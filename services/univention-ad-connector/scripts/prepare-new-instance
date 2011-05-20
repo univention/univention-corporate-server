@@ -3,7 +3,7 @@
 # Univention AD Connector
 #  preparation script for a new parallel running connector instance
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -145,7 +145,7 @@ then
     
     echo "-- copy startup script"
     cp /usr/sbin/univention-ad-connector /usr/sbin/univention-ad-"$CONFIGBASENAME"
-    sed -i "s|/usr/lib/python2.4/site-packages/univention/connector/ad/main.py.*|/usr/lib/python2.4/site-packages/univention/connector/ad/main.py --configbase \"$CONFIGBASENAME\"|" /usr/sbin/univention-ad-"$CONFIGBASENAME"
+    sed -i "s|/usr/lib/python2.6/site-packages/univention/connector/ad/main.py.*|/usr/lib/python2.6/site-packages/univention/connector/ad/main.py --configbase \"$CONFIGBASENAME\"|" /usr/sbin/univention-ad-"$CONFIGBASENAME"
     sed -i "s|/etc/univention/connector/ad/mapping|/etc/univention/$CONFIGBASENAME/ad/mapping|g" /usr/sbin/univention-ad-"$CONFIGBASENAME"
     
     

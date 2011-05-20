@@ -1,10 +1,10 @@
-#!/usr/bin/python2.4 -OO
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention AD Connector
 #  List all rejected objects
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -39,7 +39,7 @@ import univention
 import univention.connector
 import univention.connector.ad
 
-import univention_baseconfig
+import univention.config_registry
 
 CONFIGBASENAME="connector"
 
@@ -73,26 +73,26 @@ sys.path=['/etc/univention/%s/ad/'%CONFIGBASENAME]+sys.path
 import mapping
 
 def main():
-	baseConfig=univention_baseconfig.baseConfig()
-	baseConfig.load()
+	configRegistry=univention.config_registry.ConfigRegistry()
+	configRegistry.load()
 
-	if not baseConfig.has_key('%s/ad/ldap/host' % CONFIGBASENAME):
+	if not configRegistry.has_key('%s/ad/ldap/host' % CONFIGBASENAME):
 		print '%s/ad/ldap/host not set' % CONFIGBASENAME
 		sys.exit(1)
-	if not baseConfig.has_key('%s/ad/ldap/port' % CONFIGBASENAME):
+	if not configRegistry.has_key('%s/ad/ldap/port' % CONFIGBASENAME):
 		print '%s/ad/ldap/port not set' % CONFIGBASENAME
 		sys.exit(1)
-	if not baseConfig.has_key('%s/ad/ldap/base' % CONFIGBASENAME):
+	if not configRegistry.has_key('%s/ad/ldap/base' % CONFIGBASENAME):
 		print '%s/ad/ldap/base not set' % CONFIGBASENAME
 		sys.exit(1)
-	if not baseConfig.has_key('%s/ad/ldap/binddn' % CONFIGBASENAME):
+	if not configRegistry.has_key('%s/ad/ldap/binddn' % CONFIGBASENAME):
 		print '%s/ad/ldap/binddn not set' % CONFIGBASENAME
 		sys.exit(1)
-	if not baseConfig.has_key('%s/ad/ldap/bindpw' % CONFIGBASENAME):
+	if not configRegistry.has_key('%s/ad/ldap/bindpw' % CONFIGBASENAME):
 		print '%s/ad/ldap/bindpw not set' % CONFIGBASENAME
 		sys.exit(1)
 
-	if not baseConfig.has_key('%s/ad/ldap/certificate' % CONFIGBASENAME) and not (baseConfig.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and baseConfig['%s/ad/ldap/ssl' % CONFIGBASENAME] == 'no') :
+	if not configRegistry.has_key('%s/ad/ldap/certificate' % CONFIGBASENAME) and not (configRegistry.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and configRegistry['%s/ad/ldap/ssl' % CONFIGBASENAME] == 'no') :
 		print '%s/ad/ldap/certificate not set' % CONFIGBASENAME
 		sys.exit(1)
 
@@ -107,7 +107,7 @@ def main():
 		new_ca.write(string.join(ca.readlines(),''))
 		ca.close()
 
-		ca = open(baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME])
+		ca = open(configRegistry['%s/ad/ldap/certificate' % CONFIGBASENAME])
 		new_ca.write(string.join(ca.readlines(),''))
 		ca.close()
 
@@ -115,33 +115,33 @@ def main():
 	
 	ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, new_ca_filename )
 
-	if not baseConfig.has_key('%s/ad/listener/dir' % CONFIGBASENAME):
+	if not configRegistry.has_key('%s/ad/listener/dir' % CONFIGBASENAME):
 		print '%s/ad/listener/dir not set' % CONFIGBASENAME
 		sys.exit(1)
 
-	if not baseConfig.has_key('%s/ad/retryrejected' % CONFIGBASENAME):
+	if not configRegistry.has_key('%s/ad/retryrejected' % CONFIGBASENAME):
 		baseconfig_retry_rejected=10
 	else:
-		baseconfig_retry_rejected=baseConfig['%s/ad/retryrejected' % CONFIGBASENAME]
+		baseconfig_retry_rejected=configRegistry['%s/ad/retryrejected' % CONFIGBASENAME]
 
-	ad_ldap_bindpw=open(baseConfig['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
+	ad_ldap_bindpw=open(configRegistry['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
 	if ad_ldap_bindpw[-1] == '\n':
 		ad_ldap_bindpw=ad_ldap_bindpw[0:-1]
 	
-	poll_sleep=int(baseConfig['%s/ad/poll/sleep' % CONFIGBASENAME])
+	poll_sleep=int(configRegistry['%s/ad/poll/sleep' % CONFIGBASENAME])
 
 
 	#try:
 	ad=univention.connector.ad.ad( CONFIGBASENAME,
 				       mapping.ad_mapping,
-				       baseConfig,
-				       baseConfig['%s/ad/ldap/host' % CONFIGBASENAME],
-				       baseConfig['%s/ad/ldap/port' % CONFIGBASENAME],
-				       baseConfig['%s/ad/ldap/base' % CONFIGBASENAME],
-				       baseConfig['%s/ad/ldap/binddn' % CONFIGBASENAME],
+				       configRegistry,
+				       configRegistry['%s/ad/ldap/host' % CONFIGBASENAME],
+				       configRegistry['%s/ad/ldap/port' % CONFIGBASENAME],
+				       configRegistry['%s/ad/ldap/base' % CONFIGBASENAME],
+				       configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME],
 				       ad_ldap_bindpw,
-				       baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME],
-				       baseConfig['%s/ad/listener/dir' % CONFIGBASENAME])
+				       configRegistry['%s/ad/ldap/certificate' % CONFIGBASENAME],
+				       configRegistry['%s/ad/listener/dir' % CONFIGBASENAME])
 	#except:
 	#	print "Failed to read Connector-Config. This may happen if the connector is running."		
 	#	sys.exit(1)

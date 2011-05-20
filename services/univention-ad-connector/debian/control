@@ -3,15 +3,16 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper, python2.4, python-all-dev, python-central, univention-config-dev
-XS-Python-Version: 2.4
+Build-Depends: debhelper (>> 7), ucslint, python2.6-dev, python-support, univention-config-dev
 
 Package: python-univention-connector
 Architecture: all
-Depends: python-univention, python-univention-license, univention-server-master | univention-server-backup
-Pre-Depends: univention-config-registry (>= 2.6.8-5) | univention-baseconfig
-Provides: ${python:Provides}, python2.4-univention-connector
-XB-Python-Version: ${python:Versions}
+Depends: ${python:Depends},
+ python-univention,
+ python-univention-license,
+ univention-server-master | univention-server-backup
+Pre-Depends: univention-config-registry (>= 2.6.8-5)
+Provides: ${python:Provides}
 Conflicts: univention-server-slave, univention-server-member
 Description: UCS - Modules for connector sychronisation
  This package contains the modules that implement the
@@ -24,10 +25,13 @@ Description: UCS - Modules for connector sychronisation
 
 Package: python-univention-connector-ad
 Architecture: all
-Depends: python-univention, python-univention-license, python-univention-connector, python-m2crypto
-Pre-Depends: univention-config-registry | univention-baseconfig
-Provides: ${python:Provides}, python2.4-univention-connector-ad
-XB-Python-Version: ${python:Versions}
+Depends: ${python:Depends},
+ python-univention,
+ python-univention-license,
+ python-univention-connector (= ${binary:Version}),
+ python-m2crypto
+Pre-Depends: univention-config-registry
+Provides: ${python:Provides}
 Description: UCS - Modules for connector sychronisation
  This package contains the modules that implement the
  features of Univention AD Connector.
@@ -39,10 +43,9 @@ Description: UCS - Modules for connector sychronisation
 
 Package: univention-ad-connector
 Architecture: all
-Depends: python-univention, python-univention-license
-Pre-Depends: univention-config-registry | univention-baseconfig, python-univention-connector-ad
-Conflicts: python2.3-univention-connector-ad
-Replaces: python2.3-univention-connector-ad
+Pre-Depends: univention-config-registry,
+ python-univention-connector-ad (= ${binary:Version})
+Depends: shell-univention-lib
 Description: UCS - Modules for sync ucs and active directory
  This package contains the modules that implement the
  features of Univention AD Connector.
@@ -54,7 +57,7 @@ Description: UCS - Modules for sync ucs and active directory
 
 Package: univention-ad-connector-exchange
 Architecture: all
-Depends: univention-server-master
+Depends: univention-server-master | univention-server-backup
 Description: This package extends a configured AD-Connector
  to sync Microsoft-Exchange attributes by adding
  UCS LDAP-schema, custom attributes and activate

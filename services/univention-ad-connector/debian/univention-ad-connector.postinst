@@ -3,7 +3,7 @@
 # Univention AD Connector
 #  postinst script of the ad connector package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,30 +30,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-createLogfile () {
-	if [ ! -e $1 ] ; then
-		touch $1
-		chown $2 $1
-		chmod $3 $1
-	fi
-}
+. /usr/share/univention-lib/all.sh
 
-createLogfile /var/log/univention/ad-connector-certificate.log "root:adm" 640
-createLogfile /var/log/univention/connector.log "root:adm" 640
-createLogfile /var/log/univention/connector-status.log "root:adm" 640
+create_logfile /var/log/univention/ad-connector-certificate.log "root:adm" 640
+create_logfile /var/log/univention/connector.log "root:adm" 640
+create_logfile /var/log/univention/connector-status.log "root:adm" 640
 
-univention-config-registry set connector/ad/listener/dir?/var/lib/univention-connector/ad
-univention-config-registry set connector/ad/poll/sleep?5
-univention-config-registry set connector/ad/retryrejected?10
-univention-config-registry set connector/ad/ldap/port?389
-univention-config-registry set connector/ad/ldap/ssl?yes
-univention-config-registry set connector/debug/function?0
-univention-config-registry set connector/debug/level?1
-univention-config-registry set connector/password/service/encoding?"iso8859-15"
-univention-config-registry set connector/ad/mapping/user/primarymail?false connector/ad/mapping/user/win2000/description?false
-univention-config-registry set connector/ad/mapping/group/primarymail?false connector/ad/mapping/group/win2000/description?false connector/ad/mapping/group/language?de
-univention-config-registry set connector/ad/mapping/syncmode?sync
-univention-config-registry set connector/ad/autostart?yes
+univention-config-registry set connector/ad/listener/dir?/var/lib/univention-connector/ad \
+			connector/ad/poll/sleep?5 \
+			connector/ad/retryrejected?10 \
+			connector/ad/ldap/port?389 \
+			connector/ad/ldap/ssl?yes \
+			connector/debug/function?0 \
+			connector/debug/level?1 \
+			connector/password/service/encoding?"iso8859-15" \
+			connector/ad/mapping/user/primarymail?false connector/ad/mapping/user/win2000/description?false \
+			connector/ad/mapping/group/primarymail?false connector/ad/mapping/group/win2000/description?false connector/ad/mapping/group/language?de \
+			connector/ad/mapping/syncmode?sync \
+			connector/ad/autostart?yes
 
 if [ ! -d /var/lib/univention-connector/ad ]; then
 	mkdir -p /var/lib/univention-connector/ad
@@ -63,19 +57,14 @@ fi
 /etc/init.d/univention-ad-connector crestart || true
 /etc/init.d/univention-directory-listener crestart || true
 
-eval $(univention-baseconfig shell server/role)
-if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/42univention-ad-connector.inst || true
-fi
+call_joinscript /usr/lib/univention-install/42univention-ad-connector.inst
 
 #DEBHELPER#
 
+dpkg-statoverride --update --add root www-data 0710 /var/www/univention-ad-connector
+
 if [ -x /etc/init.d/univention-management-console-server ]; then
 	/etc/init.d/univention-management-console-server crestart
-fi
-
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.3-11; then
-    test -f "/var/cache/univention-config/cache" && rm -f "/var/cache/univention-config/cache"
 fi
 
 if [ -x /etc/init.d/apache2 ]; then

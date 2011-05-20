@@ -1,10 +1,10 @@
-#!/usr/bin/python2.4 -W ignore
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention AD Connector
 #  comfortable search the Active Directory LDAP interface
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,7 +32,8 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import sys, codecs, univention_baseconfig, os
+import sys, codecs, os
+import univention.config_registry
 from ldap.controls import LDAPControl
 import ldap
 
@@ -108,15 +109,15 @@ if len(sys.argv) > oiterator+1:
 else:
     filter_attributes = None
 
-baseConfig=univention_baseconfig.baseConfig()
-baseConfig.load()
+configRegistry=univention.config_registry.ConfigRegistry()
+configRegistry.load()
 
-if not (baseConfig.has_key('%s/ad/ldap/host' % CONFIGBASENAME)
-	and baseConfig.has_key('%s/ad/ldap/port' % CONFIGBASENAME)
-	and baseConfig.has_key('%s/ad/ldap/binddn' % CONFIGBASENAME)
-	and baseConfig.has_key('%s/ad/ldap/bindpw' % CONFIGBASENAME)
-	and baseConfig.has_key('%s/ad/ldap/base' % CONFIGBASENAME)
-	and (baseConfig.has_key('%s/ad/ldap/certificate' % CONFIGBASENAME) or (baseConfig.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and baseConfig['%s/ad/ldap/ssl' % CONFIGBASENAME] == 'no'))):
+if not (configRegistry.has_key('%s/ad/ldap/host' % CONFIGBASENAME)
+	and configRegistry.has_key('%s/ad/ldap/port' % CONFIGBASENAME)
+	and configRegistry.has_key('%s/ad/ldap/binddn' % CONFIGBASENAME)
+	and configRegistry.has_key('%s/ad/ldap/bindpw' % CONFIGBASENAME)
+	and configRegistry.has_key('%s/ad/ldap/base' % CONFIGBASENAME)
+	and (configRegistry.has_key('%s/ad/ldap/certificate' % CONFIGBASENAME) or (configRegistry.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and configRegistry['%s/ad/ldap/ssl' % CONFIGBASENAME] == 'no'))):
         print ""
 	print "This is univention-adsearch"
 	print ""
@@ -130,24 +131,24 @@ if not (baseConfig.has_key('%s/ad/ldap/host' % CONFIGBASENAME)
 	
 
 protocol='ldap'
-ldaps = baseConfig.get('%s/ad/ldap/ldaps' % CONFIGBASENAME, 'no').lower() # tls or ssl
+ldaps = configRegistry.get('%s/ad/ldap/ldaps' % CONFIGBASENAME, 'no').lower() # tls or ssl
 if ldaps in [ 'yes', 'true', 'enabled', '1']:
 	protocol='ldaps'
 
-ldapuri = "%s://%s:%d" % (protocol, baseConfig['%s/ad/ldap/host' % CONFIGBASENAME],int(baseConfig['%s/ad/ldap/port' % CONFIGBASENAME]))
+ldapuri = "%s://%s:%d" % (protocol, configRegistry['%s/ad/ldap/host' % CONFIGBASENAME],int(configRegistry['%s/ad/ldap/port' % CONFIGBASENAME]))
 
-login_dn = baseConfig['%s/ad/ldap/binddn' % CONFIGBASENAME]
-pw_file = baseConfig['%s/ad/ldap/bindpw' % CONFIGBASENAME]
+login_dn = configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME]
+pw_file = configRegistry['%s/ad/ldap/bindpw' % CONFIGBASENAME]
 fp = open(pw_file,'r')
 login_pw = fp.readline()
 if login_pw[-1] == '\n':
 	login_pw = login_pw[:-1]
 
-ca_file = baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME]
+ca_file = configRegistry['%s/ad/ldap/certificate' % CONFIGBASENAME]
 
 
 start_tls = 2
-if baseConfig.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and baseConfig['%s/ad/ldap/ssl' % CONFIGBASENAME] == "no":
+if configRegistry.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and configRegistry['%s/ad/ldap/ssl' % CONFIGBASENAME] == "no":
     start_tls = 0
 
 ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, ca_file )
@@ -174,9 +175,9 @@ for i in filter_tmp.split(","):
 	filter += (j[0] + "=" + j[1])
 
 if filter_attributes:
-	res = lo.search_ext_s(baseConfig['%s/ad/ldap/base' % CONFIGBASENAME],ldap.SCOPE_SUBTREE,filter.encode('utf8'),filter_attributes,serverctrls=[lc1])
+	res = lo.search_ext_s(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME],ldap.SCOPE_SUBTREE,filter.encode('utf8'),filter_attributes,serverctrls=[lc1])
 else:
-	res = lo.search_ext_s(baseConfig['%s/ad/ldap/base' % CONFIGBASENAME],ldap.SCOPE_SUBTREE,filter.encode('utf8'),serverctrls=[lc1])
+	res = lo.search_ext_s(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME],ldap.SCOPE_SUBTREE,filter.encode('utf8'),serverctrls=[lc1])
 
 n_results = len(res)
 n_referrals = 0

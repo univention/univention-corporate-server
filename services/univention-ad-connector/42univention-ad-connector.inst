@@ -3,7 +3,7 @@
 # Univention AD Connector
 #  join script
 #
-# Copyright 2009-2010 Univention GmbH
+# Copyright 2009-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -42,18 +42,18 @@ fi
 touch "${JSFILE}"
 test -n "$(grep "${JSNAME} v${VERSION} successful" ${JSFILE})" && exit 1
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 # umc module
 
 # create CUPS operations
-univention-directory-manager settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
+univention-directory-manager settings/console_operation create "$@" --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
 																				 --set name=adconnector \
 																				 --set description="AD Connector operations" \
 																				 --append operation="adconnector/*" \
 
 # create CUPS acls
-univention-directory-manager settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+univention-directory-manager settings/console_acl create "$@" --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
 																				 --set name=adconnector-all \
 																				 --set category="AD Connector" \
 																				 --set ldapbase="$ldap_base" \
@@ -61,18 +61,18 @@ univention-directory-manager settings/console_acl create $@ --ignore_exists --po
 																				 --set description="All AD Connector Operations"
 
 # policy container
-univention-directory-manager container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1
+univention-directory-manager container/cn create "$@" --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1
 
 # default policies
-univention-directory-manager policies/console_access create $@ --ignore_exists \
+univention-directory-manager policies/console_access create "$@" --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \
 	--set name=default-admin
 
-univention-directory-manager policies/console_access modify $@ --ignore_exists \
+univention-directory-manager policies/console_access modify "$@" --ignore_exists \
 	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
 	--append allow=cn=adconnector-all,cn=acls,cn=console,cn=univention,$ldap_base
 
-univention-directory-manager policies/console_access create $@ --ignore_exists \
+univention-directory-manager policies/console_access create "$@" --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \
 	--set name=adconnector-admin --append allow=cn=adconnector-all,cn=acls,cn=console,cn=univention,$ldap_base
 

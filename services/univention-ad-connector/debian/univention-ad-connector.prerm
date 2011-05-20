@@ -3,7 +3,7 @@
 # Univention AD Connector
 #  prerm script of the ad connector package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -36,3 +36,5 @@ if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
 fi
 
 #DEBHELPER#
+
+exit 0
