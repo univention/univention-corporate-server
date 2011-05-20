@@ -3,7 +3,7 @@
 # Univention Printer Assignment
 #  join script
 #
-# Copyright 2009-2010 Univention GmbH
+# Copyright 2009-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,9 +34,10 @@ VERSION=1
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
-eval `univention-config-registry shell`
+eval "$(univention-config-registry shell)"
 
-univention-directory-manager settings/syntax create --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
+univention-directory-manager settings/syntax create "$@" --ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
 	--set name="univention-printer-syntax" \
 	--set description="syntax for custom attribute univention-printer-list" \
 	--set attribute="shares/printer: name" \
@@ -45,7 +46,8 @@ univention-directory-manager settings/syntax create --ignore_exists --position "
 	--set base="$ldap_base" \
 	--set viewonly="FALSE"
 
-univention-directory-manager settings/customattribute create --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
+univention-directory-manager settings/customattribute create "$@" --ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
 	--set name="univention-printer-list" \
  	--set module="groups/group" \
 	--set tabName="Druckerzuordnung" \

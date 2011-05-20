@@ -2,7 +2,7 @@
 #
 #  Postinst script for the debian package
 #
-# Copyright 2007-2010 Univention GmbH
+# Copyright 2007-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,5 +31,8 @@
 
 #DEBHELPER#
 
-univention-config-registry set printer/assignment/removeall?no
-univention-config-registry set printer/assignment/debug?no
+univention-config-registry set \
+	printer/assignment/removeall?no \
+	printer/assignment/debug?no
+
+exit 0
