@@ -30,21 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-ldapbase=`univention-config-registry get ldap/base`
-hostname=`univention-config-registry get hostname`
-domain=`univention-config-registry get domainname`
-server_role=`univention-config-registry get server/role`
-name=pdfPrinter
-dir='/var/cache/cups-pdf/%U'
-anon_dir='/var/cache/cups-pdf'
-
-# share und printer löschen
-# create pdf share
-#udm shares/share create --ignore_exist --position="cn=shares,$ldapbase" \
-#                        --option samba --set name=$name \
-#                        --set host=$hostname.$domain --set path=$dir \
-#                        --set webaccessName=$name
-
 # set old permissions of cups-pdf backend
 dpkg-statoverride --add --force --update root lp 4754 /usr/lib/cups/backend/cups-pdf
 

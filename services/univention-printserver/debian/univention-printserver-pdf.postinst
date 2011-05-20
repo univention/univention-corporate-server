@@ -30,10 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-ldapbase=`univention-config-registry get ldap/base`
-hostname=`univention-config-registry get hostname`
-domain=`univention-config-registry get domainname`
-server_role=`univention-config-registry get server/role`
+. /usr/share/univention-lib/all.sh
+
 dir='/var/cache/cups-pdf/%U'
 anon_dir='/var/cache/cups-pdf/%U'
 
@@ -42,9 +40,7 @@ univention-config-registry set "cups/cups-pdf/directory?$dir"
 univention-config-registry set "cups/cups-pdf/anonymous?$anon_dir"
 
 # run join script
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-        /usr/lib/univention-install/79univention-printserver-pdf.inst || true
-fi
+call_joinscript 79univention-printserver-pdf.inst
 
 # cups backend 
 dpkg-statoverride --add --force --update root sys 4754 /usr/lib/cups/backend/cups-pdf || true

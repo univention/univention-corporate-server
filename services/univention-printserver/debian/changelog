@@ -1,3 +1,9 @@
+univention-printserver (5.0.0-2) unstable; urgency=low
+
+  * use call_joinscript to call join scripts Bug #22575 
+
+ -- Felix Botner <botner@univention.de>  Fri, 20 May 2011 15:00:22 +0200
+
 univention-printserver (5.0.0-1) unstable; urgency=low
 
   * UCS 3.0-0 release Bug #22575
