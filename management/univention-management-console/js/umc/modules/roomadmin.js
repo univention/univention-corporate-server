@@ -2,11 +2,11 @@
 
 dojo.provide("umc.modules.roomadmin");
 
-dojo.require("umc.modules.Module");
-dojo.require("umc.widgets.FormWidget");
+dojo.require("umc.widgets.Module");
+dojo.require("umc.widgets.Form");
 dojo.require("dojox.grid.EnhancedGrid");
 
-dojo.declare("umc.modules.roomadmin", umc.modules.Module, {
+dojo.declare("umc.modules.roomadmin", umc.widgets.Module, {
 
 	buildRendering: function() {
 		this.inherited(arguments);
@@ -86,7 +86,7 @@ dojo.declare("umc.modules.roomadmin", umc.modules.Module, {
 			[ 'myinput2', 'mychoice2' ]
 		];
 
-		this._form = new umc.widgets.FormWidget({
+		this._form = new umc.widgets.Form({
 			region: 'top',
 			widgets: widgets,
 			buttons: buttons,

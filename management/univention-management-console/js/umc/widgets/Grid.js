@@ -1,6 +1,6 @@
 /*global dojo dijit dojox umc console */
 
-dojo.provide("umc.widgets.GridWidget");
+dojo.provide("umc.widgets.Grid");
 
 dojo.require("dojo.string");
 dojo.require("dojo.data.ItemFileWriteStore");
@@ -13,7 +13,7 @@ dojo.require("dojox.grid.cells");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.tools");
 
-dojo.declare("umc.widgets.GridWidget", dijit.layout.BorderContainer, {
+dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 	// summary:
 	//		Encapsulates a complex grid with store, UMCP commands and action buttons;
 	//		offers easy access to select items etc.
@@ -55,7 +55,7 @@ dojo.declare("umc.widgets.GridWidget", dijit.layout.BorderContainer, {
 		this.inherited(arguments);
 		
 		// assertions
-		umc.tools.assert(dojo.isArray(this.columns), 'The property columns needs to be defined for umc.widgets.GridWidget as an array.');
+		umc.tools.assert(dojo.isArray(this.columns), 'The property columns needs to be defined for umc.widgets.Grid as an array.');
 
 		// create an empty store
 		this._store = new dojo.data.ItemFileWriteStore({ 

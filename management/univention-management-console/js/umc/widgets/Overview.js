@@ -1,6 +1,6 @@
 /*global dojo dijit dojox umc console window */
 
-dojo.provide("umc.widgets.OverviewWidget");
+dojo.provide("umc.widgets.Overview");
 
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit._Contained");
@@ -39,7 +39,7 @@ dojo.declare( "umc.widgets._OverviewItemWidget", [dijit.layout.ContentPane, diji
 	}
 });
 
-dojo.declare( "umc.widgets.OverviewWidget", [dijit.TitlePane, dijit._Container], {
+dojo.declare( "umc.widgets.Overview", [dijit.TitlePane, dijit._Container], {
 	// summary:
 	//		Widget that displays an overview of all modules belonging to a 
 	//		given category along with their icon and description.

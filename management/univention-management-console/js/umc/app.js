@@ -13,7 +13,7 @@ dojo.require("dojo.cookie");
 dojo.require("umc.widgets.Toaster");
 dojo.require("umc.widgets.LoginDialog");
 dojo.require("umc.widgets.ContainerPane");
-dojo.require("umc.widgets.OverviewWidget");
+dojo.require("umc.widgets.Overview");
 
 // start the application when everything has been loaded
 dojo.addOnLoad(function() {
@@ -179,7 +179,7 @@ dojo.mixin(umc.app, {
 		dojo.forEach(this.getCategories(), dojo.hitch(this, function(icat) {
 			// create a new overview widget for all modules in the given category
 			//console.log('### add category: ' + icat);
-			var overviewWidget = new umc.widgets.OverviewWidget({
+			var overviewWidget = new umc.widgets.Overview({
 				modules: this.getModules(icat.id),
 				title: icat.title
 			});

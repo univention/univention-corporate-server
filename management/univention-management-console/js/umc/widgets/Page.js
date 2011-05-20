@@ -1,34 +1,20 @@
 /*global console MyError dojo dojox dijit umc */
 
-dojo.provide("umc.modules.Module");
+dojo.provide("umc.widgets.Page");
 
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.layout.BorderContainer");
-dojo.require("umc.widgets.StandbyMixin");
 
-dojo.declare("umc.modules.Module", [ dijit.layout.ContentPane ], {
+dojo.declare("umc.widgets.Page", dijit.layout.ContentPane, {
 	// summary:
-	//		Basis class for all module classes.
-
-	// layout
-	//border: false,
-	//autoScroll: true,
-	//layout: 'fit'
+	//		Class that abstracts a displayable page for a module.
+	//		Offers a BorderContainer for layout.
 
 	// description: String
 	//		Text that describes the module, will be displayed at the top of a page.
 	description: '',
 
 	_layoutContainer: null,
-
-	postMixInProperties: function() {
-		this.inherited(arguments);
-
-		// set the css class umcModulePane
-		this['class'] = (this['class'] || '') + ' umcModulePane';
-		this.liveSplitters = false;
-		
-	},
 
 	buildRendering: function() {
 		this.inherited(arguments);

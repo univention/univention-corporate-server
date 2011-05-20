@@ -12,8 +12,8 @@ doc:
 all: jslint
 
 sync: build
-#	rsync -vrlt --delete --exclude .git --exclude .svn --exclude '.*.sw*' . root@10.200.15.10:/root/umc-js
-	rsync -vrlt --delete --exclude .git --exclude .svn --exclude '.*.sw*' --exclude 'roomadmin.js*' --exclude 'TabbedModule.js*' . root@10.200.15.10:/root/umc-js
+	rsync -vrlt --delete --exclude .git --exclude "*~" --exclude .svn --exclude '.*.sw*' . root@10.200.15.10:/root/umc-js
+#	rsync -vrlt --delete --exclude .git --exclude .svn --exclude '.*.sw*' --exclude 'roomadmin.js*' --exclude 'TabbedModule.js*' . root@10.200.15.10:/root/umc-js
 
 syncsvn:
 	rsync -vrlt --delete --exclude '*~' --exclude ".*.sw*" --exclude ".git" --exclude ".svn" . /home/aklaeser/svn/dev/branches/ucs-3.0/ucs/management/univention-management-console/js/

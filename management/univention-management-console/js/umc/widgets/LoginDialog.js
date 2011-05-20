@@ -12,7 +12,7 @@ dojo.require("umc.tools");
 dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.widgets.ContainerForm");
 dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets.FormWidget");
+dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Label");
 
 dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.StandbyMixin ], {
@@ -65,7 +65,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 
 		var layout = [['username'], ['password']];
 		
-		this._form = new umc.widgets.FormWidget({
+		this._form = new umc.widgets.Form({
 			//style: 'width: 100%',
 			widgets: widgets,
 			buttons: buttons,

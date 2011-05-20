@@ -2,7 +2,7 @@
 
 dojo.provide("umc.modules.users");
 
-dojo.require("umc.modules.TabbedModule");
+dojo.require("umc.widgets.TabbedModule");
 dojo.require("umc.tools");
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dojo.data.ItemFileWriteStore");
@@ -21,13 +21,13 @@ dojo.require("dijit.form.ComboBox");
 dojo.require("dijit.form.CheckBox");
 dojo.require("dojox.form.CheckedMultiSelect");
 dojo.require("dojox.widget.Standby");
-dojo.require("umc.widgets.SearchWidget");
+dojo.require("umc.widgets.SearchForm");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.ContainerForm");
 dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.widgets.ComboBox");
 
-dojo.declare("umc.modules._usersUser", umc.modules.TabbedModule, {
+dojo.declare("umc.modules._usersUser", umc.widgets.TabbedModule, {
 	postMixInProperties: function() {
 		// call superclass' method
 		this.inherited(arguments);
@@ -161,7 +161,7 @@ dojo.declare("umc.modules._usersUser", umc.modules.TabbedModule, {
 	}
 });
 
-dojo.declare("umc.modules.users", umc.modules.Module, {
+dojo.declare("umc.modules.users", umc.widgets.Module, {
 	// summary:
 	//		Module for modifying and displaying UCR variables on the system.
 
@@ -187,7 +187,7 @@ dojo.declare("umc.modules.users", umc.modules.Module, {
 		this.inherited(arguments);
 
 		// add search widget
-		this._searchWidget = new umc.widgets.SearchWidget({
+		this._searchWidget = new umc.widgets.SearchForm({
 			fields: [
 				{
 					id: 'searchin',

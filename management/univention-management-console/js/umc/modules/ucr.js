@@ -2,7 +2,7 @@
 
 dojo.provide("umc.modules.ucr");
 
-dojo.require("umc.modules.Module");
+dojo.require("umc.widgets.Module");
 dojo.require("umc.tools");
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dojo.data.ItemFileWriteStore");
@@ -20,9 +20,9 @@ dojo.require("dijit.form.Textarea");
 dojo.require("dijit.form.ComboBox");
 dojo.require("dojox.form.CheckedMultiSelect");
 dojo.require("dojox.widget.Standby");
-//dojo.require("umc.widgets.SearchWidget");
-dojo.require("umc.widgets.FormWidget");
-dojo.require("umc.widgets.GridWidget");
+//dojo.require("umc.widgets.SearchForm");
+dojo.require("umc.widgets.Form");
+dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.ContainerForm");
 dojo.require("umc.widgets.StandbyMixin");
@@ -83,7 +83,7 @@ dojo.declare("umc.modules._ucrDetailDialog", [ dijit.Dialog, umc.widgets.Standby
 
 		var layout = [['variable'], ['value'], ['categories']];
 		
-		this._form = new umc.widgets.FormWidget({
+		this._form = new umc.widgets.Form({
 			style: 'width: 100%',
 			widgets: widgets,
 			buttons: buttons,
@@ -230,7 +230,7 @@ dojo.declare("umc.modules._ucrDetailDialog", [ dijit.Dialog, umc.widgets.Standby
 	}
 });
 
-dojo.declare("umc.modules.ucr", umc.modules.Module, {
+dojo.declare("umc.modules.ucr", umc.widgets.Module, {
 	// summary:
 	//		Module for modifying and displaying UCR variables on the system.
 
@@ -297,7 +297,7 @@ dojo.declare("umc.modules.ucr", umc.modules.Module, {
 		}];
 
 		// generate the data grid
-		this._grid = new umc.widgets.GridWidget({
+		this._grid = new umc.widgets.Grid({
 			region: 'center',
 			actions: actions,
 			columns: columns,
@@ -359,7 +359,7 @@ dojo.declare("umc.modules.ucr", umc.modules.Module, {
 		];
 
 		// generate the search widget
-		this._searchWidget = new umc.widgets.FormWidget({
+		this._searchWidget = new umc.widgets.Form({
 			region: 'top',
 			widgets: widgets,
 			buttons: buttons,

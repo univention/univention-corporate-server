@@ -2,14 +2,14 @@
 
 dojo.provide("umc.modules.groupadmin");
 
-dojo.require("umc.modules.TabbedModule");
-dojo.require("umc.modules.Module");
-dojo.require( "umc.widgets.FormWidget" );
-dojo.require( "umc.widgets.GridWidget" );
+dojo.require("umc.widgets.TabbedModule");
+dojo.require("umc.widgets.Module");
+dojo.require( "umc.widgets.Form" );
+dojo.require( "umc.widgets.Grid" );
 dojo.require( "dojox.layout.TableContainer" );
 dojo.require( "dijit.layout.BorderContainer" );
 
-dojo.declare("umc.modules.groupadmin", umc.modules.TabbedModule, {
+dojo.declare("umc.modules.groupadmin", umc.widgets.TabbedModule, {
 	// summary:
 	//		Module for modifying and displaying UCR variables on the system.
 
@@ -67,7 +67,7 @@ dojo.declare("umc.modules.groupadmin", umc.modules.TabbedModule, {
 		}];
 
 		// generate the data grid
-		this._grid = new umc.widgets.GridWidget({
+		this._grid = new umc.widgets.Grid({
 			region: 'center',
 			actions: actions,
 			columns: columns,
@@ -111,7 +111,7 @@ dojo.declare("umc.modules.groupadmin", umc.modules.TabbedModule, {
 		];
 
 		// generate the search widget
-		this._searchWidget = new umc.widgets.FormWidget({
+		this._searchWidget = new umc.widgets.Form({
 			region: 'top',
 			widgets: widgets,
 			buttons: buttons,
@@ -127,7 +127,7 @@ dojo.declare("umc.modules.groupadmin", umc.modules.TabbedModule, {
 		});
 
 		// put everything together
-		var module = new umc.modules.Module({
+		var module = new umc.widgets.Module({
 			description: 'Hier können Gruppen für Arbeitskreise oder Projekte angelegt, bearbeitet oder gelöscht werden. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vehicula purus eu ipsum tempus quis vestibulum nunc aliquet. Donec sapien nunc, tempor sit amet malesuada vitae, cursus quis urna. Aenean molestie tempus faucibus. Donec at varius nisl. Pellentesque lobortis suscipit ante at dictum. Nulla sed mauris eget dolor pellentesque egestas at a nisl. Nam mollis urna in ipsum placerat vitae sagittis purus tristique.'
 		});
 		module.addChild( this._searchWidget );

@@ -1,6 +1,6 @@
 /*global dojo dijit dojox umc console window */
 
-dojo.provide("umc.widgets.SearchWidget");
+dojo.provide("umc.widgets.SearchForm");
 
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit._Widget");
@@ -12,7 +12,7 @@ dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.FilteringSelect");
 dojo.require("umc.tools");
 
-dojo.declare('umc.widgets.SearchWidget', dijit.layout.ContentPane, {
+dojo.declare('umc.widgets.SearchForm', dijit.layout.ContentPane, {
 	_layoutContainer: null,
 	_form: null,
 	_connects: [],

@@ -1,6 +1,6 @@
 /*global dojo dijit dojox umc console */
 
-dojo.provide("umc.widgets.FormWidget");
+dojo.provide("umc.widgets.Form");
 
 dojo.require("dijit.form.Form");
 dojo.require("dojox.form.manager._Mixin");
@@ -11,7 +11,7 @@ dojo.require("dojox.form.manager._ClassMixin");
 dojo.require("umc.widgets.Tooltip");
 dojo.require("umc.tools");
 
-dojo.declare("umc.widgets.FormWidget", [
+dojo.declare("umc.widgets.Form", [
 		dijit.form.Form,
 		dojox.form.manager._Mixin,
 		dojox.form.manager._ValueMixin,
