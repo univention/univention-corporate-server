@@ -48,32 +48,33 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 	_populateStore: function() {
 		// add all static values to the store
-		if (dojo.isObject(this.staticValues)) {
-			umc.tools.forIn(this.staticValues, function(label, id) {
-				this.store.newItem({
-					id: id,
-					label: label
-				});
-			}, this);
+		umc.tools.assert(dojo.isObject(this.staticValues) || undefined === this.staticValues, "Static values needs to be a dictionary of entries!");
+		var staticValues = this.staticValues || {};
+		umc.tools.forIn(staticValues, function(label, id) {
+			this.store.newItem({
+				id: id,
+				label: label
+			});
+		}, this);
 
-			// save the store in order for the changes to take effect and set the value
-			this.store.save();
-			this.set('value', this._initialValue);
-			this._resetValue = this._initialValue;
-		}
+		// save the store in order for the changes to take effect and set the value
+		this.store.save();
+		this.set('value', this._initialValue);
+		this._resetValue = this._initialValue;
 
 		// add all dynamic values which need to be queried via UMCP asynchronously
 		if (dojo.isString(this.umcpValues) && this.umcpValues) {
 			umc.tools.umcpCommand(this.umcpValues).then(dojo.hitch(this, function(data) {
 				// get all items
 				var items = [];
-				umc.tools.forIn(data._result, function(el, id) {
+				umc.tools.forIn(data._result, function(value, id) {
+					umc.tools.assert(!(id in staticValues), "Entry already defined by static values: " + id);
 					items.push({
 						id: id,
-						label: el.name.de
+						label: value
 					});
 				}, this);
-
+				
 				// sort items according to their displayed name
 				items.sort(function(a, b) {
 					var l1 = a.label.toLowerCase();

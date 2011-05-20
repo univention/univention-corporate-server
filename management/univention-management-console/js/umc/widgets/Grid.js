@@ -51,6 +51,26 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 
 	'class': 'umcNoBorder',
 
+	_iconFormatter: function(valueField, iconField) {
+		// summary:
+		//		Generates a formatter functor for a given value and icon field.
+
+		return dojo.hitch(this, function(value, rowIndex) {
+			// get the iconNamae
+			var item = this._grid.getItem(rowIndex);
+			var iconName = this._store.getValue(item, iconField);
+			
+			// create an HTML image that contains the down-arrow
+			var html = dojo.string.substitute('<img src="/umc/images/icons/16x16/${icon}.png" height="${height}" width="${width}" style="float:left; margin-right: 5px" /> ${value}', {
+				icon: iconName, //dojo.moduleUrl("dojo", "resources/blank.gif").toString(),
+				height: '16px',
+				width: '16px',
+				value: value
+			});
+			return html;
+		});
+	},
+
 	buildRendering: function() {
 		this.inherited(arguments);
 		
@@ -84,6 +104,12 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 			// set cell type
 			if (dojo.isString(icol.type) && 'checkbox' == icol.type.toLowerCase()) {
 				col.cellType = dojox.grid.cells.Bool;
+			}
+
+			// check for an icon
+			if (icol.iconField) {
+				// we need to specify a formatter
+				col.formatter = this._iconFormatter(icol.name, icol.iconField);
 			}
 
 			// push column config into array
@@ -122,7 +148,7 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 			name: ' ',
 			width: '20px',
 			editable: false,
-			formatter: dojo.hitch(this, function(itemID) {
+			formatter: dojo.hitch(this, function() {
 				// create an HTML image that contains the down-arrow
 				var img = dojo.string.substitute('<img src="${src}" style="height: ${height};" class="${class}" />', {
 					src: dojo.moduleUrl("dojo", "resources/blank.gif").toString(),
@@ -159,8 +185,18 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 		this._grid.setSortIndex(1);
 		this.addChild(this._grid);
 
+		// event handler for cell clicks...
+		// -> handle context menus when clicked in the last column
+		// -> call custom handler when clicked on any other cell
 		dojo.connect(this._grid, 'onCellClick', dojo.hitch(this, function(evt) {
 			if (gridColumns.length != evt.cellIndex) {
+				// check for custom callback for this column
+				var col = this.columns[evt.cellIndex - 1];
+				if (col && col.callback) {
+					// pass all values to the custom callback
+					var values = this._getValues(evt.rowIndex);
+					col.callback(values);
+				}
 				return;
 			}
 
@@ -381,6 +417,18 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 			vars.push(this._store.getValue(items[iitem], this.idField));
 		}
 		return vars; // String[]
+	},
+
+	_getValues: function(rowIndex) {
+		// summary:
+		//		Convenience method to fetch all attributes of an item as dictionary.
+		var values = {};
+		var item = this._grid.getItem(rowIndex);
+		myitem = item;
+		dojo.forEach(this._store.getAttributes(item), dojo.hitch(this, function(key) {
+			values[key] = this._store.getValue(item, key);
+		}));
+		return values;
 	}
 
 //	unsetVariable: function(/*Array*/ variable) {

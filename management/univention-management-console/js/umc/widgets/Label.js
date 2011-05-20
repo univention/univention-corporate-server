@@ -14,6 +14,11 @@ dojo.declare("umc.widgets.Label", [ dijit._Widget, dijit._Templated ], {
 
 	// label: String
 	//		String which contains the text (or HTML code) to be rendered.
-	content: ''
+	content: '',
+
+	_setContentAttr: function(content) {
+		this.content = content;
+		this.contentNode.innerHTML = content;
+	}
 });
 

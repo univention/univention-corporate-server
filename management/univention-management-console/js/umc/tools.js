@@ -44,6 +44,14 @@ dojo.mixin(umc.tools, {
 		if (handleErrors) {
 			call = call.then(function(data) {
 				// do not modify the data
+				if ( data && data._message ) {
+					if ( data._status == 200 ) {
+						umc.app.notify( data._message );
+					} else {
+						umc.app.alert( data._message );
+					}
+				}
+
 				return data; // Object
 			}, function(error) {
 				// handle errors

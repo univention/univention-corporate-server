@@ -12,6 +12,7 @@ doc:
 all: jslint
 
 sync: build
+#	git push root@10.200.15.10:/root/umc-js
 	rsync -vrlt --delete --exclude .git --exclude "*~" --exclude .svn --exclude '.*.sw*' . root@10.200.15.10:/root/umc-js
 #	rsync -vrlt --delete --exclude .git --exclude .svn --exclude '.*.sw*' --exclude 'roomadmin.js*' --exclude 'TabbedModule.js*' . root@10.200.15.10:/root/umc-js
 

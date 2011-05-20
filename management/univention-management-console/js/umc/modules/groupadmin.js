@@ -43,7 +43,11 @@ dojo.declare("umc.modules.groupadmin", umc.widgets.TabbedModule, {
 			description: 'Bearbeiten der ausgewählten Gruppen.',
 			iconClass: 'dijitIconEdit',
 			isStandardAction: false,
-			isContextAction: true
+			isContextAction: true,
+			callback: dojo.hitch( this, function( vars ) {
+				console.log( vars );
+				this._searchWidget.umcpGet( { 'group' : vars } );
+			})
 		}, {
 			name: 'delete',
 			label: 'Löschen',
@@ -72,8 +76,7 @@ dojo.declare("umc.modules.groupadmin", umc.widgets.TabbedModule, {
 			actions: actions,
 			columns: columns,
 			idField: 'name',
-			umcpSearchCommand: 'groupadmin/search',
-			umcpSetCommand: 'groupadmin/set'
+			umcpSearchCommand: 'groupadmin/search'
 		});
 
 		//
@@ -115,7 +118,9 @@ dojo.declare("umc.modules.groupadmin", umc.widgets.TabbedModule, {
 			region: 'top',
 			widgets: widgets,
 			buttons: buttons,
-			layout: layout
+			layout: layout,
+			umcpSetCommand: 'groupadmin/set',
+			umcpGetCommand: 'groupadmin/get'
 		});
 		
 		// simple handler to enable/disable standby mode

@@ -11,8 +11,15 @@ dojo.require("dijit.form.TextBox");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dojox.widget.Dialog");
 dojo.require("dojox.layout.TableContainer");
+dojo.require("dijit._Widget");
+dojo.require("dijit._Container");
 
 dojo.addOnLoad(function() {
+	dojo.declare("umc.widgets.ContainerWidget", [dijit._Widget, dijit._Container], {
+		// description:
+		//      Combination of Widget and Container class.
+	});
+
 	dojo.declare('MyDialog', dojox.widget.Dialog, {
 		buildRendering: function() {
 			// call superclass' method
@@ -22,8 +29,8 @@ dojo.addOnLoad(function() {
 
 			var form = new dojox.layout.TableContainer({
 				cols: 1,
-				orientation: 'horiz',
-				region: 'center'
+				orientation: 'horiz'
+				//region: 'center'
 			});
 			form.addChild(new dijit.form.TextBox({
 				label: 'Username',
@@ -35,12 +42,15 @@ dojo.addOnLoad(function() {
 				type: 'password'
 			}));
 			
-			var layout = new dijit.layout.BorderContainer({
-				style: 'width: 100%; height: 100%'
+			var layout = new dojox.layout.TableContainer({
+				//style: 'width: 100%; height: 100%'
+				cols: 1,
+				//orientation: 'vert',
+				showLabels: false
 			});
 			layout.addChild(new dijit.layout.ContentPane({
-				content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc scelerisque malesuada dolor eu vehicula. Nunc tempus lacinia mauris, eu semper orci vestibulum a. Mauris non lectus turpis. Pellentesque volutpat euismod lorem, id auctor massa imperdiet eu. Cras quis nisi nisi.',
-				region: 'top'
+				content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc scelerisque malesuada dolor eu vehicula. Nunc tempus lacinia mauris, eu semper orci vestibulum a. Mauris non lectus turpis. Pellentesque volutpat euismod lorem, id auctor massa imperdiet eu. Cras quis nisi nisi.'
+				//region: 'top'
 			}));
 			layout.addChild(form);
 			

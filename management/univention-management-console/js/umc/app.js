@@ -11,6 +11,8 @@ dojo.require("dijit.form.Button");
 dojo.require("dijit.Menu");
 dojo.require("dojo.cookie");
 dojo.require("umc.widgets.Toaster");
+dojo.require("umc.widgets.AlertDialog");
+dojo.require("umc.widgets.ConfirmDialog");
 dojo.require("umc.widgets.LoginDialog");
 dojo.require("umc.widgets.ContainerPane");
 dojo.require("umc.widgets.Overview");
@@ -18,25 +20,44 @@ dojo.require("umc.widgets.Overview");
 // start the application when everything has been loaded
 dojo.addOnLoad(function() {
 	umc.app.start();
+
+	// register application-wide error handler
 	/*window.onerror = function (msg, url, num) {
 		console.log(msg + ';' + url + ';' + num);
+		umc.app.alert('An error occurred:\n' + msg);
 		return true;
 	};*/
 });
 
 dojo.mixin(umc.app, {
+	_loginDialog: null,
+	_alertDialog: null,
+	_toaster: null,
 
-	notify: function(message) {
-		this.toaster.setContent(message, 'message');
+	notify: function(/*String*/ message) {
+		// show the toaster
+		this._toaster.setContent(message, 'message');
 	},
 
-	alert: function(message) {
-		this.alertDialog.set('content', message);
-		this.alertDialog.show();
+	alert: function(/*String*/ message) {
+		// show the confirmation dialog
+		this._alertDialog.set('message', message);
+		this._alertDialog.show();
 	},
 
-	confirm: function(message) {
+	confirm: function(/*String*/ message, /*Object*/ options, /*Function*/ callback) {
+		// create confirmation dialog
+		var confirmDialog = new umc.widgets.ConfirmDialog({
+			title: 'Bestätigung',
+			message: message,
+			options: options
+		});
 
+		// connect the dialog with custom callback
+		dojo.connect(confirmDialog, 'onConfirm', callback);
+
+		// show the confirmation dialog
+		confirmDialog.show();
 	},
 
 //	standby: function(/*Boolean*/ enable) {
@@ -61,23 +82,22 @@ dojo.mixin(umc.app, {
 
 		// create login dialog
 		this.loggingIn = true;
-		this.loginDialog = umc.widgets.LoginDialog({});
-		this.loginDialog.startup();
-		dojo.connect(this.loginDialog, 'onLogin', this, 'onLogin');
+		this._loginDialog = umc.widgets.LoginDialog({});
+		this._loginDialog.startup();
+		dojo.connect(this._loginDialog, 'onLogin', this, 'onLogin');
 
 		// create alert dialog
-		this.alertDialog = new dijit.Dialog({
-			content: '',
-			title: 'UMC2-Alert'
+		this._alertDialog = new umc.widgets.AlertDialog({
+			title: 'Hinweis'
 		});
 
 		// create toaster
-		this.toaster = new umc.widgets.Toaster({ });
+		this._toaster = new umc.widgets.Toaster({});
 
 		// check whether we still have a app cookie
 		var sessionCookie = dojo.cookie('UMCSessionId');
 		if (undefined === sessionCookie) {
-			this.loginDialog.show();
+			this._loginDialog.show();
 		}
 		else {
 			this.onLogin(dojo.cookie('univention.umc.username'));
@@ -96,7 +116,7 @@ dojo.mixin(umc.app, {
 	onLogin: function(username) {
 		this.username = username;
 		dojo.cookie('univention.umc.username', username, { expires: 100, path: '/' });
-		this.loginDialog.hide();
+		this._loginDialog.hide();
 		this.loadModules();
 	},
 
@@ -206,7 +226,7 @@ dojo.mixin(umc.app, {
 			'class': 'umcHeaderButton'
 		}));
 		header.addChild(new dijit.form.Button({
-			label: 'Ueber UMC',
+			label: 'Über UMC',
 			'class': 'umcHeaderButton'
 		}));
 
@@ -250,11 +270,11 @@ dojo.mixin(umc.app, {
 	showTooltips: function(visible) {
 		if (!visible) {
 			dojo.cookie('univention.umc.tooltips', 'false', { expires: 100, path: '/' } );
-			this.alert('Tooltips sind ausgeschaltet.');
+			this.notify('Tooltips sind ausgeschaltet.');
 		}
 		else {
 			dojo.cookie('univention.umc.tooltips', null, { expires: -1, path: '/' });
-			this.alert('Tooltips werden angezeigt.');
+			this.notify('Tooltips werden angezeigt.');
 		}
 	},
 

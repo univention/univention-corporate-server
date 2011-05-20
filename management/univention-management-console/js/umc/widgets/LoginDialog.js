@@ -5,7 +5,6 @@ dojo.provide("umc.widgets.LoginDialog");
 dojo.require("dijit.form.Button");
 dojo.require("dijit.form.TextBox");
 dojo.require("dijit.layout.ContentPane");
-dojo.require("dijit.layout.BorderContainer");
 dojo.require("dojox.layout.TableContainer");
 dojo.require("dojox.widget.Dialog");
 dojo.require("umc.tools");
@@ -44,7 +43,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			description: 'Der Benutzername ihres Domänen-Kontos.',
 			label: 'Benutzername'
 		}, {
-			type: 'TextBox',
+			type: 'PasswordBox',
 			name: 'password',
 			description: 'Das Passwort ihres Domänen-Kontos.',
 			label: 'Passwort'
@@ -76,25 +75,16 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		}).placeAt(this.containerNode);
 		this._form.startup();
 
-		// put the layout together along with a 
-		/*this._layoutContainer = new dijit.layout.BorderContainer({
-			//'class': 'umcNoBorder'
-			//width: '100%',
-			//height: '100%'
-		});//.placeAt(this.containerNode);
-		this._layoutContainer.addChild(this._form);
-		this._layoutContainer.addChild(new umc.widgets.Label({
-			region: 'top',
-			content: 'Willkomen auf der Univention Management Console (v2). Bitte geben Sie Benutzername und Passwort ein!'
-		}));
-
-		dojo.connect(this._layoutContainer, 'startup', function() { 
-			console.log('# this._layoutContainer.startup()');
+		// put the layout together
+		this._layoutContainer = new dojox.layout.TableContainer({
+			cols: 1,
+			showLabels: false
 		});
-		
-		// call startup to make sure everything is rendered correctly
-		//this._layoutContainer.startup();
-		this.content = this._layoutContainer;*/
+		this._layoutContainer.addChild(new umc.widgets.Label({
+			content: '<p>Willkommen auf der Univention Management Console (v2). Bitte geben Sie Benutzername und Passwort ein!</p>'
+		}));
+		this._layoutContainer.addChild(this._form);
+		this.set('content', this._layoutContainer);
 	},
 
 	postCreate: function() {

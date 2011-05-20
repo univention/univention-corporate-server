@@ -1,133 +1,175 @@
-/*global console dojo dojox dijit umc */
+/*global console MyError dojo dojox dijit umc */
 
 dojo.provide("umc.modules.roomadmin");
 
+dojo.require("umc.widgets.TabbedModule");
 dojo.require("umc.widgets.Module");
-dojo.require("umc.widgets.Form");
-dojo.require("dojox.grid.EnhancedGrid");
+dojo.require( "umc.widgets.Form" );
+dojo.require( "umc.widgets.Grid" );
+dojo.require( "dojox.layout.TableContainer" );
+dojo.require( "dijit.layout.BorderContainer" );
 
-dojo.declare("umc.modules.roomadmin", umc.widgets.Module, {
+dojo.declare("umc.modules.roomadmin", umc.widgets.TabbedModule, {
+	// summary:
+	//		Module for modifying and displaying UCR variables on the system.
+
+	_grid: null,
+	_store: null,
+	_searchWidget: null,
+	_detailDialog: null,
+	_contextVariable: null,
 
 	buildRendering: function() {
+		// call superclass' method
 		this.inherited(arguments);
+		this.addChild( this.overviewTab() );
+		this.addChild( new umc.widgets.Page( {
+			title: 'Präsentation',
+			content: '<Leer>'
+		}));
+		this.addChild( new umc.widgets.Page( {
+			title: 'Beobachtung',
+			content: '<Leer>'
+		}));
+		//this.addTab( 'Übersicht', this.overviewTab() );
+		//this.addTab( 'Präsentation', '<Leer>' );
+		//this.addTab( 'Beobachtung', '<Leer>' );
+	},
 
-		var widgets = [{
-			type: 'TextBox',
-			name: 'myinput',
-			value: 'some text',
-			description: 'You can write some text here if you want to',
-			label: 'My input field'
-			// required: true
+	overviewTab: function() {
+		// define actions
+		var actions = [{
+			name: 'logout',
+			label: 'Abmelden',
+			description: 'Den aktuell angemeldeten Benutzer abmelden',
+			iconClass: 'dijitIconAdd',
+			isStandardAction: true,
+			isContextAction: true
+		},{
+			name: 'poweroff',
+			label: 'Ausschalten',
+			description: 'Den Rechner ausschalten',
+			iconClass: 'dijitIconEdit',
+			isStandardAction: true,
+			isContextAction: true
+		}];
+		// define grid columns
+		var columns = [{
+			name: 'computer',
+			label: 'Rechner',
+			description: 'Name des Rechners',
+			editable: false,
+			iconField: 'computericon'
 		}, {
-			type: 'ComboBox',
-			name: 'mychoice',
-			value: 'choice1',
-			description: 'Here you can make your personal choice!',
-			label: 'My choice',
-			// required: true
-			staticValues: {
-				choice1: 'first choice',
-				choice2: 'second choice',
-				choice3: 'third choice'
+			name: 'user',
+			label: 'Benutzer',
+			description: 'der aktuell angemeldete Benutzer',
+			editable: false
+		},{
+			name: 'internet',
+			label: 'Internet',
+			description: 'Zeigt an, ob der Internetzugriff aktiviert ist',
+			editable: true,
+			type: 'checkbox',
+			callback: function(values) {
+				if (values.internet) {
+					umc.app.notify('Internetzugriff wurde aktiviert auf dem Rechner: ' + values.computer);
+				}
+				else {
+					umc.app.notify('Internetzugriff wurde deaktiviert auf dem Rechner: ' + values.computer);
+				}
 			}
-		}, {
-			type: 'TextBox',
-			name: 'myinput2',
-			value: 'some more text',
-			description: 'You can write some more text here if you want to',
-			label: 'My other input field'
-			// required: true
-		}, {
-			type: 'ComboBox',
-			name: 'mychoice2',
-			value: 'choice2',
-			description: 'Here you can make your personal choice a second time!',
-			label: 'My next choice',
-			// required: true
-			staticValues: {
-				choice2: 'A choice',
-				choice3: 'B choice',
-				choice1: 'C choice'
-			}
+		},{
+			name: 'locked',
+			label: 'Gesperrt',
+			description: 'Zeigt an, ob der Rechner für den Benutzer gesperrt ist',
+			editable: true,
+			type: 'checkbox'
 		}];
 
+		// generate the data grid
+		this._grid = new umc.widgets.Grid({
+			region: 'center',
+			actions: actions,
+			columns: columns,
+			idField: 'computer',
+			umcpSearchCommand: 'roomadmin/search',
+			umcpSetCommand: 'roomadmin/set'
+		});
+
+		//
+		// add search widget
+		//
+
+		// define the different search widgets
+		var widgets = [{
+			type: 'ComboBox',
+			name: 'room',
+			value: 'all',
+			description: 'Auswahl des gewünschten Raumes',
+			label: 'Name',
+			staticValues: {
+				all: 'Alle'
+			},
+			umcpValues: 'roomadmin/rooms'
+		},{
+			type: 'TextBox',
+			name: 'computer',
+			value: '*',
+			description: 'Sucht den Begriff im Rechnernamen',
+			label: 'Rechner'
+		},{
+			type: 'TextBox',
+			name: 'user',
+			value: '*',
+			description: 'Sucht den Begriff im Benutzernamen',
+			label: 'Benutzername'
+		}];
+
+		// define all buttons
 		var buttons = [{
 			name: 'submit',
-			label: 'Speichern',
-			callback: dojo.hitch(this, function() {
-				console.log('### submit button');
-				console.log(arguments);
-				umc.tools.forIn(this._form.gatherFormValues(), function(val, key) {
-					console.log('  ' + key + ': ' + val);
-				});
-				return false;
-			})
+			label: 'Suchen',
+			callback: dojo.hitch(this._grid, 'umcpSearch')
 		}, {
 			name: 'reset',
-			label: 'Werte zurueck setzen',
-			callback: dojo.hitch(this, function() {
-				console.log('### reset button');
-				console.log(arguments);
-				return true;
-			})
-		//}, {
-		//	name: 'cancel',
-		//	label: 'Abbrechen'
-		}, {
-			name: 'tralala',
-			label: 'Tolle Wurst',
-			callback: function() {
-				console.log("hello world");
-			}
+			label: 'Zurücksetzen'
 		}];
 
+		// define the search form layout
 		var layout = [
-			[ 'myinput', 'mychoice' ],
-			[ 'myinput2', 'mychoice2' ]
+			[ 'room', '' ],
+			[ 'computer', 'user' ]
 		];
 
-		this._form = new umc.widgets.Form({
+		// generate the search widget
+		this._searchWidget = new umc.widgets.Form({
 			region: 'top',
 			widgets: widgets,
 			buttons: buttons,
 			layout: layout
 		});
-		this.addChild(this._form);
-
-		this._grid = new dojox.grid.EnhancedGrid({
-			//id: 'ucrVariables',
-			region: 'center',
-			query: { object: '*', path: '*' },
-			queryOptions: { ignoreCase: true },
-			structure: layout,
-			clientSort: true,
-			store: new dojo.data.ItemFileReadStore({ data: {
-				identifier: 'id',
-				label: 'object',
-				items: [
-					{ id: 'id1', object: 'Administrator', path: 'univention.qa:/users/' },
-					{ id: 'id2', object: 'join-backup', path: 'univention.qa:/users/' },
-					{ id: 'id3', object: 'join-slave', path: 'univention.qa:/users/' },
-					{ id: 'id4', object: 'spam', path: 'univention.qa:/users/' }
-				]
-			}}),
-			rowSelector: '2px'
-			//sortFields: {
-			//	attribute: 'variable',
-			//	descending: true
-			//},
+		
+		// simple handler to enable/disable standby mode
+		dojo.connect(this._grid, 'umcpSearch', this, function() {
+			this.standby(true);
 		});
-		this.addChild(this._grid);
+		dojo.connect(this._grid, 'onUmcpSearchDone', this, function() {
+			this.standby(false);
+		});
 
-		/*dojo.connect(form, 'onSubmit', function() {
-			console.log('### submitted');
-			umc.tools.forIn(form.gatherFormValues(), function(val, key) {
-				console.log('  ' + key + ': ' + val);
-			});
-		});*/
+		// put everything together
+		var page = new umc.widgets.Page({
+			title: 'Übersicht',
+			description: 'Hier können Gruppen für Arbeitskreise oder Projekte angelegt, bearbeitet oder gelöscht werden. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vehicula purus eu ipsum tempus quis vestibulum nunc aliquet. Donec sapien nunc, tempor sit amet malesuada vitae, cursus quis urna. Aenean molestie tempus faucibus. Donec at varius nisl. Pellentesque lobortis suscipit ante at dictum. Nulla sed mauris eget dolor pellentesque egestas at a nisl. Nam mollis urna in ipsum placerat vitae sagittis purus tristique.',
+			tooltip: 'Rechner eines Raumes kontrollieren'
+		});
+		page.addChild( this._searchWidget );
+		page.addChild( this._grid ) ;
 
-
+		return page;
 	}
+
 });
 
 
