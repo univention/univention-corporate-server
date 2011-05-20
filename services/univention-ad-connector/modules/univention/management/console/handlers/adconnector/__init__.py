@@ -206,7 +206,7 @@ class handler(umch.simpleHandler):
 									( 'debug_level', 'connector/debug/level' ),
 									( 'debug_function', 'connector/debug/function' ),
 									( 'ad_mapping_sync_mode', 'connector/ad/mapping/syncmode' ),
-									( 'ad_mapping_group_language', 'connector/ad/mapping/language' ),
+									( 'ad_mapping_group_language', 'connector/ad/mapping/group/language' ),
 									):
 				val = obj.options.get(umckey)
 				# Workaround for Bug #13139 START
