@@ -1,0 +1,11 @@
+univention-lpadmin usr/sbin/
+univention-cupsadmin usr/sbin/
+cups-printers.py usr/lib/univention-directory-listener/system/
+79univention-printserver.inst usr/lib/univention-install/
+ppds.py usr/lib/univention-printserver/univention-ppds/
+modules/univention/management/console/handlers/cups/*.py usr/share/pyshared/univention/management/console/handlers/cups/
+images/default/24x24/cups/*.gif usr/share/univention-management-console/www/themes/images/default/24x24/cups/
+images/default/64x64/cups/*.gif usr/share/univention-management-console/www/themes/images/default/64x64/cups/
+images/default/64x64/cups/*.png usr/share/univention-management-console/www/themes/images/default/64x64/cups/
+images/default/64x64/cups/*.svgz usr/share/univention-management-console/www/themes/images/default/64x64/cups/
+

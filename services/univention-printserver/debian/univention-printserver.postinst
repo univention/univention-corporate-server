@@ -3,7 +3,7 @@
 # Univention Print Server
 #  postinst script for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval `univention-config-registry shell`
+eval "$(univention-config-registry shell)"
+
 
 univention-config-registry set cups/server?$hostname.$domainname \
 	cups/admin?"root@"$domainname \
@@ -42,22 +43,9 @@ univention-config-registry set cups/server?$hostname.$domainname \
 	cups/printserver?yes \
 	cups/debug/level?warn
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.2-1; then
-	if [ "`univention-baseconfig get cups/server`" = "$hostname" ]; then
-		univention-baseconfig set cups/server=$hostname.$domainname
-	fi
-fi
-
 #DEBHELPER#
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.8; then
-		cat /var/lib/univention-install/.index | grep -v "univention-printserver" >/var/lib/univention-install/.index2
-		mv /var/lib/univention-install/.index2 /var/lib/univention-install/.index
-
-		univention-admin settings/printermodel remove --dn "cn=cupsModel,cn=univention,$ldap_base"
-	fi
-
 	/usr/lib/univention-install/79univention-printserver.inst
 fi
 
@@ -73,7 +61,6 @@ if [ "$1" = "configure" ]; then
 
 fi
 
-
 if [ ! -e "/etc/cups/printers.conf" ]; then
 	touch /etc/cups/printers.conf
 fi
@@ -84,12 +71,6 @@ fi
 
 if [ -x "/etc/init.d/cups" ]; then
 	/etc/init.d/cups restart
-fi
-
-# Version 0.9 may not update printers.conf
-# Version 0.17 may not set ppd's on added spoolhosts
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.18; then
-	/usr/sbin/univention-directory-listener-ctrl resync cups-printers
 fi
 
 if [ -x /etc/init.d/univention-management-console-server ]; then

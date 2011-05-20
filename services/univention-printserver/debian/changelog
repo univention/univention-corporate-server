@@ -1,3 +1,12 @@
+univention-printserver (5.0.0-1) unstable; urgency=low
+
+  * UCS 3.0-0 release Bug #22575
+  * updated python2.4 to pyton2.6
+  * fixed copyright header
+  * reorganized debian dir
+
+ -- Felix Botner <botner@univention.de>  Fri, 20 May 2011 13:16:01 +0200
+
 univention-printserver (4.0.8-1) unstable; urgency=low
 
   * Always add auth-info-required=none to printers.conf otherwise cups

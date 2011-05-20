@@ -3,7 +3,7 @@
 # Univention Print Server
 #  listener module: management of CUPS printers
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,7 +33,7 @@
 import listener
 import os, string
 import univention.debug
-import univention_baseconfig
+import univention.config_registry
 
 name='cups-pdf'
 description='Manage Samba share for CUPS pdf printer'
@@ -59,6 +59,6 @@ def handler(dn, new, old):
 				list.append('cups/cups-pdf/anonymous=%s' % (path))
 				listener.setuid(0)
 				try:
-					univention_baseconfig.handler_set(list)
+					univention.config_registry.handler_set(list)
 				finally:
 					listener.unsetuid()

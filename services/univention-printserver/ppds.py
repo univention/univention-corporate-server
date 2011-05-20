@@ -1,11 +1,11 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Print Server
 #  helper script: prints out a list of univention admin commands to create
 #  settings/printermodel objects for all existing PPDs
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -51,7 +51,7 @@ def get_ppd_infos( filename ):
 	return ( manufacturer, nickname )
 
 def get_udm_command(manufacturer, models):
-	first = 'univention-admin settings/printermodel create $@ --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=%s' % manufacturer
+	first = 'univention-directory-manager settings/printermodel create $@ --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=%s' % manufacturer
 	rest = [ r'--append printmodel="\"%s\" \"%s\""' % (path, name) for path, name in models ]
 	rest.insert( 0, first )
 	return '# Manufacturer: %s Printers: %d\n' % ( manufacturer, len( models ) ) + ' \\\n\t'.join(rest)

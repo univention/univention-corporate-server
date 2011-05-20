@@ -3,7 +3,7 @@
 # Univention Print Server
 #  postinst script for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -38,11 +38,11 @@ dir='/var/cache/cups-pdf/%U'
 anon_dir='/var/cache/cups-pdf/%U'
 
 # set up directory
-univention-baseconfig set "cups/cups-pdf/directory?$dir"
-univention-baseconfig set "cups/cups-pdf/anonymous?$anon_dir"
+univention-config-registry set "cups/cups-pdf/directory?$dir"
+univention-config-registry set "cups/cups-pdf/anonymous?$anon_dir"
 
 # run join script
-if [ "$server_role" = "domaincontroller_master" ]; then
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
         /usr/lib/univention-install/79univention-printserver-pdf.inst || true
 fi
 
