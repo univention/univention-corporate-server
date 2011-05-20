@@ -10,6 +10,7 @@ dojo.require("dijit.form.DropDownButton");
 dojo.require("dijit.form.Button");
 dojo.require("dijit.Menu");
 dojo.require("dojo.cookie");
+dojo.require("umc.widgets.Toaster");
 dojo.require("umc.widgets.LoginDialog");
 dojo.require("umc.widgets.ContainerPane");
 dojo.require("umc.widgets.OverviewWidget");
@@ -17,7 +18,7 @@ dojo.require("umc.widgets.OverviewWidget");
 // start the application when everything has been loaded
 dojo.addOnLoad(function() {
 	umc.app.start();
-    /*window.onerror = function (msg, url, num) {
+	/*window.onerror = function (msg, url, num) {
 		console.log(msg + ';' + url + ';' + num);
 		return true;
 	};*/
@@ -25,9 +26,17 @@ dojo.addOnLoad(function() {
 
 dojo.mixin(umc.app, {
 
+	notify: function(message) {
+		this.toaster.setContent(message, 'message');
+	},
+
 	alert: function(message) {
 		this.alertDialog.set('content', message);
 		this.alertDialog.show();
+	},
+
+	confirm: function(message) {
+
 	},
 
 //	standby: function(/*Boolean*/ enable) {
@@ -53,6 +62,7 @@ dojo.mixin(umc.app, {
 		// create login dialog
 		this.loggingIn = true;
 		this.loginDialog = umc.widgets.LoginDialog({});
+		this.loginDialog.startup();
 		dojo.connect(this.loginDialog, 'onLogin', this, 'onLogin');
 
 		// create alert dialog
@@ -60,6 +70,9 @@ dojo.mixin(umc.app, {
 			content: '',
 			title: 'UMC2-Alert'
 		});
+
+		// create toaster
+		this.toaster = new umc.widgets.Toaster({ });
 
 		// check whether we still have a app cookie
 		var sessionCookie = dojo.cookie('UMCSessionId');
@@ -116,8 +129,8 @@ dojo.mixin(umc.app, {
 		//console.log('#A1');
 		var tab = new module.BaseClass({
 			title: module.title,
-			closable: true,
-			iconClass: 'icon16-' + module.id
+			iconClass: 'icon16-' + module.id,
+			closable: true
 			//items: [ new module.BaseClass() ],
 			//layout: 'fit',
 			//closable: true,
@@ -126,12 +139,8 @@ dojo.mixin(umc.app, {
 			//autoHeight: true
 		});
 		tab.startup();
-		//console.log(tab);
-		//console.log('#A2');
-		umc.widgets._tabContainer.addChild(tab);
-		//console.log('#A3');
-		umc.widgets._tabContainer.selectChild(tab, true);
-		//console.log('#A4');
+		umc.app._tabContainer.addChild(tab);
+		umc.app._tabContainer.selectChild(tab, true);
 	},
 
 	isSetupGUI: false,
@@ -150,16 +159,20 @@ dojo.mixin(umc.app, {
 		}).placeAt(dojo.body());
 
 		// container for all modules tabs
-		umc.widgets._tabContainer = new dijit.layout.TabContainer({
+		umc.app._tabContainer = new dijit.layout.TabContainer({
 			//style: "height: 100%; width: 100%;",
 			region: "center"
 		});
-		topContainer.addChild(umc.widgets._tabContainer);
+		topContainer.addChild(umc.app._tabContainer);
 
 		// the container for all category panes
+		// NOTE: We add the icon here in the first tab, otherwise the tab heights
+		//	   will not be computed correctly and future tabs will habe display
+		//	   problems.
 		var overviewContainer = new umc.widgets.ContainerPane({ 
 			//style: "overflow:visible; width: 80%"
-			title: 'Overview'
+			title: 'Overview',
+			iconClass: 'icon16-univention' 
 		});
 
 		// add an OverviewWidget for each category
@@ -177,12 +190,12 @@ dojo.mixin(umc.app, {
 			// add overview widget to container
 			overviewContainer.addChild(overviewWidget);
 		}));
-		umc.widgets._tabContainer.addChild(overviewContainer);
+		umc.app._tabContainer.addChild(overviewContainer);
 		
 		// the header
 		var header = new umc.widgets.ContainerPane({
 			title: '',
-			'class': 'header',
+			'class': 'umcHeader',
 			region: 'top'
 		});
 		topContainer.addChild( header );
@@ -190,29 +203,19 @@ dojo.mixin(umc.app, {
 		// add some buttons
 		header.addChild(new dijit.form.Button({
 			label: 'Hilfe',
-			'class': 'headerButton'
+			'class': 'umcHeaderButton'
 		}));
 		header.addChild(new dijit.form.Button({
-			label: 'Über UMC',
-			'class': 'headerButton'
+			label: 'Ueber UMC',
+			'class': 'umcHeaderButton'
 		}));
 
 		// the user context menu
 		var menu = new dijit.Menu({});
-		menu.addChild(new dijit.MenuItem({
-			label: 'Abmelden',
-			onClick: function() {
-				umc.app.closeSession();
-				window.location.reload();
-			}
-		}));
 		menu.addChild(new dijit.CheckedMenuItem({
 			label: 'Tooltips',
 			checked: umc.app.tooltipsVisible(),
 			onClick: function() {
-				console.log('###');
-				console.log(this);
-				console.log(this.checked);
 				umc.app.showTooltips(this.checked);
 			}
 		}));
@@ -223,8 +226,18 @@ dojo.mixin(umc.app, {
 		//menu.startup();
 		header.addChild(new dijit.form.DropDownButton({
 			label: 'Benutzer: ' + this.username,
-			'class': 'headerButton',
+			'class': 'umcHeaderButton',
 			dropDown: menu
+		}));
+
+		// add logout button
+		header.addChild(new dijit.form.Button({
+			label: '<img src="images/logout.png">',
+			'class': 'umcHeaderButton',
+			onClick: function() {
+				umc.app.closeSession();
+				window.location.reload();
+			}
 		}));
 
 		// put everything together
@@ -237,9 +250,11 @@ dojo.mixin(umc.app, {
 	showTooltips: function(visible) {
 		if (!visible) {
 			dojo.cookie('univention.umc.tooltips', 'false', { expires: 100, path: '/' } );
+			this.alert('Tooltips sind ausgeschaltet.');
 		}
 		else {
 			dojo.cookie('univention.umc.tooltips', null, { expires: -1, path: '/' });
+			this.alert('Tooltips werden angezeigt.');
 		}
 	},
 

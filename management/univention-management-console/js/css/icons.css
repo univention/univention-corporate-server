@@ -278,7 +278,8 @@ div.modLaunchButtonClick {
 .icon16-mrtg,
 .icon16-update,
 .icon16-top,
-.icon16-reboot {
+.icon16-reboot,
+.icon16-univention {
 	background: no-repeat;
 	width: 16px;
 	height: 16px;
@@ -334,5 +335,8 @@ div.modLaunchButtonClick {
 }
 .icon16-reboot {
 	background-image: url('../images/icons/16x16/reboot.png');
+}
+.icon16-univention {
+	background-image: url('../images/icons/16x16/univention.png');
 }
 

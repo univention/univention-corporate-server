@@ -49,8 +49,8 @@ dojo.mixin(umc.tools, {
 				// handle errors
 				umc.tools.handleErrorStatus(dojo.getObject('status', false, error));
 
-				// return the error
-				return error; // Error
+				// propagate the error
+				throw error;
 			});
 		}
 
@@ -90,7 +90,6 @@ dojo.mixin(umc.tools, {
 				case 200: // evertything is ok :)
 					return;
 				case 401:
-					umc.app.loginDialog.show();
 					if (umc.app.loggingIn) {
 						umc.app.alert('Wrong credentials, please try again!');
 					}
@@ -98,6 +97,7 @@ dojo.mixin(umc.tools, {
 						umc.app.loggingIn = true;
 						umc.app.alert('Your session has expired, please log in again!');
 					}
+					umc.app.loginDialog.show();
 					return;
 				case 403:
 					umc.app.alert('You are not authorized to perform this action!');
@@ -195,7 +195,7 @@ dojo.mixin(umc.tools, {
 		// returns:
 		//		A dictionary of button widgets.
 
-		umc.tools.assert(dojo.isArray(buttonsConf), 'renderLayout: The list of buttons is expected to be an array.');
+		umc.tools.assert(dojo.isArray(buttonsConf), 'renderButtons: The list of buttons is expected to be an array.');
 
 		// render all buttons
 		var buttons = { 
@@ -228,7 +228,8 @@ dojo.mixin(umc.tools, {
 		// render the button
 		var button = new ButtonClass({
 			label: buttonConf.label,
-			callback: buttonConf.callback
+			callback: buttonConf.callback,
+			iconClass: buttonConf.iconClass
 		});
 
 		// connect event handler for onClick .. yet only for normal buttons
@@ -240,20 +241,18 @@ dojo.mixin(umc.tools, {
 		return button; // umc.widgets.Button
 	},
 	
-	renderLayout: function(/*String[][]*/ layout, /*Object*/ widgets, /*Object?*/ buttons, /*Integer?*/ cols) {
+	renderLayout: function(/*String[][]*/ layout, /*Object*/ widgets, /*Object?*/ buttons, /*Object?*/ tableContainerCfg) {
 		// summary:
 		//		Render a widget containing a set of widgets as specified by the layout.
 		//		The optional parameter cols specifies the number of columns.
 
-		// setup default parameters
-		cols = cols || 2;
-
 		// create a layout manager (TableContainer)
-		var container = new dojox.layout.TableContainer({
-			cols: cols,
+		var cfg = dojo.mixin({
+			cols: 2,
 			showLabels: true,
 			orientation: 'vert'
-		});
+		}, tableContainerCfg || {});
+		var container = new dojox.layout.TableContainer(cfg);
 
 		// check whether the parameters are correct
 		umc.tools.assert(dojo.isArray(layout) &&
@@ -263,7 +262,7 @@ dojo.mixin(umc.tools, {
 
 		// iterate through the layout elements and the widgets at the correct position
 		for (var irow = 0; irow < layout.length; ++irow) {
-			for (var icol = 0; icol < cols; ++icol) {
+			for (var icol = 0; icol < cfg.cols; ++icol) {
 				var name = layout[irow][icol];
 				if (name) {
 					// if a string is given, try to insert the widget

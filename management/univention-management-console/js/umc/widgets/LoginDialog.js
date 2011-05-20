@@ -5,12 +5,15 @@ dojo.provide("umc.widgets.LoginDialog");
 dojo.require("dijit.form.Button");
 dojo.require("dijit.form.TextBox");
 dojo.require("dijit.layout.ContentPane");
+dojo.require("dijit.layout.BorderContainer");
 dojo.require("dojox.layout.TableContainer");
 dojo.require("dojox.widget.Dialog");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.widgets.ContainerForm");
 dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.widgets.FormWidget");
+dojo.require("umc.widgets.Label");
 
 dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.StandbyMixin ], {
 	// our own variables
@@ -28,78 +31,70 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			sizeToViewport: false,
 			dimensions: [300, 180]
 		});
+
 	},
 
 	buildRendering: function() {
-		// call superclass' postCreate()
 		this.inherited(arguments);
 
-		// embed layout container within a form-element
-		this._form = new umc.widgets.ContainerForm({
-			onSubmit: dojo.hitch(this, function(evt) {
-				// stop the event and call LoginDialog.onSubmit()
-				dojo.stopEvent(evt);
-				this._authenticate(this._usernameTextBox.get('value'), this._passwordTextBox.get('value'));
+		var widgets = [{
+			type: 'TextBox',
+			name: 'username',
+			value: dojo.cookie('univention.umc.username') || '',
+			description: 'Der Benutzername ihres Domänen-Kontos.',
+			label: 'Benutzername'
+		}, {
+			type: 'TextBox',
+			name: 'password',
+			description: 'Das Passwort ihres Domänen-Kontos.',
+			label: 'Passwort'
+		}];
 
-				// clear password entry
-				this._passwordTextBox.set('value', '');
+		var buttons = [{
+			name: 'submit',
+			label: 'Anmelden',
+			callback: dojo.hitch(this, function(values) {
+				// call LoginDialog.onSubmit() and clear password
+				this._authenticate(values.username, values.password);
+				this._form.elementValue('password', '');
 			})
-		}).placeAt(this.containerNode);
+		}, {
+			name: 'cancel',
+			label: 'Zurücksetzen'
+		}];
 
-		// add some informative Text
-		this._form.addChild(new dijit.layout.ContentPane({
+		var layout = [['username'], ['password']];
+		
+		this._form = new umc.widgets.FormWidget({
+			//style: 'width: 100%',
+			widgets: widgets,
+			buttons: buttons,
+			layout: layout,
+			cols: 1,
+			orientation: 'horiz',
+			region: 'center'
+		}).placeAt(this.containerNode);
+		this._form.startup();
+
+		// put the layout together along with a 
+		/*this._layoutContainer = new dijit.layout.BorderContainer({
+			//'class': 'umcNoBorder'
+			//width: '100%',
+			//height: '100%'
+		});//.placeAt(this.containerNode);
+		this._layoutContainer.addChild(this._form);
+		this._layoutContainer.addChild(new umc.widgets.Label({
+			region: 'top',
 			content: 'Willkomen auf der Univention Management Console (v2). Bitte geben Sie Benutzername und Passwort ein!'
 		}));
 
-		// first create a table container which contains all widgets
-		this._layoutContainer = new dojox.layout.TableContainer({
-			cols: 1,
-			showLabels: true,
-			orientation: 'horiz'
-		}).placeAt(this._form);
-
-		// add username input field
-		var username = dojo.cookie('univention.umc.username') || '';
-		this._usernameTextBox = new dijit.form.TextBox({
-			id: this.id + 'UsernameTextBox',
-			label: 'Benutzername',
-			//style: 'width: 300px',
-			value: username
+		dojo.connect(this._layoutContainer, 'startup', function() { 
+			console.log('# this._layoutContainer.startup()');
 		});
-		this._layoutContainer.addChild(this._usernameTextBox);
-
-		// add password input field
-		this._passwordTextBox = new dijit.form.TextBox({
-			id: this.id + 'PasswordTextBox',
-			label: 'Passwort',
-			type: 'password',
-			//style: 'width: 300px',
-			value: ''
-		});
-		this._layoutContainer.addChild(this._passwordTextBox);
-
-		// add 'login' button
-		var buttonContainer = new umc.widgets.ContainerWidget();
-		buttonContainer.addChild(new dijit.form.Button({
-			id: this.id + 'LoginButton',
-			label: '<b>Login</b>',
-			type: 'submit'
-		}));
-	
-		// add 'clear' button
-		buttonContainer.addChild(new dijit.form.Button({
-			id: this.id + 'clearButton',
-			label: 'Clear',
-			onClick: dojo.hitch(this, function(evt) {
-				this.reset();
-			})
-		}));
-
-		// add container for buttons to main layout
-		this._layoutContainer.addChild(buttonContainer);
-
+		
 		// call startup to make sure everything is rendered correctly
-		this._form.startup();
+		//this._layoutContainer.startup();
+		this.content = this._layoutContainer;*/
 	},
 
 	postCreate: function() {
@@ -134,15 +129,16 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			password: password
 		}).then(dojo.hitch(this, function(data) {
 			// disable standby in any case
-			console.log('# _authenticate - ok');
+			//console.log('# _authenticate - ok');
+			//console.log(data);
 			this.standby(false);
 
 			// make sure that we got data
 			this.onLogin(username);
 		}), dojo.hitch(this, function(error) {
 			// disable standby in any case
-			console.log('# _authenticate - error');
-			console.log(error);
+			//console.log('# _authenticate - error');
+			//console.log(error);
 			this.standby(false);
 		}));
 	},

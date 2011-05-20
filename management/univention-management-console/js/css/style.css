@@ -17,7 +17,7 @@ html, body
 }
 
 /* the header element with univention logo */
-.header
+.umcHeader
 {
 	background: url('../images/header.png') no-repeat 0px 0px;
 	padding: 20px 20px !important;
@@ -37,12 +37,18 @@ html, body
 }
 
 /* hack to make the header buttons not look like buttons :) */
-.headerButton .dijitButtonNode {
+.umcHeaderButton .dijitButtonNode {
 	background: none !important;
 	border: none !important;
 	box-shadow: none !important;
 }
 
+/* hack for the drop-down buttons in the grid :) */
+.umcDisplayNone {
+	display: none !important;
+}
+
+/* more hacks for the module widget */
 .umcModulePane {
 	padding: 8px;
 }
@@ -51,9 +57,59 @@ html, body
 	border: 0px !important;
 }
 
+.umcNoPadding {
+	padding: 0px !important;
+}
+
 /* fix for bug with form submission: http://bugs.dojotoolkit.org/ticket/12331 */
 .dijitOffScreen { 
 	visibility: visible !important; 
 }
 
+/* hack the popup menu for data grids for:
+   popup above the cell
+   popup below the cell */
+.umcGridRowPopupBelow {
+	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25) !important;
+}
+.umcGridRowMenuBelow {
+	border-top: 0 !important;
+	background-color: #dcedfb !important;
+}
+.umcGridRowPopupAbove {
+	box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.25) !important;
+}
+.umcGridRowMenuAbove {
+	border-bottom: 0 !important;
+	background-color: #dcedfb !important;
+}
 
+/* hack the grid */
+
+.dojoxGridCell {
+	border: none !important;
+}
+
+.dojoxGridRowOdd {
+	background-color: #e0edf4;
+}
+
+/* hacks for the toaster */
+.dijitToasterContainer {
+	width: 300px;
+}
+.dijitToasterContent {
+	font: 12px Myriad,Helvetica,Tahoma,Arial,clean,sans-serif;
+	color: #000;
+	background: url('../images/toasterHeader.png') repeat-x 0px 0px;
+	/*box-shadow: 0 -15px 5px rgba(0, 0, 0, 0.15);*/
+	border: 1px solid #999; 
+	border-top: none;
+	border-radius: 0px 0px 8px 8px;
+	-moz-border-radius: 0px 0px 8px 8px;
+	background-color: #e8e8e8;
+	text-align: center;
+}
+.dijitToasterMessage {
+	color: #000;
+}

@@ -2,7 +2,7 @@
 
 dojo.provide("umc.modules.users");
 
-dojo.require("umc.modules.Module");
+dojo.require("umc.modules.TabbedModule");
 dojo.require("umc.tools");
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dojo.data.ItemFileWriteStore");
@@ -27,7 +27,7 @@ dojo.require("umc.widgets.ContainerForm");
 dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.widgets.ComboBox");
 
-dojo.declare("umc.modules._usersUser", umc.modules.Module, {
+dojo.declare("umc.modules._usersUser", umc.modules.TabbedModule, {
 	postMixInProperties: function() {
 		// call superclass' method
 		this.inherited(arguments);
@@ -43,34 +43,6 @@ dojo.declare("umc.modules._usersUser", umc.modules.Module, {
 		// call superclass' method
 		this.inherited(arguments);
 
-		// create some dummy tabs
-		var tabContainer = new dijit.layout.TabContainer({
-			region: 'center',
-			tabPosition: 'right-h'
-		}).placeAt(this.containerNode);
-		var tab = new dijit.layout.ContentPane({
-			title: 'Allgemein'
-		});
-		tabContainer.addChild(tab);
-		tabContainer.addChild(new dijit.layout.ContentPane({
-			title: 'Benutzer-Konto'
-		}));
-		tabContainer.addChild(new dijit.layout.ContentPane({
-			title: 'Mail'
-		}));
-		tabContainer.addChild(new dijit.layout.ContentPane({
-			title: 'Kontakt'
-		}));
-		tabContainer.addChild(new dijit.layout.ContentPane({
-			title: 'Organisation'
-		}));
-		tabContainer.addChild(new dijit.layout.ContentPane({
-			title: 'Kontakt privat'
-		}));
-		tabContainer.addChild(new dijit.layout.ContentPane({
-			title: '(Optionen)'
-		}));
-
 		// embed layout container within a form-element
 		this._form = new umc.widgets.ContainerForm({
 			region: 'center',
@@ -78,7 +50,12 @@ dojo.declare("umc.modules._usersUser", umc.modules.Module, {
 				//dojo.stopEvent(evt);
 				//this.onSubmit(this.getValues());
 			})
-		}).placeAt(tab.containerNode);
+		});
+		// create some dummy tabs
+		/*var tabContainer = new dijit.layout.TabContainer({
+			region: 'center',
+			tabPosition: 'right-h'
+		}).placeAt(this.containerNode);*/
 
 		this._form.addChild(new dijit.layout.ContentPane({
 			content: '<h1>Grundeinstellungen</h1><p>Auf dieser Seite können Sie die Grundeinstellungen eines Benutzers bearbeiten. Ueber die Reiter der rechten Seite können sie spezifischere Einstellungen zu dem Benutzer vornehmen.</p>'
@@ -172,6 +149,15 @@ dojo.declare("umc.modules._usersUser", umc.modules.Module, {
 				this.destroyRecursively();
 			})
 		}));
+		
+		// create tabs
+		this.addTab('Allgemein', this._form);
+		this.addTab('Benutzer-Konto', '');
+		this.addTab('Mail', '');
+		this.addTab('Kontakt', '');
+		this.addTab('Organisation', '');
+		this.addTab('Kontakt privat', '');
+		this.addTab('(Optionen)', '');
 	}
 });
 

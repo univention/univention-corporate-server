@@ -11,7 +11,17 @@ doc:
 
 all: jslint
 
-sync:
-	rsync -vrlt --delete --exclude .git --exclude .svn . root@10.200.15.10:/root/umc-js
+sync: build
+#	rsync -vrlt --delete --exclude .git --exclude .svn --exclude '.*.sw*' . root@10.200.15.10:/root/umc-js
+	rsync -vrlt --delete --exclude .git --exclude .svn --exclude '.*.sw*' --exclude 'roomadmin.js*' --exclude 'TabbedModule.js*' . root@10.200.15.10:/root/umc-js
 
-.PHONY: jslint all doc sync
+syncsvn:
+	rsync -vrlt --delete --exclude '*~' --exclude ".*.sw*" --exclude ".git" --exclude ".svn" . /home/aklaeser/svn/dev/branches/ucs-3.0/ucs/management/univention-management-console/js/
+
+build:
+	for idir in umc css; do \
+		find . -maxdepth 1 -type l -a -name "$${idir}_*" -delete; \
+		ln -s $$idir "$${idir}_$$(date +'%Y%d%m%H%M%S')"; \
+	done;
+
+.PHONY: jslint all doc sync syncsvn build

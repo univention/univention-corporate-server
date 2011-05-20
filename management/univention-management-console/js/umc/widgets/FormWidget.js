@@ -3,16 +3,11 @@
 dojo.provide("umc.widgets.FormWidget");
 
 dojo.require("dijit.form.Form");
-
 dojo.require("dojox.form.manager._Mixin");
 dojo.require("dojox.form.manager._ValueMixin");
 dojo.require("dojox.form.manager._EnableMixin");
 dojo.require("dojox.form.manager._DisplayMixin");
 dojo.require("dojox.form.manager._ClassMixin");
-dojo.require("dojox.layout.TableContainer");
-
-dojo.require("dojo.data.ItemFileWriteStore");
-dojo.require("umc.widgets.ContainerForm");
 dojo.require("umc.widgets.Tooltip");
 dojo.require("umc.tools");
 
@@ -48,6 +43,10 @@ dojo.declare("umc.widgets.FormWidget", [
 	//		Number of columns (default is 2).
 	cols: 2,
 
+	// orient: String
+	//		Orientation of labels, possible values ['vert', 'horiz'].
+	orientation: 'vert',
+
 	// umcpGet: String
 	//		UMCP command for querying data to fill the form.
 	umcpGetCommand: '',
@@ -70,16 +69,20 @@ dojo.declare("umc.widgets.FormWidget", [
 		// render the widgets and the layout
 		this._widgets = umc.tools.renderWidgets(this.widgets);
 		this._buttons = umc.tools.renderButtons(this.buttons);
-		this._layoutContainer = umc.tools.renderLayout(this.layout, this._widgets, this._buttons, this.cols);
+		this._layoutContainer = umc.tools.renderLayout(this.layout, this._widgets, this._buttons, {
+			cols: this.cols,
+			orientation: this.orientation
+		});
 
 		// register tooltips
 		umc.tools.forIn(this._widgets, function(iwidget, iname) {
-			//console.log(iname + ': ' + iwidget.description);
-			//console.log(iwidget);
-			var tooltip = new umc.widgets.Tooltip({
-				label: iwidget.description,
-				connectId: [ iwidget.domNode ]
-			});
+			// only create a tooltip if there is a description
+			if (iwidget.description) {
+				var tooltip = new umc.widgets.Tooltip({
+					label: iwidget.description,
+					connectId: [ iwidget.domNode ]
+				});
+			}
 		}, this);
 
 		// start processing the layout information
@@ -148,7 +151,7 @@ dojo.declare("umc.widgets.FormWidget", [
 
 		// sending the data to the server
 		var values = this.gatherFormValues();
-		umc.tools.umcpCommand(this.umcpSetCommand, values).then(dojo.hitch(this, function(data) {
+		umc.tools.umcpCommand(this.umcpSetCommand, [values]).then(dojo.hitch(this, function(data) {
 			// fire event
 			this.onUmcpSetDone(true);
 		}), dojo.hitch(this, function(error) {

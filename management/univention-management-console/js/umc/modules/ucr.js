@@ -22,6 +22,7 @@ dojo.require("dojox.form.CheckedMultiSelect");
 dojo.require("dojox.widget.Standby");
 //dojo.require("umc.widgets.SearchWidget");
 dojo.require("umc.widgets.FormWidget");
+dojo.require("umc.widgets.GridWidget");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.ContainerForm");
 dojo.require("umc.widgets.StandbyMixin");
@@ -243,7 +244,74 @@ dojo.declare("umc.modules.ucr", umc.modules.Module, {
 		// call superclass' method
 		this.inherited(arguments);
 
+		//
+		// add data grid
+		//
+
+		// define actions
+		var actions = [{
+			name: 'add',
+			label: 'Hinzufügen',
+			description: 'Hinzufügen einer neuen UCR-Variablen.',
+			iconClass: 'dijitIconNewTask',
+			isContextAction: false,
+			isStandardAction: true,
+			callback: dojo.hitch(this, function() {
+				this._detailDialog.newVariable();
+			})
+		}, {
+			name: 'edit',
+			label: 'Bearbeiten',
+			description: 'Löschen der ausgewählten UCR-Variablen.',
+			iconClass: 'dijitIconEdit',
+			isStandardAction: true,
+			isMultiAction: false,
+			callback: dojo.hitch(this, function(vars) {
+				if (vars.length) {
+					this._detailDialog.loadVariable(vars[0]);
+				}
+			})
+		}, {
+			name: 'delete',
+			label: 'Löschen',
+			description: 'Löschen der ausgewählten UCR-Variablen.',
+			iconClass: 'dijitIconDelete'
+//			callback: dojo.hitch(this, function() {
+//				var vars = this.getSelectedVariables();
+//				if (vars.length) {
+//					this.unsetVariable(vars[0]);
+//				}
+//			})
+		}];
+
+		// define grid columns
+		var columns = [{
+			name: 'variable',
+			label: 'UCR-Variable',
+			description: 'Eindeutiger Name der UCR-Variable',
+			editable: false
+		}, {
+			name: 'value',
+			label: 'Wert',
+			description: 'Wert der UCR-Variable'
+		}];
+
+		// generate the data grid
+		this._grid = new umc.widgets.GridWidget({
+			region: 'center',
+			actions: actions,
+			columns: columns,
+			idField: 'variable',
+			umcpSearchCommand: 'ucr/search',
+			umcpSetCommand: 'ucr/set'
+		});
+		this.addChild(this._grid);
+
+		//
 		// add search widget
+		//
+
+		// define the different search widgets
 		var widgets = [{
 			type: 'ComboBox',
 			name: 'category',
@@ -256,7 +324,7 @@ dojo.declare("umc.modules.ucr", umc.modules.Module, {
 			umcpValues: 'ucr/categories'
 		}, {
 			type: 'ComboBox',
-			name: 'mask',
+			name: 'key',
 			value: 'all',
 			description: 'Wo soll nach dem angegebenen Suchbegriff gesucht werden',
 			label: 'Suchmaske',
@@ -268,26 +336,29 @@ dojo.declare("umc.modules.ucr", umc.modules.Module, {
 			}
 		}, {
 			type: 'TextBox',
-			name: 'search',
+			name: 'filter',
 			value: '*',
 			description: 'Suchbegriff nach dem gesucht werden soll',
 			label: 'Suchbegriff'
 		}];
 
+		// define all buttons
 		var buttons = [{
 			name: 'submit',
 			label: 'Suchen',
-			callback: dojo.hitch(this, this.filter)
+			callback: dojo.hitch(this._grid, 'umcpSearch')
 		}, {
 			name: 'reset',
 			label: 'Zurücksetzen'
 		}];
 
+		// define the search form layout
 		var layout = [
 			[ 'category', '' ],
-			[ 'mask', 'search' ]
+			[ 'key', 'filter' ]
 		];
 
+		// generate the search widget
 		this._searchWidget = new umc.widgets.FormWidget({
 			region: 'top',
 			widgets: widgets,
@@ -295,315 +366,45 @@ dojo.declare("umc.modules.ucr", umc.modules.Module, {
 			layout: layout
 		});
 		this.addChild(this._searchWidget);
-
-		//
-		// create toolbar
-		//
-
-		// first create a container for grid and tool bar
-		//var gridContainer = new dijit.layout.BorderContainer({
-		//	region: 'center'
-		//});
-		//this.addChild(gridContainer);
-
-		// create the toolbar container
-		var toolBar = new umc.widgets.ContainerWidget({
-			region: 'bottom',
-			style: 'text-align: right',
-			'class': 'umcNoBorder'
-		});
-		this.addChild(toolBar);
-
-		// create 'edit' button
-		toolBar.addChild(new dijit.form.Button({
-			label: 'Edit',
-			iconClass: 'dijitIconEdit',
-			onClick: dojo.hitch(this, function() {
-				var vars = this.getSelectedVariables();
-				if (vars.length) {
-					this._detailDialog.loadVariable(vars[0]);
-				}
-			})
-		}));
-
-		// create 'add' button
-		toolBar.addChild(new dijit.form.Button({
-			label: 'Add',
-			iconClass: 'dijitIconNewTask',
-			onClick: dojo.hitch(this, function() {
-				this._detailDialog.newVariable();
-			})
-		}));
-
-		// create 'delete' button
-		toolBar.addChild(new dijit.form.Button({
-			label: 'Delete',
-			iconClass: 'dijitIconDelete',
-			onClick: dojo.hitch(this, function() {
-				var vars = this.getSelectedVariables();
-				if (vars.length) {
-					this.unsetVariable(vars[0]);
-				}
-			})
-		}));
-
-		//
-		// create menues for grid
-		//
-
-		// menu for selected entries
-		this._selectMenuItems = {};
-		dojo.mixin(this._selectMenuItems, {
-			edit: new dijit.MenuItem({
-				label: 'Edit',
-				iconClass: 'dijitIconEdit',
-				onClick: dojo.hitch(this, function() {
-					console.log('### onClick');
-					console.log(arguments);
-					var vars = this.getSelectedVariables();
-					if (vars.length) {
-						this._detailDialog.loadVariable(vars[0]);
-					}
-				})
-			}),
-			del: new dijit.MenuItem({
-				label: 'Delete',
-				iconClass: 'dijitIconDelete',
-				onClick: dojo.hitch(this, function() {
-					var vars = this.getSelectedVariables();
-					if (vars.length) {
-						this.unsetVariable(vars[0]);
-					}
-				})
-			}),
-			add: new dijit.MenuItem({
-				label: 'Add',
-				iconClass: 'dijitIconNewTask',
-				onClick: dojo.hitch(this, function() {
-					this._detailDialog.newVariable();
-				})
-			})
-		});
-	
-		// put menu items together
-		this._selectMenu = new dijit.Menu({ });
-		this._selectMenu.addChild(this._selectMenuItems.edit);
-		this._selectMenu.addChild(this._selectMenuItems.del);
-		this._selectMenu.addChild(this._selectMenuItems.add);
-
-		// menu for cells
-		this._cellMenuItems = {};
-		dojo.mixin(this._cellMenuItems, {
-			edit: new dijit.MenuItem({
-				label: 'Edit',
-				iconClass: 'dijitIconEdit',
-				onClick: dojo.hitch(this, function() {
-					if (this._contextVariable) {
-						this._detailDialog.loadVariable(this._contextVariable);
-					}
-				})
-			}),
-			del: new dijit.MenuItem({
-				label: 'Delete',
-				iconClass: 'dijitIconDelete',
-				onClick: dojo.hitch(this, function() {
-					if (this._contextVariable) {
-						this.unsetVariable(this._contextVariable);
-					}
-				})
-			}),
-			add: new dijit.MenuItem({
-				label: 'Add',
-				iconClass: 'dijitIconNewTask',
-				onClick: dojo.hitch(this, function() {
-					this._detailDialog.newVariable();
-				})
-			})
-		});
-
-		// put menu items together
-		this._cellMenu = new dijit.Menu({ });
-		this._cellMenu.addChild(this._cellMenuItems.edit);
-		this._cellMenu.addChild(this._cellMenuItems.del);
-		this._cellMenu.addChild(this._cellMenuItems.add);
-
-		//
-		// create the grid
-		//
-
-		// create store
-		this._store = new dojo.data.ItemFileWriteStore({ data: {items:[]} });
-		var gridLayout = [{
-			field: 'key',
-			name: 'UCR-Variable',
-			width: 'auto'
-		},{
-			field: 'value',
-			name: 'Wert',
-			width: 'auto',
-			editable: true
-		}];
-		this._grid = new dojox.grid.EnhancedGrid({
-			//id: 'ucrVariables',
-			region: 'center',
-			query: { key: '*', value: '*' },
-			queryOptions: { ignoreCase: true },
-			structure: gridLayout,
-			clientSort: true,
-			store: this._store,
-			rowSelector: '2px',
-			//sortFields: {
-			//	attribute: 'variable',
-			//	descending: true
-			//},
-			plugins : {
-				menus:{ 
-					cellMenu: this._cellMenu,
-					selectedRegionMenu: this._selectMenu
-				},
-				indirectSelection: {
-					headerSelector: true,
-					name: 'Selection',
-					width: '25px',
-					styles: 'text-align: center;'
-				}
-			}
-		});
-		this._grid.setSortIndex(1);
-		this.addChild(this._grid);
-
-		// disable edit menu in case there is more than one item selected
-		dojo.connect(this._grid, 'onSelectionChanged', dojo.hitch(this, function() {
-			var nItems = this._grid.selection.getSelectedCount();
-			this._selectMenuItems.edit.set('disabled', nItems > 1);
-		}));
-
-		// save internally for which row the cell context menu was opened
-		dojo.connect(this._grid, 'onCellContextMenu', dojo.hitch(this, function(e) {
-			var item = this._grid.getItem(e.rowIndex);
-			this._contextVariable = this._store.getValue(item, 'key');
-		}));
-
-		// connect to row edits
-		dojo.connect(this._grid, 'onApplyEdit', this, function(rowIndex) {
-			// get the ucr variable and value of edited row
-			var item = this._grid.getItem(rowIndex);
-			var ucrVar = this._store.getValue(item, 'key');
-			var ucrVal = this._store.getValue(item, 'value');
-			
-			// while saving, set module to standby
+		
+		// simple handler to enable/disable standby mode
+		dojo.connect(this._grid, 'umcpSearch', this, function() {
 			this.standby(true);
-
-			// save values
-			this.saveVariable(ucrVar, ucrVal, dojo.hitch(this, function() {
-				this.standby(false);
-			}), false);
+		});
+		dojo.connect(this._grid, 'onUmcpSearchDone', this, function() {
+			this.standby(false);
 		});
 
+		//
 		// create dialog for UCR variable details
+		//
+
 		this._detailDialog = new umc.modules._ucrDetailDialog({});
 		this._detailDialog.startup();
 
 		// register to the onSubmit event of our dialog
 		// in case a value has been updated, we need to refresh the grid
-		dojo.connect(this._detailDialog, 'onSubmit', this, function(values) {
-			// set the dialog on standby
-			this._detailDialog.standby(true);
-
-			// save UCR variable
-			this.saveVariable(values.variable, values.value, dojo.hitch(this, function(data, ioargs) {
-				// data is sent, stop standby mode
-				this._detailDialog.standby(false);
-
-				// only in case of success, close dialog
-				if (200 == dojo.getObject('xhr.status', false, ioargs)) {
-					this._detailDialog.hide();
-				}
-			}));
-		});
-	},
-
-	getSelectedVariables: function() {
-		var items = this._grid.selection.getSelected();
-		var vars = [];
-		for (var iitem = 0; iitem < items.length; ++iitem) {
-			vars.push(this._store.getValue(items[iitem], 'key'));
-		}
-		console.log('### getSelectedVariables');
-		console.log(vars);
-		console.log(items);
-		return vars;
-	},
-
-	filter: function(valMap) {
-		console.log('### filter');
-		console.log(valMap);
-		this.standby(true);
-		
-		// query JSON data
-		umc.tools.xhrPostJSON(
-			{
-				filter: valMap.search,
-				key: valMap.mask,
-				category: valMap.category
-			},
-			'/umcp/command/ucr/search',
-			dojo.hitch(this, function(data, ioargs) {
-				// we received the data from our search
-				// create a new store and assign it to the grid
-				if (data) {
-					this._store = new dojo.data.ItemFileWriteStore({ 
-						data: data._result
-					});
-					this._grid.setStore(this._store);
-				}
-
-				// stop standing-by mode
-				this.standby(false);
-			})
-		);
-	},
-
-	reload: function() {
-		this.filter(this._searchWidget.gatherFormValues());
-	},
-
-	unsetVariable: function(/*Array*/ variable) {
-		// prepare the JSON object
-		var jsonObj = {
-			variable: variable
-		};
-
-		// send off the data
-		umc.tools.umcpCommand('ucr/unset', {
-			variable: variable
-		}).then(dojo.hitch(this, function(data, ioargs) {
-			this.reload();
-		}));
-	},
-
-	saveVariable: function(variable, value, xhrHandler, reload) {
-		// prepare the JSON object
-		var jsonObj = {};
-		dojo.setObject('variables.' + variable, value, jsonObj);
-
-		// send off the data
-		umc.tools.xhrPostJSON(
-			jsonObj, 
-			'/umcp/command/ucr/set', 
-			dojo.hitch(this, function(dataOrError, ioargs) {
-				// check the status
-				if (dojo.getObject('xhr.status', false, ioargs) == 200 && (reload === undefined || reload)) {
-					this.reload();
-				}
-
-				// eventually execute custom callback
-				if (xhrHandler) {
-					xhrHandler(dataOrError, ioargs);
-				}
-			})
-		);
+//		dojo.connect(this._detailDialog, 'onSubmit', this, function(values) {
+//			// set the dialog on standby
+//			this._detailDialog.standby(true);
+//
+//			// save UCR variable
+//			this.saveVariable(values.variable, values.value, dojo.hitch(this, function(data, ioargs) {
+//				// data is sent, stop standby mode
+//				this._detailDialog.standby(false);
+//
+//				// only in case of success, close dialog
+//				if (200 == dojo.getObject('xhr.status', false, ioargs)) {
+//					this._detailDialog.hide();
+//				}
+//			}));
+//		});
 	}
+
+//	reload: function() {
+//		this.filter(this._searchWidget.gatherFormValues());
+//	},
+
 });
 
 
