@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ -e "$HOME/.univention-environment" ]; then
+	. "$HOME/.univention-environment"
+fi
+

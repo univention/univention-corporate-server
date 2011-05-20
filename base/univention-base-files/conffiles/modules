@@ -1,0 +1,9 @@
+@%@UCRWARNING=# @%@
+
+@!@
+if configRegistry['kernel/modules']:
+	modules=configRegistry['kernel/modules'].split(';')
+	for i in range(0,len(modules)):
+		print modules[i]
+@!@
+

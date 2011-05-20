@@ -1,0 +1,84 @@
+@%@UCRWARNING=# @%@
+
+
+auto lo
+iface lo inet loopback
+
+@!@
+from univention.dns import networkNumber
+
+eth_devices=[]
+
+for key,value in configRegistry.items():
+	if key.startswith('interfaces/eth'):
+		k = key.split("/")[1:2][0]
+		if k not in eth_devices:
+			eth_devices.append(k)
+
+eth_devices.sort()
+
+def check_gateway (ip, netmask, gateway):
+	"""
+	Check if the 'ip' is in the same network as the 'gatewy'.
+
+	>>> check_gateway('1.2.3.4', '255.255.255.0', '1.2.3.1')
+	True
+	"""
+	if not gateway:
+		return False
+	return networkNumber(ip, netmask) == networkNumber(gateway, netmask)
+
+gateway_found = False
+configExists=False
+ifhandler=configRegistry.get('interfaces/handler','ifplugd')
+gateway = configRegistry.get('gateway')
+
+
+for i in eth_devices:
+	configExists=False
+	iface = i.replace("_", ":")
+	address = configRegistry.get('interfaces/%s/address' % i)
+	if configRegistry.get('interfaces/%s/type' % i) == 'dhcp':
+		if ifhandler == 'ifplugd' and configRegistry.is_true('interfaces/%s/ifplugd' % i, True):
+			print 'auto %s' % iface
+			print 'iface %s inet dhcp' % iface
+			configExists=True
+		elif ifhandler == 'networkmanager' and configRegistry.is_false('interfaces/%s/networkmanager' % i, True):
+			print 'auto %s' % iface
+			print 'iface %s inet dhcp' % iface
+			configExists=True
+	elif address:
+		print 'auto %s' % iface
+		print 'iface %s inet static' % iface
+		
+		print '\taddress %s' % address
+		network = configRegistry.get('interfaces/%s/network' % i)
+		if network:
+			print '\tnetwork %s' % network
+		netmask = configRegistry.get('interfaces/%s/netmask' % i)
+		if netmask:
+			print '\tnetmask %s' % netmask
+		broadcast = configRegistry.get('interfaces/%s/broadcast' % i)
+		if broadcast:
+			print '\tbroadcast %s' % broadcast
+		if address and netmask and gateway and not gateway_found:
+			if check_gateway(address, netmask, gateway):
+				print '\tgateway %s' % gateway
+				gateway_found = True
+		configExists=True
+
+	if configExists:
+		for key,value in configRegistry.items():
+			if key.startswith('interfaces/%s/route/' % i):
+				if value.startswith('host ') or value.startswith('net '):
+					print 'up route add -%s dev %s' % (value, i)
+
+		for key,value in configRegistry.items():
+			if key.startswith('interfaces/%s/options/' % i):
+				print value
+		if i == "eth0":
+			if configRegistry.get('interfaces/eth0/netmask', "") == "255.255.255.255" and gateway:
+				print "\tup ip route add %s/32 dev eth0" % gateway
+				print "\tup route add default gw %s" % gateway
+
+@!@

@@ -1,0 +1,55 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-config-registry.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-config-registry
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/profile
+#
+
+# /etc/profile: system-wide .profile file for the Bourne shell (sh(1))
+# and Bourne compatible shells (bash(1), ksh(1), ash(1), ...).
+
+if [ "`id -u`" -eq 0 ]; then
+  PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/opt/scalix/bin"
+else
+  PATH="/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games"
+fi
+
+if [ "$PS1" ]; then
+  if [ "$BASH" ]; then
+    PS1='\u@\h:\w\$ '
+  else
+    if [ "`id -u`" -eq 0 ]; then
+      PS1='# '
+    else
+      PS1='$ '
+    fi
+  fi
+fi
+
+@!@
+if configRegistry.get('proxy/http'):
+    print 'http_proxy="%s"' % configRegistry['proxy/http']
+    print 'export PATH PS1 http_proxy'
+else:
+    print 'export PATH PS1'
+
+if configRegistry.get('proxy/no_proxy'):
+    print 'export no_proxy="%s"' % configRegistry['proxy/no_proxy']
+
+if configRegistry.get('locale/default'):
+    print 'export LANG="%s"' % configRegistry['locale/default'].split(":")[0]
+@!@
+
+if [ -e "$HOME/.univention-environment" ]; then
+	. "$HOME/.univention-environment"
+fi
+
+@!@
+if configRegistry.get('umask'):
+	print 'umask %s' % configRegistry['umask']
+else:
+	print 'umask 022'
+@!@

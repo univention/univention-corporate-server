@@ -1,0 +1,50 @@
+@%@UCRWARNING=# @%@
+
+Protocol 2,1
+HostKey /etc/ssh/ssh_host_key
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_dsa_key
+UsePrivilegeSeparation yes
+KeyRegenerationInterval 3600
+ServerKeyBits 768
+SyslogFacility AUTH
+LogLevel INFO
+LoginGraceTime 600
+StrictModes yes
+RSAAuthentication yes
+PubkeyAuthentication yes
+IgnoreRhosts yes
+RhostsRSAAuthentication no
+HostbasedAuthentication no
+PermitEmptyPasswords no
+
+# Change to yes to enable challenge-response passwords (beware issues with
+# some PAM modules and threads)
+ChallengeResponseAuthentication @%@sshd/challengeresponse@%@
+PasswordAuthentication @%@sshd/passwordauthentication@%@
+
+# Kerberos options
+KerberosAuthentication no
+KerberosTicketCleanup yes
+GSSAPIAuthentication yes
+GSSAPIKeyExchange yes
+X11DisplayOffset 10
+PrintMotd no
+PrintLastLog yes
+KeepAlive yes
+Subsystem       sftp    /usr/lib/sftp-server
+UsePAM yes
+
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
+Port @%@sshd/port@%@
+PermitRootLogin @%@sshd/permitroot@%@
+X11Forwarding @%@sshd/xforwarding@%@
+@!@
+if configRegistry.get('sshd/xdisplayoffset'):
+	print "X11DisplayOffset %s" % configRegistry['sshd/xdisplayoffset']
+if configRegistry.get('sshd/xuselocalhost'):
+	print "X11UseLocalhost %s" % configRegistry['sshd/xuselocalhost']
+@!@
+

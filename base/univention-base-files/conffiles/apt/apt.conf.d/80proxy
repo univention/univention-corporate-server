@@ -1,0 +1,30 @@
+/*
+@%@UCRWARNING=# @%@
+*/
+
+@!@
+def print_proxy(proxy):
+	print 'Acquire'
+	print '{'
+	print '    http'
+	print '    {'
+	print '        Proxy "%s";' % proxy
+	print '    }'
+	print '}'
+
+proxy = configRegistry.get('proxy/http', None) 
+if not proxy: # fallback
+	proxy = configRegistry.get('proxy/address', None)
+	port = configRegistry.get('proxy/port', None)
+	if proxy and port:
+		proxy = "%s:%s" % (proxy, port)
+	username = configRegistry.get('proxy/username', None)
+	password = configRegistry.get('proxy/password', None)
+	if proxy and username and password:
+		from urllib import quote
+		proxy = "%s:%s@%s" % (quote(username), quote(password), proxy)
+if proxy:
+	if '://' not in proxy:
+		proxy = 'http://%s' % proxy
+	print_proxy(proxy)
+@!@

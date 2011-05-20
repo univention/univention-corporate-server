@@ -1,0 +1,5 @@
+libuniventionconfig.so.0 libunivention-config0 #MINVER#
+ univention_config_get_int@Base 5.0.0
+ univention_config_get_long@Base 5.0.0
+ univention_config_get_string@Base 5.0.0
+ univention_config_set_string@Base 5.0.0

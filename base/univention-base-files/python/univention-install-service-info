@@ -1,0 +1,58 @@
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
+#
+# Univention Configuration Registry
+#  install config registry information files
+#
+# Copyright 2007-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import os, sys
+import univention.service_info as us_info
+from univention.debhelper import doIt, binary_packages
+
+if __name__ == '__main__':
+	info = us_info.ServiceInfo( install_mode = True )
+	for package in binary_packages():
+		# services
+		source = os.path.join( 'debian', package + '.univention-service' )
+
+		if not os.path.exists( source ):
+			continue
+
+		info.read_services( source )
+		failed = info.check_services()
+		if failed:
+			print >>sys.stderr, 'The following services definitions are invalid: %s' % \
+				  ', '.join( failed )
+			sys.exit( 1 )
+		dest_path = os.path.join( 'debian', package, us_info.ServiceInfo.BASE_DIR[ 1 : ],
+					  us_info.ServiceInfo.SERVICES )
+		dest = os.path.join( dest_path, package + us_info.ServiceInfo.FILE_SUFFIX )
+
+		doIt(['install', '-m', '755', '-d', dest_path])
+		doIt(['install', '-m', '644', source, dest])

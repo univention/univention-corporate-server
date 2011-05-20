@@ -1,0 +1,17 @@
+AC_INIT(lib/config.c)
+
+AM_INIT_AUTOMAKE(univentionconfig,0.1)
+AM_PROG_LIBTOOL
+
+LIB_CURRENT=0
+LIB_REVISION=1
+LIB_AGE=0
+AC_SUBST(LIB_CURRENT)
+AC_SUBST(LIB_REVISION)
+AC_SUBST(LIB_AGE)
+
+AC_PROG_INSTALL
+AC_LANG_C
+AC_HEADER_STDC
+
+AC_OUTPUT(Makefile include/univention/Makefile include/Makefile lib/Makefile tests/Makefile)

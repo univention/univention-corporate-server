@@ -1,0 +1,3 @@
+python/univention-install-config-registry usr/bin/
+python/univention-install-config-registry-info usr/bin/
+python/univention-install-service-info usr/bin/

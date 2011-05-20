@@ -1,0 +1,41 @@
+[cron]
+Description[de]=Cron Dämon
+Description[en]=Cron Daemon
+start_type=cron/autostart
+programs=/usr/sbin/cron
+icon=service/icon
+
+[openbsd-inetd]
+Description[de]=Internet Superserver
+Description[en]=Internet Superserver
+start_type=inetd/autostart
+programs=/usr/sbin/inetd
+icon=service/inetd
+
+[nscd]
+Description[de]=Name Service Caching Dämon
+Description[en]=Name Service Caching Daemon
+start_type=nscd/autostart
+programs=/usr/sbin/nscd
+icon=service/nscd
+
+[ntp]
+Description[de]=NTP-Server
+Description[en]=NTP Server
+programs=/usr/sbin/ntpd
+start_type=ntp/autostart
+icon=service/ntp
+
+[portmap]
+Description[de]=Port-Mapper
+Description[en]=Port Mapper
+programs=/sbin/portmap
+start_type=portmap/autostart
+icon=service/portmap
+
+[ssh]
+Description[de]=SSH-Server
+Description[en]=SSH Server
+programs=/usr/sbin/sshd
+start_type=sshd/autostart
+icon=service/ssh

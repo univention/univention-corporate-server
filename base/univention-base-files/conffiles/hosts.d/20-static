@@ -1,0 +1,5 @@
+@!@
+for key in configRegistry.keys():
+	if key.startswith('hosts/static/') and not key == 'hosts/static/':
+		print "%s\t%s" % (key.split('/')[-1], configRegistry[key])
+@!@

@@ -1,0 +1,43 @@
+Univention Config
+
+ * Kompaitibilitaet zu dem jetzigen univention-config-registry
+   + Inline Python code
+   + Template Ersetzungen
+ * Evtl. neue Funktionen
+   + Konditionale darstellung (z.B. per Python Ausdruck, ohne dass
+     die gesamte Ausgabe ueber print erfolgen muss)
+   + @ erlaubt in @!@ Ausdruecken
+ * Verwaltung von MD5-Checksummen fuer alle installierten Dateien
+ * Unterstuetzung von Multivalue Variablen
+ * Schema basierte Variablen, z.B. (pseudo-code)
+
+   Type DNS-Name:
+   	name (String)
+	ip (IP-Address)
+	
+   Type LDAP-Connection:
+   	host (DNS-Name)
+	port (Integer)
+	base (string)
+	starttls (Integer, 0-2)
+	authmethod (SASL, simple)
+	...
+
+   Beispiele:
+
+   ldap ist vom Typ LDAP-Connection
+
+   @%@ldap.host.ip@%@
+     fuer die IP-Adresse des LDAP-Servers
+   @%@ldap.host.name@%@
+     fuer den Namen des LDAP-Servers
+   @%@ldap.host@%@
+     fuer die Default-Darstellung des LDAP-Server (IP oder Name)
+
+ * Abgleich mit LDAP?
+ * Moeglichkeit bestimmte Konfigurationsdateien erst dann zu schreiben,
+   wenn bestimmte Variablen gesetzt sind
+ * Sollten wir Werte als readonly definieren, eine weitere Stufe zu = und ?,
+   damit koennen wir in Installationsprofilen bestimmte Einstellungen als
+   readonly definieren
+
