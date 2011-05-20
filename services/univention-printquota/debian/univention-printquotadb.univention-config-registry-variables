@@ -1,0 +1,6 @@
+[cups/quota/server/access]
+Description[de]=Zugriffsmethode auf die Quota-Datenbank
+Description[en]=Access method for the quota database
+Type=str
+Categories=service-cups
+

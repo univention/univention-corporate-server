@@ -8,7 +8,7 @@ Standards-Version: 3.8.2
 Package: univention-printquota
 Architecture: all
 Depends: univention-config-registry, univention-printserver, pykota, univention-printquotadb
-Predepends: pykota
+Pre-Depends: pykota
 Description: UCS - quotasupport for printserver
  This packages provides the printquota configuration. Quotas
  can be managed with Univention Admin and Univention Console.
@@ -17,3 +17,17 @@ Description: UCS - quotasupport for printserver
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-printquotadb
+Architecture: all
+Pre-Depends: univention-postgresql
+Depends: univention-config-registry, pykota
+Description: UCS - quotasupport for printserver
+ This packages provides the printquota-database configuration. Quota-Database
+ can be managed with Univention Admin and Univention Console.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+

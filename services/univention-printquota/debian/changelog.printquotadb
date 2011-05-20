@@ -1,0 +1,104 @@
+univention-printquotadb (3.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 16:04:21 +0200
+
+univention-printquotadb (2.0.3-1) unstable; urgency=low
+
+  * correct copyright duration in joinscript (Bug #13218)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Wed, 28 Oct 2009 13:00:28 +0100
+
+univention-printquotadb (2.0.3-1) unstable; urgency=low
+
+  * added support for Postgres 8.3. Bug #16049
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Oct 2009 06:35:30 +0100
+
+univention-printquotadb (2.0.2-1) unstable; urgency=low
+
+  * add a comment, why join-script should be kept and correct wrong exit-code (Bug #13218)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Wed,  5 Aug 2009 14:54:02 +0200
+
+univention-printquotadb (2.0.1-1) unstable; urgency=low
+
+  * move UCR variables to category service-cups (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 14:10:23 +0200
+
+univention-printquotadb (2.0.0-0) unstable; urgency=low
+
+  * bump version for UCS 2.3
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 08:20:32 +0200
+
+univention-printquotadb (1.0.3-3) unstable; urgency=low
+
+  * change package priotiry from optional to standard
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Sep 2007 09:13:12 +0200
+
+univention-printquotadb (1.0.3-2) unstable; urgency=low
+
+  * fixed copyright, fixed encoding
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 23 Aug 2007 14:30:08 +0200
+
+univention-printquotadb (1.0.3-1) unstable; urgency=low
+
+  * add version number to join script 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 22 Aug 2007 15:57:44 +0200
+
+univention-printquotadb (1.0.2-1) unstable; urgency=low
+
+  * restart postgresql with /etc/init.d/postgresql-7.4
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Aug 2007 14:57:59 +0200
+
+univention-printquotadb (1.0.1-1) unstable; urgency=low
+
+  * moved files to new postgresql config directory
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 14 Aug 2007 09:02:24 +0200
+
+univention-printquotadb (1.0.0-3) unstable; urgency=low
+
+  * more wording change univention-config-registry and univention-
+    baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:45:37 +0200
+
+univention-printquotadb (1.0.0-2) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 25 Jul 2007 11:58:42 +0200
+
+univention-printquotadb (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Jul 2007 16:33:56 +0200
+
+univention-printquotadb (0.3) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Sat,  2 Dec 2006 19:29:21 +0100
+
+univention-printquotadb (0.2) unstable; urgency=low
+
+  * suppress notice messages upon initial creation of database
+  * upgrade pykota database to new version 
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 15 Dec 2005 17:12:08 +0100
+
+univention-printquotadb (0.1) unstable; urgency=low
+
+  * Pykota-Storage-Database for UCS
+
+ -- Univention GmbH <packages@univention.de>  Fri, 10 Jan 2005 15:53:05 +0100

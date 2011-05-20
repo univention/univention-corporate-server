@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+# Univention Print Quota DB
+#  postinst script for the debian package
+#
+# Copyright 2004-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+#DEBHELPER#
+
+if [ -x /etc/init.d/postgresql ]; then
+	/etc/init.d/postgresql reload
+fi
+
+if [ -x /etc/init.d/postgresql-7.4 ]; then
+	/etc/init.d/postgresql-7.4 reload
+fi
+
+if [ -x /etc/init.d/postgresql-8.3 ]; then
+	/etc/init.d/postgresql-8.3 reload
+fi
+
+eval "$(univention-config-registry shell)"
+
+pykotadb=`su - postgres -c "psql --list"|awk '/ pykota /{print $1}'`
+if [ ! "$pykotadb" ] ;then
+	# only, if database does not exist
+	su - postgres -c "PGOPTIONS='-c client_min_messages=ERROR ' psql -d template1 -f /usr/share/pykota/postgresql/pykota-postgresql.sql" > /dev/null
+fi
+
+secret=`cat $cups_quota_secret`
+su - postgres -c "echo \"ALTER USER pykotaadmin PASSWORD '$secret';\" |psql -d pykota"
+su - postgres -c "echo \"ALTER USER pykotaadmin PASSWORD '';\" |psql -d pykota"
+
+exit 0
+

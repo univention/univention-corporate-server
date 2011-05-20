@@ -1,3 +1,9 @@
+univention-printquota (4.0.0-2) unstable; urgency=low
+
+  * merged source package univention-printquotadb into univention-printquota Bug #22575 
+
+ -- Felix Botner <botner@univention.de>  Fri, 20 May 2011 15:58:22 +0200
+
 univention-printquota (4.0.0-1) unstable; urgency=low
 
   * UCS 3.0-0 release Bug #22575
