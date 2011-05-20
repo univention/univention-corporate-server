@@ -2,4 +2,6 @@
 
 AUTOMAKE_OPTIONS = foreign
 
-SUBDIRS = include lib tools
+SUBDIRS = include lib tools internal-tools
+
+bin_SCRIPTS = frontend/tklicensegen.py

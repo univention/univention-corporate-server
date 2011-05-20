@@ -1,3 +1,27 @@
+univention-licence (4.0.0-1) unstable; urgency=low
+
+  * Adapt to UCS-3.0 (Bug #22160)
+  * debian/control:
+    - Convert to dh from DebHelper 7.
+    - Update to automake-1.11.
+    - Fix ${shlib_s_:depedns}.
+  * setup.py: Convert to Pyhton2.6.
+  * include/univention/license.h:
+    - Split lib/internal.h.
+    - Fix prototype definition.
+    - Delcare arguments const.
+  * **.c: Fixes GCC detected errors.
+  * configure.in: Add libldap and libssl detection.
+  * internal-tools/Makefile: Convert to Makefile.am.
+  * internal-tools/make_license.sh:
+    - Document parameters.
+    - Fix argument handling.
+  * frontend/tklicensegen.py:
+    - Strip suffix.
+    - Provide fall-back image for head_logo.gif.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 May 2011 14:41:49 +0200
+
 univention-licence (3.0.1-1) unstable; urgency=low
 
   * Replaced deprecated ldap functions (Bug #18913)
@@ -201,7 +225,7 @@ univention-license (0.5) unstable; urgency=low
 univention-license (0.4) unstable; urgency=low
 
   * Add proper package description.
-  * Use ${shlib:Depends} instead of hardcoded dependency.
+  * Use ${shlibs:Depends} instead of hardcoded dependency.
   * Fixed Architecture: all/any.
 
  -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 09:54:12 +0200

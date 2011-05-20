@@ -98,12 +98,12 @@ static struct PyMethodDef license_methods[] = {
 	{NULL, NULL, 0, NULL}
 };
 
-void initlibuniventionlicense()
+void initlibuniventionlicense(void)
 {
 	(void) Py_InitModule("libuniventionlicense", license_methods);
 }
 
-void initlicense()
+void initlicense(void)
 {
 	(void) Py_InitModule("license", license_methods);
 }

@@ -2,18 +2,18 @@
 	@brief the ldap functions for the license lib
 */
 
-#include <univention/license.h>
+#include "internal.h"
 
 /* SGO: Besser waere eine struct, und warum sind die Variablen nicht static? */
 
 /*! ldap_connection the global ldap connection*/
-LDAP* ldap_connection = NULL; 
+static LDAP* ldap_connection = NULL; 
 /*! ldap_server ldap server ip/host*/
-char* ldap_server = NULL;
+static char* ldap_server = NULL;
 /*! ldap_port the ldap server port*/
-int   ldap_port = 0;
+static int   ldap_port = 0;
 /*! the baseDN of the ldap server*/
-char* baseDN = NULL;
+static char* baseDN = NULL;
 
 /******************************************************************************/
 /*!
@@ -165,7 +165,7 @@ void univention_license_ldap_close_connection(void)
 	
 	@return Pointer to a lObj if found, or NULL if an error has occured.
 */
-lObj* univention_license_ldap_search_licenseObject(char* searchBaseDN, char* licensetyp, int num)
+lObj* univention_license_ldap_search_licenseObject(const char* searchBaseDN, const char* licensetyp, int num)
 {
 	lObj* ret=NULL;
 	char* filter;
@@ -192,7 +192,7 @@ lObj* univention_license_ldap_search_licenseObject(char* searchBaseDN, char* lic
 	
 	@return Pointer to a lObj if found, or NULL if an error has occured.
 */
-lObj* univention_license_ldap_get_licenseObject(char* licenseDN)
+lObj* univention_license_ldap_get_licenseObject(const char* licenseDN)
 {
 	lObj* ret=NULL;
 	int scope    = LDAP_SCOPE_BASE;
@@ -222,7 +222,7 @@ lObj* univention_license_ldap_get_licenseObject(char* licenseDN)
 	@retval	NULL	if attribute is not found
 	@return lStrings a struct with num as the size of the line[] array of char*
 */
-lStrings* univention_license_ldap_get_strings(char* objectDN, char* attribute)
+lStrings* univention_license_ldap_get_strings(const char* objectDN, const char* attribute)
 {
 	lStrings* ret = NULL;
 	int numRet = 0;
@@ -238,7 +238,7 @@ lStrings* univention_license_ldap_get_strings(char* objectDN, char* attribute)
 	sprintf(filter,"%s=*",attribute);
 	filter[filterLen] = 0;
 	
-	attr[0] = attribute;
+	attr[0] = (char *)attribute;
 	attr[1] = NULL;
 		
 	license = univention_license_ldap_get(objectDN, scope, filter, attr, attribute, 0);
@@ -301,7 +301,7 @@ lStrings* univention_license_ldap_get_strings(char* objectDN, char* attribute)
 
 	@return Pointer to a lObj if found, or NULL if an error has occured.
 */
-lObj* univention_license_ldap_get(char* search_base, int scope, char* filter, char** attr, char* attrFilter, int num)
+lObj* univention_license_ldap_get(const char* search_base, int scope, const char* filter, char** attr, const char* attrFilter, int num)
 {
 	lObj* ret=NULL;
 	if (univention_license_ldap_open_connection())

@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <univention/license.h>
 
 /*! @file test.c

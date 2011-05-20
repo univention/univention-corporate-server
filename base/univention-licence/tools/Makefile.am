@@ -5,6 +5,7 @@ AUTOMAKE_OPTIONS = foreign
 INCLUDES = -I$(top_srcdir)/include
 
 bin_PROGRAMS = univentionLicenseTest 
+sbin_SCRIPTS = univention-license-import
 
 univentionLicenseTest_SOURCES = test.c
-univentionLicenseTest_LDFLAGS = -luniventionlicense -L../lib/ -lldap -luniventionconfig
+univentionLicenseTest_LDADD = ../lib/libuniventionlicense.la

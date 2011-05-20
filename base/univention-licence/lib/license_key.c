@@ -1,4 +1,4 @@
-#include <univention/license.h>
+#include "internal.h"
 /*! @file license_key.c
 	@brief key handling functions for lib license
 */
@@ -7,15 +7,15 @@
 #define NUM_PUBLIC_KEYS 3
 
 /*! the number of installed public keys */
-int public_keys_installed = 0;
+static bool public_keys_installed = false;
 
 /*! the array of loaded publicKeys */
-RSA** rsa_public = NULL;
+static RSA** rsa_public = NULL;
 /*! the array of public_key strings */
-char** public_keys = NULL;
+static char** public_keys = NULL;
 
 /*! the loaded private key*/
-RSA* rsa_private = NULL;
+static RSA* rsa_private = NULL;
 
 /******************************************************************************/
 /*!
@@ -34,8 +34,7 @@ RSA* rsa_private = NULL;
 */
 int univention_license_key_init(void)
 {
-	int i;
-	public_keys = malloc(NUM_PUBLIC_KEYS * (sizeof(char*)));
+	public_keys = malloc(NUM_PUBLIC_KEYS * sizeof(char*));
 	//setup public key strings
 	/*add here new publicKeys*/
 	/*don't forget to add '\n\' to each line end, and don't reformate the string.*/
@@ -76,9 +75,7 @@ mTp+dauS/6Iy0plubIIljUiN8qsPdRSywmvzQvPNAhXYaRDVTVb6Lp9Gw0whMpN6\n\
 ");
 	
 	//setup public key memory
-	rsa_public = malloc(NUM_PUBLIC_KEYS * (sizeof(RSA*)));
-	for (i=0; i < NUM_PUBLIC_KEYS; i++)
-		rsa_public[i] = NULL;
+	rsa_public = calloc(NUM_PUBLIC_KEYS, sizeof(RSA*));
 
 	if (!public_keys_installed)
 	{	
@@ -164,7 +161,7 @@ int univention_license_key_private_key_installed(void)
 */
 int univention_license_key_public_key_installed(void)
 {
-	if (public_keys_installed == 1)
+	if (public_keys_installed)
 	{
 		return 1;
 	}
@@ -183,7 +180,7 @@ int univention_license_key_public_key_installed(void)
 int	univention_license_key_public_key_load(void)
 {
 	int i;
-	public_keys_installed = 1;
+	public_keys_installed = true;
 	for(i=0; ((i < NUM_PUBLIC_KEYS) && public_keys_installed); i++)
 	{
 		BIO *memReadBIO = NULL;
@@ -202,17 +199,17 @@ int	univention_license_key_public_key_load(void)
 	
 			if (rsa_public[i] == NULL)
 			{
-				public_keys_installed = 0;
+				public_keys_installed = false;
 				univention_debug(UV_DEBUG_SSL, UV_DEBUG_ERROR, "Can't read PublicKey Nr. %i from memory.",i);
 			}
 		}
 		else
 		{
-			public_keys_installed = 0;
+			public_keys_installed = false;
 			univention_debug(UV_DEBUG_SSL, UV_DEBUG_ERROR, "Can't create a 'read from memory' BIO.");
 		}
 	}	
-	return public_keys_installed;
+	return public_keys_installed ? 1 : 0;
 }
 
 /******************************************************************************/
@@ -224,7 +221,7 @@ int	univention_license_key_public_key_load(void)
 	@retval	1 if the privateKey could be installed
 	@retval	0 on error
 */
-int univention_license_key_private_key_load_file(char* filename, char* passwd)
+int univention_license_key_private_key_load_file(const char* filename, const char* passwd)
 {
 	if (univention_license_init())
 	{
@@ -237,7 +234,7 @@ int univention_license_key_private_key_load_file(char* filename, char* passwd)
 				EVP_add_cipher(EVP_des_ede3_cbc());
 			
 				/*read from file*/
-				PEM_read_RSAPrivateKey(fp, &rsa_private, NULL, passwd);
+				PEM_read_RSAPrivateKey(fp, &rsa_private, NULL, (char *)passwd);
 				
 				fclose(fp);
 		
@@ -269,27 +266,27 @@ int univention_license_key_private_key_load_file(char* filename, char* passwd)
 /******************************************************************************/
 /*!
 	@brief verify data with signature
-	a verify with all publicKeys are tryed
+	verification with all publicKeys is tried.
 
 	@param	data		the data to verify
 	@param	signature	the base64 encoded signature for this data
 	@retval	1 if successfull verified the data
 	@retval	0 on error
 */
-int univention_license_verify (char* data, char* signature)
+int univention_license_verify (const char* data, const char* signature)
 {
 	int ret = 0;
 	if (univention_license_key_public_key_installed())
 	{
 		if (signature != NULL && data != NULL)
 		{
-			char hash[SHA_DIGEST_LENGTH];
+			unsigned char hash[SHA_DIGEST_LENGTH];
 			int signaturelen = 0;
-			char* rawsignature = NULL;
+			unsigned char* rawsignature = NULL;
 			int i=0;
 			
 			//hash
-			SHA1(data, strlen(data), hash);
+			SHA1((const unsigned char *)data, strlen(data), hash);
 
 			//convert base64signature to rawsignature
 			signaturelen = univention_license_base64_to_raw(signature, &rawsignature);
@@ -315,28 +312,28 @@ int univention_license_verify (char* data, char* signature)
 	@retval	char the base64 encoded signatur
 	@retval	NULL on error
 */
-char* univention_license_sign (char* data)
+char* univention_license_sign(const char* data)
 {
 	char* ret = NULL;
 	if (univention_license_init())
 	{
 		if (univention_license_key_private_key_installed())
 		{
-			char hash[SHA_DIGEST_LENGTH];
-			char* temp = NULL;
-			int templen = 0;
+			unsigned char hash[SHA_DIGEST_LENGTH];
+			unsigned char* temp = NULL;
+			unsigned int templen = 0;
 			
 			temp = malloc(RSA_size(rsa_private));
 			if (temp != NULL)
 			{
 				//hash
-				SHA1(data, strlen(data), hash);
+				SHA1((const unsigned char *)data, strlen(data), hash);
 
 				//sign
 				if (RSA_sign(NID_sha1, hash, SHA_DIGEST_LENGTH, temp, &templen, rsa_private))
 				{
 					//convert to base64
-					ret = univention_license_raw_to_base64(temp,templen);
+					ret = univention_license_raw_to_base64(temp, templen);
 				}
 				else
 					univention_debug(UV_DEBUG_SSL, UV_DEBUG_ERROR, "Signing failed!");		

@@ -1,10 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <getopt.h>
 
 #include <openssl/rsa.h>
 #include <openssl/err.h>
 #include <openssl/pem.h>
+#include <openssl/rand.h>
 
 /*!
 	@file genkey.c
@@ -33,9 +35,7 @@ int main(int argc, char** argv)
 	
 	//read args
 	int c;
-	int digit_optind = 0;
 	while (1) {
-		int this_option_optind = optind ? optind : 1;
 		int option_index = 0;
 		static struct option long_options[] = {
 			{"help",		no_argument,		0, 'h'},
@@ -107,7 +107,7 @@ int main(int argc, char** argv)
 				rsa = RSA_generate_key(bits, 65537, NULL, NULL);
 				if (rsa == NULL)
 				{
-					error("Keygeneration failed!");
+					fprintf(stderr, "Keygeneration failed!");
 					return -2;
 				}
 			
@@ -116,14 +116,14 @@ int main(int argc, char** argv)
 				f = fopen(pubkeyFileName,"w+");
 				if (f == NULL)
 				{
-					error("Can't open or create file!");
+					fprintf(stderr, "Can't open or create file!");
 					return -3;
 				}
 				ret = PEM_write_RSAPublicKey(f, rsa);
 				
 				if (ret != 1)
 				{
-					error("PEM_write_RSAPublicKey failed!\n");
+					fprintf(stderr, "PEM_write_RSAPublicKey failed!\n");
 					fclose(f);
 					return -4;
 				}
@@ -134,18 +134,18 @@ int main(int argc, char** argv)
 				f = fopen(prikeyFileName,"w+");
 				if (f == NULL)
 				{
-					error("Can't open or create file!");
+					fprintf(stderr, "Can't open or create file!");
 					return -3;
 				}
 				
 				if (password != NULL)
-					ret = PEM_write_RSAPrivateKey(f, rsa, EVP_des_ede3_cbc(),password,strlen(password),NULL,NULL);//use given password
+					ret = PEM_write_RSAPrivateKey(f, rsa, EVP_des_ede3_cbc(),(unsigned char *)password,strlen(password),NULL,NULL);//use given password
 				else
 					ret = PEM_write_RSAPrivateKey(f, rsa, EVP_des_ede3_cbc(),NULL,0,NULL,NULL);//use default passwd callback
 				
 				if (ret != 1)
 				{
-					error("PEM_write_RSAPublicKey failed!");
+					fprintf(stderr, "PEM_write_RSAPublicKey failed!");
 					fclose(f);
 					return -4;
 				}
@@ -154,10 +154,10 @@ int main(int argc, char** argv)
 				return 0;
 			}
 			else
-				printf("ERROR: private key filename is required.\n");
+				fprintf(stderr, "ERROR: private key filename is required.\n");
 		}
 		else
-			printf("ERROR: public key filename is required.\n");
+			fprintf(stderr, "ERROR: public key filename is required.\n");
 	}
 	return -1;
 }

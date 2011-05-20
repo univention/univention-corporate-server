@@ -1,0 +1,4 @@
+python-univention-license: extra-license-file usr/share/lintian/overrides/python-univention-license
+python-univention-license: extra-license-file usr/lib/python-support/python-univention-license/python2.4/univention/licence.so
+python-univention-license: extra-license-file usr/lib/python-support/python-univention-license/python2.5/univention/licence.so
+python-univention-license: extra-license-file usr/lib/python-support/python-univention-license/python2.6/univention/licence.so

@@ -1,4 +1,4 @@
-#include <univention/license.h>
+#include "internal.h"
 /*! @file license_signature.c
 	@brief functions for sign and verify license objects
 */
@@ -102,14 +102,13 @@ int univention_license_check_signature()
 	@retval	NULL if an error has occured
 	@retval char the base64 encoded signature
 */
-char* univention_license_sign_license(char* licenseDN)
+char* univention_license_sign_license(const char* licenseDN)
 {
 	char* ret = NULL;
 	lObj* license = NULL;
 	license = univention_license_ldap_get_licenseObject(licenseDN);
 	if (license != NULL)
 	{
-		char* signature = NULL;
 		char* data = NULL;
 		data = univention_license_build_data(license);
 		if (data != NULL)
@@ -132,18 +131,18 @@ char* univention_license_sign_license(char* licenseDN)
 	@retval	0	if an error has occured
 	@retval len	the amount of chars in returned rawdata
 */
-int univention_license_base64_to_raw(char* base64data, char** rawdata)
+unsigned int univention_license_base64_to_raw(const char* base64data, unsigned char** rawdata)
 {
-	int rawlen;
+	unsigned int rawlen;
 	char* temp=NULL;
-	int templen, retlen;
+	int templen;
 	BIO* b64;
 	BIO* mem;
 	
 	b64 = BIO_new(BIO_f_base64());//base64 encode BIO
 	BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL); //no newline
 	
-	mem = BIO_new_mem_buf(base64data, -1);// BIO to read from mem
+	mem = BIO_new_mem_buf((char *)base64data, -1);// BIO to read from mem
 	BIO_set_close(mem, BIO_NOCLOSE);// So BIO_free() leaves BUF_MEM alone
 	
 	b64 = BIO_push(b64,mem); //connect b64 with mem, so b64 will read from mem
@@ -176,7 +175,7 @@ int univention_license_base64_to_raw(char* base64data, char** rawdata)
 }
 
 /******************************************************************************/
-char* univention_license_raw_to_base64(char* data, int datalen)
+char* univention_license_raw_to_base64(const unsigned char* data, unsigned int datalen)
 /*!
 	@brief	convert raw data to base64
 	@param	data	the char array that holds the data
@@ -185,7 +184,6 @@ char* univention_license_raw_to_base64(char* data, int datalen)
 */
 {
 	long retlen=0;
-	int writelen=0;
 	char* ret = NULL;
 	BIO* b64;
 	BIO* mem;

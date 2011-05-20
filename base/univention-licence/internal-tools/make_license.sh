@@ -1,16 +1,78 @@
 #! /bin/sh -e
-# Shell Script to generate Univention License Keys
+#
+# Univention License
+#  Shell Script to generate Univention License Keys
+#
+# Copyright 2004-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
 
 # wenn nicht root, dann sudo versuchen
-if [ $UID != 0 ]; then sudo $0 "$@"; exit; fi
+if [ $UID != 0 ]
+then
+	sudo "$0" "$@"
+	exit
+fi
 
 help_and_exit () {
 	local RC=0;
-	if [ "$1" ]; then RC="$1"; fi; 
-	echo "$0" [-d datespec] [-a maxaccounts] [-c maxclients] [-g maxgroupwareaccounts] [-u maxuniventiondesktops] [-p product\(s\)] [ -O oemproductt\(s\)] [-o] [-i] [-e] [-H ldap-server]\\ 
-	echo "     " -f outputfilename -D ldapbinddn -w ldappwd -t tempdn -k masterkeydir customername dn
-	echo "use -o to create an old license (for systems before UGS/1.3-1)"
-	exit $RC;
+	if [ -n "$1" ]
+	then
+		exec 1>&2
+		echo "E: $1"
+		echo ""
+		RC=1
+	fi
+	echo "usage: $0 [-h | --help] [-d datespec] \\"
+	echo "  [-a maxaccounts] [-c maxclients] [-g maxgroupwareaccounts] [-u maxuniventiondesktops] \\"
+	echo "  [-p product\(s\)] [ -O oemproduct\(s\)] [-o] [-i] [-e] [-H ldap-server] \\"
+	echo "  -f outputfilename -D ldapbinddn -w ldappwd -t tempdn -k masterkeydir customername dn"
+	if [ -z "$1" ]
+	then
+		echo ""
+		echo "  -h	show this help"
+		echo "  -d	expiration date"
+		echo "  -a	maximum number of accounts"
+		echo "  -c	maximum number of hosts"
+		echo "  -g	maximum number of groupware accounts"
+		echo "  -u	maximum number of desktop hosts"
+		echo "  -p	comma separated list of procuts: UCS,UCD,TCS,DVS,..."
+		echo "  -O	comma separated list of OEM products"
+		echo "  -o	create old license for systems before UGS/1.3-1"
+		echo "  -i	create license for internal use only"
+		echo "  -e	create evaluation license"
+		echo "  -H	specify LDAP server (default: ldap/master)"
+		echo "  -f	file name for output file"
+		echo "  -D	bind-dn for LDAP authentication"
+		echo "  -w	password for LDAP authentication"
+		echo "  -t	base-dn for storing the temporary license"
+		echo "  -k	directory containing private key for license signing"
+		echo "  dn	base-dn of licensee"
+	fi
+	exit $RC
 }
 
 # paths to the key store, relativ to the directory of the master key
@@ -48,90 +110,77 @@ if [ -r /etc/univention/make_license.config ]; then
 	. /etc/univention/make_license.config
 fi;
 
-for i; do
+for i in "$@"
+do
 	if [ -z "$1" ]; then break; fi; 
 	case "$1" in
-
 		"-d")   
-			if [ -z "$2" ]; then help_and_exit 1; fi; 
 			EXPDATE="$2";
 			UNLIMITED=0;
-			shift; shift; 
+			shift 2 || help_and_exit '-d expects date'
 			;;
 		"-f")
 			filename="$2";
-			shift;
-			shift;
+			shift 2 || help_and_exit '-f expects file name'
 			;;
 		"-e")
-			shift;
 			EVALKEY=1;
+			shift
 			;;
 		"-i")
-			shift;
 			INTERNAL=1;
+			shift
 			;;
-		"-h")
-			help_and_exit 0;
+		-h|--help)
+			help_and_exit
 			;;
 		"-D")
-			if [ -z "$2" ]; then help_and_exit 1; fi; 
 			LDAPBINDDN="$2";
-			shift; shift;
+			shift 2 || help_and_exit '-D expects bind-dn'
 			;;
 		"-w")
-			if [ -z "$2" ]; then help_and_exit 1; fi; 
 			LDAPPWD="$2";
-			shift; shift;
+			shift 2 || help_and_exit '-w expects password'
 			;;
 		"-t")
-			if [ -z "$2" ]; then help_and_exit 1; fi; 
 			LDAPTMP="$2";
-			shift; shift;
+			shift 2 || help_and_exit '-t expects dn'
 			;;
 		"-k")   
-			if [ -z "$2" ]; then help_and_exit 1; fi; 
 			MASTERKEYDIR="$2";
-			shift; shift;
+			shift 2 || help_and_exit '-k expects directory'
 			;;
 		"-a")
-			if [ -z "$2" ]; then help_and_exit 1; fi;
 			MAXACCOUNTS="$2";
-			shift; shift;
+			shift 2 || help_and_exit '-a expects number of accounts'
 			;;
 		"-c")
-			if [ -z "$2" ]; then help_and_exit 1; fi;
 			MAXCLIENTS="$2";
-			shift; shift;
+			shift 2 || help_and_exit '-c expects number of clients'
 			;;
 		"-g")
-			if [ -z "$2" ]; then help_and_exit 1; fi;
 			MAXGROUPWAREACCOUNTS="$2";
-			shift; shift;
+			shift 2 || help_and_exit '-g expects number of groupware accounts'
 			;;
 		"-u")
-			if [ -z "$2" ]; then help_and_exit 1; fi;
 			MAXDESKTOPS="$2";
-			shift; shift;
+			shift 2 || help_and_exit '-u expects number of desktop hosts'
 			;;
 		"-p")
-			if [ -z "$2" ]; then help_and_exit 1; fi;
 			PRODUCTS="$2";
-			shift; shift;
+			shift 2 || help_and_exit '-p expects list of products'
 			;;
 		"-O")
-			if [ -z "$2" ]; then help_and_exit 1; fi;
 			OEMPRODUCTS="$2";
-			shift; shift;
+			shift 2 || help_and_exit '-O expects list of OEM products'
 			;;
 		"-o")
 			OLDLICENSE="1";
 			shift;
 			;;
 		"-H")
-			if [ -z "$2" ]; then help_and_exit 1; fi;
 			LDAPSERVER="-h $2";
-			shift; shift;
+			shift 2 || help_and_exit '-H expects LDAP host'
 			;;
 		*)
 			if [ "$CUSTOMER" == "" ]; then
@@ -139,7 +188,7 @@ for i; do
 			elif [ "$BASEDN" == "" ]; then 
 				BASEDN="$1";
 			else
-				help_and_exit 1;
+				help_and_exit "additional argument $1"
 			fi;
 			shift;
 			;;
@@ -147,31 +196,29 @@ for i; do
 done; 
 
 if [ "$MASTERKEYDIR" == "" ]; then 
-	help_and_exit 1;
+	help_and_exit 'Missing master directory -k'
 fi;
 
 if [ "$LDAPBINDDN" == "" -o "$LDAPPWD" == "" ]; then 
-	help_and_exit 1;
+	help_and_exit 'Missing LDAP bind-dn -D and password -w'
 fi;
 
 if [ "$LDAPTMP" == "" ]; then
-	help_and_exit 1;
+	help_and_exit 'Missing LDAP temp-dn -t'
 fi;
 
 if [ "$CUSTOMER" == "" -o "$BASEDN" == "" ]; then 
-	help_and_exit 1; 
+	help_and_exit 'Missing customer name and base-dn'
 fi; 
 
 if [ "$EXPDATE" != "" ]; then 
 	if ! EXPDATE=$( date -d "$EXPDATE" +%d.%m.%Y 2>/dev/null ); then
-		echo "E: can't parse date (see man date)"
-		exit 1;
+		help_and_exit "can't parse date (see man date)"
 	fi;
 fi;
 
 if [ "$EVALKEY" -eq 1 -a "$EXPDATE" == "" ]; then
-	echo "E: evaluation licenses require an expiration date." 1>&2
-	exit 1;
+	help_and_exit "evaluation licenses require an expiration date."
 fi; 
 
 if [ "$EXPDATE" == "" ]; then 
@@ -195,7 +242,7 @@ fi;
 
 
 # change to the master key directory
-cd "$MASTERKEYDIR" 
+cd "$MASTERKEYDIR" || help_and_exit "Can't change to directory $MASTERKEYDIR"
 
 # create the ldap objekt
 (

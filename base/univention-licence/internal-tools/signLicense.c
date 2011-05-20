@@ -1,5 +1,8 @@
+#include <stdlib.h>
+#include <stdio.h>
 #include <univention/license.h>
 #include <getopt.h>
+
 /*! @file signLicense.c
 	@brief A admin tool to generate a signature for a already existing licenseObject.
 	
@@ -15,9 +18,7 @@ int main(int argc, char** argv)
 	
 	//read args
 	int c;
-	int digit_optind = 0;
 	while (1) {
-		int this_option_optind = optind ? optind : 1;
 		int option_index = 0;
 		static struct option long_options[] = {
 			{"help",		no_argument,		0, 'h'},

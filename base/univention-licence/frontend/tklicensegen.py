@@ -1,28 +1,57 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+#
+# Univention License
+#  Tk-Frontend for univention_make_license
+#
+# Copyright 2004-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
 
 from Tkinter import *
 import os
-import string
-import commands
-import sre
+import sys
+import subprocess
 import tkFileDialog
 import time
-from tkMessageBox import showinfo
+from tkMessageBox import showinfo, showerror
 
 class tkLicenseGen:
         def __init__(self,master):
                 master.title('Univention Lizenz Generator')
                 self.master=master
 		self.logoframe=Frame(self.master,bg='red')
-		self.logoframe.pack(side=TOP,fill=X,expand=YES)	
+		self.logoframe.pack(side=TOP,fill=X,expand=YES)
 		self.lftopframes=LabelFrame(self.master)
 		self.lftopframes.pack(side=TOP,fill=X,expand=YES)
 		self.lframe=Frame(self.lftopframes)
 		self.rframe=Frame(self.lftopframes)
 		self.lframe.pack(side=LEFT,fill=X,expand=YES)
 		self.rframe.pack(side=RIGHT,fill=X,expand=YES)
-		
+
 		self.bframe=Frame(self.master)
 		self.bframe.pack(fill=X)
 
@@ -34,33 +63,36 @@ class tkLicenseGen:
 		self.chkivar=IntVar()
 		self.chkovar=IntVar()
 		self.chkdvar=IntVar()
-		
+
 		self.exday=StringVar()
 		self.exmonth=StringVar()
 		self.exyear=StringVar()
 		self.getdate() #set date to localdate (month+3)
 
-		self.logo=PhotoImage(file='/var/www/head_logo.gif')
+		try:
+			self.logo = PhotoImage(file='/var/www/head_logo.gif')
+		except TclError: # fall back to 64x64 white
+			self.logo = PhotoImage(data='R0lGODdhQABAAIAAAP///wAAACwAAAAAQABAAAACRYSPqcvtD6OctNqLs968+w+G4kiW5omm6sq27gvH8kzX9o3n+s73/g8MCofEovGITCqXzKbzCY1Kp9Sq9YrNarfcrhdQAAA7')
 		#self.logo.pack() #muss man nicht packen??!!
 		self.logolabel=Label(self.logoframe,image=self.logo,bg='#CC3300')
 		self.logolabel.pack(side=LEFT,fill=X,expand=YES)
-		
+
 		self.lfname=LabelFrame(self.lframe,font=("Helvetica", 11),text='Kundenname:')
 		self.lfname.pack(fill=X)
 		self.ekname=Entry(self.lfname,textvariable=self.kname,width=30)
 		self.ekname.pack(side=LEFT)
-	
+
 		self.lfdate=LabelFrame(self.lframe,font=("Helvetica", 11),text='Ablaufdatum (TT/MM/JJ):')
 		self.lfdate.pack(fill=X)
 		self.eexd=Entry(self.lfdate,textvariable=self.exday,width=2)
-		self.eexd.pack(side=LEFT)		
+		self.eexd.pack(side=LEFT)
 		self.eexm=Entry(self.lfdate,textvariable=self.exmonth,width=2)
-		self.eexm.pack(side=LEFT)		
+		self.eexm.pack(side=LEFT)
 		self.eexy=Entry(self.lfdate,textvariable=self.exyear,width=2)
-		self.eexy.pack(side=LEFT)	
+		self.eexy.pack(side=LEFT)
 		self.chkdate=Checkbutton(self.lfdate,text='Unbeschränkt',variable=self.chkdvar)
 		self.chkdate.pack(side=RIGHT)
-			
+
 
 		self.lfchke=LabelFrame(self.lframe,font=("Helvetica", 11),text='Evaluationslizenz:')
 		self.lfchke.pack(fill=X)
@@ -77,7 +109,7 @@ class tkLicenseGen:
 		self.chko=Checkbutton(self.lfchko, variable=self.chkovar, command=self.makegrey)
 		self.chko.pack(side=LEFT)
 
-		
+
 		self.kdn=StringVar()
 		self.kdn.set('dc=univention,dc=de')
 		self.lfdn=LabelFrame(self.rframe,font=("Helvetica", 11),text='Kunde DN:')
@@ -139,59 +171,70 @@ class tkLicenseGen:
 		self.bsave.pack(side=RIGHT)
 
 	def generate(self):
-		makelicense='./make_license.sh '
+		makelicense = ['univention_make_license']
 		path=tkFileDialog.asksaveasfilename(initialdir='~',initialfile=self.kname.get()+'-license', defaultextension='.ldif')
 		#print path
 		if path:
 			if self.chkevar.get():
-				makelicense += '-e '
+				makelicense.append('-e')
 			if self.chkivar.get():
-				makelicense += '-i '
-			makelicense += '-f "%s" '%path
-	
+				makelicense.append('-i')
+			makelicense.append('-f')
+			makelicense.append(path)
+
 			if not self.chkdvar.get():
-				makelicense += '-d "%s/%s/%s" '% (self.exmonth.get(), self.exday.get(), self.exyear.get())
-	
+				makelicense.append('-d')
+				makelicense.append("%s/%s/%s" % (self.exmonth.get(), self.exday.get(), self.exyear.get()))
+
 			if not self.chkovar.get():
 				if not self.chkmaxaccvar.get():
-					makelicense += '-a %d '%self.kmaxacc.get()
+					makelicense.append('-a')
+					makelicense.append('%d' % self.kmaxacc.get())
 				else:
-					makelicense += '-a unlimited '
+					makelicense.append('-a')
+					makelicense.append('unlimited')
 				if not self.chkmaxgaccvar.get():
-					makelicense += '-g %d '%self.kmaxgacc.get()
+					makelicense.append('-g')
+					makelicense.append('%d' % self.kmaxgacc.get())
 				else:
-					makelicense += '-g unlimited '
+					makelicense.append('-g')
+					makelicense.append('unlimited')
 				if not self.chkmaxclivar.get():
-					makelicense += '-c %d '%self.kmaxcli.get()
+					makelicense.append('-c')
+					makelicense.append('%d' % self.kmaxcli.get())
 				else:
-					makelicense += '-c unlimited '
+					makelicense.append('-c')
+					makelicense.append('unlimited')
 				if not self.chkmaxdeskvar.get():
-					makelicense += '-u %d '%self.kmaxdesk.get()
+					makelicense.append('-u')
+					makelicense.append('%d' % self.kmaxdesk.get())
 				else:
-					makelicense += '-u unlimited '
+					makelicense.append('-u')
+					makelicense.append('unlimited')
 			else:
-				makelicense += '-o '
-	
-			makelicense += '"%s" '%self.kname.get()
-			makelicense += '"%s"'%self.kdn.get()
+				makelicense.append('-o')
+
+			makelicense.append(self.kname.get())
+			makelicense.append(self.kdn.get())
 			os.chdir('/home/groups/99_license/')
-			i=commands.getstatusoutput(makelicense)
-			if i[0]:
-				if repr(i[0]) == '257':
-					showinfo('Fehler','Errorcode: "%s"\nEvtl. sind Sie nicht in dem Sudoers File!'%repr(i[0]))
-				elif repr(i[0]) == '8704':
-					showinfo('Fehler','Errorcode: "%s"\nmake_license.sh meldet: "invalid DN"!'%repr(i[0]))
-				else:
-					showinfo('Fehler','Errorcode: "%s"\nEin unbekannter Fehler ist aufgetreten!\nBitte senden Sie eine komplette Fehlerbeschreibung an "support@univention.de"'%repr(i[0]))
+			p = subprocess.Popen(makelicense, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+			stdout, stderr = p.communicate()
+			if p.returncode == 0:
+				showinfo('Lizenz Erstellt!', 'Die Lizenz für %s wurde erfolgreich erstellt!' % self.kname.get())
+			elif p.returncode == 257:
+				showerror('Fehler', 'Errorcode: "%s"\nEvtl. sind Sie nicht in dem Sudoers File!' % p.returncode)
+			elif p.returncode == 8704:
+				showerror('Fehler', 'Errorcode: "%s"\nmake_license.sh meldet: "invalid DN"!' % p.returncode)
 			else:
-				showinfo('Lizenz Erstellt!','Die Lizenz für %s wurde erfolgreich erstellt!'%self.kname.get())
+				print >>sys.stderr, '%r\n%s' % (makelicense, stdout)
+				showerror('Fehler', 'Errorcode: "%s"\nEin unbekannter Fehler ist aufgetreten!\nBitte senden Sie eine komplette Fehlerbeschreibung an "support@univention.de"' % p.returncode)
 			#print makelicense
 			#print '-->ErrorCode: %d'%i[0]
 			#print i[1]
-		
-	def getdate(self):	
+
+	def getdate(self):
 		localtime=time.strftime('%d %m %y')
-		split=string.split(localtime,' ')
+		split=localtime.split(' ')
 		day=int(split[0])
 		month=int(split[1])
 		year=int(split[2])
@@ -208,7 +251,7 @@ class tkLicenseGen:
 		self.exday.set(day)
 		self.exmonth.set(month)
 		self.exyear.set(year)
-	
+
 	def makegrey(self):
 		pass
 
@@ -219,4 +262,3 @@ if __name__ == '__main__':
         root=Tk()
         licensegen=tkLicenseGen(root)
         root.mainloop()
-

@@ -1,10 +1,10 @@
-#include <univention/license.h>
+#include "internal.h"
 /*! @file license.c
 	@brief general lib license functions
 */
 
-lObj* global_license = NULL; /*!< the container for the current selecte license*/
-int is_init = 0;/*!< the init-state of the lib*/
+static lObj* global_license = NULL; /*!< the container for the current selecte license*/
+static int is_init = 0;/*!< the init-state of the lib*/
 
 /*****************************************************************************/
 /*!
@@ -45,7 +45,7 @@ void univention_license_free(void)
 	if (global_license != NULL)
 	{
 		univention_licenseObject_free(global_license);
-		global_license == NULL;
+		global_license = NULL;
 	}
 }
 
@@ -70,7 +70,7 @@ lObj* univention_license_get_global_license(void)
 	@retval 2 the date test has failed
 	@retval 4 the basedn test has failed 
 */
-int univention_license_select(char* licensetyp)
+int univention_license_select(const char* licensetyp)
 {
 	int ret = -1;
 	//check init
@@ -183,7 +183,7 @@ int univention_license_select(char* licensetyp)
 	@retval	1 if nothing is found or an error has occured
 	@retval 0 if a valid license of this type has been found
 */
-int univention_license_selectDN(char* licenseDN)
+int univention_license_selectDN(const char* licenseDN)
 {
 	int ret = 1;
 	//check init
@@ -232,7 +232,7 @@ int univention_license_selectDN(char* licenseDN)
 	@retval 8 the object can not be found, it's not in the search path
 	
 */
-int univention_license_check(char* objectDN)
+int univention_license_check(const char* objectDN)
 {
 	int ret = -1;
 	if (univention_license_init())
@@ -330,7 +330,7 @@ int univention_license_check_enddate()
 			{
 				int endDay = 0, endMonth = 0, endYear = 0;
 				time_t cur_time;
-				struct tm* tim;
+				struct tm tim;
 				char *s;
 				char* date = strdup(licensedate->line[0]); //must be done because strtok modifies
 
@@ -359,26 +359,26 @@ int univention_license_check_enddate()
 				free(date);
 				
 				cur_time = time(NULL);
-				tim = localtime(&cur_time);
+				localtime_r(&cur_time, &tim);
 			
-				if ( (endYear-1900) >  tim->tm_year ) {
+				if ( (endYear-1900) >  tim.tm_year ) {
 					return 1;
-				} else if ( (endYear-1900)  < tim->tm_year ) {
-					univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_INFO, "This License expired on '%s'. Current date is '%i.%i.%i'.(year)",licensedate->line[0],tim->tm_mday,tim->tm_mon+1,tim->tm_year+1900);
+				} else if ( (endYear-1900)  < tim.tm_year ) {
+					univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_INFO, "This License expired on '%s'. Current date is '%i.%i.%i'.(year)",licensedate->line[0],tim.tm_mday,tim.tm_mon+1,tim.tm_year+1900);
 					return 0;
 				} else {
 					/* same year */
-					if (endMonth > (tim->tm_mon+1)) {
+					if (endMonth > (tim.tm_mon+1)) {
 						return 1;
-					} else if ( endMonth <  (tim->tm_mon+1) ) {
-						univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_INFO, "This License expired on '%s'. Current date is '%i.%i.%i'.(month)",licensedate->line[0],tim->tm_mday,tim->tm_mon+1,tim->tm_year+1900);
+					} else if ( endMonth <  (tim.tm_mon+1) ) {
+						univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_INFO, "This License expired on '%s'. Current date is '%i.%i.%i'.(month)",licensedate->line[0],tim.tm_mday,tim.tm_mon+1,tim.tm_year+1900);
 						return 0;
 					} else {
 						/* same month */
-						if (endDay > tim->tm_mday) {
+						if (endDay > tim.tm_mday) {
 							return 1;
-						} else if ( endDay < tim->tm_mday) {
-							univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_INFO, "This License expired on '%s'. Current date is '%i.%i.%i'.(day)",licensedate->line[0],tim->tm_mday,tim->tm_mon+1,tim->tm_year+1900);
+						} else if ( endDay < tim.tm_mday) {
+							univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_INFO, "This License expired on '%s'. Current date is '%i.%i.%i'.(day)",licensedate->line[0],tim.tm_mday,tim.tm_mon+1,tim.tm_year+1900);
 							return 0;
 						} else {
 							/* same day */
@@ -406,7 +406,7 @@ int univention_license_check_enddate()
 	@retval 1 if ok
 	@retval 0 on error
 */
-int univention_license_check_searchpath(char* objectDN)
+int univention_license_check_searchpath(const char* objectDN)
 {
 	int found = 0;
 
@@ -517,7 +517,7 @@ int univention_license_qsort_hook(sortElement* a, sortElement* b)
 	@retval	0	if both strings are equal
 	@retval	-1	if a is 'greater' then b
 */
-int univention_license_compare_string(char* a, char* b)
+int univention_license_compare_string(const char* a, const char* b)
 {
 	int i = 0;
 	while (i < strlen(a) && i < strlen(b))
@@ -588,19 +588,13 @@ lObj* univention_license_sort(lObj* license)
 */
 lObj* univention_licenseObject_malloc(int size)
 {
-	int i;
 	lObj* license = NULL;
 	license = malloc(sizeof(lObj));
 	//printf("LicenseMalloc:%i,%p.\n",size,license);
 	
 	license->size = size;
-	license->key  = malloc(sizeof(char*)*size);
-	license->val  = malloc(sizeof(char*)*size);
-	for(i=0; i < size; i++)
-	{
-		license->key[i] = NULL;
-		license->val[i] = NULL;
-	}		
+	license->key  = calloc(size, sizeof(char*));
+	license->val  = calloc(size, sizeof(char*));
 	return license;
 }
 
@@ -617,14 +611,9 @@ lStrings* univention_licenseStrings_malloc(int num)
 	lStrings* ret = NULL;
 	if (num > 0)
 	{
-		int i =0;
 		ret = malloc(sizeof(lStrings));
 		ret->num = num;
-		ret->line = malloc(sizeof(char*)*ret->num);
-		for (i=0; i < ret->num; i++)
-		{
-			ret->line[i] = NULL;
-		}
+		ret->line = calloc(ret->num, sizeof(char*));
 	}
 	
 	return ret;
@@ -698,7 +687,7 @@ void univention_licenseObject_free(lObj* license)
 	@retval	NULL	if attribute is not found
 	@return lStrings a struct with num as the size of the line[] array of char*
 */
-lStrings* univention_license_get_value(char* attribute)
+lStrings* univention_license_get_value(const char* attribute)
 {
 	lStrings* value = NULL;
 	if (global_license != NULL)
