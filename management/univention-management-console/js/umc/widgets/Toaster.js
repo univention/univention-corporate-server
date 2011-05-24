@@ -4,6 +4,8 @@ dojo.provide("umc.widgets.Toaster");
 
 dojo.require("dojox.widget.Toaster");
 
+// TODO: the css property box-shadow does not work since a clipping is set dynamically,
+//		 this could be fixed...
 dojo.declare("umc.widgets.Toaster", dojox.widget.Toaster, {
 	// summary:
 	//		Extension of dojox.widget.Toaster in order to allow centered notification.

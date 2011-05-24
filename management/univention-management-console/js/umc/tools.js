@@ -98,14 +98,14 @@ dojo.mixin(umc.tools, {
 				case 200: // evertything is ok :)
 					return;
 				case 401:
-					if (umc.app.loggingIn) {
+					var loggingIn = umc.app.loggingIn;
+					umc.app._loginDialog.show();
+					if (loggingIn) {
 						umc.app.alert('Wrong credentials, please try again!');
 					}
 					else {
-						umc.app.loggingIn = true;
 						umc.app.alert('Your session has expired, please log in again!');
 					}
-					umc.app.loginDialog.show();
 					return;
 				case 403:
 					umc.app.alert('You are not authorized to perform this action!');

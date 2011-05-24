@@ -109,6 +109,15 @@ div.modLaunchButtonClick {
 .icon64-roomadmin {
 	background-image: url('../images/icons/64x64/roomadmin.png');
 }
+.icon64-classes {
+	background-image: url('../images/icons/64x64/classes.png');
+}
+.icon64-teachers {
+	background-image: url('../images/icons/64x64/teachers.png');
+}
+.icon64-pupils {
+	background-image: url('../images/icons/64x64/pupils.png');
+}
 
 /* define all module icons 32x32 */
 .icon32-users,
@@ -338,5 +347,85 @@ div.modLaunchButtonClick {
 }
 .icon16-univention {
 	background-image: url('../images/icons/16x16/univention.png');
+}
+
+.icon64-printermoderation {
+	background-image: url( '../images/icons/64x64/printermoderation.png' );
+}
+
+.icon64-helpdesk {
+	background-image: url( '../images/icons/64x64/helpdesk.png' );
+}
+
+.icon64-distribution {
+	background-image: url( '../images/icons/64x64/distribution.png' );
+}
+
+.icon64-reservation {
+	background-image: url( '../images/icons/64x64/reservation.png' );
+}
+
+.icon32-printermoderation {
+	background-image: url( '../images/icons/32x32/printermoderation.png' );
+}
+
+.icon32-helpdesk {
+	background-image: url( '../images/icons/32x32/helpdesk.png' );
+}
+
+.icon32-distribution {
+	background-image: url( '../images/icons/32x32/distribution.png' );
+}
+
+.icon32-reservation {
+	background-image: url( '../images/icons/32x32/reservation.png' );
+}
+
+.icon24-printermoderation {
+	background-image: url( '../images/icons/24x24/printermoderation.png' );
+}
+
+.icon24-helpdesk {
+	background-image: url( '../images/icons/24x24/helpdesk.png' );
+}
+
+.icon24-distribution {
+	background-image: url( '../images/icons/24x24/distribution.png' );
+}
+
+.icon24-reservation {
+	background-image: url( '../images/icons/24x24/reservation.png' );
+}
+
+.icon16-printermoderation {
+	background-image: url( '../images/icons/16x16/printermoderation.png' );
+}
+
+.icon16-helpdesk {
+	background-image: url( '../images/icons/16x16/helpdesk.png' );
+}
+
+.icon16-distribution {
+	background-image: url( '../images/icons/16x16/distribution.png' );
+}
+
+.icon16-reservation {
+	background-image: url( '../images/icons/16x16/reservation.png' );
+}
+
+.icon64-proxysettings {
+	background-image: url( '../images/icons/64x64/proxysettings.png' );
+}
+
+.icon32-proxysettings {
+	background-image: url( '../images/icons/32x32/proxysettings.png' );
+}
+
+.icon24-proxysettings {
+	background-image: url( '../images/icons/24x24/proxysettings.png' );
+}
+
+.icon16-proxysettings {
+	background-image: url( '../images/icons/16x16/proxysettings.png' );
 }
 

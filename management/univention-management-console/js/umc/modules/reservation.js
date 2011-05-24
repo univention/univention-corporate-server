@@ -1,6 +1,6 @@
 /*global console MyError dojo dojox dijit umc */
 
-dojo.provide("umc.modules.groupadmin");
+dojo.provide("umc.modules.reservation");
 
 dojo.require("umc.widgets.TabbedModule");
 dojo.require("umc.widgets.Module");
@@ -9,7 +9,7 @@ dojo.require( "umc.widgets.Grid" );
 dojo.require( "dojox.layout.TableContainer" );
 dojo.require( "dijit.layout.BorderContainer" );
 
-dojo.declare("umc.modules.groupadmin", umc.widgets.TabbedModule, {
+dojo.declare("umc.modules.reservation", umc.widgets.TabbedModule, {
 	// summary:
 	//		Module for modifying and displaying UCR variables on the system.
 

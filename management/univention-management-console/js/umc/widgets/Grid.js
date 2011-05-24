@@ -301,6 +301,11 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 		// create menu
 		var actionsMenu = new dijit.Menu({});
 		dojo.forEach(this.actions, function(iaction) {
+			// make sure we only get non-standard actions
+			if (true === iaction.isStandardAction) {
+				return;
+			}
+
 			// create a new menu item
 			var item = new dijit.MenuItem({
 				label: iaction.label,
@@ -315,11 +320,13 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 			}
 		}, this);
 
-		// create drop-down button
-		toolBarRight.addChild(new dijit.form.DropDownButton({
-			label: 'Alle Aktionen...',
-			dropDown: actionsMenu
-		}));
+		// create drop-down button if there are actions
+		if (actionsMenu.hasChildren()) {
+			toolBarRight.addChild(new dijit.form.DropDownButton({
+				label: 'Weitere Aktionen...',
+				dropDown: actionsMenu
+			}));
+		}
 		
 		/*// disable edit menu in case there is more than one item selected
 		dojo.connect(this._grid, 'onSelectionChanged', dojo.hitch(this, function() {
@@ -424,7 +431,6 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 		//		Convenience method to fetch all attributes of an item as dictionary.
 		var values = {};
 		var item = this._grid.getItem(rowIndex);
-		myitem = item;
 		dojo.forEach(this._store.getAttributes(item), dojo.hitch(this, function(key) {
 			values[key] = this._store.getValue(item, key);
 		}));

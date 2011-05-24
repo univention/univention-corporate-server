@@ -16,6 +16,37 @@ html, body
 	background: url('../images/mainBackground.png') repeat-x 0px 0px;
 }
 
+/* define properties for floating buttons with margins */
+div.modLaunchButton {
+	width: 130px !important;
+	/*height: 80px !important;*/
+	white-space: normal !important; /* allow wrapping of text in button */
+	margin: 5px !important;
+    background-position: 8 center;
+	background-repeat: no-repeat;
+    padding-left:80px;
+    height:80px;
+	list-style: none;
+	float: left;
+	text-align: left;
+}
+
+div.modLaunchButton div {
+	padding-top:30px;
+	/*position: absolute;
+	width:80px;*/
+}
+
+div.modLaunchButtonHover {
+	border-radius: 8px 8px 8px 8px;
+	-moz-border-radius: 8px 8px 8px 8px;
+	background-color: #eee;
+}
+
+div.modLaunchButtonClick {
+	background-color: #e8e8e8;
+}
+
 /* the header element with univention logo */
 .umcHeader
 {

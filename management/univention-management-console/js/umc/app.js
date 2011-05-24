@@ -11,11 +11,10 @@ dojo.require("dijit.form.Button");
 dojo.require("dijit.Menu");
 dojo.require("dojo.cookie");
 dojo.require("umc.widgets.Toaster");
-dojo.require("umc.widgets.AlertDialog");
 dojo.require("umc.widgets.ConfirmDialog");
 dojo.require("umc.widgets.LoginDialog");
 dojo.require("umc.widgets.ContainerPane");
-dojo.require("umc.widgets.Overview");
+dojo.require("umc.widgets.CategoryPane");
 
 // start the application when everything has been loaded
 dojo.addOnLoad(function() {
@@ -30,22 +29,53 @@ dojo.addOnLoad(function() {
 });
 
 dojo.mixin(umc.app, {
+	// loggingIn: Boolean
+	//		True if the user is in the process of loggin in.
+	loggingIn: false,
+
 	_loginDialog: null,
 	_alertDialog: null,
 	_toaster: null,
+	_userPreferences: null,
+
+	defaultPreferences: {
+		tooltips: true,
+		moduleDescription: true,
+		confirm: true
+	},
 
 	notify: function(/*String*/ message) {
+		// summary:
+		//		Show a toaster notification with the given message string.
+
 		// show the toaster
 		this._toaster.setContent(message, 'message');
 	},
 
 	alert: function(/*String*/ message) {
+		// summary:
+		//		Popup an alert dialog with the given message string. The users needs to
+		//		confirm the dialog by clicking on the 'OK' button.
+
 		// show the confirmation dialog
 		this._alertDialog.set('message', message);
 		this._alertDialog.show();
 	},
 
-	confirm: function(/*String*/ message, /*Object*/ options, /*Function*/ callback) {
+	confirm: function(/*String*/ message, /*Object*/ options) {
+		// summary:
+		//		Popup an confirmation dialog with the given message string. The user needs
+		//		to confirm by clicking on one of multiple defined buttons.
+		// message:
+		//		The message that is displayed in the dialog.
+		// options:
+		//		Dict that defines id<->label pairs for the dialog buttons, e.g., 
+		//		{ ok: 'Do action', cancel: 'Cancel action', else: 'Do another action' }
+		//		Upon confirmation the users callback is called with the corresponding 
+		//		id of the button that is clicked as parameter.
+		// returns:
+		//		Returns a dojo.Deferred object.
+
 		// create confirmation dialog
 		var confirmDialog = new umc.widgets.ConfirmDialog({
 			title: 'Bestätigung',
@@ -53,11 +83,18 @@ dojo.mixin(umc.app, {
 			options: options
 		});
 
-		// connect the dialog with custom callback
-		dojo.connect(confirmDialog, 'onConfirm', callback);
+		// create Deferred instance and connect it with onClick event
+		var deferred = new dojo.Deferred();
+		dojo.connect(confirmDialog, 'onConfirm', function(id) {
+			confirmDialog.close();
+			deferred.resolve(id);
+		});
 
 		// show the confirmation dialog
 		confirmDialog.show();
+
+		// return the Deferred object
+		return deferred.promise; // dojo.Deferred
 	},
 
 //	standby: function(/*Boolean*/ enable) {
@@ -81,15 +118,25 @@ dojo.mixin(umc.app, {
 //		this._standbyWidget.startup();
 
 		// create login dialog
-		this.loggingIn = true;
 		this._loginDialog = umc.widgets.LoginDialog({});
 		this._loginDialog.startup();
 		dojo.connect(this._loginDialog, 'onLogin', this, 'onLogin');
-
-		// create alert dialog
-		this._alertDialog = new umc.widgets.AlertDialog({
-			title: 'Hinweis'
+		dojo.connect(this._loginDialog, 'onLogin', this, function() {
+			this.loggingIn = false;
 		});
+		dojo.connect(this._loginDialog, 'onShow', this, function() {
+			this.loggingIn = true;
+		});
+
+		// create alert dialog 
+		this._alertDialog = new umc.widgets.ConfirmDialog({
+			title: 'Hinweis',
+			options: { ok: 'Ok' }
+		});
+		dojo.connect(this._alertDialog, 'onConfirm', dojo.hitch(this, function() {
+			// hide dialog upon confirmation by click on 'OK'
+			this._alertDialog.hide();
+		}));
 
 		// create toaster
 		this._toaster = new umc.widgets.Toaster({});
@@ -189,28 +236,34 @@ dojo.mixin(umc.app, {
 		// NOTE: We add the icon here in the first tab, otherwise the tab heights
 		//	   will not be computed correctly and future tabs will habe display
 		//	   problems.
-		var overviewContainer = new umc.widgets.ContainerPane({ 
+		var overviewPage = new umc.widgets.ContainerPane({ 
 			//style: "overflow:visible; width: 80%"
 			title: 'Overview',
 			iconClass: 'icon16-univention' 
 		});
 
-		// add an OverviewWidget for each category
+		// add an CategoryPane for each category
 		dojo.forEach(this.getCategories(), dojo.hitch(this, function(icat) {
-			// create a new overview widget for all modules in the given category
-			//console.log('### add category: ' + icat);
-			var overviewWidget = new umc.widgets.Overview({
-				modules: this.getModules(icat.id),
-				title: icat.title
+			// ignore empty categories
+			var modules = this.getModules(icat.id);
+			if (0 === modules.length) {
+				return;
+			}
+
+			// create a new category pane for all modules in the given category
+			var categoryPane = new umc.widgets.CategoryPane({
+				modules: modules,
+				title: icat.title,
+				open: ('favorites' == icat.id || 'ucsschool' == icat.id) //TODO: remove this hack
 			});
 
 			// register to requests for opening a module
-			dojo.connect(overviewWidget, 'onOpenModule', dojo.hitch(this, this.openModule));
+			dojo.connect(categoryPane, 'onOpenModule', dojo.hitch(this, this.openModule));
 
-			// add overview widget to container
-			overviewContainer.addChild(overviewWidget);
+			// add category pane to overview page
+			overviewPage.addChild(categoryPane);
 		}));
-		umc.app._tabContainer.addChild(overviewContainer);
+		umc.app._tabContainer.addChild(overviewPage);
 		
 		// the header
 		var header = new umc.widgets.ContainerPane({
@@ -234,16 +287,27 @@ dojo.mixin(umc.app, {
 		var menu = new dijit.Menu({});
 		menu.addChild(new dijit.CheckedMenuItem({
 			label: 'Tooltips',
-			checked: umc.app.tooltipsVisible(),
+			checked: umc.app.preferences('tooltips'),
 			onClick: function() {
-				umc.app.showTooltips(this.checked);
+				umc.app.preferences('tooltips', this.checked);
 			}
 		}));
 		menu.addChild(new dijit.CheckedMenuItem({
 			label: 'Nachfragen',
-			checked: true
+			checked: true,
+			checked: umc.app.preferences('confirm'),
+			onClick: function() {
+				umc.app.preferences('confirm', this.checked);
+			}
 		}));
-		//menu.startup();
+		menu.addChild(new dijit.CheckedMenuItem({
+			label: 'Modul-Hilfetext',
+			checked: true,
+			checked: umc.app.preferences('moduleDescription'),
+			onClick: function() {
+				umc.app.preferences('moduleDescription', this.checked);
+			}
+		}));
 		header.addChild(new dijit.form.DropDownButton({
 			label: 'Benutzer: ' + this.username,
 			'class': 'umcHeaderButton',
@@ -267,67 +331,134 @@ dojo.mixin(umc.app, {
 		umc.widgets.isSetupGUI = true;
 	},
 
-	showTooltips: function(visible) {
-		if (!visible) {
-			dojo.cookie('univention.umc.tooltips', 'false', { expires: 100, path: '/' } );
-			this.notify('Tooltips sind ausgeschaltet.');
-		}
-		else {
-			dojo.cookie('univention.umc.tooltips', null, { expires: -1, path: '/' });
-			this.notify('Tooltips werden angezeigt.');
-		}
-	},
+	preferences: function(/*String|Object?*/ param1, /*AnyType?*/ value) {
+		// summary:
+		//		Convenience function to set/get user preferences. 
+		//		All preferences will be store in a cookie (in JSON format).
+		// returns:
+		//		If no parameter is given, returns dictionary with all preference
+		//		entries. If one parameter of type String is given, returns the
+		//		preference for the specified key. If one parameter is given which
+		//		is an dictionary, will set all key-value pairs as specified by
+		//		the dictionary. If two parameters are given and
+		//		the first is a String, the function will set preference for the
+		//		key (paramater 1) to the value as specified by parameter 2.
 
-	tooltipsVisible: function() {
-		var cookie = dojo.cookie('univention.umc.tooltips');
-		return undefined === cookie || 'true' == cookie;
+		// make sure the user preferences are cached internally
+		var cookieStr = '';
+		if (!this._userPreferences) {
+			// not yet cached .. get all preferences via cookies
+			this._userPreferences = dojo.clone(this.defaultPreferences);
+			cookieStr = dojo.cookie('univention.umc.preferences') || '{}';
+			dojo.mixin(this._userPreferences, dojo.fromJson(cookieStr));
+		}
+
+		// no arguments, return full preference object
+		if (0 === arguments.length) {
+			return this._userPreferences; // Object
+		}
+		// only one parameter, type: String -> return specified preference
+		if (1 == arguments.length && dojo.isString(param1)) {
+			return this._userPreferences[param1]; // Boolean|String|Integer
+		}
+		
+		// backup the old preferences
+		var oldPrefs = dojo.clone(this._userPreferences);
+		
+		// only one parameter, type: Object -> set all parameters as specified in the object
+		if (1 == arguments.length) {
+			// only consider keys that are defined in defaultPreferences
+			umc.tools.forIn(this.defaultPreferences, dojo.hitch(this, function(val, key) {
+				if (key in param1) {
+					this._userPreferences[key] = param1[key];
+				}
+			}));
+		}
+		// two parameters, type parameter1: String -> set specified user preference
+		else if (2 == arguments.length && dojo.isString(param1)) {
+			// make sure preference is in defaultPreferences
+			if (param1 in this.defaultPreferences) {
+				this._userPreferences[param1] = value;
+			}
+		}
+		// otherwise throw error due to incorrect parameters
+		else {
+			umc.tools.assert(false, 'umc.app.preferences(): Incorrect parameters: ' + arguments);
+		}
+
+		// publish changes in user preferences
+		umc.tools.forIn(this._userPreferences, function(val, key) {
+			if (val != oldPrefs[key]) {
+				// entry has changed
+				dojo.publish('/umc/preferences/' + key, [val]);
+			}
+		});
+
+		// set the cookie with all preferences
+		cookieStr = dojo.toJson(this._userPreferences);
+		dojo.cookie('univention.umc.preferences', cookieStr, { expires: 100, path: '/' } );
+		return; // undefined
 	},
 
 	_modules: [],
 	_categories: [],
 	loadModules: function() {
 		//console.log('### loadModules');
-		umc.tools.xhrPostJSON(
-			{}, 
-			'/umcp/get/modules/list',
-			dojo.hitch(this, function(data, ioargs) {
-				if (200 != dojo.getObject('xhr.status', false, ioargs)) {
-					return;
-				}
+		umc.tools.umcpCommand('get/modules/list').then(dojo.hitch(this, function(data) {
+			// get all categories
+			dojo.forEach(dojo.getObject('categories', false, data), dojo.hitch(this, function(i) {
+				var cat = {
+					id: i.id,
+					description: i.name,
+					title: i.name
+				};
+				this._categories.push(cat); 
+			}));
 
-				//console.log('### loadModules response');
-				//console.log(data);
+			// hack a specific order
+			//TODO: remove this hack
+			var cats1 = [];
+			var cats2 = this._categories;
+			dojo.forEach(['favorites', 'ucsschool'], function(id) {
+				var tmpCats = cats2;
+				cats2 = [];
+				dojo.forEach(tmpCats, function(icat) {
+					if (id == icat.id) {
+						cats1.push(icat);
+					}
+					else {
+						cats2.push(icat);
+					}
+				});
+			});
+			this._categories = cats1.concat(cats2);
+			console.log(cats1);
+			console.log(cats2);
+			console.log(this._categories);
+			// end of hack :)
 
-				// get all given categories
-				dojo.forEach(dojo.getObject('categories', false, data), dojo.hitch(this, function(i) {
-					var cat = {
-						id: i.id,
-						description: i.name,
-						title: i.name
-					};
-					this._categories.push(cat); 
-				}));
-
-				// get all given modules
-				for (var imod in dojo.getObject('modules', false, data)) {
-					if (data.modules.hasOwnProperty(imod)) {
-						//console.log('### load module data: umc.modules.' + imod);
+			// get all modules
+			for (var imod in dojo.getObject('modules', false, data)) {
+				if (data.modules.hasOwnProperty(imod)) {
+					try {
 						dojo.require('umc.modules.' + imod);
-						//console.log('### module data loaded');
 						this._modules.push({
 							BaseClass: dojo.getObject('umc.modules.' + imod), 
 							id: imod, 
 							title: data.modules[imod].name,
 							description: data.modules[imod].description,
-							categories: data.modules[imod].categories //['all'] // TODO: bug in server, wrong categories
+							categories: data.modules[imod].categories
 						});
 					}
+					catch (error) {
+						console.log('WARNING: Loading of module ' + imod + ' failed. Ignoring it for now!');
+					}
 				}
+			}
 
-				// loading is done
-				this.onModulesLoaded();
-			})
-		);
+			// loading is done
+			this.onModulesLoaded();
+		}));
 	},
 
 	getModules: function(/*String?*/ category) {

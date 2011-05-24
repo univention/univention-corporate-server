@@ -44,7 +44,6 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 				label: val,
 				onClick: dojo.hitch(this, function(values) {
 					this.onConfirm(key);
-					this.close();
 				})
 			}));
 		}));

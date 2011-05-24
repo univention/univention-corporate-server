@@ -3,6 +3,7 @@
 dojo.provide("umc.modules.users");
 
 dojo.require("umc.widgets.TabbedModule");
+dojo.require("umc.widgets.Module");
 dojo.require("umc.tools");
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dojo.data.ItemFileWriteStore");

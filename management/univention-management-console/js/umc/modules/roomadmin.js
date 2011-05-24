@@ -25,15 +25,15 @@ dojo.declare("umc.modules.roomadmin", umc.widgets.TabbedModule, {
 		this.addChild( this.overviewTab() );
 		this.addChild( new umc.widgets.Page( {
 			title: 'Präsentation',
-			content: '<Leer>'
+			content: '&lt;Leer&gt;'
 		}));
 		this.addChild( new umc.widgets.Page( {
 			title: 'Beobachtung',
-			content: '<Leer>'
+			content: '&lt;Leer&gt;'
 		}));
 		//this.addTab( 'Übersicht', this.overviewTab() );
-		//this.addTab( 'Präsentation', '<Leer>' );
-		//this.addTab( 'Beobachtung', '<Leer>' );
+		//this.addTab( 'Präsentation', '&lt;Leer&gt;' );
+		//this.addTab( 'Beobachtung', '&lt;Leer&gt;' );
 	},
 
 	overviewTab: function() {
@@ -107,7 +107,7 @@ dojo.declare("umc.modules.roomadmin", umc.widgets.TabbedModule, {
 			name: 'room',
 			value: 'all',
 			description: 'Auswahl des gewünschten Raumes',
-			label: 'Name',
+			label: 'Raum',
 			staticValues: {
 				all: 'Alle'
 			},
@@ -161,7 +161,7 @@ dojo.declare("umc.modules.roomadmin", umc.widgets.TabbedModule, {
 		// put everything together
 		var page = new umc.widgets.Page({
 			title: 'Übersicht',
-			description: 'Hier können Gruppen für Arbeitskreise oder Projekte angelegt, bearbeitet oder gelöscht werden. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vehicula purus eu ipsum tempus quis vestibulum nunc aliquet. Donec sapien nunc, tempor sit amet malesuada vitae, cursus quis urna. Aenean molestie tempus faucibus. Donec at varius nisl. Pellentesque lobortis suscipit ante at dictum. Nulla sed mauris eget dolor pellentesque egestas at a nisl. Nam mollis urna in ipsum placerat vitae sagittis purus tristique.',
+			description: 'Dies Übersicht zeigt Details zu dem ausgewählten Computerraum und bietet die Möglichkeit, Einfluss auf den Internetzugriff und dem Zugang zum Rechner ansich zu nehmen. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vehicula purus eu ipsum tempus quis vestibulum nunc aliquet. Donec sapien nunc, tempor sit amet malesuada vitae, cursus quis urna.',
 			tooltip: 'Rechner eines Raumes kontrollieren'
 		});
 		page.addChild( this._searchWidget );
