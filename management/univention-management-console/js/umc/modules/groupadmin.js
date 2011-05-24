@@ -28,6 +28,18 @@ dojo.declare("umc.modules.groupadmin", umc.widgets.TabbedModule, {
 	},
 
 	overviewTab: function() {
+		var tmpCallback = dojo.hitch(this, function(selection) {
+			// logout users after confirmation
+			umc.app.confirm('Sind Sie sicher, dass Sie diese Testaktion ausführen wollen?', {
+				ok: 'Ausführen',
+				cancel: 'Abbrechen'
+			}, 'ok').then(function (choice) {
+				if ('ok' == choice) {
+					umc.app.notify('Die Testaktion wurde ausgeführt?');
+				}
+			});
+		});
+
 		// define actions
 		var actions = [{
 			name: 'add',
@@ -42,7 +54,7 @@ dojo.declare("umc.modules.groupadmin", umc.widgets.TabbedModule, {
 			label: 'Bearbeiten',
 			description: 'Bearbeiten der ausgewählten Gruppen.',
 			iconClass: 'dijitIconEdit',
-			isStandardAction: false,
+			isStandardAction: true,
 			isContextAction: true,
 			callback: dojo.hitch( this, function( vars ) {
 				console.log( vars );
@@ -54,7 +66,46 @@ dojo.declare("umc.modules.groupadmin", umc.widgets.TabbedModule, {
 			description: 'Löschen der ausgewählten UCR-Variablen.',
 			iconClass: 'dijitIconDelete',
 			isStandardAction: true,
-			isContextAction: true
+			isContextAction: true,
+			callback: dojo.hitch(this, function(selection) {
+				// get all users
+				var groups = [];
+				dojo.forEach(selection, function(i) {
+					groups.push(i.name);
+				});
+				var groupsStr = groups.join(', ');
+
+				// logout users after confirmation
+				umc.app.confirm('Sind Sie sicher, dass Sie die folgenden Gruppen löschen möchten: ' + groupsStr + ' ?', {
+					ok: 'Löschen',
+					cancel: 'Abbrechen'
+				}, 'ok').then(function (choice) {
+					if ('ok' == choice) {
+						umc.app.notify('Die folgenden Gruppen wurden gelöscht: ' + groupsStr);
+					}
+				});
+			})
+		}, {
+			name: 'test1',
+			label: 'Zusatzaktion',
+			description: 'Dies ist nur eine Testaktion.',
+			isStandardAction: false,
+			isContextAction: true,
+			callback: tmpCallback
+		}, {
+			name: 'test2',
+			label: 'Noch eine Zusatzaktion',
+			description: 'Dies ist nur eine Testaktion.',
+			isStandardAction: false,
+			isContextAction: true,
+			callback: tmpCallback
+		}, {
+			name: 'test3',
+			label: 'Dritte Zusatzaktion',
+			description: 'Dies ist nur eine Testaktion.',
+			isStandardAction: false,
+			isContextAction: true,
+			callback: tmpCallback
 		}];
 
 		// define grid columns

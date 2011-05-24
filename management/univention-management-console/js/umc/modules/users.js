@@ -349,6 +349,7 @@ dojo.declare("umc.modules.users", umc.widgets.Module, {
 				label: 'Edit',
 				iconClass: 'dijitIconEdit',
 				onClick: dojo.hitch(this, function() {
+					this.openUserTab();
 					/*if (this._contextVariable) {
 						this._detailDialog.loadVariable(this._contextVariable);
 					}*/
@@ -358,6 +359,7 @@ dojo.declare("umc.modules.users", umc.widgets.Module, {
 				label: 'Delete',
 				iconClass: 'dijitIconDelete',
 				onClick: dojo.hitch(this, function() {
+					this.openUserTab();
 					/*if (this._contextVariable) {
 						this.unsetVariable(this._contextVariable);
 					}*/
@@ -367,6 +369,7 @@ dojo.declare("umc.modules.users", umc.widgets.Module, {
 				label: 'Add',
 				iconClass: 'dijitIconNewTask',
 				onClick: dojo.hitch(this, function() {
+					this.openUserTab();
 					//this._detailDialog.newVariable();
 				})
 			})
@@ -472,8 +475,8 @@ dojo.declare("umc.modules.users", umc.widgets.Module, {
 
 	openUserTab: function() {
 		var tab = new umc.modules._usersUser({});
-		umc.widgets._tabContainer.addChild(tab);
-		umc.widgets._tabContainer.selectChild(tab, true);
+		umc.app._tabContainer.addChild(tab);
+		umc.app._tabContainer.selectChild(tab, true);
 	}
 
 //	getSelectedVariables: function() {

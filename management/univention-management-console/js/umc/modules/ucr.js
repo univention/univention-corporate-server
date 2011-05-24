@@ -165,7 +165,7 @@ dojo.declare("umc.modules._ucrDetailDialog", [ dijit.Dialog, umc.widgets.Standby
 	},
 
 	loadVariable: function(ucrVariable) {
-		this._form._widgets.variable.set('disabled', false);
+		this._form._widgets.variable.set('disabled', true);
 
 		// start standing-by mode
 		this.standby(true);
@@ -268,7 +268,7 @@ dojo.declare("umc.modules.ucr", umc.widgets.Module, {
 			isMultiAction: false,
 			callback: dojo.hitch(this, function(vars) {
 				if (vars.length) {
-					this._detailDialog.loadVariable(vars[0]);
+					this._detailDialog.loadVariable(vars[0].variable);
 				}
 			})
 		}, {

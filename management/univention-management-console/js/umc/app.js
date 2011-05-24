@@ -10,6 +10,8 @@ dojo.require("dijit.form.DropDownButton");
 dojo.require("dijit.form.Button");
 dojo.require("dijit.Menu");
 dojo.require("dojo.cookie");
+dojo.require("dojo.string");
+dojo.require("dojox.html.styles");
 dojo.require("umc.widgets.Toaster");
 dojo.require("umc.widgets.ConfirmDialog");
 dojo.require("umc.widgets.LoginDialog");
@@ -62,7 +64,7 @@ dojo.mixin(umc.app, {
 		this._alertDialog.show();
 	},
 
-	confirm: function(/*String*/ message, /*Object*/ options) {
+	confirm: function(/*String*/ message, /*Object*/ options, /*String?*/ defaultOption) {
 		// summary:
 		//		Popup an confirmation dialog with the given message string. The user needs
 		//		to confirm by clicking on one of multiple defined buttons.
@@ -73,8 +75,20 @@ dojo.mixin(umc.app, {
 		//		{ ok: 'Do action', cancel: 'Cancel action', else: 'Do another action' }
 		//		Upon confirmation the users callback is called with the corresponding 
 		//		id of the button that is clicked as parameter.
+		// defaultOption:
+		//		If specified and confirmation is switched off in the user preferences,
+		//		the dialog is not shown and this default option is returned as default.
 		// returns:
 		//		Returns a dojo.Deferred object.
+
+		// if a default option is given and the user has switched off confirmations
+		// return directly the default optiona
+		var deferred = null;
+		if (!this.preferences('confirm') && defaultOption) {
+			deferred = new dojo.Deferred();
+			deferred.resolve(defaultOption);
+			return deferred.promise; // dojo.Deferred
+		}
 
 		// create confirmation dialog
 		var confirmDialog = new umc.widgets.ConfirmDialog({
@@ -84,7 +98,7 @@ dojo.mixin(umc.app, {
 		});
 
 		// create Deferred instance and connect it with onClick event
-		var deferred = new dojo.Deferred();
+		deferred = new dojo.Deferred();
 		dojo.connect(confirmDialog, 'onConfirm', function(id) {
 			confirmDialog.close();
 			deferred.resolve(id);
@@ -441,13 +455,30 @@ dojo.mixin(umc.app, {
 			for (var imod in dojo.getObject('modules', false, data)) {
 				if (data.modules.hasOwnProperty(imod)) {
 					try {
+						// load the module
 						dojo.require('umc.modules.' + imod);
+
+						// add module config class to internal list of available modules
 						this._modules.push({
 							BaseClass: dojo.getObject('umc.modules.' + imod), 
 							id: imod, 
 							title: data.modules[imod].name,
 							description: data.modules[imod].description,
 							categories: data.modules[imod].categories
+						});
+
+						// add dynamic style sheet information: for css icon classes
+						dojo.forEach([16, 24, 32, 64], function(isize) {
+							var css = dojo.string.substitute(
+								'background: no-repeat;' +
+								'width: ${s}px;' +
+								'height: ${s}px;' +
+								'background-image: url("images/icons/${s}x${s}/${id}.png")', { 
+									s: isize,
+									id: imod
+								}
+							);
+							dojox.html.insertCssRule('.icon' + isize + '-' + imod, css);
 						});
 					}
 					catch (error) {

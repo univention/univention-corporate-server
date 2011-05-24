@@ -44,14 +44,50 @@ dojo.declare("umc.modules.roomadmin", umc.widgets.TabbedModule, {
 			description: 'Den aktuell angemeldeten Benutzer abmelden',
 			iconClass: 'dijitIconAdd',
 			isStandardAction: true,
-			isContextAction: true
+			isContextAction: true,
+			callback: dojo.hitch(this, function(selection) {
+				// get all users
+				var users = [];
+				dojo.forEach(selection, function(i) {
+					users.push(i.user);
+				});
+				var usersStr = users.join(', ');
+
+				// logout users after confirmation
+				umc.app.confirm('Sind Sie sicher, dass Sie die folgenden Benutzer abmelden möchten: ' + usersStr + ' ?', {
+					ok: 'Abbmelden',
+					cancel: 'Abbrechen'
+				}, 'ok').then(function (choice) {
+					if ('ok' == choice) {
+						umc.app.notify('Die folgenden Benutzer wurden vom System abgemeldet: ' + usersStr);
+					}
+				});
+			})
 		},{
 			name: 'poweroff',
 			label: 'Ausschalten',
 			description: 'Den Rechner ausschalten',
 			iconClass: 'dijitIconEdit',
 			isStandardAction: true,
-			isContextAction: true
+			isContextAction: true,
+			callback: dojo.hitch(this, function(selection) {
+				// get all users
+				var computers = [];
+				dojo.forEach(selection, function(i) {
+					computers.push(i.computer);
+				});
+				var computersStr = computers.join(', ');
+
+				// logout users after confirmation
+				umc.app.confirm('Sind Sie sicher, dass Sie die folgenden Rechner ausschalten möchten: ' + computersStr + ' ?', {
+					ok: 'Ausschalten',
+					cancel: 'Abbrechen'
+				}, 'ok').then(function (choice) {
+					if ('ok' == choice) {
+						umc.app.notify('Die folgenden Rechner wurden abgeschaltet: ' + computersStr);
+					}
+				});
+			})
 		}];
 		// define grid columns
 		var columns = [{
@@ -73,10 +109,24 @@ dojo.declare("umc.modules.roomadmin", umc.widgets.TabbedModule, {
 			type: 'checkbox',
 			callback: function(values) {
 				if (values.internet) {
-					umc.app.notify('Internetzugriff wurde aktiviert auf dem Rechner: ' + values.computer);
+					umc.app.confirm('Sind Sie sicher, dass Sie den Internetzugriff aktivieren möchten?', {
+						ok: 'Aktivieren',
+						cancel: 'Abbrechen'
+					}, 'ok').then(function (choice) {
+						if ('ok' == choice) {
+							umc.app.notify('Internetzugriff wurde aktiviert auf dem Rechner: ' + values.computer);
+						}
+					});
 				}
 				else {
-					umc.app.notify('Internetzugriff wurde deaktiviert auf dem Rechner: ' + values.computer);
+					umc.app.confirm('Sind Sie sicher, dass Sie den Internetzugriff deaktivieren möchten?', {
+						ok: 'Deaktivieren',
+						cancel: 'Abbrechen'
+					}, 'ok').then(function (choice) {
+						if ('ok' == choice) {
+							umc.app.notify('Internetzugriff wurde deaktiviert auf dem Rechner: ' + values.computer);
+						}
+					});
 				}
 			}
 		},{

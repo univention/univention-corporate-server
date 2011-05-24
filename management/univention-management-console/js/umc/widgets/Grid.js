@@ -4,6 +4,7 @@ dojo.provide("umc.widgets.Grid");
 
 dojo.require("dojo.string");
 dojo.require("dojo.data.ItemFileWriteStore");
+dojo.require("dojo.store.DataStore");
 dojo.require("dijit.form.Button");
 dojo.require("dijit.form.DropDownButton");
 dojo.require("dijit.Menu");
@@ -47,9 +48,10 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 	//		UMCP command for saving data from the grid directly.
 	umcpSetCommand: '',
 
-	_store: null,
-
 	'class': 'umcNoBorder',
+
+	_store: null,
+	_objStore: null,
 
 	_iconFormatter: function(valueField, iconField) {
 		// summary:
@@ -84,6 +86,11 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 				label: this.idField,
 				items: [] 
 			}
+		});
+
+		// interface with an object store (for easier access)
+		this._objStore = dojo.store.DataStore({
+			store: this._store
 		});
 
 		// create the layout for the grid columns
@@ -135,11 +142,12 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 			contextMenu.addChild(item);
 
 			// connect callback function, pass the correct item ID
-			if (iaction.callback) {
-				dojo.connect(item, 'onClick', this, function() {
-					iaction.callback(this._contextItemID);
-				});
-			}
+			dojo.connect(item, 'onClick', this, function() {
+				dijit.popup.close(contextMenu);
+				if (iaction.callback) {
+					iaction.callback([this.getValues(this._contextItemID)]);
+				}
+			});
 		}, this);
 
 		// add an additional column for a drop-down button with context actions
@@ -194,7 +202,7 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 				var col = this.columns[evt.cellIndex - 1];
 				if (col && col.callback) {
 					// pass all values to the custom callback
-					var values = this._getValues(evt.rowIndex);
+					var values = this.getRowValues(evt.rowIndex);
 					col.callback(values);
 				}
 				return;
@@ -211,12 +219,20 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 				popup: contextMenu,
 				parent: this._grid,
 				around: cellNode,
+				onExecute: dijit.popup.close(contextMenu),
+				onCancel: dijit.popup.close(contextMenu),
 				orient: {
 					BR: 'TR',
 					TR: 'BR'
 				}
 			});
-			
+			contextMenu.focus();
+
+			// make sure that the menu is being closed .. also for clicks outside the grid
+			dojo.connect(contextMenu, '_onBlur', function(){
+				dijit.popup.close(contextMenu);
+			});
+	
 			// decorate popup element with our specific css class .. and remove obsolete css classes
 			var posStr = 'Below';
 			var notPosStr = 'Above';
@@ -277,8 +293,24 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 		// create buttons for standard actions
 		//
 
+		// call custom callback with selected values
+		var actions = [];
+		dojo.forEach(this.actions, dojo.hitch(this, function(iaction) {
+			var jaction = iaction;
+			if ('callback' in iaction) {
+				jaction = dojo.mixin({}, iaction); // shallow copy
+
+				// call custom callback with selected values
+				jaction.callback = dojo.hitch(this, function() {
+					iaction.callback(this.getSelectedValues());
+				});
+			}
+			actions.push(jaction);
+		}));
+
+		// prepare buttons config list
 		var buttonsCfg = [];
-		dojo.forEach(this.actions, function(iaction) {
+		dojo.forEach(actions, function(iaction) {
 			// make sure we get all standard actions
 			if (true !== iaction.isStandardAction) {
 				return;
@@ -300,7 +332,7 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 
 		// create menu
 		var actionsMenu = new dijit.Menu({});
-		dojo.forEach(this.actions, function(iaction) {
+		dojo.forEach(actions, function(iaction) {
 			// make sure we only get non-standard actions
 			if (true === iaction.isStandardAction) {
 				return;
@@ -313,11 +345,6 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 				iconClass: iaction.iconClass
 			});
 			actionsMenu.addChild(item);
-
-			// connect callback function
-			if (iaction.callback) {
-				dojo.connect(item, 'onClick', iaction.callback);
-			}
 		}, this);
 
 		// create drop-down button if there are actions
@@ -379,6 +406,11 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 			});
 			this._grid.setStore(this._store);
 
+			// interface with an object store (for easier access)
+			this._objStore = dojo.store.DataStore({
+				store: this._store
+			});
+
 			// fire event
 			this.onUmcpSearchDone(true);
 		}), dojo.hitch(this, function(error) {
@@ -426,7 +458,19 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 		return vars; // String[]
 	},
 
-	_getValues: function(rowIndex) {
+	getValues: function(id) {
+		return this._objStore.get(id);
+	},
+
+	getSelectedValues: function(id) {
+		var values = [];
+		dojo.forEach(this.getSelection(), dojo.hitch(this, function(i) {
+			values.push(this.getValues(i));
+		}));
+		return values;
+	},
+
+	getRowValues: function(rowIndex) {
 		// summary:
 		//		Convenience method to fetch all attributes of an item as dictionary.
 		var values = {};

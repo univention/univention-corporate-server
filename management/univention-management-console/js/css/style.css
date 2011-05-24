@@ -1,5 +1,5 @@
 /* import other style sheets */
-@import url('icons.css');
+/*@import url('icons.css');*/
 /*@import url('button.css');*/
 
 /* general definitions */
@@ -72,6 +72,8 @@ div.modLaunchButtonClick {
 	background: none !important;
 	border: none !important;
 	box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
 }
 
 /* hack for the drop-down buttons in the grid :) */
@@ -102,6 +104,8 @@ div.modLaunchButtonClick {
    popup below the cell */
 .umcGridRowPopupBelow {
 	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25) !important;
+	-moz-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25) !important;
+	-webkit-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25) !important;
 }
 .umcGridRowMenuBelow {
 	border-top: 0 !important;
@@ -109,6 +113,8 @@ div.modLaunchButtonClick {
 }
 .umcGridRowPopupAbove {
 	box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.25) !important;
+	-moz-box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.25) !important;
+	-webkit-box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.25) !important;
 }
 .umcGridRowMenuAbove {
 	border-bottom: 0 !important;
@@ -128,19 +134,35 @@ div.modLaunchButtonClick {
 /* hacks for the toaster */
 .dijitToasterContainer {
 	width: 300px;
+	/*clip: none !important;*/
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+	-moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+	-webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
 }
 .dijitToasterContent {
 	font: 12px Myriad,Helvetica,Tahoma,Arial,clean,sans-serif;
+	text-align: center;
 	color: #000;
 	background: url('../images/toasterHeader.png') repeat-x 0px 0px;
-	/*box-shadow: 0 -15px 5px rgba(0, 0, 0, 0.15);*/
 	border: 1px solid #999; 
 	border-top: none;
+	background-color: #e8e8e8;
+}
+.dijitToasterContent, 
+.dijitToasterContainer {
 	border-radius: 0px 0px 8px 8px;
 	-moz-border-radius: 0px 0px 8px 8px;
-	background-color: #e8e8e8;
-	text-align: center;
+	-webkit-border-radius: 0px 0px 8px 8px;
 }
 .dijitToasterMessage {
 	color: #000;
 }
+
+/* some icons */
+.icon16-univention {
+	background: no-repeat;
+	width: 16px;
+	height: 16px;
+	background-image: url('../images/icons/16x16/univention.png');
+}
+

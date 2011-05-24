@@ -151,7 +151,10 @@ dojo.declare("umc.widgets.Form", [
 
 		// sending the data to the server
 		var values = this.gatherFormValues();
-		umc.tools.umcpCommand(this.umcpSetCommand, [values]).then(dojo.hitch(this, function(data) {
+		//TODO: parameter for UMCP set command should be an array
+		var tmp = {};
+		tmp[values.variable] = values.value;
+		umc.tools.umcpCommand(this.umcpSetCommand, tmp).then(dojo.hitch(this, function(data) {
 			// fire event
 			this.onUmcpSetDone(true);
 		}), dojo.hitch(this, function(error) {

@@ -55,7 +55,7 @@ dojo.mixin(umc.tools, {
 				return data; // Object
 			}, function(error) {
 				// handle errors
-				umc.tools.handleErrorStatus(dojo.getObject('status', false, error));
+				umc.tools.handleErrorStatus(dojo.getObject('status', false, error), error);
 
 				// propagate the error
 				throw error;
@@ -91,7 +91,7 @@ dojo.mixin(umc.tools, {
 		var xhrs = dojo.xhrPost(xhrArgs);
 	},
 
-	handleErrorStatus: function(status) {
+	handleErrorStatus: function(status, error) {
 		if (undefined !== status) {
 			// handle the different status codes
 			switch (status) {
@@ -114,7 +114,10 @@ dojo.mixin(umc.tools, {
 					umc.app.alert('This service is temporarily not available (status: 503)!');
 					return;
 				default:
-					umc.app.alert('An unexpected HTTP-error occurred (status: ' + status + ')');
+					// get an error message from the server if available
+					//TODO: this should probably done in a better manner
+					var errorMsg = dojo.getObject('responseText', false, error) || '';
+					umc.app.alert('An unexpected HTTP-error occurred (status: ' + status + ')' + errorMsg);
 					return;
 			}
 		}
