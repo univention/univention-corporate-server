@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.1-1) unstable; urgency=low
+
+  * Add missing files (Bug #21486)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 May 2011 13:38:39 +0200
+
 univention-ad-connector (6.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #21486)

@@ -1,0 +1,83 @@
+#! /bin/sh
+#
+# Univention AD Connector exchange
+#  join script
+#
+# Copyright 2009-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+VERSION="1"
+
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+eval "$(univention-config-registry shell)"
+
+univention-directory-manager container/cn "$@" create --ignore_exists \
+		--position="cn=custom attributes,cn=univention,$ldap_base" \
+		--set name="MS Exchange" \
+		--set description="Attributes for MS Exchange configuration (synced with UCS AD Connector)"
+
+CAPOSITION="cn=MS Exchange,cn=custom attributes,cn=univention,$ldap_base"
+
+univention-directory-manager settings/customattribute "$@" create --ignore_exists \
+		--position="$CAPOSITION" \
+		--set name="Exchange-Homeserver" \
+		--set tabName="Exchange" \
+		--set tabPosition="1" \
+		--set objectClass="univentionADExchangeUser" \
+		--set ldapMapping="univentionADmsExchHomeServerName" \
+		--set longDescription="Exchange-Homeserver" \
+		--set shortDescription="Exchange-Homeserver" \
+		--set module="users/user"
+
+univention-directory-manager settings/customattribute "$@" create --ignore_exists \
+		--position="$CAPOSITION" \
+		--set name="Exchange-homeMDB" \
+		--set tabName="Exchange" \
+		--set tabPosition="3" \
+		--set objectClass="univentionADExchangeUser" \
+		--set ldapMapping="univentionADhomeMDB" \
+		--set longDescription="Exchange-homeMDB" \
+		--set shortDescription="Exchange-homeMDB" \
+		--set module="users/user"
+
+univention-directory-manager settings/customattribute "$@" create --ignore_exists \
+		--position="$CAPOSITION" \
+		--set name="Exchange-Nickname" \
+		--set tabName="Exchange" \
+		--set tabPosition="5" \
+		--set objectClass="univentionADExchangeUser" \
+		--set ldapMapping="univentionADmailNickname" \
+		--set longDescription="Exchange-Nickname" \
+		--set shortDescription="Exchange-Nickname" \
+		--append module="users/user" \
+		--append module="groups/group"
+joinscript_save_current_version
+
+exit 0
+
