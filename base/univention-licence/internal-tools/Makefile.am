@@ -4,7 +4,7 @@ AUTOMAKE_OPTIONS = foreign
 
 INCLUDES = -I$(top_srcdir)/include
 
-bin_PROGRAMS = univentionLicenseCreateSignature univentionLicenseGenerate
+sbin_PROGRAMS = univentionLicenseCreateSignature univentionLicenseGenerate
 sbin_SCRIPTS = make_license.sh
 
 univentionLicenseCreateSignature_SOURCES = signLicense.c
