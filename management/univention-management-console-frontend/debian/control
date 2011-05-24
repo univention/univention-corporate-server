@@ -1,0 +1,21 @@
+Source: univention-management-console-frontend
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev, jslint
+
+Package: univention-management-console-frontend
+Architecture: all
+Depends: univention-dojo, ${misc:Depends}, ${python:Depends}
+Description: Univention Management Console - Web based computer administration tool
+ Univention Console is a web based program to manage computers.
+ It has an extensible architecture, using modules to implement
+ its features. This package contains the AJAX web-frontend 
+ application. It is written using the Dojo Toolkit and allows to 
+ access the univention management console web-services through
+ the web browser.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
