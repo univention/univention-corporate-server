@@ -41,6 +41,7 @@ import grp
 import subprocess
 import os
 import fcntl
+import copy
 
 import univention.debug
 import univention.misc
@@ -93,24 +94,24 @@ def ldapTime2string( timestamp ):
 		return timestamp	# return it as it was
 	return time.strftime(timestampfmt, timestruct)
 
-def filterOutUnchangedAttributes(old, new):
-	keylist = old.keys()
+def filterOutUnchangedAttributes(old_copy, new_copy):
+	keylist = old_copy.keys()
 	for key in keylist:
-		if not new.has_key(key):
+		if not new_copy.has_key(key):
 			continue
-		if new[key] == old[key]:
-			del old[key]
-			del new[key]
+		if new_copy[key] == old_copy[key]:
+			del old_copy[key]
+			del new_copy[key]
 			continue
 		removelist=[]
-		for value in old[key]:
-			for value2 in new[key]:
+		for value in old_copy[key]:
+			for value2 in new_copy[key]:
 				if value == value2:
 					removelist.append(value)
 					continue
 		for value in removelist:
-			old[key].remove(value)
-			new[key].remove(value)
+			old_copy[key].remove(value)
+			new_copy[key].remove(value)
 
 def process_dellog( dn ):
 	dellog = listener.baseConfig[dellogKey]
@@ -169,6 +170,11 @@ def process_dellog( dn ):
 
 def handler(dn, new, old):
 
+	# Copy dictonaries because they will be modified
+	# see https://forge.univention.org/bugzilla/show_bug.cgi?id=22564 for details
+	new_copy = copy.deepcopy(new)
+	old_copy = copy.deepcopy(old)
+
 	if listener.baseConfig[registrySection] != 'yes':
 		return
 
@@ -183,7 +189,7 @@ def handler(dn, new, old):
 	listener.setuid(0)
 	try:
 		if skip == 1:
-			if not new:	# there should be a dellog entry to remove
+			if not new_copy:	# there should be a dellog entry to remove
 				process_dellog( dn )
 			return		# important: don't return a thing, otherwise this dn
 					# seems to get excluded from future processing by this module
@@ -206,23 +212,23 @@ def handler(dn, new, old):
 		f.close()
 
 		# 2. generate log record
-		if new:
-			modifier = new['modifiersName'][0]
-			timestamp = ldapTime2string( new['modifyTimestamp'][0] )
+		if new_copy:
+			modifier = new_copy['modifiersName'][0]
+			timestamp = ldapTime2string( new_copy['modifyTimestamp'][0] )
 
-			if not old:	# create branch
+			if not old_copy:	# create branch
 				record = headerfmt % (previoushash, dn, id, modifier, timestamp, 'add')
 				record += newtag
-				record += ldapEntry2string(new)
+				record += ldapEntry2string(new_copy)
 
 			else:		# modify branch
 				# filter out unchanged attibutes
-				filterOutUnchangedAttributes(old, new)
+				filterOutUnchangedAttributes(old_copy, new_copy)
 				record = headerfmt % (previoushash, dn, id, modifier, timestamp, 'modify')
 				record += oldtag
-				record += ldapEntry2string(old)
+				record += ldapEntry2string(old_copy)
 				record += newtag
-				record += ldapEntry2string(new)
+				record += ldapEntry2string(new_copy)
 
 		else:			# delete branch
 			(timestamp, dellog_id, modifier, action) = process_dellog( dn )
@@ -236,7 +242,7 @@ def handler(dn, new, old):
 
 			record = headerfmt % (previoushash, dn, id, modifier, timestamp, 'delete')
 			record += oldtag
-			record += ldapEntry2string(old)
+			record += ldapEntry2string(old_copy)
 
 		# 3. write log file record
 		record += endtag
