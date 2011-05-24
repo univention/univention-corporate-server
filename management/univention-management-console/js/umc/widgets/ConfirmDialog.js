@@ -15,7 +15,11 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 	message: '',
 
 	// options: Object
-	//		Dictionary with id-label pairs for all available options.
+	//		Array with all available choices (buttons). Each entry must have the
+	//		property 'label' and may have a 'callback', i.e., a user specified
+	//		function that is called. The callback will receive as parameter the
+	//		option chosen, i.e., an integer or - if specified - the corresponding
+	//		'name' property of the button.
 	options: [],
 
 	// our own settings
@@ -39,11 +43,20 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 		
 		// put buttons into separate container
 		var buttons = new umc.widgets.ContainerWidget({});
-		umc.tools.forIn(this.options, dojo.hitch(this, function(val, key) {
+		dojo.forEach(this.options, dojo.hitch(this, function(ichoice, idx) {
 			buttons.addChild(new umc.widgets.Button({
-				label: val,
+				label: ichoice.label,
 				onClick: dojo.hitch(this, function(values) {
-					this.onConfirm(key);
+					// the response is either a custom response or the choice (button) index
+					var response = ichoice.name || idx; 
+
+					// send 'onClick' event
+					this.onConfirm(response);
+
+					// call custom callback if specified
+					if (ichoice.callback) {
+						ichoice.callback(response);
+					}
 				})
 			}));
 		}));

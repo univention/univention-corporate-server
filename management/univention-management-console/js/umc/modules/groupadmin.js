@@ -30,14 +30,15 @@ dojo.declare("umc.modules.groupadmin", umc.widgets.TabbedModule, {
 	overviewTab: function() {
 		var tmpCallback = dojo.hitch(this, function(selection) {
 			// logout users after confirmation
-			umc.app.confirm('Sind Sie sicher, dass Sie diese Testaktion ausführen wollen?', {
-				ok: 'Ausführen',
-				cancel: 'Abbrechen'
-			}, 'ok').then(function (choice) {
-				if ('ok' == choice) {
+			umc.app.confirm('Sind Sie sicher, dass Sie diese Testaktion ausführen wollen?', [{
+				label: 'Ausführen',
+				'default': true,
+				callback: function() {
 					umc.app.notify('Die Testaktion wurde ausgeführt?');
 				}
-			});
+			}, {
+				label: 'Abbrechen'
+			}]);
 		});
 
 		// define actions
@@ -76,14 +77,15 @@ dojo.declare("umc.modules.groupadmin", umc.widgets.TabbedModule, {
 				var groupsStr = groups.join(', ');
 
 				// logout users after confirmation
-				umc.app.confirm('Sind Sie sicher, dass Sie die folgenden Gruppen löschen möchten: ' + groupsStr + ' ?', {
-					ok: 'Löschen',
-					cancel: 'Abbrechen'
-				}, 'ok').then(function (choice) {
-					if ('ok' == choice) {
+				umc.app.confirm('Sind Sie sicher, dass Sie die folgenden Gruppen löschen möchten: ' + groupsStr + ' ?', [{
+					label: 'Löschen',
+					'default': true,
+					callback: function() {
 						umc.app.notify('Die folgenden Gruppen wurden gelöscht: ' + groupsStr);
 					}
-				});
+				}, {
+					label: 'Abbrechen'
+				}]);
 			})
 		}, {
 			name: 'test1',

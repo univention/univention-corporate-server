@@ -64,30 +64,42 @@ dojo.mixin(umc.app, {
 		this._alertDialog.show();
 	},
 
-	confirm: function(/*String*/ message, /*Object*/ options, /*String?*/ defaultOption) {
+	confirm: function(/*String*/ message, /*Object*/ options) {
 		// summary:
 		//		Popup an confirmation dialog with the given message string. The user needs
 		//		to confirm by clicking on one of multiple defined buttons.
 		// message:
 		//		The message that is displayed in the dialog.
 		// options:
-		//		Dict that defines id<->label pairs for the dialog buttons, e.g., 
-		//		{ ok: 'Do action', cancel: 'Cancel action', else: 'Do another action' }
-		//		Upon confirmation the users callback is called with the corresponding 
-		//		id of the button that is clicked as parameter.
-		// defaultOption:
-		//		If specified and confirmation is switched off in the user preferences,
-		//		the dialog is not shown and this default option is returned as default.
-		// returns:
-		//		Returns a dojo.Deferred object.
+		//		Array of all possible choices that is passed to umc.widgets.ConfirmDialog
+		//		as 'options' parameter. The following properties need to be specified:
+		//		label; the properties 'callback', 'name' are optional.
+		//		If an item is specified with the option 'default: true' and confirmations
+		//		are switched off in the user preferences, the dialog is not shown and the
+		//		callback function for this default option is executed directly.
 
-		// if a default option is given and the user has switched off confirmations
-		// return directly the default optiona
-		var deferred = null;
-		if (!this.preferences('confirm') && defaultOption) {
-			deferred = new dojo.Deferred();
-			deferred.resolve(defaultOption);
-			return deferred.promise; // dojo.Deferred
+		// if the user has switched off confirmations, try to find a default option
+		if (!this.preferences('confirm')) {
+			var cb = undefined;
+			var response = undefined;
+			console.log('#A1');
+			dojo.forEach(options, function(i, idx) {
+				// check for default option
+				console.log('#A1 ' + i.label);
+				if (true === i['default']) {
+					cb = i.callback;
+					response = i.name || idx;
+					return false; // break loop
+				}
+			});
+			console.log('#A2');
+			if (cb && dojo.isFunction(cb)) {
+				// we found a default item .. call the callback and exit
+				console.log('#A3');
+				cb(response);
+				console.log('#A4');
+				return;
+			}
 		}
 
 		// create confirmation dialog
@@ -97,18 +109,13 @@ dojo.mixin(umc.app, {
 			options: options
 		});
 
-		// create Deferred instance and connect it with onClick event
-		deferred = new dojo.Deferred();
-		dojo.connect(confirmDialog, 'onConfirm', function(id) {
+		// connect to 'onConfirm' event to close the dialog in any case
+		dojo.connect(confirmDialog, 'onConfirm', function(response) {
 			confirmDialog.close();
-			deferred.resolve(id);
 		});
 
 		// show the confirmation dialog
 		confirmDialog.show();
-
-		// return the Deferred object
-		return deferred.promise; // dojo.Deferred
 	},
 
 //	standby: function(/*Boolean*/ enable) {
