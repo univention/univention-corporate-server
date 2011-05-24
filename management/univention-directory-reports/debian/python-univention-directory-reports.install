@@ -1,4 +1,2 @@
 modules/univention/directory/*.py usr/share/pyshared/univention/directory/
 modules/univention/directory/reports/*.py usr/share/pyshared/univention/directory/reports/
-univention_logo.png usr/share/$(package)/
-univention-directory-reports usr/bin/
