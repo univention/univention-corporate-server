@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-set -e
-
 if [ -e "/etc/init.d/atftpd" ]; then
 	/etc/init.d/atftpd stop
 fi;
