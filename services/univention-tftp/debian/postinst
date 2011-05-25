@@ -44,9 +44,6 @@ if [ -e "/etc/init.d/atftpd" ]; then
 	/etc/init.d/atftpd start
 fi;
 
-mkdir -p /ha
-ln -sf /home /ha/home
-
 #DEBHELPER#
 
 exit 0
