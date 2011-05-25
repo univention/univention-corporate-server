@@ -79,43 +79,43 @@ def do_package(package):
 		typ = item['Type'][0]
 		if typ == 'file':
 			f = item['File'][0]
-			doIt(['install', '-d', destDir(f, package)])
-			doIt(['cp', '-a', srcPath(f), destPath(f, package)])
+			doIt('install', '-d', destDir(f, package))
+			doIt('cp', '-a', srcPath(f), destPath(f, package))
 			for key in ('Preinst', 'Postinst'):
 				if key in item:
 					mod = item[key][0]
-					doIt(['install', '-d', destDir(mod, package, 'modules')])
-					doIt(['cp', '-a', srcPath(mod), destPath(mod, package, 'modules')])
+					doIt('install', '-d', destDir(mod, package, 'modules'))
+					doIt('cp', '-a', srcPath(mod), destPath(mod, package, 'modules'))
 		elif typ == 'subfile':
 			f = item['Subfile'][0]
-			doIt(['install', '-d', destDir(f, package)])
-			doIt(['cp', '-a', srcPath(f), destPath(f, package)])
+			doIt('install', '-d', destDir(f, package))
+			doIt('cp', '-a', srcPath(f), destPath(f, package))
 		elif typ == 'multifile':
 			f = item['Multifile'][0]
 			if os.path.exists(f):
-				doIt(['install', '-d', destDir(f, package)])
-				doIt(['cp', '-a', srcPath(f), destPath(f, package)])
+				doIt('install', '-d', destDir(f, package))
+				doIt('cp', '-a', srcPath(f), destPath(f, package))
 		elif typ == 'script':
 			f = item['Script'][0]
-			doIt(['install', '-d', destDir(f, package, 'scripts')])
-			doIt(['cp', '-a', srcPath(f), destPath(f, package, 'scripts')])
-			doIt(['chmod', 'a+x', destPath(f, package, 'scripts')])
+			doIt('install', '-d', destDir(f, package, 'scripts'))
+			doIt('cp', '-a', srcPath(f), destPath(f, package, 'scripts'))
+			doIt('chmod', 'a+x', destPath(f, package, 'scripts'))
 		elif typ == 'module':
 			f = item['Module'][0]
-			doIt(['install', '-d', destDir(f, package, 'modules')])
-			doIt(['cp', '-a', srcPath(f), destPath(f, package, 'modules')])
+			doIt('install', '-d', destDir(f, package, 'modules'))
+			doIt('cp', '-a', srcPath(f), destPath(f, package, 'modules'))
 		else:
 			print >>sys.stderr, 'Unknown type: %s' % typ
 			return
 
 	f_ucr.close()
 
-	doIt(['install', '-d', destDir('', package, 'info')])
-	doIt(['install', '-m644', n_ucr, destPath(package+'.info', package, 'info')])
+	doIt('install', '-d', destDir('', package, 'info'))
+	doIt('install', '-m644', n_ucr, destPath(package+'.info', package, 'info'))
 	mapping_file = extFile( package, 'univention-config-registry-mapping')
 	if os.path.exists(mapping_file):
-		doIt(['install', '-d', destDir('', package, 'mapping')])
-		doIt(['install', '-m644', mapping_file, destPath(package+'.univention-config-registry-mapping', package, 'mapping')])
+		doIt('install', '-d', destDir('', package, 'mapping'))
+		doIt('install', '-m644', mapping_file, destPath(package+'.univention-config-registry-mapping', package, 'mapping'))
 
 	f_postinst.write('test -x /usr/sbin/univention-config-registry && univention-config-registry register "%s" || true\n' % package)
 
@@ -129,5 +129,5 @@ if __name__ == '__main__':
 	for package in binary_packages():
 		do_package(package)
 
-	doIt(["univention-install-config-registry-info"])
-	doIt(["univention-install-service-info"])
+	doIt("univention-install-config-registry-info")
+	doIt("univention-install-service-info")

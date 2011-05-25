@@ -33,11 +33,11 @@
 import os
 import subprocess
 
-def doIt(argv):
+def doIt(*argv):
 	"""
 	Execute argv and wait.
 	
-	>>> doIt(['echo', '1'])
+	>>> doIt('echo', '1')
 	0
 	"""
 	if os.environ.get('DH_VERBOSE', False):
