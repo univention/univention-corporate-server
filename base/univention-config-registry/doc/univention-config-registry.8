@@ -1,18 +1,22 @@
 .\"                                      Hey, EMACS: -*- nroff -*-
-.TH UNIVENTION-CONFIG-REGISTRY 8 2010-07-06 UCS
+.TH UNIVENTION-CONFIG-REGISTRY 8 2011-05-24 UCS
+
 .SH NAME
 univention\-config\-registry \- base configuration for UCS
+
 .SH SYNOPSIS
 .B univention\-config\-registry
 .RI [ global-options ]\ < action >\ [ action-specific-options ]\ [ parameters ]
 .br
 .B ucr
 .RI [ global-options ]\ < action >\ [ action-specific-options ]\ [ parameters ]
+
 .SH DESCRIPTION
 This manual page documents briefly the
 .B univention\-config\-registry
 command.
 It is a tool to handle the basic configuration for UCS.
+
 .SH OPTIONS
 A summary of options is included below.
 .TP
@@ -93,11 +97,31 @@ if no \fIfile\fP is specified ALL configuration files are rebuilt.
 .TP
 \fBfilter\fP [\fB\-\-encode\-utf8\fP] [<\fIfile\fP]
 Evaluate a template \fIfile\fP, optionaly expect python inline code in UTF8 (default: US-ASCII)
+
+.SS Additional commands
+.TP
+\fBregister\fP \fIfile.info\fP
+Register a new \fI.info\fP file describing additional templates. See
+.BR univention-install-config-registry (1)
+for additional information.
+.TP
+\fBunregister\fP \fIfile.info\fP
+Un-register an \fI.info\fP file describing templates. See
+.BR univention-install-config-registry (1)
+for additional information.
+.TP
+\fBupdate\fP
+Update the internal cache of all \fI.info\fP files describing templates.
+.TP
+\fBrandpw\fP
+Print a random 8 characters password.
+
 .SH SEE ALSO
 .BR univention\-admin (8),
 .BR udm (8).
 .br
 This program is documented fully in the
 .IR "Univention Corporate Server Manual" .
+
 .SH AUTHOR
-Copyright (c) 2001-2010 Univention GmbH, Germany
+Copyright (c) 2001-2011 Univention GmbH, Germany

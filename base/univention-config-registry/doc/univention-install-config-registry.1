@@ -1,5 +1,5 @@
 .\"                                      Hey, EMACS: -*- nroff -*-
-.TH UNIVENTION-INSTALL-CONFIG-REGISTRY 1 2010-04-09 UCS
+.TH UNIVENTION-INSTALL-CONFIG-REGISTRY 1 2011-05-24 UCS
 
 .SH NAME
 univention\-install\-config\-registry \- install UCR template files into package build directories
@@ -23,17 +23,21 @@ file has the following formats:
 Each time one of the listed UCR variables gets changed, the File will be re-created.
 .RS 5
 .nf
-Type: file
-File: etc/file_name
-Variables: variable_name
-Preinst: name_of_module_in_/etc/univention/templates/modules/
-Postinst: name_of_module_in_/etc/univention/templates/modules/
-User: user_name
-Group: goup_name
-Mode: octal_file_mode
-Encode-utf8: true|yes
+\fBType: file\fP
+\fBFile:\fP \fIetc/file_name\fP
+\fBVariables:\fP \fIvariable_name\fP [OPTIONAL]
+\fBPreinst:\fP \fIname_of_module_in_/etc/univention/templates/modules/\fP [OPTIONAL]
+\fBPostinst:\fP \fIname_of_module_in_/etc/univention/templates/modules/\fP [OPTIONAL]
+\fBUser:\fP \fIuser_name\fP [OPTIONAL]
+\fBGroup:\fP \fIgroup_name\fP [OPTIONAL]
+\fBMode:\fP \fIoctal_file_mode\fP [OPTIONAL]
+\fBEncode-utf8:\fP \fBtrue\fP|\fByes\fP [OPTIONAL]
 .fi
 .RE
+.P
+The template file is scanned for variable substitutions using the \fB@%@\fP\fIvariable\fP\fB@%@\fP syntax, which are automatically registered with this entry.
+Additional variables can be explicitly registered using the \fBVariables\fP statement, one variable per statement.
+.P
 If \fBPreinst\fP und \fBPostinst\fP are used, the module must implement the following functions:
 .RS 5
 .nf
@@ -50,47 +54,57 @@ def postinst(config_registry, changes):
     """
 .fi
 .RE
+.P
 If a script \fI/etc/univention/templates/scripts/$full_path_to_file\fP exists, it will be called after the file has been created from the template.
-The script is called with the argument \fBpostinst\fP and receives the list of changes as \fIkey\fP\fB@%@\fP\fIold_value\fP\fB@%@\fP\fInew_value\fP on stdin.
+The script is called with the argument \fBpostinst\fP and receives the list of changes as \fIkey\fP\fB@%@\fP\fIold_value\fP\fB@%@\fP\fInew_value\fP on standard input.
 
 .SS Multi file
 Each time one of the listed UCR variables gets changed, the Multifile will be re-created by concatenating the Subfiles in order.
 .RS 5
 .nf
-Type: multifile
-Multifile: etc/name_of_aggregating_file
-User: $user_name [OPTIONAL]
-Group: $goup_name [OPTIONAL]
-Mode: $octal_file_mode [OPTIONAL]
-Encode-utf8: true|yes [OPTIONAL]
+\fBType: multifile\fP
+\fBMultifile:\fP \fIetc/name_of_aggregating_file\fP
+\fBVariables:\fP \fIvariable_name\fP [OPTIONAL]
+\fBUser:\fP \fIuser_name\fP [OPTIONAL]
+\fBGroup:\fP \fIgroup_name\fP [OPTIONAL]
+\fBMode:\fP \fIoctal_file_mode\fP [OPTIONAL]
+\fBEncode-utf8:\fP \fBtrue\fP|\fByes\fP [OPTIONAL]
 
-Type: subfile
-Multifile: etc/name_of_aggregating_file
-Subfile: etc/00name_of_partial_file
-Variables: variable_name
+\fBType: subfile\fP
+\fBMultifile:\fP \fIetc/name_of_aggregating_file\fP
+\fBSubfile:\fP \fIetc/00name_of_partial_file\fP
 .fi
 .RE
+.P
+The sub-template files are scanned for variable substitutions using the \fB@%@\fP\fIvariable\fP\fB@%@\fP syntax, which are automatically registered with the multifile entry.
+Additional variables can be explicitly registered using the \fBVariables\fP statement, one variable per statement.
 
 .SS Script file
 Each time one of the listed UCR variables gets changed, the script will be executed with the argument \fBgenerate\fP.
 .RS 5
 .nf
-Type: script
-Script: name_of_executable_in_/etc/univention/templates/scripts/
-Variables: variable_name
+\fBType: script\fP
+\fBScript:\fP \fIname_of_executable_in_/etc/univention/templates/scripts/\fP
+\fBVariables:\fP \fIvariable_name\fP
 .fi
 .RE
-The script receives the list of changes as \fIkey\fP\fB@%@\fP\fIold_value\fP\fB@%@\fP\fInew_value\fP on stdin.
+.P
+Variables to trigger the script must be explicitly registered using the \fBVariables\fP statement, one variable per statement.
+.P
+The script receives the list of changes as \fIkey\fP\fB@%@\fP\fIold_value\fP\fB@%@\fP\fInew_value\fP on standard input.
 
 .SS Module
 Each time one of the listed UCR variables gets changed, the Python module will be executed.
 .RS 5
 .nf
-Type: module
-Module: name_of_module_in_/etc/univention/templates/modules/
-Variables: variable_name
+\fBType: module\fP
+\fBModule:\fP \fIname_of_module_in_/etc/univention/templates/modules/\fP
+\fBVariables:\fP \fIvariable_name\fP
 .fi
 .RE
+.P
+Variables to trigger the module must be explicitly registered using the \fBVariables\fP statement, one variable per statement.
+.P
 The module should implement the following functions:
 .RS 5
 .nf
