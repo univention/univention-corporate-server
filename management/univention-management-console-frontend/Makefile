@@ -21,6 +21,7 @@ build: test_jslint
 		find . -maxdepth 1 -type l -a -name "$${idir}_*" -delete; \
 		ln -s $$idir "$${idir}_$$(date +'%Y%d%m%H%M%S')"; \
 	done;
+	@#./build.sh profileFile=../../../univention.profile.js action=release releaseDir=${D}${INSTDIR} version=${DOJO_VERSION} releaseName='' localeList="de-de,en-us" optimize=shrinksafe.keepLines layerOptimize=shrinksafe cssOptimize=comments.keepLines copyTests=false # mini=true # cssImportIgnore=../dijit.css
 
 clean:
 	rm -f umc_* css_*

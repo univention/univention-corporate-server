@@ -152,12 +152,14 @@ dojo.mixin(umc.app, {
 		// create alert dialog 
 		this._alertDialog = new umc.widgets.ConfirmDialog({
 			title: 'Hinweis',
-			options: { ok: 'Ok' }
+			options: [{
+				label: 'Ok',
+				callback: dojo.hitch(this, function() {
+					// hide dialog upon confirmation by click on 'OK'
+					this._alertDialog.hide();
+				})
+			}]
 		});
-		dojo.connect(this._alertDialog, 'onConfirm', dojo.hitch(this, function() {
-			// hide dialog upon confirmation by click on 'OK'
-			this._alertDialog.hide();
-		}));
 
 		// create toaster
 		this._toaster = new umc.widgets.Toaster({});
