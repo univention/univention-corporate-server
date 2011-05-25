@@ -30,27 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-version := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
-copyrightyear := $(shell date +%Y)
-
-PACKAGE_NAME=univention-dojo
-D=$(CURDIR)/debian/${PACKAGE_NAME}
-INSTDIR=/usr/share/${PACKAGE_NAME}
-DOJO_VERSION=1.4.3
-
 override_dh_auto_test:
 	ucslint
 	dh_auto_test
-
-override_dh_auto_install:
-	dh_auto_install
-	## DOCS FOR BUILD OPTIONS:
-	# http://dojotoolkit.org/book/dojo-book-0-9/part-4-meta-dojo/package-system-and-custom-builds (marked as outdated but still most usefull)
-	# option cssImportIgnore explained: http://bugs.dojotoolkit.org/ticket/5855
-	# option "mini" explained: http://www.sitepen.com/blog/2008/04/02/dojo-mini-optimization-tricks-with-the-dojo-toolkit/
-	tar xzf dojo-release-$(DOJO_VERSION)-src.tar.gz
-	cd dojo-release-${DOJO_VERSION}-src/util/buildscripts; \
-	./build.sh profileFile=../../../univention.profile.js action=release releaseDir=${D}${INSTDIR} version=${DOJO_VERSION} releaseName='' localeList="de-de,en-us" optimize=shrinksafe.keepLines layerOptimize=shrinksafe cssOptimize=comments.keepLines copyTests=false # mini=true # cssImportIgnore=../dijit.css
 
 %:
 	dh $@

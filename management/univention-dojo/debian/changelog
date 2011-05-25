@@ -1,3 +1,14 @@
+univention-dojo (5.0.1-1) unstable; urgency=low
+
+  * adapted package for UMC2 (Bug #22461)
+    * new upstream release: Dojo 1.6.1
+    * created Makefile
+    * added binary package univention-dojo-dev (with utils) and univention-dojo
+      (with original javascript source files)
+    * removed custom build (should go into javascript frontend directly)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 25 May 2011 15:07:52 +0200
+
 univention-dojo (5.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22431)

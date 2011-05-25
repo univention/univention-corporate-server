@@ -2,11 +2,17 @@ Source: univention-dojo
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, ucslint, openjdk-6-jdk
+Build-Depends: debhelper, ucslint
 Standards-Version: 3.7.2
 
 Package: univention-dojo
 Architecture: all
 Depends: univention-apache, php5-common
-Description: The Dojo Javascript Toolkit, custom build for Univention
- This package contains a customized build of the Javascript Toolkit "Dojo" 
+Description: The Dojo Toolkit, javascript source files
+ This package contains the javascript source files of the Dojo Toolkit.
+
+Package: univention-dojo-dev
+Architecture: all
+Depends: openjdk-6-jdk
+Description: The Dojo Toolkit, utilility functions and tools
+ This package contains utility functions and tools of the Dojo Toolkit
