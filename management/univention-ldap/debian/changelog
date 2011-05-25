@@ -1,3 +1,11 @@
+univention-ldap (8.0.5-1) unstable; urgency=low
+
+  * slapd 2.4 reads DB_CONFIG into olcDbConfig attribute, which unfortunately
+    has been chosen as IA5String, so there must not be any non-IA5 chars in
+    those files. (broken in 8.0.1-1 fixed again for Bug #22468)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 May 2011 12:03:57 +0200
+
 univention-ldap (8.0.4-1) unstable; urgency=low
 
   * Some install adjustments (Bug #22431)
