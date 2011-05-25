@@ -1,3 +1,11 @@
+univention-ftp (5.0.0-1) unstable; urgency=low
+
+  * Update for UCS 3.0 (Bug #22576)
+  * Kerberos support has been dropped from ProFTPD since it was an external
+    patch not merged into mainline, remove README.Kerberos	   
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 25 May 2011 14:58:22 +0200
+
 univention-ftp (4.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
