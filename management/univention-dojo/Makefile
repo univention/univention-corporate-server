@@ -57,7 +57,7 @@ install: build
 	install -m 0755 -d "$(DESTDIR)$(INSTDIR)"
 	install -m 0755 -d "$(DESTDIR)$(INSTDIR)-dev"
 	@# dojo directories
-	find $(DOJO_DIR)/{dojo,dijit,dojox} -type d | sed 's|$(DOJO_DIR)/||' | while read i; do \
+	find $(DOJO_DIR)/{dojo,dijit,dojox} -mindepth 1 -type d | sed 's|$(DOJO_DIR)/||' | while read i; do \
 		install -m 0755 -d "$(DESTDIR)$(INSTDIR)/$$i"; \
 	done
 	@# files
@@ -65,11 +65,14 @@ install: build
 		install -m 0644 "$(DOJO_DIR)/$$i" "$(DESTDIR)/$(INSTDIR)/$$i"; \
 	done
 	@# util directory
-	find $(DOJO_DIR)/util -type d | sed 's|$(DOJO_DIR)/util/||' | while read i; do \
+	find $(DOJO_DIR)/util -mindepth 1 -type d | sed 's|$(DOJO_DIR)/util/||' | while read i; do \
+		echo "$(DESTDIR)$(INSTDIR)-dev/$$i"; \
 		install -m 0755 -d "$(DESTDIR)$(INSTDIR)-dev/$$i"; \
 	done
-	@# util files
+	@# util files .. set execute bit for scripts
 	find $(DOJO_DIR)/util -type f | sed 's|$(DOJO_DIR)/util/||' | while read i; do  \
-		install -m 0644 "$(DOJO_DIR)/util/$$i" "$(DESTDIR)$(INSTDIR)-dev/$$i"; \
+		mod=0644; \
+		[ "$${i%.sh}" != "$$i" ] && mod=0755; \
+		install -m $$mod "$(DOJO_DIR)/util/$$i" "$(DESTDIR)$(INSTDIR)-dev/$$i"; \
 	done
 
