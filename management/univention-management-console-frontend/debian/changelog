@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.1-1) unstable; urgency=low
+
+  * removed jslint dependency from debian/control and Makefile (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 26 May 2011 15:53:35 +0200
+
 univention-management-console-frontend (0.0.0-3) unstable; urgency=low
 
   * added dependency to univention-apache (Bug #22461)

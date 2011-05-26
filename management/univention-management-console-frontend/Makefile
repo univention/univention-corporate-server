@@ -36,22 +36,17 @@ timestamp=$(shell date +'%Y%d%m%H%M%S')
 version=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 buildDir=$(CURDIR)/build
 
-.PHONY: all install jslint test_jslint build clean
+.PHONY: all install jslint build clean
 
 jslint: 
 	jslint $(jsFiles)
-
-test_jslint:
-	@echo "running jslint to make sure that there are no problems"
-	@LINT=$$(/usr/bin/jslint $(jsFiles) | grep -v -e "Unsafe character" -e "['require']"); \
-	[ -z "$$LINT" ] || (echo -e "jslint found errors:\n$$LINT"; false)
 
 all: build install
 
 clean:
 	rm -rf build
 
-build: test_jslint
+build:
 	mkdir -p "$(buildDir)"
 	@# create the module umc.widgets containing a require for all umc widgets
 	( \
