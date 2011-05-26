@@ -2,11 +2,12 @@ Source: univention-management-console-frontend
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev, jslint, imagemagick
+Build-Depends: debhelper, univention-config-dev, jslint, imagemagick,
+ ucslint, univention-management-console-frontend
 
 Package: univention-management-console-frontend
 Architecture: all
-Depends: univention-dojo, ${misc:Depends}, ${python:Depends}
+Depends: ${misc:Depends}
 Description: Univention Management Console - Web based computer administration tool
  Univention Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement

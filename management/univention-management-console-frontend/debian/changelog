@@ -1,5 +1,5 @@
 univention-management-console-frontend (0.0.0-1) unstable; urgency=low
 
-  * Inital release
+  * Inital release (Bug #22461)
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 25 May 2011 15:30:07 +0200
