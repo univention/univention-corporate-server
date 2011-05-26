@@ -5,6 +5,7 @@ Variables: dhcpd/ldap/base
 Variables: ldap/server/name
 Variables: dhcpd/autostart
 Variables: dhcpd/ddns.*
+Variables: domainname
 
 Type: file
 File: etc/init.d/dhcp3-server

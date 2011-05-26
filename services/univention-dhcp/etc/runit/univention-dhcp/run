@@ -1,5 +1,4 @@
-#!/bin/sh
-@%@UCRWARNING=# @%@
+#! /bin/sh -e
 #
 # Copyright 2004-2011 Univention GmbH
 #
@@ -28,5 +27,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-exit 0
 
+exec /usr/sbin/dhcpd3 -q -f >>/var/log/daemon.log

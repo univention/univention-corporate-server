@@ -3,7 +3,7 @@
 # Univention DHCP
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -43,20 +43,20 @@ fi
 update-rc.d -f dhcp3-server remove >/dev/null 2>&1
 update-rc.d -f dhcp remove >/dev/null 2>&1
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 if [ -n "$dhcpd_enable" ]; then
 	if [ "$dhcpd_enable" = "yes" -o "$dhcpd_enable" = "true" -o "$dhcpd_eanble" = "1" ]; then
-		univention-baseconfig set dhcpd/autostart?"yes"
+		univention-config-registry set dhcpd/autostart?"yes"
 	else
-		univention-baseconfig set dhcpd/autostart?"no"
+		univention-config-registry set dhcpd/autostart?"no"
 	fi
-	univention-baseconfig unset dhcpd/enable
+	univention-config-registry unset dhcpd/enable
 else
-	univention-baseconfig set dhcpd/autostart?"yes"
+	univention-config-registry set dhcpd/autostart?"yes"
 fi
 
-univention-baseconfig set dhcpd/restart/listener?yes
+univention-config-registry set dhcpd/restart/listener?yes
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/25univention-dhcp.inst || true
