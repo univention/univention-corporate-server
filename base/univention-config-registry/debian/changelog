@@ -1,3 +1,9 @@
+univention-config-registry (7.0.11-2) unstable; urgency=low
+
+  * fix build dependencies; Bug #22624
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 26 May 2011 17:49:28 +0200
+
 univention-config-registry (7.0.11-1) unstable; urgency=low
 
   * add UMC module; Bug #22624
