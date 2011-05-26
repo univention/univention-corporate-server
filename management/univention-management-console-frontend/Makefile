@@ -47,7 +47,7 @@ clean:
 	rm -rf build
 
 build:
-	mkdir -p "$(buildDir)"
+	mkdir -p "$(buildDir)/js/umc"
 	@# create the module umc.widgets containing a require for all umc widgets
 	( \
 		echo '/*global dojo */'; \
