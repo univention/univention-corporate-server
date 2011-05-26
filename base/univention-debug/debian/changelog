@@ -1,3 +1,10 @@
+univention-debug (5.0.6-2) unstable; urgency=low
+
+  * debian/control: libunivention-debug1 provides libunivention-debug0 to
+    fix an update problem; Bug #22160
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 26 May 2011 18:21:38 +0200
+
 univention-debug (5.0.6-1) unstable; urgency=low
 
   * debian/control: s/Conflicts/Breaks/ (Bug #22160)
