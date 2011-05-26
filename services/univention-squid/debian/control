@@ -2,15 +2,16 @@ Source: univention-squid
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev
+Build-Depends: debhelper, univention-config-dev, ucslint
 
 Package: univention-squid
 Architecture: all
 Depends: squid, univention-config-registry, winbind
 Recommends: univention-nagios-squid
 Suggests: univention-firewall
-Description: univention squid
- univention squid extension
+Description: Squid web proxy integration
+ This package integrates the Squid web proxy into Univention
+ Corporate Server.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
