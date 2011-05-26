@@ -1,3 +1,9 @@
+univention-dojo (5.0.2-1) unstable; urgency=low
+
+  * put all dojo subprojects into /usr/share/univention-dojo (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 25 May 2011 16:59:21 +0200
+
 univention-dojo (5.0.1-1) unstable; urgency=low
 
   * adapted package for UMC2 (Bug #22461)

@@ -1,1 +1,3 @@
-usr/share/univention-dojo
+usr/share/univention-dojo/dojo
+usr/share/univention-dojo/dijit
+usr/share/univention-dojo/dojox
