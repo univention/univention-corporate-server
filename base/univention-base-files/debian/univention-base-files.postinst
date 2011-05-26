@@ -74,6 +74,13 @@ if [ "$1" = configure -a \! -e /vmlinuz.install -a \! -e /initrd.img.install ]; 
 	fi
 fi
 
+getent passwd tss || useradd --system tss
+getent group scanner || addgroup --system scanner
+getent group nvram || addgroup --system nvram
+getent group rdma || addgroup --system rdma
+getent group fuse || addgroup --system fuse
+getent group kvm || addgroup --system kvm
+
 #DEBHELPER#
 
 # Bug #19585: password/quality/credit/{digist -> digits}
