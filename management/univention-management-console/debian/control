@@ -87,8 +87,7 @@ Description: Univention Management Console - Theme Files
 Package: univention-management-console-dev
 Architecture: all
 Depends: ${python:Depends},
- python-polib,
- python-json
+ python-polib
 Description: Univention Management Console - development files
  Univention Console is a web based program to manage computers.  It has
  an extensible architecture, using modules to implement its
