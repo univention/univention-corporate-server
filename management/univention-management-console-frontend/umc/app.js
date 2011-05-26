@@ -215,18 +215,14 @@ dojo.mixin(umc.app, {
 			return;
 		}
 
+		// load the module
+		var ModuleClass = dojo['require']('umc.modules.' + module.id);
+
 		// create a new tab
-		//console.log('#A1');
-		var tab = new module.BaseClass({
+		var tab = new ModuleClass({
 			title: module.title,
 			iconClass: 'icon16-' + module.id,
 			closable: true
-			//items: [ new module.BaseClass() ],
-			//layout: 'fit',
-			//closable: true,
-			//autoScroll: true
-			//autoWidth: true,
-			//autoHeight: true
 		});
 		tab.startup();
 		umc.app._tabContainer.addChild(tab);
@@ -464,12 +460,8 @@ dojo.mixin(umc.app, {
 			for (var imod in dojo.getObject('modules', false, data)) {
 				if (data.modules.hasOwnProperty(imod)) {
 					try {
-						// load the module
-						dojo['require']('umc.modules.' + imod);
-
 						// add module config class to internal list of available modules
 						this._modules.push({
-							BaseClass: dojo.getObject('umc.modules.' + imod), 
 							id: imod, 
 							title: data.modules[imod].name,
 							description: data.modules[imod].description,

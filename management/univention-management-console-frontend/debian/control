@@ -6,7 +6,7 @@ Build-Depends: debhelper, ucslint, univention-dojo-dev, jslint, imagemagick
 
 Package: univention-management-console-frontend
 Architecture: all
-Depends: ${misc:Depends}
+Depends: ${misc:Depends}, univention-apache
 Description: Univention Management Console - Web based computer administration tool
  Univention Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
