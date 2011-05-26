@@ -7,7 +7,7 @@ univention-config-registry (7.0.10-1) unstable; urgency=low
   * Add support for Variables-declaration on subfiles (Bug #15422)
   * Regenerate multifiles after unregister.
   * Fix cache usage (Bug #22609)
-  * Remove .info file on package remove (Bug #2123)
+  * Remove .info file on package remove (Bug #21263)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 25 May 2011 15:36:33 +0200
 
