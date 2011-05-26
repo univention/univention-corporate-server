@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.5-3) unstable; urgency=low
+
+  * fixed ucslint.overrides (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 26 May 2011 17:24:09 +0200
+
 univention-management-console-frontend (0.0.5-2) unstable; urgency=low
 
   * fixed ucslint complaints (Bug #22461)
