@@ -116,7 +116,7 @@ def do_package(package):
 		doIt('install', '-m644', mapping_file, destPath(package+'.univention-config-registry-mapping', package, 'mapping'))
 
 	f_postinst = open(extFile(package, 'postinst.debhelper'), 'a')
-	f_postrinst.write('# Automatically added by univention-install-config-registry\n')
+	f_postinst.write('# Automatically added by univention-install-config-registry\n')
 	f_postinst.write('test -x /usr/sbin/univention-config-registry && univention-config-registry register "%s" || true\n' % package)
 	f_postinst.write('# End automatically added section\n')
 	f_postinst.close()
