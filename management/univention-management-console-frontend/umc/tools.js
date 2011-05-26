@@ -190,7 +190,7 @@ dojo.mixin(umc.tools, {
 		delete conf.type;
 
 		// include the corresponding module for the widget
-		dojo.require('umc.widgets.' + widgetConf.type);
+		dojo['require']('umc.widgets.' + widgetConf.type);
 
 		// create the new widget according to its type
 		var WidgetClass = dojo.getObject('umc.widgets.' + widgetConf.type);
@@ -233,7 +233,7 @@ dojo.mixin(umc.tools, {
 		}
 
 		// load the java script code for the button class
-		dojo.require('umc.widgets.' + buttonClassName);
+		dojo['require']('umc.widgets.' + buttonClassName);
 		var ButtonClass = dojo.getObject('umc.widgets.' + buttonClassName);
 		
 		// render the button

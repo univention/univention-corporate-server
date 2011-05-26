@@ -1,8 +1,12 @@
 #!/usr/bin/make -f
 
 jsFiles=$(shell find umc -name "*.js")
-pkgdir=/usr/share/univention-management-console-frontend/
-.PHONY: all install jslint test_jslint build
+pkgDir=/usr/share/univention-management-console-frontend/
+timestamp=$(shell date +'%Y%d%m%H%M%S')
+version=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
+buildDir=$(CURDIR)/build
+
+.PHONY: all install jslint test_jslint build dojo_profile clean
 
 jslint: 
 	jslint $(jsFiles)
@@ -14,27 +18,40 @@ test_jslint:
 
 all: build install
 
-build: test_jslint
-	@# make temporary directories for umc and css
-	@#TODO: this should be done with an Apache redirection
-	for idir in umc css; do \
-		find . -maxdepth 1 -type l -a -name "$${idir}_*" -delete; \
-		ln -s $$idir "$${idir}_$$(date +'%Y%d%m%H%M%S')"; \
-	done;
-	@#./build.sh profileFile=../../../univention.profile.js action=release releaseDir=${D}${INSTDIR} version=${DOJO_VERSION} releaseName='' localeList="de-de,en-us" optimize=shrinksafe.keepLines layerOptimize=shrinksafe cssOptimize=comments.keepLines copyTests=false # mini=true # cssImportIgnore=../dijit.css
-
 clean:
-	rm -f umc_* css_*
+	rm -rf build
 
-install:
-	@# directories
-	for i in $$(find umc css images -type d | grep -v '.svn'); do \
-		install -m 0755 -d "$(DESTDIR)$(pkgdir)$$i"; \
+build:
+	mkdir -p "$(buildDir)"
+	@# create the module umc.widgets containing a require for all umc widgets
+	( \
+		echo 'dojo.provide("umc.widgets");'; \
+		find umc/widgets/ -name "*.js" | sed 's|/|.|g; s|^\(.*\).js$$|dojo.require("\1");|'; \
+	) > $(buildDir)/js/umc/widgets.js
+	@# dojo build
+	sed 's|%CURDIR%|$(CURDIR)|' "$(CURDIR)/build_profile.js" > "$(buildDir)/.build_profile.js"
+	#cd /usr/share/univention-dojo/util/buildscripts; \
+	#./build.sh profileFile="$(buildDir)/.build_profile.js" releaseDir="$(CURDIR)/build/js" version="$(version)"
+	@# index page .. replace the HASH with a timestamp
+	sed 's/%HASH%/_$(timestamp)/' index.html > "$(CURDIR)/build/index.html"
+	@# copy css style sheets and images
+	rsync -rp --delete --exclude "*.xcf" --exclude "*.sh" css images $(buildDir) 
+	@# scale all icons
+	for s in 16x16 24x24 32x32 64x64; do \
+		mkdir -p $(buildDir)/images/icons/$$s; \
+		for i in icons/*.png; do \
+			convert "$$i" -resize $$s "$(buildDir)/images/icons/$$s/$${i##*/}"; \
+		done; \
 	done
-	@# js, css, and image files
-	for i in $$(find umc css images -type f -name "*.js" -o -name "*.css" -o -name "*.png" -o -name "*.jpg" -o -name "*.gif"); do \
-		install -m 0644 "$$i" "$(DESTDIR)$(pkgdir)$$i"; \
-	done
-	@# index page
-	install -m 0644 "index.php" "$(DESTDIR)$(pkgdir)index.php"; \
+	@# symlinks as temporary directories with timestamp
+	@#TODO: this should be done with an Apache redirection
+	for i in js css; do \
+		rm -f "$(buildDir)/$${i}_"*; \
+		ln -s "$$i" "$(buildDir)/$${i}_$(timestamp)"; \
+	done;
+
+install: build
+	@# copy all files from the build directory .. exclude file of the pattern ".*"
+	mkdir -p $(DESTDIR)$(pkgDir)
+	rsync -rp --exclude ".*" $(buildDir)/ $(DESTDIR)$(pkgDir)
 	

@@ -465,7 +465,7 @@ dojo.mixin(umc.app, {
 				if (data.modules.hasOwnProperty(imod)) {
 					try {
 						// load the module
-						dojo.require('umc.modules.' + imod);
+						dojo['require']('umc.modules.' + imod);
 
 						// add module config class to internal list of available modules
 						this._modules.push({
