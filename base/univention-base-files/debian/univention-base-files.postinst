@@ -74,12 +74,12 @@ if [ "$1" = configure -a \! -e /vmlinuz.install -a \! -e /initrd.img.install ]; 
 	fi
 fi
 
-getent passwd tss || useradd --system tss
-getent group scanner || addgroup --system scanner
-getent group nvram || addgroup --system nvram
-getent group rdma || addgroup --system rdma
-getent group fuse || addgroup --system fuse
-getent group kvm || addgroup --system kvm
+getent passwd tss >/dev/null || useradd --system tss
+getent group scanner >/dev/null || addgroup --system scanner
+getent group nvram >/dev/null || addgroup --system nvram
+getent group rdma >/dev/null || addgroup --system rdma
+getent group fuse >/dev/null || addgroup --system fuse
+getent group kvm >/dev/null || addgroup --system kvm
 
 #DEBHELPER#
 

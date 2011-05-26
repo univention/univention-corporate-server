@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-dpkg-divert --rename --quiet --divert /etc/motd.debian --add /etc/motd
+dpkg-divert --rename --quiet --divert /etc/motd.debian --package univention-base-files --add /etc/motd
 
 #DEBHELPER#
 

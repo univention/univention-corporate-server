@@ -5,7 +5,19 @@ auto lo
 iface lo inet loopback
 
 @!@
-from univention.dns import networkNumber
+try:
+	from univention.ipv4 import networkNumber
+except ImportError:
+	def splitDotted(ip):
+		quad = map(int, ip.split('.'))[:4]
+		while len(quad) < 4:
+			quad.append(0)
+		return quad
+	def networkNumber(dottedIp, dottedNetmask):
+		ip = splitDotted(dottedIp)
+		netmask = splitDotted(dottedNetmask)
+		network = map(lambda (i, n): i & n, zip(ip, netmask))
+		return joinDotted(network)
 
 eth_devices=[]
 
