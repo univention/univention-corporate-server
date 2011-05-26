@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.2-1) unstable; urgency=low
+
+  * fixed default target of Makefile to 'all' (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 26 May 2011 16:08:12 +0200
+
 univention-management-console-frontend (0.0.1-1) unstable; urgency=low
 
   * removed jslint dependency from debian/control and Makefile (Bug #22461)

@@ -36,12 +36,12 @@ timestamp=$(shell date +'%Y%d%m%H%M%S')
 version=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 buildDir=$(CURDIR)/build
 
-.PHONY: all install jslint build clean
+.PHONY: all install build clean jslint
+
+all: install
 
 jslint: 
 	jslint $(jsFiles)
-
-all: build install
 
 clean:
 	rm -rf build
