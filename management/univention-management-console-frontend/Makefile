@@ -6,14 +6,14 @@ timestamp=$(shell date +'%Y%d%m%H%M%S')
 version=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 buildDir=$(CURDIR)/build
 
-.PHONY: all install jslint test_jslint build dojo_profile clean
+.PHONY: all install jslint test_jslint build clean
 
 jslint: 
 	jslint $(jsFiles)
 
 test_jslint:
 	@echo "running jslint to make sure that there are no problems"
-	@LINT=$$(/usr/bin/jslint $(jsFiles) | grep -v "Unsafe character"); \
+	@LINT=$$(/usr/bin/jslint $(jsFiles) | grep -v -e "Unsafe character" -e "['require']"); \
 	[ -z "$$LINT" ] || (echo -e "jslint found errors:\n$$LINT"; false)
 
 all: build install
@@ -21,17 +21,18 @@ all: build install
 clean:
 	rm -rf build
 
-build:
+build: test_jslint
 	mkdir -p "$(buildDir)"
 	@# create the module umc.widgets containing a require for all umc widgets
 	( \
+		echo '/*global dojo */'; \
 		echo 'dojo.provide("umc.widgets");'; \
 		find umc/widgets/ -name "*.js" | sed 's|/|.|g; s|^\(.*\).js$$|dojo.require("\1");|'; \
 	) > $(buildDir)/js/umc/widgets.js
 	@# dojo build
 	sed 's|%CURDIR%|$(CURDIR)|' "$(CURDIR)/build_profile.js" > "$(buildDir)/.build_profile.js"
-	#cd /usr/share/univention-dojo/util/buildscripts; \
-	#./build.sh profileFile="$(buildDir)/.build_profile.js" releaseDir="$(CURDIR)/build/js" version="$(version)"
+	cd /usr/share/univention-dojo/util/buildscripts; \
+	./build.sh profileFile="$(buildDir)/.build_profile.js" releaseDir="$(CURDIR)/build/js" version="$(version)"
 	@# index page .. replace the HASH with a timestamp
 	sed 's/%HASH%/_$(timestamp)/' index.html > "$(CURDIR)/build/index.html"
 	@# copy css style sheets and images
