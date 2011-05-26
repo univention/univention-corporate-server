@@ -2,7 +2,7 @@ Source: univention-pkgdb
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, python2.4, python-all-dev, python-support, univention-config-dev, ucslint
+Build-Depends: debhelper, python-dev, python-support, univention-config-dev, ucslint
 Standards-Version: 3.8.2
 
 Package: univention-pkgdb

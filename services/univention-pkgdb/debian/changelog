@@ -1,4 +1,4 @@
-univention-pkgdb (5.0.0-0) unstable; urgency=low
+univention-pkgdb (5.0.0-1) unstable; urgency=low
 
   * bump version for UCS 3.0
   * update to UCS 3.0 policies (Bug #22525)
