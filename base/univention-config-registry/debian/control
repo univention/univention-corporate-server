@@ -9,6 +9,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  locales,
  libtool,
  libunivention-debug-dev,
+ univention-management-console-dev,
  python-univention-lib,
  python-all
 Standards-Version: 3.5.2
@@ -94,3 +95,8 @@ Description: UCS - Python interface to configuration registry
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-management-console-module-ucr
+Architecture: all
+Depends: univention-management-console-server
+Description: UMC module for UCR
