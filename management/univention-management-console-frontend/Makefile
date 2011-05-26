@@ -36,15 +36,7 @@ timestamp=$(shell date +'%Y%d%m%H%M%S')
 version=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 buildDir=$(CURDIR)/build
 
-.PHONY: all install build clean jslint
-
-all: install
-
-jslint: 
-	jslint $(jsFiles)
-
-clean:
-	rm -rf build
+.PHONY: build install clean jslint
 
 build:
 	mkdir -p "$(buildDir)/js/umc"
@@ -81,3 +73,9 @@ install: build
 	mkdir -p $(DESTDIR)$(pkgDir)
 	rsync -rp --exclude ".svn" --exclude ".*" $(buildDir)/ $(DESTDIR)$(pkgDir)
 	
+clean:
+	rm -rf build
+
+jslint: 
+	jslint $(jsFiles)
+

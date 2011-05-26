@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.5-1) unstable; urgency=low
+
+  * changed default target to build (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 26 May 2011 16:51:41 +0200
+
 univention-management-console-frontend (0.0.4-1) unstable; urgency=low
 
   * added rsync to build dependencies (Bug #22461)
