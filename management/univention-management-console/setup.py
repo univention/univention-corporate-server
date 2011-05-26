@@ -80,6 +80,9 @@ class Build( build ):
 	def run( self ):
 		build.run( self )
 
+def all_xml_files_in( dir ):
+	return filter( lambda x: os.path.isfile( x ) and x.endswith( '.xml' ), map( lambda x: os.path.join( dir, x ), os.listdir( dir ) ) )
+
 setup( name = 'univention-management-console',
 	   description = 'Univention Management Console',
 	   author = 'Univention GmbH',
@@ -88,9 +91,9 @@ setup( name = 'univention-management-console',
 	   package_dir = { '' : 'src' },
 	   packages = [ 'univention', 'univention.management', 'univention.management.console',	'univention.management.console.protocol', 'univention.management.console.modules' ] + map( lambda x: 'univention.management.console.modules.' + x, UMC_MODULES ),
 	   scripts = [ 'scripts/univention-management-console-server', 'scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls' ],
-	   data_files = [ ( 'share/univention-management-console/syntax', [ 'data/syntax/global.xml', 'data/syntax/ucr.xml' ] ),
-					  ( 'share/univention-management-console/modules', [ 'data/modules/ucr.xml', ] ),
-					  ( 'share/univention-management-console/categories', [ 'data/categories/default.xml', ] ), ],
+	   data_files = [ ( 'share/univention-management-console/syntax', all_xml_files_in( 'data/syntax' ) ),
+					  ( 'share/univention-management-console/modules',  all_xml_files_in( 'data/modules' ) ),
+					  ( 'share/univention-management-console/categories', all_xml_files_in( 'data/categories' ) ), ],
 	   cmdclass = { 'build' : Build,
 	   				'build_i18n' : BuildI18N }
       )

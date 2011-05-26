@@ -1,0 +1,115 @@
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
+#
+# Univention Configuration Registry
+#  install UMC module
+#
+# Copyright 2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import os
+import sys
+import univention.debhelper as dh_ucs
+import univention.dh_umc as dh_umc
+
+"""Helps installing UMC modules. It parses a RFC 822 file called
+$(package).umc-modules and installs the specified components of a module
+into the correct directories."""
+
+def do_package( package ):
+	try:
+		modules = dh_umc.read_modules( package )
+	except AttributeError, e:
+		print >>sys.stderr, str( e )
+		sys.exit( 1 )
+
+	if not modules:
+		return
+
+	for module in modules:
+		# prepare directory
+		dh_ucs.doIt( 'install', '-d', 'debian/%(package)s/usr/share/pyshared/univention/management/console/modules/%(Module)s' % module )
+		dh_ucs.doIt( 'install', '-d', 'debian/%(package)s/usr/share/univention-management-console/modules' % module )
+		for lang in dh_umc.LANGUAGES:
+			module[ 'lang' ] = lang
+			dh_ucs.doIt( 'install', '-d', 'debian/%(package)s/usr/share/locale/%(lang)s/LC_MESSAGES' % module )
+			dh_ucs.doIt( 'install', '-d', 'debian/%(package)s/usr/share/univention-management-console-frontend/js/umc/modules/i18n/%(lang)s' % module )
+		if module.xml_syntax:
+			dh_ucs.doIt( 'install', '-d', 'debian/%(package)s/usr/share/univention-management-console/syntax' % module )
+		else:
+			print >>sys.stderr, 'info: no syntax definition file'
+		if module.xml_categories:
+			dh_ucs.doIt( 'install', '-d', 'debian/%(package)s/usr/share/univention-management-console/categories' % module )
+		else:
+			print >>sys.stderr, 'info: no category definition file'
+
+		# copy python module
+		install_python = []
+		for entry in os.listdir( module.python_path ):
+			filename = os.path.join( module.python_path, entry )
+			if os.path.isfile( filename ) and entry.endswith( '.py' ):
+				install_python.append( filename )
+		if not install_python:
+			print >>sys.stderr, 'error: no python files found in %s' % module.python_path
+			sys,exit( 1 )
+		install_python.insert( 0, 'install' )
+		install_python.append( 'debian/%(package)s/usr/share/pyshared/univention/management/console/modules/%(Module)s' % module )
+		dh_ucs.doIt( *install_python )
+
+		# copy javascript code
+		dh_ucs.doIt( 'install', module.js_filename, 'debian/%(package)s/usr/share/univention-management-console-frontend/js/umc/modules' % module )
+
+		# copy XML definitions
+		dh_ucs.doIt( 'install', module.xml_definition, 'debian/%(package)s/usr/share/univention-management-console/modules' % module )
+		if module.xml_syntax:
+			dh_ucs.doIt( 'install', module.xml_syntax, 'debian/%(package)s/usr/share/univention-management-console/syntax' % module )
+		if module.xml_categories:
+			dh_ucs.doIt( 'install', module.xml_categories, 'debian/%(package)s/usr/share/univention-management-console/categories' % module )
+
+		# copy translation files (python)
+		for lang in dh_umc.LANGUAGES:
+			mo_file = os.path.join( module.python_path, '%s.mo' % lang )
+			module[ 'lang' ] = lang
+			dh_ucs.doIt( 'install', mo_file, 'debian/%(package)s/usr/share/locale/%(lang)s/LC_MESSAGES/%(package)s.mo' % module )
+
+		# copy translation files (javascript)
+		for lang in dh_umc.LANGUAGES:
+			json_file = os.path.join( module.js_path, '%s.json' % lang )
+			module[ 'lang' ] = lang
+			dh_ucs.doIt( 'install', json_file, 'debian/%(package)s/usr/share/univention-management-console-frontend/js/umc/modules/i18n/%(lang)s/%(Module)s.json' % module )
+
+	f_postinst = open( os.path.join( 'debian', package + '.postinst.debhelper' ), 'a' )
+	f_postinst.write( 'invoke-rc.d univention-management-console-server reload || true\n' )
+	f_postinst.close()
+
+	f_prerm = open( os.path.join( 'debian', package + '.prerm.debhelper' ), 'a' )
+	f_prerm.write( 'invoke-rc.d univention-management-console-server reload || true\n' )
+	f_prerm.close()
+
+if __name__ == '__main__':
+	for package in dh_ucs.binary_packages():
+		do_package( package )

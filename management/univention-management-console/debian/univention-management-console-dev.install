@@ -1,1 +1,2 @@
-dev/* usr/bin
+dev/dh-umc-module-* usr/bin
+dev/dh_umc.py usr/share/pyshared/univention/

@@ -1,3 +1,9 @@
+univention-management-console (4.0.3-1) unstable; urgency=low
+
+  * new debhelper tools for UMC modules; Bug #22455
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 26 May 2011 17:16:25 +0200
+
 univention-management-console (4.0.2-1) unstable; urgency=low
 
   * server monitors modules an shutdown inactive modules to save
