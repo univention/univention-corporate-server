@@ -17,7 +17,7 @@ XS-Python-Version: all
 Package: univention-config-registry
 Architecture: all
 Depends: univention-base-files
-Description: UCS transition package - base configuration
+Description: UCS transitional package - base configuration
  This package can be savely removed, since all previously contained base
  configuration files for UCS have been moved to the univention-base-files
  package.
@@ -31,7 +31,7 @@ Package: univention-config
 Architecture: all
 Depends: python-univention, pciutils, python-univention-config-registry,
  ${misc:Depends}, ${python:Depends}
-Replaces: univention-config-registry (<< 7)
+Replaces: univention-config-registry (<< 7.0.9~)
 Description: UCS - configuration manager
  This package contains the univention-config configuration
  manager, primarily used by the UCS base configuration.

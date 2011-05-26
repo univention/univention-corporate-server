@@ -41,7 +41,6 @@ import fcntl
 import pwd
 import grp
 from debhelper import parseRfc822
-import shutil
 try:
 	from univention.lib.shell import escape_value
 except ImportError:
@@ -333,7 +332,7 @@ class _ConfigRegistry( dict ):
 		return '\n'.join(['%s: %s' % (key, self.removeInvalidChars (val)) for key, val in sorted(self.items())])
 
 def directoryFiles(dir):
-	"""Return a list of all files in the given directory."""
+	"""Return a list of all files below the given directory."""
 	all = []
 	def _walk(all, dirname, files):
 		for file in files:
@@ -438,10 +437,26 @@ class configHandlerDiverting(configHandler):
 
 	def __init__(self, to_file):
 		self.to_file = os.path.join('/', to_file)
+		self.user = None
+		self.group = None
+		self.mode = None
 
-	def _call_divert(self, *args):
-		"""Call dpkg-divert with default arguments and stdin, stdout, and stderr redirected to NULL."""
-		cmd = ['dpkg-divert', '--quiet'] + list(args)
+	def _set_perm(self, st):
+		"""Set file permissions."""
+		if self.user or self.group or self.mode:
+			if self.mode:
+				os.chmod(self.to_file, self.mode)
+			if self.user and self.group:
+				os.chown(self.to_file, self.user, self.group)
+			elif self.user:
+				os.chown(self.to_file, self.user, 0)
+			elif self.group:
+				os.chown(self.to_file, 0, self.group)
+		elif st:
+			os.chmod(self.to_file, st[0])
+
+	def _call_silent(self, *cmd):
+		"""Call command with stdin, stdout, and stderr redirected from/to devnull."""
 		null = open(os.path.devnull, 'rw')
 		try:
 			return subprocess.call(cmd, stdin=null, stdout=null, stderr=null)
@@ -451,12 +466,11 @@ class configHandlerDiverting(configHandler):
 	def install_divert(self):
 		"""Prepare file for diversion."""
 		d = '%s.debian' % self.to_file
-		self._call_divert('--rename', '--divert', d, '--add', self.to_file)
-		try: # Make sure a valid file still exists
-			if not os.path.exists(self.to_file):
-				shutil.copy2(d, self.to_file)
-		except IOError:
-			pass
+		self._call_silent('dpkg-divert', '--quiet', '--rename', '--divert', d, '--add', self.to_file)
+		# Make sure a valid file still exists
+		if os.path.exists(d) and not os.path.exists(self.to_file):
+			# Don't use shutil.copy2(), which looses file ownership (Bug #22596)
+			self._call_silent('cp', '-p', d, self.to_file)
 
 	def uninstall_divert(self):
 		"""Undo diversion of file."""
@@ -465,7 +479,7 @@ class configHandlerDiverting(configHandler):
 		except OSError:
 			pass
 		d = '%s.debian' % self.to_file
-		self._call_divert('--rename', '--divert', d, '--remove', self.to_file)
+		self._call_silent('dpkg-divert', '--quiet', '--rename', '--divert', d, '--remove', self.to_file)
 
 class configHandlerMultifile(configHandlerDiverting):
 
@@ -474,9 +488,12 @@ class configHandlerMultifile(configHandlerDiverting):
 		self.variables = set()
 		self.from_files = set()
 		self.dummy_from_file = dummy_from_file
-		self.user = None
-		self.group = None
-		self.mode = None
+		self.def_count = 1
+
+	def __setstate__(self, state):
+		"""Load state upon unpickling."""
+		self.__dict__.update(state)
+		self.def_count # may raise AttributeError, which forces UCR to rebuild the cache
 
 	def addSubfiles(self, subfiles):
 		for from_file, variables in subfiles:
@@ -484,14 +501,17 @@ class configHandlerMultifile(configHandlerDiverting):
 			self.variables |= variables
 
 	def remove_subfile(self, subfile):
-		"""Remove subfile and return is set is now empty."""
+		"""Remove subfile and return if set is now empty."""
 		self.from_files.discard(subfile)
-		if not self.from_files:
+		if self.def_count == 0 or not self.from_files:
 			self.uninstall_divert()
 
 	def __call__(self, args):
 		ucr, changed = args
 		print 'Multifile: %s' % self.to_file
+
+		if self.def_count == 0 or not self.from_files:
+			return
 
 		to_dir = os.path.dirname(self.to_file)
 		if not os.path.isdir(to_dir):
@@ -512,17 +532,17 @@ class configHandlerMultifile(configHandlerDiverting):
 				continue
 			to_fp.write(filter(from_fp.read(), ucr, srcfiles = self.from_files, opts = filter_opts))
 
-		if self.user or self.group or self.mode:
-			if self.mode:
-				os.chmod(self.to_file, self.mode)
-			if self.user and self.group:
-				os.chown(self.to_file, self.user, self.group)
-			elif self.user:
-				os.chown(self.to_file, self.user, 0)
-			elif self.group:
-				os.chown(self.to_file, 0, self.group)
-		elif st:
-			os.chmod(self.to_file, st[0])
+		self._set_perm(st)
+
+	def install_divert(self):
+		"""Only do diversion when at least one multifile and one subfile definition exists."""
+		if self.def_count >= 1 and self.from_files:
+			super(configHandlerMultifile, self).install_divert()
+
+	def uninstall_divert(self):
+		"""Undo diversion when no multifile or no subfile definition exists."""
+		if self.def_count == 0 or not self.from_files:
+			super(configHandlerMultifile, self).uninstall_divert()
 
 class configHandlerFile(configHandlerDiverting):
 
@@ -531,9 +551,6 @@ class configHandlerFile(configHandlerDiverting):
 		self.from_file = from_file
 		self.preinst = None
 		self.postinst = None
-		self.user = None
-		self.group = None
-		self.mode = None
 
 	def __call__(self, args):
 		ucr, changed = args
@@ -559,17 +576,7 @@ class configHandlerFile(configHandlerDiverting):
 
 		to_fp.write(filter(from_fp.read(), ucr, srcfiles = [self.from_file], opts = filter_opts))
 
-		if self.user or self.group or self.mode:
-			if self.mode:
-				os.chmod(self.to_file, self.mode)
-			if self.user and self.group:
-				os.chown(self.to_file, self.user, self.group)
-			elif self.user:
-				os.chown(self.to_file, self.user, 0)
-			elif self.group:
-				os.chown(self.to_file, 0, self.group)
-		else:
-			os.chmod(self.to_file, st[0])
+		self._set_perm(st)
 		from_fp.close()
 		to_fp.close()
 
@@ -611,17 +618,17 @@ class configHandlers:
 	CACHE_FILE = '/var/cache/univention-config/cache'
 	# 0: without version
 	# 1: with version header
-	# 2: switch to handlers mapping to set, drop file
+	# 2: switch to handlers mapping to set, drop file, add multifile.def_count
 	VERSION = 2
 	VERSION_MIN = 0
 	VERSION_MAX = 2
 	VERSION_TEXT = 'univention-config cache, version'
 	VERSION_NOTICE = '%s %s\n' % (VERSION_TEXT, VERSION)
-	VERSION_RE = re.compile('^%s (P<version>[0-9]+)$' % VERSION_TEXT)
+	VERSION_RE = re.compile('^%s (?P<version>[0-9]+)$' % VERSION_TEXT)
 
 	_handlers = {} # variable -> set(handlers)
 	_multifiles = {} # multifile -> handler
-	_subfiles = {} # multifile -> [subfiles] // pending
+	_subfiles = {} # multifile -> [(subfile, variables)] // pending
 
 	def _get_cache_version(self, fp):
 		line = fp.readline()	# IOError is propagated
@@ -635,6 +642,7 @@ class configHandlers:
 		return version
 
 	def load(self):
+		"""Load cached .info data or force update."""
 		try:
 			fp = open(configHandlers.CACHE_FILE, 'r')
 			try:
@@ -660,12 +668,17 @@ class configHandlers:
 		return path.replace(basepath, '')
 
 	def getHandler(self, entry):
+		"""Parse entry and return Handler instance."""
 		try:
-			typ = entry.get('Type')[0]
-		except LookupError:
+			typ = entry['Type'][0]
+			m = getattr(self, '_get_handler_%s' % typ)
+		except (LookupError, NameError):
 			return None
+		else:
+			return m(entry)
 
-		if typ == 'file':
+	def _get_handler_file(self, entry):
+			"""Parse file entry and return Handler instance."""
 			try:
 				name = entry['File'][0]
 			except LookupError:
@@ -695,26 +708,33 @@ class configHandlers:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
 				handler.mode = int(entry['Mode'][0], 8)
+			return handler
 
-		elif typ == 'script':
+	def _get_handler_script(self, entry):
+			"""Parse script entry and return Handler instance."""
 			if not entry.has_key('Variables') or not entry.has_key('Script'):
 				return None
 			handler = configHandlerScript(os.path.join(script_dir, entry['Script'][0]))
 			handler.variables = set(entry['Variables'])
+			return handler
 
-		elif typ == 'module':
+	def _get_handler_module(self, entry):
+			"""Parse module entry and return Handler instance."""
 			if not entry.has_key('Variables') or not entry.has_key('Module'):
 				return None
 			handler = configHandlerModule(os.path.splitext(entry['Module'][0])[0])
 			handler.variables = set(entry['Variables'])
+			return handler
 
-		elif typ == 'multifile':
+	def _get_handler_multifile(self, entry):
+			"""Parse multifile entry and return Handler instance."""
 			try:
 				mfile = entry['Multifile'][0]
 			except LookupError:
 				return None
 			try:
 				handler = self._multifiles[mfile]
+				handler.def_count += 1
 			except KeyError:
 				from_path = os.path.join(file_dir, mfile)
 				handler = configHandlerMultifile(from_path, mfile)
@@ -734,54 +754,65 @@ class configHandlers:
 				handler.mode = int(entry['Mode'][0], 8)
 			# Add pending subfiles from earlier entries
 			self._multifiles[mfile] = handler
-			if self._subfiles.has_key(mfile):
-				handler.addSubfiles(self._subfiles[mfile])
-				del self._subfiles[mfile]
+			try:
+				file_vars = self._subfiles.pop(mfile)
+				handler.addSubfiles(file_vars)
+			except KeyError:
+				pass
+			return handler
 
-		elif typ == 'subfile':
+	def _get_handler_subfile(self, entry):
+			"""Parse subfile entry and return Handler instance."""
 			try:
 				mfile = entry['Multifile'][0]
 				subfile = entry['Subfile'][0]
 			except LookupError:
 				return None
+			variables = set(entry.get('Variables', set()))
 			name = os.path.join(file_dir, subfile)
 			try:
-				qentry = (name, grepVariables(open(name, 'r').read()))
+				f = open(name, 'r')
+				try:
+					variables |= grepVariables(f.read())
+				finally:
+					f.close()
 			except IOError:
-				print "The following Subfile doesnt exist: \n%s \nunivention-config-registry commit aborted" % name
+				print "The following Subfile doesnt exist:\n%s\nunivention-config-registry aborted" % name
 				sys.exit(1)
-			# if multifile handler does not exist jet, queue subfiles
+			qentry = (name, variables)
+			# if multifile handler does not yet exists, queue subfiles for later
 			try:
 				handler = self._multifiles[mfile]
 				handler.addSubfiles([qentry])
 			except KeyError:
-				self._subfiles.setdefault(mfile, []).append(qentry)
+				pending = self._subfiles.setdefault(mfile, [])
+				pending.append(qentry)
 				handler = None
-
-		else:
-			handler = None
-		return handler
+			return handler
 
 	def update(self):
-		"""Parse .info files to build list of handlers."""
+		"""Parse all .info files to build list of handlers."""
 		self._handlers.clear()
 		self._multifiles.clear()
 		self._subfiles.clear()
 
-		handlers = []
+		handlers = set()
 		for file in directoryFiles(info_dir):
 			if not file.endswith('.info'):
 				continue
 			for section in parseRfc822(open(file, 'r').read()):
-				if not section.get('Type'):
-					continue
 				handler = self.getHandler(section)
 				if handler:
-					handlers.append(handler)
+					handlers.add(handler)
 		for handler in handlers:
 			for variable in handler.variables:
-				self._handlers.setdefault(variable, set()).add(handler)
+				v2h = self._handlers.setdefault(variable, set())
+				v2h.add(handler)
 
+		self._save_cache()
+
+	def _save_cache(self):
+		"""Write cache file."""
 		fp = open(configHandlers.CACHE_FILE, 'w')
 		fp.write(configHandlers.VERSION_NOTICE)
 		p = cPickle.Pickler(fp)
@@ -804,35 +835,49 @@ class configHandlers:
 				handler.install_divert()
 			values = {}
 			for variable in handler.variables:
+				v2h = self._handlers.setdefault(variable, set())
+				v2h.add(handler)
 				values[variable] = ucr[variable]
 			handler((ucr, values))
 
+		self._save_cache()
+
 	def unregister(self, package, ucr):
 		"""Un-register info file for package."""
+		handlers = set()
 		file = os.path.join(info_dir, package+'.info')
 		for section in parseRfc822(open(file, 'r').read()):
-			handler = self.getHandler(section)
-			# Handle Type=file
 			try:
-				files = section['File']
-			except KeyError:
-				pass
-			else:
-				for f in files:
-					handler.uninstall_divert()
-			# Handle Type=subfile
-			try:
+				typ = section['Type'][0]
+			except LookupError:
+				continue
+			if typ == 'file':
+				handler = self.getHandler(section)
+			elif typ == 'subfile':
 				mfile = section['Multifile'][0]
 				sfile = section['Subfile'][0]
-				handler = self._multifiles[mfile] # associated handler
-				assert isinstance(handler, configHandlerMultifile)
-			except LookupError:
-				pass
-			except AssertionError:
-				pass
-			else:
+				handler = self._multifiles[mfile]
 				name = os.path.join(file_dir, sfile)
 				handler.remove_subfile(name)
+			elif typ == 'multifile':
+				mfile = section['Multifile'][0]
+				handler = self._multifiles[mfile]
+				handler.def_count -= 1
+			else:
+				continue
+			handler.uninstall_divert()
+			# regenerate multifile from remaining parts
+			if isinstance(handler, configHandlerMultifile):
+				handlers.add(handler)
+
+		for handler in handlers:
+			self.call_handler(ucr, handler)
+
+		try:
+			# remove cache file to force rebuild of cache
+			os.unlink(configHandlers.CACHE_FILE)
+		except OSError:
+			pass
 
 	def __call__(self, variables, arg):
 		"""Call handlers registered for changes in variables."""
@@ -862,6 +907,8 @@ class configHandlers:
 		# find handlers
 		pending_handlers = set()
 		for file in directoryFiles(info_dir):
+			if not file.endswith('.info'):
+				continue
 			for section in parseRfc822(open(file, 'r').read()):
 				if not section.get('Type'):
 					continue
@@ -882,16 +929,20 @@ class configHandlers:
 					pending_handlers.add(handler)
 		# call handlers
 		for handler in pending_handlers:
-			values = {}
-			for variable in handler.variables:
-				if variable in self._handlers.keys():
-					if ".*" in variable:
-						for i in range(0,4):
-							val = variable.replace(".*", "%s" % i)
-							values[val] = ucr[val]
-					else:
-						values[variable] = ucr[variable]
-			handler((ucr, values))
+			self.call_handler(ucr, handler)
+
+	def call_handler(self, ucr, handler):
+		"""Call handler passing current configuration variables."""
+		values = {}
+		for variable in handler.variables:
+			if variable in self._handlers.keys():
+				if ".*" in variable:
+					for i in range(4):
+						val = variable.replace(".*", "%s" % i)
+						values[val] = ucr.get(val)
+				else:
+					values[variable] = ucr.get(variable)
+		handler((ucr, values))
 
 def randpw():
 	"""Create random password."""
@@ -951,8 +1002,8 @@ def handler_set( args, opts = {}, quiet = False ):
 					sep = min(sep_set, sep_def)
 			key = arg[0:sep]
 			value = arg[sep+1:]
-			old = reg[key]
-			if (reg[key] is None or sep == sep_set) and validateKey(key):
+			old = reg.get(key)
+			if (old is None or sep == sep_set) and validateKey(key):
 				if not quiet:
 					if reg.has_key( key, write_registry_only = True ):
 						print 'Setting '+key
@@ -965,7 +1016,7 @@ def handler_set( args, opts = {}, quiet = False ):
 				changed[key] = (old, value)
 			else:
 				if not quiet:
-					if old != None:
+					if old is not None:
 						print 'Not updating '+key
 					else:
 						print 'Not setting '+key
@@ -1040,8 +1091,8 @@ def handler_register( args, opts = {} ):
 	b.load()
 
 	c = configHandlers()
-	c.update()
-	c.load()
+	c.update() # cache must be current
+	# Bug #21263: by forcing an update here, the new .info file is already incorporated. Calling register for multifiles will increment the def_count a second time, which is not nice, but uncritical, since the diversion is (re-)done when >= 1.
 	c.register(args[0], b)
 	#c.commit((b, {}))
 
@@ -1050,8 +1101,7 @@ def handler_unregister( args, opts = {} ):
 	b.load()
 
 	c = configHandlers()
-	c.update()
-	c.load()
+	c.update() # cache must be current
 	c.unregister(args[0], b)
 
 def handler_randpw( args, opts = {} ):
