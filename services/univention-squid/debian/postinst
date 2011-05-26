@@ -32,48 +32,18 @@
 
 #DEBHELPER#
 
-case "$1" in
-    configure)
+. /usr/share/univention-lib/all.sh
 
-	CONFREG=univention-config-registry
+# the proxy user needs to be in the group winbindd_priv to be able to access winbind
+adduser proxy winbindd_priv
 
-	if dpkg --compare-versions "$2" lt-nl "2.0.0-1"; then
-		# Merge pre-UCS2.0-settings:
-		eval $($CONFREG shell proxy/ldapauth proxy/force proxy/parent/host proxy/parent/port )
+ucr squid/transparentproxy?false
+ucr set squid/ldapauth?no
+ucr set squid/cache?yes
 
-		[ $proxy_ldapauth ] && $CONFREG set squid/ldapauth=proxy_ldapauth
-		[ $proxy_force ] && $CONFREG set squid/transparentproxy=$proxy_force
-		[ $proxy_parent_host ] && $CONFREG set squid/parent/host=$proxy_parent_host
-		[ $proxy_parent_port ] && $CONFREG set squid/parent/port=$proxy_parent_port
+/etc/init.d/squid stop
+/etc/init.d/squid start
 
-		# remove unneeded config file
-		rm -f /etc/squid.conf
-	fi
-
-	# the proxy user needs to be in the group winbindd_priv to be able to access winbind
-	adduser proxy winbindd_priv
-
-	$CONFREG set squid/transparentproxy?false
-	$CONFREG set squid/ldapauth?no
-	$CONFREG set squid/cache?yes
-
-	/etc/init.d/squid stop
-	/etc/init.d/squid start
-
-	if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	 	/usr/lib/univention-install/79univention-antivir-web.inst
-	fi
-
-    ;;
-
-    abort-upgrade|abort-remove|abort-deconfigure)
-
-    ;;
-
-    *)
-        echo "postinst called with unknown argument \`$1'" >&2
-        exit 1
-    ;;
-esac
+call_joinscript /usr/lib/univention-install/79univention-squid.inst
 
 exit 0

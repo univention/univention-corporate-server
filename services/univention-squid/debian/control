@@ -6,7 +6,7 @@ Build-Depends: debhelper, univention-config-dev, ucslint
 
 Package: univention-squid
 Architecture: all
-Depends: squid, univention-config-registry, winbind
+Depends: squid3, univention-config, winbind
 Recommends: univention-nagios-squid
 Suggests: univention-firewall
 Description: Squid web proxy integration
