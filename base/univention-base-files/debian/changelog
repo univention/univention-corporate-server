@@ -1,3 +1,9 @@
+univention-base-files (1.0.2-2) unstable; urgency=low
+
+  * Copy joinDotted() from univention.lib (Bug #22521)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 26 May 2011 13:37:51 +0200
+
 univention-base-files (1.0.2-1) unstable; urgency=low
 
   * Move account and group creation from u-c-r (Bug #22586)

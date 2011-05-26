@@ -13,6 +13,8 @@ except ImportError:
 		while len(quad) < 4:
 			quad.append(0)
 		return quad
+	def joinDotted(ip):
+		return '%d.%d.%d.%d' % tuple(ip[0:4])
 	def networkNumber(dottedIp, dottedNetmask):
 		ip = splitDotted(dottedIp)
 		netmask = splitDotted(dottedNetmask)
