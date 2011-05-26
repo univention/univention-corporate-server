@@ -61,7 +61,7 @@ build:
 	@# index page .. replace the HASH with a timestamp
 	sed 's/%HASH%/_$(timestamp)/' index.html > "$(CURDIR)/build/index.html"
 	@# copy css style sheets and images
-	rsync -rp --delete --exclude "*.xcf" --exclude "*.sh" css images $(buildDir) 
+	rsync -rp --delete --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css images $(buildDir) 
 	@# scale all icons
 	for s in 16x16 24x24 32x32 64x64; do \
 		mkdir -p $(buildDir)/images/icons/$$s; \
@@ -79,5 +79,5 @@ build:
 install: build
 	@# copy all files from the build directory .. exclude file of the pattern ".*"
 	mkdir -p $(DESTDIR)$(pkgDir)
-	rsync -rp --exclude ".*" $(buildDir)/ $(DESTDIR)$(pkgDir)
+	rsync -rp --exclude ".svn" --exclude ".*" $(buildDir)/ $(DESTDIR)$(pkgDir)
 	

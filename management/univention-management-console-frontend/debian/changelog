@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.4-1) unstable; urgency=low
+
+  * added rsync to build dependencies (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 26 May 2011 16:41:38 +0200
+
 univention-management-console-frontend (0.0.3-1) unstable; urgency=low
 
   * bug fix for non-existent directory during build (Bug #22461)
