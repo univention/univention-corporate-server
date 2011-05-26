@@ -1,3 +1,9 @@
+univention-python (6.0.4-1) unstable; urgency=low
+
+  * Split ipv4 helpers to own module (Bug #22521)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 26 May 2011 12:34:04 +0200
+
 univention-python (6.0.3-1) unstable; urgency=low
 
   * Fixed typo s/isinstace/isinstance/ (Bug #22160)

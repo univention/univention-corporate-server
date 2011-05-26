@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Python
-#  DNS utilities
+#  IPv4 address calculation utilities
 #
 # Copyright 2002-2011 Univention GmbH
 #
@@ -30,23 +30,56 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import DNS
-
-DNS.DiscoverNameServers()
-
-def lookup(query, type='a'):
+def splitDotted(ip):
 	"""
-	Lookup DNS entries of specified type.
+	Split IPv4 address from dotted quad string.
 
-	>>> lookup('localhost')
-	['127.0.0.1']
+	>>> splitDotted('1.2.3.4')
+	[1, 2, 3, 4]
 	"""
-	rr = DNS.DnsRequest(query, qtype=type).req().answers
-	result = map(lambda x: x['data'], rr)
-	return result
+	quad = map(int, ip.split('.'))[:4]
+	while len(quad) < 4:
+		quad.append(0)
+	return quad
 
-# for backward compatibility
-from ipv4 import *
+def joinDotted(ip):
+	"""
+	Convert IPv4 address to dotted quad string.
+
+	>>> joinDotted([1, 2, 3, 4])
+	'1.2.3.4'
+	"""
+	return '%d.%d.%d.%d' % (ip[0], ip[1], ip[2], ip[3])
+
+def networkNumber(dottedIp, dottedNetmask):
+	"""
+	Calculate network number from dotted quad IPv4 address string and network mask.
+
+	>>> networkNumber('1.2.3.4', '255.255.254.0')
+	'1.2.2.0'
+	"""
+	ip = splitDotted(dottedIp)
+	netmask = splitDotted(dottedNetmask)
+
+	network = map(lambda (i, n): i & n, zip(ip, netmask))
+
+	return joinDotted(network)
+
+def broadcastNumber(dottedNetwork, dottedNetmask):
+	"""
+	Calculate broadcast address from dotted quad IPv4 address string and network mask.
+
+	>>> broadcastNumber('1.2.2.0', '255.255.254.0')
+	'1.2.3.255'
+	>>> broadcastNumber('1.2.3.4', '255.255.254.0')
+	'1.2.3.255'
+	"""
+	network = splitDotted(dottedNetwork)
+	netmask = splitDotted(dottedNetmask)
+
+	broadcast = map(lambda (n, m): n | (255 ^ m), zip(network, netmask))
+
+	return joinDotted(broadcast)
 
 if __name__ == '__main__':
 	import doctest
