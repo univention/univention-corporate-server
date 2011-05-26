@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.0-2) unstable; urgency=low
+
+  * fixed build dependencies (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 26 May 2011 14:56:50 +0200
+
 univention-management-console-frontend (0.0.0-1) unstable; urgency=low
 
   * Inital release (Bug #22461)
