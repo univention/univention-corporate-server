@@ -39,8 +39,6 @@ from distutils import cmd
 import os
 import subprocess
 
-UMC_MODULES = ( 'ucr', )
-
 class BuildI18N( cmd.Command ):
 	description = 'Compile .po files into .mo files'
 	def initialize_options( self ):
@@ -89,7 +87,7 @@ setup( name = 'univention-management-console',
 	   author_email = 'packages@univention.de',
 	   version = '1.0',
 	   package_dir = { '' : 'src' },
-	   packages = [ 'univention', 'univention.management', 'univention.management.console',	'univention.management.console.protocol', 'univention.management.console.modules' ] + map( lambda x: 'univention.management.console.modules.' + x, UMC_MODULES ),
+	   packages = [ 'univention', 'univention.management', 'univention.management.console',	'univention.management.console.protocol', 'univention.management.console.modules' ],
 	   scripts = [ 'scripts/univention-management-console-server', 'scripts/univention-management-console-web-server', 'scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls' ],
 	   data_files = [ ( 'share/univention-management-console/syntax', all_xml_files_in( 'data/syntax' ) ),
 					  ( 'share/univention-management-console/modules',  all_xml_files_in( 'data/modules' ) ),

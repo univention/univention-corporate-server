@@ -1,3 +1,9 @@
+univention-management-console (4.0.4-2) unstable; urgency=low
+
+  * remove build instruction for UCR module; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 27 May 2011 18:14:16 +0200
+
 univention-management-console (4.0.4-1) unstable; urgency=low
 
   * cleanup protocol definitions and provide constants for status codes; Bug #22460
