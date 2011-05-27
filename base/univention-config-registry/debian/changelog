@@ -1,3 +1,9 @@
+univention-config-registry (7.0.12-1) unstable; urgency=low
+
+  * removed UMC module; Bug #22624
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 27 May 2011 10:05:05 +0200
+
 univention-config-registry (7.0.11-2) unstable; urgency=low
 
   * fix build dependencies; Bug #22624
