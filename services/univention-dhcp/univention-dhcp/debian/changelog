@@ -1,0 +1,265 @@
+univention-dhcp (5.0.2-1) unstable; urgency=low
+
+  * check for sharedsubnet instead of subnet. Bug #18726
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Aug 2010 09:53:47 +0200
+
+univention-dhcp (5.0.1-1) unstable; urgency=low
+
+  * Only create the dhcp subnet if the subnet does not exists for
+    example in a shared subnet. Bug #18726
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 18:13:54 +0200
+
+univention-dhcp (5.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 16:00:12 +0200
+
+univention-dhcp (4.0.4-3) unstable; urgency=low
+
+  * service description adjusted (Bug #13469)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Mar 2010 18:40:26 +0100
+
+univention-dhcp (4.0.4-2) unstable; urgency=low
+
+  * service description adjusted (Bug #13469)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Mar 2010 18:40:19 +0100
+
+univention-dhcp (4.0.4-1) unstable; urgency=low
+
+  * added UCR Header, Bug #17816
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 09 Mar 2010 10:08:49 +0100
+
+univention-dhcp (4.0.3-1) unstable; urgency=low
+
+  * updated copyright Bug #17222
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:08:49 +0100
+
+univention-dhcp (4.0.2-1) unstable; urgency=low
+
+  * add univentionDhcpPool to listener module filter to force a restart
+    of dhcpd when creating a DHCP pool (Bug #16766)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 30 Dec 2009 16:56:49 +0100
+
+univention-dhcp (4.0.1-1) unstable; urgency=low
+
+  * provide new UCR category service-dhcp and descriptions for variables
+    (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  7 Jul 2009 14:51:52 +0200
+
+univention-dhcp (4.0.0-1) unstable; urgency=low
+
+  * Make init script LSB-compliant (Bug #14421)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 29 May 2009 15:10:09 +0200
+
+univention-dhcp (3.0.4-3) unstable; urgency=low
+
+  * don't check the autostart setting in the runit file otherwise the
+    process will be automatically started after the getty process is
+    available, Bug #9553
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Nov 2008 14:45:28 +0100
+
+univention-dhcp (3.0.4-2) unstable; urgency=low
+
+  * new autostart test in init script 
+
+ -- Felix Botner <fbotner@omar.knut.univention.de>  Tue, 28 Oct 2008 11:39:40 +0100
+
+univention-dhcp (3.0.4-1) unstable; urgency=low
+
+  * fixed minor syntax errors in dhcpd configuration 
+
+ -- Andreas B�sching <buesching@univention.de>  Wed, 16 Jan 2008 17:35:16 +0100
+
+univention-dhcp (3.0.3-1) unstable; urgency=low
+
+  * add default value for option 'ddns-hostname' 
+
+ -- Andreas B�sching <buesching@univention.de>  Sun, 13 Jan 2008 11:30:07 +0100
+
+univention-dhcp (3.0.2-1) unstable; urgency=low
+
+  * add missing config line if dynamic DNS is activated 
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 11 Nov 2007 11:31:18 +0100
+
+univention-dhcp (3.0.1-2) unstable; urgency=low
+
+  * fixed a few typos 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 26 Oct 2007 15:15:41 +0200
+
+univention-dhcp (3.0.1-1) unstable; urgency=low
+
+  * fied two minor bugs in dhcpd.conf template (ddns options) 
+  * register dhcpd/ddns.* variables
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 26 Oct 2007 14:47:57 +0200
+
+univention-dhcp (3.0.0-1) unstable; urgency=low
+  
+  * imported from UCS 2.0 branch
+  * add support for setting dynamic DNS options via configuration registry
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 25 Oct 2007 10:02:03 +0200
+
+univention-dhcp (2.0.9-1) unstable; urgency=low
+
+  * Restart the dhcp server after a dhcp subnet or a dhcp policy was
+    changed. This could be disabled with the ucr variable
+    dhcpd/restart/listener. Closes Bug #11801
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Oct 2008 12:56:07 +0200
+
+univention-dhcp (2.0.8-1) unstable; urgency=low
+
+  * fixed permissions of /var/log/univention/dhcp.log
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Sep 2007 14:08:36 +0200
+
+univention-dhcp (2.0.5-2) unstable; urgency=low
+
+  * more wording change univention-config-registry and univention-
+    baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:45:34 +0200
+
+univention-dhcp (2.0.5-1) unstable; urgency=low
+
+  * add version number to join script
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 09:45:19 +0200
+
+univention-dhcp (2.0.4-3) unstable; urgency=low
+
+  * Adapt to Univention Directory Listener.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 15:14:23 +0200
+
+univention-dhcp (2.0.4-2) unstable; urgency=low
+
+  * add service description file 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 18 Jul 2007 15:19:36 +0200
+
+univention-dhcp (2.0.3-2) unstable; urgency=low
+
+  * only try to start the daemon if the runsv link exists
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Jun 2007 11:40:47 +0200
+
+univention-dhcp (2.0.2-2) unstable; urgency=low
+
+  * make postinst script more robust
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Jun 2007 09:25:31 +0200
+
+univention-dhcp (2.0.2-1) unstable; urgency=low
+
+  * don't wait for runsv in the postinst
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Jun 2007 08:17:58 +0200
+
+univention-dhcp (2.0.1-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 16:09:49 +0200
+
+univention-dhcp (2.0.1-1) unstable; urgency=low
+
+  * switch from runsvctrl to sv
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 13 Jun 2007 13:31:57 +0200
+
+univention-dhcp (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 May 2007 17:03:52 +0200
+
+univention-dhcp (1.14) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Nov 2006 14:02:01 +0100
+
+univention-dhcp (1.13) unstable; urgency=low
+
+  * Fix installation with debhelper 4 and 5.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 16 Aug 2006 16:08:36 +0200
+
+univention-dhcp (1.12) unstable; urgency=low
+
+  * Really add conf files.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 16 Aug 2006 15:47:43 +0200
+
+univention-dhcp (1.11) unstable; urgency=low
+
+  * Add univention.conf, used to maintain Univention-specific additions
+  * Add local.conf, allowing local admins to modify DHCP options.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 16 Aug 2006 15:19:24 +0200
+
+univention-dhcp (1.10) unstable; urgency=low
+
+  * divert old dhcp init script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  2 May 2006 07:32:49 +0200
+
+univention-dhcp (1.8) unstable; urgency=low
+
+  * Support for spaces in ldap base
+  * Ability to disable dhcpd permanently by baseconfig-variable
+
+ -- Lars Rehe <lars@anton.knut.univention.de>  Wed, 29 Jun 2005 13:31:41 +0200
+
+univention-dhcp (1.6) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 29 Apr 2004 15:05:01 +0200
+
+univention-dhcp (1.5) unstable; urgency=low
+
+  * modify default-settings in client-boot-pxe and bind-proxy
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 14 Mar 2004 12:16:56 +0100
+
+univention-dhcp (1.4) unstable; urgency=low
+
+  * using runit finish script
+  * added init.d script
+
+ -- Stefan Gohmann <stefan@ds-work.office.univention.de>  Sat, 14 Feb 2004 13:13:06 +0100
+
+univention-dhcp (1.3) unstable; urgency=low
+
+  * use runit
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Nov 2003 13:49:40 +0200
+
+univention-dhcp (1.2) unstable; urgency=low
+
+  * new versioning scheme
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 20 May 2003 13:49:40 +0200
+
+univention-dhcp (0.1.univention) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  6 Mar 2003 08:38:12 +0200
