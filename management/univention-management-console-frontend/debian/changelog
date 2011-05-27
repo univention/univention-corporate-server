@@ -1,3 +1,10 @@
+univention-management-console-frontend (0.0.7-2) unstable; urgency=low
+
+  * added postinst script to set /var/www/univention-management-console
+    (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 27 May 2011 17:48:39 +0200
+
 univention-management-console-frontend (0.0.7-1) unstable; urgency=low
 
   * add symlinks in final build, inline umc.widgets.* (Bug #22461)
