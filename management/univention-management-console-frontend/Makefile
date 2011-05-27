@@ -31,25 +31,27 @@
 # <http://www.gnu.org/licenses/>.
 
 jsFiles:=$(shell find umc -name "*.js")
-pkgDir=/usr/share/univention-management-console-frontend/
+pkgDir:=/usr/share/univention-management-console-frontend/
 timestamp:=$(shell date +'%Y%d%m%H%M%S')
 version:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
-buildDir=$(CURDIR)/build
+buildDir:=$(CURDIR)/build
+tmpDir:=$(buildDir)/_tmp$(timestamp)
 
 .PHONY: build build-dev build-common install clean jslint
 
 build: build-common
+	@# create a temp directory
+	mkdir -p "$(tmpDir)"
 	@# create the module umc.widgets containing a require for all umc widgets
-	mkdir -p "$(buildDir)/js/umc"
 	( \
 		echo '/*global dojo */'; \
-		echo 'dojo.provide("umc.widgets");'; \
+		echo 'dojo.provide("_tmp$(timestamp).widgets");'; \
 		find umc/widgets/ -name "*.js" | sed 's|/|.|g; s|^\(.*\).js$$|dojo.require("\1");|'; \
-	) > $(buildDir)/js/umc/widgets.js
+	) > $(tmpDir)/widgets.js
 	@# dojo build
-	sed 's|%CURDIR%|$(CURDIR)|' "$(CURDIR)/build_profile.js" > "$(buildDir)/.build_profile.js"
+	sed 's|%CURDIR%|$(CURDIR)|g; s|%TIMESTAMP%|$(timestamp)|g' "$(CURDIR)/build_profile.js" > "$(tmpDir)/build_profile.js"
 	cd /usr/share/univention-dojo/util/buildscripts; \
-	./build.sh profileFile="$(buildDir)/.build_profile.js" releaseDir="$(CURDIR)/build/js" version="$(version)"
+	./build.sh profileFile="$(tmpDir)/build_profile.js" releaseDir="$(CURDIR)/build/js" version="$(version)"
 	@# index page .. replace the HASH with a timestamp
 	sed 's/%HASH%/_$(timestamp)/' index.html > "$(buildDir)/index.html"
 	@# copy css style sheets and images
@@ -88,9 +90,9 @@ build-common:
 	done;
 
 install: build
-	@# copy all files from the build directory .. exclude file of the pattern ".*"
+	@# copy all files from the build directory .. exclude file of the tmp directory
 	mkdir -p $(DESTDIR)$(pkgDir)
-	rsync -rp --exclude ".svn" --exclude ".*" $(buildDir)/ $(DESTDIR)$(pkgDir)
+	rsync -rpl --exclude ".svn" --exclude "_tmp$(timestamp)" $(buildDir)/ $(DESTDIR)$(pkgDir)
 	
 clean:
 	rm -rf build

@@ -5,8 +5,8 @@
 
 dependencies = {
 	//stripConsole : 'all',
-	action : 'clean,release',
-	//optimize : 'shrinksafe.keepLines',
+	action : 'release',
+	optimize : 'shrinksafe.keepLines',
 	releaseName : '',
 	localeList : 'de-de,en-us',
 	cssOptimize: 'comments.keepLines',
@@ -15,15 +15,17 @@ dependencies = {
 		["umc", "%CURDIR%/umc"], 
 		["dojo", "/usr/share/univention-dojo/dojo"], 
 		["dijit", "/usr/share/univention-dojo/dijit"],
-		["dojox", "/usr/share/univention-dojo/dojox"]
+		["dojox", "/usr/share/univention-dojo/dojox"],
+		["_tmp%TIMESTAMP%", "%CURDIR%/build/_tmp%TIMESTAMP%"]
 	], 
 	layers: [{
 		resourceName:"umc.build",
 		name:"../umc/build.js",
 		dependencies:[
 			"umc.app",
-			"umc.widgets"
-		],
+			"umc.widgets",
+			"_tmp%TIMESTAMP%.widgets" // force inlining of all our widgets
+		]
 		//layerDependencies:[]
 	}]
 }
