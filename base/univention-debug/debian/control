@@ -8,7 +8,6 @@ Build-Depends: debhelper (>= 7.0.50~), autoconf, automake, libtool, python-all-d
 Package: libunivention-debug1
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Provides: libunivention-debug0
 Description: UCS - debugging and logging library
  This package includes the Univention debugging and logging
  library.
