@@ -6,7 +6,7 @@
 dependencies = {
 	//stripConsole : 'all',
 	action : 'clean,release',
-	optimize : 'shrinksafe.keepLines',
+	//optimize : 'shrinksafe.keepLines',
 	releaseName : '',
 	localeList : 'de-de,en-us',
 	cssOptimize: 'comments.keepLines',

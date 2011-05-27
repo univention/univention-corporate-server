@@ -30,17 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-jsFiles=$(shell find umc -name "*.js")
+jsFiles:=$(shell find umc -name "*.js")
 pkgDir=/usr/share/univention-management-console-frontend/
-timestamp=$(shell date +'%Y%d%m%H%M%S')
-version=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
+timestamp:=$(shell date +'%Y%d%m%H%M%S')
+version:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 buildDir=$(CURDIR)/build
 
-.PHONY: build install clean jslint
+.PHONY: build build-dev build-common install clean jslint
 
-build:
-	mkdir -p "$(buildDir)/js/umc"
+build: build-common
 	@# create the module umc.widgets containing a require for all umc widgets
+	mkdir -p "$(buildDir)/js/umc"
 	( \
 		echo '/*global dojo */'; \
 		echo 'dojo.provide("umc.widgets");'; \
@@ -51,14 +51,33 @@ build:
 	cd /usr/share/univention-dojo/util/buildscripts; \
 	./build.sh profileFile="$(buildDir)/.build_profile.js" releaseDir="$(CURDIR)/build/js" version="$(version)"
 	@# index page .. replace the HASH with a timestamp
-	sed 's/%HASH%/_$(timestamp)/' index.html > "$(CURDIR)/build/index.html"
+	sed 's/%HASH%/_$(timestamp)/' index.html > "$(buildDir)/index.html"
 	@# copy css style sheets and images
-	rsync -rp --delete --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css images $(buildDir) 
+	rsync -rp --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css images $(buildDir) 
+
+build-dev: build-common
+	mkdir -p "$(buildDir)/js"
+	@# create the module umc.widgets containing a require for all umc widgets
+	@# symlinks to dojo source code
+	for i in dojo dijit dojox; do \
+		ln -fs /usr/share/univention-dojo/$$i "$(buildDir)/js"; \
+	done
+	@# symlink to umc code
+	ln -fs "$(CURDIR)/umc" "$(buildDir)/js/umc"
+	@# index page .. replace the HASH with a timestamp
+	sed 's/%HASH%/_$(timestamp)/' index-dev.html > "$(buildDir)/index.html"
+	@# symlinks for css style sheets and images
+	cp -rfs "$(CURDIR)/"{css,images} "$(buildDir)"
+
+build-common:
 	@# scale all icons
 	for s in 16x16 24x24 32x32 64x64; do \
-		mkdir -p $(buildDir)/images/icons/$$s; \
+		mkdir -p "$(buildDir)/images/icons/$$s"; \
 		for i in icons/*.png; do \
-			convert "$$i" -resize $$s "$(buildDir)/images/icons/$$s/$${i##*/}"; \
+			dest="$(buildDir)/images/icons/$$s/$${i##*/}"; \
+			if [ ! -e "$$dest" ]; then \
+				convert "$$i" -resize $$s "$$dest"; \
+			fi; \
 		done; \
 	done
 	@# symlinks as temporary directories with timestamp

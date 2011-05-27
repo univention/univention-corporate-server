@@ -1,3 +1,10 @@
+univention-management-console-frontend (0.0.6-1) unstable; urgency=low
+
+  * added build-dev target to Makefile for online development, fixed module 
+    loading (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 27 May 2011 12:14:29 +0200
+
 univention-management-console-frontend (0.0.5-3) unstable; urgency=low
 
   * fixed ucslint.overrides (Bug #22461)
