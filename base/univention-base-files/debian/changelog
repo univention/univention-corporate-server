@@ -1,3 +1,10 @@
+univention-base-files (1.0.3-1) unstable; urgency=low
+
+  * Move sitecustomize.py to univention-base-files (Bug #22160)
+  * Use UCRWARNING.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 27 May 2011 18:18:57 +0200
+
 univention-base-files (1.0.2-2) unstable; urgency=low
 
   * Copy joinDotted() from univention.lib (Bug #22521)

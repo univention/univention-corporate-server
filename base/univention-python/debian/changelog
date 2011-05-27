@@ -1,3 +1,9 @@
+univention-python (6.0.5-1) unstable; urgency=low
+
+  * Move sitecustomize.py to univention-base-files (Bug #22160)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 27 May 2011 18:18:12 +0200
+
 univention-python (6.0.4-1) unstable; urgency=low
 
   * Split ipv4 helpers to own module (Bug #22521)

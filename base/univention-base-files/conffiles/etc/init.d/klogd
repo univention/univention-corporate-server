@@ -1,7 +1,5 @@
 #! /bin/sh
-
 @%@UCRWARNING=# @%@
-
 
 # /etc/init.d/klogd: start the kernel log daemon.
 

@@ -1,8 +1,5 @@
 #! /bin/sh
-
 @%@UCRWARNING=# @%@
-
-
 
 # /etc/init.d/sysklogd: start the system log daemon.
 

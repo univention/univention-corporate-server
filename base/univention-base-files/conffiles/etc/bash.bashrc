@@ -1,12 +1,4 @@
-# Warning: This file is auto-generated and might be overwritten by
-#          univention-config-registry.
-#          Please edit the following file instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-config-registry
-#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
-#
-#       /etc/univention/templates/files/etc/bash.bashrc
-#
+@%@UCRWARNING=# @%@
 
 # System-wide .bashrc file for interactive bash(1) shells.
 

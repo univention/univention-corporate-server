@@ -49,7 +49,7 @@ def joinDotted(ip):
 	>>> joinDotted([1, 2, 3, 4])
 	'1.2.3.4'
 	"""
-	return '%d.%d.%d.%d' % (ip[0], ip[1], ip[2], ip[3])
+	return '%d.%d.%d.%d' % tuple(ip[0:4])
 
 def networkNumber(dottedIp, dottedNetmask):
 	"""

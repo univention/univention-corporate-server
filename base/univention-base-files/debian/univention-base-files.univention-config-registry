@@ -203,3 +203,18 @@ Variables: syslog/.*
 Type: subfile
 Multifile: etc/syslog.conf
 Subfile: etc/syslog.conf.d/00syslog.conf
+
+Type: multifile
+Multifile: etc/python2.6/sitecustomize.py
+
+Type: subfile
+Multifile: etc/python2.6/sitecustomize.py
+Subfile: etc/python2.6/sitecustomize.py.d/00header.py
+
+Type: subfile
+Multifile: etc/python2.6/sitecustomize.py
+Subfile: etc/python2.6/sitecustomize.py.d/10apport.py
+
+Type: subfile
+Multifile: etc/python2.6/sitecustomize.py
+Subfile: etc/python2.6/sitecustomize.py.d/20utf8.py
