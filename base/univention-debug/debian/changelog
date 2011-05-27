@@ -1,3 +1,9 @@
+univention-debug (5.0.6-4) unstable; urgency=low
+
+  * debian/control: Conflics & Replaces libunivention-debug0 (Bug #22160)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 27 May 2011 10:29:02 +0200
+
 univention-debug (5.0.6-3) unstable; urgency=low
 
   * debian/control: revert last commit svn24520 (Bug #22160)
