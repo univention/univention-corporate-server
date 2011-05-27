@@ -1,4 +1,0 @@
-#! /bin/sh -e
-
-
-exec /usr/sbin/dhcpd3 -q -f >>/var/log/daemon.log
