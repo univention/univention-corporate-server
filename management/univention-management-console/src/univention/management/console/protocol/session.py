@@ -225,7 +225,7 @@ class Processor( signals.Provider, Translation ):
 
 	def handle_request_version( self, msg ):
 		res = Response( msg )
-		res.status = 200 # Ok
+		res.status = SUCCESS # Ok
 		res.body[ 'version' ] = VERSION
 
 		self.signal_emit( 'response', res )
@@ -241,18 +241,18 @@ class Processor( signals.Provider, Translation ):
 			res.body[ 'categories' ] = categoryManager.all()
 			CORE.info( 'Modules: %s' % str( self.__command_list ) )
 			CORE.info( 'Categories: %s' % str( res.body[ 'categories' ] ) )
-			res.status = 200 # Ok
+			res.status = SUCCESS # Ok
 
 		elif 'categories/list' in msg.arguments:
 			res.body[ 'categories' ] = categoryManager.all()
-			res.status = 200 # Ok
+			res.status = SUCCESS # Ok
 		elif 'syntax/verification' in msg.arguments:
 			syntax_name = msg.options.get( 'syntax' )
 			value = msg.options.get( 'value' )
 			if not value or not syntax_name:
-				res.status = 600 # failed to process command
+				res.status = BAD_REQUEST_INVALID_OPTS
 			else:
-				res.status = 200
+				res.status = SUCCESS
 				try:
 					syntaxManager.verify( syntax_name, value )
 					res.result = True
@@ -260,7 +260,7 @@ class Processor( signals.Provider, Translation ):
 					res.result = False
 					res.message = str( e )
 		else:
-			res.status = 402 # invalid command arguments
+			res.status = BAD_REQUEST_INVALID_ARGS
 
 		self.signal_emit( 'response', res )
 
@@ -270,18 +270,17 @@ class Processor( signals.Provider, Translation ):
 			return self.handle_request_unknown( msg )
 
 		if msg.arguments[ 0 ] == 'locale':
-			res.status = 200
+			res.status = SUCCESS
 			self.__locale = msg.arguments[ 1 ]
 			try:
 				self.set_language( msg.arguments[ 1 ] )
 			except LocaleNotFound, e:
-				# specified locale is not available
-				res.status = 601
+				res.status = BAD_REQUEST_UNAVAILABLE_LOCALE
 				CORE.warn( 'Setting locale: specified locale is not available (%s)' % self.__locale )
 			self.signal_emit( 'response', res )
 
 		elif msg.arguments[ 0 ] == 'sessionid':
-			res.status = 200
+			res.status = SUCCESS
 			self.__sessionid = msg.arguments[ 1 ]
 			self.signal_emit( 'response', res )
 
@@ -297,8 +296,8 @@ class Processor( signals.Provider, Translation ):
 		module_name = moduleManager.module_providing( self.__command_list, command )
 		if not module_name:
 			res = Response( msg )
-			res.status = 404 # unknown command
-			res.message = status_information( 404 )
+			res.status = BAD_REQUEST_NOT_ALLOWED
+			res.message = status_description( req.status )
 			self.signal_emit( 'response', res )
 			return None
 
@@ -315,8 +314,8 @@ class Processor( signals.Provider, Translation ):
 		if module_name and msg.arguments:
 			if not self.acls.is_command_allowed( msg.arguments[ 0 ], options = msg.options ):
 				response = Response( msg )
-				response.status = 405 # not allowed
-				response.message = status_information( 405 )
+				response.status = BAD_REQUEST_NOT_ALLOWED
+				response.message = status_description( response.status )
 				self.signal_emit( 'response', response )
 				return
 			if not module_name in self.__processes:
@@ -347,8 +346,8 @@ class Processor( signals.Provider, Translation ):
 				CORE.error( 'Connection to module %s process failed' % mod.name )
 				# inform client
 				res = Response( msg )
-				res.status = 503 # error connecting to module process
-				res.message = status_information( 503 )
+				res.status = SERVER_ERR_MODULE_FAILED # error connecting to module process
+				res.message = status_description( res.status )
 				self.signal_emit( 'response', res )
 				# cleanup module
 				mod.signal_disconnect( 'closed', notifier.Callback( self._socket_died ) )
@@ -409,14 +408,14 @@ class Processor( signals.Provider, Translation ):
 	def _socket_died( self, module_name, msg):
 		CORE.warn( 'Socket died (module=%s)' % module_name )
 		res = Response( msg )
-		res.status = 502 # module process died unexpectedly
+		res.status = SERVER_ERR_MODULE_DIED
 		self._mod_died(0, 1, module_name, msg)
 
 	def _mod_died( self, pid, status, name, msg ):
 		if status:
 			CORE.warn( 'Module process died (%d): %s' % ( pid, str( status ) ) )
 			res = Response( msg )
-			res.status = 502 # module process died unexpectedly
+			res.status = SERVER_ERR_MODULE_DIED
 		else:
 			CORE.info( 'Module process died on purpose' )
 
@@ -433,8 +432,8 @@ class Processor( signals.Provider, Translation ):
 
 	def handle_request_unknown( self, msg ):
 		res = Response( msg )
-		res.status = 404 # unknown command
-		res.message = status_information( 404 )
+		res.status = UMCP_ERR_UNKNOWN_COMMAND
+		res.message = status_description( res.status )
 
 		self.signal_emit( 'response', res )
 

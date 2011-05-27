@@ -43,11 +43,12 @@ import notifier.signals as signals
 from OpenSSL import *
 
 # internal packages
-import session
-import message
-import univention.debug as ud
-
 import univention.management.console as umc
+
+from .message import *
+from .session import *
+from .definitions import *
+
 from ..resources import *
 from ..log import *
 
@@ -56,7 +57,7 @@ class MagicBucket( object ):
 	ensures that without successful authentication no other command is
 	excepted. After the user has authenticated the commands a are passed
 	on to the Processor.'''
-	def __init__( self, processorClass = session.Processor ):
+	def __init__( self, processorClass = Processor ):
 		self.__states = {}
 		self.__processorClass = processorClass
 
@@ -67,7 +68,7 @@ class MagicBucket( object ):
 		'''Is called by the Server object to annouce a new incoming
 		connetion.'''
 		CORE.info( 'Established connection: %s' % client )
-		state = session.State( client, socket )
+		state = State( client, socket )
 		state.signal_connect( 'authenticated', self._authenticated )
 		self.__states[ socket ] = state
 		notifier.socket_add( socket , self._receive )
@@ -86,9 +87,9 @@ class MagicBucket( object ):
 		'''Signal callback: Invoked when a authentication has been
 		tried. This function generates the UMCP response.'''
 		if success:
-			state.authResponse.status = 200
+			state.authResponse.status = SUCCESS
 		else:
-			state.authResponse.status = 401 # authentication failure
+			state.authResponse.status = BAD_REQUEST_AUTH_FAILED
 		state.authenticated = success
 		self._response( state.authResponse, state )
 		state.authResponse = None
@@ -123,16 +124,20 @@ class MagicBucket( object ):
 		msg = None
 		try:
 			while state.buffer:
-				msg = message.Message()
+				msg = Message()
 				state.buffer = msg.parse( state.buffer )
 				self._handle( state, msg )
-		except message.IncompleteMessageError, e:
+		except IncompleteMessageError, e:
 			CORE.info( 'MagicBucket: incomplete message: %s' % str( e ) )
-		except ( message.ParseError, message.UnknownCommandError ), e:
-			CORE.error( 'Incomplete message: %s' % str( e ) )
-			res = message.Response( msg )
-			res.id = -1
-			res.status = 406 # Unknown command
+		except ParseError, e:
+			CORE.error( 'Parser error: %s' % str( e ) )
+			res = Response( msg )
+			res.status = UMCP_ERR_UNPARSABLE_BODY
+			self._response( res, state )
+		except UnknownCommandError, e:
+			CORE.error( 'Unknown Command message: %s' % str( e ) )
+			res = Response( msg )
+			res.status = UMCP_ERR_UNKNOWN_COMMAND
 			self._response( res, state )
 
 		return True
@@ -142,12 +147,12 @@ class MagicBucket( object ):
 		successful authentication has been completed.'''
 		CORE.info( 'Incoming request of type %s' % msg.command )
 		if not state.authenticated and msg.command != 'AUTH':
-			res = message.Response( msg )
-			res.status = 401 # unauthorized
+			res = Response( msg )
+			res.status = BAD_REQUEST_UNAUTH
 			self._response( res, state )
 		elif msg.command == 'AUTH':
 			state.requests[ msg.id ] = msg
-			state.authResponse = message.Response( msg )
+			state.authResponse = Response( msg )
 			state.authenticate( msg.body[ 'username' ],	msg.body[ 'password' ] )
 		else:
 			# inform processor

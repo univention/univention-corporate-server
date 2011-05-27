@@ -41,16 +41,12 @@ import notifier.threads as threads
 import univention.management.console.protocol as umcp
 import univention.debug as ud
 
-_commands = umcp.command_names()
-_commands.append( 'HELP' )
-
 def _completer( text, state ):
-	global _commands
 	result = []
 	text = text.upper()
-	for cmd in umcp.command_names():
-		if cmd.startswith( text ):
-			result.append( cmd )
+	for cmd in umcp.COMMANDS:
+		if cmd.name.startswith( text ):
+			result.append( cmd.name )
 
 	if len( result ) > state:
 		return result[ state ]

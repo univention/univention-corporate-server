@@ -46,6 +46,9 @@ import univention.admin.handlers.computers.managedclient as managedclient
 import univention.admin.handlers.computers.mobileclient as mobileclient
 
 class ACLs:
+	"""Provides methods to determine the access rights of users to
+	specific UMC commands"""
+
 	# constants
 	( MATCH_NONE, MATCH_PART, MATCH_FULL ) = range( 3 )
 	CACHE_DIR = '/var/cache/univention-management-console/acls'
@@ -53,19 +56,18 @@ class ACLs:
 	_systemroles = ( dc_master, dc_backup, dc_slave, memberserver, managedclient, mobileclient )
 
 	def __init__( self, ldap_base = None, acls = None ):
-
 		self.__ldap_base = ldap_base
 		# the main acl dict
-		if not acls:
+		if acls is None:
 			self.acls = { 'allow': [ ], 'disallow': [ ] }
 		else:
 			self.acls = acls
 
 		# internal cache for the hosts
-		self.__cache = { }
+		self.__cache = {}
 
 	def _expand_hostlist( self, hostlist ):
-		hosts = [ ]
+		hosts = []
 		if self.__ldap_base is None:
 			self.__ldap_base = umc.configRegistry.get( 'ldap/base', None )
 
@@ -198,16 +200,16 @@ class ACLs:
 		return match
 
 	def __command_match( self, cmd1, cmd2 ):
-		# if cmd1 == cmd2 return self.COMMAND_MATCH
-		# if cmd2 is part od cmd1 return self.COMMAND_PART
-		# if noting return self.COMMAND_NONE
-
+		"""
+		if cmd1 == cmd2 return self.COMMAND_MATCH
+		if cmd2 is part od cmd1 return self.COMMAND_PART
+		if noting return self.COMMAND_NONE
+		"""
 		if cmd1 == cmd2:
 			return ACLs.MATCH_FULL
 
-		if cmd1[ -1 ] == '*':
-			if cmd2.startswith( cmd1[ 0 :-2 ] ):
-				return ACLs.MATCH_PART
+		if cmd1[ -1 ] == '*' and cmd2.startswith( cmd1[ : -1 ] ):
+			return ACLs.MATCH_PART
 
 		return ACLs.MATCH_NONE
 
@@ -252,13 +254,14 @@ class ACLs:
 		return False
 
 	def _dump( self ):
+		"""Dumps the ACLs for the user"""
 		ACL.process( '          %8s -- %20s -- %20s -- %20s' % ( 'fromUser', 'Host', 'Command', 'Options' ) )
 		ACL.process( '**********************************************************************************************')
 
 		for allow in self.acls[ 'allow' ]:
-			ACL.process( 'ALLOW:    %8s -- %20s -- %20s -- %20s' % ( allow[ 'fromUser' ], allow[ 'host' ], allow[ 'command' ], allow[ 'options' ] ))
+			ACL.process( 'ALLOW:    %(fromUser)8s -- %(host)20s -- %(command)20s -- %(options)20s' % allow )
 		for disallow in self.acls[ 'disallow' ]:
-			ACL.process( 'DISALLOW: %8s -- %20s -- %20s -- %20s' % ( disallow[ 'fromUser' ], disallow[ 'host' ], disallow[ 'command' ], disallow[ 'options' ] ))
+			ACL.process( 'DISALLOW: %(fromUser)8s -- %(host)20s -- %(command)20s -- %(options)20s' %disallow )
 
 	def _read_from_file( self, username ):
 		filename = os.path.join( ACLs.CACHE_DIR,  username )
@@ -283,6 +286,8 @@ class ACLs:
 		return self.acls
 
 class ConsoleACLs ( ACLs ):
+	"""Reads ACLs from LDAP directory for the given username."""
+
 	FROM_USER = True
 	FROM_GROUP = False
 
@@ -307,28 +312,23 @@ class ConsoleACLs ( ACLs ):
 
 	def _read_from_ldap( self ):
 		# TODO: check for fixed attributes
-		# userAllow = [ ]
-		# userDisallow = [ ]
 		policy = self._get_policy_for_dn ( self.lo.binddn )
 		if policy:
 			if 'univentionConsoleAllow' in policy:
 				for value in policy[ 'univentionConsoleAllow' ][ 'value' ]:
-					self._append_allow( ConsoleACLs.FROM_USER, self.lo.get( value ) ) #value.split( ':' )[ 0 ], value.split( ':' )[ 1], value.split( ':' )[ 2] )
+					self._append_allow( ConsoleACLs.FROM_USER, self.lo.get( value ) )
 			if 'univentionConsoleDisallow' in policy:
 				for value in policy[ 'univentionConsoleDisallow' ][ 'value' ]:
-					self._append_disallow( ConsoleACLs.FROM_USER, self.lo.get( value ) ) #value.split( ':' )[ 0 ], value.split( ':' )[ 1], value.split( ':' )[ 2] )
+					self._append_disallow( ConsoleACLs.FROM_USER, self.lo.get( value ) )
 
 		# TODO: check for nested groups
 		groupDNs = self.lo.searchDn( filter='uniqueMember=%s' % self.lo.binddn )
 
-		# groupAllow = [ ]
-		# groupDisallow = [ ]
 		for gDN in groupDNs:
 			policy = self._get_policy_for_dn ( gDN )
 			if not policy:
 				continue
 			if 'univentionConsoleAllow' in policy:
-				# groupAllow.append( policy[ 'univentionConsoleAllow' ][ 'value' ] )
 				for value in policy[ 'univentionConsoleAllow' ][ 'value' ]:
 					self._append_allow( ConsoleACLs.FROM_GROUP, self.lo.get( value ) )
 			if 'univentionConsoleDisallow' in policy:

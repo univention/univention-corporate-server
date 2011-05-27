@@ -58,7 +58,8 @@ class Client( signals.Provider ):
 		CORE.info( '__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer() )
 		CORE.info( '__verify_cert_cb: errnum=%d  depth=%d	 ok=%d' % (errnum, depth, ok) )
 		if depth == 0 and ok == 0:
-			self.signal_emit( 'authenticated', False, 504, status_information( 504 ) )
+			status = status_get( BAD_REQUEST_AUTH_FAILED )
+			self.signal_emit( 'authenticated', False, status.code, status.description )
 		return ok
 
 	def __init__( self, servername = 'localhost', port = 6670, unix = None, ssl = True, auth = True ):
@@ -231,8 +232,9 @@ class Client( signals.Provider ):
 			response = Response()
 			response._id = reqid
 			response._command = 'COMMAND'
-			response.status = 502 # module process died unexpectedly
+			response.status = SERVER_ERR_MODULE_DIED
 			self.signal_emit( 'response', response )
+		self._unfinishedRequests = []
 
 	def _recv( self, sock ):
 		try:
@@ -285,15 +287,15 @@ class Client( signals.Provider ):
 
 	def _handle( self, response ):
 		if response.command == 'AUTH' and response.id == self.__auth_id:
-			if response.status == 200:
+			if response.status == SUCCESS:
 				self.__authenticated = True
 				self.__unfinishedRequests.remove( response.id )
 			self.signal_emit( 'authenticated', self.__authenticated,
 							  response.status,
-							  status_information( response.status ) )
+							  status_description( response.status ) )
 		elif response.id in self.__unfinishedRequests:
 			self.signal_emit( 'response', response )
-			if response.isFinal():
+			if response.is_final():
 				self.__unfinishedRequests.remove( response.id )
 		else:
 			self.signal_emit( 'error', UnknownRequestError() )

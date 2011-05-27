@@ -44,12 +44,21 @@ _ = obj.translate
 class LocaleNotFound( Exception ):
 	pass
 
-class Translation( object ):
+class NullTranslation( object ):
 	def __init__( self, namespace, language = None ):
 		self._domain = namespace.replace( '/', '-' ).replace( '.', '-' )
 		self._translation = None
 		self.set_language( language )
 
+	def set_language( self, language = None ):
+		pass
+
+	def translate( self, message ):
+		return message
+
+	_ = translate
+
+class Translation( NullTranslation ):
 	def set_language( self, language ):
 		if language is None:
 			LOCALE.info( 'Trying to determine default locale settings' )
@@ -68,8 +77,5 @@ class Translation( object ):
 			LOCALE.error( 'Could not find locale %s for domain %s' % ( language, self._domain ) )
 			raise LocaleNotFound()
 
-	def _( self, message ):
+	def translate( self, message ):
 		return self._translation.ugettext( message )
-
-	translate = _
-

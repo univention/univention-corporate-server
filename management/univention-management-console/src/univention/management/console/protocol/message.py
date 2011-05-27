@@ -59,6 +59,7 @@ class UnknownCommandError( Exception ):
 class InvalidArgumentsError( Exception ):
 	pass
 
+# Constants
 MIMETYPE_JSON = 'application/json'
 MIMETYPE_JPEG = 'image/jpeg'
 MIMETYPE_PNG = 'image/png'
@@ -73,14 +74,14 @@ class Message( object ):
 		self._id = None
 		self._length = 0
 		self._type = type
-		self.command = command
-		self.arguments = arguments
-		self.mimetype = mime_type
-		self.options = options
 		if mime_type == MIMETYPE_JSON:
 			self.body = {}
 		else:
 			self.body = ''
+		self.command = command
+		self.arguments = arguments
+		self.mimetype = mime_type
+		self.options = options
 		if data:
 			self.parse( data )
 
@@ -146,7 +147,8 @@ class Message( object ):
 	status = property( lambda self: self._get_key( 'status' ), lambda self, value: self._set_key( 'status', value, int ) )
 
 	# property: options
-	options = property( lambda self: self._get_key( 'options' ), lambda self, value: self._set_key( 'options', value, int ) )
+	options = property( lambda self: self._get_key( 'options' ), lambda self, value: self._set_key( 'options', value ) )
+
 	def parse( self, msg ):
 		lines = msg.split( '\n', 1 )
 
@@ -237,7 +239,7 @@ class Response( Message ):
 			self.parse( data )
 
 	def is_final( self ):
-		return ( self._id and self.status != 210 )
+		return ( self._id and self.status != SUCCESS_PARTIAL )
 
 	recreate_id = None
 

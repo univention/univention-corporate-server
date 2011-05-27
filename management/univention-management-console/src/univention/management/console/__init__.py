@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 
 from locales import Translation
-from daemon import daemonize
 
 import univention.config_registry as ucr
 

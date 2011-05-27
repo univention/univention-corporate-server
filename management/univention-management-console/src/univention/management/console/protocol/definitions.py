@@ -31,83 +31,122 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.management.console.locales as locales
+import sys
 
-_ = locales.Translation( 'univention.management.console' ).translate
+from ..locales import *
 
-__all__ = ( 'command_names', 'command_is_known', 'command_has_arguments',
-			'command_has_options', 'command_is_valid_option',
-			'status_information' )
+_ = NullTranslation( 'univention.management.console' ).translate
 
-COMMANDS = {
-	'AUTH' : ( False, ( 'username', 'password' ) ),
-	'COMMAND' : ( True, () ),
-	'VERSION' : ( False, None ),
-	'GET' : ( True, () ),
-	'SET' : ( True, () ),
-	'CLOSE' : ( False, None ),
-	'CANCEL' : ( False, ( 'ids', ) ),
-	'STATUS' : ( False, ( 'ids', ) ),
-	'EXIT' : ( True, () ),
-}
+class Command( object ):
+	def __init__( self, name, has_arguments, *options ):
+		self._name = name
+		self._has_arguments = has_arguments
+		self._options = options
 
-STATUSINFORMATION = {
-	200 : _( 'OK, operation successful' ),
-	201 : _( 'OK, containing report message' ),
-	210 : _( 'OK, partial response' ),
-	250 : _( 'OK, operation successful ask for shutdown of connection' ),
-	300 : _( 'Command currently not available/possible' ),
-	301 : _( 'non-fatal error, processing may continue' ),
-	400 : _( 'Bad request' ),
-	401 : _( 'Unauthorized' ),
-	402 : _( 'Invalid command arguments' ),
-	403 : _( 'Forbidden' ),
-	404 : _( 'Not found' ),
-	405 : _( 'Command not allowed' ),
-	406 : _( 'Unknown command' ),
-	411 : _( 'Authentication failed' ),
-	412 : _( 'Account is expired' ),
-	413 : _( 'Account is disabled' ),
-	414 : _( 'Access to console daemon is prohibited' ),
-	415 : _( 'Command execution prohibited' ),
-	500 : _( 'Internal error' ),
-	501 : _( 'Request could not be found' ),
-	502 : _( 'Module process died unexpectedly' ),
-	503 : _( 'Connection to module process failed' ),
-	504 : _( 'SSL server certificate is not trustworthy' ),
-	551 : _( 'Unparsable message header' ),
-	552 : _( 'Unknown command' ),
-	553 : _( 'Invalid number of arguments' ),
-	554 : _( 'Unparsable message body' ),
-	600 : _( 'Error occuried during command processing' ),
-	601 : _( 'Specified locale is not available' ),
-	}
+	@property
+	def name( self ):
+		return self._name
 
-def command_names():
-	return COMMANDS.keys()
+	@property
+	def has_arguments( self ):
+		return self._has_arguments
+
+	@property
+	def options( self ):
+		return self._options
+
+COMMANDS = (
+	Command( 'AUTH', False, 'username', 'password' ),
+	Command( 'COMMAND', True ),
+	Command( 'VERSION', False ),
+	Command( 'GET', True ),
+	Command( 'SET', True ),
+	Command( 'CLOSE', False ),
+	Command( 'CANCEL', False, 'ids' ),
+	Command( 'STATUS', False, 'ids' ),
+	Command( 'EXIT', True ),
+)
+
+class Status( object ):
+	def __init__( self, name, code, description ):
+		self._name = name
+		self._code = code
+		self._description = description
+
+	@property
+	def name( self ):
+		return self._name
+
+	@property
+	def code( self ):
+		return self._code
+
+	@property
+	def description( self ):
+		if self._description:
+			return self._description
+		return _( 'Unknown status code' )
+
+STATUS = (
+	Status( 'SUCCESS'							, 200, _( 'OK, operation successful' ) ),
+	Status( 'SUCCESS_MESSAGE'					, 204, _( 'OK, containing report message' ) ),
+	Status( 'SUCCESS_PARTIAL'					, 206, _( 'OK, partial response' ) ),
+	Status( 'SUCCESS_SHUTDOWN'					, 250, _( 'OK, operation successful ask for shutdown of connection' ) ),
+
+	Status( 'CLIENT_ERR_NONFATAL'				, 301, _( 'A non-fatal error has occured processing may continue' ) ),
+
+	Status( 'BAD_REQUEST'						, 400, _( 'Bad request' ) ),
+	Status( 'BAD_REQUEST_UNAUTH'				, 401, _( 'Unauthorized' ) ),
+	Status( 'BAD_REQUEST_FORBIDDEN'				, 403, _( 'Forbidden' ) ),
+	Status( 'BAD_REQUEST_NOT_FOUND'				, 404, _( 'Not found' ) ),
+	Status( 'BAD_REQUEST_NOT_ALLOWED'			, 405, _( 'Command not allowed' ) ),
+	Status( 'BAD_REQUEST_INVALID_ARGS'			, 406, _( 'Invalid command arguments' ) ),
+	Status( 'BAD_REQUEST_INVALID_OPTS'			, 407, _( 'Invalid or missing command options' ) ),
+	Status( 'BAD_REQUEST_AUTH_FAILED'  			, 411, _( 'The authentication has failed' ) ),
+	Status( 'BAD_REQUEST_ACCOUNT_EXPIRED'		, 412, _( 'The account is expired and can not be used anymore' ) ),
+	Status( 'BAD_REQUEST_ACCOUNT_DISABLED'		, 413, _( 'The account as been disabled' ) ),
+	Status( 'BAD_REQUEST_UNAVAILABLE_LOCALE'	, 414, _( 'Specified locale is not available' ) ),
+
+	Status( 'SERVER_ERR'						, 500, _( 'Internal error' ) ),
+	Status( 'SERVER_ERR_MODULE_DIED'			, 510, _( 'Module process died unexpectedly' ) ),
+	Status( 'SERVER_ERR_MODULE_FAILED'			, 511, _( 'Connection to module process failed' ) ),
+	Status( 'SERVER_ERR_CERT_NOT_TRUSTWORTHY'	, 512, _( 'SSL server certificate is not trustworthy' ) ),
+
+	Status( 'UMCP_ERR_UNPARSABLE_HEADER'		, 551, _( 'Unparsable message header' ) ),
+	Status( 'UMCP_ERR_UNKNOWN_COMMAND'			, 552, _( 'Unknown command' ) ),
+	Status( 'UMCP_ERR_INVALID_NUM_ARGS'			, 553, _( 'Invalid number of arguments' ) ),
+	Status( 'UMCP_ERR_UNPARSABLE_BODY'			, 554, _( 'Unparsable message body' ) ),
+
+	Status( 'MODULE_ERR'						, 600, _( 'Error occuried during command processing' ) ),
+	Status( 'MODULE_ERR_COMMAND_FAILED'			, 601, _( 'The execution of a command caused an fatal error' ) )
+)
+
+# create symbols for status codes
+for status in STATUS:
+	setattr( sys.modules[ 'univention.management.console.protocol.definitions' ], status.name, status.code )
+
+def command_get( name ):
+	for cmd in COMMANDS:
+		if cmd.name == name:
+			return cmd
+	return None
 
 def command_is_known( name ):
-	return ( name in COMMANDS.keys() )
+	return command_get( name ) is not None
 
 def command_has_arguments( name ):
-	return COMMANDS.get( name )[ 0 ] == True
+	cmd = command_get( name )
+	return cmd is not None and cmd.has_arguments == True
 
-def command_has_options( name ):
-	return COMMANDS.get( name )[ 1 ] != None
+def status_description( code ):
+	for status in STATUS:
+		if status.code == code:
+			return status.description
 
-def command_is_valid_option( name, option ):
-	if name in COMMANDS:
-		valid = COMMANDS[ name ][ 1 ]
-		if valid == None:
-			return False
-		if not len( valid ):
-			return True
-		return option in valid
+	return _( 'Unknown status code' )
 
-	return False
-
-def status_information( status ):
-	if status in STATUSINFORMATION:
-		return STATUSINFORMATION[ status ]
-
-	return _( 'Unknown state' )
+def status_get( code ):
+	for status in STATUS:
+		if status.code == code:
+			return status
+	return None

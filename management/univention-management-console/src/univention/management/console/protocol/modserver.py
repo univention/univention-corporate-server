@@ -146,7 +146,7 @@ class ModuleServer( Server ):
 			while self.__buffer:
 				msg = Message()
 				self.__buffer = msg.parse( self.__buffer )
-				MODULE.info( "Received request %s" % msg.id() )
+				MODULE.info( "Received request %s" % msg.id )
 				self.handle( msg )
 		except IncompleteMessageError, e:
 			MODULE.error( 'Failed to parse incomplete message' )
@@ -166,7 +166,7 @@ class ModuleServer( Server ):
 			# shutdown module after one second
 			resp = Response( msg )
 			resp.body = { 'status': 'module %s will shutdown in %dms' % (str(msg.arguments[0]), shutdown_timeout) }
-			resp.status = 200
+			resp.status = SUCCESS
 			self.response( resp )
 			self._update_watchdog()
 			self.__timer = notifier.timer_add( shutdown_timeout, self._timed_out )
@@ -174,9 +174,9 @@ class ModuleServer( Server ):
 
 		if msg.command == 'SET':
 			resp = Response( msg )
-			resp.status = 200
+			resp.status = SUCCESS
 			if 'commands/permitted' in msg.arguments:
-				self.__acls = umc_acl.ACLs( acls = msg.options[ 'acls' ] )
+				self.__acls = ACLs( acls = msg.options[ 'acls' ] )
 				self.__commands.fromJSON( msg.options[ 'commands' ] )
 				self.__handler.acls = self.__acls
 			elif 'username' in msg.arguments:
@@ -197,7 +197,8 @@ class ModuleServer( Server ):
 				except locale.Error:
 					MODULE.warn( "Specified locale is not available (%s)" % self.__locale )
 					# specified locale is not available
-					resp.status = 601
+					resp.status = BAD_REQUEST_UNAVAILABLE_LOCALE
+					resp.message = status_description( resp.status )
 			else:
 				resp = None
 			if resp:
@@ -219,8 +220,8 @@ class ModuleServer( Server ):
 			else:
 				resp = Response( msg )
 				# status 415 (command not allowed) should be checked by the server
-				resp.status = 401 # unknown command
-				resp.message = status_information( 401 )
+				resp.status = UMCP_ERR_UNKNOWN_COMMAND
+				resp.message = status_description( resp.status )
 				self.response( resp )
 
 		if not self.__active_requests and self.__timer == None:

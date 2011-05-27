@@ -36,10 +36,11 @@ import notifier.signals as signals
 
 import univention.debug as ud
 
-import univention.management.console.protocol as umcp
-import univention.management.console.locales as umcl
+from ..protocol import Response
+from ..locales import Translation
+from ..log import MODULE
 
-_ = umcl.Translation( 'univention.management.console' ).translate
+_ = Translation( 'univention.management.console' ).translate
 
 class Base( signals.Provider ):
 	'''The base class for UMC modules of version 2 or higher'''
@@ -70,39 +71,29 @@ class Base( signals.Provider ):
 	acls = property( fset = _set_acls )
 
 	def execute( self, method, object ):
-		self.__requests[ object.id() ] = ( object, method )
+		self.__requests[ object.id ] = ( object, method )
 
-		ud.debug( ud.ADMIN, ud.INFO, 'Execute: %s' % str( object.arguments ) )
+		MODULE.info( 'Executing %s' % str( object.arguments ) )
 		try:
 			func = getattr( self, method )
 			func( object )
 		except Exception, e:
-			print 'EXECUTE', str( e )
+			MODULE.error( 'Executing of %s has failed: %s' % ( method, str( e ) ) )
 			import traceback
 
-			res = umcp.Response( object )
+			res = Response( object )
 			res.message = _( "Execution of command '%(command)s' has failed:\n\n%(text)s" ) % \
-							{ 'command' : object.arguments[ 0 ],
-							  'text' : unicode( traceback.format_exc() ) }
-			ud.debug( ud.ADMIN, ud.ERROR, res.message )
-			res.status = 500
+							{ 'command' : object.arguments[ 0 ], 'text' : unicode( traceback.format_exc() ) }
+			MODULE.error( str( res.message ) )
+			res.status = MODULE_ERR_COMMAND_FAILED
 			self.signal_emit( 'failure', res )
-			if object.id() in self.__requests:
-				del self.__requests[ object.id() ]
+			if object.id in self.__requests:
+				del self.__requests[ object.id ]
 
 	def permitted( self, command, options ):
 		if not self.__acls:
 			return False
 		return self.__acls.is_command_allowed( command, options = options )
-
-	def __execution_failed( self, object, text ):
-		res = umcp.Response( object )
-		res.dialog = None
-		res.message = _( "Execution of command '%(command)s' has failed:\n\n%(text)s" ) % \
-						{ 'command' : object.arguments[ 0 ], 'text' : unicode( text ) }
-		res.status = 500
-		self.signal_emit( 'failure', res )
-		del self.__requests[ object.id() ]
 
 	def finished( self, id, response, message = None, success = True ):
 		"""Should be invoked by module to finish the processing of a
@@ -115,28 +106,28 @@ class Base( signals.Provider ):
 			return
 		object, method = self.__requests[ id ]
 
-		if not isinstance( response, umcp.Response ):
-			res = umcp.Response( object )
+		if not isinstance( response, Response ):
+			res = Response( object )
 			res.result = response
 			res.message = message
 
 		if not res.status:
 			if success:
-				res.status = 200
+				res.status = SUCCESS
 			else:
-				res.status = 600
+				res.status = MODULE_ERR
 
 		self.result( res )
 
 	def result( self, response ):
-		if response.id() in self.__requests:
-			object, method = self.__requests[ response.id() ]
-			if response.status in ( 200, 210 ):
+		if response.id in self.__requests:
+			object, method = self.__requests[ response.id ]
+			if response.status in ( SUCCESS, SUCCESS_MESSAGE, SUCCESS_PARTIAL, SUCCESS_SHUTDOWN ):
 				response.module = [ 'ready' ]
 				self.signal_emit( 'success', response )
 			else:
 				response.module = [ 'failure' ]
 				self.signal_emit( 'failure', response )
-			del self.__requests[ response.id() ]
+			del self.__requests[ response.id ]
 
 

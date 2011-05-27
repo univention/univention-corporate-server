@@ -52,9 +52,9 @@ class Auth( signals.Provider ):
 		self.signal_new( 'auth_return' )
 
 	def credenticals( self, username = None, password = None ):
-		if username:
+		if username is not None:
 			self._username = username
-		if password:
+		if password is not None:
 			self._password = password
 
 	def authenticate( self ):
@@ -103,16 +103,6 @@ class PAM_Auth( Auth ):
 		AUTH.info( 'Authentication for %s was succcessful' % self._username )
 		return True
 
-class Baseconfig_Auth( Auth ):
-	def __init__( self, username = None, password = None ):
-		Auth.__init__( self, username, password )
-
-	def authenticate( self ):
-		self.signal_emit( 'auth_return', True )
-
-# FIXME: Baseconfig authentication is currently not implemented
-#_all_modules = ( PAM_Auth, Baseconfig_Auth )
-# _all_modules = ( Baseconfig_Auth, )
 _all_modules = ( PAM_Auth, )
 
 class AuthHandler( signals.Provider ):

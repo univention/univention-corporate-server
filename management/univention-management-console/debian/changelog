@@ -1,3 +1,11 @@
+univention-management-console (4.0.4-1) unstable; urgency=low
+
+  * cleanup protocol definitions and provide constants for status codes; Bug #22460
+  * packaging for UMC web server
+  * remove UCR module
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 27 May 2011 18:05:21 +0200
+
 univention-management-console (4.0.3-2) unstable; urgency=low
 
   * removed bogus dependency from univention-management-console-dev; Bug #22455
