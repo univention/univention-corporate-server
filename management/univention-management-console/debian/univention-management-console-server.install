@@ -1,1 +1,4 @@
-debian/tmp/usr/sbin/*
+debian/tmp/usr/sbin/univention-management-console-acls
+debian/tmp/usr/sbin/univention-management-console-client
+debian/tmp/usr/sbin/univention-management-console-module
+debian/tmp/usr/sbin/univention-management-console-server

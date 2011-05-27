@@ -13,6 +13,7 @@ Package: univention-management-console
 Architecture: all
 Depends: python-univention-management-console (= ${source:Version}),
  univention-management-console-server (= ${source:Version}),
+ univention-management-console-web-server (= ${source:Version}),
  univention-management-console-themes (= ${source:Version}),
  univention-management-console-system-info,
  python-pyopenssl,
@@ -35,6 +36,25 @@ Depends: python-univention-management-console (= ${source:Version}),
  python-cherrypy3,
  python-daemon
 Description: Univention Management Console - server
+ Univention Console is a web based program to manage computers.
+ It has an extensible architecture, using modules to implement
+ its features. This package contains the backend-daemon, which
+ can be installed on any UCS-system to provide functionalities
+ for univention-management-console
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-management-console-web-server
+Architecture: all
+Depends: python-univention-management-console (= ${source:Version}),
+ univention-runit,
+ python-cherrypy3,
+ python-daemon,
+ univention-apache
+Description: Univention Management Console - web server
  Univention Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
  its features. This package contains the backend-daemon, which

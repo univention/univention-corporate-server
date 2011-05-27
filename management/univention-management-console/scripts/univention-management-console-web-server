@@ -39,6 +39,15 @@ import univention.management.console.protocol as umcp
 import univention.debug as ud
 import simplejson
 
+from optparse import OptionParser
+from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
+
+from univention.management.console.log import *
+
+import univention.config_registry as ucr
+configRegistry = ucr.ConfigRegistry()
+configRegistry.load()
+
 _thread_http = None
 _sessionclients = {}
 _queue_send = Queue.Queue()
@@ -73,47 +82,47 @@ _sessionidcounter = 1
 
 class SessionClient(object):
 	def __init__(self):
-		ud.debug(ud.ADMIN, ud.INFO, 'SessionClient: creating new session')
+		CORE.info('SessionClient: creating new session')
 		self.client = umcp.Client()
 		self.client.signal_connect( 'authenticated', self._authenticated )
 		self.client.signal_connect( 'response', self._response )
 		self.client.signal_connect( 'closed', self._closed )
 		if self.client.connect():
-			ud.debug(ud.ADMIN, ud.INFO, 'SessionClient: connected to UMC server')
+			CORE.info('SessionClient: connected to UMC server')
 		else:
-			ud.debug(ud.ADMIN, ud.ERROR, 'SessionClient: connection to UMC server failed')
+			CORE.error('SessionClient: connection to UMC server failed')
 		self._auth_response = None
 		self._auth_response_queue = None
 		self._requestid2response_queue = {}
 
 	def _authenticated(self, success, status, message):
-		ud.debug(ud.ADMIN, ud.ERROR, 'SessionClient: _authenticated: success=%s  status=%s  message=%s' % (success, status, message) )
+		CORE.error('SessionClient: _authenticated: success=%s  status=%s  message=%s' % (success, status, message) )
 		self._auth_response.status = status
 		self._auth_response_queue.put( self._auth_response )
 		# release queue object
 		self._auth_response_queue = None
 
 	def authenticate_user(self, request, response_queue):
-		ud.debug(ud.ADMIN, ud.INFO, 'SessionClient: authenticate_user: sending authentication request for user %s' % request.body[ 'username' ])
+		CORE.info('SessionClient: authenticate_user: sending authentication request for user %s' % request.body[ 'username' ])
 		self._auth_response = umcp.Response( request )
 		self._auth_response.body['sessionid'] = request.body.get('sessionid','')
 		self._auth_response_queue = response_queue
 		self.client.authenticate( request.body[ 'username' ], request.body[ 'password' ] )
 
 	def _closed(self):
-		ud.debug(ud.ADMIN, ud.ERROR, 'SessionClient: lost connection to UMC server')
+		CORE.error('SessionClient: lost connection to UMC server')
 
 	def _response(self, response):
 		if not response.id() in self._requestid2response_queue:
-			ud.debug(ud.ADMIN, ud.ERROR, 'SessionClient: could not find request id for response %s, status %d:' % ( str( response.id() ), response.status ) )
+			CORE.error('SessionClient: could not find request id for response %s, status %d:' % ( str( response.id() ), response.status ) )
 		else:
-			ud.debug(ud.ADMIN, ud.INFO, 'SessionClient: got response with id=%s and status=%s' % ( response.id(), response.status ) )
+			CORE.info('SessionClient: got response with id=%s and status=%s' % ( response.id(), response.status ) )
 			self._requestid2response_queue[ response.id() ].put( response )
 			# remove response_queue from internal mapping
 			self.cleanup_request( response )
 
 	def send_request(self, request, response_queue):
-		ud.debug(ud.ADMIN, ud.INFO, 'SessionClient: sending request with id=%s' % request.id())
+		CORE.info('SessionClient: sending request with id=%s' % request.id())
 		self._requestid2response_queue[request.id()] = response_queue
 		self.client.request( request )
 
@@ -128,7 +137,7 @@ class UMCP_Dispatcher(object):
 	def check_queue(self):
 		global _sessionclients, _sessionidcounter, _queue_send
 		while _queue_send.qsize():
-			ud.debug(ud.ADMIN, ud.INFO, 'UMCP_Dispatcher: check_queue: new object in queue')
+			CORE.info('UMCP_Dispatcher: check_queue: new object in queue')
 			try:
 				queuerequest = _queue_send.get_nowait()
 			except Queue.Empty:
@@ -136,15 +145,15 @@ class UMCP_Dispatcher(object):
 				return
 
 			if not type(queuerequest.sessionid) == str and not queuerequest.sessionid == None:
-				ud.debug(ud.ADMIN, ud.ERROR, 'UMCP_Dispatcher: check_queue: got invalid sessionid: %s' % repr(queuerequest.sessionid))
+				CORE.error('UMCP_Dispatcher: check_queue: got invalid sessionid: %s' % repr(queuerequest.sessionid))
 			if not isinstance(queuerequest.request, umcp.Request):
-				ud.debug(ud.ADMIN, ud.ERROR, 'UMCP_Dispatcher: check_queue: got invalid UMCP request: %s' % repr(queuerequest.request))
+				CORE.error('UMCP_Dispatcher: check_queue: got invalid UMCP request: %s' % repr(queuerequest.request))
 			if not isinstance(queuerequest.response_queue, Queue.Queue):
-				ud.debug(ud.ADMIN, ud.ERROR, 'UMCP_Dispatcher: check_queue: got invalid response_queue: %s' % repr(queuerequest.response_queue))
+				CORE.error('UMCP_Dispatcher: check_queue: got invalid response_queue: %s' % repr(queuerequest.response_queue))
 
 			# stop here if sessionid is missing or unknown and request is no AUTH request
 			if ( not queuerequest.sessionid or not queuerequest.sessionid in _sessionclients.keys() ) and not queuerequest.request.command == 'AUTH':
-				ud.debug(ud.ADMIN, ud.ERROR, 'UMCP_Dispatcher: check_queue: invalid session: sessionid=%s' % repr(queuerequest.sessionid))
+				CORE.error('UMCP_Dispatcher: check_queue: invalid session: sessionid=%s' % repr(queuerequest.sessionid))
 				response = umcp.Response( queuerequest.request )
 				response.status = 401 # set status to unauthorized
 				queuerequest.response_queue.put( response )
@@ -152,9 +161,9 @@ class UMCP_Dispatcher(object):
 
 			if queuerequest.request.command == 'AUTH':
 				# AUTH request
-				ud.debug(ud.ADMIN, ud.INFO, 'UMCP_Dispatcher: check_queue: AUTH request')
+				CORE.info('UMCP_Dispatcher: check_queue: AUTH request')
 				if not queuerequest.sessionid:
-					ud.debug(ud.ADMIN, ud.INFO, 'UMCP_Dispatcher: check_queue: creating new sessionid')
+					CORE.info('UMCP_Dispatcher: check_queue: creating new sessionid')
 					# FIXME: create nice session id via uuid or something else
 					queuerequest.sessionid = '%d' % _sessionidcounter
 					_sessionidcounter += 1
@@ -167,7 +176,7 @@ class UMCP_Dispatcher(object):
 				client.authenticate_user( queuerequest.request, queuerequest.response_queue )
 			else:
 				# COMMAND / GET / SET request
-				ud.debug(ud.ADMIN, ud.INFO, 'UMCP_Dispatcher: check_queue: normal request')
+				CORE.info('UMCP_Dispatcher: check_queue: normal request')
 				client = _sessionclients.get(queuerequest.sessionid)
 				try:
 					client.send_request( queuerequest.request, queuerequest.response_queue )
@@ -198,9 +207,16 @@ def update_session_cookie(cookiejar, sessionid):
 class CPgeneric(object):
 	name = 'CPgeneric'
 
-	def _log(self, loglevel, msg):
+	_logOptions = {
+		'error': CORE.error,
+		'warn': CORE.warn,
+		'info': CORE.info,
+	}
+
+	def _log(self, loglevel, _msg):
 		remote = cherrypy.request.remote
-		ud.debug(ud.ADMIN, loglevel, '%s (%s:%s) %s' % (self.name,  remote.ip, remote.port, msg))
+		msg = '%s (%s:%s) %s' % (self.name,  remote.ip, remote.port, _msg)
+		_logOptions.get(loglevel, CORE.info)(msg)
 
 	def get_request(self, request, json):
 		req = umcp.Request( [ 'generic' ], opts = {} )
@@ -210,21 +226,21 @@ class CPgeneric(object):
 	def default(self, *args):
 		global _queue_send
 		remote = cherrypy.request.remote
-		self._log(ud.INFO, 'got new request')
+		self._log('info', 'got new request')
 
 		cookie = cherrypy.request.cookie
 		if cookie.get('UMCSessionId'):
 			sessionid = cookie['UMCSessionId'].value
-			self._log(ud.INFO, 'found sessionid')
+			self._log('info', 'found sessionid')
 			self._log(99, 'sessionid="%s"' % (sessionid))
 		else:
 			# a sessionid is required to use this command
-			self._log(ud.INFO, 'no sessionid found')
+			self._log('info', 'no sessionid found')
 			raise cherrypy.HTTPError(401)
 
 		if not cherrypy.request.headers.get(u"Content-Length", u""):
 			json = ''
-			self._log(ud.WARN, 'missing Content-Length header')
+			self._log('warn', 'missing Content-Length header')
 		else:
 			# get body and parse json
 			body = ''
@@ -234,7 +250,7 @@ class CPgeneric(object):
 			try:
 				json = simplejson.loads(body)
 			except ValueError:
-				self._log(ud.ERROR, 'cannot parse JSON body')
+				self._log('error', 'cannot parse JSON body')
 				raise cherrypy.HTTPError(400, 'Invalid JSON document')
 
 		# create new UMCP request
@@ -247,9 +263,9 @@ class CPgeneric(object):
 		request = QueueRequest(sessionid, req, response_queue)
 		_queue_send.put(request)
 
-		self._log(ud.INFO, 'pushed request %s to queue - waiting for response (sessionid="%s")' % (req.id(), sessionid))
+		self._log('info', 'pushed request %s to queue - waiting for response (sessionid="%s")' % (req.id(), sessionid))
 		response = response_queue.get()
-		self._log(ud.INFO, 'got response %s with status %s (sessionid="%s")' % (response.id(), response.status, sessionid))
+		self._log('info', 'got response %s with status %s (sessionid="%s")' % (response.id(), response.status, sessionid))
 
 		if response.status == 200:
 			update_session_cookie(cherrypy.response.cookie, sessionid)
@@ -260,7 +276,7 @@ class CPgeneric(object):
 			raise cherrypy.HTTPError(response.status)
 
 		# something bad happened
-		self._log(ud.ERROR, 'unhandled response status code: %s' % response.status)
+		self._log('error', 'unhandled response status code: %s' % response.status)
 		raise cherrypy.HTTPError(500)
 
 
@@ -275,7 +291,7 @@ class CPGet(CPgeneric):
 			args = args[ len(self.requestprefix)+1 : ]
 
 		if not args:
-			self._log(ud.ERROR, 'get_request: args is empty')
+			self._log('error', 'get_request: args is empty')
 			raise cherrypy.HTTPError(404)
 
 		req = umcp.Request( 'GET', args = [ args ] )
@@ -294,7 +310,7 @@ class CPSet(CPgeneric):
 			args = args[ len(self.requestprefix)+1 : ]
 
 		if not args:
-			self._log(ud.ERROR, 'get_request: args is empty')
+			self._log('error', 'get_request: args is empty')
 			raise cherrypy.HTTPError(404)
 
 		req = umcp.Request( 'SET', args = [ args ] )
@@ -313,7 +329,7 @@ class CPCommand(CPgeneric):
 			args = args[ len(self.requestprefix)+1 : ]
 
 		if not args:
-			self._log(ud.ERROR, 'get_request: args is empty')
+			self._log('error', 'get_request: args is empty')
 			raise cherrypy.HTTPError(404)
 
 		req = umcp.Command( [ args ], opts = json )
@@ -326,19 +342,19 @@ class CPCommand(CPgeneric):
 # 	def default(self, *args):
 # 		global _queue_send
 # 		remote = cherrypy.request.remote
-# 		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/command: got new request (%s:%s <=> %s)' % (remote.ip, remote.port, remote.name))
+# 		CORE.info('CPRoot/command: got new request (%s:%s <=> %s)' % (remote.ip, remote.port, remote.name))
 
 # 		cookie = cherrypy.request.cookie
 # 		if cookie.get('UMCSessionId'):
 # 			sessionid = cookie['UMCSessionId'].value
-# 			ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/command: sessionid="%s"' % (sessionid))
+# 			CORE.info('CPRoot/command: sessionid="%s"' % (sessionid))
 # 		else:
 # 			# a sessionid is required to use this command
-# 			ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/command: no sessionid found')
+# 			CORE.info('CPRoot/command: no sessionid found')
 # 			raise cherrypy.HTTPError(401)
 
 # 		if not cherrypy.request.headers.get(u"Content-Length", u""):
-# 			ud.debug(ud.ADMIN, ud.ERROR, 'CPRoot/command: missing Content-Length header')
+# 			CORE.error('CPRoot/command: missing Content-Length header')
 # 			raise cherrypy.HTTPError(411)
 
 # 		# get body and parse json
@@ -349,17 +365,17 @@ class CPCommand(CPgeneric):
 # 		try:
 # 			json = simplejson.loads(body)
 # 		except ValueError:
-# 			ud.debug(ud.ADMIN, ud.ERROR, 'CPRoot/auth: cannot parse JSON body')
+# 			CORE.error('CPRoot/auth: cannot parse JSON body')
 # 			raise cherrypy.HTTPError(400, 'Invalid JSON document')
 
 # 		command = cherrypy.request.path_info
 # 		if command.startswith('/command'):
 # 			command = command[9:]
-# 		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/command: request: command=%s' % command )
-# 		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/command: json=%s' % json)
+# 		CORE.info('CPRoot/command: request: command=%s' % command )
+# 		CORE.info('CPRoot/command: json=%s' % json)
 
 # 		if not command:
-# 			ud.debug(ud.ADMIN, ud.ERROR, 'CPRoot/command: request: command is empty')
+# 			CORE.error('CPRoot/command: request: command is empty')
 # 			raise cherrypy.HTTPError(404)
 
 # 		# create new UMCP request
@@ -372,9 +388,9 @@ class CPCommand(CPgeneric):
 # 		request = QueueRequest(sessionid, req, response_queue)
 # 		_queue_send.put(request)
 
-# 		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/command: pushed request %s to queue - waiting for response (sessionid="%s")' % (request.id(), sessionid))
+# 		CORE.info('CPRoot/command: pushed request %s to queue - waiting for response (sessionid="%s")' % (request.id(), sessionid))
 # 		response = response_queue.get()
-# 		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/command: got response %s with status %s (sessionid="%s")' % (response.id(), response.status, sessionid))
+# 		CORE.info('CPRoot/command: got response %s with status %s (sessionid="%s")' % (response.id(), response.status, sessionid))
 
 # 		if response.status == 200:
 # 			update_session_cookie(cherrypy.response.cookie, sessionid)
@@ -386,11 +402,11 @@ class CPCommand(CPgeneric):
 
 # 		elif response.status == 401:
 # 			# unknown command
-# 			ud.debug(ud.ADMIN, ud.ERROR, 'CPRoot/command: unknown command: %s (response.status=%s)' % (command, response.status))
+# 			CORE.error('CPRoot/command: unknown command: %s (response.status=%s)' % (command, response.status))
 # 			raise cherrypy.HTTPError(404)
 
 # 		# something bad happened
-# 		ud.debug(ud.ADMIN, ud.ERROR, 'CPRoot/command: unhandled response status: %s' % response.status)
+# 		CORE.error('CPRoot/command: unhandled response status: %s' % response.status)
 # 		raise cherrypy.HTTPError(500)
 
 
@@ -399,10 +415,10 @@ class CPAuth(object):
 	def default(self):
 		global _queue_send
 		remote = cherrypy.request.remote
-		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/auth: got new auth request (%s:%s <=> %s)' % (remote.ip, remote.port, remote.name))
+		CORE.info('CPRoot/auth: got new auth request (%s:%s <=> %s)' % (remote.ip, remote.port, remote.name))
 
 		if not cherrypy.request.headers.get(u"Content-Length", u""):
-			ud.debug(ud.ADMIN, ud.ERROR, 'CPRoot/auth: missing Content-Length header')
+			CORE.error('CPRoot/auth: missing Content-Length header')
 			raise cherrypy.HTTPError(411)
 
 		# TODO FIXME check body length and stop here if too much data has been sent by client
@@ -415,11 +431,11 @@ class CPAuth(object):
 		try:
 			json = simplejson.loads(body)
 		except ValueError:
-			ud.debug(ud.ADMIN, ud.ERROR, 'CPRoot/auth: cannot parse JSON body')
+			CORE.error('CPRoot/auth: cannot parse JSON body')
 			raise cherrypy.HTTPError(400, 'Invalid JSON document')
 
-		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/command: request: command=%s' % cherrypy.request.path_info )
-		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/command: json=%s' % json)
+		CORE.info('CPRoot/command: request: command=%s' % cherrypy.request.path_info )
+		CORE.info('CPRoot/command: json=%s' % json)
 
 		# create new UMCP request
 		req = umcp.Request( 'AUTH' )
@@ -433,20 +449,20 @@ class CPAuth(object):
 		request = QueueRequest(None, req, response_queue)
 		_queue_send.put(request)
 
-		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/auth: pushed request to queue - waiting for response')
+		CORE.info('CPRoot/auth: pushed request to queue - waiting for response')
 		response = response_queue.get()
-		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/auth: got response with status %s' % response.status)
+		CORE.info('CPRoot/auth: got response with status %s' % response.status)
 
 		if response.status == 200 and response.body.get('sessionid'):
-			ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/auth: creating cookie with sessionid=%s' % response.body.get('sessionid'))
+			CORE.info('CPRoot/auth: creating cookie with sessionid=%s' % response.body.get('sessionid'))
 			update_session_cookie(cherrypy.response.cookie, response.body['sessionid'])
 			return ""
 
 		elif response.status in (401,410):
-			ud.debug(ud.ADMIN, ud.ERROR, 'CPRoot/auth: authorization for %s failed' % json.get('username'))
+			CORE.error('CPRoot/auth: authorization for %s failed' % json.get('username'))
 			raise cherrypy.HTTPError(401)
 
-		ud.debug(ud.ADMIN, ud.ERROR, 'CPRoot/auth: unhandled status code: %s' % response.status)
+		CORE.error('CPRoot/auth: unhandled status code: %s' % response.status)
 		raise cherrypy.HTTPError(500)
 
 
@@ -455,19 +471,19 @@ class CPAuth(object):
 # 	def default(self, *args):
 # 		global _queue_send
 # 		remote = cherrypy.request.remote
-# 		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/get: got new request (%s:%s <=> %s)' % (remote.ip, remote.port, remote.name))
+# 		CORE.info('CPRoot/get: got new request (%s:%s <=> %s)' % (remote.ip, remote.port, remote.name))
 
 # 		cookie = cherrypy.request.cookie
 # 		if cookie.get('UMCSessionId'):
 # 			sessionid = cookie['UMCSessionId'].value
-# 			ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/get: sessionid="%s"' % (sessionid))
+# 			CORE.info('CPRoot/get: sessionid="%s"' % (sessionid))
 # 		else:
 # 			# a sessionid is required to use this command
-# 			ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/get: no sessionid found')
+# 			CORE.info('CPRoot/get: no sessionid found')
 # 			raise cherrypy.HTTPError(401)
 
 # 		if not cherrypy.request.headers.get(u"Content-Length", u""):
-# 			ud.debug(ud.ADMIN, ud.ERROR, 'CPRoot/get: missing Content-Length header')
+# 			CORE.error('CPRoot/get: missing Content-Length header')
 # 			raise cherrypy.HTTPError(411)
 
 # 		# get body and parse json
@@ -478,17 +494,17 @@ class CPAuth(object):
 # 		try:
 # 			json = simplejson.loads(body)
 # 		except ValueError:
-# 			ud.debug(ud.ADMIN, ud.ERROR, 'CPRoot/auth: cannot parse JSON body')
+# 			CORE.error('CPRoot/auth: cannot parse JSON body')
 # 			raise cherrypy.HTTPError(400, 'Invalid JSON document')
 
 # 		command = cherrypy.request.path_info
 # 		if command.startswith('/get'):
 # 			command = command[9:]
-# 		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/get: request: command=%s' % command )
-# 		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/get: json=%s' % json)
+# 		CORE.info('CPRoot/get: request: command=%s' % command )
+# 		CORE.info('CPRoot/get: json=%s' % json)
 
 # 		if not command:
-# 			ud.debug(ud.ADMIN, ud.ERROR, 'CPRoot/get: request: command is empty')
+# 			CORE.error('CPRoot/get: request: command is empty')
 # 			raise cherrypy.HTTPError(404)
 
 # 		# create new UMCP request
@@ -501,9 +517,9 @@ class CPAuth(object):
 # 		request = QueueRequest(sessionid, req, response_queue)
 # 		_queue_send.put(request)
 
-# 		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/get: pushed request %s to queue - waiting for response (sessionid="%s")' % (request.id(), sessionid))
+# 		CORE.info('CPRoot/get: pushed request %s to queue - waiting for response (sessionid="%s")' % (request.id(), sessionid))
 # 		response = response_queue.get()
-# 		ud.debug(ud.ADMIN, ud.INFO, 'CPRoot/get: got response %s with status %s (sessionid="%s")' % (response.id(), response.status, sessionid))
+# 		CORE.info('CPRoot/get: got response %s with status %s (sessionid="%s")' % (response.id(), response.status, sessionid))
 
 # 		if response.status == 200:
 # 			update_session_cookie(cherrypy.response.cookie, sessionid)
@@ -515,11 +531,11 @@ class CPAuth(object):
 
 # 		elif response.status == 401:
 # 			# unknown command
-# 			ud.debug(ud.ADMIN, ud.ERROR, 'CPRoot/get: unknown command: %s (response.status=%s)' % (command, response.status))
+# 			CORE.error('CPRoot/get: unknown command: %s (response.status=%s)' % (command, response.status))
 # 			raise cherrypy.HTTPError(404)
 
 # 		# something bad happened
-# 		ud.debug(ud.ADMIN, ud.ERROR, 'CPRoot/get: unhandled response status: %s' % response.status)
+# 		CORE.error('CPRoot/get: unhandled response status: %s' % response.status)
 # 		raise cherrypy.HTTPError(500)
 
 
@@ -548,20 +564,72 @@ def run_cherrypy():
 	cherrypy.quickstart(root=root)
 
 
-def main():
-	ud.init('umc2-webserver.log', 1, 1)
-	ud.set_level( ud.LDAP, 4 )
-	ud.set_level( ud.ADMIN, 4 )
-	# start webserver
-	_thread_http = threading.Thread( target = run_cherrypy )
-	_thread_http.start()
-	# start notifier loop
-	umcp_dispatcher = UMCP_Dispatcher()
-	notifier.init( notifier.GENERIC )
-	ud.debug(ud.ADMIN, ud.ERROR, 'FIXME: run check_queue in timer with shorter timeout to get called more often than 10 times per second')
-	notifier.dispatcher_add( umcp_dispatcher.check_queue )
-	notifier.loop()
+class UMC_HTTP_Daemon(DaemonRunner):
+	def __init__( self ):
+		self.parser = OptionParser()
+		self.parser.add_option( '-n', '--no-daemon', action = 'store_false',
+						   dest = 'daemon_mode', default = True,
+						   help = 'if set the process will not fork into the background' )
+		try:
+			default_debug = int( configRegistry.get( 'umc/server/debug/level', '1' ) )
+		except:
+			default_debug = 1
+		self.parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = default_debug,
+						   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
+		self.parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-web-server',
+						   help = 'specifies an alternative log file [default: %default]' )
+		( self.options, self.arguments ) = self.parser.parse_args()
 
+		# init logging
+		if not self.options.daemon_mode:
+			debug_fd = log_init( '/dev/stderr', self.options.debug )
+		else:
+			debug_fd = log_init( self.options.logfile, self.options.debug )
+
+		# default action: start
+		if not self.arguments:
+			sys.argv[ 1 ] = 'start'
+		elif self.arguments:
+			sys.argv[ 1 ] = self.arguments[ 0 ]
+
+		# for daemon runner
+		if self.options.daemon_mode:
+			self.stdin_path = os.path.devnull
+			self.stdout_path = os.path.devnull
+			self.stderr_path = os.path.devnull
+		else:
+			self.stdin_path = '/dev/stdin'
+			self.stdout_path = '/dev/stderr'
+			self.stderr_path = '/dev/stderr'
+		self.pidfile_path = '/var/run/umc-web-server.pid'
+		self.pidfile_timeout = 10
+
+		# init daemon runner
+		DaemonRunner.__init__( self, self )
+		self.daemon_context.detach_process = self.options.daemon_mode
+		self.daemon_context.files_preserve = [ debug_fd ]
+
+	def _usage_exit( self, argv ):
+		self.parser.error( 'invalid action' )
+		sys.exit( 1 )
+
+	def run(self):
+		# start webserver
+		_thread_http = threading.Thread( target = run_cherrypy )
+		_thread_http.start()
+		# start notifier loop
+		umcp_dispatcher = UMCP_Dispatcher()
+		notifier.init( notifier.GENERIC )
+		CORE.error('FIXME: run check_queue in timer with shorter timeout to get called more often than 10 times per second')
+		notifier.dispatcher_add( umcp_dispatcher.check_queue )
+		notifier.loop()
+	
 
 if __name__ == '__main__':
-	main()
+	http_daemon = UMC_HTTP_Daemon()
+	try:
+		http_daemon.do_action()
+	except DaemonRunnerStopFailureError, e:
+		CORE.error( 'Failed to shutdown server gracefully (may be its already dead): %s' % str( e ) )
+	except DaemonRunnerStartFailureError, e:
+		CORE.error( 'Failed to start server: %s' % str( e ) )
