@@ -1,3 +1,9 @@
+univention-base-files (1.0.3-2) unstable; urgency=low
+
+  * Must not use UCRWARNING_ASCII to generate sitecustomize.py (Bug #22160)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 27 May 2011 18:50:58 +0200
+
 univention-base-files (1.0.3-1) unstable; urgency=low
 
   * Move sitecustomize.py to univention-base-files (Bug #22160)
