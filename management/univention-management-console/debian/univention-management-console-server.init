@@ -52,12 +52,12 @@ case "$1" in
 		;;
 	restart)
 		log_action_msg "Restarting $NAME"
-		univention-management-console-server restart
+		$DAEMON restart
 		log_action_end_msg 0
 		;;
 	reload)
 		log_action_msg "Reloading $NAME"
-		univention-management-console-server reload
+		$DAEMON reload
 		log_action_end_msg 0
 		;;
 	crestart)

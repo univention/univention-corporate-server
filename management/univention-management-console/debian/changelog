@@ -1,8 +1,15 @@
+univention-management-console (4.0.4-5) unstable; urgency=low
+
+  * add init script for UMC web server
+  * add PAM configuration; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 28 May 2011 20:26:25 +0200
+
 univention-management-console (4.0.4-4) unstable; urgency=low
 
   * fix reload action of UMC server
   * enhance error handling in UMC server; Bug #22460
- 
+
  -- Andreas Büsching <buesching@univention.de>  Sat, 28 May 2011 17:45:06 +0200
 
 univention-management-console (4.0.4-3) unstable; urgency=low
