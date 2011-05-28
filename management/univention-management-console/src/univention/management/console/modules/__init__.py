@@ -37,6 +37,7 @@ import notifier.signals as signals
 import univention.debug as ud
 
 from ..protocol import Response
+from ..protocol.definitions import *
 from ..locales import Translation
 from ..log import MODULE
 

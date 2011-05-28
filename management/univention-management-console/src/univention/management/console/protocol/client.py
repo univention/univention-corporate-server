@@ -227,7 +227,10 @@ class Client( signals.Provider ):
 		self.__unfinishedRequests.append( msg.id )
 
 	def invalidate_all_requests(self):
-		CORE.warn( 'Invalidate all pending requests: request %s' % ', '.join( self.__unfinishedRequests ) )
+		if self.__unfinishedRequests:
+			CORE.warn( 'Invalidating all pending requests: %s' % ', '.join( self.__unfinishedRequests ) )
+		else:
+			CORE.info( 'No pending requests found' )
 		for reqid in self.__unfinishedRequests:
 			response = Response()
 			response._id = reqid

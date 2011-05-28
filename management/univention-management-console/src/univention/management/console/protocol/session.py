@@ -216,12 +216,12 @@ class Processor( signals.Provider, Translation ):
 		if module_name:
 			if module_name in self.__processes:
 				self.__processes[ module_name ].request( msg )
-				CORE.info( 'session.py: got EXIT: asked module %s to shutdown gracefully' % module_name)
+				CORE.info( 'Ask module %s to shutdown gracefully' % module_name )
 				# added timer to kill away module after 3000ms
 				cb = notifier.Callback( self._purge_child, module_name )
 				self.__killtimer[ module_name ] = notifier.timer_add( 3000, cb )
 			else:
-				CORE.info( 'session.py: got EXIT: module %s is not running' % module_name )
+				CORE.info( 'Got EXIT request for a non-existing module %s' % module_name )
 
 	def handle_request_version( self, msg ):
 		res = Response( msg )
@@ -343,7 +343,7 @@ class Processor( signals.Provider, Translation ):
 		if not mod.connect():
 			CORE.info( 'No connection to module process yet' )
 			if mod._connect_retries > 200:
-				CORE.error( 'Connection to module %s process failed' % mod.name )
+				CORE.info( 'Connection to module %s process failed' % mod.name )
 				# inform client
 				res = Response( msg )
 				res.status = SERVER_ERR_MODULE_FAILED # error connecting to module process
@@ -391,9 +391,9 @@ class Processor( signals.Provider, Translation ):
 		return False
 
 	def _mod_inactive( self, module ):
-		CORE.info( 'The module %s is inactive for to long' % module.name )
+		CORE.info( 'The module %s is inactive for to long. Sending EXIT request to module' % module.name )
 		if module.openRequests:
-			CORE.info( 'There are unfinished requests. Waiting ...' )
+			CORE.info( 'There are unfinished requests. Waiting ...: %s' % module.openRequests )
 			return True
 
 		# mark as internal so the response will not be send to the client
@@ -409,11 +409,12 @@ class Processor( signals.Provider, Translation ):
 		CORE.warn( 'Socket died (module=%s)' % module_name )
 		res = Response( msg )
 		res.status = SERVER_ERR_MODULE_DIED
-		self._mod_died(0, 1, module_name, msg)
+		if module_name in self.__processes:
+			self._mod_died( self.__processes[ module_name ].pid(), 1, module_name, msg )
 
 	def _mod_died( self, pid, status, name, msg ):
 		if status:
-			CORE.warn( 'Module process died (%d): %s' % ( pid, str( status ) ) )
+			CORE.warn( 'Module process died (pid: %d, status: %s)' % ( pid, str( status ) ) )
 			res = Response( msg )
 			res.status = SERVER_ERR_MODULE_DIED
 		else:

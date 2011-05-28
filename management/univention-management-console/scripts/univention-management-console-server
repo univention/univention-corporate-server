@@ -102,7 +102,6 @@ class UMC_Daemon( DaemonRunner ):
 
 		# init daemon runner
 		DaemonRunner.__init__( self, self )
-		self.action_funcs[ 'reload' ] = self._reload
 		self.daemon_context.detach_process = self.options.daemon_mode
 		self.daemon_context.files_preserve = [ debug_fd ]
 		self.daemon_context.singal_map = {
@@ -116,11 +115,14 @@ class UMC_Daemon( DaemonRunner ):
 			CORE.error( 'Specified locale is not available (%s)' % self.options.language )
 
 	def _reload( self ):
+		"""Handler for the reload action"""
 		if self.pidfile.is_locked():
 			pid = self.pidfile.read_pid()
 			os.kill( pid, signal.SIGUSR1 )
 		else:
 			CORE.error( 'Reload failed: server ist not running' )
+
+	DaemonRunner.action_funcs[ 'reload' ] = _reload
 
 	def _usage_exit( self, argv ):
 		self.parser.error( 'invalid action' )
