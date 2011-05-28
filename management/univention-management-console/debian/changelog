@@ -1,3 +1,10 @@
+univention-management-console (4.0.4-3) unstable; urgency=low
+
+  * add dependency python-univention-config-registry to
+    univention-management-console-dev; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 28 May 2011 16:19:03 +0200
+
 univention-management-console (4.0.4-2) unstable; urgency=low
 
   * remove build instruction for UCR module; Bug #22460
