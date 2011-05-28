@@ -36,4 +36,9 @@
 rm -f /var/www/univention-management-console
 ln -s /usr/share/univention-management-console-frontend /var/www/univention-management-console
 
+# add apache modules for redirect to UMC web server
+a2enmod proxy
+a2enmod proxy_connect
+a2enmod proxy_http
+
 exit 0

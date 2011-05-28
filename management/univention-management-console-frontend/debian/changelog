@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.8-1) unstable; urgency=low
+
+  * add apache site configuration and activate proxy modules; Bug #22461
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 28 May 2011 20:01:30 +0200
+
 univention-management-console-frontend (0.0.7-2) unstable; urgency=low
 
   * added postinst script to set /var/www/univention-management-console

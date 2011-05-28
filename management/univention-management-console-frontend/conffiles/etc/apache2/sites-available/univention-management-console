@@ -1,0 +1,14 @@
+@%@UCRWARNING=# @%@
+
+ProxyPreserveHost on
+ProxyPass /umcp/ http://localhost:8080/
+ProxyPassReverse /umcp/ http://localhost:8080/
+
+RedirectMatch ^/umc(/$|$) /univention-management-console/
+RedirectMatch ^/univention-management-console$ /univention-management-console/
+RewriteEngine On
+RewriteRule ^/univention-management-console/style/(.*) /style/$1 [L]
+
+<Directory /var/www/univention-management-console>
+</Directory>
+
