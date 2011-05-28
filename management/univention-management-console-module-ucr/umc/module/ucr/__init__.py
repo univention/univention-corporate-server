@@ -88,7 +88,7 @@ class Instance( umcm.Base ):
 			success = False
 			request.status = 403
 
-		self.finished( request.id(), success )
+		self.finished( request.id, success )
 
 	def unset( self, request ):
 		response = False
@@ -96,7 +96,7 @@ class Instance( umcm.Base ):
 			ucr.handler_unset( request.options[ 'key' ] )
 			response = True
 
-		self.finished( request.id(), response )
+		self.finished( request.id, response )
 
 	def get( self, request ):
 		ucrReg = ucr.ConfigRegistry()
@@ -105,16 +105,16 @@ class Instance( umcm.Base ):
 		var = ucrInfo.get_variable( str( request.options[ 'variable' ] ) )
 		value = ucrReg.get( str( request.options[ 'variable' ] ) )
 		if not var and value:
-			self.finished( request.id(),  { 'variable' : request.options[ 'variable' ], 'value' : value } )
+			self.finished( request.id,  { 'variable' : request.options[ 'variable' ], 'value' : value } )
 		elif var:
 			var[ 'value' ] = value
-			self.finished( request.id(), var.normalize() )
+			self.finished( request.id, var.normalize() )
 		else:
-			self.finished( request.id(), False, message = _( 'The UCR variable %(variable)s could not be found' ) % { 'variable' : request.options[ 'variable' ] } )
+			self.finished( request.id, False, message = _( 'The UCR variable %(variable)s could not be found' ) % { 'variable' : request.options[ 'variable' ] } )
 
 	def categories( self, request ):
 		ucrInfo = ConfigRegistryInfo( registered_only = False )
-		self.finished( request.id(), dict( ucrInfo.categories ) )
+		self.finished( request.id, dict( ucrInfo.categories ) )
 
 	def search( self, request ):
 		'''Returns a dictionary of configuration registry variables
@@ -158,4 +158,4 @@ class Instance( umcm.Base ):
 		if not request.status:
 			request.status = 200
 
-		self.finished( request.id(), { 'identifier' : 'key', 'label' : 'key', 'items' : variables } )
+		self.finished( request.id, { 'identifier' : 'key', 'label' : 'key', 'items' : variables } )

@@ -1,3 +1,10 @@
+univention-management-console-module-ucr (1.0.1-1) unstable; urgency=low
+
+  * update javascript code
+  * add german translation; Bug #22624
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 28 May 2011 18:11:55 +0200
+
 univention-management-console-module-ucr (1.0.0-2) unstable; urgency=low
 
   * Initial release ; Bug #22624
