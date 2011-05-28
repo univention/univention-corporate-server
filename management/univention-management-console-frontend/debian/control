@@ -2,7 +2,12 @@ Source: univention-management-console-frontend
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, ucslint, univention-dojo-dev, imagemagick, rsync
+Build-Depends: debhelper (>= 7.0.50~),
+ ucslint,
+ univention-dojo-dev,
+ univention-config-dev,
+ imagemagick,
+ rsync
 
 Package: univention-management-console-frontend
 Architecture: all

@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.8-2) unstable; urgency=low
+
+  * add build dependency univention-config-dev; Bug #22461
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 28 May 2011 20:13:23 +0200
+
 univention-management-console-frontend (0.0.8-1) unstable; urgency=low
 
   * add apache site configuration and activate proxy modules; Bug #22461
