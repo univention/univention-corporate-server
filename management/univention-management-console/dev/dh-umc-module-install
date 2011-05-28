@@ -67,6 +67,9 @@ def do_package( package ):
 		else:
 			print >>sys.stderr, 'info: no category definition file'
 
+		if not os.path.isdir( module.icons ):
+			print >>sys.stderr, 'error: could not find icon directory %s' % module.icons
+
 		# copy python module
 		install_python = []
 		for entry in os.listdir( module.python_path ):
@@ -101,6 +104,16 @@ def do_package( package ):
 			json_file = os.path.join( module.js_path, '%s.json' % lang )
 			module[ 'lang' ] = lang
 			dh_ucs.doIt( 'install', json_file, 'debian/%(package)s/usr/share/univention-management-console-frontend/js/umc/modules/i18n/%(lang)s/%(Module)s.json' % module )
+
+		# copy icons
+		for dirname, dirs, files in os.walk( module.icons ):
+			if '.svn' in dirs:
+				dirs.remove( '.svn' )
+			dest = 'debian/%s/usr/share/univention-management-console-frontend/images/icons/%s' % ( package, dirname[ len( module.icons ) : ] )
+			if not os.path.exists( dest ):
+				dh_ucs.doIt( 'install', '-d', dest )
+			for icon in files:
+				dh_ucs.doIt( 'install', '-t', dest, '-m', '644', os.path.join( dirname, icon ) )
 
 	f_postinst = open( os.path.join( 'debian', package + '.postinst.debhelper' ), 'a' )
 	f_postinst.write( 'invoke-rc.d univention-management-console-server reload || true\n' )

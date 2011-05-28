@@ -1,3 +1,9 @@
+univention-management-console (4.0.4-6) unstable; urgency=low
+
+  * dh-umc-module-install: support icons; Bug #22455
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 28 May 2011 21:28:22 +0200
+
 univention-management-console (4.0.4-5) unstable; urgency=low
 
   * add init script for UMC web server

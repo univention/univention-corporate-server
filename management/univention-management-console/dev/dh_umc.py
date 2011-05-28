@@ -41,6 +41,7 @@ DEFINITION = 'Definition'
 JAVASCRIPT = 'Javascript'
 SYNTAX = 'Syntax'
 CATEGORY = 'Category'
+ICONS = 'Icons'
 
 LANGUAGES = ( 'de', )
 
@@ -52,6 +53,9 @@ LANGUAGES = ( 'de', )
  Syntax: The XML definition of new syntax classes
  Javascript: The directory of the javascript code. In this directory must be a a file called <Module>.js
  Category: The XML definition of additional categories
+ Icons: A directory containing the icons used by the module. The
+   directory structure must follow the following pattern
+   <weight>x<height>/<icon>.(png|gif)
 
 The entries Syntax and Category are optional.
 
@@ -62,12 +66,13 @@ Example:
  Syntax: umc/syntax/ucr.xml
  Javascript: umc/js
  Category: umc/categories/ucr.xml
+ Icons: umc/icons
 """
 
 class UMC_Module( dict ):
 	def __init__( self, *args ):
 		dict.__init__( self, *args )
-		for key in ( MODULE, PYTHON, JAVASCRIPT, DEFINITION, CATEGORY, SYNTAX ):
+		for key in ( MODULE, PYTHON, JAVASCRIPT, DEFINITION, CATEGORY, SYNTAX, ICONS ):
 			if key in self and self[ key ]:
 				self[ key ] = self[ key ][ 0 ]
 
@@ -118,6 +123,10 @@ class UMC_Module( dict ):
 	def js_po_files( self ):
 		for lang in LANGUAGES:
 			yield os.path.join( self.__getitem__( JAVASCRIPT ), '%s.po' % lang )
+
+	@property
+	def icons( self ):
+		return self.get( ICONS )
 
 def read_modules( package ):
 	modules = []
