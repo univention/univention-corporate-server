@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.9-1) unstable; urgency=low
+
+  * remove UCR UMC module; Bug #22461
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 28 May 2011 21:31:39 +0200
+
 univention-management-console-frontend (0.0.8-2) unstable; urgency=low
 
   * add build dependency univention-config-dev; Bug #22461
