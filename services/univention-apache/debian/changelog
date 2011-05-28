@@ -1,3 +1,9 @@
+univention-apache (5.0.0-1) unstable; urgency=low
+
+  * fixed dependencies; Bug #22525
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 28 May 2011 19:42:15 +0200
+
 univention-apache (5.0.0-0) unstable; urgency=low
 
   * bump version for UCS 3.0

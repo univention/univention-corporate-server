@@ -2,12 +2,14 @@ Source: univention-apache
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), univention-config-dev, ucslint
+Build-Depends: debhelper (>= 7.0.50~),
+ univention-config-dev,
+  ucslint
 Standards-Version: 3.8.2
 
 Package: univention-apache
 Architecture: all
-Depends: univention-ssl, apache2, libapache2-mod-auth-pam, python2.4, univention-config-registry, php5, univention-webui-style-base
+Depends: univention-ssl, apache2, libapache2-mod-auth-pam, python2.6, univention-config-registry, php5
 Conflicts: apache
 Description: UCS - Apache2 configuration
  This packages provides the basic configuration for the
