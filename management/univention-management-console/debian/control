@@ -47,25 +47,6 @@ Description: Univention Management Console - server
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-management-console-web-server
-Architecture: all
-Depends: python-univention-management-console (= ${source:Version}),
- univention-runit,
- python-cherrypy3,
- python-daemon,
- univention-apache
-Description: Univention Management Console - web server
- Univention Console is a web based program to manage computers.
- It has an extensible architecture, using modules to implement
- its features. This package contains the backend-daemon, which
- can be installed on any UCS-system to provide functionalities
- for univention-management-console
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
 Package: python-univention-management-console
 Architecture: all
 Depends: ${python:Depends}, ${misc:Depends},
@@ -79,20 +60,6 @@ Depends: ${python:Depends}, ${misc:Depends},
  python-notifier (>= 0.8.0)
 Provides: ${python:Provides}
 Description: Univention Management Console - Python Modules
- Univention Console is a web based program to manage computers.
- It has an extensible architecture, using modules to implement
- its features. This package contains the backend-daemon, which
- can be installed on any UCS-system to provide functionalities
- for univention-management-console
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-management-console-themes
-Architecture: all
-Description: Univention Management Console - Theme Files
  Univention Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
  its features. This package contains the backend-daemon, which
