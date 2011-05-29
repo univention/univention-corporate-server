@@ -24,3 +24,18 @@ Description: Univention Management Console - Web based computer administration t
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-management-console-web-server
+Architecture: all
+Depends: univention-management-console-frontend,
+ univention-management-console-server
+Description: Univention Management Console - Web server
+ Univention Console is a web based program to manage computers.
+ It has an extensible architecture, using modules to implement
+ its features. This package contains the web server providing
+ HTTP access to the UMC server.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

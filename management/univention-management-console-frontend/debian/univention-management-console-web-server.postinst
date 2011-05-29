@@ -32,13 +32,13 @@
 
 #DEBHELPER#
 
-# make sure that the management console is correctly linked
-rm -f /var/www/univention-management-console
-ln -s /usr/share/univention-management-console-frontend /var/www/univention-management-console
-
 # add apache modules for redirect to UMC web server
 a2enmod proxy
 a2enmod proxy_connect
 a2enmod proxy_http
+
+# activate site
+a2ensite univention-management-console
+invoke-rc.d apache2 restart
 
 exit 0

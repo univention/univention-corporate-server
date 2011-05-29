@@ -1,3 +1,10 @@
+univention-management-console-frontend (0.0.10-1) unstable; urgency=low
+
+  * enable apache site; Bug #22461
+  * add UMC web server
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 28 May 2011 21:56:53 +0200
+
 univention-management-console-frontend (0.0.9-1) unstable; urgency=low
 
   * remove UCR UMC module; Bug #22461
