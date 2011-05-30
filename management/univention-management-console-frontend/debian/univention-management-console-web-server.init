@@ -55,11 +55,6 @@ case "$1" in
 		$DAEMON restart
 		log_action_end_msg 0
 		;;
-	reload)
-		log_action_msg "Reloading $NAME"
-		$DAEMON reload
-		log_action_end_msg 0
-		;;
 	crestart)
 		pid="$(</var/run/umc-web-server.pid)"
 		if [ -n "$pid" -a -d "/proc/$pid" ]; then
@@ -69,7 +64,7 @@ case "$1" in
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-management-console-web-server {start|stop|restart|reload|crestart}"
+		echo "Usage: /etc/init.d/univention-management-console-web-server {start|stop|restart|crestart}"
 		exit 1
 		;;
 esac

@@ -41,4 +41,7 @@ a2enmod proxy_http
 a2ensite univention-management-console
 invoke-rc.d apache2 restart
 
+# launch umc web server
+invoke-rc.d univention-management-console-web-server restart
+
 exit 0

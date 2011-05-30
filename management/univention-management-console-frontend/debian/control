@@ -28,7 +28,9 @@ Description: Univention Management Console - Web based computer administration t
 Package: univention-management-console-web-server
 Architecture: all
 Depends: univention-management-console-frontend,
- univention-management-console-server
+ univention-management-console-server,
+ python-cherrypy3,
+ python-daemon
 Description: Univention Management Console - Web server
  Univention Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement

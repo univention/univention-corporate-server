@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.10-2) unstable; urgency=low
+
+  * adapted package dependencies and maintainer scripts (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 30 May 2011 11:11:29 +0200
+
 univention-management-console-frontend (0.0.10-1) unstable; urgency=low
 
   * enable apache site; Bug #22461
