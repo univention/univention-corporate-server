@@ -73,9 +73,10 @@ print '          attrs=univentionDhcpPingCheck,univentionDhcpGetLeaseHostnames,u
 print '          attrs=univentionDhcpLeaseTimeDefault,univentionDhcpLeaseTimeMax,univentionDhcpLeaseTimeMin,univentionDhcpDdnsHostname,univentionDhcpDdnsDomainname'
 print '          attrs=univentionDhcpDdnsRevDomainname,univentionDhcpDdnsUpdates,univentionDhcpDdnsUpdateStyle,univentionDhcpDoForwardUpdates'
 print '          attrs=univentionDhcpUpdateStaticLeases,univentionDhcpClientUpdates'
+
+ldap_acl_read_anonymous_ips = baseConfig.get('ldap/acl/read/ips', '127.0.0.1,%s' % address).strip()
 if baseConfig.is_false('ldap/acl/read/anonymous'):
 	print '   by users read'
-	ldap_acl_read_anonymous_ips = baseConfig.get('ldap/acl/read/ips', '127.0.0.1').strip()
 	for ip in ldap_acl_read_anonymous_ips.split(','):
 		print '   by peername.ip=%s read' % ip
 else:
@@ -85,7 +86,6 @@ print
 print 'access to dn="cn=subSchema"'
 if baseConfig.is_false('ldap/acl/read/anonymous'):
 	print '   by users read'
-	ldap_acl_read_anonymous_ips = baseConfig.get('ldap/acl/read/ips', '127.0.0.1').strip()
 	for ip in ldap_acl_read_anonymous_ips.split(','):
 		print '   by peername.ip=%s read' % ip
 else:

@@ -1,3 +1,12 @@
+univention-ldap (8.0.7-1) unstable; urgency=low
+
+  * add eth0/address to list of default peernames alowed to do
+    anonymous read (Bug #17519)
+  * fix peername.ip syntax. The other option would be to use
+    peername.regex="IP=127.0.0.1:*", because the exact port is unknown
+
+ -- Arvid Requate <requate@univention.de>  Mon, 30 May 2011 16:17:42 +0200
+
 univention-ldap (8.0.6-1) unstable; urgency=low
 
   * unregister subfile 70univention-ldap-server_acl-master-end from
