@@ -1,3 +1,9 @@
+univention-management-console (4.0.5-3) unstable; urgency=low
+
+  * removed unnecessary dependencies; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 30 May 2011 11:28:12 +0200
+
 univention-management-console (4.0.5-2) unstable; urgency=low
 
   * adapted package dependencies (Bug #22460)

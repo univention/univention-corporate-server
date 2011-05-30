@@ -13,10 +13,7 @@ Package: univention-management-console
 Architecture: all
 Depends: python-univention-management-console (= ${source:Version}),
  univention-management-console-server (= ${source:Version}),
- univention-management-console-web-server (= ${source:Version}),
- univention-management-console-system-info,
- python-pyopenssl,
- openssl
+ univention-management-console-web-server
 Description: Univention Management Console - Web based computer administration tool
  Univention Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
@@ -31,7 +28,7 @@ Description: Univention Management Console - Web based computer administration t
 Package: univention-management-console-server
 Architecture: all
 Depends: python-univention-management-console (= ${source:Version}),
- univention-runit
+ univention-runit,
  python-daemon
 Description: Univention Management Console - server
  Univention Console is a web based program to manage computers.
