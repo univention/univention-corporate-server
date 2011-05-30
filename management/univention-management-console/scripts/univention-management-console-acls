@@ -38,7 +38,7 @@ import sys
 
 import univention.config_registry as ucr
 
-OPERATIONS = ( 'show', 'set', 'append' )
+OPERATIONS = ( 'show', 'reset', 'allow', 'disallow', 'remove' )
 _cache_dir = '/var/cache/univention-management-console/acls'
 
 configRegistry = ucr.ConfigRegistry()
@@ -48,9 +48,9 @@ parser = OptionParser( usage = '%%prog (%s) [options]' % '|'.join( OPERATIONS ) 
 parser.add_option( '-u', '--user', action = 'store',
 				   dest = 'user', default = 'root',
 				   help = 'define the user who should get access [default: %default]' )
-parser.add_option( '-a', '--allow', type = 'string', action = 'append',
-				   dest = 'allow', default = [],
-				   help = 'define the accessable UMC commands (or patterns)' )
+parser.add_option( '-c', '--command', type = 'string', action = 'append',
+				   dest = 'commands', default = [],
+				   help = 'defines a list of UMC commands (or patterns)' )
 parser.add_option( '-H', '--host', type = 'string', action = 'store',
 				   dest = 'host', default = configRegistry[ 'hostname' ],
 				   help = 'on which host the commands are allowed [default: %default]' )
@@ -66,15 +66,18 @@ if not operation in OPERATIONS:
 	sys.exit( 1 )
 
 filename = os.path.join( _cache_dir, options.user )
-if os.path.isfile( filename ) and operation in ( 'show', 'append' ):
-	fd = open( filename )
-	acls = cPickle.load( fd )
-	fd.close()
-	print 'loaded pickle file', filename
+if os.path.isfile( filename ) and operation in ( 'show', 'allow', 'remove' ):
+	try:
+		fd = open( filename )
+		acls = cPickle.load( fd )
+		print 'loaded pickle file', filename
+	except:
+		acls = { 'allow' : [], 'disallow' : [] }
+	finally:
+		fd.close()
 else:
 	acls = { 'allow' : [], 'disallow' : [] }
 
-print acls
 if operation == 'show':
 	print 'Username: %s' % options.user
 	print '  Allowed:'
@@ -84,9 +87,13 @@ if operation == 'show':
 	for acl in acls[ 'disallow' ]:
 		print '     Host: %-10s Command: %-15s Options: %s' % ( acl[ 'host' ], acl[ 'command' ], acl[ 'options' ] )
 	sys.exit( 0 )
-elif operation in ( 'set', 'append' ):
-	for allow in options.allow:
-		acls[ 'allow' ].append( { 'fromUser': False, 'host': options.host, 'command': allow, 'options': {} } )
+elif operation in ( 'allow', 'disallow' ):
+	for command in options.commands:
+		acls[ operation ].append( { 'fromUser': False, 'host': options.host, 'command': command, 'options': {} } )
+elif operation == 'remove':
+	acls[ 'allow' ] = filter( lambda item: item.get( 'command' ) not in options.commands,  acls[ 'allow' ] )
+elif operation == 'reset':
+	pass # nothing todo as the acls dict is already "reset" and will be written in the next step
 
 fd = open( filename, 'w' )
 fd.write( cPickle.dumps( acls ) )

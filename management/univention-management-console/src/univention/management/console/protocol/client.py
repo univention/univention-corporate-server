@@ -34,7 +34,8 @@ import errno, os, socket, sys, fcntl
 
 from .message import *
 from .definitions import *
-from ..log import *
+from ..log import CORE
+from ..locales import Translation
 from OpenSSL import *
 
 import notifier
@@ -52,7 +53,7 @@ Provides basic functionality for session-handling, authentication and
 request handling.
 '''
 
-class Client( signals.Provider ):
+class Client( signals.Provider, Translation ):
 	def __verify_cert_cb( self, conn, cert, errnum, depth, ok ):
 		CORE.info( '__verify_cert_cb: Got certificate subject: %s' % cert.get_subject() )
 		CORE.info( '__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer() )

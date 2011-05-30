@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Management Console
-#  postinst script for the debian package
+# Univention Common Python and Shell Library
+#  postinst script for UMC server
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2002-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,77 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-createLogfile () {
-	if [ ! -e $1 ] ; then
-		touch $1
-		chown $2 $1
-		chmod $3 $1
-	fi
-}
-
 #DEBHELPER#
 
-eval $( univention-config-registry shell)
+# remove old baseconfig commands
+/usr/sbin/univention-management-console-acls remove --user root \
+			--command 'baseconfig/*'
 
-# debug level for UMC server and module process
-univention-config-registry set umc/server/debug/level?1 \
-                               umc/raw/debug/level?1 \
-                               umc/raw/request/timeout?30 \
-                               umc/module/debug/level?1 \
-                               umc/module/watchdog/timeout?3600
-
-if [ "$umc_title_image" = "themes/images/default/management-console-beta.gif" ]; then
-	univention-config-registry set umc/title/image=themes/images/default/management-console.gif
-fi
-if [ "$umc_title" = "Univention Management Console (Beta-Version)" ]; then
-	univention-config-registry set umc/title="Univention Management Console"
-fi
-
-if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-
-	/usr/lib/univention-install/34univention-management-console-server.inst
-fi
-
-if [ "${locale/de_DE.UTF-8:UTF-8//}" = "$locale" ]; then
-	univention-config-registry set locale="$locale de_DE.UTF-8:UTF-8"
-fi
-
-# default logfiles
-createLogfile /var/log/univention/management-console-server.log "root:adm" 640
-createLogfile /var/log/univention/management-console-module.log "root:adm" 640
-
-# default directory for UNIX sockets daemon <-> module
-socket_dir=/var/run/univention-management-console/
-mkdir -p $socket_dir &>/dev/null
-chmod 700 $socket_dir
-
-# kill all running modules if update is not done via UMC
-if [ -x /usr/sbin/univention-management-console-server ]; then
-	pkill -f "/usr/bin/python.* /usr/sbin/univention-management-console-module -m .*"
-fi
-
-if [ "$1" = "configure" -a -n "$2" ]; then
-
-	/etc/init.d/univention-management-console-server crestart
-
-elif [ "$1" = "configure" ]; then
-	ln -s /etc/runit/univention-management-console-server /etc/runit/univention/univention-management-console-server >/dev/null 2>&1
-
-	/usr/share/univention-management-console/univention-create-acls --user root \
-		--allow 'join/*' --allow 'baseconfig/*' --allow 'service/*'
-	echo "wait for runsv to sync..."
-	count=0
-	until sv status univention-management-console-server > /dev/null 2>&1 || test $count -gt 10; do
-		sleep 1
-		((count=count+1))
-	done
-    # runsv has 10 seconds to sync, if it hasn't there will be a warning
-	/etc/init.d/univention-management-console-server start
-fi
-
-# added the php5 module to the apache2 modules list
-a2enmod php5 || true
-
-/etc/init.d/apache2 reload || true
-
-exit 0
+/usr/sbin/univention-management-console-acls allow --user root \
+            --command 'join/*' \
+			--command 'ucr/*' \
+			--command 'service/*'

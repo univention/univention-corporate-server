@@ -45,7 +45,7 @@ from OpenSSL import *
 
 import univention.uldap
 
-from .message import *
+from .message import Response, Request
 from .client import *
 from .version import *
 from .definitions import *
