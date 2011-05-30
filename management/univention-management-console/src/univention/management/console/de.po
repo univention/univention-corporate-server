@@ -41,12 +41,12 @@ msgstr ""
 #, python-format
 msgid ""
 "Execution of verification function %(function)s for syntax %(base)s failed:"
-msgstr ""
+msgstr "Die Ausführung der Überprüfungsfunktion %(function)s für die Syntax %(base)s ist fehlgeschlagen:"
 
 #: protocol/message.py:131 protocol/message.py:138
 #, python-format
 msgid "Attribute %s just available for MIME type %s"
-msgstr ""
+msgstr "Das Attribut %s ist nur verfügar für den MIME-Typ %s"
 
 #: protocol/message.py:158 protocol/definitions.py:115
 msgid "Unparsable message header"
@@ -54,7 +54,7 @@ msgstr "Unverständlicher nachrichtenkopf"
 
 #: protocol/message.py:167
 msgid "Invalid length information"
-msgstr ""
+msgstr "Ungültige Längenangabe"
 
 #: protocol/message.py:173
 #, python-format

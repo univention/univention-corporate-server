@@ -32,11 +32,20 @@
 
 #DEBHELPER#
 
+# set default UCR settings
+univention-config-registry set \
+	ucm/server/debug/level?1 \
+	ucm/module/debug/level?1
+
 # remove old baseconfig commands
 /usr/sbin/univention-management-console-acls remove --user root \
 			--command 'baseconfig/*'
 
+# append new command patterns to allow list
 /usr/sbin/univention-management-console-acls allow --user root \
             --command 'join/*' \
 			--command 'ucr/*' \
 			--command 'service/*'
+
+# ucslint needs this
+exit 0

@@ -1,35 +1,11 @@
 [umc/server/debug/level]
-Description[de]=Univention Management Console Server Debuglevel
-Description[en]=Univention Management Console Server debug level
+Description[de]=Univention Management Console Server Debuglevel (ab debug/level 99 werden XML Daten und Klartext-Passwörter im Log-File gespeichert)
+Description[en]=Univention Management Console Server debug level (with debug/level >= 99 xml data and cleartext password will be saved in log files)
 Type=str
 Categories=Management
 
 [umc/module/debug/level]
 Description[de]=Debuglevel der Module der Univention Management Console
 Description[en]=Debug level of the Univention Management Console modules
-Type=str
-Categories=Management
-
-[umc/web/debug/level]
-Description[de]=Debuglevel des Univention Management Console Webfrontends
-Description[en]=Debug level of the Univention Management Console web frontend
-Type=str
-Categories=Management
-
-[umc/web/language]
-Description[de]=Sprache der Univention Management Console
-Description[en]=Language of the Univention Management Console
-Type=str
-Categories=Management
-
-[umc/raw/debug/level]
-Description[de]=Debuglevel des Univention Management Console AJAX-Frontends
-Description[en]=Debug level of the Univention Management Console ajax frontend
-Type=str
-Categories=Management
-
-[umc/raw/request/timeout]
-Description[de]=Timeout für UMC-Requests des Univention Management Console AJAX-Frontends
-Description[en]=Timeout for UMC requests of the Univention Management Console AJAX frontend
 Type=str
 Categories=Management
