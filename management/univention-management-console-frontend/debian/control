@@ -30,7 +30,8 @@ Architecture: all
 Depends: univention-management-console-frontend,
  univention-management-console-server,
  python-cherrypy3,
- python-daemon
+ python-daemon,
+ python-simplejson
 Description: Univention Management Console - Web server
  Univention Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
