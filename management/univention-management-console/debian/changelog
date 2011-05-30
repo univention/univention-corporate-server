@@ -1,3 +1,10 @@
+univention-management-console (4.0.5-1) unstable; urgency=low
+
+  * add directories for modules, syntax definitions and categories
+  * if translation is missing return the given message; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 30 May 2011 10:57:32 +0200
+
 univention-management-console (4.0.4-8) unstable; urgency=low
 
   * remove web server and themes package; Bug #22460

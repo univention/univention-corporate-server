@@ -54,7 +54,9 @@ class NullTranslation( object ):
 		pass
 
 	def translate( self, message ):
-		return message
+		if self._translation is None:
+			return message
+		return self._translation.ugettext( message )
 
 	_ = translate
 
@@ -64,6 +66,8 @@ class Translation( NullTranslation ):
 			LOCALE.info( 'Trying to determine default locale settings' )
 			try:
 				lang = locale.getlocale( locale.LC_MESSAGES )
+				if lang[ 0 ] is None:
+					lang = locale.getdefaultlocale()
 				language = lang[ 0 ]
 				if language is None:
 					language = 'de'
@@ -74,8 +78,5 @@ class Translation( NullTranslation ):
 		try:
 			self._translation = gettext.translation( self._domain, languages = ( language, ) )
 		except IOError:
-			LOCALE.error( 'Could not find locale %s for domain %s' % ( language, self._domain ) )
-			raise LocaleNotFound()
-
-	def translate( self, message ):
-		return self._translation.ugettext( message )
+			self._translation = None
+			LOCALE.error( 'Could not find translation file for language %s of domain %s' % ( language, self._domain ) )
