@@ -1,3 +1,11 @@
+univention-ldap (8.0.6-1) unstable; urgency=low
+
+  * unregister subfile 70univention-ldap-server_acl-master-end from
+    univention-ldap-server, it's part of univention-ldap-acl-master
+    (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 30 May 2011 15:09:39 +0200
+
 univention-ldap (8.0.5-1) unstable; urgency=low
 
   * slapd 2.4 reads DB_CONFIG into olcDbConfig attribute, which unfortunately
