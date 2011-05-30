@@ -1,0 +1,6 @@
+ProxyPreserveHost on
+ProxyPass /umcp/ http://localhost:8080/
+ProxyPassReverse /umcp/ http://localhost:8080/
+
+#RewriteEngine On
+#RewriteRule		^/umcp/(.*)$	http://localhost:8080/$1	[P] 
