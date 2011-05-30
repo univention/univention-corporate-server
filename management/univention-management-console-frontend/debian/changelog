@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.12-1) unstable; urgency=low
+
+  * import os (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 30 May 2011 11:26:42 +0200
+
 univention-management-console-frontend (0.0.11-1) unstable; urgency=low
 
   * added dependency to simplejson, import sys (Bug #22460)
