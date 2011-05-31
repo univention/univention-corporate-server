@@ -1,3 +1,9 @@
+univention-management-console (4.0.8-1) unstable; urgency=low
+
+  * fix a naming bug with in the protocol module; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 31 May 2011 09:30:31 +0200
+
 univention-management-console (4.0.7-1) unstable; urgency=low
 
   * add category und syntax definitions to UMC server package

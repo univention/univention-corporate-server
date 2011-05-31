@@ -37,7 +37,7 @@ from ..locales import *
 
 _ = NullTranslation( 'univention.management.console' ).translate
 
-class Command( object ):
+class CommandDefinition( object ):
 	def __init__( self, name, has_arguments, *options ):
 		self._name = name
 		self._has_arguments = has_arguments
@@ -56,15 +56,15 @@ class Command( object ):
 		return self._options
 
 COMMANDS = (
-	Command( 'AUTH', False, 'username', 'password' ),
-	Command( 'COMMAND', True ),
-	Command( 'VERSION', False ),
-	Command( 'GET', True ),
-	Command( 'SET', True ),
-	Command( 'CLOSE', False ),
-	Command( 'CANCEL', False, 'ids' ),
-	Command( 'STATUS', False, 'ids' ),
-	Command( 'EXIT', True ),
+	CommandDefinition( 'AUTH', False, 'username', 'password' ),
+	CommandDefinition( 'COMMAND', True ),
+	CommandDefinition( 'VERSION', False ),
+	CommandDefinition( 'GET', True ),
+	CommandDefinition( 'SET', True ),
+	CommandDefinition( 'CLOSE', False ),
+	CommandDefinition( 'CANCEL', False, 'ids' ),
+	CommandDefinition( 'STATUS', False, 'ids' ),
+	CommandDefinition( 'EXIT', True ),
 )
 
 class Status( object ):
