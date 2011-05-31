@@ -1,3 +1,10 @@
+univention-management-console (4.0.8-2) unstable; urgency=low
+
+  * dh-umc-module-build: force the creation of a po file even if it is
+    empty; Bug #22455
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 31 May 2011 10:43:42 +0200
+
 univention-management-console (4.0.8-1) unstable; urgency=low
 
   * fix a naming bug with in the protocol module; Bug #22460
