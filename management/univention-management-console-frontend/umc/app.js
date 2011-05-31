@@ -455,9 +455,9 @@ dojo.mixin(umc.app, {
 				});
 			});
 			this._categories = cats1.concat(cats2);
-			console.log(cats1);
-			console.log(cats2);
-			console.log(this._categories);
+			//console.log(cats1);
+			//console.log(cats2);
+			//console.log(this._categories);
 			// end of hack :)
 
 			// get all modules

@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.13-1) unstable; urgency=low
+
+  * added support for localization to umc (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 31 May 2011 08:33:12 +0200
+
 univention-management-console-frontend (0.0.12-2) unstable; urgency=low
 
   * add install file for binary package
