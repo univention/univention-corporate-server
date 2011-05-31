@@ -1,3 +1,9 @@
+univention-ldap (8.0.7-2) unstable; urgency=low
+
+  * add local interface ips to ldap/acl/read/ips in postinst (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 01 Jun 2011 00:08:35 +0200
+
 univention-ldap (8.0.7-1) unstable; urgency=low
 
   * add eth0/address to list of default peernames alowed to do

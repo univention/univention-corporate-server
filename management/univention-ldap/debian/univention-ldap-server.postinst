@@ -72,6 +72,9 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-config-registry set ldap/translogfile?"/var/lib/univention-ldap/listener/listener"
 fi
 
+local_ips="127.0.0.1"
+for address in $(univention-config-registry search interfaces/eth.*/address | sed -n 's_interfaces/eth.*/address: \(.*\)_\1_p'); do local_ips+=",$address"; done
+
 univention-config-registry set	ldap/debug/level?0 \
 								ldap/port?389 \
 								ldap/database/type?bdb \
@@ -87,9 +90,8 @@ univention-config-registry set	ldap/debug/level?0 \
 								ldap/acl/nestedgroups?yes \
 								ldap/database/bdb/db_config_options?"set_flags" \
 								ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE" \
-								ldap/acl/read/ips="127.0.0.1" \
+								ldap/acl/read/ips="$local_ips" \
 								ldap/maxopenfiles?8192 # Bug #17705
-
 # UDM Property Attributes
 udm_prop_attrs="univentionUDMPropertyVersion,univentionUDMPropertyModule,univentionUDMPropertyShortDescription,univentionUDMPropertyLongDescription,univentionUDMPropertySyntax,univentionUDMPropertyMultivalue,univentionUDMPropertyDefault,univentionUDMPropertyLdapMapping,univentionUDMPropertyObjectClass,univentionUDMPropertyDeleteObjectClass,univentionUDMPropertyValueMayChange,univentionUDMPropertyLayoutTabName,univentionUDMPropertyLayoutOverwriteTab,univentionUDMPropertyLayoutOverwritePosition,univentionUDMPropertyLayoutPosition,univentionUDMPropertyCLIName,univentionUDMPropertyTranslationShortDescription,univentionUDMPropertyTranslationLongDescription,univentionUDMPropertyTranslationTabName,univentionUDMPropertyOptions,univentionUDMPropertyLayoutTabAdvanced,univentionUDMPropertyValueRequired,univentionUDMPropertyHook,univentionUDMPropertyDoNotSearch"
 # recommended index settings
