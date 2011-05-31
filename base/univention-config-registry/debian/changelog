@@ -1,3 +1,9 @@
+univention-config-registry (7.0.13-1) unstable; urgency=low
+
+  * add wrapper script univention-ldapsearch (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 31 May 2011 16:51:47 +0200
+
 univention-config-registry (7.0.12-1) unstable; urgency=low
 
   * removed UMC module; Bug #22624

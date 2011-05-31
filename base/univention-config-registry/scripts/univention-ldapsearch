@@ -1,0 +1,28 @@
+#!/bin/bash
+
+eval "$(univention-config-registry shell)"
+
+## check for option -D to avoid "ldapsearch: -D previously specified"
+## check for option -w to avoid "ldapsearch: -y incompatible with -w"
+for arg in "$@"; do
+	if [ "$arg" = "-D" ]; then
+		option_D_given=true
+	elif [ "$arg" = "-w" ]; then
+		option_w_given=true
+	fi
+done
+
+if [ -z "$option_D_given" ]; then
+	binddn="$ldap_binddn"
+	if [ -z "$binddn" ]; then
+		binddn="$ldap_hostdn"
+	fi
+	if [ -z "$option_w_given" ]; then
+		bindpw_file="/etc/machine.secret"
+		exec ldapsearch -D "$binddn" -y $bindpw_file "$@"
+	else
+		exec ldapsearch -D "$binddn" "$@"
+	fi
+else
+	exec ldapsearch "$@"
+fi
