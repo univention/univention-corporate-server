@@ -115,21 +115,21 @@ class SessionClient(object):
 		CORE.error('SessionClient: lost connection to UMC server')
 
 	def _response(self, response):
-		if not response.id() in self._requestid2response_queue:
-			CORE.error('SessionClient: could not find request id for response %s, status %d:' % ( str( response.id() ), response.status ) )
+		if not response.id in self._requestid2response_queue:
+			CORE.error('SessionClient: could not find request id for response %s, status %d:' % ( str( response.id ), response.status ) )
 		else:
-			CORE.info('SessionClient: got response with id=%s and status=%s' % ( response.id(), response.status ) )
-			self._requestid2response_queue[ response.id() ].put( response )
+			CORE.info('SessionClient: got response with id=%s and status=%s' % ( response.id, response.status ) )
+			self._requestid2response_queue[ response.id ].put( response )
 			# remove response_queue from internal mapping
 			self.cleanup_request( response )
 
 	def send_request(self, request, response_queue):
-		CORE.info('SessionClient: sending request with id=%s' % request.id())
-		self._requestid2response_queue[request.id()] = response_queue
+		CORE.info('SessionClient: sending request with id=%s' % request.id)
+		self._requestid2response_queue[request.id] = response_queue
 		self.client.request( request )
 
 	def cleanup_request(self, request):
-		del self._requestid2response_queue[request.id()]
+		del self._requestid2response_queue[request.id]
 
 
 class UMCP_Dispatcher(object):
@@ -218,7 +218,7 @@ class CPgeneric(object):
 	def _log(self, loglevel, _msg):
 		remote = cherrypy.request.remote
 		msg = '%s (%s:%s) %s' % (self.name,  remote.ip, remote.port, _msg)
-		_logOptions.get(loglevel, CORE.info)(msg)
+		self._logOptions.get(loglevel, CORE.info)(msg)
 
 	def get_request(self, request, json):
 		req = umcp.Request( [ 'generic' ], opts = {} )
@@ -265,9 +265,9 @@ class CPgeneric(object):
 		request = QueueRequest(sessionid, req, response_queue)
 		_queue_send.put(request)
 
-		self._log('info', 'pushed request %s to queue - waiting for response (sessionid="%s")' % (req.id(), sessionid))
+		self._log('info', 'pushed request %s to queue - waiting for response (sessionid="%s")' % (req.id, sessionid))
 		response = response_queue.get()
-		self._log('info', 'got response %s with status %s (sessionid="%s")' % (response.id(), response.status, sessionid))
+		self._log('info', 'got response %s with status %s (sessionid="%s")' % (response.id, response.status, sessionid))
 
 		if response.status == 200:
 			update_session_cookie(cherrypy.response.cookie, sessionid)
@@ -296,7 +296,7 @@ class CPGet(CPgeneric):
 			self._log('error', 'get_request: args is empty')
 			raise cherrypy.HTTPError(404)
 
-		req = umcp.Request( 'GET', args = [ args ] )
+		req = umcp.Request( 'GET', arguments = [ args ] )
 
 		return req
 
@@ -334,7 +334,7 @@ class CPCommand(CPgeneric):
 			self._log('error', 'get_request: args is empty')
 			raise cherrypy.HTTPError(404)
 
-		req = umcp.Command( [ args ], opts = json )
+		req = umcp.Command( [ args ], options = json )
 
 		return req
 
@@ -390,9 +390,9 @@ class CPCommand(CPgeneric):
 # 		request = QueueRequest(sessionid, req, response_queue)
 # 		_queue_send.put(request)
 
-# 		CORE.info('CPRoot/command: pushed request %s to queue - waiting for response (sessionid="%s")' % (request.id(), sessionid))
+# 		CORE.info('CPRoot/command: pushed request %s to queue - waiting for response (sessionid="%s")' % (request.id, sessionid))
 # 		response = response_queue.get()
-# 		CORE.info('CPRoot/command: got response %s with status %s (sessionid="%s")' % (response.id(), response.status, sessionid))
+# 		CORE.info('CPRoot/command: got response %s with status %s (sessionid="%s")' % (response.id, response.status, sessionid))
 
 # 		if response.status == 200:
 # 			update_session_cookie(cherrypy.response.cookie, sessionid)
@@ -519,9 +519,9 @@ class CPAuth(object):
 # 		request = QueueRequest(sessionid, req, response_queue)
 # 		_queue_send.put(request)
 
-# 		CORE.info('CPRoot/get: pushed request %s to queue - waiting for response (sessionid="%s")' % (request.id(), sessionid))
+# 		CORE.info('CPRoot/get: pushed request %s to queue - waiting for response (sessionid="%s")' % (request.id, sessionid))
 # 		response = response_queue.get()
-# 		CORE.info('CPRoot/get: got response %s with status %s (sessionid="%s")' % (response.id(), response.status, sessionid))
+# 		CORE.info('CPRoot/get: got response %s with status %s (sessionid="%s")' % (response.id, response.status, sessionid))
 
 # 		if response.status == 200:
 # 			update_session_cookie(cherrypy.response.cookie, sessionid)

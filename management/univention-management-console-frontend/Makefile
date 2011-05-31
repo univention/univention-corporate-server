@@ -65,7 +65,7 @@ build-dev: build-common
 		ln -fs /usr/share/univention-dojo/$$i "$(buildDir)/js"; \
 	done
 	@# symlink to umc code
-	ln -fs "$(CURDIR)/umc" "$(buildDir)/js/umc"
+	( [ ! -e "$(buildDir)/js/umc" ] && ln -fs "$(CURDIR)/umc" "$(buildDir)/js/umc" ) || true
 	@# index page .. replace the HASH with a timestamp
 	sed 's/%HASH%/_$(timestamp)/' index-dev.html > "$(buildDir)/index.html"
 	@# symlinks for css style sheets and images
