@@ -111,7 +111,7 @@ download_host_certificate () {
 check_ldap_tls_connection () {
 	echo -n "Check TLS connection "
 
-	ldapsearch -x -ZZ -s base -h "$DCNAME" dn >/dev/null
+	ldapsearch -x -ZZ -s base -h "$DCNAME" -D "$binddn" -w `cat $DCPWD` dn >/dev/null
 	if  [ $? != 0 ]; then
  		failed_message "Establishing a TLS connection with $DCNAME failed. Maybe you didn't specify a FQDN."
 	fi
@@ -257,7 +257,9 @@ fi
 
 if [ -z "$LDAPBASE" ]; then
 	echo -n "Search ldap/base"
-	ldap_base=`ldapsearch -x  -h $DCNAME -b "" -s base 'objectclass=*' NamingContexts -LLL | grep namingContexts | sed -e 's|namingContexts: ||'`
+	ldap_result=$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
+		ldapsearch -x -LLL -b \\\"\\\" -s base 'objectclass=*' NamingContexts)
+	ldap_base=$(echo "$ldap_result" | ldapsearch-wrapper | grep namingContexts | sed -e 's|namingContexts: ||')
 else
 	ldap_base="$LDAPBASE"
 fi
@@ -272,7 +274,9 @@ fi
 
 echo -n "Search LDAP binddn "
 binddn=""
-for i in `ldapsearch -x -h $DCNAME -LLL -b $ldap_base "(&(uid=$DCACCOUNT)(objectClass=person))" | ldapsearch-wrapper | grep ^dn | sed -e 's|dn: ||'`; do
+ldap_result=$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
+	"ldapsearch -x -LLL \'\(\&\(uid=$DCACCOUNT\)\(objectClass=person\)\)\' dn")
+for i in $(echo "$ldap_result" | ldapsearch-wrapper | sed -n 's/^dn: \(.*\)/\1/p'); do
 	if [ -n "$binddn" ]; then
 		failed_message "binddn for user $DCACCOUNT not unique, $i and $binddn"
 	fi

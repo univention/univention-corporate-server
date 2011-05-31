@@ -1,3 +1,9 @@
+univention-join (4.0.1-1) unstable; urgency=low
+
+  * avoid anonymous ldap searches in univention-join (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 31 May 2011 19:38:18 +0200
+
 univention-join (4.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22431)
