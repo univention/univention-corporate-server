@@ -1,0 +1,5 @@
+univention-management-console-module-udm (1.0.0-1) unstable; urgency=low
+
+  * Initial release ; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 31 May 2011 10:26:54 +0200

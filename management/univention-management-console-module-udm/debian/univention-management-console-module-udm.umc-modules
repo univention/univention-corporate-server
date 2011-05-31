@@ -1,0 +1,6 @@
+Module: udm
+Python: umc/module
+Definition: umc/udm.xml
+Category: umc/categories/udm.xml
+Javascript: umc/js
+Icons: umc/icons

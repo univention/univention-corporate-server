@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <categories>
+	<category id="domain">
+	  <name>Domain Management</name>
+	  <name lang="de_DE">Domänenverwaltung</name>
+	</category>
+  </categories>
+</umc>
