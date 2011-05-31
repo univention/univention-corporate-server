@@ -1,0 +1,6 @@
+@%@UCRWARNING=# @%@
+
+RedirectMatch ^/udm(/$|$) /univention-management-console
+RedirectMatch ^/directory-manager(/$|$) /univention-management-console/
+RedirectMatch ^/univention-directory-manager$ /univention-management-console/
+
