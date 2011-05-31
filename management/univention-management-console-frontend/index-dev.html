@@ -14,10 +14,31 @@
 			@import url("js%HASH%/dojox/widget/Toaster/Toaster.css");
 		</style>
 		<script type="text/javascript">
+			function getParameter(/*String*/ param, /*String*/ defaultVal) {
+				// if not given, the default value is ''
+				defaultVal = defaultVal || '';
+
+				// parse the URI query string
+				var query = window.location.search.substring(1);
+				var vars = query.split('&');
+				for (var i = 0; i < vars.length; i++) {
+					// parse the tuple
+					var tuple = vars[i].split('=');
+
+					// check whether we found the particular parameter we are interested in
+					if (2 == tuple.length && param == tuple[0]) {
+						return tuple[1];
+					}
+				}
+
+				// otherwise return the specified default value
+				return defaultVal;
+			}
+
 			var dojoConfig = {
 				isDebug: false,
 				debugAtAllCosts: false,
-				locale: 'en'
+				locale: getParameter('lang', undefined)
 			};
 		</script>
 		<script type="text/javascript" src="js%HASH%/dojo/dojo.js"></script>
