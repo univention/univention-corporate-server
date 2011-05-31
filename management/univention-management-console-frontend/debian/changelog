@@ -1,3 +1,10 @@
+univention-management-console-frontend (0.0.15-1) unstable; urgency=low
+
+  * improvement of i18n module, documentation, dynamically set language via
+    query string when loading the page (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 31 May 2011 11:32:07 +0200
+
 univention-management-console-frontend (0.0.14-1) unstable; urgency=low
 
   * bug fixes for web server, adaptations for Makefile (Bug #22460)
