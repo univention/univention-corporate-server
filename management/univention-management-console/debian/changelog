@@ -1,3 +1,9 @@
+univention-management-console (4.0.9-2) unstable; urgency=low
+
+  * added dhc-umc-translate to .install file (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 01 Jun 2011 14:21:46 +0200
+
 univention-management-console (4.0.9-1) unstable; urgency=low
 
   * added dhc-umc-translate to generated a .po/.json/.mo files from a set of
