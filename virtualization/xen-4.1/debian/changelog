@@ -1,3 +1,10 @@
+xen-4.1 (4.1.0-6) unstable; urgency=low
+
+  * Added some patches for the libxl driver (Bug #18357)
+  * Include libxenlight files in libxen-dev package (Bug #18357)
+
+ -- Markus Groß <gross@univention.de>  Wed, 01 Jun 2011 13:03:00 +0200
+
 xen-4.1 (4.1.0-5) unstable; urgency=low
 
   * Also include xen/sys headers (Bug #22199)

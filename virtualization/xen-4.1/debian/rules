@@ -27,16 +27,11 @@ else
 	CFLAGS += -O2
 endif
 
-ifeq ($(shell getconf LONG_BIT),64)
-	LIBDIR=lib64
-else
-	LIBDIR=lib
-endif
-
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	tar xzf xen-4.1.0.tar.gz
+	QUILT_PATCHES=debian/patches quilt push -a || test $$? = 2
 	touch $@
 
 #Architecture
@@ -78,25 +73,36 @@ install-arch-common:
 	dh_installdirs -s
 	$(MAKE) -C xen-4.1.0/xen          install
 	$(MAKE) -C xen-4.1.0/tools        install
-	mv $(DESTDIR)/usr/$(LIBDIR)/libxenstore.so.* debian/libxenstore3.0/usr/lib/
 install-python%: install-arch-common
 	$(MAKE) -C xen-4.1.0/tools/pygrub install PYTHON=/usr/bin/python$*
 	$(MAKE) -C xen-4.1.0/tools/python install PYTHON=/usr/bin/python$*
 	#$(MAKE) -C xen-4.1.0/tools/security install PYTHON=/usr/bin/python$*
 install-arch: install-arch-common $(PYVERS:%=install-python%)
+	mkdir debian/libxen-dev/usr/include/xen/foreign
+	mv $(CURDIR)/xen-4.1.0/tools/xenstore/libxenstore.so* debian/libxenstore3.0/usr/lib/
 	mv $(CURDIR)/xen-4.1.0/tools/libxc/libxenctrl.a debian/libxen-dev/usr/lib/
 	mv $(CURDIR)/xen-4.1.0/tools/libxc/libxenguest.a debian/libxen-dev/usr/lib/
 	mv $(CURDIR)/xen-4.1.0/tools/xenstore/libxenstore.a debian/libxen-dev/usr/lib/
+	mv $(CURDIR)/xen-4.1.0/tools/libxl/libxenlight.a debian/libxen-dev/usr/lib/
+	mv $(CURDIR)/xen-4.1.0/tools/libxl/libxlutil.a debian/libxen-dev/usr/lib/
+	mv $(CURDIR)/xen-4.1.0/tools/libxl/libxl.h debian/libxen-dev/usr/include/
+	mv $(CURDIR)/xen-4.1.0/tools/libxl/libxl_uuid.h debian/libxen-dev/usr/include/
+	mv $(CURDIR)/xen-4.1.0/tools/libxl/_libxl_types.h debian/libxen-dev/usr/include/
 	mv $(CURDIR)/xen-4.1.0/tools/libxc/xenctrl.h debian/libxen-dev/usr/include/
 	mv $(CURDIR)/xen-4.1.0/tools/libxc/xenguest.h debian/libxen-dev/usr/include/
+	mv $(CURDIR)/xen-4.1.0/tools/libxc/xentoollog.h debian/libxen-dev/usr/include/
 	mv $(CURDIR)/xen-4.1.0/tools/xenstore/xs_lib.h debian/libxen-dev/usr/include/
 	mv $(CURDIR)/xen-4.1.0/tools/xenstore/xs.h debian/libxen-dev/usr/include/
 	mv $(CURDIR)/xen-4.1.0/xen/include/public/* debian/libxen-dev/usr/include/xen
+	mv $(CURDIR)/xen-4.1.0/tools/include/xen-foreign/*.h debian/libxen-dev/usr/include/xen/foreign
 	mv $(CURDIR)/xen-4.1.0/tools/include/xen-sys/Linux/* debian/libxen-dev/usr/include/xen/sys
 	rm -rf debian/xen-4.1/usr/include
+	rm -rf debian/xen-4.1/usr/lib/libxenstore.so*
 	rm -rf debian/xen-4.1/usr/lib/libxenctrl.a
 	rm -rf debian/xen-4.1/usr/lib/libxenguest.a
 	rm -rf debian/xen-4.1/usr/lib/libxenstore.a
+	rm -rf debian/xen-4.1/usr/lib/libxenlight.a
+	rm -rf debian/xen-4.1/usr/lib/libxlutil.a
 	dh_install -s
 
 # Must not depend on anything. This is to be called by
