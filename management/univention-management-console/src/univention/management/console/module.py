@@ -75,6 +75,7 @@ class Flavor( JSON_Object ):
 	'''Defines a flavor of a module. i.e. a few options that influence the
 	behaviour of the module'''
 	def __init__( self, id = '', icon = '', name = '', description = '', options = None ):
+		self.id = id
 		self.name = name
 		self.description = description
 		self.icon = icon

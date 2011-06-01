@@ -160,7 +160,9 @@ def create_po_file( po_file, package, files, language = 'python' ):
 
 	if os.path.isfile( message_po ):
 		os.unlink( message_po )
-	dh_ucs.doIt( 'xgettext', '--force-po', '--from-code=UTF-8', '--sort-output', '--package-name=%s' % package, '--msgid-bugs-address=packages@univention.de', '--copyright-holder=Univention GmbH', '--language', language, '-o', message_po, files )
+	if isinstance( files, basestring ):
+		files = [ files ]
+	dh_ucs.doIt( 'xgettext', '--force-po', '--from-code=UTF-8', '--sort-output', '--package-name=%s' % package, '--msgid-bugs-address=packages@univention.de', '--copyright-holder=Univention GmbH', '--language', language, '-o', message_po, *files )
 	if os.path.isfile( po_file ):
 		dh_ucs.doIt( 'msgmerge', '--update', '--sort-output', po_file, message_po )
 		if os.path.isfile( message_po ):

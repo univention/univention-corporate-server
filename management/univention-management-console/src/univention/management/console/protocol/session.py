@@ -234,9 +234,13 @@ class Processor( signals.Provider, Translation ):
 		res = Response( msg )
 
 		if 'modules/list' in msg.arguments:
-			modules = {}
+			modules = []
 			for id, module in self.__command_list.items():
-				modules[ id ] = { 'name' : module.name, 'description' : module.description, 'icon' : module.icon, 'categories' : module.categories }
+				if module.falvors:
+					for flavor in module.flavors:
+						modules.append( { 'id' : id, 'name' : flavor.name, 'description' : flavor.description, 'icon' : flavor.icon, 'categories' : module.categories } )
+				else:
+						modules.append( { 'id' : id, 'name' : module.name, 'description' : module.description, 'icon' : module.icon, 'categories' : module.categories } )
 			res.body[ 'modules' ] = modules
 			res.body[ 'categories' ] = categoryManager.all()
 			CORE.info( 'Modules: %s' % str( self.__command_list ) )
