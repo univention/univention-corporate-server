@@ -13,13 +13,17 @@ dojo.require("umc.widgets.ContainerForm");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Label");
+dojo.require("umc.i18n");
 
-dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.StandbyMixin ], {
+dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
 	// our own variables
 	_layoutContainer: null,
 	_passwordTextBox: null,
 	_usernameTextBox: null,
 	_form: null,
+
+	// use the framework wide translation file
+	i18nClass: 'umc.app',
 
 	postMixInProperties: function() {
 		dojo.mixin(this, {
@@ -28,7 +32,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			sizeDuration: 900,
 			sizeMethod: 'chain',
 			sizeToViewport: false,
-			dimensions: [300, 180]
+			dimensions: [300, 250]
 		});
 
 	},
@@ -39,19 +43,29 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		var widgets = [{
 			type: 'TextBox',
 			name: 'username',
-			value: dojo.cookie('univention.umc.username') || '',
-			description: 'Der Benutzername ihres Domänen-Kontos.',
-			label: 'Benutzername'
+			value: dojo.cookie('UMCUsername') || '',
+			description: this._('The username of your domain account.'),
+			label: this._('Username')
 		}, {
 			type: 'PasswordBox',
 			name: 'password',
-			description: 'Das Passwort ihres Domänen-Kontos.',
-			label: 'Passwort'
+			description: this._('The password of your domain account.'),
+			label: this._('Password')
+		}, {
+			type: 'ComboBox',
+			name: 'language',
+			staticValues: {
+				de: this._('German'),
+				en: this._('English')
+			},
+			value: dojo.locale.substring(0, 2),
+			description: this._('The language for the login session.'),
+			label: this._('Language')
 		}];
 
 		var buttons = [{
 			name: 'submit',
-			label: 'Anmelden',
+			label: this._('Login'),
 			callback: dojo.hitch(this, function(values) {
 				// call LoginDialog.onSubmit() and clear password
 				this._authenticate(values.username, values.password);
@@ -59,11 +73,11 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			})
 		}, {
 			name: 'cancel',
-			label: 'Zurücksetzen'
+			label: this._('Reset')
 		}];
 
-		var layout = [['username'], ['password']];
-		
+		var layout = [['username'], ['password'], ['language']];
+		 
 		this._form = new umc.widgets.Form({
 			//style: 'width: 100%',
 			widgets: widgets,
@@ -75,13 +89,22 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		}).placeAt(this.containerNode);
 		this._form.startup();
 
+		// register onChange event
+		dojo.connect(this._form._widgets.language, 'onChange', this, function() {
+			// reload the page when a different language is selected
+			var query = dojo.queryToObject(window.location.search.substring(1));
+			query.lang = this._form.elementValue('language');
+			dojo.cookie('UMCLang', query.lang, { expires: 100, path: '/' });
+			window.location.search = '?' + dojo.objectToQuery(query);
+		});
+
 		// put the layout together
 		this._layoutContainer = new dojox.layout.TableContainer({
 			cols: 1,
 			showLabels: false
 		});
 		this._layoutContainer.addChild(new umc.widgets.Label({
-			content: '<p>Willkommen auf der Univention Management Console (v2). Bitte geben Sie Benutzername und Passwort ein!</p>'
+			content: '<p>' + this._('Welcome to the Univention Management Console. Please enter your domain username and password for login!') + '</p>'
 		}));
 		this._layoutContainer.addChild(this._form);
 		this.set('content', this._layoutContainer);

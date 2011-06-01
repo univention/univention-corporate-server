@@ -170,7 +170,7 @@ dojo.mixin(umc.app, {
 			this._loginDialog.show();
 		}
 		else {
-			this.onLogin(dojo.cookie('univention.umc.username'));
+			this.onLogin(dojo.cookie('UMCUsername'));
 			console.log('Login is still valid (cookie: ' + sessionCookie + ', username: ' + this.username + ').');
 		}
 	},
@@ -185,7 +185,7 @@ dojo.mixin(umc.app, {
 	username: null,
 	onLogin: function(username) {
 		this.username = username;
-		dojo.cookie('univention.umc.username', username, { expires: 100, path: '/' });
+		dojo.cookie('UMCUsername', username, { expires: 100, path: '/' });
 		this._loginDialog.hide();
 		this.loadModules();
 	},
@@ -372,7 +372,7 @@ dojo.mixin(umc.app, {
 		if (!this._userPreferences) {
 			// not yet cached .. get all preferences via cookies
 			this._userPreferences = dojo.clone(this.defaultPreferences);
-			cookieStr = dojo.cookie('univention.umc.preferences') || '{}';
+			cookieStr = dojo.cookie('UMCPreferences') || '{}';
 			dojo.mixin(this._userPreferences, dojo.fromJson(cookieStr));
 		}
 
@@ -419,7 +419,7 @@ dojo.mixin(umc.app, {
 
 		// set the cookie with all preferences
 		cookieStr = dojo.toJson(this._userPreferences);
-		dojo.cookie('univention.umc.preferences', cookieStr, { expires: 100, path: '/' } );
+		dojo.cookie('UMCPreferences', cookieStr, { expires: 100, path: '/' } );
 		return; // undefined
 	},
 

@@ -24,7 +24,7 @@ dependencies = {
 		dependencies:[
 			"umc.app",
 			"umc.widgets",
-			"_tmp%TIMESTAMP%.widgets" // force inlining of all our widgets
+			"_tmp%TIMESTAMP%.include" // force inlining of all widgets, translation files
 		]
 		//layerDependencies:[]
 	}]

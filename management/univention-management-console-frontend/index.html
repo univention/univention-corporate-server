@@ -14,7 +14,7 @@
 			@import url("js%HASH%/dojox/widget/Toaster/Toaster.css");
 		</style>
 		<script type="text/javascript">
-			function getParameter(/*String*/ param, /*String*/ defaultVal) {
+			function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
 				// if not given, the default value is ''
 				defaultVal = defaultVal || '';
 
@@ -35,10 +35,22 @@
 				return defaultVal;
 			}
 
+			function getCookie(/*String*/ param, /*mixed*/ defaultValue) {
+				// find the given parameter in the cookie string
+				var reg = new RegExp(param + '=([a-zA-Z_-]*)');
+				var m = reg.exec(document.cookie);
+				if (m && m[1]) {
+					return m[1];
+				}
+
+				// in case the parameter does not exist, return the default value
+				return defaultValue;
+			}
+
 			var dojoConfig = {
 				isDebug: false,
 				debugAtAllCosts: false,
-				locale: getParameter('lang', undefined)
+				locale: getQuery('lang', undefined) || getCookie('UMCLang', undefined)
 			};
 		</script>
 		<script type="text/javascript" src="js%HASH%/dojo/dojo.js"></script>

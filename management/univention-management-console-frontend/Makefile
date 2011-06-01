@@ -47,7 +47,13 @@ build: build-common
 		echo '/*global dojo */'; \
 		echo 'dojo.provide("_tmp$(timestamp).widgets");'; \
 		find umc/widgets/ -name "*.js" | sed 's|/|.|g; s|^\(.*\).js$$|dojo.require("\1");|'; \
-	) > $(tmpDir)/widgets.js
+		@# include all translation files
+		for i in "$(CURDIR)/umc/"*.json; do \
+			lang=$${i##*/}; \
+			lang=$${lang%.*}; \
+			echo 'dojo.cache("umc", "i18n/'$$lang'/app.json")'; \
+		done; \
+	) > $(tmpDir)/include.js
 	@# dojo build
 	sed 's|%CURDIR%|$(CURDIR)|g; s|%TIMESTAMP%|$(timestamp)|g' "$(CURDIR)/build_profile.js" > "$(tmpDir)/build_profile.js"
 	cd /usr/share/univention-dojo/util/buildscripts; \
@@ -64,14 +70,14 @@ build-dev: build-common
 	for i in dojo dijit dojox; do \
 		ln -fs /usr/share/univention-dojo/$$i "$(buildDir)/js"; \
 	done
-	@# symlink to umc code
-	( [ ! -e "$(buildDir)/js/umc" ] && ln -fs "$(CURDIR)/umc" "$(buildDir)/js/umc" ) || true
 	@# index page .. replace the HASH with a timestamp
 	sed 's/%HASH%/_$(timestamp)/' index-dev.html > "$(buildDir)/index.html"
 	@# symlinks for css style sheets and images
 	cp -rfs "$(CURDIR)/"{css,images} "$(buildDir)"
+	@# symlinks for UMC code
+	cp -rfs "$(CURDIR)/umc" "$(buildDir)/js"
 
-build-common:
+build-common: i18n
 	@# scale all icons
 	for s in 16x16 24x24 32x32 64x64; do \
 		mkdir -p "$(buildDir)/images/icons/$$s"; \
@@ -88,11 +94,21 @@ build-common:
 		rm -f "$(buildDir)/$${i}_"*; \
 		ln -s "$$i" "$(buildDir)/$${i}_$(timestamp)"; \
 	done;
+	@# install JSON translation file for framework
+	for i in "$(CURDIR)/umc/"*.json; do \
+		lang=$${i##*/}; \
+		lang=$${lang%.*}; \
+		mkdir -p "$(buildDir)/js/umc/i18n/$$lang"; \
+		cp $$i "$(buildDir)/js/umc/i18n/$$lang/app.json"; \
+	done
+
+i18n:
+	/usr/bin/dh-umc-translate -p univention-management-console-frontend -o umc $(jsFiles)
 
 install: build
 	@# copy all files from the build directory .. exclude file of the tmp directory
-	mkdir -p $(DESTDIR)$(pkgDir)
-	rsync -rpl --exclude ".svn" --exclude "_tmp$(timestamp)" $(buildDir)/ $(DESTDIR)$(pkgDir)
+	mkdir -p "$(DESTDIR)$(pkgDir)"
+	rsync -rpl --exclude ".svn" --exclude "_tmp$(timestamp)" "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
 	
 clean:
 	rm -rf build

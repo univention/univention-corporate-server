@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.16-1) unstable; urgency=low
+
+  * i18n for framework, add language choice to login dialog (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 01 Jun 2011 17:43:24 +0200
+
 univention-management-console-frontend (0.0.15-1) unstable; urgency=low
 
   * improvement of i18n module, documentation, dynamically set language via

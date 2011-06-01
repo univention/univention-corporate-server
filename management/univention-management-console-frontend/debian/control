@@ -6,6 +6,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  ucslint,
  univention-dojo-dev,
  univention-config-dev,
+ univention-management-console-dev,
  imagemagick,
  rsync
 
