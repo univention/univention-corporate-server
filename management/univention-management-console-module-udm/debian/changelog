@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.1-2) unstable; urgency=low
+
+  * fix dependency; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 01 Jun 2011 13:40:38 +0200
+
 univention-management-console-module-udm (1.0.1-1) unstable; urgency=low
 
   * add apache2 configuration to redirect UDM URLs to UMC; Bug #22439

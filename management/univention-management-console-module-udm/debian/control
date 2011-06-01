@@ -12,7 +12,7 @@ XS-Python-Version: all
 Package: univention-management-console-module-udm
 Architecture: all
 Depends: univention-management-console-server,
- python-univention-directory-manager-modules
+ python-univention-directory-manager
 Provides: univention-directory-manager
 Replaces: univention-directory-manager (<< 9.0.0)
 Description: UMC module for UCR
