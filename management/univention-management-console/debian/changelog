@@ -1,3 +1,10 @@
+univention-management-console (4.0.9-1) unstable; urgency=low
+
+  * added dhc-umc-translate to generated a .po/.json/.mo files from a set of
+    javascript files (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 01 Jun 2011 13:44:14 +0200
+
 univention-management-console (4.0.8-2) unstable; urgency=low
 
   * dh-umc-module-build: force the creation of a po file even if it is

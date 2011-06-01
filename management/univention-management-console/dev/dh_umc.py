@@ -33,6 +33,9 @@
 
 import os
 
+import json
+import polib
+
 import univention.debhelper as dh_ucs
 
 MODULE = 'Module'
@@ -150,3 +153,32 @@ def read_modules( package ):
 		modules.append( UMC_Module( item ) )
 
 	return modules
+
+def create_po_file( po_file, package, files, language = 'python' ):
+	"""Create a PO file for a defined set of files"""
+	message_po = '%s/messages.po' % os.path.dirname( po_file )
+
+	if os.path.isfile( message_po ):
+		os.unlink( message_po )
+	dh_ucs.doIt( 'xgettext', '--force-po', '--from-code=UTF-8', '--sort-output', '--package-name=%s' % package, '--msgid-bugs-address=packages@univention.de', '--copyright-holder=Univention GmbH', '--language', language, '-o', message_po, files )
+	if os.path.isfile( po_file ):
+		dh_ucs.doIt( 'msgmerge', '--update', '--sort-output', po_file, message_po )
+		if os.path.isfile( message_po ):
+			os.unlink( message_po )
+	else:
+		dh_ucs.doIt( 'mv', message_po, po_file )
+
+def create_mo_file( po_file ):
+	dh_ucs.doIt( 'msgfmt', '--check', '--output-file', po_file.replace( '.po', '.mo' ), po_file )
+
+def create_json_file( po_file ):
+	json_file = po_file.replace( '.po', '.json' )
+	json_fd = open( json_file, 'w' )
+	pofile = polib.pofile( po_file )
+	data = {}
+	for entry in pofile:
+		data[ entry.msgid ] = entry.msgstr
+
+	json_fd.write( json.dumps( data ) )
+	json_fd.close()
+
