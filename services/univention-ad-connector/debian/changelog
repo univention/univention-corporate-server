@@ -1,3 +1,15 @@
+univention-ad-connector (5.0.18-1) unstable; urgency=low
+
+  * Resync rejected objects not before the sync is initialized
+    (Bug #22622)
+  * Set lastUSN to internal.cfg not before the search result was
+    completely synced, otherwise the USN handling can become confused
+    (Bug #22622)
+  * Retry the synchonisation if the local idletimeout occurs
+    (Bug #22622)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 01 Jun 2011 14:33:02 +0200
+
 univention-ad-connector (5.0.17-1) unstable; urgency=low
 
   * fixed name of connector/ad/mapping/group/language in umc module (Bug #20195) 
