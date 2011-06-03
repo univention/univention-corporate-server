@@ -36,7 +36,6 @@ import os
 import subprocess
 import tempfile
 import time
-import xml.etree.ElementTree as ET
 
 ## JSON
 
@@ -86,26 +85,3 @@ def locale_get():
 		lang, encoding = locale.getdefaultlocale( locale.LC_MESSAGES )
 
 	return lang
-
-class ElementTree( ET.ElementTree ):
-	'''Wrapper providing a simplified interface to element trees'''
-
-	# FIXME: ElementTree 1.2.6 (shipped with python 2.6) supports simple xpath definitions only,
-	# ElementTree 1.3 (with python 2.7) can do more
-	def get_localized( self, path, root = None ):
-		lang = locale_get()
-		default = ''
-		if not root:
-			root = self
-		for elem in root.findall( path ):
-			elem_lang = elem.get( 'lang' )
-			if elem_lang is None:
-				default = elem.text
-			elif elem_lang == lang:
-				return elem.text
-		return default
-
-	def is_valid( self ):
-		'''This method may provide a way to check for inconsistencies in
-		the XML description'''
-		return True

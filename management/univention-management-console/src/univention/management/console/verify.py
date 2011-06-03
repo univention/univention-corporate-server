@@ -33,11 +33,10 @@
 import os
 import re
 import sys
-import locales
 
-from tools import ElementTree
+from .locales import Translation
 
-_ = locales.Translation( 'univention.management.console' ).translate
+_ = Translation( 'univention.management.console' ).translate
 
 class SyntaxVerificationError( Exception ):
 	pass

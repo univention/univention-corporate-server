@@ -33,8 +33,9 @@
 import os
 import sys
 import xml.parsers.expat
+import xml.etree.ElementTree as ET
 
-from .tools import ElementTree, JSON_Object, JSON_List, JSON_Dict
+from .tools import JSON_Object, JSON_List, JSON_Dict
 from .log import RESOURCES
 
 class Attribute( JSON_Object ):
@@ -72,17 +73,13 @@ class Command( JSON_Object ):
 			self.attributes.append( attribute )
 
 class Flavor( JSON_Object ):
-	'''Defines a flavor of a module. i.e. a few options that influence the
-	behaviour of the module'''
-	def __init__( self, id = '', icon = '', name = '', description = '', options = None ):
+	'''Defines a flavor of a module. This provides another name and icon
+	in the overview and may influence the behaviour of the module.'''
+	def __init__( self, id = '', icon = '', name = '', description = '' ):
 		self.id = id
 		self.name = name
 		self.description = description
 		self.icon = icon
-		if options is None:
-			self.options = JSON_Dict()
-		else:
-			self.options = options
 
 class Module( JSON_Object ):
 	'''Represents an command attribute'''
@@ -113,18 +110,18 @@ class Module( JSON_Object ):
 			command.fromJSON( cmd )
 			self.commands.append( command )
 
-class XML_Definition( ElementTree ):
+class XML_Definition( ET.ElementTree ):
 	'''container for the interface description of a module'''
 	def __init__( self, root = None, filename = None ):
-		ElementTree.__init__( self, element = root, file = filename )
+		ET.ElementTree.__init__( self, element = root, file = filename )
 
 	@property
 	def name( self ):
-		return self.get_localized( 'module/name' )
+		return self.find( 'module/name' ).text
 
 	@property
 	def description( self ):
-		return self.get_localized( 'module/description' )
+		return self.find( 'module/description' ).text
 
 	@property
 	def id( self ):
@@ -137,17 +134,11 @@ class XML_Definition( ElementTree ):
 	@property
 	def flavors( self ):
 		'''Retrieve list of flavor objects'''
-		flavors = []
 		for elem in self.findall( 'module/flavor' ):
-			simple_elem = ElementTree( element = elem ) # required for get_localized
 			flavor = Flavor( elem.get( 'id' ), elem.get( 'icon' ) )
-			for opt in elem.findall( 'option' ):
-				flavor.options[ opt.get( 'name' ) ] = opt.get( 'value' )
-			flavor.name = simple_elem.get_localized( 'name' )
-			flavor.description = simple_elem.get_localized( 'description' )
-			flavors.append( flavor )
-
-		return flavors
+			flavor.name = elem.find( 'name' ).text
+			flavor.description = elem.find( 'description' ).text
+			yield flavor
 
 	@property
 	def categories( self ):
@@ -163,12 +154,9 @@ class XML_Definition( ElementTree ):
 
 	def get_flavor( self, name ):
 		'''retrives details of a flavor'''
-		for flavor in self.findall( 'module/flavor' ):
-			if flavor.get( 'name' ) == name:
+		for flavor in self.flavors:
+			if flavor.name == name:
 				cmd = Flavor( name, flavor.get( 'function' ) )
-				for option in flavor.findall( 'option' ):
-					attr = Attribute( elem.get( 'name' ), elem.get( 'syntax' ), elem.get( 'required' ) in ( '', "1" ) )
-					cmd.attributes.append( attr )
 				return cmd
 
 		return None
@@ -211,9 +199,6 @@ class Manager( dict ):
 				RESOURCES.info( 'Loaded module %s' % filename )
 			except xml.parsers.expat.ExpatError, e:
 				RESOURCES.warn( 'Failed to load module %s: %s' % ( filename, str( e ) ) )
-				continue
-			if not mod.is_valid():
-				RESOURCES.warn( 'The module %s is not valid' % filename )
 				continue
 			self[ mod.id ] = mod
 

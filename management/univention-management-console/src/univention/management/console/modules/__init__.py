@@ -43,7 +43,7 @@ from ..log import MODULE
 
 _ = Translation( 'univention.management.console' ).translate
 
-class Base( signals.Provider ):
+class Base( signals.Provider, Translation ):
 	'''The base class for UMC modules of version 2 or higher'''
 	def __init__( self ):
 		signals.Provider.__init__( self )
@@ -54,6 +54,7 @@ class Base( signals.Provider ):
 		self._sessionid = None
 		self.__acls = None
 		self.__requests = {}
+		Translation.__init__( self )
 
 	def _set_username( self, username ):
 		self._username = username

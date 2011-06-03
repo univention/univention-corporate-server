@@ -138,7 +138,7 @@ class ModuleProcess( Client ):
 	def pid( self ):
 		return self.__pid
 
-class Processor( signals.Provider, Translation ):
+class Processor( signals.Provider ):
 	'''Implements a proxy and command handler. It handles all internal
 	UMCP commands and passes the commands for a module to the
 	subprocess.'''
@@ -149,7 +149,8 @@ class Processor( signals.Provider, Translation ):
 		self.__username = username
 		self.__password = password
 		signals.Provider.__init__( self )
-		Translation.__init__( self, 'univention-management-console' )
+		self.core_i18n = Translation( 'univention-management-console' )
+		self.i18n = {}
 
 		# stores the module processes [ modulename ] = <>
 		self.__processes = {}
@@ -236,14 +237,17 @@ class Processor( signals.Provider, Translation ):
 		if 'modules/list' in msg.arguments:
 			modules = []
 			for id, module in self.__command_list.items():
-				if module.falvors:
+				# check for translation
+				if not id in self.i18n:
+					self.i18n[ id ] = Translation( id, localedir = '/usr/share/univention-management-console/i18n/' )
+				if module.flavors:
 					for flavor in module.flavors:
-						modules.append( { 'id' : id, 'name' : flavor.name, 'description' : flavor.description, 'icon' : flavor.icon, 'categories' : module.categories } )
+						modules.append( { 'id' : id, 'name' : self.i18n[ id ]._( flavor.name ), 'description' : self.i18n[ id ]._( flavor.description ), 'icon' : flavor.icon, 'categories' : module.categories } )
 				else:
-						modules.append( { 'id' : id, 'name' : module.name, 'description' : module.description, 'icon' : module.icon, 'categories' : module.categories } )
+						modules.append( { 'id' : id, 'name' : self.i18n[ id ]._( module.name ), 'description' : self.i18n[ id ]._( module.description ), 'icon' : module.icon, 'categories' : module.categories } )
 			res.body[ 'modules' ] = modules
 			res.body[ 'categories' ] = categoryManager.all()
-			CORE.info( 'Modules: %s' % str( self.__command_list ) )
+			CORE.info( 'Modules: %s' % modules )
 			CORE.info( 'Categories: %s' % str( res.body[ 'categories' ] ) )
 			res.status = SUCCESS # Ok
 
@@ -270,26 +274,34 @@ class Processor( signals.Provider, Translation ):
 
 	def handle_request_set( self, msg ):
 		res = Response( msg )
-		if len( msg.arguments ) < 2:
-			return self.handle_request_unknown( msg )
+		if len( msg.arguments ):
+			res.status = BAD_REQUEST_INVALID_ARGS
+			res.message = status_description( res.status )
 
-		if msg.arguments[ 0 ] == 'locale':
-			res.status = SUCCESS
-			self.__locale = msg.arguments[ 1 ]
-			try:
-				self.set_language( msg.arguments[ 1 ] )
-			except LocaleNotFound, e:
-				res.status = BAD_REQUEST_UNAVAILABLE_LOCALE
-				CORE.warn( 'Setting locale: specified locale is not available (%s)' % self.__locale )
 			self.signal_emit( 'response', res )
+			return
 
-		elif msg.arguments[ 0 ] == 'sessionid':
-			res.status = SUCCESS
-			self.__sessionid = msg.arguments[ 1 ]
-			self.signal_emit( 'response', res )
+		res.status = SUCCESS
+		res.message = status_description( res.status )
+		for key, value in msg.options.items():
+			if key == 'locale':
+				self.__locale = value
+				try:
+					self.core_i18n.set_language( value )
+					self.session_i18n.set_language( value )
+				except LocaleNotFound, e:
+					res.status = BAD_REQUEST_UNAVAILABLE_LOCALE
+					res.message = status_description( res.status )
+					CORE.warn( 'Setting locale: specified locale is not available (%s)' % self.__locale )
+					break
+			elif key == 'sessionid':
+				self.__sessionid = value
+			else:
+				res.status = BAD_REQUEST_INVALID_OPTS
+				res.message = status_description( res.status )
+				break
 
-		else:
-			return self.handle_request_unknown( msg )
+		self.signal_emit( 'response', res )
 
 	def __is_command_known( self, msg ):
 		# only one command?
@@ -365,31 +377,32 @@ class Processor( signals.Provider, Translation ):
 			CORE.info( 'Connected to new module process')
 			mod.running = True
 
-			# send acls
-			req = Request( 'SET', arguments = [ 'commands/permitted' ], options = { 'acls' : self.acls.json(), 'commands' : self.__command_list[ mod.name ].json() } )
+			# send acls, commands, credentials, locale
+			options = {
+				'acls' : self.acls.json(),
+				'commands' : self.__command_list[ mod.name ].json(),
+				'credentials' : { 'username' : self.__username, 'password' : self.__password },
+				'locale' : self.__locale
+				}
+			req = Request( 'SET', options = options )
 			mod.request( req )
 
-			# set credentials
-			req = Request( 'SET', arguments = [ 'credentials' ], options = { 'username' : self.__username, 'password' : self.__password } )
-			mod.request( req )
+			self.session_i18n.domain = module.name
+			# FIXME: do we still need this?
+			# # set sessionid
+			# if self.__sessionid:
+			# 	req = Request( 'SET', arguments = [ 'sessionid' ], options = { 'sessionid' : self.__sessionid } )
+			# 	mod.request( req )
 
-			# set locale
-			if self.__locale:
-				req = Request( 'SET', arguments = [ 'locale' ], options = { 'locale' : self.__locale } )
-				mod.request( req )
-
-			# set sessionid
-			if self.__sessionid:
-				req = Request( 'SET', arguments = [ 'sessionid' ], options = { 'sessionid' : self.__sessionid } )
-				mod.request( req )
-
+			# send first command
 			mod.request( msg )
+
 			# send queued request that were received during start procedure
 			for req in mod._queued_requests:
 				mod.request( req )
 			mod._queued_requests = []
 
-			# watch the modules activity and kill it after X seconds inactivity
+			# watch the module's activity and kill it after X seconds inactivity
 			self.reset_inactivity_timer( mod )
 
 		return False

@@ -61,12 +61,12 @@ class ModuleServer( Server ):
 		self.__acls = None
 		self.__timeout = timeout * 1000
 		self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
-		try:
-			self.__watchdog_timeout = 1000 * int( configRegistry.get('umc/module/watchdog/timeout', 3600) )
-		except:
-			self.__watchdog_timeout = 3600 * 1000
-		MODULE.warn( "Watchdog_timeout set to %d ms" % self.__watchdog_timeout )
-		self.__watchdog_timer = notifier.timer_add( self.__watchdog_timeout, self._watchdog_timed_out )
+		# try:
+		# 	self.__watchdog_timeout = 1000 * int( configRegistry.get('umc/module/watchdog/timeout', 3600) )
+		# except:
+		# 	self.__watchdog_timeout = 3600 * 1000
+		# MODULE.warn( "Watchdog_timeout set to %d ms" % self.__watchdog_timeout )
+		# self.__watchdog_timer = notifier.timer_add( self.__watchdog_timeout, self._watchdog_timed_out )
 		self.__active_requests = 0
 		self.__check_acls = check_acls
 		self.__queue = ''
@@ -100,20 +100,20 @@ class ModuleServer( Server ):
 			self.__active_requests -= 1
 		self.response( msg )
 		if not self.__active_requests and self.__timer == None:
-			self._update_watchdog()
+			# self._update_watchdog()
 			self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 
-	def _update_watchdog( self ):
-		if self.__watchdog_timer:
-			notifier.timer_remove( self.__watchdog_timer )
-		self.__watchdog_timer = notifier.timer_add( self.__watchdog_timeout, self._watchdog_timed_out )
+	# def _update_watchdog( self ):
+	# 	if self.__watchdog_timer:
+	# 		notifier.timer_remove( self.__watchdog_timer )
+	# 	self.__watchdog_timer = notifier.timer_add( self.__watchdog_timeout, self._watchdog_timed_out )
 
-	def _watchdog_timed_out( self ):
-		MODULE.warn( "Watchdog: Commiting suicide" )
-		MODULE.info( '__timer = %s' % str(self.__timer) )
-		MODULE.info( '__active_requests = %s' % str(self.__active_requests) )
-		self.exit()
-		sys.exit( 0 )
+	# def _watchdog_timed_out( self ):
+	# 	MODULE.warn( "Watchdog: Commiting suicide" )
+	# 	MODULE.info( '__timer = %s' % str(self.__timer) )
+	# 	MODULE.info( '__active_requests = %s' % str(self.__active_requests) )
+	# 	self.exit()
+	# 	sys.exit( 0 )
 
 	def _timed_out( self ):
 		MODULE.info( "Commiting suicide" )
@@ -126,7 +126,7 @@ class ModuleServer( Server ):
 		notifier.socket_add( self.__comm, self._recv )
 
 	def _recv( self, socket ):
-		self._update_watchdog()
+		# self._update_watchdog()
 		if self.__timer:
 			notifier.timer_remove( self.__timer )
 			self.__timer == None
@@ -149,7 +149,7 @@ class ModuleServer( Server ):
 				MODULE.info( "Received request %s" % msg.id )
 				self.handle( msg )
 		except IncompleteMessageError, e:
-			MODULE.error( 'Failed to parse incomplete message' )
+			MODULE.info( 'Failed to parse incomplete message' )
 		except ( ParseError, UnknownCommandError ), e:
 			MODULE.error( 'Failed to parse message: %s' % str( e ) )
 			res = Response( msg )
@@ -168,41 +168,47 @@ class ModuleServer( Server ):
 			resp.body = { 'status': 'module %s will shutdown in %dms' % (str(msg.arguments[0]), shutdown_timeout) }
 			resp.status = SUCCESS
 			self.response( resp )
-			self._update_watchdog()
+			# self._update_watchdog()
 			self.__timer = notifier.timer_add( shutdown_timeout, self._timed_out )
 			return
 
 		if msg.command == 'SET':
 			resp = Response( msg )
 			resp.status = SUCCESS
-			if 'commands/permitted' in msg.arguments:
-				self.__acls = ACLs( acls = msg.options[ 'acls' ] )
-				self.__commands.fromJSON( msg.options[ 'commands' ] )
-				self.__handler.acls = self.__acls
-			elif 'username' in msg.arguments:
-				self.__username = msg.options[ 'username' ]
-				self.__handler.username = self.__username
-			elif 'credentials' in msg.arguments:
-				self.__username = msg.options[ 'username' ]
-				self.__password = msg.options[ 'password' ]
-				self.__handler.username = self.__username
-				self.__handler.password = self.__password
-			elif 'sessionid' in msg.arguments:
-				self.__sessionid = msg.options[ 'sessionid' ]
-				self.__handler.sessionid = self.__sessionid
-			elif 'locale' in msg.arguments:
-				self.__locale = msg.options[ 'locale' ]
-				try:
-					locale.setlocale( locale.LC_MESSAGES, locale.normalize( self.__locale ) )
-				except locale.Error:
-					MODULE.warn( "Specified locale is not available (%s)" % self.__locale )
-					# specified locale is not available
-					resp.status = BAD_REQUEST_UNAVAILABLE_LOCALE
-					resp.message = status_description( resp.status )
-			else:
-				resp = None
-			if resp:
-				self.response( resp )
+			for key, value in msg.options:
+				if key == 'acls':
+					self.__acls = ACLs( acls = value[ 'acls' ] )
+					self.__handler.acls = self.__acls
+				elif key == 'commands':
+					self.__commands.fromJSON( value[ 'commands' ] )
+				elif key == 'username':
+					self.__username = value
+					self.__handler.username = self.__username
+				elif key == 'credentials':
+					self.__username = value[ 'username' ]
+					self.__password = value[ 'password' ]
+					self.__handler.username = self.__username
+					self.__handler.password = self.__password
+				# FIXME: do we still need this?
+				# elif key == 'sessionid':
+				# 	self.__sessionid = value
+				# 	self.__handler.sessionid = self.__sessionid
+				elif key == 'locale':
+					self.__locale = value
+					try:
+						locale.setlocale( locale.LC_MESSAGES, locale.normalize( self.__locale ) )
+					except locale.Error:
+						MODULE.warn( "Specified locale is not available (%s)" % self.__locale )
+						# specified locale is not available
+						resp.status = BAD_REQUEST_UNAVAILABLE_LOCALE
+						resp.message = status_description( resp.status )
+						break
+					self.__handler.set_language( self.__locale )
+				else:
+					res.status = BAD_REQUEST_INVALID_ARGS
+					break
+
+			self.response( resp )
 
 			if not self.__active_requests and self.__timer == None:
 				self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
@@ -225,7 +231,7 @@ class ModuleServer( Server ):
 				self.response( resp )
 
 		if not self.__active_requests and self.__timer == None:
-			self._update_watchdog()
+			# self._update_watchdog()
 			self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 
 	def command_get( self, command_name ):

@@ -34,18 +34,18 @@ import os
 import re
 import sys
 import xml.parsers.expat
+import xml.etree.ElementTree as ET
 
-from .tools import ElementTree
 from .log import *
 
-class XML_Definition( ElementTree ):
+class XML_Definition( ET.ElementTree ):
 	'''Definition of a category class'''
 	def __init__( self, root = None, filename = None ):
-		ElementTree.__init__( self, element = root, file = filename )
+		ET.ElementTree.__init__( self, element = root, file = filename )
 
 	@property
 	def name( self ):
-		return self.get_localized( 'name' )
+		return self.find( 'name' ).text
 
 	@property
 	def id( self ):
@@ -73,7 +73,7 @@ class Manager( dict ):
 				RESOURCES.info( 'Found file %s with wrong suffix' % filename )
 				continue
 			try:
-				definitions = ElementTree( file = os.path.join( Manager.DIRECTORY, filename ) )
+				definitions = ET.ElementTree( file = os.path.join( Manager.DIRECTORY, filename ) )
 				for category_elem in definitions.findall( 'categories/category' ):
 					category = XML_Definition( root = category_elem )
 					self[ category.id ] = category

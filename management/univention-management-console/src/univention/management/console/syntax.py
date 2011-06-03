@@ -35,17 +35,17 @@ import re
 import sys
 import locales
 import xml.parsers.expat
+import xml.etree.ElementTree as ET
 
-from .tools import ElementTree
 from .verify import SyntaxVerificationError, import_verification_functions
 from .log import RESOURCES
 
 _ = locales.Translation( 'univention.management.console' ).translate
 
-class XML_Definition( ElementTree ):
+class XML_Definition( ET.ElementTree ):
 	'''Definition of a syntax class'''
 	def __init__( self, root = None, filename = None ):
-		ElementTree.__init__( self, element = root, file = filename )
+		ET.ElementTree.__init__( self, element = root, file = filename )
 
 	@property
 	def name( self ):
@@ -105,7 +105,7 @@ class Manager( dict ):
 				RESOURCES.warn( 'Invalid syntax definition file %s' % filename )
 				continue
 			try:
-				definitions = ElementTree( file = os.path.join( Manager.DIRECTORY, filename ) )
+				definitions = ET.ElementTree( file = os.path.join( Manager.DIRECTORY, filename ) )
 				for syntax_elem in definitions.findall( 'definitions/syntax' ):
 					syntax = XML_Definition( root = syntax_elem )
 					self[ syntax.name ] = syntax
