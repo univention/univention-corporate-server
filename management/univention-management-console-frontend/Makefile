@@ -98,8 +98,8 @@ build-common: i18n
 	for i in "$(CURDIR)/umc/"*.json; do \
 		lang=$${i##*/}; \
 		lang=$${lang%.*}; \
-		mkdir -p "$(buildDir)/js/umc/i18n/$$lang"; \
-		cp $$i "$(buildDir)/js/umc/i18n/$$lang/app.json"; \
+		mkdir -p "$(CURDIR)/umc/i18n/$$lang"; \
+		cp $$i "$(CURDIR)/umc/i18n/$$lang/app.json"; \
 	done
 
 i18n:
