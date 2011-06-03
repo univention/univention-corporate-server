@@ -1,6 +1,7 @@
 univention-netlogon-ldapsearch (3.0.0-1) unstable; urgency=low
 
   * Update for UCS 3.0 (Bug #22576)
+  * Remove historic Conflicts: on "univention-printer-assignment (<<2.0.1-1)"
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 03 Jun 2011 15:39:09 +0200
 
