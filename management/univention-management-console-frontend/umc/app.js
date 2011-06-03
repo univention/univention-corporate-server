@@ -461,40 +461,38 @@ dojo.mixin(umc.app, {
 			// end of hack :)
 
 			// get all modules
-			for (var imod in dojo.getObject('modules', false, data)) {
-				if (data.modules.hasOwnProperty(imod)) {
-					try {
-						// load the module
-						dojo['require']('umc.modules.' + imod);
+			dojo.forEach(dojo.getObject('modules', false, data), dojo.hitch( this, function(module) {
+				try {
+					// load the module
+					dojo['require']('umc.modules.' + module.id);
 
-						// add module config class to internal list of available modules
-						this._modules.push({
-							BaseClass: dojo.getObject('umc.modules.' + imod), 
-							id: imod, 
-							title: data.modules[imod].name,
-							description: data.modules[imod].description,
-							categories: data.modules[imod].categories
-						});
+					// add module config class to internal list of available modules
+					this._modules.push({
+						BaseClass: dojo.getObject('umc.modules.' + module.id), 
+						id: module.id, 
+						title: module.name,
+						description: module.description,
+						categories: module.categories
+					});
 
-						// add dynamic style sheet information: for css icon classes
-						dojo.forEach([16, 24, 32, 64], function(isize) {
-							var css = dojo.string.substitute(
-								'background: no-repeat;' +
-								'width: ${s}px;' +
-								'height: ${s}px;' +
-								'background-image: url("images/icons/${s}x${s}/${id}.png")', { 
-									s: isize,
-									id: imod
-								}
-							);
-							dojox.html.insertCssRule('.icon' + isize + '-' + imod, css);
-						});
-					}
-					catch (error) {
-						console.log('WARNING: Loading of module ' + imod + ' failed. Ignoring it for now!');
-					}
+					// add dynamic style sheet information: for css icon classes
+					dojo.forEach([16, 24, 32, 64], function(isize) {
+						var css = dojo.string.substitute(
+							'background: no-repeat;' +
+							'width: ${s}px;' +
+							'height: ${s}px;' +
+							'background-image: url("images/icons/${s}x${s}/${id}.png")', { 
+								s: isize,
+								id: module.id
+							}
+						);
+						dojox.html.insertCssRule('.icon' + isize + '-' + module.id, css);
+					});
 				}
-			}
+				catch (error) {
+					console.log('WARNING: Loading of module ' + module.id + ' failed. Ignoring it for now!');
+				}
+			}));
 
 			// loading is done
 			this.onModulesLoaded();
