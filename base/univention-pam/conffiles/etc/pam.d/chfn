@@ -3,14 +3,13 @@
 @!@
 print 'auth            sufficient      pam_rootok.so'
 
-if 'chfn' in baseConfig['auth/user/services'].split(' '):
-	scheme='common'
-elif 'chfn' in baseConfig['auth/admin/services'].split(' '):
-	scheme='admin'
-else:
-	scheme='deny'
+scope = "chfn"
+accessfileDefault = "/etc/security/access-" + scope + ".conf"
+accessfile = "auth/" + scope + "/accessfile"
+if configRegistry.is_true("auth/" + scope + "/restrict", False):
+	print 'account required pam_access.so accessfile=%s listsep=,' % configRegistry.get(accessfile, accessfileDefault)
 
-print '@include %s-auth' % scheme
-print '@include %s-account' % scheme
-print '@include %s-session' % scheme
+print '@include common-auth'
+print '@include common-account'
+print '@include common-session'
 @!@

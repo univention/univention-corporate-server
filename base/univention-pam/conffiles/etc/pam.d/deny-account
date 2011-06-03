@@ -1,3 +1,0 @@
-@%@UCRWARNING=# @%@
-
-account    required   pam_deny.so

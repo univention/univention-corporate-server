@@ -1,3 +1,13 @@
+univention-pam (5.0.2-1) unstable; urgency=low
+
+  * merged common-* and admin-* pam schemes, removed admin-* and deny-* schemes
+  * merged auth/admin/methods and auth/user/methods to auth/methods
+  * added pam_access to every pam service
+  * added pam_access config template for every service
+  * Bug #20138
+
+ -- Felix Botner <botner@univention.de>  Fri, 03 Jun 2011 13:01:25 +0200
+
 univention-pam (5.0.1-4) unstable; urgency=low
 
   * rootbinddn is necessary for non-anonymous non-local LDAP searches

@@ -1,25 +1,14 @@
-# Warning: This file is auto-generated and might be overwritten by 
-#          univention-baseconfig.
-#          Please edit the following file instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch 
-#          univention-baseconfig überschrieben werden. 
-#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
-# 
-# 	/etc/univention/templates/files/etc/pam.d/gdm
-# 
+@%@UCRWARNING=# @%@
 
 @!@
-if 'gdm' in baseConfig['auth/user/services'].split(' '):
-	scheme='common'
-elif 'gdm' in baseConfig['auth/admin/services'].split(' '):
-	scheme='admin'
-else:
-	scheme='deny'
+scope = "gdm"
+accessfileDefault = "/etc/security/access-" + scope + ".conf"
+accessfile = "auth/" + scope + "/accessfile"
+if configRegistry.is_true("auth/" + scope + "/restrict", False):
+	print 'account required pam_access.so accessfile=%s listsep=,' % configRegistry.get(accessfile, accessfileDefault)
 
-if baseConfig.has_key('auth/gdm/accessfile') and baseConfig['auth/gdm/accessfile']:
-	print 'account  required                pam_access.so accessfile=%s listsep=,' % baseConfig['auth/gdm/accessfile']
-print '@include %s-account' % scheme
-print '@include %s-auth' % scheme
-print '@include %s-session' % scheme
-print '@include %s-password' % scheme
+print '@include common-account'
+print '@include common-auth'
+print '@include common-session'
+print '@include common-password'
 @!@

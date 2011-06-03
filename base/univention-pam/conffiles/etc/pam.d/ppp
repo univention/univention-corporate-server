@@ -1,15 +1,14 @@
 @%@UCRWARNING=# @%@
 
 @!@
-if 'ppp' in baseConfig['auth/user/services'].split(' '):
-	scheme='common'
-elif 'ppp' in baseConfig['auth/admin/services'].split(' '):
-	scheme='admin'
-else:
-	scheme='deny'
+scope = "ppp"
+accessfileDefault = "/etc/security/access-" + scope + ".conf"
+accessfile = "auth/" + scope + "/accessfile"
+if configRegistry.is_true("auth/" + scope + "/restrict", False):
+	print 'account required pam_access.so accessfile=%s listsep=,' % configRegistry.get(accessfile, accessfileDefault)
 
-print '@include %s-account' % scheme
-print '@include %s-auth' % scheme
-print '@include %s-session' % scheme
-print '@include %s-password' % scheme
+print '@include common-account'
+print '@include common-auth'
+print '@include common-session'
+print '@include common-password'
 @!@

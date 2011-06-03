@@ -1,7 +1,7 @@
 @%@UCRWARNING=# @%@
 
 @!@
-if baseConfig.is_true('auth/faillog', False):
+if configRegistry.is_true('auth/faillog', False):
 	print 'account	required	pam_tally.so'
 @!@
 
@@ -30,7 +30,7 @@ def pam_section(template, index):
 	return template.replace('<action>', action)
 
 methods=filter(lambda(x): x in ['krb5', 'ldap', 'winbind', 'cache'],
-	baseConfig['auth/user/methods'].split(' '))
+	configRegistry['auth/methods'].split(' '))
 index = len(methods)
 
 if 'krb5' in methods:

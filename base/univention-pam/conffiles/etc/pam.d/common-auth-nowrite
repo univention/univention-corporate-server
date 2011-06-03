@@ -55,7 +55,7 @@ def pam_section(template, index, last):
 		replace('<fail>', fail).replace('<unknown>', unknown)
 
 methods=filter(lambda(x): x in ['krb5', 'ldap', 'winbind', 'cache'],
-	baseConfig['auth/user/methods'].split(' '))
+	baseConfig['auth/methods'].split(' '))
 if 'cache' in methods:
 	methods.remove('cache')
 	index = len(methods)

@@ -47,10 +47,44 @@ univention-config-registry set \
 	nscd/hosts/negative_time_to_live?20 \
 	nscd/group/invalidate_cache_on_changes?"false" \
 	nscd/debug/level?0 \
-	auth/user/methods?"krb5 ldap unix" \
-	auth/user/services?"chfn chsh kde kscreensaver kcheckpass rsh ssh su sudo passwd cron screen" \
-	auth/admin/methods?"krb5 ldap unix" \
-	auth/admin/services?"ftp gdm login other ppp rlogin screen" \
+	auth/methods?"krb5 ldap unix" \
+	auth/ftp/restrict?"yes" \
+	"auth/ftp/group/Domain Admins?yes" \
+	auth/ftp/group/Administrators?"yes" \
+	auth/ftp/user/root?"yes" \
+	auth/gdm/restrict?"yes" \
+	"auth/gdm/group/Domain Admins?yes" \
+	auth/gdm/group/Administrators?"yes" \
+	auth/gdm/user/root?"yes" \
+ 	auth/login/restrict?"yes" \
+	"auth/login/group/Domain Admins?yes" \
+	auth/login/group/Administrators?"yes" \
+	auth/login/user/root?"yes" \
+ 	auth/other/restrict?"yes" \
+	"auth/other/group/Domain Admins?yes" \
+	auth/other/group/Administrators?"yes" \
+	auth/other/user/root?"yes" \
+ 	auth/ppp/restrict?"yes" \
+	"auth/ppp/group/Domain Admins?yes" \
+	auth/ppp/group/Administrators?"yes" \
+	auth/ppp/user/root?"yes" \
+ 	auth/rlogin/restrict?"yes" \
+	"auth/rlogin/group/Domain Admins?yes" \
+	auth/rlogin/group/Administrators?"yes" \
+	auth/rlogin/user/root?"yes" \
+ 	auth/screen/restrict?"yes" \
+	"auth/screen/group/Domain Admins?yes" \
+	auth/screen/group/Administrators?"yes" \
+	auth/screen/user/root?"yes" \
+	auth/login/restrict?"yes" \
+	"auth/login/group/Domain Admins?yes" \
+	auth/login/group/Administrators?"yes" \
+	auth/login/user/root?"yes" \
+	auth/sshd/restrict?"yes" \
+	"auth/sshd/group/Domain Admins?yes" \
+	auth/sshd/group/Computers?"yes" \
+	auth/sshd/group/Administrators?"yes" \
+	auth/sshd/user/root?"yes" \
 	nssldap/tls/checkpeer?no \
 	auth/faillog?no
 

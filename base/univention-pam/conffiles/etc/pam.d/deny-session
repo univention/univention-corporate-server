@@ -1,3 +1,0 @@
-@%@UCRWARNING=# @%@
-
-session    required   pam_deny.so

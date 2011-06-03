@@ -1,20 +1,17 @@
 @%@UCRWARNING=# @%@
 
 @!@
-if 'ssh' in baseConfig.get('auth/user/services', '').split(' '):
-	scheme='common'
-elif 'ssh' in baseConfig.get('auth/admin/services', '').split(' '):
-	scheme='admin'
-else:
-	scheme='deny'
+scope = "sshd"
+accessfileDefault = "/etc/security/access-" + scope + ".conf"
+accessfile = "auth/" + scope + "/accessfile"
+if configRegistry.is_true("auth/" + scope + "/restrict", False):
+	print 'account required pam_access.so accessfile=%s listsep=,' % configRegistry.get(accessfile, accessfileDefault)
 
-if baseConfig.get('auth/sshd/accessfile', False):
-	print 'account  required                pam_access.so accessfile=%s listsep=,' % baseConfig['auth/sshd/accessfile']
-print '@include %s-account' % scheme
-print '@include %s-auth' % scheme
-print '@include %s-session' % scheme
+print '@include common-account'
+print '@include common-auth'
+print '@include common-session'
 print 'session    optional   pam_lastlog.so'
 print 'session    optional   pam_mail.so standard noenv'
 print 'session    optional   pam_motd.so'
-print '@include %s-password' % scheme
+print '@include common-password'
 @!@
