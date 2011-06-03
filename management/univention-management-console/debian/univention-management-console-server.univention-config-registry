@@ -1,5 +1,5 @@
 Type: file
 File: etc/pam.d/univention-management-console
-Variables: auth/user/methods
+Variables: auth/methods
 Variables: auth/passwdcache/max_user
 Variables: auth/passwdcache

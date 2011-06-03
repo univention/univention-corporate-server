@@ -1,3 +1,9 @@
+univention-management-console (4.0.13-1) unstable; urgency=low
+
+  * changed auth/user/methods to auth/methods Bug #20138 
+
+ -- Felix Botner <botner@univention.de>  Fri, 03 Jun 2011 13:48:18 +0200
+
 univention-management-console (4.0.12-1) unstable; urgency=low
 
   * dh-umc tools: generate po files from XML description of modules; Bug #22460
