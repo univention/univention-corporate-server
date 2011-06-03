@@ -67,6 +67,6 @@ su - postgres -c "psql -c \"ALTER USER pkgdbu WITH PASSWORD '`cat /etc/postgresq
 pkgdb=`su - postgres -c "psql --list"|awk '/ pkgdb /{print $1}'`
 if [ ! "$pkgdb" ] ;then
   # only, if database not exists
-  su - postgres -c "createdb --encoding UNICODE --owner pkgdbu pkgdb"
+  su - postgres -c "createdb -T template0 --encoding UNICODE --owner pkgdbu pkgdb"
   su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.sql"
 fi
