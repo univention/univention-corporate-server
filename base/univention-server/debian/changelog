@@ -1,3 +1,11 @@
+univention-server (7.0.0-1.1) unstable; urgency=low
+
+  * removed auth/admin/services and auth/user/services
+  * merged auth/admin/methods and auth/user/methods to auth/methods
+  * Bug #20138
+
+ -- Felix Botner <botner@univention.de>  Fri, 03 Jun 2011 13:31:55 +0200
+
 univention-server (7.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22433)
