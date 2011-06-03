@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (1.0.4-1) unstable; urgency=low
+
+  * adapt to new dh-umc tools; Bug #22624
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 03 Jun 2011 10:20:47 +0200
+
 univention-management-console-module-ucr (1.0.3-1) unstable; urgency=low
 
   * adapted for i18n, added translations (Bug #22460)

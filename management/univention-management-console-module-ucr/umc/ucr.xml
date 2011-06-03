@@ -2,15 +2,11 @@
 <umc version="2.0">
   <module id="ucr" icon="ucr/module" version="1.0">
 	<name>Univention Configuration Registry</name>
-	<name lang="de_DE">Univention Configuration Registry</name>
 	<description>Managing UCR variables</description>
-	<description lang="de_DE">Verwaltung von UCR-Variablen</description>
 	<flavor icon="ucr/module-expert" id="expert-mode">
 	  <option name="extensions" value="True"/>
 	  <name>Univention Configuration Registry (Experts)</name>
-	  <name lang="de_DE">Univention Configuration Registry (Experten)</name>
 	  <description>Managing additional parameters of UCR variables</description>
-	  <description lang="de_DE">Verwaltung von zusätzlichen Parametern von UCR-Variablen</description>
 	</flavor>
 	<categories>
 	  <category name="system"/>
