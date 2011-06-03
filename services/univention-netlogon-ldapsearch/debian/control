@@ -1,8 +1,8 @@
 Source: univention-netlogon-ldapsearch
-Section: admin
+Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper
+Build-Depends: debhelper, ucslint
 Standards-Version: 3.8.2
 
 Package: univention-netlogon-ldapsearch
