@@ -36,10 +36,7 @@ import os
 import subprocess
 import tempfile
 import time
-try:
-	import xml.etree.ElementTree as ET
-except:
-	import elementtree.ElementTree as ET
+import xml.etree.ElementTree as ET
 
 ## JSON
 

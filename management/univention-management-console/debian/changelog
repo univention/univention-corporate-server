@@ -1,3 +1,9 @@
+univention-management-console (4.0.12-1) unstable; urgency=low
+
+  * dh-umc tools: generate po files from XML description of modules; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 03 Jun 2011 09:24:01 +0200
+
 univention-management-console (4.0.11-1) unstable; urgency=low
 
   * fixed dhc-umc-translate (Bug #22460)

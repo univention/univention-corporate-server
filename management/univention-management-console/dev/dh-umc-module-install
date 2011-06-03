@@ -104,6 +104,11 @@ def do_package( package ):
 			json_file = os.path.join( module.js_path, '%s.json' % lang )
 			module[ 'lang' ] = lang
 			dh_ucs.doIt( 'install', json_file, 'debian/%(package)s/usr/share/univention-management-console-frontend/js/umc/modules/i18n/%(lang)s/%(Module)s.json' % module )
+		# copy translation files (xml)
+		for lang in dh_umc.LANGUAGES:
+			mo_file = os.path.join( os.path.dirname( module.xml_definition ), '%s.mo' % lang )
+			module[ 'lang' ] = lang
+			dh_ucs.doIt( 'install', '-D', mo_file, 'debian/%(package)s/usr/share/univention-management-console/i18n/%(lang)s/%(Module)s.mo' % module )
 
 		# copy icons
 		for dirname, dirs, files in os.walk( module.icons ):

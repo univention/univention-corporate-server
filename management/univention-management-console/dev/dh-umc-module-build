@@ -61,6 +61,13 @@ def do_package( package ):
 			dh_umc.create_po_file( po_file, package, module.js_filename, 'python' )
 			dh_umc.create_json_file( po_file )
 
+	# build xml PO files
+	for module in modules:
+		for lang, po_file in module.xml_po_files:
+			dh_umc.module_xml2po( module.xml_definition, po_file, module.package, lang )
+			dh_umc.create_mo_file( po_file )
+
+
 if __name__ == '__main__':
 	for package in dh_ucs.binary_packages():
 		do_package( package )
