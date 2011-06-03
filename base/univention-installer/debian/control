@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper, libparted1.8-dev, gettext, ucslint
+Build-Depends: debhelper, libparted0-dev, gettext, ucslint
 
 Package: univention-installer
 Architecture: any
