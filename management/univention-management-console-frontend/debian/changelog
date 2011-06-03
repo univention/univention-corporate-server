@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.16-2) unstable; urgency=low
+
+  * fixed minor bug in makefile; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 03 Jun 2011 14:31:44 +0200
+
 univention-management-console-frontend (0.0.16-1) unstable; urgency=low
 
   * i18n for framework, add language choice to login dialog (Bug #22460)

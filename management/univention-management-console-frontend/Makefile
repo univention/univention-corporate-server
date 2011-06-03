@@ -43,11 +43,11 @@ build: build-common
 	@# create a temp directory
 	mkdir -p "$(tmpDir)"
 	@# create the module umc.widgets containing a require for all umc widgets
+	@# include all translation files
 	( \
 		echo '/*global dojo */'; \
 		echo 'dojo.provide("_tmp$(timestamp).widgets");'; \
 		find umc/widgets/ -name "*.js" | sed 's|/|.|g; s|^\(.*\).js$$|dojo.require("\1");|'; \
-		@# include all translation files
 		for i in "$(CURDIR)/umc/"*.json; do \
 			lang=$${i##*/}; \
 			lang=$${lang%.*}; \
@@ -109,10 +109,10 @@ install: build
 	@# copy all files from the build directory .. exclude file of the tmp directory
 	mkdir -p "$(DESTDIR)$(pkgDir)"
 	rsync -rpl --exclude ".svn" --exclude "_tmp$(timestamp)" "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
-	
+
 clean:
 	rm -rf build
 
-jslint: 
+jslint:
 	jslint $(jsFiles)
 
