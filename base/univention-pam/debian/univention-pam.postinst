@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/all.sh
+
 # /etc/libnss-ldap.secret is required for rootbinddn in /etc/libnss-ldap.conf
 ln -sf /etc/machine.secret /etc/libnss-ldap.secret
 # /etc/pam_ldap.secret is required for rootbinddn in /etc/pam_ldap.conf
@@ -76,17 +78,22 @@ univention-config-registry set \
 	"auth/screen/group/Domain Admins?yes" \
 	auth/screen/group/Administrators?"yes" \
 	auth/screen/user/root?"yes" \
-	auth/login/restrict?"yes" \
-	"auth/login/group/Domain Admins?yes" \
-	auth/login/group/Administrators?"yes" \
-	auth/login/user/root?"yes" \
-	auth/sshd/restrict?"yes" \
-	"auth/sshd/group/Domain Admins?yes" \
-	auth/sshd/group/Computers?"yes" \
-	auth/sshd/group/Administrators?"yes" \
-	auth/sshd/user/root?"yes" \
 	nssldap/tls/checkpeer?no \
 	auth/faillog?no
+
+# restrict ssh and local login to admins on domaincontroller hosts
+if is_domain_controller; then
+	univention-config-registry set \
+		auth/login/restrict?"yes" \
+		"auth/login/group/Domain Admins?yes" \
+		auth/login/group/Administrators?"yes" \
+		auth/login/user/root?"yes" \
+		auth/sshd/restrict?"yes" \
+		"auth/sshd/group/Domain Admins?yes" \
+		auth/sshd/group/Computers?"yes" \
+		auth/sshd/group/Administrators?"yes" \
+		auth/sshd/user/root?"yes"
+fi
 
 if [ "$1" = "configure" -a -z "$2" ]; then
 	univention-config-registry set nscd/group/invalidate_cache_on_changes="true"

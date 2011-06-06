@@ -1,3 +1,9 @@
+univention-pam (5.0.3-1) unstable; urgency=low
+
+  * restrict login and sshd on domaincontroller hosts Bug #20138
+
+ -- Felix Botner <botner@univention.de>  Mon, 06 Jun 2011 09:13:07 +0200
+
 univention-pam (5.0.2-1) unstable; urgency=low
 
   * merged common-* and admin-* pam schemes, removed admin-* and deny-* schemes
