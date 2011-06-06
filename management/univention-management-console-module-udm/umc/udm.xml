@@ -2,22 +2,18 @@
 <umc version="2.0">
   <module id="udm" icon="udm/module" version="1.0">
 	<name>Univention Directory Manager</name>
-	<name lang="de_DE">Univention Directory Manager</name>
 	<description>Manages all UDM modules</description>
-	<description lang="de_DE">Verwaltet alle UDM-Module</description>
-	<flavor icon="udm/users-user" id="users/user">
-	  <option name="module" value="users/user"/>
+	<flavor icon="udm/users" id="users/user">
 	  <name>Users</name>
-	  <name lang="de_DE">Benutzer</name>
 	  <description>Managing users</description>
-	  <description lang="de_DE">Verwaltet Benutzer</description>
 	</flavor>
-	<flavor icon="udm/groups-group" id="groups/group">
-	  <option name="module" value="groups/group"/>
+	<flavor icon="udm/groups" id="groups/group">
 	  <name>Groups</name>
-	  <name lang="de_DE">Gruppen</name>
 	  <description>Managing groups</description>
-	  <description lang="de_DE">Verwaltet Gruppen</description>
+	</flavor>
+	<flavor icon="udm/computers" id="computers/computer">
+	  <name>Computers</name>
+	  <description>Managing computers</description>
 	</flavor>
 	<categories>
 	  <category name="domain"/>

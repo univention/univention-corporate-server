@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.2-1) unstable; urgency=low
+
+  * add german translation file for module definition and categories; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 06 Jun 2011 16:10:11 +0200
+
 univention-management-console-module-udm (1.0.1-2) unstable; urgency=low
 
   * fix dependency; Bug #22439

@@ -3,7 +3,6 @@
   <categories>
 	<category id="domain">
 	  <name>Domain Management</name>
-	  <name lang="de_DE">Domänenverwaltung</name>
 	</category>
   </categories>
 </umc>
