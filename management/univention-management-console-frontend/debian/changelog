@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.19-1) unstable; urgency=low
+
+  * added README file (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Jun 2011 10:36:37 +0200
+
 univention-management-console-frontend (0.0.18-1) unstable; urgency=low
 
   * support new UMCP set command structure; Bug #22460
