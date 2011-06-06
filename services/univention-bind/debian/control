@@ -2,7 +2,7 @@ Source: univention-bind
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), univention-config-dev
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev, ucslint
 Standards-Version: 3.8.2
 
 Package: univention-bind
