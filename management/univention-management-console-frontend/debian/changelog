@@ -1,5 +1,11 @@
 univention-management-console-frontend (0.0.19-1) unstable; urgency=low
 
+  * make the web server stoppable; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 06 Jun 2011 11:36:10 +0200
+
+univention-management-console-frontend (0.0.19-1) unstable; urgency=low
+
   * added README file (Bug #22460)
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Jun 2011 10:36:37 +0200

@@ -619,8 +619,13 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		notifier.init( notifier.GENERIC )
 		CORE.error('FIXME: run check_queue in timer with shorter timeout to get called more often than 10 times per second')
 		notifier.dispatcher_add( umcp_dispatcher.check_queue )
-		notifier.loop()
-	
+		try:
+			notifier.loop()
+		except KeyboardInterrupt:
+			# make web server stoppable
+			cherrypy.engine.exit()
+			system.exit()
+
 
 if __name__ == '__main__':
 	http_daemon = UMC_HTTP_Daemon()
