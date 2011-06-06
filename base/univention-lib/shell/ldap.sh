@@ -77,7 +77,7 @@ ucs_getGroupMembersDirect() { # <groupDN>
 #
 ucs_getGroupMembersRecursive(){ # <groupDN>
 	local reply
-	while read reply
+	ucs_getGroupMembersDirect "$1" | while read reply
 	do
 		if [ -z "$(ldapsearch -x -LLL -b "$reply" '(!(objectClass=univentionGroup))' dn | sed -ne "s/^dn: //p")" ]
 		then
@@ -85,7 +85,7 @@ ucs_getGroupMembersRecursive(){ # <groupDN>
 		else
 			echo "$reply"
 		fi
-	done < <(ucs_getGroupMembersDirect "$1") | sort -u
+	done | sort -u
 }
 
 #

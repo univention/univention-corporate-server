@@ -80,5 +80,6 @@ stop_udm_cli_server () {
 # fi
 #
 is_domain_controller () {
-	[[ "$(ucr get server/role)" == domaincontroller_* ]]
+	role="$(ucr get server/role)"
+	[ "$role" = domaincontroller_master -o "$role" = domaincontroller_backup -o "$role" = domaincontroller_slave ]
 }

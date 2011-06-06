@@ -1,3 +1,9 @@
+univention-lib (1.0.7-1) unstable; urgency=low
+
+  * remove bashisms (Bug #22491)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 06 Jun 2011 14:50:48 +0200
+
 univention-lib (1.0.6-1) unstable; urgency=low
 
   * fixed typo in base.sh (Bug #21579)
