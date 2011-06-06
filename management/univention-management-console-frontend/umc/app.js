@@ -187,7 +187,9 @@ dojo.mixin(umc.app, {
 		this.username = username;
 		dojo.cookie('UMCUsername', username, { expires: 100, path: '/' });
 		this._loginDialog.hide();
-		this.loadModules();
+		umc.tools.umcpCommand('set', {
+			locale: dojo.cookie( 'UMCLang' )
+		} ).then( dojo.hitch( this, function( data ) { this.loadModules(); } ) );
 	},
 
 	onModulesLoaded: function() {

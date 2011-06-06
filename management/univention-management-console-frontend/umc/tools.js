@@ -25,7 +25,7 @@ dojo.mixin(umc.tools, {
 		
 		// check special case for 'get' and 'auth' commands .. there we don't
 		// need to add 'command'
-		if ((/^(get\/|set\/|auth)/i).test(commandStr)) {
+		if ((/^(get\/|set$|auth)/i).test(commandStr)) {
 			url = '/umcp/' + commandStr;
 		}
 

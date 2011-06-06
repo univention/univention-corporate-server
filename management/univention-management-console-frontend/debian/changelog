@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.18-1) unstable; urgency=low
+
+  * support new UMCP set command structure; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 06 Jun 2011 09:51:51 +0200
+
 univention-management-console-frontend (0.0.17-1) unstable; urgency=low
 
   * adapt frontend to new API of UMCP command GET modules/list; Bug #22460

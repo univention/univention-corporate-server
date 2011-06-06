@@ -308,14 +308,7 @@ class CPSet(CPgeneric):
 	def get_request(self, request, json):
 		args = request.path_info
 
-		if args.startswith( self.requestprefix ):
-			args = args[ len(self.requestprefix)+1 : ]
-
-		if not args:
-			self._log('error', 'get_request: args is empty')
-			raise cherrypy.HTTPError(404)
-
-		req = umcp.Request( 'SET', args = [ args ] )
+		req = umcp.Request( 'SET', options = json )
 
 		return req
 
@@ -563,6 +556,8 @@ def run_cherrypy():
 	root.command = CPCommand()
 	root.auth = CPAuth()
 	root.get = CPGet()
+	root.set = CPSet()
+
 	cherrypy.quickstart(root=root)
 
 
