@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-06-01 17:35+0200\n"
+"POT-Creation-Date: 2011-06-06 11:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,6 +15,38 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: umc/app.js:305
+msgid "About UMC"
+msgstr "Über UMC"
+
+#: umc/tools.js:163
+msgid "An assert statement failed"
+msgstr "Ein Assert-Anweisung schlug fehl"
+
+#: umc/tools.js:130
+msgid ""
+"An error occurred while connecting to the server, please try again later."
+msgstr ""
+"Ein Fehler trat während des Verbindungsaufbaus zum Server auf, bitte "
+"versuchen Sie es später noch einmal."
+
+#: umc/tools.js:124
+#, python-format
+msgid ""
+"An unexpected HTTP-error occurred (status: %(status)s):\n"
+"%(msg)s"
+msgstr ""
+"Ein unerwarteter HTTP-Fehler trat auf (Status: %(status)s:\n"
+"%(msg)s"
+
+#: umc/app.js:106
+msgid "Confirmation"
+msgstr "Bestätigung"
+
+#: umc/app.js:319
+msgid "Confirmations"
+msgstr "Bestätigungen"
 
 #: umc/widgets/LoginDialog.js:59
 msgid "English"
@@ -34,6 +66,10 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
+#: umc/app.js:301
+msgid "Help"
+msgstr "Hilfe"
+
 #: umc/widgets/LoginDialog.js:63
 msgid "Language"
 msgstr "Sprache"
@@ -41,6 +77,31 @@ msgstr "Sprache"
 #: umc/widgets/LoginDialog.js:68
 msgid "Login"
 msgstr "Anmelden"
+
+#: umc/app.js:173
+#, python-format
+msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
+msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
+
+#: umc/app.js:327
+msgid "Module help description"
+msgstr "Modul-Hilfetexte"
+
+#: umc/widgets/Grid.js:357
+msgid "More actions..."
+msgstr "Weitere Aktionen..."
+
+#: umc/app.js:153
+msgid "Notification"
+msgstr "Hinweis"
+
+#: umc/app.js:155
+msgid "Ok"
+msgstr "Ok"
+
+#: umc/app.js:264
+msgid "Overview"
+msgstr "Übersicht"
 
 #: umc/widgets/LoginDialog.js:53
 msgid "Password"
@@ -67,9 +128,22 @@ msgstr ""
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
+#: umc/tools.js:118
+msgid "This service is temporarily not available (status: 503)!"
+msgstr "Der Dienst is zeitweise nicht erreichbar (Status: 503)!"
+
+#: umc/app.js:312
+msgid "Tooltips"
+msgstr "Tooltips"
+
 #: umc/i18n.js:87
 msgid "Translate me!"
 msgstr ""
+
+#: umc/app.js:335
+#, python-format
+msgid "User: %s"
+msgstr "Benutzer: %s"
 
 #: umc/widgets/LoginDialog.js:48
 msgid "Username"
@@ -82,6 +156,18 @@ msgid ""
 msgstr ""
 "Willkommen auf der Univention Management Console. Bitte geben Sie "
 "Benutzername und Passwort Ihres Domänen-Kontos an."
+
+#: umc/tools.js:108
+msgid "Wrong credentials, please try again!"
+msgstr "Falsche Zugangsdaten, bitte versuchen Sie es erneut!"
+
+#: umc/tools.js:115
+msgid "You are not authorized to perform this action!"
+msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen!"
+
+#: umc/tools.js:111
+msgid "Your session has expired, please log in again!"
+msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an!"
 
 #~ msgid "Domain"
 #~ msgstr "Domäne"

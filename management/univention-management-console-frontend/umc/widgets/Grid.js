@@ -13,8 +13,9 @@ dojo.require("dojox.grid.EnhancedGrid");
 dojo.require("dojox.grid.cells");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.tools");
+dojo.require("umc.i18n");
 
-dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
+dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin ], {
 	// summary:
 	//		Encapsulates a complex grid with store, UMCP commands and action buttons;
 	//		offers easy access to select items etc.
@@ -47,6 +48,9 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 	// umcpSetCommand: String
 	//		UMCP command for saving data from the grid directly.
 	umcpSetCommand: '',
+
+	// use the framework wide translation file
+	i18nClass: 'umc.app',
 
 	'class': 'umcNoBorder',
 
@@ -350,7 +354,7 @@ dojo.declare("umc.widgets.Grid", dijit.layout.BorderContainer, {
 		// create drop-down button if there are actions
 		if (actionsMenu.hasChildren()) {
 			toolBarRight.addChild(new dijit.form.DropDownButton({
-				label: 'Weitere Aktionen...',
+				label: this._('More actions...'),
 				dropDown: actionsMenu
 			}));
 		}

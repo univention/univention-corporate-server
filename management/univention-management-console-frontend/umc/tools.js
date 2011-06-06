@@ -4,8 +4,12 @@ dojo.provide("umc.tools");
 
 dojo.require("dojox.layout.TableContainer");
 dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.i18n");
 
-dojo.mixin(umc.tools, {
+dojo.mixin(umc.tools, new umc.i18n.Mixin({
+	// use the framework wide translation file
+	i18nClass: 'umc.app',
+}), {
 	umcpCommand: function(
 		/*String*/ commandStr, 
 		/*Object?*/ dataObj, 
@@ -101,29 +105,29 @@ dojo.mixin(umc.tools, {
 					var loggingIn = umc.app.loggingIn;
 					umc.app._loginDialog.show();
 					if (loggingIn) {
-						umc.app.alert('Wrong credentials, please try again!');
+						umc.app.alert(this._('Wrong credentials, please try again!'));
 					}
 					else {
-						umc.app.alert('Your session has expired, please log in again!');
+						umc.app.alert(this._('Your session has expired, please log in again!'));
 					}
 					return;
 				case 403:
-					umc.app.alert('You are not authorized to perform this action!');
+					umc.app.alert(this._('You are not authorized to perform this action!'));
 					return;
 				case 503:
-					umc.app.alert('This service is temporarily not available (status: 503)!');
+					umc.app.alert(this._('This service is temporarily not available (status: 503)!'));
 					return;
 				default:
 					// get an error message from the server if available
 					//TODO: this should probably done in a better manner
 					var errorMsg = dojo.getObject('responseText', false, error) || '';
-					umc.app.alert('An unexpected HTTP-error occurred (status: ' + status + ')' + errorMsg);
+					umc.app.alert(this._('An unexpected HTTP-error occurred (status: %(status)s):\n%(msg)s', { status: status, msg: errorMsg }));
 					return;
 			}
 		}
 		
 		// probably server timeout, could also be a different error
-		umc.app.alert('An error occurred while connecting to the server, please try again later.');
+		umc.app.alert(this._('An error occurred while connecting to the server, please try again later.'));
 	},
 
 	forIn: function(/*Object*/ obj, /*Function*/callback, /*Object?*/scope) {
@@ -156,7 +160,7 @@ dojo.mixin(umc.tools, {
 
 		// throws: Throws an Error if 'booleanValue' is false.
 		if(!booleanValue){
-			var errorMessage = "An assert statement failed";
+			var errorMessage = this._('An assert statement failed');
 			if(message){
 				errorMessage += ':\n' + message;
 			}

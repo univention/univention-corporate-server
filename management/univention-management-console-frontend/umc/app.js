@@ -17,6 +17,7 @@ dojo.require("umc.widgets.ConfirmDialog");
 dojo.require("umc.widgets.LoginDialog");
 dojo.require("umc.widgets.ContainerPane");
 dojo.require("umc.widgets.CategoryPane");
+dojo.require("umc.i18n");
 
 // start the application when everything has been loaded
 dojo.addOnLoad(function() {
@@ -30,7 +31,10 @@ dojo.addOnLoad(function() {
 	};*/
 });
 
-dojo.mixin(umc.app, {
+dojo.mixin(umc.app, new umc.i18n.Mixin({
+	// use the framework wide translation file
+	i18nClass: 'umc.app',
+}), {
 	// loggingIn: Boolean
 	//		True if the user is in the process of loggin in.
 	loggingIn: false,
@@ -82,29 +86,24 @@ dojo.mixin(umc.app, {
 		if (!this.preferences('confirm')) {
 			var cb = undefined;
 			var response = undefined;
-			console.log('#A1');
 			dojo.forEach(options, function(i, idx) {
 				// check for default option
-				console.log('#A1 ' + i.label);
 				if (true === i['default']) {
 					cb = i.callback;
 					response = i.name || idx;
 					return false; // break loop
 				}
 			});
-			console.log('#A2');
 			if (cb && dojo.isFunction(cb)) {
 				// we found a default item .. call the callback and exit
-				console.log('#A3');
 				cb(response);
-				console.log('#A4');
 				return;
 			}
 		}
 
 		// create confirmation dialog
 		var confirmDialog = new umc.widgets.ConfirmDialog({
-			title: 'Bestätigung',
+			title: this._('Confirmation'),
 			message: message,
 			options: options
 		});
@@ -151,9 +150,9 @@ dojo.mixin(umc.app, {
 
 		// create alert dialog 
 		this._alertDialog = new umc.widgets.ConfirmDialog({
-			title: 'Hinweis',
+			title: this._('Notification'),
 			options: [{
-				label: 'Ok',
+				label: this._('Ok'),
 				callback: dojo.hitch(this, function() {
 					// hide dialog upon confirmation by click on 'OK'
 					this._alertDialog.hide();
@@ -171,7 +170,7 @@ dojo.mixin(umc.app, {
 		}
 		else {
 			this.onLogin(dojo.cookie('UMCUsername'));
-			console.log('Login is still valid (cookie: ' + sessionCookie + ', username: ' + this.username + ').');
+			console.log(this._('Login is still valid (cookie: %(cookie)s, username: %(user)s).', { cookie: sessionCookie, user: this.username }));
 		}
 	},
 
@@ -218,7 +217,6 @@ dojo.mixin(umc.app, {
 		}
 
 		// create a new tab
-		//console.log('#A1');
 		var tab = new module.BaseClass({
 			title: module.title,
 			iconClass: 'icon16-' + module.id,
@@ -263,7 +261,7 @@ dojo.mixin(umc.app, {
 		//	   problems.
 		var overviewPage = new umc.widgets.ContainerPane({ 
 			//style: "overflow:visible; width: 80%"
-			title: 'Overview',
+			title: this._('Overview'),
 			iconClass: 'icon16-univention' 
 		});
 
@@ -279,7 +277,7 @@ dojo.mixin(umc.app, {
 			var categoryPane = new umc.widgets.CategoryPane({
 				modules: modules,
 				title: icat.title,
-				open: ('favorites' == icat.id || 'ucsschool' == icat.id) //TODO: remove this hack
+				open: ('favorites' == icat.id)
 			});
 
 			// register to requests for opening a module
@@ -300,25 +298,25 @@ dojo.mixin(umc.app, {
 
 		// add some buttons
 		header.addChild(new dijit.form.Button({
-			label: 'Hilfe',
+			label: this._('Help'),
 			'class': 'umcHeaderButton'
 		}));
 		header.addChild(new dijit.form.Button({
-			label: 'Über UMC',
+			label: this._('About UMC'),
 			'class': 'umcHeaderButton'
 		}));
 
 		// the user context menu
 		var menu = new dijit.Menu({});
 		menu.addChild(new dijit.CheckedMenuItem({
-			label: 'Tooltips',
+			label: this._('Tooltips'),
 			checked: umc.app.preferences('tooltips'),
 			onClick: function() {
 				umc.app.preferences('tooltips', this.checked);
 			}
 		}));
 		menu.addChild(new dijit.CheckedMenuItem({
-			label: 'Nachfragen',
+			label: this._('Confirmations'),
 			checked: true,
 			checked: umc.app.preferences('confirm'),
 			onClick: function() {
@@ -326,7 +324,7 @@ dojo.mixin(umc.app, {
 			}
 		}));
 		menu.addChild(new dijit.CheckedMenuItem({
-			label: 'Modul-Hilfetext',
+			label: this._('Module help description'),
 			checked: true,
 			checked: umc.app.preferences('moduleDescription'),
 			onClick: function() {
@@ -334,7 +332,7 @@ dojo.mixin(umc.app, {
 			}
 		}));
 		header.addChild(new dijit.form.DropDownButton({
-			label: 'Benutzer: ' + this.username,
+			label: this._('User: %s', this.username),
 			'class': 'umcHeaderButton',
 			dropDown: menu
 		}));
@@ -428,7 +426,6 @@ dojo.mixin(umc.app, {
 	_modules: [],
 	_categories: [],
 	loadModules: function() {
-		//console.log('### loadModules');
 		umc.tools.umcpCommand('get/modules/list').then(dojo.hitch(this, function(data) {
 			// get all categories
 			dojo.forEach(dojo.getObject('categories', false, data), dojo.hitch(this, function(i) {
@@ -442,21 +439,21 @@ dojo.mixin(umc.app, {
 
 			// hack a specific order
 			//TODO: remove this hack
-			var cats1 = [];
-			var cats2 = this._categories;
-			dojo.forEach(['favorites', 'ucsschool'], function(id) {
-				var tmpCats = cats2;
-				cats2 = [];
-				dojo.forEach(tmpCats, function(icat) {
-					if (id == icat.id) {
-						cats1.push(icat);
-					}
-					else {
-						cats2.push(icat);
-					}
-				});
-			});
-			this._categories = cats1.concat(cats2);
+			//var cats1 = [];
+			//var cats2 = this._categories;
+			//dojo.forEach(['favorites', 'ucsschool'], function(id) {
+			//	var tmpCats = cats2;
+			//	cats2 = [];
+			//	dojo.forEach(tmpCats, function(icat) {
+			//		if (id == icat.id) {
+			//			cats1.push(icat);
+			//		}
+			//		else {
+			//			cats2.push(icat);
+			//		}
+			//	});
+			//});
+			//this._categories = cats1.concat(cats2);
 			//console.log(cats1);
 			//console.log(cats2);
 			//console.log(this._categories);

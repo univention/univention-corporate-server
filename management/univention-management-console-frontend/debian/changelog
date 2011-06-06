@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.20-1) unstable; urgency=low
+
+  * added i18n for all modules, removed umc.widgets.SearchForm (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Jun 2011 11:58:20 +0200
+
 univention-management-console-frontend (0.0.19-1) unstable; urgency=low
 
   * make the web server stoppable; Bug #22460
