@@ -73,7 +73,7 @@ univention-config-registry (7.0.6-1) unstable; urgency=low
 
 univention-config-registry (7.0.5-1) unstable; urgency=low
 
-  * Do dpkg-divert on register and unregister (Bug #17912)
+  * Do dpkg-divert on register and unregister (Bug #17913)
   * Don't divert subfile template files (Bug #22522)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 13 May 2011 20:27:52 +0200
