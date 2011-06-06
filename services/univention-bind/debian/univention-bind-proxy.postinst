@@ -3,7 +3,7 @@
 # Univention Bind Proxy
 #  postinst script for the univention-bind debian package
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -36,30 +36,10 @@ fi
 
 #DEBHELPER#
 
-univention-baseconfig set nameserver/external?false
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions $2 lt 1.4; then
-	eval `univention-baseconfig shell`
-	if [ -n "$nameserver_internal" -a "$nameserver_internal" = true ]; then
-		univention-baseconfig set nameserver/external=false
-		univention-baseconfig unset nameserver/internal
-	else
-		univention-baseconfig set nameserver/external=true
-		univention-baseconfig unset nameserver/internal
-	fi
-fi
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions $2 lt 4.0.5-2; then
-	univention-config-registry set dns/allow/query='any'
-	univention-config-registry set dns/allow/query/cache='any'
-fi
+univention-config-registry set nameserver/external?false
 
 if [ "$1" = "configure" -a -n "$2" ]; then
-	if dpkg --compare-versions "$2" lt 1.15; then
-		/etc/init.d/univention-bind-proxy restart
-	else
-		/etc/init.d/univention-bind-proxy crestart
-	fi
+	/etc/init.d/univention-bind-proxy crestart
 else
 	if [ "$1" = "configure" ]
 		then

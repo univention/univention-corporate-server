@@ -1,0 +1,2 @@
+90univention-bind-proxy.inst usr/lib/univention-install
+conffiles/etc/runit/univention-bind-proxy/run etc/runit/univention-bind-proxy

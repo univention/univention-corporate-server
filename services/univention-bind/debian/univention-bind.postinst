@@ -3,7 +3,7 @@
 # Univention Bind
 #  postinst script for the univention-bind debian package
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,17 +35,10 @@
 chmod g+w /etc/bind
 chmod g+w /etc/bind/*
 
-univention-baseconfig set bind/autostart?yes
+univention-config-registry set 'bind/autostart?yes'
 
 if [ "$1" = "configure" -a -n "$2" ]; then
-
-	if dpkg --compare-versions "$2" lt 1.15; then
-		/etc/init.d/univention-bind restart
-	else
-		/etc/init.d/univention-bind crestart
-	fi
-
-
+	/etc/init.d/univention-bind crestart
 else
 	if [ "$1" = "configure" ]
 		then
@@ -61,12 +54,7 @@ else
 	fi
 fi
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.25; then
-	rm -f /etc/univention/templates/file/etc/bind/local.conf
-	patch -p0 </usr/share/univention-bind/remove_template.patch || true
-fi
-
-if [ "$1" = configure -a -z "$2" ]; then
+if [ "$1" = "configure" -a -z "$2" ]; then
 	echo "# add local zones here" >> /etc/bind/local.conf
 fi
 
@@ -79,4 +67,3 @@ if [ "$1" = "configure" ]
 fi
 
 exit 0
-
