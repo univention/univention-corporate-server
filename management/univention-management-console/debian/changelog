@@ -1,12 +1,18 @@
+univention-management-console (4.0.15-1) unstable; urgency=low
+
+  * first step in supporting several locales in one process (one per session); Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 06 Jun 2011 09:55:47 +0200
+
 univention-management-console (4.0.14-1) unstable; urgency=low
 
-  * reworked i18n code in UMC server; Bug #20460
+  * reworked i18n code in UMC server; Bug #22460
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 03 Jun 2011 16:48:00 +0200
 
 univention-management-console (4.0.13-1) unstable; urgency=low
 
-  * changed auth/user/methods to auth/methods Bug #20138 
+  * changed auth/user/methods to auth/methods Bug #20138
 
  -- Felix Botner <botner@univention.de>  Fri, 03 Jun 2011 13:48:18 +0200
 

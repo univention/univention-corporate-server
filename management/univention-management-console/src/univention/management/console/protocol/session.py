@@ -239,7 +239,7 @@ class Processor( signals.Provider ):
 			for id, module in self.__command_list.items():
 				# check for translation
 				if not id in self.i18n:
-					self.i18n[ id ] = Translation( id, localedir = '/usr/share/univention-management-console/i18n/' )
+					self.i18n[ id ] = Translation( id, locale_spec = self.__locale, localedir = '/usr/share/univention-management-console/i18n/' )
 				if module.flavors:
 					for flavor in module.flavors:
 						modules.append( { 'id' : id, 'name' : self.i18n[ id ]._( flavor.name ), 'description' : self.i18n[ id ]._( flavor.description ), 'icon' : flavor.icon, 'categories' : module.categories } )
@@ -288,7 +288,8 @@ class Processor( signals.Provider ):
 				self.__locale = value
 				try:
 					self.core_i18n.set_language( value )
-					self.session_i18n.set_language( value )
+					for translation in self.i18n.values():
+						tranlsation.set_language( value )
 				except LocaleNotFound, e:
 					res.status = BAD_REQUEST_UNAVAILABLE_LOCALE
 					res.message = status_description( res.status )
@@ -313,7 +314,7 @@ class Processor( signals.Provider ):
 		if not module_name:
 			res = Response( msg )
 			res.status = BAD_REQUEST_NOT_ALLOWED
-			res.message = status_description( req.status )
+			res.message = status_description( res.status )
 			self.signal_emit( 'response', res )
 			return None
 

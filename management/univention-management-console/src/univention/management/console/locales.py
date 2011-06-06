@@ -49,16 +49,16 @@ class Locale( object ):
 	'''Represents a locale specification and provides simple access to
 	language, territory, codeset and modifier'''
 
-	REGEX = re.compile( '(?P<language>[a-z]{2})(_(?P<territory>[A-Z]{2}))?(.(?P<codeset>[a-zA-Z-0-9]+)(@(?P<modified>.+))?)?' )
+	REGEX = re.compile( '(?P<language>[a-z]{2})(_(?P<territory>[A-Z]{2}))?(.(?P<codeset>[a-zA-Z-0-9]+)(@(?P<modifier>.+))?)?' )
 
-	def __init__( locale ):
+	def __init__( self, locale ):
 		if not isinstance( locale, basestring ):
 			raise TypeError( 'locale must be of type string' )
 		regex = Locale.REGEX.match( locale )
 		if not regex:
 			raise AttributeError( 'attribute does not match locale specification language[_territory][.codeset][@modifier]' )
 
-		for key, value in regex.groupdict():
+		for key, value in regex.groupdict().items():
 			setattr( self, key, value )
 
 	def __str__( self ):

@@ -175,7 +175,7 @@ class ModuleServer( Server ):
 		if msg.command == 'SET':
 			resp = Response( msg )
 			resp.status = SUCCESS
-			for key, value in msg.options:
+			for key, value in msg.options.items():
 				if key == 'acls':
 					self.__acls = ACLs( acls = value[ 'acls' ] )
 					self.__handler.acls = self.__acls
