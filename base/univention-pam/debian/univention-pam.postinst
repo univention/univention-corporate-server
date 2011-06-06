@@ -84,10 +84,6 @@ univention-config-registry set \
 # restrict ssh and local login to admins on domaincontroller hosts
 if is_domain_controller; then
 	univention-config-registry set \
-		auth/login/restrict?"yes" \
-		"auth/login/group/Domain Admins?yes" \
-		auth/login/group/Administrators?"yes" \
-		auth/login/user/root?"yes" \
 		auth/sshd/restrict?"yes" \
 		"auth/sshd/group/Domain Admins?yes" \
 		auth/sshd/group/Computers?"yes" \

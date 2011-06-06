@@ -1,6 +1,6 @@
-univention-pam (5.0.3-1) unstable; urgency=low
+univention-pam (5.0.3-2) unstable; urgency=low
 
-  * restrict login and sshd on domaincontroller hosts Bug #20138
+  * restrict sshd on domaincontroller hosts Bug #20138
 
  -- Felix Botner <botner@univention.de>  Mon, 06 Jun 2011 09:13:07 +0200
 
