@@ -143,7 +143,7 @@ class Processor( signals.Provider ):
 	UMCP commands and passes the commands for a module to the
 	subprocess.'''
 
-	INACTIVITY_TIMER = 30000
+	INACTIVITY_TIMER = 120000 # 120 seconds
 
 	def __init__( self, username, password ):
 		self.__username = username
@@ -187,6 +187,7 @@ class Processor( signals.Provider ):
 		return moduleManager.module_providing( self.__comand_list, command )
 
 	def request( self, msg ):
+		CORE.info( 'Incoming request of type: %s' % msg.command )
 		if msg.command == 'EXIT':
 			self.handle_request_exit( msg )
 		elif msg.command == 'GET':
@@ -292,7 +293,7 @@ class Processor( signals.Provider ):
 				try:
 					self.core_i18n.set_language( value )
 					for translation in self.i18n.values():
-						tranlsation.set_language( value )
+						translation.set_language( value )
 				except LocaleNotFound, e:
 					res.status = BAD_REQUEST_UNAVAILABLE_LOCALE
 					res.message = status_description( res.status )
@@ -373,7 +374,8 @@ class Processor( signals.Provider ):
 				mod.signal_disconnect( 'closed', notifier.Callback( self._socket_died ) )
 				mod.signal_disconnect( 'result', notifier.Callback( self._mod_result ) )
 				mod.signal_disconnect( 'finished', notifier.Callback( self._mod_died ) )
-				del self.__processes[ mod.name ]
+				if mod.name in self.__processes:
+					del self.__processes[ mod.name ]
 			else:
 				mod._connect_retries += 1
 				return True
@@ -388,15 +390,11 @@ class Processor( signals.Provider ):
 				'credentials' : { 'username' : self.__username, 'password' : self.__password },
 				'locale' : self.__locale
 				}
+			# WARNING! This debug message contains credentials!!!
+			# CORE.info( 'Initialize module process: %s' % options )
+
 			req = Request( 'SET', options = options )
 			mod.request( req )
-
-			self.session_i18n.domain = module.name
-			# FIXME: do we still need this?
-			# # set sessionid
-			# if self.__sessionid:
-			# 	req = Request( 'SET', arguments = [ 'sessionid' ], options = { 'sessionid' : self.__sessionid } )
-			# 	mod.request( req )
 
 			# send first command
 			mod.request( msg )

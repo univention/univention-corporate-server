@@ -50,7 +50,7 @@ import notifier.threads as threads
 
 class ModuleServer( Server ):
 	def __init__( self, socket, module, timeout = 300, check_acls = True ):
-		Server.__init__( self, ssl = False, unix = socket, magic = False )
+		Server.__init__( self, ssl = False, unix = socket, magic = False, load_ressources = False )
 		self.signal_connect( 'session_new', self._client )
 		self.__name = module
 		self.__module = module
@@ -177,7 +177,7 @@ class ModuleServer( Server ):
 			resp.status = SUCCESS
 			for key, value in msg.options.items():
 				if key == 'acls':
-					self.__acls = ACLs( acls = value[ 'acls' ] )
+					self.__acls = ACLs( acls = value )
 					self.__handler.acls = self.__acls
 				elif key == 'commands':
 					self.__commands.fromJSON( value[ 'commands' ] )
@@ -189,20 +189,16 @@ class ModuleServer( Server ):
 					self.__password = value[ 'password' ]
 					self.__handler.username = self.__username
 					self.__handler.password = self.__password
-				# FIXME: do we still need this?
-				# elif key == 'sessionid':
-				# 	self.__sessionid = value
-				# 	self.__handler.sessionid = self.__sessionid
 				elif key == 'locale':
 					self.__locale = value
 					try:
 						locale.setlocale( locale.LC_MESSAGES, locale.normalize( self.__locale ) )
 					except locale.Error:
 						MODULE.warn( "Specified locale is not available (%s)" % self.__locale )
-						# specified locale is not available
-						resp.status = BAD_REQUEST_UNAVAILABLE_LOCALE
-						resp.message = status_description( resp.status )
-						break
+						# specified locale is not available -> using system locale
+						# resp.status = BAD_REQUEST_UNAVAILABLE_LOCALE
+						# resp.message = status_description( resp.status )
+						# break
 					self.__handler.set_language( self.__locale )
 				else:
 					res.status = BAD_REQUEST_INVALID_ARGS
@@ -217,6 +213,7 @@ class ModuleServer( Server ):
 		if msg.arguments:
 			cmd = msg.arguments[ 0 ]
 			cmd_obj = self.command_get( cmd )
+			MODULE.info( 'Incoming request: %s' % cmd )
 			if cmd_obj and ( not self.__check_acls or self.__acls.is_command_allowed( cmd, options = msg.options ) ):
 				self.__active_requests += 1
 				self.__handler.execute( cmd_obj.method, msg )

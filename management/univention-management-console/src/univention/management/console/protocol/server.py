@@ -211,9 +211,15 @@ class Server( signals.Provider ):
 	'''Handles incoming connections on UNIX or TCP sockets and passes
 	the control to the MagicBucket'''
 
-	def __init__( self, port = 6670, ssl = True, unix = None, magic = True, magicClass = MagicBucket ):
+	def __init__( self, port = 6670, ssl = True, unix = None, magic = True, magicClass = MagicBucket, load_ressources = True ):
 		'''Initializes the socket to listen for requests'''
 		signals.Provider.__init__( self )
+
+		# loading resources
+		if load_ressources:
+			CORE.info( 'Loading resources ...' )
+			self.reload()
+
 		CORE.info( 'Initialising server process' )
 		self.__port = port
 		self.__unix = unix

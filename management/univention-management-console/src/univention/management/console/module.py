@@ -103,9 +103,13 @@ class Module( JSON_Object ):
 			self.commands = commands
 
 	def fromJSON( self, json ):
-		for attr in ( 'id', 'name' , 'description', 'icon', 'categories' ):
-			setattr( self, attr, json[ attr ] )
-		for cmd in json[ 'commands' ]:
+		if isinstance( json, dict ):
+			for attr in ( 'id', 'name' , 'description', 'icon', 'categories' ):
+				setattr( self, attr, json[ attr ] )
+			commands = json[ 'commands' ]
+		else:
+			commands = json
+		for cmd in commands:
 			command = Command()
 			command.fromJSON( cmd )
 			self.commands.append( command )
@@ -180,7 +184,6 @@ class Manager( dict ):
 	DIRECTORY = os.path.join( sys.prefix, 'share/univention-management-console/modules' )
 	def __init__( self ):
 		dict.__init__( self )
-		self.load()
 
 	def modules( self ):
 		'''Return list of module names'''

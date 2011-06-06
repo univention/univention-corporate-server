@@ -60,7 +60,6 @@ class Manager( dict ):
 	DIRECTORY = os.path.join( sys.prefix, 'share/univention-management-console/categories' )
 	def __init__( self ):
 		dict.__init__( self )
-		self.load()
 
 	def all( self ):
 		return map( lambda x: x.json(), self.values() )

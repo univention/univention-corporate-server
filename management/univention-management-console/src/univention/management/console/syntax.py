@@ -93,7 +93,6 @@ class Manager( dict ):
 	DIRECTORY = os.path.join( sys.prefix, 'share/univention-management-console/syntax' )
 	def __init__( self ):
 		dict.__init__( self )
-		self.load()
 
 	def load( self ):
 		'''Load the list of available syntax definitions. As the list is

@@ -82,6 +82,9 @@ class NullTranslation( object ):
 	def _set_domain( self, namespace ):
 		if namespace is not None:
 			self._domain = namespace.replace( '/', '-' ).replace( '.', '-' )
+		else:
+			self._domain = None
+
 	domain =property( fset = _set_domain )
 
 	def _get_locale( self ):

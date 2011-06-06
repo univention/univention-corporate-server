@@ -1,3 +1,10 @@
+univention-management-console (4.0.17-1) unstable; urgency=low
+
+  * enhancements for i18n support; Bug #22460
+  * fixed handling if UMCP command SET
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 06 Jun 2011 14:49:57 +0200
+
 univention-management-console (4.0.16-1) unstable; urgency=low
 
   * modify path for module translation files (otherwise gettext would find

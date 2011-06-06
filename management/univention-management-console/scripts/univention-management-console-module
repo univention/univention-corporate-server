@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.debug as ud
+from univention.management.console.log import *
 
 from optparse import OptionParser
 
@@ -60,30 +60,31 @@ if __name__ == '__main__':
 	parser.add_option( '-m', '--module', type = 'string',
 					   action = 'store', dest = 'module',
 					   help = 'set the UMC daemon module to load' )
-	parser.add_option( '-d', '--debug', action = 'store', type = 'int',
-					   dest = 'debug', default = 0,
-					   help = 'if given debugging is activated and set to the specified level' )
+	try:
+		default_debug = int( configRegistry.get( 'umc/module/debug/level', '1' ) )
+	except:
+		default_debug = 1
+	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = default_debug,
+					   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
+	parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-module', help = 'specifies an alternative log file [default: %default-<module name>.log]' )
 
 	( options, arguments ) = parser.parse_args()
 
-	if options.debug > 0:
-		ud.init( '/var/log/univention/management-console-module-%s.log' % options.module, 1, 1 )
-		ud.set_level( ud.ADMIN, options.debug )
-	else:
-		ud.init( os.devnull, 0, 0 )
+	# init logging
+	debug_fd = log_init( '%s-%s' % ( options.logfile, options.module ), options.debug )
 
 	localeok = False
 	try:
 		locale.setlocale( locale.LC_MESSAGES, locale.normalize( options.language ) )
 		localeok = True
 	except:
-		ud.debug( ud.ADMIN, ud.ERROR, 'univention-management-console-module.py: specified locale is not available (cmdline: %s)' % options.language)
-	if not localeok and ucr.get( 'umc/web/language' ):
-		try:
-			locale.setlocale( locale.LC_MESSAGES, locale.normalize( ucr['umc/web/language'] ) )
-			localeok = True
-		except:
-			ud.debug( ud.ADMIN, ud.ERROR, 'univention-management-console-module.py: specified locale is not available (UCR: %s)' % ucr[ 'umc/web/language' ] )
+		MODULE.error( 'The specified locale is not available (cmdline: %s)' % options.language )
+	# if not localeok and ucr.get( 'umc/web/language' ):
+	# 	try:
+	# 		locale.setlocale( locale.LC_MESSAGES, locale.normalize( ucr['umc/web/language'] ) )
+	# 		localeok = True
+	# 	except:
+	# 		MODULE.error( 'The specified locale is not available (UCR: %s)' % ucr[ 'umc/web/language' ] )
 
 	import univention.management.console.protocol as umcp
 
