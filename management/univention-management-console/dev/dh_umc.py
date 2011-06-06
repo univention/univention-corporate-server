@@ -181,22 +181,28 @@ def read_modules( package ):
 
 	return modules
 
-def module_xml2po( xml, po_file, package, language ):
+def module_xml2po( module, po_file, language ):
 	"""Create a PO file the XML definition of an UMC module"""
+	message_po = '%s/messages.po' % os.path.dirname( po_file )
+
 	po = polib.POFile()
 	po.header = PO_HEADER
 	po.metadata = copy.copy( PO_METADATA )
-	po.metadata[ 'Project-Id-Version' ] = package
+	po.metadata[ 'Project-Id-Version' ] = module.package
 	po.metadata[ 'POT-Creation-Date' ] = formatdate( localtime = True )
 	po.metadata[ 'Language' ] = language
-	tree = ET.ElementTree( file = xml )
+
+	tree = ET.ElementTree( file = module.xml_definition )
 	po.append( polib.POEntry( msgid = tree.find( 'module/name' ).text, msgstr = '' ) )
 	po.append( polib.POEntry( msgid = tree.find( 'module/description' ).text, msgstr = '' ) )
 	for flavor in tree.findall( 'module/flavor' ):
 		po.append( polib.POEntry( msgid = flavor.find( 'name' ).text, msgstr = '' ) )
 		po.append( polib.POEntry( msgid = flavor.find( 'description' ).text, msgstr = '' ) )
 
-	message_po = '%s/messages.po' % os.path.dirname( po_file )
+	tree = ET.ElementTree( file = module.xml_categories )
+	for cat in tree.findall( 'categories/category' ):
+		po.append( polib.POEntry( msgid = cat.find( 'name' ).text, msgstr = '' ) )
+
 	po.save( message_po )
 	if os.path.isfile( po_file ):
 		dh_ucs.doIt( 'msgmerge', '--update', '--sort-output', po_file, message_po )

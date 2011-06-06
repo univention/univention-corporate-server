@@ -1,3 +1,10 @@
+univention-management-console (4.0.17-2) unstable; urgency=low
+
+  * dh-umc-module-build: include category namea in translation files; Bug #22460
+  * add translation file for UMC server
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 06 Jun 2011 16:47:53 +0200
+
 univention-management-console (4.0.17-1) unstable; urgency=low
 
   * enhancements for i18n support; Bug #22460
