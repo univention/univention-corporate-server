@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-06-06 11:16+0200\n"
+"POT-Creation-Date: 2011-06-06 12:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/app.js:305
+#: umc/app.js:308
 msgid "About UMC"
 msgstr "Über UMC"
 
-#: umc/tools.js:163
+#: umc/tools.js:167
 msgid "An assert statement failed"
 msgstr "Ein Assert-Anweisung schlug fehl"
 
@@ -44,7 +44,7 @@ msgstr ""
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:319
+#: umc/app.js:322
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -56,17 +56,17 @@ msgstr "Englisch"
 msgid "German"
 msgstr "Deutsch"
 
-#: umc/i18n.js:90
+#: umc/i18n.js:94
 #, python-format
 msgid "Hello %(last)s, %(first)s!"
 msgstr ""
 
-#: umc/i18n.js:89
+#: umc/i18n.js:93
 #, python-format
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/app.js:301
+#: umc/app.js:304
 msgid "Help"
 msgstr "Hilfe"
 
@@ -83,7 +83,7 @@ msgstr "Anmelden"
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:327
+#: umc/app.js:330
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
@@ -99,7 +99,7 @@ msgstr "Hinweis"
 msgid "Ok"
 msgstr "Ok"
 
-#: umc/app.js:264
+#: umc/app.js:267
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -119,7 +119,7 @@ msgstr "Die Sprache für die Anmeldesitzung."
 msgid "The password of your domain account."
 msgstr "Das Passwort Ihres Domänen-Kontos."
 
-#: umc/i18n.js:88
+#: umc/i18n.js:92
 #, python-format
 msgid "The total cost was %.2f EUR!"
 msgstr ""
@@ -132,15 +132,15 @@ msgstr "Der Benutzername Ihres Domänen-Kontos."
 msgid "This service is temporarily not available (status: 503)!"
 msgstr "Der Dienst is zeitweise nicht erreichbar (Status: 503)!"
 
-#: umc/app.js:312
+#: umc/app.js:315
 msgid "Tooltips"
 msgstr "Tooltips"
 
-#: umc/i18n.js:87
+#: umc/i18n.js:91
 msgid "Translate me!"
 msgstr ""
 
-#: umc/app.js:335
+#: umc/app.js:338
 #, python-format
 msgid "User: %s"
 msgstr "Benutzer: %s"

@@ -41,6 +41,10 @@ dojo.declare("umc.i18n.Mixin", null, {
 	//		already been loaded for the module.
 	_i18nInitialized: false,
 
+	constructor: function(params) {
+		dojo.mixin(this, params);
+	},
+
 	_i18nInit: function() {
 		// summary:
 		//		Internal method to initialize the the locale information for the

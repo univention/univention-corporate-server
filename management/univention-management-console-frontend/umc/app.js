@@ -188,7 +188,9 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		this._loginDialog.hide();
 		umc.tools.umcpCommand('set', {
 			locale: dojo.cookie( 'UMCLang' )
-		} ).then( dojo.hitch( this, function( data ) { this.loadModules(); } ) );
+		} ).then( dojo.hitch( this, function( data ) { 
+			this.loadModules(); 
+		} ) );
 	},
 
 	onModulesLoaded: function() {
@@ -391,7 +393,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// only one parameter, type: Object -> set all parameters as specified in the object
 		if (1 == arguments.length) {
 			// only consider keys that are defined in defaultPreferences
-			umc.tools.forIn(this.defaultPreferences, dojo.hitch(this, function(val, key) {
+			umc.tools.forIn(this.defaultPreferences, dojo.hitch(this, function(key, val) {
 				if (key in param1) {
 					this._userPreferences[key] = param1[key];
 				}
@@ -410,7 +412,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		}
 
 		// publish changes in user preferences
-		umc.tools.forIn(this._userPreferences, function(val, key) {
+		umc.tools.forIn(this._userPreferences, function(key, val) {
 			if (val != oldPrefs[key]) {
 				// entry has changed
 				dojo.publish('/umc/preferences/' + key, [val]);

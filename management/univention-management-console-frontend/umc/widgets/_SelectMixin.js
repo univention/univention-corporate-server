@@ -50,7 +50,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		// add all static values to the store
 		umc.tools.assert(dojo.isObject(this.staticValues) || undefined === this.staticValues, "Static values needs to be a dictionary of entries!");
 		var staticValues = this.staticValues || {};
-		umc.tools.forIn(staticValues, function(label, id) {
+		umc.tools.forIn(staticValues, function(id, label) {
 			this.store.newItem({
 				id: id,
 				label: label
@@ -67,7 +67,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 			umc.tools.umcpCommand(this.umcpValues).then(dojo.hitch(this, function(data) {
 				// get all items
 				var items = [];
-				umc.tools.forIn(data._result, function(value, id) {
+				umc.tools.forIn(data._result, function(id, value) {
 					umc.tools.assert(!(id in staticValues), "Entry already defined by static values: " + id);
 					items.push({
 						id: id,

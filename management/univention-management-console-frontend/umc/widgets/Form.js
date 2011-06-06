@@ -75,7 +75,7 @@ dojo.declare("umc.widgets.Form", [
 		});
 
 		// register tooltips
-		umc.tools.forIn(this._widgets, function(iwidget, iname) {
+		umc.tools.forIn(this._widgets, function(iname, iwidget) {
 			// only create a tooltip if there is a description
 			if (iwidget.description) {
 				var tooltip = new umc.widgets.Tooltip({
@@ -125,7 +125,7 @@ dojo.declare("umc.widgets.Form", [
 			var newValues = {};
 
 			// copy all the fields that exist in the form
-			umc.tools.forIn(data, function(ival, ikey) {
+			umc.tools.forIn(data, function(ikey, ival) {
 				if (ikey in values) {
 					newValues[ikey] = ival;
 				}

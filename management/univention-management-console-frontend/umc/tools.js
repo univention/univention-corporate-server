@@ -132,9 +132,13 @@ dojo.mixin(umc.tools, new umc.i18n.Mixin({
 
 	forIn: function(/*Object*/ obj, /*Function*/callback, /*Object?*/scope) {
 		// summary:
+		//		Iterate over all elements of an object.
+		// description:
 		//		Iterate over all elements of an object checking with hasOwnProperty()
 		//		whether the element belongs directly to the object.
 		//		Optionally, a scope can be defined.
+		//		The callback function will be called with the parameters
+		//		callback(/*String*/ key, /*mixed*/ value, /*Object*/ obj).
 		//
 		//		This method is similar to dojox.lang.functional.forIn wher no hasOwnProperty()
 		//		check is carried out.
@@ -142,7 +146,7 @@ dojo.mixin(umc.tools, new umc.i18n.Mixin({
 		scope = scope || dojo.global;
 		for (var i in obj) {
 			if (obj.hasOwnProperty(i)) {
-				callback.call(scope, obj[i], i, obj);
+				callback.call(scope, i, obj[i], obj);
 			}
 		}
 	},
