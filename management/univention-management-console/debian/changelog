@@ -1,3 +1,10 @@
+univention-management-console (4.0.16-1) unstable; urgency=low
+
+  * modify path for module translation files (otherwise gettext would find
+    them); Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 06 Jun 2011 11:57:14 +0200
+
 univention-management-console (4.0.15-1) unstable; urgency=low
 
   * first step in supporting several locales in one process (one per session); Bug #22460

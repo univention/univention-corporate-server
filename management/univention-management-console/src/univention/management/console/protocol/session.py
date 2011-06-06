@@ -239,7 +239,10 @@ class Processor( signals.Provider ):
 			for id, module in self.__command_list.items():
 				# check for translation
 				if not id in self.i18n:
+					CORE.info( 'Trying to create translation object for module %s' % id )
 					self.i18n[ id ] = Translation( id, locale_spec = self.__locale, localedir = '/usr/share/univention-management-console/i18n/' )
+					self.i18n[ id ].set_language( self.__locale )
+					CORE.info( 'Translation object for %s: %s' % ( id, self.i18n[ id ].locale ) )
 				if module.flavors:
 					for flavor in module.flavors:
 						modules.append( { 'id' : id, 'name' : self.i18n[ id ]._( flavor.name ), 'description' : self.i18n[ id ]._( flavor.description ), 'icon' : flavor.icon, 'categories' : module.categories } )

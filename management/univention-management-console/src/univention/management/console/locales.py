@@ -129,7 +129,8 @@ class Translation( NullTranslation ):
 
 		try:
 			self._translation = gettext.translation( self._domain, languages = ( self.locale.language, ), localedir = self._localedir )
-		except IOError:
+		except IOError, e:
+			LOCALE.warn( 'Failed to set locale to %s (locale directory: %s): %s' % ( self.locale.language, str( self._localedir ), str( e ) ) )
 			try:
 				self._translation = gettext.translation( self._domain, languages = ( '%s_%s' % ( self.locale.language, self.locale.territory ), ), localedir = self._localedir )
 			except IOError:
