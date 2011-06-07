@@ -1,6 +1,6 @@
 @!@
 ldap_base=baseConfig['ldap/base']
-address=baseConfig['interfaces/eth0/address']
+ldap_port=baseConfig['slapd/port']
 if baseConfig['ldap/server/type']=="master":
 	usr="write"
 else:
@@ -8,7 +8,7 @@ else:
 
 print 'sasl-regexp'
 print '    uid=(.*),cn=gssapi,cn=auth'
-print '    ldap:///"%s"??sub?uid=$1' % (ldap_base)
+print '    ldap://0.0.0.0:%s/"%s"??sub?uid=$1' % (ldap_port, ldap_base)
 print
 
 print 'access to attrs=userPassword'

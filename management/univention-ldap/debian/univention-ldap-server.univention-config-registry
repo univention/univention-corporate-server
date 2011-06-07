@@ -1,6 +1,8 @@
 Type: file
 File: etc/init.d/slapd
 Variables: ldap/server/type
+Variables: slapd/port
+Variables: slapd/port/ldaps
 Variables: ldap/database/type
 Variables: ldap/schema/export
 Variables: ldap/replog
@@ -15,6 +17,7 @@ Type: multifile
 Multifile: etc/ldap/slapd.conf
 Variables: ldap/server/type
 Variables: ldap/master
+Variables: ldap/master/port
 Variables: ldap/base
 Variables: ldap/database/type
 Variables: ldap/database/bdb/checkpoint
@@ -45,6 +48,7 @@ Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/40univention-ldap-server_database
 Variables: ldap/server/type
 Variables: ldap/master
+Variables: ldap/master/port
 Variables: ldap/base
 Variables: ldap/databse/type
 Variables: ldap/database/bdb/checkpoint

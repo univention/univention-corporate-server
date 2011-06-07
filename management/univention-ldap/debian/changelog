@@ -1,3 +1,14 @@
+univention-ldap (8.0.8-1) unstable; urgency=low
+
+  * OpenLDAP / Samba 4 network port configuration (Bug #20026)
+    * By default in UCS 3.0 the slapd daemon will listen on port 7389 and 389
+      for ldap and 7636 and 636 for ldaps. Whether Samba 4 will be installed
+      the slapd daemon will only listen to 7389 and 7636 because Samba 4 must
+      listen to 389 and 636. Added slapd/port and slapd/port/ldaps to configure
+      this.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 May 2011 15:01:11 +0200
+
 univention-ldap (8.0.7-3) unstable; urgency=low
 
   * add eth0 address to fallback set of allowed peers for anonymous

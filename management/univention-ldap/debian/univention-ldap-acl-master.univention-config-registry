@@ -2,6 +2,8 @@ Type: multifile
 Multifile: etc/ldap/slapd.conf
 Variables: ldap/server/type
 Variables: ldap/master
+Variables: ldap/base
+Variables: slapd/port
 Variables: ldap/debug/level
 Variables: ldap/replog
 Variables: ldap/acl/.*
