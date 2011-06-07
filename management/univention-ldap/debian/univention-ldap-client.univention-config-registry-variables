@@ -1,0 +1,29 @@
+[ldap/server/name]
+Description[de]=Standard LDAP-Server für diesen Rechner
+Description[en]=Default LDAP server for this host
+Type=str
+Categories=service-ldap
+
+[ldap/server/port]
+Description[de]=Standard Port des LDAP-Server
+Description[en]=Default port of ldap server
+Type=int
+Categories=service-ldap
+
+[ldap/server/additional]
+Description[de]=Eine Liste weiterer LDAP-Server
+Description[en]=A list of additinal ldap server
+Type=str
+Categories=service-ldap
+
+[ldap/master]
+Description[de]=Name des DC Masters in der UCS-Domäne
+Description[en]=Name of DC master in the UCS domain
+Type=str
+Categories=service-ldap
+
+[ldap/master/port]
+Description[de]=Port des DC Masters
+Description[en]=Port of DC master
+Type=int
+Categories=service-ldap
