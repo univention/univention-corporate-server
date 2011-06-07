@@ -3,3 +3,6 @@ File: etc/runit/univention-directory-listener/run
 Variables: listener/debug/level
 Variables: server/role
 Variables: listener/ignoremaster
+Variables: ldap/base
+Variables: ldap/port
+Variables: ldap/server/port
