@@ -112,7 +112,18 @@ class SessionClient(object):
 		self.client.authenticate( request.body[ 'username' ], request.body[ 'password' ] )
 
 	def _closed(self):
+		global _sessionclients
 		CORE.error('SessionClient: lost connection to UMC server')
+
+		# remove client from global dict _sessionclients
+		#TODO: client should not manipulate the _sessionclients, this should
+		#      be done elsewhere, e.g., in the dispatcher
+		sessionID = None
+		for iid, v in _sessionclients.iteritems():
+			if v == self:
+				sessionID = iid
+		if sessionID:
+			del _sessionclients[sessionID]
 
 	def _response(self, response):
 		if not response.id in self._requestid2response_queue:
