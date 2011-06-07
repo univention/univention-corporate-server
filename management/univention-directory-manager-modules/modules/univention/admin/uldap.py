@@ -34,6 +34,7 @@ import ldap
 import univention.uldap
 import string
 import univention.admin.localization
+import univention.config_registry
 
 try:
 	import univention.admin.license
@@ -44,11 +45,17 @@ except:
 translation=univention.admin.localization.translation('univention/admin')
 _=translation.translate
 
+configRegistry=univention.config_registry.ConfigRegistry()
+configRegistry.load()
 
 explodeDn=univention.uldap.explodeDn
 
-def getBaseDN(host='localhost'):
-	l=ldap.open(host)
+def getBaseDN(host='localhost', port=None, uri=None):
+	if not uri:
+		if not port:
+			port = int(configRegistry.get('ldap/server/port', 389))
+		uri = "ldap://%s:%s" % (host, port)
+	l=ldap.initialize(uri)
 	result=l.search_s('',ldap.SCOPE_BASE,'objectClass=*',['NamingContexts'])
 	return result[0][1]['namingContexts'][0]
 
@@ -228,10 +235,12 @@ class position:
 
 class access:
 
-	def __init__(self, host='localhost', port=389, base='', binddn='', bindpw='', start_tls=2, lo=None):
+	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, lo=None):
 		if lo:
 			self.lo=lo
 		else:
+			if not port:
+				port = int(configRegistry.get('ldap/server/port', 389))
 			try:
 				self.lo=univention.uldap.access(host, port, base, binddn, bindpw, start_tls)
 			except ldap.INVALID_CREDENTIALS,ex:

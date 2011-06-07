@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.7-1) unstable; urgency=low
+
+  * Consider ldap/server/port (Bug #20026)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 07 Jun 2011 07:27:44 +0200
+
 univention-directory-manager-modules (7.0.6-1) unstable; urgency=low
 
   * Re-added baseConfig objekt to univention.admin (Bug #22431)
