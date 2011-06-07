@@ -1,3 +1,10 @@
+univention-directory-notifier (6.0.2-1) unstable; urgency=low
+
+  * Fixed typo in last commit: Added dependency to shell-univention-lib
+    > 1.0.6 (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 07 Jun 2011 15:36:15 +0200
+
 univention-directory-notifier (6.0.1-1) unstable; urgency=low
 
   * Added dependency to shell-univention-lib > 1.0.6 (Bug #22431)

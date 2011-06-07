@@ -7,7 +7,7 @@ Build-Depends: debhelper (>> 7), libssl-dev, libldap2-dev, libunivention-debug-d
 Package: univention-directory-notifier
 Architecture: any
 Depends: ${shlibs:Depends},
- shell-univention-lib (>= 1.0.6)
+ shell-univention-lib (>= 1.0.6),
  univention-runit,
  univention-ssl
 Conflicts: univention-ldap-notifier (<<2.2.1)
