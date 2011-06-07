@@ -33,6 +33,8 @@
 #ifndef __DEBUG_H__
 #define __DEBUG_H__
 
+#include <stdio.h>
+
 enum uv_debug_level {
 	UV_DEBUG_ERROR = 0,
 	UV_DEBUG_WARN = 1,
