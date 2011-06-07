@@ -118,29 +118,42 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True):
 
 class access:
 
-	def __init__(self, host='localhost', port=389, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False):
+	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False, uri=None):
 		"""start_tls = 0 (no); 1 (try); 2 (must)"""
+		ucr = None
 		self.host = host
-		self.port = port
 		self.base = base
 		self.binddn = binddn
 		self.bindpw = bindpw
 		self.start_tls = start_tls
 		self.ca_certfile = ca_certfile
 
+		self.port = port
+
+		if not self.port:
+			baseConfig = univention_baseconfig.baseConfig()
+			baseConfig.load()
+			self.port = int(baseConfig.get('ldap/server/port', 389))
+
 		# http://www.openldap.org/faq/data/cache/605.html
 		self.protocol = 'ldap'
 		if use_ldaps:
 			self.protocol = 'ldaps'
+			self.uri = 'ldaps://%s:%s" % (self.host, self.port)'
+		elif uri:
+			self.uri = uri
+		else:
+			self.uri = "ldap://%s:%s" % (self.host, self.port)
 
 		if not decode_ignorelist or decode_ignorelist == []:
-			ucr = ConfigRegistry()
-			ucr.load()
+			if not ucr:
+				ucr = ConfigRegistry()
+				ucr.load()
 			self.decode_ignorelist = ucr.get('ldap/binaryattributes', 'krb5Key,userCertificate;binary').split(',')
 		else:
 			self.decode_ignorelist = decode_ignorelist
 
-		if not ca_certfile:
+		if not ca_certfile or self.uri.startswith('ldapi://'):
 			self.__open()
 		else:
 			self.__smart_open()
@@ -168,8 +181,9 @@ class access:
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
 
 		ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, self.ca_certfile )
-		self.lo=ldap.ldapobject.SmartLDAPObject(uri=self.protocol+"://"+str(self.host)+":"+str(self.port), start_tls=self.start_tls, tls_cacertfile=self.ca_certfile)
-		self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
+		self.lo=ldap.ldapobject.SmartLDAPObject(uri=self.uri, start_tls=self.start_tls, tls_cacertfile=self.ca_certfile)
+		if not self.uri.startswith('ldapi://'):
+			self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
 
 	def __open(self):
 		_d=univention.debug.function('uldap.__open host=%s port=%d base=%s' % (self.host, self.port, self.base))
@@ -178,7 +192,7 @@ class access:
 			self.protocol = 'ldap'
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
-		self.lo=ldap.initialize(self.protocol+"://"+str(self.host)+":"+str(self.port))
+		self.lo=ldap.initialize(self.uri)
 
 		if self.protocol.lower() != 'ldaps':
 			if self.start_tls == 1:
@@ -189,7 +203,7 @@ class access:
 			elif self.start_tls == 2:
 				self.lo.start_tls_s()
 
-		if self.binddn:
+		if self.binddn and not self.uri.startswith('ldapi://'):
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'bind binddn=%s' % self.binddn)
 			self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
 
@@ -534,7 +548,7 @@ class access:
 
 		ldap._trace_level = 0
 
-		subschemasubentry_dn,schema = ldap.schema.urlfetch('ldap://%s:%s/cn=subschema',self.host,self.port)
+		subschemasubentry_dn,schema = ldap.schema.urlfetch('%s/cn=subschema',self.uri)
 
 		if subschemasubentry_dn is None:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'No sub schema sub entry found!')
