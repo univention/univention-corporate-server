@@ -159,7 +159,7 @@ class Processor( signals.Provider ):
 
 		self.__killtimer = {}
 
-		lo = ldap.open( umc.configRegistry[ 'ldap/server/name' ] )
+		lo = ldap.open( umc.configRegistry[ 'ldap/server/name' ], int(umc.baseconfig.get('ldap/server/port', 389)) )
 
 		try:
 			userdn = lo.search_s( umc.configRegistry[ 'ldap/base' ], ldap.SCOPE_SUBTREE,
