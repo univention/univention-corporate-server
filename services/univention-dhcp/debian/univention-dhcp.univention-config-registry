@@ -3,6 +3,7 @@ File: etc/dhcp3/dhcpd.conf
 Variables: ldap/base
 Variables: dhcpd/ldap/base
 Variables: ldap/server/name
+Variables: ldap/server/port
 Variables: dhcpd/autostart
 Variables: dhcpd/ddns.*
 Variables: domainname
