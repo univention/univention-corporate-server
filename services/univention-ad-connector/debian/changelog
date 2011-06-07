@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.2-1) unstable; urgency=low
+
+  * Added dependency to shell-univention-lib > 1.0.6 (Bug #21486)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 07 Jun 2011 09:55:26 +0200
+
 univention-ad-connector (6.0.1-1) unstable; urgency=low
 
   * Add missing files (Bug #21486)

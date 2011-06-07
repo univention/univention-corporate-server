@@ -44,7 +44,8 @@ Description: UCS - Modules for connector sychronisation
 Package: univention-ad-connector
 Architecture: all
 Pre-Depends: univention-config-registry,
- python-univention-connector-ad (= ${binary:Version})
+ python-univention-connector-ad (= ${binary:Version}),
+ shell-univention-lib (>= 1.0.6)
 Depends: shell-univention-lib
 Description: UCS - Modules for sync ucs and active directory
  This package contains the modules that implement the
@@ -57,7 +58,8 @@ Description: UCS - Modules for sync ucs and active directory
 
 Package: univention-ad-connector-exchange
 Architecture: all
-Depends: univention-server-master | univention-server-backup
+Depends: univention-server-master | univention-server-backup,
+ shell-univention-lib (>= 1.0.6)
 Description: This package extends a configured AD-Connector
  to sync Microsoft-Exchange attributes by adding
  UCS LDAP-schema, custom attributes and activate
