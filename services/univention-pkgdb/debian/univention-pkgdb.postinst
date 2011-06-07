@@ -63,6 +63,11 @@ fi
 
 eval "$(univention-config-registry shell)"
 
+univention-config-registry set \
+	pgsql/pkgdb/network?"$interfaces_eth0_network" \
+	pgsql/pkgdb/netmask?"$interfaces_eth0_netmask" \
+	pkgdb/scan?yes
+
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
   /usr/lib/univention-install/50univention-pkgdb.inst || true
 fi

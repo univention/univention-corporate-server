@@ -32,14 +32,4 @@
 
 #DEBHELPER#
 
-eval "$(univention-config-registry shell)"
-
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o -n $ldap_server_name ]; then
-  univention-config-registry set pgsql/pkgdb/network?"$interfaces_eth0_network" pgsql/pkgdb/netmask?"$interfaces_eth0_netmask"
-  univention-config-registry set pkgdb/scan?yes
-else
-  echo "This Package can only installed on a DC-Master, DC-Backup or Member with ldap/server/name."
-  exit 1
-fi
-
 exit 0
