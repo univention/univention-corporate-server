@@ -1,3 +1,9 @@
+univention-directory-listener (6.0.4-1) unstable; urgency=low
+
+  * Added dependency to shell-univention-lib > 1.0.6 (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 07 Jun 2011 09:56:33 +0200
+
 univention-directory-listener (6.0.3-1) unstable; urgency=low
 
   * Consider ldap/server/port (Bug #20026)
