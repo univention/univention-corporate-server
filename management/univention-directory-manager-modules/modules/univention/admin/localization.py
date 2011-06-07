@@ -61,7 +61,7 @@ class LazyTranslation (str):
 			self.data = seq.data[:]
 		else:
 			self.data = '%s' % seq
-		super (str, self).__init__ (self.data)
+		super (LazyTranslation, self).__init__ ()
 	def __str__ (self):
 		newval = ''
 		lang = locale.getlocale( locale.LC_MESSAGES )

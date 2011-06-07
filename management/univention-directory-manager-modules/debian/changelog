@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.9-1) unstable; urgency=low
+
+  * Fix another python deprecation warning. object.__init__() takes no
+    parameters (Bug #22439)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 07 Jun 2011 16:25:36 +0200
+
 univention-directory-manager-modules (7.0.8-1) unstable; urgency=low
 
   * Use python module hashlib instead of sha, which is deprecated in
