@@ -36,9 +36,12 @@ case "$1" in
 	start|restart)
 		log_daemon_msg "Starting Univention Directory Policy"
 
-		eval `univention-config-registry shell`
+		eval "$(univention-config-registry shell)"
 
-		if /bin/netcat -q0 -w4 $ldap_server_name 389 </dev/null >/dev/null 2>&1; then
+		if [ -z "$ldap_server_port" ]; then
+			ldap_server_port=389
+		fi
+		if /bin/netcat -q0 -w4 $ldap_server_name $ldap_server_port </dev/null >/dev/null 2>&1; then
 			run-parts /usr/lib/univention-directory-policy >>/var/log/univention/ldap-policy.log 2>&1
 			if [ $? = 0 ]; then
 				log_end_msg 0
