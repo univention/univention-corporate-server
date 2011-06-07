@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, string, re, copy, time, sha, types, struct, md5
+import os, sys, string, re, copy, time, hashlib, types, struct, md5
 import tempfile
 from M2Crypto import X509
 import ldap, heimdal
@@ -2827,7 +2827,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 	def __passwordInHistory(self, newpassword, pwhistory):
 		# first calc hash for the new pw
-		s = sha.new( newpassword.encode( 'utf-8' ) )
+		s = hashlib.sha1( newpassword.encode( 'utf-8' ) )
 		newpwhash = string.upper(s.hexdigest())
 		if not string.find(pwhistory, newpwhash) < 0:
 			# password has already been used.
@@ -2836,7 +2836,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 	def __getPWHistory(self, newpassword, pwhistory, pwhlen):
 		# first calc hash for the new pw
-		s = sha.new( newpassword.encode( 'utf-8' ) )
+		s = hashlib.sha1( newpassword.encode( 'utf-8' ) )
 		newpwhash = string.upper(s.hexdigest())
 
 		# split the history

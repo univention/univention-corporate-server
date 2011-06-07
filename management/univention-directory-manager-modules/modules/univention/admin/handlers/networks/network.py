@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, re , copy, time, sha
+import sys, string, re , copy, time
 import socket, struct
 import univention.admin.filter
 import univention.admin.handlers
