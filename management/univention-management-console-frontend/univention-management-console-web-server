@@ -1,5 +1,5 @@
 #!/usr/bin/python2.6
-#
+# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  UMC web server
@@ -611,21 +611,22 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		sys.exit( 1 )
 
 	def run(self):
-		# start webserver
+		# start webserver as separate thread
 		_thread_http = threading.Thread( target = run_cherrypy )
+		_thread_http.deamon = True
 		_thread_http.start()
-		# start notifier loop
-		umcp_dispatcher = UMCP_Dispatcher()
-		notifier.init( notifier.GENERIC )
-		CORE.error('FIXME: run check_queue in timer with shorter timeout to get called more often than 10 times per second')
-		notifier.dispatcher_add( umcp_dispatcher.check_queue )
-		try:
-			notifier.loop()
-		except KeyboardInterrupt:
-			# make web server stoppable
-			cherrypy.engine.exit()
-			system.exit()
 
+		try:
+			# start notifier loop
+			umcp_dispatcher = UMCP_Dispatcher()
+			notifier.init( notifier.GENERIC )
+			notifier.dispatcher_add( umcp_dispatcher.check_queue )
+			notifier.loop()
+		except (SystemExit, KeyboardInterrupt), e:
+			# stop the web server
+			CORE.info('stopping cherrypy: %s' % str(e))
+			cherrypy.engine.exit()
+			CORE.info('cherrypy stopped')
 
 if __name__ == '__main__':
 	http_daemon = UMC_HTTP_Daemon()

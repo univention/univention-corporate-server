@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-06-06 12:22+0200\n"
+"POT-Creation-Date: 2011-06-06 17:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/app.js:308
+#: umc/app.js:307
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -44,7 +44,7 @@ msgstr ""
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:322
+#: umc/app.js:321
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -66,7 +66,7 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/app.js:304
+#: umc/app.js:303
 msgid "Help"
 msgstr "Hilfe"
 
@@ -83,7 +83,7 @@ msgstr "Anmelden"
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:330
+#: umc/app.js:329
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
@@ -99,7 +99,7 @@ msgstr "Hinweis"
 msgid "Ok"
 msgstr "Ok"
 
-#: umc/app.js:267
+#: umc/app.js:266
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -132,7 +132,7 @@ msgstr "Der Benutzername Ihres Domänen-Kontos."
 msgid "This service is temporarily not available (status: 503)!"
 msgstr "Der Dienst is zeitweise nicht erreichbar (Status: 503)!"
 
-#: umc/app.js:315
+#: umc/app.js:314
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -140,7 +140,7 @@ msgstr "Tooltips"
 msgid "Translate me!"
 msgstr ""
 
-#: umc/app.js:338
+#: umc/app.js:337
 #, python-format
 msgid "User: %s"
 msgstr "Benutzer: %s"
