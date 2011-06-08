@@ -1,3 +1,9 @@
+univention-updater (6.0.87-1) unstable; urgency=low
+
+  * fix --ignoressh and --ignoreterm with local repository (Bug #22016)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 08 Jun 2011 13:18:34 +0200
+
 univention-updater (6.0.86-1) unstable; urgency=low
 
   * add --ignoressh and --ignoreterm to univention-upgrade (Bug #22191)

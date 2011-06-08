@@ -266,13 +266,19 @@ def update_ucr_updatestatus():
 	except:
 		dprint('Warning: calling univention-updater-check failed.')
 
-def call_local(updateto=None, clean=None):
+def call_local(updateto=None, clean=None, ignoressh=False, ignoreterm=False, ignorereleasenotes=False):
 	"""Call updater in "local" mode."""
 	calllocal = [sys.argv[0], 'local']
 	if updateto:
 		calllocal += ['--updateto', '%s' % updateto]
 	if not clean:
 		calllocal.append('--no-clean')
+	if ignoressh:
+		calllocal.append('--ignoressh')
+	if ignoreterm:
+		calllocal.append('--ignoreterm')
+	if ignorereleasenotes:
+		calllocal.append('--ignore-releasenotes')
 	os.execv(sys.argv[0], calllocal)
 	dprint('Fatal: failed to exec: %r' % calllocal)
 	sys.exit(1)
@@ -420,7 +426,7 @@ def main():
 				fp_debug.close()
 				raise UpdateError('Failed to execute "univention-repository-update net"', errorsource='PREPARATION')
 
-			call_local(updateto=updateto, clean=clean)
+			call_local(updateto=updateto, clean=clean, ignoressh=ignoressh, ignoreterm=ignoreterm, ignorereleasenotes=ignorereleasenotes)
 		updater = UniventionUpdater()
 		nextversion = update_available('net', baseConfig, cdrom_mount_point, iso=iso, updater=updater)
 	else:
@@ -463,7 +469,7 @@ def main():
 				fp_debug.close()
 				raise UpdateError('Failed to execute "univention-repository-update cdrom"', errorsource='UPDATE')
 
-			call_local(updateto=updateto, clean=clean)
+			call_local(updateto=updateto, clean=clean, ignoressh=ignoressh, ignoreterm=ignoreterm, ignorereleasenotes=ignorereleasenotes)
 		else:
 			dprint('Error: You are trying to install from a cdrom/dvd image')
 			dprint('       but a local repository was not found. If you want to')
