@@ -77,7 +77,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// define grid columns
 		var columns = [{
-			name: 'variable',
+			name: 'key',
 			label: this._( 'UCR variable' ),
 			description: this._( 'Unique name of the UCR variable' ),
 			editable: false
@@ -92,7 +92,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			region: 'center',
 			actions: actions,
 			columns: columns,
-			idField: 'variable',
+			idField: 'key',
 			umcpSearchCommand: 'ucr/search',
 			umcpSetCommand: 'ucr/set'
 		});

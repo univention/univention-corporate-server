@@ -40,6 +40,8 @@ import univention.debug as ud
 import univention.config_registry as ucr
 from univention.config_registry_info import ConfigRegistryInfo, Variable
 
+import univention.info_tools as uit
+
 _ = umc.Translation( 'univention-management-console-modules-ucr' ).translate
 
 class Instance( umcm.Base ):
@@ -113,8 +115,16 @@ class Instance( umcm.Base ):
 			self.finished( request.id, False, message = _( 'The UCR variable %(variable)s could not be found' ) % { 'variable' : request.options[ 'variable' ] } )
 
 	def categories( self, request ):
+		uit.set_language(str(self.locale))
 		ucrInfo = ConfigRegistryInfo( registered_only = False )
-		self.finished( request.id, dict( ucrInfo.categories ) )
+		categories = []
+		for id, obj in ucrInfo.categories.iteritems():
+			name = obj['name']
+			categories.append({
+				'id': id,
+				'name': name
+			})
+		self.finished( request.id, categories )
 
 	def search( self, request ):
 		'''Returns a dictionary of configuration registry variables
@@ -158,4 +168,4 @@ class Instance( umcm.Base ):
 		if not request.status:
 			request.status = 200
 
-		self.finished( request.id, { 'identifier' : 'key', 'label' : 'key', 'items' : variables } )
+		self.finished( request.id, variables )
