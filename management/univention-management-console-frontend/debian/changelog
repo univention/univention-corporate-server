@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.25-2) unstable; urgency=low
+
+  * version bump (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 08 Jun 2011 10:13:56 +0200
+
 univention-management-console-frontend (0.0.25-1) unstable; urgency=low
 
   * fix the locale that is sent to the server to dojo.locale (Bug #22460)
