@@ -7,7 +7,7 @@
 	max log size = 1000000
 
 @!@
-if configRegisty.has_key('samba/serverstring') and configRegistry['samba/serverstring']:
+if configRegistry.has_key('samba/serverstring') and configRegistry['samba/serverstring']:
 	print '\tserver string = %s' % configRegistry['samba/serverstring']
 else:
 	print '\tserver string = %h univention corporate server'
