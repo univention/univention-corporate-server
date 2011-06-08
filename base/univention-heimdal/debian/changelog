@@ -1,3 +1,9 @@
+univention-heimdal (5.0.1-1) unstable; urgency=low
+
+  * Removed unnecessary dependency to textutils (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 08 Jun 2011 09:01:45 +0200
+
 univention-heimdal (5.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22431)
