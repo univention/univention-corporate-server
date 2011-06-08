@@ -1,0 +1,7 @@
+univention-s4-connector usr/sbin
+univention-s4search usr/sbin
+univention-s4connector-list-rejected usr/sbin
+univention-password_sync_ucs_to_s4 usr/sbin
+conffiles/etc/univention/s4connector/s4/mapping.py etc/univention/s4connector/ad/
+97univention-s4-connector.inst usr/lib/univention-install/
+s4-connector.py usr/lib/univention-directory-listener/system

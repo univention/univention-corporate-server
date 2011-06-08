@@ -1,0 +1,3 @@
+modules/univention/s4connector/*.py usr/share/pyshared/univention/s4connector/
+modules/univention/s4connector/s4/*.py usr/share/pyshared/univention/s4connector/s4/
+

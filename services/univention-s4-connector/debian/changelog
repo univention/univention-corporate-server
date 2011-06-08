@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.1-1) unstable; urgency=low
+
+  * Added missing install files from last commit (Bug #22580)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 08 Jun 2011 12:17:16 +0200
+
 univention-s4-connector (6.0.0-1) unstable; urgency=low
 
   * Rename source package to univention-s4-connector
