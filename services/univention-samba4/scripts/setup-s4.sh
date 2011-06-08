@@ -1,4 +1,33 @@
 #!/bin/bash
+#
+# Copyright 2004-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+. /usr/share/univention-lib/all.sh
 
 usage(){ echo "$0 [-h|--help] [-w <samba4-admin password file>] [-W]"; exit 1; }
 
@@ -44,12 +73,34 @@ touch "$pwfile"
 chmod 600 "$pwfile"
 echo -n "$adminpw" >> "$pwfile"
 
-univention-config-registry set ldap/server/port=7389 ldap/master/port=7389 ldap/port=7389 ldap/port/ldaps=7636 >>$LOGFILE 2>&1
-# univention-config-registry commit /etc/init.d/slapd /etc/libnss-ldap.conf /etc/pam_ldap.conf /etc/ldap/ldap.conf \
-#           /etc/runit/univention-directory-listener/run /etc/dhcp3/dhcpd.conf
+# Test:
+# r 389
+# r 7389,389
+# r 389,7389
+# r 389,7389,8389
+# r 7389,389,8389
+# r 7389,8389,389
+remove_port ()
+{
+	if [ -n "$1" -a -n "$2" ]; then
+		echo "$1" | sed -e 's|^${2},||;s|,${2},|,|;s|,${2}$||;s|^${2}$||'
+	fi
+
+}
+
+if [ -n "$slapd_port" ]; then
+	univention-config-registry set slapd/port="$(remove_port "$slapd_port" 389)" >>$LOGFILE 2>&1
+fi
+if [ -n "$slapd_port_ldaps" ]; then
+	univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)" >>$LOGFILE 2>&1
+fi
+if [ "$lapd_server_port" = "389" ]; then
+	univention-config-registry set lapd/server/port="7389" >>$LOGFILE 2>&1
+fi
+
 
 ## restart processes with adjusted ports
-pkill -f /usr/share/univention-directory-manager-tools/univention-cli-server
+stop_udm_cli_server
 /etc/init.d/slapd restart >>$LOGFILE 2>&1
 /etc/init.d/univention-directory-listener restart >>$LOGFILE 2>&1
 /etc/init.d/univention-management-console-server restart >>$LOGFILE 2>&1
@@ -90,10 +141,6 @@ fi
 if [ ! -e /etc/phpldapadmin/config.php ]; then
 	cp /var/lib/samba/private/phpldapadmin-config.php /etc/phpldapadmin/config.php
 fi
-
-# provide a TLS-enabled smb.conf
-# cp /etc/samba/smb.conf /etc/samba/smb.conf.provision
-# cat "${SCRIPTDIR}/tls_for_smb.conf" | univention-config-registry filter >> /etc/samba/smb.conf
 
 ## TODO: Join-Script candidate: DNS-Setup
 "${SCRIPTDIR}/setup-dns-in-ucsldap.sh" >>$LOGFILE 2>&1

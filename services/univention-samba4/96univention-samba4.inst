@@ -36,27 +36,19 @@ joinscript_init
 
 /usr/share/univention-samba4/scripts/setup-s4.sh
 
-eval "$(ucr shell)"
+. /usr/share/univention-lib/all.sh
+
+eval "$(univention-config-registry shell)"
 
 NAME="Samba 4"
 
-univention-directory-manager container/cn      create "$@" --ignore_exists \
-    --set name=services \
-    --position             "cn=univention,$ldap_base"
-
-univention-directory-manager  settings/service create "$@" --ignore_exists \
-    --set name="$NAME" \
-    --position "cn=services,cn=univention,$ldap_base"
-
 # The first samba 4 DC should provide the domainname as netbios alias
-res="$(udm computers/computer list --filter "(univentionService=Samba 4)" | sed -ne 's|^DN: ||p')"
+res="$(udm computers/computer list "$@" --filter "(univentionService=${NAME})" | sed -ne 's|^DN: ||p')"
 if [ -z "$res" ]; then
 	ucr set samba/netbios/aliases?"$domainname"
 fi
 
-univention-directory-manager "computers/$server_role" modify "$@" \
-    --dn "$ldap_hostdn" \
-    --append service="$NAME"
+ucs_addServiceToLocalhost "${NAME}" "$@"
 
 joinscript_save_current_version
 

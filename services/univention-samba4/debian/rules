@@ -30,69 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-PYVERS=$(shell pyversions -vr)
-
-D=$(CURDIR)/debian/univention-samba4
-
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	touch configure-stamp
-
-build: configure-stamp build-stamp
-build-stamp:
-	dh_testdir
-	touch build-stamp
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-	rm -f *~
-	dh_clean
-
-install: install-stamp
-install-stamp: build-stamp $(PYVERS:%=install-ext-%)
-install-ext-%:
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	# Samba4 patch and provision scripts
-	install -m755 scripts/*.sh ${D}/usr/share/univention-samba4/scripts
-	install -m644 scripts/*.patch ${D}/usr/share/univention-samba4/scripts
-	install -m644 scripts/*.conf ${D}/usr/share/univention-samba4/scripts
-
-	install -m755 96univention-samba4.inst ${D}/usr/lib/univention-install
-	install -m755 univention-s4search ${D}/usr/sbin/
-	
+override_dh_auto_install:
 	univention-install-config-registry
-	univention-install-config-registry-info
-	univention-install-service-info
+	dh_auto_install 
 
-binary-arch: build install
+override_dh_installinit:
+	dh_installinit -a --no-start -u"defaults 97"
 
-binary-indep: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs
-	dh_installexamples
-	dh_installmenu
-	dh_installinit --no-start -u"defaults 97"
-	dh_installcron
-	dh_installman
-	dh_installchangelogs
-	dh_pycentral -Nunivention-ad-connector
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms -X/var/www/univention-ad-connector
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
+override_dh_auto_test:
+	ucslint
+	dh_auto_test
 
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+%:
+	dh $@
+

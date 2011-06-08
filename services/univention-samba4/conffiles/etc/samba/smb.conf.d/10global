@@ -1,10 +1,10 @@
+@%@UCRWARNING=# @%@
+
 ; ---------------------<10global>------------------------
 [global]
 @!@
 if configRegistry.get('samba/netbios/name'):
 	print '\tnetbios name = %s' % configRegistry['samba/netbios/name']
-elif configRegistry.get('samba/ha/master'):
-	print '\tnetbios name = %s' % configRegistry['samba/ha/master']
 else:
 	print '\tnetbios name = %s' % configRegistry['hostname']
 

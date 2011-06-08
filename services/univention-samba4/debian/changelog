@@ -1,3 +1,10 @@
+univention-samba4 (1.0.0-1) experimental; urgency=low
+
+  * Package cleanups for UCS 3.0 (Bug #22559)
+  * Integrate scripts/msdcs.ipProtocol.patch into udm-modules package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 08 Jun 2011 15:38:28 +0200
+
 univention-samba4 (0.2.16-1) experimental; urgency=low
 
   * Added 2011 to copyright (Bug #20916)

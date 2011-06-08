@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/all.sh
+
 #DEBHELPER#
 
 for f in installs.conf shares.conf printers.conf local.conf; do
@@ -38,11 +40,7 @@ for f in installs.conf shares.conf printers.conf local.conf; do
 	fi
 done
 
-
-eval $(univention-config-registry shell server/role)
-if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/96univention-samba4.inst || true
-fi
+call_joinscript 96univention-samba4.inst
 
 /etc/init.d/samba4 restart
 

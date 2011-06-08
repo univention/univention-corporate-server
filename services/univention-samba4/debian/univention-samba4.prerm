@@ -30,16 +30,38 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# Test is_port_set ()
+# is_port_set 389 389; echo $?
+# is_port_set 7389,389 389; echo $?
+# is_port_set 389,7389 389; echo $?
+# is_port_set 389,7389,8389 389; echo $?
+# is_port_set 7389,389,8389 389; echo $?
+# is_port_set 7389,8389,389 389; echo $?
+# is_port_set 7389,8389 389; echo $?
 
-if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
-	#PORT_PATCH=change-ucs-ldap_port.patch
-	#if grep -q ldap_port /etc/univention/templates/files/etc/init.d/slapd; then
-	#	patch -d / -Rsfp1 --dry-run < "$PORT_PATCH" && patch -d / -Rp1 < "$PORT_PATCH"
-	#fi
-	univention-config-registry unset ldap/server/port ldap/master/port ldap/port/ldaps
-	univention-config-registry set ldap/port=389
-	univention-config-registry commit /etc/init.d/slapd /etc/libnss-ldap.conf /etc/pam_ldap.conf /etc/ldap/ldap.conf \
-			   /etc/runit/univention-directory-listener/run
-fi
+is_port_set ()
+{
+	echo "$1" | egrep "^${2},|,${2},|,${2}$|^${2}$" >/dev/null
+}
 
 #DEBHELPER#
+
+if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
+
+	eval "$(univention-config-registry shell)"
+
+	if [ -n "$slapd_port" ]; then
+		is_port_set "$slapd_port" 389 || univention-config-registry set slapd/port="$slapd_port,389"
+	fi
+	if [ -n "$slapd_port_ldaps" ]; then
+		is_port_set "$slapd_port_ldaps" 636 || univention-config-registry set slapd/port/ldaps="$slapd_port_ldaps,636"
+	fi
+
+	if [ -x /etc/init.d/slapd ]; then
+		/etc/init.d/slapd restart
+	fi
+		
+fi
+
+exit 0
+
