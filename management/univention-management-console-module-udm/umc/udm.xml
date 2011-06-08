@@ -3,21 +3,23 @@
   <module id="udm" icon="udm/module" version="1.0">
 	<name>Univention Directory Manager</name>
 	<description>Manages all UDM modules</description>
-	<flavor icon="udm/users" id="users/user">
+	<flavor icon="udm-users" id="users/user">
 	  <name>Users</name>
 	  <description>Managing users</description>
 	</flavor>
-	<flavor icon="udm/groups" id="groups/group">
+	<flavor icon="udm-groups" id="groups/group">
 	  <name>Groups</name>
 	  <description>Managing groups</description>
 	</flavor>
-	<flavor icon="udm/computers" id="computers/computer">
+	<flavor icon="udm-computers" id="computers/computer">
 	  <name>Computers</name>
 	  <description>Managing computers</description>
 	</flavor>
 	<categories>
 	  <category name="domain"/>
 	</categories>
+	<command name="udm/search/properties" function="search_properties">
+	</command>
 	<command name="udm/set" function="set">
 	</command>
 	<command name="udm/unset" function="unset">

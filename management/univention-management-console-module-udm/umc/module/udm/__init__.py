@@ -52,3 +52,26 @@ class Instance( umcm.Base ):
 	def search( self, request ):
 
 		self.finished( request.id )
+
+	def search_properties( self, request ):
+		widgets = [
+			{
+				'type' : 'ComboBox',
+				'name' : 'Container',
+				'value' : 'all',
+				'description' : _( 'The container where the search should start' ),
+				'label' : _( 'Container' ),
+				'staticValues' : {
+					'all' : _( 'All' ),
+					'cn=users,dc=univention,dc=qa': 'univention.qa/users',
+					'cn=admins,dc=univention,dc=qa': 'univention.qa/admins',
+					}
+				},
+			{
+				'type' : 'TextBox',
+				'name' : 'filter',
+				'value' : '*',
+				'description' : _( 'Keyword that should be searched for in the selected attribute' ),
+				'label' : _( 'Keyword' )
+			}, ]
+		self.finished( request.id, widgets )

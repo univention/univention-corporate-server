@@ -15,17 +15,37 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// summary:
 	//		Module for handling UDM modules
 
-	_grid: null,
-	_store: null,
-	_searchWidget: null,
-	_detailDialog: null,
-	_contextVariable: null,
-
 	buildRendering: function() {
 		// call superclass method
 		this.inherited(arguments);
+		this.umcpCommand( 'udm/search/properties' ).then( dojo.hitch( this, function ( umcpResponse ) {
+																		  // define all buttons
+																		  var buttons = [{
+																							 name: 'submit',
+																							 label: this._( 'Search' ),
+																							 callback: dojo.hitch(this._grid, 'umcpSearch')
+																						 }, {
+																							 name: 'reset',
+																							 label: this._( 'Reset' )
+																						 }];
 
+																		  // define the search form layout
+																		  var layout = [
+																			  [ 'category', '' ],
+																			  [ 'key', 'filter' ]
+																		  ];
 
+																		  var widgets = umcpResponse.result;
+
+																		  // generate the search widget
+																		  this._searchWidget = new umc.widgets.Form({
+																														region: 'top',
+																														widgets: widgets,
+																														buttons: buttons,
+																														layout: layout
+																													});
+																		  this.addChild(this._searchWidget);
+																		  } ), null );
 	}
 
 });
