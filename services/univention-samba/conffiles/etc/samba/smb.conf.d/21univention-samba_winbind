@@ -9,53 +9,53 @@
 ## state (3.3.9) it does not allow more than one ldap URL.
 #
 #ldaphosts=[]
-#if baseConfig.has_key('ldap/server/name') and baseConfig['ldap/server/name']:
-#	ldaphosts.append(baseConfig['ldap/server/name'])
-#if baseConfig.has_key('ldap/server/addition') and baseConfig['ldap/server/addition']:
-#	addition=baseConfig['ldap/server/addition'].replace('"','').split(' ')
+#if configRegistry.has_key('ldap/server/name') and configRegistry['ldap/server/name']:
+#	ldaphosts.append(configRegistry['ldap/server/name'])
+#if configRegistry.has_key('ldap/server/addition') and configRegistry['ldap/server/addition']:
+#	addition=configRegistry['ldap/server/addition'].replace('"','').split(' ')
 #	ldaphosts.extend(addition)
 #if ldaphosts:
 #	print '\tidmap backend = ldap:"%s"' % ' '.join(['ldap://%s' % i for i in ldaphosts])
 
 ### <idmap config v5 for Samba 3.3.0>
-admindn=baseConfig.get('samba/user')
+admindn=configRegistry.get('samba/user')
 if not admindn:
-	if baseConfig['server/role'] == 'domaincontroller_master':
-		admindn='cn=admin,%s' % (baseConfig['ldap/base'])
+	if configRegistry['server/role'] == 'domaincontroller_master':
+		admindn='cn=admin,%s' % (configRegistry['ldap/base'])
 	else:
-		admindn='cn=backup,%s' % (baseConfig['ldap/base'])
-ldap_server_name=baseConfig.get('ldap/server/name', 'localhost')
+		admindn='cn=backup,%s' % (configRegistry['ldap/base'])
+ldap_server_name=configRegistry.get('ldap/server/name', 'localhost')
 print '\tidmap alloc backend = ldap'
 print '\tidmap alloc config : ldap_user_dn = %s' % (admindn)
 print '\tidmap alloc config : ldap_url = ldap://%s' % (ldap_server_name)
 # the range for the aloc backend is given by idmap uid/gid above
 
 # replacement for deprecated samba/winbind/trusted/domains/only=yes
-mydomain=baseConfig['windows/domain'].upper()
+mydomain=configRegistry['windows/domain'].upper()
 defaultrange = '1000-54999'
 # try uppercase domain, then allow for lowercase, otherwise use defaultrange
-range = baseConfig.get('samba/idmap/%s/range' % mydomain, baseConfig.get('samba/idmap/%s/range' % mydomain.lower(), defaultrange))
+range = configRegistry.get('samba/idmap/%s/range' % mydomain, configRegistry.get('samba/idmap/%s/range' % mydomain.lower(), defaultrange))
 print '\tidmap config %s : backend = nss' % (mydomain, )
 print '\tidmap config %s : range = %s' % (mydomain, range)
 
-idmap_domains=baseConfig.get('samba/idmap/domains')
+idmap_domains=configRegistry.get('samba/idmap/domains')
 if idmap_domains:
 	for domain in idmap_domains.replace('"','').strip().split(' '):
 		domain = domain.upper() # canonicalize to uppercase
 		defaultrange = '55000-64000'
 		# try uppercase domain, then allow for lowercase, otherwise use defaultrange
-		range = baseConfig.get('samba/idmap/%s/range' % domain, baseConfig.get('samba/idmap/%s/range' % domain.lower(), defaultrange))
+		range = configRegistry.get('samba/idmap/%s/range' % domain, configRegistry.get('samba/idmap/%s/range' % domain.lower(), defaultrange))
 		print '\tidmap config %s : backend = ldap' % (domain, )
 		print '\tidmap config %s : range = %s' % (domain, range)
 		print '\tidmap config %s : ldap_user_dn = %s' % (domain, admindn)
 		print '\tidmap config %s : ldap_url = ldap://%s' % (domain, ldap_server_name)
 ### </idmap config v5 for Samba 3.3.0>
 
-if baseConfig.get('samba/winbind/trusted/domains/only', 'no') in ('yes', 'true'):
+if configRegistry.get('samba/winbind/trusted/domains/only', 'no') in ('yes', 'true'):
 	print '\twinbind trusted domains only = yes'	# deprecated legacy setting
 
-if baseConfig.has_key('samba/winbind/nested/groups') and baseConfig['samba/winbind/nested/groups']:
-	print '\twinbind nested groups = %s' % baseConfig['samba/winbind/nested/groups']
+if configRegistry.has_key('samba/winbind/nested/groups') and configRegistry['samba/winbind/nested/groups']:
+	print '\twinbind nested groups = %s' % configRegistry['samba/winbind/nested/groups']
 @!@
 	
 	winbind enum users = yes

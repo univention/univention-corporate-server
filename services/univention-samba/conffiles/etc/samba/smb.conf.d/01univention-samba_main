@@ -1,14 +1,4 @@
-# Warning: This file is auto-generated and might be overwritten by
-#          univention-baseconfig.
-#          Please edit the files in the following directory instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-baseconfig ueberschrieben werden.
-#          Bitte bearbeiten Sie an Stelle dessen die Dateien in
-#          folgendem Verzeichnis:
-#
-#       /etc/univention/templates/files/etc/samba/smb.conf.d
-#
-
+@%@UCRWARNING=# @%@
 
 [global]
 
@@ -17,8 +7,8 @@
 	max log size = 1000000
 
 @!@
-if baseConfig.has_key('samba/serverstring') and baseConfig['samba/serverstring']:
-	print '\tserver string = %s' % baseConfig['samba/serverstring']
+if configRegisty.has_key('samba/serverstring') and configRegistry['samba/serverstring']:
+	print '\tserver string = %s' % configRegistry['samba/serverstring']
 else:
 	print '\tserver string = %h univention corporate server'
 
@@ -28,9 +18,9 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 		       ('samba/charset/display', 'display charset'),
 		       ('samba/enable-privileges', 'enable privileges'),
 			   ('samba/interfaces/bindonly', 'bind interfaces only'),]:
-	if baseConfig.has_key(key) and baseConfig[key]:
-		print '\t%s = %s' % (smbstring, baseConfig[key])
+	if configRegistry.has_key(key) and configRegistry[key]:
+		print '\t%s = %s' % (smbstring, configRegistry[key])
 
-if baseConfig.has_key('samba/socket_options') and baseConfig['samba/socket_options']:
-	print '\tsocket options = %s' % baseConfig['samba/socket_options']
+if configRegistry.has_key('samba/socket_options') and configRegistry['samba/socket_options']:
+	print '\tsocket options = %s' % configRegistry['samba/socket_options']
 @!@

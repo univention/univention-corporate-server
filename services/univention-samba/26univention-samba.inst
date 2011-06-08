@@ -3,7 +3,7 @@
 # Univention Samba
 #  join script
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -40,9 +40,9 @@ rm -f /var/cache/samba/dont_start >/dev/null 2>&1
 # during installation samba/autostart was set to no to prevent
 # a half configured samba server. Set autostart to yes during first join
 if [ "$JS_LAST_EXECUTED_VERSION" = 0 ]; then
-	univention-baseconfig set samba/autostart=yes
+	univention-config-registry set samba/autostart=yes
 fi
-univention-baseconfig set samba/autostart?yes
+univention-config-registry set samba/autostart?yes
 
 # Stop the NFS Kernel Server
 nfsd_pid=`pidof nfsd`
@@ -62,18 +62,22 @@ if [ -x /etc/init.d/winbind ]; then
 fi
 
 if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
-	univention-baseconfig set	samba/user="$ldap_hostdn" \
-								samba/user/pwdfile?"/etc/machine.secret"
+	univention-config-registry set	samba/user="$ldap_hostdn" \
+									samba/user/pwdfile?"/etc/machine.secret"
 	smbpasswd -w $(cat /etc/machine.secret)
+
 	for idmap_ldap_config in alloc ${samba_idmap_domains}; do
 		echo "setting idmap secret for ${idmap_ldap_config} from /etc/machine.secret"
 		net idmap secret ${idmap_ldap_config} `</etc/machine.secret` 2>/dev/null
 	done
+
 else
-	univention-baseconfig set	samba/user?"cn=admin,$ldap_base" \
-								samba/user/pwdfile?"/etc/ldap.secret"
+	univention-config-registry set	samba/user?"cn=admin,$ldap_base" \
+									samba/user/pwdfile?"/etc/ldap.secret"
 	/etc/init.d/samba restart >/dev/null 2>&1
+
 	smbpasswd -w $(cat /etc/ldap.secret)
+
 	for idmap_ldap_config in alloc ${samba_idmap_domains}; do
 		echo "setting idmap secret for ${idmap_ldap_config} from /etc/ldap.secret"
 		net idmap secret ${idmap_ldap_config} `</etc/ldap.secret` 2>/dev/null
@@ -102,7 +106,7 @@ fi
 if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	if [ $JS_LAST_EXECUTED_VERSION -le 5 ]; then
 		# set the samba option
-		univention-directory-manager computers/$server_role modify $@ --dn "$ldap_hostdn" --append-option samba --set password="$(</etc/machine.secret)"
+		univention-directory-manager computers/$server_role modify "$@" --dn "$ldap_hostdn" --append-option samba --set password="$(</etc/machine.secret)"
 	fi
 
 	net rpc join -U${samba_account}%${samba_pwd}
@@ -139,15 +143,14 @@ for X in COLOR IA64 W32ALPHA W32MIPS W32PPC W32X86 WIN40 x64; do
 	chmod +s $SAMBA_DRIVERS/$X
 done
 
-# make existing host share container a standard share container
-if ldapsearch -x -s base -b "cn=$hostname.$domainname,cn=shares,$ldap_base" > /dev/null; then
-	univention-admin container/cn modify $@ --dn "cn=$hostname.$domainname,cn=shares,$ldap_base" --set sharePath=1
-fi
+# do create and modify in two steps, maybe the share already exists
+univention-directory-manager container/cn create "$@" --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname
+univention-directory-manager container/cn modify "$@" --dn "cn=$hostname.$domainname,cn=shares,$ldap_base" --set sharePath=1
+
 
 if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
-	univention-admin container/cn create $@ --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname --set sharePath=1
-	univention-admin shares/share create $@ --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --set name=homes --set path=/home --set sambaName=homes --set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1
-	univention-baseconfig unset create/home/share
+	univention-directory-manager shares/share create "$@" --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --set name=homes --set path=/home --set sambaName=homes --set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1
+	univention-config-registry unset create/home/share
 fi
 
 

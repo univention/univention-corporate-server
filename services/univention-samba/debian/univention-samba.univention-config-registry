@@ -1,12 +1,16 @@
 Type: multifile
 Multifile: etc/samba/smb.conf
-Variables: server/role
-Variables: samba/.*
-Variables: windows/wins-support
-Variables: windows/wins-server
-Variables: ldap/server/name
-Variables: ldap/server/addition
 Variables: cups/server
+Variables: domainname
+Variables: hostname
+Variables: ldap/base
+Variables: ldap/server/addition
+Variables: ldap/server/name
+Variables: samba/.*
+Variables: server/role
+Variables: windows/domain
+Variables: windows/wins-server
+Variables: windows/wins-support
 
 Type: subfile
 Multifile: etc/samba/smb.conf
@@ -152,6 +156,7 @@ Variables: samba/share/home
 Variables: samba/share/groups
 Variables: server/role
 Variables: samba/domainmaster
+Variables: samba/share/netlogon
 
 Type: file
 File: etc/samba/debian_config

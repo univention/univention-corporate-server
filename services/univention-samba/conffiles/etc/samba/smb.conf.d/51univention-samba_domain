@@ -1,9 +1,9 @@
 
 	; domain
 @!@
-domain_logons = baseConfig.get('samba/domain/logons', 'auto')
-if baseConfig['server/role'] != 'memberserver':
-	if baseConfig.has_key( 'samba/role' ) and baseConfig[ 'samba/role' ].lower() == 'bdc':
+domain_logons = configRegistry.get('samba/domain/logons', 'auto')
+if configRegistry['server/role'] != 'memberserver':
+	if configRegistry.has_key( 'samba/role' ) and configRegistry[ 'samba/role' ].lower() == 'bdc':
 		print '\tsecurity = user'
 
 		if not domain_logons in [ 'yes', 'no' ]:
@@ -11,12 +11,12 @@ if baseConfig['server/role'] != 'memberserver':
 		print '\tdomain logons = %s' % domain_logons
 
 		print '\tdomain master = no'
-		if baseConfig.has_key( 'samba/preferred/master' ):
-			print '\tpreferred master = %s' % baseConfig[ 'samba/preferred/master' ]
+		if configRegistry.has_key( 'samba/preferred/master' ):
+			print '\tpreferred master = %s' % configRegistry[ 'samba/preferred/master' ]
 		else:
 			print '\tpreferred master = yes'
-		if baseConfig.has_key( 'samba/local/master' ):
-			print '\tlocal master = %s' % baseConfig[ 'samba/local/master']
+		if configRegistry.has_key( 'samba/local/master' ):
+			print '\tlocal master = %s' % configRegistry[ 'samba/local/master']
 		else:
 			print '\tlocal master = yes'
 	else:
@@ -24,16 +24,16 @@ if baseConfig['server/role'] != 'memberserver':
 		if not domain_logons in [ 'yes', 'no' ]:
 			domain_logons = 'yes'
 		print '\tdomain logons = %s' % domain_logons
-		if baseConfig['server/role']=='domaincontroller_master' or (baseConfig.has_key('samba/domainmaster') and baseConfig['samba/domainmaster']=='yes'):
+		if configRegistry['server/role']=='domaincontroller_master' or (configRegistry.has_key('samba/domainmaster') and configRegistry['samba/domainmaster']=='yes'):
 			print '\tdomain master = yes'
 		else:
 			print '\tdomain master = no'
-		if baseConfig.has_key( 'samba/preferred/master' ):
-			print '\tpreferred master = %s' % baseConfig[ 'samba/preferred/master' ]
+		if configRegistry.has_key( 'samba/preferred/master' ):
+			print '\tpreferred master = %s' % configRegistry[ 'samba/preferred/master' ]
 		else:
 			print '\tpreferred master = yes'
-		if baseConfig.has_key( 'samba/local/master' ):
-			print '\tlocal master = %s' % baseConfig[ 'samba/local/master']
+		if configRegistry.has_key( 'samba/local/master' ):
+			print '\tlocal master = %s' % configRegistry[ 'samba/local/master']
 		else:
 			print '\tlocal master = yes'
 else:
@@ -51,6 +51,6 @@ else:
 	os level = @%@samba/os/level@%@
 	wins support = @%@windows/wins-support@%@
 @!@
-if baseConfig['windows/wins-support'] != 'yes' and baseConfig['windows/wins-server']:
-	print '	wins server = %s' % baseConfig['windows/wins-server'],
+if configRegistry['windows/wins-support'] != 'yes' and configRegistry['windows/wins-server']:
+	print '	wins server = %s' % configRegistry['windows/wins-server'],
 @!@

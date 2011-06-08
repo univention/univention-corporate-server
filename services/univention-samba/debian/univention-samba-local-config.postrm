@@ -1,7 +1,0 @@
-#!/bin/sh
-
-#DEBHELPER#
-
-if [ "$1" == "purge" ]; then
-	test -x /usr/sbin/univention-config-registry && /usr/sbin/univention-config-registry commit /etc/samba/smb.conf
-fi

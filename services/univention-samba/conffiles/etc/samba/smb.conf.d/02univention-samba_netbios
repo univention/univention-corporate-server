@@ -1,18 +1,16 @@
 	netbios name = @!@
-if baseConfig.has_key('samba/netbios/name') and baseConfig['samba/netbios/name']:
-	print '%s' % baseConfig['samba/netbios/name']
-elif baseConfig.has_key('samba/ha/master') and baseConfig['samba/ha/master']:
-	print '%s' % baseConfig['samba/ha/master']
+if configRegistry.has_key('samba/netbios/name') and configRegistry['samba/netbios/name']:
+	print '%s' % configRegistry['samba/netbios/name']
 else:
-	print '%s' % baseConfig['hostname']
+	print '%s' % configRegistry['hostname']
 @!@
 
 @!@
-if baseConfig.has_key('samba/netbios/aliases') and baseConfig['samba/netbios/aliases']:
-	print '\tnetbios aliases = %s' % baseConfig['samba/netbios/aliases']
+if configRegistry.has_key('samba/netbios/aliases') and configRegistry['samba/netbios/aliases']:
+	print '\tnetbios aliases = %s' % configRegistry['samba/netbios/aliases']
 @!@
 
 @!@
-if baseConfig.has_key('samba/netbios/filter') and baseConfig['samba/netbios/filter']:
-	print '\tbrowse_dat filter = %s' % baseConfig['samba/netbios/filter']
+if configRegistry.has_key('samba/netbios/filter') and configRegistry['samba/netbios/filter']:
+	print '\tbrowse_dat filter = %s' % configRegistry['samba/netbios/filter']
 @!@

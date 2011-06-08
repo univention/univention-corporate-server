@@ -3,7 +3,7 @@
 # Univention Samba
 #  postinst script for the debian package
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,21 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-createLogfile () {
-	if [ ! -e $1 ] ; then
-		touch $1
-		chown $2 $1
-		chmod $3 $1
-	fi
-}
+. /usr/share/univention-lib/all.sh
 
-eval `univention-config-registry shell`
+eval "$(univention-config-registry shell)"
 
-createLogfile /var/log/univention/samba-sync.log "root:adm" 640
-createLogfile /var/log/univention/pdc-takeover.log "root:adm" 640
+create_logfile /var/log/univention/samba-sync.log "root:adm" 640
+create_logfile /var/log/univention/pdc-takeover.log "root:adm" 640
 
-if [ -z "$2" ]
-	then
+if [ -z "$2" ]; then
 	mkdir -p /home/groups
 
 	mkdir -p /var/lib/samba/netlogon/scripts
@@ -56,25 +49,9 @@ if [ -z "$2" ]
 	mkdir -p /etc/univention/skel/windows-profiles/{Win95,WinNT,Win2k,WinXP,Win2K3,Vista,Vista.V2}
 fi
 
-# create the profile directories during the UCS 2.0 upgrade
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.8-1; then
-	mkdir -p /etc/univention/skel/windows-profiles
-	mkdir -p /etc/univention/skel/windows-profiles/{Win95,WinNT,Win2k,WinXP,Win2K3,Vista,Vista.V2}
-fi
-
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.22-1; then
-	univention-config-registry unset samba/idmap/domains
-	# if set, domain specific idmap config is written to smb.conf
-fi
-
-univention-config-registry set samba/share/home?yes
-univention-config-registry set samba/share/groups?no
-univention-config-registry set samba/adminusers?"administrator join-backup"
-
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.6; then
-	#append join-backup to samba adminusers
-	univention-config-registry set samba/adminusers="$samba_adminusers join-backup"
-fi
+univention-config-registry set samba/share/home?yes \
+							   samba/share/groups?no \
+							   samba/adminusers?"administrator join-backup"
 
 if [ "$server_role" != "memberserver" ]
 then
@@ -87,44 +64,25 @@ then
 	else
 		tmphostname="$hostname"
 	fi
-	univention-config-registry set samba/profileserver?$tmphostname
-	univention-config-registry set samba/profilepath?'%U\windows-profiles\%a'
-	univention-config-registry set samba/homedirserver?$tmphostname
-	univention-config-registry set samba/homedirpath?%U
-	univention-config-registry set samba/homedirletter?I
+	univention-config-registry set samba/profileserver?$tmphostname \
+								   samba/profilepath?'%U\windows-profiles\%a' \
+								   samba/homedirserver?$tmphostname \
+								   samba/homedirpath?%U \
+								   samba/homedirletter?I
 fi
+
 #DEBHELPER#
-
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.37; then
-	echo converting old policy descriptions
-	if [ -f /var/lib/samba/account_policy.tdb -a \( "`which tdbexport`" != "" -a "`which tdbimport`" != "" \) ]; then
-		export outfile=`mktemp`
-		tdbexport /var/lib/samba/account_policy.tdb | \
-		  sed "s/\ (seconds\ since\ 1970)//" > $outfile
-		tdbimport -o /var/lib/samba/account_policy.tdb < $outfile
-		rm $outfile
-	fi
-fi
-
 
 if [ -z "$windows_domain" ]; then
 	domain=`echo $domainname | cut -d"." -f 1 | tr "[:lower:]" "[:upper:]"`
 	univention-config-registry set windows/domain=$domain
 fi
 
-univention-config-registry set samba/debug/level?0
-univention-config-registry set samba/os/level?65
+univention-config-registry set samba/debug/level?0 \
+							   samba/os/level?65
 
-if [ "$server_role" = "domaincontroller_master" ]; then
-	/usr/lib/univention-install/26univention-samba.inst || true
-fi
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.17; then
-	if [ "$server_role" = "memberserver" ]; then
-		univention-config-registry set samba/user="$ldap_hostdn"
-		sleep 2
-		smbpasswd -w `cat /etc/machine.secret`
-	fi
-fi
+call_joinscript 26univention-samba.inst
+
 univention-config-registry set samba/script/adduser?true \
 				samba/script/deleteuser?true \
 				samba/script/addgroup?true \
@@ -156,41 +114,27 @@ univention-config-registry set samba/script/adduser?true \
 				samba/domain/logons?auto \
 				samba/password/checkscript?"/usr/share/univention-samba/password_check %u"
 
-# remove the invalid users UCR settings which was set in earlier UCS installations
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.1-0; then
-	if [ "$samba_invalid_users" = "daemon bin sys sync games man lp mail news uucp proxy majordom postgres www-data backup msql operator list irc gnats alias qmaild qmails qmailr qmailq qmaill qmailp telnetd identd ftp rwhod gdm fetchmail faxmaster" ]; then
-		univention-config-registry unset samba/invalid_users
-	fi
-fi
-
-if [ "$1" = "configure" -a -n "$2" ];
-	then
-	/etc/init.d/samba crestart
-fi
-
-if [ "$1" = configure -a -z "$2" ]; then
-	# only set this for new installations
-	univention-config-registry set samba/autostart="no"
-	if [ "$server_role" = "domaincontroller_master" ]; then
-		univention-config-registry set windows/wins-support=yes
-	else
-		univention-config-registry set windows/wins-support?no
-		univention-config-registry set windows/wins-server?$ldap_master
-	fi
-fi
-
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.4; then
-
-	/etc/init.d/univention-directory-listener restart
-	univention-directory-listener-ctrl resync samba-shares
-fi
-
-
 if [ "$1" = "configure" ]; then
-	if test -f /etc/init.d/univention-directory-listener
-		then
+
+	if [ -z "$2" ]; then
+		# only set this for new installations
+		univention-config-registry set samba/autostart="no"
+
+		if [ "$server_role" = "domaincontroller_master" ]; then
+			univention-config-registry set windows/wins-support=yes
+		else
+			univention-config-registry set windows/wins-support?no
+			univention-config-registry set windows/wins-server?$ldap_master
+		fi
+	elif [ -n "$2" ]; then
+		/etc/init.d/samba crestart
+	fi
+
+
+	if test -f /etc/init.d/univention-directory-listener; then
 		/etc/init.d/univention-directory-listener crestart
 	fi
 fi
 
 exit 0
+

@@ -10,7 +10,7 @@ reg_othershares = re.compile('samba/othershares/usergroup/([^\/]+)/invalid')
 include = False
 include_file = "/etc/samba/local.config.conf"
 
-for key in baseConfig.keys():
+for key in configRegistry.keys():
 
 	m_user = reg_user.match(key)
 	m_options = reg_options.match(key)
@@ -18,7 +18,7 @@ for key in baseConfig.keys():
 	m_printmode = reg_printmode.match(key)
 	m_othershares = reg_othershares.match(key)
 
-	v = baseConfig.get(key)
+	v = configRegistry.get(key)
 
 	if m_user and m_user.group(1) and m_user.group(2) and v == "true":
 		include = True

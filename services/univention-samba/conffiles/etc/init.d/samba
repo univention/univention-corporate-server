@@ -1,46 +1,19 @@
 #!/bin/sh
-#
-# Warning: This file is auto-generated and might be overwritten by
-#          univention-baseconfig.
-#          Please edit the following file instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-baseconfig überschrieben werden.
-#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
-#
-#   /etc/univention/templates/files/etc/init.d/samba
-#
-# Start/stops the Samba daemons (nmbd and smbd).
-#
+@%@UCRWARNING=# @%@
 
-# Univention Samba
-#  init script
-#
-# Copyright 2006-2010 Univention GmbH
-#
-# http://www.univention.de/
-#
-# All rights reserved.
-#
-# The source code of this program is made available
-# under the terms of the GNU Affero General Public License version 3
-# (GNU AGPL V3) as published by the Free Software Foundation.
-#
-# Binary versions of this program provided by Univention to you as
-# well as other copyrighted, protected or trademarked materials like
-# Logos, graphics, fonts, specific documentations and configurations,
-# cryptographic keys etc. are subject to a license agreement between
-# you and Univention and not subject to the GNU AGPL V3.
-#
-# In the case you use this program under the terms of the GNU AGPL V3,
-# the program is provided in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License with the Debian GNU/Linux or Univention distribution in file
-# /usr/share/common-licenses/AGPL-3; if not, see
-# <http://www.gnu.org/licenses/>.
+# Written by Debian Samba Maintainers <pkg-samba-maint@lists.alioth.debian.org>
+# Modified for UCS by Univention <packages@univention.de>
+
+### BEGIN INIT INFO
+# Provides:          samba
+# Required-Start:    $network $local_fs $remote_fs
+# Required-Stop:     $network $local_fs $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Should-Start:      slapd
+# Should-Stop:       slapd
+# Short-Description: start Samba daemons (nmbd and smbd)
+### END INIT INFO
 
 # Defaults
 RUN_MODE="daemons"
@@ -48,20 +21,9 @@ RUN_MODE="daemons"
 # Reads config file (will override defaults above)
 [ -r /etc/default/samba ] && . /etc/default/samba
 
-NMBDPID=/var/run/samba/nmbd.pid
-SMBDPID=/var/run/samba/smbd.pid
-
-# If we should be started by heartbeat exit here
-
-. /lib/lsb/init-functions
-
-eval `/usr/sbin/univention-config-registry shell`
-
-if [ $samba_ha_master ]
-	then
-	echo "samba is managed by heartbeat"
-	exit 0
-fi
+PIDDIR=/var/run/samba
+NMBDPID=$PIDDIR/nmbd.pid
+SMBDPID=$PIDDIR/smbd.pid
 
 # clear conflicting settings from the environment
 unset TMPDIR
@@ -71,6 +33,8 @@ test -x /usr/sbin/nmbd -a -x /usr/sbin/smbd || exit 0
 
 test -e /var/cache/samba/dont_start && exit 0
 
+. /lib/lsb/init-functions
+
 case "$1" in
 	start)
 		# check ucr autostart setting
@@ -79,56 +43,81 @@ case "$1" in
 		    check_autostart samba samba/autostart
 		fi
 
-		log_action_msg "Starting Samba daemons: nmbd"
-		start-stop-daemon --start --quiet --pidfile $NMBDPID  -a /usr/sbin/nmbd -- -D
-
-		if [ "$RUN_MODE" != "inetd" ]; then
-			if [ -z "$samba_smbd_start" ] || [ "$samba_smbd_start" = "yes" ]; then
-				log_action_msg "Starting Samba daemons: smbd"
-				start-stop-daemon --start --quiet --pidfile $SMBDPID -a /usr/sbin/smbd -- -D
+		log_daemon_msg "Starting Samba daemons"
+		NMBD_DISABLED=`testparm -s --parameter-name='disable netbios' 2>/dev/null`
+		if [ "$NMBD_DISABLED" != 'Yes' ]; then
+			log_progress_msg "nmbd"
+			if ! start-stop-daemon --start --quiet --oknodo --pidfile $NMBDPID  -a /usr/sbin/nmbd -- -D; then
+				log_end_msg 1
+				exit 1
 			fi
 		fi
 
-		log_action_end_msg 0
+		if [ "$RUN_MODE" != "inetd" ]; then
+			log_progress_msg "smbd"
+			if ! start-stop-daemon --start --quiet --oknodo --pidfile $SMBDPID -a /usr/sbin/smbd -- -D; then
+				log_end_msg 1
+				exit 1
+			fi
+		fi
+
+		log_end_msg 0
 		;;
 	stop)
-		log_action_msg "Stopping Samba daemons: nmbd"
+		log_daemon_msg "Stopping Samba daemons"
+		log_progress_msg "nmbd"
 
 		start-stop-daemon --stop --quiet --pidfile $NMBDPID
 		# Wait a little and remove stale PID file
 		sleep 1
 		if [ -f $NMBDPID ] && ! ps h `cat $NMBDPID` > /dev/null
 		then
-			# Stale PID file (nmbd was succesfully stopped), remove it
+			# Stale PID file (nmbd was succesfully stopped),
+			# remove it (should be removed by nmbd itself IMHO.)
 			rm -f $NMBDPID
 		fi
 
 		if [ "$RUN_MODE" != "inetd" ]; then
-			if [ -z "$samba_smbd_start" ] || [ "$samba_smbd_start" = "yes" ]; then
-				start-stop-daemon --stop --quiet --pidfile $SMBDPID
-				# Wait a little and remove stale PID file
-				sleep 1
-				if [ -f $SMBDPID ] && ! ps h `cat $SMBDPID` > /dev/null
-				then
-					# Stale PID file (nmbd was succesfully stopped), remove it
-					rm -f $SMBDPID
-				fi
-				log_action_msg "Stopping Samba daemons: smbd"
+			log_progress_msg "smbd"
+			start-stop-daemon --stop --quiet --pidfile $SMBDPID
+			# Wait a little and remove stale PID file
+			sleep 1
+			if [ -f $SMBDPID ] && ! ps h `cat $SMBDPID` > /dev/null
+			then
+				# Stale PID file (nmbd was succesfully stopped),
+				# remove it (should be removed by smbd itself IMHO.)
+				rm -f $SMBDPID
 			fi
 		fi
 
-		log_action_end_msg 0
+		log_end_msg 0
 
 		;;
 	reload)
-		log_action_msg "Reloading /etc/samba/smb.conf (smbd only)"
+		log_daemon_msg "Reloading /etc/samba/smb.conf" "smbd only"
+
 		start-stop-daemon --stop --signal HUP --pidfile $SMBDPID
-		log_action_end_msg 0
+
+		log_end_msg 0
 		;;
 	restart|force-reload)
 		$0 stop
 		sleep 1
 		$0 start
+		;;
+	status)
+		status="0"
+		NMBD_DISABLED=`testparm -s --parameter-name='disable netbios' 2>/dev/null`
+		if [ "$NMBD_DISABLED" != "Yes" ]; then
+			status_of_proc -p $NMBDPID /usr/sbin/nmbd nmbd || status=$?
+		fi
+		if [ "$RUN_MODE" != "inetd" ]; then
+			status_of_proc -p $SMBDPID /usr/sbin/smbd smbd || status=$?
+		fi
+		if [ "$NMBD_DISABLED" = "Yes" -a "$RUN_MODE" = "inetd" ]; then
+			status="4"
+		fi
+		exit $status
 		;;
 	crestart)
 		if pidof smbd > /dev/null 2>&1
@@ -144,7 +133,7 @@ case "$1" in
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/samba {start|stop|reload|restart|crestart|force-reload}"
+		echo "Usage: /etc/init.d/samba {start|stop|reload|restart|crestart|force-reload|status}"
 		exit 1
 		;;
 esac

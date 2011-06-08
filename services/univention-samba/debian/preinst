@@ -3,7 +3,7 @@
 # Univention Samba
 #  preinst script for the debian package
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -39,3 +39,4 @@ fi
 # this will be checked by the samba debian postinst script
 univention-config-registry set samba/generate_smbpasswd?false
 
+exit 0

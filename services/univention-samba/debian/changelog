@@ -1,3 +1,19 @@
+univention-samba (6.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22561)
+    * Bump version for UCS 3.0
+    * Replace univention-baseconfig with univention-config-registry
+    * Replace static UCR header in the UCR templates with '@%@UCRWARNING=#
+      @%@'
+    * Update copyright to 2011
+    * Update to debhelper 7
+    * Switch from python2.4 to python2.6
+    * Add ucslint
+  * Removed univention-samba-ha and univention-samba-bdc
+  * Removed old pdc-takeover scripts and tools
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 08 Jun 2011 08:06:00 +0200
+
 univention-samba (5.0.24-1) unstable; urgency=low
 
   * fix invalid users (Bug #21143)
