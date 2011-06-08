@@ -1,0 +1,15 @@
+samba-shares.py usr/lib/univention-directory-listener/system
+vampire/remove-samba-account usr/share/univention-samba/
+vampire/purge_users_and_groups usr/share/univention-samba/
+vampire/fix_primary_groups usr/share/univention-samba/
+vampire/set_domain_sid usr/share/univention-samba/
+vampire/fix_user_sids usr/share/univention-samba/
+vampire/set_default_settings usr/share/univention-samba/
+vampire/change_sid usr/share/univention-samba/
+vampire/query_domain_policy usr/share/univention-samba/
+vampire/set_account_policy_from_pdbedit usr/share/univention-samba/
+vampire/slave-sync usr/share/univention-samba/
+vampire/account-policy usr/share/univention-samba/
+vampire/password_check usr/share/univention-samba/
+26univention-samba.inst usr/lib/univention-install/
+kerberize_user usr/share/univention-samba/

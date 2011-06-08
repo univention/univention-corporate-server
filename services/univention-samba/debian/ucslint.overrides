@@ -1,0 +1,11 @@
+0010-2: conffiles/etc/init.d/samba
+0004-29: conffiles/etc/samba/smb.conf.d/01univention-samba_main
+0004-29: conffiles/etc/samba/smb.conf.d/61univention-samba_misc
+0004-29: conffiles/etc/samba/smb.conf.d/41univention-samba_printing
+0004-29: conffiles/etc/samba/smb.conf.d/02univention-samba_netbios
+0004-29: conffiles/etc/samba/smb.conf.d/21univention-samba_winbind
+0004-29: conffiles/etc/samba/smb.conf.d/81univention-samba_scripts
+0004-29: conffiles/etc/samba/smb.conf.d/11univention-samba_ldap
+0004-29: conffiles/etc/samba/smb.conf.d/71univention-samba_users
+0004-29: conffiles/etc/samba/smb.conf.d/31univention-samba_password
+0004-29: conffiles/etc/samba/smb.conf.d/51univention-samba_domain
