@@ -284,7 +284,7 @@ class CPgeneric(object):
 			update_session_cookie(cherrypy.response.cookie, sessionid)
 			return simplejson.dumps(response.body)
 
-		elif response.status in (401,403,404):
+		elif response.status in (401,403,404, 411):
 			# user is unauthorized
 			raise cherrypy.HTTPError(response.status)
 
@@ -319,7 +319,7 @@ class CPSet(CPgeneric):
 	def get_request(self, request, json):
 		args = request.path_info
 
-		req = umcp.Request( 'SET', options = json )
+		req = umcp.Request( 'SET', options = json.get( 'options', {} ) )
 
 		return req
 
@@ -338,7 +338,9 @@ class CPCommand(CPgeneric):
 			self._log('error', 'get_request: args is empty')
 			raise cherrypy.HTTPError(404)
 
-		req = umcp.Command( [ args ], options = json )
+		req = umcp.Command( [ args ], options = json.get( 'options', {} ) )
+		if 'flavor' in json:
+			req.flavor = json[ 'flavor' ]
 
 		return req
 
@@ -445,8 +447,8 @@ class CPAuth(object):
 
 		# create new UMCP request
 		req = umcp.Request( 'AUTH' )
-		req.body[ 'username' ] = json.get('username','')
-		req.body[ 'password' ] = json.get('password','')
+		req.body[ 'username' ] = json[ 'options' ].get('username','')
+		req.body[ 'password' ] = json[ 'options' ].get('password','')
 
 		# create new response queue
 		response_queue = Queue.Queue()
@@ -464,7 +466,7 @@ class CPAuth(object):
 			update_session_cookie(cherrypy.response.cookie, response.body['sessionid'])
 			return ""
 
-		elif response.status in (401,410):
+		elif response.status in (401,410,411):
 			CORE.error('CPRoot/auth: authorization for %s failed' % json.get('username'))
 			raise cherrypy.HTTPError(401)
 

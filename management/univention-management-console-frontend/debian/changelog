@@ -1,3 +1,10 @@
+univention-management-console-frontend (0.0.27-1) unstable; urgency=low
+
+  * support flavors
+  * use icon property to find images; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 08 Jun 2011 19:31:31 +0200
+
 univention-management-console-frontend (0.0.26-1) unstable; urgency=low
 
   * adapted framework to changes in UMC protocol (Bug #22460)

@@ -33,7 +33,7 @@ dojo.addOnLoad(function() {
 
 dojo.mixin(umc.app, new umc.i18n.Mixin({
 	// use the framework wide translation file
-	i18nClass: 'umc.app',
+	i18nClass: 'umc.app'
 }), {
 	// loggingIn: Boolean
 	//		True if the user is in the process of loggin in.
@@ -468,12 +468,15 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 					dojo['require']('umc.modules.' + module.id);
 
 					// add module config class to internal list of available modules
+					console.log( module );
+					var flavor = dojo.exists( 'flavor', false, module ) && module.flavor || null;
 					this._modules.push({
 						BaseClass: dojo.getObject('umc.modules.' + module.id), 
 						id: module.id, 
 						title: module.name,
 						description: module.description,
-						categories: module.categories
+						categories: module.categories,
+						flavor: flavor
 					});
 
 					// add dynamic style sheet information: for css icon classes
@@ -484,10 +487,10 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 							'height: ${s}px;' +
 							'background-image: url("images/icons/${s}x${s}/${id}.png")', { 
 								s: isize,
-								id: module.id
+								id: module.icon
 							}
 						);
-						dojox.html.insertCssRule('.icon' + isize + '-' + module.id, css);
+						dojox.html.insertCssRule('.icon' + isize + '-' + module.icon, css);
 					});
 				}
 				catch (error) {

@@ -11,9 +11,11 @@ dojo.mixin(umc.tools, new umc.i18n.Mixin({
 	i18nClass: 'umc.app',
 }), {
 	umcpCommand: function(
-		/*String*/ commandStr, 
-		/*Object?*/ dataObj, 
-		/*Boolean?*/ handleErrors) {
+		/*String*/ commandStr,
+		/*Object?*/ dataObj,
+		/*Boolean?*/ handleErrors,
+		/*String?*/ flavor
+	) {
 
 		// summary:
 		//		Encapsulates an AJAX call for a given UMCP command.
@@ -26,13 +28,19 @@ dojo.mixin(umc.tools, new umc.i18n.Mixin({
 
 		// build the URL for the UMCP command
 		var url = '/umcp/command/' + commandStr;
-		
+
 		// check special case for 'get' and 'auth' commands .. there we don't
 		// need to add 'command'
 		if ((/^(get\/|set$|auth)/i).test(commandStr)) {
 			url = '/umcp/' + commandStr;
 		}
 
+		body = {
+			 'options' : dataObj
+		};
+		if ( flavor !== undefined && flavor !== null ) {
+			body[ 'flavor' ] = flavor;
+		}
 		// make the AJAX call
 		var call = dojo.xhrPost({
 			url: url,
@@ -41,7 +49,7 @@ dojo.mixin(umc.tools, new umc.i18n.Mixin({
 			headers: { 
 				'Content-Type': 'application/json' 
 			},
-			postData: dojo.toJson(dataObj)
+			postData: dojo.toJson(body)
 		});
 
 		// handle XHR errors unless not specified otherwise
