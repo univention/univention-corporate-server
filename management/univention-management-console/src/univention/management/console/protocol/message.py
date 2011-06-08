@@ -149,6 +149,9 @@ class Message( object ):
 	# property: options
 	options = property( lambda self: self._get_key( 'options' ), lambda self, value: self._set_key( 'options', value ) )
 
+	# property: flavor
+	flavor = property( lambda self: self._get_key( 'flavor' ), lambda self, value: self._set_key( 'flavor', value ) )
+
 	def parse( self, msg ):
 		lines = msg.split( '\n', 1 )
 
