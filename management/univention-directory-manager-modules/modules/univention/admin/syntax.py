@@ -814,6 +814,10 @@ class ipProtocol(select):
 	name='ipProtocol'
 	choices=[('tcp', _('TCP')), ('udp', _('UDP'))]
 
+class ipProtocolSRV(select):
+	name='ipProtocolSRV'
+	choices=[(_('tcp'), 'TCP'), (_('udp'), 'UDP'), (_('msdcs'), 'MSDCS'), (_('sites'), 'SITES')]
+
 class absolutePath(simple):
 	name='absolutePath'
 	min_length=1
@@ -989,7 +993,7 @@ class dnsSRVName(complex):
 	['ldap', 'tcp']
 	"""
 	name='dnsSRVName'
-	subsyntaxes=[(_('Service'), string), (_('Protocol'), ipProtocol)]
+	subsyntaxes=[(_('Service'), string), (_('Protocol'), ipProtocolSRV)]
 	all_required=1
 
 class postalAddress(complex):

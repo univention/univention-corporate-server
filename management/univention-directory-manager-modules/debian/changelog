@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.10-1) unstable; urgency=low
+
+  * Added patch from samba4 package to support msdcs and sites as DNS
+    SRV protocols (Bug #22559)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 08 Jun 2011 13:45:41 +0200
+
 univention-directory-manager-modules (7.0.9-1) unstable; urgency=low
 
   * Fix another python deprecation warning. object.__init__() takes no
