@@ -1,3 +1,10 @@
+univention-management-console (4.0.19-2) unstable; urgency=low
+
+  * minor fix in dh-umc-module-install
+  * fixes in i18n code; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 08 Jun 2011 10:00:54 +0200
+
 univention-management-console (4.0.19-1) unstable; urgency=low
 
   * code cleanup; Bug #22460

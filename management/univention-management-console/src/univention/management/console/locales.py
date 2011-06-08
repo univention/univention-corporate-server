@@ -154,7 +154,7 @@ class I18N_Error( Exception ):
 class I18N( object ):
 	LOCALE_DIR = '/usr/share/univention-management-console/i18n/'
 
-	def __init__( self, locale, domain ):
+	def __init__( self, locale = None, domain = None ):
 		self.mofile = None
 		self.domain = domain
 		self.locale = locale
@@ -165,6 +165,9 @@ class I18N( object ):
 			self.locale = locale
 		if domain is not None:
 			self.domain = domain
+		if self.locale is None or self.domain is None:
+			return
+
 		filename = os.path.join( I18N.LOCALE_DIR, self.locale.language, '%s.mo' % self.domain )
 		if not os.path.isfile( filename ):
 			filename = os.path.join( I18N.LOCALE_DIR, '%s_%s' % ( self.locale.language, self.locale.territory ), '%s.mo' % self.domain )
@@ -174,12 +177,13 @@ class I18N( object ):
 		self.mofile = polib.mofile( filename )
 
 	def exists( self, message ):
-		return self.mofile.find( message, by = 'msgid' )
+		return self.mofile is not None and self.mofile.find( message, by = 'msgid' )
 
 	def _( self, message ):
-		entry = self.mofile.find( message, by = 'msgid' )
-		if entry is not None:
-			return entry.msgstr
+		if self.mofile:
+			entry = self.mofile.find( message, by = 'msgid' )
+			if entry is not None:
+				return entry.msgstr
 
 		return message
 
