@@ -1,0 +1,33 @@
+﻿Der Buildvorgang wurde am 28.09.2010 13:44:58 gestartet.
+Projekt "Z:\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\LsaExt.vcxproj" auf Knoten "2", build Ziel(e).
+InitializeBuildStatus:
+  ".\LsaExtRelease\LsaExt.unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+ClCompile:
+  Alle Ausgaben sind aktuell.
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Ob1 /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D LSAEXT_EXPORTS /D _WIN64 /D _VC80_UPGRADE=0x0710 /D _WINDLL /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\LsaExtRelease/" /Fd".\LsaExtRelease/vc100.pdb" /Gd /TC /errorReport:prompt blowfish.c
+  blowfish.c
+  Alle Ausgaben sind aktuell.
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Ob1 /D WIN32 /D NDEBUG /D _WINDOWS /D _MBCS /D _USRDLL /D LSAEXT_EXPORTS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\LsaExtRelease/" /Fd".\LsaExtRelease/vc100.pdb" /Gd /TC /errorReport:prompt LsaExt.c
+  LsaExt.c
+LsaExt.c(174): warning C4267: 'Funktion': Konvertierung von 'size_t' nach 'int', Datenverlust möglich
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(Z:\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\LsaExtRelease\LsaExt.dll) entspricht nicht dem OutputFile-Eigenschaftswert (Z:\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\LsaExtRelease\lsremora64.dll) von Linker. Das Projekt wird daher möglicherweise nicht ordnungsgemäß erstellt. Damit dieses Problem behoben werden kann, müssen die Eigenschaftswerte für $(OutDir), $(TargetName) und $(TargetExt) dem in %(Link.OutputFile) angegebenen Wert entsprechen.
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(LsaExt) entspricht nicht dem OutputFile-Eigenschaftswert (lsremora64) von Linker. Das Projekt wird daher möglicherweise nicht ordnungsgemäß erstellt. Damit dieses Problem behoben werden kann, müssen die Eigenschaftswerte für $(OutDir), $(TargetName) und $(TargetExt) dem in %(Link.OutputFile) angegebenen Wert entsprechen.
+Link:
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:".\LsaExtRelease/lsremora64.dll" /INCREMENTAL:NO /NOLOGO kernel32.lib netapi32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib netapi32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST:NO /PDB:".\LsaExtRelease\lsremora64.pdb" /TLBID:1 /DYNAMICBASE:NO /IMPLIB:".\LsaExtRelease\lsremora64.lib" /MACHINE:X64 /DLL .\LsaExtRelease/blowfish.obj
+  .\LsaExtRelease/LsaExt.obj
+     Bibliothek ".\LsaExtRelease\lsremora64.lib" und Objekt ".\LsaExtRelease\lsremora64.exp" werden erstellt.
+  LsaExt.vcxproj -> Z:\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\LsaExtRelease\LsaExt.dll
+PostBuildEvent:
+  copy LsaExtRelease\*.dll PwDumpRelease
+  :VCEnd
+  LsaExtRelease\lsremora.dll
+  LsaExtRelease\lsremora64.dll
+          2 Datei(en) kopiert.
+FinalizeBuildStatus:
+  Die Datei ".\LsaExtRelease\LsaExt.unsuccessfulbuild" wird gelöscht.
+  Aktualisieren des Timestamps von ".\LsaExtRelease\LsaExt.lastbuildstate".
+Die Erstellung des Projekts "Z:\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\LsaExt.vcxproj" ist abgeschlossen, build Ziel(e).
+
+Das Erstellen war erfolgreich.
+
+Verstrichene Zeit 00:00:46.84

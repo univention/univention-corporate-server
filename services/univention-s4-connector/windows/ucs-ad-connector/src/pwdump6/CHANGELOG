@@ -1,0 +1,9 @@
+The change log began with version 1.7.2. For information on
+previous changes, please see the website.
+
+1.7.2
+-----
+
+- Fixed a handle being closed twice in some circumstances
+- Fixed a multi-byte conversion problem
+- Turned off some debug messages that were not necessary

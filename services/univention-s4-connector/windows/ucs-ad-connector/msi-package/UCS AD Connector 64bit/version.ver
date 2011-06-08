@@ -1,0 +1,25 @@
+;----------------------------------------------------------------------------
+;
+;    MODULE NAME:   UCS AD Connector
+;
+;        $Author:   Univention GmbH
+;      $Revision:   1.5  $
+;          $Date:   17 Jun 2010 17:25:32  $
+;
+;    DESCRIPTION:   Password synchronisation
+;
+;++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+; ProductName = UCS AD Connector
+; DESCRIPTION = Testinstall
+; Licence     = lizenz.rtf
+; Installed   = WINDOWS_ALL
+; Guid.UpgradeCode = {6EFB7F3C-98B6-4147-878F-21D5EED29EAF}
+; MsiName     = setup
+;++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+;############################################################################
+VERSION : 1.0.0
+DATE    : 17 jUNI 2010
+CHANGES : First test Release
+
+

@@ -1,0 +1,33 @@
+﻿Der Buildvorgang wurde am 28.09.2010 13:35:13 gestartet.
+Projekt "Z:\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\PwDump6.vcxproj" auf Knoten "2", build Ziel(e).
+InitializeBuildStatus:
+  ".\PwDumpRelease\PwDump6.unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+ClCompile:
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Ob1 /Oy- /D WIN32 /D NDEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /GF /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\PwDumpRelease/" /Fd".\PwDumpRelease/vc100.pdb" /Gd /TC /wd4996 /analyze- /errorReport:prompt blowfish.c XGetopt.c
+  blowfish.c
+  XGetopt.c
+  Code wird generiert...
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Ob1 /Oy- /D WIN32 /D NDEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /GF /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\PwDumpRelease/" /Fd".\PwDumpRelease/vc100.pdb" /Gd /TP /wd4996 /analyze- /errorReport:prompt PwDump6.cpp ResourceLoader.cpp
+  PwDump6.cpp
+  ResourceLoader.cpp
+  Code wird generiert...
+ResourceCompile:
+  C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D NDEBUG /D _VC80_UPGRADE=0x0710 /l"0x0409" /nologo /fo".\PwDumpRelease\pwdump.res" pwdump.rc 
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(Z:\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\PwDumpRelease\PwDump6.exe) entspricht nicht dem OutputFile-Eigenschaftswert (Z:\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\PwDumpRelease\PwDump.exe) von Linker. Das Projekt wird daher möglicherweise nicht ordnungsgemäß erstellt. Damit dieses Problem behoben werden kann, müssen die Eigenschaftswerte für $(OutDir), $(TargetName) und $(TargetExt) dem in %(Link.OutputFile) angegebenen Wert entsprechen.
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(PwDump6) entspricht nicht dem OutputFile-Eigenschaftswert (PwDump) von Linker. Das Projekt wird daher möglicherweise nicht ordnungsgemäß erstellt. Damit dieses Problem behoben werden kann, müssen die Eigenschaftswerte für $(OutDir), $(TargetName) und $(TargetExt) dem in %(Link.OutputFile) angegebenen Wert entsprechen.
+Link:
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"PwDumpRelease/PwDump.exe" /INCREMENTAL:NO /NOLOGO LsaExtRelease\lsremora.lib Mpr.lib odbc32.lib odbccp32.lib netapi32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST:NO /PDB:".\PwDumpRelease/PwDump.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE:NO /IMPLIB:".\PwDumpRelease\PwDump6.lib" /MACHINE:X86 .\PwDumpRelease\pwdump.res
+  .\PwDumpRelease/blowfish.obj
+  .\PwDumpRelease/PwDump6.obj
+  .\PwDumpRelease/ResourceLoader.obj
+  .\PwDumpRelease/XGetopt.obj
+  "Z:\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\LsaExtRelease\lsremora.lib"
+  PwDump6.vcxproj -> Z:\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\PwDumpRelease\PwDump6.exe
+FinalizeBuildStatus:
+  Die Datei ".\PwDumpRelease\PwDump6.unsuccessfulbuild" wird gelöscht.
+  Aktualisieren des Timestamps von ".\PwDumpRelease\PwDump6.lastbuildstate".
+Die Erstellung des Projekts "Z:\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\PwDump6.vcxproj" ist abgeschlossen, build Ziel(e).
+
+Das Erstellen war erfolgreich.
+
+Verstrichene Zeit 00:00:06.06

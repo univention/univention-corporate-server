@@ -1,0 +1,4 @@
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/11univention-ad-connector-exchange_schema
+Variables: ldap/server/type

@@ -1,0 +1,139 @@
+;======================================================================
+; Generated at  : 26.07.2010 07:25:38
+; Compile Reason: This is the "end of pass 1 compile"
+; Caching to    : No caching for this compile
+;======================================================================
+
+.Option explicit
+.Set MaxErrors=1
+.Set UniqueFiles=ON
+.Set MaxDiskSize=1998950400
+.Set MaxDiskSize1=1998688256
+.Set InfHeader=
+.Set InfFooter=
+.Set DiskDirectoryTemplate=.
+.Set Cabinet=ON
+
+
+;---The following are for options that can vary per MAKEMSI "Compile" command ----
+.Set Compress=ON
+.Set CompressionType=LZX
+.Set CompressionLevel=7
+.Set CompressionMemory=21
+.Set ClusterSize=4096
+
+
+
+
+
+.Set ReservePerCabinetSize=8
+.Set   FolderSizeThreshold=1
+
+
+.Set         RptFileName=out\installscript.mm\Log\MakeCab\#01\setup.rpt
+.Set         InfFileName=out\installscript.mm\Log\MakeCab\#01\setup.inf
+.Set        CabinetName1=out\installscript.mm\Log\MakeCab\#01\MM01.cab
+.Set CabinetNameTemplate=out\installscript.mm\Log\MakeCab\#01\MM01_*.CAB
+
+
+.Set InfDiskHeader=
+.Set InfDiskHeader1=";=================================="
+.Set InfDiskHeader2=";===          DISK List         ==="
+.Set InfDiskHeader3=";=== <disk number>,<disk label> ==="
+.Set InfDiskHeader4=";=================================="
+.Set InfDiskHeader5=[disk list]
+.Set InfDiskLineFormat=*disk#*,*label*
+
+
+.Set InfCabinetHeader=
+.Set InfCabinetHeader1=";==========================================================="
+.Set InfCabinetHeader2=";===                   CABINET List                      ==="
+.Set InfCabinetHeader3=";=== <cabinet number>,<disk number>,<cabinet file name>  ==="
+.Set InfCabinetHeader4=";==========================================================="
+.Set InfCabinetHeader5=[cabinet list]
+.Set InfCabinetLineFormat=*cab#*,*disk#*,*cabfile*
+
+
+.Set InfFileHeader=
+.Set InfFileHeader1=";==============================================================="
+.Set InfFileHeader2=";===                        File List                        ==="
+.Set InfFileHeader3=";=== <disk number>,<cabinet number>,<file key>,<file number> ==="
+.Set InfFileHeader4=";==============================================================="
+.Set InfFileHeader5=[file list]
+.Set InfFileLineFormat=*disk#*,*cab#*,*file*,*file#*
+
+
+
+
+
+
+;---
+;--- Component #1 "c9.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_servpw64.exe" (starts with SEQ #1) ---
+;---
+"files\Programme\UCS-AD-Connector\servpw64.exe" servpw64.exe /DATE=2010-07-26 /TIME=06:46:46
+
+
+;---
+;--- Component #2 "c8.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_servpw.exe" (starts with SEQ #2) ---
+;---
+"files\Programme\UCS-AD-Connector\servpw.exe" servpw.exe /DATE=2010-07-26 /TIME=06:46:46
+
+
+;---
+;--- Component #3 "c1.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll" (starts with SEQ #3) ---
+;---
+"files\Programme\UCS-AD-Connector\copypwd.dll" copypwd.dll /DATE=2009-07-31 /TIME=07:36:10
+
+
+;---
+;--- Component #4 "c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll" (starts with SEQ #4) ---
+;---
+"files\Programme\UCS-AD-Connector\libssl32.dll" libssl32.dll /DATE=2009-07-31 /TIME=07:36:10
+
+
+;---
+;--- Component #5 "c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll" (starts with SEQ #5) ---
+;---
+"files\Programme\UCS-AD-Connector\libeay32.dll" libeay32.dll /DATE=2009-07-31 /TIME=07:36:10
+
+
+;---
+;--- Component #6 "c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe" (starts with SEQ #6) ---
+;---
+"files\Programme\UCS-AD-Connector\copypwd.exe" copypwd.exe /DATE=2009-07-31 /TIME=07:36:10
+
+
+;---
+;--- Component #7 "c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_lsremora.dll" (starts with SEQ #7) ---
+;---
+"files\Programme\UCS-AD-Connector\lsremora.dll" lsremora.dll /DATE=2010-07-26 /TIME=06:46:26
+
+
+;---
+;--- Component #8 "c7.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_PwDump.exe" (starts with SEQ #8) ---
+;---
+"files\Programme\UCS-AD-Connector\PwDump.exe" PwDump.exe /DATE=2010-07-26 /TIME=06:46:46
+
+
+;---
+;--- Component #9 "c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_lsremora64.dll" (starts with SEQ #9) ---
+;---
+"files\Programme\UCS-AD-Connector\lsremora64.dll" lsremora64.dll /DATE=2010-07-26 /TIME=06:46:26
+
+
+;---
+;--- Component #10 "c10.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll" (starts with SEQ #10) ---
+;---
+"files\Programme\UCS-AD-Connector\ssleay32.dll" ssleay32.dll /DATE=2009-07-31 /TIME=07:36:10
+
+
+;---
+;--- Component #11 "c11.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe" (starts with SEQ #11) ---
+;---
+"files\Programme\UCS-AD-Connector\ucs-ad-connector.exe" ucs_ad_connector.exe /DATE=2010-07-26 /TIME=06:46:46
+
+
+;---
+;--- Component #12 "c12.ALL.1.0.0.UCS_A.TempFolder_x" (starts with SEQ #12) ---
+;---
+"files\temp\ucs-ad-connector-service.cmd" ucs_ad_connector_service.cmd /DATE=2010-07-25 /TIME=09:35:16

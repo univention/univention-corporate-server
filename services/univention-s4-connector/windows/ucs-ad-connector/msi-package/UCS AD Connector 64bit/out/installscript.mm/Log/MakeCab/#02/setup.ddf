@@ -1,0 +1,73 @@
+;======================================================================
+; Generated at  : 26.07.2010 07:26:02
+; Compile Reason: Compiling the documentation that MAKEMSI generated
+; Caching to    : No caching for this compile
+;======================================================================
+
+.Option explicit
+.Set MaxErrors=1
+.Set UniqueFiles=ON
+.Set MaxDiskSize=1998950400
+.Set MaxDiskSize1=1997934592
+.Set InfHeader=
+.Set InfFooter=
+.Set DiskDirectoryTemplate=.
+.Set Cabinet=ON
+
+
+;---The following are for options that can vary per MAKEMSI "Compile" command ----
+.Set Compress=ON
+.Set CompressionType=LZX
+.Set CompressionLevel=7
+.Set CompressionMemory=21
+.Set ClusterSize=4096
+
+
+
+
+
+.Set ReservePerCabinetSize=8
+.Set   FolderSizeThreshold=1
+
+
+.Set         RptFileName=out\installscript.mm\Log\MakeCab\#02\setup.rpt
+.Set         InfFileName=out\installscript.mm\Log\MakeCab\#02\setup.inf
+.Set        CabinetName1=out\installscript.mm\Log\MakeCab\#02\MM02.cab
+.Set CabinetNameTemplate=out\installscript.mm\Log\MakeCab\#02\MM02_*.CAB
+
+
+.Set InfDiskHeader=
+.Set InfDiskHeader1=";=================================="
+.Set InfDiskHeader2=";===          DISK List         ==="
+.Set InfDiskHeader3=";=== <disk number>,<disk label> ==="
+.Set InfDiskHeader4=";=================================="
+.Set InfDiskHeader5=[disk list]
+.Set InfDiskLineFormat=*disk#*,*label*
+
+
+.Set InfCabinetHeader=
+.Set InfCabinetHeader1=";==========================================================="
+.Set InfCabinetHeader2=";===                   CABINET List                      ==="
+.Set InfCabinetHeader3=";=== <cabinet number>,<disk number>,<cabinet file name>  ==="
+.Set InfCabinetHeader4=";==========================================================="
+.Set InfCabinetHeader5=[cabinet list]
+.Set InfCabinetLineFormat=*cab#*,*disk#*,*cabfile*
+
+
+.Set InfFileHeader=
+.Set InfFileHeader1=";==============================================================="
+.Set InfFileHeader2=";===                        File List                        ==="
+.Set InfFileHeader3=";=== <disk number>,<cabinet number>,<file key>,<file number> ==="
+.Set InfFileHeader4=";==============================================================="
+.Set InfFileHeader5=[file list]
+.Set InfFileLineFormat=*disk#*,*cab#*,*file*,*file#*
+
+
+
+
+
+
+;---
+;--- Component #1 "MAKEMSI_Documentation" (starts with SEQ #13) ---
+;---
+"out\installscript.mm\MSI\setup.hta" MAKEMSI_Documentation /DATE=2010-07-26 /TIME=07:25:58

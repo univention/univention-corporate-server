@@ -1,0 +1,3660 @@
+#####################################################################################
+#################################[ SUPPORT ] ########################################
+#####################################################################################
+### This file logs what you see on the console plus much more useful stuff for    ###
+### problem resolution.  There are options that allow you to alter the level      ###
+### of detail in this file.                                                       ###
+### ############################################################################# ###
+### The best place to get help for MAKEMSI specific questions is the MAKEMSI      ###
+### group, see:                                                                   ###
+###                                                                               ###
+###         http://makemsi-manual.dennisbareis.com/the_makemsi_group.htm          ###
+###                                                                               ###
+### For Windows Installer related help its best to ask questions in other forums, ###
+### there are also many sources of msi informations, I have collected a good      ###
+### range of links at:                                                            ###
+###                                                                               ###
+###         http://makemsi-manual.dennisbareis.com/links.htm                      ###
+###                                                                               ###
+### I will probably want you to supply at LEAST this file and the source          ###
+### code ZIPPED up if reporting a problems or bugs...                             ###
+###                                                                               ###
+### Note that I may not be able to help if you are on an old version of MAKEMSI,  ###
+### please try on the latest version before reporting issues.                     ###
+#####################################################################################
+ 
+ 
+[28.09.2010 14:58:40,52 - Diagnostic info cmd]: cscript.exe //NoLogo "C:\Programme\MakeMsi\VersionInformationBox.vbs" 
+
+This computer has Windows Installer 3.0.3790.2538 and WSH 5.6 on Microsoft Windows XP (5.1.2600 Service Pack 2)
+
+MAKEMSI is at version 10.169
+                            
+                            
+[28.09.2010 14:58:41,00 - Diagnostic info cmd]: set 
+ALLUSERSPROFILE=C:\Dokumente und Einstellungen\All Users
+APPDATA=C:\Dokumente und Einstellungen\stegoh\Anwendungsdaten
+BuffSize=32000
+CLIENTNAME=Console
+CommonProgramFiles=C:\Programme\Gemeinsame Dateien
+COMPUTERNAME=DIANE
+ComSpec=C:\WINDOWS\system32\cmd.exe
+DbgCmd=set
+DEBUGFILE=out\installscript.DBG.TXT
+DEFAULT_CA_NR=CA8
+FC=p
+FP_NO_HOST_CHECK=NO
+HOMEDRIVE=C:
+HOMEPATH=\Dokumente und Einstellungen\stegoh
+LOGONSERVER=\\DIANE
+MAKEMSI_DB_COMPARE_TEMPLATE.MSI=C:\Programme\MakeMsi\UiSample.MSI
+MAKEMSI_DIR=C:\Programme\MakeMsi\
+MAKEMSI_MM_SUPPORT_TEXT=C:\Programme\MakeMsi\MM_SUPPORT_TEXT.txt
+MAKEMSI_MSIVAL2_DIR=C:\Programme\MSIVAL2
+MmMode=P
+MmModeList=DdPp
+MmName=installscript
+MMQ=installscript.mm
+NUMBER_OF_PROCESSORS=1
+OS=Windows_NT
+Path=C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Programme\Internet Explorer;C:\Programme\Gemeinsame Dateien\Teleca Shared;C:\Programme\Intuwave\Shared\mRouterRuntime;C:\Programme\MakeMsi\
+PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.4mm
+PPWIZARD_INCLUDE=C:\Programme\MakeMsi\
+PPWIZARD_TEST_REGINA_VER=3.3(JULIAN)(MT)
+PROCESSOR_ARCHITECTURE=x86
+PROCESSOR_IDENTIFIER=x86 Family 6 Model 23 Stepping 10, GenuineIntel
+PROCESSOR_LEVEL=6
+PROCESSOR_REVISION=170a
+ProgramFiles=C:\Programme
+PROMPT=$P$G
+REGINA_MACROS=C:\Programme\MakeMsi\
+RootDir=out\*.*
+SESSIONNAME=Console
+SystemDrive=C:
+SystemRoot=C:\WINDOWS
+TEMP=C:\DOKUME~1\stegoh\LOKALE~1\Temp
+TMP=C:\DOKUME~1\stegoh\LOKALE~1\Temp
+USERDOMAIN=DIANE
+USERNAME=stegoh
+USERPROFILE=C:\Dokumente und Einstellungen\stegoh
+windir=C:\WINDOWS
+                            
+                            
+[28.09.2010 14:58:41,14 - CMD]: chcp 1252 
+Aktive Codepage: 1252.
+             
+[28.09.2010 14:58:41,24 - CMD]: reg4mm.exe PPWIZ4MM.4MM '/ConsoleFile:+out\installscript.DBG.TXT' /ErrorFile: /OTHER 'installscript.mm' /Define:MmMode=P /DeleteOnError:N '/Output:out\*.*\IgnoreMe.txt' /Sleep:0,0 '/BuildTitle:/OTHER/Building from {x22}{IS}{x22}' /option:Tabs='4' /IncludePath=*MAKEMSI_USER_FILES_PATH;*MAKEMSI_COMPANY_SUPPORT_DIR;  
+                 
+
+
+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
+                        Tuesday, 28 Sep 2010 2:58:43pm
+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
+
+[]---------------------------------------------------------[]
+| PPWIZ4MM.4MM: Version 08.307 (dbareis@gmail.com)          |
+|               http://dennisbareis.com/index.htm           |
+| (C)opyright Dennis Bareis 1997-2006. ALL RIGHTS RESERVED. |
+[]---------------------------------------------------------[]
+
+Building from "installscript.mm"
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   - Making: out\installscript.mm\IgnoreMe.txt
+   * Reading: installscript.mm
+     * Reading: C:\Programme\MakeMsi\ME.MMH
+       * Reading: C:\Programme\MakeMsi\DEPT.MMH
+         * Reading: C:\Programme\MakeMsi\COMPANY.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\MmVersion.mmh
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             (@30)INFO: MAKEMSI version 10.169
+             (@31)INFO: (C)opyright Dennis Bareis, Australia (2003-2008)
+             (@32)INFO: All rights reserved.
+             (@43)INFO: WEB    : "http://dennisbareis.com/makemsi.htm"
+             (@43)INFO: SUPPORT: "http://makemsi-manual.dennisbareis.com/the_makemsi_group.htm"
+             (@43)INFO: EMAIL  : "dbareis@SpamBeGone.gmail.com"
+             * Reading: C:\Programme\MakeMsi\debug.mmh
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\InvalidMacros.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\HookInto.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\MacroCfg.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\FileMake.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\SourceFile.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\SUNDRY.MMH
+               * Reading: C:\Programme\MakeMsi\List.MMH
+             * Reading: C:\Programme\MakeMsi\SUNDRY.MMH
+               * Reading: C:\Programme\MakeMsi\ImportTranslations.MMH
+             * Reading: C:\Programme\MakeMsi\SUNDRY.MMH
+               * Reading: C:\Programme\MakeMsi\ProductValidation.MMH
+             * Reading: C:\Programme\MakeMsi\SUNDRY.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\MMMODE.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Platform.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\OnExit.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Valid.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Samples.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Location.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Stamp.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\MSI.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\TableRow.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\TableDef.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Tables.MMH
+
+                 >> MsiValFilter(Case sensitive): Complete functionality of the Shortcut table is only available with Windows Installer version 4.0
+                    >> Reason: Prevents nagging if not generating msis requiring Windows Installer version 4
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\TableIE.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Access.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Feature.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Component.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Summary.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Property.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Icon.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\ShortCut.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\ShortCutUrl.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Registry.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\KeyPath.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\RemFile.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Environ.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\DirMap.MMH
+                 >> MapUserDir: "C:\Program Files\" (any case) to "[ProgramFilesFolder]\"
+                 >> MapUserDir: "C:\Windows\" (any case) to "[WindowsFolder]\"
+                 >> MapUserDir: "C:\WinNT\" (any case) to "[WindowsFolder]\"
+                 >> MapUserDir: "C:\Windows\System32\" (any case) to "[SystemFolder]\"
+                 >> MapUserDir: "C:\WinNT\System32\" (any case) to "[SystemFolder]\"
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\DirTree.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Dir1.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\DirCompress.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\File.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Files.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\FileCmt.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\RegistryCmt.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Binary.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\VER.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Guid.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Dialog.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\DialogTemplate.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\VbsCA.MMH
+               * Reading: C:\Programme\MakeMsi\VbsCa-StartEnd.MMH
+             * Reading: C:\Programme\MakeMsi\VbsCA.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\JsCA.MMH
+               * Reading: C:\Programme\MakeMsi\JsCa-StartEnd.MMH
+             * Reading: C:\Programme\MakeMsi\JsCA.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\ExeCA.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\DllCA.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\DllCA-C.MMH
+               (@76)INFO: SDK: 
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Extn.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Service.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Ini.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Find.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\AbortIf.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Schedule.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\ADSI.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\ComPlus.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\RegImport.MMH
+               * Reading: C:\Programme\MakeMsi\NotMsiFmt.MMH
+             * Reading: C:\Programme\MakeMsi\RegImport.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\IniImport.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\WrapInst.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\MergeMod.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\RunCmd.mmh
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\COMPILE.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\CodePage.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\SrcCode.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\SelfReg.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\MsiExtra.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\TransformMsi.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Py2MSI.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\CaType.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\Seq#.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+             * Reading: C:\Programme\MakeMsi\CommonFrameWork.MMH
+           * Reading: C:\Programme\MakeMsi\MakeMsi.MMH
+           * Reading: version.Ver
+             (@376)INFO: Reading Product information from the VER file...
+             (@376)INFO: KEYWORD "Note" is defaulting...
+             (@376)INFO: KEYWORD "UpgradeCodes" is defaulting...
+             (@388)INFO: PRODUCT NAME : UCS AD Connector
+             (@388)INFO: PRODUCT VER  : 1.0.0
+         * Reading: C:\Programme\MakeMsi\COMPANY.MMH
+           - Making: out\installscript.mm\Log\Pass1+2.vbs
+
+           14:58:56  Script : COMPANY.MMH(182) - @VBS0001
+           14:58:56  Command: <$COMPANY_GET_TEMPLATE_AND_OPEN_MSI>
+
+             >> Row Command for table: LaunchCondition
+                >> Condition       = NoSuchProperty.so.always.false
+                >> Description     = This MSI can't be installed as a MAKEMSI build or update did not successfully complete. <?xCRLF><?xCRLF>The failing script "installscript.mm" was executed at Tue Sep 28 2010 at 2:58:42pm.
+                >> @Validate       = NEW -MISSINGDATA
+                   >> @Validate mode: NEW -MISSINGDATA
+
+             >> Property command for: ARPCOMMENTS
+                >> Value comes from a LITERAL: MSI generated by MakeMsi version 10.169, a free tool by Dennis Bareis (http://dennisbareis.com/makemsi.htm)
+             >> Row Command for table: Property
+                >> Property        = ARPCOMMENTS
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:56  Script : COMPANY.MMH(225) - @VBS0016
+           14:58:56  Command: <$Summary "Security" *Value=^<$COMPANY_SECURITY_VALUE_VBEXP>^>
+
+
+           14:58:56  Script : COMPANY.MMH(256) - @VBS0017
+           14:58:56  Command: <$Table "Error">
+
+
+           14:58:56  Script : COMPANY.MMH(258) - @VBS0018
+           14:58:56  Command: <$@@ErrorMsg "1335">
+
+             >> Row Command for table: Error
+                >> Error           = 1335
+                >> Message         = The required cabinet file '[2]' may be corrupt or we could not create a file during extraction. This could indicate a network error, an error reading from the CD-ROM, a problem with this package, or perhaps a problem extracting a file (destination path too long?).
+                   >> @Validate mode: FIELD
+
+
+           14:58:56  Script : COMPANY.MMH(261) - @VBS0020
+           14:58:56  Command: <$@@ErrorMsg "1720">
+
+             >> Row Command for table: Error
+                >> Error           = 1720
+                >> Message         = CUSTOM ACTION SCRIPT "[2]" COULDN'T START (OR TRAPPED DURING INITIALIZATION*). ERROR [3], [4]: [5] LINE [6], COLUMN [7], [8]
+                   >> @Validate mode: FIELD
+
+
+           14:58:56  Script : COMPANY.MMH(262) - @VBS0022
+           14:58:56  Command: <$@@ErrorMsg "2740">
+
+             >> Row Command for table: Error
+                >> Error           = 2740
+                >> Message         = CUSTOM ACTION SCRIPT "[2]" STARTED BUT FAILED. ERROR [3], [4]: [5] LINE [6], COLUMN [7], [8]
+                   >> @Validate mode: FIELD
+
+
+           14:58:56  Script : COMPANY.MMH(265) - @VBS0024
+           14:58:56  Command: <$@@ErrorMsg "2705"> ;;ICE03 error at validation time, but if not validating...
+
+             >> Row Command for table: Error
+                >> Error           = 2705
+                >> Message         = Invalid table: "[2]" - Could not be linked as tree (this can occur if a directory tables "parent" directory is missing).
+                   >> @Validate mode: FIELD
+
+
+           14:58:56  Script : COMPANY.MMH(268) - @VBS0026
+           14:58:56  Command: <$@@ErrorMsg "1721">
+
+             >> Row Command for table: Error
+                >> Error           = 1721
+                >> Message         = CUSTOM ACTION "[2]" FAILED (could not start it). LOCATION: [3], COMMAND: [4]
+                   >> @Validate mode: FIELD
+
+
+           14:58:57  Script : COMPANY.MMH(269) - @VBS0028
+           14:58:57  Command: <$@@ErrorMsg "1722">
+
+             >> Row Command for table: Error
+                >> Error           = 1722
+                >> Message         = CUSTOM ACTION "[2]" FAILED (unexpected return code). LOCATION: [3], COMMAND: [4]
+                   >> @Validate mode: FIELD
+
+
+           14:58:57  Script : COMPANY.MMH(272) - @VBS0030
+           14:58:57  Command: <$@@ErrorMsg "2103">
+
+             >> Row Command for table: Error
+                >> Error           = 2103
+                >> Message         = Could not resolve path for the shell folder "[2]". If the MSI is being executed under the SYSTEM account then remember that you must have ALLUSERS=1.
+                   >> @Validate mode: FIELD
+
+
+           14:58:57  Script : COMPANY.MMH(273) - @VBS0032
+           14:58:57  Command: <$@@ErrorMsg "2755">
+
+             >> Row Command for table: Error
+                >> Error           = 2755
+                >> Message         = The server process failed processing the package "[3]" (RC = [2]). A return code of 3 probably indicates a problem accessing the drive or directory (substituted drives and network drives can be problematic). A return code of 110 probably indicates an error opening the MSI file (this can occur if the MSI is encrypted). Try moving the MSI to C:\ (make sure its not compressed or encrypted).
+                   >> @Validate mode: FIELD
+
+
+           14:58:57  Script : COMPANY.MMH(276) - @VBS0034
+           14:58:57  Command: <$@@ErrorMsg "1909">
+
+             >> Row Command for table: Error
+                >> Error           = 1909
+                >> Message         = Could not create Shortcut [2]. Verify that the destination folder exists and that you can access it. This can also happen if the "Target" of a shortcut doesn't exist (or not fully qualified) in the MSI.
+                   >> @Validate mode: FIELD
+
+
+           14:58:57  Script : COMPANY.MMH(277) - @VBS0036
+           14:58:57  Command: <$/Table>
+
+
+           14:58:57  Script : COMPANY.MMH(314) - @VBS0037
+           14:58:57  Command: <$Table "Billboard">
+
+
+           14:58:57  Script : COMPANY.MMH(315) - @VBS0038
+           14:58:57  Command: <$TableDelete>
+
+
+           14:58:57  Script : COMPANY.MMH(316) - @VBS0039
+           14:58:57  Command: <$/Table>
+
+
+           14:58:57  Script : COMPANY.MMH(321) - @VBS0040
+           14:58:57  Command: <$Table "_Validation">
+
+
+           14:58:57  Script : COMPANY.MMH(328) - @VBS0041
+           14:58:57  Command: <$Row @Where="`Table` = 'ListView' AND `Column` = 'Value'" @OK='=1' Category="Formatted" >
+
+             >> Row Command for table: _Validation
+                >> @Where          = `Table` = 'ListView' AND `Column` = 'Value'
+                >> @OK             = =1
+                >> Category        = Formatted
+                   >> @Validate mode: FETCH
+
+
+           14:58:57  Script : COMPANY.MMH(329) - @VBS0043
+           14:58:57  Command: <$/Table>
+
+
+           14:58:57  Script : COMPANY.MMH(335) - @VBS0044
+           14:58:57  Command: <$TableCreate "FeatureComponents" DropExisting="N"> ;;Windows Installer will PV in MSI.DLL (in UI sequence) if missing
+
+
+           14:58:57  Script : COMPANY.MMH(336) - @VBS0047
+           14:58:57  Command: <$TableCreate "File" DropExisting="N"> ;;Windows Installer needs table (even if empty)
+
+
+           14:58:57  Script : COMPANY.MMH(337) - @VBS0050
+           14:58:57  Command: <$TableCreate "Media" DropExisting="N"> ;;Windows Installer needs table (even if empty)
+
+
+           14:58:57  Script : COMPANY.MMH(342) - @VBS0053
+           14:58:57  Command: <$TableCreate "<$MAKEMSI_TABLENAME_FILESOURCE>">
+
+
+           14:58:57  Script : COMPANY.MMH(388) - @VBS0057
+           14:58:57  Command: <$TableCreate "MsiFileHash">
+
+
+           14:58:57  Script : COMPANY.MMH(389) - @VBS0061
+           14:58:57  Command: <$Table "_Validation">
+
+
+           14:58:57  Script : COMPANY.MMH(400) - @VBS0062
+           14:58:57  Command: <$Row Table="MsiFileHash" Column="File_" Nullable="N" KeyTable="File" KeyColumn="1" Category="Identifier" Description="Foreign key into the File table." >
+
+             >> Row Command for table: _Validation
+                >> Table           = MsiFileHash
+                >> Column          = File_
+                >> Nullable        = N
+                >> KeyTable        = File
+                >> KeyColumn       = 1
+                >> Category        = Identifier
+                >> Description     = Foreign key into the File table.
+                   >> @Validate mode: FIELD
+
+
+           14:58:57  Script : COMPANY.MMH(411) - @VBS0064
+           14:58:57  Command: <$Row Table="MsiFileHash" Column="Options" Nullable="N" Category="Integer" MinValue="0" MaxValue="0" Description="Reserved option (must be 0)." >
+
+             >> Row Command for table: _Validation
+                >> Table           = MsiFileHash
+                >> Column          = Options
+                >> Nullable        = N
+                >> Category        = Integer
+                >> MinValue        = 0
+                >> MaxValue        = 0
+                >> Description     = Reserved option (must be 0).
+                   >> @Validate mode: FIELD
+
+
+           14:58:57  Script : COMPANY.MMH(422) - @VBS0066
+           14:58:57  Command: <$HashRow "1">
+
+             >> Row Command for table: _Validation
+                >> Table           = MsiFileHash
+                >> Column          = HashPart1
+                >> Nullable        = N
+                >> Category        = DoubleInteger
+                >> Description     = MD5 part 1/4.
+                   >> @Validate mode: FIELD
+
+
+           14:58:57  Script : COMPANY.MMH(423) - @VBS0068
+           14:58:57  Command: <$HashRow "2">
+
+             >> Row Command for table: _Validation
+                >> Table           = MsiFileHash
+                >> Column          = HashPart2
+                >> Nullable        = N
+                >> Category        = DoubleInteger
+                >> Description     = MD5 part 2/4.
+                   >> @Validate mode: FIELD
+
+
+           14:58:57  Script : COMPANY.MMH(424) - @VBS0070
+           14:58:57  Command: <$HashRow "3">
+
+             >> Row Command for table: _Validation
+                >> Table           = MsiFileHash
+                >> Column          = HashPart3
+                >> Nullable        = N
+                >> Category        = DoubleInteger
+                >> Description     = MD5 part 3/4.
+                   >> @Validate mode: FIELD
+
+
+           14:58:57  Script : COMPANY.MMH(425) - @VBS0072
+           14:58:57  Command: <$HashRow "4">
+
+             >> Row Command for table: _Validation
+                >> Table           = MsiFileHash
+                >> Column          = HashPart4
+                >> Nullable        = N
+                >> Category        = DoubleInteger
+                >> Description     = MD5 part 4/4.
+                   >> @Validate mode: FIELD
+
+
+           14:58:57  Script : COMPANY.MMH(426) - @VBS0074
+           14:58:57  Command: <$/Table>
+
+
+           14:58:57  Script : COMPANY.MMH(476) - @VBS0075
+           14:58:57  Command: <$Feature "<$COMPANY_COMPLETE_FEATURE>" Directory_="<$COMPANY_COMPLETE_FEATURE_DIRECTORY>" Title="<$COMPANY_COMPLETE_FEATURE_TITLE>" Description="<$COMPANY_COMPLETE_FEATURE_DESCRIPTION>" Attributes="<$COMPANY_COMPLETE_FEATURE_ATTRIBUTES>" Display="<$COMPANY_COMPLETE_FEATURE_DISPLAY>" >
+
+             >> Row Command for table: Feature
+                >> Feature         = ALL.1.0.0.UCS_AD_Connector
+                >> Feature_Parent  = 
+                >> Title           = Complete
+                >> Description     = The Complete feature
+                >> Display         = 1
+                >> Level           = 3
+                >> Directory_      = 
+                >> Attributes      = msidbFeatureAttributesUIDisallowAbsent
+                   >> @Validate mode: FIELD
+
+
+           14:58:57  Script : COMPANY.MMH(583) - @VBS0080
+           14:58:57  Command: <$COMPANY_SET_PROPERTY_UPGRADECODE> ;;User can override above macros to change behaviour...
+
+             >> Property command for: UpgradeCode
+                >> Value comes from a VB EXPRESSION: UpgradeCode
+             >> Row Command for table: Property
+                >> Property        = UpgradeCode
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:58  Script : COMPANY.MMH(584) - @VBS0087
+           14:58:58  Command: <$COMPANY_SET_PROPERTY_PRODUCTCODE>
+
+             >> Property command for: ProductCode
+                >> Value comes from a VB EXPRESSION: GuidMake("ProductCode")
+             >> Row Command for table: Property
+                >> Property        = ProductCode
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:58  Script : COMPANY.MMH(585) - @VBS0093
+           14:58:58  Command: <$COMPANY_SET_PROPERTY_PACKAGECODE>
+
+
+           14:58:58  Script : COMPANY.MMH(595) - @VBS0094
+           14:58:58  Command: <$Property "ALLUSERS" Value="<$COMPANY_ALLUSERS_PROPERTY>">
+
+             >> Property command for: ALLUSERS
+                >> Value comes from a LITERAL: 1
+             >> Row Command for table: Property
+                >> Property        = ALLUSERS
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:58  Script : COMPANY.MMH(607) - @VBS0100
+           14:58:58  Command: <$Property "REINSTALLMODE" Value=^<$COMPANY_REINSTALLMODE>^>
+
+             >> Property command for: REINSTALLMODE
+                >> Value comes from a LITERAL: amus
+             >> Row Command for table: Property
+                >> Property        = REINSTALLMODE
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:58  Script : COMPANY.MMH(619) - @VBS0106
+           14:58:58  Command: <$Property "ProductName" Value="<$COMPANY_PROPERTY_PRODUCTNAME>">
+
+             >> Property command for: ProductName
+                >> Value comes from a LITERAL: UCS AD Connector
+             >> Row Command for table: Property
+                >> Property        = ProductName
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:58  Script : COMPANY.MMH(637) - @VBS0112
+           14:58:58  Command: <$Summary "TEMPLATE" Value="<$COMPANY_SUMMARY_TEMPLATE>">
+
+
+           14:58:58  Script : COMPANY.MMH(641) - @VBS0113
+           14:58:58  Command: <$Summary "MsiSchema" Value="<$COMPANY_SUMMARY_SCHEMA>">
+
+
+           14:58:58  Script : COMPANY.MMH(643) - @VBS0114
+           14:58:58  Command: <$Summary "TITLE" VALUE="<$COMPANY_SUMMARY_TITLE>">
+
+
+           14:58:58  Script : COMPANY.MMH(644) - @VBS0115
+           14:58:58  Command: <$Summary "Subject" VALUE="<$COMPANY_SUMMARY_SUBJECT>">
+
+
+           14:58:58  Script : COMPANY.MMH(645) - @VBS0116
+           14:58:58  Command: <$Summary "SourceType" Value="<$COMPANY_SUMMARY_SourceType>">
+
+
+           14:58:58  Script : COMPANY.MMH(646) - @VBS0117
+           14:58:58  Command: <$Summary "CREATE_DTM" VALUE="now()">
+
+
+           14:58:58  Script : COMPANY.MMH(647) - @VBS0118
+           14:58:58  Command: <$Summary "EDITTIME" VALUE="now()">
+
+
+           14:58:58  Script : COMPANY.MMH(648) - @VBS0119
+           14:58:58  Command: <$Summary "LASTSAVE_DTM" *VALUE="Empty"> ;;Don't want
+
+
+           14:58:58  Script : COMPANY.MMH(649) - @VBS0120
+           14:58:58  Command: <$Summary "LASTPRINTED" *VALUE=^Empty^> ;;Don't want
+
+
+           14:58:58  Script : COMPANY.MMH(653) - @VBS0121
+           14:58:58  Command: <$Html2Text VBVAR="VB_COMMENTS" HTML=^<$COMPANY_SUMMARY_COMMENTS>^>
+
+
+           14:58:58  Script : COMPANY.MMH(654) - @VBS0124
+           14:58:58  Command: <$Summary "COMMENTS" *VALUE="VB_COMMENTS">
+
+
+           14:58:58  Script : COMPANY.MMH(665) - @VBS0125
+           14:58:58  Command: <$Property "Manufacturer" Value="<$COMPANY_PROPERTY_MANUFACTURER>">
+
+             >> Property command for: Manufacturer
+                >> Value comes from a LITERAL: My Name
+             >> Row Command for table: Property
+                >> Property        = Manufacturer
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:58  Script : COMPANY.MMH(666) - @VBS0131
+           14:58:58  Command: <$Summary "AUTHOR" VALUE="<$COMPANY_SUMMARY_AUTHOR>">
+
+
+           14:58:58  Script : COMPANY.MMH(667) - @VBS0132
+           14:58:58  Command: <$Summary "LastAuthor" VALUE="<$COMPANY_SUMMARY_LASTAUTHOR>">
+
+
+           14:58:58  Script : COMPANY.MMH(676) - @VBS0133
+           14:58:58  Command: <$Property "ARPCONTACT" VALUE=^<$COMPANY_CONTACT_NAME>^>
+
+             >> Property command for: ARPCONTACT
+                >> Value comes from a LITERAL: My Name
+             >> Row Command for table: Property
+                >> Property        = ARPCONTACT
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:58  Script : COMPANY.MMH(691) - @VBS0139
+           14:58:58  Command: <$Property "ARPURLINFOABOUT" Value="<$COMPANY_ARP_URL_PUBLISHER>">
+
+             >> Property command for: ARPURLINFOABOUT
+                >> Value comes from a LITERAL: http://www.MyUrl.com/See/ME.MMH/
+             >> Row Command for table: Property
+                >> Property        = ARPURLINFOABOUT
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:58  Script : COMPANY.MMH(695) - @VBS0145
+           14:58:58  Command: <$Property "ARPHELPLINK" Value="<$COMPANY_ARP_URL_TECHNICAL_SUPPORT>">
+
+             >> Property command for: ARPHELPLINK
+                >> Value comes from a LITERAL: http://www.MyUrl.com/See/ME.MMH/Support
+             >> Row Command for table: Property
+                >> Property        = ARPHELPLINK
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:58  Script : COMPANY.MMH(707) - @VBS0151
+           14:58:58  Command: <$Property "ProductVersion" Value="<$ProductVersion>">
+
+             >> Property command for: ProductVersion
+                >> Value comes from a LITERAL: 1.0.0
+             >> Row Command for table: Property
+                >> Property        = ProductVersion
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:58  Script : COMPANY.MMH(711) - @VBS0157
+           14:58:58  Command: <$Html2Text VBVAR="VB_ARPCOMMENTS" HTML=^<$COMPANY_PROPERTY_ARPCOMMENTS>^>
+
+
+           14:58:58  Script : COMPANY.MMH(722) - @VBS0160
+           14:58:58  Command: <$Property "ARPCOMMENTS" *VALUE="VB_ARPCOMMENTS">
+
+             >> Property command for: ARPCOMMENTS
+                >> Value comes from a VB EXPRESSION: VB_ARPCOMMENTS
+             >> Row Command for table: Property
+                >> Property        = ARPCOMMENTS
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+             >> Macro UpgradeTable: #1: =UpgradeCode
+             >> Looking for config in macro: UpgradeCode_VALIDATE
+             >>   Not found so getting value from: UPGRADETABLE_DEFAULT_VALIDATE
+             >>     Value found: NEW
+             >> Looking for config in macro: UpgradeCode_ATTRIBUTES
+             >>   Not found so getting value from: UPGRADETABLE_DEFAULT_ATTRIBUTES
+             >>     Value found: (msidbUpgradeAttributesVersionMinInclusive or msidbUpgradeAttributesVersionMaxInclusive or msidbUpgradeAttributesLanguagesExclusive)
+             >> Looking for config in macro: UpgradeCode_REMOVE
+             >>   Not found so getting value from: UPGRADETABLE_DEFAULT_REMOVE
+             >>     Value found: ALL
+             >> Looking for config in macro: UpgradeCode_VERSION_MIN
+             >>   Not found so getting value from: UPGRADETABLE_DEFAULT_VERSION_MIN
+             >>     Value found: 
+             >> Looking for config in macro: UpgradeCode_VERSION_MAX
+             >>   Not found so getting value from: UPGRADETABLE_DEFAULT_VERSION_MAX
+             >>     Value found: 
+             >> Looking for config in macro: UpgradeCode_LANGUAGE
+             >>   Not found so getting value from: UPGRADETABLE_DEFAULT_LANGUAGE
+             >>     Value found: 
+             >> Looking for config in macro: UpgradeCode_PROPERTY
+             >>   Value found: UNINSTALLTHIS
+
+           14:58:58  Script : COMPANY.MMH(735) - @VBS0166
+           14:58:58  Command: <$UpgradeTable "=UpgradeCode"> ;;Use value in VB variable
+
+             >> Row Command for table: Upgrade
+                >> *UpgradeCode    = UpgradeCode
+                >> Attributes      = (msidbUpgradeAttributesVersionMinInclusive or msidbUpgradeAttributesVersionMaxInclusive or msidbUpgradeAttributesLanguagesExclusive)
+                >> Remove          = ALL
+                >> ActionProperty  = UNINSTALLTHIS
+                >> VersionMin      = 
+                >> VersionMax      = 
+                >> Language        = 
+                >> @Validate       = NEW
+                   >> @Validate mode: NEW
+
+             >> Row Command for table: Property
+                >> @SelfRef        = {*}
+                >> @Code           = Y
+                >> @where          = `Property` = 'SecureCustomProperties'
+                >> *Value          = {*} & ";UNINSTALLTHIS"
+                   >> @Validate mode: FETCH
+
+             >> Property command for: SecureCustomProperties
+                >> Value comes from a LITERAL: UNINSTALLTHIS
+             >> Row Command for table: Property
+                >> Property        = SecureCustomProperties
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:59  Script : COMPANY.MMH(756) - @VBS0183
+           14:58:59  Command: <$COMPANY_MOVE_RemoveExistingProducts>
+
+             >> Row Command for table: InstallExecuteSequence
+                >> Action          = RemoveExistingProducts
+                >> *Sequence       = RepSeq
+                   >> @Validate mode: FIELD
+
+
+           14:58:59  Script : COMPANY.MMH(911) - @VBS0187
+           14:58:59  Command: <$Icon '<$COMPANY_PRODUCT_ICON>' Product="Y">
+
+             >> Row Command for table: Icon
+                >> Data            = C:\Programme\MakeMsi\MmDefaultProductIcon.ico
+                >> Name            = MmDefaultProductIcon.1.0.0.ico.exe
+                   >> @Validate mode: FIELD
+
+             >> Property command for: ARPPRODUCTICON
+                >> Value comes from a LITERAL: MmDefaultProductIcon.1.0.0.ico.exe
+             >> Row Command for table: Property
+                >> Property        = ARPPRODUCTICON
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+             >> MsiValFilter(Case sensitive): MmDefaultProductIcon.1.0.0.ico.exe
+                >> Reason: Microsoft bug in the validation. Ignore any messages mentioning this product icon's key (ICE36 "Icon Bloat" warning).
+
+           14:58:59  Script : COMPANY.MMH(939) - @VBS0198
+           14:58:59  Command: <$CompanyAddStampWithProperty "MakemsiVersion" VALUE=^<$MAKEMSI_VERSION>^>
+
+             >> Property command for: _MAKEMSI_MakemsiVersion
+                >> Value comes from a LITERAL: 10.169
+             >> Row Command for table: Property
+                >> Property        = _MAKEMSI_MakemsiVersion
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:59  Script : COMPANY.MMH(940) - @VBS0204
+           14:58:59  Command: <$CompanyAddStampWithProperty "BuildComputer" VALUE=^<$MAKEMSI_COMPUTERNAME>^>
+
+             >> Property command for: _MAKEMSI_BuildComputer
+                >> Value comes from a LITERAL: DIANE
+             >> Row Command for table: Property
+                >> Property        = _MAKEMSI_BuildComputer
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:59  Script : COMPANY.MMH(941) - @VBS0210
+           14:58:59  Command: <$CompanyAddStampWithProperty "BuildUser" VALUE=^<$MAKEMSI_USERNAME> in <$MAKEMSI_USERDOMAIN>^>
+
+             >> Property command for: _MAKEMSI_BuildUser
+                >> Value comes from a LITERAL: stegoh in DIANE
+             >> Row Command for table: Property
+                >> Property        = _MAKEMSI_BuildUser
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:59  Script : COMPANY.MMH(942) - @VBS0216
+           14:58:59  Command: <$CompanyAddStampWithProperty "BuildTime" VALUE=^<?CompileTime>^>
+
+             >> Property command for: _MAKEMSI_BuildTime
+                >> Value comes from a LITERAL: Tue Sep 28 2010 at 2:58:42pm
+             >> Row Command for table: Property
+                >> Property        = _MAKEMSI_BuildTime
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:59  Script : COMPANY.MMH(943) - @VBS0222
+           14:58:59  Command: <$CompanyAddStampWithProperty "ProcessingMode" VALUE=^<$MMMODE_DESCRIPTION>^>
+
+             >> Property command for: _MAKEMSI_ProcessingMode
+                >> Value comes from a LITERAL: Production
+             >> Row Command for table: Property
+                >> Property        = _MAKEMSI_ProcessingMode
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:59  Script : COMPANY.MMH(944) - @VBS0228
+           14:58:59  Command: <$CompanyAddStampWithProperty "SupportedPlatforms" VALUE=^<$PLATFORM_MsiSupportedWhere>^>
+
+             >> Property command for: _MAKEMSI_SupportedPlatforms
+                >> Value comes from a LITERAL: SUPPORTED on On any Windows Computer.
+             >> Row Command for table: Property
+                >> Property        = _MAKEMSI_SupportedPlatforms
+                >> *Value          = cb_PropValue
+                   >> @Validate mode: FIELD
+
+
+           14:58:59  Script : COMPANY.MMH(951) - @VBS0234
+           14:58:59  Command: <$Table "Property">
+
+
+           14:58:59  Script : COMPANY.MMH(952) - @VBS0235
+           14:58:59  Command: <$RowsDelete WHERE="Property = 'ShowUserRegistrationDlg'">
+
+
+           14:58:59  Script : COMPANY.MMH(953) - @VBS0236
+           14:58:59  Command: <$/Table>
+
+
+           14:58:59  Script : COMPANY.MMH(954) - @VBS0237
+           14:58:59  Command: <$Table "ControlEvent">
+
+
+           14:58:59  Script : COMPANY.MMH(955) - @VBS0238
+           14:58:59  Command: <$RowsDelete WHERE=^Dialog_ = 'LicenseAgreementDlg' AND Control_ = 'Next' AND Event = 'NewDialog' AND Argument = 'SetupTypeDlg' AND Condition = 'IAgree = "Yes" AND ShowUserRegistrationDlg <> 1'^>
+
+
+           14:58:59  Script : COMPANY.MMH(956) - @VBS0239
+           14:58:59  Command: <$RowsDelete WHERE=^Dialog_ = 'LicenseAgreementDlg' AND Control_ = 'Next' AND Event = 'NewDialog' AND Argument = 'UserRegistrationDlg' AND Condition = 'IAgree = "Yes" AND ShowUserRegistrationDlg = 1'^>
+
+
+           14:58:59  Script : COMPANY.MMH(957) - @VBS0240
+           14:58:59  Command: <$RowsDelete WHERE="Dialog_ = 'SetupTypeDlg' AND Control_ = 'Back' AND Event = 'NewDialog' AND Argument = 'LicenseAgreementDlg' AND Condition = 'ShowUserRegistrationDlg <> 1'">
+
+
+           14:58:59  Script : COMPANY.MMH(958) - @VBS0241
+           14:58:59  Command: <$RowsDelete WHERE="Dialog_ = 'SetupTypeDlg' AND Control_ = 'Back' AND Event = 'NewDialog' AND Argument = 'UserRegistrationDlg' AND Condition = 'ShowUserRegistrationDlg = 1'">
+
+
+           14:58:59  Script : COMPANY.MMH(968) - @VBS0242
+           14:58:59  Command: <$Row Dialog_="LicenseAgreementDlg" Control_="Next" Event="NewDialog" Argument="UserRegistrationDlg" Condition='IAgree = "Yes"' Ordering="1" >
+
+             >> Row Command for table: ControlEvent
+                >> Dialog_         = LicenseAgreementDlg
+                >> Control_        = Next
+                >> Event           = NewDialog
+                >> Argument        = UserRegistrationDlg
+                >> Condition       = IAgree = "Yes"
+                >> Ordering        = 1
+                   >> @Validate mode: FIELD
+
+
+           14:58:59  Script : COMPANY.MMH(979) - @VBS0244
+           14:58:59  Command: <$Row Dialog_="SetupTypeDlg" Control_="Back" Event="NewDialog" Argument="UserRegistrationDlg" Condition="1" Ordering="" >
+
+             >> Row Command for table: ControlEvent
+                >> Dialog_         = SetupTypeDlg
+                >> Control_        = Back
+                >> Event           = NewDialog
+                >> Argument        = UserRegistrationDlg
+                >> Condition       = 1
+                >> Ordering        = 
+                   >> @Validate mode: FIELD
+
+
+           14:58:59  Script : COMPANY.MMH(980) - @VBS0246
+           14:58:59  Command: <$/Table>
+
+           (@1,010)INFO: Have licence?: installscript.licence.rtf
+           (@1,019)INFO: Using licence: lizenz.rtf
+           - Making: out\installscript.mm\Log\PreProcessed.rtf
+           * Reading: lizenz.rtf
+         * Reading: C:\Programme\MakeMsi\COMPANY.MMH
+
+           14:59:01  Script : COMPANY.MMH(1050) - @VBS0247
+           14:59:01  Command: <$Table "Control">
+
+
+           14:59:01  Script : COMPANY.MMH(1055) - @VBS0248
+           14:59:01  Command: <$Row @Where="Dialog_='LicenseAgreementDlg' and Control='AgreementText'" @OK="? = 1" *Text=~"<??b_Text>"~ >
+
+             >> Row Command for table: Control
+                >> @Where          = Dialog_='LicenseAgreementDlg' and Control='AgreementText'
+                >> @OK             = ? = 1
+                >> *Text           = "{\rtf1\ansi\deff1\adeflang1025" & vbCR & "" & vbLF & "{\fonttbl{\f0\froman\fprq2\fcharset128 Liberation Serif{\*\falt Times New Roman};}{\f1\froman\fprq2\fcharset0 Times New Roman;}{\f2\fswiss\fprq2\fcharset128 Liberation Sans{\*\falt Arial};}{\f3\fswiss\fprq2\fcharset0 Calibri;}{\f4\froman\fprq2\fcharset0 Cambria;}{\f5\froman\fprq2\fcharset0 Times New Roman;}{\f6\fnil\fprq2\fcharset128 DejaVu Sans;}}" & vbCR & "" & vbLF & "{\colortbl;\red0\green0\blue0;\red79\green129\blue189;\red128\green128\blue128;}" & vbCR & "" & vbLF & "{\stylesheet{\s1\sa200\cf0\sl276\slmult1{\*\hyphen2\hyphlead2\hyphtrail2\hyphmax0}\aspalpha\rtlch\af3\afs22\lang1025\ltrch\dbch\langfe3079\hich\f3\fs22\lang3079\loch\f3\fs22\lang3079\snext1 Normal;}" & vbCR & "" & vbLF & "{\s2\sb240\sa120\keepn\cf0\sl276\slmult1{\*\hyphen2\hyphlead2\hyphtrail2\hyphmax0}\aspalpha\rtlch\af6\afs28\lang1025\ltrch\dbch\af6\langfe3079\hich\f2\fs28\lang3079\loch\f2\fs28\lang3079\sbasedon1\snext3 Heading;}" & vbCR & "" & vbLF & "{\s3\sa120\cf0\sl276\slmult1{\*\hyphen2\hyphlead2\hyphtrail2\hyphmax0}\aspalpha\rtlch\af3\afs22\lang1025\ltrch\dbch\langfe3079\hich\f3\fs22\lang3079\loch\f3\fs22\lang3079\sbasedon1\snext3 Body Text;}" & vbCR & "" & vbLF & "{\s4\sa120\cf0\sl276\slmult1{\*\hyphen2\hyphlead2\hyphtrail2\hyphmax0}\aspalpha\rtlch\af3\afs22\lang1025\ltrch\dbch\langfe3079\hich\f3\fs22\lang3079\loch\f3\fs22\lang3079\sbasedon3\snext4 List;}" & vbCR & "" & vbLF & "{\s5\sb120\sa120\cf0\sl276\slmult1{\*\hyphen2\hyphlead2\hyphtrail2\hyphmax0}\aspalpha\rtlch\af3\afs24\lang1025\ai\ltrch\dbch\langfe3079\hich\f3\fs24\lang3079\i\loch\f3\fs24\lang3079\i\sbasedon1\snext5 caption;}" & vbCR & "" & vbLF & "{\s6\sa200\cf0\sl276\slmult1{\*\hyphen2\hyphlead2\hyphtrail2\hyphmax0}\aspalpha\rtlch\af3\afs22\lang1025\ltrch\dbch\langfe3079\hich\f3\fs22\lang3079\loch\f3\fs22\lang3079\sbasedon1\snext6 Index;}" & vbCR & "" & vbLF & "{\s7\sb200\keepn\cf2\sl276\slmult1\keep{\*\hyphen2\hyphlead2\hyphtrail2\hyphmax0}\aspalpha\rtlch\af4\afs26\lang1025\ab\ltrch\dbch\langfe3079\hich\f4\fs26\lang3079\b\loch\f4\fs26\lang3079\b\sbasedon1\snext1{\*\soutlvl1} heading 2;}" & vbCR & "" & vbLF & "{\*\cs9\cf0\rtlch\af1\afs24\lang3079\ltrch\dbch\af1\langfe3079\hich\f1\fs24\lang3079\loch\f1\fs24\lang3079 Default Paragraph Font;}" & vbCR & "" & vbLF & "{\*\cs10\cf2\rtlch\af4\afs26\lang3079\ab\ltrch\dbch\langfe3079\hich\f4\fs26\lang3079\b\loch\f4\fs26\lang3079\b\sbasedon9 \'dcberschrift 2 Zchn;}" & vbCR & "" & vbLF & "}" & vbCR & "" & vbLF & "{\info{\author x}{\creatim\yr2010\mo6\dy16\hr19\min59}{\author x}{\revtim\yr2010\mo6\dy17\hr14\min37}{\printim\yr0\mo0\dy0\hr0\min0}{\comment StarWriter}{\vern3200}}\deftab708" & vbCR & "" & vbLF & "{\*\pgdsctbl" & vbCR & "" & vbLF & "{\pgdsc0\pgdscuse195\pgwsxn11906\pghsxn16838\marglsxn1417\margrsxn1417\margtsxn1417\margbsxn1134\pgdscnxt0 Standard;}}" & vbCR & "" & vbLF & "{\*\pgdscno0}\paperh16838\paperw11906\margl1417\margr1417\margt1417\margb1134\sectd\sbknone\pgwsxn11906\pghsxn16838\marglsxn1417\margrsxn1417\margtsxn1417\margbsxn1134\ftnbj\ftnstart1\ftnrstcont\ftnnar\aenddoc\aftnrstcont\aftnstart1\aftnnrlc" & vbCR & "" & vbLF & "\pard\plain \ltrpar\s7\cf2\sl276\slmult1\keep{\*\hyphen2\hyphlead2\hyphtrail2\hyphmax0}\aspalpha\sb200\keepn\ql\rtlch\af4\afs26\lang1025\ab\ltrch\dbch\langfe3079\hich\f4\fs26\lang1031\b\loch\f4\fs26\lang1031\b{\rtlch \ltrch\loch\f4\fs26\lang1031\i0\b\rtlch UCS AD Connector}" & vbCR & "" & vbLF & "\par \pard\plain \ltrpar\s7\cf2\sl276\slmult1\keep{\*\hyphen2\hyphlead2\hyphtrail2\hyphmax0}\aspalpha\sb200\keepn\ql\rtlch\af4\afs26\lang1025\ab\ltrch\dbch\langfe3079\hich\f4\fs26\lang1031\b\loch\f4\fs26\lang1031\b {\rtlch \ltrch\loch\f4\fs26\lang1031\i0\b Password synchronisation between UCS and Active Directory}" & vbCR & "" & vbLF & "\par }" & vbCR & "" & vbLF & ""
+                   >> @Validate mode: FETCH
+
+
+           14:59:02  Script : COMPANY.MMH(1056) - @VBS0250
+           14:59:02  Command: <$/Table>
+
+
+           14:59:02  Script : COMPANY.MMH(1066) - @VBS0251
+           14:59:02  Command: <$DialogRemove "UserRegistrationDlg">
+
+             >> Row Command for table: ControlEvent
+                >> @Where          = 
+                >> @OK             = ? > 0
+                >> @Code           = Y
+                   >> @Validate mode: FETCH
+
+             >> Row Command for table: ControlEvent
+                >> @Where          = 
+                >> @OK             = ? > 0
+                >> @Code           = Y
+                >> *Argument       = DlgArgument
+                   >> @Validate mode: FETCH
+
+
+             >> MsiValFilter(Case sensitive): Column: ExtendedType of Table: CustomAction is not defined in database
+                >> Reason: This column is optional
+       * Reading: C:\Programme\MakeMsi\DEPT.MMH
+     * Reading: C:\Programme\MakeMsi\ME.MMH
+       (@66)INFO: DLL custom action code will not be compressed (UPX.EXE not found)
+   * Reading: installscript.mm
+
+     14:59:02  Script : installscript.mm(15) - @VBS0278
+     14:59:02  Command: <$DialogRemove "SetupTypeDlg"> ;; do not ask for Typical Custom complete
+
+       >> Row Command for table: ControlEvent
+          >> @Where          = 
+          >> @OK             = ? > 0
+          >> @Code           = Y
+             >> @Validate mode: FETCH
+
+       >> Row Command for table: ControlEvent
+          >> @Where          = 
+          >> @OK             = ? > 0
+          >> @Code           = Y
+          >> *Argument       = DlgArgument
+             >> @Validate mode: FETCH
+
+
+     14:59:02  Script : installscript.mm(16) - @VBS0305
+     14:59:02  Command: <$DialogRemove "LicenseAgreementDlg"> ;;ignore lizenz.rtf File
+
+       >> Row Command for table: ControlEvent
+          >> @Where          = 
+          >> @OK             = ? > 0
+          >> @Code           = Y
+             >> @Validate mode: FETCH
+
+       >> Row Command for table: ControlEvent
+          >> @Where          = 
+          >> @OK             = ? > 0
+          >> @Code           = Y
+          >> *Argument       = DlgArgument
+             >> @Validate mode: FETCH
+
+
+     14:59:03  Script : installscript.mm(25) - @VBS0332
+     14:59:03  Command: <$DirectoryTree Key="INSTALLDIR" Dir="c:\Windows\UCS-AD-Connector" CHANGE="\" PrimaryFolder="Y">
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: c:\Windows\UCS-AD-Connector\
+          >> NAME     : INSTALLDIR
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "C:\WINDOWS\UCS-AD-CONNECTOR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "C:\WINDOWS\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\"?
+                >> YES! Translated to "[WINDOWSFOLDER]\UCS-AD-CONNECTOR\"
+             >> Does "[WINDOWSFOLDER]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\"?
+             >> Does "[WINDOWSFOLDER]\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[WINDOWSFOLDER]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [WindowsFolder]\UCS-AD-Connector
+             >> Look at: [WindowsFolder]
+          >> Extracting the BASE from "[WindowsFolder]\UCS-AD-Connector"
+
+          >> Work through the tree "UCS-AD-Connector" creating any required directories
+             >> Processing part "UCS-AD-Connector"
+                >> Creating key: "INSTALLDIR"
+                >> Parent   key: "WindowsFolder"
+                >> Full name: c:\Windows\UCS-AD-Connector
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+       >> Conditional directory "WindowsFolder" has been demanded!
+       >> Conditional directory "TARGETDIR" has been demanded!
+       >> Row Command for table: Directory
+          >> Directory       = TARGETDIR
+          >> Directory_Parent = 
+          >> DefaultDir      = SourceDir
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: Directory
+          >> Directory       = WindowsFolder
+          >> Directory_Parent = TARGETDIR
+          >> DefaultDir      = .:Windows
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: Directory
+          >> Directory       = INSTALLDIR
+          >> Directory_Parent = WindowsFolder
+          >> *DefaultDir     = MakeSfnLfn("WindowsFolder", "UCS-AD-Connector")
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: Feature
+          >> @Where          = `Feature` = 'ALL.1.0.0.UCS_AD_Connector'
+          >> @OK             = =1
+          >> Directory_      = INSTALLDIR
+             >> @Validate mode: FETCH
+
+       >> Row Command for table: CustomAction
+          >> Target          = [INSTALLDIR]
+          >> *Type           = &H0033
+          >> Action          = PropertyCa01_ARPINSTALLLOCATION
+          >> Source          = ARPINSTALLLOCATION
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: InstallExecuteSequence
+          >> Action          = PropertyCa01_ARPINSTALLLOCATION
+          >> Condition       = 
+          >> *Sequence       = SeqNo
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: CustomAction
+          >> Target          = [INSTALLDIR]
+          >> *Type           = &H0033
+          >> Action          = PropertyCa02_PRIMARYFOLDER
+          >> Source          = PRIMARYFOLDER
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: InstallExecuteSequence
+          >> Action          = PropertyCa02_PRIMARYFOLDER
+          >> Condition       = 
+          >> *Sequence       = SeqNo
+             >> @Validate mode: FIELD
+
+
+     14:59:03  Script : installscript.mm(35) - @VBS0370
+     14:59:03  Command: <$Files "files\Programme\UCS-AD-Connector\*.*" DestDir="INSTALLDIR">
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: [INSTALLDIR]\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [INSTALLDIR]
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: INSTALLDIR\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: INSTALLDIR
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+       >> Row Command for table: Component
+          >> Component       = c1.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.dll
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = INSTALLDIR
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = c1.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.dll
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = c1.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.dll
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 49152
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> *Language       = FileLanguage()
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-09-28
+          >> Time            = 13:54:38
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'c1.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.dll'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = copypwd.dll
+             >> @Validate mode: FETCH
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: [INSTALLDIR]\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [INSTALLDIR]
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: INSTALLDIR\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: INSTALLDIR
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+       >> Row Command for table: Component
+          >> Component       = c2.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.exe
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = INSTALLDIR
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = c2.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.exe
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = c2.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.exe
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 32768
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> *Language       = FileLanguage()
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-09-28
+          >> Time            = 13:54:38
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'c2.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.exe'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = copypwd.exe
+             >> @Validate mode: FETCH
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: [INSTALLDIR]\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [INSTALLDIR]
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: INSTALLDIR\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: INSTALLDIR
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+       >> Row Command for table: Component
+          >> Component       = c3.ALL.1.0.0.UCS_A.INSTALLDIR_1_libeay32.dll
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = INSTALLDIR
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = c3.ALL.1.0.0.UCS_A.INSTALLDIR_1_libeay32.dll
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = c3.ALL.1.0.0.UCS_A.INSTALLDIR_1_libeay32.dll
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 843776
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> *Language       = FileLanguage()
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-09-28
+          >> Time            = 13:54:38
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'c3.ALL.1.0.0.UCS_A.INSTALLDIR_1_libeay32.dll'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = libeay32.dll
+             >> @Validate mode: FETCH
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: [INSTALLDIR]\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [INSTALLDIR]
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: INSTALLDIR\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: INSTALLDIR
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+       >> Row Command for table: Component
+          >> Component       = c4.ALL.1.0.0.UCS_A.INSTALLDIR_1_libssl32.dll
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = INSTALLDIR
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = c4.ALL.1.0.0.UCS_A.INSTALLDIR_1_libssl32.dll
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = c4.ALL.1.0.0.UCS_A.INSTALLDIR_1_libssl32.dll
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 159744
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> *Language       = FileLanguage()
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-09-28
+          >> Time            = 13:54:40
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'c4.ALL.1.0.0.UCS_A.INSTALLDIR_1_libssl32.dll'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = libssl32.dll
+             >> @Validate mode: FETCH
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: [INSTALLDIR]\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [INSTALLDIR]
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: INSTALLDIR\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: INSTALLDIR
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+       >> Row Command for table: Component
+          >> Component       = c5.ALL.1.0.0.UCS_A.INSTALLDIR_1_lsremora.dll
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = INSTALLDIR
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = c5.ALL.1.0.0.UCS_A.INSTALLDIR_1_lsremora.dll
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = c5.ALL.1.0.0.UCS_A.INSTALLDIR_1_lsremora.dll
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 71168
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> *Language       = FileLanguage()
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-09-28
+          >> Time            = 14:09:56
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'c5.ALL.1.0.0.UCS_A.INSTALLDIR_1_lsremora.dll'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = lsremora.dll
+             >> @Validate mode: FETCH
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: [INSTALLDIR]\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [INSTALLDIR]
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: INSTALLDIR\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: INSTALLDIR
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+       >> Row Command for table: Component
+          >> Component       = c6.ALL.1.0.0.UCS_A.INSTALLDIR_1_lsremora64.dll
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = INSTALLDIR
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = c6.ALL.1.0.0.UCS_A.INSTALLDIR_1_lsremora64.dll
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = c6.ALL.1.0.0.UCS_A.INSTALLDIR_1_lsremora64.dll
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 80384
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> *Language       = FileLanguage()
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-09-28
+          >> Time            = 14:09:56
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'c6.ALL.1.0.0.UCS_A.INSTALLDIR_1_lsremora64.dll'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = lsremora64.dll
+             >> @Validate mode: FETCH
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: [INSTALLDIR]\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [INSTALLDIR]
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: INSTALLDIR\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: INSTALLDIR
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+       >> Row Command for table: Component
+          >> Component       = c7.ALL.1.0.0.UCS_A.INSTALLDIR_1_msvcr100.dll
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = INSTALLDIR
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = c7.ALL.1.0.0.UCS_A.INSTALLDIR_1_msvcr100.dll
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = c7.ALL.1.0.0.UCS_A.INSTALLDIR_1_msvcr100.dll
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 827728
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> *Language       = FileLanguage()
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-09-28
+          >> Time            = 13:54:38
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'c7.ALL.1.0.0.UCS_A.INSTALLDIR_1_msvcr100.dll'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = msvcr100.dll
+             >> @Validate mode: FETCH
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: [INSTALLDIR]\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [INSTALLDIR]
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: INSTALLDIR\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: INSTALLDIR
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+       >> Row Command for table: Component
+          >> Component       = c8.ALL.1.0.0.UCS_A.INSTALLDIR_1_PwDump.exe
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = INSTALLDIR
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = c8.ALL.1.0.0.UCS_A.INSTALLDIR_1_PwDump.exe
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = c8.ALL.1.0.0.UCS_A.INSTALLDIR_1_PwDump.exe
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 411648
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> *Language       = FileLanguage()
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-09-28
+          >> Time            = 14:09:56
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'c8.ALL.1.0.0.UCS_A.INSTALLDIR_1_PwDump.exe'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = PwDump.exe
+             >> @Validate mode: FETCH
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: [INSTALLDIR]\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [INSTALLDIR]
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: INSTALLDIR\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: INSTALLDIR
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+       >> Row Command for table: Component
+          >> Component       = c9.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw.exe
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = INSTALLDIR
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = c9.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw.exe
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = c9.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw.exe
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 56320
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> *Language       = FileLanguage()
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-09-28
+          >> Time            = 14:09:56
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'c9.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw.exe'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = servpw.exe
+             >> @Validate mode: FETCH
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: [INSTALLDIR]\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [INSTALLDIR]
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: INSTALLDIR\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: INSTALLDIR
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+       >> Row Command for table: Component
+          >> Component       = c10.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw64.exe
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = INSTALLDIR
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = c10.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw64.exe
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = c10.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw64.exe
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 69120
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> *Language       = FileLanguage()
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-09-28
+          >> Time            = 14:09:56
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'c10.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw64.exe'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = servpw64.exe
+             >> @Validate mode: FETCH
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: [INSTALLDIR]\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [INSTALLDIR]
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: INSTALLDIR\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: INSTALLDIR
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+       >> Row Command for table: Component
+          >> Component       = c11.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = INSTALLDIR
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = c11.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = c11.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 159744
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> *Language       = FileLanguage()
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-09-28
+          >> Time            = 13:54:40
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'c11.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = ssleay32.dll
+             >> @Validate mode: FETCH
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: [INSTALLDIR]\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [INSTALLDIR]
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: INSTALLDIR\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: INSTALLDIR
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+       >> Row Command for table: Component
+          >> Component       = c12.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = INSTALLDIR
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = c12.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = c12.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 73216
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> *Language       = FileLanguage()
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-09-28
+          >> Time            = 13:54:38
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'c12.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = ucs_ad_connector.exe
+             >> @Validate mode: FETCH
+
+
+     14:59:07  Script : installscript.mm(36) - @VBS0635
+     14:59:07  Command: <$Files "files\temp\*.*" DestDir="[TempFolder]">
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: [TempFolder]\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "[TEMPFOLDER]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[TEMPFOLDER]\" begin with "C:\WINDOWS\"?
+             >> Does "[TEMPFOLDER]\" begin with "C:\WINNT\"?
+             >> Does "[TEMPFOLDER]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[TEMPFOLDER]\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [TempFolder]
+          >> Only a single directory component assume it's an alias
+          >> Conditional directory "TempFolder" has been demanded!
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: TempFolder
+
+       >> Row Command for table: Directory
+          >> Directory       = TempFolder
+          >> Directory_Parent = WindowsFolder
+          >> DefaultDir      = .:Temp
+             >> @Validate mode: FIELD
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: TempFolder\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "TEMPFOLDER\" begin with "C:\PROGRAM FILES\"?
+             >> Does "TEMPFOLDER\" begin with "C:\WINDOWS\"?
+             >> Does "TEMPFOLDER\" begin with "C:\WINNT\"?
+             >> Does "TEMPFOLDER\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "TEMPFOLDER\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: TempFolder
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: TempFolder
+
+       >> Row Command for table: Component
+          >> Component       = c13.ALL.1.0.0.UCS_A.TempFolder_x
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = TempFolder
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = c13.ALL.1.0.0.UCS_A.TempFolder_x
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = c13.ALL.1.0.0.UCS_A.TempFolder_x
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 148
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> *Language       = FileLanguage()
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-09-28
+          >> Time            = 13:54:40
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'c13.ALL.1.0.0.UCS_A.TempFolder_x'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = ucs_ad_connector_service.cmd
+             >> @Validate mode: FETCH
+
+
+     14:59:08  Script : installscript.mm(54) - @VBS0663
+     14:59:08  Command: <$ExeCa EXE='[TempFolder]ucs-ad-connector-service.cmd' Args=^"MsgBox Title" "MsgBox text..."^ WorkDir="TempFolder" SEQ="InstallFinalize-" Type="immediate ASync AnyRc" Condition="<$CONDITION_INSTALL_ONLY>" >
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: TempFolder\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "TEMPFOLDER\" begin with "C:\PROGRAM FILES\"?
+             >> Does "TEMPFOLDER\" begin with "C:\WINDOWS\"?
+             >> Does "TEMPFOLDER\" begin with "C:\WINNT\"?
+             >> Does "TEMPFOLDER\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "TEMPFOLDER\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: TempFolder
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: TempFolder
+
+       >> Row Command for table: CustomAction
+          >> Action          = ExeCaKeyF01
+          >> Source          = TempFolder
+          >> *Type           = &H00E2
+          >> Target          = "[TempFolder]ucs-ad-connector-service.cmd" "MsgBox Title" "MsgBox text..."
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: InstallExecuteSequence
+          >> Action          = ExeCaKeyF01
+          >> Condition       = not Installed
+          >> *Sequence       = SeqNo
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: ActionText
+          >> Action          = ExeCaKeyF01
+          >> Description     = EXE Custom Action : ExeCaKeyF01
+             >> @Validate mode: FIELD
+
+     (@54)INFO: MAKEMSI told not to backup source code.
+     * Reading: C:\Programme\MakeMsi\UiSample.MMH
+
+       14:59:08  Script : UiSample.MMH(152) - @VBS0676
+
+
+       14:59:08  Script : UiSample.MMH(169) - @VBS0677
+
+         >> Row Command for table: Control
+            >> Dialog_         = ProgressDlg
+            >> Control         = ActionData
+            >> Type            = Text
+            >> Property        = 
+            >> X               = 35
+            >> Y               = 130
+            >> Width           = 300
+            >> Height          = 90
+            >> *Attributes     = msidbControlAttributesNoPrefix or msidbControlAttributesVisible or msidbControlAttributesEnabled
+            >> Text            = 
+            >> Control_Next    = 
+            >> Help            = 
+               >> @Validate mode: FIELD
+
+
+       14:59:08  Script : UiSample.MMH(170) - @VBS0679
+
+
+       14:59:08  Script : UiSample.MMH(171) - @VBS0680
+
+
+       14:59:08  Script : UiSample.MMH(180) - @VBS0681
+
+         >> Row Command for table: EventMapping
+            >> Dialog_         = ProgressDlg
+            >> Control_        = ActionData
+            >> Event           = ActionData
+            >> Attribute       = Text
+               >> @Validate mode: FIELD
+
+
+       14:59:08  Script : UiSample.MMH(181) - @VBS0683
+
+
+       14:59:08  Script : UiSample.MMH(191) - @VBS0684
+
+
+       14:59:08  Script : UiSample.MMH(199) - @VBS0685
+
+         >> Row Command for table: Control
+            >> @Where          = `Dialog_` = 'ProgressDlg' AND `Control` = 'ActionText'
+            >> @OK             = =1
+            >> @SelfRef        = {*}
+            >> *Attributes     = {*} or msidbControlAttributesNoPrefix
+               >> @Validate mode: FETCH
+
+
+       14:59:08  Script : UiSample.MMH(200) - @VBS0687
+
+
+       14:59:08  Script : UiSample.MMH(210) - @VBS0688
+
+
+       14:59:08  Script : UiSample.MMH(218) - @VBS0689
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'ProgressDlg' AND Control = 'Title'
+            >> @OK             = =1
+            >> Width           = 300
+            >> Height          = 30
+               >> @Validate mode: FETCH
+
+
+       14:59:08  Script : UiSample.MMH(219) - @VBS0691
+
+
+       14:59:08  Script : UiSample.MMH(228) - @VBS0692
+
+
+       14:59:08  Script : UiSample.MMH(235) - @VBS0693
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'ProgressDlg' AND Control = 'ProgressBar'
+            >> @OK             = =1
+            >> Attributes      = 1
+               >> @Validate mode: FETCH
+
+
+       14:59:08  Script : UiSample.MMH(236) - @VBS0695
+
+
+       14:59:08  Script : UiSample.MMH(245) - @VBS0696
+
+
+       14:59:09  Script : UiSample.MMH(253) - @VBS0697
+
+         >> Row Command for table: Control
+            >> @Where          = `Dialog_` = 'ProgressDlg' AND `Control` = 'StatusLabel'
+            >> @OK             = =1
+            >> Width           = 30
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(262) - @VBS0699
+
+         >> Row Command for table: Control
+            >> @Where          = `Dialog_` = 'ProgressDlg' AND `Control` = 'ActionText'
+            >> @OK             = =1
+            >> X               = 65
+            >> Width           = 300
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(263) - @VBS0701
+
+
+       14:59:09  Script : UiSample.MMH(275) - @VBS0702
+
+
+       14:59:09  Script : UiSample.MMH(283) - @VBS0703
+
+         >> Row Command for table: Dialog
+            >> @Where          = `Title` = '[ProductName] [Setup]'
+            >> @OK             = ? > 0
+            >> Title           = [ProductName] ([ProductVersion]) [Setup]
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(294) - @VBS0705
+
+
+       14:59:09  Script : UiSample.MMH(317) - @VBS0706
+
+
+       14:59:09  Script : UiSample.MMH(325) - @VBS0707
+
+         >> Row Command for table: RadioButton
+            >> @Where          = 
+            >> @SelfRef        = {*}
+            >> *Text           = replace({*}, "icense", "icence")
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(326) - @VBS0709
+
+
+       14:59:09  Script : UiSample.MMH(336) - @VBS0710
+
+
+       14:59:09  Script : UiSample.MMH(344) - @VBS0711
+
+         >> Row Command for table: Dialog
+            >> @Where          = `Title` = 'Installer Information'
+            >> @OK             = ? > 0
+            >> Title           = [ProductName] ([ProductVersion]) - Installer Information
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(345) - @VBS0713
+
+
+       14:59:09  Script : UiSample.MMH(353) - @VBS0714
+
+
+       14:59:09  Script : UiSample.MMH(360) - @VBS0715
+
+         >> Row Command for table: Control
+            >> @Where          = `Dialog_` = 'VerifyRepairDlg' and `Control` = 'Title'
+            >> @SelfRef        = {*}
+            >> *Text           = {*} & "<?x20>"
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(367) - @VBS0717
+
+         >> Row Command for table: Control
+            >> @Where          = `Dialog_` = 'VerifyRemoveDlg' and `Control` = 'Title'
+            >> @SelfRef        = {*}
+            >> *Text           = {*} & "<?x20>"
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(368) - @VBS0719
+
+
+       14:59:09  Script : UiSample.MMH(391) - @VBS0720
+
+
+       14:59:09  Script : UiSample.MMH(401) - @VBS0721
+
+         >> Row Command for table: Dialog
+            >> @Where          = `Dialog` = 'ErrorDlg'
+            >> @SelfRef        = {*}
+            >> @OK             = ? = 1
+            >> *Width          = {*} + 150
+            >> *Height         = {*} + 80
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(402) - @VBS0723
+
+
+       14:59:09  Script : UiSample.MMH(403) - @VBS0724
+
+
+       14:59:09  Script : UiSample.MMH(413) - @VBS0725
+
+         >> Row Command for table: Control
+            >> @Where          = `Dialog_` = 'ErrorDlg' and `Type`='PushButton'
+            >> @SelfRef        = {*}
+            >> @OK             = ? > 0
+            >> *X              = {*} + 75
+            >> *Y              = {*} + 80
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(432) - @VBS0727
+
+         >> Row Command for table: Control
+            >> @Where          = `Dialog_` = 'ErrorDlg' and `Control`='ErrorText'
+            >> @SelfRef        = {*}
+            >> @OK             = ? = 1
+            >> Type            = Text
+            >> *Attributes     = {*} or ErrorTextControlAttr
+            >> *Width          = {*} + 150
+            >> *Height         = {*} + 80
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(433) - @VBS0729
+
+
+       14:59:09  Script : UiSample.MMH(455) - @VBS0730
+
+
+       14:59:09  Script : UiSample.MMH(463) - @VBS0731
+
+         >> Row Command for table: Control
+            >> @Where          = `Dialog_` = 'WelcomeDlg' and `Control`='Description'
+            >> @OK             = ? = 1
+            >> Height          = 165
+            >> *Text           = "This will install ""[ProductName]"" (version [ProductVersion], dated  [_MAKEMSI_BuildTime]) onto your computer."& vbCRLF & vbCRLF & "Click ""Next"" to continue."
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(464) - @VBS0733
+
+
+       14:59:09  Script : UiSample.MMH(473) - @VBS0734
+
+
+       14:59:09  Script : UiSample.MMH(481) - @VBS0735
+
+         >> Row Command for table: InstallUISequence
+            >> @Where          = `Action` = 'MaintenanceWelcomeDlg'
+            >> @OK             = ? = 1
+            >> Action          = MaintenanceTypeDlg
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(482) - @VBS0737
+
+
+       14:59:09  Script : UiSample.MMH(485) - @VBS0738
+
+
+       14:59:09  Script : UiSample.MMH(493) - @VBS0739
+
+         >> Row Command for table: Control
+            >> @Where          = `Dialog_` = 'MaintenanceTypeDlg' and `Control`='Back'
+            >> @SelfRef        = {*}
+            >> @OK             = ? = 1
+            >> *Attributes     = {*} and not (msidbControlAttributesVisible or msidbControlAttributesEnabled)
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(494) - @VBS0741
+
+
+       14:59:09  Script : UiSample.MMH(505) - @VBS0742
+
+
+       14:59:09  Script : UiSample.MMH(521) - @VBS0743
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'AdminRegistrationDlg' AND Control = 'OrganizationEdit'
+            >> @OK             = =1
+            >> Control_Next    = Back
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(522) - @VBS0747
+
+
+       14:59:09  Script : UiSample.MMH(532) - @VBS0748
+
+
+       14:59:09  Script : UiSample.MMH(540) - @VBS0749
+
+         >> Row Command for table: ControlEvent
+            >> @Where          = Dialog_ = 'AdminWelcomeDlg' AND Control_ = 'Next' AND Event = 'NewDialog' AND Argument = 'AdminRegistrationDlg' AND Condition = '1'
+            >> @OK             = =1
+            >> Argument        = AdminInstallPointDlg
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(549) - @VBS0751
+
+         >> Row Command for table: ControlEvent
+            >> @Where          = Dialog_ = 'AdminInstallPointDlg' AND Control_ = 'Back' AND Event = 'NewDialog' AND Argument = 'AdminRegistrationDlg' AND Condition = '1'
+            >> @OK             = =1
+            >> Argument        = AdminWelcomeDlg
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(550) - @VBS0753
+
+
+       14:59:09  Script : UiSample.MMH(590) - @VBS0754
+
+
+       14:59:09  Script : UiSample.MMH(600) - @VBS0755
+
+         >> Row Command for table: Control
+            >> @Where          = `Control`='BottomLine' and `Type`='Line' and (`Dialog_` <> 'AdminWelcomeDlg') and (`Dialog_` <> 'ExitDialog') and (`Dialog_` <> 'FatalError') and (`Dialog_` <> 'MaintenanceWelcomeDlg') and (`Dialog_` <> 'PrepareDlg') and (`Dialog_` <> 'ResumeDlg') and (`Dialog_` <> 'UserExit') and (`Dialog_` <> 'WelcomeDlg')
+            >> @SelfRef        = {*}
+            >> @OK             = ? >= 1
+            >> *X              = {*} + 95 + 2
+            >> *Width          = {*} - 95 - 2
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(601) - @VBS0757
+
+
+       14:59:09  Script : UiSample.MMH(640) - @VBS0758
+
+
+       14:59:09  Script : UiSample.MMH(650) - @VBS0759
+
+         >> Row Command for table: TextStyle
+            >> TextStyle       = BrandingLR
+            >> FaceName        = Tahoma
+            >> Size            = 8
+            >> Color           = &HFFFFFF
+            >> StyleBits       = 0
+               >> @Validate mode: FIELD
+
+
+       14:59:09  Script : UiSample.MMH(660) - @VBS0761
+
+         >> Row Command for table: TextStyle
+            >> TextStyle       = BrandingUL
+            >> FaceName        = Tahoma
+            >> Size            = 8
+            >> Color           = 
+            >> StyleBits       = 0
+               >> @Validate mode: FIELD
+
+
+       14:59:09  Script : UiSample.MMH(661) - @VBS0763
+
+
+       14:59:09  Script : UiSample.MMH(662) - @VBS0764
+
+
+       14:59:09  Script : UiSample.MMH(681) - @VBS0765
+
+         >> Row Command for table: Control
+            >> @Where          = `Control`='BottomLine' and `Type`='Line' and (`Dialog_` <> 'AdminWelcomeDlg') and (`Dialog_` <> 'ExitDialog') and (`Dialog_` <> 'FatalError') and (`Dialog_` <> 'MaintenanceWelcomeDlg') and (`Dialog_` <> 'PrepareDlg') and (`Dialog_` <> 'ResumeDlg') and (`Dialog_` <> 'UserExit') and (`Dialog_` <> 'WelcomeDlg')
+            >> @Method         = INSERT
+            >> @SelfRef        = {*}
+            >> @OK             = ? >= 1
+            >> Control         = BrandingLR
+            >> Type            = Text
+            >> X               = 2 + 1
+            >> Y               = {*} - (10\2)+1
+            >> Height          = 10
+            >> Width           = 95
+            >> Attributes      = msidbControlAttributesVisible or msidbControlAttributesNoPrefix
+            >> Text            = {&BrandingLR}MakeMsi by Dennis Bareis
+            >> Control_Next    = 
+            >> Help            = 
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(701) - @VBS0767
+
+         >> Row Command for table: Control
+            >> @Where          = `Control`='BottomLine' and `Type`='Line' and (`Dialog_` <> 'AdminWelcomeDlg') and (`Dialog_` <> 'ExitDialog') and (`Dialog_` <> 'FatalError') and (`Dialog_` <> 'MaintenanceWelcomeDlg') and (`Dialog_` <> 'PrepareDlg') and (`Dialog_` <> 'ResumeDlg') and (`Dialog_` <> 'UserExit') and (`Dialog_` <> 'WelcomeDlg')
+            >> @Method         = INSERT
+            >> @SelfRef        = {*}
+            >> @OK             = ? >= 1
+            >> Control         = BrandingUL
+            >> Type            = Text
+            >> Property        = 
+            >> X               = 2
+            >> Y               = {*} - (10\2)
+            >> Height          = 10
+            >> Width           = 95
+            >> Attributes      = msidbControlAttributesVisible or msidbControlAttributesTransparent or msidbControlAttributesNoPrefix
+            >> Text            = {&BrandingUL}MakeMsi by Dennis Bareis
+            >> Control_Next    = 
+            >> Help            = 
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(702) - @VBS0769
+
+
+       14:59:09  Script : UiSample.MMH(713) - @VBS0770
+
+
+       14:59:09  Script : UiSample.MMH(722) - @VBS0771
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Description'
+            >> @OK             = =1
+            >> X               = 15
+            >> Width           = 290
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(730) - @VBS0773
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Text'
+            >> @OK             = =1
+            >> X               = 15
+            >> Width           = 330
+               >> @Validate mode: FETCH
+
+
+       14:59:09  Script : UiSample.MMH(740) - @VBS0775
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Tree'
+            >> @OK             = =1
+            >> X               = 10
+            >> Y               = 77
+            >> Width           = 189
+            >> Height          = 123
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(750) - @VBS0777
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Box'
+            >> @OK             = =1
+            >> X               = 207
+            >> Y               = 73
+            >> Width           = 153
+            >> Height          = 127
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(760) - @VBS0779
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'LocationLabel'
+            >> @OK             = =1
+            >> X               = 15
+            >> Y               = 203
+            >> Width           = 37
+            >> Height          = 11
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(771) - @VBS0781
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Location'
+            >> @OK             = =1
+            >> X               = 55
+            >> Y               = 203
+            >> Width           = 243
+            >> Height          = 31
+            >> Text            = {&FeatureDirFont}<The feature's path>
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(778) - @VBS0783
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Browse'
+            >> @OK             = =1
+            >> Y               = 208
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(788) - @VBS0785
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'ItemDescription'
+            >> @OK             = =1
+            >> X               = 212
+            >> Y               = 79
+            >> Width           = 144
+            >> Height          = 65
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(798) - @VBS0787
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'ItemSize'
+            >> @OK             = =1
+            >> X               = 212
+            >> Y               = 147
+            >> Width           = 144
+            >> Height          = 51
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(800) - @VBS0789
+
+
+       14:59:10  Script : UiSample.MMH(803) - @VBS0790
+
+
+       14:59:10  Script : UiSample.MMH(811) - @VBS0791
+
+         >> Row Command for table: TextStyle
+            >> TextStyle       = FeatureDirFont
+            >> FaceName        = Tahoma
+            >> Size            = 8
+            >> Color           = 16711680
+               >> @Validate mode: FIELD
+
+
+       14:59:10  Script : UiSample.MMH(812) - @VBS0793
+
+
+       14:59:10  Script : UiSample.MMH(823) - @VBS0794
+
+         >> Row Command for table: Binary
+            >> Data            = C:\Programme\MakeMsi\MmCustomSetup.ico
+            >> Name            = custicon
+            >> @Validate       = FIELD
+               >> @Validate mode: FIELD
+
+
+       14:59:10  Script : UiSample.MMH(836) - @VBS0799
+
+         >> Row Command for table: Binary
+            >> Data            = C:\Programme\MakeMsi\white.bmp
+            >> Name            = bannrbmp
+            >> @Validate       = FIELD
+               >> @Validate mode: FIELD
+
+
+       14:59:10  Script : UiSample.MMH(872) - @VBS0804
+
+         >> Row Command for table: Binary
+            >> Data            = C:\Programme\MakeMsi\LeftSide.bmp
+            >> Name            = dlgbmp
+            >> @Validate       = FIELD
+               >> @Validate mode: FIELD
+
+
+       14:59:10  Script : UiSample.MMH(933) - @VBS0809
+
+
+       14:59:10  Script : UiSample.MMH(940) - @VBS0810
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'AdminWelcomeDlg' AND Control = 'Description'
+            >> @OK             = =1
+            >> Y               = 85
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(947) - @VBS0812
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'ExitDialog' AND Control = 'Description'
+            >> @OK             = =1
+            >> Y               = 85
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(954) - @VBS0814
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'FatalError' AND Control = 'Description1'
+            >> @OK             = =1
+            >> Y               = 85
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(961) - @VBS0816
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'FatalError' AND Control = 'Description2'
+            >> @OK             = =1
+            >> Y               = 130
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(968) - @VBS0818
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'PrepareDlg' AND Control = 'Description'
+            >> @OK             = =1
+            >> Y               = 85
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(976) - @VBS0820
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'PrepareDlg' AND Control = 'ActionText'
+            >> @OK             = =1
+            >> Y               = 130
+            >> Text            = Initialising... Please wait...
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(983) - @VBS0822
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'PrepareDlg' AND Control = 'ActionData'
+            >> @OK             = =1
+            >> Y               = 155
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(990) - @VBS0824
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'UserExit' AND Control = 'Description1'
+            >> @OK             = =1
+            >> Y               = 85
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(997) - @VBS0826
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'UserExit' AND Control = 'Description2'
+            >> @OK             = =1
+            >> Y               = 130
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(1004) - @VBS0828
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'MaintenanceWelcomeDlg' AND Control = 'Description'
+            >> @OK             = =1
+            >> Y               = 85
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(1011) - @VBS0830
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'ResumeDlg' AND Control = 'Description'
+            >> @OK             = =1
+            >> Y               = 85
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(1018) - @VBS0832
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'WelcomeDlg' AND Control = 'Description'
+            >> @OK             = =1
+            >> Y               = 85
+               >> @Validate mode: FETCH
+
+
+       14:59:10  Script : UiSample.MMH(1019) - @VBS0834
+
+
+       14:59:10  Script : UiSample.MMH(1083) - @VBS0835
+
+         >> Row Command for table: Dialog
+            >> @Where          = `Dialog` = 'CancelDlg'
+            >> @OK             = ? = 1
+            >> HCentering      = 60
+            >> VCentering      = 75
+               >> @Validate mode: FETCH
+
+         >> Row Command for table: Dialog
+            >> @Where          = `Dialog` = 'ErrorDlg'
+            >> @OK             = ? = 1
+            >> HCentering      = 60
+            >> VCentering      = 75
+               >> @Validate mode: FETCH
+
+         >> Row Command for table: Dialog
+            >> @Where          = `Dialog` = 'WaitForCostingDlg'
+            >> @OK             = ? = 1
+            >> HCentering      = 60
+            >> VCentering      = 75
+               >> @Validate mode: FETCH
+
+
+       14:59:11  Script : UiSample.MMH(1091) - @VBS0847
+
+         >> Property command for: MM_REDUCED_UI
+            >> Value comes from a LITERAL: 0
+         >> Row Command for table: Property
+            >> Property        = MM_REDUCED_UI
+            >> *Value          = cb_PropValue
+               >> @Validate mode: FIELD
+
+
+       14:59:11  Script : UiSample.MMH(1094) - @VBS0853
+
+
+       14:59:11  Script : UiSample.MMH(1102) - @VBS0854
+
+         >> Row Command for table: InstallUISequence
+            >> @Where          = Action = 'ExitDialog'
+            >> @OK             = =1
+            >> Condition       = Installed or (MM_REDUCED_UI = 0)
+               >> @Validate mode: FETCH
+
+
+       14:59:11  Script : UiSample.MMH(1110) - @VBS0856
+
+         >> Row Command for table: InstallUISequence
+            >> @Where          = Action = 'WelcomeDlg'
+            >> @OK             = =1
+            >> Condition       = NOT Installed and (MM_REDUCED_UI = 0)
+               >> @Validate mode: FETCH
+
+
+       14:59:11  Script : UiSample.MMH(1111) - @VBS0858
+
+
+         >> MsiValFilter(Case sensitive): Row 'VerifyRepairDlg.Repair' in table 'Control' has bits set in the 'Attributes' column that are reserved
+            >> Reason: Work around Microsoft's bug in latest validation CUB files (_ReservedBits table)
+
+         >> MsiValFilter(Case sensitive): Row 'VerifyRemoveDlg.Remove' in table 'Control' has bits set in the 'Attributes' column that are reserved
+            >> Reason: Work around Microsoft's bug in latest validation CUB files (_ReservedBits table)
+
+         >> MsiValFilter(Case sensitive): Row 'VerifyReadyDlg.Install' in table 'Control' has bits set in the 'Attributes' column that are reserved
+            >> Reason: Work around Microsoft's bug in latest validation CUB files (_ReservedBits table)
+
+       14:59:11  Script : UiSample.MMH(1170) - @VBS0859
+
+
+       14:59:11  Script : UiSample.MMH(1171) - @VBS0860
+
+
+       14:59:11  Script : UiSample.MMH(1172) - @VBS0861
+
+
+       14:59:11  Script : UiSample.MMH(1186) - @VBS0862
+
+
+       14:59:11  Script : UiSample.MMH(1194) - @VBS0863
+
+         >> Row Command for table: ControlEvent
+            >> @Where          = Dialog_ = 'CancelDlg' AND Control_ = 'Yes' AND Event = 'EndDialog' AND Argument = 'Exit' AND Condition = '1'
+            >> @OK             = =1
+            >> Ordering        = 2
+               >> @Validate mode: FETCH
+
+
+       14:59:11  Script : UiSample.MMH(1206) - @VBS0865
+
+         >> Row Command for table: ControlEvent
+            >> Dialog_         = CancelDlg
+            >> Control_        = Yes
+            >> Event           = [UserPressedYesOnCancelDlg]
+            >> Argument        = YES
+            >> Condition       = 1
+            >> Ordering        = 1
+               >> @Validate mode: FIELD
+
+
+       14:59:11  Script : UiSample.MMH(1208) - @VBS0867
+
+
+       14:59:11  Script : UiSample.MMH(1209) - @VBS0868
+
+
+       14:59:11  Script : UiSample.MMH(1217) - @VBS0869
+
+         >> Row Command for table: InstallUISequence
+            >> @Where          = Action = 'UserExit'
+            >> @OK             = =1
+            >> Condition       = not UserPressedYesOnCancelDlg
+               >> @Validate mode: FETCH
+
+
+       14:59:11  Script : UiSample.MMH(1218) - @VBS0871
+
+
+       14:59:11  Script : UiSample.MMH(1317) - @VBS0872
+
+
+       14:59:11  Script : UiSample.MMH(1324) - @VBS0873
+
+         >> Row Command for table: Control
+            >> @Where          = `Dialog_` = 'FatalError' AND `Control` = 'Title'
+            >> @OK             = =1
+            >> Text            = {\VerdanaBold13Red}[ProductName] [Wizard] ended prematurely
+               >> @Validate mode: FETCH
+
+
+       14:59:11  Script : UiSample.MMH(1325) - @VBS0875
+
+
+       14:59:11  Script : UiSample.MMH(1326) - @VBS0876
+
+
+       14:59:11  Script : UiSample.MMH(1335) - @VBS0877
+
+         >> Row Command for table: TextStyle
+            >> TextStyle       = VerdanaBold13Red
+            >> FaceName        = Verdana
+            >> Size            = 13
+            >> Color           = 255
+            >> StyleBits       = 1
+               >> @Validate mode: FIELD
+
+
+       14:59:11  Script : UiSample.MMH(1336) - @VBS0879
+
+
+       14:59:11  Script : UiSample.MMH(1347) - @VBS0880
+
+
+       14:59:11  Script : UiSample.MMH(1354) - @VBS0881
+
+         >> Row Command for table: Control
+            >> @Where          = Dialog_ = 'VerifyReadyDlg' AND Control = 'Text'
+            >> @OK             = =1
+            >> Height          = 160
+               >> @Validate mode: FETCH
+
+
+       14:59:11  Script : UiSample.MMH(1355) - @VBS0883
+
+   * Reading: installscript.mm
+
+     14:59:11  Script : installscript.mm(54) - @VBS0884
+
+       >> Property command for: _MAKEMSI_Header_MAKEMSI.MMH
+          >> Value comes from a LITERAL: C:\Programme\MakeMsi\MakeMsi.MMH (v10.169, 21,924 bytes, dated Tue Nov 24 2009 at 5:41:56pm)
+       >> Row Command for table: Property
+          >> Property        = _MAKEMSI_Header_MAKEMSI.MMH
+          >> *Value          = cb_PropValue
+             >> @Validate mode: FIELD
+
+       >> Property command for: _MAKEMSI_Source_INSTALLSCRIPT.MM
+          >> Value comes from a LITERAL: Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\installscript.mm (2,601 bytes, dated Tue Sep 28 2010 at 1:54:39pm)
+       >> Row Command for table: Property
+          >> Property        = _MAKEMSI_Source_INSTALLSCRIPT.MM
+          >> *Value          = cb_PropValue
+             >> @Validate mode: FIELD
+
+       >> Property command for: _MAKEMSI_Header_COMPANY.MMH
+          >> Value comes from a LITERAL: C:\Programme\MakeMsi\COMPANY.MMH (v08.202, 53,874 bytes, dated Sun Mar 28 2010 at 5:21:00pm)
+       >> Row Command for table: Property
+          >> Property        = _MAKEMSI_Header_COMPANY.MMH
+          >> *Value          = cb_PropValue
+             >> @Validate mode: FIELD
+
+       >> Property command for: _MAKEMSI_Header_DEPT.MMH
+          >> Value comes from a LITERAL: C:\Programme\MakeMsi\DEPT.MMH (v03.171, 4,275 bytes, dated Sat May 7 2005 at 9:10:04am)
+       >> Row Command for table: Property
+          >> Property        = _MAKEMSI_Header_DEPT.MMH
+          >> *Value          = cb_PropValue
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: Component
+          >> @Where          = 
+          >> @Code           = Y
+          >> @VALIDATE       = 
+             >> No validation will occur (@Validate)...
+
+       >> Row Command for table: MsiFileHash
+          >> *File_          = CurrentFileKey
+          >> Options         = 0
+          >> *HashPart1      = oHash.IntegerData(1)
+          >> *HashPart2      = oHash.IntegerData(2)
+          >> *HashPart3      = oHash.IntegerData(3)
+          >> *HashPart4      = oHash.IntegerData(4)
+             >> @Validate mode: FIELD
+
+
+     14:59:12  Script : installscript.mm(54) - @VBS0921
+     14:59:12  Command: Processing Merge Modules
+
+
+     14:59:12  Script : installscript.mm(54) - @VBS0922
+
+       >> Property command for: DiskPrompt
+          >> Value comes from a LITERAL: UCS AD Connector version 1.0.0 - [1]
+       >> Row Command for table: Property
+          >> Property        = DiskPrompt
+          >> *Value          = cb_PropValue
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: _Validation
+          >> Table           = _MAKEMSI_Cabs
+          >> Column          = Name
+          >> Nullable        = N
+          >> Category        = Identifier
+          >> Description     = Referred to by Media Table (column "Cabinet").
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: _Validation
+          >> Table           = _MAKEMSI_Cabs
+          >> Column          = Data
+          >> Nullable        = N
+          >> Category        = Binary
+          >> Description     = Hold the CAB file.
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: _MAKEMSI_Cabs
+          >> *Name           = CabKey
+          >> *Data           = ThisCabFile
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Media
+          >> *DiskId         = NextDiskId
+          >> *LastSequence   = MaxSeq
+          >> *DiskPrompt     = DiskPrompt
+          >> *VolumeLabel    = VolumeLabel
+          >> *Cabinet        = MediaCabinet
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: LaunchCondition
+          >> @Where          = 
+          >> @Code           = Y
+             >> @Validate mode: FETCH
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> @Where          = 
+          >> @Code           = Y
+          >> @VALIDATE       = 
+             >> No validation will occur (@Validate)...
+
+       >> Row Command for table: File
+          >> @Where          = 
+          >> @Code           = Y
+          >> @VALIDATE       = 
+             >> No validation will occur (@Validate)...
+
+       >> Row Command for table: Media
+          >> @Where          = 
+          >> @Code           = Y
+          >> @VALIDATE       = 
+             >> No validation will occur (@Validate)...
+
+     * Reading: C:\Programme\MakeMsi\PrettyMd5.VH
+   * Reading: installscript.mm
+     (@54)INFO: SYNTAX checking the generated VBSCRIPT
+
+     (@54)INFO: Executing the VBS to generate the MSI
+
+#### START: VBSCRIPT PASS 1 (2:59:16pm) ##############################
+
+14:59:16: MAKEMSI version 10.169 - PASS 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Windows   Version: Microsoft Windows XP (5.1.2600 Service Pack 2)
+WSH       Version: 5.6
+Installer Version: 3.0.3790.2538
+
+Creating a new MSI (template based)
+Creating "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\out\installscript.mm\MSI\setup.msi"
+From "C:\Programme\MakeMsi\UISAMPLE.msi"
+
+14:59:29: Starting compile...  No cache for this compile.
+This is the "end of pass 1 compile"
+Compile #01 for 13 file(s) with sequence numbers 1 to 13
+
+Media size is 1.998.950.400 bytes.
+Reserving 259.920 bytes on media #1 (1.998.688.256 bytes available):
+  = MSI      :  209.920
+  + Reserved :   50.000 (see "COMPILE_RESERVED_BYTES_ON_MEDIA1")
+
+Compressing the files into CAB file(s)
+Will not cache as this wasn't requested
+
+    | MakeCAB Report: Tue Sep 28 14:59:37 2010
+    | 
+    | Total files:             13
+    | Bytes before:     2,834,916
+    | Bytes after:      1,088,702
+    | After/Before:            38.40% compression
+    | Time:                     6.06 seconds ( 0 hr  0 min  6.06 sec)
+    | Throughput:             456.62 Kb/second
+
+Generated 1 cab file(s).
+Processing CAB #1: out\installscript.mm\Log\MakeCab\#01\MM01.cab
+Marking MSI updates as complete...
+14:59:44: Finished compile. Took 28,2 seconds.
+
+Closing the Windows Installer Database (updates completed).
+
+No merge modules to be merged
+
+Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\out\installscript.mm\MSI\setup.msi".
+14:59:44: Took 28,3 seconds.
+
+#### END:   VBSCRIPT PASS 1 (2:59:45pm) ##############################
+
+     * Reading: out\installscript.mm\Log\FromPass1.TXT
+   * Reading: installscript.mm
+     (@54)INFO: Generating the HTML report
+     * Reading: C:\Programme\MakeMsi\HtmlRpt.MMH
+       * Reading: C:\Programme\MakeMsi\HTMLPRE.IH
+     * Reading: C:\Programme\MakeMsi\HtmlRpt.MMH
+       * Reading: C:\Programme\MakeMsi\FileInfo.MMH
+     * Reading: C:\Programme\MakeMsi\HtmlRpt.MMH
+       * Reading: C:\Programme\MakeMsi\HtmlSumm.MMH
+     * Reading: C:\Programme\MakeMsi\HtmlRpt.MMH
+       * Reading: C:\Programme\MakeMsi\HTMLSORT.MMH
+     * Reading: C:\Programme\MakeMsi\HtmlRpt.MMH
+       * Reading: C:\Programme\MakeMsi\HTMLDIR.MMH
+     * Reading: C:\Programme\MakeMsi\HtmlRpt.MMH
+       * Reading: C:\Programme\MakeMsi\HTMLMSITABLE.MMH
+     * Reading: C:\Programme\MakeMsi\HtmlRpt.MMH
+       * Reading: C:\Programme\MakeMsi\AUTOTAG.MMH
+     * Reading: C:\Programme\MakeMsi\HtmlRpt.MMH
+   * Reading: installscript.mm
+       >> HTML report - STARTING: 14:59:47
+     - Making: out\installscript.mm\MSI\setup.hta
+     (@54)INFO: Could not find: "MsiDiff.VBS"!
+
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\Programme\UCS-AD-Connector\servpw64.exe
+          >> Look for "STRFILEINFO" in executables...
+             >> The file begins with "MZ" (probably an executable)
+             >> Looks like it could contain STRFILEINFO... Will try to obtain...
+          >> Will try to get document properties from explorer...
+             >> Document properties initialization...
+                >> PROPERTY LINE: TaskInfo: 2024 C:\WINDOWS\system32\cmd.exe
+                >> PROPERTY LINE: #-1. {ToolTip} = Typ: VBScript Script File{LF}Ge„ndert am: 07.04.2006 18:57{LF}Gr”áe: 8,92 KB
+                >> PROPERTY LINE: # 0. {Name} = MmDocumentProperties
+                >> PROPERTY LINE: # 1. {Gr”áe} = 9 KB
+                >> PROPERTY LINE: # 2. {Typ} = VBScript Script File
+                >> PROPERTY LINE: # 3. {Ge„ndert am} = 07.04.2006 18:57
+                >> PROPERTY LINE: # 4. {Erstellt am} = 07.04.2006 18:57
+                >> PROPERTY LINE: # 5. {Letzter Zugriff am} = 28.09.2010 14:58
+                >> PROPERTY LINE: # 6. {Attribute} = A
+                >> PROPERTY LINE: # 7. {Status} = Online
+                >> PROPERTY LINE: # 8. {Besitzer} = Administratoren
+                >> PROPERTY LINE: # 9. {Autor} = 
+                >> PROPERTY LINE: #10. {Titel} = 
+                >> PROPERTY LINE: #11. {Thema} = 
+                >> PROPERTY LINE: #12. {Kategorie} = 
+                >> PROPERTY LINE: #13. {Seiten} = 
+                >> PROPERTY LINE: #14. {Kommentare} = 
+                >> PROPERTY LINE: #15. {Copyright} = 
+                >> PROPERTY LINE: #16. {Interpret} = 
+                >> PROPERTY LINE: #17. {Albumtitel} = 
+                >> PROPERTY LINE: #18. {Jahr} = 
+                >> PROPERTY LINE: #19. {Titelnummer} = 
+                >> PROPERTY LINE: #20. {Genre} = 
+                >> PROPERTY LINE: #21. {Dauer} = 
+                >> PROPERTY LINE: #22. {Bitrate} = 
+                >> PROPERTY LINE: #23. {Geschtzt} = 
+                >> PROPERTY LINE: #24. {Kameramodell} = 
+                >> PROPERTY LINE: #25. {Bild aufgenommen am} = 
+                >> PROPERTY LINE: #26. {Abmessungen} = 
+                >> PROPERTY LINE: #27. {#27} = 
+                >> PROPERTY LINE: #28. {#28} = 
+                >> PROPERTY LINE: #29. {Folgenname} = 
+                >> PROPERTY LINE: #30. {Sendungsbeschreibung} = 
+                >> PROPERTY LINE: #31. {#31} = 
+                >> PROPERTY LINE: #32. {Abtastgr”áe} = 
+                >> PROPERTY LINE: #33. {Abtastrate} = 
+                >> PROPERTY LINE: #34. {Kan„le} = 
+                >> PROPERTY LINE: #35. {Firma} = 
+                >> PROPERTY LINE: #36. {Beschreibung} = 
+                >> PROPERTY LINE: #37. {Dateiversion} = 
+                >> PROPERTY LINE: #38. {Produktname} = 
+                >> PROPERTY LINE: #39. {Produktversion} = 
+                >> PROPERTY LINE: #40. {Keywords} = 
+                >> PROPERTY LINE: 
+             >> Need to determine a template for the extension: EXE
+                >> No template for this extension (won't process)
+
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\Programme\UCS-AD-Connector\servpw.exe
+          >> Look for "STRFILEINFO" in executables...
+             >> The file begins with "MZ" (probably an executable)
+             >> Looks like it could contain STRFILEINFO... Will try to obtain...
+          >> Will try to get document properties from explorer...
+
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\Programme\UCS-AD-Connector\lsremora64.dll
+          >> Look for "STRFILEINFO" in executables...
+             >> The file begins with "MZ" (probably an executable)
+             >> Looks like it could contain STRFILEINFO... Will try to obtain...
+          >> Will try to get document properties from explorer...
+             >> Need to determine a template for the extension: DLL
+                >> No template for this extension (won't process)
+
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\Programme\UCS-AD-Connector\lsremora.dll
+          >> Look for "STRFILEINFO" in executables...
+             >> The file begins with "MZ" (probably an executable)
+             >> Looks like it could contain STRFILEINFO... Will try to obtain...
+          >> Will try to get document properties from explorer...
+
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\Programme\UCS-AD-Connector\PwDump.exe
+          >> Look for "STRFILEINFO" in executables...
+             >> The file begins with "MZ" (probably an executable)
+             >> Looks like it could contain STRFILEINFO... Will try to obtain...
+          >> Will try to get document properties from explorer...
+
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\temp\ucs-ad-connector-service.cmd
+          >> Look for "STRFILEINFO" in executables...
+             >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
+          >> Will try to get document properties from explorer...
+             >> Need to determine a template for the extension: CMD
+                >> No template for this extension (won't process)
+
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\Programme\UCS-AD-Connector\ssleay32.dll
+          >> Look for "STRFILEINFO" in executables...
+             >> The file begins with "MZ" (probably an executable)
+             >> Looks like it could contain STRFILEINFO... Will try to obtain...
+          >> Will try to get document properties from explorer...
+
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\Programme\UCS-AD-Connector\libssl32.dll
+          >> Look for "STRFILEINFO" in executables...
+             >> The file begins with "MZ" (probably an executable)
+             >> Looks like it could contain STRFILEINFO... Will try to obtain...
+          >> Will try to get document properties from explorer...
+
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\Programme\UCS-AD-Connector\ucs-ad-connector.exe
+          >> Look for "STRFILEINFO" in executables...
+             >> The file begins with "MZ" (probably an executable)
+             >> Looks like it could contain STRFILEINFO... Will try to obtain...
+          >> Will try to get document properties from explorer...
+
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\Programme\UCS-AD-Connector\msvcr100.dll
+          >> Look for "STRFILEINFO" in executables...
+             >> The file begins with "MZ" (probably an executable)
+             >> Looks like it could contain STRFILEINFO... Will try to obtain...
+                >> FileDescription=Microsoft® C Runtime Library
+                >> FileVersion=10.00.30319.1
+                >> ProductName=Microsoft® Visual Studio® 2010
+                >> ProductVersion=10.00.30319.1
+                >> CompanyName=Microsoft Corporation
+                >> Author=FAILED
+                >> Maintainer=FAILED
+                >> OriginalFileName=msvcr100_clr0400.dll
+                >> Proc. Architecture=FAILED
+                >> Language=FAILED
+                >> Package Type=FAILED
+                >> Applies To=FAILED
+                >> KB Article Number=FAILED
+                >> Build Date=FAILED
+                >> Installer Engine=FAILED
+                >> Installation Type=FAILED
+                >> Installer Version=FAILED
+                >> Self-Extractor Version=FAILED
+                >> Support Link=FAILED
+          >> Will try to get document properties from explorer...
+
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\Programme\UCS-AD-Connector\libeay32.dll
+          >> Look for "STRFILEINFO" in executables...
+             >> The file begins with "MZ" (probably an executable)
+             >> Looks like it could contain STRFILEINFO... Will try to obtain...
+          >> Will try to get document properties from explorer...
+
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\Programme\UCS-AD-Connector\copypwd.exe
+          >> Look for "STRFILEINFO" in executables...
+             >> The file begins with "MZ" (probably an executable)
+             >> Looks like it could contain STRFILEINFO... Will try to obtain...
+          >> Will try to get document properties from explorer...
+
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\Programme\UCS-AD-Connector\copypwd.dll
+          >> Look for "STRFILEINFO" in executables...
+             >> The file begins with "MZ" (probably an executable)
+             >> Looks like it could contain STRFILEINFO... Will try to obtain...
+          >> Will try to get document properties from explorer...
+     * Reading: C:\Programme\MakeMsi\PrettyMd5.VH
+   * Reading: installscript.mm
+
+       >> FileInfoRexx2ExtractDocumentProperties() C:\Programme\MakeMsi\MmDefaultProductIcon.ico
+          >> Look for "STRFILEINFO" in executables...
+             >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
+          >> Will try to get document properties from explorer...
+             >> Need to determine a template for the extension: ICO
+                >> No template for this extension (won't process)
+     * Reading: installscript.mm
+   * Reading: installscript.mm
+       >> HTML report - FINISHED: 14:59:53
+     - Making: out\installscript.mm\Log\Pass1+2.vbs
+     (@54)INFO: Inserting second pass processing...
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: c:\Program Files\MAKEMSI Package Documentation\My Company\My Name\
+          >> NAME     : MAKEMSI_DOCO
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "C:\PROGRAM FILES\MAKEMSI PACKAGE DOCUMENTATION\MY COMPANY\MY NAME\" begin with "C:\PROGRAM FILES\"?
+                >> YES! Translated to "[PROGRAMFILESFOLDER]\MAKEMSI PACKAGE DOCUMENTATION\MY COMPANY\MY NAME\"
+             >> Does "[PROGRAMFILESFOLDER]\MAKEMSI PACKAGE DOCUMENTATION\MY COMPANY\MY NAME\" begin with "C:\WINDOWS\"?
+             >> Does "[PROGRAMFILESFOLDER]\MAKEMSI PACKAGE DOCUMENTATION\MY COMPANY\MY NAME\" begin with "C:\WINNT\"?
+             >> Does "[PROGRAMFILESFOLDER]\MAKEMSI PACKAGE DOCUMENTATION\MY COMPANY\MY NAME\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[PROGRAMFILESFOLDER]\MAKEMSI PACKAGE DOCUMENTATION\MY COMPANY\MY NAME\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [ProgramFilesFolder]\MAKEMSI Package Documentation\My Company\My Name
+             >> Look at: [ProgramFilesFolder]\MAKEMSI Package Documentation\My Company
+             >> Look at: [ProgramFilesFolder]\MAKEMSI Package Documentation
+             >> Look at: [ProgramFilesFolder]
+          >> Extracting the BASE from "[ProgramFilesFolder]\MAKEMSI Package Documentation\My Company\My Name"
+
+          >> Work through the tree "MAKEMSI Package Documentation\My Company\My Name" creating any required directories
+             >> Processing part "MAKEMSI Package Documentation"
+                >> Creating key: "_PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION"
+                >> Parent   key: "ProgramFilesFolder"
+                >> Full name: c:\Program Files\MAKEMSI Package Documentation
+             >> Processing part "My Company"
+                >> Creating key: "_PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION_MY_COMPANY"
+                >> Parent   key: "_PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION"
+                >> Full name: c:\Program Files\MAKEMSI Package Documentation\My Company
+             >> Processing part "My Name"
+                >> Creating key: "MAKEMSI_DOCO"
+                >> Parent   key: "_PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION_MY_COMPANY"
+                >> Full name: c:\Program Files\MAKEMSI Package Documentation\My Company\My Name
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: MAKEMSI_DOCO
+
+       >> Conditional directory "ProgramFilesFolder" has been demanded!
+       >> Row Command for table: Directory
+          >> Directory       = ProgramFilesFolder
+          >> Directory_Parent = TARGETDIR
+          >> DefaultDir      = .:ProgFile|Program Files
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: Directory
+          >> Directory       = _PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION
+          >> Directory_Parent = ProgramFilesFolder
+          >> *DefaultDir     = MakeSfnLfn("ProgramFilesFolder", "MAKEMSI Package Documentation")
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: Directory
+          >> Directory       = _PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION_MY_COMPANY
+          >> Directory_Parent = _PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION
+          >> *DefaultDir     = MakeSfnLfn("_PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION", "My Company")
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: Directory
+          >> Directory       = MAKEMSI_DOCO
+          >> Directory_Parent = _PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION_MY_COMPANY
+          >> *DefaultDir     = MakeSfnLfn("_PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION_MY_COMPANY", "My Name")
+             >> @Validate mode: FIELD
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: MAKEMSI_DOCO\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "MAKEMSI_DOCO\" begin with "C:\PROGRAM FILES\"?
+             >> Does "MAKEMSI_DOCO\" begin with "C:\WINDOWS\"?
+             >> Does "MAKEMSI_DOCO\" begin with "C:\WINNT\"?
+             >> Does "MAKEMSI_DOCO\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "MAKEMSI_DOCO\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: MAKEMSI_DOCO
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: MAKEMSI_DOCO
+
+       >> Row Command for table: Component
+          >> Component       = MAKEMSI_Documentation
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = MAKEMSI_DOCO
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = MAKEMSI_Documentation
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = MAKEMSI_Documentation
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 76005
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> Language        = 1033
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-09-28
+          >> Time            = 14:59:54
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'MAKEMSI_Documentation'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = MAKEMSI_Documentation
+             >> @Validate mode: FETCH
+
+       >> Row Command for table: CustomAction
+          >> Target          = file:///[!MAKEMSI_Documentation]
+          >> *Type           = &H0033
+          >> Action          = PropertyCa03_ARPREADME
+          >> Source          = ARPREADME
+             >> @Validate mode: FIELD
+
+
+     14:59:55  Script : installscript.mm(54) - @VBS1026
+     14:59:55  Command: #{ SET "SeqTable={ }<??cb_SeqTables>"
+
+       >> Row Command for table: InstallExecuteSequence
+          >> Action          = PropertyCa03_ARPREADME
+          >> Condition       = 
+          >> *Sequence       = SeqNo
+             >> @Validate mode: FIELD
+
+
+     14:59:55  Script : installscript.mm(54) - @VBS1030
+
+     (@54)INFO: Executing the VBS to build the MSI
+
+#### START: VBSCRIPT PASS 2 (2:59:56pm) ##############################
+
+14:59:57: MAKEMSI version 10.169 - PASS 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Windows   Version: Microsoft Windows XP (5.1.2600 Service Pack 2)
+WSH       Version: 5.6
+Installer Version: 3.0.3790.2538
+
+Opening the MSI "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\out\installscript.mm\MSI\setup.msi"
+
+14:59:57: Starting compile...  No cache for this compile.
+Compiling the documentation that MAKEMSI generated
+Compile #02 for 1 file(s) with sequence numbers 14 to 14
+
+Media size is 1.998.950.400 bytes.
+Reserving 1.362.256 bytes on media #1 (1.997.586.432 bytes available):
+  = MSI      :  1.312.256
+  + Reserved :     50.000 (see "COMPILE_RESERVED_BYTES_ON_MEDIA1")
+
+Compressing the files into CAB file(s)
+Will not cache as this wasn't requested
+
+    | MakeCAB Report: Tue Sep 28 14:59:58 2010
+    | 
+    | Total files:              1
+    | Bytes before:        76,005
+    | Bytes after:         16,382
+    | After/Before:            21.55% compression
+    | Time:                     0.33 seconds ( 0 hr  0 min  0.33 sec)
+    | Throughput:             226.29 Kb/second
+
+Generated 1 cab file(s).
+Processing CAB #1: out\installscript.mm\Log\MakeCab\#02\MM02.cab
+Marking MSI updates as complete...
+14:59:59: Finished compile. Took 2,5 seconds.
+
+
+#### END:   VBSCRIPT PASS 2 (3:00:00pm) ##############################
+
+     (@54)INFO: ====================================================
+     (@54)INFO: MSI Validation has been turned off (or not enabled)
+     (@54)INFO: The "MAKEMSI_VALIDATE_CUB" environment variable
+     (@54)INFO: should hold the name of the ".cub" file.
+     (@54)INFO: ====================================================
+
+Summary
+~~~~~~~
+   Mode            : Production
+   installscript.mm: Tue Sep 28 2010 at 1:54:39pm
+   MSI Name        : out\installscript.mm\MSI\setup.msi
+   MSI Version     : 1.0.0
+   Return Code     : 0
+   Elapsed Time    : 1 minute 21.15 seconds
+
+                                     
+                                     
+[28.09.2010 15:00:06,49 - Diagnostic info STATUS]: OK 

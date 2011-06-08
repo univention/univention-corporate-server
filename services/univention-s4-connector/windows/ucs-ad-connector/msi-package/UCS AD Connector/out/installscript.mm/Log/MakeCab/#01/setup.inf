@@ -1,0 +1,27 @@
+
+;==================================
+;===          DISK List         ===
+;=== <disk number>,<disk label> ===
+;==================================
+[disk list]
+1,Disk 1
+
+;===========================================================
+;===                   CABINET List                      ===
+;=== <cabinet number>,<disk number>,<cabinet file name>  ===
+;===========================================================
+[cabinet list]
+1,1,out\installscript.mm\Log\MakeCab\#01\MM01.cab
+
+;===============================================================
+;===                        File List                        ===
+;=== <disk number>,<cabinet number>,<file key>,<file number> ===
+;===============================================================
+[file list]
+1,1,copypwd.dll,1
+1,1,ucs_ad_connector.exe,2
+1,1,libssl32.dll,3
+1,1,libeay32.dll,4
+1,1,copypwd.exe,5
+1,1,ssleay32.dll,6
+1,1,ucs_ad_connector_service.cmd,7

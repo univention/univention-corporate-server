@@ -1,0 +1,21 @@
+
+;==================================
+;===          DISK List         ===
+;=== <disk number>,<disk label> ===
+;==================================
+[disk list]
+1,Disk 1
+
+;===========================================================
+;===                   CABINET List                      ===
+;=== <cabinet number>,<disk number>,<cabinet file name>  ===
+;===========================================================
+[cabinet list]
+1,1,out\installscript.mm\Log\MakeCab\#02\MM02.cab
+
+;===============================================================
+;===                        File List                        ===
+;=== <disk number>,<cabinet number>,<file key>,<file number> ===
+;===============================================================
+[file list]
+1,1,MAKEMSI_Documentation,1

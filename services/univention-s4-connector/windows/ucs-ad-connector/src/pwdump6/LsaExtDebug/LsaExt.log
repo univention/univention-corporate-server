@@ -1,0 +1,31 @@
+﻿Build started 27.04.2010 06:17:38.
+Project "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\LsaExt.vcxproj" on node 2 (build target(s)).
+InitializeBuildStatus:
+  Touching ".\LsaExtDebug\LsaExt.unsuccessfulbuild".
+ClCompile:
+  All outputs are up-to-date.
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /D _USRDLL /D LSAEXT_EXPORTS /Gm- /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\LsaExtDebug/" /Fd".\LsaExtDebug/vc100.pdb" /Gd /TC /analyze- /errorReport:prompt LsaExt.c
+  LsaExt.c
+\\korall\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\lsaext.c(291): warning C4101: 'dwNumber' : unreferenced local variable
+\\korall\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\lsaext.c(295): warning C4101: 'i' : unreferenced local variable
+\\korall\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\lsaext.c(294): warning C4101: 'dataSize' : unreferenced local variable
+\\korall\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\lsaext.c(286): warning C4101: 'enumRc' : unreferenced local variable
+\\korall\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\lsaext.c(403): warning C4101: 'dwCounter' : unreferenced local variable
+\\korall\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\lsaext.c(403): warning C4101: 'dwOffset' : unreferenced local variable
+\\korall\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\lsaext.c(404): warning C4101: 'j' : unreferenced local variable
+\\korall\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\lsaext.c(397): warning C4101: 'wszUserName' : unreferenced local variable
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\LsaExtDebug\LsaExt.dll) does not match the Linker's OutputFile property value (\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\LsaExtDebug\lsremora.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(LsaExt) does not match the Linker's OutputFile property value (lsremora). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+Link:
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:".\LsaExtDebug\lsremora.dll" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:".\LsaExtDebug\LsaExt.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:".\LsaExtDebug/LsaExt.pdb" /TLBID:1 /DYNAMICBASE:NO /IMPLIB:".\LsaExtDebug\lsremora.lib" /MACHINE:X86 /DLL .\LsaExtDebug/blowfish.obj
+  .\LsaExtDebug/LsaExt.obj
+blowfish.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
+     Creating library .\LsaExtDebug\lsremora.lib and object .\LsaExtDebug\lsremora.exp
+LsaExt.obj : error LNK2019: unresolved external symbol _NetApiBufferFree@4 referenced in function _SetHash
+LsaExt.obj : error LNK2019: unresolved external symbol _NetUserGetInfo@16 referenced in function _SetHash
+.\LsaExtDebug\lsremora.dll : fatal error LNK1120: 2 unresolved externals
+Done Building Project "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\LsaExt.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.88
