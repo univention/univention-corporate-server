@@ -72,6 +72,11 @@ class Base( signals.Provider, Translation ):
 		self.__acls = acls
 	acls = property( fset = _set_acls )
 
+	def init( self ):
+		'''this function is invoked after the initial UMCP SET command
+		that passes the base configuration to the module process'''
+		pass
+
 	def execute( self, method, object ):
 		self.__requests[ object.id ] = ( object, method )
 

@@ -206,6 +206,9 @@ class ModuleServer( Server ):
 
 			self.response( resp )
 
+			# call init function of module instance
+			self.__handler.init()
+
 			if not self.__active_requests and self.__timer == None:
 				self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 			return
