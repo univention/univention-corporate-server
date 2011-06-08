@@ -255,13 +255,13 @@ class ACLs:
 
 	def _dump( self ):
 		"""Dumps the ACLs for the user"""
-		ACL.process( '          %8s -- %20s -- %20s -- %20s' % ( 'fromUser', 'Host', 'Command', 'Options' ) )
-		ACL.process( '**********************************************************************************************')
-
-		for allow in self.acls[ 'allow' ]:
-			ACL.process( 'ALLOW:    %(fromUser)8s -- %(host)20s -- %(command)20s -- %(options)20s' % allow )
-		for disallow in self.acls[ 'disallow' ]:
-			ACL.process( 'DISALLOW: %(fromUser)8s -- %(host)20s -- %(command)20s -- %(options)20s' %disallow )
+		for right in self.acls:
+			ACL.process( 'Authorization: %s' % right.upper() )
+			ACL.process( ' %-5s | %-20s | %-20s | %-20s' % ( 'User', 'Host', 'Command', 'Options' ) )
+			ACL.process( '******************************************************************************')
+			for rule in self.acls[ right ]:
+				ACL.process( ' %(fromUser)-5s | %(host)-20s | %(command)-20s | %(options)-20s' % rule )
+			ACL.process( '' )
 
 	def _read_from_file( self, username ):
 		filename = os.path.join( ACLs.CACHE_DIR,  username )
@@ -272,8 +272,15 @@ class ACLs:
 			return False
 
 		lines = file.read( )
-		self.acls = cPickle.loads( lines )
+		acls = cPickle.loads( lines )
 		file.close( )
+
+		self.acls = { 'allow': [ ], 'disallow': [ ] }
+		# check for duplicates
+		for right in ( 'allow', 'disallow' ):
+			for rule in acls[ right ]:
+				if not rule in self.acls[ right ]:
+					self.acls[ right ].append( rule )
 
 	def _write_to_file( self, username ):
 		filename = os.path.join( ACLs.CACHE_DIR,  username )
