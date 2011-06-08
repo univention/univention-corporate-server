@@ -84,7 +84,7 @@ def update_status(**kwargs):
 		dprint('Warning: cannot update %s' % FN_STATUS)
 
 
-def performUpdate(updateto=None, checkForUpdates=False):
+def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoreterm=False):
 	updater = UniventionUpdater()
 
 	if updateto:
@@ -140,7 +140,13 @@ def performUpdate(updateto=None, checkForUpdates=False):
 				# perform release update (only one step!)
 				dprint('Starting update to UCS version %s at %s...' % (version_next, time.ctime()))
 				time.sleep(1)
-				retcode = subprocess.call('univention-updater net --updateto %s' % version_next, shell=True)
+				params = []
+				if ignoressh:
+					params.append(' --ignoressh')
+				if ignoreterm:
+					params.append(' --ignoreterm')
+				params = ''.join(params)
+				retcode = subprocess.call('univention-updater net --updateto %s%s' % (version_next, params, ), shell=True)
 				if retcode:
 					dprint('exitcode of univention-updater: %s' % retcode)
 					dprint('ERROR: update failed. Please check /var/log/univention/updater.log')
@@ -235,6 +241,8 @@ def main():
 	parser.add_option("--updateto", dest="updateto", default=None, action="store", help="update up to specified version")
 	parser.add_option("--check", dest="check", default=False, action="store_true", help="check if updates are available")
 	parser.add_option("--setucr", dest="setucr", default=False, action="store_true", help="if set, variable update/available will be updated if --check is specified too")
+	parser.add_option("--ignoressh", dest="ignoressh", default=False, action="store_true", help="pass --ignoressh to univention-updater")
+	parser.add_option("--ignoreterm", dest="ignoreterm", default=False, action="store_true", help="pass --ignoreterm to univention-updater")
 	(options, args) = parser.parse_args()
 
 	try:
@@ -248,7 +256,7 @@ def main():
 
 	if options.check:
 		try:
-			update_available = performUpdate(options.updateto, checkForUpdates=True)
+			update_available = performUpdate(options.updateto, checkForUpdates=True, ignoressh=options.ignoressh, ignoreterm=options.ignoreterm)
 		except SystemExit, e:
 			sys.exit(e)
 		except ConfigurationError, e:
@@ -272,7 +280,7 @@ def main():
 			sys.exit(1)
 	else:
 		try:
-			performUpdate(options.updateto)
+			performUpdate(options.updateto, ignoressh=options.ignoressh, ignoreterm=options.ignoreterm)
 		except SystemExit, e:
 			sys.exit(e)
 		except ConfigurationError, e:
@@ -290,7 +298,7 @@ def main():
 
 		# check for new updates after updating ; update UCR variable
 		try:
-			update_available = performUpdate(options.updateto, checkForUpdates=True)
+			update_available = performUpdate(options.updateto, checkForUpdates=True, ignoressh=options.ignoressh, ignoreterm=options.ignoreterm)
 		except SystemExit, e:
 			sys.exit(e)
 		except ConfigurationError, e:
