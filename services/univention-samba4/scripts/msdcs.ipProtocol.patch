@@ -1,0 +1,22 @@
+--- a/usr/lib/python2.4/site-packages/univention/admin/syntax.py	2010-09-16 22:56:46.000000000 +0200
++++ b/usr/lib/python2.4/site-packages/univention/admin/syntax.py	2010-09-16 23:00:04.000000000 +0200
+@@ -559,6 +559,10 @@
+ 	name='ipProtocol'
+ 	choices=[(_('tcp'), 'TCP'), (_('udp'), 'UDP')]
+ 
++class extended_s4_ipProtocol(select):
++	name='extended_s4_ipProtocol'
++	choices=[(_('tcp'), 'TCP'), (_('udp'), 'UDP'), (_('msdcs'), 'MSDCS'), (_('sites'), 'SITES')]
++
+ class absolutePath(simple):
+ 	name='absolutePath'
+ 	min_length=1
+@@ -700,7 +704,7 @@
+ 
+ class dnsSRVName(complex):
+ 	name='dnsSRVName'
+-	subsyntaxes=[(_('Service'), string), (_('Protocol'), ipProtocol)]
++	subsyntaxes=[(_('Service'), string), (_('Protocol'), extended_s4_ipProtocol)]
+ 	all_required=1
+ 
+ class postalAddress(complex):

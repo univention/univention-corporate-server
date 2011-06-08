@@ -1,0 +1,16 @@
+#!/bin/bash
+
+eval "$(ucr shell)"
+
+binddn="$connector_ad_ldap_binddn"
+if [ -z "$binddn" ]; then
+	binddn="cn=ucs-s4sync,cn=Users,$samba4_ldap_base"
+fi
+
+bindpw="$connector_ad_ldap_bindpw"
+if [ -z "$bindpw" ]; then
+	bindpw="/etc/samba4.secret"
+fi
+
+ldapsearch -x -h "$ldap_server_name" -p 389 -b "$samba4_ldap_base" -D "$binddn" -w "$(<$bindpw)" $@
+

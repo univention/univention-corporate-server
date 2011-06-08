@@ -1,0 +1,208 @@
+univention-samba4 (0.2.16-1) experimental; urgency=low
+
+  * Added 2011 to copyright (Bug #20916)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Jan 2011 10:46:49 +0100
+
+univention-samba4 (0.2.15-1) experimental; urgency=low
+
+  * Do not write netbios aliases twice and use the dns domainname
+    instead of the samba domain (Bug #21238)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Jan 2011 14:42:13 +0100
+
+univention-samba4 (0.2.14-1) experimental; urgency=low
+
+  * Create Samba 4 service and set netbios aliases to the first Samba 4
+    dc in the domain (Bug #21238)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Jan 2011 10:52:26 +0100
+
+univention-samba4 (0.2.13-1) experimental; urgency=low
+
+  * Check if ucr variable kerberos/realm is set (Bug #21226)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Jan 2011 07:47:46 +0100
+
+univention-samba4 (0.2.12-1) experimental; urgency=low
+
+  * Create kerberos service entries for sshd and slapd (Bug #20131)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jan 2011 08:23:20 +0100
+
+univention-samba4 (0.2.11-1) experimental; urgency=low
+
+  * Moved kerberos settings to univention-heimdal (Bug #20131)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jan 2011 06:59:06 +0100
+
+univention-samba4 (0.2.10-1) experimental; urgency=low
+
+  * Generate a secure password with pwgen (Bug #21217)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Jan 2011 16:13:12 +0100
+
+univention-samba4 (0.2.9-1) experimental; urgency=low
+
+  * Copy samba4 keytab to /etc/krb5.keytab (Bug #20916)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Jan 2011 08:06:54 +0100
+
+univention-samba4 (0.2.8-1) experimental; urgency=low
+
+  * Create local configuration files if needed (Bug #20131)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Jan 2011 14:55:55 +0100
+
+univention-samba4 (0.2.7-1) experimental; urgency=low
+
+  * More smb.conf cleanups (Bug #20131)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Jan 2011 11:40:18 +0100
+
+univention-samba4 (0.2.6-2) experimental; urgency=low
+
+  * Cleanup and expand smb.conf configuration (Bug #20131)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Jan 2011 07:45:27 +0100
+
+univention-samba4 (0.2.6-1) experimental; urgency=low
+
+  * Create ucs-s4sync user in s4-connector package (Bug #21145)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 Jan 2011 21:52:13 +0100
+
+univention-samba4 (0.2.5-1) experimental; urgency=low
+
+  * Create synchronisation user ucs-s4sync for the sync between Samba 4
+    and OpenLDAP (Bug #21145)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 Jan 2011 13:51:43 +0100
+
+univention-samba4 (0.2.4-1) experimental; urgency=low
+
+  * Determined partition GUID on the basis of the objectGUID from the
+    windows_domain partition object (Bug #20132)
+  * Use fqdn instead of hostname for the service records
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 Jan 2011 07:28:48 +0100
+
+univention-samba4 (0.2.3-3) experimental; urgency=low
+
+  * Add samba version to server string and restart samba4 in postinst
+    (Bug #20131)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Jan 2011 20:39:48 +0100
+
+univention-samba4 (0.2.3-2) experimental; urgency=low
+
+  * Added home share and cleanup smb.conf (Bug #20131)
+  * Don't patch smb.conf manually (Bug #20131)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Jan 2011 07:49:21 +0100
+
+univention-samba4 (0.2.3-1) experimental; urgency=low
+
+  * Install samba-ldb-tools by default (Bug #20131)
+  * Add univention-s4search (Bug #20915)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Jan 2011 11:15:57 +0100
+
+univention-samba4 (0.2.2-1) experimental; urgency=low
+
+  * Do no depend on dc master package (Bug #20131)
+  * Check if /etc/init.d/samba exists before calling
+  * Cleanup the setup-s4.sh script (Bug #20131)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 06 Jan 2011 09:22:35 +0100
+
+univention-samba4 (0.2.1-1) experimental; urgency=low
+
+  * removed change-ucs-ldap_port.patch, which was merged into the source
+    packages (Bug #20026)
+  * Updated copyright file
+  * Added S4 join script
+  * Move conffile 93univention-samba4 to the correct path
+  * Removed wrong references to ad connector package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 03 Jan 2011 14:38:04 +0100
+
+univention-samba4 (0.1-12) experimental; urgency=low
+
+  * add 93univention-samba4 subfile to smb.conf
+  * configure TLS for Samba Directory (Bug #20131)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Oct 2010 14:48:27 +0200
+
+univention-samba4 (0.1-11) experimental; urgency=low
+
+  * avoid using SmartLDAPObject for LDAPI (Bug #20131)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Oct 2010 10:36:10 +0200
+
+univention-samba4 (0.1-10) experimental; urgency=low
+
+  * register modified UCR-templates (Bug #20131)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Oct 2010 09:41:11 +0200
+
+univention-samba4 (0.1-9) experimental; urgency=low
+
+  * add patch for ldap/server/port support in dhcpd.conf (Bug #20131)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Oct 2010 20:03:31 +0200
+
+univention-samba4 (0.1-8) experimental; urgency=low
+
+  * resync univention-bind zones to connect to new LDAP port (Bug #20131)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 05 Oct 2010 17:14:07 +0200
+
+univention-samba4 (0.1-7) experimental; urgency=low
+
+  * more on ldapi and patch merge into change-ucs-ldap_port (Bug #20131)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 05 Oct 2010 15:09:12 +0200
+
+univention-samba4 (0.1-6) experimental; urgency=low
+
+  * supply patch to add basic ldapi support to uldap.py (Bug #20131)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 01 Oct 2010 13:55:55 +0200
+
+univention-samba4 (0.1-5) experimental; urgency=low
+
+  * generate password for Samba4 Administrator
+  * call setup-s4 Script in postinst
+  * supply current domainSid to provision script
+  * supply machine password to provision script
+  * reverse package dependency relation to univention-s4-connector
+  * new UCR variable samba4/ldap/base for s4-connector (Bug #20131)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Sep 2010 18:22:42 +0200
+
+univention-samba4 (0.1-4) experimental; urgency=low
+
+  * disable autostart of heimdal-kdc and samba3 (Bug #20131)
+  * use ldapi socket instead of tdb
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Sep 2010 14:08:23 +0200
+
+univention-samba4 (0.1-3) experimental; urgency=low
+
+  * add basic build-dependecies (Bug #20131)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 27 Sep 2010 18:16:30 +0200
+
+univention-samba4 (0.1-2) experimental; urgency=low
+
+  * minor fixes for new Bug #20131
+
+ -- Arvid Requate <requate@univention.de>  Mon, 27 Sep 2010 13:12:35 +0200
+
+univention-samba4 (0.1-1) experimental; urgency=low
+
+  * initial release (Bug #17214)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 24 Sep 2010 11:45:33 +0200
+

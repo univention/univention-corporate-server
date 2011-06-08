@@ -1,0 +1,38 @@
+@!@
+import re
+
+reg_user = re.compile('samba/share/([^\/]+)/usergroup/([^\/]+)/invalid')
+reg_options = re.compile('samba/share/([^\/]+)/options/(.*)')
+reg_globals = re.compile('samba/global/options/(.*)')
+reg_printmode = re.compile('samba/printmode/usergroup/(.*)')
+reg_othershares = re.compile('samba/othershares/usergroup/([^\/]+)/invalid')
+
+include = False
+include_file = "/etc/samba/local.config.conf"
+
+for key in configRegistry.keys():
+
+	m_user = reg_user.match(key)
+	m_options = reg_options.match(key)
+	m_globals = reg_globals.match(key)
+	m_printmode = reg_printmode.match(key)
+	m_othershares = reg_othershares.match(key)
+
+	v = configRegistry.get(key)
+
+	if m_user and m_user.group(1) and m_user.group(2) and v == "true":
+		include = True
+	elif m_othershares and m_othershares.group(1) and v == "true":
+		include = True
+	elif m_printmode and m_printmode.group(1) and (v == "all" or v == "none"):
+		include = True
+	elif m_options and m_options.group(2) and v:
+		include = True
+	elif m_globals and m_globals.group(1) and v:
+		include = True
+
+if include:
+	print "\tinclude = %s\n" % include_file
+
+@!@
+
