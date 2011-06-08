@@ -3,11 +3,6 @@
   <module id="ucr" icon="ucr/module" version="1.0">
 	<name>Univention Configuration Registry</name>
 	<description>Managing UCR variables</description>
-	<flavor icon="ucr/module-expert" id="expert-mode">
-	  <option name="extensions" value="True"/>
-	  <name>Univention Configuration Registry (Experts)</name>
-	  <description>Managing additional parameters of UCR variables</description>
-	</flavor>
 	<categories>
 	  <category name="system"/>
 	</categories>
