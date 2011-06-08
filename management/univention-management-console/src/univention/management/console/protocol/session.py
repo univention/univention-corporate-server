@@ -94,7 +94,7 @@ class ModuleProcess( Client ):
 	def __init__( self, module, debug = '0', locale = None ):
 		socket = '/var/run/univention-management-console/%u-%lu.socket' % ( os.getpid(), long( time.time() * 1000 ) )
 		# determine locale settings
-		args = [ MODULE_COMMAND, '-m', module, '-s', socket, '-d', debug ]
+		args = [ MODULE_COMMAND, '-m', module, '-s', socket, '-d', str( debug ) ]
 		if locale:
 			args.extend( ( '-l', '%s' % locale ) )
 			self.__locale = locale

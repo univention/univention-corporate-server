@@ -148,9 +148,6 @@ class Translation( NullTranslation ):
 				self._translation = None
 				LOCALE.error( 'Could not find translation file for language %s of domain %s' % ( language, self._domain ) )
 
-class I18N_Error( Exception ):
-	pass
-
 class I18N( object ):
 	LOCALE_DIR = '/usr/share/univention-management-console/i18n/'
 
@@ -172,7 +169,8 @@ class I18N( object ):
 		if not os.path.isfile( filename ):
 			filename = os.path.join( I18N.LOCALE_DIR, '%s_%s' % ( self.locale.language, self.locale.territory ), '%s.mo' % self.domain )
 			if not os.path.isfile( filename ):
-				raise I18N_Error( 'No translation file found' )
+				LOCALE.warn( ' Could not find translation file for domain %s (language: %s)' % ( self.domain, str( self.locale ) ) )
+				self.mofile = None
 
 		self.mofile = polib.mofile( filename )
 
