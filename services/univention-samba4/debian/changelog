@@ -1,3 +1,10 @@
+univention-samba4 (1.0.1-1) experimental; urgency=low
+
+  * Removed empty line from debian/univention-samba4.univention-config-
+    registry (Bug #22559)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 08 Jun 2011 15:45:06 +0200
+
 univention-samba4 (1.0.0-1) experimental; urgency=low
 
   * Package cleanups for UCS 3.0 (Bug #22559)
