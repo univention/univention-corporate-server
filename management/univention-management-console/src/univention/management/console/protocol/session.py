@@ -36,6 +36,7 @@ import locale
 import os
 import string
 import sys
+import time
 
 import notifier
 import notifier.signals as signals
@@ -46,20 +47,20 @@ from OpenSSL import *
 import univention.uldap
 
 from .message import Response, Request
-from .client import *
-from .version import *
+from .client import Client
+from .version import VERSION
 from .definitions import *
 
-from ..resources import *
+from ..resources import moduleManager, syntaxManager, categoryManager
 from ..verify import SyntaxVerificationError
 from ..auth import AuthHandler
 from ..acl import ConsoleACLs
 from ..locales import Translation, LocaleNotFound
-from ..log import *
-
-import univention.management.console as umc
+from ..log import CORE
+from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, ucr
 
 class State( signals.Provider ):
+	'''Holds information about the state of an active session'''
 	def __init__( self, client, socket ):
 		signals.Provider.__init__( self )
 		self.__auth = AuthHandler()
@@ -76,7 +77,7 @@ class State( signals.Provider ):
 		self.running = False
 
 	def __del__( self ):
-		CORE.process( 'State: dying' )
+		CORE.info( 'The session is shutting down' )
 		del self.processor
 
 	def _authenticated( self, success ):
@@ -90,12 +91,10 @@ class State( signals.Provider ):
 
 
 class ModuleProcess( Client ):
-	COMMAND = '/usr/sbin/univention-management-console-module'
-
 	def __init__( self, module, debug = '0', locale = None ):
 		socket = '/var/run/univention-management-console/%u-%lu.socket' % ( os.getpid(), long( time.time() * 1000 ) )
 		# determine locale settings
-		args = [ ModuleProcess.COMMAND, '-m', module, '-s', socket, '-d', debug ]
+		args = [ MODULE_COMMAND, '-m', module, '-s', socket, '-d', debug ]
 		if locale:
 			args.extend( ( '-l', '%s' % locale ) )
 			self.__locale = locale
@@ -143,14 +142,13 @@ class Processor( signals.Provider ):
 	UMCP commands and passes the commands for a module to the
 	subprocess.'''
 
-	INACTIVITY_TIMER = 120000 # 120 seconds
-
 	def __init__( self, username, password ):
 		self.__username = username
 		self.__password = password
 		signals.Provider.__init__( self )
 		self.core_i18n = Translation( 'univention-management-console' )
-		self.i18n = {}
+		self.i18n = I18N_Manager()
+		self.i18n[ 'univention-management-console' ] = I18N()
 
 		# stores the module processes [ modulename ] = <>
 		self.__processes = {}
@@ -159,21 +157,21 @@ class Processor( signals.Provider ):
 
 		self.__killtimer = {}
 
-		lo = ldap.open( umc.configRegistry[ 'ldap/server/name' ], int(umc.baseconfig.get('ldap/server/port', 389)) )
+		lo = ldap.open( ucr[ 'ldap/server/name' ], int( ucr.get( 'ldap/server/port', 389 ) ) )
 
 		try:
-			userdn = lo.search_s( umc.configRegistry[ 'ldap/base' ], ldap.SCOPE_SUBTREE,
+			userdn = lo.search_s( ucr[ 'ldap/base' ], ldap.SCOPE_SUBTREE,
 								  '(&(objectClass=person)(uid=%s))' % self.__username )[ 0 ][ 0 ]
 
-			self.lo = univention.uldap.access( host = umc.configRegistry[ 'ldap/server/name' ],
-											   base = umc.configRegistry[ 'ldap/base' ], binddn = userdn,
+			self.lo = univention.uldap.access( host = ucr[ 'ldap/server/name' ],
+											   base = ucr[ 'ldap/base' ], binddn = userdn,
 											   bindpw = self.__password, start_tls = 2 )
 		except:
 			self.lo = None
 
 		# read the ACLs
-		self.acls = ConsoleACLs( self.lo, self.__username, umc.configRegistry[ 'ldap/base' ] )
-		self.__command_list = moduleManager.permitted_commands( umc.configRegistry[ 'hostname' ], self.acls )
+		self.acls = ConsoleACLs( self.lo, self.__username, ucr[ 'ldap/base' ] )
+		self.__command_list = moduleManager.permitted_commands( ucr[ 'hostname' ], self.acls )
 
 		self.signal_new( 'response' )
 
@@ -239,18 +237,13 @@ class Processor( signals.Provider ):
 			modules = []
 			for id, module in self.__command_list.items():
 				# check for translation
-				if not id in self.i18n:
-					CORE.info( 'Trying to create translation object for module %s' % id )
-					self.i18n[ id ] = Translation( id, locale_spec = self.__locale, localedir = '/usr/share/univention-management-console/i18n/' )
-					self.i18n[ id ].set_language( self.__locale )
-					CORE.info( 'Translation object for %s: %s' % ( id, self.i18n[ id ].locale ) )
 				if module.flavors:
 					for flavor in module.flavors:
-						modules.append( { 'id' : id, 'name' : self.i18n[ id ]._( flavor.name ), 'description' : self.i18n[ id ]._( flavor.description ), 'icon' : flavor.icon, 'categories' : module.categories } )
+						modules.append( { 'id' : id, 'name' : self.i18n._( flavor.name, id ), 'description' : self.i18n._( flavor.description, id ), 'icon' : flavor.icon, 'categories' : module.categories } )
 				else:
-						modules.append( { 'id' : id, 'name' : self.i18n[ id ]._( module.name ), 'description' : self.i18n[ id ]._( module.description ), 'icon' : module.icon, 'categories' : module.categories } )
+						modules.append( { 'id' : id, 'name' : self.i18n._( module.name, id ), 'description' : self.i18n._( module.description, id ), 'icon' : module.icon, 'categories' : module.categories } )
 			res.body[ 'modules' ] = modules
-			res.body[ 'categories' ] = categoryManager.all()
+			res.body[ 'categories' ] = map( lambda x: { 'id' : x[ 'id' ], 'name' : self.i18n._( x[ 'name' ] ) }, categoryManager.all() )
 			CORE.info( 'Modules: %s' % modules )
 			CORE.info( 'Categories: %s' % str( res.body[ 'categories' ] ) )
 			res.status = SUCCESS # Ok
@@ -292,9 +285,8 @@ class Processor( signals.Provider ):
 				self.__locale = value
 				try:
 					self.core_i18n.set_language( value )
-					for translation in self.i18n.values():
-						translation.set_language( value )
-				except LocaleNotFound, e:
+					self.i18n.set_locale( value )
+				except I18N_Error, e:
 					res.status = BAD_REQUEST_UNAVAILABLE_LOCALE
 					res.message = status_description( res.status )
 					CORE.warn( 'Setting locale: specified locale is not available (%s)' % self.__locale )
@@ -328,7 +320,7 @@ class Processor( signals.Provider ):
 		if module._inactivity_timer is not None:
 			notifier.timer_remove( module._inactivity_timer )
 
-		module._inactivity_timer = notifier.timer_add( Processor.INACTIVITY_TIMER, notifier.Callback( self._mod_inactive, module ) )
+		module._inactivity_timer = notifier.timer_add( MODULE_INACTIVITY_TIMER, notifier.Callback( self._mod_inactive, module ) )
 
 	def handle_request_command( self, msg ):
 		module_name = self.__is_command_known( msg )
@@ -341,7 +333,7 @@ class Processor( signals.Provider ):
 				return
 			if not module_name in self.__processes:
 				CORE.info( 'Starting new module process and passing new request to module %s: %s' % (module_name, str(msg._id)) )
-				mod_proc = ModuleProcess( module_name, debug = umc.configRegistry.get( 'umc/module/debug/level', '0' ), locale = self.__locale )
+				mod_proc = ModuleProcess( module_name, debug = MODULE_DEBUG_LEVEL, locale = self.__locale )
 				mod_proc.signal_connect( 'result', self._mod_result )
 				cb = notifier.Callback( self._socket_died, module_name, msg )
 				mod_proc.signal_connect( 'closed', cb )

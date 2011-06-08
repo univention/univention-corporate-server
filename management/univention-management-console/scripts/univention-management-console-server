@@ -45,12 +45,8 @@ import notifier
 import notifier.signals as signals
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
 
-import univention.config_registry as ucr
-
-from univention.management.console.log import *
-
-configRegistry = ucr.ConfigRegistry()
-configRegistry.load()
+from univention.management.console.log import CORE, log_init
+from univention.management.console.config import SERVER_DEBUG_LEVEL
 
 server = None
 
@@ -66,10 +62,8 @@ class UMC_Daemon( DaemonRunner ):
 		self.parser.add_option( '-l', '--language', type = 'string', action = 'store',
 						   dest = 'language', default = 'de_DE.utf8',
 						   help = 'defines the language to use [default: %default]' )
-		try:
-			default_debug = int( configRegistry.get( 'umc/server/debug/level', '1' ) )
-		except:
-			default_debug = 1
+
+		default_debug = SERVER_DEBUG_LEVEL
 		self.parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = default_debug,
 						   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
 		self.parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-server',
@@ -98,7 +92,7 @@ class UMC_Daemon( DaemonRunner ):
 			self.stdout_path = '/dev/stderr'
 			self.stderr_path = '/dev/stderr'
 		self.pidfile_path = '/var/run/umc-server.pid'
-		self.pidfile_timeout = 10
+		self.pidfile_timeout = 3
 
 		# init daemon runner
 		DaemonRunner.__init__( self, self )

@@ -31,18 +31,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.management.console.log import *
+from univention.management.console.log import MODULE, log_init
+from univention.management.console.config import MODULE_DEBUG_LEVEL
 
 from optparse import OptionParser
 
-import locale, os, sys
+import locale
+import os
+import sys
 
 import notifier
-
-from univention.config_registry import ConfigRegistry
-
-ucr = ConfigRegistry()
-ucr.load()
 
 if __name__ == '__main__':
 	if os.getuid() != 0:
@@ -60,10 +58,8 @@ if __name__ == '__main__':
 	parser.add_option( '-m', '--module', type = 'string',
 					   action = 'store', dest = 'module',
 					   help = 'set the UMC daemon module to load' )
-	try:
-		default_debug = int( configRegistry.get( 'umc/module/debug/level', '1' ) )
-	except:
-		default_debug = 1
+
+	default_debug = MODULE_DEBUG_LEVEL
 	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = default_debug,
 					   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
 	parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-module', help = 'specifies an alternative log file [default: %default-<module name>.log]' )
@@ -79,12 +75,6 @@ if __name__ == '__main__':
 		localeok = True
 	except:
 		MODULE.error( 'The specified locale is not available (cmdline: %s)' % options.language )
-	# if not localeok and ucr.get( 'umc/web/language' ):
-	# 	try:
-	# 		locale.setlocale( locale.LC_MESSAGES, locale.normalize( ucr['umc/web/language'] ) )
-	# 		localeok = True
-	# 	except:
-	# 		MODULE.error( 'The specified locale is not available (UCR: %s)' % ucr[ 'umc/web/language' ] )
 
 	import univention.management.console.protocol as umcp
 

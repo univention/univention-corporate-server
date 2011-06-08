@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  UMc module init
+#  UMC configuration
 #
-# Copyright 2006-2011 Univention GmbH
+# Copyright 2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,5 +31,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from locales import Translation
+import univention.config_registry
 
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+
+def get_int( variable, default ):
+	try:
+		return int( ucr.get( variable ) )
+	except ( ValueError, TypeError ):
+		return default
+
+SERVER_DEBUG_LEVEL = get_int( 'umc/server/debug/level', 1 )
+
+MODULE_COMMAND = '/usr/sbin/univention-management-console-module'
+
+MODULE_DEBUG_LEVEL = get_int( 'umc/module/debug/level', 1 )
+MODULE_INACTIVITY_TIMER = get_int( 'umc/module/timeout', 120000 )

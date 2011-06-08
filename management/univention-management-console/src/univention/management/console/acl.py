@@ -34,7 +34,7 @@
 import os, sys, ldap, re
 import cPickle
 
-import univention.management.console as umc
+from .config import ucr
 from .log import *
 
 import univention.admin.modules
@@ -69,7 +69,7 @@ class ACLs:
 	def _expand_hostlist( self, hostlist ):
 		hosts = []
 		if self.__ldap_base is None:
-			self.__ldap_base = umc.configRegistry.get( 'ldap/base', None )
+			self.__ldap_base = ucr.get( 'ldap/base', None )
 
 		servers = []
 		for host in hostlist:
@@ -215,7 +215,7 @@ class ACLs:
 
 	def is_command_allowed( self, command, hostname = None, options = {} ):
 		if not hostname:
-			hostname = umc.configRegistry[ 'hostname' ]
+			hostname = ucr[ 'hostname' ]
 		# first check if the command is disallowed and then check if an other rule is more important
 		disallowed_rule = False
 		for disallow in self.acls[ 'disallow' ]:
@@ -348,7 +348,7 @@ if __name__ == '__main__':
 	if not password:
 		password='univention'
 
-	lo = univention.uldap.access( host = umc.configRegistry[ 'ldap/server/name' ], base = umc.configRegistry[ 'ldap/base' ], start_tls = 2 )
+	lo = univention.uldap.access( host = ucr[ 'ldap/server/name' ], base = ucr[ 'ldap/base' ], start_tls = 2 )
 	userdn=lo.searchDn( filter = 'uid=%s' % username )
 	if not userdn:
 		print '\nError: user not found'
@@ -357,17 +357,17 @@ if __name__ == '__main__':
 	userdn=userdn[ 0 ]
 
 	try:
-		lo = univention.uldap.access( host = umc.configRegistry[ 'ldap/server/name' ] , base = umc.configRegistry[ 'ldap/base' ], binddn = userdn, bindpw = password, start_tls = 2 )
+		lo = univention.uldap.access( host = ucr[ 'ldap/server/name' ] , base = ucr[ 'ldap/base' ], binddn = userdn, bindpw = password, start_tls = 2 )
 	except ldap.INVALID_CREDENTIALS:
 		print '\nError: invalid credentials'
 		sys.exit( 1 )
 
-	acls = ConsoleACLs( lo, username, umc.configRegistry[ 'ldap/base' ] )
+	acls = ConsoleACLs( lo, username, ucr[ 'ldap/base' ] )
 
-	print 'is baseconfig/set/foo allowed on this host?: %s' % acls.is_command_allowed ( 'baseconfig/set/foo', umc.configRegistry[ 'hostname' ] )
-	print 'is baseconfig/set     allowed on this host with data ldap/*?: %s' % acls.is_command_allowed ( 'baseconfig/set', umc.configRegistry[ 'hostname' ], { 'key' : 'ldap/*' } )
-	print 'is baseconfig/set     allowed on this host with data net/bla?: %s' % acls.is_command_allowed ( 'baseconfig/set', umc.configRegistry[ 'hostname' ], { 'key' : 'net/bla' } )
-	print 'is baseconfig/set     allowed on this host with data interfaces/eth1/address?: %s' % acls.is_command_allowed ( 'baseconfig/set', umc.configRegistry[ 'hostname' ], { 'key' : 'interfaces/eth1/address' } )
-	print 'is baseconfig/get     allowed on this host?: %s' % acls.is_command_allowed ( 'baseconfig/get', umc.configRegistry[ 'hostname' ] )
-	print 'is cups/view          allowed on this host?: %s' % acls.is_command_allowed ( 'cups/view', umc.configRegistry[ 'hostname' ] )
-	print 'is foo/bar            allowed on this host?: %s' % acls.is_command_allowed ( 'foo/bar', umc.configRegistry[ 'hostname' ] )
+	print 'is baseconfig/set/foo allowed on this host?: %s' % acls.is_command_allowed ( 'baseconfig/set/foo', ucr[ 'hostname' ] )
+	print 'is baseconfig/set     allowed on this host with data ldap/*?: %s' % acls.is_command_allowed ( 'baseconfig/set', ucr[ 'hostname' ], { 'key' : 'ldap/*' } )
+	print 'is baseconfig/set     allowed on this host with data net/bla?: %s' % acls.is_command_allowed ( 'baseconfig/set', ucr[ 'hostname' ], { 'key' : 'net/bla' } )
+	print 'is baseconfig/set     allowed on this host with data interfaces/eth1/address?: %s' % acls.is_command_allowed ( 'baseconfig/set', ucr[ 'hostname' ], { 'key' : 'interfaces/eth1/address' } )
+	print 'is baseconfig/get     allowed on this host?: %s' % acls.is_command_allowed ( 'baseconfig/get', ucr[ 'hostname' ] )
+	print 'is cups/view          allowed on this host?: %s' % acls.is_command_allowed ( 'cups/view', ucr[ 'hostname' ] )
+	print 'is foo/bar            allowed on this host?: %s' % acls.is_command_allowed ( 'foo/bar', ucr[ 'hostname' ] )

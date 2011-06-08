@@ -1,3 +1,11 @@
+univention-management-console (4.0.19-1) unstable; urgency=low
+
+  * code cleanup; Bug #22460
+  * more i18n stuff for the UMC server
+  * enhancements for build tools
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 06 Jun 2011 19:51:05 +0200
+
 univention-management-console (4.0.18-1) unstable; urgency=low
 
   * Consider ldap/server/port (Bug #20026)

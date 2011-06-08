@@ -45,12 +45,13 @@ from OpenSSL import *
 # internal packages
 import univention.management.console as umc
 
-from .message import *
-from .session import *
+from .message import Message, Response, IncompleteMessageError, ParseError, UnknownCommandError
+from .session import State, Processor
 from .definitions import *
 
-from ..resources import *
-from ..log import *
+from ..resources import moduleManager, syntaxManager, categoryManager
+from ..log import CORE, CRYPT
+from ..config import ucr
 
 class MagicBucket( object ):
 	'''Manages a connection (session) to the UMC server. Therefor it
@@ -241,7 +242,7 @@ class Server( signals.Provider ):
 			self.crypto_context.set_cipher_list('DEFAULT')
 			self.crypto_context.set_options( SSL.OP_NO_SSLv2 )
 			self.crypto_context.set_verify( SSL.VERIFY_PEER, self.__verify_cert_cb )
-			dir = '/etc/univention/ssl/%s.%s' % (umc.configRegistry[ 'hostname' ], umc.configRegistry[ 'domainname' ])
+			dir = '/etc/univention/ssl/%s.%s' % ( ucr[ 'hostname' ], ucr[ 'domainname' ] )
 			try:
 				self.crypto_context.use_privatekey_file( os.path.join( dir, 'private.key' ) )
 				self.crypto_context.use_certificate_file( os.path.join( dir, 'cert.pem' ) )

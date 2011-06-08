@@ -47,7 +47,7 @@ def main():
 	parser.add_option( '-p', '--package', action = 'store',
 					   dest = 'package',
 					   help = 'Specifies the package name which is needed for the creation of .po files. (Mandatory)' )
-	parser.add_option( '-t', '--type', action = 'store', type = 'choice', choices = ['json', 'mo', 'po'],
+	parser.add_option( '-t', '--type', action = 'store', type = 'choice', choices = ['json', 'mo', 'po', 'core'],
 					   dest = 'type', default = 'json',
 					   help = 'Type of the final output file; note that "json" and "mo" will both also create .po files [%default]')
 	parser.add_option( '-o', '--outdir', action = 'store',
@@ -65,16 +65,16 @@ def main():
 	if not options.package:
 		print '\nYou need to specify a package-name (--package) as well as a list of JavaScript files to process!\n'
 		sys.exit(1)
-	
+
 	# make sure that we have an output file specified
 	if not options.outdir:
 		print '\nYou need to specify an output directory (--outdir)!\n'
 		sys.exit(1)
 
-	# set the po/mo/json file names and the correct function for generating the 
+	# set the po/mo/json file names and the correct function for generating the
 	# final output
 	po_file = '%s/%%s.po' % options.outdir
-	create_final_output = lambda x: None 
+	create_final_output = lambda x: None
 	if 'json' == options.type:
 		# output is json
 		create_final_output = dh_umc.create_json_file

@@ -31,8 +31,11 @@
 # <http://www.gnu.org/licenses/>.
 
 import gettext
-import locale
+from locale import getlocale, getdefaultlocale
 import re
+import os
+
+import polib
 
 from .log import LOCALE
 
@@ -51,7 +54,12 @@ class Locale( object ):
 
 	REGEX = re.compile( '(?P<language>[a-z]{2})(_(?P<territory>[A-Z]{2}))?(.(?P<codeset>[a-zA-Z-0-9]+)(@(?P<modifier>.+))?)?' )
 
-	def __init__( self, locale ):
+	def __init__( self, locale = None ):
+		self.language = None
+		if locale is not None:
+			self.parse( locale )
+
+	def parse( self, locale ):
 		if not isinstance( locale, basestring ):
 			raise TypeError( 'locale must be of type string' )
 		regex = Locale.REGEX.match( locale )
@@ -63,11 +71,11 @@ class Locale( object ):
 
 	def __str__( self ):
 		text = self.language
-		if self.territory:
+		if getattr( self, 'territory' ) is not None:
 			text += '_%s' % self.territory
-		if self.codeset:
+		if getattr( self, 'codeset' ) is not None:
 			text += '.%s' % self.codeset
-		if self.modifier:
+		if getattr( self, 'modifier' ) is not None:
 			text += '@%s' % self.modifier
 		return text
 
@@ -120,9 +128,9 @@ class Translation( NullTranslation ):
 		if self.locale is None:
 			LOCALE.info( 'Trying to determine default locale settings' )
 			try:
-				lang = locale.getlocale( locale.LC_MESSAGES )
+				lang = getlocale( locale.LC_MESSAGES )
 				if lang[ 0 ] is None:
-					lang = locale.getdefaultlocale()
+					lang = getdefaultlocale()
 				language = lang[ 0 ]
 				if language is None:
 					language = 'de'
@@ -139,3 +147,59 @@ class Translation( NullTranslation ):
 			except IOError:
 				self._translation = None
 				LOCALE.error( 'Could not find translation file for language %s of domain %s' % ( language, self._domain ) )
+
+class I18N_Error( Exception ):
+	pass
+
+class I18N( object ):
+	LOCALE_DIR = '/usr/share/univention-management-console/i18n/'
+
+	def __init__( self, locale, domain ):
+		self.mofile = None
+		self.domain = domain
+		self.locale = locale
+		self.load( locale, domain )
+
+	def load( self, locale = None, domain = None ):
+		if locale is not None:
+			self.locale = locale
+		if domain is not None:
+			self.domain = domain
+		filename = os.path.join( I18N.LOCALE_DIR, self.locale.language, '%s.mo' % self.domain )
+		if not os.path.isfile( filename ):
+			filename = os.path.join( I18N.LOCALE_DIR, '%s_%s' % ( self.locale.language, self.locale.territory ), '%s.mo' % self.domain )
+			if not os.path.isfile( filename ):
+				raise I18N_Error( 'No translation file found' )
+
+		self.mofile = polib.mofile( filename )
+
+	def exists( self, message ):
+		return self.mofile.find( message, by = 'msgid' )
+
+	def _( self, message ):
+		entry = self.mofile.find( message, by = 'msgid' )
+		if entry is not None:
+			return entry.msgstr
+
+		return message
+
+class I18N_Manager( dict ):
+	def __init__( self ):
+		self.locale = Locale()
+
+	def set_locale( self, locale ):
+		self.locale.parse( locale )
+		for i18n in self.values():
+			i18n.load( locale = self.locale )
+
+	def _( self, message, domain = None ):
+		if domain is not None:
+			if not domain in self:
+				self[ domain ] = I18N( self.locale, domain )
+			return self[ domain ]._( message )
+		for domain, i18n in self.items():
+			if i18n.exists( message ):
+				return i18n._( message )
+
+		return message
+
