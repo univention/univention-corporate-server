@@ -67,11 +67,11 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 			umc.tools.umcpCommand(this.umcpValues).then(dojo.hitch(this, function(data) {
 				// get all items
 				var items = [];
-				umc.tools.forIn(data._result, function(id, value) {
-					umc.tools.assert(!(id in staticValues), "Entry already defined by static values: " + id);
+				dojo.forEach(data.result, function(i) {
+					umc.tools.assert(!(i.id in staticValues), "Entry already defined by static values: " + i.id);
 					items.push({
-						id: id,
-						label: value
+						id: i.id,
+						label: i.name
 					});
 				}, this);
 				

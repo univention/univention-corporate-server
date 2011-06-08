@@ -405,7 +405,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 				data: {
 					identifier: this.idField,
 					label: this.idField,
-					items: data._result
+					items: data.result
 				}
 			});
 			this._grid.setStore(this._store);

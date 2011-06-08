@@ -48,11 +48,11 @@ dojo.mixin(umc.tools, new umc.i18n.Mixin({
 		if (handleErrors) {
 			call = call.then(function(data) {
 				// do not modify the data
-				if ( data && data._message ) {
-					if ( data._status == 200 ) {
-						umc.app.notify( data._message );
+				if ( data && data.message ) {
+					if ( data.status == 200 ) {
+						umc.app.notify( data.message );
 					} else {
-						umc.app.alert( data._message );
+						umc.app.alert( data.message );
 					}
 				}
 

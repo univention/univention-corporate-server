@@ -353,7 +353,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		topContainer.startup();
 
 		// set a flag that GUI has been build up
-		umc.widgets.isSetupGUI = true;
+		umc.app.isSetupGUI = true;
 	},
 
 	preferences: function(/*String|Object?*/ param1, /*AnyType?*/ value) {

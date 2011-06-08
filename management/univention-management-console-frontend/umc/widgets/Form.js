@@ -121,7 +121,7 @@ dojo.declare("umc.widgets.Form", [
 		// query data from server
 		umc.tools.umcpCommand(this.umcpGetCommand, parameters).then(dojo.hitch(this, function(_data) {
 			var values = this.gatherFormValues();
-			var data = dojo.mixin({}, parameters, _data._result);
+			var data = dojo.mixin({}, parameters, _data.result);
 			var newValues = {};
 
 			// copy all the fields that exist in the form
