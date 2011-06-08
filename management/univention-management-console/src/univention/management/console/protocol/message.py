@@ -180,9 +180,10 @@ class Message( object ):
 				raise InvalidArgumentsError( 553, _( "The command '%s' do not have any arguments" ) % self.command )
 
 		# invalid/missing message body?
-		if len( lines ) < 2 or self._length > len( lines[ 1 ] ):
-			PARSER.error( 'Part of the body is missing' )
-			raise IncompleteMessageError( _( 'Part of the body is missing' ) )
+		current_length = len( lines[ 1 ] )
+		if len( lines ) < 2 or self._length > current_length:
+			PARSER.info( 'The message body is not complete: %d of %d bytes' % ( current_length, self._length ) )
+			raise IncompleteMessageError( _( 'The message body is not (yet) complete' ) )
 
 		remains = ''
 		if len( lines[ 1 ] ) > self._length:
@@ -202,6 +203,8 @@ class Message( object ):
 		for key in ( 'options', ):
 			if key in self.body:
 				setattr( self, key[ 1 : ], self.body[ key ] )
+
+		PARSER.info( ' UMCP message %s parsed successfully' % self._id )
 
 		return remains
 

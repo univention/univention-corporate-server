@@ -148,7 +148,7 @@ class Processor( signals.Provider ):
 		signals.Provider.__init__( self )
 		self.core_i18n = Translation( 'univention-management-console' )
 		self.i18n = I18N_Manager()
-		self.i18n[ 'univention-management-console' ] = I18N()
+		self.i18n[ 'umc-core' ] = I18N()
 
 		# stores the module processes [ modulename ] = <>
 		self.__processes = {}

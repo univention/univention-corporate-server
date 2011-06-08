@@ -196,7 +196,7 @@ def module_xml2po( module, po_file, language ):
 	po.metadata[ 'POT-Creation-Date' ] = formatdate( localtime = True )
 	po.metadata[ 'Language' ] = language
 
-	if os.path.isfile( module.xml_definition ):
+	if module.xml_definition and os.path.isfile( module.xml_definition ):
 		tree = ET.ElementTree( file = module.xml_definition )
 		po.append( polib.POEntry( msgid = tree.find( 'module/name' ).text, msgstr = '' ) )
 		po.append( polib.POEntry( msgid = tree.find( 'module/description' ).text, msgstr = '' ) )
@@ -204,7 +204,7 @@ def module_xml2po( module, po_file, language ):
 			po.append( polib.POEntry( msgid = flavor.find( 'name' ).text, msgstr = '' ) )
 			po.append( polib.POEntry( msgid = flavor.find( 'description' ).text, msgstr = '' ) )
 
-	if os.path.isfile( module.xml_categories ):
+	if module.xml_categories and os.path.isfile( module.xml_categories ):
 		tree = ET.ElementTree( file = module.xml_categories )
 		for cat in tree.findall( 'categories/category' ):
 			po.append( polib.POEntry( msgid = cat.find( 'name' ).text, msgstr = '' ) )
