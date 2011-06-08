@@ -1,7 +1,8 @@
-#!/bin/sh
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
-#  join script
+#  reads the internal configuration
 #
 # Copyright 2004-2011 Univention GmbH
 #
@@ -30,32 +31,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
-. /usr/share/univention-join/joinscripthelper.lib
-joinscript_init
 
-eval "$(univention-config-registry shell ldap/master samba4/ldap/base)"
+import sys, codecs, string, os, ConfigParser, cPickle, types, random, traceback
 
-# be sure a nameserver is running
-pgrep named || named -c /var/lib/samba/private/named.conf
-sleep 5
 
-# create an admin user for synchronisation
-samba-tool newuser ucs-s4sync "$(</etc/samba4.secret)" -U Administrator%$(</etc/samba4.secret)
-samba-tool group addmembers "Domain Admins" ucs-s4sync #maybe we could use a more restrict group?
+def fixup(s):
+    # add proper padding to a base64 string
+    n = len(s) & 3
+    if n:
+        s = s + "="*(4-n)
+    return s
 
-univention-config-registry set \
-	connector/s4/ldap/host?"$ldap_master" \
-	connector/s4/ldap/base?"$samba4_ldap_base" \
-	connector/s4/ldap/binddn?"cn=ucs-s4sync,cn=Users,$samba4_ldap_base" \
-	connector/s4/ldap/bindpw="/etc/samba4.secret" \
-	connector/s4/ldap/ssl="no" \
-	connector/s4/mapping/group/language=en \
-	connector/s4/ldap/protocol=ldapi \
-	connector/s4/ldap/socket=/var/lib/samba/private/ldap_priv/ldapi
+configfile='/etc/univention/s4connector/internal.cfg'
+if not os.path.exists(configfile):
+    print "ERROR: Config-File not found, maybe connector was never started"
+config = ConfigParser.ConfigParser()
+config.readfp(open(configfile))
 
-/etc/init.d/univention-s4-connector crestart || true
-
-joinscript_save_current_version
-
-exit 0
+for section in config.sections():
+    print "SECTION: %s" % section
+    for name, value in config.items(section):
+        if section == "S4 GUID":
+            print " --%s: %s" % (name,value)
+            print " --%s: %s" % (fixup(name).decode('base64'),fixup(value).decode('base64'))
+        else:
+            print " -- %50s : %s" % (name,value)

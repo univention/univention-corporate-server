@@ -1,0 +1,4 @@
+[service-adcon]
+name[de]=Dienst: Samba 4 Connector
+name[en]=Service: Samba 4 Connector
+icon=service-s4con.gif

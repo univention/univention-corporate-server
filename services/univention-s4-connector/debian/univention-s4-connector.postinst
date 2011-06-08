@@ -3,7 +3,7 @@
 # Univention Samba4 Connector
 #  postinst script of the samba4 connector package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,14 +30,35 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/all.sh
+
+create_logfile /var/log/univention/connector-s4.log "root:adm" 640
+create_logfile /var/log/univention/connector-s4-status.log "root:adm" 640
+
 #DEBHELPER#
 
-eval $(univention-config-registry shell server/role)
+univention-config-registry set connector/s4/listener/dir?/var/lib/univention-connector/ad \
+							   connector/s4/poll/sleep?5 \
+							   connector/s4/retryrejected?10 \
+							   connector/s4/ldap/port?389 \
+							   connector/s4/ldap/ssl?yes \
+							   connector/debug/function?0 \
+							   connector/debug/level?1 \
+							   connector/ad/mapping/group/language?de \
+							   connector/s4/mapping/syncmode?sync \
+							   connector/s4/autostart?yes
 
-if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/97univention-s4-connector.inst || true
+if [ ! -d /var/lib/univention-connector/s4 ]; then
+	mkdir -p /var/lib/univention-connector/s4
+	chown 0.0 /var/lib/univention-connector/s4
 fi
 
-/etc/init.d/univention-ad-connector restart
+/etc/init.d/univention-directory-listener crestart || true
+
+call_joinscript 97univention-s4-connector.inst
+
+if [ -x /etc/init.d/univention-s4-connector ]; then
+	/etc/init.d/univention-s4-connector restart
+fi
 
 exit 0

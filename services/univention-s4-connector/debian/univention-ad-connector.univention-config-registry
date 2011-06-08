@@ -1,3 +1,0 @@
-Type: module
-Module: ad-certificate.py
-Variables: connector/ad/ldap/host

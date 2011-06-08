@@ -1,0 +1,71 @@
+[con.*/s4/listener/dir]
+Description[de]=Verzeichnis-Pfad in dem OpenLDAP-Änderungen durch das Directory-Listener-Plugin gespeichert werden.
+Description[en]=
+Type=str
+Categories=service-adcon
+
+[con.*/s4/poll/sleep]
+Description[de]=Wartezeit in Sekunden bevor auf neue Änderungen in Samba 4 oder OpenLDAP geprüft wird.
+Description[en]=
+Type=str
+Categories=service-adcon
+
+[con.*/s4/retryrejected]
+Description[de]=Anzahl der durch Synchronisationsläufe bevor erneut versucht wird fehgeschlagene Änderungen zu synchronisieren.
+Description[en]=
+Type=str
+Categories=service-adcon
+
+[con.*/s4/ldap/port]
+Description[de]=TCP-Port über den das Samba 4 LDAP erreichbar ist (default: 389).
+Description[en]=
+Type=str
+Categories=service-adcon
+
+[con.*/s4/ldap/host]
+Description[de]=FQDN des Samba 4 Servers
+Description[en]=
+Type=str
+Categories=service-adcon
+
+[con.*/debug/function]
+Description[de]=Debug-Level für die Rückverfolgung von Funktionsaufrufen im S4-Connector (0 oder 1).
+Description[en]=
+Type=str
+Categories=service-adcon
+
+[con.*/debug/level]
+Description[de]=Debug-Level für die Ausgaben in der connector.log (0-4).
+Description[en]=
+Type=str
+Categories=service-adcon
+
+[con.*/s4/mapping/group/language]
+Description[de]=Konfiguriert, ob ein Mapping der englischen Standardgruppen im OpenLDAP auf anderssprachige Standardgruppen im Samba 4 durchgeführt werden soll (default: de).
+Description[en]=
+Type=str
+Categories=service-adcon
+
+[con.*/s4/mapping/syncmode]
+Description[de]=Konfiguriert, ob bidirectional ("sync", default) oder unidirektional ("read" oder "write") synchronisiert werden soll.
+Description[en]=
+Type=str
+Categories=service-adcon
+
+[con.*/s4/ldap/base]
+Description[de]=LDAP Basis des Samba 4 Directories.
+Description[en]=
+Type=str
+Categories=service-adcon
+
+[con.*/s4/ldap/binddn]
+Description[de]=LDAP-DN des Synchronisationsaccounts im Samba 4.
+Description[en]=
+Type=str
+Categories=service-adcon
+
+[con.*/s4/ldap/bindpw]
+Description[de]=Pfad zur Datei aus der das Passwort des Synchronisationsaccounts gelesen werden soll.
+Description[en]=
+Type=str
+Categories=service-adcon
