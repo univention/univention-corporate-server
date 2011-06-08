@@ -158,7 +158,7 @@ class UMC_Module( dict ):
 	def icons( self ):
 		return self.get( ICONS )
 
-def read_modules( package ):
+def read_modules( package, core = False ):
 	modules = []
 
 	file_umc_module = os.path.join( 'debian/', package + '.umc-modules' )
@@ -170,14 +170,18 @@ def read_modules( package ):
 
 	for item in dh_ucs.parseRfc822( f_umc_module.read() ):
 		# required fields
-		for required in ( MODULE, PYTHON, DEFINITION, JAVASCRIPT ):
-			if not required in item or not item[ required ]:
-				raise AttributeError( 'UMC module definition incomplete. key %s missing' % required )
+		if not core:
+			for required in ( MODULE, PYTHON, DEFINITION, JAVASCRIPT ):
+				if not required in item or not item[ required ]:
+					raise AttributeError( 'UMC module definition incomplete. key %s missing' % required )
 
 		# single values
 		item[ 'package' ] = package
-
-		modules.append( UMC_Module( item ) )
+		module = UMC_Module( item )
+		if core:
+			if module.module_name != 'umc-core' or not module.xml_categories:
+				raise ValueError( 'Module definition does not match core module' )
+		modules.append( module )
 
 	return modules
 
@@ -192,16 +196,18 @@ def module_xml2po( module, po_file, language ):
 	po.metadata[ 'POT-Creation-Date' ] = formatdate( localtime = True )
 	po.metadata[ 'Language' ] = language
 
-	tree = ET.ElementTree( file = module.xml_definition )
-	po.append( polib.POEntry( msgid = tree.find( 'module/name' ).text, msgstr = '' ) )
-	po.append( polib.POEntry( msgid = tree.find( 'module/description' ).text, msgstr = '' ) )
-	for flavor in tree.findall( 'module/flavor' ):
-		po.append( polib.POEntry( msgid = flavor.find( 'name' ).text, msgstr = '' ) )
-		po.append( polib.POEntry( msgid = flavor.find( 'description' ).text, msgstr = '' ) )
+	if os.path.isfile( module.xml_definition ):
+		tree = ET.ElementTree( file = module.xml_definition )
+		po.append( polib.POEntry( msgid = tree.find( 'module/name' ).text, msgstr = '' ) )
+		po.append( polib.POEntry( msgid = tree.find( 'module/description' ).text, msgstr = '' ) )
+		for flavor in tree.findall( 'module/flavor' ):
+			po.append( polib.POEntry( msgid = flavor.find( 'name' ).text, msgstr = '' ) )
+			po.append( polib.POEntry( msgid = flavor.find( 'description' ).text, msgstr = '' ) )
 
-	tree = ET.ElementTree( file = module.xml_categories )
-	for cat in tree.findall( 'categories/category' ):
-		po.append( polib.POEntry( msgid = cat.find( 'name' ).text, msgstr = '' ) )
+	if os.path.isfile( module.xml_categories ):
+		tree = ET.ElementTree( file = module.xml_categories )
+		for cat in tree.findall( 'categories/category' ):
+			po.append( polib.POEntry( msgid = cat.find( 'name' ).text, msgstr = '' ) )
 
 	po.save( message_po )
 	if os.path.isfile( po_file ):

@@ -1,3 +1,9 @@
+univention-management-console (4.0.19-4) unstable; urgency=low
+
+  * dev tools: add option to support the "core" module; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 08 Jun 2011 12:14:36 +0200
+
 univention-management-console (4.0.19-3) unstable; urgency=low
 
   * minor fixes; Bug #22460

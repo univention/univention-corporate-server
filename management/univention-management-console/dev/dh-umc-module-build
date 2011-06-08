@@ -33,33 +33,40 @@
 
 import os
 import sys
+from optparse import OptionParser
 
 import univention.debhelper as dh_ucs
-import univention.dh_umc as dh_umc
+
+try:
+	sys.path.insert( 0, './dev' )
+	import dh_umc
+except:
+	import univention.dh_umc as dh_umc
 
 """Helps installing UMC modules. It parses a RFC 822 file called
 $(package).umc-modules and installs the specified components of a module
 into the correct directories."""
 
-def do_package( package ):
+def do_package( package, core ):
 	try:
-		modules = dh_umc.read_modules( package )
+		modules = dh_umc.read_modules( package, core )
 	except AttributeError, e:
 		print >>sys.stderr, str( e )
 		sys.exit( 1 )
 
-	# build python PO files
-	for module in modules:
-		for po_file in module.python_po_files:
-			dh_umc.create_po_file( po_file, package, *module.python_files )
-			dh_umc.create_mo_file( po_file )
+	if not options.core:
+		# build python PO files
+		for module in modules:
+			for po_file in module.python_po_files:
+				dh_umc.create_po_file( po_file, package, *module.python_files )
+				dh_umc.create_mo_file( po_file )
 
-	# build javascript PO files
-	for module in modules:
-		for po_file in module.js_po_files:
-			# using python as language seems to work better than perl
-			dh_umc.create_po_file( po_file, package, module.js_filename, 'python' )
-			dh_umc.create_json_file( po_file )
+		# build javascript PO files
+		for module in modules:
+			for po_file in module.js_po_files:
+				# using python as language seems to work better than perl
+				dh_umc.create_po_file( po_file, package, module.js_filename, 'python' )
+				dh_umc.create_json_file( po_file )
 
 	# build xml PO files
 	for module in modules:
@@ -69,5 +76,10 @@ def do_package( package ):
 
 
 if __name__ == '__main__':
+	# parse all options
+	parser = OptionParser( usage = 'usage: %prog [--core]' )
+	parser.add_option( '-c', '--core', action = 'store_true', dest = 'core', help = 'If specified modules without javascript and python code are excepted' )
+
+	( options, args ) = parser.parse_args()
 	for package in dh_ucs.binary_packages():
-		do_package( package )
+		do_package( package, options.core )
