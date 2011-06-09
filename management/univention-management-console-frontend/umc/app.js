@@ -125,6 +125,13 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 //		}
 //	},
 
+	login: function() {
+		// summary: 
+		//		Show the login dialog.
+		this.loggingIn = true;
+		this._loginDialog.show();
+	},
+
 	start: function() {
 		// create a standby widget
 //		this._standbyWidget = new dojox.widget.Standby({
@@ -140,9 +147,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		this._loginDialog = umc.widgets.LoginDialog({});
 		this._loginDialog.startup();
 		dojo.connect(this._loginDialog, 'onLogin', this, 'onLogin');
-		dojo.connect(this._loginDialog, 'onShow', this, function() {
-			this.loggingIn = true;
-		});
 
 		// create alert dialog 
 		this._alertDialog = new umc.widgets.ConfirmDialog({
@@ -162,7 +166,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// check whether we still have a app cookie
 		var sessionCookie = dojo.cookie('UMCSessionId');
 		if (undefined === sessionCookie) {
-			this._loginDialog.show();
+			this.login();
 		}
 		else {
 			this.onLogin(dojo.cookie('UMCUsername'));

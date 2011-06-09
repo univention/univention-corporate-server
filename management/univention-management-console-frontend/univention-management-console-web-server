@@ -284,13 +284,9 @@ class CPgeneric(object):
 			update_session_cookie(cherrypy.response.cookie, sessionid)
 			return simplejson.dumps(response.body)
 
-		elif response.status in (401,403,404, 411):
-			# user is unauthorized
-			raise cherrypy.HTTPError(response.status)
-
 		# something bad happened
-		self._log('error', 'unhandled response status code: %s' % response.status)
-		raise cherrypy.HTTPError(500)
+		self._log('error', 'response status code: %s' % response.status)
+		raise cherrypy.HTTPError(response.status)
 
 
 class CPGet(CPgeneric):
@@ -466,12 +462,8 @@ class CPAuth(object):
 			update_session_cookie(cherrypy.response.cookie, response.body['sessionid'])
 			return ""
 
-		elif response.status in (401,410,411):
-			CORE.error('CPRoot/auth: authorization for %s failed' % json.get('username'))
-			raise cherrypy.HTTPError(401)
-
-		CORE.error('CPRoot/auth: unhandled status code: %s' % response.status)
-		raise cherrypy.HTTPError(500)
+		CORE.error('CPRoot/auth: username: %s, status code: %s' % (json.get('username'), response.status))
+		raise cherrypy.HTTPError(response.status)
 
 
 # class CPGet(object):

@@ -1,3 +1,10 @@
+univention-management-console-frontend (0.0.29-1) unstable; urgency=low
+
+  * corrected status error messages, let web server communicate to the 
+    frontend all status numbers (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Jun 2011 18:12:09 +0200
+
 univention-management-console-frontend (0.0.28-1) unstable; urgency=low
 
   * bug fixes for flavor handling, added handling for all UMCP error codes
