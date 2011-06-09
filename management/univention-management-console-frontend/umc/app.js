@@ -10,7 +10,6 @@ dojo.require("dijit.form.DropDownButton");
 dojo.require("dijit.form.Button");
 dojo.require("dijit.Menu");
 dojo.require("dojo.cookie");
-dojo.require("dojo.string");
 dojo.require("dojox.html.styles");
 dojo.require("umc.widgets.Toaster");
 dojo.require("umc.widgets.ConfirmDialog");
@@ -141,9 +140,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		this._loginDialog = umc.widgets.LoginDialog({});
 		this._loginDialog.startup();
 		dojo.connect(this._loginDialog, 'onLogin', this, 'onLogin');
-		dojo.connect(this._loginDialog, 'onLogin', this, function() {
-			this.loggingIn = false;
-		});
 		dojo.connect(this._loginDialog, 'onShow', this, function() {
 			this.loggingIn = true;
 		});
@@ -185,6 +181,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	onLogin: function(username) {
 		this.username = username;
 		dojo.cookie('UMCUsername', username, { expires: 100, path: '/' });
+		this.loggingIn = false;
 		this._loginDialog.hide();
 		umc.tools.umcpCommand('set', {
 			locale: dojo.locale
@@ -463,38 +460,41 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 
 			// get all modules
 			dojo.forEach(dojo.getObject('modules', false, data), dojo.hitch( this, function(module) {
+				// try to load the module
 				try {
-					// load the module
 					dojo['require']('umc.modules.' + module.id);
+				}
+				catch (error1) {
+					// log as warning and continue with the next element in the list
+					console.log('WARNING: Loading of module ' + module.id + ' failed. Ignoring it for now!');
+					return true; 
+				}
 
-					// add module config class to internal list of available modules
-					console.log( module );
-					var flavor = dojo.exists( 'flavor', false, module ) && module.flavor || null;
-					this._modules.push({
-						BaseClass: dojo.getObject('umc.modules.' + module.id), 
-						id: module.id, 
-						title: module.name,
-						description: module.description,
-						categories: module.categories,
-						flavor: flavor
-					});
+				// load the module
+				// add module config class to internal list of available modules
+				this._modules.push(dojo.mixin({
+					BaseClass: dojo.getObject('umc.modules.' + module.id), 
+					title: module.name
+				}, module));
 
-					// add dynamic style sheet information: for css icon classes
+				// try to add dynamic style sheet information for module icons
+				try {
 					dojo.forEach([16, 24, 32, 64], function(isize) {
-						var css = dojo.string.substitute(
+						var values = {
+							s: isize,
+							icon: module.icon
+						};
+						var css = dojo.replace(
 							'background: no-repeat;' +
-							'width: ${s}px;' +
-							'height: ${s}px;' +
-							'background-image: url("images/icons/${s}x${s}/${id}.png")', { 
-								s: isize,
-								id: module.icon
-							}
-						);
-						dojox.html.insertCssRule('.icon' + isize + '-' + module.icon, css);
+							'width: {s}px; height: {s}px;' +
+							'background-image: url("images/icons/{s}x{s}/{icon}.png")',
+							values);
+						var rule = dojo.replace('.icon{s}-{icon}', values);
+						dojox.html.insertCssRule(rule, css);
 					});
 				}
-				catch (error) {
-					console.log('WARNING: Loading of module ' + module.id + ' failed. Ignoring it for now!');
+				catch (error2) {
+					console.log(dojo.replace('ERROR: Could not create CSS information for module {id} using the icon name: {icon}', module));
 				}
 			}));
 

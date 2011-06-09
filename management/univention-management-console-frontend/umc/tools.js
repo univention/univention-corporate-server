@@ -4,23 +4,32 @@ dojo.provide("umc.tools");
 
 dojo.require("dojox.layout.TableContainer");
 dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.app");
 dojo.require("umc.i18n");
 
 dojo.mixin(umc.tools, new umc.i18n.Mixin({
 	// use the framework wide translation file
-	i18nClass: 'umc.app',
-}), {
+	i18nClass: 'umc.app'
+}));
+dojo.mixin(umc.tools, {
 	umcpCommand: function(
 		/*String*/ commandStr,
 		/*Object?*/ dataObj,
 		/*Boolean?*/ handleErrors,
-		/*String?*/ flavor
-	) {
+		/*String?*/ flavor) {
 
 		// summary:
 		//		Encapsulates an AJAX call for a given UMCP command.
 		// returns:
 		//		A deferred object.
+
+		// when logging in, ignore all except the AUTH command
+		if (umc.app.loggingIn && !(/^auth$/i).test(commandStr)) {
+			console.log(this._('WARNING: Ignoring command "%s" since user is logging in', commandStr));
+			deferred = new dojo.Deferred();
+			deferred.errback();
+			return deferred;
+		}
 
 		// set default values for parameters
 		dataObj = dataObj || {};
@@ -35,12 +44,13 @@ dojo.mixin(umc.tools, new umc.i18n.Mixin({
 			url = '/umcp/' + commandStr;
 		}
 
-		body = {
-			 'options' : dataObj
+		var body = {
+			 options: dataObj
 		};
 		if ( flavor !== undefined && flavor !== null ) {
-			body[ 'flavor' ] = flavor;
+			body.flavor = flavor;
 		}
+
 		// make the AJAX call
 		var call = dojo.xhrPost({
 			url: url,
@@ -103,39 +113,123 @@ dojo.mixin(umc.tools, new umc.i18n.Mixin({
 		var xhrs = dojo.xhrPost(xhrArgs);
 	},
 
+	// _statusMessages:
+	//		A dictionary that translates a status to an error message
+
+	//Status( 'SUCCESS'                           , 200, _( 'OK, operation successful' ) ),
+	//Status( 'SUCCESS_MESSAGE'                   , 204, _( 'OK, containing report message' ) ),
+	//Status( 'SUCCESS_PARTIAL'                   , 206, _( 'OK, partial response' ) ),
+	//Status( 'SUCCESS_SHUTDOWN'                  , 250, _( 'OK, operation successful ask for shutdown of connection' ) ),
+	//
+	//Status( 'CLIENT_ERR_NONFATAL'               , 301, _( 'A non-fatal error has occured processing may continue' ) ),
+	//
+	//Status( 'BAD_REQUEST'                       , 400, _( 'Bad request' ) ),
+	//Status( 'BAD_REQUEST_UNAUTH'                , 401, _( 'Unauthorized' ) ),
+	//Status( 'BAD_REQUEST_FORBIDDEN'             , 403, _( 'Forbidden' ) ),
+	//Status( 'BAD_REQUEST_NOT_FOUND'             , 404, _( 'Not found' ) ),
+	//Status( 'BAD_REQUEST_NOT_ALLOWED'           , 405, _( 'Command not allowed' ) ),
+	//Status( 'BAD_REQUEST_INVALID_ARGS'          , 406, _( 'Invalid command arguments' ) ),
+	//Status( 'BAD_REQUEST_INVALID_OPTS'          , 407, _( 'Invalid or missing command options' ) ),
+	//Status( 'BAD_REQUEST_AUTH_FAILED'           , 411, _( 'The authentication has failed' ) ),
+	//Status( 'BAD_REQUEST_ACCOUNT_EXPIRED'       , 412, _( 'The account is expired and can not be used anymore' ) ),
+	//Status( 'BAD_REQUEST_ACCOUNT_DISABLED'      , 413, _( 'The account as been disabled' ) ),
+	//Status( 'BAD_REQUEST_UNAVAILABLE_LOCALE'    , 414, _( 'Specified locale is not available' ) ),
+	//
+	// Status( 'SERVER_ERR'                        , 500, _( 'Internal error' ) ),
+	// Status( 'SERVER_ERR_MODULE_DIED'            , 510, _( 'Module process died unexpectedly' ) ),
+	// Status( 'SERVER_ERR_MODULE_FAILED'          , 511, _( 'Connection to module process failed' ) ),
+	// Status( 'SERVER_ERR_CERT_NOT_TRUSTWORTHY'   , 512, _( 'SSL server certificate is not trustworthy' ) ),
+	//
+	// Status( 'UMCP_ERR_UNPARSABLE_HEADER'        , 551, _( 'Unparsable message header' ) ),
+	// Status( 'UMCP_ERR_UNKNOWN_COMMAND'          , 552, _( 'Unknown command' ) ),
+	// Status( 'UMCP_ERR_INVALID_NUM_ARGS'         , 553, _( 'Invalid number of arguments' ) ),
+	// Status( 'UMCP_ERR_UNPARSABLE_BODY'          , 554, _( 'Unparsable message body' ) ),
+	//
+	// Status( 'MODULE_ERR'                        , 600, _( 'Error occuried during command processing' ) ),
+	// Status( 'MODULE_ERR_COMMAND_FAILED'         , 601, _( 'The execution of a command caused an fatal error' ) )
+
+	_statusMessages: {
+		400: umc.tools._( 'Could not fullfill the UMCP command.' ),
+		401: '', // no error message, this error is handled bellow
+		403: umc.tools._( 'You are not authorized to perform this action.' ),
+		404: umc.tools._( 'The specified UMCP command is unknown.' ),
+		405: umc.tools._( 'The specified UMCP command is not allowed.' ),
+		406: umc.tools._( 'The specified arguments for the UMCP command are invalid.' ),
+		407: umc.tools._( 'The specified options for the UMCP command are invalid or missing.'),
+		411: umc.tools._( 'The authentication has failed, please login in again.' ),
+		412: umc.tools._( 'The account is expired and can not be used anymore.' ),
+		413: umc.tools._( 'The account as been disabled.' ),
+		414: umc.tools._( 'Specified locale is not available.' ),
+
+		500: umc.tools._( 'Internal server error.' ),
+		510: umc.tools._( 'Internal server error: The module process died unexpectedly.' ),
+		511: umc.tools._( 'Internal server error: Could not connect to the module process.' ),
+		512: umc.tools._( 'Internal server error: The SSL server certificate is not trustworthy.' ),
+
+		551: umc.tools._( 'Internal UMC protocol error: The UMCP message header could not be parsed.' ),
+		552: umc.tools._( 'Internal UMC protocol error: The UMCP command is not known.' ),
+		553: umc.tools._( 'Internal UMC protocol error: The specified number of arguments for the UMCP command is not valid.' ),
+		554: umc.tools._( 'Internal UMC protocol error: The UMCP message body could not be parsed.' ),
+
+		600: umc.tools._( 'Internal module error: An error occured during command processing.' ),
+		601: umc.tools._( 'Internal module error: The execution of a command caused an fatal error.' )
+	},
+
 	handleErrorStatus: function(status, error) {
-		if (undefined !== status) {
-			// handle the different status codes
-			switch (status) {
-				case 200: // evertything is ok :)
-					return;
-				case 401:
-					var loggingIn = umc.app.loggingIn;
-					umc.app._loginDialog.show();
-					if (loggingIn) {
-						umc.app.alert(this._('Wrong credentials, please try again!'));
-					}
-					else {
-						umc.app.alert(this._('Your session has expired, please log in again!'));
-					}
-					return;
-				case 403:
-					umc.app.alert(this._('You are not authorized to perform this action!'));
-					return;
-				case 503:
-					umc.app.alert(this._('This service is temporarily not available (status: 503)!'));
-					return;
-				default:
-					// get an error message from the server if available
-					//TODO: this should probably done in a better manner
-					var errorMsg = dojo.getObject('responseText', false, error) || '';
-					umc.app.alert(this._('An unexpected HTTP-error occurred (status: %(status)s):\n%(msg)s', { status: status, msg: errorMsg }));
-					return;
+		// handle the different status codes
+		if (undefined !== status && status in this._statusMessages) {
+			// special case during login
+			if (401 == status) {
+				var loggingIn = umc.app.loggingIn;
+				umc.app._loginDialog.show();
+				if (loggingIn) {
+					umc.app.notify(this._('Wrong credentials, please try again!'));
+				}
+				else {
+					umc.app.notify(this._('Your session has expired, please log in again!'));
+				}
+				return;
+			}
+			// all other cases
+			else {
+				var errorMsg = dojo.getObject('responseText', false, error);
+				umc.app.alert(this._statusMessages[status] + (errorMsg ? this._('<br>Error message from server: %s', errorMsg) : ''));
 			}
 		}
-		
-		// probably server timeout, could also be a different error
-		umc.app.alert(this._('An error occurred while connecting to the server, please try again later.'));
+		if (undefined !== status) {
+			// unknown status code .. should not happen
+			umc.app.alert(this._('An unknown error with status code %s occurred while connecting to the server, please try again later.', status));
+		}
+		else {
+			// probably server timeout, could also be a different error
+			umc.app.alert(this._('An error occurred while connecting to the server, please try again later.'));
+		}
+//		switch (status) {
+//			case 200: // evertything is ok :)
+//				return;
+//			case 401:
+//				var loggingIn = umc.app.loggingIn;
+//				umc.app._loginDialog.show();
+//				if (loggingIn) {
+//					umc.app.alert(this._('Wrong credentials, please try again!'));
+//				}
+//				else {
+//					umc.app.alert(this._('Your session has expired, please log in again!'));
+//				}
+//				return;
+//			case 403:
+//				umc.app.alert(this._('You are not authorized to perform this action!'));
+//				return;
+//			case 503:
+//				umc.app.alert(this._('This service is temporarily not available (status: 503)!'));
+//				return;
+//			default:
+//				// get an error message from the server if available
+//				//TODO: this should probably done in a better manner
+//				var errorMsg = dojo.getObject('responseText', false, error) || '';
+//				umc.app.alert(this._('An unexpected HTTP-error occurred (status: %(status)s):\n%(msg)s', { status: status, msg: errorMsg }));
+//				return;
+//		}
 	},
 
 	forIn: function(/*Object*/ obj, /*Function*/callback, /*Object?*/scope) {
