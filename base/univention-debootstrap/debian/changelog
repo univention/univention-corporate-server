@@ -1,3 +1,9 @@
+univention-debootstrap (4.0.1-1) unstable; urgency=low
+
+  * renamed suite from "univention" to "ucs3" (Bug #22448)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 09 Jun 2011 15:03:21 +0200
+
 univention-debootstrap (4.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22431)
