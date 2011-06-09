@@ -1,3 +1,9 @@
+univention-nfs (4.0.1-1) unstable; urgency=low
+
+  * always set -g as RPCMOUNTDOPTS for proper acl handling on nfs shares (Bug #3172)
+
+ -- Felix Botner <botner@univention.de>  Thu, 09 Jun 2011 16:48:50 +0200
+
 univention-nfs (4.0.0-0) unstable; urgency=low
 
   * bump version for UCS 3.0

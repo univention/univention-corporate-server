@@ -13,9 +13,9 @@ RPCNFSDPRIORITY=0
 
 @!@
 if baseConfig.has_key('nfs/ports') and baseConfig['nfs/ports'] == 'static':
-        print 'RPCMOUNTDOPTS="-p 32767"'
+        print 'RPCMOUNTDOPTS="-g -p 32767"'
 else:
-	print 'RPCMOUNTDOPTS='
+	print 'RPCMOUNTDOPTS="-g"'
 @!@
 
 # Do you want to start the svcgssd daemon? It is only required for Kerberos
