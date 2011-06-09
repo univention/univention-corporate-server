@@ -1,3 +1,9 @@
+univention-management-console (4.0.24-2) unstable; urgency=low
+
+  * added python-polib to the dependencies (Bug #20026)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Jun 2011 16:34:51 +0200
+
 univention-management-console (4.0.24-1) unstable; urgency=low
 
   * modules/list add flavor key; Bug #22460

@@ -52,6 +52,7 @@ Depends: ${python:Depends}, ${misc:Depends},
  python-elementtree,
  python-json,
  python-pam,
+ python-polib,
  python-notifier (>= 0.8.0)
 Provides: ${python:Provides}
 Description: Univention Management Console - Python Modules
