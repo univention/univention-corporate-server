@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-06-09 18:03+0200\n"
+"POT-Creation-Date: 2011-06-10 10:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,11 +19,7 @@ msgstr ""
 #: umc/tools.js:191
 #, python-format
 msgid "<br>Error message from server: %s"
-msgstr ""
-
-#: umc/tools.js:124
-msgid "A non-fatal error has occured processing may continue"
-msgstr ""
+msgstr "<br>Fehlermeldung des Servers: %s"
 
 #: umc/app.js:308
 msgid "About UMC"
@@ -41,20 +37,17 @@ msgstr ""
 "versuchen Sie es später noch einmal."
 
 #: umc/tools.js:196
+#, python-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
 "server, please try again later."
 msgstr ""
-"Ein Fehler trat während des Verbindungsaufbaus zum Server auf, bitte "
-"versuchen Sie es später noch einmal."
+"Ein unbekannter Fehler mit Status-Code %s trat während des "
+"Verbindungsaufbaus zum Server auf, bitte versuchen Sie es später noch einmal."
 
-#: umc/tools.js:126
-msgid "Bad request"
-msgstr ""
-
-#: umc/tools.js:130
-msgid "Command not allowed"
-msgstr ""
+#: umc/tools.js:161
+msgid "Authentication failed, please login again."
+msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 
 #: umc/app.js:105
 msgid "Confirmation"
@@ -64,25 +57,13 @@ msgstr "Bestätigung"
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
-#: umc/tools.js:140
-msgid "Connection to module process failed"
-msgstr ""
-
 #: umc/tools.js:152
-msgid "Could not fullfill the request."
-msgstr ""
+msgid "Could not fulfill the request."
+msgstr "Die Anfrage konnte nicht ausgeführt werden."
 
 #: umc/widgets/LoginDialog.js:59
 msgid "English"
 msgstr "Englisch"
-
-#: umc/tools.js:148
-msgid "Error occuried during command processing"
-msgstr ""
-
-#: umc/tools.js:128
-msgid "Forbidden"
-msgstr ""
 
 #: umc/widgets/LoginDialog.js:58
 msgid "German"
@@ -104,65 +85,63 @@ msgstr "Hilfe"
 
 #: umc/tools.js:172
 msgid "Internal UMC protocol error: The UMCP command is not known."
-msgstr ""
+msgstr "Interner UMC-Protokoll-Fehler: Der UMCP-Befehl ist nicht bekannt."
 
 #: umc/tools.js:174
 msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
 msgstr ""
+"Interner UMC-Protokoll-Fehler: Der UMCP-Message-Body konnte nicht geparst "
+"werden."
 
 #: umc/tools.js:171
 msgid ""
 "Internal UMC protocol error: The UMCP message header could not be parsed."
 msgstr ""
+"Interner UMC-Protokoll-Fehler: Der UMCP-Message-Header konnte nicht geparst "
+"werden."
 
 #: umc/tools.js:173
 msgid ""
 "Internal UMC protocol error: The specified number of arguments for the UMCP "
 "command is not valid."
 msgstr ""
-
-#: umc/tools.js:138
-msgid "Internal error"
-msgstr ""
+"Interner UMC-Protokoll-Fehler: Die angegebene Anzahl an Argumente für den "
+"UCMP-Befehl ist nicht zulässig."
 
 #: umc/tools.js:176
 msgid "Internal module error: An error occured during command processing."
 msgstr ""
+"Interner Modul-Fehler: Ein Fehler trat während des Ausführens des Befehls "
+"auf."
 
 #: umc/tools.js:177
 msgid ""
 "Internal module error: The execution of a command caused an fatal error."
 msgstr ""
+"Interner Modul-Fehler: Die Ausführung eines Befehls löste einen "
+"schwerwiegenden Fehler aus."
 
 #: umc/tools.js:166
 msgid "Internal server error."
-msgstr ""
+msgstr "Interner Server-Fehler."
 
 #: umc/tools.js:168
 msgid "Internal server error: Could not connect to the module process."
 msgstr ""
+"Interner Server-Fehler: Verbindung zum Modulprozess konnte nicht aufgebaut "
+"werden."
 
 #: umc/tools.js:169
 msgid ""
 "Internal server error: The SSL server certificate is not trustworthy. Please "
 "check your SSL configurations."
 msgstr ""
+"Interner Server-Fehler: Das SSL-Server-Zertifikat ist nicht "
+"vertrauenswürdig. Bitte überprüfen Sie ihre SSL-Konfiguration."
 
 #: umc/tools.js:167
 msgid "Internal server error: The module process died unexpectedly."
-msgstr ""
-
-#: umc/tools.js:131
-msgid "Invalid command arguments"
-msgstr ""
-
-#: umc/tools.js:145
-msgid "Invalid number of arguments"
-msgstr ""
-
-#: umc/tools.js:132
-msgid "Invalid or missing command options"
-msgstr ""
+msgstr "Interner Server-Fehler: Der Modulprozess starb unerwartet."
 
 #: umc/widgets/LoginDialog.js:63
 msgid "Language"
@@ -181,37 +160,13 @@ msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
-#: umc/tools.js:139
-msgid "Module process died unexpectedly"
-msgstr ""
-
 #: umc/widgets/Grid.js:357
 msgid "More actions..."
 msgstr "Weitere Aktionen..."
 
-#: umc/tools.js:129
-msgid "Not found"
-msgstr ""
-
 #: umc/app.js:153
 msgid "Notification"
 msgstr "Hinweis"
-
-#: umc/tools.js:120
-msgid "OK, containing report message"
-msgstr ""
-
-#: umc/tools.js:119
-msgid "OK, operation successful"
-msgstr ""
-
-#: umc/tools.js:122
-msgid "OK, operation successful ask for shutdown of connection"
-msgstr ""
-
-#: umc/tools.js:121
-msgid "OK, partial response"
-msgstr ""
 
 #: umc/app.js:155
 msgid "Ok"
@@ -229,41 +184,19 @@ msgstr "Passwort"
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: umc/tools.js:141
-msgid "SSL server certificate is not trustworthy"
-msgstr ""
-
-#: umc/tools.js:136
-msgid "Specified locale is not available"
-msgstr ""
-
 #: umc/tools.js:164
 msgid "Specified locale is not available."
-msgstr ""
-
-#: umc/tools.js:135
-msgid "The account as been disabled"
-msgstr ""
+msgstr "Die angegebenen Locale ist nicht verfügbar."
 
 #: umc/tools.js:163
 msgid "The account as been disabled."
-msgstr ""
-
-#: umc/tools.js:134
-msgid "The account is expired and can not be used anymore"
-msgstr ""
+msgstr "Das Benutzerkonto wurde deaktiviert."
 
 #: umc/tools.js:162
 msgid "The account is expired and can not be used anymore."
 msgstr ""
-
-#: umc/tools.js:133
-msgid "The authentication has failed"
-msgstr ""
-
-#: umc/tools.js:149
-msgid "The execution of a command caused an fatal error"
-msgstr ""
+"Das Benutzerkonto kannt nicht verwendet werden, seine Gültigkeit ist "
+"ausgelaufen."
 
 #: umc/widgets/LoginDialog.js:62
 msgid "The language for the login session."
@@ -290,22 +223,6 @@ msgstr "Tooltips"
 msgid "Translate me!"
 msgstr ""
 
-#: umc/tools.js:127
-msgid "Unauthorized"
-msgstr ""
-
-#: umc/tools.js:144
-msgid "Unknown command"
-msgstr ""
-
-#: umc/tools.js:146
-msgid "Unparsable message body"
-msgstr ""
-
-#: umc/tools.js:143
-msgid "Unparsable message header"
-msgstr ""
-
 #: umc/app.js:338
 #, python-format
 msgid "User: %s"
@@ -325,20 +242,24 @@ msgid ""
 "Webfrontend error: The specified UMCP command arguments of the request are "
 "invalid."
 msgstr ""
+"Webfrontend-Fehler: Die angegebenen UMCP-Befehl-Argumente der Anfrage sind "
+"nicht zulässig."
 
 #: umc/tools.js:159
 msgid ""
 "Webfrontend error: The specified arguments for the UMCP module method are "
 "invalid or missing."
 msgstr ""
+"Webfrontend-Fehler: Die angegebenen Argumente für die UMCP-Modul-Methode "
+"sind nicht zulässig oder fehlen."
 
 #: umc/tools.js:157
 msgid "Webfrontend error: The specified request is not allowed."
-msgstr ""
+msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht zulässig."
 
 #: umc/tools.js:156
 msgid "Webfrontend error: The specified request is unknown."
-msgstr ""
+msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht bekannt."
 
 #: umc/widgets/LoginDialog.js:107
 msgid ""
@@ -348,15 +269,11 @@ msgstr ""
 "Willkommen auf der Univention Management Console. Bitte geben Sie "
 "Benutzername und Passwort Ihres Domänen-Kontos an."
 
-#: umc/tools.js:153
-msgid "You are not authenticated, please log in."
-msgstr "Sie sind nicht authentifiziert, bitte melden Sie sich an."
-
 #: umc/tools.js:154
 msgid "You are not authorized to perform this action."
 msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
 
-#: umc/tools.js:161
+#: umc/tools.js:153
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 
@@ -370,9 +287,6 @@ msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 #~ msgid "Domain"
 #~ msgstr "Domäne"
 
-#~ msgid "The authentication has failed, please login in again."
-#~ msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
-
 #~ msgid "The domain for the login session."
 #~ msgstr "Die Domäne für die Anmeldesitzung."
 
@@ -381,6 +295,9 @@ msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 
 #~ msgid "Wrong credentials, please try again!"
 #~ msgstr "Falsche Zugangsdaten, bitte versuchen Sie es erneut!"
+
+#~ msgid "You are not authenticated, please log in."
+#~ msgstr "Sie sind nicht authentifiziert, bitte melden Sie sich an."
 
 #~ msgid "You are not authorized to perform this action!"
 #~ msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen!"
