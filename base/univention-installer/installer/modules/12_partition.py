@@ -448,7 +448,7 @@ class object(content):
 				if self.container['disk'][disk]['partitions'][part]['num'] > 0 : # only valid partitions
 					if len(self.container['disk'][disk]['partitions'][part]['mpoint'].strip()):
 						if self.container['disk'][disk]['partitions'][part]['mpoint'] in mpoint_temp:
-							return _('Double mount point \'%s\'') % self.container['disk'][disk]['partitions'][part]['mpoint']
+							return _("Double mount point '%s'") % self.container['disk'][disk]['partitions'][part]['mpoint']
 						mpoint_temp.append(self.container['disk'][disk]['partitions'][part]['mpoint'])
 					if self.container['disk'][disk]['partitions'][part]['mpoint'] == '/':
 						root_fs_type=self.container['disk'][disk]['partitions'][part]['fstype']
@@ -469,7 +469,7 @@ class object(content):
 				mpoint = lv['mpoint'].strip()
 				if len(mpoint):
 					if mpoint in mpoint_temp:
-						return _('Double mount point \'%s\'') % mpoint
+						return _("Double mount point '%s'") % mpoint
 				mpoint_temp.append(mpoint)
 				if mpoint == '/':
 					if not lv['fstype'] in ALLOWED_ROOT_FSTYPES:
@@ -482,11 +482,11 @@ class object(content):
 
 		if root_fs:
 			#self.move_focus( 1 )
-			return _('Wrong file system type \'%s\' for mount point \'/\'' % root_fs)
+			return _("Wrong file system type '%s' for mount point '/'") % root_fs
 
 		if boot_fs:
 			#self.move_focus( 1 )
-			return _('Wrong file system type \'%s\' for mount point \'/boot\'' % boot_fs)
+			return _("Wrong file system type '%s' for mount point '/boot'") % boot_fs
 
 		# check if LVM is enabled, /-partition is LVM LV and /boot is missing
 		rootfs_is_lvm = False

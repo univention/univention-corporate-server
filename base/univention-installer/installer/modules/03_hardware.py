@@ -238,7 +238,7 @@ class object(content):
 		#load modules
 		#if self.all_results.has_key('modules'):
 		#	for m in self.all_results['modules'].split():
-		#		self.sub = self.active(self,_('Load modules'),_('Loading module %s' % m))
+		#		self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
 		#		self.sub.action='loadmodule'
 		#		self.sub.loadmodule=m
 		#		self.sub.draw()
