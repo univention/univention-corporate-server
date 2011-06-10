@@ -35,7 +35,7 @@ import urllib
 import random
 
 class RefreshFrame( base.HTML ):
-	def __init__( self, sessionid, command, opts = {}, attributes = {}, maxlen=300000, refresh_interval=3000 ):
+	def __init__( self, sessionid, command, opts = {}, attributes = {}, maxlen=300000, refresh_interval=3000, no_concurrency=False ):
 		"""
 		Returns a frame with specified geometry and refreshes its content every 'refresh_interval' miliseconds by calling
 		specified 'command' and passing 'opts' as command options.
@@ -46,6 +46,12 @@ class RefreshFrame( base.HTML ):
 			attributes: dictionary with widget attributes (colspan, width (in pixel), height (in pixel))
 			maxlen: maximum length of data shown in frame (don't use too large values - it will slow down your browser)
 			refresh_interval: interval in miliseconds
+			no_concurrency: if set to False, RefreshFrame will send out at regulary interval (refresh_interval) a new
+							request	regardless of any outstanding requests.
+							If set to True, a new request will be sent after refresh_interval miliseconds after the last
+							request has been answered.
+							Note: in this case if your request requires 1 seconds to be answered and the refresh_interval
+								  is 3 seconds, then a new request is sent every 4 seconds! If an answer get
 
 		Example for revamp:
 		result.add_row( [ umcd.RefreshFrame( self._sessionid, 'some/command', { 'foo1': 3, 'ding': 'dong' }, attributes = { 'colspan': '3', 'width': '750', 'height': '400' }, refresh_interval=1000) ] )
@@ -93,6 +99,7 @@ class RefreshFrame( base.HTML ):
 var umc = {};
 umc.ajax = {};
 umc.ajax.refreshframe = {};
+umc.ajax.refreshframe.concurrency = %(concurrency)s;
 umc.ajax.refreshframe.updateData = function(refreshurl, wndid, dataid, maxlen) {
 	var xhrArgs = {
 			url: refreshurl,
@@ -129,8 +136,11 @@ umc.ajax.refreshframe.updateData = function(refreshurl, wndid, dataid, maxlen) {
 						} catch(err) { ; }
 					}
 				}
-			},
-		}
+				if ( umc.ajax.refreshframe.concurrency === false ) {
+					window.setTimeout( function() { umc.ajax.refreshframe.updateData(refreshurl, wndid, dataid, maxlen);}, %(interval)s);
+				}
+			}
+		};
 	var deferred = dojo.xhrGet(xhrArgs);
 };
 dojo.addOnLoad (function() {
@@ -138,7 +148,9 @@ dojo.addOnLoad (function() {
 	var wndid = 'wnd%(identifier)s';
 	var dataid = 'data%(identifier)s';
 	umc.ajax.refreshframe.updateData(url, wndid, dataid, %(maxlen)d);
-	window.setInterval( function() { umc.ajax.refreshframe.updateData(url, wndid, dataid, %(maxlen)d);}, %(interval)s);
+	if ( umc.ajax.refreshframe.concurrency ) {
+ 		window.setInterval( function() { umc.ajax.refreshframe.updateData(url, wndid, dataid, %(maxlen)d);}, %(interval)s);
+	}
 });
 </script>
 """ % { 'sessionid': sessionid,
@@ -147,6 +159,7 @@ dojo.addOnLoad (function() {
 		'options': url_options,
 		'interval': refresh_interval,
 		'identifier': identifier,
+		'concurrency': str(bool(not(no_concurrency))).lower(),
 		}
 
 		html = '%s%s' % (txt_div, txt_javascript)
