@@ -1,6 +1,6 @@
 univention-management-console (3.0.105-1) unstable; urgency=low
 
-  * added option to prevent concurrent ajax calls in umcd.RefreshFrame (Bug #22711)
+  * added option to prevent concurrent ajax calls in umcd.RefreshFrame (Bug #22594)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 10 Jun 2011 17:58:23 +0200
 
