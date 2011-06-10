@@ -41,7 +41,6 @@ msgstr ""
 "versuchen Sie es später noch einmal."
 
 #: umc/tools.js:196
-#, fuzzy, python-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
 "server, please try again later."
@@ -350,18 +349,16 @@ msgstr ""
 "Benutzername und Passwort Ihres Domänen-Kontos an."
 
 #: umc/tools.js:153
-#, fuzzy
 msgid "You are not authenticated, please log in."
-msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an!"
+msgstr "Sie sind nicht authentifiziert, bitte melden Sie sich an."
 
 #: umc/tools.js:154
 msgid "You are not authorized to perform this action."
 msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
 
 #: umc/tools.js:161
-#, fuzzy
 msgid "Your session has expired, please login again."
-msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an!"
+msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 
 #~ msgid ""
 #~ "An unexpected HTTP-error occurred (status: %(status)s):\n"
