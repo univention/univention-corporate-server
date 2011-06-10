@@ -49,7 +49,7 @@ if __name__ == '__main__':
 		sys.stderr.write( '%s must be started as root\n' % os.path.basename( sys.argv[ 0 ] ) )
 		sys.exit( 1 )
 
-	notifier.init( notifier.GENERIC )
+	notifier.init( notifier.GENERIC, recursive_depth = 50 )
 
 	parser = OptionParser( usage = "usage: %prog [options]" )
 	parser.add_option( '-s', '--socket', type = 'string', action = 'store',
