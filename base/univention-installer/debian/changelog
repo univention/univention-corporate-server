@@ -1,3 +1,9 @@
+univention-installer (7.0.2-1) unstable; urgency=low
+
+  * fixed PartedCreate Makefile (Bug #22448)
+
+ -- Felix Botner <botner@univention.de>  Fri, 10 Jun 2011 12:14:13 +0200
+
 univention-installer (7.0.1-5) unstable; urgency=low
 
   * converted installer.po to utf-8 (Bug #22448)
