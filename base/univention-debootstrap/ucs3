@@ -55,7 +55,11 @@ first_stage_install () {
 	x_feign_install () {
 		local pkg="$1"
 		local deb="$(debfor $pkg)"
-		local ver="$(extract_deb_field "$TARGET/$deb" Version)"
+        local ver="$(
+            ar -p "$TARGET/$deb" control.tar.gz | zcat |
+                tar -O -xf - control ./control 2>/dev/null |
+                grep -i ^Version: | sed -e 's/[^:]*: *//' | head -n 1
+        )"
 
 		mkdir -p "$TARGET/var/lib/dpkg/info"
 

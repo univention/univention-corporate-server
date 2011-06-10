@@ -1,3 +1,10 @@
+univention-debootstrap (4.0.2-1) unstable; urgency=low
+
+  * fixed version detection in x_feign_install(), to make it work with
+    older versions of debootstrap (Bug #22448)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 10 Jun 2011 11:52:32 +0200
+
 univention-debootstrap (4.0.1-2) unstable; urgency=low
 
   * renamed .install file (Bug #22448)
