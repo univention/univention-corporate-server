@@ -1,3 +1,9 @@
+univention-debootstrap (4.0.1-2) unstable; urgency=low
+
+  * renamed .install file (Bug #22448)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 10 Jun 2011 10:52:43 +0200
+
 univention-debootstrap (4.0.1-1) unstable; urgency=low
 
   * renamed suite from "univention" to "ucs3" (Bug #22448)
