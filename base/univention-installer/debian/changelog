@@ -1,4 +1,4 @@
-univention-installer (7.0.1-4) unstable; urgency=low
+univention-installer (7.0.1-5) unstable; urgency=low
 
   * converted installer.po to utf-8 (Bug #22448)
 
