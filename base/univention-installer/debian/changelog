@@ -1,6 +1,6 @@
-univention-installer (7.0.1-3) unstable; urgency=low
+univention-installer (7.0.1-4) unstable; urgency=low
 
-  * converted installer.po to utf-8 Bug #22448
+  * converted installer.po to utf-8 (Bug #22448)
 
  -- Felix Botner <botner@univention.de>  Fri, 10 Jun 2011 10:49:33 +0200
 
