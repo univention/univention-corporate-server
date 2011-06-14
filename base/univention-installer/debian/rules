@@ -34,12 +34,9 @@ override_dh_auto_build:
 	ucslint
 	dh_auto_build
 
-override_dh_testdir:
-	dh_testdir
-	make -C parted/
-
 override_dh_install:
 	msgfmt -o installer/locale/de/LC_MESSAGES/installer.mo installer/locale/de/LC_MESSAGES/installer.po
+	make -C parted/
 	dh_install
 
 %:

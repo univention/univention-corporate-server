@@ -33,7 +33,6 @@ all: PartedCreate
 
 PartedCreate: PartedCreate.c
 	gcc -Wall -o PartedCreate PartedCreate.c -lparted -ldl -L/usr/lib
-	ldd PartedCreate
 
 clean:
 	rm -f PartedCreate

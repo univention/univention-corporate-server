@@ -1,4 +1,4 @@
-univention-installer (7.0.2-2) unstable; urgency=low
+univention-installer (7.0.2-3) unstable; urgency=low
 
   * fixed PartedCreate Makefile (Bug #22448)
 
