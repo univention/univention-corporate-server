@@ -38,7 +38,7 @@
 
 import objects
 import time, os
-import sre
+import re
 from objects import *
 from local import _
 
@@ -333,7 +333,7 @@ class object(content):
 										cdrom_devices.append(ff)
 									k.close()
 				if os.path.exists('/proc/scsi/scsi'):
-					_sre=sre.compile('Type:\s*CD-ROM')
+					_sre=re.compile('Type:\s*CD-ROM')
 					count=0
 					f=open('/proc/scsi/scsi', 'r')
 					lines=f.readlines()

@@ -1,3 +1,9 @@
+univention-installer (7.0.3-1) unstable; urgency=low
+
+  * fixed deprecation warning (Bug #22448)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 15 Jun 2011 11:58:41 +0200
+
 univention-installer (7.0.2-3) unstable; urgency=low
 
   * fixed PartedCreate Makefile (Bug #22448)
