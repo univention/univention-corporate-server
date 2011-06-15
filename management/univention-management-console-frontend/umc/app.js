@@ -196,10 +196,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		} ) );
 	},
 
-	onModulesLoaded: function() {
-		this.setupGui();
-	},
-
 	// _tabContainer:
 	//		Internal reference to the TabContainer object
 	_tabContainer: null,
@@ -238,10 +234,10 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		umc.app._tabContainer.selectChild(tab, true);
 	},
 
-	isSetupGUI: false,
+	_isSetupGUI: false,
 	setupGui: function() {
 		// make sure that we have not build the GUI before
-		if (this.isSetupGUI) {
+		if (this._isSetupGUI) {
 			return;
 		}
 
@@ -356,81 +352,23 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		topContainer.startup();
 
 		// set a flag that GUI has been build up
-		umc.app.isSetupGUI = true;
+		umc.app._isSetupGUI = true;
 	},
 
-	preferences: function(/*String|Object?*/ param1, /*AnyType?*/ value) {
-		// summary:
-		//		Convenience function to set/get user preferences. 
-		//		All preferences will be store in a cookie (in JSON format).
-		// returns:
-		//		If no parameter is given, returns dictionary with all preference
-		//		entries. If one parameter of type String is given, returns the
-		//		preference for the specified key. If one parameter is given which
-		//		is an dictionary, will set all key-value pairs as specified by
-		//		the dictionary. If two parameters are given and
-		//		the first is a String, the function will set preference for the
-		//		key (paramater 1) to the value as specified by parameter 2.
-
-		// make sure the user preferences are cached internally
-		var cookieStr = '';
-		if (!this._userPreferences) {
-			// not yet cached .. get all preferences via cookies
-			this._userPreferences = dojo.clone(this.defaultPreferences);
-			cookieStr = dojo.cookie('UMCPreferences') || '{}';
-			dojo.mixin(this._userPreferences, dojo.fromJson(cookieStr));
-		}
-
-		// no arguments, return full preference object
-		if (0 === arguments.length) {
-			return this._userPreferences; // Object
-		}
-		// only one parameter, type: String -> return specified preference
-		if (1 == arguments.length && dojo.isString(param1)) {
-			return this._userPreferences[param1]; // Boolean|String|Integer
-		}
-		
-		// backup the old preferences
-		var oldPrefs = dojo.clone(this._userPreferences);
-		
-		// only one parameter, type: Object -> set all parameters as specified in the object
-		if (1 == arguments.length) {
-			// only consider keys that are defined in defaultPreferences
-			umc.tools.forIn(this.defaultPreferences, dojo.hitch(this, function(key, val) {
-				if (key in param1) {
-					this._userPreferences[key] = param1[key];
-				}
-			}));
-		}
-		// two parameters, type parameter1: String -> set specified user preference
-		else if (2 == arguments.length && dojo.isString(param1)) {
-			// make sure preference is in defaultPreferences
-			if (param1 in this.defaultPreferences) {
-				this._userPreferences[param1] = value;
-			}
-		}
-		// otherwise throw error due to incorrect parameters
-		else {
-			umc.tools.assert(false, 'umc.app.preferences(): Incorrect parameters: ' + arguments);
-		}
-
-		// publish changes in user preferences
-		umc.tools.forIn(this._userPreferences, function(key, val) {
-			if (val != oldPrefs[key]) {
-				// entry has changed
-				dojo.publish('/umc/preferences/' + key, [val]);
-			}
-		});
-
-		// set the cookie with all preferences
-		cookieStr = dojo.toJson(this._userPreferences);
-		dojo.cookie('UMCPreferences', cookieStr, { expires: 100, path: '/' } );
-		return; // undefined
+	onModulesLoaded: function() {
+		this.setupGui();
 	},
 
 	_modules: [],
 	_categories: [],
+	_modulesLoaded: false,
 	loadModules: function() {
+		// make sure that we don't load the modules twice
+		if (this._modulesLoaded) {
+			this.onModulesLoaded();
+			return;
+		}
+
 		umc.tools.umcpCommand('get/modules/list').then(dojo.hitch(this, function(data) {
 			// get all categories
 			dojo.forEach(dojo.getObject('categories', false, data), dojo.hitch(this, function(i) {
@@ -506,6 +444,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 
 			// loading is done
 			this.onModulesLoaded();
+			this._modulesLoaded = true;
 		}));
 	},
 
@@ -560,6 +499,75 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		//		Get all categories as an array. Each entry has the following properties:
 		//		{ id, description }.
 		return this._categories; // Object[]
+	},
+
+	preferences: function(/*String|Object?*/ param1, /*AnyType?*/ value) {
+		// summary:
+		//		Convenience function to set/get user preferences. 
+		//		All preferences will be store in a cookie (in JSON format).
+		// returns:
+		//		If no parameter is given, returns dictionary with all preference
+		//		entries. If one parameter of type String is given, returns the
+		//		preference for the specified key. If one parameter is given which
+		//		is an dictionary, will set all key-value pairs as specified by
+		//		the dictionary. If two parameters are given and
+		//		the first is a String, the function will set preference for the
+		//		key (paramater 1) to the value as specified by parameter 2.
+
+		// make sure the user preferences are cached internally
+		var cookieStr = '';
+		if (!this._userPreferences) {
+			// not yet cached .. get all preferences via cookies
+			this._userPreferences = dojo.clone(this.defaultPreferences);
+			cookieStr = dojo.cookie('UMCPreferences') || '{}';
+			dojo.mixin(this._userPreferences, dojo.fromJson(cookieStr));
+		}
+
+		// no arguments, return full preference object
+		if (0 === arguments.length) {
+			return this._userPreferences; // Object
+		}
+		// only one parameter, type: String -> return specified preference
+		if (1 == arguments.length && dojo.isString(param1)) {
+			return this._userPreferences[param1]; // Boolean|String|Integer
+		}
+		
+		// backup the old preferences
+		var oldPrefs = dojo.clone(this._userPreferences);
+		
+		// only one parameter, type: Object -> set all parameters as specified in the object
+		if (1 == arguments.length) {
+			// only consider keys that are defined in defaultPreferences
+			umc.tools.forIn(this.defaultPreferences, dojo.hitch(this, function(key, val) {
+				if (key in param1) {
+					this._userPreferences[key] = param1[key];
+				}
+			}));
+		}
+		// two parameters, type parameter1: String -> set specified user preference
+		else if (2 == arguments.length && dojo.isString(param1)) {
+			// make sure preference is in defaultPreferences
+			if (param1 in this.defaultPreferences) {
+				this._userPreferences[param1] = value;
+			}
+		}
+		// otherwise throw error due to incorrect parameters
+		else {
+			umc.tools.assert(false, 'umc.app.preferences(): Incorrect parameters: ' + arguments);
+		}
+
+		// publish changes in user preferences
+		umc.tools.forIn(this._userPreferences, function(key, val) {
+			if (val != oldPrefs[key]) {
+				// entry has changed
+				dojo.publish('/umc/preferences/' + key, [val]);
+			}
+		});
+
+		// set the cookie with all preferences
+		cookieStr = dojo.toJson(this._userPreferences);
+		dojo.cookie('UMCPreferences', cookieStr, { expires: 100, path: '/' } );
+		return; // undefined
 	}
 });
 
