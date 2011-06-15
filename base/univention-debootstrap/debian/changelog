@@ -1,3 +1,9 @@
+univention-debootstrap (4.0.3-1) unstable; urgency=low
+
+  * merged copy of debootstrap as debootstrap-ucs3 (Bug #22448)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 10 Jun 2011 13:28:35 +0200
+
 univention-debootstrap (4.0.2-1) unstable; urgency=low
 
   * fixed version detection in x_feign_install(), to make it work with
