@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.32-1) unstable; urgency=low
+
+  * fixed cherrypy 408/409 errors (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 15 Jun 2011 12:24:47 +0200
+
 univention-management-console-frontend (0.0.31-2) unstable; urgency=low
 
   * removed restarting of webserver from postinst script (Bug #22460)
