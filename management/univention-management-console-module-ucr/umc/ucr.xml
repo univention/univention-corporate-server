@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-  <module id="ucr" icon="ucr/module" version="1.0">
+  <module id="ucr" icon="ucr" version="1.0">
 	<name>Univention Configuration Registry</name>
 	<description>Managing UCR variables</description>
 	<categories>
 	  <category name="system"/>
 	</categories>
-	<command name="ucr/set" function="set">
+	<command name="ucr/put" function="put">
 	  <attribute name="variables" syntax="UCR-Variables" required="1"/>
 	  <return syntax="Boolean"/>
 	</command>
-	<command name="ucr/unset" function="unset">
+	<command name="ucr/remove" function="remove">
 	  <attribute name="variable" syntax="UCR-Variable" required="1"/>
 	  <return syntax="Boolean"/>
 	</command>
@@ -21,7 +21,7 @@
 	<command name="ucr/categories" function="categories">
 	  <return syntax="Dictionary"/>
 	</command>
-	<command name="ucr/search" function="search">
+	<command name="ucr/query" function="query">
 	  <attribute name="filter" syntax="String" required="1"/>
 	  <attribute name="key" syntax="UCR-SearchOption" required="1"/>
 	  <attribute name="category" syntax="String" required="1"/>

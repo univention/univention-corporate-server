@@ -73,46 +73,58 @@ class Instance( umcm.Base ):
 			info.add_variable( options[ 'key' ], var )
 			info.write_customized()
 
-	def set( self, request ):
+	def put( self, request ):
 		if isinstance( request.options, ( list, tuple ) ):
 			for var in request.options:
-				if 'value' in var:
-					value = var[ 'value' ]
-					if  value is None:
-						value = ''
-						arg = [ '%s=%s' % ( key.encode(), value.encode() ) ]
-						ucr.handler_set( arg )
+				try:
+					value = var['value'] or ''
+					key = var['key']
+					arg = [ '%s=%s' % ( key.encode(), value.encode() ) ]
+					ucr.handler_set( arg )
+				except KeyError:
+					# handle the case that neither key nor value are given for an UCR variable entry
+					request.status = 407
+					self.finished(request.id, False, message = _('Invalid UCR variable entry, the properties "key" and "value" need to specified.'))
+					return
+				# handle descriptions, type, and categories
 				if 'descriptions' in var or 'type' in var or 'categories' in var:
 					self.__create_variable_info( var )
 			request.status = 200
 			success = True
 		else:
 			success = False
-			request.status = 403
+			request.status = 407
 
 		self.finished( request.id, success )
 
-	def unset( self, request ):
-		response = False
-		if 'key' in request.options:
-			ucr.handler_unset( request.options[ 'key' ] )
-			response = True
-
-		self.finished( request.id, response )
+	def remove( self, request ):
+		ucr.handler_unset(request.options)
+		self.finished( request.id, True )
 
 	def get( self, request ):
 		ucrReg = ucr.ConfigRegistry()
 		ucrReg.load()
 		ucrInfo = ConfigRegistryInfo( registered_only = False )
-		var = ucrInfo.get_variable( str( request.options[ 'variable' ] ) )
-		value = ucrReg.get( str( request.options[ 'variable' ] ) )
-		if not var and value:
-			self.finished( request.id,  { 'variable' : request.options[ 'variable' ], 'value' : value } )
-		elif var:
-			var[ 'value' ] = value
-			self.finished( request.id, var.normalize() )
-		else:
-			self.finished( request.id, False, message = _( 'The UCR variable %(variable)s could not be found' ) % { 'variable' : request.options[ 'variable' ] } )
+
+		# iterate over all requested variables
+		results = []
+		for key in request.options:
+			info = ucrInfo.get_variable( str( key ) )
+			value = ucrReg.get( str( key ) )
+			if not info and value:
+				# only the value available
+				results.append( {'key': key, 'value': value} )
+			elif info:
+				# info (categories etc.) available
+				info['value'] = value
+				info['key'] = key
+				results.append(info.normalize())
+			else:
+				# variable not available, request failed
+				request.status = 407
+				self.finished( request.id, False, message = _( 'The UCR variable %(key)s could not be found' ) % { 'key' : key } )
+				return
+		self.finished( request.id, results )
 
 	def categories( self, request ):
 		uit.set_language(str(self.locale))
@@ -126,7 +138,7 @@ class Instance( umcm.Base ):
 			})
 		self.finished( request.id, categories )
 
-	def search( self, request ):
+	def query( self, request ):
 		'''Returns a dictionary of configuration registry variables
 		found by searching for the (wildcard) expression defined by the
 		UMCP request. Additionally a list of configuration registry
@@ -135,7 +147,7 @@ class Instance( umcm.Base ):
 		The dictionary returned is compatible with the Dojo data store
 		format.'''
 		variables = []
-		ud.debug( ud.ADMIN, ud.INFO, 'UCR.search: options: %s' % str( request.options ) )
+		ud.debug( ud.ADMIN, ud.INFO, 'UCR.query: options: %s' % str( request.options ) )
 		category = request.options.get( 'category', None )
 		if category == 'all':
 			# load _all_ config registry variables

@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (1.0.7-1) unstable; urgency=low
+
+  * adapted to changes in API, added scaled icons, bug fixes (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 15 Jun 2011 12:58:16 +0200
+
 univention-management-console-module-ucr (1.0.6-1) unstable; urgency=low
 
   * removed flavor definition; Bug #22624

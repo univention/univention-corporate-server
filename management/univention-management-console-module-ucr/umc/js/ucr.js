@@ -37,6 +37,9 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	_detailDialog: null,
 	_contextVariable: null,
 
+	moduleID: 'ucr',
+	idProperty: 'key',
+
 	buildRendering: function() {
 		// call superclass method
 		this.inherited(arguments);
@@ -65,14 +68,17 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			isMultiAction: false,
 			callback: dojo.hitch(this, function(vars) {
 				if (vars.length) {
-					this._detailDialog.loadVariable(vars[0].variable);
+					this._detailDialog.loadVariable(vars[0]);
 				}
 			})
 		}, {
 			name: 'delete',
 			label: this._( 'Delete' ),
 			description: this._( 'Deleting the selected UCR variables' ),
-			iconClass: 'dijitIconDelete'
+			iconClass: 'dijitIconDelete',
+			callback: dojo.hitch(this, function(vars) {
+				this.moduleStore.multiRemove(vars);
+			})
 		}];
 
 		// define grid columns
@@ -92,9 +98,12 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			region: 'center',
 			actions: actions,
 			columns: columns,
-			idField: 'key',
-			umcpSearchCommand: 'ucr/search',
-			umcpSetCommand: 'ucr/set'
+			moduleStore: this.moduleStore,
+			query: {
+				category: "all",
+				key: "all",
+				filter:"*"
+			}
 		});
 		this.addChild(this._grid);
 
@@ -137,7 +146,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var buttons = [{
 			name: 'submit',
 			label: this._( 'Search' ),
-			callback: dojo.hitch(this._grid, 'umcpSearch')
+			callback: dojo.hitch(this._grid, 'filter')
 		}, {
 			name: 'reset',
 			label: this._( 'Reset' )
@@ -158,21 +167,14 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		});
 		this.addChild(this._searchWidget);
 
-		// simple handler to enable/disable standby mode
-		dojo.connect(this._grid, 'umcpSearch', this, function() {
-			this.standby(true);
-		});
-		dojo.connect(this._grid, 'onUmcpSearchDone', this, function() {
-			this.standby(false);
-		});
-
 		//
 		// create dialog for UCR variable details
 		//
 
-		this._detailDialog = new umc.modules.ucr._DetailDialog({});
+		this._detailDialog = new umc.modules.ucr._DetailDialog({
+			moduleStore: this.moduleStore
+		});
 		this._detailDialog.startup();
-
 	}
 
 });
@@ -183,13 +185,15 @@ dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.Standb
 	// use i18n information from umc.modules.ucr
 	i18nClass: 'umc.modules.ucr',
 
+	moduleStore: null,
+
 	postMixInProperties: function() {
 		// call superclass method
 		this.inherited(arguments);
 
 		dojo.mixin(this, {
-			title: this._( 'Edit UCR variable' ),
-			style: 'width: 450px'
+			title: this._( 'Edit UCR variable' )
+			//style: 'max-width: 450px'
 		});
 	},
 
@@ -199,7 +203,7 @@ dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.Standb
 
 		var widgets = [{
 			type: 'TextBox',
-			name: 'variable',
+			name: 'key',
 			description: this._( 'Name of UCR variable' ),
 			label: this._( 'UCR variable' )
 		}, {
@@ -207,20 +211,20 @@ dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.Standb
 			name: 'value',
 			description: this._( 'Value of UCR variable' ),
 			label: this._( 'Value' )
-		}, {
-			type: 'MultiSelect',
-			name: 'categories',
-			description: this._( 'Categories that the UCR variable is assoziated with' ),
-			label: this._( 'Categories' ),
-			umcpValues: 'ucr/categories'
+//		}, {
+//			type: 'MultiSelect',
+//			name: 'categories',
+//			description: this._( 'Categories that the UCR variable is assoziated with' ),
+//			label: this._( 'Categories' ),
+//			umcpValues: 'ucr/categories'
 		}];
 
 		var buttons = [{
 			name: 'submit',
 			label: this._( 'Save' ),
 			callback: dojo.hitch(this, function() {
-				this.standby(true);
-				this._form.umcpSet();
+				this._form.save();
+				this.hide();
 			})
 		}, {
 			//FIXME: Should be much simpled. The key name should be enough
@@ -231,32 +235,32 @@ dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.Standb
 			})
 		}];
 
-		var layout = [['variable'], ['value'], ['categories']];
+		var layout = [['key'], ['value']];//, ['categories']];
 
 		this._form = new umc.widgets.Form({
 			style: 'width: 100%',
 			widgets: widgets,
 			buttons: buttons,
 			layout: layout,
-			umcpGetCommand: 'ucr/get',
-			umcpSetCommand: 'ucr/set',
+			moduleStore: this.moduleStore,
 			cols: 1
 		}).placeAt(this.containerNode);
 
 		// simple handler to disable standby mode
-		dojo.connect(this._form, 'onUmcpGetDone', this, function() {
+		dojo.connect(this._form, 'onLoaded', this, function() {
 			this.standby(false);
 		});
-		dojo.connect(this._form, 'onUmcpSetDone', this, function() {
+		dojo.connect(this._form, 'onSaved', this, function() {
 			this.standby(false);
 		});
 
 	},
 
 	newVariable: function() {
-		this._form._widgets.variable.set('disabled', false);
+		this._form._widgets.key.set('disabled', false);
+		this.standby(false);
 		var emptyValues = {};
-		umc.tools.forIn(this._form.gatherFormValues(), function(ival, ikey) {
+		umc.tools.forIn(this._form.gatherFormValues(), function(ikey) {
 			emptyValues[ikey] = '';
 		});
 		this._form.setFormValues(emptyValues);
@@ -264,16 +268,15 @@ dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.Standb
 	},
 
 	loadVariable: function(ucrVariable) {
-		this._form._widgets.variable.set('disabled', true);
+		this._form._widgets.key.set('disabled', true);
 
 		// start standing-by mode
 		this.standby(true);
 		this.show();
 
 		// start the query
-		this._form.umcpGet({ variable: ucrVariable });
+		this._form.load(ucrVariable);
 	},
-
 
 	getValues: function() {
 		// description:
