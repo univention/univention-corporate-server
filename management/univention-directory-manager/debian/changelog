@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.74-1) unstable; urgency=low
+
+  * fix display of mapped search results (Bug #22659)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 15 Jun 2011 13:08:42 +0200
+
 univention-directory-manager (8.0.73-1) unstable; urgency=low
 
   * added sambaPrivileges Bug #2619

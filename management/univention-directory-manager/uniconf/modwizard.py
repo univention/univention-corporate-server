@@ -1361,7 +1361,10 @@ class modwizard(unimodule.unimodule):
 
 				if search_property_name != '*' and sub_object.has_key(search_property_name) and sub_object[search_property_name] \
 					and not search_module.property_descriptions[search_property_name].identifies:
-					tmpvalue=sub_object[search_property_name]
+					if sub_object.mapping.mapName(search_property_name):
+						tmpvalue=sub_object.mapping.mapValue(search_property_name, sub_object[search_property_name])
+					else:
+						tmpvalue=sub_object[search_property_name]
 					if type(tmpvalue) is not types.ListType:
 						displayvalue=[tmpvalue]
 					else:
