@@ -56,3 +56,10 @@ yield usable tracebacks for dynamically loaded modules. (to be verified)
 All icons in the directory 'icons' will be automatically scaled (using 
 ImageMagick's 'convert') to the appropriate sizes.
 
+
+=== More modules ===
+
+Some more modules with icons (for demonstration purposes) can be found in the
+directory more_modules.
+
+

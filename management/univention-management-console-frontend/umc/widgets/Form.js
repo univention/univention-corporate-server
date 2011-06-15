@@ -47,13 +47,10 @@ dojo.declare("umc.widgets.Form", [
 	//		Orientation of labels, possible values ['vert', 'horiz'].
 	orientation: 'vert',
 
-	// umcpGet: String
-	//		UMCP command for querying data to fill the form.
-	umcpGetCommand: '',
-
-	// umcpSet: String
-	//		UMCP command for saving data from the form.
-	umcpSetCommand: '',
+	// moduleStore: umc.store.UmcpModuleStore
+	//		Object store for module requests using UMCP commands. If given, form data
+	//		can be loaded/saved by the form itself.
+	moduleStore: null,
 
 	_widgets: null,
 
@@ -109,19 +106,19 @@ dojo.declare("umc.widgets.Form", [
 		}));
 	},
 
-	umcpGet: function(/*Object*/ parameters) {
+	load: function(/*String*/ itemID) {
 		// summary:
 		//		Send off an UMCP query to the server for querying the data for the form.
 		//		For this the field umcpGetCommand needs to be set.
-		// parameters: Object
-		//		Parameter object that is passed to the UMCP command.
+		// itemID: String
+		//		ID of the object that should be loaded.
 
-		umc.tools.assert(this.umcpGetCommand, 'In order to query form data from the server, umcpGetCommand needs to be set');
+		umc.tools.assert(this.moduleStore, 'In order to load form data from the server, the umc.widgets.Form.moduleStore needs to be set.');
+		umc.tools.assert(itemID, 'The specifid itemID for umc.widgets.Form.load() must valid.');
 
 		// query data from server
-		umc.tools.umcpCommand(this.umcpGetCommand, parameters).then(dojo.hitch(this, function(_data) {
+		this.moduleStore.get(itemID).then(dojo.hitch(this, function(data) {
 			var values = this.gatherFormValues();
-			var data = dojo.mixin({}, parameters, _data.result);
 			var newValues = {};
 
 			// copy all the fields that exist in the form
@@ -135,39 +132,36 @@ dojo.declare("umc.widgets.Form", [
 			this.setFormValues(newValues);
 
 			// fire event
-			this.onUmcpGetDone(true);
+			this.onLoaded(true);
 		}), dojo.hitch(this, function(error) {
 			// fore event also in error case
-			this.onUmcpGetDone(false);
+			this.onLoaded(false);
 		}));
 	},
 
-	umcpSet: function() {
+	save: function() {
 		// summary:
 		//		Gather all form values and send them to the server via UMCP.
 		//		For this, the field umcpSetCommand needs to be set.
 
-		umc.tools.assert(this.umcpSetCommand, 'In order to query form data from the server, umcpGetCommand needs to be set');
+		umc.tools.assert(this.moduleStore, 'In order to save form data to the server, the umc.widgets.Form.moduleStore needs to be set');
 
 		// sending the data to the server
 		var values = this.gatherFormValues();
-		//TODO: parameter for UMCP set command should be an array
-		var tmp = {};
-		tmp[values.variable] = values.value;
-		umc.tools.umcpCommand(this.umcpSetCommand, tmp).then(dojo.hitch(this, function(data) {
+		this.moduleStore.put(values).then(dojo.hitch(this, function() {
 			// fire event
-			this.onUmcpSetDone(true);
-		}), dojo.hitch(this, function(error) {
-			// fore event also in error case
-			this.onUmcpSetDone(false);
+			this.onSaved(true);
+		}), dojo.hitch(this, function() {
+			// fire event also in error case
+			this.onSaved(false);
 		}));
 	},
 
-	onUmcpSetDone: function() {
+	onSaved: function(/*Boolean*/ success) {
 		// event stub
 	},
 
-	onUmcpGetDone: function() {
+	onLoaded: function(/*Boolean*/ success) {
 		// event stub
 	}
 });

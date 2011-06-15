@@ -23,6 +23,7 @@ dojo.declare("umc.widgets.StandbyMixin", dijit._Widget, {
 		// create a standby widget targeted at this module
 		this._standbyWidget = new dojox.widget.Standby({
 			target: this.domNode,
+			duration: 200,
 			//zIndex: 99999999,
 			color: '#FFF'
 		});

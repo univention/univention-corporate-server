@@ -1,3 +1,11 @@
+univention-management-console-frontend (0.0.33-1) unstable; urgency=low
+
+  * introduced object store to access UMC module data (Bug #22460)
+  * bug fixes, refactoring
+  * removed dummy modules
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 15 Jun 2011 13:00:56 +0200
+
 univention-management-console-frontend (0.0.32-1) unstable; urgency=low
 
   * fixed cherrypy 408/409 errors (Bug #22460)

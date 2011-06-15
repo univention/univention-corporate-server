@@ -5,17 +5,20 @@ dojo.provide("umc.widgets.Grid");
 dojo.require("dojo.string");
 dojo.require("dojo.data.ItemFileWriteStore");
 dojo.require("dojo.store.DataStore");
+dojo.require("dojo.data.ObjectStore");
 dojo.require("dijit.form.Button");
 dojo.require("dijit.form.DropDownButton");
 dojo.require("dijit.Menu");
 dojo.require("dijit.layout.BorderContainer");
+dojo.require("dojox.data.ClientFilter");
 dojo.require("dojox.grid.EnhancedGrid");
 dojo.require("dojox.grid.cells");
 dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.tools");
 dojo.require("umc.i18n");
 
-dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin ], {
+dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin, umc.widgets.StandbyMixin ], {
 	// summary:
 	//		Encapsulates a complex grid with store, UMCP commands and action buttons;
 	//		offers easy access to select items etc.
@@ -36,26 +39,18 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 	//		'editable': whether or not the field can be edited by the user;
 	columns: null,
 
-	// idField: String
-	//		Data field that represents a unique identifier for an object.
-	idField: '',
-
-	// umcpSearchCommand: String
-	//		UMCP command for querying a listing of all items with optional 
-	//		filter parameters.
-	umcpSearchCommand: '',
-
-	// umcpSetCommand: String
-	//		UMCP command for saving data from the grid directly.
-	umcpSetCommand: '',
+	// query: Object?
+	//		The initial query for the data grid. If not specified it will be guessed.
+	query: {},
+	
+	// moduleStore: umc.store.UmcpModuleStore
+	//		Object store for module requests using UMCP commands.
+	moduleStore: null,
 
 	// use the framework wide translation file
 	i18nClass: 'umc.app',
 
 	'class': 'umcNoBorder',
-
-	_store: null,
-	_objStore: null,
 
 	_iconFormatter: function(valueField, iconField) {
 		// summary:
@@ -64,7 +59,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 		return dojo.hitch(this, function(value, rowIndex) {
 			// get the iconNamae
 			var item = this._grid.getItem(rowIndex);
-			var iconName = this._store.getValue(item, iconField);
+			var iconName = this._dataStore.getValue(item, iconField);
 			
 			// create an HTML image that contains the down-arrow
 			var html = dojo.string.substitute('<img src="/umc/images/icons/16x16/${icon}.png" height="${height}" width="${width}" style="float:left; margin-right: 5px" /> ${value}', {
@@ -77,25 +72,20 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 		});
 	},
 
+	postMixInProperties: function() {
+		this.inherited(arguments);
+
+		// encapsulate the object store into a old data store for the grid
+		this._dataStore = new dojo.data.ObjectStore({
+			objectStore: this.moduleStore
+		});
+	},
+
 	buildRendering: function() {
 		this.inherited(arguments);
 		
 		// assertions
 		umc.tools.assert(dojo.isArray(this.columns), 'The property columns needs to be defined for umc.widgets.Grid as an array.');
-
-		// create an empty store
-		this._store = new dojo.data.ItemFileWriteStore({ 
-			data: {
-				identifier: this.idField,
-				label: this.idField,
-				items: [] 
-			}
-		});
-
-		// interface with an object store (for easier access)
-		this._objStore = dojo.store.DataStore({
-			store: this._store
-		});
 
 		// create the layout for the grid columns
 		var gridColumns = [];
@@ -130,6 +120,26 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 			query[icol.name] = '*';
 		}, this);
 
+		// use the query object specified by the user
+		query = this.query || query;
+
+		// add an additional column for a drop-down button with context actions
+		gridColumns.push({
+			field: this.moduleStore.idProperty,
+			name: ' ',
+			width: '20px',
+			editable: false,
+			formatter: dojo.hitch(this, function() {
+				// create an HTML image that contains the down-arrow
+				var img = dojo.string.substitute('<img src="${src}" style="height: ${height};" class="${class}" />', {
+					src: dojo.moduleUrl("dojo", "resources/blank.gif").toString(),
+					height: '6px',
+					'class': 'dijitArrowButtonInner umcDisplayNone'
+				});
+				return img;
+			})
+		});
+
 		// create context menu
 		var contextMenu = new dijit.Menu({ });
 		dojo.forEach(this.actions, function(iaction) {
@@ -149,37 +159,19 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 			dojo.connect(item, 'onClick', this, function() {
 				dijit.popup.close(contextMenu);
 				if (iaction.callback) {
-					iaction.callback([this.getValues(this._contextItemID)]);
+					iaction.callback([this._contextItemID]);
 				}
 			});
 		}, this);
 
-		// add an additional column for a drop-down button with context actions
-		gridColumns.push({
-			field: this.idField,
-			name: ' ',
-			width: '20px',
-			editable: false,
-			formatter: dojo.hitch(this, function() {
-				// create an HTML image that contains the down-arrow
-				var img = dojo.string.substitute('<img src="${src}" style="height: ${height};" class="${class}" />', {
-					src: dojo.moduleUrl("dojo", "resources/blank.gif").toString(),
-					height: '6px',
-					'class': 'dijitArrowButtonInner umcDisplayNone'
-				});
-				return img;
-			})
-		});
-
 		// create the grid
 		this._grid = new dojox.grid.EnhancedGrid({
 			//id: 'ucrVariables',
+			store: this._dataStore,
 			region: 'center',
 			query: query,
 			queryOptions: { ignoreCase: true },
 			structure: gridColumns,
-			clientSort: true,
-			store: this._store,
 			rowSelector: '2px',
 			plugins : {
 				indirectSelection: {
@@ -214,7 +206,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 
 			// save the ID of the current element
 			var item = this._grid.getItem(evt.rowIndex);
-			this._contextItemID = this._store.getValue(item, this.idField);
+			this._contextItemID = this._dataStore.getValue(item, this.moduleStore.idProperty);
 
 			// show popup
 			var column = this._grid.getCell(gridColumns.length);
@@ -301,12 +293,12 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 		var actions = [];
 		dojo.forEach(this.actions, dojo.hitch(this, function(iaction) {
 			var jaction = iaction;
-			if ('callback' in iaction) {
+			if (iaction.callback) {
 				jaction = dojo.mixin({}, iaction); // shallow copy
 
 				// call custom callback with selected values
 				jaction.callback = dojo.hitch(this, function() {
-					iaction.callback(this.getSelectedValues());
+					iaction.callback(this.getSelection());
 				});
 			}
 			actions.push(jaction);
@@ -316,12 +308,10 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 		var buttonsCfg = [];
 		dojo.forEach(actions, function(iaction) {
 			// make sure we get all standard actions
-			if (true !== iaction.isStandardAction) {
-				return;
+			if (true === iaction.isStandardAction) {
+				buttonsCfg.push(iaction);
 			}
 
-			// prepare the list of button config objects
-			buttonsCfg.push(iaction);
 		}, this);
 		var buttons = umc.tools.renderButtons(buttonsCfg);
 
@@ -345,9 +335,11 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 			// create a new menu item
 			var item = new dijit.MenuItem({
 				label: iaction.label,
-				onClick: iaction.callback,
 				iconClass: iaction.iconClass
 			});
+			if (iaction.callback) {
+				item.onClick = iaction.callback;
+			}
 			actionsMenu.addChild(item);
 		}, this);
 
@@ -358,6 +350,26 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 				dropDown: actionsMenu
 			}));
 		}
+
+		//
+		// register event handler
+		//
+
+		// in case of any changes in the module store, refresh the grid
+		dojo.connect(this.moduleStore, 'onChange', dojo.hitch(this, function() {
+			this.filter(this.query);
+		}));
+
+		// standby animation when loading data
+		dojo.connect(this._grid, "_onFetchComplete", dojo.hitch(this, function() {
+			this.standby(false);
+		}));
+		dojo.connect(this._grid, "_onFetchError", dojo.hitch(this, function() {
+			this.standby(false);
+		}));
+
+		// when a cell gets modified, save the changes directly back to the server
+		dojo.connect(this._grid, 'onApplyCellEdit', this._dataStore, 'save');
 		
 		/*// disable edit menu in case there is more than one item selected
 		dojo.connect(this._grid, 'onSelectionChanged', dojo.hitch(this, function() {
@@ -368,110 +380,28 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 		// save internally for which row the cell context menu was opened
 /*		dojo.connect(this._grid, 'onCellContextMenu', dojo.hitch(this, function(e) {
 			var item = this._grid.getItem(e.rowIndex);
-			this._contextVariable = this._store.getValue(item, 'key');
+			this._contextVariable = this._dataStore.getValue(item, 'key');
 		}));*/
-
-/*		// connect to row edits
-		dojo.connect(this._grid, 'onApplyEdit', this, function(rowIndex) {
-			// get the ucr variable and value of edited row
-			var item = this._grid.getItem(rowIndex);
-			var ucrVar = this._store.getValue(item, 'key');
-			var ucrVal = this._store.getValue(item, 'value');
-			
-			// while saving, set module to standby
-			this.standby(true);
-
-			// save values
-			this.saveVariable(ucrVar, ucrVal, dojo.hitch(this, function() {
-				this.standby(false);
-			}), false);
-		});*/
-
 	},
 
-	umcpSearch: function(/*Object*/ parameters) {
-		// summary:
-		//		Send off an UMCP query to the server for searching...
-		// parameters: Object
-		//		Parameter object that is passed to the UMCP command containing a
-		//		dictionary of search parameters.
-
-		umc.tools.assert(this.umcpSearchCommand, 'In order to query form data from the server, umcpSearchCommand needs to be specified.');
-
-		// query data from server
-		umc.tools.umcpCommand(this.umcpSearchCommand, parameters).then(dojo.hitch(this, function(data) {
-			// create a new store and assign it to the grid
-			this._store = new dojo.data.ItemFileWriteStore({ 
-				data: {
-					identifier: this.idField,
-					label: this.idField,
-					items: data.result
-				}
-			});
-			this._grid.setStore(this._store);
-
-			// interface with an object store (for easier access)
-			this._objStore = dojo.store.DataStore({
-				store: this._store
-			});
-
-			// fire event
-			this.onUmcpSearchDone(true);
-		}), dojo.hitch(this, function(error) {
-			// fire event also in error case
-			this.onUmcpSearchDone(false);
-		}));
-	},
-
-/*	umcpSet: function() {
-		// summary:
-		//		Gather all form values and send them to the server via UMCP.
-		//		For this, the field umcpSetCommand needs to be set.
-
-		umc.tools.assert(this.umcpSetCommand, 'In order to query form data from the server, umcpGetCommand needs to be set');
-
-		// sending the data to the server
-		var values = this.gatherFormValues();
-		umc.tools.umcpCommand(this.umcpSetCommand, values).then(dojo.hitch(this, function(data) {
-			// fire event
-			this.onUmcpSetDone(true);
-		}), dojo.hitch(this, function(error) {
-			// fore event also in error case
-			this.onUmcpSetDone(false);
-		}));
-	},*/
-
-	onUmcpSetDone: function() {
-		// event stub
-	},
-
-	onUmcpSearchDone: function() {
-		// event stub
+	filter: function(query) {
+		// store the last query
+		this.query = query;
+		this.standby(true);
+		this._grid.filter(query);
 	},
 
 	getSelection: function() {
 		// summary:
 		//		Return the currently selected items.
 		// returns:
-		//		An array of id strings (as specified by idField).
+		//		An array of id strings (as specified by moduleStore.idProperty).
 		var items = this._grid.selection.getSelected();
 		var vars = [];
 		for (var iitem = 0; iitem < items.length; ++iitem) {
-			vars.push(this._store.getValue(items[iitem], this.idField));
+			vars.push(this._dataStore.getValue(items[iitem], this.moduleStore.idProperty));
 		}
 		return vars; // String[]
-	},
-
-	getValues: function(id) {
-		return this._objStore.get(id);
-	},
-
-	getSelectedValues: function(id) {
-		var values = [];
-		dojo.forEach(this.getSelection(), dojo.hitch(this, function(i) {
-			values.push(this.getValues(i));
-		}));
-		return values;
 	},
 
 	getRowValues: function(rowIndex) {
@@ -479,53 +409,11 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 		//		Convenience method to fetch all attributes of an item as dictionary.
 		var values = {};
 		var item = this._grid.getItem(rowIndex);
-		dojo.forEach(this._store.getAttributes(item), dojo.hitch(this, function(key) {
-			values[key] = this._store.getValue(item, key);
+		dojo.forEach(this._dataStore.getAttributes(item), dojo.hitch(this, function(key) {
+			values[key] = this._dataStore.getValue(item, key);
 		}));
 		return values;
 	}
-
-//	unsetVariable: function(/*Array*/ variable) {
-//		// prepare the JSON object
-//		var jsonObj = {
-//			variable: variable
-//		};
-//
-//		// send off the data
-//		umc.tools.umcpCommand('ucr/unset', {
-//			variable: variable
-//		}).then(dojo.hitch(this, function(data, ioargs) {
-//			this.reload();
-//		}));
-//	},
-
-//	saveVariable: function(variable, value, xhrHandler, reload) {
-//		// prepare the JSON object
-//		var jsonObj = {};
-//		dojo.setObject('variables.' + variable, value, jsonObj);
-//
-//		// send off the data
-//		umc.tools.xhrPostJSON(
-//			jsonObj, 
-//			'/umcp/command/ucr/set', 
-//			dojo.hitch(this, function(dataOrError, ioargs) {
-//				// check the status
-//				if (dojo.getObject('xhr.status', false, ioargs) == 200 && (reload === undefined || reload)) {
-//					this.reload();
-//				}
-//
-//				// eventually execute custom callback
-//				if (xhrHandler) {
-//					xhrHandler(dataOrError, ioargs);
-//				}
-//			})
-//		);
-//	}
 });
-
-
-
-
-
 
 

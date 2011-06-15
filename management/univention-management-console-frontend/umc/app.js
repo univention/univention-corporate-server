@@ -103,6 +103,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// create confirmation dialog
 		var confirmDialog = new umc.widgets.ConfirmDialog({
 			title: this._('Confirmation'),
+			style: 'max-width: 400px;',
 			message: message,
 			options: options
 		});
@@ -151,6 +152,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// create alert dialog 
 		this._alertDialog = new umc.widgets.ConfirmDialog({
 			title: this._('Notification'),
+			style: 'max-width: 400px;',
 			options: [{
 				label: this._('Ok'),
 				callback: dojo.hitch(this, function() {

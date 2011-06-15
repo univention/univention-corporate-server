@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-06-10 10:03+0200\n"
+"POT-Creation-Date: 2011-06-15 11:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "<br>Error message from server: %s"
 msgstr "<br>Fehlermeldung des Servers: %s"
 
-#: umc/app.js:308
+#: umc/app.js:310
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -47,13 +47,13 @@ msgstr ""
 
 #: umc/tools.js:161
 msgid "Authentication failed, please login again."
-msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
+msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
 #: umc/app.js:105
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:322
+#: umc/app.js:324
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -79,7 +79,7 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/app.js:304
+#: umc/app.js:306
 msgid "Help"
 msgstr "Hilfe"
 
@@ -151,28 +151,28 @@ msgstr "Sprache"
 msgid "Login"
 msgstr "Anmelden"
 
-#: umc/app.js:173
+#: umc/app.js:175
 #, python-format
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:330
+#: umc/app.js:332
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
-#: umc/widgets/Grid.js:357
+#: umc/widgets/Grid.js:349
 msgid "More actions..."
 msgstr "Weitere Aktionen..."
 
-#: umc/app.js:153
+#: umc/app.js:154
 msgid "Notification"
 msgstr "Hinweis"
 
-#: umc/app.js:155
+#: umc/app.js:157
 msgid "Ok"
 msgstr "Ok"
 
-#: umc/app.js:267
+#: umc/app.js:269
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -215,7 +215,7 @@ msgstr ""
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
-#: umc/app.js:315
+#: umc/app.js:317
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -223,7 +223,7 @@ msgstr "Tooltips"
 msgid "Translate me!"
 msgstr ""
 
-#: umc/app.js:338
+#: umc/app.js:340
 #, python-format
 msgid "User: %s"
 msgstr "Benutzer: %s"
