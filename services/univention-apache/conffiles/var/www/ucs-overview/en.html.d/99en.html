@@ -1,0 +1,43 @@
+@!@
+role = "@%@server/role@%@"
+if role == "domaincontroller_master" or role == "domaincontroller_backup" :
+	print'<tr>'
+	print'<td class="overview"><a href="../ucs-root-ca.crt"><img src="../icon/perms.png" alt="" style="border: 0;" /></a></td>'
+	print'<td class="overview"><a href="../ucs-root-ca.crt">Root certificate</a></td>'
+	print'<td class="overview">Certificate of the Certification Authority for UCS-Domain @%@domainname@%@</td>'
+	print'</tr>'
+	print'<tr>'
+	print'<td class="overview"><a href="../ucsCA.crl"><img src="../icon/invalidperms.png" alt="" style="border: 0;" /></a></td>'
+	print'<td class="overview"><a href="../ucsCA.crl">Certificate revocation list</a></td>'
+	print'<td class="overview">List of withdrawn certificates</td>'
+	print'</tr>'
+@!@
+<tr>
+<td></td>
+</tr>
+<tr>
+<td class="overview"><a href="http://www.univention.de/en/"><img src="../icon/about.png" alt="" style="border: 0;" /></a></td>
+<td class="overview"><a href="http://www.univention.de/en/">Univention</a></td>
+<td class="overview">The website of Univention GmbH</td>
+</tr>
+<tr>
+<td class="overview"><a href="http://forum.univention.de"><img src="../icon/about.png" alt="" style="border: 0;" /></a></td>
+<td class="overview"><a href="http://forum.univention.de">Univention forum</a></td>
+<td class="overview">The Univention forum</td>
+</tr>
+<tr>
+<td class="overview"><a href="http://www.univention.de/en/download/documentation/"><img src="../icon/about.png" alt="" style="border: 0;" /></a></td>
+<td class="overview"><a href="http://www.univention.de/en/download/documentation/">Univention documentation</a></td>
+<td class="overview">Documentation for Univention Corporate Server</td>
+</tr>
+</table>
+				</div>
+				<!-- @end content -->
+			</div>
+			<!-- @end content-wrapper -->
+			<br class="clear" />
+		</div>
+		<!-- @end wrapper -->
+	</body>
+	<!-- @end body -->
+</html>
