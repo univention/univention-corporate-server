@@ -43,7 +43,7 @@ class Instance( umcm.Base ):
 		umcm.Base.__init__( self )
 		self.defaults = UDM_DefaultContainers()
 
-	def set( self, request ):
+	def put( self, request ):
 		self.finished( request.id )
 
 	def remove( self, request ):
@@ -58,20 +58,20 @@ class Instance( umcm.Base ):
 
 		self.finished( request.id )
 
-	def search_properties( self, request ):
+	def query_properties( self, request ):
 		module_name = request.options.get( 'objectType' )
 		module = UDM_Module( module_name )
 
 		self.finished( request.id, module.properties )
 
-	def search_values( self, request ):
+	def query_values( self, request ):
 		module_name = request.options.get( 'objectType' )
 		property_name = request.options.get( 'objectProperty' )
 		module = UDM_Module( module_name )
 
 		self.finished( request.id, module.get_default_values( property_name ) )
 
-	def search_layout( self, request ):
+	def query_layout( self, request ):
 		module = UDM_Module( request.flavor )
 		widgets = []
 		containers = self.defaults.get( request.flavor )
@@ -106,7 +106,7 @@ class Instance( umcm.Base ):
 				'depends' : [ 'objectType', ],
 				'description' : _( 'The attribute that should be compared to the given keyword' ),
 				'label' : _( 'Keyword' ),
-				'dynamicValues' : 'udm/search/properties'
+				'dynamicValues' : 'udm/query/properties'
 			},
 			{
 				'type' : 'MixedInput',
@@ -114,7 +114,12 @@ class Instance( umcm.Base ):
 				'depends' : [ 'objectType', 'objectProperty' ],
 				'description' : _( 'The keyword that should be searched for in the selected attribute' ),
 				'label' : '',
-				'dynamicValues' : 'udm/search/values'
+				'dynamicValues' : 'udm/query/values'
 			}, ] )
 
 		self.finished( request.id, widgets )
+
+	def put_layout( self, request ):
+		module = UDM_Module( request.flavor )
+
+		self.finished( request.id, module.layout )

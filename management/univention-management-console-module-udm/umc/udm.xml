@@ -18,19 +18,21 @@
 	<categories>
 	  <category name="domain"/>
 	</categories>
-	<command name="udm/search/layout" function="search_layout">
+	<command name="udm/query" function="query">
 	</command>
-	<command name="udm/search/properties" function="search_properties">
+	<command name="udm/query/layout" function="query_layout">
 	</command>
-	<command name="udm/search/value" function="search_value">
+	<command name="udm/query/properties" function="query_properties">
 	</command>
-	<command name="udm/set" function="set">
+	<command name="udm/query/value" function="query_value">
 	</command>
-	<command name="udm/unset" function="unset">
+	<command name="udm/put" function="put">
+	</command>
+	<command name="udm/put/layout" function="put_layout">
+	</command>
+	<command name="udm/remove" function="remove">
 	</command>
 	<command name="udm/get" function="get">
-	</command>
-	<command name="udm/search" function="search">
 	</command>
   </module>
 </umc>

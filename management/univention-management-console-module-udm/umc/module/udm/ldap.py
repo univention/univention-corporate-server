@@ -95,6 +95,16 @@ class UDM_Module( object ):
 		return modules
 
 	@property
+	def layout( self ):
+		tabs = []
+		for tab in getattr( self.module, 'layout', [] ):
+			data = { 'name' : tab.short_description, 'description' : tab.long_description, 'layout' : [] }
+			for item in tab.fields:
+				data[ 'layout' ].append( [ field.property for field in item ] )
+			tabs.append( data )
+		return tabs
+
+	@property
 	def properties( self ):
 		props = []
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
