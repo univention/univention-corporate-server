@@ -264,6 +264,10 @@ dojo.mixin(umc.tools, {
 	},
 
 	renderWidget: function(/*Object*/ widgetConf) {
+		if (!widgetConf) {
+			return undefined;
+		}
+
 		// make a copy of the widget's config object and remove 'type'
 		var conf = dojo.clone(widgetConf);
 		delete conf.type;
@@ -389,26 +393,99 @@ dojo.mixin(umc.tools, {
 		return container; // dojox.layout.TableContainer
 	},
 
-	cmpObjects: function(order) {
-		return function(a, b) {
-			var result = 0;
+	cmpObjects: function(/*mixed...*/) {
+		// summary:
+		//		Returns a comparison functor for Array.sort() in order to sort arrays of
+		//		objects/dictionaries. 
+		// description:
+		//		The function arguments specify the sorting order. Each function argument
+		//		can either be a string (specifying the object attribute to compare) or an
+		//		object with 'attribute' specifying the attribute to compare. Additionally,
+		//		the object may specify the attributes 'descending' (boolean), 'ignoreCase' 
+		//		(boolean).
+		//		In order to be useful for grids and sort options, the arguments may also
+		//		be one single array.
+		// example:
+		//	|	var list = [ { id: '0', name: 'Bob' }, { id: '1', name: 'alice' } ];
+		//	|	var cmp = umc.tools.cmpObjects({
+		//	|		attribute: 'name', 
+		//	|		descending: true, 
+		//	|		ignoreCase: true
+		//	|	});
+		//	|	list.sort(cmp);
+		// example:
+		//	|	var list = [ { id: '0', val: 100, val2: 11 }, { id: '1', val: 42, val2: 33 } ];
+		//	|	var cmp = umc.tools.cmpObjects('val', {
+		//	|		attribute: 'val2', 
+		//	|		descending: true
+		//	|	});
+		//	|	list.sort(cmp);
+		//	|	var cmp2 = umc.tools.cmpObjects('val', 'val2');
+		//	|	list.sort(cmp2);
+
+		// in case we got a single array as argument, 
+		var args = arguments;
+		if (1 == arguments.length && dojo.isArray(arguments[0])) {
+			args = arguments[0];
+		}
+
+		// prepare unified ordering property list
+		var order = [];
+		for (var i = 0; i < args.length; ++i) {
+			// default values
+			var o = {
+				attr: '',
+				desc: 1,
+				ignCase: false
+			};
+
+			// entry for ordering can by a String or an Object
+			if (dojo.isString(args[i])) {
+				o.attr = args[i];
+			}
+			else if (dojo.isObject(args[i]) && 'attribute' in args[i]) {
+				o.attr = args[i].attribute;
+				o.desc = (args[i].descending ? -1 : 1);
+				o.ignCase = args[i].ignoreCase;
+			}
+			else {
+				// error case
+				umc.tools.assert(false, 'Wrong parameter for umc.tools.cmpObjects(): ' + dojo.toJson(args));
+			}
+
+			// add order entry to list
+			order.push(o);
+		}
+
+		// return the comparison function
+		return function(_a, _b) {
 			for (var i = 0; i < order.length; ++i) {
-				var iattr = order[i].attribute;
-				var desc = (order[i].descending ? -1 : 1);
-				if (!(iattr in a) || !(iattr in b)) {
+				var o = order[i];
+
+				// make sure the attribute is specified in both objects
+				if (!(o.attr in _a) || !(o.attr in _b)) {
 					return 0;
 				}
-				if (a[iattr] < b[iattr]) {
-					return -1 * desc;
+
+				// check for lowercase
+				var a = _a[o.attr];
+				var b = _b[o.attr];
+				if (o.ignCase) {
+					a = a.toLowerCase();
+					b = b.toLowerCase();
+				}
+
+				// check for lower/greater
+				if (a < b) {
+					return -1 * o.desc;
 				}				
-				if (a[iattr] > b[iattr]) {
-					return 1 * desc;
+				if (a > b) {
+					return 1 * o.desc;
 				}
 			}
 			return 0;		
 		};
 	}
-
 });
 
 

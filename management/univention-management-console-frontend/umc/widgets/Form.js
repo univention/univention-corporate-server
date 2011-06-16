@@ -34,9 +34,11 @@ dojo.declare("umc.widgets.Form", [
 	//		standard handlers unless 
 	buttons: null,
 
-	// layout: String[][]
+	// layout: String[][]?
 	//		Array of strings that specifies the position of each element in the
-	//		layout.
+	//		layout. If not specified, the order of the widgets is used directly.
+	//		You may specify a widget entry as `undefined` or `null` in order 
+	//		to leave a place free.
 	layout: null,
 
 	// cols: Integer
@@ -59,6 +61,33 @@ dojo.declare("umc.widgets.Form", [
 	_layoutContainer: null,
 
 	'class': 'umcNoBorder',
+
+	postMixInProperties: function() {
+		this.inherited(arguments);
+
+		// in case no layout is specified, create one automatically
+		if (!this.layout || !this.layout.length) {
+			this.layout = [];
+			var row = null;
+			for (var i = 0; i < this.widgets.length; ++i) {
+				// check whether we need to create a new row for the layout
+				if (0 === (i % this.cols)) {
+					if (row) {
+						this.layout.push(row);
+					}
+					row = [];
+				}
+				
+				// add the name (or undefined) to the row
+				row.push(dojo.getObject('name', false, this.widgets[i]));
+			}
+
+			// add the last row to the layout
+			if (row && row.length) {
+				this.layout.push(row);
+			}
+		}
+	},
 
 	buildRendering: function() {
 		this.inherited(arguments);
