@@ -1,0 +1,84 @@
+[nagios/server/autostart]
+Description[de]=Starte Nagios-Server bei Systemstart
+Description[en]=Start Nagios server during system startup
+Type=str
+Categories=service-nagios,system-services
+
+[nagios/server/authenticate]
+Description[de]=Aktiviere/Deaktiviere die Anmeldung am Nagios-Webfrontend
+Description[en]=Enable/Disable authentication for the Nagios web frontend
+Type=str
+Categories=service-nagios
+
+[nagios/server/checkexternalcmd]
+Description[de]=Aktiviere/Deaktiviere das Übergeben von Kommandos aus dem Webfrontend
+Description[en]=Enable/Disable the ability to run commands through the web frontend
+Type=str
+Categories=service-nagios
+
+[nagios/server/refreshrate]
+Description[de]=Automatischer Aktualisierungsintervall des Nagios-Webfrontends (in Sekunden)
+Description[en]=Refresh rate of the Nagios web frontend in seconds
+Type=str
+Categories=service-nagios
+
+[nagios/server/theme]
+Description[de]=Name des zu verwendenden Nagios-Themes
+Description[en]=Name of the Nagios theme to use
+Type=str
+Categories=service-nagios
+
+[nagios/server/user/allcmd]
+Description[de]=Erlaube diesen Benutzern dienstbezogene Kommandos zu starten
+Description[en]=Allow these users to run service specific commands
+Type=str
+Categories=service-nagios
+
+[nagios/server/user/allinfo]
+Description[de]=Erlaube diesen Benutzern alle Rechner- und Dienst-informationen einzusehen
+Description[en]=Allow these users to view all available system and process information
+Type=str
+Categories=service-nagios
+
+[nagios/server/user/configinfo]
+Description[de]=Erlaube den angegebenen Benutzer Lesezugriff auf die Nagios-Konfiguration
+Description[en]=Grant read access to the Nagios configuration to the given users
+Type=str
+Categories=service-nagios
+
+[nagios/server/user/systemcmd]
+Description[de]=Erlaube den angegebenen Benutzern das Ausführen von Systemkommandos
+Description[en]=Allow the given users to run system commands
+Type=str
+Categories=service-nagios
+
+[nagios/server/user/systeminfo]
+Description[de]=Nur hier angegebene Benutzer können System und Prozessinformationen einsehen (* für alle)
+Description[en]=Show system and process informations to this users only (* means all)
+Type=str
+Categories=service-nagios
+
+[nagios/server/hostcheck/enable]
+Description[de]=Aktiviere/Deaktiviere die regelmäßige Erreichbarkeitsprüfung aller Nagios-Rechner
+Description[en]=Enable/Disable regular availability checks for all Nagios hosts
+Type=str
+Categories=service-nagios
+
+[nagios/server/hostcheck/notificationinterval]
+Description[de]=Zeitspanne in Minuten bevor eine erneute Hostcheck-Benachrichtigung versendet wird
+Description[en]=Time span in minutes before resending a host check notification (in minutes)
+Type=str
+Categories=service-nagios
+
+[auth/nagios/accessfile]
+Description[de]=Dateiname für die Konfigurationsdatei zur Zugangskontrolle über pam_access
+Description[en]=Filename of pam_access config file for nagios access control
+Type=str
+Categories=service-nagios
+
+[nagios/plugin/check_nrpe/timeout]
+Description[de]=Zeitspanne in Sekunden bevor die NRPE-Verbindung in einen Timeout läßuft
+Description[en]=Number of seconds before the nrpe connection times out
+Type=str
+Categories=service-nagios
+

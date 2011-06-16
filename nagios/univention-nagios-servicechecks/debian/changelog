@@ -1,0 +1,53 @@
+univention-nagios-servicechecks (1.0.5-1) unstable; urgency=low
+
+  * added missing UCR headers (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 15 Jul 2010 10:56:02 +0200
+
+univention-nagios-servicechecks (1.0.4-1) unstable; urgency=low
+
+  * register service objects even if nagios/client/autoregister=no (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 23 Jun 2010 16:51:44 +0200
+
+univention-nagios-servicechecks (1.0.3-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 23 Jun 2010 15:52:27 +0200
+
+univention-nagios-servicechecks (1.0.2-1) unstable; urgency=low
+
+  * stop joinscript if registering host to OPSI nagios service fails (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 23 Jun 2010 10:23:29 +0200
+
+univention-nagios-servicechecks (1.0.1-2) unstable; urgency=low
+
+  * registration is done in service packages (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 01 Jun 2010 11:31:04 +0200
+
+univention-nagios-servicechecks (1.0.1-1) unstable; urgency=low
+
+  * register services if nagios is enabled for that host (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 01 Jun 2010 10:01:52 +0200
+
+univention-nagios-servicechecks (1.0.0-3) unstable; urgency=low
+
+  * fixed debian/rules (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 May 2010 16:59:01 +0200
+
+univention-nagios-servicechecks (1.0.0-2) unstable; urgency=low
+
+  * added missing postinst debhelper (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 May 2010 16:19:18 +0200
+
+univention-nagios-servicechecks (1.0.0-1) unstable; urgency=low
+
+  * Initial release (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 May 2010 11:59:47 +0200

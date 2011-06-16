@@ -1,0 +1,6 @@
+[nagios-nrpe-server]
+Description[de]=Nagios-RPE-Server
+Description[en]=Nagios RPE Server
+icon=service/nrpe
+programs=/usr/sbin/nrpe
+start_type=nagios/client/autostart

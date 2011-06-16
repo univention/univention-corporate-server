@@ -1,0 +1,24 @@
+[nagios/client/allowedhosts]
+Description[de]=Rechnern denen der Zugriff auf den NRPE-Dienst gestattet ist
+Description[en]=Hosts that are allowed to access the NRPE-service
+Type=str
+Categories=service-nagios
+
+[nagios/client/checkraid]
+Description[de]=Prüfe lokale Raid-Systeme regelmäßig
+Description[en]=Check local harddisk raids regularly
+Type=str
+Categories=service-nagios
+
+[nagios/client/autostart]
+Description[de]=Starte Nagios bei Systemstart
+Description[en]=Start Nagios client during system startup
+Type=str
+Categories=service-nagios
+
+[nagios/client/autoregister]
+Description[de]=Aktiviere/Deaktiviere automatische Registrierung von Standard-Diensten beim Nagios Server
+Description[en]=Enable/Disable the automatic registration of standard services on the Nagios server
+Type=str
+Categories=service-nagios
+

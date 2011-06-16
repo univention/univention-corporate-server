@@ -1,0 +1,7 @@
+usr/lib/nagios/plugins
+usr/lib/univention-install
+usr/share/nagios-plugins/templates-univention
+var/lib/univention-nagios
+etc/nagios/nrpe.local.d
+etc/nagios/nrpe.univention.d
+usr/lib/univention-directory-listener/system

@@ -1,0 +1,14 @@
+etc/nagios3/conf.local.d
+etc/nagios3/conf.univention.d
+etc/nagios3/conf.univention.d/hosts
+etc/nagios3/conf.univention.d/hostgrps
+etc/nagios3/conf.univention.d/contacts
+etc/nagios3/conf.univention.d/contactgrps
+etc/nagios3/conf.univention.d/timeperiods
+etc/nagios3/conf.univention.d/services
+usr/lib/univention-directory-listener/system
+usr/share/nagios3/htdocs/images/logos
+usr/share/nagios3/htdocs-nuvola
+usr/share/univention-nagios-server/tools
+usr/share/univention-nagios-server/icons
+usr/lib/univention-install

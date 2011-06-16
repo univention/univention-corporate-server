@@ -1,0 +1,4 @@
+[service-nagios]
+name[de]=Dienst: Nagios
+name[en]=Service: Nagios
+icon=service-nagios.gif

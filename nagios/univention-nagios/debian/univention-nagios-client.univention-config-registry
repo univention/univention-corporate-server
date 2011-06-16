@@ -1,0 +1,11 @@
+Type: file
+File: etc/nagios/nrpe.cfg
+Variables: nagios/client/allowedhosts
+Variables: ldap/master
+
+Type: file
+File: etc/cron.d/univention-nagios
+Variables: nagios/client/checkraid
+
+Type: file
+File: etc/init.d/nagios-nrpe-server

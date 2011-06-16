@@ -1,0 +1,103 @@
+#!/bin/sh
+# 
+#
+# Copyright 2004-2010 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+
+eval "$(univention-config-registry shell ldap/hostdn ldap/base server/role hostname domainname lilo/root)"
+
+# set default baseconfig settings
+univention-config-registry set 'nagios/server/refreshrate?90' \
+                          'nagios/server/authenticate?yes' \
+                          'nagios/server/user/systeminfo?*' \
+                          'nagios/server/user/configinfo?*' \
+                          'nagios/server/user/systemcmd?*' \
+                          'nagios/server/user/allinfo?*' \
+                          'nagios/server/user/allcmd?*' \
+                          'nagios/server/checkexternalcmd?no' \
+						  'nagios/server/hostcheck/enable?yes' \
+						  'nagios/server/hostcheck/notificationinterval?180' \
+                          'nagios/server/theme?nuvola' \
+						  'nagios/server/autostart?yes' \
+						  'nagios/plugin/check_nrpe/timeout?10'
+
+USERSERVICES=$(univention-config-registry get auth/user/services | egrep "(^| )nagios( |$)" -c)
+ADMINSERVICES=$(univention-config-registry get auth/admin/services | egrep "(^| )nagios( |$)" -c)
+if [ "$USERSERVICES" = "0" -a "$ADMINSERVICES" = "0" ] ; then
+	eval "$(univention-config-registry shell)"
+	univention-config-registry set auth/admin/services="$auth_admin_services nagios"
+fi
+
+#DEBHELPER#
+
+# call join script if installed on master or backup
+if [ "$server_role" = "domaincontroller_master" -o \
+	 "$server_role" = "domaincontroller_backup" ] ; then
+	/usr/lib/univention-install/26univention-nagios-server.inst || true
+
+	# call univention-nagios-client join script again 
+    # (script maybe aborted if installed before univention-nagios-server)
+	/usr/lib/univention-install/30univention-nagios-client.inst || true
+fi
+
+if [ ! -d /etc/apache2/conf.d ]; then
+	mkdir -p /etc/apache2/conf.d
+fi
+
+# upgrade nagios2 -> nagios3 (Bug #14594)
+# univention-nagios-server 3.0.X is shipped by UCS 2.3-X
+# univention-nagios-server 4.0.X is shipped by UCS 2.4-X
+updateNagios2To3() {
+	/usr/sbin/univention-directory-listener-ctrl resync nagios-server
+	if [ -L /etc/apache2/conf.d/nagios2.conf ]; then
+		rm -f /etc/apache2/conf.d/nagios2.conf
+	fi
+}
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions 3.0.0 lt "$2" && dpkg --compare-versions "$2" lt 3.1.0; then
+	updateNagios2To3
+fi
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions 4.0.0 lt "$2" && dpkg --compare-versions "$2" lt 4.1.0; then
+	updateNagios2To3
+fi
+
+
+if [ "$1" = "configure" ]; then
+	if test -f /etc/init.d/univention-directory-listener
+		then
+		/etc/init.d/univention-directory-listener crestart
+	fi
+
+	if test -f /etc/init.d/apache2
+		then
+		/etc/init.d/apache2 restart
+	fi
+
+	/etc/init.d/nagios3 restart
+fi
+
+exit 0

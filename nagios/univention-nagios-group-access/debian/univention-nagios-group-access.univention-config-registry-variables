@@ -1,0 +1,5 @@
+[nagios/server/webaccess/groups]
+Description[de]=Kommaseparierte Liste von Benutzergruppen, die Zugriff auf Nagios-Weboberfläche erhalten
+Description[en]=Comma separated list of usergroups that gain access to nagios web interface
+Type=str
+Categories=service-nagios

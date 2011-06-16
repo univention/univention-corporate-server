@@ -1,0 +1,50 @@
+Source: univention-nagios-servicechecks
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev
+Standards-Version: 3.5.2
+
+Package: univention-nagios-cups
+Architecture: all
+Description: nagios plugin for monitoring cups daemon and webservice
+ This package installs a nagios plugin to monitor CUPS
+ daemon and checks the availability of CUPS webfrontend.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-nagios-squid
+Architecture: all
+Description: nagios plugin for monitoring squid daemon and webservice
+ This package installs a nagios plugin to monitor squid
+ daemon and checks the availability of the proxy service.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-nagios-dansguardian
+Architecture: all
+Description: nagios plugin for monitoring dansguardian daemon and webservice
+ This package installs a nagios plugin to monitor dansguardian
+ daemon and checks the availability of the proxy service.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-nagios-opsi
+Architecture: all
+Description: nagios plugin for monitoring opsi daemons and webservice
+ This package installs a nagios plugin to monitor OPSI
+ daemon and checks the availability of OPSI webfrontend.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
