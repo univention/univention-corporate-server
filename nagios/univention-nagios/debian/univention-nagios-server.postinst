@@ -84,6 +84,9 @@ fi
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions 4.0.0 lt "$2" && dpkg --compare-versions "$2" lt 4.1.0; then
 	updateNagios2To3
 fi
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions 5.0.0 lt "$2" && dpkg --compare-versions "$2" lt 5.1.0; then
+	updateNagios2To3
+fi
 
 
 if [ "$1" = "configure" ]; then
@@ -99,5 +102,6 @@ if [ "$1" = "configure" ]; then
 
 	/etc/init.d/nagios3 restart
 fi
+
 
 exit 0

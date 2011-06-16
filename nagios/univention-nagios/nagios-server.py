@@ -646,7 +646,7 @@ def handleHost(dn, new, old):
 			if new.has_key('description') and new['description']:
 				fp.write('    alias                   %s (%s)\n' % (newfqdn,new['description'][0]))
 			else:
-				fp.write('    alias                   Host %s\n' % newfqdn)
+				fp.write('    alias                   %s\n' % newfqdn)
 			fp.write('    address                 %s\n' % new['aRecord'][0])
 			if new.has_key('univentionNagiosParent') and new['univentionNagiosParent']:
 				fp.write('    parents                 %s\n' % ', '.join(new['univentionNagiosParent']))

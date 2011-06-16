@@ -12,7 +12,7 @@ class UniventionNagiosLDAP(object):
 	def __init__(self, binddn='', bindpwd='', start_tls=2):
 		try:
 			if binddn:
-				self.lo = univention.uldap.access( host = confreg['ldap/master'], base = confreg['ldap/base'], binddn = binddn, bindpw = bindpwd, start_tls = start_tls, decode_ignorelist = [])
+				self.lo = univention.uldap.access( host = confreg['ldap/master'], port = confreg['ldap/master/port'], base = confreg['ldap/base'], binddn = binddn, bindpw = bindpwd, start_tls = start_tls, decode_ignorelist = [])
 			else:
 				self.lo = uuldap.getAdminConnection()
 		except Exception, e:

@@ -1,0 +1,14 @@
+@%@UCRWARNING=# @%@
+
+@!@
+scope = "nagios"
+accessfileDefault = "/etc/security/access-" + scope + ".conf"
+accessfile = "auth/" + scope + "/accessfile"
+if configRegistry.is_true("auth/" + scope + "/restrict", False):
+	print 'account required pam_access.so accessfile=%s listsep=,' % configRegistry.get(accessfile, accessfileDefault)
+
+print '@include common-account'
+print '@include common-auth'
+print '@include common-session'
+print '@include common-password'
+@!@
