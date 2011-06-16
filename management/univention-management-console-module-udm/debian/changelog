@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.7-1) unstable; urgency=low
+
+  * fixed data structure for container selection; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 16 Jun 2011 17:18:05 +0200
+
 univention-management-console-module-udm (1.0.6-1) unstable; urgency=low
 
   * changed udm/search/layout to udm/query/layout (Bug #22439)

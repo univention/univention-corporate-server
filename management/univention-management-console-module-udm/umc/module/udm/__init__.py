@@ -77,8 +77,8 @@ class Instance( umcm.Base ):
 		containers = self.defaults.get( request.flavor )
 		if containers:
 			containers.sort()
-			containers = map( lambda x: { x : x }, containers )
-			containers.insert( 0, { 'all' : _( 'All' ) } )
+			containers = map( lambda x: { 'id' : x, 'label' : x }, containers )
+			containers.insert( 0, { 'id' : 'all', 'label' : _( 'All' ) } )
 			widgets.append( {
 				'type' : 'ComboBox',
 				'name' : 'container',
