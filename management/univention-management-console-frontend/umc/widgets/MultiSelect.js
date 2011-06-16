@@ -29,7 +29,7 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.form.CheckedMultiSelect, umc.wid
 		this.inherited(arguments);
 
 		// _SelectMixin method
-		this._populateStore();
+		this._loadValues();
 	},
 
 	_setValueAttr: function(/*String|Array*/ values) {

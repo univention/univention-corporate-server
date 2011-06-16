@@ -1,3 +1,10 @@
+univention-management-console-frontend (0.0.36-1) unstable; urgency=low
+
+  * added form widget property to define dependencies for dynamic reloading
+    of values/widget types (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 16 Jun 2011 16:08:08 +0200
+
 univention-management-console-frontend (0.0.35-1) unstable; urgency=low
 
   * API changes for forms, added umc.widgets.SearchForm 

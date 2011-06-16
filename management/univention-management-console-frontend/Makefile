@@ -114,5 +114,5 @@ clean:
 	rm -rf build
 
 jslint:
-	jslint $(jsFiles)
+	jslint $(jsFiles) | grep -v "\['require'\] is better written in dot notation" || true
 

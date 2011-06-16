@@ -60,6 +60,8 @@ dojo.declare("umc.widgets.Form", [
 
 	_layoutContainer: null,
 
+	_dependencyMap: {},
+
 	'class': 'umcNoBorder',
 
 	postMixInProperties: function() {
@@ -100,6 +102,31 @@ dojo.declare("umc.widgets.Form", [
 			orientation: this.orientation
 		});
 
+		// prepare registration of onChange events
+		umc.tools.forIn(this._widgets, dojo.hitch(this, function(iname, iwidget) {
+			// check whether the widget has a `depends` field
+			if (!iwidget.depends) {
+				return;
+			}
+
+			// loop over all dependencies and cache the dependencies as a map from
+			// publishers -> receivers
+			var depends = dojo.isArray(iwidget.depends) ? iwidget.depends : [ iwidget.depends ];
+			dojo.forEach(depends, dojo.hitch(this, function(idep) {
+				this._dependencyMap[idep] = this._dependencyMap[idep] || [];
+				this._dependencyMap[idep].push(iwidget);
+			}));
+		}));
+
+		// register all necessary onChange events to handle dependencies
+		umc.tools.forIn(this._dependencyMap, dojo.hitch(this, function(iname) {
+			if (iname in this._widgets) {
+				dojo.connect(this._widgets[iname], 'onChange', dojo.hitch(this, function() {
+					this._updateDependencies(iname);
+				}));
+			}
+		}));
+
 		// register tooltips
 		umc.tools.forIn(this._widgets, function(iname, iwidget) {
 			// only create a tooltip if there is a description
@@ -133,6 +160,17 @@ dojo.declare("umc.widgets.Form", [
 			var customCallback = dojo.getObject('reset.callback', false, this._buttons) || function() { };
 			customCallback(this.gatherFormValues());
 		}));
+	},
+
+	_updateDependencies: function(publisherName) {
+		if (publisherName in this._dependencyMap) {
+			var values = this.gatherFormValues();
+			dojo.forEach(this._dependencyMap[publisherName], function(ireceiver) {
+				if (ireceiver && ireceiver._loadValues) {
+					ireceiver._loadValues(values);
+				}
+			});
+		}
 	},
 
 	load: function(/*String*/ itemID) {

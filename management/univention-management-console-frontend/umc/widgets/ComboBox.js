@@ -26,7 +26,7 @@ dojo.declare("umc.widgets.ComboBox", [ dijit.form.FilteringSelect, umc.widgets._
 		this.inherited(arguments);
 
 		// _SelectMixin method
-		this._populateStore();
+		this._loadValues();
 	}
 });
 

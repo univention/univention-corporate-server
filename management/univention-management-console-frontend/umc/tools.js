@@ -260,6 +260,7 @@ dojo.mixin(umc.tools, {
 				widgets[iconf.name] = widget;
 			}
 		}, this);
+
 		return widgets; // Object
 	},
 
