@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 #
 import getopt, sys, os, socket, copy
 import univention.uldap as uuldap

@@ -1,6 +1,6 @@
 univention-nagios (5.0.0-0) unstable; urgency=low
 
-  * update to UCS 3.0 policies
+  * update to UCS 3.0 policies (Bug #14594)
   * bump version for UCS 3.0
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 16 Jun 2011 14:14:05 +0200
