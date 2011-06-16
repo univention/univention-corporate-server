@@ -116,7 +116,7 @@ class CLI_Client( umcp.Client ):
 		self.signal_connect( 'authenticated', self._authenticated )
 		self.signal_connect( 'closed', self._closed )
 		if arguments:
-			self.__wait = self.create( arguments[ 0 ], arguments[ 1 : ], options.options )
+			self.__wait = self.create( arguments[ 0 ], arguments[ 1 : ], options.options, options.flavor )
 		if options.authenticate:
 			self.authenticate( options.username, options.password )
 		else:
@@ -128,9 +128,11 @@ class CLI_Client( umcp.Client ):
 				rl = threads.Simple( 'readline', _readline, self._input )
 				rl.run()
 
-	def create( self, command, args = [], options = [] ):
+	def create( self, command, args = [], options = [], flavor = None ):
 		msg = umcp.Request( command.upper() )
 		msg.arguments = args
+		if flavor is not None:
+			msg.flavor = flavor
 		for opt in options:
 			key, value = opt.split( '=' )
 			if key.find( ':' ) > 0:
@@ -209,6 +211,9 @@ if __name__ == '__main__':
 	parser.add_option( '-s', '--server', type = 'string', action = 'store',
 					   dest = 'server', default = 'localhost',
 					   help = 'defines the host of the UMC daemon to connect to' )
+	parser.add_option( '-f', '--flavor', action = 'store',
+					   dest = 'flavor', default = None,
+					   help = 'set the required flavor' )
 	parser.add_option( '-p', '--port', type = 'int', action = 'store',
 					   dest = 'port', default = '6670',
 					   help = 'defines the port to connect to' )

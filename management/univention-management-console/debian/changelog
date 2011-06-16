@@ -1,3 +1,9 @@
+univention-management-console (4.0.27-1) unstable; urgency=low
+
+  * UMC client: support flavor; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 16 Jun 2011 15:12:58 +0200
+
 univention-management-console (4.0.26-1) unstable; urgency=low
 
   * minor fix in dh-umc-module-build tool; Bug #22460
