@@ -189,7 +189,7 @@ class ModuleServer( Server ):
 					self.__password = value[ 'password' ]
 					self.__handler.username = self.__username
 					self.__handler.password = self.__password
-				elif key == 'locale':
+				elif key == 'locale' and value is not None:
 					self.__locale = value
 					try:
 						locale.setlocale( locale.LC_MESSAGES, locale.normalize( self.__locale ) )

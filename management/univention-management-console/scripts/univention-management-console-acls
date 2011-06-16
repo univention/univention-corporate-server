@@ -89,7 +89,12 @@ if operation == 'show':
 	sys.exit( 0 )
 elif operation in ( 'allow', 'disallow' ):
 	for command in options.commands:
-		acls[ operation ].append( { 'fromUser': False, 'host': options.host, 'command': command, 'options': {} } )
+		rule = { 'fromUser': False, 'host': options.host, 'command': command, 'options': {} }
+		if not rule in acls[ operation ]:
+			acls[ operation ].append( rule )
+			print 'info: rule %s appended' % command
+		else:
+			print 'warning: rule %s already exists' % command
 elif operation == 'remove':
 	acls[ 'allow' ] = filter( lambda item: item.get( 'command' ) not in options.commands,  acls[ 'allow' ] )
 elif operation == 'reset':
