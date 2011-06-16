@@ -10,6 +10,7 @@ dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.ContainerForm");
 dojo.require("umc.widgets.StandbyMixin");*/
 dojo.require("umc.i18n");
+dojo.require("umc.widgets.SearchForm");
 
 dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// summary:
@@ -18,34 +19,17 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	buildRendering: function() {
 		// call superclass method
 		this.inherited(arguments);
-		this.umcpCommand( 'udm/search/properties' ).then( dojo.hitch( this, function ( umcpResponse ) {
-																		  // define all buttons
-																		  var buttons = [{
-																							 name: 'submit',
-																							 label: this._( 'Search' ),
-																							 callback: dojo.hitch(this._grid, 'umcpSearch')
-																						 }, {
-																							 name: 'reset',
-																							 label: this._( 'Reset' )
-																						 }];
 
-																		  // define the search form layout
-																		  var layout = [
-																			  [ 'category', '' ],
-																			  [ 'key', 'filter' ]
-																		  ];
-
-																		  var widgets = umcpResponse.result;
-
-																		  // generate the search widget
-																		  this._searchWidget = new umc.widgets.Form({
-																														region: 'top',
-																														widgets: widgets,
-																														buttons: buttons,
-																														layout: layout
-																													});
-																		  this.addChild(this._searchWidget);
-																		  } ), null );
+		// we need to dynamically load the search widget
+		this.umcpCommand('udm/search/layout').then(dojo.hitch(this, function(data) {
+			var widgets = data.result;
+			this._searchWidget = new umc.widgets.SearchForm({
+				region: 'top',
+				widgets: widgets
+			});
+			this.addChild(this._searchWidget);
+			this._layoutContainer.layout();
+		}));
 	}
 
 });

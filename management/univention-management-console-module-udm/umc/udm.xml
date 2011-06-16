@@ -18,15 +18,23 @@
 	<categories>
 	  <category name="domain"/>
 	</categories>
+	<command name="udm/search/layout" function="search_layout">
+	</command>
+	<command name="udm/search/containers" function="search_containers">
+	</command>
+	<command name="udm/search/types" function="search_types">
+	</command>
 	<command name="udm/search/properties" function="search_properties">
 	</command>
-	<command name="udm/set" function="set">
+	<command name="udm/search/values" function="search_values">
 	</command>
-	<command name="udm/unset" function="unset">
+	<command name="udm/put" function="put">
+	</command>
+	<command name="udm/remove" function="remove">
 	</command>
 	<command name="udm/get" function="get">
 	</command>
-	<command name="udm/search" function="search">
+	<command name="udm/query" function="query">
 	</command>
   </module>
 </umc>

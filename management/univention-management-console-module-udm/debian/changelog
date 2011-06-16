@@ -1,3 +1,12 @@
+univention-management-console-module-udm (1.0.3-1) unstable; urgency=low
+
+  * added missing icons
+  * added rudimentary JavaScript code
+  * added dummy code for python module
+  (Bug #22439)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 16 Jun 2011 15:14:23 +0200
+
 univention-management-console-module-udm (1.0.2-1) unstable; urgency=low
 
   * add german translation file for module definition and categories; Bug #22439

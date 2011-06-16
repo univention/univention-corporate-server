@@ -37,11 +37,11 @@ import univention.management.console.modules as umcm
 _ = umc.Translation( 'univention-management-console-modules-udm' ).translate
 
 class Instance( umcm.Base ):
-	def set( self, request ):
+	def put( self, request ):
 
 		self.finished( request.id )
 
-	def unset( self, request ):
+	def remove( self, request ):
 
 		self.finished( request.id )
 
@@ -49,29 +49,99 @@ class Instance( umcm.Base ):
 		
 		self.finished( request.id )
 
-	def search( self, request ):
+	def query( self, request ):
 
 		self.finished( request.id )
 
-	def search_properties( self, request ):
-		widgets = [
-			{
-				'type' : 'ComboBox',
-				'name' : 'Container',
-				'value' : 'all',
-				'description' : _( 'The container where the search should start' ),
-				'label' : _( 'Container' ),
-				'staticValues' : {
-					'all' : _( 'All' ),
-					'cn=users,dc=univention,dc=qa': 'univention.qa/users',
-					'cn=admins,dc=univention,dc=qa': 'univention.qa/admins',
-					}
-				},
-			{
-				'type' : 'TextBox',
-				'name' : 'filter',
-				'value' : '*',
-				'description' : _( 'Keyword that should be searched for in the selected attribute' ),
-				'label' : _( 'Keyword' )
-			}, ]
+	def search_layout( self, request ):
+		widgets = [ {
+			'type': 'ComboBox',
+			'name': 'container',
+			'description': 'LDAP container in which objects are searched for.',
+			'label': 'Container',
+			'dynamicValues': 'udm/search/containers'
+		}, {
+			'type': 'ComboBox',
+			'name': 'type',
+			'label': 'Object',
+			'description': 'The type of user that is searched for.',
+			'dynamicValues': 'udm/search/types'
+		}, {
+			'depends': 'type',
+			'type': 'ComboBox',
+			'name': 'property',
+			'label': 'Object property',
+			'description': 'Type object property that is searched for.',
+			'dynamicValues': 'udm/search/properties'
+#		}, {
+#			'depends': ['property', 'type'],
+#			'type': 'MutableInput',
+#			'name': 'value',
+#			'label': 'Value',
+#			'description': 'Value of the selected property',
+#			'dynamicValues': 'udm/search/values'
+		} ]
 		self.finished( request.id, widgets )
+
+	def search_containers( self, request ):
+		containers = [
+			{ 'id': 'all', 					'label': 'all registered User containers' },
+			{ 'id': 'univention.qa/users',	'label': 'only univention.qa:/users/' },
+			{ 'id': 'domain', 				'label': 'selected domain' },
+			{ 'id': 'domain_rec',			'label': 'selected domain including subdomains' }
+		]
+		self.finished( request.id, containers )
+
+	def search_types( self, request ):
+		types = [
+			{ 'id': 'all', 'label': 'All registered users' },
+			{ 'id': 'superusers', 'label': 'Superusers' },
+			{ 'id': 'admins', 'label': 'Administrators' }
+		]
+		self.finished( request.id, types )
+
+	def search_properties( self, request ):
+		properties = {
+			'all': [
+				{ 'id': 'name', 'label': 'Name of user' },
+				{ 'id': 'description', 'label': 'Description of user' },
+				{ 'id': 'uid', 'label': 'UID of user' },
+				{ 'id': 'group', 'label': 'Group of user' },
+				{ 'id': 'coolguy', 'label': 'User is a cool guy?' },
+			],
+			'superusers': [
+				{ 'id': 'name', 'label': 'Name of superuser' },
+				{ 'id': 'description', 'label': 'Description of superuser' },
+				{ 'id': 'uid', 'label': 'UID of superuser' },
+				{ 'id': 'group', 'label': 'Group of superuser' },
+				{ 'id': 'coolguy', 'label': 'Superuser is a cool guy?' },
+			],
+			'admins': [
+				{ 'id': 'name', 'label': 'Name of admin' },
+				{ 'id': 'description', 'label': 'Description of admin' },
+				{ 'id': 'uid', 'label': 'UID of admin' },
+				{ 'id': 'group', 'label': 'Group of admin' },
+				{ 'id': 'coolguy', 'label': 'Admin is a cool guy?' },
+			]
+		}
+		thetype = request.options.get('type', 'all')
+		self.finished( request.id, properties[thetype] )
+
+	def search_values( self, request ):
+		values = {
+			'group': [
+				{ 'id': 'dau', 'label': 'DAU Group' },
+				{ 'id': 'group1', 'label': 'Group #1' },
+				{ 'id': 'group2', 'label': 'Group #2' },
+				{ 'id': 'group3', 'label': 'Group #3' },
+			],
+			'coolguy': true,
+			'name': '*',
+			'description': '*',
+			'uid': '1*'
+		}
+		theproperty = request.options.get('property', 'name')
+		self.finished( request.id, values[theproperty] )
+
+
+
