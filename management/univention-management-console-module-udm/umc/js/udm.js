@@ -21,7 +21,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.inherited(arguments);
 
 		// we need to dynamically load the search widget
-		this.umcpCommand('udm/search/layout').then(dojo.hitch(this, function(data) {
+		this.umcpCommand('udm/query/layout').then(dojo.hitch(this, function(data) {
 			var widgets = data.result;
 			this._searchWidget = new umc.widgets.SearchForm({
 				region: 'top',
