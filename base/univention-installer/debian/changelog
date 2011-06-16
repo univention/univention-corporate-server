@@ -1,3 +1,11 @@
+univention-installer (7.0.4-1) unstable; urgency=low
+
+  * set executable bit (Bug #22448)
+  * hide messages if in quiet mode
+  * added new "Loading" message 
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 16 Jun 2011 11:26:48 +0200
+
 univention-installer (7.0.3-1) unstable; urgency=low
 
   * fixed deprecation warning (Bug #22448)
