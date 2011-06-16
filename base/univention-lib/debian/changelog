@@ -1,3 +1,9 @@
+univention-lib (1.0.8-1) unstable; urgency=low
+
+  * added call_joinscript_on_dcmaster (Bug #21579)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 16 Jun 2011 12:22:04 +0200
+
 univention-lib (1.0.7-1) unstable; urgency=low
 
   * remove bashisms (Bug #22491)

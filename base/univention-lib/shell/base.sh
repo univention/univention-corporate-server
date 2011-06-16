@@ -61,6 +61,24 @@ call_joinscript () {
 	joinscript="/usr/lib/univention-install/$1"
 	if [ -x "$joinscript" ] ; then
 		shift
+		local role="$(ucr get server/role)"
+		if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ] ; then
+			"$joinscript" "$@"
+		fi
+	fi
+}
+
+#
+# calls the given joinscript ONLY on DC master
+# call_joinscript_on_dcmaster <joinscript>
+# e.g. call_joinscript_on_dcmaster 99my-custom-joinscript.inst
+# e.g. call_joinscript_on_dcmaster 99my-custom-joinscript.inst --binddn ... --bindpwd ...
+#
+call_joinscript_on_dcmaster () {
+	local joinscript
+	joinscript="/usr/lib/univention-install/$1"
+	if [ -x "$joinscript" ] ; then
+		shift
 		if [ "$(ucr get server/role)" = "domaincontroller_master" ] ; then
 			"$joinscript" "$@"
 		fi
