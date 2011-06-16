@@ -221,7 +221,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		var tab = new module.BaseClass({
 			title: module.title,
 			iconClass: 'icon16-' + module.id,
-			closable: true
+			closable: true,
+			moduleFlavor: module.flavor
 			//items: [ new module.BaseClass() ],
 			//layout: 'fit',
 			//closable: true,

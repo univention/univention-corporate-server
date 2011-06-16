@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.37-1) unstable; urgency=low
+
+  * set flavor of Module object; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 16 Jun 2011 17:19:27 +0200
+
 univention-management-console-frontend (0.0.36-1) unstable; urgency=low
 
   * added form widget property to define dependencies for dynamic reloading
