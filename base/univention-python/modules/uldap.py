@@ -131,9 +131,9 @@ class access:
 		self.port = port
 
 		if not self.port:
-			baseConfig = univention_baseconfig.baseConfig()
-			baseConfig.load()
-			self.port = int(baseConfig.get('ldap/server/port', 389))
+			ucr = ConfigRegistry()
+			ucr.load()
+			self.port = int(ucr.get('ldap/server/port', 389))
 
 		# http://www.openldap.org/faq/data/cache/605.html
 		self.protocol = 'ldap'

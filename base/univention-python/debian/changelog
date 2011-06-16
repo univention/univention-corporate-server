@@ -1,3 +1,9 @@
+univention-python (6.0.7-1) unstable; urgency=low
+
+  * replace univention_baseconfig with ConfigRegistry; Bug #22160
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 16 Jun 2011 14:18:34 +0200
+
 univention-python (6.0.6-1) unstable; urgency=low
 
   * Consider ldap/server/port and add support for uri in access class
