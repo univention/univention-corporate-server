@@ -1,3 +1,11 @@
+univention-management-console (4.0.26-1) unstable; urgency=low
+
+  * minor fix in dh-umc-module-build tool; Bug #22460
+  * just pass locale to module process if set by the client explicitly
+  * fixed typos
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 16 Jun 2011 13:47:19 +0200
+
 univention-management-console (4.0.25-1) unstable; urgency=low
 
   * minor fix in ACL tool; Bug #22460

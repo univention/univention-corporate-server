@@ -201,7 +201,7 @@ class ModuleServer( Server ):
 						# break
 					self.__handler.set_language( self.__locale )
 				else:
-					res.status = BAD_REQUEST_INVALID_ARGS
+					resp.status = BAD_REQUEST_INVALID_OPTS
 					break
 
 			self.response( resp )

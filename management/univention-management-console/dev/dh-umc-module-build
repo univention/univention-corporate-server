@@ -59,7 +59,7 @@ def do_package( package, core ):
 		# build python PO files
 		for module in modules:
 			for po_file in module.python_po_files:
-				dh_umc.create_po_file( po_file, package, *module.python_files )
+				dh_umc.create_po_file( po_file, package, module.python_files )
 				dh_umc.create_mo_file( po_file )
 
 		# build javascript PO files

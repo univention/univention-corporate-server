@@ -380,8 +380,10 @@ class Processor( signals.Provider ):
 				'acls' : self.acls.json(),
 				'commands' : self.__command_list[ mod.name ].json(),
 				'credentials' : { 'username' : self.__username, 'password' : self.__password },
-				'locale' : self.__locale
 				}
+			if self.__locale is not None:
+				options[ 'locale' ] = self.__locale
+
 			# WARNING! This debug message contains credentials!!!
 			# CORE.info( 'Initialize module process: %s' % options )
 
