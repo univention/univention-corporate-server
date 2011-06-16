@@ -29,13 +29,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-echo -n "Starting syslog daemon: "
+printmsg="yes"
+if grep -iq '\<quiet\>' /proc/cmdline; then
+	printmsg=""
+fi
 
 modprobe -q unix >/dev/null 2>&1 || true
 
+[ -n "$printmsg" ] && echo -n "Starting syslog daemon: "
 /bin/syslogd -m 0 -O /var/log/syslogd -S
-echo -n "syslogd, "
+[ -n "$printmsg" ] && echo -n "syslogd, "
 /bin/klogd -c 2
-echo "klogd"
+[ -n "$printmsg" ] && echo "klogd"
 
 
