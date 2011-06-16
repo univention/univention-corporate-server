@@ -11,6 +11,8 @@ Package: univention-apache
 Architecture: all
 Depends: univention-ssl, apache2, libapache2-mod-auth-pam, python2.6, univention-config-registry, php5
 Conflicts: apache
+Breaks: univention-webui-style
+Replaces: univention-webui-style
 Description: UCS - Apache2 configuration
  This packages provides the basic configuration for the
  Apache web server.
