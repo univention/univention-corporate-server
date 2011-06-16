@@ -20,21 +20,17 @@
 	</categories>
 	<command name="udm/search/layout" function="search_layout">
 	</command>
-	<command name="udm/search/containers" function="search_containers">
-	</command>
-	<command name="udm/search/types" function="search_types">
-	</command>
 	<command name="udm/search/properties" function="search_properties">
 	</command>
-	<command name="udm/search/values" function="search_values">
+	<command name="udm/search/value" function="search_value">
 	</command>
-	<command name="udm/put" function="put">
+	<command name="udm/set" function="set">
 	</command>
-	<command name="udm/remove" function="remove">
+	<command name="udm/unset" function="unset">
 	</command>
 	<command name="udm/get" function="get">
 	</command>
-	<command name="udm/query" function="query">
+	<command name="udm/search" function="search">
 	</command>
   </module>
 </umc>

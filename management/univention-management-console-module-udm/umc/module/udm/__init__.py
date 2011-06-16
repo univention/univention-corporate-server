@@ -34,11 +34,16 @@
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 
+from .ldap import UDM_Module, UDM_DefaultContainers
+
 _ = umc.Translation( 'univention-management-console-modules-udm' ).translate
 
 class Instance( umcm.Base ):
-	def put( self, request ):
+	def __init__( self ):
+		umcm.Base.__init__( self )
+		self.defaults = UDM_DefaultContainers()
 
+	def set( self, request ):
 		self.finished( request.id )
 
 	def remove( self, request ):
@@ -46,102 +51,70 @@ class Instance( umcm.Base ):
 		self.finished( request.id )
 
 	def get( self, request ):
-		
+
 		self.finished( request.id )
 
 	def query( self, request ):
 
 		self.finished( request.id )
 
-	def search_layout( self, request ):
-		widgets = [ {
-			'type': 'ComboBox',
-			'name': 'container',
-			'description': 'LDAP container in which objects are searched for.',
-			'label': 'Container',
-			'dynamicValues': 'udm/search/containers'
-		}, {
-			'type': 'ComboBox',
-			'name': 'type',
-			'label': 'Object',
-			'description': 'The type of user that is searched for.',
-			'dynamicValues': 'udm/search/types'
-		}, {
-			'depends': 'type',
-			'type': 'ComboBox',
-			'name': 'property',
-			'label': 'Object property',
-			'description': 'Type object property that is searched for.',
-			'dynamicValues': 'udm/search/properties'
-#		}, {
-#			'depends': ['property', 'type'],
-#			'type': 'MutableInput',
-#			'name': 'value',
-#			'label': 'Value',
-#			'description': 'Value of the selected property',
-#			'dynamicValues': 'udm/search/values'
-		} ]
-		self.finished( request.id, widgets )
-
-	def search_containers( self, request ):
-		containers = [
-			{ 'id': 'all', 					'label': 'all registered User containers' },
-			{ 'id': 'univention.qa/users',	'label': 'only univention.qa:/users/' },
-			{ 'id': 'domain', 				'label': 'selected domain' },
-			{ 'id': 'domain_rec',			'label': 'selected domain including subdomains' }
-		]
-		self.finished( request.id, containers )
-
-	def search_types( self, request ):
-		types = [
-			{ 'id': 'all', 'label': 'All registered users' },
-			{ 'id': 'superusers', 'label': 'Superusers' },
-			{ 'id': 'admins', 'label': 'Administrators' }
-		]
-		self.finished( request.id, types )
-
 	def search_properties( self, request ):
-		properties = {
-			'all': [
-				{ 'id': 'name', 'label': 'Name of user' },
-				{ 'id': 'description', 'label': 'Description of user' },
-				{ 'id': 'uid', 'label': 'UID of user' },
-				{ 'id': 'group', 'label': 'Group of user' },
-				{ 'id': 'coolguy', 'label': 'User is a cool guy?' },
-			],
-			'superusers': [
-				{ 'id': 'name', 'label': 'Name of superuser' },
-				{ 'id': 'description', 'label': 'Description of superuser' },
-				{ 'id': 'uid', 'label': 'UID of superuser' },
-				{ 'id': 'group', 'label': 'Group of superuser' },
-				{ 'id': 'coolguy', 'label': 'Superuser is a cool guy?' },
-			],
-			'admins': [
-				{ 'id': 'name', 'label': 'Name of admin' },
-				{ 'id': 'description', 'label': 'Description of admin' },
-				{ 'id': 'uid', 'label': 'UID of admin' },
-				{ 'id': 'group', 'label': 'Group of admin' },
-				{ 'id': 'coolguy', 'label': 'Admin is a cool guy?' },
-			]
-		}
-		thetype = request.options.get('type', 'all')
-		self.finished( request.id, properties[thetype] )
+		module_name = request.options.get( 'objectType' )
+		module = UDM_Module( module_name )
+
+		self.finished( request.id, module.properties )
 
 	def search_values( self, request ):
-		values = {
-			'group': [
-				{ 'id': 'dau', 'label': 'DAU Group' },
-				{ 'id': 'group1', 'label': 'Group #1' },
-				{ 'id': 'group2', 'label': 'Group #2' },
-				{ 'id': 'group3', 'label': 'Group #3' },
-			],
-			'coolguy': true,
-			'name': '*',
-			'description': '*',
-			'uid': '1*'
-		}
-		theproperty = request.options.get('property', 'name')
-		self.finished( request.id, values[theproperty] )
+		module_name = request.options.get( 'objectType' )
+		property_name = request.options.get( 'objectProperty' )
+		module = UDM_Module( module_name )
 
+		self.finished( request.id, module.get_default_values( property_name ) )
 
+	def search_layout( self, request ):
+		module = UDM_Module( request.flavor )
+		widgets = []
+		containers = self.defaults.get( request.flavor )
+		if containers:
+			containers.sort()
+			containers = map( lambda x: { x : x }, containers )
+			containers.insert( 0, { 'all' : _( 'All' ) } )
+			widgets.append( {
+				'type' : 'ComboBox',
+				'name' : 'container',
+				'value' : 'all',
+				'description' : _( 'The base container for the search' ),
+				'label' : _( 'Container' ),
+				'staticValues' : containers
+				} )
 
+		children = module.child_modules
+		if children:
+			widgets.append( {
+				'type' : 'ComboBox',
+				'name' : 'objectType',
+				'value' : 'all',
+				'description' : _( 'The type of the object to search for' ),
+				'label' : _( 'Container' ),
+				'staticValues' : children
+				} )
+
+		widgets.extend( [
+			{
+				'type' : 'ComboBox',
+				'name' : 'objectProperty',
+				'depends' : [ 'objectType', ],
+				'description' : _( 'The attribute that should be compared to the given keyword' ),
+				'label' : _( 'Keyword' ),
+				'dynamicValues' : 'udm/search/properties'
+			},
+			{
+				'type' : 'MixedInput',
+				'name' : 'objectPropertyValue',
+				'depends' : [ 'objectType', 'objectProperty' ],
+				'description' : _( 'The keyword that should be searched for in the selected attribute' ),
+				'label' : '',
+				'dynamicValues' : 'udm/search/values'
+			}, ] )
+
+		self.finished( request.id, widgets )

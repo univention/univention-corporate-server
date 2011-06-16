@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.4-1) unstable; urgency=low
+
+  * udm/search/layout: provide the input fields for the search form; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 16 Jun 2011 15:17:27 +0200
+
 univention-management-console-module-udm (1.0.3-1) unstable; urgency=low
 
   * added missing icons
