@@ -22,7 +22,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// we need to dynamically load the search widget
 		this.umcpCommand('udm/query/layout').then(dojo.hitch(this, function(data) {
+			// add to each widget a reference to the module specific umcpCommand method
 			var widgets = data.result;
+			dojo.forEach(widgets, dojo.hitch(this, function(iwidget) {
+				iwidget.umcpCommand = this.umcpCommand;
+			}));
+
+			// create the search widget
 			this._searchWidget = new umc.widgets.SearchForm({
 				region: 'top',
 				widgets: widgets
