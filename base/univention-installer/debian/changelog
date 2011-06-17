@@ -1,3 +1,10 @@
+univention-installer (7.0.7-1) unstable; urgency=low
+
+  * disabled system_settings module (Bug #22448)
+  * disabled ssl module
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 17 Jun 2011 16:06:45 +0200
+
 univention-installer (7.0.6-1) unstable; urgency=low
 
   * disabled 01_modules.py and 15_bootloader.py (Bug #22448)
