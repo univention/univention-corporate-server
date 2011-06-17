@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.41-1) unstable; urgency=low
+
+  * include already installed modules in the make target build-dev (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Jun 2011 11:29:08 +0200
+
 univention-management-console-frontend (0.0.40-1) unstable; urgency=low
 
   * property for certain widgets to specify reference to umcpCommand
