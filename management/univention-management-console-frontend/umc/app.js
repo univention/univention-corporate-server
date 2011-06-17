@@ -200,7 +200,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	//		Internal reference to the TabContainer object
 	_tabContainer: null,
 
-	openModule: function(/*String*/ module) {
+	openModule: function(/*String|Object*/ module) {
 		// summary:
 		//		Open a new tab for the given module.
 		// module:
@@ -218,11 +218,13 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		}
 
 		// create a new tab
+		console.log('### opening ' + dojo.toJson(module));
 		var tab = new module.BaseClass({
-			title: module.title,
+			title: module.name,
 			iconClass: 'icon16-' + module.icon,
 			closable: true,
-			moduleFlavor: module.flavor
+			moduleFlavor: module.flavor,
+			moduleID: module.id
 			//items: [ new module.BaseClass() ],
 			//layout: 'fit',
 			//closable: true,
@@ -267,7 +269,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			iconClass: 'icon16-univention' 
 		});
 
-		// add an CategoryPane for each category
+		// add a CategoryPane for each category
 		dojo.forEach(this.getCategories(), dojo.hitch(this, function(icat) {
 			// ignore empty categories
 			var modules = this.getModules(icat.id);
@@ -276,9 +278,10 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			}
 
 			// create a new category pane for all modules in the given category
+			console.log('# adding category: ' + dojo.toJson(icat));
 			var categoryPane = new umc.widgets.CategoryPane({
 				modules: modules,
-				title: icat.title,
+				title: icat.name,
 				open: ('favorites' == icat.id)
 			});
 
@@ -372,13 +375,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 
 		umc.tools.umcpCommand('get/modules/list').then(dojo.hitch(this, function(data) {
 			// get all categories
-			dojo.forEach(dojo.getObject('categories', false, data), dojo.hitch(this, function(i) {
-				var cat = {
-					id: i.id,
-					description: i.name,
-					title: i.name
-				};
-				this._categories.push(cat); 
+			dojo.forEach(dojo.getObject('categories', false, data), dojo.hitch(this, function(icat) {
+				this._categories.push(icat); 
 			}));
 
 			// hack a specific order
@@ -417,9 +415,9 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 
 				// load the module
 				// add module config class to internal list of available modules
+				console.log('### adding ' + dojo.toJson(module));
 				this._modules.push(dojo.mixin({
-					BaseClass: dojo.getObject('umc.modules.' + module.id), 
-					title: module.name
+					BaseClass: dojo.getObject('umc.modules.' + module.id)
 				}, module));
 
 				// try to add dynamic style sheet information for module icons
@@ -478,7 +476,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		return modules; // Object[]
 	},
 
-	getModule: function(/*String*/ id) {
+	getModule: function(/*String*/ id, /*String?*/ flavor) {
 		// summary:
 		//		Get the module object for a given module ID.
 		//		The returned object has the following properties:

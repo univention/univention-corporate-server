@@ -1,3 +1,11 @@
+univention-management-console-frontend (0.0.39-1) unstable; urgency=low
+
+  * fixed handling of flavors
+  * fixed form widget dependencies
+  (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Jun 2011 10:33:11 +0200
+
 univention-management-console-frontend (0.0.38-1) unstable; urgency=low
 
   * fixed display if module and flavor icons in category pane; Bug #22460

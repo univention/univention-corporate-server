@@ -116,19 +116,17 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		this._clearValues();
 		this._setStaticValues();
 
-		// add dynamic values only if all necessary dependency values are given
-		var dependValues = {};
-		if (this.depends) {
-			// we need to have dependValues defined, don't populate the store
-			if (!dojo.isObject(_dependValues)) {
-				return;
-			}
+		// unify `depends` property to be an array
+		var dependList = dojo.isArray(this.depends) ? this.depends : 
+			(this.depends && dojo.isString(this.depends)) ? [ this.depends ] : [];
 
+		// add dynamic values if all necessary dependency values are given
+		var dependValues = {};
+		if (dependList.length && dojo.isObject(_dependValues)) {
 			// check whether all necessary values are specified
-			var tmpDepends = dojo.isArray(this.depends) ? this.depends : [ this.depends ];
-			for (var i = 0; i < tmpDepends.length; ++i) {
-				if (_dependValues[tmpDepends[i]]) {
-					dependValues[tmpDepends[i]] = _dependValues[tmpDepends[i]];
+			for (var i = 0; i < dependList.length; ++i) {
+				if (_dependValues[dependList[i]]) {
+					dependValues[dependList[i]] = _dependValues[dependList[i]];
 				}
 				else {
 					// necessary value not given, don't populate the store

@@ -77,13 +77,13 @@ dojo.declare( "umc.widgets.CategoryPane", [dijit.TitlePane, dijit._Container], {
 			var modWidget = new umc.widgets._CategoryItem({
 				modID: imod.id,
 				modIcon: imod.icon,
-				label: imod.title,
+				label: imod.name,
 				description: imod.description
 			});
 
 			// hook to the onClick event of the module
 			dojo.connect(modWidget, 'onClick', dojo.hitch(this, function(evt) {
-				this.onOpenModule(imod.id);
+				this.onOpenModule(imod);
 			}));
 
 			// add module widget to the container
