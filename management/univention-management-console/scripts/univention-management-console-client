@@ -134,7 +134,7 @@ class CLI_Client( umcp.Client ):
 		if flavor is not None:
 			msg.flavor = flavor
 		for opt in options:
-			key, value = opt.split( '=' )
+			key, value = opt.split( '=', 1 )
 			if key.find( ':' ) > 0:
 				typ, key = key.split( ':', 1 )
 				try:

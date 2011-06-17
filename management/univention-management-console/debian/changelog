@@ -1,3 +1,9 @@
+univention-management-console (4.0.27-2) unstable; urgency=low
+
+  * minor fix in command option parser; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 17 Jun 2011 15:18:06 +0200
+
 univention-management-console (4.0.27-1) unstable; urgency=low
 
   * UMC client: support flavor; Bug #22460
