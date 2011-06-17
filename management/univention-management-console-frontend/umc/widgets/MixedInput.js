@@ -43,14 +43,12 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 
 	_loadValues: function(/*Object?*/ _dependValues) {
 		// we need to have dependValues defined
-		console.log('# _loadValues: ' + dojo.toJson(_dependValues));
 		if (!dojo.isObject(_dependValues)) {
 			return;
 		}
 
 		// check whether all necessary values are specified
 		var dependValues = {};
-		console.log('# check values');
 		var tmpDepends = dojo.isArray(this.depends) ? this.depends : [ this.depends ];
 		for (var i = 0; i < tmpDepends.length; ++i) {
 			if (_dependValues[tmpDepends[i]]) {
@@ -63,7 +61,6 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 		}
 
 		// get new values from the server and create a new form widget dynamically
-		console.log('# umcp command');
 		this.umcpCommand(this.dynamicValues, dependValues).then(dojo.hitch(this, function(data) {
 			// guess the form widget type based on the result that we get
 			//   array      -> ComboBox
@@ -76,12 +73,9 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 			else if (true === data.result || false === data.result || 'true' == data.result || 'false' == data.result) {
 				newWidgetClass = 'umc.widgets.CheckBox';
 			}
-			console.log('# newWidgetClass: ' + newWidgetClass);
 
 			// destroy old widget in case the type has changed and create a new one
 			if (this._widget && this._widget.declaredClass != newWidgetClass) {
-				console.log('# destroying old widget');
-
 				// destroy widget
 				this._widget.destroyRecursive();
 				this._widget = null;

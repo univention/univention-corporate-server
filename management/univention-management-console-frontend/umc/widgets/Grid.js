@@ -2,21 +2,23 @@
 
 dojo.provide("umc.widgets.Grid");
 
-dojo.require("dojo.string");
-dojo.require("dojo.data.ItemFileWriteStore");
-dojo.require("dojo.store.DataStore");
-dojo.require("dojo.data.ObjectStore");
+dojo.require("dijit.Menu");
 dojo.require("dijit.form.Button");
 dojo.require("dijit.form.DropDownButton");
-dojo.require("dijit.Menu");
 dojo.require("dijit.layout.BorderContainer");
+dojo.require("dojo.data.ItemFileWriteStore");
+dojo.require("dojo.data.ObjectStore");
+dojo.require("dojo.store.DataStore");
+dojo.require("dojo.string");
 dojo.require("dojox.data.ClientFilter");
 dojo.require("dojox.grid.EnhancedGrid");
 dojo.require("dojox.grid.cells");
+dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
+dojo.require("dojox.grid.enhanced.plugins.Menu");
+dojo.require("umc.i18n");
+dojo.require("umc.tools");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.StandbyMixin");
-dojo.require("umc.tools");
-dojo.require("umc.i18n");
 
 dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin, umc.widgets.StandbyMixin ], {
 	// summary:

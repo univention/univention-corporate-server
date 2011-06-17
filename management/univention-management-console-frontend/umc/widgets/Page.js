@@ -105,7 +105,7 @@ dojo.declare("umc.widgets.Page", dijit.layout.ContentPane, {
 			opacity: 0,
 			display: 'block'
 		});
-		this._topLayoutContainer.layout();
+		this.layout();
 		this._descriptionShown = true;
 		
 		// fade in the description
@@ -131,9 +131,14 @@ dojo.declare("umc.widgets.Page", dijit.layout.ContentPane, {
 				dojo.style(this._descriptionPane.domNode, {
 					display: 'none'
 				});
-				this._topLayoutContainer.layout();
+				this.layout();
 			})
 		}).play();
+	},
+
+	layout: function() {
+		var container = this._topLayoutContainer || this._layoutContainer;
+		container.layout();
 	}
 });
 

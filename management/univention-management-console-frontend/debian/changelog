@@ -1,3 +1,13 @@
+univention-management-console-frontend (0.0.42-1) unstable; urgency=low
+
+  * added necessary includes to umc.widgets.Grid
+  * bug fixes for umc.widgets._SelectMixin
+  * removed some debug output
+  * added layout function to umc.widgets.Module
+  (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Jun 2011 12:15:43 +0200
+
 univention-management-console-frontend (0.0.41-1) unstable; urgency=low
 
   * include already installed modules in the make target build-dev (Bug #22460)

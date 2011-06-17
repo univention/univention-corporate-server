@@ -218,7 +218,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		}
 
 		// create a new tab
-		console.log('### opening ' + dojo.toJson(module));
 		var tab = new module.BaseClass({
 			title: module.name,
 			iconClass: 'icon16-' + module.icon,
@@ -278,7 +277,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			}
 
 			// create a new category pane for all modules in the given category
-			console.log('# adding category: ' + dojo.toJson(icat));
 			var categoryPane = new umc.widgets.CategoryPane({
 				modules: modules,
 				title: icat.name,
@@ -415,7 +413,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 
 				// load the module
 				// add module config class to internal list of available modules
-				console.log('### adding ' + dojo.toJson(module));
 				this._modules.push(dojo.mixin({
 					BaseClass: dojo.getObject('umc.modules.' + module.id)
 				}, module));

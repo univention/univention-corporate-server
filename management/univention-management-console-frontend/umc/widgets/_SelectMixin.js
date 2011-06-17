@@ -76,7 +76,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 	_setStaticValues: function() {
 		// add all static values to the store
-		umc.tools.assert(dojo.isArray(this.staticValues) || undefined === this.staticValues, "Static values needs to be an array of entries!");
+		umc.tools.assert(dojo.isArray(this.staticValues) || !this.staticValues, "Static values needs to be an array of entries: " + dojo.toJson(this.staticValues));
 		var staticValues = this.staticValues || [];
 		this._ids = {};
 		dojo.forEach(staticValues, function(iitem) {
@@ -109,7 +109,9 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		
 		// add items to the store
 		dojo.forEach(items, function(i) {
-			this.store.newItem(i);
+			if (i) {
+				this.store.newItem(i);
+			}
 		}, this);
 
 		// save the store in order for the changes to take effect and set the value

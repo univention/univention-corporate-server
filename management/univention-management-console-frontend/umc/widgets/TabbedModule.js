@@ -8,6 +8,7 @@ dojo.require("dojox.layout.TableContainer");
 dojo.require("umc.widgets._ModuleMixin");
 dojo.require("umc.widgets.StandbyMixin");
 
+//TODO: parent ContentPane should be removed?!?
 dojo.declare("umc.widgets.TabbedModule", [ dijit.layout.ContentPane, dijit.layout.TabContainer, umc.widgets.StandbyMixin, umc.widgets._ModuleMixin ], {
 	// summary:
 	//		Basis class for all module classes that offer sub tabs.

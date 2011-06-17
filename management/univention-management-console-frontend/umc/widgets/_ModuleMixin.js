@@ -19,10 +19,12 @@ dojo.declare("umc.widgets._ModuleMixin", null, {
 	// moduleFlavor: String
 	//		Specifies the module flavor which may need to be communicated to 
 	//		the server via `umc.tool.umcpCommand()`.
+	//		(Is specified automatically.)
 	moduleFlavor: null,
 	
 	// moduleID: String
 	//		ID of the module.
+	//		(Is specified automatically.)
 	moduleID: '',
 
 	// moduleStore: umc.store.UmcpModuleStore
