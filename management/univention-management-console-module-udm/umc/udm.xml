@@ -34,5 +34,11 @@
 	</command>
 	<command name="udm/get" function="get">
 	</command>
+	<command name="udm/properties" function="properties">
+	  <attribute name="objectType" syntax="String"/>
+	</command>
+	<command name="udm/options" function="options">
+	  <attribute name="objectType" syntax="String"/>
+	</command>
   </module>
 </umc>

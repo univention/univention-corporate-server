@@ -31,11 +31,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import operator
+
 import univention.admin.modules as udm_modules
 import univention.admin.uldap as udm_uldap
 import univention.admin.syntax as udm_syntax
 
 from ...config import ucr
+from ...log import MODULE
 
 # global LDAP connection
 _ldap_connection = None
@@ -70,8 +73,10 @@ class UDM_Module( object ):
 		udm_modules.init( lo, po, self.module, template_object )
 
 	def get_default_values( self, property_name ):
+		MODULE.info( 'Searching for property %s' % property_name )
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if key == property_name:
+				MODULE.info( 'Found property with syntax %s' % str( type( prop.syntax ) ) )
 				if isinstance( prop.syntax, udm_syntax.boolean ):
 					return False
 				elif isinstance( prop.syntax, udm_syntax.simple ):
@@ -79,18 +84,25 @@ class UDM_Module( object ):
 				elif isinstance( prop.syntax, udm_syntax.select ):
 					return prop.syntax.choices
 
+	def search( self, container, attribute, value ):
+		lo. po = get_ldap_connection()
+		objects = self.module.lookup( None, lo, container )
+
 	@property
 	def child_modules( self ):
 		if self.module is None:
 			return None
+		MODULE.info( 'Collecting child modules ...' )
 		children = getattr( self.module, 'childmodules', None )
 		if children is None:
+			MODULE.info( 'No child modules were found' )
 			return []
 		modules = []
 		for child in children:
 			mod = udm_modules.get( child )
 			if not mod:
 				continue
+			MODULE.info( 'Found module %s' % str( mod ) )
 			modules.append( { 'id' : child, 'label' : getattr( mod, 'short_description', child ) } )
 		return modules
 
@@ -105,12 +117,44 @@ class UDM_Module( object ):
 		return tabs
 
 	@property
-	def properties( self ):
+	def property_names( self ):
 		props = []
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			props.append( { 'id' : key, 'label' : prop.short_description } )
 		props.sort( key = operator.itemgetter( 'id' ) )
 		return props
+
+	@property
+	def properties( self ):
+		props = []
+		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
+			item = { 'name' : key, 'label' : prop.short_description, 'description' : prop.long_description,
+					 'required' : prop.required in ( 1, True ), 'editable' : prop.may_change in ( 1, True ),
+					 'options' : prop.options }
+			if isinstance( prop.syntax, udm_syntax.boolean ):
+				item[ 'type' ] = 'CheckBox'
+			elif isinstance( prop.syntax, ( udm_syntax.passwd, udm_syntax.userPasswd ) ):
+				item[ 'type' ] = 'PasswordBox'
+			if isinstance( prop.syntax, udm_syntax.simple ):
+				item[ 'type' ] = 'TextBox'
+			elif isinstance( prop.syntax, udm_syntax.select ):
+				item[ 'type' ] = 'ComboBox'
+				item[ 'staticValues' ] = map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, prop.syntax.choices )
+			else:
+				MODULE.error( 'Could not convert UDM syntax %s' % str( prop.syntax.__name__ ) )
+				item[ 'type' ] = None
+			props.append( item )
+		props.sort( key = operator.itemgetter( 'name' ) )
+		return props
+
+	@property
+	def options( self ):
+		opts = []
+		for key, option in getattr( self.module, 'options', {} ).items():
+			item = { 'id' : key, 'label' : option.short_description, 'default' : option.default }
+			opts.append( item )
+		opts.sort( key = operator.itemgetter( 'label' ) )
+		return opts
 
 	@property
 	def operations( self ):
