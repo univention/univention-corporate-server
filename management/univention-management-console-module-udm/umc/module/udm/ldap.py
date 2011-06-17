@@ -77,16 +77,20 @@ class UDM_Module( object ):
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if key == property_name:
 				MODULE.info( 'Found property with syntax %s' % str( type( prop.syntax ) ) )
-				if isinstance( prop.syntax, udm_syntax.boolean ):
+				if isinstance( prop.syntax, ( udm_syntax.boolean, udm_syntax.TrueFalseUp ) ):
 					return False
 				elif isinstance( prop.syntax, udm_syntax.simple ):
 					return '*'
 				elif isinstance( prop.syntax, udm_syntax.select ):
 					return prop.syntax.choices
+				else:
+					return '*'
 
 	def search( self, container, attribute, value ):
 		lo. po = get_ldap_connection()
-		objects = self.module.lookup( None, lo, container )
+		if container == 'all':
+			container = po.getBase()
+		return self.module.lookup( None, lo, '%s=%s' % ( attribute, value ), base = container )
 
 	@property
 	def child_modules( self ):
@@ -120,6 +124,7 @@ class UDM_Module( object ):
 	def property_names( self ):
 		props = []
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
+			if key == 'filler' or prop.dontsearch: continue
 			props.append( { 'id' : key, 'label' : prop.short_description } )
 		props.sort( key = operator.itemgetter( 'id' ) )
 		return props
@@ -131,7 +136,7 @@ class UDM_Module( object ):
 			item = { 'name' : key, 'label' : prop.short_description, 'description' : prop.long_description,
 					 'required' : prop.required in ( 1, True ), 'editable' : prop.may_change in ( 1, True ),
 					 'options' : prop.options }
-			if isinstance( prop.syntax, udm_syntax.boolean ):
+			if isinstance( prop.syntax, ( udm_syntax.boolean, udm_syntax.TrueFalseUp ) ):
 				item[ 'type' ] = 'CheckBox'
 			elif isinstance( prop.syntax, ( udm_syntax.passwd, udm_syntax.userPasswd ) ):
 				item[ 'type' ] = 'PasswordBox'

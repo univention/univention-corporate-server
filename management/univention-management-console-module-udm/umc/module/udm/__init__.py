@@ -61,7 +61,8 @@ class Instance( umcm.Base ):
 		module = UDM_Module( module_name )
 
 		result = module.search( request.options( 'container' ), request.options( 'objectProperty' ), request.options( 'objectPropertyValue' ) )
-		self.finished( request.id )
+
+		self.finished( request.id, map( lambda obj: { 'ldap-dn' : obj.dn, 'name' : obj[ 'name' ], 'path' : obj.dn } ) )
 
 	def query_properties( self, request ):
 		module_name = request.options.get( 'objectType' )

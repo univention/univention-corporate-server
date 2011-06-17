@@ -20,25 +20,25 @@
 	</categories>
 	<command name="udm/query" function="query">
 	</command>
-	<command name="udm/query/layout" function="query_layout">
+	<command name="udm/containers" function="containers">
 	</command>
-	<command name="udm/query/properties" function="query_properties">
-	</command>
-	<command name="udm/query/values" function="query_values">
-	</command>
-	<command name="udm/put" function="put">
-	</command>
-	<command name="udm/put/layout" function="put_layout">
-	</command>
-	<command name="udm/remove" function="remove">
-	</command>
-	<command name="udm/get" function="get">
+	<command name="udm/types" function="containers">
 	</command>
 	<command name="udm/properties" function="properties">
 	  <attribute name="objectType" syntax="String"/>
 	</command>
 	<command name="udm/options" function="options">
 	  <attribute name="objectType" syntax="String"/>
+	</command>
+	<command name="udm/values" function="values">
+	  <attribute name="objectType" syntax="String"/>
+	  <attribute name="objectProperty" syntax="String" required="True"/>
+	</command>
+	<command name="udm/put" function="put">
+	</command>
+	<command name="udm/remove" function="remove">
+	</command>
+	<command name="udm/get" function="get">
 	</command>
   </module>
 </umc>
