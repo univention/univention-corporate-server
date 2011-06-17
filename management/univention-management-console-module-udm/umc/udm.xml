@@ -22,12 +22,15 @@
 	</command>
 	<command name="udm/containers" function="containers">
 	</command>
-	<command name="udm/types" function="containers">
+	<command name="udm/types" function="types">
 	</command>
 	<command name="udm/properties" function="properties">
 	  <attribute name="objectType" syntax="String"/>
 	</command>
 	<command name="udm/options" function="options">
+	  <attribute name="objectType" syntax="String"/>
+	</command>
+	<command name="udm/layout" function="layout">
 	  <attribute name="objectType" syntax="String"/>
 	</command>
 	<command name="udm/values" function="values">

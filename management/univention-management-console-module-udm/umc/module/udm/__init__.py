@@ -64,15 +64,7 @@ class Instance( umcm.Base ):
 
 		self.finished( request.id, map( lambda obj: { 'ldap-dn' : obj.dn, 'name' : obj[ 'name' ], 'path' : obj.dn } ) )
 
-	def query_properties( self, request ):
-		module_name = request.options.get( 'objectType' )
-		if not module_name:
-			module_name = request.flavor
-		module = UDM_Module( module_name )
-
-		self.finished( request.id, module.property_names )
-
-	def query_values( self, request ):
+	def values( self, request ):
 		module_name = request.options.get( 'objectType' )
 		if not module_name:
 			module_name = request.flavor
@@ -81,65 +73,21 @@ class Instance( umcm.Base ):
 
 		self.finished( request.id, module.get_default_values( property_name ) )
 
-	def query_layout( self, request ):
+	def containers( self, request ):
+		self.finished( request.id, self.defaults.get( request.flavor ) )
+
+	def types( self, request ):
 		module = UDM_Module( request.flavor )
-		widgets = []
-		containers = self.defaults.get( request.flavor )
-		if containers:
-			containers.sort()
-			containers = map( lambda x: { 'id' : x, 'label' : x }, containers )
-			containers.insert( 0, { 'id' : 'all', 'label' : _( 'All' ) } )
-			widgets.append( {
-				'type' : 'ComboBox',
-				'name' : 'container',
-				'value' : 'all',
-				'description' : _( 'The base container for the search' ),
-				'label' : _( 'Container' ),
-				'staticValues' : containers
-				} )
+		self.finished( request.id, module.child_modules )
 
-		children = module.child_modules
-		if children:
-			widgets.append( {
-				'type' : 'ComboBox',
-				'name' : 'objectType',
-				'value' : 'all',
-				'description' : _( 'The type of the object to search for' ),
-				'label' : _( 'Container' ),
-				'staticValues' : children
-				} )
-			property_depends = [ 'objectType', ]
-			property_value_depends = [ 'objectType', 'objectProperty' ]
-		else:
-			property_depends = []
-			property_value_depends = [ 'objectProperty' ]
-			widgets.append( None )
-
-		widgets.extend( [
-			{
-				'type' : 'ComboBox',
-				'name' : 'objectProperty',
-				'depends' : property_depends,
-				'description' : _( 'The attribute that should be compared to the given keyword' ),
-				'label' : _( 'Keyword' ),
-				'dynamicValues' : 'udm/query/properties'
-			},
-			{
-				'type' : 'MixedInput',
-				'name' : 'objectPropertyValue',
-				'depends' : property_value_depends,
-				'description' : _( 'The keyword that should be searched for in the selected attribute' ),
-				'label' : '',
-				'dynamicValues' : 'udm/query/values'
-			}, ] )
-
-		self.finished( request.id, widgets )
-
-	def put_layout( self, request ):
+	def layout( self, request ):
 		module = UDM_Module( request.flavor )
 		self.finished( request.id, module.layout )
 
 	def properties( self, request ):
+		module_name = request.options.get( 'objectType' )
+		if not module_name:
+			module_name = request.flavor
 		module = UDM_Module( request.flavor )
 		self.finished( request.id, module.properties )
 

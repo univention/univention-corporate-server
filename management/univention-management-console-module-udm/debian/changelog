@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.14-1) unstable; urgency=low
+
+  * add icons in 64x64 for category pane
+  * implement a simple query function
+  * python module does not return layout structures; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 17 Jun 2011 14:51:23 +0200
+
 univention-management-console-module-udm (1.0.13-1) unstable; urgency=low
 
   * added grid (Bug #22439)

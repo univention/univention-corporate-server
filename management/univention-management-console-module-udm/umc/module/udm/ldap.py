@@ -133,7 +133,7 @@ class UDM_Module( object ):
 	def properties( self ):
 		props = []
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
-			item = { 'name' : key, 'label' : prop.short_description, 'description' : prop.long_description,
+			item = { 'id' : key, 'label' : prop.short_description, 'description' : prop.long_description,
 					 'required' : prop.required in ( 1, True ), 'editable' : prop.may_change in ( 1, True ),
 					 'options' : prop.options }
 			if isinstance( prop.syntax, ( udm_syntax.boolean, udm_syntax.TrueFalseUp ) ):
