@@ -1,3 +1,11 @@
+univention-installer (7.0.6-1) unstable; urgency=low
+
+  * disabled 01_modules.py and 15_bootloader.py (Bug #22448)
+  * do automatic bootloader_device detection in 02_disk_check.sh or use
+    kernel cmdline argument or profile entry
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 17 Jun 2011 15:50:01 +0200
+
 univention-installer (7.0.5-1) unstable; urgency=low
 
   * changed screen resultion to 1024x768x8 (Bug #22448)
