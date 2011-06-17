@@ -134,7 +134,7 @@ class Instance( umcm.Base ):
 			name = obj['name']
 			categories.append({
 				'id': id,
-				'name': name
+				'label': name
 			})
 		self.finished( request.id, categories )
 

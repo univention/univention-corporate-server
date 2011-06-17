@@ -4,26 +4,9 @@ dojo.provide("umc.modules.ucr");
 
 dojo.require("umc.widgets.Module");
 dojo.require("umc.tools");
-dojo.require("dojo.data.ItemFileReadStore");
-dojo.require("dojo.data.ItemFileWriteStore");
-dojo.require("dojox.grid.EnhancedGrid");
-//dojo.require("dojox.grid.DataGrid");
-dojo.require("dojox.grid.enhanced.plugins.Menu");
-dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
-dojo.require("dojox.grid.cells");
-dojo.require("dojox.layout.TableContainer");
-dojo.require("dijit.Dialog");
-dojo.require("dijit.Menu");
-dojo.require("dijit.form.Button");
-dojo.require("dijit.form.TextBox");
-dojo.require("dijit.form.Textarea");
-dojo.require("dijit.form.ComboBox");
-dojo.require("dojox.form.CheckedMultiSelect");
-dojo.require("dojox.widget.Standby");
 dojo.require("umc.widgets.Form");
+dojo.require("umc.widgets.SearchForm");
 dojo.require("umc.widgets.Grid");
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets.ContainerForm");
 dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.i18n");
 
@@ -89,7 +72,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			editable: false
 		}, {
 			name: 'value',
-			label: 'Wert',
+			label: this._( 'Value' ),
 			description: this._( 'Value of the UCR variable' )
 		}];
 
@@ -118,22 +101,24 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			value: 'all',
 			description: this._( 'Category the UCR variable should associated with' ),
 			label: this._('Category'),
-			staticValues: {
-				all: this._('All')
-			},
-			umcpValues: 'ucr/categories'
-		}, {
+			staticValues: [
+				{ id: 'all', label: this._('All') }
+			],
+			dynamicValues: 'ucr/categories'
+		},
+		undefined,
+		{
 			type: 'ComboBox',
 			name: 'key',
 			value: 'all',
 			description: this._( 'Select the attribute of a UCR variable that should be search for the given keyword' ),
 			label: this._( 'Search attribute' ),
-			staticValues: {
-				all: this._( 'All' ),
-				key: this._( 'Variable' ),
-				value: this._( 'Value' ),
-				description: this._( 'Description' )
-			}
+			staticValues: [
+				{ id: 'all', label: this._( 'All' ) },
+				{ id: 'key', label: this._( 'Variable' ) },
+				{ id: 'value', label: this._( 'Value' ) },
+				{ id: 'description', label: this._( 'Description' ) }
+			]
 		}, {
 			type: 'TextBox',
 			name: 'filter',
@@ -142,28 +127,11 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			label: this._( 'Keyword' )
 		}];
 
-		// define all buttons
-		var buttons = [{
-			name: 'submit',
-			label: this._( 'Search' ),
-			callback: dojo.hitch(this._grid, 'filter')
-		}, {
-			name: 'reset',
-			label: this._( 'Reset' )
-		}];
-
-		// define the search form layout
-		var layout = [
-			[ 'category', '' ],
-			[ 'key', 'filter' ]
-		];
-
 		// generate the search widget
-		this._searchWidget = new umc.widgets.Form({
+		this._searchWidget = new umc.widgets.SearchForm({
 			region: 'top',
 			widgets: widgets,
-			buttons: buttons,
-			layout: layout
+			onSearch: dojo.hitch(this._grid, 'filter')
 		});
 		this.addChild(this._searchWidget);
 
@@ -216,7 +184,7 @@ dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.Standb
 //			name: 'categories',
 //			description: this._( 'Categories that the UCR variable is assoziated with' ),
 //			label: this._( 'Categories' ),
-//			umcpValues: 'ucr/categories'
+//			dynamicValues: 'ucr/categories'
 		}];
 
 		var buttons = [{
