@@ -24,7 +24,7 @@
 	</command>
 	<command name="udm/query/properties" function="query_properties">
 	</command>
-	<command name="udm/query/value" function="query_value">
+	<command name="udm/query/values" function="query_values">
 	</command>
 	<command name="udm/put" function="put">
 	</command>

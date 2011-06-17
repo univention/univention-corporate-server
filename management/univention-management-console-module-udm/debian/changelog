@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.12-1) unstable; urgency=low
+
+  * fixed type (Bug #22439)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Jun 2011 12:17:53 +0200
+
 univention-management-console-module-udm (1.0.11-1) unstable; urgency=low
 
   * bug fix for ucmpCommand reference #3 (Bug #22439) 
