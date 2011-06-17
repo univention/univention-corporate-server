@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.38-1) unstable; urgency=low
+
+  * fixed display if module and flavor icons in category pane; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 17 Jun 2011 09:51:46 +0200
+
 univention-management-console-frontend (0.0.37-1) unstable; urgency=low
 
   * set flavor of Module object; Bug #22460

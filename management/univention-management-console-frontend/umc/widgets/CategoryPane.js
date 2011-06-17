@@ -10,6 +10,7 @@ dojo.require("umc.widgets.Tooltip");
 
 dojo.declare( "umc.widgets._CategoryItem", [dijit.layout.ContentPane, dijit._Contained], {
 	modID: '',
+	modIcon: '',
 	label: '',
 	description: '',
 
@@ -17,7 +18,7 @@ dojo.declare( "umc.widgets._CategoryItem", [dijit.layout.ContentPane, dijit._Con
 		this.inherited(arguments);
 		dojo.mixin(this, {
 			baseClass: 'modLaunchButton',
-			'class': 'icon64-' + this.modID,
+			'class': 'icon64-' + this.modIcon,
 			content: '<div>' + this.label + '</div>'
 		});
 	},
@@ -63,7 +64,7 @@ dojo.declare( "umc.widgets.CategoryPane", [dijit.TitlePane, dijit._Container], {
 	postMixInProperties: function() {
 		this.inherited(arguments);
 	},
-	
+
 	buildRendering: function() {
 		// summary:
 		//		Render a list of module items for the given category.
@@ -75,6 +76,7 @@ dojo.declare( "umc.widgets.CategoryPane", [dijit.TitlePane, dijit._Container], {
 			// create a new button widget for each module
 			var modWidget = new umc.widgets._CategoryItem({
 				modID: imod.id,
+				modIcon: imod.icon,
 				label: imod.title,
 				description: imod.description
 			});
@@ -87,7 +89,7 @@ dojo.declare( "umc.widgets.CategoryPane", [dijit.TitlePane, dijit._Container], {
 			// add module widget to the container
 			this.addChild(modWidget);
 		}));
-		
+
 		// we need to add a <br> at the end, otherwise we will get problems 
 		// with the visualizaton
 		this.containerNode.appendChild(dojo.create('br', { clear: 'all' }));

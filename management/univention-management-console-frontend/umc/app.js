@@ -220,7 +220,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// create a new tab
 		var tab = new module.BaseClass({
 			title: module.title,
-			iconClass: 'icon16-' + module.id,
+			iconClass: 'icon16-' + module.icon,
 			closable: true,
 			moduleFlavor: module.flavor
 			//items: [ new module.BaseClass() ],
