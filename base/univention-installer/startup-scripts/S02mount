@@ -33,4 +33,5 @@ if [ ! -d /proc/self ]; then
 	mount -t proc proc /proc
 fi
 
-mount /dev/ram0 / -o remount,rw 
+mount /dev/ram0 / -o remount,rw
+mount tmpfs -t tmpfs -o size=64M /tmp
