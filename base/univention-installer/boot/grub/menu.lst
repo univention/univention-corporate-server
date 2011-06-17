@@ -10,7 +10,7 @@ background = 000000
 #color cyan/blue white/blue
 
 title Univention Installer
-kernel /boot/linux-@%@KERNEL@%@ root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 flavor=linux nomodeset text
+kernel /boot/linux-@%@KERNEL@%@ root=/dev/ram ro vt.default_utf8=1 vga=773 ramdisk_size=65536 flavor=linux nomodeset text quiet
 initrd /boot/linux-@%@KERNEL@%@.bin
 
 title Additional options
