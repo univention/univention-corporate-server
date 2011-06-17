@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.9-1) unstable; urgency=low
+
+  * bug fix for ucmpCommand reference (Bug #22439)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Jun 2011 11:52:52 +0200
+
 univention-management-console-module-udm (1.0.8-1) unstable; urgency=low
 
   * pass widgets reference to umcpCommand (Bug #22439)

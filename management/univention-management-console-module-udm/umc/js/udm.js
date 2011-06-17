@@ -25,7 +25,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			// add to each widget a reference to the module specific umcpCommand method
 			var widgets = data.result;
 			dojo.forEach(widgets, dojo.hitch(this, function(iwidget) {
-				iwidget.umcpCommand = this.umcpCommand;
+				if (dojo.isObject(iwidget)) {
+					iwidget.umcpCommand = this.umcpCommand;
+				}
 			}));
 
 			// create the search widget
