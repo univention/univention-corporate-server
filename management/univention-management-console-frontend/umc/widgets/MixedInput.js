@@ -6,6 +6,12 @@ dojo.require("dijit.layout.ContentPane");
 dojo.require("umc.tools");
 
 dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
+	// umcpCommand:
+	//		Reference to the umcpCommand the widget should use.
+	//		In order to make the widget send information such as module flavor
+	//		etc., it can be necessary to specify a module specific umcpCommand
+	//		method.
+	umcpCommand: umc.tools.umcpCommand,
 
 	// dynamicValues: String
 	//		see description at `umc.widgets._SelectMixin`
@@ -32,6 +38,7 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 		umc.tools.assert(this.dynamicValues && dojo.isString(this.dynamicValues), "For MixedInput, the property 'dynamicValues' needs to be specified.");
 		this.depends = props.depends;
 		umc.tools.assert(this.depends, "For MixedInput, the property 'depends' needs to be specified.");
+		this.umcpCommand = props.umcpCommand || umc.tools.umcpCommand;
 	},
 
 	_loadValues: function(/*Object?*/ _dependValues) {
@@ -57,7 +64,7 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 
 		// get new values from the server and create a new form widget dynamically
 		console.log('# umcp command');
-		umc.tools.umcpCommand(this.dynamicValues, dependValues).then(dojo.hitch(this, function(data) {
+		this.umcpCommand(this.dynamicValues, dependValues).then(dojo.hitch(this, function(data) {
 			// guess the form widget type based on the result that we get
 			//   array      -> ComboBox
 			//   true/false -> CheckBox

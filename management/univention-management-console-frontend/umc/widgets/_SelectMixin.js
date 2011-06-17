@@ -7,6 +7,12 @@ dojo.require("dojo.Stateful");
 dojo.require("umc.tools");
 
 dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
+	// umcpCommand:
+	//		Reference to the umcpCommand the widget should use.
+	//		In order to make the widget send information such as module flavor
+	//		etc., it can be necessary to specify a module specific umcpCommand
+	//		method.
+	umcpCommand: umc.tools.umcpCommand,
 	
 	// dynamicValues: String
 	//		UMCP command to query data from. Can be mixed with staticValues 
@@ -137,7 +143,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 		// add all dynamic values which need to be queried via UMCP asynchronously
 		if (dojo.isString(this.dynamicValues) && this.dynamicValues) {
-			umc.tools.umcpCommand(this.dynamicValues, dependValues).then(dojo.hitch(this, function(data) {
+			this.umcpCommand(this.dynamicValues, dependValues).then(dojo.hitch(this, function(data) {
 				this._setDynamicValues(data.result);
 			}));
 		}
