@@ -29,10 +29,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-nousbhid=`cat /proc/cmdline | grep -i nousbhid`
-
-if [ -z "$nousbhid" ]; then
-	echo "Loading USB HID module"
+if grep -iq '\<nousbhid\>' /proc/cmdline; then
+	echo "Loading USB HID module disabled."
+else
 	modprobe ehci-hcd
 	modprobe uhci-hcd
 	modprobe ohci-hcd
