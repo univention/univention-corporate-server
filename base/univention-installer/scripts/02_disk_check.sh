@@ -205,10 +205,23 @@ fi
 
 touch /instmnt/.log
 
+# get bootloader_device via /proc/cmdline
+if [ -n "$bootloader_device" ] ; then
+	bootloader_device="$(sed -rne 's/.*\bbootloaderdevice=([^ ]+)\s*.*/\1/p' /proc/cmdline)"
+fi
+
+# get bootloader_device via /proc/partitions
+if [ -n "$bootloader_device" ] ; then
+	partitions_device="$(egrep -r '^\s*[0-9]+\s+' /proc/partitions | head -n1 | awk '{ print $NF }')"
+	[ -n "$first_device" ] && bootloader_device="/dev/$partitions_device"
+fi
+
 if [ -n "$bootloader_record" ]; then
-	python2.6 /sbin/univention-config-registry set grub/boot?$bootloader_record
-elif [ -n "$bootloader_device" ]; then
 	python2.6 /sbin/univention-config-registry set grub/boot?$bootloader_device
 else
-	python2.6 /sbin/univention-config-registry set grub/boot?$grub_boot_fallback
+	echo
+	echo
+	echo "ERROR: bootloader_device has not been set!"
+	echo
+	echo
 fi
