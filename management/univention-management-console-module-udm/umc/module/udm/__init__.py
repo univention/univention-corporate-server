@@ -60,9 +60,9 @@ class Instance( umcm.Base ):
 			module_name = request.flavor
 		module = UDM_Module( module_name )
 
-		result = module.search( request.options( 'container' ), request.options( 'objectProperty' ), request.options( 'objectPropertyValue' ) )
+		result = module.search( request.options[ 'container' ], request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ] )
 
-		self.finished( request.id, map( lambda obj: { 'ldap-dn' : obj.dn, 'name' : obj[ 'name' ], 'path' : obj.dn } ) )
+		self.finished( request.id, map( lambda obj: { 'ldap-dn' : obj.dn, 'name' : obj[ module.identifies ], 'path' : obj.dn }, result ) )
 
 	def values( self, request ):
 		module_name = request.options.get( 'objectType' )

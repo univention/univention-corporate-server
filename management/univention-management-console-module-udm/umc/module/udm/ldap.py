@@ -87,10 +87,17 @@ class UDM_Module( object ):
 					return '*'
 
 	def search( self, container, attribute, value ):
-		lo. po = get_ldap_connection()
+		lo, po = get_ldap_connection()
 		if container == 'all':
 			container = po.getBase()
 		return self.module.lookup( None, lo, '%s=%s' % ( attribute, value ), base = container )
+
+	@property
+	def identifies( self ):
+		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
+			if prop.identifies:
+				return key
+		return None
 
 	@property
 	def child_modules( self ):

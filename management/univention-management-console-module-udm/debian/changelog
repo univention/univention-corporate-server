@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.15-1) unstable; urgency=low
+
+  * fixed typos
+  * minor fixes in query command; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 17 Jun 2011 15:33:22 +0200
+
 univention-management-console-module-udm (1.0.14-1) unstable; urgency=low
 
   * add icons in 64x64 for category pane
