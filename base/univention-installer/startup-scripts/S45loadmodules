@@ -37,6 +37,7 @@ cmdline = fh.readlines()
 fh.close
 options = cmdline[0].strip().split(' ')
 modules = []
+load_defaultmodules = True
 
 for option in options:
 	if option.startswith("loadmodules") and option.find("=") != -1:
@@ -47,10 +48,15 @@ for option in options:
 	if option == "expert_partition":
 		for m in ["raid1", "raid0", "raid5", "raid10"]:
 			modules.append(m)
+	if option == 'nodefaultmodules':
+		load_defaultmodules = False
+
+if load_defaultmodules:
+   modules.extend( [ 'ide-generic', 'ide-disk', 'sd_mod', 'dm_mod' ] )
 
 for m in modules:
 	print "Loading %s" % m
 	os.system('/sbin/modprobe %s >/dev/null 2>&1' % m)
-	time.sleep(0.5)
+	time.sleep(0.2)
 
-
+os.system('udevadm settle')
