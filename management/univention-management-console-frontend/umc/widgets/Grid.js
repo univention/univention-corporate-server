@@ -42,8 +42,9 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 	columns: null,
 
 	// query: Object?
-	//		The initial query for the data grid. If not specified it will be guessed.
-	query: {},
+	//		The initial query for the data grid. If not specified no query will be executed 
+	//		when the module has loaded.
+	query: null,
 	
 	// moduleStore: umc.store.UmcpModuleStore
 	//		Object store for module requests using UMCP commands.
@@ -91,7 +92,6 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 
 		// create the layout for the grid columns
 		var gridColumns = [];
-		var query = {};
 		dojo.forEach(this.columns, function(icol) {
 			umc.tools.assert(icol.name !== undefined && icol.label !== undefined, 'The definition of grid columns requires the properties \'name\' and \'label\'.');
 
@@ -119,11 +119,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			gridColumns.push(col);
 
 			// adapt the query object to show all elements
-			query[icol.name] = '*';
 		}, this);
-
-		// use the query object specified by the user
-		query = this.query || query;
 
 		// add an additional column for a drop-down button with context actions
 		gridColumns.push({
@@ -171,7 +167,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			//id: 'ucrVariables',
 			store: this._dataStore,
 			region: 'center',
-			query: query,
+			query: this.query,
 			queryOptions: { ignoreCase: true },
 			structure: gridColumns,
 			rowSelector: '2px',

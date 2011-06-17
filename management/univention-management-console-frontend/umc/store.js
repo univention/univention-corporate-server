@@ -150,20 +150,30 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		
 		// if called via dojo.data.ObjectStore, queries can be translated to regexps
 		var query = {};
+		var nQueryEl = 0;
 		umc.tools.forIn(_query, function(ikey, ival) {
 			query[ikey] = typeof ival == "string" ? ival : String(ival);
+			++nQueryEl;
 		});
-
-		var deferred = umc.tools.umcpCommand(this.moduleID + '/query', query, true, this.moduleFlavor);
-		deferred = deferred.then(function(data) {
-			var result = data.result;
-			// if requested, sort the list
-			var sort = dojo.getObject('sort', false, options);
-			if (sort) {
-				result.sort(umc.tools.cmpObjects(sort));
-			}
-			return result;
-		});
+		var deferred = new dojo.Deferred();
+		if (nQueryEl) {
+			// non-empty query
+			deferred = umc.tools.umcpCommand(this.moduleID + '/query', query, true, this.moduleFlavor);
+			deferred = deferred.then(function(data) {
+				var result = data.result;
+				// if requested, sort the list
+				var sort = dojo.getObject('sort', false, options);
+				if (sort) {
+					result.sort(umc.tools.cmpObjects(sort));
+				}
+				return result;
+			});
+		}
+		else {
+			// empty query -> return an empty list 
+			// this is the query the grid will send automatically at the beginning
+			deferred.callback([]);
+		}
 		return dojo.store.util.QueryResults(deferred);
 	},
 
