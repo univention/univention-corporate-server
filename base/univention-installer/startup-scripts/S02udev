@@ -42,6 +42,8 @@ else
 	mv /dev /dev.old
 	mkdir /dev
 
+	# mount devtmpfs
+	mount devtmpfs -t devtmpfs /dev
 
 	# udev
 	echo > /sys/kernel/uevent_helper
