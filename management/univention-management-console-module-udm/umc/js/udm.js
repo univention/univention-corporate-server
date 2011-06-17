@@ -26,7 +26,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			var widgets = data.result;
 			dojo.forEach(widgets, dojo.hitch(this, function(iwidget) {
 				if (iwidget && dojo.isObject(iwidget)) {
-					iwidget.umcpCommand = this.umcpCommand;
+					iwidget.umcpCommand = dojo.hitch(this, 'umcpCommand');
 				}
 			}));
 

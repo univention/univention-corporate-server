@@ -3,38 +3,38 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Thu, 02 Jun 2011 02:09:08 +0200\n"
+"POT-Creation-Date: Fri, 17 Jun 2011 12:00:58 +0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
-
-msgid "Univention Directory Manager"
-msgstr "Univention Directory Manager"
-
-msgid "Manages all UDM modules"
-msgstr "Verwaltung der UCS-Domäne"
-
-msgid "Users"
-msgstr "Benutzer"
-
-msgid "Managing users"
-msgstr "IVerwaltung von Benutzern"
-
-msgid "Groups"
-msgstr "Gruppen"
-
-msgid "Managing groups"
-msgstr "Verwaltung von Gruppen"
 
 msgid "Computers"
 msgstr "Rechner"
 
+msgid "Domain Management"
+msgstr "Domänenverwaltung"
+
+msgid "Groups"
+msgstr "Gruppen"
+
+msgid "Manages all UDM modules"
+msgstr "Verwaltung der UCS-Domäne"
+
 msgid "Managing computers"
 msgstr "Verwaltung von Rechnern"
 
-msgid "Domain Management"
-msgstr "Domänenverwaltung"
+msgid "Managing groups"
+msgstr "Verwaltung von Gruppen"
+
+msgid "Managing users"
+msgstr "IVerwaltung von Benutzern"
+
+msgid "Univention Directory Manager"
+msgstr "Univention Directory Manager"
+
+msgid "Users"
+msgstr "Benutzer"
