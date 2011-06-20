@@ -1,0 +1,11 @@
+# search for users
+univention-management-console-client -U root -P univention COMMAND udm/query -f users/user -o objectType=users/user -o objectProperty=name -o objectPropertyValue="*" -o container=cn=users,dc=univention,dc=qa
+
+# get users/user properties
+univention-management-console-client -U root -P univention COMMAND udm/properties -f users/user
+
+# list usrs/user containers
+univention-management-console-client -U root -P univention COMMAND udm/containers -f users/user
+
+# return default search value for specific property
+univention-management-console-client -U root -P univention COMMAND udm/values -f users/user -o objectType=users/user -o objectProperty=overridePWHistory
