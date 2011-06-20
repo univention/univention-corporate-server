@@ -79,7 +79,7 @@ class Instance( umcm.Base ):
 		self.finished( request.id, module.get_default_values( property_name ) )
 
 	def containers( self, request ):
-		self.finished( request.id, self.settings.container( request.flavor ) )
+		self.finished( request.id, self.settings.containers( request.flavor ) )
 
 	def types( self, request ):
 		module = UDM_Module( request.flavor )
