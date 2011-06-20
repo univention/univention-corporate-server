@@ -44,6 +44,7 @@ from optparse import OptionParser
 import notifier
 import notifier.signals as signals
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
+from daemon.daemon import set_signal_handlers
 
 from univention.management.console.log import CORE, log_init
 from univention.management.console.config import SERVER_DEBUG_LEVEL
@@ -98,10 +99,12 @@ class UMC_Daemon( DaemonRunner ):
 		DaemonRunner.__init__( self, self )
 		self.daemon_context.detach_process = self.options.daemon_mode
 		self.daemon_context.files_preserve = [ debug_fd ]
-		self.daemon_context.singal_map = {
+		signal_map = {
 			signal.SIGHUP : self.hang_up,
 			signal.SIGUSR1 : self.user1
 			}
+		set_signal_handlers( signal_map )
+
 		# set locale
 		try:
 			locale.setlocale( locale.LC_MESSAGES, locale.normalize( self.options.language ) )

@@ -206,7 +206,7 @@ class ModuleServer( Server ):
 
 				# if SET command contains 'acls', commands' and 'credentials' it is it initialization of the module process
 				keys = msg.options.keys()
-				if 'acls' in keys and 'commands' in keys and ' credentials' in keys:
+				if 'acls' in keys and 'commands' in keys and 'credentials' in keys:
 					self.__handler.init()
 			self.response( resp )
 
