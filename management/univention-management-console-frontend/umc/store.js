@@ -152,9 +152,9 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		var query = {};
 		var nQueryEl = 0;
 		umc.tools.forIn(_query, function(ikey, ival) {
-			query[ikey] = typeof ival == "string" ? ival : String(ival);
+			query[ikey] = (dojo.isString(ival) || typeof ival == 'boolean' || 'null' === ival) ? ival : String(ival);
 			++nQueryEl;
-		});
+		}, this, true);
 		var deferred = new dojo.Deferred();
 		if (nQueryEl) {
 			// non-empty query

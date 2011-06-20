@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.44-1) unstable; urgency=low
+
+  * bug fixes for komplex search with MixedInput fields (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Jun 2011 17:58:01 +0200
+
 univention-management-console-frontend (0.0.43-1) unstable; urgency=low
 
   * replace dojo.connect with this.connect to automatically remove connections

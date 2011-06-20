@@ -95,16 +95,20 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 					throw new Error('MixedInput: Could not instantiate the class ' + newWidgetClass);
 				}
 				this._widget = new WidgetClass(this._userProperties);
+				this.onWidgetChanged(this._widget);
 				this.set('content', this._widget);
 			}
 
+			// set the indicated values
 			if (this._widget._setDynamicValues) {
 				// clear all values and set the dynamic values, they don't need to be reloaded
 				this._widget._clearValues();
 				this._widget._setDynamicValues(data.result);
 			}
+			else if (!dojo.isArray(data.result)) {
+				this._widget.set('value', data.result);
+			}
 			this._widget.startup();
-			this.onWidgetChanged(this._widget);
 		}));
 	},
 

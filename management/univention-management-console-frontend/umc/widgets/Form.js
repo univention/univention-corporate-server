@@ -168,7 +168,7 @@ dojo.declare("umc.widgets.Form", [
 					this.registerWidget(widget);
 				});
 				this.connect(iwidget, 'onBeforeWidgetChanged', function(widget) {
-					this.unregisterWidget(widget);
+					this.unregisterWidget(widget.name);
 				});
 			}
 		}, this);

@@ -201,7 +201,7 @@ dojo.mixin(umc.tools, {
 		}
 	},
 
-	forIn: function(/*Object*/ obj, /*Function*/callback, /*Object?*/scope) {
+	forIn: function(/*Object*/ obj, /*Function*/ callback, /*Object?*/ scope, /*Boolean?*/ inheritedProperties) {
 		// summary:
 		//		Iterate over all elements of an object.
 		// description:
@@ -216,7 +216,7 @@ dojo.mixin(umc.tools, {
 
 		scope = scope || dojo.global;
 		for (var i in obj) {
-			if (obj.hasOwnProperty(i)) {
+			if (obj.hasOwnProperty(i) || inheritedProperties) {
 				callback.call(scope, i, obj[i], obj);
 			}
 		}
