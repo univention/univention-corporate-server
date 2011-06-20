@@ -103,9 +103,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'objectType',
 			description: this._( 'The type of the LDAP object.' ),
 			label: this._('Object type'),
-			value: 'all',
+			value: this.moduleFlavor,
 			staticValues: [ 
-				{ id: 'all', label: this._( 'All types' ) }
+				{ id: this.moduleFlavor, label: this._( 'All types' ) }
 			],
 			dynamicValues: 'udm/types',
 			umcpCommand: thisUmcpCommand

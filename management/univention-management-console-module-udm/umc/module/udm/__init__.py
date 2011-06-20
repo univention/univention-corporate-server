@@ -46,7 +46,7 @@ class Instance( umcm.Base ):
 	def init( self ):
 		'''Initialize the module. Invoked when ACLs, commands and
 		credentials are available'''
-		self.settings = UDM_Settings( self.username )
+		self.settings = UDM_Settings( self._username )
 
 	def put( self, request ):
 		self.finished( request.id )

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.18-1) unstable; urgency=low
+
+  * make UDM search work (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Jun 2011 17:56:33 +0200
+
 univention-management-console-module-udm (1.0.17-1) unstable; urgency=low
 
   * fixed two tracebacks; Bug #22460
