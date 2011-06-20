@@ -22,7 +22,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	buildRendering: function() {
 		// call superclass method
 		this.inherited(arguments);
-	
+
 		//
 		// add data grid
 		//
@@ -77,11 +77,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			region: 'center',
 			actions: actions,
 			columns: columns,
-			moduleStore: this.moduleStore,
-			query: {
-				container: "*",
-				value: "*"
-			}
+			moduleStore: this.moduleStore
 		});
 		this.addChild(this._grid);
 		this.layout();
@@ -89,25 +85,58 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		//
 		// add search widget
 		//
-	
-		// we need to dynamically load the search widget
-		this.umcpCommand('udm/query/layout').then(dojo.hitch(this, function(data) {
-			// add to each widget a reference to the module specific umcpCommand method
-			var widgets = data.result;
-			dojo.forEach(widgets, dojo.hitch(this, function(iwidget) {
-				if (iwidget && dojo.isObject(iwidget)) {
-					iwidget.umcpCommand = dojo.hitch(this, 'umcpCommand');
-				}
-			}));
 
-			// create the search widget
-			this._searchWidget = new umc.widgets.SearchForm({
-				region: 'top',
-				widgets: widgets
-			});
-			this.addChild(this._searchWidget);
-			this.layout();
-		}));
+		var thisUmcpCommand = dojo.hitch(this, 'umcpCommand');
+		var widgets = [{
+			type: 'ComboBox',
+			name: 'container',
+			description: this._( 'The LDAP container in which the query is executed.' ),
+			label: this._('Container'),
+			value: 'all',
+			staticValues: [ 
+				{ id: 'all', label: this._( 'All containers' ) }
+			],
+			dynamicValues: 'udm/containers',
+			umcpCommand: thisUmcpCommand
+		}, {
+			type: 'ComboBox',
+			name: 'objectType',
+			description: this._( 'The type of the LDAP object.' ),
+			label: this._('Object type'),
+			value: 'all',
+			staticValues: [ 
+				{ id: 'all', label: this._( 'All types' ) }
+			],
+			dynamicValues: 'udm/types',
+			umcpCommand: thisUmcpCommand
+		}, {
+			type: 'ComboBox',
+			name: 'objectProperty',
+			description: this._( 'The object property on which the query is filtered.' ),
+			label: this._( 'Object property' ),
+			value: 'any',
+			staticValues: [
+				{ id: 'any', label: this._( 'Any property' ) }
+			],
+			dynamicValues: 'udm/properties',
+			umcpCommand: thisUmcpCommand,
+			depends: 'objectType'
+		}, {
+			type: 'MixedInput',
+			name: 'objectPropertyValue',
+			description: this._( 'The value for the specified object property on which the query is filtered.' ),
+			label: this._( 'Property value' ),
+			dynamicValues: 'udm/values',
+			depends: [ 'objectProperty', 'objectType' ]
+		}];
+
+		// generate the search widget
+		this._searchWidget = new umc.widgets.SearchForm({
+			region: 'top',
+			widgets: widgets,
+			onSearch: dojo.hitch(this._grid, 'filter')
+		});
+		this.addChild(this._searchWidget);
 	}
 
 });

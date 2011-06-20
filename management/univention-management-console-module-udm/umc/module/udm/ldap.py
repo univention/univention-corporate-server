@@ -153,7 +153,7 @@ class UDM_Module( object ):
 				item[ 'type' ] = 'ComboBox'
 				item[ 'staticValues' ] = map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, prop.syntax.choices )
 			else:
-				MODULE.error( 'Could not convert UDM syntax %s' % str( prop.syntax.__name__ ) )
+				MODULE.error( 'Could not convert UDM syntax %s' % str( prop.syntax.name ) )
 				item[ 'type' ] = None
 			props.append( item )
 		props.sort( key = operator.itemgetter( 'name' ) )

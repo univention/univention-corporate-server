@@ -66,7 +66,7 @@ class Instance( umcm.Base ):
 
 	def values( self, request ):
 		module_name = request.options.get( 'objectType' )
-		if not module_name:
+		if not module_name or 'all' == module_name:
 			module_name = request.flavor
 		property_name = request.options.get( 'objectProperty' )
 		module = UDM_Module( module_name )
