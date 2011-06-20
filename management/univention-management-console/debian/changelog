@@ -1,4 +1,11 @@
-univention-management-console (4.0.27-2) unstable; urgency=low
+univention-management-console (4.0.29-1) unstable; urgency=low
+
+  * invoke modules init function only after SET commands containing acls,
+    commands and credentials; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 20 Jun 2011 12:13:03 +0200
+
+univention-management-console (4.0.28-1) unstable; urgency=low
 
   * minor fix in command option parser; Bug #22460
 

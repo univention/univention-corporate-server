@@ -204,10 +204,11 @@ class ModuleServer( Server ):
 					resp.status = BAD_REQUEST_INVALID_OPTS
 					break
 
+				# if SET command contains 'acls', commands' and 'credentials' it is it initialization of the module process
+				keys = msg.options.keys()
+				if 'acls' in keys and 'commands' in keys and ' credentials' in keys:
+					self.__handler.init()
 			self.response( resp )
-
-			# call init function of module instance
-			self.__handler.init()
 
 			if not self.__active_requests and self.__timer == None:
 				self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
