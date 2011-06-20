@@ -70,20 +70,13 @@ if [ ! -d /etc/apache2/conf.d ]; then
 fi
 
 # upgrade nagios2 -> nagios3 (Bug #14594)
-# univention-nagios-server 3.0.X is shipped by UCS 2.3-X
-# univention-nagios-server 4.0.X is shipped by UCS 2.4-X
+# univention-nagios-server 5.0.X is shipped by UCS 3.0-X
 updateNagios2To3() {
 	/usr/sbin/univention-directory-listener-ctrl resync nagios-server
 	if [ -L /etc/apache2/conf.d/nagios2.conf ]; then
 		rm -f /etc/apache2/conf.d/nagios2.conf
 	fi
 }
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions 3.0.0 lt "$2" && dpkg --compare-versions "$2" lt 3.1.0; then
-	updateNagios2To3
-fi
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions 4.0.0 lt "$2" && dpkg --compare-versions "$2" lt 4.1.0; then
-	updateNagios2To3
-fi
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions 5.0.0 lt "$2" && dpkg --compare-versions "$2" lt 5.1.0; then
 	updateNagios2To3
 fi

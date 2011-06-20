@@ -107,10 +107,10 @@ def writeTimeperiod( filename, name, alias, periods ):
 	try:
 		fp = open(filename, 'w')
 		fp.write('# Warning: This file is auto-generated and might be overwritten.\n')
-		fp.write('#          Please use univention-admin instead.\n')
+		fp.write('#          Please use univention-directory-manager instead.\n')
 		fp.write('# Warnung: Diese Datei wurde automatisch generiert und wird\n')
 		fp.write('#          automatisch ueberschrieben. Bitte benutzen Sie\n')
-		fp.write('#          stattdessen den Univention Admin.\n')
+		fp.write('#          stattdessen den Univention Directory Manager.\n')
 		fp.write('\n')
 		fp.write('define timeperiod {\n')
 		fp.write('    timeperiod_name   %s\n' % name)

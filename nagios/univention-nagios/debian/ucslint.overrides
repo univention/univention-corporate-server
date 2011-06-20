@@ -1,0 +1,3 @@
+0010-2: conffiles/etc/init.d/nagios-nrpe-server
+0010-2: conffiles/etc/init.d/nagios3
+0004-12: conffiles/etc/pam.d/nagios

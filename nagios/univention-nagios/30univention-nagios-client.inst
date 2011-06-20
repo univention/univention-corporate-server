@@ -34,7 +34,7 @@ VERSION=2
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 # One of the configuration variables, allowed_hosts, uses ldap/master as a default
 # Since ldap/master is only set during the join process we force a commit on the nrpe.cfg
@@ -53,9 +53,9 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
     # Enable Nagios for this host
     # Managed clients are still called "fatclient" in Config Registry
     if [ "$server_role" = "fatclient" ] ; then
-        univention-directory-manager computers/managedclient modify $@ --dn ${ldap_hostdn} --append-option="nagios"
+        univention-directory-manager computers/managedclient modify "$@" --dn ${ldap_hostdn} --append-option="nagios"
     else
-        univention-directory-manager computers/${server_role} modify $@ --dn ${ldap_hostdn} --append-option="nagios"
+        univention-directory-manager computers/${server_role} modify "$@" --dn ${ldap_hostdn} --append-option="nagios"
     fi
 
     # append host to default services
@@ -67,7 +67,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
               "cn=UNIVENTION_REPLICATION,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_NSCD,cn=nagios,$ldap_base" ; do
 		if ldapsearch -xLLL -b "$dn" dn 2>/dev/null >/dev/null ; then
-			univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "$dn"
+			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
 		else
 			echo "Skipping $dn (code $?)"
 		fi
@@ -79,7 +79,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 		for dn in "cn=UNIVENTION_SSL,cn=nagios,$ldap_base" \
 				  "cn=UNIVENTION_KPASSWDD,cn=nagios,$ldap_base" ; do
 			if ldapsearch -xLLL -b "$dn" dn 2>/dev/null >/dev/null ; then
-				univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "$dn"
+				univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
 			else
 				echo "Skipping $dn (code $?)"
 			fi
@@ -92,7 +92,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
          "$server_role" = "domaincontroller_slave" ] ; then
 		dn="cn=UNIVENTION_LDAP,cn=nagios,$ldap_base"
 		if ldapsearch -xLLL -b "$dn" dn 2>/dev/null >/dev/null ; then
-			univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "$dn"
+			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
 		else
 			echo "Skipping $dn (code $?)"
 		fi
@@ -106,7 +106,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
          "$server_role" = "fatclient" ] ; then
 		dn="cn=UNIVENTION_JOINSTATUS,cn=nagios,$ldap_base"
 		if ldapsearch -xLLL -b "$dn" dn 2>/dev/null >/dev/null ; then
-			univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "$dn"
+			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
 		else
 			echo "Skipping $dn (code $?)"
 		fi

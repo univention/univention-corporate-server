@@ -30,12 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-univention-baseconfig set 'nagios/client/checkraid?no' \
+univention-config-registry set 'nagios/client/checkraid?no' \
 						  'nagios/client/autostart?yes'
 
 #DEBHELPER#
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 # create missing device file for raidutils
 if [ ! -e /dev/dpti0 ] ; then
