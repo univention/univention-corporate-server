@@ -121,9 +121,9 @@ dojo.declare("umc.widgets.Form", [
 		// register all necessary onChange events to handle dependencies
 		umc.tools.forIn(this._dependencyMap, dojo.hitch(this, function(iname) {
 			if (iname in this._widgets) {
-				dojo.connect(this._widgets[iname], 'onChange', dojo.hitch(this, function() {
+				this.connect(this._widgets[iname], 'onChange', function() {
 					this._updateDependencies(iname);
-				}));
+				});
 			}
 		}));
 
@@ -147,19 +147,31 @@ dojo.declare("umc.widgets.Form", [
 		this.inherited(arguments);
 
 		// register callbacks for onSubmit and onReset events
-		dojo.connect(this, 'onSubmit', dojo.hitch(this, function(e) {
+		this.connect(this, 'onSubmit', function(e) {
 			// prevent standard form submission
 			e.preventDefault();
 
 			// if there is a custom callback, call it with all form values
 			var customCallback = dojo.getObject('submit.callback', false, this._buttons) || function() { };
 			customCallback(this.gatherFormValues());
-		}));
-		dojo.connect(this, 'onReset', dojo.hitch(this, function(e) {
+		});
+		this.connect(this, 'onReset', function(e) {
 			// if there is a custom callback, call it with all form values
 			var customCallback = dojo.getObject('reset.callback', false, this._buttons) || function() { };
 			customCallback(this.gatherFormValues());
-		}));
+		});
+
+		// register for dynamically changing Widgets
+		umc.tools.forIn(this._widgets, function(iname, iwidget) {
+			if (iwidget.onWidgetChanged) {
+				this.connect(iwidget, 'onWidgetChanged', function(widget) {
+					this.registerWidget(widget);
+				});
+				this.connect(iwidget, 'onBeforeWidgetChanged', function(widget) {
+					this.unregisterWidget(widget);
+				});
+			}
+		}, this);
 	},
 
 	_updateDependencies: function(publisherName) {

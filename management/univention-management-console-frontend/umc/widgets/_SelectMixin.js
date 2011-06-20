@@ -94,12 +94,34 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	},
 
 	_setDynamicValues: function(/*Object[]*/ values) {
-		// get all items
+		// get all items...
 		var items = [];
-		dojo.forEach(values, function(iitem) {
-			umc.tools.assert(!(iitem.id in this._ids), "Entry already previously defined: " + dojo.toJson(iitem));
-			items.push(iitem);
-		}, this);
+
+		if (dojo.isArray(values) && values.length) {
+			// array of dicts
+			if (dojo.isObject(values[0])) {
+				dojo.forEach(values, function(iitem) {
+					umc.tools.assert(!(iitem.id in this._ids), "Entry already previously defined: " + dojo.toJson(iitem));
+					items.push(iitem);
+				}, this);
+			}
+			// array of strings
+			else if (dojo.isString(values[0])) {
+				dojo.forEach(values, function(ival) {
+					items.push({
+						id: ival,
+						label: ival
+					});
+				});
+			}
+			// unknown format
+			else {
+				umc.tools.assert(false, "Given dynamic values are in incorrect format: " + dojo.toJson(values));
+			}
+		}
+		else if (!dojo.isArray(values)) {
+			umc.tools.assert(false, "Given dynamic values are in incorrect format: " + dojo.toJson(values));
+		}
 		
 		// sort items according to their displayed name
 		items.sort(umc.tools.cmpObjects({
@@ -128,27 +150,35 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		var dependList = dojo.isArray(this.depends) ? this.depends : 
 			(this.depends && dojo.isString(this.depends)) ? [ this.depends ] : [];
 
-		// add dynamic values if all necessary dependency values are given
+		// check whether all necessary values are specified
 		var dependValues = {};
+		var nDepValues = 0;
 		if (dependList.length && dojo.isObject(_dependValues)) {
 			// check whether all necessary values are specified
 			for (var i = 0; i < dependList.length; ++i) {
 				if (_dependValues[dependList[i]]) {
 					dependValues[dependList[i]] = _dependValues[dependList[i]];
-				}
-				else {
-					// necessary value not given, don't populate the store
-					return;
+					++nDepValues;
 				}
 			}
+		}
+
+		// only load dynamic values in case all dependencies are fullfilled
+		if (dependList.length != nDepValues) {
+			return;
 		}
 
 		// add all dynamic values which need to be queried via UMCP asynchronously
 		if (dojo.isString(this.dynamicValues) && this.dynamicValues) {
 			this.umcpCommand(this.dynamicValues, dependValues).then(dojo.hitch(this, function(data) {
 				this._setDynamicValues(data.result);
+				this.onDynamicValuesLoaded(data.result);
 			}));
 		}
+	},
+
+	onDynamicValuesLoaded: function(values) {
+		// event stub
 	}
 });
 

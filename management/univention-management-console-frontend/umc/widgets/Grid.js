@@ -154,7 +154,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			contextMenu.addChild(item);
 
 			// connect callback function, pass the correct item ID
-			dojo.connect(item, 'onClick', this, function() {
+			this.connect(item, 'onClick', function() {
 				dijit.popup.close(contextMenu);
 				if (iaction.callback) {
 					iaction.callback([this._contextItemID]);
@@ -190,7 +190,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		// event handler for cell clicks...
 		// -> handle context menus when clicked in the last column
 		// -> call custom handler when clicked on any other cell
-		dojo.connect(this._grid, 'onCellClick', dojo.hitch(this, function(evt) {
+		this.connect(this._grid, 'onCellClick', function(evt) {
 			if (gridColumns.length != evt.cellIndex) {
 				// check for custom callback for this column
 				var col = this.columns[evt.cellIndex - 1];
@@ -237,26 +237,26 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			dojo.removeClass(contextMenu.containerNode.parentNode, 'umcGridRowMenu' + notPosStr);
 			dojo.addClass(contextMenu.containerNode.parentNode, 'umcGridRowMenu' + posStr);
 			dojo.addClass(contextMenu.domNode.parentNode, 'umcGridRowPopup' + posStr);
-		}));
+		});
 
 		// register event for showing/hiding the combo buttons
-		dojo.connect(this._grid, 'onRowMouseOver', dojo.hitch(this, function(evt) {
+		this.connect(this._grid, 'onRowMouseOver', function(evt) {
 			// query DOM node of image and show it
 			dojo.query('img.dijitArrowButtonInner', evt.rowNode).removeClass('umcDisplayNone');
-		}));
-		dojo.connect(this._grid, 'onRowMouseOut', dojo.hitch(this, function(evt) {
+		});
+		this.connect(this._grid, 'onRowMouseOut', function(evt) {
 			// query DOM node of image and hide it
 			dojo.query('img.dijitArrowButtonInner', evt.rowNode).addClass('umcDisplayNone');
-		}));
+		});
 
 		// register events for hiding the menu popup
 		var hidePopup = function(evt) {
 			dijit.popup.close(contextMenu);
 		};
-		dojo.connect(this._grid.scroller, 'scroll', hidePopup);
+		this.connect(this._grid.scroller, 'scroll', hidePopup);
 		dojo.forEach(['onHeaderCellClick', 'onHeaderClick', 'onRowClick', 'onSelectionChanged'], 
 			dojo.hitch(this, function(ievent) {
-				dojo.connect(this._grid, ievent, hidePopup);
+				this.connect(this._grid, ievent, hidePopup);
 			})
 		);
 
@@ -354,20 +354,20 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		//
 
 		// in case of any changes in the module store, refresh the grid
-		dojo.connect(this.moduleStore, 'onChange', dojo.hitch(this, function() {
+		this.connect(this.moduleStore, 'onChange', function() {
 			this.filter(this.query);
-		}));
+		});
 
 		// standby animation when loading data
-		dojo.connect(this._grid, "_onFetchComplete", dojo.hitch(this, function() {
+		this.connect(this._grid, "_onFetchComplete", function() {
 			this.standby(false);
-		}));
-		dojo.connect(this._grid, "_onFetchError", dojo.hitch(this, function() {
+		});
+		this.connect(this._grid, "_onFetchError", function() {
 			this.standby(false);
-		}));
+		});
 
 		// when a cell gets modified, save the changes directly back to the server
-		dojo.connect(this._grid, 'onApplyCellEdit', this._dataStore, 'save');
+		this.connect(this._grid, 'onApplyCellEdit', dojo.hitch(this._dataStore, 'save'));
 		
 		/*// disable edit menu in case there is more than one item selected
 		dojo.connect(this._grid, 'onSelectionChanged', dojo.hitch(this, function() {

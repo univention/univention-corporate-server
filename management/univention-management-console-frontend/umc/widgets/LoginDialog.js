@@ -90,7 +90,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		this._form.startup();
 
 		// register onChange event
-		dojo.connect(this._form._widgets.language, 'onChange', this, function() {
+		this.connect(this._form._widgets.language, 'onChange', function() {
 			// reload the page when a different language is selected
 			var query = dojo.queryToObject(window.location.search.substring(1));
 			query.lang = this._form.elementValue('language');

@@ -33,18 +33,18 @@ dojo.declare( "umc.widgets._CategoryItem", [dijit.layout.ContentPane, dijit._Con
 		});
 
 		//this.domNode.innerHtml = '<div>' + this.description + '</div>';
-		dojo.connect(this, 'onMouseOver', dojo.hitch(this, function(evt) {
+		this.connect(this, 'onMouseOver', function(evt) {
 			dojo.addClass(this.domNode, 'modLaunchButtonHover');
-		}));
-		dojo.connect(this, 'onMouseOut', dojo.hitch(this, function(evt) {
+		});
+		this.connect(this, 'onMouseOut', function(evt) {
 			dojo.removeClass(this.domNode, 'modLaunchButtonHover');
-		}));
-		dojo.connect(this, 'onMouseDown', dojo.hitch(this, function(evt) {
+		});
+		this.connect(this, 'onMouseDown', function(evt) {
 			dojo.addClass(this.domNode, 'modLaunchButtonClick');
-		}));
-		dojo.connect(this, 'onMouseUp', dojo.hitch(this, function(evt) {
+		});
+		this.connect(this, 'onMouseUp', function(evt) {
 			dojo.removeClass(this.domNode, 'modLaunchButtonClick');
-		}));
+		});
 	}
 });
 
@@ -82,9 +82,9 @@ dojo.declare( "umc.widgets.CategoryPane", [dijit.TitlePane, dijit._Container], {
 			});
 
 			// hook to the onClick event of the module
-			dojo.connect(modWidget, 'onClick', dojo.hitch(this, function(evt) {
+			this.connect(modWidget, 'onClick', function(evt) {
 				this.onOpenModule(imod);
-			}));
+			});
 
 			// add module widget to the container
 			this.addChild(modWidget);

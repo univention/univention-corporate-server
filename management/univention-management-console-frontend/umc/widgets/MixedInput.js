@@ -27,7 +27,7 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 	// store the currently displayed widget
 	_widget: null,
 
-	'class': 'umcNoBorder',
+	style: 'padding: 0',
 
 	constructor: function(/*Object*/ props) {
 		// store user defined properties
@@ -42,22 +42,26 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 	},
 
 	_loadValues: function(/*Object?*/ _dependValues) {
-		// we need to have dependValues defined
-		if (!dojo.isObject(_dependValues)) {
-			return;
-		}
+		// unify `depends` property to be an array
+		var dependList = dojo.isArray(this.depends) ? this.depends : 
+			(this.depends && dojo.isString(this.depends)) ? [ this.depends ] : [];
 
 		// check whether all necessary values are specified
 		var dependValues = {};
-		var tmpDepends = dojo.isArray(this.depends) ? this.depends : [ this.depends ];
-		for (var i = 0; i < tmpDepends.length; ++i) {
-			if (_dependValues[tmpDepends[i]]) {
-				dependValues[tmpDepends[i]] = _dependValues[tmpDepends[i]];
+		var nDepValues = 0;
+		if (dependList.length && dojo.isObject(_dependValues)) {
+			// check whether all necessary values are specified
+			for (var i = 0; i < dependList.length; ++i) {
+				if (_dependValues[dependList[i]]) {
+					dependValues[dependList[i]] = _dependValues[dependList[i]];
+					++nDepValues;
+				}
 			}
-			else {
-				// necessary value not given, don't populate the store
-				return;
-			}
+		}
+
+		// only load dynamic values in case all dependencies are fullfilled
+		if (dependList.length != nDepValues) {
+			return;
 		}
 
 		// get new values from the server and create a new form widget dynamically
@@ -77,6 +81,7 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 			// destroy old widget in case the type has changed and create a new one
 			if (this._widget && this._widget.declaredClass != newWidgetClass) {
 				// destroy widget
+				this.onBeforeWidgetChanged(this._widget);
 				this._widget.destroyRecursive();
 				this._widget = null;
 			}
@@ -99,8 +104,16 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 				this._widget._setDynamicValues(data.result);
 			}
 			this._widget.startup();
+			this.onWidgetChanged(this._widget);
 		}));
-	}
+	},
 
+	onBeforeWidgetChanged: function(widget) {
+		// event stub
+	},
+
+	onWidgetChanged: function(widget) {
+		// event stub
+	}
 });
 

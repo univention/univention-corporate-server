@@ -1,3 +1,12 @@
+univention-management-console-frontend (0.0.43-1) unstable; urgency=low
+
+  * replace dojo.connect with this.connect to automatically remove connections
+  * fixed dynamic setting of values with dependencies
+  * handle dynamically added form elements correctly (MixedInput)
+  (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Jun 2011 12:16:07 +0200
+
 univention-management-console-frontend (0.0.42-1) unstable; urgency=low
 
   * added necessary includes to umc.widgets.Grid

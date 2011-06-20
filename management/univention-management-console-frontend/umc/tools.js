@@ -329,7 +329,7 @@ dojo.mixin(umc.tools, {
 
 		// connect event handler for onClick .. yet only for normal buttons
 		if ('Button' == buttonClassName) {
-			dojo.connect(button, 'onClick', buttonConf.callback);
+			button.connect(button, 'onClick', buttonConf.callback);
 		}
 
 		// done, return the button
