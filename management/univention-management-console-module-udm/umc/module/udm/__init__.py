@@ -34,14 +34,19 @@
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 
-from .ldap import UDM_Module, UDM_DefaultContainers
+from .ldap import UDM_Module, UDM_Settings
 
 _ = umc.Translation( 'univention-management-console-modules-udm' ).translate
 
 class Instance( umcm.Base ):
 	def __init__( self ):
 		umcm.Base.__init__( self )
-		self.defaults = UDM_DefaultContainers()
+		self.settings = None
+
+	def init( self ):
+		'''Initialize the module. Invoked when ACLs, commands and
+		credentials are available'''
+		self.settings = UDM_Settings( self.username )
 
 	def put( self, request ):
 		self.finished( request.id )
@@ -74,7 +79,7 @@ class Instance( umcm.Base ):
 		self.finished( request.id, module.get_default_values( property_name ) )
 
 	def containers( self, request ):
-		self.finished( request.id, self.defaults.get( request.flavor ) )
+		self.finished( request.id, self.settings.container( request.flavor ) )
 
 	def types( self, request ):
 		module = UDM_Module( request.flavor )

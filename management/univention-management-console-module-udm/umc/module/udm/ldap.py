@@ -153,10 +153,16 @@ class UDM_Module( object ):
 				item[ 'type' ] = 'ComboBox'
 				item[ 'staticValues' ] = map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, prop.syntax.choices )
 			else:
-				MODULE.error( 'Could not convert UDM syntax %s' % str( prop.syntax.name ) )
+				if hasattr( prop.syntax, '__name__' ):
+					name = prop.syntax.__name__
+				elif hasattr( prop.syntax, '__class__' ):
+					name = prop.syntax.__class__.__name__
+				else:
+					name = "Unknown class (name attribute :%s)" % prop.name
+				MODULE.error( 'Could not convert UDM syntax %s' % name )
 				item[ 'type' ] = None
 			props.append( item )
-		props.sort( key = operator.itemgetter( 'name' ) )
+		props.sort( key = operator.itemgetter( 'label' ) )
 		return props
 
 	@property
@@ -173,19 +179,24 @@ class UDM_Module( object ):
 		return self.module is not None and getattr( self.module, 'operations', None )
 
 
-class UDM_DefaultContainers( object ):
-	def __init__( self ):
+class UDM_Settings( object ):
+	def __init__( self, username ):
 		lo, po = get_ldap_connection()
-		objects = udm_modules.lookup( 'settings/directory', None, lo, scope = 'sub' )
+		self.user_dn = lo.searchDn( 'uid=%s' % username, unique = True )
+		self.policies = lo.getPolicies( self.user_dn )
 
-		if not objects:
-			self.object = None
+		directories = udm_modules.lookup( 'settings/directory', None, lo, scope = 'sub' )
+		if not directories:
+			self.directory = None
 		else:
-			self.object = objects[ 0 ]
+			self.directory = directories[ 0 ]
 
-	def get( self, module_name ):
+	def containers( self, module_name ):
 		if module_name.find( '/' ) < 0:
 			return []
 		base, name = module_name.split( '/', 1 )
 
-		return self.object[ base ]
+		return self.directory[ base ]
+
+	def resultColumns( self, module_name ):
+		pass
