@@ -36,7 +36,7 @@ override_dh_auto_install:
 	dh_auto_install
 
 override_dh_auto_build:
-	#ucslint
+	ucslint
 	dh_auto_build
 
 override_dh_fixperms:

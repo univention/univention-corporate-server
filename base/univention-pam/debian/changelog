@@ -1,3 +1,9 @@
+univention-pam (5.0.4-2) unstable; urgency=low
+
+  * fix ucslint (Bug #22776)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 20 Jun 2011 11:25:04 +0200
+
 univention-pam (5.0.4-1) unstable; urgency=low
 
   * Consider ldap/server/port (Bug #20026)
