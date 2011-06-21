@@ -332,20 +332,18 @@ properties = {
 
 }
 
-tab = univention.admin.tab( _( 'Windows Advanced' ), _( 'Windows Terminal server settings' ), [
-		[ univention.admin.field( "CtxWFHomeDir" ), univention.admin.field( "CtxWFHomeDirDrive" ) ],
-		[ univention.admin.field( "filler" ), univention.admin.field( "filler" ) ],
-		[ univention.admin.field( "CtxInitialProgram" ), univention.admin.field( "CtxWorkDirectory" ) ],
-		[ univention.admin.field( "CtxStartprogramClient" ), univention.admin.field( "filler" ) ],
-		[ univention.admin.field( "filler"), univention.admin.field( "filler" ) ],
-		[ univention.admin.field( "CtxWFProfilePath"), univention.admin.field( "CtxKeyboardLayout" ) ],
-		[ univention.admin.field( "filler"), univention.admin.field( "filler" ) ],
-		[ univention.admin.field( "CtxCfgTSLogon"), univention.admin.field( "CtxCfgClientDrivers" ) ],
-		[ univention.admin.field( "CtxCfgClientPrinters"), univention.admin.field( "CtxCfgDefaultClientPrinters" ) ],
-		[ univention.admin.field( 'CtxShadow' ) ],
-		[ univention.admin.field( 'CtxBrokenSession' ), univention.admin.field( 'CtxReconnectSession' ) ],
-		[ univention.admin.field( 'CtxRASDialin' ) ],
-	], advanced = True )
+tab = { 'name' : _( 'Windows Advanced' ), 'description' : _( 'Windows Terminal server settings' ), 'advanced' : True,
+		'layout' : [
+			[ 'CtxWFHomeDir', 'CtxWFHomeDirDrive' ],
+			[ 'CtxInitialProgram',  'CtxWorkDirectory' ],
+			'CtxStartprogramClient',
+			[ 'CtxWFProfilePath',	'CtxKeyboardLayout' ],
+			[ 'CtxCfgTSLogon',	 'CtxCfgClientDrivers' ],
+			[ 'CtxCfgClientPrinters',	'CtxCfgDefaultClientPrinters' ],
+			[ 'CtxShadow' ],
+			[ 'CtxBrokenSession',	 'CtxReconnectSession' ],
+			'CtxRASDialin',
+			] }
 
 class Support( object ):
 	def __init__( self ):

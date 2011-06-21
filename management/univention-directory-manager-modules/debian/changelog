@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.13-1) unstable; urgency=low
+
+  * adapt global module function to new layout structure
+  * re-structured layout data of mungeddial module; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 21 Jun 2011 17:25:48 +0200
+
 univention-directory-manager-modules (7.0.12-1) unstable; urgency=low
 
   * fixed typo in layout data structure; Bug #22439
