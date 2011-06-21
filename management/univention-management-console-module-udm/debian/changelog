@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.20-1) unstable; urgency=low
+
+  * return new layout structure; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 21 Jun 2011 17:26:50 +0200
+
 univention-management-console-module-udm (1.0.19-1) unstable; urgency=low
 
   * return "path" represention of LDAP DN

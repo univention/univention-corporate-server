@@ -33,6 +33,7 @@
 
 import operator
 
+import univention.admin as udm
 import univention.admin.modules as udm_modules
 import univention.admin.uldap as udm_uldap
 import univention.admin.syntax as udm_syntax
@@ -84,7 +85,7 @@ class UDM_Module( object ):
 				elif isinstance( prop.syntax, udm_syntax.simple ):
 					return '*'
 				elif isinstance( prop.syntax, udm_syntax.select ):
-					return prop.syntax.choices
+					return map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] },  prop.syntax.choices )
 				else:
 					return '*'
 
@@ -121,13 +122,33 @@ class UDM_Module( object ):
 
 	@property
 	def layout( self ):
+		layout = getattr( self.module, 'layout', [] )
+		if not layout:
+			return layout
+
+		if isinstance( layout[ 0 ], udm.tab ):
+			return self._parse_old_layout( layout )
+
+		return self._parse_new_layout( layout )
+
+	def _parse_old_layout( self, layout ):
 		tabs = []
-		for tab in getattr( self.module, 'layout', [] ):
-			data = { 'name' : tab.short_description, 'description' : tab.long_description, 'layout' : [] }
+		for tab in layout:
+			data = { 'name' : tab.short_description, 'description' : tab.long_description, 'advanced' : tab.advanced, 'layout' : [ { 'name' : 'General', 'description' : 'General settings', 'layout' : [] } ] }
 			for item in tab.fields:
-				data[ 'layout' ].append( [ field.property for field in item ] )
+				line = []
+				for field in item:
+					if isinstance( field, ( list, tuple ) ):
+						elem = [ x.property for x in field ]
+					else:
+						elem = field.property
+					line.append( elem )
+				data[ 'layout' ][ 0 ][ 'layout' ].append( line )
 			tabs.append( data )
 		return tabs
+
+	def _parse_new_layout( self, layout ):
+		return layout
 
 	@property
 	def properties( self ):
