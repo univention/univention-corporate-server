@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.47-1) unstable; urgency=low
+
+  * added group box widget (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 21 Jun 2011 17:17:01 +0200
+
 univention-management-console-frontend (0.0.46-1) unstable; urgency=low
 
   * support preselecting items in ComboBox and FilteringSelect widgets; Bug #22460
