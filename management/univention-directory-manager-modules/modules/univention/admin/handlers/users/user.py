@@ -30,10 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, string, re, copy, time, hashlib, types, struct, md5
+import hashlib
+import os
+import string
+import re
+import copy
+import time
+import types
+import struct
 import tempfile
 from M2Crypto import X509
-import ldap, heimdal
+import ldap
 import univention.admin
 import univention.admin.filter
 import univention.admin.handlers
@@ -1054,16 +1061,6 @@ property_descriptions={
 			options=['pki'],
 			identifies=0
 		),
-	'filler': univention.admin.property(
-			short_description='',
-			long_description='',
-			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		)
 }
 
 # append CTX properties
@@ -1072,91 +1069,103 @@ for key, value in mungeddial.properties.items():
 
 default_property_descriptions=copy.deepcopy(property_descriptions) # for later reset of descriptions
 
-layout=[
-	univention.admin.tab(_('General'),_('Basic settings'),[
-		[univention.admin.field("username"), univention.admin.field("description",width=300)],
-		[univention.admin.field("password"),
-		[univention.admin.field("overridePWHistory"), univention.admin.field("overridePWLength")]],
-		[univention.admin.field("firstname"), univention.admin.field("lastname")],
-		[univention.admin.field("title"), univention.admin.field("organisation")],
-	]),
-	univention.admin.tab(_('User account'),_('Account settings'),[
-		[univention.admin.field("disabled"), univention.admin.field("locked")],
-		[univention.admin.field("userexpiry"), univention.admin.field("passwordexpiry")],
-		[univention.admin.field("filler"), univention.admin.field("pwdChangeNextLogin")],
-	]),
-	univention.admin.tab(_('Mail'),_('Mail preferences'),[
-		[univention.admin.field("mailPrimaryAddress")],
-		[univention.admin.field("mailAlternativeAddress")],
-		[univention.admin.field("mailGlobalSpamFolder")],
-	]),
-	univention.admin.tab(_('Contact'),_('Contact information'),[
-		[univention.admin.field("e-mail"), univention.admin.field("phone")],
-		[univention.admin.field("street"), univention.admin.field("birthday")],
-		[univention.admin.field("postcode"), univention.admin.field("city")],
-		[univention.admin.field("jpegPhoto")],
-	]),
-	univention.admin.tab(_('Organisation'),_('Organisational information'),[
-		[univention.admin.field("employeeNumber"), univention.admin.field("employeeType")],
-		[univention.admin.field("roomNumber"), univention.admin.field("departmentNumber")],
-		[univention.admin.field("secretary", colspan=2)]
-	]),
-	univention.admin.tab(_('Private contact'),_('Private contact information'),[
-		[univention.admin.field("mobileTelephoneNumber"), univention.admin.field("homeTelephoneNumber")],
-		[univention.admin.field("pagerTelephoneNumber"),univention.admin.field("homePostalAddress")]
-	]),
-	univention.admin.tab(_('POSIX (Linux/UNIX)'),_('POSIX (Linux/UNIX) account settings'), [
-		[univention.admin.field("unixhome"), univention.admin.field("shell")],
-		[univention.admin.field("uidNumber"), univention.admin.field("gidNumber")],
-		[univention.admin.field("homeShare"), univention.admin.field("homeSharePath")],
-		[univention.admin.field("gecos"),]
-	], advanced = True),
-	univention.admin.tab(_('Windows'),_('Windows account settings'),[
-		[univention.admin.field("sambahome"), univention.admin.field("homedrive")],
-		[univention.admin.field("scriptpath"), univention.admin.field("profilepath")],
-		[univention.admin.field("sambaRID")],
-		[univention.admin.field("sambaLogonHours"), univention.admin.field("sambaUserWorkstations")]
-	]),
-	univention.admin.tab(_('Groups'),_('Group memberships'), [
-		[univention.admin.field("primaryGroup")],
-		[univention.admin.field("groups")]
-	]),
-	univention.admin.tab(_('Out of office notice'),_('Out of office notice'), [
-		[univention.admin.field('kolabVacationText'),
-		 [univention.admin.field('kolabVacationActive'),
-		  univention.admin.field('kolabVacationReplyToUCE'),
-		  univention.admin.field('kolabVacationResendInterval'),]],
-		[univention.admin.field('kolabVacationAddress')],
-		[univention.admin.field('kolabVacationReactDomain'), univention.admin.field('kolabVacationNoReactDomain')]
-	]),
-	univention.admin.tab(_('Groupware'),_('Groupware settings'), [
-		[univention.admin.field('kolabHomeServer'), univention.admin.field('kolabDisableSieve')],
-		[univention.admin.field('kolabForwardAddress'),
-		 [univention.admin.field('kolabForwardActive'),
-		  univention.admin.field('kolabForwardKeepCopy'),
-		  univention.admin.field('kolabForwardUCE')],],
-		[univention.admin.field("filler"), univention.admin.field("filler")],
-		[univention.admin.field('kolabDeliveryToFolderName'), univention.admin.field('kolabDeliveryToFolderActive')],
-		[univention.admin.field("filler"), univention.admin.field("filler")],
-		[univention.admin.field('kolabDelegate')]
-	]),
-	univention.admin.tab(_('Invitation'),_('Invitation acceptance'), [
-		[univention.admin.field('kolabInvitationPolicy')],
-	], advanced = True),
-	univention.admin.tab(_('User Certificate'),_('User Certificate'), [
-		[univention.admin.field("userCertificate")],
-		[univention.admin.field('certificateSubjectCommonName'), univention.admin.field('certificateSubjectOrganisationalUnit')],
-		[univention.admin.field('certificateSubjectOrganisation'), univention.admin.field('certificateSubjectLocation')],
-		[univention.admin.field('certificateSubjectState'), univention.admin.field('certificateSubjectCountry')],
-		[univention.admin.field('certificateSubjectMail'), ],
-		[univention.admin.field('certificateIssuerCommonName'), univention.admin.field('certificateIssuerOrganisationalUnit')],
-		[univention.admin.field('certificateIssuerOrganisation'), univention.admin.field('certificateIssuerLocation')],
-		[univention.admin.field('certificateIssuerState'), univention.admin.field('certificateIssuerCountry')],
-		[univention.admin.field('certificateIssuerMail'), ],
-		[univention.admin.field('certificateDateNotBefore'), univention.admin.field('certificateDateNotAfter') ],
-		[univention.admin.field('certificateVersion'), univention.admin.field('certificateSerial') ],
-	], advanced = True),
-]
+layout = [
+	{ 'name' : _( 'General' ), 'description' : _( 'Basic settings' ),
+	  'layout' : [
+		  { 'label' : _( 'User account' ), 'layout' : [
+			'username',
+			'password', 
+			'description',
+			  ] },
+		  { 'label' : _( 'Personal information' ), 'layout' : [
+			  'title',
+			  [ 'firstname', 'lastname' ],
+			  'organisation',
+			  ] },
+		  { 'label' : _( 'Extended settings' ), 'layout' : [
+			  [ 'overridePWHistory', 'overridePWLength' ],
+			  ] },
+		  ] },
+	{ 'name' : _( 'User account' ), 'description' : _( 'Account settings' ),
+	  'layout' : [
+		  [ 'disabled', 'locked' ],
+		  [ 'userexpiry', 'passwordexpiry' ],
+		  [ 'filler', 'pwdChangeNextLogin' ],
+		  ] },
+	{ 'name' : _( 'Mail' ), 'description' : _( 'Mail preferences' ),
+	  'layout' : [
+		  'mailPrimaryAddress',
+		  'mailAlternativeAddress',
+		  'mailGlobalSpamFolder',
+		  ] },
+	{ 'name' : _( 'Contact' ), 'description' : _( 'Contact information' ),
+	  'layout' : [
+		  [ 'e-mail', 'phone' ],
+		  [ 'street', 'birthday' ],
+		  [ 'postcode', 'city' ],
+		  'jpegPhoto',
+		  ] },
+	{ 'name' : _( 'Organisation' ), 'description' : _( 'Organisational information' ),
+	  'layout' : [
+		  [ 'employeeNumber', 'employeeType' ],
+		  [ 'roomNumber', 'departmentNumber' ],
+		  'secretary',
+		  ] },
+	{ 'name' : _( 'Private contact' ), 'description' : _( 'Private contact information' ),
+	  'layout' : [
+		  [ 'mobileTelephoneNumber', 'homeTelephoneNumber' ],
+		  [ 'pagerTelephoneNumber','homePostalAddress' ]
+		  ] },
+	{ 'name' : _( 'POSIX (Linux/UNIX)' ), 'description' : _( 'POSIX (Linux/UNIX) account settings' ), 'advanced' : True,
+	  'layout' : [
+		  [ 'unixhome', 'shell' ],
+		  [ 'uidNumber', 'gidNumber' ],
+		  [ 'homeShare', 'homeSharePath' ],
+		  'gecos'
+		  ] },
+	{ 'name' : _( 'Windows' ), 'description' : _( 'Windows account settings' ),
+	  'layout' : [
+		  [ 'sambahome', 'homedrive' ],
+		  [ 'scriptpath', 'profilepath' ],
+		  [ 'sambaRID', 'sambaPrivileges' ],
+		  [ 'sambaLogonHours', 'sambaUserWorkstations' ]
+		  ] },
+	{ 'name' : _( 'Groups' ), 'description' : _( 'Group memberships' ),
+	  'layout' : [
+		  'primaryGroup',
+		  'groups',
+		  ] },
+	{ 'name' : _( 'Out of office notice' ), 'description' : _( 'Out of office notice' ),
+	  'layout' : [
+		  ['kolabVacationText', [ 'kolabVacationActive', 'kolabVacationReplyToUCE',	'kolabVacationResendInterval', ] ],
+		  'kolabVacationAddress',
+		  [ 'kolabVacationReactDomain' , 'kolabVacationNoReactDomain' ]
+		  ] },
+	{ 'name' : _('Groupware'), _( 'Groupware settings' ),
+	  'layout' : [
+		  [ 'kolabHomeServer', 'kolabDisableSieve' ],
+		  [ 'kolabForwardAddress', [ 'kolabForwardActive', 'kolabForwardKeepCopy', 'kolabForwardUCE' ], ],
+		  [ 'kolabDeliveryToFolderName', 'kolabDeliveryToFolderActive' ],
+		  'kolabDelegate'
+		  ] },
+	{ 'name' : _( 'Invitation' ), 'description' : _( 'Invitation acceptance' ), 'advanced' : True,
+	  'layout' : [
+		  'kolabInvitationPolicy'
+		  ] },
+	{ 'name' : _( 'User Certificate' ), 'description' : _( 'User Certificate' ), 'advanced' : True,
+	  'layout' : [
+		  'userCertificate',
+		  [ 'certificateSubjectCommonName' , 'certificateSubjectOrganisationalUnit' ],
+		  [ 'certificateSubjectOrganisation' , 'certificateSubjectLocation' ],
+		  [ 'certificateSubjectState' , 'certificateSubjectCountry' ],
+		  'certificateSubjectMail',
+		  [ 'certificateIssuerCommonName' , 'certificateIssuerOrganisationalUnit' ],
+		  [ 'certificateIssuerOrganisation' , 'certificateIssuerLocation' ],
+		  [ 'certificateIssuerState' , 'certificateIssuerCountry' ],
+		  'certificateIssuerMail',
+		  [ 'certificateDateNotBefore' , 'certificateDateNotAfter' ],
+		  [ 'certificateVersion', 'certificateSerial'  ]
+		  ] } ]
 
 # append tab with CTX flags
 layout.append( mungeddial.tab )
@@ -2891,7 +2900,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		#calculating hash. sored as a 32byte hex in sambePasswordHistory,
 		#syntax like that: [Salt][MD5(Salt+Hash)]
 		#	First 16bytes ^		^ last 16bytes.
-		pwdhash = md5.md5(salt + pwd).hexdigest().upper()
+		pwdhash = hashlib.md5(salt + pwd).hexdigest().upper()
 		smbpwhash = hexsalt+pwdhash
 
 		if len(pwlist) < smbpwhlen:

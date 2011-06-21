@@ -30,8 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, string, re, copy, time, types, struct, md5
-import ldap, heimdal
+import copy
 import univention.admin
 import univention.admin.handlers
 import univention.admin.handlers.settings.user
