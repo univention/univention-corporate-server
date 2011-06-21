@@ -128,17 +128,21 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		else if (!dojo.isArray(values)) {
 			umc.tools.assert(false, "Given dynamic values are in incorrect format: " + dojo.toJson(values));
 		}
-		
+
 		// sort items according to their displayed name
 		items.sort(umc.tools.cmpObjects({
 			attribute: 'label',
 			ignoreCase: true
 		}));
-		
+
 		// add items to the store
 		dojo.forEach(items, function(i) {
 			if (i) {
 				this.store.newItem(i);
+				// set pre-selected item
+				if ( i.preselected !== undefined && i.preselected == true ) {
+                    this._initialValue = i.id;
+                }
 			}
 		}, this);
 
