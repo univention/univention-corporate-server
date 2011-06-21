@@ -280,7 +280,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			var categoryPane = new umc.widgets.CategoryPane({
 				modules: modules,
 				title: icat.name,
-				open: ('favorites' == icat.id)
+				open: true //('favorites' == icat.id)
 			});
 
 			// register to requests for opening a module
