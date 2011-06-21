@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.12-1) unstable; urgency=low
+
+  * fixed typo in layout data structure; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 21 Jun 2011 15:42:01 +0200
+
 univention-directory-manager-modules (7.0.11-1) unstable; urgency=low
 
   * apply new data structure to layout attribute of users/user module; Bug #22439

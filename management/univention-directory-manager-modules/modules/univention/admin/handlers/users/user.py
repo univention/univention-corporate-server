@@ -1141,7 +1141,7 @@ layout = [
 		  'kolabVacationAddress',
 		  [ 'kolabVacationReactDomain' , 'kolabVacationNoReactDomain' ]
 		  ] },
-	{ 'name' : _('Groupware'), _( 'Groupware settings' ),
+	{ 'name' : _('Groupware'), 'description' : _( 'Groupware settings' ),
 	  'layout' : [
 		  [ 'kolabHomeServer', 'kolabDisableSieve' ],
 		  [ 'kolabForwardAddress', [ 'kolabForwardActive', 'kolabForwardKeepCopy', 'kolabForwardUCE' ], ],
