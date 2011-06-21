@@ -60,7 +60,7 @@ dojo.declare("umc.widgets.Form", [
 
 	_layoutContainer: null,
 
-	_dependencyMap: {},
+	_dependencyMap: null,
 
 	'class': 'umcNoBorder',
 
@@ -89,6 +89,9 @@ dojo.declare("umc.widgets.Form", [
 				this.layout.push(row);
 			}
 		}
+
+		// initiate _dependencyMap
+		this._dependencyMap = {};
 	},
 
 	buildRendering: function() {
@@ -175,6 +178,11 @@ dojo.declare("umc.widgets.Form", [
 	},
 
 	_updateDependencies: function(publisherName) {
+		var tmp = [];
+		dojo.forEach(this._dependencyMap[publisherName], function(i) {
+			tmp.push(i.name);
+		});
+		console.log(dojo.replace('# _updateDependencies: publisherName={0} _dependencyMap[{0}]={1}', [publisherName, dojo.toJson(tmp)]));
 		if (publisherName in this._dependencyMap) {
 			var values = this.gatherFormValues();
 			dojo.forEach(this._dependencyMap[publisherName], function(ireceiver) {

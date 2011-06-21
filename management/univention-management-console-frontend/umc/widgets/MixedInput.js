@@ -17,6 +17,10 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 	//		see description at `umc.widgets._SelectMixin`
 	dynamicValues: null,
 
+	// dynamicOptions: Object?|Function?
+	//		see description at `umc.widgets._SelectMixin`
+	dynamicOptions: null,
+
 	// depends: String?|String[]?
 	//		see description at `umc.widgets._SelectMixin`
 	depends: null,
@@ -47,13 +51,13 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 			(this.depends && dojo.isString(this.depends)) ? [ this.depends ] : [];
 
 		// check whether all necessary values are specified
-		var dependValues = {};
+		var params = {};
 		var nDepValues = 0;
 		if (dependList.length && dojo.isObject(_dependValues)) {
 			// check whether all necessary values are specified
 			for (var i = 0; i < dependList.length; ++i) {
 				if (_dependValues[dependList[i]]) {
-					dependValues[dependList[i]] = _dependValues[dependList[i]];
+					params[dependList[i]] = _dependValues[dependList[i]];
 					++nDepValues;
 				}
 			}
@@ -64,8 +68,18 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 			return;
 		}
 
+		// mixin additional options for the UMCP command
+		if (this.dynamicOptions && dojo.isObject(this.dynamicOptions)) {
+			dojo.mixin(params, this.dynamicOptions);
+		}
+		else if (this.dynamicOptions && dojo.isFunction(this.dynamicOptions)) {
+			var res = this.dynamicOptions();
+			umc.tools.assert(res && dojo.isObject(res), 'The return type of a function specified by umc.widgets.MixedInput.dynamicOptions() needs to return a dictionary: ' + dojo.toJson(res));
+			dojo.mixin(params, res);
+		}
+
 		// get new values from the server and create a new form widget dynamically
-		this.umcpCommand(this.dynamicValues, dependValues).then(dojo.hitch(this, function(data) {
+		this.umcpCommand(this.dynamicValues, params).then(dojo.hitch(this, function(data) {
 			// guess the form widget type based on the result that we get
 			//   array      -> ComboBox
 			//   true/false -> CheckBox

@@ -20,6 +20,12 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	//		format as for staticValues.
 	dynamicValues: null,
 
+	// dynamicOptions: Object?|Function?
+	//		Reference to a dictionary containing options that are passed over to
+	//		the UMCP command specified by `dynamicValues`. Instead of an dictionary,
+	//		a reference of a function returning a dictionary can also be specified.
+	dynamicOptions: null,
+
 	// staticValues: Object[]
 	//		Array of id/label objects containing predefined values, e.g.
 	//		[ { id: 'de', label: 'German' }, { id: 'en', label: 'English' } ].
@@ -151,13 +157,13 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 			(this.depends && dojo.isString(this.depends)) ? [ this.depends ] : [];
 
 		// check whether all necessary values are specified
-		var dependValues = {};
+		var params = {};
 		var nDepValues = 0;
 		if (dependList.length && dojo.isObject(_dependValues)) {
 			// check whether all necessary values are specified
 			for (var i = 0; i < dependList.length; ++i) {
 				if (_dependValues[dependList[i]]) {
-					dependValues[dependList[i]] = _dependValues[dependList[i]];
+					params[dependList[i]] = _dependValues[dependList[i]];
 					++nDepValues;
 				}
 			}
@@ -168,9 +174,19 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 			return;
 		}
 
+		// mixin additional options for the UMCP command
+		if (this.dynamicOptions && dojo.isObject(this.dynamicOptions)) {
+			dojo.mixin(params, this.dynamicOptions);
+		}
+		else if (this.dynamicOptions && dojo.isFunction(this.dynamicOptions)) {
+			var res = this.dynamicOptions();
+			umc.tools.assert(res && dojo.isObject(res), 'The return type of a function specified by umc.widgets._SelectMixin.dynamicOptions() needs to return a dictionary: ' + dojo.toJson(res));
+			dojo.mixin(params, res);
+		}
+
 		// add all dynamic values which need to be queried via UMCP asynchronously
 		if (dojo.isString(this.dynamicValues) && this.dynamicValues) {
-			this.umcpCommand(this.dynamicValues, dependValues).then(dojo.hitch(this, function(data) {
+			this.umcpCommand(this.dynamicValues, params).then(dojo.hitch(this, function(data) {
 				this._setDynamicValues(data.result);
 				this.onDynamicValuesLoaded(data.result);
 			}));
