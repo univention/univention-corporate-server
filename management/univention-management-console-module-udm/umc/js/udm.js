@@ -119,6 +119,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				{ id: 'any', label: this._( 'Any property' ) }
 			],
 			dynamicValues: 'udm/properties',
+			dynamicOptions: { searchable: true },
 			umcpCommand: thisUmcpCommand,
 			depends: 'objectType'
 		}, {
