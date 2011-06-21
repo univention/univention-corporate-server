@@ -60,6 +60,8 @@ def get_ldap_connection():
 	return _ldap_connection, _ldap_position
 
 class UDM_Module( object ):
+	UCR_SEARCH_DEFAULT = 'directory/manager/web/modules/%(module)s/search/default'
+
 	def __init__( self, module ):
 		self.load( module )
 
@@ -128,21 +130,19 @@ class UDM_Module( object ):
 		return tabs
 
 	@property
-	def property_names( self ):
-		props = []
-		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
-			if key == 'filler' or prop.dontsearch: continue
-			props.append( { 'id' : key, 'label' : prop.short_description } )
-		props.sort( key = operator.itemgetter( 'id' ) )
-		return props
-
-	@property
 	def properties( self ):
 		props = []
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
+			if key == 'filler': continue
 			item = { 'id' : key, 'label' : prop.short_description, 'description' : prop.long_description,
 					 'required' : prop.required in ( 1, True ), 'editable' : prop.may_change in ( 1, True ),
-					 'options' : prop.options }
+					 'options' : prop.options, 'searchable' : not prop.dontsearch }
+
+			# read UCR configuration
+			if ucr.get( UDM_Module.UCR_SEARCH_DEFAULT % { 'module' : self.module.module } ) == key:
+				item[ 'preselected' ] = True
+
+			# map syntax to widget
 			if isinstance( prop.syntax, ( udm_syntax.boolean, udm_syntax.TrueFalseUp ) ):
 				item[ 'type' ] = 'CheckBox'
 			elif isinstance( prop.syntax, ( udm_syntax.passwd, udm_syntax.userPasswd ) ):
@@ -200,3 +200,22 @@ class UDM_Settings( object ):
 
 	def resultColumns( self, module_name ):
 		pass
+
+def ldap_dn2path( ldap_dn ):
+	ldap_base = ucr.get( 'ldap/base' )
+	if ldap_base is None or not ldap_dn.endswith( ldap_base ):
+		return ldap_dn
+	rdn = ldap_dn[ : -1 * len( ldap_base ) ]
+	path = []
+	for item in ldap_base.split( ',' ):
+		if not item: continue
+		dummy, value = item.split( '=', 1 )
+		path.append( value )
+	path = [ '.'.join( path ) + ':', ]
+	if rdn:
+		for item in rdn.split( ',' )[ 1 : ]:
+			if not item: continue
+			dummy, value = item.split( '=', 1 )
+			path.insert( 1, value )
+
+	return '/'.join( path )

@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.19-1) unstable; urgency=low
+
+  * return "path" represention of LDAP DN
+  * support option searchable for udm/properties request; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 21 Jun 2011 12:46:43 +0200
+
 univention-management-console-module-udm (1.0.18-1) unstable; urgency=low
 
   * make UDM search work (Bug #22460)

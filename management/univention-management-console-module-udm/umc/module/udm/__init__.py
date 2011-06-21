@@ -34,7 +34,7 @@
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 
-from .ldap import UDM_Module, UDM_Settings
+from .ldap import UDM_Module, UDM_Settings, ldap_dn2path
 
 _ = umc.Translation( 'univention-management-console-modules-udm' ).translate
 
@@ -67,7 +67,7 @@ class Instance( umcm.Base ):
 
 		result = module.search( request.options[ 'container' ], request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ] )
 
-		self.finished( request.id, map( lambda obj: { 'ldap-dn' : obj.dn, 'name' : obj[ module.identifies ], 'path' : obj.dn }, result ) )
+		self.finished( request.id, map( lambda obj: { 'ldap-dn' : obj.dn, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) }, result ) )
 
 	def values( self, request ):
 		module_name = request.options.get( 'objectType' )
@@ -94,7 +94,10 @@ class Instance( umcm.Base ):
 		if not module_name:
 			module_name = request.flavor
 		module = UDM_Module( request.flavor )
-		self.finished( request.id, module.properties )
+		properties = module.properties
+		if request.options.get( 'searchable', False ):
+			properties = filter( lambda prop: prop[ 'searchable' ], properties )
+		self.finished( request.id, properties )
 
 	def options( self, request ):
 		module = UDM_Module( request.flavor )
