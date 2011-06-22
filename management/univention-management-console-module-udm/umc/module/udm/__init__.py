@@ -86,7 +86,10 @@ class Instance( umcm.Base ):
 		self.finished( request.id, module.child_modules )
 
 	def layout( self, request ):
-		module = UDM_Module( request.flavor )
+		module_name = request.options.get( 'objectType' )
+		if not module_name or 'all' == module_name:
+			module_name = request.flavor
+		module = UDM_Module( module_name )
 		self.finished( request.id, module.layout )
 
 	def properties( self, request ):

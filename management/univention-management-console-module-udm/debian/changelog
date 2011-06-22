@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.21-1) unstable; urgency=low
+
+  * support retrieving layout structures for all UDM modules; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 22 Jun 2011 18:04:58 +0200
+
 univention-management-console-module-udm (1.0.20-1) unstable; urgency=low
 
   * return new layout structure; Bug #22439
