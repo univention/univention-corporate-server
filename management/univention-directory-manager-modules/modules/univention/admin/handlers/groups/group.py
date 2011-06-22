@@ -30,8 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, copy, re, os, time, ldap
+import copy
+import time
+import ldap
+
 import univention.admin
+from univention.admin.layout import Tab, Group
 import univention.admin.uldap
 import univention.admin.filter
 import univention.admin.handlers
@@ -199,32 +203,31 @@ property_descriptions={
 		)
 }
 
-layout=[
-	univention.admin.tab(_('General'),_('Basic settings'),[
-		[univention.admin.field("name"), univention.admin.field("description")],
-		[univention.admin.field("gidNumber"),univention.admin.field("sambaRID")],
-		[univention.admin.field("sambaGroupType"), univention.admin.field("mailAddress")]
-	] ),
-	univention.admin.tab(_('Members'),_('Members of this Group'),[
-		[univention.admin.field("users")]
-	] ),
-	univention.admin.tab(_('Host members'),_('Host members of this group'),[
-		[univention.admin.field("hosts")]
-	], advanced = True ),
-	univention.admin.tab(_('Nested groups'),_('Membership of other groups'),[
-		[univention.admin.field("nestedGroup")]
-	], advanced = True ),
-	univention.admin.tab(_('Member of'),_('Membership in other groups'),[
-			[univention.admin.field("memberOf")]
-	], advanced = True ),
-	univention.admin.tab(_('Allowed users'),_('Users that are allowed to send e-mails to the group'),[
-		[univention.admin.field("allowedEmailUsers")]
-	], advanced = True ),
-	univention.admin.tab(_('Allowed groups'),_('Groups that are allowed to send e-mails to the group'),[
-		[univention.admin.field("allowedEmailGroups")]
-	], advanced = True )
+layout = [
+	Tab( _( 'General' ),_( 'Basic settings' ), layout = [
+		[ 'name', 'description' ],
+		[ 'gidNumber','sambaRID' ],
+		[ 'sambaGroupType', 'mailAddress' ]
+		] ),
+	Tab( _( 'Members' ), _( 'Members of this Group' ), layout = [
+		'users'
+		] ),
+	Tab( _( 'Host members' ), _( 'Host members of this group' ), advanced = True, layout = [
+		'hosts'
+		] ),
+	Tab( _( 'Nested groups' ), _( 'Membership of other groups' ), advanced = True, layout = [
+		'nestedGroup'
+		] ),
+	Tab( _( 'Member of' ), _( 'Membership in other groups' ), advanced = True, layout = [
+		'memberOf'
+		] ),
+	Tab( _( 'Allowed users' ), _( 'Users that are allowed to send e-mails to the group' ), advanced = True, layout = [
+		'allowedEmailUsers'
+		] ),
+	Tab( _( 'Allowed groups' ), _( 'Groups that are allowed to send e-mails to the group' ), advanced = True, layout = [
+		'allowedEmailGroups'
+		] )
 ]
-
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

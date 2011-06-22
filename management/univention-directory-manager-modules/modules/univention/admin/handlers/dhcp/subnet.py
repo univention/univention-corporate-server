@@ -30,8 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
-import socket, struct
+import string
+
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.ipaddress
@@ -103,14 +104,15 @@ property_descriptions={
 }
 options={
 }
-layout=[
-	univention.admin.tab(_('General'), _('Basic settings'), [
-		[univention.admin.field('subnet'),univention.admin.field('subnetmask')],
-		[univention.admin.field('broadcastaddress'),univention.admin.field('filler')]
-	]),
-	univention.admin.tab(_('Dynamic address assignment'), _('Define a pool of addresses available for dynamic address assignment.'), [
-		[univention.admin.field('range')]
-	]),
+
+layout = [
+	Tab( _( 'General' ), _('Basic settings'), layout = [
+		[ 'subnet', 'subnetmask' ],
+		'broadcastaddress'
+		] ),
+	Tab( _( 'Dynamic address assignment' ), _( 'Define a pool of addresses available for dynamic address assignment.' ), layout = [
+		'range'
+		] ),
 ]
 
 def rangeMap(old):

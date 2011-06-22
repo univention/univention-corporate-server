@@ -30,7 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, re, copy
+import copy
+import string
+
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
@@ -132,16 +135,16 @@ property_descriptions={
 }
 options={
 }
-layout=[
-	univention.admin.tab(_('General'), _('Basic settings'), [
+layout = [
+	Tab(_('General'), _('Basic settings'), layout = [
 		[univention.admin.field('name'), univention.admin.field('range')]
-	]),
-	univention.admin.tab(_('Advanced'), _('Advanced DHCP pool options'), [
-		[univention.admin.field('failover_peer'), univention.admin.field('filler')],
-		[univention.admin.field('known_clients'),univention.admin.field('unknown_clients')],
-		[univention.admin.field('dynamic_bootp_clients'),univention.admin.field('all_clients') ]
-	], advanced = True)
-]
+		] ),
+	Tab( _( 'Advanced' ), _('Advanced DHCP pool options'), advanced = True, layout = [
+		'failover_peer',
+		[ 'known_clients', 'unknown_clients' ],
+		[ 'dynamic_bootp_clients', 'all_clients' ]
+		] )
+	]
 
 def rangeMap(old):
 	new=[]

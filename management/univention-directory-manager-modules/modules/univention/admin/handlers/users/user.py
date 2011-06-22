@@ -41,7 +41,10 @@ import struct
 import tempfile
 from M2Crypto import X509
 import ldap
+import base64
+
 import univention.admin
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.groups.group
@@ -54,7 +57,6 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.admin.mungeddial as mungeddial
 import univention.admin.handlers.settings.prohibited_username
-import base64
 
 import univention.debug
 import univention.password
@@ -1070,102 +1072,94 @@ for key, value in mungeddial.properties.items():
 default_property_descriptions=copy.deepcopy(property_descriptions) # for later reset of descriptions
 
 layout = [
-	{ 'name' : _( 'General' ), 'description' : _( 'Basic settings' ),
-	  'layout' : [
-		  { 'label' : _( 'User account' ), 'layout' : [
+	Tab( _( 'General' ), _( 'Basic settings' ),	[
+		Group( _( 'User account' ), layout = [
 			'username',
 			'password', 
 			'description',
-			  ] },
-		  { 'label' : _( 'Personal information' ), 'layout' : [
-			  'title',
-			  [ 'firstname', 'lastname' ],
-			  'organisation',
-			  ] },
-		  { 'label' : _( 'Extended settings' ), 'layout' : [
-			  [ 'overridePWHistory', 'overridePWLength' ],
-			  ] },
-		  ] },
-	{ 'name' : _( 'User account' ), 'description' : _( 'Account settings' ),
-	  'layout' : [
-		  [ 'disabled', 'locked' ],
-		  [ 'userexpiry', 'passwordexpiry' ],
-		  [ 'filler', 'pwdChangeNextLogin' ],
-		  ] },
-	{ 'name' : _( 'Mail' ), 'description' : _( 'Mail preferences' ),
-	  'layout' : [
-		  'mailPrimaryAddress',
-		  'mailAlternativeAddress',
-		  'mailGlobalSpamFolder',
-		  ] },
-	{ 'name' : _( 'Contact' ), 'description' : _( 'Contact information' ),
-	  'layout' : [
-		  [ 'e-mail', 'phone' ],
-		  [ 'street', 'birthday' ],
-		  [ 'postcode', 'city' ],
-		  'jpegPhoto',
-		  ] },
-	{ 'name' : _( 'Organisation' ), 'description' : _( 'Organisational information' ),
-	  'layout' : [
-		  [ 'employeeNumber', 'employeeType' ],
-		  [ 'roomNumber', 'departmentNumber' ],
-		  'secretary',
-		  ] },
-	{ 'name' : _( 'Private contact' ), 'description' : _( 'Private contact information' ),
-	  'layout' : [
-		  [ 'mobileTelephoneNumber', 'homeTelephoneNumber' ],
-		  [ 'pagerTelephoneNumber','homePostalAddress' ]
-		  ] },
-	{ 'name' : _( 'POSIX (Linux/UNIX)' ), 'description' : _( 'POSIX (Linux/UNIX) account settings' ), 'advanced' : True,
-	  'layout' : [
-		  [ 'unixhome', 'shell' ],
-		  [ 'uidNumber', 'gidNumber' ],
-		  [ 'homeShare', 'homeSharePath' ],
-		  'gecos'
-		  ] },
-	{ 'name' : _( 'Windows' ), 'description' : _( 'Windows account settings' ),
-	  'layout' : [
-		  [ 'sambahome', 'homedrive' ],
-		  [ 'scriptpath', 'profilepath' ],
-		  [ 'sambaRID', 'sambaPrivileges' ],
-		  [ 'sambaLogonHours', 'sambaUserWorkstations' ]
-		  ] },
-	{ 'name' : _( 'Groups' ), 'description' : _( 'Group memberships' ),
-	  'layout' : [
-		  'primaryGroup',
-		  'groups',
-		  ] },
-	{ 'name' : _( 'Out of office notice' ), 'description' : _( 'Out of office notice' ),
-	  'layout' : [
-		  ['kolabVacationText', [ 'kolabVacationActive', 'kolabVacationReplyToUCE',	'kolabVacationResendInterval', ] ],
-		  'kolabVacationAddress',
-		  [ 'kolabVacationReactDomain' , 'kolabVacationNoReactDomain' ]
-		  ] },
-	{ 'name' : _('Groupware'), 'description' : _( 'Groupware settings' ),
-	  'layout' : [
-		  [ 'kolabHomeServer', 'kolabDisableSieve' ],
-		  [ 'kolabForwardAddress', [ 'kolabForwardActive', 'kolabForwardKeepCopy', 'kolabForwardUCE' ], ],
-		  [ 'kolabDeliveryToFolderName', 'kolabDeliveryToFolderActive' ],
-		  'kolabDelegate'
-		  ] },
-	{ 'name' : _( 'Invitation' ), 'description' : _( 'Invitation acceptance' ), 'advanced' : True,
-	  'layout' : [
-		  'kolabInvitationPolicy'
-		  ] },
-	{ 'name' : _( 'User Certificate' ), 'description' : _( 'User Certificate' ), 'advanced' : True,
-	  'layout' : [
-		  'userCertificate',
-		  [ 'certificateSubjectCommonName' , 'certificateSubjectOrganisationalUnit' ],
-		  [ 'certificateSubjectOrganisation' , 'certificateSubjectLocation' ],
-		  [ 'certificateSubjectState' , 'certificateSubjectCountry' ],
-		  'certificateSubjectMail',
-		  [ 'certificateIssuerCommonName' , 'certificateIssuerOrganisationalUnit' ],
-		  [ 'certificateIssuerOrganisation' , 'certificateIssuerLocation' ],
-		  [ 'certificateIssuerState' , 'certificateIssuerCountry' ],
-		  'certificateIssuerMail',
-		  [ 'certificateDateNotBefore' , 'certificateDateNotAfter' ],
-		  [ 'certificateVersion', 'certificateSerial'  ]
-		  ] } ]
+			] ),
+		Group( _( 'Personal information' ), layout = [
+			'title',
+			[ 'firstname', 'lastname' ],
+			'organisation',
+			] ),
+		Group( _( 'Extended settings' ), layout = [
+			[ 'overridePWHistory', 'overridePWLength' ],
+			] ),
+		] ),
+	Tab( _( 'User account' ),  _( 'Account settings' ), [
+		[ 'disabled', 'locked' ],
+		[ 'userexpiry', 'passwordexpiry' ],
+		[ 'filler', 'pwdChangeNextLogin' ],
+		] ),
+	Tab(_( 'Mail' ), _( 'Mail preferences' ), [
+		'mailPrimaryAddress',
+		'mailAlternativeAddress',
+		'mailGlobalSpamFolder',
+		] ),
+	Tab( _( 'Contact' ), _( 'Contact information' ), [
+		[ 'e-mail', 'phone' ],
+		[ 'street', 'birthday' ],
+		[ 'postcode', 'city' ],
+		'jpegPhoto',
+		] ),
+	Tab( _( 'Organisation' ), _( 'Organisational information' ), [
+		[ 'employeeNumber', 'employeeType' ],
+		[ 'roomNumber', 'departmentNumber' ],
+		'secretary',
+		] ),
+	Tab( _( 'Private contact' ), _( 'Private contact information' ), [
+		[ 'mobileTelephoneNumber', 'homeTelephoneNumber' ],
+		[ 'pagerTelephoneNumber','homePostalAddress' ]
+		] ),
+	Tab( _( 'POSIX (Linux/UNIX)' ), _( 'POSIX (Linux/UNIX) account settings' ), True, [
+		[ 'unixhome', 'shell' ],
+		[ 'uidNumber', 'gidNumber' ],
+		[ 'homeShare', 'homeSharePath' ],
+		'gecos'
+		] ),
+	Tab( _( 'Windows' ), _( 'Windows account settings' ), [
+		[ 'sambahome', 'homedrive' ],
+		[ 'scriptpath', 'profilepath' ],
+		[ 'sambaRID', 'sambaPrivileges' ],
+		[ 'sambaLogonHours', 'sambaUserWorkstations' ]
+		] ),
+	Tab( _( 'Groups' ), _( 'Group memberships' ), [
+		'primaryGroup',
+		'groups',
+		] ),
+	Tab( _( 'Out of office notice' ), _( 'Out of office notice' ), [
+		['kolabVacationText', [ 'kolabVacationActive', 'kolabVacationReplyToUCE',	'kolabVacationResendInterval', ] ],
+		'kolabVacationAddress',
+		[ 'kolabVacationReactDomain' , 'kolabVacationNoReactDomain' ]
+		] ),
+	Tab( _('Groupware'), _( 'Groupware settings' ), [
+		[ 'kolabHomeServer', 'kolabDisableSieve' ],
+		[ 'kolabForwardAddress', [ 'kolabForwardActive', 'kolabForwardKeepCopy', 'kolabForwardUCE' ], ],
+		[ 'kolabDeliveryToFolderName', 'kolabDeliveryToFolderActive' ],
+		'kolabDelegate'
+		] ),
+	Tab( _( 'Invitation' ), _( 'Invitation acceptance' ), True, [
+		'kolabInvitationPolicy'
+		] ),
+	Tab( _( 'User Certificate' ), _( 'User Certificate' ), True, [
+		Group( _( 'General' ), '', [
+			'userCertificate',
+			[ 'certificateSubjectCommonName' , 'certificateSubjectOrganisationalUnit' ],
+			[ 'certificateSubjectOrganisation' , 'certificateSubjectLocation' ],
+			[ 'certificateSubjectState' , 'certificateSubjectCountry' ],
+			'certificateSubjectMail', ] ),
+		Group( _( 'Issuer' ), '', [
+			   [ 'certificateIssuerCommonName' , 'certificateIssuerOrganisationalUnit' ],
+			   [ 'certificateIssuerOrganisation' , 'certificateIssuerLocation' ],
+			   [ 'certificateIssuerState' , 'certificateIssuerCountry' ],
+			   'certificateIssuerMail', ] ),
+		Group( _( 'Dates' ), '', [
+			[ 'certificateDateNotBefore' , 'certificateDateNotAfter' ], ] ),
+		Group( _( 'Misc' ), '', [
+			[ 'certificateVersion', 'certificateSerial'  ] ] )
+		] )
+	]
 
 # append tab with CTX flags
 layout.append( mungeddial.tab )

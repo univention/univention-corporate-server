@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, types
+from univention.admin.layout import Tab, Group
 import univention.admin
 import univention.admin.handlers
 import univention.admin.localization
@@ -67,10 +67,11 @@ property_descriptions={
 			may_change=1
 		),
 }
-layout=[
-	univention.admin.tab(_('General'), _('Basic settings'), fields=[
-		[univention.admin.field('address'), univention.admin.field('ptr_record')],
-	]),
+
+layout = [
+	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
+		[ 'address', 'ptr_record' ],
+		] ),
 ]
 
 mapping=univention.admin.mapping.mapping()

@@ -30,7 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import re, sys, string
+import re
+
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
@@ -177,26 +179,27 @@ property_descriptions={
 			may_change=1
 		),
 }
-layout=[
-	univention.admin.tab(_('General'), _('Basic settings'), [
-		[univention.admin.field('zone')],
-		[univention.admin.field('zonettl')]
-	]),
-	univention.admin.tab(_('Start of Authority'), _('Primary name server information'), [
-		[univention.admin.field('contact'), univention.admin.field("filler")],
-		[univention.admin.field('nameserver', first_only=1, short_description=_('Primary Name Server')), univention.admin.field('serial')],
-		[univention.admin.field('refresh'), univention.admin.field('retry')],
-		[univention.admin.field('expire'), univention.admin.field('ttl')]
-	]),
-	univention.admin.tab(_('Name servers'), _('Additional name servers'), [
-		[univention.admin.field('nameserver')]
-	]),
-	univention.admin.tab(_('MX records'), _('Mail exchanger records'), [
-		[univention.admin.field('mx')]
-	]),
-	univention.admin.tab(_('TXT records'), _('Text records'), [
-		[univention.admin.field('txt')]
-	]),
+
+layout = [
+	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
+		'zone',
+		'zonettl'
+		] ),
+	Tab( _( 'Start of Authority' ), _( 'Primary name server information' ), layout = [
+		[ 'contact', "filler" ],
+		[ 'nameserver', 'serial' ],
+		[ 'refresh', 'retry' ],
+		[ 'expire', 'ttl' ]
+		] ),
+	Tab( _( 'Name servers'), _('Additional name servers'), layout = [
+		'nameserver'
+		] ),
+	Tab( _( 'MX records' ), _( 'Mail exchanger records' ), layout = [
+		'mx'
+		] ),
+	Tab(_('TXT records'), _('Text records'), layout = [
+		'txt'
+		] ),
 ]
 
 def mapMX(old):

@@ -290,9 +290,9 @@ def ucr_overwrite_module_layout( module ):
 
 	new_layout = []
 	for tab in module.layout[ : ]:
-		desc = tab[ 'name' ]
-		if hasattr( tab[ 'name' ], 'data' ):
-			desc = tab[ 'name' ].data
+		desc = tab.label
+		if hasattr( tab.label, 'data' ):
+			desc = tab.label.data
 
 		# replace invalid characters by underscores
 		desc = re.sub(univention.config_registry.invalid_key_chars, '_', desc).replace('/','_')

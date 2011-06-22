@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
@@ -83,13 +83,13 @@ Each address should be either an IP address or a domain name that resolves to on
 		),
 }
 layout=[
-	univention.admin.tab(_('General'), _('Basic settings'), [
-		[univention.admin.field('host')],
-		[univention.admin.field('hwaddress')]
-	]),
-	univention.admin.tab(_('Fixed IP addresses'), _('Fixed IP Addresses of the Host'), [
-		[univention.admin.field('fixedaddress')]
-	])
+	Tab( _('General'), _('Basic settings'), layout = [
+		'host',
+		'hwaddress'
+		] ),
+	Tab( _( 'Fixed IP addresses' ), _( 'Fixed IP Addresses of the Host' ), layout = [
+		'fixedaddress'
+		] )
 ]
 
 def unmapHWAddress(old):

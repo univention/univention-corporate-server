@@ -30,8 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, string, re, copy, time, types
 import univention.admin
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
@@ -85,10 +85,9 @@ property_descriptions={
 		)
 }
 
-layout=[
-	univention.admin.tab(_('Change password'),_('Change password'),[
-		[univention.admin.field("password"), univention.admin.field("filler")],
-	]),
-]
+layout = [
+	Tab( _( 'Change password' ), _( 'Change password' ), [
+		'password' ] )
+	]
 
 object=univention.admin.handlers.users.user.object

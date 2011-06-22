@@ -30,8 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
-import socket, struct
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.ipaddress
@@ -62,11 +61,12 @@ property_descriptions={
 }
 options={
 }
-layout=[
-	univention.admin.tab(_('General'), _('Basic settings'), [
-		[univention.admin.field('name')]
-	]),
-]
+
+layout = [
+	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
+		'name'
+		] ),
+	]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

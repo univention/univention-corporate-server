@@ -31,9 +31,12 @@
 # <http://www.gnu.org/licenses/>.
 
 import copy
+
+from univention.admin.layout import Tab, Group
 import univention.admin
 import univention.admin.localization
 import univention.admin.syntax
+
 import re
 
 translation=univention.admin.localization.translation('univention.admin')
@@ -75,13 +78,13 @@ nagios_properties = {
 }
 
 
-nagios_tab_A = univention.admin.tab( _( 'Nagios services' ), _( 'Nagios Service Settings' ), [
-		[ univention.admin.field( "nagiosServices" ) ],
+nagios_tab_A = Tab( _( 'Nagios services' ), _( 'Nagios Service Settings' ), [
+	"nagiosServices",
 	] )
 
-nagios_tab_B = univention.admin.tab( _( 'Nagios notification' ), _( 'Nagios Notification Settings' ), [
-		[ univention.admin.field( "nagiosContactEmail" ) ],
-		[ univention.admin.field( "nagiosParents" ) ],
+nagios_tab_B = Tab( _( 'Nagios notification' ), _( 'Nagios Notification Settings' ), [
+	"nagiosContactEmail",
+	"nagiosParents",
 	] )
 
 

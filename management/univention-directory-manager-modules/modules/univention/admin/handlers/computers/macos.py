@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, ldap, copy
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.password
@@ -38,10 +38,7 @@ import univention.admin.allocators
 import univention.admin.localization
 import univention.admin.uldap
 import univention.admin.nagios as nagios
-import univention.admin.handlers.dns.forward_zone
-import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.groups.group
-import univention.admin.handlers.networks.network
 
 translation=univention.admin.localization.translation('univention.admin.handlers.computers')
 _=translation.translate
@@ -242,34 +239,35 @@ property_descriptions={
 			identifies=0
 		),
 }
-layout=[
-	univention.admin.tab(_('General'),_('Basic settings'),[
-			[univention.admin.field("name"), univention.admin.field('description')],
-			[univention.admin.field("mac"), univention.admin.field('network')],
-			[univention.admin.field("inventoryNumber")],
-		]),
-	univention.admin.tab(_('IP'),_('IP'),[
-			[univention.admin.field("ip")],
-		]),
-	univention.admin.tab(_('Account'),_('Account'),[
-			[univention.admin.field("password")],
-			[univention.admin.field("primaryGroup")]
-		], advanced = True),
-	univention.admin.tab(_('Unix account'),_('Unix account settings'), [
-			[univention.admin.field("unixhome"), univention.admin.field("shell")]
-		], advanced = True),
-	univention.admin.tab(_('DNS'),_('DNS Forward and Reverse Lookup Zone'),[
-			[univention.admin.field("dnsEntryZoneForward")],
-			[univention.admin.field("dnsEntryZoneReverse")],
-			[univention.admin.field("dnsEntryZoneAlias")]
-		]),
-	univention.admin.tab(_('DHCP'),_('DHCP'),[
-			[univention.admin.field("dhcpEntryZone")]
-		]),
-	univention.admin.tab(_('Groups'),_('Group memberships'),[
-			[univention.admin.field("groups")],
-		], advanced = True),
-]
+
+layout = [
+	Tab( _( 'General' ),_( 'Basic settings' ), layout = [
+		[ "name", 'description' ],
+		[ "mac", 'network' ],
+		"inventoryNumber",
+		] ),
+	Tab( _( 'IP' ),_( 'IP' ), layout = [
+		"ip",
+		] ),
+	Tab( _( 'Account' ),_( 'Account' ), advanced = True, layout = [
+		[ "password" ],
+		[ "primaryGroup" ]
+		] ),
+	Tab( _( 'Unix account' ),_( 'Unix account settings' ), advanced = True, layout = [
+		[ "unixhome", "shell" ]
+		] ),
+	Tab( _( 'DNS' ),_( 'DNS Forward and Reverse Lookup Zone' ), layout = [
+		[ "dnsEntryZoneForward" ],
+		[ "dnsEntryZoneReverse" ],
+		[ "dnsEntryZoneAlias" ]
+		] ),
+	Tab( _( 'DHCP' ),_( 'DHCP' ), layout = [
+		"dhcpEntryZone"
+		] ),
+	Tab( _( 'Groups' ),_( 'Group memberships' ), advanced = True, layout = [
+		"groups",
+		] ),
+ ]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

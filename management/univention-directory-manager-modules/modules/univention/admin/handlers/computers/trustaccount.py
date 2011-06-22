@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, ldap
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.config
 import univention.admin.handlers
@@ -84,13 +84,14 @@ property_descriptions={
 			identifies=0
 		),
 }
-layout=[
-	univention.admin.tab(_('General'),_('Basic Values'),[
-			[univention.admin.field("name"), univention.admin.field("description")],
-		]),
-	univention.admin.tab(_('Domain trust account'),_('Trust account settings'),[
-			[univention.admin.field("password")]
-		])
+
+layout = [
+	Tab( _( 'General' ), _( 'Basic Values' ), layout = [
+		[ "name", "description" ],
+		] ),
+	Tab( _( 'Domain trust account' ), _( 'Trust account settings' ), layout = [
+		"password"
+		] )
 ]
 
 mapping=univention.admin.mapping.mapping()

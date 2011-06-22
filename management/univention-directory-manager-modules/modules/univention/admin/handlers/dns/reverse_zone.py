@@ -30,7 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, types
+import string
+import types
+
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
@@ -159,20 +162,21 @@ property_descriptions={
 			dontsearch=1
 		)
 }
-layout=[
-	univention.admin.tab(_('General'), _('Basic settings'), [
-		[univention.admin.field('subnet')],
-		[univention.admin.field('zonettl')]
-	]),
-	univention.admin.tab(_('Start of Authority'), _('Primary name server information'), [
-		[univention.admin.field('contact'), univention.admin.field('filler')],
-		[univention.admin.field('nameserver', first_only=1, short_description=_('Primary Name Server')), univention.admin.field('serial')],
-		[univention.admin.field('refresh'), univention.admin.field('retry')],
-		[univention.admin.field('expire'), univention.admin.field('ttl')]
-	]),
-	univention.admin.tab(_('Name servers'), _('Additional name servers'), [
-		[univention.admin.field('nameserver')]
-	])
+
+layout = [
+	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
+		'subnet',
+		'zonettl'
+		] ),
+	Tab(_('Start of Authority'), _('Primary name server information'), layout = [
+		['contact', 'filler'],
+		['nameserver', 'serial'],
+		['refresh', 'retry'],
+		['expire', 'ttl']
+		] ),
+	Tab(_('Name servers'), _('Additional name servers'), layout = [
+		'nameserver'
+		] )
 ]
 
 def mapSubnet(subnet):

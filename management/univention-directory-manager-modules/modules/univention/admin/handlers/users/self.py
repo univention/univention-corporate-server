@@ -31,14 +31,14 @@
 # <http://www.gnu.org/licenses/>.
 
 import copy
-import univention.admin
+
+from univention.admin.layout import Tab, Group
 import univention.admin.handlers
 import univention.admin.handlers.settings.user
 import univention.admin.handlers.policies.admin_user
 import univention.admin.localization
 import univention.admin.uexceptions
 import univention.admin.uldap
-import base64
 
 import univention.debug
 import univention.admin.handlers.users.user
@@ -52,8 +52,7 @@ options = {}
 
 mapping = univention.admin.handlers.users.user.mapping
 property_descriptions = univention.admin.handlers.users.user.property_descriptions
-layout = [univention.admin.tab( _('General'),_('There are no options enabled.'),[
-					[univention.admin.field("filler"), ]])]
+layout = [ Tab( _( 'General' ), _( 'There are no options enabled.' ) ) ]
 
 uid_umlauts=0
 childs=0
@@ -70,20 +69,20 @@ def _create_layout(fields, options):
 	layout = []
 	for tab in univention.admin.handlers.users.user.layout:
 		newtab = copy.deepcopy( tab )
-		newtab.fields = []
+		newtab.layout = []
 		for line in tab.fields:
 			newline = []
 			for cell in line:
-				if isinstance( cell, univention.admin.field ):
-					if _check_cell(cell, fields, options):
-						newline.append( copy.copy( cell ) )
-				else:
+				if isinstance( cell, ( list, tuple ) ):
 					newcell = []
 					for subcell in cell:
-						if isinstance( subcell, univention.admin.field ):
+						if isinstance( subcell, basestring ):
 							if _check_cell(subcell, fields, options):
 								newcell.append( copy.copy( subcell ) )
 					if newcell: newline.append( newcell )
+				else:
+					if _check_cell(cell, fields, options):
+						newline.append( copy.copy( cell ) )
 			if newline:
 				newtab.fields.append( newline )
 		if newtab.fields:
@@ -113,8 +112,7 @@ class object(univention.admin.handlers.users.user.object):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'self.py: fields: %s' % (fields))
 		self.layout = _create_layout(fields, self.options)
 		if not self.layout:
-			tab = univention.admin.tab( _('General'),_('There are no options enabled.'),[
-					[univention.admin.field("filler"), ]])
+			tab = Tab( _( 'General' ), _( 'There are no options enabled.' ) )
 			self.layout.append( tab )
 		layout = self.layout
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'self.py: layout: %s' % (layout))

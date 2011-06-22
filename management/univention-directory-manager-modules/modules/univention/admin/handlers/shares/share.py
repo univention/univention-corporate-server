@@ -30,7 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, copy, re, os
+import re
+
+from univention.admin.layout import Tab, Group
 import univention.admin.uldap
 import univention.admin.syntax
 import univention.admin.filter
@@ -650,52 +652,53 @@ property_descriptions={
 			identifies=0,
 		),
 }
-layout=[
-	univention.admin.tab(_('General'),_('General settings'),[
-			[univention.admin.field('name')],
-			[univention.admin.field('host'), univention.admin.field('path')],
-			[univention.admin.field('owner'), univention.admin.field('group')],
-			[univention.admin.field('directorymode')]
-		]),
-	univention.admin.tab(_('NFS general'),_('General NFS settings'),[
-			[univention.admin.field('writeable'), univention.admin.field('sync')],
-			[univention.admin.field('subtree_checking'), univention.admin.field('root_squash')],
-			[univention.admin.field('nfs_hosts')],
-		]),
-	univention.admin.tab(_('Web access general'),_('General Webaccess Settings'),[
-			[univention.admin.field('webaccessName'), univention.admin.field('webaccessIpaddress')],
-		]),
-	univention.admin.tab(_('Samba general'),_('General Samba settings'),[
-			[univention.admin.field('sambaName')],
-			[univention.admin.field('sambaBrowseable'), univention.admin.field('sambaPublic')],
-			[univention.admin.field('sambaPostexec'), univention.admin.field('sambaPreexec')],
-			[univention.admin.field('sambaVFSObjects'), univention.admin.field('sambaMSDFSRoot') ],
-			[univention.admin.field('sambaDosFilemode'), univention.admin.field('sambaHideUnreadable') ],
-		]),
-	univention.admin.tab(_('Samba permissions'),_('Samba permission settings'),[
-			[univention.admin.field('sambaWriteable')],
-			[univention.admin.field('sambaForceUser'), univention.admin.field('sambaForceGroup')],
-			[univention.admin.field('sambaValidUsers'), univention.admin.field('sambaInvalidUsers') ],
-			[univention.admin.field('sambaHostsAllow'), univention.admin.field('sambaHostsDeny') ],
-			[univention.admin.field('sambaWriteList'), univention.admin.field('sambaHideFiles') ],
-			[univention.admin.field('sambaNtAclSupport'), univention.admin.field('sambaInheritAcls')],
-			[univention.admin.field('sambaInheritOwner'), univention.admin.field('sambaInheritPermissions')],
-		], advanced = True),
-	univention.admin.tab(_('Samba extended permissions'),_('Samba extended permission settings'),[
-			[univention.admin.field('sambaCreateMode'), univention.admin.field('sambaDirectoryMode')],
-			[univention.admin.field('sambaForceCreateMode'), univention.admin.field('sambaForceDirectoryMode')],
-			[univention.admin.field('sambaSecurityMode'), univention.admin.field('sambaDirectorySecurityMode')],
-			[univention.admin.field('sambaForceSecurityMode'), univention.admin.field('sambaForceDirectorySecurityMode')],
-		], advanced = True),
-	univention.admin.tab(_('Samba performance'),_('Samba performance settings'),[
-			[univention.admin.field('sambaLocking'), univention.admin.field('sambaBlockingLocks')],
-			[univention.admin.field('sambaStrictLocking'), univention.admin.field('sambaOplocks')],
-			[univention.admin.field('sambaLevel2Oplocks'), univention.admin.field('sambaFakeOplocks')],
-			[univention.admin.field('sambaBlockSize'), univention.admin.field('sambaCscPolicy')],
-		], advanced = True),
-	univention.admin.tab(_('Samba custom settings'),_('Custom settings for Samba shares'), [
-			[univention.admin.field('sambaCustomSettings') , ],
-		], advanced = True),
+
+layout = [
+	Tab(_('General'),_('General settings'), layout = [
+		'name',
+		['host', 'path'],
+		['owner', 'group'],
+		'directorymode'
+		] ),
+	Tab(_('NFS general'),_('General NFS settings'), layout = [
+		['writeable', 'sync'],
+		['subtree_checking', 'root_squash'],
+		'nfs_hosts',
+		] ),
+	Tab(_('Web access general'),_('General Webaccess Settings'), layout = [
+		[ 'webaccessName', 'webaccessIpaddress' ],
+		] ),
+	Tab( _( 'Samba general' ), _( 'General Samba settings' ), layout = [
+		'sambaName',
+		[ 'sambaBrowseable', 'sambaPublic'],
+		[ 'sambaPostexec', 'sambaPreexec'],
+		[ 'sambaVFSObjects', 'sambaMSDFSRoot' ],
+		[ 'sambaDosFilemode', 'sambaHideUnreadable' ],
+		] ),
+	Tab( _( 'Samba permissions' ), _( 'Samba permission settings' ), advanced = True, layout = [
+		'sambaWriteable',
+		[ 'sambaForceUser', 'sambaForceGroup' ],
+		[ 'sambaValidUsers', 'sambaInvalidUsers' ],
+		[ 'sambaHostsAllow', 'sambaHostsDeny' ],
+		[ 'sambaWriteList', 'sambaHideFiles' ],
+		[ 'sambaNtAclSupport', 'sambaInheritAcls' ],
+		[ 'sambaInheritOwner', 'sambaInheritPermissions' ],
+		] ),
+	Tab( _( 'Samba extended permissions' ), _( 'Samba extended permission settings' ), advanced = True, layout = [
+		[ 'sambaCreateMode', 'sambaDirectoryMode' ],
+		[ 'sambaForceCreateMode', 'sambaForceDirectoryMode' ],
+		[ 'sambaSecurityMode', 'sambaDirectorySecurityMode' ],
+		[ 'sambaForceSecurityMode', 'sambaForceDirectorySecurityMode' ],
+		] ),
+	Tab( _( 'Samba performance' ), _( 'Samba performance settings' ), advanced = True, layout = [
+		[ 'sambaLocking', 'sambaBlockingLocks' ],
+		[ 'sambaStrictLocking', 'sambaOplocks' ],
+		[ 'sambaLevel2Oplocks', 'sambaFakeOplocks' ],
+		[ 'sambaBlockSize', 'sambaCscPolicy' ],
+		] ),
+	Tab( _( 'Samba custom settings' ), _( 'Custom settings for Samba shares' ), advanced = True, layout = [
+		'sambaCustomSettings'
+		] ),
 ]
 
 def boolToString(value):

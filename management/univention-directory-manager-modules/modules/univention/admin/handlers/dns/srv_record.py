@@ -30,7 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
+import string
+
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
@@ -80,12 +82,12 @@ property_descriptions={
 			default=('10800', [])
 		),
 }
-layout=[
-	univention.admin.tab(_('General'), _('Basic settings'), fields=[
-		[univention.admin.field('name')],
-		[univention.admin.field('location')],
-		[univention.admin.field('zonettl')]
-	]),
+layout = [
+	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
+		'name',
+		'location',
+		'zonettl'
+		] ),
 ]
 
 def unmapName(old):

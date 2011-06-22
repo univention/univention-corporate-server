@@ -30,12 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.admin
+import base64
+
+from univention.admin.layout import Tab, Group
 import univention.admin.localization
 
 import univention.debug as ud
-
-import base64
 
 translation=univention.admin.localization.translation('univention.admin')
 _=translation.translate
@@ -332,18 +332,17 @@ properties = {
 
 }
 
-tab = { 'name' : _( 'Windows Advanced' ), 'description' : _( 'Windows Terminal server settings' ), 'advanced' : True,
-		'layout' : [
-			[ 'CtxWFHomeDir', 'CtxWFHomeDirDrive' ],
-			[ 'CtxInitialProgram',  'CtxWorkDirectory' ],
-			'CtxStartprogramClient',
-			[ 'CtxWFProfilePath',	'CtxKeyboardLayout' ],
-			[ 'CtxCfgTSLogon',	 'CtxCfgClientDrivers' ],
-			[ 'CtxCfgClientPrinters',	'CtxCfgDefaultClientPrinters' ],
-			[ 'CtxShadow' ],
-			[ 'CtxBrokenSession',	 'CtxReconnectSession' ],
-			'CtxRASDialin',
-			] }
+tab = Tab( _( 'Windows Advanced' ), _( 'Windows Terminal server settings' ), True, [
+	[ 'CtxWFHomeDir', 'CtxWFHomeDirDrive' ],
+	[ 'CtxInitialProgram',  'CtxWorkDirectory' ],
+	'CtxStartprogramClient',
+	[ 'CtxWFProfilePath',	'CtxKeyboardLayout' ],
+	[ 'CtxCfgTSLogon',	 'CtxCfgClientDrivers' ],
+	[ 'CtxCfgClientPrinters',	'CtxCfgDefaultClientPrinters' ],
+	[ 'CtxShadow' ],
+	[ 'CtxBrokenSession',	 'CtxReconnectSession' ],
+	'CtxRASDialin',
+	] )
 
 class Support( object ):
 	def __init__( self ):

@@ -30,7 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
+import string
+
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
@@ -97,21 +99,22 @@ property_descriptions={
 			may_change=1
 		)
 }
-layout=[
-	univention.admin.tab(_('General'), _('Basic Values'), fields=[
-		[univention.admin.field('name')],
-		[univention.admin.field('a', first_only=1, short_description=_('Primary IP-Address'))],
-		[univention.admin.field('zonettl')]
-	]),
-	univention.admin.tab(_('IP addresses'), _('IP addresses of the host'), fields=[
-		[univention.admin.field('a')],
-	]),
-	univention.admin.tab(_('Mail'), _('Mail exchangers for this host'), fields=[
-		[univention.admin.field('mx')],
-	], advanced = True),
-	univention.admin.tab(_('Text'), _('Optional text'), fields=[
-		[univention.admin.field('txt')],
-	], advanced = True)
+
+layout = [
+	Tab(_('General'), _('Basic Values'), layout = [
+		'name',
+		'a',
+		'zonettl'
+		] ),
+	Tab(_('IP addresses'), _('IP addresses of the host'), layout = [
+		'a'
+		] ),
+	Tab(_('Mail'), _('Mail exchangers for this host'), advanced = True, layout = [
+		'mx'
+		] ),
+	Tab(_('Text'), _('Optional text'), advanced = True, layout = [
+		'txt',
+		] )
 ]
 
 
