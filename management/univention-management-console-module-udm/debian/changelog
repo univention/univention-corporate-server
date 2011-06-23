@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.23-1) unstable; urgency=low
+
+  * dynamically load details page (Bug #22439)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Jun 2011 16:09:34 +0200
+
 univention-management-console-module-udm (1.0.22-1) unstable; urgency=low
 
   * add flavors for all UDM modules
