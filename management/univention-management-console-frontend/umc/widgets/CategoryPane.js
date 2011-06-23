@@ -8,6 +8,8 @@ dojo.require("dijit._Container");
 dojo.require("dijit.TitlePane");
 dojo.require("umc.widgets.Tooltip");
 
+//TODO: don't use float, use display:inline-block; we need a hack for IE7 here, see:
+//      http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
 dojo.declare( "umc.widgets._CategoryItem", [dijit.layout.ContentPane, dijit._Contained], {
 	modID: '',
 	modIcon: '',
@@ -92,7 +94,7 @@ dojo.declare( "umc.widgets.CategoryPane", [dijit.TitlePane, dijit._Container], {
 
 		// we need to add a <br> at the end, otherwise we will get problems 
 		// with the visualizaton
-		this.containerNode.appendChild(dojo.create('br', { clear: 'all' }));
+		//this.containerNode.appendChild(dojo.create('br', { clear: 'all' }));
 	},
 
 	onOpenModule: function(imod) {

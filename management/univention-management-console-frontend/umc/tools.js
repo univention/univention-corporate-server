@@ -2,10 +2,11 @@
 
 dojo.provide("umc.tools");
 
-dojo.require("dojox.layout.TableContainer");
-dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.app");
 dojo.require("umc.i18n");
+dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.widgets.LabelPane");
+dojo.require("umc.widgets.Tooltip");
 
 dojo.mixin(umc.tools, new umc.i18n.Mixin({
 	// use the framework wide translation file
@@ -241,7 +242,8 @@ dojo.mixin(umc.tools, {
 			}
 			
 			// throw error
-			throw new Error(errorMessage);
+			var e = new Error(errorMessage);
+			throw e;
 		}
 	},
 
@@ -254,10 +256,19 @@ dojo.mixin(umc.tools, {
 		// iterate over all widget config objects
 		var widgets = { };
 		dojo.forEach(widgetsConf, function(iconf) {
+			// ignore empty elements
+			if (!iconf || !dojo.isObject(iconf)) {
+				return true;
+			}
+
+			// copy the property 'id' to 'name'
+			var conf = dojo.mixin({}, iconf);
+			conf.name = iconf.id || iconf.name;
+
 			// render the widget
-			var widget = this.renderWidget(iconf);
+			var widget = this.renderWidget(conf);
 			if (widget) {
-				widgets[iconf.name] = widget;
+				widgets[conf.name] = widget;
 			}
 		}, this);
 
@@ -268,10 +279,17 @@ dojo.mixin(umc.tools, {
 		if (!widgetConf) {
 			return undefined;
 		}
+		if (!widgetConf.type) {
+			console.log(dojo.replace("WARNING in umc.tools.renderWidget: The widget type '{0}' is invalid. Ignoring error.", [widgetConf.type]));
+			return undefined;
+		}
 
 		// make a copy of the widget's config object and remove 'type'
-		var conf = dojo.clone(widgetConf);
+		var conf = dojo.mixin({}, widgetConf);
 		delete conf.type;
+
+		// remove property 'id'
+		delete conf.id;
 
 		// include the corresponding module for the widget
 		dojo['require']('umc.widgets.' + widgetConf.type);
@@ -279,9 +297,20 @@ dojo.mixin(umc.tools, {
 		// create the new widget according to its type
 		var WidgetClass = dojo.getObject('umc.widgets.' + widgetConf.type);
 		if (!WidgetClass) {
-			return undefined; // undefined
+			console.log(dojo.replace("WARNING in umc.tools.renderWidget: The widget class 'umc.widgets.{0}' cannot be found. Ignoring error.", [widgetConf.type]));
+			return undefined;
 		}
-		return new WidgetClass(conf); // Widget
+		var widget = new WidgetClass(conf); // Widget
+
+		// create a tooltip if there is a description
+		if (widgetConf.description) {
+			var tooltip = new umc.widgets.Tooltip({
+				label: widgetConf.description,
+				connectId: [ widget.domNode ]
+			});
+		}
+
+		return widget; // dijit._Widget
 	},
 
 	renderButtons: function(/*Object[]*/ buttonsConf) {
@@ -336,62 +365,84 @@ dojo.mixin(umc.tools, {
 		return button; // umc.widgets.Button
 	},
 	
-	renderLayout: function(/*String[][]*/ layout, /*Object*/ widgets, /*Object?*/ buttons, /*Object?*/ tableContainerCfg) {
+	renderLayout: function(/*Array*/ layout, /*Object*/ widgets, /*Object?*/ buttons) {
 		// summary:
 		//		Render a widget containing a set of widgets as specified by the layout.
 		//		The optional parameter cols specifies the number of columns.
 
-		// create a layout manager (TableContainer)
-		var cfg = dojo.mixin({
-			cols: 2,
-			showLabels: true,
-			orientation: 'vert'
-		}, tableContainerCfg || {});
-		var container = new dojox.layout.TableContainer(cfg);
+		// create a container
+		var globalContainer = new umc.widgets.ContainerWidget({});
 
 		// check whether the parameters are correct
+		//console.log('### renderLayout');
+		//console.log(layout);
 		umc.tools.assert(dojo.isArray(layout) &&
-				layout.length &&
-				dojo.isArray(layout[0]),
-				'Invalid layout configuration object!');
+				layout.length,
+				'umc.tools.renderLayout: Invalid layout configuration object!');
 
-		// iterate through the layout elements and the widgets at the correct position
-		for (var irow = 0; irow < layout.length; ++irow) {
-			for (var icol = 0; icol < cfg.cols; ++icol) {
-				var name = layout[irow][icol];
-				if (name) {
-					// if a string is given, try to insert the widget
-					umc.tools.assert(name in widgets, 'The widget "' + name + '" requested in the layout has not been specified.');
-					container.addChild(widgets[name]);
-				}
-				else {
-					// otherwise insert an empty widget at the position
-					container.addChild(new dijit._Widget({}));
-				}
+		// iterate through the layout elements
+		for (var iel = 0; iel < layout.length; ++iel) {
+
+			// element can be:
+			//   String -> reference to widget
+			//   Array  -> references to widgets
+			//   Object -> grouped widgets -> recursive call of renderLayout()
+			var el = layout[iel];
+			var elList = null;
+			if (dojo.isString(el)) {
+				elList = [el];
+			}
+			else if (dojo.isArray(el)) {
+				elList = el;
+			}
+
+			// for single String / Array
+			if (elList) {
+				// add current form widgets to layout
+				var elContainer = new umc.widgets.ContainerWidget({});
+				dojo.forEach(elList, function(jel) {
+					// make sure the reference to the widget exists
+					if (!(jel in widgets)) {
+						console.log(dojo.replace("WARNING in umc.tools.renderLayout: The widget '{0}' is not defined in the argument 'widgets'. Ignoring error.", [jel]));
+						return true;
+					}
+
+					// add the widget surrounded with a LabelPane
+					var widget = widgets[jel];
+					elContainer.addChild(new umc.widgets.LabelPane({
+						label: widget.label,
+						content: widget
+					}));
+				}, this);
+				globalContainer.addChild(elContainer);
+			}
+			// for Object (i.e., a grouping box)
+			else if (dojo.isObject(el) && el.layout) {
+				//console.log('### renderLayout - recursive call');
+				//console.log(el);
+				globalContainer.addChild(new umc.widgets.GroupBox({
+					legend: this.label,
+					content: this.renderLayout(el.layout, widgets)
+				}));
 			}
 		}
 
 		// add buttons if specified
 		if (buttons) {
-			// create a container for all buttons since they need a different layout
-			var buttonContainer = new umc.widgets.ContainerWidget({ });
-
-			// add all buttons to the container in the correct order
+			// add all buttons to a container in the correct order
 			// (i.e., using the interal array field _order) 
+			var buttonContainer = new umc.widgets.ContainerWidget({});
 			dojo.forEach(buttons._order, function(ibutton) {
 				buttonContainer.addChild(ibutton);
 			});
-
-			// add button container to main layout into the second column
-			container.addChild(new dijit._Widget({}));
-			container.addChild(buttonContainer);
+			globalContainer.addChild(buttonContainer);
 		}
 
 		// start processing the layout information
-		container.startup();
+		globalContainer.startup();
 
 		// return the container
-		return container; // dojox.layout.TableContainer
+		return globalContainer; // dojox.layout.TableContainer
 	},
 
 	cmpObjects: function(/*mixed...*/) {

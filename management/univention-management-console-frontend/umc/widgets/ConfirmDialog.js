@@ -6,7 +6,7 @@ dojo.require("dijit.Dialog");
 dojo.require("dojox.layout.TableContainer");
 dojo.require("dojox.widget.Dialog");
 dojo.require("umc.tools");
-dojo.require("umc.widgets.Label");
+dojo.require("umc.widgets.Text");
 dojo.require("umc.widgets.ContainerWidget");
 
 dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
@@ -37,7 +37,7 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 		this.inherited(arguments);
 
 		// create our widgets...
-		this._labelWidget = umc.widgets.Label({
+		this._labelWidget = umc.widgets.Text({
 			content: this.message
 		});
 		

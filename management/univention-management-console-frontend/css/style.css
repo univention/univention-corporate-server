@@ -27,8 +27,7 @@ div.modLaunchButton {
     padding-left:80px;
     height:80px;
 	list-style: none;
-	float: left;
-	text-align: left;
+	display: inline-block;
 }
 
 div.modLaunchButton div {

@@ -4,9 +4,6 @@ dojo.provide("umc.widgets._ModuleMixin");
 
 dojo.require("dojo.store.Observable");
 
-dojo.require("umc.tools");
-dojo.require("umc.store");
-
 dojo.declare("umc.widgets._ModuleMixin", null, {
 	// summary:
 	//		Basis class for all module classes.

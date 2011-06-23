@@ -139,8 +139,9 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		dojo.forEach(items, function(i) {
 			if (i) {
 				this.store.newItem(i);
+
 				// set pre-selected item
-				if ( i.preselected !== undefined && i.preselected == true ) {
+				if (i.preselected) {
                     this._initialValue = i.id;
                 }
 			}

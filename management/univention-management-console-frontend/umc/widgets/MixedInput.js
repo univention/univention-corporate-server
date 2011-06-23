@@ -80,50 +80,54 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 
 		// get new values from the server and create a new form widget dynamically
 		this.umcpCommand(this.dynamicValues, params).then(dojo.hitch(this, function(data) {
-			// guess the form widget type based on the result that we get
-			//   array      -> ComboBox
-			//   true/false -> CheckBox
-			//   otherwise  -> TextBox
-			var newWidgetClass = 'umc.widgets.TextBox';
-			if (dojo.isArray(data.result)) {
-				newWidgetClass = 'umc.widgets.ComboBox';
-			}
-			else if (true === data.result || false === data.result || 'true' == data.result || 'false' == data.result) {
-				newWidgetClass = 'umc.widgets.CheckBox';
-			}
-
-			// destroy old widget in case the type has changed and create a new one
-			if (this._widget && this._widget.declaredClass != newWidgetClass) {
-				// destroy widget
-				this.onBeforeWidgetChanged(this._widget);
-				this._widget.destroyRecursive();
-				this._widget = null;
-			}
-
-			// check whether we need to create a new widget
-			if (!this._widget) {
-				// create the new widget according to its type
-				dojo['require'](newWidgetClass);
-				var WidgetClass = dojo.getObject(newWidgetClass);
-				if (!WidgetClass) {
-					throw new Error('MixedInput: Could not instantiate the class ' + newWidgetClass);
-				}
-				this._widget = new WidgetClass(this._userProperties);
-				this.onWidgetChanged(this._widget);
-				this.set('content', this._widget);
-			}
-
-			// set the indicated values
-			if (this._widget._setDynamicValues) {
-				// clear all values and set the dynamic values, they don't need to be reloaded
-				this._widget._clearValues();
-				this._widget._setDynamicValues(data.result);
-			}
-			else if (!dojo.isArray(data.result)) {
-				this._widget.set('value', data.result);
-			}
-			this._widget.startup();
+			this._setValues(data.result);
 		}));
+	},
+
+	_setValues: function(values) {
+		// guess the form widget type based on the result that we get
+		//   array      -> ComboBox
+		//   true/false -> CheckBox
+		//   otherwise  -> TextBox
+		var newWidgetClass = 'umc.widgets.TextBox';
+		if (dojo.isArray(values)) {
+			newWidgetClass = 'umc.widgets.ComboBox';
+		}
+		else if (true === values || false === values || 'true' == values || 'false' == values) {
+			newWidgetClass = 'umc.widgets.CheckBox';
+		}
+
+		// destroy old widget in case the type has changed and create a new one
+		if (this._widget && this._widget.declaredClass != newWidgetClass) {
+			// destroy widget
+			this.onBeforeWidgetChanged(this._widget);
+			this._widget.destroyRecursive();
+			this._widget = null;
+		}
+
+		// check whether we need to create a new widget
+		if (!this._widget) {
+			// create the new widget according to its type
+			dojo['require'](newWidgetClass);
+			var WidgetClass = dojo.getObject(newWidgetClass);
+			if (!WidgetClass) {
+				throw new Error('MixedInput: Could not instantiate the class ' + newWidgetClass);
+			}
+			this._widget = new WidgetClass(this._userProperties);
+			this.onWidgetChanged(this._widget);
+			this.set('content', this._widget);
+		}
+
+		// set the indicated values
+		if (this._widget._setDynamicValues) {
+			// clear all values and set the dynamic values, they don't need to be reloaded
+			this._widget._clearValues();
+			this._widget._setDynamicValues(values);
+		}
+		else if (!dojo.isArray(values)) {
+			this._widget.set('value', values);
+		}
+		this._widget.startup();
 	},
 
 	onBeforeWidgetChanged: function(widget) {

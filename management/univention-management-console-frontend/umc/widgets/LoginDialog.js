@@ -12,7 +12,7 @@ dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.widgets.ContainerForm");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.Form");
-dojo.require("umc.widgets.Label");
+dojo.require("umc.widgets.Text");
 dojo.require("umc.i18n");
 
 dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
@@ -103,7 +103,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			cols: 1,
 			showLabels: false
 		});
-		this._layoutContainer.addChild(new umc.widgets.Label({
+		this._layoutContainer.addChild(new umc.widgets.Text({
 			content: '<p>' + this._('Welcome to the Univention Management Console. Please enter your domain username and password for login!') + '</p>'
 		}));
 		this._layoutContainer.addChild(this._form);

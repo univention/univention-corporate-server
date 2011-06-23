@@ -8,7 +8,6 @@ dojo.require("dojox.form.manager._ValueMixin");
 dojo.require("dojox.form.manager._EnableMixin");
 dojo.require("dojox.form.manager._DisplayMixin");
 dojo.require("dojox.form.manager._ClassMixin");
-dojo.require("umc.widgets.Tooltip");
 dojo.require("umc.tools");
 
 dojo.declare("umc.widgets.Form", [
@@ -23,12 +22,14 @@ dojo.declare("umc.widgets.Form", [
 	//		Encapsulates a complete form, offers unified access to elements as
 	//		well as some convenience methods.
 
-	// widgets: Object[]
+	// widgets: Object[]|dijit.form._FormWidget[]|Object
 	//		Array of config objects that specify the widgets that are going to 
-	//		be used in the form.
+	//		be used in the form. Can also be a list of dijit.form._FormWidget 
+	//		instances or a dictionary with name->Widget entries in which case 
+	//		no layout is rendered and `content` is expected to be specified.
 	widgets: null,
 
-	// buttons: Object[]
+	// buttons: Object[]?
 	//		Array of config objects that specify the buttons that are going to 
 	//		be used in the form. Buttons with the name 'submit' and 'reset' have
 	//		standard handlers unless 
@@ -41,13 +42,12 @@ dojo.declare("umc.widgets.Form", [
 	//		to leave a place free.
 	layout: null,
 
-	// cols: Integer
-	//		Number of columns (default is 2).
-	cols: 2,
-
-	// orient: String
-	//		Orientation of labels, possible values ['vert', 'horiz'].
-	orientation: 'vert',
+	// content: dijit._Widget?
+	//		Widget that contains all form elements already layed out.
+	//		If given, `widgets` is expected to be a list of already initiated 
+	//		dijit.form._FormWidget instances that occur in the manually layed out
+	//		content.
+	content: null,
 
 	// moduleStore: umc.store.UmcpModuleStore
 	//		Object store for module requests using UMCP commands. If given, form data
@@ -58,7 +58,7 @@ dojo.declare("umc.widgets.Form", [
 
 	_buttons: null,
 
-	_layoutContainer: null,
+	_container: null,
 
 	_dependencyMap: null,
 
@@ -67,27 +67,13 @@ dojo.declare("umc.widgets.Form", [
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
-		// in case no layout is specified, create one automatically
-		if (!this.layout || !this.layout.length) {
+		// in case no layout is specified and no content, either, create one automatically
+		if ((!this.layout || !this.layout.length) && !this.content) {
 			this.layout = [];
-			var row = null;
-			for (var i = 0; i < this.widgets.length; ++i) {
-				// check whether we need to create a new row for the layout
-				if (0 === (i % this.cols)) {
-					if (row) {
-						this.layout.push(row);
-					}
-					row = [];
-				}
-				
+			dojo.forEach(this.widgets, function(iwidget) {
 				// add the name (or undefined) to the row
-				row.push(dojo.getObject('name', false, this.widgets[i]));
-			}
-
-			// add the last row to the layout
-			if (row && row.length) {
-				this.layout.push(row);
-			}
+				this.layout.push(dojo.getObject('name', false, iwidget));
+			}, this);
 		}
 
 		// initiate _dependencyMap
@@ -97,16 +83,43 @@ dojo.declare("umc.widgets.Form", [
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		// render the widgets and the layout
-		this._widgets = umc.tools.renderWidgets(this.widgets);
-		this._buttons = umc.tools.renderButtons(this.buttons);
-		this._layoutContainer = umc.tools.renderLayout(this.layout, this._widgets, this._buttons, {
-			cols: this.cols,
-			orientation: this.orientation
-		});
+		// render the widgets and the layout if no content is given
+		if (!this.content) {
+			this._widgets = umc.tools.renderWidgets(this.widgets);
+			this._buttons = umc.tools.renderButtons(this.buttons || []);
+			this._container = umc.tools.renderLayout(this.layout, this._widgets, this._buttons);
+
+			// start processing the layout information
+			this._container.placeAt(this.containerNode);
+			this._container.startup();
+		}
+		// otherwise, register content and create an internal dictionary of widgets
+		else {
+			var errMsg = "umc.widgets.Form: As 'content' is specified, the property 'widgets' is expected to be an array of widgets.";
+
+			// register content
+			umc.tools.assert(this.content.domNode && this.content.declaredClass, errMsg);
+			this.content.placeAt(this.containerNode);
+
+			// create internal dictionary of widgets
+			if (dojo.isArray(this.widgets)) {
+				dojo.forEach(this.widgets, function(iwidget) {
+					// make sure the object looks like a widget
+					umc.tools.assert(iwidget.domNode && iwidget.declaredClass, errMsg);
+					umc.tools.assert(iwidget.name, "umc.widgets.Form: Each widget needs to specify the property 'name'.");
+
+					// add entry to dictionary
+					this._widgets[iwidget.name] = iwidget;
+				}, this);
+			}
+			// `widgets` is already a dictionary
+			else if (dojo.isObject(this.widgets)) {
+				this._widgets = this.widgets;
+			}
+		}
 
 		// prepare registration of onChange events
-		umc.tools.forIn(this._widgets, dojo.hitch(this, function(iname, iwidget) {
+		umc.tools.forIn(this._widgets, function(iname, iwidget) {
 			// check whether the widget has a `depends` field
 			if (!iwidget.depends) {
 				return;
@@ -119,50 +132,34 @@ dojo.declare("umc.widgets.Form", [
 				this._dependencyMap[idep] = this._dependencyMap[idep] || [];
 				this._dependencyMap[idep].push(iwidget);
 			}));
-		}));
+		}, this);
 
 		// register all necessary onChange events to handle dependencies
-		umc.tools.forIn(this._dependencyMap, dojo.hitch(this, function(iname) {
+		umc.tools.forIn(this._dependencyMap, function(iname) {
 			if (iname in this._widgets) {
 				this.connect(this._widgets[iname], 'onChange', function() {
 					this._updateDependencies(iname);
 				});
 			}
-		}));
-
-		// register tooltips
-		umc.tools.forIn(this._widgets, function(iname, iwidget) {
-			// only create a tooltip if there is a description
-			if (iwidget.description) {
-				var tooltip = new umc.widgets.Tooltip({
-					label: iwidget.description,
-					connectId: [ iwidget.domNode ]
-				});
-			}
 		}, this);
-
-		// start processing the layout information
-		this._layoutContainer.placeAt(this.containerNode);
-		this._layoutContainer.startup();
 	},
 
 	postCreate: function() {
 		this.inherited(arguments);
 
 		// register callbacks for onSubmit and onReset events
-		this.connect(this, 'onSubmit', function(e) {
-			// prevent standard form submission
-			e.preventDefault();
+		umc.tools.forIn({ 'submit': 'onSubmit', 'reset': 'onReset' }, function(ibutton, ievent) {
+			var customCallback = dojo.getObject(ibutton + '.callback', false, this._buttons);
+			if (customCallback) {
+				this.connect(this, ievent, function(e) {
+					// prevent standard form submission
+					e.preventDefault();
 
-			// if there is a custom callback, call it with all form values
-			var customCallback = dojo.getObject('submit.callback', false, this._buttons) || function() { };
-			customCallback(this.gatherFormValues());
-		});
-		this.connect(this, 'onReset', function(e) {
-			// if there is a custom callback, call it with all form values
-			var customCallback = dojo.getObject('reset.callback', false, this._buttons) || function() { };
-			customCallback(this.gatherFormValues());
-		});
+					// if there is a custom callback, call it with all form values
+					customCallback(this.gatherFormValues());
+				});
+			}
+		}, this);
 
 		// register for dynamically changing Widgets
 		umc.tools.forIn(this._widgets, function(iname, iwidget) {
@@ -182,7 +179,7 @@ dojo.declare("umc.widgets.Form", [
 		dojo.forEach(this._dependencyMap[publisherName], function(i) {
 			tmp.push(i.name);
 		});
-		console.log(dojo.replace('# _updateDependencies: publisherName={0} _dependencyMap[{0}]={1}', [publisherName, dojo.toJson(tmp)]));
+		//console.log(dojo.replace('# _updateDependencies: publisherName={0} _dependencyMap[{0}]={1}', [publisherName, dojo.toJson(tmp)]));
 		if (publisherName in this._dependencyMap) {
 			var values = this.gatherFormValues();
 			dojo.forEach(this._dependencyMap[publisherName], function(ireceiver) {
@@ -221,7 +218,7 @@ dojo.declare("umc.widgets.Form", [
 			// fire event
 			this.onLoaded(true);
 		}), dojo.hitch(this, function(error) {
-			// fore event also in error case
+			// fire event also in error case
 			this.onLoaded(false);
 		}));
 	},

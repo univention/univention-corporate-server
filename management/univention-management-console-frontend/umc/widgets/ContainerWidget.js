@@ -8,6 +8,7 @@ dojo.require("dijit._Container");
 dojo.declare("umc.widgets.ContainerWidget", [dijit._Widget, dijit._Container], {
 	// description:
 	//		Combination of Widget and Container class.
+	style: 'overflow: auto;'
 });
 
 

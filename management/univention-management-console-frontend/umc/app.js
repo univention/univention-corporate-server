@@ -14,7 +14,7 @@ dojo.require("dojox.html.styles");
 dojo.require("umc.widgets.Toaster");
 dojo.require("umc.widgets.ConfirmDialog");
 dojo.require("umc.widgets.LoginDialog");
-dojo.require("umc.widgets.ContainerPane");
+dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.CategoryPane");
 dojo.require("umc.i18n");
 
@@ -45,7 +45,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 
 	defaultPreferences: {
 		tooltips: true,
-		moduleDescription: true,
+		moduleHelpText: true,
 		confirm: true
 	},
 
@@ -262,7 +262,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// NOTE: We add the icon here in the first tab, otherwise the tab heights
 		//	   will not be computed correctly and future tabs will habe display
 		//	   problems.
-		var overviewPage = new umc.widgets.ContainerPane({ 
+		var overviewPage = new umc.widgets.ContainerWidget({ 
 			//style: "overflow:visible; width: 80%"
 			title: this._('Overview'),
 			iconClass: 'icon16-univention' 
@@ -292,7 +292,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		umc.app._tabContainer.addChild(overviewPage);
 		
 		// the header
-		var header = new umc.widgets.ContainerPane({
+		var header = new umc.widgets.ContainerWidget({
 			title: '',
 			'class': 'umcHeader',
 			region: 'top'
@@ -329,9 +329,9 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		menu.addChild(new dijit.CheckedMenuItem({
 			label: this._('Module help description'),
 			checked: true,
-			checked: umc.app.preferences('moduleDescription'),
+			checked: umc.app.preferences('moduleHelpText'),
 			onClick: function() {
-				umc.app.preferences('moduleDescription', this.checked);
+				umc.app.preferences('moduleHelpText', this.checked);
 			}
 		}));
 		header.addChild(new dijit.form.DropDownButton({

@@ -2,75 +2,56 @@
 
 dojo.provide("umc.widgets.Page");
 
-dojo.require("dijit.layout.ContentPane");
-dojo.require("dijit.layout.BorderContainer");
 dojo.require("umc.app");
+dojo.require("umc.widgets.Text");
+dojo.require("umc.widgets.ContainerWidget");
 
-dojo.declare("umc.widgets.Page", dijit.layout.ContentPane, {
+dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 	// summary:
 	//		Class that abstracts a displayable page for a module.
 	//		Offers a BorderContainer for layout.
 
-	// description: String
+	// helpText: String
 	//		Text that describes the module, will be displayed at the top of a page.
-	description: '',
+	helpText: '',
 
-	_layoutContainer: null,
-	_topLayoutContainer: null,
-	_descriptionPane: null,
-	_descriptionShown: true,
+	// title: String
+	//		Title of the page. This option is necessary for tab pages.
+	title: '',
+
+	_helpTextPane: null,
+	_helpTextShown: true,
 	_subscriptionHandle: null,
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
-		// get user preferences for the module description
-		this._descriptionShown = umc.app.preferences('moduleDescription');
+		// get user preferences for the module helpText
+		this._helpTextShown = umc.app.preferences('moduleHelpText');
 	},
 
 	buildRendering: function() {
 		this.inherited(arguments);
 		
-		// in case we have a description, put it into the layout ... it needs to
-		// be displayed at the very top, therefor use a container in a container
-		if (this.description) {
-			// create a content pane for the module description
-			this._descriptionPane = new dijit.layout.ContentPane({
-				content: this.description,
-				region: 'top',
-				gutters: false,
-				'class': 'umcNoBorder umcNoPadding'
-			});
+		// put the help text in a Text widget and then add it to the container
+		this._helpTextPane = new umc.widgets.Text({
+			content: this.helpText || ''
+		});
 
-			// hide the description if specified
-			if (!this._descriptionShown) {
-				dojo.style(this._descriptionPane.domNode, {
-					opacity: 0,
-					display: 'none'
-				});
-			}
-
-			// put everything together
-			this._topLayoutContainer = new dijit.layout.BorderContainer({});
-			this._topLayoutContainer.addChild(this._descriptionPane);
-			this._layoutContainer = new dijit.layout.BorderContainer({
-				region: 'center'
+		// hide the help text if specified
+		if (!this._helpTextShown) {
+			dojo.style(this._descriptionPane.domNode, {
+				opacity: 0,
+				display: 'none'
 			});
-			this._topLayoutContainer.addChild(this._layoutContainer);
-			this.content = this._topLayoutContainer;
-		}
-		// otherwise simply create one BorderContainer for the layout
-		else {
-			this._layoutContainer = new dijit.layout.BorderContainer({});
-			this.content = this._layoutContainer;
 		}
 	},
 
 	postCreate: function() {
 		this.inherited(arguments);
 
-		// register for events to hide the description information
-		this._subscriptionHandle = dojo.subscribe('/umc/preferences/moduleDescription', dojo.hitch(this, function(show) {
+		// register for events to hide the help text information
+		this._subscriptionHandle = dojo.subscribe('/umc/preferences/moduleHelpText', dojo.hitch(this, function(show) {
 			if (false === show) {
 				this.hideDescription();
 			}
@@ -85,60 +66,45 @@ dojo.declare("umc.widgets.Page", dijit.layout.ContentPane, {
 		dojo.unsubscribe(this._subscriptionHandle);
 	},
 
-	addChild: function(item) {
-		this._layoutContainer.addChild(item);
-	},
-
-	startup: function() {
-		var container = this._topLayoutContainer || this._layoutContainer;
-		container.startup();
-	},
-
 	showDescription: function() {
-		// if we don't have a description, ignore call
-		if (!this._descriptionPane || this._descriptionShown) {
+		// if we don't have a help text, ignore call
+		if (!this._helpTextPane || this._helpTextShown) {
 			return;
 		}
 
 		// make the node transparent, yet displayable and redo the layout
-		dojo.style(this._descriptionPane.domNode, {
+		dojo.style(this._helpTextPane.domNode, {
 			opacity: 0,
 			display: 'block'
 		});
-		this.layout();
-		this._descriptionShown = true;
+		this._helpTextShown = true;
 		
-		// fade in the description
+		// fade in the help text
 		dojo.fadeIn({
-			node: this._descriptionPane.domNode,
+			node: this._helpTextPane.domNode,
 			duration: 500
 		}).play();
 	},
 
 	hideDescription: function() {
-		// if we don't have a description or the description is already hidden, ignore call
-		if (!this._descriptionPane || !this._descriptionShown) {
+		// if we don't have a help text or the help text is already hidden, ignore call
+		if (!this._helpTextPane || !this._helpTextShown) {
 			return;
 		}
 		
-		// fade out the description
+		// fade out the help text
 		dojo.fadeOut({
-			node: this._descriptionPane.domNode,
+			node: this._helpTextPane.domNode,
 			duration: 500,
 			onEnd: dojo.hitch(this, function() {
 				// redo the layout
-				this._descriptionShown = false;
-				dojo.style(this._descriptionPane.domNode, {
+				this._helpTextShown = false;
+				dojo.style(this._helpTextPane.domNode, {
 					display: 'none'
 				});
 				this.layout();
 			})
 		}).play();
-	},
-
-	layout: function() {
-		var container = this._topLayoutContainer || this._layoutContainer;
-		container.layout();
 	}
 });
 

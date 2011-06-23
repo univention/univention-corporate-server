@@ -5,6 +5,7 @@ dojo.provide("umc.store");
 dojo.require("umc.tools");
 dojo.require("dojo.DeferredList");
 dojo.require("dojo.store.util.QueryResults");
+dojo.require("dojo.store.Observable");
 dojo.require("dojo.data.ObjectStore");
 
 dojo.declare("umc.store.UmcpModuleStore", null, {
