@@ -199,6 +199,25 @@ class UDM_Module( object ):
 	def operations( self ):
 		return self.module is not None and getattr( self.module, 'operations', None )
 
+	@property
+	def containers( self ):
+		containers = getattr( self.module, 'default_containers', [] )
+		ldap_base = ucr.get( 'ldap/base' )
+
+		return map( lambda x: x + ldap_base, containers )
+
+	@property
+	def superordinates( self ):
+		return getattr( self.module, 'wizardsuperordinates', [] )
+
+	def types4superordinate( self, superordinate ):
+		if not superordinate in self.superordinates:
+			return []
+		types = getattr( self.module, 'wizardtypesforsuper' )
+		if isinstance( types, dict ) and superordinate in types:
+			return types[ superordinate ]
+
+		return []
 
 class UDM_Settings( object ):
 	def __init__( self, username ):
@@ -217,7 +236,7 @@ class UDM_Settings( object ):
 			return []
 		base, name = module_name.split( '/', 1 )
 
-		return self.directory[ base ]
+		return self.directory.get( base, [] )
 
 	def resultColumns( self, module_name ):
 		pass
