@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-06-22 17:52+0200\n"
+"POT-Creation-Date: 2011-06-23 17:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "<br>Error message from server: %s"
 msgstr "<br>Fehlermeldung des Servers: %s"
 
-#: umc/app.js:308
+#: umc/app.js:309
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -53,7 +53,7 @@ msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:322
+#: umc/app.js:323
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -79,7 +79,7 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/app.js:304
+#: umc/app.js:305
 msgid "Help"
 msgstr "Hilfe"
 
@@ -156,7 +156,7 @@ msgstr "Anmelden"
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:330
+#: umc/app.js:331
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
@@ -219,7 +219,7 @@ msgstr ""
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
-#: umc/app.js:315
+#: umc/app.js:316
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -227,7 +227,7 @@ msgstr "Tooltips"
 msgid "Translate me!"
 msgstr ""
 
-#: umc/app.js:338
+#: umc/app.js:339
 #, python-format
 msgid "User: %s"
 msgstr "Benutzer: %s"

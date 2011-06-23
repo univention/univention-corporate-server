@@ -280,7 +280,7 @@ dojo.mixin(umc.tools, {
 			return undefined;
 		}
 		if (!widgetConf.type) {
-			console.log(dojo.replace("WARNING in umc.tools.renderWidget: The widget type '{0}' is invalid. Ignoring error.", [widgetConf.type]));
+			console.log(dojo.replace("WARNING in umc.tools.renderWidget: The type '{type}' of the widget '{name}' is invalid. Ignoring error.", widgetConf));
 			return undefined;
 		}
 
@@ -297,7 +297,7 @@ dojo.mixin(umc.tools, {
 		// create the new widget according to its type
 		var WidgetClass = dojo.getObject('umc.widgets.' + widgetConf.type);
 		if (!WidgetClass) {
-			console.log(dojo.replace("WARNING in umc.tools.renderWidget: The widget class 'umc.widgets.{0}' cannot be found. Ignoring error.", [widgetConf.type]));
+			console.log(dojo.replace("WARNING in umc.tools.renderWidget: The widget class 'umc.widgets.{type}' defined by widget '{name}' cannot be found. Ignoring error.", widgetConf));
 			return undefined;
 		}
 		var widget = new WidgetClass(conf); // Widget

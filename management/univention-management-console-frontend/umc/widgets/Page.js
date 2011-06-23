@@ -19,6 +19,8 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 	//		Title of the page. This option is necessary for tab pages.
 	title: '',
 
+	scrollable: true,
+
 	_helpTextPane: null,
 	_helpTextShown: true,
 	_subscriptionHandle: null,

@@ -265,7 +265,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		var overviewPage = new umc.widgets.ContainerWidget({ 
 			//style: "overflow:visible; width: 80%"
 			title: this._('Overview'),
-			iconClass: 'icon16-univention' 
+			iconClass: 'icon16-univention',
+			scrollable: true
 		});
 
 		// add a CategoryPane for each category
