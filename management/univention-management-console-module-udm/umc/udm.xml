@@ -15,12 +15,42 @@
 	  <name>Computers</name>
 	  <description>Managing computers</description>
 	</flavor>
+	<flavor icon="udm-networks" id="networks/network">
+	  <name>Networks</name>
+	  <description>Managing networks</description>
+	</flavor>
+	<flavor icon="udm-dns" id="dns/dns">
+	  <name>DNS</name>
+	  <description>Managing DNS settings</description>
+	</flavor>
+	<flavor icon="udm-dhcp" id="dhcp/dhcp">
+	  <name>DHCP</name>
+	  <description>Managing DHCP settings</description>
+	</flavor>
+	<flavor icon="udm-shares" id="shares/share">
+	  <name>Shares</name>
+	  <description>Managing shares</description>
+	</flavor>
+	<flavor icon="udm-printers" id="shares/print">
+	  <name>Printers</name>
+	  <description>Managing printers</description>
+	</flavor>
+	<flavor icon="udm-mail" id="mail/mail">
+	  <name>Mail</name>
+	  <description>Managing mail settings</description>
+	</flavor>
+	<flavor icon="udm-nagios" id="nagios/nagios">
+	  <name>Nagios</name>
+	  <description>Managing Nagios settings</description>
+	</flavor>
 	<categories>
 	  <category name="domain"/>
 	</categories>
 	<command name="udm/query" function="query">
 	</command>
 	<command name="udm/containers" function="containers">
+	</command>
+	<command name="udm/superordinates" function="superordinates">
 	</command>
 	<command name="udm/types" function="types">
 	</command>

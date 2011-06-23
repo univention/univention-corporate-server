@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.22-1) unstable; urgency=low
+
+  * add flavors for all UDM modules
+  * add missing icons; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 23 Jun 2011 10:10:39 +0200
+
 univention-management-console-module-udm (1.0.21-1) unstable; urgency=low
 
   * support retrieving layout structures for all UDM modules; Bug #22439
