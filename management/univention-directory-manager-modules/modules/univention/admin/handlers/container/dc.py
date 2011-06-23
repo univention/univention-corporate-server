@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, ldap
+
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.password
@@ -170,23 +171,28 @@ property_descriptions={
 			identifies=0
 		),
 }
-layout=[
-	univention.admin.tab(_('General'),_('Basic settings'),[[univention.admin.field("name")]]),
-	univention.admin.tab(_('Domain Password'),_('Administrator password for this domain'),[[univention.admin.field("domainPassword")]], advanced = True),
-	univention.admin.tab(_('DNS'),_('DNS Zones'),[
-			[univention.admin.field("dnsForwardZone"),univention.admin.field("dnsReverseZone")]
-		], advanced = True),
-	univention.admin.tab(_('Samba'),_('Samba Settings'),[
-			[univention.admin.field("sambaDomainName"), univention.admin.field("sambaSID")],
-			[univention.admin.field("sambaNextUserRid"), univention.admin.field("sambaNextGroupRid")]
-		], advanced = True),
-	univention.admin.tab(_('Kerberos'), _('Kerberos Settings'),[
-			[univention.admin.field('kerberosRealm')]
-		], advanced = True),
-	univention.admin.tab(_('Mail'), _('Mail Settings'),[
-			[univention.admin.field('mailRelay')]
-		], advanced = True),
-]
+
+layout = [
+	Tab(_('General'),_('Basic settings'), layout = [
+		"name"
+		] ),
+	Tab(_('Domain Password'),_('Administrator password for this domain'), layout = [
+		"domainPassword"
+		] ),
+	Tab(_('DNS'),_('DNS Zones'), advanced = True, layout = [
+		[ "dnsForwardZone", "dnsReverseZone" ]
+		] ),
+	Tab(_('Samba'),_('Samba Settings'), advanced = True, layout = [
+		[ "sambaDomainName", "sambaSID" ],
+		[ "sambaNextUserRid", "sambaNextGroupRid" ]
+		] ),
+	Tab(_('Kerberos'), _('Kerberos Settings'), advanced = True, layout = [
+		'kerberosRealm'
+		] ),
+	Tab(_('Mail'), _('Mail Settings'), advanced = True, layout = [
+		'mailRelay'
+		] ),
+	]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('sambaDomainName', 'sambaDomainName')

@@ -150,16 +150,6 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'filler': univention.admin.property(
-			short_description=(''),
-			long_description='',
-			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		),
 	'mx': univention.admin.property(
 			short_description=_('Mail exchanger host'),
 			long_description='',
@@ -186,7 +176,7 @@ layout = [
 		'zonettl'
 		] ),
 	Tab( _( 'Start of Authority' ), _( 'Primary name server information' ), layout = [
-		[ 'contact', "filler" ],
+		'contact',
 		[ 'nameserver', 'serial' ],
 		[ 'refresh', 'retry' ],
 		[ 'expire', 'ttl' ]

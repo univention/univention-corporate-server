@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
@@ -143,15 +144,14 @@ property_descriptions = {
 }
 
 layout = [
-		univention.admin.tab(_('General'), _('Basic Values'), [
-			[univention.admin.field('name'), ],
-			[univention.admin.field("shortDescription"), univention.admin.field("longDescription")],
-			[univention.admin.field("translationShortDescription"), univention.admin.field("translationLongDescription")],
-			[univention.admin.field("default"), univention.admin.field("editable")],
-			[univention.admin.field('module'), univention.admin.field("objectClass")],
-			]
-		),
-]
+	Tab(_('General'), _('Basic Values'), layout = [
+		'name',
+		[ "shortDescription", "longDescription" ],
+		[ "translationShortDescription", "translationLongDescription" ],
+		[ "default", "editable" ],
+		[ 'module', "objectClass" ],
+		] ),
+	]
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

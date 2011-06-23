@@ -30,8 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import copy, types, sys, re, string, ldap
+import copy
+import types
+import re
+import string
+import ldap
+
 import univention.debug
+
+from univention.admin.layout import Tab
 import univention.admin.filter
 import univention.admin.uldap
 import univention.admin.mapping
@@ -2290,9 +2297,8 @@ class simplePolicy(simpleLdap):
 			self.descriptions[ '_view_referencing_objects' ] = prop
 
 			# add property to layout
-			tab = univention.admin.tab( _( 'Referencing objects' ),
-										_( 'Objects referencing this policy object' ),
-										[ [ univention.admin.field( '_view_referencing_objects' ) ] ] )
+			tab = Tab( _( 'Referencing objects' ), _( 'Objects referencing this policy object' ),
+					   layout = [ '_view_referencing_objects' ] )
 			self.layout.append( tab )
 
 	def primary_group(self):

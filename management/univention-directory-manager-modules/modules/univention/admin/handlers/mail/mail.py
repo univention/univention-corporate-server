@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.localization
 
@@ -72,7 +72,7 @@ property_descriptions={
 			identifies=1
 		)
 }
-layout=[ univention.admin.tab(_('General'),_('Basic settings'),[ [univention.admin.field("name")] ]) ]
+layout = [ Tab( _( 'General' ), _( 'Basic settings' ), [ "name" ] ) ]
 
 mapping=univention.admin.mapping.mapping()
 

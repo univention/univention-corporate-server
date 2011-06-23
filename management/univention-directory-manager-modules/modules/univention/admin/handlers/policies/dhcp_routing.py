@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
+from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
@@ -120,26 +120,17 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 			),
-	'filler': univention.admin.property(
-			short_description='',
-			long_description='',
-			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		)
 }
-layout=[
-	univention.admin.tab(_('General'),_('DHCP routing'), [
-		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('routers'), univention.admin.field('filler', hide_in_normalmode=1)]
-	]),
-	univention.admin.tab(_('Object'),_('Object'), [
-		[univention.admin.field('requiredObjectClasses') , univention.admin.field('prohibitedObjectClasses') ],
-		[univention.admin.field('fixedAttributes'), univention.admin.field('emptyAttributes')]
-	], advanced = True),
-]
+
+layout = [
+	Tab(_('General'),_('DHCP routing'), layout = [
+		'name',
+		] ),
+	Tab(_('Object'),_('Object'), advanced = True, layout = [
+		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
+		[ 'fixedAttributes', 'emptyAttributes' ]
+		] ),
+	]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

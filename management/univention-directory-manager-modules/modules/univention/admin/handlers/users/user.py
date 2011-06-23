@@ -1075,7 +1075,7 @@ layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ),	[
 		Group( _( 'User account' ), layout = [
 			'username',
-			'password', 
+			'password',
 			'description',
 			] ),
 		Group( _( 'Personal information' ), layout = [
@@ -1090,7 +1090,7 @@ layout = [
 	Tab( _( 'User account' ),  _( 'Account settings' ), [
 		[ 'disabled', 'locked' ],
 		[ 'userexpiry', 'passwordexpiry' ],
-		[ 'filler', 'pwdChangeNextLogin' ],
+		'pwdChangeNextLogin',
 		] ),
 	Tab(_( 'Mail' ), _( 'Mail preferences' ), [
 		'mailPrimaryAddress',

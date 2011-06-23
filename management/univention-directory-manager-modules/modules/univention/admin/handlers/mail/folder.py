@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.allocators
@@ -140,18 +140,18 @@ property_descriptions={
 		),
 }
 
-layout=[
-	univention.admin.tab(_('General'),_('Basic settings'),[
-	[univention.admin.field("name"), univention.admin.field("mailDomain")],
-	[univention.admin.field("kolabHomeServer"), univention.admin.field("cyrus-userquota")],
-	[univention.admin.field("folderType"), univention.admin.field("mailPrimaryAddress")],
-	[univention.admin.field("userNamespace"), ],
-	] ),
-	univention.admin.tab(_('Access Rights'),_('Access rights for shared folder'),[
-	[univention.admin.field("sharedFolderUserACL")],
-	[univention.admin.field("sharedFolderGroupACL")],
-	] )
-]
+layout = [
+	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
+		[ "name" , "mailDomain" ],
+		[ "kolabHomeServer", "cyrus-userquota" ],
+		[ "folderType", "mailPrimaryAddress" ],
+		"userNamespace",
+		] ),
+	Tab( _( 'Access Rights'),_('Access rights for shared folder'), layout = [
+		"sharedFolderUserACL",
+		"sharedFolderGroupACL",
+		] )
+	]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('cyrus-userquota', 'cyrus-userquota', None, univention.admin.mapping.ListToString)

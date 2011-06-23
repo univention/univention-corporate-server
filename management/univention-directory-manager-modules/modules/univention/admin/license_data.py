@@ -168,7 +168,6 @@ modules = {
 	'policies/xfree': Attributes( UCS ),
 	'settings/admin': Attributes(),
 	'settings/cn': Attributes(),
-	'settings/customattribute': Attributes(),
 	'settings/default': Attributes( [ UCS, UGS ]),
 	'settings/directory': Attributes(),
 	'settings/license': Attributes(),

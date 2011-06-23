@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.password
@@ -173,20 +173,21 @@ property_descriptions={
 			identifies=0
 		)
 }
-layout=[
-	univention.admin.tab(_('General'),_('Basic Values'),[[univention.admin.field("name")]]),
-	univention.admin.tab(_('Users'),_('User Links'),[[univention.admin.field("users")]]),
-	univention.admin.tab(_('Groups'),_('Group Links'),[[univention.admin.field("groups")]]),
-	univention.admin.tab(_('Computers'),_('Computer Links'),[[univention.admin.field("computers")]]),
-	univention.admin.tab(_('Policy'),_('Policy Links'),[[univention.admin.field("policies")]]),
-	univention.admin.tab(_('DNS'),_('DNS Links'),[[univention.admin.field("dns")]]),
-	univention.admin.tab(_('DHCP'),_('DHCP Links'),[[univention.admin.field("dhcp")]]),
-	univention.admin.tab(_('Network'),_('Network Links'),[[univention.admin.field("networks")]]),
-	univention.admin.tab(_('Shares'),_('Shares Links'),[[univention.admin.field("shares")]]),
-	univention.admin.tab(_('Printers'),_('Printers Links'),[[univention.admin.field("printers")]]),
-	univention.admin.tab(_('Mail'),_('Mail Links'),[[univention.admin.field("mail")]]),
-	univention.admin.tab(_('License'),_('License Links'),[[univention.admin.field("license")]])
-]
+
+layout = [
+	Tab( _('General'),_('Basic Values'), layout = [ "name" ] ),
+	Tab( _('Users'),_('User Links'), layout = [ "users" ] ),
+	Tab( _('Groups'),_('Group Links'), layout = [ "groups" ] ),
+	Tab( _('Computers'),_('Computer Links'), layout = [ "computers" ] ),
+	Tab( _('Policy'),_('Policy Links'), layout = [ "policies" ] ),
+	Tab( _('DNS'),_('DNS Links'), layout = [ "dns" ] ),
+	Tab( _('DHCP'),_('DHCP Links'), layout = [ "dhcp" ] ),
+	Tab( _('Network'),_('Network Links'), layout = [ "networks" ] ),
+	Tab( _('Shares'),_('Shares Links'), layout = [ "shares" ] ),
+	Tab( _('Printers'),_('Printers Links'), layout = [ "printers" ] ),
+	Tab( _('Mail'),_('Mail Links'), layout = [ "mail" ] ),
+	Tab( _('License'),_('License Links'), layout = [ "license" ] )
+	]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
@@ -333,35 +334,35 @@ property_descriptions={
 		),
 }
 
-layout=[
-	univention.admin.tab(_('General'),_('Basic Values'),[
-			[ univention.admin.field("name") ],
-			[ univention.admin.field("shortDescription"), univention.admin.field("longDescription") ],
-			[ univention.admin.field("translationShortDescription"), univention.admin.field("translationLongDescription") ]
-			]),
-	univention.admin.tab(_('UDM Web'),_('Settings for UDM web interface'),[
-			[ univention.admin.field("tabName"), univention.admin.field("tabPosition") ],
-			[ univention.admin.field("translationTabName"), [ univention.admin.field("overwritePosition"),
-															  univention.admin.field("fullWidth"),
-															  univention.admin.field("overwriteTab"),
-															  univention.admin.field("tabAdvanced"),
-															  univention.admin.field("addEmptyValue") ]  ]
-			]),
-	univention.admin.tab(_('UDM General'),_('UDM related settings'),[
-			[ univention.admin.field("CLIName"), univention.admin.field("hook") ],
-			[ univention.admin.field("options"), univention.admin.field("module") ]
-			]),
-	univention.admin.tab(_('Data type'),_('Data type definition'),[
-			[univention.admin.field("syntax"), univention.admin.field("default") ],
-			[univention.admin.field("multivalue"), univention.admin.field("valueRequired") ],
-			[univention.admin.field("mayChange"),  univention.admin.field("doNotSearch") ],
-			[univention.admin.field("notEditable") ]
-			]),
-	univention.admin.tab(_('LDAP'),_('LDAP mapping'),[
-			[ univention.admin.field("objectClass"), univention.admin.field("ldapMapping") ],
-			[ univention.admin.field("deleteObjectClass") ]
-			])
-]
+layout = [
+	Tab(_('General'),_('Basic Values'), layout = [
+		"name",
+		[ "shortDescription", "longDescription" ],
+		[ "translationShortDescription", "translationLongDescription" ]
+		] ),
+	Tab(_('UDM Web'),_('Settings for UDM web interface'), layout = [
+		[ "tabName", "tabPosition" ],
+		[ "translationTabName", [ "overwritePosition",
+								  "fullWidth",
+								  "overwriteTab",
+								  "tabAdvanced",
+								  "addEmptyValue" ] ]
+		] ),
+	Tab(_('UDM General'),_('UDM related settings'), layout = [
+		[ "CLIName", "hook" ],
+		[ "options", "module" ]
+		] ),
+	Tab(_('Data type'),_('Data type definition'), layout = [
+		[ "syntax", "default" ],
+		[ "multivalue", "valueRequired" ],
+		[ "mayChange",  "doNotSearch" ],
+		"notEditable"
+		] ),
+	Tab(_('LDAP'),_('LDAP mapping'), layout = [
+		[ "objectClass", "ldapMapping" ],
+		[ "deleteObjectClass" ]
+		] )
+	]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

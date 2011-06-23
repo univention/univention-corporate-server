@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
+from univention.admin.layout import Tab, Group
 import univention.admin.handlers
 import univention.admin.password
 import univention.admin.localization
@@ -151,35 +151,28 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'filler': univention.admin.property(
-			short_description=_('None'),
-			long_description='',
-			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		)
 }
-layout=[
-	univention.admin.tab(_('General'),_('Basic Values'),[
-		[univention.admin.field("name")]]),
-	univention.admin.tab(_('Primary Groups'),_('Primary Groups'),[
-		[univention.admin.field("defaultGroup")],
-		[univention.admin.field("defaultComputerGroup")],
-		[univention.admin.field("defaultDomainControllerMBGroup")],
-		[univention.admin.field("defaultDomainControllerGroup")],
-		[univention.admin.field("defaultMemberServerGroup")],
-		[univention.admin.field("defaultClientGroup")]]),
-	univention.admin.tab(_('KDE Profiles'),_('KDE Profiles'),[
-		[univention.admin.field("defaultKdeProfiles")],
-	]),
-	univention.admin.tab(_('Groupware'),_('Groupware'),[
-		[univention.admin.field("defaultKolabHomeServer")],
-		[univention.admin.field("defaultScalixMailnode")],
-	]),
-]
+
+layout = [
+	Tab(_('General'),_('Basic Values'), layout = [
+		"name"
+		] ),
+	Tab(_('Primary Groups'),_('Primary Groups'), layout = [
+		"defaultGroup",
+		"defaultComputerGroup",
+		"defaultDomainControllerMBGroup",
+		"defaultDomainControllerGroup",
+		"defaultMemberServerGroup",
+		"defaultClientGroup"
+		] ),
+	Tab(_('KDE Profiles'),_('KDE Profiles'), layout = [
+		"defaultKdeProfiles",
+		] ),
+	Tab(_('Groupware'),_('Groupware'), layout = [
+		"defaultKolabHomeServer",
+		"defaultScalixMailnode",
+		] ),
+	]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

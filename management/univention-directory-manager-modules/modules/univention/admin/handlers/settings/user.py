@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
+from univention.admin.layout import Tab, Group
 import univention.admin.handlers
 import univention.admin.password
 import univention.admin.localization
@@ -211,24 +211,15 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'filler': univention.admin.property(
-			short_description='',
-			long_description='',
-			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		)
 }
-layout=[
-	univention.admin.tab(_('Univention Directory Manager'),_('Univention Directory Manager User Settings'),[
-		[univention.admin.field("username"), univention.admin.field('baseDN')],
-		[univention.admin.field('listWizards'), univention.admin.field('listWebModules')],
-		[ univention.admin.field( 'selfAttributes' ), univention.admin.field( 'listAttributes' )],
-		[ univention.admin.field( 'listNavigationAttributes' ), univention.admin.field( 'filler' )],
-	]),
+
+layout = [
+	Tab(_('Univention Directory Manager'),_('Univention Directory Manager User Settings'), layout = [
+		[ "username", 'baseDN' ],
+		[ 'listWizards', 'listWebModules' ],
+		[ 'selfAttributes', 'listAttributes' ],
+		'listNavigationAttributes',
+		] ),
 # TODO: default container
 #	univention.admin.tab(_('Users'),_('User Links'),[[univention.admin.field("users")]]),
 #	univention.admin.tab(_('Groups'),_('Group Links'),[[univention.admin.field("groups")]]),
@@ -239,7 +230,7 @@ layout=[
 #	univention.admin.tab(_('Network'),_('Network Links'),[[univention.admin.field("networks")]]),
 #	univention.admin.tab(_('Shares'),_('Shares Links'),[[univention.admin.field("shares")]]),
 #	univention.admin.tab(_('Printers'),_('Printers Links'),[[univention.admin.field("printers")]]),
-]
+	]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)

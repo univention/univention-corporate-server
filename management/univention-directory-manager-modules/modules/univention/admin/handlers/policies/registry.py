@@ -30,7 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, copy
+import string
+
+from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
@@ -119,27 +121,18 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'filler': univention.admin.property(
-			short_description='',
-			long_description='',
-			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		)
 }
-layout=[
-	univention.admin.tab(_('General'),_('These configuration settings will be set on the local UCS system.'), [
-		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('filler', hide_in_normalmode=1) ],
-		[univention.admin.field('registry'), univention.admin.field('filler')],
-	]),
-	univention.admin.tab(_('Object'),_('Object'), [
-		[univention.admin.field('requiredObjectClasses') , univention.admin.field('prohibitedObjectClasses') ],
-		[univention.admin.field('fixedAttributes'), univention.admin.field('emptyAttributes')]
-	], advanced = True),
-]
+
+layout = [
+	Tab(_('General'),_('These configuration settings will be set on the local UCS system.'), layout = [
+		'name',
+		'registry',
+		] ),
+	Tab(_('Object'),_('Object'), advanced = True, layout = [
+		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
+		[ 'fixedAttributes', 'emptyAttributes' ]
+		] ),
+	]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
@@ -190,8 +183,8 @@ class object(univention.admin.handlers.simplePolicy):
 				may_change=1,
 				identifies=0,
 			)
-			layout[0].fields.append([univention.admin.field(key)])
-			layout[0].fields.sort()
+			layout[0].layout.append([key])
+			layout[0].layout.sort()
 
 			mapping.register(key, 'univentionRegistry;entry-hex-%s' % key.encode('hex'), None, univention.admin.mapping.ListToString)
 			self.oldinfo[key] = ''

@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.password
@@ -162,27 +162,18 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'filler': univention.admin.property(
-			short_description='',
-			long_description='',
-			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		)
 }
-layout=[
-	univention.admin.tab(_('General'),_('X Configuration Choices'), [
-		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('xModule',width=width), univention.admin.field('filler', hide_in_normalmode=1) ],
-		[univention.admin.field('resolution',width=width), univention.admin.field('colorDepth',width=width)],
-		[univention.admin.field('mouseProtocol',width=width), univention.admin.field('mouseDevice',width=width)],
-		[univention.admin.field('keyboardLayout',width=width), univention.admin.field('keyboardVariant',width=width)],
-		[univention.admin.field('hSync',width=width), univention.admin.field('vRefresh',width=width)],
-		[univention.admin.field('displaySize',width=width), univention.admin.field('filler')]
-	])
-]
+
+layout = [
+	Tab(_('General'),_('X Configuration Choices'), layout = [
+		'name',
+		[ 'resolution', 'colorDepth' ],
+		[ 'mouseProtocol', 'mouseDevice' ],
+		[ 'keyboardLayout', 'keyboardVariant' ],
+		[ 'hSync', 'vRefresh' ],
+		'displaySize'
+		] )
+	]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

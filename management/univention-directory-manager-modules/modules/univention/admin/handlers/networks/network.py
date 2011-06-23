@@ -30,8 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, re , copy, time
-import socket, struct
+import string
+
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.ipaddress
@@ -133,34 +134,24 @@ property_descriptions={
 			dontsearch=1,
 			identifies=0
 		),
-	'filler': univention.admin.property(
-			short_description=(''),
-			long_description='',
-			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		)
 }
 
-layout=[
-	univention.admin.tab(_('General'),_('Basic settings'), [
-		[univention.admin.field('name'), univention.admin.field('filler')],
-		[univention.admin.field('network'), univention.admin.field('netmask')],
-	]),
-	univention.admin.tab(_('IP'),_('IP address ranges'), [
-		[univention.admin.field('ipRange')],
-	]),
-	univention.admin.tab(_('DNS'),_('DNS preferences'), [
-		[univention.admin.field('dnsEntryZoneForward') ],
-		[ univention.admin.field('dnsEntryZoneReverse')],
-	]),
-	univention.admin.tab(_('DHCP'),_('DHCP'),[
-			[univention.admin.field("dhcpEntryZone")]
-		])
-]
+layout = [
+	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
+		'name',
+		[ 'network', 'netmask' ],
+		] ),
+	Tab(_('IP'),_('IP address ranges'), layout = [
+		'ipRange',
+		] ),
+	Tab(_('DNS'),_('DNS preferences'), layout = [
+		'dnsEntryZoneForward',
+		'dnsEntryZoneReverse',
+		] ),
+	Tab(_('DHCP'),_('DHCP'), layout = [
+		"dhcpEntryZone"
+		] )
+	]
 
 def rangeMap(old):
 	new=[]

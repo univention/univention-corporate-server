@@ -30,8 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
-sys.path=['.']+sys.path
+from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
@@ -74,13 +73,14 @@ property_descriptions={
 			identifies=0,
 		),
 }
-layout=[
-	univention.admin.tab(_('General'),_('Printer URI'), [
-		[univention.admin.field('name') ],
-		[univention.admin.field('printeruri')],
-	]),
-]
- 		
+
+layout = [
+	Tab(_('General'),_('Printer URI'), layout = [
+		'name',
+		'printeruri',
+		] ),
+	]
+
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

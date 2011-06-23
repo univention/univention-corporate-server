@@ -30,8 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
-sys.path=['.']+sys.path
+from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
@@ -74,12 +73,13 @@ property_descriptions={
 			identifies=0,
 		),
 }
-layout=[
-	univention.admin.tab(_('General'),_('Printer List'), [
-		[univention.admin.field('name') ],
-		[univention.admin.field('printmodel')],
-	]),
-]
+
+layout = [
+	Tab(_('General'),_('Printer List'), layout = [
+		'name',
+		'printmodel',
+		] ),
+	]
 
 def unmapDriverList(old):
 	str=[]

@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
+from univention.admin.layout import Tab, Group
 import univention.admin.uldap
 import univention.admin.syntax
 import univention.admin.filter
@@ -178,30 +178,21 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'filler': univention.admin.property(
-			short_description=(''),
-			long_description='',
-			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		)
 }
-layout=[
-	univention.admin.tab(_('General'),_('Basic settings'),[
-			[univention.admin.field("name"), univention.admin.field("description")],
-			]),
-	univention.admin.tab(_('Container settings'),_('Default position when adding objects'),[
-			[univention.admin.field("userPath"), univention.admin.field("groupPath")],
-			[univention.admin.field("computerPath"), univention.admin.field("policyPath")],
-			[univention.admin.field("dnsPath"), univention.admin.field("dhcpPath")],
-			[univention.admin.field("networkPath"), univention.admin.field("sharePath")],
-			[univention.admin.field("printerPath"), univention.admin.field("mailPath")],
-			[ univention.admin.field("licensePath")],
-			], advanced = True)
-]
+
+layout = [
+	Tab(_('General'),_('Basic settings'), layout = [
+		[ "name", "description" ],
+		] ),
+	Tab(_('Container settings'),_('Default position when adding objects'), advanced = True, layout = [
+		["userPath", "groupPath" ],
+		[ "computerPath", "policyPath" ],
+		[ "dnsPath", "dhcpPath" ],
+		[ "networkPath", "sharePath" ],
+		[ "printerPath", "mailPath" ],
+		"licensePath",
+		] )
+	]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

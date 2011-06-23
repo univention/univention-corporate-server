@@ -30,8 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
-sys.path=['.']+sys.path
+from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
@@ -145,28 +144,19 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'filler': univention.admin.property(
-	        short_description='',
-			long_description='',
-			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-			)
 }
-layout=[
-	univention.admin.tab(_('General'),_('Print quota'), [
-		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('filler', hide_in_resultmode=1)],
-		[univention.admin.field('quotaUsers'), univention.admin.field('quotaGroupsPerUsers') ],
-		[univention.admin.field('quotaGroups')]
-	]),
-	univention.admin.tab(_('Object'),_('Object'), [
-		[univention.admin.field('requiredObjectClasses') , univention.admin.field('prohibitedObjectClasses') ],
-		[univention.admin.field('fixedAttributes'),univention.admin.field('emptyAttributes')]
-	], advanced = True),
-]
+
+layout = [
+	Tab(_('General'),_('Print quota'), layout = [
+		'name',
+		[ 'quotaUsers', 'quotaGroupsPerUsers' ],
+		'quotaGroups'
+		] ),
+	Tab(_('Object'),_('Object'), advanced = True, layout = [
+		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
+		[ 'fixedAttributes', 'emptyAttributes' ]
+		] )
+	]
 
 def unmapQuotaEntries(old):
 	new=[]

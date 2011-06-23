@@ -30,8 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
-sys.path=['.']+sys.path
+import sys
+
+from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
@@ -125,16 +126,17 @@ property_descriptions={
 			identifies=0
 		),
 }
-layout=[
-	univention.admin.tab(_('General'),_('Univention Directory Manager settings'), [
-		[univention.admin.field('name', hide_in_resultmode=1)],
-		[univention.admin.field('listModules')],
-	]),
-	univention.admin.tab(_('Object'),_('Object'), [
-		[univention.admin.field('requiredObjectClasses') , univention.admin.field('prohibitedObjectClasses') ],
-		[univention.admin.field('fixedAttributes'), univention.admin.field('emptyAttributes')]
-	], advanced = True),
-]
+
+layout = [
+	Tab( _( 'General' ), _( 'Univention Directory Manager settings' ), layout = [
+                'name',
+                'listModules',
+                ] ),
+	Tab( _( 'Object' ), _( 'Object' ), advanced = True, layout = [
+                [ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
+                [ 'fixedAttributes', 'emptyAttributes' ]
+                ] ),
+        ]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

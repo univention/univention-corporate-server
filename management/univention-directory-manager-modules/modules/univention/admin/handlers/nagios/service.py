@@ -31,7 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import re, sys, string
+import re
+
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.syntax
@@ -221,24 +223,24 @@ property_descriptions={
 }
 
 
-layout=[
-	univention.admin.tab( _('General'), _('Basic settings'),
-			[ [ univention.admin.field( "name" ), univention.admin.field( "description" ) ],
-			  [ univention.admin.field( "checkCommand" ), univention.admin.field( "checkArgs" ) ],
-			  [ univention.admin.field( "useNRPE" ) ]
-			  ] ),
-	univention.admin.tab( _('Interval'), _('Check settings'),
-			[ [ univention.admin.field( "normalCheckInterval" ), univention.admin.field( "retryCheckInterval" ) ],
-			  [ univention.admin.field( "maxCheckAttempts" ), univention.admin.field( "checkPeriod" ) ]
-			  ], advanced = True ),
-	univention.admin.tab( _('Notification'), _('Notification settings'),
-			[ [ univention.admin.field( "notificationInterval" ), univention.admin.field( "notificationPeriod" ) ],
-			  [ univention.admin.field( "notificationOptionWarning" ), univention.admin.field( "notificationOptionCritical" ) ],
-			  [ univention.admin.field( "notificationOptionUnreachable" ), univention.admin.field( "notificationOptionRecovered" ) ]
-			  ], advanced = True ),
-	univention.admin.tab( _('Hosts'), _('Assigned hosts'),
-			[ [ univention.admin.field( "assignedHosts" ) ]
-			  ] )
+layout = [
+	Tab( _('General'), _('Basic settings'), layout = [
+		[ "name", "description" ],
+		[ "checkCommand" ,  "checkArgs" ],
+		"useNRPE"
+		] ),
+	Tab( _('Interval'), _('Check settings'), advanced = True, layout = [
+		[ "normalCheckInterval", "retryCheckInterval" ],
+		[ "maxCheckAttempts", "checkPeriod" ]
+		] ),
+	Tab( _('Notification'), _('Notification settings'), advanced = True, layout = [
+		[ "notificationInterval", "notificationPeriod" ],
+		[ "notificationOptionWarning", "notificationOptionCritical" ],
+		[ "notificationOptionUnreachable", "notificationOptionRecovered" ]
+		] ),
+	Tab( _('Hosts'), _('Assigned hosts'), layout = [
+		"assignedHosts" 
+		] )
 	]
 
 

@@ -30,7 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
+import string
+
+from univention.admin.layout import Tab, Group
 import univention.admin.uldap
 import univention.admin.syntax
 import univention.admin.filter
@@ -121,14 +123,15 @@ property_descriptions={
 			identifies=0
 		),
 }
+
 layout=[
-	univention.admin.tab(_('General'),_('General settings'),[
-			[univention.admin.field('name'), univention.admin.field('spoolHost')],
-			[univention.admin.field('sambaName'), univention.admin.field('groupMember')],
-			[univention.admin.field('setQuota')],
-			[univention.admin.field('pagePrice'),univention.admin.field('jobPrice')],
-			]),
-]
+	Tab(_('General'),_('General settings'), layout = [
+		[ 'name', 'spoolHost' ],
+		[ 'sambaName', 'groupMember' ],
+		'setQuota',
+		[ 'pagePrice', 'jobPrice' ],
+		] ),
+	]
 
 def boolToString(value):
 	if value == '1':

@@ -73,16 +73,6 @@ property_descriptions={
 			identifies=0,
 			dontsearch=1
 		),
-	'filler': univention.admin.property(
-			short_description='',
-			long_description='',
-			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		)
 }
 
 layout = [

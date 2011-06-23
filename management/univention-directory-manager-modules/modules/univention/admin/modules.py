@@ -158,7 +158,7 @@ def init(lo, position, module, template_object=None):
 				except:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules init: custom field for tab %s: failed to set tabposition' % tabname)
 
-		custom_fields[tabname].append((tabposition, univention.admin.field(pname)))
+		custom_fields[ tabname ].append( ( tabposition, pname ) )
 		module.ldap_extra_objectclasses.extend( ([(attrs.get('univentionAdminPropertyObjectClass', [])[0], pname, propertySyntaxString, attrs['univentionAdminPropertyLdapMapping'][0], deleteValues, deleteObjectClass )]))
 
 	if custom_fields:
@@ -199,7 +199,7 @@ def init(lo, position, module, template_object=None):
 
 			if lastfield:
 				fields.append([lastfield])
-			module.layout.append(univention.admin.tab(tabname, tabname, fields))
+			module.layout.append( Tab( tabname, tabname, fields ) )
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules init: one custom field added %s'% fields)
 
 	# check for properties with the syntax class LDAP_Search
@@ -449,9 +449,9 @@ def update_extended_attributes(lo, module, position):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to set tabPosition' % tabname)
 
 		if fullWidth:
-			properties4tabs[ tabname ].append( (tabPosition, univention.admin.field(pname, colspan=2), tabAdvanced, overwritePosition, fullWidth) )
+			properties4tabs[ tabname ].append( (tabPosition, pname, tabAdvanced, overwritePosition, fullWidth) )
 		else:
-			properties4tabs[ tabname ].append( (tabPosition, univention.admin.field(pname), tabAdvanced, overwritePosition, fullWidth) )
+			properties4tabs[ tabname ].append( (tabPosition, pname, tabAdvanced, overwritePosition, fullWidth) )
 
 		module.extended_udm_attributes.extend( [ univention.admin.extended_attribute( pname, attrs.get('univentionUDMPropertyObjectClass', [])[0],
 																			  attrs['univentionUDMPropertyLdapMapping'][0], deleteObjectClass,
@@ -500,7 +500,7 @@ def update_extended_attributes(lo, module, position):
 					break
 			else:
 				# tab not found in current layout, so add it
-				currentTab = univention.admin.tab(tabname, tabname, fields, advanced = True)
+				currentTab = Tab( tabname, tabname, advanced = True, layout = fields )
 				module.layout.append( currentTab )
 				# remember tabs that have been added by UDM extended attributes
 				if not tabname in module.extended_attribute_tabnames:
@@ -653,23 +653,20 @@ def layout(module_name, object=None):
 			for tab in defining_layout:
 				empty  = True
 				fields = []
-				for line in tab.fields:
+				for line in tab.layout:
 					nline = []
 					for row in line:
 						single = False
 						nrow = []
-						if isinstance(row, univention.admin.field):
+						if isinstance( row, basestring ):
 							single = True
 							row = [row]
 						for field in row:
-							prop = module.property_descriptions[field.property]
-							nrow.append(field)
-							#if not field.property == 'filler' and (not prop.options or [opt for opt in prop.options if opt in object.options]):
-							#	empty = False
-							if not field.property == 'filler':
-								if not prop.options or [opt for opt in prop.options if opt in object.options]:
-									if not prop.license or [license for license in prop.license if license in object.lo.licensetypes]:
-										empty = False
+							prop = module.property_descriptions[field]
+							nrow.append( field )
+							if not prop.options or [opt for opt in prop.options if opt in object.options]:
+								if not prop.license or [license for license in prop.license if license in object.lo.licensetypes]:
+									empty = False
 						if nrow:
 							if single:
 								nrow = nrow[0]
@@ -678,7 +675,7 @@ def layout(module_name, object=None):
 						fields.append(nline)
 				if fields and not empty:
 					ntab=copy.deepcopy(tab)
-					ntab.fields=fields
+					ntab.layout=fields
 					layout.append(ntab)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'modules.py layout:: return layout decreased by given options')
 			return layout

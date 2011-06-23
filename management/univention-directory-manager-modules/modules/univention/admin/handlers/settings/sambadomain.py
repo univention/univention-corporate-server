@@ -30,7 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import string, os
+import os
+
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.password
@@ -231,17 +233,18 @@ property_descriptions={
 			identifies=0
 		),
 	}
-layout=[
-	univention.admin.tab(_('General'),_('Basic Values'),[
-	   [univention.admin.field("name"), univention.admin.field("SID")],
-	   [univention.admin.field("NextUserRid"), univention.admin.field("NextGroupRid")],
-	   [univention.admin.field("NextRid")],
-	   [univention.admin.field("passwordLength"), univention.admin.field("passwordHistory")],
-	   [univention.admin.field("minPasswordAge"), univention.admin.field("maxPasswordAge")],
-	   [univention.admin.field("badLockoutAttempts"), univention.admin.field("lockoutDuration")],
-	   [univention.admin.field("resetCountMinutes"), univention.admin.field("logonToChangePW")],
-	   [univention.admin.field("disconnectTime"), univention.admin.field("refuseMachinePWChange")],
-	   ])
+
+layout = [
+	Tab(_('General'),_('Basic Values'), layout = [
+		["name", "SID"],
+		["NextUserRid", "NextGroupRid"],
+		"NextRid",
+		["passwordLength", "passwordHistory"],
+		["minPasswordAge", "maxPasswordAge"],
+		["badLockoutAttempts", "lockoutDuration"],
+		["resetCountMinutes", "logonToChangePW"],
+		["disconnectTime", "refuseMachinePWChange"],
+		] )
 	]
 
 

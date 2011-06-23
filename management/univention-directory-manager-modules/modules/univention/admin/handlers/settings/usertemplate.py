@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, time
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
@@ -516,82 +516,68 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 		),
-	'filler': univention.admin.property(
-			short_description='',
-			long_description='',
-			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		)
 }
 
 # append CTX properties
 for key, value in mungeddial.properties.items():
 	property_descriptions[ key ] = value
 
-layout=[
-	univention.admin.tab(_('General'),_('Basic Values'),[
-		[univention.admin.field("name"),univention.admin.field("description")],
-		[[univention.admin.field("title"),
-		  univention.admin.field("organisation")],
-		 univention.admin.field("_options")],
-	]),
- 	univention.admin.tab(_('User Account'),_('Account Settings'),[
-	[univention.admin.field("disabled"),univention.admin.field("pwdChangeNextLogin")]
- 	]),
-	univention.admin.tab(_('Mail'),_('Mail Settings'),[
-		[univention.admin.field("mailPrimaryAddress")],
-		[univention.admin.field("mailAlternativeAddress")],
-		[univention.admin.field("mailGlobalSpamFolder")],
-	]),
-	univention.admin.tab(_('User Contact'),_('Contact Information'),[
-		[univention.admin.field("e-mail"), univention.admin.field("phone")],
-		[univention.admin.field("street"),univention.admin.field("filler")],
-		[univention.admin.field("postcode"),univention.admin.field("city")]
-	]),
-	univention.admin.tab(_('Employee'),_('Employee Information'),[
-		[univention.admin.field("employeeType")],
-		[univention.admin.field("departmentNumber")],
-		[univention.admin.field("secretary")]
-	]),
-	univention.admin.tab(_('Linux'),_('Unix Account Settings'), [
-		[univention.admin.field("unixhome"), univention.admin.field("shell")],
-		[univention.admin.field("homeShare"), univention.admin.field("homeSharePath")]
-	]),
-	univention.admin.tab(_('Windows'),_('Windows Account Settings'),[
-		[univention.admin.field("sambahome"), univention.admin.field("homedrive")],
-		[univention.admin.field("scriptpath"), univention.admin.field("profilepath")]
-	]),
-	univention.admin.tab(_('Groups'),_('Group Memberships'), [
-		[univention.admin.field("primaryGroup")],
-		[univention.admin.field("groups")]
-	]),
-	univention.admin.tab(_('Vacation'),_('Vacation'), [
-		[univention.admin.field('kolabVacationText'),
-		 [univention.admin.field('kolabVacationActive'),
-		  univention.admin.field('kolabVacationReplyToUCE'),
-		  univention.admin.field('kolabVacationResendInterval'),]],
-		[univention.admin.field('kolabVacationAddress')],
-		[univention.admin.field('kolabVacationReactDomain'), univention.admin.field('kolabVacationNoReactDomain')]
-	]),
-	univention.admin.tab(_('Groupware'),_('Groupware Settings'), [
-		[univention.admin.field('kolabHomeServer')],
-		[univention.admin.field('kolabForwardAddress'),
-		 [univention.admin.field('kolabForwardActive'),
-		  univention.admin.field('kolabForwardKeepCopy'),
-		  univention.admin.field('kolabForwardUCE')],],
-		[univention.admin.field("filler"), univention.admin.field("filler")],
-		[univention.admin.field('kolabDeliveryToFolderName'), univention.admin.field('kolabDeliveryToFolderActive')],
-		[univention.admin.field("filler"), univention.admin.field("filler")],
-		[univention.admin.field('kolabDelegate')]
-	]),
-	univention.admin.tab(_('Invitation'),_('Invitation'), [
-		[univention.admin.field('kolabInvitationPolicy')],
-	]),
-]
+layout = [
+	Tab(_('General'),_('Basic Values'), layout = [
+		[ "name","description" ],
+		[ [ "title", "organisation" ], "_options" ],
+		] ),
+ 	Tab(_('User Account'),_('Account Settings'), layout = [
+		[ "disabled", "pwdChangeNextLogin" ]
+		] ),
+	Tab(_('Mail'),_('Mail Settings'),[
+		"mailPrimaryAddress",
+		"mailAlternativeAddress",
+		"mailGlobalSpamFolder",
+		] ),
+	Tab(_('User Contact'),_('Contact Information'), layout = [
+		[ "e-mail", "phone" ],
+		"street",
+		[ "postcode","city" ]
+		] ),
+	Tab(_('Employee'),_('Employee Information'), layout = [
+		"employeeType",
+		"departmentNumber",
+		"secretary"
+		] ),
+	Tab(_('Linux'),_('Unix Account Settings'), layout = [
+		["unixhome", "shell"],
+		["homeShare", "homeSharePath"]
+		] ),
+	Tab(_('Windows'),_('Windows Account Settings'), layout = [
+		["sambahome", "homedrive"],
+		["scriptpath", "profilepath"]
+		] ),
+	Tab(_('Groups'),_('Group Memberships'), layout = [
+		["primaryGroup"],
+		["groups"]
+		] ),
+	Tab(_('Vacation'),_('Vacation'), layout = [
+		['kolabVacationText',
+		 ['kolabVacationActive',
+		  'kolabVacationReplyToUCE',
+		  'kolabVacationResendInterval',]],
+		'kolabVacationAddress',
+		['kolabVacationReactDomain', 'kolabVacationNoReactDomain']
+		] ),
+	Tab(_('Groupware'),_('Groupware Settings'), layout = [
+		'kolabHomeServer',
+		['kolabForwardAddress',
+		 ['kolabForwardActive',
+		  'kolabForwardKeepCopy',
+		  'kolabForwardUCE'],],
+		['kolabDeliveryToFolderName', 'kolabDeliveryToFolderActive'],
+		'kolabDelegate'
+		] ),
+	Tab(_('Invitation'),_('Invitation'), layout = [
+		'kolabInvitationPolicy',
+		] ),
+	]
 
 # append tab with CTX flags
 layout.append( mungeddial.tab )

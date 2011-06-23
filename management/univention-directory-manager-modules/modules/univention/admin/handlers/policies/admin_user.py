@@ -30,8 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
-sys.path=['.']+sys.path
+from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
@@ -288,40 +287,31 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'filler': univention.admin.property(
-			short_description='',
-			long_description='',
-			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		)
 }
-layout=[
-	univention.admin.tab(_('General'),_('Univention Directory Manager settings'), [
-		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('baseDN')],
-		[univention.admin.field('listWizards'), univention.admin.field('listWebModules')],
-		[univention.admin.field('selfAttributes'), univention.admin.field('listAttributes')],
-		[univention.admin.field('listNavigationAttributes')],
-		[univention.admin.field('mayOverrideSettings'), univention.admin.field("filler")]],
-	),
+
+layout = [
+        Tab( _( 'General' ), _( 'Univention Directory Manager settings' ), layout = [
+                [ 'name', 'baseDN' ],
+                [ 'listWizards', 'listWebModules' ],
+                [ 'selfAttributes', 'listAttributes' ],
+                [ 'listNavigationAttributes' ],
+                'mayOverrideSettings',
+                ] ),
+        Tab( _( 'Object' ), _( 'Object' ), advanced = True, layout = [
+                [ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
+                [ 'fixedAttributes', 'emptyAttributes' ]
+                ] ),
 # TODO: default container
-#	univention.admin.tab(_('Users'),_('User Links'),[[univention.admin.field("users")]]),
-#	univention.admin.tab(_('Groups'),_('Group Links'),[[univention.admin.field("groups")]]),
-#	univention.admin.tab(_('Computers'),_('Computer Links'),[[univention.admin.field("computers")]]),
-#	univention.admin.tab(_('Policy'),_('Policy Links'),[[univention.admin.field("policy")]]),
-#	univention.admin.tab(_('DNS'),_('DNS Links'),[[univention.admin.field("dns")]]),
-#	univention.admin.tab(_('DHCP'),_('DHCP Links'),[[univention.admin.field("dhcp")]]),
-#	univention.admin.tab(_('Network'),_('Network Links'),[[univention.admin.field("networks")]]),
-#	univention.admin.tab(_('Shares'),_('Shares Links'),[[univention.admin.field("shares")]]),
-#	univention.admin.tab(_('Printers'),_('Printers Links'),[[univention.admin.field("printers")]]),
-	univention.admin.tab(_('Object'),_('Object'), [
-		[univention.admin.field('requiredObjectClasses') , univention.admin.field('prohibitedObjectClasses') ],
-		[univention.admin.field('fixedAttributes'), univention.admin.field('emptyAttributes')]
-	], advanced = True),
-]
+#	univention.admin.tab(_('Users'),_('User Links'),[["users")]]),
+#	univention.admin.tab(_('Groups'),_('Group Links'),[["groups")]]),
+#	univention.admin.tab(_('Computers'),_('Computer Links'),[["computers")]]),
+#	univention.admin.tab(_('Policy'),_('Policy Links'),[["policy")]]),
+#	univention.admin.tab(_('DNS'),_('DNS Links'),[["dns")]]),
+#	univention.admin.tab(_('DHCP'),_('DHCP Links'),[["dhcp")]]),
+#	univention.admin.tab(_('Network'),_('Network Links'),[["networks")]]),
+#	univention.admin.tab(_('Shares'),_('Shares Links'),[["shares")]]),
+#	univention.admin.tab(_('Printers'),_('Printers Links'),[["printers")]]),
+        ]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

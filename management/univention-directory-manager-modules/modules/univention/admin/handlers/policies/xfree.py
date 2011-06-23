@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
+from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
@@ -384,93 +384,35 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 		),
-	'filler': univention.admin.property(
-			short_description='',
-			long_description='',
-			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		),
-	'info_text_general': univention.admin.property(
-			short_description=_('General settings'),
-			long_description='',
-			syntax=univention.admin.syntax.info_text,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		),
-	'info_text_input': univention.admin.property(
-			short_description=_('Input devices'),
-			long_description='',
-			syntax=univention.admin.syntax.info_text,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		),
-	'info_text_advanced': univention.admin.property(
-			short_description=_('Advanced settings'),
-			long_description='',
-			syntax=univention.admin.syntax.info_text,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		),
-	'info_text_advanced_primary': univention.admin.property(
-			short_description=_('Advanced settings of primary display'),
-			long_description='',
-			syntax=univention.admin.syntax.info_text,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		),
-	'info_text_advanced_secondary': univention.admin.property(
-			short_description=_('Advanced settings of secondary display'),
-			long_description='',
-			syntax=univention.admin.syntax.info_text,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
-		),
 }
-layout=[
-	univention.admin.tab(_('General'),_('Display settings'), [
-		[univention.admin.field('name', hide_in_resultmode=1) ],
-		[univention.admin.field('info_text_general')],
-		[univention.admin.field( 'autodetect' ) ],
-		[ univention.admin.field('xModule')],
-		[univention.admin.field('resolution'), univention.admin.field('colorDepth')],
-		[univention.admin.field('secondaryresolution'), univention.admin.field('displayposition')],
-		[univention.admin.field('info_text_input')],
-		[univention.admin.field('mouseProtocol'), univention.admin.field('mouseDevice')],
-		[univention.admin.field('keyboardLayout'), univention.admin.field('keyboardVariant')],
-		[univention.admin.field('info_text_advanced')],
-        [univention.admin.field('vncExport'), univention.admin.field('vncExportViewonly')],
-		[univention.admin.field('videoRam'), univention.admin.field('virtualsize')],
-		[univention.admin.field('info_text_advanced_primary')],
-		[univention.admin.field('primarydisplay'),univention.admin.field('displaySize')],
-		[univention.admin.field('hSync'), univention.admin.field('vRefresh')],
-		[univention.admin.field('info_text_advanced_secondary')],
-		[univention.admin.field('secondarydisplay'),univention.admin.field('displaySizeSecondary')],
-		[univention.admin.field('hSyncSecondary'), univention.admin.field('vRefreshSecondary')],
-	]),
-	univention.admin.tab(_('Object'),_('Object'), [
-		[univention.admin.field('requiredObjectClasses') , univention.admin.field('prohibitedObjectClasses') ],
-		[univention.admin.field('fixedAttributes'), univention.admin.field('emptyAttributes')]
-	], advanced = True),
-]
+
+layout = [
+	Tab(_('General'),_('Display settings'), layout = [
+		Group( _( 'General' ), layout = [
+			'name',
+			'autodetect',
+			'xModule',
+			[ 'resolution', 'colorDepth' ],
+			[ 'secondaryresolution', 'displayposition' ] ] ),
+		Group( _( 'Input devices' ), layout = [
+			[ 'mouseProtocol', 'mouseDevice' ],
+			[ 'keyboardLayout', 'keyboardVariant' ] ] ),
+		Group( _( 'Advanced settings' ), layout = [
+			[ 'vncExport', 'vncExportViewonly' ],
+			[ 'videoRam', 'virtualsize' ] ] ),
+		Group( _( 'Advanced settings of primary display' ), layout = [
+			[ 'primarydisplay','displaySize' ],
+			[ 'hSync', 'vRefresh' ] ] ),
+		Group( _( 'Advanced settings of secondary display' ), layout = [
+			[ 'secondarydisplay','displaySizeSecondary' ],
+			[ 'hSyncSecondary', 'vRefreshSecondary' ]
+			] ),
+		] ),
+	Tab(_('Object'),_('Object'), advanced = True, layout = [
+		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
+		[ 'fixedAttributes', 'emptyAttributes' ]
+		] ),
+	]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

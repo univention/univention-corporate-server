@@ -31,7 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import re, sys, string
+import re
+
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.syntax
@@ -165,15 +167,14 @@ property_descriptions={
 }
 
 
-layout=[
-	univention.admin.tab( _('General'), _('Time Period Settings'),
-	      [
-			[ univention.admin.field( "name" ), univention.admin.field( "description" ) ],
-			[ univention.admin.field( "periodMonday" ), univention.admin.field( "periodTuesday" ) ],
-			[ univention.admin.field( "periodWednesday" ), univention.admin.field( "periodThursday" ) ],
-			[ univention.admin.field( "periodFriday" ), univention.admin.field( "periodSaturday" ) ],
-			[ univention.admin.field( "periodSunday" ) ]
-		  ] )
+layout = [
+	Tab( _('General'), _('Time Period Settings'), layout = [
+			[ "name",	 "description" ],
+			[ "periodMonday", "periodTuesday" ],
+			[ "periodWednesday", "periodThursday" ],
+			[ "periodFriday", "periodSaturday" ],
+			"periodSunday"
+		] )
 	]
 
 
