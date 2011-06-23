@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (1.0.9-1) unstable; urgency=low
+
+  * adaptations to API changes (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Jun 2011 15:23:15 +0200
+
 univention-management-console-module-ucr (1.0.8-1) unstable; urgency=low
 
   * use umc.widgets.SearchForm, adaptations to API changes (Bug #22460)

@@ -2,13 +2,14 @@
 
 dojo.provide("umc.modules.ucr");
 
-dojo.require("umc.widgets.Module");
+dojo.require("dijit.layout.BorderContainer");
+dojo.require("umc.i18n");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.Form");
-dojo.require("umc.widgets.SearchForm");
 dojo.require("umc.widgets.Grid");
+dojo.require("umc.widgets.Module");
+dojo.require("umc.widgets.SearchForm");
 dojo.require("umc.widgets.StandbyMixin");
-dojo.require("umc.i18n");
 
 dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// summary:
@@ -19,6 +20,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	_searchWidget: null,
 	_detailDialog: null,
 	_contextVariable: null,
+	_layoutContainer: null,
 
 	moduleID: 'ucr',
 	idProperty: 'key',
@@ -26,6 +28,10 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	buildRendering: function() {
 		// call superclass method
 		this.inherited(arguments);
+
+		// generate border layout and add it to the module
+		this._layoutContainer = new dijit.layout.BorderContainer({});
+		this.addChild(this._layoutContainer);
 
 		//
 		// add data grid
@@ -88,7 +94,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				filter:"*"
 			}
 		});
-		this.addChild(this._grid);
+		this._layoutContainer.addChild(this._grid);
 
 		//
 		// add search widget
@@ -105,9 +111,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				{ id: 'all', label: this._('All') }
 			],
 			dynamicValues: 'ucr/categories'
-		},
-		undefined,
-		{
+		}, {
 			type: 'ComboBox',
 			name: 'key',
 			value: 'all',
@@ -131,9 +135,12 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._searchWidget = new umc.widgets.SearchForm({
 			region: 'top',
 			widgets: widgets,
+			layout: [[ 'category', 'key', 'filter' ]],
 			onSearch: dojo.hitch(this._grid, 'filter')
 		});
-		this.addChild(this._searchWidget);
+		this._layoutContainer.addChild(this._searchWidget);
+
+		this._layoutContainer.startup();
 
 		//
 		// create dialog for UCR variable details
