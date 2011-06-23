@@ -1072,7 +1072,7 @@ for key, value in mungeddial.properties.items():
 default_property_descriptions=copy.deepcopy(property_descriptions) # for later reset of descriptions
 
 layout = [
-	Tab( _( 'General' ), _( 'Basic settings' ),	[
+	Tab( _( 'General' ), _( 'Basic settings' ),	layout = [
 		Group( _( 'User account' ), layout = [
 			'username',
 			'password',
@@ -1087,62 +1087,62 @@ layout = [
 			[ 'overridePWHistory', 'overridePWLength' ],
 			] ),
 		] ),
-	Tab( _( 'User account' ),  _( 'Account settings' ), [
+	Tab( _( 'User account' ),  _( 'Account settings' ), layout = [
 		[ 'disabled', 'locked' ],
 		[ 'userexpiry', 'passwordexpiry' ],
 		'pwdChangeNextLogin',
 		] ),
-	Tab(_( 'Mail' ), _( 'Mail preferences' ), [
+	Tab(_( 'Mail' ), _( 'Mail preferences' ), layout = [
 		'mailPrimaryAddress',
 		'mailAlternativeAddress',
 		'mailGlobalSpamFolder',
 		] ),
-	Tab( _( 'Contact' ), _( 'Contact information' ), [
+	Tab( _( 'Contact' ), _( 'Contact information' ), layout = [
 		[ 'e-mail', 'phone' ],
 		[ 'street', 'birthday' ],
 		[ 'postcode', 'city' ],
 		'jpegPhoto',
 		] ),
-	Tab( _( 'Organisation' ), _( 'Organisational information' ), [
+	Tab( _( 'Organisation' ), _( 'Organisational information' ), layout = [
 		[ 'employeeNumber', 'employeeType' ],
 		[ 'roomNumber', 'departmentNumber' ],
 		'secretary',
 		] ),
-	Tab( _( 'Private contact' ), _( 'Private contact information' ), [
+	Tab( _( 'Private contact' ), _( 'Private contact information' ), layout = [
 		[ 'mobileTelephoneNumber', 'homeTelephoneNumber' ],
 		[ 'pagerTelephoneNumber','homePostalAddress' ]
 		] ),
-	Tab( _( 'POSIX (Linux/UNIX)' ), _( 'POSIX (Linux/UNIX) account settings' ), True, [
+	Tab( _( 'POSIX (Linux/UNIX)' ), _( 'POSIX (Linux/UNIX) account settings' ), advanced = True, layout = [
 		[ 'unixhome', 'shell' ],
 		[ 'uidNumber', 'gidNumber' ],
 		[ 'homeShare', 'homeSharePath' ],
 		'gecos'
 		] ),
-	Tab( _( 'Windows' ), _( 'Windows account settings' ), [
+	Tab( _( 'Windows' ), _( 'Windows account settings' ), layout = [
 		[ 'sambahome', 'homedrive' ],
 		[ 'scriptpath', 'profilepath' ],
 		[ 'sambaRID', 'sambaPrivileges' ],
 		[ 'sambaLogonHours', 'sambaUserWorkstations' ]
 		] ),
-	Tab( _( 'Groups' ), _( 'Group memberships' ), [
+	Tab( _( 'Groups' ), _( 'Group memberships' ), layout = [
 		'primaryGroup',
 		'groups',
 		] ),
-	Tab( _( 'Out of office notice' ), _( 'Out of office notice' ), [
+	Tab( _( 'Out of office notice' ), _( 'Out of office notice' ), layout = [
 		['kolabVacationText', [ 'kolabVacationActive', 'kolabVacationReplyToUCE',	'kolabVacationResendInterval', ] ],
 		'kolabVacationAddress',
 		[ 'kolabVacationReactDomain' , 'kolabVacationNoReactDomain' ]
 		] ),
-	Tab( _('Groupware'), _( 'Groupware settings' ), [
+	Tab( _('Groupware'), _( 'Groupware settings' ), layout = [
 		[ 'kolabHomeServer', 'kolabDisableSieve' ],
 		[ 'kolabForwardAddress', [ 'kolabForwardActive', 'kolabForwardKeepCopy', 'kolabForwardUCE' ], ],
 		[ 'kolabDeliveryToFolderName', 'kolabDeliveryToFolderActive' ],
 		'kolabDelegate'
 		] ),
-	Tab( _( 'Invitation' ), _( 'Invitation acceptance' ), True, [
+	Tab( _( 'Invitation' ), _( 'Invitation acceptance' ), True, layout = [
 		'kolabInvitationPolicy'
 		] ),
-	Tab( _( 'User Certificate' ), _( 'User Certificate' ), True, [
+	Tab( _( 'User Certificate' ), _( 'User Certificate' ), True, layout = [
 		Group( _( 'General' ), '', [
 			'userCertificate',
 			[ 'certificateSubjectCommonName' , 'certificateSubjectOrganisationalUnit' ],
