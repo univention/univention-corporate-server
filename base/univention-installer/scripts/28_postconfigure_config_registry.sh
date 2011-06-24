@@ -224,27 +224,10 @@ else
 	fi
 fi
 
-if [ -n "$ssl_country" ]; then
-	univention-config-registry set ssl/country="$ssl_country"
-fi
-if [ -n "$ssl_state" ]; then
-	univention-config-registry set ssl/state="$ssl_state"
-fi
-if [ -n "$ssl_locality" ]; then
-	univention-config-registry set ssl/locality="$ssl_locality"
-fi
-if [ -n "$ssl_organization" ]; then
-	univention-config-registry set ssl/organization="$ssl_organization"
-fi
-if [ -n "$ssl_organizationalunit" ]; then
-	univention-config-registry set ssl/organizationalunit="$ssl_organizationalunit"
-fi
-if [ -n "$ssl_common" ]; then
-	univention-config-registry set ssl/common="$ssl_common"
-fi
-if [ -n "$ssl_email" ]; then
-	univention-config-registry set ssl/email=$ssl_email
-fi
+# get all profile variables with leading "ssl_" and set them as UCR variables with leading "ssl/"
+set | grep ^ssl_ | while read ; do 
+    ucr set "$(echo $REPLY | sed -e 's,^ssl_,ssl/,')"
+done
 
 if [ -n "$acpi_off" ]; then
 	univention-config-registry set "\$(univention-config-registry get grub/append) acpi=off"

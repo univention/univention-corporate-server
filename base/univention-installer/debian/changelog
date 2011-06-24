@@ -1,3 +1,10 @@
+univention-installer (7.0.9-1) unstable; urgency=low
+
+  * transfer all values of profile variables starting with leading "ssl_*"
+    to corresponding UCR variables ("ssl/*") (Bug #22846)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 24 Jun 2011 13:33:48 +0200
+
 univention-installer (7.0.8-1) unstable; urgency=low
 
   * load default modules ide-generic, ide-disk, sd_mod, dm_mod (Bug #22448)
