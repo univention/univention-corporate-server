@@ -153,9 +153,8 @@ dojo.mixin(umc.tools, {
 		400: umc.tools._( 'Could not fulfill the request.' ),
 		401: umc.tools._( 'Your session has expired, please login again.' ), // error occurrs only when user is not authenticated and a request is sent
 		403: umc.tools._( 'You are not authorized to perform this action.' ),
-		
+
 		404: umc.tools._( 'Webfrontend error: The specified request is unknown.' ),
-		405: umc.tools._( 'Webfrontend error: The specified request is not allowed.' ), // difference to 403 not clear?
 		406: umc.tools._( 'Webfrontend error: The specified UMCP command arguments of the request are invalid.' ),
 		407: umc.tools._( 'Webfrontend error: The specified arguments for the UMCP module method are invalid or missing.'),
 
@@ -170,12 +169,10 @@ dojo.mixin(umc.tools, {
 		512: umc.tools._( 'Internal server error: The SSL server certificate is not trustworthy. Please check your SSL configurations.' ),
 
 		551: umc.tools._( 'Internal UMC protocol error: The UMCP message header could not be parsed.' ),
-		552: umc.tools._( 'Internal UMC protocol error: The UMCP command is not known.' ), // difference to 404 not clear?
-		553: umc.tools._( 'Internal UMC protocol error: The specified number of arguments for the UMCP command is not valid.' ), // difference to 406 not clear?
 		554: umc.tools._( 'Internal UMC protocol error: The UMCP message body could not be parsed.' ),
 
-		600: umc.tools._( 'Internal module error: An error occured during command processing.' ),
-		601: umc.tools._( 'Internal module error: The execution of a command caused an fatal error.' )
+		590: umc.tools._( 'Internal module error: An error occured during command processing.' ),
+		591: umc.tools._( 'Internal module error: The execution of a command caused an fatal error.' )
 	},
 
 	handleErrorStatus: function(status, error) {
