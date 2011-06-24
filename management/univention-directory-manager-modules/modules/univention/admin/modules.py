@@ -32,7 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import os, sys, ldap, types, copy, locale
-import univention.debug
+import univention.debug as ud
 import univention.admin
 import univention.admin.uldap
 import univention.admin.syntax
@@ -57,7 +57,7 @@ def update():
 				continue
 			p=os.path.join(dir, file).replace(root, '').replace('.py', '')
 			p=p[1:]
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.modules.update: importing "%s"' % p)
+			ud.debug(ud.ADMIN, ud.INFO, 'admin.modules.update: importing "%s"' % p)
 			parts=p.split(os.path.sep)
 			mod, name='.'.join(parts), '/'.join(parts)
 			m=__import__(mod, globals(), locals(), name)
@@ -86,7 +86,7 @@ def init(lo, position, module, template_object=None):
 	# reset property descriptions to defaults if possible
 	if hasattr(module,'default_property_descriptions'):
 		module.property_descriptions=copy.deepcopy(module.default_property_descriptions)
-		#univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: reset default descriptions')
+		#ud.debug(ud.ADMIN, ud.INFO, 'modules_init: reset default descriptions')
 
 	# overwrite property descriptions
 	univention.admin.ucr_overwrite_properties( module, lo )
@@ -134,9 +134,9 @@ def init(lo, position, module, template_object=None):
 
 		deleteValues=attrs.get('univentionAdminPropertyDeleteValues')
 		if deleteValues:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'deleteValues %s' % deleteValues)
+			ud.debug(ud.ADMIN, ud.INFO, 'deleteValues %s' % deleteValues)
 		else:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'No deleteValues')
+			ud.debug(ud.ADMIN, ud.INFO, 'No deleteValues')
 
 		deleteObjectClass=0
 		tabname = attrs.get('univentionAdminPropertyLayoutTabName',[_('Custom')])[0]
@@ -144,19 +144,19 @@ def init(lo, position, module, template_object=None):
 			deleteObjectClass=attrs.get('univentionAdminPropertyDeleteObjectClass')[0]
 		if not custom_fields.has_key(tabname):
 			custom_fields[tabname] = []
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules init: custom fields init for Tab %s' % tabname)
+			ud.debug(ud.ADMIN, ud.INFO, 'modules init: custom fields init for Tab %s' % tabname)
 		tabposition = attrs.get('univentionAdminPropertyLayoutPosition',['-1'])[0]
 		try:
 			tabposition = int(tabposition)
 		except:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules init: custom field for tab %s: failed to convert tabNumber to int' % tabname)
+			ud.debug(ud.ADMIN, ud.WARN, 'modules init: custom field for tab %s: failed to convert tabNumber to int' % tabname)
 		if tabposition == -1 and len(custom_fields[tabname]) > 0:
 			for pos, el in custom_fields[tabname]:
 				try:
 					if int(pos) <= tabposition:
 						tabposition = int(pos)-1
 				except:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules init: custom field for tab %s: failed to set tabposition' % tabname)
+					ud.debug(ud.ADMIN, ud.WARN, 'modules init: custom field for tab %s: failed to set tabposition' % tabname)
 
 		custom_fields[ tabname ].append( ( tabposition, pname ) )
 		module.ldap_extra_objectclasses.extend( ([(attrs.get('univentionAdminPropertyObjectClass', [])[0], pname, propertySyntaxString, attrs['univentionAdminPropertyLdapMapping'][0], deleteValues, deleteObjectClass )]))
@@ -175,7 +175,7 @@ def init(lo, position, module, template_object=None):
 			fields=[]
 			lastfield = ''
 			for (prio, field) in priofields:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules init: custom fields found prio %s'% prio)
+				ud.debug(ud.ADMIN, ud.INFO, 'modules init: custom fields found prio %s'% prio)
 				if not lastfield:
 					lastfield = field
 					lastprio = prio
@@ -183,24 +183,24 @@ def init(lo, position, module, template_object=None):
 					try:
 						if int(prio) > int(lastprio)+1:
 							fields.append([lastfield])
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules init: single custom field added %s'% fields)
+							ud.debug(ud.ADMIN, ud.INFO, 'modules init: single custom field added %s'% fields)
 							lastfield = field
 							lastprio = prio
 						else:
 							fields.append([lastfield,field])
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules init: two custom fields added %s'% fields)
+							ud.debug(ud.ADMIN, ud.INFO, 'modules init: two custom fields added %s'% fields)
 							lastfield = ''
 							lastprio = ''
 					except: # if int(prio) failes
 						 fields.append([lastfield,field])
-						 univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules init: two custom fields added %s'% fields)
+						 ud.debug(ud.ADMIN, ud.INFO, 'modules init: two custom fields added %s'% fields)
 						 lastfield = ''
 						 lastprio = ''
 
 			if lastfield:
 				fields.append([lastfield])
 			module.layout.append( Tab( tabname, tabname, fields ) )
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules init: one custom field added %s'% fields)
+			ud.debug(ud.ADMIN, ud.INFO, 'modules init: one custom field added %s'% fields)
 
 	# check for properties with the syntax class LDAP_Search
 	for pname, prop in module.property_descriptions.items():
@@ -219,7 +219,7 @@ def init(lo, position, module, template_object=None):
 
 	# get defaults from template
 	if template_object:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: got template object %s' % template_object.dn)
+		ud.debug(ud.ADMIN, ud.INFO, 'modules_init: got template object %s' % template_object.dn)
 		template_object.open()
 
 		# add template ext. attr. defaults
@@ -235,7 +235,7 @@ def init(lo, position, module, template_object=None):
 									module.property_descriptions[property_name].base_default.append(default[i])
 						else:
 							module.property_descriptions[property_name].base_default=default
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "modules.init: added template default (%s) to property %s" % (property.base_default, property_name))
+						ud.debug(ud.ADMIN, ud.INFO, "modules.init: added template default (%s) to property %s" % (property.base_default, property_name))
 
 		# add template defaults
 		for key in template_object.keys():
@@ -253,14 +253,14 @@ def init(lo, position, module, template_object=None):
 							module.property_descriptions[key].base_default=[]
 							for i in range(0,len(template_object[key])):
 								module.property_descriptions[key].base_default.append(template_object[key][i])
-						else: univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules.init: template and object values not both multivalue !!')
+						else: ud.debug(ud.ADMIN, ud.INFO, 'modules.init: template and object values not both multivalue !!')
 
 					else:
 						module.property_descriptions[key].base_default=template_object[key]
 					module.property_descriptions[key].templates.append(template_object)
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: module.property_description after template: %s' % module.property_descriptions)
+		ud.debug(ud.ADMIN, ud.INFO, 'modules_init: module.property_description after template: %s' % module.property_descriptions)
 	else:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: got no template')
+		ud.debug(ud.ADMIN, ud.INFO, 'modules_init: got no template')
 
 
 	# re-build layout if there any overwrites defined
@@ -285,7 +285,7 @@ def update_extended_options(lo, module, position):
 
 	# get current language
 	lang = locale.getlocale(locale.LC_MESSAGES)[0]
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_options: LANG=%s' % lang)
+	ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_options: LANG=%s' % lang)
 	if lang:
 		lang = lang.replace('_','-').lower()
 	else:
@@ -345,7 +345,7 @@ def update_extended_attributes(lo, module, position):
 		try:
 			mayChange = int( attrs.get('univentionUDMPropertyValueMayChange', ['0'])[0] )
 		except:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange throwed exception - assuming mayChange=0')
+			ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange throwed exception - assuming mayChange=0')
 			mayChange = 0
 
 		# value is editable (only via hooks or direkt module.info[] access)
@@ -358,7 +358,7 @@ def update_extended_attributes(lo, module, position):
 		try:
 			doNotSearch = int( attrs.get('univentionUDMPropertyDoNotSearch',[ '0' ])[0] )
 		except:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch throwed exception - assuming doNotSearch=0')
+			ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch throwed exception - assuming doNotSearch=0')
 			doNotSearch = 0
 
 		# add an empty value
@@ -376,7 +376,7 @@ def update_extended_attributes(lo, module, position):
 
 		# get current language
 		lang = locale.getlocale( locale.LC_MESSAGES )[0]
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: LANG = %s' % str(lang))
+		ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: LANG = %s' % str(lang))
 		if lang:
 			lang = lang.replace('_','-').lower()
 		else:
@@ -421,7 +421,7 @@ def update_extended_attributes(lo, module, position):
 		# add tab name to list if missing
 		if not properties4tabs.has_key(tabname):
 			properties4tabs[tabname] = []
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: custom fields init for tab %s' % tabname)
+			ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: custom fields init for tab %s' % tabname)
 
 		# remember tab for purging if required
 		if overwriteTab and not tabname in overwriteTabList:
@@ -433,7 +433,7 @@ def update_extended_attributes(lo, module, position):
 		try:
 			tabPosition = int(tabPosition)
 		except:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname)
+			ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname)
 			tabPosition = -1
 
 		# (top left position is defined as 1) ==> if tabPosition is smaller then disable overwritePosition
@@ -446,7 +446,7 @@ def update_extended_attributes(lo, module, position):
 					if pos <= tabPosition:
 						tabPosition = pos-1
 				except:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to set tabPosition' % tabname)
+					ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to set tabPosition' % tabname)
 
 		if fullWidth:
 			properties4tabs[ tabname ].append( (tabPosition, pname, tabAdvanced, overwritePosition, fullWidth) )
@@ -480,7 +480,7 @@ def update_extended_attributes(lo, module, position):
 			currentTab = None
 			# get existing fields if tab has not been overwritten
 			for tab in module.layout:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: tabname=%s   tab.short=%s' % (tabname, tab.short_description) )
+				ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: tabname=%s   tab.short=%s' % (tabname, tab.short_description) )
 
 				if tab.short_description == tabname:
 					currentTab = tab
@@ -510,9 +510,9 @@ def update_extended_attributes(lo, module, position):
 			# check if tab is empty ==> overwritePosition is impossible
 			freshTab = (len(fields) == 0)
 
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: lastprio=%s   lastfield=%s'% (lastprio,lastfield))
+			ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: lastprio=%s   lastfield=%s'% (lastprio,lastfield))
 			for (prio, field, tabAdvanced, overwritePosition, fullWidth) in priofields:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: custom fields found prio %s'% prio)
+				ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: custom fields found prio %s'% prio)
 				if currentTab.advanced and not tabAdvanced:
 					currentTab.advanced = False
 
@@ -532,16 +532,16 @@ def update_extended_attributes(lo, module, position):
 					if len(fields[fline]) >= (fpos+1):
 						oldfield = fields[ fline ][ fpos ]
 						fields[ fline ][ fpos ] = field
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
+						ud.debug(ud.ADMIN, ud.INFO,
 											   'modules update_extended_attributes: replacing field "%s" with "%s" on position "%s" (%s,%s)' % (oldfield.property, field.property, prio, fline, fpos))
 					else:
 						fields[ fline ].append( field )
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
+						ud.debug(ud.ADMIN, ud.INFO,
 											   'modules update_extended_attributes: added new field "%s" on position "%s" (%s,%s)' % (field.property, prio, fline, fpos))
 				else:
 					if fullWidth:
 						fields.append([field])
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: full width field added %s' % fields)
+						ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: full width field added %s' % fields)
 						lastfield = ''
 						lastprio = ''
 					elif not lastfield:
@@ -553,21 +553,21 @@ def update_extended_attributes(lo, module, position):
 						if prio > lastprio+1:
 							# a) abs(prio - lastprio) > 1 ==> only one item in this line
 							fields.append([lastfield])
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: single custom field added %s'% fields)
+							ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: single custom field added %s'% fields)
 							lastfield = field
 							lastprio = prio
 						else:
 							# b) abs(prio - lastprio) <= 1 ==> place two items in this line
 							fields.append([lastfield,field])
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: two custom fields added %s'% fields)
+							ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: two custom fields added %s'% fields)
 							lastfield = ''
 							lastprio = ''
 
 			if lastfield:
 				fields.append([lastfield])
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: one custom field added %s'% fields)
+				ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: one custom field added %s'% fields)
 			currentTab.set_fields(fields)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: layout for tab %s finished: %s'% (tabname, fields) )
+			ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: layout for tab %s finished: %s'% (tabname, fields) )
 
 	# check for properties with the syntax class LDAP_Search
 	for pname, prop in module.property_descriptions.items():
@@ -580,22 +580,25 @@ def update_extended_attributes(lo, module, position):
 				if subsyn.name == 'LDAP_Search':
 					subsyn._load( lo )
 
-def identify(dn, attr, type='', canonical=0):
+def identify( dn, attr, module_name = '', canonical = 0, module_base = None ):
 
 	global modules
 	res=[]
-	for module in modules.values():
-		if name(module).startswith('dns/zone_'):
+	for name, module in modules.items():
+		if name.startswith( 'dns/zone_' ):
+			continue
+		if module_base is not None and not name.startswith( module_base ):
 			continue
 		if not hasattr(module, 'identify'):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'module %s does not provide identify' % module)
-			pass
-		elif module.identify(dn, attr) and not type or type == module.module:
+			ud.debug(ud.ADMIN, ud.INFO, 'module %s does not provide identify' % module)
+			continue
+
+		if module.identify(dn, attr) and not module_name or module_name == module.module:
 			res.append(module)
 	if not res:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'object could not be identified')
+		ud.debug(ud.ADMIN, ud.INFO, 'object could not be identified')
 	for r in res:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'identify: found module %s on %s'%(r.module,dn) )
+		ud.debug(ud.ADMIN, ud.INFO, 'identify: found module %s on %s'%(r.module,dn) )
 	return res
 
 def identifyOne(dn, attr, type=''):
@@ -638,14 +641,14 @@ def layout(module_name, object=None):
 	module = get(module_name)
 	defining_layout = None
 	if object:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'modules.py layout:: got an definied object')
+		ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: got an definied object')
 
 	if object and hasattr(object, 'layout'): # for dynamic modules like users/self
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'modules.py layout:: layout is defined by the object')
+		ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: layout is defined by the object')
 		defining_layout = object.layout
 	elif hasattr(module, 'layout'):
 		defining_layout = module.layout
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'modules.py layout:: layout is defined by the module')
+		ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: layout is defined by the module')
 
 	if defining_layout:
 		if object and hasattr(object, 'options'):
@@ -677,10 +680,10 @@ def layout(module_name, object=None):
 					ntab=copy.deepcopy(tab)
 					ntab.layout=fields
 					layout.append(ntab)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'modules.py layout:: return layout decreased by given options')
+			ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: return layout decreased by given options')
 			return layout
 		else:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'modules.py layout:: return defining_layout.')
+			ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: return defining_layout.')
 			return defining_layout
 
 	else:
@@ -770,16 +773,17 @@ def supports(module_name, operation):
 		return True
 	return operation in module.operations
 
-def objectType(co, lo, dn, attr=None, modules=[]):
+def objectType( co, lo, dn, attr = None, modules = [], module_base = None ):
 	if not dn:
 		return []
-	if not attr:
-		attr=lo.get(dn)
+	if attr is None:
+		attr = lo.get( dn )
 		if not attr:
 			return []
 	if not modules:
-		modules=identify(dn, attr)
-	return [name(mod) for mod in modules]
+		modules = identify( dn, attr, module_base = module_base )
+
+	return [ name( mod ) for mod in modules ]
 
 def objectShadowType(co, lo, dn, attr=None, modules=[]):
 	res=[]
@@ -790,15 +794,15 @@ def objectShadowType(co, lo, dn, attr=None, modules=[]):
 			res.append(type)
 	return res
 
-def findObject(co, lo, dn, type, attr=None):
-	if not attr:
-		attr=lo.get(dn)
+def findObject( co, lo, dn, type, attr = None, module_base = None ):
+	if attr is None:
+		attr = lo.get( dn )
 		if not attr:
 			return None
 	ndn=dn
 	nattr=attr
 	while 1:
-		for module in identify(ndn, nattr):
+		for module in identify( ndn, nattr ):
 			if module and module.module == type:
 				s=superordinate(module)
 				if s:
