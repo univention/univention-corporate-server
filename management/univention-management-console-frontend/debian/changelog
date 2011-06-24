@@ -1,3 +1,11 @@
+univention-management-console-frontend (0.0.51-1) unstable; urgency=low
+
+  * extend LabelPane to watch changes on the widget property 'label'
+  * added CSS code for LabelPane
+  (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Jun 2011 12:12:49 +0200
+
 univention-management-console-frontend (0.0.50-1) unstable; urgency=low
 
   * added the property 'scrollable' to umc.widgets.ContainerWidget (Bug #22460)

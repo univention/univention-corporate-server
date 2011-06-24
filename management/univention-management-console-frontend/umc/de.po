@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-06-23 17:45+0200\n"
+"POT-Creation-Date: 2011-06-24 11:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/tools.js:192
+#: umc/tools.js:189
 #, python-format
 msgid "<br>Error message from server: %s"
 msgstr "<br>Fehlermeldung des Servers: %s"
@@ -25,18 +25,18 @@ msgstr "<br>Fehlermeldung des Servers: %s"
 msgid "About UMC"
 msgstr "Über UMC"
 
-#: umc/tools.js:239
+#: umc/tools.js:236
 msgid "An assert statement failed"
 msgstr "Ein Assert-Anweisung schlug fehl"
 
-#: umc/tools.js:201
+#: umc/tools.js:198
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
 "Ein Fehler trat während des Verbindungsaufbaus zum Server auf, bitte "
 "versuchen Sie es später noch einmal."
 
-#: umc/tools.js:197
+#: umc/tools.js:194
 #, python-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
@@ -45,7 +45,7 @@ msgstr ""
 "Ein unbekannter Fehler mit Status-Code %s trat während des "
 "Verbindungsaufbaus zum Server auf, bitte versuchen Sie es später noch einmal."
 
-#: umc/tools.js:162
+#: umc/tools.js:161
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
@@ -83,17 +83,13 @@ msgstr ""
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/tools.js:173
-msgid "Internal UMC protocol error: The UMCP command is not known."
-msgstr "Interner UMC-Protokoll-Fehler: Der UMCP-Befehl ist nicht bekannt."
-
-#: umc/tools.js:175
+#: umc/tools.js:172
 msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
 msgstr ""
 "Interner UMC-Protokoll-Fehler: Der UMCP-Message-Body konnte nicht geparst "
 "werden."
 
-#: umc/tools.js:172
+#: umc/tools.js:171
 msgid ""
 "Internal UMC protocol error: The UMCP message header could not be parsed."
 msgstr ""
@@ -101,37 +97,29 @@ msgstr ""
 "werden."
 
 #: umc/tools.js:174
-msgid ""
-"Internal UMC protocol error: The specified number of arguments for the UMCP "
-"command is not valid."
-msgstr ""
-"Interner UMC-Protokoll-Fehler: Die angegebene Anzahl an Argumente für den "
-"UCMP-Befehl ist nicht zulässig."
-
-#: umc/tools.js:177
 msgid "Internal module error: An error occured during command processing."
 msgstr ""
 "Interner Modul-Fehler: Ein Fehler trat während des Ausführens des Befehls "
 "auf."
 
-#: umc/tools.js:178
+#: umc/tools.js:175
 msgid ""
 "Internal module error: The execution of a command caused an fatal error."
 msgstr ""
 "Interner Modul-Fehler: Die Ausführung eines Befehls löste einen "
 "schwerwiegenden Fehler aus."
 
-#: umc/tools.js:167
+#: umc/tools.js:166
 msgid "Internal server error."
 msgstr "Interner Server-Fehler."
 
-#: umc/tools.js:169
+#: umc/tools.js:168
 msgid "Internal server error: Could not connect to the module process."
 msgstr ""
 "Interner Server-Fehler: Verbindung zum Modulprozess konnte nicht aufgebaut "
 "werden."
 
-#: umc/tools.js:170
+#: umc/tools.js:169
 msgid ""
 "Internal server error: The SSL server certificate is not trustworthy. Please "
 "check your SSL configurations."
@@ -139,7 +127,7 @@ msgstr ""
 "Interner Server-Fehler: Das SSL-Server-Zertifikat ist nicht "
 "vertrauenswürdig. Bitte überprüfen Sie ihre SSL-Konfiguration."
 
-#: umc/tools.js:168
+#: umc/tools.js:167
 msgid "Internal server error: The module process died unexpectedly."
 msgstr "Interner Server-Fehler: Der Modulprozess starb unerwartet."
 
@@ -188,15 +176,15 @@ msgstr "Zurücksetzen"
 msgid "Search"
 msgstr "Suchen"
 
-#: umc/tools.js:165
+#: umc/tools.js:164
 msgid "Specified locale is not available."
 msgstr "Die angegebenen Locale ist nicht verfügbar."
 
-#: umc/tools.js:164
+#: umc/tools.js:163
 msgid "The account as been disabled."
 msgstr "Das Benutzerkonto wurde deaktiviert."
 
-#: umc/tools.js:163
+#: umc/tools.js:162
 msgid "The account is expired and can not be used anymore."
 msgstr ""
 "Das Benutzerkonto kannt nicht verwendet werden, seine Gültigkeit ist "
@@ -241,7 +229,7 @@ msgstr "Benutzername"
 msgid "WARNING: Ignoring command \"%s\" since user is logging in"
 msgstr ""
 
-#: umc/tools.js:159
+#: umc/tools.js:158
 msgid ""
 "Webfrontend error: The specified UMCP command arguments of the request are "
 "invalid."
@@ -249,17 +237,13 @@ msgstr ""
 "Webfrontend-Fehler: Die angegebenen UMCP-Befehl-Argumente der Anfrage sind "
 "nicht zulässig."
 
-#: umc/tools.js:160
+#: umc/tools.js:159
 msgid ""
 "Webfrontend error: The specified arguments for the UMCP module method are "
 "invalid or missing."
 msgstr ""
 "Webfrontend-Fehler: Die angegebenen Argumente für die UMCP-Modul-Methode "
 "sind nicht zulässig oder fehlen."
-
-#: umc/tools.js:158
-msgid "Webfrontend error: The specified request is not allowed."
-msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht zulässig."
 
 #: umc/tools.js:157
 msgid "Webfrontend error: The specified request is unknown."
@@ -291,11 +275,24 @@ msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 #~ msgid "Domain"
 #~ msgstr "Domäne"
 
+#~ msgid "Internal UMC protocol error: The UMCP command is not known."
+#~ msgstr "Interner UMC-Protokoll-Fehler: Der UMCP-Befehl ist nicht bekannt."
+
+#~ msgid ""
+#~ "Internal UMC protocol error: The specified number of arguments for the "
+#~ "UMCP command is not valid."
+#~ msgstr ""
+#~ "Interner UMC-Protokoll-Fehler: Die angegebene Anzahl an Argumente für den "
+#~ "UCMP-Befehl ist nicht zulässig."
+
 #~ msgid "The domain for the login session."
 #~ msgstr "Die Domäne für die Anmeldesitzung."
 
 #~ msgid "This service is temporarily not available (status: 503)!"
 #~ msgstr "Der Dienst is zeitweise nicht erreichbar (Status: 503)!"
+
+#~ msgid "Webfrontend error: The specified request is not allowed."
+#~ msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht zulässig."
 
 #~ msgid "Wrong credentials, please try again!"
 #~ msgstr "Falsche Zugangsdaten, bitte versuchen Sie es erneut!"

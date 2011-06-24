@@ -27,6 +27,15 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 
 	labelNode: null,
 
+	postCreate: function() {
+		// if we have a widget as content, watch its label attribute
+		if (this.content && this.content.watch) {
+			this.content.watch('label', dojo.hitch(this, function(attr, oldVal, newVal) {
+				this.set('label', newVal);
+			}));
+		}
+	},
+
 	_setLabelAttr: function(label) {
 		this.label = label;
 		this.labelNode.innerHTML = label;
