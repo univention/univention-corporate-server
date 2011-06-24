@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.53-1) unstable; urgency=low
+
+  * added focus for password input field in umc.widgets.LoginDialog (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Jun 2011 14:53:56 +0200
+
 univention-management-console-frontend (0.0.52-1) unstable; urgency=low
 
   * fixed layout of umc.widgets.LoginDialog (Bug #22460)

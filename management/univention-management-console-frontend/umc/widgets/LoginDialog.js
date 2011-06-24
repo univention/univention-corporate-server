@@ -114,6 +114,15 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		dojo.style(this.closeButtonNode, 'display', 'none');
 	},
 
+	_showContent: function() {
+		this.inherited(arguments);
+
+		// focus on password input field if username is already given by cookie
+		if (this._form.elementValue('username')) {
+			this._form._widgets.password.focus();
+		}
+	},
+
 	reset: function() {
 		// description:
 		//		Reset all form entries to their initial values.
