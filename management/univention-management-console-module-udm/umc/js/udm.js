@@ -29,22 +29,29 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// call superclass method
 		this.inherited(arguments);
 
-		// render search page directly
-		this._renderSearchPage();
+		// render search page, we first need to query lists of containers/superodinates
+		// in order to correctly render the search form
+		(new dojo.DeferredList([
+			this.umcpCommand('udm/containers'),
+			this.umcpCommand('udm/superordinates')
+		])).then(dojo.hitch(this, function(results) {
+			var containers = results[0][0] ? results[0][1] : [];
+			var superordinates = results[1][0] ? results[1][1] : [];
+			this._renderSearchPage(containers.result, superordinates.result);
+		}));
 
 		// for the detail page, we first need to query property data from the server
-		var deferredList = [];
-		deferredList.push(this.umcpCommand('udm/properties'));
-		deferredList.push(this.umcpCommand('udm/layout'));
-		var deferreds = new dojo.DeferredList(deferredList);
-		deferreds.then(dojo.hitch(this, function(results) {
+		(new dojo.DeferredList([
+			this.umcpCommand('udm/properties'),
+			this.umcpCommand('udm/layout')
+		])).then(dojo.hitch(this, function(results) {
 			var properties = results[0][1];
 			var layout = results[1][1];
 			this._renderDetailPage(properties.result, layout.result);
 		}));
 	},
 
-	_renderSearchPage: function() {
+	_renderSearchPage: function(containers, superordinates) {
 		// setup search page
 		this._searchPage = new dijit.layout.BorderContainer({});
 		this.addChild(this._searchPage);
@@ -110,30 +117,55 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		//
 		// add search widget
 		//
+		
+		var umcpCmd = dojo.hitch(this, 'umcpCommand');
+		var widgets = [];
+		var layout = [];
+		
+		// check whether we need to display containers or superordinates
+		var objTypeDependencies = undefined;
+		var objTypes = [];
+		if (superordinates.length) {
+			// superordinates...
+			widgets.push({
+				type: 'ComboBox',
+				name: 'superordinate',
+				description: this._( 'The superordinate in which the search is carried out.' ),
+				label: this._('Superordinate'),
+				value: superordinates[0].id || superordinates[0],
+				staticValues: superordinates,
+				umcpCommand: umcpCmd
+			});
+			layout.push('superordinate');
+			objTypeDependencies = 'superordinate';
+		}
+		else {
+			// containers...
+			containers.unshift({ id: 'all', label: this._( 'All containers' ) });
+			widgets.push({
+				type: 'ComboBox',
+				name: 'container',
+				description: this._( 'The LDAP container in which the query is executed.' ),
+				label: this._('Container'),
+				value: containers[0].id || containers[0],
+				staticValues: containers,
+				umcpCommand: umcpCmd
+			});
+			layout.push('container');
+			objTypes.push({ id: this.moduleFlavor, label: this._( 'All types' ) });
+		}
 
-		var thisUmcpCommand = dojo.hitch(this, 'umcpCommand');
-		var widgets = [{
-			type: 'ComboBox',
-			name: 'container',
-			description: this._( 'The LDAP container in which the query is executed.' ),
-			label: this._('Container'),
-			value: 'all',
-			staticValues: [ 
-				{ id: 'all', label: this._( 'All containers' ) }
-			],
-			dynamicValues: 'udm/containers',
-			umcpCommand: thisUmcpCommand
-		}, {
+		// add remaining elements of the search form
+		widgets = widgets.concat([{
 			type: 'ComboBox',
 			name: 'objectType',
 			description: this._( 'The type of the LDAP object.' ),
 			label: this._('Object type'),
 			value: this.moduleFlavor,
-			staticValues: [ 
-				{ id: this.moduleFlavor, label: this._( 'All types' ) }
-			],
+			staticValues: objTypes,
 			dynamicValues: 'udm/types',
-			umcpCommand: thisUmcpCommand
+			umcpCommand: umcpCmd,
+			depends: objTypeDependencies
 		}, {
 			type: 'ComboBox',
 			name: 'objectProperty',
@@ -141,7 +173,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			label: this._( 'Object property' ),
 			dynamicValues: 'udm/properties',
 			dynamicOptions: { searchable: true },
-			umcpCommand: thisUmcpCommand,
+			umcpCommand: umcpCmd,
 			depends: 'objectType'
 		}, {
 			type: 'MixedInput',
@@ -150,13 +182,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			label: this._( 'Property value' ),
 			dynamicValues: 'udm/values',
 			depends: [ 'objectProperty', 'objectType' ]
-		}];
-		var layout = [[ 'container', 'objectType', 'objectProperty', 'objectPropertyValue' ]];
+		}]);
+		layout = layout.concat([ 'objectType', 'objectProperty', 'objectPropertyValue' ]);
 
 		// generate the search widget
 		this._searchWidget = new umc.widgets.SearchForm({
 			widgets: widgets,
-			layout: layout,
+			layout: [ layout ],
 			onSearch: dojo.hitch(this._grid, 'filter')
 		});
 		var group = new umc.widgets.GroupBox({
@@ -222,12 +254,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	postCreate: function() {
 		// only show the objectType combobox when there are different values to choose from
-		var objTypeWidget = this._searchWidget._widgets.objectType;
+		/*var objTypeWidget = this._searchWidget._widgets.objectType;
 		this.connect(objTypeWidget, 'onDynamicValuesLoaded', function(values) {
 			if (values.length) {
 				//dojo.style(objTypeWidget.
 			}
-		});
+		});*/
 	}
 
 });

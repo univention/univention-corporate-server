@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.27-1) unstable; urgency=low
+
+  * fixed typos, added translations
+  * extended JavaScript module to support superordinates
+  (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Jun 2011 17:46:13 +0200
+
 univention-management-console-module-udm (1.0.26-1) unstable; urgency=low
 
   * add SVG and PNG images for UDM modules; images for computer modules

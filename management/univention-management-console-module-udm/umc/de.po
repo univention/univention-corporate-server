@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Fri, 17 Jun 2011 12:00:58 +0200\n"
+"POT-Creation-Date: Thu, 23 Jun 2011 16:10:57 +0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -15,14 +15,32 @@ msgstr ""
 msgid "Computers"
 msgstr "Rechner"
 
+msgid "DHCP"
+msgstr ""
+
+msgid "DNS"
+msgstr ""
+
 msgid "Domain Management"
 msgstr "Domänenverwaltung"
 
 msgid "Groups"
 msgstr "Gruppen"
 
+msgid "Mail"
+msgstr "E-Mail"
+
 msgid "Manages all UDM modules"
-msgstr "Verwaltung der UCS-Domäne"
+msgstr "Verwaltet alle UDM-Module"
+
+msgid "Managing DHCP settings"
+msgstr "Verwaltung von DHCP-Einstellungen"
+
+msgid "Managing DNS settings"
+msgstr "Verwaltung von DNS-Einstellungen"
+
+msgid "Managing Nagios settings"
+msgstr "Verwaltung von Nagios-Einstellungen"
 
 msgid "Managing computers"
 msgstr "Verwaltung von Rechnern"
@@ -30,8 +48,32 @@ msgstr "Verwaltung von Rechnern"
 msgid "Managing groups"
 msgstr "Verwaltung von Gruppen"
 
+msgid "Managing mail settings"
+msgstr "Verwaltung von E-Mail-Einstellungen"
+
+msgid "Managing networks"
+msgstr "Verwaltung von Netzwerk-Einstellungen"
+
+msgid "Managing printers"
+msgstr "Verwaltung von Druckern"
+
+msgid "Managing shares"
+msgstr "Verwaltung von Freigaben"
+
 msgid "Managing users"
-msgstr "IVerwaltung von Benutzern"
+msgstr "Verwaltung von Benutzern"
+
+msgid "Nagios"
+msgstr ""
+
+msgid "Networks"
+msgstr "Netzwerke"
+
+msgid "Printers"
+msgstr "Drucker"
+
+msgid "Shares"
+msgstr "Freigaben"
 
 msgid "Univention Directory Manager"
 msgstr "Univention Directory Manager"
