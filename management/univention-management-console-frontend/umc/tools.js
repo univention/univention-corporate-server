@@ -418,7 +418,7 @@ dojo.mixin(umc.tools, {
 				//console.log('### renderLayout - recursive call');
 				//console.log(el);
 				globalContainer.addChild(new umc.widgets.GroupBox({
-					legend: this.label,
+					legend: el.label,
 					content: this.renderLayout(el.layout, widgets)
 				}));
 			}
