@@ -45,6 +45,10 @@ import univention.info_tools as uit
 _ = umc.Translation( 'univention-management-console-modules-ucr' ).translate
 
 class Instance( umcm.Base ):
+	def init(self):
+		# set the language in order to return the correctly localized labels/descriptions
+		uit.set_language(str(self.locale))
+
 	def __create_variable_info( self, options ):
 		all_info = ConfigRegistryInfo( registered_only = False )
 		info = ConfigRegistryInfo( install_mode = True )
@@ -127,7 +131,6 @@ class Instance( umcm.Base ):
 		self.finished( request.id, results )
 
 	def categories( self, request ):
-		uit.set_language(str(self.locale))
 		ucrInfo = ConfigRegistryInfo( registered_only = False )
 		categories = []
 		for id, obj in ucrInfo.categories.iteritems():
