@@ -1,3 +1,10 @@
+univention-management-console-frontend (0.0.54-1) unstable; urgency=low
+
+  * refactored umc.widgets._SelectMixin to accept arrays of strings/dicts
+    (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Jun 2011 17:37:29 +0200
+
 univention-management-console-frontend (0.0.53-1) unstable; urgency=low
 
   * added focus for password input field in umc.widgets.LoginDialog (Bug #22460)

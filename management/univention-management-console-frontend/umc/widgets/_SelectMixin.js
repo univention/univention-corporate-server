@@ -80,13 +80,50 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		this.store.close();
 	},
 
+	_convertItems: function(_items) {
+		// unify the items into the format:
+		//   [{
+		//       id: '...', 
+		//       label: '...'
+		//   }, ... ]
+		var items = [];
+
+		if (dojo.isArray(_items)) {
+			dojo.forEach(_items, function(iitem) {
+				// string
+				if (dojo.isString(iitem)) {
+					items.push({
+						id: iitem,
+						label: iitem
+					});
+				}
+				// array of dicts
+				else if (dojo.isObject(iitem)) {
+					umc.tools.assert('id' in iitem && 'label' in iitem, "umc.widgets._SelectMixin: One of the entries specified does not have the properties 'id' and 'label': " + dojo.toJson(iitem));
+					items.push(iitem);
+				}
+				// unknown format
+				else {
+					umc.tools.assert(false, "umc.widgets._SelectMixin: Given items are in incorrect format: " + dojo.toJson(_items));
+				}
+			});
+		}
+		else {
+			umc.tools.assert(false, "umc.widgets._SelectMixin: Given items are in incorrect format: " + dojo.toJson(_items));
+		}
+
+		return items;
+	},
+
 	_setStaticValues: function() {
+		// convert items to the correct format
+		var staticValues = this._convertItems(this.staticValues);
+
 		// add all static values to the store
-		umc.tools.assert(dojo.isArray(this.staticValues) || !this.staticValues, "Static values needs to be an array of entries: " + dojo.toJson(this.staticValues));
-		var staticValues = this.staticValues || [];
 		this._ids = {};
 		dojo.forEach(staticValues, function(iitem) {
-			umc.tools.assert('id' in iitem && 'label' in iitem, "One of the entries specified for static values does not have the properties 'id' and 'label': " + dojo.toJson(iitem));
+			// add item to store
+			umc.tools.assert(!(iitem.id in this._ids), "umc.widgets._SelectMixin: Entry already previously defined: " + dojo.toJson(iitem));
 			this.store.newItem(iitem);
 
 			// cache the values in a dict
@@ -100,34 +137,8 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	},
 
 	_setDynamicValues: function(/*Object[]*/ values) {
-		// get all items...
-		var items = [];
-
-		if (dojo.isArray(values) && values.length) {
-			// array of dicts
-			if (dojo.isObject(values[0])) {
-				dojo.forEach(values, function(iitem) {
-					umc.tools.assert(!(iitem.id in this._ids), "Entry already previously defined: " + dojo.toJson(iitem));
-					items.push(iitem);
-				}, this);
-			}
-			// array of strings
-			else if (dojo.isString(values[0])) {
-				dojo.forEach(values, function(ival) {
-					items.push({
-						id: ival,
-						label: ival
-					});
-				});
-			}
-			// unknown format
-			else {
-				umc.tools.assert(false, "Given dynamic values are in incorrect format: " + dojo.toJson(values));
-			}
-		}
-		else if (!dojo.isArray(values)) {
-			umc.tools.assert(false, "Given dynamic values are in incorrect format: " + dojo.toJson(values));
-		}
+		// convert items to the correct format
+		var items = this._convertItems(values);
 
 		// sort items according to their displayed name
 		items.sort(umc.tools.cmpObjects({
@@ -136,13 +147,15 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		}));
 
 		// add items to the store
-		dojo.forEach(items, function(i) {
-			if (i) {
-				this.store.newItem(i);
+		dojo.forEach(items, function(iitem) {
+			if (iitem) {
+				// add item to store
+				umc.tools.assert(!(iitem.id in this._ids), "umc.widgets._SelectMixin: Entry already previously defined: " + dojo.toJson(iitem));
+				this.store.newItem(iitem);
 
 				// set pre-selected item
-				if (i.preselected) {
-                    this._initialValue = i.id;
+				if (iitem.preselected) {
+                    this._initialValue = iitem.id;
                 }
 			}
 		}, this);
