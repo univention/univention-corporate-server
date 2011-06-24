@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (1.0.10-1) unstable; urgency=low
+
+  * use UMCP status code constants; Bug #22624
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 24 Jun 2011 10:50:25 +0200
+
 univention-management-console-module-ucr (1.0.9-1) unstable; urgency=low
 
   * adaptations to API changes (Bug #22460)

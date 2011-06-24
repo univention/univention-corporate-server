@@ -83,17 +83,17 @@ class Instance( umcm.Base ):
 					ucr.handler_set( arg )
 				except KeyError:
 					# handle the case that neither key nor value are given for an UCR variable entry
-					request.status = 407
+					request.status = BAD_REQUEST_INVALID_OPTS
 					self.finished(request.id, False, message = _('Invalid UCR variable entry, the properties "key" and "value" need to specified.'))
 					return
 				# handle descriptions, type, and categories
 				if 'descriptions' in var or 'type' in var or 'categories' in var:
 					self.__create_variable_info( var )
-			request.status = 200
+			request.status = SUCCESS
 			success = True
 		else:
 			success = False
-			request.status = 407
+			request.status = BAD_REQUEST_INVALID_OPTS
 
 		self.finished( request.id, success )
 
@@ -121,7 +121,7 @@ class Instance( umcm.Base ):
 				results.append(info.normalize())
 			else:
 				# variable not available, request failed
-				request.status = 407
+				request.status = BAD_REQUEST_INVALID_OPTS
 				self.finished( request.id, False, message = _( 'The UCR variable %(key)s could not be found' ) % { 'key' : key } )
 				return
 		self.finished( request.id, results )
@@ -178,6 +178,6 @@ class Instance( umcm.Base ):
 					variables.append( { 'key' : name, 'value' : var.value } )
 
 		if not request.status:
-			request.status = 200
+			request.status = SUCCESS
 
 		self.finished( request.id, variables )
