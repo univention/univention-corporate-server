@@ -18,18 +18,6 @@ dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.CategoryPane");
 dojo.require("umc.i18n");
 
-// start the application when everything has been loaded
-dojo.addOnLoad(function() {
-	umc.app.start();
-
-	// register application-wide error handler
-	/*window.onerror = function (msg, url, num) {
-		console.log(msg + ';' + url + ';' + num);
-		umc.app.alert('An error occurred:\n' + msg);
-		return true;
-	};*/
-});
-
 dojo.mixin(umc.app, new umc.i18n.Mixin({
 	// use the framework wide translation file
 	i18nClass: 'umc.app'
