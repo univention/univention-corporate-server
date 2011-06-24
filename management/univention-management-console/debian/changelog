@@ -1,3 +1,9 @@
+univention-management-console (4.0.34-1) unstable; urgency=low
+
+  * umc-client: support list options; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 24 Jun 2011 16:16:09 +0200
+
 univention-management-console (4.0.33-1) unstable; urgency=low
 
   * fixed typo; Bug #22460

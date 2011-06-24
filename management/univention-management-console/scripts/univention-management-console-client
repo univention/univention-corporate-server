@@ -39,7 +39,7 @@ import notifier
 import notifier.threads as threads
 
 import univention.management.console.protocol as umcp
-import univention.debug as ud
+from univention.management.console.log import CORE, log_init, log_set_level
 
 def _completer( text, state ):
 	result = []
@@ -66,7 +66,7 @@ def _readline():
 		elif command == 'HELP':
 			return ( command, None, None, None )
 		else:
-			print 'error: unknown command:', command
+			CORE.error( 'The entered command is unknown: %s' % command )
 
 	readline.set_completer( None )
 	arguments = []
@@ -84,7 +84,7 @@ def _readline():
 			opt = raw_input( ' option: ' )
 			if opt:
 				if len( opt.split( '=' ) ) != 2:
-					print 'error: invalid option format: <option>=<value>'
+					CORE.error( 'The specified option has an invalid format: <option>=<value>' )
 				else:
 					options.append( opt )
 			else:
@@ -110,13 +110,13 @@ class CLI_Client( umcp.Client ):
 			raise Exception( 'error: failed to connect to daemon on host %s' % \
 							 options.server )
 		else:
-			print "connection to '%s' established" % options.server
+			CORE.info( "The connection to '%s' is established" % options.server )
 
 		self.signal_connect( 'response', self._response )
 		self.signal_connect( 'authenticated', self._authenticated )
 		self.signal_connect( 'closed', self._closed )
 		if arguments:
-			self.__wait = self.create( arguments[ 0 ], arguments[ 1 : ], options.options, options.flavor )
+			self.__wait = self.create( arguments[ 0 ], arguments[ 1 : ], options )
 		if options.authenticate:
 			self.authenticate( options.username, options.password )
 		else:
@@ -131,28 +131,31 @@ class CLI_Client( umcp.Client ):
 	def create( self, command, args = [], options = [], flavor = None ):
 		msg = umcp.Request( command.upper() )
 		msg.arguments = args
-		if flavor is not None:
-			msg.flavor = flavor
-		for opt in options:
-			key, value = opt.split( '=', 1 )
-			if key.find( ':' ) > 0:
-				typ, key = key.split( ':', 1 )
-				try:
-					value = eval( "%s('%s')" % ( typ, value ) )
-				except NameError:
-					print >>sys.stderr, "Invalid type for option: %s" % typ
-			msg.options[ key ] = value
+		if options.flavor is not None:
+			msg.flavor = options.flavor
+		if options.list_options:
+			msg.options = options.options
+		else:
+			for opt in options.options:
+				key, value = opt.split( '=', 1 )
+				if key.find( ':' ) > 0:
+					typ, key = key.split( ':', 1 )
+					try:
+						value = eval( "%s('%s')" % ( typ, value ) )
+					except NameError:
+						CORE.error( "Invalid type for option: %s" % typ )
+				msg.options[ key ] = value
 		return msg
 
 	def _closed( self ):
-		print 'error: server closed connection'
+		CORE.error( 'The server closed the connection' )
 		if self.__timer:
 			notifier.timer_remove( self.__timer )
 		sys.exit( 0 )
 
 	def _authenticated( self, success, status, text ):
 		if success:
-			print 'authentication successful'
+			CORE.info( 'authentication successful' )
 			if self.__wait:
 				self.request( self.__wait )
 				self.__wait = None
@@ -172,25 +175,28 @@ class CLI_Client( umcp.Client ):
 	def _input( self, name, output ):
 		req = self.create( *output )
 		self.request( req )
-		print "waiting for response to '%s' " % req.command,
+		CORE.info( "waiting for response to '%s' " % req.command )
 		self.__timer = notifier.timer_add( 1000, self._waiting_for_response )
 
 	def _response( self, msg ):
 		notifier.timer_remove( self.__timer )
 		self.__timer = None
 		if self.__interactive:
-			print ' found'
-		print 'server replied:', msg.command
+			CORE.info( ' found' )
+		CORE.info( 'The server replied: %s' % msg.command )
 		if msg.arguments:
-			print '  ARGUMENTS:', ' '.join( msg.arguments )
-		print '  STATUS   : %d' % msg.status
+			CORE.info( '  ARGUMENTS: %s' % ' '.join( msg.arguments ) )
+		CORE.info( '  STATUS   : %d' % msg.status )
 		if msg.options:
-			print '  OPTIONS  : %s' % ' '.join( [ '%s=%s' % ( k, v ) for k, v in msg.options.items() ] )
-		print '  MESSAGE  : %s' % msg.message
-		print '  RESULT   : %s' % msg.result
-		print '  data length   : %4d' % len( str( msg ) )
-		print '  message length: %4d' % msg._length
-		print '  complete body :', msg.body
+			if isinstance( msg.options, ( list, tuple ) ):
+				CORE.info( '  OPTIONS  : %s' % ', '.join( msg.options ) )
+			else:
+				CORE.info( '  OPTIONS  : %s' % ' '.join( [ '%s=%s' % ( k, v ) for k, v in msg.options.items() ] ) )
+		CORE.info( '  MESSAGE  : %s' % msg.message )
+		CORE.info( '  RESULT   : %s' % msg.result )
+		CORE.info( '  data length   : %4d' % len( str( msg ) ) )
+		CORE.info( '  message length: %4d' % msg._length )
+		CORE.info( '  complete body : %s' % msg.body )
 		if self.__interactive:
 			readline.parse_and_bind( 'tab: complete' )
 			rl = threads.Simple( 'readline', _readline, self._input )
@@ -229,17 +235,16 @@ if __name__ == '__main__':
 	parser.add_option( '-o', '--option', type = 'string', default = [],
 					   action = 'append', dest = 'options',
 					   help = 'append an option to the request' )
+	parser.add_option( '-l', '--list-options', action = 'store_true',
+					   dest = 'list_options',
+					   help = 'if set all specified options will be assembled in a list' )
 	parser.add_option( '-d', '--debug', action = 'store', type = 'int',
-					   dest = 'debug', default = 0,
+					   dest = 'debug', default = 4,
 					   help = 'if given than debugging is activated and set to the specified level' )
 
 	( options, arguments ) = parser.parse_args()
 
-	if options.debug > 0:
-		ud.init( '/var/log/univention/management-console-client.log', 1, 1 )
-		ud.set_level( ud.ADMIN, options.debug )
-	else:
-		ud.init( '/dev/null', 0, 0 )
+	log_init( '/dev/stderr', options.debug )
 
 	if not options.interactive and not arguments:
 		parser.error( 'command is missing' )
