@@ -50,6 +50,11 @@ class Instance( Base ):
 		self.settings = UDM_Settings( self._username )
 
 	def put( self, request ):
+		module_name = request.options.get( 'objectType' )
+		if not module_name:
+			module_name = request.flavor
+		module = UDM_Module( module_name )
+
 		self.finished( request.id )
 
 	def remove( self, request ):

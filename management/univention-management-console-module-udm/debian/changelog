@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.26-1) unstable; urgency=low
+
+  * add SVG and PNG images for UDM modules; images for computer modules
+    are still missing; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 24 Jun 2011 16:58:28 +0200
+
 univention-management-console-module-udm (1.0.25-1) unstable; urgency=low
 
   * add command udm/templates: retrieve a list of template modules; Bug #22439
