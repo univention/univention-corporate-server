@@ -99,7 +99,6 @@ STATUS = (
 	Status( 'BAD_REQUEST_UNAUTH'				, 401, _( 'Unauthorized' ) ),
 	Status( 'BAD_REQUEST_FORBIDDEN'				, 403, _( 'Forbidden' ) ),
 	Status( 'BAD_REQUEST_NOT_FOUND'				, 404, _( 'Not found' ) ),
-	Status( 'BAD_REQUEST_NOT_ALLOWED'			, 405, _( 'Command not allowed' ) ),
 	Status( 'BAD_REQUEST_INVALID_ARGS'			, 406, _( 'Invalid command arguments' ) ),
 	Status( 'BAD_REQUEST_INVALID_OPTS'			, 407, _( 'Invalid or missing command options' ) ),
 	Status( 'BAD_REQUEST_AUTH_FAILED'  			, 411, _( 'The authentication has failed' ) ),
@@ -113,12 +112,11 @@ STATUS = (
 	Status( 'SERVER_ERR_CERT_NOT_TRUSTWORTHY'	, 512, _( 'SSL server certificate is not trustworthy' ) ),
 
 	Status( 'UMCP_ERR_UNPARSABLE_HEADER'		, 551, _( 'Unparsable message header' ) ),
-	Status( 'UMCP_ERR_UNKNOWN_COMMAND'			, 552, _( 'Unknown command' ) ),
 	Status( 'UMCP_ERR_INVALID_NUM_ARGS'			, 553, _( 'Invalid number of arguments' ) ),
 	Status( 'UMCP_ERR_UNPARSABLE_BODY'			, 554, _( 'Unparsable message body' ) ),
 
-	Status( 'MODULE_ERR'						, 600, _( 'Error occuried during command processing' ) ),
-	Status( 'MODULE_ERR_COMMAND_FAILED'			, 601, _( 'The execution of a command caused an fatal error' ) )
+	Status( 'MODULE_ERR'						, 590, _( 'Error occuried during command processing' ) ),
+	Status( 'MODULE_ERR_COMMAND_FAILED'			, 591, _( 'The execution of a command caused an fatal error' ) )
 )
 
 # create symbols for status codes

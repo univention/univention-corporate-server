@@ -309,7 +309,7 @@ class Processor( signals.Provider ):
 		module_name = moduleManager.module_providing( self.__command_list, command )
 		if not module_name:
 			res = Response( msg )
-			res.status = BAD_REQUEST_NOT_ALLOWED
+			res.status = BAD_REQUEST_FORBIDDEN
 			res.message = status_description( res.status )
 			self.signal_emit( 'response', res )
 			return None
@@ -446,7 +446,7 @@ class Processor( signals.Provider ):
 
 	def handle_request_unknown( self, msg ):
 		res = Response( msg )
-		res.status = UMCP_ERR_UNKNOWN_COMMAND
+		res.status = BAD_REQUEST_NOT_FOUND
 		res.message = status_description( res.status )
 
 		self.signal_emit( 'response', res )

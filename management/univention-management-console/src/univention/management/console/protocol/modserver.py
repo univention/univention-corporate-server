@@ -50,7 +50,6 @@ import notifier.threads as threads
 
 class ModuleServer( Server ):
 	def __init__( self, socket, module, timeout = 300, check_acls = True ):
-		Server.__init__( self, ssl = False, unix = socket, magic = False, load_ressources = False )
 		self.signal_connect( 'session_new', self._client )
 		self.__name = module
 		self.__module = module
@@ -61,12 +60,6 @@ class ModuleServer( Server ):
 		self.__acls = None
 		self.__timeout = timeout * 1000
 		self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
-		# try:
-		# 	self.__watchdog_timeout = 1000 * int( configRegistry.get('umc/module/watchdog/timeout', 3600) )
-		# except:
-		# 	self.__watchdog_timeout = 3600 * 1000
-		# MODULE.warn( "Watchdog_timeout set to %d ms" % self.__watchdog_timeout )
-		# self.__watchdog_timer = notifier.timer_add( self.__watchdog_timeout, self._watchdog_timed_out )
 		self.__active_requests = 0
 		self.__check_acls = check_acls
 		self.__queue = ''
@@ -74,6 +67,7 @@ class ModuleServer( Server ):
 		self.__password = None
 		self.__sessionid = None
 		self._load_module()
+		Server.__init__( self, ssl = False, unix = socket, magic = False, load_ressources = False )
 
 	def _load_module( self ):
 		try:
@@ -83,8 +77,9 @@ class ModuleServer( Server ):
 				try:
 					file = 'univention.management.console.%s.%s' % ( type, modname )
 					self.__module = __import__( file, [], [], modname )
-				except:
-					pass
+				except BaseException, e::
+					import traceback
+					traceback.print_exc()
 			if not self.__module:
 				raise Exception( "Module '%s' could not be found. Exiting ..." % modname )
 			self.__handler = self.__module.Instance()
@@ -93,27 +88,14 @@ class ModuleServer( Server ):
 		except Exception, e:
 			import traceback
 			traceback.print_exc()
-			sys.exit( 1 )
+			sys.exit( 5 )
 
 	def _reply( self, msg, final ):
 		if final:
 			self.__active_requests -= 1
 		self.response( msg )
 		if not self.__active_requests and self.__timer == None:
-			# self._update_watchdog()
 			self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
-
-	# def _update_watchdog( self ):
-	# 	if self.__watchdog_timer:
-	# 		notifier.timer_remove( self.__watchdog_timer )
-	# 	self.__watchdog_timer = notifier.timer_add( self.__watchdog_timeout, self._watchdog_timed_out )
-
-	# def _watchdog_timed_out( self ):
-	# 	MODULE.warn( "Watchdog: Commiting suicide" )
-	# 	MODULE.info( '__timer = %s' % str(self.__timer) )
-	# 	MODULE.info( '__active_requests = %s' % str(self.__active_requests) )
-	# 	self.exit()
-	# 	sys.exit( 0 )
 
 	def _timed_out( self ):
 		MODULE.info( "Commiting suicide" )
@@ -126,7 +108,6 @@ class ModuleServer( Server ):
 		notifier.socket_add( self.__comm, self._recv )
 
 	def _recv( self, socket ):
-		# self._update_watchdog()
 		if self.__timer:
 			notifier.timer_remove( self.__timer )
 			self.__timer == None
@@ -168,7 +149,6 @@ class ModuleServer( Server ):
 			resp.body = { 'status': 'module %s will shutdown in %dms' % (str(msg.arguments[0]), shutdown_timeout) }
 			resp.status = SUCCESS
 			self.response( resp )
-			# self._update_watchdog()
 			self.__timer = notifier.timer_add( shutdown_timeout, self._timed_out )
 			return
 
@@ -204,7 +184,9 @@ class ModuleServer( Server ):
 					resp.status = BAD_REQUEST_INVALID_OPTS
 					break
 
-				# if SET command contains 'acls', commands' and 'credentials' it is it initialization of the module process
+				# if SET command contains 'acls', commands' and
+				# 'credentials' it is the initialization of the module
+				# process
 				keys = msg.options.keys()
 				if 'acls' in keys and 'commands' in keys and 'credentials' in keys:
 					self.__handler.init()
@@ -227,12 +209,11 @@ class ModuleServer( Server ):
 			else:
 				resp = Response( msg )
 				# status 415 (command not allowed) should be checked by the server
-				resp.status = UMCP_ERR_UNKNOWN_COMMAND
+				resp.status = BAD_REQUEST_NOT_FOUND
 				resp.message = status_description( resp.status )
 				self.response( resp )
 
 		if not self.__active_requests and self.__timer == None:
-			# self._update_watchdog()
 			self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 
 	def command_get( self, command_name ):

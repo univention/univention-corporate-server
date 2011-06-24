@@ -138,7 +138,7 @@ class MagicBucket( object ):
 		except UnknownCommandError, e:
 			CORE.error( 'Unknown Command message: %s' % str( e ) )
 			res = Response( msg )
-			res.status = UMCP_ERR_UNKNOWN_COMMAND
+			res.status = BAD_REQUEST_NOT_FOUND
 			self._response( res, state )
 
 		return True
