@@ -68,6 +68,9 @@
 	  <attribute name="objectType" syntax="String"/>
 	  <attribute name="objectProperty" syntax="String" required="True"/>
 	</command>
+	<command name="udm/templates" function="templates">
+	  <attribute name="objectType" syntax="String" required="False"/>
+	</command>
 	<command name="udm/put" function="put">
 	</command>
 	<command name="udm/remove" function="remove">

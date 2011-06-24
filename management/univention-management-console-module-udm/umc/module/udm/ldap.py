@@ -89,11 +89,26 @@ class UDM_Module( object ):
 				else:
 					return '*'
 
-	def search( self, container, attribute, value ):
+	def search( self, container, attribute = None, value = None ):
 		lo, po = get_ldap_connection()
 		if container == 'all':
 			container = po.getBase()
-		return self.module.lookup( None, lo, '%s=%s' % ( attribute, value ), base = container )
+		if attribute is None:
+			filter_s = ''
+		else:
+			filter_s = '%s=%s' % ( attribute, value )
+
+		return self.module.lookup( None, lo, filter_s, base = container )
+
+	def get( self, ldap_dn ):
+		lo, po = get_ldap_connection()
+		obj = self.module.object( None, lo, None, ldap_dn )
+		obj.open()
+		return obj.info
+
+	@property
+	def name( self ):
+		return self.module is not None and self.module.module
 
 	@property
 	def identifies( self ):
@@ -200,6 +215,10 @@ class UDM_Module( object ):
 		return self.module is not None and getattr( self.module, 'operations', None )
 
 	@property
+	def template( self ):
+		return getattr( self.module, 'template', None )
+
+	@property
 	def containers( self ):
 		containers = getattr( self.module, 'default_containers', [] )
 		ldap_base = ucr.get( 'ldap/base' )
@@ -232,14 +251,21 @@ class UDM_Settings( object ):
 			self.directory = directories[ 0 ]
 
 	def containers( self, module_name ):
-		if module_name.find( '/' ) < 0:
-			return []
-		base, name = module_name.split( '/', 1 )
+		base, name = split_module_name( module_name )
 
-		return self.directory.get( base, [] )
+		return self.directory.info.get( base, [] )
 
 	def resultColumns( self, module_name ):
 		pass
+
+def split_module_name( module_name ):
+	if module_name.find( '/' ) < 0:
+		return []
+	parts = module_name.split( '/', 1 )
+	if len( parts ) == 2:
+		return parts
+
+	return ( None, None )
 
 def ldap_dn2path( ldap_dn ):
 	ldap_base = ucr.get( 'ldap/base' )
@@ -259,3 +285,10 @@ def ldap_dn2path( ldap_dn ):
 			path.insert( 1, value )
 
 	return '/'.join( path )
+
+def get_module( flavor, ldap_dn ):
+	base, name = split_module_name( flavor )
+	lo, po = get_ldap_connection()
+	modules = udm_modules.objectType( None, lo, ldap_dn, module_base = base )
+
+	return modules and UDM_Module( modules[ 0 ] )

@@ -31,16 +31,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.management.console as umc
-import univention.management.console.modules as umcm
+from univention.management.console import Translation
+from univention.management.console.config import ucr
+from univention.management.console.modules import Base
 
-from .ldap import UDM_Module, UDM_Settings, ldap_dn2path
+from .ldap import UDM_Module, UDM_Settings, ldap_dn2path, get_module
 
-_ = umc.Translation( 'univention-management-console-modules-udm' ).translate
+_ = Translation( 'univention-management-console-modules-udm' ).translate
 
-class Instance( umcm.Base ):
+class Instance( Base ):
 	def __init__( self ):
-		umcm.Base.__init__( self )
+		Base.__init__( self )
 		self.settings = None
 
 	def init( self ):
@@ -56,8 +57,15 @@ class Instance( umcm.Base ):
 		self.finished( request.id )
 
 	def get( self, request ):
-
-		self.finished( request.id )
+		result = []
+		for ldap_dn in request.options:
+			module = get_module( request.flavor, ldap_dn )
+			if module is None:
+				continue
+			obj = module.get( ldap_dn )
+			if obj:
+				result.append( obj )
+		self.finished( request.id, result )
 
 	def query( self, request ):
 		module_name = request.options.get( 'objectType' )
@@ -67,7 +75,15 @@ class Instance( umcm.Base ):
 
 		result = module.search( request.options[ 'container' ], request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ] )
 
-		self.finished( request.id, map( lambda obj: { 'ldap-dn' : obj.dn, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) }, result ) )
+		entries = []
+		if module_name == request.flavor:
+			for obj in result:
+				entries.append( { 'ldap-dn' : obj.dn, 'objectType' : module_name, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) } )
+		else:
+			for obj in result:
+				module = get_module( request.flavor, obj.dn )
+				entries.append( { 'ldap-dn' : obj.dn, 'objectType' : module.name, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) } )
+		self.finished( request.id, entries )
 
 	def values( self, request ):
 		module_name = request.options.get( 'objectType' )
@@ -87,8 +103,27 @@ class Instance( umcm.Base ):
 		self.finished( request.id, module.containers + self.settings.containers( request.flavor ) )
 
 	def superordinates( self, request ):
-		module = UDM_Module( request.options.get( 'objectType' ) )
-		self.finished( request.id, self.module.superordinates )
+		module_name = request.options.get( 'objectType' )
+		if not module_name or 'all' == module_name:
+			module_name = request.flavor
+		module = UDM_Module( module_name )
+		self.finished( request.id, module.superordinates )
+
+	def templates( self, request ):
+		module_name = request.options.get( 'objectType' )
+		if not module_name or 'all' == module_name:
+			module_name = request.flavor
+		module = UDM_Module( module_name )
+
+		result = []
+		if module.template:
+			template = UDM_Module( module.template )
+			objects = template.search( ucr.get( 'ldap/base' ) )
+			for obj in objects:
+				obj.open()
+				result.append( { 'id' : obj.dn, 'label' : obj[ template.identifies ] } )
+
+		self.finished( request.id, result )
 
 	def types( self, request ):
 		module = UDM_Module( request.flavor )

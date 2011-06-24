@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.25-1) unstable; urgency=low
+
+  * add command udm/templates: retrieve a list of template modules; Bug #22439
+  * add command udm/get: retrieves all details about LDAP objects
+  * get_module: identifies the assoziated UDM module for a given LDAP DN
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 24 Jun 2011 15:54:53 +0200
+
 univention-management-console-module-udm (1.0.24-1) unstable; urgency=low
 
   * add support for superordinates; Bug #22439
