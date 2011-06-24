@@ -5,22 +5,22 @@ dojo.provide("umc.widgets.LoginDialog");
 dojo.require("dijit.form.Button");
 dojo.require("dijit.form.TextBox");
 dojo.require("dijit.layout.ContentPane");
-dojo.require("dojox.layout.TableContainer");
 dojo.require("dojox.widget.Dialog");
+dojo.require("umc.i18n");
 dojo.require("umc.tools");
-dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.widgets.ContainerForm");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.Form");
+dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.widgets.Text");
-dojo.require("umc.i18n");
 
 dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
 	// our own variables
-	_layoutContainer: null,
+	_container: null,
 	_passwordTextBox: null,
 	_usernameTextBox: null,
 	_form: null,
+	_container: null,
 
 	// use the framework wide translation file
 	i18nClass: 'umc.app',
@@ -32,7 +32,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			sizeDuration: 900,
 			sizeMethod: 'chain',
 			sizeToViewport: false,
-			dimensions: [300, 250]
+			dimensions: [300, 280]
 		});
 
 	},
@@ -83,9 +83,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			widgets: widgets,
 			buttons: buttons,
 			layout: layout,
-			cols: 1,
-			orientation: 'horiz',
-			region: 'center'
+			style: 'margin-left: auto; margin-right: auto; width: 180px;'
 		}).placeAt(this.containerNode);
 		this._form.startup();
 
@@ -99,15 +97,13 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		});
 
 		// put the layout together
-		this._layoutContainer = new dojox.layout.TableContainer({
-			cols: 1,
-			showLabels: false
-		});
-		this._layoutContainer.addChild(new umc.widgets.Text({
+		this._container = new umc.widgets.ContainerWidget({});
+		this._container.addChild(new umc.widgets.Text({
+			style: 'margin-left: auto; margin-right: auto; width: 250px;',
 			content: '<p>' + this._('Welcome to the Univention Management Console. Please enter your domain username and password for login!') + '</p>'
 		}));
-		this._layoutContainer.addChild(this._form);
-		this.set('content', this._layoutContainer);
+		this._container.addChild(this._form);
+		this.set('content', this._container);
 	},
 
 	postCreate: function() {

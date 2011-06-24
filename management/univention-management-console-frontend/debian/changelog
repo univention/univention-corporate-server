@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.52-1) unstable; urgency=low
+
+  * fixed layout of umc.widgets.LoginDialog (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Jun 2011 14:04:11 +0200
+
 univention-management-console-frontend (0.0.51-1) unstable; urgency=low
 
   * extend LabelPane to watch changes on the widget property 'label'
