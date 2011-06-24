@@ -75,6 +75,11 @@ div.modLaunchButtonClick {
 	margin-bottom: 2px;
 }
 
+/* help text for umc.widgets.Page */
+.umcPageHelpText {
+	margin: 10px 0 10px 0;
+}
+
 /* hack to make the header buttons not look like buttons :) */
 .umcHeaderButton .dijitButtonNode {
 	background: none !important;

@@ -3,19 +3,20 @@
 dojo.provide('umc.app');
 
 dojo.require("dijit.Dialog");
+dojo.require("dijit.Menu");
+dojo.require("dijit.form.Button");
+dojo.require("dijit.form.DropDownButton");
 dojo.require("dijit.layout.BorderContainer");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.layout.TabContainer");
-dojo.require("dijit.form.DropDownButton");
-dojo.require("dijit.form.Button");
-dojo.require("dijit.Menu");
 dojo.require("dojo.cookie");
 dojo.require("dojox.html.styles");
-dojo.require("umc.widgets.Toaster");
-dojo.require("umc.widgets.ConfirmDialog");
-dojo.require("umc.widgets.LoginDialog");
-dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.CategoryPane");
+dojo.require("umc.widgets.ConfirmDialog");
+dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.widgets.LoginDialog");
+dojo.require("umc.widgets.Page");
+dojo.require("umc.widgets.Toaster");
 dojo.require("umc.i18n");
 
 dojo.mixin(umc.app, new umc.i18n.Mixin({
@@ -250,11 +251,11 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// NOTE: We add the icon here in the first tab, otherwise the tab heights
 		//	   will not be computed correctly and future tabs will habe display
 		//	   problems.
-		var overviewPage = new umc.widgets.ContainerWidget({ 
+		var overviewPage = new umc.widgets.Page({ 
 			//style: "overflow:visible; width: 80%"
 			title: this._('Overview'),
 			iconClass: 'icon16-univention',
-			scrollable: true
+			helpText: this._('Univention Management Console is a modularly designed, web-based application for the administration of objects in your Univention Corporate Server domain as well as individual of Univention Corporate Server systems.')
 		});
 
 		// add a CategoryPane for each category

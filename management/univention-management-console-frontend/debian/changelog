@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.56-1) unstable; urgency=low
+
+  * added help text to the overview page (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Jun 2011 18:24:03 +0200
+
 univention-management-console-frontend (0.0.55-1) unstable; urgency=low
 
   * merged index-dev.html and index.html (Bug #22460)

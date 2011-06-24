@@ -37,8 +37,10 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 		
 		// put the help text in a Text widget and then add it to the container
 		this._helpTextPane = new umc.widgets.Text({
-			content: this.helpText || ''
+			content: this.helpText || '',
+			'class': 'umcPageHelpText'
 		});
+		this.addChild(this._helpTextPane);
 
 		// hide the help text if specified
 		if (!this._helpTextShown) {
