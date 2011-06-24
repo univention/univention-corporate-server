@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.19-1) unstable; urgency=low
+
+  * removed all icons; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 24 Jun 2011 17:18:00 +0200
+
 univention-directory-manager-modules (7.0.18-1) unstable; urgency=low
 
   * modules.identify: the list of probed modules can be reduced by
