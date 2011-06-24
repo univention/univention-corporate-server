@@ -50,7 +50,6 @@ import notifier.threads as threads
 
 class ModuleServer( Server ):
 	def __init__( self, socket, module, timeout = 300, check_acls = True ):
-		self.signal_connect( 'session_new', self._client )
 		self.__name = module
 		self.__module = module
 		self.__commands = Module()
@@ -68,6 +67,7 @@ class ModuleServer( Server ):
 		self.__sessionid = None
 		self._load_module()
 		Server.__init__( self, ssl = False, unix = socket, magic = False, load_ressources = False )
+		self.signal_connect( 'session_new', self._client )
 
 	def _load_module( self ):
 		try:
@@ -77,7 +77,9 @@ class ModuleServer( Server ):
 				try:
 					file = 'univention.management.console.%s.%s' % ( type, modname )
 					self.__module = __import__( file, [], [], modname )
-				except BaseException, e::
+					break
+				except BaseException, e:
+					MODULE.error( 'Failed to import module %s: %s' % ( modname, str( e ) ) )
 					import traceback
 					traceback.print_exc()
 			if not self.__module:

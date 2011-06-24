@@ -1,3 +1,10 @@
+univention-management-console (4.0.33-1) unstable; urgency=low
+
+  * fixed typo; Bug #22460
+  * reload UCR von server reload
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 24 Jun 2011 11:22:10 +0200
+
 univention-management-console (4.0.32-1) unstable; urgency=low
 
   * removed unnecessary UMCP status code; Bug #22460

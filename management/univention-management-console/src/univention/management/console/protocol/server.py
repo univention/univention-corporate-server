@@ -43,14 +43,12 @@ import notifier.signals as signals
 from OpenSSL import *
 
 # internal packages
-import univention.management.console as umc
-
 from .message import Message, Response, IncompleteMessageError, ParseError, UnknownCommandError
 from .session import State, Processor
 from .definitions import *
 
 from ..resources import moduleManager, syntaxManager, categoryManager
-from ..log import CORE, CRYPT
+from ..log import CORE, CRYPT, RESOURCES
 from ..config import ucr
 
 class MagicBucket( object ):
@@ -338,3 +336,5 @@ class Server( signals.Provider ):
 		moduleManager.load()
 		syntaxManager.load()
 		categoryManager.load()
+		RESOURCES.info( 'Reloading UCR variables' )
+		ucr.load()
