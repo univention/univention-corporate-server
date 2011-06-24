@@ -112,7 +112,6 @@ STATUS = (
 	Status( 'SERVER_ERR_CERT_NOT_TRUSTWORTHY'	, 512, _( 'SSL server certificate is not trustworthy' ) ),
 
 	Status( 'UMCP_ERR_UNPARSABLE_HEADER'		, 551, _( 'Unparsable message header' ) ),
-	Status( 'UMCP_ERR_INVALID_NUM_ARGS'			, 553, _( 'Invalid number of arguments' ) ),
 	Status( 'UMCP_ERR_UNPARSABLE_BODY'			, 554, _( 'Unparsable message body' ) ),
 
 	Status( 'MODULE_ERR'						, 590, _( 'Error occuried during command processing' ) ),
