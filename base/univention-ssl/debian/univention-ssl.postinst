@@ -35,22 +35,22 @@ if [ ! -e /etc/univention/ssl/ucsCA -a -d /etc/univention/ssl/udsCA ] ; then
 	mv /etc/univention/ssl/udsCA /etc/univention/ssl/ucsCA
 fi
 
-CERTPATH=/etc/univention/ssl/ucsCA/certs
+CERTPATH="/etc/univention/ssl/ucsCA/certs"
 
-test -d $CERTPATH || /bin/mkdir -p $CERTPATH
+test -d "$CERTPATH" || /bin/mkdir -p "$CERTPATH"
 
 # add symlink for backward compatibility (will be removed in future releases!)
 if [ ! -e /etc/univention/ssl/udsCA ] ; then
 	ln -s ucsCA /etc/univention/ssl/udsCA
 fi
 
-eval "$(univention-config-registry shell domainname)"
+eval "$(ucr shell)"
 
 country="$(echo "$locale_default"  | cut -c 1-2)"
 
-univention-config-registry set ssl/country?${country:-DE} \
-					ssl/state?${country:-DE} \
-					ssl/locality?${country:-DE} \
+univention-config-registry set ssl/country?"${country:-DE}" \
+					ssl/state?"${country:-DE}" \
+					ssl/locality?"${country:-DE}" \
 					ssl/organization?"${country:-DE}" \
 					ssl/organizationalunit?"Univention Corporate Server" \
 					ssl/common?"Univention Corporate Server Root CA" \

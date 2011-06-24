@@ -1,3 +1,9 @@
+univention-ssl (6.0.2-1) unstable; urgency=low
+
+  * fixed country detection for ssl default values (Bug #22847)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 24 Jun 2011 14:39:25 +0200
+
 univention-ssl (6.0.1-1) unstable; urgency=low
 
   * Add missing install file (Bug #22431)
