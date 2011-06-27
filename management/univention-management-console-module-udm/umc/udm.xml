@@ -43,6 +43,10 @@
 	  <name>Nagios</name>
 	  <description>Managing Nagios settings</description>
 	</flavor>
+	<flavor icon="udm-policies" id="policies/policy">
+	  <name>Policies</name>
+	  <description>Managing policies</description>
+	</flavor>
 	<categories>
 	  <category name="domain"/>
 	</categories>

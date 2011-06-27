@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.29-1) unstable; urgency=low
+
+  * support searching with attributer superordinate
+  * support different object types in search result; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 27 Jun 2011 16:03:42 +0200
+
 univention-management-console-module-udm (1.0.28-1) unstable; urgency=low
 
   * fixed typo (Bug #22460)

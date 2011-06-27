@@ -34,6 +34,7 @@
 from univention.management.console import Translation
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base
+from univention.management.console.log import MODULE
 
 from .ldap import UDM_Module, UDM_Settings, ldap_dn2path, get_module
 
@@ -69,7 +70,7 @@ class Instance( Base ):
 				continue
 			obj = module.get( ldap_dn )
 			if obj:
-				result.append( obj )
+				result.append( obj.info )
 		self.finished( request.id, result )
 
 	def query( self, request ):
@@ -78,16 +79,23 @@ class Instance( Base ):
 			module_name = request.flavor
 		module = UDM_Module( module_name )
 
-		result = module.search( request.options[ 'container' ], request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ] )
+		superordinate = request.options.get( 'superordinate' )
+		if superordinate is not None:
+			MODULE.info( 'Query defines a superordinate %s' % superordinate )
+			mod = get_module( request.flavor, superordinate )
+			if mod is not None:
+				MODULE.info( 'Found UDM module for superordinate' )
+				superordinate = mod.get( superordinate )
+
+		result = module.search( request.options.get( 'container' ), request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ], superordinate )
 
 		entries = []
-		if module_name == request.flavor:
-			for obj in result:
-				entries.append( { 'ldap-dn' : obj.dn, 'objectType' : module_name, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) } )
-		else:
-			for obj in result:
-				module = get_module( request.flavor, obj.dn )
-				entries.append( { 'ldap-dn' : obj.dn, 'objectType' : module_name, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) } )
+		for obj in result:
+			module = get_module( request.flavor, obj.dn )
+			if module is None:
+				MODULE.warn( 'Could not identify LDAP object %s (flavor: %s). The object is ignored.' % ( obj.dn, request.flavor ) )
+				continue
+			entries.append( { 'ldap-dn' : obj.dn, 'objectType' : module.name, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) } )
 		self.finished( request.id, entries )
 
 	def values( self, request ):

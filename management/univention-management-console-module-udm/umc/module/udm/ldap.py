@@ -89,22 +89,25 @@ class UDM_Module( object ):
 				else:
 					return '*'
 
-	def search( self, container, attribute = None, value = None ):
+	def search( self, container = None, attribute = None, value = None, superordinate = None ):
 		lo, po = get_ldap_connection()
 		if container == 'all':
 			container = po.getBase()
+		elif container is None:
+			container = ''
 		if attribute is None:
 			filter_s = ''
 		else:
 			filter_s = '%s=%s' % ( attribute, value )
 
-		return self.module.lookup( None, lo, filter_s, base = container )
+		return self.module.lookup( None, lo, filter_s, base = container, superordinate = superordinate )
 
 	def get( self, ldap_dn ):
 		lo, po = get_ldap_connection()
 		obj = self.module.object( None, lo, None, ldap_dn )
 		obj.open()
-		return obj.info
+
+		return obj
 
 	@property
 	def name( self ):
@@ -291,4 +294,7 @@ def get_module( flavor, ldap_dn ):
 	lo, po = get_ldap_connection()
 	modules = udm_modules.objectType( None, lo, ldap_dn, module_base = base )
 
-	return modules and UDM_Module( modules[ 0 ] )
+	if not modules:
+		return None
+
+	return UDM_Module( modules[ 0 ] )
