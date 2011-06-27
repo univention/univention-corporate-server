@@ -33,6 +33,8 @@
 
 import operator
 
+from univention.management.console import Translation
+
 import univention.admin as udm
 import univention.admin.modules as udm_modules
 import univention.admin.uldap as udm_uldap
@@ -40,6 +42,8 @@ import univention.admin.syntax as udm_syntax
 
 from ...config import ucr
 from ...log import MODULE
+
+_ = Translation( 'univention-management-console-modules-udm' ).translate
 
 # global LDAP connection
 _ldap_connection = None
@@ -112,6 +116,10 @@ class UDM_Module( object ):
 	@property
 	def name( self ):
 		return self.module is not None and self.module.module
+
+	@property
+	def title( self ):
+		return getattr( self.module, 'short_description', self.module.module )
 
 	@property
 	def identifies( self ):
@@ -230,16 +238,30 @@ class UDM_Module( object ):
 
 	@property
 	def superordinates( self ):
-		return getattr( self.module, 'wizardsuperordinates', [] )
+		modules = getattr( self.module, 'wizardsuperordinates', [] )
+		superordinates = []
+		for mod in modules:
+			if mod == 'None':
+				superordinates.append( { 'id' : mod, 'label' : _( 'None' ) } )
+			else:
+				module = UDM_Module( mod )
+				if module:
+					superordinates.append( { 'id' : mod, 'label' : module.title } )
+
+		return superordinates
 
 	def types4superordinate( self, superordinate ):
-		if not superordinate in self.superordinates:
+		if not superordinate in getattr( self.module, 'wizardsuperordinates', [] ):
 			return []
 		types = getattr( self.module, 'wizardtypesforsuper' )
+		typelist = []
 		if isinstance( types, dict ) and superordinate in types:
-			return types[ superordinate ]
+			for mod in types[ superordinate ]:
+				module = UDM_Module( mod )
+				if module:
+					typelist.append( { 'id' : mod, 'label' : module.title } )
 
-		return []
+		return typelist
 
 class UDM_Settings( object ):
 	def __init__( self, username ):

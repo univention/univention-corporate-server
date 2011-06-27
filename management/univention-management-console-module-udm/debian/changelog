@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.30-1) unstable; urgency=low
+
+  * udm/types, udm/superordinates: show module descriptions instead of the
+    id; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 27 Jun 2011 16:31:18 +0200
+
 univention-management-console-module-udm (1.0.29-1) unstable; urgency=low
 
   * support searching with attributer superordinate
