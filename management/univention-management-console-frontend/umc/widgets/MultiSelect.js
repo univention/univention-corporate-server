@@ -25,7 +25,7 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.form.CheckedMultiSelect, umc.wid
 		this._saveInitialValue();
 	},
 
-	postCreate: function() {
+	startup: function() {
 		this.inherited(arguments);
 
 		// _SelectMixin method

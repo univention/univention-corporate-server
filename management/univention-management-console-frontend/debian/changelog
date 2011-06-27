@@ -1,3 +1,13 @@
+univention-management-console-frontend (0.0.59-1) unstable; urgency=low
+
+  * fixed dependencies for ComboBox with static values
+  * at login, only reload when the language changed
+  * umc.widgets.Grid: pass list of IDs and list of dicts to callback functions
+  * remove obsolete module umc.widgets._ModuleMixin
+  (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 27 Jun 2011 17:51:04 +0200
+
 univention-management-console-frontend (0.0.58-1) unstable; urgency=low
 
   * let the module store use the correct module flavor (Bug #22460)

@@ -55,6 +55,9 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 
 	'class': 'umcNoBorder',
 
+	_contextItem: null,
+	_contextItemID: null,
+
 	_iconFormatter: function(valueField, iconField) {
 		// summary:
 		//		Generates a formatter functor for a given value and icon field.
@@ -157,7 +160,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			this.connect(item, 'onClick', function() {
 				dijit.popup.close(contextMenu);
 				if (iaction.callback) {
-					iaction.callback([this._contextItemID]);
+					iaction.callback([this._contextItemID], [this._contextItem]);
 				}
 			});
 		}, this);
@@ -204,6 +207,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 
 			// save the ID of the current element
 			var item = this._grid.getItem(evt.rowIndex);
+			this._contextItem = item;
 			this._contextItemID = this._dataStore.getValue(item, this.moduleStore.idProperty);
 
 			// show popup
@@ -296,7 +300,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 
 				// call custom callback with selected values
 				jaction.callback = dojo.hitch(this, function() {
-					iaction.callback(this.getSelection());
+					iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
 				});
 			}
 			actions.push(jaction);
@@ -389,7 +393,15 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		this._grid.filter(query);
 	},
 
-	getSelection: function() {
+	getSelectedItems: function() {
+		// summary:
+		//		Return the currently selected items.
+		// returns:
+		//		An array of dictionaries with all available properties of the selected items.
+		return this._grid.selection.getSelected();
+	},
+
+	getSelectedIDs: function() {
 		// summary:
 		//		Return the currently selected items.
 		// returns:

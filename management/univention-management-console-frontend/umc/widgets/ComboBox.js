@@ -22,7 +22,7 @@ dojo.declare("umc.widgets.ComboBox", [ dijit.form.FilteringSelect, umc.widgets._
 		this._saveInitialValue();
 	},
 
-	postCreate: function() {
+	startup: function() {
 		this.inherited(arguments);
 
 		// _SelectMixin method

@@ -48,6 +48,8 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	// internal variable to keep track of which ids have already been added
 	_ids: {},
 
+	_firstValueInList: null,
+
 	_setupStore: function() {
 		// The store needs to be available already at construction time, otherwise an 
 		// error will be thrown. We need to define it here, in order to create a new 
@@ -66,6 +68,12 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		// rember the intial value since it will be overridden by the dojo
 		// methods since at initialization time the store is empty
 		this._initialValue = this.value;
+	},
+
+	_setCustomValue: function() {
+		this._initialValue = this._initialValue || this._firstValueInList;
+		this.set('value', this._initialValue);
+		this._resetValue = this._initialValue;
 	},
 
 	_clearValues: function() {
@@ -122,6 +130,11 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		// add all static values to the store
 		this._ids = {};
 		dojo.forEach(staticValues, function(iitem) {
+			// store the first value of the list
+			if (null === this._firstValueInList) {
+				this._firstValueInList = iitem.id;
+			}
+
 			// add item to store
 			umc.tools.assert(!(iitem.id in this._ids), "umc.widgets._SelectMixin: Entry already previously defined: " + dojo.toJson(iitem));
 			this.store.newItem(iitem);
@@ -130,10 +143,13 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 			this._ids[iitem.id] = iitem.label;
 		}, this);
 
-		// save the store in order for the changes to take effect and set the value
+		// save the store in order for the changes to take effect
 		this.store.save();
-		this.set('value', this._initialValue);
-		this._resetValue = this._initialValue;
+		
+		// set the user specified value if we don't have dynamic values
+		if (!dojo.isString(this.dynamicValues) || !this.dynamicValues) {
+			this._setCustomValue();
+		}
 	},
 
 	_setDynamicValues: function(/*Object[]*/ values) {
@@ -149,6 +165,11 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		// add items to the store
 		dojo.forEach(items, function(iitem) {
 			if (iitem) {
+				// store the first value of the list
+				if (null === this._firstValueInList) {
+					this._firstValueInList = iitem.id;
+				}
+
 				// add item to store
 				umc.tools.assert(!(iitem.id in this._ids), "umc.widgets._SelectMixin: Entry already previously defined: " + dojo.toJson(iitem));
 				this.store.newItem(iitem);
@@ -162,8 +183,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 		// save the store in order for the changes to take effect and set the value
 		this.store.save();
-		this.set('value', this._initialValue);
-		this._resetValue = this._initialValue;
+		this._setCustomValue();
 	},
 
 	_loadValues: function(/*Object?*/ _dependValues) {
@@ -188,6 +208,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		}
 
 		// only load dynamic values in case all dependencies are fullfilled
+		//console.log('### dependencies: ' + dependList + ' depVals: ' + dojo.toJson(params));
 		if (dependList.length != nDepValues) {
 			return;
 		}
@@ -205,6 +226,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		// add all dynamic values which need to be queried via UMCP asynchronously
 		if (dojo.isString(this.dynamicValues) && this.dynamicValues) {
 			this.umcpCommand(this.dynamicValues, params).then(dojo.hitch(this, function(data) {
+				//console.log('# dynamicValues(' + this.dynamicValues + '): ' + data.result);
 				this._setDynamicValues(data.result);
 				this.onDynamicValuesLoaded(data.result);
 			}));

@@ -88,12 +88,14 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		this._form.startup();
 
 		// register onChange event
-		this.connect(this._form._widgets.language, 'onChange', function() {
-			// reload the page when a different language is selected
-			var query = dojo.queryToObject(window.location.search.substring(1));
-			query.lang = this._form.elementValue('language');
-			dojo.cookie('UMCLang', query.lang, { expires: 100, path: '/' });
-			window.location.search = '?' + dojo.objectToQuery(query);
+		this.connect(this._form._widgets.language, 'onChange', function(lang) {
+			if (lang != dojo.locale) {
+				// reload the page when a different language is selected
+				var query = dojo.queryToObject(window.location.search.substring(1));
+				query.lang = lang;
+				dojo.cookie('UMCLang', query.lang, { expires: 100, path: '/' });
+				window.location.search = '?' + dojo.objectToQuery(query);
+			}
 		});
 
 		// put the layout together

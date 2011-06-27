@@ -117,6 +117,10 @@ dojo.declare("umc.widgets.Form", [
 				this._widgets = this.widgets;
 			}
 		}
+	},
+
+	postCreate: function() {
+		this.inherited(arguments);
 
 		// prepare registration of onChange events
 		umc.tools.forIn(this._widgets, function(iname, iwidget) {
@@ -142,10 +146,6 @@ dojo.declare("umc.widgets.Form", [
 				});
 			}
 		}, this);
-	},
-
-	postCreate: function() {
-		this.inherited(arguments);
 
 		// register callbacks for onSubmit and onReset events
 		umc.tools.forIn({ 'submit': 'onSubmit', 'reset': 'onReset' }, function(ibutton, ievent) {
@@ -181,7 +181,6 @@ dojo.declare("umc.widgets.Form", [
 		});
 		//console.log(dojo.replace('# _updateDependencies: publisherName={0} _dependencyMap[{0}]={1}', [publisherName, dojo.toJson(tmp)]));
 		if (publisherName in this._dependencyMap) {
-			var values = this.gatherFormValues();
 			dojo.forEach(this._dependencyMap[publisherName], function(ireceiver) {
 				if (ireceiver && ireceiver._loadValues) {
 					ireceiver._loadValues(values);

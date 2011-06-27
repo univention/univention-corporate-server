@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-06-24 18:23+0200\n"
+"POT-Creation-Date: 2011-06-27 17:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -148,7 +148,7 @@ msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
-#: umc/widgets/Grid.js:347
+#: umc/widgets/Grid.js:351
 msgid "More actions..."
 msgstr "Weitere Aktionen..."
 
@@ -259,7 +259,7 @@ msgstr ""
 msgid "Webfrontend error: The specified request is unknown."
 msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht bekannt."
 
-#: umc/widgets/LoginDialog.js:103
+#: umc/widgets/LoginDialog.js:105
 msgid ""
 "Welcome to the Univention Management Console. Please enter your domain "
 "username and password for login!"
