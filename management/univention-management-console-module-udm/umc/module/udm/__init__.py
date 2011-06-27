@@ -87,7 +87,7 @@ class Instance( Base ):
 		else:
 			for obj in result:
 				module = get_module( request.flavor, obj.dn )
-				entries.append( { 'ldap-dn' : obj.dn, 'objectType' : module.name, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) } )
+				entries.append( { 'ldap-dn' : obj.dn, 'objectType' : module_name, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) } )
 		self.finished( request.id, entries )
 
 	def values( self, request ):
