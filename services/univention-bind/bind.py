@@ -59,7 +59,7 @@ def handler(dn, new, old):
 			elif old and not new:
 				remove_zone(old['zoneName'][0])
 			if new.has_key('zoneName'):
-				f=open(os.path.join('/var/cache/univention-bind-proxy', new['zoneName'][0]), 'w')
+				f=open(os.path.join('/var/cache/univention-bind-proxy', new['zoneName'][0]) + ".zone", 'w')
 				f.close()
 	finally:
 		listener.unsetuid()
@@ -130,9 +130,10 @@ def postrun():
 			if not os.path.exists(os.path.join('/var/cache/bind', file)):
 				restart=True
 			else:
+				zone = file.replace(".zone", "")
 				if os.path.exists('/usr/sbin/rndc'):
-					os.spawnv(os.P_WAIT, '/usr/sbin/rndc', ['rndc', '-p 55555', 'reload', file])
-					os.spawnv(os.P_WAIT, '/usr/sbin/rndc', ['rndc', '-p 953', 'reload', file])
+					os.spawnv(os.P_WAIT, '/usr/sbin/rndc', ['rndc', '-p 55555', 'reload', zone])
+					os.spawnv(os.P_WAIT, '/usr/sbin/rndc', ['rndc', '-p 953', 'reload', zone])
 			os.remove(os.path.join('/var/cache/univention-bind-proxy', file))
 		if restart:
 			os.spawnv(os.P_WAIT, '/etc/init.d/univention-bind-proxy', ['univention-bind-proxy', 'restart'])

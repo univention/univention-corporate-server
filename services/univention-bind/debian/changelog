@@ -1,3 +1,9 @@
+univention-bind (5.0.23-1) unstable; urgency=low
+
+  * reload zone if zone exists in /var/cache/bind in bind.py Bug #22346
+
+ -- Felix Botner <botner@univention.de>  Mon, 27 Jun 2011 16:02:19 +0200
+
 univention-bind (5.0.22-1) unstable; urgency=low
 
   * bumped version (for integration of 2.4-2 version at a later point)
