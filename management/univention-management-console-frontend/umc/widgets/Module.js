@@ -45,20 +45,18 @@ dojo.declare("umc.widgets.Module", [ dijit.layout.StackContainer, umc.widgets.St
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
-		// create a singleton for the module store at the first call
-		var mod = dojo.getObject('umc.modules.' + this.moduleID);
-		if (!mod.moduleStore) {
-			mod.moduleStore = dojo.store.Observable(new umc.store.UmcpModuleStore({
+		// create a singleton for the module store for each flavor; this is to ensure that
+		// the correct flavor of the module is send to the server
+		var path = this.moduleID + '._moduleStores.' + (this.moduleFlavor || 'default');
+		this.moduleStore = dojo.getObject(path, false, umc.modules);
+		if (!this.moduleStore) {
+			this.moduleStore = dojo.store.Observable(new umc.store.UmcpModuleStore({
 				idProperty: this.idProperty,
-				moduleID: this.moduleID
+				moduleID: this.moduleID,
+				umcpCommand: dojo.hitch(this, 'umcpCommand')
 			}));
+			dojo.setObject(path, this.moduleStore, umc.modules);
 		}
-
-		// create a delegate object of the store and just overwrite for the current
-		// flavor the umcpCommand reference; this will send along also the correct
-		// flavor of the module .. note we might have the same module with different
-		// flavors .. and each flavor may influence the results the store returns
-		this.moduleStore = dojo.delegate(mod.moduleStore, { umcpCommand: dojo.hitch(this, 'umcpCommand') });
 
 		// set the css class umcModulePane
 		//this['class'] = (this['class'] || '') + ' umcModulePane';
