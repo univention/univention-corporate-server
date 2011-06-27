@@ -50,7 +50,8 @@ Categories=service-adcon
 
 [con.*/ad/mapping/user/win2000/description]
 Description[de]=Konfiguriert, ob der Abgleich von Benutzer-Beschreibungen bei der Synchronisation mit Windows 2000 Domänencontrolern aktiviert werden soll.
-Description[en]=Controls, whether the description attribute of users should be synchronised when replicating against Windows 2000.
+Description[en]=Due to limitations in operation with Windows 2000 servers the connector cannot set any object description as blank in Active
+Directory. As a result the synchronisation of descriptions in Windows 2000 mode is deactivated. If this variable is set to "true", descriptions are nevertheless synchronised for users in so far as this is possible.
 Type=str
 Categories=service-adcon
 
@@ -81,7 +82,7 @@ Categories=service-adcon
 
 [con.*/ad/windows_version]
 Description[de]=Die Art der LDAP-Datenbankzugriffe unterscheidet sich zwischen Windows 2000 und Windows 2003/2008. Um gegen ein Active Directory aus Windows 2000 synchronisieren zu können, muss diese Variable auf "win2000" konfiguriert werden.
-Description[en]=The version of Windows Server running Active Directory. If not specified, Windows 2003 is assumed.
+Description[en]=The type of LDAP database accesses is different between Windows 2000 and Windows 2003/2008. This variable must be set to "win2000" to synchronise against an Active Directory from Windows 2000.
 Type=str
 Categories=service-adcon
 
@@ -123,7 +124,7 @@ Categories=service-adcon
 
 [con.*/password/service/encoding]
 Description[de]=Der Passwortdienst unter Windows benötigt den Benutzernamen bei der Passwortänderung im iso8859-Format. Mit dieser Variable kann das Encoding gesetzt werden. Abweichungen von der Voreinstellung (iso8859-15) sollten nur in Sonderfällen nötig sein.
-Description[en]=The encoding the Windows password services uses for user names.
+Description[en]=The password service in Windows requires the user name to be in iso8859 format for changing the password. The encoding can be set with this variable. Deviations from the preset (iso8859-15) should only be necessary in corner cases.
 Type=str
 Categories=service-adcon
 
