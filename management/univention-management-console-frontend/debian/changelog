@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.57-1) unstable; urgency=low
+
+  * fixed typo for sed command in Makefile (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 27 Jun 2011 08:48:52 +0200
+
 univention-management-console-frontend (0.0.56-1) unstable; urgency=low
 
   * added help text to the overview page (Bug #22460)

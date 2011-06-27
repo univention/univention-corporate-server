@@ -59,7 +59,7 @@ build: build-common
 	cd /usr/share/univention-dojo/util/buildscripts; \
 	./build.sh profileFile="$(tmpDir)/build_profile.js" releaseDir="$(CURDIR)/build/js" version="$(version)"
 	@# index page .. replace the HASH with a timestamp
-	sed 's/%HASH%/_$(timestamp)/; s/%STARTMODULE%|umc/app|' index.html > "$(buildDir)/index.html"
+	sed 's/%HASH%/_$(timestamp)/; s|%STARTMODULE%|umc/app|' index.html > "$(buildDir)/index.html"
 	@# copy css style sheets and images
 	rsync -rp --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css images $(buildDir) 
 
