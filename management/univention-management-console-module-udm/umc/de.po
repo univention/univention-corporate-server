@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Thu, 23 Jun 2011 16:10:57 +0200\n"
+"POT-Creation-Date: Mon, 27 Jun 2011 16:48:53 +0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -54,6 +54,10 @@ msgstr "Verwaltung von E-Mail-Einstellungen"
 msgid "Managing networks"
 msgstr "Verwaltung von Netzwerk-Einstellungen"
 
+#, fuzzy
+msgid "Managing policies"
+msgstr "Verwaltung von Druckern"
+
 msgid "Managing printers"
 msgstr "Verwaltung von Druckern"
 
@@ -68,6 +72,9 @@ msgstr ""
 
 msgid "Networks"
 msgstr "Netzwerke"
+
+msgid "Policies"
+msgstr ""
 
 msgid "Printers"
 msgstr "Drucker"

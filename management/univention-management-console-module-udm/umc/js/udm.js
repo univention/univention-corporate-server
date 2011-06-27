@@ -22,8 +22,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	idProperty: 'ldap-dn',
 
 	_searchPage: null,
-	_detailPage: null,
 	_detailForm: null,
+	_detailTabs: null,
 
 	buildRendering: function() {
 		// call superclass method
@@ -38,16 +38,6 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			var containers = results[0][0] ? results[0][1] : [];
 			var superordinates = results[1][0] ? results[1][1] : [];
 			this._renderSearchPage(containers.result, superordinates.result);
-		}));
-
-		// for the detail page, we first need to query property data from the server
-		(new dojo.DeferredList([
-			this.umcpCommand('udm/properties'),
-			this.umcpCommand('udm/layout')
-		])).then(dojo.hitch(this, function(results) {
-			var properties = results[0][1];
-			var layout = results[1][1];
-			this._renderDetailPage(properties.result, layout.result);
 		}));
 	},
 
@@ -78,9 +68,20 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			iconClass: 'dijitIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
-			callback: dojo.hitch(this, function(vars) {
-				if (vars.length && this._detailForm) {
-					this.selectChild(this._detailForm);
+			callback: dojo.hitch(this, function(ids, items) {
+				if (items.length && items[0].objectType) {
+					// for the detail page, we first need to query property data from the server
+					// for the layout of the selected object type, then we can render the page
+					var params = { objectType: items[0].objectType };
+					(new dojo.DeferredList([
+						this.umcpCommand('udm/properties', params),
+						this.umcpCommand('udm/layout', params)
+					])).then(dojo.hitch(this, function(results) {
+						var properties = results[0][1];
+						var layout = results[1][1];
+						this._renderDetailPage(properties.result, layout.result);
+						this.showDetailPage();
+					}));
 				}
 			})
 		}, {
@@ -123,7 +124,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var layout = [];
 		
 		// check whether we need to display containers or superordinates
-		var objTypeDependencies = undefined;
+		var objTypeDependencies = [];
 		var objTypes = [];
 		if (superordinates.length) {
 			// superordinates...
@@ -137,7 +138,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				umcpCommand: umcpCmd
 			});
 			layout.push('superordinate');
-			objTypeDependencies = 'superordinate';
+			objTypeDependencies.push('superordinate');
 		}
 		else {
 			// containers...
@@ -161,7 +162,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'objectType',
 			description: this._( 'The type of the LDAP object.' ),
 			label: this._('Object type'),
-			value: this.moduleFlavor,
+			value: objTypes.length ? this.moduleFlavor : undefined,
 			staticValues: objTypes,
 			dynamicValues: 'udm/types',
 			umcpCommand: umcpCmd,
@@ -181,6 +182,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			description: this._( 'The value for the specified object property on which the query is filtered.' ),
 			label: this._( 'Property value' ),
 			dynamicValues: 'udm/values',
+			umcpCommand: umcpCmd,
 			depends: [ 'objectProperty', 'objectType' ]
 		}]);
 		layout = layout.concat([ 'objectType', 'objectProperty', 'objectPropertyValue' ]);
@@ -230,8 +232,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'save',
 			label: this._('Save changes')
 		}, {
-			name: 'reset',
-			label: this._('Reset changes')
+			name: 'close',
+			label: this._('Back to search'),
+			callback: dojo.hitch(this, 'closeDetailPage')
 		}]);
 		var footer = new umc.widgets.ContainerWidget({
 			region: 'bottom',
@@ -250,6 +253,18 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			moduleStore: this.moduleStore
 		});
 		this.addChild(this._detailForm);
+	},
+
+	showDetailPage: function() {
+		this.selectChild(this._detailForm);
+	},
+
+	closeDetailPage: function() {
+		if (this._detailForm) {
+			this.closeChild(this._detailForm);
+			this._detailForm = null;
+			this._detailTabs = null;
+		}
 	},
 
 	postCreate: function() {
