@@ -103,53 +103,64 @@ class object(content):
 
 	def layout(self):
 		self.oxae = (self.cmdline.get('edition') and self.cmdline['edition'][0] == 'oxae')
-		if self.oxae:
-			fqdn = ''
-			if self.all_results['hostname'] or self.all_results['domainname']:
-				fqdn = '%s.%s' % (self.all_results['hostname'], self.all_results['domainname'])
-			self.add_elem('TXT_FQDN', textline(_('Fully qualified domain name (e.g. host.example.com):'), self.minY, self.minX+2))#2
-			self.add_elem('IN_FQDN', input(fqdn, self.minY+1, self.minX+2,30))#3
-			self.add_elem('TXT_MAILDOMAIN', textline(_('Mail domain (e.g. example.com):'), self.minY+3, self.minX+2))#4
-			self.add_elem('IN_MAILDOMAIN', input(self.all_results.get('ox_primary_maildomain',''), self.minY+4, self.minX+2,30))#5
-		else:
-			self.add_elem('TXT_HOSTNAME', textline(_('Hostname:'), self.minY, self.minX+2))#2
-			self.add_elem('IN_HOSTNAME', input(self.all_results['hostname'], self.minY+1, self.minX+2,30))#3
-			self.add_elem('TXT_DOMAIN', textline(_('Domain name:'), self.minY+3, self.minX+2))#4
-			self.add_elem('IN_DOMAIN', input(self.all_results['domainname'], self.minY+4, self.minX+2,30))#5
 
-		self.append_spaces = 0
+		index = 0
+
+		fqdn = ''
+		if self.all_results['hostname'] or self.all_results['domainname']:
+			fqdn = '%s.%s' % (self.all_results['hostname'], self.all_results['domainname'])
+
+		# fqdn
+		self.add_elem('TXT_FQDN', 
+			textline(_('Fully qualified domain name (e.g. host.example.com):'), self.minY+index, self.minX+2))#2
+		index += 1
+		self.add_elem('IN_FQDN', input(fqdn, self.minY+index, self.minX+2,30))#3
+		index += 2
+
+		# oxae maildomain
+		if self.oxae:
+			self.add_elem('TXT_MAILDOMAIN',
+				textline(_('Mail domain (e.g. example.com):'), self.minY+index, self.minX+2))#4
+			index += 1
+			self.add_elem('IN_MAILDOMAIN',
+				input(self.all_results.get('ox_primary_maildomain',''), self.minY+index, self.minX+2,30))#5
+			index += 2
+
+		# ucs ldap base
 		if self.all_results.has_key('system_role') and self.all_results['system_role'] == 'domaincontroller_master':
 			if not self.oxae:
-				self.append_spaces = 3
-				self.add_elem('TXT_LDAPBASE', textline(_('LDAP base:'), self.minY+6, self.minX+2))#6
-				self.add_elem('IN_LDAPBASE', input(self.all_results['ldap_base'], self.minY+7, self.minX+2,30))#7
+				self.add_elem('TXT_LDAPBASE', 
+					textline(_('LDAP base:'), self.minY+index, self.minX+2))#6
+				index += 1
+				self.add_elem('IN_LDAPBASE', 
+					input(self.all_results['ldap_base'], self.minY+index, self.minX+2,30))#7
+				index += 2
 				if self.all_results.has_key('ldap_base') and self.all_results['ldap_base']:
 					self.guessed[ 'ldap_base' ] = self.all_results['ldap_base']+'already_initialize'
 
-		self.add_elem('TXT_WINDOMAIN', textline(_('Windows domain:'), self.minY+6+int(self.append_spaces), self.minX+2))#8
-		self.add_elem('IN_WINDOMAIN', input(self.all_results['windows_domain'], self.minY+7+int(self.append_spaces), self.minX+2,30))#9
+		# windom
+		self.add_elem('TXT_WINDOMAIN', textline(_('Windows domain:'), self.minY+index, self.minX+2))#8
+		index += 1
+		self.add_elem('IN_WINDOMAIN', input(self.all_results['windows_domain'], self.minY+index, self.minX+2,30))#9
+		index += 2
 		if self.all_results.has_key('windows_domain') and self.all_results['windows_domain']:
 			self.guessed[ 'windows_domain' ] = self.all_results['windows_domain']+'already_initialize'
 
-		self.add_elem('TXT_ROOTPW1', textline(_('Root password:'),self.minY+9+int(self.append_spaces),self.minX+2)) #10
-		self.add_elem('IN_ROOTPW1', password(self.all_results['root_password'],self.minY+10+int(self.append_spaces),self.minX+2,30)) #11
+		# password
+		self.add_elem('TXT_ROOTPW1', textline(_('Root password:'),self.minY+index,self.minX+2)) #10
+		index += 1
+		self.add_elem('IN_ROOTPW1', password(self.all_results['root_password'],self.minY+index,self.minX+2,30)) #11
+		index += 2
 
-		self.add_elem('TXT_ROOTPW2', textline(_('Root password (retype):'),self.minY+12+int(self.append_spaces),self.minX+2)) #12
-		self.add_elem('IN_ROOTPW2', password(self.all_results['root_password'],self.minY+13+int(self.append_spaces),self.minX+2,30)) #13
+		self.add_elem('TXT_ROOTPW2', textline(_('Root password (retype):'),self.minY+index,self.minX+2)) #12
+		index += 1
+		self.add_elem('IN_ROOTPW2', password(self.all_results['root_password'],self.minY+index,self.minX+2,30)) #13
+		index += 1
 
 	def tab(self):
-		if not self.oxae and self.current == self.get_elem_id('IN_HOSTNAME'):
-			elem = self.get_elem('IN_HOSTNAME')
-			if len(elem.text) and not elem.text.islower():
-				text = elem.text.lower()
-				self.guessed['hostname'] = text
-				elem.text = text
-				elem.cursor=len(text)
-				elem.set_off()
-				elem.draw()
-				self.draw()
 
-		if self.oxae and self.current == self.get_elem_id('IN_FQDN'):
+		# fqdn
+		if self.current == self.get_elem_id('IN_FQDN'):
 			elem_fqdn = self.get_elem('IN_FQDN')
 			if len(elem_fqdn.text) and not elem_fqdn.text.islower():
 				text = elem_fqdn.text.lower()
@@ -159,58 +170,86 @@ class object(content):
 				elem_fqdn.set_off()
 				elem_fqdn.draw()
 				self.draw()
-			# FQDN is set
 			if elem_fqdn.text:
-				# IF oxmaildomain is not set OR oxmaildomain has not been guessed yet OR oxmaildomain is currently equal to guessed oxmaildomain THEN
-				elem_oxmaildomain = self.get_elem('IN_MAILDOMAIN')
-				if not elem_oxmaildomain.text:
-					fqdn = elem_fqdn.text
-					if '.' in fqdn:
-						oxmaildomain = fqdn[fqdn.find('.')+1:]
-						self.guessed[ 'ox_primary_maildomain' ] = oxmaildomain
-						elem_oxmaildomain.text = oxmaildomain
-						elem_oxmaildomain.cursor=len(oxmaildomain)
-						elem_oxmaildomain.set_off()
-						elem_oxmaildomain.draw()
-						self.draw()
 
+				# IF oxmaildomain is not set OR oxmaildomain has not been guessed yet 
+				# OR oxmaildomain is currently equal to guessed oxmaildomain THEN
+				if self.oxae:
+					fqdn = elem_fqdn.text
+
+					elem_oxmaildomain = self.get_elem('IN_MAILDOMAIN')
+					if not len(elem_oxmaildomain.text) or not self.guessed.has_key('ox_primary_maildomain') \
+					or self.guessed['ox_primary_maildomain'] == elem_oxmaildomain.text:
+						if '.' in fqdn:
+							oxmaildomain = fqdn[fqdn.find('.')+1:]
+							self.guessed[ 'ox_primary_maildomain' ] = oxmaildomain
+							elem_oxmaildomain.text = oxmaildomain
+							elem_oxmaildomain.cursor=len(oxmaildomain)
+							elem_oxmaildomain.set_off()
+							elem_oxmaildomain.draw()
+							self.draw()
+				# ucs
+				else:
+
+					fqdn = elem_fqdn.text
+					# master -> ldapbase
+					if self.all_results.has_key( 'system_role' ) and \
+					self.all_results['system_role'] == 'domaincontroller_master':
+						element = self.get_elem('IN_LDAPBASE')
+						if not len(element.text) or not self.guessed.has_key('ldap_base') \
+						or self.guessed['ldap_base'] == element.text:
+							if '.' in fqdn:
+								dom = fqdn[fqdn.find('.')+1:]
+								if dom:	
+									base = "dc=" + string.join(dom.split( '.' ), ',dc=').lower()
+									self.guessed['ldap_base'] = base
+									element.text = base
+									element.cursor=len(base)
+									element.set_off()
+									element.draw()
+									self.draw()
+					# rest -> win dom
+					else:
+						element = self.get_elem('IN_WINDOMAIN')
+						if not len(element.text) or not self.guessed.has_key('windows_domain') \
+						or self.guessed['windows_domain'] == element.text:
+							if '.' in fqdn:
+								tmp = fqdn.split('.')
+								if len(tmp) > 0:
+									text = tmp[1].upper()
+									text = re.sub("^\d*", "", text)
+									self.guessed['windows_domain'] = text
+									element.text = text
+									element.cursor=len(text)
+									element.set_off()
+									element.draw()
+									self.draw()
+				
+		# win dom for ucs master and oxae
+		elem_id = "IN_LDAPBASE"
 		if self.oxae:
-			elemname = 'IN_MAILDOMAIN'
-			guessid = 'ox_primary_maildomain'
-		else:
-			elemname = 'IN_DOMAIN'
-			guessid = 'domainname'
-		if self.current == self.get_elem_id(elemname):
-			elem = self.get_elem(elemname)
-			if len(elem.text):
-				elem_windomain = self.get_elem('IN_WINDOMAIN')
-				if not len(elem_windomain.text) or not self.guessed.has_key( 'windows_domain' ) or self.guessed[ 'windows_domain' ] == elem_windomain.text:
-					text = elem.text.split('.')[0].upper()
-					text = re.sub("^\d*", "", text)
-					self.guessed[ 'windows_domain' ] = text
-					elem_windomain.text = text
-					elem_windomain.cursor=len(text)
-					elem_windomain.set_off()
-					elem_windomain.draw()
-					self.draw()
-				if not self.oxae and self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
-					elem_ldapbase = self.get_elem('IN_LDAPBASE')
-					if not len(elem_ldapbase.text) or not self.guessed.has_key( 'ldap_base' ) or self.guessed[ 'ldap_base' ] == elem_ldapbase.text:
-						text = "dc=" + string.join( elem.text.split( '.' ), ',dc=' ).lower()
-						self.guessed[ 'ldap_base' ] = text
-						elem_ldapbase.text = text
-						elem_ldapbase.cursor=len(text)
-						elem_ldapbase.set_off()
-						elem_ldapbase.draw()
-						self.draw()
-				if not elem.text.islower():
-					text = elem.text.lower()
-					self.guessed[ guessid ] = text
-					elem.text = text
-					elem.cursor=len(text)
-					elem.set_off()
-					elem.draw()
-					self.draw()
+			elem_id = "IN_MAILDOMAIN"
+		if self.all_results.has_key( 'system_role' ) and \
+		self.all_results['system_role'] == 'domaincontroller_master':
+			if self.current == self.get_elem_id(elem_id):
+				elem_fqdn = self.get_elem('IN_FQDN')
+				element = self.get_elem("IN_WINDOMAIN")
+				if not len(element.text) or not self.guessed.has_key('windows_domain') \
+				or self.guessed['windows_domain'] == element.text:
+					fqdn = elem_fqdn.text
+					if fqdn and "." in fqdn:
+						tmp = fqdn.split('.')
+						if len(tmp) > 0:
+							text = tmp[1].upper()
+							text = re.sub("^\d*", "", text)
+							self.guessed['windows_domain'] = text
+							element.text = text
+							element.cursor=len(text)
+							element.set_off()
+							element.draw()
+							self.draw()
+					
+		# upper case win dom
 		if self.current == self.get_elem_id('IN_WINDOMAIN'):
 			elem = self.get_elem('IN_WINDOMAIN')
 			if len(elem.text) and not elem.text.isupper():
@@ -222,7 +261,6 @@ class object(content):
 				elem.draw()
 				self.draw()
 		content.tab(self)
-
 
 	def input(self,key):
 		if key in [ 10, 32 ] and self.btn_next():
@@ -249,14 +287,10 @@ class object(content):
 
 		if hostname.strip() == '' or hostname.strip() in ['localhost', 'local'] or hostname.strip().find(' ') != -1 or not self.syntax_is_hostname(hostname):
 			if not self.ignore('hostname'):
-				if self.oxae:
-					if focus:
-						self.move_focus( self.get_elem_id('IN_FQDN') )
-					return _("Please enter a valid fully qualified domain name in lowercase (e.g. host.example.com).")
-				else:
-					if focus:
-						self.move_focus( self.get_elem_id('IN_HOSTNAME') )
-					return _("Please enter a valid hostname in lowercase.")
+				if focus:
+					self.move_focus( self.get_elem_id('IN_FQDN') )
+				return _("Please enter a valid fully qualified domain name in lowercase (e.g. host.example.com).")
+
 		if len(hostname) > 15:
 			# The warning will be displayed only once
 			if hostname != self.hostname_last_warning:
@@ -269,39 +303,31 @@ class object(content):
 					if focus:
 						self.move_focus( self.get_elem_id('IN_MAILDOMAIN') )
 					return _("Please enter a valid mail domain in lowercase (e.g. example.com).")
+
 		if domainname.strip() == '' or domainname.strip().find(' ') != -1 or not self.syntax_is_domainname(domainname):
 			if not self.ignore('domainname'):
-				if self.oxae:
-					if focus:
-						self.move_focus( self.get_elem_id('IN_FQDN') )
-					return _("Please enter a valid fully qualified domain name in lowercase (e.g. host.example.com).")
-				else:
-					if focus:
-						self.move_focus( self.get_elem_id('IN_DOMAIN') )
-					return _("Please enter a valid domain name in lowercase.")
+				if focus:
+					self.move_focus( self.get_elem_id('IN_FQDN') )
+				return _("Please enter a valid fully qualified domain name in lowercase (e.g. host.example.com).")
+
 		if len(hostname.strip()+domainname.strip()) >= 63:
 			if not self.ignore('hostname') and not self.ignore('domainname'):
-				if self.oxae:
-					if focus:
-						self.move_focus( self.get_elem_id('IN_FQDN') )
-					return _('The length of fully qualified domain name is greater than 63 characters.')
-				else:
-					if focus:
-						self.move_focus( self.get_elem_id('IN_HOSTNAME') )
-					return _('The length of host and domain name is greater than 63 characters.')
+				if focus:
+					self.move_focus( self.get_elem_id('IN_FQDN') )
+				return _('The length of fully qualified domain name is greater than 63 characters.')
+
 		if hostname.strip() == domainname.strip().split('.')[0]:
 			if not self.ignore('hostname') and not self.ignore('domainname'):
 				if focus:
-					if self.oxae:
-						self.move_focus( self.get_elem_id('IN_FQDN') )
-					else:
-						self.move_focus( self.get_elem_id('IN_DOMAIN') )
+					self.move_focus( self.get_elem_id('IN_FQDN') )
 				return _("Hostname is equal to domain name.")
+
 		if (ldap_base.strip() == '') and (self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master'):
 			if not self.ignore('ldap_base'):
 				if focus:
 					self.move_focus( 7 )
 				return _("Please enter the LDAP base.")
+
 		if (ldap_base.strip() != '') and ((self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master')) or ldap_base.strip().find(' ') != -1:
 
 			if not self.ignore('ldap_base'):
@@ -319,6 +345,7 @@ class object(content):
 					if focus:
 						self.move_focus( 7 )
 					return message
+
 		if not self.all_results.has_key('root_password_crypted'):
 			if root_password1.strip() == '':
 				if not self.ignore('password'):
@@ -380,21 +407,20 @@ class object(content):
 
 	def incomplete(self):
 		ldap_base=''
+
+		if '.' in self.get_elem('IN_FQDN').text:
+			hostname, domainname = self.get_elem('IN_FQDN').result().strip().lower().split('.', 1)
+		else:
+			hostname = self.get_elem('IN_FQDN').result().strip().lower()
+			domainname = ''
+
+
 		if self.oxae:
 			oxmaildomain = self.get_elem('IN_MAILDOMAIN').result()
-			if '.' in self.get_elem('IN_FQDN').text:
-				hostname, domainname = self.get_elem('IN_FQDN').result().strip().lower().split('.', 1)
-			else:
-				hostname = self.get_elem('IN_FQDN').result().strip().lower()
-				domainname = ''
-
 			if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
 				ldap_base = "dc=" + ',dc='.join( self.get_elem('IN_MAILDOMAIN').text.strip().lower().split( '.' ) )
 		else:
 			oxmaildomain = ''
-			hostname = self.get_elem('IN_HOSTNAME').result()
-			domainname = self.get_elem('IN_DOMAIN').result()
-
 			if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
 				ldap_base=self.get_elem('IN_LDAPBASE').result()
 
@@ -420,14 +446,12 @@ class object(content):
 	def result(self):
 		result={}
 		if self.oxae:
-			hostname, domainname = self.get_elem('IN_FQDN').result().strip().lower().split('.', 1)
-			result['fqdn'] = self.get_elem('IN_FQDN').result().strip().lower()
 			result['ox_primary_maildomain'] = self.get_elem('IN_MAILDOMAIN').result().strip().lower()
-			result['hostname'] = hostname
-			result['domainname'] = domainname
-		else:
-			result['hostname']='%s' % self.get_elem('IN_HOSTNAME').result().strip().lower()
-			result['domainname']='%s' % self.get_elem('IN_DOMAIN').result().strip().lower()
+
+		hostname, domainname = self.get_elem('IN_FQDN').result().strip().lower().split('.', 1)
+		result['fqdn'] = self.get_elem('IN_FQDN').result().strip().lower()
+		result['hostname'] = hostname
+		result['domainname'] = domainname
 
 		if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
 			if self.oxae:
