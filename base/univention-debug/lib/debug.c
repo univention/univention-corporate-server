@@ -37,6 +37,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
+#include <sys/time.h>
 #include <syslog.h>
 
 #include <univention/debug.h>
@@ -87,7 +88,7 @@ static const char *univention_debug_level_text[] = {
 FILE * univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush, enum uv_debug_flag_function function)
 {
 	int i;
-	time_t t;
+	struct timeval tv;
 	struct tm tm;
 
 	if (univention_debug_ready) {
@@ -120,10 +121,10 @@ FILE * univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush
 	univention_debug_flush = flush;
 	univention_debug_function = function;
 
-	t = time(NULL);
-	localtime_r(&t, &tm);
+	gettimeofday( &tv, NULL );
+	localtime_r(&tv.tv_sec, &tm);
 
-	fprintf(univention_debug_file, "%02d.%02d.%02d %02d:%02d:%02d  DEBUG_INIT\n", tm.tm_mday, tm.tm_mon+1, tm.tm_year-100, tm.tm_hour,tm.tm_min, tm.tm_sec);
+	fprintf(univention_debug_file, "%02d.%02d.%02d %02d:%02d:%02d.%03d  DEBUG_INIT\n", tm.tm_mday, tm.tm_mon+1, tm.tm_year-100, tm.tm_hour,tm.tm_min, tm.tm_sec, ( int ) ( tv.tv_usec / 1000 ) );
 	fflush(univention_debug_file);
 
 	univention_debug_ready = true;
@@ -134,15 +135,16 @@ FILE * univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush
 void univention_debug(enum uv_debug_category id, enum uv_debug_level level, const char *fmt, ...)
 {
 	va_list ap;
-	time_t t;
 	struct tm tm;
+	struct timeval tv;
+
 	if (univention_debug_file && level <= univention_debug_level[id]) {
-		t = time(NULL);
-		localtime_r(&t, &tm);
+		gettimeofday( &tv, NULL );
+		localtime_r( &tv.tv_sec, &tm );
 		fprintf(univention_debug_file,
-				"%02d.%02d.%02d %02d:%02d:%02d  %s %s",
+				"%02d.%02d.%02d %02d:%02d:%02d.%03d  %s %s",
 				tm.tm_mday, tm.tm_mon+1, tm.tm_year-100,
-				tm.tm_hour, tm.tm_min, tm.tm_sec,
+				tm.tm_hour, tm.tm_min, tm.tm_sec, ( int ) (tv.tv_usec / 1000 ),
 				univention_debug_id_text[id],
 				univention_debug_level_text[level]);
 		va_start(ap, fmt);
@@ -201,17 +203,17 @@ void univention_debug_reopen(void)
 
 void univention_debug_exit(void)
 {
-	time_t t;
+	struct timeval tv;
 	struct tm tm;
 
 	if (!univention_debug_ready) {
 		return;
 	}
 
-	t = time(NULL);
-	localtime_r(&t, &tm);
+	gettimeofday( &tv, NULL );
+	localtime_r(&tv.tv_sec, &tm);
 
-	fprintf(univention_debug_file, "%02d.%02d.%02d %02d:%02d:%02d  DEBUG_EXIT\n", tm.tm_mday, tm.tm_mon+1, tm.tm_year-100, tm.tm_hour,tm.tm_min, tm.tm_sec);
+	fprintf(univention_debug_file, "%02d.%02d.%02d %02d:%02d:%02d.%03d  DEBUG_EXIT\n", tm.tm_mday, tm.tm_mon+1, tm.tm_year-100, tm.tm_hour,tm.tm_min, tm.tm_sec, ( int ) ( tv.tv_usec / 1000 ) );
 	fflush(univention_debug_file);
 	fclose(univention_debug_file);
 	univention_debug_file = NULL;

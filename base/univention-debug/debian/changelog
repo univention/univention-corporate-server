@@ -1,3 +1,9 @@
+univention-debug (5.0.8-1) unstable; urgency=low
+
+  * add milliseconds to the tiemstamp of debug messages; Bug #22855
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 27 Jun 2011 14:52:45 +0200
+
 univention-debug (5.0.7-1) unstable; urgency=low
 
   * Include stdio.h in debug.h since univention_debug_init returns a
