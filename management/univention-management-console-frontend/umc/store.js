@@ -14,14 +14,13 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 	//		The values of this property should be unique.
 	idProperty: '',
 
-	// moduleFlavor: String
-	//		Specifies the module flavor which may need to be communicated to 
-	//		the server via `umc.tool.umcpCommand()`.
-	moduleFlavor: null,
-	
 	// moduleID: String
 	//		ID of the module.
 	moduleID: '',
+
+	// umcpCommand: Function
+	//		Reference to a particularly flavored umcpCommand.
+	umcpCommand: umc.tools.umcpCommand,
 
 	constructor: function(params) {
 		dojo.mixin(this, params);
@@ -56,7 +55,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		}
 		else {
 			// send the UMCP command
-			return umc.tools.umcpCommand(this.moduleID + '/' + type, params, true, this.moduleFlavor).
+			return this.umcpCommand(this.moduleID + '/' + type, params).
 				then(dojo.hitch(this, function(data) {
 					// make sure that we get an non-empty array
 					//console.log('# _genericMultiCmd - deferred: data=' + String(data));
@@ -159,7 +158,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		var deferred = new dojo.Deferred();
 		if (nQueryEl) {
 			// non-empty query
-			deferred = umc.tools.umcpCommand(this.moduleID + '/query', query, true, this.moduleFlavor);
+			deferred = this.umcpCommand(this.moduleID + '/query', query);
 			deferred = deferred.then(function(data) {
 				var result = data.result;
 				// if requested, sort the list

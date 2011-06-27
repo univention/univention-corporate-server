@@ -50,11 +50,15 @@ dojo.declare("umc.widgets.Module", [ dijit.layout.StackContainer, umc.widgets.St
 		if (!mod.moduleStore) {
 			mod.moduleStore = dojo.store.Observable(new umc.store.UmcpModuleStore({
 				idProperty: this.idProperty,
-				moduleID: this.moduleID, 
-				moduleFlavor: this.moduleFlavor
+				moduleID: this.moduleID
 			}));
 		}
-		this.moduleStore = mod.moduleStore;
+
+		// create a delegate object of the store and just overwrite for the current
+		// flavor the umcpCommand reference; this will send along also the correct
+		// flavor of the module .. note we might have the same module with different
+		// flavors .. and each flavor may influence the results the store returns
+		this.moduleStore = dojo.delegate(mod.moduleStore, { umcpCommand: dojo.hitch(this, 'umcpCommand') });
 
 		// set the css class umcModulePane
 		//this['class'] = (this['class'] || '') + ' umcModulePane';

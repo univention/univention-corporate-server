@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.58-1) unstable; urgency=low
+
+  * let the module store use the correct module flavor (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 27 Jun 2011 14:40:50 +0200
+
 univention-management-console-frontend (0.0.57-1) unstable; urgency=low
 
   * fixed typo for sed command in Makefile (Bug #22460)
