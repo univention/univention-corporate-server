@@ -1,3 +1,14 @@
+univention-management-console (4.0.35-1) unstable; urgency=low
+
+  * clean up debug messages
+  * add exception classes to simplify error reporting for module's command
+    functions
+  * fixed typos in source documentation
+  * removed translations from XML file
+  * add german translation for categories; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 28 Jun 2011 11:29:54 +0200
+
 univention-management-console (4.0.34-1) unstable; urgency=low
 
   * umc-client: support list options; Bug #22460

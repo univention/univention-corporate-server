@@ -207,7 +207,7 @@ class Message( object ):
 			if key in self.body:
 				setattr( self, key[ 1 : ], self.body[ key ] )
 
-		PARSER.info( ' UMCP message %s parsed successfully' % self._id )
+		PARSER.info( 'UMCP %(type)s %(id)s parsed successfully' % groups )
 
 		return remains
 

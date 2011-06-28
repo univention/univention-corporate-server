@@ -3,19 +3,15 @@
   <categories>
 	<category id="favorites">
 	  <name>Favorites</name>
-	  <name lang="de_DE">Favoriten</name>
 	</category>
 	<category id="system">
 	  <name>System</name>
-	  <name lang="de_DE">System</name>
 	</category>
 	<category id="wizards">
 	  <name>Wizards</name>
-	  <name lang="de_DE">Assistenten</name>
 	</category>
 	<category id="monitor">
 	  <name>Surveillance</name>
-	  <name lang="de_DE">Überwachung</name>
 	</category>
   </categories>
 </umc>

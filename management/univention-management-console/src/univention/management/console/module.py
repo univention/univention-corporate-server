@@ -149,7 +149,7 @@ class XML_Definition( ET.ElementTree ):
 		return [ elem.get( 'name' ) for elem in self.findall( 'module/categories/category' ) ]
 
 	def commands( self ):
-		'''generator to iterate over the commands'''
+		'''Generator to iterate over the commands'''
 		for command in self.findall( 'module/command' ):
 			yield command.get( 'name' )
 
@@ -157,7 +157,7 @@ class XML_Definition( ET.ElementTree ):
 		return Module( self.id, self.name, self.description, self.icon, self.categories, self.flavors )
 
 	def get_flavor( self, name ):
-		'''retrives details of a flavor'''
+		'''Retrieves details of a flavor'''
 		for flavor in self.flavors:
 			if flavor.name == name:
 				cmd = Flavor( name, flavor.get( 'function' ) )
@@ -166,7 +166,7 @@ class XML_Definition( ET.ElementTree ):
 		return None
 
 	def get_command( self, name ):
-		'''retrives details of a command'''
+		'''Rtrieves details of a command'''
 		for command in self.findall( 'module/command' ):
 			if command.get( 'name' ) == name:
 				cmd = Command( name, command.get( 'function' ) )

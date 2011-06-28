@@ -185,7 +185,6 @@ class Processor( signals.Provider ):
 		return moduleManager.module_providing( self.__comand_list, command )
 
 	def request( self, msg ):
-		CORE.info( 'Incoming request of type: %s' % msg.command )
 		if msg.command == 'EXIT':
 			self.handle_request_exit( msg )
 		elif msg.command == 'GET':
@@ -279,7 +278,6 @@ class Processor( signals.Provider ):
 			return
 
 		res.status = SUCCESS
-		res.message = status_description( res.status )
 		for key, value in msg.options.items():
 			if key == 'locale':
 				self.__locale = value

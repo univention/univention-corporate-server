@@ -43,6 +43,24 @@ from ..log import MODULE
 
 _ = Translation( 'univention.management.console' ).translate
 
+class UMC_Error( Exception ):
+	def __init__( self, request_id, message ):
+		'''This constructor forces the two arguments'''
+		Exception.__init__( self, id, message )
+
+	@property
+	def id( self ):
+		return self.args[ 0 ]
+
+	def __str__( self ):
+		return str( self.args[ 1 ] )
+
+class UMC_AttributeTypeError( UMC_Error ):
+	pass
+
+class UMC_AttributeMissing( UMC_Error ):
+	pass
+
 class Base( signals.Provider, Translation ):
 	'''The base class for UMC modules of version 2 or higher'''
 	def __init__( self ):
@@ -81,21 +99,26 @@ class Base( signals.Provider, Translation ):
 		self.__requests[ object.id ] = ( object, method )
 
 		MODULE.info( 'Executing %s' % str( object.arguments ) )
+		message = ''
 		try:
 			func = getattr( self, method )
 			func( object )
+			return
+		except UMC_AttributeTypeError, e:
+			message = _(  'An attribute passed to %s has the wrong type: %s' ) % ( method, str( e ) )
+		except UMC_AttributeMissing, e:
+			message = _(  'An attribute to %s is missing: %s' ) % ( method, str( e ) )
 		except Exception, e:
-			MODULE.error( 'Executing of %s has failed: %s' % ( method, str( e ) ) )
 			import traceback
-
-			res = Response( object )
-			res.message = _( "Execution of command '%(command)s' has failed:\n\n%(text)s" ) % \
-							{ 'command' : object.arguments[ 0 ], 'text' : unicode( traceback.format_exc() ) }
-			MODULE.error( str( res.message ) )
-			res.status = MODULE_ERR_COMMAND_FAILED
-			self.signal_emit( 'failure', res )
-			if object.id in self.__requests:
-				del self.__requests[ object.id ]
+			message = _( "Execution of command '%(command)s' has failed:\n\n%(text)s" ) % \
+					  { 'command' : object.arguments[ 0 ], 'text' : unicode( traceback.format_exc() ) }
+		res = Response( object )
+		res.message = message
+		MODULE.error( str( res.message ) )
+		res.status = MODULE_ERR_COMMAND_FAILED
+		self.signal_emit( 'failure', res )
+		if object.id in self.__requests:
+			del self.__requests[ object.id ]
 
 	def permitted( self, command, options ):
 		if not self.__acls:
