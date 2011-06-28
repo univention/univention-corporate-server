@@ -43,22 +43,10 @@ from ..log import MODULE
 
 _ = Translation( 'univention.management.console' ).translate
 
-class UMC_Error( Exception ):
-	def __init__( self, request_id, message ):
-		'''This constructor forces the two arguments'''
-		Exception.__init__( self, id, message )
-
-	@property
-	def id( self ):
-		return self.args[ 0 ]
-
-	def __str__( self ):
-		return str( self.args[ 1 ] )
-
-class UMC_AttributeTypeError( UMC_Error ):
+class UMC_AttributeTypeError( Exception ):
 	pass
 
-class UMC_AttributeMissing( UMC_Error ):
+class UMC_AttributeMissing( Exception ):
 	pass
 
 class Base( signals.Provider, Translation ):
@@ -95,14 +83,14 @@ class Base( signals.Provider, Translation ):
 		that passes the base configuration to the module process'''
 		pass
 
-	def execute( self, method, object ):
-		self.__requests[ object.id ] = ( object, method )
+	def execute( self, method, request ):
+		self.__requests[ request.id ] = ( request, method )
 
-		MODULE.info( 'Executing %s' % str( object.arguments ) )
+		MODULE.info( 'Executing %s' % str( request.arguments ) )
 		message = ''
 		try:
 			func = getattr( self, method )
-			func( object )
+			func( request )
 			return
 		except UMC_AttributeTypeError, e:
 			message = _(  'An attribute passed to %s has the wrong type: %s' ) % ( method, str( e ) )
@@ -111,14 +99,14 @@ class Base( signals.Provider, Translation ):
 		except Exception, e:
 			import traceback
 			message = _( "Execution of command '%(command)s' has failed:\n\n%(text)s" ) % \
-					  { 'command' : object.arguments[ 0 ], 'text' : unicode( traceback.format_exc() ) }
-		res = Response( object )
+					  { 'command' : request.arguments[ 0 ], 'text' : unicode( traceback.format_exc() ) }
+		res = Response( request )
 		res.message = message
 		MODULE.error( str( res.message ) )
 		res.status = MODULE_ERR_COMMAND_FAILED
 		self.signal_emit( 'failure', res )
-		if object.id in self.__requests:
-			del self.__requests[ object.id ]
+		if request.id in self.__requests:
+			del self.__requests[ request.id ]
 
 	def permitted( self, command, options ):
 		if not self.__acls:
