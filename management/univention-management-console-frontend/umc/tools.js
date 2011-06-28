@@ -371,10 +371,7 @@ dojo.mixin(umc.tools, {
 		var globalContainer = new umc.widgets.ContainerWidget({});
 
 		// check whether the parameters are correct
-		//console.log('### renderLayout');
-		//console.log(layout);
-		umc.tools.assert(dojo.isArray(layout) &&
-				layout.length,
+		umc.tools.assert(dojo.isArray(layout), 
 				'umc.tools.renderLayout: Invalid layout configuration object!');
 
 		// iterate through the layout elements
