@@ -84,7 +84,7 @@ class UDM_Module( object ):
 		MODULE.info( 'Searching for property %s' % property_name )
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if key == property_name:
-				return default_value( prop )
+				return default_value( prop.syntax )
 
 	def search( self, container = None, attribute = None, value = None, superordinate = None ):
 		lo, po = get_ldap_connection()
@@ -182,7 +182,7 @@ class UDM_Module( object ):
 			if ucr.get( UDM_Module.UCR_SEARCH_DEFAULT % { 'module' : self.module.module } ) == key:
 				item[ 'preselected' ] = True
 
-			item.update( widget( prop ) )
+			item.update( widget( prop.syntax ) )
 			props.append( item )
 		props.sort( key = operator.itemgetter( 'label' ) )
 		return props
@@ -209,7 +209,7 @@ class UDM_Module( object ):
 		containers = getattr( self.module, 'default_containers', [] )
 		ldap_base = ucr.get( 'ldap/base' )
 
-		return map( lambda x: x + ldap_base, containers )
+		return map( lambda x: { 'id' : x + ldap_base, 'label' : ldap_dn2path( x + ldap_base ) }, containers )
 
 	@property
 	def superordinates( self ):
@@ -261,7 +261,7 @@ class UDM_Settings( object ):
 	def containers( self, module_name ):
 		base, name = split_module_name( module_name )
 
-		return self.directory.info.get( base, [] )
+		return map( lambda x: { 'id' : x, 'label' : ldap_dn2path( x ) }, self.directory.info.get( base, [] ) )
 
 	def resultColumns( self, module_name ):
 		pass

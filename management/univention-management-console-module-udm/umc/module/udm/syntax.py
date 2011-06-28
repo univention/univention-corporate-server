@@ -38,19 +38,14 @@ from ...log import MODULE
 class Widget( object ):
 	'''Describes a widget for the new web frontend'''
 
-	def __init__( self, name, syntax_classes, default_value, static_values_func = None ):
+	def __init__( self, name, syntax_classes, default_value ):
 		self._name = name
 		self._syntax_classes = syntax_classes
 		self._default_value = default_value
-		self._static_values_func = static_values_func
 
 	def __contains__( self, syntax ):
-		return isinstance( syntax, self._syntax_classes )
-
-	def values( self, udm_property ):
-		if self._static_values_func is None:
-			return ()
-		return self._static_values_func( self, udm_property )
+		'''Checks if the syntax is represented by this widget'''
+		return isinstance( syntax, self._syntax_classes ) or type( syntax ) in ( type, ) and issubclass( syntax, self._syntax_classes )
 
 	@property
 	def name( self ):
@@ -65,33 +60,55 @@ __widgets = (
 	Widget( 'PasswordInputBox', ( udm_syntax.passwd, udm_syntax.userPasswd ), '' ),
 	Widget( 'DateBox', udm_syntax.iso8601Date, '1970-01-01' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
-	Widget( 'ComboBox', udm_syntax.select, '', lambda self, udm_property: map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, udm_property.syntax.choices ) )
+	Widget( 'ComboBox', udm_syntax.select, '' ),
+	Widget( 'ComplexInput', udm_syntax.complex, None ),
 	)
 
-def widget( udm_property ):
-	'''Returns a widget description'''
+def choices( syntax ):
+	"""Returns the choices attribute of the property's syntax as a list
+	of dictionaries with id and label keys. If the attribute is not
+	available an empty list is returned."""
+	return map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syntax, 'choices', [] ) )
+
+def subsyntaxes( syntax ):
+	"""Returns a list of dictionaries describing the the sub types of a
+	complex syntax"""
+	return map( lambda x: { 'label' : x[ 0 ], 'type' : widget( x[ 1 ] ) }, getattr( syntax, 'subsyntaxes', [] ) )
+
+def widget( syntax ):
+	"""Returns a widget description as a dictionary"""
 	global __widgets
 
 	for widget in __widgets:
-		if udm_property.syntax in widget:
-			return { 'type' : widget.name, 'staticValues' : widget.values( udm_property ) }
+		if syntax in widget:
+			descr = { 'type' : widget.name }
+			values = choices( syntax )
+			subtypes = subsyntaxes( syntax )
+			if values:
+				MODULE.info( "Syntax %s has the following choices: %s" % ( syntax.name, values ) )
+				descr[ 'staticValues' ] = values
+			if subtypes:
+				MODULE.info( "Syntax %s has the following sub-types: %s" % ( syntax.name, subtypes ) )
+				descr[ 'subtypes' ] = subtypes
+				descr[ 'delimiter' ] = syntax.delimiter
+			return descr
 
-	if hasattr( udm_property.syntax, '__name__' ):
-		name = udm_property.syntax.__name__
-	elif hasattr( udm_property.syntax, '__class__' ):
-		name = udm_property.syntax.__class__.__name__
+	if hasattr( syntax, '__name__' ):
+		name = syntax.__name__
+	elif hasattr( syntax, '__class__' ):
+		name = syntax.__class__.__name__
 	else:
-		name = "Unknown class (name attribute :%s)" % udm_property.name
+		name = "Unknown class (name attribute :%s)" % syntax.name
 	MODULE.error( 'Could not convert UDM syntax %s' % name )
 
 	return {}
 
-def default_value( udm_property ):
+def default_value( syntax ):
 	'''Returns a widget description'''
 	global __widgets
 
 	for widget in __widgets:
-		if udm_property.syntax in widget:
+		if syntax in widget:
 			return widget.default_value
 
 	return '*'
