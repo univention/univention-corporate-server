@@ -288,11 +288,15 @@ dojo.mixin(umc.tools, {
 		// remove property 'id'
 		delete conf.id;
 
-		// include the corresponding module for the widget
-		dojo['require']('umc.widgets.' + widgetConf.type);
+		var WidgetClass = undefined;
+		try {
+			// include the corresponding module for the widget
+			dojo['require']('umc.widgets.' + widgetConf.type);
 
-		// create the new widget according to its type
-		var WidgetClass = dojo.getObject('umc.widgets.' + widgetConf.type);
+			// create the new widget according to its type
+			WidgetClass = dojo.getObject('umc.widgets.' + widgetConf.type);
+		}
+		catch (error) { }
 		if (!WidgetClass) {
 			console.log(dojo.replace("WARNING in umc.tools.renderWidget: The widget class 'umc.widgets.{type}' defined by widget '{name}' cannot be found. Ignoring error.", widgetConf));
 			return undefined;

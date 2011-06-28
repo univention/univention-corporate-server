@@ -1,3 +1,12 @@
+univention-management-console-frontend (0.0.61-1) unstable; urgency=low
+
+  * fixed problem of setting default values when reloading dynamical values
+    in ComboBoxes
+  * catch errors when creating non-existing widgets
+    (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Jun 2011 17:55:34 +0200
+
 univention-management-console-frontend (0.0.60-1) unstable; urgency=low
 
   * added missing code line (Bug #22460)

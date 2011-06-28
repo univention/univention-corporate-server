@@ -50,6 +50,10 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 	_firstValueInList: null,
 
+	_initialValue: null,
+
+	_isAutoValue: false,
+
 	_setupStore: function() {
 		// The store needs to be available already at construction time, otherwise an 
 		// error will be thrown. We need to define it here, in order to create a new 
@@ -71,7 +75,10 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	},
 
 	_setCustomValue: function() {
-		this._initialValue = this._initialValue || this._firstValueInList;
+		if (!this._initialValue) {
+			this._initialValue = this._firstValueInList;
+			this._isAutoValue = true;
+		}
 		this.set('value', this._initialValue);
 		this._resetValue = this._initialValue;
 	},
@@ -86,6 +93,13 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 			items: []
 		};
 		this.store.close();
+
+		if (this._isAutoValue) {
+			// reset the _initialValue in case we chose it automatically
+			this._initialValue = null;
+		}
+		this._isAutoValue = false;
+		this._firstValueInList = null;
 	},
 
 	_convertItems: function(_items) {
