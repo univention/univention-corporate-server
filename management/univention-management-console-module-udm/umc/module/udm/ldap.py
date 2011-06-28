@@ -226,13 +226,20 @@ class UDM_Module( object ):
 
 		return superordinates
 
-	def types4superordinate( self, superordinate ):
-		if not superordinate in getattr( self.module, 'wizardsuperordinates', [] ):
-			return []
+	def types4superordinate( self, flavor, superordinate ):
 		types = getattr( self.module, 'wizardtypesforsuper' )
 		typelist = []
-		if isinstance( types, dict ) and superordinate in types:
-			for mod in types[ superordinate ]:
+
+		if superordinate == 'None':
+			module_name = superordinate
+		else:
+			module = get_module( flavor, superordinate )
+			if not module:
+				return typelist
+			module_name = module.name
+
+		if isinstance( types, dict ) and module_name in types:
+			for mod in types[ module_name ]:
 				module = UDM_Module( mod )
 				if module:
 					typelist.append( { 'id' : mod, 'label' : module.title } )

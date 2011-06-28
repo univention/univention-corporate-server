@@ -146,7 +146,7 @@ class Instance( Base ):
 		module = UDM_Module( request.flavor )
 		superordinate = request.options.get( 'superordinate' )
 		if superordinate:
-			self.finished( request.id, module.types4superordinate( superordinate ) )
+			self.finished( request.id, module.types4superordinate( request.flavor, superordinate ) )
 
 		self.finished( request.id, module.child_modules )
 
