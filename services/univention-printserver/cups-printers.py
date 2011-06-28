@@ -279,6 +279,12 @@ def handler(dn, new, old):
 					continue
 
 				if a == 'univentionPrinterSpoolHost' and not 'univentionPrinterModel' in changes:
+					if new.get('univentionPrinterModel', [''])[0] == 'None':
+						continue
+
+					if new.get('univentionPrinterModel', [''])[0] == 'smb':
+						continue
+
 					args+=[options['univentionPrinterModel'], new.get('univentionPrinterModel', [''])[0]]
 
 				if not options.has_key(a):

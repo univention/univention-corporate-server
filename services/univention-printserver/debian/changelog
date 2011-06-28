@@ -1,3 +1,10 @@
+univention-printserver (4.0.9-1) unstable; urgency=low
+
+  * fix error message in listener.log and cups/error_log when modifying
+    printers with model None or smb (Bug #22547)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 28 Jun 2011 15:42:32 +0200
+
 univention-printserver (4.0.8-1) unstable; urgency=low
 
   * Always add auth-info-required=none to printers.conf otherwise cups
