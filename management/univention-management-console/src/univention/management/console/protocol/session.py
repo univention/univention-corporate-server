@@ -152,7 +152,6 @@ class Processor( signals.Provider ):
 
 		# stores the module processes [ modulename ] = <>
 		self.__processes = {}
-		self.__locale = None
 		self.__sessionid = None
 
 		self.__killtimer = {}
@@ -280,14 +279,13 @@ class Processor( signals.Provider ):
 		res.status = SUCCESS
 		for key, value in msg.options.items():
 			if key == 'locale':
-				self.__locale = value
 				try:
 					self.core_i18n.set_language( value )
 					self.i18n.set_locale( value )
 				except I18N_Error, e:
 					res.status = BAD_REQUEST_UNAVAILABLE_LOCALE
 					res.message = status_description( res.status )
-					CORE.warn( 'Setting locale: specified locale is not available (%s)' % self.__locale )
+					CORE.warn( 'Setting locale: specified locale is not available (%s)' % value )
 					break
 			elif key == 'sessionid':
 				self.__sessionid = value
@@ -331,7 +329,7 @@ class Processor( signals.Provider ):
 				return
 			if not module_name in self.__processes:
 				CORE.info( 'Starting new module process and passing new request to module %s: %s' % (module_name, str(msg._id)) )
-				mod_proc = ModuleProcess( module_name, debug = MODULE_DEBUG_LEVEL, locale = self.__locale )
+				mod_proc = ModuleProcess( module_name, debug = MODULE_DEBUG_LEVEL, locale = self.i18n.locale )
 				mod_proc.signal_connect( 'result', self._mod_result )
 				cb = notifier.Callback( self._socket_died, module_name, msg )
 				mod_proc.signal_connect( 'closed', cb )
@@ -379,8 +377,8 @@ class Processor( signals.Provider ):
 				'commands' : self.__command_list[ mod.name ].json(),
 				'credentials' : { 'username' : self.__username, 'password' : self.__password },
 				}
-			if self.__locale is not None:
-				options[ 'locale' ] = self.__locale
+			if str( self.i18n.locale ):
+				options[ 'locale' ] = str( self.i18n.locale )
 
 			# WARNING! This debug message contains credentials!!!
 			# CORE.info( 'Initialize module process: %s' % options )

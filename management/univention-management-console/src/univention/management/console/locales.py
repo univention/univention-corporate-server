@@ -71,13 +71,13 @@ class Locale( object ):
 
 	def __str__( self ):
 		text = self.language
-		if getattr( self, 'territory' ) is not None:
+		if getattr( self, 'territory', None ) is not None:
 			text += '_%s' % self.territory
-		if getattr( self, 'codeset' ) is not None:
+		if getattr( self, 'codeset', None ) is not None:
 			text += '.%s' % self.codeset
-		if getattr( self, 'modifier' ) is not None:
+		if getattr( self, 'modifier', None ) is not None:
 			text += '@%s' % self.modifier
-		return text
+		return text is None and '' or text
 
 class NullTranslation( object ):
 	def __init__( self, namespace = None, locale_spec = None, localedir = None ):
@@ -191,7 +191,10 @@ class I18N( object ):
 
 class I18N_Manager( dict ):
 	def __init__( self ):
-		self.locale = Locale()
+		lang, codeset = getdefaultlocale()
+		if lang is None:
+			lang = 'de_DE'
+		self.locale = Locale( lang )
 
 	def set_locale( self, locale ):
 		LOCALE.info( 'Setting locale to %s' % locale )
