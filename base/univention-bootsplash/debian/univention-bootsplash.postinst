@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Univention Bootsplash
-#  append a bootsplash image to an initrd file
+#  postinst script for the univention-bootsplash debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,34 +30,34 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval `univention-baseconfig shell`
-
-themedir="/etc/bootsplash/themes"
-parm1="$1"
-parm2="$2"
-
-function help() {
-	echo "univention-appendsplash: tool to append bootsplash images to initrd"
-	echo "copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany"
-	echo ""
-	echo " Syntax:"
-	echo "  univention-appendsplash [-i <initrd>]"
-	echo ""
-	echo "  -i                  append to <initrd>"
-	echo ""
-}
-
-
-res=0
-if [ -n "$parm1" ] && [ "$parm1" == "-i" ] && [ -n "$parm2" ] ; then
-	version=`basename $parm2 | sed -e 's|initrd.img-||'`
-	mkinitramfs --supported-target-version=$version -o /boot/$parm2
-	res=$?
-elif [ -n "$parm1" ]; then
-	help
-else
-	mkinitramfs -o /boot/initrd.img-`uname -r`
-	res=$?
+# update to ucs 3.0 with plymouth
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; then
+	univention-config-registry set bootsplash/theme="text"
 fi
 
-exit $res
+
+eval "$(univention-config-registry shell)"
+
+univention-config-registry set bootsplash/theme?"text"
+
+
+univention-config-registry set grub/vga?791
+
+# TODO grub2 configuration 
+# splash in GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+#if [ -z "`echo $grub_append | grep splash`" ] ; then
+#	univention-baseconfig set grub/append="splash $grub_append"
+#fi
+
+
+#DEBHELPER#
+
+update-initramfs -u
+
+if [ -x /usr/bin/update-grub2 ]; then
+	update-grub2
+elif [ -x /sbin/lilo ]; then
+	lilo
+fi
+
+exit 0

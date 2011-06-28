@@ -1,12 +1,5 @@
 [bootsplash/theme]
-Description[de]=Name des Bootsplash Theme unterhalb von /etc/bootsplash/theme
-Description[en]=Name of the bootsplash theme below /etc/bootsplash/theme
+Description[de]=Name des Bootsplash Design (eines von "plymouth-set-default-theme -l")
+Description[en]=Name of the bootsplash theme (one of "plymouth-set-default-theme -l")
 Type=str
 Categories=system-base
-
-[bootsplash/size]
-Description[de]=Größe des Bootsplash Image für die initiale Ramdisk, Standardwert ist all.
-Description[en]=Size for the bootsplash-image in the initrd, default is all.
-Type=str
-Categories=system-base
-

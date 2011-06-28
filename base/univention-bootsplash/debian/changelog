@@ -1,3 +1,10 @@
+univention-bootsplash (4.0.0-1) unstable; urgency=low
+
+  * UCS 3.0 (Bug #20138)
+  * use plymouth instead of usplash
+
+ -- Felix Botner <botner@univention.de>  Tue, 28 Jun 2011 13:51:54 +0200
+
 univention-bootsplash (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

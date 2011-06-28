@@ -1,4 +1,4 @@
-Copyright 2001-2010 Univention GmbH
+Copyright 2001-2011 Univention GmbH
 
 http://www.univention.de/
 
@@ -25,28 +25,3 @@ You should have received a copy of the GNU Affero General Public
 License with the Debian GNU/Linux or Univention distribution in file
 /usr/share/common-licenses/AGPL-3; if not, see
 <http://www.gnu.org/licenses/>.
-
-=============================================================================
-
-The following files are excluded from the GNU AGPL V3 license:
- - pictures/
- - pictures/skeleton1024x768.jpg
- - pictures/skeleton1280x1024.jpg
- - pictures/ucs1024x768.jpg
- - pictures/ucs1280x1024.jpg
- - pictures/ucs640x480.jpg
- - pictures/ucs800x600.jpg
- - pictures/verbose-splash-1024x768.jpg
- - pictures/verbose-splash-1280x1024.jpg
- - pictures/verbose-splash-640x480.jpg
- - pictures/verbose-splash-800x600.jpg
- - pictures/text
- - pictures/text/logo.gif
- - pictures/text/ucs_dcbackup.gif
- - pictures/text/ucs_dcmaster.gif
- - pictures/text/ucs_dcslave.gif
- - pictures/text/ucs_manclient.gif
- - pictures/text/ucs_memberserver.gif
- - pictures/text/ucs_mobclient.gif
- - pictures/text/ucs_server.gif
- - pictures/text/ucs_thinclient.gif

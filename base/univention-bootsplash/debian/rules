@@ -3,7 +3,7 @@
 # Univention Bootsplash
 #  rules file for the univention-bootsplash debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,53 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-copyrightyear=`date +%Y`
+override_dh_auto_build:
+	ucslint
+	dh_auto_build
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	touch configure-stamp
+%:
+	dh $@
 
-build: configure-stamp
-	dh_testdir
-
-clean:
-	dh_testdir
-	dh_testroot
-	dh_clean
-
-B=$(CURDIR)/debian/univention-bootsplash
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-	
-	# for thin-client bootsplash
-	install -m 644 etc/bootsplash/themes/ucs/config/*cfg debian/univention-bootsplash/etc/bootsplash/themes/ucs/config/
-	install -m 644 etc/bootsplash/themes/ucs/images/*jpg debian/univention-bootsplash/etc/bootsplash/themes/ucs/images/
-	
-	univention-install-baseconfig
-
-binary-indep: build install
-
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs
-	dh_installexamples
-	dh_installmenu
-	dh_installchangelogs
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
