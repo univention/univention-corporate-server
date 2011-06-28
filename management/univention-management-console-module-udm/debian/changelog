@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.34-1) unstable; urgency=low
+
+  * add syntax.py: maps UDM syntax classes to widgets
+  * superordinate: return list of objects instead of module names; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 28 Jun 2011 13:45:06 +0200
+
 univention-management-console-module-udm (1.0.33-1) unstable; urgency=low
 
   * fix usage of UMC_AttributeError; Bug #22439

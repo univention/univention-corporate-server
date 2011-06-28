@@ -38,10 +38,11 @@ from univention.management.console import Translation
 import univention.admin as udm
 import univention.admin.modules as udm_modules
 import univention.admin.uldap as udm_uldap
-import univention.admin.syntax as udm_syntax
 
 from ...config import ucr
 from ...log import MODULE
+
+from .syntax import widget, default_value
 
 _ = Translation( 'univention-management-console-modules-udm' ).translate
 
@@ -83,15 +84,7 @@ class UDM_Module( object ):
 		MODULE.info( 'Searching for property %s' % property_name )
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if key == property_name:
-				MODULE.info( 'Found property with syntax %s' % str( type( prop.syntax ) ) )
-				if isinstance( prop.syntax, ( udm_syntax.boolean, udm_syntax.TrueFalseUp ) ):
-					return False
-				elif isinstance( prop.syntax, udm_syntax.simple ):
-					return '*'
-				elif isinstance( prop.syntax, udm_syntax.select ):
-					return map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] },  prop.syntax.choices )
-				else:
-					return '*'
+				return default_value( prop )
 
 	def search( self, container = None, attribute = None, value = None, superordinate = None ):
 		lo, po = get_ldap_connection()
@@ -189,25 +182,7 @@ class UDM_Module( object ):
 			if ucr.get( UDM_Module.UCR_SEARCH_DEFAULT % { 'module' : self.module.module } ) == key:
 				item[ 'preselected' ] = True
 
-			# map syntax to widget
-			if isinstance( prop.syntax, ( udm_syntax.boolean, udm_syntax.TrueFalseUp ) ):
-				item[ 'type' ] = 'CheckBox'
-			elif isinstance( prop.syntax, ( udm_syntax.passwd, udm_syntax.userPasswd ) ):
-				item[ 'type' ] = 'PasswordBox'
-			if isinstance( prop.syntax, udm_syntax.simple ):
-				item[ 'type' ] = 'TextBox'
-			elif isinstance( prop.syntax, udm_syntax.select ):
-				item[ 'type' ] = 'ComboBox'
-				item[ 'staticValues' ] = map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, prop.syntax.choices )
-			else:
-				if hasattr( prop.syntax, '__name__' ):
-					name = prop.syntax.__name__
-				elif hasattr( prop.syntax, '__class__' ):
-					name = prop.syntax.__class__.__name__
-				else:
-					name = "Unknown class (name attribute :%s)" % prop.name
-				MODULE.error( 'Could not convert UDM syntax %s' % name )
-				item[ 'type' ] = None
+			item.update( widget( prop ) )
 			props.append( item )
 		props.sort( key = operator.itemgetter( 'label' ) )
 		return props
@@ -246,7 +221,8 @@ class UDM_Module( object ):
 			else:
 				module = UDM_Module( mod )
 				if module:
-					superordinates.append( { 'id' : mod, 'label' : module.title } )
+					for obj in module.search():
+						superordinates.append( { 'id' : obj.dn, 'label' : '%s: %s' % ( module.title, obj[ module.identifies ] ) } )
 
 		return superordinates
 
