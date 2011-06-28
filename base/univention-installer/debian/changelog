@@ -1,3 +1,9 @@
+univention-installer (6.0.54-1) unstable; urgency=low
+
+  * wait for device in installer/network.sh Bug #22505
+
+ -- Felix Botner <botner@univention.de>  Tue, 28 Jun 2011 16:35:39 +0200
+
 univention-installer (6.0.53-2) unstable; urgency=low
 
   * only switch from /dev/tty1 to /dev/hvc0 if /dev/hvc0 exists 

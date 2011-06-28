@@ -51,6 +51,17 @@ if [ -n "$ip_cmdline" ]; then
 	if [ ! "$_gateway" = "0.0.0.0" ] ; then
 		route add default gw $_gateway
 	fi
+
+	counter=0
+	while true; do
+		ifconfig eth0 >/dev/null 2>/dev/null
+		if [ 0 -eq $? ] || [ $counter -ge 10 ]; then
+			break
+		fi
+		sleep 1
+		counter=$(($counter + 1))
+	done
+
 fi
 
 echo ""
