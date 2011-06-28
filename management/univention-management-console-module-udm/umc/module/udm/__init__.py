@@ -157,7 +157,7 @@ class Instance( Base ):
 		module_name = request.options.get( 'objectType' )
 		if not module_name:
 			module_name = request.flavor
-		module = UDM_Module( request.flavor )
+		module = UDM_Module( module_name )
 		properties = module.properties
 		if request.options.get( 'searchable', False ):
 			properties = filter( lambda prop: prop[ 'searchable' ], properties )
