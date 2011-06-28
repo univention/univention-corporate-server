@@ -65,7 +65,7 @@ __widgets = (
 	Widget( 'PasswordInputBox', ( udm_syntax.passwd, udm_syntax.userPasswd ), '' ),
 	Widget( 'DateBox', udm_syntax.iso8601Date, '1970-01-01' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
-	Widget( 'ComboxBox', udm_syntax.select, '', lambda self, udm_property: map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, udm_property.syntax.choices ) )
+	Widget( 'ComboBox', udm_syntax.select, '', lambda self, udm_property: map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, udm_property.syntax.choices ) )
 	)
 
 def widget( udm_property ):

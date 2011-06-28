@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.38-1) unstable; urgency=low
+
+  * fixed typo ('ComboxBox' -> 'ComboBox') (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Jun 2011 17:57:51 +0200
+
 univention-management-console-module-udm (1.0.37-1) unstable; urgency=low
 
   * load object values in the detail page
