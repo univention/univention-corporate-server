@@ -32,5 +32,6 @@ set -e
 
 #DEBHELPER#
 
-univention-config-registry set version/security-patchlevel=6
+univention-config-registry set version/security-patchlevel=7
+
 

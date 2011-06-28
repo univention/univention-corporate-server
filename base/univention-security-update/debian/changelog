@@ -1,3 +1,9 @@
+univention-security-update (4.0.0-7) unstable; urgency=low
+
+  * Seventh security update for UCS 2.3 (Bug #22911)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 28 Jun 2011 11:15:01 +0200
+
 univention-security-update (4.0.0-6) unstable; urgency=low
 
   * Sixth security update for UCS 2.3 (Bug #22095)
