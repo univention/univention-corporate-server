@@ -52,13 +52,13 @@ fi
 if ! test -e /etc/ldap.secret; then
 	touch /etc/ldap.secret
 	chmod 600 /etc/ldap.secret
-	makepasswd > /etc/ldap.secret
+	echo -n "$(makepasswd)" > /etc/ldap.secret
 fi
 
 if ! test -e /etc/ldap-backup.secret; then
 	touch /etc/ldap-backup.secret
 	chmod 600 /etc/ldap-backup.secret
-	makepasswd > /etc/ldap-backup.secret
+	echo -n "$(makepasswd)" > /etc/ldap-backup.secret
 fi
 
 exit 0

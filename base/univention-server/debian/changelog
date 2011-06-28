@@ -1,4 +1,11 @@
-univention-server (7.0.0-1.1) unstable; urgency=low
+univention-server (7.0.1-1) unstable; urgency=low
+
+  * avoid EOL in ldap.secret, ldap-backup.secret and machine.secret
+    (Bug #14186)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 28 Jun 2011 15:53:54 +0200
+
+univention-server (7.0.0-2) unstable; urgency=low
 
   * removed auth/admin/services and auth/user/services
   * merged auth/admin/methods and auth/user/methods to auth/methods
