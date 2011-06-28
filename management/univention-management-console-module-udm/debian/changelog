@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.37-1) unstable; urgency=low
+
+  * load object values in the detail page
+  * added 'new object' dialog
+  (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Jun 2011 16:40:13 +0200
+
 univention-management-console-module-udm (1.0.36-1) unstable; urgency=low
 
   * send multivalue attribute for all properties; Bug #22439

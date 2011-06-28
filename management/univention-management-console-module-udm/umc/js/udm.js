@@ -5,6 +5,7 @@ dojo.provide("umc.modules.udm");
 dojo.require("dojo.DeferredList");
 dojo.require("dijit.layout.BorderContainer");
 dojo.require("dijit.layout.TabContainer");
+dojo.require("dijit.Dialog");
 dojo.require("umc.widgets.Module");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.Grid");
@@ -57,10 +58,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			description: this._( 'Adding a new LDAP object.' ),
 			iconClass: 'dijitIconNewTask',
 			isContextAction: false,
-			isStandardAction: true
-			//callback: dojo.hitch(this, function() {
-			//	this._detailDialog.newVariable();
-			//})
+			isStandardAction: true,
+			callback: dojo.hitch(this, 'showNewObjectDialog')
 		}, {
 			name: 'edit',
 			label: this._( 'Edit' ),
@@ -80,7 +79,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						var properties = results[0][1];
 						var layout = results[1][1];
 						this._renderDetailPage(properties.result, layout.result);
-						this.showDetailPage();
+						this.showDetailPage(ids[0]);
 					}));
 				}
 			})
@@ -255,15 +254,21 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.addChild(this._detailForm);
 	},
 
-	showDetailPage: function() {
+	showDetailPage: function(ldapName) {
 		this.selectChild(this._detailForm);
+		this._detailForm.load(ldapName);
 	},
 
 	closeDetailPage: function() {
 		if (this._detailForm) {
-			this.closeChild(this._detailForm);
+			// show the search page
+			this.selectChild(this._searchPage);
+
+			// remove the detail page in the background
+			var oldDetailForm = this._detailForm;
 			this._detailForm = null;
 			this._detailTabs = null;
+			this.closeChild(oldDetailForm);
 		}
 	},
 
@@ -275,7 +280,133 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				//dojo.style(objTypeWidget.
 			}
 		});*/
+	},
+
+	showNewObjectDialog: function() {
+		var dialog = new umc.modules.udm._NewObjectDialog({
+			umcpCommand: dojo.hitch(this, 'umcpCommand')
+		});
 	}
 
+});
+
+dojo.declare("umc.modules.udm._NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin ], {
+	// use i18n information from umc.modules.udm
+	i18nClass: 'umc.modules.udm',
+
+	ucmpCommand: umc.tools.umcpCommand,
+
+	_form: null,
+
+	postMixInProperties: function() {
+		this.inherited(arguments);
+
+		dojo.mixin(this, {
+			//style: 'max-width: 450px'
+			title: this._( 'New UDM-Object' )
+		});
+	},
+
+	buildRendering: function() {
+		this.inherited(arguments);
+
+		// query 
+		(new dojo.DeferredList([
+			this.umcpCommand('udm/containers'),
+			this.umcpCommand('udm/superordinates'),
+			this.umcpCommand('udm/types'),
+			this.umcpCommand('udm/templates')
+		])).then(dojo.hitch(this, function(results) {
+			var containers = results[0][0] ? results[0][1] : [];
+			var superordinates = results[1][0] ? results[1][1] : [];
+			var types = results[2][0] ? results[2][1] : [];
+			var templates = results[3][0] ? results[3][1] : [];
+			this._renderForm(containers.result, superordinates.result, types.result, templates.result);
+		}));
+	},
+
+	_renderForm: function(containers, superordinates, types, templates) {
+		// depending on the list we get, create a form for adding
+		// a new UDM object
+		var widgets = [];
+		var layout = [];
+
+		// if we have superordinates, we don't need containers
+		if (superordinates.length) {
+			widgets = widgets.concat([{
+				type: 'ComboBox',
+				name: 'superordinate',
+				label: 'Superordinate',
+				description: this._('The corresponding superordinate for the new object.'),
+				staticValues: superordinates
+			}, {
+				type: 'ComboBox',
+				name: 'objectType',
+				label: 'Object type',
+				description: this._('The exact object type of the new object.'),
+				umcpCommand: this.umcpCommand,
+				dynamicValues: 'udm/types',
+				depends: 'superordinate'
+			}]);
+			layout = [ 'superordinate', 'objectType' ];
+		}
+		// no superordinates, then we need a container in any case
+		else {
+			widgets.push({
+				type: 'ComboBox',
+				name: 'container',
+				label: 'Container',
+				description: this._('The LDAP container in which the object shall be created.'),
+				staticValues: containers
+			});
+			layout.push('container');
+
+			// object types
+			if (types.length) {
+				widgets.push({
+					type: 'ComboBox',
+					name: 'objectType',
+					label: 'Object type',
+					description: this._('The exact object type of the new object.'),
+					staticValues: types
+				});
+				layout.push('objectType');
+			}
+
+			// templates
+			if (templates.length) {
+				templates.unshift({ id: '', label: this._('None') });
+				widgets.push({
+					type: 'ComboBox',
+					name: 'objectTemplate',
+					label: 'Object template',
+					description: this._('A template defines rules for default property values.'),
+					staticValues: templates
+				});
+				layout.push('objectTemplate');
+			}
+		}
+
+		// buttons
+		var buttons = [{
+			name: 'add',
+			label: this._('Add new object')
+		}, {
+			name: 'close',
+			label: this._('Close dialog'),
+			callback: dojo.hitch(this, function() { 
+				this.destroyRecursive();
+			})
+		}];
+
+		// now create a Form
+		this._form = new umc.widgets.Form({
+			widgets: widgets,
+			layout: layout,
+			buttons: buttons
+		});
+		this.set('content', this._form);
+		this.show();
+	}
 });
 
