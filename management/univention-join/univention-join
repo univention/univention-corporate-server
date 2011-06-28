@@ -335,7 +335,7 @@ if [ -n "$res" ]; then
 			cat /etc/machine.secret >>/etc/machine.secret.SAVE
 		fi
 
-		echo "$pwd" >/etc/machine.secret
+		echo -n "$pwd" >/etc/machine.secret
 		fromdos /etc/machine.secret
 		chmod 600 /etc/machine.secret
 		if [ -e /etc/machine.secret.SAVE ]; then
