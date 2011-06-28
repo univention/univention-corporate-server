@@ -1,4 +1,4 @@
-univention-bootsplash (4.0.0-1) unstable; urgency=low
+univention-bootsplash (4.0.0-2) unstable; urgency=low
 
   * UCS 3.0 (Bug #20138)
   * use plymouth instead of usplash
