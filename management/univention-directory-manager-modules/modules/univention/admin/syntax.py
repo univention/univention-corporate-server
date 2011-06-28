@@ -69,7 +69,7 @@ def update_choices():
 	for func in choice_update_functions:
 		func()
 
-class simple:
+class simple( object ):
 	type='simple'
 
 	def tostring(self, text):
@@ -79,7 +79,7 @@ class simple:
 	def any(self):
 		return '*'
 
-class select:
+class select( object ):
 	"""Select item from list of choices.
 	self.choice = [(id, _("Display text"), ...]
 	"""
@@ -96,7 +96,7 @@ class select:
 	def any(self):
 		return '*'
 
-class complex:
+class complex( object ):
 	type = 'complex'
 	delimiter = ' '
 	# possible delimiters:
@@ -185,7 +185,7 @@ class info_text(simple):
 	name="info_text"
 	pass
 
-class module:
+class module( object ):
 	type='module'
 	name='module'
 
