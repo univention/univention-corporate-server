@@ -176,7 +176,7 @@ class UDM_Module( object ):
 			if key == 'filler': continue
 			item = { 'id' : key, 'label' : prop.short_description, 'description' : prop.long_description,
 					 'required' : prop.required in ( 1, True ), 'editable' : prop.may_change in ( 1, True ),
-					 'options' : prop.options, 'searchable' : not prop.dontsearch }
+					 'options' : prop.options, 'searchable' : not prop.dontsearch, 'multivalue' : prop.multivalue in ( 1, True ) }
 
 			# read UCR configuration
 			if ucr.get( UDM_Module.UCR_SEARCH_DEFAULT % { 'module' : self.module.module } ) == key:
