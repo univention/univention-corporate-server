@@ -89,7 +89,7 @@ class Instance( Base ):
 				MODULE.info( 'Found UDM module for superordinate' )
 				superordinate = mod.get( superordinate )
 			else:
-				raise UMC_AttributeTypeError( request.id, _( 'Could not find an UDM module for the superordinate object %s' ) % superordinate )
+				raise UMC_AttributeTypeError( _( 'Could not find an UDM module for the superordinate object %s' ) % superordinate )
 
 		result = module.search( request.options.get( 'container' ), request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ], superordinate )
 
