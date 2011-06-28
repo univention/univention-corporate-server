@@ -33,7 +33,7 @@
 
 from univention.management.console import Translation
 from univention.management.console.config import ucr
-from univention.management.console.modules import Base
+from univention.management.console.modules import Base, UMC_AttributeTypeError
 from univention.management.console.log import MODULE
 
 from .ldap import UDM_Module, UDM_Settings, ldap_dn2path, get_module
@@ -80,12 +80,16 @@ class Instance( Base ):
 		module = UDM_Module( module_name )
 
 		superordinate = request.options.get( 'superordinate' )
-		if superordinate is not None:
+		if superordinate == 'None':
+			superordinate = None
+		elif superordinate is not None:
 			MODULE.info( 'Query defines a superordinate %s' % superordinate )
 			mod = get_module( request.flavor, superordinate )
 			if mod is not None:
 				MODULE.info( 'Found UDM module for superordinate' )
 				superordinate = mod.get( superordinate )
+			else:
+				raise UMC_AttributeTypeError( request.id, _( 'Could not find an UDM module for the superordinate object %s' ) % superordinate )
 
 		result = module.search( request.options.get( 'container' ), request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ], superordinate )
 
