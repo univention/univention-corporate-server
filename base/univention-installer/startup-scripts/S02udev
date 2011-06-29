@@ -48,7 +48,8 @@ else
 	# udev
 	echo > /sys/kernel/uevent_helper
 	mkdir -p /dev/.udev/db/
-	udevd --daemon 1>/dev/null 2>/dev/null
+	# disable name resolving ==> udev assumes always root as owner
+	udevd --daemon --resolve-names=never 1>/dev/null 2>/dev/null
 	mkdir -p /dev/.udev/queue/ /dev/.udev/rules.d/
 	udevadm trigger 1>/dev/null 2>/dev/null
 	udevadm settle 1>/dev/null 2>/dev/null || true

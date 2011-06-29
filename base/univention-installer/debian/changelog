@@ -1,3 +1,9 @@
+univention-installer (7.0.11-2) unstable; urgency=low
+
+  * disable name resolving of udev (Bug #22602)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 29 Jun 2011 17:20:48 +0200
+
 univention-installer (7.0.11-1) unstable; urgency=low
 
   * reduce loglevel to avoid udev messages (Bug #22602)
