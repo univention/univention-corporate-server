@@ -97,6 +97,7 @@ class UDM_Module( object ):
 		else:
 			filter_s = '%s=%s' % ( attribute, value )
 
+		MODULE.info( 'Searching for LDAP objects: container = %s, filter = %s, superordinate = %s' % ( container, filter_s, superordinate ) )
 		return self.module.lookup( None, lo, filter_s, base = container, superordinate = superordinate )
 
 	def get( self, ldap_dn ):

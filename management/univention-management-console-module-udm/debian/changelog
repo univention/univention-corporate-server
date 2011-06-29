@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.40-1) unstable; urgency=low
+
+  * adapt to new UMC API
+  * enhance error handling; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 29 Jun 2011 16:22:53 +0200
+
 univention-management-console-module-udm (1.0.39-1) unstable; urgency=low
 
   * support mapping of complex types; Bug #22439

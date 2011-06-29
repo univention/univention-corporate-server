@@ -33,7 +33,7 @@
 
 from univention.management.console import Translation
 from univention.management.console.config import ucr
-from univention.management.console.modules import Base, UMC_AttributeTypeError
+from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 from univention.management.console.log import MODULE
 
 from .ldap import UDM_Module, UDM_Settings, ldap_dn2path, get_module
@@ -50,16 +50,24 @@ class Instance( Base ):
 		credentials are available'''
 		self.settings = UDM_Settings( self._username )
 
-	def put( self, request ):
+	def _get_module( self, request ):
 		module_name = request.options.get( 'objectType' )
-		if not module_name:
+		if not module_name or 'all' == module_name:
 			module_name = request.flavor
-		module = UDM_Module( module_name )
+
+		if not module_name:
+			raise UMC_OptionMissing( _( 'No flavor or valid UDM module name specified' ) )
+
+		return UDM_Module( module_name )
+
+	def put( self, request ):
+		module = self._get_module( request )
 
 
 		self.finished( request.id )
 
 	def remove( self, request ):
+		module = self._get_module( request )
 
 		self.finished( request.id )
 
@@ -75,10 +83,7 @@ class Instance( Base ):
 		self.finished( request.id, result )
 
 	def query( self, request ):
-		module_name = request.options.get( 'objectType' )
-		if not module_name:
-			module_name = request.flavor
-		module = UDM_Module( module_name )
+		module = self._get_module( request )
 
 		superordinate = request.options.get( 'superordinate' )
 		if superordinate == 'None':
@@ -90,12 +95,14 @@ class Instance( Base ):
 				MODULE.info( 'Found UDM module for superordinate' )
 				superordinate = mod.get( superordinate )
 			else:
-				raise UMC_AttributeTypeError( _( 'Could not find an UDM module for the superordinate object %s' ) % superordinate )
+				raise UMC_OptionTypeError( _( 'Could not find an UDM module for the superordinate object %s' ) % superordinate )
 
 		result = module.search( request.options.get( 'container' ), request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ], superordinate )
 
 		entries = []
 		for obj in result:
+			if obj is None:
+				continue
 			module = get_module( request.flavor, obj.dn )
 			if module is None:
 				MODULE.warn( 'Could not identify LDAP object %s (flavor: %s). The object is ignored.' % ( obj.dn, request.flavor ) )
@@ -104,34 +111,22 @@ class Instance( Base ):
 		self.finished( request.id, entries )
 
 	def values( self, request ):
-		module_name = request.options.get( 'objectType' )
-		if not module_name or 'all' == module_name:
-			module_name = request.flavor
+		module = self._get_module( request )
 		property_name = request.options.get( 'objectProperty' )
-		module = UDM_Module( module_name )
 
 		self.finished( request.id, module.get_default_values( property_name ) )
 
 	def containers( self, request ):
-		module_name = request.options.get( 'objectType' )
-		if not module_name or 'all' == module_name:
-			module_name = request.flavor
-		module = UDM_Module( module_name )
+		module = self._get_module( request )
 
 		self.finished( request.id, module.containers + self.settings.containers( request.flavor ) )
 
 	def superordinates( self, request ):
-		module_name = request.options.get( 'objectType' )
-		if not module_name or 'all' == module_name:
-			module_name = request.flavor
-		module = UDM_Module( module_name )
+		module = self._get_module( request )
 		self.finished( request.id, module.superordinates )
 
 	def templates( self, request ):
-		module_name = request.options.get( 'objectType' )
-		if not module_name or 'all' == module_name:
-			module_name = request.flavor
-		module = UDM_Module( module_name )
+		module = self._get_module( request )
 
 		result = []
 		if module.template:
@@ -152,22 +147,16 @@ class Instance( Base ):
 		self.finished( request.id, module.child_modules )
 
 	def layout( self, request ):
-		module_name = request.options.get( 'objectType' )
-		if not module_name or 'all' == module_name:
-			module_name = request.flavor
-		module = UDM_Module( module_name )
+		module = self._get_module( request )
 		self.finished( request.id, module.layout )
 
 	def properties( self, request ):
-		module_name = request.options.get( 'objectType' )
-		if not module_name:
-			module_name = request.flavor
-		module = UDM_Module( module_name )
+		module = self._get_module( request )
 		properties = module.properties
 		if request.options.get( 'searchable', False ):
 			properties = filter( lambda prop: prop[ 'searchable' ], properties )
 		self.finished( request.id, properties )
 
 	def options( self, request ):
-		module = UDM_Module( request.flavor )
+		module = self._get_module( request )
 		self.finished( request.id, module.options )
