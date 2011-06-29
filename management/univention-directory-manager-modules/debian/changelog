@@ -1,9 +1,9 @@
-univention-directory-manager-modules (7.0.21-1) unstable; urgency=low
+univention-directory-manager-modules (7.0.21-2) unstable; urgency=low
 
   * syntax classes are used without instantiation so functions must be
     classmethods for new-style classes; Bug #22439
 
- --
+ -- Andreas Büsching <buesching@univention.de>  Wed, 29 Jun 2011 16:04:30 +0200
 
 univention-directory-manager-modules (7.0.20-1) unstable; urgency=low
 
