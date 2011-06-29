@@ -47,7 +47,7 @@ from OpenSSL import *
 import univention.uldap
 
 from .message import Response, Request
-from .client import Client
+from .client import Client, NoSocketError, ConnectionError
 from .version import VERSION
 from .definitions import *
 
@@ -152,7 +152,6 @@ class Processor( signals.Provider ):
 
 		# stores the module processes [ modulename ] = <>
 		self.__processes = {}
-		self.__sessionid = None
 
 		self.__killtimer = {}
 
@@ -287,8 +286,6 @@ class Processor( signals.Provider ):
 					res.message = status_description( res.status )
 					CORE.warn( 'Setting locale: specified locale is not available (%s)' % value )
 					break
-			elif key == 'sessionid':
-				self.__sessionid = value
 			else:
 				res.status = BAD_REQUEST_INVALID_OPTS
 				res.message = status_description( res.status )
@@ -349,26 +346,37 @@ class Processor( signals.Provider ):
 					proc._queued_requests.append( msg )
 
 	def _mod_connect( self, mod, msg ):
-		if not mod.connect():
-			CORE.info( 'No connection to module process yet' )
+		"""Callback for a timer event: Trying to connect to newly started module process"""
+		def _send_error():
+			# inform client
+			res = Response( msg )
+			res.status = SERVER_ERR_MODULE_FAILED # error connecting to module process
+			res.message = status_description( res.status )
+			self.signal_emit( 'response', res )
+			# cleanup module
+			mod.signal_disconnect( 'closed', notifier.Callback( self._socket_died ) )
+			mod.signal_disconnect( 'result', notifier.Callback( self._mod_result ) )
+			mod.signal_disconnect( 'finished', notifier.Callback( self._mod_died ) )
+			if mod.name in self.__processes:
+				del self.__processes[ mod.name ]
+
+		try:
+			mod.connect()
+		except NoSocketError:
 			if mod._connect_retries > 200:
 				CORE.info( 'Connection to module %s process failed' % mod.name )
-				# inform client
-				res = Response( msg )
-				res.status = SERVER_ERR_MODULE_FAILED # error connecting to module process
-				res.message = status_description( res.status )
-				self.signal_emit( 'response', res )
-				# cleanup module
-				mod.signal_disconnect( 'closed', notifier.Callback( self._socket_died ) )
-				mod.signal_disconnect( 'result', notifier.Callback( self._mod_result ) )
-				mod.signal_disconnect( 'finished', notifier.Callback( self._mod_died ) )
-				if mod.name in self.__processes:
-					del self.__processes[ mod.name ]
-			else:
-				mod._connect_retries += 1
-				return True
+				_send_error()
+				return False
+			if not mod._connect_retries % 50:
+				CORE.info( 'No connection to module process yet' )
+			mod._connect_retries += 1
+			return True
+		except Exception, e:
+			CORE.error( 'Unknown error while trying to connect to module process: %s' % str( e ) )
+			_send_error()
+			return False
 		else:
-			CORE.info( 'Connected to new module process')
+			CORE.info( 'Connected to new module process' )
 			mod.running = True
 
 			# send acls, commands, credentials, locale

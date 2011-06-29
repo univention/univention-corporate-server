@@ -43,10 +43,13 @@ from ..log import MODULE
 
 _ = Translation( 'univention.management.console' ).translate
 
-class UMC_AttributeTypeError( Exception ):
+class UMC_OptionTypeError( Exception ):
 	pass
 
-class UMC_AttributeMissing( Exception ):
+class UMC_OptionMissing( Exception ):
+	pass
+
+class UMC_CommandError( Exception ):
 	pass
 
 class Base( signals.Provider, Translation ):
@@ -57,7 +60,6 @@ class Base( signals.Provider, Translation ):
 		self.signal_new( 'failure' )
 		self._username = None
 		self._password = None
-		self._sessionid = None
 		self.__acls = None
 		self.__requests = {}
 		Translation.__init__( self )
@@ -69,10 +71,6 @@ class Base( signals.Provider, Translation ):
 	def _set_password( self, password ):
 		self._password = password
 	password = property( fset = _set_password )
-
-	def _set_sessionid( self, sessionid ):
-		self._sessionid = sessionid
-	sessionid = property( fset = _set_sessionid )
 
 	def _set_acls( self, acls ):
 		self.__acls = acls
@@ -92,10 +90,12 @@ class Base( signals.Provider, Translation ):
 			func = getattr( self, method )
 			func( request )
 			return
-		except UMC_AttributeTypeError, e:
+		except UMC_OptionTypeError, e:
 			message = _(  'An attribute passed to %s has the wrong type: %s' ) % ( method, str( e ) )
-		except UMC_AttributeMissing, e:
+		except UMC_OptionMissing, e:
 			message = _(  'An attribute to %s is missing: %s' ) % ( method, str( e ) )
+		except UMC_CommandFailed, e:
+			message = _(  'The command has failed: %s' ) % str( e )
 		except Exception, e:
 			import traceback
 			message = _( "Execution of command '%(command)s' has failed:\n\n%(text)s" ) % \

@@ -106,9 +106,11 @@ class CLI_Client( umcp.Client ):
 		self.__timer = None
 		self.__interactive = options.interactive
 
-		if not self.connect():
-			raise Exception( 'error: failed to connect to daemon on host %s' % \
-							 options.server )
+		try:
+			self.connect()
+		except umcp.NoSocketError:
+			CORE.error( "The UMC server %s could not be contacted." % options.server )
+			sys.exit( 1 )
 		else:
 			CORE.info( "The connection to '%s' is established" % options.server )
 
@@ -253,6 +255,10 @@ if __name__ == '__main__':
 			options.username = raw_input( 'Username:' )
 		if not options.password:
 			options.password = getpass( 'Password:' )
-	client = CLI_Client( options, arguments )
+	try:
+		client = CLI_Client( options, arguments )
+	except Exception, e:
+		CORE.error( 'An fatal error occurred: %s' % str( e ) )
+		sys.exit( 1 )
 
 	notifier.loop()

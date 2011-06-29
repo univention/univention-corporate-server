@@ -64,7 +64,6 @@ class ModuleServer( Server ):
 		self.__queue = ''
 		self.__username = None
 		self.__password = None
-		self.__sessionid = None
 		self._load_module()
 		Server.__init__( self, ssl = False, unix = socket, magic = False, load_ressources = False )
 		self.signal_connect( 'session_new', self._client )
@@ -143,6 +142,7 @@ class ModuleServer( Server ):
 		return True
 
 	def handle( self, msg ):
+		PROTOCOL.info( 'Received UMCP %s REQUEST %s' % ( msg.command, msg.id ) )
 		if msg.command == 'EXIT':
 			shutdown_timeout = 100
 			MODULE.info( "EXIT: module shutdown in %dms" % shutdown_timeout )
@@ -201,7 +201,6 @@ class ModuleServer( Server ):
 		if msg.arguments:
 			cmd = msg.arguments[ 0 ]
 			cmd_obj = self.command_get( cmd )
-			MODULE.info( 'Incoming request: %s' % cmd )
 			if cmd_obj and ( not self.__check_acls or self.__acls.is_command_allowed( cmd, options = msg.options ) ):
 				self.__active_requests += 1
 				self.__handler.execute( cmd_obj.method, msg )
@@ -250,6 +249,7 @@ class ModuleServer( Server ):
 			return False
 
 	def response( self, msg ):
+		PROTOCOL.info( 'Sending UMCP RESPONSE %s' % msg.id )
 		data = str( msg )
 		self.__queue += str(msg)
 

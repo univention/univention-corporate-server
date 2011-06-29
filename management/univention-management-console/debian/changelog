@@ -1,3 +1,12 @@
+univention-management-console (4.0.38-1) unstable; urgency=low
+
+  * remove relicts of sessionid
+  * make module process a daemon
+  * rename and add new exception to annouce errors during command
+    execution; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 29 Jun 2011 12:18:23 +0200
+
 univention-management-console (4.0.37-1) unstable; urgency=low
 
   * add faillback if no locale can be found; Bug #22460

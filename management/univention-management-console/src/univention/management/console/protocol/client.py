@@ -34,7 +34,7 @@ import errno, os, socket, sys, fcntl
 
 from .message import *
 from .definitions import *
-from ..log import CORE
+from ..log import CORE, PROTOCOL
 from ..locales import Translation
 from OpenSSL import *
 
@@ -45,6 +45,12 @@ class UnknownRequestError( Exception ):
 	pass
 
 class NotAuthenticatedError( Exception ):
+	pass
+
+class NoSocketError( Exception ):
+	pass
+
+class ConnectionError( Exception ):
 	pass
 
 '''
@@ -157,10 +163,11 @@ class Client( signals.Provider, Translation ):
 					self.__realsocket.connect( ( self.__server, self.__port ) )
 				self.__realsocket.setblocking( 0 )
 				notifier.socket_add( self.__realsocket, self._recv )
-			return True
-		except Exception, e:
-			CORE.error( 'Client.connect: failed: %s' % str( e ) )
-			return False
+		except socket.error, e:
+			# ENOENT: file not found, ECONNREFUSED: connection refused
+			if e.errno in ( errno.ENOENT, errno.ECONNREFUSED ):
+				raise NoSocketError()
+			raise e
 
 	def _resend( self, sock ):
 		if self.__resend_queue.has_key(sock):
@@ -210,6 +217,7 @@ class Client( signals.Provider, Translation ):
 		if not self.__authenticated and msg.command != 'AUTH':
 			raise NotAuthenticatedError()
 
+		PROTOCOL.info( 'Sending UMCP %s REQUEST %s' % ( msg.command, msg.id ) )
 		if self.__ssl and not self.__unix:
 			sock = self.__socket
 		else:
@@ -290,6 +298,7 @@ class Client( signals.Provider, Translation ):
 		return True
 
 	def _handle( self, response ):
+		PROTOCOL.info( 'Received UMCP RESPONSE %s' % response.id )
 		if response.command == 'AUTH' and response.id == self.__auth_id:
 			if response.status == SUCCESS:
 				self.__authenticated = True
