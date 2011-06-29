@@ -43,7 +43,7 @@ else
 	mkdir /dev
 
 	# mount devtmpfs
-	mount devtmpfs -t devtmpfs /dev
+	mount devtmpfs -t devtmpfs /dev -o size=10M
 
 	# udev
 	echo > /sys/kernel/uevent_helper

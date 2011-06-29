@@ -52,11 +52,10 @@ for option in options:
 		load_defaultmodules = False
 
 if load_defaultmodules:
-   modules.extend( [ 'ide-generic', 'ide-disk', 'sd_mod', 'dm_mod' ] )
+	modules.extend( [ 'ide-generic', 'ide-disk', 'sd_mod', 'dm_mod' ] )
 
 for m in modules:
-	print "Loading %s" % m
 	os.system('/sbin/modprobe %s >/dev/null 2>&1' % m)
-	time.sleep(0.2)
+	time.sleep(0.15)
 
 os.system('udevadm settle')

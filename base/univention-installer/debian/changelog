@@ -1,3 +1,11 @@
+univention-installer (7.0.11-1) unstable; urgency=low
+
+  * reduce loglevel to avoid udev messages (Bug #22602)
+  * reduce size of devtmpfs to 10MiB
+  * removed "Loading" message during startup
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 29 Jun 2011 15:33:52 +0200
+
 univention-installer (7.0.10-1) unstable; urgency=low
 
   * simplified installer/modules/11_basis.py (Bug #22846)
