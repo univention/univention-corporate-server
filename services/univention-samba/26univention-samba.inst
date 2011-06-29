@@ -115,6 +115,7 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	
 	# set default printer permissions
 	net rpc rights -U${samba_account}%${samba_pwd} grant Printer-Admins SePrintOperatorPrivilege
+	net rpc rights -U${samba_account}%${samba_pwd} grant Administrator SePrintOperatorPrivilege
 
 fi
 
