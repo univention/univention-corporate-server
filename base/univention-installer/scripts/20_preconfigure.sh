@@ -48,33 +48,12 @@ fi
 cat >>/instmnt/preconfigure.sh <<__EOT__
 #!/bin/sh
 
-if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-	mkdir -p /dev/iseries
-	mknod /dev/iseries/vcda b 113 0
-	mknod /dev/iseries/vda b 112 0
-	mknod /dev/iseries/vdb b 112 8
-	mknod /dev/iseries/vdc b 112 16
-
-	for((i=1;i<8;i++)); do
-		mknod /dev/iseries/vda\$i b 112 \$i
-	done
-
-	for((i=9;i<16;i++)); do
-		mknod /dev/iseries/vdb\$((i-8)) b 112 \$i
-	done
-
-	for((i=17;i<24;i++)); do
-		mknod /dev/iseries/vdc\$((i-16)) b 112 \$i
-	done
-fi
-
-
 mount proc /proc -t proc
 mount -t sysfs sysfs /sys/
 
 # create devices file for xen and kvm
 cd /sys/block
-for d in xvd[a-z] vd[a-z]; do
+for d in xvd[a-z] vd[a-z] ; do
         if [ ! -d "/sys/block/\$d" ]; then
                 continue
         fi
@@ -90,7 +69,7 @@ done
 
 # create xen console
 cd /sys/devices/virtual/tty
-for d in hvc[0-9]; do
+for d in hvc[0-9] ; do
         if [ ! -d "/sys/devices/virtual/tty/\$d" ]; then
                 continue
         fi
@@ -103,7 +82,7 @@ done
 
 
 echo "Setting up devices, this may take a while."
-
+mount devtmpfs -t devtmpfs /dev -o size=10M
 cd /dev
 /sbin/MAKEDEV generic
 cd -

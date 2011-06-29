@@ -1,3 +1,13 @@
+univention-installer (7.0.11-3) unstable; urgency=low
+
+  * use "ar" for extracting deb files in debootstrap (Bug #22602)
+    (busybox' dpkg-deb does not provide "--fsys-tarfile")
+  * removed old stuff
+  * use devfs
+  * made some files executable
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 29 Jun 2011 21:36:32 +0200
+
 univention-installer (7.0.11-2) unstable; urgency=low
 
   * disable name resolving of udev (Bug #22602)
