@@ -1,3 +1,10 @@
+univention-nagios-servicechecks (1.0.6-1) unstable; urgency=low
+
+  * fixed authentication check in squid/dansguardian plugin Bug #22935
+    Bug #22934 
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Jun 2011 16:43:52 +0200
+
 univention-nagios-servicechecks (1.0.5-1) unstable; urgency=low
 
   * added missing UCR headers (Bug #17957)
