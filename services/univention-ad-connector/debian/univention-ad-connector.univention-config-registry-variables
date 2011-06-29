@@ -135,3 +135,9 @@ Description[de]=Konfiguriert auf welches Attribut im Active Directory das Attrib
 Description[en]=Controls the Active Directory attribute to which the UCS attribute Organisation is mapped (as standard: company)
 Type=str
 Categories=service-adcon
+
+[con.*/ad/password/timestamp/check]
+Description[de]=Die Variable gibt an, ob die Passwortsynchronisation nur erfolgt, wenn das zu synchronisierende Passwort neuer ist (default: false)
+Description[de]=The variable specifies that the password synchronisation only performs if the sync password newer is (default: false)
+Type=bool
+Categories=service-adcon

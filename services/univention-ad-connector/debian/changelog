@@ -1,3 +1,17 @@
+univention-ad-connector (5.0.19-1) unstable; urgency=low
+
+  * Sync the passwords only if the timestamp is newer. The bahavior can
+    configured with the UCR variable connector/ad/password/timestamp/check.
+    Default is false (Bug #22751)
+  * Consider empty sambaLMPassword attributes to prevent sync loops
+    (Bug #22749)
+  * No longer use sambaPwdMustChange to calculate the password end time
+    (Bug #18187)
+  * explode_unicode_dn: Also retrun last dn component. Thanks to Joerg
+    Steffens for the patch (Bug #21000)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 29 Jun 2011 07:28:57 +0200
+
 univention-ad-connector (5.0.18-1) unstable; urgency=low
 
   * Resync rejected objects not before the sync is initialized

@@ -559,6 +559,7 @@ def explode_unicode_dn(dn, notypes=0):
 				last_found += 1
 			ret.append(dn[last_found:last])
 			last_found = last			
+	ret.append(dn[last+1:])                                                                                                      
 	
 	return ret
 
