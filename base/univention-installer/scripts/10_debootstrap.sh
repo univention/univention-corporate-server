@@ -78,6 +78,9 @@ if [ -n "$hostname" ]; then
 	hostname $hostname
 fi
 
+# busybox' dpkg-deb is incompatible with debootstrap
+export EXTRACTOR_OVERRIDE="ar"
+
 # Installing univention base system
 if [ -z "$USE_NO_LOG" ]; then
 	if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
