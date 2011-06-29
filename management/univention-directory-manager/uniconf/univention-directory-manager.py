@@ -61,7 +61,7 @@ def main(argv):
 
 	socket_filename=''
 	socket_timeout=60*5
-	socket_timeout_short = 30
+	socket_timeout_short = 5
 	debugging = 0
 	language = configRegistry.get ('directory/manager/web/language', LANG_EN)
 	https = 0 

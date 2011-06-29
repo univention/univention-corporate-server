@@ -49,7 +49,7 @@ configRegistry.load()
 
 watchdog = time.time()
 watchdog_timeout = 60 * 5
-watchdog_timeout_short = 30
+watchdog_timeout_short = 5
 
 THREAD_ERRORS = []
 

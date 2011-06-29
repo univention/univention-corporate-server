@@ -1,3 +1,9 @@
+univention-management-console (3.0.106-1) unstable; urgency=low
+
+  * reduce lifetime of session, when not logged in, from 30s to 5s (Bug #21982)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 29 Jun 2011 16:45:17 +0200
+
 univention-management-console (3.0.105-1) unstable; urgency=low
 
   * added option to prevent concurrent ajax calls in umcd.RefreshFrame (Bug #22594)
