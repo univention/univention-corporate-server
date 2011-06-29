@@ -69,3 +69,28 @@ Description[de]=URLs, bei denen squid nicht auf URLs prüft
 Description[en]=
 Type=str
 Categories=service-webproxy
+
+[dansguardian/virus/exception/extensions]
+Description[de]==Dateiendungen die nicht auf Viren geprüft werden
+Description[en]=The Virus scanning code will ignore files with these extensions
+Type=str
+Categories=service-webproxy
+
+[dansguardian/virus/exception/mimetypes]
+Description[de]=MIME-Types die nicht auf Viren geprüft werden
+Description[en]=MIME types the virus scanning code ignores
+Type=str
+Categories=service-webproxy
+
+[dansguardian/virus/exception/sites]
+Description[de]=Webseiten die nicht auf Viren geprüft werden
+Description[en]=Sites in virus exception list will not be virus scanned
+Type=str
+Categories=service-webproxy
+
+[dansguardian/virus/exception/urls]
+Description[de]=URLs die nicht auf Viren geprüft werden
+Description[en]=URLs in exception virus list will not be virus scanned
+Type=str
+Categories=service-webproxy
+

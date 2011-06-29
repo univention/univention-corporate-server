@@ -1,3 +1,9 @@
+univention-antivir-web (4.0.4-1) unstable; urgency=low
+
+  * fixed ucr variables registration and documentation (Bug #20331)
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Jun 2011 11:57:46 +0200
+
 univention-antivir-web (4.0.3-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

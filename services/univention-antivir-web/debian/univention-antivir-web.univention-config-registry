@@ -20,22 +20,22 @@ Variables: dansguardian/groups
 Type: file
 File: etc/dansguardian/lists/contentscanners/exceptionvirusextensionlist
 Variables: squid/virusscan
-Variables: dansguardian/.*scan.*
+Variables: dansguardian/virus/exception/extensions
 
 Type: file
 File: etc/dansguardian/lists/contentscanners/exceptionvirusmimetypelist
 Variables: squid/virusscan
-Variables: dansguardian/.*scan.*
+Variables: dansguardian/virus/exception/mimetypes
 
 Type: file
 File: etc/dansguardian/lists/contentscanners/exceptionvirussitelist
 Variables: squid/virusscan
-Variables: dansguardian/.*scan.*
+Variables: dansguardian/virus/exception/sites
 
 Type: file
 File: etc/dansguardian/lists/contentscanners/exceptionvirusurllist
 Variables: squid/virusscan
-Variables: dansguardian/.*scan.*
+Variables: dansguardian/virus/exception/urls
 
 Type: file
 File: etc/dansguardian/lists/authplugins/ipgroups
