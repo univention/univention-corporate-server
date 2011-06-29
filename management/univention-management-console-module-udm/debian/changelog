@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.41-1) unstable; urgency=low
+
+  * udm/query: major performance increase; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 29 Jun 2011 17:01:46 +0200
+
 univention-management-console-module-udm (1.0.40-1) unstable; urgency=low
 
   * adapt to new UMC API

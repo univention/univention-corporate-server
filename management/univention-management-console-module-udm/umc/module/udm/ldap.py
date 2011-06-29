@@ -52,6 +52,9 @@ _ldap_position = udm_uldap.position( ucr.get( 'ldap/base' ) )
 
 udm_modules.update()
 
+# module cache
+_modules = {}
+
 def get_ldap_connection():
 	global _ldap_connection, _ldap_position
 
@@ -72,13 +75,18 @@ class UDM_Module( object ):
 		self.load( module )
 
 	def load( self, module, template_object = None ):
-		self.module = udm_modules.get( module )
-		if self.module is None:
-			return self.module
+		global _modules
+		if module in _modules:
+			self.module = _modules[ module ]
+		else:
+			_modules[ module ] = udm_modules.get( module )
+			if _modules[ module ] is None:
+				return None
 
-		lo, po = get_ldap_connection()
+			lo, po = get_ldap_connection()
 
-		udm_modules.init( lo, po, self.module, template_object )
+			udm_modules.init( lo, po, _modules[ module ], template_object )
+			self.module = _modules[ module ]
 
 	def get_default_values( self, property_name ):
 		MODULE.info( 'Searching for property %s' % property_name )
