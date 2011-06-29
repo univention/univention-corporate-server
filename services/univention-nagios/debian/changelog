@@ -1,3 +1,10 @@
+univention-nagios (4.0.14-1) unstable; urgency=low
+
+  * respect changes of univentionNagiosEmail in nagios-server.py (Bug
+    #22853)
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Jun 2011 13:05:50 +0200
+
 univention-nagios (4.0.13-2) unstable; urgency=low
 
   * switch from check_univention_winbind to
