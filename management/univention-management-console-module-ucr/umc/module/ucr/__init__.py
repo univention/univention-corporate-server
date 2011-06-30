@@ -36,6 +36,7 @@ from fnmatch import fnmatch
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 import univention.debug as ud
+from univention.management.console.protocol.definitions import *
 
 import univention.config_registry as ucr
 from univention.config_registry_info import ConfigRegistryInfo, Variable

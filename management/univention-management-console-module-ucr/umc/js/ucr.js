@@ -55,9 +55,9 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			iconClass: 'dijitIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
-			callback: dojo.hitch(this, function(vars) {
+			callback: dojo.hitch(this, function(ids) {
 				if (vars.length) {
-					this._detailDialog.loadVariable(vars[0]);
+					this._detailDialog.loadVariable(ids[0]);
 				}
 			})
 		}, {
@@ -65,8 +65,8 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			label: this._( 'Delete' ),
 			description: this._( 'Deleting the selected UCR variables' ),
 			iconClass: 'dijitIconDelete',
-			callback: dojo.hitch(this, function(vars) {
-				this.moduleStore.multiRemove(vars);
+			callback: dojo.hitch(this, function(ids) {
+				this.moduleStore.multiRemove(ids);
 			})
 		}];
 

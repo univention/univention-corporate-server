@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-ucr\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-06-24 11:37+0200\n"
+"POT-Creation-Date: 2011-06-30 11:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,13 +16,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/module/ucr/__init__.py:91
+#: umc/module/ucr/__init__.py:92
 msgid ""
 "Invalid UCR variable entry, the properties \"key\" and \"value\" need to "
 "specified."
 msgstr ""
 
-#: umc/module/ucr/__init__.py:129
+#: umc/module/ucr/__init__.py:130
 #, python-format
 msgid "The UCR variable %(key)s could not be found"
 msgstr ""
