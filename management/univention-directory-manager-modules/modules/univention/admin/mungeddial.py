@@ -332,7 +332,7 @@ properties = {
 
 }
 
-tab = Tab( _( 'Windows Terminal Server' ), _( 'Windows Terminal server settings' ), advanced = True, layout = [
+tab = Tab( _( 'Windows terminal server' ), _( 'Windows Terminal server settings' ), advanced = True, layout = [
 	Group( _( 'Directories' ), layout = [
 		'CtxWFHomeDir',
 		'CtxWFHomeDirDrive'
