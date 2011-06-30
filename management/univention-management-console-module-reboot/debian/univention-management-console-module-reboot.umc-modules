@@ -1,0 +1,6 @@
+Module: reboot
+Python: umc/module
+Definition: umc/reboot.xml
+Syntax: umc/syntax/reboot.xml
+Javascript: umc/js
+Icons: umc/icons

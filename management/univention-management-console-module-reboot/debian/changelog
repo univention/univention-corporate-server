@@ -1,0 +1,5 @@
+univention-management-console-module-reboot (1.0.0-1) unstable; urgency=low
+
+  * Initial release (Bug #22848)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 30 Jun 2011 14:15:59 +0200

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <definitions>
+	<syntax base="Selection" name="Reboot-Options">
+	  <choice name="reboot"/>
+	  <choice name="halt"/>
+        <!-- FIXME -->
+  </definitions>
+</umc>

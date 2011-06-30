@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="reboot" icon="reboot" version="1.0">
+	<name>Reboot</name>
+	<description>System reboot or halt</description>
+	<command name="reboot/execute" function="execute">
+	  <attribute name="action" syntax="Reboot-Options" required="1"/>
+	  <attribute name="message" syntax="String" required="1"/>
+	  <return syntax="Boolean"/>
+	</command>
+  </module>
+</umc>
