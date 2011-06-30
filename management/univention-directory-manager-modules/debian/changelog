@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.22-1) unstable; urgency=low
+
+  * removed kolab attributes from user
+  * modified layout for users/user (new style); Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 30 Jun 2011 11:47:25 +0200
+
 univention-directory-manager-modules (7.0.21-2) unstable; urgency=low
 
   * syntax classes are used without instantiation so functions must be
