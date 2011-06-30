@@ -1,3 +1,10 @@
+univention-installer (7.0.12-1) unstable; urgency=low
+
+  * added more installer cmdline options for customizing
+    the header (Bug #22546)
+
+ -- Felix Botner <botner@univention.de>  Thu, 30 Jun 2011 14:37:25 +0200
+
 univention-installer (7.0.11-3) unstable; urgency=low
 
   * use "ar" for extracting deb files in debootstrap (Bug #22602)

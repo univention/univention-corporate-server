@@ -55,7 +55,7 @@ read_cmdline = False
 
 if len(sys.argv) > 1:
 
-	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'loadmodule=', 'excludemodule=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'version=', 'edition=', 'expert_partition', 'nousbstorage', 'nousbcdrom']
+	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'loadmodule=', 'excludemodule=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'version=', 'extension=', 'edition=', 'expert_partition', 'nousbstorage', 'nousbcdrom', 'name=', 'codename=']
 	try:
 		opts, args=getopt.getopt(sys.argv[1:], '', longopts)
 	except getopt.error, msg:
@@ -88,6 +88,12 @@ if len(sys.argv) > 1:
 			cmdline['profile_file']=val
 		elif opt == '--version' and val:
 			cmdline['version']=val
+		elif opt == '--extension' and val:
+			cmdline['extension']=val
+		elif opt == '--name' and val:
+			cmdline['name']=val
+		elif opt == '--codename' and val:
+			cmdline['codename']=val
 		elif opt == '--edition' and val:
 			cmdline['edition']=[]
 			for e in val.split(','):
@@ -375,11 +381,17 @@ class mods:
 		return window
 
 	def header(self):
-		codename = "golden beech"
-		if self.cmdline.has_key('product') and self.cmdline['product'].lower() == "ugs":
-			return objects.headline(_(' UCS - %(codename)s (%(version)s)') % { 'codename': codename,
-																			   'version': self.cmdline.get('version', '')}, max_y/2-12,max_x/2-35)
-		return objects.headline(_(' Univention Corporate Server %(version)s (%(codename)s)') % {'version': self.cmdline.get('version', ''), 'codename': codename }, max_y/2-12,max_x/2-35)
+		codename = self.cmdline.get('codename', "golden beech")
+		extension = self.cmdline.get('extension', '')
+		version = self.cmdline.get('version', '3.0')
+		name = self.cmdline.get('name', 'Univention Corporate Server')
+
+		headLine = name + " " + version
+		if extension:
+			headLine = headLine + " " + extension
+		headLine = headLine + " (" + codename + ")"
+
+		return objects.headline(headLine,  max_y/2-12,max_x/2-35)
 
 	def footer(self, last):
 		if last[0]==0: # first

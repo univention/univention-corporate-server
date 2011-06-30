@@ -51,12 +51,24 @@ if [ -n "$architecture" ] && [ "$architecture" = "ppc64" ]; then
 	params="$params --simple"
 fi
 
-if [ -e /.ucs-edition ]; then
+if [ -s /.ucs-edition ]; then
 	params="$params --edition $(cat /.ucs-edition)"
 fi
 
-if [ -e /.ucs-version ]; then
+if [ -s /.ucs-version ]; then
 	params="$params --version $(cat /.ucs-version)"
+fi
+
+if [ -s /.ucs-name ]; then
+    params="$params --name $(cat /.ucs-name)"
+fi
+
+if [ -s /.ucs-codename ]; then
+    params="$params --codename $(cat /.ucs-codename)"
+fi
+
+if [ -s /.ucs-extension ]; then
+    params="$params --version $(cat /.ucs-extension)"
 fi
 
 if [ -n "$expert_partition" ]; then
