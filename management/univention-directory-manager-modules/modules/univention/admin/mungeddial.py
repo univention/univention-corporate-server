@@ -332,16 +332,32 @@ properties = {
 
 }
 
-tab = Tab( _( 'Windows Advanced' ), _( 'Windows Terminal server settings' ), True, [
-	[ 'CtxWFHomeDir', 'CtxWFHomeDirDrive' ],
-	[ 'CtxInitialProgram',  'CtxWorkDirectory' ],
-	'CtxStartprogramClient',
-	[ 'CtxWFProfilePath',	'CtxKeyboardLayout' ],
-	[ 'CtxCfgTSLogon',	 'CtxCfgClientDrivers' ],
-	[ 'CtxCfgClientPrinters',	'CtxCfgDefaultClientPrinters' ],
-	[ 'CtxShadow' ],
-	[ 'CtxBrokenSession',	 'CtxReconnectSession' ],
-	'CtxRASDialin',
+tab = Tab( _( 'Windows Terminal Server' ), _( 'Windows Terminal server settings' ), advanced = True, layout = [
+	Group( _( 'Directories' ), layout = [
+		'CtxWFHomeDir',
+		'CtxWFHomeDirDrive'
+		] ),
+	Group( _( 'Startup command' ), layout = [
+		'CtxInitialProgram',
+		'CtxWorkDirectory',
+		'CtxStartprogramClient',
+		] ),
+	Group( _( 'Client devices' ), layout = [
+		'CtxCfgClientDrivers',
+		'CtxCfgClientPrinters',
+		'CtxCfgDefaultClientPrinters',
+		] ),
+	Group( _( 'Connection' ), layout = [
+		'CtxCfgTSLogon',
+		'CtxShadow',
+		'CtxBrokenSession',
+		'CtxReconnectSession',
+		'CtxRASDialin',
+		] ),
+	Group( _( 'Advanced' ), layout = [
+		'CtxWFProfilePath',
+		'CtxKeyboardLayout',
+		] ),
 	] )
 
 class Support( object ):
