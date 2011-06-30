@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.23-1) unstable; urgency=low
+
+  * implement contains operator for simpleLdap
+  * add missing classmethod decorator for syntax userPasswd; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 30 Jun 2011 14:39:50 +0200
+
 univention-directory-manager-modules (7.0.22-1) unstable; urgency=low
 
   * removed kolab attributes from user

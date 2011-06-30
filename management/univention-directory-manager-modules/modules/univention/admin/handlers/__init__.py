@@ -276,6 +276,9 @@ class base(object):
 		else:
 			return None
 
+	def __contains__( self, key ):
+		return key in self.descriptions
+
 	def keys(self):
 		return self.descriptions.keys()
 

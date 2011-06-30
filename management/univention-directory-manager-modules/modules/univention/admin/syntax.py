@@ -718,6 +718,7 @@ class passwd(simple):
 class userPasswd(simple):
 	name="passwd"
 
+	@classmethod
 	def parse(self, text):
 		if text and len(text) > 0:
 			return text
