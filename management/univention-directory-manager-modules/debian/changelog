@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.25-2) unstable; urgency=low
+
+  * re-add Groups tab; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 30 Jun 2011 16:57:27 +0200
+
 univention-directory-manager-modules (7.0.25-1) unstable; urgency=low
 
   * more re-arrangements in layout of users/user; Bug #22439

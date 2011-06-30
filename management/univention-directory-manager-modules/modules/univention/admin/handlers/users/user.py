@@ -883,7 +883,6 @@ layout = [
 			[ 'username', 'description' ],
 			[ 'password', 'pwdChangeNextLogin' ],
 			'primaryGroup',
-			'groups',
 			'mailPrimaryAddress',
 			] ),
 		Group( _( 'Personal information' ), layout = [
@@ -898,6 +897,11 @@ layout = [
 			'employeeNumber',
 			'employeeType',
 			'secretary',
+			] ),
+		] ),
+	Tab( _( 'Groups' ), _( 'Groups' ), layout = [
+		Group( _( 'Additional groups' ), layout = [
+			'groups',
 			] ),
 		] ),
 	Tab( _( 'Account' ),  _( 'Account settings' ), layout = [
