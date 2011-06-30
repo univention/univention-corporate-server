@@ -75,7 +75,9 @@ class MagicBucket( object ):
 	def exit( self ):
 		'''Closes all open connections.'''
 		# remove all sockets
-		for sock in self.__states.keys():
+		for sock, state in self.__states.items():
+			CORE.info( 'Shutting down connection %s' % sock )
+			state.processor.shutdown()
 			notifier.socket_remove( sock )
 		# delete states
 		for state in self.__states.values():
@@ -107,6 +109,7 @@ class MagicBucket( object ):
 			return True
 		except ( SSL.SysCallError, SSL.Error ), error:
 			CRYPT.warn( 'SSL error: %s. Probably the socket was closed by the client.' % str( error ) )
+			self.__states[ socket ].processor.shutdown()
 			notifier.socket_remove( socket )
 			del self.__states[ socket ]
 			socket.close()

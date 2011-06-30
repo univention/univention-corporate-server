@@ -173,6 +173,12 @@ class Processor( signals.Provider ):
 
 		self.signal_new( 'response' )
 
+	def shutdown( self ):
+		CORE.info( 'The session is shutting down. Sending UMC modules an EXIT request (%d processes)' % len( self.__processes ) )
+		for module_name in self.__processes:
+			CORE.info( 'Ask module %s to shutdown gracefully' % module_name )
+			req = Request( 'EXIT', arguments = [ module_name, 'internal' ] )
+			self.__processes[ module_name ].request( req )
 
 	def __del__( self ):
 		CORE.process( 'Processor: dying' )
@@ -413,7 +419,7 @@ class Processor( signals.Provider ):
 			CORE.info( 'There are unfinished requests. Waiting ...: %s' % module.openRequests )
 			return True
 
-		# mark as internal so the response will not be send to the client
+		# mark as internal so the response will not be forwarded to the client
 		req = Request( 'EXIT', arguments = [ module.name, 'internal' ] )
 		self.handle_request_exit( req )
 

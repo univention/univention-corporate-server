@@ -31,6 +31,11 @@
 # <http://www.gnu.org/licenses/>.
 
 import univention.debug as ud
+import logging
+
+# no exceptions from logging
+# otherwise shutdown the server will raise an exception that the logging stream could not be closed
+logging.raiseExceptions = 0
 
 COMPONENTS = ( ud.MAIN, ud.NETWORK, ud.SSL, ud.ADMIN, ud.MODULE, ud.AUTH, ud.PARSER, ud.LOCALE, ud.ACL, ud.RESOURCES, ud.PROTOCOL )
 

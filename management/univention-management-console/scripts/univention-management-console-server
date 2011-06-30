@@ -99,11 +99,12 @@ class UMC_Daemon( DaemonRunner ):
 		DaemonRunner.__init__( self, self )
 		self.daemon_context.detach_process = self.options.daemon_mode
 		self.daemon_context.files_preserve = [ debug_fd ]
-		signal_map = {
-			signal.SIGHUP : self.hang_up,
-			signal.SIGUSR1 : self.user1
+		self.daemon_context.signal_map = {
+			signal.SIGHUP : self.signal_hang_up,
+			signal.SIGUSR1 : self.signal_user1,
+			signal.SIGTERM : self.signal_terminate
 			}
-		set_signal_handlers( signal_map )
+		# set_signal_handlers( signal_map )
 
 		# set locale
 		try:
@@ -114,12 +115,24 @@ class UMC_Daemon( DaemonRunner ):
 	def _reload( self ):
 		"""Handler for the reload action"""
 		if self.pidfile.is_locked():
+			CORE.error( 'Reloading configuration ...' )
 			pid = self.pidfile.read_pid()
 			os.kill( pid, signal.SIGUSR1 )
 		else:
 			CORE.error( 'Reload failed: server ist not running' )
 
 	DaemonRunner.action_funcs[ 'reload' ] = _reload
+
+	def _crestart( self ):
+		"""Handler for the crestart action. """
+		if self.pidfile.is_locked():
+			CORE.error( 'Stopping UMC server ...' )
+			self._stop()
+
+		CORE.error( 'Starting UMC server ...' )
+		self._start()
+
+	DaemonRunner.action_funcs[ 'crestart' ] = _crestart
 
 	def _usage_exit( self, argv ):
 		self.parser.error( 'invalid action' )
@@ -135,11 +148,15 @@ class UMC_Daemon( DaemonRunner ):
 		CORE.error( 'Server started' )
 		notifier.loop()
 
-	def hang_up( self, signal, frame ):
+	def signal_hang_up( self, signal, frame ):
 		self.server.reload()
 
-	def user1( self, signal, frame ):
+	def signal_user1( self, signal, frame ):
 		self.server.reload()
+
+	def signal_terminate( self, signal, frame ):
+		self.server.exit()
+		raise SystemExit( 'Shutting down UMC server' )
 
 if __name__ == "__main__":
 	umc_daemon = UMC_Daemon()

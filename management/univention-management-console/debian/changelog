@@ -1,3 +1,11 @@
+univention-management-console (4.0.39-1) unstable; urgency=low
+
+  * cleanup
+  * when stopping UMC server shutting down all connections and exit UMC
+    modules; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 30 Jun 2011 11:11:28 +0200
+
 univention-management-console (4.0.38-1) unstable; urgency=low
 
   * remove relicts of sessionid

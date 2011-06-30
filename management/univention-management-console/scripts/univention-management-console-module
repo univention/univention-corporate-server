@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
 	( options, arguments ) = parser.parse_args()
 
-	daemon = DaemonContext( detach_process = True )
+	daemon = DaemonContext( detach_process = False )
 	daemon.open()
 
 	# init logging
