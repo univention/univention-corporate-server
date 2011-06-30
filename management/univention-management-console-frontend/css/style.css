@@ -28,6 +28,13 @@ div.modLaunchButton {
     height:80px;
 	list-style: none;
 	display: inline-block;
+
+	/**
+	 * hack for IE, see: 
+	 * http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/ 
+	 */
+	zoom:1;
+	*display:inline;
 }
 
 div.modLaunchButton div {

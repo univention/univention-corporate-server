@@ -12,7 +12,7 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 
 	//TODO: don't use float, use display:inline-block; we need a hack for IE7 here, see:
 	//      http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
-	templateString: '<div style="display:inline-block;vertical-align:top;" class="umcLabelPane">' +
+	templateString: '<div style="display:inline-block;vertical-align:top;zoom:1;*display:inline;" class="umcLabelPane">' +
 		'<div dojoAttachPoint="labelNode" class="umcLabelPaneLabelNode" style="display:block;"></div>' +
 		'<div dojoAttachPoint="containerNode,contentNode" style="display:block;"></div>' +
 		'</div>',
@@ -23,16 +23,22 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 	content: '',
 
 	// label: String
-	label: '',
+	label: null,
 
 	labelNode: null,
 
-	postCreate: function() {
-		// if we have a widget as content, watch its label attribute
-		if (this.content && this.content.watch) {
-			this.content.watch('label', dojo.hitch(this, function(attr, oldVal, newVal) {
-				this.set('label', newVal);
-			}));
+	postMixInProperties: function() {
+		this.inherited(arguments);
+
+		// if we have a widget as content and label is not specified, use the widget's 
+		// label attribute and watch it for changes
+		if (null === this.label && this.content && dojo.isString(this.content.label)) {
+			this.label = this.content.label;
+			if (this.content.watch) {
+				this.content.watch('label', dojo.hitch(this, function(attr, oldVal, newVal) {
+					this.set('label', newVal);
+				}));
+			}
 		}
 	},
 

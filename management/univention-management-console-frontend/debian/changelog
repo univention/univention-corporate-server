@@ -1,3 +1,11 @@
+univention-management-console-frontend (0.0.63-1) unstable; urgency=low
+
+  * adaptations for MultiInput 
+  * added CSS tweak for CategoryPane and LabelPane for IE
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 30 Jun 2011 17:41:19 +0200
+
 univention-management-console-frontend (0.0.62-1) unstable; urgency=low
 
   * added widget DateBox
