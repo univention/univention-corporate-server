@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-06-27 17:09+0200\n"
+"POT-Creation-Date: 2011-06-29 18:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,6 +24,10 @@ msgstr "<br>Fehlermeldung des Servers: %s"
 #: umc/app.js:298
 msgid "About UMC"
 msgstr "Über UMC"
+
+#: umc/widgets/MultiInput.js:66
+msgid "Add new element"
+msgstr ""
 
 #: umc/tools.js:236
 msgid "An assert statement failed"
@@ -167,6 +171,10 @@ msgstr "Übersicht"
 #: umc/widgets/LoginDialog.js:53
 msgid "Password"
 msgstr "Passwort"
+
+#: umc/widgets/MultiInput.js:172
+msgid "Remove"
+msgstr ""
 
 #: umc/widgets/SearchForm.js:29 umc/widgets/LoginDialog.js:76
 msgid "Reset"

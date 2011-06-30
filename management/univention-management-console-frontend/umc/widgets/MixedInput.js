@@ -100,7 +100,7 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 		// destroy old widget in case the type has changed and create a new one
 		if (this._widget && this._widget.declaredClass != newWidgetClass) {
 			// destroy widget
-			this.onBeforeWidgetChanged(this._widget);
+			this.onWidgetRemove(this._widget);
 			this._widget.destroyRecursive();
 			this._widget = null;
 		}
@@ -114,7 +114,7 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 				throw new Error('MixedInput: Could not instantiate the class ' + newWidgetClass);
 			}
 			this._widget = new WidgetClass(this._userProperties);
-			this.onWidgetChanged(this._widget);
+			this.onWidgetAdd(this._widget);
 			this.set('content', this._widget);
 		}
 
@@ -130,11 +130,11 @@ dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
 		this._widget.startup();
 	},
 
-	onBeforeWidgetChanged: function(widget) {
+	onWidgetRemove: function(widget) {
 		// event stub
 	},
 
-	onWidgetChanged: function(widget) {
+	onWidgetAdd: function(widget) {
 		// event stub
 	}
 });
