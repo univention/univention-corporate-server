@@ -880,9 +880,10 @@ default_property_descriptions=copy.deepcopy(property_descriptions) # for later r
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ),	layout = [
 		Group( _( 'User account' ), layout = [
-			'username',
+			[ 'username', 'description' ],
 			[ 'password', 'pwdChangeNextLogin' ],
-			'description',
+			'primaryGroup',
+			'groups',
 			'mailPrimaryAddress',
 			] ),
 		Group( _( 'Personal information' ), layout = [
@@ -901,17 +902,22 @@ layout = [
 		] ),
 	Tab( _( 'Account' ),  _( 'Account settings' ), layout = [
 		Group( _( 'Windows' ), _( 'Windows account settings' ), layout = [
-			[ 'sambahome', 'homedrive' ],
+			[ 'homedrive', 'sambahome' ],
 			[ 'scriptpath', 'profilepath' ],
-			[ 'sambaRID', 'sambaPrivileges' ],
-			[ 'sambaLogonHours', 'sambaUserWorkstations' ]
+			'sambaRID',
+			'sambaPrivileges',
+			'sambaLogonHours',
+			'sambaUserWorkstations'
 			] ),
 		Group( _( 'Locking and deactivation' ), layout = [
-			[ 'disabled', 'locked' ],
-			[ 'userexpiry', 'passwordexpiry' ],
+			'disabled',
+			'locked',
+			'userexpiry',
+			'passwordexpiry',
 			] ),
 		Group( _( 'Extended settings' ), layout = [
-			[ 'overridePWHistory', 'overridePWLength' ],
+			'overridePWHistory',
+			'overridePWLength',
 			] ),
 		Group( _( 'POSIX (Linux/UNIX)' ), _( 'POSIX (Linux/UNIX) account settings' ), layout = [
 			'unixhome',
@@ -922,10 +928,6 @@ layout = [
 			'homeSharePath',
 			'gecos'
 			] ),
-		] ),
-	Tab( _( 'Groups' ), _( 'Group memberships' ), layout = [
-		'primaryGroup',
-		'groups',
 		] ),
 	Tab( _( 'Contact' ), _( 'Contact information' ), layout = [
 		Group( _( 'Business' ), layout = [
@@ -939,30 +941,44 @@ layout = [
 		Group( _( 'Privat' ), layout = [
 			'mobileTelephoneNumber',
 			'homeTelephoneNumber',
-			'pagerTelephoneNumber'
+			'pagerTelephoneNumber',
 			'homePostalAddress'
 			] ),
 		] ),
 	Tab(_( 'Mail' ), _( 'Mail preferences' ), advanced = True, layout = [
-		'mailAlternativeAddress',
-		'mailGlobalSpamFolder',
+		Group( _( 'Advanced settings' ), layout = [
+			'mailAlternativeAddress',
+			'mailGlobalSpamFolder',
+			], ),
 		] ),
 	Tab( _( 'Certificate' ), _( 'Certificate' ), advanced = True, layout = [
 		Group( _( 'General' ), '', [
 			'userCertificate',
-			[ 'certificateSubjectCommonName' , 'certificateSubjectOrganisationalUnit' ],
-			[ 'certificateSubjectOrganisation' , 'certificateSubjectLocation' ],
-			[ 'certificateSubjectState' , 'certificateSubjectCountry' ],
-			'certificateSubjectMail', ] ),
+			'certificateSubjectCommonName',
+			'certificateSubjectOrganisationalUnit',
+			'certificateSubjectOrganisation',
+			'certificateSubjectLocation',
+			'certificateSubjectState',
+			'certificateSubjectCountry',
+			'certificateSubjectMail',
+			] ),
 		Group( _( 'Issuer' ), '', [
-			   [ 'certificateIssuerCommonName' , 'certificateIssuerOrganisationalUnit' ],
-			   [ 'certificateIssuerOrganisation' , 'certificateIssuerLocation' ],
-			   [ 'certificateIssuerState' , 'certificateIssuerCountry' ],
-			   'certificateIssuerMail', ] ),
+			'certificateIssuerCommonName',
+			'certificateIssuerOrganisationalUnit',
+			'certificateIssuerOrganisation',
+			'certificateIssuerLocation',
+			'certificateIssuerState',
+			'certificateIssuerCountry',
+			'certificateIssuerMail',
+			] ),
 		Group( _( 'Dates' ), '', [
-			[ 'certificateDateNotBefore' , 'certificateDateNotAfter' ], ] ),
+			'certificateDateNotBefore',
+			'certificateDateNotAfter',
+			] ),
 		Group( _( 'Misc' ), '', [
-			[ 'certificateVersion', 'certificateSerial'  ] ] )
+			'certificateVersion',
+			'certificateSerial'
+			] )
 		] )
 	]
 
