@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (1.0.13-1) unstable; urgency=low
+
+  * fixed typo (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 30 Jun 2011 15:56:59 +0200
+
 univention-management-console-module-ucr (1.0.12-1) unstable; urgency=low
 
   * added import for status definitions (Bug #22460)

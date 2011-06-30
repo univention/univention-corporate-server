@@ -56,7 +56,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			isStandardAction: true,
 			isMultiAction: false,
 			callback: dojo.hitch(this, function(ids) {
-				if (vars.length) {
+				if (ids.length) {
 					this._detailDialog.loadVariable(ids[0]);
 				}
 			})
