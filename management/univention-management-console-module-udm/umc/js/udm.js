@@ -201,11 +201,26 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._searchPage.addChild(group);
 	},
 
-	_renderDetailPage: function(properties, layoutSubTabs) {
+	_renderDetailPage: function(_properties, layoutSubTabs) {
 		// create detail page
 		this._detailTabs = new dijit.layout.TabContainer({
 			nested: true,
 			region: 'center'
+		});
+
+		// parse the widget configurations
+		var properties = [];
+		dojo.forEach(_properties, function(iprop) {
+			if ('ComplexInput' == iprop.type) {
+				// handle complex widgets
+				iprop.type = 'MultiInput';
+			}
+			if (iprop.multivalue && 'MultiInput' != iprop.type) {
+				// handle multivalue inputs
+				iprop.subtypes = [{ type: iprop.type }];
+				iprop.type = 'MultiInput';
+			}
+			properties.push(iprop);
 		});
 
 		// render all widgets

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.44-1) unstable; urgency=low
+
+  * adaptations for multi value and complex widgets (Bug #22460) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 30 Jun 2011 17:42:57 +0200
+
 univention-management-console-module-udm (1.0.43-2) unstable; urgency=low
 
   * renamed ComplexInput to MultiInput; Bug #22439
