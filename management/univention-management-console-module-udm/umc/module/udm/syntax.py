@@ -73,7 +73,12 @@ def choices( syntax ):
 def subsyntaxes( syntax ):
 	"""Returns a list of dictionaries describing the the sub types of a
 	complex syntax"""
-	return map( lambda x: { 'label' : x[ 0 ], 'type' : widget( x[ 1 ] ) }, getattr( syntax, 'subsyntaxes', [] ) )
+	def subtypes_dict( item ):
+		elem = widget( item[ 1 ] )
+		elem[ 'label' ] = item[ 0 ]
+		return elem
+
+	return map( subtypes_dict, getattr( syntax, 'subsyntaxes', [] ) )
 
 def widget( syntax ):
 	"""Returns a widget description as a dictionary"""
