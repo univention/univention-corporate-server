@@ -56,7 +56,7 @@ class Widget( object ):
 		return self._default_value
 
 __widgets = (
-	Widget( 'CheckBox', ( udm_syntax.OkOrNot, udm_syntax.TrueFalseUp ), False ),
+	Widget( 'CheckBox', ( udm_syntax.OkOrNot, udm_syntax.TrueFalseUp, udm_syntax.boolean ), False ),
 	Widget( 'PasswordInputBox', ( udm_syntax.passwd, udm_syntax.userPasswd ), '' ),
 	Widget( 'DateBox', udm_syntax.iso8601Date, '1970-01-01' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
