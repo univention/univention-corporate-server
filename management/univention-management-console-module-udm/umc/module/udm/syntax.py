@@ -61,7 +61,7 @@ __widgets = (
 	Widget( 'DateBox', udm_syntax.iso8601Date, '1970-01-01' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
 	Widget( 'ComboBox', udm_syntax.select, '' ),
-	Widget( 'ComplexInput', udm_syntax.complex, None ),
+	Widget( 'MultiInput', udm_syntax.complex, None ),
 	)
 
 def choices( syntax ):

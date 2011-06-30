@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.43-2) unstable; urgency=low
+
+  * renamed ComplexInput to MultiInput; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 30 Jun 2011 16:53:26 +0200
+
 univention-management-console-module-udm (1.0.43-1) unstable; urgency=low
 
   * udm/properties: fix data structure for subtypes; Bug #22439
