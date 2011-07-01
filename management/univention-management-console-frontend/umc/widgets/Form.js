@@ -256,6 +256,18 @@ dojo.declare("umc.widgets.Form", [
 		return parsedVals;
 	},
 
+	setFormValues: function(values) {
+		// set all values based on or list of widgets
+		umc.tools.forIn(values, function(iname, ival) {
+			if (this._widgets[iname]) {
+				this._widgets[iname].set('value', ival);
+			}
+			else {
+				console.log(dojo.replace("WARNING: Could not set the property '{0}': {1}", [iname, ival]));
+			}
+		}, this);
+	},
+
 	_updateDependencies: function(publisherName) {
 		var tmp = [];
 		dojo.forEach(this._dependencyMap[publisherName], function(i) {
