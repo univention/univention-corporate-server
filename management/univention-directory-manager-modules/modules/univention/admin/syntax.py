@@ -1705,8 +1705,12 @@ class dhcpService( ldapDnOrNone ):
 
 class dhcpEntry( complex ):
 	name='dhcpEntry'
-	subsyntaxes= ( ( _( 'DHCP-Service' ), dhcpService ), ( _( 'MAC address' ), string ), ( _( 'IP address' ), string ) )
+	subsyntaxes= ( ( _( 'DHCP-Service' ), dhcpService ), ( _( 'IP address' ), ipAddress ), ( _( 'MAC address' ), macAddress ) )
 	description=_( 'DHCP Entry' )
+
+	@classmethod
+	def parse( self, value ):
+		return value
 
 class dnsEntryNetwork(ldapDnOrNone):
 	name='dnsEntryNetwork'

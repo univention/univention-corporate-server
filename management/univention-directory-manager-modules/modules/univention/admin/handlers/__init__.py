@@ -1332,19 +1332,6 @@ class simpleComputer( simpleLdap ):
 
 		return dn
 
-	def __split_dhcp_line( self, entry ):
-
-		mac = entry.split( ' ' )[ -1 ]
-		if self.__is_mac ( mac ):
-			ip = entry.split( ' ' )[ -2 ]
-			if self.__is_ip ( ip ):
-				zone = string.join( entry.split( ' ' )[ :-2 ], ' ' )
-				return ( zone, ip, mac )
-			else:
-				return ( entry, None, mac )
-		else:
-			return ( entry, None, None )
-
 	def __split_dns_line( self, entry ):
 
 		ip = entry.split( ' ' )[ -1 ]
@@ -1621,7 +1608,7 @@ class simpleComputer( simpleLdap ):
 
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'remove' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: removed: %s' % entry )
-			dn, ip, mac = self.__split_dhcp_line( entry )
+			dn, ip, mac = entry
 			if not ip and not mac and not self.__multiip:
 				self.__remove_from_dhcp_object( dn,  mac = self[ 'mac' ][ 0 ] )
 			else:
@@ -1629,7 +1616,7 @@ class simpleComputer( simpleLdap ):
 
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'add' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % entry )
-			dn, ip, mac = self.__split_dhcp_line( entry )
+			dn, ip, mac = entry
 			if not ip and not mac and not self.__multiip:
 				self.__modify_dhcp_object( dn, self[ 'name' ], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] )
 			else:
@@ -1827,7 +1814,7 @@ class simpleComputer( simpleLdap ):
 			# remove all DHCP-entries that have been associated with any of these IP/MAC addresses
 			newDhcpEntries = []
 			for entry in self['dhcpEntryZone']:
-				dn, ip, mac = self.__split_dhcp_line(entry)
+				dn, ip, mac = entry
 				if ip not in removedIPs and mac not in removedMACs:
 					newDhcpEntries.append(entry)
 			self['dhcpEntryZone'] = newDhcpEntries
@@ -1839,7 +1826,7 @@ class simpleComputer( simpleLdap ):
 						self.__changes[ 'dhcpEntryZone' ][ 'remove' ].append( entry )
 			for entry in self.info[ 'dhcpEntryZone' ]:
 				#check if line is valid
-				dn, ip, mac = self.__split_dhcp_line( entry )
+				dn, ip, mac = entry
 				if dn and ip and mac:
 					if not self.oldinfo.has_key( 'dhcpEntryZone' ) or not entry in self.oldinfo[ 'dhcpEntryZone' ]:
 						self.__changes[ 'dhcpEntryZone' ][ 'add' ].append( entry )
@@ -1931,7 +1918,7 @@ class simpleComputer( simpleLdap ):
 	def _ldap_post_create(self):
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'remove' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: removed: %s' % entry )
-			dn, ip, mac = self.__split_dhcp_line( entry )
+			dn, ip, mac = entry
 			if not ip and not mac and not self.__multiip:
 				self.__remove_from_dhcp_object( dn,  mac = self[ 'mac' ][ 0 ] )
 			else:
@@ -1939,7 +1926,7 @@ class simpleComputer( simpleLdap ):
 
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'add' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % entry )
-			dn, ip, mac = self.__split_dhcp_line( entry )
+			dn, ip, mac = entry
 			if not ip and not mac and not self.__multiip:
 				if len( self[ 'ip' ] ) > 0 and len( self[ 'mac' ] ) > 0:
 					self.__modify_dhcp_object( dn, self[ 'name' ], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] )
@@ -1980,7 +1967,7 @@ class simpleComputer( simpleLdap ):
 
 		if not self.__multiip:
 			if self.has_key('dhcpEntryZone') and len(self['dhcpEntryZone']) > 0:
-				dn, ip, mac = self.__split_dhcp_line(  self[ 'dhcpEntryZone' ][ 0 ] )
+				dn, ip, mac =  self[ 'dhcpEntryZone' ][ 0 ]
 				for entry in self.__changes[ 'mac' ][ 'add' ]:
 					if len( self[ 'ip' ] ) > 0:
 						self.__modify_dhcp_object( dn , self[ 'name' ], mac = entry, ip = self[ 'ip' ][ 0 ] )
@@ -2121,7 +2108,7 @@ class simpleComputer( simpleLdap ):
 
 		if self['dhcpEntryZone']:
 			for dhcpEntryZone in self['dhcpEntryZone']:
-				dn, ip, mac = self.__split_dhcp_line(  dhcpEntryZone )
+				dn, ip, mac = dhcpEntryZone
 				try:
 					self.__remove_from_dhcp_object( dn, self[ 'name' ],  None, mac )
 				except Exception,e:
