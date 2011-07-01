@@ -38,6 +38,7 @@ from univention.management.console import Translation
 import univention.admin as udm
 import univention.admin.modules as udm_modules
 import univention.admin.uldap as udm_uldap
+import univention.admin.syntax as udm_syntax
 
 from ...config import ucr
 from ...log import MODULE
@@ -179,11 +180,26 @@ class UDM_Module( object ):
 		return layout
 
 	@property
+	def password_properties( self ):
+		passwords = []
+		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
+			if prop.syntax in ( udm_syntax.passwd, udm_syntax.userPasswd ):
+				passwords.append( key )
+
+		return passwords
+
+	@property
 	def properties( self ):
-		props = []
+		props = [ { 'id' : 'ldap-dn', 'type' : 'HiddenInput', 'label' : '', 'searchable' : False } ]
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if key == 'filler': continue
-			item = { 'id' : key, 'label' : prop.short_description, 'description' : prop.long_description,
+			if hasattr( prop.syntax, '__name__' ):
+				syntax_name = prop.syntax.__name__
+			elif hasattr( prop.syntax, '__class__' ):
+				syntax_name = prop.syntax.__class__.__name__
+			else:
+				syntax_name = getattr( 'name', prop, None )
+			item = { 'id' : key, 'label' : prop.short_description, 'description' : prop.long_description, 'syntax' : syntax_name,
 					 'required' : prop.required in ( 1, True ), 'editable' : prop.may_change in ( 1, True ),
 					 'options' : prop.options, 'searchable' : not prop.dontsearch, 'multivalue' : prop.multivalue in ( 1, True ) }
 
@@ -304,7 +320,10 @@ def ldap_dn2path( ldap_dn ):
 	return '/'.join( path )
 
 def get_module( flavor, ldap_dn ):
-	base, name = split_module_name( flavor )
+	if flavor is None:
+		base = None
+	else:
+		base, name = split_module_name( flavor )
 	lo, po = get_ldap_connection()
 	modules = udm_modules.objectType( None, lo, ldap_dn, module_base = base )
 
@@ -312,3 +331,21 @@ def get_module( flavor, ldap_dn ):
 		return None
 
 	return UDM_Module( modules[ 0 ] )
+
+def init_syntax():
+	MODULE.info( 'Scanning syntax classes ...' )
+	for name, syn in udm_syntax.__dict__.items():
+		if type( syn ) is not type:
+			continue
+		if not hasattr( syn, 'udm_module' ):
+			continue
+		MODULE.info( 'Found syntax class %s with udm_module attribute (= %s)' % ( name, syn.udm_module ) )
+		module = UDM_Module( syn.udm_module )
+		if module is None:
+			syn.choices = ()
+			continue
+		MODULE.info( 'Found syntax %s with udm_module property' % name )
+		syn.choices = map( lambda obj: ( obj.dn, obj[ module.identifies ] ), module.search() )
+		MODULE.info( 'Set choices to %s' % syn.choices )
+
+

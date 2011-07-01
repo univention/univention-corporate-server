@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.45-1) unstable; urgency=low
+
+  * support syntax classes based on select with attribute udm_module; Bug #22439
+  * properties: add hidden property ldap-dn; add attribute syntax to each property
+  * udm/get: do not send password properties (syntax passwd and userPasswd)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jul 2011 13:38:39 +0200
+
 univention-management-console-module-udm (1.0.44-1) unstable; urgency=low
 
   * adaptations for multi value and complex widgets (Bug #22460) 

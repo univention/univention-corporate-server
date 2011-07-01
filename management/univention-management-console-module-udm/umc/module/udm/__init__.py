@@ -36,9 +36,11 @@ from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 from univention.management.console.log import MODULE
 
-from .ldap import UDM_Module, UDM_Settings, ldap_dn2path, get_module
+from .ldap import UDM_Module, UDM_Settings, ldap_dn2path, get_module, init_syntax
 
 _ = Translation( 'univention-management-console-modules-udm' ).translate
+
+init_syntax()
 
 class Instance( Base ):
 	def __init__( self ):
@@ -79,7 +81,12 @@ class Instance( Base ):
 				continue
 			obj = module.get( ldap_dn )
 			if obj:
-				result.append( obj.info )
+				props = obj.info
+				for passwd in module.password_properties:
+					if passwd in props:
+						del props[ passwd ]
+				props[ 'ldap-dn' ] = obj.dn
+				result.append( props )
 		self.finished( request.id, result )
 
 	def query( self, request ):

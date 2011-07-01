@@ -77,9 +77,13 @@
 	</command>
 	<command name="udm/put" function="put">
 	</command>
+	<command name="udm/add" function="add">
+	</command>
 	<command name="udm/remove" function="remove">
 	</command>
 	<command name="udm/get" function="get">
+	</command>
+	<command name="udm/syntax/check" function="syntax_check">
 	</command>
   </module>
 </umc>
