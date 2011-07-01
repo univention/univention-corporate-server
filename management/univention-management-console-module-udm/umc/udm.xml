@@ -83,7 +83,7 @@
 	</command>
 	<command name="udm/get" function="get">
 	</command>
-	<command name="udm/syntax/check" function="syntax_check">
+	<command name="udm/validate" function="validate">
 	</command>
   </module>
 </umc>

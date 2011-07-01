@@ -36,6 +36,8 @@ from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 from univention.management.console.log import MODULE
 
+import univention.admin.uexceptions as udm_errors
+
 from .ldap import UDM_Module, UDM_Settings, ldap_dn2path, get_module, init_syntax
 
 _ = Translation( 'univention-management-console-modules-udm' ).translate
@@ -189,3 +191,21 @@ class Instance( Base ):
 	def options( self, request ):
 		module = self._get_module( request )
 		self.finished( request.id, module.options )
+
+	def validate( self, request ):
+		module = self._get_module( request )
+
+		result = []
+		for property_name, value in request.options.get( 'properties' ).items():
+			property_obj = module.get_property( property_name )
+
+			if property_obj is None:
+				raise UMC_OptionMissing( _( 'Property %s not found' ) % property_name )
+
+			try:
+				property_obj.syntax.parse( value )
+				result.append( { 'property' : property_name, 'valid' : True } )
+			except ( udm_errors.valueInvalidSyntax, udm_errors.valueError ), e:
+				result.append( { 'property' : property_name, 'valid' : False, 'details' : str( e ) } )
+
+		self.finished( request.id, result )

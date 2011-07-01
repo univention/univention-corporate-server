@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.47-1) unstable; urgency=low
+
+  * udm/validate: validates the correctness of given property values; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jul 2011 18:06:59 +0200
+
 univention-management-console-module-udm (1.0.46-1) unstable; urgency=low
 
   * implemnt simple version of udm/add; Bug #22439

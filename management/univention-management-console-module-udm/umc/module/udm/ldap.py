@@ -142,6 +142,9 @@ class UDM_Module( object ):
 
 		return obj
 
+	def get_property( self, property_name ):
+		return getattr( self.module, 'property_descriptions', {} ).get( property_name, None )
+
 	@property
 	def name( self ):
 		return self.module is not None and self.module.module
