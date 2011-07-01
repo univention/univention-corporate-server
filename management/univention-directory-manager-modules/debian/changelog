@@ -1,3 +1,12 @@
+univention-directory-manager-modules (7.0.26-1) unstable; urgency=low
+
+  * syntax dhcpEntry: use base class complex instead of ldapDnOrNone
+  * create new syntax variation of select. if the attribute udm_module
+    exists the choices list is filled with all existing objects of this
+    type; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jul 2011 13:35:00 +0200
+
 univention-directory-manager-modules (7.0.25-2) unstable; urgency=low
 
   * re-add Groups tab; Bug #22439

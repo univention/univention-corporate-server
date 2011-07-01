@@ -1686,7 +1686,7 @@ class primaryGroup2(ldapDn):
 
 class network(ldapDnOrNone):
 	name='network'
-	searchFilter='objectClass=univentionNetworkClass'
+	udm_module = 'networks/network'
 	description=_('Network')
 
 
@@ -1700,10 +1700,13 @@ class dnsEntryReverse(ldapDnOrNone):
 	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
 	description=_('DNS Entry Reverse')
 
-class dhcpEntry(ldapDnOrNone):
+class dhcpService( ldapDnOrNone ):
+	udm_module = 'dhcp/service'
+
+class dhcpEntry( complex ):
 	name='dhcpEntry'
-	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
-	description=_('DHCP Entry')
+	subsyntaxes= ( ( _( 'DHCP-Service' ), dhcpService ), ( _( 'MAC address' ), string ), ( _( 'IP address' ), string ) )
+	description=_( 'DHCP Entry' )
 
 class dnsEntryNetwork(ldapDnOrNone):
 	name='dnsEntryNetwork'
