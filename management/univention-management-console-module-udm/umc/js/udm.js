@@ -26,6 +26,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	_detailForm: null,
 	_detailTabs: null,
 
+	_receivedObjData: null,
+	_newObjOptions: null,
+
 	buildRendering: function() {
 		// call superclass method
 		this.inherited(arguments);
@@ -69,18 +72,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			isMultiAction: false,
 			callback: dojo.hitch(this, function(ids, items) {
 				if (items.length && items[0].objectType) {
-					// for the detail page, we first need to query property data from the server
-					// for the layout of the selected object type, then we can render the page
-					var params = { objectType: items[0].objectType };
-					(new dojo.DeferredList([
-						this.umcpCommand('udm/properties', params),
-						this.umcpCommand('udm/layout', params)
-					])).then(dojo.hitch(this, function(results) {
-						var properties = results[0][1];
-						var layout = results[1][1];
-						this._renderDetailPage(properties.result, layout.result);
-						this.showDetailPage(ids[0]);
-					}));
+					this._createDetailPage(items[0].objectType, ids[0]);
 				}
 			})
 		}, {
@@ -201,6 +193,21 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._searchPage.addChild(group);
 	},
 
+	_createDetailPage: function(objectType, ldapName) {
+		// for the detail page, we first need to query property data from the server
+		// for the layout of the selected object type, then we can render the page
+		var params = { objectType: objectType };
+		(new dojo.DeferredList([
+			this.umcpCommand('udm/properties', params),
+			this.umcpCommand('udm/layout', params)
+		])).then(dojo.hitch(this, function(results) {
+			var properties = results[0][1];
+			var layout = results[1][1];
+			this._renderDetailPage(properties.result, layout.result);
+			this.showDetailPage(ldapName);
+		}));
+	},
+
 	_renderDetailPage: function(_properties, layoutSubTabs) {
 		// create detail page
 		this._detailTabs = new dijit.layout.TabContainer({
@@ -244,7 +251,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// buttons
 		var buttons = umc.tools.renderButtons([{
 			name: 'save',
-			label: this._('Save changes')
+			label: this._('Save changes'),
+			callback: dojo.hitch(this, 'saveChanges')
 		}, {
 			name: 'close',
 			label: this._('Back to search'),
@@ -271,7 +279,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	showDetailPage: function(ldapName) {
 		this.selectChild(this._detailForm);
-		this._detailForm.load(ldapName);
+		if (ldapName) {
+			this._detailForm.load(ldapName);
+		}
 	},
 
 	closeDetailPage: function() {
@@ -283,7 +293,31 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			var oldDetailForm = this._detailForm;
 			this._detailForm = null;
 			this._detailTabs = null;
+			this._newObjOptions = null;
+			this._receivedObjData = null;
 			this.closeChild(oldDetailForm);
+		}
+	},
+
+	saveChanges: function() {
+		var vals = this._detailForm.gatherFormValues();
+		if (this._newObjOptions) {
+			// new object, save all properties
+			this.moduleStore.add(vals, this._newObjOptions).then(dojo.hitch(this, function() {
+				this.closeDetailPage();
+			}));
+		}
+		else {
+			// existing object .. get only the values that changed
+			var newVals = {};
+			umc.tool.forIn(vals, function(iname, ival) {
+				if (this._receivedObjData[iname] != ival) {
+					newVals[iname] = ival;
+				}
+			});
+			this.moduleStore.put(newVals).then(dojo.hitch(this, function() {
+				this.closeDetailPage();
+			}));
 		}
 	},
 
@@ -299,7 +333,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	showNewObjectDialog: function() {
 		var dialog = new umc.modules.udm._NewObjectDialog({
-			umcpCommand: dojo.hitch(this, 'umcpCommand')
+			umcpCommand: dojo.hitch(this, 'umcpCommand'),
+			onDone: dojo.hitch(this, function(options) {
+				// when the options are specified, create a new detail page
+				options.objectType = options.objectType || this.moduleFlavor; // default objectType is the module flavor
+				this._newObjOptions = options;
+				this._createDetailPage(options.objectType);
+			})
 		});
 	}
 
@@ -405,11 +445,15 @@ dojo.declare("umc.modules.udm._NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 		// buttons
 		var buttons = [{
 			name: 'add',
-			label: this._('Add new object')
+			label: this._('Add new object'),
+			callback: dojo.hitch(this, function() {
+				this.onDone(this._form.gatherFormValues());
+				this.destroyRecursive();
+			})
 		}, {
 			name: 'close',
 			label: this._('Close dialog'),
-			callback: dojo.hitch(this, function() { 
+			callback: dojo.hitch(this, function() {
 				this.destroyRecursive();
 			})
 		}];
@@ -422,6 +466,10 @@ dojo.declare("umc.modules.udm._NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 		});
 		this.set('content', this._form);
 		this.show();
+	},
+
+	onDone: function(options) {
+		// event stub
 	}
 });
 
