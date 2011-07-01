@@ -36,9 +36,6 @@ eval "$(ucr shell ldap/base)"
 # set ACLs
 umc-acls allow -c "udm/*"
 
-# create a user (NOT IMPLEMENTED YET)
-# umc-client -U root -P univention COMMAND udm/put -f users/user -o ojectType -o container="cn=users,$ldap_base" -o username=test1 -o lastname=Test1 -o password=univention
-
 # get a user
 umc-client -U root -P univention COMMAND udm/get -f users/user -l -o "uid=test1,cn=users,$ldap_base"
 
@@ -56,6 +53,12 @@ umc-client -U root -P univention COMMAND udm/templates -f users/user -o objectTy
 
 # create a user
 umc-client -U root -P univention command udm/add -f users/user -l -e -o '{ "options" : { "container" : "cn=users,dc=univention,dc=qa", "objectType" : "users/user" }, "object" : { "username" : "crunchy2" , "lastname" : "crunchy2", "password" : "univention" } }'
+
+# modify a user
+umc-client -U root -P univention command udm/put -f users/user -l -e -o '{ "options" : {}, "object" : { "ldap-dn" : "uid=crunchy2,cn=users,dc=univention,dc=qa", "lastname" : "is cool" , "firstname" : "UMC" } }'
+
+# validate properties
+umc-client -U root -P univention command udm/validate -f users/user -e -o '{ "objectType" : "users/user", "properties" : { "username" : "admin", } }'
 
 # return default search value for specific property
 umc-client -U root -P univention COMMAND udm/values -f users/user -o objectType=users/user -o objectProperty=overridePWHistory

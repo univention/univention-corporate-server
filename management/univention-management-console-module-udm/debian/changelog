@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.48-1) unstable; urgency=low
+
+  * support modifying UDM objects; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jul 2011 18:55:08 +0200
+
 univention-management-console-module-udm (1.0.47-1) unstable; urgency=low
 
   * udm/validate: validates the correctness of given property values; Bug #22439
@@ -6,7 +12,7 @@ univention-management-console-module-udm (1.0.47-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.46-1) unstable; urgency=low
 
-  * implemnt simple version of udm/add; Bug #22439
+  * implement simple version of udm/add; Bug #22439
   * add more test commands
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jul 2011 17:21:07 +0200

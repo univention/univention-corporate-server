@@ -121,6 +121,17 @@ class UDM_Module( object ):
 			obj[ key ] = value
 		obj.create()
 
+	def modify( self, ldap_object ):
+		lo, po = get_ldap_connection()
+
+		obj = self.module.object( None, lo, po, dn = ldap_object.get( 'ldap-dn' ) )
+		del ldap_object[ 'ldap-dn' ]
+		obj.open()
+		MODULE.info( 'Modifying object with properties: %s' % ldap_object )
+		for key, value in ldap_object.items():
+			obj[ key ] = value
+		obj.modify()
+
 	def search( self, container = None, attribute = None, value = None, superordinate = None ):
 		lo, po = get_ldap_connection()
 		if container == 'all':

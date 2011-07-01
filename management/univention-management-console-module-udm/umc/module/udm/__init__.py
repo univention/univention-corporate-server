@@ -81,7 +81,6 @@ class Instance( Base ):
 		self.finished( request.id, True )
 
 	def put( self, request ):
-		module = self._get_module( request )
 		for obj in request.options:
 			if not isinstance( obj, dict ):
 				raise UMC_OptionTypeError( _( 'Invalid object definition' ) )
@@ -89,7 +88,11 @@ class Instance( Base ):
 			properties = obj.get( 'object', {} )
 			if not properties.get( 'ldap-dn' ):
 				raise UMC_OptionMissing( _( 'LDAP DN of object missing' ) )
-			module.modify( properties, container = options.get( 'container' ), superordinate = options.get( 'superordinate' ) )
+			module = get_module( request.flavor, properties[ 'ldap-dn' ] )
+			if module is None:
+				raise UMC_OptionTypeError( _( 'Could not find a matching UMD module for the LDAP object %s' ) % properties[ 'ldap-dn' ] )
+			MODULE.info( 'Modifying LDAP object %s' % properties[ 'ldap-dn' ] )
+			module.modify( properties )
 		self.finished( request.id, True )
 
 	def remove( self, request ):
