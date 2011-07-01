@@ -3,6 +3,8 @@
 dojo.provide("umc.widgets.MultiInput");
 
 dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.widgets.HiddenInput");
+dojo.require("umc.tools");
 
 dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.Mixin ], {
 	// summary:

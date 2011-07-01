@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.66-1) unstable; urgency=low
+
+  * added PasswordInputBox (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 01 Jul 2011 15:54:22 +0200
+
 univention-management-console-frontend (0.0.65-1) unstable; urgency=low
 
   * integrated MultiInput to work into umc.widgets.Form.setFormValues()

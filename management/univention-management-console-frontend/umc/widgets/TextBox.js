@@ -2,10 +2,10 @@
 
 dojo.provide("umc.widgets.TextBox");
 
-dojo.require("dijit.form.TextBox");
+dojo.require("dijit.form.ValidationTextBox");
 dojo.require("umc.tools");
 
-dojo.declare("umc.widgets.TextBox", dijit.form.TextBox, {
+dojo.declare("umc.widgets.TextBox", dijit.form.ValidationTextBox, {
 	
 });
 
