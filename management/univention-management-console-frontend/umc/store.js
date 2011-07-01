@@ -36,22 +36,23 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		return object[this.idProperty];
 	},
 
-	_genericCmd: function(type, param, options) {
+	_genericCmd: function(type, param) {
 		//console.log('_genericCmd: ' + dojo.toJson(arguments));
 		if (this._doingTransaction) {
-			this._addTransactions(type, [param], [options]);
+			this._addTransactions(type, [param]);
 		}
 		else {
-			return this._genericMultiCmd(type, [param], options).then(function(data) {
-				return data[0];
-			});
+			return this._genericMultiCmd(type, [param]).
+				then(function(results) {
+					return results[0];
+				});
 		}
 	},
 
-	_genericMultiCmd: function(type, params, options) {
+	_genericMultiCmd: function(type, params) {
 		//console.log('_genericMultiCmd: ' + dojo.toJson(arguments));
 		if (this._doingTransaction) {
-			this._addTransactions(type, params, options);
+			this._addTransactions(type, params);
 		}
 		else {
 			// send the UMCP command
@@ -85,10 +86,6 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		return this._genericCmd('get', id);
 	},
 
-	multiGet: function(ids) {
-		return this._genericMultiCmd('get', ids);
-	},
-
 	put: function(object, options) {
 		//console.log('put: ' + dojo.toJson(arguments));
 		// summary:
@@ -99,11 +96,10 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		// options:
 		//		This parameter is currently ignored.
 		// returns: dojo.Deferred
-		return this._genericCmd('put', object, options);
-	},
-
-	multiPut: function(objects, options) {
-		return this._genericMultiCmd('put', objects, options);
+		return this._genericCmd('put', {
+			object: object, 
+			options: options || null
+		});
 	},
 
 	add: function(object, options) {
@@ -115,11 +111,10 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		//		The object to store.
 		// options:
 		//		This parameter is currently ignored.
-		return this.put(object, options);
-	},
-
-	multiAdd: function(objects, options) {
-		return this.multiPut(objects, options);
+		return this._genericCmd('add', {
+			object: object, 
+			options: options || null
+		});
 	},
 
 	remove: function(id) {
@@ -132,10 +127,6 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		return this._genericCmd('remove', id);
 	},
 
-	multiRemove: function(ids) {
-		return this._genericMultiCmd('remove', ids);
-	},
-
 	query: function(_query, options) {
 		//console.log('query: ' + dojo.toJson(arguments));
 		// summary:
@@ -144,8 +135,8 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		// query: Object
 		//		The query to use for retrieving objects from the store.
 		// options: 
-		//		This parameter is currently ignored.
-		//	returns: dojo.store.api.Store.QueryResults
+		//		Query options, such as 'sort' (see also umc.tools.cmpObjects()).
+		// returns: dojo.store.api.Store.QueryResults
 		//		The results of the query, extended with iterative methods.
 		
 		// if called via dojo.data.ObjectStore, queries can be translated to regexps
@@ -183,7 +174,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 
 	_groupedTransactions: [],
 
-	_addTransactions: function(type, params, options) {
+	_addTransactions: function(type, params) {
 		var lastGroupType = (0 === this._groupedTransactions.length ? 
 			'' : this._groupedTransactions[this._groupedTransactions.length - 1].type);
 		if (lastGroupType != type) {
@@ -191,8 +182,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 			// transaction does not match the current one, start a new group of transactions
 			var newGroup = {
 				type: type,
-				params: params,
-				options: options
+				params: params
 			};
 			this._groupedTransactions.push(newGroup);
 		}
@@ -200,7 +190,6 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 			// otherwise append the current commands to the last group
 			var lastGroup = this._groupedTransactions[this._groupedTransactions.length - 1];
 			lastGroup.params = lastGroup.params.concat(params);
-			lastGroup.options = lastGroup.options.concat(options);
 		}
 	},
 
@@ -216,10 +205,10 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 			// check whether the data is modified
 			dataModified = dataModified || 'remove' == igroup.type || 'put' == igroup.type;
 
-			// execute group as one command, only use the options of the first item in the group
+			// execute group as one command
 			if (0 === i) {
 				// the initial deferred command
-				deferred = this._genericMultiCmd(igroup.type, igroup.params, igroup.options[0]).then(function(data) {
+				deferred = this._genericMultiCmd(igroup.type, igroup.params).then(function(data) {
 					results[i] = data;
 					//console.log(dojo.replace('# deferred: i={0} data={1}', [i, String(data)]));
 					return null;
@@ -228,7 +217,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 			else {
 				// chain all deferred commands
 				deferred = deferred.then(function(data) {
-					this._genericMultiCmd(igroup.type, igroup.params, igroup.options[0]).then(function(data) {
+					this._genericMultiCmd(igroup.type, igroup.params).then(function(data) {
 						results[i] = data;
 						//console.log(dojo.replace('# deferred: i={0} data={1}', [i, String(data)]));
 						return null;
