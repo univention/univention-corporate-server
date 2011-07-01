@@ -1,3 +1,12 @@
+univention-management-console-module-ucr (1.0.14-1) unstable; urgency=low
+
+  * adaptations to store API changes
+  * added 'add' method
+  * moved directory "umc/module" to "umc/python"
+  (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 01 Jul 2011 17:57:18 +0200
+
 univention-management-console-module-ucr (1.0.13-1) unstable; urgency=low
 
   * fixed typo (Bug #22460)

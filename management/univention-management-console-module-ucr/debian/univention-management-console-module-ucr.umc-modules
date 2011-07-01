@@ -1,5 +1,5 @@
 Module: ucr
-Python: umc/module
+Python: umc/python
 Definition: umc/ucr.xml
 Syntax: umc/syntax/ucr.xml
 Javascript: umc/js

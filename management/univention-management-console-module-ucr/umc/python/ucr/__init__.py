@@ -78,22 +78,28 @@ class Instance( umcm.Base ):
 			info.add_variable( options[ 'key' ], var )
 			info.write_customized()
 
+	def add( self, request ):
+		# does the same as put
+		self.put( request )
+
 	def put( self, request ):
 		if isinstance( request.options, ( list, tuple ) ):
-			for var in request.options:
+			for _var in request.options:
 				try:
+					var = _var['object']
 					value = var['value'] or ''
 					key = var['key']
 					arg = [ '%s=%s' % ( key.encode(), value.encode() ) ]
 					ucr.handler_set( arg )
+
+					# handle descriptions, type, and categories
+					if 'descriptions' in var or 'type' in var or 'categories' in var:
+						self.__create_variable_info( var )
 				except KeyError:
 					# handle the case that neither key nor value are given for an UCR variable entry
 					request.status = BAD_REQUEST_INVALID_OPTS
 					self.finished(request.id, False, message = _('Invalid UCR variable entry, the properties "key" and "value" need to specified.'))
 					return
-				# handle descriptions, type, and categories
-				if 'descriptions' in var or 'type' in var or 'categories' in var:
-					self.__create_variable_info( var )
 			request.status = SUCCESS
 			success = True
 		else:

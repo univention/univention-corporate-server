@@ -10,6 +10,10 @@
 	  <attribute name="variables" syntax="UCR-Variables" required="1"/>
 	  <return syntax="Boolean"/>
 	</command>
+	<command name="ucr/add" function="add">
+	  <attribute name="variables" syntax="UCR-Variables" required="1"/>
+	  <return syntax="Boolean"/>
+	</command>
 	<command name="ucr/remove" function="remove">
 	  <attribute name="variable" syntax="UCR-Variable" required="1"/>
 	  <return syntax="Boolean"/>
