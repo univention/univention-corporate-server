@@ -239,7 +239,7 @@ dojo.declare("umc.widgets.Form", [
 
 			if (dojo.isArray(iobj)) {
 				// element is an array, remove last elements that are empty
-				while (iobj.length && !iobj[vals.length - 1]) {
+				while (iobj.length && !iobj[iobj.length - 1]) {
 					iobj.pop();
 				}
 			}
