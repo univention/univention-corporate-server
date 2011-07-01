@@ -1,3 +1,9 @@
+univention-installer (7.0.12-2) unstable; urgency=low
+
+  * fixed parameter handling in sbin/univention-installer (Bug #22546) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 01 Jul 2011 08:38:57 +0200
+
 univention-installer (7.0.12-1) unstable; urgency=low
 
   * added more installer cmdline options for customizing

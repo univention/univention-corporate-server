@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Installer
 #
@@ -33,7 +33,7 @@
 forceascii=`cat /proc/cmdline | grep " forceascii"`
 recover=`cat /proc/cmdline | grep " recover"`
 expert_partition=`cat /proc/cmdline | grep "expert_partition"`
-params="--cmdline"
+params[${#params[@]}]="--cmdline"
 
 # disable console blanking
 setterm -powersave off
@@ -44,52 +44,57 @@ setterm -blank 0
 architecture=`uname -m`
 
 if [ -n "$forceascii" ] ; then
-	params="$params --simple"
+	params[${#params[@]}]="--simple"
 fi
 
 if [ -n "$architecture" ] && [ "$architecture" = "ppc64" ]; then
-	params="$params --simple"
+	params[${#params[@]}]="--simple"
 fi
 
 if [ -s /.ucs-edition ]; then
-	params="$params --edition $(cat /.ucs-edition)"
+	params[${#params[@]}]="--edition"
+	params[${#params[@]}]="$(cat /.ucs-edition)"
 fi
 
 if [ -s /.ucs-version ]; then
-	params="$params --version $(cat /.ucs-version)"
+	params[${#params[@]}]="--version"
+	params[${#params[@]}]="$(cat /.ucs-version)"
 fi
 
 if [ -s /.ucs-name ]; then
-    params="$params --name $(cat /.ucs-name)"
+	params[${#params[@]}]="--name"
+	params[${#params[@]}]="$(cat /.ucs-name)"
 fi
 
 if [ -s /.ucs-codename ]; then
-    params="$params --codename $(cat /.ucs-codename)"
+	params[${#params[@]}]="--codename"
+	params[${#params[@]}]="$(cat /.ucs-codename)"
 fi
 
 if [ -s /.ucs-extension ]; then
-    params="$params --version $(cat /.ucs-extension)"
+	params[${#params[@]}]="--extension"
+	params[${#params[@]}]="$(cat /.ucs-extension)"
 fi
 
 if [ -n "$expert_partition" ]; then
-	params="$params --expert_partition"
+	params[${#params[@]}]="--expert_partition"
 fi
 
 if [ -n "$recover" ]; then
 
 
-	/bin/python2.6 -OO /lib/univention-installer/main.py $params
+	/bin/python2.6 -OO /lib/univention-installer/main.py "${params[@]}"
 	echo "Starting recover shell"
 	echo ""
 	/bin/sh
 else
 	while [ ! -e /tmp/installation_profile ]; do
 
-		/bin/python2.6 -OO /lib/univention-installer/main.py $params
+		/bin/python2.6 -OO /lib/univention-installer/main.py "${params[@]}"
 
 		if [ ! -e /tmp/installation_profile ]; then
 			echo "Press Return to restart the installer program."
-			read $foo
+			read foo
 			continue
 		fi
 
