@@ -1,3 +1,9 @@
+univention-installer (7.0.12-3) unstable; urgency=low
+
+  * UTF-8 adjustments (Bug #22489)
+
+ -- Felix Botner <botner@univention.de>  Fri, 01 Jul 2011 10:58:27 +0200
+
 univention-installer (7.0.12-2) unstable; urgency=low
 
   * fixed parameter handling in sbin/univention-installer (Bug #22546) 

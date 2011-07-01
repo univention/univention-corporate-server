@@ -48,6 +48,9 @@ except:
 from local import _
 from objects import *
 
+import locale
+locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
+
 profile=0
 cmdline={}
 

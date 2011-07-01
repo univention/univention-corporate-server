@@ -39,6 +39,9 @@ import curses.ascii
 import linecache
 from local import _
 
+import locale
+locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
+
 MAX_HEIGHT = 24
 MAX_WIDTH = 78
 fn_error_msg = "/tmp/installation_error.log"

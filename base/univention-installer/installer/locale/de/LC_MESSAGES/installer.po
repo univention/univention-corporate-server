@@ -1102,7 +1102,7 @@ msgstr "Passwort (zur Bestätigung bitte nochmal eingeben):"
 msgid ""
 "Please enter a valid fully qualified domain name in lowercase (e.g. host."
 "example.com)."
-msgstr "Bitte geben Sie einen klein-geschriebenen und vollst<E4>ndigen Rechnernamen an (z.B. host.example.com)."
+msgstr "Bitte geben Sie einen klein-geschriebenen und vollständigen Rechnernamen an (z.B. host.example.com)."
 
 #: installer/modules/11_basis.py:195
 msgid "Please enter a valid windows domain name."
