@@ -73,8 +73,13 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.M
 		dojo.forEach(valList, function(ival, irow) {
 			var rowVals = [];
 			if (dojo.isString(ival)) {
-				// entry is string .. we need to parse it
-				rowVals = ival.split(this.delimiter);
+				// entry is string .. we need to parse it if we have a delimiter
+				if (this.delimiter) {
+					rowVals = ival.split(this.delimiter);
+				}
+				else {
+					rowVals = [ ival ];
+				}
 			}
 			else if (dojo.isArray(ival)) {
 				rowVals = ival;

@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.64-1) unstable; urgency=low
+
+  * fixed bug in MultiInput when this.delimiter is not given (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 01 Jul 2011 09:40:54 +0200
+
 univention-management-console-frontend (0.0.63-1) unstable; urgency=low
 
   * adaptations for MultiInput 
