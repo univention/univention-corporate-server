@@ -1,3 +1,9 @@
+univention-installer (7.0.13-1) unstable; urgency=low
+
+  * fixed detection of bootloader_device for UCR variable grub/boot (Bug #22602)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 01 Jul 2011 13:50:57 +0200
+
 univention-installer (7.0.12-3) unstable; urgency=low
 
   * UTF-8 adjustments (Bug #22489)
