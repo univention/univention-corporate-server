@@ -37,8 +37,10 @@ from univention.management.console import Translation
 
 import univention.admin as udm
 import univention.admin.modules as udm_modules
+import univention.admin.objects as udm_objects
 import univention.admin.uldap as udm_uldap
 import univention.admin.syntax as udm_syntax
+import univention.admin.uexceptions as udm_errors
 
 from ...config import ucr
 from ...log import MODULE
@@ -94,6 +96,30 @@ class UDM_Module( object ):
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if key == property_name:
 				return default_value( prop.syntax )
+
+	def create( self, ldap_object, container = None, superordinate = None ):
+		lo, po = get_ldap_connection()
+
+		if container is not None:
+			try:
+				po.setDn( container )
+			except udm_errors.noObject, e:
+				raise UMC_CommandError( str( e ) )
+
+		if superordinate is not None:
+			mod = get_module( self.name, superordinate )
+			if mod is not None:
+				MODULE.info( 'Found UDM module for superordinate' )
+				superordinate = mod.get( superordinate )
+			else:
+				raise UMC_OptionTypeError( _( 'Could not find an UDM module for the superordinate object %s' ) % superordinate )
+
+		obj = self.module.object( None, lo, po, superordinate = superordinate )
+		obj.open()
+		MODULE.info( 'Creating object with properties: %s' % ldap_object )
+		for key, value in ldap_object.items():
+			obj[ key ] = value
+		obj.create()
 
 	def search( self, container = None, attribute = None, value = None, superordinate = None ):
 		lo, po = get_ldap_connection()

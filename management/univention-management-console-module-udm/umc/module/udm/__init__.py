@@ -52,8 +52,11 @@ class Instance( Base ):
 		credentials are available'''
 		self.settings = UDM_Settings( self._username )
 
-	def _get_module( self, request ):
-		module_name = request.options.get( 'objectType' )
+	def _get_module( self, request, object_type = None ):
+		if object_type is None:
+			module_name = request.options.get( 'objectType' )
+		else:
+			module_name = object_type
 		if not module_name or 'all' == module_name:
 			module_name = request.flavor
 
@@ -62,11 +65,30 @@ class Instance( Base ):
 
 		return UDM_Module( module_name )
 
+	def add( self, request ):
+		for obj in request.options:
+			if not isinstance( obj, dict ):
+				raise UMC_OptionTypeError( _( 'Invalid object definition' ) )
+
+			options = obj.get( 'options', {} )
+			properties = obj.get( 'object', {} )
+
+			module = self._get_module( request, object_type = options.get( 'objectType' ) )
+			module.create( properties, container = options.get( 'container' ), superordinate = options.get( 'superordinate' ) )
+
+		self.finished( request.id, True )
+
 	def put( self, request ):
 		module = self._get_module( request )
-
-
-		self.finished( request.id )
+		for obj in request.options:
+			if not isinstance( obj, dict ):
+				raise UMC_OptionTypeError( _( 'Invalid object definition' ) )
+			options = obj.get( 'options', {} )
+			properties = obj.get( 'object', {} )
+			if not properties.get( 'ldap-dn' ):
+				raise UMC_OptionMissing( _( 'LDAP DN of object missing' ) )
+			module.modify( properties, container = options.get( 'container' ), superordinate = options.get( 'superordinate' ) )
+		self.finished( request.id, True )
 
 	def remove( self, request ):
 		module = self._get_module( request )
