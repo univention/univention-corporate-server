@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-01 11:09+0200\n"
+"POT-Creation-Date: 2011-07-01 11:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -152,10 +152,6 @@ msgstr "Modul-Hilfetexte"
 msgid "More actions..."
 msgstr "Weitere Aktionen..."
 
-#: umc/widgets/MultiInput.js:153
-msgid "New"
-msgstr ""
-
 #: umc/app.js:143
 msgid "Notification"
 msgstr "Hinweis"
@@ -171,10 +167,6 @@ msgstr "Übersicht"
 #: umc/widgets/LoginDialog.js:53
 msgid "Password"
 msgstr "Passwort"
-
-#: umc/widgets/MultiInput.js:221
-msgid "Remove"
-msgstr ""
 
 #: umc/widgets/SearchForm.js:29 umc/widgets/LoginDialog.js:76
 msgid "Reset"

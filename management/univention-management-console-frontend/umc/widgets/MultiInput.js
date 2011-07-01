@@ -93,9 +93,14 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.M
 		}, this);
 	},
 	
-	_setValueAttr: function(valList) {
+	_setValueAttr: function(vals) {
+		// remove all empty elements at the end
+		while (vals.length && !vals[vals.length - 1]) {
+			vals.pop();
+		}
+
 		// append an empty element
-		this._setAllValues(valList.concat(['']));
+		this._setAllValues(vals.concat(['']));
 	},
 
 	_getAllValues: function() {
