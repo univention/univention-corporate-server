@@ -94,7 +94,7 @@ class Base( signals.Provider, Translation ):
 			message = _(  'An attribute passed to %s has the wrong type: %s' ) % ( method, str( e ) )
 		except UMC_OptionMissing, e:
 			message = _(  'An attribute to %s is missing: %s' ) % ( method, str( e ) )
-		except UMC_CommandFailed, e:
+		except UMC_CommandError, e:
 			message = _(  'The command has failed: %s' ) % str( e )
 		except Exception, e:
 			import traceback

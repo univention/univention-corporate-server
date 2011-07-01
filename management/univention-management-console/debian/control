@@ -49,8 +49,6 @@ Depends: ${python:Depends}, ${misc:Depends},
  univention-join,
  python-univention,
  python-pyopenssl,
- python-elementtree,
- python-json,
  python-pam,
  python-polib,
  python-notifier (>= 0.9.0)

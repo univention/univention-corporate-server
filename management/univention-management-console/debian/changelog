@@ -1,3 +1,10 @@
+univention-management-console (4.0.40-1) unstable; urgency=low
+
+  * fixed typo; Bug #22460
+  * fixed dependencies of python-univention-management-console
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jul 2011 12:05:39 +0200
+
 univention-management-console (4.0.39-1) unstable; urgency=low
 
   * cleanup
