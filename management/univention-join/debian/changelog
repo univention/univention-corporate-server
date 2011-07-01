@@ -1,3 +1,9 @@
+univention-join (4.0.4-2) unstable; urgency=low
+
+  * removed dependency to sysutils (Bug #22602)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 01 Jul 2011 11:41:46 +0200
+
 univention-join (4.0.4-1) unstable; urgency=low
 
   * remove EOL from ldap.secret, ldap-backup.secret and machine.secret
