@@ -135,8 +135,13 @@ class CLI_Client( umcp.Client ):
 		msg.arguments = args
 		if options.flavor is not None:
 			msg.flavor = options.flavor
-		if options.list_options:
+		if options.list_options and not options.eval_options:
 			msg.options = options.options
+		elif options.eval_options:
+			if not options.list_options:
+				msg.options = eval( options.options[ 0 ] )
+			else:
+				msg.options = map( lambda x: eval( x ), options.options )
 		else:
 			for opt in options.options:
 				key, value = opt.split( '=', 1 )
@@ -191,7 +196,7 @@ class CLI_Client( umcp.Client ):
 		CORE.info( '  STATUS   : %d' % msg.status )
 		if msg.options:
 			if isinstance( msg.options, ( list, tuple ) ):
-				CORE.info( '  OPTIONS  : %s' % ', '.join( msg.options ) )
+				CORE.info( '  OPTIONS  : %s' % ', '.join( map( lambda x: str( x ), msg.options ) ) )
 			else:
 				CORE.info( '  OPTIONS  : %s' % ' '.join( [ '%s=%s' % ( k, v ) for k, v in msg.options.items() ] ) )
 		CORE.info( '  MESSAGE  : %s' % msg.message )
@@ -237,11 +242,11 @@ if __name__ == '__main__':
 	parser.add_option( '-o', '--option', type = 'string', default = [],
 					   action = 'append', dest = 'options',
 					   help = 'append an option to the request' )
-	parser.add_option( '-l', '--list-options', action = 'store_true',
-					   dest = 'list_options',
+	parser.add_option( '-l', '--list-options', action = 'store_true', dest = 'list_options',
 					   help = 'if set all specified options will be assembled in a list' )
-	parser.add_option( '-d', '--debug', action = 'store', type = 'int',
-					   dest = 'debug', default = 4,
+	parser.add_option( '-e', '--eval-option', action = 'store_true', dest = 'eval_options',
+					   help = 'if set the only given option is evalulated as python code' )
+	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = 4,
 					   help = 'if given than debugging is activated and set to the specified level' )
 
 	( options, arguments ) = parser.parse_args()

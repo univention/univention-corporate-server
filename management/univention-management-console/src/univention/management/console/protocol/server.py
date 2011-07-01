@@ -109,7 +109,8 @@ class MagicBucket( object ):
 			return True
 		except ( SSL.SysCallError, SSL.Error ), error:
 			CRYPT.warn( 'SSL error: %s. Probably the socket was closed by the client.' % str( error ) )
-			self.__states[ socket ].processor.shutdown()
+			if self.__states[ socket ].processor is not None:
+				self.__states[ socket ].processor.shutdown()
 			notifier.socket_remove( socket )
 			del self.__states[ socket ]
 			socket.close()
