@@ -55,6 +55,12 @@ class Instance( Base ):
 		self.settings = UDM_Settings( self._username )
 
 	def _get_module( self, request, object_type = None ):
+		"""Tries to determine to UDM module to use. If no specific
+		object type is given the request option 'objectType' is used. In
+		case none if this leads to a valid object type the request
+		flavor is chosen. Failing all this will raise in
+		UMC_OptionMissing exception. On success a UMC_Module object is
+		returned."""
 		if object_type is None:
 			module_name = request.options.get( 'objectType' )
 		else:
@@ -68,6 +74,12 @@ class Instance( Base ):
 		return UDM_Module( module_name )
 
 	def add( self, request ):
+		"""Creates LDAP objects.
+
+		requests.options = [ { 'options' : {}, 'object' : {} }, ... ]
+
+		return: [ { 'ldap-dn' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
+		"""
 		for obj in request.options:
 			if not isinstance( obj, dict ):
 				raise UMC_OptionTypeError( _( 'Invalid object definition' ) )
@@ -78,9 +90,15 @@ class Instance( Base ):
 			module = self._get_module( request, object_type = options.get( 'objectType' ) )
 			module.create( properties, container = options.get( 'container' ), superordinate = options.get( 'superordinate' ) )
 
-		self.finished( request.id, True )
+		self.finished( request.id, True ) #FIXME
 
 	def put( self, request ):
+		"""Modifies the given list of LDAP objects.
+
+		requests.options = [ { 'options' : {}, 'object' : {} }, ... ]
+
+		return: [ { 'ldap-dn' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
+		"""
 		for obj in request.options:
 			if not isinstance( obj, dict ):
 				raise UMC_OptionTypeError( _( 'Invalid object definition' ) )
@@ -93,14 +111,27 @@ class Instance( Base ):
 				raise UMC_OptionTypeError( _( 'Could not find a matching UMD module for the LDAP object %s' ) % properties[ 'ldap-dn' ] )
 			MODULE.info( 'Modifying LDAP object %s' % properties[ 'ldap-dn' ] )
 			module.modify( properties )
-		self.finished( request.id, True )
+
+		self.finished( request.id, True ) # FIXME
 
 	def remove( self, request ):
+		"""Removes the given list of LDAP objects.
+
+		requests.options = [ <LDAP DN>, ... ]
+
+		return: [ { 'ldap-dn' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
+		"""
 		module = self._get_module( request )
 
 		self.finished( request.id )
 
 	def get( self, request ):
+		"""Retrieves the given list of LDAP objects. Password property will be removed.
+
+		requests.options = [ <LDAP DN>, ... ]
+
+		return: [ { 'ldap-dn' : <LDAP DN>, <object properties> }, ... ]
+		"""
 		result = []
 		for ldap_dn in request.options:
 			module = get_module( request.flavor, ldap_dn )
@@ -117,6 +148,16 @@ class Instance( Base ):
 		self.finished( request.id, result )
 
 	def query( self, request ):
+		"""Searches for LDAP objects and returns a few properties of the found objects
+
+		requests.options = {}
+		  'objectProperty' -- the object property that should be scaned
+		  'objectPropertyValue' -- the filter that should b found in the property
+		  'container' -- the base container where the search should be started (default: LDAP base)
+		  'superordinate' -- the superordinate object for the search (default: None)
+
+		return: [ { 'ldap-dn' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
+		"""
 		module = self._get_module( request )
 
 		superordinate = request.options.get( 'superordinate' )
@@ -145,21 +186,53 @@ class Instance( Base ):
 		self.finished( request.id, entries )
 
 	def values( self, request ):
+		"""Returns the default search pattern/value for the given object property
+
+		requests.options = {}
+		  'objectProperty' -- the object property that should be scaned
+
+		return: <value>
+		"""
 		module = self._get_module( request )
 		property_name = request.options.get( 'objectProperty' )
 
 		self.finished( request.id, module.get_default_values( property_name ) )
 
 	def containers( self, request ):
+		"""Returns the list of default containers for the given object
+		type. Therefor the python module and the default object in the
+		LDAP directory are searched.
+
+		requests.options = {}
+		  'objectType' -- The UDM module name
+
+		return: [ { 'id' : <LDAP DN of container>, 'label' : <name> }, ... ]
+		"""
 		module = self._get_module( request )
 
 		self.finished( request.id, module.containers + self.settings.containers( request.flavor ) )
 
 	def superordinates( self, request ):
+		"""Returns the list of superordinate containers for the given
+		object type.
+
+		requests.options = {}
+		  'objectType' -- The UDM module name
+
+		return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
+		"""
 		module = self._get_module( request )
 		self.finished( request.id, module.superordinates )
 
 	def templates( self, request ):
+		"""Returns the list of template objects for the given object
+		type.
+
+		requests.options = {}
+		  'objectType' -- The UDM module name
+
+		return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
+		"""
 		module = self._get_module( request )
 
 		result = []
@@ -173,6 +246,13 @@ class Instance( Base ):
 		self.finished( request.id, result )
 
 	def types( self, request ):
+		"""Returns the list of object types matching the given flavor.
+
+		requests.options = {}
+		  'superordinate' -- if available only types for the given superordinate are returned
+
+		return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
+		"""
 		module = UDM_Module( request.flavor )
 		superordinate = request.options.get( 'superordinate' )
 		if superordinate:
@@ -181,10 +261,24 @@ class Instance( Base ):
 		self.finished( request.id, module.child_modules )
 
 	def layout( self, request ):
+		"""Returns the layout information for the given object type.
+
+		requests.options = {}
+		  'objectType' -- The UDM module name. If not available the flavor is used
+
+		return: <layout data structure (see UDM python modules)>
+		"""
 		module = self._get_module( request )
 		self.finished( request.id, module.layout )
 
 	def properties( self, request ):
+		"""Returns the properties of the given object type.
+
+		requests.options = {}
+		  'searchable' -- If given only properties that might be used for search filters are returned
+
+		return: [ {}, ... ]
+		"""
 		module = self._get_module( request )
 		properties = module.properties
 		if request.options.get( 'searchable', False ):
@@ -192,10 +286,25 @@ class Instance( Base ):
 		self.finished( request.id, properties )
 
 	def options( self, request ):
+		"""Returns the options specified for the given object type
+
+		requests.options = {}
+		  'objectType' -- The UDM module name. If not available the flavor is used
+
+		return: [ {}, ... ]
+		"""
 		module = self._get_module( request )
 		self.finished( request.id, module.options )
 
 	def validate( self, request ):
+		"""Validates the correctness of values for properties of the
+		given object type. Therefor the syntax definition of the properties is used.
+
+		requests.options = {}
+		  'objectType' -- The UDM module name. If not available the flavor is used
+
+		return: [ { 'property' : <name>, 'valid' : (True|False), 'details' : <message> }, ... ]
+		"""
 		module = self._get_module( request )
 
 		result = []

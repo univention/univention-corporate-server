@@ -59,6 +59,12 @@ udm_modules.update()
 _modules = {}
 
 def get_ldap_connection():
+	"""Tries to open an LDAP connection. On DC master and DC backup
+	systems the cn=admin account is used and on all other system roles
+	the machine account.
+
+	return: ( <LDAP connection>, <LDAP position> )
+	"""
 	global _ldap_connection, _ldap_position
 
 	if _ldap_connection is not None:
@@ -72,12 +78,19 @@ def get_ldap_connection():
 	return _ldap_connection, _ldap_position
 
 class UDM_Module( object ):
+	"""Wraps UDM modules to provie a simple access to the properties and functions"""
+
 	UCR_SEARCH_DEFAULT = 'directory/manager/web/modules/%(module)s/search/default'
 
 	def __init__( self, module ):
+		"""Initializes the object"""
 		self.load( module )
 
 	def load( self, module, template_object = None ):
+		"""Tries to load an UDM module with the given name. Optional a
+		template object is passed to the init function of the module. As
+		the initialisation of a module is expensive the function uses a
+		cache to ensure that each module is just initialized once."""
 		global _modules
 		if module in _modules:
 			self.module = _modules[ module ]
@@ -92,12 +105,15 @@ class UDM_Module( object ):
 			self.module = _modules[ module ]
 
 	def get_default_values( self, property_name ):
+		"""Depending on the syntax of the given property a default
+		search pattern/value is returned"""
 		MODULE.info( 'Searching for property %s' % property_name )
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if key == property_name:
 				return default_value( prop.syntax )
 
 	def create( self, ldap_object, container = None, superordinate = None ):
+		"""Creates a LDAP object"""
 		lo, po = get_ldap_connection()
 
 		if container is not None:
@@ -122,6 +138,7 @@ class UDM_Module( object ):
 		obj.create()
 
 	def modify( self, ldap_object ):
+		"""Modifies a LDAP object"""
 		lo, po = get_ldap_connection()
 
 		obj = self.module.object( None, lo, po, dn = ldap_object.get( 'ldap-dn' ) )
@@ -133,6 +150,7 @@ class UDM_Module( object ):
 		obj.modify()
 
 	def search( self, container = None, attribute = None, value = None, superordinate = None ):
+		"""Searches for LDAP objects based on a search pattern"""
 		lo, po = get_ldap_connection()
 		if container == 'all':
 			container = po.getBase()
@@ -147,6 +165,7 @@ class UDM_Module( object ):
 		return self.module.lookup( None, lo, filter_s, base = container, superordinate = superordinate )
 
 	def get( self, ldap_dn ):
+		"""Retrieves details for a given LDAP object"""
 		lo, po = get_ldap_connection()
 		obj = self.module.object( None, lo, None, ldap_dn )
 		obj.open()
@@ -154,18 +173,22 @@ class UDM_Module( object ):
 		return obj
 
 	def get_property( self, property_name ):
+		"""Returns details for a given property"""
 		return getattr( self.module, 'property_descriptions', {} ).get( property_name, None )
 
 	@property
 	def name( self ):
+		"""Internal name of the UDM module"""
 		return self.module is not None and self.module.module
 
 	@property
 	def title( self ):
+		"""Descriptive name of the UDM module"""
 		return getattr( self.module, 'short_description', self.module.module )
 
 	@property
 	def identifies( self ):
+		"""Property of the UDM module that identifies objects of this type"""
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if prop.identifies:
 				return key
@@ -173,6 +196,7 @@ class UDM_Module( object ):
 
 	@property
 	def child_modules( self ):
+		"""List of child modules"""
 		if self.module is None:
 			return None
 		MODULE.info( 'Collecting child modules ...' )
@@ -191,6 +215,7 @@ class UDM_Module( object ):
 
 	@property
 	def layout( self ):
+		"""Layout information"""
 		layout = getattr( self.module, 'layout', [] )
 		if not layout:
 			return layout
@@ -198,9 +223,10 @@ class UDM_Module( object ):
 		if isinstance( layout[ 0 ], udm.tab ):
 			return self._parse_old_layout( layout )
 
-		return self._parse_new_layout( layout )
+		return layout
 
 	def _parse_old_layout( self, layout ):
+		"""Parses old layout information"""
 		tabs = []
 		for tab in layout:
 			data = { 'name' : tab.short_description, 'description' : tab.long_description, 'advanced' : tab.advanced, 'layout' : [ { 'name' : 'General', 'description' : 'General settings', 'layout' : [] } ] }
@@ -216,11 +242,9 @@ class UDM_Module( object ):
 			tabs.append( data )
 		return tabs
 
-	def _parse_new_layout( self, layout ):
-		return layout
-
 	@property
 	def password_properties( self ):
+		"""All properties with the syntax class passwd or userPasswd"""
 		passwords = []
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if prop.syntax in ( udm_syntax.passwd, udm_syntax.userPasswd ):
@@ -230,6 +254,7 @@ class UDM_Module( object ):
 
 	@property
 	def properties( self ):
+		"""All properties of the UDM module"""
 		props = [ { 'id' : 'ldap-dn', 'type' : 'HiddenInput', 'label' : '', 'searchable' : False } ]
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if key == 'filler': continue
@@ -254,6 +279,7 @@ class UDM_Module( object ):
 
 	@property
 	def options( self ):
+		"""List of defined options"""
 		opts = []
 		for key, option in getattr( self.module, 'options', {} ).items():
 			item = { 'id' : key, 'label' : option.short_description, 'default' : option.default }
@@ -263,14 +289,17 @@ class UDM_Module( object ):
 
 	@property
 	def operations( self ):
+		"""Allowed operations of the UDM module"""
 		return self.module is not None and getattr( self.module, 'operations', None )
 
 	@property
 	def template( self ):
+		"""List of UMD module names of templates"""
 		return getattr( self.module, 'template', None )
 
 	@property
 	def containers( self ):
+		"""List of LDAP DNs of default containers"""
 		containers = getattr( self.module, 'default_containers', [] )
 		ldap_base = ucr.get( 'ldap/base' )
 
@@ -278,6 +307,7 @@ class UDM_Module( object ):
 
 	@property
 	def superordinates( self ):
+		"""List of superordinates"""
 		modules = getattr( self.module, 'wizardsuperordinates', [] )
 		superordinates = []
 		for mod in modules:
@@ -292,6 +322,7 @@ class UDM_Module( object ):
 		return superordinates
 
 	def types4superordinate( self, flavor, superordinate ):
+		"""List of object types for the given superordinate"""
 		types = getattr( self.module, 'wizardtypesforsuper' )
 		typelist = []
 
@@ -312,7 +343,10 @@ class UDM_Module( object ):
 		return typelist
 
 class UDM_Settings( object ):
+	"""Provides access to different kinds of settings regarding UDM"""
+
 	def __init__( self, username ):
+		"""Reads the policies for the current user"""
 		lo, po = get_ldap_connection()
 		self.user_dn = lo.searchDn( 'uid=%s' % username, unique = True )
 		self.policies = lo.getPolicies( self.user_dn )
@@ -324,6 +358,7 @@ class UDM_Settings( object ):
 			self.directory = directories[ 0 ]
 
 	def containers( self, module_name ):
+		"""Returns list of default containers for a given UDM module"""
 		base, name = split_module_name( module_name )
 
 		return map( lambda x: { 'id' : x, 'label' : ldap_dn2path( x ) }, self.directory.info.get( base, [] ) )
@@ -332,6 +367,8 @@ class UDM_Settings( object ):
 		pass
 
 def split_module_name( module_name ):
+	"""Splits a module name into category and internal name"""
+
 	if module_name.find( '/' ) < 0:
 		return []
 	parts = module_name.split( '/', 1 )
@@ -341,6 +378,8 @@ def split_module_name( module_name ):
 	return ( None, None )
 
 def ldap_dn2path( ldap_dn ):
+	"""Returns a path representation of an LDAP DN"""
+
 	ldap_base = ucr.get( 'ldap/base' )
 	if ldap_base is None or not ldap_dn.endswith( ldap_base ):
 		return ldap_dn
@@ -360,6 +399,7 @@ def ldap_dn2path( ldap_dn ):
 	return '/'.join( path )
 
 def get_module( flavor, ldap_dn ):
+	"""Determines an UDM module handling the LDAP object identified by the given LDAP DN"""
 	if flavor is None:
 		base = None
 	else:
@@ -373,6 +413,12 @@ def get_module( flavor, ldap_dn ):
 	return UDM_Module( modules[ 0 ] )
 
 def init_syntax():
+	"""Initialize all syntax classes
+
+	Syntax classes based on select: If a property udm_module is
+	available the choices attribute of the class is set to a list of all
+	available modules of the specified UDM module.
+	"""
 	MODULE.info( 'Scanning syntax classes ...' )
 	for name, syn in udm_syntax.__dict__.items():
 		if type( syn ) is not type:
