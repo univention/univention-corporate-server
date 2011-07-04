@@ -26,7 +26,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	_detailForm: null,
 	_detailTabs: null,
 
-	_receivedObjData: null,
+	_receivedObjFormData: null,
+	_receivedObjOrigData: null,
 	_newObjOptions: null,
 
 	buildRendering: function() {
@@ -238,6 +239,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			var subTab = new umc.widgets.Page({
 				title: ilayout.label || ilayout.name //TODO: 'name' should not be necessary
 			});
+
 			subTab.addChild(umc.tools.renderLayout(ilayout.layout, widgets));
 			this._detailTabs.addChild(subTab);
 		}, this);
@@ -269,7 +271,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// create the form containing the whole BorderContainer as content and add 
 		// the form as new 'page'
-		this._detailForm = umc.widgets.Form({
+		this._detailForm = new umc.widgets.Form({
 			widgets: widgets,
 			content: layout,
 			moduleStore: this.moduleStore
@@ -280,7 +282,10 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	showDetailPage: function(ldapName) {
 		this.selectChild(this._detailForm);
 		if (ldapName) {
-			this._detailForm.load(ldapName);
+			this._detailForm.load(ldapName).then(dojo.hitch(this, function(vals) {
+				this._receivedObjOrigData = vals;
+				this._receivedObjFormData = this._detailForm.gatherFormValues();
+			}));
 		}
 	},
 
@@ -294,7 +299,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			this._detailForm = null;
 			this._detailTabs = null;
 			this._newObjOptions = null;
-			this._receivedObjData = null;
+			this._receivedObjOrigData = null;
+			this._receivedObjFormData = null;
 			this.closeChild(oldDetailForm);
 		}
 	},
@@ -302,19 +308,39 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	saveChanges: function() {
 		var vals = this._detailForm.gatherFormValues();
 		if (this._newObjOptions) {
+			// get only non-empty values
+			var newVals = {};
+			umc.tools.forIn(vals, dojo.hitch(this, function(iname, ival) {
+				if (!(dojo.isArray(ival) && !ival.length) && ival) {
+					newVals[iname] = ival;
+				}
+			}));
 			// new object, save all properties
-			this.moduleStore.add(vals, this._newObjOptions).then(dojo.hitch(this, function() {
+			this.moduleStore.add(newVals, this._newObjOptions).then(dojo.hitch(this, function() {
 				this.closeDetailPage();
 			}));
 		}
 		else {
 			// existing object .. get only the values that changed
 			var newVals = {};
-			umc.tool.forIn(vals, function(iname, ival) {
-				if (this._receivedObjData[iname] != ival) {
-					newVals[iname] = ival;
+			umc.tools.forIn(vals, dojo.hitch(this, function(iname, ival) {
+				var oldVal = this._receivedObjFormData[iname];
+				if (dojo.isArray(ival)) {
+					if (dojo.toJson(ival) != dojo.toJson(oldVal)) {
+						newVals[iname] = ival;
+					}
 				}
-			});
+				// string .. ignore if empty and if it was not given before
+				else {
+					if (oldVal != ival) {
+						newVals[iname] = ival;
+					}
+				}
+			}));
+
+			// set the LDAP DN
+			newVals[this.idProperty] = vals[this.idProperty];
+
 			this.moduleStore.put(newVals).then(dojo.hitch(this, function() {
 				this.closeDetailPage();
 			}));
