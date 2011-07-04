@@ -137,7 +137,20 @@ Type=str
 Categories=service-adcon
 
 [con.*/ad/password/timestamp/check]
-Description[de]=Die Variable gibt an, ob die Passwortsynchronisation nur erfolgt, wenn das zu synchronisierende Passwort neuer ist (default: false)
-Description[de]=The variable specifies that the password synchronisation only performs if the sync password newer is (default: false)
+Description[de]=Die Variable gibt an, ob die Passwortsynchronisation nur erfolgt, wenn das zu synchronisierende Passwort neuer ist. Bitte beachten Sie, dass das Zurücksetzen der Passwörter dann nicht mehr eindeutig erkennt werden kann, das Verhalten kann über con.*/ad/password/timestamp/ignorreset/.* gesteuert werden (default: false)
+Description[en]=The variable specifies that the password synchronisation only performs if the sync password newer is. Please note the password reset won't discovered in all cases, the programm behavior can configured by con.*/ad/password/timestamp/ignorreset/.* (default: false)
 Type=bool
 Categories=service-adcon
+
+[con.*/ad/password/timestamp/ignorereset/ucs]
+Description[de]=Diese Variable gibt an, ob das Zurücksetzen des Passworts auf UCS Seite während der Timestamp"=Überprüfung berücksichtigt werden soll (default: false)
+Description[en]=The variable specifies that the passwort reset on UCS will be considered while checking the timestamp (default: false)
+Type=bool
+Categories=service-adcon
+
+[con.*/ad/password/timestamp/ignorereset/ad]
+Description[de]=Diese Variable gibt an, ob das Zurücksetzen des Passworts auf Active Directory Seite während der Timestamp"=Überprüfung berücksichtigt werden soll (default: false)
+Description[en]=The variable specifies that the passwort reset on Active Directory will be considered while checking the timestamp (default: false)
+Type=bool
+Categories=service-adcon
+

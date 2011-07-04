@@ -193,9 +193,12 @@ def password_sync_ucs(connector, key, object):
 	# Only sync passwords from UCS to AD when the password timestamp in UCS is newer
 	if connector.baseConfig.is_true('%s/ad/password/timestamp/check' % connector.CONFIGBASENAME, False):
 		ad_password_last_set = 0
-		# If sambaPwdLastSet was set to 1 the password must be change on next login. In this
-		# case the timestamp is ignored and the password will be synced.
-		if sambaPwdLastSet != None and sambaPwdLastSet != 1:
+		# If sambaPwdLast was set to 1 the password must be changed on next login. In this
+		# case the timestamp is ignored and the password will be synced. This behaviour can
+		# be disbled by setting connector/ad/password/timestamp/ignorereset/ucs to false. This
+		# might be necessary if the connector is configured in read mode and the password will be
+		# synced in two ways: Bug #22653
+		if sambaPwdLastSet > 1 or (sambaPwdLastSet == 1 and connector.baseConfig.is_true('%s/ad/password/timestamp/ignorreset/ucs' % connector.CONFIGBASENAME, False):
 			ad_password_last_set = univention.connector.ad.ad2samba_time(pwdLastSet)
 			if sambaPwdLastSet:
 				if long(ad_password_last_set) >= long(sambaPwdLastSet):
@@ -269,7 +272,13 @@ def password_sync(connector, key, ucs_object):
 	if connector.baseConfig.is_true('%s/ad/password/timestamp/check' % connector.CONFIGBASENAME, False):
 		# Only sync the passwords from AD to UCS when the pwdLastSet timestamps in AD are newer
 		ad_password_last_set = 0
-		if pwdLastSet != None:
+
+		# If pwdLastSet was set to 0 the password must be changed on next login. In this
+		# case the timestamp is ignored and the password will be synced. This behaviour can
+		# be disbled by setting connector/ad/password/timestamp/ignorereset/ad to false. This
+		# might be necessary if the connector is configured in read mode and the password will be
+		# synced in two ways: Bug #22653
+		if pwdLastSet or (pwdLastSet == 0 and connector.baseConfig.is_true('%s/ad/password/timestamp/ignorreset/ad' % connector.CONFIGBASENAME, False):
 			ad_password_last_set = univention.connector.ad.ad2samba_time(pwdLastSet)
 			if sambaPwdLastSet:
 				if long(sambaPwdLastSet) >= long(ad_password_last_set) and long(sambaPwdLastSet) != 1:
