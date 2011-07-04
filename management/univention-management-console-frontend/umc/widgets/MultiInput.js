@@ -103,13 +103,16 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.M
 	},
 
 	_getAllValues: function() {
-		var i, j, vals = [], rowVals = [];
+		var i, j, val, isSet, vals = [], rowVals = [];
 		for (i = 0; i < this._widgets.length; ++i) {
 			rowVals = [];
+			isSet = false;
 			for (j = 0; j < this._widgets[i].length; ++j) {
-				rowVals.push(this._widgets[i][j].get('value'));
+				val = this._widgets[i][j].get('value');
+				isSet = isSet || ('' !== val);
+				rowVals.push(val);
 			}
-			vals.push(rowVals.join(this.delimiter));
+			vals.push(isSet ? rowVals.join(this.delimiter) : '');
 		}
 		return vals;
 	},
