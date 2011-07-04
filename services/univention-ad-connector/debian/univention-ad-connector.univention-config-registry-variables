@@ -143,14 +143,14 @@ Type=bool
 Categories=service-adcon
 
 [con.*/ad/password/timestamp/ignorereset/ucs]
-Description[de]=Diese Variable gibt an, ob das Zurücksetzen des Passworts auf UCS Seite während der Timestamp"=Überprüfung berücksichtigt werden soll (default: false)
-Description[en]=The variable specifies that the passwort reset on UCS will be considered while checking the timestamp (default: false)
+Description[de]=Diese Variable gibt an, ob das Zurücksetzen des Passworts auf UCS Seite während der Timestamp"=Überprüfung berücksichtigt werden soll (default: true)
+Description[en]=The variable specifies that the passwort reset on UCS will be considered while checking the timestamp (default: true)
 Type=bool
 Categories=service-adcon
 
 [con.*/ad/password/timestamp/ignorereset/ad]
-Description[de]=Diese Variable gibt an, ob das Zurücksetzen des Passworts auf Active Directory Seite während der Timestamp"=Überprüfung berücksichtigt werden soll (default: false)
-Description[en]=The variable specifies that the passwort reset on Active Directory will be considered while checking the timestamp (default: false)
+Description[de]=Diese Variable gibt an, ob das Zurücksetzen des Passworts auf Active Directory Seite während der Timestamp"=Überprüfung berücksichtigt werden soll (default: true)
+Description[en]=The variable specifies that the passwort reset on Active Directory will be considered while checking the timestamp (default: true)
 Type=bool
 Categories=service-adcon
 

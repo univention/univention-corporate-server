@@ -42,18 +42,21 @@ createLogfile /var/log/univention/ad-connector-certificate.log "root:adm" 640
 createLogfile /var/log/univention/connector.log "root:adm" 640
 createLogfile /var/log/univention/connector-status.log "root:adm" 640
 
-univention-config-registry set connector/ad/listener/dir?/var/lib/univention-connector/ad
-univention-config-registry set connector/ad/poll/sleep?5
-univention-config-registry set connector/ad/retryrejected?10
-univention-config-registry set connector/ad/ldap/port?389
-univention-config-registry set connector/ad/ldap/ssl?yes
-univention-config-registry set connector/debug/function?0
-univention-config-registry set connector/debug/level?1
-univention-config-registry set connector/password/service/encoding?"iso8859-15"
-univention-config-registry set connector/ad/mapping/user/primarymail?false connector/ad/mapping/user/win2000/description?false
-univention-config-registry set connector/ad/mapping/group/primarymail?false connector/ad/mapping/group/win2000/description?false connector/ad/mapping/group/language?de
-univention-config-registry set connector/ad/mapping/syncmode?sync
-univention-config-registry set connector/ad/autostart?yes
+univention-config-registry set	connector/ad/listener/dir?/var/lib/univention-connector/ad \
+								connector/ad/poll/sleep?5 \
+								connector/ad/retryrejected?10 \
+								connector/ad/ldap/port?389 \
+								connector/ad/ldap/ssl?yes \
+								connector/debug/function?0 \
+								connector/debug/level?1 \
+								connector/password/service/encoding?"iso8859-15" \
+								connector/ad/mapping/user/primarymail?false connector/ad/mapping/user/win2000/description?false \
+								connector/ad/mapping/group/primarymail?false connector/ad/mapping/group/win2000/description?false connector/ad/mapping/group/language?de \
+								connector/ad/mapping/syncmode?sync \
+								connector/ad/autostart?yes \
+								connector/ad/password/timestamp/check?false \
+								connector/ad/password/timestamp/ignorereset/ucs?true \
+								connector/ad/password/timestamp/ignorereset/ad?true
 
 if [ ! -d /var/lib/univention-connector/ad ]; then
 	mkdir -p /var/lib/univention-connector/ad
