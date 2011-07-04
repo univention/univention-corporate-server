@@ -1,3 +1,9 @@
+univention-ad-connector (5.0.22-1) unstable; urgency=low
+
+  * Added missing brackets (Bug #22751)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 04 Jul 2011 08:02:18 +0200
+
 univention-ad-connector (5.0.21-1) unstable; urgency=low
 
   * Set default values in postinst for

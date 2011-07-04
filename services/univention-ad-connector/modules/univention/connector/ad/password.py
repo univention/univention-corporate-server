@@ -198,7 +198,7 @@ def password_sync_ucs(connector, key, object):
 		# be disbled by setting connector/ad/password/timestamp/ignorereset/ucs to false. This
 		# might be necessary if the connector is configured in read mode and the password will be
 		# synced in two ways: Bug #22653
-		if sambaPwdLastSet > 1 or (sambaPwdLastSet == 1 and connector.baseConfig.is_true('%s/ad/password/timestamp/ignorreset/ucs' % connector.CONFIGBASENAME, False):
+		if sambaPwdLastSet > 1 or (sambaPwdLastSet == 1 and connector.baseConfig.is_true('%s/ad/password/timestamp/ignorreset/ucs' % connector.CONFIGBASENAME, False)):
 			ad_password_last_set = univention.connector.ad.ad2samba_time(pwdLastSet)
 			if sambaPwdLastSet:
 				if long(ad_password_last_set) >= long(sambaPwdLastSet):
@@ -278,7 +278,7 @@ def password_sync(connector, key, ucs_object):
 		# be disbled by setting connector/ad/password/timestamp/ignorereset/ad to false. This
 		# might be necessary if the connector is configured in read mode and the password will be
 		# synced in two ways: Bug #22653
-		if pwdLastSet or (pwdLastSet == 0 and connector.baseConfig.is_true('%s/ad/password/timestamp/ignorreset/ad' % connector.CONFIGBASENAME, False):
+		if pwdLastSet or (pwdLastSet == 0 and connector.baseConfig.is_true('%s/ad/password/timestamp/ignorreset/ad' % connector.CONFIGBASENAME, False)):
 			ad_password_last_set = univention.connector.ad.ad2samba_time(pwdLastSet)
 			if sambaPwdLastSet:
 				if long(sambaPwdLastSet) >= long(ad_password_last_set) and long(sambaPwdLastSet) != 1:
