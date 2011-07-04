@@ -60,6 +60,10 @@ dojo.declare("umc.widgets.PasswordInputBox", [ umc.widgets.ContainerWidget, umc.
 		this.connect(this._firstWidget, 'onChange', dojo.hitch(this._secondWidget, 'validate', false));
 	},
 
+	_getValueAttr: function() {
+		return this._secondWidget.get('value');
+	},
+
 	_checkValidity: function(ipwBox) {
 		// make sure we can access the widgets
 		if (!this._firstWidget || !this._secondWidget) {

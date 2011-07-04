@@ -1,3 +1,12 @@
+univention-management-console-frontend (0.0.68-1) unstable; urgency=low
+
+  * simplified form handling (iterate over list of widgets in umc.widgets.Form)
+  * make umc.widgets.DateBox return 'yyyy-MM-dd' strings
+  * added missing 'new' statements
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 04 Jul 2011 14:31:04 +0200
+
 univention-management-console-frontend (0.0.67-1) unstable; urgency=low
 
   * adapted store API (Bug #22461)

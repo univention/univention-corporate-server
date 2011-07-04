@@ -5,8 +5,12 @@ dojo.provide("umc.widgets.CheckBox");
 dojo.require("dijit.form.CheckBox");
 
 dojo.declare("umc.widgets.CheckBox", dijit.form.CheckBox, {
+	_setValueAttr: function(newValue) {
+		this.set('checked', newValue == '0' || newValue == 'false' || newValue == 'FALSE' || !newValue ? false : true);
+	},
+
 	_getValueAttr: function() {
-		return this.inherited(arguments) ? true : false;
+		return this.get('checked');
 	}
 });
 

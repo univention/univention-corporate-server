@@ -134,7 +134,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 //		this._standbyWidget.startup();
 
 		// create login dialog
-		this._loginDialog = umc.widgets.LoginDialog({});
+		this._loginDialog = new umc.widgets.LoginDialog({});
 		this._loginDialog.startup();
 		dojo.connect(this._loginDialog, 'onLogin', this, 'onLogin');
 

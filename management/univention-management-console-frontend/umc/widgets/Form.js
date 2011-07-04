@@ -68,6 +68,8 @@ dojo.declare("umc.widgets.Form", [
 
 	_dependencyMap: null,
 
+	_loadedID: null,
+
 	'class': 'umcNoBorder',
 
 	postMixInProperties: function() {
@@ -166,94 +168,26 @@ dojo.declare("umc.widgets.Form", [
 				});
 			}
 		}, this);
-
-		// register for dynamically changing Widgets
-		umc.tools.forIn(this._widgets, function(iname, iwidget) {
-			if (iwidget.onWidgetAdd) {
-				this.connect(iwidget, 'onWidgetAdd', function(widget) {
-					this.registerWidget(widget);
-				});
-				this.connect(iwidget, 'onWidgetRemove', function(widget) {
-					this.unregisterWidget(widget.name);
-				});
-			}
-		}, this);
 	},
 
 	// regexp for matching 1D and 2D array-like names
-	_arrayRegExp: /^([^\[\]]+)\[([^\[\]]+)\](\[([^\[\]]+)\])?$/,
 	gatherFormValues: function() {
-		var vals = this.inherited(arguments);
-
-		// now we might have elements with names such as 'myname[2]' or 'myname[dd]',
-		// these indicate array/dict elements .. parse these elements into a real 
-		// arrays/dicts
-		var parsedVals = {};
-		umc.tools.forIn(vals, function(ikey, ival) {
+		// gather values from all registered widgets
+		var vals = {};
+		umc.tools.forIn(this._widgets, function(iname, iwidget) {
 			// ignore elements that start with '__'
-			if ('__' == ikey.substr(0, 2)) {
-				return true;
-			}
-
-			// check whether we have an array expression
-			var m = this._arrayRegExp.exec(ikey);
-			if (!m) {
-				// normal value
-				parsedVals[ikey] = ival;
-			}
-			else {
-				// get the key and parse the indeces
-				var key = m[1];
-				var idx = [ key, m[2] ]; // list of 'string' indeces
-				if (undefined !== m[4]) {
-					idx.push(m[4]);
-				}
-				var nidx = dojo.map(idx, function(i) { // list of integer indeces
-					return parseInt(i, 10);
-				});
-
-				// get the object that is referenced
-				var path = parsedVals;
-				var lastIdx = null;
-				for (var i = 0; i < idx.length - 1; ++i) {
-					// check the next level
-					var subPath = path[ nidx[i] || idx[i] ];
-
-					if (!subPath) {
-						// object does not exist, create dict or array depending on whehter 
-						// we got a number or string as index
-						subPath = path[ nidx[i] || idx[i] ] = isNaN(nidx[i + 1]) ? {} : [];
-					}
-					path = subPath;
-					lastIdx = nidx[i + 1] || idx[i + 1];
-				}
-				path[ nidx[idx.length - 1] || idx[idx.length - 1] ] = ival;
+			if ('__' != iname.substr(0, 2)) {
+				vals[iname] = iwidget.get('value');
 			}
 		}, this);
-
-		// for arrays, remove last elements that are empty
-		var objList = [ parsedVals ]; // LIFO of elements to examine
-		while (objList.length) {
-			// take next element in list
-			var iobj = objList.pop();
-
-			if (dojo.isArray(iobj)) {
-				// element is an array, remove last elements that are empty
-				while (iobj.length && !iobj[iobj.length - 1]) {
-					iobj.pop();
-				}
-			}
-			else if (dojo.isObject(iobj)) {
-				// element is an object, it may contain arrays .. add all objects to the list
-				var newObjs = [];
-				umc.tools.forIn(iobj, function(jkey, jobj) {
-					newObjs.push(jobj);
-				});
-				objList = objList.concat(newObjs);
-			}
+		
+		// add item ID to the dictionary in case it is not already included
+		var idProperty = dojo.getObject('moduleStore.idProperty', false, this);
+		if (idProperty && !(idProperty in vals) && null !== this._loadedID) {
+			vals[idProperty] = this._loadedID;
 		}
 
-		return parsedVals;
+		return vals;
 	},
 
 	setFormValues: function(values) {
@@ -295,7 +229,7 @@ dojo.declare("umc.widgets.Form", [
 		umc.tools.assert(itemID, 'The specifid itemID for umc.widgets.Form.load() must valid.');
 
 		// query data from server
-		this.moduleStore.get(itemID).then(dojo.hitch(this, function(data) {
+		var deferred = this.moduleStore.get(itemID).then(dojo.hitch(this, function(data) {
 			var values = this.gatherFormValues();
 			var newValues = {};
 
@@ -308,13 +242,18 @@ dojo.declare("umc.widgets.Form", [
 
 			// set all values at once
 			this.setFormValues(newValues);
+			this._loadedID = itemID;
 
 			// fire event
 			this.onLoaded(true);
+
+			return newValues;
 		}), dojo.hitch(this, function(error) {
 			// fire event also in error case
 			this.onLoaded(false);
 		}));
+
+		return deferred;
 	},
 
 	save: function() {
@@ -326,13 +265,15 @@ dojo.declare("umc.widgets.Form", [
 
 		// sending the data to the server
 		var values = this.gatherFormValues();
-		this.moduleStore.put(values).then(dojo.hitch(this, function() {
+		var deferred = this.moduleStore.put(values).then(dojo.hitch(this, function() {
 			// fire event
 			this.onSaved(true);
 		}), dojo.hitch(this, function() {
 			// fire event also in error case
 			this.onSaved(false);
 		}));
+
+		return deferred;
 	},
 
 	onSaved: function(/*Boolean*/ success) {

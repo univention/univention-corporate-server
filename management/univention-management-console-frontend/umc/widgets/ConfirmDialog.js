@@ -37,7 +37,7 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 		this.inherited(arguments);
 
 		// create our widgets...
-		this._labelWidget = umc.widgets.Text({
+		this._labelWidget = new umc.widgets.Text({
 			content: this.message
 		});
 		

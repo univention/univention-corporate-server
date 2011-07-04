@@ -3,7 +3,7 @@
 dojo.provide("umc.widgets.MultiInput");
 
 dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets.HiddenInput");
+//dojo.require("umc.widgets.HiddenInput");
 dojo.require("umc.tools");
 
 dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.Mixin ], {
@@ -30,8 +30,6 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.M
 
 	_rowContainers: null,
 
-	_hiddenInputs: null,
-
 	_widgets: null,
 
 	_newButton: null,
@@ -45,7 +43,6 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.M
 
 		// initiate other properties
 		this._rowContainers = [];
-		this._hiddenInputs = [];
 		this._widgets = [];
 	},
 
@@ -106,10 +103,14 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.M
 	},
 
 	_getAllValues: function() {
-		var vals = [];
-		dojo.forEach(this._hiddenInputs, function(iwidget) {
-			vals.push(iwidget.get('value'));
-		});
+		var i, j, vals = [], rowVals = [];
+		for (i = 0; i < this._widgets.length; ++i) {
+			rowVals = [];
+			for (j = 0; j < this._widgets[i].length; ++j) {
+				rowVals.push(this._widgets[i][j].get('value'));
+			}
+			vals.push(rowVals.join(this.delimiter));
+		}
 		return vals;
 	},
 
@@ -120,20 +121,6 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.M
 			vals.pop();
 		}
 		return vals;
-	},
-
-	_updateHiddenInput: function(hiddenWidget, visibleWidgets) {
-		var vals = dojo.map(visibleWidgets, function(iwidget) {
-			return iwidget.get('value');
-		});
-		var valuesSet = false;
-		dojo.forEach(vals, function(ival) {
-			valuesSet = valuesSet || ival;
-		});
-		if (!valuesSet) {
-			vals = [];
-		}
-		hiddenWidget.set('value', vals.join(this.delimiter));
 	},
 
 	_removeNewButton: function() {
@@ -181,15 +168,8 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.M
 		this._removeNewButton();
 
 		for (var irow = this._nRenderedElements; irow < this._nRenderedElements + n; ++irow) {
-			// add a hidden element that contains the value that is passed over to the server
-			var hiddenWidgetName = this.name + '[' + irow + ']';
-			var widgetConfs = [{
-				type: 'HiddenInput',
-				name: hiddenWidgetName
-			}];
-
 			// add all other elements with '__' such that they will be ignored by umc.widgets.form
-			var order = [];
+			var order = [], widgetConfs = [];
 			dojo.forEach(this.subtypes, function(iwidget, i) {
 				// add the widget configuration dict to the list of widgets
 				var iname = '__' + this.name + '-' + irow + '-' + i;
@@ -201,15 +181,12 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.M
 				order.push(iname);
 			}, this);
 
-			// render the widgets, layout them, and connect to onChange events in order to
-			// update the hidden input field
+			// render the widgets and layout them
 			var widgets = umc.tools.renderWidgets(widgetConfs);
-			var hiddenWidget = widgets[hiddenWidgetName];
 			var visibleWidgets = dojo.map(order, function(iname) {
 				return widgets[iname];
 			});
 			var rowContainer = new umc.widgets.ContainerWidget({});
-			rowContainer.addChild(hiddenWidget);
 			var hasSubTypeLabels = false;
 			dojo.forEach(order, function(iname) {
 				// add widget to row container (wrapped by a LabelPane)
@@ -218,9 +195,6 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.M
 					content: widgets[iname],
 					label: irow !== 0 ? '' : null // only keep the label for the first row
 				}));
-
-				// connect to widget's onChange event
-				dojo.connect(widgets[iname], 'onChange', dojo.hitch(this, '_updateHiddenInput', hiddenWidget, visibleWidgets));
 			}, this);
 
 			// add a 'remove' button at the end of the row
@@ -234,13 +208,9 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.M
 				label: irow === 0 && hasSubTypeLabels ? '&nbsp;' : '' // only keep the label for the first row
 			}));
 
-			// register the hidden input field
-			this.onWidgetAdd(hiddenWidget);
-
 			// add row
 			this.addChild(rowContainer);
 			this._rowContainers.push(rowContainer);
-			this._hiddenInputs.push(hiddenWidget);
 			this._widgets.push(visibleWidgets);
 		}
 
@@ -260,15 +230,11 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.M
 		this._removeNewButton();
 		
 		for (var irow = this._nRenderedElements - 1; irow >= this._nRenderedElements - n; --irow) {
-			// register removal of hidden input infield
-			this.onWidgetRemove(this._hiddenInputs[irow]);
-
 			// destroy the row container
 			this._rowContainers[irow].destroyRecursive();
 
 			// clean up internal arrays
 			this._rowContainers.pop();
-			this._hiddenInputs.pop();
 			this._widgets.pop();
 		}
 
@@ -288,14 +254,6 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.M
 			vals.push('');
 		}
 		this._setAllValues(vals);
-	},
-
-	onWidgetAdd: function(widget) {
-		// event stub
-	},
-
-	onWidgetRemove: function(widget) {
-		// event stub
 	}
 });
 
