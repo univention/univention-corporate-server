@@ -1,3 +1,9 @@
+univention-ssl (5.0.7-1) unstable; urgency=low
+
+  * sync root certificate to /var/www (Bug #22909)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 04 Jul 2011 13:39:43 +0200
+
 univention-ssl (5.0.6-2) unstable; urgency=low
 
   * Rebuild security fix for UCS 2.4-3 (Bug #22234)
