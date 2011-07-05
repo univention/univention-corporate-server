@@ -1,3 +1,9 @@
+univention-ad-connector (5.0.23-1) unstable; urgency=low
+
+  * More password timestamp handling and some cleanups (Bug #22751)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 05 Jul 2011 09:00:05 +0200
+
 univention-ad-connector (5.0.22-1) unstable; urgency=low
 
   * Added missing brackets (Bug #22751)

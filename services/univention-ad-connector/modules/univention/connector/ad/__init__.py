@@ -133,10 +133,14 @@ def ad2unix_time(l):
 	return time.strftime("%d.%m.%y",time.gmtime((l-d)/10000000))
 
 def samba2ad_time(l):
+	if l in [0,1]:
+		return l
 	d=116444736000000000L #difference between 1601 and 1970
 	return long(time.mktime(time.gmtime(l+3600)))*10000000+d
 
 def ad2samba_time(l):
+	if l == 0:
+		return l
 	d=116444736000000000L #difference between 1601 and 1970
 	return long(((l-d))/10000000)
 

@@ -153,7 +153,7 @@ def password_sync_ucs(connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, "   UCS DN not printable")
 
 	try:
-		res = connector.lo.lo.search(base=ucs_object['dn'], scope='base', attr=['sambaLMPassword', 'sambaNTPassword','sambaPwdLastSet','sambaPwdMustChange'])
+		res = connector.lo.lo.search(base=ucs_object['dn'], scope='base', attr=['sambaLMPassword', 'sambaNTPassword','sambaPwdLastSet'])
 	except ldap.NO_SUCH_OBJECT:
 		ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: The UCS object (%s) was not found. The object was removed." % ucs_object['dn'])
 		return
@@ -163,11 +163,6 @@ def password_sync_ucs(connector, key, object):
 		sambaPwdLastSet = long(res[0][1]['sambaPwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: sambaPwdLastSet: %s" % sambaPwdLastSet)
 	
-	sambaPwdMustChange = -1
-	if res[0][1].has_key('sambaPwdMustChange'):
-		sambaPwdMustChange = long(res[0][1]['sambaPwdMustChange'][0])
-	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: sambaPwdMustChange: %s" % sambaPwdMustChange)
-
 	pwd = None
 	if res[0][1].has_key('sambaNTPassword'):
 		pwd=res[0][1]['sambaNTPassword'][0]
@@ -198,7 +193,7 @@ def password_sync_ucs(connector, key, object):
 		# be disbled by setting connector/ad/password/timestamp/ignorereset/ucs to false. This
 		# might be necessary if the connector is configured in read mode and the password will be
 		# synced in two ways: Bug #22653
-		if sambaPwdLastSet > 1 or (sambaPwdLastSet == 1 and connector.baseConfig.is_true('%s/ad/password/timestamp/ignorreset/ucs' % connector.CONFIGBASENAME, False)):
+		if sambaPwdLastSet > 1 or ( sambaPwdLastSet <= 2 and connector.baseConfig.is_true('%s/ad/password/timestamp/ignorreset/ucs' % connector.CONFIGBASENAME, False)):
 			ad_password_last_set = univention.connector.ad.ad2samba_time(pwdLastSet)
 			if sambaPwdLastSet:
 				if long(ad_password_last_set) >= long(sambaPwdLastSet):
@@ -232,11 +227,11 @@ def password_sync_ucs(connector, key, object):
 		#	# password expired, must be changed on next login
 		#	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: samba pwd expired, set newpwdLastSet to 0")
 		#	newpwdlastset = "0"
-		if sambaPwdLastSet == 1:
-			newpwdlastset = "0"
+		if sambaPwdLastSet <= 1:
+			newpwdlastset = "0" # User must change his password
 		elif pwdLastSet and int(pwdLastSet) > 0 and not pwd_set:
 			newpwdlastset = "1"
-		if not long(newpwdlastset) > 0: # means: not == 1
+		if long(newpwdlastset) != 1:
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdlastset in modlist: %s" % newpwdlastset)
 			connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset)])
 		else:
@@ -244,6 +239,10 @@ def password_sync_ucs(connector, key, object):
 	else:
 		ud.debug(ud.LDAP, ud.ERROR, "password_sync_ucs: Failed to sync Password from AD ")
 
+		#if res and len(res) >3 and _get_integer(res[4:]) == 0:
+		#	connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'pwdlastset', "-1")])
+		#else:
+		#	ud.debug(ud.LDAP, ud.ERROR, "password_sync_ucs: Failed to sync Password from AD ")
 
 def password_sync(connector, key, ucs_object):
 	_d=ud.function('ldap.ad.password_sync')
@@ -262,7 +261,7 @@ def password_sync(connector, key, ucs_object):
 	if res[0][1].has_key('objectSid'):
 		rid = str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
 
-	ucs_result=connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdMustChange', 'sambaPwdLastSet','sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd'])
+	ucs_result=connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdLastSet','sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd'])
 
 	sambaPwdLastSet = None
 	if ucs_result[0][1].has_key('sambaPwdLastSet'):
@@ -278,7 +277,7 @@ def password_sync(connector, key, ucs_object):
 		# be disbled by setting connector/ad/password/timestamp/ignorereset/ad to false. This
 		# might be necessary if the connector is configured in read mode and the password will be
 		# synced in two ways: Bug #22653
-		if pwdLastSet or (pwdLastSet == 0 and connector.baseConfig.is_true('%s/ad/password/timestamp/ignorreset/ad' % connector.CONFIGBASENAME, False)):
+		if (pwdLastSet > 1) or (pwdLastSet in [0,1] and connector.baseConfig.is_true('%s/ad/password/timestamp/ignorreset/ad' % connector.CONFIGBASENAME, False)):
 			ad_password_last_set = univention.connector.ad.ad2samba_time(pwdLastSet)
 			if sambaPwdLastSet:
 				if long(sambaPwdLastSet) >= long(ad_password_last_set) and long(sambaPwdLastSet) != 1:
@@ -313,11 +312,6 @@ def password_sync(connector, key, ucs_object):
 			krb5Principal=ucs_result[0][1]['krb5PrincipalName'][0]
 		if ucs_result[0][1].has_key('userPassword'):
 			userPassword=ucs_result[0][1]['userPassword'][0]
-		sambaPwdMustChange = ''
-		if ucs_result[0][1].has_key('sambaPwdMustChange'):
-			sambaPwdMustChange=ucs_result[0][1]['sambaPwdMustChange'][0]
-		ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdMustChange: %s" % sambaPwdMustChange)
-
 
 		pwd_changed = False
 
@@ -348,33 +342,7 @@ def password_sync(connector, key, ucs_object):
 				modlist.append(('krb5PasswordEnd', ucs_result[0][1]['krb5PasswordEnd'][0], None))
 
 			if pwdLastSet or pwdLastSet == 0:
-				newSambaPwdMustChange = sambaPwdMustChange
-				if pwdLastSet == 0: # pwd change on next login
-					newSambaPwdMustChange = str(pwdLastSet)
-					newSambaPwdLastSet = str(pwdLastSet)
-				else:
-					newSambaPwdLastSet = str(univention.connector.ad.ad2samba_time(pwdLastSet))
-					userobject = connector.get_ucs_object('user', ucs_object['dn'])
-					if not userobject:
-						ud.debug(ud.LDAP, ud.ERROR, "password_sync: couldn't get user-object from UCS")
-						return False
-					sambaPwdMustChange=sambaPwdMustChange.strip()
-					if not sambaPwdMustChange.isdigit():
-						pass
-					elif pwd_changed or (long(sambaPwdMustChange) < time.time() and not pwdLastSet == 0):
-						pwhistoryPolicy = userobject.loadPolicyObject('policies/pwhistory')
-						try:
-							expiryInterval=int(pwhistoryPolicy['expiryInterval'])
-							newSambaPwdMustChange = str(long(newSambaPwdLastSet)+(expiryInterval*3600*24) )
-						except: # FIXME: which exception is to be caught?
-							# expiryInterval is empty or no legal int-string
-							pwhistoryPolicy['expiryInterval']=''
-							expiryInterval=-1
-							newSambaPwdMustChange = ''
-
-						ud.debug(ud.LDAP, ud.INFO, "password_sync: pwhistoryPolicy: expiryInterval: %s" %
-											   expiryInterval)
-
+				newSambaPwdLastSet = str(univention.connector.ad.ad2samba_time(pwdLastSet))
 
 				if sambaPwdLastSet:
 					if sambaPwdLastSet != newSambaPwdLastSet:
@@ -385,18 +353,6 @@ def password_sync(connector, key, ucs_object):
 					modlist.append(('sambaPwdLastSet', '', newSambaPwdLastSet ))
 					ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet in modlist (set): %s" %
 										newSambaPwdLastSet)
-
-				if sambaPwdMustChange != newSambaPwdMustChange:
-					# change if password has changed or "change pwd on next login" is not set
-					# set sambaPwdMustChange regarding to the univention-policy
-					if sambaPwdMustChange:
-						modlist.append(('sambaPwdMustChange', sambaPwdMustChange, newSambaPwdMustChange))
-						ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdMustChange in modlist (replace): %s" %
-									   newSambaPwdMustChange)
-					else:
-						modlist.append(('sambaPwdMustChange', '', newSambaPwdMustChange))
-						ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdMustChange in modlist (set): %s" %
-									   newSambaPwdMustChange)
 
 		if len(modlist)>0:	
 			connector.lo.lo.modify(ucs_object['dn'], modlist)
