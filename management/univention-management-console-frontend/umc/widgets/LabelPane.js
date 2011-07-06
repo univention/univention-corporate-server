@@ -42,7 +42,15 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 		}
 	},
 
-	_setLabelAttr: function(label) {
+	_setLabelAttr: function(_label) {
+		var label = _label;
+
+		// if we have a widget which is required, add the string ' (*)' to the label
+		if (dojo.getObject('domNode', false, this.content) && 
+				dojo.getObject('declaredClass', false, this.content) && 
+				dojo.getObject('required', false, this.content)) {
+			label = label + ' (*)';
+		}
 		this.label = label;
 		this.labelNode.innerHTML = label;
 	},

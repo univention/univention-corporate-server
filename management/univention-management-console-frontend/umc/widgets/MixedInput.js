@@ -4,8 +4,9 @@ dojo.provide("umc.widgets.MixedInput");
 
 dojo.require("dijit.layout.ContentPane");
 dojo.require("umc.tools");
+dojo.require("umc.widgets._FormWidgetMixin");
 
-dojo.declare("umc.widgets.MixedInput", dijit.layout.ContentPane, {
+dojo.declare("umc.widgets.MixedInput", [ dijit.layout.ContentPane, umc.widgets._FormWidgetMixin ], {
 	// umcpCommand:
 	//		Reference to the umcpCommand the widget should use.
 	//		In order to make the widget send information such as module flavor

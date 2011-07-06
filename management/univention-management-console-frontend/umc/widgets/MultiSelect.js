@@ -5,9 +5,10 @@ dojo.provide("umc.widgets.MultiSelect");
 dojo.require("dojox.form.CheckedMultiSelect");
 dojo.require("dojo.data.ItemFileWriteStore");
 dojo.require("umc.widgets._SelectMixin");
+dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.tools");
 
-dojo.declare("umc.widgets.MultiSelect", [ dojox.form.CheckedMultiSelect, umc.widgets._SelectMixin ], {
+dojo.declare("umc.widgets.MultiSelect", [ dojox.form.CheckedMultiSelect, umc.widgets._SelectMixin, umc.widgets._FormWidgetMixin ], {
 	multiple: true,
 	size: 5,
 

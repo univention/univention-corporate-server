@@ -5,8 +5,9 @@ dojo.provide("umc.widgets.MultiInput");
 dojo.require("umc.widgets.ContainerWidget");
 //dojo.require("umc.widgets.HiddenInput");
 dojo.require("umc.tools");
+dojo.require("umc.widgets._FormWidgetMixin");
 
-dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.i18n.Mixin ], {
+dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.widgets._FormWidgetMixin, umc.i18n.Mixin ], {
 	// summary:
 	//		Simple widget that displays a widget/HTML code with a label above.
 

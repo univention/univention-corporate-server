@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.70-1) unstable; urgency=low
+
+  * mark required form fields with '(*)' (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 06 Jul 2011 14:33:47 +0200
+
 univention-management-console-frontend (0.0.69-1) unstable; urgency=low
 
   * umc.widgets.MultiInput: ignore last empty entries
