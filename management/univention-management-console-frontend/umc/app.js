@@ -153,7 +153,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// cookie as soon as the session is invalid, the login screen will be shown
 		this._checkSessionTimer = new dojox.timing.Timer(1000);
 		this._checkSessionTimer.onTick = dojo.hitch(this, function() {
-			if (!dojo.cookie('UMCSessionId')) {
+			if (!dojo.isString(dojo.cookie('UMCSessionId'))) {
 				this.login();
 			}
 		});
