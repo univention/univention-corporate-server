@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  heimdal-dev,
  sharutils,
  ucslint
-Standards-Version: 3.7.2
+Standards-Version: 3.8.2
 
 Package: python-univention-heimdal
 Architecture: any

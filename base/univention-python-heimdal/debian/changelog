@@ -1,3 +1,10 @@
+univention-python-heimdal (4.0.0-3) unstable; urgency=low
+
+  * copyright updated for Bug #22520
+  * Standards-Version updated
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Jul 2011 11:20:29 +0200
+
 univention-python-heimdal (4.0.0-2) unstable; urgency=low
 
   * fixed build dependency; Bug #22520
