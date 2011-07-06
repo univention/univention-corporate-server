@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.28-1) unstable; urgency=low
+
+  * provide standard salt to asn1_encode_key (Bug #22212)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Jul 2011 09:25:12 +0200
+
 univention-directory-manager-modules (7.0.27-1) unstable; urgency=low
 
   * syntax: dhcpEntry is now based and complex and therefor the computer

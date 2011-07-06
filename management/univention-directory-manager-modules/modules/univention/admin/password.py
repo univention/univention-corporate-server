@@ -65,15 +65,17 @@ def ntlm(password):
 
 	return (r[1],r[0])
 
-def krb5_asn1(principal, password, context=None):
+def krb5_asn1(principal, password, krb5_context=None):
 	list=[]
 	if type(principal) == types.UnicodeType:
 		principal = str( principal )
 	if type(password) == types.UnicodeType:
 		password = str( password )
-	if not context:
-		context = heimdal.context()
-	for etype in context.get_default_in_tkt_etypes():
-		keyblock = heimdal.keyblock(context, etype, password, heimdal.principal(context, principal))
-		list.append(heimdal.asn1_encode_key(keyblock, None, 0))
+	if not krb5_context:
+		krb5_context = heimdal.context()
+	for krb5_etype in krb5_context.get_default_in_tkt_etypes():
+		krb5_principal = heimdal.principal(krb5_context, principal)
+		krb5_keyblock = heimdal.keyblock(krb5_context, krb5_etype, password, krb5_principal)
+		krb5_salt = heimdal.salt(krb5_context, krb5_principal)
+		list.append(heimdal.asn1_encode_key(krb5_keyblock, krb5_salt, 0))
 	return list
