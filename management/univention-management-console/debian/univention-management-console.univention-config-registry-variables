@@ -4,6 +4,12 @@ Description[en]=Timout of Univention Management Console session
 Type=str
 Categories=management-umc
 
+[umc/web/timeout/presession]
+Description[de]=Laufzeit von Univention Management Console Sitzungen ohne Anmeldung (Anmeldung trotzdem möglich)
+Description[en]=Timout of Univention Management Console session without login (login still possible)
+Type=str
+Categories=management-umc
+
 [umc/web/debug/level]
 Description[de]=Debug-Level für das Web-Frontend von UMC
 Description[en]=Debug level of the UMC web frontend

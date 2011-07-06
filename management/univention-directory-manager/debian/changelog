@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.76-1) unstable; urgency=low
+
+  * make lifetime of session, when not logged in, configurable via UCR (Bug #21982)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 06 Jul 2011 10:46:39 +0200
+
 univention-directory-manager (8.0.75-1) unstable; urgency=low
 
   * reduce lifetime of session, when not logged in, from 30s to 5s (Bug #21982)

@@ -16,6 +16,12 @@ Description[en]=Session timeout of the Univention Directory Manager web frontend
 Type=str
 Categories=management-udm
 
+[directory/manager/timeout/presession]
+Description[de]=Sitzungsablaufintervall des Univention Directory Manager-Webfrontends ohne Anmeldung (Anmeldung trotzdem möglich)
+Description[en]=Session timeout of the Univention Directory Manager web frontend without login (login still possible)
+Type=str
+Categories=management-udm
+
 [directory/manager/cmd/timeout]
 Description[de]=Sitzungsablaufintervall des Univention Directory Manager-Kommandozeilenfrontends
 Description[en]=Session timeout of the commandline Univention Directory Manager
