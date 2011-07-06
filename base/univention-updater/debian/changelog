@@ -1,3 +1,9 @@
+univention-updater (6.0.89-1) unstable; urgency=low
+
+  * do not show proxy password on boot (Bug #22458)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 06 Jul 2011 12:15:55 +0200
+
 univention-updater (6.0.88-1) unstable; urgency=low
 
   * add jitter to univention-maintenance cron job (Bug #22010)
