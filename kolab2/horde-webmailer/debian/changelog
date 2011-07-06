@@ -1,3 +1,10 @@
+horde-webmailer (1.2.5~2.2.15-1) unstable; urgency=low
+
+  * revert adjusted upstream patch introduced in 1.2.5~2.2.6-1
+    to the original upstream patch (Bug #22027)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Jul 2011 14:59:41 +0200
+
 horde-webmailer (1.2.5~2.2.14-2) unstable; urgency=low
 
   * Adapt patches to the enforced quilt level (Bug #20191)

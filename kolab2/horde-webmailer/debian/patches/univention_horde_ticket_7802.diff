@@ -1,21 +1,75 @@
 https://forge.univention.org/bugzilla/show_bug.cgi?id=19893
 http://bugs.horde.org/ticket/7802
+https://forge.univention.org/bugzilla/show_bug.cgi?id=22027
 
---- a/horde-webmail/turba/lib/Driver.php	2010-09-23 14:57:26.000000000 +0200
-+++ b/horde-webmail/turba/lib/Driver.php	2010-11-19 12:06:53.000000000 +0100
-@@ -444,8 +444,13 @@
-             foreach ($this->map as $key => $val) {
-                 if (!is_array($val)) {
-                     $new_entry[$key] = null;
--                    if (isset($entry[$val]) && strlen($entry[$val])) {
--                        $new_entry[$key] = trim($entry[$val]);
-+		
-+                    if (isset($entry[$val])) {
-+                        if (is_array($entry[$val])) {
-+                             $new_entry[$key] = $entry[$val];
-+                        } elseif (strlen($entry[$val])) {
-+                             $new_entry[$key] = trim($entry[$val]);
-+                        }
-                     }
-                 }
-             }
+This patch overloads the method toTurbaKeys defined in /turba/lib/Driver.php
+to introduce a slight adjustment necessary for the kolab backend driver, where
+the value to the 'email' key in the $object is of type hash. In the kolab driver
+there seems to be some confusion about the 'email' and 'emails' keys. To avoid
+php errors for array to string conversion the content of the 'email' key is not
+copied to the turba object. Somewhere in sources.d it says that this 'email' key
+is "hidden", so probably this is ok. See also the comment "// Special emails hack"
+in turba/lib/Driver/kolab.php ...
+
+--- a/horde-webmail/turba/lib/Driver/kolab.php.orig	2011-07-06 10:39:18.000000000 +0200
++++ b/horde-webmail/turba/lib/Driver/kolab.php	2011-07-06 10:42:46.000000000 +0200
+@@ -165,6 +165,20 @@ class Turba_Driver_kolab extends Turba_D
+     }
+ 
+     /**
++     * Translates an array of hashes from being keyed on driver-specific
++     * fields to being keyed on the generalized Turba attributes. The
++     * translation is based on the contents of $this->map.
++     *
++     * @param array $objects  Array of hashes using driver-specific keys.
++     *
++     * @return array  Translated version of $objects.
++     */
++    function toTurbaKeys($objects)
++    {
++        return $this->_wrapper->toTurbaKeys($objects, $this->map);
++    }
++
++    /**
+      * Creates a new Horde_Share
+      *
+      * @param array  The params for the share.
+@@ -1297,4 +1311,38 @@ class Turba_Driver_kolab_wrapper_new ext
+ 
+         return $key;
+     }
++
++    /**
++     * Translates an array of hashes from being keyed on driver-specific
++     * fields to being keyed on the generalized Turba attributes. The
++     * translation is based on the contents of $this->map.
++     *
++     * @param array $objects  Array of hashes using driver-specific keys.
++     * @param array $map  Hash that maps between Turba fields and kolab specific fields.
++     *
++     * @return array  Translated version of $objects.
++     */
++    function toTurbaKeys($objects, $map)
++    {
++        $attributes = array();
++        foreach ($objects as $entry) {
++            $new_entry = array();
++
++            foreach ($map as $key => $val) {
++
++                if (!is_array($val)) {
++                    $new_entry[$key] = null;
++                    if ($key == 'email') {
++                        continue;
++                    }
++                    if (isset($entry[$val]) && strlen($entry[$val])) {
++                        $new_entry[$key] = trim($entry[$val]);
++                    }
++                }
++            }
++
++            $attributes[] = $new_entry;
++        }
++        return $attributes;
++    }
+ }
