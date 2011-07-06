@@ -11,6 +11,7 @@ dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.layout.TabContainer");
 dojo.require("dojo.cookie");
 dojo.require("dojox.html.styles");
+dojo.require("dojox.timing");
 dojo.require("umc.widgets.CategoryPane");
 dojo.require("umc.widgets.ConfirmDialog");
 dojo.require("umc.widgets.ContainerWidget");
@@ -31,6 +32,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	_alertDialog: null,
 	_toaster: null,
 	_userPreferences: null,
+	_checkSessionTimer: null,
 
 	defaultPreferences: {
 		tooltips: true,
@@ -115,13 +117,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 //		}
 //	},
 
-	login: function() {
-		// summary: 
-		//		Show the login dialog.
-		this.loggingIn = true;
-		this._loginDialog.show();
-	},
-
 	start: function() {
 		// create a standby widget
 //		this._standbyWidget = new dojox.widget.Standby({
@@ -154,6 +149,15 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// create toaster
 		this._toaster = new umc.widgets.Toaster({});
 
+		// create a background process that checks each second the validity of the session
+		// cookie as soon as the session is invalid, the login screen will be shown
+		this._checkSessionTimer = new dojox.timing.Timer(1000);
+		this._checkSessionTimer.onTick = dojo.hitch(this, function() {
+			if (!dojo.cookie('UMCSessionId')) {
+				this.login();
+			}
+		});
+
 		// check whether we still have a app cookie
 		var sessionCookie = dojo.cookie('UMCSessionId');
 		if (undefined === sessionCookie) {
@@ -172,17 +176,27 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		});
 	},
 
+	login: function() {
+		// summary: 
+		//		Show the login dialog.
+		this.loggingIn = true;
+		this._checkSessionTimer.stop();
+		this._loginDialog.show();
+	},
+
 	username: null,
 	onLogin: function(username) {
 		this.username = username;
 		dojo.cookie('UMCUsername', username, { expires: 100, path: '/' });
 		this.loggingIn = false;
 		this._loginDialog.hide();
+		this._checkSessionTimer.start();
 		umc.tools.umcpCommand('set', {
 			locale: dojo.locale
 		} ).then( dojo.hitch( this, function( data ) { 
 			this.loadModules(); 
 		} ) );
+
 	},
 
 	// _tabContainer:
