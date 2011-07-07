@@ -56,7 +56,7 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			cols: 1
 		});
 
-        this._page.AddChild(this._form);
+        this._page.addChild(this._form);
 
         this._page.startup();
     }

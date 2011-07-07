@@ -1,3 +1,11 @@
+univention-management-console-module-reboot (1.0.1-1) unstable; urgency=low
+
+  * added category for module
+  * fixed typo
+  (Bug #22848)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 07 Jul 2011 18:11:10 +0200
+
 univention-management-console-module-reboot (1.0.0-1) unstable; urgency=low
 
   * Initial release (Bug #22848)
