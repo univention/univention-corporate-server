@@ -29,6 +29,8 @@
 
 . /usr/share/univention-lib/all.sh
 
+eval "$(univention-config-registry shell)"
+
 usage(){ echo "$0 [-h|--help] [-w <samba4-admin password file>] [-W]"; exit 1; }
 
 SCRIPTDIR=/usr/share/univention-samba4/scripts
@@ -83,7 +85,7 @@ echo -n "$adminpw" >> "$pwfile"
 remove_port ()
 {
 	if [ -n "$1" -a -n "$2" ]; then
-		echo "$1" | sed -e 's|^${2},||;s|,${2},|,|;s|,${2}$||;s|^${2}$||'
+		echo "$1" | sed -e "s|^${2},||;s|,${2},|,|;s|,${2}$||;s|^${2}$||"
 	fi
 
 }
