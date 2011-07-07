@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.5-1) unstable; urgency=low
+
+  * Use correct listener dir (Bug #22580)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 07 Jul 2011 18:28:28 +0200
+
 univention-s4-connector (6.0.4-1) unstable; urgency=low
 
   * Use s4internal.cfg (Bug #22580)
