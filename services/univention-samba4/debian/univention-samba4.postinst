@@ -34,7 +34,7 @@
 
 #DEBHELPER#
 
-if [ -f /etc/samba/smb.conf]; then
+if [ -f /etc/samba/smb.conf ]; then
 	rm /etc/samba/smb.conf
 fi
 
