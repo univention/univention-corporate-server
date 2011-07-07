@@ -83,10 +83,22 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'delete',
 			label: this._( 'Delete' ),
 			description: this._( 'Deleting the selected LDAP object.' ),
-			iconClass: 'dijitIconDelete'
-			//callback: dojo.hitch(this, function(vars) {
-			//	this.moduleStore.multiRemove(vars);
-			//})
+			iconClass: 'dijitIconDelete',
+			callback: dojo.hitch(this, function(ids) {
+				umc.app.confirm(this._('Please confirm the removal of %d objects!', ids.length), [{ 
+					label: this._('Delete'),
+					callback: dojo.hitch(this, function() {
+						var transaction = this.moduleStore.transaction();
+						dojo.forEach(ids, function(iid) {
+							this.moduleStore.remove(iid);
+						}, this);
+						transaction.commit();
+					})
+				}, { 
+					label: this._('Cancel'), 
+					'default': true 
+				}]);
+			})
 		}];
 
 		// define grid columns
