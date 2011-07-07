@@ -9,7 +9,10 @@ dojo.require("umc.widgets.ContainerWidget");
 dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 	// summary:
 	//		Class that abstracts a displayable page for a module.
-	//		Offers a BorderContainer for layout.
+	//		Offers the possibility to enter a help text that is shown or not
+	//		depending on the user preferences.
+	//		The widget itself is also a container such that children widgets
+	//		may be adde via the 'addChild()' method.
 
 	// helpText: String
 	//		Text that describes the module, will be displayed at the top of a page.
@@ -44,7 +47,7 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 
 		// hide the help text if specified
 		if (!this._helpTextShown) {
-			dojo.style(this._descriptionPane.domNode, {
+			dojo.style(this._helpTextPane.domNode, {
 				opacity: 0,
 				display: 'none'
 			});
@@ -76,7 +79,7 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 			return;
 		}
 
-		// make the node transparent, yet displayable and redo the layout
+		// make the node transparent, yet displayable 
 		dojo.style(this._helpTextPane.domNode, {
 			opacity: 0,
 			display: 'block'
@@ -101,12 +104,10 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 			node: this._helpTextPane.domNode,
 			duration: 500,
 			onEnd: dojo.hitch(this, function() {
-				// redo the layout
 				this._helpTextShown = false;
 				dojo.style(this._helpTextPane.domNode, {
 					display: 'none'
 				});
-				this.layout();
 			})
 		}).play();
 	}

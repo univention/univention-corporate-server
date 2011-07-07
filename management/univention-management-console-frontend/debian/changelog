@@ -1,3 +1,10 @@
+univention-management-console-frontend (0.0.72-1) unstable; urgency=low
+
+  * fixed problems with showing/hiding help text in umc.widgets.Page 
+    (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 07 Jul 2011 15:26:31 +0200
+
 univention-management-console-frontend (0.0.71-1) unstable; urgency=low
 
   * added time to automatically show login screen as soon as the session 
