@@ -1,3 +1,10 @@
+univention-ldap (8.0.10-1) unstable; urgency=low
+
+  * Use ldapi:/// interface for searching the schema because anonymous
+    bind is disabled by default (Bug #17519)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 07 Jul 2011 07:03:38 +0200
+
 univention-ldap (8.0.9-1) unstable; urgency=low
 
   * Added some more ucr descriptions (Bug #20026)
