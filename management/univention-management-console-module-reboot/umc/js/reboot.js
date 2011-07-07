@@ -15,10 +15,10 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	buildRendering: function() {
 		this.inherited(arguments);
 
-        this._page = new umc.widgets.Page(){
+        this._page = new umc.widgets.Page({
             title: this._("Reboot"),
-            helptext: this._("System reboot or shutdown"),
-        }
+            helptext: this._("System reboot or shutdown")
+        });
         this.addChild(this._page);
 
 		var widgets = [{
@@ -27,9 +27,9 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			value: 'reboot',
 			label: this._('Action'),
 			staticValues: [
-				{ id: 'reboot', label: this._('Reboot') }
+				{ id: 'reboot', label: this._('Reboot') },
 				{ id: 'halt', label: this._('Stop') }
-			],
+			]
 		}, {
 			type: 'TextBox',
 			name: 'reason',
@@ -53,15 +53,11 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			widgets: widgets,
 			buttons: buttons,
 			layout: layout,
-			moduleStore: this.moduleStore,
 			cols: 1
-		})
+		});
 
         this._page.AddChild(this._form);
 
         this._page.startup();
-
-        }
-
     }
-}
+});
