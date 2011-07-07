@@ -94,10 +94,9 @@ fi
 if [ -n "$slapd_port_ldaps" ]; then
 	univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)" >>$LOGFILE 2>&1
 fi
-if [ "$lapd_server_port" = "389" ]; then
-	univention-config-registry set lapd/server/port="7389" >>$LOGFILE 2>&1
+if [ "$ldap_server_port" = "389" ]; then
+	univention-config-registry set ldap/server/port="7389" >>$LOGFILE 2>&1
 fi
-
 
 ## restart processes with adjusted ports
 stop_udm_cli_server
@@ -126,10 +125,12 @@ if [ ! -e /usr/modules ]; then
 	ln -s /usr/lib /usr/modules		# somehow MODULESDIR is set to /usr/modules in samba4 source despite --enable-fhs
 fi
 
-S3_DOMAIN_SID="$(ldapsearch -x objectclass=sambadomain sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
+S3_DOMAIN_SID="$(univention-ldapsearch -x objectclass=sambadomain sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
 
-# /usr/sbin/upgradeprovision --full --realm="$kerberos_realm" -s /etc/samba/smb.conf.samba3
-/usr/sbin/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$S3_DOMAIN_SID" \
+export LDB_MODULES_PATH=/usr/lib/samba/ldb/
+
+# /usr/share/samba/setup/upgradeprovision --full --realm="$kerberos_realm" -s /etc/samba/smb.conf.samba3
+/usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$S3_DOMAIN_SID" \
 					--adminpass="$adminpw" --server-role='domain controller'	\
 					--machinepass=="$(</etc/machine.secret)" >>$LOGFILE 2>&1
 # the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use

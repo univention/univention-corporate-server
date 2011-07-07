@@ -1,3 +1,14 @@
+univention-samba4 (1.0.3-1) experimental; urgency=low
+
+  * set LDB_MODULES_PATH before starting provision (Bug #22559)
+  * adjust path to setup/provision tools to debian alpha16 package
+  * depend on samba4-clients
+  * remove existing smb.conf in postinst, replaced by smb.conf.d
+  * use univention-ldapsearch for authenticated search (Bug #17519)
+  * fix typo in setting of ldap/server/path
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Jul 2011 11:57:32 +0200
+
 univention-samba4 (1.0.2-1) experimental; urgency=low
 
   * Changed dependency from samba-ldb-tools to ldb-tools (Bug #22559)
