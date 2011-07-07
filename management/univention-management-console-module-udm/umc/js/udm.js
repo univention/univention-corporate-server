@@ -29,6 +29,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	_receivedObjFormData: null,
 	_receivedObjOrigData: null,
 	_newObjOptions: null,
+	_editedObjType: null,
+	_propertySubTabMap: null,
+	_detailPages: null,
 
 	buildRendering: function() {
 		// call superclass method
@@ -195,6 +198,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	_createDetailPage: function(objectType, ldapName) {
+		// remember the objectType of the object we are going to edit
+		this._editedObjType = objectType;
+
 		// for the detail page, we first need to query property data from the server
 		// for the layout of the selected object type, then we can render the page
 		var params = { objectType: objectType };
@@ -235,13 +241,33 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var widgets = umc.tools.renderWidgets(properties);
 
 		// render the layout for each subtab
+		this._propertySubTabMap = {}; // map to remember which form element is displayed on which subtab
+		this._detailPages = [];
 		dojo.forEach(layoutSubTabs, function(ilayout) {
+			// create a new page, i.e., subtab
 			var subTab = new umc.widgets.Page({
 				title: ilayout.label || ilayout.name //TODO: 'name' should not be necessary
 			});
 
+			// add rendered layout to subtab and register subtab
 			subTab.addChild(umc.tools.renderLayout(ilayout.layout, widgets));
 			this._detailTabs.addChild(subTab);
+
+			// update _propertySubTabMap
+			this._detailPages.push(subTab);
+			var layoutStack = [ ilayout.layout ];
+			while (layoutStack.length) {
+				var ielement = layoutStack.pop();
+				if (dojo.isArray(ielement)) {
+					layoutStack = layoutStack.concat(ielement);
+				}
+				else if (dojo.isString(ielement)) {
+					this._propertySubTabMap[ielement] = subTab;
+				}
+				else if (ielement.layout) {
+					layoutStack.push(ielement.layout);
+				}
+			}
 		}, this);
 		this._detailTabs.startup();
 
@@ -252,9 +278,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// buttons
 		var buttons = umc.tools.renderButtons([{
-			name: 'save',
-			label: this._('Save changes'),
-			callback: dojo.hitch(this, 'saveChanges')
+			name: 'submit',
+			label: this._('Save changes')
 		}, {
 			name: 'close',
 			label: this._('Back to search'),
@@ -274,7 +299,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._detailForm = new umc.widgets.Form({
 			widgets: widgets,
 			content: layout,
-			moduleStore: this.moduleStore
+			moduleStore: this.moduleStore,
+			onSubmit: dojo.hitch(this, 'validateChanges')
 		});
 		this.addChild(this._detailForm);
 	},
@@ -301,28 +327,100 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			this._newObjOptions = null;
 			this._receivedObjOrigData = null;
 			this._receivedObjFormData = null;
+			this._editedObjType = null;
+			this._propertySubTabMap = null;
+			this._detailPages = null;
 			this.closeChild(oldDetailForm);
 		}
 	},
 
-	saveChanges: function() {
+	validateChanges: function(e) {
+		// prevent standard form submission
+		e.preventDefault();
+
+		// get all values that have been altered
+		var vals = this.getAlteredValues();
+
+		// copy dict and remove the ID
+		var valsNoID = dojo.mixin({}, vals);
+		delete valsNoID[this.idProperty];
+
+		// reset changed headings
+		dojo.forEach(this._detailPages, function(ipage) {
+			// reset the original title (in case we altered it)
+			if (ipage.$titleOrig$) {
+				ipage.set('title', ipage.$titleOrig$);
+				delete ipage.$titleOrig$;
+			}
+		});
+
+		// before storing the values, make a syntax check of the user input on the server side
+		var params = {
+			objectType: this._editedObjType,
+			properties: valsNoID
+		};
+		this.umcpCommand('udm/validate', params).then(dojo.hitch(this, function(data) {
+			var validation = data.result;
+			var allValid = true;
+			dojo.forEach(data.result, function(ivalid) {
+				// make sure the form element exists
+				var iwidget = this._detailForm._widgets[ivalid.property];
+				if (!iwidget) {
+					return true;
+				}
+
+				// check whether form element is valid
+				allValid = allValid && ivalid.valid;
+				if (!ivalid.valid) {
+					iwidget.setInvalid(ivalid.details);
+
+					// mark the title of the subtab (in case we have not done it already)
+					var ipage = this._propertySubTabMap[ivalid.property];
+					if (ipage && !ipage.$titleOrig$) {
+						// store the original title
+						ipage.$titleOrig$ = ipage.title;
+						ipage.set('title', '<span style="color:red">' + ipage.title + ' (!)</span>');
+					}
+				}
+				else {
+					iwidget.resetValid();
+				}
+			}, this);
+
+			// if all elements are valid, save element
+			if (allValid) {
+				this.saveChanges(vals);
+			}
+		}));
+	},
+
+	saveChanges: function(vals) {
+		var deffered = null;
+		if (this._newObjOptions) {
+			deffered = this.moduleStore.add(vals, this._newObjOptions);
+		}
+		else {
+			deffered = this.moduleStore.put(vals);
+		}
+		deffered.then(dojo.hitch(this, function() {
+			this.closeDetailPage();
+		}));
+	},
+
+	getAlteredValues: function() {
+		// get all form values and see which values are new
 		var vals = this._detailForm.gatherFormValues();
+		var newVals = {};
 		if (this._newObjOptions) {
 			// get only non-empty values
-			var newVals = {};
 			umc.tools.forIn(vals, dojo.hitch(this, function(iname, ival) {
 				if (!(dojo.isArray(ival) && !ival.length) && ival) {
 					newVals[iname] = ival;
 				}
 			}));
-			// new object, save all properties
-			this.moduleStore.add(newVals, this._newObjOptions).then(dojo.hitch(this, function() {
-				this.closeDetailPage();
-			}));
 		}
 		else {
 			// existing object .. get only the values that changed
-			var newVals = {};
 			umc.tools.forIn(vals, dojo.hitch(this, function(iname, ival) {
 				var oldVal = this._receivedObjFormData[iname];
 				if (dojo.isArray(ival)) {
@@ -340,11 +438,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 			// set the LDAP DN
 			newVals[this.idProperty] = vals[this.idProperty];
-
-			this.moduleStore.put(newVals).then(dojo.hitch(this, function() {
-				this.closeDetailPage();
-			}));
 		}
+		return newVals;
 	},
 
 	postCreate: function() {
@@ -456,7 +551,7 @@ dojo.declare("umc.modules.udm._NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 
 			// templates
 			if (templates.length) {
-				templates.unshift({ id: '', label: this._('None') });
+				templates.unshift({ id: 'None', label: this._('None') });
 				widgets.push({
 					type: 'ComboBox',
 					name: 'objectTemplate',
