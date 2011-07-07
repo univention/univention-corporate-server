@@ -51,11 +51,11 @@ class Instance(umcm.Base):
                         do = "r"
                         target=_('The system is going down for reboot NOW with following message: ')
 
-                request.options['message'] = target + request.options['message']
+                request.options['reason'] = target + request.options['reason']
                 # TODO
                 # logger?
                 try:
-                        subprocess.call(('shutdown', '-%s' %do, 'now', str(request.options['message'])))
+                        subprocess.call(('shutdown', '-%s' %do, 'now', str(request.options['reason'])))
                         request.status = SUCCESS
                         success = True
                 except:

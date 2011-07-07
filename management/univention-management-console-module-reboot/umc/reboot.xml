@@ -5,7 +5,7 @@
 	<description>System reboot or halt</description>
 	<command name="reboot/execute" function="execute">
 	  <attribute name="action" syntax="Reboot-Options" required="1"/>
-	  <attribute name="message" syntax="String" required="1"/>
+	  <attribute name="reason" syntax="String" required="1"/>
 	  <return syntax="Boolean"/>
 	</command>
   </module>
