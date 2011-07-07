@@ -13,7 +13,7 @@ Depends: univention-config-registry,
  shell-univention-lib (>> 1.0.6),
  python-univention,
  samba4,
- samba-ldb-tools,
+ ldb-tools,
  pwgen
 Description: UCS - Samba4 integration package
  This package contains the scripts and patches

@@ -1,3 +1,9 @@
+univention-samba4 (1.0.2-1) experimental; urgency=low
+
+  * Changed dependency from samba-ldb-tools to ldb-tools (Bug #22559)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 08 Jun 2011 15:51:41 +0200
+
 univention-samba4 (1.0.1-1) experimental; urgency=low
 
   * Removed empty line from debian/univention-samba4.univention-config-
