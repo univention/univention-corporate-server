@@ -85,15 +85,19 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			description: this._( 'Deleting the selected LDAP object.' ),
 			iconClass: 'dijitIconDelete',
 			callback: dojo.hitch(this, function(ids) {
-				umc.app.confirm(this._('Please confirm the removal of %d objects!', ids.length), [{ 
+				// ignore empty selections
+				if (!ids.length) {
+					return;
+				}
+
+				// let user confirm deletion
+				var msg = this._('Please confirm the removal of the %d selected objects!', ids.length);
+				if (ids.length == 1) {
+					msg = this._('Please confirm the removal of the selected object!', ids.length);
+				}
+				umc.app.confirm(msg, [{ 
 					label: this._('Delete'),
-					callback: dojo.hitch(this, function() {
-						var transaction = this.moduleStore.transaction();
-						dojo.forEach(ids, function(iid) {
-							this.moduleStore.remove(iid);
-						}, this);
-						transaction.commit();
-					})
+					callback: dojo.hitch(this, 'removeObjects', ids)
 				}, { 
 					label: this._('Cancel'), 
 					'default': true 
@@ -417,6 +421,14 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		deffered.then(dojo.hitch(this, function() {
 			this.closeDetailPage();
 		}));
+	},
+
+	removeObjects: function(ids) {
+		var transaction = this.moduleStore.transaction();
+		dojo.forEach(ids, function(iid) {
+			this.moduleStore.remove(iid);
+		}, this);
+		transaction.commit();
 	},
 
 	getAlteredValues: function() {
