@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.2-1) unstable; urgency=low
+
+  * Removed univention-s4search, it will be part of univention-samba4
+    (Bug #22580)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 08 Jun 2011 13:37:11 +0200
+
 univention-s4-connector (6.0.1-1) unstable; urgency=low
 
   * Added missing install files from last commit (Bug #22580)
