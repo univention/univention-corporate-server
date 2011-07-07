@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.4-1) unstable; urgency=low
+
+  * Use s4internal.cfg (Bug #22580)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 07 Jul 2011 18:13:47 +0200
+
 univention-s4-connector (6.0.3-1) unstable; urgency=low
 
   * Install init.d script (Bug #22580)

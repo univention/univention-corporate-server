@@ -36,6 +36,7 @@ import ldap
 import pdb
 import univention_baseconfig
 import univention.uldap
+import univention.admin.config
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
@@ -239,7 +240,7 @@ class ucs:
 		self.listener_dir=listener_dir
 
 
-		self.configfile='/etc/univention/%s/internal.cfg' % self.CONFIGBASENAME
+		self.configfile='/etc/univention/%s/s4internal.cfg' % self.CONFIGBASENAME
 		if not os.path.exists(self.configfile):
 			os.mknod(self.configfile)
 		self.config = configsaver(self.configfile)
