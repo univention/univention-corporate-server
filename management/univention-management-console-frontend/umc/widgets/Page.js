@@ -31,6 +31,9 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
+		// remove title from the attributeMap
+		delete this.attributeMap.title;
+
 		// get user preferences for the module helpText
 		this._helpTextShown = umc.app.preferences('moduleHelpText');
 	},

@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.73-1) unstable; urgency=low
+
+  * added support for external validation of form elements (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 07 Jul 2011 17:39:45 +0200
+
 univention-management-console-frontend (0.0.72-1) unstable; urgency=low
 
   * fixed problems with showing/hiding help text in umc.widgets.Page 
