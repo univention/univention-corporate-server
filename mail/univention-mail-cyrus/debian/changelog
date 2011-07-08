@@ -1,3 +1,9 @@
+univention-mail-cyrus (3.0.9-1) unstable; urgency=low
+
+  * set premissions of /var/spool/cyrus/sieve directories (Bug #22045)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 08 Jul 2011 12:15:47 +0200
+
 univention-mail-cyrus (3.0.8-1) unstable; urgency=low
 
   * add missing dependency python-pexpect to univention-mail-cyrus{,-imap} (Bug #22981)
