@@ -818,7 +818,7 @@ class simpleLdap(base):
 				members=self.lo.getAttr(group, 'uniqueMember')
 				newmembers=[]
 				for member in members:
-					if not member.lower() == olddn.lower():
+					if not member.lower() in (olddn.lower(), self.dn.lower(), ):
 						newmembers.append(member)
 				newmembers.append(self.dn)
 				self.lo.modify(group, [('uniqueMember', members, newmembers)])
