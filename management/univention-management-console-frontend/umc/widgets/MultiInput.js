@@ -258,38 +258,30 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.widget
 		this._setAllValues(vals);
 	},
 
-	//
-	// propagate calls to validation methods
-	//
-
-	_propagate: function(funName, funArgs) {
+	isValid: function() {
+		var areValid = true;
 		var i, j;
 		for (i = 0; i < this._widgets.length; ++i) {
 			for (j = 0; j < this._widgets[i].length; ++j) {
-				var iwidget = this._widgets[i][j];
-				iwidget[funName].apply(iwidget, funArgs);
+				areValid = areValid && this._widgets[i][j].isValid();
 			}
 		}
+		return areValid;
 	},
 
-	setInvalid: function() {
-		this.inherited(arguments);
-		this._propagate('setInvalid', arguments);
-	},
-
-	setValid: function() {
-		this.inherited(arguments);
-		this._propagate('setValid', arguments);
-	},
-
-	resetValid: function() {
-		this.inherited(arguments);
-		this._propagate('resetValid', arguments);
-	},
-
-	_setValidAttr: function(newVal) {
-		this.inherited(arguments);
-		this._propagate('set', ['valid', newVal]);
+	setValid: function(/*Boolean|Boolean[]*/ areValid, /*String?|String[]?*/ messages) {
+		// summary:
+		//		Set all child elements to valid/invalid.
+		//		Parameters can be either simple values (Boolean/String) or arrays.
+		//		Arrays indicate specific states for each element
+		var i, j;
+		for (i = 0; i < this._widgets.length; ++i) {
+			var imessage = dojo.isArray(messages) ? messages[i] : messages;
+			var iisValid = dojo.isArray(areValid) ? areValid[i] : areValid;
+			for (j = 0; j < this._widgets[i].length; ++j) {
+				this._widgets[i][j].setValid(iisValid, imessage);
+			}
+		}
 	}
 });
 

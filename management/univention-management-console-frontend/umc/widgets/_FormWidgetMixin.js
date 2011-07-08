@@ -20,31 +20,37 @@ dojo.declare("umc.widgets._FormWidgetMixin", null, {
 		return this.inherited(arguments);
 	},
 
-	_setValidAttr: function(newVal) {
-		this.valid = newVal;
-		if (newVal || null === newVal) {
+	_isValidSubset: function() {
+		// use the property 'valid' in case it has been set
+		// otherwise fall back to the default
+		if (null !== this.valid) {
+			return this.get('valid');
+		}
+		return this.inherited(arguments);
+	},
+
+	setValid: function(isValid, message) {
+		if (null === isValid || undefined === isValid) {
+			// reset error state and message
+			this.set('valid', null);
 			this.set('state', '');
+			this.set('invalidMessage', '');
+			this._maskValidSubsetError = false;
+		}
+		else if (isValid) {
+			// force valid state
+			this.set('valid', true);
+			this.set('state', '');
+			this.set('invalidMessage', '');
+			this._maskValidSubsetError = true;
 		}
 		else {
+			// force invalid state
+			this.set('valid', false);
 			this.set('state', 'Error');
+			this.set('invalidMessage', message);
+			this._maskValidSubsetError = false;
 		}
-	},
-
-	setInvalid: function(message) {
-		this.set('invalidMessage', message);
-		this.set('valid', false);
-	},
-
-	setValid: function() {
-		this.set('invalidMessage', '');
-		this.set('valid', true);
-	},
-
-	resetValid: function() {
-		// summary:
-		//		Resets the default behaviour for validation.
-		this.set('invalidMessage', '');
-		this.set('valid', null);
 	}
 });
 
