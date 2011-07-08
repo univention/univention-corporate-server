@@ -7,7 +7,7 @@ Standards-Version: 3.5.2
 
 Package: univention-mail-cyrus
 Architecture: all
-Depends: univention-mail-cyrus-imap, cyrus-admin-2.2 | cyrus21-admin, univention-mail-cyrus-pop, whois
+Depends: univention-mail-cyrus-imap, cyrus-admin-2.2 | cyrus21-admin, univention-mail-cyrus-pop, whois, python-pexpect
 Conflicts: univention-mail-tiny, univention-mail-imap, univention-mail-pop, univention-mail, univention-mail-cyrus-quota-mailserver
 Replaces: univention-mail-cyrus-quota-mailserver
 Description: UCS - imap configuration
@@ -19,7 +19,7 @@ Description: UCS - imap configuration
 
 Package: univention-mail-cyrus-imap
 Architecture: all
-Depends: univention-config-registry (>= 1.2), libpam-univentionmailcyrus, cyrus-imapd-2.2 | cyrus21-imapd, sasl2-bin, libsasl2-modules
+Depends: univention-config-registry (>= 1.2), libpam-univentionmailcyrus, cyrus-imapd-2.2 | cyrus21-imapd, sasl2-bin, libsasl2-modules, python-pexpect
 Conflicts: univention-mail-tiny, univention-mail-imap, univention-mail-pop, univention-mail
 Description: UCS - imap configuration
  The UCS cyrus imapd mail package
