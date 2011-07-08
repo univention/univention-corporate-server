@@ -378,28 +378,36 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.umcpCommand('udm/validate', params).then(dojo.hitch(this, function(data) {
 			var validation = data.result;
 			var allValid = true;
-			dojo.forEach(data.result, function(ivalid) {
+			dojo.forEach(data.result, function(iprop) {
 				// make sure the form element exists
-				var iwidget = this._detailForm._widgets[ivalid.property];
+				var iwidget = this._detailForm._widgets[iprop.property];
 				if (!iwidget) {
 					return true;
 				}
 
-				// check whether form element is valid
-				allValid = allValid && ivalid.valid;
-				if (!ivalid.valid) {
-					iwidget.setInvalid(ivalid.details);
+				// iprop.valid and iprop.details may be arrays for properties with 
+				// multiple values... set all 'true' values to 'null' in order to reset
+				// the original items validation mechanism
+				var ivalid = iprop.valid === true ? null : iprop.valid;
+				var iallValid = ivalid;
+				if (dojo.isArray(ivalid)) {
+					for (var i = 0; i < ivalid.length; ++i) {
+						iallValid = iallValid && ivalid[i];
+						ivalid[i] = ivalid[i] === true ? null : ivalid[i];
+					}
+				}
 
+				// check whether form element is valid
+				allValid = allValid && iallValid;
+				iwidget.setValid(ivalid, iprop.details);
+				if (!iallValid) {
 					// mark the title of the subtab (in case we have not done it already)
-					var ipage = this._propertySubTabMap[ivalid.property];
+					var ipage = this._propertySubTabMap[iprop.property];
 					if (ipage && !ipage.$titleOrig$) {
 						// store the original title
 						ipage.$titleOrig$ = ipage.title;
 						ipage.set('title', '<span style="color:red">' + ipage.title + ' (!)</span>');
 					}
-				}
-				else {
-					iwidget.resetValid();
 				}
 			}, this);
 

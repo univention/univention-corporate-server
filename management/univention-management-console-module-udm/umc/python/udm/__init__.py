@@ -182,7 +182,13 @@ class Instance( Base ):
 			if module is None:
 				MODULE.warn( 'Could not identify LDAP object %s (flavor: %s). The object is ignored.' % ( obj.dn, request.flavor ) )
 				continue
-			entries.append( { 'ldap-dn' : obj.dn, 'objectType' : module.name, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) } )
+			entries.append( { 
+				'ldap-dn' : obj.dn, 
+				'objectType' : module.name, 
+				'name' : obj[ module.identifies ], 
+				'path' : ldap_dn2path( obj.dn ) , 
+				request.options[ 'objectProperty' ] : obj[ request.options[ 'objectProperty' ] ]
+			} )
 		self.finished( request.id, entries )
 
 	def values( self, request ):
@@ -314,10 +320,25 @@ class Instance( Base ):
 			if property_obj is None:
 				raise UMC_OptionMissing( _( 'Property %s not found' ) % property_name )
 
-			try:
-				property_obj.syntax.parse( value )
-				result.append( { 'property' : property_name, 'valid' : True } )
-			except ( udm_errors.valueInvalidSyntax, udm_errors.valueError ), e:
-				result.append( { 'property' : property_name, 'valid' : False, 'details' : str( e ) } )
+			# check each element if 'value' is a list
+			if isinstance(value, (tuple, list)):
+				subResults = []
+				subDetails = []
+				for ival in value:
+					try:
+						property_obj.syntax.parse( ival )
+						subResults.append( True )
+						subDetails.append('')
+					except ( udm_errors.valueInvalidSyntax, udm_errors.valueError ), e:
+						subResults.append( False )
+						subDetails.append( str(e) )
+				result.append( { 'property' : property_name, 'valid' : subResults, 'details' : subDetails } )
+			# otherwise we have a single value
+			else:
+				try:
+					property_obj.syntax.parse( value )
+					result.append( { 'property' : property_name, 'valid' : True } )
+				except ( udm_errors.valueInvalidSyntax, udm_errors.valueError ), e:
+					result.append( { 'property' : property_name, 'valid' : False, 'details' : str( e ) } )
 
 		self.finished( request.id, result )

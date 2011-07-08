@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.55-1) unstable; urgency=low
+
+  * added validation of properties with multiple entries (Bug #22883) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 08 Jul 2011 17:13:49 +0200
+
 univention-management-console-module-udm (1.0.54-1) unstable; urgency=low
 
   * added JavaScript method for removing objects (Bug #22883) 
