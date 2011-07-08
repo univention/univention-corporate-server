@@ -140,6 +140,36 @@ dojo.declare("umc.widgets.MixedInput", [ dijit.layout.ContentPane, umc.widgets._
 			return this._widget.get('value');
 		}
 		return undefined;
+	},
+
+	//
+	// propagate calls to validation methods
+	//
+
+	_propagate: function(funName, funArgs) {
+		if (this._widget) {
+			this._widget[funName].apply(this._widget, funArgs);
+		}
+	},
+
+	setInvalid: function() {
+		this.inherited(arguments);
+		this._propagate('setInvalid', arguments);
+	},
+
+	setValid: function() {
+		this.inherited(arguments);
+		this._propagate('setValid', arguments);
+	},
+
+	resetValid: function() {
+		this.inherited(arguments);
+		this._propagate('resetValid', arguments);
+	},
+
+	_setValidAttr: function(newVal) {
+		this.inherited(arguments);
+		this._propagate('set', ['valid', newVal]);
 	}
 });
 

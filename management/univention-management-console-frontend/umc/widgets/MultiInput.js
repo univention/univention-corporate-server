@@ -31,8 +31,6 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.widget
 
 	_rowContainers: null,
 
-	_widgets: null,
-
 	_newButton: null,
 
 	postMixInProperties: function() {
@@ -258,6 +256,40 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.widget
 			vals.push('');
 		}
 		this._setAllValues(vals);
+	},
+
+	//
+	// propagate calls to validation methods
+	//
+
+	_propagate: function(funName, funArgs) {
+		var i, j;
+		for (i = 0; i < this._widgets.length; ++i) {
+			for (j = 0; j < this._widgets[i].length; ++j) {
+				var iwidget = this._widgets[i][j];
+				iwidget[funName].apply(iwidget, funArgs);
+			}
+		}
+	},
+
+	setInvalid: function() {
+		this.inherited(arguments);
+		this._propagate('setInvalid', arguments);
+	},
+
+	setValid: function() {
+		this.inherited(arguments);
+		this._propagate('setValid', arguments);
+	},
+
+	resetValid: function() {
+		this.inherited(arguments);
+		this._propagate('resetValid', arguments);
+	},
+
+	_setValidAttr: function(newVal) {
+		this.inherited(arguments);
+		this._propagate('set', ['valid', newVal]);
 	}
 });
 
