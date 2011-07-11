@@ -1,2 +1,2 @@
 skel/acrogre.conf etc/univention/skel/.adobe/Acrobat/8.0/Preferences/
-debian/acroread.sh usr/bin/acroread
+debian/acroread usr/bin/

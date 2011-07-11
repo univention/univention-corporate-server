@@ -1,3 +1,9 @@
+acroread (9.4.2-4) stable; urgency=low
+
+  * install acroread into usr/bin Bug #22432 
+
+ -- Felix Botner <botner@univention.de>  Mon, 11 Jul 2011 13:42:38 +0200
+
 acroread (9.4.2-3) stable; urgency=low
 
   * bumped version Bug #22432
