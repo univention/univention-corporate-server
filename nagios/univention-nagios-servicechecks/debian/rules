@@ -30,61 +30,27 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-build: build-stamp
+override_dh_auto_clean:
+	rm -f debian/univention-nagios-dansguardian.conffiles
+	rm -f debian/univention-nagios-opsi.conffiles
+	rm -f debian/univention-nagios-cups.conffiles
+	rm -f debian/univention-nagios-squid.conffiles
 
-CUPS=$(CURDIR)/debian/univention-nagios-cups
-SQUID=$(CURDIR)/debian/univention-nagios-squid
-DANSGUARDIAN=$(CURDIR)/debian/univention-nagios-dansguardian
-OPSI=$(CURDIR)/debian/univention-nagios-opsi
-
-build-stamp:
-	dh_testdir
-	touch build-stamp
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp
-	dh_clean
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-	dh_install
-
-	install -m 0755 35univention-nagios-cups.inst ${CUPS}/usr/lib/univention-install/
-	install -m 0755 check_univention_cups ${CUPS}/usr/lib/nagios/plugins/
-
-	install -m 0755 35univention-nagios-squid.inst ${SQUID}/usr/lib/univention-install/
-	install -m 0755 check_univention_squid ${SQUID}/usr/lib/nagios/plugins/
-
-	install -m 0755 35univention-nagios-dansguardian.inst ${DANSGUARDIAN}/usr/lib/univention-install/
-	install -m 0755 check_univention_dansguardian ${DANSGUARDIAN}/usr/lib/nagios/plugins/
-
-	install -m 0755 35univention-nagios-opsi.inst ${OPSI}/usr/lib/univention-install/
-	install -m 0755 check_univention_opsi ${OPSI}/usr/lib/nagios/plugins/
-
+override_dh_auto_install:
+	dh_auto_install
 	univention-install-config-registry
 	univention-install-config-registry-info
 
-binary-indep: build install
-	dh_testdir -i
-	dh_testroot -i
-	dh_installchangelogs -i
-	dh_installdocs -i
-	dh_installexamples -i
-	dh_link -i
-	dh_compress -i
-	dh_fixperms -i
-	dh_shlibdeps -i
-	dh_installdeb -i
-	dh_gencontrol -i
-	dh_md5sums -i
-	dh_builddeb -i
+override_dh_fixperms:
+	dh_fixperms
+	chmod +x debian/univention-nagios-cups/usr/lib/nagios/plugins/check_univention_cups
+	chmod +x debian/univention-nagios-squid/usr/lib/nagios/plugins/check_univention_squid
+	chmod +x debian/univention-nagios-dansguardian/usr/lib/nagios/plugins/check_univention_dansguardian
+	chmod +x debian/univention-nagios-opsi/usr/lib/nagios/plugins/check_univention_opsi
 
-binary-arch: build install
+override_dh_auto_test:
+	ucslint
+	dh_auto_test
 
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
+%:
+	dh $@

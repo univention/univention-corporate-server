@@ -1,0 +1,2 @@
+35univention-nagios-cups.inst usr/lib/univention-install/
+check_univention_cups usr/lib/nagios/plugins/

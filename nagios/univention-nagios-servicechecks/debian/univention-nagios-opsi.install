@@ -1,0 +1,2 @@
+35univention-nagios-opsi.inst usr/lib/univention-install/
+check_univention_opsi usr/lib/nagios/plugins/

@@ -9,8 +9,6 @@ MODULENAME=$(PACKAGE:univention-management-console-%=%)
 
 all:	$(MO_FILES_ADMIN) $(MODULES) $(MO_FILES_BACKEND) 
 
-modules: $(MODULES)
-
 install-locales-admin: $(MO_FILES_ADMIN)
 	@for i in $(MO_FILES_ADMIN); do\
 		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`-$(MODULENAME);\
@@ -22,7 +20,7 @@ install-locales-admin: $(MO_FILES_ADMIN)
 clean:
 	@find modules/ -name '*.mo' -exec rm \{\} \;
 
-install-modules: modules
+install-modules: $(MODULES)
 	install -d debian/$(PACKAGE)/usr/share/pyshared
 	@for i in $(MODULES); do\
 		o=debian/$(PACKAGE)/usr/share/pyshared/$${i#modules};\
@@ -30,7 +28,7 @@ install-modules: modules
 		install -m755 $$i $$o;\
 	done
 
-install-images:
+install-images: $(IMAGES)
 	@for i in $(IMAGES); do\
 		o=debian/$(PACKAGE)/usr/share/univention-management-console/www/themes/$$i;\
 		install -d "`dirname $$o`";\

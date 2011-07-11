@@ -31,130 +31,38 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-export DH_COMPAT=4
-
-PYVERS=$(shell pyversions -vr)
-
-CFLAGS = -Wall -g
-
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
-
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	touch configure-stamp
-
-build: build-stamp
-build-stamp: configure-stamp
+override_dh_auto_build:
+	dh_auto_build
 	gcc -o usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper.c
-	dh_testdir
-	touch build-stamp
 
 DS=$(CURDIR)/debian/univention-nagios-server
 DC=$(CURDIR)/debian/univention-nagios-client
 
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-	rm -rf ${DS} ${DC}
-	dh_clean
-
-install: install-stamp
-install-stamp: build-stamp $(PYVERS:%=install-ext-%)
-install-ext-%:
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-    # install nagios server
-	install -m 755 nagios-server.py ${DS}/usr/lib/univention-directory-listener/system
-
-	install -m 755 26univention-nagios-server.inst ${DS}/usr/lib/univention-install/26univention-nagios-server.inst
-
-    # add nagios tools
-	install -m 755 -o root -g root usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool ${DS}/usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool
-
-    # add univention icons
-	find usr/share/univention-nagios-server/icons/ -type f | xargs -n1 -i install -m 644 -o root -g root {} ${DS}/usr/share/univention-nagios-server/icons/
-
-    # copy theme nuvola
-	ln -s ../htdocs/contexthelp ${DS}/usr/share/nagios3/htdocs-nuvola/contexthelp
-	ln -s ../htdocs/docs ${DS}/usr/share/nagios3/htdocs-nuvola/docs
-	cp -ar usr/share/nagios3/htdocs-nuvola/* ${DS}/usr/share/nagios3/htdocs-nuvola
-	chown root:root -Rf ${DS}/usr/share/nagios3/htdocs-nuvola
-	find ${DS}/usr/share/nagios3/htdocs-nuvola -type f | xargs chmod -f 0444
-	find ${DS}/usr/share/nagios3/htdocs-nuvola -type d | xargs chmod -f 0755
-	chown -Rf root:root ${DS}/usr/share/nagios3/htdocs-nuvola
-
-	# ln -s ../../../../nagios/htdocs/images/logos/andrade ${DS}/usr/share/nagios3/htdocs-nuvola/images/logos/andrade
-	# ln -s ../../../../nagios/htdocs/images/logos/base ${DS}/usr/share/nagios3/htdocs-nuvola/images/logos/base
-	# ln -s ../../../../nagios/htdocs/images/logos/bernhard ${DS}/usr/share/nagios3/htdocs-nuvola/images/logos/bernhard
-	# ln -s ../../../../nagios/htdocs/images/logos/cook ${DS}/usr/share/nagios3/htdocs-nuvola/images/logos/cook
-	# ln -s ../../../../nagios/htdocs/images/logos/didier ${DS}/usr/share/nagios3/htdocs-nuvola/images/logos/didier
-	# ln -s ../../../../nagios/htdocs/images/logos/remus ${DS}/usr/share/nagios3/htdocs-nuvola/images/logos/remus
-	# ln -s ../../../../nagios/htdocs/images/logos/satrapa ${DS}/usr/share/nagios3/htdocs-nuvola/images/logos/satrapa
-	# ln -s ../../../../nagios/htdocs/images/logos/werschler ${DS}/usr/share/nagios3/htdocs-nuvola/images/logos/werschler
-	ln -s /usr/share/univention-nagios-server/icons ${DS}/usr/share/nagios3/htdocs-nuvola/images/logos/univention
-
-	ln -s /usr/share/univention-nagios-server/icons ${DS}/usr/share/nagios3/htdocs/images/logos/univention
-
-
-    # install univention nagios plugins
-	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_printerqueue ${DC}/usr/lib/nagios/plugins/
-	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_replication ${DC}/usr/lib/nagios/plugins/
-	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_i2o_raid ${DC}/usr/lib/nagios/plugins/
-	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_nfsstatus ${DC}/usr/lib/nagios/plugins/
-	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_ssl_certificate ${DC}/usr/lib/nagios/plugins/
-	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_winbind ${DC}/usr/lib/nagios/plugins/
-	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_smbd ${DC}/usr/lib/nagios/plugins/
-	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_nmbd ${DC}/usr/lib/nagios/plugins/
-	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_joinstatus ${DC}/usr/lib/nagios/plugins/
-	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper ${DC}/usr/lib/nagios/plugins/
+override_dh_fixperms:
+	dh_fixperms
 	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper
+	chmod +x ${DC}/usr/lib/nagios/plugins/check_univention_joinstatus
+	chmod +x ${DC}/usr/lib/univention-install/30univention-nagios-client.inst
 
-	install -m 644 -o root -g root usr/share/nagios-plugins/templates-univention/univention.cfg ${DC}/usr/share/nagios-plugins/templates-univention/univention.cfg
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -f debian/univention-nagios-server.conffiles
+	rm -f debian/univention-nagios-client.conffiles
+	rm -f usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper
 
-    # install client listener
-	install -m 755 nagios-client.py ${DC}/usr/lib/univention-directory-listener/system
-
-	install -m 755 30univention-nagios-client.inst ${DC}/usr/lib/univention-install/30univention-nagios-client.inst
-
-    # install UMC module
+override_dh_auto_install:
+	find usr/share/univention-nagios-server/icons/ -type d -name .svn -prune -o -type f -exec cp {} ${DS}/usr/share/univention-nagios-server/icons/ \;
 	make PACKAGE=univention-nagios-server install-modules
 	make PACKAGE=univention-nagios-server install-locales-backend
 	make PACKAGE=univention-nagios-server install-images
-
 	univention-install-config-registry
 	univention-install-config-registry-info
 	univention-install-service-info
-	dh_install
+	dh_auto_install
 
+override_dh_auto_test:
+	ucslint
+	dh_auto_test
 
-binary-indep: build install
-
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_installdirs
-	dh_installchangelogs
-	dh_installdocs
-	dh_installpam --name=httpd-nagios
-	dh_pycentral
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms -X/usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+%:
+	dh $@

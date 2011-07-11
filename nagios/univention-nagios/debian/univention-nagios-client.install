@@ -1,0 +1,13 @@
+usr/lib/nagios/plugins/check_univention_printerqueue usr/lib/nagios/plugins/
+usr/lib/nagios/plugins/check_univention_replication usr/lib/nagios/plugins/
+usr/lib/nagios/plugins/check_univention_i2o_raid usr/lib/nagios/plugins/
+usr/lib/nagios/plugins/check_univention_nfsstatus usr/lib/nagios/plugins/
+usr/lib/nagios/plugins/check_univention_ssl_certificate usr/lib/nagios/plugins/
+usr/lib/nagios/plugins/check_univention_winbind usr/lib/nagios/plugins/
+usr/lib/nagios/plugins/check_univention_smbd usr/lib/nagios/plugins/
+usr/lib/nagios/plugins/check_univention_nmbd usr/lib/nagios/plugins/
+usr/lib/nagios/plugins/check_univention_joinstatus usr/lib/nagios/plugins/
+usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper usr/lib/nagios/plugins/
+usr/share/nagios-plugins/templates-univention/univention.cfg usr/share/nagios-plugins/templates-univention/
+nagios-client.py usr/lib/univention-directory-listener/system/
+30univention-nagios-client.inst usr/lib/univention-install/
