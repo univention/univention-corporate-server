@@ -1,7 +1,7 @@
-#!/usr/bin/make -f
+#!/bin/sh
 #
-# Univention acroread
-#  rules file for the debian package
+# Univention PAM
+#  preinst script for the debian package
 #
 # Copyright 2011 Univention GmbH
 #
@@ -30,9 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_build:
-	ucslint
-	dh_auto_build
 
-%:
-	dh $@
+#DEBHELPER#
+
+dpkg-divert --divert /usr/bin/acroread.orig --rename --package acroread --add /usr/bin/acroread
+
+exit 0

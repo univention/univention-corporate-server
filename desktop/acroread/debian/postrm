@@ -1,7 +1,0 @@
-#!/bin/sh
-
-#DEBHELPER#
-
-dpkg-divert --divert /usr/bin/acroread.orig --rename --package acroread --remove /usr/bin/acroread
-
-exit 0
