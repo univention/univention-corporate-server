@@ -1,3 +1,10 @@
+acroread-de (9.4.2-3) stable; urgency=low
+
+  * Depend on Acrobat Reader 9.4.2 
+  * Package cleanup for UCS 3.0 Bug #22432
+
+ -- Felix Botner <botner@univention.de>  Mon, 11 Jul 2011 13:19:44 +0200
+
 acroread-de (9.4-1) stable; urgency=low
 
   * Depend on Acrobat Reader 9.4 fixes several vulnerabilities. (Bug #20110)
