@@ -1,3 +1,10 @@
+univention-printserver (4.0.9-2) unstable; urgency=low
+
+  * renamed service from 'cupsys' to 'cups' in order to match the service name
+    necessary for invoke-rc.d (Bug #20286)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 11 Jul 2011 15:50:14 +0200
+
 univention-printserver (4.0.9-1) unstable; urgency=low
 
   * fix error message in listener.log and cups/error_log when modifying
