@@ -6,7 +6,7 @@
 	<categories>
 	  <category name="system"/>
 	</categories>
-	<command name="reboot/execute" function="execute">
+	<command name="reboot/reboot" function="reboot">
 	  <attribute name="action" syntax="Reboot-Options" required="1"/>
 	  <attribute name="reason" syntax="String" required="1"/>
 	  <return syntax="Boolean"/>

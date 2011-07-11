@@ -1,3 +1,12 @@
+univention-management-console-module-reboot (1.0.2-1) unstable; urgency=low
+
+  * Change command name
+  * Add missing imports
+  * Make button work
+  (Bug #22848)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 11 Jul 2011 12:53:22 +0200
+
 univention-management-console-module-reboot (1.0.1-1) unstable; urgency=low
 
   * added category for module

@@ -31,19 +31,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import subprocess
 import univention.info_tools as uit
 import univention.management.console as umc
+import univention.management.console.modules as umcm
+
+from univention.management.console.log import MODULE
+from univention.management.console.protocol.definitions import *
 
 _ = umc.Translation('univention-management-console-modules-reboot').translate
 
 class Instance(umcm.Base):
 	def init(self):
-		# set the language in order to return the correctly localized labels/descriptions
 		uit.set_language(str(self.locale))
 
-        def execute(self, request):
-                # TODO
-                # check if args are valid
+        def reboot(self, request):
                 if request.options['action'] == 'halt':
                         do="h"
                         target=_('The system is going down for system halt NOW with following message: ')
@@ -52,14 +54,14 @@ class Instance(umcm.Base):
                         target=_('The system is going down for reboot NOW with following message: ')
 
                 request.options['reason'] = target + request.options['reason']
-                # TODO
-                # logger?
+
                 try:
                         subprocess.call(('shutdown', '-%s' %do, 'now', str(request.options['reason'])))
                         request.status = SUCCESS
                         success = True
-                except:
+                except (OSError, ValueError), e:
                         request.status = MODULE_ERR
                         success = False
+                        MODULE.warn(str(e))
 
 		self.finished(request.id, success)

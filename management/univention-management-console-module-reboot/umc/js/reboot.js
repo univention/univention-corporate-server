@@ -2,6 +2,7 @@
 
 dojo.provide("umc.modules.reboot");
 
+dojo.require("umc.app");
 dojo.require("umc.i18n");
 dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Module");
@@ -37,16 +38,17 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}];
 
 		var buttons = [{
-			name: 'execute',
-			label: this._( 'Execute' ),
+			name: 'submit',
+			label: this._('Execute'),
 			callback: dojo.hitch(this, function() {
-                // FIXME
-				// this._form.save();
-				// this.hide();
+                var vals = this._form.gatherFormValues();
+                this.umcpCommand('reboot/reboot', vals).then(dojo.hitch(this, function(data) {
+                    umc.app.alert(this._('FIXME'));
+                }));
 			})
 		}];
 
-		var layout = [['action'], ['reason'], ['execute']];
+		var layout = [['action'], ['reason']];
 
 		this._form = new umc.widgets.Form({
 			style: 'width: 100%',
