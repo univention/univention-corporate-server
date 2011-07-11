@@ -1,0 +1,57 @@
+#!/usr/bin/make -f
+
+#include /usr/share/dpatch/dpatch.make
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+
+	rm -f INSTALL_Debian
+
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_installdirs
+	install -m 644 skel/acrogre.conf debian/acroread-de/etc/univention/skel/.adobe/Acrobat/8.0/Preferences/
+	install -m 755 debian/acroread.sh debian/acroread-de/usr/bin/acroread
+
+
+# Build architecture-independent files here.
+binary-indep: build install
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+
+
+# Prune empty directories
+	find debian -type d | xargs rmdir -p --ignore-fail-on-non-empty
+
+	dh_installexamples
+	dh_installchangelogs
+	dh_installmenu
+	dh_installmime
+	dh_link
+#	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

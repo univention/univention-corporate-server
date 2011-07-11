@@ -1,0 +1,146 @@
+acroread (9.4-1) stable; urgency=low
+
+  * Depend on Acrobat Reader 9.4 fixes several vulnerabilities. (Bug #20110)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 07 Oct 2010 09:58:53 +0200
+
+acroread (9.3.4-1) stable; urgency=low
+
+  * Depend on Acrobat Reader 9.3.4 fixes several vulnerabilities. (Bug #19626)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Sep 2010 18:18:40 +0200
+
+acroread (9.3.3-1) stable; urgency=low
+
+  * Depend on Acrobat Reader 9.3.3, fixes several vulnerabilities. (Bug #18586)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jun 2010 16:16:16 +0200
+
+acroread (9.3.2-1) stable; urgency=low
+
+  * Depend on Acrobat Reader 9.3.2, fixes several vulnerabilities. (Bug #18141)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 20 Apr 2010 10:10:01 +0200
+
+acroread (9.3.1-1) stable; urgency=low
+
+  * Depend on Acrobat Reader 9.3.1, fixes several vulnerabilities. (Bug #17714)	
+
+ -- Arvid Requate <requate@univention.de>  Mon, 01 Mar 2010 13:33:25 +0100
+
+acroread (9.3-1) stable; urgency=low
+
+  * Depend on Acrobat Reader 9.3, fixes several vulnerabilities. (Bug #17334)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 13 Jan 2010 17:11:18 +0100
+
+acroread (9.2-4) stable; urgency=low
+
+  * fix acroread wrapper script to use /opt/Adobe/Reader9 (Bug #14758)
+  * remove explicit dependency on ia32-libs, ia32-libs-gtk is enough
+
+ -- Arvid Requate <requate@univention.de>  Mon,  2 Nov 2009 16:14:58 +0100
+
+acroread (9.2-3) stable; urgency=low
+
+  * depend on ia32-libs-gtk [amd64] (Bug #14758)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Oct 2009 14:17:34 +0100
+
+acroread (9.2-2) stable; urgency=low
+
+  * remove empty packages and Suggests for them (Bug #14758)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 28 Oct 2009 20:42:34 +0100
+
+acroread (9.2-1) stable; urgency=low
+
+  * depend on version 9.2 (Bug #14758)
+  * remove empty package acroread-escript
+
+ -- Arvid Requate <requate@univention.de>  Fri, 23 Oct 2009 12:23:33 +0200
+
+acroread (9.1.1-4) stable; urgency=low
+
+  * fix architecture specific dependency on ia32-libs (Bug #14758)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Oct 2009 11:25:51 +0200
+
+acroread (9.1.1-3) stable; urgency=low
+
+  * libxul0d was split up across several packages (Bug #14758)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Oct 2009 10:24:32 +0200
+
+acroread (9.1.1-2) stable; urgency=low
+
+  * depend amd64 packages on libc6-i386 (Bug #14758)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Oct 2009 18:57:11 +0200
+
+acroread (9.1.1-1) stable; urgency=low
+
+  * Version bump for UCS 2.3
+  * depend on version 9.1.1 (Bug #14758)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Jun 2009 19:30:49 +0200
+
+acroread (8.1.4-1) stable; urgency=low
+
+  * Add an explicit Depends on Acrobat Reader 8.1.4 (Bug #12694)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  7 Apr 2009 10:12:38 +0200
+
+acroread (8.1.2-1) stable; urgency=low
+
+  * Add an explicit depends on Acrobat Reader 8.1.2 (Bug #12867)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 13 Feb 2009 13:29:20 +0100
+
+acroread (8.1.1-9) stable; urgency=low
+
+  * Add link to plugin to support iceweasel (Bug #7431)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 23 Sep 2008 19:09:47 +0200
+
+acroread (8.1.1-8) stable; urgency=low
+
+  * wrapper script: pass arguments to acroread 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  7 Aug 2008 08:38:18 +0200
+
+acroread (8.1.1-7) stable; urgency=low
+
+  * divert /usr/bin/acroread in preinst 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  1 Aug 2008 18:48:53 +0200
+
+acroread (8.1.1-6) stable; urgency=low
+
+  * ensure that GTK+ finds the printer backends on amd64 system 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 31 Jul 2008 15:43:00 +0200
+
+acroread (8.1.1-4) stable; urgency=low
+
+  * make inline html with xulrunner on amd64 possible
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 May 2008 15:02:59 +0200
+
+acroread (8.1.1-3) stable; urgency=low
+
+  * add architecture amd64 
+
+ -- Andreas B�sching <buesching@univention.de>  Wed, 30 Apr 2008 17:06:38 +0200
+
+acroread (8.1.1-2) stable; urgency=low
+
+  * add dependency to libxul0d
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Nov 2007 10:12:57 +0100
+
+acroread (8.1.1-1) stable; urgency=low
+
+  * Initial Relase
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Nov 2007 19:07:58 +0100

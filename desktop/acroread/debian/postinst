@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+arch=$(dpkg-architecture -qDEB_BUILD_ARCH)
+
+if [ "$arch" = "amd64" ]; then
+	ln -sf /emul/ia32-linux/usr/lib/xulrunner /usr/lib/xulrunner-acroread
+else
+	ln -sf /usr/lib/xulrunner /usr/lib/xulrunner-acroread
+fi
+
+exit 0
