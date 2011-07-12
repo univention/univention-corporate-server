@@ -10,6 +10,12 @@ Description[en]=Allow root login at GDM
 Type=str
 Categories=system-desktop
 
+[gdm/relaxpermissions]
+Description[de]=Nutze Dateien und Ordner welche für andere Nutzer als den Besitzer schreibbar sind: 0 = nein, 1 = gruppenweit schreibbar, 2 = für jeden schreibbar
+Description[en]=Use files and directories writable to other users than the owner: 0 = no, 1 = group writable 2 = world writable
+Type=str
+Categories=system-desktop
+
 [gdm/menu/language]
 Description[de]=Aktiviere/Deaktiviere die Schaltfläche für die Sprachauswahl
 Description[en]=Enable/Disable language button
@@ -64,3 +70,14 @@ Description[en]=Enable automatic login
 Type=str
 Categories=system-desktop
 
+[gdm/autostart/user]
+Description[de]=Der angegebene Benutzer wird für den automatischen Login verwendet. (default: autostart)
+Description[en]=The given user will be used for automatic login (default: autostart)
+Type=str
+Categories=system-desktop
+
+[gdm/autostart/permitteduser]
+Description[de]=Benutzer, welche berechtigt sind, einen XServer zu starten - mögliche Werte: "rootonly", "console" or "anybody"
+Description[en]=Users who are allowed to start a xserver - possible values: "rootonly", "console", "anybody"
+Type=str
+Categories=system-desktop

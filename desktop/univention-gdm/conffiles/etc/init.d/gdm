@@ -95,13 +95,22 @@ case "$1" in
 	    check_autostart gdm gdm/autostart
 	fi
 
+	# check for autostart scripts
+	if [ -x /usr/sbin/univention-config-registry ]; then
+		eval $(/usr/sbin/univention-config-registry shell univentionAutoStartScript gdm/autostart/user)
+		if [ -n "$univentionAutoStartScript" ] && [ "$univentionAutoStartScript" != "none" -a "$univentionAutoStartScript" != "None" ]; then
+			/usr/share/univention-gdm-sessions/autostart >>/var/log/x-autostart.log 2>&1 &
+			exit 0
+		fi
+	fi
+
   	if [ -e "$DEFAULT_DISPLAY_MANAGER_FILE" -a "$HEED_DEFAULT_DISPLAY_MANAGER" = "true" -a "$(cat $DEFAULT_DISPLAY_MANAGER_FILE 2> /dev/null)" != "$DEBCONF_DAEMON" ]; then
 		log_action_msg "Not starting GNOME Display Manager; it is not the default display manager"
 	else
-		log_daemon_msg "Starting GNOME Display Manager" "gdm"
-		start_daemon $DAEMON
-		log_end_msg $?
-		sleep @%@gdm/boot/timeout@%@
+		# don't show log messages during boot, otherwise we see a console with the gdm starting message
+		! pidof usplash > /dev/null && log_daemon_msg "Starting GNOME Display Manager" "gdm"
+		start_daemon $DAEMON; result=$?
+		! pidof usplash > /dev/null && log_end_msg $result
 	fi
   ;;
   stop)

@@ -1,15 +1,69 @@
-univention-gdm (6.0.10-2) unstable; urgency=low
+univention-gdm (7.0.15-1) unstable; urgency=low
 
-  * changed gdm login text color (Bug #20183) 
+  * Fixed bash typo in last commit (Bug #18559)
 
- -- Felix Botner <botner@univention.de>  Tue, 02 Nov 2010 09:17:09 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Dec 2010 10:28:36 +0100
 
-univention-gdm (6.0.10-1) unstable; urgency=low
+univention-gdm (7.0.14-1) unstable; urgency=low
 
-  * ucs gdm theme layout changes Bug #20183
-  * gdm init script optimization
+  * Only set permitted user on managed and mobile clients to anybody
+    (Bug #18559)
 
- -- Felix Botner <botner@univention.de>  Mon, 01 Nov 2010 15:31:44 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Dec 2010 10:22:25 +0100
+
+univention-gdm (7.0.13-1) unstable; urgency=low
+
+  * Fixed typo in Xwrapper.config (Bug #18559)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 20 Dec 2010 16:35:42 +0100
+
+univention-gdm (7.0.12-1) unstable; urgency=low
+
+  * adopt autostart handling from TCS (Bug #18559)
+  * add gdm/autostart/permitteduser for handling Xwrapper.config,
+    which is a template now
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 16 Dec 2010 16:20:06 +0100
+
+univention-gdm (7.0.11-1) unstable; urgency=low
+
+  * don't set RelaxPermissions default if variable is not set Bug #12740
+  * improve template
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 08 Dec 2010 08:35:00 +0100
+
+univention-gdm (7.0.10-1) unstable; urgency=low
+
+  * add gdm/relaxpermissions Bug #12740
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 07 Dec 2010 15:10:00 +0100
+
+univention-gdm (7.0.4-1) unstable; urgency=low
+
+  * removed gdm/theme/resolution from gdm init script Bug #20565 
+
+ -- Felix Botner <botner@univention.de>  Fri, 12 Nov 2010 16:38:28 +0100
+
+univention-gdm (7.0.2-1) unstable; urgency=low
+
+  * Use the correct return code in the gdm init script (Bug #19383)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Nov 2010 07:08:57 +0100
+
+univention-gdm (7.0.1-1) unstable; urgency=low
+
+  * Don't show log messages during boot otherwise we see a console with
+    the gdm starting message (Bug #19383)
+  * Removed obsolete gdm timeout
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Nov 2010 06:53:53 +0100
+
+univention-gdm (7.0.0-1) unstable; urgency=low
+
+  * merged changes from ucd 3.0 to ucs 2.4 packages
+  * bump version for UCD 3.1  Bug #19088
+
+ -- Felix Botner <botner@univention.de>  Mon, 20 Sep 2010 16:02:42 +0200
 
 univention-gdm (6.0.9-1) unstable; urgency=low
 

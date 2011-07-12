@@ -52,7 +52,7 @@ install: build
 	install -m 0644 univention/quit.png debian/univention-gdm/usr/share/gdm/themes/univention/
 	install -m 0644 univention/session-prelight.png debian/univention-gdm/usr/share/gdm/themes/univention/
 	install -m 0644 univention/univention.png debian/univention-gdm/usr/share/gdm/themes/univention/
-	install -m 0644 univention/*.png debian/univention-gdm/usr/share/gdm/themes/univention/
+	install -m 0644 univention/*.jpg debian/univention-gdm/usr/share/gdm/themes/univention/
 	install -m 0644 univention/action*.png debian/univention-gdm/usr/share/gdm/themes/univention/
 	install -m 0644 univention/pw.png debian/univention-gdm/usr/share/gdm/themes/univention/
 	install -m 0644 univention/disconnect.png debian/univention-gdm/usr/share/gdm/themes/univention/
@@ -66,6 +66,7 @@ install: build
 	install -m 0755 univention/citrix debian/univention-gdm-sessions/etc/gdm/Autostart/
 	install -m 0755 univention/nx debian/univention-gdm-sessions/etc/gdm/Autostart/
 	install -m 0755 univention/Linux-Arbeitsplatz.desktop debian/univention-gdm-sessions/etc/gdm/Sessions/
+	install -m 0755 univention/autostart debian/univention-gdm-sessions/usr/share/univention-gdm-sessions/autostart
 	
 	univention-install-config-registry
 	univention-install-service-info

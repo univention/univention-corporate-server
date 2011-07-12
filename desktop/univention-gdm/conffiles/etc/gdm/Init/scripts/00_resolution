@@ -3,13 +3,12 @@
 
 xorg_autodetect="$(ucr get xorg/autodetect)"
 if [ -n "$xorg_autodetect" ]; then
-	if [ "$xorg_autodetect" = "yes" -o "$xorg_autodetect" = "1" -o "$xorg_autodetect" = "on" ]; then
-		res=$(xwininfo -root | egrep '(Height|Width): ' | sed 's/.*: //' | xargs | sed 's/ /x/')
-		orig_res="$(univention-config-registry get xorg/resolution)"
+        if [ "$xorg_autodetect" = "yes" -o "$xorg_autodetect" = "1" -o "$xorg_autodetect" = "on" ]; then
+                res=$(xwininfo -root | egrep '(Height|Width): ' | sed 's/.*: //' | xargs | sed 's/ /x/')
+                orig_res="$(univention-config-registry get xorg/resolution)"
 
-		if [ "$res" != "$orig_res" ];then
-		univention-config-registry set xorg/resolution=$res
-		fi
-	fi
+                if [ "$res" != "$orig_res" ];then
+                	univention-config-registry set xorg/resolution=$res
+                fi
+        fi
 fi
-

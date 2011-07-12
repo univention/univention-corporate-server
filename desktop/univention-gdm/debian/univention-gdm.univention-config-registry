@@ -4,6 +4,10 @@ Variables: univentionAutoStartScript
 Variables: gdm/.*
 
 Type: file
+File: etc/X11/Xwrapper.config
+Variables: gdm/autostart/permitteduser
+
+Type: file
 File: etc/pam.d/gdm-autologin
 
 Type: file

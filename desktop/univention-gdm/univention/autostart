@@ -1,0 +1,39 @@
+#!/bin/bash
+
+eval $(/usr/sbin/univention-config-registry shell univentionAutoStartScript gdm/autostart/user)
+
+if [ -n "$univentionAutoStartScript" ] && [ "$univentionAutoStartScript" != "none" -a "$univentionAutoStartScript" != "None" ]; then
+	#check if autostart user exists
+	if [ -z "$gdm_autostart_user" ]; then
+		gdm_autostart_user="autostart"
+	fi
+	id "$gdm_autostart_user" >/dev/null 2>&1
+	if [ $? = 0 ]; then
+		while [ True ]; do
+			start=$(date +%s)
+			if [ -x "/etc/gdm/Autostart/${univentionAutoStartScript}" ]; then
+				autostart_program="/etc/gdm/Autostart/${univentionAutoStartScript}"
+			else
+				autostart_program="${univentionAutoStartScript}"
+			fi
+
+			test -x "/etc/gdm/Init/Default" && /etc/gdm/Init/Default
+			su - autostart -- startx "$autostart_program" -- vt7 &
+			X_PID=$!
+			sleep 1
+			test -x "/etc/gdm/PostLogin/Default" && USER=autostart /etc/gdm/PostLogin/Default
+			test -x "/etc/gdm/PreSession/Default" && USER=autostart /etc/gdm/PreSession/Default
+			wait $X_PID
+			end=$(date +%s)
+			if [ $((end-start)) -lt 10 ]; then
+				message="Your autostart session ${autostart_program} only lasted less than 10 seconds." 
+				echo -e "$message" | logger
+				xmessage "$message"
+				echo "" >>/dev/console
+				echo "" >>/dev/console
+				echo -e "$message" >>/dev/console
+				exit 1
+			fi
+		done
+	fi
+fi

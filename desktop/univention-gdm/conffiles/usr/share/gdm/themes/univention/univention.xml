@@ -35,291 +35,252 @@ License with the Debian GNU/Linux or Univention distribution in file
 <!DOCTYPE greeter SYSTEM "greeter.dtd">
 <greeter>
 @!@
-
-bcolor="000000"
-#bcolor="056b27"
-tcolor="000000"
 pos = {}
 
 pos["640x480"] = {}
-pos["640x480"]["login_w"] = 150
-pos["640x480"]["login_h"] = 22
+pos["640x480"]["login_w"] = 169
+pos["640x480"]["login_h"] = 19
 pos["640x480"]["loginPad_x"] = 2
 pos["640x480"]["loginPad_y"] = 2
 pos["640x480"]["loginPad_w"] = -4
 pos["640x480"]["loginPad_h"] = -4
-pos["640x480"]["button_gap"] = 9
-pos["640x480"]["button_w"] = 70
-pos["640x480"]["button_h"] = 22
+pos["640x480"]["button_gap"] = 7
+pos["640x480"]["button_w"] = 80
+pos["640x480"]["button_h"] = 19
 pos["640x480"]["font"] = "Sans 13"
-pos["640x480"]["fontbold"] = "Sans bold 13"
 
 pos["800x600"] = {}
-pos["800x600"]["login_w"] = 180
-pos["800x600"]["login_h"] = 26
+pos["800x600"]["login_w"] = 203
+pos["800x600"]["login_h"] = 23
 pos["800x600"]["loginPad_x"] = 3
 pos["800x600"]["loginPad_y"] = 3
 pos["800x600"]["loginPad_w"] = -6
 pos["800x600"]["loginPad_h"] = -6
-pos["800x600"]["button_gap"] = 10
-pos["800x600"]["button_w"] = 85
-pos["800x600"]["button_h"] = 26
+pos["800x600"]["button_gap"] = 8
+pos["800x600"]["button_w"] = 95
+pos["800x600"]["button_h"] = 23
 pos["800x600"]["font"] = "Sans 13"
-pos["800x600"]["fontbold"] = "Sans bold 13"
 
 pos["1024x768"] = {}
-pos["1024x768"]["login_w"] = 218
-pos["1024x768"]["login_h"] = 26
+pos["1024x768"]["login_w"] = 235
+pos["1024x768"]["login_h"] = 27
 pos["1024x768"]["loginPad_x"] = 4
 pos["1024x768"]["loginPad_y"] = 4
 pos["1024x768"]["loginPad_w"] = -8
 pos["1024x768"]["loginPad_h"] = -8
 pos["1024x768"]["button_gap"] = 10
-pos["1024x768"]["button_w"] = 102
-pos["1024x768"]["button_h"] = 26
+pos["1024x768"]["button_w"] = 110
+pos["1024x768"]["button_h"] = 27
 pos["1024x768"]["font"] = "Sans 13"
-pos["1024x768"]["fontbold"] = "Sans bold 13"
 
 pos["1280x1024"] = {}
-pos["1280x1024"]["login_w"] = 271
-pos["1280x1024"]["login_h"] = 31
+pos["1280x1024"]["login_w"] = 300
+pos["1280x1024"]["login_h"] = 34
 pos["1280x1024"]["loginPad_x"] = 4
 pos["1280x1024"]["loginPad_y"] = 4
 pos["1280x1024"]["loginPad_w"] = -8
 pos["1280x1024"]["loginPad_h"] = -8
-pos["1280x1024"]["button_gap"] = 14
-pos["1280x1024"]["button_w"] = 127
-pos["1280x1024"]["button_h"] = 31
+pos["1280x1024"]["button_gap"] = 13
+pos["1280x1024"]["button_w"] = 141
+pos["1280x1024"]["button_h"] = 34
 pos["1280x1024"]["font"] = "Sans 16"
-pos["1280x1024"]["fontbold"] = "Sans bold 16"
 
 pos["1400x1050"] = {}
-pos["1400x1050"]["login_w"] = 339
+pos["1400x1050"]["login_w"] = 340
 pos["1400x1050"]["login_h"] = 39
 pos["1400x1050"]["loginPad_x"] = 4
 pos["1400x1050"]["loginPad_y"] = 4
 pos["1400x1050"]["loginPad_w"] = -8
 pos["1400x1050"]["loginPad_h"] = -8
-pos["1400x1050"]["button_gap"] = 17
+pos["1400x1050"]["button_gap"] = 15
 pos["1400x1050"]["button_w"] = 159
 pos["1400x1050"]["button_h"] = 39
 pos["1400x1050"]["font"] = "Sans 16"
-pos["1400x1050"]["fontbold"] = "Sans bold 16"
-
-pos["1440x900"] = {}
-pos["1440x900"]["login_w"] = 290
-pos["1440x900"]["login_h"] = 33
-pos["1440x900"]["loginPad_x"] = 4
-pos["1440x900"]["loginPad_y"] = 4
-pos["1440x900"]["loginPad_w"] = -8
-pos["1440x900"]["loginPad_h"] = -8
-pos["1440x900"]["button_gap"] = 15
-pos["1440x900"]["button_w"] = 136
-pos["1440x900"]["button_h"] = 33
-pos["1440x900"]["font"] = "Sans 16"
-pos["1440x900"]["fontbold"] = "Sans bold 16"
 
 pos["1600x1200"] = {}
-pos["1600x1200"]["login_w"] = 339
+pos["1600x1200"]["login_y"] = 637
+pos["1600x1200"]["login_w"] = 340
 pos["1600x1200"]["login_h"] = 39
 pos["1600x1200"]["loginPad_x"] = 4
 pos["1600x1200"]["loginPad_y"] = 4
 pos["1600x1200"]["loginPad_w"] = -8
 pos["1600x1200"]["loginPad_h"] = -8
-pos["1600x1200"]["button_gap"] = 16
+pos["1600x1200"]["button_gap"] = 15
 pos["1600x1200"]["button_w"] = 159
 pos["1600x1200"]["button_h"] = 39
 pos["1600x1200"]["font"] = "Sans 18"
-pos["1600x1200"]["fontbold"] = "Sans bold 18"
 
 pos["1680x1050"] = {}
-pos["1680x1050"]["login_w"] = 339
+pos["1680x1050"]["login_w"] = 340
 pos["1680x1050"]["login_h"] = 39
 pos["1680x1050"]["loginPad_x"] = 4
 pos["1680x1050"]["loginPad_y"] = 4
 pos["1680x1050"]["loginPad_w"] = -8
 pos["1680x1050"]["loginPad_h"] = -8
-pos["1680x1050"]["button_gap"] = 16
+pos["1680x1050"]["button_gap"] = 15
 pos["1680x1050"]["button_w"] = 159
 pos["1680x1050"]["button_h"] = 39
 pos["1680x1050"]["font"] = "Sans 18"
-pos["1680x1050"]["fontbold"] = "Sans bold 18"
-
-pos["1920x1200"] = {}
-pos["1920x1200"]["login_w"] = 387
-pos["1920x1200"]["login_h"] = 44
-pos["1920x1200"]["loginPad_x"] = 4
-pos["1920x1200"]["loginPad_y"] = 4
-pos["1920x1200"]["loginPad_w"] = -8
-pos["1920x1200"]["loginPad_h"] = -8
-pos["1920x1200"]["button_gap"] = 20
-pos["1920x1200"]["button_w"] = 181
-pos["1920x1200"]["button_h"] = 44
-pos["1920x1200"]["font"] = "Sans 22"
-pos["1920x1200"]["fontbold"] = "Sans bold 22"
 
 pos["1920x1080"] = {}
-pos["1920x1080"]["login_w"] = 339
+pos["1920x1080"]["login_w"] = 340
 pos["1920x1080"]["login_h"] = 39
 pos["1920x1080"]["loginPad_x"] = 4
 pos["1920x1080"]["loginPad_y"] = 4
 pos["1920x1080"]["loginPad_w"] = -8
 pos["1920x1080"]["loginPad_h"] = -8
-pos["1920x1080"]["button_gap"] = 16
+pos["1920x1080"]["button_gap"] = 15
 pos["1920x1080"]["button_w"] = 159
 pos["1920x1080"]["button_h"] = 39
 pos["1920x1080"]["font"] = "Sans 22"
-pos["1920x1080"]["fontbold"] = "Sans bold 22"
 
-defaultRes = "1280x1024"
-res = baseConfig.get("xorg/resolution", defaultRes)
-files = res
 
-# no predefined resolution found use 1280x1024 config
+res = baseConfig.get("xorg/resolution", "1024x768")
+
 if not res in pos:
-	pos[res] = {}
-	files = defaultRes
-	for i in pos[defaultRes].keys():
-		pos[res][i] = pos[defaultRes][i]
+	res = "1024x768"
 
 system = language = autostart = False
 if baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
 	system = True
 if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true':
 	language = True
+# support none as keyword for disable autostart scripts
 if baseConfig.get( 'univentionAutoStartScript', 'none' ).lower() != 'none':
 	autostart = True
 
+maxX = "1024"
+maxY = "768"
 for xy in pos.keys():
 
 	maxX, maxY = xy.split("x")
 	maxX = int(maxX)
 	maxY = int(maxY)
-	pos[xy]["tcolor"] = tcolor
-	pos[xy]["bcolor"] = bcolor
+
+	if language and not system:
+		pos[xy]["session_x"] = (maxX / 2) - ((pos[xy]["button_w"] * 2 + pos[xy]["button_gap"]) / 2)
+		pos[xy]["language_x"] = pos[xy]["session_x"] + pos[xy]["button_gap"] + pos[xy]["button_w"]
+	elif not language and system:
+		pos[xy]["session_x"] = (maxX / 2) - ((pos[xy]["button_w"] * 2 + pos[xy]["button_gap"]) / 2)
+		pos[xy]["system_x"] = pos[xy]["session_x"] + pos[xy]["button_gap"] + pos[xy]["button_w"]
+	elif language and system:
+		pos[xy]["session_x"] = (maxX / 2) - ((pos[xy]["button_w"] * 3 + pos[xy]["button_gap"] * 2) / 2) 
+		pos[xy]["system_x"] = pos[xy]["session_x"] + pos[xy]["button_gap"] + pos[xy]["button_w"]
+		pos[xy]["language_x"] = pos[xy]["system_x"] + pos[xy]["button_gap"] + pos[xy]["button_w"]
+	else:
+		pos[xy]["session_x"] = (maxX / 2) - (pos[xy]["button_w"] /2)
+
+	pos[xy]["session_w"] = pos[xy]["button_w"]
+	pos[xy]["system_w"] = pos[xy]["button_w"]
+	pos[xy]["language_w"] = pos[xy]["button_w"]
+	pos[xy]["session_h"] = pos[xy]["button_h"]
+	pos[xy]["system_h"] = pos[xy]["button_h"]
+	pos[xy]["language_h"] = pos[xy]["button_h"]
+
 	pos[xy]["pamEntry_width"] = maxX / 4 * 3
 
-print ''
-print '\t<!-- background -->'
-print '\t<item type="pixmap" background="true">'
-print '\t\t<normal file="%s.png"/>' % files
+print '\t<item type="pixmap">'
+print '\t\t<normal file="%s_start_1.jpg"/>' % res
 print '\t\t<pos x="0" y="0" width="100%" height="100%"/>'
 print '\t</item>'
-
 print ''
 print '\t<!-- caps-lock-warning -->'
 print '\t<item type="rect" id="caps-lock-warning">'
 print '\t\t<pos x="50%%" y="73%%" width="box" height="box"/>' % pos[res]
 print '\t\t<box orientation="vertical">'
 print '\t\t\t<item type="label">'
-print '\t\t\t\t<normal color="#%(tcolor)s" font="%(font)s"/>' % pos[res]
+print '\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
 print '\t\t\t\t<pos anchor="center"/>'
 print '\t\t\t\t<stock type="caps-lock-warning"/>'
 print '\t\t\t</item>'
 print '\t\t</box>'
 print '\t</item>'
-
 print ''
-print '\t<!-- box -->'
-print '\t<item type="pixmap">'
-print '\t\t<normal file="%s_block.png"/>' % files
-print '\t\t<pos x="50%" y="45%" width="38%" height="27%" anchor="c" />'
-print '\t</item>'
-
-print ''
-print '\t<!-- username label -->'
+print '\t<!-- login -->'
 print '\t<item type="rect">'
-print '\t\t<pos x="50%" y="40%" width="100%" height="box" anchor="c" />'
-print '\t\t<box orientation="vertical">'
-print '\t\t\t<item type="label" id="pam-prompt">'
-print '\t\t\t\t<normal color="#%(tcolor)s" font="%(fontbold)s"/>' % pos[res]
-print '\t\t\t\t<stock type="username-label"/>'
-print '\t\t\t\t<pos x="50%" anchor="c" />'
+print '\t\t<pos x="56%%" y="53.5%%" width="box" height="box" anchor="c" />' % pos[res]
+print '\t\t<box spacing="%(button_gap)s" orientation="horizontal">' % pos[res]
+print '\t\t\t<item type="rect">'
+print '\t\t\t\t<pos height="box" y="58%%" />' % pos[res]
+print '\t\t\t\t<box orientation="vertical">'
+print '\t\t\t\t\t<item type="label" id="pam-prompt">'
+print '\t\t\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
+print '\t\t\t\t\t\t<stock type="username-label"/>'
+print '\t\t\t\t\t\t<pos anchor="ne" x="100%" />'
+print '\t\t\t\t\t</item>'
+print '\t\t\t\t</box>'
+print '\t\t\t</item>'
+print '\t\t\t<item type="pixmap">'
+print '\t\t\t\t<normal file="pw.png" />'
+print '\t\t\t\t<pos  y="50%%" width="%(login_w)s" height="%(login_h)s"/>' % pos[res]
+print '\t\t\t\t<fixed>'
+print '\t\t\t\t\t<item type="entry" id="user-pw-entry">'
+print '\t\t\t\t\t\t<normal color="#000000" font="%(font)s"/>' % pos[res]
+print '\t\t\t\t\t\t<pos anchor="nw" x="%(loginPad_x)s" y="%(loginPad_y)s" height="%(loginPad_h)s" width="%(loginPad_w)s"/>' % pos[res]
+print '\t\t\t\t\t</item>'
+print '\t\t\t\t</fixed>'
 print '\t\t\t</item>'
 print '\t\t</box>'
 print '\t</item>'
-
-print ''
-print '\t<!-- login -->'
-print '\t<item type="pixmap">'
-print '\t\t<normal file="pw.png" />'
-print '\t\t<pos x="50%%" y="45%%" width="%(login_w)s" height="%(login_h)s" anchor="c" />' % pos[res]
-print '\t\t<fixed>'
-print '\t\t\t<item type="entry" id="user-pw-entry">'
-print '\t\t\t\t<normal color="#000000" font="%(font)s"/>' % pos[res]
-print '\t\t\t\t<pos anchor="nw" x="%(loginPad_x)s" y="%(loginPad_y)s" height="%(loginPad_h)s" width="%(loginPad_w)s"/>' % pos[res]
-print '\t\t\t</item>'
-print '\t\t</fixed>'
-print '\t</item>'
-
 print ''
 print '\t<!-- pam error -->'
 print '\t<item type="rect">'
 print '\t\t<pos x="50%%" y="68%%" width="box" height="box"/>' % pos[res]
 print '\t\t<box orientation="vertical" min-width="%(pamEntry_width)s" >' % pos[res]
 print '\t\t\t<item type="label" id="pam-error">'
-print '\t\t\t\t<normal color="#%(tcolor)s" font="%(font)s"/>' % pos[res]
+print '\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
 print '\t\t\t\t<pos anchor="center" />'
 print '\t\t\t\t<text></text>'
 print '\t\t\t</item>'
 print '\t\t</box>'
 print '\t</item>'
-
 print ''
-print '\t<!-- buttons -->'
-print '\t<item type="rect">'
-print '\t\t<pos x="50%" y="50%" width="box" height="box" anchor="c" />'
-print '\t\t<box orientation="horizontal" spacing="%(button_gap)s">' % pos[res]
-print ''
-print '\t\t\t<!-- session -->'
-print '\t\t\t<item type="pixmap" id="session_button" button="true">'
-print '\t\t\t<normal file="action.png"/>'
-print '\t\t\t\t<prelight file="action-prelight.png"/>'
-print '\t\t\t\t<pos y="50%%" width="%(button_w)s" height="%(button_h)s"/>' % pos[res]
-print '\t\t\t\t<box orientation="vertical" homogeneous="true">'
-print '\t\t\t\t\t<item type="label">'
-print '\t\t\t\t\t\t<pos anchor="c" x="50%%" y="50%%"/>'
-print '\t\t\t\t\t\t<normal color="#%(bcolor)s" font="%(font)s"/>' % pos[res]
-print '\t\t\t\t\t\t<stock type="session"/>'
-print '\t\t\t\t\t</item>'
-print '\t\t\t\t</box>'
+print '\t<!-- session -->'
+print '\t<item type="pixmap" id="session_button" button="true">'
+print '\t<normal file="action.png"/>'
+print '\t\t<prelight file="action-prelight.png"/>'
+print '\t\t<pos anchor="nw" x="%(session_x)s" y="59.7%%" width="%(session_w)s" height="%(session_h)s"/>' % pos[res]
+print '\t\t<box orientation="vertical" homogeneous="true">'
+print '\t\t\t<item type="label">'
+print '\t\t\t\t<pos anchor="c" x="50%%" y="50%%"/>' % pos[res]
+print '\t\t\t\t<normal color="#000000" font="%(font)s"/>' % pos[res]
+print '\t\t\t\t<stock type="session"/>'
 print '\t\t\t</item>'
-
-if system:
-	print ''
-	print '\t\t\t<!-- system -->'
-	print '\t\t\t<item type="pixmap" id="system_button" button="true">'
-	print '\t\t\t\t<normal file="action.png"/>'
-	print '\t\t\t\t<prelight file="action-prelight.png"/>'
-	print '\t\t\t\t<pos y="50%%" width="%(button_w)s" height="%(button_h)s"/>' % pos[res]
-	print '\t\t\t\t<box orientation="vertical" homogeneous="true">'
-	print '\t\t\t\t\t<item type="label">'
-	print '\t\t\t\t\t\t<pos anchor="c" x="50%%" y="50%%"/>'
-	print '\t\t\t\t\t\t<normal color="#%(bcolor)s" font="%(font)s"/>' % pos[res]
-	print '\t\t\t\t\t\t<stock type="system"/>'
-	print '\t\t\t\t\t</item>'
-	print '\t\t\t\t</box>'
-	print '\t\t\t</item>'
-
-if language:
-	print ''
-	print '\t\t\t<!-- language -->'
-	print '\t\t\t<item type="pixmap" id="language_button" button="true">'
-	print '\t\t\t\t<normal file="action.png"/>'
-	print '\t\t\t\t<prelight file="action-prelight.png"/>'
-	print '\t\t\t\t<pos y="50%%" width="%(button_w)s" height="%(button_h)s"/>' % pos[res]
-	print '\t\t\t\t<box orientation="vertical" homogeneous="true">'
-	print '\t\t\t\t\t<item type="label">'
-	print '\t\t\t\t\t\t<pos anchor="c" x="50%%" y="50%%"/>'
-	print '\t\t\t\t\t\t<normal color="#%(bcolor)s" font="%(font)s"/>' % pos[res]
-	print '\t\t\t\t\t\t<stock type="language"/>'
-	print '\t\t\t\t\t</item>'
-	print '\t\t\t\t</box>'
-	print '\t\t\t</item>'
-
-
 print '\t\t</box>'
 print '\t</item>'
+print ''
+
+if system:
+	print '\t<!-- system -->'
+	print '\t<item type="pixmap" id="system_button" button="true">'
+	print '\t\t<normal file="action.png"/>'
+	print '\t\t<prelight file="action-prelight.png"/>'
+	print '\t\t<pos anchor="nw" x="%(system_x)s" y="59.7%%" width="%(system_w)s" height="%(system_h)s"/>' % pos[res]
+	print '\t\t<box orientation="vertical" homogeneous="true">'
+	print '\t\t\t<item type="label">'
+	print '\t\t\t\t<pos anchor="c" x="50%%" y="50%%"/>' % pos[res]
+	print '\t\t\t\t<normal color="#000000" font="%(font)s"/>' % pos[res]
+	print '\t\t\t\t<stock type="system"/>'
+	print '\t\t\t</item>'
+	print '\t\t</box>'
+	print '\t</item>'
+	print ''
+
+if language:
+	print '\t<!-- language -->'
+	print '\t<item type="pixmap" id="language_button" button="true">'
+	print '\t\t<normal file="action.png"/>'
+	print '\t\t<prelight file="action-prelight.png"/>'
+	print '\t\t<pos anchor="nw" x="%(language_x)s" y="59.7%%" width="%(language_w)s" height="%(language_h)s"/>' % pos[res]
+	print '\t\t<box orientation="vertical" homogeneous="true">'
+	print '\t\t\t<item type="label">'
+	print '\t\t\t\t<pos anchor="c" x="50%%" y="50%%"/>' % pos[res]
+	print '\t\t\t\t<normal color="#000000" font="%(font)s"/>' % pos[res]
+	print '\t\t\t\t<stock type="language"/>'
+	print '\t\t\t</item>'
+	print '\t\t</box>'
+	print '\t</item>'
+	print ''
 
 if autostart:
 	print '\t<!-- autostart -->'
@@ -327,7 +288,7 @@ if autostart:
 	print '\t\t<pos x="50%%" y="76.5%%" width="box" height="box"/>' % pos[res]
 	print '\t\t<box orientation="vertical">' % pos[res]
 	print '\t\t\t<item type="label" id="timed-label">'
-	print '\t\t\t\t<normal color="#%(tcolor)s" font="%(font)s"/>' % pos[res]
+	print '\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
 	print '\t\t\t\t<pos anchor="center"/>'
 	print '\t\t\t\t<!-- Stock label for: User %s will login in %d seconds -->'
 	print '\t\t\t\t<stock type="timed-label"/>'
@@ -335,7 +296,6 @@ if autostart:
 	print '\t\t</box>'
 	print '\t</item>'
 	print ''
-
 @!@
 
 </greeter>

@@ -41,7 +41,7 @@ else
 	univention-baseconfig set gdm/menu/securesystem?false
 fi
 
-if [ "$server_role" = "mobile_client" -o "$server_role" = "fatclient" ]; then
+if [ "$server_role" = "managedclient" -o "$server_role" = "mobileclient" -o "$server_role" = "fatclient" ]; then
 	adduser --system --home /tmp --shell "/bin/bash" --disabled-password autostart
 fi
 
@@ -55,7 +55,14 @@ if [ -n "$gdm_language" ] ; then
 	univention-baseconfig unset gdm/language
 fi
 
-univention-baseconfig set gdm/autostart?yes gdm/boot/timeout?8 gdm/disallow/tcp?yes
+if [ "$server_role" = "managedclient" -o "$server_role" = "mobileclient" -o "$server_role" = "fatclient" ]; then
+	permitteduser="anybody"
+else
+	permitteduser="console"
+fi
+
+univention-baseconfig set gdm/autostart?yes gdm/disallow/tcp?yes gdm/autostart/permitteduser?$permitteduser
 
 #DEBHELPER#
 
+exit 0
