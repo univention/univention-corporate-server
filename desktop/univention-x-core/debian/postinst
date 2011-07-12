@@ -3,28 +3,29 @@
 # Univention X Core
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright (C) 2004-2010 Univention GmbH
 #
 # http://www.univention.de/
 #
 # All rights reserved.
 #
-# The source code of this program is made available
+# The source code of the software contained in this package
+# as well as the source package itself are made available
 # under the terms of the GNU Affero General Public License version 3
 # (GNU AGPL V3) as published by the Free Software Foundation.
-#
-# Binary versions of this program provided by Univention to you as
+# 
+# Binary versions of this package provided by Univention to you as
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
 # you and Univention and not subject to the GNU AGPL V3.
-#
-# In the case you use this program under the terms of the GNU AGPL V3,
+# 
+# In the case you use the software under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
-#
+# 
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
@@ -137,6 +138,7 @@ univention-baseconfig set	xorg/device/driver?$(eval getXModul) \
 							xorg/monitor/HorizSync?30-70 \
 							xorg/monitor/VertRefresh?50-90 \
 							xorg/serverflags/options/AllowMouseOpenFail?true \
+							xorg/serverflags/options/AllowEmptyInput?false \
 							xorg/keyboard/options/XkbLayout?de \
 							xorg/keyboard/options/XkbRules?xorg \
 							xorg/keyboard/options/XkbModel?pc105 \
@@ -182,7 +184,4 @@ univention-baseconfig set	xorg/device/driver?$(eval getXModul) \
 							xorg/device/BoardName?All \
 							xorg/module/load?"bitmap;ddc;dri;extmod;freetype;glx;int10;vbe;dbe;GLcore;xie;pex5;speedo;type1;record"
 
-
-
 #DEBHELPER#
-

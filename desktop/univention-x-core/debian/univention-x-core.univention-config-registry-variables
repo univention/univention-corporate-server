@@ -41,6 +41,11 @@ Description[en]=Start up even if the mouse device can't be opened/initialised
 Type=str
 Categories=system-desktop
 
+[xorg/serverflags/options/AllowEmptyInput]
+Description[de]=Deaktiviert die Benutzung der Standard-Treiber für Maus und Tastatur
+Description[en]=Deactivates the use of the default drivers for mouse and keyboard
+Type=str
+Categories=system-desktop
 
 [xorg/mouse/.*]
 Description[de]=Xorg Maus-Sektion
