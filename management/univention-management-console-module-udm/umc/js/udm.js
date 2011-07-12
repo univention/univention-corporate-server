@@ -388,17 +388,17 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				// iprop.valid and iprop.details may be arrays for properties with 
 				// multiple values... set all 'true' values to 'null' in order to reset
 				// the original items validation mechanism
+				var iallValid = iprop.valid;
 				var ivalid = iprop.valid === true ? null : iprop.valid;
-				var iallValid = ivalid;
 				if (dojo.isArray(ivalid)) {
 					for (var i = 0; i < ivalid.length; ++i) {
 						iallValid = iallValid && ivalid[i];
 						ivalid[i] = ivalid[i] === true ? null : ivalid[i];
 					}
 				}
+				allValid = allValid && iallValid;
 
 				// check whether form element is valid
-				allValid = allValid && iallValid;
 				iwidget.setValid(ivalid, iprop.details);
 				if (!iallValid) {
 					// mark the title of the subtab (in case we have not done it already)
