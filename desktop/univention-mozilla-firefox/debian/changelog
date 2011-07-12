@@ -1,3 +1,28 @@
+univention-mozilla-firefox (6.0.0-4) unstable; urgency=low
+
+  * revert changes from Bug #18025
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 13 Dec 2010 16:13:10 +0100
+
+univention-mozilla-firefox (6.0.0-3) unstable; urgency=low
+
+  * fixed last commit (Bug #18025)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 13 Dec 2010 14:43:18 +0100
+
+univention-mozilla-firefox (6.0.0-2) unstable; urgency=low
+
+  * added UCR commit in postinst and postrm (Bug #18025)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 13 Dec 2010 14:25:21 +0100
+
+univention-mozilla-firefox (6.0.0-1) unstable; urgency=low
+
+  * bumped version for UCD 3.1 
+  * fixed firefox.js Bug #19337
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Oct 2010 12:07:13 +0200
+
 univention-mozilla-firefox (5.0.1-2) unstable; urgency=low
 
   * Set default homepage to 2.4-0 and create Downloads directory (Bug #19660)

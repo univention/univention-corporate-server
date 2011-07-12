@@ -41,5 +41,6 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.2-1; t
 	mkdir -p /etc/univention/skel/Downloads
 fi
 
+
 exit 0
 

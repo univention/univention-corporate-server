@@ -181,7 +181,7 @@ pref("keyword.URL", "chrome://browser-region/locale/region.properties");
 
 pref("general.useragent.locale", "en-US");
 pref("general.skins.selectedSkin", "classic/1.0");
-pref("general.useragent.extra.firefox", "Firefox/3.6.2");
+pref("general.useragent.extra.firefox", "Firefox/3.6.10");
 
 pref("general.smoothScroll", false);
 //@line 183 "/builds/moz2_slave/linux_build/build/browser/app/profile/firefox.js"
