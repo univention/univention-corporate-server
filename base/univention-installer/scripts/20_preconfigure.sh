@@ -83,9 +83,6 @@ done
 
 echo "Setting up devices, this may take a while."
 mount devtmpfs -t devtmpfs /dev -o size=10M
-cd /dev
-/sbin/MAKEDEV generic
-cd -
 
 
 mount -a
@@ -101,11 +98,6 @@ else
 	usermod -p '`mkpasswd -H md5 $root_password`' root
 fi
 
-#create parport devices
-cd /dev
-/sbin/MAKEDEV parport
-cd -
-
 export DEBIAN_FRONTEND=noninteractive
 
 #syslogd $LOG
@@ -115,7 +107,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 mkdir -p /var/log/univention
 touch /var/log/univention/join.log
-chown root:adm /var/log/univention/join.log
+chown root:root /var/log/univention/join.log
 chmod 600 /var/log/univention/join.log
 tail -f /var/log/syslog >/dev/tty3 2>&1 &
 tail -f /var/log/univention/join.log >/dev/tty4 2>&1 &

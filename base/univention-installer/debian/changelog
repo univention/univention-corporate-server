@@ -1,3 +1,10 @@
+univention-installer (7.0.13-2) unstable; urgency=low
+
+  * removed deprecated "MAKEDEV" (Bug #22602)
+  * fixed file permissions
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 12 Jul 2011 14:31:36 +0200
+
 univention-installer (7.0.13-1) unstable; urgency=low
 
   * fixed detection of bootloader_device for UCR variable grub/boot (Bug #22602)
