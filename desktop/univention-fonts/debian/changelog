@@ -1,3 +1,9 @@
+univention-fonts (4.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 Bug #22432 
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Jul 2011 14:56:51 +0200
+
 univention-fonts (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
