@@ -1,0 +1,36 @@
+[firefox/prefs/conffile]
+Description[de]=Zusätzliche Konfigurationsdatei
+Description[en]=Additional configuration file
+Type=str
+Categories=system-desktop
+
+[firefox/prefs/mailto]
+Description[de]=Mailprogramm
+Description[en]=Mail program
+Type=str
+Categories=system-desktop
+
+[firefox/prefs/checkdefaultbrowser]
+Description[de]=Gibt an ob der Standard-Browser beim Start geprüft wird (default: false)
+Description[en]=Specifies wether to run the default browser check on startup (default: false) 
+Type=str
+Categories=system-desktop
+
+[firefox/prefs/printing]
+Description[de]=Druckprogramm
+Description[en]=Printing command
+Type=str
+Categories=system-desktop
+
+[firefox/prefs/spellchecker/dictionary]
+Description[de]=Standard Wörterbuch
+Description[en]=Default spellchecke dictionary
+Type=str
+Categories=system-desktop
+
+[firefox/prefs/homepage]
+Description[de]=Startseite des Webbrowsers
+Description[en]=Webbowsers start page
+Type=str
+Categories=system-desktop
+
