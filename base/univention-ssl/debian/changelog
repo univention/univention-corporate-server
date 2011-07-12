@@ -1,3 +1,9 @@
+univention-ssl (6.0.3-1) unstable; urgency=low
+
+  * fixed bashism (Bug #22847)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 12 Jul 2011 15:01:40 +0200
+
 univention-ssl (6.0.2-1) unstable; urgency=low
 
   * fixed country detection for ssl default values (Bug #22847)
