@@ -3,7 +3,7 @@
 # Univention KDE
 #  creates a Debian packageof KDE profiles
 #
-# Copyright (C) 2004-2010 Univention GmbH
+# Copyright (C) 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -305,7 +305,7 @@ EndOfFile
 echo "___ Create debian/copyright"
 # Creating copyright
 cat << 'EndOfFile' > copyright
-Copyright (C) 2000-2010 Univention GmbH. All rights reserved.
+Copyright (C) 2000-2011 Univention GmbH. All rights reserved.
 http://www.univention.de/
 EndOfFile
 

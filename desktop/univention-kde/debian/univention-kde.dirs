@@ -26,9 +26,15 @@ usr/share/icons/crystalsvg-univention-23/scalable/apps
 usr/share/apps/ksplash/Themes/Univention
 usr/share/apps/ksplash/Themes/Univention-green21
 usr/share/apps/ksplash/Themes/Univention-23
-usr/share/wallpapers
+usr/share/wallpapers/UCD-2.3/contents/images
 usr/share/pixmaps
 usr/share/univention-kde-profiles/
 usr/share/univention-kde/
 usr/lib/univention-install
 usr/bin
+usr/share/kde4/apps/ksplash/Themes/UCD-2.3
+usr/share/kde4/apps/ksplash/Themes/UCD-2.3/600x400
+usr/share/kde4/apps/ksplash/Themes/UCD-2.3/800x600
+usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1024x768
+usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1280x1024
+usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1600x1200

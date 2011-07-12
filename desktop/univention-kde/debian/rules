@@ -3,7 +3,7 @@
 # Univention KDE
 #  rules file for the debian package
 #
-# Copyright (C) 2004-2010 Univention GmbH
+# Copyright (C) 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,130 +31,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# This is the debhelper compatability version to use.
-
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	touch configure-stamp
-
-build: configure-stamp build-stamp
-build-stamp:
-	dh_testdir
-	touch build-stamp
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-	dh_clean
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
+override_dh_auto_install:
+	univention-install-config-registry
+	univention-install-config-registry-info
 	(cd profiles && find . ! -path "*.svn*" -type d -exec install  -d "../debian/univention-kde/usr/share/univention-kde-profiles/"{} \;)
 	(cd profiles && find . ! -path "*.svn*" -type f -exec install {} "../debian/univention-kde/usr/share/univention-kde-profiles/"{} \;)
+	dh_auto_install
 
-	install -m 0644 design/usr/share/wallpapers/{*png,*svg} debian/univention-kde/usr/share/wallpapers/
+override_dh_auto_build:
+	ucslint
+	dh_auto_build
 
-	install -d debian/univention-kde/usr/share/wallpapers/UCD-2.3
-	install -d debian/univention-kde/usr/share/wallpapers/UCD-2.3/contents
-	install -d debian/univention-kde/usr/share/wallpapers/UCD-2.3/contents/images
-	install -m 0644 design/usr/share/wallpapers/UCD-2.3/metadata.desktop debian/univention-kde/usr/share/wallpapers/UCD-2.3/
-	install -m 0644 design/usr/share/wallpapers/UCD-2.3/contents/screenshot.jpg debian/univention-kde/usr/share/wallpapers/UCD-2.3/contents/
-	#install -m 0644 design/usr/share/wallpapers/UCD-2.3/contents/images/{*jpg,*png,*svg} debian/univention-kde/usr/share/wallpapers/UCD-2.3/contents/images/
-	install -m 0644 design/usr/share/wallpapers/UCD-2.3/contents/images/*jpg debian/univention-kde/usr/share/wallpapers/UCD-2.3/contents/images/
-
-	# KDE 4 splash
-	install -d debian/univention-kde/usr/share/kde4/
-	install -d debian/univention-kde/usr/share/kde4/apps
-	install -d debian/univention-kde/usr/share/kde4/apps/ksplash/
-	install -d debian/univention-kde/usr/share/kde4/apps/ksplash/Themes
-	install -d debian/univention-kde/usr/share/kde4/apps/ksplash/Themes/UCD-2.3
-	install -m 0644 design/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/{*png,*rc} debian/univention-kde/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/
-
-	install -d debian/univention-kde/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/600x400
-	install -m 0644 design/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/600x400/*png debian/univention-kde/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/600x400/
-
-	install -d debian/univention-kde/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/800x600
-	install -m 0644 design/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/800x600/*png debian/univention-kde/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/800x600/
-
-	install -d debian/univention-kde/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1024x768
-	install -m 0644 design/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1024x768/*png debian/univention-kde/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1024x768/
-
-	install -d debian/univention-kde/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1280x1024
-	install -m 0644 design/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1280x1024/*png debian/univention-kde/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1280x1024/
-
-	install -d debian/univention-kde/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1600x1200
-	install -m 0644 design/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1600x1200/{*png,*txt} debian/univention-kde/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1600x1200/
-
-	# install -d debian/univention-kde/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1920x1200
-	# install -m 0644 design/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1920x1200/*png debian/univention-kde/usr/share/kde4/apps/ksplash/Themes/UCD-2.3/1920x1200/
-
-	# ksplash
-	install -m 0644 design/usr/share/apps/ksplash/Themes/Univention/*{rc,png} debian/univention-kde/usr/share/apps/ksplash/Themes/Univention/
-	install -m 0644 design/usr/share/apps/ksplash/Themes/Univention-green21/*{rc,png} debian/univention-kde/usr/share/apps/ksplash/Themes/Univention-green21/
-	install -m 0644 design/usr/share/apps/ksplash/Themes/Univention-23/*{rc,png} debian/univention-kde/usr/share/apps/ksplash/Themes/Univention-23/
-
-	# color scheme
-	install -m 0644 design/usr/share/apps/kdisplay/color-schemes/UniventionGreen.kcsrc debian/univention-kde/usr/share/apps/kdisplay/color-schemes/
-	install -m 0644 design/usr/share/apps/kdisplay/color-schemes/UniventionGreen21.kcsrc debian/univention-kde/usr/share/apps/kdisplay/color-schemes/
-	install -m 0644 design/usr/share/apps/kdisplay/color-schemes/Univention23.kcsrc debian/univention-kde/usr/share/apps/kdisplay/color-schemes/
-
-	# icons
-	install -m 0644 design/usr/share/icons/crystalsvg-univention/128x128/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/128x128/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention/16x16/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/16x16/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention/22x22/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/22x22/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention/32x32/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/32x32/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention/48x48/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/48x48/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention/64x64/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/64x64/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention/scalable/apps/kmenu.svg debian/univention-kde/usr/share/icons/crystalsvg-univention/scalable/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention/index.theme debian/univention-kde/usr/share/icons/crystalsvg-univention/index.theme
-
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/128x128/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/128x128/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/16x16/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/16x16/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/22x22/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/22x22/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/32x32/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/32x32/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/48x48/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/48x48/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/64x64/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/64x64/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/scalable/apps/kmenu.svg debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/scalable/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/index.theme debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/index.theme
-
-	for i in 16x16 128x128 22x22 32x32 48x48 64x64; do install -m 0644 design/usr/share/icons/crystalsvg-univention-23/$$i/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention-23/$$i/apps/; done
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-23/scalable/apps/kmenu.svg debian/univention-kde/usr/share/icons/crystalsvg-univention-23/scalable/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-23/index.theme debian/univention-kde/usr/share/icons/crystalsvg-univention-23/index.theme
-
-	# themes
-	install -m 0644 "design/usr/share/apps/kthememanager/themes/Plastik-Univention-Green/"{*png,*xml} "debian/univention-kde/usr/share/apps/kthememanager/themes/Plastik-Univention-Green/"
-	install -m 0644 "design/usr/share/apps/kthememanager/themes/Plastik-Univention-Green21/"{*png,*xml} "debian/univention-kde/usr/share/apps/kthememanager/themes/Plastik-Univention-Green21/"
-	install -m 0644 "design/usr/share/apps/kthememanager/themes/Plastik-Univention-23/"{*png,*xml} "debian/univention-kde/usr/share/apps/kthememanager/themes/Plastik-Univention-23/"
-
-	install -m 0755 univention-kde-profile-builder debian/univention-kde/usr/bin/
-	install -m 0755 univention-kde-profile-builder-dialog debian/univention-kde/usr/bin/
-
-	install -m 0755 78univention-kde.inst debian/univention-kde/usr/lib/univention-install/
-	install -m 0755 univention-set-kdedirs debian/univention-kde-setdirs/usr/share/univention-kde/
-	univention-install-baseconfig
-
-binary-arch: build install
-
-binary-indep: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs
-	dh_installchangelogs
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+%:
+	dh $@

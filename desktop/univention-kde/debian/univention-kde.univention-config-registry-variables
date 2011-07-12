@@ -1,0 +1,5 @@
+[hal/devices/group]
+Description[de]=Hal Geräte Gruppe
+Description[en]=Hal device group
+Type=str
+Categories=system-desktop

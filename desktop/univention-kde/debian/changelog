@@ -1,3 +1,10 @@
+univention-kde (6.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 Bug #22432
+  * Removed dependencies to old kdepim packages and arts 
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Jul 2011 17:48:14 +0200
+
 univention-kde (5.1.19-2) unstable; urgency=low
 
   * Added dependency to sux (Bug #21022)
