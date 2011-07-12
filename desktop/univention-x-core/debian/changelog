@@ -1,3 +1,9 @@
+univention-x-core (6.0.1-1) unstable; urgency=low
+
+  * always set xorg/autodetect?yes Bug #19035
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Jul 2011 15:47:34 +0200
+
 univention-x-core (6.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 Bug #22432
