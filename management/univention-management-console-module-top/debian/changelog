@@ -1,0 +1,5 @@
+univention-management-console-module-top (1.0.0-1) unstable; urgency=low
+
+  * Initial release (Bug #22850)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 12 Jul 2011 12:27:45 +0200

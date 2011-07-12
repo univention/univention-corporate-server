@@ -1,0 +1,6 @@
+Module: top
+Python: umc/python
+Definition: umc/top.xml
+Syntax: umc/syntax/top.xml
+Javascript: umc/js
+Icons: umc/icons

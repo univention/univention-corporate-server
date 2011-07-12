@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="top" icon="top" version="1.0">
+	<name>Top</name>
+	<description>process overview</description>
+	<categories>
+	  <category name="system"/>
+	</categories>
+	<command name="top/reboot" function="reboot">
+	  <attribute name="action" syntax="String" required="1"/>
+	  <attribute name="message" syntax="String" required="1"/>
+	  <return syntax="Boolean"/>
+	</command>
+  </module>
+</umc>
