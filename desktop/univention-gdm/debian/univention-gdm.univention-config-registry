@@ -15,6 +15,7 @@ File: usr/share/gdm/themes/univention/univention.xml
 Variables: gdm/menu/system
 Variables: gdm/menu/language
 Variables: xorg/resolution
+Variables: univentionAutoStartScript
 
 Type: file
 File: etc/gdm/Init/Default

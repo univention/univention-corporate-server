@@ -3,7 +3,7 @@
 # Univention GDM
 #  Linux Arbeitsplatz session script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval `/usr/sbin/univention-baseconfig shell`
+eval "$(/usr/sbin/univention-config-registry shell)"
+
 unset univentionDesktopProfile
 # remove quotes from startup script filename
 univentionAutoStartScript=`echo $univentionAutoStartScript | sed 's/^"//;s/"$//'`
@@ -101,7 +102,7 @@ function thinclient() {
 	# debug
 	if [ -n "$thinclient_debug" ]; then
 		echo "Settings:"
-		/usr/sbin/univention-baseconfig dump
+		/usr/sbin/univention-config-registry dump
 		echo "SESSION_HOST: $SESSION_HOST"
 		echo "SESSION_RSH: $SESSION_RSH"
 		echo ""
@@ -114,7 +115,7 @@ function thinclient() {
 	# establish session to application server
 	if [ -z "$univentionAutoStartScript" -o "$univentionAutoStartScript" = "none" -o "$univentionAutoStartScript" = "None" ]
 	then
-		timeout=`$SESSION_RSH $SESSION_HOST /usr/sbin/univention-baseconfig get thinclient/session/startup`
+		timeout=`$SESSION_RSH $SESSION_HOST /usr/sbin/univention-config-registry get thinclient/session/startup`
 		timeout=`echo $timeout | egrep "^([0-9])+$"`
 
 		FIFOFILE=/tmp/univention-client.sock.$USER

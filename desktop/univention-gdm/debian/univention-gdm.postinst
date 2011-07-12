@@ -3,7 +3,7 @@
 # Univention GDM
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,29 +30,23 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
-	univention-baseconfig set gdm/menu/system?true
-	univention-baseconfig set gdm/menu/securesystem?true
+	univention-config-registry set gdm/menu/system?true
+	univention-config-registry set gdm/menu/securesystem?true
 else
-	univention-baseconfig set gdm/menu/system?true
-	univention-baseconfig set gdm/menu/securesystem?false
+	univention-config-registry set gdm/menu/system?true
+	univention-config-registry set gdm/menu/securesystem?false
 fi
 
 if [ "$server_role" = "managedclient" -o "$server_role" = "mobileclient" -o "$server_role" = "fatclient" ]; then
 	adduser --system --home /tmp --shell "/bin/bash" --disabled-password autostart
 fi
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.34; then
-        	univention-baseconfig set gdm/allowroot?true gdm/allowremoteroot?true
-else
-        	univention-baseconfig set gdm/allowroot?false gdm/allowremoteroot?false
-fi
-
 if [ -n "$gdm_language" ] ; then
-	univention-baseconfig unset gdm/language
+	univention-config-registry unset gdm/language
 fi
 
 if [ "$server_role" = "managedclient" -o "$server_role" = "mobileclient" -o "$server_role" = "fatclient" ]; then
@@ -61,7 +55,7 @@ else
 	permitteduser="console"
 fi
 
-univention-baseconfig set gdm/autostart?yes gdm/disallow/tcp?yes gdm/autostart/permitteduser?$permitteduser
+univention-config-registry set gdm/autostart?yes gdm/disallow/tcp?yes gdm/autostart/permitteduser?$permitteduser
 
 #DEBHELPER#
 

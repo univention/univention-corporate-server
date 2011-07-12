@@ -1,3 +1,11 @@
+univention-gdm (8.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 Bug #22432
+  * replaced ucd theme with ucd gdm theme
+  * remove dependency to univention-gdm-theme-ucd 
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Jul 2011 14:40:37 +0200
+
 univention-gdm (7.0.15-1) unstable; urgency=low
 
   * Fixed bash typo in last commit (Bug #18559)
