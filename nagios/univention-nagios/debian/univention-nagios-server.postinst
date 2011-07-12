@@ -46,24 +46,37 @@ univention-config-registry set 'nagios/server/refreshrate?90' \
 						  'nagios/server/autostart?yes' \
 						  'nagios/plugin/check_nrpe/timeout?10'
 
-USERSERVICES=$(univention-config-registry get auth/user/services | egrep "(^| )nagios( |$)" -c)
-ADMINSERVICES=$(univention-config-registry get auth/admin/services | egrep "(^| )nagios( |$)" -c)
-if [ "$USERSERVICES" = "0" -a "$ADMINSERVICES" = "0" ] ; then
-	eval "$(univention-config-registry shell)"
-	univention-config-registry set auth/admin/services="$auth_admin_services nagios"
+if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '5.0.0-0'
+then # update from previous version
+	# migrate UCRV auth/*/services
+	if univention-config-registry get auth/user/services  | grep -Eqs '(^| )nagios( |$)'
+	then
+		univention-config-registry set 'auth/nagios/group/Domain Users?yes'
+	fi
+	if univention-config-registry get auth/admin/services | grep -Eqs '(^| )nagios( |$)'
+	then
+		univention-config-registry set 'auth/nagios/group/Domain Admins?yes'
+	fi
+	univention-config-registry set 'auth/nagios/user/Administrator?yes'
+	# migrate from univention-nagios-group-access
+	oldgroups="$(univention-config-registry get nagios/server/webaccess/groups)"
+	OLDIFS="$IFS"
+	for group in $oldgroups
+	do
+		univention-config-registry set "auth/nagios/group/${group}?yes"
+	done
+	IFS="$OLDIFS"
+	univention-config-registry unset 'nagios/server/webaccess/groups'
+elif [ "$1" = 'configure' -a -z "$2" ]
+	univention-config-registry set 'auth/nagios/group/Domain Admins?yes'
+	univention-config-registry set 'auth/nagios/user/Administrator?yes'
 fi
 
 #DEBHELPER#
 
-# call join script if installed on master or backup
-if [ "$server_role" = "domaincontroller_master" -o \
-	 "$server_role" = "domaincontroller_backup" ] ; then
-	/usr/lib/univention-install/26univention-nagios-server.inst || true
-
-	# call univention-nagios-client join script again 
-    # (script maybe aborted if installed before univention-nagios-server)
-	/usr/lib/univention-install/30univention-nagios-client.inst || true
-fi
+. /usr/share/univention-lib/base.sh
+call_joinscript 26univention-nagios-server.inst
+call_joinscript 30univention-nagios-client.inst
 
 if [ ! -d /etc/apache2/conf.d ]; then
 	mkdir -p /etc/apache2/conf.d

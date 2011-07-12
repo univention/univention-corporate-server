@@ -142,6 +142,10 @@ univention-directory-manager policies/console_access modify "$@" --ignore_exists
 	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
 	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
 
+univention-directory-manager groups/group create "$@" --ignore_exists \
+    --position "cn=groups,$ldap_base" \
+    --set name="Nagios Admins" \
+    --set description="Group of users with permission to access Nagios web interface"
 
 joinscript_save_current_version
 
