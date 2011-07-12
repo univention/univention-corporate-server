@@ -1,3 +1,9 @@
+acroread (9.4.2-6) stable; urgency=low
+
+  * fixed path to pdf plugin Bug #22432 
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Jul 2011 10:54:35 +0200
+
 acroread (9.4.2-5) stable; urgency=low
 
   * moved acroread script on top of debian dir Bug #22432
