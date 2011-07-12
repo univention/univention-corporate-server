@@ -1,3 +1,10 @@
+univention-management-console-module-reboot (1.0.3-1) unstable; urgency=low
+
+  * Fix result message
+  (Bug #22848)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 12 Jul 2011 11:38:25 +0200
+
 univention-management-console-module-reboot (1.0.2-1) unstable; urgency=low
 
   * Change command name

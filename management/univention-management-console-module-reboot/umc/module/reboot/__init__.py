@@ -53,10 +53,11 @@ class Instance(umcm.Base):
                         do = "r"
                         target=_('The system is going down for reboot NOW with following message: ')
 
-                request.options['reason'] = target + request.options['reason']
+                message = target + request.options['message']
 
                 try:
-                        subprocess.call(('shutdown', '-%s' %do, 'now', str(request.options['reason'])))
+                        subprocess.call(('logger', '-f', '/var/log/syslog', '-t', 'UMC', message))
+                        subprocess.call(('shutdown', '-%s' %do, 'now', message))
                         request.status = SUCCESS
                         success = True
                 except (OSError, ValueError), e:
@@ -64,4 +65,4 @@ class Instance(umcm.Base):
                         success = False
                         MODULE.warn(str(e))
 
-		self.finished(request.id, success)
+		self.finished(request.id, { "success": success, "message": message })

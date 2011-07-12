@@ -13,6 +13,8 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
     _page: null,
     _form: null,
 
+	i18nClass: 'umc.modules.reboot',
+
 	buildRendering: function() {
 		this.inherited(arguments);
 
@@ -28,13 +30,13 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			value: 'reboot',
 			label: this._('Action'),
 			staticValues: [
-				{ id: 'reboot', label: this._('Reboot') },
-				{ id: 'halt', label: this._('Stop') }
+				{id: 'reboot', label: this._('Reboot')},
+				{id: 'halt', label: this._('Stop')}
 			]
 		}, {
 			type: 'TextBox',
-			name: 'reason',
-			label: this._( 'Reason for this reboot/shutdown' )
+			name: 'message',
+			label: this._('Reason for this reboot/shutdown')
 		}];
 
 		var buttons = [{
@@ -43,12 +45,12 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			callback: dojo.hitch(this, function() {
                 var vals = this._form.gatherFormValues();
                 this.umcpCommand('reboot/reboot', vals).then(dojo.hitch(this, function(data) {
-                    umc.app.alert(this._('FIXME'));
+                    umc.app.alert(data.result.message);
                 }));
 			})
 		}];
 
-		var layout = [['action'], ['reason']];
+		var layout = [['action'], ['message']];
 
 		this._form = new umc.widgets.Form({
 			style: 'width: 100%',
