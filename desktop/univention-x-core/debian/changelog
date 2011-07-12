@@ -1,4 +1,4 @@
-univention-x-core (5.0.0-1) unstable; urgency=low
+univention-x-core (6.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 Bug #22432
 
