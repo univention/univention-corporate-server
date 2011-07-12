@@ -91,7 +91,7 @@ set -e
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/sbin/gdm
-DEBCONF_DAEMON=/usr/bin/gdm
+DEBCONF_DAEMON=/usr/sbin/gdm
 
 test -x $DAEMON || exit 0
 
