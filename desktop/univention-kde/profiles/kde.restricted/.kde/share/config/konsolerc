@@ -1,5 +1,10 @@
-[$Version]
-update_info=konsole.upd:kde2.2/r1,konsole.upd:kde3.0/r1
+[Desktop Entry]
+DefaultProfile=Shell.profile
 
-[TipOfDay]
-RunOnStart=false
+[Favorite Profiles]
+Favorites=/usr/share/kde4/apps/konsole/Shell.profile
+
+[MainWindow]
+Height 768=564
+State=AAAA/wAAAAD9AAAAAAAAAfMAAAIgAAAABAAAAAQAAAAIAAAACPwAAAAA
+Width 1024=499

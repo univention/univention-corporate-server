@@ -7,7 +7,7 @@ Standards-Version: 3.5.5
 
 Package: univention-kde
 Architecture: all
-Depends: xbase-clients,  kdebase, kdenetwork, ark, kcalc, kde-i18n-de, univention-config-registry (>=0.06), debhelper, kontact, kdepim-wizards, kmail, kaddressbook, kmailcvt, knode, korganizer, kdepim-kio-plugins, kdepim-kfile-plugins, univention-kde-setdirs, arts, alsa-base, fakeroot, akregator, kpilot, knewsticker, kweather
+Depends: xbase-clients, ark, kcalc, kde-l10n-de, univention-config-registry (>=0.06), debhelper, kontact, kdepim-wizards, kmail, kaddressbook, kmailcvt, knode, korganizer, kdepim-kio-plugins, kdepim-kfile-plugins, univention-kde-setdirs, arts, alsa-base, fakeroot, akregator, kpilot, kweather (>= 4:4.4.5), kdebase (>= 4:4.4.5), kdebase-runtime (>= 4:4.4.5), kdebase-apps (>= 4:4.4.5), kdebase-bin (>= 4:4.4.5), kdebase-kio-plugins (>= 4:3.5.9.dfsg.1-6-1.5.201002090936), kdenetwork (>= 4:4.4.5), libkonq5-templates, kde-standard (>= 4:4.4.5), kdebase-workspace (>= 4:4.4.5), kde-window-manager (>= 4:4.4.5), kde-plasma-desktop (>= 4:4.4.5), khelpcenter4 (>= 4:4.4.5), gwenview (>= 4:4.4.5), libkipi7, kdeprint, sux
 Description: UCS - KDE desktop
  This package installs the KDE desktop.
  .

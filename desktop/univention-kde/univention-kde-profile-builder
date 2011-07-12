@@ -3,28 +3,29 @@
 # Univention KDE
 #  creates a Debian packageof KDE profiles
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright (C) 2004-2010 Univention GmbH
 #
 # http://www.univention.de/
 #
 # All rights reserved.
 #
-# The source code of this program is made available
+# The source code of the software contained in this package
+# as well as the source package itself are made available
 # under the terms of the GNU Affero General Public License version 3
 # (GNU AGPL V3) as published by the Free Software Foundation.
-#
-# Binary versions of this program provided by Univention to you as
+# 
+# Binary versions of this package provided by Univention to you as
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
 # you and Univention and not subject to the GNU AGPL V3.
-#
-# In the case you use this program under the terms of the GNU AGPL V3,
+# 
+# In the case you use the software under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
-#
+# 
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
@@ -122,25 +123,20 @@ cp -a  "$path/.kde" $pkg_name/
 
 echo -e "___ Copy Desktop"
 if [ "$desktop" == "restricted" ]; then
-	mkdir -p $pkg_name/.kde/share/apps/kdesktop/
-	cp -a $path/Desktop $pkg_name/.kde/share/apps/kdesktop/DesktopLinks
-elif [ "$desktop" == "locked" ]; then
-	cp -a  $path/Desktop $pkg_name/
-	if [ -e "$pkg_name/.kde/share/config/kdeglobals" ]; then
-		cp -a "$pkg_name/.kde/share/config/kdeglobals" "$pkg_name/.kde/share/config/kdeglobals.tmp"
-		echo -n > "$pkg_name/.kde/share/config/kdeglobals"
-		cat  "$pkg_name/.kde/share/config/kdeglobals.tmp" | while read line; do
-			if [ "$line" = "[Paths]" ]; then
-				echo "$line" >>"$pkg_name/.kde/share/config/kdeglobals"
-				echo "Desktop=/usr/share/univention-kde-profiles/$pkg_name/Desktop/" >>"$pkg_name/.kde/share/config/kdeglobals"
-			else
-				echo "$line" >>"$pkg_name/.kde/share/config/kdeglobals"
-			fi
-		done
-		rm -f "$pkg_name/.kde/share/config/kdeglobals.tmp"
+	if [ -d "$path/Desktop" ]; then
+		mkdir -p $pkg_name/.kde/share/apps/kio_desktop/DesktopLinks
+		cp -rL $path/Desktop/* $pkg_name/.kde/share/apps/kio_desktop/DesktopLinks
 	fi
-	# insert [$i] into all KDE config files, execpt 'kdeglobals'
-	find "$pkg_name/.kde/share/config/" -type f ! -name kdeglobals | while read file; do
+	# change desktop location
+	sed -i -r "s|^url=file://$path/Desktop|url=Desktop:/|;s|^url=$path/Desktop|url=Desktop:/|" "$pkg_name/.kde/share/config/plasma-desktop-appletsrc"
+elif [ "$desktop" == "locked" ]; then
+	if [ -d "$path/Desktop" ]; then
+		targetDesktop="/usr/share/univention-kde-profiles/$pkg_name/Desktop"
+		cp -rL $path/Desktop $pkg_name/
+		sed -i -r "s|^url=desktop.*|url=$targetDesktop|;s|^url=Desktop.*|url=$targetDesktop|;s|^url=$path/Desktop|url=$targetDesktop|;s|^url=file://$path/Desktop|url=$targetDesktop|" "$pkg_name/.kde/share/config/plasma-desktop-appletsrc"
+	fi
+	# insert [$i] into all KDE config files
+	find "$pkg_name/.kde/share/config/" -type f | while read file; do
 		grep '\[$i\]' "$file" >/dev/null && continue
 		cp -a "$file" "$file.tmp"
 		echo '[$i]' >"$file"
@@ -148,11 +144,18 @@ elif [ "$desktop" == "locked" ]; then
 		rm -f "$file.tmp"
 	done
 fi
+
 # replace dirnames in all KDE config files
 find "$pkg_name/.kde/share/config/" -type f | while read file; do
 	grep "$path" "$file" >/dev/null || continue
 	sed -i "s@$path@/usr/share/univention-kde-profiles/$pkg_name@g" "$file"
 done
+
+# remove userID from the restart commands
+if [ -e "$pkg_name/.kde/share/config/ksmserverrc" ]; then
+	cat $pkg_name/.kde/share/config/ksmserverrc | egrep -v "^userId" >$pkg_name/.kde/share/config/ksmserverrc.BAK
+	mv $pkg_name/.kde/share/config/ksmserverrc.BAK $pkg_name/.kde/share/config/ksmserverrc
+fi
 
 if [ -f $path/.kderc ]; then
 	echo "___ Copy .kderc"
@@ -167,8 +170,6 @@ if [ -d "$path/.local" ]; then
         echo "___ Copy .local/"
         cp -ar "$path/.local/" $pkg_name/
 fi
-
-
 
 echo "___ Remove Symlinks"
 find "$pkg_name/.kde" -type l -exec rm {} \;
@@ -224,6 +225,7 @@ install: build
 	dh_installdirs
 	(cd profiles && find . ! -path "*.svn*" -type d -exec install  -d "../debian/@@@pkgname@@@/usr/share/univention-kde-profiles/"{} \;)
 	(cd profiles && find . ! -path "*.svn*" -type f -exec install {} "../debian/@@@pkgname@@@/usr/share/univention-kde-profiles/"{} \;)
+	(cd profiles && find . ! -path "*.svn*" -type l -exec cp -l {} "../debian/@@@pkgname@@@/usr/share/univention-kde-profiles/"{} \;)
 	install -m 0755 80univention-kde-profile_@@@profile_name@@@.inst debian/@@@pkgname@@@/usr/lib/univention-install/
 
 binary-arch: build install
@@ -289,7 +291,7 @@ EndOfFile
 
 echo "___ Create debian/changelog"
 # Creating changelog
-date=`date +%a," "%e" "%b" "%Y" "%X" "%z`
+date=`date --rfc-2822`
 
 cat << 'EndOfFile' | sed -e "s/@@@pkgname@@@/$pkg_name/g" -e "s/@@@date@@@/$date/g" -e "s/@@@version@@@/$version/g"> changelog
 @@@pkgname@@@ (@@@version@@@) unstable; urgency=low
@@ -303,7 +305,7 @@ EndOfFile
 echo "___ Create debian/copyright"
 # Creating copyright
 cat << 'EndOfFile' > copyright
-Copyright (C) 2000-2004 Univention GmbH. All rights reserved.
+Copyright (C) 2000-2010 Univention GmbH. All rights reserved.
 http://www.univention.de/
 EndOfFile
 
@@ -315,6 +317,7 @@ Source: @@@pkgname@@@
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0)
 Standards-Version: 3.5.5
 
 Package: @@@pkgname@@@
@@ -336,22 +339,22 @@ echo "___ Create 80univention-kde-profile_$profile_name.inst"
 cat << 'EndOfFile' |sed -e "s/@@@profile_name@@@/$profile_name/g" -e "s/@@@pkg_name@@@/$pkg_name/g" > 80univention-kde-profile_"$profile_name".inst
 #!/bin/sh
 
+VERSION=1
+
 eval `univention-baseconfig shell`
 
-if [ $server_role = domaincontroller_master -o $server_role = domaincontroller_slave ]; then
-	if ! test -e "/usr/share/univention-join/.joined"; then
-	        echo "The server has not joined yet"
-	        exit 1
-	fi
-
-	touch /usr/lib/univention-install/.index.txt
-
-	test -n "`grep "univention-kde-profile_@@@profile_name@@@ successful" /usr/lib/univention-install/.index.txt`" && exit 1
-
-	univention-admin settings/default modify $@ --dn cn=default,cn=univention,$ldap_base --append defaultKdeProfiles="/usr/share/univention-kde-profiles/@@@pkg_name@@@"
-
-	test -n "`grep "univention-kde-profile_@@@profile_name@@@ successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde-profile_@@@profile_name@@@ successful" >>/usr/lib/univention-install/.index.txt
+if ! test -e "/usr/share/univention-join/.joined"; then
+        echo "The server has not joined yet"
+        exit 1
 fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep "univention-kde-profile_@@@profile_name@@@ successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+univention-admin settings/default modify $@ --dn cn=default,cn=univention,$ldap_base --append defaultKdeProfiles="/usr/share/univention-kde-profiles/@@@pkg_name@@@"
+
+test -n "`grep "univention-kde-profile_@@@profile_name@@@ successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde-profile_@@@profile_name@@@ successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
 EndOfFile

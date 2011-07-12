@@ -1,0 +1,12 @@
+[Desktop Entry]
+Exec=beagle-search --icon
+Name=Beagle Search Tool
+Terminal=false
+Type=Application
+StartupNotify=false
+X-KDE-autostart-phase=2
+X-KDE-autostart-after=panel
+# Setting Hidden=true unintuitively disables autostart on KDE and
+# GNOME >= 2.19.2, but it breaks disabling of autostart in older GNOME.
+Hidden=true
+X-GNOME-Autostart-enabled=false

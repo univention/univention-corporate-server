@@ -1,0 +1,9 @@
+[KSplash Theme: UCD-2.3]
+Name = UCD-2.3 Splash Screen
+Description = UCD-2.3 Splash Screen
+Version = 1.0
+Author = Univention GmbH <packages@univention.de>
+Homepage = http://www.univention.de
+
+# Theme behaviour settings.
+Engine = KSplashX

@@ -1,46 +1,49 @@
-<!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN" "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+<!DOCTYPE Menu PUBLIC '-//freedesktop//DTD Menu 1.0//EN' 'http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd'>
 <Menu>
+ <Layout>
+  <Merge type="menus" />
+  <Menuname>Office</Menuname>
+  <Menuname>Graphics</Menuname>
+  <Menuname>Internet</Menuname>
+  <Merge type="files" />
+  <Filename>kde4-kfind.desktop</Filename>
+  <Filename>kde-Help.desktop</Filename>
+ </Layout>
  <Menu>
   <Name>Office</Name>
   <Layout>
    <Merge type="files" />
-   <Filename>Kontact.desktop</Filename>
-   <Filename>evolution.desktop</Filename>
+   <Filename>kde-Kontact.desktop</Filename>
+   <Separator/>
+   <Filename>kde4-okular.desktop</Filename>
+   <Filename>openoffice.org-startcenter.desktop</Filename>
+   <Filename>AdobeReader.desktop</Filename>
+   <Separator/>
   </Layout>
   <Exclude>
    <Filename>kde-kaddressbook.desktop</Filename>
-   <Filename>ooo645template.desktop</Filename>
-   <Filename>ooo645calc.desktop</Filename>
-   <Filename>ooo645draw.desktop</Filename>
-   <Filename>ooo645printeradmin.desktop</Filename>
-   <Filename>ooo645impress.desktop</Filename>
-   <Filename>ooo645math.desktop</Filename>
-   <Filename>ooo645writer.desktop</Filename>
-   <Filename>ooo645web.desktop</Filename>
-   <Filename>kde-korganizer.desktop</Filename>
-  </Exclude>
- </Menu>
- <Menu>
-  <Name>Utilities</Name>
-  <Menu>
-   <Name>XUtilities</Name>
-   <Deleted/>
-  </Menu>
-  <Exclude>
-   <Filename>kde-ark.desktop</Filename>
-   <Filename>kde-KFloppy.desktop</Filename>
-   <Filename>kde-kdeprintfax.desktop</Filename>
+   <Filename>openoffice.org-base.desktop</Filename>
+   <Filename>ooo-base.desktop</Filename>
+   <Filename>openoffice.org-math.desktop</Filename>
+   <Filename>ooo-math.desktop</Filename>
    <Filename>kde-knotes.desktop</Filename>
+   <Filename>kde-groupwarewizard.desktop</Filename>
+   <Filename>kde-KMail.desktop</Filename>
+   <Filename>kde-kpalmdoc.desktop</Filename>
    <Filename>kde-kpilot.desktop</Filename>
-   <Filename>kde-kgpg.desktop</Filename>
-   <Filename>kde-kcalc.desktop</Filename>
+   <Filename>kde-korganizer.desktop</Filename>
+   <Filename>kde-kalarm.desktop</Filename>
+   <Filename>kde-karm.desktop</Filename>
+   <Filename>openoffice.org-impress.desktop</Filename>
+   <Filename>ooo-calc.desktop</Filename>
+   <Filename>ooo-writer.desktop</Filename>
+   <Filename>kde-ktnef.desktop</Filename>
+   <Filename>openoffice.org-draw.desktop</Filename>
+   <Filename>ooo-draw.desktop</Filename>
+   <Filename>ooo-impress.desktop</Filename>
+   <Filename>openoffice.org-calc.desktop</Filename>
+   <Filename>openoffice.org-writer.desktop</Filename>
   </Exclude>
-  <Layout>
-   <Merge type="files" />
-   <Filename>kde-kjobviewer.desktop</Filename>
-   <Filename>kde-kdict.desktop</Filename>
-   <Filename>kde-klipper.desktop</Filename>
-  </Layout>
   <Menu>
    <Name>More</Name>
    <Deleted/>
@@ -50,80 +53,28 @@
   <Name>Graphics</Name>
   <Layout>
    <Merge type="files" />
-   <Filename>GV.desktop</Filename>
-   <Filename>The GIMP.desktop</Filename>
-  </Layout>
-  <Menu>
-   <Name>More</Name>
-   <Deleted/>
-  </Menu>
-  <Exclude>
+   <Filename>kde4-gwenview.desktop</Filename>
    <Filename>kde-kuickshow.desktop</Filename>
-   <Filename>kde-kview.desktop</Filename>
-   <Filename>kde-ksnapshot.desktop</Filename>
-   <Filename>kde-kdvi.desktop</Filename>
-   <Filename>kde-kolourpaint.desktop</Filename>
-   <Filename>kde-kpdf.desktop</Filename>
-   <Filename>kde-kpovmodeler.desktop</Filename>
-   <Filename>kde-kghostview.desktop</Filename>
-   <Filename>kde-kooka.desktop</Filename>
-  </Exclude>
-  <Include>
-   <Filename>The GIMP.desktop</Filename>
-   <Filename>GV.desktop</Filename>
-  </Include>
- </Menu>
- <Menu>
-  <Name>Internet</Name>
-  <Layout>
-   <Merge type="files" />
-   <Filename>Mozilla.desktop</Filename>
-   <Filename>Konqueror.desktop</Filename>
-   <Filename>kde-links-ssl.desktop</Filename>
-   <Filename>kde-KNode.desktop</Filename>
+   <Filename>gimp.desktop</Filename>
+   <Filename>kde4-okular.desktop</Filename>
+   <Separator/>
   </Layout>
-  <Menu>
-   <Name>Terminal</Name>
-   <Deleted/>
-  </Menu>
   <Exclude>
-   <Filename>kde-kit.desktop</Filename>
-   <Filename>kde-knetattach.desktop</Filename>
-   <Filename>kde-kget.desktop</Filename>
-   <Filename>kde-Kppp.desktop</Filename>
-   <Filename>kde-kopete.desktop</Filename>
-   <Filename>kde-ksirc.desktop</Filename>
-   <Filename>javaws1.4.desktop</Filename>
-   <Filename>kde-KMail.desktop</Filename>
-   <Filename>kde-krdc.desktop</Filename>
-   <Filename>kde-konqbrowser.desktop</Filename>
+   <Filename>kde-kview.desktop</Filename>
+   <Filename>kde4-ksnapshot.desktop</Filename>
+   <Filename>inkscape.desktop</Filename>
+   <Filename>kde-kolourpaint.desktop</Filename>
+   <Filename>scribus-ng.desktop</Filename>
+   <Filename>kde-kghostview.desktop</Filename>
+   <Filename>kde-kpdf.desktop</Filename>
+   <Filename>kde-kooka.desktop</Filename>
+   <Filename>ooo-draw.desktop</Filename>
+   <Filename>openoffice.org-draw.desktop</Filename>
   </Exclude>
   <Menu>
    <Name>More</Name>
    <Deleted/>
   </Menu>
-  <Include>
-   <Filename>Mozilla.desktop</Filename>
-   <Filename>Konqueror.desktop</Filename>
-  </Include>
- </Menu>
- <Menu>
-  <Name>Programme</Name>
-  <Directory>Programme.directory</Directory>
-  <Include>
-   <Filename>Acrobat Reader.desktop</Filename>
-   <Filename>Ark.desktop</Filename>
-   <Filename>KCalc.desktop</Filename>
-  </Include>
-  <Layout>
-   <Merge type="files" />
-   <Filename>Acrobat Reader.desktop</Filename>
-   <Filename>Ark.desktop</Filename>
-   <Filename>KCalc.desktop</Filename>
-  </Layout>
-  <Exclude>
-   <Filename>kde-Kfind.desktop</Filename>
-  </Exclude>
  </Menu>
  <Menu>
   <Name>Debian</Name>
@@ -134,19 +85,27 @@
   <Deleted/>
  </Menu>
  <Menu>
+  <Name>Utilities</Name>
+  <Deleted/>
+ </Menu>
+ <Menu>
   <Name>Development</Name>
   <Deleted/>
  </Menu>
  <Menu>
-  <Name>Toys</Name>
+  <Name>Information</Name>
   <Deleted/>
  </Menu>
  <Menu>
-  <Name>Edutainment</Name>
+  <Name>Education</Name>
   <Deleted/>
  </Menu>
  <Menu>
   <Name>Multimedia</Name>
+  <Deleted/>
+ </Menu>
+ <Menu>
+  <Name>Settings</Name>
   <Deleted/>
  </Menu>
  <Menu>
@@ -165,68 +124,92 @@
   <Name>Applications</Name>
   <Deleted/>
  </Menu>
- <Exclude>
-  <Filename>kde-Help.desktop</Filename>
-  <Filename>kde-KControl.desktop</Filename>
- </Exclude>
  <Menu>
   <Name>.hidden</Name>
   <Include>
-   <Filename>kde-Kontact.desktop</Filename>
    <Filename>kde-kaddressbook.desktop</Filename>
-   <Filename>ooo645template.desktop</Filename>
-   <Filename>ooo645calc.desktop</Filename>
-   <Filename>ooo645draw.desktop</Filename>
-   <Filename>ooo645printeradmin.desktop</Filename>
-   <Filename>ooo645impress.desktop</Filename>
-   <Filename>ooo645math.desktop</Filename>
-   <Filename>ooo645writer.desktop</Filename>
-   <Filename>ooo645web.desktop</Filename>
-   <Filename>kde-korganizer.desktop</Filename>
-   <Filename>kde-ark.desktop</Filename>
-   <Filename>kde-KFloppy.desktop</Filename>
-   <Filename>kde-kdeprintfax.desktop</Filename>
+   <Filename>openoffice.org-base.desktop</Filename>
+   <Filename>ooo-base.desktop</Filename>
+   <Filename>openoffice.org-math.desktop</Filename>
+   <Filename>ooo-math.desktop</Filename>
    <Filename>kde-knotes.desktop</Filename>
+   <Filename>kde-groupwarewizard.desktop</Filename>
+   <Filename>kde-kpalmdoc.desktop</Filename>
    <Filename>kde-kpilot.desktop</Filename>
-   <Filename>kde-kgpg.desktop</Filename>
-   <Filename>kde-kcalc.desktop</Filename>
-   <Filename>kde-kuickshow.desktop</Filename>
+   <Filename>kde-korganizer.desktop</Filename>
+   <Filename>kde-kalarm.desktop</Filename>
+   <Filename>kde-karm.desktop</Filename>
+   <Filename>openoffice.org-impress.desktop</Filename>
+   <Filename>ooo-calc.desktop</Filename>
+   <Filename>ooo-writer.desktop</Filename>
+   <Filename>ooo-impress.desktop</Filename>
+   <Filename>openoffice.org-calc.desktop</Filename>
+   <Filename>openoffice.org-writer.desktop</Filename>
    <Filename>kde-kview.desktop</Filename>
-   <Filename>kde-ksnapshot.desktop</Filename>
-   <Filename>kde-kdvi.desktop</Filename>
+   <Filename>kde4-ksnapshot.desktop</Filename>
+   <Filename>inkscape.desktop</Filename>
    <Filename>kde-kolourpaint.desktop</Filename>
-   <Filename>kde-kpdf.desktop</Filename>
-   <Filename>kde-kpovmodeler.desktop</Filename>
+   <Filename>scribus-ng.desktop</Filename>
    <Filename>kde-kghostview.desktop</Filename>
+   <Filename>kde-kpdf.desktop</Filename>
    <Filename>kde-kooka.desktop</Filename>
-   <Filename>kde-kit.desktop</Filename>
-   <Filename>kde-knetattach.desktop</Filename>
-   <Filename>kde-kget.desktop</Filename>
-   <Filename>kde-Kppp.desktop</Filename>
-   <Filename>kde-kopete.desktop</Filename>
+   <Filename>ooo-draw.desktop</Filename>
+   <Filename>openoffice.org-draw.desktop</Filename>
+   <Filename>kde-akregator.desktop</Filename>
+   <Filename>kde4-krfb.desktop</Filename>
+   <Filename>kde4-knetattach.desktop</Filename>
+   <Filename>kde4-kget.desktop</Filename>
+   <Filename>kde4-Kppp.desktop</Filename>
+   <Filename>kde4-kopete.desktop</Filename>
+   <Filename>kde4-konversation.desktop</Filename>
    <Filename>kde-ksirc.desktop</Filename>
-   <Filename>javaws1.4.desktop</Filename>
    <Filename>kde-KMail.desktop</Filename>
-   <Filename>kde-krdc.desktop</Filename>
-   <Filename>kde-konqbrowser.desktop</Filename>
-   <Filename>kde-Help.desktop</Filename>
-   <Filename>kde-KControl.desktop</Filename>
+   <Filename>kde-kandy.desktop</Filename>
+   <Filename>sun-java6-javaws.desktop</Filename>
+   <Filename>ia32-sun-java6-javaws.desktop</Filename>
+   <Filename>kde-ktnef.desktop</Filename>
+   <Filename>kde-KNode.desktop</Filename>
+   <Filename>kde4-krdc.desktop</Filename>
+   <Filename>elinks.desktop</Filename>
+   <Filename>kde4-konqbrowser.desktop</Filename>
   </Include>
  </Menu>
- <Layout>
-  <Merge type="menus" />
-  <Menuname>Office</Menuname>
-  <Menuname>Utilities</Menuname>
-  <Menuname>Editors</Menuname>
-  <Menuname>Graphics</Menuname>
-  <Menuname>Internet</Menuname>
-  <Menuname>OpenOffice.org1.1</Menuname>
-  <Menuname>Programme</Menuname>
-  <Merge type="files" />
-  <Filename>kde-Kfind.desktop</Filename>
-  <Filename>kde-Home.desktop</Filename>
- </Layout>
- <Include>
-  <Filename>kde-Kfind.desktop</Filename>
- </Include>
+ <Menu>
+  <Name>Internet</Name>
+  <Layout>
+   <Merge type="files" />
+   <Filename>kde-Kontact.desktop</Filename>
+   <Filename>kde-groupwarewizard.desktop</Filename>
+   <Filename>firefox.desktop</Filename>
+   <Separator/>
+   <Merge type="menus" />
+   <Menuname>More</Menuname>
+  </Layout>
+  <Menu>
+   <Name>Terminal</Name>
+   <Deleted/>
+  </Menu>
+  <Exclude>
+   <Filename>kde-akregator.desktop</Filename>
+   <Filename>kde4-krfb.desktop</Filename>
+   <Filename>kde4-knetattach.desktop</Filename>
+   <Filename>kde4-kget.desktop</Filename>
+   <Filename>kde4-Kppp.desktop</Filename>
+   <Filename>kde4-kopete.desktop</Filename>
+   <Filename>kde4-konversation.desktop</Filename>
+   <Filename>kde-ksirc.desktop</Filename>
+   <Filename>kde-KMail.desktop</Filename>
+   <Filename>kde-kandy.desktop</Filename>
+   <Filename>sun-java6-javaws.desktop</Filename>
+   <Filename>ia32-sun-java6-javaws.desktop</Filename>
+   <Filename>kde-ktnef.desktop</Filename>
+   <Filename>kde-KNode.desktop</Filename>
+   <Filename>kde4-krdc.desktop</Filename>
+   <Filename>elinks.desktop</Filename>
+   <Filename>kde4-konqbrowser.desktop</Filename>
+  </Exclude>
+  <Include>
+   <Filename>kde-Kontact.desktop</Filename>
+  </Include>
+ </Menu>
 </Menu>

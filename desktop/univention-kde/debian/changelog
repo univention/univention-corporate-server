@@ -1,42 +1,265 @@
-univention-kde (5.0.3-1) unstable; urgency=low
+univention-kde (5.1.19-2) unstable; urgency=low
 
-  * call 'konqueror $HOME' instead of 'kfmclient openProfile
-    filemanagement' in kde example profiles. Bug #13104
+  * Added dependency to sux (Bug #21022)
 
- -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 19:14:35 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Dec 2010 12:01:33 +0100
 
-univention-kde (5.0.2-1) unstable; urgency=low
+univention-kde (5.1.19-1) unstable; urgency=low
 
-  * unset auth/kdeprofile while removing package. Bug #18648
+  * Fixed kwin restart command in locked and restricted profile
+    (Bug #18103)
 
- -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 19:01:25 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Dec 2010 10:50:57 +0100
 
-univention-kde (5.0.1-1) unstable; urgency=low
+univention-kde (5.1.18-1) unstable; urgency=low
 
-  * added UCR header to /etc/univention/skel/.mcoprc. Bug #19169
+  * Be sure the cached kde profile will be used on a mobile client if
+    the network connection is down (Bug #21037)
 
- -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Jul 2010 21:14:02 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Dec 2010 10:22:11 +0100
 
-univention-kde (5.0.0-1) unstable; urgency=low
+univention-kde (5.1.17-1) unstable; urgency=low
 
-  * convert to GNU APGL V3 (Bug #17543)
-  * bump version for UCS 2.4
+  * converted to GNU APGL V3 Bug #19200
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 15:42:14 +0200
+ -- Felix Botner <botner@univention.de>  Tue, 21 Dec 2010 16:45:34 +0100
 
-univention-kde (4.0.4-1) unstable; urgency=low
+univention-kde (5.1.16-1) unstable; urgency=low
 
-  * be sure univentionDesktopProfile is not evaluated from UCR. Bug
-    #12493
+  * Fixed sed expression (Bug #13749)
 
- -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 May 2010 09:20:21 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Dec 2010 14:22:35 +0100
 
-univention-kde (4.0.3-1) unstable; urgency=low
+univention-kde (5.1.15-2) unstable; urgency=low
+
+  * Support file:// URLs for the desktop path (Bug #13749)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Dec 2010 13:16:02 +0100
+
+univention-kde (5.1.15-1) unstable; urgency=low
+
+  * Fixed desktop handling for locked and restricted profiles
+    (Bug #13749)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Dec 2010 12:09:53 +0100
+
+univention-kde (5.1.14-1) unstable; urgency=low
+
+  * added kdeprint as dependency of univention-kde (Bug #16700)
+
+ -- Felix Botner <botner@univention.de>  Wed, 15 Dec 2010 10:27:50 +0100
+
+univention-kde (5.1.13-1) unstable; urgency=low
+
+  * disabled nepomuk/strigi in kde4 profile (Bug #20404)
+
+ -- Felix Botner <botner@univention.de>  Mon, 13 Dec 2010 13:50:18 +0100
+
+univention-kde (5.1.12-1) unstable; urgency=low
+
+  * disabled beagle in kde4 profile (Bug #20085) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 13 Dec 2010 13:19:03 +0100
+
+univention-kde (5.1.11-1) unstable; urgency=low
+
+  * always dpkg-statoverride /usr/lib/kde4/libexec/kcheckpass (Bug #17711)
+
+ -- Felix Botner <botner@univention.de>  Fri, 12 Nov 2010 15:33:29 +0100
+
+univention-kde (5.1.10-1) unstable; urgency=low
+
+  * fixed profile builder for kde 4.4.5 (Bug #13749)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 08 Nov 2010 15:57:47 +0100
+
+univention-kde (5.1.9-1) unstable; urgency=low
+
+  * fixed wrong Kontact link in kickoffs favorite list (Bug #18106)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 02 Nov 2010 12:40:21 +0100
+
+univention-kde (5.1.8-1) unstable; urgency=low
+
+  * added kickoffrc template (Bug #18025)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 02 Nov 2010 09:55:59 +0100
+
+univention-kde (5.1.7-1) unstable; urgency=low
+
+  * Disable animations and shadows by default for oxygen theme (Bug #20126)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Oct 2010 13:36:32 +0200
+
+univention-kde (5.1.6-1) unstable; urgency=low
+
+  * fixed wrong date format in generated changelog (Bug #5842)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 01 Oct 2010 11:20:45 +0200
+
+univention-kde (5.1.5-1) unstable; urgency=low
+
+  * fixed deps for kde 4.4.5 (Bug #19088) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 24 Sep 2010 09:22:30 +0200
+
+univention-kde (5.1.4-1) unstable; urgency=low
+
+  * fixed deps for kde 4.4.5 (Bug #19088)
+
+ -- Felix Botner <botner@univention.de>  Mon, 20 Sep 2010 17:10:38 +0200
+
+univention-kde (5.1.3-1) unstable; urgency=low
+
+  * fixed deps for kde 4.4.5 (Bug #19088) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 20 Sep 2010 13:12:02 +0200
+
+univention-kde (5.1.2-1) unstable; urgency=low
+
+  * fixed deps for kde 4.4.5 (Bug #19088) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Sep 2010 15:34:18 +0200
+
+univention-kde (5.1.1-1) unstable; urgency=low
+
+  * add debhelper to Build-Depends of created packages (Bug #6655)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 08 Sep 2010 14:06:16 +0200
+
+univention-kde (5.1.0-1) unstable; urgency=low
+
+  * Merges from UCD 2.4:
+    * unset auth/kdeprofile while removing package. Bug #18648
+    * added UCR header to /etc/univention/skel/.mcoprc. Bug #19169
+  * bump version for UCD 3.1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Aug 2010 10:36:16 +0200
+
+univention-kde (4.1.16-2) unstable; urgency=low
+
+  * revert change for 4.1.16-1, as it does not solve the theme bug (Bug #17955)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 09 Apr 2010 11:39:28 +0200
+
+univention-kde (4.1.16-1) unstable; urgency=low
+
+  * set networkmanager/group to Domain Users to avoid KDE crashes on first
+    login a domain user (Bug #17955)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 09 Apr 2010 11:21:44 +0200
+
+univention-kde (4.1.15-1) unstable; urgency=low
+
+  * set default x cursor theme Bug #17880
+
+ -- Felix Botner <botner@univention.de>  Tue, 16 Mar 2010 13:46:20 +0100
+
+univention-kde (4.1.14-1) unstable; urgency=low
 
   * fixed a typo in univention-set-kdedirs which avoids the use of an
     KDE profile in a disconnected mobile client session. Bug #12493
 
- -- Stefan Gohmann <gohmann@univention.de>  Wed, 03 Mar 2010 09:13:24 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 08 Mar 2010 09:40:20 +0100
+
+univention-kde (4.1.13-1) unstable; urgency=low
+
+  * set setuid flag for kcheckpass to allow kscreensaver unlock for ldap
+    users. Bug #17711
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 23 Feb 2010 13:59:00 +0100
+
+univention-kde (4.1.12-1) unstable; urgency=low
+
+  * be sure the old profile directories will be replaced. Bug #17564
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Feb 2010 11:08:29 +0100
+
+univention-kde (4.1.11-1) unstable; urgency=low
+
+  * move the kickoff favorites from the normal kde profile to the menu
+    profile. Bug #17568
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Feb 2010 06:27:02 +0100
+
+univention-kde (4.1.10-1) unstable; urgency=low
+
+  * recreate kde.restricted and kde.lockeddown for KDE 4. Bug #17557
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Feb 2010 07:51:27 +0100
+
+univention-kde (4.1.9-2) unstable; urgency=low
+
+  * fixed dependencies for KDE4. Bug #10325 
+
+ -- Felix Botner <botner@univention.de>  Tue, 16 Feb 2010 13:32:45 +0100
+
+univention-kde (4.1.9-1) unstable; urgency=low
+
+  * fixed dependencies for KDE4. Bug #10325 
+
+ -- Felix Botner <botner@univention.de>  Tue, 16 Feb 2010 11:22:45 +0100
+
+univention-kde (4.1.8-1) unstable; urgency=low
+
+  * update the default KDE4 profile. Bug #17564
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 Feb 2010 10:36:26 +0100
+
+univention-kde (4.1.7-1) unstable; urgency=low
+
+  * remove some unused entries from the menu. Bug #17568
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 Feb 2010 09:07:20 +0100
+
+univention-kde (4.1.6-1) unstable; urgency=low
+
+  * added missing debian/links file. Bug #17564
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 Feb 2010 07:30:23 +0100
+
+univention-kde (4.1.5.1) unstable; urgency=low
+
+  * fixed control file Bug #10325
+
+ -- Felix Botner <botner@univention.de>  Mon, 08 Feb 2010 12:21:27 +0100
+
+univention-kde (4.1.4-1) unstable; urgency=low
+
+  * use the classic kde mouse theme. Bug #17564
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 05 Feb 2010 19:49:27 +0100
+
+univention-kde (4.1.3-1) unstable; urgency=low
+
+  * added a UCD wallpaper. Bug #17564
+  * removed the information entry from the menu. Bug #17568
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 05 Feb 2010 16:03:29 +0100
+
+univention-kde (4.1.2-1) unstable; urgency=low
+
+  * create new kde profiles for kde 4. Bug #17564 and Bug #17568
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Feb 2010 14:42:44 +0100
+
+univention-kde (4.1.1-2) unstable; urgency=low
+
+  * fixed control file Bug #10325 
+
+ -- Felix Botner <botner@univention.de>  Wed, 03 Feb 2010 16:42:35 +0100
+
+univention-kde (4.1.1-1) unstable; urgency=low
+
+  * added conflict to old kdebase-kio-plugins Bug #10325
+
+ -- Felix Botner <botner@univention.de>  Wed, 03 Feb 2010 16:18:51 +0100
+
+univention-kde (4.1.0-1) unstable; urgency=low
+
+  * bumped version for ucd component Bug #10325
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Jan 2010 11:16:47 +0100
 
 univention-kde (4.0.2-2) unstable; urgency=low
 

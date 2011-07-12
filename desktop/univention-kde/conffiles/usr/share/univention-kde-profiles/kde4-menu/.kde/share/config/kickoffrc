@@ -1,0 +1,23 @@
+@%@BCWARNING=# @%@
+
+[Favorites]
+@!@
+import os.path
+
+defFavorites=("/usr/share/applications/kde/Kontact.desktop", \
+"/usr/share/applications/kde4/Kontact.desktop", \
+"/usr/share/applications/firefox.desktop", \
+"/usr/share/applications/openoffice.org-startcenter.desktop", \
+"/usr/share/applications/kde4/dolphin.desktop")
+
+favorites=""
+
+for application in defFavorites:
+    if os.path.isfile(application):
+        favorites += application + ","
+
+if len(favorites) != 0:
+    favorites = favorites[:-1]
+
+print "FavoriteURLs=%s" %(favorites)
+@!@

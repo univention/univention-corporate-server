@@ -1,10 +1,11 @@
-kcminputrc Mouse cursorTheme ''
+kcminputrc Mouse cursorTheme 'Oxygen_Black'
 kcminputrc Mouse cursorSize ''
-kpersonalizerrc General FirstLogin true
 ksplashrc KSplash Theme Default
+ksplashrc KSplash Engine KSplashX
 kcmrandrrc Display ApplyOnStartup false
 kcmrandrrc [Screen0]
 kcmrandrrc [Screen1]
 kcmrandrrc [Screen2]
 kcmrandrrc [Screen3]
 kcmfonts General forceFontDPI 0
+kdeglobals Locale Language '' # trigger requesting languages from KLocale

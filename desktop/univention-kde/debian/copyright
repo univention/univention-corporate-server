@@ -1,5 +1,6 @@
-Copyright 2001-2010 Univention GmbH
+Copyright 2001-2010 by
 
+Univention GmbH
 http://www.univention.de/
 
 All rights reserved.
@@ -28,11 +29,6 @@ License with the Debian GNU/Linux or Univention distribution in file
 
 =============================================================================
 
-The following files are excluded from the GNU AGPL V3 license:
- - univention-background.png
-
-=============================================================================
-
 libVncExt.So.2.0 and vnevent are part of xf4vnc version 4.3.0.999 which
 is released under the GPL
 
@@ -55,3 +51,8 @@ design/usr/share/wallpapers/lineart_univention_*
 
 The artwork is derived from lineart.svgz which is part of KDE (debian 
 package kdebase-data).
+
+=============================================================================
+
+The following files are excluded from the AGPL license:
+ - univention-background.png
