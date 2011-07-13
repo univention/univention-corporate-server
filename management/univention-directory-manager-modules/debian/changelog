@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.29-1) unstable; urgency=low
+
+  * removed dependency to univention-newsid and univention-smbencrypt (Bug #23017)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 13 Jul 2011 12:34:55 +0200
+
 univention-directory-manager-modules (7.0.28-1) unstable; urgency=low
 
   * provide standard salt to asn1_encode_key (Bug #22212)
