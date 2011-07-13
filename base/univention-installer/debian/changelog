@@ -1,3 +1,9 @@
+univention-installer (7.0.14-2) unstable; urgency=low
+
+  * fixed grub config (Bug #22707) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 13 Jul 2011 16:39:52 +0200
+
 univention-installer (7.0.14-1) unstable; urgency=low
 
   * added grub2 config (Bug #22707) 

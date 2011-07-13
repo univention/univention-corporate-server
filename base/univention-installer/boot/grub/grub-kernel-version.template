@@ -5,7 +5,7 @@ set color_highlight=white/black
 set menu_color_normal=white/black
 set menu_color_highlight=white/dark-gray
 
-menuentry '--> back' {
+menuentry '<-- back' {
 	configfile /boot/grub/grub-kernel.cfg
 }
 
