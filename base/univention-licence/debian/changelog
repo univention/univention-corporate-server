@@ -1,3 +1,9 @@
+univention-licence (3.0.1-2) unstable; urgency=low
+
+  * removed deprecated/useless dependency (Bug #22160)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 13 Jul 2011 17:45:30 +0200
+
 univention-licence (3.0.1-1) unstable; urgency=low
 
   * Replaced deprecated ldap functions (Bug #18913)
