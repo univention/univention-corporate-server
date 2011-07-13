@@ -369,7 +369,6 @@ dojo.mixin(umc.tools, {
 	renderLayout: function(/*Array*/ layout, /*Object*/ widgets, /*Object?*/ buttons) {
 		// summary:
 		//		Render a widget containing a set of widgets as specified by the layout.
-		//		The optional parameter cols specifies the number of columns.
 
 		// create a container
 		var globalContainer = new umc.widgets.ContainerWidget({});
@@ -396,21 +395,50 @@ dojo.mixin(umc.tools, {
 
 			// for single String / Array
 			if (elList) {
+				// see how many buttons and how many widgets there are in this row
+				var nWidgetsWithLabel = 0;
+				dojo.forEach(elList, function(jel) {
+					nWidgetsWithLabel += jel in widgets && (widgets[jel].label ? 1 : 0);
+				});
+
 				// add current form widgets to layout
 				var elContainer = new umc.widgets.ContainerWidget({});
 				dojo.forEach(elList, function(jel) {
-					// make sure the reference to the widget exists
-					if (!(jel in widgets)) {
+					// make sure the reference to the widget/button exists
+					if (!(jel in widgets) && !(jel in buttons)) {
 						console.log(dojo.replace("WARNING in umc.tools.renderLayout: The widget '{0}' is not defined in the argument 'widgets'. Ignoring error.", [jel]));
 						return true;
 					}
 
-					// add the widget surrounded with a LabelPane
+					// make sure the widget/button has not been already rendered
 					var widget = widgets[jel];
-					elContainer.addChild(new umc.widgets.LabelPane({
-						label: widget.label,
-						content: widget
-					}));
+					var button = buttons[jel];
+					if ((widget && widget._isRendered) || (button && button._isRendered)) {
+						console.log(dojo.replace("WARNING in umc.tools.renderLayout: The widget '{0}' has been referenced more than once in the layout. Ignoring error.", [jel]));
+						return true;
+					}
+
+					// add the widget or button surrounded with a LabelPane
+					if (widget) {
+						elContainer.addChild(new umc.widgets.LabelPane({
+							label: widget.label,
+							content: widget
+						}));
+						widget._isRendered = true;
+					} else if (button) {
+						if (nWidgetsWithLabel) {
+							// if buttons are displayed along with widgets, we need to add a '&nbps;' 
+							// as label in order to display them on the same height
+							elContainer.addChild(new umc.widgets.LabelPane({
+								label: '&nbsp;',
+								content: button
+							}));
+						} else {
+							// if there are only buttons in the row, we do not need a label
+							elContainer.addChild(button);
+						}
+						button._isRendered = true;
+					}
 				}, this);
 				globalContainer.addChild(elContainer);
 			}
@@ -420,18 +448,21 @@ dojo.mixin(umc.tools, {
 				//console.log(el);
 				globalContainer.addChild(new umc.widgets.GroupBox({
 					legend: el.label,
-					content: this.renderLayout(el.layout, widgets)
+					content: this.renderLayout(el.layout, widgets, buttons)
 				}));
 			}
 		}
 
 		// add buttons if specified
 		if (buttons) {
-			// add all buttons to a container in the correct order
-			// (i.e., using the interal array field _order) 
+			// add all buttons that have not been rendered so far to a separate container
+			// and respect their correct order (i.e., using the interal array field _order) 
 			var buttonContainer = new umc.widgets.ContainerWidget({});
 			dojo.forEach(buttons._order, function(ibutton) {
-				buttonContainer.addChild(ibutton);
+				if (!ibutton._isRendered) {
+					buttonContainer.addChild(ibutton);
+					ibutton._isRendered = true;
+				}
 			});
 			globalContainer.addChild(buttonContainer);
 		}
