@@ -1,0 +1,5 @@
+univention-dependency-dummy (0.0.0.0.0-1) unstable; urgency=low
+
+  * initial import (Bug #22602)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 13 Jul 2011 14:23:50 +0200
