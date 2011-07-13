@@ -1185,6 +1185,7 @@ class simpleComputer( simpleLdap ):
 
 		tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
 		if not position:
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.WARN, 'could not access network object and given position is "None", using LDAP root as position for DHCP entry')
 			position = tmppos.getBase( )
 		results = self.lo.search( base = position, scope = 'domain', attr = [ 'univentionDhcpFixedAddress' ], filter = 'dhcpHWAddress=%s' % ethernet, unique = 0 )
 
@@ -1691,9 +1692,9 @@ class simpleComputer( simpleLdap ):
 						dn = self.__remove_from_dhcp_object(  None, self[ 'name' ], entry,  self[ 'mac' ][ 0 ])
 						try:
 							dn = string.join(dn.split(',')[1:],',')
+							self.__modify_dhcp_object( dn, self[ 'name' ], self.__changes[ 'ip' ][ 'add' ][ 0 ],  self[ 'mac' ][ 0 ] )
 						except:
-							dn = None
-						self.__modify_dhcp_object( dn, self[ 'name' ], self.__changes[ 'ip' ][ 'add' ][ 0 ],  self[ 'mac' ][ 0 ] )
+							pass
 				else:
 					# remove the dns objects
 					self.__remove_dns_forward_object( self[ 'name' ], None, entry )
@@ -1804,25 +1805,43 @@ class simpleComputer( simpleLdap ):
 			ml.append( ( 'sn', self.oldattr.get( 'sn', [ None ] )[ 0 ], self[ 'name' ] ) )
 			self.__changes[ 'name' ] = ( self.oldattr.get( 'sn', [ None ] )[ 0 ], self[ 'name' ] )
 
-		# remove the corresponding dhcp-entries when removing an IP or MAC address (bug #18966)
 		if self.hasChanged('ip') or self.hasChanged('mac'):
-			# get all IP addresses that have been removed
-			removedIPs = []
-			if self.oldinfo.has_key('ip'):
-				removedIPs = [ ip for ip in self.oldinfo['ip'] if ip and ip not in self['ip'] ]
-
-			# get all MAC addresses that have been removed
-			removedMACs = []
-			if self.oldinfo.has_key('mac'):
-				removedMACs = [ mac for mac in self.oldinfo['mac'] if mac and mac not in self['mac'] ]
-
-			# remove all DHCP-entries that have been associated with any of these IP/MAC addresses
-			newDhcpEntries = []
-			for entry in self['dhcpEntryZone']:
+			if len(self.info['ip']) == 1 and len(self.info['mac']) == 1 and len(self.info['dhcpEntryZone']):
+				# In this special case, we assume the mapping between ip/mac address to be
+				# unique. The dhcp entry needs to contain the mac address (as sepcified by
+				# the ldap search for dhcp entries), the ip address may not correspond to 
+				# the ip address associated with the computer ldap object, but this would 
+				# be erroneous anyway. We therefore update the dhcp entry to correspond to 
+				# the current ip and mac address. (Bug #20315)
+				entry = self.info['dhcpEntryZone'][0]
 				dn, ip, mac = self.__split_dhcp_line(entry)
-				if ip not in removedIPs and mac not in removedMACs:
-					newDhcpEntries.append(entry)
-			self['dhcpEntryZone'] = newDhcpEntries
+				if dn and ip and mac:
+					self.info['dhcpEntryZone'] = [ '%s %s %s' % (dn, self.info['ip'][0], self.info['mac'][0]) ]
+				else:
+					self.info['dhcpEntryZone'] = []
+			else:
+				# in all other cases, we remove old dhcp entries that do not match ip or
+				# mac addresses (Bug #18966)
+
+				# get all IP addresses that have been removed
+				removedIPs = []
+				if self.oldinfo.has_key('ip'):
+					removedIPs = [ ip for ip in self.oldinfo['ip'] if ip and ip not in self['ip'] ]
+
+				# get all MAC addresses that have been removed
+				removedMACs = []
+				if self.oldinfo.has_key('mac'):
+					removedMACs = [ mac for mac in self.oldinfo['mac'] if mac and mac not in self['mac'] ]
+
+				# remove all DHCP-entries that have been associated with any of these IP/MAC addresses
+				newDhcpEntries = []
+				for entry in self['dhcpEntryZone']:
+					dn, ip, mac = self.__split_dhcp_line(entry)
+					if ip not in removedIPs and mac not in removedMACs:
+						newDhcpEntries.append(entry)
+
+				# update the value
+				self.info['dhcpEntryZone'] = newDhcpEntries
 
 		if self.hasChanged( 'dhcpEntryZone' ):
 			if self.oldinfo.has_key( 'dhcpEntryZone' ):

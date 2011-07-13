@@ -1,3 +1,11 @@
+univention-directory-manager-modules (6.0.208-1) unstable; urgency=low
+
+  * fixed updating DHCP entries when changing the MAC or IP address of a UDM
+    computer object; the bug caused DHCP objects to be created in the LDAP root
+    (Bug #20315)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 13 Jul 2011 15:52:59 +0200
+
 univention-directory-manager-modules (6.0.207-1) unstable; urgency=low
 
   * fix "type or value exists" when moving computer objects (Bug #18419)
