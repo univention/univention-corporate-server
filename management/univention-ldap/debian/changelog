@@ -1,3 +1,9 @@
+univention-ldap (8.0.12-2) unstable; urgency=low
+
+  * changed dependencies (Bug #22431)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 13 Jul 2011 17:24:20 +0200
+
 univention-ldap (8.0.12-1) unstable; urgency=low
 
   * removed dependency to univention-newsid (Bug #23017)
