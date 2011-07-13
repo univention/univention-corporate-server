@@ -41,7 +41,7 @@ pgrep named || named -c /var/lib/samba/private/named.conf
 sleep 5
 
 # create an admin user for synchronisation
-samba-tool newuser ucs-s4sync "$(</etc/samba4.secret)" -U Administrator%$(</etc/samba4.secret)
+samba-tool newuser ucs-s4sync "$(cat /etc/samba4.secret)" -U Administrator%$(cat /etc/samba4.secret)
 samba-tool group addmembers "Domain Admins" ucs-s4sync #maybe we could use a more restrict group?
 
 univention-config-registry set \

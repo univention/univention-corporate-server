@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention LDAP Server
 #  postinst script for the debian package
@@ -29,6 +29,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+
+. /usr/share/univention-lib/all.sh
 
 # check for running slapd first
 if [ -n "$(pidof slapd)" ]; then
@@ -71,7 +73,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 fi
 
 local_ips="127.0.0.1"
-for address in $(univention-config-registry search interfaces/eth.*/address | sed -n 's_interfaces/eth.*/address: \(.*\)_\1_p'); do local_ips+=",$address"; done
+for address in $(univention-config-registry search interfaces/eth.*/address | sed -n 's_interfaces/eth.*/address: \(.*\)_\1_p'); do local_ips="${local_ips},$address"; done
 
 univention-config-registry set	ldap/debug/level?0 \
 								slapd/port?"7389,389" \
@@ -107,7 +109,7 @@ if ! shopt -q nocasematch; then
 	shopt -s nocasematch
 fi
 
-if [[ "$ldap_replog" =~ ^("true"|"yes")$ ]]; then
+if is_ucr_true "ldap/replog" ; then
 	test -f /var/lib/univention-ldap/replog/replog || \
 		touch /var/lib/univention-ldap/replog/replog
 	chmod 0600 /var/lib/univention-ldap/replog/replog
@@ -116,7 +118,7 @@ if [[ "$ldap_replog" =~ ^("true"|"yes")$ ]]; then
 fi
 
 merge_csv_unique_sorted() {
-	if [ "$(echo $1)" == "none" ]; then
+	if [ "$1" = "none" ]; then
 		old=''
 	else
 		old="$1"
@@ -124,7 +126,7 @@ merge_csv_unique_sorted() {
 	echo -n "$(echo  -n "$old,$2" | tr "," "\n" | egrep -v "^$" | sort -u  | tr "\n" "," | sed -e 's/,$//')"
 }
 
-if [[ "$ldap_index_autorebuild" =~ ^("true"|"yes")$ ]]; then
+if is_ucr_true "ldap/index/autorebuild" ; then
 	# merge csv lists of current and recommended attributes
 	eval "$(univention-config-registry shell ldap/index/eq ldap/index/pres ldap/index/sub ldap/index/approx)"
 	merged_ldap_index_eq="$(merge_csv_unique_sorted "$ldap_index_eq" "$recommended_ldap_index_eq")"

@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.3-1) unstable; urgency=low
+
+  * fixed bashisms (Bug #23005)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 12 Jul 2011 18:36:23 +0200
+
 univention-ad-connector (6.0.2-2) unstable; urgency=low
 
   * Update descriptions of Univention Configuration Registry variables

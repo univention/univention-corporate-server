@@ -144,7 +144,7 @@ def create_certificate(name, serverUidNumber, domainname):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: can\'t create certificate, Common Name too long: %s.%s' % (name,domainname))
 		return
 
-	p = os.popen('source /usr/share/univention-ssl/make-certificates.sh; gencert %s.%s %s.%s' % (name,domainname,name,domainname) )
+	p = os.popen('. /usr/share/univention-ssl/make-certificates.sh; gencert %s.%s %s.%s' % (name,domainname,name,domainname) )
 	p.close()
 	p = os.popen('ln -sf %s/%s.%s %s/%s' % (ssldir,name,domainname,ssldir,name) )
 	p.close()

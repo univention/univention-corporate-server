@@ -1,3 +1,9 @@
+univention-gdm (8.0.2-1) unstable; urgency=low
+
+  * fixed bashisms (Bug #23005)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 12 Jul 2011 18:38:35 +0200
+
 univention-gdm (8.0.1-1) unstable; urgency=low
 
   * fixed gdm init script Bug #22432 

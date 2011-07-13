@@ -36,7 +36,7 @@ wait_for_dns(){
 eval "$(univention-config-registry shell)"
 if [ "$server_role" != "domaincontroller_master" ]
     then
-    continue=1; while [ $continue == "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
+    continue=1; while [ $continue = "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
 fi
 }
 

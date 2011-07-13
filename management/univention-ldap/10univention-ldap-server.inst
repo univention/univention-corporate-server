@@ -49,7 +49,7 @@ reverse=`univention-ipcalc --netmask $interfaces_eth0_netmask --ip $interfaces_e
 sleep 5
 if [ "$server_role" != "domaincontroller_master" ]; then
 	continue=1;
-	while [ $continue == "1" ];do
+	while [ $continue = "1" ];do
 		echo "wait for named ?";
 		timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`;
 		if [ -z "$timeout" ]; then
@@ -64,7 +64,7 @@ if [ $? != 0 ]; then exit 1; fi
 sleep 5
 if [ "$server_role" != "domaincontroller_master" ]; then
 	continue=1;
-	while [ $continue == "1" ]; do
+	while [ $continue = "1" ]; do
 		echo "wait for named ?";
 		timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`;
 		if [ -z "$timeout" ]; then
@@ -78,7 +78,7 @@ if [ $? != 0 ]; then exit 1; fi
 sleep 5
 if [ "$server_role" != "domaincontroller_master" ]; then
 	continue=1;
-	while [ $continue == "1" ]; do
+	while [ $continue = "1" ]; do
 		echo "wait for named ?";
 		timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`;
 		if [ -z "$timeout" ]; then
@@ -125,7 +125,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	sleep 5
 	if [ "$server_role" != "domaincontroller_master" ]; then
 		continue=1;
-		while [ $continue == "1" ]; do
+		while [ $continue = "1" ]; do
 			echo "wait for named ?";
 			timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`;
 			if [ -z "$timeout" ]; then
@@ -140,7 +140,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	sleep 5
 	if [ "$server_role" != "domaincontroller_master" ]; then
 		continue=1;
-		while [ $continue == "1" ]; do
+		while [ $continue = "1" ]; do
 			echo "wait for named ?";
 			timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`;
 			if [ -z "$timeout" ]; then

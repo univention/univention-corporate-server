@@ -63,7 +63,7 @@ check_started () {
 		
   if [ -f "$THEPIDFILE" ]; then
     pid="$(cat $THEPIDFILE)"
-    if [ "$pid" ] && kill -0 $pid >/dev/null; then
+    if [ "$pid" ] && /bin/kill -0 $pid >/dev/null; then
       return 0    # Is started
     fi
   fi
@@ -180,7 +180,7 @@ stop () {
         while [ `pidof nagios3 | wc -l ` -gt 0 ]; do
             cnt=`expr "$cnt" + 1`
             if [ "$cnt" -gt 15 ]; then
-                kill -9 `pidof nagios3`
+                /bin/kill -9 `pidof nagios3`
                 break
             fi
             sleep 1
@@ -234,7 +234,7 @@ case "$1" in
   start)
     # check ucr autostart setting
     if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-        source "/usr/share/univention-config-registry/init-autostart.lib"
+        . "/usr/share/univention-config-registry/init-autostart.lib"
         check_autostart nagios-server nagios/server/autostart
     fi
     log_daemon_msg "Starting $DESC" "$NAME"

@@ -34,7 +34,7 @@
 
 eval "$(univention-config-registry shell)"
 
-source /usr/share/univention-lib/all.sh
+. /usr/share/univention-lib/all.sh
 
 case "$1" in
 	configure)

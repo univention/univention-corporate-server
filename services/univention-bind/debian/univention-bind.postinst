@@ -47,7 +47,7 @@ else
 		until runsvstat /etc/runit/univention-bind > /dev/null 2>&1 || test $count -gt 10
 		  do
 		  sleep 1
-		  ((count=count+1))
+		  count=$((count+1))
 		done
 		# runsv has 10 seconds to sync, if it hasn't there will be a warning
 		/etc/init.d/univention-bind start

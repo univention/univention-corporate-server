@@ -46,7 +46,9 @@ if [ -z "$2" ]; then
 	fi;
 
 	mkdir -p /etc/univention/skel/windows-profiles
-	mkdir -p /etc/univention/skel/windows-profiles/{Win95,WinNT,Win2k,WinXP,Win2K3,Vista,Vista.V2}
+	for dname in Win95 WinNT Win2k WinXP Win2K3 Vista Vista.V2 ; do
+		mkdir -p /etc/univention/skel/windows-profiles/$dname
+	done
 fi
 
 univention-config-registry set samba/share/home?yes \

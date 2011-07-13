@@ -1,3 +1,9 @@
+univention-directory-listener (6.0.5-1) unstable; urgency=low
+
+  * fixed bashisms (Bug #23005)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 12 Jul 2011 18:38:15 +0200
+
 univention-directory-listener (6.0.4-1) unstable; urgency=low
 
   * Added dependency to shell-univention-lib > 1.0.6 (Bug #22431)

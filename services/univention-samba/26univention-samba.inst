@@ -68,7 +68,7 @@ if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver
 
 	for idmap_ldap_config in alloc ${samba_idmap_domains}; do
 		echo "setting idmap secret for ${idmap_ldap_config} from /etc/machine.secret"
-		net idmap secret ${idmap_ldap_config} `</etc/machine.secret` 2>/dev/null
+		net idmap secret ${idmap_ldap_config} $(cat /etc/machine.secret) 2>/dev/null
 	done
 
 else
@@ -80,7 +80,7 @@ else
 
 	for idmap_ldap_config in alloc ${samba_idmap_domains}; do
 		echo "setting idmap secret for ${idmap_ldap_config} from /etc/ldap.secret"
-		net idmap secret ${idmap_ldap_config} `</etc/ldap.secret` 2>/dev/null
+		net idmap secret ${idmap_ldap_config} $(cat /etc/ldap.secret) 2>/dev/null
 	done
 fi
 
@@ -100,13 +100,13 @@ if [ -n "$dcaccount" -a -n "$bindpwd" ]; then
 	samba_pwd="$bindpwd"
 elif [ -e /etc/backup-join.secret ]; then
 	samba_account="join-backup"
-	samba_pwd="$(</etc/backup-join.secret)"
+	samba_pwd="$(cat /etc/backup-join.secret)"
 fi
 
 if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	if [ $JS_LAST_EXECUTED_VERSION -le 5 ]; then
 		# set the samba option
-		univention-directory-manager computers/$server_role modify "$@" --dn "$ldap_hostdn" --append-option samba --set password="$(</etc/machine.secret)"
+		univention-directory-manager computers/$server_role modify "$@" --dn "$ldap_hostdn" --append-option samba --set password="$(cat /etc/machine.secret)"
 	fi
 
 	net rpc join -U${samba_account}%${samba_pwd}

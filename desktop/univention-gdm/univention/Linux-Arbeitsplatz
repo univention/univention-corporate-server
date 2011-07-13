@@ -36,7 +36,7 @@ unset univentionDesktopProfile
 # remove quotes from startup script filename
 univentionAutoStartScript=`echo $univentionAutoStartScript | sed 's/^"//;s/"$//'`
 
-function other() {
+other () {
 
 	if [ -z "$ldap_port" ]; then
 		ldap_port=389
@@ -79,7 +79,7 @@ function other() {
 
 }
 
-function thinclient() {
+thinclient () {
 
 	if test -e /tmp/passwd; then
 		PASSWD=`cat /tmp/passwd`

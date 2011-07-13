@@ -1,3 +1,9 @@
+univention-dhcp (6.0.2-1) unstable; urgency=low
+
+  * fixed bashisms (Bug #23005)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 12 Jul 2011 18:33:53 +0200
+
 univention-dhcp (6.0.1-0) unstable; urgency=low
 
   * Consider ldap/server/port (Bug #20026)
