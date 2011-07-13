@@ -1,0 +1,3 @@
+menuentry 'Univention Installer Kernel @%@KERNEL@%@' {
+	configfile /boot/grub/grub-kernel-@%@KERNEL@%@.cfg
+}

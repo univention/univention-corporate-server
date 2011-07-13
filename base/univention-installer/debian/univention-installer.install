@@ -7,8 +7,5 @@ sbin/univention-installer sbin/
 sbin/univention-installer-startup sbin/
 parted/PartedCreate sbin/
 profiles/[a-zA-Z]* profiles/
-boot/grub/menu* boot/grub/
-boot/grub/uniboot.xpm.gz boot/grub/
-
-
-
+boot/grub/uniboot.png boot/grub/
+boot/grub/grub* boot/grub/

@@ -1,3 +1,9 @@
+univention-installer (7.0.14-1) unstable; urgency=low
+
+  * added grub2 config (Bug #22707) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 13 Jul 2011 14:47:55 +0200
+
 univention-installer (7.0.13-2) unstable; urgency=low
 
   * removed deprecated "MAKEDEV" (Bug #22602)
