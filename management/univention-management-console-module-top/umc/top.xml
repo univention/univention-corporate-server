@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
   <module id="top" icon="top" version="1.0">
-	<name>Top</name>
+	<name>process overview</name>
 	<description>process overview</description>
 	<categories>
 	  <category name="system"/>
 	</categories>
-	<command name="top/reboot" function="reboot">
-	  <attribute name="action" syntax="String" required="1"/>
-	  <attribute name="message" syntax="String" required="1"/>
+	<command name="top/query" function="query">
+	  <return syntax="Dictionary"/>
+	</command>
+    <!-- dict? -->
+	<command name="top/kill" function="kill">
+	  <attribute name="pid" syntax="Integer" required="1"/>
+	  <attribute name="signal" syntax="Top-Signal" required="1"/>
 	  <return syntax="Boolean"/>
 	</command>
   </module>

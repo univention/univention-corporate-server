@@ -38,13 +38,13 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}];
 
 		var columns = [{
-			name: 'uid',
+			name: 'user',
 			label: this._('User')
 		}, {
 			name: 'pid',
 			label: this._('PID')
 		}, {
-			name: 'cpu',
+			name: 'pcpu',
 			label: this._('CPU')
 		}, {
 			name: 'vsize',
@@ -53,10 +53,10 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'rssize',
 			label: this._('Resident set size')
 		}, {
-			name: 'mem',
+			name: 'pmem',
 			label: this._('Memory in %')
 		}, {
-			name: 'prog',
+			name: 'command',
 			label: this._('Program')
 		}];
 
@@ -65,30 +65,11 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			actions: actions,
 			columns: columns,
 			moduleStore: this.moduleStore,
-			query: {
-                // FIXME
-				category: "all",
-				key: "all",
-				filter:"*"
-			}
+			query: { _dummy: 'dummy' }
 		});
 		this._layoutContainer.addChild(this._grid);
 
 		var widgets = [{
-			type: 'ComboBox',
-			name: 'sort',
-			value: 'cpu',
-			label: this._('Sort processes'),
-			staticValues: [
-				{id: 'uid', label: this._('User')},
-				{id: 'pid', label: this._('PID')},
-				{id: 'cpu', label: this._('CPU')},
-				{id: 'vsize', label: this._('Virtual size')},
-				{id: 'rssize', label: this._('Resident set size')},
-				{id: 'mem', label: this._('Memory in %')},
-				{id: 'prog', label: this._('Program')}
-			]
-		}, {
 			type: 'ComboBox',
 			name: 'count',
 			value: '50',
@@ -105,10 +86,7 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'submit',
 			label: this._('Reload'),
 			callback: dojo.hitch(this, function() {
-                var vals = this._form.gatherFormValues();
-                this.umcpCommand('top/reboot', vals).then(dojo.hitch(this, function(data) {
-                    umc.app.alert(data.result.message);
-                }));
+                this._grid.filter({ _dummy: 'dummy' });
 			})
 		}];
 
@@ -116,8 +94,7 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			region: 'top',
 			widgets: widgets,
 			buttons: buttons,
-			layout: [['sort', 'count']],
-			onSearch: dojo.hitch(this._grid, 'filter')
+			layout: [['count']]
 		});
 		this._layoutContainer.addChild(this._searchWidget);
 
