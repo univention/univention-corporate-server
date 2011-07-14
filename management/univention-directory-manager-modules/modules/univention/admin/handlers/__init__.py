@@ -1136,8 +1136,11 @@ class simpleComputer( simpleLdap ):
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dnsEntryZoneAlias: %s' % self[ 'dnsEntryZoneAlias' ] )
 
 			if self[ 'mac' ]:
-
 				for macAddress in self[ 'mac' ]:
+					# mac address may be an empty string (Bug #21958)
+					if not macAddress:
+						continue
+
 					univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'open: DHCP; we have a mac address: %s' % macAddress )
 					ethernet = 'ethernet '+ macAddress
 					searchFilter = '(&(dhcpHWAddress=%s)(objectClass=univentionDhcpHost))'% ( ethernet )

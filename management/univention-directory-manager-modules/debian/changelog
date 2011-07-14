@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.210-1) unstable; urgency=low
+
+  * fixed displaying DHCP entries when MAC address ist not given (Bug #21958)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 14 Jul 2011 14:47:18 +0200
+
 univention-directory-manager-modules (6.0.209-1) unstable; urgency=low
 
   * added empty method cancel() to univention.admin.handlers.simpleLdap since
