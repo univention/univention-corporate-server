@@ -99,13 +99,15 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			umc.tools.assert(icol.name !== undefined && icol.label !== undefined, 'The definition of grid columns requires the properties \'name\' and \'label\'.');
 
 			// set common properties
-			var col = {
-				field: icol.name,
-				name: icol.label,
+			var col = dojo.mixin({
 				width: 'auto',
-				description: icol.description || '',
-				editable: icol.editable === undefined || icol.editable
-			};
+				editable: false,
+				description: ''
+			}, icol, {
+				field: icol.name,
+				name: icol.label
+			});
+			delete col.label;
 
 			// set cell type
 			if (dojo.isString(icol.type) && 'checkbox' == icol.type.toLowerCase()) {

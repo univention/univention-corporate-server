@@ -1,3 +1,10 @@
+univention-management-console-frontend (0.0.75-1) unstable; urgency=low
+
+  * mix in all properties specified by the user for the grid column 
+    (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 14 Jul 2011 15:50:31 +0200
+
 univention-management-console-frontend (0.0.74-1) unstable; urgency=low
 
   * extended umc.tools.renderLayout() to accept also buttons in the layout

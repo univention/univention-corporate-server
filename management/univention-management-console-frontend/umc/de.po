@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-06 15:38+0200\n"
+"POT-Creation-Date: 2011-07-14 15:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -153,7 +153,7 @@ msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
-#: umc/widgets/Grid.js:351
+#: umc/widgets/Grid.js:353
 msgid "More actions..."
 msgstr "Weitere Aktionen..."
 
