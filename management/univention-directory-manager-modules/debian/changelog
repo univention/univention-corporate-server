@@ -1,3 +1,13 @@
+univention-directory-manager-modules (6.0.211-1) unstable; urgency=low
+
+  * added debug output for LDAP modifications and added logging of complete
+    error message for LDAP errors (both for debug level ALL)
+  * added the complete LDAP error message ('desc' and 'info') when raising an 
+    exception
+    (Bug #21642)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 14 Jul 2011 17:46:24 +0200
+
 univention-directory-manager-modules (6.0.210-1) unstable; urgency=low
 
   * fixed displaying DHCP entries when MAC address ist not given (Bug #21958)
