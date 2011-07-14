@@ -109,12 +109,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var columns = [{
 			name: 'name',
 			label: this._( 'Name' ),
-			description: this._( 'Name of the LDAP object.' ),
-			editable: false
+			description: this._( 'Name of the LDAP object.' )
 		}, {
 			name: 'path',
 			label: this._('Path'),
-			description: this._( 'Path of the LDAP object.' )
+			description: this._( 'Path of the LDAP object.' ),
+			editable: true
 		}];
 
 		// generate the data grid

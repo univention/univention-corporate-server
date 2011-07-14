@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.57-1) unstable; urgency=low
+
+  * adjust property 'editable' for grid columns (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 14 Jul 2011 15:51:26 +0200
+
 univention-management-console-module-udm (1.0.56-1) unstable; urgency=low
 
   * bug fix for validation (Bug #22883)
