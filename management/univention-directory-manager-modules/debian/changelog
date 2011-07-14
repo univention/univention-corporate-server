@@ -1,3 +1,11 @@
+univention-directory-manager-modules (6.0.209-1) unstable; urgency=low
+
+  * added empty method cancel() to univention.admin.handlers.simpleLdap since
+    it is called there and the subclass does not necessarily provide an
+    implementation (Bug #21070)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 14 Jul 2011 12:52:01 +0200
+
 univention-directory-manager-modules (6.0.208-1) unstable; urgency=low
 
   * fixed updating DHCP entries when changing the MAC or IP address of a UDM

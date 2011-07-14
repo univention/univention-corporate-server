@@ -974,6 +974,10 @@ class simpleLdap(base):
 		self._update_policies()
 		self.closePolicyObjects()
 
+	def cancel(self):
+		# method stub which is implemented by subclasses (see Bug #21070)
+		pass
+
 
 class simpleComputer( simpleLdap ):
 
