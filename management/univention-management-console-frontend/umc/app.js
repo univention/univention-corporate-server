@@ -29,8 +29,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	loggingIn: false,
 
 	_loginDialog: null,
-	_alertDialog: null,
-	_toaster: null,
 	_userPreferences: null,
 	_checkSessionTimer: null,
 
@@ -40,37 +38,101 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		confirm: true
 	},
 
+	_toaster: null, // internal reference to the toaster
+
 	notify: function(/*String*/ message) {
 		// summary:
 		//		Show a toaster notification with the given message string.
+		// message:
+		//		The message that is displayed in the notification.
+
+		// create toaster the first time
+		if (!this._toaster) {
+			this._toaster = new umc.widgets.Toaster({});
+		}
 
 		// show the toaster
 		this._toaster.setContent(message, 'message');
 	},
 
+	_alertDialog: null, // internal reference for the alert dialog
+
 	alert: function(/*String*/ message) {
 		// summary:
 		//		Popup an alert dialog with the given message string. The users needs to
 		//		confirm the dialog by clicking on the 'OK' button.
+		// message:
+		//		The message that is displayed in the dialog.
+
+		// create alert dialog the first time
+		if (!this._alertDialog) {
+			this._alertDialog = new umc.widgets.ConfirmDialog({
+				title: this._('Notification'),
+				style: 'max-width: 400px;',
+				options: [{
+					label: this._('Ok'),
+					callback: dojo.hitch(this, function() {
+						// hide dialog upon confirmation by click on 'OK'
+						this._alertDialog.hide();
+					})
+				}]
+			});
+		}
 
 		// show the confirmation dialog
 		this._alertDialog.set('message', message);
+		this._alertDialog.startup();
 		this._alertDialog.show();
 	},
 
-	confirm: function(/*String*/ message, /*Object*/ options) {
+	confirm: function(/*String*/ message, /*Object[]*/ options) {
 		// summary:
-		//		Popup an confirmation dialog with the given message string. The user needs
-		//		to confirm by clicking on one of multiple defined buttons.
+		//		Popup a confirmation dialog with a given message string and a
+		//		list of options to choose from.
+		// description:
+		//		This function provides a shortcut for umc.widgets.ConfirmDialog.
+		//		The user needs to confirm the dialog by clicking on one of
+		//		multiple defined buttons (=choice). When any of the buttons
+		//		is pressed, the dialog is automatically closed.
 		// message:
 		//		The message that is displayed in the dialog.
 		// options:
-		//		Array of all possible choices that is passed to umc.widgets.ConfirmDialog
-		//		as 'options' parameter. The following properties need to be specified:
-		//		label; the properties 'callback', 'name' are optional.
-		//		If an item is specified with the option 'default: true' and confirmations
-		//		are switched off in the user preferences, the dialog is not shown and the
-		//		callback function for this default option is executed directly.
+		//		Array of objects describing the possible choices. Array is passed to 
+		//		umc.widgets.ConfirmDialog as 'options' parameter. The property 'label' needs
+		//		to be specified. The properties 'callback', 'name' and 'default' are optional.
+		//		If one single (!) item is specified with the property 'default=true' and 
+		//		confirmations are switched off in the user preferences, the dialog is not shown 
+		//		and the callback function for this default option is executed directly.
+		// example:
+		//		A simple example that uses the 'default' property.
+		// |	umc.app.confirm(msg, [{
+		// |	    label: Delete',
+		// |	    callback: function() {
+		// |			// do something...
+		// |		}
+		// |	}, {
+		// |	    label: 'Cancel',
+		// |	    'default': true
+		// |	}]);
+		// example:
+		//		We may also refer the callback to a method of an object, i.e.:
+		// |	var myObj = {
+		// |		foo: function(answer) {
+		// |			if ('delete' == answer) {
+		// |				console.log('Item will be deleted!');
+		// |			}
+		// |		}
+		// |	};
+		// |	umc.app.confirm('Do you want to delete the item?', [{
+		// |	    label: 'Delete item',
+		// |		name: 'delete',
+		// |	    'default': true,
+		// |	    callback: dojo.hitch(myObj, 'foo')
+		// |	}, {
+		// |	    label: 'Cancel',
+		// |		name: 'cancel',
+		// |	    callback: dojo.hitch(myObj, 'foo')
+		// |	}]);
 
 		// if the user has switched off confirmations, try to find a default option
 		if (!this.preferences('confirm')) {
@@ -132,22 +194,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		this._loginDialog = new umc.widgets.LoginDialog({});
 		this._loginDialog.startup();
 		dojo.connect(this._loginDialog, 'onLogin', this, 'onLogin');
-
-		// create alert dialog 
-		this._alertDialog = new umc.widgets.ConfirmDialog({
-			title: this._('Notification'),
-			style: 'max-width: 400px;',
-			options: [{
-				label: this._('Ok'),
-				callback: dojo.hitch(this, function() {
-					// hide dialog upon confirmation by click on 'OK'
-					this._alertDialog.hide();
-				})
-			}]
-		});
-
-		// create toaster
-		this._toaster = new umc.widgets.Toaster({});
 
 		// create a background process that checks each second the validity of the session
 		// cookie as soon as the session is invalid, the login screen will be shown

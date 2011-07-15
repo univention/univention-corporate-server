@@ -10,12 +10,55 @@ dojo.require("umc.widgets.Text");
 dojo.require("umc.widgets.ContainerWidget");
 
 dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
+	// summary:
+	//		Class that provides a customizable confirmation dialog.
+	//		(For easier access see umc.app.confirm().)
+	// description:
+	//		The dialog expects a title, a message, and a list of choices the
+	//		user can choose from. For each choice, a callback handler can be
+	//		specified.
+	// example:
+	// 		This is a simple basic example that demonstrates all provided features.
+	// |	var myDialog = new umc.widgets.ConfirmDialog({
+	// |		title: 'Please confirm...',
+	// |		message: 'Please confirm <b>now</b>!',
+	// |		options: [{
+	// |		    label: 'Do nothing',
+	// |			name: 'nothing'
+	// |		}, {
+	// |		    label: 'Do something',
+	// |			name: 'something',
+	// |			callback: function() {
+	// |				// we may provide a callback handler directly
+	// |				// ... we need to close the dialog manually
+	// |				myDialog.close();
+	// |			}
+	// |		}]
+	// |	});
+	// |
+	// |	// instead of using the 'callback' property, we can also use dojo.connect()
+	// |	dojo.connect(myDialog, 'onConfirm', function(answer) {
+	// |		if ('something' == answer) {
+	// |			// do something
+	// |			// ...
+	// | 			// dialog will be closed by the callback function
+	// |		}
+	// |		else {
+	// |			// close the dialog for the choice 'nothing'
+	// |			myDialog.close();
+	// |		}
+	// |	});
+
 	// message: String
 	//		The message to be displayed.
 	message: '',
 
-	// options: Object
-	//		Array with all available choices (buttons). Each entry must have the
+	// title: String
+	//		The title of the dialog window.
+	title: '',
+
+	// options: Object[]
+	//		Array of objects with all available choices (=buttons). Each entry must have the
 	//		property 'label' and may have a 'callback', i.e., a user specified
 	//		function that is called. The callback will receive as parameter the
 	//		option chosen, i.e., an integer or - if specified - the corresponding

@@ -1,3 +1,12 @@
+univention-management-console-frontend (0.0.76-1) unstable; urgency=low
+
+  * adjust the width of the alert dialog at each call
+  * create the alert dialog and notification toaster on the fly
+  * added inline documentation
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 15 Jul 2011 12:04:06 +0200
+
 univention-management-console-frontend (0.0.75-1) unstable; urgency=low
 
   * mix in all properties specified by the user for the grid column 
