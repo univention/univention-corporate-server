@@ -57,7 +57,9 @@ then # update from previous version
 	then
 		univention-config-registry set 'auth/nagios/group/Domain Admins?yes'
 	fi
+	# set defaults
 	univention-config-registry set 'auth/nagios/user/Administrator?yes'
+	univention-config-registry set 'auth/nagios/restrict?yes'
 	# migrate from univention-nagios-group-access
 	oldgroups="$(univention-config-registry get nagios/server/webaccess/groups)"
 	OLDIFS="$IFS"
@@ -71,6 +73,7 @@ elif [ "$1" = 'configure' -a -z "$2" ]
 then
 	univention-config-registry set 'auth/nagios/group/Domain Admins?yes'
 	univention-config-registry set 'auth/nagios/user/Administrator?yes'
+	univention-config-registry set 'auth/nagios/restrict?yes'
 fi
 
 #DEBHELPER#
