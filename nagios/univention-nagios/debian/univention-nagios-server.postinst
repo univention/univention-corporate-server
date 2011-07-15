@@ -68,6 +68,7 @@ then # update from previous version
 	IFS="$OLDIFS"
 	univention-config-registry unset 'nagios/server/webaccess/groups'
 elif [ "$1" = 'configure' -a -z "$2" ]
+then
 	univention-config-registry set 'auth/nagios/group/Domain Admins?yes'
 	univention-config-registry set 'auth/nagios/user/Administrator?yes'
 fi
