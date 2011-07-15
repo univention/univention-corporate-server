@@ -75,8 +75,7 @@ Package: univention-license-import
 Architecture: all
 Depends: univention-config-registry,
  univention-config (>= 1.20),
- ldap-utils,
- sysutils
+ ldap-utils
 Description: UCS - tool to import new licenses
  This package contains the tool to import new UCS
  licenses.
