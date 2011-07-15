@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.212-1) unstable; urgency=low
+
+  * fixed lookup of users with mailAlternativeAddress filter (Bug #22764)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 15 Jul 2011 16:13:28 +0200
+
 univention-directory-manager-modules (6.0.211-1) unstable; urgency=low
 
   * added debug output for LDAP modifications and added logging of complete
