@@ -1,9 +1,3 @@
-univention-licence (3.0.2-1) unstable; urgency=low
-
-  * version bump (Bug #22160)
-
- -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 15 Jul 2011 11:45:45 +0200
-
 univention-licence (3.0.1-1) unstable; urgency=low
 
   * Replaced deprecated ldap functions (Bug #18913)
