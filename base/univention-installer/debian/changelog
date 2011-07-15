@@ -1,3 +1,9 @@
+univention-installer (7.0.14-4) unstable; urgency=low
+
+  * (re)added kernel paramter vga=773 to grub config (Bug #22707)
+
+ -- Felix Botner <botner@univention.de>  Fri, 15 Jul 2011 16:09:35 +0200
+
 univention-installer (7.0.14-3) unstable; urgency=low
 
   * added grub2 config for recover dvd (Bug #22707) 
