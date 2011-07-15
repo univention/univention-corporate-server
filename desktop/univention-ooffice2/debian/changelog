@@ -1,3 +1,15 @@
+univention-ooffice2 (4.0.3-3) unstable; urgency=low
+
+  * revert changes from Bug #18025
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 13 Dec 2010 16:04:21 +0100
+
+univention-ooffice2 (4.0.3-2) unstable; urgency=low
+
+  * added UCR commit in postinst and postrm (Bug #18025)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 13 Dec 2010 15:41:40 +0100
+
 univention-ooffice2 (4.0.3-1) unstable; urgency=low
 
   * Added openoffice.org-style-crystal to dependencies (Bug #19669)
