@@ -39,25 +39,36 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		var columns = [{
 			name: 'user',
-			label: this._('User')
+			label: this._('User'),
+            width: '10%'
 		}, {
 			name: 'pid',
-			label: this._('PID')
+			label: this._('PID'),
+            width: '10%'
 		}, {
-			name: 'pcpu',
-			label: this._('CPU')
+			name: 'cpu',
+			label: this._('CPU'),
+            width: '10%'
 		}, {
 			name: 'vsize',
-			label: this._('Virtual size')
+			label: this._('Virtual size'),
+            width: '10%'
 		}, {
 			name: 'rssize',
-			label: this._('Resident set size')
+			label: this._('Resident set size'),
+            width: '10%'
 		}, {
-			name: 'pmem',
-			label: this._('Memory in %')
+			name: 'mem',
+			label: this._('Memory in %'),
+            width: '10%'
+		}, {
+			name: 'prog',
+			label: this._('Program'),
+            width: '10%'
 		}, {
 			name: 'command',
-			label: this._('Program')
+			label: this._('Command'),
+            width: 'auto'
 		}];
 
 		this._grid = new umc.widgets.Grid({
@@ -65,7 +76,9 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			actions: actions,
 			columns: columns,
 			moduleStore: this.moduleStore,
-			query: { _dummy: 'dummy' }
+			query: {
+                _dummy: 'dummy'
+            }
 		});
 		this._layoutContainer.addChild(this._grid);
 
@@ -94,7 +107,7 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			region: 'top',
 			widgets: widgets,
 			buttons: buttons,
-			layout: [['count']]
+			layout: [['count', 'submit']]
 		});
 		this._layoutContainer.addChild(this._searchWidget);
 

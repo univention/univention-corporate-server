@@ -31,14 +31,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import subprocess
-
-import univention.management.console as umc
-import univention.management.console.modules as umcm
-import univention.management.console.tools as umct
-from univention.management.console.protocol.definitions import *
+import psutil
 
 import univention.info_tools as uit
+import univention.management.console as umc
+import univention.management.console.modules as umcm
+from univention.management.console.protocol.definitions import *
 
 _ = umc.Translation('univention-management-console-modules-ucr').translate
 
@@ -46,41 +44,23 @@ class Instance(umcm.Base):
     def init(self):
         uit.set_language(str(self.locale))
 
-    def __popen(self, CommandTuple, Input=None, MergeErrors=False, RequireZeroExit=False):
-        stderr = subprocess.PIPE
-        if MergeErrors:
-            stderr = subprocess.STDOUT
-        try:
-            process = subprocess.Popen(CommandTuple, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=stderr, close_fds=True)
-            (stdoutdata, stderrdata) = process.communicate(input=Input)
-            if RequireZeroExit and process.returncode != 0:
-                return ('Command %s exited with status %d:\n%s\n%s' % (repr(CommandTuple), process.returncode, stdoutdata, stderrdata), None, None)
-            else:
-                return (process.returncode, stdoutdata, stderrdata)
-        except (OSError, IOError), error:
-            return ('Could not execute %s:\n%s' % (repr(CommandTuple), ' '.join(map(str, error.args))), None, None)
-
     def query(self, request):
-        columns = ['user', 'pid', 'pcpu', 'vsize', 'rssize', 'pmem', 'command']
-        psCommand = ['ps', 'h', '-eo', ','.join(columns)]
         processes = []
 
-        (errorMessage, stdoutData, stderrData) = self.__popen(psCommand, RequireZeroExit=True)
-        if errorMessage:
-            request.status = MODULE_ERR
-            success = False
-        else:
-            for line in stdoutData.split('\n'):
-                dictLine = {}
-                for key, value in zip(columns, line.split(None, 6)):
-                    dictLine[key] = value
-                processes.append(dictLine)
-
-            #processes = [line.split(None, 6) for line in stdoutData.split('\n')]
-            request.status = SUCCESS
-            success = True
-
-        #self.finished(request.id, {'success': success, 'processes': processes})
+        for process in psutil.process_iter():
+            p = {}
+            p['user'] = process.username
+            p['pid'] = process.pid
+            p['cpu'] = '%.1f' % process.get_cpu_percent()
+            mem = process.get_memory_info()
+            p['vsize'] = mem[1]
+            p['rssize'] = mem[0]
+            p['mem'] = '%.1f' % process.get_memory_percent()
+            p['prog'] = process.name
+            p['command'] = process.cmdline
+            processes.append(p)
+        request.status = SUCCESS
+        success = True
         self.finished(request.id, processes)
 
     def kill(self, request):
