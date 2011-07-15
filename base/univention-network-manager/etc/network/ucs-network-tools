@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-function ucs_ignore_interface() {
+ucs_ignore_interface () {
 	if [ "$IFACE" = "lo" -o "$IFACE" = "all" ]; then
 		exit 0
 	fi

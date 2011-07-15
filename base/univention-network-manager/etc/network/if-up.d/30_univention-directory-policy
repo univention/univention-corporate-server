@@ -33,6 +33,6 @@
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
-invoke-rc.d univention-directory-policy start &>/dev/null
+invoke-rc.d univention-directory-policy start >/dev/null 2> /dev/null
 
 exit 0
