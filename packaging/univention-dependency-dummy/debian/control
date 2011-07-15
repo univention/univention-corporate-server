@@ -12,6 +12,7 @@ Provides: univention-system-setup,
  univention-grub,
  univention-ipcalc,
  univention-shares,
+ univention-directory-replication,
  univention-archive-key
 Description: temporary development package
  This package was build to provide a target for missing package dependencies.
