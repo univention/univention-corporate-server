@@ -36,7 +36,7 @@ copyrightyear=`date +%Y`
 PACKAGE_NAME=univention-dojo
 D=$(CURDIR)/debian/${PACKAGE_NAME}
 INSTDIR=/usr/share/${PACKAGE_NAME}
-DOJO_VERSION=1.4.3
+DOJO_VERSION=1.6.1
 
 configure: configure-stamp
 configure-stamp:

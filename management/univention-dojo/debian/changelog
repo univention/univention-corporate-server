@@ -1,3 +1,9 @@
+univention-dojo (4.0.3-1) unstable; urgency=low
+
+  * updated to dojo version 1.6.1 (Bug #21934)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 15 Jul 2011 14:29:56 +0200
+
 univention-dojo (4.0.2-2) unstable; urgency=low
 
   * added GNU APGL V3 header (Bug #9620)
