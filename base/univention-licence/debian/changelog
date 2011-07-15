@@ -1,8 +1,8 @@
-univention-licence (3.0.1-2) unstable; urgency=low
+univention-licence (3.0.2-1) unstable; urgency=low
 
-  * removed deprecated/useless dependency (Bug #22160)
+  * version bump (Bug #22160)
 
- -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 13 Jul 2011 17:45:30 +0200
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 15 Jul 2011 11:45:45 +0200
 
 univention-licence (3.0.1-1) unstable; urgency=low
 
