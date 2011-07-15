@@ -154,8 +154,11 @@ class webui_out{			# PHP ---> Python
 		$file = $config->session_dir.($config->number-1);
 		$socket_file = $config->socket_filename;
 		if (file_exists($socket_file)) {
-			$this->pipe=fsockopen("unix://".$config->socket_filename, 0);  	# Python Backend
-		} else { $file=""; }
+			$this->pipe=@fsockopen("unix://".$config->socket_filename, 0);  	# Python Backend
+		}
+		if (!$this->pipe) {
+			$file="";
+		}
 
 		if (file_exists($file) && is_file($file) && $this->pipe){
 

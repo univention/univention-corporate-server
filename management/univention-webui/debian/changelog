@@ -1,3 +1,10 @@
+univention-webui (4.0.67-1) unstable; urgency=low
+
+  * fixed redirection to the start page when the frontend process has been
+    killed (e.g., via apache restart) (Bug #22029)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 15 Jul 2011 12:49:27 +0200
+
 univention-webui (4.0.66-1) unstable; urgency=low
 
   * enable login even if session died (Bug #18115)
