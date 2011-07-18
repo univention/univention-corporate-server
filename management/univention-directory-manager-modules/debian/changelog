@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.30-2) unstable; urgency=low
+
+  * fix ucslint errors (bashisms); Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 18 Jul 2011 14:04:31 +0200
+
 univention-directory-manager-modules (7.0.30-1) unstable; urgency=low
 
   * add missing import of module ldap in container/dc; Bug #22439

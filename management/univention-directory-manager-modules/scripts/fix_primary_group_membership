@@ -86,7 +86,7 @@ if [ -z "$ONLYUSER" ] ; then
 	 		if [ -z "$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(uniqueMember=${dn}))" dn)" ] ; then
 	 			echo "*** $dn is missing in group with gidNumber $gidNumber ($grpDn)"
 	 			if [ -n "$FORCE" ] ; then
-	 				ldapmodify -x -D "cn=admin,$ldap_base" -w "$(< /etc/ldap.secret)" <<EOF
+	 				ldapmodify -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" <<EOF
 dn: $grpDn
 changetype: modify
 add: uniqueMember
@@ -98,7 +98,7 @@ EOF
 	 		if [ -z "$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(memberUid=${hostuid}))" dn)" ] ; then
 	 			echo "*** $hostuid is missing in group with gidNumber $gidNumber ($grpDn)"
 	 			if [ -n "$FORCE" ] ; then
-	 				ldapmodify -x -D "cn=admin,$ldap_base" -w "$(< /etc/ldap.secret)" <<EOF
+	 				ldapmodify -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" <<EOF
 dn: $grpDn
 changetype: modify
 add: memberUid
@@ -119,7 +119,7 @@ if [ -z "$ONLYCOMPUTER" ] ; then
 	 		if [ -z "$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(uniqueMember=${dn}))" dn)" ] ; then
 	 			echo "*** $dn is missing in group with gidNumber $gidNumber ($grpDn)"
 	 			if [ -n "$FORCE" ] ; then
-	 				ldapmodify -x -D "cn=admin,$ldap_base" -w "$(< /etc/ldap.secret)" <<EOF
+	 				ldapmodify -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" <<EOF
 dn: $grpDn
 changetype: modify
 add: uniqueMember
@@ -131,7 +131,7 @@ EOF
 	 		if [ -z "$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(memberUid=${useruid}))" dn)" ] ; then
 	 			echo "*** $useruid is missing in group with gidNumber $gidNumber ($grpDn)"
 	 			if [ -n "$FORCE" ] ; then
-	 				ldapmodify -x -D "cn=admin,$ldap_base" -w "$(< /etc/ldap.secret)" <<EOF
+	 				ldapmodify -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" <<EOF
 dn: $grpDn
 changetype: modify
 add: memberUid
