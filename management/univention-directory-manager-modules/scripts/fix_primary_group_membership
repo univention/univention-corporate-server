@@ -75,7 +75,8 @@ done
 
 
 OLDIFS="$IFS"
-IFS=$'\n'
+IFS='
+'
 
 if [ -z "$ONLYUSER" ] ; then
 	# TEST COMPUTERS

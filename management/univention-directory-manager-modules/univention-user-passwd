@@ -1,5 +1,4 @@
-#!/bin/bash
-# IMPORTANT: read option -s requires bash
+#!/bin/sh
 #
 # Univention Admin Modules
 #  simple script for modifying a user password
@@ -37,19 +36,28 @@ PWUSER=$USERNAME
 OLDPW=$OLDPASSWORD
 NEWPW=$NEWPASSWORD
 
+read_silent() {
+	prompt="$1"
+	variable="$2"
+	stty -echo
+	read -p "$prompt" "$variable"
+	stty echo
+}
+
 if [ -z "$USER" ]; then
     read -p "username    : " USER
 fi
 
+
 if [ -z "$OLDPW" ]; then
-    read -s -p "old password: " OLDPW
+    read_silent "old password: " OLDPW
     echo ""
 fi
 
 if [ -z "$NEWPW" ]; then
-    read -s -p "new password: " NEWPW
+    read_silent "new password: " NEWPW
     echo ""
-    read -s -p "retype new password: " NEWPWR
+    read_silent "retype new password: " NEWPWR
     echo ""
     if [ "$NEWPW" != "$NEWPWR" ]; then
 	echo "ERROR: Passwords don't match"
