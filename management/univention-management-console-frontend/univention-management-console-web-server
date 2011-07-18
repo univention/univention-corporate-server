@@ -551,11 +551,15 @@ class CPRoot(object):
 def run_cherrypy():
 	# TODO FIXME Folgenden Configeintrag einbauen, wenn loglevel in (0,1,2)
 	# 'server.environment': 'production',
-	cherrypy.config.update( { 'server.socket_port': 8080,
-							  'server.socket_host': '0.0.0.0',
-							  'engine.autoreload_on': False,
-							  } )
+	cherrypy.config.update( { 
+		'server.socket_port': 8080,
+		'server.socket_host': '0.0.0.0',
+		'engine.autoreload_on': False,
+	} )
 	cherrypy.tools.proxy(base=None, local='X-Forwarded-Host', remote='X-Forwarded-For', scheme='X-Forwarded-Proto')
+
+	# modify the template for HTTP errors to return errors in JSON format
+	cherrypy._cperror._HTTPErrorTemplate = '{ "status": %(status)s, "message": "%(message)s" }'
 
 	root = CPRoot()
 	root.command = CPCommand()

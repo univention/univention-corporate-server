@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.78-1) unstable; urgency=low
+
+  * format the web server to send error messages in JSON format (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 18 Jul 2011 17:38:40 +0200
+
 univention-management-console-frontend (0.0.77-1) unstable; urgency=low
 
   * fix handling of undefined references in umc.tools.renderLayout()
