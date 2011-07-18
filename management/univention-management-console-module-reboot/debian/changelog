@@ -1,3 +1,12 @@
+univention-management-console-module-reboot (1.0.4-1) unstable; urgency=low
+
+  * Fix typo in helpText
+  * Check if reboot/shutdown is successful
+  * Remove obsolete page title
+  (Bug #22848)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 14 Jul 2011 10:50:25 +0200
+
 univention-management-console-module-reboot (1.0.3-1) unstable; urgency=low
 
   * Fix result message

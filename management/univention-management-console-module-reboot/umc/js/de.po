@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-12 11:04+0200\n"
+"POT-Creation-Date: 2011-07-14 10:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,27 +13,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/reboot.js:32
+#: umc/js/reboot.js:30
 msgid "Action"
 msgstr "Aktion"
 
-#: umc/js/reboot.js:45
+#: umc/js/reboot.js:50
+msgid "Error: Could not reboot/shutdown the system"
+msgstr "Fehler: Konnte das System nicht neustarten/herunterfahren"
+
+#: umc/js/reboot.js:43
 msgid "Execute"
 msgstr "Ausführen"
 
-#: umc/js/reboot.js:40
+#: umc/js/reboot.js:38
 msgid "Reason for this reboot/shutdown"
 msgstr "Grund für dieses Neustarten/Herunterfahren"
 
-#: umc/js/reboot.js:23 umc/js/reboot.js:34
+#: umc/js/reboot.js:32
 msgid "Reboot"
 msgstr "Neustarten"
 
-#: umc/js/reboot.js:35
+#: umc/js/reboot.js:33
 msgid "Stop"
 msgstr "Herunterfahren"
 
-#: umc/js/reboot.js:24
+#: umc/js/reboot.js:22
 #, fuzzy
 msgid "System reboot or shutdown"
 msgstr "Grund für dieses Neustarten/Herunterfahren"

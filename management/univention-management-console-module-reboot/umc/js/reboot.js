@@ -19,8 +19,7 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.inherited(arguments);
 
         this._page = new umc.widgets.Page({
-            title: this._("Reboot"),
-            helptext: this._("System reboot or shutdown")
+            helpText: this._("System reboot or shutdown")
         });
         this.addChild(this._page);
 
@@ -45,7 +44,11 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			callback: dojo.hitch(this, function() {
                 var vals = this._form.gatherFormValues();
                 this.umcpCommand('reboot/reboot', vals).then(dojo.hitch(this, function(data) {
-                    umc.app.alert(data.result.message);
+					if (data.result.success) {
+                    	umc.app.alert(data.result.message);
+					} else {
+                    	umc.app.alert(this._('Error: Could not reboot/shutdown the system'));
+					}
                 }));
 			})
 		}];
