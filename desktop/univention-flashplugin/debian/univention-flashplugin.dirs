@@ -1,0 +1,13 @@
+usr/lib/flashplayer
+usr/lib/mozilla/plugins
+usr/lib/mozilla-firefox/plugins
+usr/lib/univention-flashplugin
+var/cache/flashplugin-nonfree
+usr/bin
+usr/sbin
+usr/lib/mozilla/plugins
+usr/lib/mozilla-firefox/plugins
+usr/lib/firefox/plugins
+usr/lib/iceweasel/plugins
+usr/lib/iceape/plugins
+usr/lib/flashplugin-nonfree

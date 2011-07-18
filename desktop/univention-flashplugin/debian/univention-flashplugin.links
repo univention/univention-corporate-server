@@ -1,0 +1,5 @@
+usr/lib/flashplugin-nonfree/libflashplayer.so usr/lib/mozilla/plugins/libflashplayer.so
+usr/lib/flashplugin-nonfree/libflashplayer.so usr/lib/mozilla-firefox/plugins/libflashplayer.so
+usr/lib/flashplugin-nonfree/libflashplayer.so usr/lib/firefox/plugins/libflashplayer.so
+usr/lib/flashplugin-nonfree/libflashplayer.so usr/lib/iceweasel/plugins/libflashplayer.so
+usr/lib/flashplugin-nonfree/libflashplayer.so usr/lib/iceape/plugins/libflashplayer.so
