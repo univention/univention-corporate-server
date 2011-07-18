@@ -3,7 +3,7 @@
 # Univention OpenOffice.Org 2
 #  rules file for the debian package
 #
-# Copyright 2003-2010 Univention GmbH
+# Copyright 2003-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,71 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-D=$(CURDIR)/debian/univention-ooffice2
+override_dh_auto_install:
+	univention-install-config-registry
+	dh_auto_install
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	touch configure-stamp
+override_dh_auto_build:
+	ucslint
+	dh_auto_build
 
-build: configure-stamp build-stamp
-build-stamp:
-	dh_testdir
-	touch build-stamp
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-	rm -rf ${D}
-	dh_clean
-
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	install -m755 ooo-wrapper $(D)/usr/bin/ooo-wrapper
-	install -m755 oobase $(D)/usr/bin/oobase
-	install -m755 oocalc $(D)/usr/bin/oocalc
-	install -m755 oodraw $(D)/usr/bin/oodraw
-	install -m755 ooffice $(D)/usr/bin/ooffice
-	install -m755 oofromtemplate $(D)/usr/bin/oofromtemplate
-	install -m755 ooimpress $(D)/usr/bin/ooimpress
-	install -m755 oomath $(D)/usr/bin/oomath
-	install -m755 ooweb $(D)/usr/bin/ooweb
-	install -m755 oowriter $(D)/usr/bin/oowriter
-
-	for d in locolor hicolor; do \
-		for s in 16x16 22x22 32x32 48x48; do \
-			for f in ooo_base.xpm ooo_calc.xpm ooo_draw.xpm ooo_gulls.xpm ooo_impress.xpm ooo_math.xpm ooo_template.xpm ooo_web.xpm ooo_writer.xpm; do \
-				install -m 644 files/usr/share/icons/$${d}/$${s}/apps/$$f $(D)/usr/share/icons/$${d}/$${s}/apps/; \
-			done; \
-		done; \
-	done;
-
-
-	univention-install-baseconfig
-
-
-binary-arch: build install
-
-binary-indep: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs
-	dh_installchangelogs
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+%:
+	dh $@

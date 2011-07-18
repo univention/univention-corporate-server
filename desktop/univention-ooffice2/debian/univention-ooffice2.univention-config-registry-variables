@@ -1,0 +1,5 @@
+[openoffice/database/default]
+Description[de]=Standard Openoffice Datenbank
+Description[en]=Default openoffive database
+Type=str
+Categories=system-desktop

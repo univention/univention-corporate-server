@@ -1,3 +1,9 @@
+univention-ooffice2 (5.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 Bug #22432
+
+ -- Felix Botner <botner@univention.de>  Mon, 18 Jul 2011 09:17:57 +0200
+
 univention-ooffice2 (4.0.3-3) unstable; urgency=low
 
   * revert changes from Bug #18025
