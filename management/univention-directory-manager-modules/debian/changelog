@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.30-3) unstable; urgency=low
+
+  * fix ucslint errors (bashisms); Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 18 Jul 2011 14:49:44 +0200
+
 univention-directory-manager-modules (7.0.30-2) unstable; urgency=low
 
   * fix ucslint errors (bashisms); Bug #22439
