@@ -77,7 +77,9 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			columns: columns,
 			moduleStore: this.moduleStore,
 			query: {
-                _dummy: 'dummy'
+                count: '50',
+                category: 'all',
+                filter: '*'
             }
 		});
 		this._layoutContainer.addChild(this._grid);
@@ -88,11 +90,28 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			value: '50',
 			label: this._('Number of processes'),
 			staticValues: [
-				{id: 'all', label: this._('All')},
-				{id: '10', label: '10'},
+				{id: '50', label: '50'},
 				{id: '20', label: '20'},
-				{id: '50', label: '50'}
+				{id: '10', label: '10'},
+				{id: 'all', label: this._('All')}
 			]
+        },{
+			type: 'ComboBox',
+			name: 'category',
+			value: 'all',
+			label: this._('Category'),
+			staticValues: [
+				{id: 'all', label: this._('All')},
+				{id: 'user', label: this._('User')},
+				{id: 'pid', label: this._('PID')},
+				{id: 'prog', label: this._('Program')},
+				{id: 'command', label: this._('Command')}
+			]
+		}, {
+			type: 'TextBox',
+			name: 'filter',
+			value: '*',
+			label: this._('Keyword')
 		}];
 
 		var buttons = [{
@@ -103,12 +122,13 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			})
 		}];
 
-		this._searchWidget = new umc.widgets.Form({
+		this._searchWidget = new umc.widgets.SearchForm({
 			region: 'top',
 			widgets: widgets,
-			buttons: buttons,
-			layout: [['count', 'submit']]
+			layout: [['count', 'category', 'filter']]
 		});
+
+
 		this._layoutContainer.addChild(this._searchWidget);
 
 		this._layoutContainer.startup();
