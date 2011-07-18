@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-source $1
+. $1
 
 PWUSER=$USERNAME
 OLDPW=$OLDPASSWORD
@@ -40,12 +40,14 @@ read_silent() {
 	prompt="$1"
 	variable="$2"
 	stty -echo
-	read -p "$prompt" "$variable"
+	printf "$prompt"
+	read "$variable"
 	stty echo
 }
 
 if [ -z "$USER" ]; then
-    read -p "username    : " USER
+	printf "username    : "
+    read USER
 fi
 
 
@@ -56,11 +58,12 @@ fi
 
 if [ -z "$NEWPW" ]; then
     read_silent "new password: " NEWPW
+
     echo ""
     read_silent "retype new password: " NEWPWR
     echo ""
     if [ "$NEWPW" != "$NEWPWR" ]; then
-	echo "ERROR: Passwords don't match"
+		echo "ERROR: Passwords don't match"
 	exit 1
     fi
 fi
