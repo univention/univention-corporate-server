@@ -405,14 +405,14 @@ dojo.mixin(umc.tools, {
 				var elContainer = new umc.widgets.ContainerWidget({});
 				dojo.forEach(elList, function(jel) {
 					// make sure the reference to the widget/button exists
-					if (!(jel in widgets) && !(jel in buttons)) {
+					if (!(widgets && jel in widgets) && !(buttons && jel in buttons)) {
 						console.log(dojo.replace("WARNING in umc.tools.renderLayout: The widget '{0}' is not defined in the argument 'widgets'. Ignoring error.", [jel]));
 						return true;
 					}
 
 					// make sure the widget/button has not been already rendered
-					var widget = widgets[jel];
-					var button = buttons[jel];
+					var widget = widgets ? widgets[jel] : null;
+					var button = buttons ? buttons[jel] : null;
 					if ((widget && widget._isRendered) || (button && button._isRendered)) {
 						console.log(dojo.replace("WARNING in umc.tools.renderLayout: The widget '{0}' has been referenced more than once in the layout. Ignoring error.", [jel]));
 						return true;
