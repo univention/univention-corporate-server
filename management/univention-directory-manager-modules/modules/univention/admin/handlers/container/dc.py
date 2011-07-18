@@ -30,8 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import ldap
 
 from univention.admin.layout import Tab, Group
+
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.password
@@ -47,7 +49,7 @@ _=translation.translate
 
 def makeDnsForwardZone(object, arg):
 	return [object['name']+'.'+object.position.getPrintable()]
-	
+
 def makeSambaDomainName(object, arg):
 	return [(object['name'].upper()+'.'+object.position.getPrintable()).upper()]
 
