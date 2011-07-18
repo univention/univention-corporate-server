@@ -1,3 +1,9 @@
+ucslint (2.0.10-1) unstable; urgency=low
+
+  * fixed plugindir argument (Bug #22092)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 18 Jul 2011 12:41:51 +0200
+
 ucslint (2.0.9-1) unstable; urgency=low
 
   * changed 0004-10 to "warning" (Bug #22514)

@@ -222,8 +222,8 @@ if __name__ == '__main__':
 					   dest = 'ignore_IDs', default = '',
 					   help = 'list of IDs to be ignored (e.g. -i 0003-4,19-27)' )
 
-	parser.add_option( '-p', '--plugindir', action = 'store', type = 'string',
-					   dest = 'plugindir', default = '',
+	parser.add_option( '-p', '--plugindir', action = 'append', type = 'string',
+					   dest = 'plugindir', default = [],
 					   help = 'override plugin directory with <plugindir>' )
 
 	parser.add_option( '-c', '--display-categories', action = 'store', type = 'string',
@@ -256,7 +256,7 @@ if __name__ == '__main__':
 
 	# override plugin directories
 	if options.plugindir:
-		plugindirs = [ options.plugindir ]
+		plugindirs = options.plugindir
 
 	if options.ignore_IDs:
 		options.ignore_IDs = options.ignore_IDs.split(',')
