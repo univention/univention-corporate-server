@@ -1,3 +1,9 @@
+ucslint (2.0.11-1) unstable; urgency=low
+
+  * added module 0013-bashism.py (Bug #22558)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 18 Jul 2011 13:17:38 +0200
+
 ucslint (2.0.10-1) unstable; urgency=low
 
   * fixed plugindir argument (Bug #22092)

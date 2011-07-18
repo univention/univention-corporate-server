@@ -261,6 +261,101 @@ class UPCFileTester(object):
 					msglist.append( UPCMessage( t.msgid, msg=msg, filename=self.filename ) )
 		return msglist
 
+
+class FilteredDirWalkGenerator:
+	def __init__(self, path, ignore_dirs=None, prefixes=None, suffixes=None, ignore_suffixes=None, ignore_files=None, ignore_debian_subdirs=True, reHashBang=None, readSize=2048):
+		"""
+		FilteredDirWalkGenerator is a generator that walks down all directories and returns all matching filenames.
+
+		There are several posibilities to limit returned results:
+		- ignore_dirs: a list of directory names that will be excluded when traversing subdirectories (e.g. [ '.git', '.svn' ] )
+		- prefixes: a list of prefixes files have to start with (e.g. ['univention-', 'preinst'])
+		- suffixes: a list of suffixes files have to end with (e.g. [ '.py', '.sh', '.patch' ])
+		- ignore_suffixes: files, that end with one of defined suffixes, will be ignored (e.g. ['~', '.bak'])
+		- ignore_files: list of files that will be ignored (e.g. ['.gitignore', 'config.sub'])
+		- ignore_debian_subdirs: boolean that defines if .../debian/* directories are ignored or not
+		- reHashBang: if defined, only files are returned whose first bytes match specified regular expression
+        - readSize: number of bytes that will be read for e.g. reHashBang
+
+		example:
+		>>> for fn in FilteredDirWalkGenerator(path, suffixes=['.py']).items():
+		>>>   print fn
+		"""
+		self.path = path
+		if ignore_dirs is None:
+			self.ignore_dirs = [ '.git', '.svn' ]
+		else:
+			self.ignore_dirs = ignore_dirs
+		self.prefixes = prefixes
+		self.suffixes = suffixes
+		if ignore_suffixes is None:
+			self.ignore_suffixes = [ '~', '.bak' ]
+		else:
+			self.ignore_suffixes = ignore_suffixes
+		if ignore_files is None:
+			self.ignore_files = ( 'config.guess', 'configure', 'libtool', 'depcomp', 'install-sh', 'config.sub', 'missing', 'config.status' )
+		else:
+			self.ignore_files = ignore_files
+		self.ignore_debian_subdirs = ignore_debian_subdirs
+		self.reHashBang = reHashBang
+		self.readSize = readSize
+
+	def items(self):
+		for dirpath, dirnames, filenames in os.walk( self.path ):
+			# remove undesired directories
+			if self.ignore_dirs:
+				for item in self.ignore_dirs:
+					if item in dirnames:
+						dirnames.remove(item)
+
+			# ignore all subdirectories in debian directory if requested
+			if self.ignore_debian_subdirs:
+				if dirpath.startswith( os.path.join(self.path, 'debian', '') ):
+					continue
+
+			# iterate over filenames
+			for filename in filenames:
+				fn = os.path.join(dirpath, filename)
+
+				# check if filename is on ignore list
+				if self.ignore_files and filename in self.ignore_files:
+					continue
+
+				# check if filename ends with ignoresuffix
+				if self.ignore_suffixes:
+					for suffix in self.ignore_suffixes:
+						if fn.endswith(suffix):
+							continue
+
+				# check if filename starts with required prefix
+				if self.prefixes:
+					for prefix in self.prefixes:
+						if filename.startswith(prefix):
+							break
+					else:
+						continue
+
+				# check if filename ends with required suffix
+				if self.suffixes:
+					for suffix in self.suffixes:
+						if filename.endswith(suffix):
+							break
+					else:
+						continue
+
+				if self.reHashBang:
+					try:
+						content = open(fn,'r').read(self.readSize)
+					except:
+						continue
+					if not self.reHashBang.search(content):
+						continue
+
+				# return complete filename
+				yield fn
+		return
+
+
 if __name__ == '__main__':
 	import re
 	x = UPCFileTester()

@@ -1,0 +1,60 @@
+# -*- coding: utf-8 -*-
+
+try:
+	import univention.ucslint.base as uub
+except:
+	import ucslint.base as uub
+import re
+import os
+import subprocess
+
+
+class UniventionPackageCheck(uub.UniventionPackageCheckBase):
+	def __init__(self):
+		uub.UniventionPackageCheckBase.__init__(self)
+		self.name = '0013-bashism'
+
+	def getMsgIds(self):
+		return { '0013-1': [ uub.RESULT_WARN,  'failed to open file' ],
+				 '0013-2': [ uub.RESULT_ERROR, 'possible bashism found' ],
+				 '0013-3': [ uub.RESULT_WARN,  'cannot parse output of "checkbashism"' ],
+				 }
+
+	def postinit(self, path):
+		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
+		pass
+
+	def check(self, path):
+		""" the real check """
+
+		if not os.path.isdir( os.path.join(path, 'debian') ):
+			print "ERROR: directory %s does not exist!" % path
+			return
+
+		reBashism = re.compile(r'^.*?\s+line\s+(\d+)\s+[(](.*?)[)][:]\n([^\n]+)$')
+
+		for fn in uub.FilteredDirWalkGenerator( path,
+												ignore_suffixes=['~','.py','.bak','.po'],
+												reHashBang=re.compile('^#![ \t]*/bin/sh')  ).items():
+			self.debug('Testing file %s' % fn)
+			p = subprocess.Popen(['checkbashisms', fn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			stdout, stderr = p.communicate()
+			# 2 = file is no shell script or file is already bash script
+			# 1 = bashism found
+			# 0 = everything is posix compliant
+			if p.returncode == 1:
+				for item in stderr.split('possible bashism in '):
+					item = item.strip()
+					if not item:
+						continue
+
+					match = reBashism.search(item)
+					if not match:
+						self.addmsg( '0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n','\\n').replace('\r','\\r'), filename=str(fn))
+						continue
+
+					line = match.group(1)
+					msg = match.group(2)
+					code = match.group(3)
+
+					self.addmsg( '0013-2', 'possible bashism (%s):\n%s' % (msg, code), filename=str(fn), line=line )

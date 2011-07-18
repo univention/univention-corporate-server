@@ -1,0 +1,2 @@
+W:0013-2: univention-certificate:100: possible bashisms (should be '.', not 'source'):
+source /usr/share/univention-ssl/make-certificates.sh
