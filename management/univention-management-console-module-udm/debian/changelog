@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.62-1) unstable; urgency=low
+
+  * added first version of UDM navigation (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 19 Jul 2011 18:11:44 +0200
+
 univention-management-console-module-udm (1.0.61-1) unstable; urgency=low
 
   * udm/types: return all modules for flavor 'navigation'; Bug #22439

@@ -6,6 +6,8 @@ dojo.require("dojo.DeferredList");
 dojo.require("dijit.layout.BorderContainer");
 dojo.require("dijit.layout.TabContainer");
 dojo.require("dijit.Dialog");
+dojo.require("dijit.layout.ContentPane");
+dojo.require("dijit.Tree");
 dojo.require("umc.widgets.Module");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.Grid");
@@ -32,21 +34,28 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	_editedObjType: null,
 	_propertySubTabMap: null,
 	_detailPages: null,
+	_tree: null,
 
 	buildRendering: function() {
 		// call superclass method
 		this.inherited(arguments);
 
-		// render search page, we first need to query lists of containers/superodinates
-		// in order to correctly render the search form
-		(new dojo.DeferredList([
-			this.umcpCommand('udm/containers'),
-			this.umcpCommand('udm/superordinates')
-		])).then(dojo.hitch(this, function(results) {
-			var containers = results[0][0] ? results[0][1] : [];
-			var superordinates = results[1][0] ? results[1][1] : [];
-			this._renderSearchPage(containers.result, superordinates.result);
-		}));
+		if ('navigation' == this.moduleFlavor) {
+			// for the UDM navigation, we do not need to query
+			this._renderSearchPage();
+		}
+		else {
+			// render search page, we first need to query lists of containers/superodinates
+			// in order to correctly render the search form
+			(new dojo.DeferredList([
+				this.umcpCommand('udm/containers'),
+				this.umcpCommand('udm/superordinates')
+			])).then(dojo.hitch(this, function(results) {
+				var containers = results[0][0] ? results[0][1] : [];
+				var superordinates = results[1][0] ? results[1][1] : [];
+				this._renderSearchPage(containers.result, superordinates.result);
+			}));
+		}
 	},
 
 	_renderSearchPage: function(containers, superordinates) {
@@ -117,12 +126,21 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			editable: true
 		}];
 
+		// the navigation needs a slightly modified store that uses the UMCP query 
+		// function 'udm/nav/object/query'
+		var store = this.moduleStore;
+		if ('navigation' == this.moduleFlavor) {
+			store = dojo.delegate(this.moduleStore, {
+				storePath: 'udm/nav/object'
+			})
+		}
+
 		// generate the data grid
 		this._grid = new umc.widgets.Grid({
 			region: 'center',
 			actions: actions,
 			columns: columns,
-			moduleStore: this.moduleStore
+			moduleStore: store
 		});
 		this._searchPage.addChild(this._grid);
 
@@ -137,7 +155,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// check whether we need to display containers or superordinates
 		var objTypeDependencies = [];
 		var objTypes = [];
-		if (superordinates.length) {
+		if (superordinates && superordinates.length) {
 			// superordinates...
 			widgets.push({
 				type: 'ComboBox',
@@ -151,7 +169,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			layout.push('superordinate');
 			objTypeDependencies.push('superordinate');
 		}
-		else {
+		else if (containers && containers.length) {
 			// containers...
 			containers.unshift({ id: 'all', label: this._( 'All containers' ) });
 			widgets.push({
@@ -198,11 +216,17 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}]);
 		layout = layout.concat([ 'objectType', 'objectProperty', 'objectPropertyValue' ]);
 
+		// for the navigation we need a different search form
+		if ('navigation' == this.moduleFlavor) {
+			widgets = [];
+			layout = [];
+		}
+
 		// generate the search widget
 		this._searchWidget = new umc.widgets.SearchForm({
 			widgets: widgets,
 			layout: [ layout ],
-			onSearch: dojo.hitch(this._grid, 'filter')
+			onSearch: dojo.hitch(this, 'filter')
 		});
 		var group = new umc.widgets.GroupBox({
 			legend: this._('Filter results'),
@@ -211,6 +235,27 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			content: this._searchWidget
 		});
 		this._searchPage.addChild(group);
+
+		// generate the navigation pane for the navigation module
+		if ('navigation' == this.moduleFlavor) {
+			var model = new umc.modules.udm._TreeModel({
+				umcpCommand: umcpCmd
+			});
+			this._tree = new dijit.Tree({
+				//style: 'width: auto; height: auto;',
+				model: model,
+				persist: false
+			});
+			var treePane = new dijit.layout.ContentPane({
+				content: this._tree,
+				region: 'left',
+				splitter: true,
+				style: 'width: 150px;'
+			})
+			this._searchPage.addChild(treePane);
+		}
+
+		this._searchPage.startup();
 	},
 
 	_createDetailPage: function(objectType, ldapName) {
@@ -418,6 +463,20 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}));
 	},
 
+	filter: function(vals) {
+		if ('navigation' == this.moduleFlavor) {
+			var items = this._tree.get('selectedItems');
+			if (items.length) {
+				this._grid.filter({
+					container: items[0].id
+				});
+			}
+		}
+		else {
+			this._grid.filter(vals);
+		}
+	},
+
 	saveChanges: function(vals) {
 		var deffered = null;
 		if (this._newObjOptions) {
@@ -518,7 +577,7 @@ dojo.declare("umc.modules.udm._NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		// query 
+		// query for UDM objects
 		(new dojo.DeferredList([
 			this.umcpCommand('udm/containers'),
 			this.umcpCommand('udm/superordinates'),
@@ -625,4 +684,45 @@ dojo.declare("umc.modules.udm._NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 		// event stub
 	}
 });
+
+dojo.declare('umc.modules.udm._TreeModel', null, {
+	childrenAttr: 'children',
+	umcpCommand: null,
+
+	constructor: function(args) {
+		dojo.mixin(this, args);
+	},
+
+	getRoot: function(onItem) {
+		this.umcpCommand('udm/nav/container/query').then(dojo.hitch(this, function(data) {
+			var results = dojo.isArray(data.result) ? data.result : [];
+			if (results.length) {
+				onItem(results[0]);
+			}
+			else {
+				console.log('WARNING: No top container could be queried for LDAP navigation! Ignoring error.');
+			}
+		}));
+	},
+
+	getLabel: function(item) {
+		return item.label;
+	},
+
+	mayHaveChildren: function(item) {
+		return true;
+	},
+
+	getIdentity: function(item) {
+		return item.id;
+	},
+
+	getChildren: function(parentItem, onComplete) {
+		this.umcpCommand('udm/nav/container/query', { container: parentItem.id }).then(dojo.hitch(this, function(data) {
+			var results = dojo.isArray(data.result) ? data.result : [];
+			onComplete(results);
+		}));
+	}
+});
+
 

@@ -39,8 +39,6 @@ from univention.management.console.log import MODULE
 import univention.admin.modules as udm_modules
 import univention.admin.uexceptions as udm_errors
 
-import re
-
 from .ldap import UDM_Error, UDM_Module, UDM_Settings, ldap_dn2path, get_module, init_syntax, list_objects
 
 _ = Translation( 'univention-management-console-modules-udm' ).translate
@@ -384,7 +382,6 @@ class Instance( Base ):
 		success = True
 		message = None
 		result = []
-		regSplit = re.compile('[=,]')
 		for container_type in ( 'cn', 'ou' ):
 			module = UDM_Module( 'container/%s' % container_type )
 			try:
