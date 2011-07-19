@@ -559,7 +559,7 @@ def run_cherrypy():
 	cherrypy.tools.proxy(base=None, local='X-Forwarded-Host', remote='X-Forwarded-For', scheme='X-Forwarded-Proto')
 
 	# modify the template for HTTP errors to return errors in JSON format
-	cherrypy._cperror._HTTPErrorTemplate = '{ "status": %(status)s, "message": "%(message)s" }'
+	cherrypy._cperror._HTTPErrorTemplate = '{ "status": "%(status)s", "message": "%(message)s" }'
 
 	root = CPRoot()
 	root.command = CPCommand()
