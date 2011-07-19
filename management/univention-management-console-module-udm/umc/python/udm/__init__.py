@@ -37,6 +37,7 @@ from univention.management.console.modules import Base, UMC_OptionTypeError, UMC
 from univention.management.console.log import MODULE
 
 import univention.admin.uexceptions as udm_errors
+import re
 
 from .ldap import UDM_Error, UDM_Module, UDM_Settings, ldap_dn2path, get_module, init_syntax, list_objects
 
@@ -378,11 +379,16 @@ class Instance( Base ):
 		success = True
 		message = None
 		result = []
+		regSplit = re.compile('[=,]')
 		for container_type in ( 'cn', 'ou' ):
 			module = UDM_Module( 'container/%s' % container_type )
 			try:
 				for item in module.search( request.options.get( 'container' ), scope = 'one' ):
-					result.append( { 'id' : item.dn, 'label' : ldap_dn2path( item.dn ), 'icon' : 'udm-container-%s' % container_type } )
+					label = item.dn
+					split = regSplit.split(item.dn)
+					if len(split) >= 2:
+						label = split[1]
+					result.append( { 'id' : item.dn, 'label' : label, 'icon' : 'udm-container-%s' % container_type } )
 			except UDM_Error, e:
 				success = False
 				result = None
