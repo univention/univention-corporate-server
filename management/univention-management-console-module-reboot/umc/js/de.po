@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-14 12:30+0200\n"
+"POT-Creation-Date: 2011-07-14 20:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,10 +16,6 @@ msgstr ""
 #: umc/js/reboot.js:30
 msgid "Action"
 msgstr "Aktion"
-
-#: umc/js/reboot.js:50
-msgid "Error: Could not reboot/shutdown the system"
-msgstr "Fehler: Konnte das System nicht neustarten/herunterfahren"
 
 #: umc/js/reboot.js:43
 msgid "Execute"
@@ -47,6 +43,9 @@ msgstr ""
 "Mit diesem Modul lässt sich das System aus der Ferne Neustarten oder "
 "Herunterfahren. Der optional angegebene Grund wird beim Ausführen des "
 "Befehls auf der Konsole ausgegeben sowie in die Syslog geschrieben."
+
+#~ msgid "Error: Could not reboot/shutdown the system"
+#~ msgstr "Fehler: Konnte das System nicht neustarten/herunterfahren"
 
 #, fuzzy
 #~ msgid "System reboot or shutdown"
