@@ -62,6 +62,7 @@ COMMANDS = (
 	CommandDefinition( 'GET', True ),
 	CommandDefinition( 'SET', True ),
 	CommandDefinition( 'CLOSE', False ),
+	CommandDefinition( 'STATISTICS', False ),
 	CommandDefinition( 'CANCEL', False, 'ids' ),
 	CommandDefinition( 'STATUS', False, 'ids' ),
 	CommandDefinition( 'EXIT', True ),

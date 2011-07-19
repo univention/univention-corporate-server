@@ -33,64 +33,14 @@
 from optparse import OptionParser
 from getpass import getpass
 
-import os, readline, socket, sys
+import datetime
+import os
+import sys
 
 import notifier
-import notifier.threads as threads
 
 import univention.management.console.protocol as umcp
-from univention.management.console.log import CORE, log_init, log_set_level
-
-def _completer( text, state ):
-	result = []
-	text = text.upper()
-	for cmd in umcp.COMMANDS:
-		if cmd.name.startswith( text ):
-			result.append( cmd.name )
-
-	if len( result ) > state:
-		return result[ state ]
-	else:
-		return None
-
-def _options( text, state ):
-	print readline.input_buffer().split( ' ' )
-
-def _readline():
-	readline.set_completer( _completer )
-
-	while True:
-		command = raw_input( ' > ' )
-		if umcp.command_is_known( command ):
-			break
-		elif command == 'HELP':
-			return ( command, None, None, None )
-		else:
-			CORE.error( 'The entered command is unknown: %s' % command )
-
-	readline.set_completer( None )
-	arguments = []
-	if umcp.command_has_arguments( command ):
-		while True:
-			arg = raw_input( ' argument: ' )
-			if arg:
-				arguments.append( arg )
-			else:
-				break
-
-	options = []
-	if umcp.command_has_options( command ):
-		while True:
-			opt = raw_input( ' option: ' )
-			if opt:
-				if len( opt.split( '=' ) ) != 2:
-					CORE.error( 'The specified option has an invalid format: <option>=<value>' )
-				else:
-					options.append( opt )
-			else:
-				break
-
-	return ( command, arguments, options )
+from univention.management.console.log import log_init, log_set_level
 
 class CLI_Client( umcp.Client ):
 	def __init__( self, options = [], arguments = [] ):
@@ -102,17 +52,16 @@ class CLI_Client( umcp.Client ):
 								  port = options.port,
 								  auth = options.authenticate )
 		self.__wait = None
-		self.__input = ''
-		self.__timer = None
-		self.__interactive = options.interactive
+		self.__quite = options.quite
+		self.__timing = options.timing
+		self.__started = None
+		self.__finished = None
 
 		try:
 			self.connect()
 		except umcp.NoSocketError:
-			CORE.error( "The UMC server %s could not be contacted." % options.server )
+			print >>sys.stderr, "The UMC server %s could not be contacted." % options.server
 			sys.exit( 1 )
-		else:
-			CORE.info( "The connection to '%s' is established" % options.server )
 
 		self.signal_connect( 'response', self._response )
 		self.signal_connect( 'authenticated', self._authenticated )
@@ -120,15 +69,13 @@ class CLI_Client( umcp.Client ):
 		if arguments:
 			self.__wait = self.create( arguments[ 0 ], arguments[ 1 : ], options )
 		if options.authenticate:
+			if self.__timing:
+				self.__started = datetime.datetime.now()
 			self.authenticate( options.username, options.password )
 		else:
 			if self.__wait:
 				self.request( self.__wait )
 				self.__wait = None
-			elif self.__interactive:
-				readline.parse_and_bind( 'tab: complete' )
-				rl = threads.Simple( 'readline', _readline, self._input )
-				rl.run()
 
 	def create( self, command, args = [], options = [], flavor = None ):
 		msg = umcp.Request( command.upper() )
@@ -150,74 +97,68 @@ class CLI_Client( umcp.Client ):
 					try:
 						value = eval( "%s('%s')" % ( typ, value ) )
 					except NameError:
-						CORE.error( "Invalid type for option: %s" % typ )
+						print >>sys.stderr, "Invalid type for option: %s" % typ
 				msg.options[ key ] = value
 		return msg
 
 	def _closed( self ):
-		CORE.error( 'The server closed the connection' )
-		if self.__timer:
-			notifier.timer_remove( self.__timer )
-		sys.exit( 0 )
+		sys.exit( 1 )
+
+	def print_timing( self, response = None ):
+		if self.__started is not None and self.__finished is not None:
+			diff = self.__finished - self.__started
+			if response is not None:
+				print '>>> Timing:', response.command, ' '.join( response.arguments )
+			else:
+				print '>>> Timing (Authentication):'
+			print ' Request send at', self.__started
+			print ' Response received at', self.__finished
+			print ' Elapsed time', diff
+
+		self.__started = None
+		self.__finished = None
 
 	def _authenticated( self, success, status, text ):
+		if self.__timing:
+			self.__finished = datetime.datetime.now()
+			self.print_timing()
 		if success:
-			CORE.info( 'authentication successful' )
 			if self.__wait:
+				if self.__timing:
+					self.__started = datetime.datetime.now()
 				self.request( self.__wait )
 				self.__wait = None
-				return
-			if self.__interactive:
-				readline.parse_and_bind( 'tab: complete' )
-				rl = threads.Simple( 'readline', _readline, self._input )
-				rl.run()
 		else:
 			raise Exception( 'error: authentication failed' )
 
-	def _waiting_for_response( self ):
-		sys.stdout.write( '.' )
-		sys.stdout.flush()
-		return True
-
-	def _input( self, name, output ):
-		req = self.create( *output )
-		self.request( req )
-		CORE.info( "waiting for response to '%s' " % req.command )
-		self.__timer = notifier.timer_add( 1000, self._waiting_for_response )
-
 	def _response( self, msg ):
-		notifier.timer_remove( self.__timer )
-		self.__timer = None
-		if self.__interactive:
-			CORE.info( ' found' )
-		CORE.info( 'The server replied: %s' % msg.command )
+		if self.__timing:
+			self.__finished = datetime.datetime.now()
+			self.print_timing( msg )
+		if self.__quite:
+			sys.exit( 0 )
+		print 'Response: %s' % msg.command
+		print '  data length   : %4d' % len( str( msg ) )
+		print '  message length: %4d' % msg._length
+		print '  ---'
 		if msg.arguments:
-			CORE.info( '  ARGUMENTS: %s' % ' '.join( msg.arguments ) )
-		CORE.info( '  STATUS   : %d' % msg.status )
+			print '  ARGUMENTS: %s' % ' '.join( msg.arguments )
+		print '  STATUS   : %d' % msg.status
 		if msg.options:
 			if isinstance( msg.options, ( list, tuple ) ):
-				CORE.info( '  OPTIONS  : %s' % ', '.join( map( lambda x: str( x ), msg.options ) ) )
+				print '  OPTIONS  : %s' % ', '.join( map( lambda x: str( x ), msg.options ) )
 			else:
-				CORE.info( '  OPTIONS  : %s' % ' '.join( [ '%s=%s' % ( k, v ) for k, v in msg.options.items() ] ) )
-		CORE.info( '  MESSAGE  : %s' % msg.message )
-		CORE.info( '  RESULT   : %s' % msg.result )
-		CORE.info( '  data length   : %4d' % len( str( msg ) ) )
-		CORE.info( '  message length: %4d' % msg._length )
-		CORE.info( '  complete body : %s' % msg.body )
-		if self.__interactive:
-			readline.parse_and_bind( 'tab: complete' )
-			rl = threads.Simple( 'readline', _readline, self._input )
-			rl.run()
-		else:
-			sys.exit( 0 )
+				print '  OPTIONS  : %s' % ' '.join( [ '%s=%s' % ( k, v ) for k, v in msg.options.items() ] )
+		print '  MESSAGE  : %s' % msg.message
+		print '  RESULT   : %s' % msg.result
+		sys.exit( 0 )
 
 if __name__ == '__main__':
 	notifier.init( notifier.GENERIC )
 
 	parser = OptionParser( usage = "usage: %prog [options] command <arguments>" )
-	parser.add_option( '-i', '--interactive', action = 'store_true',
-					   dest = 'interactive',
-					   help = 'provides a shell-like interactive interface' )
+	parser.add_option( '-q', '--quite', action = 'store_true', dest = 'quite',
+					   help = 'if given no output is generated' )
 	parser.add_option( '-n', '--no-auth', action = 'store_false',
 					   dest = 'authenticate', default = True,
 					   help = 'if given the client do not try to authenticate first' )
@@ -246,14 +187,16 @@ if __name__ == '__main__':
 					   help = 'if set all specified options will be assembled in a list' )
 	parser.add_option( '-e', '--eval-option', action = 'store_true', dest = 'eval_options',
 					   help = 'if set the only given option is evalulated as python code' )
-	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = 4,
+	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = 0,
 					   help = 'if given than debugging is activated and set to the specified level' )
+	parser.add_option( '-t', '--timing', action = 'store_true', dest = 'timing',
+					   help = 'if given the amount of time required for the UMCP request is measured. -q will not supress the output' )
 
 	( options, arguments ) = parser.parse_args()
 
 	log_init( '/dev/stderr', options.debug )
 
-	if not options.interactive and not arguments:
+	if not arguments:
 		parser.error( 'command is missing' )
 	if options.authenticate:
 		if not options.username:
@@ -263,7 +206,7 @@ if __name__ == '__main__':
 	try:
 		client = CLI_Client( options, arguments )
 	except Exception, e:
-		CORE.error( 'An fatal error occurred: %s' % str( e ) )
+		print >> sys.stderr, 'An fatal error occurred: %s' % str( e )
 		sys.exit( 1 )
 
 	notifier.loop()

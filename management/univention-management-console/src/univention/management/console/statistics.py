@@ -1,9 +1,9 @@
-#!/bin/sh
+# -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  init script for the UMC server
+#  runtime statistics of the UMC server
 #
-# Copyright 2006-2011 Univention GmbH
+# Copyright 2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,46 +30,34 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /lib/lsb/init-functions
+class Counter( object ):
+	def __init__( self ):
+		self._all = 0l
+		self._active = 0l
 
-DAEMON="/usr/sbin/univention-management-console-server"
-NAME="Univention Management Console Server"
+	def new( self ):
+		self._all += 1
+		self._active += 1
 
-if [ ! -x "$DAEMON" ]; then
-	exit 0
-fi
+	def inactive( self ):
+		self._active -= 1
 
-case "$1" in
-	start)
-		log_action_msg "Starting $NAME"
-		$DAEMON start
-		log_action_end_msg 0
-		;;
-	stop)
-		log_action_msg "Stopping $NAME"
-		$DAEMON stop
-		log_action_end_msg 0
-		;;
-	restart)
-		log_action_msg "Restarting $NAME"
-		$DAEMON restart
-		log_action_end_msg 0
-		;;
-	reload)
-		log_action_msg "Reloading $NAME"
-		$DAEMON reload
-		log_action_end_msg 0
-		;;
-	crestart)
-		pid="$(cat /var/run/umc-server.pid)"
-		if [ -n "$pid" -a -d "/proc/$pid" ]; then
-			$0 restart
-		else
-			log_action_msg "$NAME is not running, no need to restart."
-		fi
-		;;
-	*)
-		echo "Usage: /etc/init.d/univention-management-console-server {start|stop|restart|reload|crestart}"
-		exit 1
-		;;
-esac
+	def json( self ):
+		return { 'all' : self._all, 'active' : self._active }
+
+class Statistics( object ):
+	connections = Counter()
+	modules = Counter()
+	requests = Counter()
+	users = set()
+
+	@staticmethod
+	def json():
+		return { 'connections' : Statistics.connections.json(),
+				 'modules' : Statistics.modules.json(),
+				 'requests' : Statistics.requests.json(),
+				 'users' : list( Statistics.users ) }
+
+statistics = Statistics()
+
+__all__ = [ 'statistics' ]

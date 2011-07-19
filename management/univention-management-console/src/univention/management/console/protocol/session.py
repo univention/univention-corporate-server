@@ -75,6 +75,7 @@ class State( signals.Provider ):
 		self.signal_new( 'authenticated' )
 		self.resend_queue = []
 		self.running = False
+		self.username = None
 
 	def __del__( self ):
 		CORE.info( 'The session is shutting down' )
@@ -84,6 +85,7 @@ class State( signals.Provider ):
 		self.signal_emit( 'authenticated', success, self )
 
 	def authenticate( self, username, password ):
+		self.username = username
 		self.__auth.authenticate( username, password )
 
 	def credentials( self ):
@@ -104,7 +106,7 @@ class ModuleProcess( Client ):
 		self.signal_connect( 'response', self._response )
 		CORE.process( 'running: %s' % args )
 		self.__process = popen.RunIt( args, stdout = False )
-		self.__process.signal_connect( 'finished', self._died )
+		self.__process.signal_connect( 'killed', self._died )
 		self.__pid = self.__process.start()
 		self._connect_retries = 1
 		self.signal_new( 'result' )
@@ -117,12 +119,13 @@ class ModuleProcess( Client ):
 	def __del__( self ):
 		CORE.process( 'ModuleProcess: dying' )
 		self.disconnect()
+		self.__process.signal_disconnect( 'killed', self._died )
 		self.__process.stop()
 		CORE.process( 'ModuleProcess: child stopped' )
 
 	def _died( self, pid, status ):
 		CORE.process( 'ModuleProcess: child died' )
-		self.signal_emit( 'finished', pid, status, self.name )
+		self.signal_emit( 'finished', pid, status )
 
 	def _response( self, msg ):
 		# these responses must not be send to the external client as
@@ -334,9 +337,9 @@ class Processor( signals.Provider ):
 				CORE.info( 'Starting new module process and passing new request to module %s: %s' % (module_name, str(msg._id)) )
 				mod_proc = ModuleProcess( module_name, debug = MODULE_DEBUG_LEVEL, locale = self.i18n.locale )
 				mod_proc.signal_connect( 'result', self._mod_result )
-				cb = notifier.Callback( self._socket_died, module_name, msg )
+				cb = notifier.Callback( self._socket_died, module_name )
 				mod_proc.signal_connect( 'closed', cb )
-				cb = notifier.Callback( self._mod_died, msg )
+				cb = notifier.Callback( self._mod_died, module_name )
 				mod_proc.signal_connect( 'finished', cb )
 				self.__processes[ module_name ] = mod_proc
 				cb = notifier.Callback( self._mod_connect, mod_proc, msg )
@@ -416,7 +419,7 @@ class Processor( signals.Provider ):
 	def _mod_inactive( self, module ):
 		CORE.info( 'The module %s is inactive for to long. Sending EXIT request to module' % module.name )
 		if module.openRequests:
-			CORE.info( 'There are unfinished requests. Waiting ...: %s' % module.openRequests )
+			CORE.info( 'There are unfinished requests. Waiting for %s' % ', '.join( module.openRequests ) )
 			return True
 
 		# mark as internal so the response will not be forwarded to the client
@@ -428,31 +431,39 @@ class Processor( signals.Provider ):
 	def _mod_result( self, msg ):
 		self.signal_emit( 'response', msg )
 
-	def _socket_died( self, module_name, msg):
+	def _socket_died( self, module_name ):
 		CORE.warn( 'Socket died (module=%s)' % module_name )
-		res = Response( msg )
-		res.status = SERVER_ERR_MODULE_DIED
 		if module_name in self.__processes:
-			self._mod_died( self.__processes[ module_name ].pid(), 1, module_name, msg )
+			self._mod_died( self.__processes[ module_name ].pid(), -1, module_name )
 
-	def _mod_died( self, pid, status, name, msg ):
+	def _mod_died( self, pid, status, module_name ):
 		if status:
-			CORE.warn( 'Module process died (pid: %d, status: %s)' % ( pid, str( status ) ) )
-			res = Response( msg )
-			res.status = SERVER_ERR_MODULE_DIED
+			if os.WIFSIGNALED( status ):
+				signal = os.WTERMSIG( status )
+				exitcode = -1
+			elif os.WIFEXITED( status ):
+				signal = -1
+				exitcode = os.WEXITSTATUS( status )
+			else:
+				signal = -1
+				exitcode = -1
+			CORE.warn( 'Module process %s died (pid: %d, exit status: %d, signal: %d)' % ( module_name, pid, exitcode, signal ) )
 		else:
-			CORE.info( 'Module process died on purpose' )
+			CORE.info( 'Module process %s died on purpose' % module_name )
 
-		if name in self.__processes:
-			CORE.warn( 'module process died: cleaning up requests')
-			self.__processes[ name ].invalidate_all_requests()
 		# if killtimer has been set then remove it
-		if name in self.__killtimer:
-			CORE.info( 'module process died: stopping killtimer of "%s"' % name )
-			notifier.timer_remove( self.__killtimer[ name ] )
-			del self.__killtimer[ name ]
-		if name in self.__processes:
-			del self.__processes[ name ]
+		CORE.info( 'Checking for kill timer (%s)' % ', '.join( self.__killtimer.keys() ) )
+		if module_name in self.__killtimer:
+			CORE.info( 'Stopping kill timer)' )
+			notifier.timer_remove( self.__killtimer[ module_name ] )
+			del self.__killtimer[ module_name ]
+		if module_name in self.__processes:
+			CORE.warn( 'Cleaning up requests' )
+			self.__processes[ module_name ].invalidate_all_requests()
+			if self.__processes[ module_name ]._inactivity_timer is not None:
+				CORE.warn( 'Remove inactivity timer' )
+				notifier.timer_remove( self.__processes[ module_name ]._inactivity_timer )
+			del self.__processes[ module_name ]
 
 	def handle_request_unknown( self, msg ):
 		res = Response( msg )

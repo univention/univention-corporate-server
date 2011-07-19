@@ -34,6 +34,7 @@
 # python packages
 import fcntl
 import os
+import pwd
 import socket
 import sys
 
@@ -50,15 +51,15 @@ from .definitions import *
 from ..resources import moduleManager, syntaxManager, categoryManager
 from ..log import CORE, CRYPT, RESOURCES
 from ..config import ucr
+from ..statistics import statistics
 
 class MagicBucket( object ):
 	'''Manages a connection (session) to the UMC server. Therefor it
 	ensures that without successful authentication no other command is
 	excepted. After the user has authenticated the commands a are passed
 	on to the Processor.'''
-	def __init__( self, processorClass = Processor ):
+	def __init__( self ):
 		self.__states = {}
-		self.__processorClass = processorClass
 
 	def __del__( self ):
 		self.exit()
@@ -71,14 +72,17 @@ class MagicBucket( object ):
 		state.signal_connect( 'authenticated', self._authenticated )
 		self.__states[ socket ] = state
 		notifier.socket_add( socket , self._receive )
+		statistics.connections.new()
 
 	def exit( self ):
 		'''Closes all open connections.'''
 		# remove all sockets
 		for sock, state in self.__states.items():
 			CORE.info( 'Shutting down connection %s' % sock )
-			state.processor.shutdown()
+			if state.processor is not None:
+				state.processor.shutdown()
 			notifier.socket_remove( sock )
+			statistics.connections.inactive()
 		# delete states
 		for state in self.__states.values():
 			del state
@@ -88,6 +92,7 @@ class MagicBucket( object ):
 		'''Signal callback: Invoked when a authentication has been
 		tried. This function generates the UMCP response.'''
 		if success:
+			statistics.users.add( state.username )
 			state.authResponse.status = SUCCESS
 		else:
 			state.authResponse.status = BAD_REQUEST_AUTH_FAILED
@@ -108,6 +113,8 @@ class MagicBucket( object ):
 			# this error can be ignored (SSL need to do something)
 			return True
 		except ( SSL.SysCallError, SSL.Error ), error:
+			statistics.connections.inactive()
+			statistics.users.remove( self.__states[ socket ].username )
 			CRYPT.warn( 'SSL error: %s. Probably the socket was closed by the client.' % str( error ) )
 			if self.__states[ socket ].processor is not None:
 				self.__states[ socket ].processor.shutdown()
@@ -134,11 +141,13 @@ class MagicBucket( object ):
 			CORE.info( 'MagicBucket: incomplete message: %s' % str( e ) )
 		except ParseError, e:
 			CORE.error( 'Parser error: %s' % str( e ) )
+			state.requests[ msg.id ] = msg
 			res = Response( msg )
 			res.status = UMCP_ERR_UNPARSABLE_BODY
 			self._response( res, state )
 		except UnknownCommandError, e:
 			CORE.error( 'Unknown Command message: %s' % str( e ) )
+			state.requests[ msg.id ] = msg
 			res = Response( msg )
 			res.status = BAD_REQUEST_NOT_FOUND
 			self._response( res, state )
@@ -148,22 +157,35 @@ class MagicBucket( object ):
 	def _handle( self, state, msg ):
 		'''Ensures that commands are only passed to the processor if a
 		successful authentication has been completed.'''
+		state.requests[ msg.id ] = msg
+		statistics.requests.new()
 		CORE.info( 'Incoming request of type %s' % msg.command )
 		if not state.authenticated and msg.command != 'AUTH':
 			res = Response( msg )
 			res.status = BAD_REQUEST_UNAUTH
 			self._response( res, state )
 		elif msg.command == 'AUTH':
-			state.requests[ msg.id ] = msg
 			state.authResponse = Response( msg )
 			state.authenticate( msg.body[ 'username' ],	msg.body[ 'password' ] )
+		elif msg.command == 'STATISTICS':
+			response = Response( msg )
+			try:
+				pwent = pwd.getpwnam( state.username )
+				if not pwent.pw_uid in ( 0, 2005 ):
+					raise KeyError
+				CORE.info( 'Sending statistic data to client' )
+				response.status = SUCCESS
+				response.result = statistics.json()
+			except KeyError:
+				CORE.info( 'User not allowed to retrieve statistics' )
+				response.status = BAD_REQUEST_FORBIDDEN
+			self._response( response, state )
 		else:
 			# inform processor
 			if not state.processor:
-				state.processor = self.__processorClass( *state.credentials() )
+				state.processor = Processor( *state.credentials() )
 				cb = notifier.Callback( self._response, state )
 				state.processor.signal_connect( 'response', cb )
-			state.requests[ msg.id ] = msg
 			state.processor.request( msg )
 
 	def _do_send( self, socket ):
@@ -189,9 +211,11 @@ class MagicBucket( object ):
 		request.'''
 		# FIXME: error handling is missing!!
 		if not msg.id in state.requests and msg.id != -1:
+			CORE.error( 'The given response is invalid or not known' )
 			return
 
 		try:
+			statistics.requests.inactive()
 			data = str( msg )
 			ret = state.socket.send( data )
 			# not all data could be send; retry later
