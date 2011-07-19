@@ -77,7 +77,6 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			columns: columns,
 			moduleStore: this.moduleStore,
 			query: {
-                count: '50',
                 category: 'all',
                 filter: '*'
             }
@@ -85,17 +84,6 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._layoutContainer.addChild(this._grid);
 
 		var widgets = [{
-			type: 'ComboBox',
-			name: 'count',
-			value: '50',
-			label: this._('Number of processes'),
-			staticValues: [
-				{id: '50', label: '50'},
-				{id: '20', label: '20'},
-				{id: '10', label: '10'},
-				{id: 'all', label: this._('All')}
-			]
-        },{
 			type: 'ComboBox',
 			name: 'category',
 			value: 'all',
@@ -114,18 +102,11 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			label: this._('Keyword')
 		}];
 
-		var buttons = [{
-			name: 'submit',
-			label: this._('Reload'),
-			callback: dojo.hitch(this, function() {
-                this._grid.filter({ _dummy: 'dummy' });
-			})
-		}];
-
 		this._searchWidget = new umc.widgets.SearchForm({
 			region: 'top',
 			widgets: widgets,
-			layout: [['count', 'category', 'filter']]
+			layout: [['category', 'filter']],
+			onSearch: dojo.hitch(this._grid, 'filter')
 		});
 
 

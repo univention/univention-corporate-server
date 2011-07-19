@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-  <definitions>
-	<syntax base="Selection" name="Top-Count">
-	  <choice name="10"/>
-	  <choice name="20"/>
-	  <choice name="50"/>
-	  <choice name="all"/>
+	<definitions>
+	<syntax base="Selection" name="Top-Category">
+		<choice name="all"/>
+		<choice name="user"/>
+		<choice name="pid"/>
+		<choice name="prog"/>
+		<choice name="command"/>
+	</syntax>
+	<syntax base="String" name="Top-Filter">
+		<regex-invalid>^$</regex-invalid>
 	</syntax>
 	<syntax base="Selection" name="Top-Signal">
-	  <choice name="-9"/>
-	  <choice name="-15"/>
+		<choice name="-9"/>
+		<choice name="-15"/>
 	</syntax>
-  </definitions>
+	</definitions>
 </umc>

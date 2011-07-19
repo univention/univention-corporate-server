@@ -32,47 +32,50 @@
 # <http://www.gnu.org/licenses/>.
 
 import psutil
+from fnmatch import fnmatch
 
 import univention.info_tools as uit
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.protocol.definitions import *
 
-_ = umc.Translation('univention-management-console-modules-ucr').translate
+_ = umc.Translation('univention-management-console-modules-top').translate
 
 class Instance(umcm.Base):
-    def init(self):
-        uit.set_language(str(self.locale))
+	def init(self):
+		uit.set_language(str(self.locale))
 
-    def query(self, request):
-        processes = []
+	def query(self, request):
+		category = request.options.get('category', 'all')
+		filter = request.options.get('filter', '*')
+		processes = []
+		for process in psutil.process_iter():
+			listEntry = {}
+			listEntry['user'] = process.username
+			listEntry['pid'] = process.pid
+			listEntry['cpu'] = '%.1f' % process.get_cpu_percent()
+			(listEntry['vsize'], listEntry['rssize'], ) = process.get_memory_info()
+			listEntry['mem'] = '%.1f' % process.get_memory_percent()
+			listEntry['prog'] = process.name
+			listEntry['command'] = process.cmdline
+			if category == 'all':
+				for value in listEntry.itervalues():
+					if fnmatch(str(value), filter):
+						processes.append(listEntry)
+						break
+			else:
+				if fnmatch(listEntry[category], filter):
+					processes.append(listEntry)
+		request.status = SUCCESS
+		self.finished(request.id, processes)
 
-        for process in psutil.process_iter():
-            p = {}
-            p['user'] = process.username
-            p['pid'] = process.pid
-            p['cpu'] = '%.1f' % process.get_cpu_percent()
-            mem = process.get_memory_info()
-            p['vsize'] = mem[1]
-            p['rssize'] = mem[0]
-            p['mem'] = '%.1f' % process.get_memory_percent()
-            p['prog'] = process.name
-            p['command'] = process.cmdline
-            processes.append(p)
-        request.status = SUCCESS
-        success = True
-        self.finished(request.id, processes)
-
-    def kill(self, request):
-        cmd = ['kill']
-        if request.options['signal'] == 'kill':
-                cmd.append('-9')
-        else:
-                cmd.append('-15')
-
-        for pid in request.options['pid']:
-                cmd.append(str(pid))
-
-        subprocess.call(cmd)
-
-        self.finished(request.id(), None)
+	def kill(self, request):
+		cmd = ['kill']
+		if request.options['signal'] == 'kill':
+			cmd.append('-9')
+		else:
+			cmd.append('-15')
+		for pid in request.options['pid']:
+			cmd.append(str(pid))
+		subprocess.call(cmd)
+		self.finished(request.id(), None)
