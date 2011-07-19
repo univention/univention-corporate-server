@@ -384,11 +384,7 @@ class Instance( Base ):
 			module = UDM_Module( 'container/%s' % container_type )
 			try:
 				for item in module.search( request.options.get( 'container' ), scope = 'one' ):
-					label = item.dn
-					split = regSplit.split(item.dn)
-					if len(split) >= 2:
-						label = split[1]
-					result.append( { 'id' : item.dn, 'label' : label, 'icon' : 'udm-container-%s' % container_type } )
+					result.append( { 'id' : item.dn, 'label' : item[ module.identifies ], 'icon' : 'udm-container-%s' % container_type } )
 			except UDM_Error, e:
 				success = False
 				result = None

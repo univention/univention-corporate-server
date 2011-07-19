@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.60-1) unstable; urgency=low
+
+  * udm/nav/container/query: use only RDN for labels; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 19 Jul 2011 15:53:14 +0200
+
 univention-management-console-module-udm (1.0.59-1) unstable; urgency=low
 
   * implement udm/remove to delete LDAP objects
