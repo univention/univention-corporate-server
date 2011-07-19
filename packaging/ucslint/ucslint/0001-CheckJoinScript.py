@@ -150,11 +150,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		#
 		# check if join scripts are present in debian/rules
 		#
-		fn = os.path.join( path, 'debian', 'rules' )
-		if not os.path.exists( fn ):
-			self.addmsg( '0001-5', 'file is missing', 'debian/rules' )
-			return
-		else:
+		found = {}
+		debianpath = os.path.join( path, 'debian' )
+		# get all .install files
+		fnlist = [ x for x in uub.FilteredDirWalkGenerator( debianpath,	suffixes=['.install'] ).items() ]
+		# append debian/rules
+		fnlist.append( os.path.join( debianpath, 'rules' ) )
+
+		for fn in fnlist:
 			try:
 				content = open(fn, 'r').read()
 			except:
@@ -162,8 +165,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 			for js in fnlist_joinscripts.keys():
 				self.debug('looking for %s in debian/rules' % js)
-				if not js in content:
-					self.addmsg( '0001-6', 'join script is not mentioned in debian/rules', js )
+				if js in content:
+					found[js] = found.get(js,0) + 1
+
+		for js in fnlist_joinscripts.keys():
+			if found.get(js,0) == 0:
+				self.addmsg( '0001-6', 'join script is not mentioned in debian/rules or *.install files', js )
 
 		#
 		# check if join scripts are present in debian/*postinst
