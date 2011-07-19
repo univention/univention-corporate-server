@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-18 11:03+0200\n"
+"POT-Creation-Date: 2011-07-19 10:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,27 +21,27 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr ""
 
-#: umc/tools.js:189
+#: umc/tools.js:193
 #, python-format
-msgid "<br>Error message from server: %s"
-msgstr "<br>Fehlermeldung des Servers: %s"
+msgid "<br>Server error message: <i>%s</i>"
+msgstr ""
 
 #: umc/app.js:358
 msgid "About UMC"
 msgstr "Über UMC"
 
-#: umc/tools.js:236
+#: umc/tools.js:240
 msgid "An assert statement failed"
 msgstr "Ein Assert-Anweisung schlug fehl"
 
-#: umc/tools.js:198
+#: umc/tools.js:202
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
 "Ein Fehler trat während des Verbindungsaufbaus zum Server auf, bitte "
 "versuchen Sie es später noch einmal."
 
-#: umc/tools.js:194
+#: umc/tools.js:198
 #, python-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
@@ -283,6 +283,9 @@ msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
 #: umc/tools.js:154
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
+
+#~ msgid "<br>Error message from server: %s"
+#~ msgstr "<br>Fehlermeldung des Servers: %s"
 
 #~ msgid ""
 #~ "An unexpected HTTP-error occurred (status: %(status)s):\n"

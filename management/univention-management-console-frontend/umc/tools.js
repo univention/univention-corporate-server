@@ -175,7 +175,12 @@ dojo.mixin(umc.tools, {
 		591: umc.tools._( 'Internal module error: The execution of a command caused an fatal error.' )
 	},
 
-	handleErrorStatus: function(status, error) {
+	handleErrorStatus: function(_status, error) {
+		var jsonResponse = dojo.getObject('responseText', false, error) || '{}';
+		var response = dojo.fromJson(jsonResponse);
+		var status = dojo.getObject('status', false, response) || _status;
+		var message = dojo.getObject('message', false, response) || '';
+
 		// handle the different status codes
 		if (undefined !== status && status in this._statusMessages) {
 			// special cases during login, only show a notification
@@ -185,8 +190,7 @@ dojo.mixin(umc.tools, {
 			}
 			// all other cases
 			else {
-				var errorMsg = dojo.getObject('responseText', false, error);
-				umc.app.alert(this._statusMessages[status]);// + (errorMsg ? this._('<br>Error message from server: %s', errorMsg) : ''));
+				umc.app.alert(this._statusMessages[status] + (message ? this._('<br>Server error message: <i>%s</i>', message) : ''));
 			}
 		}
 		else if (undefined !== status) {

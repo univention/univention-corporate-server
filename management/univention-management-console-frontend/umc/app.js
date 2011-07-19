@@ -68,7 +68,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		if (!this._alertDialog) {
 			this._alertDialog = new umc.widgets.ConfirmDialog({
 				title: this._('Notification'),
-				style: 'max-width: 400px;',
+				style: 'max-width: 500px;',
 				options: [{
 					label: this._('Ok'),
 					callback: dojo.hitch(this, function() {
@@ -81,7 +81,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 
 		// show the confirmation dialog
 		this._alertDialog.set('message', message);
-		this._alertDialog.startup();
+		//this._alertDialog.startup();
 		this._alertDialog.show();
 	},
 

@@ -3,7 +3,6 @@
 dojo.provide("umc.widgets.ConfirmDialog");
 
 dojo.require("dijit.Dialog");
-dojo.require("dojox.layout.TableContainer");
 dojo.require("dojox.widget.Dialog");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.Text");
@@ -85,7 +84,9 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 		});
 		
 		// put buttons into separate container
-		var buttons = new umc.widgets.ContainerWidget({});
+		var buttons = new umc.widgets.ContainerWidget({
+			style: 'text-align: center;'
+		});
 		dojo.forEach(this.options, dojo.hitch(this, function(ichoice, idx) {
 			buttons.addChild(new umc.widgets.Button({
 				label: ichoice.label,
@@ -105,17 +106,11 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 		}));
 
 		// put the layout together
-		var layout = new dojox.layout.TableContainer({
-			cols: 1,
-			showLabels: false
-		});
+		var layout = new umc.widgets.ContainerWidget({});
 		layout.addChild(this._labelWidget);
 		layout.addChild(buttons);
 		layout.startup();
 	
-		// center buttons
-		dojo.style(buttons.domNode.parentNode, 'textAlign', 'center');
-		
 		// attach layout to dialog
 		this.set('content', layout);
 	},

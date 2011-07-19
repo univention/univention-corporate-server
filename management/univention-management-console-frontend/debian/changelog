@@ -1,3 +1,11 @@
+univention-management-console-frontend (0.0.79-1) unstable; urgency=low
+
+  * fixed displayed width of alert dialog
+  * fixed error status handling
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 19 Jul 2011 11:07:16 +0200
+
 univention-management-console-frontend (0.0.78-1) unstable; urgency=low
 
   * format the web server to send error messages in JSON format (Bug #22461)
