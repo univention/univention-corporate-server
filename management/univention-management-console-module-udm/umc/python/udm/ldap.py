@@ -58,6 +58,12 @@ udm_modules.update()
 # module cache
 _modules = {}
 
+# exceptions
+
+class UDM_Error( Exception ):
+	pass
+
+
 def get_ldap_connection():
 	"""Tries to open an LDAP connection. On DC master and DC backup
 	systems the cn=admin account is used and on all other system roles
@@ -131,11 +137,26 @@ class UDM_Module( object ):
 				raise UMC_OptionTypeError( _( 'Could not find an UDM module for the superordinate object %s' ) % superordinate )
 
 		obj = self.module.object( None, lo, po, superordinate = superordinate )
-		obj.open()
-		MODULE.info( 'Creating object with properties: %s' % ldap_object )
-		for key, value in ldap_object.items():
-			obj[ key ] = value
-		obj.create()
+		try:
+			obj.open()
+			MODULE.info( 'Creating object with properties: %s' % ldap_object )
+			for key, value in ldap_object.items():
+				obj[ key ] = value
+			obj.create()
+		except udm_errors.base, e:
+			raise UDM_Error( e.message )
+
+	def remove( self, ldap_dn ):
+		"""Removes a LDAP object"""
+		lo, po = get_ldap_connection()
+
+		obj = self.module.object( None, lo, po, dn = ldap_dn )
+		try:
+			obj.open()
+			MODULE.info( 'Removing object with properties: %s' % ldap_dn )
+			obj.remove()
+		except udm_errors.base, e:
+			raise UDM_Error( str( e ) )
 
 	def modify( self, ldap_object ):
 		"""Modifies a LDAP object"""
@@ -143,13 +164,16 @@ class UDM_Module( object ):
 
 		obj = self.module.object( None, lo, po, dn = ldap_object.get( 'ldap-dn' ) )
 		del ldap_object[ 'ldap-dn' ]
-		obj.open()
-		MODULE.info( 'Modifying object with properties: %s' % ldap_object )
-		for key, value in ldap_object.items():
-			obj[ key ] = value
-		obj.modify()
+		try:
+			obj.open()
+			MODULE.info( 'Modifying object with properties: %s' % ldap_object )
+			for key, value in ldap_object.items():
+				obj[ key ] = value
+			obj.modify()
+		except udm_errors.base, e:
+			raise UDM_Error( e.message )
 
-	def search( self, container = None, attribute = None, value = None, superordinate = None ):
+	def search( self, container = None, attribute = None, value = None, superordinate = None, scope = 'sub' ):
 		"""Searches for LDAP objects based on a search pattern"""
 		lo, po = get_ldap_connection()
 		if container == 'all':
@@ -162,7 +186,10 @@ class UDM_Module( object ):
 			filter_s = '%s=%s' % ( attribute, value )
 
 		MODULE.info( 'Searching for LDAP objects: container = %s, filter = %s, superordinate = %s' % ( container, filter_s, superordinate ) )
-		return self.module.lookup( None, lo, filter_s, base = container, superordinate = superordinate )
+		try:
+			return self.module.lookup( None, lo, filter_s, base = container, superordinate = superordinate, scope = scope )
+		except udm_errors.base, e:
+			raise UDM_Error( str( e ) )
 
 	def get( self, ldap_dn ):
 		"""Retrieves details for a given LDAP object"""
@@ -388,7 +415,7 @@ def ldap_dn2path( ldap_dn ):
 	for item in ldap_base.split( ',' ):
 		if not item: continue
 		dummy, value = item.split( '=', 1 )
-		path.append( value )
+		path.insert( 0, value )
 	path = [ '.'.join( path ) + ':', ]
 	if rdn:
 		for item in rdn.split( ',' )[ 1 : ]:
@@ -412,6 +439,24 @@ def get_module( flavor, ldap_dn ):
 
 	return UDM_Module( modules[ 0 ] )
 
+def list_objects( container ):
+	"""Returns a list of UDM objects"""
+	lo, po = get_ldap_connection()
+	try:
+		result = lo.searchDn( base = container, scope = 'one' )
+	except udm_errors.base, e:
+		raise UDM_Error( str( e ) )
+	objects = []
+	for dn in result:
+		modules = udm_modules.objectType( None, lo, dn )
+		if not modules:
+			MODULE.warn( 'Could not identify LDAP object %s' % dn )
+			continue
+		module = UDM_Module( modules[ 0 ] )
+		objects.append( ( module, module.get( dn ) ) )
+
+	return objects
+
 def init_syntax():
 	"""Initialize all syntax classes
 
@@ -433,5 +478,3 @@ def init_syntax():
 		MODULE.info( 'Found syntax %s with udm_module property' % name )
 		syn.choices = map( lambda obj: ( obj.dn, obj[ module.identifies ] ), module.search() )
 		MODULE.info( 'Set choices to %s' % syn.choices )
-
-

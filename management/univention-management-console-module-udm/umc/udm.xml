@@ -47,6 +47,10 @@
 	  <name>Policies</name>
 	  <description>Managing policies</description>
 	</flavor>
+	<flavor icon="udm-navigation" id="navigation">
+	  <name>Navigation</name>
+	  <description>Browsing the LDAP directory</description>
+	</flavor>
 	<categories>
 	  <category name="domain"/>
 	</categories>
@@ -84,6 +88,10 @@
 	<command name="udm/get" function="get">
 	</command>
 	<command name="udm/validate" function="validate">
+	</command>
+	<command name="udm/nav/container/query" function="nav_container_query">
+	</command>
+	<command name="udm/nav/object/query" function="nav_object_query">
 	</command>
   </module>
 </umc>

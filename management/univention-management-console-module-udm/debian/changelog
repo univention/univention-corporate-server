@@ -1,3 +1,17 @@
+univention-management-console-module-udm (1.0.59-1) unstable; urgency=low
+
+  * implement udm/remove to delete LDAP objects
+  * add flavor navigation
+  * implement navigation commands: udm/nav/container/query, udm/nav/object/query; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 19 Jul 2011 11:17:50 +0200
+
+univention-management-console-module-udm (1.0.58-1) unstable; urgency=low
+
+  * enhance error handling for put and add; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 18 Jul 2011 11:50:25 +0200
+
 univention-management-console-module-udm (1.0.57-1) unstable; urgency=low
 
   * adjust property 'editable' for grid columns (Bug #22883)

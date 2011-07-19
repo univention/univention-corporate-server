@@ -38,7 +38,7 @@ from univention.management.console.log import MODULE
 
 import univention.admin.uexceptions as udm_errors
 
-from .ldap import UDM_Module, UDM_Settings, ldap_dn2path, get_module, init_syntax
+from .ldap import UDM_Error, UDM_Module, UDM_Settings, ldap_dn2path, get_module, init_syntax, list_objects
 
 _ = Translation( 'univention-management-console-modules-udm' ).translate
 
@@ -80,6 +80,8 @@ class Instance( Base ):
 
 		return: [ { 'ldap-dn' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
 		"""
+		message = ''
+		success = True
 		for obj in request.options:
 			if not isinstance( obj, dict ):
 				raise UMC_OptionTypeError( _( 'Invalid object definition' ) )
@@ -88,9 +90,13 @@ class Instance( Base ):
 			properties = obj.get( 'object', {} )
 
 			module = self._get_module( request, object_type = options.get( 'objectType' ) )
-			module.create( properties, container = options.get( 'container' ), superordinate = options.get( 'superordinate' ) )
+			try:
+				module.create( properties, container = options.get( 'container' ), superordinate = options.get( 'superordinate' ) )
+			except UDM_Error, e:
+				success = False
+				message = str( e )
 
-		self.finished( request.id, True ) #FIXME
+		self.finished( request.id, None, message, success ) #FIXME
 
 	def put( self, request ):
 		"""Modifies the given list of LDAP objects.
@@ -99,6 +105,8 @@ class Instance( Base ):
 
 		return: [ { 'ldap-dn' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
 		"""
+		message = ''
+		success = True
 		for obj in request.options:
 			if not isinstance( obj, dict ):
 				raise UMC_OptionTypeError( _( 'Invalid object definition' ) )
@@ -110,9 +118,13 @@ class Instance( Base ):
 			if module is None:
 				raise UMC_OptionTypeError( _( 'Could not find a matching UMD module for the LDAP object %s' ) % properties[ 'ldap-dn' ] )
 			MODULE.info( 'Modifying LDAP object %s' % properties[ 'ldap-dn' ] )
-			module.modify( properties )
+			try:
+				module.modify( properties )
+			except UDM_Error, e:
+				success = False
+				message = str( e )
 
-		self.finished( request.id, True ) # FIXME
+		self.finished( request.id, None, message, success ) # FIXME
 
 	def remove( self, request ):
 		"""Removes the given list of LDAP objects.
@@ -121,9 +133,19 @@ class Instance( Base ):
 
 		return: [ { 'ldap-dn' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
 		"""
-		module = self._get_module( request )
+		result = []
+		for ldap_dn in request.options:
+			module = get_module( request.flavor, ldap_dn )
+			if module is None:
+				result.append( { 'ldap-dn' : ldap_dn, 'success' : False, 'details' : _( 'LDAP object could not be identified' ) } )
+				continue
+			try:
+				module.remove( ldap_dn )
+				result.append( { 'ldap-dn' : ldap_dn, 'success' : True } )
+			except UDM_Error, e:
+				result.append( { 'ldap-dn' : ldap_dn, 'success' : False, 'details' : str( e ) } )
 
-		self.finished( request.id )
+		self.finished( request.id, result )
 
 	def get( self, request ):
 		"""Retrieves the given list of LDAP objects. Password property will be removed.
@@ -182,11 +204,11 @@ class Instance( Base ):
 			if module is None:
 				MODULE.warn( 'Could not identify LDAP object %s (flavor: %s). The object is ignored.' % ( obj.dn, request.flavor ) )
 				continue
-			entries.append( { 
-				'ldap-dn' : obj.dn, 
-				'objectType' : module.name, 
-				'name' : obj[ module.identifies ], 
-				'path' : ldap_dn2path( obj.dn ) , 
+			entries.append( {
+				'ldap-dn' : obj.dn,
+				'objectType' : module.name,
+				'name' : obj[ module.identifies ],
+				'path' : ldap_dn2path( obj.dn ),
 				request.options[ 'objectProperty' ] : obj[ request.options[ 'objectProperty' ] ]
 			} )
 		self.finished( request.id, entries )
@@ -342,3 +364,46 @@ class Instance( Base ):
 					result.append( { 'property' : property_name, 'valid' : False, 'details' : str( e ) } )
 
 		self.finished( request.id, result )
+
+	def nav_container_query( self, request ):
+		"""Returns a list of LDAP containers located under the given
+		LDAP base (option 'container'). If no base container is
+		spiecified the LDAP base object is returned."""
+
+		if not request.options.get( 'container' ):
+			ldap_base = ucr.get( 'ldap/base' )
+			self.finished( request.id, [ { 'id' : ldap_base, 'label' : ldap_dn2path( ldap_base ), 'icon' : 'udm-container-base' } ] )
+			return
+
+		success = True
+		message = None
+		result = []
+		for container_type in ( 'cn', 'ou' ):
+			module = UDM_Module( 'container/%s' % container_type )
+			try:
+				for item in module.search( request.options.get( 'container' ), scope = 'one' ):
+					result.append( { 'id' : item.dn, 'label' : ldap_dn2path( item.dn ), 'icon' : 'udm-container-%s' % container_type } )
+			except UDM_Error, e:
+				success = False
+				result = None
+				message = str( e )
+
+		self.finished( request.id, result, message, success )
+
+	def nav_object_query( self, request ):
+		"""Returns a list of objects in a LDAP container (scope: one)
+
+		requests.options = {}
+		  'container' -- the base container where the search should be started (default: LDAP base)
+
+		return: [ { 'ldap-dn' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
+		"""
+		if not 'container' in request.options:
+			raise UMC_OptionMissing( "The option 'container' is required" )
+
+		entries = []
+		for module, obj in list_objects( request.options.get( 'container' ) ):
+			if obj is None or module.name.startswith( 'container/' ):
+				continue
+			entries.append( { 'ldap-dn' : obj.dn, 'objectType' : module.name, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) } )
+		self.finished( request.id, entries )

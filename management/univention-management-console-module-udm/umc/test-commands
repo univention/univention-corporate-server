@@ -39,6 +39,9 @@ umc-acls allow -c "udm/*"
 # get a user
 umc-client -U root -P univention COMMAND udm/get -f users/user -l -o "uid=test1,cn=users,$ldap_base"
 
+# remove a user
+umc-client -t -U root -P univention COMMAND udm/remove -f users/user -l -o uid=crunchy,cn=users,dc=univention,dc=qa
+
 # search for ALL users
 umc-client -U root -P univention COMMAND udm/query -f users/user -o objectType=users/user -o objectProperty=name -o objectPropertyValue="*" -o container="cn=users,$ldap_base"
 
@@ -69,3 +72,8 @@ umc-client -U root -P univention COMMAND udm/containers -f users/user
 # search for DHCP objects
 umc-client -U root -P univention COMMAND udm/query -f dhcp/dhcp -o objectProperty=name -o objectPropertyValue="*" -o superordinate=cn=univention.qa,cn=dhcp,dc=univention,dc=qa
 
+# list sub-container
+umc-client -U root -P univention COMMAND udm/nav/container/query -f users/user -o container=cn=univention,dc=univention,dc=qa
+
+# list objects of a given container
+umc-client -U root -P univention COMMAND udm/nav/object/query -f users/user -o container=cn=univention,dc=univention,dc=qa
