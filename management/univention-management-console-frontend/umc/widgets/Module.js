@@ -52,7 +52,7 @@ dojo.declare("umc.widgets.Module", [ dijit.layout.StackContainer, umc.widgets.St
 		if (!this.moduleStore) {
 			this.moduleStore = dojo.store.Observable(new umc.store.UmcpModuleStore({
 				idProperty: this.idProperty,
-				moduleID: this.moduleID,
+				storePath: this.moduleID,
 				umcpCommand: dojo.hitch(this, 'umcpCommand')
 			}));
 			dojo.setObject(path, this.moduleStore, umc.modules);

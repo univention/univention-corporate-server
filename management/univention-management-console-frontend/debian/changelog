@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.80-1) unstable; urgency=low
+
+  * rename umc.store.UmcpModuleStore.moduleID -> storePath (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 19 Jul 2011 17:59:01 +0200
+
 univention-management-console-frontend (0.0.79-1) unstable; urgency=low
 
   * fixed displayed width of alert dialog

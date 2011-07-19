@@ -14,9 +14,10 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 	//		The values of this property should be unique.
 	idProperty: '',
 
-	// moduleID: String
-	//		ID of the module.
-	moduleID: '',
+	// storePath: String
+	//		UMCP URL of the module where query, set, remove, put, and add 
+	//		methods can be found.
+	storePath: '',
 
 	// umcpCommand: Function
 	//		Reference to a particularly flavored umcpCommand.
@@ -56,7 +57,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		}
 		else {
 			// send the UMCP command
-			return this.umcpCommand(this.moduleID + '/' + type, params).
+			return this.umcpCommand(this.storePath + '/' + type, params).
 				then(dojo.hitch(this, function(data) {
 					// make sure that we get an non-empty array
 					//console.log('# _genericMultiCmd - deferred: data=' + String(data));
@@ -68,7 +69,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 					}
 
 					//umc.tools.assert(res && dojo.isArray(res) && res.length == params.length,
-					//	dojo.replace('UMCP result from {0}/{1} did not yield an non-empty array!', [this.moduleID, type]));
+					//	dojo.replace('UMCP result from {0}/{1} did not yield an non-empty array!', [this.storePath, type]));
 					return res;
 				}));
 		}
@@ -149,7 +150,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		var deferred = new dojo.Deferred();
 		if (nQueryEl) {
 			// non-empty query
-			deferred = this.umcpCommand(this.moduleID + '/query', query);
+			deferred = this.umcpCommand(this.storePath + '/query', query);
 			deferred = deferred.then(function(data) {
 				var result = data.result;
 				// if requested, sort the list
