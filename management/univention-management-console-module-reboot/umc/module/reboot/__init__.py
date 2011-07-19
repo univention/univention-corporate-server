@@ -59,10 +59,8 @@ class Instance(umcm.Base):
                         subprocess.call(('logger', '-f', '/var/log/syslog', '-t', 'UMC', message))
                         subprocess.call(('shutdown', '-%s' %do, 'now', message))
                         request.status = SUCCESS
-                        success = True
                 except (OSError, ValueError), e:
                         request.status = MODULE_ERR
-                        success = False
                         MODULE.warn(str(e))
 
-		self.finished(request.id, { "success": success, "message": message })
+		self.finished(request.id, {"message": message})

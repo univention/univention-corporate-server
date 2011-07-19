@@ -1,3 +1,9 @@
+univention-management-console-module-reboot (1.0.5-1) unstable; urgency=low
+
+  * Remove needless success check (Bug #22848)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 14 Jul 2011 20:09:03 +0200
+
 univention-management-console-module-reboot (1.0.4-1) unstable; urgency=low
 
   * Change helpText (Bug #22848)

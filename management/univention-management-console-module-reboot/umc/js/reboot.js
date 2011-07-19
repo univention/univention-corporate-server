@@ -44,11 +44,7 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			callback: dojo.hitch(this, function() {
                 var vals = this._form.gatherFormValues();
                 this.umcpCommand('reboot/reboot', vals).then(dojo.hitch(this, function(data) {
-					if (data.result.success) {
-                    	umc.app.alert(data.result.message);
-					} else {
-                    	umc.app.alert(this._('Error: Could not reboot/shutdown the system'));
-					}
+                	umc.app.alert(data.result.message);
                 }));
 			})
 		}];
