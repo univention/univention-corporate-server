@@ -426,7 +426,7 @@ def ldap_dn2path( ldap_dn ):
 
 def get_module( flavor, ldap_dn ):
 	"""Determines an UDM module handling the LDAP object identified by the given LDAP DN"""
-	if flavor is None:
+	if flavor is None or flavor == 'navigation':
 		base = None
 	else:
 		base, name = split_module_name( flavor )

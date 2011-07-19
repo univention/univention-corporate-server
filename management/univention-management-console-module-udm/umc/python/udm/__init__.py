@@ -36,7 +36,9 @@ from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 from univention.management.console.log import MODULE
 
+import univention.admin.modules as udm_modules
 import univention.admin.uexceptions as udm_errors
+
 import re
 
 from .ldap import UDM_Error, UDM_Module, UDM_Settings, ldap_dn2path, get_module, init_syntax, list_objects
@@ -117,7 +119,7 @@ class Instance( Base ):
 				raise UMC_OptionMissing( _( 'LDAP DN of object missing' ) )
 			module = get_module( request.flavor, properties[ 'ldap-dn' ] )
 			if module is None:
-				raise UMC_OptionTypeError( _( 'Could not find a matching UMD module for the LDAP object %s' ) % properties[ 'ldap-dn' ] )
+				raise UMC_OptionTypeError( _( 'Could not find a matching UDM module for the LDAP object %s' ) % properties[ 'ldap-dn' ] )
 			MODULE.info( 'Modifying LDAP object %s' % properties[ 'ldap-dn' ] )
 			try:
 				module.modify( properties )
@@ -282,12 +284,15 @@ class Instance( Base ):
 
 		return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
 		"""
-		module = UDM_Module( request.flavor )
-		superordinate = request.options.get( 'superordinate' )
-		if superordinate:
-			self.finished( request.id, module.types4superordinate( request.flavor, superordinate ) )
-
-		self.finished( request.id, module.child_modules )
+		if request.flavor != 'navigation':
+			module = UDM_Module( request.flavor )
+			superordinate = request.options.get( 'superordinate' )
+			if superordinate:
+				self.finished( request.id, module.types4superordinate( request.flavor, superordinate ) )
+			else:
+				self.finished( request.id, module.child_modules )
+		else:
+			self.finished( request.id, map( lambda module: { 'id' : module[ 0 ], 'label' : getattr( module[ 1 ], 'short_description', module[ 0 ] ) }, udm_modules.modules.items() ) )
 
 	def layout( self, request ):
 		"""Returns the layout information for the given object type.
