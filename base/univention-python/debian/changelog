@@ -1,3 +1,13 @@
+univention-python (6.0.8-1) unstable; urgency=low
+
+  * use ldap/master/port in getAdminConnection (Bug #20026)
+  * use ldap/master/port in getBackupConnection
+  * use ldap/server/port in getMachineConnection by default
+  * use ldap/master/port in getMachineConnection if the parameter
+    ldap_master is set to true
+
+ -- Arvid Requate <requate@univention.de>  Wed, 20 Jul 2011 16:45:48 +0200
+
 univention-python (6.0.7-1) unstable; urgency=low
 
   * replace univention_baseconfig with ConfigRegistry; Bug #22160
