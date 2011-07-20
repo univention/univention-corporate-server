@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.64-1) unstable; urgency=low
+
+  * added sub tab for advanced settings
+  * cleaned up search form
+  (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 20 Jul 2011 17:36:56 +0200
+
 univention-management-console-module-udm (1.0.63-1) unstable; urgency=low
 
   * fixed icon for ldap-base

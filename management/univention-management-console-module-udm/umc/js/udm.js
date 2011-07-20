@@ -12,7 +12,6 @@ dojo.require("umc.i18n");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.Grid");
-dojo.require("umc.widgets.GroupBox");
 dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.SearchForm");
@@ -247,17 +246,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// generate the search widget
 		this._searchWidget = new umc.widgets.SearchForm({
+			region: 'top',
 			widgets: widgets,
 			layout: [ layout ],
 			onSearch: dojo.hitch(this, 'filter')
 		});
-		var group = new umc.widgets.GroupBox({
-			legend: this._('Filter results'),
-			region: 'top',
-			toggleable: false,
-			content: this._searchWidget
-		});
-		this._searchPage.addChild(group);
+		this._searchPage.addChild(this._searchWidget);
 
 		// generate the navigation pane for the navigation module
 		if ('navigation' == this.moduleFlavor) {
@@ -311,7 +305,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}));
 	},
 
-	_renderDetailPage: function(_properties, layoutSubTabs) {
+	_renderDetailPage: function(_properties, _layout) {
 		// create detail page
 		this._detailTabs = new dijit.layout.TabContainer({
 			nested: true,
@@ -333,13 +327,36 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			properties.push(iprop);
 		});
 
+		// parse the layout configuration... we would like to group all groups of advanced 
+		// settings on a special sub tab
+		var advancedGroup = {
+			label: this._('Advanced settings'),
+			description: this._('Advanced settings'),
+			layout: []
+		};
+		var layout = [];
+		dojo.forEach(_layout, function(ilayout) {
+			if (ilayout.advanced) {
+				// advanced groups of settings should go into one single sub tab
+				var jlayout = dojo.mixin({ open: false }, ilayout);
+				advancedGroup.layout.push(jlayout);
+			}
+			else {
+				layout.push(ilayout);
+			}
+		});
+		// if there are advanced settings, add them to the layout
+		if (advancedGroup.layout.length) {
+			layout.push(advancedGroup);
+		}
+
 		// render all widgets
 		var widgets = umc.tools.renderWidgets(properties);
 
 		// render the layout for each subtab
 		this._propertySubTabMap = {}; // map to remember which form element is displayed on which subtab
 		this._detailPages = [];
-		dojo.forEach(layoutSubTabs, function(ilayout) {
+		dojo.forEach(layout, function(ilayout) {
 			// create a new page, i.e., subtab
 			var subTab = new umc.widgets.Page({
 				title: ilayout.label || ilayout.name //TODO: 'name' should not be necessary
