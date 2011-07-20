@@ -1,3 +1,9 @@
+univention-grub (5.0.0-1) unstable; urgency=low
+
+  * Update for UCS 3.0:
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 16 May 2011 10:54:10 +0200
+
 univention-grub (4.0.3-5) unstable; urgency=low
 
   * added memtest86+ to the dependency list (Bug #10584)
