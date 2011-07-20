@@ -56,7 +56,7 @@ case "$1" in
 		log_action_end_msg 0
 		;;
 	crestart)
-		pid="$(</var/run/umc-web-server.pid)"
+		pid="$(cat /var/run/umc-web-server.pid)"
 		if [ -n "$pid" -a -d "/proc/$pid" ]; then
 			$0 restart
 		else
