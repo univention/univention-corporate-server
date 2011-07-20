@@ -66,7 +66,9 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			description: this._( 'Deleting the selected UCR variables' ),
 			iconClass: 'dijitIconDelete',
 			callback: dojo.hitch(this, function(ids) {
-				this.moduleStore.multiRemove(ids);
+				var transaction = this.moduleStore.transaction();
+				dojo.forEach(ids, dojo.hitch(this.moduleStore, 'remove'));
+				transaction.commit();
 			})
 		}];
 

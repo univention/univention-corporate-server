@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (1.0.15-1) unstable; urgency=low
+
+  * fixed removing UCR variables (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 20 Jul 2011 11:18:48 +0200
+
 univention-management-console-module-ucr (1.0.14-1) unstable; urgency=low
 
   * adaptations to store API changes
