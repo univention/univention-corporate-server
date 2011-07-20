@@ -1,3 +1,9 @@
+univention-python (6.0.9-1) unstable; urgency=low
+
+  * Actually add univention/__init__.py (Bug #22521)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 20 Jul 2011 17:24:05 +0200
+
 univention-python (6.0.8-1) unstable; urgency=low
 
   * use ldap/master/port in getAdminConnection (Bug #20026)
