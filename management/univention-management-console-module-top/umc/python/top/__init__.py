@@ -75,13 +75,13 @@ class Instance(umcm.Base):
 		for pid in pidList:
 			pid = int(pid)
 			try:
+				process = psutil.Process(pid)
 				if signal == 'SIGTERM':
-					psutil.Process(pid).terminate()
+					process.kill(15)
 				elif signal == 'SIGKILL':
-					psutil.Process(pid).kill()
-			except NoSuchProcess:
-				#TODO
-				print 'foobar'
-		success = True
+					process.kill(9)
+				success = True
+			except psutil.NoSuchProcess:
+				success = False
 		request.status = SUCCESS
 		self.finished(request.id, success)

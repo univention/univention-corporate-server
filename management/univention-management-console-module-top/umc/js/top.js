@@ -23,6 +23,17 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	i18nClass: 'umc.modules.top',
 
+
+	killProcesses: function(signal, pids) {
+		var params = {
+			signal: signal,
+			pid: pids
+		};
+		this.umcpCommand('top/kill', params).then(dojo.hitch(this, function(data) {
+			umc.app.notify(this._('Processes killed successfully'));
+		}));
+	},
+
 	buildRendering: function() {
 		this.inherited(arguments);
 
@@ -30,18 +41,15 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.addChild(this._layoutContainer);
 
 		var actions = [{
-			name: 'delete',
+			name: 'terminate',
 			label: this._('Kill processes'),
 			iconClass: 'dijitIconDelete',
-			callback: dojo.hitch(this, function(ids) {
-				var params = {
-					signal: 'SIGTERM',
-					pid: ids
-				};
-                this.umcpCommand('top/kill', params).then(dojo.hitch(this, function(data) {
-					umc.app.notify(this._('Processes killed successfully'));
-				}));
-			})
+			callback: dojo.hitch(this, 'killProcesses', 'SIGTERM')
+		}, {
+			name: 'kill',
+			label: this._('Kill processes'),
+			iconClass: 'dijitIconDelete',
+			callback: dojo.hitch(this, 'killProcesses', 'SIGKILL')
 		}];
 
 		var columns = [{
