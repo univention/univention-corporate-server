@@ -3,7 +3,7 @@
  * Univention Webui
  *  file.php
  *
- * Copyright 2004-2010 Univention GmbH
+ * Copyright 2004-2011 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -31,10 +31,19 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-header('Content-type: '.$_GET['mime-type']);
-$content = file($_GET['tmpFile']);
-
-foreach($content as $key => $value)
+$filename = realpath($_GET['tmpFile']);
+/* limit access to subtree /tmp/webui/ 
+   Hint1: if an URL is passed in "tmpFile", $filename contains an empty string
+   Hint2: symlinks will be resolved by realpath ==> no problem
+*/
+if ("/tmp/webui/" == substr($filename, 0, 11)) {
+  header('Content-type: '.$_GET['mime-type']);
+  $content = file($filename);
+  foreach($content as $key => $value) {
 	echo $value;
-
+  }
+} else {
+  header("HTTP/1.0 403 Forbidden");
+  echo "Access denied";
+}
 ?>
