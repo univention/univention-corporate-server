@@ -1,3 +1,11 @@
+univention-samba4 (1.0.5-1) experimental; urgency=low
+
+  * setup-s4: set ldap/master/port=7389 if we are the ldap/master
+  * setup-s4: adjust ldap/server/port only if we are ldap/server/name
+    (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 20 Jul 2011 17:32:14 +0200
+
 univention-samba4 (1.0.4-2) experimental; urgency=low
 
   * fix shell syntax error in postinst (Bug #22559)
@@ -10,7 +18,6 @@ univention-samba4 (1.0.4-1) experimental; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 07 Jul 2011 16:53:45 +0200
 
->>>>>>> .r25274
 univention-samba4 (1.0.3-1) experimental; urgency=low
 
   * set LDB_MODULES_PATH before starting provision (Bug #22559)
