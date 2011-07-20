@@ -11,9 +11,5 @@
 	<syntax base="String" name="Top-Filter">
 		<regex-invalid>^$</regex-invalid>
 	</syntax>
-	<syntax base="Selection" name="Top-Signal">
-		<choice name="-9"/>
-		<choice name="-15"/>
-	</syntax>
 	</definitions>
 </umc>

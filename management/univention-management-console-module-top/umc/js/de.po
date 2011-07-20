@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-top\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-15 00:15+0200\n"
+"POT-Creation-Date: 2011-07-15 09:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,23 +13,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/top.js:92
+#: umc/js/top.js:97
 msgid "All"
 msgstr ""
 
-#: umc/js/top.js:50
+#: umc/js/top.js:55
 msgid "CPU"
 msgstr ""
 
-#: umc/js/top.js:90
+#: umc/js/top.js:95
 msgid "Category"
 msgstr ""
 
-#: umc/js/top.js:70 umc/js/top.js:96
+#: umc/js/top.js:75 umc/js/top.js:101
 msgid "Command"
 msgstr ""
 
-#: umc/js/top.js:102
+#: umc/js/top.js:107
 msgid "Keyword"
 msgstr ""
 
@@ -37,26 +37,30 @@ msgstr ""
 msgid "Kill processes"
 msgstr ""
 
-#: umc/js/top.js:62
+#: umc/js/top.js:67
 msgid "Memory in %"
 msgstr ""
 
-#: umc/js/top.js:46 umc/js/top.js:94
+#: umc/js/top.js:51 umc/js/top.js:99
 msgid "PID"
 msgstr ""
 
-#: umc/js/top.js:66 umc/js/top.js:95
+#: umc/js/top.js:39
+msgid "Processes killed successfully"
+msgstr ""
+
+#: umc/js/top.js:71 umc/js/top.js:100
 msgid "Program"
 msgstr ""
 
-#: umc/js/top.js:58
+#: umc/js/top.js:63
 msgid "Resident set size"
 msgstr ""
 
-#: umc/js/top.js:42 umc/js/top.js:93
+#: umc/js/top.js:47 umc/js/top.js:98
 msgid "User"
 msgstr ""
 
-#: umc/js/top.js:54
+#: umc/js/top.js:59
 msgid "Virtual size"
 msgstr ""

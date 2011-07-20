@@ -52,7 +52,7 @@ class Instance(umcm.Base):
 		for process in psutil.process_iter():
 			listEntry = {}
 			listEntry['user'] = process.username
-			listEntry['pid'] = process.pid
+			listEntry['pid'] = str(process.pid)
 			listEntry['cpu'] = '%.1f' % process.get_cpu_percent()
 			(listEntry['vsize'], listEntry['rssize'], ) = process.get_memory_info()
 			listEntry['mem'] = '%.1f' % process.get_memory_percent()
@@ -70,12 +70,18 @@ class Instance(umcm.Base):
 		self.finished(request.id, processes)
 
 	def kill(self, request):
-		cmd = ['kill']
-		if request.options['signal'] == 'kill':
-			cmd.append('-9')
-		else:
-			cmd.append('-15')
-		for pid in request.options['pid']:
-			cmd.append(str(pid))
-		subprocess.call(cmd)
-		self.finished(request.id(), None)
+		signal = request.options.get('signal', 'SIGTERM')
+		pidList = request.options.get('pid', [])
+		for pid in pidList:
+			pid = int(pid)
+			try:
+				if signal == 'SIGTERM':
+					psutil.Process(pid).terminate()
+				elif signal == 'SIGKILL':
+					psutil.Process(pid).kill()
+			except NoSuchProcess:
+				#TODO
+				print 'foobar'
+		success = True
+		request.status = SUCCESS
+		self.finished(request.id, success)

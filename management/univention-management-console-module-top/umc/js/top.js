@@ -2,7 +2,6 @@
 
 dojo.provide("umc.modules.top");
 
-//TODO: All modules needed?
 dojo.require("dijit.layout.BorderContainer");
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
@@ -20,6 +19,10 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	_contextVariable: null,
 	_layoutContainer: null,
 
+	idProperty: 'pid',
+
+	i18nClass: 'umc.modules.top',
+
 	buildRendering: function() {
 		this.inherited(arguments);
 
@@ -27,13 +30,17 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.addChild(this._layoutContainer);
 
 		var actions = [{
-            //TODO: Muss der name delete sein? (bzgl. submit Button)
 			name: 'delete',
 			label: this._('Kill processes'),
 			iconClass: 'dijitIconDelete',
 			callback: dojo.hitch(this, function(ids) {
-                //TODO: Korrekt?
-				this.moduleStore.multiRemove(ids);
+				var params = {
+					signal: 'SIGTERM',
+					pid: ids
+				};
+                this.umcpCommand('top/kill', params).then(dojo.hitch(this, function(data) {
+					umc.app.notify(this._('Processes killed successfully'));
+				}));
 			})
 		}];
 

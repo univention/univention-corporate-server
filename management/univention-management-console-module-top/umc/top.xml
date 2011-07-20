@@ -12,9 +12,6 @@
 		<return syntax="Dictionary"/>
 	</command>
 	<command name="top/kill" function="kill">
-		<attribute name="pid" syntax="Integer" required="1"/>
-		<attribute name="signal" syntax="Top-Signal" required="1"/>
-		<return syntax="Boolean"/>
 	</command>
 	</module>
 </umc>
