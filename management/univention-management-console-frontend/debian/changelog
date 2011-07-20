@@ -1,3 +1,12 @@
+univention-management-console-frontend (0.0.83-1) unstable; urgency=low
+
+  * fixed URL for icon images in umc.widgets.Grid 
+  * use TitlePanes to group fields in an form
+  * changes suggested by jslint
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 20 Jul 2011 13:48:40 +0200
+
 univention-management-console-frontend (0.0.82-1) unstable; urgency=low
 
   * improved HTTP error handling (parsing of JSON data etc.) (Bug #22461)

@@ -68,7 +68,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			var iconName = this._dataStore.getValue(item, iconField);
 			
 			// create an HTML image that contains the icon
-			var html = dojo.string.substitute('<img src="/umc/images/icons/16x16/${icon}.png" height="${height}" width="${width}" style="float:left; margin-right: 5px" /> ${value}', {
+			var html = dojo.string.substitute('<img src="images/icons/16x16/${icon}.png" height="${height}" width="${width}" style="float:left; margin-right: 5px" /> ${value}', {
 				icon: iconName, //dojo.moduleUrl("dojo", "resources/blank.gif").toString(),
 				height: '16px',
 				width: '16px',

@@ -2,6 +2,7 @@
 
 dojo.provide("umc.tools");
 
+dojo.require("dijit.TitlePane");
 dojo.require("umc.app");
 dojo.require("umc.i18n");
 dojo.require("umc.widgets.ContainerWidget");
@@ -68,7 +69,7 @@ dojo.mixin(umc.tools, {
 			call = call.then(function(data) {
 				// do not modify the data
 				if ( data && data.message ) {
-					if ( parseInt(data.status) == 200 ) {
+					if ( parseInt(data.status, 10) == 200 ) {
 						umc.app.notify( data.message );
 					} else {
 						umc.app.alert( data.message );
@@ -182,10 +183,10 @@ dojo.mixin(umc.tools, {
 		try {
 			var jsonResponse = dojo.getObject('responseText', false, error) || '{}';
 			var response = dojo.fromJson(jsonResponse);
-			status = parseInt(dojo.getObject('status', false, response) || _status);
+			status = parseInt(dojo.getObject('status', false, response) || _status, 10);
 			message = dojo.getObject('message', false, response) || '';
 		}
-		catch (error) { }
+		catch (_err) { }
 
 		// handle the different status codes
 		if (undefined !== status && status in this._statusMessages) {
@@ -456,8 +457,8 @@ dojo.mixin(umc.tools, {
 			else if (dojo.isObject(el) && el.layout) {
 				//console.log('### renderLayout - recursive call');
 				//console.log(el);
-				globalContainer.addChild(new umc.widgets.GroupBox({
-					legend: el.label,
+				globalContainer.addChild(new dijit.TitlePane({
+					title: el.label,
 					content: this.renderLayout(el.layout, widgets, buttons)
 				}));
 			}
