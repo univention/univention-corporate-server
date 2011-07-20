@@ -1,3 +1,9 @@
+univention-dojo (5.0.3-1) unstable; urgency=low
+
+  * added patch to fix ucs-lint errors (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 20 Jul 2011 09:57:50 +0200
+
 univention-dojo (5.0.2-2) unstable; urgency=low
 
   * removed dependency to univention-apache (Bug #22461)
