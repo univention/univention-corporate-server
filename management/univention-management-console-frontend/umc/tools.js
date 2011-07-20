@@ -570,6 +570,36 @@ dojo.mixin(umc.tools, {
 			}
 			return 0;		
 		};
+	},
+
+	_existingIconClasses: {},
+
+	getIconClass: function(iconName, size) {
+		// check whether the css rule for the given icon has already been added
+		size = size || 16;
+		var values = {
+			s: size,
+			icon: iconName
+		};
+		var iconClass = dojo.replace('icon{s}-{icon}', values);
+		if (!(iconClass in this._existingIconClasses)) {
+			try {
+				// add dynamic style sheet information for the given icon
+				var css = dojo.replace(
+					'background: no-repeat;' +
+					'width: {s}px; height: {s}px;' +
+					'background-image: url("images/icons/{s}x{s}/{icon}.png")',
+					values);
+				dojox.html.insertCssRule('.' + iconClass, css);
+				
+				// remember that we have already added a rule for the icon
+				this._existingIconClasses[iconClass] = true;
+			}
+			catch (error) {
+				console.log(dojo.replace("ERROR: Could not create CSS information for the icon name '{icon}' of size {s}", values));
+			}
+		}
+		return iconClass;
 	}
 });
 

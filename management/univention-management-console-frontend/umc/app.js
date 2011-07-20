@@ -269,7 +269,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// create a new tab
 		var tab = new module.BaseClass({
 			title: module.name,
-			iconClass: 'icon16-' + module.icon,
+			iconClass: umc.tools.getIconClass(module.icon),
 			closable: true,
 			moduleFlavor: module.flavor,
 			moduleID: module.id
@@ -314,7 +314,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		var overviewPage = new umc.widgets.Page({ 
 			//style: "overflow:visible; width: 80%"
 			title: this._('Overview'),
-			iconClass: 'icon16-univention',
+			iconClass: umc.tools.getIconClass('univention'),
 			helpText: this._('Univention Management Console is a modularly designed, web-based application for the administration of objects in your Univention Corporate Server domain as well as individual of Univention Corporate Server systems.')
 		});
 
@@ -455,7 +455,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				try {
 					dojo['require']('umc.modules.' + module.id);
 				}
-				catch (error1) {
+				catch (error) {
 					// log as warning and continue with the next element in the list
 					console.log('WARNING: Loading of module ' + module.id + ' failed. Ignoring it for now!');
 					return true; 
@@ -466,26 +466,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				this._modules.push(dojo.mixin({
 					BaseClass: dojo.getObject('umc.modules.' + module.id)
 				}, module));
-
-				// try to add dynamic style sheet information for module icons
-				try {
-					dojo.forEach([16, 24, 32, 64], function(isize) {
-						var values = {
-							s: isize,
-							icon: module.icon
-						};
-						var css = dojo.replace(
-							'background: no-repeat;' +
-							'width: {s}px; height: {s}px;' +
-							'background-image: url("images/icons/{s}x{s}/{icon}.png")',
-							values);
-						var rule = dojo.replace('.icon{s}-{icon}', values);
-						dojox.html.insertCssRule(rule, css);
-					});
-				}
-				catch (error2) {
-					console.log(dojo.replace('ERROR: Could not create CSS information for module {id} using the icon name: {icon}', module));
-				}
 			}));
 
 			// loading is done

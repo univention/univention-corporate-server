@@ -6,6 +6,7 @@ dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit._Contained");
 dojo.require("dijit._Container");
 dojo.require("dijit.TitlePane");
+dojo.require("umc.tools");
 dojo.require("umc.widgets.Tooltip");
 
 //TODO: don't use float, use display:inline-block; we need a hack for IE7 here, see:
@@ -20,7 +21,7 @@ dojo.declare( "umc.widgets._CategoryItem", [dijit.layout.ContentPane, dijit._Con
 		this.inherited(arguments);
 		dojo.mixin(this, {
 			baseClass: 'modLaunchButton',
-			'class': 'icon64-' + this.modIcon,
+			'class': umc.tools.getIconClass(this.modIcon, 64),
 			content: '<div>' + this.label + '</div>'
 		});
 	},
