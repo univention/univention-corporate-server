@@ -2,20 +2,20 @@
 
 dojo.provide("umc.modules.udm");
 
-dojo.require("dojo.DeferredList");
-dojo.require("dijit.layout.BorderContainer");
-dojo.require("dijit.layout.TabContainer");
 dojo.require("dijit.Dialog");
-dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.Tree");
-dojo.require("umc.widgets.Module");
-dojo.require("umc.tools");
-dojo.require("umc.widgets.Grid");
-dojo.require("umc.widgets.Page");
+dojo.require("dijit.layout.BorderContainer");
+dojo.require("dijit.layout.ContentPane");
+dojo.require("dijit.layout.TabContainer");
+dojo.require("dojo.DeferredList");
 dojo.require("umc.i18n");
-dojo.require("umc.widgets.SearchForm");
-dojo.require("umc.widgets.GroupBox");
+dojo.require("umc.tools");
 dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.widgets.Grid");
+dojo.require("umc.widgets.GroupBox");
+dojo.require("umc.widgets.Module");
+dojo.require("umc.widgets.Page");
+dojo.require("umc.widgets.SearchForm");
 
 dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// summary:
@@ -58,9 +58,30 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}
 	},
 
+	_iconFormatter: function(value, rowIndex) {
+		// get the iconNamae
+		var item = this._grid._grid.getItem(rowIndex);
+		var iconName = item.objectType || '';
+		iconName = iconName.replace('/', '-');
+		
+		// create an HTML image that contains the icon (if we have a valid iconName)
+		var result = value;
+		if (iconName) {
+			result = dojo.string.substitute('<img src="images/icons/16x16/udm-${icon}.png" height="${height}" width="${width}" style="float:left; margin-right: 5px" /> ${value}', {
+				icon: iconName, //dojo.moduleUrl("dojo", "resources/blank.gif").toString(),
+				height: '16px',
+				width: '16px',
+				value: value
+			});
+		}
+		return result;
+	},
+
 	_renderSearchPage: function(containers, superordinates) {
 		// setup search page
-		this._searchPage = new dijit.layout.BorderContainer({});
+		this._searchPage = new dijit.layout.BorderContainer({
+			design: 'sidebar'
+		});
 		this.addChild(this._searchPage);
 
 		//
@@ -118,7 +139,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var columns = [{
 			name: 'name',
 			label: this._( 'Name' ),
-			description: this._( 'Name of the LDAP object.' )
+			description: this._( 'Name of the LDAP object.' ),
+			formatter: dojo.hitch(this, '_iconFormatter')
 		}, {
 			name: 'path',
 			label: this._('Path'),
@@ -132,7 +154,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		if ('navigation' == this.moduleFlavor) {
 			store = dojo.delegate(this.moduleStore, {
 				storePath: 'udm/nav/object'
-			})
+			});
 		}
 
 		// generate the data grid
@@ -152,74 +174,75 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var widgets = [];
 		var layout = [];
 		
-		// check whether we need to display containers or superordinates
-		var objTypeDependencies = [];
-		var objTypes = [];
-		if (superordinates && superordinates.length) {
-			// superordinates...
-			widgets.push({
-				type: 'ComboBox',
-				name: 'superordinate',
-				description: this._( 'The superordinate in which the search is carried out.' ),
-				label: this._('Superordinate'),
-				value: superordinates[0].id || superordinates[0],
-				staticValues: superordinates,
-				umcpCommand: umcpCmd
-			});
-			layout.push('superordinate');
-			objTypeDependencies.push('superordinate');
-		}
-		else if (containers && containers.length) {
-			// containers...
-			containers.unshift({ id: 'all', label: this._( 'All containers' ) });
-			widgets.push({
-				type: 'ComboBox',
-				name: 'container',
-				description: this._( 'The LDAP container in which the query is executed.' ),
-				label: this._('Container'),
-				value: containers[0].id || containers[0],
-				staticValues: containers,
-				umcpCommand: umcpCmd
-			});
-			layout.push('container');
-			objTypes.push({ id: this.moduleFlavor, label: this._( 'All types' ) });
-		}
-
-		// add remaining elements of the search form
-		widgets = widgets.concat([{
-			type: 'ComboBox',
-			name: 'objectType',
-			description: this._( 'The type of the LDAP object.' ),
-			label: this._('Object type'),
-			value: objTypes.length ? this.moduleFlavor : undefined,
-			staticValues: objTypes,
-			dynamicValues: 'udm/types',
-			umcpCommand: umcpCmd,
-			depends: objTypeDependencies
-		}, {
-			type: 'ComboBox',
-			name: 'objectProperty',
-			description: this._( 'The object property on which the query is filtered.' ),
-			label: this._( 'Object property' ),
-			dynamicValues: 'udm/properties',
-			dynamicOptions: { searchable: true },
-			umcpCommand: umcpCmd,
-			depends: 'objectType'
-		}, {
-			type: 'MixedInput',
-			name: 'objectPropertyValue',
-			description: this._( 'The value for the specified object property on which the query is filtered.' ),
-			label: this._( 'Property value' ),
-			dynamicValues: 'udm/values',
-			umcpCommand: umcpCmd,
-			depends: [ 'objectProperty', 'objectType' ]
-		}]);
-		layout = layout.concat([ 'objectType', 'objectProperty', 'objectPropertyValue' ]);
-
-		// for the navigation we need a different search form
 		if ('navigation' == this.moduleFlavor) {
+			// for the navigation we need a different search form
 			widgets = [];
 			layout = [];
+		}
+		else {
+			// check whether we need to display containers or superordinates
+			var objTypeDependencies = [];
+			var objTypes = [];
+			if (superordinates && superordinates.length) {
+				// superordinates...
+				widgets.push({
+					type: 'ComboBox',
+					name: 'superordinate',
+					description: this._( 'The superordinate in which the search is carried out.' ),
+					label: this._('Superordinate'),
+					value: superordinates[0].id || superordinates[0],
+					staticValues: superordinates,
+					umcpCommand: umcpCmd
+				});
+				layout.push('superordinate');
+				objTypeDependencies.push('superordinate');
+			}
+			else if (containers && containers.length) {
+				// containers...
+				containers.unshift({ id: 'all', label: this._( 'All containers' ) });
+				widgets.push({
+					type: 'ComboBox',
+					name: 'container',
+					description: this._( 'The LDAP container in which the query is executed.' ),
+					label: this._('Container'),
+					value: containers[0].id || containers[0],
+					staticValues: containers,
+					umcpCommand: umcpCmd
+				});
+				layout.push('container');
+				objTypes.push({ id: this.moduleFlavor, label: this._( 'All types' ) });
+			}
+
+			// add remaining elements of the search form
+			widgets = widgets.concat([{
+				type: 'ComboBox',
+				name: 'objectType',
+				description: this._( 'The type of the LDAP object.' ),
+				label: this._('Object type'),
+				value: objTypes.length ? this.moduleFlavor : undefined,
+				staticValues: objTypes,
+				dynamicValues: 'udm/types',
+				umcpCommand: umcpCmd,
+				depends: objTypeDependencies
+			}, {
+				type: 'ComboBox',
+				name: 'objectProperty',
+				description: this._( 'The object property on which the query is filtered.' ),
+				label: this._( 'Object property' ),
+				dynamicValues: 'udm/properties',
+				dynamicOptions: { searchable: true },
+				umcpCommand: umcpCmd,
+				depends: 'objectType'
+			}, {
+				type: 'MixedInput',
+				name: 'objectPropertyValue',
+				description: this._( 'The value for the specified object property on which the query is filtered.' ),
+				label: this._( 'Property value' ),
+				dynamicValues: 'udm/values',
+				umcpCommand: umcpCmd,
+				depends: [ 'objectProperty', 'objectType' ]
+			}]);
+			layout = layout.concat([ 'objectType', 'objectProperty', 'objectPropertyValue' ]);
 		}
 
 		// generate the search widget
@@ -244,14 +267,26 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			this._tree = new dijit.Tree({
 				//style: 'width: auto; height: auto;',
 				model: model,
-				persist: false
+				persist: false,
+				// customize the method getIconClass() 
+				getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
+					return umc.tools.getIconClass(item.icon || 'udm-container-cn');
+				}
 			});
 			var treePane = new dijit.layout.ContentPane({
 				content: this._tree,
 				region: 'left',
 				splitter: true,
 				style: 'width: 150px;'
-			})
+			});
+
+			// encapsulate the current layout with a new BorderContainer in order to place
+			// the tree navigation pane on the left side
+			//var tmpContainer = new dijit.layout.BorderContainer({});
+			//tmpContainer.addChild(treePane);
+			//this._searchPage.region = 'center';
+			//tmpContainer.addChild(this._searchPage);
+			//this._searchPage = tmpContainer;
 			this._searchPage.addChild(treePane);
 		}
 
@@ -343,7 +378,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			label: this._('Save changes')
 		}, {
 			name: 'close',
-			label: this._('Back to search'),
+			label: 'navigation' == this.moduleFlavor ? this._('Back to navigation') : this._('Back to search'),
 			callback: dojo.hitch(this, 'closeDetailPage')
 		}]);
 		var footer = new umc.widgets.ContainerWidget({
@@ -554,7 +589,6 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			})
 		});
 	}
-
 });
 
 dojo.declare("umc.modules.udm._NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin ], {
@@ -685,6 +719,7 @@ dojo.declare("umc.modules.udm._NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 	}
 });
 
+
 dojo.declare('umc.modules.udm._TreeModel', null, {
 	childrenAttr: 'children',
 	umcpCommand: null,
@@ -719,7 +754,9 @@ dojo.declare('umc.modules.udm._TreeModel', null, {
 
 	getChildren: function(parentItem, onComplete) {
 		this.umcpCommand('udm/nav/container/query', { container: parentItem.id }).then(dojo.hitch(this, function(data) {
+			// sort items alphabetically
 			var results = dojo.isArray(data.result) ? data.result : [];
+			results.sort(umc.tools.cmpObjects('label'));
 			onComplete(results);
 		}));
 	}

@@ -1,3 +1,12 @@
+univention-management-console-module-udm (1.0.63-1) unstable; urgency=low
+
+  * fixed icon for ldap-base
+  * added missing files of scaled icon images
+  * added icons in navigation and search grid
+  (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 20 Jul 2011 13:50:41 +0200
+
 univention-management-console-module-udm (1.0.62-1) unstable; urgency=low
 
   * added first version of UDM navigation (Bug #22883)
