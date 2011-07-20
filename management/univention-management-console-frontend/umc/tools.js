@@ -68,7 +68,7 @@ dojo.mixin(umc.tools, {
 			call = call.then(function(data) {
 				// do not modify the data
 				if ( data && data.message ) {
-					if ( data.status == 200 ) {
+					if ( parseInt(data.status) == 200 ) {
 						umc.app.notify( data.message );
 					} else {
 						umc.app.alert( data.message );
@@ -164,6 +164,7 @@ dojo.mixin(umc.tools, {
 		414: umc.tools._( 'Specified locale is not available.' ),
 
 		500: umc.tools._( 'Internal server error.' ),
+		503: umc.tools._( 'Internal server error: The service is temporarily not available.' ),
 		510: umc.tools._( 'Internal server error: The module process died unexpectedly.' ),
 		511: umc.tools._( 'Internal server error: Could not connect to the module process.' ),
 		512: umc.tools._( 'Internal server error: The SSL server certificate is not trustworthy. Please check your SSL configurations.' ),
@@ -176,10 +177,15 @@ dojo.mixin(umc.tools, {
 	},
 
 	handleErrorStatus: function(_status, error) {
-		var jsonResponse = dojo.getObject('responseText', false, error) || '{}';
-		var response = dojo.fromJson(jsonResponse);
-		var status = dojo.getObject('status', false, response) || _status;
-		var message = dojo.getObject('message', false, response) || '';
+		var status = _status;
+		var message = '';
+		try {
+			var jsonResponse = dojo.getObject('responseText', false, error) || '{}';
+			var response = dojo.fromJson(jsonResponse);
+			status = parseInt(dojo.getObject('status', false, response) || _status);
+			message = dojo.getObject('message', false, response) || '';
+		}
+		catch (error) { }
 
 		// handle the different status codes
 		if (undefined !== status && status in this._statusMessages) {

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-19 10:51+0200\n"
+"POT-Creation-Date: 2011-07-20 13:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr ""
 
-#: umc/tools.js:193
+#: umc/tools.js:199
 #, python-format
 msgid "<br>Server error message: <i>%s</i>"
 msgstr ""
@@ -30,18 +30,18 @@ msgstr ""
 msgid "About UMC"
 msgstr "Über UMC"
 
-#: umc/tools.js:240
+#: umc/tools.js:246
 msgid "An assert statement failed"
 msgstr "Ein Assert-Anweisung schlug fehl"
 
-#: umc/tools.js:202
+#: umc/tools.js:208
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
 "Ein Fehler trat während des Verbindungsaufbaus zum Server auf, bitte "
 "versuchen Sie es später noch einmal."
 
-#: umc/tools.js:198
+#: umc/tools.js:204
 #, python-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
@@ -88,26 +88,26 @@ msgstr ""
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/tools.js:172
+#: umc/tools.js:173
 msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
 msgstr ""
 "Interner UMC-Protokoll-Fehler: Der UMCP-Message-Body konnte nicht geparst "
 "werden."
 
-#: umc/tools.js:171
+#: umc/tools.js:172
 msgid ""
 "Internal UMC protocol error: The UMCP message header could not be parsed."
 msgstr ""
 "Interner UMC-Protokoll-Fehler: Der UMCP-Message-Header konnte nicht geparst "
 "werden."
 
-#: umc/tools.js:174
+#: umc/tools.js:175
 msgid "Internal module error: An error occured during command processing."
 msgstr ""
 "Interner Modul-Fehler: Ein Fehler trat während des Ausführens des Befehls "
 "auf."
 
-#: umc/tools.js:175
+#: umc/tools.js:176
 msgid ""
 "Internal module error: The execution of a command caused an fatal error."
 msgstr ""
@@ -118,13 +118,13 @@ msgstr ""
 msgid "Internal server error."
 msgstr "Interner Server-Fehler."
 
-#: umc/tools.js:168
+#: umc/tools.js:169
 msgid "Internal server error: Could not connect to the module process."
 msgstr ""
 "Interner Server-Fehler: Verbindung zum Modulprozess konnte nicht aufgebaut "
 "werden."
 
-#: umc/tools.js:169
+#: umc/tools.js:170
 msgid ""
 "Internal server error: The SSL server certificate is not trustworthy. Please "
 "check your SSL configurations."
@@ -132,9 +132,13 @@ msgstr ""
 "Interner Server-Fehler: Das SSL-Server-Zertifikat ist nicht "
 "vertrauenswürdig. Bitte überprüfen Sie ihre SSL-Konfiguration."
 
-#: umc/tools.js:167
+#: umc/tools.js:168
 msgid "Internal server error: The module process died unexpectedly."
 msgstr "Interner Server-Fehler: Der Modulprozess starb unerwartet."
+
+#: umc/tools.js:167
+msgid "Internal server error: The service is temporarily not available."
+msgstr "Interner Server-Fehler: Der Dienst is zeitweise nicht erreichbar!"
 
 #: umc/widgets/LoginDialog.js:63
 msgid "Language"
@@ -309,9 +313,6 @@ msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 
 #~ msgid "The domain for the login session."
 #~ msgstr "Die Domäne für die Anmeldesitzung."
-
-#~ msgid "This service is temporarily not available (status: 503)!"
-#~ msgstr "Der Dienst is zeitweise nicht erreichbar (Status: 503)!"
 
 #~ msgid "Webfrontend error: The specified request is not allowed."
 #~ msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht zulässig."

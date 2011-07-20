@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.82-1) unstable; urgency=low
+
+  * improved HTTP error handling (parsing of JSON data etc.) (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 20 Jul 2011 13:16:32 +0200
+
 univention-management-console-frontend (0.0.81-2) unstable; urgency=low
 
   * added method umc.tools.getIconClass() to dynamically create CSS rules for
