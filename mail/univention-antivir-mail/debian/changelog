@@ -1,3 +1,10 @@
+univention-antivir-mail (3.0.1-1) unstable; urgency=low
+
+  * enable amavisd socket to be able to release false positives out of
+    quarantine (Bug #22944)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 20 Jul 2011 12:19:45 +0200
+
 univention-antivir-mail (3.0.0-2) unstable; urgency=low
 
   * added GNU APGL V3 header (Bug #9620)
