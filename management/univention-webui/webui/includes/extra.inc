@@ -658,7 +658,12 @@ class button extends extra{
 		if (isset($this->attribute['link'])) {
 			$str .= '<a title="'.$title.'" href="'.$this->attribute['link'].'">'.$title.'</a>';
 		} else {
-			$str .= '<a title="'.$title.'" onClick="sendForm('.$byteindex.')">'.$title.'</a>';
+			$onclick = 'onClick="sendForm('.$byteindex.')"';
+			if(isset($this->attribute['webui-confirm-title'])) {
+				$onclick_func = "sendForm";
+				$onclick = ' onClick="umc_popup_confirm( \''.$this->attribute['webui-confirm-title'].'\', \''.$this->attribute['webui-confirm-question'].'\', \''.$this->attribute['webui-confirm-yes'].'\', \''.$this->attribute['webui-confirm-no'].'\', \''.$onclick_func.'\', '.$byteindex.')"';
+			}
+			$str .= '<a title="'.$title.'" '.$onclick.'>'.$title.'</a>';
 		}
 		$str .= '</span>';
 

@@ -1,3 +1,9 @@
+univention-webui (4.0.70-1) unstable; urgency=low
+
+  * added missing "confirm" handling (Bug #23065)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 20 Jul 2011 19:30:37 +0200
+
 univention-webui (4.0.69-1) unstable; urgency=low
 
   * limit access via file.php (Bug #22859)
