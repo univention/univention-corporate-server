@@ -362,11 +362,7 @@ dojo.mixin(umc.tools, {
 		var ButtonClass = dojo.getObject('umc.widgets.' + buttonClassName);
 		
 		// render the button
-		var button = new ButtonClass({
-			label: buttonConf.label,
-			callback: buttonConf.callback,
-			iconClass: buttonConf.iconClass
-		});
+		var button = new ButtonClass(buttonConf);
 
 		// connect event handler for onClick .. yet only for normal buttons
 		if ('Button' == buttonClassName) {
@@ -377,9 +373,11 @@ dojo.mixin(umc.tools, {
 		return button; // umc.widgets.Button
 	},
 	
-	renderLayout: function(/*Array*/ layout, /*Object*/ widgets, /*Object?*/ buttons) {
+	renderLayout: function(/*Array*/ layout, /*Object*/ widgets, /*Object?*/ buttons, /*Integer?*/ _iLevel) {
 		// summary:
 		//		Render a widget containing a set of widgets as specified by the layout.
+
+		var iLevel = 'number' == typeof(_iLevel) ? _iLevel : 0;
 
 		// create a container
 		var globalContainer = new umc.widgets.ContainerWidget({});
@@ -433,7 +431,8 @@ dojo.mixin(umc.tools, {
 					if (widget) {
 						elContainer.addChild(new umc.widgets.LabelPane({
 							label: widget.label,
-							content: widget
+							content: widget,
+							style: widget.align ? 'float: ' + widget.align : ''
 						}));
 						widget._isRendered = true;
 					} else if (button) {
@@ -442,10 +441,14 @@ dojo.mixin(umc.tools, {
 							// as label in order to display them on the same height
 							elContainer.addChild(new umc.widgets.LabelPane({
 								label: '&nbsp;',
-								content: button
+								content: button,
+								style: button.align ? 'float: ' + button.align : ''
 							}));
 						} else {
 							// if there are only buttons in the row, we do not need a label
+							if (button.align) {
+								button.set('style', 'float: ' + button.align);
+							}
 							elContainer.addChild(button);
 						}
 						button._isRendered = true;
@@ -459,7 +462,10 @@ dojo.mixin(umc.tools, {
 				//console.log(el);
 				globalContainer.addChild(new dijit.TitlePane({
 					title: el.label,
-					content: this.renderLayout(el.layout, widgets, buttons)
+					'class': 'umcFormLevel' + iLevel,
+					toggleable: iLevel < 1,
+					open: undefined === el.open ? true : el.open,
+					content: this.renderLayout(el.layout, widgets, buttons, iLevel + 1)
 				}));
 			}
 		}

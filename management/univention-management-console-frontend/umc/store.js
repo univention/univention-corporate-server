@@ -45,7 +45,9 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		else {
 			return this._genericMultiCmd(type, [param]).
 				then(function(results) {
-					return results[0];
+					if (results && dojo.isArray(results)) {
+						return results[0];
+					}
 				});
 		}
 	},

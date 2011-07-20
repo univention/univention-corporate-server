@@ -19,17 +19,34 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 		// in case no buttons are defined, define the standard buttons: 'submit' and 'reset'
 		if (!this.buttons) {
 			this.buttons = [{
+				name: 'reset',
+				label: this._( 'Reset' ),
+				align: 'right'
+				//callback: dojo.hitch(this, 'onReset')
+			}, {
 				name: 'submit',
 				label: this._( 'Search' ),
+				align: 'right',
 				callback: dojo.hitch(this, function(values) {
 					this.onSearch(values);
 				})
-			}, {
-				name: 'reset',
-				label: this._( 'Reset' )
-				//callback: dojo.hitch(this, 'onReset')
 			}];
 		}
+
+		// layout the buttons in the same row as the form (if there is only one row)
+		console.log('#layout: ' + this.layout);
+		if (dojo.isArray(this.layout)) {
+			var layout = this.layout;
+			if (1 == layout.length) {
+				layout = layout[0];
+				if (!dojo.isArray(layout)) {
+					layout = [ layout ];
+				}
+				this.layout[0] = layout;
+			}
+			layout.push('submit', 'reset');
+		}
+		console.log('#layout: ' + this.layout);
 	},
 
 	onSearch: function(values) {

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-20 14:08+0200\n"
+"POT-Creation-Date: 2011-07-20 15:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -177,11 +177,11 @@ msgstr "Übersicht"
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/widgets/SearchForm.js:29 umc/widgets/LoginDialog.js:76
+#: umc/widgets/SearchForm.js:23 umc/widgets/LoginDialog.js:76
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: umc/widgets/SearchForm.js:23
+#: umc/widgets/SearchForm.js:28
 msgid "Search"
 msgstr "Suchen"
 

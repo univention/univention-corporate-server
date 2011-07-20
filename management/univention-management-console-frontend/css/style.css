@@ -178,11 +178,15 @@ div.modLaunchButtonClick {
 	color: #000;
 }
 
-/* some icons */
-.icon16-univention {
-	background: no-repeat;
-	width: 16px;
-	height: 16px;
-	background-image: url('../images/icons/16x16/univention.png');
+/* hacks for the TitlePane for level 1 */
+.umcFormLevel1 .dijitTitlePaneTitle {
+	background-color: transparent;
+	background-image: none;
+	border: none;
+	font-weight: bold;
+}
+
+.umcFormLevel1 .dijitTitlePaneContentOuter {
+	border: none;
 }
 
