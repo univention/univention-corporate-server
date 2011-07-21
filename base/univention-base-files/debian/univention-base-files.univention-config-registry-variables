@@ -95,8 +95,14 @@ Type=str
 Categories=system-network
 
 [gateway]
-Description[de]=Standard-Netz-Gateway
-Description[en]=Default gateway of network
+Description[de]=Standard-IPv4-Gateway
+Description[en]=Default IPv4 gateway
+Type=str
+Categories=system-network
+
+[ipv6/gateway]
+Description[de]=Standard-IPv6-Gateway
+Description[en]=Default IPv6 gateway
 Type=str
 Categories=system-network
 
@@ -107,32 +113,32 @@ Type=str
 Categories=system-network
 
 [interfaces/eth.*/address]
-Description[de]=IP-Adresse des Netz-Interfaces
-Description[en]=IP address of the network interface
+Description[de]=IPv4-Adresse der Netzschnittstelle
+Description[en]=IPv4 address of the network interface
 Type=str
 Categories=system-network
 
 [interfaces/eth.*/broadcast]
-Description[de]=Broadcast Adresse des Netz-Interfaces
-Description[en]=Broadcase address of the network interface
+Description[de]=IPv4-Broadcast-Adresse der Netzschnittstelle
+Description[en]=IPv4 broadcast address of the network interface
 Type=str
 Categories=system-network
 
 [interfaces/eth.*/mac]
-Description[de]=MAC-Adresse des Netz-Interfaces
+Description[de]=MAC-Adresse der Netzschnittstelle
 Description[en]=MAC address of the network interface
 Type=str
 Categories=system-network
 
 [interfaces/eth.*/netmask]
-Description[de]=Netzmaske des Netz-Interfaces
-Description[en]=Netmask of the network interface
+Description[de]=IPv4-Netzmaske der Netzschnittstelle
+Description[en]=IPv4 netmask of the network interface
 Type=str
 Categories=system-network
 
 [interfaces/eth.*/network]
-Description[de]=Netzwerk des Netz-Interfaces
-Description[en]=Network of the network interface
+Description[de]=IPv4-Netzwerk der Netzschnittstelle
+Description[en]=IPv4 network of the network interface
 Type=str
 Categories=system-network
 
@@ -159,6 +165,25 @@ Description[de]=Zusätzliche Einstellungen für die einzelnen Interfaces
 Description[en]=Additional options for each network interface
 Type=str
 Categories=system-network
+
+[interfaces/eth.*/ipv6/.*/address]
+Description[de]=IPv6-Adresse der Netzschnittstelle
+Description[en]=IPv6 address of the network interface
+Type=str
+Categories=system-network
+
+[interfaces/eth.*/ipv6/.*/netmask]
+Description[de]=IPv6-Netzmaske der Netzschnittstelle (CIDR-Notation)
+Description[en]=IPv6 netmask of the network interface (CIDR notation)
+Type=str
+Categories=system-network
+
+[interfaces/eth.*/ipv6/acceptRA]
+Description[de]=Neighbour Discovery Protocol (NDP) Router Advertisements akzeptieren um die Netzschnittstelle zu konfigurieren
+Description[en]=Accept neighbour discovery protocol (NDP) router advertisements (RA) to configure this interface
+Type=str
+Categories=system-network
+
 
 [hosts/static/.*]
 Description[de]=Zusätzliche /etc/hosts Einträge

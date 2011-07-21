@@ -1,3 +1,9 @@
+univention-base-files (1.0.5-1) unstable; urgency=low
+
+  * make IPv6 configurable (Bug #22871)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 21 Jul 2011 13:17:05 +0200
+
 univention-base-files (1.0.4-2) unstable; urgency=low
 
   * reverted last commit Bug #22117 

@@ -94,12 +94,17 @@ File: etc/apt/apt.conf.d/20secureapt
 Variables: update/secure_apt
 
 Type: file
+File: etc/sysctl.d/local.conf
+Variables: interfaces/eth.*/ipv6/acceptRA
+
+Type: file
 File: etc/network/interfaces
 Preinst: interfaces.py
 Postinst: interfaces.py
 Variables: interfaces/eth.*
 Variables: interfaces/handler
 Variables: gateway
+Variables: ipv6/gateway
 
 Type: multifile
 Multifile: etc/hosts
