@@ -1,3 +1,9 @@
+univention-base-files (1.0.4-2) unstable; urgency=low
+
+  * reverted last commit Bug #22117 
+
+ -- Felix Botner <botner@univention.de>  Thu, 21 Jul 2011 12:01:32 +0200
+
 univention-base-files (1.0.4-1) unstable; urgency=low
 
   * add console-setup to package dependencies
