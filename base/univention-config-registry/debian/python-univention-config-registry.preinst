@@ -1,5 +1,5 @@
 #!/bin/sh
-# preinst script for python-univention-debug
+# preinst script for python-univention-config-registry
 #
 # Copyright 2011 Univention GmbH
 #
@@ -30,8 +30,8 @@
 
 set -e
 
-if [ "$1" = upgrade ] && dpkg --compare-versions "$2" lt 5.0.0; then
-	pycentral pkgremove python-univention-debug
+if [ "$1" = upgrade ] && dpkg --compare-versions "$2" lt 7.0.0; then
+	pycentral pkgremove python-univention-config-registry
 fi
 
 #DEBHELPER#
