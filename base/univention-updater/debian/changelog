@@ -1,3 +1,9 @@
+univention-updater (6.0.90-1) unstable; urgency=low
+
+  * added possibility to remove configured component (Bug #15630)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 20 Jul 2011 19:47:32 +0200
+
 univention-updater (6.0.89-1) unstable; urgency=low
 
   * do not show proxy password on boot (Bug #22458)
