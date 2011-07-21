@@ -1,3 +1,10 @@
+univention-base-files (1.0.4-1) unstable; urgency=low
+
+  * add console-setup to package dependencies
+    (sets up keymap on startup) Bug #22117 
+
+ -- Felix Botner <botner@univention.de>  Thu, 21 Jul 2011 11:42:05 +0200
+
 univention-base-files (1.0.3-2) unstable; urgency=low
 
   * Must not use UCRWARNING_ASCII to generate sitecustomize.py (Bug #22160)
