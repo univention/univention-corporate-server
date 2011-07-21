@@ -1,3 +1,15 @@
+univention-management-console-module-top (1.0.3-1) unstable; urgency=low
+
+  * Fix terminate/kill function
+  * Remove obsolete code
+  * Add translation 
+  * Remove programm column
+  * Adjust vsize & rssize
+  * Fix "command" column
+  (Bug #22850)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 21 Jul 2011 12:41:50 +0200
+
 univention-management-console-module-top (1.0.2-1) unstable; urgency=low
 
   * Remove "number of processes"-box

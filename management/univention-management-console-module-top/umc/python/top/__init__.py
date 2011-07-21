@@ -54,10 +54,11 @@ class Instance(umcm.Base):
 			listEntry['user'] = process.username
 			listEntry['pid'] = str(process.pid)
 			listEntry['cpu'] = '%.1f' % process.get_cpu_percent()
-			(listEntry['vsize'], listEntry['rssize'], ) = process.get_memory_info()
+			(vsize, rssize, ) = process.get_memory_info()
+			listEntry['vsize'] = vsize / 1048576.0
+			listEntry['rssize'] = rssize / 1048576.0
 			listEntry['mem'] = '%.1f' % process.get_memory_percent()
-			listEntry['prog'] = process.name
-			listEntry['command'] = process.cmdline
+			listEntry['command'] = ' '.join(process.cmdline)
 			if category == 'all':
 				for value in listEntry.itervalues():
 					if fnmatch(str(value), filter):
@@ -80,8 +81,10 @@ class Instance(umcm.Base):
 					process.kill(15)
 				elif signal == 'SIGKILL':
 					process.kill(9)
+				request.status = SUCCESS
 				success = True
-			except psutil.NoSuchProcess:
+			except psutil.NoSuchProcess, error:
 				success = False
-		request.status = SUCCESS
+				MODULE.error(str(error))
+				request.status = MODULE_ERR
 		self.finished(request.id, success)

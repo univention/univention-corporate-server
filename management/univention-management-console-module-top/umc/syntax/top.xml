@@ -5,7 +5,6 @@
 		<choice name="all"/>
 		<choice name="user"/>
 		<choice name="pid"/>
-		<choice name="prog"/>
 		<choice name="command"/>
 	</syntax>
 	<syntax base="String" name="Top-Filter">

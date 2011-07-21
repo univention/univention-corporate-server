@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
 	<module id="top" icon="top" version="1.0">
-		<name>process overview</name>
-	<description>process overview</description>
+	<name>Process overview</name>
+	<description>Process overview and control</description>
 	<categories>
 		<category name="system"/>
 	</categories>
@@ -12,6 +12,7 @@
 		<return syntax="Dictionary"/>
 	</command>
 	<command name="top/kill" function="kill">
+		<attribute name="success" syntax="Bool"/>
 	</command>
 	</module>
 </umc>

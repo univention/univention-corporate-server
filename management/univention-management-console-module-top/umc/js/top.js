@@ -3,13 +3,10 @@
 dojo.provide("umc.modules.top");
 
 dojo.require("dijit.layout.BorderContainer");
+dojo.require("dojox.string.sprintf");
 dojo.require("umc.i18n");
-dojo.require("umc.tools");
-dojo.require("umc.widgets.Form");
-dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.SearchForm");
-dojo.require("umc.widgets.StandbyMixin");
 
 dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
@@ -19,10 +16,8 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	_contextVariable: null,
 	_layoutContainer: null,
 
-	idProperty: 'pid',
-
 	i18nClass: 'umc.modules.top',
-
+	idProperty: 'pid',
 
 	killProcesses: function(signal, pids) {
 		var params = {
@@ -42,7 +37,7 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		var actions = [{
 			name: 'terminate',
-			label: this._('Kill processes'),
+			label: this._('Terminate processes'),
 			iconClass: 'dijitIconDelete',
 			callback: dojo.hitch(this, 'killProcesses', 'SIGTERM')
 		}, {
@@ -55,31 +50,33 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var columns = [{
 			name: 'user',
 			label: this._('User'),
-            width: '10%'
+            width: '100px'
 		}, {
 			name: 'pid',
 			label: this._('PID'),
-            width: '10%'
+            width: '75px'
 		}, {
 			name: 'cpu',
-			label: this._('CPU'),
-            width: '10%'
+			label: this._('CPU (%)'),
+            width: '50px'
 		}, {
 			name: 'vsize',
-			label: this._('Virtual size'),
-            width: '10%'
+			label: this._('Virtual size (MB)'),
+            width: '125px',
+			formatter: function(value) {
+				return dojox.string.sprintf('%.1f', value);
+			}
 		}, {
 			name: 'rssize',
-			label: this._('Resident set size'),
-            width: '10%'
+			label: this._('Resident set size (MB)'),
+            width: '150px',
+			formatter: function(value) {
+				return dojox.string.sprintf('%.1f', value);
+			}
 		}, {
 			name: 'mem',
-			label: this._('Memory in %'),
-            width: '10%'
-		}, {
-			name: 'prog',
-			label: this._('Program'),
-            width: '10%'
+			label: this._('Memory (%)'),
+            width: '80px'
 		}, {
 			name: 'command',
 			label: this._('Command'),
@@ -107,7 +104,6 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				{id: 'all', label: this._('All')},
 				{id: 'user', label: this._('User')},
 				{id: 'pid', label: this._('PID')},
-				{id: 'prog', label: this._('Program')},
 				{id: 'command', label: this._('Command')}
 			]
 		}, {
