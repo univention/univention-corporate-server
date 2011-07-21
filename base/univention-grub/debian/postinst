@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Grub
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,91 +30,62 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+#DEBHELPER#
+
 eval "$(univention-config-registry shell)"
 
-if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
+# Remove now obsolete UCR variables previously used for lilo
+univention-config-registry unset lilo/vga lilo/boot lilo/append lilo/root lilo/append/acpi 1> /dev/null 
+univention-config-registry unset lilo/append/pci/acpi lilo/compact lilo/default lilo/append 1> /dev/null 
 
-        vars="grub/timeout=5 "
+univention-config-registry set grub/memtest86=true
+univention-config-registry set grub/timeout?5
+univention-config-registry set kernel/postinst_hook?"/usr/sbin/update-grub"
+univention-config-registry set grub/quiet?"no"
+univention-config-registry set grub/loglevel?"0"
 
-        if [ -n "$lilo_vga" ]; then
-                vars="$vars grub/vga=$lilo_vga "
-        fi
+# New installation, the 
+if [ "$1" = configure -a -z "$2" ];  then
 
-		if [ -n "$lilo_boot" ]; then
-			vars="$vars grub/boot=$lilo_boot"
-		fi
+#	rootdevice=$(awk '$2=="/" {print $1}' /etc/fstab)
+#        univention-config-registry set grub/root=$rootdevice
 
-        if [ -n "$lilo_append" ]; then
-                if [ -n "$grub_append" ]; then
-                        grub_append="$grub_append $lilo_append"
-                else
-                        grub_append="$lilo_append"
-                fi
-        fi
+#        root2fstype=$(awk '$2=="/" {print $3}' /etc/fstab)
 
-        if [ -n "$lilo_root" ]; then
-			vars="$vars grub/root=$lilo_root"
-		else
-			rootdevice=$(awk '$2=="/" {print $1}' /etc/fstab)
-			vars="$vars grub/root=$rootdevice"
-        fi
+#        if [ -n "$root2fstype" ]; then
+#                if [ -n "$grub_append" ]; then
+#                        grub_append="$grub_append root2fstype=$root2fstype "
+#                else
+#                        grub_append="root2fstype=$root2fstype "
+#                fi
+#        fi
 
-        if [ -n "$lilo_append_acpi" ] && [ "$lilo_append_acpi" = "off" ]; then
-                if [ -n "$grub_append" ]; then
-                        grub_append="$grub_append acpi=off "
-                else
-                        grub_append="acpi=off "
-                fi
-        fi
+#        if [ -n "$grub_append" ]; then
+#                univention-config-registry set grub/append="$grub_append"
+#        fi
 
-        if [ -n "$lilo_append_pci_acpi" ] && [ "$lilo_append_pci_acpi" = "off" ]; then
-                if [ -n "$grub_append" ]; then
-                        grub_append="$grub_append pci=noacpi "
-                else
-                        grub_append="pci=noacpi "
-                fi
-        fi
+	# invoke grub-mkdevicemap (required for KVM machines
+	grub-mkdevicemap $grub_boot
+	# source the update-grub file, so we could use the grub helper functions
+	if [ -n "$grub_boot" ]; then
+		/usr/sbin/grub-install --no-floppy "$grub_boot"
+	fi
+	update-grub
 
-        root2fstype=$(awk '$2=="/" {print $3}' /etc/fstab)
-        if [ -n "$root2fstype" ]; then
-                if [ -n "$grub_append" ]; then
-                        grub_append="$grub_append root2fstype=$root2fstype "
-                else
-                        grub_append="root2fstype=$root2fstype "
-                fi
-        fi
+# # Upgrade from an earlier version
+# elif [ -z "$2" ]; then
+#         # root fs type for quota support on xfs
+#         root2fstype=$(awk '$2=="/" {print $3}' /etc/fstab)
+#         if [ -n "$root2fstype" ]; then
+#                 append="$append root2fstype=$root2fstype "
+#         fi
+#         univention-config-registry set grub/append="$append splash=silent"
 
-        if [ -n "$grub_append" ]; then
-                univention-baseconfig set grub/append="$grub_append"
-        fi
+#         rootdevice=$(awk '$2=="/" {print $1}' /etc/fstab)
+# 	univention-config-registry set grub/root="$rootdevice"
 
-        univention-baseconfig set $vars grub/memtest86=true
-
-        univention-baseconfig unset lilo/append/acpi \
-                                lilo/append/pci_acpi \
-                                lilo/append \
-                                lilo/boot \
-                                lilo/compact \
-                                lilo/default \
-                                lilo/root \
-                                lilo/vga
-
-elif [ -z "$2" ]; then
-        # root fs type for quota support on xfs
-        root2fstype=$(awk '$2=="/" {print $3}' /etc/fstab)
-        if [ -n "$root2fstype" ]; then
-                append="$append root2fstype=$root2fstype "
-        fi
-
-        rootdevice=$(awk '$2=="/" {print $1}' /etc/fstab)
-
-        univention-baseconfig set grub/timeout?5 \
-								grub/append="$append splash=silent" \
-								grub/root="$rootdevice" \
-								grub/vga=791 \
-								grub/memtest86=true
-
-fi
+# 	univention-config-registry set grub/vga=791
+# fi
 
 
 # Usage: convert os_device
@@ -197,19 +168,6 @@ fi
 
 eval "$(univention-config-registry shell)"
 
-#DEBHELPER#
-
-
-if [ "$1" = configure -a -z "$2" ]; then
-	# invoke grub-mkdevicemap (required for KVM machines
-	grub-mkdevicemap $grub_boot
-	# source the update-grub file, so we could use the grub helper functions
-	if [ -n "$grub_boot" ]; then
-		/usr/sbin/grub-install --no-floppy "$grub_boot"
-	fi
-	update-grub -y
-fi
-
 # determine grubdevice
 # needs to be called after grub-install: devices.map is created by grub-install
 if [ -z "$grub_groot" ] ; then
@@ -217,12 +175,9 @@ if [ -z "$grub_groot" ] ; then
 	groot=$(convert "$grubdev")
 	if [ -n "$groot" ]
 	then
-		univention-baseconfig set grub/groot="$groot"
+		univention-config-registry set grub/groot="$groot"
 	fi
 fi
 
-univention-baseconfig set kernel/postinst_hook?"/usr/sbin/update-grub"
-univention-baseconfig set grub/quiet?"no"
-univention-baseconfig set grub/loglevel?"0"
 
 exit 0

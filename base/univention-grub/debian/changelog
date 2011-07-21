@@ -1,6 +1,8 @@
 univention-grub (5.0.0-1) unstable; urgency=low
 
-  * Update for UCS 3.0:
+  * Update for UCS 3.0 (Bug #22115)
+  * Depend on grub-pc
+  * Various cleanups	  
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 16 May 2011 10:54:10 +0200
 
