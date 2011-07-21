@@ -386,7 +386,7 @@ class Instance( Base ):
 			module = UDM_Module( 'container/%s' % container_type )
 			try:
 				for item in module.search( request.options.get( 'container' ), scope = 'one' ):
-					result.append( { 'id' : item.dn, 'label' : item[ module.identifies ], 'icon' : 'udm-container-%s' % container_type } )
+					result.append( { 'id' : item.dn, 'label' : item[ module.identifies ], 'icon' : 'udm-container-%s' % container_type, 'path': ldap_dn2path(item.dn) } )
 			except UDM_Error, e:
 				success = False
 				result = None

@@ -15,6 +15,7 @@ dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.SearchForm");
+dojo.require("umc.widgets.Text");
 
 dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// summary:
@@ -288,6 +289,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	_createDetailPage: function(objectType, ldapName) {
+		console.log('#_createDetailPage: ' + objectType);
 		// remember the objectType of the object we are going to edit
 		this._editedObjType = objectType;
 
@@ -386,8 +388,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// setup detail page, needs to be wrapped by a form (for managing the
 		// form entries) and a BorderContainer (for the footer with buttons)
-		var layout = new dijit.layout.BorderContainer({});
-		layout.addChild(this._detailTabs);
+		var borderLayout = new dijit.layout.BorderContainer({});
+		borderLayout.addChild(this._detailTabs);
 
 		// buttons
 		var buttons = umc.tools.renderButtons([{
@@ -405,13 +407,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		dojo.forEach(buttons._order, function(i) { 
 			footer.addChild(i);
 		});
-		layout.addChild(footer);
+		borderLayout.addChild(footer);
 
 		// create the form containing the whole BorderContainer as content and add 
 		// the form as new 'page'
 		this._detailForm = new umc.widgets.Form({
 			widgets: widgets,
-			content: layout,
+			content: borderLayout,
 			moduleStore: this.moduleStore,
 			onSubmit: dojo.hitch(this, 'validateChanges')
 		});
@@ -596,8 +598,24 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	showNewObjectDialog: function() {
+		// when we are in navigation mode, make sure the user has selected a container
+		var selectedContainer = { id: '', label: '', path: '' };
+		if ('navigation' == this.moduleFlavor) {
+			var items = this._tree.get('selectedItems');
+			if (items.length) {
+				selectedContainer = items[0];
+			}
+			else {
+				umc.app.alert(this._('Please select a container in the navigation bar. The new object will be placed at this location.'));
+				return;
+			}
+		}
+
+		// open the dialog
 		var dialog = new umc.modules.udm._NewObjectDialog({
 			umcpCommand: dojo.hitch(this, 'umcpCommand'),
+			moduleFlavor: this.moduleFlavor,
+			selectedContainer: selectedContainer,
 			onDone: dojo.hitch(this, function(options) {
 				// when the options are specified, create a new detail page
 				options.objectType = options.objectType || this.moduleFlavor; // default objectType is the module flavor
@@ -614,7 +632,13 @@ dojo.declare("umc.modules.udm._NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 
 	ucmpCommand: umc.tools.umcpCommand,
 
+	moduleFlavor: '',
+
+	selectedContainer: { id: '', label: '', path: '' },
+
 	_form: null,
+
+	style: 'max-width: 250px;',
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
@@ -628,81 +652,124 @@ dojo.declare("umc.modules.udm._NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		// query for UDM objects
-		(new dojo.DeferredList([
-			this.umcpCommand('udm/containers'),
-			this.umcpCommand('udm/superordinates'),
-			this.umcpCommand('udm/types'),
-			this.umcpCommand('udm/templates')
-		])).then(dojo.hitch(this, function(results) {
-			var containers = results[0][0] ? results[0][1] : [];
-			var superordinates = results[1][0] ? results[1][1] : [];
-			var types = results[2][0] ? results[2][1] : [];
-			var templates = results[3][0] ? results[3][1] : [];
-			this._renderForm(containers.result, superordinates.result, types.result, templates.result);
-		}));
+		if (!'navigation' == this.moduleFlavor) {
+			// query the necessary elements to display the add-dialog correctly
+			(new dojo.DeferredList([
+				this.umcpCommand('udm/types'),
+				this.umcpCommand('udm/containers'),
+				this.umcpCommand('udm/superordinates'),
+				this.umcpCommand('udm/templates')
+			])).then(dojo.hitch(this, function(results) {
+				var types = results[0][0] ? results[0][1] : [];
+				var containers = results[1][0] ? results[1][1] : [];
+				var superordinates = results[2][0] ? results[2][1] : [];
+				var templates = results[3][0] ? results[3][1] : [];
+				this._renderForm(types.result, containers.result, superordinates.result, templates.result);
+			}));
+		}
+		else {
+			// for the UDM navigation, only query object types
+			this.umcpCommand('udm/types').then(dojo.hitch(this, function(data) {
+				this._renderForm(data.result);
+			}));
+		}
 	},
 
-	_renderForm: function(containers, superordinates, types, templates) {
+	_renderForm: function(types, containers, superordinates, templates) {
+		// default values and sort items
+		types = types || [];
+		containers = containers || [];
+		superordinates = superordinates || [];
+		templates = templates || [];
+		dojo.forEach([types, containers, superordinates, templates], function(iarray) {
+			iarray.sort(umc.tools.cmpObjects('label'));
+		});
+		
 		// depending on the list we get, create a form for adding
 		// a new UDM object
 		var widgets = [];
 		var layout = [];
 
-		// if we have superordinates, we don't need containers
-		if (superordinates.length) {
-			widgets = widgets.concat([{
-				type: 'ComboBox',
-				name: 'superordinate',
-				label: 'Superordinate',
-				description: this._('The corresponding superordinate for the new object.'),
-				staticValues: superordinates
+		if (!'navigation' == this.moduleFlavor) {
+			// if we have superordinates, we don't need containers
+			if (superordinates.length) {
+				widgets = [{
+					type: 'ComboBox',
+					name: 'superordinate',
+					label: 'Superordinate',
+					description: this._('The corresponding superordinate for the new object.'),
+					staticValues: superordinates
+				}, {
+					type: 'ComboBox',
+					name: 'objectType',
+					label: 'Object type',
+					description: this._('The exact object type of the new object.'),
+					umcpCommand: this.umcpCommand,
+					dynamicValues: 'udm/types',
+					depends: 'superordinate'
+				}];
+				layout = [ 'superordinate', 'objectType' ];
+			}
+			// no superordinates, then we need a container in any case
+			else {
+				widgets.push({
+					type: 'ComboBox',
+					name: 'container',
+					label: 'Container',
+					description: this._('The LDAP container in which the object shall be created.'),
+					staticValues: containers
+				});
+				layout.push('container');
+
+				// object types
+				if (types.length) {
+					widgets.push({
+						type: 'ComboBox',
+						name: 'objectType',
+						label: 'Object type',
+						description: this._('The exact object type of the new object.'),
+						staticValues: types
+					});
+					layout.push('objectType');
+				}
+
+				// templates
+				if (templates.length) {
+					templates.unshift({ id: 'None', label: this._('None') });
+					widgets.push({
+						type: 'ComboBox',
+						name: 'objectTemplate',
+						label: 'Object template',
+						description: this._('A template defines rules for default property values.'),
+						staticValues: templates
+					});
+					layout.push('objectTemplate');
+				}
+			}
+		}
+		else {
+			// for the navigation, we show all elements and let them query their content automatically
+			widgets = [{
+				type: 'HiddenInput',
+				name: 'container',
+				value: this.selectedContainer.id
 			}, {
 				type: 'ComboBox',
 				name: 'objectType',
 				label: 'Object type',
 				description: this._('The exact object type of the new object.'),
-				umcpCommand: this.umcpCommand,
-				dynamicValues: 'udm/types',
-				depends: 'superordinate'
-			}]);
-			layout = [ 'superordinate', 'objectType' ];
-		}
-		// no superordinates, then we need a container in any case
-		else {
-			widgets.push({
+				staticValues: types
+			}, {
 				type: 'ComboBox',
-				name: 'container',
-				label: 'Container',
-				description: this._('The LDAP container in which the object shall be created.'),
-				staticValues: containers
-			});
-			layout.push('container');
-
-			// object types
-			if (types.length) {
-				widgets.push({
-					type: 'ComboBox',
-					name: 'objectType',
-					label: 'Object type',
-					description: this._('The exact object type of the new object.'),
-					staticValues: types
-				});
-				layout.push('objectType');
-			}
-
-			// templates
-			if (templates.length) {
-				templates.unshift({ id: 'None', label: this._('None') });
-				widgets.push({
-					type: 'ComboBox',
-					name: 'objectTemplate',
-					label: 'Object template',
-					description: this._('A template defines rules for default property values.'),
-					staticValues: templates
-				});
-				layout.push('objectTemplate');
-			}
+				name: 'objectTemplate',
+				label: 'Object template',
+				description: this._('A template defines rules for default property values.'),
+				depends: 'objectType',
+				umcpCommand: this.umcpCommand,
+				dynamicValues: 'udm/templates',
+				staticValues: [ { id: 'None', label: this._('None') } ]
+			}];
+			layout = [ 'container', 'objectType', 'objectTemplate' ];
 		}
 
 		// buttons
@@ -727,7 +794,14 @@ dojo.declare("umc.modules.udm._NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 			layout: layout,
 			buttons: buttons
 		});
-		this.set('content', this._form);
+		var container = new umc.widgets.ContainerWidget({});
+		if ('navigation' == this.moduleFlavor) {
+			container.addChild(new umc.widgets.Text({
+				content: this._('<p>The object will be created in the the LDAP container:</p><p><i>%s</i></p>', this.selectedContainer.path)
+			}));
+		}
+		container.addChild(this._form);
+		this.set('content', container);
 		this.show();
 	},
 
