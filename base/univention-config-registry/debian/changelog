@@ -1,3 +1,9 @@
+univention-config-registry (7.0.14-1) unstable; urgency=low
+
+  * Purge leftover files from PyCentral on upgrade (Bug #23054)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 21 Jul 2011 16:21:10 +0200
+
 univention-config-registry (7.0.13-1) unstable; urgency=low
 
   * add wrapper script univention-ldapsearch (Bug #17519)
