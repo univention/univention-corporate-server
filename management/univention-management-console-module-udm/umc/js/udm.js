@@ -652,7 +652,7 @@ dojo.declare("umc.modules.udm._NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		if (!'navigation' == this.moduleFlavor) {
+		if ('navigation' != this.moduleFlavor) {
 			// query the necessary elements to display the add-dialog correctly
 			(new dojo.DeferredList([
 				this.umcpCommand('udm/types'),
@@ -684,13 +684,14 @@ dojo.declare("umc.modules.udm._NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 		dojo.forEach([types, containers, superordinates, templates], function(iarray) {
 			iarray.sort(umc.tools.cmpObjects('label'));
 		});
+
 		
 		// depending on the list we get, create a form for adding
 		// a new UDM object
 		var widgets = [];
 		var layout = [];
 
-		if (!'navigation' == this.moduleFlavor) {
+		if ('navigation' != this.moduleFlavor) {
 			// if we have superordinates, we don't need containers
 			if (superordinates.length) {
 				widgets = [{
