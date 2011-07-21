@@ -104,18 +104,18 @@ if [ "$grepcnt" = "0" ] ; then
 	fi
 fi
 
-eval "$(univention-config-registry shell)"
+# eval "$(univention-config-registry shell)"
 
-# determine grubdevice
-# needs to be called after grub-install: devices.map is created by grub-install
-if [ -z "$grub_groot" ] ; then
-	grubdev=$(df -P /boot | sed -ne '$s% .*%%p')
-	groot=$(convert "$grubdev")
-	if [ -n "$groot" ]
-	then
-		univention-config-registry set grub/groot="$groot"
-	fi
-fi
+# # determine grubdevice
+# # needs to be called after grub-install: devices.map is created by grub-install
+# if [ -z "$grub_groot" ] ; then
+# 	grubdev=$(df -P /boot | sed -ne '$s% .*%%p')
+# 	groot=$(convert "$grubdev")
+# 	if [ -n "$groot" ]
+# 	then
+# 		univention-config-registry set grub/groot="$groot"
+# 	fi
+# fi
 
 
 exit 0
