@@ -61,10 +61,9 @@ def main(argv):
 
 	socket_filename=''
 	socket_timeout=60*5
-	socket_timeout_short = configRegistry.get('directory/manager/timeout/presession', '5')
-	if socket_timeout_short.strip('0123456789') == '':
-		socket_timeout_short = int(socket_timeout_short)
-	else:
+	try:
+		socket_timeout_short = abs(int(configRegistry.get('directory/manager/timeout/presession', '')))
+	except ValueError:
 		socket_timeout_short = 5
 	debugging = 0
 	language = configRegistry.get ('directory/manager/web/language', LANG_EN)

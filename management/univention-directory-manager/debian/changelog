@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.77-1) unstable; urgency=low
+
+  * fix processing of directory/manager/timeout/presession (Bug #21982)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 21 Jul 2011 10:22:33 +0200
+
 univention-directory-manager (8.0.76-1) unstable; urgency=low
 
   * make lifetime of session, when not logged in, configurable via UCR (Bug #21982)

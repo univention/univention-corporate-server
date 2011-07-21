@@ -1,3 +1,9 @@
+univention-management-console (3.0.108-1) unstable; urgency=low
+
+  * fix processing of umc/web/timeout/presession (Bug #21982)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 21 Jul 2011 10:25:49 +0200
+
 univention-management-console (3.0.107-1) unstable; urgency=low
 
   * make lifetime of session, when not logged in, configureable via UCR (Bug #21982)

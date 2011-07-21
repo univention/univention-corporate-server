@@ -49,10 +49,9 @@ configRegistry.load()
 
 watchdog = time.time()
 watchdog_timeout = 60 * 5
-watchdog_timeout_short = int(configRegistry.get('umc/web/timeout/presession', '5'))
-if watchdog_timeout_short.strip('0123456789') == '':
-	watchdog_timeout_short = int(watchdog_timeout_short)
-else:
+try:
+	watchdog_timeout_short = abs(int(configRegistry.get('umc/web/timeout/presession', '')))
+except ValueError:
 	watchdog_timeout_short = 5
 
 THREAD_ERRORS = []
