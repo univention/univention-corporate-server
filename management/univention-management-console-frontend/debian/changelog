@@ -1,3 +1,10 @@
+univention-management-console-frontend (0.0.86-1) unstable; urgency=low
+
+  * fixed umc.widgets.LabelPane and adjusted size of umc.widgets.LoginDialog
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 21 Jul 2011 17:27:17 +0200
+
 univention-management-console-frontend (0.0.85-1) unstable; urgency=low
 
   * umc.widgets.SearchForm: no right alignment of buttons

@@ -39,7 +39,8 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 					this.set('label', newVal || '');
 				}));
 			}
-		} else {
+		} 
+		else if (!dojo.isString(this.label)) {
 			this.label = '';
 		}
 	},

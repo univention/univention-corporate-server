@@ -32,7 +32,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			sizeDuration: 900,
 			sizeMethod: 'chain',
 			sizeToViewport: false,
-			dimensions: [300, 220]
+			dimensions: [300, 270]
 		});
 
 	},
