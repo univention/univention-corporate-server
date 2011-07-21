@@ -1,0 +1,12 @@
+#!/bin/sh
+# preinst script for python-univention-debug
+
+set -e
+
+if [ "$1" = upgrade ] && dpkg --compare-versions "$2" lt 5.0.0; then
+       pycentral pkgremove python-univention-debug
+fi
+
+#DEBHELPER#
+
+exit 0

@@ -1,6 +1,12 @@
+univention-debug (5.0.9-1) unstable; urgency=low
+
+  * Purge leftover files from PyCentral on upgrade (Bug #23054)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 21 Jul 2011 16:16:05 +0200
+
 univention-debug (5.0.8-1) unstable; urgency=low
 
-  * add milliseconds to the tiemstamp of debug messages; Bug #22855
+  * add milliseconds to the timestamp of debug messages; Bug #22855
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 27 Jun 2011 14:52:45 +0200
 
@@ -13,7 +19,7 @@ univention-debug (5.0.7-1) unstable; urgency=low
 
 univention-debug (5.0.6-4) unstable; urgency=low
 
-  * debian/control: Conflics & Replaces libunivention-debug0 (Bug #22160)
+  * debian/control: Conflicts & Replaces libunivention-debug0 (Bug #22160)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 27 May 2011 10:29:02 +0200
 
