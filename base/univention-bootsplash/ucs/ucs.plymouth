@@ -1,0 +1,11 @@
+[Plymouth Theme]
+Name=Script
+Description=Script example plugin.
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/ucs
+ScriptFile=/usr/share/plymouth/themes/ucs/script.script
+
+[script-env-vars]
+example_env_var=example env var value

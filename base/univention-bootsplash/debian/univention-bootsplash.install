@@ -1,0 +1,4 @@
+ucs/*.png usr/share/plymouth/themes/ucs
+ucs/script.script usr/share/plymouth/themes/ucs
+ucs/ucs.plymouth usr/share/plymouth/themes/ucs
+lsb-base-logging.sh etc

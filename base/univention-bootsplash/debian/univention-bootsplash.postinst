@@ -32,16 +32,14 @@
 
 # update to ucs 3.0 with plymouth
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; then
-	univention-config-registry set bootsplash/theme="text"
+	univention-config-registry set bootsplash/theme="ucs"
 fi
-
 
 eval "$(univention-config-registry shell)"
 
-univention-config-registry set bootsplash/theme?"text"
-
-
-univention-config-registry set grub/vga?791
+univention-config-registry set \
+	bootsplash/theme?"ucs" \
+	grub/vga?791
 
 # TODO grub2 configuration 
 # splash in GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"

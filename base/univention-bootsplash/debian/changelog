@@ -1,3 +1,9 @@
+univention-bootsplash (4.0.0-4) unstable; urgency=low
+
+  * added plymouth theme and lsb-base-logging.sh (Bug #20138)
+
+ -- Felix Botner <botner@univention.de>  Thu, 21 Jul 2011 12:56:40 +0200
+ 
 univention-bootsplash (4.0.0-3) unstable; urgency=low
 
   * fixed debian/rules (Bug #20138)
