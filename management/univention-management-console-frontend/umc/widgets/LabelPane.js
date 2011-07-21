@@ -33,12 +33,14 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 		// if we have a widget as content and label is not specified, use the widget's 
 		// label attribute and watch it for changes
 		if (null === this.label && this.content && dojo.isString(this.content.label)) {
-			this.label = this.content.label;
+			this.label = this.content.label || '';
 			if (this.content.watch) {
 				this.content.watch('label', dojo.hitch(this, function(attr, oldVal, newVal) {
-					this.set('label', newVal);
+					this.set('label', newVal || '');
 				}));
 			}
+		} else {
+			this.label = '';
 		}
 	},
 

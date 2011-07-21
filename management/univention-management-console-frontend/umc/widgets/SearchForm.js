@@ -20,13 +20,10 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 		if (!this.buttons) {
 			this.buttons = [{
 				name: 'reset',
-				label: this._( 'Reset' ),
-				align: 'right'
-				//callback: dojo.hitch(this, 'onReset')
+				label: this._( 'Reset' )
 			}, {
 				name: 'submit',
 				label: this._( 'Search' ),
-				align: 'right',
 				callback: dojo.hitch(this, function(values) {
 					this.onSearch(values);
 				})
@@ -34,7 +31,6 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 		}
 
 		// layout the buttons in the same row as the form (if there is only one row)
-		console.log('#layout: ' + this.layout);
 		if (dojo.isArray(this.layout)) {
 			var layout = this.layout;
 			if (1 == layout.length) {
@@ -44,9 +40,8 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 				}
 				this.layout[0] = layout;
 			}
-			layout.push('submit', 'reset');
+			layout.push('reset', 'submit');
 		}
-		console.log('#layout: ' + this.layout);
 	},
 
 	onSearch: function(values) {

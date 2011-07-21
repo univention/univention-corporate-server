@@ -16,6 +16,11 @@ html, body
 	background: url('../images/mainBackground.png') repeat-x 0px 0px;
 }
 
+p {
+	margin-top: 0em;
+	margin-bottom: 0.5em;
+}
+
 /* define properties for floating buttons with margins */
 div.modLaunchButton {
 	width: 130px !important;

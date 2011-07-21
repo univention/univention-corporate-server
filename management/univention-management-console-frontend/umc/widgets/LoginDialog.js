@@ -32,7 +32,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			sizeDuration: 900,
 			sizeMethod: 'chain',
 			sizeToViewport: false,
-			dimensions: [300, 280]
+			dimensions: [300, 220]
 		});
 
 	},
@@ -101,7 +101,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		// put the layout together
 		this._container = new umc.widgets.ContainerWidget({});
 		this._container.addChild(new umc.widgets.Text({
-			style: 'margin-left: auto; margin-right: auto; width: 250px;',
+			style: 'margin-left: auto; margin-right: auto; margin-top: 1em; width: 250px;',
 			content: '<p>' + this._('Welcome to the Univention Management Console. Please enter your domain username and password for login!') + '</p>'
 		}));
 		this._container.addChild(this._form);
