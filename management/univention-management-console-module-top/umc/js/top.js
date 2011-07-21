@@ -32,7 +32,9 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		this._layoutContainer = new dijit.layout.BorderContainer({});
+		this._layoutContainer = new dijit.layout.BorderContainer({
+			// helpText: this._('This module generates an overview of all running processes. The search function can reduce the number of results. Specifig processes can be selected and terminated. If a process can\'t be normally terminated (using SIGTERM signal), the termination can be forced (using SIGKILL signal).')
+		});
 		this.addChild(this._layoutContainer);
 
 		var actions = [{
