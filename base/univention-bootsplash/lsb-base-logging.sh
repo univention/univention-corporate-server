@@ -34,6 +34,13 @@ log_daemon_msg () {
     log_daemon_msg_post "$@"
 }
 
+log_action_begin_msg () {
+    echo -n "$@..."
+    if log_use_plymouth; then
+        plymouth message --text="$@" || true
+    fi
+}
+
 #log_progress_msg () {
 #    if [ -z "${1:-}" ]; then
 #        return 1
@@ -46,7 +53,7 @@ log_daemon_msg () {
 
 log_action_msg () {
     if log_use_plymouth; then
-        plymouth message --text="$@." || true
+        plymouth message --text="$@" || true
     fi
     echo "$@."
 }
