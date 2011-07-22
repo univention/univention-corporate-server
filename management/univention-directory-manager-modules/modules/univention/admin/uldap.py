@@ -62,6 +62,15 @@ def getMachineConnection(start_tls=2,decode_ignorelist=[], ldap_master = True):
 	pos=position(lo.base)
 	return access(lo=lo), pos
 
+def _err2str(err):
+	msgs = []
+	for iarg in err.args:
+		if 'info' in iarg and 'desc' in iarg:
+			msgs.append('%(desc)s: %(info)s' % iarg)
+		elif 'desc' in iarg:
+			msgs.append(str(iarg['desc']))
+	return '. '.join(msgs)
+
 class domain:
 	def __init__(self, lo, position):
 		self.lo=lo
@@ -300,25 +309,25 @@ class access:
 		try:
 			return self.lo.search(filter, base, scope, attr, unique, required, timeout, sizelimit)
 		except ldap.NO_SUCH_OBJECT, msg:
-			raise univention.admin.uexceptions.noObject, '%(desc)s: %(info)s' % msg[0]
+			raise univention.admin.uexceptions.noObject, _err2str(msg)
 		except ldap.INAPPROPRIATE_MATCHING, msg:
-			raise univention.admin.uexceptions.insufficientInformation, '%(desc)s: %(info)s' % msg[0]
+			raise univention.admin.uexceptions.insufficientInformation, _err2str(msg)
 		except ldap.LDAPError, msg:
-			raise univention.admin.uexceptions.ldapError, '%(desc)s: %(info)s' % msg[0]
+			raise univention.admin.uexceptions.ldapError, _err2str(msg)
 
 	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 		try:
 			return self.lo.searchDn(filter, base, scope, unique, required, timeout, sizelimit)
 		except ldap.NO_SUCH_OBJECT, msg:
-			raise univention.admin.uexceptions.noObject, '%(desc)s: %(info)s' % msg[0]
+			raise univention.admin.uexceptions.noObject, _err2str(msg)
 		except ldap.INAPPROPRIATE_MATCHING, msg:
-			raise univention.admin.uexceptions.insufficientInformation, '%(desc)s: %(info)s' % msg[0]
+			raise univention.admin.uexceptions.insufficientInformation, _err2str(msg)
 		except ldap.LDAPError, msg:
 			# workaround for bug 14827 ==> msg tuple seems to be empty
 			if not msg:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'uldap.searchDn: ldapError occured: msg=' % str(msg))
 				raise univention.admin.uexceptions.ldapError, str(msg)
-			raise univention.admin.uexceptions.ldapError, '%(desc)s: %(info)s' % msg[0]
+			raise univention.admin.uexceptions.ldapError, _err2str(msg)
 
 	def getPolicies(self, dn, policies=[], attrs={}, result={}, fixedattrs={}):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'getPolicies modules dn %s result' % dn)
@@ -343,7 +352,7 @@ class access:
 			raise univention.admin.uexceptions.permissionDenied
 		except ldap.LDAPError, msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'add dn=%s err=%s' % (dn, msg))
-			raise univention.admin.uexceptions.ldapError, '%(desc)s: %(info)s' % msg[0]
+			raise univention.admin.uexceptions.ldapError, _err2str(msg)
 
 	def modify(self, dn, changes, exceptions=False, ignore_license=0):
 		self.__validateLicense()
@@ -364,7 +373,7 @@ class access:
 			raise univention.admin.uexceptions.permissionDenied
 		except ldap.LDAPError, msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s err=%s' % (dn, msg))
-			raise univention.admin.uexceptions.ldapError, '%(desc)s: %(info)s' % msg[0]
+			raise univention.admin.uexceptions.ldapError, _err2str(msg)
 
 	def rename(self, dn, newdn, move_childs=0, ignore_license=False):
 		if not move_childs == 0:
@@ -385,7 +394,7 @@ class access:
 			raise univention.admin.uexceptions.permissionDenied
 		except ldap.LDAPError, msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s err=%s' % (dn, msg))
-			raise univention.admin.uexceptions.ldapError, '%(desc)s: %(info)s' % msg[0]
+			raise univention.admin.uexceptions.ldapError, _err2str(msg)
 
 	def delete(self, dn, exceptions=False):
 		self.__validateLicense()
@@ -405,7 +414,7 @@ class access:
 			raise univention.admin.uexceptions.permissionDenied
 		except ldap.LDAPError, msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'del dn=%s err=%s' % (dn, msg))
-			raise univention.admin.uexceptions.ldapError, '%(desc)s: %(info)s' % msg[0]
+			raise univention.admin.uexceptions.ldapError, _err2str(msg)
 
 	def parentDn(self, dn):
 		return self.lo.parentDn(dn)

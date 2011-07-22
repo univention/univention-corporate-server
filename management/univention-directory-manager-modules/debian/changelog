@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.214-1) unstable; urgency=low
+
+  * fixed KeyError when converting LDAP error message to string (Bug #21642)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 22 Jul 2011 15:34:37 +0200
+
 univention-directory-manager-modules (6.0.213-1) unstable; urgency=low
 
   * update groups if a computer object gets renamed (Bug #21882)
