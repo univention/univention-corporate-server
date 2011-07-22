@@ -1722,6 +1722,7 @@ class simpleComputer( simpleLdap ):
 
 		if self.__changes[ 'name' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: name has changed' )
+			self.__update_groups_after_namechange()
 			self.__rename_dhcp_object( position = None, old_name = self.__changes[ 'name' ][ 0 ], new_name = self.__changes[ 'name' ][ 1 ] )
 			self.__rename_dns_object( position = None, old_name = self.__changes[ 'name' ][ 0 ], new_name = self.__changes[ 'name' ][ 1 ] )
 			pass
@@ -2043,6 +2044,49 @@ class simpleComputer( simpleLdap ):
 		for group in groups:
 			groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
 			groupObject.fast_member_remove( [ self.dn ], self.oldattr.get('uid',[]), ignore_license=1 )
+
+
+	def __update_groups_after_namechange(self):
+		oldname = self.oldinfo.get('name')
+		newname = self.info.get('name')
+		if not oldname:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, '__update_groups_after_namechange: oldname is empty')
+			return
+
+		# Since self.dn is not updated yet, self.dn contains still the old DN.
+		# Thats why olddn and newdn get reassebled from scratch.
+		olddn = 'cn=%s,%s' % (oldname, ','.join(univention.admin.uldap.explodeDn( self.dn, 0 )[1:]))
+		newdn = 'cn=%s,%s' % (newname, ','.join(univention.admin.uldap.explodeDn( self.dn, 0 )[1:]))
+
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: olddn=%s' % olddn)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: newdn=%s' % newdn)
+
+		for group in self.info.get('groups',[]):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: grp=%s' % group)
+
+			# Using the UDM groups/group object does not work at this point. The computer object has already been renamed.
+			# During open() of groups/group each member is checked if it exists. Because the computer object with "olddn" is missing,
+			# it won't show up in groupobj['hosts']. That's why the uniqueMember/memberUid updates is done directly via
+			# self.lo.modify()
+
+			oldUniqueMembers = self.lo.getAttr(group, 'uniqueMember')
+			newUniqueMembers = copy.deepcopy(oldUniqueMembers)
+			if olddn in newUniqueMembers:
+				newUniqueMembers.remove(olddn)
+			if not newdn in newUniqueMembers:
+				newUniqueMembers.append(newdn)
+
+			oldUid = '%s$' % oldname
+			newUid = '%s$' % newname
+			oldMemberUids = self.lo.getAttr(group, 'memberUid')
+			newMemberUids = copy.deepcopy(oldMemberUids)
+			if oldUid in newMemberUids:
+				newMemberUids.remove(oldUid)
+			if not newUid in newMemberUids:
+				newMemberUids.append(newUid)
+
+			self.lo.modify(group, [('uniqueMember', oldUniqueMembers, newUniqueMembers), ('memberUid', oldMemberUids, newMemberUids)])
+
 
 	def update_groups(self):
 		if not self.hasChanged('groups') and \
