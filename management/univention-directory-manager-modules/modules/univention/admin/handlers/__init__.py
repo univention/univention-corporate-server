@@ -1244,6 +1244,9 @@ class simpleComputer( simpleLdap ):
 
 	def __rename_dns_object( self, position = None, old_name = None, new_name = None ):
 		for dns_line in self[ 'dnsEntryZoneForward' ]:
+			# dns_line may be the empty string
+			if not dns_line:
+				continue
 			dn, ip = self.__split_dns_line( dns_line )
 			results = self.lo.searchDn( base = dn, scope = 'domain', filter = 'aRecord=%s' % ip, unique = 0 )
 			for result in results:
@@ -1252,6 +1255,9 @@ class simpleComputer( simpleLdap ):
 				object[ 'name' ] = new_name
 				object.modify( )
 		for dns_line in self[ 'dnsEntryZoneReverse' ]:
+			# dns_line may be the empty string
+			if not dns_line:
+				continue
 			dn, ip = self.__split_dns_line( dns_line )
 			results = self.lo.searchDn( base = dn, scope = 'domain', filter = '(|(pTRRecord=%s)(pTRRecord=%s.*))' % (old_name, old_name), unique = 0 )
 			for result in results:
@@ -1259,7 +1265,10 @@ class simpleComputer( simpleLdap ):
 				object.open( )
 				object[ 'ptr_record' ] = object[ 'ptr_record' ].replace( old_name, new_name )
 				object.modify( )
-		for entry in self[ 'dnsentryzonealias' ]:
+		for entry in self[ 'dnsEntryZoneAlias' ]:
+			# entry may be the empty string
+			if not entry:
+				continue
 			dnsforwardzone, dnsaliaszonecontainer, alias = self.__split_dns_alias_line( entry )
 			results = self.lo.searchdn( base = dnsaliaszonecontainer, scope = 'domain', filter = 'relativedomainname=%s' % alias, unique = 0 )
 			for result in results:
@@ -1272,6 +1281,9 @@ class simpleComputer( simpleLdap ):
 		module = univention.admin.modules.get( 'dhcp/host' )
 		tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
 		for mac in self[ 'mac' ]:
+			# mac may be the empty string
+			if not mac:
+				continue
 			ethernet = 'ethernet %s' % mac
 
 			results = self.lo.searchDn( base = tmppos.getBase( ), scope = 'domain', filter = 'dhcpHWAddress=%s' % ethernet, unique = 0 )

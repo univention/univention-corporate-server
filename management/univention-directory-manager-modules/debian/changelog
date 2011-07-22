@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.213-1) unstable; urgency=low
+
+  * update groups if a computer object gets renamed (Bug #21882)
+  * fixed tracebacks if a computer object gets renamed (Bug #21878)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 22 Jul 2011 12:03:00 +0200
+
 univention-directory-manager-modules (6.0.212-1) unstable; urgency=low
 
   * fixed lookup of users with mailAlternativeAddress filter (Bug #22764)
