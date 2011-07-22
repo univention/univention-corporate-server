@@ -1260,7 +1260,10 @@ class handler(umch.simpleHandler):
 		frame_release = umcd.Frame([list_release], _('Component settings'))
 
 		inpt_activated = umcd.make(self['update/components_settings']['component_activated'], default = activated)
-		inpt_name = umcd.make(self['update/components_settings']['component_name'], default = name)
+		if name:
+			inpt_name = umcd.make_readonly(self['update/components_settings']['component_name'], default = name)
+		else:
+			inpt_name = umcd.make(self['update/components_settings']['component_name'], default = name)
 		inpt_description = umcd.make(self['update/components_settings']['component_description'], default = description)
 		# TODO: add a check button
 		inpt_server = umcd.make(self['update/components_settings']['component_server'], default = server)
