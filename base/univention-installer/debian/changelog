@@ -1,3 +1,9 @@
+univention-installer (7.0.14-5) unstable; urgency=low
+
+  * changed grub layout (Bug #22707) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 22 Jul 2011 14:46:15 +0200
+
 univention-installer (7.0.14-4) unstable; urgency=low
 
   * (re)added kernel paramter vga=773 to grub config (Bug #22707)
