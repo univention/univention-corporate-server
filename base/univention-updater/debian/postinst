@@ -102,7 +102,7 @@ eval "$(univention-config-registry shell hostname domainname update/server)"
 if [ -n "$update_server" -a "$update_server" != "http://download.univention.de" ]; then
 	update_server=`echo "$update_server" | sed -e 's|http://||' | sed -e 's|/.*||'`
 	univention-config-registry set repository/online/server?"$update_server"
-elif host univention-repository.$domainname &> /dev/null; then
+elif host univention-repository.$domainname > /dev/null 2>&1; then
 	univention-config-registry set repository/online/server?"univention-repository.$domainname"
 else
 	univention-config-registry set repository/online/server?"apt.univention.de"

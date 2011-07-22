@@ -1,3 +1,9 @@
+univention-updater (7.0.2-2) unstable; urgency=low
+
+  * fix build: remove bashisms (Bug #22433)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 22 Jul 2011 13:56:29 +0200
+
 univention-updater (7.0.2-1) unstable; urgency=low
 
   * remove nagios2 packages during update (Bug #14594)

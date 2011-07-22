@@ -157,7 +157,7 @@ check_space(){
 	usersize=$3
 	if [ `df -P $partition|tail -n1 | awk '{print $4}'` -gt "$size" ]
 		then
-		echo -e "Space on $partition:\t OK"
+		printf "Space on $partition:\t OK\n"
 	else
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
         echo "         This may interrupt the update and result in an inconsistent system!"
@@ -175,7 +175,7 @@ initrd_backup=/var/backups/univention-initrd.bak/
 if [ ! -d $initrd_backup ]; then
 	mkdir $initrd_backup
 fi
-mv /boot/*.bak /var/backups/univention-initrd.bak/ &>/dev/null
+mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
 
 # check space on filesystems
 if [ ! "$update24_checkfilesystems" = "no" ]
