@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.32 (1.0.15-4) unstable; urgency=low
+
+  * Bump version (Bug #22998)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 22 Jul 2011 11:18:23 +0200
+
 univention-kernel-image-2.6.32 (1.0.15-3) unstable; urgency=low
 
   * Depend on correct kernel image (Bug #22998)
