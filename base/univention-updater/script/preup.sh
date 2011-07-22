@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Copyright (C) 2010-2011 Univention GmbH
 #
@@ -115,7 +115,7 @@ echo
 if [ ! "$update_warning_releasenotes" = "no" -a ! "$update_warning_releasenotes" = "false" -a ! "$update_warning_releasenotes_internal" = "no" ] ; then
 	echo "Update will wait here for 60 seconds..."
 	echo "Press CTRL-c to abort or press ENTER to continue"
-	# BUG: 'read -t' is a bash'ism, but she-bang is /bin/sh, not /bin/bash!
+	# BUG: 'read -t' is the only bash'ism in this file, therefore she-bang has to be /bin/bash not /bin/sh!
 	read -t 60 somevar
 fi
 
