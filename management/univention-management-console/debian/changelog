@@ -1,3 +1,9 @@
+univention-management-console (3.0.109-1) unstable; urgency=low
+
+  * added value checks for "basis" wizard (Bug #22591)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 22 Jul 2011 14:26:08 +0200
+
 univention-management-console (3.0.108-1) unstable; urgency=low
 
   * fix processing of umc/web/timeout/presession (Bug #21982)

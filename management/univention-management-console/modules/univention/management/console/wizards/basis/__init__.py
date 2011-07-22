@@ -67,10 +67,10 @@ command_description = {
 		short_description = _( 'Base configuration' ),
 		long_description = _( 'Set base configuration' ),
 		method = 'basis_set',
-		values = { 'hostname' : umc.String( _( 'Hostname' ) ),
-				   'domainname' : umc.String( _( 'Domain name' ) ),
-				   'windows_domain' : umc.String( _( 'Windows domain' ) ),
-				   'ldap_base' : umc.String( _( 'LDAP base' ) ), },
+		values = { 'hostname' : umc.String( _( 'Hostname' ), regex = r'^[a-z]([a-z0-9-]*[a-z0-9])*$' ),
+				   'domainname' : umc.String( _( 'Domain name' ), regex = r'^([a-z0-9]([a-z0-9-]*[a-z0-9])*[.])*[a-z0-9]([a-z0-9-]*[a-z0-9])*$' ),
+				   'windows_domain' : umc.String( _( 'Windows domain' ), regex = r'^([a-z]([a-z0-9-]*[a-z0-9])*[.])*[a-z]([a-z0-9-]*[a-z0-9])*$' ),
+				   'ldap_base' : umc.String( _( 'LDAP base' ), regex = r'^((dc|cn|c|o|l)=[^ ,=]+,)*(dc|cn|c|o|l)=[^ ,=]+$' ), },
 	),
 }
 
