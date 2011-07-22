@@ -1,4 +1,4 @@
-univention-base-files (1.0.5-1) unstable; urgency=low
+univention-base-files (1.0.5-2) unstable; urgency=low
 
   * make IPv6 configurable (Bug #22871)
 
