@@ -215,7 +215,7 @@ if dpkg -l lilo 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
 fi
 
 # remove old packages that causes conflicts
-olddebs="python2.4-dns alsa-headers"
+olddebs="python2.4-dns alsa-headers nagios2 nagios2-common nagios2-doc"
 for deb in $olddebs; do
 	if dpkg -l $deb >>"$UPDATER_LOG" 2>&1; then
 		dpkg -P $deb >>"$UPDATER_LOG" 2>&1
