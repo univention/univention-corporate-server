@@ -1,3 +1,9 @@
+univention-installer (7.0.14-6) unstable; urgency=low
+
+  * removed bashism (Bug #22707) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 22 Jul 2011 15:18:02 +0200
+
 univention-installer (7.0.14-5) unstable; urgency=low
 
   * changed grub layout (Bug #22707) 

@@ -72,7 +72,9 @@ if [ "$1" = "2.4" ]; then
 else
 	sysfsmtpt=/sys
 	if ! grep -q sysfs /proc/mounts; then
-		[[ -d "${sysfsmtpt}" ]] || { /bin/mkdir "${sysfsmtpt}"; }
+		if [ ! -d "${sysfsmtpt}" ]; then
+			/bin/mkdir "${sysfsmtpt}"
+		fi
 		/bin/mount -tsysfs -onodev,noexec,nosuid sysfs "${sysfsmtpt}" >/dev/null 2>&1 || exit 1
 	fi
 

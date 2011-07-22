@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Installer
 #  helper script: scanning /sys for devices
