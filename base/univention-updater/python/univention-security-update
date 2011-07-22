@@ -251,7 +251,7 @@ if __name__ == '__main__':
 				break
 
 			secver = updater.current_version
-			secver.patchlevel = int(nextupdate[len('sec'):])
+			secver.patchlevel = nextupdate
 			dprint( 'Update to Security Update %s' % secver, [fp_debug,sys.stdout] )
 
 			remove_temporary_sources_list()

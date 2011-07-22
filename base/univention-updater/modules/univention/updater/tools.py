@@ -616,7 +616,11 @@ class UniventionUpdater:
 		return sources_list
 
 	def get_all_available_security_updates(self):
-		'''Returns a list of all available security updates for current major.minor version'''
+		'''Returns a list of all available security updates for current major.minor version
+	       as integer
+		   >>> updater.get_all_available_security_updates()
+		   [3, 4, 5]
+		'''
 		result = []
 		archs = ['all', 'extern'] + self.architectures
 		for sp in xrange(self.security_patchlevel + 1, 99):
@@ -629,14 +633,16 @@ class UniventionUpdater:
 		return result
 
 	def security_update_available(self, version=None):
-		'''Check for the security version for the current version'''
+		'''Check for the security version for the current version.
+	       Returns next available security update number (integer) or False if no security update is available.
+		'''
 		if version:
 			start = end = version
 		else:
 			start = end = UCS_Version( (self.version_major, self.version_minor, self.security_patchlevel+1) )
 		archs = ['all', 'extern'] + self.architectures
 		for server, ver in self._iterate_security_repositories(start, end, self.parts, archs):
-			return 'sec%(patchlevel)s' % ver
+			return ver.patchlevel
 		return False
 
 	@property

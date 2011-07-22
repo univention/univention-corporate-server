@@ -1018,7 +1018,7 @@ class handler(umch.simpleHandler):
 				if available_security_updates:
 					btn_install_security_update = umcd.Button(_('Install available security updates'), 'actions/install', actions = [umcd.Action(self.__get_warning_request({'type': 'security'}))])
 					txt = _('The currently installed security update version is %(old)s and the most recent security update version is %(new)s.')
-					list_update_security.add_row([umcd.Text(txt % {'old':self.updater.security_patchlevel, 'new': available_security_updates[-1].replace('sec','') })])
+					list_update_security.add_row([umcd.Text(txt % {'old':self.updater.security_patchlevel, 'new': available_security_updates[-1] })])
 					list_update_security.add_row([btn_install_security_update])
 				else:
 					txt = umcd.Text( _('The currently installed security update version is %(old)s and no further security updates are available.') % { 'old': self.updater.security_patchlevel } )

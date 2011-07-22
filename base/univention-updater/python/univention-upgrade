@@ -201,16 +201,16 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 		#######################################################################
 		# reinit updater module
 		updater.ucr_reinit()
-		current_security_update = None
+		current_security_update = 0
 		next_security_update = updater.security_update_available()
-		while next_security_update > current_security_update:
+		while next_security_update and ( next_security_update != current_security_update ):
 			# updates available ==> stop here in "check-mode"
 			if checkForUpdates:
 				dprint('Security update has been found.')
 				return True
 
 			# perform security update
-			dprint('Starting security update %s at %s...' % (next_security_update, time.ctime()))
+			dprint('Starting security update sec%s at %s...' % (next_security_update, time.ctime()))
 			time.sleep(1)
 			retcode = subprocess.call('univention-security-update net', shell=True)
 			if retcode:
@@ -218,7 +218,7 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 				dprint('ERROR: update failed. Please check /var/log/univention/security-updates.log')
 				update_status( status='FAILED', errorsource='UPDATE' )
 				sys.exit(1)
-			dprint('Security update finished %s at %s...' % (next_security_update, time.ctime()))
+			dprint('Security update finished sec%s at %s...' % (next_security_update, time.ctime()))
 			time.sleep(1)
 
 			updater.ucr_reinit()
