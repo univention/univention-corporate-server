@@ -1,3 +1,10 @@
+univention-updater (7.0.4-1) unstable; urgency=low
+
+  * abort update if lilo and/or univention-lilo is installed 
+    (Bug #23063)
+
+ -- Felix Botner <botner@univention.de>  Mon, 25 Jul 2011 12:42:55 +0200
+
 univention-updater (7.0.3-1) unstable; urgency=low
 
   * purge packages kcontrol, libusplash0, univention-usplash-theme 

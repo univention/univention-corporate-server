@@ -105,6 +105,7 @@ if dpkg -l lilo 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
 fi
 
 # remove obsolte packages, no more required after UCS 3.0-0 update
+# Bug #22997
 for package in $PACKAGES_TO_BE_PURGED; do
 	dpkg -P $package 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
 	if [ ! 0 -eq $? ]; then
