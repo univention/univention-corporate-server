@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.68-1) unstable; urgency=low
+
+  * added support for user templates (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 25 Jul 2011 16:25:39 +0200
+
 univention-management-console-module-udm (1.0.67-1) unstable; urgency=low
 
   * udm/nav/container/query: add module settings/cn; Bug #22439
