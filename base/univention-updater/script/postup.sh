@@ -30,6 +30,7 @@
 UPDATER_LOG="/var/log/univention/updater.log"
 UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
+PACKAGES_TO_BE_PURGED="kcontrol libusplash0 univention-usplash-theme usplash"
 
 check_and_install ()
 {
@@ -102,6 +103,14 @@ fi
 if dpkg -l lilo 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
 	dpkg-divert --rename --divert /usr/share/initramfs-tools/bootsplash.debian --remove /usr/share/initramfs-tools/hooks/bootsplash 2>> "$UPDATER_LOG" >> "$UPDATER_LOG"
 fi
+
+# remove obsolte packages, no more required after UCS 3.0-0 update
+for package in $PACKAGES_TO_BE_PURGED; do
+	dpkg -P $package 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
+	if [ ! 0 -eq $? ]; then
+		echo "Puring package $package failed: $?" >> "$UPDATER_LOG"
+	fi
+done
 
 # executes custom postup script (always required)
 if [ ! -z "$update_custom_postup" ]; then

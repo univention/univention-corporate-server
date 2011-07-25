@@ -1,3 +1,10 @@
+univention-updater (7.0.3-1) unstable; urgency=low
+
+  * purge packages kcontrol, libusplash0, univention-usplash-theme 
+    and usplash in updater/postup.sh (Bug #22997)
+
+ -- Felix Botner <botner@univention.de>  Mon, 25 Jul 2011 11:56:59 +0200
+
 univention-updater (7.0.2-3) unstable; urgency=low
 
   * fix build: remove bashisms (Bug #22433)
