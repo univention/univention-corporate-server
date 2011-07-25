@@ -6,8 +6,14 @@ dojo.require("umc.widgets.ContainerWidget");
 //dojo.require("umc.widgets.HiddenInput");
 dojo.require("umc.tools");
 dojo.require("umc.widgets._FormWidgetMixin");
+dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
-dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.widgets._FormWidgetMixin, umc.i18n.Mixin ], {
+dojo.declare("umc.widgets.MultiInput", [ 
+	umc.widgets.ContainerWidget, 
+	umc.widgets._FormWidgetMixin, 
+	umc.widgets._WidgetsInWidgetsMixin,
+	umc.i18n.Mixin 
+], {
 	// summary:
 	//		Simple widget that displays a widget/HTML code with a label above.
 
@@ -127,7 +133,7 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.widget
 
 	_removeNewButton: function() {
 		if (this._newButton) {
-			this._newButton.destroyRecursive();
+			this.orphan(this._newButton, true);
 			this._newButton = null;
 		}
 	},
@@ -145,14 +151,14 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.widget
 		});
 
 		// create 'new' button
-		var btn = new dijit.form.Button({
+		var btn = this.adopt(dijit.form.Button, {
 			label: '<b>+</b>',
 			//iconClass: 'dijitIconNewTask',
 			onClick: dojo.hitch(this, '_appendElements', 1)
 		});
 
 		// wrap a button with a LabelPane
-		this._newButton = new umc.widgets.LabelPane({
+		this._newButton = this.adopt(umc.widgets.LabelPane, {
 			content: btn,
 			label: this._nRenderedElements === 1 && hasSubTypeLabels ? '&nbsp;' : '' // only keep the label for the first row
 		});
@@ -188,7 +194,7 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.widget
 			var visibleWidgets = dojo.map(order, function(iname) {
 				return widgets[iname];
 			});
-			var rowContainer = new umc.widgets.ContainerWidget({});
+			var rowContainer = this.adopt(umc.widgets.ContainerWidget, {});
 			var hasSubTypeLabels = false;
 			dojo.forEach(order, function(iname) {
 				// add widget to row container (wrapped by a LabelPane)
@@ -197,10 +203,13 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.widget
 					content: widgets[iname],
 					label: irow !== 0 ? '' : null // only keep the label for the first row
 				}));
+
+				// register to 'onChange' events
+				this.connect(widgets[iname], 'onChange', 'onChange');
 			}, this);
 
 			// add a 'remove' button at the end of the row
-			var button = new dijit.form.Button({
+			var button = this.adopt(dijit.form.Button, {
 				label: '<b>-</b>',
 				//iconClass: 'dijitIconDelete',
 				onClick: dojo.hitch(this, '_removeElement', irow)
@@ -233,7 +242,7 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.widget
 		
 		for (var irow = this._nRenderedElements - 1; irow >= this._nRenderedElements - n; --irow) {
 			// destroy the row container
-			this._rowContainers[irow].destroyRecursive();
+			this.orphan(this._rowContainers[irow], true);
 
 			// clean up internal arrays
 			this._rowContainers.pop();
@@ -281,6 +290,20 @@ dojo.declare("umc.widgets.MultiInput", [ umc.widgets.ContainerWidget, umc.widget
 			for (j = 0; j < this._widgets[i].length; ++j) {
 				this._widgets[i][j].setValid(iisValid, imessage);
 			}
+		}
+	},
+
+	_setBlockOnChangeAttr: function(/*Boolean*/ value) {
+		// execute the inherited functionality in the widget's scope
+		if (this._widget) {
+			umc.tools.delegateCall(this, arguments, this._widget);
+		}
+	},
+
+	_getBlockOnChangeAttr: function(/*Boolean*/ value) {
+		// execute the inherited functionality in the widget's scope
+		if (this._widget) {
+			umc.tools.delegateCall(this, arguments, this._widget);
 		}
 	}
 });

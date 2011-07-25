@@ -3,7 +3,30 @@
 dojo.provide("umc.widgets._FormWidgetMixin");
 
 dojo.declare("umc.widgets._FormWidgetMixin", null, {
+	// by default, set required to 'false'
 	required: false,
+
+	//
+	// event handling
+	//
+
+	// blockOnChange:
+	//		Set this variable to true in order to avoid notifications of onChange
+	//		events. Use set()/get() methods to access this property.
+	blockOnChange: undefined,
+
+	_setBlockOnChangeAttr: function(/*Boolean*/ value) {
+		this._onChangeActive = !value;
+	},
+
+	_getBlockOnChangeAttr: function(/*Boolean*/ value) {
+		return this._onChangeActive;
+	},
+
+	// provide 'onChange' method stub in case it does not exist yet
+	onChange: function(newValue) {
+		// event stub
+	},
 
 	//
 	// methods/variables for validation

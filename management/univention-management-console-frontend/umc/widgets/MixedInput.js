@@ -5,8 +5,13 @@ dojo.provide("umc.widgets.MixedInput");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("umc.tools");
 dojo.require("umc.widgets._FormWidgetMixin");
+dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
-dojo.declare("umc.widgets.MixedInput", [ dijit.layout.ContentPane, umc.widgets._FormWidgetMixin ], {
+dojo.declare("umc.widgets.MixedInput", [ 
+	dijit.layout.ContentPane, 
+	umc.widgets._FormWidgetMixin,
+	umc.widgets._WidgetsInWidgetsMixin
+], {
 	// umcpCommand:
 	//		Reference to the umcpCommand the widget should use.
 	//		In order to make the widget send information such as module flavor
@@ -101,7 +106,7 @@ dojo.declare("umc.widgets.MixedInput", [ dijit.layout.ContentPane, umc.widgets._
 		// destroy old widget in case the type has changed and create a new one
 		if (this._widget && this._widget.declaredClass != newWidgetClass) {
 			// destroy widget
-			this._widget.destroyRecursive();
+			this.orphan(this._widget, true);
 			this._widget = null;
 		}
 
@@ -113,8 +118,11 @@ dojo.declare("umc.widgets.MixedInput", [ dijit.layout.ContentPane, umc.widgets._
 			if (!WidgetClass) {
 				throw new Error('MixedInput: Could not instantiate the class ' + newWidgetClass);
 			}
-			this._widget = new WidgetClass(this._userProperties);
+			this._widget = this.adopt(WidgetClass, this._userProperties);
 			this.set('content', this._widget);
+			
+			// hook to the onChange event
+			this.connect(this._widget, 'onChange', 'onChange');
 		}
 
 		// set the indicated values
@@ -152,6 +160,20 @@ dojo.declare("umc.widgets.MixedInput", [ dijit.layout.ContentPane, umc.widgets._
 	setValid: function() {
 		if (this._widget) {
 			this._widget.setValid.apply(this._widget, arguments);
+		}
+	},
+
+	_setBlockOnChangeAttr: function(/*Boolean*/ value) {
+		// execute the inherited functionality in the widget's scope
+		if (this._widget) {
+			umc.tools.delegateCall(this, arguments, this._widget);
+		}
+	},
+
+	_getBlockOnChangeAttr: function(/*Boolean*/ value) {
+		// execute the inherited functionality in the widget's scope
+		if (this._widget) {
+			umc.tools.delegateCall(this, arguments, this._widget);
 		}
 	}
 });

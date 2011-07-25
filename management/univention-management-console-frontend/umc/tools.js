@@ -320,6 +320,9 @@ dojo.mixin(umc.tools, {
 				label: widgetConf.description,
 				connectId: [ widget.domNode ]
 			});
+
+			// destroy the tooltip when the widget is destroyed
+			tooltip.connect(widget, 'destroy', 'destroy');
 		}
 
 		return widget; // dijit._Widget
@@ -613,6 +616,13 @@ dojo.mixin(umc.tools, {
 			}
 		}
 		return iconClass;
+	},
+
+	delegateCall: function(/*Object*/ self, /*Arguments*/ args, /*Object*/ that) {
+		// summary:
+		//		Delegates a method call into the scope of a different object.
+		var m = self.getInherited(args);
+		m.apply(that, args);
 	}
 });
 

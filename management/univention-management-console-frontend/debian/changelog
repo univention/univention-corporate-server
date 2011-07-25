@@ -1,3 +1,13 @@
+univention-management-console-frontend (0.0.87-1) unstable; urgency=low
+
+  * added functionality for blocking onChange events
+  * added umc.widgets._WidgetsInWidgetsMixin
+  * implement onChange event for custom widgets
+  * added umc.tools.delegateCall()
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 25 Jul 2011 16:19:08 +0200
+
 univention-management-console-frontend (0.0.86-1) unstable; urgency=low
 
   * fixed umc.widgets.LabelPane and adjusted size of umc.widgets.LoginDialog
