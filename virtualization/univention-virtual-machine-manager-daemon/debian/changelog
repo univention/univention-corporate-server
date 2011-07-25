@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.308-1) unstable; urgency=low
+
+  * add a regular expression to the memory size setting of a virtual
+    instance to ensure the given value is valid; Bug #21927
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 25 Jul 2011 16:24:39 +0200
+
 univention-virtual-machine-manager-daemon (0.9.307-1) unstable; urgency=low
 
   * ensure that missing domain information will not crash the backend; Bug #21956

@@ -154,7 +154,7 @@ command_description = {
 		method = 'uvmm_domain_configure',
 		values = { 'domain' : umc.String( 'instance' ), # last name, which was used to load the configuration
 				   'name' : umc.String( _( 'Name' ) ), # new name
-				   'memory' : umc.String( _( 'Memory' ) ),
+				   'memory' : umc.String( _( 'Memory' ), regex = MemorySize.SIZE_REGEX ),
 				   'cpus' : cpus_select,
 				   'vnc' : umc.Boolean( _( 'Direct access' ) ),
 				   'vnc_global' : umc.Boolean( _( 'Globally available' ) ),
