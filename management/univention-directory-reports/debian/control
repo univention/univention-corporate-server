@@ -20,7 +20,7 @@ Description: Creates reports about Univention Admin objects
 
 Package: python-univention-directory-reports
 Architecture: all
-Depends: ${python:Depends}, python-univention-directory-manager, univention-config-registry, univention-webui
+Depends: ${python:Depends}, python-univention-directory-manager, univention-config-registry
 Provides: ${python:Provides}
 Description: Creates reports about Univention Admin objects
  Univention Report Generator creates reports in PDF format using
