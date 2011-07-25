@@ -1,3 +1,9 @@
+univention-installer (7.0.14-7) unstable; urgency=low
+
+  * removed bashism (Bug #22707)
+
+ -- Felix Botner <botner@univention.de>  Mon, 25 Jul 2011 15:35:27 +0200
+
 univention-installer (7.0.14-6) unstable; urgency=low
 
   * removed bashism (Bug #22707) 

@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 #
 # Univention Installer
 #  Refresh gettext entries for univention-installer and univention-system-setup
@@ -54,7 +54,7 @@ echo "Merging old gettext data with newly introduced strings"
 msgmerge ./installer/locale/$po/LC_MESSAGES/installer.po  $po.pot > $po.pox
 
 echo "Now you need to fix up all "fuzzy" entries in your editor"
-read -r
+read answ
 
 if [ -n "$EDITOR" ]; then
     $EDITOR $po.pox
