@@ -3,7 +3,7 @@
 # Univention Network Manager
 #  rules file for the debian package
 #
-# Copyright 2009-2010 Univention GmbH
+# Copyright 2009-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,66 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	touch configure-stamp
-
-build: configure-stamp build-stamp
-build-stamp:
-	dh_testdir
-	touch build-stamp
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-	rm -f *~ univention-name-to-unicode
-
-	dh_clean
-
-D=$(CURDIR)/debian/univention-server
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	# univention-network-manager
-	install -m 755 etc/network/ucs-network-tools debian/univention-network-manager/etc/network
-	install -m 755 etc/network/if-up.d/[0-9]* debian/univention-network-manager/etc/network/if-up.d
-	install -m 755 etc/network/if-down.d/[0-9]* debian/univention-network-manager/etc/network/if-down.d
-	install -m 755 etc/NetworkManager/dhcp-hooks.d/[0-9]* debian/univention-network-manager/etc/NetworkManager/dhcp-hooks.d
-	install -m 755 nm-dhcp-client.action.sh debian/univention-network-manager/usr/lib/NetworkManager/nm-dhcp-client.action
-
-	# univention-ifplugd
-	install -m 755 etc/network/ucs-network-tools debian/univention-ifplugd/etc/network
-	install -m 755 etc/network/if-up.d/[0-9]* debian/univention-ifplugd/etc/network/if-up.d
-	install -m 755 etc/network/if-down.d/[0-9]* debian/univention-ifplugd/etc/network/if-down.d
-	install -m 755 univention-ifplugd-enter-hook debian/univention-ifplugd/etc/dhcp3/dhclient-enter-hooks.d/univention-ifplugd-enter-hook
-	install -m 755 etc/NetworkManager/dhcp-hooks.d/[0-9]* debian/univention-ifplugd/etc/dhcp3/dhclient-enter-hooks.univention.d
-
+override_dh_auto_install:
 	univention-install-config-registry
-	univention-install-config-registry-info
+	dh_auto_install
 
-binary-arch: build install
+override_dh_auto_build:
+	ucslint
+	dh_auto_build
 
-binary-indep: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs
-	dh_installchangelogs
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+%:
+	dh $@

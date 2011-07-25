@@ -4,7 +4,7 @@
 #  network script: (re)mounts all entries from /etc/fstab when
 #  the network link is active
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,7 +34,7 @@
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
-eval $(univention-baseconfig shell networkmanager/action/mount)
+eval "$(univention-config-registry shell networkmanager/action/mount)"
 [ "$networkmanager_action_mount" = "yes" -o "$networkmanager_action_mount" = "true" ] ||  exit 0
 
 [ -x /bin/mount ] && /bin/mount -a

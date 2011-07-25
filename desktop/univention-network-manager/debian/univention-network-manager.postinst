@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Network Manager
 #  postinst script
 #
-# Copyright 2009-2010 Univention GmbH
+# Copyright 2009-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,7 +32,7 @@
 
 #DEBHELPER#
 
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 if [ -z "$ifplugd_action_mount" ]; then
 	   ifplugd_action_mount="yes"
@@ -60,11 +60,5 @@ for i in $(seq 0 4); do
 		univention-config-registry unset "${!var}"
 	fi
 done
-
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.4.11-1; then
-	if [ -e /etc/network/if-up.d/99_resolvconf ]; then
-		mv /etc/network/if-up.d/99_resolvconf /etc/network/if-up.d/00_resolvconf
-	fi
-fi
 
 exit 0
