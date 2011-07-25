@@ -1,3 +1,10 @@
+univention-ssl (6.0.4-1) unstable; urgency=low
+
+  * Set execute permissions for /usr/share/univention-ssl/ssl-sync
+    (Bug #23061 and Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 25 Jul 2011 16:07:18 +0200
+
 univention-ssl (6.0.3-2) unstable; urgency=low
 
   * fixed another bashism (Bug #23005)
