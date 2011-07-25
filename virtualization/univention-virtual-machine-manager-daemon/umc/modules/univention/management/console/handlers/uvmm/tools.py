@@ -34,10 +34,25 @@
 import re
 import math
 
+import univention.management.console as umc
 import univention.management.console.dialog as umcd
 
+_ = umc.Translation('univention.management.console.handlers.uvmm').translate
+
 def percentage( percent, label = None, width = 100 ):
-	return umcd.Progressbar( percent, label = label, attributes = { 'width' : '%dpx' % width } )
+	if isinstance( percent, basestring ):
+		percent = float( percent )
+	elif callable( percent ):
+		try:
+			percent = percent()
+		except:
+			return umcd.HTML( '<i>%s</i>' % _( 'currently not available' ) )
+	elif percent is None:
+		return umcd.HTML( '<i>%s</i>' % _( 'currently not available' ) )
+	try:
+		return umcd.Progressbar( percent, label = label, attributes = { 'width' : '%dpx' % width } )
+	except:
+		return umcd.HTML( '<i>%s</i>' % _( 'unknown value' ) )
 
 def str2pat( string ):
 	if not string:
