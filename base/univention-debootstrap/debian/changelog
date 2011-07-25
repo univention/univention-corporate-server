@@ -1,3 +1,9 @@
+univention-debootstrap (4.0.3-3) unstable; urgency=low
+
+  * fixed bug in debian/univention-debootstrap-3.install (Bug #22448)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 25 Jul 2011 14:52:04 +0200
+
 univention-debootstrap (4.0.3-2) unstable; urgency=low
 
   * added ucslint.overrides (Bug #22448)
