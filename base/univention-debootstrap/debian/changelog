@@ -1,3 +1,9 @@
+univention-debootstrap (4.0.3-2) unstable; urgency=low
+
+  * added ucslint.overrides (Bug #22448)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 25 Jul 2011 14:33:35 +0200
+
 univention-debootstrap (4.0.3-1) unstable; urgency=low
 
   * merged copy of debootstrap as debootstrap-ucs3 (Bug #22448)
