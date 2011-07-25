@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Reports
 #  postinst file for the debian package

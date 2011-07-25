@@ -1,3 +1,9 @@
+univention-directory-reports (4.0.4-1) unstable; urgency=low
+
+  * Use bash for postinst (Bug #22439)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 25 Jul 2011 15:49:27 +0200
+
 univention-directory-reports (4.0.3-1) unstable; urgency=low
 
   * Removed univention-webui dependency from python-univention-
