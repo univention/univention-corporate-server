@@ -382,11 +382,11 @@ class Instance( Base ):
 		success = True
 		message = None
 		result = []
-		for container_type in ( 'cn', 'ou' ):
-			module = UDM_Module( 'container/%s' % container_type )
+		for base, typ in ( ( 'container', 'cn' ), ( 'container', 'ou' ), ( 'settings', 'cn' ), ( 'dhcp', 'service' ), ( 'dhcp', 'subnet' ), ( 'dhcp', 'sharedsubnet' ) ):
+			module = UDM_Module( '%s/%s' % ( base, typ ) )
 			try:
 				for item in module.search( request.options.get( 'container' ), scope = 'one' ):
-					result.append( { 'id' : item.dn, 'label' : item[ module.identifies ], 'icon' : 'udm-container-%s' % container_type, 'path': ldap_dn2path(item.dn) } )
+					result.append( { 'id' : item.dn, 'label' : item[ module.identifies ], 'icon' : 'udm-%s-%s' % ( base, typ ), 'path': ldap_dn2path( item.dn ) } )
 			except UDM_Error, e:
 				success = False
 				result = None

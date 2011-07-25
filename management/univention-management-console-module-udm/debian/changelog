@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.67-1) unstable; urgency=low
+
+  * udm/nav/container/query: add module settings/cn; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 20 Jul 2011 17:23:17 +0200
+
 univention-management-console-module-udm (1.0.66-1) unstable; urgency=low
 
   * fixed broken add-object dialog for UDM modules (Bug #22883)
