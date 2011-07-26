@@ -1,3 +1,10 @@
+horde-webmailer (1.2.5~2.2.15-2) unstable; urgency=low
+
+  * use patch applied in customer project instead of original upstream
+    patch (Bug #22027)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Jul 2011 19:43:11 +0200
+
 horde-webmailer (1.2.5~2.2.15-1) unstable; urgency=low
 
   * revert adjusted upstream patch introduced in 1.2.5~2.2.6-1
