@@ -196,6 +196,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-config-registry set ldap/server/ip=$eth0_ip
 	univention-config-registry set ldap/server/name=$hostname.$domainname
 	univention-config-registry set ldap/master=$hostname.$domainname
+	univention-config-registry set ldap/master/port=7389
 	univention-config-registry set kerberos/adminserver=$hostname.$domainname
 	univention-config-registry set server/role=domaincontroller_master
 	univention-config-registry set ldap/server/type=master
@@ -205,6 +206,7 @@ else
 	fi
 	if [ -n "$domain_controller_ip" ]; then
 		univention-config-registry set ldap/master/ip=$domain_controller_ip
+		univention-config-registry set ldap/master/port=7389
 	fi
 
 	univention-config-registry set ldap/server/type=slave
