@@ -56,7 +56,7 @@ def handler(dn, new, old):
 		uuids |= set(new.get('univentionVirtualMachineUUID', []))
 	for uuid in uuids:
 		# Bug #21534: listener breaks pickle, using external CLI instead
-		rc = listener.run("/usr/sbin/univention-virtual-machine-manager", ["univention-virtual-machine-manager", "domain_update", uuid], 0, True)
+		rc = listener.run("/usr/sbin/univention-virtual-machine-manager", ["univention-virtual-machine-manager", "domain_update", uuid], 0, False)
 		debug.debug(debug.LISTENER, debug.INFO, "Requested update for %s: %d" % (', '.join(uuids), rc))
 		continue
 

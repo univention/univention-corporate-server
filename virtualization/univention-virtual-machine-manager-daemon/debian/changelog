@@ -1,3 +1,16 @@
+univention-virtual-machine-manager-daemon (0.9.311-1) unstable; urgency=low
+
+  * Merge from DVS scope (Bug #22788, Bug #22786):
+   [ Stefan Gohmann ]
+    * Added two timeout parameters to UVMM_ClientSSLSocket: ssl_timeout and
+      tcp_timeout (Bug #22416)
+    * UMC module: Limit the image name to get a fancy layout (Bug #22787)
+   [ Arvid Requate ]
+    * don't wait for uvmm cli process to finish, to avoid blocking of
+      listener (Bug #22778)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Jul 2011 06:48:46 +0200
+
 univention-virtual-machine-manager-daemon (0.9.310-1) unstable; urgency=low
 
   * Redirect stdout and stderr in uvmm-check.sh to prevent cron mails

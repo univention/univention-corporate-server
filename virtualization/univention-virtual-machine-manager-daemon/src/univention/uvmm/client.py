@@ -174,7 +174,7 @@ class UVMM_ClientSSLSocket(UVMM_ClientSocket):
 	certificate = '/etc/univention/ssl/%s/cert.pem' % FQDN
 	cas = '/etc/univention/ssl/ucsCA/CAcert.pem'
 
-	def __init__(self, host, port=2106):
+	def __init__(self, host, port=2106, ssl_timeout=0, tcp_timeout=0):
 		"""Open new SSL encrypted TCP socket to host:port."""
 		try:
 			ctx = SSL.Context(SSL.SSLv23_METHOD)
@@ -185,8 +185,17 @@ class UVMM_ClientSSLSocket(UVMM_ClientSocket):
 			ctx.load_verify_locations(UVMM_ClientSSLSocket.cas)
 
 			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			if tcp_timeout > 0:
+				sock.settimeout(tcp_timeout)
 			self.sock = SSL.Connection(ctx, sock)
 			self.sock.connect((host, port))
+
+			if ssl_timeout > 0:
+				import struct
+				self.sock.setblocking(1)
+				tv = struct.pack('ii', int(ssl_timeout), int(0))
+				self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVTIMEO, tv)
+
 		except socket.error, (errno, msg):
 			raise ClientError(_('Could not connect to "%(host)s:%(port)d": %(errno)d'), host=host, port=port, errno=errno)
 

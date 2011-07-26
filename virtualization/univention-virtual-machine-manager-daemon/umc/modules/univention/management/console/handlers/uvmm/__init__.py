@@ -912,7 +912,11 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				else:
 					buttons = []
 
-				disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], buttons ] )
+				if len(values[ 'image' ])> 40:
+					image_name = umcd.HTML('<p title="%s">%s...</p>' % (values[ 'image' ], values[ 'image' ][0:40]))
+				else:
+					image_name = umcd.HTML('<p title="%s">%s</p>' % (values[ 'image' ], values[ 'image' ]))
+				disk_list.add_row( [ values[ 'type' ], image_name, values[ 'size' ], values[ 'pool' ], buttons ] )
 				if domain_info.os_type in ( 'linux', 'xen' ):
 					first = False
 		drive_sec.add_row( [disk_list ] )
