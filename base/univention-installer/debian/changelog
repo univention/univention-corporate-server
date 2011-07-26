@@ -1,3 +1,9 @@
+univention-installer (7.0.15-2) unstable; urgency=low
+
+  * for domaincontroller_master also set ldap/server/port=7389 (Bug #20026)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Jul 2011 15:01:20 +0200
+
 univention-installer (7.0.15-1) unstable; urgency=low
 
   * set ldap/master/port=7389 (Bug #20026)

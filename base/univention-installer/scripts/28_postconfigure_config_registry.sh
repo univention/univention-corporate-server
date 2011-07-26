@@ -193,7 +193,8 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	if [ -n "$ldap_base" ]; then
 		univention-config-registry set ldap/base="$ldap_base"
 	fi
-	univention-config-registry set ldap/server/ip=$eth0_ip
+	univention-config-registry set ldap/server/ip=$eth0_ip \
+								ldap/server/port=7389
 	univention-config-registry set ldap/server/name=$hostname.$domainname
 	univention-config-registry set ldap/master=$hostname.$domainname
 	univention-config-registry set ldap/master/port=7389
