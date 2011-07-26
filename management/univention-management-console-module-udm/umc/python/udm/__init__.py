@@ -328,6 +328,11 @@ class Instance( Base ):
 		module = self._get_module( request )
 		self.finished( request.id, module.options )
 
+	def policies( self, request ):
+		"""Returns a list of policy types that apply to the given object type"""
+		module = self._get_module( request )
+		self.finished( request.id, module.policies )
+
 	def validate( self, request ):
 		"""Validates the correctness of values for properties of the
 		given object type. Therefor the syntax definition of the properties is used.

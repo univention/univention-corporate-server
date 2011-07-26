@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.69-1) unstable; urgency=low
+
+  * add command udm/policies: returning list of policy types applying to
+    the given object type; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 26 Jul 2011 11:25:03 +0200
+
 univention-management-console-module-udm (1.0.68-1) unstable; urgency=low
 
   * added support for user templates (Bug #22883)

@@ -348,6 +348,13 @@ class UDM_Module( object ):
 
 		return superordinates
 
+	@property
+	def policies( self ):
+		"""Searches in all policy objects for the given object type and
+		returns a list of all matching policy types"""
+
+		return udm_modules.policyTypes( self.name )
+
 	def types4superordinate( self, flavor, superordinate ):
 		"""List of object types for the given superordinate"""
 		types = getattr( self.module, 'wizardtypesforsuper' )

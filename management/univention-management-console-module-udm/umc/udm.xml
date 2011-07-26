@@ -79,6 +79,9 @@
 	<command name="udm/templates" function="templates">
 	  <attribute name="objectType" syntax="String" required="False"/>
 	</command>
+	<command name="udm/policies" function="policies">
+	  <attribute name="objectType" syntax="String" required="True"/>
+	</command>
 	<command name="udm/put" function="put">
 	</command>
 	<command name="udm/add" function="add">
