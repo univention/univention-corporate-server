@@ -3,6 +3,7 @@ File: etc/postfix/main.cf
 Variables: mail/relay
 Variables: hostname
 Variables: domainname
+Variables: mail/smtp/VRFY/disabled
 
 Type: file
 File: etc/aliases

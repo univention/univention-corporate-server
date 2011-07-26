@@ -16,3 +16,8 @@ Description[en]=Enable/Disable the automatic of Postfix
 Type=str
 Categories=service-mail
 
+[mail/smtp/VRFY/disabled]
+Description[de]=Der Wert "yes" deaktiviert das SMTP-Kommando "VRFY" in Postfix.
+Description[en]=If set to "yes" the SMTP command "VRFY" gets disabled in postfix.
+Type=bool
+Categories=service-mail

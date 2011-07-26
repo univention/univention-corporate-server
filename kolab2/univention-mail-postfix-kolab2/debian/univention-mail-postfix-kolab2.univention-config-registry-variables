@@ -52,6 +52,12 @@ Description[en]=Hostname to send in the SMTP EHLO or HELO command.
 Type=str
 Categories=service-mail
 
+[mail/smtp/VRFY/disabled]
+Description[de]=Der Wert "yes" deaktiviert das SMTP-Kommando "VRFY" in Postfix.
+Description[en]=If set to "yes" the SMTP command "VRFY" gets disabled in postfix.
+Type=bool
+Categories=service-mail
+
 [mail/smtpport]
 Description[de]=Port des SMTP-Servers
 Description[en]=Port for SMTP server to use

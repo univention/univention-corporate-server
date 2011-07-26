@@ -95,3 +95,8 @@ if baseConfig['mail/relayauth'] == 'yes':
 	print 'smtp_sasl_security_options = noanonymous'
 	print 'smtp_sasl_password_maps = hash:/etc/postfix/smtp_auth'
 @!@
+
+@!@
+yesno = { True: 'yes', False: 'no' }
+print 'disable_vrfy_command = %s' % yesno.get(configRegistry.is_true('mail/smtp/VRFY/disabled', False))
+@!@

@@ -21,6 +21,7 @@ Variables: postfix/masquerade/domains
 Variables: postfix/masquerade/exceptions
 Variables: postfix/zarafa
 Variables: mail/postfix/ldap/timeout
+Variables: mail/smtp/VRFY/disabled
 
 Type: file
 File: etc/postfix/master.cf

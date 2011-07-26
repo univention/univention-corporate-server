@@ -1,3 +1,9 @@
+univention-mail-postfix (3.0.7-1) unstable; urgency=low
+
+  * added UCR variable mail/smtp/VRFY/disabled (Bug #22835)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 26 Jul 2011 13:29:18 +0200
+
 univention-mail-postfix (3.0.6-1) unstable; urgency=low
 
   * fixed postfix hashbang (Bug #20846)
