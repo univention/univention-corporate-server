@@ -1,3 +1,13 @@
+univention-python-heimdal (4.0.1-1) unstable; urgency=low
+
+  * adjust krb5_get_default_in_tkt_etypes to upstream change for heimdal-1.5
+    https://github.com/heimdal/heimdal/commit/2fbad6432b41f6c20df716051199bb1222baf55b
+    switching to new krb5_get_permitted_enctypes function introduced in
+    https://github.com/heimdal/heimdal/commit/ba5c014af01c2de7c3ef0575d5082e8582d4c574
+    (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Jul 2011 20:44:46 +0200
+
 univention-python-heimdal (4.0.0-3) unstable; urgency=low
 
   * copyright updated for Bug #22520

@@ -63,7 +63,7 @@ krb5ContextObject *context_open(PyObject *unused, PyObject *args)
 		return self;
 }
 
-PyObject *context_get_default_in_tkt_etypes(krb5ContextObject *self, PyObject *args)
+PyObject *context_get_permitted_enctypes(krb5ContextObject *self, PyObject *args)
 {
 	krb5_error_code ret;
 	krb5_enctype *etypes;
@@ -77,7 +77,7 @@ PyObject *context_get_default_in_tkt_etypes(krb5ContextObject *self, PyObject *a
 		goto out;
 	}
 
-	ret = krb5_get_default_in_tkt_etypes(self->context, &etypes);
+	ret = krb5_get_permitted_enctypes(self->context, &etypes);
 	if (ret) {
 		error = 1;
 		krb5_exception(NULL, ret);
@@ -130,6 +130,6 @@ PyTypeObject krb5ContextType = {
 };
 
 static struct PyMethodDef context_methods[] = {
-	{"get_default_in_tkt_etypes", (PyCFunction)context_get_default_in_tkt_etypes, METH_VARARGS, "Return etypes for context"},
+	{"get_permitted_enctypes", (PyCFunction)context_get_permitted_enctypes, METH_VARARGS, "Return etypes for context"},
 	{NULL}
 };
