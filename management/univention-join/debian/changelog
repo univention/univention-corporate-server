@@ -1,3 +1,10 @@
+univention-join (4.0.6-1) unstable; urgency=low
+
+  * set ldap/master/port?7389 in univention-join for all roles
+    except domaincontroller_master and basesystem (Bug #20026)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Jul 2011 14:50:56 +0200
+
 univention-join (4.0.5-1) unstable; urgency=low
 
   * made joinscripthelper.lib dash compliant (Bug #23006)

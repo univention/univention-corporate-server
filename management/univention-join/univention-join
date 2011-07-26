@@ -434,6 +434,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	univention-config-registry set ldap/server/name=$hostname.$domainname >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/server/ip=$interfaces_eth0_address >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/master/port?7389 >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/server/type=slave >>/var/log/univention/join.log 2>&1
 
 
@@ -535,6 +536,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	univention-config-registry set ldap/server/name=$hostname.$domainname >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/server/ip=$interfaces_eth0_address >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/master/port?7389 >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/server/type=slave >>/var/log/univention/join.log 2>&1
 
 	mkdir -p /etc/univention/ssl/ucsCA
@@ -614,6 +616,7 @@ elif [ "$server_role" = "memberserver" ]; then
 	download_host_certificate
 
 	univention-config-registry set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/master/port?7389 >>/var/log/univention/join.log 2>&1
 	cat /etc/ldap/ldap.conf  | sed -e "s|#.*||g" | grep -q TLS_CACERT || echo "TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem" >>/etc/ldap/ldap.conf
 
 	# invalidate the nscd hosts cache
@@ -662,6 +665,7 @@ else
 
 	univention-config-registry set ldap/server/name="$DCNAME" >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/master="$DCNAME" >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/master/port?7389 >>/var/log/univention/join.log 2>&1
 	univention-config-registry set kerberos/adminserver="$DCNAME" >>/var/log/univention/join.log 2>&1
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 	cat /etc/ldap/ldap.conf  | sed -e "s|#.*||g" | grep -q TLS_CACERT || echo "TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem" >>/etc/ldap/ldap.conf
