@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager 0.9.10-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-04-21 11:10+0200\n"
+"POT-Creation-Date: 2011-07-26 09:34+0200\n"
 "PO-Revision-Date: 2011-04-21 10:25+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -66,7 +66,7 @@ msgstr "Kommando \"%(command)s\" ist verboten"
 msgid "Connection options"
 msgstr "Verbindungsoptionen"
 
-#: src/univention/uvmm/client.py:166 src/univention/uvmm/client.py:191
+#: src/univention/uvmm/client.py:166 src/univention/uvmm/client.py:200
 #, python-format
 msgid "Could not connect to \"%(host)s:%(port)d\": %(errno)d"
 msgstr "Keine Verbindung zu \"%(host)s:%(port)d\": %(errno)d"
@@ -288,18 +288,18 @@ msgstr "Aktualisieren der Domäne \"%(domain)s\" fehlgeschlagen"
 msgid "Fork into background"
 msgstr "Abspalten in den Hintergrund"
 
-#: src/univention-virtual-machine-manager:566
+#: src/univention-virtual-machine-manager:568
 #: src/univention-virtual-machine-manager-daemon:192
 msgid "HOST and PORT number of the SSL encrypted TCP socket"
 msgstr "RECHNER und PORT-Nummer für die SSL verschlüsselte TCP Verbindung"
 
-#: src/univention-virtual-machine-manager:563
+#: src/univention-virtual-machine-manager:565
 #: src/univention-virtual-machine-manager-daemon:189
 msgid "HOST and PORT number of the TCP socket"
 msgstr "RECHNER und PORT-Nummer für die TCP Verbindung"
 
-#: src/univention-virtual-machine-manager:562
-#: src/univention-virtual-machine-manager:565
+#: src/univention-virtual-machine-manager:564
+#: src/univention-virtual-machine-manager:567
 #: src/univention-virtual-machine-manager-daemon:188
 #: src/univention-virtual-machine-manager-daemon:191
 msgid "HOST:PORT"
@@ -342,7 +342,7 @@ msgstr "LDAP-Optionen"
 msgid "No SERVICES defined."
 msgstr "Keine Dienste(SERVICES) definiert."
 
-#: src/univention-virtual-machine-manager:581
+#: src/univention-virtual-machine-manager:583
 msgid "No mode specified"
 msgstr "Kein Modus angegeben"
 
@@ -384,7 +384,7 @@ msgstr "PAM Information: %(msg)s"
 msgid "Packet is no UVMM Request: %(type)s"
 msgstr "Paket ist keine UVMM-Anfrage: %(type)s"
 
-#: src/univention-virtual-machine-manager:560
+#: src/univention-virtual-machine-manager:562
 msgid "Path to the UNIX socket"
 msgstr "Pfad zum UNIX-Socket"
 
@@ -407,7 +407,7 @@ msgstr "Pfad zur Log-Datei"
 msgid "Path to the pid-file [%(default)s]"
 msgstr "Pfad zur pid-Datei [%(default)s]"
 
-#: src/univention-virtual-machine-manager:569
+#: src/univention-virtual-machine-manager:571
 #: src/univention-virtual-machine-manager-daemon:213
 msgid "Print additional information"
 msgstr "Ausführliche Informationen ausgeben"
@@ -439,7 +439,7 @@ msgid "Unknown disk type: %(type)d"
 msgstr "Unbekannter Laufwerkstyp: %(type)d"
 
 #: src/univention-virtual-machine-manager:191
-#: src/univention-virtual-machine-manager:583
+#: src/univention-virtual-machine-manager:585
 #, python-format
 msgid "Unknown mode \"%(mode)s\""
 msgstr "Unbekannter Modus \"%(mode)s\""
@@ -480,7 +480,7 @@ msgstr "group != Zeichenkette: %(group)s"
 msgid "hz != int: %(hz)s"
 msgstr "hz != Ganzzahl: %(hz)s"
 
-#: src/univention-virtual-machine-manager:557
+#: src/univention-virtual-machine-manager:559
 msgid "show this help message and exit"
 msgstr "Anzeigen dieses Hilfetextes und beenden"
 
@@ -522,7 +522,7 @@ msgstr "Unbekannter Zustand: %(state)s"
 msgid "uri != string: %(uri)s"
 msgstr "uri != Zeichenkette: %(uri)s"
 
-#: src/univention-virtual-machine-manager:552
+#: src/univention-virtual-machine-manager:554
 #, python-format
 msgid "usage: %%prog [options] {%(modes)s} uri"
 msgstr "Aufruf: %%prog [Optionen] {%(modes)s} uri"
