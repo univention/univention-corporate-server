@@ -1,3 +1,10 @@
+univention-updater (6.0.94-1) unstable; urgency=low
+
+  * fixed traceback in univention-updater if
+    repository/online/component/$comp/version is set (Bug #22530)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 25 Jul 2011 14:23:34 +0200
+
 univention-updater (6.0.93-1) unstable; urgency=low
 
   * preup/postup cleanups for 2.4-3 (Bug #23082)

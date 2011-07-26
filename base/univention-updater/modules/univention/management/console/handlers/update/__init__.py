@@ -752,7 +752,7 @@ class handler(umch.simpleHandler):
 				fn = object.options.get(key)
 				# some security checks
 				if not fn.startswith('/var/log/univention/'):
-					self.finished(object.id(), 'invalid filename%s: access not allowed by UMC module' % fn)
+					self.finished(object.id(), 'invalid filename %s: access not allowed by UMC module' % fn)
 					return
 				else:
 					# create fd if fd is not present

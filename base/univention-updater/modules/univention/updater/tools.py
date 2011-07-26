@@ -1137,6 +1137,10 @@ class UniventionUpdater:
 					mm_versions = self._releases_in_range(start, end)
 				versions |= set(mm_versions)
 			else:
+				if '-' in version:
+					version = UCS_Version(version)
+				else:
+					version = UCS_Version('%s-0' % version)
 				versions.add(version)
 		return versions
 
