@@ -310,6 +310,8 @@ if [ ! -e /etc/runit/univention/univention-virtual-machine-manager-daemon ]; the
 	ln -s /etc/runit/univention-virtual-machine-manager-daemon /etc/runit/univention/univention-virtual-machine-manager-daemon
 fi
 
+invoke-rc.d univention-virtual-machine-manager-daemon restart 
+
 joinscript_save_current_version
 
 exit 0
