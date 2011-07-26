@@ -49,7 +49,6 @@ def getSubnodesByName(node,name):
 class uniconf:
 	def get_input(self):
 		text=self.xvars.get("usertext")
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'search text = %s' % text)
 		if text:
 			return text.strip()
 		else:

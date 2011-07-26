@@ -1,3 +1,9 @@
+univention-webui (4.0.71-1) unstable; urgency=low
+
+  * remove password from debug output (Bug #23029)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 26 Jul 2011 09:53:08 +0200
+
 univention-webui (4.0.70-1) unstable; urgency=low
 
   * added missing "confirm" handling (Bug #23065)
