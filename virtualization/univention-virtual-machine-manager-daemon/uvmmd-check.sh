@@ -48,7 +48,7 @@ if sv status /etc/runit/univention-virtual-machine-manager-daemon | grep ^run: >
 
 		echo "uvmm-check.sh: uvmm does not response like expected. Restarting uvmmd now." >>"$logfile"
 		cat "$tempfile" >> "$logfile"
-		invoke-rc.d univention-virtual-machine-manager-daemon restart
+		invoke-rc.d univention-virtual-machine-manager-daemon restart >/dev/null 2>&1
 	fi
 
 	rm "$tempfile"
