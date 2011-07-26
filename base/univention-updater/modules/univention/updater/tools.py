@@ -507,7 +507,7 @@ class UniventionUpdater:
 				assert self.server.access('')
 			except DownloadError, e:
 				uri, code = e
-				raise ConfigurationError(uri, 'non-existing prefix')
+				raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (str(self.repository_prefix), str(uri)))
 		except ConfigurationError, e:
 			if self.check_access:
 				raise
@@ -1096,30 +1096,35 @@ class UniventionUpdater:
 
 		server = UCSHttpServer(server=server, port=port, prefix='', username=username, password=password)
 		try:
-			# allow None as a component prefix
-			if not prefix:
-				server2 = server + '/univention-repository/'
+			# if prefix.lower() == 'none' ==> use no prefix
+			if prefix and prefix.lower() == 'none':
 				try:
-					assert server2.access('')
-					server = server2
+					assert server.access('')
 				except DownloadError, e:
-					ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-					if self.repository_prefix:
-						server3 = server + self.repository_prefix
-						try:
-							assert server3.access('')
-							server = server3
-						except DownloadError, e:
-							ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-				return server # already validated or implicit /
-			elif prefix.lower() != 'none':
-				server = server + prefix
-			# Validate server settings
-			try:
-				assert server.access('')
-			except DownloadError, e:
-				uri, code = e
-				raise ConfigurationError(uri, 'non-existing prefix')
+					uri, code = e
+					raise ConfigurationError(uri, 'absent prefix forced - component %s not found: %s' % (str(component), str(uri)))
+			else:
+				# build list of possible repository prefixes
+				test_server_list = []
+				test_server_list.append( server + '/univention-repository/' )    # first test
+				if self.repository_prefix:
+					test_server_list.append( server + self.repository_prefix )   # second test (only if repository_prefix is defined)
+				test_server_list.append( server )                                # last guess :-)
+
+				for testserver in test_server_list:
+					if prefix:
+						testserver = testserver + prefix  # append prefix if defined
+
+					try:
+						assert testserver.access('')
+						server = testserver               # testserver is valid ==> save it
+						break                             # server is valid ==> stop loop here; "else" statement will not match
+					except DownloadError, e:
+						ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+						uri, code = e
+				else:
+					raise ConfigurationError(uri, 'non-existing component prefix: %s' % (str(uri)))
+
 		except ConfigurationError, e:
 			if self.check_access:
 				raise

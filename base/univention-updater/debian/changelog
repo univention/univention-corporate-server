@@ -1,3 +1,10 @@
+univention-updater (6.0.95-1) unstable; urgency=low
+
+  * do also test /univention-repository/ and self.repository_prefix for
+    components (Bug #22929)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 26 Jul 2011 10:33:26 +0200
+
 univention-updater (6.0.94-1) unstable; urgency=low
 
   * fixed traceback in univention-updater if
