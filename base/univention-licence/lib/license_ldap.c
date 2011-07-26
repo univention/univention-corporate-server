@@ -27,7 +27,7 @@ int univention_license_ldap_init(void)
 {
 	/*get config from univention-baseconfig*/	
 	ldap_server= univention_config_get_string("ldap/server/name");
-	ldap_port  = univention_config_get_int("ldap/port");
+	ldap_port  = univention_config_get_int("ldap/server/port");
 	
 	/*open ldap connection*/
 	if (ldap_connection == NULL)

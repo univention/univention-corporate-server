@@ -1,3 +1,9 @@
+univention-licence (4.0.1-1) unstable; urgency=low
+
+  * replace ldap/port by ldap/server/port (Bug #20026)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Jul 2011 16:00:58 +0200
+
 univention-licence (4.0.0-3) unstable; urgency=low
 
   * removed deprecated/useless dependency (Bug #22160)
