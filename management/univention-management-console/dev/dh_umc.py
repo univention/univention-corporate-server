@@ -109,8 +109,19 @@ class UMC_Module( dict ):
 		return '%(Javascript)s/' % self
 
 	@property
-	def js_filename( self ):
+	def js_module_file( self ):
 		return '%(Javascript)s/%(Module)s.js' % self
+
+	@property
+	def js_files( self ):
+		for dirname, dirs, files in os.walk( self.js_path ):
+			# ignore .svn directories
+			if '.svn' in dirs:
+				dirs.remove( '.svn' )
+			# we are only interested in .js files
+			for ifile in files:
+				if ifile.endswith('.js'):
+					yield os.path.join(dirname, ifile)
 
 	@property
 	def module_name( self ):

@@ -92,8 +92,18 @@ def do_package( package, core ):
 			install_python.append( 'debian/%(package)s/usr/share/pyshared/univention/management/console/modules/%(Module)s' % module )
 			dh_ucs.doIt( *install_python )
 
-			# copy javascript code
-			dh_ucs.doIt( 'install', module.js_filename, 'debian/%(package)s/usr/share/univention-management-console-frontend/js/umc/modules' % module )
+			# copy javascript files
+			for srcFile in module.js_files:
+				# get destination path
+				destFile = 'debian/%s/usr/share/univention-management-console-frontend/js/umc/modules/%s' % ( package, srcFile[len(module.js_path):] )
+
+				# check whether we need to create the destination dir
+				destDir = os.path.dirname(destFile)
+				if not os.path.exists( destDir ):
+					dh_ucs.doIt( 'install', '-d', destDir )
+
+				# copy the .js file
+				dh_ucs.doIt( 'install', srcFile, destFile )
 
 			# copy XML definitions
 			dh_ucs.doIt( 'install', module.xml_definition, 'debian/%(package)s/usr/share/univention-management-console/modules' % module )

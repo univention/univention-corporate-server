@@ -1,3 +1,9 @@
+univention-management-console (4.0.43-1) unstable; urgency=low
+
+  * added support for multiple javascript module files (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 26 Jul 2011 12:52:47 +0200
+
 univention-management-console (4.0.42-1) unstable; urgency=low
 
   * simplify UMC server implementation
