@@ -31,8 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-set -e
-
 eval "$(univention-config-registry shell hostname domainname server/role)"
 
 univention-config-registry set "uvmm/pool/default/path?/var/lib/libvirt/images" \
@@ -94,6 +92,9 @@ univention-config-registry set auth/uvmmd/accessfile?/etc/security/access-uvmmd.
 #DEBHELPER#
 
 if [ -x /etc/init.d/univention-virtual-machine-manager-daemon ] && [ -d "/etc/runit/univention/univention-virtual-machine-manager-daemon/supervise" ]; then
+    # don't restart too fast
+    sleep 10
+
     if [ "$1" = "configure" ] && [ -z "$2" ]; then
         invoke-rc.d univention-virtual-machine-manager-daemon crestart
     elif [ "$1" = "configure" ] && [ -n "$2" ]; then

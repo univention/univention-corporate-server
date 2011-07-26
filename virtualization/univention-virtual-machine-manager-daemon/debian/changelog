@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.312-1) unstable; urgency=low
+
+  * Don't restart UVMMd too fast (Bug #21935)
+  * Remove set -e from postinst
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Jul 2011 08:04:15 +0200
+
 univention-virtual-machine-manager-daemon (0.9.311-1) unstable; urgency=low
 
   * Merge from DVS scope (Bug #22788, Bug #22786):
