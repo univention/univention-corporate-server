@@ -7,17 +7,24 @@ dojo.require("dijit.layout.ContentPane");
 
 dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widgets._WidgetsInWidgetsMixin, umc.i18n.Mixin ], {
 	// summary:
-	//		
-	// description:
+	//		This class renderes a detail page containing subtabs and form elements
+	//		in order to edit UDM objects.
 
 	// umcpCommand: Function
 	//		Reference to the module specific umcpCommand function.
 	umcpCommand: null,
 
+	// moduleStore: Object
+	//		Reference to the module's module store.
 	moduleStore: null,
 
+	// objectType: String
+	//		The object type of the UDM object that is edited.
 	objectType: null,
 
+	// ldapName: String?
+	//		The LDAP DN of the object that is edited. This property needs not to be set
+	//		when a new object is edited.
 	ldapName: null,
 
 	// newObjectOptions:
