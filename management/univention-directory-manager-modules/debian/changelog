@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.33-1) unstable; urgency=low
+
+  * as the API of get_default_in_tkt_etypes has changed in heimdal-1.5,
+    univention-python-heimdal now uses the API-compatible function
+    get_permitted_enctypes (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Jul 2011 21:01:14 +0200
+
 univention-directory-manager-modules (7.0.32-1) unstable; urgency=low
 
   * add method policy_result to retrieve effective values for a given LDAP

@@ -73,7 +73,7 @@ def krb5_asn1(principal, password, krb5_context=None):
 		password = str( password )
 	if not krb5_context:
 		krb5_context = heimdal.context()
-	for krb5_etype in krb5_context.get_default_in_tkt_etypes():
+	for krb5_etype in krb5_context.get_permitted_enctypes():
 		krb5_principal = heimdal.principal(krb5_context, principal)
 		krb5_keyblock = heimdal.keyblock(krb5_context, krb5_etype, password, krb5_principal)
 		krb5_salt = heimdal.salt(krb5_context, krb5_principal)
