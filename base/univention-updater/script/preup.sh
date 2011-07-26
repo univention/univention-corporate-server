@@ -10,7 +10,6 @@ date >>"$UPDATER_LOG" 2>&1
 
 eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
 
-# Bug #16454: Workaround to remove source.list on failed upgrades
 cleanup () {
 	# remove statoverride for UMC and apache in case of error during preup script
 	if [ -e /usr/sbin/univention-management-console-server ]; then
@@ -24,55 +23,6 @@ cleanup () {
 }
 trap cleanup EXIT
 
-# Bug #21993: Check for suspend KVM instances
-if [ yes != "$update24_ignorekvm" ] && which kvm >/dev/null && which virsh >/dev/null
-then
-	running= suspended= virtio=
-	for vm in $(LC_ALL=C virsh -c qemu:///system list --all | sed -e '1,2d' -nre 's/^ *[-0-9]+ +(.+) (no state|running|idle|paused|in shutdown|shut off|crashed)$/\1/p')
-	do
-		if [ -S "/var/lib/libvirt/qemu/$vm.monitor" ]
-		then
-			running="${running:+$running }'$vm'"
-		elif [ -s "/var/lib/libvirt/qemu/save/$vm.save" ]
-		then
-			suspended="${suspended:+$suspended }'$vm'"
-		fi
-		if grep -q "<target.* bus='virtio'.*/>\|<model.* type='virtio'.*/>" "/etc/libvirt/qemu/$vm.xml"
-		then
-			virtio="${virtio:+$virtio }'$vm'"
-		fi
-	done
-	if [ -n "$running" ] || [ -n "$suspended" ] || [ -n "$virtio" ]
-	then
-		echo "\
-WARNING: Qemu-kvm will be updated to version 0.14, which is incompatible with
-previous versions. Virtual machines running Windows and using VirtIO must be
-updated to use at least version 1.1.16 of the VirtIO driver for Windows.
-
-All virtual machines should be turned off before updating. Please use UVMM or
-virsh to turn off all running and suspended virtual machines.
-
-This check can be disabled by setting the Univention Configuration Registry
-variable \"update24/ignorekvm\" to \"yes\"."
-		if [ -n "$virtio" ]
-		then
-			echo "VMs using virtio: $virtio" | fmt
-		fi
-		if [ -n "$running" ]
-		then
-			echo "Running VMs: $running" | fmt
-		fi
-		if [ -n "$suspended" ]
-		then
-			echo "Suspended VMs: $suspended" | fmt
-		fi
-	fi
-	if [ -n "$running" ] || [ -n "$suspended" ]
-	then
-		exit 1
-	fi
-fi
-
 ###########################################################################
 # RELEASE NOTES SECTION (Bug #19584)
 # Please update URL to release notes and changelog on every release update
@@ -81,7 +31,7 @@ echo
 echo "HINT:"
 echo "Please check the following documents carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
 #echo "Release Notes: http://download.univention.de/doc/release-notes-2.4.pdf"
-echo "Changelog: http://download.univention.de/doc/changelog-2.4-2.pdf"
+echo "Changelog: http://download.univention.de/doc/changelog-2.4-3.pdf"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
