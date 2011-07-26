@@ -1185,7 +1185,7 @@ $sa_timeout = 300;         # default is 120 seconds
 # AWL (auto whitelisting), requires spamassassin 2.44 or better
 # $sa_auto_whitelist = 1;   # defaults to undef
 
-$sa_mail_body_size_limit = 150*1024;  # don't waste time on SA is mail is larger
+$sa_mail_body_size_limit = @%@mail/antispam/bodysizelimit@%@*1024;  # don't waste time on SA is mail is larger
                             # (less than 1% of spam is > 64k)
                             # default: undef, no limitations
 

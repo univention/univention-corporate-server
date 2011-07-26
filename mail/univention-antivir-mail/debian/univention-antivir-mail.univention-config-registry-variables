@@ -15,3 +15,9 @@ Description[de]=Automatischer Start des Virenscanner Updaters
 Description[en]=Automatically start of the antivirus update daemon
 Type=str
 Categories=service-mail,system-services
+
+[mail/antispam/bodysizelimit]
+Description[de]=Größenlimit für die SPAM-Prüfung (KiB)
+Description[en]=Sizelimit for spam check (KiB)
+Type=str
+Categories=service-mail
