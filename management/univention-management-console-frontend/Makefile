@@ -77,7 +77,7 @@ build-dev: build-common
 	@# symlinks for UMC code
 	cp -rfs "$(CURDIR)/umc" "$(buildDir)/js"
 	@# symlinks for installed modules/icons
-	cp -fs /usr/share/univention-management-console-frontend/js/umc/modules/*.js $(buildDir)/js/umc/modules
+	cp -frs /usr/share/univention-management-console-frontend/js/umc/modules/* $(buildDir)/js/umc/modules
 	cp -frs /usr/share/univention-management-console-frontend/images/icons/* $(buildDir)/images/icons/
 
 build-common: i18n

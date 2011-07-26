@@ -1,3 +1,10 @@
+univention-management-console-frontend (0.0.88-1) unstable; urgency=low
+
+  * for target "build-dev": copy existing JavaScript modules recursively
+    (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 26 Jul 2011 13:45:25 +0200
+
 univention-management-console-frontend (0.0.87-1) unstable; urgency=low
 
   * added functionality for blocking onChange events
