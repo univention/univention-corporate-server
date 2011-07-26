@@ -1,5 +1,5 @@
---- /usr/share/horde3/turba/lib/Driver.php.orig 2011-03-30 13:14:53.000000000 +0200
-+++ /usr/share/horde3/turba/lib/Driver.php      2011-03-30 13:14:57.000000000 +0200
+--- a/horde-webmail/turba/lib/Driver.php.orig 2011-03-30 13:14:53.000000000 +0200
++++ b/horde-webmail/turba/lib/Driver.php      2011-03-30 13:14:57.000000000 +0200
 @@ -444,6 +444,12 @@
              foreach ($this->map as $key => $val) {
                  if (!is_array($val)) {
