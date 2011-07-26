@@ -154,6 +154,67 @@ if [ ! "$update_lilo_check" = "no" -a ! "$update_lilo_check" = "false" -a ! "$up
 	fi
 fi
 
+# BEGIN -- update to 3.0-0 Bug #22878
+# first, test if univention-thin-client-basesystem is installed (UCS TCS or UCS with thin-client packages)
+# second, activate tcs component (thin client services are now only available via component tcs)
+# test if component is available (with univention.updater)
+checkTcsComponent=$(ucr get update/check/component/tcs)
+tcsInstalled=false
+if [ -n "$checkTcsComponent" -a "$checkTcsComponent" = "no" ]; then
+	continue
+else
+	if [ "$(dpkg-query -W -f='${Status}\n' univention-thin-client-basesystem 2>/dev/null)" = "install ok installed" ]; then
+		tcsInstalled=true
+	fi
+fi
+if [ "$tcsInstalled" = "true" ]; then
+	# activate component
+	univention-config-registry set \
+		repository/online/component/tcs=yes \
+		repository/online/component/tcs/version=current
+
+	# check if component is available in ucs 3.0-0
+	updateError=$(mktemp)
+	scope=$(python2.6 -c '
+#!/usr/bin/python2.6
+
+from univention.updater import UniventionUpdater, UCS_Version
+from univention.updater.tools import LocalUpdater
+import univention.config_registry
+import sys
+
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
+yes = ["enabled", "true", "1", "yes", "enable"]
+scope = "tcs"
+version = "3.0"
+
+if configRegistry.get("repository/online/component/%s" % scope, "").lower() in yes:
+	available = []
+	updater = UniventionUpdater()
+	available += updater.get_component_repositories(scope, [version])
+	updater = LocalUpdater()
+	available += updater.get_component_repositories(scope, [version])
+	if not available:
+		sys.exit(1)
+sys.exit(0)
+' 2>$updateError)
+	
+	# component tcs in 3.0 not found, -> abort the update
+	if [ ! $? -eq 0 ]; then
+		if [ -s $updateError ]; then
+			echo "WARNING: Traceback in UniventionUpdater() python module:"
+			cat $updateError
+		fi
+		echo "WARNING: An update to UCS 3.0 without the component 'tcs' is"
+		echo "         not possible because the component 'tcs' is required."
+		exit 1
+	fi
+	rm $updateError
+fi
+# END -- update to 3.0-0 Bug #22878
+
+
 # call custom preup script if configured
 if [ ! -z "$update_custom_preup" ]; then
 	if [ -f "$update_custom_preup" ]; then

@@ -1,3 +1,10 @@
+univention-updater (7.0.5-1) unstable; urgency=low
+
+  * abort update if ucs tcs is installed and not 
+    available for the update version (Bug #22878)
+
+ -- Felix Botner <botner@univention.de>  Tue, 26 Jul 2011 08:36:14 +0200
+
 univention-updater (7.0.4-1) unstable; urgency=low
 
   * abort update if lilo and/or univention-lilo is installed 
