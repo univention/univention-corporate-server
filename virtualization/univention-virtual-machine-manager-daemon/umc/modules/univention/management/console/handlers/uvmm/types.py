@@ -94,7 +94,41 @@ class SearchOptions( umc.StaticSelection ):
 class KBLayoutSelect( umc.StaticSelection ):
 	"""List of keyboard layouts."""
 	def choices( self ):
-		return ( ( 'de', _( 'German' ) ), ( 'en-us', _( 'American' ) ) )
+		return (
+				('ar', _('Arabic')),
+				('da', _('Danish')),
+				('de', _('German')),
+				('de-ch', _('German-Switzerland')),
+				('en-gb', _('English-Britain')),
+				('en-us', _('English-America')),
+				('es', _('Spanish')),
+				('et', _('Estonian')),
+				('fi', _('Finnish')),
+				('fo', _('Faroese')),
+				('fr', _('French')),
+				('fr-be', _('French-Belgium')),
+				('fr-ca', _('French-Canada')),
+				('fr-ch', _('French-Switzerland')),
+				('hr', _('Croatian')),
+				('hu', _('Hungarian')),
+				('is', _('Icelandic')),
+				('it', _('Italian')),
+				('ja', _('Japanese')),
+				('lt', _('Lithuanian')),
+				('lv', _('Latvian')),
+				('mk', _('Macedonian')),
+				('nl', _('Dutch')),
+				('nl-be', _('Dutch-Belgium')),
+				('no', _('Norwegian')),
+				('pl', _('Polish')),
+				('pt', _('Portuguese')),
+				('pt-br', _('Portuguese-Brasil')),
+				('ru', _('Russian')),
+				('sl', _('Slovene')),
+				('sv', _('Swedish')),
+				('th', _('Thai')),
+				('tr', _('Turkish')),
+				)
 
 class BootDeviceSelect( umc.StaticSelection ):
 	"""List of devices to boot from."""

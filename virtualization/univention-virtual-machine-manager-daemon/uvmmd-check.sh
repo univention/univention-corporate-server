@@ -30,29 +30,27 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(ucr shell uvmm/check/timeout)"
-
 logfile="/var/log/univention/virtual-machine-manager-daemon-errors.log"
-tempfile="$(mktemp)"
 
 if sv status /etc/runit/univention-virtual-machine-manager-daemon | grep ^run: > /dev/null 2>&1; then
+	tempfile="$(mktemp)"
+	trap "rm -f '$tempfile'" EXIT
+
 	uvmm groups >"$tempfile" 2>&1 &
+	pid=$!
 
-	timeout=${uvmm_check_timeout:-5}
-	sleep ${timeout}s
+	eval "$(univention-config-registry shell uvmm/check/timeout)"
+	sleep ${uvmm_check_timeout:-5}s
 
-	grep -q "^DATA:" "$tempfile"
-	if [ "$?" != 0 ]; then
+	if ! grep -q "^DATA:" "$tempfile"
+	then
 		# Kill the uvmm process
-		pkill -P $$ uvmm
+		kill $pid
 
 		echo "uvmm-check.sh: uvmm does not response like expected. Restarting uvmmd now." >>"$logfile"
 		cat "$tempfile" >> "$logfile"
 		invoke-rc.d univention-virtual-machine-manager-daemon restart >/dev/null 2>&1
 	fi
-
-	rm "$tempfile"
-
 fi
 
 exit 0

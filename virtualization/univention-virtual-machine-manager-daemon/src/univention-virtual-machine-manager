@@ -426,8 +426,10 @@ class Client(object):
 		for graphics in root.find('devices').findall('graphics'):
 			g = Graphic()
 			g.type = g.map_type(name=graphics.attrib['type'])
-			try: g.port = graphics.attrib['port']
+			try: g.port = int(graphics.attrib['port'])
 			except KeyError: pass
+			except ValueError: pass
+			except TypeError: pass
 			try: g.autoport = graphics.attrib['autoport'] == 'yes'
 			except KeyError: pass
 			try: g.keymap = graphics.attrib['keymap']
