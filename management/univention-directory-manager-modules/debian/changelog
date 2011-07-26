@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.32-1) unstable; urgency=low
+
+  * add method policy_result to retrieve effective values for a given LDAP
+    object
+  * code clean up; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 26 Jul 2011 17:20:00 +0200
+
 univention-directory-manager-modules (7.0.31-1) unstable; urgency=low
 
   * minor fixes in modules.policyTypes; Bug #22439

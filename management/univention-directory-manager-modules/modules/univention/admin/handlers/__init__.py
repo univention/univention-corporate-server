@@ -2291,13 +2291,9 @@ class simplePolicy(simpleLdap):
 					   layout = [ '_view_referencing_objects' ] )
 			self.layout.append( tab )
 
-	def primary_group(self):
-		simpleLdap.primary_group( self )
-
-	def update_groups(self):
-		simpleLdap.update_groups( self )
-
 	def copyIdentifier(self, from_object):
+		"""Activate the result mode and set the referring object"""
+
 		self.resultmode=1
 		for key, property in from_object.descriptions.items():
 			if property.identifies:
@@ -2309,14 +2305,17 @@ class simplePolicy(simpleLdap):
 			self.referring_object_dn=from_object.position.getDn()
 		self.referring_object_position_dn=from_object.position.getDn()
 
-	def clone(self, referring_object):
-		self.cloned=self.dn
-		self.dn=''
-		self.copyIdentifier(referring_object)
+	def clone (self, referring_object ):
+		"""Marks the object as a not existing one containing values
+		retrieved by evaluating the policies for the given object"""
+
+		self.cloned = self.dn
+		self.dn = ''
+		self.copyIdentifier( referring_object )
 
 	def getIdentifier(self):
 		for key, property in self.descriptions.items():
-			if property.identifies and self.info.has_key(key) and self.info[key]:
+			if property.identifies and key in self.info and self.info[ key ]:
 				return key
 
 	def __makeUnique(self):
@@ -2348,6 +2347,31 @@ class simplePolicy(simpleLdap):
 			self.__makeUnique()
 			self.create()
 
+	def policy_result( self ):
+		"""This method retrieves the policy values currently effective
+		for this object. If the 'resultmode' is not active the evaluation
+		is cancelled."""
+
+		if not self.resultmode:
+			return
+
+		values = {}
+		self.polinfo_more={}
+		if not self.policy_attrs:
+			if not self.referring_object_dn == self.referring_object_position_dn:
+				result = self.lo.getPolicies(self.lo.parentDn(self.referring_object_dn), policies=[], attrs={}, result={}, fixedattrs={})
+			else:
+				result = self.lo.getPolicies(self.referring_object_position_dn, policies=[], attrs={}, result={}, fixedattrs={})
+			for policy_oc, attrs in result.items():
+				if univention.admin.objects.ocToType(policy_oc) == self.module:
+					self.policy_attrs=attrs
+
+		for attr_name, value_dict in self.policy_attrs.items():
+			values[ attr_name ] = value_dict[ 'value' ]
+			self.polinfo_more[ self.mapping.unmapName( attr_name ) ] = value_dict
+
+		self.polinfo = univention.admin.mapping.mapDict( self.mapping, values )
+
 	def __getitem__(self, key):
 		if not self.resultmode:
 			if self.has_key('emptyAttributes') and self.mapping.mapName(key) and self.mapping.mapName(key) in simpleLdap.__getitem__(self,'emptyAttributes'):
@@ -2359,23 +2383,9 @@ class simplePolicy(simpleLdap):
 			return simpleLdap.__getitem__(self, key)
 
 		dict={}
-		self.polinfo_more={}
+		self.policy_result()
 
-		if not self.policy_attrs:
-			if not self.referring_object_dn == self.referring_object_position_dn:
-				result=self.lo.getPolicies(self.lo.parentDn(self.referring_object_dn), policies=[], attrs={}, result={}, fixedattrs={})
-			else:
-				result=self.lo.getPolicies(self.referring_object_position_dn, policies=[], attrs={}, result={}, fixedattrs={})
-			for policy_oc, attrs in result.items():
-				if univention.admin.objects.ocToType(policy_oc) == self.module:
-					self.policy_attrs=attrs
-		for attr_name, value_dict in self.policy_attrs.items():
-			dict[attr_name]=value_dict['value']
-			self.polinfo_more[self.mapping.unmapName(attr_name)]=value_dict
-
-		self.polinfo=univention.admin.mapping.mapDict(self.mapping, dict)
-
-		if (self.polinfo.has_key(key) and not (self.info.has_key(key) or self.oldinfo.has_key(key))) or (self.polinfo_more.has_key(key) and self.polinfo_more[key].has_key( 'fixed' ) and self.polinfo_more[key]['fixed']):
+		if ( key in self.polinfo and not ( key in self.info or key in self.oldinfo ) ) or ( key in self.polinfo_more and 'fixed' in self.polinfo_more[ key ] and self.polinfo_more[ key ][ 'fixed' ] ):
 			if self.descriptions[key].multivalue and not type(self.polinfo[key]) == types.ListType:
 				# why isn't this correct in the first place?
 				self.polinfo[key]=[self.polinfo[key]]
@@ -2427,22 +2437,7 @@ class simplePolicy(simpleLdap):
 			return
 
 		dict={}
-		self.polinfo_more={}
-
-		if not self.policy_attrs:
-			if not self.referring_object_dn == self.referring_object_position_dn:
-				result=self.lo.getPolicies(self.lo.parentDn(self.referring_object_dn))
-			else:
-				result=self.lo.getPolicies(self.referring_object_position_dn)
-			for policy_oc, attrs in result.items():
-				if univention.admin.objects.ocToType(policy_oc) == self.module:
-					self.policy_attrs=attrs
-		for attr_name, value_dict in self.policy_attrs.items():
-			dict[attr_name]=value_dict['value']
-			self.polinfo_more[self.mapping.unmapName(attr_name)]=value_dict
-
-		self.polinfo=univention.admin.mapping.mapDict(self.mapping, dict)
-
+		self.policy_result()
 
 		if self.polinfo.has_key(key):
 
