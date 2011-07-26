@@ -1,6 +1,7 @@
 univention-management-console-module-udm (1.0.70-1) unstable; urgency=low
 
   * added documentation and translations to the JavaScript UDM part 
+  * refactorization into separate files
     (Bug #22883)
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 26 Jul 2011 11:40:27 +0200
