@@ -372,6 +372,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	createDetailPage: function(objectType, ldapName, newObjOptions) {
+		// summary:
+		//		Creates and views the detail page for editing UDM objects.
+
 		this._detailPage = new umc.modules._udm.DetailPage({
 			umcpCommand: dojo.hitch(this, 'umcpCommand'),
 			moduleStore: this.moduleStore,
@@ -385,6 +388,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	closeDetailPage: function() {
+		// summary:
+		//		Closes the detail page for editing UDM objects.
+
 		this.selectChild(this._searchPage);
 		if (this._detailPageCloseHandle) {
 			dojo.disconnect(this._detailPageCloseHandle);
