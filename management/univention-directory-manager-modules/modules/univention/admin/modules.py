@@ -842,20 +842,20 @@ def policies():
 		policies.append(univention.admin.policiesGroup(id=groupname, members=members))
 	return policies
 
-def policyTypes(module):
-	if not module:
-		return
+def policyTypes( module_name ):
+	"""Returns a list of policy types applying to the given module"""
 	global modules
+
 	res=[]
-	for mod in modules.values():
-		if not name(mod).startswith('policies'):
+
+	if not module_name or not module_name in modules:
+		return res
+	for name, module in modules.items():
+		if not name.startswith( 'policies/' ) or not hasattr( module, 'policy_apply_to' ):
 			continue
-		if not hasattr(mod, 'policy_apply_to'):
-			continue
-		if name(module) in mod.policy_apply_to:
-			res.append(name(mod))
-	if not res:
-		pass
+		if module_name in module.policy_apply_to:
+			res.append( name )
+
 	return res
 
 def policyPositionDnPrefix(module_name):

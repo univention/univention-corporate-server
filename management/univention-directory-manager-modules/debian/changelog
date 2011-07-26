@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.31-1) unstable; urgency=low
+
+  * minor fixes in modules.policyTypes; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 26 Jul 2011 11:25:42 +0200
+
 univention-directory-manager-modules (7.0.30-5) unstable; urgency=low
 
   * fix ucslint errors (bashisms); Bug #22439
