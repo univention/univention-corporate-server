@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (3.0.26-1) unstable; urgency=low
+
+  * add missing dependency python-pexpect to univention-mail-cyrus-kolab2 (Bug #22981)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 26 Jul 2011 11:36:05 +0200
+
 univention-mail-cyrus-kolab2 (3.0.25-1) unstable; urgency=low
 
   * fixed renaming of folder subscriptions in
