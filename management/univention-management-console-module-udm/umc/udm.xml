@@ -96,5 +96,10 @@
 	</command>
 	<command name="udm/nav/object/query" function="nav_object_query">
 	</command>
+	<command name="udm/object/policies" function="object_policies">
+	  <attribute name="objectType" syntax="String" required="True"/>
+	  <attribute name="objectDN" syntax="String" required="True"/>
+	  <attribute name="policyType" syntax="String" required="True"/>
+	</command>
   </module>
 </umc>

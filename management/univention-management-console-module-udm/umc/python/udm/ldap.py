@@ -191,11 +191,14 @@ class UDM_Module( object ):
 		except udm_errors.base, e:
 			raise UDM_Error( str( e ) )
 
-	def get( self, ldap_dn ):
+	def get( self, ldap_dn = None ):
 		"""Retrieves details for a given LDAP object"""
 		lo, po = get_ldap_connection()
-		obj = self.module.object( None, lo, None, ldap_dn )
-		obj.open()
+		if ldap_dn is not None:
+			obj = self.module.object( None, lo, None, ldap_dn )
+			obj.open()
+		else:
+			obj = self.module.object( None, lo, None )
 
 		return obj
 
@@ -212,6 +215,11 @@ class UDM_Module( object ):
 	def title( self ):
 		"""Descriptive name of the UDM module"""
 		return getattr( self.module, 'short_description', self.module.module )
+
+	@property
+	def description( self ):
+		"""Descriptive text of the UDM module"""
+		return getattr( self.module, 'long_description', '' )
 
 	@property
 	def identifies( self ):
@@ -321,7 +329,7 @@ class UDM_Module( object ):
 
 	@property
 	def template( self ):
-		"""List of UMD module names of templates"""
+		"""List of UDM module names of templates"""
 		return getattr( self.module, 'template', None )
 
 	@property
@@ -353,7 +361,12 @@ class UDM_Module( object ):
 		"""Searches in all policy objects for the given object type and
 		returns a list of all matching policy types"""
 
-		return udm_modules.policyTypes( self.name )
+		policies = []
+		for policy in udm_modules.policyTypes( self.name ):
+			module = UDM_Module( policy )
+			policies.append( { 'objectType' : policy, 'label' : module.title, 'description' : module.description } )
+
+		return policies
 
 	def types4superordinate( self, flavor, superordinate ):
 		"""List of object types for the given superordinate"""

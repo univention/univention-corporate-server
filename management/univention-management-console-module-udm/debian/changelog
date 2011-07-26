@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.72-1) unstable; urgency=low
+
+  * udm/policies: return object type, name and description per policy
+  * add udm/object/policies: return effective values of a specific policy
+    type for a given LDAP object; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 26 Jul 2011 17:18:43 +0200
+
 univention-management-console-module-udm (1.0.71-1) unstable; urgency=low
 
   * refactorization of the UDM object detail page into a separate class

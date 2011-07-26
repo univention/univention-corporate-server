@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import copy
+
 from univention.management.console import Translation
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
@@ -416,3 +418,37 @@ class Instance( Base ):
 				continue
 			entries.append( { 'ldap-dn' : obj.dn, 'objectType' : module.name, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) } )
 		self.finished( request.id, entries )
+
+	def object_policies( self, request ):
+		object_type = request.options.get( 'objectType' )
+		if not object_type:
+			raise UMC_OptionMissing( 'The object type is missing' )
+		object_dn = request.options.get( 'objectDN' )
+		if not object_dn:
+			raise UMC_OptionMissing( 'The object LDAP DN is missing' )
+		policy_type = request.options.get( 'policyType' )
+		if not object_dn:
+			raise UMC_OptionMissing( 'The policy type is missing' )
+
+		module = UDM_Module( object_type )
+		if module.module is None:
+			raise UMC_OptionTypeError( 'The given object type is not valid' )
+
+		obj = module.get( object_dn )
+		if obj is None:
+			raise UMC_OptionTypeError( 'The object could not be found' )
+
+		policy_module = UDM_Module( policy_type )
+		if policy_module.module is None:
+			raise UMC_OptionTypeError( 'The given policy type is not valid' )
+
+		policy_obj = policy_module.get()
+		policy_obj.clone( obj )
+		policy_obj.policy_result()
+
+		infos = copy.copy( policy_obj.polinfo_more )
+		for key, value in infos.items():
+			infos[ key ][ 'value' ] = policy_obj.polinfo[ key ]
+		self.finished( request.id, infos )
+
+

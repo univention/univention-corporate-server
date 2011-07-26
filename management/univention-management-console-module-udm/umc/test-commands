@@ -77,3 +77,9 @@ umc-client -U root -P univention COMMAND udm/nav/container/query -f users/user -
 
 # list objects of a given container
 umc-client -U root -P univention COMMAND udm/nav/object/query -f users/user -o container=cn=univention,dc=univention,dc=qa
+
+# policy types for given object type
+umc-client -t -U root -P univention COMMAND udm/policies -o objectType=users/user
+
+# effective values of a specific policy tpye for a given object
+umc-client -t -U root -P univention COMMAND udm/object/policies -o objectType=users/user -o policyType=policies/pwhistory -o objectDN=uid=Administrator,cn=users,dc=univention,dc=qa
