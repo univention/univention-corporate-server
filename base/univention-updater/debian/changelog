@@ -1,3 +1,10 @@
+univention-updater (6.0.96-1) unstable; urgency=low
+
+  * use correct component server when downloading component's
+    preup.sh/postup.sh into local repository (Bug #23084)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 26 Jul 2011 10:41:53 +0200
+
 univention-updater (6.0.95-1) unstable; urgency=low
 
   * do also test /univention-repository/ and self.repository_prefix for

@@ -96,16 +96,16 @@ class UniventionMirror( UniventionUpdater ):
 		parts = self.parts
 		archs = ('all',)
 
-		repos = self._iterate_version_repositories(start, end, parts, archs)
+		repos = self._iterate_version_repositories(start, end, parts, archs) # returns generator
 
 		end_sec = UCS_Version((end.major, end.minor, 99)) # get all available for mirror
 		hotfixes = self.hotfixes
-		sec = self._iterate_security_repositories(start, end_sec, parts, archs, hotfixes)
+		sec = self._iterate_security_repositories(start, end_sec, parts, archs, hotfixes) # returns generator
 
 		components = self.get_components()
-		comp = self._iterate_component_repositories(components, start, end, archs)
+		comp = self._iterate_component_repositories(components, start, end, archs, for_mirror_list=True) # returns generator
 
-		all_repos = itertools.chain(repos, sec, comp)
+		all_repos = itertools.chain(repos, sec, comp) # concatenate all generators into a single one
 		for server, struct, phase, path, script in UniventionUpdater.get_sh_files(all_repos):
 			assert script is not None, 'No script'
 			filename = os.path.join(self.repository_path, 'mirror', path)
