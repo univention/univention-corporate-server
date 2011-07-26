@@ -17,24 +17,62 @@ dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.SearchForm");
 dojo.require("umc.widgets.Text");
 
+dojo.require("umc.modules._udm.Template");
+dojo.require("umc.modules._udm.NewObjectDialog");
+dojo.require("umc.modules._udm.TreeModel");
+
 dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// summary:
-	//		Module for handling UDM modules
+	//		Module to interface (Univention Directory Manager) UDM objects.
+	// description:
+	//		This class offers a GUI interface to query and manipulate the different types
+	//		of UDM objects. UDM objects have different properties and functions, however,
+	//		the way they are displayed is rudimentary similar across the different types.
+	//		This class is meant to be used (a) either to interface a particular UDM type
+	//		(users, groups, computers, ...) or (b) to display a navigation interface which 
+	//		shows the container hierarchy on the left side and existing UDM objects of
+	//		any type on the search list. The class' behaviour is controlled by the moduleFlavor
+	//		property (which is set automatically when available modules are queried during
+	//		the initialization).
 
-	// the property field that acts as unique identifier
+	// the property field that acts as unique identifier: the LDAP DN
 	idProperty: 'ldap-dn',
 
+	// internal reference to the search page
 	_searchPage: null,
+
+	// internal reference to the formular containing all form widgets of an UDM object
 	_detailForm: null,
+
+	// internal reference to the page containing the subtabs for object properties
 	_detailTabs: null,
 
-	_receivedObjFormData: null,
+	// object properties as they are received from the server
 	_receivedObjOrigData: null,
+
+	// initial object properties as they are represented by the form
+	_receivedObjFormData: null,
+
+	// dict containing options for creating a new UDM object (chosen by the user 
+	// in the 'add object' dialog)
 	_newObjOptions: null,
+
+	// UDM object type of the current edited object
 	_editedObjType: null,
+
+	// dict that saves which form element is displayed on which subtab
+	// (used to display user input errors)
 	_propertySubTabMap: null,
+
+	// array that stores extra references to all sub tabs
+	// (necessary to reset change sub tab titles [when displaying input errors])
 	_detailPages: null,
+
+	// reference to a dijit.Tree instance which is used to display the container
+	// hierarchy for the UDM navigation module
 	_tree: null,
+
+	// reference to the template object in order to monitor user input changes
 	_template: null,
 
 	buildRendering: function() {
@@ -43,7 +81,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		if ('navigation' == this.moduleFlavor) {
 			// for the UDM navigation, we do not need to query
-			this._renderSearchPage();
+			this.renderSearchPage();
 		}
 		else {
 			// render search page, we first need to query lists of containers/superodinates
@@ -54,31 +92,16 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			])).then(dojo.hitch(this, function(results) {
 				var containers = results[0][0] ? results[0][1] : [];
 				var superordinates = results[1][0] ? results[1][1] : [];
-				this._renderSearchPage(containers.result, superordinates.result);
+				this.renderSearchPage(containers.result, superordinates.result);
 			}));
 		}
 	},
 
-	_iconFormatter: function(value, rowIndex) {
-		// get the iconNamae
-		var item = this._grid._grid.getItem(rowIndex);
-		var iconName = item.objectType || '';
-		iconName = iconName.replace('/', '-');
-		
-		// create an HTML image that contains the icon (if we have a valid iconName)
-		var result = value;
-		if (iconName) {
-			result = dojo.string.substitute('<img src="images/icons/16x16/udm-${icon}.png" height="${height}" width="${width}" style="float:left; margin-right: 5px" /> ${value}', {
-				icon: iconName, //dojo.moduleUrl("dojo", "resources/blank.gif").toString(),
-				height: '16px',
-				width: '16px',
-				value: value
-			});
-		}
-		return result;
-	},
+	renderSearchPage: function(containers, superordinates) {
+		// summary:
+		//		Render all GUI elements for the search formular, the grid, and the side-bar
+		//		for the UMD navigation.
 
-	_renderSearchPage: function(containers, superordinates) {
 		// setup search page
 		this._searchPage = new dijit.layout.BorderContainer({
 			design: 'sidebar'
@@ -93,7 +116,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var actions = [{
 			name: 'add',
 			label: this._( 'Add' ),
-			description: this._( 'Adding a new LDAP object.' ),
+			description: this._( 'Adding a new UDM object.' ),
 			iconClass: 'dijitIconNewTask',
 			isContextAction: false,
 			isStandardAction: true,
@@ -101,19 +124,19 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'edit',
 			label: this._( 'Edit' ),
-			description: this._( 'Edit the LDAP object.' ),
+			description: this._( 'Edit the UDM object.' ),
 			iconClass: 'dijitIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
 			callback: dojo.hitch(this, function(ids, items) {
 				if (items.length && items[0].objectType) {
-					this._createDetailPage(items[0].objectType, ids[0]);
+					this.createDetailPage(items[0].objectType, ids[0]);
 				}
 			})
 		}, {
 			name: 'delete',
 			label: this._( 'Delete' ),
-			description: this._( 'Deleting the selected LDAP object.' ),
+			description: this._( 'Deleting the selected UDM object.' ),
 			iconClass: 'dijitIconDelete',
 			callback: dojo.hitch(this, function(ids) {
 				// ignore empty selections
@@ -140,12 +163,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var columns = [{
 			name: 'name',
 			label: this._( 'Name' ),
-			description: this._( 'Name of the LDAP object.' ),
-			formatter: dojo.hitch(this, '_iconFormatter')
+			description: this._( 'Name of the UDM object.' ),
+			formatter: dojo.hitch(this, 'iconFormatter')
 		}, {
 			name: 'path',
 			label: this._('Path'),
-			description: this._( 'Path of the LDAP object.' ),
+			description: this._( 'Path of the UDM object.' ),
 			editable: true
 		}];
 
@@ -204,7 +227,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				widgets.push({
 					type: 'ComboBox',
 					name: 'container',
-					description: this._( 'The LDAP container in which the query is executed.' ),
+					description: this._( 'The container in which the query is executed.' ),
 					label: this._('Container'),
 					value: containers[0].id || containers[0],
 					staticValues: containers,
@@ -218,7 +241,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			widgets = widgets.concat([{
 				type: 'ComboBox',
 				name: 'objectType',
-				description: this._( 'The type of the LDAP object.' ),
+				description: this._( 'The type of the UDM object.' ),
 				label: this._('Object type'),
 				value: objTypes.length ? this.moduleFlavor : undefined,
 				staticValues: objTypes,
@@ -257,7 +280,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// generate the navigation pane for the navigation module
 		if ('navigation' == this.moduleFlavor) {
-			var model = new umc.modules.udm._TreeModel({
+			var model = new umc.modules._udm.TreeModel({
 				umcpCommand: umcpCmd
 			});
 			this._tree = new dijit.Tree({
@@ -289,7 +312,52 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._searchPage.startup();
 	},
 
-	_createDetailPage: function(objectType, ldapName) {
+	iconFormatter: function(value, rowIndex) {
+		// summary:
+		//		Formatter method that adds in a given column of the search grid icons 
+		//		according to the object types.
+
+		// get the iconNamae
+		var item = this._grid._grid.getItem(rowIndex);
+		var iconName = item.objectType || '';
+		iconName = iconName.replace('/', '-');
+		
+		// create an HTML image that contains the icon (if we have a valid iconName)
+		var result = value;
+		if (iconName) {
+			result = dojo.string.substitute('<img src="images/icons/16x16/udm-${icon}.png" height="${height}" width="${width}" style="float:left; margin-right: 5px" /> ${value}', {
+				icon: iconName,
+				height: '16px',
+				width: '16px',
+				value: value
+			});
+		}
+		return result;
+	},
+
+	filter: function(vals) {
+		// summary:
+		//		Send a new query with the given filter options as specified in the search form
+		//		and (for the UDM navigation) the selected container.
+
+		if ('navigation' == this.moduleFlavor) {
+			var items = this._tree.get('selectedItems');
+			if (items.length) {
+				this._grid.filter({
+					container: items[0].id
+				});
+			}
+		}
+		else {
+			this._grid.filter(vals);
+		}
+	},
+
+	createDetailPage: function(objectType, ldapName) {
+		// summary:
+		//		Query necessary information from the server for the object detail page
+		//		and initiate the rendering process.
+
 		// remember the objectType of the object we are going to edit
 		this._editedObjType = objectType;
 
@@ -312,12 +380,16 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			var properties = results[0][1];
 			var layout = results[1][1];
 			var template = results.length > 2 ? results[2][1].result : null;
-			this._renderDetailPage(properties.result, layout.result, template);
+			this.renderDetailPage(properties.result, layout.result, template);
 			this.showDetailPage(ldapName);
 		}));
 	},
 
-	_renderDetailPage: function(_properties, _layout, _template) {
+	renderDetailPage: function(_properties, _layout, _template) {
+		// summary:
+		//		Render the form with subtabs containing all object properties that can
+		//		be edited by the user.
+
 		// create detail page
 		this._detailTabs = new dijit.layout.TabContainer({
 			nested: true,
@@ -432,7 +504,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// in case we have a template, create a new template object that takes care
 		// of updating the elements in the form
 		if (_template && _template.length > 0) {
-			this._template = new umc.modules.udm._Template({
+			this._template = new umc.modules._udm.Template({
 				widgets: widgets,
 				template: _template[0]
 			});
@@ -440,6 +512,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	showDetailPage: function(ldapName) {
+		// summary:
+		//		Put the page with subtabs and object properties into the foreground.
+
 		this.selectChild(this._detailForm);
 		if (ldapName) {
 			this._detailForm.load(ldapName).then(dojo.hitch(this, function(vals) {
@@ -450,6 +525,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	closeDetailPage: function() {
+		// summary:
+		//		Close the page with subtabs and object properties and destroy widgets.
+
 		if (this._detailForm) {
 			// show the search page
 			this.selectChild(this._searchPage);
@@ -473,6 +551,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	validateChanges: function(e) {
+		// summary:
+		//		Validate the user input through the server and save changes upon success.
+
 		// prevent standard form submission
 		e.preventDefault();
 
@@ -540,21 +621,10 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}));
 	},
 
-	filter: function(vals) {
-		if ('navigation' == this.moduleFlavor) {
-			var items = this._tree.get('selectedItems');
-			if (items.length) {
-				this._grid.filter({
-					container: items[0].id
-				});
-			}
-		}
-		else {
-			this._grid.filter(vals);
-		}
-	},
-
 	saveChanges: function(vals) {
+		// summary:
+		//		Save the user changes for the edited object.
+
 		var deffered = null;
 		if (this._newObjOptions) {
 			deffered = this.moduleStore.add(vals, this._newObjOptions);
@@ -568,6 +638,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	removeObjects: function(ids) {
+		// summary:
+		//		Remove the selected UDM objects.
+
 		var transaction = this.moduleStore.transaction();
 		dojo.forEach(ids, function(iid) {
 			this.moduleStore.remove(iid);
@@ -576,6 +649,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	getAlteredValues: function() {
+		// summary:
+		//		Return a list of object properties that have been altered.
+		
 		// get all form values and see which values are new
 		var vals = this._detailForm.gatherFormValues();
 		var newVals = {};
@@ -610,17 +686,10 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		return newVals;
 	},
 
-	postCreate: function() {
-		// only show the objectType combobox when there are different values to choose from
-		/*var objTypeWidget = this._searchWidget._widgets.objectType;
-		this.connect(objTypeWidget, 'onDynamicValuesLoaded', function(values) {
-			if (values.length) {
-				//dojo.style(objTypeWidget.
-			}
-		});*/
-	},
-
 	showNewObjectDialog: function() {
+		// summary:
+		//		Open a user dialog for creating a new UDM object.
+
 		// when we are in navigation mode, make sure the user has selected a container
 		var selectedContainer = { id: '', label: '', path: '' };
 		if ('navigation' == this.moduleFlavor) {
@@ -635,7 +704,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}
 
 		// open the dialog
-		var dialog = new umc.modules.udm._NewObjectDialog({
+		var dialog = new umc.modules._udm.NewObjectDialog({
 			umcpCommand: dojo.hitch(this, 'umcpCommand'),
 			moduleFlavor: this.moduleFlavor,
 			selectedContainer: selectedContainer,
@@ -643,7 +712,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				// when the options are specified, create a new detail page
 				options.objectType = options.objectType || this.moduleFlavor; // default objectType is the module flavor
 				this._newObjOptions = options;
-				this._createDetailPage(options.objectType);
+				this.createDetailPage(options.objectType);
 			})
 		});
 	},
@@ -655,493 +724,6 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}
 	}
 });
-
-dojo.declare("umc.modules.udm._NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin ], {
-	// use i18n information from umc.modules.udm
-	i18nClass: 'umc.modules.udm',
-
-	ucmpCommand: umc.tools.umcpCommand,
-
-	moduleFlavor: '',
-
-	selectedContainer: { id: '', label: '', path: '' },
-
-	_form: null,
-
-	style: 'max-width: 250px;',
-
-	postMixInProperties: function() {
-		this.inherited(arguments);
-
-		dojo.mixin(this, {
-			//style: 'max-width: 450px'
-			title: this._( 'New UDM-Object' )
-		});
-	},
-
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		if ('navigation' != this.moduleFlavor) {
-			// query the necessary elements to display the add-dialog correctly
-			(new dojo.DeferredList([
-				this.umcpCommand('udm/types'),
-				this.umcpCommand('udm/containers'),
-				this.umcpCommand('udm/superordinates'),
-				this.umcpCommand('udm/templates')
-			])).then(dojo.hitch(this, function(results) {
-				var types = results[0][0] ? results[0][1] : [];
-				var containers = results[1][0] ? results[1][1] : [];
-				var superordinates = results[2][0] ? results[2][1] : [];
-				var templates = results[3][0] ? results[3][1] : [];
-				this._renderForm(types.result, containers.result, superordinates.result, templates.result);
-			}));
-		}
-		else {
-			// for the UDM navigation, only query object types
-			this.umcpCommand('udm/types').then(dojo.hitch(this, function(data) {
-				this._renderForm(data.result);
-			}));
-		}
-	},
-
-	_renderForm: function(types, containers, superordinates, templates) {
-		// default values and sort items
-		types = types || [];
-		containers = containers || [];
-		superordinates = superordinates || [];
-		templates = templates || [];
-		dojo.forEach([types, containers, superordinates, templates], function(iarray) {
-			iarray.sort(umc.tools.cmpObjects('label'));
-		});
-
-		
-		// depending on the list we get, create a form for adding
-		// a new UDM object
-		var widgets = [];
-		var layout = [];
-
-		if ('navigation' != this.moduleFlavor) {
-			// if we have superordinates, we don't need containers
-			if (superordinates.length) {
-				widgets = [{
-					type: 'ComboBox',
-					name: 'superordinate',
-					label: 'Superordinate',
-					description: this._('The corresponding superordinate for the new object.'),
-					staticValues: superordinates
-				}, {
-					type: 'ComboBox',
-					name: 'objectType',
-					label: 'Object type',
-					description: this._('The exact object type of the new object.'),
-					umcpCommand: this.umcpCommand,
-					dynamicValues: 'udm/types',
-					depends: 'superordinate'
-				}];
-				layout = [ 'superordinate', 'objectType' ];
-			}
-			// no superordinates, then we need a container in any case
-			else {
-				widgets.push({
-					type: 'ComboBox',
-					name: 'container',
-					label: 'Container',
-					description: this._('The LDAP container in which the object shall be created.'),
-					staticValues: containers
-				});
-				layout.push('container');
-
-				// object types
-				if (types.length) {
-					widgets.push({
-						type: 'ComboBox',
-						name: 'objectType',
-						label: 'Object type',
-						description: this._('The exact object type of the new object.'),
-						staticValues: types
-					});
-					layout.push('objectType');
-				}
-
-				// templates
-				if (templates.length) {
-					templates.unshift({ id: 'None', label: this._('None') });
-					widgets.push({
-						type: 'ComboBox',
-						name: 'objectTemplate',
-						label: 'Object template',
-						description: this._('A template defines rules for default property values.'),
-						staticValues: templates
-					});
-					layout.push('objectTemplate');
-				}
-			}
-		}
-		else {
-			// for the navigation, we show all elements and let them query their content automatically
-			widgets = [{
-				type: 'HiddenInput',
-				name: 'container',
-				value: this.selectedContainer.id
-			}, {
-				type: 'ComboBox',
-				name: 'objectType',
-				label: 'Object type',
-				description: this._('The exact object type of the new object.'),
-				staticValues: types
-			}, {
-				type: 'ComboBox',
-				name: 'objectTemplate',
-				label: 'Object template',
-				description: this._('A template defines rules for default property values.'),
-				depends: 'objectType',
-				umcpCommand: this.umcpCommand,
-				dynamicValues: 'udm/templates',
-				staticValues: [ { id: 'None', label: this._('None') } ]
-			}];
-			layout = [ 'container', 'objectType', 'objectTemplate' ];
-		}
-
-		// buttons
-		var buttons = [{
-			name: 'add',
-			label: this._('Add new object'),
-			callback: dojo.hitch(this, function() {
-				this.onDone(this._form.gatherFormValues());
-				this.destroyRecursive();
-			})
-		}, {
-			name: 'close',
-			label: this._('Close dialog'),
-			callback: dojo.hitch(this, function() {
-				this.destroyRecursive();
-			})
-		}];
-
-		// now create a Form
-		this._form = new umc.widgets.Form({
-			widgets: widgets,
-			layout: layout,
-			buttons: buttons
-		});
-		var container = new umc.widgets.ContainerWidget({});
-		if ('navigation' == this.moduleFlavor) {
-			container.addChild(new umc.widgets.Text({
-				content: this._('<p>The object will be created in the the LDAP container:</p><p><i>%s</i></p>', this.selectedContainer.path)
-			}));
-		}
-		container.addChild(this._form);
-		this.set('content', container);
-		this.show();
-	},
-
-	onDone: function(options) {
-		// event stub
-	}
-});
-
-
-dojo.declare('umc.modules.udm._TreeModel', null, {
-	childrenAttr: 'children',
-	umcpCommand: null,
-
-	constructor: function(args) {
-		dojo.mixin(this, args);
-	},
-
-	getRoot: function(onItem) {
-		this.umcpCommand('udm/nav/container/query').then(dojo.hitch(this, function(data) {
-			var results = dojo.isArray(data.result) ? data.result : [];
-			if (results.length) {
-				onItem(results[0]);
-			}
-			else {
-				console.log('WARNING: No top container could be queried for LDAP navigation! Ignoring error.');
-			}
-		}));
-	},
-
-	getLabel: function(item) {
-		return item.label;
-	},
-
-	mayHaveChildren: function(item) {
-		return true;
-	},
-
-	getIdentity: function(item) {
-		return item.id;
-	},
-
-	getChildren: function(parentItem, onComplete) {
-		this.umcpCommand('udm/nav/container/query', { container: parentItem.id }).then(dojo.hitch(this, function(data) {
-			// sort items alphabetically
-			var results = dojo.isArray(data.result) ? data.result : [];
-			results.sort(umc.tools.cmpObjects('label'));
-			onComplete(results);
-		}));
-	}
-});
-
-
-dojo.declare('umc.modules.udm._Template', null, {
-	widgets: null,
-
-	template: null,
-
-	_inverseReferences: null,
-
-	_userChanges: null,
-
-	_eventHandles: null,
-
-	_focusedWidget: '',
-
-	// mappings to convert umlauts and special characters to standard ones
-	_umlauts: { 'ä' :'ae', 'Ä' : 'Ae', 'ö' : 'oe', 'Ö' : 'Oe', 'ü' : 'ue', 'Ü' : 'Ue', 'ß' : 'ss', 'Á' : 'A', 'Â' : 'A', 'Ã' : 'A', 'Ä' : 'A', 'Å' : 'A', 'Æ' : 'AE', 'Ç' : 'C', 'È' : 'E', 'É' : 'E', 'Ê' : 'E', 'Ë' : 'E', 'Ì' : 'I', 'Í' : 'I', 'Î' : 'I', 'Ï' : 'I', 'Ð' : 'D', 'Ñ' : 'N', 'Ò' : 'O', 'Ó' : 'O', 'Ô' : 'O', 'Õ' : 'O', 'Ö' : 'O', 'Ù' : 'U', 'Ú' : 'U', 'Û' : 'U', 'à' : 'a', 'â' : 'a', 'á' : 'a', 'ã' : 'a', 'æ' : 'ae', 'ç' : 'c', 'è' : 'e', 'é' : 'e', 'ê' : 'e', 'ë' : 'e', 'ì' : 'i', 'í' : 'i', 'î' : 'i', 'ï' : 'i', 'ñ' : 'n', 'ò' : 'o', 'ó' : 'o', 'ô' : 'o', 'ù' : 'u', 'ú' : 'u', 'û' : 'u', 'ý' : 'y', 'ÿ' : 'y', 'Ĉ' : 'C', 'ĉ' : 'c' },
-
-	// regular expressio for matching variables in the template, this includes 
-	// following possible variants with var='Univention'
-	//
-	// simple: 
-	//   <var>               -> 'Univention'
-	// with modifiers: 
-	//   <var:lower>         -> 'univention'
-	//   <var:upper>         -> 'UNIVENTION'
-	//   <var:umlauts,upper> -> 'UNIVENTION'
-	// with pythonic index operator: 
-	//   <var>[0]   -> 'U'
-	//   <var>[-2]  -> 'o'
-	//   <var>[0:2] -> 'Un'
-	//   <var>[1:]  -> 'nivention'
-	//   <var>[:3]  -> 'Uni'
-	//   <var>[:-3] -> 'Univent'
-	//
-	_regVar: /<(\w+)(:([\w,]*))?>(\[(-?\d*)(:(-?\d*))?\])?/g,
-
-	_getModifiers: function(modifierString, startIdx, endIdx) {
-		// get the correct string modifiers (can be a list of modifiers)
-		var modifierNames = dojo.isString(modifierString) ? modifierString.toLowerCase().split(',') : [''];
-		var modifiers = [];
-		dojo.forEach(modifierNames, function(iname) {
-			switch(dojo.trim(iname)) {
-			case 'lower': 
-				modifiers.push(function(str) {
-					return dojo.isString(str) ? str.toLowerCase() : str;
-				});
-				break;
-			case 'upper': 
-				modifiers.push(function(str) {
-					return dojo.isString(str) ? str.toUpperCase() : str;
-				});
-				break;
-			case 'umlaut':
-			case 'umlauts':
-				modifiers.push(dojo.hitch(this, function(str) {
-					if (!dojo.isString(str)) {
-						return str;
-					}
-					var newStr = '';
-					for (var i = 0; i < str.length; ++i) {
-						newStr += this._umlauts[str[i]] || str[i];
-					}
-					return newStr;
-				}));
-				break;
-			default:
-				// default modifier is a dummy function that does nothing
-				modifiers.push(function(str) { return str; });
-			}
-		}, this);
-
-		// add index operator as last modifier
-		modifiers.push(function(str) {
-			return str.slice(startIdx, endIdx);
-		});
-
-		// return function that applies all modifiers
-		return function(str) {
-			dojo.forEach(modifiers, function(imod) {
-				str = imod(str);
-			});
-			return str;
-		};
-	},
-
-	constructor: function(props) {
-		// mixin the props
-		dojo.mixin(this, props);
-
-		// iterate over all template values
-		// * set static values directly to the form
-		// * register dynamic values to react on user input
-		var updaters = [];
-		umc.tools.forIn(this.template, function(ikey, ival) {
-			// ignore values that do not have a widget
-			if (!(ikey in this.widgets)) {
-				console.log('WARNING: The property "' + ikey + '" as specified by the template does not exist. Ignoring error.');
-				return true;
-			}
-
-			// object for updating the field
-			var updater = {
-				key: ikey,
-				selfReference: this.widgets[ikey],
-				templateString: dojo.clone(ival),
-				references: [], // ordered list of widgets that are referenced
-				modifiers: [], // ordered list of string modifiers per reference
-				update: function() {
-					// collect all necessary values
-					var vals = [];
-					dojo.forEach(this.references, function(iwidget, i) {
-						vals.push(this.modifiers[i](iwidget.get('value')));
-					}, this);
-
-					// the value might be a simple string or an array of strings
-					var newVal;
-					if (dojo.isString(this.templateString)) {
-						newVal = dojo.replace(this.templateString, vals);
-					}
-					else if (dojo.isArray(this.templateString)) {
-						newVal = [];
-						dojo.forEach(this.templateString, function(istr) {
-							newVal.push(dojo.replace(istr, vals));
-						});
-					}
-
-					// block onChange events (so we do not register the values as changes by
-					// the user) and set the value
-					//this.selfReference.set('blockOnChange', true);
-					this.selfReference.set('value', newVal);
-					//this.selfReference.set('blockOnChange', false);
-				}
-			};
-
-			// try to match all variable references... the template value might be a string
-			// or an array of strings
-			var nRefs = 0;
-			var tmpVals = dojo.isArray(ival) ? ival : [ival];
-			dojo.forEach(tmpVals, function(jval, j) {
-				var matches = jval.match(this._regVar);
-				dojo.forEach(matches, function(imatch) {
-					// parse the matched reference
-					this._regVar.lastIndex = 0; // start matching in any case from the string beginning
-					var match = this._regVar.exec(imatch);
-
-					// we have a value with variable reference... 
-					// parse the variable reference and get the correct indeces
-					var refKey = match[1];
-					var modifier = match[3];
-					var startIdx = 0;
-					var endIdx = Infinity;
-					try {
-						startIdx = !match[5] ? 0 : parseInt(match[5], 10);
-					}
-					catch (err1) { }
-
-					// check whether the user specified an end index
-					if (!match[6] && dojo.isString(match[5])) {
-						// nope... index points to one single character
-						endIdx = startIdx + 1;
-						if (0 === endIdx) {
-							// startIdx == -1
-							endIdx = Infinity;
-						}
-					}
-					else if (match[6]) {
-						try {
-							endIdx = !match[7] && match[7] !== '0' ? Infinity : parseInt(match[7], 10);
-						}
-						catch (err2) { }
-					}
-
-					// register the reference
-					if (!(refKey in this.widgets)) {
-						// reference does not exist
-						return true;
-					}
-					updater.references.push(this.widgets[refKey]);
-
-					// update the template string
-					if (dojo.isArray(ival)) {
-						updater.templateString[j] = updater.templateString[j].replace(imatch, '{' + nRefs + '}');
-					}
-					else {
-						updater.templateString = updater.templateString.replace(imatch, '{' + nRefs + '}');
-					}
-
-					// register the modifier
-					updater.modifiers.push(this._getModifiers(modifier, startIdx, endIdx));
-
-					// count the matched references
-					++nRefs;
-				}, this);
-			}, this);
-			if (nRefs) {
-				// we have a dynamic value with variable references
-				updaters.push(updater);
-			}
-			else {
-				// we have a static value, try to set the given key
-				if (ikey in this.widgets) {
-					this.widgets[ikey].set('value', ival);
-				}
-			}
-		}, this);
-
-		// build an inverse map to the reference... i.e., we want to know for a field
-		// that is being changed, which other templated fields depend on its value
-		this._inverseReferences = {};
-		dojo.forEach(updaters, function(iupdater) {
-			// get inverse references
-			dojo.forEach(iupdater.references, function(iref) {
-				// when we have the first entry for this reference, initiate with an empty dict
-				if (!(iref.name in this._inverseReferences)) {
-					this._inverseReferences[iref.name] = {};
-				}
-
-				// register the reference
-				this._inverseReferences[iref.name][iupdater.key] = iupdater;
-			}, this);
-
-			// update field for the first time
-			iupdater.update();
-		}, this);
-
-		// register user changes
-		this._userChanges = {};
-		this._eventHandles = [];
-		umc.tools.forIn(this.widgets, function(ikey, iwidget) {
-			// monitor value changes... onChange for changes made automatically and
-			// onKeyUp for changes made by the user
-			this._eventHandles.push(dojo.connect(iwidget, 'onKeyUp', dojo.hitch(this, 'onChange', iwidget)));
-			this._eventHandles.push(dojo.connect(iwidget, 'onChange', dojo.hitch(this, 'onChange', iwidget)));
-		}, this);
-	},
-
-	onChange: function(widget) {
-		// register that the user has changed this field manually in case the
-		// focus was on this field
-		if (widget.get('focused')) {
-			this._userChanges[widget.name] = true;
-		}
-
-		// see whether we can update other fields that have not been changed manually
-		var references = this._inverseReferences[widget.name] || {};
-		umc.tools.forIn(references, function(iRefKey, iUpdater) {
-			if (!this._userChanges[iRefKey]) {
-				iUpdater.update();
-			}
-		}, this);
-	},
-
-	destroy: function() {
-		dojo.forEach(this._eventHandles, dojo.disconnect);	
-	}
-});
-
-
 
 
 

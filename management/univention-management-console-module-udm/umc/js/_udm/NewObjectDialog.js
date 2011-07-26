@@ -1,0 +1,207 @@
+/*global console MyError dojo dojox dijit umc */
+
+dojo.provide("umc.modules._udm.NewObjectDialog");
+
+dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin ], {
+	// summary:
+	//		Dialog class for creating a new UDM object.
+
+	// use i18n information from umc.modules.udm
+	i18nClass: 'umc.modules.udm',
+
+	// umcpCommand: Function
+	//		Reference to the module specific umcpCommand function.
+	ucmpCommand: null,
+
+	// moduleFlavor: String
+	//		Specifies the flavor of the module. This property is necessary to decide what
+	//		kind of dialog is presented: in the context of a particular UDM module or
+	//		the UDM navigation.
+	moduleFlavor: '',
+
+	// selectedContainer: Object
+	//		If the new object shall be placed into a container that is specified
+	//		upfront, the container (with id [=ldap-dn], label, and path [=LDAP path])
+	//		can be specified via this property.
+	selectedContainer: { id: '', label: '', path: '' },
+
+	// internal reference to the dialog's form
+	_form: null,
+
+	// force max-width
+	style: 'max-width: 300px;',
+
+	postMixInProperties: function() {
+		this.inherited(arguments);
+
+		// mixin the dialog title
+		dojo.mixin(this, {
+			//style: 'max-width: 450px'
+			title: this._( 'New UDM-Object' )
+		});
+	},
+
+	buildRendering: function() {
+		this.inherited(arguments);
+
+		if ('navigation' != this.moduleFlavor) {
+			// query the necessary elements to display the add-dialog correctly
+			(new dojo.DeferredList([
+				this.umcpCommand('udm/types'),
+				this.umcpCommand('udm/containers'),
+				this.umcpCommand('udm/superordinates'),
+				this.umcpCommand('udm/templates')
+			])).then(dojo.hitch(this, function(results) {
+				var types = results[0][0] ? results[0][1] : [];
+				var containers = results[1][0] ? results[1][1] : [];
+				var superordinates = results[2][0] ? results[2][1] : [];
+				var templates = results[3][0] ? results[3][1] : [];
+				this._renderForm(types.result, containers.result, superordinates.result, templates.result);
+			}));
+		}
+		else {
+			// for the UDM navigation, only query object types
+			this.umcpCommand('udm/types').then(dojo.hitch(this, function(data) {
+				this._renderForm(data.result);
+			}));
+		}
+	},
+
+	_renderForm: function(types, containers, superordinates, templates) {
+		// default values and sort items
+		types = types || [];
+		containers = containers || [];
+		superordinates = superordinates || [];
+		templates = templates || [];
+		dojo.forEach([types, containers, superordinates, templates], function(iarray) {
+			iarray.sort(umc.tools.cmpObjects('label'));
+		});
+
+		
+		// depending on the list we get, create a form for adding
+		// a new UDM object
+		var widgets = [];
+		var layout = [];
+
+		if ('navigation' != this.moduleFlavor) {
+			// if we have superordinates, we don't need containers
+			if (superordinates.length) {
+				widgets = [{
+					type: 'ComboBox',
+					name: 'superordinate',
+					label: 'Superordinate',
+					description: this._('The corresponding superordinate for the new object.'),
+					staticValues: superordinates
+				}, {
+					type: 'ComboBox',
+					name: 'objectType',
+					label: 'Object type',
+					description: this._('The exact object type of the new object.'),
+					umcpCommand: this.umcpCommand,
+					dynamicValues: 'udm/types',
+					depends: 'superordinate'
+				}];
+				layout = [ 'superordinate', 'objectType' ];
+			}
+			// no superordinates, then we need a container in any case
+			else {
+				widgets.push({
+					type: 'ComboBox',
+					name: 'container',
+					label: 'Container',
+					description: this._('The container in which the object shall be created.'),
+					staticValues: containers
+				});
+				layout.push('container');
+
+				// object types
+				if (types.length) {
+					widgets.push({
+						type: 'ComboBox',
+						name: 'objectType',
+						label: 'Object type',
+						description: this._('The exact object type of the new object.'),
+						staticValues: types
+					});
+					layout.push('objectType');
+				}
+
+				// templates
+				if (templates.length) {
+					templates.unshift({ id: 'None', label: this._('None') });
+					widgets.push({
+						type: 'ComboBox',
+						name: 'objectTemplate',
+						label: 'Object template',
+						description: this._('A template defines rules for default property values.'),
+						staticValues: templates
+					});
+					layout.push('objectTemplate');
+				}
+			}
+		}
+		else {
+			// for the navigation, we show all elements and let them query their content automatically
+			widgets = [{
+				type: 'HiddenInput',
+				name: 'container',
+				value: this.selectedContainer.id
+			}, {
+				type: 'ComboBox',
+				name: 'objectType',
+				label: 'Object type',
+				description: this._('The exact object type of the new object.'),
+				staticValues: types
+			}, {
+				type: 'ComboBox',
+				name: 'objectTemplate',
+				label: 'Object template',
+				description: this._('A template defines rules for default property values.'),
+				depends: 'objectType',
+				umcpCommand: this.umcpCommand,
+				dynamicValues: 'udm/templates',
+				staticValues: [ { id: 'None', label: this._('None') } ]
+			}];
+			layout = [ 'container', 'objectType', 'objectTemplate' ];
+		}
+
+		// buttons
+		var buttons = [{
+			name: 'add',
+			label: this._('Add new object'),
+			callback: dojo.hitch(this, function() {
+				this.onDone(this._form.gatherFormValues());
+				this.destroyRecursive();
+			})
+		}, {
+			name: 'close',
+			label: this._('Close dialog'),
+			callback: dojo.hitch(this, function() {
+				this.destroyRecursive();
+			})
+		}];
+
+		// now create a Form
+		this._form = new umc.widgets.Form({
+			widgets: widgets,
+			layout: layout,
+			buttons: buttons
+		});
+		var container = new umc.widgets.ContainerWidget({});
+		if ('navigation' == this.moduleFlavor) {
+			container.addChild(new umc.widgets.Text({
+				content: this._('<p>The object will be created in the the container:</p><p><i>%s</i></p>', this.selectedContainer.path)
+			}));
+		}
+		container.addChild(this._form);
+		this.set('content', container);
+		this.show();
+	},
+
+	onDone: function(options) {
+		// event stub
+	}
+});
+
+
+
