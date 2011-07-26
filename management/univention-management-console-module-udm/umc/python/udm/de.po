@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-20 12:08+0200\n"
+"POT-Creation-Date: 2011-07-26 11:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,7 +43,7 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: umc/python/udm/__init__.py:347
+#: umc/python/udm/__init__.py:352
 #, python-format
 msgid "Property %s not found"
 msgstr ""
