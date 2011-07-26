@@ -120,7 +120,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		touch /etc/machine.secret
 		chmod 600 /etc/machine.secret
 
-		echo "$computerPassword" >>/etc/machine.secret
+		echo -n "$computerPassword" >>/etc/machine.secret
 	fi
 	sleep 5
 	if [ "$server_role" != "domaincontroller_master" ]; then

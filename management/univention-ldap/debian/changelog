@@ -1,3 +1,9 @@
+univention-ldap (8.0.14-1) unstable; urgency=low
+
+  * avoid trailing newline in machine.secret (Bug #14186)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Jul 2011 14:53:44 +0200
+
 univention-ldap (8.0.13-1) unstable; urgency=low
 
   * set ldap/master/port?7389 for domaincontroller_master in
