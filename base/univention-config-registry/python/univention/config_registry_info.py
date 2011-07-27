@@ -77,7 +77,7 @@ class ConfigRegistryInfo( object ):
 	CUSTOMIZED = '_customized'
 	FILE_SUFFIX = '.cfg'
 
-	def __init__( self, install_mode = False, registered_only = True ):
+	def __init__( self, install_mode = False, registered_only = True, load_customized=True ):
 		self.categories = {}
 		self.variables = {}
 		self.__patterns = {}
@@ -85,7 +85,7 @@ class ConfigRegistryInfo( object ):
 			self.__configRegistry = ucr.ConfigRegistry()
 			self.__configRegistry.load()
 			self.load_categories()
-			self.__load_variables( registered_only )
+			self.__load_variables( registered_only, load_customized )
 		else:
 			self.__configRegistry = None
 
@@ -209,7 +209,7 @@ class ConfigRegistryInfo( object ):
 				var.value = self.__configRegistry.get( sec, None )
 			self.variables[ sec ] = var
 
-	def __load_variables( self, registered_only = True ):
+	def __load_variables( self, registered_only = True, load_customized=True ):
 		path = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES )
 		if os.path.exists ( path ):
 			for entry in os.listdir( path ):
@@ -225,7 +225,8 @@ class ConfigRegistryInfo( object ):
 					var.value = value
 					self.variables[ key ] = var
 			# read customized infos afterwards to override existing entries
-			self.read_customized()
+			if load_customized:
+				self.read_customized()
 
 	def get_categories( self ):
 		'''returns a list of category names'''

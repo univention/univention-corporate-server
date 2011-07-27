@@ -1,3 +1,10 @@
+univention-config-registry (6.0.46-1) unstable; urgency=low
+
+  * added additional argument to be able to load registry info *without*
+    user customized values (Bug #22755)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 27 Jul 2011 10:45:11 +0200
+
 univention-config-registry (6.0.45-2) unstable; urgency=low
 
   * remove reduntant modification introduced in 6.0.43-1 (Bug #12168)
