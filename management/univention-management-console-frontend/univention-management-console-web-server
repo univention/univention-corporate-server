@@ -286,7 +286,7 @@ class CPgeneric(object):
 
 		# something bad happened
 		self._log('error', 'response status code: %s' % response.status)
-		raise cherrypy.HTTPError(response.status)
+		raise cherrypy.HTTPError(response.status, response.message)
 
 
 class CPGet(CPgeneric):
@@ -463,7 +463,7 @@ class CPAuth(object):
 			return ""
 
 		CORE.error('CPRoot/auth: username: %s, status code: %s' % (json.get('username'), response.status))
-		raise cherrypy.HTTPError(response.status)
+		raise cherrypy.HTTPError(response.status, response.message)
 
 
 # class CPGet(object):

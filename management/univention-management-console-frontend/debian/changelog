@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.90-1) unstable; urgency=low
+
+  * let UMC web server also report the error message (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 27 Jul 2011 15:15:34 +0200
+
 univention-management-console-frontend (0.0.89-1) unstable; urgency=low
 
   * added subscription channel for opening modules
