@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Mail Postfix
-#  baseconfig module: creates a global archive mailbox
+# Univention mail Postfix Kolab2
+#  listener module: creates mailboxes
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2005-2010 Univention GmbH
 #
 # http://www.univention.de/
 #

@@ -1,0 +1,17 @@
+## Kolab Policy Server
+@!@
+# get all recipient restrictions from UCR ==> [ (key, val), ... ]
+ucrlist = [ x for x in configRegistry.items() if x[0].startswith('mail/postfix/smtpd/restrictions/recipient/') ]
+# add listfilter if enabled by UCR with level "05"
+if configRegistry.get("mail/postfix/policy/listfilter", "no").lower() in ['yes', 'true']:
+	ucrlist.append( ('mail/postfix/smtpd/restrictions/recipient/05-listfilter', 'check_policy_service unix:private/listfilter') )
+ucrlist.sort()
+recipient_restrictions = [ x[1] for x in ucrlist ]
+
+print "smtpd_recipient_restrictions = %s" % ",\n        ".join(recipient_restrictions)
+@!@
+smtpd_sender_restrictions = permit_mynetworks, check_policy_service unix:private/kolabpolicy
+kolabpolicy_time_limit = 3600
+kolabpolicy_max_idle = 20
+
+

@@ -1,9 +1,9 @@
 #!/bin/sh -e
 # Warning: This file is auto-generated and might be overwritten by 
-#          univention-baseconfig.
+#          univention-config-registry.
 #          Please edit the following file instead:
 # Warnung: Diese Datei wurde automatisch generiert und kann durch 
-#          univention-baseconfig überschrieben werden. 
+#          univention-config-registry überschrieben werden. 
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 # 
 # 	/etc/univention/templates/files/etc/init.d/postfix
@@ -34,11 +34,11 @@ case "$1" in
     start)
 	log_action_msg "Starting mail transport agent: Postfix"
 
-	# check ucr autostart setting
-	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-		source "/usr/share/univention-config-registry/init-autostart.lib"
-		check_autostart postfix postfix/autostart
-	fi
+        # check ucr autostart setting
+        if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+                source "/usr/share/univention-config-registry/init-autostart.lib"
+                check_autostart postfix postfix/autostart
+        fi
 
 	# see if anything is running chrooted.
 	NEED_CHROOT=$(awk '/^[0-9a-z]/ && ($5 == "-") { print "y"; exit}' /etc/postfix/master.cf)
