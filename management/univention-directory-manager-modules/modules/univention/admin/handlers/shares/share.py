@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
+import copy
 
 from univention.admin.layout import Tab, Group
 import univention.admin.uldap

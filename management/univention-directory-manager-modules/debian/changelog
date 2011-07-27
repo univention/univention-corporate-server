@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.34-1) unstable; urgency=low
+
+  * added missing 'import copy' statement to .../handlers/shares/share.py
+    (Bug #22439)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 27 Jul 2011 12:01:54 +0200
+
 univention-directory-manager-modules (7.0.33-1) unstable; urgency=low
 
   * as the API of get_default_in_tkt_etypes has changed in heimdal-1.5,
