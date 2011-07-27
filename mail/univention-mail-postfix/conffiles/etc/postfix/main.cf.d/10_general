@@ -1,30 +1,18 @@
-# Warning: This file is auto-generated and might be overwritten by
-#          univention-config-registry.
-#          Please edit the files in the following directory instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-config-registry ueberschrieben werden.
-#          Bitte bearbeiten Sie an Stelle dessen die Dateien in
-#          folgendem Verzeichnis:
-#
-#       /etc/univention/templates/files/etc/postfix/main.cf.d
-#
-
-
-# many options are based on original kolab-settings
+@%@UCRHEADER=# @%@
 
 # The message_size_limit parameter limits the total size in bytes of
 # a message, including envelope information. Default is 10240000
 @!@
-if baseConfig.has_key('mail/messagesizelimit') and not baseConfig['mail/messagesizelimit'] == '':
-	print 'message_size_limit = @%@mail/messagesizelimit@%@'
+if configRegistry.get('mail/messagesizelimit'):
+	print 'message_size_limit = %s' % configRegistry.get('mail/messagesizelimit')
 else:
-	print '#message_size_limit = 0'
+	print '# message_size_limit = 0'
 @!@
 
 # mailbox_size_limit limits the max. size of local mailboxes. Default is 51200000
 @!@
-if baseConfig.has_key('mail/localmailboxsizelimit') and not baseConfig['mail/localmailboxsizelimit'] == '':
-	print 'mailbox_size_limit = @%@mail/localmailboxsizelimit@%@'
+if configRegistry.get('mail/localmailboxsizelimit'):
+	print 'mailbox_size_limit = %s' % configRegistry.get('mail/localmailboxsizelimit')
 else:
 	print '#mailbox_size_limit = 0'
 @!@
@@ -37,60 +25,46 @@ program_directory = /usr/lib/postfix
 
 # some basic mail system settings
 myhostname = @%@hostname@%@.@%@domainname@%@
-mydomain = @%@domainname@%@
-myorigin = /etc/mailname
+# mydomain is unset - The default is to use $myhostname minus the first component.
+myorigin = @%@hostname@%@.@%@domainname@%@
 @!@
-if baseConfig.has_key('mail/smtp/helo/name') and baseConfig['mail/smtp/helo/name']:
-	print 'smtp_helo_name = %s' % baseConfig['mail/smtp/helo/name']
-else:
-	print 'smtp_helo_name = %s.%s' % (baseConfig['hostname'], baseConfig['domainname'])
-@!@
-
-@!@
-if baseConfig.has_key('mail/postfix/dnslookups') and baseConfig['mail/postfix/dnslookups'] in [ '0', 'false', 'no' ]:
+print 'smtp_helo_name = %s' % configRegistry.get('mail/smtp/helo/name', '%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname')))
+print
+if configRegistry.is_false('mail/postfix/dnslookups', True):
 	print 'disable_dns_lookups = yes'
-if baseConfig.has_key('mail/postfix/softbounce') and baseConfig['mail/postfix/softbounce'] in [ '1', 'true', 'yes' ]:
+if configRegistry.is_true('mail/postfix/softbounce', False):
 	print 'soft_bounce = yes'
 @!@
 
 append_dot_mydomain = no
 
 @!@
-print 'masquerade_domains = %s' % baseConfig.get('postfix/masquerade/domains', '$mydomain')
-print 'masquerade_exceptions = %s' % baseConfig.get('postfix/masquerade/exceptions', 'root')
+print 'masquerade_domains = %s' % configRegistry.get('postfix/masquerade/domains', '$mydomain')
+print 'masquerade_exceptions = %s' % configRegistry.get('postfix/masquerade/exceptions', 'root')
 @!@
 
-# this defines which domains are considered to be "own" domains and
-# therefor are not forwarded to the relay host.
-# if ldap is used, all "own" domains must be given
-# in the transport file with the keyword "virtual".
 transport_maps = hash:/etc/postfix/transport, ldap:ldaptransport, ldap:ldaphomeservertransport
 @!@
-all_hosted_domains = ''
-if baseConfig.has_key('mail/hosteddomains'):
-	all_hosted_domains = ', '.join( baseConfig['mail/hosteddomains'].split(' ') ) + ', '
+all_hosted_domains = set()
+all_hosted_domains.update( re.split('[ ,]+', configRegistry.get('mail/hosteddomains','')) )
+all_hosted_domains.update( re.split('[ ,]+', configRegistry.get('mail/postfix/mydomains','')) )
+all_hosted_domains = ', '.join([ x for x in all_hosted_domains if x ])
+if not all_hosted_domains:
+	all_hosted_domains = '$mydomain'
 
-if baseConfig.has_key('mail/postfix/mydomains') and baseConfig['mail/postfix/mydomains']:
-	print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, %s, %s localhost' % (baseConfig['mail/postfix/mydomains'], all_hosted_domains)
-else:
-	print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, $mydomain, localhost, $transport_maps'
-	print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, $mydomain, %s localhost' % all_hosted_domains
-if baseConfig.has_key('mail/postfix/mynetworks') and baseConfig['mail/postfix/mynetworks']:
-	print 'mynetworks = %s' % baseConfig['mail/postfix/mynetworks']
-else:
-	print 'mynetworks = 127.0.0.0/8'
+print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, localhost, %s' % all_hosted_domains
+print 'mynetworks = %s' % configRegistry.get('mail/postfix/mynetworks', '127.0.0.0/8')
 @!@
 
 relay_domains = $mydestination
 
-
 # we need to name a smtp relay host to which we forward non-local
 # mails. smtp authentication is also possible.
 @!@
-if baseConfig['mail/relayhost']:
-	print 'relayhost = @%@mail/relayhost@%@'
+if configRegistry.get('mail/relayhost'):
+	print 'relayhost = %s' % configRegistry.get('mail/relayhost')
 
-if baseConfig['mail/relayauth'] == 'yes':
+if configRegistry.is_true('mail/relayauth', False):
 	print 'smtp_sasl_auth_enable = yes'
 	print 'smtp_sasl_security_options = noanonymous'
 	print 'smtp_sasl_password_maps = hash:/etc/postfix/smtp_auth'
