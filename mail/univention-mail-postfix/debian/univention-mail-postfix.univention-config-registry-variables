@@ -17,8 +17,8 @@ Type=str
 Categories=service-mail
 
 [mail/messagesizelimit]
-Description[de]=Maximale Größe E-Mails (Byte)
-Description[en]=Maximum size of e-mails (Byte)
+Description[de]=Maximale Größe von E-Mails (Angabe in Bytes)
+Description[en]=Maximum size of e-mails (specified in byte)
 Type=str
 Categories=service-mail
 
@@ -77,8 +77,8 @@ Type=str
 Categories=service-mail
 
 [mail/localmailboxsizelimit]
-Description[de]=Maximale Dateigröße lokaler mailbox oder maildir Dateien
-Description[en]=Maximum size of any local mailbox or maildir file
+Description[de]=Maximale Dateigröße lokaler mailbox- oder maildir-Dateien (Angabe in Bytes)
+Description[en]=Maximum size of any local mailbox or maildir file (specified in bytes)
 Type=str
 Categories=service-mail
 

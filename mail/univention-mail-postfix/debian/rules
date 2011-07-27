@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-package=univention-mail-postfix-kolab2
+package=univention-mail-postfix
+D=debian/univention-mail-postfix
 
 build: build-stamp
 
@@ -50,14 +51,14 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	
-	install -m 755 67univention-mail-postfix-kolab2.inst debian/univention-mail-postfix-kolab2/usr/lib/univention-install/
-	
+
+	install -m 755 67univention-mail-postfix.inst ${D}/usr/lib/univention-install/
+
 	# create file regarding postfix used by univention-console
-	echo "Postfix Mailserver;postfix;/usr/lib/postfix/master;20" > debian/univention-mail-postfix-kolab2/etc/univention/daemons/postfix
-	
-	install -m 755 listfilter.py debian/univention-mail-postfix-kolab2/usr/share/univention-mail-postfix-kolab2
-	
+	echo "Postfix Mailserver;postfix;/usr/lib/postfix/master;20" > ${D}/etc/univention/daemons/postfix
+
+	install -m 755 listfilter.py ${D}/usr/share/univention-mail-postfix
+
 	univention-install-config-registry
 	univention-install-config-registry-info
 	univention-install-service-info
