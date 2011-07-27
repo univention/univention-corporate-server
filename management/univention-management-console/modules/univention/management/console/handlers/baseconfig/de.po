@@ -30,127 +30,134 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-16 10:46+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2011-07-27 10:10+0200\n"
+"PO-Revision-Date: 2011-07-27 11:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: _revamp.py:81 _types.py:90
+#: __init__.py:56
+msgid "Univention Configuration Registry"
+msgstr ""
+
+#: __init__.py:57
+msgid "Add, modify and search Univention Configuration Registry variables"
+msgstr "Hinzufügen, Beareiten und Suchen von Configuration Registry Variablen"
+
+#: __init__.py:62
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: __init__.py:63
+msgid "Add a new configuration registry variable"
+msgstr "Hinzufügen einer neuen Configuration Registry Variable"
+
+#: __init__.py:74
+msgid "Show"
+msgstr "Anzeigen"
+
+#: __init__.py:75
+msgid "Display information about a configuration registry variable"
+msgstr "Anzeigen von Informationen zu einer Configuration Registry Variable"
+
+#: __init__.py:80
+msgid "Remove"
+msgstr "Entfernen"
+
+#: __init__.py:81
+msgid "Unset a configuration registry value"
+msgstr "Entfernen eines Configuration Registry Wertes"
+
+#: __init__.py:86
+msgid "Search"
+msgstr "Suchen"
+
+#: __init__.py:87
+msgid "Search for a configuration registry value"
+msgstr "Suchen eines Configuration Registry Wertes"
+
+#: __init__.py:157
+#, python-format
+msgid ""
+"ERROR: UCR variable <i>%s</i> is read-only! Variable has not been created or "
+"changed!"
+msgstr "ERROR: Die UCR-Variable <i>%s</i> darf nicht verändert werden! Die Variable wurde nicht angelegt oder modifiziert."
+
+#: _revamp.py:83 _types.py:94
 msgid "Variable"
 msgstr "Variable"
 
-#: _revamp.py:81 _types.py:90 _types.py:98
+#: _revamp.py:83 _types.py:94 _types.py:102
 msgid "Value"
 msgstr "Wert"
 
-#: _revamp.py:81 _revamp.py:188 _types.py:91 _types.py:104
+#: _revamp.py:83 _revamp.py:196 _types.py:95 _types.py:108
 msgid "Description"
 msgstr "Beschreibung"
 
-#: _revamp.py:82
+#: _revamp.py:84
 msgid "Categories"
 msgstr "Kategorien"
 
-#: _revamp.py:124
+#: _revamp.py:126
 #, python-format
 msgid "Variable: %(key)s"
 msgstr "Variable: %(key)s"
 
-#: _revamp.py:128
+#: _revamp.py:130
 msgid "No configuration registry variables were found."
 msgstr "Es wurden keine Configuration Registry Variablen gefunden."
 
-#: _revamp.py:130
-msgid "Search result"
+#: _revamp.py:132
+msgid "Search results"
 msgstr "Suchergebnis"
 
-#: _revamp.py:188 _types.py:105
+#: _revamp.py:196 _types.py:109
 msgid "Language"
 msgstr "Sprache"
 
-#: _revamp.py:203
+#: _revamp.py:211
 msgid "Modify Configuration Registry variable"
 msgstr "Bearbeiten einer Configuration Registry Variable"
 
-#: _revamp.py:205
+#: _revamp.py:213
 msgid "Add Configuration Registry variable(s)"
 msgstr "Hinzufügen einer Configuration Registry Variable"
 
-#: __init__.py:54
-msgid "Univention Configuration Registry"
-msgstr ""
-
-#: __init__.py:55
-msgid "Add, modify and search Univention Configuration Registry variables"
-msgstr "Hinzufügen, Beareiten und Suchen von Configuration Registry Variablen"
-
-#: __init__.py:60
-msgid "Add"
-msgstr "Hinzufügen"
-
-#: __init__.py:61
-msgid "Add a new configuration registry variable"
-msgstr "Hinzufügen einer neuen Configuration Registry Variable"
-
-#: __init__.py:72
-msgid "Show"
-msgstr "Anzeigen"
-
-#: __init__.py:73
-msgid "Display information about a configuration registry variable"
-msgstr "Anzeigen von Informationen zu einer Configuration Registry Variable"
-
-#: __init__.py:78
-msgid "Remove"
-msgstr "Entfernen"
-
-#: __init__.py:79
-msgid "Unset a configuration registry value"
-msgstr "Entfernen eines Configuration Registry Wertes"
-
-#: __init__.py:84
-msgid "Search"
-msgstr "Suchen"
-
-#: __init__.py:85
-msgid "Search for a configuration registry value"
-msgstr "Suchen eines Configuration Registry Wertes"
-
-#: _types.py:41
+#: _types.py:45
 msgid "Category"
 msgstr "Kategorie"
 
-#: _types.py:62
+#: _types.py:66
 msgid "All (incl. not registered)"
 msgstr "Alle (inkl. nicht registrierter)"
 
-#: _types.py:63
+#: _types.py:67
 msgid "All"
 msgstr "Alle"
 
-#: _types.py:71
+#: _types.py:75
 msgid "List of categories"
 msgstr "Liste der Kategorien"
 
-#: _types.py:78
+#: _types.py:82
 msgid "Types"
 msgstr "Typen"
 
-#: _types.py:81
+#: _types.py:85
 msgid "String"
 msgstr "Zeichenkette"
 
-#: _types.py:87
+#: _types.py:91
 msgid "Search key"
 msgstr "Suchmaske"
 
-#: _types.py:96
+#: _types.py:100
 msgid "Key"
 msgstr "Schlüssel"
 
-#: _types.py:106
+#: _types.py:110
 msgid "Multilinugal description"
 msgstr "Mehrsprachige Beschreibung"
