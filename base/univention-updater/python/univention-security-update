@@ -252,7 +252,7 @@ if __name__ == '__main__':
 
 			secver = updater.current_version
 			secver.patchlevel = nextupdate
-			dprint( 'Update to Security Update %s' % secver, [fp_debug,sys.stdout] )
+			dprint( 'Update to Security Update %d.%d sec%d' % (secver.major, secver.minor, secver.patchlevel), [fp_debug,sys.stdout] )
 
 			remove_temporary_sources_list()
 			sources_list_entries = updater.security_update_temporary_sources_list()
