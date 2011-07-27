@@ -298,8 +298,8 @@ if __name__ == '__main__':
 					if ret:
 						sys.exit( ret )
 
-		update_ucr_updatestatus()
 		update_status( status='DONE' )
 	finally:
 		if not univention.updater.tools.updater_lock_release(lock):
 			print 'WARNING: updater-lock already released!'
+		update_ucr_updatestatus()

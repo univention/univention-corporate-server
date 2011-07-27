@@ -550,6 +550,8 @@ if __name__ == '__main__':
 		usage()
 		sys.exit(0)
 
+	do_ucr_update = True
+
 	fd_log = open(LOGNAME, 'a+')
 	try:
 		lock = univention.updater.tools.updater_lock_acquire()
@@ -560,7 +562,6 @@ if __name__ == '__main__':
 		try:
 			try:
 				main()
-				update_ucr_updatestatus()
 			except ConfigurationError, e:
 				msg = 'Update aborted due to configuration error: %s' % e
 				raise UpdateError(msg, errorsource='SETTINGS')
@@ -608,6 +609,11 @@ if __name__ == '__main__':
 				if error.reboot is not None:
 					subprocess.call(['at', '-f', '/var/lib/univention-updater/reboot.at', '--', '%s' % error.reboot])
 			sys.exit(0)
+		except SystemExit:
+			# disable update of UCR variable update/available to prevent call loop of univention-updater
+			# (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
+			do_ucr_update = False
+			raise
 	finally:
 		fd_log.close()
 		if not univention.updater.tools.updater_lock_release(lock):
@@ -616,3 +622,5 @@ if __name__ == '__main__':
 			remove_temporary_sources_list()
 		except:
 			print >>sys.stderr, "Failed to remove %s." % TMPSOURCE
+		if do_ucr_update:
+			update_ucr_updatestatus()

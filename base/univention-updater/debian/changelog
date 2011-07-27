@@ -1,3 +1,10 @@
+univention-updater (6.0.98-1) unstable; urgency=low
+
+  * fixed conflict of update_ucr_updatestatus() and locking files (Bug #22956)
+  * check for release and security updates in univention-updater-check
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 27 Jul 2011 12:32:24 +0200
+
 univention-updater (6.0.97-1) unstable; urgency=low
 
   * fixed misleading message of univention-security-update (Bug #22577)
