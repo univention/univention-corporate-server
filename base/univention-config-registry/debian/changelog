@@ -2,6 +2,7 @@ univention-config-registry (6.0.46-1) unstable; urgency=low
 
   * added additional argument to be able to load registry info *without*
     user customized values (Bug #22755)
+  * set some mission critical UCR variables to readonly
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 27 Jul 2011 10:45:11 +0200
 
