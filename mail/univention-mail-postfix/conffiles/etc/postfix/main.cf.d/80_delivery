@@ -7,10 +7,10 @@
 
 # if virus scanning is desired, all mails can be redirected through amavis.
 @!@
-if baseConfig['mail/antivir'] == 'yes':
+if configRegistry['mail/antivir'] == 'yes':
 	print 'content_filter = smtp-amavis:[127.0.0.1]:10024'
 
-if baseConfig.has_key('mail/archivefolder') and not baseConfig['mail/archivefolder'] == '':
+if configRegistry.has_key('mail/archivefolder') and not configRegistry['mail/archivefolder'] == '':
 	print '# Send a blind carbon copy of every mail to this account.'
 	print 'always_bcc = @%@mail/archivefolder@%@'
 @!@

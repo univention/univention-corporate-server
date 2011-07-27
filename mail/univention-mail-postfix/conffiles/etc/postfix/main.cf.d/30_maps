@@ -1,24 +1,24 @@
 @!@
 sender_canonical_maps = []
-val = baseConfig.get('mail/maps/canonical/sender/enable','').split(' ')
+val = configRegistry.get('mail/maps/canonical/sender/enable','').split(' ')
 if 'file' in val:
 	sender_canonical_maps.append('hash:/etc/postfix/canonical_sender')
 if 'ldap' in val:
 	sender_canonical_maps.append('ldap:ldapcanonicalsender')
 if sender_canonical_maps:
-	val_classes = baseConfig.get('mail/maps/canonical/sender/classes','').split(' ')
+	val_classes = configRegistry.get('mail/maps/canonical/sender/classes','').split(' ')
 	if val_classes:
 		print 'sender_canonical_classes = %s' % ', '.join(val_classes)
 	print 'sender_canonical_maps = %s' % ', '.join(sender_canonical_maps)
 
 recipient_canonical_maps = []
-val = baseConfig.get('mail/maps/canonical/recipient/enable','').split(' ')
+val = configRegistry.get('mail/maps/canonical/recipient/enable','').split(' ')
 if 'file' in val:
 	recipient_canonical_maps.append('hash:/etc/postfix/canonical_recipient')
 if 'ldap' in val:
 	recipient_canonical_maps.append('ldap:ldapcanonicalrecipient')
 if recipient_canonical_maps:
-	val_classes = baseConfig.get('mail/maps/canonical/recipient/classes','').split(' ')
+	val_classes = configRegistry.get('mail/maps/canonical/recipient/classes','').split(' ')
 	if val_classes:
 		print 'recipient_canonical_classes = %s' % ', '.join(val_classes)
 	print 'recipient_canonical_maps = %s' % ', '.join(recipient_canonical_maps)
