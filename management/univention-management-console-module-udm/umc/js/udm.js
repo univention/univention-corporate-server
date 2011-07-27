@@ -36,6 +36,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	//		property (which is set automatically when available modules are queried during
 	//		the initialization).
 
+	// openObject: Object?
+	//		If given, the module will open upon start the detail page for editing the given
+	//		object (specified by its LDAP DN). This property is expected to be a dict with
+	//		the properties 'objectType' and 'objectDN' (both as strings).
+	openObject: null,
+
+
 	// the property field that acts as unique identifier: the LDAP DN
 	idProperty: 'ldap-dn',
 
@@ -71,6 +78,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				var superordinates = results[1][0] ? results[1][1] : [];
 				this.renderSearchPage(containers.result, superordinates.result);
 			}));
+		}
+
+		// check whether we need to open directly the detail page of a given object
+		if (this.openObject) {
+			console.log('# this.openObject');
+			console.log(this.openObject);
+			this.createDetailPage(this.openObject.objectType, this.openObject.objectDN);
 		}
 	},
 

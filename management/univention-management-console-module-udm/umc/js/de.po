@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-26 11:23+0200\n"
+"POT-Creation-Date: 2011-07-27 12:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,92 +13,80 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/udm.js:118
+#: umc/js/udm.js:109
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/js/udm.js:119
+#: umc/js/udm.js:110
 msgid "Adding a new UDM object."
 msgstr "Hinzufügen eines neuen UDM-Objektes."
 
-#: umc/js/udm.js:417 umc/js/udm.js:418
-msgid "Advanced settings"
-msgstr "Erweiterte Einstellungen"
-
-#: umc/js/udm.js:226
+#: umc/js/udm.js:217
 msgid "All containers"
 msgstr "Alle Container"
 
-#: umc/js/udm.js:237
+#: umc/js/udm.js:228
 msgid "All types"
 msgstr "All Objekttypen"
 
-#: umc/js/udm.js:482
-msgid "Back to navigation"
-msgstr "Zurück zur Navigation"
-
-#: umc/js/udm.js:482
-msgid "Back to search"
-msgstr "Zurück zur Suche"
-
-#: umc/js/udm.js:156
+#: umc/js/udm.js:147
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/udm.js:231
+#: umc/js/udm.js:222
 msgid "Container"
 msgstr "Container"
 
-#: umc/js/udm.js:138 umc/js/udm.js:153
+#: umc/js/udm.js:129 umc/js/udm.js:144
 msgid "Delete"
 msgstr "Löschen"
 
-#: umc/js/udm.js:139
+#: umc/js/udm.js:130
 msgid "Deleting the selected UDM object."
 msgstr "Die ausgewählten UDM-Objekte löschen"
 
-#: umc/js/udm.js:126
+#: umc/js/udm.js:117
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: umc/js/udm.js:127
+#: umc/js/udm.js:118
 msgid "Edit the UDM object."
 msgstr "Das UDM-Objekt bearbeiten"
 
-#: umc/js/udm.js:165
+#: umc/js/udm.js:156
 msgid "Name"
 msgstr "Name"
 
-#: umc/js/udm.js:166
+#: umc/js/udm.js:157
 msgid "Name of the UDM object."
 msgstr "Name des UDM-Objektes"
 
-#: umc/js/udm.js:255
+#: umc/js/udm.js:246
 msgid "Object property"
 msgstr "Objekteigenschaft"
 
-#: umc/js/udm.js:245
+#: umc/js/udm.js:236
 msgid "Object type"
 msgstr "Objekttyp"
 
-#: umc/js/udm.js:170
+#: umc/js/udm.js:161
 msgid "Path"
 msgstr "Pfad"
 
-#: umc/js/udm.js:171
+#: umc/js/udm.js:162
 msgid "Path of the UDM object."
 msgstr "Pfad des UDM-Objektes"
 
-#: umc/js/udm.js:148
+#: umc/js/udm.js:139
 #, python-format
 msgid "Please confirm the removal of the %d selected objects!"
 msgstr "Bitte bestätigen Sie das Löschen der %d ausgewählten Objekte!"
 
-#: umc/js/udm.js:150
+#: umc/js/udm.js:141
 msgid "Please confirm the removal of the selected object!"
 msgstr "Bitte bestätigen Sie das Löschen des ausgewählten Objektes"
 
-#: umc/js/udm.js:701
+#: umc/js/udm.js:370
 msgid ""
 "Please select a container in the navigation bar. The new object will be "
 "placed at this location."
@@ -106,35 +94,31 @@ msgstr ""
 "Bitte wählen Sie einen Container in der Navigations-Leiste aus. Das neue "
 "Objekte wird an dieser Stelle erzeugt."
 
-#: umc/js/udm.js:264
+#: umc/js/udm.js:255
 msgid "Property value"
 msgstr "Eigenschaftswert"
 
-#: umc/js/udm.js:479
-msgid "Save changes"
-msgstr "Änderungen speichern"
-
-#: umc/js/udm.js:216
+#: umc/js/udm.js:207
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
-#: umc/js/udm.js:230
+#: umc/js/udm.js:221
 msgid "The container in which the query is executed."
 msgstr "Der Container, in dem die Suche ausgeführt wird."
 
-#: umc/js/udm.js:254
+#: umc/js/udm.js:245
 msgid "The object property on which the query is filtered."
 msgstr "Die Objekteigenschaft, nach der gesucht wird."
 
-#: umc/js/udm.js:215
+#: umc/js/udm.js:206
 msgid "The superordinate in which the search is carried out."
 msgstr "Das übergeordnete Objekt, für welches die Suche ausgeführt wird."
 
-#: umc/js/udm.js:244
+#: umc/js/udm.js:235
 msgid "The type of the UDM object."
 msgstr "Der Type des UDM-Objektes."
 
-#: umc/js/udm.js:263
+#: umc/js/udm.js:254
 msgid ""
 "The value for the specified object property on which the query is filtered."
 msgstr "Der Wert der Objekteigenschaft, nach der gesucht wird."
@@ -152,6 +136,15 @@ msgstr "Der Wert der Objekteigenschaft, nach der gesucht wird."
 #~ msgid "Add new object"
 #~ msgstr "Neues Objekt hinzufügen"
 
+#~ msgid "Advanced settings"
+#~ msgstr "Erweiterte Einstellungen"
+
+#~ msgid "Back to navigation"
+#~ msgstr "Zurück zur Navigation"
+
+#~ msgid "Back to search"
+#~ msgstr "Zurück zur Suche"
+
 #~ msgid "Close dialog"
 #~ msgstr "Dialog schließen"
 
@@ -160,6 +153,9 @@ msgstr "Der Wert der Objekteigenschaft, nach der gesucht wird."
 
 #~ msgid "None"
 #~ msgstr "Kein"
+
+#~ msgid "Save changes"
+#~ msgstr "Änderungen speichern"
 
 #~ msgid "The container in which the object shall be created."
 #~ msgstr "Der Container, in dem das Objekt erzeugt wird."

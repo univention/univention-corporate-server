@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-26 11:51+0200\n"
+"POT-Creation-Date: 2011-07-26 17:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,37 +13,37 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/udm/__init__.py:120
+#: umc/python/udm/__init__.py:122
 #, python-format
 msgid "Could not find a matching UDM module for the LDAP object %s"
 msgstr ""
 
-#: umc/python/udm/ldap.py:137 umc/python/udm/__init__.py:196
+#: umc/python/udm/ldap.py:137 umc/python/udm/__init__.py:198
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""
 
-#: umc/python/udm/__init__.py:88 umc/python/udm/__init__.py:113
+#: umc/python/udm/__init__.py:90 umc/python/udm/__init__.py:115
 msgid "Invalid object definition"
 msgstr ""
 
-#: umc/python/udm/__init__.py:117
+#: umc/python/udm/__init__.py:119
 msgid "LDAP DN of object missing"
 msgstr ""
 
-#: umc/python/udm/__init__.py:141
+#: umc/python/udm/__init__.py:143
 msgid "LDAP object could not be identified"
 msgstr ""
 
-#: umc/python/udm/__init__.py:73
+#: umc/python/udm/__init__.py:75
 msgid "No flavor or valid UDM module name specified"
 msgstr ""
 
-#: umc/python/udm/ldap.py:342
+#: umc/python/udm/ldap.py:350
 msgid "None"
 msgstr ""
 
-#: umc/python/udm/__init__.py:352
+#: umc/python/udm/__init__.py:354
 #, python-format
 msgid "Property %s not found"
 msgstr ""

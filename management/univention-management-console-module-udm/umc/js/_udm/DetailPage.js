@@ -4,6 +4,7 @@ dojo.provide("umc.modules._udm.DetailPage");
 
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 dojo.require("dijit.layout.ContentPane");
+dojo.require("dojo.string");
 
 dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widgets._WidgetsInWidgetsMixin, umc.i18n.Mixin ], {
 	// summary:
@@ -58,6 +59,9 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 	// array that stores extra references to all sub tabs
 	// (necessary to reset change sub tab titles [when displaying input errors])
 	_detailPages: null,
+
+	// reference to the policies tab
+	_policiesTab: null,
 
 	// reference to the template object in order to monitor user input changes
 	_template: null,
@@ -125,7 +129,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// parse the layout configuration... we would like to group all groups of advanced 
 		// settings on a special sub tab
 		var advancedGroup = {
-			label: this._('Advanced settings'),
+			label: this._('[Advanced settings]'),
 			description: this._('Advanced settings'),
 			layout: []
 		};
@@ -178,12 +182,118 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			}
 		}, this);
 
+		// in case we have policies that apply to the current object, we need an extra
+		// sub tab that groups all policies together
+		if (this.ldapName && policies && policies.length) {
+			this._policiesTab = new umc.widgets.Page({
+				title: this._('[Policies]'),
+				Description: this._('List of all object properties that are inherited by policies.')
+			});
+			this._tabs.addChild(this._policiesTab);
+
+			// we need to query for each policy object its properties and its layout
+			// this can be done asynchronously
+			var commands = [];
+			dojo.forEach(policies, function(ipolicy) {
+				var params = { objectType: ipolicy.objectType };
+				commands.push(this.umcpCommand('udm/properties', params));
+				commands.push(this.umcpCommand('udm/layout', params));
+				commands.push(this.umcpCommand('udm/object/policies', {
+					objectType: this.objectType,
+					objectDN: this.ldapName,
+					policyType: ipolicy.objectType
+				}));
+			}, this);
+
+			// wait until we have results for all queries
+			(new dojo.DeferredList(commands)).then(dojo.hitch(this, function(results) {
+				// parse the widget configurations
+				var layout = [];
+				var widgetConfs = [];
+				var i;
+				for (i = 0; i < results.length; i += 3) {
+					var ipolicy = policies[Math.floor(i / 3)];
+					var iproperties = results[i][1].result;
+					var ilayout = results[i + 1][1].result;
+					var ipolicyVals = results[i + 2][1].result;
+					var newLayout = [];
+
+					dojo.forEach(ilayout, function(jlayout) {
+						if (false === jlayout.advanced) {
+							// we found the general properties of the policy... remember its layout
+							newLayout = jlayout.layout;
+
+							// break the loop
+							return false;
+						}
+					});
+
+					// build up a small map that indicates which policy properties will be shown
+					// filter out the property 'name'
+					var usedProperties = {};
+					dojo.forEach(newLayout, function(jlayout, j) {
+						if (dojo.isArray(jlayout)) {
+							dojo.forEach(jlayout, function(klayout, k) {
+								if (dojo.isString(klayout)) {
+									if ('name' != klayout) {
+										usedProperties[klayout] = true;
+									}
+								}
+							});
+						}
+						else if (dojo.isString(jlayout)) {
+							if ('name' != jlayout) {
+								usedProperties[jlayout] = true;
+							}
+						}
+					});
+
+					// get only the properties that need to be rendered
+					var newProperties = [];
+					dojo.forEach(iproperties, function(jprop) {
+						var name = jprop.id || jprop.name;
+						if (name in usedProperties) {
+							if ('ComplexInput' == jprop.type) {
+								// handle complex widgets
+								jprop.type = 'MultiInput';
+							}
+							if (jprop.multivalue && 'MultiInput' != jprop.type) {
+								// handle multivalue inputs
+								jprop.subtypes = [{ type: jprop.type }];
+								jprop.type = 'MultiInput';
+							}
+							jprop.disabled = true; // policies cannot be edited
+							if (name in ipolicyVals) {
+								jprop.value = ipolicyVals[name].value;
+								var moduleProps = {
+									openObject: {
+										objectType: ipolicy.objectType,
+										objectDN: ipolicyVals[name].policy
+									}
+								};
+								jprop.label += ' (<a href="#" onClick=\'dojo.publish("/umc/modules/open", ["udm", "policies/policy", ' +
+									dojo.toJson(moduleProps) + '])\' title="' +
+									this._('Click to edit the inherited properties of the policy: %s', ipolicyVals[name].policy) + 
+									'">' + this._('edit') + '</a>)';
+							}
+							newProperties.push(jprop);
+						}
+					}, this);
+
+					// render the group of properties
+					var widgets = umc.tools.renderWidgets(newProperties);
+					this._policiesTab.addChild(new dijit.TitlePane({
+						title: ipolicy.label,
+						description: ipolicy.description,
+						open: false,
+						content: umc.tools.renderLayout(newLayout, widgets)
+					}));
+				}
+			}));
+		}
+
 		// finished adding sub tabs for now
 		this._tabs.startup();
-
-		// in case we have policies that apply to the current object, we need an extra
-		// sub tab that groups all policies together:e 
-		var policyGroups;
 
 		// setup detail page, needs to be wrapped by a form (for managing the
 		// form entries) and a BorderContainer (for the footer with buttons)

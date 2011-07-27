@@ -436,12 +436,14 @@ def ldap_dn2path( ldap_dn ):
 		if not item: continue
 		dummy, value = item.split( '=', 1 )
 		path.insert( 0, value )
-	path = [ '.'.join( path ) + ':/', ]
+	path = [ '.'.join( path ) + ':', ]
 	if rdn:
-		for item in rdn.split( ',' )[ 1 : ]:
+		for item in rdn.split( ',' )[ : -1 ]:
 			if not item: continue
 			dummy, value = item.split( '=', 1 )
 			path.insert( 1, value )
+	else:
+		path.append('')
 	return '/'.join( path )
 
 def get_module( flavor, ldap_dn ):
