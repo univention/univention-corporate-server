@@ -45,7 +45,7 @@ from univention.uvmm.uvmm_ldap import SERVICES, ldap2fqdn
 def uvmm(mode, uri):
 	"""Invoke UVMM CLI as root."""
 	# Bug #21534: listener breaks pickle, using external CLI instead
-	return listener.run("/usr/sbin/univention-virtual-machine-manager", ["univention-virtual-machine-manager", mode, uri], 0, True)
+	return listener.run("/usr/sbin/univention-virtual-machine-manager", ["univention-virtual-machine-manager", mode, uri, "-T", "5"], 0, True)
 
 def initialize():
 	"""Called once on first initialization."""
