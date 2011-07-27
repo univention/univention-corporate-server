@@ -39,6 +39,7 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
+from univention.admin.layout import Tab, Group
 import univention.config_registry
 import univention.admin.ipaddress
 
@@ -134,6 +135,54 @@ def version():
 	o.append('univention-directory-manager @%@package_version@%@')
 	return o
 
+def _print_property( module, action, name, output ):
+	property = module.property_descriptions.get( name )
+	if property is None:
+		output.append( 'E: unknown property %s of module %s' % ( name, univention.admin.modules.name( module ) ) )
+		return
+
+	required = {
+		'create' : False,
+		'modify' : False,
+		'remove' : False,
+		'editable': True,
+		}
+
+	if property.required:
+		required [ 'create' ] = True
+	if property.identifies:
+		required[ 'modify' ] = True
+		required[ 'remove' ] = True
+	if not property.editable:
+		required[ 'modify' ] = False
+		required[ 'remove' ] = False
+		required[ 'editable' ] = False
+
+	flags = ''
+	if action in required and required[ action ]:
+		flags='*'
+	elif not action in required:
+		if required[ 'create' ]:
+			flags += 'c'
+		if required[ 'modify' ]:
+			flags += 'm'
+		if required[ 'remove' ]:
+			flags += 'r'
+		if not required[ 'editable' ]:
+			flags += 'e'
+	if property.options:
+		if flags:
+			flags += ','
+		flags += string.join( property.options, ',' )
+	if property.multivalue:
+		if flags:
+			flags += ','
+		flags += '[]'
+	if flags:
+		flags = '(' + flags + ')'
+
+	output.append( '		%-40s %s' % ( name + ' ' + flags, property.short_description ) )
+
 def module_usage(information, action=''):
 	out=[]
 	for module, l in information.items():
@@ -151,59 +200,24 @@ def module_usage(information, action=''):
 		if not hasattr(module,"layout"):
 			continue
 		for moduletab in module.layout:
-			out.append('  %s:' % (moduletab.short_description))
+			out.append('  %s:' % (moduletab.label))
 
-			for row in moduletab.fields:
-				for field in row:
-					if type(field) != type([]):
-						field=[field]
-
-					for f in field:
-						name=f.property
-						if name == "filler":
+			for row in moduletab.layout:
+				if isinstance( row, Group ):
+					out.append( '	%s' % row.label )
+					for row in row.layout:
+						if isinstance( row, basestring ):
+							_print_property( module, action, row, out )
 							continue
-						property=module.property_descriptions.get(name)
+						for item in row:
+							_print_property( module, action, item, out )
+				else:
+					if isinstance( row, basestring ):
+						_print_property( module, action, row, out )
+						continue
+					for item in row:
+						_print_property( module, action, item, out )
 
-						required={}
-						required['create']=0
-						required['modify']=0
-						required['remove']=0
-						required['editable']=1
-
-						if property.required:
-							required['create']=1
-						if property.identifies:
-							required['modify']=1
-							required['remove']=1
-						if not property.editable:
-							required['modify']=0
-							required['remove']=0
-							required['editable']=0
-
-						flags=''
-						if required.has_key(action) and required[action]:
-							flags='*'
-						elif not required.has_key(action):
-							if required['create']:
-								flags+='c'
-							if required['modify']:
-								flags+='m'
-							if required['remove']:
-								flags+='r'
-							if not required['editable']:
-								flags+='e'
-						if property.options:
-							if flags:
-								flags+=','
-							flags+=string.join(property.options, ',')
-						if property.multivalue:
-							if flags:
-								flags+=','
-							flags+='[]'
-						if flags:
-							flags='('+flags+')'
-
-						out.append('    %-40s %s' % (name+' '+flags, property.short_description))
 	return out
 
 def module_information(module, identifies_only=0):

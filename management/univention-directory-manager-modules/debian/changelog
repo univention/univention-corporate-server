@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.35-1) unstable; urgency=low
+
+  * removed LazyTranslation
+  * adapt UDM commandline client to new layout classes; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 27 Jul 2011 17:03:15 +0200
+
 univention-directory-manager-modules (7.0.34-1) unstable; urgency=low
 
   * added missing 'import copy' statement to .../handlers/shares/share.py
