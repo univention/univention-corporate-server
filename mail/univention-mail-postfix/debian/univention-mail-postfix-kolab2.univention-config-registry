@@ -89,6 +89,17 @@ Type: subfile
 Multifile: etc/postfix/master.cf
 Subfile: etc/postfix/master.cf.d/70_policy
 
+Type: multifile
+Multifile: etc/postfix/transport
+Variables: hostname
+Variables: domainname
+Variables: mail/hosteddomains
+Variables: mail/maps/transport/.*
+
+Type: subfile
+Multifile: etc/postfix/transport
+Subfile: etc/postfix/transport.d/10_base
+
 Type: file
 File: etc/mailname
 Variables: hostname
@@ -97,13 +108,6 @@ Variables: domainname
 Type: file
 File: etc/aliases
 Variables: mail/alias/.*
-
-Type: file
-File: etc/postfix/transport
-Variables: hostname
-Variables: domainname
-Variables: mail/hosteddomains
-Variables: mail/maps/transport/.*
 
 Type: file
 File: etc/init.d/postfix
