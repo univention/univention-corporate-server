@@ -139,7 +139,8 @@ class Web( object ):
 		form = umcd.List()
 
 		ud.debug( ud.ADMIN, ud.INFO, 'Baseconfig.show: options: %s' % str( res.dialog ) )
-		variable = res.dialog
+		variable, is_readonly = res.dialog
+
 		# name
 		if variable != None:
 			varname = umcd.make_readonly( self[ 'baseconfig/set' ][ 'key' ],
@@ -149,7 +150,10 @@ class Web( object ):
 
 		# value
 		if variable != None:
-			value = umcd.make( self[ 'baseconfig/set' ][ 'value' ], default = variable.value )
+			if is_readonly:
+				value = umcd.make_readonly( self[ 'baseconfig/set' ][ 'value' ], default = variable.value )
+			else:
+				value = umcd.make( self[ 'baseconfig/set' ][ 'value' ], default = variable.value )
 		else:
 			value = umcd.make( self[ 'baseconfig/set' ][ 'value' ] )
 		form.add_row( [ varname, value ] )

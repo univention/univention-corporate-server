@@ -1,3 +1,9 @@
+univention-management-console (3.0.110-1) unstable; urgency=low
+
+  * added handling of readonly UCR variables (Bug #22755)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 27 Jul 2011 10:13:53 +0200
+
 univention-management-console (3.0.109-1) unstable; urgency=low
 
   * added value checks for "basis" wizard (Bug #22591)

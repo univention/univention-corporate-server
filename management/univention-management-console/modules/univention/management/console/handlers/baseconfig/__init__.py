@@ -129,28 +129,47 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			info.add_variable( options[ 'key' ], var )
 			info.write_customized()
 
+	def is_readonly( self, key ):
+		ucrinfo_system = ConfigRegistryInfo( registered_only=False, load_customized=False )
+		var = ucrinfo_system.get_variable( key )
+		if var:
+			return var.get('readonly') in ['yes','1','true']
+		return False
+
 	def baseconfig_set( self, object ):
 		success = True
+		report = None
 
 		ud.debug( ud.ADMIN, ud.INFO, 'Baseconfig.set: options: %s' % str( object.options ) )
 		if object.incomplete:
 			object.status( 200 )
 		elif object.options.has_key( 'key' ) and \
 			   object.options.has_key( 'value' ):
+
 			value = object.options[ 'value' ]
 			if value == None:
 				value = ''
-			arg = [ '%s=%s' % ( object.options[ 'key' ].encode(), value.encode() ) ]
-			univention.config_registry.handler_set( arg )
-			if object.options.get( 'descriptions', '' ) or object.options.get( 'type', '' ) or \
-				   object.options.get( 'categories', '' ):
-				self.__create_variable_info( object.options )
-			object.status( 200 )
+
+			ucr = univention.config_registry.ConfigRegistry()
+			ucr.load()
+			if self.is_readonly(object.options['key']) and not(value == ucr.get(object.options['key'],'')):
+				# fail if existing UCR variable shall be created
+				report = _('ERROR: UCR variable <i>%s</i> is read-only! Variable has not been created or changed!') % object.options['key']
+				success = False
+				object.status( 201 )
+			else:
+				# edit existing UCR variable
+				arg = [ '%s=%s' % ( object.options[ 'key' ].encode(), value.encode() ) ]
+				univention.config_registry.handler_set( arg )
+				if object.options.get( 'descriptions', '' ) or object.options.get( 'type', '' ) or \
+					   object.options.get( 'categories', '' ):
+					self.__create_variable_info( object.options )
+				object.status( 200 )
 		else:
 			success = False
 			object.status( 403 )
 
-		self.finished( object.id(), None, success = success )
+		self.finished( object.id(), [ None, None ], success = success, report = report )
 
 	def baseconfig_unset( self, object ):
 		if object.options.has_key( 'key' ):
@@ -163,15 +182,16 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		"""this method returns a dictionary of configuration registry variables
 		found by searching for the (wildcard) expression defined by the UMCP
 		request. Additionally a list of configuration registry categories can be defined"""
+		key = object.options['key']
 		if not object.incomplete:
 			baseInfo = ConfigRegistryInfo( registered_only = False )
 			vars = baseInfo.get_variables()
-			if vars.has_key( object.options[ 'key' ] ):
-				self.finished( object.id(), vars[ object.options[ 'key' ] ] )
+			if vars.has_key(key):
+				self.finished( object.id(), [ vars[key], self.is_readonly(key) ] )
 			else:
-				self.finished( object.id(), None, success = False )
+				self.finished( object.id(), [ None, None ], success = False )
 		else:
-			self.finished( object.id(), None, success = False )
+			self.finished( object.id(), [ None, None ], success = False )
 
 	def baseconfig_search( self, object ):
 		"""this method returns a dictionary of configuration registry variables
