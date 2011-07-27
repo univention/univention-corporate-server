@@ -165,3 +165,9 @@ Description[de]=Einträge für die Postfix-Option smtpd_recipient_restrictions
 Description[en]=Entries for postfix option smtpd_recipient_restrictions
 Type=str
 Categories=service-mail
+
+[mail/postfix/smtp/hostlookup]
+Description[de]=Mechanismen, die der Postfix SMTP client verwendet, um die IP-Adresse eines Rechners aufzulösen (Default: dns)
+Description[en]=What mechanisms are used when the Postfix SMTP client tries to look up a host's IP address (default: dns)
+Type=str
+Categories=service-mail

@@ -34,6 +34,8 @@ if configRegistry.is_false('mail/postfix/dnslookups', True):
 	print 'disable_dns_lookups = yes'
 if configRegistry.is_true('mail/postfix/softbounce', False):
 	print 'soft_bounce = yes'
+if configRegistry.get('mail/postfix/smtp/hostlookup'):
+	print 'smtp_host_lookup = %s' % configRegistry.get('mail/postfix/smtp/hostlookup')
 @!@
 
 append_dot_mydomain = no
