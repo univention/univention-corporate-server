@@ -1,24 +1,11 @@
-# Warning: This file is auto-generated and might be overwritten by
-#          univention-config-registry.
-#          Please edit the files in the following directory instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-config-registry ueberschrieben werden.
-#          Bitte bearbeiten Sie an Stelle dessen die Dateien in
-#          folgendem Verzeichnis:
-# 
-# 	/etc/univention/templates/files/etc/postfix/master.cf.d
-#
-
+@%@UCRHEADER=# @%@
 
 # ==========================================================================
 # service type	private	unpriv	chroot	wakeup	maxproc	command + args
 # 		(yes)	(yes)	(yes)	(never)	(50)
 # ==========================================================================
 @!@
-if baseConfig.has_key('mail/smtpport'):
-	print '%s      inet  n       -       n       -       -       smtpd' % baseConfig['mail/smtpport']
-else:
-	print '25      inet  n       -       n       -       -       smtpd'
+print '%s      inet  n       -       n       -       -       smtpd' % configRegistry.get('mail/smtpport', '25')
 @!@
 #628      inet  n       -       n       -       -       qmqpd
 pickup    fifo  n       -       n       60      1       pickup

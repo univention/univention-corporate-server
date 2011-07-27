@@ -21,11 +21,11 @@ kolabpolicy    unix  -       n       n       -       -       spawn user=cyrus ar
     -basedn @%@ldap/base@%@
     -domain @%@domainname@%@
 @!@
-if baseConfig.has_key('postfix/permithosts') and baseConfig['postfix/permithosts']:
-	print '    -permithosts %s.%s,%s' % (baseConfig['hostname'], baseConfig['domainname'], baseConfig['postfix/permithosts'].replace(' ', ','))
+if configRegistry.get('postfix/permithosts'):
+	print '    -permithosts %s.%s,%s' % (configRegistry.get('hostname'), configRegistry.get('domainname'), configRegistry.get('postfix/permithosts').replace(' ', ','))
 else:
-	print '    -permithosts %s.%s' % (baseConfig['hostname'], baseConfig['domainname'])
-if baseConfig.has_key('postfix/allow-unauth') and baseConfig['postfix/allow-unauth'].lower() in ['yes', 'true']:
+	print '    -permithosts %s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
+if configRegistry.is_true('postfix/allow-unauth', False):
 	print '    -allow-unauth'
 @!@
 
