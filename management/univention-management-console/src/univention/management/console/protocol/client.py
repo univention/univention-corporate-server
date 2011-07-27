@@ -32,10 +32,11 @@
 
 import errno, os, socket, sys, fcntl
 
+from univention.lib.i18n import Translation
+
 from .message import *
 from .definitions import *
 from ..log import CORE, PROTOCOL
-from ..locales import Translation
 from OpenSSL import *
 
 import notifier
@@ -252,7 +253,7 @@ class Client( signals.Provider, Translation ):
 		try:
 			recv = ''
 			while True:
-				recv += sock.recv( 16384 )
+				recv += sock.recv( 65536 )
 				if self.__ssl and not self.__unix:
 					if not sock.pending():
 						break

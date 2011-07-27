@@ -33,7 +33,7 @@
 
 import sys
 
-from ..locales import *
+from univention.lib.i18n import NullTranslation
 
 _ = NullTranslation( 'univention.management.console' ).translate
 

@@ -108,7 +108,7 @@ class MagicBucket( object ):
 		data = ''
 
 		try:
-			data = socket.recv( 16384 )
+			data = socket.recv( 65536 )
 		except SSL.WantReadError:
 			# this error can be ignored (SSL need to do something)
 			return True

@@ -34,7 +34,7 @@ import os
 import re
 import sys
 
-from .locales import Translation
+from univention.lib.i18n import Translation
 
 _ = Translation( 'univention.management.console' ).translate
 

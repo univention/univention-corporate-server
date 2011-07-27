@@ -31,5 +31,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from locales import Translation
+from univention.lib.i18n import Translation
 

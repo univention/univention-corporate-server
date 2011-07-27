@@ -45,6 +45,7 @@ import notifier.popen as popen
 from OpenSSL import *
 
 import univention.uldap
+from univention.lib.i18n import Translation, LocaleNotFound
 
 from .message import Response, Request
 from .client import Client, NoSocketError, ConnectionError
@@ -55,9 +56,9 @@ from ..resources import moduleManager, syntaxManager, categoryManager
 from ..verify import SyntaxVerificationError
 from ..auth import AuthHandler
 from ..acl import ConsoleACLs
-from ..locales import Translation, LocaleNotFound
 from ..log import CORE
 from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, ucr
+from ..locales import I18N, I18N_Manager
 
 class State( signals.Provider ):
 	'''Holds information about the state of an active session'''

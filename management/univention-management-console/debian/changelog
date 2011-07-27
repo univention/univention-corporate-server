@@ -1,3 +1,9 @@
+univention-management-console (4.0.44-1) unstable; urgency=low
+
+  * moved i18n code to univention.lib; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 27 Jul 2011 17:02:07 +0200
+
 univention-management-console (4.0.43-1) unstable; urgency=low
 
   * added support for multiple javascript module files (Bug #22460)

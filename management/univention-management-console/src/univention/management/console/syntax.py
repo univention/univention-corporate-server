@@ -33,14 +33,15 @@
 import os
 import re
 import sys
-import locales
 import xml.parsers.expat
 import xml.etree.ElementTree as ET
 
 from .verify import SyntaxVerificationError, import_verification_functions
 from .log import RESOURCES
 
-_ = locales.Translation( 'univention.management.console' ).translate
+from univention.lib.i18n import Translation
+
+_ = Translation( 'univention.management.console' ).translate
 
 class XML_Definition( ET.ElementTree ):
 	'''Definition of a syntax class'''

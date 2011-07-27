@@ -37,7 +37,8 @@ import notifier.threads as threads
 import PAM
 
 from .log import *
-from .locales import Translation
+
+from univention.lib.i18n import Translation
 
 __all__ = [ 'AuthHandler' ]
 

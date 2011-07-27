@@ -41,8 +41,9 @@ except:
 	import json
 
 from .definitions import *
-from ..locales import Translation
 from ..log import PARSER, PROTOCOL
+
+from univention.lib.i18n import Translation
 
 _ = Translation( 'univention.management.console' ).translate
 
