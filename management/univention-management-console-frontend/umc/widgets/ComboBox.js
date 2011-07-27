@@ -9,13 +9,6 @@ dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.tools");
 
 dojo.declare("umc.widgets.ComboBox", [ dijit.form.FilteringSelect, umc.widgets._SelectMixin, umc.widgets._FormWidgetMixin ], {
-	constructor: function(props) {
-		dojo.mixin(this, props);
-
-		// _SelectMixin method
-		this._setupStore();
-	},
-
 	postMixInProperties: function() {
 		this.inherited(arguments);
 

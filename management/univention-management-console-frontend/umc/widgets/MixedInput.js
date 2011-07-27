@@ -31,6 +31,10 @@ dojo.declare("umc.widgets.MixedInput", [
 	//		see description at `umc.widgets._SelectMixin`
 	depends: null,
 
+	// disabled: Boolean?
+	//		Disables the widget for user input.
+	disabled: false,
+
 	// store the original properties as specified by the user
 	_userProperties: null,
 
@@ -40,6 +44,9 @@ dojo.declare("umc.widgets.MixedInput", [
 	style: 'padding: 0',
 
 	constructor: function(/*Object*/ props) {
+		// mixin in the 'disabled' property
+		props.disabled = this.disabled;
+
 		// store user defined properties
 		this._userProperties = props;
 

@@ -29,6 +29,8 @@ dojo.declare("umc.widgets.MultiInput", [
 
 	delimiter: '',
 
+	disabled: false,
+
 	i18nClass: 'umc.app',
 
 	_widgets: null,
@@ -152,6 +154,7 @@ dojo.declare("umc.widgets.MultiInput", [
 
 		// create 'new' button
 		var btn = this.adopt(dijit.form.Button, {
+			disabled: this.disabled,
 			label: '<b>+</b>',
 			//iconClass: 'dijitIconNewTask',
 			onClick: dojo.hitch(this, '_appendElements', 1)
@@ -182,6 +185,7 @@ dojo.declare("umc.widgets.MultiInput", [
 				// add the widget configuration dict to the list of widgets
 				var iname = '__' + this.name + '-' + irow + '-' + i;
 				widgetConfs.push(dojo.mixin({}, iwidget, {
+					disabled: this.disabled,
 					name: iname
 				}));
 
@@ -200,6 +204,7 @@ dojo.declare("umc.widgets.MultiInput", [
 				// add widget to row container (wrapped by a LabelPane)
 				hasSubTypeLabels = hasSubTypeLabels || widgets[iname].label;
 				rowContainer.addChild(new umc.widgets.LabelPane({
+					disabled: this.disabled,
 					content: widgets[iname],
 					label: irow !== 0 ? '' : null // only keep the label for the first row
 				}));
@@ -210,6 +215,7 @@ dojo.declare("umc.widgets.MultiInput", [
 
 			// add a 'remove' button at the end of the row
 			var button = this.adopt(dijit.form.Button, {
+				disabled: this.disabled,
 				label: '<b>-</b>',
 				//iconClass: 'dijitIconDelete',
 				onClick: dojo.hitch(this, '_removeElement', irow)

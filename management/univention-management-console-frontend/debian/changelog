@@ -1,3 +1,11 @@
+univention-management-console-frontend (0.0.89-1) unstable; urgency=low
+
+  * added subscription channel for opening modules
+  * added support for 'disabled' property in custom widgets
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 27 Jul 2011 11:50:23 +0200
+
 univention-management-console-frontend (0.0.88-1) unstable; urgency=low
 
   * for target "build-dev": copy existing JavaScript modules recursively

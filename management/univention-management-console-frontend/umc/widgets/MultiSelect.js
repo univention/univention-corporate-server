@@ -12,13 +12,6 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.form.CheckedMultiSelect, umc.wid
 	multiple: true,
 	size: 5,
 
-	constructor: function(props) {
-		dojo.mixin(this, props);
-
-		// _SelectMixin method
-		this._setupStore();
-	},
-
 	postMixInProperties: function() {
 		this.inherited(arguments);
 

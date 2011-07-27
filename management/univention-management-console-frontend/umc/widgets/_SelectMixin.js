@@ -54,7 +54,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 	_isAutoValue: false,
 
-	_setupStore: function() {
+	constructor: function() {
 		// The store needs to be available already at construction time, otherwise an 
 		// error will be thrown. We need to define it here, in order to create a new 
 		// store for each instance.

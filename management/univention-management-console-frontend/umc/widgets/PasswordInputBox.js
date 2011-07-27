@@ -24,6 +24,8 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 
 	required: '',
 
+	disabled: false,
+
 	i18nClass: 'umc.app',
 
 	_firstWidget: null,
@@ -36,11 +38,13 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 		// create password fields
 		this._firstWidget = this.adopt(umc.widgets.PasswordBox, {
 			required: this.required,
+			disabled: this.disabled,
 			name: '__' + this.name, // '__' will exclude the entry from umc.widgets.Form.gatherFormValues()
 			validator: dojo.hitch(this, '_checkValidity', 1)
 		});
 		this._secondWidget = this.adopt(umc.widgets.PasswordBox, {
 			required: this.required,
+			disabled: this.disabled,
 			label: this._('%(label)s (retype)', this),
 			name: this.name,
 			validator: dojo.hitch(this, '_checkValidity', 2),

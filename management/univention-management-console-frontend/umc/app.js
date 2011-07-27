@@ -170,26 +170,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		confirmDialog.show();
 	},
 
-//	standby: function(/*Boolean*/ enable) {
-//		if (enable === true) {
-//			this._standbyWidget.show();
-//		}
-//		else {
-//			this._standbyWidget.hide();
-//		}
-//	},
-
 	start: function() {
-		// create a standby widget
-//		this._standbyWidget = new dojox.widget.Standby({
-//			target: dojo.body(),
-//			timeout: 0,
-//			zIndex: 99999999,
-//			color: '#FFF'
-//		});
-//		dojo.body().appendChild(this._standbyWidget.domNode);
-//		this._standbyWidget.startup();
-
 		// create login dialog
 		this._loginDialog = new umc.widgets.LoginDialog({});
 		this._loginDialog.startup();
@@ -249,25 +230,24 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	//		Internal reference to the TabContainer object
 	_tabContainer: null,
 
-	openModule: function(/*String|Object*/ module) {
+	openModule: function(/*String|Object*/ module, /*String?*/ flavor, /*Object?*/ props) {
 		// summary:
 		//		Open a new tab for the given module.
 		// module:
 		//		Module ID as string
-
-		////console.log('### openModule');
-		//console.log(module);
+		// props:
+		//		Optional properties that are handed over to the module constructor.
 
 		// get the object in case we have a string
 		if (typeof(module) == 'string') {
-			module = this.getModule(module);
+			module = this.getModule(module, flavor);
 		}
 		if (undefined === module) {
 			return;
 		}
 
 		// create a new tab
-		var tab = new module.BaseClass({
+		var params = dojo.mixin({
 			title: module.name,
 			iconClass: umc.tools.getIconClass(module.icon),
 			closable: true,
@@ -279,7 +259,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			//autoScroll: true
 			//autoWidth: true,
 			//autoHeight: true
-		});
+		}, props);
+		var tab = new module.BaseClass(params);
 		tab.startup();
 		umc.app._tabContainer.addChild(tab);
 		umc.app._tabContainer.selectChild(tab, true);
@@ -403,6 +384,9 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// put everything together
 		topContainer.startup();
 
+		// subscribe to requests for opening modules
+		dojo.subscribe('/umc/modules/open', dojo.hitch(this, 'openModule'));
+
 		// set a flag that GUI has been build up
 		umc.app._isSetupGUI = true;
 	},
@@ -507,13 +491,20 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// summary:
 		//		Get the module object for a given module ID.
 		//		The returned object has the following properties:
-		//		{ BaseClass, id, description, category }.
+		//		{ BaseClass, id, description, category, flavor }.
 		// id:
-		//		Module ID as a string.
+		//		Module ID as string.
+		// flavor:
+		//		The module flavor as string.
 
 		var i;
 		for (i = 0; i < this._modules.length; ++i) {
-			if (this._modules[i].id == id) {
+			if (!flavor && this._modules[i].id == id) {
+				// flavor is not given, we matched only the module ID
+				return this._modules[i]; // Object
+			}
+			else if (flavor && this._modules[i].id == id && this._modules[i].flavor == flavor) {
+				// flavor is given, module ID as well as flavor matched
 				return this._modules[i]; // Object
 			}
 		}
