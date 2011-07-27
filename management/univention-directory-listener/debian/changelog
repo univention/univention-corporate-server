@@ -1,3 +1,13 @@
+univention-directory-listener (5.0.9-1) unstable; urgency=low
+
+  * With UCS 3.0 and Samba 4 the default ldap port 389 will be used by
+    Samba 4. Added a check to prevent a replication from a Samba 4 LDAP
+    server (Bug #22579)
+  * Consider port configuration via UCR for ldap/master/port,
+    ldap/backup/port and notifier/server/port (Bug #23095)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 27 Jul 2011 12:16:07 +0200
+
 univention-directory-listener (5.0.8-4) unstable; urgency=low
 
   * lower debug level for normal check_parent_dn operations
