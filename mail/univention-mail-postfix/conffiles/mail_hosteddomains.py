@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Baseconfig
-#  call postmap and reload postfix
+# Univention Mail Postfix
+#  call postmap on transport map and reload postfix
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,5 +32,5 @@
 
 import os
 
-def handler(baseConfig, changes):
+def handler(configRegistry, changes):
 	os.system('/usr/sbin/postmap /etc/postfix/transport')

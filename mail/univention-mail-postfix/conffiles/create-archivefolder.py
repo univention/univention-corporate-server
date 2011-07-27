@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# Univention mail Postfix Kolab2
+# Univention Mail Postfix
 #  listener module: creates mailboxes
 #
-# Copyright 2005-2010 Univention GmbH
+# Copyright 2005-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,8 +35,8 @@ import os
 var = 'mail/archivefolder'
 cmd = '/usr/sbin/univention-cyrus-mkdir'
 
-def handler(baseConfig, changes):
-	folder = baseConfig.get(var)
+def handler(configRegistry, changes):
+	folder = configRegistry.get(var)
 	if folder:
 		print '', folder
 		os.system('%s %s' % (cmd, folder))
