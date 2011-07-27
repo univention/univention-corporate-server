@@ -64,6 +64,8 @@ class UVMM_ClientSocket(object):
 		try:
 			self.sock.send(packet)
 			return self.receive()
+		except socket.timeout, msg:
+			raise ClientError(_('Timed out while sending data.'))
 		except socket.error, (errno, msg):
 			raise ClientError(_("Could not send request: %(errno)d"), errno=errno)
 
@@ -91,6 +93,8 @@ class UVMM_ClientSocket(object):
 					return res
 		except protocol.PacketError, (translatable_text, dict):
 			raise ClientError(translatable_text, **dict)
+		except socket.timeout, msg:
+			raise ClientError(_('Timed out while receiving data.'))
 		except socket.error, (errno, msg):
 			raise ClientError(_('Error while waiting for answer: %(errno)d'), errno=errno)
 		except EOFError:
@@ -101,17 +105,23 @@ class UVMM_ClientSocket(object):
 		try:
 			self.sock.close()
 			self.sock = None
+		except socket.timeout, msg:
+			raise ClientError(_('Timed out while closing socket.'))
 		except socket.error, (errno, msg):
 			raise ClientError(_('Error while closing socket: %(errno)d'), errno=errno)
 
 class UVMM_ClientUnixSocket(UVMM_ClientSocket):
 	"""UVMM client Unix socket."""
 
-	def __init__(self, socket_path):
+	def __init__(self, socket_path, timeout=0):
 		"""Open new UNIX socket to socket_path."""
 		try:
 			self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+			if timeout > 0:
+				self.sock.settimeout(timeout)
 			self.sock.connect(socket_path)
+		except socket.timeout, msg:
+			raise ClientError(_('Timed out while opening local socket "%(path)s".'), path=socket_path)
 		except socket.error, (errno, msg):
 			raise ClientError(_('Could not open socket "%(path)s": %(errno)d'), path=socket_path, errno=errno)
 
@@ -157,11 +167,15 @@ class UVMM_ClientAuthenticatedSocket(UVMM_ClientSocket):
 
 class UVMM_ClientTCPSocket(UVMM_ClientSocket):
 	"""UVMM client TCP socket to (str(host), int(port))."""
-	def __init__(self, host, port=2105):
+	def __init__(self, host, port=2105, timeout=0):
 		"""Open new TCP socket to host:port."""
 		try:
 			self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			if timeout > 0:
+				self.sock.settimeout(timeout)
 			self.sock.connect((host, port))
+		except socket.timeout, msg:
+			raise ClientError(_('Timed out while connecting to "%(host)s:%(port)d".'), host=host, port=port)
 		except socket.error, (errno, msg):
 			raise ClientError(_('Could not connect to "%(host)s:%(port)d": %(errno)d'), host=host, port=port, errno=errno)
 
@@ -196,6 +210,8 @@ class UVMM_ClientSSLSocket(UVMM_ClientSocket):
 				tv = struct.pack('ii', int(ssl_timeout), int(0))
 				self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVTIMEO, tv)
 
+		except socket.timeout, msg:
+			raise ClientError(_('Timed out while connecting to "%(host)s:%(port)d".'), host=host, port=port)
 		except socket.error, (errno, msg):
 			raise ClientError(_('Could not connect to "%(host)s:%(port)d": %(errno)d'), host=host, port=port, errno=errno)
 

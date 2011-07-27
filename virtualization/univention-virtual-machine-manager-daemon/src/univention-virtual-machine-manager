@@ -59,15 +59,15 @@ def create_socket(options):
 			host, port = options.ssl.rsplit(':', 1)
 		else:
 			host, port = options.ssl, 2106
-		sock = client.UVMM_ClientSSLSocket(host, int(port))
+		sock = client.UVMM_ClientSSLSocket(host, int(port), tcp_timeout=options.timeout, ssl_timeout=options.timeout)
 	elif options.tcp:
 		if ':' in options.tcp:
 			host, port = options.tcp.rsplit(':', 1)
 		else:
 			host, port = options.tcp, 2105
-		sock = client.UVMM_ClientTCPSocket(host, int(port))
+		sock = client.UVMM_ClientTCPSocket(host, int(port), timeout=options.timeout)
 	else:
-		sock = client.UVMM_ClientUnixSocket(options.socket)
+		sock = client.UVMM_ClientUnixSocket(options.socket, timeout=options.timeout)
 	if options.verbose:
 		print >>sys.stderr, "sock=%s" % (sock,)
 	return sock
@@ -569,6 +569,9 @@ if __name__ == '__main__':
 	parser.add_option( '-v', '--verbose',
 			action='store_true', dest='verbose', default=False,
 			help=_('Print additional information'))
+	parser.add_option( '-T', '--timeout',
+			action='store', dest='timeout', default=0, type="int",
+			help=_('Timeout in seconds for UVMM commands'))
 
 	(options, arguments) = parser.parse_args()
 

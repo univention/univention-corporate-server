@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.314-1) unstable; urgency=low
+
+  * Added a timeout parameter for univention-virtual-machine-manager to
+    avoid endless blocking for domain updates (Bug #22777, Bug #22788)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 27 Jul 2011 07:14:44 +0200
+
 univention-virtual-machine-manager-daemon (0.9.313-1) unstable; urgency=low
 
   * updated german translation; Bug #21927

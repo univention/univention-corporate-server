@@ -33,10 +33,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager 0.9.10-1\n"
-"Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-26 09:34+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-07-27 07:07+0200\n"
 "PO-Revision-Date: 2011-04-21 10:25+0200\n"
-"Last-Translator: Philipp Hahn <hahn@univention.de>\n"
+"Last-Translator: Univention Gmbh <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -66,7 +66,7 @@ msgstr "Kommando \"%(command)s\" ist verboten"
 msgid "Connection options"
 msgstr "Verbindungsoptionen"
 
-#: src/univention/uvmm/client.py:166 src/univention/uvmm/client.py:200
+#: src/univention/uvmm/client.py:180 src/univention/uvmm/client.py:216
 #, python-format
 msgid "Could not connect to \"%(host)s:%(port)d\": %(errno)d"
 msgstr "Keine Verbindung zu \"%(host)s:%(port)d\": %(errno)d"
@@ -79,7 +79,7 @@ msgstr "Keine LDAP-Verbindung als Administrator"
 msgid "Could not open LDAP-Machine connection"
 msgstr "Keine LDAP-Verbindung als Host"
 
-#: src/univention/uvmm/client.py:116
+#: src/univention/uvmm/client.py:126
 #, python-format
 msgid "Could not open socket \"%(path)s\": %(errno)d"
 msgstr "Konnte Socket \"%(path)s\" nicht öffnen: %(errno)d"
@@ -89,7 +89,7 @@ msgstr "Konnte Socket \"%(path)s\" nicht öffnen: %(errno)d"
 msgid "Could not query \"%(uri)s\""
 msgstr "Keine Antwort für \"%(uri)s\""
 
-#: src/univention/uvmm/client.py:68
+#: src/univention/uvmm/client.py:70
 #, python-format
 msgid "Could not send request: %(errno)d"
 msgstr "Konnte Socket nicht öffnen: %(errno)d"
@@ -109,7 +109,7 @@ msgstr ""
 msgid "Domain name \"%(domain)s\" already used by \"%(uuid)s\""
 msgstr "Domain-Name \"%(domain)s\" wird bereits von \"%(uuid)s\" verwendet"
 
-#: src/univention/uvmm/client.py:97
+#: src/univention/uvmm/client.py:101
 msgid "EOS while waiting for answer."
 msgstr "Ende des Datenstroms beim Warten auf eine Antwort"
 
@@ -254,12 +254,12 @@ msgstr "Fehler beim Löschen der Domäne \"%(domain)s\": %(error)s"
 msgid "Error updating domain \"%(domain)s\""
 msgstr "Fehler beim Aktualisieren der Domäne \"%(domain)s\""
 
-#: src/univention/uvmm/client.py:105
+#: src/univention/uvmm/client.py:111
 #, python-format
 msgid "Error while closing socket: %(errno)d"
 msgstr "Fehler beim Löschen des Sockets: %(errno)d"
 
-#: src/univention/uvmm/client.py:95
+#: src/univention/uvmm/client.py:99
 #, python-format
 msgid "Error while waiting for answer: %(errno)d"
 msgstr "Fehler beim Warten auf eine Antwort: %(errno)d"
@@ -342,7 +342,7 @@ msgstr "LDAP-Optionen"
 msgid "No SERVICES defined."
 msgstr "Keine Dienste(SERVICES) definiert."
 
-#: src/univention-virtual-machine-manager:583
+#: src/univention-virtual-machine-manager:586
 msgid "No mode specified"
 msgstr "Kein Modus angegeben"
 
@@ -360,7 +360,7 @@ msgstr "Knoten %(uri)s ist nicht verfügbar"
 msgid "Not a Packet: %(type)s"
 msgstr "Kein Paket: %(type)s"
 
-#: src/univention/uvmm/client.py:89
+#: src/univention/uvmm/client.py:91
 msgid "Not a UVMM_Response."
 msgstr "Keine UVMM-Antwort."
 
@@ -369,12 +369,12 @@ msgstr "Keine UVMM-Antwort."
 msgid "Not a valid Packet: %(msg)s"
 msgstr "Kein gültiges Paket: %(msg)s"
 
-#: src/univention/uvmm/client.py:146
+#: src/univention/uvmm/client.py:156
 #, python-format
 msgid "PAM error: %(msg)s"
 msgstr "PAM Fehler: %(msg)s"
 
-#: src/univention/uvmm/client.py:148
+#: src/univention/uvmm/client.py:158
 #, python-format
 msgid "PAM info: %(msg)s"
 msgstr "PAM Information: %(msg)s"
@@ -423,7 +423,34 @@ msgstr "Lesen der ini-Datei überspringen"
 msgid "Snapshot not supported \"%(node)s\""
 msgstr "\"%(node)s\" unterstützt keine Sicherungspunkte."
 
-#: src/univention/uvmm/client.py:150
+#: src/univention/uvmm/client.py:109
+#, fuzzy
+msgid "Timed out while closing socket."
+msgstr "Fehler beim Löschen des Sockets: %(errno)d"
+
+#: src/univention/uvmm/client.py:178 src/univention/uvmm/client.py:214
+#, fuzzy, python-format
+msgid "Timed out while connecting to \"%(host)s:%(port)d\"."
+msgstr "Keine Verbindung zu \"%(host)s:%(port)d\": %(errno)d"
+
+#: src/univention/uvmm/client.py:124
+#, python-format
+msgid "Timed out while opening local socket \"%(path)s\"."
+msgstr "Timeout beim Öffnen des lokalen Socket \"%(path)s\"."
+
+#: src/univention/uvmm/client.py:97
+msgid "Timed out while receiving data."
+msgstr "Timeout beim Empfangen von Daten."
+
+#: src/univention/uvmm/client.py:68
+msgid "Timed out while sending data."
+msgstr "Timeout beim Senden von Daten."
+
+#: src/univention-virtual-machine-manager:574
+msgid "Timeout in seconds for UVMM commands"
+msgstr "Timeout in Sekunden für UVMM Kommandos"
+
+#: src/univention/uvmm/client.py:160
 #, python-format
 msgid "Unknown PAM type: %(type)s"
 msgstr "Unbekannter PAM-Typ: %(type)s"
@@ -439,7 +466,7 @@ msgid "Unknown disk type: %(type)d"
 msgstr "Unbekannter Laufwerkstyp: %(type)d"
 
 #: src/univention-virtual-machine-manager:191
-#: src/univention-virtual-machine-manager:585
+#: src/univention-virtual-machine-manager:588
 #, python-format
 msgid "Unknown mode \"%(mode)s\""
 msgstr "Unbekannter Modus \"%(mode)s\""
