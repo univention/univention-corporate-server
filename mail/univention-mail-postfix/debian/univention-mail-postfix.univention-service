@@ -1,5 +1,6 @@
 [postfix]
-description[de]=Mail-Server
-description[en]=Mail Server
+Description[de]=Mail-Server
+Description[en]=Mail Server
 icon=service/postfix
 programs=/usr/lib/postfix/master
+start_type=postfix/autostart
