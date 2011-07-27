@@ -1,3 +1,12 @@
+univention-management-console-module-udm (1.0.74-1) unstable; urgency=low
+
+  * use Translation class from univention.lib.i18n
+  * add more container modules for navigation
+  * updated german translation
+  * udm/nav/object/query: support listing of object that require an superordinate; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 27 Jul 2011 17:36:22 +0200
+
 univention-management-console-module-udm (1.0.73-1) unstable; urgency=low
 
   * fixed ldap_dn2path() method which always ignored the last element 

@@ -33,7 +33,7 @@
 
 import copy
 
-from univention.management.console import Translation
+from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 from univention.management.console.log import MODULE
@@ -388,11 +388,21 @@ class Instance( Base ):
 
 		success = True
 		message = None
+		superordinate = None
 		result = []
-		for base, typ in ( ( 'container', 'cn' ), ( 'container', 'ou' ), ( 'settings', 'cn' ), ( 'dhcp', 'service' ), ( 'dhcp', 'subnet' ), ( 'dhcp', 'sharedsubnet' ) ):
+		for base, typ in ( ( 'container', 'cn' ), ( 'container', 'ou' ), ( 'settings', 'cn' ), ( 'dhcp', 'service' ), ( 'dhcp', 'subnet' ), ( 'dhcp', 'sharedsubnet' ), ( 'dns', 'forward_zone' ), ( 'dns', 'reverse_zone' ) ):
 			module = UDM_Module( '%s/%s' % ( base, typ ) )
+			if module.superordinate:
+				if superordinate is None:
+					so_module = UDM_Module( module.superordinate )
+					so_obj = so_module.get( request.options.get( 'container' ) )
+					superordinate = so_obj
+				else:
+					so_obj = superordinate
+			else:
+				so_obj = None
 			try:
-				for item in module.search( request.options.get( 'container' ), scope = 'one' ):
+				for item in module.search( request.options.get( 'container' ), scope = 'one', superordinate = so_obj ):
 					result.append( { 'id' : item.dn, 'label' : item[ module.identifies ], 'icon' : 'udm-%s-%s' % ( base, typ ), 'path': ldap_dn2path( item.dn ) } )
 			except UDM_Error, e:
 				success = False
