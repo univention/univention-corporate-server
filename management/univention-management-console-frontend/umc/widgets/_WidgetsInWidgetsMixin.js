@@ -40,19 +40,19 @@ dojo.declare("umc.widgets._WidgetsInWidgetsMixin", null, {
         //  |   var t;
         //  |   if(4 > 5){ t = new my.ui.Button(); }else{ t = new my.ui.OtherButton() }
         //  |   this._addItem(t);
- 
+
         var x = new Class(props, node);
         this._addItem(x);
         return x; // my.Widget
     },
- 
+
     _addItem: function(/* dijit._Widget... */){
         // summary: Add any number of programatically created children to this instance for later cleanup.
         // private, use `adopt` directly.
         this._addedItems = this._addedItems || [];
         this._addedItems.push.apply(this._addedItems, arguments);
     },
- 
+
     orphan: function(/* dijit._Widget */widget, /* Boolean? */destroy){
         // summary: remove a single item from this instance when we destroy it. It is the parent widget's job
         // to properly destroy an orphaned child.
@@ -82,7 +82,7 @@ dojo.declare("umc.widgets._WidgetsInWidgetsMixin", null, {
 			this._kill(widget);
 		}
     },
- 
+
     _kill: function(w){
         // summary: Private helper function to properly destroy a widget instance.
         if (w && w.destroyRecursive){
@@ -92,7 +92,7 @@ dojo.declare("umc.widgets._WidgetsInWidgetsMixin", null, {
             w.destroy();
         }
     },
- 
+
     destroy: function(){
         // summary: override the default destroy function to account for programatically added children.
         dojo.forEach(this._addedItems, this._kill);

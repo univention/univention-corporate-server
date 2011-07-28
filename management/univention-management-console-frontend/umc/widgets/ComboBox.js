@@ -6,7 +6,6 @@ dojo.require("dijit.form.FilteringSelect");
 dojo.require("dojo.data.ItemFileWriteStore");
 dojo.require("umc.widgets._SelectMixin");
 dojo.require("umc.widgets._FormWidgetMixin");
-dojo.require("umc.tools");
 
 dojo.declare("umc.widgets.ComboBox", [ dijit.form.FilteringSelect, umc.widgets._SelectMixin, umc.widgets._FormWidgetMixin ], {
 	postMixInProperties: function() {

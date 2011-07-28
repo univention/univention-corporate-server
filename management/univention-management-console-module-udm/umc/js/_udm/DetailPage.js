@@ -2,9 +2,20 @@
 
 dojo.provide("umc.modules._udm.DetailPage");
 
-dojo.require("umc.widgets._WidgetsInWidgetsMixin");
+dojo.require("dijit.TitlePane");
+dojo.require("dijit.layout.BorderContainer");
 dojo.require("dijit.layout.ContentPane");
+dojo.require("dijit.layout.TabContainer");
 dojo.require("dojo.string");
+dojo.require("dojo.DeferredList");
+dojo.require("umc.i18n");
+dojo.require("umc.modules._udm.Template");
+dojo.require("umc.render");
+dojo.require("umc.tools");
+dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.widgets.Form");
+dojo.require("umc.widgets.Page");
+dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
 dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widgets._WidgetsInWidgetsMixin, umc.i18n.Mixin ], {
 	// summary:
@@ -33,7 +44,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 	// 		in the 'add object' dialog). This includes properties such as superordinate,
 	//		the container in wich the object is to be created, the object type etc.
 	newObjectOptions: null,
-	
+
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.udm',
 
@@ -126,7 +137,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			properties.push(iprop);
 		});
 
-		// parse the layout configuration... we would like to group all groups of advanced 
+		// parse the layout configuration... we would like to group all groups of advanced
 		// settings on a special sub tab
 		var advancedGroup = {
 			label: this._('[Advanced settings]'),
@@ -150,7 +161,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		}
 
 		// render all widgets
-		var widgets = umc.tools.renderWidgets(properties);
+		var widgets = umc.render.widgets(properties);
 
 		// render the layout for each subtab
 		this._propertySubTabMap = {}; // map to remember which form element is displayed on which subtab
@@ -162,7 +173,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			});
 
 			// add rendered layout to subtab and register subtab
-			subTab.addChild(umc.tools.renderLayout(ilayout.layout, widgets));
+			subTab.addChild(umc.render.layout(ilayout.layout, widgets));
 			this._tabs.addChild(subTab);
 
 			// update _propertySubTabMap
@@ -273,7 +284,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 								};
 								jprop.label += ' (<a href="#" onClick=\'dojo.publish("/umc/modules/open", ["udm", "policies/policy", ' +
 									dojo.toJson(moduleProps) + '])\' title="' +
-									this._('Click to edit the inherited properties of the policy: %s', ipolicyVals[name].policy) + 
+									this._('Click to edit the inherited properties of the policy: %s', ipolicyVals[name].policy) +
 									'">' + this._('edit') + '</a>)';
 							}
 							newProperties.push(jprop);
@@ -281,12 +292,12 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					}, this);
 
 					// render the group of properties
-					var widgets = umc.tools.renderWidgets(newProperties);
+					var widgets = umc.render.widgets(newProperties);
 					this._policiesTab.addChild(new dijit.TitlePane({
 						title: ipolicy.label,
 						description: ipolicy.description,
 						open: false,
-						content: umc.tools.renderLayout(newLayout, widgets)
+						content: umc.render.layout(newLayout, widgets)
 					}));
 				}
 			}));
@@ -301,7 +312,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		borderLayout.addChild(this._tabs);
 
 		// buttons
-		var buttons = umc.tools.renderButtons([{
+		var buttons = umc.render.buttons([{
 			name: 'submit',
 			label: this._('Save changes')
 		}, {
@@ -313,7 +324,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			region: 'bottom',
 			'class': 'umcNoBorder'
 		});
-		dojo.forEach(buttons._order, function(i) { 
+		dojo.forEach(buttons._order, function(i) {
 			footer.addChild(i);
 		});
 		borderLayout.addChild(footer);
@@ -385,7 +396,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					return true;
 				}
 
-				// iprop.valid and iprop.details may be arrays for properties with 
+				// iprop.valid and iprop.details may be arrays for properties with
 				// multiple values... set all 'true' values to 'null' in order to reset
 				// the original items validation mechanism
 				var iallValid = iprop.valid;
@@ -439,7 +450,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 	getAlteredValues: function() {
 		// summary:
 		//		Return a list of object properties that have been altered.
-		
+
 		// get all form values and see which values are new
 		var vals = this._form.gatherFormValues();
 		var newVals = {};

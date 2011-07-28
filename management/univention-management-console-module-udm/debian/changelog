@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.75-1) unstable; urgency=low
+
+  * Adaptations to JavaScript API changes (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 28 Jul 2011 15:09:27 +0200
+
 univention-management-console-module-udm (1.0.74-1) unstable; urgency=low
 
   * use Translation class from univention.lib.i18n
@@ -9,7 +15,7 @@ univention-management-console-module-udm (1.0.74-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.73-1) unstable; urgency=low
 
-  * fixed ldap_dn2path() method which always ignored the last element 
+  * fixed ldap_dn2path() method which always ignored the last element
   * added support for policies
   (Bug #22883)
 
@@ -32,7 +38,7 @@ univention-management-console-module-udm (1.0.71-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.70-1) unstable; urgency=low
 
-  * added documentation and translations to the JavaScript UDM part 
+  * added documentation and translations to the JavaScript UDM part
   * refactorization into separate files
     (Bug #22883)
 
@@ -132,13 +138,13 @@ univention-management-console-module-udm (1.0.56-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.55-1) unstable; urgency=low
 
-  * added validation of properties with multiple entries (Bug #22883) 
+  * added validation of properties with multiple entries (Bug #22883)
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 08 Jul 2011 17:13:49 +0200
 
 univention-management-console-module-udm (1.0.54-1) unstable; urgency=low
 
-  * added JavaScript method for removing objects (Bug #22883) 
+  * added JavaScript method for removing objects (Bug #22883)
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 07 Jul 2011 18:15:20 +0200
 
@@ -162,7 +168,7 @@ univention-management-console-module-udm (1.0.51-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.50-1) unstable; urgency=low
 
-  * added support for saving new/edited object (Bug #22883) 
+  * added support for saving new/edited object (Bug #22883)
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 01 Jul 2011 18:56:45 +0200
 
@@ -201,7 +207,7 @@ univention-management-console-module-udm (1.0.45-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.44-1) unstable; urgency=low
 
-  * adaptations for multi value and complex widgets (Bug #22460) 
+  * adaptations for multi value and complex widgets (Bug #22460)
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 30 Jun 2011 17:42:57 +0200
 
@@ -427,7 +433,7 @@ univention-management-console-module-udm (1.0.12-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.11-1) unstable; urgency=low
 
-  * bug fix for ucmpCommand reference #3 (Bug #22439) 
+  * bug fix for ucmpCommand reference #3 (Bug #22439)
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Jun 2011 12:07:01 +0200
 

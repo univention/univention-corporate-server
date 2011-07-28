@@ -2,13 +2,9 @@
 
 dojo.provide("umc.widgets.LoginDialog");
 
-dojo.require("dijit.form.Button");
-dojo.require("dijit.form.TextBox");
-dojo.require("dijit.layout.ContentPane");
 dojo.require("dojox.widget.Dialog");
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
-dojo.require("umc.widgets.ContainerForm");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.StandbyMixin");
@@ -77,7 +73,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		}];
 
 		var layout = [['username'], ['password'], ['language']];
-		 
+
 		this._form = new umc.widgets.Form({
 			//style: 'width: 100%',
 			widgets: widgets,
@@ -155,6 +151,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 
 			// make sure that we got data
 			this.onLogin(username);
+			this.hide();
 		}), dojo.hitch(this, function(error) {
 			// disable standby in any case
 			//console.log('# _authenticate - error');

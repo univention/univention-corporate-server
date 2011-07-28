@@ -35,12 +35,12 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 		delete this.attributeMap.title;
 
 		// get user preferences for the module helpText
-		this._helpTextShown = umc.app.preferences('moduleHelpText');
+		this._helpTextShown = umc.tools.preferences('moduleHelpText');
 	},
 
 	buildRendering: function() {
 		this.inherited(arguments);
-		
+
 		// put the help text in a Text widget and then add it to the container
 		this._helpTextPane = new umc.widgets.Text({
 			content: this.helpText || '',
@@ -82,13 +82,13 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 			return;
 		}
 
-		// make the node transparent, yet displayable 
+		// make the node transparent, yet displayable
 		dojo.style(this._helpTextPane.domNode, {
 			opacity: 0,
 			display: 'block'
 		});
 		this._helpTextShown = true;
-		
+
 		// fade in the help text
 		dojo.fadeIn({
 			node: this._helpTextPane.domNode,
@@ -101,7 +101,7 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 		if (!this._helpTextPane || !this._helpTextShown) {
 			return;
 		}
-		
+
 		// fade out the help text
 		dojo.fadeOut({
 			node: this._helpTextPane.domNode,

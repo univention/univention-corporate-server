@@ -2,6 +2,8 @@
 
 dojo.provide("umc.modules._udm.Template");
 
+dojo.require("umc.tools");
+
 dojo.declare('umc.modules._udm.Template', null, {
 	// summary:
 	//		Class that provides a template functionality for UDM objects.
@@ -9,19 +11,19 @@ dojo.declare('umc.modules._udm.Template', null, {
 	//		This class registers event handlers and monitors user input in order to
 	//		update UDM object values for a specified template. Template values may
 	//		be static values (i.e., strings) or values containing references to other
-	//		form fields. References are indicated by using tags '<variable>'. 
+	//		form fields. References are indicated by using tags '<variable>'.
 	//		Additionally, modifiers can be applied to the content of a variable (e.g.,
 	//		to convert values to upper or lower case) and an index operator enables
 	//		accessing particular character ranges.
 	// example:
 	//		Here some valid examples for variable expansion.
-	//	|	simple: 
+	//	|	simple:
 	//	|	  <var>               -> 'Univention'
-	//	|	with modifiers: 
+	//	|	with modifiers:
 	//	|	  <var:lower>         -> 'univention'
 	//	|	  <var:upper>         -> 'UNIVENTION'
 	//	|	  <var:umlauts,upper> -> 'UNIVENTION'
-	//	|	with index operator: 
+	//	|	with index operator:
 	//	|	  <var>[0]   -> 'U'
 	//	|	  <var>[-2]  -> 'o'
 	//	|	  <var>[0:2] -> 'Un'
@@ -31,8 +33,8 @@ dojo.declare('umc.modules._udm.Template', null, {
 	//
 
 	// widgets: Object
-	//		Dict of (key -> widget) pairs containing all form widgets of 
-	//		the edited object. 
+	//		Dict of (key -> widget) pairs containing all form widgets of
+	//		the edited object.
 	widgets: null,
 
 	// template: Object
@@ -114,7 +116,7 @@ dojo.declare('umc.modules._udm.Template', null, {
 					this._regVar.lastIndex = 0; // start matching in any case from the string beginning
 					var match = this._regVar.exec(imatch);
 
-					// we have a value with variable reference... 
+					// we have a value with variable reference...
 					// parse the variable reference and get the correct indeces
 					var refKey = match[1];
 					var modifier = match[3];
@@ -211,12 +213,12 @@ dojo.declare('umc.modules._udm.Template', null, {
 		var modifiers = [];
 		dojo.forEach(modifierNames, function(iname) {
 			switch(dojo.trim(iname)) {
-			case 'lower': 
+			case 'lower':
 				modifiers.push(function(str) {
 					return dojo.isString(str) ? str.toLowerCase() : str;
 				});
 				break;
-			case 'upper': 
+			case 'upper':
 				modifiers.push(function(str) {
 					return dojo.isString(str) ? str.toUpperCase() : str;
 				});
@@ -272,7 +274,7 @@ dojo.declare('umc.modules._udm.Template', null, {
 
 	destroy: function() {
 		// when called, disconnect signal handlers
-		dojo.forEach(this._eventHandles, dojo.disconnect);	
+		dojo.forEach(this._eventHandles, dojo.disconnect);
 	}
 });
 

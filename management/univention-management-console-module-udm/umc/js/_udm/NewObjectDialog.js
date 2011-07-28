@@ -2,6 +2,13 @@
 
 dojo.provide("umc.modules._udm.NewObjectDialog");
 
+dojo.require("dojo.DeferredList");
+dojo.require("umc.i18n");
+dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.widgets.Form");
+dojo.require("umc.tools");
+dojo.require("umc.widgets.Text");
+
 dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin ], {
 	// summary:
 	//		Dialog class for creating a new UDM object.
@@ -77,7 +84,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 			iarray.sort(umc.tools.cmpObjects('label'));
 		});
 
-		
+
 		// depending on the list we get, create a form for adding
 		// a new UDM object
 		var widgets = [];

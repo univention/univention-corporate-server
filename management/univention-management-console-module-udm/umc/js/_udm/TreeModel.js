@@ -2,6 +2,8 @@
 
 dojo.provide("umc.modules._udm.TreeModel");
 
+dojo.require("umc.tools");
+
 dojo.declare('umc.modules._udm.TreeModel', null, {
 	// summary:
 	//		Class that implements the tree model for the UDM container hierarchy.
@@ -9,7 +11,7 @@ dojo.declare('umc.modules._udm.TreeModel', null, {
 	//		This class that implements a tree model for the container hierarchy which
 	//		is use in the UDM navigation module in combination with the diji.Tree widget.
 	//		More details about this model can be found in dijit.tree.model.
-	
+
 	// umcpCommand: Function
 	//		Reference to the module specific umcpCommand function.
 	umcpCommand: null,

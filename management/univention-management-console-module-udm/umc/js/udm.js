@@ -2,20 +2,16 @@
 
 dojo.provide("umc.modules.udm");
 
-dojo.require("dijit.Dialog");
 dojo.require("dijit.Tree");
 dojo.require("dijit.layout.BorderContainer");
 dojo.require("dijit.layout.ContentPane");
-dojo.require("dijit.layout.TabContainer");
 dojo.require("dojo.DeferredList");
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
-dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.dialog");
 dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.Module");
-dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.SearchForm");
-dojo.require("umc.widgets.Text");
 
 dojo.require("umc.modules._udm.Template");
 dojo.require("umc.modules._udm.NewObjectDialog");
@@ -30,7 +26,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	//		of UDM objects. UDM objects have different properties and functions, however,
 	//		the way they are displayed is rudimentary similar across the different types.
 	//		This class is meant to be used (a) either to interface a particular UDM type
-	//		(users, groups, computers, ...) or (b) to display a navigation interface which 
+	//		(users, groups, computers, ...) or (b) to display a navigation interface which
 	//		shows the container hierarchy on the left side and existing UDM objects of
 	//		any type on the search list. The class' behaviour is controlled by the moduleFlavor
 	//		property (which is set automatically when available modules are queried during
@@ -140,12 +136,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				if (ids.length == 1) {
 					msg = this._('Please confirm the removal of the selected object!', ids.length);
 				}
-				umc.app.confirm(msg, [{ 
+				umc.dialog.confirm(msg, [{
 					label: this._('Delete'),
 					callback: dojo.hitch(this, 'removeObjects', ids)
-				}, { 
-					label: this._('Cancel'), 
-					'default': true 
+				}, {
+					label: this._('Cancel'),
+					'default': true
 				}]);
 			})
 		}];
@@ -163,7 +159,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			editable: true
 		}];
 
-		// the navigation needs a slightly modified store that uses the UMCP query 
+		// the navigation needs a slightly modified store that uses the UMCP query
 		// function 'udm/nav/object/query'
 		var store = this.moduleStore;
 		if ('navigation' == this.moduleFlavor) {
@@ -184,11 +180,11 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		//
 		// add search widget
 		//
-		
+
 		var umcpCmd = dojo.hitch(this, 'umcpCommand');
 		var widgets = [];
 		var layout = [];
-		
+
 		if ('navigation' == this.moduleFlavor) {
 			// for the navigation we need a different search form
 			widgets = [];
@@ -278,7 +274,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				//style: 'width: auto; height: auto;',
 				model: model,
 				persist: false,
-				// customize the method getIconClass() 
+				// customize the method getIconClass()
 				getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
 					return umc.tools.getIconClass(item.icon || 'udm-container-cn');
 				}
@@ -305,14 +301,14 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	iconFormatter: function(value, rowIndex) {
 		// summary:
-		//		Formatter method that adds in a given column of the search grid icons 
+		//		Formatter method that adds in a given column of the search grid icons
 		//		according to the object types.
 
 		// get the iconNamae
 		var item = this._grid._grid.getItem(rowIndex);
 		var iconName = item.objectType || '';
 		iconName = iconName.replace('/', '-');
-		
+
 		// create an HTML image that contains the icon (if we have a valid iconName)
 		var result = value;
 		if (iconName) {
@@ -367,7 +363,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				selectedContainer = items[0];
 			}
 			else {
-				umc.app.alert(this._('Please select a container in the navigation bar. The new object will be placed at this location.'));
+				umc.dialog.alert(this._('Please select a container in the navigation bar. The new object will be placed at this location.'));
 				return;
 			}
 		}

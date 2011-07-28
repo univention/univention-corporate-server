@@ -5,6 +5,7 @@ dojo.provide("umc.widgets.MultiInput");
 dojo.require("umc.widgets.ContainerWidget");
 //dojo.require("umc.widgets.HiddenInput");
 dojo.require("umc.tools");
+dojo.require("umc.render");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
@@ -20,7 +21,7 @@ dojo.declare("umc.widgets.MultiInput", [
 	// subtypes: Object[]
 	//		Essentially an array of object that describe the widgets for one element
 	//		of the MultiInput widget, the 'name' needs not to be specified, this
-	//		property is passed to umc.tools.renderWidgets().
+	//		property is passed to umc.render.widgets().
 	subtypes: null,
 
 	name: '',
@@ -194,7 +195,7 @@ dojo.declare("umc.widgets.MultiInput", [
 			}, this);
 
 			// render the widgets and layout them
-			var widgets = umc.tools.renderWidgets(widgetConfs);
+			var widgets = umc.render.widgets(widgetConfs);
 			var visibleWidgets = dojo.map(order, function(iname) {
 				return widgets[iname];
 			});

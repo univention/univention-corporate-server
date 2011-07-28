@@ -64,7 +64,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 					// make sure that we get an non-empty array
 					//console.log('# _genericMultiCmd - deferred: data=' + String(data));
 					var res = dojo.getObject('result', false, data);
-					
+
 					// send event when changes occurred
 					if (!this._noEvents && ('remove' == type || 'put' == type)) {
 						this.onChange();
@@ -141,7 +141,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		//		Query options, such as 'sort' (see also umc.tools.cmpObjects()).
 		// returns: dojo.store.api.Store.QueryResults
 		//		The results of the query, extended with iterative methods.
-		
+
 		// if called via dojo.data.ObjectStore, queries can be translated to regexps
 		var query = {};
 		var nQueryEl = 0;

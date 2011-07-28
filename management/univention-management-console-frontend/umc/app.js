@@ -2,180 +2,32 @@
 
 dojo.provide('umc.app');
 
-dojo.require("dijit.Dialog");
 dojo.require("dijit.Menu");
 dojo.require("dijit.form.Button");
 dojo.require("dijit.form.DropDownButton");
 dojo.require("dijit.layout.BorderContainer");
-dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.layout.TabContainer");
 dojo.require("dojo.cookie");
 dojo.require("dojox.html.styles");
 dojo.require("dojox.timing");
+dojo.require("umc.tools");
+dojo.require("umc.dialog");
 dojo.require("umc.widgets.CategoryPane");
-dojo.require("umc.widgets.ConfirmDialog");
 dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets.LoginDialog");
 dojo.require("umc.widgets.Page");
-dojo.require("umc.widgets.Toaster");
 dojo.require("umc.i18n");
 
 dojo.mixin(umc.app, new umc.i18n.Mixin({
 	// use the framework wide translation file
 	i18nClass: 'umc.app'
 }), {
-	// loggingIn: Boolean
-	//		True if the user is in the process of loggin in.
-	loggingIn: false,
-
-	_loginDialog: null,
-	_userPreferences: null,
 	_checkSessionTimer: null,
 
-	defaultPreferences: {
-		tooltips: true,
-		moduleHelpText: true,
-		confirm: true
-	},
-
-	_toaster: null, // internal reference to the toaster
-
-	notify: function(/*String*/ message) {
-		// summary:
-		//		Show a toaster notification with the given message string.
-		// message:
-		//		The message that is displayed in the notification.
-
-		// create toaster the first time
-		if (!this._toaster) {
-			this._toaster = new umc.widgets.Toaster({});
-		}
-
-		// show the toaster
-		this._toaster.setContent(message, 'message');
-	},
-
-	_alertDialog: null, // internal reference for the alert dialog
-
-	alert: function(/*String*/ message) {
-		// summary:
-		//		Popup an alert dialog with the given message string. The users needs to
-		//		confirm the dialog by clicking on the 'OK' button.
-		// message:
-		//		The message that is displayed in the dialog.
-
-		// create alert dialog the first time
-		if (!this._alertDialog) {
-			this._alertDialog = new umc.widgets.ConfirmDialog({
-				title: this._('Notification'),
-				style: 'max-width: 500px;',
-				options: [{
-					label: this._('Ok'),
-					callback: dojo.hitch(this, function() {
-						// hide dialog upon confirmation by click on 'OK'
-						this._alertDialog.hide();
-					})
-				}]
-			});
-		}
-
-		// show the confirmation dialog
-		this._alertDialog.set('message', message);
-		//this._alertDialog.startup();
-		this._alertDialog.show();
-	},
-
-	confirm: function(/*String*/ message, /*Object[]*/ options) {
-		// summary:
-		//		Popup a confirmation dialog with a given message string and a
-		//		list of options to choose from.
-		// description:
-		//		This function provides a shortcut for umc.widgets.ConfirmDialog.
-		//		The user needs to confirm the dialog by clicking on one of
-		//		multiple defined buttons (=choice). When any of the buttons
-		//		is pressed, the dialog is automatically closed.
-		// message:
-		//		The message that is displayed in the dialog.
-		// options:
-		//		Array of objects describing the possible choices. Array is passed to 
-		//		umc.widgets.ConfirmDialog as 'options' parameter. The property 'label' needs
-		//		to be specified. The properties 'callback', 'name' and 'default' are optional.
-		//		If one single (!) item is specified with the property 'default=true' and 
-		//		confirmations are switched off in the user preferences, the dialog is not shown 
-		//		and the callback function for this default option is executed directly.
-		// example:
-		//		A simple example that uses the 'default' property.
-		// |	umc.app.confirm(msg, [{
-		// |	    label: Delete',
-		// |	    callback: function() {
-		// |			// do something...
-		// |		}
-		// |	}, {
-		// |	    label: 'Cancel',
-		// |	    'default': true
-		// |	}]);
-		// example:
-		//		We may also refer the callback to a method of an object, i.e.:
-		// |	var myObj = {
-		// |		foo: function(answer) {
-		// |			if ('delete' == answer) {
-		// |				console.log('Item will be deleted!');
-		// |			}
-		// |		}
-		// |	};
-		// |	umc.app.confirm('Do you want to delete the item?', [{
-		// |	    label: 'Delete item',
-		// |		name: 'delete',
-		// |	    'default': true,
-		// |	    callback: dojo.hitch(myObj, 'foo')
-		// |	}, {
-		// |	    label: 'Cancel',
-		// |		name: 'cancel',
-		// |	    callback: dojo.hitch(myObj, 'foo')
-		// |	}]);
-
-		// if the user has switched off confirmations, try to find a default option
-		if (!this.preferences('confirm')) {
-			var cb = undefined;
-			var response = undefined;
-			dojo.forEach(options, function(i, idx) {
-				// check for default option
-				if (true === i['default']) {
-					cb = i.callback;
-					response = i.name || idx;
-					return false; // break loop
-				}
-			});
-			if (cb && dojo.isFunction(cb)) {
-				// we found a default item .. call the callback and exit
-				cb(response);
-				return;
-			}
-		}
-
-		// create confirmation dialog
-		var confirmDialog = new umc.widgets.ConfirmDialog({
-			title: this._('Confirmation'),
-			style: 'max-width: 400px;',
-			message: message,
-			options: options
-		});
-
-		// connect to 'onConfirm' event to close the dialog in any case
-		dojo.connect(confirmDialog, 'onConfirm', function(response) {
-			confirmDialog.close();
-		});
-
-		// show the confirmation dialog
-		confirmDialog.show();
-	},
+	// username: String
+	//		The username of the authenticated user.
+	username: null,
 
 	start: function() {
-		// create login dialog
-		this._loginDialog = new umc.widgets.LoginDialog({});
-		this._loginDialog.startup();
-		dojo.connect(this._loginDialog, 'onLogin', this, 'onLogin');
-
 		// create a background process that checks each second the validity of the session
 		// cookie as soon as the session is invalid, the login screen will be shown
 		this._checkSessionTimer = new dojox.timing.Timer(1000);
@@ -206,24 +58,22 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	login: function() {
 		// summary: 
 		//		Show the login dialog.
-		this.loggingIn = true;
 		this._checkSessionTimer.stop();
-		this._loginDialog.show();
+		umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
 	},
 
-	username: null,
 	onLogin: function(username) {
-		this.username = username;
+		// save the username internally and as cookie
 		dojo.cookie('UMCUsername', username, { expires: 100, path: '/' });
-		this.loggingIn = false;
-		this._loginDialog.hide();
+		this.username = username;
+
+		// restart the timer for session checking
 		this._checkSessionTimer.start();
 		umc.tools.umcpCommand('set', {
 			locale: dojo.locale
 		} ).then( dojo.hitch( this, function( data ) { 
 			this.loadModules(); 
 		} ) );
-
 	},
 
 	// _tabContainer:
@@ -262,133 +112,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		}, props);
 		var tab = new module.BaseClass(params);
 		tab.startup();
-		umc.app._tabContainer.addChild(tab);
-		umc.app._tabContainer.selectChild(tab, true);
-	},
-
-	_isSetupGUI: false,
-	setupGui: function() {
-		// make sure that we have not build the GUI before
-		if (this._isSetupGUI) {
-			return;
-		}
-
-		// set up fundamental layout parts
-		var topContainer = new dijit.layout.BorderContainer( {
-			style: "height: 100%; width: 100%; margin-left: auto; margin-right: auto;",
-			//height: 100%,
-			//width: 100%,
-			gutters: false
-		}).placeAt(dojo.body());
-
-		// container for all modules tabs
-		umc.app._tabContainer = new dijit.layout.TabContainer({
-			//style: "height: 100%; width: 100%;",
-			region: "center"
-		});
-		topContainer.addChild(umc.app._tabContainer);
-
-		// the container for all category panes
-		// NOTE: We add the icon here in the first tab, otherwise the tab heights
-		//	   will not be computed correctly and future tabs will habe display
-		//	   problems.
-		var overviewPage = new umc.widgets.Page({ 
-			//style: "overflow:visible; width: 80%"
-			title: this._('Overview'),
-			iconClass: umc.tools.getIconClass('univention'),
-			helpText: this._('Univention Management Console is a modularly designed, web-based application for the administration of objects in your Univention Corporate Server domain as well as individual of Univention Corporate Server systems.')
-		});
-
-		// add a CategoryPane for each category
-		dojo.forEach(this.getCategories(), dojo.hitch(this, function(icat) {
-			// ignore empty categories
-			var modules = this.getModules(icat.id);
-			if (0 === modules.length) {
-				return;
-			}
-
-			// create a new category pane for all modules in the given category
-			var categoryPane = new umc.widgets.CategoryPane({
-				modules: modules,
-				title: icat.name,
-				open: true //('favorites' == icat.id)
-			});
-
-			// register to requests for opening a module
-			dojo.connect(categoryPane, 'onOpenModule', dojo.hitch(this, this.openModule));
-
-			// add category pane to overview page
-			overviewPage.addChild(categoryPane);
-		}));
-		umc.app._tabContainer.addChild(overviewPage);
-		
-		// the header
-		var header = new umc.widgets.ContainerWidget({
-			title: '',
-			'class': 'umcHeader',
-			region: 'top'
-		});
-		topContainer.addChild( header );
-
-		// add some buttons
-		header.addChild(new dijit.form.Button({
-			label: this._('Help'),
-			'class': 'umcHeaderButton'
-		}));
-		header.addChild(new dijit.form.Button({
-			label: this._('About UMC'),
-			'class': 'umcHeaderButton'
-		}));
-
-		// the user context menu
-		var menu = new dijit.Menu({});
-		menu.addChild(new dijit.CheckedMenuItem({
-			label: this._('Tooltips'),
-			checked: umc.app.preferences('tooltips'),
-			onClick: function() {
-				umc.app.preferences('tooltips', this.checked);
-			}
-		}));
-		menu.addChild(new dijit.CheckedMenuItem({
-			label: this._('Confirmations'),
-			checked: true,
-			checked: umc.app.preferences('confirm'),
-			onClick: function() {
-				umc.app.preferences('confirm', this.checked);
-			}
-		}));
-		menu.addChild(new dijit.CheckedMenuItem({
-			label: this._('Module help description'),
-			checked: true,
-			checked: umc.app.preferences('moduleHelpText'),
-			onClick: function() {
-				umc.app.preferences('moduleHelpText', this.checked);
-			}
-		}));
-		header.addChild(new dijit.form.DropDownButton({
-			label: this._('User: %s', this.username),
-			'class': 'umcHeaderButton',
-			dropDown: menu
-		}));
-
-		// add logout button
-		header.addChild(new dijit.form.Button({
-			label: '<img src="images/logout.png">',
-			'class': 'umcHeaderButton',
-			onClick: function() {
-				umc.app.closeSession();
-				window.location.reload();
-			}
-		}));
-
-		// put everything together
-		topContainer.startup();
-
-		// subscribe to requests for opening modules
-		dojo.subscribe('/umc/modules/open', dojo.hitch(this, 'openModule'));
-
-		// set a flag that GUI has been build up
-		umc.app._isSetupGUI = true;
+		this._tabContainer.addChild(tab);
+		this._tabContainer.selectChild(tab, true);
 	},
 
 	onModulesLoaded: function() {
@@ -518,74 +243,129 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		return this._categories; // Object[]
 	},
 
-	preferences: function(/*String|Object?*/ param1, /*AnyType?*/ value) {
-		// summary:
-		//		Convenience function to set/get user preferences. 
-		//		All preferences will be store in a cookie (in JSON format).
-		// returns:
-		//		If no parameter is given, returns dictionary with all preference
-		//		entries. If one parameter of type String is given, returns the
-		//		preference for the specified key. If one parameter is given which
-		//		is an dictionary, will set all key-value pairs as specified by
-		//		the dictionary. If two parameters are given and
-		//		the first is a String, the function will set preference for the
-		//		key (paramater 1) to the value as specified by parameter 2.
-
-		// make sure the user preferences are cached internally
-		var cookieStr = '';
-		if (!this._userPreferences) {
-			// not yet cached .. get all preferences via cookies
-			this._userPreferences = dojo.clone(this.defaultPreferences);
-			cookieStr = dojo.cookie('UMCPreferences') || '{}';
-			dojo.mixin(this._userPreferences, dojo.fromJson(cookieStr));
+	_isSetupGUI: false,
+	setupGui: function() {
+		// make sure that we have not build the GUI before
+		if (this._isSetupGUI) {
+			return;
 		}
 
-		// no arguments, return full preference object
-		if (0 === arguments.length) {
-			return this._userPreferences; // Object
-		}
-		// only one parameter, type: String -> return specified preference
-		if (1 == arguments.length && dojo.isString(param1)) {
-			return this._userPreferences[param1]; // Boolean|String|Integer
-		}
-		
-		// backup the old preferences
-		var oldPrefs = dojo.clone(this._userPreferences);
-		
-		// only one parameter, type: Object -> set all parameters as specified in the object
-		if (1 == arguments.length) {
-			// only consider keys that are defined in defaultPreferences
-			umc.tools.forIn(this.defaultPreferences, dojo.hitch(this, function(key, val) {
-				if (key in param1) {
-					this._userPreferences[key] = param1[key];
-				}
-			}));
-		}
-		// two parameters, type parameter1: String -> set specified user preference
-		else if (2 == arguments.length && dojo.isString(param1)) {
-			// make sure preference is in defaultPreferences
-			if (param1 in this.defaultPreferences) {
-				this._userPreferences[param1] = value;
-			}
-		}
-		// otherwise throw error due to incorrect parameters
-		else {
-			umc.tools.assert(false, 'umc.app.preferences(): Incorrect parameters: ' + arguments);
-		}
+		// set up fundamental layout parts
+		var topContainer = new dijit.layout.BorderContainer( {
+			style: "height: 100%; width: 100%; margin-left: auto; margin-right: auto;",
+			//height: 100%,
+			//width: 100%,
+			gutters: false
+		}).placeAt(dojo.body());
 
-		// publish changes in user preferences
-		umc.tools.forIn(this._userPreferences, function(key, val) {
-			if (val != oldPrefs[key]) {
-				// entry has changed
-				dojo.publish('/umc/preferences/' + key, [val]);
-			}
+		// container for all modules tabs
+		this._tabContainer = new dijit.layout.TabContainer({
+			//style: "height: 100%; width: 100%;",
+			region: "center"
+		});
+		topContainer.addChild(this._tabContainer);
+
+		// the container for all category panes
+		// NOTE: We add the icon here in the first tab, otherwise the tab heights
+		//	   will not be computed correctly and future tabs will habe display
+		//	   problems.
+		var overviewPage = new umc.widgets.Page({ 
+			//style: "overflow:visible; width: 80%"
+			title: this._('Overview'),
+			iconClass: umc.tools.getIconClass('univention'),
+			helpText: this._('Univention Management Console is a modularly designed, web-based application for the administration of objects in your Univention Corporate Server domain as well as individual of Univention Corporate Server systems.')
 		});
 
-		// set the cookie with all preferences
-		cookieStr = dojo.toJson(this._userPreferences);
-		dojo.cookie('UMCPreferences', cookieStr, { expires: 100, path: '/' } );
-		return; // undefined
+		// add a CategoryPane for each category
+		dojo.forEach(this.getCategories(), dojo.hitch(this, function(icat) {
+			// ignore empty categories
+			var modules = this.getModules(icat.id);
+			if (0 === modules.length) {
+				return;
+			}
+
+			// create a new category pane for all modules in the given category
+			var categoryPane = new umc.widgets.CategoryPane({
+				modules: modules,
+				title: icat.name,
+				open: true //('favorites' == icat.id)
+			});
+
+			// register to requests for opening a module
+			dojo.connect(categoryPane, 'onOpenModule', dojo.hitch(this, this.openModule));
+
+			// add category pane to overview page
+			overviewPage.addChild(categoryPane);
+		}));
+		this._tabContainer.addChild(overviewPage);
+
+		// the header
+		var header = new umc.widgets.ContainerWidget({
+			title: '',
+			'class': 'umcHeader',
+			region: 'top'
+		});
+		topContainer.addChild( header );
+
+		// add some buttons
+		header.addChild(new dijit.form.Button({
+			label: this._('Help'),
+			'class': 'umcHeaderButton'
+		}));
+		header.addChild(new dijit.form.Button({
+			label: this._('About UMC'),
+			'class': 'umcHeaderButton'
+		}));
+
+		// the user context menu
+		var menu = new dijit.Menu({});
+		menu.addChild(new dijit.CheckedMenuItem({
+			label: this._('Tooltips'),
+			checked: umc.tools.preferences('tooltips'),
+			onClick: dojo.hitch(this, function() {
+				umc.tools.preferences('tooltips', this.checked);
+			})
+		}));
+		menu.addChild(new dijit.CheckedMenuItem({
+			label: this._('Confirmations'),
+			checked: true,
+			checked: umc.tools.preferences('confirm'),
+			onClick: dojo.hitch(this, function() {
+				umc.tools.preferences('confirm', this.checked);
+			})
+		}));
+		menu.addChild(new dijit.CheckedMenuItem({
+			label: this._('Module help description'),
+			checked: true,
+			checked: umc.tools.preferences('moduleHelpText'),
+			onClick: function() {
+				umc.tools.preferences('moduleHelpText', this.checked);
+			}
+		}));
+		header.addChild(new dijit.form.DropDownButton({
+			label: this._('User: %s', this.username),
+			'class': 'umcHeaderButton',
+			dropDown: menu
+		}));
+
+		// add logout button
+		header.addChild(new dijit.form.Button({
+			label: '<img src="images/logout.png">',
+			'class': 'umcHeaderButton',
+			onClick: dojo.hitch(this, function() {
+				this.closeSession();
+				window.location.reload();
+			})
+		}));
+
+		// put everything together
+		topContainer.startup();
+
+		// subscribe to requests for opening modules
+		dojo.subscribe('/umc/modules/open', dojo.hitch(this, 'openModule'));
+
+		// set a flag that GUI has been build up
+		this._isSetupGUI = true;
 	}
 });
-
 

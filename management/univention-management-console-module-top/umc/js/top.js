@@ -7,6 +7,7 @@ dojo.require("dojox.string.sprintf");
 dojo.require("umc.i18n");
 dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.SearchForm");
+dojo.require("umc.dialog");
 
 dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
@@ -25,7 +26,17 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			pid: pids
 		};
 		this.umcpCommand('top/kill', params).then(dojo.hitch(this, function(data) {
-			umc.app.notify(this._('Processes killed successfully'));
+			umc.dialog.notify(this._('Processes killed successfully'));
+		}));
+	},
+
+	killProcesses(signal, pids) {
+		var params = {
+			signal: signal,
+			pid: pids
+		};
+		this.umcpCommand('top/kill', params).then(dojo.hitch(this, function(data) {
+			umc.dialog.notify(this._('Processes killed successfully'));
 		}));
 	},
 

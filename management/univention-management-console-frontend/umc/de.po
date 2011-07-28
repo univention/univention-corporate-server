@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-27 11:42+0200\n"
+"POT-Creation-Date: 2011-07-28 14:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,27 +21,27 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
-#: umc/tools.js:200
+#: umc/tools.js:197
 #, python-format
 msgid "<br>Server error message: <i>%s</i>"
 msgstr "<br>Fehlernachricht des Servers: <i>%s</i>"
 
-#: umc/app.js:358
+#: umc/app.js:316
 msgid "About UMC"
 msgstr "Über UMC"
 
-#: umc/tools.js:247
+#: umc/tools.js:244
 msgid "An assert statement failed"
 msgstr "Ein Assert-Anweisung schlug fehl"
 
-#: umc/tools.js:209
+#: umc/tools.js:206
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
 "Ein Fehler trat während des Verbindungsaufbaus zum Server auf, bitte "
 "versuchen Sie es später noch einmal."
 
-#: umc/tools.js:205
+#: umc/tools.js:202
 #, python-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
@@ -50,27 +50,27 @@ msgstr ""
 "Ein unbekannter Fehler mit Status-Code %s trat während des "
 "Verbindungsaufbaus zum Server auf, bitte versuchen Sie es später noch einmal."
 
-#: umc/tools.js:162
+#: umc/tools.js:159
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
-#: umc/app.js:158
+#: umc/dialog.js:172
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:372
+#: umc/app.js:330
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
-#: umc/tools.js:154
+#: umc/tools.js:151
 msgid "Could not fulfill the request."
 msgstr "Die Anfrage konnte nicht ausgeführt werden."
 
-#: umc/widgets/LoginDialog.js:59
+#: umc/widgets/LoginDialog.js:55
 msgid "English"
 msgstr "Englisch"
 
-#: umc/widgets/LoginDialog.js:58
+#: umc/widgets/LoginDialog.js:54
 msgid "German"
 msgstr "Deutsch"
 
@@ -84,47 +84,47 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/app.js:354
+#: umc/app.js:312
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/tools.js:174
+#: umc/tools.js:171
 msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
 msgstr ""
 "Interner UMC-Protokoll-Fehler: Der UMCP-Message-Body konnte nicht geparst "
 "werden."
 
-#: umc/tools.js:173
+#: umc/tools.js:170
 msgid ""
 "Internal UMC protocol error: The UMCP message header could not be parsed."
 msgstr ""
 "Interner UMC-Protokoll-Fehler: Der UMCP-Message-Header konnte nicht geparst "
 "werden."
 
-#: umc/tools.js:176
+#: umc/tools.js:173
 msgid "Internal module error: An error occured during command processing."
 msgstr ""
 "Interner Modul-Fehler: Ein Fehler trat während des Ausführens des Befehls "
 "auf."
 
-#: umc/tools.js:177
+#: umc/tools.js:174
 msgid ""
 "Internal module error: The execution of a command caused an fatal error."
 msgstr ""
 "Interner Modul-Fehler: Die Ausführung eines Befehls löste einen "
 "schwerwiegenden Fehler aus."
 
-#: umc/tools.js:167
+#: umc/tools.js:164
 msgid "Internal server error."
 msgstr "Interner Server-Fehler."
 
-#: umc/tools.js:170
+#: umc/tools.js:167
 msgid "Internal server error: Could not connect to the module process."
 msgstr ""
 "Interner Server-Fehler: Verbindung zum Modulprozess konnte nicht aufgebaut "
 "werden."
 
-#: umc/tools.js:171
+#: umc/tools.js:168
 msgid ""
 "Internal server error: The SSL server certificate is not trustworthy. Please "
 "check your SSL configurations."
@@ -132,78 +132,78 @@ msgstr ""
 "Interner Server-Fehler: Das SSL-Server-Zertifikat ist nicht "
 "vertrauenswürdig. Bitte überprüfen Sie ihre SSL-Konfiguration."
 
-#: umc/tools.js:169
+#: umc/tools.js:166
 msgid "Internal server error: The module process died unexpectedly."
 msgstr "Interner Server-Fehler: Der Modulprozess starb unerwartet."
 
-#: umc/tools.js:168
+#: umc/tools.js:165
 msgid "Internal server error: The service is temporarily not available."
 msgstr "Interner Server-Fehler: Der Dienst is zeitweise nicht erreichbar!"
 
-#: umc/widgets/LoginDialog.js:63
+#: umc/widgets/LoginDialog.js:59
 msgid "Language"
 msgstr "Sprache"
 
-#: umc/widgets/LoginDialog.js:68
+#: umc/widgets/LoginDialog.js:64
 msgid "Login"
 msgstr "Anmelden"
 
-#: umc/app.js:214
+#: umc/app.js:47
 #, python-format
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:380
+#: umc/app.js:338
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
-#: umc/widgets/Grid.js:353
+#: umc/widgets/Grid.js:354
 msgid "More actions..."
 msgstr "Weitere Aktionen..."
 
-#: umc/app.js:70
+#: umc/dialog.js:84
 msgid "Notification"
 msgstr "Hinweis"
 
-#: umc/app.js:73
+#: umc/dialog.js:87
 msgid "Ok"
 msgstr "Ok"
 
-#: umc/app.js:316
+#: umc/app.js:274
 msgid "Overview"
 msgstr "Übersicht"
 
-#: umc/widgets/LoginDialog.js:53
+#: umc/widgets/LoginDialog.js:49
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/widgets/SearchForm.js:23 umc/widgets/LoginDialog.js:76
+#: umc/widgets/SearchForm.js:22 umc/widgets/LoginDialog.js:72
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: umc/widgets/SearchForm.js:26
+#: umc/widgets/SearchForm.js:25
 msgid "Search"
 msgstr "Suchen"
 
-#: umc/tools.js:165
+#: umc/tools.js:162
 msgid "Specified locale is not available."
 msgstr "Die angegebenen Locale ist nicht verfügbar."
 
-#: umc/tools.js:164
+#: umc/tools.js:161
 msgid "The account as been disabled."
 msgstr "Das Benutzerkonto wurde deaktiviert."
 
-#: umc/tools.js:163
+#: umc/tools.js:160
 msgid "The account is expired and can not be used anymore."
 msgstr ""
 "Das Benutzerkonto kannt nicht verwendet werden, seine Gültigkeit ist "
 "ausgelaufen."
 
-#: umc/widgets/LoginDialog.js:62
+#: umc/widgets/LoginDialog.js:58
 msgid "The language for the login session."
 msgstr "Die Sprache für die Anmeldesitzung."
 
-#: umc/widgets/LoginDialog.js:52
+#: umc/widgets/LoginDialog.js:48
 msgid "The password of your domain account."
 msgstr "Das Passwort Ihres Domänen-Kontos."
 
@@ -216,11 +216,11 @@ msgstr "Die Passworte stimmen nicht überein, bitte versuchen Sie es erneut."
 msgid "The total cost was %.2f EUR!"
 msgstr ""
 
-#: umc/widgets/LoginDialog.js:47
+#: umc/widgets/LoginDialog.js:43
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
-#: umc/app.js:365
+#: umc/app.js:323
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -228,7 +228,7 @@ msgstr "Tooltips"
 msgid "Translate me!"
 msgstr ""
 
-#: umc/app.js:318
+#: umc/app.js:276
 msgid ""
 "Univention Management Console is a modularly designed, web-based application "
 "for the administration of objects in your Univention Corporate Server domain "
@@ -238,21 +238,21 @@ msgstr ""
 "für die Administrierung von Objekten in der Univention-Corporate-Server-"
 "Domäne und individueller Univention-Corporate-Server-Systeme."
 
-#: umc/app.js:388
+#: umc/app.js:346
 #, python-format
 msgid "User: %s"
 msgstr "Benutzer: %s"
 
-#: umc/widgets/LoginDialog.js:48
+#: umc/widgets/LoginDialog.js:44
 msgid "Username"
 msgstr "Benutzername"
 
-#: umc/tools.js:30
+#: umc/tools.js:27
 #, python-format
 msgid "WARNING: Ignoring command \"%s\" since user is logging in"
 msgstr ""
 
-#: umc/tools.js:159
+#: umc/tools.js:156
 msgid ""
 "Webfrontend error: The specified UMCP command arguments of the request are "
 "invalid."
@@ -260,7 +260,7 @@ msgstr ""
 "Webfrontend-Fehler: Die angegebenen UMCP-Befehl-Argumente der Anfrage sind "
 "nicht zulässig."
 
-#: umc/tools.js:160
+#: umc/tools.js:157
 msgid ""
 "Webfrontend error: The specified arguments for the UMCP module method are "
 "invalid or missing."
@@ -268,11 +268,11 @@ msgstr ""
 "Webfrontend-Fehler: Die angegebenen Argumente für die UMCP-Modul-Methode "
 "sind nicht zulässig oder fehlen."
 
-#: umc/tools.js:158
+#: umc/tools.js:155
 msgid "Webfrontend error: The specified request is unknown."
 msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht bekannt."
 
-#: umc/widgets/LoginDialog.js:105
+#: umc/widgets/LoginDialog.js:101
 msgid ""
 "Welcome to the Univention Management Console. Please enter your domain "
 "username and password for login!"
@@ -280,11 +280,11 @@ msgstr ""
 "Willkommen auf der Univention Management Console. Bitte geben Sie "
 "Benutzername und Passwort Ihres Domänen-Kontos an."
 
-#: umc/tools.js:156
+#: umc/tools.js:153
 msgid "You are not authorized to perform this action."
 msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
 
-#: umc/tools.js:155
+#: umc/tools.js:152
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 

@@ -3,7 +3,6 @@
 dojo.provide("umc.widgets.PasswordBox");
 
 dojo.require("dijit.form.ValidationTextBox");
-dojo.require("umc.tools");
 dojo.require("umc.widgets._FormWidgetMixin");
 
 dojo.declare("umc.widgets.PasswordBox", [ dijit.form.ValidationTextBox, umc.widgets._FormWidgetMixin ], {

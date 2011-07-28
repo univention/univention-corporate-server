@@ -1,3 +1,20 @@
+univention-management-console-frontend (0.0.91-1) unstable; urgency=low
+
+  * JavaScript API changes:
+    umc.app.alert -> umc.dialog.alert
+    umc.app.notify -> umc.dialog.notify
+    umc.app.confirm -> umc.dialog.confirm
+    umc.app.login -> umc.dialog.login
+    umc.app.preferences -> umc.tools.preferences
+    umc.tools.renderButton -> umc.render.button
+    umc.tools.renderButtons -> umc.render.buttons
+    umc.tools.renderWidget -> umc.render.widget
+    umc.tools.renderWidgets -> umc.render.widgets
+    umc.tools.renderLayout -> umc.render.layouta
+    (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 28 Jul 2011 15:09:55 +0200
+
 univention-management-console-frontend (0.0.90-1) unstable; urgency=low
 
   * let UMC web server also report the error message (Bug #22461)

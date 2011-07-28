@@ -4,14 +4,13 @@ dojo.provide("umc.widgets.ConfirmDialog");
 
 dojo.require("dijit.Dialog");
 dojo.require("dojox.widget.Dialog");
-dojo.require("umc.tools");
 dojo.require("umc.widgets.Text");
 dojo.require("umc.widgets.ContainerWidget");
 
 dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 	// summary:
 	//		Class that provides a customizable confirmation dialog.
-	//		(For easier access see umc.app.confirm().)
+	//		(For easier access see umc.dialog.confirm().)
 	// description:
 	//		The dialog expects a title, a message, and a list of choices the
 	//		user can choose from. For each choice, a callback handler can be
@@ -82,7 +81,7 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 		this._labelWidget = new umc.widgets.Text({
 			content: this.message
 		});
-		
+
 		// put buttons into separate container
 		var buttons = new umc.widgets.ContainerWidget({
 			style: 'text-align: center;'
@@ -92,7 +91,7 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 				label: ichoice.label,
 				onClick: dojo.hitch(this, function(values) {
 					// the response is either a custom response or the choice (button) index
-					var response = ichoice.name || idx; 
+					var response = ichoice.name || idx;
 
 					// send 'onClick' event
 					this.onConfirm(response);
@@ -110,7 +109,7 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 		layout.addChild(this._labelWidget);
 		layout.addChild(buttons);
 		layout.startup();
-	
+
 		// attach layout to dialog
 		this.set('content', layout);
 	},

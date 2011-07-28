@@ -3,7 +3,6 @@
 dojo.provide("umc.widgets.SearchForm");
 
 dojo.require("dijit.form.Form");
-dojo.require("umc.tools");
 dojo.require("umc.i18n");
 
 dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {

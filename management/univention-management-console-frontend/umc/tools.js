@@ -2,18 +2,15 @@
 
 dojo.provide("umc.tools");
 
-dojo.require("dijit.TitlePane");
-dojo.require("umc.app");
 dojo.require("umc.i18n");
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets.LabelPane");
-dojo.require("umc.widgets.Tooltip");
+dojo.require("umc.dialog");
 
 dojo.mixin(umc.tools, new umc.i18n.Mixin({
 	// use the framework wide translation file
 	i18nClass: 'umc.app'
 }));
 dojo.mixin(umc.tools, {
+
 	umcpCommand: function(
 		/*String*/ commandStr,
 		/*Object?*/ dataObj,
@@ -58,8 +55,8 @@ dojo.mixin(umc.tools, {
 			url: url,
 			preventCache: true,
 			handleAs: 'json',
-			headers: { 
-				'Content-Type': 'application/json' 
+			headers: {
+				'Content-Type': 'application/json'
 			},
 			postData: dojo.toJson(body)
 		});
@@ -70,9 +67,9 @@ dojo.mixin(umc.tools, {
 				// do not modify the data
 				if ( data && data.message ) {
 					if ( parseInt(data.status, 10) == 200 ) {
-						umc.app.notify( data.message );
+						umc.dialog.notify( data.message );
 					} else {
-						umc.app.alert( data.message );
+						umc.dialog.alert( data.message );
 					}
 				}
 
@@ -96,8 +93,8 @@ dojo.mixin(umc.tools, {
 			url: url,
 			preventCache: true,
 			handleAs: 'json',
-			headers: { 
-				'Content-Type': 'application/json' 
+			headers: {
+				'Content-Type': 'application/json'
 			},
 			postData: dojo.toJson(dataObj),
 			handle: function(dataOrError, ioargs) {
@@ -122,9 +119,9 @@ dojo.mixin(umc.tools, {
 	// Status( 'SUCCESS_MESSAGE'				   , 204, ( 'OK, containing report message' ) ),
 	// Status( 'SUCCESS_PARTIAL'				   , 206, ( 'OK, partial response' ) ),
 	// Status( 'SUCCESS_SHUTDOWN'				  , 250, ( 'OK, operation successful ask for shutdown of connection' ) ),
-	// 
+	//
 	// Status( 'CLIENT_ERR_NONFATAL'			   , 301, ( 'A non-fatal error has occured processing may continue' ) ),
-	// 
+	//
 	// Status( 'BAD_REQUEST'					   , 400, ( 'Bad request' ) ),
 	// Status( 'BAD_REQUEST_UNAUTH'				, 401, ( 'Unauthorized' ) ),
 	// Status( 'BAD_REQUEST_FORBIDDEN'			 , 403, ( 'Forbidden' ) ),
@@ -192,21 +189,21 @@ dojo.mixin(umc.tools, {
 		if (undefined !== status && status in this._statusMessages) {
 			// special cases during login, only show a notification
 			if (401 == status || 411 == status) {
-				umc.app.login();
-				umc.app.notify(this._statusMessages[status]);
+				umc.dialog.login();
+				umc.dialog.notify(this._statusMessages[status]);
 			}
 			// all other cases
 			else {
-				umc.app.alert(this._statusMessages[status] + (message ? this._('<br>Server error message: <i>%s</i>', message) : ''));
+				umc.dialog.alert(this._statusMessages[status] + (message ? this._('<br>Server error message: <i>%s</i>', message) : ''));
 			}
 		}
 		else if (undefined !== status) {
 			// unknown status code .. should not happen
-			umc.app.alert(this._('An unknown error with status code %s occurred while connecting to the server, please try again later.', status));
+			umc.dialog.alert(this._('An unknown error with status code %s occurred while connecting to the server, please try again later.', status));
 		}
 		else {
 			// probably server timeout, could also be a different error
-			umc.app.alert(this._('An error occurred while connecting to the server, please try again later.'));
+			umc.dialog.alert(this._('An error occurred while connecting to the server, please try again later.'));
 		}
 	},
 
@@ -232,14 +229,14 @@ dojo.mixin(umc.tools, {
 	},
 
 	assert: function(/* boolean */ booleanValue, /* string? */ message){
-		// summary: 
+		// summary:
 		// 		Throws an exception if the assertion fails.
-		// description: 
+		// description:
 		// 		If the asserted condition is true, this method does nothing. If the
-		// 		condition is false, we throw an error with a error message. 
-		// booleanValue: 
+		// 		condition is false, we throw an error with a error message.
+		// booleanValue:
 		//		Must be true for the assertion to succeed.
-		// message: 
+		// message:
 		//		A string describing the assertion.
 
 		// throws: Throws an Error if 'booleanValue' is false.
@@ -248,283 +245,45 @@ dojo.mixin(umc.tools, {
 			if(message){
 				errorMessage += ':\n' + message;
 			}
-			
+
 			// throw error
 			var e = new Error(errorMessage);
 			throw e;
 		}
 	},
 
-	renderWidgets: function(/*Object[]*/ widgetsConf) {
-		// summary:
-		//		Renders an array of widget config objects.
-		// returns:
-		//		A dictionary of widget objects.
-
-		// iterate over all widget config objects
-		var widgets = { };
-		dojo.forEach(widgetsConf, function(iconf) {
-			// ignore empty elements
-			if (!iconf || !dojo.isObject(iconf)) {
-				return true;
-			}
-
-			// copy the property 'id' to 'name'
-			var conf = dojo.mixin({}, iconf);
-			conf.name = iconf.id || iconf.name;
-
-			// render the widget
-			var widget = this.renderWidget(conf);
-			if (widget) {
-				widgets[conf.name] = widget;
-			}
-		}, this);
-
-		return widgets; // Object
-	},
-
-	renderWidget: function(/*Object*/ widgetConf) {
-		if (!widgetConf) {
-			return undefined;
-		}
-		if (!widgetConf.type) {
-			console.log(dojo.replace("WARNING in umc.tools.renderWidget: The type '{type}' of the widget '{name}' is invalid. Ignoring error.", widgetConf));
-			return undefined;
-		}
-
-		// make a copy of the widget's config object and remove 'type'
-		var conf = dojo.mixin({}, widgetConf);
-		delete conf.type;
-
-		// remove property 'id'
-		delete conf.id;
-
-		var WidgetClass = undefined;
-		try {
-			// include the corresponding module for the widget
-			dojo['require']('umc.widgets.' + widgetConf.type);
-
-			// create the new widget according to its type
-			WidgetClass = dojo.getObject('umc.widgets.' + widgetConf.type);
-		}
-		catch (error) { }
-		if (!WidgetClass) {
-			console.log(dojo.replace("WARNING in umc.tools.renderWidget: The widget class 'umc.widgets.{type}' defined by widget '{name}' cannot be found. Ignoring error.", widgetConf));
-			return undefined;
-		}
-		var widget = new WidgetClass(conf); // Widget
-
-		// create a tooltip if there is a description
-		if (widgetConf.description) {
-			var tooltip = new umc.widgets.Tooltip({
-				label: widgetConf.description,
-				connectId: [ widget.domNode ]
-			});
-
-			// destroy the tooltip when the widget is destroyed
-			tooltip.connect(widget, 'destroy', 'destroy');
-		}
-
-		return widget; // dijit._Widget
-	},
-
-	renderButtons: function(/*Object[]*/ buttonsConf) {
-		// summary:
-		//		Renders an array of button config objects.
-		// returns:
-		//		A dictionary of button widgets.
-
-		umc.tools.assert(dojo.isArray(buttonsConf), 'renderButtons: The list of buttons is expected to be an array.');
-
-		// render all buttons
-		var buttons = { 
-			_order: [] // internal field to store the correct order of the buttons
-		};
-		dojo.forEach(buttonsConf, function(i) {
-			var btn = umc.tools.renderButton(i);
-			buttons[i.name] = btn;
-			buttons._order.push(btn);
-		});
-
-		// return buttons
-		return buttons; // Object
-	},
-			
-	renderButton: function(/*Object*/ buttonConf) {
-		// specific button types need special care: submit, reset
-		var buttonClassName = 'Button';
-		if ('submit' == buttonConf.name) {
-			buttonClassName = 'SubmitButton';
-		}
-		if ('reset' == buttonConf.name) {
-			buttonClassName = 'ResetButton';
-		}
-
-		// load the java script code for the button class
-		dojo['require']('umc.widgets.' + buttonClassName);
-		var ButtonClass = dojo.getObject('umc.widgets.' + buttonClassName);
-		
-		// render the button
-		var button = new ButtonClass(buttonConf);
-
-		// connect event handler for onClick .. yet only for normal buttons
-		if ('Button' == buttonClassName) {
-			button.connect(button, 'onClick', buttonConf.callback);
-		}
-
-		// done, return the button
-		return button; // umc.widgets.Button
-	},
-	
-	renderLayout: function(/*Array*/ layout, /*Object*/ widgets, /*Object?*/ buttons, /*Integer?*/ _iLevel) {
-		// summary:
-		//		Render a widget containing a set of widgets as specified by the layout.
-
-		var iLevel = 'number' == typeof(_iLevel) ? _iLevel : 0;
-
-		// create a container
-		var globalContainer = new umc.widgets.ContainerWidget({});
-
-		// check whether the parameters are correct
-		umc.tools.assert(dojo.isArray(layout), 
-				'umc.tools.renderLayout: Invalid layout configuration object!');
-
-		// iterate through the layout elements
-		for (var iel = 0; iel < layout.length; ++iel) {
-
-			// element can be:
-			//   String -> reference to widget
-			//   Array  -> references to widgets
-			//   Object -> grouped widgets -> recursive call of renderLayout()
-			var el = layout[iel];
-			var elList = null;
-			if (dojo.isString(el)) {
-				elList = [el];
-			}
-			else if (dojo.isArray(el)) {
-				elList = el;
-			}
-
-			// for single String / Array
-			if (elList) {
-				// see how many buttons and how many widgets there are in this row
-				var nWidgetsWithLabel = 0;
-				dojo.forEach(elList, function(jel) {
-					nWidgetsWithLabel += jel in widgets && (widgets[jel].label ? 1 : 0);
-				});
-
-				// add current form widgets to layout
-				var elContainer = new umc.widgets.ContainerWidget({});
-				dojo.forEach(elList, function(jel) {
-					// make sure the reference to the widget/button exists
-					if (!(widgets && jel in widgets) && !(buttons && jel in buttons)) {
-						console.log(dojo.replace("WARNING in umc.tools.renderLayout: The widget '{0}' is not defined in the argument 'widgets'. Ignoring error.", [jel]));
-						return true;
-					}
-
-					// make sure the widget/button has not been already rendered
-					var widget = widgets ? widgets[jel] : null;
-					var button = buttons ? buttons[jel] : null;
-					if ((widget && widget._isRendered) || (button && button._isRendered)) {
-						console.log(dojo.replace("WARNING in umc.tools.renderLayout: The widget '{0}' has been referenced more than once in the layout. Ignoring error.", [jel]));
-						return true;
-					}
-
-					// add the widget or button surrounded with a LabelPane
-					if (widget) {
-						elContainer.addChild(new umc.widgets.LabelPane({
-							label: widget.label,
-							content: widget,
-							style: widget.align ? 'float: ' + widget.align : ''
-						}));
-						widget._isRendered = true;
-					} else if (button) {
-						if (nWidgetsWithLabel) {
-							// if buttons are displayed along with widgets, we need to add a '&nbps;' 
-							// as label in order to display them on the same height
-							elContainer.addChild(new umc.widgets.LabelPane({
-								label: '&nbsp;',
-								content: button,
-								style: button.align ? 'float: ' + button.align : ''
-							}));
-						} else {
-							// if there are only buttons in the row, we do not need a label
-							if (button.align) {
-								button.set('style', 'float: ' + button.align);
-							}
-							elContainer.addChild(button);
-						}
-						button._isRendered = true;
-					}
-				}, this);
-				globalContainer.addChild(elContainer);
-			}
-			// for Object (i.e., a grouping box)
-			else if (dojo.isObject(el) && el.layout) {
-				//console.log('### renderLayout - recursive call');
-				//console.log(el);
-				globalContainer.addChild(new dijit.TitlePane({
-					title: el.label,
-					'class': 'umcFormLevel' + iLevel,
-					toggleable: iLevel < 1,
-					open: undefined === el.open ? true : el.open,
-					content: this.renderLayout(el.layout, widgets, buttons, iLevel + 1)
-				}));
-			}
-		}
-
-		// add buttons if specified
-		if (buttons) {
-			// add all buttons that have not been rendered so far to a separate container
-			// and respect their correct order (i.e., using the interal array field _order) 
-			var buttonContainer = new umc.widgets.ContainerWidget({});
-			dojo.forEach(buttons._order, function(ibutton) {
-				if (!ibutton._isRendered) {
-					buttonContainer.addChild(ibutton);
-					ibutton._isRendered = true;
-				}
-			});
-			globalContainer.addChild(buttonContainer);
-		}
-
-		// start processing the layout information
-		globalContainer.startup();
-
-		// return the container
-		return globalContainer; // dojox.layout.TableContainer
-	},
 
 	cmpObjects: function(/*mixed...*/) {
 		// summary:
 		//		Returns a comparison functor for Array.sort() in order to sort arrays of
-		//		objects/dictionaries. 
+		//		objects/dictionaries.
 		// description:
 		//		The function arguments specify the sorting order. Each function argument
 		//		can either be a string (specifying the object attribute to compare) or an
 		//		object with 'attribute' specifying the attribute to compare. Additionally,
-		//		the object may specify the attributes 'descending' (boolean), 'ignoreCase' 
+		//		the object may specify the attributes 'descending' (boolean), 'ignoreCase'
 		//		(boolean).
 		//		In order to be useful for grids and sort options, the arguments may also
 		//		be one single array.
 		// example:
 		//	|	var list = [ { id: '0', name: 'Bob' }, { id: '1', name: 'alice' } ];
 		//	|	var cmp = umc.tools.cmpObjects({
-		//	|		attribute: 'name', 
-		//	|		descending: true, 
+		//	|		attribute: 'name',
+		//	|		descending: true,
 		//	|		ignoreCase: true
 		//	|	});
 		//	|	list.sort(cmp);
 		// example:
 		//	|	var list = [ { id: '0', val: 100, val2: 11 }, { id: '1', val: 42, val2: 33 } ];
 		//	|	var cmp = umc.tools.cmpObjects('val', {
-		//	|		attribute: 'val2', 
+		//	|		attribute: 'val2',
 		//	|		descending: true
 		//	|	});
 		//	|	list.sort(cmp);
 		//	|	var cmp2 = umc.tools.cmpObjects('val', 'val2');
 		//	|	list.sort(cmp2);
 
-		// in case we got a single array as argument, 
+		// in case we got a single array as argument,
 		var args = arguments;
 		if (1 == arguments.length && dojo.isArray(arguments[0])) {
 			args = arguments[0];
@@ -579,12 +338,12 @@ dojo.mixin(umc.tools, {
 				// check for lower/greater
 				if (a < b) {
 					return -1 * o.desc;
-				}				
+				}
 				if (a > b) {
 					return 1 * o.desc;
 				}
 			}
-			return 0;		
+			return 0;
 		};
 	},
 
@@ -607,7 +366,7 @@ dojo.mixin(umc.tools, {
 					'background-image: url("images/icons/{s}x{s}/{icon}.png")',
 					values);
 				dojox.html.insertCssRule('.' + iconClass, css);
-				
+
 				// remember that we have already added a rule for the icon
 				this._existingIconClasses[iconClass] = true;
 			}
@@ -623,6 +382,84 @@ dojo.mixin(umc.tools, {
 		//		Delegates a method call into the scope of a different object.
 		var m = self.getInherited(args);
 		m.apply(that, args);
+	},
+
+	_userPreferences: null, // internal reference to the user preferences
+
+	// internal array with default values for all preferences
+	_defaultPreferences: {
+		tooltips: true,
+		moduleHelpText: true,
+		confirm: true
+	},
+
+	preferences: function(/*String|Object?*/ param1, /*AnyType?*/ value) {
+		// summary:
+		//		Convenience function to set/get user preferences.
+		//		All preferences will be store in a cookie (in JSON format).
+		// returns:
+		//		If no parameter is given, returns dictionary with all preference
+		//		entries. If one parameter of type String is given, returns the
+		//		preference for the specified key. If one parameter is given which
+		//		is an dictionary, will set all key-value pairs as specified by
+		//		the dictionary. If two parameters are given and
+		//		the first is a String, the function will set preference for the
+		//		key (paramater 1) to the value as specified by parameter 2.
+
+		// make sure the user preferences are cached internally
+		var cookieStr = '';
+		if (!this._userPreferences) {
+			// not yet cached .. get all preferences via cookies
+			this._userPreferences = dojo.clone(this._defaultPreferences);
+			cookieStr = dojo.cookie('UMCPreferences') || '{}';
+			dojo.mixin(this._userPreferences, dojo.fromJson(cookieStr));
+		}
+
+		// no arguments, return full preference object
+		if (0 === arguments.length) {
+			return this._userPreferences; // Object
+		}
+		// only one parameter, type: String -> return specified preference
+		if (1 == arguments.length && dojo.isString(param1)) {
+			return this._userPreferences[param1]; // Boolean|String|Integer
+		}
+
+		// backup the old preferences
+		var oldPrefs = dojo.clone(this._userPreferences);
+
+		// only one parameter, type: Object -> set all parameters as specified in the object
+		if (1 == arguments.length) {
+			// only consider keys that are defined in defaultPreferences
+			umc.tools.forIn(this._defaultPreferences, dojo.hitch(this, function(key, val) {
+				if (key in param1) {
+					this._userPreferences[key] = param1[key];
+				}
+			}));
+		}
+		// two parameters, type parameter1: String -> set specified user preference
+		else if (2 == arguments.length && dojo.isString(param1)) {
+			// make sure preference is in defaultPreferences
+			if (param1 in this._defaultPreferences) {
+				this._userPreferences[param1] = value;
+			}
+		}
+		// otherwise throw error due to incorrect parameters
+		else {
+			umc.tools.assert(false, 'umc.tools.preferences(): Incorrect parameters: ' + arguments);
+		}
+
+		// publish changes in user preferences
+		umc.tools.forIn(this._userPreferences, function(key, val) {
+			if (val != oldPrefs[key]) {
+				// entry has changed
+				dojo.publish('/umc/preferences/' + key, [val]);
+			}
+		});
+
+		// set the cookie with all preferences
+		cookieStr = dojo.toJson(this._userPreferences);
+		dojo.cookie('UMCPreferences', cookieStr, { expires: 100, path: '/' } );
+		return; // undefined
 	}
 });
 

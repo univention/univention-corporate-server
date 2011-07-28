@@ -9,6 +9,7 @@ dojo.require("dojox.form.manager._EnableMixin");
 dojo.require("dojox.form.manager._DisplayMixin");
 dojo.require("dojox.form.manager._ClassMixin");
 dojo.require("umc.tools");
+dojo.require("umc.render");
 
 dojo.declare("umc.widgets.Form", [
 		dijit.form.Form,
@@ -23,34 +24,34 @@ dojo.declare("umc.widgets.Form", [
 	//		well as some convenience methods.
 	// description:
 	//		This class has some extra assumptions for gatherFormValues().
-	//		Elements that start with '__' will be ignored. Elements that have 
-	//		a name such as 'myname[1]' or 'myname[2]' will be converted into 
+	//		Elements that start with '__' will be ignored. Elements that have
+	//		a name such as 'myname[1]' or 'myname[2]' will be converted into
 	//		arrays or dicts, respectively. Two-dimensional arrays/dicts are
 	//		also possible.
 
 	// widgets: Object[]|dijit.form._FormWidget[]|Object
-	//		Array of config objects that specify the widgets that are going to 
-	//		be used in the form. Can also be a list of dijit.form._FormWidget 
-	//		instances or a dictionary with name->Widget entries in which case 
+	//		Array of config objects that specify the widgets that are going to
+	//		be used in the form. Can also be a list of dijit.form._FormWidget
+	//		instances or a dictionary with name->Widget entries in which case
 	//		no layout is rendered and `content` is expected to be specified.
 	widgets: null,
 
 	// buttons: Object[]?
-	//		Array of config objects that specify the buttons that are going to 
+	//		Array of config objects that specify the buttons that are going to
 	//		be used in the form. Buttons with the name 'submit' and 'reset' have
-	//		standard handlers unless 
+	//		standard handlers unless
 	buttons: null,
 
 	// layout: String[][]?
 	//		Array of strings that specifies the position of each element in the
 	//		layout. If not specified, the order of the widgets is used directly.
-	//		You may specify a widget entry as `undefined` or `null` in order 
+	//		You may specify a widget entry as `undefined` or `null` in order
 	//		to leave a place free.
 	layout: null,
 
 	// content: dijit._Widget?
 	//		Widget that contains all form elements already layed out.
-	//		If given, `widgets` is expected to be a list of already initiated 
+	//		If given, `widgets` is expected to be a list of already initiated
 	//		dijit.form._FormWidget instances that occur in the manually layed out
 	//		content.
 	content: null,
@@ -93,9 +94,9 @@ dojo.declare("umc.widgets.Form", [
 
 		// render the widgets and the layout if no content is given
 		if (!this.content) {
-			this._widgets = umc.tools.renderWidgets(this.widgets);
-			this._buttons = umc.tools.renderButtons(this.buttons || []);
-			this._container = umc.tools.renderLayout(this.layout, this._widgets, this._buttons);
+			this._widgets = umc.render.widgets(this.widgets);
+			this._buttons = umc.render.buttons(this.buttons || []);
+			this._container = umc.render.layout(this.layout, this._widgets, this._buttons);
 
 			// start processing the layout information
 			this._container.placeAt(this.containerNode);
@@ -180,7 +181,7 @@ dojo.declare("umc.widgets.Form", [
 				vals[iname] = iwidget.get('value');
 			}
 		}, this);
-		
+
 		// add item ID to the dictionary in case it is not already included
 		var idProperty = dojo.getObject('moduleStore.idProperty', false, this);
 		if (idProperty && !(idProperty in vals) && null !== this._loadedID) {

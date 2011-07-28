@@ -2,7 +2,7 @@
 
 dojo.provide("umc.modules.reboot");
 
-dojo.require("umc.app");
+dojo.require("umc.dialog");
 dojo.require("umc.i18n");
 dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Module");
@@ -44,7 +44,7 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			callback: dojo.hitch(this, function() {
                 var vals = this._form.gatherFormValues();
                 this.umcpCommand('reboot/reboot', vals).then(dojo.hitch(this, function(data) {
-                	umc.app.alert(data.result.message);
+                	umc.dialog.alert(data.result.message);
                 }));
 			})
 		}];

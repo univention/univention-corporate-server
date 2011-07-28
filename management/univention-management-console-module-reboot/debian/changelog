@@ -1,3 +1,9 @@
+univention-management-console-module-reboot (1.0.6-1) unstable; urgency=low
+
+  * Adaptations to JavaScript API changes (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 28 Jul 2011 15:08:59 +0200
+
 univention-management-console-module-reboot (1.0.5-1) unstable; urgency=low
 
   * Remove needless success check (Bug #22848)

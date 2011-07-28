@@ -17,6 +17,7 @@ dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
 dojo.require("dojox.grid.enhanced.plugins.Menu");
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
+dojo.require("umc.render");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.StandbyMixin");
 
@@ -26,8 +27,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 	//		offers easy access to select items etc.
 
 	// actions: Object[]
-	//		Array of config objects that specify the actions that are going to 
-	//		be used in the grid. 
+	//		Array of config objects that specify the actions that are going to
+	//		be used in the grid.
 	//		TODO: explain isContextAction, isStandardAction, isMultiAction
 	actions: null,
 
@@ -42,10 +43,10 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 	columns: null,
 
 	// query: Object?
-	//		The initial query for the data grid. If not specified no query will be executed 
+	//		The initial query for the data grid. If not specified no query will be executed
 	//		when the module has loaded.
 	query: null,
-	
+
 	// moduleStore: umc.store.UmcpModuleStore
 	//		Object store for module requests using UMCP commands.
 	moduleStore: null,
@@ -66,7 +67,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			// get the iconNamae
 			var item = this._grid.getItem(rowIndex);
 			var iconName = this._dataStore.getValue(item, iconField);
-			
+
 			// create an HTML image that contains the icon
 			var html = dojo.string.substitute('<img src="images/icons/16x16/${icon}.png" height="${height}" width="${width}" style="float:left; margin-right: 5px" /> ${value}', {
 				icon: iconName, //dojo.moduleUrl("dojo", "resources/blank.gif").toString(),
@@ -89,7 +90,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 
 	buildRendering: function() {
 		this.inherited(arguments);
-		
+
 		// assertions
 		umc.tools.assert(dojo.isArray(this.columns), 'The property columns needs to be defined for umc.widgets.Grid as an array.');
 
@@ -232,7 +233,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			dojo.connect(contextMenu, '_onBlur', function(){
 				dijit.popup.close(contextMenu);
 			});
-	
+
 			// decorate popup element with our specific css class .. and remove obsolete css classes
 			var posStr = 'Below';
 			var notPosStr = 'Above';
@@ -260,7 +261,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			dijit.popup.close(contextMenu);
 		};
 		this.connect(this._grid.scroller, 'scroll', hidePopup);
-		dojo.forEach(['onHeaderCellClick', 'onHeaderClick', 'onRowClick', 'onSelectionChanged'], 
+		dojo.forEach(['onHeaderCellClick', 'onHeaderClick', 'onRowClick', 'onSelectionChanged'],
 			dojo.hitch(this, function(ievent) {
 				this.connect(this._grid, ievent, hidePopup);
 			})
@@ -317,7 +318,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			}
 
 		}, this);
-		var buttons = umc.tools.renderButtons(buttonsCfg);
+		var buttons = umc.render.buttons(buttonsCfg);
 
 		// add buttons to toolbar
 		dojo.forEach(buttons._order, function(ibutton) {
@@ -374,7 +375,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 
 		// when a cell gets modified, save the changes directly back to the server
 		this.connect(this._grid, 'onApplyCellEdit', dojo.hitch(this._dataStore, 'save'));
-		
+
 		/*// disable edit menu in case there is more than one item selected
 		dojo.connect(this._grid, 'onSelectionChanged', dojo.hitch(this, function() {
 			var nItems = this._grid.selection.getSelectedCount();
