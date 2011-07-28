@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.215-1) unstable; urgency=low
+
+  * update license handling: deactivated accounts are not counted (Bug #22457)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 28 Jul 2011 10:02:50 +0200
+
 univention-directory-manager-modules (6.0.214-1) unstable; urgency=low
 
   * fixed KeyError when converting LDAP error message to string (Bug #21642)
