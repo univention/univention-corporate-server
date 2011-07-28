@@ -1,3 +1,10 @@
+univention-installer (7.0.19-1) unstable; urgency=low
+
+  * Some package list cleanups for UCS 3.0 (Bug #22869)
+  * Added Samba 4 to package list (Bug #22559)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 Jul 2011 17:32:34 +0200
+
 univention-installer (7.0.18-1) unstable; urgency=low
 
   * disabled firewall/security module (Bug #22602)

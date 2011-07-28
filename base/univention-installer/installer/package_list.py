@@ -41,25 +41,34 @@ PackageList=[
 	'Packages':
 			[
 				{
-					'Name': _('Samba'),
+					'Name': _('Samba 4'),
+					'Packages': ['univention-samba4']
+					'Edition': [ 'scalix', 'ugs' ],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [ 'domaincontroller_slave', 'memberserver' ],
+					'Possible': [ 'domaincontroller_slave', 'memberserver' ],
+					'Description': _("Samba 4 Services"),
+				},
+				{
+					'Name': _('Samba 4'), # DC Master and DC Backups need the s4 connector for UCS 3,0 MS1 and MS2
+					'Packages': ['univention-s4-connector', 'univention-samba4']
+					'Edition': [ 'scalix', 'ugs' ],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],
+					'Description': _("Samba 4 Services"),
+				},
+				{
+					'Name': _('Samba 3'),
 					'Packages': ['univention-samba', 'samba'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
-					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem'],
+					'Active': [],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Description': _("Samba Services"),
 				},
 				{
-					'Name': _('Windows Installer'),
-					'Packages': ['univention-windows-installer'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
-					'Active': [],
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave' ],
-					'Description': _("Automatic Installation for Windows Clients"),
-				},
-				{
-					'Name': _('Samba PDC on Non-DC Master'),
+					'Name': _('Samba 3 PDC on Non-DC Master'),
 					'Packages': ['univention-samba-slave-pdc'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
@@ -68,7 +77,7 @@ PackageList=[
 					'Description': _("Samba domain controller as a slave to another master domain controller"),
 				},
 				{
-					'Name': _('Winbind'),
+					'Name': _('Winbind for Samba 3'),
 					'Packages': ['winbind'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
@@ -93,24 +102,6 @@ PackageList=[
 	'Description': _('Several mail/groupware related services'),
 	'Packages':
 			[
-				{
-					'Name': _('Scalix for UCS'),
-					'Packages': ['univention-scalix', 'univention-scalix-amavis' ],
-					'Edition': [ 'scalix' ],
-					'Architecture': [ 'x86' ],
-					'Active': ['domaincontroller_master' ],
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem'],
-					'Description': _('The Scalix Groupware'),
-				},
-				{
-					'Name': _('Kolab 2 for UCS'),
-					'Packages': ['univention-kolab2', 'univention-kolab2-framework', 'univention-mail-postfix-kolab2', 'univention-mail-cyrus-kolab2', 'univention-kolab2-webclient'],
-					'Architecture': [ 'x86', 'powerpc' ],
-					'Edition': [ 'ugs' ],
-					'Active': ['domaincontroller_master' ],
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
-					'Description': _('Groupware based on Kolab 2 (server and client)'),
-				},
 				{
 					'Name': _('Standard mail services'),
 					'Packages': ['univention-mail-postfix', 'univention-mail-cyrus'],
@@ -375,16 +366,7 @@ PackageList=[
 					'Description': _('Network based Backup Software'),
 				},
 				{
-					'Name': _('Unidump'),
-					'Packages': ['unidump'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
-					'Active': [],
-					'Possible': ['all'],
-					'Description': _('Tape Backup Software'),
-				},
-				{
-					'Name': _('Remote backup (for Unidump)'),
+					'Name': _('Remote backup'),
 					'Packages': ['univention-remote-backup'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
