@@ -1,3 +1,10 @@
+univention-samba4 (1.0.5-2) experimental; urgency=low
+
+  * depend on current version of python-univention for getAdminConnection
+    to honour ldap/master/port (Bug #20026)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 28 Jul 2011 18:26:14 +0200
+
 univention-samba4 (1.0.5-1) experimental; urgency=low
 
   * setup-s4: set ldap/master/port=7389 if we are the ldap/master
