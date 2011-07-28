@@ -208,12 +208,12 @@ for file in files:
 		if cmdline.has_key( 'recover' ) and cmdline[ 'recover' ]:
 			if not file in [ '01_modules.py' ]:
 				continue
-		if not profile and file == '04_profile.py':
+		if not profile and file == '15_profile.py':
 			continue
 		if temp[0].split('_')[0].isdigit():
-			if cmdline.has_key("expert_partition") and temp[0] == "12_partition":
+			if cmdline.has_key("expert_partition") and temp[0] == "65_partition":
 				continue
-			if not cmdline.has_key("expert_partition") and temp[0] == "12_expert_partition":
+			if not cmdline.has_key("expert_partition") and temp[0] == "60_expert_partition":
 				continue
 			modules.append(temp[0])
 	modules.sort()

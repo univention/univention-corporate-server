@@ -1,3 +1,9 @@
+univention-installer (7.0.21-1) unstable; urgency=low
+
+  * Consider new module numbers (Bug #22869)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 Jul 2011 18:26:19 +0200
+
 univention-installer (7.0.20-1) unstable; urgency=low
 
   * default security profile is still "normal" but during profile
