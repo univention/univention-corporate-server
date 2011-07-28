@@ -31,8 +31,8 @@
  */
 
 #include <Python.h>
-#include <krb5_asn1.h>
-#include <hdb_asn1.h>
+#include <krb5.h>
+#include <hdb.h>
 
 #include "keyblock.h"
 #include "salt.h"
@@ -113,7 +113,9 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 		// First embed salt->salt of type krb5_salt into asn1_salt of type Salt
 		asn1_salt.type = salt->salt.salttype;
 		asn1_salt.salt = salt->salt.saltvalue;	// heim_octet_string := krb5_data, now we have void *asn1_salt.salt.data == *salt->salt.saltvalue.data
+#if HDB_INTERFACE_VERSION > 4
 		asn1_salt.opaque = NULL;	// heimdal-1.5 field
+#endif
 
 		// Then embed asn1_salt of type Salt into  asn1_key of type Key
 		asn1_key.salt = &asn1_salt;

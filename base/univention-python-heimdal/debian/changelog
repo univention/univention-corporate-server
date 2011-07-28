@@ -1,6 +1,15 @@
+univention-python-heimdal (4.0.1-3) unstable; urgency=low
+
+  * use generic include files in asn1 and document the upstream
+    HDB_INTERFACE_VERSION where the Salt.opaque field can be found
+    (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 28 Jul 2011 15:25:36 +0200
+
 univention-python-heimdal (4.0.1-2) unstable; urgency=low
 
-  * adjust to extended Salt structure in heimdal-1.5 (Bug #22559)
+  * adjust to extended Salt structure in heimdal-1.5 introduced by
+    upstream commit 95f39b1cc05578a4e486a3a7e371d6eb66cb846f (Bug #22559)
 
  -- Arvid Requate <requate@univention.de>  Thu, 28 Jul 2011 14:56:11 +0200
 
