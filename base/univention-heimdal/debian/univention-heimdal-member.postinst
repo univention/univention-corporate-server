@@ -38,4 +38,8 @@ realm="$(echo $domainname | tr "[:lower:]" "[:upper:]")"
 
 univention-config-registry set "kerberos/realm?$realm"
 
+if [ "$1" = configure -a -z "$2" ]; then
+	univention-config-registry set "kerberos/allow/weak/crypto?no"
+fi
+
 exit 0

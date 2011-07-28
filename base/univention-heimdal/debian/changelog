@@ -1,3 +1,11 @@
+univention-heimdal (5.0.3-2) unstable; urgency=low
+
+  * register kerberos/allow/weak/crypto also in univention-heimdal-member
+  * provide UCR variable descriptions also for univention-heimdal-member
+    (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 28 Jul 2011 16:35:09 +0200
+
 univention-heimdal (5.0.3-1) unstable; urgency=low
 
   * set allow_weak_crypto in krb5.conf to restore heimdal-1.4 behaviour,

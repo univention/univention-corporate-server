@@ -16,12 +16,6 @@ Description[en]=Kerberos realm of the domain
 Type=str
 Categories=service-heimdal
 
-[kerberos/v4tickets]
-Description[de]=Aktiviere Kerberos v4 Tickets
-Description[en]=Activate kerberos v4 tickets
-Type=str
-Categories=System
-
 [kerberos/password/quality/check]
 Description[de]=Die Passwortstärkenüberprüfung über cracklib2 kann über den Wert 'yes' aktiviert werden.
 Description[en]=Check of password strength by cracklib2 can be activated by setting this value to 'yes'.
