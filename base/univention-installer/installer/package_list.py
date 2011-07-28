@@ -42,7 +42,7 @@ PackageList=[
 			[
 				{
 					'Name': _('Samba 4'),
-					'Packages': ['univention-samba4']
+					'Packages': ['univention-samba4'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ 'domaincontroller_slave', 'memberserver' ],
@@ -51,7 +51,7 @@ PackageList=[
 				},
 				{
 					'Name': _('Samba 4'), # DC Master and DC Backups need the s4 connector for UCS 3,0 MS1 and MS2
-					'Packages': ['univention-s4-connector', 'univention-samba4']
+					'Packages': ['univention-s4-connector', 'univention-samba4'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
