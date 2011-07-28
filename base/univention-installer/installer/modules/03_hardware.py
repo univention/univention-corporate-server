@@ -36,6 +36,7 @@
 # Results of this module need to be stored in the dictionary self.result (variablename:value[,value1,value2])
 #
 
+import subprocess
 import objects
 import time, os
 import re
@@ -45,6 +46,7 @@ from local import _
 class object(content):
 	def __init__(self, max_y, max_x, last, file, cmdline):
 		self.cdrom_test=1
+		self.auto_input_enabled = True
 		self.prepared=0
 		content.__init__(self, max_y, max_x, last, file, cmdline)
 	#def std_button():
@@ -58,10 +60,11 @@ class object(content):
 		return ['hardware']
 
 	def prepare(self):
+		self.debug('==> prepare(%s)' % self.prepared)
 		if self.prepared == 1:
 			return
 		self.prepared=1
-		if os.system('/bin/ifconfig | grep eth0 >/dev/null') == 0:
+		if os.system('/bin/ifconfig | egrep ^[a-z] | egrep -q -v "^lo\b"') == 0:
 			self.activate_network=1
 			if not self.container.has_key('cdrom_devices'):
 				self.container['cdrom_devices']=[]
@@ -73,12 +76,13 @@ class object(content):
 			self.activate_network=0
 
 	def profile_prerun(self):
+		self.debug('==> profile_prerun')
 		if self.cmdline.has_key('nfsserver') and self.cmdline.has_key('nfspath'):
 			self.container['cdrom_device']='nfs:%s:%s' % (self.cmdline['nfsserver'], self.cmdline['nfspath'])
 		else:
 			if self.ignore('cdrom_device'):
 				return
-			self.sub = self.active(self,_('Search CD-ROM Drive'),_('Please wait ...'))
+			self.sub = self.active(self,_('Searching CD-ROM Drive'),_('Please wait ...'))
 			self.sub.action='cdrom-search'
 			self.sub.draw()
 			self.prepare()
@@ -87,18 +91,19 @@ class object(content):
 		if self.ignore('cdrom_device'):
 			return
 
-		self.sub = self.active(self,_('Test CD-ROM Drive'),_('Please wait ...'))
+		self.sub = self.active(self,_('Testing CD-ROM Drive'),_('Please wait ...'))
 		self.sub.action='cdrom-test-profile'
 		self.sub.draw()
 		self.debug('self.container=%s' % self.container)
 
 		#prepare cdrom
-		self.sub = self.active(self,_('Mount CD-ROM Drive'),_('Please wait ...'))
+		self.sub = self.active(self,_('Mounting CD-ROM Drive'),_('Please wait ...'))
 		self.sub.action='cdrom-prepare'
 		self.sub.draw()
 		self.debug('self.container=%s' % self.container)
 
 	def profile_complete(self):
+		self.debug('==> profile_complete')
 		if self.check('cdrom_device'):
 			return False
 		if self.container.has_key('cdrom_device') and self.container['cdrom_device']:
@@ -109,6 +114,7 @@ class object(content):
 		return False
 
 	def run_profiled(self): # this can define a special way when running by profile
+		self.debug('==> run_profiled')
 		if self.container['cdrom_device'].startswith('nfs') or self.container['cdrom_device'].startswith('smbfs') or self.container['cdrom_device'].startswith('/dev/'):
 			return {'cdrom_device': self.container['cdrom_device']}
 		else:
@@ -119,6 +125,7 @@ class object(content):
 
 
 	def layout(self):
+		self.debug('==> layout')
 
 		self.prepare()
 
@@ -164,21 +171,36 @@ class object(content):
 
 
 	def postrun(self):
+		self.debug('==> postrun(%s)' % self.cdrom_test)
 		if self.cdrom_test:
 			#test cdrom
-			self.sub = self.active(self,_('Test CD-ROM Drive'),_('Please wait ...'))
+			self.sub = self.active(self,_('Testing CD-ROM Drive'),_('Please wait ...'))
 			self.sub.action='cdrom-test'
 			self.sub.draw()
 
 			#prepare cdrom
-			self.sub = self.active(self,_('Mount CD-ROM Drive'),_('Please wait ...'))
-			self.sub.action='cdrom-prepare'
-			self.sub.draw()
+			msg=_('Mounting CD-ROM Drive')
+			dev=self.container.get('cdrom_device','')
+			if dev:
+				if ':' in dev:
+					msg=_('Mounting Network Device %s') % dev.split('/',1)[0]
+				else:
+					msg=_('Mounting CD-ROM Drive %s') % dev
+				self.sub = self.active(self,msg,_('Please wait ...'))
+				self.sub.action='cdrom-prepare'
+				self.sub.draw()
 			self.cdrom_test=0
 
-			self.debug('layout again')
+			#self.debug('layout again')
 			#self.layout()
 			#self.draw()
+
+	def auto_input(self):
+		# Return "next" (== F12) and disable auto_input() function.
+		# This way, only one F12 keypress will be done automatically.
+		self.debug('==> auto_input')
+		self.auto_input_enabled = False
+		return "next"
 
 	def input(self,key): # return 1 0 -1
 		self.debug('key=%d' % key)
@@ -216,6 +238,7 @@ class object(content):
 			return self.elements[self.current].key_event(key)
 
 	def incomplete(self):
+		self.debug('==> incomplete')
 		if self.container.has_key('cdrom_device') and self.container['cdrom_device']:
 			return 0
 		else:
@@ -229,26 +252,19 @@ class object(content):
 		return _('Source device')
 
 	def result(self):
+		self.debug('==> result')
 		result={}
 		if self.container.has_key('cdrom_device'):
 			result['cdrom_device']=self.container['cdrom_device']
 		return result
 
 	def start(self):
-		#load modules
-		#if self.all_results.has_key('modules'):
-		#	for m in self.all_results['modules'].split():
-		#		self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
-		#		self.sub.action='loadmodule'
-		#		self.sub.loadmodule=m
-		#		self.sub.draw()
-
+		self.debug('==> start')
 		#search cdrom
-		self.sub = self.active(self,_('Search CD-ROM Drive'),_('Please wait ...'))
+		self.sub = self.active(self,_('Searching CD-ROM Drive'),_('Please wait ...'))
 		self.sub.action='cdrom-search'
 		self.sub.draw()
 
-		pass
 
 	class added_device(subwin):
 		def layout(self):
@@ -317,11 +333,14 @@ class object(content):
 			elif self.elements[self.current].usable():
 				self.elements[self.current].key_event(key)
 			return 1
+
 	class active(act_win):
 		def function(self):
+			self.parent.debug('==> %s' % self.action)
 			if self.action == 'cdrom-search':
 				#Kernel 2.4
-				cdrom_devices=[]
+				cdrom_devices = set()
+
 				if os.path.exists('/proc/ide'):
 					for f in os.listdir('/proc/ide/'):
 						if f.startswith('ide'):
@@ -330,8 +349,11 @@ class object(content):
 									k=open(os.path.join('/proc/ide', f, ff, 'media'), 'r')
 									l=k.readline()
 									if l.startswith('cdrom'):
-										cdrom_devices.append(ff)
+										device = '/dev/%s' % ff
+										if os.path.exists(device):
+											cdrom_devices.add(device)
 									k.close()
+
 				if os.path.exists('/proc/scsi/scsi'):
 					_sre=re.compile('Type:\s*CD-ROM')
 					count=0
@@ -339,32 +361,40 @@ class object(content):
 					lines=f.readlines()
 					for line in lines:
 						if _sre.search(line):
-							cdrom_devices.append('scd%d' % count)
+							device = '/dev/scd%d' % count
+							if os.path.exists(device):
+								cdrom_devices.add(device)
 							count=count+1
-				if len(cdrom_devices) < 1:
-					# added cdrom devices for iSeries
-					if self.parent.cmdline.has_key('architecture') and self.parent.cmdline['architecture'] == 'powerpc':
-						cdrom_devices.append('iseries/vcda')
-						cdrom_devices.append('iseries/vcdb')
-						cdrom_devices.append('iseries/vcdc')
-						cdrom_devices.append('iseries/vcdd')
-				
+
+				p = subprocess.Popen( ['find', '/dev', '-type', 'b', '-exec', 'file', '-s', '{}', ';'], stdout=subprocess.PIPE )
+				stdout = p.communicate()[0]
+				for line in stdout.splitlines():
+					self.parent.debug('line=%s' % line)
+					if 'filesystem' in line and not 'mounted' in line and not 'unclean' in line:
+						device = line.split(':',1)[0]
+						self.parent.debug('adding device %s' % device)
+						cdrom_devices.add(device)
+
 				# virt
 				for i in map(chr, range(ord('a'), ord('z')+1)):
 					# xen
-					if os.path.exists('/sys/block/xvd%s' % i):
-						cdrom_devices.append("/dev/xvd%s" % i)
+					device = '/dev/xvd%s' % i
+					if os.path.exists(device):
+						cdrom_devices.add(device)
 					# virtio
-					if os.path.exists('/sys/block/vd%s' % i):
-						cdrom_devices.append("/dev/vd%s" % i)
+					device = '/dev/vd%s' % i
+					if os.path.exists(device):
+						cdrom_devices.add(device)
 
-				# defauls
-				defaults = ["scd0", "scd1"]
-				for i in defaults:
-					if not i in cdrom_devices:
-						cdrom_devices.append(i)
+				# defaults
+				for device in ('/dev/scd0', '/dev/scd1'):
+					if os.path.exists(device):
+						cdrom_devices.add(device)
 
-				self.parent.container['cdrom_devices']=cdrom_devices
+				self.parent.debug('list of devices to test: %s' % cdrom_devices)
+
+				self.parent.container['cdrom_devices'] = list(cdrom_devices)
+
 			elif self.action == 'cdrom-test' or self.action == 'cdrom-test-profile':
 
 				if self.action == 'cdrom-test-profile':
@@ -372,15 +402,19 @@ class object(content):
 				else:
 					result_list=self.parent.elements[3].result()
 
+				self.parent.debug('result_list=%s' % result_list)
+
 				#for dev in self.parent.container['cdrom_devices']:
 				for dev in result_list:
 					if dev.startswith('nfs:'):
+						time.sleep(int(self.cmdline.get('nfsdelay','0')))
 						dev=dev.replace('nfs:', '')
 						res=os.system('/bin/mount -t nfs %s /mnt -o exec >/dev/null 2>&1' % dev)
 						if res == 0:
 							if os.path.exists('/mnt/.univention_install'):
 								self.parent.container['cdrom_device']='nfs:%s' % dev
 					elif dev.startswith('smbfs:'):
+						time.sleep(int(self.cmdline.get('nfsdelay','0')))
 						dev=dev.replace('smbfs:', '')
 						res=os.system('/bin/mount -t smbfs %s /mnt -o exec >/dev/null 2>&1' % dev)
 						if res == 0:
@@ -399,7 +433,11 @@ class object(content):
 					except:
 						pass
 
+				self.parent.debug('cdrom_device=%s' % self.parent.container['cdrom_device'])
+
+
 			elif self.action == 'cdrom-prepare':
+				self.parent.debug('preparing cdrom_device=%s' % self.parent.container['cdrom_device'])
 				if self.parent.container.has_key('cdrom_device'):
 					dev=self.parent.container['cdrom_device']
 					if dev.startswith('nfs:'):
@@ -440,5 +478,9 @@ class object(content):
 					os.system('umount /mnt >/dev/null 2>&1')
 				except:
 					pass
+
+				time.sleep(3)
+
+				self.parent.debug('preparing cdrom_device done')
 
 			self.stop()

@@ -166,6 +166,8 @@ if len(sys.argv) < 1 or read_cmdline:
 			cmdline['nousbstorage'] = True
 		elif opt == 'nousbcdrom':
 			cmdline['nousbcdrom'] = True
+		elif opt == 'nfsdelay':
+			cmdline['nfsdelay']=val
 
 		elif next_profile:
 			if not val:
@@ -729,6 +731,7 @@ try:
 	installer.draw_all()
 	view_warning=0
 	if cmdline.has_key('profile'):
+		# profile installation
 			while 1:
 				res=next_screen_profile(view_warning)
 				view_warning=0
@@ -767,6 +770,7 @@ try:
 								installer.tab()
 
 	else:
+		# interactive installation
 		while 1:
 			try:
 
@@ -774,10 +778,20 @@ try:
 					if installer.obj[ installer.current ].needs_draw_all:
 						installer.draw_all()
 
-				c = stdscr.getch()
-				if c == 275: # F11 -> back
+				# If module has defined function auto_input() and boolean flag auto_input_enabled
+				# and auto_input_enabled==True then use result of auto_input() instead of keypress
+				# as new input. Return value may be keycode (integer) or 'back' or 'next'.
+				# Otherwise use user keypress as new input.
+				if hasattr(installer.obj[ installer.current ], "auto_input") and \
+					   hasattr(installer.obj[ installer.current ], "auto_input_enabled") and \
+					   installer.obj[ installer.current ].auto_input_enabled:
+					c = installer.obj[ installer.current ].auto_input()
+				else:
+					c = stdscr.getch()
+
+				if c == 275 or c == 'back': # F11 -> back
 					prev_screen()
-				elif c == 276: # F12 -> next
+				elif c == 276 or c == 'next': # F12 -> next
 					if hasattr( installer.obj[ installer.current ], 'sub' ):
 						if installer.obj[ installer.current ].input( c ) == 'next':
 							next_screen()

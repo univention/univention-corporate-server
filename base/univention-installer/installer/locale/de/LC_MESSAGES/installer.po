@@ -749,17 +749,20 @@ msgstr "Warte auf Treiber-Initialisierung"
 msgid "Please wait ..."
 msgstr "Bitte warten ..."
 
-#: installer/modules/03_hardware.py:81 installer/modules/03_hardware.py:247
-msgid "Search CD-ROM Drive"
+msgid "Searching CD-ROM Drive"
 msgstr "Suche CD-ROM-Laufwerk"
 
-#: installer/modules/03_hardware.py:90 installer/modules/03_hardware.py:169
-msgid "Test CD-ROM Drive"
+msgid "Testing CD-ROM Drive"
 msgstr "Teste CD-ROM-Laufwerk"
 
-#: installer/modules/03_hardware.py:96 installer/modules/03_hardware.py:174
-msgid "Mount CD-ROM Drive"
+msgid "Mounting CD-ROM Drive"
 msgstr "Binde CD-ROM-Laufwerk ein"
+
+msgid "Mounting CD-ROM Drive %s"
+msgstr "Binde CD-ROM-Laufwerk %s ein"
+
+msgid "Mounting Network Device %s"
+msgstr "Binde Netzlaufwerk %s ein"
 
 #: installer/modules/03_hardware.py:108 installer/modules/03_hardware.py:223
 msgid "No valid source found"

@@ -1,3 +1,14 @@
+univention-installer (7.0.16-1) unstable; urgency=low
+
+  * CD/DVD detection (Bug #22602)
+    - automatically add block devices with filesystems 
+    - display name of successfully tested device
+    - switch automatically to next module after successful detection
+    - added kernel parameter nfsdelay=X to wait X seconds before mounting NFS source
+    - test against ANY configured network interface and not only "eth0"  
+  
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 28 Jul 2011 11:30:21 +0200
+
 univention-installer (7.0.15-2) unstable; urgency=low
 
   * for domaincontroller_master also set ldap/server/port=7389 (Bug #20026)
