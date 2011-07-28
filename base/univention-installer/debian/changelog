@@ -1,3 +1,9 @@
+univention-installer (7.0.17-1) unstable; urgency=low
+
+  * switched to 800x600 as resolution (Bug #22602)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 28 Jul 2011 11:57:58 +0200
+
 univention-installer (7.0.16-1) unstable; urgency=low
 
   * CD/DVD detection (Bug #22602)
