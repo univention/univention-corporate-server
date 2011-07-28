@@ -37,6 +37,57 @@
 #include "keyblock.h"
 #include "salt.h"
 
+/*
+"If there is one thing that scares me then it's that ASN1 stuff" -- Andrew Bartlett mutatis mutandis 2011
+
+In case you are looking into some problem here, note that asn1_Key.c and asn1_Salt.c are generated at compile
+time in the heimdal sources by means of asn1_compile from lib/hdb/hdb.asn1.
+Some definitions from the heimdal source upfront:
+
+--- /usr/include/hdb_asn1.h: ---
+
+typedef struct Key {
+  unsigned int *mkvno;
+  EncryptionKey key;
+  Salt *salt;
+} Key;
+
+typedef struct Salt {  // heimdal-1.4
+  unsigned int type;
+  heim_octet_string salt;
+} Salt;
+
+typedef struct Salt {  // heimdal-1.5
+  unsigned int type;
+  heim_octet_string salt;
+  heim_octet_string *opaque;	// New, must by initialized, otherwise this code segfaults in function length_Salt in asn1_Salt.c
+} Salt;
+
+typedef struct heim_octet_string {
+  size_t length;
+  void *data;
+} heim_octet_string;
+
+--- /usr/include/krb5_asn1.h: ---
+
+typedef struct EncryptionKey {
+  krb5int32 keytype;
+  heim_octet_string keyvalue;
+} EncryptionKey;
+
+--- /usr/include/krb5.h: ---
+
+typedef EncryptionKey krb5_keyblock;
+
+typedef struct krb5_salt {
+    krb5_salttype salttype;
+    krb5_data saltvalue;
+} krb5_salt;
+
+typedef heim_octet_string krb5_data;
+
+*/
+
 PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 {
 	krb5KeyblockObject *keyblock;
@@ -53,11 +104,20 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 
 	//asn1_key.mkvno = &mkvno;
 	asn1_key.mkvno = NULL;
-	asn1_key.key = keyblock->keyblock;
+
+	// Embed keyblock->keyblock of type krb5_keyblock into asn1_key of type Key
+	asn1_key.key = keyblock->keyblock;	// EncryptionKey := krb5_keyblock, now we have void *asn1_key.key.keyvalue.data == keyblock->keyblock.keyvalue.data
+
 	if ((PyObject*)salt != Py_None) {
+
+		// First embed salt->salt of type krb5_salt into asn1_salt of type Salt
 		asn1_salt.type = salt->salt.salttype;
-		asn1_salt.salt = salt->salt.saltvalue;
+		asn1_salt.salt = salt->salt.saltvalue;	// heim_octet_string := krb5_data, now we have void *asn1_salt.salt.data == *salt->salt.saltvalue.data
+		asn1_salt.opaque = NULL;	// heimdal-1.5 field
+
+		// Then embed asn1_salt of type Salt into  asn1_key of type Key
 		asn1_key.salt = &asn1_salt;
+
 	} else {
 		asn1_key.salt = NULL;
 	}
