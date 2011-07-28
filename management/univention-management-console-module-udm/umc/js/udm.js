@@ -283,7 +283,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				content: this._tree,
 				region: 'left',
 				splitter: true,
-				style: 'width: 150px;'
+				style: 'width: 200px;'
 			});
 
 			// encapsulate the current layout with a new BorderContainer in order to place

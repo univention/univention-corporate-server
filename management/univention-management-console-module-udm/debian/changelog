@@ -1,3 +1,12 @@
+univention-management-console-module-udm (1.0.76-1) unstable; urgency=low
+
+  * enlarged width of UDM navigation sidebar
+  * added check to umc.modules._udm.Template to make sure values really have
+    changed
+  (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 28 Jul 2011 16:06:39 +0200
+
 univention-management-console-module-udm (1.0.75-1) unstable; urgency=low
 
   * Adaptations to JavaScript API changes (Bug #22461)

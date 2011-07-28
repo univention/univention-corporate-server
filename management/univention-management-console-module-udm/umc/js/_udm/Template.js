@@ -50,6 +50,8 @@ dojo.declare('umc.modules._udm.Template', null, {
 
 	_focusedWidget: '',
 
+	_lastValues: null,
+
 	// mappings to convert umlauts and special characters to standard ones
 	_umlauts: { 'ä' :'ae', 'Ä' : 'Ae', 'ö' : 'oe', 'Ö' : 'Oe', 'ü' : 'ue', 'Ü' : 'Ue', 'ß' : 'ss', 'Á' : 'A', 'Â' : 'A', 'Ã' : 'A', 'Ä' : 'A', 'Å' : 'A', 'Æ' : 'AE', 'Ç' : 'C', 'È' : 'E', 'É' : 'E', 'Ê' : 'E', 'Ë' : 'E', 'Ì' : 'I', 'Í' : 'I', 'Î' : 'I', 'Ï' : 'I', 'Ð' : 'D', 'Ñ' : 'N', 'Ò' : 'O', 'Ó' : 'O', 'Ô' : 'O', 'Õ' : 'O', 'Ö' : 'O', 'Ù' : 'U', 'Ú' : 'U', 'Û' : 'U', 'à' : 'a', 'â' : 'a', 'á' : 'a', 'ã' : 'a', 'æ' : 'ae', 'ç' : 'c', 'è' : 'e', 'é' : 'e', 'ê' : 'e', 'ë' : 'e', 'ì' : 'i', 'í' : 'i', 'î' : 'i', 'ï' : 'i', 'ñ' : 'n', 'ò' : 'o', 'ó' : 'o', 'ô' : 'o', 'ù' : 'u', 'ú' : 'u', 'û' : 'u', 'ý' : 'y', 'ÿ' : 'y', 'Ĉ' : 'C', 'ĉ' : 'c' },
 
@@ -59,6 +61,9 @@ dojo.declare('umc.modules._udm.Template', null, {
 	constructor: function(props) {
 		// mixin the props
 		dojo.mixin(this, props);
+
+		// initiate the dict of the last known values
+		this._lastValues = {};
 
 		// iterate over all template values
 		// * set static values directly to the form
@@ -97,11 +102,7 @@ dojo.declare('umc.modules._udm.Template', null, {
 						});
 					}
 
-					// block onChange events (so we do not register the values as changes by
-					// the user) and set the value
-					//this.selfReference.set('blockOnChange', true);
 					this.selfReference.set('value', newVal);
-					//this.selfReference.set('blockOnChange', false);
 				}
 			};
 
@@ -204,6 +205,9 @@ dojo.declare('umc.modules._udm.Template', null, {
 			// onKeyUp for changes made by the user
 			this._eventHandles.push(dojo.connect(iwidget, 'onKeyUp', dojo.hitch(this, 'onChange', iwidget)));
 			this._eventHandles.push(dojo.connect(iwidget, 'onChange', dojo.hitch(this, 'onChange', iwidget)));
+
+			// save initial value
+			this._lastValues[iwidget.name] = iwidget.get('value');
 		}, this);
 	},
 
@@ -257,6 +261,14 @@ dojo.declare('umc.modules._udm.Template', null, {
 	},
 
 	onChange: function(widget) {
+		// make sure that the widget's value really has been altered
+		var lastVal = this._lastValues[widget.name];
+		var newVal = widget.get('value');
+		if (lastVal == newVal) {
+			return;
+		}
+		this._lastValues[widget.name] = newVal;
+
 		// register that the user has changed this field manually in case the
 		// focus was on this field
 		if (widget.get('focused')) {
