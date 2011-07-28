@@ -129,3 +129,9 @@ Description[de]=Die von Services verwendbaren Verschlüsselungsvarianten.
 Description[en]=The encryption types permitted for services.
 Type=str
 Categories=System
+
+[kerberos/allow/weak/crypto]
+Description[de]=Mit der Einstellung "no", "false" oder "0" wird die Erzeugung von single-DES Keys unterbunden.
+Description[en]=Setting this key to "no", "false" oder "0" disables the generation of single-DES keys.
+Type=str
+Categories=System

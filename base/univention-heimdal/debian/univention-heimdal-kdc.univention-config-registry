@@ -11,6 +11,7 @@ Variables: kerberos/defaults/enctypes/tgs
 Variables: kerberos/defaults/enctypes/tkt
 Variables: kerberos/defaults/enctypes/permitted
 Variables: kerberos/afscell
+Variables: kerberos/allow/weak/crypto
 
 Type: file
 File: etc/heimdal-kdc/kdc.conf
