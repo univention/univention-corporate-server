@@ -1,0 +1,255 @@
+/*global dojo dijit dojox umc console window */
+
+dojo.provide("umc.render");
+
+dojo.require("dijit.TitlePane");
+dojo.require("umc.i18n");
+dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.widgets.LabelPane");
+dojo.require("umc.widgets.Tooltip");
+dojo.require("umc.tools");
+
+dojo.mixin(umc.render, new umc.i18n.Mixin({
+	// use the framework wide translation file
+	i18nClass: 'umc.app'
+}), {
+	widgets: function(/*Object[]*/ widgetsConf) {
+		// summary:
+		//		Renders an array of widget config objects.
+		// returns:
+		//		A dictionary of widget objects.
+
+		// iterate over all widget config objects
+		var widgets = { };
+		dojo.forEach(widgetsConf, function(iconf) {
+			// ignore empty elements
+			if (!iconf || !dojo.isObject(iconf)) {
+				return true;
+			}
+
+			// copy the property 'id' to 'name'
+			var conf = dojo.mixin({}, iconf);
+			conf.name = iconf.id || iconf.name;
+
+			// render the widget
+			var widget = this.widget(conf);
+			if (widget) {
+				widgets[conf.name] = widget;
+			}
+		}, this);
+
+		return widgets; // Object
+	},
+
+	widget: function(/*Object*/ widgetConf) {
+		if (!widgetConf) {
+			return undefined;
+		}
+		if (!widgetConf.type) {
+			console.log(dojo.replace("WARNING in umc.render.widget: The type '{type}' of the widget '{name}' is invalid. Ignoring error.", widgetConf));
+			return undefined;
+		}
+
+		// make a copy of the widget's config object and remove 'type'
+		var conf = dojo.mixin({}, widgetConf);
+		delete conf.type;
+
+		// remove property 'id'
+		delete conf.id;
+
+		var WidgetClass = undefined;
+		try {
+			// include the corresponding module for the widget
+			dojo['require']('umc.widgets.' + widgetConf.type);
+
+			// create the new widget according to its type
+			WidgetClass = dojo.getObject('umc.widgets.' + widgetConf.type);
+		}
+		catch (error) { }
+		if (!WidgetClass) {
+			console.log(dojo.replace("WARNING in umc.render.widget: The widget class 'umc.widgets.{type}' defined by widget '{name}' cannot be found. Ignoring error.", widgetConf));
+			return undefined;
+		}
+		var widget = new WidgetClass(conf); // Widget
+
+		// create a tooltip if there is a description
+		if (widgetConf.description) {
+			var tooltip = new umc.widgets.Tooltip({
+				label: widgetConf.description,
+				connectId: [ widget.domNode ]
+			});
+
+			// destroy the tooltip when the widget is destroyed
+			tooltip.connect(widget, 'destroy', 'destroy');
+		}
+
+		return widget; // dijit._Widget
+	},
+
+	buttons: function(/*Object[]*/ buttonsConf) {
+		// summary:
+		//		Renders an array of button config objects.
+		// returns:
+		//		A dictionary of button widgets.
+
+		umc.tools.assert(dojo.isArray(buttonsConf), 'buttons: The list of buttons is expected to be an array.');
+
+		// render all buttons
+		var buttons = {
+			_order: [] // internal field to store the correct order of the buttons
+		};
+		dojo.forEach(buttonsConf, function(i) {
+			var btn = this.button(i);
+			buttons[i.name] = btn;
+			buttons._order.push(btn);
+		}, this);
+
+		// return buttons
+		return buttons; // Object
+	},
+
+	button: function(/*Object*/ buttonConf) {
+		// specific button types need special care: submit, reset
+		var buttonClassName = 'Button';
+		if ('submit' == buttonConf.name) {
+			buttonClassName = 'SubmitButton';
+		}
+		if ('reset' == buttonConf.name) {
+			buttonClassName = 'ResetButton';
+		}
+
+		// load the java script code for the button class
+		dojo['require']('umc.widgets.' + buttonClassName);
+		var ButtonClass = dojo.getObject('umc.widgets.' + buttonClassName);
+
+		// render the button
+		var button = new ButtonClass(buttonConf);
+
+		// connect event handler for onClick .. yet only for normal buttons
+		if ('Button' == buttonClassName) {
+			button.connect(button, 'onClick', buttonConf.callback);
+		}
+
+		// done, return the button
+		return button; // umc.widgets.Button
+	},
+
+	layout: function(/*Array*/ layout, /*Object*/ widgets, /*Object?*/ buttons, /*Integer?*/ _iLevel) {
+		// summary:
+		//		Render a widget containing a set of widgets as specified by the layout.
+
+		var iLevel = 'number' == typeof(_iLevel) ? _iLevel : 0;
+
+		// create a container
+		var globalContainer = new umc.widgets.ContainerWidget({});
+
+		// check whether the parameters are correct
+		umc.tools.assert(dojo.isArray(layout),
+				'umc.render.layout: Invalid layout configuration object!');
+
+		// iterate through the layout elements
+		for (var iel = 0; iel < layout.length; ++iel) {
+
+			// element can be:
+			//   String -> reference to widget
+			//   Array  -> references to widgets
+			//   Object -> grouped widgets -> recursive call of layout()
+			var el = layout[iel];
+			var elList = null;
+			if (dojo.isString(el)) {
+				elList = [el];
+			}
+			else if (dojo.isArray(el)) {
+				elList = el;
+			}
+
+			// for single String / Array
+			if (elList) {
+				// see how many buttons and how many widgets there are in this row
+				var nWidgetsWithLabel = 0;
+				dojo.forEach(elList, function(jel) {
+					nWidgetsWithLabel += jel in widgets && (widgets[jel].label ? 1 : 0);
+				});
+
+				// add current form widgets to layout
+				var elContainer = new umc.widgets.ContainerWidget({});
+				dojo.forEach(elList, function(jel) {
+					// make sure the reference to the widget/button exists
+					if (!(widgets && jel in widgets) && !(buttons && jel in buttons)) {
+						console.log(dojo.replace("WARNING in umc.render.layout: The widget '{0}' is not defined in the argument 'widgets'. Ignoring error.", [jel]));
+						return true;
+					}
+
+					// make sure the widget/button has not been already rendered
+					var widget = widgets ? widgets[jel] : null;
+					var button = buttons ? buttons[jel] : null;
+					if ((widget && widget._isRendered) || (button && button._isRendered)) {
+						console.log(dojo.replace("WARNING in umc.render.layout: The widget '{0}' has been referenced more than once in the layout. Ignoring error.", [jel]));
+						return true;
+					}
+
+					// add the widget or button surrounded with a LabelPane
+					if (widget) {
+						elContainer.addChild(new umc.widgets.LabelPane({
+							label: widget.label,
+							content: widget,
+							style: widget.align ? 'float: ' + widget.align : ''
+						}));
+						widget._isRendered = true;
+					} else if (button) {
+						if (nWidgetsWithLabel) {
+							// if buttons are displayed along with widgets, we need to add a '&nbps;'
+							// as label in order to display them on the same height
+							elContainer.addChild(new umc.widgets.LabelPane({
+								label: '&nbsp;',
+								content: button,
+								style: button.align ? 'float: ' + button.align : ''
+							}));
+						} else {
+							// if there are only buttons in the row, we do not need a label
+							if (button.align) {
+								button.set('style', 'float: ' + button.align);
+							}
+							elContainer.addChild(button);
+						}
+						button._isRendered = true;
+					}
+				}, this);
+				globalContainer.addChild(elContainer);
+			}
+			// for Object (i.e., a grouping box)
+			else if (dojo.isObject(el) && el.layout) {
+				//console.log('### layout - recursive call');
+				//console.log(el);
+				globalContainer.addChild(new dijit.TitlePane({
+					title: el.label,
+					'class': 'umcFormLevel' + iLevel,
+					toggleable: iLevel < 1,
+					open: undefined === el.open ? true : el.open,
+					content: this.layout(el.layout, widgets, buttons, iLevel + 1)
+				}));
+			}
+		}
+
+		// add buttons if specified
+		if (buttons) {
+			// add all buttons that have not been rendered so far to a separate container
+			// and respect their correct order (i.e., using the interal array field _order)
+			var buttonContainer = new umc.widgets.ContainerWidget({});
+			dojo.forEach(buttons._order, function(ibutton) {
+				if (!ibutton._isRendered) {
+					buttonContainer.addChild(ibutton);
+					ibutton._isRendered = true;
+				}
+			});
+			globalContainer.addChild(buttonContainer);
+		}
+
+		// start processing the layout information
+		globalContainer.startup();
+
+		// return the container
+		return globalContainer; // dojox.layout.TableContainer
+	}
+});
+
