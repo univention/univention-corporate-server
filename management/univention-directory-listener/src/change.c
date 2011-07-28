@@ -190,8 +190,9 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 			}
 	
 			signals_block();
-			handler_update(dns[i].dn, &cache_entry, &old_cache_entry, handler, 'n');
+			/* First write the entry to the local cache to be sure the entry in the cache is untouched. Bug #21914 */
 			cache_update_entry_lower(0, dns[i].dn, &cache_entry);
+			handler_update(dns[i].dn, &cache_entry, &old_cache_entry, handler, 'n');
 			signals_unblock();
 			cache_free_entry(NULL, &cache_entry);
 		}

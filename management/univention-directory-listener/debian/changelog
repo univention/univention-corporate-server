@@ -1,3 +1,12 @@
+univention-directory-listener (5.0.10-1) unstable; urgency=low
+
+  * Write the new entry first into the cache before giving the entry to
+    the handler. Otherwise the entry might be modified and the cache
+    gets corrupted and the listener can't read the entry from the cache
+    anymore (Bug #21914).
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 Jul 2011 07:03:53 +0200
+
 univention-directory-listener (5.0.9-1) unstable; urgency=low
 
   * With UCS 3.0 and Samba 4 the default ldap port 389 will be used by
