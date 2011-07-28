@@ -1,3 +1,9 @@
+univention-pam (5.0.6-1) unstable; urgency=low
+
+  * Remove libpam-smbpass / samba-common dependency (Bug #22559)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 Jul 2011 19:03:00 +0200
+
 univention-pam (5.0.5-1) unstable; urgency=low
 
   * allow ssh access to members of host groups on dc's (Bug #20138)
