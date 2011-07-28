@@ -1,3 +1,10 @@
+univention-installer (7.0.20-1) unstable; urgency=low
+
+  * default security profile is still "normal" but during profile
+    installation other security profiles can be selected (Bug #22602)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 28 Jul 2011 17:53:32 +0200
+
 univention-installer (7.0.19-1) unstable; urgency=low
 
   * Some package list cleanups for UCS 3.0 (Bug #22869)
