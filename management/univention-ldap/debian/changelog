@@ -1,3 +1,9 @@
+univention-ldap (8.0.15-1) unstable; urgency=low
+
+  * Fixed bashisms (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 06:56:47 +0200
+
 univention-ldap (8.0.14-1) unstable; urgency=low
 
   * avoid trailing newline in machine.secret (Bug #14186)
