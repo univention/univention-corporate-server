@@ -1,3 +1,10 @@
+univention-base-files (1.0.6-1) unstable; urgency=low
+
+  * Move UCRWARNING into python code block in /etc/issue* templates
+    (Bug #22160)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 07:42:28 +0200
+
 univention-base-files (1.0.5-2) unstable; urgency=low
 
   * make IPv6 configurable (Bug #22871)

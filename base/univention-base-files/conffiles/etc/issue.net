@@ -1,6 +1,5 @@
-@%@UCRWARNING=# @%@
-
 @!@
+@%@UCRWARNING=# @%@
 menutitle=''
 
 if   configRegistry['server/role'] == 'fatclient':
