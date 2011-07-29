@@ -1,3 +1,9 @@
+univention-directory-notifier (6.0.3-1) unstable; urgency=low
+
+  * Fixed bashisms (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 07:03:32 +0200
+
 univention-directory-notifier (6.0.2-1) unstable; urgency=low
 
   * Fixed typo in last commit: Added dependency to shell-univention-lib

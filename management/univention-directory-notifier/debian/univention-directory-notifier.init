@@ -40,7 +40,7 @@ case "$1" in
 	start)
 		# check ucr autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-		    source "/usr/share/univention-config-registry/init-autostart.lib"
+		    . "/usr/share/univention-config-registry/init-autostart.lib"
 		    check_autostart notifier notifier/autostart
 		fi
 		log_action_msg "Starting Univention Directory Notifier daemon"
