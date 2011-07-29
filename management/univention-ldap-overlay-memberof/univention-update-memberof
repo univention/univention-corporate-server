@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention LDAP Server
 #  postrm script for the debian package
