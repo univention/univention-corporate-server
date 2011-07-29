@@ -1,4 +1,4 @@
-PROG=		newsid
+PROG=		univention-newsid
 OBJS=		memory.o util_pw.o md4.o genrand.o newsid.o
 
 BINDIR=		$(SUFFIX)/usr/local/bin

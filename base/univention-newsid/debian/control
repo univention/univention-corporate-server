@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper(>> 3.0.0)
+Build-Depends: debhelper(>> 3.0.0), ucslint
 
 Package: univention-newsid
 Architecture: any
