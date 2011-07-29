@@ -43,6 +43,8 @@ then
     /usr/lib/univention-install/44univention-virtual-machine-manager-node-kvm.inst || true
 fi
 
+adduser --quiet libvirt-qemu cdrom
+
 #DEBHELPER#
 
 exit 0
