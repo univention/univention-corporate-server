@@ -70,6 +70,11 @@ if [ -z "$files" ] ; then
 	killall -9 slapd >/dev/null 2>&1
 
 	rm -f /var/lib/univention-ldap/ldap/*
+
+	if [ -e "/etc/ldap/slapd.d/cn=config.ldif" ]; then
+		mv "/etc/ldap/slapd.d/cn=config.ldif" "/etc/ldap/slapd.d/cn=config.ldif.DISABLED"
+	fi
+
 	univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
 
 	if [ -z "$LDAP_SECRET" ]; then

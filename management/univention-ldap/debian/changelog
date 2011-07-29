@@ -1,3 +1,10 @@
+univention-ldap (8.0.17-1) unstable; urgency=low
+
+  * Move cn=config.ldif to cn=config.ldif.DISABLED in join script to
+    disable cn=config backend (Bug #22468)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 10:27:39 +0200
+
 univention-ldap (8.0.16-1) unstable; urgency=low
 
   * Readded univention-newsid to dependencies (Bug #23017)
