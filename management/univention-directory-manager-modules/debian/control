@@ -12,6 +12,7 @@ Depends: ${python:Depends},
  python-univention-heimdal (>= 4.0.1-1),
  makepasswd,
  python-m2crypto,
+ python-smbpasswd,
  shell-univention-lib,
  python-univention-directory-manager-cli (= ${binary:Version})
 Provides: ${python:Provides}

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.36-1) unstable; urgency=low
+
+  * Use python-smbpasswd instead of univention-smbencrypt for generating
+    samba NTLM hashes (Bug #23017 and Bug #21870)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 20:48:57 +0200
+
 univention-directory-manager-modules (7.0.35-1) unstable; urgency=low
 
   * removed LazyTranslation

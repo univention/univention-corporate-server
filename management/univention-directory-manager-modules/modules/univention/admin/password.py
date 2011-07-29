@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import os, heimdal, codecs, types, string, sys
+import smbpasswd
 
 def crypt(password):
 	"""return crypt hash"""
@@ -55,15 +56,7 @@ def crypt(password):
 def ntlm(password):
 	"""return tuple with NT and LanMan hash"""
 
-	p_to, p_from = os.popen2('/usr/sbin/univention-smbencrypt')
-
-	p_to.write( password.encode( 'utf-8' ) + '\n' )
-	p_to.close()
-
-	r = p_from.read()[:-1]
-	r = r.split(':')
-
-	return (r[1],r[0])
+	return smbpasswd.hash(password)
 
 def krb5_asn1(principal, password, krb5_context=None):
 	list=[]
