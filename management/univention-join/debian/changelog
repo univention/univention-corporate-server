@@ -1,3 +1,9 @@
+univention-join (4.0.7-1) unstable; urgency=low
+
+  * Fixed bashisms (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 06:58:52 +0200
+
 univention-join (4.0.6-1) unstable; urgency=low
 
   * set ldap/master/port?7389 in univention-join for all roles
