@@ -3,7 +3,7 @@
 # Univention System Setup
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,19 +30,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval $(univention-baseconfig shell)
+eval "$(univention-config-registry shell)"
 
 if [ -n "$boot_setup_start" ]; then
-	univention-baseconfig set system/setup/boot/start?"$boot_setup_start"
+	univention-config-registry set "system/setup/boot/start?$boot_setup_start"
 else
-	univention-baseconfig set system/setup/boot/start?true
+	univention-config-registry set 'system/setup/boot/start?true'
 fi
 
 if [ -n "$boot_setup_modules" ]; then
-	univention-baseconfig set system/setup/boot/modules?"$boot_setup_modules"
+	univention-config-registry set "system/setup/boot/modules?$boot_setup_modules"
 else
-	univention-baseconfig set system/setup/boot/modules?"basis,net"
+	univention-config-registry set 'system/setup/boot/modules?basis,net'
 fi
 
 #DEBHELPER#
 
+exit 0

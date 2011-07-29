@@ -3,7 +3,7 @@
 # Univention Setup
 #  interfaces change script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -547,11 +547,11 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 
 	if [ -x /usr/sbin/smbd ]; then
 	    for i in `pidof smbd`; do
-			kill -9 $i
+			/bin/kill -9 $i
 		done
 		sleep 1
 		for i in `pidof nmbd`; do
-			kill -9 $i
+			/bin/kill -9 $i
 		done
 		/etc/init.d/samba restart
 	fi

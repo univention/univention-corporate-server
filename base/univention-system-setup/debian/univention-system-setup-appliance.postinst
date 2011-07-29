@@ -3,7 +3,7 @@
 # Univention System Setup
 #  postinst script
 #
-# Copyright 2009-2010 Univention GmbH
+# Copyright 2009-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,10 +31,10 @@
 # <http://www.gnu.org/licenses/>.
 
 
-univention-config-registry set system/setup/appliance/start?true
-univention-config-registry set system/setup/boot/modules?"basis,net"
+univention-config-registry set 'system/setup/appliance/start?true'
+univention-config-registry set 'system/setup/boot/modules?basis,net'
 
-eval $(univention-config-registry shell system/setup/boot/modules)
+eval "$(univention-config-registry shell system/setup/boot/modules)"
 
 if [ "$1" = "configure" -a -z "$2" ]; then
 	univention-config-registry set system/setup/boot/modules="$system_setup_boot_modules,ssl"

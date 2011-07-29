@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Setup
 #  regenerate SSL certificates
 #
-# Copyright 2009-2010 Univention GmbH
+# Copyright 2009-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
