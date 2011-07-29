@@ -1,3 +1,9 @@
+univention-ldap (8.0.16-1) unstable; urgency=low
+
+  * Readded univention-newsid to dependencies (Bug #23017)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 07:19:42 +0200
+
 univention-ldap (8.0.15-1) unstable; urgency=low
 
   * Fixed bashisms (Bug #22431)
