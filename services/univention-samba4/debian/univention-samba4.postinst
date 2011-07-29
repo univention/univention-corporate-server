@@ -38,6 +38,8 @@ if [ -f /etc/samba/smb.conf ]; then
 	rm /etc/samba/smb.conf
 fi
 
+univention-config-registry set samba/debug/level?0
+
 for f in installs.conf shares.conf printers.conf local.conf; do
 	if [ ! -e "/etc/samba/$f" ]; then
 		touch /etc/samba/$f
