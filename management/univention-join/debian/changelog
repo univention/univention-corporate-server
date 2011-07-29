@@ -1,3 +1,9 @@
+univention-join (4.0.8-1) unstable; urgency=low
+
+  * More bashisms (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 07:16:03 +0200
+
 univention-join (4.0.7-1) unstable; urgency=low
 
   * Fixed bashisms (Bug #22431)
