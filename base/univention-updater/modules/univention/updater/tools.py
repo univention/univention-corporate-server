@@ -439,7 +439,7 @@ class UniventionUpdater:
 		Throws ConfigurationError when configured server is not available immediately."""
 		self.check_access = check_access
 		self.connection = None
-		self.architectures = [ os.popen('dpkg-architecture -qDEB_BUILD_ARCH 2>/dev/null').readline()[:-1] ]
+		self.architectures = [ os.popen('dpkg --print-architecture 2>/dev/null').readline()[:-1] ]
 
 		self.ucr_reinit()
 
@@ -477,7 +477,7 @@ class UniventionUpdater:
 		#UCS version
 		self.ucs_version=self.configRegistry['version/version']
 		self.patchlevel = int(self.configRegistry['version/patchlevel'])
-		self.security_patchlevel = int(self.configRegistry['version/security-patchlevel'])
+		self.security_patchlevel = int(self.configRegistry.get('version/security-patchlevel', 0))
 		self.version_major, self.version_minor = map(int, self.ucs_version.split('.'))
 
 		# should hotfixes be used

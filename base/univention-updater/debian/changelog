@@ -1,3 +1,12 @@
+univention-updater (7.0.6-1) unstable; urgency=low
+
+  * Since Squeeze dpkg-architecture is part of dpkg-dev, now the updater
+    uses dpkg --print-architecture (Bug #22433)
+  * Ignore empty UCR variable version/security-patchlevel (Bug #18693)
+  * Use testing.univention.de as online repository server (Bug #23121)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 30 Jul 2011 14:32:25 +0200
+
 univention-updater (7.0.5-1) unstable; urgency=low
 
   * abort update if ucs tcs is installed and not 
