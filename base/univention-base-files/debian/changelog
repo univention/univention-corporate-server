@@ -1,3 +1,10 @@
+univention-base-files (1.0.8-2) unstable; urgency=low
+
+  * No longer print version/security-patchlevel in /etc/issue
+    (Bug #18693)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 30 Jul 2011 14:28:44 +0200
+
 univention-base-files (1.0.8-1) unstable; urgency=low
 
   * Fixed bashisms in init-autostart.lib (Bug #22160)
