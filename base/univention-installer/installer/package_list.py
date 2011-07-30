@@ -316,7 +316,7 @@ PackageList=[
 			[
 				{
 					'Name': _('Univention Directory Manager'),
-					'Packages': ['univention-directory-manager', 'python-univention-license'],
+					'Packages': ['univention-management-console-module-udm', 'python-univention-license'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],
@@ -472,7 +472,7 @@ PackageList=[
 				},
 				{
 					'Name': _('Commandline tools'),
-					'Packages': ['vim', 'emacs22', 'less', 'elinks', 'wget', 'nmap', 'zip', 'unzip', 'eject'],
+					'Packages': ['vim', 'emacs23', 'less', 'elinks', 'wget', 'nmap', 'zip', 'unzip', 'eject'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['all'],
 					'Possible': [ 'all' ],
