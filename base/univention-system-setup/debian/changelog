@@ -1,3 +1,9 @@
+univention-system-setup (5.0.2-1) unstable; urgency=low
+
+  * univention-system-setup-appliance no newline in secret files (Bug #14186)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 01 Aug 2011 16:04:43 +0200
+
 univention-system-setup (5.0.1-1) unstable; urgency=low
 
   * add samba4 to services-to-be-restarted in 10interfaces
