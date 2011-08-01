@@ -84,10 +84,41 @@ krb5SaltObject *salt_new(PyObject *unused, PyObject *args)
 		return self;
 }
 
+krb5SaltObject *salt_raw_new(PyObject *unused, PyObject *args) {
+
+	krb5ContextObject *context;
+	char *saltstring = NULL;
+	int saltlen;
+	krb5SaltObject *self = (krb5SaltObject *) PyObject_NEW(krb5SaltObject, &krb5SaltType);
+
+	if (self == NULL)
+		return NULL;
+
+	if (! PyArg_ParseTuple(args, "Os#", &context, &saltstring, &saltlen))
+		return NULL; 
+
+	self->context = context->context;
+	self->salt.salttype = KRB5_PW_SALT;
+	self->salt.saltvalue.length = saltlen;
+	self->salt.saltvalue.data = strdup(saltstring);
+
+	return self;
+}
+
+PyObject *salt_saltvalue(krb5SaltObject *self, PyObject *args)
+{
+	return PyString_FromStringAndSize(self->salt.saltvalue.data, self->salt.saltvalue.length);
+}
+
 void salt_destroy(krb5SaltObject *self)
 {
 	krb5_free_salt(self->context, self->salt);
 	PyObject_Del(self);
+}
+
+static PyObject *salt_getattr(krb5SaltObject *self, char *name)
+{
+	return Py_FindMethod(salt_methods, (PyObject *)self, name);
 }
 
 PyTypeObject krb5SaltType = {
@@ -99,7 +130,7 @@ PyTypeObject krb5SaltType = {
 	/* methods */
 	(destructor)salt_destroy,	/*tp_dealloc*/
 	0,				/*tp_print*/
-	0,				/*tp_getattr*/
+	(getattrfunc)salt_getattr,	/*tp_getattr*/
 	0,				/*tp_setattr*/
 	0,				/*tp_compare*/
 	0,				/*tp_repr*/
@@ -110,4 +141,7 @@ PyTypeObject krb5SaltType = {
 	0,				/*tp_hash*/
 };
 
-//static struct PyMethodDef salt_methods[] = {};
+static struct PyMethodDef salt_methods[] = {
+	{"saltvalue", (PyCFunction)salt_saltvalue, METH_VARARGS, "Return saltvalue"},
+	{NULL, NULL, 0, NULL}
+};

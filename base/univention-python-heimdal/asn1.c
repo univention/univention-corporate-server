@@ -36,6 +36,7 @@
 
 #include "keyblock.h"
 #include "salt.h"
+#include "error.h"
 
 /*
 "If there is one thing that scares me then it's that ASN1 stuff" -- Andrew Bartlett mutatis mutandis 2011
@@ -132,4 +133,71 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 		Py_INCREF(s); /* FIXME */
 		return s;
 	}
+}
+
+
+PyObject* asn1_decode_key(PyObject *unused, PyObject* args)
+{
+	uint8_t *key_buf;
+	size_t key_len;
+	krb5KeyblockObject *keyblock;
+	krb5SaltObject *salt;
+	krb5_error_code ret;
+	Key asn1_key;
+	size_t len;
+	PyObject *self;
+	int error = 0;
+
+	if (!PyArg_ParseTuple(args, "s#", &key_buf, &key_len))
+		return NULL;
+
+	ret = decode_Key(key_buf, key_len, &asn1_key, &len);
+	if (ret) {
+		error = 1;
+		krb5_exception(NULL, ret);
+		goto out;
+	}
+
+	keyblock = (krb5KeyblockObject *) PyObject_NEW(krb5KeyblockObject, &krb5KeyblockType);
+	keyblock->keyblock.keytype = asn1_key.key.keytype;
+
+	keyblock->keyblock.keyvalue.data = malloc(asn1_key.key.keyvalue.length);
+	if (keyblock->keyblock.keyvalue.data == NULL) {
+		error = 1;
+		krb5_exception(NULL, -1, "malloc for keyvalue.data failed");
+		goto out;
+	}
+	memcpy(keyblock->keyblock.keyvalue.data, asn1_key.key.keyvalue.data, asn1_key.key.keyvalue.length);
+	keyblock->keyblock.keyvalue.length = asn1_key.key.keyvalue.length;
+
+	salt = (krb5SaltObject *) PyObject_NEW(krb5SaltObject, &krb5SaltType);
+	if (asn1_key.salt != NULL) {
+		salt->salt.salttype = asn1_key.salt->type;
+		salt->salt.saltvalue.data = malloc(asn1_key.salt->salt.length);
+		if (salt->salt.saltvalue.data == NULL) {
+			error = 1;
+			krb5_exception(NULL, -1, "malloc for saltvalue.data failed");
+			goto out;
+		}
+		memcpy(salt->salt.saltvalue.data, asn1_key.salt->salt.data, asn1_key.salt->salt.length);
+		salt->salt.saltvalue.length = asn1_key.salt->salt.length;
+	} else {
+		/*
+		Py_INCREF(Py_None);
+		salt = Py_None;
+		*/
+		salt->salt.salttype = KRB5_PW_SALT;
+		salt->salt.saltvalue.data   = NULL;
+		salt->salt.saltvalue.length = 0;
+	}
+	
+	self = Py_BuildValue("(OOi)", keyblock, salt, asn1_key.mkvno);
+
+	if (!self)
+		error = 1;
+ out:
+	if (error)
+		return NULL;
+	else
+		return self;
 }

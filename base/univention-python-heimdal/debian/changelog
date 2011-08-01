@@ -1,3 +1,10 @@
+univention-python-heimdal (4.0.2-1) unstable; urgency=low
+
+  * merge keyblock_raw code of versions 3.1.2-1 and 3.1.3-1 from
+    ucs_2.4-samba4 to ucs main (Bug #22580)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 01 Aug 2011 17:55:07 +0200
+
 univention-python-heimdal (4.0.1-3) unstable; urgency=low
 
   * use generic include files in asn1 and document the upstream

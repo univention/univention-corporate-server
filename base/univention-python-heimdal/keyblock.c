@@ -33,6 +33,7 @@
 #include <Python.h>
 
 #include <krb5.h>
+#include <stdio.h>
 
 #include "error.h"
 #include "context.h"
@@ -98,7 +99,7 @@ PyObject *keyblock_keytype(krb5KeyblockObject *self, PyObject *args)
 
 PyObject *keyblock_keyvalue(krb5KeyblockObject *self, PyObject *args)
 {
-	return PyString_FromString(self->keyblock.keyvalue.data);
+	return PyString_FromStringAndSize(self->keyblock.keyvalue.data, self->keyblock.keyvalue.length);
 }
 
 void keyblock_destroy(krb5KeyblockObject *self)
