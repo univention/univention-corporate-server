@@ -1,3 +1,10 @@
+univention-lib (1.0.10-2) unstable; urgency=low
+
+  * re-enable build for all python versions
+  * add copyright node to python module; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 01 Aug 2011 15:26:08 +0200
+
 univention-lib (1.0.10-1) unstable; urgency=low
 
   * shell/umc.sh: tools for creating operation acls LDAP objects; Bug #22439
