@@ -1,3 +1,10 @@
+univention-samba4 (1.0.7-1) experimental; urgency=low
+
+  * set ldap/server/port=7389 in setup-s4.sh if ldap/server/name points
+    to local system (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 01 Aug 2011 19:20:02 +0200
+
 univention-samba4 (1.0.6-1) experimental; urgency=low
 
   * Set samba/debug/level in postinst (Bug #22559)

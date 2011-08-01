@@ -97,9 +97,7 @@ if [ -n "$slapd_port_ldaps" ]; then
 	univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)" >>$LOGFILE 2>&1
 fi
 if [ "$ldap_server_name" = "$hostname.$domainname" ]; then
-	if [ "$ldap_server_port" = "389" ]; then
-		univention-config-registry set ldap/server/port="7389" >>$LOGFILE 2>&1
-	fi
+	univention-config-registry set ldap/server/port="7389" >>$LOGFILE 2>&1
 fi
 if [ "$ldap_master" = "$hostname.$domainname" ]; then
 	univention-config-registry set ldap/master/port="7389" >>$LOGFILE 2>&1
