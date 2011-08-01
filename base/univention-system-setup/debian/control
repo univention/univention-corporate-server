@@ -41,12 +41,3 @@ Description: perform initial configuration of appliance editions
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
-
-Package: univention-setup
-Architecture: any
-Depends: univention-setup
-Description: Transition package
- Package to ease upgrading from old package
- univention-setup to the new package.  This package
- can be purged at anytime once the
- univention-system-setup package has been installed.
