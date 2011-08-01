@@ -132,6 +132,16 @@ def do_package( package, core ):
 			module[ 'lang' ] = lang
 			dh_ucs.doIt( 'install', '-D', mo_file, 'debian/%(package)s/usr/share/univention-management-console/i18n/%(lang)s/%(Module)s.mo' % module )
 
+		# join script
+		join_script = '%s.inst' % package
+		join_dest = 'debian/%s/usr/lib/univention-install' % package
+		for filename in os.listdir( '.' ):
+			if filename.endswith( join_script ):
+				if not os.path.exists( join_dest ):
+					dh_ucs.doIt( 'install', '-d', join_dest )
+				dh_ucs.doIt( 'install', '-t', join_dest, '-m', '755', filename )
+				break
+
 		if not core:
 			# copy icons
 			for dirname, dirs, files in os.walk( module.icons ):

@@ -183,11 +183,11 @@ class Client( signals.Provider, Translation ):
 					else:
 						del self.__resend_queue[sock][0]
 				except socket.error, e:
-					if e[0] in [104, 107, 9]:
+					if e.errno in ( errno.ECONNABORTED, errno.EISCONN, errno.ENOEXEC ):
 						# Error may happen if module process died and server tries to send request at the same time
-						# 104: connection reset by peer
-						# 107: socket not connected
-						# 9: bad file descriptor
+						# ECONNABORTED: connection reset by peer
+						# EISCONN: socket not connected
+						# ENOEXEC: bad file descriptor
 						CORE.info( 'Client: _resend: socket is damaged: %s' % str( e ) )
 						self.signal_emit( 'closed' )
 						return False
@@ -253,7 +253,7 @@ class Client( signals.Provider, Translation ):
 		try:
 			recv = ''
 			while True:
-				recv += sock.recv( 65536 )
+				recv += sock.recv( RECV_BUFFER_SIZE )
 				if self.__ssl and not self.__unix:
 					if not sock.pending():
 						break

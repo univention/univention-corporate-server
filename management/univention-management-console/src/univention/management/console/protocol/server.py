@@ -108,13 +108,14 @@ class MagicBucket( object ):
 		data = ''
 
 		try:
-			data = socket.recv( 65536 )
+			data = socket.recv( RECV_BUFFER_SIZE )
 		except SSL.WantReadError:
 			# this error can be ignored (SSL need to do something)
 			return True
 		except ( SSL.SysCallError, SSL.Error ), error:
 			statistics.connections.inactive()
-			statistics.users.remove( self.__states[ socket ].username )
+			if self.__states[ socket ].username in statistics.users:
+				statistics.users.remove( self.__states[ socket ].username )
 			CRYPT.warn( 'SSL error: %s. Probably the socket was closed by the client.' % str( error ) )
 			if self.__states[ socket ].processor is not None:
 				self.__states[ socket ].processor.shutdown()

@@ -113,7 +113,7 @@ class ModuleServer( Server ):
 			notifier.timer_remove( self.__timer )
 			self.__timer == None
 
-		data = socket.recv( 32768 )
+		data = socket.recv( RECV_BUFFER_SIZE )
 
 		# connection closed?
 		if not len( data ):

@@ -37,6 +37,9 @@ from univention.lib.i18n import NullTranslation
 
 _ = NullTranslation( 'univention.management.console' ).translate
 
+# buffer size for reading commands from socket
+RECV_BUFFER_SIZE = 65536
+
 class CommandDefinition( object ):
 	def __init__( self, name, has_arguments, *options ):
 		self._name = name
