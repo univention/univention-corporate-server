@@ -1,3 +1,9 @@
+univention-base-files (1.0.10-1) unstable; urgency=low
+
+  * Re-synchronize init.d/networking from Debian-Squeeze (Bug #22160)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Aug 2011 16:37:33 +0200
+
 univention-base-files (1.0.9-1) unstable; urgency=low
 
   * Set sshd/challengeresponse?yes, sshd/passwordauthentication?no (Bug #22586)
