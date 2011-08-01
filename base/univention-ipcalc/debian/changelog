@@ -1,3 +1,13 @@
+univention-ipcalc (3.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22511)
+    * Bump version for UCS 3.0
+    * Update copyright to 2011
+    * Update to debhelper 7
+    * Switch from python2.4 to python2.6
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Aug 2011 13:47:32 +0200
+
 univention-ipcalc (2.0.1-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
