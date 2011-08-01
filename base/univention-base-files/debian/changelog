@@ -1,3 +1,9 @@
+univention-base-files (1.0.9-1) unstable; urgency=low
+
+  * Set sshd/challengeresponse?yes, sshd/passwordauthentication?no (Bug #22586)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Aug 2011 15:15:45 +0200
+
 univention-base-files (1.0.8-2) unstable; urgency=low
 
   * No longer print version/security-patchlevel in /etc/issue
