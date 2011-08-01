@@ -10,7 +10,6 @@ Package: univention-dependency-dummy
 Architecture: all
 Provides: univention-system-setup,
  univention-grub,
- univention-ipcalc,
  univention-shares,
  univention-directory-replication,
  univention-archive-key
