@@ -1,3 +1,9 @@
+univention-management-console (4.0.46-1) unstable; urgency=low
+
+  * add join-script; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 01 Aug 2011 15:14:19 +0200
+
 univention-management-console (4.0.45-1) unstable; urgency=low
 
   * dh-umc-module-install: automagically install join script; Bug #22439
