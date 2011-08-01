@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.78-1) unstable; urgency=low
+
+  * initialize syntax classes based on ldapDn; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 01 Aug 2011 16:41:52 +0200
+
 univention-management-console-module-udm (1.0.77-1) unstable; urgency=low
 
   * add join script to create UMC acls ans operations; Bug #22439

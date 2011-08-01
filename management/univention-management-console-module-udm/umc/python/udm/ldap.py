@@ -498,13 +498,23 @@ def init_syntax():
 	for name, syn in udm_syntax.__dict__.items():
 		if type( syn ) is not type:
 			continue
-		if not hasattr( syn, 'udm_module' ):
-			continue
-		MODULE.info( 'Found syntax class %s with udm_module attribute (= %s)' % ( name, syn.udm_module ) )
-		module = UDM_Module( syn.udm_module )
-		if module is None:
-			syn.choices = ()
-			continue
-		MODULE.info( 'Found syntax %s with udm_module property' % name )
-		syn.choices = map( lambda obj: ( obj.dn, obj[ module.identifies ] ), module.search() )
-		MODULE.info( 'Set choices to %s' % syn.choices )
+		if hasattr( syn, 'udm_module' ):
+			MODULE.info( 'Found syntax class %s with udm_module attribute (= %s)' % ( name, syn.udm_module ) )
+			module = UDM_Module( syn.udm_module )
+			if module is None:
+				syn.choices = ()
+				continue
+			MODULE.info( 'Found syntax %s with udm_module property' % name )
+			syn.choices = map( lambda obj: ( obj.dn, obj[ module.identifies ] ), module.search() )
+			MODULE.info( 'Set choices to %s' % syn.choices )
+		elif issubclass( syn, udm_syntax.ldapDn ) and hasattr( syn, 'searchFilter' ):
+			lo, po = get_ldap_connection()
+			try:
+				result = lo.searchDn( filter = syn.searchFilter )
+			except udm_errors.base, e:
+				MODULE.error( 'Failed to initialize syntax class %s' % name )
+				continue
+			syn.choices = []
+			for dn in result:
+				dn_list = lo.explodeDn( dn )
+				syn.choices.append( ( dn, dn_list[ 0 ].split( '=', 1 )[ 1 ] ) )

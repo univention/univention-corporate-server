@@ -59,7 +59,7 @@ __widgets = (
 	Widget( 'CheckBox', ( udm_syntax.OkOrNot, udm_syntax.TrueFalseUp, udm_syntax.boolean ), False ),
 	Widget( 'PasswordInputBox', ( udm_syntax.passwd, udm_syntax.userPasswd ), '' ),
 	Widget( 'DateBox', udm_syntax.iso8601Date, '1970-01-01' ),
-	Widget( 'ComboBox', ( udm_syntax.select, udm_syntax.ldapDnOrNone ), '' ),
+	Widget( 'ComboBox', ( udm_syntax.select, udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
 	Widget( 'MultiInput', udm_syntax.complex, None ),
 	)
