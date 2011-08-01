@@ -1,3 +1,9 @@
+univention-server (7.0.2-1) unstable; urgency=low
+
+  * Fix bashism in server_password_change (Bug #22160)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Aug 2011 15:25:26 +0200
+
 univention-server (7.0.1-1) unstable; urgency=low
 
   * avoid EOL in ldap.secret, ldap-backup.secret and machine.secret
