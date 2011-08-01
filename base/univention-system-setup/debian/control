@@ -2,13 +2,13 @@ Source: univention-system-setup
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Standards-Version: 3.5.2
+Standards-Version: 3.8.2
 Build-Depends: debhelper
 
 Package: univention-system-setup
 Architecture: all
 Conflicts: univention-setup (<<1.1.2)
-Depends: univention-installer-modules, python2.4, python2.4-apt, univention-ipcalc, whois
+Depends: univention-installer-modules, python2.4, python2.4-apt, univention-ipcalc, whois, shell-univention-lib
 Description: univention system setup tools
  .
  It is part of Univention Corporate Server (UCS), an

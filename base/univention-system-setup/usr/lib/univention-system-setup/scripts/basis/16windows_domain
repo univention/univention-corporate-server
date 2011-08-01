@@ -62,7 +62,7 @@ fi
 
 service_stop samba
 
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 if [ "$ldap_available" = 1 ]; then
 	if [ "$server_role" = "domaincontroller_master" ]; then

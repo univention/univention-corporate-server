@@ -30,17 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-createLogfile () {
-	if [ ! -e $1 ] ; then
-		touch $1
-		chown $2 $1
-		chmod $3 $1
-	fi
-}
-
 #DEBHELPER#
 
-createLogfile /var/log/univention/setup.log "root:adm" 640
+. /usr/share/univention-lib/base.sh
+create_logfile /var/log/univention/setup.log "root:adm" 640
 
 chmod -R 700 /var/cache/univention-system-setup
 

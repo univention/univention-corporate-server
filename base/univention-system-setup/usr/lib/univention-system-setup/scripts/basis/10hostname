@@ -39,7 +39,7 @@ if [ $? = 0 ]; then
 	exit 0
 fi
 
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 
 if [ "$check_ldap_access" = "1" ]; then
@@ -70,57 +70,8 @@ service_stop nscd heimdal-kdc univention-directory-notifier
 binddn=`ldap_binddn`
 bindpwd=`ldap_bindpwd`
 
-#fallback for old univention admin version
-ua_version=`dpkg -s univention-directory-manager-tools | grep ^Version | sed -e 's|Version: ||'`
-
 if [ "$ldap_available" = 1 ]; then
 
-	dpkg --compare-versions $ua_version lt 1.10-1
-	if [ $? = 0 ]; then
-		echo `date` : "Configure Kerberos principal name in LDAP: " $new_hostname  >> /var/log/univention/setup.log
-		echo "dn: $ldap_hostdn" >/var/cache/univention-system-setup/krb5principal.rename.ldif
-		echo "changetype: modify" >>/var/cache/univention-system-setup/krb5principal.rename.ldif
-		echo "replace: krb5PrincipalName" >>/var/cache/univention-system-setup/krb5principal.rename.ldif
-		echo "krb5PrincipalName: host/$new_hostname.$domainname@$kerberos_realm" >>/var/cache/univention-system-setup/krb5principal.rename.ldif
-		echo "-" >>/var/cache/univention-system-setup/krb5principal.rename.ldif
-		echo "replace: uid" >>/var/cache/univention-system-setup/krb5principal.rename.ldif
-		echo "uid: $new_hostname$" >>/var/cache/univention-system-setup/krb5principal.rename.ldif
-		echo "-" >>/var/cache/univention-system-setup/krb5principal.rename.ldif
-		echo "replace: sn" >>/var/cache/univention-system-setup/krb5principal.rename.ldif
-		echo "sn: $new_hostname" >>/var/cache/univention-system-setup/krb5principal.rename.ldif
-		echo "-" >>/var/cache/univention-system-setup/krb5principal.rename.ldif
-		ldapmodify -x -D "$binddn" -w "$bindpwd" -f /var/cache/univention-system-setup/krb5principal.rename.ldif
-		rm /var/cache/univention-system-setup/krb5principal.rename.ldif
-
-
-		kerberos_ldap_dn=`ldapsearch -x cn="ldap/$old_hostname.$domainname@$kerberos_realm" -b cn=kerberos,$ldap_base cn -LLL | ldapsearch-wrapper | grep "^dn: " | sed -e 's|dn: ||'`
-		if [ -n "$kerberos_ldap_dn" ]; then
-			echo "dn: $kerberos_ldap_dn" >/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-			echo "changetype: modify" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-			echo "replace: sn" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-			echo "sn: ldap/$new_hostname.$domainname@$kerberos_realm" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-			echo "-" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-			echo "replace: krb5PrincipalName" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-			echo "krb5PrincipalName: ldap/$new_hostname.$domainname@`echo $kerberos_realm | tr [[:lower:]] [[:upper:]]`" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-			echo "-" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-			ldapmodify -x -D "$binddn" -w "$bindpwd" -h "$ldap_master" -f /var/cache/univention-system-setup/kerberos_ldap_service.ldif
-			rm /var/cache/univention-system-setup/kerberos_ldap_service.ldif
-
-			ldapmodrdn -x -D "$binddn" -w "$bindpwd" -h "$ldap_master" -r $kerberos_ldap_dn cn=ldap/$new_hostname.$domainname@$kerberos_realm
-		fi
-
-		ldapmodrdn -x -D "$binddn" -w "$bindpwd" -h "$ldap_master" -r "$ldap_hostdn" cn=$new_hostname
-
-
-		ldapsearch -x -D "$binddn" -w "$bindpwd"  "(&(objectClass=univentionGroup)(uniqueMember=$ldap_hostdn))" -LLL dn | ldapsearch-wrapper | grep "^dn: " | sed -e 's|^dn: ||' | while read dn; do
-			univention-directory-manager groups/group modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --append users="$(echo $ldap_hostdn|sed -e"s|cn=$old_hostname,|cn=$new_hostname,|")" --remove users=$ldap_hostdn
-		done
-
-		echo `date` : "Configure hostname for groupware account in LDAP: " $new_hostname.$domainname  >> /var/log/univention/setup.log
-
-		ldapmodrdn -x -D "$binddn" -w "$bindpwd" -h "$ldap_master" -r "cn=$old_hostname.$domainname Groupware Account,cn=templates,cn=univention,$ldap_base" "cn=$new_hostname.$domainname Groupware Account"
-
-	else
 		if [ "$server_role" = "fatclient" ]; then
 			server_role="client"
 		fi
@@ -131,7 +82,6 @@ if [ "$ldap_available" = 1 ]; then
 		ldapmodrdn -x -D "$binddn" -w "$bindpwd" -h "$ldap_master" -r "cn=$old_hostname.$domainname Groupware Account,cn=templates,cn=univention,$ldap_base" "cn=$new_hostname.$domainname Groupware Account"
 
 
-	fi
 	if [ -x "/usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool" ] ; then
 		/usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool -m -o $old_hostname.$domainname -n $new_hostname.$domainname -D "$binddn" -w "$bindpwd"
 	fi
@@ -523,7 +473,7 @@ if [ -x "/etc/init.d/postfix" ]; then
 	/etc/init.d/postfix reload
 fi
 
-eval $(univention-config-registry shell samba/user ldap/hostdn)
+eval "$(univention-config-registry shell samba/user ldap/hostdn)"
 
 if  [ "$samba_user" = "cn=admin,$ldap_base" ]; then
 	passfile="/etc/ldap.secret"

@@ -32,7 +32,7 @@
 
 exec >/var/log/univention/setup-appliance.log 2>&1
 
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 if [ ! "$server_role" = "domaincontroller_master" ]; then
 	exit 0

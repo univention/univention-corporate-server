@@ -38,7 +38,7 @@ is_variable_set "domainname"
 if [ $? = 0 ]; then
 	exit 0
 fi
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 
 if [ "$check_ldap_access" = "1" ]; then
@@ -247,7 +247,7 @@ if [ -d "/etc/univention/ssl/$hostname.$new_domainname" ]; then
 fi
 
 
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 echo `date` : "Setting new hostname into effect for Kerberos : $hostname.$new_domainname@$kerberos_realm"  >> /var/log/univention/setup.log
 rm -f /etc/krb5.keytab

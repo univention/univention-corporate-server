@@ -38,7 +38,7 @@ if [ $? = 0 ]; then
 	exit 0
 fi
 
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 security_profile=`get_profile_var "security_profile"`
 

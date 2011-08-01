@@ -32,7 +32,7 @@
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 new_ssl_locality=$(get_profile_var "ssl/locality")
 new_ssl_organization=$(get_profile_var "ssl/organization")

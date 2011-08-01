@@ -98,7 +98,7 @@ service_start ()
 
 ldap_binddn ()
 {
-	eval $(univention-config-registry shell server/role ldap/base ldap/master)
+	eval "$(univention-config-registry shell server/role ldap/base ldap/master)"
 	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 		echo "cn=admin,$ldap_base"
 	else
@@ -112,7 +112,7 @@ ldap_binddn ()
 
 ldap_bindpwd ()
 {
-	eval $(univention-config-registry shell server/role ldap/base ldap/master)
+	eval "$(univention-config-registry shell server/role ldap/base ldap/master)"
 	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 		echo "`cat /etc/ldap.secret`"
 	else

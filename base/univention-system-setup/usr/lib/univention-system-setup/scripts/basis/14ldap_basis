@@ -53,7 +53,7 @@ if [ -z "$new_ldap_base" ]; then
 	exit 0
 fi
 
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 oldbn=$(univention-config-registry get ldap/base)
 
@@ -106,7 +106,7 @@ slapadd </var/cache/univention-system-setup/new_ldif.$d
 
 service_start slapd univention-directory-notifier nscd heimdal-kdc
 
-eval $(univention-config-registry shell samba/user ldap/hostdn)
+eval "$(univention-config-registry shell samba/user ldap/hostdn)"
 
 if  [ "$samba_user" = "cn=admin,$new_ldap_base" ]; then
 	passfile="/etc/ldap.secret"

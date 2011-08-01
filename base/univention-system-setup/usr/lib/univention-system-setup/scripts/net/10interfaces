@@ -40,7 +40,7 @@ serversystem=0
 restart_ifplugd=0
 dhcp_in_use=0
 
-eval $(univention-config-registry shell server/role interfaces/handler)
+eval "$(univention-config-registry shell server/role interfaces/handler)"
 
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ] || [ "$server_role" = "domaincontroller_slave" ] || [ "$server_role" = "memberserver" ]; then
   serversystem=1
@@ -290,7 +290,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 	binddn=`ldap_binddn`
 	bindpwd=`ldap_bindpwd`
 
-	eval $(univention-config-registry shell)
+	eval "$(univention-config-registry shell)"
 		
 	service_stop nscd samba cupsys
 

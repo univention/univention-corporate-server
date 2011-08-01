@@ -28,7 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval $(univention-baseconfig shell ldap/master)
+eval "$(univention-config-registry shell ldap/master)"
 nc -z $ldap_master 389 2> /dev/null
 
 if [ $? = 1 ]; then

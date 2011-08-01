@@ -1,3 +1,9 @@
+univention-system-setup (5.0.0-0) unstable; urgency=low
+
+  * update to UCS 3.0 policies (Bug #22587)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 01 Aug 2011 10:50:43 +0200
+
 univention-system-setup (4.0.10-2) unstable; urgency=low
 
   * add mapping for ox/mail/domain/primary (Bug #21203)
