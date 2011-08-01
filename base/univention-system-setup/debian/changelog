@@ -1,3 +1,10 @@
+univention-system-setup (5.0.1-1) unstable; urgency=low
+
+  * add samba4 to services-to-be-restarted in 10interfaces
+  * fix 10interfaces: IP address change with port (Bug #21374)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 01 Aug 2011 15:49:23 +0200
+
 univention-system-setup (5.0.0-1) unstable; urgency=low
 
   * update to UCS 3.0 policies (Bug #22587)
