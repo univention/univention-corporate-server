@@ -30,82 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-HOOK_SCRIPTS := $(wildcard usr/lib/univention-system-setup/appliance-hooks.d/[0-9]*)
-
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	touch configure-stamp
-
-build: configure-stamp build-stamp
-build-stamp:
-	dh_testdir
-	touch build-stamp
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-
-	dh_clean
-
-D=$(CURDIR)/debian/univention-system-setup
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	install -m 755 usr/sbin/univention-system-setup ${D}/usr/sbin/
-
-	install -m 700 usr/lib/univention-system-setup/scripts/setup_utils.sh ${D}/usr/lib/univention-system-setup/scripts/
-	install -m 700 usr/lib/univention-system-setup/scripts/ldap_available.sh ${D}/usr/lib/univention-system-setup/scripts/
-	install -m 700 usr/lib/univention-system-setup/scripts/ldif_rewrite.py ${D}/usr/lib/univention-system-setup/scripts/
-	install -m 700 usr/lib/univention-system-setup/scripts/keyboard/10keyboard ${D}/usr/lib/univention-system-setup/scripts/keyboard/
-	install -m 700 usr/lib/univention-system-setup/scripts/timezone/10timezone ${D}/usr/lib/univention-system-setup/scripts/timezone/
-	install -m 700 usr/lib/univention-system-setup/scripts/net/10interfaces ${D}/usr/lib/univention-system-setup/scripts/net/
-	install -m 700 usr/lib/univention-system-setup/scripts/net/12gateway ${D}/usr/lib/univention-system-setup/scripts/net/
-	install -m 700 usr/lib/univention-system-setup/scripts/net/14nameserver ${D}/usr/lib/univention-system-setup/scripts/net/
-	install -m 700 usr/lib/univention-system-setup/scripts/net/16forwarder ${D}/usr/lib/univention-system-setup/scripts/net/
-	install -m 700 usr/lib/univention-system-setup/scripts/net/18proxy ${D}/usr/lib/univention-system-setup/scripts/net/
-	install -m 700 usr/lib/univention-system-setup/scripts/language/10language ${D}/usr/lib/univention-system-setup/scripts/language/
-	install -m 700 usr/lib/univention-system-setup/scripts/language/11default_locale ${D}/usr/lib/univention-system-setup/scripts/defaultlocale/
-	install -m 700 usr/lib/univention-system-setup/scripts/basis/10hostname ${D}/usr/lib/univention-system-setup/scripts/basis/
-	install -m 700 usr/lib/univention-system-setup/scripts/basis/12domainname ${D}/usr/lib/univention-system-setup/scripts/basis/
-	install -m 700 usr/lib/univention-system-setup/scripts/basis/14ldap_basis ${D}/usr/lib/univention-system-setup/scripts/basis/
-	install -m 700 usr/lib/univention-system-setup/scripts/basis/16windows_domain ${D}/usr/lib/univention-system-setup/scripts/basis/
-	install -m 700 usr/lib/univention-system-setup/scripts/basis/18root_password ${D}/usr/lib/univention-system-setup/scripts/basis/
-	install -m 700 usr/lib/univention-system-setup/scripts/security/10security ${D}/usr/lib/univention-system-setup/scripts/security/
-	install -m 700 usr/lib/univention-system-setup/scripts/software/10software ${D}/usr/lib/univention-system-setup/scripts/software/
-	install -m 700 $(wildcard usr/lib/univention-system-setup/scripts/ssl/[0-9]*) ${D}/usr/lib/univention-system-setup/scripts/ssl/
-
-	install -m 700 $(HOOK_SCRIPTS) ${D}-appliance/usr/lib/univention-system-setup/appliance-hooks.d/
-	dh_install
-
-binary-arch: build install
-
-binary-indep: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs
-	dh_installexamples
-	dh_installmenu
+override_dh_installinit:
 	dh_installinit -punivention-system-setup-boot --no-start -u"defaults 70"
 	dh_installinit -punivention-system-setup-appliance --no-start -u"defaults 75"
-	dh_installcron
-	dh_installman
-	dh_installinfo
-	dh_installchangelogs
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
 
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+override_dh_fixperms:
+	dh_fixperms
+	find debian/*/usr/lib/univention-system-setup/ -type f -exec chmod +x {} +
+
+override_dh_auto_test:
+	ucslint
+
+%:
+	dh $@

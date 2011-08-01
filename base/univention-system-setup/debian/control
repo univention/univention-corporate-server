@@ -3,12 +3,16 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper
+Build-Depends: debhelper (>= 7.0.50~),
+ python-support,
+ python-all
+XS-Python-Version: all
 
 Package: univention-system-setup
 Architecture: all
-Conflicts: univention-setup (<<1.1.2)
-Depends: univention-installer-modules, python2.4, python2.4-apt, univention-ipcalc, whois, shell-univention-lib
+Depends: univention-installer-modules, ${python:Depends}, ${misc:Depends}, univention-ipcalc, whois, shell-univention-lib
+Provides: ${python:Provides}
+XB-Python-Version: ${python:Versions}
 Description: univention system setup tools
  .
  It is part of Univention Corporate Server (UCS), an
@@ -20,7 +24,6 @@ Package: univention-system-setup-boot
 Architecture: all
 Provides: univention-setup-boot
 Depends: univention-system-setup
-Conflicts: univention-setup-boot (<= 1.0.2)
 Replaces: univention-setup-boot
 Description: starting univention-system-setup on next boot
  .
