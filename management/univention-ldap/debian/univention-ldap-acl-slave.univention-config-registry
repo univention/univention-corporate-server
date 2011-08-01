@@ -12,3 +12,4 @@ Subfile: etc/ldap/slapd.conf.d/60univention-ldap-server_acl-slave
 Variables: ldap/base
 Variables: ldap/replog
 Variables: ldap/hostdn
+Variables: ldap/acl/read/.*

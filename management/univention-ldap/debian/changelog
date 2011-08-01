@@ -1,3 +1,10 @@
+univention-ldap (8.0.18-1) unstable; urgency=low
+
+  * register ldap/acl/read/anonymous and ldap/acl/read/ips with
+    60univention-ldap-server_acl-slave (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Jul 2011 15:34:06 +0200
+
 univention-ldap (8.0.17-1) unstable; urgency=low
 
   * Move cn=config.ldif to cn=config.ldif.DISABLED in join script to
