@@ -1,3 +1,9 @@
+univention-installer (7.0.25-1) unstable; urgency=low
+
+  * set grub2 timeout to 60 (Bug #22707) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 01 Aug 2011 14:35:54 +0200
+
 univention-installer (7.0.24-1) unstable; urgency=low
 
   * More package_list.py adjustments (Bug #22448)

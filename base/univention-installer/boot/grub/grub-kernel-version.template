@@ -1,5 +1,5 @@
 set default=0
-set timeout=5
+set timeout=60
 set color_normal=black/black
 set color_highlight=black/black
 set menu_color_normal=black/black
