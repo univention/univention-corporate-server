@@ -1,3 +1,9 @@
+univention-management-console-module-reboot (1.0.7-1) unstable; urgency=low
+
+  * add join script to create UMC acls ans operations; Bug #22461
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 01 Aug 2011 16:16:05 +0200
+
 univention-management-console-module-reboot (1.0.6-1) unstable; urgency=low
 
   * Adaptations to JavaScript API changes (Bug #22461)
