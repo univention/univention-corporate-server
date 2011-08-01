@@ -1,3 +1,9 @@
+univention-join (4.0.9-1) unstable; urgency=low
+
+  * Fix installation of check-join-status (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Aug 2011 15:25:39 +0200
+
 univention-join (4.0.8-1) unstable; urgency=low
 
   * More bashisms (Bug #22431)
