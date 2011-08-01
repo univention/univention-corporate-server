@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.9-1) unstable; urgency=low
+
+  * Initialize udm modules (Bug #22439)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Aug 2011 17:20:49 +0200
+
 univention-s4-connector (6.0.8-1) unstable; urgency=low
 
   * Set correct logfiles (Bug #22580)
