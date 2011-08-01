@@ -1,3 +1,10 @@
+univention-ad-connector (6.0.4-1) unstable; urgency=low
+
+  * Initialze self.lo even if bindpw does not contain a newline
+    (Bug #14186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Aug 2011 16:55:39 +0200
+
 univention-ad-connector (6.0.3-1) unstable; urgency=low
 
   * fixed bashisms (Bug #23005)

@@ -259,7 +259,7 @@ class ucs:
 		if bindpw[-1] == '\n':
 			bindpw=bindpw[0:-1]
 
-			self.lo=univention.admin.uldap.access(host=self.baseConfig['ldap/master'], base=self.baseConfig['ldap/base'], binddn='cn=admin,'+self.baseConfig['ldap/base'], bindpw=bindpw, start_tls=2)
+		self.lo=univention.admin.uldap.access(host=self.baseConfig['ldap/master'], base=self.baseConfig['ldap/base'], binddn='cn=admin,'+self.baseConfig['ldap/base'], bindpw=bindpw, start_tls=2)
 
 	def search_ucs( self, filter = '(objectClass=*)', base = '', scope = 'sub', attr = [], unique = 0, required = 0, timeout = -1, sizelimit = 0 ):
 		try:
