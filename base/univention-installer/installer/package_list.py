@@ -43,8 +43,7 @@ PackageList=[
 				{
 					'Name': _('Samba 4'),
 					'Packages': ['univention-samba4'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': [ 'domaincontroller_slave', 'memberserver' ],
 					'Possible': [ 'domaincontroller_slave', 'memberserver' ],
 					'Description': _("Samba 4 Services"),
@@ -52,8 +51,7 @@ PackageList=[
 				{
 					'Name': _('Samba 4'), # DC Master and DC Backups need the s4 connector for UCS 3,0 MS1 and MS2
 					'Packages': ['univention-s4-connector', 'univention-samba4'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],
 					'Description': _("Samba 4 Services"),
@@ -61,8 +59,7 @@ PackageList=[
 				{
 					'Name': _('Samba 3'),
 					'Packages': ['univention-samba', 'samba'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': [],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Description': _("Samba Services"),
@@ -70,8 +67,7 @@ PackageList=[
 				{
 					'Name': _('Samba 3 PDC on Non-DC Master'),
 					'Packages': ['univention-samba-slave-pdc'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': [],
 					'Possible': ['domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Description': _("Samba domain controller as a slave to another master domain controller"),
@@ -79,8 +75,7 @@ PackageList=[
 				{
 					'Name': _('Winbind for Samba 3'),
 					'Packages': ['winbind'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': [ 'memberserver' ],
 					'Possible': ['all'],
 					'Description': _("Winbind Service"),
@@ -88,7 +83,6 @@ PackageList=[
 				{
 					'Name': _('Univention AD Connector'),
 					'Packages': ['univention-ad-connector'],
-					'Architecture': [ 'x86', 'powerpc' ],
 					'EditionDisable': [ 'oxae' ],
 					'Active': [ ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],
@@ -105,8 +99,7 @@ PackageList=[
 				{
 					'Name': _('Standard mail services'),
 					'Packages': ['univention-mail-postfix', 'univention-mail-cyrus'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': [''], 
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
 					'Description': _('Standard mail services with postfix and cyrus (SMTP/POP/IMAP)'),
@@ -122,8 +115,7 @@ PackageList=[
 				{
 					'Name': _('DNS'),
 					'Packages': ['univention-bind', 'univention-bind-proxy', 'bind9'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
 					'Description': _("DNS Server and Proxy"),
@@ -131,8 +123,7 @@ PackageList=[
 				{
 					'Name': _('DHCP'),
 					'Packages': ['univention-dhcp', 'dhcp3-server'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Description': _("DHCP Server"),
@@ -140,8 +131,7 @@ PackageList=[
 				{
 					'Name': _('Squid proxy server'),
 					'Packages': ['univention-squid', 'squid'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': [ ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Description': _('Web Proxy Services'),
@@ -157,7 +147,6 @@ PackageList=[
 				{
 					'Name': _('Univention AD Connector'),
 					'Packages': ['univention-ad-connector'],
-					'Architecture': [ 'x86', 'powerpc' ],
 					'Edition': [ 'oxae' ],
 					'Active': [ ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],
@@ -167,7 +156,6 @@ PackageList=[
 					'Name': _('Bacula (Backup)'),
 					'Packages': ['univention-bacula'],
 					'Edition': [ 'oxae' ],
-					'Architecture': [ 'x86' ],
 					'Active': [],
 					'Possible': ['all'],
 					'Description': _('Network based Backup Software'),
@@ -176,7 +164,6 @@ PackageList=[
 					'Name': _('Open-Xchange'),
 					'Packages': ['univention-ox', 'univention-ox-directory-integration', 'univention-oxae'],
 					'Edition': [ 'oxae' ],
-					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
 					'Description': _('Open-Xchange Groupware Server'),
@@ -185,7 +172,6 @@ PackageList=[
 					'Name': _('Samba'),
 					'Packages': ['univention-samba', 'samba', 'cups', 'cups-bsd', 'cups-client', 'cups-driver-gutenprint', 'foomatic-db-gutenprint', 'foomatic-db-hpijs', 'foomatic-filters-ppds'],
 					'Edition': [ 'oxae' ],
-					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem'],
 					'Description': _("Samba Services"),
@@ -193,8 +179,7 @@ PackageList=[
 				{
 					'Name': _('Terminal server'),
 					'Packages': ['univention-application-server'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Description': _('X-Window-System Client for Terminal Services'),
@@ -202,8 +187,7 @@ PackageList=[
 				{
 					'Name': _('Thin client environment'),
 					'Packages': ['univention-thin-client'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Description': _('Thinclient Infrastructure'),
@@ -211,8 +195,7 @@ PackageList=[
 				{
 					'Name': _('Print server'),
 					'Packages': ['univention-printserver', 'cups'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Possible': ['all'],
 					'Description': _('Print server based on cups'),
@@ -220,8 +203,7 @@ PackageList=[
 				{
 					'Name': _('Print quota'),
 					'Packages': ['univention-printquota', 'pykota', 'univention-printquotadb'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': [],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Description': _('Print quota support based on pykota'),
@@ -229,8 +211,7 @@ PackageList=[
 				{
 					'Name': _('Nagios server'),
 					'Packages': ['univention-nagios-server'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': [ 'domaincontroller_master' ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Description': _('Host, service and network monitoring program (server software)'),
@@ -238,25 +219,14 @@ PackageList=[
 				{
 					'Name': _('Nagios client'),
 					'Packages': ['univention-nagios-client'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': [ 'domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver' ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver' ],
 					'Description': _('Host, service and network monitoring program (client software)'),
 				},
 				{
-					'Name': _('Fax server'),
-					'Packages': ['univention-fax-server', 'univention-fax-client'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
-					'Active': [ ],
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
-					'Description': _('Fax server and client based on hylafax'),
-				},
-				{
 					'Name': _('OpenSSH server'),
 					'Packages': ['openssh-server'],
-					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ 'all' ],
 					'Possible': [ 'all' ],
 					'Description': _("Secure shell server, an rshd replacement"),
@@ -264,8 +234,7 @@ PackageList=[
 				{
 					'Name': _('FreeNX server'),
 					'Packages': ['freenx'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': [ ],
 					'Possible': ['all'],
 					'Description': _('FreeNX application/thin-client server'),
@@ -282,8 +251,7 @@ PackageList=[
 				{
 					'Name': _('Virtual Machine Manager (UVMM)'),
 					'Packages': ['univention-virtual-machine-manager-daemon', 'univention-virtual-machine-manager-schema'],
-					'Architecture': [ 'x86' ],
-					'Edition': [ 'scalix', 'ugs' ],
+					'Edition': [ 'ucs' ],
 					'Active': [ ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
 					'Description': _('UMC module for managing virtualization servers and virtual instances'),
@@ -291,8 +259,7 @@ PackageList=[
 				{
 					'Name': _('Xen virtualization server'),
 					'Packages': ['univention-virtual-machine-manager-node-xen'],
-					'Architecture': [ 'x86' ],
-					'Edition': [ 'scalix', 'ugs' ],
+					'Edition': [ 'ucs' ],
 					'Active': [ ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem'],
 					'Description': _('Sets up a virtualization server based on Xen'),
@@ -300,8 +267,7 @@ PackageList=[
 				{
 					'Name': _('KVM virtualization server'),
 					'Packages': ['univention-virtual-machine-manager-node-kvm'],
-					'Architecture': [ 'x86' ],
-					'Edition': [ 'scalix', 'ugs' ],
+					'Edition': [ 'ucs' ],
 					'Active': [ ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem'],
 					'Description': _('Sets up a virtualization server based on KVM'),
@@ -317,7 +283,6 @@ PackageList=[
 				{
 					'Name': _('Univention Directory Manager'),
 					'Packages': ['univention-management-console-module-udm', 'python-univention-license'],
-					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],
 					'Description': _('Univention Director Manager Web Frontend'),
@@ -325,7 +290,6 @@ PackageList=[
 				{
 					'Name': _('Univention Management Console'),
 					'Packages': ['univention-management-console'],
-					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('Configuration Frontend for Servers and Clients'),
@@ -333,8 +297,7 @@ PackageList=[
 				{
 					'Name': _('Univention Software Monitor'),
 					'Packages': ['univention-pkgdb'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': ['domaincontroller_master'],
 					'Possible': ['all'],
 					'Description': _('Univention packagestatus database'),
@@ -342,8 +305,7 @@ PackageList=[
 				{
 					'Name': _('UCS Net Installer'),
 					'Packages': ['univention-net-installer'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Description': _('Install UCS over the network'),
@@ -359,8 +321,7 @@ PackageList=[
 				{
 					'Name': _('Bacula (Backup)'),
 					'Packages': ['univention-bacula'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86' ],
+					'Edition': [ 'ucs' ],
 					'Active': [],
 					'Possible': ['all'],
 					'Description': _('Network based Backup Software'),
@@ -368,8 +329,7 @@ PackageList=[
 				{
 					'Name': _('Remote backup'),
 					'Packages': ['univention-remote-backup'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'ucs' ],
 					'Active': [],
 					'Possible': ['all'],
 					'Description': _('Backup Software based on rsync'),
@@ -385,7 +345,6 @@ PackageList=[
 				{
 					'Name': _('Graphical user interface'),
 					'Packages': ['univention-x-core', 'univention-gdm', 'univention-gdm-sessions'],
-					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('Core Packages for a Graphical Desktop Environment'),
@@ -393,7 +352,6 @@ PackageList=[
 				{
 					'Name': _('KDE desktop'),
 					'Packages': ['univention-kde', 'ispell', 'ingerman', 'gimp', 'acroread-de'],
-					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('KDE - K Desktop Environment'),
@@ -401,7 +359,6 @@ PackageList=[
 				{
 					'Name': _('KDE add-ons'),
 					'Packages': ['k3b', 'k3b-i18n', 'cdrdao', 'kdeartwork-misc', 'kdeartwork-emoticons', 'kdeartwork-style', 'kdeartwork-theme-icon', 'kscreensaver', 'kdewallpapers', 'kdeartwork-theme-window', 'kamera', 'kfax', 'kpdf', 'kview', 'kuickshow', 'ksnapshot', 'kgpg', 'kpowersave', 'kwalletmanager', 'kdepim', 'kompose', 'kerry', 'amarok', 'kaffeine', 'kmplayer', 'kdemultimedia', 'mplayer'],
-					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('Additional KDE applications like k3b, kamera, ...'),
@@ -409,7 +366,6 @@ PackageList=[
 				{
 					'Name': _('OpenOffice.org'),
 					'Packages': ['univention-ooffice2', 'myspell-de-de'],
-					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('OpenOffice.org is a full-featured office productivity suite.'),
@@ -417,7 +373,6 @@ PackageList=[
 				{
 					'Name': _('Mozilla Firefox'),
 					'Packages': ['univention-mozilla-firefox'],
-					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('Firefox Webbrowser'),
@@ -425,7 +380,6 @@ PackageList=[
 				{
 					'Name': "  %s" % _('Java plugin/runtime'),
 					'Packages': ['univention-java'],
-					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('Java Virtual Machine'),
@@ -433,7 +387,6 @@ PackageList=[
 				{
 					'Name': "  %s" %_('Flash plugin installer'),
 					'Packages': ['univention-flashplugin'],
-					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('Flashplugin for webbrowsers'),
@@ -441,7 +394,6 @@ PackageList=[
 				{
 					'Name': "  %s" %_('Mplayer plugin'),
 					'Packages': ['mozilla-mplayer'],
-					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('Mplayer for webbrowsers'),
@@ -449,7 +401,6 @@ PackageList=[
 				{
 					'Name': _('Microsoft fonts installer'),
 					'Packages': ['msttcorefonts'],
-					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ ],
 					'Possible': [ 'all' ],
 					'Description': _("Microsoft True Type Core fonts"),
@@ -465,7 +416,6 @@ PackageList=[
 				{
 					'Name': _('Java'),
 					'Packages': ['univention-java'],
-					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('Java Virtual Machine'),
@@ -473,7 +423,6 @@ PackageList=[
 				{
 					'Name': _('Commandline tools'),
 					'Packages': ['vim', 'emacs23', 'less', 'elinks', 'wget', 'nmap', 'zip', 'unzip', 'eject'],
-					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['all'],
 					'Possible': [ 'all' ],
 					'Description': _('Various commandline tools, like vim, less, nmap, ...'),

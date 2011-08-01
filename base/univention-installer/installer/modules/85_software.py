@@ -134,11 +134,13 @@ class object(content):
 							if os.path.exists('/usr/bin/apt-cache'):
 								res = os.system('apt-cache show %s >/dev/null 2>&1' % p )
 								if res != 0:
-									failed.append(package_list.PackageList[i]['Packages'][j]['Name'])
+									if not package_list.PackageList[i]['Packages'][j]['Name'] in failed:
+										failed.append(package_list.PackageList[i]['Packages'][j]['Name'])
 									break
 							else:
 								if not p in PackagesList and not PackagesList == 'INVALID':
-									failed.append(package_list.PackageList[i]['Packages'][j]['Name'])
+									if not package_list.PackageList[i]['Packages'][j]['Name'] in failed:
+										failed.append(package_list.PackageList[i]['Packages'][j]['Name'])
 									break
 					if len(failed) < len(package_list.PackageList[i]['Packages']):
 						position=len(NewPackageList)

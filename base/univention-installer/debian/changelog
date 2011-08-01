@@ -1,3 +1,11 @@
+univention-installer (7.0.26-1) unstable; urgency=low
+
+  * More package_list.py adjustments (Bug #22448)
+  * Don't sleep for some seconds while detecting the cdrom device
+  * Add packages to failed list only once
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Aug 2011 15:14:06 +0200
+
 univention-installer (7.0.25-1) unstable; urgency=low
 
   * set grub2 timeout to 60 (Bug #22707) 

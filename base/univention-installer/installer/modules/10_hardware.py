@@ -479,8 +479,6 @@ class object(content):
 				except:
 					pass
 
-				time.sleep(3)
-
 				self.parent.debug('preparing cdrom_device done')
 
 			self.stop()
