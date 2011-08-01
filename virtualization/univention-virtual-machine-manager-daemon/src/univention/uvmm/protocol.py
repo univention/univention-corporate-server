@@ -358,12 +358,13 @@ class Disk(object):
 			TYPE_BLOCK: 'block',
 			}
 
-	CACHE_DEFAULT, CACHE_NONE, CACHE_WT, CACHE_WB = range(4)
+	CACHE_DEFAULT, CACHE_NONE, CACHE_WT, CACHE_WB, CACHE_UNSAFE = range(5)
 	CACHE_MAP = {
 			CACHE_DEFAULT: 'default',
-			CACHE_NONE: 'none',
+			CACHE_NONE: 'none', # off
 			CACHE_WT: 'writethrough',
 			CACHE_WB: 'writeback',
+			CACHE_UNSAFE: 'unsafe',
 			}
 
 	def __init__(self):

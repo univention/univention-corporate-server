@@ -339,7 +339,7 @@ class Domain(object):
 			if driver:
 				dev.driver = driver[0].getAttribute('name')
 				dev.driver_type = driver[0].getAttribute('type')
-				dev.driver_cache = driver[0].getAttribute('cache')
+				dev.driver_cache = Disk.map_cache(name=driver[0].getAttribute('cache'))
 			source = disk.getElementsByTagName( 'source' )
 			if source:
 				if dev.type == Disk.TYPE_FILE:

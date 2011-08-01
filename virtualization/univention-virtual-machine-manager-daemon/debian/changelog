@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.315-1) unstable; urgency=low
+
+  * Add missing convert of /domain/devices/disk/driver/@cache to Disk.CACHE_*
+    identifier (Bug #23125)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Aug 2011 10:56:04 +0200
+
 univention-virtual-machine-manager-daemon (0.9.314-1) unstable; urgency=low
 
   * Added a timeout parameter for univention-virtual-machine-manager to
