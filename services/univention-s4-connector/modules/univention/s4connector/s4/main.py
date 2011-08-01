@@ -52,7 +52,7 @@ parser.add_option("--configbasename", dest="configbasename",
 CONFIGBASENAME = "connector"
 if options.configbasename:
 	CONFIGBASENAME = options.configbasename
-STATUSLOGFILE = "/var/log/univention/%s-status.log" % CONFIGBASENAME
+STATUSLOGFILE = "/var/log/univention/%s-s4-status.log" % CONFIGBASENAME
 
 sys.path=['/etc/univention/%s/s4/' % CONFIGBASENAME]+sys.path
 

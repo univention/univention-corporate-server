@@ -261,7 +261,7 @@ class ucs:
 		if bindpw[-1] == '\n':
 			bindpw=bindpw[0:-1]
 
-			self.lo=univention.admin.uldap.access(host=self.baseConfig['ldap/master'], base=self.baseConfig['ldap/base'], binddn='cn=admin,'+self.baseConfig['ldap/base'], bindpw=bindpw, start_tls=2)
+		self.lo=univention.admin.uldap.access(host=self.baseConfig['ldap/master'], base=self.baseConfig['ldap/base'], binddn='cn=admin,'+self.baseConfig['ldap/base'], bindpw=bindpw, start_tls=2)
 
 	def search_ucs( self, filter = '(objectClass=*)', base = '', scope = 'sub', attr = [], unique = 0, required = 0, timeout = -1, sizelimit = 0 ):
 		try:
@@ -287,7 +287,7 @@ class ucs:
 				function_level = 0
 		else:
 			function_level=0
-		ud.init('/var/log/univention/%s.log' % self.CONFIGBASENAME, 1, function_level)
+		ud.init('/var/log/univention/%s-s4.log' % self.CONFIGBASENAME, 1, function_level)
 		if self.baseConfig.has_key('%s/debug/level' % self.CONFIGBASENAME):
 			debug_level=self.baseConfig['%s/debug/level' % self.CONFIGBASENAME]
 		else:
@@ -431,7 +431,7 @@ class ucs:
 		'''
 		exc_info = sys.exc_info()
 		_d=ud.function('ldap._debug_traceback')
-		tracebackFile = '/var/log/univention/%s-tracebacks.log' % self.CONFIGBASENAME
+		tracebackFile = '/var/log/univention/%s-s4-tracebacks.log' % self.CONFIGBASENAME
 
 		ud.debug(ud.LDAP, level , text)
 		ud.debug(ud.LDAP, level , ' --  for details see %s -- ' % tracebackFile)		

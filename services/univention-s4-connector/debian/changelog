@@ -1,3 +1,11 @@
+univention-s4-connector (6.0.8-1) unstable; urgency=low
+
+  * Set correct logfiles (Bug #22580)
+  * Fix lo initialize in s4connector (Bug #22580)
+  * By default set connector/s4/ldap/ssl to no
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Aug 2011 16:52:12 +0200
+
 univention-s4-connector (6.0.7-2) unstable; urgency=low
 
   * depend on univention-samba4, otherwise get_loadparm fails due to
