@@ -1,3 +1,9 @@
+univention-lib (1.0.10-1) unstable; urgency=low
+
+  * shell/umc.sh: tools for creating operation acls LDAP objects; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 01 Aug 2011 13:44:02 +0200
+
 univention-lib (1.0.9-2) unstable; urgency=low
 
   * only build for python2.6; Bug #22439
