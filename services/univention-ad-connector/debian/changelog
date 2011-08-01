@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.5-1) unstable; urgency=low
+
+  * Initialize udm modules (Bug #22439)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Aug 2011 17:20:52 +0200
+
 univention-ad-connector (6.0.4-1) unstable; urgency=low
 
   * Initialze self.lo even if bindpw does not contain a newline
