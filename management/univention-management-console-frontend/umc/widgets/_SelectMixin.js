@@ -13,10 +13,10 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	//		etc., it can be necessary to specify a module specific umcpCommand
 	//		method.
 	umcpCommand: umc.tools.umcpCommand,
-	
+
 	// dynamicValues: String
-	//		UMCP command to query data from. Can be mixed with staticValues 
-	//		property. Command is expected to return an array in the same 
+	//		UMCP command to query data from. Can be mixed with staticValues
+	//		property. Command is expected to return an array in the same
 	//		format as for staticValues.
 	dynamicValues: null,
 
@@ -55,10 +55,10 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	_isAutoValue: false,
 
 	constructor: function() {
-		// The store needs to be available already at construction time, otherwise an 
-		// error will be thrown. We need to define it here, in order to create a new 
+		// The store needs to be available already at construction time, otherwise an
+		// error will be thrown. We need to define it here, in order to create a new
 		// store for each instance.
-		this.store = new dojo.data.ItemFileWriteStore({ 
+		this.store = new dojo.data.ItemFileWriteStore({
 			data: {
 				identifier: 'id',
 				label: 'label',
@@ -105,7 +105,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	_convertItems: function(_items) {
 		// unify the items into the format:
 		//   [{
-		//       id: '...', 
+		//       id: '...',
 		//       label: '...'
 		//   }, ... ]
 		var items = [];
@@ -129,9 +129,6 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 					umc.tools.assert(false, "umc.widgets._SelectMixin: Given items are in incorrect format: " + dojo.toJson(_items));
 				}
 			});
-		}
-		else {
-			umc.tools.assert(false, "umc.widgets._SelectMixin: Given items are in incorrect format: " + dojo.toJson(_items));
 		}
 
 		return items;
@@ -159,7 +156,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 		// save the store in order for the changes to take effect
 		this.store.save();
-		
+
 		// set the user specified value if we don't have dynamic values
 		if (!dojo.isString(this.dynamicValues) || !this.dynamicValues) {
 			this._setCustomValue();
@@ -205,7 +202,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		this._setStaticValues();
 
 		// unify `depends` property to be an array
-		var dependList = dojo.isArray(this.depends) ? this.depends : 
+		var dependList = dojo.isArray(this.depends) ? this.depends :
 			(this.depends && dojo.isString(this.depends)) ? [ this.depends ] : [];
 
 		// check whether all necessary values are specified
