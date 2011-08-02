@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.9-2) unstable; urgency=low
+
+  * depend on recent versions of python-univention-heimdal and
+    python-univention-directory-manager (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Aug 2011 17:23:45 +0200
+
 univention-s4-connector (6.0.9-1) unstable; urgency=low
 
   * Initialize udm modules (Bug #22439)
