@@ -1,3 +1,9 @@
+univention-samba4 (1.0.8-3) experimental; urgency=low
+
+  * use ldaps port in salt_krb5Keys (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Aug 2011 19:24:26 +0200
+
 univention-samba4 (1.0.8-2) experimental; urgency=low
 
   * add copyright to salt_krb5Keys (Bug #22559)
