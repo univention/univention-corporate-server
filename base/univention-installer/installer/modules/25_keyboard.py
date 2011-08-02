@@ -134,6 +134,8 @@ class object(content):
 		self.elements.append(textline(_('Select your keyboard layout:'),self.minY-1,self.minX+2))
 		self.add_elem('MAPS',select(dict,self.minY+1,self.minX+2,WIDTH,HEIGHT, default_position))
 
+		self.move_focus(self.get_elem_id('MAPS'))
+
 		self._keymap = True
 
 	def draw(self):

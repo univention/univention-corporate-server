@@ -127,6 +127,8 @@ class object(content):
 		self.elements.append(textline(_('Select a language:'),self.minY-1,self.minX+2))
 		self.add_elem('LANGUAGE',select(dict, self.minY+1, self.minX+2, WIDTH, HEIGHT, selectedLine))
 
+		self.move_focus(self.get_elem_id('LANGUAGE'))
+
 	def input(self,key):
 
 		if key in [ 10, 32 ] and self.btn_next():

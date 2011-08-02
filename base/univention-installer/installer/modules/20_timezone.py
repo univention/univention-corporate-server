@@ -199,6 +199,8 @@ class object(content):
 		self.elements.append(textline(_('Select a time zone:'),self.minY-1,self.minX+2))
 		self.add_elem('ZONES',select(dict, self.minY+1, self.minX+2, WIDTH, HEIGHT, default_position, longline=1))
 
+		self.move_focus(self.get_elem_id('ZONES'))
+
 		self._timezone = True
 
 	def input(self,key):
