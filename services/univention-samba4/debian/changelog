@@ -1,3 +1,10 @@
+univention-samba4 (1.0.8-1) experimental; urgency=low
+
+  * install salt_krb5Keys script, needed by univention-s4-connector
+    (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Aug 2011 18:39:32 +0200
+
 univention-samba4 (1.0.7-1) experimental; urgency=low
 
   * set ldap/server/port=7389 in setup-s4.sh if ldap/server/name points
