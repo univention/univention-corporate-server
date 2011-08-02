@@ -56,7 +56,9 @@ def crypt(password):
 def ntlm(password):
 	"""return tuple with NT and LanMan hash"""
 
-	return smbpasswd.hash(password)
+	(lm, nt) = smbpasswd.hash(password)
+
+	return (nt, lm)
 
 def krb5_asn1(principal, password, krb5_context=None):
 	list=[]

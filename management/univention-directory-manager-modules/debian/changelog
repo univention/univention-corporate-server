@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.37-1) unstable; urgency=low
+
+  * Fix hash order in function ntlm in password.py
+    (Bug #23017 and Bug #21870)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Aug 2011 12:27:18 +0200
+
 univention-directory-manager-modules (7.0.36-1) unstable; urgency=low
 
   * Use python-smbpasswd instead of univention-smbencrypt for generating
