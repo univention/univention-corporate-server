@@ -1,3 +1,9 @@
+acroread (9.4.2-8) stable; urgency=low
+
+  * made acro-update.sh a bash script (bashism) Bug #22432 
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Aug 2011 09:22:41 +0200
+
 acroread (9.4.2-7) stable; urgency=low
 
   * replaced dependency libldap2 with libldap-2.4-2 Bug #22432
