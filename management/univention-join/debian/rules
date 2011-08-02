@@ -44,6 +44,10 @@ override_dh_install:
 	sed -i "s/@%@copyright_lastyear@%@/${copyrightyear}/g;s/@%@package_version@%@/${version}/g" debian/univention-join/usr/share/univention-join/univention-run-join-scripts
 	mv debian/univention-join/usr/share/univention-join/check_join_status.sh debian/univention-join/usr/share/univention-join/check_join_status
 
+override_dh_fixperms:
+	dh_fixperms
+	chmod 755 debian/univention-join/usr/share/univention-join/univention-run-join-scripts
+
 %:
 	dh $@
 

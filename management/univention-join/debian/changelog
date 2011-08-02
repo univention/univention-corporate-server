@@ -1,3 +1,9 @@
+univention-join (4.0.10-1) unstable; urgency=low
+
+  * Set execute permissions to univention-run-join-scripts (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Aug 2011 11:02:32 +0200
+
 univention-join (4.0.9-1) unstable; urgency=low
 
   * Fix installation of check-join-status (Bug #22431)
