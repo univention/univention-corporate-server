@@ -102,7 +102,8 @@ class object(content):
 				continue
 			
 			counter = counter + 1
-			dict[language_en + " (" + language_orig + ")"] = [langcode, counter]
+			#dict[language_en + " (" + language_orig + ")"] = [langcode, counter]
+			dict[language_en] = [langcode, counter]
 			langConfig[langcode] = {}
 			langConfig[langcode]["fallbacklocale"] = fallbacklocale
 			langConfig[langcode]["countrycode"] = countrycode

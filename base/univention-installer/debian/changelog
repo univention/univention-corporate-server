@@ -1,3 +1,10 @@
+univention-installer (7.0.29-1) unstable; urgency=low
+
+  * show only english language names
+  * renamed old language modules (Bug #22869)
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Aug 2011 17:25:42 +0200
+
 univention-installer (7.0.28-1) unstable; urgency=low
 
   * changed language selection (Bug #22869)
