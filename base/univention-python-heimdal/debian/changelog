@@ -1,13 +1,6 @@
-univention-python-heimdal (4.0.2-3) unstable; urgency=low
-
-  * add asn1_decode_key and salt_raw to module (Bug #20132)
-
- -- Arvid Requate <requate@univention.de>  Thu, 06 Jan 2011 19:16:07 +0100
-
 univention-python-heimdal (4.0.2-2) unstable; urgency=low
 
-  * add keyblock_raw_new to convert binary unicodePwd/ntHash to
-    krb5KeyblockObject (Bug #20132)
+  * merge module API changes from ucs_2.4-samba4 to ucs main (Bug #22580)
 
  -- Arvid Requate <requate@univention.de>  Wed, 01 Dec 2010 19:14:36 +0100
 
