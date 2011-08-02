@@ -65,6 +65,13 @@ umc_operation_create () {
 		--set description="$description" $operations
 }
 
+umc_operation_remove_old () {
+	# example: umc_operation_remove_old "baseconfig-all"
+	operation="$1"; shift
+
+	udm settings/console_operation remove $BIND_ARGS --dn "cn=$operation,cn=operations,cn=console,cn=univention,$ldap_base"
+}
+
 umc_acl_create () {
 	# example: umc_acl_create "udm-all" "UDM" "All UDM operations" "udm/*"
 	name=$1; shift
@@ -83,6 +90,13 @@ umc_acl_create () {
 		--set ldapbase="$ldap_base" $commands
 }
 
+umc_acl_remove_old () {
+	# example: umc_acl_remove_old "baseconfig-all"
+	acl="$1"; shift
+
+	udm policies/console_acl remove $BIND_ARGS --dn "cn=$acl,cn=acls,cn=console,cn=univention,$ldap_base"
+}
+
 umc_policy_append () {
 	# example: umc_policy_append "default-admin" "udm-all" "udm-users"
 	policy="$1"; shift
@@ -94,4 +108,11 @@ umc_policy_append () {
 
 	udm policies/console_access modify $BIND_ARGS --ignore_exists \
 		--dn "cn=$policy,cn=UMC,cn=policies,$ldap_base" $acls
+}
+
+umc_policy_remove_old () {
+	# example: umc_policy_remove_old "default-admin"
+	policy="$1"; shift
+
+	udm policies/console_access remove $BIND_ARGS --dn "cn=$policy,cn=console,cn=policies,$ldap_base"
 }

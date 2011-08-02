@@ -1,3 +1,9 @@
+univention-lib (1.0.11-1) unstable; urgency=low
+
+  * shell/umc.sh: add functions to remove old ACLs, operations and policies; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 02 Aug 2011 10:41:55 +0200
+
 univention-lib (1.0.10-2) unstable; urgency=low
 
   * re-enable build for all python versions
