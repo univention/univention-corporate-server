@@ -33,3 +33,4 @@
 #include <Python.h>
 
 PyObject* asn1_encode_key(PyObject* args);
+PyObject* asn1_decode_key(PyObject *unused, PyObject* args);

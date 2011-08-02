@@ -92,6 +92,56 @@ krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 		return self;
 }
 
+krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
+{
+	krb5_error_code ret;
+	krb5ContextObject *py_context;
+	PyObject *py_enctype;
+	PyObject *py_key;
+	uint8_t *key_buf;
+	size_t key_len;
+	krb5_enctype enctype;
+	int error = 0;
+
+	krb5KeyblockObject *self = (krb5KeyblockObject *) PyObject_NEW(krb5KeyblockObject, &krb5KeyblockType);
+
+	if (!PyArg_ParseTuple(args, "O!OS", &krb5ContextType, &py_context, &py_enctype, &py_key))
+		return NULL;
+
+	if (self == NULL)
+		return NULL;
+
+	self->context = py_context->context;
+
+	if (PyObject_TypeCheck(py_enctype, &krb5EnctypeType)) {
+		krb5EnctypeObject *enctype_obj = (krb5EnctypeObject*)py_enctype;
+		enctype = enctype_obj>enctype;
+	} else if (PyInt_Check(py_enctype)) {
+		enctype = PyInt_AsLong(py_enctype);
+	} else {
+		PyErr_SetString(PyExc_TypeError, "enctype must be of type integer or krb5EnctypeObject");
+		error = 1;
+		goto out;
+	}
+
+	key_buf = (uint8_t *) PyString_AsString(py_key);
+	key_len = PyString_Size(py_key);
+
+	ret = krb5_keyblock_init(py_context->context, enctype, key_buf, key_len, &self->keyblock);
+
+	if (ret) {
+		error = 1;
+		krb5_exception(NULL, ret);
+		goto out;
+	}
+
+ out:
+	if (error)
+		return NULL;
+	else
+		return self;
+}
+
 PyObject *keyblock_keytype(krb5KeyblockObject *self, PyObject *args)
 {
 	return (PyObject*) enctype_from_enctype(self->context, self->keyblock.keytype);

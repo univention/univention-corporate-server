@@ -39,8 +39,6 @@
 #include "error.h"
 
 /*
-"If there is one thing that scares me then it's that ASN1 stuff" -- Andrew Bartlett mutatis mutandis 2011
-
 In case you are looking into some problem here, note that asn1_Key.c and asn1_Salt.c are generated at compile
 time in the heimdal sources by means of asn1_compile from lib/hdb/hdb.asn1.
 Some definitions from the heimdal source upfront:
@@ -135,7 +133,6 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 	}
 }
 
-
 PyObject* asn1_decode_key(PyObject *unused, PyObject* args)
 {
 	uint8_t *key_buf;
@@ -201,3 +198,4 @@ PyObject* asn1_decode_key(PyObject *unused, PyObject* args)
 	else
 		return self;
 }
+

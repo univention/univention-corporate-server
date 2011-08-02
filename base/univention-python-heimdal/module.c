@@ -48,9 +48,12 @@ static struct PyMethodDef module_methods[] = {
 	{"keytab", (PyCFunction)keytab_open, METH_VARARGS, "Open keytab"},
 	{"ccache", (PyCFunction)ccache_open, METH_VARARGS, "Open credential cache"},
 	{"salt", (PyCFunction)salt_new, METH_VARARGS, "Create new salt"},
+	{"salt_raw", (PyCFunction)salt_raw_new, METH_VARARGS, "Create new salt from a string"},
 	{"enctype", (PyCFunction)enctype_new, METH_VARARGS, "Create enctype"},
 	{"keyblock", (PyCFunction)keyblock_new, METH_VARARGS, "Create keyblock"},
+	{"keyblock_raw", (PyCFunction)keyblock_raw_new, METH_VARARGS, "Create a keyblock from an existing blob"},
 	{"asn1_encode_key", (PyCFunction)asn1_encode_key, METH_VARARGS, "ASN1 encode keyblock"},
+	{"asn1_decode_key", (PyCFunction)asn1_decode_key, METH_VARARGS, "ASN1 decode keyblock"},
 	{NULL, NULL, 0, NULL}
 };
 
