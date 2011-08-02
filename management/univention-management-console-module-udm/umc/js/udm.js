@@ -12,6 +12,8 @@ dojo.require("umc.dialog");
 dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.SearchForm");
+dojo.require("umc.widgets.Page");
+dojo.require("umc.widgets.ExpandingTitlePane");
 
 dojo.require("umc.modules._udm.Template");
 dojo.require("umc.modules._udm.NewObjectDialog");
@@ -78,8 +80,6 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// check whether we need to open directly the detail page of a given object
 		if (this.openObject) {
-			console.log('# this.openObject');
-			console.log(this.openObject);
 			this.createDetailPage(this.openObject.objectType, this.openObject.objectDN);
 		}
 	},
@@ -90,10 +90,16 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		//		for the UMD navigation.
 
 		// setup search page
-		this._searchPage = new dijit.layout.BorderContainer({
-			design: 'sidebar'
+		this._searchPage = new umc.widgets.Page({
+			headerText: this.description,
+			helpText: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.'
 		});
 		this.addChild(this._searchPage);
+		var titlePane = new umc.widgets.ExpandingTitlePane({
+			title: this._('Entries'),
+			design: 'sidebar'
+		});
+		this._searchPage.addChild(titlePane);
 
 		//
 		// add data grid
@@ -175,7 +181,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			columns: columns,
 			moduleStore: store
 		});
-		this._searchPage.addChild(this._grid);
+		titlePane.addChild(this._grid);
 
 		//
 		// add search widget
@@ -263,7 +269,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			layout: [ layout ],
 			onSearch: dojo.hitch(this, 'filter')
 		});
-		this._searchPage.addChild(this._searchWidget);
+		titlePane.addChild(this._searchWidget);
 
 		// generate the navigation pane for the navigation module
 		if ('navigation' == this.moduleFlavor) {
@@ -293,7 +299,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			//this._searchPage.region = 'center';
 			//tmpContainer.addChild(this._searchPage);
 			//this._searchPage = tmpContainer;
-			this._searchPage.addChild(treePane);
+			titlePane.addChild(treePane);
 		}
 
 		this._searchPage.startup();

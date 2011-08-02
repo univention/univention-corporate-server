@@ -7,7 +7,7 @@ dojo.require("dijit._Templated");
 
 dojo.declare("umc.widgets.Text", [ dijit._Widget, dijit._Templated ], {
 	// summary:
-	//		Simple widget that displays a given label, e.g., some text to 
+	//		Simple widget that displays a given label, e.g., some text to
 	//		be rendered in a form. Can also render HTML code.
 
 	templateString: '<div dojoAttachPoint="contentNode">${content}</div>',

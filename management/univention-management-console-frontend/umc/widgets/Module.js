@@ -10,20 +10,20 @@ dojo.require("umc.widgets.StandbyMixin");
 dojo.declare("umc.widgets.Module", [ dijit.layout.StackContainer, umc.widgets.StandbyMixin ], {
 	// summary:
 	//		Basis class for all module classes.
-	//		It extends dijit.layout.StackContainer and adds some module specific 
+	//		It extends dijit.layout.StackContainer and adds some module specific
 	//		properties/methods.
 
 	// idProperty: String
-	//		Indicates the property to use as the identity property. 
+	//		Indicates the property to use as the identity property.
 	//		The values of this property should be unique.
 	idProperty: '',
 
 	// moduleFlavor: String
-	//		Specifies the module flavor which may need to be communicated to 
+	//		Specifies the module flavor which may need to be communicated to
 	//		the server via `umc.tool.umcpCommand()`.
 	//		(Is specified automatically.)
 	moduleFlavor: null,
-	
+
 	// moduleID: String
 	//		ID of the module.
 	//		(Is specified automatically.)
@@ -31,7 +31,7 @@ dojo.declare("umc.widgets.Module", [ dijit.layout.StackContainer, umc.widgets.St
 
 	// moduleStore: umc.store.UmcpModuleStore
 	//		A dojo object store interface for query/get/put/remove methods for the UMC
-	//		module. Requests for operations on module items should be executed through 
+	//		module. Requests for operations on module items should be executed through
 	//		this store interface. In this way, changes will be immediatly reflected to
 	//		other parts of the GUI.
 	//		(Is specified automatically.)

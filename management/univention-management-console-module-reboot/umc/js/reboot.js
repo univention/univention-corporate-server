@@ -19,7 +19,8 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.inherited(arguments);
 
         this._page = new umc.widgets.Page({
-            helpText: this._("This module can be used to restart or shut down the system remotely. The optionally given message will be displayed on the console and written to the syslog.")
+            helpText: this._("This module can be used to restart or shut down the system remotely. The optionally given message will be displayed on the console and written to the syslog."),
+            headerText: this._("Reboot/shutdown the system")
         });
         this.addChild(this._page);
 
@@ -52,7 +53,6 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var layout = [['action'], ['message']];
 
 		this._form = new umc.widgets.Form({
-			style: 'width: 100%',
 			widgets: widgets,
 			buttons: buttons,
 			layout: layout,

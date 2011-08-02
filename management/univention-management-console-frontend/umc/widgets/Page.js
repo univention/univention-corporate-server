@@ -2,11 +2,12 @@
 
 dojo.provide("umc.widgets.Page");
 
+dojo.require("dijit.layout.BorderContainer");
 dojo.require("umc.app");
+dojo.require("umc.render");
 dojo.require("umc.widgets.Text");
-dojo.require("umc.widgets.ContainerWidget");
 
-dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
+dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 	// summary:
 	//		Class that abstracts a displayable page for a module.
 	//		Offers the possibility to enter a help text that is shown or not
@@ -18,15 +19,27 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 	//		Text that describes the module, will be displayed at the top of a page.
 	helpText: '',
 
+	// headerText: String
+	//		Text that will be displayed as header title.
+	headerText: '&lt;Title missing&gt;',
+
+	// footer: Object[]?
+	//		Optional array of dicts that describes buttons that shall be added
+	//		to the footer. The default button will be displayed on the right
+	footerButtons: null,
+
 	// title: String
 	//		Title of the page. This option is necessary for tab pages.
 	title: '',
 
-	scrollable: true,
+	gutters: false,
+
+	//style: 'width: 100%; height: 100%;',
 
 	_helpTextPane: null,
 	_helpTextShown: true,
 	_subscriptionHandle: null,
+	_footer: null,
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
@@ -41,9 +54,17 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 	buildRendering: function() {
 		this.inherited(arguments);
 
+		// add the header
+		this.addChild(new umc.widgets.Text({
+			content: '<h1>' + this.headerText + '</h1>',
+			region: 'top',
+			'class': 'umcPageHeader'
+		}));
+
 		// put the help text in a Text widget and then add it to the container
 		this._helpTextPane = new umc.widgets.Text({
 			content: this.helpText || '',
+			region: 'top',
 			'class': 'umcPageHelpText'
 		});
 		this.addChild(this._helpTextPane);
@@ -54,6 +75,34 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 				opacity: 0,
 				display: 'none'
 			});
+		}
+
+		// create the footer container(s)
+		this._footer = new umc.widgets.ContainerWidget({
+			region: 'bottom',
+			'class': 'umcPageFooter'
+		});
+		this.addChild(this._footer);
+		var footerLeft = new umc.widgets.ContainerWidget({
+			style: 'float: left'
+		});
+		this._footer.addChild(footerLeft);
+		var footerRight = new umc.widgets.ContainerWidget({
+			style: 'float: right'
+		});
+		this._footer.addChild(footerRight);
+
+		// render all buttons and add them to the footer
+		if (this.footerButtons && dojo.isArray(this.footerButtons) && this.footerButtons.length) {
+			var buttons = umc.render.buttons(this.footerButtons);
+			dojo.forEach(buttons._order, function(ibutton) {
+				if ('submit' == ibutton.type) {
+					footerRight.addChild(ibutton);
+				}
+				else {
+					footerLeft.addChild(ibutton);
+				}
+			}, this);
 		}
 	},
 
@@ -76,6 +125,14 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 		dojo.unsubscribe(this._subscriptionHandle);
 	},
 
+	addChild: function(child) {
+		// use 'center' as default region
+		if (!child.region) {
+			child.region = 'center';
+		}
+		this.inherited(arguments);
+	},
+
 	showDescription: function() {
 		// if we don't have a help text, ignore call
 		if (!this._helpTextPane || this._helpTextShown) {
@@ -88,12 +145,14 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 			display: 'block'
 		});
 		this._helpTextShown = true;
+		this.layout();
 
 		// fade in the help text
 		dojo.fadeIn({
 			node: this._helpTextPane.domNode,
 			duration: 500
 		}).play();
+
 	},
 
 	hideDescription: function() {
@@ -111,8 +170,10 @@ dojo.declare("umc.widgets.Page", umc.widgets.ContainerWidget, {
 				dojo.style(this._helpTextPane.domNode, {
 					display: 'none'
 				});
+				this.layout();
 			})
 		}).play();
+
 	}
 });
 

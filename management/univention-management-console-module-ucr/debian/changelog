@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (1.0.18-1) unstable; urgency=low
+
+  * adaptations to use umc.widgets.Page (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Aug 2011 11:56:18 +0200
+
 univention-management-console-module-ucr (1.0.17-1) unstable; urgency=low
 
   * add join script to create UMC acls ans operations; Bug #22439

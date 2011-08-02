@@ -174,11 +174,15 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		dojo.forEach(layout, function(ilayout) {
 			// create a new page, i.e., subtab
 			var subTab = new umc.widgets.Page({
-				title: ilayout.label || ilayout.name //TODO: 'name' should not be necessary
+				title: ilayout.label || ilayout.name, //TODO: 'name' should not be necessary
+				headerText: ilayout.description || ilayout.label || ilayout.name,
+				helpText: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren.'
 			});
 
 			// add rendered layout to subtab and register subtab
-			subTab.addChild(umc.render.layout(ilayout.layout, widgets));
+			var subTabWidgets = umc.render.layout(ilayout.layout, widgets);
+			dojo.style(subTabWidgets.domNode, 'overflow', 'auto');
+			subTab.addChild(subTabWidgets);
 			this._tabs.addChild(subTab);
 
 			// update _propertySubTabMap
@@ -203,9 +207,14 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		if (this.ldapName && policies && policies.length) {
 			this._policiesTab = new umc.widgets.Page({
 				title: this._('[Policies]'),
-				Description: this._('List of all object properties that are inherited by policies.')
+				headerText: this._('Properties inherited from policies'),
+				helpText: this._('List of all object properties that are inherited by policies. The values cannot be edited directly. In order to edit a policy, click on the "edit" button to open a particular policy in a new tab.')
 			});
 			this._tabs.addChild(this._policiesTab);
+			var policiesContainer = new umc.widgets.ContainerWidget({
+				scrollable: true
+			});
+			this._policiesTab.addChild(policiesContainer);
 
 			// we need to query for each policy object its properties and its layout
 			// this can be done asynchronously
@@ -298,7 +307,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 					// render the group of properties
 					var widgets = umc.render.widgets(newProperties);
-					this._policiesTab.addChild(new dijit.TitlePane({
+					policiesContainer.addChild(new dijit.TitlePane({
 						title: ipolicy.label,
 						description: ipolicy.description,
 						open: false,
@@ -313,21 +322,24 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 		// setup detail page, needs to be wrapped by a form (for managing the
 		// form entries) and a BorderContainer (for the footer with buttons)
-		var borderLayout = this.adopt(dijit.layout.BorderContainer, {});
+		var borderLayout = this.adopt(dijit.layout.BorderContainer, {
+			gutters: false
+		});
 		borderLayout.addChild(this._tabs);
 
 		// buttons
 		var buttons = umc.render.buttons([{
 			name: 'submit',
-			label: this._('Save changes')
+			label: this._('Save changes'),
+			style: 'float: right'
 		}, {
 			name: 'close',
 			label: 'navigation' == this.moduleFlavor ? this._('Back to navigation') : this._('Back to search'),
-			callback: dojo.hitch(this, 'onClose')
+			callback: dojo.hitch(this, 'onClose'),
+			style: 'float: left'
 		}]);
 		var footer = new umc.widgets.ContainerWidget({
-			region: 'bottom',
-			'class': 'umcNoBorder'
+			region: 'bottom'
 		});
 		dojo.forEach(buttons._order, function(i) {
 			footer.addChild(i);

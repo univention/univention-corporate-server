@@ -2,12 +2,12 @@
 
 dojo.provide("umc.modules.ucr");
 
-dojo.require("dijit.layout.BorderContainer");
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.Module");
+dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.SearchForm");
 dojo.require("umc.widgets.StandbyMixin");
 
@@ -20,7 +20,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	_searchWidget: null,
 	_detailDialog: null,
 	_contextVariable: null,
-	_layoutContainer: null,
+	_page: null,
 
 	moduleID: 'ucr',
 	idProperty: 'key',
@@ -30,8 +30,11 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.inherited(arguments);
 
 		// generate border layout and add it to the module
-		this._layoutContainer = new dijit.layout.BorderContainer({});
-		this.addChild(this._layoutContainer);
+		this._page = new umc.widgets.Page({
+			headerText: this._('Univention Config Registry'),
+			helpText: this._('The Univention Config Registry (UCR) is the central tool that allows to access and edit system-wide properties in a unified manner. These settings can be settings such as a static IP address, DNS forwarders, proxies, hostname etc. When changes are made to UCR variables, depending system configuration files are updated.')
+		});
+		this.addChild(this._page);
 
 		//
 		// add data grid
@@ -96,7 +99,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				filter:"*"
 			}
 		});
-		this._layoutContainer.addChild(this._grid);
+		this._page.addChild(this._grid);
 
 		//
 		// add search widget
@@ -140,9 +143,9 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			layout: [[ 'category', 'key', 'filter' ]],
 			onSearch: dojo.hitch(this._grid, 'filter')
 		});
-		this._layoutContainer.addChild(this._searchWidget);
+		this._page.addChild(this._searchWidget);
 
-		this._layoutContainer.startup();
+		this._page.startup();
 
 		//
 		// create dialog for UCR variable details

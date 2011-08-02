@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.95-1) unstable; urgency=low
+
+  * adaptations for the new layout (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Aug 2011 18:05:02 +0200
+
 univention-management-console-frontend (0.0.94-1) unstable; urgency=low
 
   * added call to startup in MultiInput

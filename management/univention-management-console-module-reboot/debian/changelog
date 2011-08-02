@@ -1,3 +1,9 @@
+univention-management-console-module-reboot (1.0.8-1) unstable; urgency=low
+
+  * Adaptations to use umc.widgets.Page (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Aug 2011 13:06:52 +0200
+
 univention-management-console-module-reboot (1.0.7-1) unstable; urgency=low
 
   * add join script to create UMC acls ans operations; Bug #22461

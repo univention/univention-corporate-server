@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-14 20:17+0200\n"
+"POT-Creation-Date: 2011-08-02 13:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,28 +13,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/reboot.js:30
+#: umc/js/reboot.js:31
 msgid "Action"
 msgstr "Aktion"
 
-#: umc/js/reboot.js:43
+#: umc/js/reboot.js:44
 msgid "Execute"
 msgstr "Ausführen"
 
-#: umc/js/reboot.js:38
+#: umc/js/reboot.js:39
 msgid "Reason for this reboot/shutdown"
 msgstr "Grund für dieses Neustarten/Herunterfahren"
 
-#: umc/js/reboot.js:32
+#: umc/js/reboot.js:33
 msgid "Reboot"
 msgstr "Neustarten"
 
-#: umc/js/reboot.js:33
+#: umc/js/reboot.js:23
+msgid "Reboot/shutdown the system"
+msgstr "System neustarten/herunterfahren"
+
+#: umc/js/reboot.js:34
 msgid "Stop"
 msgstr "Herunterfahren"
 
 #: umc/js/reboot.js:22
-#, fuzzy
 msgid ""
 "This module can be used to restart or shut down the system remotely. The "
 "optionally given message will be displayed on the console and written to the "
@@ -43,9 +46,6 @@ msgstr ""
 "Mit diesem Modul lässt sich das System aus der Ferne Neustarten oder "
 "Herunterfahren. Der optional angegebene Grund wird beim Ausführen des "
 "Befehls auf der Konsole ausgegeben sowie in die Syslog geschrieben."
-
-#~ msgid "Error: Could not reboot/shutdown the system"
-#~ msgstr "Fehler: Konnte das System nicht neustarten/herunterfahren"
 
 #, fuzzy
 #~ msgid "System reboot or shutdown"

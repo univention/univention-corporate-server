@@ -4,60 +4,64 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-top\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-07-21 16:59+0200\n"
+"POT-Creation-Date: 2011-08-02 11:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 
-#: umc/js/top.js:106
+#: umc/js/top.js:118
 msgid "All"
 msgstr ""
 
-#: umc/js/top.js:62
+#: umc/js/top.js:74
 msgid "CPU (%)"
 msgstr ""
 
-#: umc/js/top.js:104
+#: umc/js/top.js:116
 msgid "Category"
 msgstr ""
 
-#: umc/js/top.js:84 umc/js/top.js:109
+#: umc/js/top.js:96 umc/js/top.js:121
 msgid "Command"
 msgstr ""
 
-#: umc/js/top.js:115
+#: umc/js/top.js:127
 msgid "Keyword"
 msgstr ""
 
-#: umc/js/top.js:47
+#: umc/js/top.js:59
 msgid "Kill processes"
 msgstr ""
 
-#: umc/js/top.js:80
+#: umc/js/top.js:92
 msgid "Memory (%)"
 msgstr ""
 
-#: umc/js/top.js:58 umc/js/top.js:108
+#: umc/js/top.js:70 umc/js/top.js:120
 msgid "PID"
 msgstr ""
 
-#: umc/js/top.js:28
+#: umc/js/top.js:47
+msgid "Process overview"
+msgstr ""
+
+#: umc/js/top.js:29 umc/js/top.js:39
 msgid "Processes killed successfully"
 msgstr ""
 
-#: umc/js/top.js:73
+#: umc/js/top.js:85
 msgid "Resident set size (MB)"
 msgstr ""
 
-#: umc/js/top.js:42
+#: umc/js/top.js:54
 msgid "Terminate processes"
 msgstr ""
 
-#: umc/js/top.js:36
+#: umc/js/top.js:48
 msgid ""
 "This module generates an overview of all running processes. The search "
 "function can reduce the number of results. Specifig processes can be "
@@ -65,10 +69,10 @@ msgid ""
 "SIGTERM signal), the termination can be forced (using SIGKILL signal)."
 msgstr ""
 
-#: umc/js/top.js:54 umc/js/top.js:107
+#: umc/js/top.js:66 umc/js/top.js:119
 msgid "User"
 msgstr ""
 
-#: umc/js/top.js:66
+#: umc/js/top.js:78
 msgid "Virtual size (MB)"
 msgstr ""

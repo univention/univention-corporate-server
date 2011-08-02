@@ -6,19 +6,78 @@
 html, body
 {
 	height: 100%;
-    width: 100%; 
+    width: 100%;
 	height: 100%;
-    border: 0; 
+    border: 0;
 	margin: 0;
 	padding: 0;
 	background-color: #FFFFFF;
 	overflow: hidden;
-	background: url('../images/mainBackground.png') repeat-x 0px 0px;
+	/*background: url('../images/mainBackground.png') repeat-x 0px 0px;*/
 }
 
 p {
 	margin-top: 0em;
 	margin-bottom: 0.5em;
+}
+
+.umcTopContainer {
+	height: 100%;
+	max-width: 970px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* the header element and its buttons */
+.umcHeader
+{
+	/*background: url('../images/header.png') no-repeat 0px 0px;*/
+	background-color: #000;
+	padding: 5px !important;
+	height: 25px;
+	text-align: right;
+	color: #FFF;
+}
+
+.umcHeaderButton .dijitButtonText {
+	color: #FFF;
+}
+
+.umcHeaderButton .dijitButtonNode {
+	background: none !important;
+	border: none !important;
+	box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+}
+
+/* the footer element */
+.umcFooter
+{
+	background: url('../images/logo.png') bottom right no-repeat;
+	height: 40px;
+	text-align: right;
+}
+
+/* define style sheets for umc.widgets.Page */
+.umcPageHeader {
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #000;
+	margin-bottom: 10px;
+	padding-bottom: 5px;
+}
+.umcPageFooter {
+	border-top-style: solid;
+	border-top-width: 1px;
+	border-top-color: #000;
+	margin-top: 10px;
+	padding-top: 5px;
+}
+
+/* no border for the top tab container */
+.dijitTabContainerTop-container {
+	border-width: 0px;
 }
 
 /* define properties for floating buttons with margins */
@@ -35,8 +94,8 @@ div.modLaunchButton {
 	display: inline-block;
 
 	/**
-	 * hack for IE, see: 
-	 * http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/ 
+	 * hack for IE, see:
+	 * http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
 	 */
 	zoom:1;
 	*display:inline;
@@ -58,22 +117,6 @@ div.modLaunchButtonClick {
 	background-color: #e8e8e8;
 }
 
-/* the header element with univention logo */
-.umcHeader
-{
-	background: url('../images/header.png') no-repeat 0px 0px;
-	padding: 20px 20px !important;
-	/*color: #d50029;*/
-	/*font-family: tahoma,arial,verdana,sans-serif;*/
-	/*font-size: 11px;*/
-	height: 80px;
-	text-align: right;
-}
-
-.dijitTabPane {
-	overflow: auto;
-}
-
 .umcSubmitButton {
 	font-weight: bold !important;
 }
@@ -90,15 +133,6 @@ div.modLaunchButtonClick {
 /* help text for umc.widgets.Page */
 .umcPageHelpText {
 	margin: 10px 0 10px 0;
-}
-
-/* hack to make the header buttons not look like buttons :) */
-.umcHeaderButton .dijitButtonNode {
-	background: none !important;
-	border: none !important;
-	box-shadow: none !important;
-	-moz-box-shadow: none !important;
-	-webkit-box-shadow: none !important;
 }
 
 /* hack for the drop-down buttons in the grid :) */
@@ -120,8 +154,8 @@ div.modLaunchButtonClick {
 }
 
 /* fix for bug with form submission: http://bugs.dojotoolkit.org/ticket/12331 */
-.dijitOffScreen { 
-	visibility: visible !important; 
+.dijitOffScreen {
+	visibility: visible !important;
 }
 
 /* hack the popup menu for data grids for:
@@ -169,11 +203,11 @@ div.modLaunchButtonClick {
 	text-align: center;
 	color: #000;
 	background: url('../images/toasterHeader.png') repeat-x 0px 0px;
-	border: 1px solid #999; 
+	border: 1px solid #999;
 	border-top: none;
 	background-color: #e8e8e8;
 }
-.dijitToasterContent, 
+.dijitToasterContent,
 .dijitToasterContainer {
 	border-radius: 0px 0px 8px 8px;
 	-moz-border-radius: 0px 0px 8px 8px;

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.81-1) unstable; urgency=low
+
+  * adaptations for the new layout (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Aug 2011 18:06:01 +0200
+
 univention-management-console-module-udm (1.0.80-1) unstable; urgency=low
 
   * fix reading UDM settings from LDAP

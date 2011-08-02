@@ -2,12 +2,12 @@
 
 dojo.provide("umc.modules.top");
 
-dojo.require("dijit.layout.BorderContainer");
 dojo.require("dojox.string.sprintf");
+dojo.require("umc.dialog");
 dojo.require("umc.i18n");
 dojo.require("umc.widgets.Module");
+dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.SearchForm");
-dojo.require("umc.dialog");
 
 dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
@@ -15,7 +15,7 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	_store: null,
 	_searchWidget: null,
 	_contextVariable: null,
-	_layoutContainer: null,
+	_page: null,
 
 	i18nClass: 'umc.modules.top',
 	idProperty: 'pid',
@@ -30,7 +30,7 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}));
 	},
 
-	killProcesses(signal, pids) {
+	killProcesses: function(signal, pids) {
 		var params = {
 			signal: signal,
 			pid: pids
@@ -43,10 +43,11 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		this._layoutContainer = new dijit.layout.BorderContainer({
-			// helpText: this._('This module generates an overview of all running processes. The search function can reduce the number of results. Specifig processes can be selected and terminated. If a process can\'t be normally terminated (using SIGTERM signal), the termination can be forced (using SIGKILL signal).')
+		this._page = new umc.widgets.Page({
+			headerText: this._('Process overview'),
+			helpText: this._('This module generates an overview of all running processes. The search function can reduce the number of results. Specifig processes can be selected and terminated. If a process can\'t be normally terminated (using SIGTERM signal), the termination can be forced (using SIGKILL signal).')
 		});
-		this.addChild(this._layoutContainer);
+		this.addChild(this._page);
 
 		var actions = [{
 			name: 'terminate',
@@ -106,7 +107,7 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
                 filter: '*'
             }
 		});
-		this._layoutContainer.addChild(this._grid);
+		this._page.addChild(this._grid);
 
 		var widgets = [{
 			type: 'ComboBox',
@@ -133,9 +134,8 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			onSearch: dojo.hitch(this._grid, 'filter')
 		});
 
+		this._page.addChild(this._searchWidget);
 
-		this._layoutContainer.addChild(this._searchWidget);
-
-		this._layoutContainer.startup();
+		this._page.startup();
     }
 });

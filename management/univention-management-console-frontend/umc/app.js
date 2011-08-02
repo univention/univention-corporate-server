@@ -15,6 +15,7 @@ dojo.require("umc.dialog");
 dojo.require("umc.widgets.CategoryPane");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.Page");
+dojo.require("umc.widgets.Text");
 dojo.require("umc.i18n");
 
 dojo.mixin(umc.app, new umc.i18n.Mixin({
@@ -26,6 +27,14 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	// username: String
 	//		The username of the authenticated user.
 	username: null,
+
+	// hostname: String
+	//		The hostname on which the UMC is running.
+	hostname: '',
+
+	// domainname: String
+	//		The domainname on which the UMC is running.
+	domainname: '',
 
 	start: function() {
 		// create a background process that checks each second the validity of the session
@@ -56,7 +65,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	},
 
 	login: function() {
-		// summary: 
+		// summary:
 		//		Show the login dialog.
 		this._checkSessionTimer.stop();
 		umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
@@ -71,8 +80,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		this._checkSessionTimer.start();
 		umc.tools.umcpCommand('set', {
 			locale: dojo.locale
-		} ).then( dojo.hitch( this, function( data ) { 
-			this.loadModules(); 
+		} ).then( dojo.hitch( this, function( data ) {
+			this.loadModules();
 		} ) );
 	},
 
@@ -102,7 +111,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			iconClass: umc.tools.getIconClass(module.icon),
 			closable: true,
 			moduleFlavor: module.flavor,
-			moduleID: module.id
+			moduleID: module.id,
+			description: module.description
 			//items: [ new module.BaseClass() ],
 			//layout: 'fit',
 			//closable: true,
@@ -133,7 +143,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		umc.tools.umcpCommand('get/modules/list').then(dojo.hitch(this, function(data) {
 			// get all categories
 			dojo.forEach(dojo.getObject('categories', false, data), dojo.hitch(this, function(icat) {
-				this._categories.push(icat); 
+				this._categories.push(icat);
 			}));
 
 			// hack a specific order
@@ -167,7 +177,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				catch (error) {
 					// log as warning and continue with the next element in the list
 					console.log('WARNING: Loading of module ' + module.id + ' failed. Ignoring it for now!');
-					return true; 
+					return true;
 				}
 
 				// load the module
@@ -196,7 +206,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			// find all modules with the given category
 			modules = [];
 			for (var imod = 0; imod < this._modules.length; ++imod) {
-				// iterate over all categories for the module 
+				// iterate over all categories for the module
 				var categories = this._modules[imod].categories;
 				for (var icat = 0; icat < categories.length; ++icat) {
 					// check whether the category matches the query
@@ -252,16 +262,13 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 
 		// set up fundamental layout parts
 		var topContainer = new dijit.layout.BorderContainer( {
-			style: "height: 100%; width: 100%; margin-left: auto; margin-right: auto;",
-			//height: 100%,
-			//width: 100%,
+			'class': 'umcTopContainer',
 			gutters: false
 		}).placeAt(dojo.body());
 
 		// container for all modules tabs
 		this._tabContainer = new dijit.layout.TabContainer({
-			//style: "height: 100%; width: 100%;",
-			region: "center"
+			region: 'center'
 		});
 		topContainer.addChild(this._tabContainer);
 
@@ -269,14 +276,19 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// NOTE: We add the icon here in the first tab, otherwise the tab heights
 		//	   will not be computed correctly and future tabs will habe display
 		//	   problems.
-		var overviewPage = new umc.widgets.Page({ 
-			//style: "overflow:visible; width: 80%"
+		//     -> This could probably be fixed by calling layout() after adding a new tab!
+		var overviewPage = new umc.widgets.Page({
 			title: this._('Overview'),
+			headerText: this._('Overview'),
 			iconClass: umc.tools.getIconClass('univention'),
 			helpText: this._('Univention Management Console is a modularly designed, web-based application for the administration of objects in your Univention Corporate Server domain as well as individual of Univention Corporate Server systems.')
 		});
+		this._tabContainer.addChild(overviewPage);
 
 		// add a CategoryPane for each category
+		var categories = umc.widgets.ContainerWidget({
+			scrollable: true
+		});
 		dojo.forEach(this.getCategories(), dojo.hitch(this, function(icat) {
 			// ignore empty categories
 			var modules = this.getModules(icat.id);
@@ -295,27 +307,52 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			dojo.connect(categoryPane, 'onOpenModule', dojo.hitch(this, this.openModule));
 
 			// add category pane to overview page
-			overviewPage.addChild(categoryPane);
+			categories.addChild(categoryPane);
 		}));
-		this._tabContainer.addChild(overviewPage);
+		overviewPage.addChild(categories);
 
 		// the header
 		var header = new umc.widgets.ContainerWidget({
-			title: '',
 			'class': 'umcHeader',
 			region: 'top'
 		});
 		topContainer.addChild( header );
 
+		// we need containers aligned to the left and the right
+		var headerLeft = new umc.widgets.ContainerWidget({
+			style: 'float: left'
+		});
+		header.addChild(headerLeft);
+		var headerRight = new umc.widgets.ContainerWidget({
+			style: 'float: right'
+		});
+		header.addChild(headerRight);
+
 		// add some buttons
-		header.addChild(new dijit.form.Button({
+		headerLeft.addChild(new dijit.form.Button({
 			label: this._('Help'),
 			'class': 'umcHeaderButton'
 		}));
-		header.addChild(new dijit.form.Button({
+		headerLeft.addChild(new dijit.form.Button({
 			label: this._('About UMC'),
 			'class': 'umcHeaderButton'
 		}));
+
+		// query domainname and hostname and add this information to the header
+		var hostInfo = new dijit.form.Button({
+			label: '...',
+			'class': 'umcHeaderButton'
+		});
+		headerRight.addChild(hostInfo);
+		umc.tools.umcpCommand('ucr/get', [ 'domainname', 'hostname' ]).
+			then(dojo.hitch(this, function(data) {
+				this.domainname = data.result[0].value;
+				this.hostname = data.result[1].value;
+				hostInfo.set('label', this._('Host: %(host)s.%(domain)s', {
+					domain: this.domainname,
+					host: this.hostname
+				}));
+			}));
 
 		// the user context menu
 		var menu = new dijit.Menu({});
@@ -342,14 +379,14 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				umc.tools.preferences('moduleHelpText', this.checked);
 			}
 		}));
-		header.addChild(new dijit.form.DropDownButton({
+		headerRight.addChild(new dijit.form.DropDownButton({
 			label: this._('User: %s', this.username),
 			'class': 'umcHeaderButton',
 			dropDown: menu
 		}));
 
 		// add logout button
-		header.addChild(new dijit.form.Button({
+		headerRight.addChild(new dijit.form.Button({
 			label: '<img src="images/logout.png">',
 			'class': 'umcHeaderButton',
 			onClick: dojo.hitch(this, function() {
@@ -357,6 +394,13 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				window.location.reload();
 			})
 		}));
+
+		// the footer
+		var footer = new umc.widgets.ContainerWidget({
+			'class': 'umcFooter',
+			region: 'bottom'
+		});
+		topContainer.addChild(footer);
 
 		// put everything together
 		topContainer.startup();
