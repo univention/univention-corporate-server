@@ -1,3 +1,9 @@
+univention-installer (7.0.27-1) unstable; urgency=low
+
+  * Removed TCS from package list (Bug #22878)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Aug 2011 09:03:35 +0200
+
 univention-installer (7.0.26-1) unstable; urgency=low
 
   * More package_list.py adjustments (Bug #22448)

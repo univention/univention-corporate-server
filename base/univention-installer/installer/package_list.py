@@ -185,14 +185,6 @@ PackageList=[
 					'Description': _('X-Window-System Client for Terminal Services'),
 				},
 				{
-					'Name': _('Thin client environment'),
-					'Packages': ['univention-thin-client'],
-					'Edition': [ 'ucs' ],
-					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
-					'Description': _('Thinclient Infrastructure'),
-				},
-				{
 					'Name': _('Print server'),
 					'Packages': ['univention-printserver', 'cups'],
 					'Edition': [ 'ucs' ],
