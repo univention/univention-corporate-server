@@ -21,7 +21,7 @@ Enhances: locales,
  bzip2,
  psmisc,
  lsb-base,
- bash-completion,
+Recommends: bash-completion
 Conflicts: univention-config-registry (<= 7.0.7),
  univention-config (<= 7.0.8),
 Replaces: univention-config-registry (<= 7.0.7),

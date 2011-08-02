@@ -1,3 +1,10 @@
+univention-base-files (1.0.10-2) unstable; urgency=low
+
+  * debian/control: Recommends: bash-completion (Bug #22586)
+  * etc/default/ntpdate: Add missing ucr.get(...)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 02 Aug 2011 14:42:45 +0200
+
 univention-base-files (1.0.10-1) unstable; urgency=low
 
   * Re-synchronize init.d/networking from Debian-Squeeze (Bug #22160)
