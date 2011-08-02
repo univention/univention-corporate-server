@@ -131,11 +131,16 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			}
 			if (iprop.multivalue && 'MultiInput' != iprop.type) {
 				// handle multivalue inputs
-				iprop.subtypes = [{ type: iprop.type }];
+				iprop.subtypes = [{
+					type: iprop.type,
+					dynamicValues: iprop.dynamicValues,
+					dynamicOptions: iprop.dynamicOptions,
+					staticValues: iprop.staticValues
+				}];
 				iprop.type = 'MultiInput';
 			}
 			properties.push(iprop);
-		});
+		}, this);
 
 		// parse the layout configuration... we would like to group all groups of advanced
 		// settings on a special sub tab

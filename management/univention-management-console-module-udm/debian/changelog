@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.79-1) unstable; urgency=low
+
+  * for added dynamic/static values to subtypes for MultiValue widgets
+    (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Aug 2011 14:17:43 +0200
+
 univention-management-console-module-udm (1.0.78-1) unstable; urgency=low
 
   * initialize syntax classes based on ldapDn; Bug #22439
