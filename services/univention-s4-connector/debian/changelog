@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.10-2) unstable; urgency=low
+
+  * check JS_LAST_EXECUTED_VERSION in joinscript (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Aug 2011 19:53:07 +0200
+
 univention-s4-connector (6.0.10-1) unstable; urgency=low
 
   * call salt_krb5keys in join script (Bug #22559)

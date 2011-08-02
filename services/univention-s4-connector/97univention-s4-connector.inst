@@ -36,7 +36,9 @@ joinscript_init
 
 eval "$(univention-config-registry shell ldap/master samba4/ldap/base)"
 
-/usr/share/univention-samba4/scripts/salt_krb5Keys 
+if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
+	/usr/share/univention-samba4/scripts/salt_krb5Keys 
+fi
 
 # create an admin user for synchronisation
 samba-tool newuser ucs-s4sync "$(cat /etc/samba4.secret)" -U Administrator%$(cat /etc/samba4.secret)
