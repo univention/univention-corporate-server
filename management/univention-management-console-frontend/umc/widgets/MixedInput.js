@@ -58,6 +58,15 @@ dojo.declare("umc.widgets.MixedInput", [
 		this.umcpCommand = props.umcpCommand || umc.tools.umcpCommand;
 	},
 
+	postCreate: function() {
+		this.inherited(arguments);
+
+		// invoke the loading of dynamic values in case we do not have any dependencies
+		if (!this.depends || !this.depends.length) {
+			this._loadValues();
+		}
+	},
+
 	_loadValues: function(/*Object?*/ _dependValues) {
 		// unify `depends` property to be an array
 		var dependList = dojo.isArray(this.depends) ? this.depends :
