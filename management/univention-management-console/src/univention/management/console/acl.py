@@ -116,7 +116,7 @@ class ACLs:
 
 				hosts.extend( filter( lambda server: 'name' in server, servers ) )
 
-		return hosts
+		return map( lambda server: server[ 'name' ], hosts )
 
 	def __parse_command( self, command ):
 		if command.find( ':' ) != -1:

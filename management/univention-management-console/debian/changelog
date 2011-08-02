@@ -1,3 +1,11 @@
+univention-management-console (4.0.47-1) unstable; urgency=low
+
+  * ACLs: fixed minor bug in hostname expansion; Bug #22460
+  * dh-umc-module-install: run join script in postinst
+  * catch exceptions in module's init function
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 02 Aug 2011 09:13:18 +0200
+
 univention-management-console (4.0.46-1) unstable; urgency=low
 
   * add join-script; Bug #22439

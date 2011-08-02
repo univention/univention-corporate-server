@@ -135,11 +135,14 @@ def do_package( package, core ):
 		# join script
 		join_script = '%s.inst' % package
 		join_dest = 'debian/%s/usr/lib/univention-install' % package
+		join_exists = False
 		for filename in os.listdir( '.' ):
 			if filename.endswith( join_script ):
+				join_script = filename
 				if not os.path.exists( join_dest ):
 					dh_ucs.doIt( 'install', '-d', join_dest )
 				dh_ucs.doIt( 'install', '-t', join_dest, '-m', '755', filename )
+				join_exists = True
 				break
 
 		if not core:
@@ -154,6 +157,12 @@ def do_package( package, core ):
 					dh_ucs.doIt( 'install', '-t', dest, '-m', '644', os.path.join( dirname, icon ) )
 
 		f_postinst = open( os.path.join( 'debian', package + '.postinst.debhelper' ), 'a' )
+		if join_exists:
+			f_postinst.write( '''
+# run join script on DC master and DC backup
+. /usr/share/univention-lib/base.sh
+call_joinscript %s || true
+''' % join_script )
 		f_postinst.write( 'invoke-rc.d univention-management-console-server reload || true\n' )
 		f_postinst.close()
 

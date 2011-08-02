@@ -189,9 +189,13 @@ class ModuleServer( Server ):
 				# if SET command contains 'acls', commands' and
 				# 'credentials' it is the initialization of the module
 				# process
-				keys = msg.options.keys()
-				if 'acls' in keys and 'commands' in keys and 'credentials' in keys:
-					self.__handler.init()
+				if 'acls' in msg.options and 'commands' in msg.options and 'credentials' in msg.options:
+					try:
+						self.__handler.init()
+					except Exception, e:
+						import traceback
+						resp.status = MODULE_ERR
+						resp.message = _( 'The init function of the module has failed: %s' ) % traceback.format_stack()
 			self.response( resp )
 
 			if not self.__active_requests and self.__timer == None:
