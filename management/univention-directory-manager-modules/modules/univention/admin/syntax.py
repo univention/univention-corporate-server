@@ -1622,12 +1622,15 @@ class moduleSearch(ldapDn):
 
 class groupDn(ldapDn):
 	name='groupDn'
+	udm_module = 'groups/group'
 
 class userDn(ldapDn):
 	name='userDn'
+	udm_module = 'users/user'
 
 class hostDn(ldapDn):
 	name='hostDn'
+	udm_module = 'computers/computer'
 
 class userID(integer):
 	name='userID'

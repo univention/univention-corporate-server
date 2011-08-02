@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.38-1) unstable; urgency=low
+
+  * extend syntax classes based on ldapDn to work without old frontend; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 02 Aug 2011 13:55:44 +0200
+
 univention-directory-manager-modules (7.0.37-1) unstable; urgency=low
 
   * Fix hash order in function ntlm in password.py
