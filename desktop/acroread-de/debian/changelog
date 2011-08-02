@@ -1,3 +1,9 @@
+acroread-de (9.4.2-6) stable; urgency=low
+
+  * replaced dependency libldap2 with libldap-2.4-2 Bug #22432 
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Aug 2011 09:05:12 +0200
+
 acroread-de (9.4.2-5) stable; urgency=low
 
   * fixed path to pdf plugin Bug #22432 
