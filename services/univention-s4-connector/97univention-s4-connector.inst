@@ -36,9 +36,7 @@ joinscript_init
 
 eval "$(univention-config-registry shell ldap/master samba4/ldap/base)"
 
-# be sure a nameserver is running
-pgrep named || named -c /var/lib/samba/private/named.conf
-sleep 5
+/usr/share/univention-samba4/scripts/salt_krb5Keys 
 
 # create an admin user for synchronisation
 samba-tool newuser ucs-s4sync "$(cat /etc/samba4.secret)" -U Administrator%$(cat /etc/samba4.secret)

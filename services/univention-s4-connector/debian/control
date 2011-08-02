@@ -28,7 +28,8 @@ Architecture: all
 Depends: python-univention-connector-s4 (= ${binary:Version}),
  shell-univention-lib (>= 1.0.6),
  samba4-clients,
- univention-samba4
+ univention-samba4,
+ univention-directory-manager-tools
 Description: UCS - Modules for sync UCS and Samba4 LDB directory
  This package contains the modules that implement the
  features of Univention S4 Connector for Samba4.

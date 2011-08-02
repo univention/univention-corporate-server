@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.10-1) unstable; urgency=low
+
+  * call salt_krb5keys in join script (Bug #22559)
+  * remove raw named check from join script
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Aug 2011 18:42:07 +0200
+
 univention-s4-connector (6.0.9-2) unstable; urgency=low
 
   * depend on recent versions of python-univention-heimdal and
