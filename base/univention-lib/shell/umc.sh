@@ -51,6 +51,15 @@ umc_init () {
 		--policy-reference="cn=default-admin,cn=UMC,cn=policies,$ldap_base"
 }
 
+_umc_remove_old () {
+	# removes an object and ignores all errors
+	name=$1; shift
+	module=$1; shift
+	container=$1
+
+	udm $module remove $BIND_ARGS --dn "cn=$name,$container,$ldap_base" 2>/dev/null || true
+}
+
 umc_operation_create () {
 	# example: umc_operation_create "udm" "UDM" "udm/*"
 	name=$1; shift
@@ -67,9 +76,7 @@ umc_operation_create () {
 
 umc_operation_remove_old () {
 	# example: umc_operation_remove_old "baseconfig-all"
-	operation="$1"; shift
-
-	udm settings/console_operation remove $BIND_ARGS --dn "cn=$operation,cn=operations,cn=console,cn=univention,$ldap_base"
+	_umc_remove_old $1 settings/console_operation cn=operations,cn=console,cn=univention
 }
 
 umc_acl_create () {
@@ -92,9 +99,7 @@ umc_acl_create () {
 
 umc_acl_remove_old () {
 	# example: umc_acl_remove_old "baseconfig-all"
-	acl="$1"; shift
-
-	udm policies/console_acl remove $BIND_ARGS --dn "cn=$acl,cn=acls,cn=console,cn=univention,$ldap_base"
+	_umc_remove_old $1 settings/console_acl cn=acls,cn=console,cn=univention
 }
 
 umc_policy_append () {
@@ -112,7 +117,5 @@ umc_policy_append () {
 
 umc_policy_remove_old () {
 	# example: umc_policy_remove_old "default-admin"
-	policy="$1"; shift
-
-	udm policies/console_access remove $BIND_ARGS --dn "cn=$policy,cn=console,cn=policies,$ldap_base"
+	_umc_remove_old $1 policies/console_access cn=console,cn=policies
 }

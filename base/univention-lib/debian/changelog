@@ -1,3 +1,10 @@
+univention-lib (1.0.12-1) unstable; urgency=low
+
+  * shell/umc.sh: add helper function to remove old UMC LDAP objects for
+    acls, operations and policies; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 02 Aug 2011 14:10:54 +0200
+
 univention-lib (1.0.11-1) unstable; urgency=low
 
   * shell/umc.sh: add functions to remove old ACLs, operations and policies; Bug #22439
