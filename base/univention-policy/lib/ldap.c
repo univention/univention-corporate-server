@@ -178,7 +178,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 			return 1;
 	}
 	if (lp->port == 0 && lp->uri == NULL) {
-		lp->port = 389;
+		lp->port = 7389;
 	}
 	if (lp->base == NULL) {
 		lp->base = univention_config_get_string("ldap/base");

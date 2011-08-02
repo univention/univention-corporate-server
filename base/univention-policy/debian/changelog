@@ -1,3 +1,9 @@
+univention-policy (5.0.2-1) unstable; urgency=low
+
+  * By default use port 7389 (Bug #20026)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Aug 2011 08:05:58 +0200
+
 univention-policy (5.0.1-1) unstable; urgency=low
 
   * Fix memory leaks and NULL pointer exceptions (Bug #22553)
