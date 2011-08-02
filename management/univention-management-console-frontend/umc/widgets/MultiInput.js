@@ -225,6 +225,7 @@ dojo.declare("umc.widgets.MultiInput", [
 				content: button,
 				label: irow === 0 && hasSubTypeLabels ? '&nbsp;' : '' // only keep the label for the first row
 			}));
+			rowContainer.startup();
 
 			// add row
 			this.addChild(rowContainer);

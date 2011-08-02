@@ -1,3 +1,9 @@
+univention-management-console-frontend (0.0.94-1) unstable; urgency=low
+
+  * added call to startup in MultiInput (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Aug 2011 14:58:57 +0200
+
 univention-management-console-frontend (0.0.93-1) unstable; urgency=low
 
   * removed necessity of specifying 'depends' property for MixedInput
