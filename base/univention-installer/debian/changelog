@@ -1,3 +1,11 @@
+univention-installer (7.0.31-1) unstable; urgency=low
+
+  * Added a script which writes the Administrator password to Samba 4
+    (Bug #22580)
+  * More package_list.py adjustments (Bug #22448)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Aug 2011 20:00:13 +0200
+
 univention-installer (7.0.30-1) unstable; urgency=low
 
   * set focus on select box in language dialogs (Bug #22869)
