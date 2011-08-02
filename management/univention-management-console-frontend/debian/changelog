@@ -1,3 +1,10 @@
+univention-management-console-frontend (0.0.93-1) unstable; urgency=low
+
+  * removed necessity of specifying 'depends' property for MixedInput
+    (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Aug 2011 14:19:56 +0200
+
 univention-management-console-frontend (0.0.92-1) unstable; urgency=low
 
   * added missing files to repository (Bug #22461)

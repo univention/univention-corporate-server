@@ -9,11 +9,11 @@ dojo.require("umc.render");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
-dojo.declare("umc.widgets.MultiInput", [ 
-	umc.widgets.ContainerWidget, 
-	umc.widgets._FormWidgetMixin, 
+dojo.declare("umc.widgets.MultiInput", [
+	umc.widgets.ContainerWidget,
+	umc.widgets._FormWidgetMixin,
 	umc.widgets._WidgetsInWidgetsMixin,
-	umc.i18n.Mixin 
+	umc.i18n.Mixin
 ], {
 	// summary:
 	//		Simple widget that displays a widget/HTML code with a label above.
@@ -46,7 +46,7 @@ dojo.declare("umc.widgets.MultiInput", [
 		this.inherited(arguments);
 
 		// check the property 'subtypes'
-		umc.tools.assert(dojo.isArray(this.subtypes), 
+		umc.tools.assert(dojo.isArray(this.subtypes),
 				'umc.widgets.ContainerWidget: The property subtypes needs to be a string or an array of strings: ' + this.subtypes);
 
 		// initiate other properties
@@ -99,7 +99,7 @@ dojo.declare("umc.widgets.MultiInput", [
 			}
 		}, this);
 	},
-	
+
 	_setValueAttr: function(vals) {
 		// remove all empty elements at the end
 		while (vals.length && !vals[vals.length - 1]) {
@@ -246,7 +246,7 @@ dojo.declare("umc.widgets.MultiInput", [
 
 		// remove the 'new' button
 		this._removeNewButton();
-		
+
 		for (var irow = this._nRenderedElements - 1; irow >= this._nRenderedElements - n; --irow) {
 			// destroy the row container
 			this.orphan(this._rowContainers[irow], true);

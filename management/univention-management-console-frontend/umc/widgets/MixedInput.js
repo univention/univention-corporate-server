@@ -7,8 +7,8 @@ dojo.require("umc.tools");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
-dojo.declare("umc.widgets.MixedInput", [ 
-	dijit.layout.ContentPane, 
+dojo.declare("umc.widgets.MixedInput", [
+	dijit.layout.ContentPane,
 	umc.widgets._FormWidgetMixin,
 	umc.widgets._WidgetsInWidgetsMixin
 ], {
@@ -54,13 +54,13 @@ dojo.declare("umc.widgets.MixedInput", [
 		this.dynamicValues = props.dynamicValues;
 		umc.tools.assert(this.dynamicValues && dojo.isString(this.dynamicValues), "For MixedInput, the property 'dynamicValues' needs to be specified.");
 		this.depends = props.depends;
-		umc.tools.assert(this.depends, "For MixedInput, the property 'depends' needs to be specified.");
+		//umc.tools.assert(this.depends, "For MixedInput, the property 'depends' needs to be specified.");
 		this.umcpCommand = props.umcpCommand || umc.tools.umcpCommand;
 	},
 
 	_loadValues: function(/*Object?*/ _dependValues) {
 		// unify `depends` property to be an array
-		var dependList = dojo.isArray(this.depends) ? this.depends : 
+		var dependList = dojo.isArray(this.depends) ? this.depends :
 			(this.depends && dojo.isString(this.depends)) ? [ this.depends ] : [];
 
 		// check whether all necessary values are specified
@@ -127,7 +127,7 @@ dojo.declare("umc.widgets.MixedInput", [
 			}
 			this._widget = this.adopt(WidgetClass, this._userProperties);
 			this.set('content', this._widget);
-			
+
 			// hook to the onChange event
 			this.connect(this._widget, 'onChange', 'onChange');
 		}
