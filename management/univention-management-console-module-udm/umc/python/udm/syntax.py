@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import inspect
+
 import univention.admin.syntax as udm_syntax
 
 from ...log import MODULE
@@ -38,14 +40,18 @@ from ...log import MODULE
 class Widget( object ):
 	'''Describes a widget for the new web frontend'''
 
-	def __init__( self, name, syntax_classes, default_value ):
+	def __init__( self, name, syntax_classes, default_value, subclasses = True ):
 		self._name = name
 		self._syntax_classes = syntax_classes
 		self._default_value = default_value
+		self._subclasses = subclasses
 
 	def __contains__( self, syntax ):
 		'''Checks if the syntax is represented by this widget'''
-		return isinstance( syntax, self._syntax_classes ) or type( syntax ) in ( type, ) and issubclass( syntax, self._syntax_classes )
+		if self._subclasses:
+			return isinstance( syntax, self._syntax_classes ) or type( syntax ) in ( type, ) and issubclass( syntax, self._syntax_classes )
+		else:
+			return inspect.isclass( syntax ) and syntax in self._syntax_classes or type( syntax ) in self._syntax_classes
 
 	@property
 	def name( self ):
@@ -59,7 +65,9 @@ __widgets = (
 	Widget( 'CheckBox', ( udm_syntax.OkOrNot, udm_syntax.TrueFalseUp, udm_syntax.boolean ), False ),
 	Widget( 'PasswordInputBox', ( udm_syntax.passwd, udm_syntax.userPasswd ), '' ),
 	Widget( 'DateBox', udm_syntax.iso8601Date, '1970-01-01' ),
-	Widget( 'ComboBox', ( udm_syntax.select, udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '' ),
+	Widget( 'ComboBox', udm_syntax.select, [] ),
+	Widget( 'TextBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', subclasses = False ),
+	Widget( 'ComboBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
 	Widget( 'MultiInput', udm_syntax.complex, None ),
 	)
@@ -68,7 +76,11 @@ def choices( syntax ):
 	"""Returns the choices attribute of the property's syntax as a list
 	of dictionaries with id and label keys. If the attribute is not
 	available an empty list is returned."""
-	return map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syntax, 'choices', [] ) )
+	if type( syntax ) in ( type, ) and issubclass( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
+		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__name__ } }
+	if isinstance( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
+		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__ } }
+	return { 'staticValues' : map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syntax, 'choices', [] ) ) }
 
 def subsyntaxes( syntax ):
 	"""Returns a list of dictionaries describing the the sub types of a
@@ -91,7 +103,7 @@ def widget( syntax ):
 			subtypes = subsyntaxes( syntax )
 			if values:
 				MODULE.info( "Syntax %s has the following choices: %s" % ( syntax.name, values ) )
-				descr[ 'staticValues' ] = values
+				descr.update( values )
 			if subtypes:
 				MODULE.info( "Syntax %s has the following sub-types: %s" % ( syntax.name, subtypes ) )
 				descr[ 'subtypes' ] = subtypes

@@ -92,6 +92,9 @@
 	</command>
 	<command name="udm/validate" function="validate">
 	</command>
+	<command name="udm/syntax/choices" function="syntax_choices">
+	  <attribute name="syntax" syntax="String" required="True"/>
+	</command>
 	<command name="udm/nav/container/query" function="nav_container_query">
 	</command>
 	<command name="udm/nav/object/query" function="nav_object_query">

@@ -400,7 +400,9 @@ class UDM_Settings( object ):
 		"""Reads the policies for the current user"""
 		lo, po = get_ldap_connection()
 		self.user_dn = lo.searchDn( 'uid=%s' % username, unique = True )
-		self.policies = lo.getPolicies( self.user_dn )
+		if self.user_dn:
+			self.user_dn = self.user_dn[ 0 ]
+			self.policies = lo.getPolicies( self.user_dn )
 
 		directories = udm_modules.lookup( 'settings/directory', None, lo, scope = 'sub' )
 		if not directories:
@@ -487,6 +489,35 @@ def list_objects( container ):
 
 	return objects
 
+def read_syntax_choices( syntax_name ):
+	if syntax_name not in udm_syntax.__dict__:
+		return None
+
+	syn = udm_syntax.__dict__[ syntax_name ]
+
+	if hasattr( syn, 'udm_module' ):
+		MODULE.info( 'Found syntax class %s with udm_module attribute (= %s)' % ( syntax_name, syn.udm_module ) )
+		module = UDM_Module( syn.udm_module )
+		if module is None:
+			syn.choices = ()
+			return
+		MODULE.info( 'Found syntax %s with udm_module property' % syntax_name )
+		syn.choices = map( lambda obj: ( obj.dn, obj[ module.identifies ] ), module.search() )
+		MODULE.info( 'Set choices to %s' % syn.choices )
+	elif issubclass( syn, udm_syntax.ldapDn ) and hasattr( syn, 'searchFilter' ):
+		lo, po = get_ldap_connection()
+		try:
+			result = lo.searchDn( filter = syn.searchFilter )
+		except udm_errors.base, e:
+			MODULE.error( 'Failed to initialize syntax class %s' % syntax_name )
+			return
+		syn.choices = []
+		for dn in result:
+			dn_list = lo.explodeDn( dn )
+			syn.choices.append( ( dn, dn_list[ 0 ].split( '=', 1 )[ 1 ] ) )
+
+	return getattr( syn, 'choices', [] )
+
 def init_syntax():
 	"""Initialize all syntax classes
 
@@ -498,23 +529,4 @@ def init_syntax():
 	for name, syn in udm_syntax.__dict__.items():
 		if type( syn ) is not type:
 			continue
-		if hasattr( syn, 'udm_module' ):
-			MODULE.info( 'Found syntax class %s with udm_module attribute (= %s)' % ( name, syn.udm_module ) )
-			module = UDM_Module( syn.udm_module )
-			if module is None:
-				syn.choices = ()
-				continue
-			MODULE.info( 'Found syntax %s with udm_module property' % name )
-			syn.choices = map( lambda obj: ( obj.dn, obj[ module.identifies ] ), module.search() )
-			MODULE.info( 'Set choices to %s' % syn.choices )
-		elif issubclass( syn, udm_syntax.ldapDn ) and hasattr( syn, 'searchFilter' ):
-			lo, po = get_ldap_connection()
-			try:
-				result = lo.searchDn( filter = syn.searchFilter )
-			except udm_errors.base, e:
-				MODULE.error( 'Failed to initialize syntax class %s' % name )
-				continue
-			syn.choices = []
-			for dn in result:
-				dn_list = lo.explodeDn( dn )
-				syn.choices.append( ( dn, dn_list[ 0 ].split( '=', 1 )[ 1 ] ) )
+		read_syntax_choices( name )

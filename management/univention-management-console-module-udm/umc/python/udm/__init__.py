@@ -41,11 +41,11 @@ from univention.management.console.log import MODULE
 import univention.admin.modules as udm_modules
 import univention.admin.uexceptions as udm_errors
 
-from .ldap import UDM_Error, UDM_Module, UDM_Settings, ldap_dn2path, get_module, init_syntax, list_objects
+from .ldap import UDM_Error, UDM_Module, UDM_Settings, ldap_dn2path, get_module, read_syntax_choices, list_objects
 
 _ = Translation( 'univention-management-console-modules-udm' ).translate
 
-init_syntax()
+# init_syntax()
 
 class Instance( Base ):
 	def __init__( self ):
@@ -55,7 +55,8 @@ class Instance( Base ):
 	def init( self ):
 		'''Initialize the module. Invoked when ACLs, commands and
 		credentials are available'''
-		self.settings = UDM_Settings( self._username )
+		if self._username is not None:
+			self.settings = UDM_Settings( self._username )
 
 	def _get_module( self, request, object_type = None ):
 		"""Tries to determine to UDM module to use. If no specific
@@ -241,7 +242,10 @@ class Instance( Base ):
 		"""
 		module = self._get_module( request )
 
-		self.finished( request.id, module.containers + self.settings.containers( request.flavor ) )
+		if self.settings is not None:
+			self.finished( request.id, module.containers + self.settings.containers( request.flavor ) )
+		else:
+			self.finished( request.id, module.containers )
 
 	def superordinates( self, request ):
 		"""Returns the list of superordinate containers for the given
@@ -375,6 +379,16 @@ class Instance( Base ):
 					result.append( { 'property' : property_name, 'valid' : False, 'details' : str( e ) } )
 
 		self.finished( request.id, result )
+
+	def syntax_choices( self, request ):
+		"""Dynamically determine valid values for a given syntax class
+
+		requests.options = {}
+		  'syntax' -- The UDM syntax class
+
+		return: [ { 'id' : <name>, 'label' : <text }, ... ]
+		"""
+		self.finished( request.id, map( lambda item: { 'id' : item[ 0 ], 'label' : item[ 1 ] }, read_syntax_choices( request.options[ 'syntax' ] ) ) )
 
 	def nav_container_query( self, request ):
 		"""Returns a list of LDAP containers located under the given

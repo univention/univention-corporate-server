@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.80-1) unstable; urgency=low
+
+  * fix reading UDM settings from LDAP
+  * udm/syntax/choices: dynamically loading choices for syntax classes based on ldapDn; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 02 Aug 2011 15:49:50 +0200
+
 univention-management-console-module-udm (1.0.79-1) unstable; urgency=low
 
   * for added dynamic/static values to subtypes for MultiValue widgets
