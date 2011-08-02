@@ -1,3 +1,12 @@
+univention-heimdal (5.0.3-3) unstable; urgency=low
+
+  * kerberos/allow/weak/crypto=yes seems to be the default in samba4
+    and the calculate_supplementalCredentials in univention-s4-connector
+    fails in case neither des-cbc-md5 nor des-cbc-crc are available from
+    from the UCS/LDAP user account (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Aug 2011 15:20:24 +0200
+
 univention-heimdal (5.0.3-2) unstable; urgency=low
 
   * register kerberos/allow/weak/crypto also in univention-heimdal-member
