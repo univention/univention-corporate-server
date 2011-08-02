@@ -69,7 +69,7 @@ touch /etc/ldap/rootpw.conf
 eval "$(univention-config-registry shell)"
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	univention-config-registry set lapd/translogfile?"/var/lib/univention-ldap/listener/listener"
+	univention-config-registry set ldap/translogfile?"/var/lib/univention-ldap/listener/listener"
 	univention-config-registry set ldap/master/port?"7389"
 fi
 

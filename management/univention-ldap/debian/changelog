@@ -1,3 +1,9 @@
+univention-ldap (8.0.19-1) unstable; urgency=low
+
+  * Fixed typo while setting ldap/translogfile (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Aug 2011 16:21:50 +0200
+
 univention-ldap (8.0.18-1) unstable; urgency=low
 
   * register ldap/acl/read/anonymous and ldap/acl/read/ips with
