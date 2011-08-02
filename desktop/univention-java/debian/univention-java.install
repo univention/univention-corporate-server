@@ -1,0 +1,3 @@
+files/usr/share/univention-java/*.class usr/share/univention-java
+files/usr/share/univention-java/*.java usr/share/univention-java
+files/usr/bin/univention-java-baseconfigdump usr/bin
