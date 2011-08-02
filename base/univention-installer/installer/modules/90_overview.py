@@ -138,6 +138,9 @@ class object(content):
 	def modheader(self):
 		return _('Overview')
 
+	def profileheader(self):
+		return 'Overview'
+
 	def result(self):
 		result={}
 		return result

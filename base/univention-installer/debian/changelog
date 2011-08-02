@@ -1,3 +1,9 @@
+univention-installer (7.0.28-1) unstable; urgency=low
+
+  * changed language selection (Bug #22869)
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Aug 2011 16:17:06 +0200
+
 univention-installer (7.0.27-1) unstable; urgency=low
 
   * Removed TCS from package list (Bug #22878)

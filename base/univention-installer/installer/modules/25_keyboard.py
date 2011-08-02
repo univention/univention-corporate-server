@@ -41,6 +41,9 @@ import string
 from objects import *
 from local import _
 
+HEIGHT = 14
+WIDTH = 38
+
 class object(content):
 	def checkname(self):
 		return ['keymap']
@@ -56,61 +59,117 @@ class object(content):
 			return False
 
 	def run_profiled(self):
+
 		if self.all_results.has_key('country'):
-			self.profile_kmap=self.all_results['country']
+			map = self.all_results['country']
 		else:
-			self.profile_kmap=self.all_results['keymap']
-		self.sub = self.active(self,_('Loading Keyset'),_('Please wait...'))
-		self.sub.draw()
+			map = self.all_results['keymap']
+
+		self.loadkeys(map)
 
 		if self.all_results.has_key('country'):
 			return { 'keymap': self.all_results['country']}
 		elif self.all_results.has_key('keymap'):
 			return { 'keymap': self.all_results['keymap']}
 
-	def layout(self):
-		#Headline
-		self.elements.append(textline(_('Select your keyboard layout:'),self.minY-1,self.minX+2)) #2
+	def get_keymaps(self, all=False):
 
+		maps = {}
+
+		if all:
+			kfile = "all-kmaps"
+		else:
+			kfile = "default-kmaps"
+
+		# get kmaps for language countries
 		try:
-			file=open('modules/keymap')
+			file = open("locale/" + kfile)
 		except:
-			file=open('/lib/univention-installer/modules/keymap')
+			file = open("/lib/univention-installer/locale/" + kfile)
+		for line in file:
+			if line.startswith("#"): continue
+			line = line.strip("\n")
+			parts = line.split(":")
+			if len(parts) > 1:
+				parts[0] = parts[0].replace("Standard ", "")
+				parts[0] = parts[0].replace(" Standard ", "")
+				parts[0] = parts[0].replace("Standard", "")
+				maps[parts[0]] = parts[1]
+		
+		return maps
 
-		dict={}
-		keymap=[]
-		for line in file.readlines():
-			keymap.append(line[line.find(' '):])
-		keymap.sort()
+	def create_kmap_list(self, language, showAll=False):
+		
+		if showAll:
+			maps = self.get_keymaps(all=True)
+		else:
+			maps = self.get_keymaps()
+
+		dict = {}
+		mapCounter = 0
+		default_position = 0
+		for map in sorted(maps):
+			mapFile = maps[map]
+			dict[map] = [mapFile, mapCounter]
+			if map[0:4] == language[0:4]:
+				default_position = mapCounter
+			if language == mapFile:
+				default_position = mapCounter
+			if self.cmdline.get("COUNTRY_FROM_TIMEZONE", "").lower() == mapFile:
+				default_position = mapCounter
+			mapCounter = mapCounter + 1
+
+		return dict, default_position, showAll
+		
+	def layout(self):
 
 		if self.all_results.has_key('keymap'):
-			default_value=self.all_results['keymap']
+			default_value = self.all_results['keymap']
 		else:
-			default_value='de-latin1'
-			lang = ""
-			if os.environ.has_key('LANGUAGE'):
-				lang=os.environ['LANGUAGE']
-			if lang == "en":
-				default_value='us' #"us" is listed after "uk"
-			elif lang == "de":
-				default_value='de-latin1'
+			default_value = self.cmdline.get("DEFAULT_LANGUAGE_EN", "German")
 
-		default_line=''
-		for line in range(len(keymap)):
-			entry = keymap[line].strip()
-			dict[entry]=[entry,line]
-			if entry.split(':')[1] == default_value:
-				default_line=line
+		dict, default_position, showAll = self.create_kmap_list(default_value)
 
-		#Marking qwertz:de-latin1 as active (Element 5)
-		self.elements.append(select(dict,self.minY,self.minX+2,38,18, default_line)) #3
+		self.add_elem('CBX', checkbox({_('Show all available keyboard layouts'):' '},self.minY+2+HEIGHT,self.minX+2,WIDTH, 1, []))
+		self.elements.append(textline(_('Select your keyboard layout:'),self.minY-1,self.minX+2))
+		self.add_elem('MAPS',select(dict,self.minY+1,self.minX+2,WIDTH,HEIGHT, default_position))
 
+		self._keymap = True
 
+	def draw(self):
+
+		if hasattr(self, '_keymap'):
+			maps = self.get_elem('MAPS')
+			cbx = self.get_elem('CBX')
+			if maps:
+				for e in self.elements:
+					if e == maps:
+						del self.elements[self.elements.index(e)]
+	
+			# chebox selected -> all zones
+			if " " in cbx.result():
+				all = True
+			# checkbox unselected -> short list
+			else:
+				all = False
+
+			if self.all_results.has_key('keymap'):
+				default_value = self.all_results['keymap']
+			else:
+				default_value = self.cmdline.get("DEFAULT_LANGUAGE_EN", "German")
+			dict, default_position, showAll = self.create_kmap_list(default_value, all)
+			self.add_elem('MAPS',select(dict,self.minY+1,self.minX+2,WIDTH,HEIGHT, default_position))
+
+		content.draw(self)
+			
 	def input(self,key):
 		if key in [ 10, 32 ] and self.btn_next():
 			return 'next'
 		elif key in [ 10, 32 ] and self.btn_back():
 			return 'prev'
+		elif key in [ 10, 32 ] and self.get_elem('CBX').active:
+			self.elements[self.current].key_event(key)
+			self.draw()
 		else:
 			return self.elements[self.current].key_event(key)
 
@@ -123,41 +182,31 @@ class object(content):
 	def modheader(self):
 		return _('Keyboard')
 
+	def profileheader(self):
+		return 'Keyboard'
+
+	def loadkeys(self, map):
+
+		if ":" in map:
+			map = map.split(":")[1]
+
+		mapFile = "/usr/keymaps/%s.kmap" % map
+		
+		if os.path.exists(mapFile):
+			self.debug('binary-keyset: %s' % mapFile)
+			os.system('/bin/loadkeys < %s > /dev/null 2>&1'% mapFile)
+		else:
+			self.debug('binary-keyset: %s not found' % mapFile)
+
+		# ???
+		if os.path.exists('/lib/univention-installer-startup.d/S88keyboard'):
+			os.system('/lib/univention-installer-startup.d/S88keyboard > /dev/null 2>&1')
+
+
+
 	def result(self):
-		result={}
-		result['keymap']='%s' % string.split(self.elements[3].result()[0], ':')[1]
-		self.sub = self.active(self,_('Loading Keyset'),_('Please wait...'))
-		self.sub.draw()
-
+		result = {}
+		map = self.get_elem('MAPS').result()[0]
+		self.loadkeys(map)
+		result['keymap'] = map
 		return result
-
-	class active(act_win):
-
-		def loadkeys(self):
-			#Trying to load the choosen keyset
-			if hasattr(self.parent, 'profile_kmap'):
-				if self.parent.profile_kmap.find(':') > -1:
-					binkeyset='/usr/keymaps/%s.kmap'%string.split(self.parent.profile_kmap, ':')[1]
-				else:
-					binkeyset='/usr/keymaps/%s.kmap'%self.parent.profile_kmap
-			else:
-				binkeyset='/usr/keymaps/%s.kmap'%string.split(self.parent.elements[3].result()[0], ':')[1]
-			self.parent.debug('binary-keyset: %s'%binkeyset)
-
-			if os.path.exists(binkeyset):
-				#loadkeys will return 0 if it was successful
-				try:
-					res=os.system('/bin/loadkeys < %s > /dev/null 2>&1'% binkeyset)
-				except:
-					res=1
-
-				if os.path.exists('/lib/univention-installer-startup.d/S88keyboard'):
-					os.system('/lib/univention-installer-startup.d/S88keyboard > /dev/null 2>&1')
-
-				return res
-			else:
-				# on PPC we have no keymaps
-				return 0
-
-		def function(self):
-			self.loadkeys()

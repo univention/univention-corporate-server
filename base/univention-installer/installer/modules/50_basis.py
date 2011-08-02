@@ -443,6 +443,9 @@ class object(content):
 	def modheader(self):
 		return _('Settings')
 
+	def profileheader(self):
+		return 'Settings'
+
 	def result(self):
 		result={}
 		if self.oxae:

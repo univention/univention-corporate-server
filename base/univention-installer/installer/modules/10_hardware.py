@@ -251,6 +251,9 @@ class object(content):
 	def modheader(self):
 		return _('Source device')
 
+	def profileheader(self):
+		return 'Source device'
+
 	def result(self):
 		self.debug('==> result')
 		result={}

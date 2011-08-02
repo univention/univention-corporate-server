@@ -37,7 +37,7 @@
 #
 
 import objects
-import time, os, sre, re, curses, string
+import time, os, re, curses, string
 from objects import *
 from local import _
 
@@ -338,6 +338,9 @@ class object(content):
 
 	def modheader(self):
 		return _('Profile')
+
+	def profileheader(self):
+		return 'Profile'
 
 	def result(self):
 		result={}

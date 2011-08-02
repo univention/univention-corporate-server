@@ -92,6 +92,9 @@ class object(content):
 	def modheader(self):
 		return _('Partitioning')
 
+	def profileheader(self):
+		return 'Partitioning'
+
 	def result(self):
 		result={}
 		return result

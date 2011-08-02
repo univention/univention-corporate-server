@@ -292,7 +292,7 @@ class password(input):
 		self.invert.refresh(0,0,self.pos_y,self.pos_x+position,self.pos_y,self.pos_x+position)
 
 class select:
-	def __init__(self, dict, pos_y, pos_x, width, visible, status=0, line=1):
+	def __init__(self, dict, pos_y, pos_x, width, visible, status=0, line=1, longline=0):
 		self.width = width
 		self.visible=[0,visible]
 		self.pos_x=pos_x+1
@@ -301,6 +301,7 @@ class select:
 		self.dict={}
 		self.list=[]
 		self.disabled = 0
+		self.longline = longline
 		list=[]
 
 		if type(dict) is type(self.dict):
@@ -325,8 +326,13 @@ class select:
 				self.leftline = vLine(pos_y,pos_x,visible)
 		else:
 			if self.line:
-				self.rightline = vLine(self.pos_y,pos_x+width,len(list))
-				self.leftline = vLine(pos_y,pos_x,len(list))
+				if self.longline:
+					self.rightline = vLine(self.pos_y,pos_x+width, visible)
+					self.leftline = vLine(pos_y,pos_x, visible)
+				else:
+					self.rightline = vLine(self.pos_y,pos_x+width,len(list))
+					self.leftline = vLine(pos_y,pos_x,len(list))
+
 		for i in range(len(list)):
 			self.list.append(baseObject(list[i],pos_y,self.pos_x,width))
 			pos_y += 1

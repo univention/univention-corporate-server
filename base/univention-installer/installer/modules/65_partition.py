@@ -555,6 +555,9 @@ class object(content):
 	def modheader(self):
 		return _('Partitioning')
 
+	def profileheader(self):
+		return 'Partitioning'
+
 	def start(self):
 		self.container={}
 		self.container['min_size']=float(1)
@@ -2078,6 +2081,9 @@ class object(content):
 
 		def modheader(self):
 			return _(' Partitioning dialog ')
+
+		def profileheader(self):
+			return ' Partitioning dialog '
 
 		def layout(self):
 			self.reset_layout()

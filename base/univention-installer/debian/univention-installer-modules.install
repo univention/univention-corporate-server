@@ -4,9 +4,12 @@ installer/*.sh lib/univention-installer/
 installer/modules/kernel-2.4 lib/univention-installer/modules/
 installer/modules/kernel-2.6 lib/univention-installer/modules/
 installer/modules/filesystem lib/univention-installer/modules/
-installer/modules/keymap lib/univention-installer/modules/
-installer/modules/languages lib/univention-installer/modules/
-installer/modules/timezone lib/univention-installer/modules/
 installer/dhclient-script-wrapper lib/univention-installer/
 installer/locale/de/LC_MESSAGES/installer.mo lib/univention-installer/locale/de/LC_MESSAGES/
-
+installer/locale/all-kmaps lib/univention-installer/locale
+installer/locale/countrycode2timezone lib/univention-installer/locale
+installer/locale/default-kmaps lib/univention-installer/locale
+installer/locale/languagelist lib/univention-installer/locale
+installer/locale/selectedlanguage lib/univention-installer/locale
+installer/locale/timezone lib/univention-installer/locale
+installer/locale/short-list/*.short lib/univention-installer/locale/short-list

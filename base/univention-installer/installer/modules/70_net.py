@@ -616,6 +616,9 @@ class object(content):
 	def modheader(self):
 		return _('Network')
 
+	def profileheader(self):
+		return 'Network'
+
 	def is_hostname(self, host):
 		if len(host) < 1:
 			return 0
@@ -840,6 +843,9 @@ class object(content):
 		def modheader(self):
 			return _(' Interface configuration')
 
+		def profileheader(self):
+			return ' Interface configuration'
+
 		def put_result(self):
 			result={}
 			virtual=''
@@ -1045,8 +1051,13 @@ class object(content):
 			self.elements[self.current].set_on()
 		def helptext(self):
 			return self.parent.helptext()
+
 		def modheader(self):
 			return _( ' More %ss' ) % self.type
+
+		def profileheader(self):
+			return ' More %ss' % self.type
+
 		def put_result(self):
 			result={}
 			i=2

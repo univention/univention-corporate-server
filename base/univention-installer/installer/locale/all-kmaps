@@ -1,0 +1,127 @@
+Belgian (Standard Apple USB azerty):mac-usb-be
+Belgian (Standard azerty):be2-latin1
+Belgian (Standard Wang azerty):wangbe
+Brazilian (Standard ABNT2 Standard qwerty):br-abnt2
+Brazilian (Standard BR-Latin1 qwerty):br-latin1
+British (Standard Apple USB qwerty):mac-usb-uk
+British (Standard qwerty):uk
+Bulgarian (Standard CP 1251 coding qwerty):bg-cp1251
+Bulgarian (Standard qwerty):bg
+Byelorussian (Standard qwerty):by
+Canadian (Standard English qwerty):us
+Canadian (Standard French qwerty):cf
+Canadian (Standard Multilingual qwerty):ca-multi
+Croat (Standard qwertz):croat
+Czech (Programmer Standard qwerty):cz-lat2-prog
+Czech (Standard qwerty):cz-lat2
+Czech (Standard qwertz):cz-us-qwertz
+Czech (US Layout Standard qwerty):cz-us-qwerty
+Danish (Apple USB Standard qwerty):mac-usb-dk-latin1
+Danish (Dead keys Standard qwerty):dk-latin1
+Danish (Standard qwerty):dk
+Dutch (Standard qwerty):nl
+Estonian (No dead keys Standard qwerty):et-nodeadkeys
+Estonian (Standard qwerty):et
+Finnish (Standard Apple USB qwerty):mac-usb-fi-latin1
+Finnish (Standard Old (obsolete) qwerty):fi
+Finnish (Standard qwerty):fi-latin1
+French (Standard Apple USB azerty):mac-usb-fr
+French (Standard Same as X11 (latin 9) azerty):fr-latin9
+German (Programmer Standard qwertz):de
+German (latin1 - no dead keys Apple USB qwertz):mac-usb-de-latin1-nodeadkeys
+German (latin1 - no dead keys Standard qwertz):de-latin1-nodeadkeys
+German (latin1 Apple USB qwertz):mac-usb-de-latin1
+German (latin1 Standard qwertz):de-latin1
+Greek (Standard qwerty):gr
+Greek (gr-pc Standard qwerty):gr-pc
+Hebrew (Old Phonetic Standard qwerty):hebrew
+Hebrew (Phonetic Standard qwerty):il-phonetic
+Hebrew (Standard qwerty):il
+Hebrew (il-Heb Standard qwerty):il-heb
+Hungarian (Standard qwerty):hu101
+Hungarian (Standard qwertz):hu
+Icelandic (Standard qwerty):is-latin1
+Icelandic (US Standard qwerty):is-latin1-us
+Italian (IBM Standard qwerty):it-ibm
+Italian (Standard qwerty):it
+Italian (it2 Standard qwerty):it2
+Japanese (Standard PC 110 qwerty):pc110
+Japanese (Standard qwerty):jp106
+Kirghiz (unicode Standard qwerty):kg
+Latin American (Standard qwerty):la-latin1
+Latvian (latin4 Standard qwerty):lv-latin4
+Latvian (latin7 Standard qwerty):lv-latin7
+Lithuanian (latin4 Standard qwerty):lt.l4
+Lithuanian (unicode Standard qwerty):lt
+Macedonian (unicode Standard qwerty):mk
+Norwegian (Standard qwerty):no
+Norwegian (latin1 Standard qwerty):no-latin1
+Polish (AltGr only diacritics Standard qwerty):pl1
+Polish (Diacritics with AltGr and Alt Standard qwerty):pl
+Polish (Standard qwertz):pl-qwertz
+Portugese (Old keymap Standard qwerty):pt-old
+Portugese (Standard qwerty):pt-latin1
+Romanian (Academic Standard qwerty):ro-academic
+Romanian (Standard qwerty):ro
+Romanian (With comma Standard qwerty):ro-comma
+Russian (CP-1251 (1) Standard qwerty):ru-cp1251
+Russian (CP-1251 (2) Standard qwerty):ru_win
+Russian (CP-866 Standard qwerty):ru2
+Russian (KOI8-R (102 Keys) Standard qwerty):ru3
+Russian (KOI8-R (105 Keys) Standard qwerty):ru4
+Russian (KOI8-R (MS Cyrillic Layout) Standard qwerty):ru-ms
+Russian (KOI8-R (RightAlt) Standard qwerty):ru1
+Russian (KOI8-R (RightCtrl) Standard qwerty):ru
+Russian (KOI8-R (Yawerty Layout) Standard qwerty):ru-yawerty
+Serbian (Standard qwerty):sr-cy
+Serbian (Standard qwertz):sr
+Slovak (Alternate programmer Standard qwerty):sk-prog-qwerty
+Slovak (Programmer Standard qwerty):sk-prog
+Slovak (Programmer Standard qwertz):sk-prog-qwertz
+Slovak (Standard qwerty):sk-qwerty
+Slovak (Standard qwertz):sk-qwertz
+Slovene (Standard qwertz):slovene
+Spanish (CP850 Standard qwerty):es-cp850
+Spanish (Standard Apple USB qwerty):mac-usb-es
+Spanish (Standard qwerty):es
+Swedish (Standard Apple USB qwerty):mac-usb-se
+Swedish (Standard qwerty):se-latin1
+Swiss (Apple USB French qwertz):mac-usb-fr_CH-latin1
+Swiss (Apple USB German qwertz):mac-usb-de_CH
+Swiss (Standard French qwertz):fr_CH
+Swiss (Standard German qwertz):sg
+Swiss (latin1 French qwertz):fr_CH-latin1
+Swiss (latin1 German qwertz):sg-latin1
+Swiss (latin1-lk450 German qwertz):sg-latin1-lk450
+Thai (Standard qwerty):th-tis
+Turkish (Alternate Standard qwerty):tralt
+Turkish (F Layout Standard fgGIod):trf
+Turkish (F Layout with Unicode Standard fgGIod):trfu
+Turkish (Q Layout Standard qwerty):trq
+Turkish (Q Layout with Unicode Standard qwerty):trqu
+US american (Lisp Machine Standard qwerty):lisp-us
+US american (Standard Apple USB qwerty):mac-usb-us
+US american (Standard qwerty):us
+US american (US International (ISO 8859-1) Standard qwerty):us-intl.iso01
+US american (US International (ISO 8859-15) Standard qwerty):us-intl.iso15
+US american (With latin1 Standard qwerty):us-latin1
+Ukrainian (Alternate - unicode Standard qwerty):uaw_uni
+Ukrainian (Alternate Standard qwerty):uaw
+Ukrainian (Standard (koi8u) Standard qwerty):ua
+Ukrainian (WS - unicode Standard qwerty):ua-utf-ws
+Ukrainian (WS Standard qwerty):ua-ws
+Ukrainian (unicode Standard qwerty):ua-utf
+Unknown (ANSI Standard dvorak):ANSI-dvorak
+Unknown (Dvorak Classic Standard dvorak):dvorak-classic
+Unknown (Dvorak French Bepo (UTF8) Standard dvorak):dvorak-fr-bepo-utf8
+Unknown (Dvorak French Bepo Standard dvorak):dvorak-fr-bepo
+Unknown (Dvorak French Standard dvorak):dvorak-fr
+Unknown (Dvorak German Standard dvorak):dvorak-de
+Unknown (Dvorak Lisp machine Standard dvorak):dvorak-lisp
+Unknown (Dvorak Russian Standard dvorak):dvorak-ru
+Unknown (Dvorak United Kingdom Standard dvorak):dvorak-uk
+Unknown (Standard Apple USB dvorak):mac-usb-dvorak
+Unknown (Standard Left single-handed dvorak):dvorak-l
+Unknown (Standard Right single-handed dvorak):dvorak-r
+Unknown (Standard dvorak):dvorak
+Unknown (With French and Spanish accents Standard dvorak):pc-dvorak-latin1

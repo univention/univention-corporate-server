@@ -108,6 +108,7 @@ class object(content):
 
 
 	def input(self,key):
+
 		self.debug('key_event=%d' % key)
 		if key in [10, 32] and self.btn_next():
 			return 'next'
@@ -124,6 +125,9 @@ class object(content):
 
 	def modheader(self):
 		return _('System role')
+
+	def profileheader(self):
+		return 'System role'
 
 	def result(self):
 		return {'system_role':self.elements[3].result()}

@@ -291,52 +291,6 @@ class error_message(subwin):
 		else:
 			return self.elements[self.current].key_event(key)
 
-class lang_win(subwin):
-	def layout(self):
-		try:
-			file=open('modules/languages')
-		except:
-			file=open('/lib/univention-installer/modules/languages')
-		dict={}
-		self.elements.append(textline(_('Available Installer languages:'),self.pos_y+2,self.pos_x+2)) #0
-
-		languages=file.readlines()
-		for line in range(len(languages)):
-			entry = languages[line].split(' ')
-			dict[entry[0]]=[entry[1],line]
-		try:
-			#FIXME language can be set in profile
-			set=all.index(self.all_results['language'])
-		except:
-			set=0
-		self.elements.append(select(dict,self.pos_y+4,self.pos_x+2,25,3,set)) #1
-		self.elements.append(button(_('Ok'),self.pos_y+8,self.pos_x+(self.width/2),align='middle')) #2
-
-	def input(self, key):
-		if key == 10:
-			self.set_language()
-			return 1
-		if key == 9:
-			self.tab()
-		else:
-			return self.elements[self.current].key_event(key)
-
-	def set_language(self):
-		os.environ['LANGUAGE'] = "%s" % self.elements[1].result()[0].strip()
-
-		#this is needed for the installation end message
-		fp = open('/tmp/language', 'w')
-		fp.write("%s" % self.elements[1].result()[0].strip())
-		fp.close()
-
-		if self.elements[1].result()[0].strip() == 'de':
-			if os.path.exists('/usr/keymaps/de-latin1.kmap'):
-				os.system('/bin/loadkeys </usr/keymaps/de-latin1.kmap > /dev/null 2>&1')
-			if os.path.exists('/lib/univention-installer-startup.d/S88keyboard'):
-				os.system('/lib/univention-installer-startup.d/S88keyboard > /dev/null 2>&1')
-		debug('Set LANGUAGE to %s\n' % self.elements[1].result()[0].strip())
-
-
 class mods:
 	def __init__(self,modules,max_x,max_y,initialized=1, cmdline={}):
 		self.max_x=max_x
@@ -482,7 +436,7 @@ class mods:
 	def result_update(self):
 		self.result.update(self.obj[self.current].get_result())
 		# external result (sorted)
-		self.profile[self.obj[self.current].modheader()]=self.obj[self.current].get_result()
+		self.profile[self.obj[self.current].profileheader()]=self.obj[self.current].get_result()
 		self.obj[self.current].put_result(self.result)
 
 	def check_depends(self, number):
@@ -702,29 +656,6 @@ def prev_screen():
 try:
 
 	debug('Commandline: %s' % cmdline)
-	if cmdline.has_key('lang'):
-		os.environ['LANGUAGE'] = "%s" % cmdline['lang']
-		if cmdline['lang'].strip() == 'de':
-			if os.path.exists('/usr/keymaps/de-latin1.kmap'):
-				os.system('/bin/loadkeys < /usr/keymaps/de-latin1.kmap 2>&1 > /dev/null')
-		debug('Set LANGUAGE to %s\n' % cmdline['lang'].strip())
-	elif not cmdline.has_key('profile'):
-		# init main window
-		installer=mods(modules,max_x,max_y,0,cmdline=cmdline)
-		installer.draw_all()
-
-		## Set Language
-		lang_height=11
-		lang_width=30
-		lang_min_x=(max_x/2)-(lang_width/2)
-		lang_min_y=(max_y/2)-(lang_height/2)
-		lang = lang_win(None, lang_min_y, lang_min_x, lang_width+4, lang_height)
-		lang.draw()
-		while 1:
-			c = stdscr.getch()
-			if lang.input(c):
-				break
-
 
 	# init main window
 	installer=mods(modules,max_x,max_y, cmdline=cmdline)

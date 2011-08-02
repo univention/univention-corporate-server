@@ -83,6 +83,9 @@ class object(content):
 		return 'A short description...'
 
 	def modheader(self):
+		return _('Software')
+
+	def profileheader(self):
 		return 'Software'
 
 	def result(self):

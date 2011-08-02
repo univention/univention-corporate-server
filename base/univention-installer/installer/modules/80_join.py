@@ -154,6 +154,9 @@ class object(content):
 	def modheader(self):
 		return _('Join settings')
 
+	def profileheader(self):
+		return 'Join settings'
+
 	def result(self):
 		result={}
 		if self.elements[7].disabled and self.elements[9].disabled and self.elements[11].disabled and self.elements[13].disabled:
