@@ -161,8 +161,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'path',
 			label: this._('Path'),
-			description: this._( 'Path of the UDM object.' ),
-			editable: true
+			description: this._( 'Path of the UDM object.' )
 		}];
 
 		// the navigation needs a slightly modified store that uses the UMCP query
