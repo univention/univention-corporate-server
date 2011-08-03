@@ -1,3 +1,10 @@
+univention-installer (7.0.33-1) unstable; urgency=low
+
+  * Removed Managed and Mobile Clients from server role selection
+    (Bug #23156)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 03 Aug 2011 16:56:35 +0200
+
 univention-installer (7.0.32-1) unstable; urgency=low
 
   * Added missing script from last commit (Bug #22580)
