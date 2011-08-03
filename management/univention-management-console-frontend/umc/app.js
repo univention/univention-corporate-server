@@ -359,17 +359,17 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		menu.addChild(new dijit.CheckedMenuItem({
 			label: this._('Tooltips'),
 			checked: umc.tools.preferences('tooltips'),
-			onClick: dojo.hitch(this, function() {
+			onClick: function() {
 				umc.tools.preferences('tooltips', this.checked);
-			})
+			}
 		}));
 		menu.addChild(new dijit.CheckedMenuItem({
 			label: this._('Confirmations'),
 			checked: true,
 			checked: umc.tools.preferences('confirm'),
-			onClick: dojo.hitch(this, function() {
+			onClick: function() {
 				umc.tools.preferences('confirm', this.checked);
-			})
+			}
 		}));
 		menu.addChild(new dijit.CheckedMenuItem({
 			label: this._('Module help description'),

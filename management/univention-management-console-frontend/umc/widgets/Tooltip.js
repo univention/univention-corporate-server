@@ -3,7 +3,7 @@
 dojo.provide("umc.widgets.Tooltip");
 
 dojo.require("dijit.Tooltip");
-dojo.require("umc.app");
+dojo.require("umc.tools");
 
 dojo.declare("umc.widgets.Tooltip", dijit.Tooltip, {
 

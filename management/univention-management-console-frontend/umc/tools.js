@@ -23,7 +23,7 @@ dojo.mixin(umc.tools, {
 		//		A deferred object.
 
 		// when logging in, ignore all except the AUTH command
-		if (umc.app.loggingIn && !(/^auth$/i).test(commandStr)) {
+		if (umc.dialog.loggingIn && !(/^auth$/i).test(commandStr)) {
 			console.log(this._('WARNING: Ignoring command "%s" since user is logging in', commandStr));
 			var deferred = new dojo.Deferred();
 			deferred.errback();
