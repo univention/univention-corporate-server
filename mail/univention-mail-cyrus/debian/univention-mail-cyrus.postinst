@@ -74,6 +74,9 @@ chmod 600 /etc/univention/templates/files/var/spool/sieve/*
 
 univention-config-registry set mail/antispam/globalfolder="spam@$domainname"
 
+univention-config-registry set mail/cyrus/threads?5
+
+
 # Mail-Quota
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.5; then
 	univention-config-registry set	mail/cyrus/imap/quota?"yes" \
