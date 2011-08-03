@@ -1,3 +1,9 @@
+univention-installer (7.0.32-1) unstable; urgency=low
+
+  * Added missing script from last commit (Bug #22580)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 03 Aug 2011 07:40:21 +0200
+
 univention-installer (7.0.31-1) unstable; urgency=low
 
   * Added a script which writes the Administrator password to Samba 4
