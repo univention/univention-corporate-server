@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.11-1) unstable; urgency=low
+
+  * Adjust univention-password_sync_ucs_to_s4 to new ucr variables and
+    to the new module structure (Bug #22580)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 03 Aug 2011 08:40:23 +0200
+
 univention-s4-connector (6.0.10-2) unstable; urgency=low
 
   * check JS_LAST_EXECUTED_VERSION in joinscript (Bug #22559)
