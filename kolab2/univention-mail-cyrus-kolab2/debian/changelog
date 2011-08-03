@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (3.0.26-2) unstable; urgency=low
+
+  * Make the amount of saslthreads configurable through the Univention
+    Configuration Registry variable mail/cyrus/threads (Bug #13358) 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 03 Aug 2011 12:33:23 +0200
+
 univention-mail-cyrus-kolab2 (3.0.26-1) unstable; urgency=low
 
   * add missing dependency python-pexpect to univention-mail-cyrus-kolab2 (Bug #22981)

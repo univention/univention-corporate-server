@@ -10,6 +10,12 @@ Description[en]=List of users with administrative rigths in IMAP
 Type=str
 Categories=service-mail
 
+[mail/cyrus/threads]
+Description[de]=Konfiguriert die Anzahl der gestarteten saslauthd-Threads. Wird die Variable auf 0 gesetzt, wird für jede Verbindung ein neuer Prozess geforkt.
+Description[en]=Configures the amount of saslauthd threads to be started. If the variable is set to 0, a process is forked for every connection.
+Type=str
+Categories=service-mail
+
 [mail/cyrus/loginrealms]
 Description[de]=Liste alternativer Domänen aus denen sich Benutzer anmelden dürfen
 Description[en]=List of remote realms whose users may authenticate

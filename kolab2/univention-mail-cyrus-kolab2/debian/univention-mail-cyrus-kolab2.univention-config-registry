@@ -52,6 +52,7 @@ Variables: ldap/server/name
 
 Type: file
 File: etc/default/saslauthd
+Variables: mail/cyrus/threads
 
 Type: multifile
 Multifile: etc/imapd/cyrus.conf
