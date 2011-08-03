@@ -2,12 +2,14 @@
 
 dojo.provide("umc.modules.reboot");
 
+dojo.require("dijit.TitlePane");
 dojo.require("umc.dialog");
 dojo.require("umc.i18n");
+dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.Page");
-dojo.require("dijit.TitlePane");
+dojo.require("umc.widgets.TitlePane");
 
 dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
@@ -56,15 +58,19 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._form = new umc.widgets.Form({
 			widgets: widgets,
 			buttons: buttons,
-			layout: layout,
-			cols: 1
+			layout: layout
 		});
 
-        this._page.addChild(new dijit.TitlePane({
+		var container = new umc.widgets.ContainerWidget({
+			scrollable: true
+		});
+		this._page.addChild(container);
+
+		var titlePane = new dijit.TitlePane({
 			title: this._('Actions'),
 			content: this._form
-		}));
-
-        this._page.startup();
-    }
+		});
+		
+		container.addChild(titlePane);
+	}
 });
