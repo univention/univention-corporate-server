@@ -1,3 +1,17 @@
+univention-s4-connector (6.0.12-1) unstable; urgency=low
+
+  * sync krb5Principal to userPrincipalName (Bug #22559)
+    beware: the case currently differs from the Samba4-Standard
+  * allow for missing single-des keys in create_supplementalCredentials.
+    With this change, the connector code does not stop any longer with
+    "Subcontext Error" (NDR_ERR_SUBCONTEXT) if allow_weak_crypto=false
+    is kept as default in krb5.conf.
+    Currently this triggers another strange error message from samba4:
+    "Constraint violation - KerberosNewerKeys num_keys != 2"
+    but thats more useful than "Subcontext Error".
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Aug 2011 14:40:38 +0200
+
 univention-s4-connector (6.0.11-1) unstable; urgency=low
 
   * Adjust univention-password_sync_ucs_to_s4 to new ucr variables and

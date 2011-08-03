@@ -166,6 +166,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 
 	## build new drsblobs.supplementalCredentialsBlob
 
+	sc_blob = None
 	cred_List = []
 	package_names = []
 	
@@ -238,79 +239,81 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 		package_names.append('Kerberos-Newer-Keys')
 
 	## Primary:Kerberos : MD5 and CRC keys
-	ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: building Primary:Kerberos blob")
-	kerberosKey3list = []
-	
-	if krb5_des_md5:
-		next_key = drsblobs.package_PrimaryKerberosKey3()
-		next_key.keytype = 3
-		next_key.value = krb5_des_md5
-		next_key.value_len = len(krb5_des_md5)
-		kerberosKey3list.append(next_key)
-	if krb5_des_crc:
-		next_key = drsblobs.package_PrimaryKerberosKey3()
-		next_key.keytype = 1
-		next_key.value = krb5_des_crc
-		next_key.value_len = len(krb5_des_crc)
-		kerberosKey3list.append(next_key)
+	if krb5_des_md5 or krb5_des_crc:
+		ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: building Primary:Kerberos blob")
+		kerberosKey3list = []
+		
+		if krb5_des_md5:
+			next_key = drsblobs.package_PrimaryKerberosKey3()
+			next_key.keytype = 3
+			next_key.value = krb5_des_md5
+			next_key.value_len = len(krb5_des_md5)
+			kerberosKey3list.append(next_key)
+		if krb5_des_crc:
+			next_key = drsblobs.package_PrimaryKerberosKey3()
+			next_key.keytype = 1
+			next_key.value = krb5_des_crc
+			next_key.value_len = len(krb5_des_crc)
+			kerberosKey3list.append(next_key)
 
-	salt = drsblobs.package_PrimaryKerberosString()
-	salt.string = krb_ctr3_salt
+		salt = drsblobs.package_PrimaryKerberosString()
+		salt.string = krb_ctr3_salt
 
-	ctr3 = drsblobs.package_PrimaryKerberosCtr3()
-	ctr3.salt = salt
-	ctr3.num_keys = len(kerberosKey3list)
-	ctr3.keys = kerberosKey3list
+		ctr3 = drsblobs.package_PrimaryKerberosCtr3()
+		ctr3.salt = salt
+		ctr3.num_keys = len(kerberosKey3list)
+		ctr3.keys = kerberosKey3list
 
-	if old_krb.get('ctr3'):
-		ctr3.old_keys = old_krb['ctr3'].keys
-		ctr3.num_old_keys = old_krb['ctr3'].num_keys
+		if old_krb.get('ctr3'):
+			ctr3.old_keys = old_krb['ctr3'].keys
+			ctr3.num_old_keys = old_krb['ctr3'].num_keys
 
-	if ctr3.num_old_keys != ctr3.num_keys:
-		pass	# TODO: Recommended policy is to fill up old_keys to match num_keys
+		if ctr3.num_old_keys != ctr3.num_keys:
+			pass	# TODO: Recommended policy is to fill up old_keys to match num_keys
 
-	krb = drsblobs.package_PrimaryKerberosBlob()
-	krb.version = 3
-	krb.ctr = ctr3 
-	krb3_blob = ndr_pack(krb)
+		krb = drsblobs.package_PrimaryKerberosBlob()
+		krb.version = 3
+		krb.ctr = ctr3 
+		krb3_blob = ndr_pack(krb)
 
-	creddata_Primary_Kerberos = binascii.hexlify(krb3_blob)
-	credname_Primary_Kerberos = "Primary:Kerberos"
+		creddata_Primary_Kerberos = binascii.hexlify(krb3_blob)
+		credname_Primary_Kerberos = "Primary:Kerberos"
 
-	cred_Primary_Kerberos = drsblobs.supplementalCredentialsPackage()
-	cred_Primary_Kerberos.name = credname_Primary_Kerberos
-	cred_Primary_Kerberos.name_len = len(credname_Primary_Kerberos)
-	cred_Primary_Kerberos.data = creddata_Primary_Kerberos
-	cred_Primary_Kerberos.data_len = len(creddata_Primary_Kerberos)
-	cred_Primary_Kerberos.reserved = 1
-	cred_List.append(cred_Primary_Kerberos)
-	package_names.append('Kerberos')
+		cred_Primary_Kerberos = drsblobs.supplementalCredentialsPackage()
+		cred_Primary_Kerberos.name = credname_Primary_Kerberos
+		cred_Primary_Kerberos.name_len = len(credname_Primary_Kerberos)
+		cred_Primary_Kerberos.data = creddata_Primary_Kerberos
+		cred_Primary_Kerberos.data_len = len(creddata_Primary_Kerberos)
+		cred_Primary_Kerberos.reserved = 1
+		cred_List.append(cred_Primary_Kerberos)
+		package_names.append('Kerberos')
 
-	package_names_carray = (ctypes.c_char_p * len(package_names))(*package_names)
-	package_names_PyCObject = _PyCObject_FromVoidPtr(ctypes.cast(package_names_carray, ctypes.POINTER(ctypes.c_char_p)), None) 
-	krb_Packages = drsblobs.package_PackagesBlob() 
-	krb_Packages.names = package_names_PyCObject
-	krb_blob_Packages = ndr_pack(krb_Packages)
-	# krb_blob_Packages = '\0'.join(package_names).encode('utf-16le')       # this pretty much simulates it
-	cred_PackagesBlob_data = binascii.hexlify(krb_blob_Packages).upper()
-	cred_PackagesBlob_name = "Packages"
-	cred_PackagesBlob = drsblobs.supplementalCredentialsPackage()
-	cred_PackagesBlob.name = cred_PackagesBlob_name
-	cred_PackagesBlob.name_len = len(cred_PackagesBlob_name)
-	cred_PackagesBlob.data = cred_PackagesBlob_data
-	cred_PackagesBlob.data_len = len(cred_PackagesBlob_data)
-	cred_PackagesBlob.reserved = 2
-	cred_List.insert(-1, cred_PackagesBlob)
+	if package_names:
+		package_names_carray = (ctypes.c_char_p * len(package_names))(*package_names)
+		package_names_PyCObject = _PyCObject_FromVoidPtr(ctypes.cast(package_names_carray, ctypes.POINTER(ctypes.c_char_p)), None) 
+		krb_Packages = drsblobs.package_PackagesBlob() 
+		krb_Packages.names = package_names_PyCObject
+		krb_blob_Packages = ndr_pack(krb_Packages)
+		# krb_blob_Packages = '\0'.join(package_names).encode('utf-16le')       # this pretty much simulates it
+		cred_PackagesBlob_data = binascii.hexlify(krb_blob_Packages).upper()
+		cred_PackagesBlob_name = "Packages"
+		cred_PackagesBlob = drsblobs.supplementalCredentialsPackage()
+		cred_PackagesBlob.name = cred_PackagesBlob_name
+		cred_PackagesBlob.name_len = len(cred_PackagesBlob_name)
+		cred_PackagesBlob.data = cred_PackagesBlob_data
+		cred_PackagesBlob.data_len = len(cred_PackagesBlob_data)
+		cred_PackagesBlob.reserved = 2
+		cred_List.insert(-1, cred_PackagesBlob)
 
-	sub = drsblobs.supplementalCredentialsSubBlob()
-	sub.num_packages = len(cred_List)
-	sub.packages = cred_List
-	sub.signature = drsblobs.SUPPLEMENTAL_CREDENTIALS_SIGNATURE
-	sub.prefix = drsblobs.SUPPLEMENTAL_CREDENTIALS_PREFIX
+		sub = drsblobs.supplementalCredentialsSubBlob()
+		sub.num_packages = len(cred_List)
+		sub.packages = cred_List
+		sub.signature = drsblobs.SUPPLEMENTAL_CREDENTIALS_SIGNATURE
+		sub.prefix = drsblobs.SUPPLEMENTAL_CREDENTIALS_PREFIX
 
-	sc = drsblobs.supplementalCredentialsBlob()
-	sc.sub = sub
-	sc_blob = ndr_pack(sc)
+		sc = drsblobs.supplementalCredentialsBlob()
+		sc.sub = sub
+		sc_blob = ndr_pack(sc)
 
 	return sc_blob
 
@@ -663,9 +666,10 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 
 	pwd_set = False
 	# pwd_s4_res = get_password_from_s4(s4connector, rid)
-	res=s4connector.lo_s4.lo.search_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, compatible_modstring('(objectSid=%s)' % objectSid), ['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
+	res=s4connector.lo_s4.lo.search_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, compatible_modstring('(objectSid=%s)' % objectSid), ['unicodePwd', 'userPrincipalName', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
 	unicodePwd_attr = res[0][1].get('unicodePwd', [None])[0]
 	dBCSPwd_attr = res[0][1].get('dBCSPwd', [None])[0]
+	userPrincipalName_attr = res[0][1].get('userPrincipalName', [None])[0]
 	supplementalCredentials = res[0][1].get('supplementalCredentials', [None])[0]
 	msDS_KeyVersionNumber = res[0][1].get('msDS-KeyVersionNumber', [0])[0]
 	# ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Password-Hash from S4: %s" % unicodePwd_attr)
@@ -683,6 +687,17 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4: Failed to get LM Password-Hash from S4")
 
 	modlist=[]
+	if krb5Principal != userPrincipalName_attr:
+		if krb5Principal:
+			if not userPrincipalName_attr:	## new and not old
+				modlist.append((ldap.MOD_ADD, 'userPrincipalName', krb5Principal))
+			else:				## new and old differ
+				ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4: userPrincipalName != krb5Principal: userPrincipalName='%s'" % userPrincipalName_attr)
+				modlist.append((ldap.MOD_REPLACE, 'userPrincipalName', krb5Principal))
+		else:
+			if userPrincipalName_attr:	## old and not new
+				modlist.append((ldap.MOD_SELETE, 'userPrincipalName', userPrincipalName_attr))
+
 	if not ucsNThash == s4NThash:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: NT Hash S4: %s NT Hash UCS: %s" % (s4NThash, ucsNThash))
 		pwd_set = True
@@ -709,7 +724,9 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 				modlist.append((ldap.MOD_DELETE, 'supplementalCredentials', supplementalCredentials))
 			if krb5Key:
 				supplementalCredentials_new = calculate_supplementalCredentials(krb5Key, supplementalCredentials)
-				modlist.append((ldap.MOD_ADD, 'supplementalCredentials', supplementalCredentials_new))
+				if supplementalCredentials_new:
+					ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: no supplementalCredentials_new")
+					modlist.append((ldap.MOD_ADD, 'supplementalCredentials', supplementalCredentials_new))
 				#if supplementalCredentials:
 				#	modlist.append((ldap.MOD_REPLACE, 'msDS-KeyVersionNumber', krb5KeyVersionNumber))
 				#else:
