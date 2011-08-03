@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-top\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-08-03 10:10+0200\n"
+"POT-Creation-Date: 2011-08-03 15:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,8 +58,8 @@ msgid "Processes killed successfully"
 msgstr "Prozesse würden erfolgreich beendet"
 
 #: umc/js/top.js:91
-msgid "Resident set size (MB)"
-msgstr "Residente Setgröße (MB)"
+msgid "Resident (MB)"
+msgstr ""
 
 #: umc/js/top.js:60
 msgid "Terminate processes"
@@ -71,12 +71,17 @@ msgid ""
 "function can reduce the number of results. Specifig processes can be "
 "selected and terminated. If a process can't be normally terminated (using "
 "SIGTERM signal), the termination can be forced (using SIGKILL signal)."
-msgstr "Dieses Modul erzeugt eine Übersicht aller laufenden Prozesse. Über die Suchfunktion kann die Ergebnisliste eingeschränkt werden. Einzelne Prozesse können ausgewählt und beendet werden. Wenn ein Prozess nicht normal beendet werden kann (mittels des Signals SIGTERM), kann die Beendigung erzwungen werden (mittels des Signals SIGKILL)."
+msgstr ""
+"Dieses Modul erzeugt eine Übersicht aller laufenden Prozesse. Über die "
+"Suchfunktion kann die Ergebnisliste eingeschränkt werden. Einzelne Prozesse "
+"können ausgewählt und beendet werden. Wenn ein Prozess nicht normal beendet "
+"werden kann (mittels des Signals SIGTERM), kann die Beendigung erzwungen "
+"werden (mittels des Signals SIGKILL)."
 
 #: umc/js/top.js:72 umc/js/top.js:125
 msgid "User"
 msgstr "Benutzer"
 
 #: umc/js/top.js:84
-msgid "Virtual size (MB)"
-msgstr "Virtuelle Größe (MB)"
+msgid "Virtual (MB)"
+msgstr "Virtuell (MB)"

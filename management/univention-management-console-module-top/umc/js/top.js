@@ -74,29 +74,29 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'pid',
 			label: this._('PID'),
-            width: '75px'
+            width: '70px'
 		}, {
 			name: 'cpu',
 			label: this._('CPU (%)'),
-            width: '50px'
+            width: 'adjust'
 		}, {
 			name: 'vsize',
-			label: this._('Virtual size (MB)'),
-            width: '125px',
+			label: this._('Virtual (MB)'),
+            width: 'adjust',
 			formatter: function(value) {
 				return dojox.string.sprintf('%.1f', value);
 			}
 		}, {
 			name: 'rssize',
-			label: this._('Resident set size (MB)'),
-            width: '150px',
+			label: this._('Resident (MB)'),
+            width: 'adjust',
 			formatter: function(value) {
 				return dojox.string.sprintf('%.1f', value);
 			}
 		}, {
 			name: 'mem',
 			label: this._('Memory (%)'),
-            width: '80px'
+            width: 'adjust'
 		}, {
 			name: 'command',
 			label: this._('Command'),

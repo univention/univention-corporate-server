@@ -1,3 +1,9 @@
+univention-management-console-module-top (1.0.7-1) unstable; urgency=low
+
+  * changed column widths to 'adjust' (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 03 Aug 2011 15:20:49 +0200
+
 univention-management-console-module-top (1.0.6-1) unstable; urgency=low
 
   * adaptations to use umc.widgets.Page (Bug #22881)
