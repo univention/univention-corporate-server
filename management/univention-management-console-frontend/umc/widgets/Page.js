@@ -3,8 +3,8 @@
 dojo.provide("umc.widgets.Page");
 
 dojo.require("dijit.layout.BorderContainer");
-dojo.require("umc.app");
 dojo.require("umc.render");
+dojo.require("umc.tools");
 dojo.require("umc.widgets.Text");
 
 dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
