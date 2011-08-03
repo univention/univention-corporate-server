@@ -121,9 +121,9 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			//autoHeight: true
 		}, props);
 		var tab = new module.BaseClass(params);
-		tab.startup();
 		this._tabContainer.addChild(tab);
 		this._tabContainer.selectChild(tab, true);
+		tab.startup();
 	},
 
 	onModulesLoaded: function() {
