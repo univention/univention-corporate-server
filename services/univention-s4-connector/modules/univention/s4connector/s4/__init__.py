@@ -39,11 +39,11 @@ import univention.s4connector
 import univention.debug2 as ud
 from ldap.controls import LDAPControl
 
-def activate_user (s4connector, key, object):
-        # set userAccountControl to 544
+def normalise_userAccountControl (s4connector, key, object):
+        # set userAccountControl to 512 -- accounts synced to samba4 alpha17 had userAccountControl == 544
         for i in range(0,10):
                 try:
-                        s4connector.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'userAccountControl', ['544'])])
+                        s4connector.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'userAccountControl', ['512'])])
                 except ldap.NO_SUCH_OBJECT:
                         time.sleep(1)
                         continue

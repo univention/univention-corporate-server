@@ -725,8 +725,9 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 			if krb5Key:
 				supplementalCredentials_new = calculate_supplementalCredentials(krb5Key, supplementalCredentials)
 				if supplementalCredentials_new:
-					ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: no supplementalCredentials_new")
 					modlist.append((ldap.MOD_ADD, 'supplementalCredentials', supplementalCredentials_new))
+				else:
+					ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: no supplementalCredentials_new")
 				#if supplementalCredentials:
 				#	modlist.append((ldap.MOD_REPLACE, 'msDS-KeyVersionNumber', krb5KeyVersionNumber))
 				#else:

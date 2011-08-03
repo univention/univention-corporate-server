@@ -98,6 +98,9 @@ s4_mapping = {
 						 univention.s4connector.set_primary_group_user
 						 ],
 
+			post_con_create_functions = [ univention.s4connector.s4.normalise_userAccountControl,
+						 ],
+
 			post_con_modify_functions=[ univention.s4connector.s4.password.password_sync_ucs_to_s4,
 						    univention.s4connector.s4.primary_group_sync_from_ucs,
 						    univention.s4connector.s4.object_memberships_sync_from_ucs,

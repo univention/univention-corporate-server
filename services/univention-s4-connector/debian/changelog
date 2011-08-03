@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.14-1) unstable; urgency=low
+
+  * normalise_userAccountControl to 512 in post_con_create_functions
+  * fix debug message (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Aug 2011 16:19:16 +0200
+
 univention-s4-connector (6.0.13-1) unstable; urgency=low
 
   * fix userAccountControl in function disable_user_from_ucs (Bug #23154)
