@@ -7,6 +7,7 @@ dojo.require("umc.i18n");
 dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.Page");
+dojo.require("dijit.TitlePane");
 
 dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
@@ -59,7 +60,10 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			cols: 1
 		});
 
-        this._page.addChild(this._form);
+        this._page.addChild(new dijit.TitlePane({
+			title: this._('Actions'),
+			content: this._form
+		}));
 
         this._page.startup();
     }

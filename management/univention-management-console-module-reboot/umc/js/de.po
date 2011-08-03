@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-08-02 13:05+0200\n"
+"POT-Creation-Date: 2011-08-03 10:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,31 +13,35 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/reboot.js:31
+#: umc/js/reboot.js:32
 msgid "Action"
 msgstr "Aktion"
 
-#: umc/js/reboot.js:44
+#: umc/js/reboot.js:64
+msgid "Actions"
+msgstr "Aktionen"
+
+#: umc/js/reboot.js:45
 msgid "Execute"
 msgstr "Ausführen"
 
-#: umc/js/reboot.js:39
+#: umc/js/reboot.js:40
 msgid "Reason for this reboot/shutdown"
 msgstr "Grund für dieses Neustarten/Herunterfahren"
 
-#: umc/js/reboot.js:33
+#: umc/js/reboot.js:34
 msgid "Reboot"
 msgstr "Neustarten"
 
-#: umc/js/reboot.js:23
+#: umc/js/reboot.js:24
 msgid "Reboot/shutdown the system"
 msgstr "System neustarten/herunterfahren"
 
-#: umc/js/reboot.js:34
+#: umc/js/reboot.js:35
 msgid "Stop"
 msgstr "Herunterfahren"
 
-#: umc/js/reboot.js:22
+#: umc/js/reboot.js:23
 msgid ""
 "This module can be used to restart or shut down the system remotely. The "
 "optionally given message will be displayed on the console and written to the "

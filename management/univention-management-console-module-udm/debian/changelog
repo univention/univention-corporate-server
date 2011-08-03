@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.82-1) unstable; urgency=low
+
+  * Adaptations for new design (Bug #22881) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 03 Aug 2011 10:28:00 +0200
+
 univention-management-console-module-udm (1.0.81-1) unstable; urgency=low
 
   * adaptations for the new layout (Bug #22881)

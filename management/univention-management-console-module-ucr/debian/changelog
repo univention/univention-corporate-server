@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (1.0.19-1) unstable; urgency=low
+
+  * Adaptations for new design (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 03 Aug 2011 10:13:02 +0200
+
 univention-management-console-module-ucr (1.0.18-1) unstable; urgency=low
 
   * adaptations to use umc.widgets.Page (Bug #22881)
