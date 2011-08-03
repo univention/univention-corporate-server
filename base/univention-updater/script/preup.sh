@@ -173,11 +173,17 @@ if [ "$tcsInstalled" = "true" ]; then
 		repository/online/component/tcs=yes \
 		repository/online/component/tcs/version=current
 
+	# check if this is ucs 3.0 and set propper python version
+	version=$(dpkg-query -W -f '${Version}' univention-updater)
+	if dpkg --compare-versions "$version" lt "7.0"; then
+		python_version="python2.4"
+	else
+		python_version="python2.6"
+	fi
+
 	# check if component is available in ucs 3.0-0
 	updateError=$(mktemp)
-	scope=$(python2.6 -c '
-#!/usr/bin/python2.6
-
+	scope=$($python_version -c '
 from univention.updater import UniventionUpdater, UCS_Version
 from univention.updater.tools import LocalUpdater
 import univention.config_registry

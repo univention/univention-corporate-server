@@ -1,3 +1,11 @@
+univention-updater (7.0.7-1) unstable; urgency=low
+
+  * use python2.4 or python2.6 for tcs test in preup.sh,
+    depending on what univention-updater version is installed
+    Bug #22878 
+
+ -- Felix Botner <botner@univention.de>  Wed, 03 Aug 2011 17:49:13 +0200
+
 univention-updater (7.0.6-1) unstable; urgency=low
 
   * Since Squeeze dpkg-architecture is part of dpkg-dev, now the updater
