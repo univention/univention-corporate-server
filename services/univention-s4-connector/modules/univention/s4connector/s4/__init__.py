@@ -1463,7 +1463,7 @@ class s4(univention.s4connector.ucs):
 			# user enabled in UCS
 			if ldap_object_s4.has_key('userAccountControl') and (int(ldap_object_s4['userAccountControl'][0]) & 2 ) > 0:
 				#user disabled in S4 -> change
-				res=str(int(ldap_object_s4['userAccountControl'][0]) + 2)
+				res=str(int(ldap_object_s4['userAccountControl'][0]) - 2)
 				modlist.append((ldap.MOD_REPLACE, 'userAccountControl', [res]))
 
 		# account expires
