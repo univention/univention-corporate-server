@@ -57,14 +57,18 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		var actions = [{
 			name: 'terminate',
-			label: this._('Terminate processes'),
+			label: this._('Terminate'),
 			iconClass: 'dijitIconDelete',
-			callback: dojo.hitch(this, 'killProcesses', 'SIGTERM')
+			callback: dojo.hitch(this, 'killProcesses', 'SIGTERM'),
+			isStandardAction: true,
+			isMultiAction: true
 		}, {
 			name: 'kill',
-			label: this._('Kill processes'),
+			label: this._('Kill'),
 			iconClass: 'dijitIconDelete',
-			callback: dojo.hitch(this, 'killProcesses', 'SIGKILL')
+			callback: dojo.hitch(this, 'killProcesses', 'SIGKILL'),
+			isStandardAction: true,
+			isMultiAction: true
 		}];
 
 		var columns = [{
