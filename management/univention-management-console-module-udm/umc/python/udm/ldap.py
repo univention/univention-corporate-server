@@ -86,8 +86,6 @@ def get_ldap_connection():
 class UDM_Module( object ):
 	"""Wraps UDM modules to provie a simple access to the properties and functions"""
 
-	UCR_SEARCH_DEFAULT = 'directory/manager/web/modules/%(module)s/search/default'
-
 	def __init__( self, module ):
 		"""Initializes the object"""
 		self.load( module )
@@ -304,9 +302,6 @@ class UDM_Module( object ):
 					 'options' : prop.options, 'searchable' : not prop.dontsearch, 'multivalue' : prop.multivalue in ( 1, True ) }
 
 			# read UCR configuration
-			if ucr.get( UDM_Module.UCR_SEARCH_DEFAULT % { 'module' : self.module.module } ) == key:
-				item[ 'preselected' ] = True
-
 			item.update( widget( prop.syntax ) )
 			props.append( item )
 		props.sort( key = operator.itemgetter( 'label' ) )

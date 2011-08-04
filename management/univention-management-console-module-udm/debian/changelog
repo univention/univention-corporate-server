@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.83-1) unstable; urgency=low
+
+  * add UCR variable for default settings; Bug #22439
+  * remove sendings search options; frontend will directly it from UCR
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 04 Aug 2011 13:08:31 +0200
+
 univention-management-console-module-udm (1.0.82-1) unstable; urgency=low
 
   * Adaptations for new design (Bug #22881) 
