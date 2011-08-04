@@ -2,18 +2,20 @@
 
 dojo.provide("umc.modules.udm");
 
-dojo.require("dijit.Tree");
+dojo.require("dijit.Menu");
+dojo.require("dijit.MenuItem");
 dojo.require("dijit.layout.BorderContainer");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dojo.DeferredList");
+dojo.require("umc.dialog");
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
-dojo.require("umc.dialog");
+dojo.require("umc.widgets.ExpandingTitlePane");
 dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.Module");
-dojo.require("umc.widgets.SearchForm");
 dojo.require("umc.widgets.Page");
-dojo.require("umc.widgets.ExpandingTitlePane");
+dojo.require("umc.widgets.SearchForm");
+dojo.require("umc.widgets.Tree");
 
 dojo.require("umc.modules._udm.Template");
 dojo.require("umc.modules._udm.NewObjectDialog");
@@ -40,7 +42,6 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	//		the properties 'objectType' and 'objectDN' (both as strings).
 	openObject: null,
 
-
 	// the property field that acts as unique identifier: the LDAP DN
 	idProperty: 'ldap-dn',
 
@@ -53,9 +54,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// internal reference to the signal handle to umc.modules._udm.DetailPage.onClose
 	_detailPageCloseHandle: null,
 
-	// reference to a dijit.Tree instance which is used to display the container
+	// reference to a `umc.widgets.Tree` instance which is used to display the container
 	// hierarchy for the UDM navigation module
 	_tree: null,
+
+	// reference to the last item in the navigation on which a context menu has been opened
+	_navContextItem: null,
 
 	buildRendering: function() {
 		// call superclass method
@@ -134,23 +138,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			isMultiAction: true,
 			iconClass: 'dijitIconDelete',
 			callback: dojo.hitch(this, function(ids) {
-				// ignore empty selections
-				if (!ids.length) {
-					return;
+				if (ids.length) {
+					this.removeObjects(ids);
 				}
-
-				// let user confirm deletion
-				var msg = this._('Please confirm the removal of the %d selected objects!', ids.length);
-				if (ids.length == 1) {
-					msg = this._('Please confirm the removal of the selected object!', ids.length);
-				}
-				umc.dialog.confirm(msg, [{
-					label: this._('Delete'),
-					callback: dojo.hitch(this, 'removeObjects', ids)
-				}, {
-					label: this._('Cancel'),
-					'default': true
-				}]);
 			})
 		}];
 
@@ -277,11 +267,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			var model = new umc.modules._udm.TreeModel({
 				umcpCommand: umcpCmd
 			});
-			this._tree = new dijit.Tree({
+			this._tree = new umc.widgets.Tree({
 				//style: 'width: auto; height: auto;',
 				model: model,
 				persist: false,
 				// customize the method getIconClass()
+				onClick: dojo.hitch(this, 'filter'),
 				getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
 					return umc.tools.getIconClass(item.icon || 'udm-container-cn');
 				}
@@ -291,6 +282,41 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				region: 'left',
 				splitter: true,
 				style: 'width: 200px;'
+			});
+
+			// add a context menu to edit/delete items
+			var menu = dijit.Menu({});
+			menu.addChild(new dijit.MenuItem({
+				label: this._( 'Edit' ),
+				iconClass: 'dijitIconEdit',
+				onClick: dojo.hitch(this, function(e) {
+					this.createDetailPage(this._navContextItem.objectType, this._navContextItem.id);
+				})
+			}));
+			menu.addChild(new dijit.MenuItem({
+				label: this._( 'Delete' ),
+				iconClass: 'dijitIconDelete',
+				onClick: dojo.hitch(this, function() {
+					this.removeObjects(this._navContextItem.id);
+				})
+			}));
+			menu.addChild(new dijit.MenuItem({
+				label: this._( 'Reload' ),
+				iconClass: 'dijitIconUndo',
+				onClick: dojo.hitch(this, function() {
+					this._tree.reload();
+				})
+			}));
+
+			// when we right-click anywhere on the tree, make sure we open the menu
+			menu.bindDomNode(this._tree.domNode);
+
+			// remember on which item the context menu has been opened
+			this.connect(menu, '_openMyself', function(e) {
+				var el = dijit.getEnclosingWidget(e.target);
+				if (el) {
+					this._navContextItem = el.item;
+				}
 			});
 
 			// encapsulate the current layout with a new BorderContainer in order to place
@@ -347,15 +373,42 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}
 	},
 
-	removeObjects: function(ids) {
+	removeObjects: function(/*String|String[]*/ _ids) {
 		// summary:
 		//		Remove the selected UDM objects.
 
-		var transaction = this.moduleStore.transaction();
-		dojo.forEach(ids, function(iid) {
-			this.moduleStore.remove(iid);
-		}, this);
-		transaction.commit();
+		// get an array
+		var ids = dojo.isArray(_ids) ? _ids : (_ids ? [ _ids ] : []);
+
+		console.log('# removeObjects');
+		console.log(dojo.toJson(_ids));
+		console.log(dojo.toJson(ids));
+		
+		// ignore empty array
+		if (!ids.length) {
+			return;
+		}
+		console.log('# 1');
+
+		// let user confirm deletion
+		var msg = this._('Please confirm the removal of the %d selected objects!', ids.length);
+		if (ids.length == 1) {
+			msg = this._('Please confirm the removal of the selected object!');
+		}
+		umc.dialog.confirm(msg, [{
+			label: this._('Delete'),
+			callback: dojo.hitch(this, function() {
+				// remove the selected elements via a transaction on the module store
+				var transaction = this.moduleStore.transaction();
+				dojo.forEach(ids, function(iid) {
+					this.moduleStore.remove(iid);
+				}, this);
+				transaction.commit();
+			})
+		}, {
+			label: this._('Cancel')
+		}]);
+
 	},
 
 	showNewObjectDialog: function() {

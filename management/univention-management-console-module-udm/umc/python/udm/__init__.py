@@ -417,7 +417,7 @@ class Instance( Base ):
 				so_obj = None
 			try:
 				for item in module.search( request.options.get( 'container' ), scope = 'one', superordinate = so_obj ):
-					result.append( { 'id' : item.dn, 'label' : item[ module.identifies ], 'icon' : 'udm-%s-%s' % ( base, typ ), 'path': ldap_dn2path( item.dn ) } )
+					result.append( { 'id' : item.dn, 'label' : item[ module.identifies ], 'icon' : 'udm-%s-%s' % ( base, typ ), 'path': ldap_dn2path( item.dn ), 'objectType': '%s/%s' % (base, typ) } )
 			except UDM_Error, e:
 				success = False
 				result = None

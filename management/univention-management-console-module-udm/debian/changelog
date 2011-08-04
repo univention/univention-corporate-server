@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.86-1) unstable; urgency=low
+
+  * added autosearch when clicking on a container in navigation sidebar
+  * added 'edit'/'delete' feature for containers in navigation sidebar
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 04 Aug 2011 17:21:59 +0200
+
 univention-management-console-module-udm (1.0.85-1) unstable; urgency=low
 
   * udm/nav/object/query: do not return container objects
