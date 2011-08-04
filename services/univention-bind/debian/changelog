@@ -1,3 +1,10 @@
+univention-bind (6.0.3-1) unstable; urgency=low
+
+  * create pid dir in univention-bind(-proxy) start script
+   (Bug #22478)
+
+ -- Felix Botner <botner@univention.de>  Thu, 04 Aug 2011 13:34:49 +0200
+
 univention-bind (6.0.2-1) unstable; urgency=low
 
   * fixed bashisms (Bug #23005)
