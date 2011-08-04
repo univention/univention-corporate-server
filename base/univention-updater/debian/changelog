@@ -1,3 +1,9 @@
+univention-updater (7.0.8-1) unstable; urgency=low
+
+  * Use host account for policy result in the init script (Bug #17519)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Aug 2011 09:13:10 +0200
+
 univention-updater (7.0.7-1) unstable; urgency=low
 
   * use python2.4 or python2.6 for tcs test in preup.sh,
