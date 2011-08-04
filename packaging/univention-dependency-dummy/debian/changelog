@@ -1,3 +1,9 @@
+univention-dependency-dummy (0.0.0.0.0-6) unstable; urgency=low
+
+  * Removed univention-directory-replication from provides (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Aug 2011 13:36:41 +0200
+
 univention-dependency-dummy (0.0.0.0.0-5) unstable; urgency=low
 
   * Removed univention-ipcalc from provides (Bug #22511)
