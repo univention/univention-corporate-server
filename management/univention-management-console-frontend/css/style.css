@@ -135,12 +135,12 @@ div.modLaunchButtonClick {
 	margin: 10px 0 10px 0;
 }
 
-/* hack for the drop-down buttons in the grid :) */
+/* adapatation for the drop-down buttons in the grid :) */
 .umcDisplayNone {
 	display: none !important;
 }
 
-/* more hacks for the module widget */
+/* more adapatations for the module widget */
 .umcModulePane {
 	padding: 8px;
 }
@@ -158,39 +158,13 @@ div.modLaunchButtonClick {
 	visibility: visible !important;
 }
 
-/* hack the popup menu for data grids for:
-   popup above the cell
-   popup below the cell */
-.umcGridRowPopupBelow {
-	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25) !important;
-	-moz-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25) !important;
-	-webkit-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25) !important;
-}
-.umcGridRowMenuBelow {
-	border-top: 0 !important;
-	background-color: #dcedfb !important;
-}
-.umcGridRowPopupAbove {
-	box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.25) !important;
-	-moz-box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.25) !important;
-	-webkit-box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.25) !important;
-}
-.umcGridRowMenuAbove {
-	border-bottom: 0 !important;
-	background-color: #dcedfb !important;
-}
-
-/* hack the grid */
+/* adaptations for the grid */
 
 .dojoxGridCell {
 	border: none !important;
 }
 
-.dojoxGridRowOdd {
-	background-color: #e0edf4;
-}
-
-/* hacks for the toaster */
+/* adaptations for the toaster */
 .dijitToasterContainer {
 	width: 300px;
 	/*clip: none !important;*/
@@ -217,7 +191,7 @@ div.modLaunchButtonClick {
 	color: #000;
 }
 
-/* hacks for the TitlePane for level 1 */
+/* adapatations for the TitlePane in forms for level 1 */
 .umcFormLevel1 .dijitTitlePaneTitle {
 	background-color: transparent;
 	background-image: none;

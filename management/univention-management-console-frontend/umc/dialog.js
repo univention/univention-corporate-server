@@ -3,6 +3,7 @@
 dojo.provide("umc.dialog");
 
 dojo.require("umc.i18n");
+dojo.require("umc.tools");
 dojo.require("umc.widgets.LoginDialog");
 dojo.require("umc.widgets.Toaster");
 dojo.require("umc.widgets.ConfirmDialog");
@@ -149,7 +150,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		// |	}]);
 
 		// if the user has switched off confirmations, try to find a default option
-		if (!this.preferences('confirm')) {
+		if (!umc.tools.preferences('confirm')) {
 			var cb = undefined;
 			var response = undefined;
 			dojo.forEach(options, function(i, idx) {
