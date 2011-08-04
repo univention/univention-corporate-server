@@ -34,8 +34,8 @@
 
 # set default UCR settings
 univention-config-registry set \
-	ucm/server/debug/level?1 \
-	ucm/module/debug/level?1
+	umc/server/debug/level?1 \
+	umc/module/debug/level?1
 
 # remove old baseconfig commands
 /usr/sbin/univention-management-console-acls remove --user root \

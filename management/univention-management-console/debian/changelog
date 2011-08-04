@@ -1,3 +1,11 @@
+univention-management-console (4.0.47-2) unstable; urgency=low
+
+  * add dependencies to meta package univention-management-console for
+    currently available base modules (ucr, top, reboot); Bug #22460
+  * fixed typos
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 03 Aug 2011 20:34:59 +0200
+
 univention-management-console (4.0.47-1) unstable; urgency=low
 
   * ACLs: fixed minor bug in hostname expansion; Bug #22460
