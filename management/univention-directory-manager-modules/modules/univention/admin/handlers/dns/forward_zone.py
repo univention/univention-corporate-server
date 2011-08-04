@@ -33,6 +33,8 @@
 import re
 
 from univention.admin.layout import Tab, Group
+from univention.admin import configRegistry
+
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
@@ -83,7 +85,7 @@ property_descriptions={
 			required=1,
 			may_change=1,
 			identifies=0,
-			default=(makeContactPerson, [], ''),
+			default = ( 'root@%s' % configRegistry.get( 'domainname' ), [] ),
 		),
 	'serial': univention.admin.property(
 			short_description=_('Serial number'),
@@ -330,7 +332,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 
 def identify(dn, attr, canonical=0):
-
-	return 'dNSZone' in attr.get('objectClass', []) and\
-		['@'] == attr.get('relativeDomainName', []) and\
-		not attr['zoneName'][0].endswith('.in-addr.arpa')
+	return 'dNSZone' in attr.get('objectClass', []) and ['@'] == attr.get('relativeDomainName', []) and not attr['zoneName'][0].endswith('.in-addr.arpa')

@@ -70,29 +70,6 @@ class vacationResendDays(univention.admin.syntax.select):
 	for i in range(2,60):
 		choices.append(("%s" % i,"%s %s" % (i, _('days'))))
 
-class _default_gecos:
-	def __init__( self ):
-		pass
-
-	def __call__( self, object, old_data = False ):
-		if not old_data:
-			if object[ 'firstname' ]:
-				gecos = "%s %s" % ( object.info.get( 'firstname', '' ), object.info.get( 'lastname', '' ) )
-			else:
-				gecos = "%s" % object.info.get( 'lastname', '' )
-		else:
-			if object[ 'firstname' ]:
-				gecos = "%s %s" % ( object.oldinfo.get( 'firstname', '' ), object.oldinfo.get( 'lastname', '' ) )
-			else:
-				gecos = "%s" % object.oldinfo.get( 'lastname', '' )
-
-		# replace umlauts
-		_umlauts = { 'ä' :'ae', 'Ä' : 'Ae', 'ö' : 'oe', 'Ö' : 'Oe', 'ü' : 'ue', 'Ü' : 'Ue', 'ß' : 'ss', 'Á' : 'A', 'Â' : 'A', 'Ã' : 'A', 'Ä' : 'A', 'Å' : 'A', 'Æ' : 'AE', 'Ç' : 'C', 'È' : 'E', 'É' : 'E', 'Ê' : 'E', 'Ë' : 'E', 'Ì' : 'I', 'Í' : 'I', 'Î' : 'I', 'Ï' : 'I', 'Ð' : 'D', 'Ñ' : 'N', 'Ò' : 'O', 'Ó' : 'O', 'Ô' : 'O', 'Õ' : 'O', 'Ö' : 'O', 'Ù' : 'U', 'Ú' : 'U', 'Û' : 'U', 'à' : 'a', 'â' : 'a', 'á' : 'a', 'ã' : 'a', 'æ' : 'ae', 'ç' : 'c', 'è' : 'e', 'é' : 'e', 'ê' : 'e', 'ë' : 'e', 'ì' : 'i', 'í' : 'i', 'î' : 'i', 'ï' : 'i', 'ñ' : 'n', 'ò' : 'o', 'ó' : 'o', 'ô' : 'o', 'ù' : 'u', 'ú' : 'u', 'û' : 'u', 'ý' : 'y', 'ÿ' : 'y', 'Ĉ' : 'C', 'ĉ' : 'c' }
-		for umlaut, code in _umlauts.items():
-			gecos = gecos.replace( umlaut, code )
-
-		return gecos.encode('ascii', 'replace')
-
 module='users/user'
 operations=['add','edit','remove','search','move']
 template='settings/usertemplate'
@@ -203,7 +180,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			may_change=1,
-			default = ( _default_gecos(), [], False ),
+			default = '<firstname:umlauts> <lastname:umlauts>',
 			identifies=0
 		),
 	'title': univention.admin.property(
@@ -321,7 +298,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			default=(['<mailPrimaryAddress>'])
+			default = [ '<mailPrimaryAddress>' ]
 		),
 	'postcode': univention.admin.property(
 			short_description=_('Postal code'),
@@ -462,7 +439,7 @@ property_descriptions={
 			required=1,
 			may_change=1,
 			identifies=0,
-			default=('/home/<username>', ['username']) # FIXME: should escape umlauts
+			default= '/home/<username>'
 		),
 
 	'shell': univention.admin.property(
@@ -474,7 +451,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			default=('/bin/bash', [])
+			default = '/bin/bash'
 		),
 	'sambahome': univention.admin.property(
 			short_description=_('Windows home path'),
@@ -625,7 +602,7 @@ property_descriptions={
 			dontsearch=1,
 			may_change=1,
 			identifies=0,
-			default=('<username>', ['username']) # FIXME: should escape umlauts
+			default = '<username>'
 		),
 	'sambaUserWorkstations': univention.admin.property(
 			short_description=_('Allow the authentication only on these windows hosts'),

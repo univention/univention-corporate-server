@@ -42,15 +42,6 @@ import univention.admin.localization
 translation=univention.admin.localization.translation('univention.admin.handlers.settings')
 _=translation.translate
 
-def makeSambaDomainName(object, arg):
-	return [(object['name'].upper()+'.'+object.position.getPrintable()).upper()]
-
-def makeSambaDomainSid(object, arg):
-	popen = os.popen('/usr/sbin/univention-newsid')
-	sid = popen.read()[:-1]
-	popen.close()
-	return sid
-
 # see also container/dc.py
 def logonToChangePWMap(val):
 	"""
@@ -96,7 +87,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=0,
-			default=(makeSambaDomainSid, [], 'sambaDomain'),
+			default = '',
 			identifies=0
 			),
 	'NextUserRid': univention.admin.property(
@@ -107,7 +98,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			default=('1000', []),
+			default= '1000',
 			identifies=0
 		),
 	'NextGroupRid': univention.admin.property(
@@ -118,7 +109,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			default=('1000', []),
+			default = '1000',
 			identifies=0
 			),
 	'NextRid': univention.admin.property(
@@ -129,7 +120,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			default=('1000', []),
+			default = '1000',
 			identifies=0
 			),
 	'passwordLength': univention.admin.property(

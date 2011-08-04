@@ -34,16 +34,14 @@ import string
 import types
 
 from univention.admin.layout import Tab, Group
+from univention.admin import configRegistry
+
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
 translation=univention.admin.localization.translation('univention.admin.handlers.dns')
 _=translation.translate
-
-def makeContactPerson(object, arg):
-	domain=object.position.getDomain()
-	return 'root@%s.' %(domain.replace(',dc=','.').replace('dc=',''))
 
 module='dns/reverse_zone'
 operations=['add','edit','remove','search']
@@ -84,7 +82,7 @@ property_descriptions={
 			required=1,
 			may_change=1,
 			identifies=0,
-			default=(makeContactPerson, [], ''),
+			default = ( 'root@%s.' % configRegistry.get( 'domainname', '' ), [] ),
 		),
 	'serial': univention.admin.property(
 			short_description=_('Serial number'),

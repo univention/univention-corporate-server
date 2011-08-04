@@ -227,7 +227,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			default=('<name>', ['name'])
+			default= '<name>',
 		),
 	'sambaBrowseable': univention.admin.property(
 			short_description=_('Browseable'),

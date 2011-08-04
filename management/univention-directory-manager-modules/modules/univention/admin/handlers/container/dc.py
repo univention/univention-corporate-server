@@ -33,6 +33,7 @@
 import ldap
 
 from univention.admin.layout import Tab, Group
+from univention.admin import configRegistry
 
 import univention.admin.filter
 import univention.admin.handlers
@@ -47,14 +48,8 @@ import univention.admin.handlers.groups.group
 translation=univention.admin.localization.translation('univention.admin.handlers.container')
 _=translation.translate
 
-def makeDnsForwardZone(object, arg):
-	return [object['name']+'.'+object.position.getPrintable()]
-
 def makeSambaDomainName(object, arg):
 	return [(object['name'].upper()+'.'+object.position.getPrintable()).upper()]
-
-def makeSambaDomainSid(object, arg):
-	return univention.admin.allocators.requestDomainSid(object.lo, object.position )
 
 module='container/dc'
 childs=1
@@ -95,7 +90,7 @@ property_descriptions={
 			multivalue=1,
 			options=[],
 			required=0,
-			default=(makeDnsForwardZone, [], ''),
+			default = ( '<name>.%s' % configRegistry.get( 'domainname', '' ), [] ),
 			may_change=0,
 			identifies=0
 		),
@@ -117,7 +112,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			default=(makeSambaDomainName, [], 'sambaDomain'),
+			default = ( configRegistry.get( 'domainname', '' ).upper(), [] ),
 			identifies=0
 		),
 	'sambaSID': univention.admin.property(
@@ -160,7 +155,7 @@ property_descriptions={
 			options=['kerberos'],
 			required=1,
 			may_change=0,
-			default=(makeSambaDomainName, [], 'sambaDomain'),
+			default = ( configRegistry.get( 'domainname', '' ).upper(), [] ),
 			identifies=0
 		),
 	'mailRelay': univention.admin.property(

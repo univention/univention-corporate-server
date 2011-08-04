@@ -55,7 +55,8 @@ property_descriptions={
 			multivalue=0,
 			options=[],
 			required=1,
-			may_change=1
+			may_change=1,
+		identifies = True
 		),
 	'ptr_record': univention.admin.property(
 			short_description=_('Pointer'),

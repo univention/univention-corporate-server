@@ -41,7 +41,7 @@ configRegistry.load()
 # baseconfig legacy
 baseConfig=configRegistry
 
-__path__.append("handlers")
+# __path__.append("handlers")
 
 def ucr_overwrite_properties( module, lo ):
 	"""
@@ -86,6 +86,8 @@ def ucr_overwrite_properties( module, lo ):
 			continue
 
 class property:
+	UMLAUTS = { 'ä' :'ae', 'Ä' : 'Ae', 'ö' : 'oe', 'Ö' : 'Oe', 'ü' : 'ue', 'Ü' : 'Ue', 'ß' : 'ss', 'Á' : 'A', 'Â' : 'A', 'Ã' : 'A', 'Ä' : 'A', 'Å' : 'A', 'Æ' : 'AE', 'Ç' : 'C', 'È' : 'E', 'É' : 'E', 'Ê' : 'E', 'Ë' : 'E', 'Ì' : 'I', 'Í' : 'I', 'Î' : 'I', 'Ï' : 'I', 'Ð' : 'D', 'Ñ' : 'N', 'Ò' : 'O', 'Ó' : 'O', 'Ô' : 'O', 'Õ' : 'O', 'Ö' : 'O', 'Ù' : 'U', 'Ú' : 'U', 'Û' : 'U', 'à' : 'a', 'â' : 'a', 'á' : 'a', 'ã' : 'a', 'æ' : 'ae', 'ç' : 'c', 'è' : 'e', 'é' : 'e', 'ê' : 'e', 'ë' : 'e', 'ì' : 'i', 'í' : 'i', 'î' : 'i', 'ï' : 'i', 'ñ' : 'n', 'ò' : 'o', 'ó' : 'o', 'ô' : 'o', 'ù' : 'u', 'ú' : 'u', 'û' : 'u', 'ý' : 'y', 'ÿ' : 'y', 'Ĉ' : 'C', 'ĉ' : 'c' }
+
 	def __init__(self, short_description='', long_description='', syntax=None, module_search=None, multivalue=0, one_only=0, parent=None, options=[], license=[], required=0, may_change=1, identifies=0, unique=0, default=None, dontsearch=0, show_in_lists=0, editable=1, configObjectPosition=None,configAttributeName=None):
 		self.short_description=short_description
 		self.long_description=long_description
@@ -118,6 +120,23 @@ class property:
 			return None
 
 	def _replace(self,res,object):
+		global_commands = []
+		def modify_text( text, commands ):
+			# apply all string commands
+			for iCmd in commands:
+				if iCmd == 'lower':
+					text = text.lower()
+				elif iCmd == 'upper':
+					text = text.upper()
+				elif iCmd == 'umlauts':
+					for umlaut, code in property.UMLAUTS.items():
+						text = text.replace( umlaut, code )
+
+					text = text.encode( 'ascii', 'replace' )
+				elif iCmd in ( 'trim', 'strip' ):
+					text = text.strip()
+			return text
+
 		def repl(match):
 			key = match.group('key')
 			ext = match.group('ext')
@@ -132,18 +151,15 @@ class property:
 				# get all commands in lower case and without leading/trailing spaces
 				strCommands = [iCmd.lower().strip() for iCmd in tmpStr.split(',')]
 
-			# make sure the key value exists
-			if object.has_key(key) and object[key]:
-				# get the value of 'object[key]'
-				val = object[key]
+				# if this is a list of global commands store the
+				# commands and return an empty string
+				if not key:
+					global_commands.extend( strCommands )
+					return ''
 
-				# apply all string commands
-				for iCmd in strCommands:
-					if iCmd == 'lower':
-						val = val.lower()
-					elif iCmd == 'upper':
-						val = val.upper()
-						
+			# make sure the key value exists
+			if object.get( key, None ):
+				val = modify_text( object[key], strCommands )
 				# try to apply the indexing instructions, indicated through '[...]'
 				if ext:
 					try:
@@ -155,8 +171,12 @@ class property:
 			elif key == 'dn' and object.dn:
 				return object.dn
 			return ''
+
 		pattern = re.compile(r'<(?P<key>[^>]+)>(?P<ext>\[[\d:]+\])?')
-		return pattern.sub(repl, res, 0)
+		value = pattern.sub(repl, res, 0)
+		if global_commands:
+			value = modify_text( value, global_commands )
+		return value
 
 
 	def default(self, object):
@@ -395,3 +415,9 @@ class policiesGroup:
 			self.short_description=short_description
 		self.long_description=long_description
 		self.members=members
+
+if __name__ == '__main__':
+	prop = property( '_replace' )
+	for pattern in ( '<firstname>', '<firstname> <lastname>', '<firstname:upper>', '<:trim,upper><firstname> <lastname>     ', '<:lower><firstname> <lastname>', '<:umlauts><firstname> <lastname>' ):
+		print "pattern: '%s'" % pattern
+		print " -> '%s'" % prop._replace( pattern, { 'firstname' : 'Andreas', 'lastname' : 'Büsching' } )

@@ -129,7 +129,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			default=('/home/<username>', [])
+			default = '/home/<username>',
 		),
  	'homeShare': univention.admin.property(
  			short_description=_('Home Share'),
@@ -161,7 +161,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			default=('/bin/bash', [])
+			default = '/bin/bash'
 		),
 	'sambahome': univention.admin.property(
 			short_description=_('Windows Home Path'),

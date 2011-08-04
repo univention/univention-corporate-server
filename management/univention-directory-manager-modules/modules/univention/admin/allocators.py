@@ -86,13 +86,6 @@ def requestGroupSid(lo, position, gid_s):
 	return request(lo, position, 'sid', sid)
 
 
-def requestDomainSid(lo, position):
-
-	sid='3424242-42424'
-	
-	return request(lo, position, 'sid', sid)
-
-
 def acquireRange(lo, position, type, attr, ranges, scope='base'):
 
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Start allocation for type = %s' % (type))
