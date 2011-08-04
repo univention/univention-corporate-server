@@ -133,10 +133,12 @@ class access:
 
 		self.port = port
 
-		if not self.port:
+		if not self.port:	## if no explicit port is given
 			ucr = ConfigRegistry()
 			ucr.load()
-			self.port = int(ucr.get('ldap/server/port', 389))
+			self.port = int(ucr.get('ldap/server/port', 7389))	## take UCR value
+			if use_ldaps and self.port == "7389":				## adjust the standard port for ssl
+					self.port = "7636"
 
 		# http://www.openldap.org/faq/data/cache/605.html
 		self.protocol = 'ldap'
