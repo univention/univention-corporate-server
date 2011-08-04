@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.39-1) unstable; urgency=low
+
+  * add univention-object-type-migrate (Bug #23114)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 04 Aug 2011 13:41:25 +0200
+
 univention-directory-manager-modules (7.0.38-1) unstable; urgency=low
 
   * extend syntax classes based on ldapDn to work without old frontend; Bug #22439
