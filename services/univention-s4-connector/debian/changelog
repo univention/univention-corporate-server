@@ -1,3 +1,14 @@
+univention-s4-connector (6.0.16-1) unstable; urgency=low
+
+  * call univention-password_sync_ucs_to_s4 for Administrator once
+    in join script, i.e. before first stat of the S4 Connector.
+  * avoid duplication of complex password_sync_ucs_to_s4 code  
+    in univention-password_sync_ucs_to_s4, simply call the connector code
+  * remove ad-connector specific code in s4connector/s4/password.py
+    (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 04 Aug 2011 11:06:52 +0200
+
 univention-s4-connector (6.0.15-1) unstable; urgency=low
 
   * samba2ad_time was renamed to samba2s4_time. In univention-

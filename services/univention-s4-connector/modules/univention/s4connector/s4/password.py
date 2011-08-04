@@ -33,13 +33,11 @@
 
 
 import os, time
-import array, socket, ldap
+import ldap
 import univention.debug2 as ud
 import univention.s4connector.s4
 import binascii
 import types
-
-import M2Crypto
 
 from samba.ndr import ndr_unpack, ndr_pack
 from samba.dcerpc import drsblobs
@@ -50,15 +48,6 @@ _PyCObject_FromVoidPtr = ctypes.pythonapi.PyCObject_FromVoidPtr
 _PyCObject_FromVoidPtr.argtypes = [ctypes.POINTER(ctypes.c_char_p), ctypes.c_void_p] 
 _PyCObject_FromVoidPtr.restype = ctypes.py_object 
 
-def nt_password_to_arcfour_hmac_md5(nt_password):
-	# all arcfour-hmac-md5 keys begin this way
-	key='0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
-	
-	for i in range(0, 16):
-		o=nt_password[2*i:2*i+2]
-		key+=chr(int(o, 16))
-	return key
-	
 def lm_password_to_user_password(lm_password):
 	return '{LANMAN}%s' % lm_password
 
@@ -341,277 +330,6 @@ def _get_integer(str):
 	res=ord(str[0]) + (ord(str[1]) << 8) + (ord(str[2]) << 16) + (ord(str[3]) << 24)
 	return res
 
-def ssl_init(sd):
-	meth = M2Crypto.__m2crypto.sslv2_method();
-	ctx = M2Crypto.__m2crypto.ssl_ctx_new (meth);
-	ssl = M2Crypto.__m2crypto.ssl_new (ctx);
-	M2Crypto.__m2crypto.ssl_set_fd (ssl, sd);
-	err = M2Crypto.__m2crypto.ssl_connect (ssl);
-	return ssl
-
-def set_password_in_s4(s4connector, samaccountname, pwd):
-	_d=ud.function('ldap.s4.set_password_in_s4')
-	compatible_modstring = univention.s4connector.s4.compatible_modstring
-
-	a = array.array('c')
-	
-	_append ( a, univention.s4connector.s4.explode_unicode_dn(s4connector.lo_s4.binddn,1)[0] )
-	_append ( a, s4connector.lo_s4.bindpw )
-	a.append ( 'S' )
-
-	# The copypwd utility on the windows side needs the
-	# username as iso8859 string. See Bug #8516
-	# _append ( a, compatible_modstring(samaccountname) )
-	_append ( a, samaccountname.encode(s4connector.baseConfig.get('connector/password/service/encoding', 'iso8859-15')))
-
-	_append ( a, str(pwd) )
-	package = array.array('c')
-	_append_array( package, a)
-
-	# Create Socket and send package
-	s = socket.socket( socket.AF_INET, socket.SOCK_STREAM );
-	s.connect ( (s4connector.lo_s4.host, 6670) )
-	ssl=ssl_init(s.fileno())
-	M2Crypto.__m2crypto.ssl_write(ssl, package)
-
-	return M2Crypto.__m2crypto.ssl_read(ssl, 8192)
-
-
-def get_password_from_s4(s4connector, rid):
-	_d=ud.function('ldap.s4.get_password_from_s4')
-	a = array.array('c')
-
-	_append ( a, univention.s4connector.s4.explode_unicode_dn(s4connector.lo_s4.binddn,1)[0] )
-	_append ( a, s4connector.lo_s4.bindpw )
-	a.append ( 'G' )
-
-	_append(a, rid)
-		
-	package = array.array('c')
-	_append_array( package, a)
-
-	# Create Socket and send package
-	s = socket.socket( socket.AF_INET, socket.SOCK_STREAM );
-
-	s.connect ( (s4connector.lo_s4.host, 6670) )
-	ssl=ssl_init(s.fileno())
-	M2Crypto.__m2crypto.ssl_write(ssl, package)
-
-	return M2Crypto.__m2crypto.ssl_read(ssl, 8192)
-
-
-def password_sync_ucs(s4connector, key, object):
-	_d=ud.function('ldap.s4.password_sync_ucs')
-	# externes Programm zum Überptragen des Hash aufrufen
-	# per ldapmodify pwdlastset auf -1 setzen
-	
-	compatible_modstring = univention.s4connector.s4.compatible_modstring
-	try:
-		ud.debug(ud.LDAP, ud.INFO, "Object DN=%s" % object['dn'])
-	except: # FIXME: which exception is to be caught?
-		ud.debug(ud.LDAP, ud.INFO, "Object DN not printable")
-		
-	ucs_object = s4connector._object_mapping(key, object, 'con')
-
-	try:
-		ud.debug(ud.LDAP, ud.INFO, "   UCS DN = %s" % ucs_object['dn'])
-	except: # FIXME: which exception is to be caught?
-		ud.debug(ud.LDAP, ud.INFO, "   UCS DN not printable")
-
-	try:
-		res = s4connector.lo.lo.search(base=ucs_object['dn'], scope='base', attr=['sambaLMPassword', 'sambaNTPassword','sambaPwdLastSet','sambaPwdMustChange'])
-	except ldap.NO_SUCH_OBJECT:
-		ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: The UCS object (%s) was not found. The object was removed." % ucs_object['dn'])
-		return
-	
-	sambaPwdLastSet = None
-	if res[0][1].has_key('sambaPwdLastSet'):
-		sambaPwdLastSet = long(res[0][1]['sambaPwdLastSet'][0])
-	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: sambaPwdLastSet: %s" % sambaPwdLastSet)
-	
-	sambaPwdMustChange = -1
-	if res[0][1].has_key('sambaPwdMustChange'):
-		sambaPwdMustChange = long(res[0][1]['sambaPwdMustChange'][0])
-	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: sambaPwdMustChange: %s" % sambaPwdMustChange)
-
-	pwd=None
-	if res[0][1].has_key('sambaLMPassword') and res[0][1].has_key('sambaNTPassword'):
-		pwd=res[0][1]['sambaNTPassword'][0]+res[0][1]['sambaLMPassword'][0]
-
-	if not pwd:
-		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get Password-Hash from UCS")
-
-	res=s4connector.lo_s4.lo.search_s(univention.s4connector.s4.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)',['pwdLastSet','objectSid'])
-	pwdLastSet = None
-	if res[0][1].has_key('pwdLastSet'):
-		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
-	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdLastSet from S4 : %s" % pwdLastSet)
-	rid = None
-	if res[0][1].has_key('objectSid'):
-		rid = str(univention.s4connector.s4.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
-
-	pwd_set = False
-	pwd_s4_res = get_password_from_s4(s4connector, rid)
-	pwd_s4 = ''
-	if len(pwd_s4_res) >3 and _get_integer(pwd_s4_res[4:]) == 0:
-		pwd_s4 = pwd_s4_res[12:].split(':')[1].strip().upper()
-	else:
-		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get Password-Hash from S4")
-	res = ''
-
-	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash S4: %s Hash UCS: %s"%(pwd_s4,pwd))
-	if not pwd == pwd_s4:
-		pwd_set = True
-		res = set_password_in_s4(s4connector, object['attributes']['sAMAccountName'][0], pwd)
-
-	if not pwd_set or len(res) >3 and _get_integer(res[4:]) == 0 :
-		newpwdlastset = "-1" # if pwd was set in s4 we need to set pwdlastset to -1 or it will be 0		
-		if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
-			# password expired, must be changed on next login
-			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: samba pwd expired, set newpwdLastSet to 0")
-			newpwdlastset = "0"
-		elif pwdLastSet and int(pwdLastSet) > 0 and not pwd_set:
-			newpwdlastset = "1"
-		if not long(newpwdlastset) > 0: # means: not == 1
-			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdlastset in modlist: %s" % newpwdlastset)
-			s4connector.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset)])
-		else:
-			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: don't modify pwdlastset")
-	else:
-		ud.debug(ud.LDAP, ud.ERROR, "password_sync_ucs: Failed to sync Password from S4 ")
-
-	res=s4connector.lo_s4.lo.search_s(univention.s4connector.s4.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)',['pwdLastSet'])
-	pwdLastSet = None
-	if res[0][1].has_key('pwdLastSet'):
-		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
-	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdLastSet from S4 : %s" % pwdLastSet)
-
-
-def password_sync(s4connector, key, ucs_object):
-	_d=ud.function('ldap.s4.password_sync')
-	# externes Programm zum holen des Hash aufrufen
-	# "kerberos_now"
-
-	object=s4connector._object_mapping(key, ucs_object, 'ucs')
-	res=s4connector.lo_s4.lo.search_s(univention.s4connector.s4.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)',['objectSid','pwdLastSet'])
-
-	pwdLastSet = None
-	if res[0][1].has_key('pwdLastSet'):
-		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
-	ud.debug(ud.LDAP, ud.INFO, "password_sync: pwdLastSet from S4: %s (%s)" % (pwdLastSet,res))
-
-	rid = None
-	if res[0][1].has_key('objectSid'):
-		rid = str(univention.s4connector.s4.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
-
-	res = get_password_from_s4(s4connector, rid)
-
-	if len(res) >3 and _get_integer(res[4:]) == 0:
-		ntPwd_ucs = ''
-		lmPwd_ucs = ''
-		krb5Principal = ''
-		userPassword = ''
-
-		data = res[12:].split(':')[1].strip()
-		ntPwd = data[:32]
-		lmPwd = data[32:]
-		modlist=[]
-		res=s4connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdMustChange', 'sambaPwdLastSet','sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd'])
-
-		if res[0][1].has_key('sambaLMPassword') and res[0][1].has_key('sambaNTPassword'):
-			ntPwd_ucs = res[0][1]['sambaNTPassword'][0]
-			lmPwd_ucs = res[0][1]['sambaLMPassword'][0]
-		if res[0][1].has_key('krb5PrincipalName'):
-			krb5Principal=res[0][1]['krb5PrincipalName'][0]
-		if res[0][1].has_key('userPassword'):
-			userPassword=res[0][1]['userPassword'][0]
-		sambaPwdLastSet = None
-		if res[0][1].has_key('sambaPwdLastSet'):
-			sambaPwdLastSet=res[0][1]['sambaPwdLastSet'][0]
-		ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet: %s" % sambaPwdLastSet)
-		sambaPwdMustChange = ''
-		if res[0][1].has_key('sambaPwdMustChange'):
-			sambaPwdMustChange=res[0][1]['sambaPwdMustChange'][0]
-		ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdMustChange: %s" % sambaPwdMustChange)
-
-		pwd_changed = False
-		if ntPwd.upper() != ntPwd_ucs.upper() and lmPwd.upper() != lmPwd_ucs.upper():
-			pwd_changed = True
-			modlist.append(('sambaNTPassword', ntPwd_ucs, str(ntPwd.upper())))
-			modlist.append(('sambaLMPassword', lmPwd_ucs, str(lmPwd.upper())))
-			if krb5Principal:
-				s4connector.lo.lo.lo.modify_s(univention.s4connector.s4.compatible_modstring(ucs_object['dn']),
-								[(ldap.MOD_REPLACE, 'krb5Key', nt_password_to_arcfour_hmac_md5(ntPwd.upper()))])
-			s4connector.lo.lo.lo.modify_s(univention.s4connector.s4.compatible_modstring(ucs_object['dn']),
-							[(ldap.MOD_REPLACE, 'userPassword', lm_password_to_user_password(lmPwd.upper()))])
-		if pwd_changed:
-			# Remove the POSIX and Kerberos password expiry interval
-			if res[0][1].has_key('shadowLastChange'):
-				modlist.append(('shadowLastChange', res[0][1]['shadowLastChange'][0], None))
-			if res[0][1].has_key('shadowMax'):
-				modlist.append(('shadowMax', res[0][1]['shadowMax'][0], None))
-			if res[0][1].has_key('krb5PasswordEnd'):
-				modlist.append(('krb5PasswordEnd', res[0][1]['krb5PasswordEnd'][0], None))
-
-		if pwdLastSet or pwdLastSet == 0:
-			newSambaPwdMustChange = sambaPwdMustChange
-			if pwdLastSet == 0: # pwd change on next login
-				newSambaPwdMustChange = str(pwdLastSet)
-				newSambaPwdLastSet = str(pwdLastSet)
-			else:
-				newSambaPwdLastSet = str(univention.s4connector.s4.s42samba_time(pwdLastSet))
-				userobject = s4connector.get_ucs_object('user', ucs_object['dn'])
-				if not userobject:
-					ud.debug(ud.LDAP, ud.ERROR, "password_sync: couldn't get user-object from UCS")
-					return False
-				sambaPwdMustChange=sambaPwdMustChange.strip()
-				if not sambaPwdMustChange.isdigit():
-					pass
-				elif pwd_changed or (long(sambaPwdMustChange) < time.time() and not pwdLastSet == 0):
-					pwhistoryPolicy = userobject.loadPolicyObject('policies/pwhistory')
-					try:
-						expiryInterval=int(pwhistoryPolicy['expiryInterval'])
-						newSambaPwdMustChange = str(long(newSambaPwdLastSet)+(expiryInterval*3600*24) )
-					except: # FIXME: which exception is to be caught?
-						# expiryInterval is empty or no legal int-string
-						pwhistoryPolicy['expiryInterval']=''
-						expiryInterval=-1
-						newSambaPwdMustChange = ''
-
-					ud.debug(ud.LDAP, ud.INFO, "password_sync: pwhistoryPolicy: expiryInterval: %s" %
-										   expiryInterval)
-
-
-			if sambaPwdLastSet:
-				if sambaPwdLastSet != newSambaPwdLastSet:
-					modlist.append(('sambaPwdLastSet', sambaPwdLastSet, newSambaPwdLastSet))
-					ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet in modlist (replace): %s" %
-										newSambaPwdLastSet)
-			else:
-				modlist.append(('sambaPwdLastSet', '', newSambaPwdLastSet ))
-				ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet in modlist (set): %s" %
-									newSambaPwdLastSet)
-
-			if sambaPwdMustChange != newSambaPwdMustChange:
-				# change if password has changed or "change pwd on next login" is not set
-				# set sambaPwdMustChange regarding to the univention-policy
-				if sambaPwdMustChange:
-					modlist.append(('sambaPwdMustChange', sambaPwdMustChange, newSambaPwdMustChange))
-					ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdMustChange in modlist (replace): %s" %
-							       newSambaPwdMustChange)
-				else:
-					modlist.append(('sambaPwdMustChange', '', newSambaPwdMustChange))
-					ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdMustChange in modlist (set): %s" %
-							       newSambaPwdMustChange)
-
-		if len(modlist)>0:	
-			s4connector.lo.lo.modify(ucs_object['dn'], modlist)
-
-
-	else:
-		ud.debug(ud.LDAP, ud.ERROR, "password_sync: sync failed, no result from S4" )
-
-
 def password_sync_ucs_to_s4(s4connector, key, object):
 	_d=ud.function('ldap.s4.password_sync_ucs_to_s4')
 	ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4 called")
@@ -665,7 +383,6 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	# 	rid = str(univention.s4connector.s4.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
 
 	pwd_set = False
-	# pwd_s4_res = get_password_from_s4(s4connector, rid)
 	res=s4connector.lo_s4.lo.search_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, compatible_modstring('(objectSid=%s)' % objectSid), ['unicodePwd', 'userPrincipalName', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
 	unicodePwd_attr = res[0][1].get('unicodePwd', [None])[0]
 	dBCSPwd_attr = res[0][1].get('dBCSPwd', [None])[0]
@@ -701,7 +418,6 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	if not ucsNThash == s4NThash:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: NT Hash S4: %s NT Hash UCS: %s" % (s4NThash, ucsNThash))
 		pwd_set = True
-		# res = set_password_in_s4(s4connector, object['attributes']['sAMAccountName'][0], ucsNThash+ucsLMhash)
 		if unicodePwd_attr:
 			modlist.append((ldap.MOD_DELETE, 'unicodePwd', unicodePwd_attr))
 		if ucsNThash:
@@ -769,7 +485,6 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object):
 	# if res[0][1].has_key('objectSid'):
 	# 	rid = str(univention.s4connector.s4.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
 
-	# res = get_password_from_s4(s4connector, rid)
 	res=s4connector.lo_s4.lo.search_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, univention.s4connector.s4.compatible_modstring('(objectSid=%s)' % objectSid), ['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
 	unicodePwd_attr = res[0][1].get('unicodePwd', [None])[0]
 	if unicodePwd_attr:
