@@ -19,10 +19,10 @@ if [ -z "$option_D_given" ]; then
 	fi
 	if [ -z "$option_w_given" ]; then
 		bindpw_file="/etc/machine.secret"
-		exec ldapsearch -D "$binddn" -y $bindpw_file "$@"
+		exec ldapsearch -ZZ -D "$binddn" -y $bindpw_file "$@"
 	else
-		exec ldapsearch -D "$binddn" "$@"
+		exec ldapsearch -ZZ -D "$binddn" "$@"
 	fi
 else
-	exec ldapsearch "$@"
+	exec ldapsearch -ZZ "$@"
 fi

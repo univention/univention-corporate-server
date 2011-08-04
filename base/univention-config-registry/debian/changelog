@@ -1,3 +1,9 @@
+univention-config-registry (7.0.15-1) unstable; urgency=low
+
+  * Always use -ZZ for ldapsearch in univention-ldapsearch (Bug #17519)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Aug 2011 08:50:34 +0200
+
 univention-config-registry (7.0.14-1) unstable; urgency=low
 
   * Purge leftover files from PyCentral on upgrade (Bug #23054)
