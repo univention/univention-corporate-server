@@ -74,6 +74,8 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			label: this._( 'Delete' ),
 			description: this._( 'Deleting the selected UCR variables' ),
 			iconClass: 'dijitIconDelete',
+			isStandardAction: true,
+			isMultiAction: true,
 			callback: dojo.hitch(this, function(ids) {
 				var transaction = this.moduleStore.transaction();
 				dojo.forEach(ids, dojo.hitch(this.moduleStore, 'remove'));
@@ -90,7 +92,8 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'value',
 			label: this._( 'Value' ),
-			description: this._( 'Value of the UCR variable' )
+			description: this._( 'Value of the UCR variable' ),
+			editable: true
 		}];
 
 		// generate the data grid
@@ -242,14 +245,18 @@ dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.Standb
 
 	},
 
-	newVariable: function() {
-		this._form._widgets.key.set('disabled', false);
-		this.standby(false);
+	clearForm: function() {
 		var emptyValues = {};
 		umc.tools.forIn(this._form.gatherFormValues(), function(ikey) {
 			emptyValues[ikey] = '';
 		});
 		this._form.setFormValues(emptyValues);
+	},
+
+	newVariable: function() {
+		this._form._widgets.key.set('disabled', false);
+		this.clearForm();
+		this.standby(false);
 		this.show();
 	},
 
@@ -260,7 +267,8 @@ dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.Standb
 		this.standby(true);
 		this.show();
 
-		// start the query
+		// clear form and start the query
+		this.clearForm();
 		this._form.load(ucrVariable);
 	},
 

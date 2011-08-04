@@ -122,7 +122,7 @@ class Instance( umcm.Base ):
 		for key in request.options:
 			info = ucrInfo.get_variable( str( key ) )
 			value = ucrReg.get( str( key ) )
-			if not info and value:
+			if not info and (value or '' == value):
 				# only the value available
 				results.append( {'key': key, 'value': value} )
 			elif info:

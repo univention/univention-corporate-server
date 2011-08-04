@@ -1,3 +1,11 @@
+univention-management-console-module-ucr (1.0.20-1) unstable; urgency=low
+
+  * fixed problems with querying empty variables
+  * adapted action types
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 04 Aug 2011 13:32:36 +0200
+
 univention-management-console-module-ucr (1.0.19-1) unstable; urgency=low
 
   * Adaptations for new design (Bug #22881)
