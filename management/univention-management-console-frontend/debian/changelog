@@ -1,3 +1,11 @@
+univention-management-console-frontend (0.0.99-1) unstable; urgency=low
+
+  * fixed layout problems in umc/widgets/ExpandingTitlePane.js
+  * added umc.widgets.Tree
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 04 Aug 2011 19:26:39 +0200
+
 univention-management-console-frontend (0.0.98-1) unstable; urgency=low
 
   * adaptationd of the grid to new design (Bug #22881)

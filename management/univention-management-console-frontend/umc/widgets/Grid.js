@@ -407,7 +407,6 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		var item = this._grid.getItem(evt.rowIndex);
 		this._contextItem = item;
 		this._contextItemID = this._dataStore.getValue(item, this.moduleStore.idProperty);
-		console.log('# contextItem: ' + this._contextItemID);
 	},
 
 	_createFooter: function() {
@@ -510,11 +509,9 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		}
 
 		dojo.forEach(this._footerCells, function(icell) {
-			console.log(icell);
 			this._footer.addChild(icell);
 		}, this);
 		this._footer.startup();
-		console.log('# footer: ' + dojo.toJson(dojo.marginBox(this._footer.containerNode)));
 
 		// redo the layout since we added elements
 		this.layout();

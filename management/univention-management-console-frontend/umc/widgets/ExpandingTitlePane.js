@@ -24,8 +24,17 @@ dojo.declare("umc.widgets.ExpandingTitlePane", dijit.layout.BorderContainer, {
 	// internal reference to the main container to which child elements are added
 	_contentContainer: null,
 
+	_userProps: null,
+
+	constructor: function(props) {
+		// store the user defined properties
+		this._userProps = dojo.mixin({}, props);
+	},
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
+
+		this.design = 'sidebar';
 
 		// remove title from the attributeMap
 		delete this.attributeMap.title;
@@ -44,11 +53,12 @@ dojo.declare("umc.widgets.ExpandingTitlePane", dijit.layout.BorderContainer, {
 
 		// create the container for the main content... add css classes to be similar
 		// the dijit.TitlePane container
-		this._contentContainer = new dijit.layout.BorderContainer({
+		var props = dojo.mixin({}, this._userProps, {
 			region: 'center',
 			gutters: false,
 			'class': 'dijitTitlePaneContentOuter dijitTitlePaneContentInner'
 		});
+		this._contentContainer = new dijit.layout.BorderContainer(props);
 		this.inherited('addChild', [ this._contentContainer ]);
 	},
 
@@ -66,6 +76,11 @@ dojo.declare("umc.widgets.ExpandingTitlePane", dijit.layout.BorderContainer, {
 	startup: function() {
 		this.inherited(arguments);
 		this._contentContainer.startup();
+	},
+
+	layout: function() {
+		this.inherited(arguments);
+		this._contentContainer.layout();
 	}
 });
 
