@@ -130,6 +130,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'delete',
 			label: this._( 'Delete' ),
 			description: this._( 'Deleting the selected UDM object.' ),
+			isStandardAction: true,
+			isMultiAction: true,
 			iconClass: 'dijitIconDelete',
 			callback: dojo.hitch(this, function(ids) {
 				// ignore empty selections
