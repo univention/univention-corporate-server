@@ -96,7 +96,14 @@ if is_domain_controller; then
 fi
 
 if [ "$1" = "configure" -a -z "$2" ]; then
-	univention-config-registry set nscd/group/invalidate_cache_on_changes="true"
+	univention-config-registry set	nscd/group/invalidate_cache_on_changes="true" \
+									nssldap/auth?yes \
+									pamldap/auth?yes
+
+else
+	univention-config-registry set	nssldap/auth?no \
+									pamldap/auth?no
+
 fi
 
 # remove old non-multifile template

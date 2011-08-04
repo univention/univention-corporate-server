@@ -112,6 +112,18 @@ Description[en]=Comma separated list of UID's whose group memberships are not re
 Type=str
 Categories=system-base
 
+[nssldap/auth]
+Description[de]=Gibt an, ob nssldap eine Authentifizierung gegenüber dem LDAP-Server durchführt. (default: yes)
+Description[en]=Specifies whether or not nssldap authenticates against the LDAP server. (default: yes)
+Type=bool
+Categories=system-base
+
+[pamldap/auth]
+Description[de]=Gibt an, ob pam_ldap eine Authentifizierung gegenüber dem LDAP-Server durchführt. (default: yes)
+Description[en]=Specifies whether or not pam_ldap authenticates against the LDAP server. (default: yes)
+Type=bool
+Categories=system-base
+
 [security/limits/user/.*/hard/.*]
 Description[de]=Definiert den maximalen Wert auf den der Benutzer das entsprechende Limit setzen kann.
 Description[en]=Specifies the maximum value the user can change the corresponding limit to.
