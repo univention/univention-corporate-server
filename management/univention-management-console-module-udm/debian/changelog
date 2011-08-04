@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.85-1) unstable; urgency=low
+
+  * udm/nav/object/query: do not return container objects
+  * udm/properties: provide default value for each property; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 04 Aug 2011 18:39:50 +0200
+
 univention-management-console-module-udm (1.0.84-1) unstable; urgency=low
 
   * changed action types for the search grid (Bug #22881) 

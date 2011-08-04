@@ -438,7 +438,7 @@ class Instance( Base ):
 
 		entries = []
 		for module, obj in list_objects( request.options.get( 'container' ) ):
-			if obj is None or module.name.startswith( 'container/' ):
+			if obj is None or module.childs:
 				continue
 			entries.append( { 'ldap-dn' : obj.dn, 'objectType' : module.name, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) } )
 		self.finished( request.id, entries )

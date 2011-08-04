@@ -224,8 +224,13 @@ class UDM_Module( object ):
 		"""Property of the UDM module that identifies objects of this type"""
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if prop.identifies:
+				MODULE.info( 'The property %s identifies to module objects %s' % ( key, self.name ) )
 				return key
 		return None
+
+	@property
+	def childs( self ):
+		return bool( getattr( self.module, 'childs', False ) )
 
 	@property
 	def child_modules( self ):
@@ -298,8 +303,18 @@ class UDM_Module( object ):
 			else:
 				syntax_name = getattr( 'name', prop, None )
 			item = { 'id' : key, 'label' : prop.short_description, 'description' : prop.long_description, 'syntax' : syntax_name,
-					 'required' : prop.required in ( 1, True ), 'editable' : prop.may_change in ( 1, True ),
-					 'options' : prop.options, 'searchable' : not prop.dontsearch, 'multivalue' : prop.multivalue in ( 1, True ) }
+					 'required' : bool( prop.required ), 'editable' : bool( prop.may_change ),
+					 'options' : prop.options, 'searchable' : not prop.dontsearch, 'multivalue' : bool( prop.multivalue ) }
+
+			# default value
+			if prop.base_default is not None:
+				if isinstance( prop.base_default, ( list, tuple ) ):
+					if prop.multivalue and prop.base_default and isinstance( prop.base_default[ 0 ], ( list, tuple ) ):
+						item[ 'default' ] = prop.base_default
+					else:
+						item[ 'default' ] = prop.base_default[ 0 ]
+				else:
+					item[ 'default' ] = str( prop.base_default )
 
 			# read UCR configuration
 			item.update( widget( prop.syntax ) )

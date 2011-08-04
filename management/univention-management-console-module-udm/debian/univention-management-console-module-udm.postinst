@@ -36,7 +36,8 @@ eval "$(univention-config-registry shell)"
 
 # remove old variables
 for mod in modwizard modbrowse; do
-	if [ -n "directory_manager_web_${mod}_defaults_visible_results" ]; then
+	var="directory_manager_web_${mod}_defaults_visible_results"
+	if [ -n "${!var}" ]; then
 		ucr unset directory/manager/web/${mod}/defaults/visible-results
 	fi
 done
