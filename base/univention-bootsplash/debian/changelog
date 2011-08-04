@@ -1,3 +1,9 @@
+univention-bootsplash (4.0.0-6) unstable; urgency=low
+
+  * disabled bootsplash logging with lsb-base-logging.sh (Bug #20138)
+
+ -- Felix Botner <botner@univention.de>  Thu, 04 Aug 2011 14:01:09 +0200
+
 univention-bootsplash (4.0.0-5) unstable; urgency=low
 
   * more boot messages via lsb-base-logging.sh (Bug #20138) 
