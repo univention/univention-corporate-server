@@ -1,3 +1,9 @@
+univention-bind (6.0.4-1) unstable; urgency=low
+
+  * Use hostaccount for the ldap connection of bind (Bug #23176)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 05 Aug 2011 15:21:30 +0200
+
 univention-bind (6.0.3-1) unstable; urgency=low
 
   * create pid dir in univention-bind(-proxy) start script

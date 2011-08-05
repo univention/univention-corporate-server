@@ -59,10 +59,25 @@ def handler(dn, new, old):
 			elif old and not new:
 				remove_zone(old['zoneName'][0])
 			if new.has_key('zoneName'):
-				f=open(os.path.join('/var/cache/univention-bind-proxy', new['zoneName'][0]), 'w')
+				zonefile=os.path.join('/var/cache/univention-bind-proxy', new['zoneName'][0])
+				f=open(zonefile, 'w')
 				f.close()
+				os.chmod(zonefile, 0640)
 	finally:
 		listener.unsetuid()
+
+def ldap_auth_string(baseConfig):
+
+	account=baseConfig.get('bind/binddn', baseConfig.get('ldap/hostdn')).replace(',', '%2c')
+
+	if account == 'None':
+		return ''
+
+	pwdfile=baseConfig.get('bind/bindpw', '/etc/machine.secret')
+	pwd=open(pwdfile).readlines()
+
+
+	return '????!bindname=%s,!x-bindpw=%s,x-tls' % (account, pwd[0])
 
 def new_zone(baseConfig, zonename, dn):
 
@@ -70,11 +85,17 @@ def new_zone(baseConfig, zonename, dn):
 	if not os.path.exists(named_conf_dir):
 		os.mkdir(named_conf_dir)
 
-	f=open(os.path.join(named_conf_dir, zonename), 'w')
+
+	zonefile=os.path.join(named_conf_dir, zonename)
+	f=open(zonefile, 'w').close()
+	os.chmod(zonefile, 0640)
+
+	f=open(zonefile, 'w+')
+
 	f.write('zone "%s" {\n' % zonename)
 	f.write('\ttype master;\n')
 	f.write('\tnotify yes;\n')
-	f.write('\tdatabase "ldap ldap://%s:%s/%s 172800";\n' % (baseConfig['ldap/server/ip'], baseConfig['ldap/server/port'], dn))
+	f.write('\tdatabase "ldap ldap://%s:%s/%s%s 172800";\n' % (baseConfig['ldap/server/ip'], baseConfig['ldap/server/port'], dn, ldap_auth_string(baseConfig)))
 	f.write('};\n')
 	f.close()
 
