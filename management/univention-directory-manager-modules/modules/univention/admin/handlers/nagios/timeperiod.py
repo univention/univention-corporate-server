@@ -55,6 +55,7 @@ class syntax_timeperiod(univention.admin.syntax.simple):
 	name='timeperiod'
 	_re = re.compile('^([0-9][0-9]\:[0-9][0-9]-[0-9][0-9]\:[0-9][0-9](,[0-9][0-9]\:[0-9][0-9]-[0-9][0-9]\:[0-9][0-9])*)?$')
 
+	@classmethod
 	def parse(self, text):
 		if text and self._re.match(text) != None:
 			for period in text.split(','):

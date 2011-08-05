@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.41-1) unstable; urgency=low
+
+  * adapt syntax class syntax_timeperiod to new style syntax classes; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 05 Aug 2011 13:58:15 +0200
+
 univention-directory-manager-modules (7.0.40-1) unstable; urgency=low
 
   * replace function providing default functions; Bug #22439
