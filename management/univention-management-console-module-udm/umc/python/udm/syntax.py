@@ -67,7 +67,7 @@ __widgets = (
 	Widget( 'DateBox', udm_syntax.iso8601Date, '1970-01-01' ),
 	Widget( 'ComboBox', udm_syntax.select, [] ),
 	Widget( 'TextBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', subclasses = False ),
-	Widget( 'ComboBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '' ),
+	Widget( 'ComboBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn, udm_syntax.module ), '' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
 	Widget( 'MultiInput', udm_syntax.complex, None ),
 	)
@@ -78,8 +78,13 @@ def choices( syntax ):
 	available an empty list is returned."""
 	if type( syntax ) in ( type, ) and issubclass( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
 		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__name__ } }
+
 	if isinstance( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
 		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__ } }
+
+	if isinstance( syntax, udm_syntax.module ):
+		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__, 'options' : { 'module' : syntax.module_type, 'filter' : str( syntax.filter ) } } }
+
 	return { 'staticValues' : map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syntax, 'choices', [] ) ) }
 
 def subsyntaxes( syntax ):

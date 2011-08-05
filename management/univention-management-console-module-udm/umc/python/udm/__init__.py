@@ -442,13 +442,13 @@ class Instance( Base ):
 		return: [ { 'id' : <name>, 'label' : <text }, ... ]
 		"""
 
-		def _thread( syntax ):
-			return map( lambda item: { 'id' : item[ 0 ], 'label' : item[ 1 ] }, read_syntax_choices( syntax ) )
+		def _thread( request ):
+			return map( lambda item: { 'id' : item[ 0 ], 'label' : item[ 1 ] }, read_syntax_choices( request.options[ 'syntax' ], request.options.get( 'options', {} ) ) )
 
 		def _finish( thread, result, request ):
 			self.finished( request.id, result )
 
-		thread = notifier.threads.Simple( 'SyntaxChoice', notifier.Callback( _thread, request.options[ 'syntax' ] ),
+		thread = notifier.threads.Simple( 'SyntaxChoice', notifier.Callback( _thread, request ),
 										  notifier.Callback( _finish, request ) )
 		thread.run()
 

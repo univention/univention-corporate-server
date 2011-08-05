@@ -184,7 +184,7 @@ class UDM_Module( object ):
 		except udm_errors.base, e:
 			raise UDM_Error( e.message )
 
-	def search( self, container = None, attribute = None, value = None, superordinate = None, scope = 'sub' ):
+	def search( self, container = None, attribute = None, value = None, superordinate = None, scope = 'sub', filter = '' ):
 		"""Searches for LDAP objects based on a search pattern"""
 		lo, po = get_ldap_connection()
 		if container == 'all':
@@ -192,7 +192,10 @@ class UDM_Module( object ):
 		elif container is None:
 			container = ''
 		if attribute is None:
-			filter_s = ''
+			if filter:
+				filter_s = str( filter )
+			else:
+				filter_s = ''
 		else:
 			filter_s = '%s=%s' % ( attribute, value )
 
@@ -512,7 +515,7 @@ def list_objects( container ):
 
 	return objects
 
-def read_syntax_choices( syntax_name ):
+def read_syntax_choices( syntax_name, options = {} ):
 	if syntax_name not in udm_syntax.__dict__:
 		return None
 
@@ -525,8 +528,7 @@ def read_syntax_choices( syntax_name ):
 			syn.choices = ()
 			return
 		MODULE.info( 'Found syntax %s with udm_module property' % syntax_name )
-		syn.choices = map( lambda obj: ( obj.dn, obj[ module.identifies ] ), module.search() )
-		MODULE.info( 'Set choices to %s' % syn.choices )
+		syn.choices = map( lambda obj: ( obj.dn, udm_objects.description( obj ) ), module.search() )
 	elif issubclass( syn, udm_syntax.ldapDn ) and hasattr( syn, 'searchFilter' ):
 		lo, po = get_ldap_connection()
 		try:
@@ -538,6 +540,9 @@ def read_syntax_choices( syntax_name ):
 		for dn in result:
 			dn_list = lo.explodeDn( dn )
 			syn.choices.append( ( dn, dn_list[ 0 ].split( '=', 1 )[ 1 ] ) )
+	elif issubclass( syn, udm_syntax.module ):
+		module = UDM_Module( options[ 'module' ] )
+		syn.choices = map( lambda obj: ( obj.dn, udm_objects.description( obj ) ), module.search( filter = options[ 'filter' ] ) )
 
 	return getattr( syn, 'choices', [] )
 

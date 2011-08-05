@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.89-1) unstable; urgency=low
+
+  * support UDM syntax module; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 05 Aug 2011 15:57:34 +0200
+
 univention-management-console-module-udm (1.0.88-1) unstable; urgency=low
 
   * added autosearch feature respecting UCR variable settings (Bug #22883)
