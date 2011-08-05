@@ -40,7 +40,7 @@ import objects
 from objects import *
 from local import _
 import linecache
-HEIGHT = 14
+HEIGHT = 13
 WIDTH = 38
 
 class object(content):
@@ -124,8 +124,9 @@ class object(content):
 			self.default = defaultLanguage
 
 
-		self.elements.append(textline(_('Select a language:'),self.minY-1,self.minX+2))
-		self.add_elem('LANGUAGE',select(dict, self.minY+1, self.minX+2, WIDTH, HEIGHT, selectedLine))
+		self.elements.append(textline(_('Select a language for your system'),self.minY-1,self.minX+2))
+		self.elements.append(textline(_('and if supported for the installer:'),self.minY,self.minX+2))
+		self.add_elem('LANGUAGE',select(dict, self.minY+2, self.minX+2, WIDTH, HEIGHT, selectedLine))
 
 		self.move_focus(self.get_elem_id('LANGUAGE'))
 
@@ -142,7 +143,7 @@ class object(content):
 		return 0
 
 	def helptext(self):
-		return _('Language \n \n Select the language for your system. ')
+		return _('Language \n \n Select the language for your system.')
 
 	def modheader(self):
 		return _('Language')

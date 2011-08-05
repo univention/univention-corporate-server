@@ -41,7 +41,7 @@ import string
 from objects import *
 from local import _
 
-HEIGHT = 14
+HEIGHT = 13
 WIDTH = 38
 
 class object(content):
@@ -130,9 +130,9 @@ class object(content):
 
 		dict, default_position, showAll = self.create_kmap_list(default_value)
 
-		self.add_elem('CBX', checkbox({_('Show all available keyboard layouts'):' '},self.minY+2+HEIGHT,self.minX+2,WIDTH, 1, []))
+		self.add_elem('CBX', checkbox({_('Show all available keyboard layouts'):' '},self.minY+3+HEIGHT,self.minX+2,WIDTH, 1, []))
 		self.elements.append(textline(_('Select your keyboard layout:'),self.minY-1,self.minX+2))
-		self.add_elem('MAPS',select(dict,self.minY+1,self.minX+2,WIDTH,HEIGHT, default_position))
+		self.add_elem('MAPS',select(dict,self.minY+2,self.minX+2,WIDTH,HEIGHT, default_position))
 
 		self.move_focus(self.get_elem_id('MAPS'))
 
@@ -160,7 +160,7 @@ class object(content):
 			else:
 				default_value = self.cmdline.get("DEFAULT_LANGUAGE_EN", "German")
 			dict, default_position, showAll = self.create_kmap_list(default_value, all)
-			self.add_elem('MAPS',select(dict,self.minY+1,self.minX+2,WIDTH,HEIGHT, default_position))
+			self.add_elem('MAPS',select(dict,self.minY+2,self.minX+2,WIDTH,HEIGHT, default_position))
 
 		content.draw(self)
 			

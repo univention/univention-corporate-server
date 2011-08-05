@@ -1,3 +1,9 @@
+univention-installer (7.0.35-1) unstable; urgency=low
+
+  * changed installer messsages and add translations (Bug #22869) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 05 Aug 2011 12:56:24 +0200
+
 univention-installer (7.0.34-1) unstable; urgency=low
 
   * changed vga=771 to vga=788 in grub2 config  

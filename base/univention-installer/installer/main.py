@@ -345,7 +345,7 @@ class mods:
 		version = self.cmdline.get('version', '3.0')
 		name = self.cmdline.get('name', 'Univention Corporate Server')
 
-		headLine = name + " " + version
+		headLine = " " + name + " " + version
 		if extension:
 			headLine = headLine + " " + extension
 		headLine = headLine + " (" + codename + ")"

@@ -40,7 +40,7 @@ import objects
 from objects import *
 from local import _
 
-HEIGHT = 14
+HEIGHT = 13
 WIDTH = 38
 
 class object(content):
@@ -195,9 +195,9 @@ class object(content):
 
 		dict, default_position, showAll = self.create_timezone_list(self.timezone_default)
 
-		self.add_elem('CBX', checkbox({_('Show all available timezones'):' '},self.minY+2+HEIGHT,self.minX+2,WIDTH, 1, []))
+		self.add_elem('CBX', checkbox({_('Show all available timezones'):' '},self.minY+3+HEIGHT,self.minX+2,WIDTH, 1, []))
 		self.elements.append(textline(_('Select a time zone:'),self.minY-1,self.minX+2))
-		self.add_elem('ZONES',select(dict, self.minY+1, self.minX+2, WIDTH, HEIGHT, default_position, longline=1))
+		self.add_elem('ZONES',select(dict, self.minY+2, self.minX+2, WIDTH, HEIGHT, default_position, longline=1))
 
 		self.move_focus(self.get_elem_id('ZONES'))
 
@@ -236,7 +236,7 @@ class object(content):
 				self.timezone_default = self.all_results['timezone']
 
 			dict, default_position, showAll = self.create_timezone_list(self.timezone_default, all)
-			self.add_elem('ZONES',select(dict,self.minY+1,self.minX+2,WIDTH,HEIGHT, default_position, longline=1))
+			self.add_elem('ZONES',select(dict,self.minY+2,self.minX+2,WIDTH,HEIGHT, default_position, longline=1))
 
 		content.draw(self)
 

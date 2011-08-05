@@ -2593,6 +2593,26 @@ msgstr "Verarbeite postrun-Skripte"
 msgid "Processing %s "
 msgstr "Verarbeite %s"
 
+#: ../univention-system-setup/usr/sbin/univention-system-setup:865
+msgid "Select a language for your system"
+msgstr "Bitte wählen Sie eine Sprache für das System"
+
+#: ../univention-system-setup/usr/sbin/univention-system-setup:865
+msgid "and if supported for the installer:"
+msgstr "und falls untestützt für den Installer aus:"
+
+#: ../univention-system-setup/usr/sbin/univention-system-setup:865
+msgid "Language \n \n Select the language for your system."
+msgstr "Sprache \n \n Wählen Sie eine Sprache für das System."
+
+#: ../univention-system-setup/usr/sbin/univention-system-setup:865
+msgid "Show all available timezones"
+msgstr "Alle verfügbaren Zeitzonen anzeigen"
+
+#: ../univention-system-setup/usr/sbin/univention-system-setup:865
+msgid "Show all available keyboard layouts"
+msgstr "Alle verfügbaren Tastaturlayouts anzeigen"
+
 #~ msgid "No device files found for following devices. Please"
 #~ msgstr "Keine Gerätedateien für die nachfolgenden Geräte gefunden. Bitte"
 
