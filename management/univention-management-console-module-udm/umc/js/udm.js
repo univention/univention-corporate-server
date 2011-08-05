@@ -61,23 +61,32 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// reference to the last item in the navigation on which a context menu has been opened
 	_navContextItem: null,
 
+	// a dict of variable -> value entries for relevant UCR variables
+	_ucr: null,
+
 	buildRendering: function() {
 		// call superclass method
 		this.inherited(arguments);
 
 		if ('navigation' == this.moduleFlavor) {
-			// for the UDM navigation, we do not need to query
-			this.renderSearchPage();
+			// for the UDM navigation, we only query the UCR variables
+			umc.tools.ucr('directory/manager/web*').then(dojo.hitch(this, function(ucr) {
+				this._ucr = ucr;
+				this.renderSearchPage();
+			}));
 		}
 		else {
 			// render search page, we first need to query lists of containers/superodinates
-			// in order to correctly render the search form
+			// in order to correctly render the search form...
+			// query also necessary UCR variables for the UDM module
 			(new dojo.DeferredList([
 				this.umcpCommand('udm/containers'),
-				this.umcpCommand('udm/superordinates')
+				this.umcpCommand('udm/superordinates'),
+				umc.tools.ucr('directory/manager/web*')
 			])).then(dojo.hitch(this, function(results) {
 				var containers = results[0][0] ? results[0][1] : [];
 				var superordinates = results[1][0] ? results[1][1] : [];
+				this._ucr = results[2][0] ? results[2][1] : {};
 				this.renderSearchPage(containers.result, superordinates.result);
 			}));
 		}
@@ -178,6 +187,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// add search widget
 		//
 
+		// get configured search values
+		var autoObjProperty = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/default'] || 
+			this._ucr['directory/manager/web/modules/default'];
+		var autoSearch = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/autosearch'] ||
+			this._ucr['directory/manager/web/modules/autosearch'];
+
 		var umcpCmd = dojo.hitch(this, 'umcpCommand');
 		var widgets = [];
 		var layout = [];
@@ -188,6 +203,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			layout = [];
 		}
 		else {
+
 			// check whether we need to display containers or superordinates
 			var objTypeDependencies = [];
 			var objTypes = [];
@@ -231,7 +247,15 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				staticValues: objTypes,
 				dynamicValues: 'udm/types',
 				umcpCommand: umcpCmd,
-				depends: objTypeDependencies
+				depends: objTypeDependencies,
+				onChange: dojo.hitch(this, function(newObjType) {
+					// update the object property depending on the updated object type
+					var newObjProperty = this._ucr['directory/manager/web/modules/' + newObjType + '/search/default'] || '';
+					var widget = this._searchWidget._widgets.objectProperty;
+					console.log('# ucr: directory/manager/web/modules/' + newObjType + '/search/default');
+					console.log('# newObjProperty: ' + newObjProperty);
+					widget.setInitialValue(newObjProperty || undefined);
+				})
 			}, {
 				type: 'ComboBox',
 				name: 'objectProperty',
@@ -240,7 +264,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				dynamicValues: 'udm/properties',
 				dynamicOptions: { searchable: true },
 				umcpCommand: umcpCmd,
-				depends: 'objectType'
+				depends: 'objectType',
+				value: autoObjProperty
 			}, {
 				type: 'MixedInput',
 				name: 'objectPropertyValue',
@@ -330,6 +355,15 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}
 
 		this._searchPage.startup();
+
+		// check whether we have autosearch activated 
+		if ('navigation' != this.moduleFlavor && umc.tools.isTrue(autoSearch)) {
+			// connect to the onChange event of the form elemet for the object property value
+			var tmpHandel = this.connect(this._searchWidget._widgets.objectPropertyValue, 'onChange', function() {
+				this.filter(this._searchWidget.gatherFormValues());
+				this.disconnect(tmpHandel);
+			});
+		}
 	},
 
 	iconFormatter: function(value, rowIndex) {

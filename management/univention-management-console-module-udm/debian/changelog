@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.88-1) unstable; urgency=low
+
+  * added autosearch feature respecting UCR variable settings (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 05 Aug 2011 13:58:29 +0200
+
 univention-management-console-module-udm (1.0.87-1) unstable; urgency=low
 
   * implement thread-safe version of UDM module cache
