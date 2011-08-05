@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.41-2) unstable; urgency=low
+
+  * extend the nagios/nagios module to make the Nagios wizard work within
+    the new frontend; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 05 Aug 2011 15:55:45 +0200
+
 univention-directory-manager-modules (7.0.41-1) unstable; urgency=low
 
   * adapt syntax class syntax_timeperiod to new style syntax classes; Bug #22439

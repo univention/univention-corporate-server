@@ -57,14 +57,26 @@ childmodules=[ 'nagios/service',
 childs=0
 short_description=_('Nagios object')
 long_description=''
-operations=[]
+operations=[ 'search' ]
 virtual=1
 options={
 }
 
-property_descriptions={}
+property_descriptions = {
+	'name': univention.admin.property(
+		short_description = _( 'Name' ),
+		long_description = _( 'Nagios object name' ),
+		syntax=univention.admin.syntax.string_numbers_letters_dots,
+		multivalue = False,
+		options = [],
+		required = True,
+		may_change = False,
+		identifies = True
+		),
+	}
 
 mapping=univention.admin.mapping.mapping()
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module

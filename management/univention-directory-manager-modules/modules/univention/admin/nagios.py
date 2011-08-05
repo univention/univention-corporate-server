@@ -78,11 +78,11 @@ nagios_properties = {
 }
 
 
-nagios_tab_A = Tab( _( 'Nagios services' ), _( 'Nagios Service Settings' ), [
+nagios_tab_A = Tab( _( 'Nagios services' ), _( 'Nagios Service Settings' ), advanced = True, layout = [
 	"nagiosServices",
 	] )
 
-nagios_tab_B = Tab( _( 'Nagios notification' ), _( 'Nagios Notification Settings' ), [
+nagios_tab_B = Tab( _( 'Nagios notification' ), _( 'Nagios Notification Settings' ), advanced = True, layout = [
 	"nagiosContactEmail",
 	"nagiosParents",
 	] )
