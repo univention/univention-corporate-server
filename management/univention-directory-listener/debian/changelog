@@ -1,3 +1,19 @@
+univention-directory-listener (6.0.6-1) unstable; urgency=low
+
+  * Some more db 4.8 adjustements (Bug #22431)
+  * Merge from UCS 2.4
+    * Write the new entry first into the cache before giving the entry to
+      the handler. Otherwise the entry might be modified and the cache
+      gets corrupted and the listener can't read the entry from the cache
+      anymore (Bug #21914).
+    * With UCS 3.0 and Samba 4 the default ldap port 389 will be used by
+      Samba 4. Added a check to prevent a replication from a Samba 4 LDAP
+      server (Bug #22579)
+    * Consider port configuration via UCR for ldap/master/port,
+      ldap/backup/port and notifier/server/port (Bug #23095)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 05 Aug 2011 06:55:48 +0200
+
 univention-directory-listener (6.0.5-1) unstable; urgency=low
 
   * fixed bashisms (Bug #23005)

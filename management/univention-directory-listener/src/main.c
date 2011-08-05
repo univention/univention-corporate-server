@@ -215,7 +215,7 @@ static void convert_cookie(void)
 	} else
 		master_entry.schema_id = 0;
 
-	if ((rv=cache_update_master_entry(&master_entry, NULL)) != 1)
+	if ((rv=cache_update_master_entry(&master_entry, NULL)) != 0)
 		exit(1); /* XXX */
 }
 
@@ -258,6 +258,33 @@ void prepare_cache(const char *cache_dir)
 		mkdir(dirname, 0700);
 	}
 	free(dirname);
+}
+
+int do_connection(univention_ldap_parameters_t *lp)
+{
+	LDAPMessage *res;
+	struct  timeval timeout;
+	int rc;
+
+	timeout.tv_sec=10;                                                                                                                                                                              
+	timeout.tv_usec=0;
+
+	if (univention_ldap_open(lp) != 0 || notifier_client_new(NULL, lp->host, 1) != 0) {
+		return 1;
+	}
+	/* check if we are connected to an OpenLDAP */
+	if ( (rc = ldap_search_ext_s(lp->ld, lp->base, LDAP_SCOPE_BASE, "objectClass=univentionBase", NULL, 0, NULL, NULL, &timeout, 0, &res) ) != LDAP_SUCCESS ) {
+		if ( rc == LDAP_NO_SUCH_OBJECT ) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Failed to find \"(objectClass=univentionBase)\" on LDAP server %s:%d", lp->host, lp->port);
+		} else {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Failed to search for \"(objectClass=univentionBase)\" on LDAP server %s:%d with message %s", lp->host, lp->port, ldap_err2string(rc));
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Base: [%s]", lp->base);
+		}
+		return 1;
+	}
+	ldap_msgfree( res );
+
+	return 0;
 }
 
 
@@ -420,7 +447,7 @@ int main(int argc, char* argv[])
 	if (lp->host == 0) {
 		free(lp->host);
 		lp->ld = NULL;
-		lp->host=select_server();
+		select_server(lp);
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 				"no server given, choose one by myself (%s)",
 				lp->host);
@@ -435,7 +462,7 @@ int main(int argc, char* argv[])
 	}
 #endif
 
-	while (univention_ldap_open(lp) != 0 || notifier_client_new(NULL, lp->host, 1) != 0) {
+	while (do_connection(lp) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to ldap server (%s)", lp->host);
 		free(lp->host);
 		if ( lp->ld != NULL ) {
@@ -454,7 +481,7 @@ int main(int argc, char* argv[])
 			sleep(30);
 		}
 
-		lp->host=select_server();
+		select_server(lp);
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "choose as server: %s", lp->host);
 	}
 

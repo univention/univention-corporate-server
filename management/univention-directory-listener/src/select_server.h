@@ -33,12 +33,14 @@
 #ifndef _SELECT_SERVER_H_
 #define _SELECT_SERVER_H_
 
+#include <univention/ldap.h>
+
 struct server_list {
 	char* server_name;
 	int conn_attemp;
 };
 
-char *select_server();
+int select_server(univention_ldap_parameters_t *lp);
 int suspend_connect(struct server_list *list, int entries);
 
 #endif

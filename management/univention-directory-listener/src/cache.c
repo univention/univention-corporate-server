@@ -315,18 +315,19 @@ DB_TXN* cache_new_transaction(NotifierID id, char *dn)
 		else
 			old_id = &master_entry.id;
 
-		if (*old_id >= id) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-					"New ID (%ld) is not greater than old"
-					" ID (%ld): %s", id, *old_id, dn);
+		if (*old_id > id) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "New ID (%ld) is lower than old ID (%ld): %s", id, *old_id, dn);
 			dbtxnp->abort(dbtxnp);
 			return NULL;
-		} else
+		} else if ( *old_id < id ) {
 			*old_id = id;
+
+			if (cache_update_master_entry(&master_entry, dbtxnp) != 0) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_transaction: cache_update_master_entry failed");
+				dbtxnp->abort(dbtxnp);
+				return NULL;
+			}
 		
-		if (cache_update_master_entry(&master_entry, dbtxnp) != 0) {
-			dbtxnp->abort(dbtxnp);
-			return NULL;
 		}
 	}
 

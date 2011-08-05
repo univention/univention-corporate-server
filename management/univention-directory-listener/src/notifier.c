@@ -86,7 +86,9 @@ static int connect_to_ldap(univention_ldap_parameters_t *lp,
 			sleep(30);
 		}
 
-		lp->host=select_server();
+		if (lp->host != NULL)
+			free(lp->host);
+		select_server(lp);
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "choose as server: %s", lp->host);
 	}
 

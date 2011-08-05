@@ -66,35 +66,48 @@ int suspend_connect(struct server_list *list, int entries)
 	return retval;
 }
 
-char *select_server()
+int select_server(univention_ldap_parameters_t *lp)
 {
-	char *server_hostname;
 	char *server_role;
 	char *ldap_master;
 	char *ldap_backups = NULL;
 	char *notify_master;
 	int nbackups = 0;
 	int randval = 0;
+	int port = 0;
 
-	server_role = univention_config_get_string("server/role");
-	ldap_master = univention_config_get_string("ldap/master");
 	notify_master = univention_config_get_string("notifier/server");
 
 	if ( notify_master  != NULL ) {
-		return notify_master;
+		lp->host = notify_master;
+		port = univention_config_get_int("notifier/server/port");
+		if (port > 0)
+			lp->port = port;
+		return 0;
 	}
+
+	free (notify_master);
+
+	server_role = univention_config_get_string("server/role");
+	ldap_master = univention_config_get_string("ldap/master");
 
 	/* if this is a master or backup return ldap/master */
 	if (!strcmp(server_role, "domaincontroller_master")) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 				 "We are %s, select ldap/master as LDAP-Server",
 				 server_role);
-		server_hostname = strdup(ldap_master);
+		lp->host = strdup(ldap_master);
+		port = univention_config_get_int("ldap/master/port");
+		if (port > 0)
+			lp->port = port;
 	} else if (!strcmp(server_role, "domaincontroller_backup")) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 				 "We are %s, select ldap/master as LDAP-Server",
 				 server_role);
-		server_hostname = strdup(ldap_master);
+		lp->host = strdup(ldap_master);
+		port = univention_config_get_int("ldap/master/port");
+		if (port > 0)
+			lp->port = port;
 	} else {
 		ldap_backups = univention_config_get_string("ldap/backup");
 
@@ -136,6 +149,10 @@ char *select_server()
 				}
 			}
 
+			int i;
+			for(i=0;i<nbackups;i++) {
+				fprintf(stderr, "%d: %s\n", i, server_list[i].server_name);
+			}
 			/* randomize start point of server search */
 			unsigned seed = getpid() * time(NULL);
 			srandom(seed);
@@ -145,19 +162,32 @@ char *select_server()
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 					 "randval = %d ", randval);
 
-			server_hostname = strdup(server_list[randval].server_name);
+			lp->host = strdup(server_list[randval].server_name);
+			if ( !strcmp(lp->host, ldap_master) ){
+				port = univention_config_get_int("ldap/master/port");
+				if (port > 0)
+					lp->port = port;
+			} else {
+				port = univention_config_get_int("ldap/backup/port");
+				if (port > 0)
+					lp->port = port;
+			}
 		} else {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 					 "No Backup found, server is ldap/master");
-			server_hostname = strdup(ldap_master);
+			lp->host = strdup(ldap_master);
+			port = univention_config_get_int("ldap/master/port");
+			if (port > 0)
+				lp->port = port;
 		}
 
 	}
 
-	free(ldap_master);
-	free(server_role);
+	if (ldap_master != NULL)
+		free(ldap_master);
+	if (server_role != NULL)
+		free(server_role);
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "LDAP-Server is %s",
-			 server_hostname);
-	return server_hostname;
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "LDAP-Server is %s", lp->host);
+	return 1;
 }
