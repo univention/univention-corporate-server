@@ -10,12 +10,6 @@ Description[en]=Defines which network interface should be used for the bridge
 Type=str
 Categories=uvmm
 
-[uvmm/kvm/no_irqchip]
-Description[de]=Deaktiviert die in-Kernel-APIC-Unterstützung
-Description[en]=Deactivates the in-kernel APIC support
-Type=bool
-Categories=uvmm
-
 [uvmm/kvm/qemu/user]
 Description[de]=Definiert den Benutzer als der die QEMU Prozesse laufen
 Description[en]=Defines the user that owns the QEMU processes

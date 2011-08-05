@@ -1,9 +1,0 @@
-#!/bin/sh
-# Work-around for <https://forge.univention.org/bugzilla/show_bug.cgi?id=21130>
-. /usr/share/univention-lib/ucr.sh
-if is_ucr_true uvmm/kvm/no_irqchip
-then
-	exec /usr/bin/kvm.bin "$@" -no-kvm-irqchip
-else
-	exec /usr/bin/kvm.bin "$@"
-fi

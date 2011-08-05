@@ -57,8 +57,6 @@ install: build
 	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/finish
 	install -m 755 conffiles/etc/modprobe.d/loop debian/univention-virtual-machine-manager-node-common/etc/modprobe.d/
 
-	install -m 755 kvm.wrap debian/univention-virtual-machine-manager-node-kvm/usr/bin/kvm
-
 # Build architecture-independent files here.
 binary-indep: build install
 

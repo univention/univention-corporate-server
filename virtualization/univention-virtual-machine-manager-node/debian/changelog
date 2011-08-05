@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (0.1.32-1) unstable; urgency=low
+
+  * Remove kvm wrapper (Bug #22303)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 05 Aug 2011 16:47:45 +0200
+
 univention-virtual-machine-manager-node (0.1.31-1) unstable; urgency=low
 
   * add user libvirt-qemu to group cdrom (Bug #23052)
