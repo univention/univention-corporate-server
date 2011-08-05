@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 #
 # Univention Bind
 #  join script
@@ -57,7 +57,15 @@ fi
 
 wait_for_dns
 #search for existing zone
-zone=`ldapsearch -x -LLL "(&(objectClass=dNSZone)(zoneName=$domainname))" dn | grep ^dn:`
+
+if [ -r "/etc/ldap.secret" ]; then
+	zone="$(ldapsearch -x -LLL -ZZ -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" "(&(objectClass=dNSZone)(zoneName=$domainname))" dn | grep ^dn:)"
+elif [ -r "/etc/machine.secret" ]; then
+	zone="$(ldapsearch -x -LLL -ZZ -D "$ldap_hostdn" -w "$(cat /etc/machine.secret)" "(&(objectClass=dNSZone)(zoneName=$domainname))" dn | grep ^dn:)"
+else
+	zone="$(ldapsearch -x -LLL "(&(objectClass=dNSZone)(zoneName=$domainname))" dn | grep ^dn:)"
+fi
+
 if [ -z "$zone" ]; then
 	/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists $domainname add zone root@$domainname. 1 28800 7200 604800 10800 $hostname.$domainname.
 	if [ $? != 0 ]; then exit 1; fi

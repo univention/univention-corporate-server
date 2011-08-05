@@ -1,3 +1,9 @@
+univention-bind (6.0.5-1) unstable; urgency=low
+
+  * Consider disabled anoymous bind in join script (Bug #23176)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 05 Aug 2011 16:47:17 +0200
+
 univention-bind (6.0.4-1) unstable; urgency=low
 
   * Use hostaccount for the ldap connection of bind (Bug #23176)
