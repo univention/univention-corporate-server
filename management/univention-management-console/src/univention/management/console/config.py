@@ -43,6 +43,7 @@ def get_int( variable, default ):
 		return default
 
 SERVER_DEBUG_LEVEL = get_int( 'umc/server/debug/level', 1 )
+SERVER_MAX_CONNECTIONS = 100
 
 MODULE_COMMAND = '/usr/sbin/univention-management-console-module'
 

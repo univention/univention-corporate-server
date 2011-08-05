@@ -50,7 +50,7 @@ from .definitions import *
 
 from ..resources import moduleManager, syntaxManager, categoryManager
 from ..log import CORE, CRYPT, RESOURCES
-from ..config import ucr
+from ..config import ucr, SERVER_MAX_CONNECTIONS
 from ..statistics import statistics
 
 class MagicBucket( object ):
@@ -203,6 +203,17 @@ class MagicBucket( object ):
 			CRYPT.info( 'UMCP: SSL error during re-send' )
 			state.resend_queue.insert( 0, ( id, first ) )
 			return True
+		except ( SSL.SysCallError, SSL.Error ), error:
+			statistics.connections.inactive()
+			if self.__states[ socket ].username in statistics.users:
+				statistics.users.remove( self.__states[ socket ].username )
+			CRYPT.warn( 'SSL error: %s. Probably the socket was closed by the client.' % str( error ) )
+			if self.__states[ socket ].processor is not None:
+				self.__states[ socket ].processor.shutdown()
+			notifier.socket_remove( socket )
+			del self.__states[ socket ]
+			socket.close()
+			return False
 
 		return ( len( state.resend_queue ) > 0 )
 
@@ -218,7 +229,11 @@ class MagicBucket( object ):
 		try:
 			statistics.requests.inactive()
 			data = str( msg )
-			ret = state.socket.send( data )
+			# there is not data from another request in the send queue
+			if not state.resend_queue:
+				ret = state.socket.send( data )
+			else:
+				ret = 0
 			# not all data could be send; retry later
 			if ret < len( data ):
 				if not state.resend_queue:
@@ -282,7 +297,7 @@ class Server( signals.Provider ):
 				self.crypto_context = None
 				self.__realsocket.bind( ( '', self.__port ) )
 				CRYPT.info( 'Server listening to unencrypted connections' )
-				self.__realsocket.listen( 10 )
+				self.__realsocket.listen( SERVER_MAX_CONNECTIONS )
 
 			if self.crypto_context:
 				self.connection = SSL.Connection( self.crypto_context , self.__realsocket )
@@ -290,7 +305,7 @@ class Server( signals.Provider ):
 				self.connection.bind( ( '', self.__port ) )
 				self.connection.set_accept_state()
 				CRYPT.info( 'Server listening to SSL connections' )
-				self.connection.listen( 10 )
+				self.connection.listen( SERVER_MAX_CONNECTIONS )
 		else:
 			self.crypto_context = None
 			if self.__unix:
@@ -305,7 +320,7 @@ class Server( signals.Provider ):
 			else:
 				self.__realsocket.bind( ( '', self.__port ) )
 			CRYPT.info(  'Server listening to connections' )
-			self.__realsocket.listen( 10 )
+			self.__realsocket.listen( SERVER_MAX_CONNECTIONS )
 
 		self.__magic = magic
 		self.__magicClass = magicClass

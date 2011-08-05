@@ -226,7 +226,7 @@ class Client( signals.Provider, Translation ):
 
 		data = str(msg)
 
-		if self.__resend_queue.has_key( sock ):
+		if sock in self.__resend_queue:
 			self.__resend_queue[ sock ].append( data )
 		else:
 			self.__resend_queue[ sock ] = [ data ]
