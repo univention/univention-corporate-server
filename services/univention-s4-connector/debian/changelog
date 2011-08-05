@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.17-1) unstable; urgency=low
+
+  * Call univention-password_sync_ucs_to_s4 for Administrator in join
+    script after the s4 connector is configured (Bug #22580)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 05 Aug 2011 16:32:53 +0200
+
 univention-s4-connector (6.0.16-1) unstable; urgency=low
 
   * call univention-password_sync_ucs_to_s4 for Administrator once
