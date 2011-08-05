@@ -81,7 +81,7 @@ else
 fi
 options="$options -ZZ -d 1"
 
-options="$options -i -h $ldap_master -b \"$ldap_base\" -m $moduledir -c $cachedir"
+options="$options -i -h $ldap_master -b "$ldap_base" -m $moduledir -c $cachedir"
 
 if [ -n "$server_role" ]; then
 
