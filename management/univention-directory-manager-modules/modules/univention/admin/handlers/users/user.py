@@ -2036,9 +2036,10 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				ml.append(('givenName', self.oldattr.get('givenName', [''])[0], self['firstname']))
 
 			if 'posix' in self.options:
-				gecos = _default_gecos()
+				prop = self.descriptions[ 'gecos' ]
+				gecos = prop._replace( prop.base_default, self )
 				if self.oldinfo.get( 'gecos', '' ):
-					old_gecos = gecos( self, old_data = True )
+					old_gecos = prop._replace( prop.base_default, self.oldinfo )
 					if old_gecos == self.oldinfo.get( 'gecos', '' ):
 						ml.append( ( 'gecos', self.oldinfo.get( 'gecos', [ '' ] )[ 0 ], gecos( self ) ) )
 

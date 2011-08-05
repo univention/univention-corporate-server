@@ -158,7 +158,7 @@ class property:
 					return ''
 
 			# make sure the key value exists
-			if object.get( key, None ):
+			if object.has_key( key ) and object[ key ]:
 				val = modify_text( object[key], strCommands )
 				# try to apply the indexing instructions, indicated through '[...]'
 				if ext:
