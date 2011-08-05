@@ -1,3 +1,11 @@
+univention-installer (7.0.34-1) unstable; urgency=low
+
+  * changed vga=771 to vga=788 in grub2 config  
+    to match up the kernel vga setting and the grub2
+    gfxmode configuration (Bug #22707)
+
+ -- Felix Botner <botner@univention.de>  Fri, 05 Aug 2011 10:52:53 +0200
+
 univention-installer (7.0.33-1) unstable; urgency=low
 
   * Removed Managed and Mobile Clients from server role selection
