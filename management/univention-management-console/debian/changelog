@@ -1,3 +1,9 @@
+univention-management-console (4.0.49-1) unstable; urgency=low
+
+  * umc/module/timeout should defined as seconds and not milliseconds; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 05 Aug 2011 13:13:19 +0200
+
 univention-management-console (4.0.48-1) unstable; urgency=low
 
   * add configuration constant for allowed unaccepted connections; Bug #22360

@@ -48,4 +48,4 @@ SERVER_MAX_CONNECTIONS = 100
 MODULE_COMMAND = '/usr/sbin/univention-management-console-module'
 
 MODULE_DEBUG_LEVEL = get_int( 'umc/module/debug/level', 1 )
-MODULE_INACTIVITY_TIMER = get_int( 'umc/module/timeout', 120000 )
+MODULE_INACTIVITY_TIMER = get_int( 'umc/module/timeout', 120 ) * 1000
