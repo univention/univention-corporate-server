@@ -160,9 +160,10 @@ else:
 print '   by dn.base="uid=root,cn=users,%s" %s' % (ldap_base, usr)
 if baseConfig.is_false('ldap/acl/read/anonymous'):
 	print '   by users read'
-	ldap_acl_read_anonymous_ips = baseConfig.get('ldap/acl/read/ips', '127.0.0.1,%s' % address).strip()
-	for ip in ldap_acl_read_anonymous_ips.split(','):
-		print '   by peername.ip=%s read' % ip
+	ldap_acl_read_anonymous_ips = baseConfig.get('ldap/acl/read/ips')
+	if ldap_acl_read_anonymous_ips:
+		for ip in ldap_acl_read_anonymous_ips.split(','):
+			print '   by peername.ip=%s read' % ip
 else:
 	print '   by * read'
 

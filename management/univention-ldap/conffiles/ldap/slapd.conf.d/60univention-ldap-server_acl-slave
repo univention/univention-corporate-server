@@ -20,10 +20,10 @@ if baseConfig['ldap/hostdn']:
 print 'access to *'
 if baseConfig.is_false('ldap/acl/read/anonymous'):
 	print '   by users read'
-	address=baseConfig['interfaces/eth0/address']
-	ldap_acl_read_anonymous_ips = baseConfig.get('ldap/acl/read/ips', '127.0.0.1,%s' % address).strip()
-	for ip in ldap_acl_read_anonymous_ips.split(','):
-		print '   by peername.ip=%s read' % ip
+	ldap_acl_read_anonymous_ips = baseConfig.get('ldap/acl/read/ips')
+	if ldap_acl_read_anonymous_ips:
+		for ip in ldap_acl_read_anonymous_ips.split(','):
+			print '   by peername.ip=%s read' % ip
 else:
 	print '   by * read'
 print
