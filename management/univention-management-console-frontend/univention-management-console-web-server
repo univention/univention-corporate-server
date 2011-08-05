@@ -211,7 +211,10 @@ class QueueRequest(object):
 
 def update_session_cookie(cookiejar, sessionid):
 	cookiejar['UMCSessionId'] = sessionid
-	cookiejar['UMCSessionId']['max-age'] = 180
+	try:
+		cookiejar['UMCSessionId']['max-age'] = int( configRegistry.get( 'umc/http/session/timeout', 300 ) )
+	except TypeError, ValueError:
+		cookiejar['UMCSessionId']['max-age'] = 300
 	cookiejar['UMCSessionId']['version'] = 1
 	cookiejar['UMCSessionId']['path'] = '/'
 	# TODO FIXME set session timeout via UCR variable
