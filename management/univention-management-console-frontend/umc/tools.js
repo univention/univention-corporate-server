@@ -460,7 +460,55 @@ dojo.mixin(umc.tools, {
 		cookieStr = dojo.toJson(this._userPreferences);
 		dojo.cookie('UMCPreferences', cookieStr, { expires: 100, path: '/' } );
 		return; // undefined
+	},
+
+	ucr: function(/*String*/ query) {
+		// summary:
+		//		Function that fetches with the given query the UCR variables.
+		// query: String
+		//		Query string that is matched on the UCR variable names.
+		// return: dojo.Deferred
+		//		Returns a dojo.Deferred that expects a callback to which is passed
+		//		a dict of variable name -> value entries.
+
+		return this.umcpCommand('ucr/query', {
+		 	filter: query,
+			category: 'all',
+			key: 'key'
+		}).then(function(data) {
+			// fetch all resulting variable into a dict
+			var dict = {};
+			dojo.forEach(data.result, function(i) {
+				dict[i.key] = i.value;
+			});
+			return dict;
+		});
+	},
+
+	isFalse: function(/*mixed*/ input) {
+		if (dojo.isString(input)) {
+			switch (input.toLowerCase()) {
+				case 'no':
+				case 'false':
+				case '0':
+				case 'disable':
+				case 'disabled':
+				case 'off':
+					return true;
+			}
+		}
+		if (false === input || 0 === input || null === input || undefined === input || '' === input) {
+			return true;
+		}
+		return false;
+	},
+
+	isTrue: function(/*mixed*/ input) {
+		//('yes', 'true', '1', 'enable', 'enabled', 'on')
+		return !this.isFalse(input);
 	}
 });
+
+
 
 

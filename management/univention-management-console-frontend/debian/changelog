@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.2-1) unstable; urgency=low
+
+  * added umc.tools.ucr() method (with isTrue() and isFalse())
+  * refactored umc.widgets._SelectMixin and added setInitalValue() method
+  (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 05 Aug 2011 14:00:07 +0200
+
 univention-management-console-frontend (1.0.1-2) unstable; urgency=low
 
   * fixed typo in postinst; Bug #22881

@@ -54,6 +54,8 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 	_isAutoValue: false,
 
+	_isInitialized: false,
+
 	constructor: function() {
 		// The store needs to be available already at construction time, otherwise an
 		// error will be thrown. We need to define it here, in order to create a new
@@ -68,10 +70,38 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		});
 	},
 
+	postMixInProperties: function() {
+		this.inherited(arguments);
+
+		this._saveInitialValue();
+	},
+
+	startup: function() {
+		this.inherited(arguments);
+
+		this._loadValues();
+	},
+
+	_setValueAttr: function(newVal) {
+		this.inherited(arguments);
+
+		// store the value as intial value after the widget has been intialized
+		if (this._isInitialized) {
+			this._saveInitialValue();
+		}
+	},
+
 	_saveInitialValue: function() {
 		// rember the intial value since it will be overridden by the dojo
 		// methods since at initialization time the store is empty
 		this._initialValue = this.value;
+	},
+
+	setInitialValue: function(value) {
+		// summary:
+		//		Forces to set this given initial value.
+		this._initialValue = value;
+		this.set('value', value);
 	},
 
 	_setCustomValue: function() {
@@ -240,12 +270,24 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 				//console.log('# dynamicValues(' + this.dynamicValues + '): ' + data.result);
 				this._setDynamicValues(data.result);
 				this.onDynamicValuesLoaded(data.result);
+
+				// initialization is done
+				this.onInitialized();
 			}));
+		}
+		else {
+			// initialization is done
+			this.onInitialized();
 		}
 	},
 
 	onDynamicValuesLoaded: function(values) {
 		// event stub
+	},
+
+	onInitialized: function() {
+		// initilization is done
+		this._isInitialized = true;
 	}
 });
 

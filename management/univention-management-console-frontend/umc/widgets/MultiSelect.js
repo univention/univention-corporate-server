@@ -12,20 +12,6 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.form.CheckedMultiSelect, umc.wid
 	multiple: true,
 	size: 5,
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
-
-		// _SelectMixin method
-		this._saveInitialValue();
-	},
-
-	startup: function() {
-		this.inherited(arguments);
-
-		// _SelectMixin method
-		this._loadValues();
-	},
-
 	_setValueAttr: function(/*String|Array*/ values) {
 		// convenience method to handle string list or array
 		umc.tools.assert(dojo.isString(values) || dojo.isArray(values),

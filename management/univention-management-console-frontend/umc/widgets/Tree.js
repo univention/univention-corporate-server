@@ -1,4 +1,4 @@
-/*global dojo dijit dojox umc console */
+/*global dojo dijit dojox umc console clearTimeout */
 
 dojo.provide("umc.widgets.Tree");
 
@@ -63,11 +63,11 @@ dojo.declare("umc.widgets.Tree", dijit.Tree, {
 		/* unset the store's cache (if existing).  
 		 * TODO: currently only tested on JsonRestStore! */ 
 		if (dojox && dojox.rpc && dojox.rpc.Rest && dojox.rpc.Rest._index) {
-			for (idx in dojox.rpc.Rest._index) {
+			for (var idx in dojox.rpc.Rest._index) {
 				if (idx.match("^" + this.model.store.target)) {
 					delete dojox.rpc.Rest._index[idx];
 				}
-			};
+			}
 		}
 
 		// reset the tree.model's root
