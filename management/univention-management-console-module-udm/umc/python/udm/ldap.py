@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import operator
+import threading
 
 from univention.management.console import Translation
 
@@ -55,13 +56,32 @@ _ldap_position = udm_uldap.position( ucr.get( 'ldap/base' ) )
 
 udm_modules.update()
 
-# module cache
-_modules = {}
-
 # exceptions
-
 class UDM_Error( Exception ):
 	pass
+
+# module cache
+class UDM_ModuleCache( dict ):
+	lock = threading.Lock()
+
+	def get( self, name, template_object = None ):
+		UDM_ModuleCache.lock.acquire()
+		if name in self:
+			UDM_ModuleCache.lock.release()
+			return self[ name ]
+
+		self[ name ] = udm_modules.get( name )
+		if self[ name ] is None:
+			UDM_ModuleCache.lock.release()
+			return None
+
+		lo, po = get_ldap_connection()
+		udm_modules.init( lo, po, self[ name ], template_object )
+		UDM_ModuleCache.lock.release()
+
+		return self[ name ]
+
+_module_cache = UDM_ModuleCache()
 
 
 def get_ldap_connection():
@@ -95,18 +115,9 @@ class UDM_Module( object ):
 		template object is passed to the init function of the module. As
 		the initialisation of a module is expensive the function uses a
 		cache to ensure that each module is just initialized once."""
-		global _modules
-		if module in _modules:
-			self.module = _modules[ module ]
-		else:
-			_modules[ module ] = udm_modules.get( module )
-			if _modules[ module ] is None:
-				return None
+		global _module_cache
 
-			lo, po = get_ldap_connection()
-
-			udm_modules.init( lo, po, _modules[ module ], template_object )
-			self.module = _modules[ module ]
+		self.module = _module_cache.get( module )
 
 	def get_default_values( self, property_name ):
 		"""Depending on the syntax of the given property a default
@@ -142,7 +153,9 @@ class UDM_Module( object ):
 				obj[ key ] = value
 			obj.create()
 		except udm_errors.base, e:
-			raise UDM_Error( e.message )
+			raise UDM_Error( e.message, obj.dn )
+
+		return obj.dn
 
 	def remove( self, ldap_dn ):
 		"""Removes a LDAP object"""
