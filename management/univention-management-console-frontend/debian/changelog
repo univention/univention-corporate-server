@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.0-1) unstable; urgency=low
+
+  * increase number of allowed unaccepted connections; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 05 Aug 2011 11:35:23 +0200
+
 univention-management-console-frontend (0.0.99-1) unstable; urgency=low
 
   * fixed layout problems in umc/widgets/ExpandingTitlePane.js
