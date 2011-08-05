@@ -10,6 +10,7 @@ Architecture: all
 Depends: univention-config-registry,
  shell-univention-lib (>= 1.0.6),
  univention-ssh (>= 3.0.1-2),
+ tofrodos,
  ldap-utils
 Description: UCS - join domains
  This packages allows for the joining of UCS computers to a

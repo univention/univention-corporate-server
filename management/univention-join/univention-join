@@ -111,7 +111,9 @@ download_host_certificate () {
 check_ldap_tls_connection () {
 	echo -n "Check TLS connection "
 
-	ldapsearch -x -ZZ -s base -h "$DCNAME" -D "$binddn" -w `cat $DCPWD` dn >/dev/null
+	eval "$(ucr shell ldap/master/port)"
+
+	ldapsearch -x -ZZ -p "$ldap_master_port" -s base -h "$DCNAME" -D "$binddn" -w `cat $DCPWD` dn >/dev/null
 	if  [ $? != 0 ]; then
  		failed_message "Establishing a TLS connection with $DCNAME failed. Maybe you didn't specify a FQDN."
 	fi
@@ -184,10 +186,6 @@ if [ -z "$DCPWD" ]; then
 	echo ""
 fi
 
-if [ "$DCACCOUNT" != "root" ]; then
-    auth_cmd="-bindaccount \"$DCACCOUNT\" -bindpwfile \"$DCPWD\""
-fi
-
 if [ -z "$server_role" ]; then
 	if [ -z "$TYPE" ]; then
 		echo "try: -type"
@@ -209,11 +207,9 @@ fi
 
 if [ -z "$DCNAME" ]; then
 	echo -n "Search DC Master: "
-	if [ "$interfaces_eth0_type" = "dhcp" ]; then
-		DCNAME=`host -t SRV _domaincontroller_master._tcp.$domainname | grep -v "not found" | grep -v "reached" | tail -1 | sed -e 's|.* ||g' | sed -e 's|\.$||'`
-		if [ -n "$DCNAME" ]; then
-			echo -e "\033[60Gdone"
-		fi
+	DCNAME=`host -t SRV _domaincontroller_master._tcp.$domainname | grep -v "not found" | grep -v "reached" | tail -1 | sed -e 's|.* ||g' | sed -e 's|\.$||'`
+	if [ -n "$DCNAME" ]; then
+		echo -e "\033[60Gdone"
 	else
 		for i in "$nameserver" "$nameserver1" "$nameserver2" "$nameserver3" "$dns_forwarder1" "$dns_forwarder2" "$dns_forwarder3"; do
 			if [ -z "$i" ]; then continue; fi
@@ -255,16 +251,26 @@ if [ -x /etc/init.d/slapd ]; then
 	echo -e "\033[60Gdone"
 fi
 
+if [ -x /etc/init.d/samba4 ]; then
+	echo -n "Stop Samba 4 Server: "
+	/etc/init.d/samba4 stop >>/var/log/univention/join.log 2>&1
+	echo -e "\033[60Gdone"
+fi
+
 if [ -z "$LDAPBASE" ]; then
 	echo -n "Search ldap/base"
-	ldap_result=$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
-		ldapsearch -x -LLL -b \\\"\\\" -s base 'objectclass=*' NamingContexts)
-	ldap_base=$(echo "$ldap_result" | ldapsearch-wrapper | grep namingContexts | sed -e 's|namingContexts: ||')
+	ldap_base="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" /usr/sbin/ucr search --brief ^ldap/base$ | sed -ne 's|^ldap/base: ||p')"
+	
 else
 	ldap_base="$LDAPBASE"
 fi
-univention-config-registry set ldap/base="$ldap_base" >/dev/null 2>&1
-echo -e "\033[60Gdone"
+
+if [ -n "$ldap_base" ]; then
+	univention-config-registry set ldap/base="$ldap_base" >/dev/null 2>&1
+	echo -e "\033[60Gdone"
+else
+	failed_message "Failed to determine ldap/base."
+fi
 
 if [ -x /etc/init.d/slapd ]; then
 	echo -n "Start LDAP Server: "
@@ -273,23 +279,34 @@ if [ -x /etc/init.d/slapd ]; then
 fi
 
 echo -n "Search LDAP binddn "
-binddn=""
-ldap_result=$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
-	"ldapsearch -x -LLL \'\(\&\(uid=$DCACCOUNT\)\(objectClass=person\)\)\' dn")
-for i in $(echo "$ldap_result" | ldapsearch-wrapper | sed -n 's/^dn: \(.*\)/\1/p'); do
-	if [ -n "$binddn" ]; then
-		failed_message "binddn for user $DCACCOUNT not unique, $i and $binddn"
-	fi
-	echo -e "\033[60Gdone"
-	binddn="$i"
-done
+
+# First use udm to search the user DN
+binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
+	/usr/sbin/udm users/user list --filter uid=$DCACCOUNT --logfile /dev/null | sed -ne 's|DN: ||p')"
+
 if [ -z "$binddn" ]; then
-	failed_message "binddn for user $DCACCOUNT not found"
+	# Next check is the local ldapi interface
+	binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
+		ldapsearch -x LLL -H ldapi:/// "(&(uid=$DCACCOUNT)(objectClass=person))" dn | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
+fi
+
+if [ -z "$binddn" ]; then
+	# Check with anonymous bind
+	ldap_result=$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
+		   "ldapsearch -x -LLL \'\(\&\(uid=$DCACCOUNT\)\(objectClass=person\)\)\' dn")
+	for i in $(echo "$ldap_result" | ldapsearch-wrapper | sed -n 's/^dn: \(.*\)/\1/p'); do
+		   if [ -n "$binddn" ]; then
+				   failed_message "binddn for user $DCACCOUNT not unique, $i and $binddn"
+		   fi
+		   binddn="$i"
+	done
+
+fi
+
+if [ -z "$binddn" ]; then
+	failed_message "binddn for user $DCACCOUNT not found. "
 else
-	ldapsearch -x -h $DCNAME -LLL -b "$ldap_base" -D "$binddn" -w `cat $DCPWD` -LLL -s base >/dev/null 2>&1
-	if [ $? != 0 ]; then
-		failed_message "Invalid credentials"
-	fi
+	echo -e "\033[60Gdone"
 fi
 
 if [ $server_role != "domaincontroller_master" -a "$server_role" != "domaincontroller_backup" -a -z "$binddn" ]; then
@@ -304,6 +321,15 @@ fi
 
 if [ -n "$ldap_position" ]; then
 	position_cmd="-position \"$ldap_position\""
+fi
+
+master_version="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" /usr/sbin/ucr search --brief ^version/version$ | sed -ne 's|^version/version: ||p')"
+
+if [ "${master_version:0:1}" -lt 3 ]; then
+	# UCS 2.x does not support the -binddn parameter
+	auth_cmd="-bindaccount \"$DCACCOUNT\" -bindpwfile \"$DCPWD\""
+else
+	auth_cmd="-binddn \"$binddn\" -bindpwfile \"$DCPWD\""
 fi
 
 if [ -n "$server_role" ]; then

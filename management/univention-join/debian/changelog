@@ -1,3 +1,11 @@
+univention-join (4.0.11-1) unstable; urgency=low
+
+  * UCS 3.0 adjustments (Bug #22413)
+  * Support for ldap/master/port (Bug #20026)
+  * Consider disabled anonymous ldap access on DC Master (Bug #17519)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 05 Aug 2011 10:49:38 +0200
+
 univention-join (4.0.10-1) unstable; urgency=low
 
   * Set execute permissions to univention-run-join-scripts (Bug #22431)

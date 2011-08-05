@@ -59,8 +59,9 @@ display_help() {
 	  -ip <ip-address>:        IP address of computer system
 	  -mac <mac-address>:      MAC address of computer system
 
-	  -bindaccount
-	  -bindpwfile:             UID and password for Univention Admin
+	  -bindaccount             UID for Univention Directory Manager (deprecated)
+	  -binddn                  DN for Univention Directory Manager
+	  -bindpwfile:             Password for Univention Directory Manager
 
 	  -h | --help | -?:        print this usage message and exit program
 	  --version:               print version information and exit program
@@ -142,6 +143,11 @@ do
 			BINDACCOUNT="$1"
 			shift
 			;;
+		"-binddn")
+			shift
+			BINDDN="$1"
+			shift
+			;;
 		"-bindpwfile")
 			shift
 			BINDPWFILE="$1"
@@ -164,13 +170,15 @@ do
 done
 
 # extend options for univention-directory-manager
-if [ "$BINDACCOUNT" ]; then
-    BINDDN=`ldapsearch -x "(&(uid=$BINDACCOUNT)(objectclass=posixAccount))" dn | ldapsearch-wrapper | grep ^dn | sed -e 's|dn: ||'`
-    log 0 "found BINDDN: $BINDDN" >>$LOGFILE
-    if [ -z "$BINDDN" ]; then
-	log 1 "failed to get binddn for $BINDACCOUNT"
-	exit 1
-    fi
+if [ -z "$BINDDN" ]; then
+	if [ -n "$BINDACCOUNT" ]; then
+		BINDDN="$(ldapsearch -x "(&(uid=$BINDACCOUNT)(objectclass=posixAccount))" dn | ldapsearch-wrapper | sed -ne 's|dn: ||p')"
+		log 0 "found BINDDN: $BINDDN" >>$LOGFILE
+		if [ -z "$BINDDN" ]; then
+			log 1 "failed to get binddn for $BINDACCOUNT"
+			exit 1
+		fi
+	fi
 fi
 
 if [ "$BINDDN" ]; then
