@@ -27,9 +27,6 @@ Type: file
 File: etc/init.d/networking
 
 Type: file
-File: etc/init.d/sysklogd
-
-Type: file
 File: etc/init.d/klogd
 
 Type: file
@@ -135,14 +132,6 @@ Variables: log/rotate/weeks
 Variables: log/rotate/univention/compress
 
 Type: file
-File: etc/cron.weekly/sysklogd
-Variables: log/rotate/weeks
-
-Type: file
-File: etc/cron.daily/sysklogd
-Variables: log/rotate/weeks
-
-Type: file
 File: etc/resolv.conf
 Postinst: resolv.py
 Variables: domainname
@@ -202,12 +191,8 @@ File: etc/cron.d/univention-ucr-cronjobs
 Variables: cron/.*
 
 Type: multifile
-Multifile: etc/syslog.conf
+Multifile: etc/rsyslog.d/00syslog.conf
 Variables: syslog/.*
-
-Type: subfile
-Multifile: etc/syslog.conf
-Subfile: etc/syslog.conf.d/00syslog.conf
 
 Type: multifile
 Multifile: etc/python2.6/sitecustomize.py
