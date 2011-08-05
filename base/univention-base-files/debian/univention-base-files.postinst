@@ -110,7 +110,10 @@ univention-config-registry set sshd/port?22 \
 # univention-config-registry set version/releasename="hornbeam" # UCS 2.3
 
 # http://en.wikipedia.org/wiki/Fagus_sylvatica
-univention-config-registry set version/releasename="golden beech" # UCS 2.4
+# univention-config-registry set version/releasename="golden beech" # UCS 2.4
+
+# http://de.wikipedia.org/wiki/Horn-Lehe
+univention-config-registry set version/releasename="Horn-Lehe" # UCS 3.0
 
 if [ -x /etc/init.d/ntpdate -a -x /etc/rcS.d/S51ntpdate ]; then
 	update-rc.d -f ntpdate remove >/dev/null 2>&1 || true

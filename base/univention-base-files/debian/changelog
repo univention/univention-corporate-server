@@ -1,3 +1,9 @@
+univention-base-files (1.0.11-1) unstable; urgency=low
+
+  * Set codename for UCS 3.0 to Horn-Lehe (Bug #21474)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 05 Aug 2011 11:57:56 +0200
+
 univention-base-files (1.0.10-2) unstable; urgency=low
 
   * debian/control: Recommends: bash-completion (Bug #22586)
