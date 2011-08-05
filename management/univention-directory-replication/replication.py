@@ -427,6 +427,8 @@ BUILTIN_OIDS=[
 	'1.3.6.1.4.1.4203.1.12.2.4.0.8',	# olcModuleList
 	'1.3.6.1.4.1.4203.1.12.2.4.2.1.1',	# olcBdbConfig
 	'1.3.6.1.4.1.4203.1.12.2.4.2.2.1',	# olcLdifConfig
+	# UCS 3.0
+	'1.3.6.1.4.1.4203.666.11.1.3.0.93', # olcListenerThreads
 	# UCS 2.0
 	'2.5.4.34', #seeAlso
 	'0.9.2342.19200300.100.1.1', #userid
@@ -521,11 +523,6 @@ def connect(ldif=0):
 
 	if not os.path.exists(LDIF_FILE) and not ldif:
 		# ldap connection
-		if os.path.exists('/var/run/ldapi.sock'):
-			sock='/var/run/ldapi.sock'
-		else:
-			sock='/var/lib/ldapi.sock'
-
 		if not os.path.exists('/etc/ldap/rootpw.conf'):
 			pw=new_password()
 			init_slapd('restart')
@@ -536,8 +533,12 @@ def connect(ldif=0):
 				init_slapd('restart')
 
 		listener.setuid(0)
+
+		local_ip=127.0.0.1
+		local_port=baseConfig.get('slapd/port', '389').split(',')[0]
+		
 		try:
-			connection=ldap.open(sock)
+			connection=ldap.open(local_ip, local_port)
 			connection.simple_bind_s('cn=update,'+listener.baseConfig['ldap/base'], pw)
 		finally:
 			listener.unsetuid()
