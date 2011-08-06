@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 #
 # Univention Nagios Client
 #  join script
@@ -44,7 +44,7 @@ univention-config-registry commit /etc/nagios/nrpe.cfg
 # only register host to ldap if nagios/client/autoregister is not "no"
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
 
-	if ! ldapsearch -xLLL -s base -b "cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
+	if ! udm container/cn list "$@" --filter cn=nagios | grep "^DN: cn=nagios,$ldap_base$" 2>/dev/null >/dev/null ; then 
 		echo "Cannot find container cn=nagios,$ldap_base (ldapsearch error $?)"
 		echo "Please check if univention-nagios-server is installed on a system in UCS domain."
 		exit 0
@@ -66,7 +66,8 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
               "cn=UNIVENTION_SMTP,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_REPLICATION,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_NSCD,cn=nagios,$ldap_base" ; do
-		if ldapsearch -xLLL -b "$dn" dn 2>/dev/null >/dev/null ; then
+		rdn="$(echo $dn | sed -e 's|,.*||')"
+		if udm nagios/service list "$@" --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
 			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
 		else
 			echo "Skipping $dn (code $?)"
@@ -78,7 +79,8 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
          "$server_role" = "domaincontroller_backup" ] ; then
 		for dn in "cn=UNIVENTION_SSL,cn=nagios,$ldap_base" \
 				  "cn=UNIVENTION_KPASSWDD,cn=nagios,$ldap_base" ; do
-			if ldapsearch -xLLL -b "$dn" dn 2>/dev/null >/dev/null ; then
+			rdn="$(echo $dn | sed -e 's|,.*||')"
+			if udm nagios/service list "$@" --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
 				univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
 			else
 				echo "Skipping $dn (code $?)"
@@ -91,7 +93,8 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
          "$server_role" = "domaincontroller_backup" -o \
          "$server_role" = "domaincontroller_slave" ] ; then
 		dn="cn=UNIVENTION_LDAP,cn=nagios,$ldap_base"
-		if ldapsearch -xLLL -b "$dn" dn 2>/dev/null >/dev/null ; then
+		rdn="$(echo $dn | sed -e 's|,.*||')"
+		if udm nagios/service list "$@" --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
 			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
 		else
 			echo "Skipping $dn (code $?)"
@@ -105,7 +108,8 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
          "$server_role" = "memberserver" -o \
          "$server_role" = "fatclient" ] ; then
 		dn="cn=UNIVENTION_JOINSTATUS,cn=nagios,$ldap_base"
-		if ldapsearch -xLLL -b "$dn" dn 2>/dev/null >/dev/null ; then
+		rdn="$(echo $dn | sed -e 's|,.*||')"
+		if udm nagios/service list "$@" --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
 			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
 		else
 			echo "Skipping $dn (code $?)"

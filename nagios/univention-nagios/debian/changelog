@@ -1,3 +1,9 @@
+univention-nagios (5.0.4-1) unstable; urgency=low
+
+  * Consider disabled anoymous bind in join script (Bug #23180)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 06 Aug 2011 08:37:50 +0200
+
 univention-nagios (5.0.3-1) unstable; urgency=low
 
   * set auth/nagios/restrict (Bug #14594)
