@@ -4,5 +4,6 @@
 	<syntax base="Selection" name="Reboot-Options">
 	  <choice name="reboot"/>
 	  <choice name="halt"/>
+	</syntax>
   </definitions>
 </umc>

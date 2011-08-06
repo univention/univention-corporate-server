@@ -1,3 +1,9 @@
+univention-management-console-module-reboot (1.0.10-1) unstable; urgency=low
+
+  * fixed syntax error in syntax definition; Bug #22848
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 06 Aug 2011 11:40:29 +0200
+
 univention-management-console-module-reboot (1.0.9-1) unstable; urgency=low
 
   * Adaptations for new design (Bug #22881) 
