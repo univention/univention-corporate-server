@@ -67,7 +67,7 @@ if [ ! -f "$CERT_PATH" ]; then
 	ENABLE_SSL=no
 fi
 
-if [ $ENABLE_SSL == yes ]; then
+if [ $ENABLE_SSL = yes ]; then
 	a2enmod ssl
 else
 	a2dismod ssl
