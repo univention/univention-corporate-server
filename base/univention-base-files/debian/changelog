@@ -1,8 +1,8 @@
-univention-base-files (1.0.12-1) unstable; urgency=low
+univention-base-files (1.0.12-2) unstable; urgency=low
 
   * change to rsyslog (Bug #23143)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 05 Aug 2011 17:17:55 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 08 Aug 2011 09:52:45 +0200
 
 univention-base-files (1.0.11-1) unstable; urgency=low
 

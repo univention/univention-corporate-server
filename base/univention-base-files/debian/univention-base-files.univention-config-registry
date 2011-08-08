@@ -190,8 +190,8 @@ Type: file
 File: etc/cron.d/univention-ucr-cronjobs
 Variables: cron/.*
 
-Type: multifile
-Multifile: etc/rsyslog.d/00syslog.conf
+Type: file
+File: etc/rsyslog.conf
 Variables: syslog/.*
 
 Type: multifile
