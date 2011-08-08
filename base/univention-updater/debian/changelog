@@ -1,3 +1,10 @@
+univention-updater (7.0.9-2) unstable; urgency=low
+
+  * inititalize ldap/hostdn and bind/bindpw for univention_policy_result
+    (Bug #23178)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 08 Aug 2011 18:14:34 +0200
+
 univention-updater (7.0.9-1) unstable; urgency=low
 
   * use ldap/hostdn and bind/bindpw for univention_policy_result
