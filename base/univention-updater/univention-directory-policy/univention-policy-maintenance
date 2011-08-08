@@ -32,18 +32,18 @@
 # <http://www.gnu.org/licenses/>.
 
 import os, string, sys
-import tempfile
-import univention_baseconfig
+import subprocess
+import univention.config_registry
 
 # Name of the cron.d file
 CRON_D='/etc/cron.d/univention-maintenance'
 
-def write_cron_job(baseConfig, cron, updateto, reboot):
+def write_cron_job(configRegistry, cron, updateto, reboot):
 	file=open(CRON_D, 'w')
 	file.write('# cron job for update\n')
 	if cron != '* * * * * ':
 		file.write('%s root ' % cron)
-		if baseConfig.get( 'local/repository', 'no' ).lower() in ( 'yes', 'true' ):
+		if configRegistry.is_true( 'local/repository' ):
 			target='local'
 		else:
 			target='net'
@@ -57,29 +57,29 @@ def write_cron_job(baseConfig, cron, updateto, reboot):
 	file.close()
 
 
-baseConfig=univention_baseconfig.baseConfig()
-baseConfig.load()
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
 
 if os.path.exists(CRON_D):
 	os.unlink(CRON_D)
 
-if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
-	tempfile=tempfile.mktemp()
+bindpw_filename = configRegistry.get('bind/bindpw', '/etc/machine.secret')
+ldap_hostdn = configRegistry.get('ldap/hostdn')
+if ldap_hostdn:
 
-	result=os.system('univention_policy_result -s "%s" >>%s' %  (baseConfig['ldap/hostdn'], tempfile))
+	p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', bindpw_filename, '-s', ldap_hostdn], stdout=subprocess.PIPE)
+	result = p1.communicate()[0]
 
-	if result != 0:
+	if p1.returncode != 0:
 		print 'failed to execute univention_policy_result'
 		sys.exit(result)
-
-	file=open(tempfile, 'r')
 
 	updateto=''
 	cron_active=''
 	reboot=''
 	cron=None
 
-	for line in file.readlines():
+	for line in result.split('\n'):
 		line=line.strip(' ').strip('\n')
 		if line.startswith('univentionCronActive='):
 			cron_active=line.replace('univentionCronActive=', '').replace('"','')
@@ -90,12 +90,8 @@ if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
 		elif line.startswith('univentionInstallationReboot='):
 			reboot=line.replace('univentionInstallationReboot=', '').replace('"','')
 
-	file.close()
-
 	if cron_active and cron_active == '1':
 		if cron:
-			write_cron_job(baseConfig, cron, updateto, reboot)
-
-	os.remove(tempfile)
+			write_cron_job(configRegistry, cron, updateto, reboot)
 
 sys.exit(0)

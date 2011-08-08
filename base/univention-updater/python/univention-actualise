@@ -215,21 +215,18 @@ def getPackageList(configRegistry, job):
 		print >>sys.stderr, "E: no valid job defined"
 		sys.exit(1)
 
-	tmpfile=tempfile.mktemp()
-	res=os.system('univention_policy_result -s "%s" >>%s' %  (configRegistry['ldap/hostdn'], tmpfile))
-	if res != 0:
+	p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', bindpw_filename, '-s', ldap_hostdn], stdout=subprocess.PIPE)
+	result = p1.communicate()[0]
+
+	if p1.returncode != 0:
 		print >>sys.stderr, 'failed to execute univention_policy_result'
 		sys.exit(res)
 
-	tfile=open(tmpfile, 'r')
-
-	for line in tfile.readlines():
+	for line in result.split('\n'):
 		line=line.strip(' ').replace('"','')
 		if line.startswith(packages_name):
 			package=line.strip('\n').replace('%s' % packages_name, '').split('/')[-1]
 			packageList.append(package)
-	tfile.close()
-	os.remove(tmpfile)
 	return packageList
 
 def main():

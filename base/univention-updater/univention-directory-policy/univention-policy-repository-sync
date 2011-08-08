@@ -31,31 +31,30 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, string, sys
-import tempfile
-import univention_baseconfig
+import os, string, sys, subprocess
+import univention.config_registry
+
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
 
 # Name of the cron.d file
 CRON_D='/etc/cron.d/univention-repository-sync'
 
-baseConfig=univention_baseconfig.baseConfig()
-baseConfig.load()
-
 if os.path.exists(CRON_D):
 	os.unlink(CRON_D)
 
-if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
-	tempfile=tempfile.mktemp()
+bindpw_filename = configRegistry.get('bind/bindpw', '/etc/machine.secret')
+ldap_hostdn = configRegistry.get('ldap/hostdn')
+if ldap_hostdn:
 
-	result=os.system('univention_policy_result -s "%s" >> "%s"' %  (baseConfig['ldap/hostdn'], tempfile))
+	p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', bindpw_filename, '-s', ldap_hostdn], stdout=subprocess.PIPE)
+	result = p1.communicate()[0]
 
-	if result != 0:
+	if p1.returncode != 0:
 		print 'failed to execute univention_policy_result'
 		sys.exit(result)
 
-	file=open(tempfile, 'r')
-
-	for line in file.readlines():
+	for line in result.split('\n'):
 		line=line.strip(' ').strip('\n').replace('"','')
 		if line.startswith('univentionRepositoryCron='):
 			new_repository_sync=line.replace('univentionRepositoryCron=', '')
@@ -65,9 +64,5 @@ if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
 				if new_repository_sync != '* * * * * ':
 					cron_file.write('%s root /usr/sbin/univention-repository-update net\n' % new_repository_sync)
 				cron_file.close()
-
-	file.close()
-
-	os.remove(tempfile)
 
 sys.exit(0)

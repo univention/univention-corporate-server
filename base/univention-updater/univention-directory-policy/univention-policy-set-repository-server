@@ -32,11 +32,14 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
-import sys
-import univention_baseconfig
+import sys, subprocess
+import univention.config_registry
 
-baseConfig=univention_baseconfig.baseConfig()
-baseConfig.load()
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
+
+bindpw_filename = configRegistry.get('bind/bindpw', '/etc/machine.secret')
+ldap_hostdn = configRegistry.get('ldap/hostdn')
 
 def exit(result, message = None):
 	script = os.path.basename(sys.argv[0])
@@ -44,39 +47,39 @@ def exit(result, message = None):
 		print '%s: %s' % (script, message)
 	sys.exit(result)
 
-def query_policy(dn, update):
+def query_policy():
 	server = None
-	policy = 'univention_policy_result'
-	pipe = os.popen('%s -s "%s"' % (policy, dn))
-	for line in pipe:
+	p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', bindpw_filename, '-s', ldap_hostdn], stdout=subprocess.PIPE)
+	result = p1.communicate()[0]
+
+	if p1.returncode != 0:
+		exit(result, "FAIL: failed to execute `univention_policy_result'")
+
+	for line in result.split('\n'):
 		line = line.strip()
 		if line.startswith('univentionRepositoryServer='):
 			server = line.split('=', 1)[1].split('"',2)[1]
 		elif line.startswith('univentionUpdateVersion='):
 			update = line.split('=', 1)[1].split('"',2)[1]
-	result = pipe.close()
-	if result is not None:
-		exit(result, "FAIL: failed to execute `%s'" % policy)
 	if server and server.startswith('http://'):
 		server = server.replace('http://', '', 1)
 	return (server, update)
 
 def main():
 	restore_server = None
-	hostdn = baseConfig.get( 'ldap/hostdn', None )
-	online_server = baseConfig.get( 'repository/online/server', None )
-	mirror_server = baseConfig.get( 'repository/mirror/server', None )
-	local_repo = baseConfig.get( 'local/repository', None ) in ('yes', 'true')
-	fqdn  = '%s.%s' % (baseConfig['hostname'], baseConfig['domainname'])
-	update = '%s-%s' % (baseConfig['version/version'], baseConfig['version/patchlevel'])
+	online_server = configRegistry.get( 'repository/online/server')
+	mirror_server = configRegistry.get( 'repository/mirror/server')
+	local_repo = configRegistry.is_true( 'local/repository')
+	fqdn  = '%s.%s' % (configRegistry['hostname'], configRegistry['domainname'])
+	update = '%s-%s' % (configRegistry['version/version'], configRegistry['version/patchlevel'])
 	# ldap_host_dn, old_server, local_server, local_repo, fqdn, update = query_baseconfig()
 
 	ucr_variables = []
-	if not hostdn:
+	if not ldap_hostdn:
 		# can't query policy without host-dn
 		exit(0)
 
-	new_server, update = query_policy( hostdn, update )
+	new_server, update = query_policy()
 	# without a local repository
 	if not local_repo:
 		if not new_server or new_server == online_server:
@@ -91,7 +94,7 @@ def main():
 		elif new_server != mirror_server:
 			ucr_variables.append( 'repository/mirror/server=%s' % new_server )
 
-	univention_baseconfig.handler_set( ucr_variables )
+	univention.config_registry.handler_set( ucr_variables )
 
 if __name__ == '__main__':
 	main()

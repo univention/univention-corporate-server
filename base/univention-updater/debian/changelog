@@ -1,3 +1,11 @@
+univention-updater (7.0.9-1) unstable; urgency=low
+
+  * use ldap/hostdn and bind/bindpw for univention_policy_result
+    (Bug #23178)
+  * wording fix: use configRegistry instead of baseConfig
+
+ -- Arvid Requate <requate@univention.de>  Mon, 08 Aug 2011 16:30:04 +0200
+
 univention-updater (7.0.8-1) unstable; urgency=low
 
   * Use host account for policy result in the init script (Bug #17519)
