@@ -35,10 +35,13 @@ import os
 import univention.config_registry
 import ldap
 import string
-import sys
+import sys, subprocess
 
 configRegistry=univention.config_registry.ConfigRegistry()
 configRegistry.load()
+
+bindpw_filename = configRegistry.get('bind/bindpw', '/etc/machine.secret')
+ldap_hostdn = configRegistry.get('ldap/hostdn')
 
 def exit(result, message = None):
 	import sys
@@ -49,15 +52,16 @@ def exit(result, message = None):
 
 def query_policy(dn):
 	nfsmount = []
-	policy = 'univention_policy_result'
-	pipe = os.popen('%s -s "%s"' % (policy, dn))
-	for line in pipe:
+	p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', bindpw_filename, '-s', ldap_hostdn], stdout=subprocess.PIPE)
+	result = p1.communicate()[0]
+
+	if p1.returncode != 0:
+		exit(result, "FAIL: failed to execute `%s'" % policy)
+
+	for line in result.split('\n'):
 		line = line.strip()
 		if line.startswith('univentionNFSMounts='):
 			nfsmount.append(line.split('=', 1)[1].split('"',2)[1])
-	result = pipe.close()
-	if result is not None:
-		exit(result, "FAIL: failed to execute `%s'" % policy)
 	return nfsmount
 
 def main():

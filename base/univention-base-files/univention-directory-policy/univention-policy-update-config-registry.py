@@ -94,9 +94,10 @@ def main():
 		print 'Simulating update...'
 
 	# get policy result
-	p1 = subprocess.Popen('univention-policy-result "%s"' % dn, shell=True, stdout=subprocess.PIPE)
-	p2 = subprocess.Popen('grep -A1 "^Attribute: univentionRegistry;entry-hex-"',
-						  shell=True, stdin=p1.stdout, stdout=subprocess.PIPE)
+	pwdfilename = baseConfig.get('bind/bindpw', '/etc/machine.secret')
+	p1 = subprocess.Popen(['univention-policy-result', '-D', dn, '-y', pwdfilename, dn], stdout=subprocess.PIPE)
+	p2 = subprocess.Popen(['grep', '-A1', '^Attribute: univentionRegistry;entry-hex-'],
+						  stdin=p1.stdout, stdout=subprocess.PIPE)
 	result = p2.communicate()[0]
 	# if univention-policy-result fails then quit and do not parse output
 	if p1.wait() != 0:

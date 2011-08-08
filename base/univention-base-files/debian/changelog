@@ -1,3 +1,10 @@
+univention-base-files (1.0.13-1) unstable; urgency=low
+
+  * use ldap/hostdn and bind/bindpw for univention_policy_result
+    (Bug #23178)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 08 Aug 2011 16:33:08 +0200
+
 univention-base-files (1.0.12-2) unstable; urgency=low
 
   * change to rsyslog (Bug #23143)
