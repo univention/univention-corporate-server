@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import os, sys, getopt, types, re, codecs, string, time, base64, os
+import sys, getopt, types, re, codecs, string, time, base64, os, subprocess
 
 import univention.debug
 
@@ -419,7 +419,9 @@ def doit(arglist):
 	arg=None
 	binddn=None
 	bindpwd=None
-	policyOptions=None
+	list_policies=False
+	policies_with_DN=False
+	policyOptions=[]
 	logfile='/var/log/univention/admin-cmd.log'
 	tls=2
 	ignore_exists=0
@@ -440,9 +442,11 @@ def doit(arglist):
 		elif opt == '--logfile':
 			logfile=val
 		elif opt == '--policies':
-			policyOptions=" -s"
+			policies = True
 			if val=="1":
-				policyOptions=" "
+				policies_with_DN = True
+			else:
+				policyOptions = ['-s']
 		elif opt == '--binddn':
 			binddn=val
 		elif opt == '--bindpwd':
@@ -514,16 +518,19 @@ def doit(arglist):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
 			out.append('authentication error: %s' % str(e))
 			return out + ["OPERATION FAILED"]
+		policyOptions.extend(['-D', binddn, '-w', bindpwd])	## FIXME not so nice
 
 	else:
 		if os.path.exists('/etc/ldap.secret'):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using cn=admin,%s account" % baseDN)
 			secretFileName='/etc/ldap.secret'
 			binddn='cn=admin,'+baseDN
+			policyOptions.extend(['-D', binddn, '-y', secretFileName])
 		elif os.path.exists('/etc/machine.secret'):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % configRegistry['ldap/hostdn'])
 			secretFileName='/etc/machine.secret'
 			binddn=configRegistry['ldap/hostdn']
+			policyOptions.extend(['-D', binddn, '-y', secretFileName])
 
 		try:
 			secretFile=open(secretFileName,'r')
@@ -1097,17 +1104,19 @@ def doit(arglist):
 								out.append('  %s: %s' % ( 'univentionPolicyReference',
 													  	_2utf8( s.tostring( el ) ) ) )
 
-				if policyOptions:
-					policyResults = os.popen( 'univention_policy_result %s %s' % ( policyOptions, _2utf8( univention.admin.objects.dn( object ) ) ) )
+				if list_policies:
+					utf8_objectdn = _2utf8( univention.admin.objects.dn( object ) )
+					p1 = subprocess.Popen(['univention_policy_result'] + policyOptions + [utf8_objectdn], stdout=subprocess.PIPE)
+					policyResults = p1.communicate()[0].split('\n')
+
 					out.append("  Policy-based Settings:")
-					line = policyResults.readline()
 					policy=''
 					value=[]
 					client={}
-					while not line == "":
+					for line in policyResults:
 						if not (line.strip() == "" or line.strip()[:4]=="DN: " or line.strip()[:7]=="POLICY "):
 							out.append("    %s"%line.strip())
-							if policyOptions==" ":
+							if policies_with_DN:
 								clsplit=string.split(line.strip(), ': ')
 								if clsplit[0] == 'Policy':
 									if policy:
@@ -1124,9 +1133,7 @@ def doit(arglist):
 									client[clsplit[0]] = []
 								client[clsplit[0]].append(clsplit[1])
 
-						line = policyResults.readline()
-
-					if policyOptions==" ":
+					if policies_with_DN:
 						client[attribute]=[policy, value]
 						value=[]
 
@@ -1137,16 +1144,17 @@ def doit(arglist):
 							for subnet in univention.admin.modules.lookup(subnet_module, co, lo, scope='sub', superordinate=superordinate, base='', filter=''):
 
 								if univention.admin.ipaddress.ip_is_in_network(subnet['subnet'], subnet['subnetmask'], object['fixedaddress'][0]):
-									policyResults = os.popen( 'univention_policy_result %s %s' % ( policyOptions, _2utf8( subnet.dn ) ) )
+									utf8_subnet_dn = _2utf8( subnet.dn )
+									p1 = subprocess.Popen(['univention_policy_result'] + policyOptions + [utf8_subnet_dn], stdout=subprocess.PIPE)
+									policyResults = p1.communicate()[0].split('\n')
 									out.append("  Subnet-based Settings:")
-									line = policyResults.readline()
 									ddict={}
 									policy=''
 									value=[]
-									while not line == "":
+									for line in policyResults:
 										if not (line.strip() == "" or line.strip()[:4]=="DN: " or line.strip()[:7]=="POLICY "):
 											out.append("    %s"%line.strip())
-											if policyOptions==" ":
+											if policies_with_DN:
 												subsplit=string.split(line.strip(), ': ')
 												if subsplit[0] == 'Policy':
 													if policy:
@@ -1163,11 +1171,9 @@ def doit(arglist):
 													ddict[subsplit[0]] = []
 												ddict[subsplit[0]].append(subsplit[1])
 
-										line = policyResults.readline()
-
 									out.append('')
 
-									if policyOptions==" ":
+									if policies_with_DN:
 										ddict[attribute]=[policy, value]
 										value=[]
 
@@ -1177,9 +1183,7 @@ def doit(arglist):
 										if not client.has_key(key):
 											client[key]=ddict[key]
 
-
-
-									if policyOptions==" ":
+									if policies_with_DN:
 										for key in client.keys():
 											out.append("    Policy: "+client[key][0])
 											out.append("    Attribute: "+key)
