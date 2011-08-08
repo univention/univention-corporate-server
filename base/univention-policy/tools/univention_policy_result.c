@@ -35,6 +35,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <ldap.h>
+#include <errno.h>
 
 #include <univention/debug.h>
 #include <univention/ldap.h>
@@ -62,25 +63,38 @@ static char* read_password_file(char* filename)
 		perror("read_password_file: malloc failed");
 		return NULL;
 	}
-	int fd = open(filename, O_RDONLY);
-	if (fd == -1) {
+	int fd;
+	while ((fd = open(filename, O_RDONLY)) == -1) {
+		if (errno == EINTR) { /* the call was interrupted by a signal handler */
+			continue; /* try again */
+		}
 		perror("read_password_file: open failed");
+		free(buffer);
 		return NULL;
 	}
-	int count = 0;
+	int buffer_pos = 0;
 	for (;;) {
-		count = read(fd, buffer+count, buffer_len-count);
+		int count = read(fd, buffer + buffer_pos, buffer_len - buffer_pos);
 		if (count == 0) {
 			break;
 		}
 		if (count == -1) {
+			if (errno == EINTR) { /* the call was interrupted by a signal handler */
+				continue; /* try again */
+			}
 			perror("read_password_file: read failed");
 			close(fd);
+			free(buffer);
 			return NULL;
 		}
+		buffer_pos+= count;
 	}
-	if (close(fd) == -1) {
+	while (close(fd) == -1) {
+		if (errno == EINTR) { /* the call was interrupted by a signal handler */
+			continue; /* try again */
+		}
 		perror("read_password_file: close failed");
+		free(buffer);
 		return NULL;
 	}
 	return buffer;
