@@ -158,10 +158,14 @@ if [ -z "$nmpoints" ]
 	exit 0
 fi
 
+if [ -z "$bind_bindpw" ]; then
+	bind_bindpw="/etc/machine.secret"
+fi
+
 # shares, first line is dn, second is path
 i=0
 oldi=-1
-for s in `/usr/bin/ldapsearch -x -h $ldap_server_name "(&(objectClass=univentionShare)(univentionShareHost=$hostname.$domainname))" | ldapsearch-wrapper | grep "^dn:\|^univentionSharePath:" | awk '{print $2}'`
+for s in `/usr/bin/ldapsearch -x -h $ldap_server_name -D "$ldap_hostdn" -y "$bind_bindpw" "(&(objectClass=univentionShare)(univentionShareHost=$hostname.$domainname))" | ldapsearch-wrapper | grep "^dn:\|^univentionSharePath:" | awk '{print $2}'`
   do
   if [ $oldi -lt $i ] # dn
 	  then
@@ -169,7 +173,7 @@ for s in `/usr/bin/ldapsearch -x -h $ldap_server_name "(&(objectClass=univention
 	  univentionQuotaHardLimitInodes=0
 	  univentionQuotaSoftLimitInodes=0
 	  univentionQuotaHardLimitSpace=0
-	  eval `/usr/bin/univention_policy_result -s $s`
+	  eval `/usr/bin/univention_policy_result -D "$ldap_hostdn" -y "$bind_bindpw" -s $s`
 	  sharedn[$i]=$s
 	  sharehli[$i]=$univentionQuotaHardLimitInodes
 	  sharesli[$i]=$univentionQuotaSoftLimitInodes
