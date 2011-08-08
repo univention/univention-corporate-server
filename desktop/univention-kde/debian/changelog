@@ -1,3 +1,10 @@
+univention-kde (6.0.1-1) unstable; urgency=low
+
+  * use ldap/hostdn and bind/bindpw for univention_policy_result
+    call in join script (Bug #23178)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 08 Aug 2011 18:25:13 +0200
+
 univention-kde (6.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 Bug #22432
