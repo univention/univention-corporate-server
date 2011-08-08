@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.3-2) unstable; urgency=low
+
+  * version bump (Bug #22669)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 08 Aug 2011 14:23:58 +0200
+
 univention-management-console-frontend (1.0.3-1) unstable; urgency=low
 
   * added necessary files for UMC to appear on the overview site (Bug #22669)
