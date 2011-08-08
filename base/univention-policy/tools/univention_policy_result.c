@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <ldap.h>
 
 #include <univention/debug.h>
@@ -45,10 +46,44 @@ static void usage(void)
 	fprintf(stderr, "\t-h\thost\n");
 	fprintf(stderr, "\t-D\tbinddn\n");
 	fprintf(stderr, "\t-w\tbindpw\n");
+	fprintf(stderr, "\t-y\tpasswordfile\n");
 
 	fprintf(stderr, "\t-s\tShell output\n");
 	fprintf(stderr, "\t-b\tConfiguration Registry output\n");
 	fprintf(stderr, "\t-d\tEnable debug\n");
+}
+
+#define MAX_PASSWORD_SIZE 256
+static char* read_password_file(char* filename)
+{
+	int buffer_len = MAX_PASSWORD_SIZE;
+	char* buffer = malloc(buffer_len);
+	if (buffer == NULL) {
+		perror("read_password_file: malloc failed");
+		return NULL;
+	}
+	int fd = open(filename, O_RDONLY);
+	if (fd == -1) {
+		perror("read_password_file: open failed");
+		return NULL;
+	}
+	int count = 0;
+	for (;;) {
+		count = read(fd, buffer+count, buffer_len-count);
+		if (count == 0) {
+			break;
+		}
+		if (count == -1) {
+			perror("read_password_file: read failed");
+			close(fd);
+			return NULL;
+		}
+	}
+	if (close(fd) == -1) {
+		perror("read_password_file: close failed");
+		return NULL;
+	}
+	return buffer;
 }
 
 #define OUTPUT_VERBOSE 0
@@ -71,7 +106,7 @@ int main(int argc, char* argv[])
 
 	for (;;) {
 		int c;
-		c = getopt(argc, argv, "h:p:D:w:Wdsb");
+		c = getopt(argc, argv, "h:p:D:w:Wdsby:");
 		if (c == -1)
 			break;
 		switch (c) {
@@ -92,6 +127,12 @@ int main(int argc, char* argv[])
 				break;
 			case 'b':
 				output = OUTPUT_BASECONFIG;
+				break;
+			case 'y':
+				ldap_parameters->bindpw = read_password_file(optarg);
+				if (ldap_parameters->bindpw == NULL) {
+					return 1;
+				}
 				break;
 			default:
 				univention_ldap_close(ldap_parameters);

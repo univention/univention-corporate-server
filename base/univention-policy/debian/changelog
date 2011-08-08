@@ -1,3 +1,9 @@
+univention-policy (5.0.3-1) unstable; urgency=low
+
+  * add -y to read password files (Bug #23178)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 08 Aug 2011 15:39:17 +0200
+
 univention-policy (5.0.2-1) unstable; urgency=low
 
   * By default use port 7389 (Bug #20026)
