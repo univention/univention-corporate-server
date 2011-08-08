@@ -31,50 +31,47 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, string
-import tempfile
+import sys, string, subprocess
+import univention.config_registry
 
-import univention_baseconfig
-
-baseConfig=univention_baseconfig.baseConfig()
-baseConfig.load()
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
 
 found=0
 
-if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
-	tempfile=tempfile.mktemp()
+bindpw_filename = configRegistry.get('bind/bindpw', '/etc/machine.secret')
+ldap_hostdn = configRegistry.get('ldap/hostdn')
+if ldap_hostdn:
 
 	for key in ['ldap/server/name', 'ldap/server/addition']:
-		if baseConfig.has_key(key):
-			for k in baseConfig[key].split(' '):
-				result=os.system('univention_policy_result -h %s -s "%s" >>%s' %  (k, baseConfig['ldap/hostdn'], tempfile))
+		ldap_server_string = configRegistry.get(key)
+		if ldap_server_string:
+			for k in ldap_server_string.split(' '):
+				p1 = subprocess.Popen(['univention_policy_result', '-h', k, '-D', ldap_hostdn, '-y', bindpw_filename, '-s', ldap_hostdn], stdout=subprocess.PIPE)
+				result = p1.communicate()[0]
 				addition=[]
 
-				if result != 0:
+				if p1.returncode != 0:
 					continue
 
-				file=open(tempfile, 'r')
-
-				for line in file.readlines():
+				for line in result.split('\n'):
 					line=line.strip(' ').strip('\n')
 					if line.startswith('univentionLDAPServer='):
 						new_ldap_server=line.replace('univentionLDAPServer=', '').replace('"','')
 						if not found:
-							if not baseConfig.has_key('ldap/server/name'):
-								out=univention_baseconfig.handler_set(['ldap/server/name=%s' % new_ldap_server])
-							elif  not new_ldap_server == baseConfig['ldap/server/name']:
-								out=univention_baseconfig.handler_set(['ldap/server/name=%s' % new_ldap_server])
+							ldap_server_name = configRegistry.get('ldap/server/name')
+							if not ldap_server_name:
+								out=univention.config_registry.handler_set(['ldap/server/name=%s' % new_ldap_server])
+							elif  not new_ldap_server == ldap_server_name:
+								out=univention.config_registry.handler_set(['ldap/server/name=%s' % new_ldap_server])
 							found=1
 						else:
 							addition.append(new_ldap_server)
 				if addition:
-					out=univention_baseconfig.handler_set(['ldap/server/addition=%s' % string.join(addition,' ')])
+					out=univention.config_registry.handler_set(['ldap/server/addition=%s' % string.join(addition,' ')])
 				else:
-					if baseConfig.has_key( 'ldap/server/addition' ):
-						out=univention_baseconfig.handler_unset(['ldap/server/addition'])
-
-				file.close()
-				os.remove(tempfile)
+					if configRegistry.get( 'ldap/server/addition' ):
+						out=univention.config_registry.handler_unset(['ldap/server/addition'])
 
 				sys.exit(0)
 
