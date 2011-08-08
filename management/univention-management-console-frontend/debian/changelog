@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.4-1) unstable; urgency=low
+
+  * forced vertical scrollbars for umc.widgets.Grid (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 08 Aug 2011 17:51:29 +0200
+
 univention-management-console-frontend (1.0.3-2) unstable; urgency=low
 
   * version bump (Bug #22669)

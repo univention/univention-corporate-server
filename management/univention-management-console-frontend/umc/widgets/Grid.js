@@ -281,6 +281,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			queryOptions: { ignoreCase: true },
 			structure: gridColumns,
 			rowSelector: '2px',
+			'class': 'umcGrid',
 			plugins : {
 				indirectSelection: {
 					headerSelector: true,

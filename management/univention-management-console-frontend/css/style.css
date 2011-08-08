@@ -203,3 +203,8 @@ div.modLaunchButtonClick {
 	border: none;
 }
 
+/* force scrollbars for grids */
+.umcGrid .dojoxGridScrollbox {
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
