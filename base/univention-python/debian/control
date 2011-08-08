@@ -16,6 +16,7 @@ Depends: ${python:Depends}, ${misc:Depends},
  python-cracklib
 Provides: ${python:Provides}
 Replaces: python-univention-config-registry
+Breaks: python-univention-config-registry (<< 7)
 XB-Python-Version: ${python:Versions}
 Description: UCS - common Python modules
  This package contains Python modules used by various

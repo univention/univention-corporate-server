@@ -1,3 +1,9 @@
+univention-python (6.0.11-1) unstable; urgency=low
+
+  * debian/control: Break python-univention-config-registry (Bug #23054)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 08 Aug 2011 19:30:02 +0200
+
 univention-python (6.0.10-1) unstable; urgency=low
 
   * adjust automatic port defaults for use_ldaps (Bug #20026)
