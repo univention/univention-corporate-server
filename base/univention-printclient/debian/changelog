@@ -1,3 +1,11 @@
+univention-printclient (6.0.2-1) unstable; urgency=low
+
+  * use ldap/hostdn and bind/bindpw for univention_policy_result
+    (Bug #23178)
+  * wording fix for configRegistry
+
+ -- Arvid Requate <requate@univention.de>  Mon, 08 Aug 2011 18:18:11 +0200
+
 univention-printclient (6.0.1-1) unstable; urgency=low
 
   * replaced dependencies to old cupsys packages (Bug #22433)
