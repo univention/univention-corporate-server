@@ -1,3 +1,9 @@
+univention-apache (5.0.2-3) unstable; urgency=low
+
+  * adapted install destinations (Bug #22669)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 08 Aug 2011 15:38:16 +0200
+
 univention-apache (5.0.2-2) unstable; urgency=low
 
   * changed test with '==' to '=' in postinst file (Bug #22669)
