@@ -7,7 +7,7 @@ Standards-Version: 3.8.2
 
 Package: univention-dhcp
 Architecture: all
-Depends: univention-config-registry (>=0.06), dhcp3-server, univention-directory-listener, univention-runit (>= 0.2)
+Depends: univention-config-registry (>=0.06), dhcp3-server, univention-directory-listener, univention-runit (>= 0.2), univention-join
 Pre-Depends: netmask (>> 2.3.7.2)
 Conflicts: univention-dns
 Replaces: univention-dns
