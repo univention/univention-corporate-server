@@ -3,87 +3,83 @@
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<!-- 
+<!--
 	@description
 -->
 
 <!-- @start html -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" dir="ltr">
-	
+
 	<!-- @start head -->
 	<head>
-		
+
 		<!-- @start meta -->
 
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 		<!-- @end meta -->
-		
+
 		<!-- @start title -->
-		<title>Univention Server</title>
+		<title>Univention Corporate Server</title>
 		<!-- @end title -->
-		
+
 		<!-- @start favicon -->
-		<link rel="shortcut icon" href="../style/favicon.ico" />
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
 		<!-- @end favicon -->
 
-		
+
 		<!-- @start styles -->
-		<link rel="stylesheet" href="../style/stylesheet.css" type="text/css" media="screen" title="style.css" charset="utf-8" />
+		<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" title="style.css" charset="utf-8" />
 		<!-- @end styles -->
-		
+
 	</head>
 	<!-- @end head -->
-	
-	<!-- @start body -->
-	<body class="start tundra">
-		<!-- @start wrapper -->
-		<div id="wrapper">
 
-			<!-- @start header -->
-			<div id="header">
-				<!-- @start header-title -->
-				<h1 class="header-title">
+
+	<!-- @start body -->
+	<body>
 @!@
 rolesdict = {"domaincontroller_master":"Domaincontroller Master","domaincontroller_backup":"Domaincontroller Backup","domaincontroller_slave":"Domaincontroller Slave","memberserver":"Memberserver","fatclient":"Managed Client","mobileclient":"Mobile Client"}
 try:
 	role = rolesdict["@%@server/role@%@"]
 except:
 	role = "Univention Corporate Server"
-print '					<span class="hide">univention</span> <a href="#" title="Start">%s</a>' % role
+#print '					Univention Server%s' % role
 
 print """
-				</h1>
-				<!-- @end header-title -->
-
-				
-				<!-- @start header-form -->
-				<form name="jump" id="lang" action="GO"><select name="lang" id="language" onchange="location=document.jump.lang.options[document.jump.lang.selectedIndex].value;" value="GO">
-				<option selected="selected" value="de.html">deutsch</option>
-				<option value="en.html">english</option>
+		<!-- @start header -->
+		<div id="header">
+			<div id="header-wrapper">
+				<span>Host: %(host)s</span>
+				<form name="jump" id="lang" action="GO">
+				<select name="lang" id="language" onchange="location=document.jump.lang.options[document.jump.lang.selectedIndex].value;" value="GO">
+					<option selected="selected" value="de.html">deutsch</option>
+					<option value="en.html">english</option>
 				</select>
 				</form>
-				<br class="clear" />
-				<!-- @end header-form -->
 			</div>
-			<!-- @end header -->
-			
-			<!-- @start content-wrapper -->
-			<div id="content-wrapper">
-				<!-- @start content-head -->
-				<div id="content-head">
+		</div>
+		<!-- @end header -->
 
-					<h2>Willkommen auf dem %(role)s %(host)s</h2>
+		<!-- @start wrapper -->
+		<div id="wrapper">
+			<!-- @start content-head -->
+			<div id="content-head">
+				<!-- @start header-title -->
+				<h1>Univention Corporate Server</h1>
+				<!-- @end header-title -->
+				<h2>Willkommen auf dem %(role)s %(host)s</h2>
 	""" % {'role': role, 'host': baseConfig.get('hostname') }
 @!@
-				</div>				
-				<!-- @end content-head -->
-				
-				<!-- @start content -->
-				<div id="content">
+			</div>
+			<!-- @end content-head -->
+
+			<!-- @start content -->
+			<div id="content">
 			<table class="content">
 
 
-@!@	
+@!@
 if not baseConfig.get('server/role', None) == "domaincontroller_master" and baseConfig.has_key('ldap/master'):
 	print'<tr>'
 	print'<td class="overview"><a href="https://@%@ldap/master@%@/ucs-overview/de.html"><img src="../icon/about.png" alt="" style="border: 0;" /></a></td>'

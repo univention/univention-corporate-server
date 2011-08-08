@@ -1,3 +1,9 @@
+univention-apache (5.0.2-1) unstable; urgency=low
+
+  * adapted style of ucs-overview (Bug #22669)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 08 Aug 2011 15:16:32 +0200
+
 univention-apache (5.0.1-2) unstable; urgency=low
 
   * move ucs-overview to univention-apache (Bug #22669)

@@ -1,0 +1,95 @@
+/* import basic styles from the dojo main css file */
+@import url("dojo.css");
+
+/* styles for the overview site */
+
+html, body
+{
+	height: 100%;
+    width: 100%;
+    border: 0;
+	margin: 0;
+	padding: 0;
+	background-color: #FFFFFF;
+}
+
+h1 {
+	margin-top: 0;
+	padding-top: 75px;
+	font-weight: bold;
+}
+
+#wrapper {
+	margin-left: auto;
+	margin-right: auto;
+	width: 901px;
+	padding-left: 45px;
+	padding-right: 45px;
+	background-image: url('../images/background.png');
+	background-repeat: repeat-y;
+
+	/**
+	 * Necessary for a CSS footer to work:
+	 * http://ryanfait.com/resources/footer-stick-to-bottom-of-page/
+	 */
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin-bottom: -80px;
+}
+
+#header {
+	position:absolute;
+	left:0;
+	top:0;
+	width:100%;
+	height: 35px;
+	background-color: #000000;
+}
+
+#header #header-wrapper {
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 7px;
+	width: 961px;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: right;
+}
+
+#header {
+	color: #FFFFFF;
+}
+
+#header span {
+	margin-right: 20px;
+	font-weight: bold;
+}
+
+#header form {
+	display: inline-block;
+	/**
+	 * hack for IE, see:
+	 * http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
+	 */
+	zoom:1;
+	*display:inline;
+}
+
+#footer {
+	height: 80px;
+	width: 991px;
+	margin-left: auto;
+	margin-right: auto;
+	background-image: url('../images/footer.png');
+	background-repeat: no-repeat;
+}
+
+table.content {
+	width: 100%;
+}
+
+table.content td {
+	padding: 5px;
+}
+
