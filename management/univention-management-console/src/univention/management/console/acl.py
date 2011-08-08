@@ -319,7 +319,12 @@ class ConsoleACLs ( ACLs ):
 
 	def _read_from_ldap( self ):
 		# TODO: check for fixed attributes
-		policy = self._get_policy_for_dn ( self.lo.binddn )
+		try:
+			userdn = self.lo.searchDn( '(&(objectClass=person)(uid=%s))' % self.username, unique = True )[ 0 ]
+			policy = self._get_policy_for_dn ( userdn )
+		except ldap.LDAPError, IndexError:
+			return
+
 		if policy:
 			if 'univentionConsoleAllow' in policy:
 				for value in policy[ 'univentionConsoleAllow' ][ 'value' ]:
@@ -329,7 +334,7 @@ class ConsoleACLs ( ACLs ):
 					self._append_disallow( ConsoleACLs.FROM_USER, self.lo.get( value ) )
 
 		# TODO: check for nested groups
-		groupDNs = self.lo.searchDn( filter='uniqueMember=%s' % self.lo.binddn )
+		groupDNs = self.lo.searchDn( filter='uniqueMember=%s' % userdn )
 
 		for gDN in groupDNs:
 			policy = self._get_policy_for_dn ( gDN )

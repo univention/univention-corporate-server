@@ -162,13 +162,8 @@ class Processor( signals.Provider ):
 		lo = ldap.open( ucr[ 'ldap/server/name' ], int( ucr.get( 'ldap/server/port', 389 ) ) )
 
 		try:
-			userdn = lo.search_s( ucr[ 'ldap/base' ], ldap.SCOPE_SUBTREE,
-								  '(&(objectClass=person)(uid=%s))' % self.__username )[ 0 ][ 0 ]
-
-			self.lo = univention.uldap.access( host = ucr[ 'ldap/server/name' ],
-											   base = ucr[ 'ldap/base' ], binddn = userdn,
-											   bindpw = self.__password, start_tls = 2 )
-		except:
+			self.lo = univention.uldap.getMachineConnection( ldap_master = False )
+		except ldap.LDAPError:
 			self.lo = None
 
 		# read the ACLs
