@@ -322,7 +322,9 @@ class ConsoleACLs ( ACLs ):
 		try:
 			userdn = self.lo.searchDn( '(&(objectClass=person)(uid=%s))' % self.username, unique = True )[ 0 ]
 			policy = self._get_policy_for_dn ( userdn )
-		except ldap.LDAPError, IndexError:
+		except ( ldap.LDAPError, IndexError ):
+			# read ACLs from file
+			self._read_from_file( self.username )
 			return
 
 		if policy:
