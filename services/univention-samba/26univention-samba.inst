@@ -93,7 +93,7 @@ sleep 3
 # parse binddn and bindpwd from command line arguments into shell variables
 eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nbindpwd="\2"/p')
 if [ -n "$binddn" ]; then
-	dcaccount="$(ldapsearch -x -s base -b "$binddn" -LLL uid | ldapsearch-wrapper | sed -n 's/^uid: \(.*\)$/\1/p')"
+	dcaccount="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -s base -b "$binddn" -LLL uid | ldapsearch-wrapper | sed -n 's/^uid: \(.*\)$/\1/p')"
 fi
 if [ -n "$dcaccount" -a -n "$bindpwd" ]; then
 	samba_account="$dcaccount"
