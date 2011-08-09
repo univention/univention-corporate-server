@@ -1,3 +1,9 @@
+univention-pkgdb (5.0.2-1) unstable; urgency=low
+
+  * use machine account for ldapsearch (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2011 12:56:40 +0200
+
 univention-pkgdb (5.0.1-2) unstable; urgency=low
 
   * remove obsolte check (Bug #22525)

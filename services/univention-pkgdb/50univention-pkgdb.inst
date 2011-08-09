@@ -43,7 +43,7 @@ test -n "`grep "univention-pkgdb v${VERSION} successful" /usr/lib/univention-ins
 
 eval "$(univention-config-registry shell)"
 
-res=`ldapsearch -x -LLL relativeDomainName=_pkgdb._tcp relativeDomainName`
+res=`ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL relativeDomainName=_pkgdb._tcp relativeDomainName`
 if [ -z "$res" ]; then
 	/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv pkgdb tcp 0 0 5432 $hostname.$domainname.
 fi
