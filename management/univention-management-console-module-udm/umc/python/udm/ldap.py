@@ -515,6 +515,9 @@ def list_objects( container ):
 
 	return objects
 
+def split_module_attr( value ):
+	return value.split( ': ', 1 )
+
 def read_syntax_choices( syntax_name, options = {} ):
 	if syntax_name not in udm_syntax.__dict__:
 		return None
@@ -543,18 +546,42 @@ def read_syntax_choices( syntax_name, options = {} ):
 	elif issubclass( syn, udm_syntax.module ):
 		module = UDM_Module( options[ 'module' ] )
 		syn.choices = map( lambda obj: ( obj.dn, udm_objects.description( obj ) ), module.search( filter = options[ 'filter' ] ) )
+	elif issubclass( syn, udm_syntax.LDAP_Search ):
+		lo, po = get_ldap_connection()
+		syntax = udm_syntax.LDAP_Search( options[ 'syntax' ], options[ 'filter' ], options[ 'attributes' ], options[ 'base' ], options[ 'value' ], options[ 'viewonly' ], options[ 'empty' ] )
 
+		if 'ldap-dn' in options:
+			# TODO: get LDAP object
+			#obj = 
+			# update choices
+			syntax.filter = udm.pattern_replace( syntax.filter, obj )
+
+		syntax._prepare( lo, syntax.filter )
+
+		syntax.choices = []
+		for dn, store_pattern, display_attr in syntax.values:
+			mod_display, display = split_module_attr( display_attr )
+			mod_store, store = split_module_attr( store_pattern )
+			module = get_module( mod_display, dn )
+			if not module:
+				continue
+			obj = module.get( dn )
+			if not obj:
+				continue
+			if store == 'dn':
+				id = dn
+			else:
+				id = obj.get( store )
+			if display == 'dn':
+				label = dn
+			else:
+				if obj.has_key( display ):
+					label = obj[ display ]
+				else:
+					label = 'Unknown attribute %s' % display
+			if syntax.viewonly:
+				syntax.choices.append( { 'id' : id, 'label' : label } )
+			else:
+				syntax.choices.append( { 'objectType' : module.name, 'id' : id, 'label' : label } )
+		return syntax.choices
 	return getattr( syn, 'choices', [] )
-
-def init_syntax():
-	"""Initialize all syntax classes
-
-	Syntax classes based on select: If a property udm_module is
-	available the choices attribute of the class is set to a list of all
-	available modules of the specified UDM module.
-	"""
-	MODULE.info( 'Scanning syntax classes ...' )
-	for name, syn in udm_syntax.__dict__.items():
-		if type( syn ) is not type:
-			continue
-		read_syntax_choices( name )

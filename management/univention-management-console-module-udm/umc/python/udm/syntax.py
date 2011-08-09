@@ -40,11 +40,12 @@ from ...log import MODULE
 class Widget( object ):
 	'''Describes a widget for the new web frontend'''
 
-	def __init__( self, name, syntax_classes, default_value, subclasses = True ):
+	def __init__( self, name, syntax_classes, default_value, subclasses = True, widget_func = None ):
 		self._name = name
 		self._syntax_classes = syntax_classes
 		self._default_value = default_value
 		self._subclasses = subclasses
+		self._widget_func = widget_func
 
 	def __contains__( self, syntax ):
 		'''Checks if the syntax is represented by this widget'''
@@ -53,8 +54,9 @@ class Widget( object ):
 		else:
 			return inspect.isclass( syntax ) and syntax in self._syntax_classes or type( syntax ) in self._syntax_classes
 
-	@property
-	def name( self ):
+	def name( self, syntax ):
+		if self._name is None and callable( self._widget_func ):
+			return self._widget_func( syntax )
 		return self._name
 
 	@property
@@ -67,6 +69,7 @@ __widgets = (
 	Widget( 'DateBox', udm_syntax.iso8601Date, '1970-01-01' ),
 	Widget( 'ComboBox', udm_syntax.select, [] ),
 	Widget( 'TextBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', subclasses = False ),
+	Widget( None, ( udm_syntax.LDAP_Search, ), [], subclasses = False, widget_func = lambda syn: syn.viewonly and 'ButtonList' or 'ComboBox' ),
 	Widget( 'ComboBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn, udm_syntax.module ), '' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
 	Widget( 'MultiInput', udm_syntax.complex, None ),
@@ -76,6 +79,7 @@ def choices( syntax ):
 	"""Returns the choices attribute of the property's syntax as a list
 	of dictionaries with id and label keys. If the attribute is not
 	available an empty list is returned."""
+	MODULE.info( 'Find choices for syntax %s' % syntax )
 	if type( syntax ) in ( type, ) and issubclass( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
 		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__name__ } }
 
@@ -84,6 +88,9 @@ def choices( syntax ):
 
 	if isinstance( syntax, udm_syntax.module ):
 		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__, 'options' : { 'module' : syntax.module_type, 'filter' : str( syntax.filter ) } } }
+
+	if isinstance( syntax, udm_syntax.LDAP_Search ):
+		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__, 'options' : { 'syntax' : syntax.name, 'filter' : syntax.filter, 'viewonly' : syntax.viewonly, 'base' : syntax.base, 'value' : syntax.value, 'attributes' : syntax.attributes, 'empty' : syntax.addEmptyValue } } }
 
 	return { 'staticValues' : map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syntax, 'choices', [] ) ) }
 
@@ -103,7 +110,7 @@ def widget( syntax ):
 
 	for widget in __widgets:
 		if syntax in widget:
-			descr = { 'type' : widget.name }
+			descr = { 'type' : widget.name( syntax ) }
 			values = choices( syntax )
 			subtypes = subsyntaxes( syntax )
 			if values:

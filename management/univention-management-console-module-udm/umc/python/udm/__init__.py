@@ -48,8 +48,6 @@ from .ldap import UDM_Error, UDM_Module, UDM_Settings, ldap_dn2path, get_module,
 
 _ = Translation( 'univention-management-console-modules-udm' ).translate
 
-# init_syntax()
-
 class Instance( Base ):
 	def __init__( self ):
 		Base.__init__( self )
@@ -442,8 +440,11 @@ class Instance( Base ):
 		return: [ { 'id' : <name>, 'label' : <text }, ... ]
 		"""
 
+		if not 'syntax' in request.options:
+			raise UMC_OptionMissing( "The option 'syntax' is required" )
+
 		def _thread( request ):
-			return map( lambda item: { 'id' : item[ 0 ], 'label' : item[ 1 ] }, read_syntax_choices( request.options[ 'syntax' ], request.options.get( 'options', {} ) ) )
+			return read_syntax_choices( request.options[ 'syntax' ], request.options.get( 'options', {} ) )
 
 		def _finish( thread, result, request ):
 			self.finished( request.id, result )

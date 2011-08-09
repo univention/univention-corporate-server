@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.90-1) unstable; urgency=low
+
+  * add support for LDAP_Search syntax; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 09 Aug 2011 15:08:08 +0200
+
 univention-management-console-module-udm (1.0.89-1) unstable; urgency=low
 
   * support UDM syntax module; Bug #22439
