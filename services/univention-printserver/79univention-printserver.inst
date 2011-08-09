@@ -123,9 +123,9 @@ manuf="Tally Compaq KonicaMinolta Generic Okidata HP Minolta Gestetner NEC Fujif
 if [ $JS_LAST_EXECUTED_VERSION -le 4 ]; then
 	if [ "$cups_keep_ppds" != "true" ]; then
 		backupfile=/var/backups/ldap-hp-ppds-`date +"%d-%m-%y-%H-%M-%S"`
-		ldapsearch -x 'objectclass=univentionPrinterModels' >  $backupfile
+		ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret 'objectclass=univentionPrinterModels' >  $backupfile
 		for i in $manuf; do
-			ldapsearch -x "(&(objectclass=univentionPrinterModels)(cn=$i))" dn | grep dn: >/dev/null
+			ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectclass=univentionPrinterModels)(cn=$i))" dn | grep dn: >/dev/null
 			if [ $? -eq 0 ]; then
 				univention-directory-manager settings/printermodel remove "$@" --dn "cn=$i,cn=cups,cn=univention,$ldap_base"
 			fi
@@ -390,7 +390,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/openprinting-gs-builtin/Canon/Canon-BJ-330-bj200.ppd.gz\" \"Canon BJ-330 Foomatic/bj200 (recommended)\""
 
 # Manufacturer: HP Printers: 1343
-if ! ldapsearch -x -b "cn=HP,cn=cups,cn=univention,$ldap_base" dn | grep -q '^dn: '; then	# avoid the modify if object exists, workaround for Bug #12964 
+if ! ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b "cn=HP,cn=cups,cn=univention,$ldap_base" dn | grep -q '^dn: '; then	# avoid the modify if object exists, workaround for Bug #12964 
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=HP \
 	--append printmodel="\"cups-included/HP/deskjet.ppd\" \"HP DeskJet Series, 1.3\"" \
 	--append printmodel="\"cups-included/HP/laserjet.ppd\" \"HP LaserJet Series PCL 4/5, 1.3\"" \
@@ -3893,11 +3893,11 @@ univention-directory-manager policies/console_access create "$@" --ignore_exists
 # add CUPS to nagios' UNIVENTION_CUPS service check
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
 
-	if ! ldapsearch -xLLL -s base -b "cn=UNIVENTION_CUPS,cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
+	if ! ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -s base -b "cn=UNIVENTION_CUPS,cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
 		echo "Cannot find nagios object cn=UNIVENTION_CUPS,cn=nagios,$ldap_base (ldapsearch error $?)"
 		echo "Please check if univention-nagios-server is installed on a system in UCS domain to enable nagios functionality."
 	else
-		if [ "$(ldapsearch -xLLL -b "$ldap_hostdn" univentionNagiosEnabled | sed -ne 's/univentionNagiosEnabled: //p')" = "1" ] ; then
+		if [ "$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b "$ldap_hostdn" univentionNagiosEnabled | sed -ne 's/univentionNagiosEnabled: //p')" = "1" ] ; then
 			univention-directory-manager nagios/service modify "$@" \
 				--dn "cn=UNIVENTION_CUPS,cn=nagios,$ldap_base" \
 				--append assignedHosts="${ldap_hostdn}"
