@@ -2514,24 +2514,46 @@ class LDAP_Search( select ):
 	"""Selection list from LDAP search.
 
 	Searches can be either defined dynamically via a UDM settings/syntax
-	definition and using LDAP_Search(syntax_name="NAME"), or programmatically
-	by directly instantiating LDAP_Search(filter="(LDAP-Search-Filter)",
-	attribute=["LDAP attributes", ...], value="LDAP attribute", base="LDAP
-	base").
+	definition and using
+
+	>>> LDAP_Search( syntax_name = '<NAME>' )
+
+	or programmatically	by directly instantiating
+
+	>>> LDAP_Search( filter = '<LDAP-Search-Filter>', attribute = [ '<LDAP attributes>', ... ], value = '<LDAP attribute>', base = '<LDAP base>' )
 	"""
 	FILTER_PATTERN = '(&(objectClass=univentionSyntax)(cn=%s))'
 
-	def __init__( self, syntax_name = None, filter = None,
-				  attribute = [], base = '', value = 'dn',
-				  viewonly = False, addEmptyValue = False ):
-		self.__syntax = syntax_name
-		if filter:
+	def __init__( self, syntax_name = None, filter = None, attribute = [], base = '', value = 'dn', viewonly = False, addEmptyValue = False ):
+		"""Creates an syntax object providing a list of choices defined
+		by a LDAP objects
+
+		syntax_name: name of the syntax LDAP object
+
+		filter: an LDAP filter to find the LDAP objects providing the
+		list of choices. The filter may contain patterns, that are
+
+		attribute: a list of UDM module attributes definitions like
+		'shares/share: dn' to be used as human readable representation
+		for each element of the choices.
+
+		value: the UDM modul attribute that will be stored to identify
+		the selected element. The value is specified like 'shares/share:
+		dn'
+
+		viewonly: If set to True the values can not be changed
+
+		addEmptyValue: If set to True an empty value is add to the list
+		of choices
+	    """
+		self.syntax = syntax_name
+		if filter is not None:
 			# programmatically
-			self.__syntax = None
+			self.syntax = None
 			self.filter = filter
 			self.attributes = attribute
-			self.__base = base
-			self.__value = value
+			self.base = base
+			self.value = value
 
 		self.choices = []
 		self.name = self.__class__.__name__
@@ -2543,15 +2565,19 @@ class LDAP_Search( select ):
 		return text
 
 	def _load( self, lo ):
-		if not self.__syntax:
+		"""Loads an LDAP_Search object from the LDAP directory. If no
+		syntax name is given the object is expected to be created with
+		the required settings programmatically."""
+
+		if not self.syntax:
 			# programmatically
 			if self.viewonly:
-				self.__value = 'dn'
+				self.value = 'dn'
 			return
 
 		# get values from UDM settings/syntax
 		try:
-			filter = LDAP_Search.FILTER_PATTERN % self.__syntax
+			filter = LDAP_Search.FILTER_PATTERN % self.syntax
 			dn, attrs = lo.search( filter = filter )[ 0 ]
 		except:
 			return
@@ -2561,25 +2587,25 @@ class LDAP_Search( select ):
 			self.filter = attrs[ 'univentionSyntaxLDAPFilter' ][ 0 ]
 			self.attributes = attrs[ 'univentionSyntaxLDAPAttribute' ]
 			if attrs.has_key( 'univentionSyntaxLDAPBase' ):
-				self.__base = attrs[ 'univentionSyntaxLDAPBase' ][ 0 ]
+				self.base = attrs[ 'univentionSyntaxLDAPBase' ][ 0 ]
 			else:
 				self.__base = ''
 			if attrs.has_key( 'univentionSyntaxLDAPValue' ):
-				self.__value = attrs[ 'univentionSyntaxLDAPValue' ][ 0 ]
+				self.value = attrs[ 'univentionSyntaxLDAPValue' ][ 0 ]
 			else:
-				self.__value = 'dn'
+				self.value = 'dn'
 			if attrs[ 'univentionSyntaxViewOnly' ][ 0 ] == 'TRUE':
 				self.viewonly = True
-				self.__value = 'dn'
+				self.value = 'dn'
 
 	def _prepare( self, lo, filter = None ):
-		if not filter:
+		if filter is None:
 			filter = self.filter
 		self.choices = []
 		self.values = []
-		for dn, attrs in lo.search( filter = filter, base = self.__base ):
+		for dn in lo.searchDn( filter = filter, base = self.base ):
 			if not self.viewonly:
-				self.values.append( ( dn, self.__value, self.attributes[ 0 ] ) )
+				self.values.append( ( dn, self.value, self.attributes[ 0 ] ) )
 			else:
 				self.values.append( ( dn, self.attributes ) )
 

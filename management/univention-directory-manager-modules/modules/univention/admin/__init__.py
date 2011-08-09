@@ -85,6 +85,70 @@ def ucr_overwrite_properties( module, lo ):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ucr_overwrite_properties: failed to set property attribute: %s' % str( e ) )
 			continue
 
+def pattern_replace( pattern, object ):
+	"""Replaces patterns like <attribute:command,...>[range] with values
+	of the specified UDM attribute."""
+
+	global_commands = []
+	def modify_text( text, commands ):
+		# apply all string commands
+		for iCmd in commands:
+			if iCmd == 'lower':
+				text = text.lower()
+			elif iCmd == 'upper':
+				text = text.upper()
+			elif iCmd == 'umlauts':
+				for umlaut, code in property.UMLAUTS.items():
+					text = text.replace( umlaut, code )
+
+				text = text.encode( 'ascii', 'replace' )
+			elif iCmd in ( 'trim', 'strip' ):
+				text = text.strip()
+		return text
+
+	def repl(match):
+		key = match.group('key')
+		ext = match.group('ext')
+		strCommands = []
+
+		# check within the key for additional commands to be applied on the string
+		# (e.g., 'firstname:lower,umlaut') these commands are found after a ':'
+		if ':' in key:
+			# get the corrected key without following commands
+			key, tmpStr = key.rsplit(':', 1)
+
+			# get all commands in lower case and without leading/trailing spaces
+			strCommands = [iCmd.lower().strip() for iCmd in tmpStr.split(',')]
+
+			# if this is a list of global commands store the
+			# commands and return an empty string
+			if not key:
+				global_commands.extend( strCommands )
+				return ''
+
+		# make sure the key value exists
+		if object.has_key( key ) and object[ key ]:
+			val = modify_text( object[key], strCommands )
+			# try to apply the indexing instructions, indicated through '[...]'
+			if ext:
+				try:
+					return eval('val%s' % (ext))
+				except SyntaxError:
+					return val
+			return val
+
+		elif key == 'dn' and object.dn:
+			return object.dn
+		return ''
+
+	regex = re.compile(r'<(?P<key>[^>]+)>(?P<ext>\[[\d:]+\])?')
+	value = regex.sub(repl, pattern, 0)
+	if global_commands:
+		value = modify_text( value, global_commands )
+
+	return value
+
+
 class property:
 	UMLAUTS = { 'ä' :'ae', 'Ä' : 'Ae', 'ö' : 'oe', 'Ö' : 'Oe', 'ü' : 'ue', 'Ü' : 'Ue', 'ß' : 'ss', 'Á' : 'A', 'Â' : 'A', 'Ã' : 'A', 'Ä' : 'A', 'Å' : 'A', 'Æ' : 'AE', 'Ç' : 'C', 'È' : 'E', 'É' : 'E', 'Ê' : 'E', 'Ë' : 'E', 'Ì' : 'I', 'Í' : 'I', 'Î' : 'I', 'Ï' : 'I', 'Ð' : 'D', 'Ñ' : 'N', 'Ò' : 'O', 'Ó' : 'O', 'Ô' : 'O', 'Õ' : 'O', 'Ö' : 'O', 'Ù' : 'U', 'Ú' : 'U', 'Û' : 'U', 'à' : 'a', 'â' : 'a', 'á' : 'a', 'ã' : 'a', 'æ' : 'ae', 'ç' : 'c', 'è' : 'e', 'é' : 'e', 'ê' : 'e', 'ë' : 'e', 'ì' : 'i', 'í' : 'i', 'î' : 'i', 'ï' : 'i', 'ñ' : 'n', 'ò' : 'o', 'ó' : 'o', 'ô' : 'o', 'ù' : 'u', 'ú' : 'u', 'û' : 'u', 'ý' : 'y', 'ÿ' : 'y', 'Ĉ' : 'C', 'ĉ' : 'c' }
 
@@ -119,65 +183,10 @@ class property:
 		else:
 			return None
 
-	def _replace(self,res,object):
-		global_commands = []
-		def modify_text( text, commands ):
-			# apply all string commands
-			for iCmd in commands:
-				if iCmd == 'lower':
-					text = text.lower()
-				elif iCmd == 'upper':
-					text = text.upper()
-				elif iCmd == 'umlauts':
-					for umlaut, code in property.UMLAUTS.items():
-						text = text.replace( umlaut, code )
 
-					text = text.encode( 'ascii', 'replace' )
-				elif iCmd in ( 'trim', 'strip' ):
-					text = text.strip()
-			return text
 
-		def repl(match):
-			key = match.group('key')
-			ext = match.group('ext')
-			strCommands = []
-
-			# check within the key for additional commands to be applied on the string
-			# (e.g., 'firstname:lower,umlaut') these commands are found after a ':'
-			if ':' in key:
-				# get the corrected key without following commands
-				key, tmpStr = key.rsplit(':', 1)
-
-				# get all commands in lower case and without leading/trailing spaces
-				strCommands = [iCmd.lower().strip() for iCmd in tmpStr.split(',')]
-
-				# if this is a list of global commands store the
-				# commands and return an empty string
-				if not key:
-					global_commands.extend( strCommands )
-					return ''
-
-			# make sure the key value exists
-			if object.has_key( key ) and object[ key ]:
-				val = modify_text( object[key], strCommands )
-				# try to apply the indexing instructions, indicated through '[...]'
-				if ext:
-					try:
-						return eval('val%s' % (ext))
-					except SyntaxError:
-						return val
-				return val
-
-			elif key == 'dn' and object.dn:
-				return object.dn
-			return ''
-
-		pattern = re.compile(r'<(?P<key>[^>]+)>(?P<ext>\[[\d:]+\])?')
-		value = pattern.sub(repl, res, 0)
-		if global_commands:
-			value = modify_text( value, global_commands )
-		return value
-
+	def _replace( self, res, object ):
+		return pattern_replace( res, object )
 
 	def default(self, object):
 		if not object.set_defaults:
