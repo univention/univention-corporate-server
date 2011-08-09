@@ -89,12 +89,12 @@ univention-admin dns/srv_record modify --superordinate zoneName=$domainname,cn=d
 old_ldap_master_hostname=`echo $old_ldap_master | awk -F '.' '{print $1}'`
 univention-admin computers/domaincontroller_master remove --filter name=$old_ldap_master_hostname --remove_referring
 
-res=`ldapsearch -x -LLL "(&(relativeDomainName=univention-admin)(cNameRecord=$old_ldap_master_hostname))"`
+res=`ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL "(&(relativeDomainName=univention-admin)(cNameRecord=$old_ldap_master_hostname))"`
 if [ -n "$res" ]; then
 	 /usr/share/univention-admin-tools/univention-dnsedit --stoptls --overwrite $domainname add cname univention-admin $hostname
 fi
 
-res=`ldapsearch -x -LLL "(&(relativeDomainName=univention-repository)(cNameRecord=$old_ldap_master_hostname))"`
+res=`ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL "(&(relativeDomainName=univention-repository)(cNameRecord=$old_ldap_master_hostname))"`
 if [ -n "$res" ]; then
 	 /usr/share/univention-admin-tools/univention-dnsedit --stoptls --overwrite $domainname add cname univention-repository $hostname
 fi
