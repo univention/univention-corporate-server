@@ -103,7 +103,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	setInitialValue: function(value, setValue) {
 		// summary:
 		//		Forces to set this given initial value.
-		setValue = undefined == setValue ? true : setValue;
+		setValue = undefined === setValue ? true : setValue;
 		//console.log('# _SelectMixin: '+this.name+'.setInitialValue(): "'+value+'"');
 		this._initialValue = value;
 		if (setValue) {

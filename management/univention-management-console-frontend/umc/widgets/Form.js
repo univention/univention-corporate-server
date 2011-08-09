@@ -196,6 +196,9 @@ dojo.declare("umc.widgets.Form", [
 		umc.tools.forIn(values, function(iname, ival) {
 			if (this._widgets[iname]) {
 				this._widgets[iname].set('value', ival);
+				if (this._widgets[iname].setInitialValue) {
+					this._widgets[iname].setInitialValue(ival, false);
+				}
 			}
 			else {
 				console.log(dojo.replace("WARNING: Could not set the property '{0}': {1}", [iname, ival]));
