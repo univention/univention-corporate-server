@@ -46,10 +46,7 @@ numeric=""
 numeric=`echo "$username" | egrep ^[0-9]+$` || true
 first_numeric=`echo "$username" | egrep ^[0-9].*$` || true
 
-eval "$(univention-config-registry shell ldap/hostdn bind/bindpw)"
-if [ -z "$bind_bindpw" ]; then
-	bind_bindpw="/etc/machine.secret"
-fi
+eval "$(univention-config-registry shell ldap/hostdn)"
 
 if [ -z "$numeric" ] && [ -z "$first_numeric" ]; then
 	pw_entry=`getent passwd $username `
@@ -62,7 +59,7 @@ if [ -z "$numeric" ] && [ -z "$first_numeric" ]; then
 	UID_NUMBER=${pw_fields[3]}
 	GID_NUMBER=${pw_fields[4]}
 else
-	ldap_result=`ldapsearch -x -D "$ldap_hostdn" -y "$bind_bindpw" -LLL uid="$username" homeDirectory uidNumber gidNumber`
+	ldap_result=`ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL uid="$username" homeDirectory uidNumber gidNumber`
 	if [ $? = 0 ]; then
 		HOME=`echo "$ldap_result" | grep ^homeDirectory | sed -e 's|homeDirectory: ||'`
 		UID_NUMBER=`echo "$ldap_result" | grep ^uidNumber | sed -e 's|uidNumber: ||'`
@@ -108,7 +105,7 @@ fi
 # doesn't exist yet, this will fail. We could probably login via krsh before
 # to make sure it exists and mount it then. Running krsh here isn't pretty
 # though.
-homeattr=`ldapsearch -x -D "$ldap_hostdn" -y "$bind_bindpw" -z 1 "(&(objectClass=posixAccount)(objectClass=automount)(uid=$USER))" automountInformation -LLL | /usr/bin/ldapsearch-wrapper | sed -n 's/automountInformation: \(.*\)/\1/p'`
+homeattr=`ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -z 1 "(&(objectClass=posixAccount)(objectClass=automount)(uid=$USER))" automountInformation -LLL | /usr/bin/ldapsearch-wrapper | sed -n 's/automountInformation: \(.*\)/\1/p'`
 if [ -z "$homeattr" ]; then
 	eval "$(univention-config-registry shell server/role)"
 
@@ -122,7 +119,7 @@ if [ -z "$homeattr" ]; then
 		fi
 		# Otherwise look for servers
 		eval "$(univention-config-registry shell ldap/mydn)"
-		for server in `univention_policy_result -D "$ldap_hostdn" -y "$bind_bindpw" -s "$ldap_mydn" | grep "univentionFileServer" | sed -e 's|.*univentionFileServer=||' | sed -e 's|"||g'`; do
+		for server in `univention_policy_result -D "$ldap_hostdn" -y /etc/machine.secret -s "$ldap_mydn" | grep "univentionFileServer" | sed -e 's|.*univentionFileServer=||' | sed -e 's|"||g'`; do
 			if [ -n "$server" ]; then
 				# mount in heartbeat-situations needs to be done from /ha/home, but normally /home fits
 				if mount -t nfs $server:/home /ramdisk/home || mount -t nfs $server:/ha/home /ramdisk/home

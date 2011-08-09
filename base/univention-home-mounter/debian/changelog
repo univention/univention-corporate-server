@@ -1,3 +1,10 @@
+univention-home-mounter (4.0.2-2) unstable; urgency=low
+
+  * use -ZZ when providing credentials to ldapsearch (Bug #17519)
+  * avoid using bind/bindpw, simply use machine.secret
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2011 09:35:39 +0200
+
 univention-home-mounter (4.0.2-1) unstable; urgency=low
 
   * use ldap/hostdn and bind/bindpw for univention_policy_result
