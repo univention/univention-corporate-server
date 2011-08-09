@@ -1,4 +1,4 @@
-univention-management-console-module-udm (1.0.92-1) unstable; urgency=low
+univention-management-console-module-udm (1.0.93-1) unstable; urgency=low
 
   * enhance error handling; Bug #22439
 
