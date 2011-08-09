@@ -27,7 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(ucr shell)"
+eval "$(univention-config-registry shell)"
 
 usage () {
 	echo "$(basename "$0") [-h] [-u|-c] [-f]"
@@ -80,11 +80,11 @@ IFS='
 
 if [ -z "$ONLYUSER" ] ; then
 	# TEST COMPUTERS
-	gidNumberList="$(ldapsearch -LLLx "(&(objectClass=univentionHost)(gidNumber=*))" gidNumber | ldapsearch-wrapper | sed -ne "s,^gidNumber: ,,p" | sort -u)"
+	gidNumberList="$(ldapsearch -LLLx -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectClass=univentionHost)(gidNumber=*))" gidNumber | ldapsearch-wrapper | sed -ne "s,^gidNumber: ,,p" | sort -u)"
 	for gidNumber in $gidNumberList ; do
-	 	grpDn="$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber}))" dn | ldapsearch-wrapper | sed -ne 's,dn: ,,p')"
-	 	for dn in $(ldapsearch -LLLx "(&(objectClass=univentionHost)(gidNumber=${gidNumber}))" dn | ldapsearch-wrapper | sed -ne "s,^dn: ,,p") ; do
-	 		if [ -z "$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(uniqueMember=${dn}))" dn)" ] ; then
+	 	grpDn="$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectClass=univentionGroup)(gidNumber=${gidNumber}))" dn | ldapsearch-wrapper | sed -ne 's,dn: ,,p')"
+	 	for dn in $(ldapsearch -LLLx -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectClass=univentionHost)(gidNumber=${gidNumber}))" dn | ldapsearch-wrapper | sed -ne "s,^dn: ,,p") ; do
+	 		if [ -z "$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(uniqueMember=${dn}))" dn)" ] ; then
 	 			echo "*** $dn is missing in group with gidNumber $gidNumber ($grpDn)"
 	 			if [ -n "$FORCE" ] ; then
 	 				ldapmodify -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" <<EOF
@@ -95,8 +95,8 @@ uniqueMember: $dn
 EOF
 	 		    fi
 	 		fi
-	 		hostuid="$(ldapsearch -xLLL -b "$dn" uid | ldapsearch-wrapper | sed -ne 's,^uid: ,,p')"
-	 		if [ -z "$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(memberUid=${hostuid}))" dn)" ] ; then
+	 		hostuid="$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b "$dn" uid | ldapsearch-wrapper | sed -ne 's,^uid: ,,p')"
+	 		if [ -z "$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(memberUid=${hostuid}))" dn)" ] ; then
 	 			echo "*** $hostuid is missing in group with gidNumber $gidNumber ($grpDn)"
 	 			if [ -n "$FORCE" ] ; then
 	 				ldapmodify -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" <<EOF
@@ -113,11 +113,11 @@ fi
 
 if [ -z "$ONLYCOMPUTER" ] ; then
 	# TEST USERS
-	gidNumberList="$(ldapsearch -LLLx "(&(objectClass=posixAccount)(uid=*)(!(uid=*$))(gidNumber=*))" gidNumber | ldapsearch-wrapper | sed -ne "s,^gidNumber: ,,p" | sort -u)"
+	gidNumberList="$(ldapsearch -LLLx -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectClass=posixAccount)(uid=*)(!(uid=*$))(gidNumber=*))" gidNumber | ldapsearch-wrapper | sed -ne "s,^gidNumber: ,,p" | sort -u)"
 	for gidNumber in $gidNumberList ; do
-	 	grpDn="$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber}))" dn | ldapsearch-wrapper | sed -ne 's,dn: ,,p')"
+	 	grpDn="$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectClass=univentionGroup)(gidNumber=${gidNumber}))" dn | ldapsearch-wrapper | sed -ne 's,dn: ,,p')"
 	 	for dn in $(ldapsearch -LLLx "(&(objectClass=posixAccount)(uid=*)(!(uid=*$))(gidNumber=${gidNumber}))" dn | ldapsearch-wrapper | sed -ne "s,^dn: ,,p") ; do
-	 		if [ -z "$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(uniqueMember=${dn}))" dn)" ] ; then
+	 		if [ -z "$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(uniqueMember=${dn}))" dn)" ] ; then
 	 			echo "*** $dn is missing in group with gidNumber $gidNumber ($grpDn)"
 	 			if [ -n "$FORCE" ] ; then
 	 				ldapmodify -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" <<EOF
@@ -128,8 +128,8 @@ uniqueMember: $dn
 EOF
 	 		    fi
 	 		fi
-	 		useruid="$(ldapsearch -xLLL -b "$dn" uid | ldapsearch-wrapper | sed -ne 's,^uid: ,,p')"
-	 		if [ -z "$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(memberUid=${useruid}))" dn)" ] ; then
+	 		useruid="$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b "$dn" uid | ldapsearch-wrapper | sed -ne 's,^uid: ,,p')"
+	 		if [ -z "$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(memberUid=${useruid}))" dn)" ] ; then
 	 			echo "*** $useruid is missing in group with gidNumber $gidNumber ($grpDn)"
 	 			if [ -n "$FORCE" ] ; then
 	 				ldapmodify -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" <<EOF

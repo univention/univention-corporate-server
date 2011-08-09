@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.47-1) unstable; urgency=low
+
+  * use machine account for ldapsearch (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2011 14:48:52 +0200
+
 univention-directory-manager-modules (7.0.46-1) unstable; urgency=low
 
   * Consider ldap/master/port in license_check.py, passwd.py and
