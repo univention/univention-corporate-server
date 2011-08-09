@@ -1,5 +1,11 @@
 univention-management-console-module-udm (1.0.92-1) unstable; urgency=low
 
+  * enhance error handling; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 09 Aug 2011 17:43:16 +0200
+
+univention-management-console-module-udm (1.0.92-1) unstable; urgency=low
+
   * fixed issues with autosearch (Bug #22881)
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 09 Aug 2011 16:24:08 +0200

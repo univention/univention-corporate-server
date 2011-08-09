@@ -106,8 +106,9 @@ class Instance( Base ):
 
 		def _finish( thread, result, request ):
 			if isinstance( result, Exception ):
-				raise UMC_CommandError( str( e ) )
-			self.finished( request.id, result )
+				self.finished( request.id, None, str( result ), False )
+			else:
+				self.finished( request.id, result )
 
 		thread = notifier.threads.Simple( 'Get', notifier.Callback( _thread, request ),
 										  notifier.Callback( _finish, request ) )
@@ -125,25 +126,31 @@ class Instance( Base ):
 			result = []
 			for obj in request.options:
 				if not isinstance( obj, dict ):
-					raise UMC_OptionTypeError( _( 'Invalid object definition' ) )
+					return UMC_OptionTypeError( _( 'Invalid object definition' ) )
 				options = obj.get( 'options', {} )
+				if options is None:
+					options = {}
 				properties = obj.get( 'object', {} )
 				if not properties.get( 'ldap-dn' ):
-					raise UMC_OptionMissing( _( 'LDAP DN of object missing' ) )
-				module = get_module( request.flavor, properties[ 'ldap-dn' ] )
+					return UMC_OptionMissing( _( 'LDAP DN of object missing' ) )
+				ldap_dn = properties[ 'ldap-dn' ]
+				module = get_module( request.flavor, ldap_dn )
 				if module is None:
-					raise UMC_OptionTypeError( _( 'Could not find a matching UDM module for the LDAP object %s' ) % properties[ 'ldap-dn' ] )
-				MODULE.info( 'Modifying LDAP object %s' % properties[ 'ldap-dn' ] )
+					return UMC_OptionTypeError( _( 'Could not find a matching UDM module for the LDAP object %s' ) % ldap_dn )
+				MODULE.info( 'Modifying LDAP object %s' % ldap_dn )
 				try:
 					module.modify( properties )
-					result.append( { 'ldap-dn' : properties[ 'ldap-dn' ], 'success' : True } )
+					result.append( { 'ldap-dn' : ldap_dn, 'success' : True } )
 				except UDM_Error, e:
-					result.append( { 'ldap-dn' : properties[ 'ldap-dn' ], 'success' : False, 'details' : str( e ) } )
+					result.append( { 'ldap-dn' : ldap_dn, 'success' : False, 'details' : str( e ) } )
 
 			return result
 
 		def _finish( thread, result, request ):
-			self.finished( request.id, result )
+			if isinstance( result, Exception ):
+				self.finished( request.id, None, str( result ), False )
+			else:
+				self.finished( request.id, result )
 
 		thread = notifier.threads.Simple( 'Get', notifier.Callback( _thread, request ),
 										  notifier.Callback( _finish, request ) )
@@ -401,7 +408,7 @@ class Instance( Base ):
 				property_obj = module.get_property( property_name )
 
 				if property_obj is None:
-					raise UMC_OptionMissing( _( 'Property %s not found' ) % property_name )
+					return UMC_OptionMissing( _( 'Property %s not found' ) % property_name )
 
 				# check each element if 'value' is a list
 				if isinstance(value, (tuple, list)):
@@ -412,7 +419,7 @@ class Instance( Base ):
 							property_obj.syntax.parse( ival )
 							subResults.append( True )
 							subDetails.append('')
-						except ( udm_errors.valueInvalidSyntax, udm_errors.valueError ), e:
+						except ( udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError ), e:
 							subResults.append( False )
 							subDetails.append( str(e) )
 					result.append( { 'property' : property_name, 'valid' : subResults, 'details' : subDetails } )
@@ -427,7 +434,10 @@ class Instance( Base ):
 			return result
 
 		def _finish( thread, result, request ):
-			self.finished( request.id, result )
+			if isinstance( result, Exception ):
+				self.finished( request.id, None, str( result ), False )
+			else:
+				self.finished( request.id, result )
 
 		thread = notifier.threads.Simple( 'Validate', notifier.Callback( _thread, request ),
 										  notifier.Callback( _finish, request ) )
