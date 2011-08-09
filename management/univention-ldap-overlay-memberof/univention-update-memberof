@@ -49,7 +49,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	# DO NOT CHANGE FOLLOWING TWO LINES! THE LINEBREAK IS IMPORTANT!
 	IFS="
 "
-	for dn in $(ldapsearch -x objectClass=posixGroup dn | grep ^dn | cut -b 5-) ; do
+	for dn in $(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret objectClass=posixGroup dn | grep ^dn | cut -b 5-) ; do
 		echo "*** UPDATING GROUP $dn ***";
 		univention-directory-manager groups/group modify --dn "$dn" --append users="$USER_DN"
 		univention-directory-manager groups/group modify --dn "$dn" --remove users="$USER_DN"
