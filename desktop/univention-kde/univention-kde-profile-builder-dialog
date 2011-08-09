@@ -45,7 +45,7 @@ if ! hash -r kdialog; then
 	exit 1
 fi
 
-if [ ! $UID -eq 0 ]; then
+if [ ! "$(id -ru)" -eq 0 ]; then
 	kdialog --error "Dieses Programm kann nur als root gestartet werden!"
 	exit 1
 fi
@@ -65,7 +65,7 @@ if [ $? -ne 0 ]; then exit 1; fi
 name=`cat $tmpfile | grep -v KWrited | tail -n -1`
 echo "NAME:" $name
 
-kdialog --msgbox "Im folgenden Dialog muss das Heimatverzeichnis des Benutzers ausgewählt werden mit dem das KDE-Profil erstellt wurde." &>/dev/null
+kdialog --msgbox "Im folgenden Dialog muss das Heimatverzeichnis des Benutzers ausgewählt werden mit dem das KDE-Profil erstellt wurde." >/dev/null 2>&1
 
 $cmd --title "Auswahl des Heimatverzeichnisses" --getexistingdirectory $default_path 2>/dev/null >$tmpfile
 if [ $? -ne 0 ]; then exit 1; fi

@@ -1,3 +1,9 @@
+univention-kde (6.0.1-3) unstable; urgency=low
+
+  * make ucs_lint happy (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2011 10:06:27 +0200
+
 univention-kde (6.0.1-2) unstable; urgency=low
 
   * avoid evaluating bind/bindpw, simply use machine.secret (Bug #17519)
