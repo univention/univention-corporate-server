@@ -48,7 +48,10 @@ getUsersInGroupNested () { # GROUP
 
 getUsersInGroupFlat () { # GROUP
 	local GROUP="$1"
-	ldapsearch -xLLL "(&(cn=$GROUP)(objectClass=univentionGroup))" uniqueMember | \
+	if [ -z "$ldap_hostdn" ]; then
+		ldap_hostdn=$(univention-config-registry get ldap/hostdn)
+	fi
+	ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(cn=$GROUP)(objectClass=univentionGroup))" uniqueMember | \
 		ldapsearch-wrapper | \
 		ldapsearch-decode64 | \
 		grep '^uniqueMember: uid=' | \

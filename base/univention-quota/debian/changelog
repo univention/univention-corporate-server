@@ -1,7 +1,14 @@
+univention-quota (6.0.1-2) unstable; urgency=low
+
+  * use -ZZ when providing credentials to ldapsearch (Bug #17519)
+  * avoid checking bind/bindpw, simply use machine.secret
+
+ -- Arvid Requate <requate@univention.de>  Mon, 08 Aug 2011 21:52:46 +0200
+
 univention-quota (6.0.1-1) unstable; urgency=low
 
   * use ldap/hostdn and bind/bindpw for univention_policy_result
-    (Bug #23178)
+    (Bug #17519)
 
  -- Arvid Requate <requate@univention.de>  Mon, 08 Aug 2011 18:20:19 +0200
 

@@ -158,14 +158,10 @@ if [ -z "$nmpoints" ]
 	exit 0
 fi
 
-if [ -z "$bind_bindpw" ]; then
-	bind_bindpw="/etc/machine.secret"
-fi
-
 # shares, first line is dn, second is path
 i=0
 oldi=-1
-for s in `/usr/bin/ldapsearch -x -h $ldap_server_name -D "$ldap_hostdn" -y "$bind_bindpw" "(&(objectClass=univentionShare)(univentionShareHost=$hostname.$domainname))" | ldapsearch-wrapper | grep "^dn:\|^univentionSharePath:" | awk '{print $2}'`
+for s in `/usr/bin/ldapsearch -x -h $ldap_server_name -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectClass=univentionShare)(univentionShareHost=$hostname.$domainname))" | ldapsearch-wrapper | grep "^dn:\|^univentionSharePath:" | awk '{print $2}'`
   do
   if [ $oldi -lt $i ] # dn
 	  then
