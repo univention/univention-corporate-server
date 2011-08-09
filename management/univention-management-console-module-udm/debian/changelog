@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.92-1) unstable; urgency=low
+
+  * fixed issues with autosearch (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 09 Aug 2011 16:24:08 +0200
+
 univention-management-console-module-udm (1.0.91-1) unstable; urgency=low
 
   * fixed return value of read_syntax_choices; Bug #22439

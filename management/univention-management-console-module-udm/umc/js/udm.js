@@ -243,7 +243,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				name: 'objectType',
 				description: this._( 'The type of the UDM object.' ),
 				label: this._('Object type'),
-				value: objTypes.length ? this.moduleFlavor : undefined,
+				//value: objTypes.length ? this.moduleFlavor : undefined,
 				staticValues: objTypes,
 				dynamicValues: 'udm/types',
 				umcpCommand: umcpCmd,
@@ -251,10 +251,10 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				onChange: dojo.hitch(this, function(newObjType) {
 					// update the object property depending on the updated object type
 					var newObjProperty = this._ucr['directory/manager/web/modules/' + newObjType + '/search/default'] || '';
-					var widget = this._searchWidget._widgets.objectProperty;
-					console.log('# ucr: directory/manager/web/modules/' + newObjType + '/search/default');
-					console.log('# newObjProperty: ' + newObjProperty);
-					widget.setInitialValue(newObjProperty || undefined);
+					var objPropertyWidget = this._searchWidget._widgets.objectProperty;
+					objPropertyWidget.setInitialValue(newObjProperty || undefined, false);
+					var objTypeWidget = this._searchWidget._widgets.objectType;
+					objTypeWidget.setInitialValue(null, false);
 				})
 			}, {
 				type: 'ComboBox',
@@ -414,15 +414,10 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// get an array
 		var ids = dojo.isArray(_ids) ? _ids : (_ids ? [ _ids ] : []);
 
-		console.log('# removeObjects');
-		console.log(dojo.toJson(_ids));
-		console.log(dojo.toJson(ids));
-		
 		// ignore empty array
 		if (!ids.length) {
 			return;
 		}
-		console.log('# 1');
 
 		// let user confirm deletion
 		var msg = this._('Please confirm the removal of the %d selected objects!', ids.length);

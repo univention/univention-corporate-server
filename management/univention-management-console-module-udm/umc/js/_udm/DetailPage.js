@@ -450,8 +450,6 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// summary:
 		//		Save the user changes for the edited object.
 
-		console.log(vals);
-
 		var deffered = null;
 		if (this.newObjectOptions) {
 			deffered = this.moduleStore.add(vals, this.newObjectOptions);
