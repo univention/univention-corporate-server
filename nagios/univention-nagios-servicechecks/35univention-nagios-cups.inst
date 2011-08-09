@@ -36,7 +36,7 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-if ! ldapsearch -xLLL -s base -b "cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
+if ! ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -s base -b "cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
 	echo "Creation of nagios service skipped - cannot find container cn=nagios,$ldap_base (ldapsearch error $?)"
 else
 		# create nagios service for CUPS

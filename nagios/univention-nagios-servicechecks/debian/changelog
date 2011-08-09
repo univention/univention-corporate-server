@@ -1,3 +1,9 @@
+univention-nagios-servicechecks (2.0.1-0) unstable; urgency=low
+
+  * use host account for ldapsearch  (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 08 Aug 2011 22:00:40 +0200
+
 univention-nagios-servicechecks (2.0.0-0) unstable; urgency=low
 
   * update to UCS 3.0 policies (Bug #14594)
