@@ -333,6 +333,8 @@ class boolean(simple):
 
 	@classmethod
 	def parse(self, text):
+		if isinstance( text, bool ):
+			return text and '1' or '0'
 		if self._re.match(text) != None:
 			return text
 		else:
