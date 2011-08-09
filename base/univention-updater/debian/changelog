@@ -1,3 +1,9 @@
+univention-updater (6.0.99-1) unstable; urgency=low
+
+  * Reload ucr Python module after upgrade (Bug #23202)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 09 Aug 2011 11:25:05 +0200
+
 univention-updater (6.0.98-1) unstable; urgency=low
 
   * fixed conflict of update_ucr_updatestatus() and locking files (Bug #22956)
