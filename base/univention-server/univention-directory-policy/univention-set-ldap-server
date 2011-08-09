@@ -39,7 +39,6 @@ configRegistry.load()
 
 found=0
 
-bindpw_filename = configRegistry.get('bind/bindpw', '/etc/machine.secret')
 ldap_hostdn = configRegistry.get('ldap/hostdn')
 if ldap_hostdn:
 
@@ -47,7 +46,7 @@ if ldap_hostdn:
 		ldap_server_string = configRegistry.get(key)
 		if ldap_server_string:
 			for k in ldap_server_string.split(' '):
-				p1 = subprocess.Popen(['univention_policy_result', '-h', k, '-D', ldap_hostdn, '-y', bindpw_filename, '-s', ldap_hostdn], stdout=subprocess.PIPE)
+				p1 = subprocess.Popen(['univention_policy_result', '-h', k, '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', ldap_hostdn], stdout=subprocess.PIPE)
 				result = p1.communicate()[0]
 				addition=[]
 

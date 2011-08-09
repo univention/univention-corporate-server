@@ -56,18 +56,14 @@ case $1 in
 			exit 1
 		fi
 
-		if [ -z "$bind_bindpw" ]; then
-			bind_bindpw="/etc/machine.secret"
-		fi
-
 		# check for ldap server
-		if /bin/netcat -q0 -w4 $ldap_server_name 389 </dev/null >/dev/null 2>&1; then
-			ldapsearch -x -h $ldap_server_name -D "$ldap_hostdn" -y "$bind_bindpw" -b $ldap_base -s BASE | ldapsearch-wrapper>>/var/log/univention/mobile-client.log 2>&1
+		if /bin/netcat -q0 -w4 $ldap_server_name 7389 </dev/null >/dev/null 2>&1; then
+			ldapsearch -x -h $ldap_server_name -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b $ldap_base -s BASE | ldapsearch-wrapper>>/var/log/univention/mobile-client.log 2>&1
 			if [ $? = 0 ]; then
 				univention-config-registry set domain/connection=true >/dev/null 2>&1
 
 				if [ -z "$ldap_mydn" ]; then
-					ldap_mydn="$(ldapsearch -x -h $ldap_server_name -D "$ldap_hostdn" -y "$bind_bindpw" -b $ldap_base "(&(objectClass=univentionMobileClient)(objectClass=univentionHost)(cn=$hostname))" | ldapsearch-wrapper | grep ^dn | sed -e 's|dn: ||')"
+					ldap_mydn="$(ldapsearch -x -h $ldap_server_name -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b $ldap_base "(&(objectClass=univentionMobileClient)(objectClass=univentionHost)(cn=$hostname))" | ldapsearch-wrapper | grep ^dn | sed -e 's|dn: ||')"
 				fi
 
 				if [ -n "$ldap_hostdn" ]; then
@@ -84,7 +80,7 @@ case $1 in
 					policy_file=$(mktemp)
 					policy_file_result=$(mktemp)
 
-					univention_policy_result -D "$ldap_hostdn" -y "$bind_bindpw" -s "$use_dn" > $policy_file
+					univention_policy_result -D "$ldap_hostdn" -y /etc/machine.secret -s "$use_dn" > $policy_file
 
 					cat $policy_file | while read line; do
 
