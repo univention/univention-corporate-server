@@ -35,8 +35,16 @@
 # ==> 20110622112559Z
 #
 ucs_getAttrOfDN() { # <attr> <dn>
-	if [ -n "$1" -a -n "$2" ]; then
-		ldapsearch -x -s base -b "$2" -LLL "$1" | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne "s/^$1: //p"
+	local attr="$1"
+	local base="$2"
+	if ! shift 2
+	then
+		echo "ucs_getAttrOfDN: wrong number of arguments" >&2
+		return 2
+	fi
+	if [ -n "$attr" ]; then
+		ldapsearch -x "$@" -s base -b "$base" -LLL "$attr" \
+			| ldapsearch-wrapper | ldapsearch-decode64 | sed -ne "s/^$attr: //p"
 	fi
 }
 
@@ -46,9 +54,14 @@ ucs_getAttrOfDN() { # <attr> <dn>
 # e.g. ucs_convertUID2DN "testuser"
 #
 ucs_convertUID2DN() { # <uid>
-	uid=$(echo -n "$1"|base64 -w 0)
-	if [ -n "$1" ]; then
-		ldapsearch -x -LLL "uid=$(echo -n "$uid"|base64 -d)" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's/dn: //p'
+	local uid=$(echo -n "$1"|base64 -w 0)
+	if ! shift 1
+	then
+		echo "ucs_convertUID2DN: wrong number of arguments" >&2
+		return 2
+	fi
+	if [ -n "$uid" ]; then
+		ldapsearch -x "$@" -LLL "uid=$(echo -n "$uid"|base64 -d)" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's/dn: //p'
 	fi
 }
 
@@ -58,7 +71,13 @@ ucs_convertUID2DN() { # <uid>
 # e.g. ucs_convertUID2DN "uid=testuser,cn=users,dc=test,dc=system"
 #
 ucs_convertDN2UID() { # <userdn>
-	ucs_getAttrOfDN "uid" "$1"
+	local userdn="$1"
+	if ! shift 1
+	then
+		echo "ucs_convertDN2UID: wrong number of arguments" >&2
+		return 2
+	fi
+	ucs_getAttrOfDN "uid" "$userdn" "$@"
 }
 
 #
@@ -67,7 +86,13 @@ ucs_convertDN2UID() { # <userdn>
 # e.g. ucs_getGroupMembersDirect "cn=Domain Admins,cn=groups,dc=test,dc=system"
 #
 ucs_getGroupMembersDirect() { # <groupDN>
-	ucs_getAttrOfDN "uniqueMember" "$1"
+	local groupdn="$1"
+	if ! shift 1
+	then
+		echo "ucs_getGroupMembersDirect: wrong number of arguments" >&2
+		return 2
+	fi
+	ucs_getAttrOfDN "uniqueMember" "$groupdn" "$@"
 }
 
 #
@@ -75,13 +100,26 @@ ucs_getGroupMembersDirect() { # <groupDN>
 # ucs_getGroupMembersDirect <group dn>
 # e.g. ucs_getGroupMembersDirect "cn=Domain Admins,cn=groups,dc=test,dc=system"
 #
+# optional environment: ldap_binddn and ldap_bindpw
+#
 ucs_getGroupMembersRecursive(){ # <groupDN>
 	local reply
-	ucs_getGroupMembersDirect "$1" | while read reply
+	local ldif
+	local groupdn="$1"
+	if ! shift 1
+	then
+		echo "ucs_getGroupMembersRecursive: wrong number of arguments" >&2
+		return 2
+	fi
+	ucs_getGroupMembersDirect "$groupdn" "$@" | while read reply
 	do
-		if [ -z "$(ldapsearch -x -LLL -b "$reply" '(!(objectClass=univentionGroup))' dn | sed -ne "s/^dn: //p")" ]
+		ldif=$(ldapsearch -x "$@" -LLL -b "$reply" '(!(objectClass=univentionGroup))' dn | sed -ne "s/^dn: //p")
+		if [ "$?" != 0 ]; then	## don't recurse in case of error
+			break
+		fi
+		if [ -z "$ldif" ]
 		then
-			ucs_getGroupMembersRecursive "$reply"
+			ucs_getGroupMembersRecursive "$reply" "$@"
 		else
 			echo "$reply"
 		fi
