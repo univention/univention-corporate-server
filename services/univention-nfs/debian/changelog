@@ -1,3 +1,9 @@
+univention-nfs (4.0.2-1) unstable; urgency=low
+
+  * ldapsearch with machine account bind Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2011 10:33:27 +0200
+
 univention-nfs (4.0.1-1) unstable; urgency=low
 
   * always set -g as RPCMOUNTDOPTS for proper acl handling on nfs shares (Bug #3172)

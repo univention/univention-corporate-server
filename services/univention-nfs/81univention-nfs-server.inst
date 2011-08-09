@@ -40,7 +40,7 @@ eval "$(univention-config-registry shell)"
 univention-directory-manager policies/thinclient modify "$@" --dn "cn=default-settings,cn=thinclient,cn=policies,$ldap_base" --set name=default-settings --append fileServer=$hostname.$domainname
 
 # make existing host share container a standard share container
-if ldapsearch -x -s base -b "cn=$hostname.$domainname,cn=shares,$ldap_base" > /dev/null; then
+if ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -s base -b "cn=$hostname.$domainname,cn=shares,$ldap_base" > /dev/null; then
 	univention-directory-manager container/cn modify "$@" --dn "cn=$hostname.$domainname,cn=shares,$ldap_base" --set sharePath=1
 fi
 
