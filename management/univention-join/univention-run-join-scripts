@@ -130,20 +130,38 @@ if [ ! "$server_role" = "domaincontroller_master" ] ; then
 	fi
 
 	echo -n "Search LDAP binddn "
-	binddn=""
-	for i in `ldapsearch -x -LLL -b $ldap_base "(&(uid=$DCACCOUNT)(objectClass=person))" | ldapsearch-wrapper | grep ^dn | sed -e 's|dn: ||'`; do
-		if [ -n "$binddn" ]; then
-			failed_message "binddn for user $DCACCOUNT not unique, $i and $binddn"
-		fi
-		echo -e "\033[60Gdone"
-		binddn="$i"
-	done
+
+	# First use udm to search the user DN
+	binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$ldap_master" \
+		/usr/sbin/udm users/user list --filter uid=$DCACCOUNT --logfile /dev/null | sed -ne 's|DN: ||p')"
+
+	if [ -z "$binddn" ]; then
+		# Next check is the local ldapi interface
+		binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$ldap_master" \
+			ldapsearch -x LLL -H ldapi:/// "(&(uid=$DCACCOUNT)(objectClass=person))" dn | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
+	fi
+
+	if [ -z "$binddn" ]; then
+		# Check with anonymous bind
+		ldap_result=$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$ldap_master" \
+			   "ldapsearch -x -LLL \'\(\&\(uid=$DCACCOUNT\)\(objectClass=person\)\)\' dn")
+		for i in $(echo "$ldap_result" | ldapsearch-wrapper | sed -n 's/^dn: \(.*\)/\1/p'); do
+			   if [ -n "$binddn" ]; then
+					   failed_message "binddn for user $DCACCOUNT not unique, $i and $binddn"
+			   fi
+			   binddn="$i"
+		done
+
+	fi
+
 	if [ -z "$binddn" ]; then
 		failed_message "binddn for user $DCACCOUNT not found"
 	else
 		ldapsearch -x -LLL -b "$ldap_base" -D "$binddn" -w `cat $DCPWD` -LLL -s base >/dev/null 2>&1
 		if [ $? != 0 ]; then
 			failed_message "Invalid credentials"
+		else
+			echo -e "\033[60Gdone"
 		fi
 	fi
 fi

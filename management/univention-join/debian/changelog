@@ -1,3 +1,10 @@
+univention-join (4.0.12-2) unstable; urgency=low
+
+  * use binddn lookup code from univention-join also in
+    univention-run-join-scripts (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2011 14:06:50 +0200
+
 univention-join (4.0.12-1) unstable; urgency=low
 
   * Add joinscript_extract_binddn_and_bindpwd_from_args (Bug #17519)
