@@ -1,3 +1,9 @@
+univention-squid (5.0.2-1) unstable; urgency=low
+
+  * make ucs_lint happy (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2011 12:52:10 +0200
+
 univention-squid (5.0.1-1) unstable; urgency=low
 
   * use machine account for ldapsearch (Bug #17519)
