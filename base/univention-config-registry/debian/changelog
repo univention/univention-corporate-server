@@ -1,3 +1,9 @@
+univention-config-registry (7.0.16-1) unstable; urgency=low
+
+  * Use at least Python2.6 after upgrade (Bug #23202)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 09 Aug 2011 11:26:30 +0200
+
 univention-config-registry (7.0.15-1) unstable; urgency=low
 
   * Always use -ZZ for ldapsearch in univention-ldapsearch (Bug #17519)

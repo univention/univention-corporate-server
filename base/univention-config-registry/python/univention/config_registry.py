@@ -342,6 +342,11 @@ def directoryFiles(dir):
 	os.path.walk(dir, _walk, all)
 	return all
 
+# Bug #23202: For UCS-2.x use /usr/bin/python2.4, but after upgrade to UCS-3.x use /usr/bin/python2.6
+if sys.version_info[0:2] < (2, 6):
+	__python_executable = '/usr/bin/python2.6'
+else:
+	__python_executable = sys.executable
 def filter(template, dir, srcfiles=set(), opts = {}):
 	"""Process a template file: susbstitute variables and call hook scripts and modules."""
 	while True:
@@ -377,7 +382,7 @@ def filter(template, dir, srcfiles=set(), opts = {}):
 			start = i.next()
 			end = i.next()
 
-			p = subprocess.Popen((sys.executable, ), stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
+			p = subprocess.Popen((__python_executable, ), stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
 			child_stdin, child_stdout = p.stdin, p.stdout
 			child_stdin.write('# -*- coding: utf-8 -*-\n')
 			child_stdin.write('import univention.config_registry\n')
