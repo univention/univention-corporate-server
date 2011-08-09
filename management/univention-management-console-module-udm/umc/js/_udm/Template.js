@@ -103,6 +103,9 @@ dojo.declare('umc.modules._udm.Template', null, {
 					}
 
 					this.selfReference.set('value', newVal);
+					if (this.selfReference.setInitialValue) {
+						this.selfReference.setInitialValue(newVal, false);
+					}
 				}
 			};
 
@@ -174,6 +177,9 @@ dojo.declare('umc.modules._udm.Template', null, {
 				// we have a static value, try to set the given key
 				if (ikey in this.widgets) {
 					this.widgets[ikey].set('value', ival);
+					if (this.widgets[ikey].setInitialValue) {
+						this.widgets[ikey].setInitialValue(ival, false);
+					}
 				}
 			}
 		}, this);

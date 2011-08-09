@@ -360,9 +360,12 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// in case we have a template, create a new template object that takes care
 		// of updating the elements in the form
 		if (template && template.length > 0) {
+			// remove first the template's LDAP-DN
+			template = template[0];
+			delete template['ldap-dn'];
 			this._template = this.adopt(umc.modules._udm.Template, {
 				widgets: widgets,
-				template: template[0]
+				template: template
 			});
 		}
 

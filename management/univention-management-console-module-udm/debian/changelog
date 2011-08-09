@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.94-1) unstable; urgency=low
+
+  * removed ldap-dn from template
+  * call setInitialValue() in Template
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 09 Aug 2011 18:12:13 +0200
+
 univention-management-console-module-udm (1.0.93-1) unstable; urgency=low
 
   * enhance error handling; Bug #22439
