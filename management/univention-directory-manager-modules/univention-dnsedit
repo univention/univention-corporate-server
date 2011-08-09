@@ -122,7 +122,7 @@ def bind():
 		sys.exit(1)
 	if options['binddn'] and options['bindpwd']:
 		try:
-			lo=univention.admin.uldap.access(host=configRegistry['ldap/master'], base=configRegistry['ldap/base'], binddn=options['binddn'], bindpw=options['bindpwd'], start_tls=start_tls)
+			lo=univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=configRegistry['ldap/base'], binddn=options['binddn'], bindpw=options['bindpwd'], start_tls=start_tls)
 			position=univention.admin.uldap.position(lo.base)
 			return lo, position
 		except univention.admin.uexceptions.authFail, e:
