@@ -1,3 +1,9 @@
+univention-kde (6.0.1-2) unstable; urgency=low
+
+  * avoid evaluating bind/bindpw, simply use machine.secret (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2011 09:41:38 +0200
+
 univention-kde (6.0.1-1) unstable; urgency=low
 
   * use ldap/hostdn and bind/bindpw for univention_policy_result

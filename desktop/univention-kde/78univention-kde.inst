@@ -53,10 +53,7 @@ univention-directory-manager policies/desktop  create "$@" --ignore_exists \
 	--append profile="/usr/share/univention-kde-profiles/kde4-menu" \
 	--append profile="/usr/share/univention-kde-profiles/kde4-ucs2.3"
 
-if [ -z "$bind_bindpw" ]; then
-	bind_bindpw="/etc/machine.secret"
-fi
-res=$(univention_policy_result -D "$ldap_hostdn" -y "$bind_bindpw" -s "$ldap_base" | grep univentionDesktopProfile)
+res=$(univention_policy_result -D "$ldap_hostdn" -y /etc/machine.secret -s "$ldap_base" | grep univentionDesktopProfile)
 if [ -z "$res" ]; then
 	univention-directory-manager container/dc modify "$@" --dn "$ldap_base" \
 		--policy-reference "cn=UCS 2.3 KDE4,cn=desktop,cn=policies,$ldap_base"
