@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.91-1) unstable; urgency=low
+
+  * fixed return value of read_syntax_choices; Bug #22439
+  * fixed exception handling in udm/add
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 09 Aug 2011 15:56:21 +0200
+
 univention-management-console-module-udm (1.0.90-1) unstable; urgency=low
 
   * add support for LDAP_Search syntax; Bug #22439

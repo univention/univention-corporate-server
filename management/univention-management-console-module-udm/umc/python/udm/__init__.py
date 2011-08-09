@@ -90,7 +90,7 @@ class Instance( Base ):
 			result = []
 			for obj in request.options:
 				if not isinstance( obj, dict ):
-					raise UMC_OptionTypeError( _( 'Invalid object definition' ) )
+					return UMC_OptionTypeError( _( 'Invalid object definition' ) )
 
 				options = obj.get( 'options', {} )
 				properties = obj.get( 'object', {} )
@@ -105,6 +105,8 @@ class Instance( Base ):
 			return result
 
 		def _finish( thread, result, request ):
+			if isinstance( result, Exception ):
+				raise UMC_CommandError( str( e ) )
 			self.finished( request.id, result )
 
 		thread = notifier.threads.Simple( 'Get', notifier.Callback( _thread, request ),

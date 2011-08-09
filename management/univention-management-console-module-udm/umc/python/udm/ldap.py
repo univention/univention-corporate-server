@@ -584,4 +584,4 @@ def read_syntax_choices( syntax_name, options = {} ):
 			else:
 				syntax.choices.append( { 'objectType' : module.name, 'id' : id, 'label' : label } )
 		return syntax.choices
-	return getattr( syn, 'choices', [] )
+	return map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syn, 'choices', [] ) )
