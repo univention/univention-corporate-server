@@ -1,9 +1,15 @@
+univention-squid (5.0.1-1) unstable; urgency=low
+
+  * use machine account for ldapsearch (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2011 11:38:16 +0200
+
 univention-squid (5.0.0-1) unstable; urgency=low
 
   * Update for UCS 3.0 (Bug #22576)
   * Migrate to Squid 3
   * Execute correct join script (Bug #19737)	 
-	
+
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 26 May 2011 15:07:49 +0200
 
 univention-squid (4.0.3-1) unstable; urgency=low
