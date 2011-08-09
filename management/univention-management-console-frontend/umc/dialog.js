@@ -2,6 +2,7 @@
 
 dojo.provide("umc.dialog");
 
+dojo.require("dojo.cookie");
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.LoginDialog");

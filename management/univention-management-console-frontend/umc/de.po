@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-08-08 17:51+0200\n"
+"POT-Creation-Date: 2011-08-09 12:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,7 +63,7 @@ msgstr ""
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
-#: umc/dialog.js:173
+#: umc/dialog.js:174
 msgid "Confirmation"
 msgstr "Bestätigung"
 
@@ -183,11 +183,11 @@ msgstr "Weitere..."
 msgid "No object selected"
 msgstr ""
 
-#: umc/dialog.js:85
+#: umc/dialog.js:86
 msgid "Notification"
 msgstr "Hinweis"
 
-#: umc/dialog.js:88
+#: umc/dialog.js:89
 msgid "Ok"
 msgstr "Ok"
 

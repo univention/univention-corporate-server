@@ -43,7 +43,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 	store: null,
 
-	value: '',
+	value: null,
 
 	// internal variable to keep track of which ids have already been added
 	_ids: {},
@@ -52,9 +52,9 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 	_initialValue: null,
 
-	_isAutoValue: false,
+	//_isAutoValue: false,
 
-	_isInitialized: false,
+	//_isInitialized: false,
 
 	constructor: function() {
 		// The store needs to be available already at construction time, otherwise an
@@ -85,29 +85,38 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	_setValueAttr: function(newVal) {
 		this.inherited(arguments);
 
+		//console.log('# _SelectMixin: '+this.name+'._initialValue=' + this._initialValue);
 		// store the value as intial value after the widget has been intialized
-		if (this._isInitialized) {
-			this._saveInitialValue();
-		}
+		//if (this._isInitialized) {
+		//	this._saveInitialValue();
+		//}
 	},
 
 	_saveInitialValue: function() {
 		// rember the intial value since it will be overridden by the dojo
 		// methods since at initialization time the store is empty
+		//console.log('# _SelectMixin: '+this.name+'._saveInitialValue(): "'+this.value+'"');
+		//console.log('# _isInitialized: "'+this._isInitialized);
 		this._initialValue = this.value;
 	},
 
-	setInitialValue: function(value) {
+	setInitialValue: function(value, setValue) {
 		// summary:
 		//		Forces to set this given initial value.
+		setValue = undefined == setValue ? true : setValue;
+		//console.log('# _SelectMixin: '+this.name+'.setInitialValue(): "'+value+'"');
 		this._initialValue = value;
-		this.set('value', value);
+		if (setValue) {
+			this.set('value', value);
+		}
 	},
 
 	_setCustomValue: function() {
-		if (!this._initialValue) {
+		//console.log('# _SelectMixin: '+this.name+'._setCustomValue()');
+		//console.log('# _SelectMixin: '+this.name+'._initialValue=' + this._initialValue);
+		if (null === this._initialValue || undefined === this._initialValue) {
 			this._initialValue = this._firstValueInList;
-			this._isAutoValue = true;
+			//this._isAutoValue = true;
 		}
 		this.set('value', this._initialValue);
 		this._resetValue = this._initialValue;
@@ -124,12 +133,13 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		};
 		this.store.close();
 
-		if (this._isAutoValue) {
-			// reset the _initialValue in case we chose it automatically
-			this._initialValue = null;
-		}
-		this._isAutoValue = false;
+		//if (this._isAutoValue) {
+		//	// reset the _initialValue in case we chose it automatically
+		//	this._initialValue = null;
+		//}
+		//this._isAutoValue = false;
 		this._firstValueInList = null;
+		this.set('value', this._initialValue);
 	},
 
 	_convertItems: function(_items) {
@@ -228,6 +238,8 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	},
 
 	_loadValues: function(/*Object?*/ _dependValues) {
+		//console.log('# _SelectMixin: '+this.name+'.loadValues');
+		//console.log('# _SelectMixin: '+this.name+'._initialValue=' + this._initialValue);
 		this._clearValues();
 		this._setStaticValues();
 
@@ -249,7 +261,6 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		}
 
 		// only load dynamic values in case all dependencies are fullfilled
-		//console.log('### dependencies: ' + dependList + ' depVals: ' + dojo.toJson(params));
 		if (dependList.length != nDepValues) {
 			return;
 		}
@@ -287,7 +298,12 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 	onInitialized: function() {
 		// initilization is done
-		this._isInitialized = true;
+		// if the value is not set (undefined/null), automatically choose the first element in the list
+		//console.log('# _SelectMixin: '+this.name+'.onInitialized: _firstValueInList=' + this._firstValueInList);
+		if (null === this.value || undefined === this.value) {
+			this.set('value', this._firstValueInList);
+		}
+		//console.log('# _SelectMixin: '+this.name+'._initialValue=' + this._initialValue);
 	}
 });
 

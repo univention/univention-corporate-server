@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.5-1) unstable; urgency=low
+
+  * fixed problems with ComboBoxes and MultiInput (new elements where not
+    empty, setting values did not work properly)
+  * ComboBox does now filter for '*<keyword>*'
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 09 Aug 2011 16:18:51 +0200
+
 univention-management-console-frontend (1.0.4-1) unstable; urgency=low
 
   * forced vertical scrollbars for umc.widgets.Grid (Bug #22881)

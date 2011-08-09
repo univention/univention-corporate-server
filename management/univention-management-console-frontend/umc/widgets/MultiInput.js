@@ -2,6 +2,7 @@
 
 dojo.provide("umc.widgets.MultiInput");
 
+dojo.require("dijit.form.Button");
 dojo.require("umc.widgets.ContainerWidget");
 //dojo.require("umc.widgets.HiddenInput");
 dojo.require("umc.tools");
@@ -96,6 +97,11 @@ dojo.declare("umc.widgets.MultiInput", [
 			for (var j = 0; j < this.subtypes.length; ++j) {
 				var val = j >= rowVals.length ? '' : rowVals[j];
 				this._widgets[irow][j].set('value', val);
+
+				// for dynamic combo boxes, we need to save the value as "initial value"
+				if (this._widgets[irow][j].setInitialValue) {
+					this._widgets[irow][j].setInitialValue(val, false);
+				}
 			}
 		}, this);
 	},
@@ -187,7 +193,8 @@ dojo.declare("umc.widgets.MultiInput", [
 				var iname = '__' + this.name + '-' + irow + '-' + i;
 				widgetConfs.push(dojo.mixin({}, iwidget, {
 					disabled: this.disabled,
-					name: iname
+					name: iname,
+					value: ''
 				}));
 
 				// add the name of the widget to the list of widget names
