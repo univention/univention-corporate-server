@@ -1,3 +1,9 @@
+univention-samba4 (1.0.10-1) experimental; urgency=low
+
+  * call provision only on domaincontroller_master (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2011 12:43:40 +0200
+
 univention-samba4 (1.0.9-1) experimental; urgency=low
 
   * remove unknown smb.conf parameter "setup directory" (Bug #22559)

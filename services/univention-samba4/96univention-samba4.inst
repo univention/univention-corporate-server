@@ -34,18 +34,25 @@ VERSION=1
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
-/usr/share/univention-samba4/scripts/setup-s4.sh
-
 . /usr/share/univention-lib/all.sh
 
 eval "$(univention-config-registry shell)"
 
 NAME="Samba 4"
 
-# The first samba 4 DC should provide the domainname as netbios alias
-res="$(udm computers/computer list "$@" --filter "(univentionService=${NAME})" | sed -ne 's|^DN: ||p')"
-if [ -z "$res" ]; then
-	ucr set samba/netbios/aliases?"$domainname"
+if [ "$server_role" = "domaincontroller_master" ]; then
+
+	/usr/share/univention-samba4/scripts/setup-s4.sh
+
+	# The first samba 4 DC should provide the domainname as netbios alias
+	res="$(udm computers/computer list "$@" --filter "(univentionService=${NAME})" | sed -ne 's|^DN: ||p')"
+	if [ -z "$res" ]; then
+		ucr set samba/netbios/aliases?"$domainname"
+	fi
+
+else
+	# joinscript_extract_binddn_and_bindpwd_from_args "$@"
+	# samba-tool join "$domainname" -U"$JOINUSERNAME" --realm="$kerberos_realm"
 fi
 
 ucs_addServiceToLocalhost "${NAME}" "$@"
