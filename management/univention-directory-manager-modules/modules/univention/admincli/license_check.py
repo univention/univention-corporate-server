@@ -180,6 +180,7 @@ def main(argv):
 	configRegistry.load()
 	baseDN = configRegistry['ldap/base']
 	master = configRegistry['ldap/master']
+	port = int(configRegistry.get('ldap/master/port', '7389'))
 	binddn = options.get('binddn', 'cn=admin,%s' % baseDN)
 	bindpw = options.get('bindpw', None)
 	if bindpw is None:
@@ -189,6 +190,7 @@ def main(argv):
 			raise UsageError, "Permission denied, try `--binddn' and `--bindpw'"
 	try:
 		lo = univention.admin.uldap.access(host = master,
+						   port = port,
 						   base = baseDN,
 						   binddn = binddn,
 						   bindpw = bindpw)
