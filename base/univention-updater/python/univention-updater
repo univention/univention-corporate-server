@@ -514,6 +514,8 @@ def main():
 	# Call the postup.sh
 	(nvv,nvp)=nextversion.split('-')[0:2]
 
+	# Bug #23202: Force reload of module after upgrdae from Python2.4 to Python2.6
+	reload(ucr)
 	out = ucr.handler_set(['version/version=%s' % nvv, 'version/patchlevel=%s' % nvp])
 	remove_temporary_sources_list()
 
