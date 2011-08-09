@@ -47,7 +47,7 @@ def exit(result, message = None):
 		print '%s: %s' % (script, message)
 	sys.exit(result)
 
-def query_policy():
+def query_policy(update):
 	server = None
 	p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', bindpw_filename, '-s', ldap_hostdn], stdout=subprocess.PIPE)
 	result = p1.communicate()[0]
@@ -79,7 +79,7 @@ def main():
 		# can't query policy without host-dn
 		exit(0)
 
-	new_server, update = query_policy()
+	new_server, update = query_policy(update)
 	# without a local repository
 	if not local_repo:
 		if not new_server or new_server == online_server:
