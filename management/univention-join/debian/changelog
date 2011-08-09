@@ -1,3 +1,9 @@
+univention-join (4.0.12-1) unstable; urgency=low
+
+  * Add joinscript_extract_binddn_and_bindpwd_from_args (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2011 11:32:08 +0200
+
 univention-join (4.0.11-1) unstable; urgency=low
 
   * UCS 3.0 adjustments (Bug #22413)

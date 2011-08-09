@@ -231,4 +231,17 @@ joinscript_init () {
 		joinscript_abort "Error determining last executed version"
 	fi
 }
+
+joinscript_extract_binddn_and_bindpwd_from_args () {
+	while getopts ":-:" option; do
+		case "${option}" in
+			-)
+			echo "${OPTARG}"
+			case "${OPTARG}" in
+				"binddn") JOINUSERDN="${!OPTIND}"; OPTIND=$(($OPTIND + 1));;
+				"bindpwd") JOINUSERPWD="${!OPTIND}"; OPTIND=$(($OPTIND + 1));;
+			esac;;
+		esac
+	done
+}
 # vim:set ft=sh:
