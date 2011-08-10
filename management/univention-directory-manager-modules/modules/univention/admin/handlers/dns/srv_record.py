@@ -185,7 +185,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None,scope="sub", unique=0, 
 	return res
 
 def identify(dn, attr, canonical=0):
-
-	return 'dNSZone' in attr.get('objectClass', []) and\
-		'@' not in attr.get('relativeDomainName', []) and\
-		not attr['zoneName'][0].endswith('.in-addr.arpa')
+	return 'dNSZone' in attr.get('objectClass', []) and '@' not in attr.get('relativeDomainName', []) and \
+		   not attr['zoneName'][0].endswith('.in-addr.arpa') and attr.get( 'sRVRecord', [] )

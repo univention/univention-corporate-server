@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.50-1) unstable; urgency=low
+
+  * dns/srv_record: adjust identify logic to match lookup
+    filter. Otherwise host records might be identified as service records;
+    Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 10 Aug 2011 10:43:45 +0200
+
 univention-directory-manager-modules (7.0.49-1) unstable; urgency=low
 
   * boolean syntax type must support real boolean values; Bug #22439
