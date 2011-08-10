@@ -1,3 +1,9 @@
+univention-nagios (5.0.4-2) unstable; urgency=low
+
+  * Removed debug code from join script (Bug #23180)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Aug 2011 15:29:11 +0200
+
 univention-nagios (5.0.4-1) unstable; urgency=low
 
   * Consider disabled anoymous bind in join script (Bug #23180)
