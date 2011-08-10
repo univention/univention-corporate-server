@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.51-1) unstable; urgency=low
+
+  * dns/host_record: fix identify function to really match host records; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 10 Aug 2011 13:45:48 +0200
+
 univention-directory-manager-modules (7.0.50-1) unstable; urgency=low
 
   * dns/srv_record: adjust identify logic to match lookup

@@ -191,8 +191,8 @@ def lookup(co, lo, filter_s, base='', superordinate=None,scope="sub", unique=0, 
 		univention.admin.filter.expression('objectClass', 'dNSZone'),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('CNAMERecord', '*')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('SRVRecord', '*')])
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('cNAMERecord', '*')]),
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sRVRecord', '*')])
 		])
 
 	if superordinate:
@@ -209,11 +209,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None,scope="sub", unique=0, 
 	return res
 
 def identify(dn, attr, canonical=0):
-
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALIAS(host_record) identify DN=%s'% dn)
-	return 'dNSZone' in attr.get('objectClass', []) and\
-		'@' not in attr.get('relativeDomainName', []) and\
-		not attr['zoneName'][0].endswith('.in-addr.arpa') and\
-		'*' not in attr.get('CNAMERecord', []) and\
-		'*' not in attr.get('SRVRecord', []) and\
-		('*' in attr.get('ARecord', []) or '*' in attr.get('MXRecord', []) )
+	return 'dNSZone' in attr.get('objectClass', []) and '@' not in attr.get('relativeDomainName', []) and \
+		not attr['zoneName'][0].endswith('.in-addr.arpa') and not attr.get( 'cNAMERecord', [] ) and \
+		not attr.get( 'sRVRecord', [] ) and ( attr.get( 'aRecord', [] ) or attr.get( 'mXRecord', [] ) )
