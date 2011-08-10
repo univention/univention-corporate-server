@@ -566,7 +566,8 @@ class Instance( Base ):
 
 			infos = copy.copy( policy_obj.polinfo_more )
 			for key, value in infos.items():
-				infos[ key ][ 'value' ] = policy_obj.polinfo[ key ]
+				if key in policy_obj.polinfo:
+					infos[ key ][ 'value' ] = policy_obj.polinfo[ key ]
 
 			return infos
 
