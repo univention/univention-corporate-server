@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.53-1) unstable; urgency=low
+
+  * dns/alias: fix identify function to really match alias records; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 10 Aug 2011 16:12:05 +0200
+
 univention-directory-manager-modules (7.0.52-1) unstable; urgency=low
 
   * univention-object-type-migrate: improve -v (Bug #23114)
