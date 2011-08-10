@@ -98,13 +98,13 @@ service_start ()
 
 ldap_binddn ()
 {
-	eval "$(univention-config-registry shell server/role ldap/base ldap/master)"
+	eval "$(univention-config-registry shell server/role ldap/base ldap/master ldap/hostdn)"
 	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 		echo "cn=admin,$ldap_base"
 	else
 		ldap_username=`get_profile_var ldap_username`
 		if [ -n "$ldap_username" ]; then
-			dn=`ldapsearch -x -h $ldap_master "(&(objectClass=person)(uid=$ldap_username))" | grep "dn: " | sed -e 's|dn: ||' | head -n 1`
+			dn=`ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -h $ldap_master "(&(objectClass=person)(uid=$ldap_username))" | grep "dn: " | sed -e 's|dn: ||' | head -n 1`
 			echo "$dn"
 		fi
 	fi

@@ -88,7 +88,7 @@ if [ "$ldap_available" = 1 ]; then
 	ldapmodify -x -D "$binddn" -w "$bindpwd" -f /var/cache/univention-system-setup/krb5principal.rename.ldif
 	rm /var/cache/univention-system-setup/krb5principal.rename.ldif
 
-	kerberos_ldap_dn=$(ldapsearch -x krb5PrincipalName="ldap/$hostname.$old_domainname@$kerberos_realm" -b cn=kerberos,$ldap_base cn -LLL | ldapsearch-wrapper | grep "^dn: " | sed -e 's|dn: ||')
+	kerberos_ldap_dn=$(ldapsearch -x -D "$binddn" -w "$bindpwd" krb5PrincipalName="ldap/$hostname.$old_domainname@$kerberos_realm" -b cn=kerberos,$ldap_base cn -LLL | ldapsearch-wrapper | grep "^dn: " | sed -e 's|dn: ||')
 	if [ -n "$kerberos_ldap_dn" ]; then
 		echo `date` : "Configure Kerberos principal name of LDAP Service in LDAP: " host/$hostname.$new_domainname@$kerberos_realm  >> /var/log/univention/setup.log
 		echo "dn: $kerberos_ldap_dn" >/var/cache/univention-system-setup/kerberos_ldap_service.ldif

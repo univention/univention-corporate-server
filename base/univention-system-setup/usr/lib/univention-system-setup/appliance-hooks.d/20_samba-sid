@@ -41,7 +41,7 @@ fi
 if [ -x /usr/share/univention-samba/change_sid ]; then
 	new_sid=$(/usr/sbin/univention-newsid)
 
-	old_sid=$(ldapsearch -x -LLL objectClass=sambaDomain sambaSID | grep sambaSID:  | sed 's/sambaSID: //')
+	old_sid=$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL objectClass=sambaDomain sambaSID | grep sambaSID:  | sed 's/sambaSID: //')
 
 	/usr/share/univention-samba/change_sid $old_sid $new_sid
 

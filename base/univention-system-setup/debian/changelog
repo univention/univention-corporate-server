@@ -1,3 +1,9 @@
+univention-system-setup (5.0.3-1) unstable; urgency=low
+
+  * use machine account for ldapsearch (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Aug 2011 10:43:55 +0200
+
 univention-system-setup (5.0.2-1) unstable; urgency=low
 
   * univention-system-setup-appliance no newline in secret files (Bug #14186)
