@@ -1,3 +1,9 @@
+univention-base-files (1.0.14-1) unstable; urgency=low
+
+  * set IPv6 gateway on UCRV change (Bug #22871)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 10 Aug 2011 16:37:57 +0200
+
 univention-base-files (1.0.13-1) unstable; urgency=low
 
   * use ldap/hostdn and bind/bindpw for univention_policy_result

@@ -67,6 +67,22 @@ def restore_gateway(gateway, netmask):
 			os.system('route del default >/dev/null 2>&1')
 			os.system('route add default gw %s' % gateway)
 
+def restore_v6gateway(gateway):
+	if type(gateway) is tuple:
+		(old, new, ) = gateway
+		if not new:
+			os.system('ip -6 route del to default via %s' % old)
+		elif not old:
+			os.system('ip -6 route del to default')
+			os.system('ip -6 route add to default via %s' % new)
+		else:
+			os.system('ip -6 route del to default via %s' % old)
+			os.system('ip -6 route add to default via %s' % new)
+	else:
+		if gateway:
+			os.system('ip -6 route del to default')
+			os.system('ip -6 route add to default via %s' % gateway)
+
 def preinst(configRegistry, changes):
 	for iface in set(changes):
 		if iface in configRegistry:
@@ -81,3 +97,5 @@ def postinst(configRegistry, changes):
 			restore_gateway(changes['gateway'], configRegistry.get("interfaces/eth0/netmask", False))
 		else:
 			restore_gateway(configRegistry.get("gateway", False), configRegistry.get("interfaces/eth0/netmask", False))
+	if 'ipv6/gateway' in changes:
+		restore_v6gateway(changes['ipv6/gateway'])
