@@ -1,3 +1,10 @@
+univention-directory-logger (4.0.1-1) unstable; urgency=low
+
+  * Depend on python-univention instead of univention-python
+    (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Aug 2011 16:14:56 +0200
+
 univention-directory-logger (4.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22431)
