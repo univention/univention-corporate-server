@@ -1,6 +1,6 @@
 Type: file
 File: etc/default/saslauthd
-Variables: mail/cyrus/threads
+Variables: mail/saslauthd/threads
 
 Type: file
 File: var/spool/sieve/local.sieve

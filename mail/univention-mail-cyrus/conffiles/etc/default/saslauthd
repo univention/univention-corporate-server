@@ -31,7 +31,7 @@ MECH_OPTIONS=""
 
 # How many saslauthd processes should we run? (default: 5)
 # A value of 0 will fork a new process for each connection.
-THREADS=@%@mail/cyrus/threads@%@
+THREADS=@%@mail/saslauthd/threads@%@
 
 # Other options (default: -c -m /var/run/saslauthd)
 # Note: You MUST specify the -m option or saslauthd won't run!

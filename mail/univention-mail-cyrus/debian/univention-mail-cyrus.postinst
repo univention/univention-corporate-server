@@ -3,7 +3,7 @@
 # Univention Mail Cyrus
 #  postinst script for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -74,7 +74,7 @@ chmod 600 /etc/univention/templates/files/var/spool/sieve/*
 
 univention-config-registry set mail/antispam/globalfolder="spam@$domainname"
 
-univention-config-registry set mail/cyrus/threads?5
+univention-config-registry set mail/saslauthd/threads?5
 
 
 # Mail-Quota
