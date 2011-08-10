@@ -169,6 +169,11 @@ else
 	fi
 fi
 if [ "$tcsInstalled" = "true" ]; then
+
+	# save old values
+	old_repository_online_component_tcs="$repository_online_component_tcs"
+	old_repository_online_component_tcs_version="$repository_online_component_tcs_version"
+	
 	# activate component
 	univention-config-registry set \
 		repository/online/component/tcs=yes \
@@ -206,18 +211,36 @@ if configRegistry.get("repository/online/component/%s" % scope, "").lower() in y
 		sys.exit(1)
 sys.exit(0)
 ' 2>"$updateError")
-	
+	res=$?
+
+	# reset old values
+	if [ -n "$old_repository_online_component_tcs" ]; then
+		univention-config-registry set repository/online/component/tcs="$old_repository_online_component_tcs"
+	else
+		univention-config-registry unset repository/online/component/tcs
+	fi
+	if [ -n "$old_repository_online_component_tcs_version" ]; then
+		univention-config-registry set repository/online/component/tcs/version="$old_repository_online_component_tcs_version"
+	else
+		univention-config-registry unset repository/online/component/tcs/version
+	fi
+
 	# component tcs in 3.0 not found, -> abort the update
-	if [ ! $? -eq 0 ]; then
+	if [ ! $res -eq 0 ]; then
 		if [ -s $updateError ]; then
 			echo "WARNING: Traceback in UniventionUpdater() python module:"
 			cat "$updateError"
 		fi
-		echo "WARNING: An update to UCS 3.0 without the component 'tcs' is"
-		echo "         not possible because the component 'tcs' is required."
+		echo "WARNING: An update to UCS 3.0 without the component 'tcs' is not possible"
+		echo "     because the component 'tcs' is required. If the thin client packages"
+        echo "     are not essential on this system, it is possible to remove these"
+		echo "     packages by running the following command:"
+		echo "        apt-get remove --purge univention-thin-client-basesystem"
+		echo "     Afterwards a new update test to UCS 3.0 can be started."
 		exit 1
 	fi
 	rm "$updateError"
+
 fi
 # END -- update to 3.0-0 Bug #22878
 
