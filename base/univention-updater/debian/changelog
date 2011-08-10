@@ -1,3 +1,11 @@
+univention-updater (6.0.14-1) unstable; urgency=low
+
+  * Use external ucr instead of internal ucr (Bug #23202)
+  * Fix writing to closed fd_log (Bug #23259)
+  * Fix wrong release number (Bug #21843)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 10 Aug 2011 18:51:35 +0200
+
 univention-updater (7.0.13-1) unstable; urgency=low
 
   * Some more cleanups for the preup.sh script (Bug #22878)
