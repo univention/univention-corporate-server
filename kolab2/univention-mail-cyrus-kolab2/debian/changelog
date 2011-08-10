@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (3.0.26-3) unstable; urgency=low
+
+  * Rename the variable to mail/saslauthd/threads (Bug #13358) 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 10 Aug 2011 08:42:25 +0200
+
 univention-mail-cyrus-kolab2 (3.0.26-2) unstable; urgency=low
 
   * Make the amount of saslthreads configurable through the Univention

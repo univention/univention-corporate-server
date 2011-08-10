@@ -3,7 +3,7 @@
 # Univention Mail Cyrus Kolab2
 #  postinst script for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -81,7 +81,7 @@ univention-config-registry set mail/cyrus?yes \
 								mail/antispam/globalfolder?"spam@$domainname" \
 								mail/cyrus/backup-metadata/cron?"15 3 * * *"
 
-univention-config-registry set mail/cyrus/threads?5
+univention-config-registry set mail/saslauthd/threads?5
 
 dpkg-statoverride --add root sasl 660 /etc/sasldb2 || true
 
