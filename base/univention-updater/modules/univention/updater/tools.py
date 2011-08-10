@@ -1311,9 +1311,9 @@ class UniventionUpdater:
 				if size == len(script):
 					ud.debug(ud.NETWORK, ud.INFO, "%s saved to %s" % (uri, name))
 					if struct.part.endswith('/component'):
-						comp[phase].append((name, struct.patch))
+						comp[phase].append((name, str(struct.patch)))
 					else:
-						main[phase].append((name, struct.patch))
+						main[phase].append((name, str(struct.patch)))
 					continue
 			finally:
 				os.close(fd)

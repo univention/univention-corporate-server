@@ -519,9 +519,8 @@ def main():
 	# Call the postup.sh
 	(nvv,nvp)=nextversion.split('-')[0:2]
 
-	# Bug #23202: Force reload of module after upgrdae from Python2.4 to Python2.6
-	reload(ucr)
-	out = ucr.handler_set(['version/version=%s' % nvv, 'version/patchlevel=%s' % nvp])
+	# Bug #23202: After the update from Python2.4 to Python2.6, ucr.handler_set() does not work any more because it still uses python2.4!
+	subprocess.call(('univention-config-registry', 'set', 'version/version=%s' % nvv, 'version/patchlevel=%s' % nvp))
 	remove_temporary_sources_list()
 
 	if os.path.exists('/usr/sbin/univention-pkgdb-scan'):
@@ -617,7 +616,6 @@ if __name__ == '__main__':
 			do_ucr_update = False
 			raise
 	finally:
-		fd_log.close()
 		if not univention.updater.tools.updater_lock_release(lock):
 			print 'WARNING: updater-lock already released!'
 		try:
@@ -626,3 +624,4 @@ if __name__ == '__main__':
 			print >>sys.stderr, "Failed to remove %s." % TMPSOURCE
 		if do_ucr_update:
 			update_ucr_updatestatus()
+		fd_log.close()
