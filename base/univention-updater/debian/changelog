@@ -1,8 +1,15 @@
+univention-updater (7.0.11-1) unstable; urgency=low
+
+  * Make scripts in /usr/shared/univention-updater/ executable (Bug #22433)
+  * Redirect preup.sh output to logfile (Bug #23054)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 10 Aug 2011 13:51:50 +0200
+
 univention-updater (7.0.10-1) unstable; urgency=low
 
   * Reload ucr Python module after upgrade (Bug #23202)
   * Install Python2.6 before upgrade (bug #23054)
-  * Force upgrade of slapd before libdb4.7 upgrade (Bug #23054)
+  * Force upgrade of slapd before libdb4.7 upgrade (Bug #23054, Bug #23227)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 09 Aug 2011 11:22:42 +0200
 
