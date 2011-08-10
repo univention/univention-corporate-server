@@ -106,13 +106,15 @@ fi
 ###########################################################################
 echo
 echo "HINT:"
-echo "Please check the following documents carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
+#echo "Please check the following documents carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
 #echo "Release Notes: http://download.univention.de/doc/release-notes-2.4.pdf"
-echo "Changelog: http://download.univention.de/doc/changelog-2.4-2.pdf"
+#echo "Changelog: http://download.univention.de/doc/changelog-2.4-2.pdf"
+echo "Please note that Univention Corporate Server (UCS) 3.0 is under development."
+echo "At the moment UCS 3.0 is not ready for production use!"
 echo
-echo "Please also consider documents of following release updates and"
-echo "3rd party components."
-echo
+#echo "Please also consider documents of following release updates and"
+#echo "3rd party components."
+#echo
 if [ ! "$update_warning_releasenotes" = "no" -a ! "$update_warning_releasenotes" = "false" -a ! "$update_warning_releasenotes_internal" = "no" ] ; then
 	echo "Update will wait here for 60 seconds..."
 	echo "Press CTRL-c to abort or press ENTER to continue"
@@ -177,7 +179,7 @@ if [ "$tcsInstalled" = "true" ]; then
 	# activate component
 	univention-config-registry set \
 		repository/online/component/tcs=yes \
-		repository/online/component/tcs/version=current
+		repository/online/component/tcs/version=current >&3
 
 	# check if this is ucs 3.0 and set propper python version
 	version=$(dpkg-query -W -f '${Version}' univention-updater)
@@ -215,14 +217,14 @@ sys.exit(0)
 
 	# reset old values
 	if [ -n "$old_repository_online_component_tcs" ]; then
-		univention-config-registry set repository/online/component/tcs="$old_repository_online_component_tcs"
+		univention-config-registry set repository/online/component/tcs="$old_repository_online_component_tcs" >&3
 	else
-		univention-config-registry unset repository/online/component/tcs
+		univention-config-registry unset repository/online/component/tcs >&3
 	fi
 	if [ -n "$old_repository_online_component_tcs_version" ]; then
-		univention-config-registry set repository/online/component/tcs/version="$old_repository_online_component_tcs_version"
+		univention-config-registry set repository/online/component/tcs/version="$old_repository_online_component_tcs_version" >&3
 	else
-		univention-config-registry unset repository/online/component/tcs/version
+		univention-config-registry unset repository/online/component/tcs/version >&3
 	fi
 
 	# component tcs in 3.0 not found, -> abort the update
@@ -237,6 +239,7 @@ sys.exit(0)
 		echo "     packages by running the following command:"
 		echo "        apt-get remove --purge univention-thin-client-basesystem"
 		echo "     Afterwards a new update test to UCS 3.0 can be started."
+		echo ""
 		exit 1
 	fi
 	rm "$updateError"
