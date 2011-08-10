@@ -1,3 +1,9 @@
+univention-ldap (8.0.23-1) unstable; urgency=low
+
+  * fix base.ldif (Bug #23111)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 10 Aug 2011 15:53:42 +0200
+
 univention-ldap (8.0.22-1) unstable; urgency=low
 
   * use machine account for ldapsearch (Bug #17519)

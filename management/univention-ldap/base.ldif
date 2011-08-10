@@ -65,7 +65,7 @@ dn: cn=univention,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
-univentionObjectType: container/cn
+univentionObjectType: settings/cn
 description: Containing System Specific Data
 cn: univention
 
@@ -259,7 +259,7 @@ dn: cn=default,cn=univention,@%@ldap/base@%@
 objectClass: top
 objectClass: univentionDefault
 objectClass: univentionObject
-univentionObjectType: container/cn
+univentionObjectType: settings/default
 cn: default
 univentionDefaultGroup: cn=Domain Users,cn=groups,@%@ldap/base@%@
 univentionDefaultComputerGroup: cn=Windows Hosts,cn=groups,@%@ldap/base@%@
@@ -279,7 +279,7 @@ dn: cn=admin,cn=license,cn=univention,@%@ldap/base@%@
 objectClass: top
 objectClass: univentionLicense
 objectClass: univentionObject
-univentionObjectType: settings/license # TODO : signature???
+univentionObjectType: settings/license
 univentionLicenseEndDate: unlimited
 univentionLicenseModule: admin
 univentionLicenseBaseDN: Free for personal use edition
