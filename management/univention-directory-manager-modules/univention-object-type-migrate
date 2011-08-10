@@ -79,6 +79,7 @@ def warningSupressed(dn, attributes):
 	return False
 
 def main(options):
+	errorsOccurred = False
 	if options.verify:
 		searchFilter='(objectClass=*)'
 	else:
@@ -100,13 +101,16 @@ def main(options):
 					]
 				uldap.modify(dn, changes)
 			elif attributes['univentionObjectType'][0] != matches[0]:
-				raise ValueError('Mismatch for %r: univentionObjectType is %r but should be %r!' % (dn, attributes['univentionObjectType'], matches, ))
+				errorsOccurred = True
+				print >>sys.stderr, 'Mismatch for %r: univentionObjectType is %r but should be %r!' % (dn, attributes['univentionObjectType'], matches, )
 		elif len(matches) > 2:
 			raise ValueError('Multiple matches for %r: %r!' % (dn, matches, ))
 		else:
 			if not warningSupressed(dn, attributes):
 				print >>sys.stderr, 'Warning: No match for %r' % (dn, )
+	return not errorsOccurred
 
 if __name__ == "__main__":
 	options = parseOptions()
-	main(options)
+	if not main(options):
+		sys.exit(1)
