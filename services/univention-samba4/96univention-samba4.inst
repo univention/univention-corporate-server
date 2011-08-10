@@ -53,6 +53,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 else
 	# joinscript_extract_binddn_and_bindpwd_from_args "$@"
 	# samba-tool join "$domainname" -U"$JOINUSERNAME" --realm="$kerberos_realm"
+	echo -n
 fi
 
 ucs_addServiceToLocalhost "${NAME}" "$@"

@@ -1,3 +1,9 @@
+univention-samba4 (1.0.12-1) experimental; urgency=low
+
+  * Fixed shell syntax error in 96univention-samba4.inst (Bug #22559)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Aug 2011 08:10:20 +0200
+
 univention-samba4 (1.0.11-1) experimental; urgency=low
 
   * check if printers.conf and shares.conf exist before including in
