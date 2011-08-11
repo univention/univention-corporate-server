@@ -1,3 +1,9 @@
+univention-updater (6.0.15-1) unstable; urgency=low
+
+  * changed interpreter to bash for univention-install (Bug #23270)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 11 Aug 2011 14:10:34 +0200
+
 univention-updater (6.0.14-1) unstable; urgency=low
 
   * Use external ucr instead of internal ucr (Bug #23202)
