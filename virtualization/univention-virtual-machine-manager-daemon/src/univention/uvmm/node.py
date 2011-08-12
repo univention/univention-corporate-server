@@ -1136,6 +1136,8 @@ def domain_state(uri, domain, state):
 						network = network_find_by_bridge( conn, nic.source )
 						if network:
 							network_start( conn, network.name )
+			# Detect if VNC is wanted
+			wait_for_vnc = state in ('RUN', 'PAUSE') and True in [True for dev in dom_stat.pd.graphics if dev.type == Graphic.TYPE_VNC]
 			transition()
 			ignore_states = [libvirt.VIR_DOMAIN_NOSTATE]
 			if state == 'RUN':
@@ -1147,7 +1149,16 @@ def domain_state(uri, domain, state):
 					dom_stat.pd.state = cur_state
 					break
 				time.sleep(1)
+			# wait for update
 			node.wait_update(domain, stat_key)
+			if wait_for_vnc:
+				# wait <=3*10s until port is known
+				for t in range(3):
+					if True in [True for dev in dom_stat.pd.graphics if dev.type == Graphic.TYPE_VNC and 0 <= dev.port < (1<<16)]:
+						break
+					logger.info('Still waiting for VNC of %s...' % domain)
+					stat_key = dom_stat.key()
+					node.wait_update(domain, stat_key)
 	except KeyError, e:
 		logger.error("Domain %s not found" % (e,))
 		raise NodeError(_('Error managing domain "%(domain)s"'), domain=domain)
