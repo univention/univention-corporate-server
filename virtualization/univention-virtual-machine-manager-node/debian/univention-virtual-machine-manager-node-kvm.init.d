@@ -1,8 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 # Univention Virtual Machine Manager KVM Node
 #  init script
 #
 # Most parts of this script are taken from the xen bridging scripts.
+# <http://xenbits.xen.org/hg/xen-unstable.hg/raw-file/1f08b380d438/tools/hotplug/Linux/network-bridge>
+# <http://xenbits.xen.org/hg/xen-unstable.hg/raw-file/1f08b380d438/tools/hotplug/Linux/xen-network-common.sh>
+# <http://xenbits.xen.org/hg/xen-unstable.hg/raw-file/1f08b380d438/tools/hotplug/Linux/locking.sh>
 # Details to the copyright can be found under
 # /usr/share/doc/univention-virtual-machine-manager-node-kvm/copyright
 
@@ -19,15 +22,31 @@
 ### END INIT INFO
 
 # configure interfaces which act as pure bridge ports:
-setup_bridge_port() {
+_setup_bridge_port() {
     local dev="$1"
+    local virtual="$2"
 
     # take interface down ...
     ip link set ${dev} down
 
+    if [ $virtual -ne 0 ] ; then
+	# Initialise a dummy MAC address. We choose the numerically
+	# largest non-broadcast address to prevent the address getting
+	# stolen by an Ethernet bridge for STP purposes.
+	# (FE:FF:FF:FF:FF:FF)
+	ip link set ${dev} address fe:ff:ff:ff:ff:ff || true
+    fi 
+
     # ... and configure it
     ip addr flush ${dev}
 }
+
+setup_physical_bridge_port() {
+    _setup_bridge_port $1 0
+}
+setup_virtual_bridge_port() {
+    _setup_bridge_port $1 1
+} 
 
 # Usage: create_bridge bridge
 create_bridge () {
@@ -116,9 +135,9 @@ do_ifup() {
             # use the info from get_ip_info()
             ip addr flush $1
             ip addr add ${addr_pfx} dev $1
-            ip link set dev $1 up
-            [ -n "$gateway" ] && ip route add default via ${gateway}
         fi
+        ip link set dev $1 up
+        [ -n "$gateway" ] && ip route add default via ${gateway}
     fi
 }
 
@@ -201,7 +220,7 @@ antispoofing () {
 show_status () {
     local dev=$1
     local bridge=$2
-
+    
     echo '============================================================'
     ip addr show ${dev}
     ip addr show ${bridge}
@@ -219,13 +238,20 @@ op_start () {
 	return
     fi
 
+#    if [ `brctl show | wc -l` != 1 ]; then
+#        return
+#    fi
+
     if link_exists "$pdev"; then
         # The device is already up.
         return
     fi
 
+#    claim_lock "network-bridge"
+
     create_bridge ${tdev}
 
+#    preiftransfer ${netdev}
     transfer_addrs ${netdev} ${tdev}
     # Remember slaves for bonding interface.
     if [ -e /sys/class/net/${netdev}/bonding/slaves ]; then
@@ -240,12 +266,12 @@ op_start () {
     ip link set ${netdev} name ${pdev}
     ip link set ${tdev} name ${bridge}
 
-    setup_bridge_port ${pdev}
+    setup_physical_bridge_port ${pdev}
 
     # Restore slaves
     if [ -n "${slaves}" ]; then
-		ip link set ${pdev} up
-		ifenslave ${pdev} ${slaves}
+	ip link set ${pdev} up
+	ifenslave ${pdev} ${slaves}
     fi
     add_to_bridge2 ${bridge} ${pdev}
     do_ifup ${bridge}
@@ -253,6 +279,8 @@ op_start () {
     if [ ${antispoof} = 'yes' ] ; then
 	antispoofing
     fi
+
+#    release_lock "network-bridge"
 }
 
 op_stop () {
@@ -262,6 +290,12 @@ op_stop () {
     if ! link_exists "$bridge"; then
 	return
     fi
+    if ! [ -e "/sys/class/net/${bridge}/brif/${pdev}" ]; then
+        # $bridge is not a bridge to which pdev is enslaved
+        return
+    fi
+
+#    claim_lock "network-bridge"
 
     transfer_addrs ${bridge} ${pdev}
     if ! ifdown ${bridge}; then
@@ -278,6 +312,8 @@ op_stop () {
     do_ifup ${netdev}
 
     brctl delbr ${tdev}
+
+#    release_lock "network-bridge"
 }
 
 # adds $dev to $bridge but waits for $dev to be in running state first
@@ -312,16 +348,25 @@ case "$command" in
             check_autostart univention-virtual-machine-manager-node-kvm uvmm/kvm/bridge/autostart
         fi
 
-		op_start
-		;;
+	op_start
+	;;
+    
     stop)
-		op_stop
-		;;
+	op_stop
+	;;
+
+    restart|force-reload)
+    	op_stop
+    	op_start
+    	;;
+
     status)
-		show_status ${netdev} ${bridge}
-		;;
+	show_status ${netdev} ${bridge}
+	;;
+
     *)
-		echo "Unknown command: $command" >&2
-		echo 'Valid commands are: start, stop, status' >&2
-		exit 1
+	echo "Unknown command: $command" >&2
+	echo 'Valid commands are: start, stop, restart, status' >&2
+	exit 1
 esac
+# vim:set ts=8 ft=sh:

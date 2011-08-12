@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (0.1.33-1) unstable; urgency=low
+
+  * Re-synchronize init.d/u-v-m-m-n-kvm with xen scripts (Bug #21969)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2011 16:51:12 +0200
+
 univention-virtual-machine-manager-node (0.1.32-1) unstable; urgency=low
 
   * Remove kvm wrapper (Bug #22303)
