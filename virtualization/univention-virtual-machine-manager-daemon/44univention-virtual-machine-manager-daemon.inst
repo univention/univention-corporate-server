@@ -306,6 +306,12 @@ create_hvm_profile "Other (64 Bit)" "other-" "kvm" "x86_64" "512MB" "0" "0" "0" 
 
 # TODO: profiles for xen-xen
 
+# Re-link certificates
+rm -rf /etc/pki/libvirt/clientcert.pem
+ln -sf /etc/univention/ssl/$hostname.$domainname/cert.pem /etc/pki/libvirt/clientcert.pem
+rm -rf /etc/pki/libvirt/private/clientkey.pem
+ln -sf /etc/univention/ssl/$hostname.$domainname/private.key /etc/pki/libvirt/private/clientkey.pem
+
 if [ ! -e /etc/runit/univention/univention-virtual-machine-manager-daemon ]; then
 	ln -s /etc/runit/univention-virtual-machine-manager-daemon /etc/runit/univention/univention-virtual-machine-manager-daemon
 fi

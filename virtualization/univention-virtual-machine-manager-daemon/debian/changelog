@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.316-1) unstable; urgency=low
+
+  * Re-link client certificates in join script (Bug #22509)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2011 15:54:17 +0200
+
 univention-virtual-machine-manager-daemon (0.9.315-1) unstable; urgency=low
 
   * Add missing convert of /domain/devices/disk/driver/@cache to Disk.CACHE_*
