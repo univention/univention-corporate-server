@@ -28,16 +28,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, getopt, subprocess
+import os, sys, getopt
+import subprocess
 import univention.config_registry as confreg
 
-def usage():
-	print 'syntax: univention-policy-update-config-registry [-a] [-h] [-s] [<dn>]'
-	print '     -a               write all variables set by policy'
-	print '     -h               print this help'
-	print '     -s               simulate update and show values to be set'
-	print '     <dn>             use univention-policy-result of <dn>'
-	print ''
+def usage(out=sys.stdout):
+	"""Output usage message."""
+	print >>out, 'syntax: univention-policy-update-config-registry [-a] [-h] [-s] [-v] [<dn>]'
+	print >>out, '     -a, --setall     write all variables set by policy'
+	print >>out, '     -h, --help       print this help'
+	print >>out, '     -s, --simulate   simulate update and show values to be set'
+	print >>out, '     -v, --verbose    print verbose information'
+	print >>out, '     <dn>             distinguished LDAP name of object'
+	print >>out, ''
 
 
 ############
@@ -58,112 +61,86 @@ def main():
 	unsetList = []
 	setList = {}
 	simulate = False
+	verbose = False
 	setall = False
-	dn = None
-
-	if configRegistry.has_key('ldap/hostdn'):
-		dn = configRegistry['ldap/hostdn']
-	elif configRegistry.has_key('ldap/mydn'):
-		dn = configRegistry['ldap/mydn']
+	dn = configRegistry.get('ldap/hostdn') or configRegistry.get('ldap/mydn') or None
 
 	# parse command line
 	try:
-		(opts, pargs) = getopt.getopt(sys.argv[1:], 'ahs', ['setall', 'help', 'simulate'])
+		opts, pargs = getopt.getopt(sys.argv[1:], 'ahsv', ['setall', 'help', 'simulate', 'verbose'])
 	except:
-		usage()
-		sys.exit(0)
+		usage(sys.stderr)
+		sys.exit(2)
 
 	# get command line data
-	for opt in opts:
-		if opt[0] == '-a' or opt[0] == '--setall':
+	for option, value in opts:
+		if option == '-a' or option == '--setall':
 			setall = True
-		elif opt[0] == '-h' or opt[0] == '--help':
+		elif option == '-h' or option == '--help':
 			usage()
 			sys.exit(0)
-		elif opt[0] == '-s' or opt[0] == '--simulate':
+		elif option == '-s' or option == '--simulate':
 			simulate = True
+		elif option == '-v' or option == '--verbose':
+			verbose = True
 
 	if len(pargs) > 0:
 		dn = pargs[0]
 
-	if dn==None:
-		print 'ERROR: cannot get ldap/hostdn'
-		sys.exit(0)
+	if not dn:
+		print >>sys.stderr, 'ERROR: cannot get ldap/hostdn'
+		sys.exit(1)
 
 	if simulate:
-		print 'Simulating update...'
+		print >>sys.stderr, 'Simulating update...'
 
 	# get policy result
-	p1 = subprocess.Popen('univention-policy-result "%s"' % dn, shell=True, stdout=subprocess.PIPE)
-	p2 = subprocess.Popen('grep -A1 "^Attribute: univentionRegistry;entry-hex-"',
-						  shell=True, stdin=p1.stdout, stdout=subprocess.PIPE)
-	result = p2.communicate()[0]
-	# if univention-policy-result fails then quit and do not parse output
-	if p1.wait() != 0:
+	ATTR = 'Attribute: univentionRegistry;entry-hex-'
+	VALUE = 'Value: '
+	if verbose:
+		print >>sys.stderr, 'Retrieving policy for %s...' % dn
+	p = subprocess.Popen(['univention_policy_result', dn], shell=False, stdout=subprocess.PIPE)
+	for line in p.stdout:
+		line = line.rstrip('\n')
+		if line.startswith('Policy: '):
+			key = value = None
+		elif line.startswith(ATTR):
+			key = line[len(ATTR):]
+			key = key.decode('hex')
+		elif line.startswith(VALUE) and key:
+			value = line[len(VALUE):]
+			setList[key] = value
+			if verbose:
+				print >>sys.stderr, "Retrieved %s=%s" % (key, value)
+	if p.wait() != 0:
 		# no output: this script is called by cron
-		# print 'WARN: univention-policy-result failed - LDAP server may be down'
-		sys.exit(0)
-
-
-	result = result.strip('\n')
-
-	if result:
-		for record in result.split('\n--\n'):
-			record = record.strip('\t\n\r ')
-
-			lines = record.splitlines()
-			if len(lines) != 2:
-				print "ERROR: cannot parse following lines:"
-				print "==> %s" % '\n==> '.join(lines)
-			else:
-				key = None
-				value = None
-				if lines[0].startswith('Attribute: univentionRegistry;entry-hex-'):
-					key = lines[0][ len('Attribute: univentionRegistry;entry-hex-') : ]
-					#key = key.replace('-','/')
-					key = key.decode('hex')
-				else:
-					print 'ERROR: cannot parse key line:', lines[0]
-
-				if lines[1].startswith('Value: '):
-					value = lines[1][ len('Value: ') : ]
-				else:
-					print 'ERROR: cannot parse value line:', lines[1]
-
-				setList[key] = value
+		# print 'WARN: univention_policy_result failed - LDAP server may be down'
+		sys.exit(1)
 
 	if setList:
 		newSetList = []
 		for key, value in setList.items():
 			record = '%s=%s' % (key, value)
-			if configRegistryLDAP.has_key(key):
-				if configRegistryLDAP[key] != value or setall:
-					# value changed
-					newSetList.append( record.encode() )
-			else:
-				# value is new
+
+			if configRegistryLDAP.get(key) != value or setall:
 				newSetList.append( record.encode() )
 
+		if simulate or verbose:
+			for item in newSetList:
+				print >>sys.stderr, 'Setting %s' % item
 		if not simulate:
 			confreg.handler_set( newSetList, { 'ldap-policy': True } )
-		else:
-			for item in newSetList:
-				print 'Setting %s' % item
 
 	for key, value in configRegistryLDAP.items():
-		if not setList.has_key(key):
+		if key not in setList:
 			unsetList.append(key.encode())
 
 	if unsetList:
+		if simulate or verbose:
+			for item in unsetList:
+				print >>sys.stderr, 'Unsetting %s' % item
 		if not simulate:
 			confreg.handler_unset( unsetList, { 'ldap-policy': True } )
-		else:
-			for item in unsetList:
-				print 'Unsetting %s' % item
-
-	sys.exit(0)
-
-
 
 if __name__ == '__main__':
 	main()

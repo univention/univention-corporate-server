@@ -1,3 +1,10 @@
+univention-config-registry (6.0.47-1) unstable; urgency=low
+
+  * Fix unsave quoting in u-d-policy (Bug #22644)
+  * Fix manual pages.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 11 Aug 2011 18:53:48 +0200
+
 univention-config-registry (6.0.46-1) unstable; urgency=low
 
   * added additional argument to be able to load registry info *without*
