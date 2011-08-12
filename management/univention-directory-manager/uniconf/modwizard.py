@@ -892,20 +892,20 @@ class modwizard(unimodule.unimodule):
 		path_preselect=self.save.get('wizard_path')
 		if not path_preselect:
 			path_default = ucr.get('directory/manager/web/modules/%s/search/path' % search_module.module, None)
-			path_preselect = {'CONTAINERS': allstr, 'DOMAIN': domainstr, 'SUBDOMAINS': domainincsubstr}.get(path_default, path_default)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "%s.find() default=%s path_preselect=%s" % (search_module.module, path_default, path_preselect))
-
-			# reset path_preselect in case the given path does not exist
-			# otherwise the UDM shows an ugly traceback (see Bug #20972, comment #2)
 			try:
-				# try to find the DN
-				self.lo.searchDn(base=path_preselect, scope='base')
-			except univention.admin.uexceptions.noObject, e:
-				# since the error is certainly related to a wrong UCR search path setting, 
-				# log an error message 
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Could not find given search path '%s', please check your UCR variable 'directory/manager/web/modules/%s/search/path'" % (path_preselect, search_module.module))
-				# exception is thrown in case the DN does not exist => reset path_preselect
-				path_preselect = ""
+				path_preselect = {'CONTAINERS': allstr, 'DOMAIN': domainstr, 'SUBDOMAINS': domainincsubstr}[path_default]
+			except LookupError, e:
+				path_preselect = path_default
+				# reset path_preselect in case the given path does not exist
+				# otherwise the UDM shows an ugly traceback (see Bug #20972, comment #2)
+				try:
+					# try to find the DN
+					self.lo.searchDn(base=path_preselect, scope='base')
+				except Exception, e:
+					# since the error is certainly related to a wrong UCR search path setting, log a warning
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, "Could not find given search path '%s', please check your UCR variable 'directory/manager/web/modules/%s/search/path'" % (path_preselect, search_module.module))
+					path_preselect = ""
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "%s.find() default=%s path_preselect=%s" % (search_module.module, path_default, path_preselect))
 
 		if not path_preselect:
 			if pathlist and not hasattr(search_module,"wizardsuperordinates"):

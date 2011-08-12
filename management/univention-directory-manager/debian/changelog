@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.78-1) unstable; urgency=low
+
+  * Fix wizard_search_path verification (Bug #22105)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2011 14:20:30 +0200
+
 univention-directory-manager (8.0.77-1) unstable; urgency=low
 
   * fix processing of directory/manager/timeout/presession (Bug #21982)

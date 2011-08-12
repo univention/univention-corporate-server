@@ -40,7 +40,6 @@ build-stamp:
 
 clean:
 	dh_testdir
-	dh_testroot
 	rm -rf *~ debian/tmp debian/*~ debian/files* debian/substvars
 	make clean
 	rm -f build-stamp 
