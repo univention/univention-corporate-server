@@ -1,3 +1,9 @@
+univention-nagios (5.0.5-1) unstable; urgency=low
+
+  * correctly update from nagios2 (Bug #22087)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 12 Aug 2011 13:05:35 +0200
+
 univention-nagios (5.0.4-2) unstable; urgency=low
 
   * Removed debug code from join script (Bug #23180)

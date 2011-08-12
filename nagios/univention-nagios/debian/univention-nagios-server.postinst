@@ -94,7 +94,7 @@ updateNagios2To3() {
 		rm -f /etc/apache2/conf.d/nagios2.conf
 	fi
 }
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions 5.0.0 lt "$2" && dpkg --compare-versions "$2" lt 5.1.0; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 5.0.0; then
 	updateNagios2To3
 fi
 
