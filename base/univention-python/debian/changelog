@@ -1,3 +1,10 @@
+univention-python (6.0.12-1) unstable; urgency=low
+
+  * getPolicies: ensure that the objectClass univentionObject is excluded
+    when determining the policy type; Bug #23115
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 14 Aug 2011 13:39:19 +0200
+
 univention-python (6.0.11-1) unstable; urgency=low
 
   * debian/control: Break python-univention-config-registry (Bug #23054)

@@ -350,7 +350,7 @@ class access:
 			ptype=None
 			if pattrs:
 				for oc in pattrs['objectClass']:
-					if oc == 'top' or oc == 'univentionPolicy':
+					if oc in ( 'top', 'univentionPolicy', 'univentionObject' ):
 						continue
 					ptype=oc
 					break
