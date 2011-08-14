@@ -78,6 +78,12 @@ class Instance( Base ):
 
 		return UDM_Module( module_name )
 
+	def _thread_finished( self, thread, result, request ):
+		if not isinstance( result, BaseException ):
+			self.finished( request.id, result )
+		else:
+			self.finished( request.id, None, str( result ), False )
+
 	def add( self, request ):
 		"""Creates LDAP objects.
 
@@ -90,7 +96,7 @@ class Instance( Base ):
 			result = []
 			for obj in request.options:
 				if not isinstance( obj, dict ):
-					return UMC_OptionTypeError( _( 'Invalid object definition' ) )
+					raise UMC_OptionTypeError( _( 'Invalid object definition' ) )
 
 				options = obj.get( 'options', {} )
 				properties = obj.get( 'object', {} )
@@ -104,14 +110,8 @@ class Instance( Base ):
 
 			return result
 
-		def _finish( thread, result, request ):
-			if isinstance( result, Exception ):
-				self.finished( request.id, None, str( result ), False )
-			else:
-				self.finished( request.id, result )
-
 		thread = notifier.threads.Simple( 'Get', notifier.Callback( _thread, request ),
-										  notifier.Callback( _finish, request ) )
+										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
 	def put( self, request ):
@@ -126,17 +126,17 @@ class Instance( Base ):
 			result = []
 			for obj in request.options:
 				if not isinstance( obj, dict ):
-					return UMC_OptionTypeError( _( 'Invalid object definition' ) )
+					raise UMC_OptionTypeError( _( 'Invalid object definition' ) )
 				options = obj.get( 'options', {} )
 				if options is None:
 					options = {}
 				properties = obj.get( 'object', {} )
 				if not properties.get( 'ldap-dn' ):
-					return UMC_OptionMissing( _( 'LDAP DN of object missing' ) )
+					raise UMC_OptionMissing( _( 'LDAP DN of object missing' ) )
 				ldap_dn = properties[ 'ldap-dn' ]
 				module = get_module( request.flavor, ldap_dn )
 				if module is None:
-					return UMC_OptionTypeError( _( 'Could not find a matching UDM module for the LDAP object %s' ) % ldap_dn )
+					raise UMC_OptionTypeError( _( 'Could not find a matching UDM module for the LDAP object %s' ) % ldap_dn )
 				MODULE.info( 'Modifying LDAP object %s' % ldap_dn )
 				try:
 					module.modify( properties )
@@ -146,14 +146,8 @@ class Instance( Base ):
 
 			return result
 
-		def _finish( thread, result, request ):
-			if isinstance( result, Exception ):
-				self.finished( request.id, None, str( result ), False )
-			else:
-				self.finished( request.id, result )
-
 		thread = notifier.threads.Simple( 'Get', notifier.Callback( _thread, request ),
-										  notifier.Callback( _finish, request ) )
+										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
 	def remove( self, request ):
@@ -177,11 +171,8 @@ class Instance( Base ):
 				except UDM_Error, e:
 					result.append( { 'ldap-dn' : ldap_dn, 'success' : False, 'details' : str( e ) } )
 
-		def _finish( thread, result, request ):
-			self.finished( request.id, result )
-
 		thread = notifier.threads.Simple( 'Get', notifier.Callback( _thread, request ),
-										  notifier.Callback( _finish, request ) )
+										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
 	def get( self, request ):
@@ -208,11 +199,8 @@ class Instance( Base ):
 					result.append( props )
 			return result
 
-		def _finish( thread, result, request ):
-			self.finished( request.id, result )
-
 		thread = notifier.threads.Simple( 'Get', notifier.Callback( _thread, request ),
-										  notifier.Callback( _finish, request ) )
+										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
 	def query( self, request ):
@@ -261,11 +249,8 @@ class Instance( Base ):
 				} )
 			return entries
 
-		def _finish( thread, result, request ):
-			self.finished( request.id, result )
-
 		thread = notifier.threads.Simple( 'Query', notifier.Callback( _thread, request ),
-										  notifier.Callback( _finish, request ) )
+										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
 	def values( self, request ):
@@ -408,7 +393,7 @@ class Instance( Base ):
 				property_obj = module.get_property( property_name )
 
 				if property_obj is None:
-					return UMC_OptionMissing( _( 'Property %s not found' ) % property_name )
+					raise UMC_OptionMissing( _( 'Property %s not found' ) % property_name )
 
 				# check each element if 'value' is a list
 				if isinstance(value, (tuple, list)):
@@ -433,14 +418,8 @@ class Instance( Base ):
 
 			return result
 
-		def _finish( thread, result, request ):
-			if isinstance( result, Exception ):
-				self.finished( request.id, None, str( result ), False )
-			else:
-				self.finished( request.id, result )
-
 		thread = notifier.threads.Simple( 'Validate', notifier.Callback( _thread, request ),
-										  notifier.Callback( _finish, request ) )
+										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
 	def syntax_choices( self, request ):
@@ -458,11 +437,8 @@ class Instance( Base ):
 		def _thread( request ):
 			return read_syntax_choices( request.options[ 'syntax' ], request.options.get( 'options', {} ) )
 
-		def _finish( thread, result, request ):
-			self.finished( request.id, result )
-
 		thread = notifier.threads.Simple( 'SyntaxChoice', notifier.Callback( _thread, request ),
-										  notifier.Callback( _finish, request ) )
+										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
 	def nav_container_query( self, request ):
@@ -502,8 +478,11 @@ class Instance( Base ):
 			return result, message, success
 
 		def _finish( thread, result, request ):
-			result, message, success = result
-			self.finished( request.id, result, message, success )
+			if not isinstance( result, BaseException ):
+				result, message, success = result
+				self.finished( request.id, result, message, success )
+			else:
+				self.finished( request.id, None, str( result ), False )
 
 		thread = notifier.threads.Simple( 'NavObjectQuery', notifier.Callback( _thread, request.options[ 'container' ] ),
 										  notifier.Callback( _finish, request ) )
@@ -529,11 +508,8 @@ class Instance( Base ):
 
 			return entries
 
-		def _finish( thread, result, request ):
-			self.finished( request.id, result )
-
 		thread = notifier.threads.Simple( 'NavObjectQuery', notifier.Callback( _thread, request.options[ 'container' ] ),
-										  notifier.Callback( _finish, request ) )
+										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
 	def object_policies( self, request ):
@@ -571,11 +547,8 @@ class Instance( Base ):
 
 			return infos
 
-		def _finish( thread, result, request ):
-			self.finished( request.id, result )
-
 		thread = notifier.threads.Simple( 'ObjectPolicies', notifier.Callback( _thread, object_type, object_dn, policy_type ),
-										  notifier.Callback( _finish, request ) )
+										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
 

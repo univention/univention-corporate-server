@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.96-1) unstable; urgency=low
+
+  * use new API of UDM modules; Bug #22879
+  * enhance error handling
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 14 Aug 2011 13:23:32 +0200
+
 univention-management-console-module-udm (1.0.95-1) unstable; urgency=low
 
   * fix a bug that occurred when retrieving the policy result for a given

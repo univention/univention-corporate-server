@@ -205,14 +205,14 @@ class UDM_Module( object ):
 		except udm_errors.base, e:
 			raise UDM_Error( str( e ) )
 
-	def get( self, ldap_dn = None, superordinate = None ):
+	def get( self, ldap_dn = None, superordinate = None, attributes = [] ):
 		"""Retrieves details for a given LDAP object"""
 		lo, po = get_ldap_connection()
 		if ldap_dn is not None:
-			obj = self.module.object( None, lo, None, ldap_dn, superordinate )
+			obj = self.module.object( None, lo, None, ldap_dn, superordinate, attributes = attributes )
 			obj.open()
 		else:
-			obj = self.module.object( None, lo, None, '', superordinate )
+			obj = self.module.object( None, lo, None, '', superordinate, attributes = attributes )
 
 		return obj
 
@@ -496,12 +496,12 @@ def list_objects( container ):
 	"""Returns a list of UDM objects"""
 	lo, po = get_ldap_connection()
 	try:
-		result = lo.searchDn( base = container, scope = 'one' )
+		result = lo.search( base = container, scope = 'one' )
 	except udm_errors.base, e:
 		raise UDM_Error( str( e ) )
 	objects = []
-	for dn in result:
-		modules = udm_modules.objectType( None, lo, dn )
+	for dn, attrs in result:
+		modules = udm_modules.objectType( None, lo, dn, attrs )
 		if not modules:
 			MODULE.warn( 'Could not identify LDAP object %s' % dn )
 			continue
@@ -509,9 +509,15 @@ def list_objects( container ):
 		if module.superordinate:
 			so_module = UDM_Module( module.superordinate )
 			so_obj = so_module.get( container )
-			objects.append( ( module, module.get( dn, so_obj ) ) )
+			try:
+				objects.append( ( module, module.get( dn, so_obj, attributes = attrs ) ) )
+			except:
+				objects.append( ( module, module.get( dn, so_obj ) ) )
 		else:
-			objects.append( ( module, module.get( dn ) ) )
+			try:
+				objects.append( ( module, module.get( dn, attributes = attrs ) ) )
+			except:
+				objects.append( ( module, module.get( dn ) ) )
 
 	return objects
 
