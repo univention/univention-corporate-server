@@ -339,16 +339,11 @@ nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, opti
 class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		global options
 		global mapping
 		global property_descriptions
 
-		self.co=co
-		self.lo=lo
-		self.dn=dn
-		self.position=position
-		self._exists=0
 		self.mapping=mapping
 		self.descriptions=property_descriptions
 		self.alloc=[]
@@ -418,9 +413,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 #		self.save()
 
-	def exists(self):
-		return self._exists
-	
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 		if not self['password']:
@@ -550,7 +542,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			if 'posix' in self.options:
 				password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
 				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
-																																			
 		if self.hasChanged('name'):
 			if 'posix' in self.options:
 				if hasattr(self, 'uidNum'):
@@ -628,8 +619,8 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 			univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
 			filter.expressions.append(filter_p)
 
-		for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
-			res.append(object(co, lo, None, dn))
+		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
+			res.append( object( co, lo, None, dn, attributes = attrs ) )
 	return res
 
 def identify(dn, attr, canonical=0):

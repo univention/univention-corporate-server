@@ -584,6 +584,8 @@ def identify( dn, attr, module_name = '', canonical = 0, module_base = None ):
 
 	global modules
 	res=[]
+	if 'univentionObjectType' in attr and attr[ 'univentionObjectType' ]:
+		return attr[ 'univentionObjectType' ]
 	for name, module in modules.items():
 		if module_base is not None and not name.startswith( module_base ):
 			continue
@@ -778,6 +780,9 @@ def objectType( co, lo, dn, attr = None, modules = [], module_base = None ):
 		attr = lo.get( dn )
 		if not attr:
 			return []
+	if 'univentionObjectType' in attr and attr[ 'univentionObjectType' ]:
+		return attr[ 'univentionObjectType' ]
+
 	if not modules:
 		modules = identify( dn, attr, module_base = module_base )
 

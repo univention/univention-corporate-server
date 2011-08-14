@@ -125,23 +125,15 @@ mapping=univention.admin.mapping.mapping()
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		global mapping
 		global property_descriptions
 
-		self.co=co
-		self.lo=lo
-		self.dn=dn
-		self.position=position
-		self._exists=0
 		self.mapping=mapping
 		self.descriptions=property_descriptions
 
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
+		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
-	def exists(self):
-		return self._exists
-	
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	return univention.admin.handlers.shares.printer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.shares.printergroup.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)

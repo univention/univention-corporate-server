@@ -207,22 +207,14 @@ mapping.register('emptyAttributes', 'emptyAttributes')
 class object(univention.admin.handlers.simplePolicy):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		global mapping
 		global property_descriptions
 
-		self.co=co
-		self.lo=lo
-		self.dn=dn
-		self.position=position
-		self._exists=0
 		self.mapping=mapping
 		self.descriptions=property_descriptions
 
-		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate)
-
-	def exists(self):
-		return self._exists
+		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes )
 
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
@@ -245,8 +237,8 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 	res=[]
 	try:
-		for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
-			res.append(object(co, lo, None, dn))
+		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
+			res.append( object( co, lo, None, dn, attributes = attrs ) )
 	except:
 		pass
 	return res

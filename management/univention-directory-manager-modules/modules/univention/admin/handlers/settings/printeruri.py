@@ -89,23 +89,15 @@ mapping.register('printeruri', 'printerURI')
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		global mapping
 		global property_descriptions
 
-		self.co=co
-		self.lo=lo
-		self.dn=dn
-		self.position=position
-		self._exists=0
 		self.mapping=mapping
 		self.descriptions=property_descriptions
 
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
+		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
-	def exists(self):
-		return self._exists
-	
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
@@ -125,8 +117,8 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 	res=[]
 	try:
-		for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
-			res.append(object(co, lo, None, dn))
+		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
+			res.append( object( co, lo, None, dn, attributes = attrs ) )
 	except:
 		pass
 	return res

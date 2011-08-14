@@ -254,20 +254,14 @@ mapping.register('printers', 'univentionPrintersObject')
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		global mapping
 		global property_descriptions
 
-		self.co=co
-		self.lo=lo
-		self.dn=dn
-		self.position=position
-		self.superordinate=superordinate
-		self._exists=0
 		self.mapping=mapping
 		self.descriptions=property_descriptions
 
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
+		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
 		self._really_exists = self._exists
 		# object does not exist
@@ -298,9 +292,6 @@ class object(univention.admin.handlers.simpleLdap):
 					self[ 'listDNS' ] = settings[ 'univentionAdminListDNs' ][ 'value' ]
 				if settings.has_key( 'univentionAdminBaseDN' ):
 					self[ 'baseDN' ] = settings[ 'univentionAdminBaseDN' ][ 'value' ][ 0 ]
-
-	def exists(self):
-		return self._exists
 
 	def _modify( self, modify_childs = 1, ignore_license = 0 ):
 		if not self._really_exists:
@@ -334,8 +325,8 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		filter.expressions.append(filter_p)
 
 	res=[]
-	for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn))
+	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
+		res.append( object( co, lo, None, dn, attributes = attrs ) )
 	return res
 
 def identify(dn, attr, canonical=0):

@@ -147,22 +147,14 @@ mapping.register('ip', 'aRecord' )
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		global mapping
 		global property_descriptions
 
-		self.co=co
-		self.lo=lo
-		self.dn=dn
-		self.position=position
-		self._exists=0
 		self.mapping=mapping
 		self.descriptions=property_descriptions
 
 		super(object, self).__init__(co, lo, position, dn, superordinate)
-
-	def exists(self):
-		return self._exists
 
 	def open( self ):
 		super( object, self ).open()

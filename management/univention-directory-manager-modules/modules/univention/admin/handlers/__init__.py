@@ -49,13 +49,16 @@ import univention.admin.localization
 translation=univention.admin.localization.translation('univention/admin/handlers')
 _=translation.translate
 
-__path__.append("users")
+# FIXME: What is the use of the following line?
+# __path__.append("users")
 
 # manages properties
 class base(object):
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
-		self.lo=lo
-		self.dn=dn
+	def __init__(self, co, lo, position, dn='', superordinate = None ):
+		self.co = co
+		self.lo = lo
+		self.dn = dn
+		self.superordinate = superordinate
 
 		self.set_defaults = 0
 		if not self.dn: # this object is newly created and so we can use the default values
@@ -75,7 +78,7 @@ class base(object):
 			self.policyObjects={}
 		self.__no_default=[]
 
-		if not hasattr(self, 'position') or not self.position:
+		if not self.position:
 			self.position=univention.admin.uldap.position(lo.base)
 			if dn:
 				self.position.setDn(dn)
@@ -127,7 +130,7 @@ class base(object):
 					else:
 						univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "simpleLdap.diff: key %s not valid (option not set)" % key )
 						changes.remove( item )
-			
+
 		return changes
 
 	def hasChanged(self, key):
@@ -256,25 +259,26 @@ class base(object):
 
 	def __getitem__(self, key):
 		_d=univention.debug.function('admin.handlers.base.__getitem__ key = %s'%key)
-		if key:
-			if self.info.has_key(key):
-				if self.descriptions[key].multivalue and not type(self.info[key]) == types.ListType:
-					# why isn't this correct in the first place?
-					self.info[key]=[self.info[key]]
-				##univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'result=%s' % str(self.info[key]))
-				return self.info[key]
-			elif not key in self.__no_default and self.descriptions[key].editable:
-				##univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'default, result=%s' % str(self.descriptions[key].default(self)))
-				self.info[key]=self.descriptions[key].default(self)
-				return self.info[key]
-			elif self.descriptions[key].multivalue:
-				#univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'result=[]')
-				return []
-			else:
-				#univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'result=None')
-				return None
+		if not key:
+			return None
+
+		if key in self.info:
+			if self.descriptions[key].multivalue and not type(self.info[key]) == types.ListType:
+				# why isn't this correct in the first place?
+				self.info[ key ] = [ self.info[ key ] ]
+			return self.info[ key ]
+		elif not key in self.__no_default and self.descriptions[key].editable:
+			self.info[key]=self.descriptions[key].default(self)
+			return self.info[key]
+		elif self.descriptions[key].multivalue:
+			return []
 		else:
 			return None
+
+	def get( self, key, default = None ):
+		if key in self.info:
+			return self.info[ key ]
+		return default
 
 	def __contains__( self, key ):
 		return key in self.descriptions
@@ -440,18 +444,18 @@ class base(object):
 
 class simpleLdap(base):
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
-
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+		self._exists = False
 		self.exceptions=[]
-		base.__init__(self, co, lo, position, dn, superordinate, arg)
-
-
-
+		base.__init__(self, co, lo, position, dn, superordinate )
 		base.open(self)
 
-		self.oldattr=self.lo.get(self.dn)
+		if attributes:
+			self.oldattr = attributes
+		else:
+			self.oldattr=self.lo.get(self.dn)
 		if self.oldattr:
-			self._exists=1
+			self._exists = True
 			oldinfo=univention.admin.mapping.mapDict(self.mapping, self.oldattr)
 			if 'univentionPolicyReference' in self.oldattr.get('objectClass', []):
 				self.policies=self.oldattr.get('univentionPolicyReference', [])
@@ -460,6 +464,9 @@ class simpleLdap(base):
 		self.info=oldinfo
 
 		self.save()
+
+	def exists( self ):
+		return self._exists
 
 	def call_udm_property_hook(self, hookname, module, changes = None):
 		m = univention.admin.modules.get( module.module )
@@ -644,6 +651,11 @@ class simpleLdap(base):
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "trying to add object at: %s" % self.dn)
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "dn: %s" % (self.dn))
+
+		# ensure univentionObject is set
+		al.append( ( 'objectClass', [ 'univentionObject', ] ) )
+		al.append( ( 'univentionObjectType', [ self.module, ] ) )
+
 		self.lo.add(self.dn, al)
 
 		if hasattr(self,'_ldap_post_create'):
@@ -985,8 +997,8 @@ class simpleLdap(base):
 
 class simpleComputer( simpleLdap ):
 
-	def __init__( self, co, lo, position, dn = '', superordinate = None, arg = None ):
-		simpleLdap.__init__( self, co, lo, position, dn, superordinate, arg )
+	def __init__( self, co, lo, position, dn = '', superordinate = None, attributes = [] ):
+		simpleLdap.__init__( self, co, lo, position, dn, superordinate, attributes )
 
 		self.ip = [ ]
 		self.network_object = False
@@ -2221,8 +2233,8 @@ class simpleComputer( simpleLdap ):
 
 class simpleLdapSub(simpleLdap):
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
-		base.__init__(self, co, lo, position, dn, superordinate, arg)
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+		base.__init__(self, co, lo, position, dn, superordinate )
 
 	def _create(self):
 		self._modify()
@@ -2240,7 +2252,7 @@ class simpleLdapSub(simpleLdap):
 			self._ldap_post_remove()
 
 class simplePolicy(simpleLdap):
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 
 		self.resultmode=0
 		self.dn=dn
@@ -2257,11 +2269,10 @@ class simplePolicy(simpleLdap):
 		if not hasattr(self, 'referring_object_dn'):
 			self.referring_object_dn=None
 
-		simpleLdap.__init__(self, co, lo, position, dn, superordinate, arg)
+		simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes )
 
 		# append attribute and layout information for a list of objects
 		# referencing this policy (if it exists)
-		import copy
 		self.layout = copy.copy( univention.admin.modules.layout( self.module ) )
 		self.__add_reference_list()
 
@@ -2338,7 +2349,7 @@ class simplePolicy(simpleLdap):
 			simpleLdap.create(self)
 			return
 
-		self._exists=0
+		self._exists = False
 		try:
 			self.oldinfo={}
 			simpleLdap.create(self)

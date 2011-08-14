@@ -94,8 +94,8 @@ def _create_layout(fields, options):
 class object(univention.admin.handlers.users.user.object):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
-		univention.admin.handlers.users.user.object.__init__( self, co, lo, position, dn, superordinate, arg )
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+		univention.admin.handlers.users.user.object.__init__( self, co, lo, position, dn, superordinate, attributes )
 		self.__modifyLayout()
 
 	def __modifyLayout( self ):

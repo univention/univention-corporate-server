@@ -177,19 +177,14 @@ mapping.register('dhcpEntryZone','univentionDhcpEntry', univention.admin.mapping
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		global mapping
 		global property_descriptions
 
-		self.co=co
-		self.lo=lo
-		self.dn=dn
-		self.position=position
-		self._exists=0
 		self.mapping=mapping
 		self.descriptions=property_descriptions
 
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
+		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
@@ -320,9 +315,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		return ml
 
-	def exists(self):
-		return self._exists
-
 def rewrite(filter, mapping):
 	univention.admin.mapping.mapRewrite(filter, mapping)
 
@@ -338,8 +330,8 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		filter.expressions.append(filter_p)
 
 	res=[]
-	for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn))
+	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
+		res.append( object( co, lo, None, dn, attributes = attrs ) )
 	return res
 
 def identify(dn, attr, canonical=0):

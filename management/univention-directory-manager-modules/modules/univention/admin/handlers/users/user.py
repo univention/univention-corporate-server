@@ -972,14 +972,6 @@ def case_insensitive_in_list(dn, list):
 			return True
 	return False
 
-def case_insensitive_remove_from_list(dn, list):
-	for element in list:
-		if dn.decode('utf8').lower() == element.decode('utf8').lower():
-			remove_element = element
-	list.remove(remove_element)
-	return list
-
-
 def posixDaysToDate(days):
 	return time.strftime("%Y-%m-%d",time.gmtime(long(days)*3600*24))
 
@@ -1269,7 +1261,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			return True
 		return False
 	def __is_posix_disabled(self):
-		if self['disabled'] in ['all', 'posix', 'posix_kerberos', 'windows_posix']:
+		if self['disabled'] in ( 'all', 'posix', 'posix_kerberos', 'windows_posix' ):
 			return True
 		return False
 
@@ -1278,7 +1270,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			return 'keep'
 		return 'no'
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = []):
 		global options
 		global mapping
 		global property_descriptions
@@ -1292,11 +1284,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					if property_descriptions['homePostalAddress'].syntax.name == "postalAddress":
 						mapping.register('homePostalAddress', 'homePostalAddress', mapHomePostalAddress, unmapHomePostalAddress)
 
-		self.co=co
-		self.lo=lo
-		self.dn=dn
-		self.position=position
-		self._exists=0
 		self.mapping=mapping
 		self.descriptions=property_descriptions
 		self.kerberos_active=0
@@ -1310,11 +1297,11 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		self.old_username = None
 
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
+		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 		mungeddial.Support.__init__( self )
 
 		self.options=[]
-		if self.oldattr.has_key('objectClass'):
+		if 'objectClass' in self.oldattr:
 			ocs = set(self.oldattr['objectClass'])
 			for opt in ('posix', 'samba', 'person', 'kerberos', 'mail', 'pki', 'ldap_pwd'):
 				if options[opt].matches(ocs):
@@ -1329,11 +1316,11 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			# shadowMax is the number of days a password is valid. So the password expires on 1/1/1970+shadowLastChange+shadowMax.
 			# shadowExpire contains the absolute date to expire the account.
 
-			if self.oldattr.has_key('shadowExpire') and len(self.oldattr['shadowExpire']) > 0 :
+			if 'shadowExpire' in self.oldattr and len(self.oldattr['shadowExpire']) > 0 :
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'userexpiry: %s' % posixDaysToDate(self.oldattr['shadowExpire'][0]))
 				if self.oldattr['shadowExpire'][0] != '1':
 					self.info['userexpiry'] = posixDaysToDate(self.oldattr['shadowExpire'][0])
-			if self.oldattr.has_key( 'shadowLastChange' ) and self.oldattr.has_key( 'shadowMax' ) and len(self.oldattr['shadowLastChange']) > 0 and len(self.oldattr['shadowMax']) > 0:
+			if 'shadowLastChange' in self.oldattr and 'shadowMax' in self.oldattr and len(self.oldattr['shadowLastChange']) > 0 and len(self.oldattr['shadowMax']) > 0:
 				try:
 					self.info['passwordexpiry'] = posixDaysToDate(int(self.oldattr['shadowLastChange'][0]) +  int(self.oldattr['shadowMax'][0]))
 				except:
@@ -1573,9 +1560,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					self.info[i]=values[i]
 		else:
 			self.__certificate_clean()
-
-	def exists(self):
-		return self._exists
 
 	def hasChanged(self, key):
 		if key == 'disabled':
@@ -2765,8 +2749,8 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		filter.expressions.append(filter_p)
 
 	res=[]
-	for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn))
+	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
+		res.append( object( co, lo, None, dn, attributes = attrs ) )
 	return res
 
 def identify(dn, attr, canonical=0):

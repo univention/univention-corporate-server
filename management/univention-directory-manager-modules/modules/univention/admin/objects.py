@@ -47,7 +47,7 @@ def module(object):
 			mod=res[0].replace('.', '/')
 			return mod
 
-def get(module, co, lo, position, dn='', attr=None, superordinate=None, arg=None):
+def get(module, co, lo, position, dn='', attr=None, superordinate=None):
 	'''return object of module while trying to create objects of
 	superordinate modules as well'''
 
@@ -66,7 +66,7 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None, arg=None
 					superordinate=get(s, co, lo, position, pdn)
 				pdn=lo.parentDn(pdn)
 
-	return module.object(co, lo, position, dn, arg=arg, superordinate=superordinate)
+	return module.object(co, lo, position, dn, superordinate=superordinate)
 
 def open(object):
 	'''initialization of properties not neccessary for browsing etc.'''

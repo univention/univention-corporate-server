@@ -1,3 +1,17 @@
+univention-directory-manager-modules (7.0.54-1) unstable; urgency=low
+
+  * simpleLdap: add attribute univentionObjectType when creating an object
+  * optimized identify: instead of looping over all modules the attribute; Bug #23155
+  * optimized modules: lookup function just searches once for the object and not twice
+    univentionObjectType is used to identify the UDM modul to use for the
+    object.
+  * cleanup modules: common stuff like initializing members is now done in the base classes
+  * API change: the last argument of the simpleLdap constructor is
+    replaced by a parameter attributes that may contain the attributes of
+    the LDAP object. Bug #22879
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 14 Aug 2011 13:01:46 +0200
+
 univention-directory-manager-modules (7.0.53-1) unstable; urgency=low
 
   * dns/alias: fix identify function to really match alias records; Bug #22439

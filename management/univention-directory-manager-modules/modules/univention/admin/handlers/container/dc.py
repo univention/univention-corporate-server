@@ -202,16 +202,11 @@ mapping.register('mailRelay', 'mailRelay')
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		global options
 		global mapping
 		global property_descriptions
 
-		self.co=co
-		self.lo=lo
-		self.dn=dn
-		self.position=position
-		self._exists=0
 		self.mapping=mapping
 		self.descriptions=property_descriptions
 		self.options = []
@@ -219,7 +214,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.alloc=[]
 
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo,  position, dn,superordinate)
+		univention.admin.handlers.simpleLdap.__init__(self, co, lo,  position, dn, superordinate, attributes = attributes )
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
@@ -241,9 +236,6 @@ class object(univention.admin.handlers.simpleLdap):
 			if not 'krb5Realm' in self.oldattr.get('objectClass', []):
 				iself._remove_option('kerberos')
 
-	def exists(self):
-		return self._exists
-	
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
@@ -396,11 +388,9 @@ class object(univention.admin.handlers.simpleLdap):
 		ocs=self.oldattr.get('objectClass', [])
 		if not 'univentionMailDomain' in ocs:
 			ml.insert(0, ('objectClass', '', 'univentionMailDomain'))
-		
-		return ml
-	
 
-	
+		return ml
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
@@ -413,10 +403,9 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		filter.expressions.append(filter_p)
 
 	res=[]
-	for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn))
+	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
+		res.append( object( co, lo, None, dn, attributes = attrs ) )
 	return res
 
 def identify(dn, attr, canonical=0):
-	
 	return 'univentionBase' in attr.get('objectClass', [])
