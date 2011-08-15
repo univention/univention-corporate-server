@@ -1,3 +1,9 @@
+univention-system-setup (5.0.4-1) unstable; urgency=low
+
+  * store backup-join and slave-join.secret without newline (Bug #14186)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Aug 2011 14:23:24 +0200
+
 univention-system-setup (5.0.3-1) unstable; urgency=low
 
   * use machine account for ldapsearch (Bug #17519)
