@@ -16,8 +16,8 @@ Depends: ${misc:Depends}, univention-apache
 Description: Univention Management Console - Web based computer administration tool
  Univention Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
- its features. This package contains the AJAX web-frontend 
- application. It is written using the Dojo Toolkit and allows to 
+ its features. This package contains the AJAX web-frontend
+ application. It is written using the Dojo Toolkit and allows to
  access the univention management console web-services through
  the web browser.
  .
@@ -38,6 +38,23 @@ Description: Univention Management Console - Web server
  It has an extensible architecture, using modules to implement
  its features. This package contains the web server providing
  HTTP access to the UMC server.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-management-console-fontend-dev
+Architecture: all
+Depends: univention-dojo,
+ univention-management-console-dev,
+ imagemagick,
+ rsync
+Description: Univention Management Console - development files
+ Univention Console is a web based program to manage computers.  It has
+ an extensible architecture, using modules to implement its
+ features. This package is a meta package that contains dependencies
+ to packages that are necessary for the framework development.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
