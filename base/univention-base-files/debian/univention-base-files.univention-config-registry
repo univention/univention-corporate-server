@@ -17,7 +17,7 @@ Variables: sshd/passwordauthentication
 
 Type: file
 File: etc/ssh/ssh_config
-Variables: auth/user/methods
+Variables: auth/methods
 
 Type: file
 File: etc/default/ssh
