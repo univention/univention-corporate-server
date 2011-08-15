@@ -1,3 +1,10 @@
+univention-updater (6.0.16-1) unstable; urgency=low
+
+  * preup.sh: Removed continue from if/then expression in tcs check
+    (Bug #22878)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 Aug 2011 07:10:14 +0200
+
 univention-updater (6.0.15-1) unstable; urgency=low
 
   * changed interpreter to bash for univention-install (Bug #23270)

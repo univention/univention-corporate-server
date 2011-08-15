@@ -164,7 +164,7 @@ fi
 checkTcsComponent=$(univention-config-registry get update/check/component/tcs)
 tcsInstalled=false
 if [ -n "$checkTcsComponent" -a "$checkTcsComponent" = "no" ]; then
-	continue
+	tcsInstalled="ignore"
 else
 	if [ "$(dpkg-query -W -f='${Status}\n' univention-thin-client-basesystem 2>/dev/null)" = "install ok installed" ]; then
 		tcsInstalled=true
