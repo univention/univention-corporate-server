@@ -1,4 +1,4 @@
-univention-updater (6.0.18-1) unstable; urgency=low
+univention-updater (6.0.18-2) unstable; urgency=low
 
   * abort update if lilo is installed and set to hold (Bug #23063)
 
