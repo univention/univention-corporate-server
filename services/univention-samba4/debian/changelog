@@ -1,3 +1,9 @@
+univention-samba4 (1.0.13-1) experimental; urgency=low
+
+  * move salt_krb5keys to univention-heimdal-kdc (Bug #22212)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Aug 2011 15:17:17 +0200
+
 univention-samba4 (1.0.12-1) experimental; urgency=low
 
   * Fixed shell syntax error in 96univention-samba4.inst (Bug #22559)
