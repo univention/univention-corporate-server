@@ -34,7 +34,7 @@
 
 function isBrowserSupported()
 {
-	$browsers = array('Firefox/3.', 'Firefox/4.', 'Firefox/5.', 'MSIE 6', 'MSIE 7', 'MSIE 8', 'MSIE 9');
+	$browsers = array('Firefox/3.', 'Firefox/4.', 'Firefox/5.', 'Firefox/6.', 'MSIE 6', 'MSIE 7', 'MSIE 8', 'MSIE 9');
 
 	foreach ($browsers as $browser) {
 		if (strstr($_SERVER['HTTP_USER_AGENT'],$browser)) {

@@ -1,3 +1,9 @@
+univention-webui (4.0.72-1) unstable; urgency=low
+
+  * added support for Firefox 6 (Bug #21934)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 15 Aug 2011 14:46:53 +0200
+
 univention-webui (4.0.71-1) unstable; urgency=low
 
   * remove password from debug output (Bug #23029)
