@@ -998,7 +998,9 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 		content.add_row( [ name, os_widget ] )
 		content.add_row( [ contact_widget, description_widget ] )
-		content.add_row( [ arch, '' ] )
+		node_uri = self.uvmm.node_name2uri(object.options['node'])
+		if not node_uri.startswith( 'xen' ): # Ignore on Xen
+			content.add_row( [ arch, '' ] )
 		content.add_row( [ cpus, memory ] )
 
 		content2 = umcd.List( default_type = 'uvmm_settings_table' )
