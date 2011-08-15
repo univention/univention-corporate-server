@@ -1,3 +1,10 @@
+univention-dojo (4.0.4-1) unstable; urgency=low
+
+  * removed template code for DateTextBox due incompatibility with recent Dojo
+    version; the calendar icon is now set via CSS (Bug #21934)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 15 Aug 2011 17:20:47 +0200
+
 univention-dojo (4.0.3-1) unstable; urgency=low
 
   * updated to dojo version 1.6.1 (Bug #21934)
