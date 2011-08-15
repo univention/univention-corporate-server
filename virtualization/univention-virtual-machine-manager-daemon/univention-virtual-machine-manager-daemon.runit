@@ -19,4 +19,6 @@ if [ -f "/etc/default/$NAME" ] ; then
 	. "/etc/default/$NAME"
 fi
 
-exec "$DAEMON" -l "$LOGFILE" $DAEMON_OPTS >>"$LOGFILE" 2>&1
+exec >>"$LOGFILE" 2>&1
+echo "=== $$ === $(date --rfc-2822) ==="
+exec "$DAEMON" -l "$LOGFILE" $DAEMON_OPTS
