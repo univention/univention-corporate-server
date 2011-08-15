@@ -109,7 +109,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 if [ $? != 0 ]; then exit 1; fi
 
 # kill running UDM daemon
-ps -ef | grep "/usr/bin/python.*univention-cli-server$" | awk '{print $2}' | while read clipid; do kill $clipid >/dev/null 2>&1; done
+pkill -f "python.\.. /usr/share/univention-directory-manager-tools/univention-cli-server" || true
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "$ldap_base" \
