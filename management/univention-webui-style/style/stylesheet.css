@@ -2132,3 +2132,9 @@ tbody tr.uvmm_table td.uvmm_table table.uvmm_table tbody tr.uvmm_table td.uvmm_t
 	width: 100%;
 }
 
+/* force dojo calendar widgets to display a calendar icon */
+.dijitDateTextBox .dijitArrowButton .dijitArrowButtonInner {
+	background-image: url('icon-1day.gif') !important;
+	background-position: 0 0 !important;
+}
+
