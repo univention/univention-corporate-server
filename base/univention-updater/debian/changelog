@@ -1,3 +1,10 @@
+univention-updater (6.0.17-1) unstable; urgency=low
+
+  * Only reset old tcs values in preup.sh when the update check failed
+    (Bug #22878)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 Aug 2011 12:12:37 +0200
+
 univention-updater (6.0.16-1) unstable; urgency=low
 
   * preup.sh: Removed continue from if/then expression in tcs check

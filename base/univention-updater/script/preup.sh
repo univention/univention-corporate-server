@@ -215,20 +215,21 @@ sys.exit(0)
 ' 2>"$updateError")
 	res=$?
 
-	# reset old values
-	if [ -n "$old_repository_online_component_tcs" ]; then
-		univention-config-registry set repository/online/component/tcs="$old_repository_online_component_tcs" >&3
-	else
-		univention-config-registry unset repository/online/component/tcs >&3
-	fi
-	if [ -n "$old_repository_online_component_tcs_version" ]; then
-		univention-config-registry set repository/online/component/tcs/version="$old_repository_online_component_tcs_version" >&3
-	else
-		univention-config-registry unset repository/online/component/tcs/version >&3
-	fi
-
 	# component tcs in 3.0 not found, -> abort the update
 	if [ ! $res -eq 0 ]; then
+
+		# reset old values
+		if [ -n "$old_repository_online_component_tcs" ]; then
+			univention-config-registry set repository/online/component/tcs="$old_repository_online_component_tcs" >&3
+		else
+			univention-config-registry unset repository/online/component/tcs >&3
+		fi
+		if [ -n "$old_repository_online_component_tcs_version" ]; then
+			univention-config-registry set repository/online/component/tcs/version="$old_repository_online_component_tcs_version" >&3
+		else
+			univention-config-registry unset repository/online/component/tcs/version >&3
+		fi
+
 		if [ -s $updateError ]; then
 			echo "WARNING: Traceback in UniventionUpdater() python module:"
 			cat "$updateError"
