@@ -2136,5 +2136,7 @@ tbody tr.uvmm_table td.uvmm_table table.uvmm_table tbody tr.uvmm_table td.uvmm_t
 .dijitDateTextBox .dijitArrowButton .dijitArrowButtonInner {
 	background-image: url('icon-1day.gif') !important;
 	background-position: 0 0 !important;
+	width: 15px;
+	height: 15px;
 }
 
