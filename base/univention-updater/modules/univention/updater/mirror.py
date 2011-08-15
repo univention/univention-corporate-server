@@ -108,7 +108,13 @@ class UniventionMirror( UniventionUpdater ):
 		all_repos = itertools.chain(repos, sec, comp) # concatenate all generators into a single one
 		for server, struct, phase, path, script in UniventionUpdater.get_sh_files(all_repos):
 			assert script is not None, 'No script'
-			filename = os.path.join(self.repository_path, 'mirror', path)
+
+			# use prefix if defined - otherwise file will be stored in wrong directory
+			if server.prefix:
+				filename = os.path.join(self.repository_path, 'mirror', server.prefix, path)
+			else:
+				filename = os.path.join(self.repository_path, 'mirror', path)
+
 			if os.path.exists(filename):
 				ud.debug(ud.NETWORK, ud.ALL, "Script already exists, skipping: %s" % filename)
 				continue

@@ -1,3 +1,10 @@
+univention-updater (6.0.100-1) unstable; urgency=low
+
+  * use correct prefix when storing downloaded component's
+    preup.sh/postup.sh into local repository (Bug #23084)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 15 Aug 2011 17:27:57 +0200
+
 univention-updater (6.0.99-2) unstable; urgency=low
 
   * Use external ucr instead of internal ucr (Bug #23202)
