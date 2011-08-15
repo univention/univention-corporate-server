@@ -34,8 +34,8 @@
 source /etc/openoffice/soffice.sh
 
 exec 0</dev/null
-if [ -x /usr/sbin/univention-baseconfig ]; then
-	CUPS=`/usr/sbin/univention-baseconfig get openoffice/cups/support`
+if [ -x /usr/sbin/univention-config-registry ]; then
+	CUPS=`/usr/sbin/univention-config-registry get openoffice/cups/support`
 	if [ "$CUPS" -a "$CUPS" = "false" ]; then
 		export SAL_DISABLE_CUPS=1
 	fi
