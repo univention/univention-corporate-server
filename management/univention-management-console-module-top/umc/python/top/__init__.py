@@ -37,6 +37,7 @@ from fnmatch import fnmatch
 import univention.info_tools as uit
 import univention.management.console as umc
 import univention.management.console.modules as umcm
+from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
 _ = umc.Translation('univention-management-console-modules-top').translate
@@ -59,6 +60,8 @@ class Instance(umcm.Base):
 			listEntry['rssize'] = rssize / 1048576.0
 			listEntry['mem'] = '%.1f' % process.get_memory_percent()
 			listEntry['command'] = ' '.join(process.cmdline)
+			if listEntry['command'] == '':
+				listEntry['command'] = process.name
 			if category == 'all':
 				for value in listEntry.itervalues():
 					if fnmatch(str(value), filter):

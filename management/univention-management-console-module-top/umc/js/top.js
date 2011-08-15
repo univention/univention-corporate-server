@@ -27,17 +27,7 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			pid: pids
 		};
 		this.umcpCommand('top/kill', params).then(dojo.hitch(this, function(data) {
-			umc.dialog.notify(this._('Processes killed successfully'));
-		}));
-	},
-
-	killProcesses: function(signal, pids) {
-		var params = {
-			signal: signal,
-			pid: pids
-		};
-		this.umcpCommand('top/kill', params).then(dojo.hitch(this, function(data) {
-			umc.dialog.notify(this._('Processes killed successfully'));
+			umc.dialog.notify(this._('Signal (%s) sent successfully', signal));
 		}));
 	},
 

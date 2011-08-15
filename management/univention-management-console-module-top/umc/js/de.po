@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-top\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-08-04 15:48+0200\n"
+"POT-Creation-Date: 2011-08-15 16:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,59 +13,60 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/top.js:128
+#: umc/js/top.js:118
 msgid "All"
 msgstr "Alle"
 
-#: umc/js/top.js:84
+#: umc/js/top.js:74
 msgid "CPU (%)"
 msgstr "CPU (%)"
 
-#: umc/js/top.js:126
+#: umc/js/top.js:116
 msgid "Category"
 msgstr "Kategorie"
 
-#: umc/js/top.js:106 umc/js/top.js:131
+#: umc/js/top.js:96 umc/js/top.js:121
 msgid "Command"
 msgstr "Befehl"
 
-#: umc/js/top.js:54
+#: umc/js/top.js:44
 msgid "Entries"
 msgstr "Einträge"
 
-#: umc/js/top.js:137
+#: umc/js/top.js:127
 msgid "Keyword"
 msgstr "Schlüsselwort"
 
-#: umc/js/top.js:67
+#: umc/js/top.js:57
 msgid "Kill"
 msgstr "Töten"
 
-#: umc/js/top.js:102
+#: umc/js/top.js:92
 msgid "Memory (%)"
 msgstr "Speicher (%)"
 
-#: umc/js/top.js:80 umc/js/top.js:130
+#: umc/js/top.js:70 umc/js/top.js:120
 msgid "PID"
 msgstr "PID"
 
-#: umc/js/top.js:48
+#: umc/js/top.js:38
 msgid "Process overview"
 msgstr "Prozessübersicht"
 
-#: umc/js/top.js:30 umc/js/top.js:40
-msgid "Processes killed successfully"
-msgstr "Prozesse würden erfolgreich beendet"
-
-#: umc/js/top.js:95
+#: umc/js/top.js:85
 msgid "Resident (MB)"
 msgstr ""
 
-#: umc/js/top.js:60
+#: umc/js/top.js:30
+#, python-format
+msgid "Signal (%s) sent successfully"
+msgstr "Signal (%s) wurde erfolgreich gesendet"
+
+#: umc/js/top.js:50
 msgid "Terminate"
 msgstr "Beenden"
 
-#: umc/js/top.js:49
+#: umc/js/top.js:39
 msgid ""
 "This module generates an overview of all running processes. The search "
 "function can reduce the number of results. Specifig processes can be "
@@ -78,10 +79,13 @@ msgstr ""
 "werden kann (mittels des Signals SIGTERM), kann die Beendigung erzwungen "
 "werden (mittels des Signals SIGKILL)."
 
-#: umc/js/top.js:76 umc/js/top.js:129
+#: umc/js/top.js:66 umc/js/top.js:119
 msgid "User"
 msgstr "Benutzer"
 
-#: umc/js/top.js:88
+#: umc/js/top.js:78
 msgid "Virtual (MB)"
 msgstr "Virtuell (MB)"
+
+#~ msgid "Processes killed successfully"
+#~ msgstr "Prozesse würden erfolgreich beendet"

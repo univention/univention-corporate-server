@@ -1,3 +1,11 @@
+univention-management-console-module-top (1.0.9-1) unstable; urgency=low
+
+  * Fix command column
+  * Fix missing import
+  * Change notify message
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 15 Aug 2011 16:45:38 +0200
+
 univention-management-console-module-top (1.0.8-1) unstable; urgency=low
 
   * changed actions to isMultiAction and isStandardAction (Bug #22881)
