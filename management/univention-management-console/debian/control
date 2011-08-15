@@ -74,7 +74,8 @@ Package: univention-management-console-dev
 Architecture: all
 Depends: ${python:Depends},
  python-univention-config-registry,
- python-polib
+ python-polib,
+ gettext
 Description: Univention Management Console - development files
  Univention Console is a web based program to manage computers.  It has
  an extensible architecture, using modules to implement its

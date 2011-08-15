@@ -1,3 +1,9 @@
+univention-management-console (4.0.52-2) unstable; urgency=low
+
+  * added gettext dependency to univention-management-console-dev (Bug #20026)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 15 Aug 2011 15:17:36 +0200
+
 univention-management-console (4.0.52-1) unstable; urgency=low
 
   * ensure that trying to send a message to an already dead module process
