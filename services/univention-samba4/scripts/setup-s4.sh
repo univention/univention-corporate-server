@@ -136,8 +136,9 @@ export LDB_MODULES_PATH=/usr/lib/samba/ldb/
 
 # /usr/share/samba/setup/upgradeprovision --full --realm="$kerberos_realm" -s /etc/samba/smb.conf.samba3
 /usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$S3_DOMAIN_SID" \
+					--function-level=2008_R2 \
 					--adminpass="$adminpw" --server-role='domain controller'	\
-					--machinepass=="$(</etc/machine.secret)" >>$LOGFILE 2>&1
+					--machinepass="$(</etc/machine.secret)" >>$LOGFILE 2>&1
 # the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
 univention-config-registry set samba4/ldap/base="DC=${kerberos_realm/./,DC=}" >>$LOGFILE 2>&1
 
