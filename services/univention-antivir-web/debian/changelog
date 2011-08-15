@@ -1,3 +1,9 @@
+univention-antivir-web (4.0.4-3) unstable; urgency=low
+
+  * fixed typo in bannediplist template (Bug #20331) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Aug 2011 14:48:06 +0200
+
 univention-antivir-web (4.0.4-2) unstable; urgency=low
 
   * fixed dansguardianfX.conf to support banned/ipaddresses
