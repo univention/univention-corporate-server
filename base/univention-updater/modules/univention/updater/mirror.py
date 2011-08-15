@@ -130,11 +130,8 @@ class UniventionMirror( UniventionUpdater ):
 					raise
 			fd = open(filename, "w")
 			try:
-				wsize = fd.write(script)
-				if wsize == len(script):
-					ud.debug(ud.ADMIN, ud.INFO, "Successfully mirrored script: %s" % filename)
-				else:
-					ud.debug(ud.ADMIN, ud.ERROR, "Error writing script: %s" % filename)
+				fd.write(script)
+				ud.debug(ud.ADMIN, ud.INFO, "Successfully mirrored script: %s" % filename)
 			finally:
 				fd.close()
 
