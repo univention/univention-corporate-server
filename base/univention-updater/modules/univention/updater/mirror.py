@@ -115,9 +115,11 @@ class UniventionMirror( UniventionUpdater ):
 			else:
 				filename = os.path.join(self.repository_path, 'mirror', path)
 
-			if os.path.exists(filename):
-				ud.debug(ud.NETWORK, ud.ALL, "Script already exists, skipping: %s" % filename)
-				continue
+			# Check disabled, otherwise files won't get refetched if they change on upstream server
+			#if os.path.exists(filename):
+			# 	ud.debug(ud.NETWORK, ud.ALL, "Script already exists, skipping: %s" % filename)
+			# 	continue
+
 			dirname = os.path.dirname(filename)
 			try:
 				os.makedirs(dirname, 0755)
