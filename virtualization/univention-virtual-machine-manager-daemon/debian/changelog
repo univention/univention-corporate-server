@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.319-1) unstable; urgency=low
+
+  * Depend on newer u-v-m-m-schema for rtcoffset (Bug #22033)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Aug 2011 10:29:24 +0200
+
 univention-virtual-machine-manager-daemon (0.9.318-1) unstable; urgency=low
 
   * Don't display the architecture field on a xen machine (Bug #22004)
