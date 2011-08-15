@@ -28,7 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-source /etc/openoffice/soffice.sh
+. /etc/openoffice/soffice.sh
 
 if [ -x /usr/sbin/univention-config-registry ]; then
 	CUPS=`/usr/sbin/univention-config-registry get openoffice/cups/support`

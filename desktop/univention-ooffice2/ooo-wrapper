@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-source /etc/openoffice/soffice.sh
+. /etc/openoffice/soffice.sh
 
 exec 0</dev/null
 if [ -x /usr/sbin/univention-config-registry ]; then
