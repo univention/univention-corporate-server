@@ -874,7 +874,7 @@ def doit(arglist):
 				return out + ["OPERATION FAILED"]
 
 		try:
-			object=univention.admin.objects.get(module, co, lo, position='', dn=dn, arg=arg)
+			object=univention.admin.objects.get(module, co, lo, position='', dn=dn)
 		except univention.admin.uexceptions.noObject:
 			out.append('E: object not found')
 			return out + ["OPERATION FAILED"]

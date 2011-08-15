@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.55-1) unstable; urgency=low
+
+  * fix a call to objects.get using the old API; Bug #22879
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 15 Aug 2011 15:59:05 +0200
+
 univention-directory-manager-modules (7.0.54-1) unstable; urgency=low
 
   * simpleLdap: add attribute univentionObjectType when creating an object
