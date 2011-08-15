@@ -149,6 +149,12 @@ if [ ! "$update_lilo_check" = "no" -a ! "$update_lilo_check" = "false" -a ! "$up
 	if [ "$(dpkg-query -W -f='${Status}\n' univention-lilo 2>/dev/null)" = "install ok installed" ]; then
 		lilo_is_installed=true
 	fi
+	if [ "$(dpkg-query -W -f='${Status}\n' lilo 2>/dev/null)" = "hold ok installed" ]; then
+		lilo_is_installed=true
+	fi
+	if [ "$(dpkg-query -W -f='${Status}\n' univention-lilo 2>/dev/null)" = "hold ok installed" ]; then
+		lilo_is_installed=true
+	fi
 	if [ "$lilo_is_installed" = "true" ]; then
 		echo "WARNING: Bootloader lilo (packages lilo and/or univention-lilo) is installed!"
 		echo "Update to UCS 3.0-0 with bootloader lilo is not supported. Please upgrade your bootloader"

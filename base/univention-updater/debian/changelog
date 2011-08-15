@@ -1,3 +1,9 @@
+univention-updater (6.0.18-1) unstable; urgency=low
+
+  * abort update if lilo is installed and set to hold (Bug #23063)
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Aug 2011 12:47:38 +0200
+
 univention-updater (6.0.17-1) unstable; urgency=low
 
   * Only reset old tcs values in preup.sh when the update check failed
