@@ -34,6 +34,12 @@ univentionXDisplayPosition="xorg/display/relative-position"
 
 univentionXDisplayVirtualSize="xorg/display/virtual"
 
+univentionXHSyncSecondary="xorg/monitorsecondary/HorizSync"
+
+univentionXVRefreshSecondary="xorg/monitorsecondary/VertRefresh"
+
+univentionXDisplaySizeSecondary="xorg/monitorsecondary/DisplaySize"
+
 X_VNC_Export_Type="xorg/vnc/exporttype"
 
 X_Mouse_Device="xorg/mouse/device"

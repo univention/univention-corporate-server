@@ -1,3 +1,12 @@
+univention-x-core (6.0.2-1) unstable; urgency=low
+
+  * merged changes from ucd 3.1 hotfix (Bug #22432)
+
+     * Support for hsync and vrefresh in dual head mode
+     * Set primary option to true for the primary display
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Aug 2011 09:45:30 +0200
+
 univention-x-core (6.0.1-1) unstable; urgency=low
 
   * always set xorg/autodetect?yes Bug #19035
