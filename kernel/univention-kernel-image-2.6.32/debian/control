@@ -228,3 +228,243 @@ Description: UCS - Linux kernel source for managed clients (PAE)
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-kernel-image-2.6.18
+Architecture: any
+Depends: univention-kernel-image-2.6.32
+Description: UCS - Linux kernel
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-image-2.6.18-xen
+Architecture: any
+Depends: univention-kernel-image-2.6.32-xen
+Description: UCS - Linux kernel
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-image-2.6.18-64gb
+Architecture: any
+Depends: univention-kernel-image-2.6.32-64gb
+Description: UCS - Linux kernel
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-headers-2.6.18
+Architecture: any
+Depends: univention-kernel-headers-2.6.32
+Description: UCS - Linux kernel headers
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-headers-2.6.18-64gb
+Architecture: any
+Depends: univention-kernel-headers-2.6.32-64gb
+Description: UCS - Linux kernel headers
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-headers-2.6.18-xen
+Architecture: any
+Depends: univention-kernel-headers-2.6.32-xen
+Description: UCS - Linux kernel headers
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-source-2.6.18
+Architecture: any
+Depends: univention-kernel-source-2.6.32
+Description: UCS - Linux kernel source
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-source-2.6.18-64gb
+Architecture: any
+Depends: univention-kernel-source-2.6.32-64gb
+Description: UCS - Linux kernel source
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-image-mobileclient-2.6.18
+Architecture: any
+Depends: univention-kernel-image-mobileclient-2.6.32
+Description: UCS - Linux kernel
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-image-mobileclient-2.6.18-64gb
+Architecture: any
+Depends: univention-kernel-image-mobileclient-2.6.32-64gb
+Description: UCS - Linux kernel
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-headers-mobileclient-2.6.18
+Architecture: any
+Depends: univention-kernel-headers-mobileclient-2.6.32
+Description: UCS - Linux kernel headers
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-headers-mobileclient-2.6.18-64gb
+Architecture: any
+Depends: univention-kernel-headers-mobileclient-2.6.32-64gb
+Description: UCS - Linux kernel headers
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-source-mobileclient-2.6.18
+Architecture: any
+Depends: univention-kernel-source-mobileclient-2.6.32
+Description: UCS - Linux kernel source
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-source-mobileclient-2.6.18-64gb
+Architecture: any
+Depends: univention-kernel-source-mobileclient-2.6.32-64gb
+Description: UCS - Linux kernel source
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-image-managedclient-2.6.18
+Architecture: any
+Depends: univention-kernel-image-managedclient-2.6.32
+Description: UCS - Linux kernel
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-image-managedclient-2.6.18-64gb
+Architecture: any
+Depends: univention-kernel-image-managedclient-2.6.32-64gb
+Description: UCS - Linux kernel
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-headers-managedclient-2.6.18
+Architecture: any
+Depends: univention-kernel-headers-managedclient-2.6.32
+Description: UCS - Linux kernel headers
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-headers-managedclient-2.6.18-64gb
+Architecture: any
+Depends: univention-kernel-headers-managedclient-2.6.32-64gb
+Description: UCS - Linux kernel headers
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-source-managedclient-2.6.18
+Architecture: any
+Depends: univention-kernel-source-managedclient-2.6.32
+Description: UCS - Linux kernel source
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-source-managedclient-2.6.18-64gb
+Architecture: any
+Depends: univention-kernel-source-managedclient-2.6.32-64gb
+Description: UCS - Linux kernel source
+ Transitional package to facilitate the upgrade to the
+ 2.6.32 based kernel.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
