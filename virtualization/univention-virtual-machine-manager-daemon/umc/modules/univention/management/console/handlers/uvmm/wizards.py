@@ -494,8 +494,6 @@ class DriveWizard( umcd.IWizard ):
 			disk.driver_type = driver_type.lower()
 			if driver_pv and drive_type != 'floppy' and disk.type != uvmmn.Disk.TYPE_BLOCK:
 				disk.target_bus = 'virtio'
-			if disk.driver_type == 'qcow2': # Bug #23091
-				disk.driver_cache = Disk.CACHE_WT
 		elif self.node_uri.startswith('xen'):
 			if driver_pv and drive_type != 'floppy' and disk.type != uvmmn.Disk.TYPE_BLOCK:
 				disk.target_bus = 'xen'
