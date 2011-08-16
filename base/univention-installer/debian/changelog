@@ -1,4 +1,10 @@
-univention-installer (6.0.54-1) unstable; urgency=low
+univention-installer (6.0.55-1) unstable; urgency=low
+
+  * sleep wait for network in installer/network.sh Bug #22505 
+
+ -- Felix Botner <botner@univention.de>  Tue, 16 Aug 2011 17:08:16 +0200
+
+univention-installer (6.0.54-2) unstable; urgency=low
 
   * wait for device in installer/network.sh Bug #22505
 
