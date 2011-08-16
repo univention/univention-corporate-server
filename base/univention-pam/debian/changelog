@@ -1,3 +1,9 @@
+univention-pam (5.0.9-1) unstable; urgency=low
+
+  * Use binddn for pam_ldap and nssldap by default (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 16 Aug 2011 11:36:31 +0200
+
 univention-pam (5.0.8-1) unstable; urgency=low
 
   * Register ldap/hostdn for libnss-ldap.conf and pam_ldap.conf

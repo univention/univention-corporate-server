@@ -79,7 +79,9 @@ univention-config-registry set \
 	auth/screen/group/Administrators?"yes" \
 	auth/screen/user/root?"yes" \
 	nssldap/tls/checkpeer?no \
-	auth/faillog?no
+	auth/faillog?no \
+	nssldap/auth?yes \
+	pamldap/auth?yes
 
 # restrict ssh and local login to admins on domaincontroller hosts
 # allow access to members of groups Computers, DC Slave Hosts and DC
@@ -96,14 +98,7 @@ if is_domain_controller; then
 fi
 
 if [ "$1" = "configure" -a -z "$2" ]; then
-	univention-config-registry set	nscd/group/invalidate_cache_on_changes="true" \
-									nssldap/auth?yes \
-									pamldap/auth?yes
-
-else
-	univention-config-registry set	nssldap/auth?no \
-									pamldap/auth?no
-
+	univention-config-registry set	nscd/group/invalidate_cache_on_changes="true"
 fi
 
 # remove old non-multifile template
