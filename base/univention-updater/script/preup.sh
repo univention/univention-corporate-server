@@ -156,9 +156,18 @@ if [ ! "$update_lilo_check" = "no" -a ! "$update_lilo_check" = "false" -a ! "$up
 		lilo_is_installed=true
 	fi
 	if [ "$lilo_is_installed" = "true" ]; then
-		echo "WARNING: Bootloader lilo (packages lilo and/or univention-lilo) is installed!"
-		echo "Update to UCS 3.0-0 with bootloader lilo is not supported. Please upgrade your bootloader"
-		echo "to grub (package: univention-grub) before the update."
+		echo "WARNING: Bootloader lilo is installed!"
+		echo ""
+		echo "With UCS 3.0-0 the default bootloader is grub and all UCS installations with"
+		echo "lilo as bootloader must be migrated to grub. Additional information about the"
+		echo "installation and configuration of grub can be found in the Univention SDB:"
+		echo "http://sdb.univention.de/1072"
+		echo ""
+		echo "If the bootloader has been migrated and the packages \"lilo\" and"
+		echo "\"univention-lilo\" are removed from the system, the upgrade can be restarted."
+		echo ""
+		echo "This check can be disabled by setting the Univention Configuration Registry"
+		echo "variable \"update/lilo/check\" to \"no\"."
 		exit 1
 	fi
 fi

@@ -1,3 +1,9 @@
+univention-updater (6.0.18-3) unstable; urgency=low
+
+  * changed message in lilo check in preup.sh (Bug #23063)
+
+ -- Felix Botner <botner@univention.de>  Tue, 16 Aug 2011 09:26:56 +0200
+
 univention-updater (6.0.18-2) unstable; urgency=low
 
   * abort update if lilo is installed and set to hold (Bug #23063)
