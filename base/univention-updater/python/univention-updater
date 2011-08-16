@@ -515,7 +515,7 @@ def main():
 	(nvv,nvp)=nextversion.split('-')[0:2]
 
 	# Bug #23202: After the update from Python2.4 to Python2.6, ucr.handler_set() does not work any more because it still uses python2.4!
-	subprocess.call(('univention-config-registry', 'set', 'version/version=%s' % nvv, 'version/patchlevel=%s' % nvp))
+	subprocess.call(('univention-config-registry', 'set', 'version/version=%s' % nvv, 'version/patchlevel=%s' % nvp), stdout=fp_debug, stderr=fp_debug)
 	remove_temporary_sources_list()
 
 	if os.path.exists('/usr/sbin/univention-pkgdb-scan'):

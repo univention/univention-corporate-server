@@ -214,11 +214,10 @@ import sys
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
-yes = ["enabled", "true", "1", "yes", "enable"]
 scope = "tcs"
 version = "3.0"
 
-if configRegistry.get("repository/online/component/%s" % scope, "").lower() in yes:
+if configRegistry.is_true("repository/online/component/%s" % scope, False):
 	available = []
 	updater = UniventionUpdater()
 	available += updater.get_component_repositories(scope, [version])
