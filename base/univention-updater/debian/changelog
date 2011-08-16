@@ -1,3 +1,9 @@
+univention-updater (6.0.101-1) unstable; urgency=low
+
+  * Hide output of external ucr (Bug #23202)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 16 Aug 2011 09:38:34 +0200
+
 univention-updater (6.0.100-1) unstable; urgency=low
 
   * use correct prefix when storing downloaded component's
