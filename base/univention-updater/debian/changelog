@@ -1,42 +1,42 @@
-univention-updater (6.0.19-1) unstable; urgency=low
+univention-updater (7.0.19-1) unstable; urgency=low
 
   * Hide output of external ucr (Bug #23202)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 16 Aug 2011 10:02:08 +0200
 
-univention-updater (6.0.18-3) unstable; urgency=low
+univention-updater (7.0.18-3) unstable; urgency=low
 
   * changed message in lilo check in preup.sh (Bug #23063)
 
  -- Felix Botner <botner@univention.de>  Tue, 16 Aug 2011 09:26:56 +0200
 
-univention-updater (6.0.18-2) unstable; urgency=low
+univention-updater (7.0.18-2) unstable; urgency=low
 
   * abort update if lilo is installed and set to hold (Bug #23063)
 
  -- Felix Botner <botner@univention.de>  Mon, 15 Aug 2011 12:47:38 +0200
 
-univention-updater (6.0.17-1) unstable; urgency=low
+univention-updater (7.0.17-1) unstable; urgency=low
 
   * Only reset old tcs values in preup.sh when the update check failed
     (Bug #22878)
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 Aug 2011 12:12:37 +0200
 
-univention-updater (6.0.16-1) unstable; urgency=low
+univention-updater (7.0.16-1) unstable; urgency=low
 
   * preup.sh: Removed continue from if/then expression in tcs check
     (Bug #22878)
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 Aug 2011 07:10:14 +0200
 
-univention-updater (6.0.15-1) unstable; urgency=low
+univention-updater (7.0.15-1) unstable; urgency=low
 
   * changed interpreter to bash for univention-install (Bug #23270)
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 11 Aug 2011 14:10:34 +0200
 
-univention-updater (6.0.14-1) unstable; urgency=low
+univention-updater (7.0.14-1) unstable; urgency=low
 
   * Use external ucr instead of internal ucr (Bug #23202)
   * Fix writing to closed fd_log (Bug #23259)
