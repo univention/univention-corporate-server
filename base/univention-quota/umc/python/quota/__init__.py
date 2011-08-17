@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  module: manages quota support for locale hard drives
+#  module: filesystem quota
 #
-# Copyright 2007-2011 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,27 +31,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import univention.info_tools as uit
 import univention.management.console as umc
-import univention.management.console.dialog as umcd
+import univention.management.console.modules as umcm
 
-_ = umc.Translation( 'univention.management.console.handlers.quota' ).translate
+_ = umc.Translation('univention-management-console-modules-quota').translate
 
-class ByteSize( umc.String ):
-	def __init__( self, name ):
-		umc.String.__init__( self, name, regex = '^[0-9.,]*(B|KB|MB|GB|TB)?$' )
-
-	def is_valid( self, value ):
-		check = umc.String.is_valid( self, value )
-		if not check:
-			self.error = _( 'Value is not a valid size.' )
-		return check
-
-umcd.copy( umc.String, ByteSize )
-
-user = umc.String( _( 'User' ) )
-partition = umc.String( _( 'Partition' ), regex = '^/dev/[a-z0-9/]+$' )
-partitions = umc.StringList( _( 'Partitions' ) )
-bsoft = ByteSize( _( 'Data size soft limit' ) )
-bhard = ByteSize( _( 'Data size hard limit' ) )
-fsoft = umc.Integer( _( 'Files soft limit' ) )
-fhard = umc.Integer( _( 'Files hard limit' ) )
+class Instance(umcm.Base):
+	def init(self):
+		uit.set_language(str(self.locale))
+	def quota_list(self, request):
+		foo = "bar"
+		self.finished(request.id, foo)

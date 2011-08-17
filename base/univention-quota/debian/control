@@ -21,3 +21,14 @@ Description: UCS - set default-quotas for users
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-management-console-module-quota
+Architecture: all
+Depends: univention-management-console-server
+Description: UMC module for filesystem quota
+ This package contains the UMC module for the filesystem quota
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

@@ -1,10 +1,10 @@
-#!/usr/bin/python2.6
+#!/bin/sh
 # -*- coding: utf-8 -*-
 #
-# Univention Management Console
-#  quota module: provides size information about a hard drive partition
+# Univention Management Console Module Quota
+#  join script
 #
-# Copyright 2006-2011 Univention GmbH
+# Copyright 2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,23 +31,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-'''This module provides a similar functionality as the UNIX tool df'''
+VERSION=1
 
-import os
+. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/umc.sh
 
-class DeviceInfo:
-	def __init__( self, path ):
-		self.path = path
-		self._statvfs = os.statvfs( self.path )
+joinscript_init
 
-	def free( self ):
-		return ( self._statvfs.f_bfree * self._statvfs.f_bsize )
+umc_init
+umc_operation_create "quota" "Filesystem quotas" "quota/*"
+umc_acl_create "quota-all" "Filesystem quotas" "All operations" "quota/*"
+umc_policy_append "default-admin" "quota-all"
 
-	def available( self ):
-		return ( self._statvfs.f_bavail * self._statvfs.f_bsize )
+joinscript_save_current_version
 
-	def size( self ):
-		return ( self._statvfs.f_blocks * self._statvfs.f_bsize )
-
-	def block_size( self ):
-		return self._statvfs.f_bsize
+exit 0

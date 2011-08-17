@@ -30,38 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-PO_FILES := $(shell find modules -name '*.po')
-MO_FILES := $(PO_FILES:%.po=%.mo)
-IMAGES:=$(shell find images -name '*.gif' -o -name '*.png')
-
-%.mo:	%.po
-	msgfmt --check -o $@ $<
-
-override_dh_auto_build: $(MO_FILES)
-	dh_auto_build
-
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
-override_dh_auto_install:
-	dh_auto_install
-	univention-install-config-registry
-
-	set -e;\
-	for i in $(IMAGES); do\
-		o=debian/univention-quota/usr/share/univention-management-console/www/themes/$$i;\
-		install -d "`dirname $$o`";\
-		install -m644 $$i $$o;\
-	done
-	@set -e;\
-	for i in $(MO_FILES); do\
-		lang=`basename "$$i" .mo`;\
-		domain=`dirname "$$i" | sed 's,^modules/,,;s,/,-,g'`;\
-		o=debian/univention-quota/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
-		install -d "`dirname "$$o"`";\
-		install -m 644 "$$i" "$$o";\
-	done
-
 %:
 	dh $@
+
+override_dh_auto_build:
+	dh-umc-module-build
+	dh_auto_build
+
+override_dh_auto_install:
+	dh-umc-module-install
+	dh_auto_install
+	univention-install-config-registry

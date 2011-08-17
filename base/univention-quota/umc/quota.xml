@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="quota" icon="quota-module" version="1.0">
+	<name>Filesystem quotas</name>
+	<description>Set, unset and modify filesystem quota</description>
+	<categories>
+		<category name="system"/>
+	</categories>
+	<command name="quota/list" function="quota_list">
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="quota/partition/show" function="quota_partition_show">
+		<attribute name="partition" syntax="Quota-Partition"/>
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="quota/partition/activate" function="quota_partition_activate">
+		<attribute name="partition" syntax="Quota-Partition"/>
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="quota/partition/deactivate" function="quota_partition_deactivate">
+		<attribute name="partition" syntax="Quota-Partition"/>
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="quota/user/set" function="quota_user_set">
+		<attribute name="user" syntax="Quota-User"/>
+		<attribute name="partition" syntax="Quota-Partition"/>
+		<attribute name="block_soft" syntax="Quota-Block-Soft"/>
+		<attribute name="block_hard" syntax="Quota-Block-Hard"/>
+		<attribute name="file_soft" syntax="Quota-File-Soft"/>
+		<attribute name="file_hard" syntax="Quota-File-Hard"/>
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="quota/user/remove" function="quota_user_remove">
+		<attribute name="user" syntax="Quota-User"/>
+		<attribute name="partition" syntax="Quota-Partition"/>
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="quota/user/show" function="quota_user_show">
+		<attribute name="user" syntax="Quota-User"/>
+		<attribute name="partition" syntax="Quota-Partition"/>
+		<return syntax="Dictionary"/>
+	</command>
+	</module>
+</umc>

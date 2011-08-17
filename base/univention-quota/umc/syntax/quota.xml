@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<definitions>
+	<syntax base="String" name="Quota-User">
+		<regex-invalid>^$</regex-invalid>
+	</syntax>
+	<syntax base="String" name="Quota-Partition">
+		<regex-invalid>^$</regex-invalid>
+	</syntax>
+	<syntax base="String" name="Quota-Block-Soft">
+		<regex-invalid>^$</regex-invalid>
+	</syntax>
+	<syntax base="String" name="Quota-Block-Hard">
+		<regex-invalid>^$</regex-invalid>
+	</syntax>
+	<syntax base="String" name="Quota-File-Soft">
+		<regex-invalid>^$</regex-invalid>
+	</syntax>
+	<syntax base="String" name="Quota-File-Hard">
+		<regex-invalid>^$</regex-invalid>
+	</syntax>
+	</definitions>
+</umc>

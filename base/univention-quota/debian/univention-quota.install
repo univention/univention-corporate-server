@@ -2,5 +2,4 @@ files/univention-group-quota usr/sbin
 files/univention-user-quota usr/sbin
 files/univention-setquota usr/sbin
 71univention-quota.inst usr/lib/univention-install/
-modules/univention/management/console/handlers/quota/*.py usr/share/pyshared/univention/management/console/handlers/quota/
 

@@ -1,3 +1,10 @@
+univention-quota (6.0.2-1) unstable; urgency=low
+
+  * Update UMC modul
+  (Bug #22903)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 17 Aug 2011 11:09:26 +0200
+
 univention-quota (6.0.1-2) unstable; urgency=low
 
   * use -ZZ when providing credentials to ldapsearch (Bug #17519)

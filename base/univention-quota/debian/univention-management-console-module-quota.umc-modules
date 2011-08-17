@@ -1,0 +1,6 @@
+Module: quota
+Python: umc/python
+Definition: umc/quota.xml
+Syntax: umc/syntax/quota.xml
+Javascript: umc/js
+Icons: umc/icons
