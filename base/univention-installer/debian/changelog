@@ -1,3 +1,9 @@
+univention-installer (7.0.36-1) unstable; urgency=low
+
+  * Updated translation (Bug #23156)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Aug 2011 06:14:07 +0200
+
 univention-installer (7.0.35-1) unstable; urgency=low
 
   * changed installer messsages and add translations (Bug #22869) 
