@@ -59,8 +59,7 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.4-1;
 		## remove EOL
 		if test -e "$secret_file"; then
 			tmp_ldap_secret_file="${secret_file}.dpkg-tmp"
-			touch "$tmp_ldap_secret_file"
-			chmod 600 "$tmp_ldap_secret_file"
+			cp -a "$secret_file" "$tmp_ldap_secret_file"
 			echo -n "$(cat "$secret_file")" > "$tmp_ldap_secret_file" && mv "$tmp_ldap_secret_file" "$secret_file"
 		fi
 	done

@@ -1,3 +1,9 @@
+univention-join (4.0.13-3) unstable; urgency=low
+
+  * keep ownership and mode when migrating .secret files (Bug #14186)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 17 Aug 2011 12:43:34 +0200
+
 univention-join (4.0.13-2) unstable; urgency=low
 
   * trim EOL from backup-join and slave-join.secret on update (Bug #14186)
