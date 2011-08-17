@@ -1,6 +1,10 @@
+
 univention-kernel-image-2.6.32 (2.0.0-5) unstable; urgency=low
 
   * Add transitional packages for 2.6.18 kernels (Bug #22440)
+  * Drop meta packages for mobile client and managed clients, since
+    UCD will be shipping separate kernel images starting with
+    the UCS 3.0 release.	 
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 16 Aug 2011 15:45:25 +0200
 
