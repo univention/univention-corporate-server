@@ -31,71 +31,70 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys
-import os
 import cherrypy
-import threading
-import notifier
+import os
 import Queue
-import univention.management.console.protocol as umcp
-import univention.debug as ud
-import simplejson
-
 from optparse import OptionParser
+import simplejson
+import sys
+import threading
+import uuid
+
+import notifier
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
 
+import univention.management.console.protocol as umcp
 from univention.management.console.log import *
-
 import univention.config_registry as ucr
+
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
+# global objects
+try:
+	_session_timout = int( configRegistry.get( 'umc/http/session/timeout', 300 ) )
+except TypeError, ValueError:
+	CORE.error( 'Failed to read session timeout from UCR variable umc/http/session/timeout. Using default of 300 seconds' )
+	_session_timout = 300
 _thread_http = None
-_sessionclients = {}
 _queue_send = Queue.Queue()
 
-_sessionidcounter = 1
-
-
-# Traceback (most recent call last):
-#   File "./umc2-webserver.py", line 507, in ?
-#     main()
-#   File "./umc2-webserver.py", line 503, in main
-#     notifier.loop()
-#   File "/usr/lib/python2.4/site-packages/notifier/nf_generic.py", line 272, in loop
-#     step()
-#   File "/usr/lib/python2.4/site-packages/notifier/nf_generic.py", line 264, in step
-#     __min_timer = dispatch.dispatcher_run()
-#   File "/usr/lib/python2.4/site-packages/notifier/dispatch.py", line 71, in dispatcher_run
-#     if not disp():
-#   File "./umc2-webserver.py", line 116, in check_queue
-#     client.send_request( queuerequest.request, queuerequest.response_queue )
-#   File "./umc2-webserver.py", line 61, in send_request
-#     self.client.request( request )
-#   File "/usr/lib/python2.4/site-packages/univention/management/console/protocol/client.py", line 228, in request
-#     if self._resend( sock ):
-#   File "/usr/lib/python2.4/site-packages/univention/management/console/protocol/client.py", line 199, in _resend
-#     self.__realsocket.shutdown( socket.SHUT_RDWR )
-#   File "<string>", line 1, in shutdown
-#   File "/usr/lib/python2.4/socket.py", line 136, in _dummy
-#     raise error(EBADF, 'Bad file descriptor')
-# socket.error: (9, 'Bad file descriptor')
-
-
 class SessionClient(object):
-	def __init__(self):
+	def __init__( self, timeout = 300 ):
 		CORE.info('SessionClient: creating new session')
 		self.client = umcp.Client()
 		self.client.signal_connect( 'authenticated', self._authenticated )
 		self.client.signal_connect( 'response', self._response )
-		self.client.signal_connect( 'closed', self._closed )
 		if self.client.connect():
-			CORE.info('SessionClient: connected to UMC server')
+			CORE.info( 'SessionClient: connected to UMC server' )
 		else:
-			CORE.error('SessionClient: connection to UMC server failed')
+			CORE.error( 'SessionClient: connection to UMC server failed' )
 		self._auth_response = None
 		self._auth_response_queue = None
 		self._requestid2response_queue = {}
+		self._timeout = timeout * 1000
+		self._timeout_id = None
+		self.renew_timer()
+
+	def renew_timer( self ):
+		"""Refresh the session timer. If there is already a timer
+		running it is removed before the new timer is set up"""
+		if self._timeout_id is not None:
+			notifier.timer_remove( self._timeout_id )
+		self._timeout_id = notifier.timer_add( self._timeout, self._timed_out )
+
+	def _timed_out( self ):
+		"""Timer event: the session has expired and therefor the
+		connection to the UMC server is closed as long as there are no
+		open requests."""
+		CORE.info( 'Session timed out!' )
+		if self._requestid2response_queue:
+			CORE.info( 'There are open requests (%s). Postpone session shutdown' % ','.join( self._requestid2response_queue.keys() ) )
+			self._timeout = 0 # wait until all requests are answered
+		else:
+			CORE.info( 'Closing connection to UMC server' )
+			self.client.disconnect()
+		return False
 
 	def _authenticated(self, success, status, message):
 		CORE.error('SessionClient: _authenticated: success=%s  status=%s  message=%s' % (success, status, message) )
@@ -111,20 +110,6 @@ class SessionClient(object):
 		self._auth_response_queue = response_queue
 		self.client.authenticate( request.body[ 'username' ], request.body[ 'password' ] )
 
-	def _closed(self):
-		global _sessionclients
-		CORE.error('SessionClient: lost connection to UMC server')
-
-		# remove client from global dict _sessionclients
-		#TODO: client should not manipulate the _sessionclients, this should
-		#      be done elsewhere, e.g., in the dispatcher
-		sessionID = None
-		for iid, v in _sessionclients.iteritems():
-			if v == self:
-				sessionID = iid
-		if sessionID:
-			del _sessionclients[sessionID]
-
 	def _response(self, response):
 		if not response.id in self._requestid2response_queue:
 			CORE.error('SessionClient: could not find request id for response %s, status %d:' % ( str( response.id ), response.status ) )
@@ -134,21 +119,27 @@ class SessionClient(object):
 			# remove response_queue from internal mapping
 			self.cleanup_request( response )
 
+		# shutdown connection when the session is expired and there are no open requests
+		if self._timeout == 0 and not self._requestid2response_queue:
+			self.client.disconnect()
+
 	def send_request(self, request, response_queue):
 		CORE.info('SessionClient: sending request with id=%s' % request.id)
 		self._requestid2response_queue[request.id] = response_queue
 		self.client.request( request )
+		self.renew_timer()
 
 	def cleanup_request(self, request):
 		del self._requestid2response_queue[request.id]
 
 
-class UMCP_Dispatcher(object):
-	def __init__(self):
-		pass
+class UMCP_Dispatcher( object ):
+	"""Dispatcher used to exchange the requests between CherryPy and UMC"""
+	sessions = {}
 
-	def check_queue(self):
-		global _sessionclients, _sessionidcounter, _queue_send
+	@staticmethod
+	def check_queue():
+		global _queue_send
 		while _queue_send.qsize():
 			CORE.info('UMCP_Dispatcher: check_queue: new object in queue')
 			try:
@@ -157,7 +148,7 @@ class UMCP_Dispatcher(object):
 				# Queue is empty - nothing to do
 				return
 
-			if not type(queuerequest.sessionid) == str and not queuerequest.sessionid == None:
+			if not type(queuerequest.sessionid) == str and queuerequest.sessionid is not None:
 				CORE.error('UMCP_Dispatcher: check_queue: got invalid sessionid: %s' % repr(queuerequest.sessionid))
 			if not isinstance(queuerequest.request, umcp.Request):
 				CORE.error('UMCP_Dispatcher: check_queue: got invalid UMCP request: %s' % repr(queuerequest.request))
@@ -165,7 +156,7 @@ class UMCP_Dispatcher(object):
 				CORE.error('UMCP_Dispatcher: check_queue: got invalid response_queue: %s' % repr(queuerequest.response_queue))
 
 			# stop here if sessionid is missing or unknown and request is no AUTH request
-			if ( not queuerequest.sessionid or not queuerequest.sessionid in _sessionclients.keys() ) and not queuerequest.request.command == 'AUTH':
+			if ( not queuerequest.sessionid or not queuerequest.sessionid in UMCP_Dispatcher.sessions.keys() ) and not queuerequest.request.command == 'AUTH':
 				CORE.error('UMCP_Dispatcher: check_queue: invalid session: sessionid=%s' % repr(queuerequest.sessionid))
 				response = umcp.Response( queuerequest.request )
 				response.status = 401 # set status to unauthorized
@@ -178,11 +169,12 @@ class UMCP_Dispatcher(object):
 				if not queuerequest.sessionid:
 					CORE.info('UMCP_Dispatcher: check_queue: creating new sessionid')
 					# FIXME: create nice session id via uuid or something else
-					queuerequest.sessionid = '%d' % _sessionidcounter
-					_sessionidcounter += 1
+					queuerequest.sessionid = str( uuid.uuid4() )
 				# create new session / umcp client
-				_sessionclients[ queuerequest.sessionid ] = SessionClient()
-				client = _sessionclients.get(queuerequest.sessionid)
+				UMCP_Dispatcher.sessions[ queuerequest.sessionid ] = SessionClient()
+				client = UMCP_Dispatcher.sessions.get(queuerequest.sessionid)
+				callback = notifier.Callback( UMCP_Dispatcher.cleanup_session, queuerequest.sessionid )
+				client.client.signal_connect( 'closed', callback )
 
 				# save new sessionid in UMCP request so it can be returned after authentication
 				queuerequest.request.body['sessionid'] = queuerequest.sessionid
@@ -190,7 +182,7 @@ class UMCP_Dispatcher(object):
 			else:
 				# COMMAND / GET / SET request
 				CORE.info('UMCP_Dispatcher: check_queue: normal request')
-				client = _sessionclients.get(queuerequest.sessionid)
+				client = UMCP_Dispatcher.sessions.get(queuerequest.sessionid)
 				try:
 					client.send_request( queuerequest.request, queuerequest.response_queue )
 				except umcp.client.NotAuthenticatedError:
@@ -202,23 +194,34 @@ class UMCP_Dispatcher(object):
 
 		return True
 
+	@staticmethod
+	def cleanup_session( sessionid ):
+		"""Removes a session when the connection to the UMC server has died or the session is expired"""
+		CORE.info( 'Open sessions: %s' % ','.join( UMCP_Dispatcher.sessions.keys() ) )
+		CORE.info( 'Cleaning up session %s' % sessionid )
+		if sessionid in UMCP_Dispatcher.sessions:
+			del UMCP_Dispatcher.sessions[ sessionid ]
+		else:
+			CORE.info( 'Session %s not found' % sessionid )
 
 class QueueRequest(object):
+	"""Element for the request queue containing the assoziated session
+	ID, the request object and a response queue."""
 	def __init__(self, sessionid, request, response_queue):
 		self.sessionid = sessionid
 		self.request = request
 		self.response_queue = response_queue
 
 def update_session_cookie(cookiejar, sessionid):
+	"""Defines a new cookie for the given session ID."""
 	cookiejar['UMCSessionId'] = sessionid
 	try:
 		cookiejar['UMCSessionId']['max-age'] = int( configRegistry.get( 'umc/http/session/timeout', 300 ) )
 	except TypeError, ValueError:
+		CORE.error( 'Failed to read session timeout from UCR variable umc/http/session/timeout. Using default of 300 seconds' )
 		cookiejar['UMCSessionId']['max-age'] = 300
 	cookiejar['UMCSessionId']['version'] = 1
 	cookiejar['UMCSessionId']['path'] = '/'
-	# TODO FIXME set session timeout via UCR variable
-
 
 class CPgeneric(object):
 	name = 'CPgeneric'
@@ -344,79 +347,6 @@ class CPCommand(CPgeneric):
 		return req
 
 
-# class CPCommand(object):
-# 	@cherrypy.expose
-# 	def default(self, *args):
-# 		global _queue_send
-# 		remote = cherrypy.request.remote
-# 		CORE.info('CPRoot/command: got new request (%s:%s <=> %s)' % (remote.ip, remote.port, remote.name))
-
-# 		cookie = cherrypy.request.cookie
-# 		if cookie.get('UMCSessionId'):
-# 			sessionid = cookie['UMCSessionId'].value
-# 			CORE.info('CPRoot/command: sessionid="%s"' % (sessionid))
-# 		else:
-# 			# a sessionid is required to use this command
-# 			CORE.info('CPRoot/command: no sessionid found')
-# 			raise cherrypy.HTTPError(401)
-
-# 		if not cherrypy.request.headers.get(u"Content-Length", u""):
-# 			CORE.error('CPRoot/command: missing Content-Length header')
-# 			raise cherrypy.HTTPError(411)
-
-# 		# get body and parse json
-# 		body = ''
-# 		if cherrypy.request.body:
-# 			body = cherrypy.request.body.read()
-
-# 		try:
-# 			json = simplejson.loads(body)
-# 		except ValueError:
-# 			CORE.error('CPRoot/auth: cannot parse JSON body')
-# 			raise cherrypy.HTTPError(400, 'Invalid JSON document')
-
-# 		command = cherrypy.request.path_info
-# 		if command.startswith('/command'):
-# 			command = command[9:]
-# 		CORE.info('CPRoot/command: request: command=%s' % command )
-# 		CORE.info('CPRoot/command: json=%s' % json)
-
-# 		if not command:
-# 			CORE.error('CPRoot/command: request: command is empty')
-# 			raise cherrypy.HTTPError(404)
-
-# 		# create new UMCP request
-# 		req = umcp.Command( [ command ], opts = json )
-
-# 		# create new response queue
-# 		response_queue = Queue.Queue()
-
-# 		# send request to UMC server
-# 		request = QueueRequest(sessionid, req, response_queue)
-# 		_queue_send.put(request)
-
-# 		CORE.info('CPRoot/command: pushed request %s to queue - waiting for response (sessionid="%s")' % (request.id, sessionid))
-# 		response = response_queue.get()
-# 		CORE.info('CPRoot/command: got response %s with status %s (sessionid="%s")' % (response.id, response.status, sessionid))
-
-# 		if response.status == 200:
-# 			update_session_cookie(cherrypy.response.cookie, sessionid)
-# 			return "I got my response: %s<br>\n%s" % (response.status, response)
-
-# 		elif response.status == 410:
-# 			# user is unauthorized
-# 			raise cherrypy.HTTPError(401)
-
-# 		elif response.status == 401:
-# 			# unknown command
-# 			CORE.error('CPRoot/command: unknown command: %s (response.status=%s)' % (command, response.status))
-# 			raise cherrypy.HTTPError(404)
-
-# 		# something bad happened
-# 		CORE.error('CPRoot/command: unhandled response status: %s' % response.status)
-# 		raise cherrypy.HTTPError(500)
-
-
 class CPAuth(object):
 	@cherrypy.expose
 	def default(self):
@@ -442,7 +372,6 @@ class CPAuth(object):
 			raise cherrypy.HTTPError(400, 'Invalid JSON document')
 
 		CORE.info('CPRoot/command: request: command=%s' % cherrypy.request.path_info )
-		CORE.info('CPRoot/command: json=%s' % json)
 
 		# create new UMCP request
 		req = umcp.Request( 'AUTH' )
@@ -467,80 +396,6 @@ class CPAuth(object):
 
 		CORE.error('CPRoot/auth: username: %s, status code: %s' % (json.get('username'), response.status))
 		raise cherrypy.HTTPError(response.status, response.message)
-
-
-# class CPGet(object):
-# 	@cherrypy.expose
-# 	def default(self, *args):
-# 		global _queue_send
-# 		remote = cherrypy.request.remote
-# 		CORE.info('CPRoot/get: got new request (%s:%s <=> %s)' % (remote.ip, remote.port, remote.name))
-
-# 		cookie = cherrypy.request.cookie
-# 		if cookie.get('UMCSessionId'):
-# 			sessionid = cookie['UMCSessionId'].value
-# 			CORE.info('CPRoot/get: sessionid="%s"' % (sessionid))
-# 		else:
-# 			# a sessionid is required to use this command
-# 			CORE.info('CPRoot/get: no sessionid found')
-# 			raise cherrypy.HTTPError(401)
-
-# 		if not cherrypy.request.headers.get(u"Content-Length", u""):
-# 			CORE.error('CPRoot/get: missing Content-Length header')
-# 			raise cherrypy.HTTPError(411)
-
-# 		# get body and parse json
-# 		body = ''
-# 		if cherrypy.request.body:
-# 			body = cherrypy.request.body.read()
-
-# 		try:
-# 			json = simplejson.loads(body)
-# 		except ValueError:
-# 			CORE.error('CPRoot/auth: cannot parse JSON body')
-# 			raise cherrypy.HTTPError(400, 'Invalid JSON document')
-
-# 		command = cherrypy.request.path_info
-# 		if command.startswith('/get'):
-# 			command = command[9:]
-# 		CORE.info('CPRoot/get: request: command=%s' % command )
-# 		CORE.info('CPRoot/get: json=%s' % json)
-
-# 		if not command:
-# 			CORE.error('CPRoot/get: request: command is empty')
-# 			raise cherrypy.HTTPError(404)
-
-# 		# create new UMCP request
-# 		req = umcp.Request( 'GET', args = [ command ] )
-
-# 		# create new response queue
-# 		response_queue = Queue.Queue()
-
-# 		# send request to UMC server
-# 		request = QueueRequest(sessionid, req, response_queue)
-# 		_queue_send.put(request)
-
-# 		CORE.info('CPRoot/get: pushed request %s to queue - waiting for response (sessionid="%s")' % (request.id, sessionid))
-# 		response = response_queue.get()
-# 		CORE.info('CPRoot/get: got response %s with status %s (sessionid="%s")' % (response.id, response.status, sessionid))
-
-# 		if response.status == 200:
-# 			update_session_cookie(cherrypy.response.cookie, sessionid)
-# 			return "I got my response: %s<br>\n%s" % (response.status, response)
-
-# 		elif response.status == 410:
-# 			# user is unauthorized
-# 			raise cherrypy.HTTPError(401)
-
-# 		elif response.status == 401:
-# 			# unknown command
-# 			CORE.error('CPRoot/get: unknown command: %s (response.status=%s)' % (command, response.status))
-# 			raise cherrypy.HTTPError(404)
-
-# 		# something bad happened
-# 		CORE.error('CPRoot/get: unhandled response status: %s' % response.status)
-# 		raise cherrypy.HTTPError(500)
-
 
 class CPRoot(object):
 	def index(self):
@@ -631,9 +486,8 @@ class UMC_HTTP_Daemon(DaemonRunner):
 
 		try:
 			# start notifier loop
-			umcp_dispatcher = UMCP_Dispatcher()
 			notifier.init( notifier.GENERIC )
-			notifier.dispatcher_add( umcp_dispatcher.check_queue )
+			notifier.dispatcher_add( UMCP_Dispatcher.check_queue )
 			notifier.loop()
 		except (SystemExit, KeyboardInterrupt), e:
 			# stop the web server

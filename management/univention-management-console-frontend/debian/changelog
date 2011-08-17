@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.8-1) unstable; urgency=low
+
+  * code cleanup
+  * generate UUID's for session keys
+  * close connections to UMC server after session timeout exired; Bug #22971
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 17 Aug 2011 15:43:18 +0200
+
 univention-management-console-frontend (1.0.7-1) unstable; urgency=low
 
   * added class umc.widgets.TabbedModule (Bug #22461)
