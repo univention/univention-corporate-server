@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.7-1) unstable; urgency=low
+
+  * added class umc.widgets.TabbedModule (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 17 Aug 2011 12:02:41 +0200
+
 univention-management-console-frontend (1.0.6-2) unstable; urgency=low
 
   * added univention-management-console-frontend-dev binary package that can be
