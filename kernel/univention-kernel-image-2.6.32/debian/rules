@@ -38,18 +38,10 @@ amd64_SOURCE_VERSION := 2.6.32
 amd64_VERSION := 2.6.32-${ABI}-amd64
 amd64_VERSION_64 := 2.6.32-${ABI}-amd64
 amd64_VERSION_XEN := 2.6.32-${ABI}-xen-amd64
-amd64_VERSION_MANAGEDCLIENT := 2.6.32-${ABI}-amd64
-amd64_VERSION_MANAGEDCLIENT_64 := 2.6.32-${ABI}-amd64
-amd64_VERSION_MOBILECLIENT := 2.6.32-${ABI}-amd64
-amd64_VERSION_MOBILECLIENT_64 := 2.6.32-${ABI}-amd64
 i386_SOURCE_VERSION := 2.6.32
 i386_VERSION := 2.6.32-${ABI}-686
 i386_VERSION_64 := 2.6.32-${ABI}-686-bigmem
 i386_VERSION_XEN := 2.6.32-${ABI}-xen-686
-i386_VERSION_MANAGEDCLIENT := 2.6.32-${ABI}-686
-i386_VERSION_MANAGEDCLIENT_64 := 2.6.32-${ABI}-686-bigmem
-i386_VERSION_MOBILECLIENT := 2.6.32-${ABI}-686
-i386_VERSION_MOBILECLIENT_64 := 2.6.32-${ABI}-686-bigmem
 
 DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
@@ -58,12 +50,6 @@ SOURCEVERSION := ${${DEB_BUILD_ARCH}_SOURCE_VERSION}
 KERNELVERSION := ${${DEB_BUILD_ARCH}_VERSION}
 KERNELVERSION64 := ${${DEB_BUILD_ARCH}_VERSION_64}
 KERNELVERSIONXEN := ${${DEB_BUILD_ARCH}_VERSION_XEN}
-SOURCEVERSION_MANAGEDCLIENT := ${${DEB_BUILD_ARCH}_SOURCE_VERSION}
-KERNELVERSION_MANAGEDCLIENT := ${${DEB_BUILD_ARCH}_VERSION_MANAGEDCLIENT}
-KERNELVERSION_MANAGEDCLIENT64 := ${${DEB_BUILD_ARCH}_VERSION_MANAGEDCLIENT_64}
-SOURCEVERSION_MOBILECLIENT := ${${DEB_BUILD_ARCH}_SOURCE_VERSION}
-KERNELVERSION_MOBILECLIENT := ${${DEB_BUILD_ARCH}_VERSION_MOBILECLIENT}
-KERNELVERSION_MOBILECLIENT64 := ${${DEB_BUILD_ARCH}_VERSION_MOBILECLIENT_64}
 
 configure:
 
@@ -131,61 +117,6 @@ ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-kernel-source-2.6.32-64gb -u-VF:KernelVersion64="${SOURCEVERSION}"
 	dh_md5sums -punivention-kernel-source-2.6.32-64gb
 	dh_builddeb -punivention-kernel-source-2.6.32-64gb
-
-endif
-
-	# Mobileclient kernel packages
-	dh_gencontrol -punivention-kernel-image-mobileclient-2.6.32 -u-VF:KernelVersion="${KERNELVERSION_MOBILECLIENT}"
-	dh_md5sums -punivention-kernel-image-mobileclient-2.6.32
-	dh_builddeb -punivention-kernel-image-mobileclient-2.6.32
-
-	dh_gencontrol -punivention-kernel-headers-mobileclient-2.6.32 -u-VF:KernelVersion="${KERNELVERSION_MOBILECLIENT}"
-	dh_md5sums -punivention-kernel-headers-mobileclient-2.6.32
-	dh_builddeb -punivention-kernel-headers-mobileclient-2.6.32
-
-	dh_gencontrol -punivention-kernel-source-mobileclient-2.6.32 -u-VF:KernelVersion="${SOURCEVERSION_MOBILECLIENT}"
-	dh_md5sums -punivention-kernel-source-mobileclient-2.6.32
-	dh_builddeb -punivention-kernel-source-mobileclient-2.6.32
-
-ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
-	dh_gencontrol -punivention-kernel-image-mobileclient-2.6.32-64gb -u-VF:KernelVersion64="${KERNELVERSION_MOBILECLIENT64}"
-	dh_md5sums -punivention-kernel-image-mobileclient-2.6.32-64gb
-	dh_builddeb -punivention-kernel-image-mobileclient-2.6.32-64gb
-
-	dh_gencontrol -punivention-kernel-headers-mobileclient-2.6.32-64gb -u-VF:KernelVersion64="${KERNELVERSION_MOBILECLIENT64}"
-	dh_md5sums -punivention-kernel-headers-mobileclient-2.6.32-64gb
-	dh_builddeb -punivention-kernel-headers-mobileclient-2.6.32-64gb
-
-	dh_gencontrol -punivention-kernel-source-mobileclient-2.6.32-64gb -u-VF:KernelVersion64="${SOURCEVERSION_MOBILECLIENT}"
-	dh_md5sums -punivention-kernel-source-mobileclient-2.6.32-64gb
-	dh_builddeb -punivention-kernel-source-mobileclient-2.6.32-64gb
-endif
-
-	# Managedclient kernel packages
-	dh_gencontrol -punivention-kernel-image-managedclient-2.6.32 -u-VF:KernelVersion="${KERNELVERSION_MANAGEDCLIENT}"
-	dh_md5sums -punivention-kernel-image-managedclient-2.6.32
-	dh_builddeb -punivention-kernel-image-managedclient-2.6.32
-
-	dh_gencontrol -punivention-kernel-headers-managedclient-2.6.32 -u-VF:KernelVersion="${KERNELVERSION_MANAGEDCLIENT}"
-	dh_md5sums -punivention-kernel-headers-managedclient-2.6.32
-	dh_builddeb -punivention-kernel-headers-managedclient-2.6.32
-
-	dh_gencontrol -punivention-kernel-source-managedclient-2.6.32 -u-VF:KernelVersion="${SOURCEVERSION_MANAGEDCLIENT}"
-	dh_md5sums -punivention-kernel-source-managedclient-2.6.32
-	dh_builddeb -punivention-kernel-source-managedclient-2.6.32
-
-ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
-	dh_gencontrol -punivention-kernel-image-managedclient-2.6.32-64gb -u-VF:KernelVersion64="${KERNELVERSION_MANAGEDCLIENT64}"
-	dh_md5sums -punivention-kernel-image-managedclient-2.6.32-64gb
-	dh_builddeb -punivention-kernel-image-managedclient-2.6.32-64gb
-
-	dh_gencontrol -punivention-kernel-headers-managedclient-2.6.32-64gb -u-VF:KernelVersion64="${KERNELVERSION_MANAGEDCLIENT64}"
-	dh_md5sums -punivention-kernel-headers-managedclient-2.6.32-64gb
-	dh_builddeb -punivention-kernel-headers-managedclient-2.6.32-64gb
-
-	dh_gencontrol -punivention-kernel-source-managedclient-2.6.32-64gb -u-VF:KernelVersion64="${SOURCEVERSION_MANAGEDCLIENT}"
-	dh_md5sums -punivention-kernel-source-managedclient-2.6.32-64gb
-	dh_builddeb -punivention-kernel-source-managedclient-2.6.32-64gb
 
 endif
 
