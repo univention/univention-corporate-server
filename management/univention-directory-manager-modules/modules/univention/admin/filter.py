@@ -219,8 +219,14 @@ def replace_fqdn_filter( filter_s ):
 		match = FQDN_REGEX.match( str( filter_s ) )
 		if match:
 			prefix, value, suffix = match.groups()
-			host, domain = value.split( '.', 1 )
-			fqdn_filter = '(&(cn=%s)(associatedDomain=%s))' % ( host, domain )
+			if value.find( '.' ) >= 0:
+				host, domain = value.split( '.', 1 )
+				operator = '&'
+			else:
+				host = value
+				domain = value
+				operator = '|'
+			fqdn_filter = '(%s(cn=%s)(associatedDomain=%s))' % ( operator, host, domain )
 			return prefix + fqdn_filter + suffix
 
 	return filter_s

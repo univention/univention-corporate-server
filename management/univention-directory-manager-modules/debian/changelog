@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.216-1) unstable; urgency=low
+
+  * the search filter for the attribute fqdn does not require to contain a
+    '.' anymore; Bug #22139
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 17 Aug 2011 11:50:58 +0200
+
 univention-directory-manager-modules (6.0.215-1) unstable; urgency=low
 
   * update license handling: deactivated accounts are not counted (Bug #22457)
