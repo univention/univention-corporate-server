@@ -42,20 +42,12 @@ SAMBA_PRIVILEGES = {
 	"SeBackupPrivilege"         : { "number" :   2, "index" : 1 },
 	"SeRestorePrivilege"        : { "number" :   4, "index" : 1 },
 	"SeRemoteShutdownPrivilege" : { "number" :   1, "index" : 1 },
+	"SeSecurityPrivilege"       : { "number" :  16, "index" : 1 },
 	"SePrintOperatorPrivilege"  : { "number" :  32, "index" : 0 },
 	"SeDiskOperatorPrivilege"   : { "number" : 128, "index" : 0 },
 }
 
-ALL_SAMBA_PRIVILEGES = [
-	"SeMachineAccountPrivilege",
-	"SeAddUsersPrivilege",
-	"SeTakeOwnershipPrivilege",
-	"SeBackupPrivilege",
-	"SeRestorePrivilege",
-	"SeRemoteShutdownPrivilege",
-	"SePrintOperatorPrivilege",
-	"SeDiskOperatorPrivilege",
-]
+ALL_SAMBA_PRIVILEGES = SAMBA_PRIVILEGES.keys()
 
 SAMBA_POLICY_TDB = "/var/lib/samba/account_policy.tdb"
 
@@ -92,7 +84,7 @@ def handler(dn, new, old):
 		# removed
 		if not newPrivs and oldPrivs:
 			univention.debug.debug(where, level, "%s: remove all samba privs (%s)" % (name, sid))
-			removePrivileges(sid, ALL_SAMBA_PRIVILEGES)
+			removePrivileges(sid, oldPrivs)
 		# added
 		if newPrivs and not oldPrivs:
 			univention.debug.debug(where, level, "%s: add new samba privs (%s)" % (name, sid))
