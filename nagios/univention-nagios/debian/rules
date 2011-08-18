@@ -51,10 +51,6 @@ override_dh_auto_clean:
 	rm -f usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper
 
 override_dh_auto_install:
-	find usr/share/univention-nagios-server/icons/ -type d -name .svn -prune -o -type f -exec cp {} ${DS}/usr/share/univention-nagios-server/icons/ \;
-	make PACKAGE=univention-nagios-server install-modules
-	make PACKAGE=univention-nagios-server install-locales-backend
-	make PACKAGE=univention-nagios-server install-images
 	univention-install-config-registry
 	univention-install-config-registry-info
 	univention-install-service-info

@@ -1,3 +1,9 @@
+univention-nagios (5.0.6-2) unstable; urgency=low
+
+  * cleanup join script and rules file and remove Makefile; Bug #22253
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 18 Aug 2011 16:09:27 +0200
+
 univention-nagios (5.0.6-1) unstable; urgency=low
 
   * removed old UMC Nagios wizard

@@ -110,44 +110,11 @@ univention-directory-manager container/cn create "$@" --ignore_exists --position
 univention-directory-manager container/cn create "$@" --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=operations
 univention-directory-manager container/cn create "$@" --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1
 
-# create nagios operations
-univention-directory-manager settings/console_operation create "$@" --ignore_exists \
-	--position cn=operations,cn=console,cn=univention,$ldap_base \
-	--set name=wizard-nagios \
-	--set description="Nagios Wizard" \
-	--append operation="wizard/nagios/*"
-
-# create nagios operations
-univention-directory-manager settings/console_operation create "$@" --ignore_exists \
-	--position cn=operations,cn=console,cn=univention,$ldap_base \
-	--set name=wizard-basis \
-	--set description="Basis Wizard" \
-	--append operation="wizard/basis/*"
-
-# create nagios wizard acls
-univention-directory-manager settings/console_acl create "$@" --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
-	--set name=wizard-nagios-all \
-	--set category="Wizard Nagios" \
-	--set ldapbase="$ldap_base" \
-	--set command="wizard/nagios/*" \
-	--set description="Nagios Wizard"
-
-
-# default policies
-univention-directory-manager policies/console_access create "$@" --ignore_exists \
-	--position cn=console,cn=policies,$ldap_base \
-	--set name=default-admin
-
-univention-directory-manager policies/console_access modify "$@" --ignore_exists \
-	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
-	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
-
 univention-directory-manager groups/group create "$@" --ignore_exists \
     --position "cn=groups,$ldap_base" \
     --set name="Nagios Admins" \
     --set description="Group of users with permission to access Nagios web interface"
 
 joinscript_save_current_version
-
 
 exit 0
