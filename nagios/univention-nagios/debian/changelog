@@ -1,3 +1,10 @@
+univention-nagios (5.0.6-1) unstable; urgency=low
+
+  * removed old UMC Nagios wizard
+  * add Nagios icon for the UCS overview page; Bug #23253
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 18 Aug 2011 15:57:47 +0200
+
 univention-nagios (5.0.5-1) unstable; urgency=low
 
   * correctly update from nagios2 (Bug #22087)

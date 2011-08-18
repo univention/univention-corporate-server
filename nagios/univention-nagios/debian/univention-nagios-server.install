@@ -1,5 +1,6 @@
 nagios-server.py usr/lib/univention-directory-listener/system/
 26univention-nagios-server.inst usr/lib/univention-install/
+icon/nagios.png /var/www/icon/
 usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool usr/share/univention-nagios-server/tools/
 usr/share/nagios3/htdocs-nuvola/index.html                    usr/share/nagios3/htdocs-nuvola/
 usr/share/nagios3/htdocs-nuvola/license.txt                   usr/share/nagios3/htdocs-nuvola/
