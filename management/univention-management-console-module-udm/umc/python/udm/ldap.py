@@ -148,11 +148,12 @@ class UDM_Module( object ):
 		obj = self.module.object( None, lo, po, superordinate = superordinate )
 		try:
 			obj.open()
-			MODULE.info( 'Creating object with properties: %s' % ldap_object )
+			MODULE.info( 'Creating LDAP object' )
 			for key, value in ldap_object.items():
 				obj[ key ] = value
 			obj.create()
 		except udm_errors.base, e:
+			MODULE.error( 'Failed to create LDAP object: %s' % str( e ) )
 			raise UDM_Error( e.message, obj.dn )
 
 		return obj.dn
@@ -164,9 +165,10 @@ class UDM_Module( object ):
 		obj = self.module.object( None, lo, po, dn = ldap_dn )
 		try:
 			obj.open()
-			MODULE.info( 'Removing object with properties: %s' % ldap_dn )
+			MODULE.info( 'Removing LDAP object %s' % ldap_dn )
 			obj.remove()
 		except udm_errors.base, e:
+			MODULE.error( 'Failed to remove LDAP object %s' % ldap_dn )
 			raise UDM_Error( str( e ) )
 
 	def modify( self, ldap_object ):
@@ -177,11 +179,12 @@ class UDM_Module( object ):
 		del ldap_object[ 'ldap-dn' ]
 		try:
 			obj.open()
-			MODULE.info( 'Modifying object with properties: %s' % ldap_object )
+			MODULE.info( 'Modifying LDAP object %s' % obj.dn )
 			for key, value in ldap_object.items():
 				obj[ key ] = value
 			obj.modify()
 		except udm_errors.base, e:
+			MODULE.error( 'Failed to modify LDAP object %s' % ldap_dn )
 			raise UDM_Error( e.message )
 
 	def search( self, container = None, attribute = None, value = None, superordinate = None, scope = 'sub', filter = '' ):

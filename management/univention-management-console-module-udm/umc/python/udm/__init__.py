@@ -79,6 +79,9 @@ class Instance( Base ):
 		return UDM_Module( module_name )
 
 	def _thread_finished( self, thread, result, request ):
+		"""This method is invoked when a threaded request function is
+		finished. The result is send back to the client. If the result
+		is an instance of BaseException an error is returned."""
 		if not isinstance( result, BaseException ):
 			self.finished( request.id, result )
 		else:

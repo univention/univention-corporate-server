@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.97-1) unstable; urgency=low
+
+  * removed some debug messages that might log sensitive data; Bug #23212
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 18 Aug 2011 11:23:31 +0200
+
 univention-management-console-module-udm (1.0.96-1) unstable; urgency=low
 
   * use new API of UDM modules; Bug #22879
