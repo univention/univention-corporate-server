@@ -1,4 +1,4 @@
-univention-updater (6.0.101-2) unstable; urgency=low
+univention-updater (6.0.102-1) unstable; urgency=low
 
   * do also fetch preup.sh/postup.sh of security updates if
     repository/mirror/version/start has been set to "X.Y.0" (Bug #23084)
