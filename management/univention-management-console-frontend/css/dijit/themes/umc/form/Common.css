@@ -1,0 +1,134 @@
+
+.umc .dijitTextBoxError .dijitValidationContainer {
+  background-color: #d46464;
+  background-image: url('images/error.png');
+  background-position: top center;
+  border: solid #d46464 0;
+  border-left-width: 1px;
+  width: 9px;
+}
+.umc .dijitTextBoxError .dijitValidationIcon {
+  width: 0;
+  background-color: transparent !important;
+  
+}
+.umc .dijitTextArea, .umc .dijitInputField .dijitPlaceHolder {
+  padding: 2px;
+}
+.umc .dijitTextBox .dijitInputField {
+  padding: 1px 2px;
+}
+.dj_gecko .umc .dijitTextBox .dijitInputInner, .dj_webkit .umc .dijitTextBox .dijitInputInner {
+  padding: 1px;
+}
+.umc .dijitTextBox, .umc .dijitTextBox .dijitButtonNode {
+  
+  border-color: #b5bcc7;
+  -webkit-transition-property: background-color, border;
+  -moz-transition-property: background-color, border;
+  transition-property: background-color, border;
+  -webkit-transition-duration: 0.35s;
+  -moz-transition-duration: 0.35s;
+  transition-duration: 0.35s;
+}
+.umc .dijitTextBox {
+  background-color: #ffffff;
+}
+.umc .dijitTextBoxHover, .umc .dijitTextBoxHover .dijitButtonNode {
+  border-color: #769dc0;
+  -webkit-transition-duration: 0.25s;
+  -moz-transition-duration: 0.25s;
+  transition-duration: 0.25s;
+}
+.umc .dijitTextBoxHover {
+  background-color: #e9f4fe;
+  background-image: url('images/textBox_back.png');
+  background-repeat: repeat-x;
+}
+.umc .dijitTextBoxError, .umc .dijitTextBoxError .dijitButtonNode {
+  border-color: #d46464;
+}
+.umc .dijitTextBoxError, .umc .dijitTextBoxError .dijitInputContainer {
+  background-color: #ffffff;
+}
+.umc .dijitTextBoxFocused, .umc .dijitTextBoxFocused .dijitButtonNode {
+  border-color: #769dc0;
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+}
+.umc .dijitTextBoxFocused {
+  background-color: #ffffff;
+  background-image: url('images/textBox_back.png');
+  background-repeat: repeat-x;
+}
+.umc .dijitTextBoxFocused .dijitInputContainer {
+  background: #ffffff;
+}
+.umc .dijitTextBoxErrorFocused, .umc .dijitTextBoxErrorFocused .dijitButtonNode {
+  border-color: #ce4f4f;
+}
+.umc .dijitTextBoxDisabled, .umc .dijitTextBoxDisabled .dijitButtonNode {
+  border-color: #d3d3d3;
+}
+.umc .dijitTextBoxDisabled, .umc .dijitTextBoxDisabled .dijitInputContainer {
+  background-color: #efefef;
+  background-image: none;
+  color: #818181;
+}
+.umc .dijitComboBox .dijitArrowButtonInner {
+  background-image: url("images/commonFormArrows.png");
+  background-position: -35px 53%;
+  background-repeat: no-repeat;
+  margin: 0;
+  width: 16px;
+  border: 1px solid #ffffff;
+}
+.umc .dijitToolbar .dijitComboBox .dijitArrowButtonInner {
+  border: none;
+}
+.umc .dijitToolbar .dijitComboBox .dijitArrowButtonInner {
+  border: none;
+}
+.umc .dijitTextBox .dijitInputInner, .umc .dijitTextBox .dijitValidationContainer {
+  padding: 1px 0;
+}
+.umc .dijitComboBox .dijitButtonNode {
+  background-color: #efefef;
+  background-image: url("images/formHighlight.png");
+  background-repeat: repeat-x;
+}
+.umc .dijitComboBoxOpenOnClickHover .dijitButtonNode, .umc .dijitComboBox .dijitDownArrowButtonHover {
+  background-color: #abd6ff;
+}
+.umc .dijitComboBoxOpenOnClickHover .dijitArrowButtonInner, .umc .dijitComboBox .dijitDownArrowButtonHover .dijitArrowButtonInner {
+  background-position: -70px 53%;
+}
+.umc .dijitComboBox .dijitHasDropDownOpen {
+  background-color: #7dbefa;
+  background-position: 0 -177px;
+  padding: 1px;
+}
+.umc .dijitComboBox .dijitHasDropDownOpen .dijitArrowButtonInner {
+  background-position: -70px 53%;
+  border: 0 none;
+}
+.umc div.dijitComboBoxDisabled .dijitArrowButtonInner {
+  
+  background-position: 0 50%;
+  background-color: #efefef;
+}
+.dj_ff3 .umc .dijitInputField input[type="hidden"] {
+  display: none;
+  height: 0;
+  width: 0;
+}
+.dj_ie6 .umc .dijitTextBox, .dj_ie6 .umc .dijitComboBox .dijitButtonNode {
+  background-image: none;
+}
+.dj_borderbox .umc .dijitComboBox .dijitHasDropDownOpen .dijitArrowButtonInner {
+  width: 18px;
+}
+.dj_borderbox .umc .dijitComboBoxFocused .dijitHasDropDownOpen .dijitArrowButtonInner {
+  width: 16px;
+}

@@ -1,0 +1,16 @@
+
+.umc .dijitContentPane {
+  padding: 8px;
+}
+.umc .dijitTabContainerTop-dijitContentPane,
+.umc .dijitTabContainerLeft-dijitContentPane,
+.umc .dijitTabContainerBottom-dijitContentPane,
+.umc .dijitTabContainerRight-dijitContentPane,
+.umc .dijitAccordionContainer-dijitContentPane {
+  background-color: #ffffff;
+  padding: 8px;
+}
+.umc .dijitSplitContainer-dijitContentPane, .umc .dijitBorderContainer-dijitContentPane {
+  background-color: #ffffff;
+  padding: 8px;
+}

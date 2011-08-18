@@ -1,0 +1,102 @@
+
+.umc .dijitSpinnerButtonContainer {
+  overflow: hidden;
+  position: relative;
+  width: auto;
+  padding: 0 2px;
+}
+.umc .dijitSpinnerButtonContainer .dijitSpinnerButtonInner {
+  border-width: 1px 0;
+  
+  border-style: solid none;
+}
+.umc .dijitSpinner .dijitArrowButton {
+  width: auto;
+  background-color: #efefef;
+  background-image: url("images/formHighlight.png");
+  background-position: 0 0;
+  background-repeat: repeat-x;
+  overflow: hidden;
+}
+.dj_iequirks .umc .dijitSpinner .dijitArrowButton {
+  overflow: visible;
+  
+}
+.umc .dijitSpinner .dijitSpinnerButtonInner {
+  width: 15px;
+}
+.umc .dijitSpinner .dijitArrowButtonInner {
+  border: solid 1px #ffffff;
+  border-bottom-width: 0;
+  
+  background-image: url("images/commonFormArrows.png");
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 15px;
+  padding-left: 1px;
+  padding-right: 1px;
+  
+  background-position: -139px center;
+  
+  display: block;
+  margin: -1px 0 -1px 0;
+  
+}
+.dj_ie6 .umc .dijitSpinner .dijitArrowButtonInner, .dj_ie7 .umc .dijitSpinner .dijitArrowButtonInner {
+  margin-top: 0;
+  
+}
+.dj_iequirks .umc .dijitSpinner .dijitArrowButtonInner {
+  width: 19px;
+}
+.umc .dijitSpinner .dijitDownArrowButton .dijitArrowButtonInner {
+  background-position: -34px;
+}
+.umc .dijitSpinner .dijitArrowButtonInner .dijitInputField {
+  padding: 0;
+}
+.umc .dijitUpArrowButtonActive, .umc .dijitDownArrowButtonActive {
+  background-color: #abd6ff;
+}
+.umc .dijitSpinner .dijitUpArrowButtonHover, .umc .dijitSpinner .dijitDownArrowButtonHover, .umc .dijitSpinnerFocused .dijitArrowButton {
+  background-color: #abd6ff;
+}
+.umc .dijitSpinner .dijitUpArrowButtonHover .dijitArrowButtonInner {
+  background-position: -174px;
+}
+.umc .dijitSpinner .dijitDownArrowButtonHover .dijitArrowButtonInner {
+  background-position: -69px;
+}
+.umc .dijitSpinnerFocused {
+  background-color: #ffffff;
+  background-image: none;
+}
+.umc .dijitSpinner .dijitDownArrowButtonActive, .umc .dijitSpinner .dijitUpArrowButtonActive {
+  background-color: #7dbefa;
+  background-position: 0 -177px;
+}
+.umc .dijitSpinner .dijitUpArrowButtonActive .dijitArrowButtonInner, .umc .dijitSpinner .dijitDownArrowButtonActive .dijitArrowButtonInner {
+  
+  border: 0;
+  padding: 1px;
+  margin-right: 2px;
+  margin-bottom: 1px;
+}
+.umc .dijitSpinner .dijitUpArrowButtonActive .dijitArrowButtonInner {
+  background-position: -173px;
+}
+.umc .dijitSpinner .dijitDownArrowButtonActive .dijitArrowButtonInner {
+  background-position: -68px;
+}
+.umc .dijitSpinnerDisabled .dijitArrowButtonInner {
+  background-color: #efefef;
+}
+.umc .dijitSpinnerDisabled .dijitUpArrowButton .dijitArrowButtonInner {
+  background-position: -104px;
+}
+.umc .dijitSpinnerDisabled .dijitDownArrowButton .dijitArrowButtonInner {
+  background-position: 1px;
+}
+.dj_ie7 .umc .dijitSpinner {
+  overflow: visible;
+}

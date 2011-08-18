@@ -1,0 +1,26 @@
+
+.umc .dijitToolbar .dijitComboButtonRtl .dijitButtonNode {
+  border-width: 0;
+  padding: 2px;
+}
+.umc .dijitToolbar .dijitComboButtonRtlHover .dijitButtonNode, .umc .dijitToolbar .dijitComboButtonRtlActive .dijitButtonNode {
+  border-width: 1px;
+  padding: 1px;
+}
+.umc .dijitToolbar .dijitComboButtonRtl .dijitStretch {
+  
+  -moz-border-radius: 0 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+}
+.umc .dijitToolbar .dijitComboButtonRtl .dijitArrowButton {
+  
+  -moz-border-radius: 2px 0 0 2px;
+  border-radius: 2px 0 0 2px;
+}
+.umc .dijitToolbar .dijitComboButtonRtlHover .dijitArrowButton, .umc .dijitToolbar .dijitComboButtonRtlActive .dijitArrowButton {
+  
+  border-left-width: 1px;
+  border-right-width: 0;
+  padding-left: 1px;
+  padding-right: 2px;
+}

@@ -73,7 +73,7 @@ build-dev: build-common
 	@# index page .. replace the HASH with a timestamp
 	sed 's/%HASH%/_$(timestamp)/; s|%STARTMODULE%|umc/build|' index.html > "$(buildDir)/index.html"
 	@# symlinks for css style sheets and images
-	cp -rfs "$(CURDIR)/css" "$(buildDir)"
+	cp -rfs "$(CURDIR)/css" "$(CURDIR)/images" "$(buildDir)"
 	@# symlinks for UMC code
 	cp -rfs "$(CURDIR)/umc" "$(buildDir)/js"
 	@# symlinks for installed modules/icons

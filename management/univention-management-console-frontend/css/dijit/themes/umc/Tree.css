@@ -1,0 +1,97 @@
+
+.umc .dijitTreeNode {
+  zoom: 1;
+  
+}
+.umc .dijitTreeIsRoot {
+  background-image: none;
+}
+.umc .dijitTreeRow, .umc .dijitTreeNode .dojoDndItemBefore, .umc .dijitTreeNode .dojoDndItemAfter {
+  
+  padding: 4px 1px 2px 0;
+  margin: 0 1px;
+  
+  background-color: none;
+  background-color: transparent;
+  background-color: rgba(171, 214, 255, 0);
+  background-image: url("images/commonHighlight.png");
+  background-position: 0 0;
+  background-repeat: repeat-x;
+  border-color: rgba(118, 157, 192, 0);
+  border-width: 0;
+  -webkit-transition-property: background-color, border-color;
+  -moz-transition-property: background-color, border-color;
+  transition-property: background-color, border-color;
+  -webkit-transition-duration: 0.25s;
+  -moz-transition-duration: 0.25s;
+  transition-duration: 0.25s;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.dj_ie6 .umc .dijitTreeRow {
+  background-image: none;
+}
+.umc .dijitTreeRowSelected {
+  background-repeat: repeat-x;
+  background-color: #cfe5fa;
+  padding: 3px 0 1px;
+  margin: 0;
+  border: solid 1px #769dc0;
+  color: #000000;
+}
+.umc .dijitTreeRowHover {
+  background-color: #abd6ff;
+  padding: 3px 0 1px;
+  margin: 0;
+  border: solid 1px #769dc0;
+  color: #000000;
+  -webkit-transition-duration: 0.25s;
+  -moz-transition-duration: 0.25s;
+  transition-duration: 0.25s;
+}
+.umc .dijitTreeRowActive {
+  background-color: #7dbefa;
+  background-position: 0 -177px;
+  padding: 3px 0 1px;
+  margin-left: 0;
+  border: solid 1px #769dc0;
+  color: #000000;
+}
+.dj_ie6 .umc .dijitTreeRowActive {
+  background-image: none;
+}
+.umc .dijitTreeRowFocused {
+  background-repeat: repeat;
+}
+.umc .dijitTreeExpando {
+  background-image: url('images/treeExpandImages.png');
+  width: 16px;
+  height: 16px;
+  background-position: -35px 0;
+  
+}
+.dj_ie6 .umc .dijitTreeExpando {
+  background-image: url('images/treeExpandImages8bit.png');
+}
+.umc .dijitTreeRowHover .dijitTreeExpandoOpened {
+  background-position: -53px 0;
+}
+.umc .dijitTreeExpandoClosed {
+  background-position: 1px 0;
+}
+.umc .dijitTreeRowHover .dijitTreeExpandoClosed {
+  background-position: -17px 0;
+}
+.umc .dijitTreeExpandoLeaf, .dj_ie6 .umc .dijitTreeExpandoLeaf {
+  background-image: none;
+}
+.umc .dijitTreeExpandoLoading {
+  background-image: url('images/loadingAnimation.gif');
+}
+.umc .dijitTreeNode .dojoDndItemBefore .dijitTreeContent {
+  border-top: 2px solid #769dc0;
+}
+.umc .dijitTreeNode .dojoDndItemAfter .dijitTreeContent {
+  border-bottom: 2px solid #769dc0;
+}

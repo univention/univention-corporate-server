@@ -1,210 +1,303 @@
-/* import other style sheets */
-/*@import url('icons.css');*/
-/*@import url('button.css');*/
-
-/* general definitions */
-html, body
-{
-	height: 100%;
-    width: 100%;
-	height: 100%;
-    border: 0;
-	margin: 0;
-	padding: 0;
-	background-color: #FFFFFF;
-	overflow: hidden;
-	/*background: url('../images/mainBackground.png') repeat-x 0px 0px;*/
+html {
+	background: url(../images/bg/page.png) repeat-y center #eeeeef;
 }
 
-p {
-	margin-top: 0em;
-	margin-bottom: 0.5em;
+body {
+	font-family: Helvetica, "Helvetica Neue", Arial, Geneva, sans-serif;
+	color: #414142;
+}
+
+a {
+	color: #74be4b;
+}
+
+form {
+	margin-bottom: 15px;
 }
 
 .umcTopContainer {
 	height: 100%;
-	max-width: 970px;
-	margin-left: auto;
-	margin-right: auto;
+	width: 960px;
+	margin: 0 auto;
+	background: #fff;
 }
 
-/* the header element and its buttons */
-.umcHeader
-{
-	/*background: url('../images/header.png') no-repeat 0px 0px;*/
-	background-color: #000;
-	padding: 5px !important;
-	height: 25px;
-	text-align: right;
-	color: #FFF;
+.dijitLayoutContainer {
+	overflow: visible !important;
 }
 
-.umcHeaderButton .dijitButtonText {
-	color: #FFF;
+/* @group Header */
+
+.umcHeader {
+	height: 34px;
+	overflow: hidden;
+	background: url(../images/bg/top.png) repeat-x top;
 }
 
-.umcHeaderButton .dijitButtonNode {
-	background: none !important;
-	border: none !important;
-	box-shadow: none !important;
-	-moz-box-shadow: none !important;
-	-webkit-box-shadow: none !important;
+.umcHeader .umcHeaderButton {
+	margin: 0;
 }
 
-/* the footer element */
-.umcFooter
-{
-	background: url('../images/logo.png') bottom right no-repeat;
-	height: 40px;
-	text-align: right;
+.umcHeader .umcHeaderButton .dijitButtonNode {
+	height: auto;
+	background: none;
+	border-radius: 0;
+	border: none;
+	padding: 0;
+	box-shadow: none;
 }
 
-/* define style sheets for umc.widgets.Page */
-.umcPageHeader {
-	border-bottom-style: solid;
-	border-bottom-width: 1px;
-	border-bottom-color: #000;
-	margin-bottom: 10px;
-	padding-bottom: 5px;
+.umcHeader .umcHeaderButton .dijitButtonNode .dijitInline {
+	padding: 9px;
+	font-size: 15px;
+	color: #fff;
+	
+	background: url(../images/bg/top-link.png) repeat-y left 5px;
 }
-.umcPageFooter {
-	border-top-style: solid;
-	border-top-width: 1px;
-	border-top-color: #000;
-	margin-top: 10px;
-	padding-top: 5px;
+.umcHeader .dijitButtonHover,
+.umcHeader .dijitDropdownButtonHover {
+	background-color: #4d4d4f;
 }
 
-/* no border for the top tab container */
-.dijitTabContainerTop-container {
-	border-width: 0px;
+/* Useless spans? */
+.umcHeader .umcHeaderButton .dijitButtonNode .dijitIcon {
+	width: auto;
+	height: auto;
+	padding: 0;
+	background: none;
 }
 
-/* define properties for floating buttons with margins */
-div.modLaunchButton {
-	width: 130px !important;
-	/*height: 80px !important;*/
-	white-space: normal !important; /* allow wrapping of text in button */
-	margin: 5px !important;
-    background-position: 8 center;
-	background-repeat: no-repeat;
-    padding-left:80px;
-    height:80px;
-	list-style: none;
+/* Logout-Button */
+.umcHeader .umcHeaderButton .dijitButtonNode #dijit_form_Button_3_label {
+	padding: 0;
+	background: none;
+}
+
+.umc .umcHeader .dijitButtonText {
 	display: inline-block;
-
-	/**
-	 * hack for IE, see:
-	 * http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
-	 */
-	zoom:1;
-	*display:inline;
+	height: auto;
 }
 
-div.modLaunchButton div {
-	padding-top:30px;
-	/*position: absolute;
-	width:80px;*/
+/* @group User-Dropdown */
+
+#dijit_form_DropDownButton_0 {
+	border-right: 5px solid #313133;
 }
 
-div.modLaunchButtonHover {
-	border-radius: 8px 8px 8px 8px;
-	-moz-border-radius: 8px 8px 8px 8px;
-	background-color: #eee;
+#dijit_form_DropDownButton_0_label {
+	padding-right: 5px;
 }
 
-div.modLaunchButtonClick {
-	background-color: #e8e8e8;
+/* @end */
+
+.umcHeader .umcHeaderButton .dijitButtonNode .dijitArrowButtonInner {
+	width: 8px;
+	height: 5px;
+	padding: 0 10px 0 0;
+	background-image: url(../images/arrow-down.png);
 }
 
-.umcSubmitButton {
-	font-weight: bold !important;
+/* @end */
+
+#dijit_layout_TabContainer_0 {
+	padding: 20px 30px;
 }
 
-/* css data for umc.widgets.LabelPane */
+.umcPageHeader h1 {
+	margin: 15px 0;
+	padding: 0 0 10px 7px;
+	border-bottom: 1px solid #989a9c;
+}
+
+.umcPageHelpText {
+	margin-bottom: 15px;
+}
+
+.dijitTitlePane {
+	margin: 0 0 15px 0;
+}
+
+/* @group Main Icons */
+
+#dijit_layout_TabContainer_0 .modLaunchButton {
+	position: relative;
+	float: left;
+	height: 85px;
+	width: 85px;
+	padding: 15px;
+	margin: 0 30px 20px 0;
+	background-position: center 10px;
+}
+#dijit_layout_TabContainer_0 #umc_widgets__CategoryItem_14 {
+	height: 105px;
+}
+
+/* @end */
+
+.modLaunchButton div {
+	margin-top: 70px;
+	text-align: center;
+}
+
+#dijit_layout_TabContainer_0 .modLaunchButtonHover {
+	background-color: #ededee;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
+#dijit_layout_TabContainer_0 .dojoxGridCell .dijitButtonNode {
+	background: none;
+}
+
+#dijit_layout_TabContainer_0 .dojoxGridRowOver tr {
+	background-color: #dedede !important;
+}
+
+.umcGridFooter {
+	margin-bottom: 10px;
+	padding-top: 10px !important;
+	background-color: #ededee;
+	border-top: 1px solid #000;
+	border-bottom: 2px solid #919395;
+}
+
+.umcGridFooter {
+	padding-top: 10px !important;
+}
+
+#dijit_layout_TabContainer_0 .umcGridFooter .dijitButtonNode {
+	padding-top: 0 !important;
+}
+
+/* @group Forms */
+
 .umcLabelPane {
-	margin: 2px 10px 5px 0;
+	margin-right: 5px;
+}
+
+.dijitDialog .dijitTextBox {
+	width: auto;
+}
+
+.dojoxDialog .umcLabelPane {
+	width: auto;
 }
 
 .umcLabelPaneLabelNode {
-	margin-bottom: 2px;
+	margin-bottom: 3px;
 }
 
-/* help text for umc.widgets.Page */
-.umcPageHelpText {
-	margin: 10px 0 10px 0;
+.dijitAlignBottom .umcSubmitButton .dijitButtonText {
+	display: inline-block;
+    height: 13px;
+    padding: 5px 8px 5px;
+	background-color: #74BE4B !important;
+    background-image: url("../images/button.png") !important;
+    background-position: left top !important;
+    background-repeat: repeat-x !important;
+    color: #FFFFFF;
+    font-size: 14px;
+    text-decoration: none !important;
 }
 
-/* adapatation for the drop-down buttons in the grid :) */
-.umcDisplayNone {
-	display: none !important;
+/* @end */
+
+/* @group Dialog */
+
+.dojoxDialog {
+	position: absolute;
+	z-index: 999;
+	outline:0;
+	background-color: #fff;
 }
 
-/* more adapatations for the module widget */
-.umcModulePane {
-	padding: 8px;
+.dijitDialog p {
+	margin-top: 0;
 }
 
-.umcNoBorder {
-	border: 0px !important;
+.dijitDialog form {
+	margin-bottom: 0;
 }
 
-.umcNoPadding {
-	padding: 0px !important;
+.dijitDialog form,
+.dijitDialog #umc_widgets_Text_0 {
+	width: auto !important;
+	margin-top: 0 !important;
 }
 
-/* fix for bug with form submission: http://bugs.dojotoolkit.org/ticket/12331 */
-.dijitOffScreen {
-	visibility: visible !important;
+.dijitDialog .umcLabelPane {
+	margin-bottom: 8px;
 }
 
-/* adaptations for the grid */
-
-.dojoxGridCell {
-	border: none !important;
+.dijitDialog .dijitButtonNode {
+	margin-left: 0 !important;
 }
 
-/* adaptations for the toaster */
-.dijitToasterContainer {
-	width: 300px;
-	/*clip: none !important;*/
-	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
-	-moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
-	-webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
-}
-.dijitToasterContent {
-	font: 12px Myriad,Helvetica,Tahoma,Arial,clean,sans-serif;
-	text-align: center;
-	color: #000;
-	background: url('../images/toasterHeader.png') repeat-x 0px 0px;
-	border: 1px solid #999;
-	border-top: none;
-	background-color: #e8e8e8;
-}
-.dijitToasterContent,
-.dijitToasterContainer {
-	border-radius: 0px 0px 8px 8px;
-	-moz-border-radius: 0px 0px 8px 8px;
-	-webkit-border-radius: 0px 0px 8px 8px;
-}
-.dijitToasterMessage {
-	color: #000;
+/* @group Login */
+
+#umc_widgets_LoginDialog_0 {
+	width: 320px;
+	height: 350px !important;
 }
 
-/* adapatations for the TitlePane in forms for level 1 */
-.umcFormLevel1 .dijitTitlePaneTitle {
-	background-color: transparent;
-	background-image: none;
-	border: none;
-	font-weight: bold;
+#umc_widgets_LoginDialog_0 * {
+	overflow: hidden;
 }
 
-.umcFormLevel1 .dijitTitlePaneContentOuter {
-	border: none;
+#umc_widgets_LoginDialog_0 .dojoxDialogPaneContent {
+	width: 202 !important;
+	height: 320px !important;
+	margin: 0 auto !important;
+	padding: 35px 45px 0 45px !important;
 }
 
-/* force scrollbars for grids */
-.umcGrid .dojoxGridScrollbox {
-	overflow-y: scroll;
-	overflow-x: hidden;
+#umc_widgets_LoginDialog_0 .dojoxDialogPaneContent .contentNode {
+	margin-bottom: 10px;
+}
+
+#umc_widgets_LoginDialog_0 .umcLabelPane {
+	margin-bottom: 0;
+}
+
+#umc_widgets_LoginDialog_0 .dijitTextBox {
+	width: 200px;
+}
+
+#umc_widgets_LoginDialog_0 #umc_widgets_ContainerWidget_4 {
+	margin-top: 10px;
+}
+
+#umc_widgets_LoginDialog_0 .umcSubmitButton {
+	float: right;
+}
+
+#umc_widgets_Button_0_label .dijitButtonNode {
+	background: none;
+}
+
+/* @end */
+
+/* @end */
+
+#dijit_layout_TabContainer_0 .dijitAlignBottom .dijitButtonNode {
+	background: none;
+	color: #414142;
+}
+#dijit_layout_TabContainer_0 .dijitAlignBottom .dijitButtonContents {
+	display: inline;
+}
+#dijit_layout_TabContainer_0 .dijitAlignBottom .dijitButtonText {
+	display: inline-block;
+	padding: 0 0 0 5px;
+	height: auto;
+	text-align: left;
+}
+
+#dijit_layout_TabContainer_0 .dijitAlignBottom .dijitButtonNode .dijitButtonText {
+	text-decoration: underline;
+}
+
+.umcgrid {
+	border-width: 2px;
+	border-bottom-width: 0;
 }

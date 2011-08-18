@@ -1,0 +1,51 @@
+
+.umc .dijitToggleButton .dijitRadio, .umc .dijitToggleButton .dijitRadioIcon {
+  background-image: url('images/checkboxRadioButtonStates.png');
+}
+.dj_ie6 .umc .dijitToggleButton .dijitRadio, .dj_ie6 .umc .dijitToggleButton .dijitRadioIcon {
+  background-image: url('images/checkboxAndRadioButtons_IE6.png');
+}
+.umc .dijitRadio, .umc .dijitRadioIcon {
+  
+  background-image: url('images/checkboxRadioButtonStates.png');
+  
+  background-repeat: no-repeat;
+  width: 15px;
+  height: 15px;
+  margin: 0 2px 0 0;
+  padding: 0;
+}
+.dj_ie6 .umc .dijitRadio, .dj_ie6 .umc .dijitRadioIcon {
+  
+  background-image: url('images/checkboxAndRadioButtons_IE6.png');
+  
+}
+.umc .dijitRadio {
+  
+  background-position: -105px;
+}
+.umc .dijitToggleButton .dijitRadioIcon {
+  
+  background-position: -107px;
+}
+.umc .dijitRadioDisabled {
+  
+  background-position: -165px;
+}
+.umc .dijitRadioHover {
+  
+  background-position: -135px;
+}
+.umc .dijitRadioChecked {
+  background-position: -90px;
+}
+.umc .dijitToggleButtonChecked .dijitRadioIcon {
+  background-position: -92px;
+}
+.umc .dijitRadioCheckedHover {
+  background-position: -120px;
+}
+.umc .dijitRadioCheckedDisabled {
+  
+  background-position: -150px;
+}

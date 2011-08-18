@@ -1,0 +1,33 @@
+
+.umc .dijitEditorIFrameContainer {
+  padding: 3px 3px 1px 10px;
+}
+.umc .dijitEditorIFrame {
+  background-color: #ffffff;
+}
+.umc .dijitEditor {
+  border: 1px solid #b5bcc7;
+}
+.umc .dijitEditor .dijitEditorIFrameContainer {
+  background-color: #ffffff;
+  background-image: url('form/images/textBox_back.png');
+  background-repeat: repeat-x;
+}
+.dj_ie6 .umc .dijitEditor .dijitEditorIFrameContainer {
+  background-image: none;
+}
+.umc .dijitEditorHover .dijitEditorIFrameContainer, .umc .dijitEditorHover .dijitEditorIFrameContainer .dijitEditorIFrame {
+  background-color: #e9f4fe;
+}
+.umc .dijitEditorFocused .dijitEditorIFrameContainer, .umc .dijitEditorFocused .dijitEditorIFrameContainer .dijitEditorIFrame {
+  
+  background-color: #ffffff;
+}
+.umc .dijitEditorDisabled {
+  border: 1px solid #d3d3d3;
+  color: #818181;
+}
+.umc .dijitDisabled .dijitEditorIFrame, .umc .dijitDisabled .dijitEditorIFrameContainer, .umc .dijitDisabled .dijitEditorIFrameContainer .dijitEditorIFrame {
+  background-color: #efefef;
+  background-image: none;
+}
