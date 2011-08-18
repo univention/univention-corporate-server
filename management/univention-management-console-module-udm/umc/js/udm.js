@@ -100,7 +100,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	renderSearchPage: function(containers, superordinates) {
 		// summary:
 		//		Render all GUI elements for the search formular, the grid, and the side-bar
-		//		for the UMD navigation.
+		//		for the UDM navigation.
 
 		// setup search page
 		this._searchPage = new umc.widgets.Page({
