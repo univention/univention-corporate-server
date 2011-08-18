@@ -576,6 +576,10 @@ msgstr "Unter dem primären Monitor"
 msgid "Add machines to domain"
 msgstr "Maschinen zur Domäne hinzufügen"
 
+#: syntax.py:1123
+msgid "Manage auditing and security log"
+msgstr "Verwalten von Überwachungs-und Sicherheitsprotokollen"
+
 #: syntax.py:1124
 msgid "Take ownership of files or other objects"
 msgstr "Besitz von Dateien oder anderen Objekten übernehmen"

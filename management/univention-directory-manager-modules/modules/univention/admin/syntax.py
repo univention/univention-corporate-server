@@ -1121,6 +1121,7 @@ class sambaPrivileges(simple):
 	name='sambaPrivileges'
 	privileges = [
 		{ "name" : "SeMachineAccountPrivilege", "description" : _("Add machines to domain") },
+		{ "name" : "SeSecurityPrivilege",       "description" : _("Manage auditing and security log") },
 		{ "name" : "SeTakeOwnershipPrivilege",  "description" : _("Take ownership of files or other objects") },
 		{ "name" : "SeBackupPrivilege",         "description" : _("Back up files and directories") },
 		{ "name" : "SeRestorePrivilege",        "description" : _("Restore files and directories") },

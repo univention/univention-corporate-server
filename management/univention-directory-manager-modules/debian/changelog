@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.217-1) unstable; urgency=low
+
+  * added samba privilege SeSecurityPrivilege Bug #2619
+
+ -- Felix Botner <botner@univention.de>  Thu, 18 Aug 2011 12:49:40 +0200
+
 univention-directory-manager-modules (6.0.216-1) unstable; urgency=low
 
   * the search filter for the attribute fqdn does not require to contain a
