@@ -98,9 +98,10 @@ class UniventionMirror( UniventionUpdater ):
 
 		repos = self._iterate_version_repositories(start, end, parts, archs) # returns generator
 
+		start_sec = UCS_Version((start.major, start.minor, 1))  # security updates start with 'sec1'
 		end_sec = UCS_Version((end.major, end.minor, 99)) # get all available for mirror
 		hotfixes = self.hotfixes
-		sec = self._iterate_security_repositories(start, end_sec, parts, archs, hotfixes) # returns generator
+		sec = self._iterate_security_repositories(start_sec, end_sec, parts, archs, hotfixes) # returns generator
 
 		components = self.get_components()
 		comp = self._iterate_component_repositories(components, start, end, archs, for_mirror_list=True) # returns generator

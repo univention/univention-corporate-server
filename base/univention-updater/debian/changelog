@@ -1,3 +1,10 @@
+univention-updater (6.0.101-2) unstable; urgency=low
+
+  * do also fetch preup.sh/postup.sh of security updates if
+    repository/mirror/version/start has been set to "X.Y.0" (Bug #23084)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 18 Aug 2011 17:52:29 +0200
+
 univention-updater (6.0.101-1) unstable; urgency=low
 
   * Hide output of external ucr (Bug #23202)
