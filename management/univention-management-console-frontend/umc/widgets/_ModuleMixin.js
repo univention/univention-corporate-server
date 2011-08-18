@@ -12,7 +12,7 @@ dojo.declare("umc.widgets._ModuleMixin", null, {
 
 	// idProperty: String
 	//		Indicates the property to use as the identity property.
-	//		The values of this property should be unique.
+	//		The values of this property need to be unique.
 	idProperty: '',
 
 	// moduleFlavor: String
@@ -42,21 +42,39 @@ dojo.declare("umc.widgets._ModuleMixin", null, {
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
+		this.moduleStore = this.getModuleStore(this.idProperty, this.moduleID, this.moduleFlavor);
+	},
+
+	getModuleStore: function(/*String*/ idProperty, /*String?*/ storePath, /*String?*/ moduleFlavor) {
+		// summary:
+		//		Returns (and if necessary creates) a singleton instance of umc.store.UmcpModuleStore
+		//		for the given path to the store and (if specified) the given flavor.
+		// idProperty: String
+		//		Indicates the property to use as the identity property.
+		//		The values of this property need to be unique.
+		// storePath: String?
+		//		UMCP URL of the module where query, set, remove, put, and add
+		//		methods can be found. By default this is the module ID.
+		// moduleFlavor: String?
+		//		Specifies the module flavor which may need to be communicated to
+		//		the server via `umc.tool.umcpCommand()`.
+		//		(Is specified automatically.)
+
 		// create a singleton for the module store for each flavor; this is to ensure that
 		// the correct flavor of the module is send to the server
-		var path = this.moduleID + '._moduleStores.' + (this.moduleFlavor || 'default');
-		this.moduleStore = dojo.getObject(path, false, umc.modules);
-		if (!this.moduleStore) {
-			this.moduleStore = dojo.store.Observable(new umc.store.UmcpModuleStore({
-				idProperty: this.idProperty,
-				storePath: this.moduleID,
-				umcpCommand: dojo.hitch(this, 'umcpCommand')
+		var stores = dojo.getObject('umc.modules._moduleStores', true);
+		var key = (storePath || this.moduleID) + '@' + (moduleFlavor || 'default');
+		if (!stores[key]) {
+			// the store does not exist, we need to create a new singleton
+			stores[key] = dojo.store.Observable(new umc.store.UmcpModuleStore({
+				idProperty: idProperty,
+				storePath: storePath,
+				umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor ) {
+					return umc.tools.umcpCommand( commandStr, dataObj, handleErrors, flavor || moduleFlavor );
+				}
 			}));
-			dojo.setObject(path, this.moduleStore, umc.modules);
 		}
-
-		// set the css class umcModulePane
-		//this['class'] = (this['class'] || '') + ' umcModulePane';
+		return stores[key];
 	},
 
 	umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor ) {

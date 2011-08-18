@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.11-1) unstable; urgency=low
+
+  * added umc.widgets._ModuleMixin.getModuleStore() (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 18 Aug 2011 18:29:57 +0200
+
 univention-management-console-frontend (1.0.10-1) unstable; urgency=low
 
   * integrated new UMC design into package (Bug #22881)
