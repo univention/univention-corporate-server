@@ -17,6 +17,7 @@ Depends: python-univention-management-console (= ${source:Version}),
  univention-management-console-web-server,
  univention-management-console-module-top,
  univention-management-console-module-reboot,
+ univention-management-console-module-mrtg,
  univention-management-console-module-ucr
 Description: Univention Management Console - Web based computer administration tool
  Univention Console is a web based program to manage computers.

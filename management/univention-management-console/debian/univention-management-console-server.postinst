@@ -45,6 +45,7 @@ univention-config-registry set \
 /usr/sbin/univention-management-console-acls allow --user root \
             --command 'join/*' \
 			--command 'ucr/*' \
+			--command 'mrtg/*' \
 			--command 'service/*'
 
 # ucslint needs this
