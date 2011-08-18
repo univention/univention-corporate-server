@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="mrtg" icon="mrtg" version="1.0">
+	<name>Statistics</name>
+	<description>Show system usage statistics</description>
+	<categories>
+	  <category name="system"/>
+	</categories>
+	<!-- CAUTION: this is a dummy command that is not implemented -->
+	<command name="mrtg/show" function="show">
+	</command>
+  </module>
+</umc>
