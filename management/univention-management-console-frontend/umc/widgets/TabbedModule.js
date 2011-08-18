@@ -12,6 +12,8 @@ dojo.declare("umc.widgets.TabbedModule", [ dijit.layout.TabContainer, umc.widget
 	//		It extends dijit.layout.TabContainer and adds some module specific
 	//		properties/methods.
 
+	// subtabs should be displayed as nested tabs
+	nested: true
 });
 
 
