@@ -49,4 +49,22 @@ univention-config-registry unset umc/web/timeout umc/web/language umc/web/respon
 univention-config-registry set "umc/http/session/timeout?600"
 univention-config-registry set "umc/module/timeout?600"
 
+if dpkg --compare-versions "$2" lt-nl 1.0.8-1; then
+	ucr unregister univention-directory-manager || true
+    dpkg-query -W -f='${Conffiles}' univention-directory-manager | egrep -- '-(en|de)\.html' | sort -u | while read path md5 flag; do
+		# make sure the path exists
+        [ ! -e "$path" ] && continue
+
+		# if the flag "obsolete" is given, we may remove the file immediately
+		if [ "$flag" = obsolete ]; then
+			rm -f "$path"
+			continue
+		fi
+
+		# remove if file has not been modified
+		currentMd5="$(md5sum "$path" | sed -e 's/ .*//')"
+		[ "$currentMd5" = "$md5" ] && rm -f "$path"
+    done
+fi
+
 exit 0

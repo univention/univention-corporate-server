@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.9-2) unstable; urgency=low
+
+  * remove old UCR templates for the UCS overview page of UDM; Bug #23253
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 18 Aug 2011 14:49:31 +0200
+
 univention-management-console-frontend (1.0.9-1) unstable; urgency=low
 
   * added property nested=true to umc.widgets.TabbedModule (Bug #22461)
