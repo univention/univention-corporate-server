@@ -71,7 +71,6 @@ def handler(dn, new, old):
 	if new and not old:
 		if new.get("univentionSambaPrivilegeList") and new.get("sambaSID"):
 			univention.debug.debug(where, level, "%s: add new samba privs (%s)" % (name, new["sambaSID"][0]))
-			removePrivileges(new["sambaSID"][0], ALL_SAMBA_PRIVILEGES)
 			addPrivileges(new["sambaSID"][0], new["univentionSambaPrivilegeList"])
 
 	# modified
