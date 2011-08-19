@@ -7,20 +7,6 @@ univention-directory-manager-modules (7.0.58-1) unstable; urgency=low
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 19 Aug 2011 15:59:20 +0200
 
-univention-directory-manager-modules (7.0.57-1) unstable; urgency=low
-
-  * Rename password change function to change (Bug #22108)
-
- -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Aug 2011 13:51:35 +0200
-
-univention-directory-manager-modules (7.0.56-1) unstable; urgency=low
-
-  * Move password.py from univention-lib to univention-directory-
-    manager-modules (Bug #22521)
-
- -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Aug 2011 12:10:28 +0200
-
->>>>>>> .r26225
 univention-directory-manager-modules (7.0.55-1) unstable; urgency=low
 
   * fix a call to objects.get using the old API; Bug #22879
