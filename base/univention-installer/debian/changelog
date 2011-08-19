@@ -1,3 +1,9 @@
+univention-installer (7.0.37-1) unstable; urgency=low
+
+  * changed text resolution of installer to 100x37 characters (Bug #23120)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 29 Jul 2011 16:11:18 +0200
+
 univention-installer (7.0.36-1) unstable; urgency=low
 
   * Updated translation (Bug #23156)

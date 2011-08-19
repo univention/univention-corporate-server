@@ -1083,20 +1083,20 @@ class content:
 		self.all_results={}
 		self.file=file
 		self.last=last
-		self.width=60
-		self.height=22
-		self.pos_x=(max_x/2)-20
-		self.pos_y=(max_y/2)-11
+		self.width=80
+		self.height=35
+		self.pos_x=(max_x/2)-30
+		self.pos_y=(max_y/2)-17
 		if not self.pos_y:
 			self.pos_y=1
 		self.max_x=max_x
 		self.max_y=max_y
-		self.minX=self.max_x/2-18
-		self.minY=self.max_y/2-9
+		self.minX=self.max_x/2-28
+		self.minY=self.max_y/2-4
 		self.maxWidth=56
 		self.maxHeight=17
-		self.maxX=self.minX+56
-		self.maxY=self.minY+17
+		self.maxX=self.minX+66
+		self.maxY=self.minY+27
 		self.cmdline=cmdline
 		self.pad=curses.newpad(self.height,self.width)
 		self.pad.bkgd(" ",curses.color_pair(4))
@@ -1459,8 +1459,8 @@ class subwin:
 			self.max_x=self.parent.max_x
 			self.max_y=self.parent.max_y
 		else:
-			self.max_x=80
-			self.max_y=25
+			self.max_x=100
+			self.max_y=35
 
 		self.all_results={}
 		self.width=width

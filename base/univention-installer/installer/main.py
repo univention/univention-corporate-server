@@ -334,7 +334,7 @@ class mods:
 
 
 	def mainwin(self):
-		window = curses.newpad(25,80)
+		window = curses.newpad(37,100)
 		window.bkgd(" ",curses.color_pair(4))
 		window.border(' ',' ',curses.MY_HLINE,curses.MY_HLINE,curses.MY_HLINE,curses.MY_HLINE,curses.MY_HLINE,curses.MY_HLINE)
 		return window
@@ -350,7 +350,7 @@ class mods:
 			headLine = headLine + " " + extension
 		headLine = headLine + " (" + codename + ")"
 
-		return objects.headline(headLine,  max_y/2-12,max_x/2-35)
+		return objects.headline(headLine,  max_y/2-18,max_x/2-45)
 
 	def footer(self, last):
 		if last[0]==0: # first
@@ -370,7 +370,7 @@ class mods:
 			elif last[1]==1: # not last
 				text = _(' F1-Help | F11-Back | F12-Next | Strg+c-Exit')
 
-		return objects.footline(text,max_y/2+12,max_x/2-(len(text)/2))
+		return objects.footline(text,max_y/2+18,max_x/2-(len(text)/2))
 
 
 	def draw(self):
@@ -381,21 +381,21 @@ class mods:
 				self.modview[i][0].bgcolor()
 			self.modview[i][0].draw()
 		if self.current == len(self.modules)-1 and self.current == 0:
-			self.window.refresh(0,0,self.max_y/2+12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+			self.window.refresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 			self.footline1.draw()
 		elif self.current == 0:
-			self.window.refresh(0,0,self.max_y/2+12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+			self.window.refresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 			self.footline2.draw()
 		elif self.current == len(self.modules)-1:
-			self.window.refresh(0,0,self.max_y/2+12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+			self.window.refresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 			self.footline3.draw()
 		else:
-			self.window.refresh(0,0,self.max_y/2+12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+			self.window.refresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 			self.footline4.draw()
 		self.obj[self.current].draw()
 
 	def draw_all(self):
-		self.window.refresh(0,0,self.max_y/2-12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+		self.window.refresh(0,0,self.max_y/2-18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 		self.headerline.draw()
 		if self.current == len(self.modules)-1 and self.current == 0:
 			self.footline1.draw()
@@ -418,11 +418,11 @@ class mods:
 					if self.result.has_key(key):
 						for l in depends[key]:
 							if l in self.result[key]:
-								self.modview.append((objects.modline(self.obj[i].modheader(),self.max_y/2-10+count,self.max_x/2-38),self.obj[i].mod_depends()))
+								self.modview.append((objects.modline(self.obj[i].modheader(),self.max_y/2-16+count,self.max_x/2-48),self.obj[i].mod_depends()))
 								count=count+1
 								break
 			else:
-				self.modview.append((objects.modline(self.obj[i].modheader(),self.max_y/2-10+count,self.max_x/2-38),self.obj[i].mod_depends()))
+				self.modview.append((objects.modline(self.obj[i].modheader(),self.max_y/2-16+count,self.max_x/2-48),self.obj[i].mod_depends()))
 				count=count+1
 
 	def start_profile_mode(self):
