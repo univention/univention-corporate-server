@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  entries in the cache
  *
- * Copyright 2004-2011 Univention GmbH
+ * Copyright 2004-2010 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -78,7 +78,7 @@ int cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp)
 {
 	CacheEntryAttribute **attribute;
 	char **module;
-	unsigned char **value;
+	char **value;
 	
 	fprintf(fp, "dn: %s\n", dn);
 	for (attribute=entry->attributes; attribute != NULL && *attribute != NULL; attribute++) {

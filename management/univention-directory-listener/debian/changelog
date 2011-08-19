@@ -1,3 +1,10 @@
+univention-directory-listener (6.0.7-1) unstable; urgency=low
+
+  * Build again against db3 because of some bugs with the db4.8
+    adjustements. See also Bug #23367 (Bug #23160)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Aug 2011 06:37:33 +0200
+
 univention-directory-listener (6.0.6-1) unstable; urgency=low
 
   * Some more db 4.8 adjustements (Bug #22431)

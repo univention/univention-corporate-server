@@ -30,8 +30,8 @@
 # <http://www.gnu.org/licenses/>.
 #
 CC=gcc
-DB_LDADD=-ldb-4.8
-DB_CFLAGS=-I/usr/include/db -DWITH_DB48
+DB_LDADD=-ldb3
+DB_CFLAGS=-I/usr/include/db3 -DWITH_DB3
 DB_OBJS=cache.o cache_entry.o cache_lowlevel.o base64.o
 
 CFLAGS=-g -Wall -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS)

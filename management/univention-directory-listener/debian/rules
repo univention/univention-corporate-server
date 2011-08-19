@@ -50,7 +50,7 @@ override_dh_installinit:
 	dh_installinit -a --no-start -r -u"defaults 50"
 
 override_dh_auto_build:
-	cd src; $(MAKE) clean; $(MAKE) DB_CFLAGS="-I/usr/include/db -DWITH_DB48" DB_LDADD="-ldb-4.8"; cd -
+	cd src; $(MAKE) clean; $(MAKE) DB_CFLAGS="-I/usr/include/db3 -DWITH_DB3" DB_LDADD="-ldb3"; cd -
 	dh_auto_build
 
 override_dh_auto_test:

@@ -100,15 +100,28 @@ static int connect_to_ldap(univention_ldap_parameters_t *lp,
 int notifier_listen(univention_ldap_parameters_t *lp,
 		univention_krb5_parameters_t *kp,
 		int write_transaction_file,
-		univention_ldap_parameters_t *lp_local, CacheMasterEntry master_entry)
+		univention_ldap_parameters_t *lp_local)
 {
+	NotifierID	id;
+
+#ifndef WITH_DB42
+	/* we should only get here, if the cache has previously been
+	   initialized; thus, *some* ID should've been stored in the
+	   cache */
+	cache_get_int("notifier_id", &id, -1);
+	if ((long)id == -1) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get last transaction ID from cache; possibly, it hasn't been initialized yet");
+		return 1;
+	}
+#endif
+
 	for (;;) {
 		NotifierEntry	entry;
 		int		msgid;
 		time_t		timeout = DELAY_LDAP_CLOSE;
 		int		rv;
 
-		if ((msgid = notifier_get_dn(NULL, master_entry.id+1)) < 1)
+		if ((msgid = notifier_get_dn(NULL, id+1)) < 1)
 			break;
 
 		/* wait for data; on timeouts, do maintainance stuff
@@ -122,7 +135,7 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get alive answer");
 						return 1;
 					}
-					notifier_resend_get_dn(NULL, msgid, master_entry.id+1);
+					notifier_resend_get_dn(NULL, msgid, id+1);
 				} else {
 					if (lp->ld != NULL) {
 						ldap_unbind_ext(lp->ld, NULL, NULL);
@@ -151,8 +164,8 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 		}
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "notifier returned = id: %ld\tdn: %s\tcmd: %c", entry.id, entry.dn, entry.command);
 
-		if (entry.id != master_entry.id+1) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "notifier returned transaction id %ld (%ld expected)", entry.id, master_entry.id+1);
+		if (entry.id != id+1) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "notifier returned transaction id %ld (%ld expected)", entry.id, id+1);
 			notifier_entry_free(&entry);
 			return 1;
 		}
@@ -191,8 +204,10 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 			break;
 		}
 
-		master_entry.id = entry.id;
-
+		id = entry.id;
+#ifndef WITH_DB42
+		cache_set_int("notifier_id", id);
+#endif
 		notifier_entry_free(&entry);
 	}
 

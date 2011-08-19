@@ -40,16 +40,19 @@
 #include <stdbool.h>
 
 
-int	cache_init				(void);
-
-typedef struct _CacheMasterEntry {
+#ifdef WITH_DB42
+struct _CacheMasterEntry {
 	NotifierID id;
 	NotifierID schema_id;
 } CacheMasterEntry;
+#endif
 
-int	cache_get_master_entry			(CacheMasterEntry *master_entry);
-int	cache_update_master_entry		(CacheMasterEntry *master_entry, DB_TXN *dptxnp);
-
+int	cache_init				(void);
+#ifdef WITH_DB42
+int	cache_get_master_entry			(CacheMasterEntry	 *master_entry);
+int	cache_update_master_entry		(CacheMasterEntry	 *master_entry,
+						 DB_TXN			 *dptxnp);
+#endif
 int	cache_update_entry			(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);

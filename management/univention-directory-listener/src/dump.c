@@ -63,7 +63,7 @@ void usage(void)
 
 int main(int argc, char* argv[])
 {
-	int debugging = 0, broken_only = 0;
+	int debugging = 0, broken_only = 0, id_only = 0;
 	char *output_file = NULL;
 	FILE *fp;
 	int rv;
@@ -94,6 +94,11 @@ int main(int argc, char* argv[])
 		case 'r':
 			broken_only=1;
 			break;
+#ifdef WITH_DB42
+		case 'i':
+			id_only=1;
+			break;
+#endif
 		default:
 			usage();
 			exit(1);
@@ -127,6 +132,20 @@ int main(int argc, char* argv[])
 	if (cache_init() != 0)
 		exit(1);
 
+#ifdef WITH_DB42
+	if (id_only) {
+
+		CacheMasterEntry master_entry;
+		cache_get_master_entry(&master_entry);
+
+		printf("%ld %ld\n", master_entry.id, master_entry.schema_id);
+		
+	} else {
+
+	cache_print_entries("uid=b95152,cn=users,dc=olb,dc=de");
+
+	exit(0);
+#endif
 		
 	for (rv=cache_first_entry(&cur, &dn, &entry); rv != DB_NOTFOUND;
 			rv=cache_next_entry(&cur, &dn, &entry)) {
@@ -139,6 +158,10 @@ int main(int argc, char* argv[])
 	}
 	cache_free_cursor(cur);
 
+#ifdef WITH_DB42
+	}
+#endif
+	
 	cache_close();
 
 	return 0;

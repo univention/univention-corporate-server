@@ -178,6 +178,29 @@ static void usage(void)
 
 static void convert_cookie(void)
 {
+#ifndef WITH_DB42
+	char *f;
+	struct stat stbuf;
+
+	asprintf(&f, "%s/notifier_id", cache_dir);
+	if (stat(f, &stbuf) != 0) {
+		free(f);
+		asprintf(&f, "%s/cookie", cache_dir);
+		FILE *fp = fopen(f, "r");
+		if (fp != NULL) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "converting cookie file");
+			char buf[1024];
+			int  i;
+			fgets(buf, 1024, fp);
+			fgets(buf, 1024, fp);
+			i = atoi(buf);
+			if (i > 0)
+				cache_set_int("notifier_id", i);
+			fclose(fp);
+		}
+	}
+	free(f);
+#else
 	char *filename;
 	FILE *fp;
 	CacheMasterEntry master_entry;
@@ -214,9 +237,11 @@ static void convert_cookie(void)
 		fclose(fp);
 	} else
 		master_entry.schema_id = 0;
+	free(filename);
 
 	if ((rv=cache_update_master_entry(&master_entry, NULL)) != 0)
 		exit(1); /* XXX */
+#endif
 }
 
 void purge_cache(const char *cache_dir)
@@ -306,7 +331,11 @@ int main(int argc, char* argv[])
 					 write_transaction_file = 0;
 	int				 rv;
 	NotifierID			 id = -1;
+#ifndef WITH_DB42
+	NotifierID			 old_id = -1;
+#else
 	CacheMasterEntry		 master_entry;
+#endif
 	struct stat			 stbuf;
 
 	if (stat("/var/lib/univention-directory-listener/bad_cache", &stbuf) == 0) {
@@ -538,6 +567,7 @@ int main(int argc, char* argv[])
 	signals_unblock();
 
 	/* if no ID is set, assume the database has just been initialized */
+#ifdef WITH_DB42
 	if ((rv=cache_get_master_entry(&master_entry)) == DB_NOTFOUND) {
 		master_entry.id = id;
 		if ((rv=cache_update_master_entry(&master_entry, NULL)) != 0)
@@ -545,9 +575,15 @@ int main(int argc, char* argv[])
 	} else if (rv != 0)
 		exit(1);
 	
+#else
+	cache_get_int("notifier_id", &old_id, -1);
+	if ((long)old_id == -1) {
+		cache_set_int("notifier_id", id);
+	}
+#endif
 	
 	if (!initialize_only) {
-		rv=notifier_listen(lp, kp, write_transaction_file, lp_local, master_entry);
+		rv=notifier_listen(lp, kp, write_transaction_file, lp_local);
 	}
 
 	if (rv != 0)
