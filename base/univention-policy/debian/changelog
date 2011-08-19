@@ -1,3 +1,10 @@
+univention-policy (5.0.4-1) unstable; urgency=low
+
+  * Move policy_result.py from univention-lib to univention-policy
+    (Bug #22521)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Aug 2011 12:32:43 +0200
+
 univention-policy (5.0.3-2) unstable; urgency=low
 
   * add -y to read password files (Bug #23178)

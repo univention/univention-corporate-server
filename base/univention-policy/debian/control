@@ -11,6 +11,8 @@ Build-Depends: debhelper,
  libtool,
  libunivention-debug-dev,
  libunivention-config-dev,
+ python-all,
+ python-support (>= 0.90),
 # ucslint
 
 Package: libunivention-policy0
@@ -42,7 +44,9 @@ Description: UCS - group policy library (development files)
 
 Package: univention-policy-tools
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Provides: ${python:Provides}
+Replaces: python-univention-lib (<< 1.0.16-1)
 Description: UCS - tool to view group policies
  This package includes the univention_policy_result tool
  that displays all group policies for a given DN.

@@ -1,1 +1,2 @@
 usr/bin
+python-lib/*.py usr/share/pyshared/univention/lib
