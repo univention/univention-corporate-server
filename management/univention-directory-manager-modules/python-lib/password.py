@@ -38,12 +38,12 @@ import univention.admin.handlers.users.user
 
 univention.admin.modules.update()
 
-def password_change(username, password):
+def change(username, password):
 	"""
 	Change the password of the given user
 
-	>>> import univention.lib
-	>>> univention.lib.password_change('Administrator', 'secret12345')
+	>>> import univention.lib.password
+	>>> univention.lib.password.change('Administrator', 'secret12345')
 	>>>
 
 	"""
