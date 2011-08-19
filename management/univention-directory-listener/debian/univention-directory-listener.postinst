@@ -74,12 +74,16 @@ fi
 
 call_joinscript 03univention-directory-listener.inst
 
+
 if [ "$1" = "configure" -a -n "$2" ]; then
-	if dpkg --compare-versions "$2" lt 1.12; then
-		/etc/init.d/univention-directory-listener restart
-	else
-		/etc/init.d/univention-directory-listener crestart
+	if dpkg --compare-versions "$2" lt 6.0.7 && dpkg --compare-versions "$2" gt 6.0.0; then
+		# Make UCS 3.0 MS1 users happy
+		mkdir -p /var/univention-backup/listener-cache-ucs_3.0-ms1/
+		mv /var/lib/univention-directory-listener/cache.* /var/univention-backup/listener-cache-ucs_3.0-ms1/
+		mv /var/lib/univention-directory-listener/__* /var/univention-backup/listener-cache-ucs_3.0-ms1/
+		mv /var/lib/univention-directory-listener/log.* /var/univention-backup/listener-cache-ucs_3.0-ms1/
 	fi
+	/etc/init.d/univention-directory-listener crestart
 fi
 
 exit 0
