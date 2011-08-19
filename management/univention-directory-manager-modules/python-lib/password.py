@@ -44,6 +44,7 @@ def change(username, password):
 
 	>>> import univention.lib.password
 	>>> univention.lib.password.change('Administrator', 'secret12345')
+	>>> univention.lib.password.change('Administrator@DOMAIN.DE', 'secret12345')
 	>>>
 
 	"""
@@ -57,7 +58,11 @@ def change(username, password):
 
 	univention.admin.modules.init(lo,pos,module)
 
-	objects = module.lookup(co, lo, 'uid=%s' % username, superordinate=None, unique=1, required=1, timeout=-1, sizelimit=0)
+	if username.find('@') > 0: #krb5Principal
+		filter='krb5PrincipalName=%s' % username
+	else:
+		filter='uid=%s' % username
+	objects = module.lookup(co, lo, filter, superordinate=None, unique=1, required=1, timeout=-1, sizelimit=0)
 
 	# search was unique and required
 	object = objects[0]
