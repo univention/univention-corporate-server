@@ -1,3 +1,10 @@
+univention-lib (1.0.15-1) unstable; urgency=low
+
+  * Move password.py to univention-directory-manager-modules
+    (Bug #22521)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Aug 2011 12:08:27 +0200
+
 univention-lib (1.0.14-1) unstable; urgency=low
 
   * Added a password_change function to univention_lib. (Bug #22108)

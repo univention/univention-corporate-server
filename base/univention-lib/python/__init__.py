@@ -36,4 +36,3 @@ from univention.lib.shell import *
 from univention.lib.policy_result import *
 from univention.lib.locking import *
 from univention.lib.i18n import *
-from univention.lib.password import *
