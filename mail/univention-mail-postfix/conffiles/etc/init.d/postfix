@@ -28,7 +28,7 @@ case "$1" in
 
         # check ucr autostart setting
         if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-                source "/usr/share/univention-config-registry/init-autostart.lib"
+                . "/usr/share/univention-config-registry/init-autostart.lib"
                 check_autostart postfix postfix/autostart
         fi
 
