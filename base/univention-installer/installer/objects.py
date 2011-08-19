@@ -619,6 +619,23 @@ class modline(textline):
 	def active(self):
 		self.pad.bkgd(" ",curses.color_pair(5))
 
+class border:
+	def __init__(self, pos_y, pos_x, width, height):
+		self.pos_x=pos_x
+		self.pos_y=pos_y
+		self.width = width
+		self.height = height
+		self.pad = curses.newpad(self.height, self.width)
+		self.pad.bkgd(" ",curses.color_pair(4))
+		self.pad.border(curses.MY_VLINE,curses.MY_VLINE,curses.MY_HLINE,curses.MY_HLINE,curses.EDGE_TL,curses.EDGE_TR,curses.EDGE_BL,curses.EDGE_BR)
+
+	def draw(self):
+		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
+
+	def usable(self):
+		return 0
+
+
 class help_win:
 	def __init__(self, text, max_y, max_x):
 		self.width = 40
