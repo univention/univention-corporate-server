@@ -1,10 +1,9 @@
 #!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
-# Univention Lib
-#  python module
+# Univention Common Python Library
 #
-# Copyright 2011 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,9 +30,40 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.lib.error import *
-from univention.lib.shell import *
-from univention.lib.policy_result import *
-from univention.lib.locking import *
-from univention.lib.i18n import *
-from univention.lib.password import *
+
+import univention.admin.uldap
+import univention.admin.objects
+import univention.admin.modules
+import univention.admin.handlers.users.user
+
+univention.admin.modules.update()
+
+def password_change(username, password):
+	"""
+	Change the password of the given user
+
+	>>> import univention.lib
+	>>> univention.lib.password_change('Administrator', 'secret12345')
+	>>>
+
+	"""
+	co = None
+	try:
+		lo, pos = univention.admin.uldap.getAdminConnection()
+	except:
+		lo, pos = univention.admin.uldap.getMachineConnection()
+
+	module=univention.admin.modules.get('users/user')
+
+	univention.admin.modules.init(lo,pos,module)
+
+	objects = module.lookup(co, lo, 'uid=%s' % username, superordinate=None, unique=1, required=1, timeout=-1, sizelimit=0)
+
+	# search was unique and required
+	object = objects[0]
+
+	object.open()
+	object['password']=unicode(password)
+	dn=object.modify()
+
+	
