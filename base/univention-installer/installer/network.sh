@@ -37,7 +37,7 @@ if [ -n "$ip_cmdline" ]; then
 	_ip=`cat /proc/cmdline | sed -e 's|.*ip=||g' | awk -F ':' '{print $1}'`
 	_netmask=`cat /proc/cmdline | sed -e 's|.*ip=||g' | awk -F ':' '{print $4}'`
 	_gateway=`cat /proc/cmdline | sed -e 's|.*ip=||g' | awk -F ':' '{print $3}'`
-	_networksleep=`cat /proc/cmdline | sed -e 's|.*networksleep=||g' | awk '{print $1}'`
+	_networksleep=`cat /proc/cmdline | sed -nre 's/^.*\bnetworksleep=([^ ]+)\b.*$/\1/p'`
 
 	echo -n " lo "
 	ifconfig lo 127.0.0.1 up
