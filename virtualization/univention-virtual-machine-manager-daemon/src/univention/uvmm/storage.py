@@ -226,10 +226,18 @@ def get_all_storage_volumes(conn, domain):
 	"""Retrieve all referenced storage volumes."""
 	volumes = []
 	doc = parseString(domain.XMLDesc(0))
-	devices = doc.getElementsByTagName('devices')[0]
+	devices = doc.getElementsByTagName('devices')
+	try:
+		devices = devices[0]
+	except IndexError:
+		return volumes
 	disks = devices.getElementsByTagName('disk')
 	for disk in disks:
-		source = disk.getElementsByTagName('source')[0]
+		source = disk.getElementsByTagName('source')
+		try:
+			source = source[0]
+		except IndexError:
+			continue
 		volumes.append(source.getAttribute('file'))
 	return volumes
 

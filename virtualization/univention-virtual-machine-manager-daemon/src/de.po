@@ -32,11 +32,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: univention-virtual-machine-manager 0.9.10-1\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-27 07:07+0200\n"
-"PO-Revision-Date: 2011-04-21 10:25+0200\n"
-"Last-Translator: Univention Gmbh <packages@univention.de>\n"
+"Project-Id-Version: univention-virtual-machine-manager 0.9.321-1\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2011-08-18 18:24+0200\n"
+"PO-Revision-Date: 2011-08-18 18:29+0200\n"
+"Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -98,7 +98,7 @@ msgstr "Konnte Socket nicht öffnen: %(errno)d"
 msgid "Daemon options"
 msgstr "Dämonoptionen"
 
-#: src/univention/uvmm/node.py:1235
+#: src/univention/uvmm/node.py:1246
 #, python-format
 msgid "Domain \"%(domain)s\" in state \"%(state)s\" can not be migrated"
 msgstr ""
@@ -113,7 +113,7 @@ msgstr "Domain-Name \"%(domain)s\" wird bereits von \"%(uuid)s\" verwendet"
 msgid "EOS while waiting for answer."
 msgstr "Ende des Datenstroms beim Warten auf eine Antwort"
 
-#: src/univention/uvmm/node.py:1273
+#: src/univention/uvmm/node.py:1284
 #, python-format
 msgid "Error creating \"%(domain)s\" snapshot: %(error)s"
 msgstr "Fehler beim Sichern der Domäne \"%(domain)s\": %(error)s"
@@ -138,13 +138,13 @@ msgstr ""
 msgid "Error defining domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Definieren der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1313 src/univention/uvmm/node.py:1322
+#: src/univention/uvmm/node.py:1324 src/univention/uvmm/node.py:1333
 #, python-format
 msgid "Error deleting \"%(domain)s\" snapshot: %(error)s"
 msgstr ""
 "Fehler beim Löschen des Sciherungsstandes von \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/storage.py:199 src/univention/uvmm/storage.py:292
+#: src/univention/uvmm/storage.py:199 src/univention/uvmm/storage.py:300
 #, python-format
 msgid "Error listing pools at \"%(uri)s\": %(error)s"
 msgstr "Fehler beim Anzeigen der Speicherbereiche von \"%(uri)s\": %(error)s"
@@ -164,17 +164,17 @@ msgstr ""
 "Fehler beim Finden der Speichermediums \"%(volume)s\" von \"%(domain)s\": %"
 "(error)s"
 
-#: src/univention/uvmm/node.py:1153
+#: src/univention/uvmm/node.py:1164
 #, python-format
 msgid "Error managing domain \"%(domain)s\""
 msgstr "Fehler beim Verwalten der Domäne \"%(domain)s\""
 
-#: src/univention/uvmm/node.py:1156 src/univention/uvmm/node.py:1159
+#: src/univention/uvmm/node.py:1167 src/univention/uvmm/node.py:1170
 #, python-format
 msgid "Error managing domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Verwalten der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1252
+#: src/univention/uvmm/node.py:1263
 #, python-format
 msgid "Error migrating domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Migrieren der Domäne \"%(domain)s\": %(error)s"
@@ -209,7 +209,7 @@ msgstr "Fehler beim Umbenennen der Datei %(file)s.new: %(msg)s"
 msgid "Error renaming %(file)s: %(msg)s"
 msgstr "Fehler beim Umbenennen der Datei %(file)s: %(msg)s"
 
-#: src/univention/uvmm/node.py:1187
+#: src/univention/uvmm/node.py:1198
 #, python-format
 msgid "Error restoring domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Wiederherstellen der Domäne \"%(domain)s\": %(error)s"
@@ -229,12 +229,12 @@ msgstr "Fehler beim Auslesen der Netzwerke: %(error)s"
 msgid "Error retrieving old domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Auslesen der alten Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1290 src/univention/uvmm/node.py:1296
+#: src/univention/uvmm/node.py:1301 src/univention/uvmm/node.py:1307
 #, python-format
 msgid "Error reverting \"%(domain)s\" to snapshot: %(error)s"
 msgstr "Fehler beim Wiederherstellen der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1173
+#: src/univention/uvmm/node.py:1184
 #, python-format
 msgid "Error saving domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Speichern der Domäne \"%(domain)s\": %(error)s"
@@ -244,12 +244,12 @@ msgstr "Fehler beim Speichern der Domäne \"%(domain)s\": %(error)s"
 msgid "Error starting network %(name)s: %(error)s"
 msgstr "Fehler beim Starten des Netzwerks %(name)s: %(error)s"
 
-#: src/univention/uvmm/node.py:1209
+#: src/univention/uvmm/node.py:1220
 #, python-format
 msgid "Error undefining domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Löschen der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1340 src/univention/uvmm/node.py:1357
+#: src/univention/uvmm/node.py:1351 src/univention/uvmm/node.py:1368
 #, python-format
 msgid "Error updating domain \"%(domain)s\""
 msgstr "Fehler beim Aktualisieren der Domäne \"%(domain)s\""
@@ -279,7 +279,7 @@ msgstr ""
 "Die Aktualisierung zusätzlicher Informationen im LDAP-Verzeichnis ist "
 "fehlgeschlagen."
 
-#: src/univention/uvmm/node.py:1362
+#: src/univention/uvmm/node.py:1373
 #, python-format
 msgid "Failto to update domain \"%(domain)s\""
 msgstr "Aktualisieren der Domäne \"%(domain)s\" fehlgeschlagen"
@@ -416,22 +416,21 @@ msgstr "Ausführliche Informationen ausgeben"
 msgid "Skip reading ini-file"
 msgstr "Lesen der ini-Datei überspringen"
 
-#: src/univention/uvmm/node.py:1259 src/univention/uvmm/node.py:1264
-#: src/univention/uvmm/node.py:1280 src/univention/uvmm/node.py:1285
-#: src/univention/uvmm/node.py:1303 src/univention/uvmm/node.py:1308
+#: src/univention/uvmm/node.py:1270 src/univention/uvmm/node.py:1275
+#: src/univention/uvmm/node.py:1291 src/univention/uvmm/node.py:1296
+#: src/univention/uvmm/node.py:1314 src/univention/uvmm/node.py:1319
 #, python-format
 msgid "Snapshot not supported \"%(node)s\""
 msgstr "\"%(node)s\" unterstützt keine Sicherungspunkte."
 
 #: src/univention/uvmm/client.py:109
-#, fuzzy
 msgid "Timed out while closing socket."
-msgstr "Fehler beim Löschen des Sockets: %(errno)d"
+msgstr "Zeitüberschreitung beim Schließen des Sockets."
 
 #: src/univention/uvmm/client.py:178 src/univention/uvmm/client.py:214
-#, fuzzy, python-format
+#, python-format
 msgid "Timed out while connecting to \"%(host)s:%(port)d\"."
-msgstr "Keine Verbindung zu \"%(host)s:%(port)d\": %(errno)d"
+msgstr "Zeitüberschreitung beim verbinden zu \"%(host)s:%(port)d\"."
 
 #: src/univention/uvmm/client.py:124
 #, python-format

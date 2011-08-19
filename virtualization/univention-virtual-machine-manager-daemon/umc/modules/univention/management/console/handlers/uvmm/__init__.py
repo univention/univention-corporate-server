@@ -270,6 +270,17 @@ command_description = {
 		method = 'uvmm_drive_bootdevice',
 		values = {},
 		),
+	'uvmm/drive/media/change': umch.command(
+		short_description=_('Change media from device'),
+		long_description=_('Eject or change media from device'),
+		method='uvmm_drive_media_change',
+		values={
+			'node': umc.String('node'),
+			'domain': umc.String('domain'),
+			'target_dev': umc.String(''), # uniquely identifies drive
+			'source': umc.String(_('Media image')),
+			},
+		),
 	'uvmm/nic/create': umch.command(
 		short_description = _( 'New network interface' ),
 		long_description = _('Create a new network interface' ),
@@ -325,7 +336,8 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		global command_description
 		umch.simpleHandler.__init__( self, command_description )
 		self.uvmm = uvmmd.Client( auto_connect = False )
-		self.drive_wizard = DriveWizard( 'uvmm/drive/create' )
+		self.drive_wizard = DriveWizard('uvmm/drive/create')
+		self.media_wizard = DriveWizard('uvmm/drive/media/change', True)
 		self.domain_wizard = InstanceWizard( 'uvmm/domain/create' )
 
 	@staticmethod
@@ -794,6 +806,9 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 	def _dlg_domain_settings( self, object, node_info, domain_info ):
 		"""Create domain setting widgets."""
 		domain_is_off = 5 == domain_info.state
+		node_name = object.options['node']
+		node_uri = self.uvmm.node_name2uri(node_name)
+		is_xen = node_uri.startswith('xen')
 
 		content = umcd.List( default_type = 'uvmm_settings_table' )
 
@@ -811,6 +826,8 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		type_select.update_choices( types )
 		arch_select.update_choices( archs )
 
+		overview_cmd = umcp.SimpleCommand('uvmm/domain/overview', options=copy.copy(object.options))
+
 		# if domain is not stopped ...
 		make_func = domain_is_off and umcd.make or umcd.make_readonly
 
@@ -818,9 +835,9 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		cpus_select.max = int( node_info.cpus )
 		mem = handler._getattr(domain_info, 'maxMem', str(512<<10)) # KiB
 		virt_tech = umcd.make_readonly( self[ 'uvmm/domain/configure' ][ 'type' ], default = tech_default, attributes = { 'width' : '250' } )
-		os_widget = make_func( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', ''), attributes = { 'width' : '250' } )
-		contact_widget = make_func( self[ 'uvmm/domain/configure' ][ 'contact' ], default = getattr(domain_info, 'annotations', {}).get('contact', ''), attributes = { 'width' : '250' } )
-		description_widget = make_func( self[ 'uvmm/domain/configure' ][ 'description' ], default = getattr(domain_info, 'annotations', {}).get('description', ''), attributes = { 'width' : '250' } )
+		os_widget = umcd.make( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', ''), attributes = { 'width' : '250' } )
+		contact_widget = umcd.make( self[ 'uvmm/domain/configure' ][ 'contact' ], default = getattr(domain_info, 'annotations', {}).get('contact', ''), attributes = { 'width' : '250' } )
+		description_widget = umcd.make( self[ 'uvmm/domain/configure' ][ 'description' ], default = getattr(domain_info, 'annotations', {}).get('description', ''), attributes = { 'width' : '250' } )
 
 		name = make_func( self[ 'uvmm/domain/configure' ][ 'name' ], default = handler._getattr( domain_info, 'name', '' ), attributes = { 'width' : '250' } )
 		arch = make_func( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ), attributes = { 'width' : '250' } )
@@ -853,12 +870,12 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		drive_sec = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
 		if domain_is_off:
 			cmd = umcp.SimpleCommand('uvmm/drive/create', options=copy.copy(object.options))
-			drive_sec.add_row([umcd.LinkButton(_('Add new drive'), actions=[umcd.Action(cmd),])])
+			drive_sec.add_row([umcd.LinkButton(_('Add new drive'), 'uvmm/add', actions=[umcd.Action(cmd),])])
 		disk_list = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
 		disk_list.set_header( [ _( 'Type' ), _( 'Image' ), _( 'Size' ), _( 'Pool' ), '' ] )
 		if domain_info and domain_info.disks:
 			defaults = []
-			overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = copy.copy( object.options ) )
+			storages = self.uvmm.storage_pools(node_uri)
 			storage_volumes = {}
 			first = True
 			for dev in domain_info.disks:
@@ -874,11 +891,6 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				values[ 'image' ] = os.path.basename( dev.source )
 				dir = os.path.dirname( dev.source )
 				values[ 'pool' ] = dir
-				try:
-					storages
-				except NameError:
-					node_uri = self.uvmm.node_name2uri(object.options['node'])
-					storages = self.uvmm.storage_pools(node_uri)
 				for pool in storages:
 					if pool.path != dir:
 						continue
@@ -896,21 +908,37 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				else:
 					values[ 'size' ] = MemorySize.num2str( dev.size )
 
+				buttons = []
 				if domain_is_off:
-					remove_cmd.options[ 'disk' ] = copy.copy( dev.source )
+					remove_cmd.options['disk'] = dev.target_dev
 					remove_btn = umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ) ] )
-					buttons = [ remove_btn, ]
+					buttons.append(remove_btn)
+
+					# <= UCS-2.4-2: Only VirtIO can be changed, which is only fully working for HDs
+					# >= UCS-2.4-3: +Allow online change of CDROM and FLOPPY
 					unchangeable = dev.device == uvmmn.Disk.DEVICE_FLOPPY or dev.type == uvmmn.Disk.TYPE_BLOCK
 					if not unchangeable:
-						edit_cmd.options[ 'disk' ] = copy.copy( dev.source )
+						edit_cmd.options['disk'] = dev.target_dev
 						edit_btn = umcd.LinkButton( _( 'Edit' ), actions = [ umcd.Action( edit_cmd ) ] )
 						buttons.append( edit_btn )
+
 					if not first:
-						bootdev_cmd.options[ 'disk' ] = copy.copy( dev.source )
+						bootdev_cmd.options['disk'] = dev.target_dev
 						bootdev_btn = umcd.LinkButton( _( 'Set as boot device' ), actions = [ umcd.Action( bootdev_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] )
 						buttons.append( bootdev_btn )
-				else:
-					buttons = []
+
+				# Xen can change source, but ...
+				# 1) this requires both libvirt.VIR_DOMAIN_DEVICE_MODIFY_LIVE | libvirt.VIR_DOMAIN_DEVICE_MODIFY_CONFIG,
+				# 2) xend barfs with "xend_post: error from xen daemon: (xend.err 'Device 832 not connected')" in File "/usr/lib/python2.5/site-packages/xen/xend/XendDomainInfo.py", line 1218, in device_configure
+				if dev.device in (uvmmn.Disk.DEVICE_FLOPPY, uvmmn.Disk.DEVICE_CDROM) and not is_xen:
+					change_cmd = umcp.SimpleCommand('uvmm/drive/media/change', options=copy.copy(object.options))
+					change_cmd.options['drive-type'] = uvmmn.Disk.map_device(id=dev.device)
+					if pool and pool.name:
+						change_cmd.options['pool-name'] = pool.name
+					change_cmd.options['vol-name'] = os.path.basename(dev.source)
+					change_cmd.options['target_dev'] = dev.target_dev
+					change_btn = umcd.LinkButton(_('Change media'), actions=[umcd.Action(change_cmd)])
+					buttons.append(change_btn)
 
 				if len(values[ 'image' ])> 40:
 					image_name = umcd.HTML('<p title="%s">%s...</p>' % (values[ 'image' ], values[ 'image' ][0:40]))
@@ -926,12 +954,11 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		if domain_is_off:
 			cmd = umcp.SimpleCommand( 'uvmm/nic/create', options = copy.copy( object.options ) )
 			cmd.incomplete = True
-			nic_sec.add_row( [ umcd.LinkButton( _( 'Add new network interface' ), actions = [ umcd.Action( cmd ), ] ) ] )
+			nic_sec.add_row([umcd.LinkButton(_('Add new network interface'), 'uvmm/add', actions=[umcd.Action(cmd),])])
 		nic_list = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
 		nic_list.set_header( [ _( 'Typ' ), _( 'Source' ), _( 'Driver' ), _( 'MAC address' ), '' ] )
 		if domain_info and domain_info.interfaces:
 			defaults = []
-			overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = copy.copy( object.options ) )
 			for iface in domain_info.interfaces:
 				opts = copy.copy( object.options )
 				opts[ 'nictype' ] = iface.map_type( id = iface.type )
@@ -992,14 +1019,17 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		vnc = make_func( self[ 'uvmm/domain/configure' ][ 'vnc' ], default = vnc_bool, attributes = { 'width' : '250' } )
 		kblayout = make_func( self[ 'uvmm/domain/configure' ][ 'kblayout' ], default = vnc_keymap, attributes = { 'width' : '250' } )
 		vnc_global = make_func( self[ 'uvmm/domain/configure' ][ 'vnc_global' ], default = vnc_global, attributes = { 'width' : '250' } )
-		vnc_passwd = make_func(self['uvmm/domain/configure']['vnc_passwd'], default=old_passwd, attributes={'width': '250'})
+		if is_xen: # Xen does not support online VNC password change
+			vnc_passwd = make_func(self['uvmm/domain/configure']['vnc_passwd'], default=old_passwd, attributes={'width': '250'})
+		else:
+			vnc_passwd = umcd.make(self['uvmm/domain/configure']['vnc_passwd'], default=old_passwd, attributes={'width': '250'})
 
 		rtc_offset = make_func(self[ 'uvmm/domain/configure']['rtc_offset'], default=handler._getattr( domain_info, 'rtc_offset', ''), attributes={'width': '250'})
 
 		content.add_row( [ name, os_widget ] )
 		content.add_row( [ contact_widget, description_widget ] )
 		node_uri = self.uvmm.node_name2uri(object.options['node'])
-		if not node_uri.startswith( 'xen' ): # Ignore on Xen
+		if not is_xen: # Ignore on Xen
 			content.add_row( [ arch, '' ] )
 		content.add_row( [ cpus, memory ] )
 
@@ -1026,11 +1056,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 		ids = (name.id(), os_widget.id(), contact_widget.id(), description_widget.id(), virt_tech.id(), arch.id(), cpus.id(), memory.id(), ram_disk.id(), root_part.id(), kernel.id(), advkernelconf.id(), vnc.id(), vnc_global.id(), vnc_passwd.id(), kblayout.id(), bootdevs.id(), rtc_offset.id())
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
-		overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = object.options )
 
 		sections = []
 		if not domain_is_off:
-			sections.append( [ umcd.InfoBox( _( 'The settings of a virtual instance can just be modified if it is shut off.' ) ) ] )
+			sections.append( [ umcd.InfoBox( _( 'Most settings of the virtual instance can not be modified while it is running.' ) ) ] )
 		if not domain_info:
 			sections.append( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = False, hidden = False, name = 'drives.newdomain' ) ] )
 			sections.append( [ umcd.Section( _( 'Network Interfaces' ), nic_sec, hideable = False, hidden = False, name = 'interfaces.newdomain' ) ] )
@@ -1041,8 +1070,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			sections.append( [ umcd.Section( _( 'Network Interfaces' ), nic_sec, hideable = True, hidden = False, name = 'interfaces.%s' % domain_info.name ) ] )
 			sections.append( [ umcd.Section( _( 'Settings' ), content, hideable = True, hidden = True, name = 'settings.%s' % domain_info.name ) ] )
 			sections.append( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'extsettings.%s' % domain_info.name ) ] )
-		if domain_is_off:
-			sections.append( [ umcd.Cell( umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ], default = True ), attributes = { 'align' : 'right' } ) ] )
+		sections.append( [ umcd.Cell( umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ], default = True ), attributes = { 'align' : 'right' } ) ] )
 
 		return sections
 
@@ -1192,7 +1220,8 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		domain_info.annotations['os'] = handler._getstr( object, 'os' )
 		domain_info.annotations['description'] = handler._getstr( object, 'description' )
 		domain_info.annotations['contact'] = handler._getstr( object, 'contact' )
-		domain_info.arch = object.options[ 'arch' ]
+		if 'arch' in object.options:
+			domain_info.arch = object.options['arch']
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: architecture: %s' % domain_info.arch )
 		domain_info.vcpus = int( object.options[ 'cpus' ] )
 		# if para-virtualized machine ...

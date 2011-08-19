@@ -40,7 +40,7 @@ import univention.uvmm.node as uvmmn
 import univention.debug as ud
 
 import copy
-import os
+import os.path
 
 from treeview import *
 from tools import *
@@ -50,17 +50,18 @@ _uvmm_locale = umc.Translation('univention.virtual.machine.manager').translate
 
 class DriveCommands( object ):
 	def uvmm_drive_create( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Drive create' )
+		"""Create new drive using a wizard."""
+		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_create(action=%(action)s)' % ddict(object.options))
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
 		if not success:
 			self.finished(object.id(), res)
 			return
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		if not node_uri:
+			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_create: node %(node)s not found' % request.options)
 			return self.uvmm_node_overview( object )
 		node_info = self.uvmm.get_node_info( node_uri )
 
-		ud.debug( ud.ADMIN, ud.INFO, 'Drive create: action: %s' % str( object.options.get( 'action' ) ) )
 		# user cancelled the wizard
 		if object.options.get( 'action' ) == 'cancel':
 			self.drive_wizard.reset()
@@ -80,7 +81,7 @@ class DriveCommands( object ):
 
 		result = self.drive_wizard.action( object )
 
-		# domain wizard finished?
+		# wizard finished?
 		new_disk = self.drive_wizard.result()
 		if new_disk:
 			domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
@@ -105,24 +106,40 @@ class DriveCommands( object ):
 		self.finished( object.id(), res, report = report )
 
 	def uvmm_drive_remove( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Drive remove' )
-		res = umcp.Response( object )
+		"""Remove drive from domain and optionally delete used image."""
+		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_remove(%(disk)s)' % ddict(object.options))
 
 		if object.incomplete:
 			( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
 			if not success:
 				self.finished(object.id(), res)
 				return
+		else:
+			res = umcp.Response( object )
+
+		node_uri = self.uvmm.node_name2uri(object.options['node'])
+		if not node_uri:
+			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_remove: node %(node)s not found' % request.options)
+			return self.uvmm_node_overview(object)
+		node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
+
+		# find disk to remove and collect others to keep
+		target_dev = object.options['disk']
+		new_disks = []
+		rm_disk = None
+		for disk in domain_info.disks:
+			if disk.target_dev == target_dev:
+				rm_disk = disk
+			else:
+				new_disks.append(disk)
+		if rm_disk is None:
+			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_remove: failed to find %(disk)s' % object.options)
+			return self.finished(object.id(), res)
+
+		if object.incomplete:
 			# remove domain
 			# if the attached drive could be removed successfully the user should be ask, if the image should be removed
-			node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
-			if not node_uri:
-				return self.uvmm_node_overview( object )
-			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
-			for disk in domain_info.disks:
-				if disk.source == object.options['disk']:
-					break
-			is_shared_image = disk.device in ( uvmmn.Disk.DEVICE_CDROM, uvmmn.Disk.DEVICE_FLOPPY )
+			is_shared_image = rm_disk.device in (uvmmn.Disk.DEVICE_CDROM, uvmmn.Disk.DEVICE_FLOPPY)
 			lst = umcd.List( default_type = 'uvmm_table' )
 
 			opts = copy.copy( object.options )
@@ -134,15 +151,19 @@ class DriveCommands( object ):
 			opts[ 'drive-remove' ] = False
 			detach = umcp.SimpleCommand( 'uvmm/drive/remove', options = opts )
 
-			if disk.type != uvmmn.Disk.TYPE_BLOCK:
-				lst.add_row([umcd.Cell(umcd.HTML(_('The drive will be detached from the virtual instance.<br/>Additionally the associated image <i>%(image)s</i> may be deleted permanently.') % {'image': object.options['disk']}), attributes={'colspan': '3'})])
+			if rm_disk.source and rm_disk.type != uvmmn.Disk.TYPE_BLOCK:
+				lst.add_row([umcd.Cell(umcd.HTML(_('The drive will be detached from the virtual instance.<br/>Additionally the associated image <i>%(image)s</i> may be deleted permanently.') % {'image': rm_disk.source}), attributes={'colspan': '3'})])
 				btn_cancel = umcd.Button(_('Cancel'), actions=[umcd.Action(overview)])
 				btn_detach = umcd.Button(_('Detach'), actions=[umcd.Action(detach), umcd.Action(overview)], default=is_shared_image)
 				btn_delete = umcd.Button(_('Delete'), actions=[umcd.Action(remove), umcd.Action(overview)], default=not is_shared_image)
 				lst.add_row( [ '' ] )
 				lst.add_row([btn_cancel, '', umcd.Cell(btn_detach, attributes={'align': 'right', 'colspan': '2'}), umcd.Cell(btn_delete, attributes={'align': 'right'})])
 			else:
-				lst.add_row( [ umcd.Cell( umcd.Text( _( 'The drive will be detached from the virtual instance and the associated local device will be kept as is.' ) ), attributes = { 'colspan' : '3' } ) ] )
+				if rm_disk.source:
+					msg = _('The drive will be detached from the virtual instance and the associated local device will be kept as is.')
+				else:
+					msg = _('The drive will be detached from the virtual instance.')
+				lst.add_row([umcd.Cell(umcd.Text(msg), attributes={'colspan': '3'})])
 				lst.add_row( [ '' ], attributes = { 'colspan' : '3' } )
 				btn_detach = umcd.Button( _( 'Detach' ), actions = [ umcd.Action( detach ), umcd.Action( overview ) ], default = True )
 				btn_cancel = umcd.Button( _( 'Cancel' ), actions=[ umcd.Action( overview ) ] )
@@ -151,55 +172,45 @@ class DriveCommands( object ):
 			res.dialog[ 0 ].set_dialog( lst )
 			self.finished(object.id(), res)
 		else:
-			node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
-			if not node_uri:
-				return self.uvmm_node_overview( object )
-			domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
-			new_disks = []
-			rm_disk = None
-			for dev in domain_info.disks:
-				if dev.source != object.options[ 'disk' ]:
-					new_disks.append( dev )
-				else:
-					rm_disk = dev
 			domain_info.disks = new_disks
 			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
 
-			if rm_disk and rm_disk.type == uvmmn.Disk.TYPE_BLOCK:
-				drive = object.options[ 'disk' ]
-			else:
-				drive = os.path.basename( object.options[ 'disk' ] )
 			if self.uvmm.is_error( resp ):
 				res.status( 301 )
-				self.finished( object.id(), res, report = _( 'Detaching the drive <i>%(drive)s</i> failed' ) % { 'drive' : drive } )
+				self.finished(object.id(), res, report=_('Detaching the drive <i>%(drive)s</i> failed') % {'drive': target_dev})
 				return
 
-			if object.options.get( 'drive-remove', False ):
-				resp = self.uvmm.storage_volumes_destroy( node_uri, [ object.options[ 'disk' ], ] )
+			if rm_disk.source and object.options.get('drive-remove', False):
+				resp = self.uvmm.storage_volumes_destroy(node_uri, [rm_disk.source,])
 
 				if not resp:
 					res.status( 301 )
-					self.finished( object.id(), res, report = _( 'Removing the image <i>%(disk)s</i> failed. It must be removed manually.' ) % { 'drive' : drive } )
+					self.finished(object.id(), res, report=_('The drive <i>%(drive)s</i> was detached successfully, but removing the image <i>%(image)s</i> failed. It must be removed manually.') % {'drive': target_dev, 'image': rm_disk.source})
 					return
 				res.status( 201 )
-				self.finished( object.id(), res, report = _( 'The drive <i>%(drive)s</i> was detached and removed successfully' ) % { 'drive' : drive } )
+				self.finished(object.id(), res, report=_('The drive <i>%(drive)s</i> was detached and image <i>%(image)s</i> removed successfully.') % {'drive': target_dev, 'image': rm_disk.source})
 			res.status( 201 )
-			self.finished( object.id(), res, report = _( 'The drive <i>%(drive)s</i> was detached successfully' ) % { 'drive' : drive } )
+			self.finished(object.id(), res, report=_('The drive <i>%(drive)s</i> was detached successfully.') % {'drive': target_dev})
 
 	def uvmm_drive_edit( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Drive edit' )
+		"""Edit drive: chnage use of VirtIO / PV."""
+		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_edit(%s)' % object.options)
 		res = umcp.Response( object )
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		if not node_uri:
+			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_edit: node %(node)s not found' % request.options)
 			return self.uvmm_node_overview( object )
 		node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
 
 		drive = None
 		for disk in domain_info.disks:
-			if disk.source == object.options[ 'disk' ]:
+			if disk.target_dev == object.options[ 'disk' ]:
 				drive = disk
 				break
+		else:
+			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_edit: failed to find %(disk)s' % object.options)
+			return self.finished(object.id(), res)
 
 		if object.incomplete:
 			( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
@@ -275,22 +286,23 @@ class DriveCommands( object ):
 			return
 
 		# save changes (if necessary)
-		ud.debug( ud.ADMIN, ud.INFO, 'Drive edit: options: %s' % str( object.options ) )
 		paravirtual = object.options[ 'drive-paravirtual' ]
 		old_paravirtual = object.options[ 'drive-paravirtual-old' ]
 		if paravirtual != old_paravirtual:
 			for disk in domain_info.disks:
-				if disk.source == object.options[ 'disk' ]:
-					ud.debug( ud.ADMIN, ud.INFO, 'Drive edit: found disk' )
-					disk.target_dev = ''
+				if disk.target_dev == object.options[ 'disk' ]:
+					ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_edit: found disk')
+					disk.target_dev = '' # this is the unique identifier for a disk, which must be changed to match the new bus. Bad things might happen...
 					if paravirtual:
-						if node_uri.startswith( 'qemu' ):
+						if node_uri.startswith('qemu'):
 							disk.target_bus = 'virtio'
-						else:
+						elif node_uri.startswith('xen'):
 							disk.target_bus = 'xen'
+						else:
+							ud.debug(ud.ADMIN, ud.WARNING, 'UVMM.drive_edit: unknown PV type: %s' % node_uri)
 					else:
 						disk.target_bus = 'ide'
-					ud.debug( ud.ADMIN, ud.INFO, 'Drive edit: new target bus: %s' % disk.target_bus )
+					ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_edit: new target bus: %s' % disk.target_bus)
 					break
 
 		resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
@@ -303,26 +315,101 @@ class DriveCommands( object ):
 		self.finished( object.id(), res, report = _( 'The drive configuration has been saved successfully' ) )
 
 	def uvmm_drive_bootdevice( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Drive boot device should be %s' % object.options[ 'disk' ] )
+		"""Change boot device for Xen-PV."""
+		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_bootdevice(%(disk)s)' % object.options)
 		res = umcp.Response( object )
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		if not node_uri:
+			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_bootdevice: node %(node)s not found' % request.options)
 			return self.uvmm_node_overview( object )
 		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
 		new_disks = []
-		for dev in domain_info.disks:
-			if dev.source != object.options[ 'disk' ]:
-				new_disks.append( dev )
+		for disk in domain_info.disks:
+			if disk.target_dev != object.options[ 'disk' ]:
+				new_disks.append(disk)
 			else:
-				ud.debug( ud.ADMIN, ud.INFO, 'found new boot device %s' % object.options[ 'disk' ] )
-				new_disks.insert( 0, dev )
+				ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_bootdevice: new found')
+				new_disks.insert(0, disk)
 		domain_info.disks = new_disks
 		resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
 
 		if self.uvmm.is_error( resp ):
 			res.status( 301 )
-			self.finished( object.id(), res, report = _( 'Setting the drive <i>%(drive)s</i> as boot device as failed' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
+			self.finished(object.id(), res, report=_('Setting the drive <i>%(drive)s</i> as boot device as failed') % {'drive': object.options['disk']})
 		else:
 			self.finished( object.id(), res )
 
+	def uvmm_drive_media_change(self, request):
+		"""Eject or change media from device"""
+		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_media_change(%(target_dev)s of domain %(domain)s on node %(node)s; action=%(action)s)' % ddict(request.options))
+
+		action = request.options.get('action')
+		node = request.options['node']
+		domain_name = request.options['domain']
+		target_dev = request.options['target_dev']
+
+		# user cancelled the wizard
+		if action == 'cancel':
+			self.media_wizard.reset()
+			del request.options['action']
+			return self.uvmm_domain_overview(request)
+
+		# Find node...
+		node_uri = self.uvmm.node_name2uri(node)
+		if not node_uri:
+			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_media_change: node %(node)s not found' % request.options)
+			return self.uvmm_node_overview(request)
+		# Find domain...
+		node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, domain_name)
+		# Find disk...
+		for disk in domain_info.disks:
+			if disk.target_dev == target_dev:
+				break
+		else:
+			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_media_change: Target device %(taregt_dev)s not found in domain %(domain)s' % request.options)
+			return self.uvmm_node_overview(request)
+
+		assert disk.device in (uvmmn.Disk.DEVICE_CDROM, uvmmn.Disk.DEVICE_FLOPPY)
+
+		res = self.uvmm_domain_overview(request, finish=False)
+
+		# Show selection for new image
+		if action is None:
+			self.media_wizard.reset()
+			request.options['existing-or-new-disk'] = 'disk-exists'
+			self.media_wizard.current = self.media_wizard.PAGE_INIT
+			self.media_wizard.drive_type_select.floppies = domain_info.os_type == 'hvm'
+			self.media_wizard.domain_name = domain_name
+			self.media_wizard.domain_virttech('%s-%s' % (domain_info.domain_type, domain_info.os_type))
+			self.media_wizard.blacklist = [] # does query domains
+			self.media_wizard.set_node(node_uri, node_info)
+
+		result = self.media_wizard.action(request)
+
+		# wizard finished?
+		new_disk = self.media_wizard.result()
+		if new_disk:
+			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_media_change: Change media from %s:%s to %s:%s' % (disk.type, disk.source, new_disk.type, new_disk.source))
+			if (disk.type, disk.source) != (new_disk.type, new_disk.source):
+				disk.type = new_disk.type # FILE | BLOCK
+				disk.source = new_disk.source
+				disk.driver = new_disk.driver # file | qemu | tap2
+				resp = self.uvmm.domain_configure(node, domain_info)
+				self.media_wizard.reset()
+
+				# Return response
+				if self.uvmm.is_error(resp):
+					res.status(301)
+					return self.finished(request.id(), res, report=resp.msg)
+			return self.uvmm_domain_overview(request)
+
+		# navigating in the wizard ...
+		page = self.media_wizard.setup(request)
+		res.dialog[0].set_dialog(page)
+		if not result:
+			res.status(201)
+			report = result.text
+		else:
+			report = ''
+		self.finished(request.id(), res, report=report)

@@ -719,18 +719,32 @@ def _domain_edit(node, dom_stat, xml):
 	else:
 		xml = '<domain/>'
 		defaults = True
+	live_updates = []
 
-	def update(_node_parent, _node_name, _node_value, **attr):
-		'''Create, update or delete node named '_node_name' of '_node_parent'.'''
+	def update(_node_parent, _node_name, _node_value, _changes=set(), **attr):
+		'''Create, update or delete node named '_node_name' of '_node_parent'.
+		If _node_value == None and all(attr == None), then node is deleted.
+		'''
 		node = _node_parent.find(_node_name)
 		if _node_value is None and not filter(lambda v: v is not None, attr.values()):
 			if node is not None:
+				_changes.add(None)
 				_node_parent.remove(node)
 		else:
 			if node is None:
 				node = ET.SubElement(_node_parent, _node_name)
-			node.text = _node_value or ''
-			node.attrib.update(attr)
+			new_text = _node_value or None
+			if node.text != new_text:
+				_changes.add(None)
+				node.text = new_text
+			for k, v in attr.items():
+				if v is None or v == '':
+					if k in node.attrib:
+						_changes.add(k)
+						del node.attrib[k]
+				elif node.attrib.get(k) != v:
+					_changes.add(k)
+					node.attrib[k] = v
 		return node
 
 	# find loader
@@ -840,6 +854,7 @@ def _domain_edit(node, dom_stat, xml):
 		domain_devices.remove(domain_devices_disk)
 	for disk in dom_stat.disks:
 		logger.debug('DISK: %s' % disk)
+		changes = set()
 		# /domain/devices/disk @type @device
 		try:
 			key = (disk.target_bus, disk.target_dev)
@@ -857,9 +872,9 @@ def _domain_edit(node, dom_stat, xml):
 		domain_devices_disk_driver = update(domain_devices_disk, 'driver', None, name=disk.driver, type=disk.driver_type, cache=Disk.map_cache(id=disk.driver_cache))
 		# /domain/devices/disk/source @file @dev
 		if disk.type == Disk.TYPE_FILE:
-			domain_devices_disk_source = update(domain_devices_disk, 'source', '', file=disk.source, dev=None)
+			domain_devices_disk_source = update(domain_devices_disk, 'source', None, _changes=changes, file=disk.source, dev=None)
 		elif disk.type == Disk.TYPE_BLOCK:
-			domain_devices_disk_source = update(domain_devices_disk, 'source', '', file=None, dev=disk.source)
+			domain_devices_disk_source = update(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=disk.source)
 		else:
 			raise NodeError("Unknown disk/type='%(type)s'", type=disk.type)
 		# /domain/devices/disk/readonly
@@ -870,6 +885,9 @@ def _domain_edit(node, dom_stat, xml):
 		else:
 			if domain_devices_disk_readonly is not None:
 				domain_devices_disk.remove(domain_devices_disk_readonly)
+		# do live update
+		if changes:
+			live_updates.append(domain_devices_disk)
 
 	# /domain/devices/interface[]
 	domain_devices_interfaces = domain_devices.findall('interface')
@@ -881,6 +899,7 @@ def _domain_edit(node, dom_stat, xml):
 		domain_devices.remove(domain_devices_interface)
 	for interface in dom_stat.interfaces:
 		logger.debug('INTERFACE: %s' % interface)
+		changes = set()
 		# /domain/devices/interface @type @device
 		try:
 			key = interface.mac_address
@@ -894,11 +913,11 @@ def _domain_edit(node, dom_stat, xml):
 		domain_devices_interface.attrib['type'] = Interface.map_type(id=interface.type)
 		# /domain/devices/interface/source @bridge @network @dev
 		if interface.type == Interface.TYPE_BRIDGE:
-			domain_devices_interface_source = update(domain_devices_interface, 'source', '', bridge=interface.source, network=None, dev=None)
+			domain_devices_interface_source = update(domain_devices_interface, 'source', '', _changes=changes, bridge=interface.source, network=None, dev=None)
 		elif interface.type == Interface.TYPE_NETWORK:
-			domain_devices_interface_source = update(domain_devices_interface, 'source', '', bridge=None, network=interface.source, dev=None)
+			domain_devices_interface_source = update(domain_devices_interface, 'source', '', _changes=changes, bridge=None, network=interface.source, dev=None)
 		elif interface.type == Interface.TYPE_DIRECT:
-			domain_devices_interface_source = update(domain_devices_interface, 'source', '', bridge=None, network=None, dev=interface.source)
+			domain_devices_interface_source = update(domain_devices_interface, 'source', '', _changes=changes, bridge=None, network=None, dev=interface.source)
 		else:
 			raise NodeError("Unknown interface/type='%(type)s'", type=interface.type)
 		# /domain/devices/interface/script @bridge
@@ -907,6 +926,9 @@ def _domain_edit(node, dom_stat, xml):
 		domain_devices_interface_target = update(domain_devices_interface, 'target', None, dev=interface.target)
 		# /domain/devices/interface/model @dev
 		domain_devices_interface_model = update(domain_devices_interface, 'model', None, type=interface.model)
+		# do live update
+		if changes:
+			live_updates.append(domain_devices_interface)
 
 	# /domain/devices/input @type @bus
 	if dom_stat.os_type == 'hvm':
@@ -923,6 +945,7 @@ def _domain_edit(node, dom_stat, xml):
 	for domain_devices_graphic in domain_devices_graphics:
 		domain_devices.remove(domain_devices_graphic)
 	for graphics in dom_stat.graphics:
+		logger.debug('GRAPHIC: %s' % graphics)
 		# /domain/devices/graphics @type
 		key = Graphic.map_type(id=graphics.type)
 		for domain_devices_graphic in domain_devices_graphics:
@@ -940,7 +963,9 @@ def _domain_edit(node, dom_stat, xml):
 		domain_devices_graphic.attrib['port'] = '%d' % graphics.port
 		domain_devices_graphic.attrib['keymap'] = graphics.keymap
 		domain_devices_graphic.attrib['listen'] = graphics.listen
-		domain_devices_graphic.attrib['passwd'] = graphics.passwd
+		if domain_devices_graphic.attrib.get('passwd') != graphics.passwd:
+			domain_devices_graphic.attrib['passwd'] = graphics.passwd
+			live_updates.append(domain_devices_graphic)
 	
 	if dom_stat.domain_type in ('kvm'): # 'qemu'
 		models = set()
@@ -983,15 +1008,15 @@ def _domain_edit(node, dom_stat, xml):
 
 	# Make ET happy and cleanup None values
 	for n in domain.getiterator():
-		if n.text is None:
-			n.text = ''
 		for k, v in n.attrib.items():
 			if v is None or v == '':
 				del n.attrib[k]
 			elif not isinstance(v, basestring):
 				n.attrib[k] = '%s' % v
 
-	return ET.tostring(domain)
+	xml = ET.tostring(domain)
+	updates_xml = [ET.tostring(device) for device in live_updates]
+	return (xml, updates_xml)
 
 def domain_define( uri, domain ):
 	"""Convert python object to an XML document."""
@@ -1032,7 +1057,7 @@ def domain_define( uri, domain ):
 		else:
 			old_stat = dom.key()
 	
-	new_xml = _domain_edit(node, domain, old_xml)
+	new_xml, live_updates = _domain_edit(node, domain, old_xml)
 
 	# create new disks
 	logger.debug('DISKS: %s' % domain.disks)
@@ -1043,6 +1068,24 @@ def domain_define( uri, domain ):
 				create_storage_volume(conn, domain, disk)
 			except StorageError, e:
 				raise NodeError(e)
+	
+	# update running domain definition
+	if old_dom and live_updates:
+		try:
+			if old_dom.isActive():
+				for xml in live_updates:
+					try:
+						logger.debug('DEVICE_UPDATE: %s' % xml)
+						# As of qemu-0.14.1 and libvirt-0.8.4, only updating live domains works.
+						rv = old_dom.updateDeviceFlags(xml, libvirt.VIR_DOMAIN_DEVICE_MODIFY_LIVE)
+						if rv != 0:
+							warnings.append(_('Failed to update device.'))
+					except libvirt.libvirtError, e:
+						if e.get_error_code() != libvirt.VIR_ERR_OPERATION_INVALID:
+							raise
+		except libvirt.libvirtError, e:
+			logger.error(e)
+			raise NodeError(_('Error updating domain "%(domain)s": %(error)s'), domain=domain.uuid, error=e.get_error_message())
 
 	# remove old domain definitions
 	if old_dom:

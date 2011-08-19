@@ -161,6 +161,13 @@ class VirtTech( object ):
 	def hvm( self ):
 		return self.os == 'hvm'
 
+class ddict(dict):
+	"""Wrapper for dictionary with default value for unset keys."""
+	def __init__(self, *args, **kwargs):
+		dict.__init__(self, *args, **kwargs)
+	def __getitem__(self, key):
+		return self.get(key, '<UNSET>')
+
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

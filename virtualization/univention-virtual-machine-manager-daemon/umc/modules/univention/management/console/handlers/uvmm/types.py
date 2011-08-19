@@ -187,14 +187,20 @@ class DiskSelect( umc.StaticSelection ):
 	"""Select between creating a new, reusing an existing image or integrating a local block device."""
 	def __init__( self ):
 		umc.StaticSelection.__init__(self, '' )
-		self._default = [ ( 'disk-new', _( 'Create a new image' ) ), ( 'disk-exists', _( 'Choose existing image' ) ), ( 'disk-block', _( 'Use a local device' ) ) ]
+		self._default = [
+				('disk-new', _('Create a new image')),
+				('disk-exists', _('Choose existing image')),
+				('disk-block', _('Use a local device')),
+				('disk-empty', _('No media')),
+				]
 		self._choices = None
 		self.set_choices()
 
 	def set_choices( self, with_new = True ):
-		self._choices = copy.copy( self._default )
-		if not with_new:
-			del self._choices[ 0 ]
+		if with_new:
+			self._choices = self._default[0:3]
+		else:
+			self._choices = self._default[1:4]
 
 	def choices( self ):
 		return self._choices

@@ -1,3 +1,16 @@
+univention-virtual-machine-manager-daemon (0.9.321-1) unstable; urgency=low
+
+  * Implement disk/source change (Bug #21763)
+    - Change <disk>-identifier from source/@file|@dev to target/@dev.
+    - Handle <source> elements for empty CDROM/floppy drives.
+    - Allow changeing of contact, description, os, VNC password.
+  * Rewrite DriveWizard:
+    - Only check in next()
+    - Update page in setup()
+  * Fix Xen-arch bug on change (Bug #22004)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 19 Aug 2011 17:33:39 +0200
+
 univention-virtual-machine-manager-daemon (0.9.320-2) unstable; urgency=low
 
   * Revert part of accidental svn26114 to wizards.py (Bug #22002)
