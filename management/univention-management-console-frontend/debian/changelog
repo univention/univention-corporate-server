@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.12-1) unstable; urgency=low
+
+  * If a specific UDM syntax is passed to the Checkbox widget the value is
+    converted to match the syntax; Bug #23222
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 19 Aug 2011 15:56:32 +0200
+
 univention-management-console-frontend (1.0.11-1) unstable; urgency=low
 
   * added umc.widgets._ModuleMixin.getModuleStore() (Bug #22461)

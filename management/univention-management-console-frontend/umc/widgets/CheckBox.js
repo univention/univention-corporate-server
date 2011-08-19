@@ -14,7 +14,25 @@ dojo.declare("umc.widgets.CheckBox", [ dijit.form.CheckBox, umc.widgets._FormWid
 	},
 
 	_getValueAttr: function() {
-		return this.get('checked');
+		value = this.get('checked');
+
+		if ( this.syntax == undefined ) {
+			return value;
+		}
+
+		// try to map boolean value to UDM compatible string
+		switch ( this.syntax ) {
+			case "AllowDeny":
+				return value ? "allow" : "deny";
+			case "TrueFalseUp":
+				return value ? "TRUE" : "FALSE";
+			case "OkOrNot":
+				return value ? "OK" : "Not";
+			case "boolean":
+				return value ? "1" : "0";
+		}
+
+		return value;
 	}
 });
 
