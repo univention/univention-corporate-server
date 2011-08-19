@@ -2301,6 +2301,9 @@ class simplePolicy(simpleLdap):
 			tab = Tab( _( 'Referencing objects' ), _( 'Objects referencing this policy object' ),
 					   layout = [ '_view_referencing_objects' ] )
 			self.layout.append( tab )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.__add_reference_list: appended tab with referencing objects' )
+		else:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.__add_reference_list: No object DN set!' )
 
 	def copyIdentifier(self, from_object):
 		"""Activate the result mode and set the referring object"""

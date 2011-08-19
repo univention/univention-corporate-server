@@ -47,6 +47,20 @@ def module(object):
 			mod=res[0].replace('.', '/')
 			return mod
 
+def get_superordinate( module, co, lo, dn ):
+	"""Searches for the superordinate object for the given DN. if the
+	object does not require a superordinate object or it is not found
+	None is returned."""
+	super_module = univention.admin.modules.superordinate( module )
+	if super_module:
+		while dn:
+			attr = lo.get( dn )
+			if univention.admin.modules.identifyOne( dn, attr ) == super_module:
+				return get( super_module, co, lo, position, dn )
+				dn = lo.parentDn( dn )
+
+	return None
+
 def get(module, co, lo, position, dn='', attr=None, superordinate=None):
 	'''return object of module while trying to create objects of
 	superordinate modules as well'''
@@ -56,17 +70,9 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None):
 		return None
 
 	if not superordinate:
-		s=univention.admin.modules.superordinate(module)
-		if s:
-			if dn:	pdn=dn
-			else:	pdn=position.getDn()
-			while pdn:
-				pattr=lo.get(pdn)
-				if univention.admin.modules.identifyOne(pdn, pattr) == s:
-					superordinate=get(s, co, lo, position, pdn)
-				pdn=lo.parentDn(pdn)
+		superordinate = get_superordinate( module, co, lo, dn or position.getDn() )
 
-	return module.object(co, lo, position, dn, superordinate=superordinate)
+	return module.object( co, lo, position, dn, superordinate = superordinate )
 
 def open(object):
 	'''initialization of properties not neccessary for browsing etc.'''

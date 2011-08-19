@@ -69,9 +69,24 @@ def update_choices():
 	for func in choice_update_functions:
 		func()
 
-class simple( object ):
-	type='simple'
+class ClassProperty( object ):
+	'''A decorator that can be used to define read-only class properties'''
+	def __init__( self, getter ):
+		self.getter = getter
+	def __get__( self, instance, owner ):
+		return self.getter( owner )
 
+class ISyntax( object ):
+	'''A base class for all syntax classes'''
+	@ClassProperty
+	def name( cls ):
+		return cls.__name__
+
+	@ClassProperty
+	def type( cls ):
+		return cls.__name__
+
+class simple( ISyntax ):
 	@classmethod
 	def tostring(self, text):
 		return text
@@ -82,11 +97,10 @@ class simple( object ):
 	def any(self):
 		return '*'
 
-class select( object ):
+class select( ISyntax ):
 	"""Select item from list of choices.
 	self.choice = [(id, _("Display text"), ...]
 	"""
-	type='select'
 
 	@classmethod
 	def parse(self, text):
@@ -106,8 +120,7 @@ class select( object ):
 	def any(self):
 		return '*'
 
-class complex( object ):
-	type = 'complex'
+class complex( ISyntax ):
 	delimiter = ' '
 	# possible delimiters:
 	# delimiter = '='   ==> single string is used to concatenate all subitems
@@ -191,17 +204,12 @@ class complex( object ):
 		return s
 
 class none(simple):
-	name="none"
 	pass
 
 class info_text(simple):
-	name="info_text"
 	pass
 
-class module( object ):
-	type='module'
-	name='module'
-
+class module( ISyntax ):
 	def __init__(self, type, filter='', description=''):
 		self.module_type=type
 		self.filter=filter
@@ -234,7 +242,6 @@ class module( object ):
 		return text
 
 class string(simple):
-	name='string'
 	min_length=0
 	max_length=0
 
@@ -242,15 +249,14 @@ class string(simple):
 	def parse(self, text):
 		return text
 
+# FIXME: do we still need this?
 class long_string(string):
-	name='long_string'
+	pass
 
 class file(string):
-	name='file'
+	pass
 
 class binaryfile(file):
-	name='binaryfile'
-
 	@classmethod
 	def tostring(self, text):
 		if text and text[0]:
@@ -260,8 +266,6 @@ class binaryfile(file):
 			return ''
 
 class jpegPhoto(file):
-	name='jpegPhoto'
-
 	@classmethod
 	def tostring(self, text):
 		if text and text[0]:
@@ -293,7 +297,6 @@ class integer(simple):
 		...
 	valueError:
 	"""
-	name='integer'
 	min_length=1
 	max_length=0
 	_re = re.compile('^[0-9]+$')
@@ -326,7 +329,6 @@ class boolean(simple):
 		...
 	valueError:
 	"""
-	name='boolean'
 	min_length=1
 	max_length=1
 	_re = re.compile('^[01]?$')
@@ -369,7 +371,6 @@ class filesize(simple):
 		...
 	valueError:
 	"""
-	name='filesize'
 	min_length=1
 	max_length=0
 	_re = re.compile('^[0-9]+(|[gGmMkK])(|[bB])$')
@@ -398,8 +399,6 @@ class mail_folder_name(simple):
 		...
 	valueError:
 	"""
-	name='mail_folder_name'
-
 	@classmethod
 	def parse(self,text):
 		if  "!" in text or " " in text or "\t" in text:
@@ -475,7 +474,6 @@ class string_numbers_letters_dots(simple):
 		...
 	valueError:
 	"""
-	name='string_numbers_letters_dots'
 
 	_re = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)')
 
@@ -531,7 +529,6 @@ class string_numbers_letters_dots_spaces(simple):
 		...
 	valueError:
 	"""
-	name='string_numbers_letters_dots_spaces'
 
 	_re = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._ -]*([a-zA-Z0-9]$)')
 
@@ -556,7 +553,6 @@ class phone(simple):
 		...
 	valueError:
 	"""
-	name='phone'
 	min_length=1
 	max_length=16
 	_re = re.compile('(?u)[a-zA-Z0-9._ ()\\\/+-]*$')
@@ -576,7 +572,6 @@ class IA5string(string):
 		...
 	valueError:
 	"""
-	name='IA5string'
 
 	@classmethod
 	def parse(self, text):
@@ -631,7 +626,6 @@ class uid(simple):
 	>>> uid().parse('Admin')
 	'Admin'
 	"""
-	name='uid'
 	min_length=1
 	max_length=16
 	_re = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)')
@@ -657,7 +651,6 @@ class uid_umlauts(simple):
 			raise univention.admin.uexceptions.valueError, _("Username must only contain numbers, letters and dots, and may not be 'admin'!")
 
 class uid_umlauts_lower_except_first_letter(simple):
-	name='uid'
 	min_length=1
 	max_length=16
 	_re = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')
@@ -675,7 +668,6 @@ class uid_umlauts_lower_except_first_letter(simple):
 			raise univention.admin.uexceptions.valueError, _("Username must only contain numbers, letters and dots, and may not be 'admin'!")
 
 class gid(simple):
-	name='gid'
 	min_length=1
 	max_length=32
 	_re = re.compile('(?u)^\w([\w -.]*\w)?$')
@@ -688,7 +680,6 @@ class gid(simple):
 			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots!")
 
 class sharePath(simple):
-	name='sharePath'
 	_re = re.compile('.*".*')
 
 	@classmethod
@@ -704,7 +695,6 @@ class sharePath(simple):
 			raise univention.admin.uexceptions.valueError, _('Value may not contain double quotes (")!')
 
 class passwd(simple):
-	name="passwd"
 	min_length=8
 	max_length=0
 	_re1 = re.compile(r"[A-Z]")
@@ -718,8 +708,6 @@ class passwd(simple):
 		else:
 			raise univention.admin.uexceptions.valueError, _('The password is too short, at least %d characters needed.') % self.min_length
 class userPasswd(simple):
-	name="passwd"
-
 	@classmethod
 	def parse(self, text):
 		if text and len(text) > 0:
@@ -728,7 +716,6 @@ class userPasswd(simple):
 			raise univention.admin.uexceptions.valueError, _('Empty password not allowed!')
 
 class hostName(simple):
-	name='hostName'
 	min_length=0
 	max_length=0
 	# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
@@ -742,7 +729,6 @@ class hostName(simple):
 			raise univention.admin.uexceptions.valueError, _("Not a valid hostname!")
 
 class windowsHostName(simple):
-	name='windowsHostName'
 	min_length=0
 	max_length=0
 	# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
@@ -757,7 +743,6 @@ class windowsHostName(simple):
 			raise univention.admin.uexceptions.valueError, _("Not a valid windows hostname!")
 
 class ipAddress(simple):
-	name='ipAddress'
 	min_length=7
 	max_length=15
 	_re = re.compile('^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$')
@@ -773,7 +758,6 @@ class ipAddress(simple):
 		raise univention.admin.uexceptions.valueError, _("Not a valid IP address!")
 
 class hostOrIP(simple):
-	name='host'
 	min_length=0
 	max_length=0
 
@@ -803,7 +787,6 @@ class hostOrIP(simple):
 			raise univention.admin.uexceptions.valueError, _('Not a valid hostname or IP address!')
 
 class netmask(simple):
-	name='netmask'
 	min_length=1
 	max_length=15
 
@@ -848,7 +831,6 @@ class netmask(simple):
 			raise univention.admin.uexceptions.valueError, _("Not a valid netmask!")
 
 class ipRange(complex):
-	name='ipRange'
 	subsyntaxes=[(_('First Address'), ipAddress), (_('Last Address'), string)]
 	all_required=1
 
@@ -860,15 +842,12 @@ class ipRange(complex):
 			return ''
 
 class ipProtocol(select):
-	name='ipProtocol'
 	choices=[('tcp', _('TCP')), ('udp', _('UDP'))]
 
 class ipProtocolSRV(select):
-	name='ipProtocolSRV'
 	choices=[(_('tcp'), 'TCP'), (_('udp'), 'UDP'), (_('msdcs'), 'MSDCS'), (_('sites'), 'SITES')]
 
 class absolutePath(simple):
-	name='absolutePath'
 	min_length=1
 	max_length=0
 	_re = re.compile('^/.*')
@@ -881,8 +860,6 @@ class absolutePath(simple):
 			raise univention.admin.uexceptions.valueError,_("Not an absolute path!")
 
 class emailAddress(simple):
-	name='emailAddress'
-
 	@classmethod
 	def parse(self, text):
 		if '@' not in text:
@@ -890,7 +867,6 @@ class emailAddress(simple):
 		return text
 
 class emailAddressTemplate(simple):
-	name='emailAddress'
 	min_length=4
 	max_length=0
 	_re = re.compile("^.*@.*$")
@@ -910,7 +886,6 @@ class iso8601Date(simple):
 	yyyy-Www-D (2009-W21-4)
 	with the dashes being optional
 	'''
-	name = 'iso8601Date'
 
 	# regexp-source: http://regexlib.com/REDetails.aspx?regexp_id=2092
 	_re=re.compile('^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$')
@@ -970,7 +945,6 @@ class date(simple):
 		raise univention.admin.uexceptions.valueError,_("Not a valid Date")
 
 class reverseLookupSubnet(simple):
-	name='reverseLookupSubnet'
 	min_length=1
 	max_length=15
 	_re = re.compile('^[0-9]+(\.[0-9]+)?(\.[0-9]+)?$')
@@ -985,7 +959,6 @@ class reverseLookupSubnet(simple):
 		raise univention.admin.uexceptions.valueError,_("An IP subnet consists of one to three numbers ranging from 0 to 255 separated by dots.")
 
 class reverseLookupZoneName(simple):
-	name='reverseLookupZoneName'
 	min_length=14
 	max_length=30 #?
 	_re=re.compile('^[0-9]+(\.[0-9]+)?(\.[0-9]+)?\.in-addr\.arpa$')
@@ -1001,7 +974,6 @@ class reverseLookupZoneName(simple):
 		raise univention.admin.uexceptions.valueError,_("The name of a reverse zone consists of the reversed subnet address followed by .in-addr.arpa. Example: \"0.168.192.in-addr.arpa\"")
 
 class dnsName(simple):
-	name='dnsName'
 	_re = re.compile('^[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9.]$')
 
 	@classmethod
@@ -1013,7 +985,6 @@ class dnsName(simple):
 		raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots!")
 
 class dnsName_umlauts(simple):
-	name='dnsName_umlauts'
 	_re = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')
 
 	@classmethod
@@ -1023,7 +994,6 @@ class dnsName_umlauts(simple):
 		raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots!")
 
 class dnsNameDot(simple):
-	name='dnsName'
 	_re = re.compile('^[0-9a-zA-Z.-]+$')
 
 	@classmethod
@@ -1035,13 +1005,11 @@ class dnsNameDot(simple):
 
 
 class keyAndValue(complex):
-	name = 'keyAndValue'
 	delimiter = ' = '
 	subsyntaxes = [(_('Key'), string), (_('Value'), string)]
 	all_required = 1
 
 class dnsMX(complex):
-	name='dnsMX'
 	subsyntaxes=[(_('Priority'), integer), (_('Mail Server'), dnsNameDot)]
 	all_required=1
 
@@ -1051,23 +1019,19 @@ class dnsSRVName(complex):
 	>>> dnsSRVName().parse(['ldap', 'tcp'])
 	['ldap', 'tcp']
 	"""
-	name='dnsSRVName'
 	subsyntaxes=[(_('Service'), string), (_('Protocol'), ipProtocolSRV)]
 	all_required=1
 
 class postalAddress(complex):
-	name='postalAddress'
 	delimiter = ', '
 	subsyntaxes=[(_('Street'), string), (_('Postal code'), string), (_('City'), string)]
 	all_required=1
 
 class dnsSRVLocation(complex):
-	name='dnsSRVLocation'
 	subsyntaxes=[(_('Priority'), integer), (_('Weight'), integer), (_('Port'), integer), (_('Server'), dnsName)]
 	all_required=1
 
 class unixTime(simple):
-	name='unixTime'
 	_re=re.compile('^[0-9]+$')
 
 	@classmethod
@@ -1075,8 +1039,8 @@ class unixTime(simple):
 		if self._re.match(text) != None:
 			return text
 		raise univention.admin.uexceptions.valueError,_("Not a valid time format")
+
 class unixTimeInterval(simple):
-	name='unixTimeInterval'
 	_re=re.compile('^[0-9]+$')
 
 	@classmethod
@@ -1093,11 +1057,9 @@ class unixTimeInterval(simple):
 			return 'None'
 
 class dhcpHWAddressHardware(select):
-	name='dhcpHWAddressHardware'
 	choices=[('ethernet', _('Ethernet')), ('fddi', _('FDDI')), ('token-ring', _('Token-Ring'))]
 
 class macAddress(simple):
-	name='macAddress'
 	_re=re.compile('^[0-9a-fA-F][0-9a-fA-F]??$')
 
 	@classmethod
@@ -1123,12 +1085,10 @@ class macAddress(simple):
 		raise univention.admin.uexceptions.valueError,_("Value must have 6 two digit hexadecimal numbers separated by \"-\" or \":\" !")
 
 class dhcpHWAddress(complex):
-	name='dhcpHWAddress'
 	subsyntaxes=[(_('Type'), dhcpHWAddressHardware), (_('Address'), macAddress)]
 	all_required=1
 
 class printerName(simple):
-	name='printerName'
 	min_length=1
 	max_length=16
 	_re = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9_-]*([a-zA-Z0-9]$)')
@@ -1141,22 +1101,19 @@ class printerName(simple):
 			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters, underscore (\"_\") and minus (\"-\")!")
 
 class printerModel(complex):
-	name='PrintDriver'
 	subsyntaxes=[(_('Driver'), string), (_('Description'), string)]
 	all_required=1
 
 class printersList(string):
-	name='printersList'
+	pass
 
 class printerURI(string):
-	name='printerURI'
+	pass
 
 class packageList(string):
-	name='packageList'
+	pass
 
 class userAttributeList(string):
-	name='userAttributeList'
-
 	@classmethod
 	def parse(self, text):
 		return text
@@ -1167,7 +1124,6 @@ class ldapDn(simple):
 	>>> ldapDn().parse('dc=foo,dc=bar,dc=test')
 	'dc=foo,dc=bar,dc=test'
 	"""
-	name='ldapDn'
 	_re=re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 
 	@classmethod
@@ -1177,46 +1133,35 @@ class ldapDn(simple):
 		raise univention.admin.uexceptions.valueError,_("Not a valid LDAP DN")
 
 class consoleACL(simple):
-	name='consoleACL'
-
 	@classmethod
 	def parse(self, text):
 		return text
 class consoleOperations(simple):
-	name='consoleOperations'
-
 	@classmethod
 	def parse(self, text):
 		return text
 
 class ldapServer(simple):
-	name='ldapServer'
-
 	@classmethod
 	def parse(self, text):
 		return text
 
 class printerServer(simple):
-	name='printerServer'
-
 	@classmethod
 	def parse(self, text):
 		return text
+
 class kolabHomeServer(simple):
-	name='kolabHomeServer'
-
 	@classmethod
 	def parse(self, text):
 		return text
-class mailDomain(simple):
-	name='mailDomain'
 
+class mailDomain(simple):
 	@classmethod
 	def parse(self, text):
 		return text
 
 class kolabInvitationPolicy(string):
-	name='kolabInvitationPolicy'
 	searchFilter='(&(uid=*)(objectClass=posixAccount)(mailPrimaryAddress=*))'
 	description=_('Invitation Policy')
 
@@ -1226,7 +1171,6 @@ class kolabInvitationPolicy(string):
 
 class sharedFolderUserACL(string):
 	_re=re.compile('^([^\s]+@[^\s]+|anyone)+(\s(none|read|post|append|write|all))$')
-	name='sharedFolderUserACL'
 	searchFilter='(&(uid=*)(objectClass=posixAccount)(mailPrimaryAddress=*)(!(objectClass=univentionHost)))'
 	description=_('Shared folder user ACL')
 
@@ -1239,7 +1183,6 @@ class sharedFolderUserACL(string):
 
 class sharedFolderGroupACL(string):
 	_re=re.compile('^.+(\s(none|read|post|append|write|all))$')
-	name='sharedFolderGroupACL'
 	searchFilter='(&(cn=*)(objectClass=posixGroup))'
 	description=_('Shared folder group ACL')
 
@@ -1251,7 +1194,6 @@ class sharedFolderGroupACL(string):
 		raise univention.admin.uexceptions.valueError,_("Not a valid shared folder ACL")
 
 class ldapDnOrNone(simple):
-	name='ldapDnOrNone'
 	_re=re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 
 	@classmethod
@@ -1263,21 +1205,16 @@ class ldapDnOrNone(simple):
 		raise univention.admin.uexceptions.valueError,_("Not a valid LDAP DN")
 
 class ldapObjectClass(simple):
-	name='ldapObjectClass'
-
 	@classmethod
 	def parse(self, text):
 		return text
 
 class ldapAttribute(simple):
-	name='ldapAttribute'
-
 	@classmethod
 	def parse(self, text):
 		return text
 
 class XResolution(simple):
-	name='XResolution'
 	_re=re.compile('^[0-9]+x[0-9]+$')
 
 	@classmethod
@@ -1287,7 +1224,6 @@ class XResolution(simple):
 		raise univention.admin.uexceptions.valueError,_("Value consists of two integer numbers separated by an \"x\" (e.g. \"1024x768\")")
 
 class XSync(simple):
-	name='XSync'
 	_re=re.compile('^[0-9]+(-[0-9]+)?( +[0-9]+(-[0-9]+)?)*$')
 
 	@classmethod
@@ -1297,7 +1233,6 @@ class XSync(simple):
 		raise univention.admin.uexceptions.valueError,_("Value consists of two integer numbers separated by a \"-\" (e.g. \"30-70\")")
 
 class XColorDepth(simple):
-	name='XColorDepth'
 	_re=re.compile('^[0-9]+$')
 
 	@classmethod
@@ -1305,7 +1240,6 @@ class XColorDepth(simple):
 		return text
 
 class XModule(select):
-	name='XModule'
 	choices=[
 		('', ''),
 		('apm', 'apm'),
@@ -1353,7 +1287,6 @@ class XModule(select):
 	]
 
 class XMouseProtocol(select):
-	name='XMouseProtocol'
 	choices=[
 		('', ''),
 		('Auto', 'Auto'),
@@ -1373,7 +1306,6 @@ class XMouseProtocol(select):
 	]
 
 class XDisplayPosition(select):
-	name='XDisplayPosition'
 	choices=[
 		('', ''),
 		('left', _('Left of primary display')),
@@ -1383,7 +1315,6 @@ class XDisplayPosition(select):
 	]
 
 class XMouseDevice(select):
-	name='XMouseDevice'
 	choices=[
 		('', ''),
 		('/dev/psaux', 'PS/2'),
@@ -1392,7 +1323,6 @@ class XMouseDevice(select):
 	]
 
 class XKeyboardLayout(select):
-	name='XKeyboardLayout'
 	choices=[
 		('', ''),
 		('ad', 'Andorra'),
@@ -1483,7 +1413,6 @@ class XKeyboardLayout(select):
 	]
 
 class soundModule(select):
-	name='soundModule'
 	choices=[
 		('', ''),
 		('auto', 'auto detect'),
@@ -1619,89 +1548,74 @@ class soundModule(select):
 	]
 
 class moduleSearch(ldapDn):
-	name='moduleSearch'
 	description='FIXME'
 
 class groupDn(ldapDn):
-	name='groupDn'
 	udm_module = 'groups/group'
 
 class userDn(ldapDn):
-	name='userDn'
 	udm_module = 'users/user'
 
 class hostDn(ldapDn):
-	name='hostDn'
 	udm_module = 'computers/computer'
 
 class userID(integer):
-	name='userID'
 	searchFilter='(&(uid=*)(objectClass=posixAccount)(!(objectClass=univentionHost)))'
 	description=_('User ID')
 
 class groupID(integer):
-	name='groupID'
 	searchFilter='(&(cn=*)(objectClass=posixGroup))'
 	description=_('Group ID')
 
 class shareHost(string):
-	name='shareHost'
+	pass
 
 class windowsTerminalServer(string):
-        name='windowsTerminalServer'
-        searchFilter='(&(cn=*)(objectClass=univentionWindows))'
-        description=_('Windows Terminal Server Hosts')
+	searchFilter='(&(cn=*)(objectClass=univentionWindows))'
+	description=_('Windows Terminal Server Hosts')
 
 class linuxTerminalServer(string):
-        name='linuxTerminalServer'
-        searchFilter='(&(cn=*)(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)))'
-        description=_('Linux Terminal Server Hosts')
+	searchFilter='(&(cn=*)(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)))'
+	description=_('Linux Terminal Server Hosts')
 
 class authenticationServer(string):
-        name='authenticationServer'
-        searchFilter='(&(cn=*)(objectClass=univentionDomainController))'
-        description=_('Authentication Server')
+	searchFilter='(&(cn=*)(objectClass=univentionDomainController))'
+	description=_('Authentication Server')
 
 class fileServer(string):
-        name='fileServer'
-        searchFilter='(&(cn=*)(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)))'
-        description=_('File Server')
+	searchFilter='(&(cn=*)(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)))'
+	description=_('File Server')
 
 class repositoryServer(string):
-	name='repositoryServer'
+	pass
 
 class policyPrinterServer(string):
-	name='policyPrinterServer'
+	pass
 
 class kdeProfiles(string):
-	name='kdeProfiles'
+	pass
 
 class genericSelect(string):
-	name='genericSelect'
+	pass
 
 class primaryGroup(ldapDn):
-	name='primaryGroup'
 	searchFilter='objectClass=posixGroup'
 	description=_('Primary Group')
 
 class primaryGroup2(ldapDn):
-	name='primaryGroup'
 	searchFilter='objectClass=posixGroup'
 	description=_('Primary Group')
 
 class network(ldapDnOrNone):
-	name='network'
 	udm_module = 'networks/network'
 	description=_('Network')
 
 
 class dnsEntry(ldapDnOrNone):
-	name='dnsEntry'
 	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
 	description=_('DNS Entry')
 
 class dnsEntryReverse(ldapDnOrNone):
-	name='dnsEntryReverse'
 	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
 	description=_('DNS Entry Reverse')
 
@@ -1709,7 +1623,6 @@ class dhcpService( ldapDnOrNone ):
 	udm_module = 'dhcp/service'
 
 class dhcpEntry( complex ):
-	name='dhcpEntry'
 	subsyntaxes= ( ( _( 'DHCP-Service' ), dhcpService ), ( _( 'IP address' ), ipAddress ), ( _( 'MAC address' ), macAddress ) )
 	description=_( 'DHCP Entry' )
 
@@ -1718,22 +1631,18 @@ class dhcpEntry( complex ):
 		return value
 
 class dnsEntryNetwork(ldapDnOrNone):
-	name='dnsEntryNetwork'
 	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
 	description=_('DNS Entry')
 
 class dnsEntryReverseNetwork(ldapDnOrNone):
-	name='dnsEntryReverseNetwork'
 	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
 	description=_('DNS Entry Reverse')
 
 class dhcpEntryNetwork(ldapDnOrNone):
-	name='dhcpEntryNetwork'
 	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
 	description=_('DHCP Entry')
 
 class dnsEntryAlias(ldapDnOrNone):
-	name='dnsEntryAlias'
 	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
 	description=_('DNS Entry Alias')
 	# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
@@ -1750,12 +1659,10 @@ class dnsEntryAlias(ldapDnOrNone):
 		raise univention.admin.uexceptions.valueError,_("Entry does not have dnsEntryAlias Syntax: %s") % text
 
 class share(ldapDnOrNone):
-	name='share'
 	searchFilter='(objectClass=univentionShare)'
 	description=_('Share')
 
 class AllowDenyIgnore(select):
-	name='AllowDenyIgnore'
 	choices=[
 		('', ''),
 		('allow', 'allow'),
@@ -1764,14 +1671,12 @@ class AllowDenyIgnore(select):
 	]
 
 class AllowDeny(select):
-	name='AllowDeny'
 	choices=[
 		('', ''),
 		('allow', 'allow'),
 		('deny', 'deny')
 	]
 class booleanNone(select):
-	name='booleanNone'
 	choices=[
 		('', ''),
 		('yes', 'Yes'),
@@ -1779,7 +1684,6 @@ class booleanNone(select):
 	]
 
 class TrueFalse(select):
-	name='booleanNone'
 	choices=[
 		('', ''),
 		('true', 'True'),
@@ -1787,28 +1691,24 @@ class TrueFalse(select):
 	]
 
 class TrueFalseUpper(select):
-	name='BOOLEANNone'
 	choices=[
 		('', ''),
 		('TRUE', 'TRUE'),
 		('FALSE', 'FALSE')
 	]
 class TrueFalseUp(select):
-	name='BOOLEAN'
 	choices=[
 		('TRUE', 'TRUE'),
 		('FALSE', 'FALSE')
 	]
 
 class OkOrNot(select):
-	name='OKORNOT'
 	choices=[
 		('OK', 'OK'),
 		('Not', 'KO'),
 	]
 
 class ddnsUpdateStyle(select):
-	name='booleanNone'
 	choices=[
 		('', ''),
 		('ad-hoc', 'ad-hoc'),
@@ -1817,7 +1717,6 @@ class ddnsUpdateStyle(select):
 	]
 
 class ddnsUpdates(select):
-	name='booleanNone'
 	choices=[
 		('', ''),
 		('on', 'on'),
@@ -1825,7 +1724,6 @@ class ddnsUpdates(select):
 	]
 
 class netbiosNodeType(select):
-	name='netbiosNodeType'
 	choices=[
 		('', ''),
 		('1', '1 B-node: Broadcast - no WINS'),
@@ -1835,7 +1733,6 @@ class netbiosNodeType(select):
 	]
 
 class kdeProfile(select):
-	name='kdeProfile'
 	choices=[
 		('', 'none'),
 		('/home/kde.restricted', 'restricted'),
@@ -1845,7 +1742,6 @@ class kdeProfile(select):
 
 
 class language(select):
-	name='language'
 	choices=[
 		('', ''),
 		('af_ZA', 'Afrikaans/South Africa'),
@@ -2132,7 +2028,6 @@ class language(select):
 	]
 
 class Month(select):
-	name='language'
 	choices=[
 		('', ''),
 		('all', _( 'all' ) ),
@@ -2151,7 +2046,6 @@ class Month(select):
 	]
 
 class Weekday(select):
-	name='language'
 	choices=[
 		('', ''),
 		('all', _( 'all' ) ),
@@ -2165,7 +2059,6 @@ class Weekday(select):
 	]
 
 class Day(select):
-	name='day'
 	choices=[
 		('', ''),
 		('all', _( 'all' ) ),
@@ -2203,7 +2096,6 @@ class Day(select):
 	]
 
 class Hour(select):
-	name='hour'
 	choices=[
 		('', ''),
 		('all', _( 'all' ) ),
@@ -2234,7 +2126,6 @@ class Hour(select):
 	]
 
 class HourSimple(select):
-	name='hour'
 	choices=[
 		('00', '0'),
 		('1', '1'),
@@ -2263,7 +2154,6 @@ class HourSimple(select):
 	]
 
 class Minute(select):
-	name='minute'
 	choices=[
 		('', ''),
 		('all', _( 'all' ) ),
@@ -2282,7 +2172,6 @@ class Minute(select):
 	]
 
 class MinuteSimple(select):
-	name='minute'
 	choices=[
 		('00', '0'),
 		('5', '5'),
@@ -2299,17 +2188,14 @@ class MinuteSimple(select):
 	]
 
 class fileMode(simple):
-	name='fileMode'
-
 	@classmethod
 	def parse(self, text):
 		return text
 
 class directoryMode(fileMode):
-	name='directoryMode'
+	pass
 
 class sambaGroupType(select):
-	name='sambagrouptype'
 	choices=[
 		('2', _('Domain Group')),
 		('3', _('Local Group')),
@@ -2317,47 +2203,41 @@ class sambaGroupType(select):
 	]
 
 class sambaLogonHours(string):
-	name='sambaLogonHours'
+	pass
 
 class printQuotaGroup(complex):
-	name='printQuotaGroup'
 	searchFilter='(&(cn=*)(objectClass=posixGroup))'
 	subsyntaxes=[(_('Soft limit'), integer), (_('Hard limit'), integer), (_('Group'), string)]
 	all_required=0
 
 
 class printQuotaUser(complex):
-	name='printQuotaUser'
 	searchFilter='(&(uid=*)(objectClass=posixAccount)(!(objectClass=univentionHost)))'
 	subsyntaxes=[(_('Soft limit'), integer), (_('Hard limit'), integer), (_('User'), string)]
 	all_required=0
 
-
 class printQuotaGroupsPerUser(complex):
-	name='printQuotaUser'
 	searchFilter='(&(uid=*)(objectClass=posixAccount)(!(objectClass=univentionHost)))'
 	subsyntaxes=[(_('Soft limit'), integer), (_('Hard limit'), integer), (_('Group'), string)]
 	all_required=0
 
 
 class printerShare(string):
-	name='printerShare'
+	pass
 
 class spoolHost(string):
-	name='spoolHost'
+	pass
 
 class service(string):
-	name='service'
+	pass
 
 class nfssync(select):
-	name='nfssync'
 	choices=[
 		('sync', _( 'synchronous' ) ),
 		('async', _( 'asynchronous' ) )
 	]
 
 class univentionAdminModules(select):
-	name='univentionAdminModules'
 	# we need a fallback
 	choices=[('computers/managedclient', 'Computer: Managed Client'), ('computers/domaincontroller_backup', 'Computer: Domain Controller Backup'), ('computers/domaincontroller_master', 'Computer: Domain Controller Master'), ('computers/domaincontroller_slave', 'Computer: Domain Controller Slave'), ('computers/trustaccount', 'Computer: Domain Trust Account'), ('computers/ipmanagedclient', 'Computer: IP Managed Client'), ('computers/macos', 'Computer: Mac OS X Client'), ('computers/memberserver', 'Computer: Member Server'), ('computers/mobileclient', 'Computer: Mobile Client'), ('computers/thinclient', 'Computer: Thin Client'), ('computers/windows', 'Computer: Windows'), ('container/cn', 'Container: Container'), ('container/dc', 'Container: Domain'), ('container/ou', 'Container: Organizational Unit'), ('dhcp/host', 'DHCP: Host'), ('dhcp/pool', 'DHCP: Pool'), ('dhcp/server', 'DHCP: Server'), ('dhcp/service', 'DHCP: Service'), ('dhcp/shared', 'DHCP: Shared Network'), ('dhcp/sharedsubnet', 'DHCP: Shared Subnet'), ('dhcp/subnet', 'DHCP: Subnet'), ('dns/alias', 'DNS: Alias Record'), ('dns/forward_zone', 'DNS: Forward Lookup Zone'), ('dns/host_record', 'DNS: Host Record'), ('dns/ptr_record', 'DNS: Pointer'), ('dns/reverse_zone', 'DNS: Reverse Lookup Zone'), ('dns/srv_record', 'DNS: Service Record'), ('dns/zone_mx_record', 'DNS: Zone Mail Exchanger'), ('dns/zone_txt_record', 'DNS: Zone Text'), ('groups/group', 'Group: Group'), ('mail/folder', 'Mail: IMAP Folder'), ('mail/domain', 'Mail: Mail Domains'), ('mail/lists', 'Mail: Mailing Lists'), ('networks/network', 'Networks: Network'), ('policies/autostart', 'Policy: Autostart'), ('policies/clientdevices', 'Policy: Client Devices'), ('policies/dhcp_scope', 'Policy: DHCP Allow/Deny'), ('policies/dhcp_boot', 'Policy: DHCP Boot'), ('policies/dhcp_dns', 'Policy: DHCP DNS'), ('policies/dhcp_dnsupdate', 'Policy: DHCP DNS Update'), ('policies/dhcp_leasetime', 'Policy: DHCP Lease Time'), ('policies/dhcp_netbios', 'Policy: DHCP Netbios'), ('policies/dhcp_routing', 'Policy: DHCP Routing'), ('policies/dhcp_statements', 'Policy: DHCP Statements'), ('policies/desktop', 'Policy: Desktop'), ('policies/xfree', 'Policy: Display'), ('policies/ldapserver', 'Policy: LDAP Server'), ('policies/mailquota', 'Policy: Mail Quota'), ('policies/maintenance', 'Policy: Maintenance'), ('policies/managedclientpackages', 'Policy: Packages Managed Client'), ('policies/masterpackages', 'Policy: Packages Master'), ('policies/memberpackages', 'Policy: Packages Member'), ('policies/mobileclientpackages', 'Policy: Packages Mobile Client'), ('policies/slavepackages', 'Policy: Packages Slave'), ('policies/pwhistory', 'Policy: Password Policy'), ('policies/print_quota', 'Policy: Print Quota'), ('policies/printserver', 'Policy: Print Server'), ('policies/release', 'Policy: Release'), ('policies/repositoryserver', 'Policy: Repository Server'), ('policies/repositorysync', 'Policy: Repository Sync'), ('policies/sound', 'Policy: Sound'), ('policies/thinclient', 'Policy: Thin Client'), ('policies/admin_container', 'Policy: Univention Admin Container Settings'), ('policies/admin_user', 'Policy: Univention Admin View'), ('policies/share_userquota', 'Policy: Userquota-Policy'), ('policies/windowsinstallation', 'Policy: Windows Installation'), ('settings/default', 'Preferences: Default'), ('settings/directory', 'Preferences: Path'), ('settings/admin', 'Preferences: Univention Admin Global Settings'), ('settings/user', 'Preferences: Univention Admin User Settings'), ('settings/xconfig_choices', 'Preferences: X Configuration Choices'), ('shares/printer', 'Print-Share: Printer'), ('shares/printergroup', 'Print-Share: Printer Group'), ('settings/license', 'Settings: License'), ('settings/lock', 'Settings: Lock'), ('settings/packages', 'Settings: Package List'), ('settings/printermodel', 'Settings: Printer Driver List'), ('settings/printeruri', 'Settings: Printer URI List'), ('settings/prohibited_username', 'Settings: Prohibited Usernames'), ('settings/sambaconfig', 'Settings: Samba Configuration'), ('settings/sambadomain', 'Settings: Samba Domain'), ('settings/service', 'Settings: Service'), ('settings/usertemplate', 'Settings: User Template'), ('shares/share', 'Share: Directory'), ('settings/cn', 'Univention Settings'), ('users/user', 'User'), ('users/passwd', 'User: Password'), ('users/self', 'User: Self')]
 
@@ -2382,7 +2262,6 @@ def univentionAdminModules_update():
 __register_choice_update_function(univentionAdminModules_update)
 
 class univentionAdminWizards(select):
-	name='univentionAdminWizards'
 	# we need a fallback
 	choices=[('None', 'None'), ('computers/computer', 'Computer'), ('dhcp/dhcp', 'DHCP'), ('dns/dns', 'DNS'), ('groups/group', 'Groups'), ('mail/mail', 'Mail'), ('networks/network', 'Network'), ('policies/policy', 'Policies'), ('shares/print', 'Printers'), ('shares/share', 'Shares'), ('users/user', 'Users')]
 
@@ -2408,20 +2287,16 @@ def univentionAdminWizards_update():
 __register_choice_update_function(univentionAdminWizards_update)
 
 class univentionAdminWebModules(select):
-	name='univentionAdminWebModules'
 	choices = [('modabout',_('About')), ('modbrowse',_('Browse')),( 'modwizard',_('Wizards')), ('modself',_('Personal Settings'))]
 	# make no sense here: 'modedit', 'modlogout', 'modrelogin', 'modspacer'
 
 class listAttributes(select):
-	name = 'listAttributes'
-
 	@classmethod
 	def parse(self, text):
 		return text
 
 class timeSpec(select):
 	"""Time format used by 'at'."""
-	name = 'timeSpec'
 	_times  = [(time, time) for hour in range(0, 24)
 				for minute in range(0, 60, 15)
 				for time in ('%02d:%02d' % (hour, minute),)]
@@ -2431,7 +2306,6 @@ class timeSpec(select):
 	] + _times
 
 class optionsUsersUser(select):
-	name = 'optionsUsersUser'
 	choices = [
 		('groupware', _('Groupware Account')),
 		('kerberos', _('Kerberos Principal')),
@@ -2444,7 +2318,6 @@ class optionsUsersUser(select):
 class CTX_BrokenTimedoutSession( select ):
 	'''The keys of the choices are the hexdecimal values that represent
 	the options value within the munged dial flags'''
-	name = 'CTX_BrokenTimedoutSession'
 	choices = (
 		( '0000', _( 'Disconnect' ) ),
 		( '0400', _( 'Reset' ) ),
@@ -2453,7 +2326,6 @@ class CTX_BrokenTimedoutSession( select ):
 class CTX_ReconnectSession( select ):
 	'''The keys of the choices are the hexdecimal values that represent
 	the options value within the munged dial flags'''
-	name = 'CTX_ReconnectSession'
 	choices = (
 		( '0000', _( 'All Clients' ) ),
 		( '0200', _( 'Previously used Client' ) ),
@@ -2462,7 +2334,6 @@ class CTX_ReconnectSession( select ):
 class CTX_Shadow( select ):
 	'''The keys of the choices are the hexdecimal values that represent
 	the options value within the munged dial flags'''
-	name = 'CTX_Shadow'
 	choices = (
 		( '00000000', _( 'Disabled' ) ),
 		( '01000000', _( 'Enabled: Input: on, Message: on' ) ),
@@ -2473,7 +2344,6 @@ class CTX_Shadow( select ):
 class CTX_RASDialin( select ):
 	'''The keys of the choices are the hexdecimal values that represent
 	the options value within the munged dial flags'''
-	name = 'CTX_RASDialin'
 	choices = (
 		( 'E', _( 'Disabled' ) ),
 		( 'w', _( 'Enabled: Set by Caller' ) ),
@@ -2483,30 +2353,21 @@ class CTX_RASDialin( select ):
 
 
 class nagiosHostsEnabledDn(simple):
-	name='nagiosHostsEnabledDn'
-
 	@classmethod
 	def parse(self, text):
 		return text
 
-
 class nagiosServiceDn(simple):
-	name='nagiosServiceDn'
-
 	@classmethod
 	def parse(self, text):
 		return text
 
 class configRegistry(simple):
-	name='configRegistry'
-
 	@classmethod
 	def parse(self, text):
 		return text
 
 class configRegistryKey(simple):
-	name='configRegistryKey'
-
 	@classmethod
 	def parse(self, text):
 		return text
@@ -2612,12 +2473,10 @@ class LDAP_Search( select ):
 				self.values.append( ( dn, self.attributes ) )
 
 class nfsMounts(complex):
-	name='nfsMounts'
 	subsyntaxes=[(_('NFS-Share'), LDAP_Search( filter = 'objectClass=univentionShareNFS', attribute = [ 'shares/share: printablename' ], value = 'shares/share: dn' )), ('Mount point', string)]
 	all_required=1
 
 class languageCode(string):
-	name='langCode'
 	min_length=5
 	max_length=5
 	_re = re.compile('^[a-z][a-z]_[A-Z][A-Z]$')
@@ -2631,7 +2490,6 @@ class languageCode(string):
 
 
 class translationTuple(complex):
-	name = 'translationTuple'
 	delimiter = ': '
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Text'), string)]
 	all_required = 1
@@ -2646,7 +2504,6 @@ class translationTupleTabName(translationTuple):
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated tab name'), string)]
 
 class disabled( select ):
-	name = 'disabled'
 	choices = (
 		( 'none', _( 'None' ) ),
 		( 'all', _( 'All disabled' ) ),
@@ -2660,7 +2517,6 @@ class disabled( select ):
 	)
 
 class locked( select ):
-	name = 'locked'
 	choices = (
 		( 'none', _( 'None locked login method' ) ),
 		( 'all', _( 'Locked all login method' ) ),

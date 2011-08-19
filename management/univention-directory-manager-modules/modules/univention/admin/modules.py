@@ -585,16 +585,17 @@ def identify( dn, attr, module_name = '', canonical = 0, module_base = None ):
 	global modules
 	res=[]
 	if 'univentionObjectType' in attr and attr[ 'univentionObjectType' ]:
-		return attr[ 'univentionObjectType' ]
-	for name, module in modules.items():
-		if module_base is not None and not name.startswith( module_base ):
-			continue
-		if not hasattr(module, 'identify'):
-			ud.debug(ud.ADMIN, ud.INFO, 'module %s does not provide identify' % module)
-			continue
+		res = attr[ 'univentionObjectType' ]
+	else:
+		for name, module in modules.items():
+			if module_base is not None and not name.startswith( module_base ):
+				continue
+			if not hasattr(module, 'identify'):
+				ud.debug(ud.ADMIN, ud.INFO, 'module %s does not provide identify' % module)
+				continue
 
-		if ( not module_name or module_name == module.module ) and module.identify(dn, attr):
-			res.append(module)
+			if ( not module_name or module_name == module.module ) and module.identify(dn, attr):
+				res.append(module)
 	if not res:
 		ud.debug(ud.ADMIN, ud.INFO, 'object could not be identified')
 	for r in res:
