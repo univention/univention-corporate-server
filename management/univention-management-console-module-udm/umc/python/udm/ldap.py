@@ -184,7 +184,7 @@ class UDM_Module( object ):
 				obj[ key ] = value
 			obj.modify()
 		except udm_errors.base, e:
-			MODULE.error( 'Failed to modify LDAP object %s' % ldap_dn )
+			MODULE.error( 'Failed to modify LDAP object %s' % obj.dn )
 			raise UDM_Error( e.message )
 
 	def search( self, container = None, attribute = None, value = None, superordinate = None, scope = 'sub', filter = '' ):
@@ -212,6 +212,8 @@ class UDM_Module( object ):
 		"""Retrieves details for a given LDAP object"""
 		lo, po = get_ldap_connection()
 		if ldap_dn is not None:
+			if superordinate is None:
+				superordinate = udm_objects.get_superordinate( self.module, None, lo, ldap_dn )
 			obj = self.module.object( None, lo, None, ldap_dn, superordinate, attributes = attributes )
 			obj.open()
 		else:
@@ -270,12 +272,19 @@ class UDM_Module( object ):
 			modules.append( { 'id' : child, 'label' : getattr( mod, 'short_description', child ) } )
 		return modules
 
-	@property
-	def layout( self ):
+	def get_layout( self, ldap_dn = None ):
 		"""Layout information"""
-		layout = getattr( self.module, 'layout', [] )
-		if not layout:
-			return layout
+		layout = []
+		if ldap_dn is not None:
+			mod = get_module( None, ldap_dn )
+			if mod.name != self.name:
+				layout = getattr( self.module, 'layout', [] )
+			else:
+				obj = self.get( ldap_dn )
+				if hasattr( obj, 'layout' ):
+					layout = obj.layout
+		else:
+			layout = getattr( self.module, 'layout', [] )
 
 		if isinstance( layout[ 0 ], udm.tab ):
 			return self._parse_old_layout( layout )
@@ -568,28 +577,40 @@ def read_syntax_choices( syntax_name, options = {} ):
 		syntax._prepare( lo, syntax.filter )
 
 		syntax.choices = []
-		for dn, store_pattern, display_attr in syntax.values:
-			mod_display, display = split_module_attr( display_attr )
-			mod_store, store = split_module_attr( store_pattern )
-			module = get_module( mod_display, dn )
+		for item in syntax.values:
+			if syntax.viewonly:
+				dn, display_attr = item
+			else:
+				dn, store_pattern, display_attr = item
+
+			if display_attr:
+				mod_display, display = split_module_attr( display_attr[ 0 ] )
+				module = get_module( mod_display, dn )
+			else:
+				module = get_module( None, dn )
+				display = None
 			if not module:
 				continue
 			obj = module.get( dn )
 			if not obj:
 				continue
-			if store == 'dn':
-				id = dn
-			else:
-				id = obj.get( store )
+			if not syntax.viewonly:
+				mod_store, store = split_module_attr( store_pattern )
+				if store == 'dn':
+					id = dn
+				else:
+					id = obj.get( store )
 			if display == 'dn':
 				label = dn
+			elif display is None: # if view-only and in case of error
+				label = '%s: %s' % ( module.title, obj[ module.identifies ] )
 			else:
 				if obj.has_key( display ):
 					label = obj[ display ]
 				else:
 					label = 'Unknown attribute %s' % display
 			if syntax.viewonly:
-				syntax.choices.append( { 'id' : id, 'label' : label } )
+				syntax.choices.append( { 'id' : dn, 'label' : label } )
 			else:
 				syntax.choices.append( { 'objectType' : module.name, 'id' : id, 'label' : label } )
 		return syntax.choices

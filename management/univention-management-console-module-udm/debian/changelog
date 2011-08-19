@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.98-1) unstable; urgency=low
+
+  * fixes in LDAP_Search syntax (view-only mode)
+  * support layout information within UDM objects
+  * pass LDAP DN to udm/layout; Bug #23222
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 19 Aug 2011 16:01:55 +0200
+
 univention-management-console-module-udm (1.0.97-1) unstable; urgency=low
 
   * removed some debug messages that might log sensitive data; Bug #23212

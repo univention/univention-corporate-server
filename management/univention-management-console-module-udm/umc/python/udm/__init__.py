@@ -346,7 +346,7 @@ class Instance( Base ):
 		return: <layout data structure (see UDM python modules)>
 		"""
 		module = self._get_module( request )
-		self.finished( request.id, module.layout )
+		self.finished( request.id, module.get_layout( request.options.get( 'objectDN', None ) ) )
 
 	def properties( self, request ):
 		"""Returns the properties of the given object type.

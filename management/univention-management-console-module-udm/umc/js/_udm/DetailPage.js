@@ -88,7 +88,10 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 		// for the detail page, we first need to query property data from the server
 		// for the layout of the selected object type, then we can render the page
-		var params = { objectType: this.objectType };
+		var params = {
+			objectType: this.objectType,
+			objectDN: this.ldapName
+		};
 		var commands = [
 			this.umcpCommand('udm/properties', params),
 			this.umcpCommand('udm/layout', params),
