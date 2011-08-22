@@ -208,7 +208,7 @@ def init(lo, position, module, template_object=None):
 			prop.syntax._load( lo )
 			if prop.syntax.viewonly:
 				module.mapping.unregister( pname )
-		elif prop.syntax.type == 'complex' and hasattr( prop.syntax, 'subsyntaxes' ):
+		elif univention.admin.syntax.is_syntax( prop.syntax, univention.admin.syntax.complex ) and hasattr( prop.syntax, 'subsyntaxes' ):
 			for text, subsyn in prop.syntax.subsyntaxes:
 				if subsyn.name == 'LDAP_Search':
 					subsyn._load( lo )
@@ -575,7 +575,7 @@ def update_extended_attributes(lo, module, position):
 			prop.syntax._load( lo )
 			if prop.syntax.viewonly:
 				module.mapping.unregister( pname )
-		elif prop.syntax.type == 'complex' and hasattr( prop.syntax, 'subsyntaxes' ):
+		elif univention.admin.syntax.is_syntax( prop.syntax, univention.admin.syntax.complex ) and hasattr( prop.syntax, 'subsyntaxes' ):
 			for text, subsyn in prop.syntax.subsyntaxes:
 				if subsyn.name == 'LDAP_Search':
 					subsyn._load( lo )
@@ -584,8 +584,8 @@ def identify( dn, attr, module_name = '', canonical = 0, module_base = None ):
 
 	global modules
 	res=[]
-	if 'univentionObjectType' in attr and attr[ 'univentionObjectType' ]:
-		res = attr[ 'univentionObjectType' ]
+	if 'univentionObjectType' in attr and attr[ 'univentionObjectType' ] and attr[ 'univentionObjectType' ][ 0 ] in modules:
+		res.append( modules.get( attr[ 'univentionObjectType' ][ 0 ] ) )
 	else:
 		for name, module in modules.items():
 			if module_base is not None and not name.startswith( module_base ):

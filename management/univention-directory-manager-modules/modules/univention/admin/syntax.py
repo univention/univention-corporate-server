@@ -69,6 +69,11 @@ def update_choices():
 	for func in choice_update_functions:
 		func()
 
+def is_syntax( syntax_obj, syntax_type ):
+	"""Returns True if the syntax object/class matches the given type."""
+
+	return type( syntax_obj ) == type and issubclass( syntax_obj, syntax_type ) or isinstance( syntax_obj, syntax_type )
+
 class ClassProperty( object ):
 	'''A decorator that can be used to define read-only class properties'''
 	def __init__( self, getter ):

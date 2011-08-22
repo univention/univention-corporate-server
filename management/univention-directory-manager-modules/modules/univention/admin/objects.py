@@ -56,8 +56,8 @@ def get_superordinate( module, co, lo, dn ):
 		while dn:
 			attr = lo.get( dn )
 			if univention.admin.modules.identifyOne( dn, attr ) == super_module:
-				return get( super_module, co, lo, position, dn )
-				dn = lo.parentDn( dn )
+				return get( super_module, co, lo, None, dn )
+			dn = lo.parentDn( dn )
 
 	return None
 

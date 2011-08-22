@@ -257,7 +257,7 @@ def object_input(module, object, input, append=None, remove=None):
 				else:
 					out.append('WARNING: file not found: %s' % value)
 
-			elif module.property_descriptions[key].syntax.type == 'complex':
+			elif univention.admin.syntax.is_syntax( module.property_descriptions[key].syntax, univention.admin.syntax.complex ):
 				for i in range(0,len(value)):
 					test_val=value[i].split('"')
 					if test_val[0] and test_val[0] == value[i]:
@@ -291,7 +291,7 @@ def object_input(module, object, input, append=None, remove=None):
 							out.append('E: Invalid Syntax: %s' % str(errmsg))
 	if remove:
 		for key, value in remove.items():
-			if module.property_descriptions[key].syntax.type == 'complex':
+			if univention.admin.syntax.is_syntax( module.property_descriptions[key].syntax, univention.admin.syntax.complex ):
 				if value:
 					for i in range(0,len(value)):
 						test_val=value[i].split('"')
@@ -344,7 +344,7 @@ def object_input(module, object, input, append=None, remove=None):
 				else:
 					out.append('WARNING: file not found: %s' % value)
 
-			elif module.property_descriptions[key].syntax.type == 'complex':
+			elif univention.admin.syntax.is_syntax( module.property_descriptions[key].syntax, univention.admin.syntax.complex ):
 				if type(value) == type([]):
 					for i in range(0,len(value)):
 						test_val=value[i].split('"')

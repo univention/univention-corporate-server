@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.61-1) unstable; urgency=low
+
+  * make syntax complexwork again for UDM command line tool; Bug #23385
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 22 Aug 2011 13:22:32 +0200
+
 univention-directory-manager-modules (7.0.60-1) unstable; urgency=low
 
   * all boolean syntax classes provide a mapping between the string
