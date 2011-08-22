@@ -1,3 +1,9 @@
+univention-ad-connector (5.0.24-1) unstable; urgency=low
+
+  * Fixed typo s/ignorreset/ignorereset/g (Bug #22751)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 22 Aug 2011 14:35:23 +0200
+
 univention-ad-connector (5.0.23-1) unstable; urgency=low
 
   * More password timestamp handling and some cleanups (Bug #22751)
