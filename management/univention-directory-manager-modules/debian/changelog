@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.60-1) unstable; urgency=low
+
+  * all boolean syntax classes provide a mapping between the string
+    representation and the boolean value; Bug #23222
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 22 Aug 2011 10:27:27 +0200
+
 univention-directory-manager-modules (7.0.59-1) unstable; urgency=low
 
   * Support krb5PrincipalName in univention.lib.password.change

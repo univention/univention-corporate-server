@@ -1670,43 +1670,61 @@ class AllowDenyIgnore(select):
 		('ignore', 'ignore')
 	]
 
-class AllowDeny(select):
-	choices=[
-		('', ''),
-		('allow', 'allow'),
-		('deny', 'deny')
-	]
-class booleanNone(select):
-	choices=[
-		('', ''),
-		('yes', 'Yes'),
-		('no', 'No')
-	]
+class IStates( select ):
+	values = []
 
-class TrueFalse(select):
-	choices=[
-		('', ''),
-		('true', 'True'),
-		('false', 'False')
-	]
+	@ClassProperty
+	def choices( cls ):
+		return map( lambda x: ( x[ 1 ] ), cls.values )
 
-class TrueFalseUpper(select):
-	choices=[
-		('', ''),
-		('TRUE', 'TRUE'),
-		('FALSE', 'FALSE')
-	]
-class TrueFalseUp(select):
-	choices=[
-		('TRUE', 'TRUE'),
-		('FALSE', 'FALSE')
-	]
+	@classmethod
+	def parse( cls, text ):
+		if isinstance( text, basestring ):
+			return text
+		for value, choice in cls.values:
+			if text == value:
+				return choice[ 0 ]
+		return text
 
-class OkOrNot(select):
-	choices=[
-		('OK', 'OK'),
-		('Not', 'KO'),
-	]
+class AllowDeny( IStates ):
+	values = (
+		( None, ('', '') ),
+		( True, ( 'allow', 'allow' ) ),
+		( False, ('deny', 'deny') )
+	)
+
+class booleanNone( IStates ):
+	values = (
+		( None, ( '', '' ) ),
+		( True, ('yes', 'Yes' ) ),
+		( False, ( 'no', 'No' ) )
+	)
+
+class TrueFalse( IStates ):
+	values = (
+		( None, ( '', '' ) ),
+		( True, ( 'true', 'True' ) ),
+		( False, ( 'false', 'False') )
+	)
+
+class TrueFalseUpper( IStates ):
+	values = (
+		( None, ( '', '' ) ),
+		( True, ( 'TRUE', 'TRUE' ) ),
+		( False, ( 'FALSE', 'FALSE' ) )
+	)
+
+class TrueFalseUp( IStates ):
+	values = (
+		( True, ( 'TRUE', 'TRUE' ) ),
+		( False, ( 'FALSE', 'FALSE' ) )
+	)
+
+class OkOrNot( IStates ):
+	values = (
+		( True, ( 'OK', 'OK' ) ),
+		( False, ( 'Not', 'KO' ) )
+	)
 
 class ddnsUpdateStyle(select):
 	choices=[
@@ -1716,12 +1734,12 @@ class ddnsUpdateStyle(select):
 		('none', 'none')
 	]
 
-class ddnsUpdates(select):
-	choices=[
-		('', ''),
-		('on', 'on'),
-		('off', 'off')
-	]
+class ddnsUpdates( IStates ):
+	values = (
+		( None, ( '', '' ) ),
+		( True, ( 'on', 'on' ) ),
+		( False, ( 'off', 'off' ) )
+	)
 
 class netbiosNodeType(select):
 	choices=[
