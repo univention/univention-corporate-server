@@ -119,6 +119,10 @@ class UDM_Module( object ):
 
 		self.module = _module_cache.get( module )
 
+	def __getitem__( self, key ):
+		props = getattr( self.module, 'property_descriptions', {} )
+		return props[ key ]
+
 	def get_default_values( self, property_name ):
 		"""Depending on the syntax of the given property a default
 		search pattern/value is returned"""
@@ -323,14 +327,8 @@ class UDM_Module( object ):
 		"""All properties of the UDM module"""
 		props = [ { 'id' : 'ldap-dn', 'type' : 'HiddenInput', 'label' : '', 'searchable' : False } ]
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
-			if key == 'filler': continue
-			if hasattr( prop.syntax, '__name__' ):
-				syntax_name = prop.syntax.__name__
-			elif hasattr( prop.syntax, '__class__' ):
-				syntax_name = prop.syntax.__class__.__name__
-			else:
-				syntax_name = getattr( 'name', prop, None )
-			item = { 'id' : key, 'label' : prop.short_description, 'description' : prop.long_description, 'syntax' : syntax_name,
+			if key == 'filler': continue # FIXME: should be removed from all UDM modules
+			item = { 'id' : key, 'label' : prop.short_description, 'description' : prop.long_description, 'syntax' : prop.syntax.name,
 					 'required' : bool( prop.required ), 'editable' : bool( prop.may_change ),
 					 'options' : prop.options, 'searchable' : not prop.dontsearch, 'multivalue' : bool( prop.multivalue ) }
 
@@ -615,3 +613,18 @@ def read_syntax_choices( syntax_name, options = {} ):
 				syntax.choices.append( { 'objectType' : module.name, 'id' : id, 'label' : label } )
 		return syntax.choices
 	return map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syn, 'choices', [] ) )
+
+def map_syntaxes( object_type, ldap_object ):
+	"""Maps syntax types like boolean and integers to the value expected
+	by the UDM syntax"""
+	for key, value in ldap_object:
+		mod = UDM_Module( object_type )
+		if not nod:
+			continue
+		if isinstance( value, bool ):
+			try:
+				prop = mod[ key ]
+			except KeyError:
+				continue
+			# this should help to remove the hack in umc/widgets/Checkbox.js
+			ldap_object[ key ] = prop.syntax.parse( value )

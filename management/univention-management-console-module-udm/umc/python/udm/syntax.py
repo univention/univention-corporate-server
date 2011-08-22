@@ -133,7 +133,7 @@ def widget( syntax ):
 	return {}
 
 def default_value( syntax ):
-	'''Returns a widget description'''
+	"""Returns a default search pattern/value for the given widget"""
 	global __widgets
 
 	for widget in __widgets:

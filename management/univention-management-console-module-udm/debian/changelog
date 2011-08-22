@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.99-1) unstable; urgency=low
+
+  * map boolean syntax types to strings when adding or modifying an
+    object; Bug #23222
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 22 Aug 2011 10:29:50 +0200
+
 univention-management-console-module-udm (1.0.98-1) unstable; urgency=low
 
   * fixes in LDAP_Search syntax (view-only mode)
