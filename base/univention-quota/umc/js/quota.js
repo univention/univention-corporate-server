@@ -4,28 +4,24 @@ dojo.provide("umc.modules.quota");
 
 dojo.require("umc.i18n");
 dojo.require("umc.widgets.Module");
-dojo.require("umc.widgets.Page");
+
+dojo.require("umc.modules._quota.OverviewPage");
 
 dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
-	_grid: null,
-	_store: null,
-	_searchWidget: null,
-	_contextVariable: null,
-	_page: null,
-
-	i18nClass: 'umc.modules.quota',
+	_overviewPage: null,
 
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		this._page = new umc.widgets.Page({
+		this._overviewPage = new umc.modules._quota.OverviewPage({
+			moduleStore: this.getModuleStore('id', this.moduleID + '/partitions'),
+
 			headerText: this._('Filesystem quotas'),
 			helpText: this._('Set, unset and modify filesystem quota')
 		});
 
-		this.addChild(this._page);
-
-		this._page.startup();
+		this.addChild(this._overviewPage);
+		this._overviewPage.startup();
     }
 });
