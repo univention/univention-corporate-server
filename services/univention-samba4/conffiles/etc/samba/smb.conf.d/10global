@@ -18,8 +18,6 @@ else:
 for key, smbstring in [('samba/interfaces','interfaces'),
 		       ('samba/charset/dos', 'dos charset'),
 		       ('samba/charset/unix', 'unix charset'),
-		       ('samba/charset/display', 'display charset'),
-		       ('samba/enable-privileges', 'enable privileges'),
 		       ('samba/socket_options', 'socket options'),
 		       ('samba/netbios/aliases', 'netbios aliases'),
 		       ('', ''),

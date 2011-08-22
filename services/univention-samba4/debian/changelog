@@ -1,3 +1,10 @@
+univention-samba4 (1.0.15-1) experimental; urgency=low
+
+  * display charset and enable privileges have been removed from loadparm
+    (Bug #23158)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 22 Aug 2011 18:23:53 +0200
+
 univention-samba4 (1.0.14-2) experimental; urgency=low
 
   * fix machinepass in provision command (Bug #22559)
