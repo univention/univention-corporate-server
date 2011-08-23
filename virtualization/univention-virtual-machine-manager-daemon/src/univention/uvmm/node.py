@@ -414,39 +414,41 @@ class Node(object):
 	def __init__(self, uri):
 		self.pd = Data_Node() # public data
 		self.uri = uri
-		self._lock = threading.Lock()
 		self.conn = None
 		self.domains = {}
 		self.config_frequency = Nodes.IDLE_FREQUENCY
 		self.current_frequency = Nodes.IDLE_FREQUENCY
-
-		def timer_callback(timer, *opaque):
-			try:
-				"""Handle regular poll. Also checks connection liveness."""
-				logger.debug("timer_callback#%d: %s)" % (timer, self.uri,))
-				try:
-					self._lock.acquire()
-					self.update_autoreconnect()
-				finally:
-					self._lock.release()
-			except Exception, e:
-				logger.error("%s: Exception in timer_callbck", (self.uri,), exc_info=True)
-				# don't crash the event handler
-
-		self.timerID = virEventAddTimerImpl(self.current_frequency, timer_callback, (None,None))
 		self.domainCB = None
+		self.timerEvent = threading.Event()
+		self.timer = threading.Thread(group=None, target=self.run, name=self.uri, args=(), kwargs={})
+		self.timer.start()
+	
+	def run(self):
+		"""Handle regular poll. Also checks connection liveness."""
+		logger.info("timer_callback(%s) start" % (self.uri,))
+		try:
+			while self.timer is not None:
+				try:
+					logger.debug("timer_callback: %s" % (self.uri,))
+					self.update_autoreconnect()
+				except Exception, e:
+					logger.error("%s: Exception in timer_callbck", (self.uri,), exc_info=True)
+					# don't crash the event handler
+				self.timerEvent.clear()
+				self.timerEvent.wait(self.current_frequency / 1000.0)
+		finally:
+			logger.debug("timer_callback(%s) terminated" % (self.uri,))
 
 	def update_autoreconnect(self):
 		"""(Re-)connect after connection broke."""
 		try:
-			if self.conn == None:
+			if self.conn is None:
 				self.conn = libvirt.open(self.uri)
 				logger.info("Connected to '%s'" % (self.uri,))
 				self.update_once()
 				self._register_default_pool()
 				# reset timer after successful re-connect
 				self.current_frequency = self.config_frequency
-				virEventUpdateTimerImpl(self.timerID, self.config_frequency)
 			self.update()
 			self.pd.last_try = self.pd.last_update = time.time()
 		except libvirt.libvirtError, e:
@@ -456,8 +458,7 @@ class Node(object):
 			logger.warning("'%s' broken? next check in %s. %s" % (self.uri, ms(hz), e))
 			if hz > self.current_frequency:
 				self.current_frequency = hz
-				virEventUpdateTimerImpl(self.timerID, self.current_frequency)
-			if self.conn != None:
+			if self.conn is not None:
 				try:
 					self.conn.domainEventDeregister(self.domainCB)
 				except Exception, e:
@@ -549,15 +550,22 @@ class Node(object):
 		self.conn.domainEventRegister(domain_callback, self)
 		self.domainCB = domain_callback
 
-	def unregister(self):
+	def unregister(self, wait=False):
 		"""Unregister callbacks doing updates."""
-		if self.timerID != None:
-			virEventRemoveTimerImpl(self.timerID)
-			self.timerID = None
-		if self.domainCB != None:
+		if self.timer is not None:
+			timer = self.timer
+			self.timer = None
+			self.timerEvent.set()
+			while wait:
+				timer.join(1.0) # wait for up to 1 second until Thread terminates
+				if timer.isAlive():
+					logger.debug("timer still alive: %s" % (self.uri,))
+				else:
+					wait = False
+		if self.domainCB is not None:
 			self.conn.domainEventDeregister(self.domainCB)
 			self.domainCB = None
-		if self.conn != None:
+		if self.conn is not None:
 			self.conn.close()
 			self.conn = None
 
@@ -565,7 +573,7 @@ class Node(object):
 		"""Set polling frequency for update."""
 		self.config_frequency = hz
 		self.current_frequency = hz
-		virEventUpdateTimerImpl(self.timerID, hz)
+		self.timerEvent.set()
 
 	def update(self):
 		"""Update node statistics."""
@@ -670,7 +678,7 @@ def node_query(uri):
 def node_frequency(hz=Nodes.IDLE_FREQUENCY, uri=None):
 	"""Set frequency for polling nodes."""
 	global nodes
-	if uri == None:
+	if uri is None:
 		nodes.set_frequency(hz)
 	else:
 		node = node_query(uri)

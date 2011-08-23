@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (0.9.322-1) unstable; urgency=low
+
+  * Update multi-threaded (Bug #23088)
+  * src/univention/uvmm/eventloop.py: Synchronize
+  	331d7b09a7724528bf398bc4043648e01203960f from upstream.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 23 Aug 2011 15:56:52 +0200
+
 univention-virtual-machine-manager-daemon (0.9.321-1) unstable; urgency=low
 
   * Implement disk/source change (Bug #21763)

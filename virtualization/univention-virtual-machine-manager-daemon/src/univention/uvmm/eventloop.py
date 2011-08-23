@@ -30,7 +30,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-"""Event loop. From libvirt/examples/event-python/."""
+"""Event loop. From libvirt/examples/domain-events/events-python/event-test-py"""
 #################################################################################
 # Start off by implementing a general purpose event loop for anyones use
 #################################################################################
@@ -111,6 +111,8 @@ class virEventLoopPure:
         self.debugOn = debug
         self.poll = select.poll()
         self.pipetrick = os.pipe()
+        self.pendingWakeup = False
+        self.runningPoll = False
         self.nextHandleID = 1
         self.nextTimerID = 1
         self.handles = []
@@ -190,6 +192,7 @@ class virEventLoopPure:
         if timeouts are due, we allow a margin of 20ms, to avoid
         these pointless repeated tiny sleeps."""
         sleep = -1
+        self.runningPoll = True
         next = self.next_timeout()
         self.debug("Next timeout due at %d" % next)
         if next > 0:
@@ -214,6 +217,7 @@ class virEventLoopPure:
             # telling us to wakup. if so, then discard
             # the data just continue
             if fd == self.pipetrick[0]:
+                self.pendingWakeup = False
                 data = os.read(fd, 1)
                 continue
 
@@ -236,6 +240,7 @@ class virEventLoopPure:
                 t.set_last_fired(now)
                 t.dispatch()
 
+        self.runningPoll = False
 
     def run_loop(self):
         """Actually the event loop forever."""
@@ -244,7 +249,10 @@ class virEventLoopPure:
             self.run_once()
 
     def interrupt(self):
-        os.write(self.pipetrick[1], 'c')
+        if self.runningPoll and not self.pendingWakeup:
+            self.pendingWakeup = True
+            os.write(self.pipetrick[1], 'c')
+
 
     def add_handle(self, fd, events, cb, opaque):
         """
