@@ -36,6 +36,8 @@
 
 eval "$(univention-config-registry shell)"
 
+univention-config-registry set samba/quota/command?'/usr/sbin/univention-setquota'
+
 if [ ! `echo $kernel_modules | grep quota_v2` ]; then
 	univention-config-registry set kernel/modules="$kernel_modules;quota_v2"
 fi

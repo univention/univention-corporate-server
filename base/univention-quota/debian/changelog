@@ -1,3 +1,10 @@
+univention-quota (6.0.3-1) unstable; urgency=low
+
+  * New UCR variable samba/quota/command for 'set quota command'
+    (Bug #23158)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 23 Aug 2011 16:37:00 +0200
+
 univention-quota (6.0.2-1) unstable; urgency=low
 
   * Update UMC modul

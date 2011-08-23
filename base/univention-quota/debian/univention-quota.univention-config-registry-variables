@@ -3,3 +3,9 @@ Description[de]=Datei in der Aufrufe von univention-user-quota protokolliert wer
 Description[en]=File in which calls to univention-user-quota are logged.
 Type=str
 Categories=system-base
+
+[samba/quota/command]
+Description[de]=Kommando, dass in samba 'set quota command' verwendet werden soll.
+Description[en]=Command that is used in samba 'set quota command'.
+Type=str
+Categories=service-samba
