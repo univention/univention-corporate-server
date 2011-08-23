@@ -3,7 +3,7 @@
 # Univention Server Installation
 #  pstinst script for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -66,3 +66,5 @@ if [ "$1" = "configure" ]; then
 		/etc/init.d/univention-directory-listener crestart
 	fi
 fi
+
+exit 0
