@@ -3,7 +3,7 @@
 # Univention Share
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,15 +32,9 @@
 
 #DEBHELPER#
 
-createLogfile () {
-	if [ ! -e $1 ] ; then
-		touch $1
-		chown $2 $1
-		chmod $3 $1
-	fi
-}
+. /usr/share/univention-lib/all.sh
 
-createLogfile /var/log/univention/share-replication.log "root:adm" 640
+create_logfile_if_missing /var/log/univention/share-replication.log "root:adm" 640
 
 if [ "$1" = "configure" -a -n "$2" ]; then
 	/etc/init.d/univention-directory-listener crestart
