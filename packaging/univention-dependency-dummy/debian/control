@@ -10,7 +10,6 @@ Package: univention-dependency-dummy
 Architecture: all
 Provides: univention-system-setup,
  univention-grub,
- univention-shares,
  univention-archive-key
 Description: temporary development package
  This package was build to provide a target for missing package dependencies.
