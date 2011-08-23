@@ -1,3 +1,9 @@
+univention-netlogon-ldapsearch (3.0.0-2) unstable; urgency=low
+
+  * Fix build dep (Bug #22576)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Aug 2011 15:19:19 +0200
+
 univention-netlogon-ldapsearch (3.0.0-1) unstable; urgency=low
 
   * Update for UCS 3.0 (Bug #22576)
