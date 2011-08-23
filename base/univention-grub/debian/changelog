@@ -1,3 +1,10 @@
+univention-grub (5.0.0-4) unstable; urgency=low
+
+  * Remove registration of menu.lst to prevent overwriting the transitional
+    script generated in postinst (Bug #22115)	 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Aug 2011 13:25:41 +0200
+
 univention-grub (5.0.0-3) unstable; urgency=low
 
   * Drop obsolete code  (Bug #22115)
