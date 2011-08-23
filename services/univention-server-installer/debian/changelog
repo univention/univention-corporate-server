@@ -1,6 +1,9 @@
-univention-server-installer (5.0.0-1) unstable; urgency=low
+univention-net-installer (5.0.0-1) unstable; urgency=low
 
   * Update for UCS 3.0 (Bug #22576)
+  * Add a copyright file
+  * Remove the old transition package univention-server-installer, also
+    rename the source package to univention-net-installer
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Aug 2011 16:47:58 +0200
 

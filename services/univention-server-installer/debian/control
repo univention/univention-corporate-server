@@ -1,4 +1,4 @@
-Source: univention-server-installer
+Source: univention-net-installer
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
@@ -11,17 +11,6 @@ Depends: univention-client-boot-pxe, syslinux | syslinux-bin, univention-config-
 Conflicts: univention-server-installer (<< 0.3)
 Description: UCS - automatic profile server installation
  This package contain the automatic profile server installation.
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-server-installer
-Architecture: all
-Depends: univention-net-installer
-Description: UCS - automatic profile server installation
- Metapackage.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
