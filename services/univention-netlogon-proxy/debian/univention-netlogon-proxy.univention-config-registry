@@ -5,3 +5,5 @@ Variables: samba/netlogonscript/proxy/port
 Variables: samba/netlogonscript/proxy/whitelist
 Variables: samba/netlogonscript/proxy/enable/firefox
 Variables: samba/netlogonscript/proxy/enable/iexplorer
+Variables: hostname
+Variables: domainname

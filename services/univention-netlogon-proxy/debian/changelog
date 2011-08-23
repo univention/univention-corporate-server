@@ -2,6 +2,8 @@ univention-netlogon-proxy (5.0.0-1) unstable; urgency=low
 
   * Update for UCS 3.0 (Bug #22576)
   * Make the package Architecture: all (Bug #18720)
+  * Many ucslint cleanups
+  * Add missing UCR variable descriptions and registrations	
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Aug 2011 15:36:40 +0200
 

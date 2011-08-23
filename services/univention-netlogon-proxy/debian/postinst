@@ -30,29 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-set -e
+eval "$(univention-config-registry shell)"
 
-case "$1" in
-    configure)
-
-	eval `univention-config-registry shell`
-
-	univention-config-registry set samba/netlogonscript/proxy/host?"$hostname.$domainname" \
-							  samba/netlogonscript/proxy/port?3128 \
-							  samba/netlogonscript/proxy/whitelist?"127.0.0.1 localhost $hostname.$domainname" \
-							  samba/netlogonscript/proxy/enable/firefox?true \
-							  samba/netlogonscript/proxy/enable/iexplorer?true
-    ;;
-
-    abort-upgrade|abort-remove|abort-deconfigure)
-    ;;
-
-    *)
-        echo "postinst called with unknown argument \`$1'" >&2
-        exit 1
-    ;;
-esac
-
+univention-config-registry set samba/netlogonscript/proxy/host?"$hostname.$domainname" \
+			   samba/netlogonscript/proxy/port?3128 \
+			   samba/netlogonscript/proxy/whitelist?"127.0.0.1 localhost $hostname.$domainname" \
+			   samba/netlogonscript/proxy/enable/firefox?true \
+			   samba/netlogonscript/proxy/enable/iexplorer?true
 #DEBHELPER#
 
 exit 0
