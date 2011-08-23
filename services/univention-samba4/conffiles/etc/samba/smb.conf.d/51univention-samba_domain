@@ -1,0 +1,37 @@
+
+	; domain
+@!@
+if configRegistry['server/role'] != 'memberserver':
+	if configRegistry.has_key( 'samba/role' ) and configRegistry[ 'samba/role' ].lower() == 'bdc':
+		print '\tsecurity = user'
+
+		if configRegistry.has_key( 'samba/preferred/master' ):
+			print '\tpreferred master = %s' % configRegistry[ 'samba/preferred/master' ]
+		else:
+			print '\tpreferred master = yes'
+		if configRegistry.has_key( 'samba/local/master' ):
+			print '\tlocal master = %s' % configRegistry[ 'samba/local/master']
+		else:
+			print '\tlocal master = yes'
+	else:
+		print '\tsecurity = user'
+		if configRegistry.has_key( 'samba/preferred/master' ):
+			print '\tpreferred master = %s' % configRegistry[ 'samba/preferred/master' ]
+		else:
+			print '\tpreferred master = yes'
+		if configRegistry.has_key( 'samba/local/master' ):
+			print '\tlocal master = %s' % configRegistry[ 'samba/local/master']
+		else:
+			print '\tlocal master = yes'
+else:
+	print '\tsecurity = ads'
+
+	print '\tpreferred master = no'
+	print '\tlocal master = no'
+@!@
+
+	wins support = @%@windows/wins-support@%@
+@!@
+if configRegistry['windows/wins-support'] != 'yes' and configRegistry['windows/wins-server']:
+	print '	wins server = %s' % configRegistry['windows/wins-server'],
+@!@

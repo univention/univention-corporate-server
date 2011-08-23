@@ -1,14 +1,32 @@
 Type: multifile
 Multifile: etc/samba/smb.conf
-Variables: kerberos/realm
 Variables: hostname
 Variables: domainname
-Variables: samba/.*
 Variables: server/role
+Variables: kerberos/realm
+Variables: windows/domain
+Variables: samba/.*
+Variables: windows/wins-.*
 
 Type: subfile
 Multifile: etc/samba/smb.conf
 Subfile: etc/samba/smb.conf.d/10global
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/21univention-samba_winbind
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/31univention-samba_password
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/51univention-samba_domain
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/61univention-samba_misc
 
 Type: subfile
 Multifile: etc/samba/smb.conf

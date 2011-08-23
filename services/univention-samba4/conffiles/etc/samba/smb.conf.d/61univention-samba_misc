@@ -1,0 +1,15 @@
+@!@
+print '\toplocks = %s' % configRegistry.get('samba/oplocks', 'yes')
+print '\tlarge readwrite = %s' % configRegistry.get('samba/large_readwrite', 'yes')
+print '\tread raw = %s' % configRegistry.get('samba/read_raw', 'yes')
+print '\twrite raw = %s' % configRegistry.get('samba/write_raw', 'yes')
+print '\tmax xmit = %s' % configRegistry.get('samba/max_xmit', '65535')
+
+print '\ttime server = %s' % configRegistry.get('samba/time_server', 'yes')
+
+if configRegistry.has_key('samba/enable-msdfs') and configRegistry['samba/enable-msdfs'] == 'yes':
+	print '\thost msdfs = yes'
+else:
+	print '\thost msdfs = no'
+	print '\tmsdfs root = no'
+@!@

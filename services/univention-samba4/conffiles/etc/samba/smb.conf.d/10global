@@ -8,10 +8,17 @@ if configRegistry.get('samba/netbios/name'):
 else:
 	print '\tnetbios name = %s' % configRegistry['hostname']
 
-@!@	workgroup	= @%@windows/domain@%@
+server_role = configRegistry.get('server/role')
+if server_role in ('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'):
+	print '\tserver role = domain controller'
+elif server_role == 'memberserver':
+	print '\tserver role = member server'
+
+samba_serverstring = configRegistry.get('samba/serverstring', 'Samba %v - Univention Corporate Server')
+print '\tserver string =', samba_serverstring
+@!@
+	workgroup	= @%@windows/domain@%@
 	realm		= @%@kerberos/realm@%@
-	server role     = domain controller
-	server string = @!@print configRegistry.get('samba/serverstring', 'Samba %v - Univention Corporate Server')@!@
 
 	debug level = @%@samba/debug/level@%@
 @!@
@@ -21,7 +28,7 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 		       ('samba/socket_options', 'socket options'),
 		       ('samba/netbios/aliases', 'netbios aliases'),
 		       ('', ''),
-			   ('samba/interfaces/bindonly', 'bind interfaces only'),]:
+		       ('samba/interfaces/bindonly', 'bind interfaces only'),]:
 	if configRegistry.get(key):
 		print '\t%s = %s' % (smbstring, configRegistry[key])
 @!@

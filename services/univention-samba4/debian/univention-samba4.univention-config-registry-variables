@@ -1,0 +1,131 @@
+[samba/charset/dos]
+Description[de]=Zeichensatz für die Kommunikation mit DOS SMB Clients
+Description[en]=Charset used to communicate with DOS SMB clients
+Type=str
+Categories=service-samba
+
+[samba/charset/unix]
+Description[de]=Zeichensatz des Samba-Servers
+Description[en]=Charset of the machine samba runs on
+Type=str
+Categories=service-samba
+
+[samba/use_spnego]
+Description[de]=Versuche Simple and Protected NEGOciation mit Windows 2000 and XP Clients
+Description[en]=Try to use Simple and Protected NEGOciation with Windows 2000 and XP clients
+Type=str
+Categories=service-samba
+
+[samba/client_use_spnego]
+Description[de]=Kontrolliert ob Samba Client versuchen Simple and Protected NEGOciation zu verwenden
+Description[en]=Controls whether Samba clients will try to use Simple and Protected NEGOciation
+Type=str
+Categories=service-samba
+
+[samba/enable-msdfs]
+Description[de]=Agiere als DFS-Server und erlaube DFS-fähigen Clients DFS-Trees zu durchsuchen
+Description[en]=Act as a DFS server and allow DFS-aware clients to browse DFS trees
+Type=str
+Categories=service-samba
+
+[samba/encrypt_passwords]
+Description[de]=Versuche verschlüsselte Passwörter mit dem Client auszuhandeln
+Description[en]=Negotiate encrypted passwords with the client
+Type=str
+Categories=service-samba
+
+[samba/large_readwrite]
+Description[de]=Unterstützung für 64k Streaming Lesen/Schreiben-SMB-Variante
+Description[en]=Enable/disable the 64k streaming read and write varient SMB requests
+Type=str
+Categories=service-samba
+
+[samba/max_xmit]
+Description[de]=Maximal aushandelbare Paketgröße
+Description[en]=Maximum packet size that will be negotiated
+Type=str
+Categories=service-samba
+
+[samba/netbios/aliases]
+Description[de]=Zusätzliche NetBIOS-Namen für den Samba-Server
+Description[en]=Additional NetBIOS names under which the Samba server is known
+Type=str
+Categories=service-samba
+
+[samba/oplocks]
+Description[de]=Erteilen von oplocks für Datei-Öffnen-Anfrage
+Description[en]=Issue oplocks to file open requests
+Type=str
+Categories=service-samba
+
+[samba/read_raw]
+Description[de]=Unterstützung für 64 kByte-Datenpakete beim Übertragen von Daten an Clients
+Description[en]=Support 64 kByte packets when transferring data to clients
+Type=str
+Categories=service-samba
+
+[samba/write_raw]
+Description[de]=Unterstützung für 'Raw-SMBs' beim Datentransfer von Clients
+Description[en]=Enable the Server to write raw SMBs when transfering data from clients
+Type=str
+Categories=service-samba
+
+[samba/serverstring]
+Description[de]=Zeichenkette die als Kommentar im Druck-Manager und von 'net view' angezeigt wird
+Description[en]=String that will show up in printer comment box and 'net view'
+Type=str
+Categories=service-samba
+
+[samba/share/groups]
+Description[de]=Aktivieren/Deaktivieren der Gruppenfreigabe
+Description[en]=Enable/Disable the group share
+Type=str
+Categories=service-samba
+
+[samba/share/home]
+Description[de]=Aktivieren/Deaktivieren der Heimatverzeichnissfreigabe
+Description[en]=Enable/Disable the home directory share
+Type=str
+Categories=service-samba
+
+[samba/socket_options]
+Description[de]=Zusätzliche Socket-Optionen die bei Verbindungen mit Samba-Clients verwendet werden
+Description[en]=Extra socket options to be used when talking with the client
+Type=str
+Categories=service-samba
+
+[samba/time_server]
+Description[de]=Verwende Samba als Zeitserver für Windows Clients
+Description[en]=Advertises samba as a time server to Windows clients
+Type=str
+Categories=service-samba
+
+[windows/wins-server]
+Description[de]=WINS-Server an dem Samba sich registriert
+Description[en]=WINS server, on which Samba should register
+Type=str
+Categories=service-samba
+
+[windows/wins-support]
+Description[de]=Aktiviert/Deaktiviert WINS-Funktionalität im Samba-Dienst
+Description[en]=Enables/disables WINS services of Samba
+Type=str
+Categories=service-samba
+
+[samba/autostart]
+Description[de]=Aktiviere/Deaktiviere den Samba Start beim Booten
+Description[en]=Enable/Disable Samba start on bootup
+Type=str
+Categories=service-samba
+
+[samba/debug/level]
+Description[de]=Debug Level für Samba Prozesse
+Description[en]=Debug level for samba processes
+Type=str
+Categories=service-samba
+
+[samba/interfaces/bindonly]
+Description[de]=Weist Samba an, nur die in samba/interfaces aufgeführten Interfaces zu verwenden.
+Description[en]=Limits Samba to listen only on the interfaces listed in samba/interfaces.
+Type=str
+Categories=service-samba
