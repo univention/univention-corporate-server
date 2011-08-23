@@ -14,7 +14,7 @@ dojo.declare("umc.modules._quota.OverviewPage", [ umc.widgets.Page, umc.i18n.Mix
 		this.inherited(arguments);
 
 		var titlePane = new umc.widgets.ExpandingTitlePane({
-			title: this._('Entries')
+			title: this._('Partition overview')
 		});
 		this.addChild(titlePane);
 

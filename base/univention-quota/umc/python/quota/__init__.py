@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  module: filesystem quota
+#  module: manages quota support for locale hard drives
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2006-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,12 +34,45 @@
 import univention.info_tools as uit
 import univention.management.console as umc
 import univention.management.console.modules as umcm
+from univention.management.console.log import MODULE
+from univention.management.console.protocol.definitions import *
+
+import df
+import fstab
+import mtab
+import tools
+import partition
+import user
 
 _ = umc.Translation('univention-management-console-modules-quota').translate
 
-class Instance(umcm.Base):
-	def init(self):
+class Instance(umcm.Base, partition.Commands, user.Commands):
+	def __init__(self):
+		partition.Commands.__init__(self)
+		user.Commands.__init__(self)
 		uit.set_language(str(self.locale))
+
 	def quota_list(self, request):
-		foo = "bar"
-		self.finished(request.id, foo)
+		fs = fstab.File()
+		mt = mtab.File()
+		partitions = fs.get(['xfs', 'ext3', 'ext2'], False) #TODO ext4?
+
+		result = []
+
+		for part in partitions:
+			listEntry = {}
+			listEntry['partition'] = part
+			listEntry['mounted'] = mt.get(part.spec)
+			listEntry['written'] = ('usrquota' in part.options)
+			listEntry['size'] = '-'
+			listEntry['free'] = '-'
+			listEntry['used'] = False
+			if listEntry['mounted']:
+				info = df.DeviceInfo(part.mount_point)
+				listEntry['size'] = tools.block2byte(info.size(), 1)
+				listEntry['free'] = tools.block2byte(info.free(), 1)
+				listEntry['used'] = ('usrquota' in listEntry['mounted'].options)
+			result.append(listEntry)
+
+		request.status = SUCCESS
+		self.finished(request.id(), result)
