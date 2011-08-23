@@ -33,38 +33,29 @@
 #DEBHELPER#
 
 
-if [ "$1" = "configure" ]; then
-	eval $(univention-config-registry shell server/role)
+eval $(univention-config-registry shell server/role)
 
-	if [ ! -e /var/lib/univention-client-boot/linux-server ]; then
-		if [ -e /var/lib/univention-repository/boot/linux-2.6.32 ]; then
-			ln -sf /var/lib/univention-repository/boot/linux-2.6.32 /var/lib/univention-client-boot/linux-server
-			ln -sf /var/lib/univention-repository/boot/linux-2.6.32.bin /var/lib/univention-client-boot/linux.bin
-		elif [ -e /var/lib/univention-repository/boot/linux-2.6.32-64gb ]; then
-			ln -sf /var/lib/univention-repository/boot/linux-2.6.32-64gb /var/lib/univention-client-boot/linux-server
-			ln -sf /var/lib/univention-repository/boot/linux-2.6.32-64gb.bin /var/lib/univention-client-boot/linux.bin
-		elif [ -e /var/lib/univention-repository/boot/linux-2.6.18 ]; then
-			ln -sf /var/lib/univention-repository/boot/linux-2.6.18 /var/lib/univention-client-boot/linux-server
-			ln -sf /var/lib/univention-repository/boot/linux-2.6.18.bin /var/lib/univention-client-boot/linux.bin
-		elif [ -e /var/lib/univention-repository/boot/linux-2.6.30 ]; then
-			ln -sf /var/lib/univention-repository/boot/linux-2.6.30 /var/lib/univention-client-boot/linux-server
-			ln -sf /var/lib/univention-repository/boot/linux-2.6.30.bin /var/lib/univention-client-boot/linux.bin
-		elif [ -e /var/lib/univention-repository/boot/linux-2.6.26 ]; then
-			ln -sf /var/lib/univention-repository/boot/linux-2.6.26 /var/lib/univention-client-boot/linux-server
-			ln -sf /var/lib/univention-repository/boot/linux-2.6.26.bin /var/lib/univention-client-boot/linux.bin
-		else
-			ln -sf /var/lib/univention-repository/boot/linux-2.6.32 /var/lib/univention-client-boot/linux-server
-			ln -sf /var/lib/univention-repository/boot/linux-2.6.32.bin /var/lib/univention-client-boot/linux.bin
-		fi
+if [ ! -e /var/lib/univention-client-boot/linux-server ]; then
+	if [ -e /var/lib/univention-repository/boot/linux-2.6.32 ]; then
+		ln -sf /var/lib/univention-repository/boot/linux-2.6.32 /var/lib/univention-client-boot/linux-server
+		ln -sf /var/lib/univention-repository/boot/linux-2.6.32.bin /var/lib/univention-client-boot/linux.bin
+	elif [ -e /var/lib/univention-repository/boot/linux-2.6.32-64gb ]; then
+		ln -sf /var/lib/univention-repository/boot/linux-2.6.32-64gb /var/lib/univention-client-boot/linux-server
+		ln -sf /var/lib/univention-repository/boot/linux-2.6.32-64gb.bin /var/lib/univention-client-boot/linux.bin
+	else
+		ln -sf /var/lib/univention-repository/boot/linux-2.6.32 /var/lib/univention-client-boot/linux-server
+		ln -sf /var/lib/univention-repository/boot/linux-2.6.32.bin /var/lib/univention-client-boot/linux.bin
 	fi
-	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]
+fi
+
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]
+then
+	/usr/lib/univention-install/81univention-server-installation.inst
+fi
+
+if test -f /etc/init.d/univention-directory-listener
 	then
-		/usr/lib/univention-install/81univention-server-installation.inst
-	fi
-	if test -f /etc/init.d/univention-directory-listener
-		then
-		/etc/init.d/univention-directory-listener crestart
-	fi
+	/etc/init.d/univention-directory-listener crestart
 fi
 
 exit 0

@@ -4,6 +4,7 @@ univention-net-installer (5.0.0-1) unstable; urgency=low
   * Add a copyright file
   * Remove the old transition package univention-server-installer, also
     rename the source package to univention-net-installer
+  * Remove link creation for older kernels in postinst	
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Aug 2011 16:47:58 +0200
 
