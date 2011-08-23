@@ -2,10 +2,10 @@ Source: univention-netlogon-proxy
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev
+Build-Depends: debhelper, univention-config-dev, ucslint
 
 Package: univention-netlogon-proxy
-Architecture: any
+Architecture: all
 Conflicts: univention-squid
 Depends: univention-config-registry
 Description: univention netlogon script
