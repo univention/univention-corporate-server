@@ -1,6 +1,0 @@
-netlogon/README.txt var/lib/samba/netlogon/
-netlogon/ldapsearch.exe var/lib/samba/netlogon/
-netlogon/libcrypto.dll var/lib/samba/netlogon/
-netlogon/liblber.dll var/lib/samba/netlogon/
-netlogon/libldap.dll var/lib/samba/netlogon/
-netlogon/libssl.dll var/lib/samba/netlogon/
