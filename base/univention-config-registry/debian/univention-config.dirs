@@ -3,6 +3,7 @@ usr/bin
 etc/bash_completion.d
 etc/univention
 etc/univention/templates
+etc/univention/templates/removed
 etc/univention/templates/files
 etc/univention/templates/scripts
 etc/univention/templates/info

@@ -1,3 +1,12 @@
+univention-config-registry (7.0.16-2) unstable; urgency=low
+
+  * Add a new sub directory for UCR templates, which are removed during
+    a version upgrade. If the local administrator has made any changes
+    which might need to be merged back, they can be checked manually.
+    (Needed for Bug #22576)	  
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 24 Aug 2011 10:22:35 +0200
+
 univention-config-registry (7.0.16-1) unstable; urgency=low
 
   * Use at least Python2.6 after upgrade (Bug #23202)
