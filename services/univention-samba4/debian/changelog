@@ -1,3 +1,9 @@
+univention-samba4 (1.0.15-5) experimental; urgency=low
+
+  * set samba/quota/command to a special value (Bug #23158)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 24 Aug 2011 10:57:08 +0200
+
 univention-samba4 (1.0.15-4) experimental; urgency=low
 
   * use the --force, ucr (Bug #23158)
