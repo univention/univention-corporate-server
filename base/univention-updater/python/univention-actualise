@@ -379,7 +379,16 @@ def main():
 				else:
 					os.system('/usr/sbin/univention-pkgdb-scan > /dev/null')
 
+def update_ucr_updatestatus():
+	try:
+		devnull = open(os.path.devnull, 'w' )
+		subprocess.call( '/usr/share/univention-updater/univention-updater-check', stdout = devnull, stderr = devnull )
+		devnull.close()
+	except:
+		dprint('Warning: calling univention-updater-check failed.')
+
 if __name__ == '__main__':
+	do_ucr_update = False
 	try:
 		lock = univention.updater.tools.updater_lock_acquire()
 	except univention.updater.tools.LockingError, e:
@@ -404,7 +413,10 @@ if __name__ == '__main__':
 			sys.exit(2)
 
 		main()
+		do_ucr_update = True
 		sys.exit(0)
 	finally:
 		if not univention.updater.tools.updater_lock_release(lock):
 			print 'WARNING: updater-lock already released!'
+		if do_ucr_update:
+			update_ucr_updatestatus()

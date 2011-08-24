@@ -1,3 +1,9 @@
+univention-updater (6.0.103-1) unstable; urgency=low
+
+  * prevent recursion problem if UpdateError exception is raised (Bug #22956)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 23 Aug 2011 16:59:01 +0200
+
 univention-updater (6.0.102-1) unstable; urgency=low
 
   * do also fetch preup.sh/postup.sh of security updates if

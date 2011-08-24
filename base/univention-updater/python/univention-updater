@@ -594,14 +594,19 @@ if __name__ == '__main__':
 			print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
 			subprocess.call(['touch', failure])
 			reenable_apache2_and_umc()
+			# disable update of UCR variable update/available to prevent call loop of univention-updater
+			# (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
+			do_ucr_update = False
 			sys.exit(1)
 		except KeyboardInterrupt:
 			update_status( status='FAILED' )
 			dprint("\nUpdate aborted by user (ctrl-c)\n")
 			reenable_apache2_and_umc()
+			# disable update of UCR variable update/available to prevent call loop of univention-updater
+			# (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
+			do_ucr_update = False
 			sys.exit(1)
 		except UpToDateNoError, error:
-			update_ucr_updatestatus()
 			update_status( status='DONE' )
 			if os.path.exists(failure):
 				os.unlink(failure)
