@@ -39,13 +39,13 @@ fi
 
 touch /usr/lib/univention-install/.index.txt
 
-test -n "`grep "univention-server-installation v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-net-installer v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 eval `univention-config-registry shell`
 # create ucs-repository share
 univention-directory-manager container/cn create $@ --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname
 univention-directory-manager shares/share create $@ --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --option nfs --set name=ucs-repository --set path=/var/lib/univention-repository --set host=$hostname.$domainname
 
-test -n "`grep "univention-server-installation v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-server-installation v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-net-installer v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-net-installer v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0

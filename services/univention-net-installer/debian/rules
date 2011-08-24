@@ -65,7 +65,7 @@ install: build
 	dh_installdirs
 
 	install -m0755 serverinstallerpxe.py $(D)/usr/lib/univention-directory-listener/system/
-	install -m0755 81univention-server-installation.inst $(D)/usr/lib/univention-install/
+	install -m0755 81univention-net-installer.inst $(D)/usr/lib/univention-install/
 
 
 	univention-install-config-registry

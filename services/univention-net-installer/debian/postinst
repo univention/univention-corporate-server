@@ -32,8 +32,9 @@
 
 #DEBHELPER#
 
+. /usr/share/univention-lib/all.sh
 
-eval $(univention-config-registry shell server/role)
+eval "$(univention-config-registry shell server/role)"
 
 if [ ! -e /var/lib/univention-client-boot/linux-server ]; then
 	if [ -e /var/lib/univention-repository/boot/linux-2.6.32 ]; then
@@ -48,10 +49,8 @@ if [ ! -e /var/lib/univention-client-boot/linux-server ]; then
 	fi
 fi
 
-if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]
-then
-	/usr/lib/univention-install/81univention-server-installation.inst
-fi
+call_joinscript 81univention-net-installer.inst
+
 
 if test -f /etc/init.d/univention-directory-listener
 	then

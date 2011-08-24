@@ -3,8 +3,10 @@ univention-net-installer (5.0.0-1) unstable; urgency=low
   * Update for UCS 3.0 (Bug #22576)
   * Add a copyright file
   * Remove the old transition package univention-server-installer, also
-    rename the source package to univention-net-installer
-  * Remove link creation for older kernels in postinst	
+    rename the source package and the join script to univention-net-installer
+  * Remove link creation for older kernels in postinst
+  * Remove historic Conflicts	
+  * Port join script to join script library	
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Aug 2011 16:47:58 +0200
 
