@@ -1,3 +1,9 @@
+univention-tftp (5.0.0-2) unstable; urgency=low
+
+  * Bump version (Bug #22576) 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 24 Aug 2011 11:34:24 +0200
+
 univention-tftp (5.0.0-1) unstable; urgency=low
 
   * Update for UCS 3.0 (Bug #22576)
