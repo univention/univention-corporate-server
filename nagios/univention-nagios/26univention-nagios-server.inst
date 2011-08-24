@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=3
+VERSION=4
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -88,6 +88,8 @@ univention-directory-manager nagios/service create "$@" --ignore_exists --positi
 univention-directory-manager nagios/service create "$@" --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_SMTP" --set description="Default Service: check if service smtp is ok" --set checkCommand="check_smtp"  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
 
 univention-directory-manager nagios/service create "$@" --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_SSL" --set description="Default Service: check if ssl certificate is valid" --set checkCommand="check_univention_sslcert" --set checkArgs="40!20" --set useNRPE="1" --set normalCheckInterval="60" --set retryCheckInterval="5" --set maxCheckAttempts="3" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_LOAD" --set description="Default Service: check if cpu load exceeds specified limits" --set checkCommand="check_univention_load" --set checkArgs="3!2!1!6!4!2" --set useNRPE="1" --set normalCheckInterval="5" --set retryCheckInterval="2" --set maxCheckAttempts="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
 
 univention-directory-manager nagios/service create "$@" --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_REPLICATION" --set description="Default Service: check if ldap replication is uptodate" --set checkCommand="check_univention_replication" --set checkArgs="10!50!100" --set useNRPE="1" --set normalCheckInterval="2" --set retryCheckInterval="1" --set maxCheckAttempts="5" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
 
