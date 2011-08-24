@@ -27,17 +27,32 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(ucr shell)"
+eval "$(univention-config-registry shell)"
 
-binddn="$connector_ad_ldap_binddn"
-if [ -z "$binddn" ]; then
-	binddn="cn=ucs-s4sync,cn=Users,$samba4_ldap_base"
+binddn="$connector_s4_ldap_binddn"
+bindpw="$connector_s4_ldap_bindpw"
+
+if [ -n "$binddn" ] && [ -n "$bindpw" ] ; then
+	option_simplebinddn="--simple-bind-dn=$binddn"
+	option_simplebindpw="--password=$bindpw"
+	echo "## Searching as '$binddn'"
+	LDB_MODULES_PATH=/usr/lib/ldb ldbsearch -H "ldaps://$ldap_server_name" \
+						"$option_simplebinddn" "$option_simplebindpw" $@
+else
+	if [ -r '/etc/samba4.secret' ]; then
+		samaccount="${windows_domain}/ucs-s4sync"
+		bindpw="/etc/samba4.secret";
+	elif [ -r '/etc/machine.secret' ]; then
+		samaccount="${windows_domain}/${hostname}\$"
+		bindpw="/etc/machine.secret";
+	fi
+	option_samcredentials="-U$samaccount%$(cat $bindpw)"
+
+	if [ -n "$option_samcredentials" ]; then
+		echo "## Searching as '$samaccount'"
+		LDB_MODULES_PATH=/usr/lib/ldb ldbsearch -H "ldaps://$ldap_server_name" "$option_samcredentials" $@
+	else
+		LDB_MODULES_PATH=/usr/lib/ldb ldbsearch -H "ldaps://$ldap_server_name" $@
+	fi
 fi
-
-bindpw="$connector_ad_ldap_bindpw"
-if [ -z "$bindpw" ]; then
-	bindpw="/etc/samba4.secret"
-fi
-
-ldapsearch -x -h "$ldap_server_name" -p 389 -b "$samba4_ldap_base" -D "$binddn" -w "$(<$bindpw)" $@
 

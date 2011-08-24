@@ -1,3 +1,12 @@
+univention-samba4 (1.0.18-1) experimental; urgency=low
+
+  * use ldbsearch in univention-s4search to be able to authenticate with
+    SAM account names instead of binddns. This way we can authenticate
+    with the host account on systems where no samba4.secret is available.
+    (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 24 Aug 2011 21:23:14 +0200
+
 univention-samba4 (1.0.17-1) experimental; urgency=low
 
   * resync of bind module should not be necessary any longer (Bug #23220)
