@@ -2,7 +2,12 @@ Source: univention-quota
 Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper (>> 3.0.0), ucslint, univention-config-dev, python-all, python-support (>= 0.90)
+Build-Depends: debhelper (>> 3.0.0),
+ ucslint,
+ univention-config-dev,
+ univention-management-console-dev,
+ python-all,
+ python-support (>= 0.90)
 
 Package: univention-quota
 Architecture: all
