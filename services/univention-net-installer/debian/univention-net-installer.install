@@ -1,0 +1,3 @@
+serverinstallerpxe.py /usr/lib/univention-directory-listener/system/
+81univention-net-installer.inst /usr/lib/univention-install/
+
