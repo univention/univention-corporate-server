@@ -1,0 +1,5 @@
+./files/etc/remote-backup.conf /etc/
+./files/etc/remote-backup.servers /etc/
+./files/etc/remote-backup.clients /etc/
+./files/usr/sbin/remote-backup /usr/sbin
+./files/var/lib/remote-backup/status  /var/lib/remote-backup
