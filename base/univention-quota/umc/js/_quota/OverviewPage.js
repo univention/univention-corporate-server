@@ -19,40 +19,52 @@ dojo.declare("umc.modules._quota.OverviewPage", [ umc.widgets.Page, umc.i18n.Mix
 		this.addChild(titlePane);
 
 		var actions = [{
-			name: 'activate',
-			label: this._('Activate')
+			name: 'activateQuota',
+			label: this._('Activate'),
+			isStandardAction: true
+			// TODO isMultiAction useful?
 		}, {
-			name: 'deactivate',
-			label: this._('Deactivate')
+			name: 'deactivateQuota',
+			label: this._('Deactivate'),
+			isStandardAction: true
+			// TODO isMultiAction useful?
+		}, {
+			name: 'configureQuota',
+			label: this._('Configure'),
+			isStandardAction: false
+			// TODO isMultiAction useful?
 		}];
 
 		var columns = [{
-			name: 'partition',
+			name: 'partitionDevice',
 			label: this._('Partition'),
-			width: 'auto'
+			width: 'auto' // adjust won't work correctly
 		}, {
 			name: 'mountPoint',
 			label: this._('Mount point'),
-			width: 'auto'
+			width: 'auto' // adjust won't work correctly
 		}, {
-			name: 'quota',
+			name: 'inUse',
 			label: this._('Quota'),
-			width: 'auto'
+			width: 'auto' // adjust won't work correctly
 		}, {
-			name: 'size',
+			name: 'partitionSize',
 			label: this._('Size'),
-			width: 'auto'
+			width: 'auto' // adjust won't work correctly
 		}, {
-			name: 'free',
+			name: 'freeSpace',
 			label: this._('Free'),
-			width: 'auto'
+			width: 'auto' // adjust won't work correctly
 		}];
 
 		this._grid = new umc.widgets.Grid({
 			region: 'center',
 			actions: actions,
 			columns: columns,
-			moduleStore: this.moduleStore
+			moduleStore: this.moduleStore,
+			query: {
+				dummy: 'dummy'
+			}
 		});
 		titlePane.addChild(this._grid);
 	},

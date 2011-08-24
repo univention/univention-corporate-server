@@ -67,11 +67,6 @@ class Entry(object):
 		self.dump = int(dump)
 		self.passno = int(passno)
 
-	def __str__(self):
-		return '%s\t%s\t%s\t%s\t%d\t%d' % \
-		       (self.spec, self.mount_point, self.type,  ','.join(self.options),
-		        self.dump, self.passno)
-
 class InvalidEntry(Exception):
 	pass
 

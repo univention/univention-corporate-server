@@ -10,12 +10,16 @@ dojo.require("umc.modules._quota.OverviewPage");
 dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	_overviewPage: null,
+	_partitionPage: null,
 
 	buildRendering: function() {
 		this.inherited(arguments);
+		this.renderOverviewPage();
+    }
 
+	renderOverviewPage: function() {
 		this._overviewPage = new umc.modules._quota.OverviewPage({
-			moduleStore: this.getModuleStore('id', this.moduleID + '/partitions'),
+			moduleStore: this.getModuleStore('partitionDevice', this.moduleID + '/partitions'),
 
 			headerText: this._('Filesystem quotas'),
 			helpText: this._('Set, unset and modify filesystem quota')
@@ -24,4 +28,9 @@ dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.addChild(this._overviewPage);
 		this._overviewPage.startup();
     }
+
+	createPartitionPage: function() {
+		this._partitionPage = new umc.modules._quota.PartitionPage){
+		}
+	}
 });

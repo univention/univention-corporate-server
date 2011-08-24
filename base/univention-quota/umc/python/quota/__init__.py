@@ -48,31 +48,32 @@ _ = umc.Translation('univention-management-console-modules-quota').translate
 
 class Instance(umcm.Base, partition.Commands, user.Commands):
 	def __init__(self):
+		umcm.Base.__init__(self)
 		partition.Commands.__init__(self)
 		user.Commands.__init__(self)
-		uit.set_language(str(self.locale))
 
 	def quota_list(self, request):
 		fs = fstab.File()
 		mt = mtab.File()
-		partitions = fs.get(['xfs', 'ext3', 'ext2'], False) #TODO ext4?
-
+		partitions = fs.get(['xfs', 'ext3', 'ext2'], False) # TODO ext4?
 		result = []
-
-		for part in partitions:
+		for partition in partitions:
 			listEntry = {}
-			listEntry['partition'] = part
-			listEntry['mounted'] = mt.get(part.spec)
-			listEntry['written'] = ('usrquota' in part.options)
-			listEntry['size'] = '-'
-			listEntry['free'] = '-'
-			listEntry['used'] = False
-			if listEntry['mounted']:
-				info = df.DeviceInfo(part.mount_point)
-				listEntry['size'] = tools.block2byte(info.size(), 1)
-				listEntry['free'] = tools.block2byte(info.free(), 1)
-				listEntry['used'] = ('usrquota' in listEntry['mounted'].options)
+			if partition.uuid:
+				listEntry['partitionDevice'] = partition.uuid
+			else:
+				listEntry['partitionDevice'] = partition.spec
+			listEntry['mountPoint'] = partition.mount_point
+			listEntry['partitionSize'] = '-'
+			listEntry['freeSpace'] = '-'
+			listEntry['inUse'] = 'False' # TODO where to translate?
+			isMounted = mt.get(partition.spec)
+			if isMounted:
+				deviceInfo = df.DeviceInfo(partition.mount_point)
+				listEntry['partitionSize'] = tools.block2byte(deviceInfo.size(), 1)
+				listEntry['freeSpace'] = tools.block2byte(deviceInfo.free(), 1)
+				listEntry['inUse'] = str(('usrquota' in isMounted.options)) # TODO where to translate?
 			result.append(listEntry)
 
 		request.status = SUCCESS
-		self.finished(request.id(), result)
+		self.finished(request.id, result)
