@@ -3,7 +3,8 @@ univention-tftp (5.0.0-1) unstable; urgency=low
   * Update for UCS 3.0 (Bug #22576)
   * Drop old special case handling for /ha
   * Update the UCR template for the default file to the Squeeze version and move
-    it to it's current location (/etc/default/atftpd instead of /etc/default/atftpd)	
+    it to it's current location (/etc/default/atftpd instead of /etc/default/atftpd.conf)
+    The old template is removed using remove-ucr-template	
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 25 May 2011 15:17:56 +0200
 
