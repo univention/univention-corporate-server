@@ -40,6 +40,19 @@ fi
 
 univention-config-registry set samba/debug/level?0
 
+if [ "$1" = "configure" ]; then
+
+	if [ -z "$2" ]; then
+		# only set this for new installations
+		if [ "$server_role" = "domaincontroller_master" ]; then
+			univention-config-registry set windows/wins-support=yes
+		else
+			univention-config-registry set windows/wins-support?no
+			univention-config-registry set windows/wins-server?$ldap_master
+		fi
+	fi
+fi
+
 for f in installs.conf shares.conf printers.conf local.conf; do
 	if [ ! -e "/etc/samba/$f" ]; then
 		touch /etc/samba/$f
