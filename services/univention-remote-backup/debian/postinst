@@ -3,7 +3,7 @@
 # Univention Remote Backup
 #  postinst script for the debian package
 #
-# Copyright 2003-2010 Univention GmbH
+# Copyright 2003-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,28 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-set -e
-
-case "$1" in
-    configure)
-
-	if [ ! -d /home/backup ]; then
-		mkdir /home/backup
-		chmod 700 /home/backup
-		chown root: /home/backup
-	fi
-
-    ;;
-
-    abort-upgrade|abort-remove|abort-deconfigure)
-
-    ;;
-
-    *)
-		echo "postinst called with unknown argument \`$1'" >&2
-		exit 1
-    ;;
-esac
+if [ ! -d /home/backup ]; then
+	mkdir /home/backup
+	chmod 700 /home/backup
+	chown root: /home/backup
+fi
 
 #DEBHELPER#
 
