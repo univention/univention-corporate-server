@@ -1,3 +1,9 @@
+univention-samba4 (1.0.15-4) experimental; urgency=low
+
+  * use the --force, ucr (Bug #23158)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 24 Aug 2011 09:56:24 +0200
+
 univention-samba4 (1.0.15-3) experimental; urgency=low
 
   * unset samba/quota/command in join script (Bug #23158)

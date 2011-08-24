@@ -40,7 +40,7 @@ eval "$(univention-config-registry shell)"
 
 NAME="Samba 4"
 
-univention-config-registry unset samba/quota/command	# currently unsupported in samba4
+univention-config-registry unset --force samba/quota/command	# currently unsupported in samba4
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 
