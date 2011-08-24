@@ -109,9 +109,6 @@ stop_udm_cli_server
 /etc/init.d/univention-directory-listener restart >>$LOGFILE 2>&1
 /etc/init.d/univention-management-console-server restart >>$LOGFILE 2>&1
 
-## commit univention-bind zones in /etc/bind/univention.conf.d/ to use new port
-univention-directory-listener-ctrl resync bind >>$LOGFILE 2>&1
-
 ## Provision Samba4
 eval "$(univention-config-registry shell)"
 
