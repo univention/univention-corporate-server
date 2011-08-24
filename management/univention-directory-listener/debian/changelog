@@ -1,3 +1,9 @@
+univention-directory-listener (6.0.8-2) unstable; urgency=low
+
+  * fix copyright (Bug #23160)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 24 Aug 2011 10:39:13 +0200
+
 univention-directory-listener (6.0.8-1) unstable; urgency=low
 
   * Move the old listener cache from UCS 3.0 MS1 users to a backup
