@@ -61,6 +61,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
     # append host to default services
     for dn in "cn=UNIVENTION_PING,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_DISK_ROOT,cn=nagios,$ldap_base" \
+              "cn=UNIVENTION_SWAP,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_DNS,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_NTP,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_SMTP,cn=nagios,$ldap_base" \

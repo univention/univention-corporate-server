@@ -1,6 +1,7 @@
 univention-nagios (5.0.7-1) unstable; urgency=low
 
   * added "check_univention_load" (Bug #15612)
+  * added "check_univention_swap" (Bug #15612)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 24 Aug 2011 15:12:55 +0200
 
