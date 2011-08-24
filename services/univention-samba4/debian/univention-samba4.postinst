@@ -61,6 +61,4 @@ done
 
 call_joinscript 96univention-samba4.inst
 
-/etc/init.d/samba4 restart
-
 exit 0

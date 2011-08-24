@@ -40,6 +40,27 @@ eval "$(univention-config-registry shell)"
 
 NAME="Samba 4"
 
+extract_binddn_and_bindpwd_from_args() {
+	## parse binddn and bindpwd from command line arguments into shell variables
+	eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nbindpwd="\2"/p')
+	if [ -n "$binddn" ]; then
+		dcaccount="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -s base -b "$binddn" -LLL uid | ldapsearch-wrapper | sed -n 's/^uid: \(.*\)$/\1/p')"
+	fi
+}
+
+set_machine_secret() {
+	## 1. replace random machine secret in SAM with /etc/machine.secret
+	samba-tool setpassword "${hostname}\$" --newpassword="$(cat /etc/machine.secret)"
+
+	## 2. store password locally in secrets.ldb
+	cat <<-%EOF | LDB_MODULES_PATH=/usr/lib/ldb ldbmodify -H /var/lib/samba/private/secrets.ldb
+	dn: flatname=${windows_domain},cn=Primary Domains
+	changetype: modify
+	replace: secret
+	secret:< file:///etc/machine.secret
+	%EOF
+}
+
 univention-config-registry set samba/quota/command='None'	# currently unsupported in samba4
 
 if [ "$server_role" = "domaincontroller_master" ]; then
@@ -52,10 +73,35 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		ucr set samba/netbios/aliases?"$domainname"
 	fi
 
-else
-	# joinscript_extract_binddn_and_bindpwd_from_args "$@"
-	# samba-tool join "$domainname" -U"$JOINUSERNAME" --realm="$kerberos_realm"
-	echo -n
+elif [ "$server_role" = "domaincontroller_backup" ] || [ "$server_role" = "domaincontroller_slave" ]; then
+
+	if [ -x /etc/init.d/samba ]; then
+		/etc/init.d/samba stop
+	fi
+	if [ -x /etc/init.d/winbind ]; then
+		/etc/init.d/winbind stop
+	fi
+	univention-config-registry set samba/autostart=no winbind/autostart=no kerberos/autostart=no
+
+	/etc/init.d/heimdal-kdc stop
+
+	univention-config-registry set slapd/port=7389 \
+		slapd/port/ldaps=7636;
+
+	/etc/init.d/slapd crestart
+	sleep 1
+
+	extract_binddn_and_bindpwd_from_args
+	samba-tool join "$domainname" DC -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
+	set_machine_secret
+
+	/etc/init.d/samba4 restart
+
+elif [ "$server_role" = "memberserver" ]; then
+
+	extract_binddn_and_bindpwd_from_args
+	samba-tool join "$domainname" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
+	set_machine_secret
 fi
 
 ucs_addServiceToLocalhost "${NAME}" "$@"

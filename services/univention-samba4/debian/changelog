@@ -1,3 +1,11 @@
+univention-samba4 (1.0.16-1) experimental; urgency=low
+
+  * add cases for backup, slave and member to joinscript (Bug #23360)
+  * set initially random machine secrets to /etc/machine.secret after join
+  * restart samba4 in joinscript instead of postinst
+
+ -- Arvid Requate <requate@univention.de>  Wed, 24 Aug 2011 20:15:24 +0200
+
 univention-samba4 (1.0.15-6) experimental; urgency=low
 
   * copy postinst initialization code for windows/wins-support from
