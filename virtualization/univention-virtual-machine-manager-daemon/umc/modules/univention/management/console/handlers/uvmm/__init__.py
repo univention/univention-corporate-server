@@ -533,8 +533,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		opts = copy.copy( object.options )
 		create_cmd = umcp.SimpleCommand( 'uvmm/domain/snapshot/create', options = opts )
 		create_cmd.incomplete = True
-		create_act = [umcd.Action(create_cmd),]
-		table.add_row( [ umcd.LinkButton( _( 'Create new snapshot' ), actions = create_act ) ] )
+		create_act = [umcd.Action(create_cmd),]#
+		btn = umcd.LinkButton( _( 'Create new snapshot' ), 'uvmm/add', actions = create_act )
+		btn.set_size( umct.SIZE_SMALL )
+		table.add_row( [ btn  ] )
 
 		# listing of existing snapshots
 		lst = umcd.List( default_type = 'uvmm_table' )
@@ -870,7 +872,9 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		drive_sec = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
 		if domain_is_off:
 			cmd = umcp.SimpleCommand('uvmm/drive/create', options=copy.copy(object.options))
-			drive_sec.add_row([umcd.LinkButton(_('Add new drive'), 'uvmm/add', actions=[umcd.Action(cmd),])])
+			btn = umcd.LinkButton(_('Add new drive'), 'uvmm/add', actions=[umcd.Action(cmd),])
+			btn.set_size( umct.SIZE_SMALL )
+			drive_sec.add_row([ btn ])
 		disk_list = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
 		disk_list.set_header( [ _( 'Type' ), _( 'Image' ), _( 'Size' ), _( 'Pool' ), '' ] )
 		if domain_info and domain_info.disks:
@@ -954,7 +958,9 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		if domain_is_off:
 			cmd = umcp.SimpleCommand( 'uvmm/nic/create', options = copy.copy( object.options ) )
 			cmd.incomplete = True
-			nic_sec.add_row([umcd.LinkButton(_('Add new network interface'), 'uvmm/add', actions=[umcd.Action(cmd),])])
+			btn = umcd.LinkButton(_('Add new network interface'), 'uvmm/add', actions=[umcd.Action(cmd),])
+			btn.set_size( umct.SIZE_SMALL )
+			nic_sec.add_row([ btn ])
 		nic_list = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
 		nic_list.set_header( [ _( 'Typ' ), _( 'Source' ), _( 'Driver' ), _( 'MAC address' ), '' ] )
 		if domain_info and domain_info.interfaces:
