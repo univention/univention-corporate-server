@@ -1,3 +1,10 @@
+univention-ad-connector (5.0.25-1) unstable; urgency=low
+
+  * Rename UCR variable ad/password/timestamp/ignorereset to
+    ad/password/timestamp/syncreset (Bug #22751)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Aug 2011 06:45:56 +0200
+
 univention-ad-connector (5.0.24-1) unstable; urgency=low
 
   * Fixed typo s/ignorreset/ignorereset/g (Bug #22751)

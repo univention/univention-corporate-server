@@ -55,8 +55,8 @@ univention-config-registry set	connector/ad/listener/dir?/var/lib/univention-con
 								connector/ad/mapping/syncmode?sync \
 								connector/ad/autostart?yes \
 								connector/ad/password/timestamp/check?false \
-								connector/ad/password/timestamp/ignorereset/ucs?true \
-								connector/ad/password/timestamp/ignorereset/ad?true
+								connector/ad/password/timestamp/syncreset/ucs?true \
+								connector/ad/password/timestamp/syncreset/ad?true
 
 if [ ! -d /var/lib/univention-connector/ad ]; then
 	mkdir -p /var/lib/univention-connector/ad

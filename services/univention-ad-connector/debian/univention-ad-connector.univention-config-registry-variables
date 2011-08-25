@@ -142,15 +142,15 @@ Description[en]=The variable specifies that the password synchronisation only pe
 Type=bool
 Categories=service-adcon
 
-[con.*/ad/password/timestamp/ignorereset/ucs]
-Description[de]=Diese Variable gibt an, ob das Zurücksetzen des Passworts auf UCS Seite während der Timestamp"=Überprüfung berücksichtigt werden soll (default: true)
-Description[en]=The variable specifies that the passwort reset on UCS will be considered while checking the timestamp (default: true)
+[con.*/ad/password/timestamp/syncreset/ucs]
+Description[de]=Wenn das Passwort im UCS zurückgesetzt wurde, so wird das Passwort nicht nach Active Directory zurücksynchronisiert, wenn diese Variable auf false gesetzt ist (default: true)
+Description[en]=If the user password was reset in UCS the password won't be synced to Active Directory if this variable is set to false (default: true)
 Type=bool
 Categories=service-adcon
 
-[con.*/ad/password/timestamp/ignorereset/ad]
-Description[de]=Diese Variable gibt an, ob das Zurücksetzen des Passworts auf Active Directory Seite während der Timestamp"=Überprüfung berücksichtigt werden soll (default: true)
-Description[en]=The variable specifies that the passwort reset on Active Directory will be considered while checking the timestamp (default: true)
+[con.*/ad/password/timestamp/syncreset/ad]
+Description[de]=Wenn das Passwort im Active Directory zurückgesetzt wurde, so wird das Passwort nicht nach UCS zurücksynchronisiert, wenn diese Variable auf false gesetzt ist (default: true)
+Description[en]=If the user password was reset in Active Directory the password won't be synced to UCS if this variable is set to false (default: true)
 Type=bool
 Categories=service-adcon
 
