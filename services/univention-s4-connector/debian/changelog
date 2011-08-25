@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.19-1) unstable; urgency=low
+
+  * Register S4 Connector service entry (Bug #22862)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Aug 2011 07:59:11 +0200
+
 univention-s4-connector (6.0.18-1) unstable; urgency=low
 
   * move salt_krb5keys to univention-heimdal-kdc (Bug #22212)
