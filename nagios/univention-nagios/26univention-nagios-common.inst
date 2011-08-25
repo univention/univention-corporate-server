@@ -1,0 +1,111 @@
+#!/bin/sh -e
+#
+# Univention Nagios Common
+#  join script
+#
+# Copyright 2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+VERSION=1
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+. /usr/share/univention-lib/ucr.sh
+
+eval "$(univention-config-registry shell)"
+
+# stop here if service checks shall not be create automatically
+is_ucr_true "nagios/common/servicechecks/autocreate"
+if [ "$?" = "1" ] ; then
+	# $?==0 ==> true/yes/... ; $?==1 ==> false/no/... ; $?==2 ==> empty/other values
+	echo "HINT: creating nagios service checks has been disabled by nagios/common/servicechecks/autocreate=no"
+	joinscript_save_current_version
+	exit 0
+fi
+
+# create nagios container
+univention-directory-manager container/cn create "$@" --ignore_exists --position="$ldap_base" --set name="nagios" --set description="Nagios Objects"
+
+NAGIOSCONTAINER="cn=nagios,$ldap_base"
+
+# create default timeperiod objects
+univention-directory-manager nagios/timeperiod create "$@" --ignore_exists --position="$NAGIOSCONTAINER" \
+                                          --set name="24x7"                   --set description="Default Timeperiod 24x7" \
+                                          --set periodMonday="00:00-24:00"    --set periodTuesday="00:00-24:00" \
+                                          --set periodWednesday="00:00-24:00" --set periodThursday="00:00-24:00" \
+                                          --set periodFriday="00:00-24:00"    --set periodSaturday="00:00-24:00" \
+                                          --set periodSunday="00:00-24:00"
+
+univention-directory-manager nagios/timeperiod create "$@"  --ignore_exists --position="$NAGIOSCONTAINER" \
+                                          --set name="WorkHours"              --set description="Default Timeperiod WorkHours" \
+                                          --set periodMonday="08:00-16:00"    --set periodTuesday="08:00-16:00" \
+                                          --set periodWednesday="08:00-16:00" --set periodThursday="08:00-16:00" \
+                                          --set periodFriday="08:00-16:00"
+
+univention-directory-manager nagios/timeperiod create "$@"  --ignore_exists --position="$NAGIOSCONTAINER" \
+                                          --set name="NonWorkHours"                       --set description="Default Timeperiod NonWorkHours" \
+                                          --set periodMonday="00:00-08:00,16:00-24:00"    --set periodTuesday="00:00-08:00,16:00-24:00" \
+                                          --set periodWednesday="00:00-08:00,16:00-24:00" --set periodThursday="00:00-08:00,16:00-24:00" \
+                                          --set periodFriday="00:00-08:00,16:00-24:00"    --set periodSaturday="00:00-24:00" \
+                                          --set periodSunday="00:00-24:00"
+
+# add default services
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_PING" --set description="Default Service: check if host is alive" --set checkCommand="check_ping" --set checkArgs='50,20%!100,40%' --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_DISK_ROOT" --set description="Default Service: check if / is out of diskspace" --set checkCommand="check_disk" --set checkArgs='25%!10%!/'  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_DNS" --set description="Default Service: check if service dns is ok" --set checkCommand="check_univention_dns" --set checkArgs='www.univention.de'  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_SWAP" --set description="Default Service: check if swap device is out of free space" --set checkCommand="check_univention_swap" --set checkArgs='40%!20%' --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" --set normalCheckInterval="10" --set retryCheckInterval="1" --set maxCheckAttempts="1"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_LDAP" --set description="Default Service: check if service ldap is ok" --set checkCommand="check_ldap"  --set useNRPE="1" --set checkArgs="$ldap_base" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_NTP" --set description="Default Service: check if service ntp is ok" --set checkCommand="check_ntp" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_SMTP" --set description="Default Service: check if service smtp is ok" --set checkCommand="check_smtp"  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_SSL" --set description="Default Service: check if ssl certificate is valid" --set checkCommand="check_univention_sslcert" --set checkArgs="40!20" --set useNRPE="1" --set normalCheckInterval="60" --set retryCheckInterval="5" --set maxCheckAttempts="3" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_LOAD" --set description="Default Service: check if cpu load exceeds specified limits" --set checkCommand="check_univention_load" --set checkArgs="3!2!1!6!4!2" --set useNRPE="1" --set normalCheckInterval="5" --set retryCheckInterval="2" --set maxCheckAttempts="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_REPLICATION" --set description="Default Service: check if ldap replication is uptodate" --set checkCommand="check_univention_replication" --set checkArgs="10!50!100" --set useNRPE="1" --set normalCheckInterval="2" --set retryCheckInterval="1" --set maxCheckAttempts="5" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_NSCD" --set description="Default Service: check if nscd process is present" --set checkCommand="check_univention_procs_name" --set checkArgs="1:1!1:!nscd" --set useNRPE="1" --set normalCheckInterval="15" --set retryCheckInterval="2" --set maxCheckAttempts="2" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_KPASSWDD" --set description="Default Service: check if kpasswdd process is present" --set checkCommand="check_univention_procs_name" --set checkArgs="1:1!1:!kpasswdd" --set useNRPE="1" --set normalCheckInterval="15" --set retryCheckInterval="2" --set maxCheckAttempts="2" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_WINBIND" --set description="Default Service: check if winbind is functional" --set checkCommand="check_univention_winbind" --set checkArgs="none" --set useNRPE="1" --set normalCheckInterval="15" --set retryCheckInterval="2" --set maxCheckAttempts="2" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_SMBD" --set description="Default Service: check if smbd is functional" --set checkCommand="check_univention_smbd" --set checkArgs="guest" --set useNRPE="1" --set normalCheckInterval="15" --set retryCheckInterval="2" --set maxCheckAttempts="2" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_NMBD" --set description="Default Service: check if nmbd is functional" --set checkCommand="check_univention_nmbd" --set checkArgs="" --set useNRPE="1" --set normalCheckInterval="15" --set retryCheckInterval="2" --set maxCheckAttempts="2" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_JOINSTATUS" --set description="Default Service: check if system has been joined successfully" --set checkCommand="check_univention_joinstatus" --set checkArgs="" --set useNRPE="1" --set normalCheckInterval="1440" --set retryCheckInterval="480" --set maxCheckAttempts="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+joinscript_save_current_version
+
+exit 0
