@@ -1,3 +1,9 @@
+univention-snmpd (4.0.0-3) unstable; urgency=low
+
+  * ucslint is buggy, so set an overrride (Bug #22576)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 25 Aug 2011 15:23:36 +0200
+
 univention-snmpd (4.0.0-2) unstable; urgency=low
 
   * Explicitly spell out variable name to bypass overly strict ucslint checking
