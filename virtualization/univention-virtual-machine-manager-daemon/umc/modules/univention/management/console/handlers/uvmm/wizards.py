@@ -36,6 +36,7 @@ import os
 
 import univention.management.console as umc
 import univention.management.console.dialog as umcd
+import univention.management.console.tools as umct
 import univention.management.console.protocol as umcp
 
 import univention.debug as ud
@@ -631,7 +632,10 @@ class InstanceWizard( umcd.IWizard ):
 		# PAGE_SUMMARY=2
 		page = umcd.Page( self.title, umcd.HTML( _( 'The virtual instance will be created with the settings shown below. The button <i>Add drive</i> can be used to attach another drive.' ) ) )
 		page.options.append( umcd.HTML( '' ) )
-		add_btn = umcd.Button( _( 'Add drive' ), 'uvmm/add', ( umcd.Action( umcp.SimpleCommand( command, options = { 'action' : 'new-drive' } ) ), ) )
+		add_cmd = umcp.SimpleCommand(command, options={'action': 'new-drive'})
+		add_act = umcd.Action(add_cmd)
+		add_btn = umcd.LinkButton(_('Add drive'), 'uvmm/add', actions=(add_act,))
+		add_btn.set_size(umct.SIZE_SMALL)
 		page.actions.append( add_btn )
 		self.append( page )
 
