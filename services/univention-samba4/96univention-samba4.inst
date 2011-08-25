@@ -125,7 +125,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		ucr set samba/netbios/aliases?"$domainname"
 	fi
 
-	set_machine_secret
+	# set_machine_secret
 
 elif [ "$server_role" = "domaincontroller_backup" ] || [ "$server_role" = "domaincontroller_slave" ]; then
 
@@ -154,7 +154,7 @@ elif [ "$server_role" = "domaincontroller_backup" ] || [ "$server_role" = "domai
 	extract_binddn_and_bindpwd_from_args "$@"
 	samba-tool join "$domainname" DC -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 
-	set_machine_secret
+	# set_machine_secret
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
 		## Create kerberos service entries for sshd and slapd (ssh and ldapsearch -Y GSSAPI)
@@ -168,7 +168,7 @@ elif [ "$server_role" = "memberserver" ]; then
 	extract_binddn_and_bindpwd_from_args "$@"
 	samba-tool join "$domainname" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 
-	set_machine_secret
+	# set_machine_secret
 
 fi
 
