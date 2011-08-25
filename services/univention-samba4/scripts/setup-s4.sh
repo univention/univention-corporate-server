@@ -156,23 +156,6 @@ fi
 ## TODO: Join-Script candidate: DNS-Setup
 "${SCRIPTDIR}/setup-dns-in-ucsldap.sh" >>$LOGFILE 2>&1
 
-# Copy keytab
-if [ -e /etc/krb5.keytab ]; then
-	mv /etc/krb5.keytab /etc/krb5.keytab.BACKUP_UCS_INSTALLATION
-fi
-
-ln -sf /var/lib/samba/private/secrets.keytab /etc/krb5.keytab
-
-# Create kerberos service entries for sshd and slapd (ssh and ldapsearch -Y GSSAPI)
-ldbmodify -H /var/lib/samba/private/secrets.ldb -b "flatname=$windows_domain,cn=Primary Domains" <<%EOF
-dn: flatname=$windows_domain,cn=Primary Domains
-changetype: modify
-add: servicePrincipalName
-servicePrincipalName: host/$hostname.$domainname
-servicePrincipalName: ldap/$hostname.$domainname
--
-%EOF
-
 /etc/init.d/samba4 restart >>$LOGFILE 2>&1	# somehow this currently is necessary to avoid 'Failed to listen on 0.0.0.0:445 - NT_STATUS_ADDRESS_ALREADY_ASSOCIATED'
 
 exit 0

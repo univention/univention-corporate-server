@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -53,12 +53,42 @@ set_machine_secret() {
 	samba-tool setpassword "${hostname}\$" --newpassword="$(cat /etc/machine.secret)"
 
 	## 2. store password locally in secrets.ldb
-	cat <<-%EOF | LDB_MODULES_PATH=/usr/lib/ldb ldbmodify -H /var/lib/samba/private/secrets.ldb
+	ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
 	dn: flatname=${windows_domain},cn=Primary Domains
 	changetype: modify
 	replace: secret
 	secret:< file:///etc/machine.secret
+	-
 	%EOF
+}
+
+let_samba4_manage_etc_krb5_keytab() {
+	## Let samba4 manage /etc/krb5.keytab
+	if [ -e /etc/krb5.keytab ]; then
+		cp /etc/krb5.keytab /etc/krb5.keytab.SAVE
+	fi
+
+	ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
+	dn: flatname=$windows_domain,cn=Primary Domains
+	changetype: modify
+	add: krb5Keytab
+	krb5Keytab: /etc/krb5.keytab
+	-
+	%EOF
+}
+
+add_servicePrincipals() {
+	{
+	cat <<-%EOF
+	dn: flatname=$windows_domain,cn=Primary Domains
+	changetype: modify
+	add: servicePrincipalName
+	%EOF
+
+	for spn in "$@"; do
+		echo "servicePrincipalName: $spn"
+	done
+	} | ldbmodify -H /var/lib/samba/private/secrets.ldb
 }
 
 remove_port ()
@@ -73,11 +103,21 @@ univention-config-registry commit /etc/samba/smb.conf		# 03univention-directory-
 
 univention-config-registry set samba/quota/command='None'	# currently unsupported in samba4
 
+LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH
+
 if [ "$server_role" = "domaincontroller_master" ]; then
 
-	/usr/share/univention-samba4/scripts/setup-s4.sh
+	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+		## Provision Samba4
+		/usr/share/univention-samba4/scripts/setup-s4.sh
 
-	set_machine_secret
+		## Create kerberos service entries for sshd and slapd (ssh and ldapsearch -Y GSSAPI)
+		add_servicePrincipal "host/$hostname.$domainname" "ldap/$hostname.$domainname"
+	fi
+
+	if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
+		let_samba4_manage_etc_krb5_keytab
+	fi
 
 	## The first samba 4 DC should provide the domainname as netbios alias
 	res="$(univention-directory-manager computers/computer list "$@" --filter "(univentionService=${NAME})" | sed -ne 's|^DN: ||p')"
@@ -85,37 +125,51 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		ucr set samba/netbios/aliases?"$domainname"
 	fi
 
+	set_machine_secret
+
 elif [ "$server_role" = "domaincontroller_backup" ] || [ "$server_role" = "domaincontroller_slave" ]; then
 
-	if [ -x /etc/init.d/samba ]; then
-		/etc/init.d/samba stop
-	fi
-	if [ -x /etc/init.d/winbind ]; then
-		/etc/init.d/winbind stop
-	fi
-	univention-config-registry set samba/autostart=no winbind/autostart=no kerberos/autostart=no
+	if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
+		if [ -x /etc/init.d/samba ]; then
+			/etc/init.d/samba stop
+		fi
+		if [ -x /etc/init.d/winbind ]; then
+			/etc/init.d/winbind stop
+		fi
+		univention-config-registry set samba/autostart=no winbind/autostart=no kerberos/autostart=no
 
-	/etc/init.d/heimdal-kdc stop
+		/etc/init.d/heimdal-kdc stop
 
-	if [ -n "$slapd_port" ]; then
-		univention-config-registry set slapd/port="$(remove_port "$slapd_port" 389)"
-	fi
-	if [ -n "$slapd_port_ldaps" ]; then
-		univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)"
-	fi
+		if [ -n "$slapd_port" ]; then
+			univention-config-registry set slapd/port="$(remove_port "$slapd_port" 389)"
+		fi
+		if [ -n "$slapd_port_ldaps" ]; then
+			univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)"
+		fi
 
-	/etc/init.d/slapd crestart
-	sleep 1
+		/etc/init.d/slapd crestart
+		sleep 1
+	fi
 
 	extract_binddn_and_bindpwd_from_args "$@"
 	samba-tool join "$domainname" DC -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
+
 	set_machine_secret
+
+	if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
+		## Create kerberos service entries for sshd and slapd (ssh and ldapsearch -Y GSSAPI)
+		add_servicePrincipal "host/$hostname.$domainname" "ldap/$hostname.$domainname"
+
+		let_samba4_manage_etc_krb5_keytab
+	fi
 
 elif [ "$server_role" = "memberserver" ]; then
 
 	extract_binddn_and_bindpwd_from_args "$@"
 	samba-tool join "$domainname" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
+
 	set_machine_secret
+
 fi
 
 /etc/init.d/samba4 restart
