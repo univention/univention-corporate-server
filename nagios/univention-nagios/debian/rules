@@ -41,8 +41,6 @@ DC=$(CURDIR)/debian/univention-nagios-client
 override_dh_fixperms:
 	dh_fixperms
 	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper
-	chmod +x ${DC}/usr/lib/nagios/plugins/check_univention_joinstatus
-	chmod +x ${DC}/usr/lib/univention-install/30univention-nagios-client.inst
 
 override_dh_auto_clean:
 	dh_auto_clean
