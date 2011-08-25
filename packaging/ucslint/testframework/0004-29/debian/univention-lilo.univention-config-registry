@@ -27,7 +27,9 @@ Variables: lilo/compact
 
 Type: multifile
 Multifile: etc/hosts
+Variables: ding
 
 Type: subfile
 Multifile: etc/hosts
 Subfile: etc/hosts.d/99-ucs-test
+Variables: dong

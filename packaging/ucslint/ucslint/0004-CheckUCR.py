@@ -380,13 +380,21 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 					mfn = obj.get('Multifile',[None])[0]
 					if mfn and mfn in all_multifiles:
 						# "Multifile" entry exists ==> obj is a subfile
-						mfvars = all_multifiles[mfn][0].get('Variables',[])  # ...otherwise it contains empty list or UCR variable names
+						knownvars = set()
+						# add known variables from multifile entry
+						knownvars.update( all_multifiles[mfn][0].get('Variables',[]) ) # ...otherwise it contains empty list or UCR variable names
+						# iterate over all subfile entries for this multifile
+						for sf in all_subfiles[mfn]:
+							# if subfile matches current subtemplate...
+							if cfn == sf.get('Subfile',[''])[0]:
+								# ...then add variables to list of known variables
+								knownvars.update( sf.get('Variables',[]) )
 
-						# check all variables
+						# check all variables against knownvars
 						for var in conffiles[conffn]['variables']:
-							if not var in mfvars:
+							if not var in knownvars:
 								# if not found check if regex matches
-								for rvar in mfvars:
+								for rvar in knownvars:
 									if '.*' in rvar:
 										regEx = re.compile(rvar)
 										if regEx.match( var ):
@@ -399,7 +407,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 								invalidUCRVarNames.add(var)
 
 						if len(notregistered):
-							self.addmsg( '0004-29', 'template file contains variables that are not registered in multifile entry:\n	- %s' % ('\n	- '.join(notregistered)), conffn)
+							self.debug('cfn = %r' % cfn)
+							self.debug('knownvars(mf+sf) = %r' % knownvars)
+							self.addmsg( '0004-29', 'template file contains variables that are not registered in multifile or subfile entry:\n	- %s' % ('\n	- '.join(notregistered)), conffn)
 
 					else:
 						# no subfile ==> File, Module, Script

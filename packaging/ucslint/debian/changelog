@@ -1,3 +1,9 @@
+ucslint (2.0.13-1) unstable; urgency=low
+
+  * respect variable registrations on subfiles (Bug #23429)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 25 Aug 2011 17:41:55 +0200
+
 ucslint (2.0.12-1) unstable; urgency=low
 
   * join scripts may also be mentioned in *.install files (Bug #21488)
