@@ -1,3 +1,12 @@
+univention-samba4 (1.0.19-1) experimental; urgency=low
+
+  * set machine secret also on master after provision
+  * don't append passwords to the samba4.secret file
+  * fix permissions for samba4.secret.SAVE file
+  * add timestamps to samba4.secret.SAVE (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Aug 2011 11:43:01 +0200
+
 univention-samba4 (1.0.18-2) experimental; urgency=low
 
   * improve and dashify univention-s4search (Bug #23360)

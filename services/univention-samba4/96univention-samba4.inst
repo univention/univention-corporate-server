@@ -67,6 +67,8 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 
 	/usr/share/univention-samba4/scripts/setup-s4.sh
 
+	set_machine_secret
+
 	# The first samba 4 DC should provide the domainname as netbios alias
 	res="$(udm computers/computer list "$@" --filter "(univentionService=${NAME})" | sed -ne 's|^DN: ||p')"
 	if [ -z "$res" ]; then

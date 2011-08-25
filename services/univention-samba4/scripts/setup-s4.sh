@@ -69,11 +69,18 @@ done
 
 pwfile="/etc/samba4.secret"
 if [ -e "$pwfile" ]; then
-	cat "$pwfile" >>"$pwfile".SAVE
+	pwhistoryfile="$pwfile.SAVE"
+	if [ ! -f "$pwhistoryfile" ]; then
+		cp -a "$pwfile" "$pwhistoryfile"	# always keep ownership
+	else
+		cat "$pwfile" >> "$pwhistoryfile"
+	fi
+	timestamp=$(stat --printf='%y' "$pwfile")
+	printf "\t# modification timestamp: $timestamp\n" >> "$pwhistoryfile"
 fi
 touch "$pwfile"
 chmod 600 "$pwfile"
-echo -n "$adminpw" >> "$pwfile"
+echo -n "$adminpw" > "$pwfile"
 
 # Test:
 # r 389
