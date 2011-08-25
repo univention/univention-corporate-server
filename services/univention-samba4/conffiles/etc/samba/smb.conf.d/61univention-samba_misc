@@ -7,7 +7,7 @@ print '\tmax xmit = %s' % configRegistry.get('samba/max_xmit', '65535')
 
 print '\ttime server = %s' % configRegistry.get('samba/time_server', 'yes')
 
-if configRegistry.has_key('samba/enable-msdfs') and configRegistry['samba/enable-msdfs'] == 'yes':
+if configRegistry.is_true('samba/enable-msdfs'):
 	print '\thost msdfs = yes'
 else:
 	print '\thost msdfs = no'

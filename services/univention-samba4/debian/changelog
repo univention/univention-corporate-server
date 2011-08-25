@@ -1,3 +1,10 @@
+univention-samba4 (1.0.19-3) experimental; urgency=low
+
+  * some improvements in readability and robustness for smb.conf templates
+    (Bug #23158)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Aug 2011 16:00:40 +0200
+
 univention-samba4 (1.0.19-2) experimental; urgency=low
 
   * some postinst and joinscript fixes (Bug #23360)
