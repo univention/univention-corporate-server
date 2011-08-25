@@ -1,6 +1,6 @@
 univention-bind (6.0.7-1) unstable; urgency=low
 
-  * provide default for ldap/server/port in bind listener (Bug #23220)
+  * provide default for ldap/server/port in bind listener (Bug #23360)
 
  -- Arvid Requate <requate@univention.de>  Wed, 24 Aug 2011 19:20:38 +0200
 
