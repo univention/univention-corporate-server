@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (0.9.324-1) unstable; urgency=low
+
+  * Fix creating local device (Bug #21763)
+  * Fix spelling of en_GB (Bug #22964)
+  * Update translation.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 25 Aug 2011 13:13:14 +0200
+
 univention-virtual-machine-manager-daemon (0.9.323-1) unstable; urgency=low
 
   * UMC module: add icon to all add buttons (snapshos, drives and network interfaces); Bug #23417

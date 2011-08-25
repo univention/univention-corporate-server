@@ -68,7 +68,7 @@ class DriveWizard( umcd.IWizard ):
 		if change:
 			self.title = _('Change media')
 		else:
-			self.title = _('Add a drive')
+			self.title = _('Add drive')
 		self.change = change
 		self.pool_syntax = DynamicSelect( _( 'Storage pool' ) )
 		self.image_syntax = DynamicSelect( _( 'Drive image' ) )
@@ -375,6 +375,7 @@ class DriveWizard( umcd.IWizard ):
 					object.options['vol-name'] = '/dev/cdrom'
 				elif object.options['drive-type'] == 'floppy':
 					object.options['vol-name'] = '/dev/fd0'
+				object.options['driver-type'] = 'RAW'
 			elif object.options[ 'existing-or-new-disk' ] == 'disk-empty':
 				self.current = DriveWizard.PAGE_SUMMARY
 				object.options['pool-name'] = None
