@@ -1,6 +1,6 @@
 univention-samba4 (1.0.19-4) experimental; urgency=low
 
-  * let samba4 manage /etc/krb5.keytab on DCs
+  * let samba4 manage /etc/krb5.keytab on DCs (Bug #22963)
   * add service principals also in backup ans slave (Bug #23360)
   * increase JS VERSION for MS2
   * encapsule MS2 changes with JS_LAST_EXECUTED_VERSION
