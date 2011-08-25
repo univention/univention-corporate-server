@@ -1,3 +1,10 @@
+univention-snmpd (4.0.0-2) unstable; urgency=low
+
+  * Explicitly spell out variable name to bypass overly strict ucslint checking
+    (Bug #22576)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 25 Aug 2011 15:16:05 +0200
+
 univention-snmpd (4.0.0-1) unstable; urgency=low
 
   * Update for UCS 3.0 (Bug #22576)
