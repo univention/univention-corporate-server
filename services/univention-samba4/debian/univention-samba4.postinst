@@ -34,15 +34,12 @@
 
 #DEBHELPER#
 
-if [ -f /etc/samba/smb.conf ]; then
-	rm /etc/samba/smb.conf
-fi
-
 univention-config-registry set samba/debug/level?0
 
 if [ "$1" = "configure" ]; then
 
 	if [ -z "$2" ]; then
+
 		# only set this for new installations
 		if [ "$server_role" = "domaincontroller_master" ]; then
 			univention-config-registry set windows/wins-support=yes
@@ -50,14 +47,14 @@ if [ "$1" = "configure" ]; then
 			univention-config-registry set windows/wins-support?no
 			univention-config-registry set windows/wins-server?$ldap_master
 		fi
+
+	elif [ -n "$2" ]; then
+
+		univention-config-registry commit /etc/samba/smb.conf
+		/etc/init.d/samba4 crestart
+
 	fi
 fi
-
-for f in installs.conf shares.conf printers.conf local.conf; do
-	if [ ! -e "/etc/samba/$f" ]; then
-		touch /etc/samba/$f
-	fi
-done
 
 call_joinscript 96univention-samba4.inst
 

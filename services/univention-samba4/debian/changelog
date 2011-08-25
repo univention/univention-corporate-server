@@ -1,3 +1,9 @@
+univention-samba4 (1.0.19-2) experimental; urgency=low
+
+  * some postinst and joinscript fixes (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Aug 2011 15:33:53 +0200
+
 univention-samba4 (1.0.19-1) experimental; urgency=low
 
   * set machine secret also on master after provision

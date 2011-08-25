@@ -61,6 +61,16 @@ set_machine_secret() {
 	%EOF
 }
 
+remove_port ()
+{
+	if [ -n "$1" -a -n "$2" ]; then
+		echo "$1" | sed -e "s|^${2},||;s|,${2},|,|;s|,${2}$||;s|^${2}$||"
+	fi
+
+}
+
+univention-config-registry commit /etc/samba/smb.conf		# 03univention-directory-listener.inst might remove include
+
 univention-config-registry set samba/quota/command='None'	# currently unsupported in samba4
 
 if [ "$server_role" = "domaincontroller_master" ]; then
@@ -69,8 +79,8 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 
 	set_machine_secret
 
-	# The first samba 4 DC should provide the domainname as netbios alias
-	res="$(udm computers/computer list "$@" --filter "(univentionService=${NAME})" | sed -ne 's|^DN: ||p')"
+	## The first samba 4 DC should provide the domainname as netbios alias
+	res="$(univention-directory-manager computers/computer list "$@" --filter "(univentionService=${NAME})" | sed -ne 's|^DN: ||p')"
 	if [ -z "$res" ]; then
 		ucr set samba/netbios/aliases?"$domainname"
 	fi
@@ -87,24 +97,28 @@ elif [ "$server_role" = "domaincontroller_backup" ] || [ "$server_role" = "domai
 
 	/etc/init.d/heimdal-kdc stop
 
-	univention-config-registry set slapd/port=7389 \
-		slapd/port/ldaps=7636;
+	if [ -n "$slapd_port" ]; then
+		univention-config-registry set slapd/port="$(remove_port "$slapd_port" 389)"
+	fi
+	if [ -n "$slapd_port_ldaps" ]; then
+		univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)"
+	fi
 
 	/etc/init.d/slapd crestart
 	sleep 1
 
-	extract_binddn_and_bindpwd_from_args
+	extract_binddn_and_bindpwd_from_args "$@"
 	samba-tool join "$domainname" DC -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 	set_machine_secret
 
-	/etc/init.d/samba4 restart
-
 elif [ "$server_role" = "memberserver" ]; then
 
-	extract_binddn_and_bindpwd_from_args
+	extract_binddn_and_bindpwd_from_args "$@"
 	samba-tool join "$domainname" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 	set_machine_secret
 fi
+
+/etc/init.d/samba4 restart
 
 ucs_addServiceToLocalhost "${NAME}" "$@"
 
