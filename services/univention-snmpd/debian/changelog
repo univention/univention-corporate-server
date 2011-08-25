@@ -1,6 +1,8 @@
 univention-snmpd (4.0.0-1) unstable; urgency=low
 
   * Update for UCS 3.0 (Bug #22576)
+  * Add UCR variable descriptions
+  * Remove historic Conflicts on univention-monitoring	
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 25 Aug 2011 14:45:10 +0200
 
