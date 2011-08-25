@@ -15,3 +15,9 @@ Description[de]=Vorlage-Zeichenkette mit UDM Benutzerattribut-Variablen für die
 Description[en]=Template string with UDM user attribut variables for the "cn" and "displayName" user attributes (default: "<firstname> <lastname>")
 Type=str
 Categories=management-udm
+
+[directory/manager/samba3/legacy]
+Description[de]=In Samba 4 Umgebungen werden die Samba Attribute durch Samba 4 generiert. Wenn diese Variable auf yes gesetzt ist, so werden die Samba Attribute durch den UDM generiert
+Description[en]=The samba attributes will be generated through Samba 4 in a Samba 4 environment. The UDM will generate the samba attributes if this variale is set to yes
+Type=str
+Categories=management-udm

@@ -60,6 +60,7 @@ import univention.admin.handlers.settings.prohibited_username
 
 import univention.debug
 import univention.password
+from univention.admin import configRegistry
 
 translation=univention.admin.localization.translation('univention.admin.handlers.users')
 _=translation.translate
@@ -963,6 +964,14 @@ layout = [
 		] )
 	]
 
+# global caching variable
+if configRegistry.is_true('directory/manager/samba3/legacy', False):
+	s4connector_present = False
+elif configRegistry.is_false('directory/manager/samba3/legacy', False):
+	s4connector_present = True
+else:
+	s4connector_present = None
+
 # append tab with CTX flags
 layout.append( mungeddial.tab )
 
@@ -1275,6 +1284,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		global mapping
 		global property_descriptions
 		global default_property_descriptions
+		global s4connector_present
 
 		# homePostalAddress backward compatibility
 		# change mapping only if new syntax is used (via ucr)
@@ -1299,6 +1309,18 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 		mungeddial.Support.__init__( self )
+		# s4connector_present is a global caching variable than can be
+		# None ==> ldap has not been checked for servers with service "S4 Connector"
+		# True ==> at least one server with IP address (aRecord) is present
+		# False ==> no server is present
+		if s4connector_present == None:
+			searchResult = self.lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr = ['aRecord'])
+			s4connector_present = True
+			if not [ dn for (dn, attr) in searchResult if attr.has_key('aRecord') ]:
+				options['samba'].default = False
+				s4connector_present = False
+		elif s4connector_present:
+			options['samba'].default = False
 
 		self.options=[]
 		if 'objectClass' in self.oldattr:

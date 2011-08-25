@@ -1,3 +1,12 @@
+univention-directory-manager-modules (7.0.62-1) unstable; urgency=low
+
+  * Samba4 needs to generate the samba attributes. If a S4 Connector
+    service is registered the samba attributes won't be added when a
+    user is created via UDM. This behavior can be changed by setting
+    directory/manager/samba3/legacy (Bug #22862)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Aug 2011 10:20:03 +0200
+
 univention-directory-manager-modules (7.0.61-1) unstable; urgency=low
 
   * make syntax complexwork again for UDM command line tool; Bug #23385
