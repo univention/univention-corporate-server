@@ -1,0 +1,11 @@
+[snmpd/autostart]
+Description[de]=Definiert, ob der SNMP-Dienst automatisch gestartet werden soll
+Description[en]=Defines, whether the SNMP service should be started automatically
+Type=str
+Categories=system-network
+
+[snmpd/defaultconfig]
+Description[de]=Definiert, ob eine Standard-Konfiguration erzeugt werden soll
+Description[en]=Controls, whether a standard configuration should be generated
+Type=str
+Categories=system-base
