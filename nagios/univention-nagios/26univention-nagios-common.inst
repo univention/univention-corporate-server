@@ -39,9 +39,9 @@ joinscript_init
 eval "$(univention-config-registry shell)"
 
 # stop here if service checks shall not be create automatically
-is_ucr_true "nagios/common/servicechecks/autocreate"
+is_ucr_true "nagios/common/defaultservices/autocreate"
+# $?==0 ==> true/yes/... ; $?==1 ==> false/no/... ; $?==2 ==> empty/other values
 if [ "$?" = "1" ] ; then
-	# $?==0 ==> true/yes/... ; $?==1 ==> false/no/... ; $?==2 ==> empty/other values
 	echo "HINT: creating nagios service checks has been disabled by nagios/common/servicechecks/autocreate=no"
 	joinscript_save_current_version
 	exit 0

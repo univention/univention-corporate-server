@@ -79,7 +79,7 @@ fi
 #DEBHELPER#
 
 . /usr/share/univention-lib/base.sh
-call_joinscript 26univention-nagios-server.inst
+call_joinscript 28univention-nagios-server.inst
 call_joinscript 30univention-nagios-client.inst
 
 if [ ! -d /etc/apache2/conf.d ]; then

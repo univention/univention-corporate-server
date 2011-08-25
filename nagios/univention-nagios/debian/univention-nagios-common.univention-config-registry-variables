@@ -1,0 +1,6 @@
+[nagios/common/defaultservices/autocreate]
+Description[de]=Der Wert "no" deaktiviert die automatische Erstellung von Standard-Nagios-Diensten (Default: yes)
+Description[en]=If set to "no", default nagios services will not be created in LDAP automatically (default: yes)
+Type=str
+Categories=service-nagios
+
