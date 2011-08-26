@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.325-1) unstable; urgency=low
+
+  * Redirect error message from kill in uvmmd-check.sh to prevent cron
+    mails (Bug #22008)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 26 Aug 2011 12:18:19 +0200
+
 univention-virtual-machine-manager-daemon (0.9.324-2) unstable; urgency=low
 
   * Also add icon in drive wizard (Bug #23417)

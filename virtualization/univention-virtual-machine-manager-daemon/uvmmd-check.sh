@@ -45,7 +45,7 @@ if sv status /etc/runit/univention-virtual-machine-manager-daemon | grep ^run: >
 	if ! grep -q "^DATA:" "$tempfile"
 	then
 		# Kill the uvmm process
-		kill $pid
+		kill $pid >/dev/null 2>&1
 
 		echo "uvmm-check.sh: uvmm does not response like expected. Restarting uvmmd now." >>"$logfile"
 		cat "$tempfile" >> "$logfile"
