@@ -32,12 +32,12 @@
 # <http://www.gnu.org/licenses/>.
 
 import string
-import univention_baseconfig
+import univention.config_registry as ucr
 import univention.debug2 as ud
+import univention.s4connector.s4
 
-baseConfig=univention_baseconfig.baseConfig()
-baseConfig.load()
-
+configRegistry=ucr.ConfigRegistry()
+configRegistry.load()
 
 
 def ucs2s4_sid(s4connector, key, object):
@@ -63,7 +63,7 @@ def s42ucs_givenName(s4connector, key, object):
 
 def ucs2s4_dn_string(dn):
 	_d=ud.function('mapping.ucs2s4_dn_string')
-	return string.replace(dn,baseConfig['ldap/base'],baseConfig['connector/s4/ldap/base'])
+	return string.replace(dn,configRegistry['ldap/base'],configRegistry['connector/s4/ldap/base'])
 
 def ucs2s4_dn(s4connector, key, object):
 	_d=ud.function('mapping.ucs2s4_dn')
@@ -71,7 +71,7 @@ def ucs2s4_dn(s4connector, key, object):
 
 def s42ucs_dn_string(dn):
 	_d=ud.function('mapping.s42ucs_dn_string')
-	return string.replace(dn,baseConfig['connector/s4/ldap/base'],baseConfig['ldap/base'])
+	return string.replace(dn,configRegistry['connector/s4/ldap/base'],configRegistry['ldap/base'])
 
 def s42ucs_dn(s4connector, key, object):
 	_d=ud.function('mapping.s42ucs_dn')

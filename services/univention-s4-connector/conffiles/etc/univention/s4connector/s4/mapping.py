@@ -33,6 +33,7 @@
 import univention.s4connector.s4
 import univention.s4connector.s4.mapping
 import univention.s4connector.s4.password
+import univention.s4connector.s4.sid_mapping
 
 global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base@%@',
 			'cn=shares,@%@ldap/base@%@','cn=printers,@%@ldap/base@%@',
@@ -63,7 +64,7 @@ s4_mapping = {
 			scope='sub',
 
 			con_search_filter='(&(objectClass=user)(!(objectClass=computer))(userAccountControl:1.2.840.113556.1.4.803:=512))',
-			match_filter='(&(|(&(objectClass=posixAccount)(objectClass=sambaSamAccount))(objectClass=user))(!(objectClass=univentionHost)))',
+			match_filter='(&(|(&(objectClass=posixAccount)(objectClass=krb5Principal))(objectClass=user))(!(objectClass=univentionHost)))',
 			ignore_filter='(|(uid=root)(uid=pcpatch)(cn=pcpatch)(CN=pcpatch)(uid=ucs-s4sync)(CN=ucs-s4sync))',
 
 			ignore_subtree = global_ignore_subtree,
@@ -101,13 +102,17 @@ s4_mapping = {
 			post_con_create_functions = [ univention.s4connector.s4.normalise_userAccountControl,
 						 ],
 
-			post_con_modify_functions=[ univention.s4connector.s4.password.password_sync_ucs_to_s4,
+			post_con_modify_functions=[
+							univention.s4connector.s4.sid_mapping.sid_to_s4,
+							univention.s4connector.s4.password.password_sync_ucs_to_s4,
 						    univention.s4connector.s4.primary_group_sync_from_ucs,
 						    univention.s4connector.s4.object_memberships_sync_from_ucs,
 						    univention.s4connector.s4.disable_user_from_ucs,
 						    ],
 
-			post_ucs_modify_functions=[ univention.s4connector.s4.password.password_sync_s4_to_ucs,
+			post_ucs_modify_functions=[
+							univention.s4connector.s4.sid_mapping.sid_to_ucs,
+							univention.s4connector.s4.password.password_sync_s4_to_ucs,
 						    univention.s4connector.s4.primary_group_sync_to_ucs,
 						    univention.s4connector.s4.object_memberships_sync_to_ucs,
 						    univention.s4connector.s4.disable_user_to_ucs,
