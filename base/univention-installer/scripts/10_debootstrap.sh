@@ -81,24 +81,20 @@ fi
 # busybox' dpkg-deb is incompatible with debootstrap
 export EXTRACTOR_OVERRIDE="ar"
 
+excludes="pcmcia-cs libpcre3-udeb udev-udeb libc6-udeb rsyslog"
+includes="postfix"
 # Installing univention base system
-if [ -z "$USE_NO_LOG" ]; then
-	if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-		debootstrap --arch powerpc --include="postfix" --exclude="pcmcia-cs libpcre3-udeb udev-udeb libc6-udeb rsyslog" univention /instmnt/ $repo_dir 2>&1 | tee -a /instmnt/.log
-	elif [ "$architecture" = "x86_64" ]; then
-		debootstrap --arch amd64 --include="postfix" --exclude="pcmcia-cs libpcre3-udeb udev-udeb libc6-udeb rsyslog" univention /instmnt/ $repo_dir 2>&1 | tee -a /instmnt/.log
-	else
-		debootstrap --arch i386 --include="postfix" --exclude="pcmcia-cs libpcre3-udeb udev-udeb libc6-udeb rsyslog" univention /instmnt/ $repo_dir 2>&1 | tee -a /instmnt/.log
-	fi
+if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
+	debootstrap --arch powerpc --include="$includes" --keep-debootstrap-dir --exclude="$excludes" univention /instmnt/ $repo_dir
+elif [ "$architecture" = "x86_64" ]; then
+	debootstrap --arch amd64   --include="$includes" --keep-debootstrap-dir --exclude="$excludes" univention /instmnt/ $repo_dir
 else
-	if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-		debootstrap --arch powerpc --include="postfix" --exclude="pcmcia-cs libpcre3-udeb udev-udeb libc6-udeb rsyslog" univention /instmnt/ $repo_dir
-	elif [ "$architecture" = "x86_64" ]; then
-		debootstrap --arch amd64 --include="postfix" --exclude="pcmcia-cs libpcre3-udeb udev-udeb libc6-udeb rsyslog" univention /instmnt/ $repo_dir
-	else
-		debootstrap --arch i386 --include="postfix" --exclude="pcmcia-cs libpcre3-udeb udev-udeb libc6-udeb rsyslog" univention /instmnt/ $repo_dir
-	fi
+	debootstrap --arch i386    --include="$includes" --keep-debootstrap-dir --exclude="$excludes" univention /instmnt/ $repo_dir
 fi
+
+gzip /instmnt/debootstrap/debootstrap.log
+cp /instmnt/debootstrap/debootstrap.log.gz /tmp
+rm -rf /instmnt/debootstrap
 
 if [ -e /instmnt/dev/.udev ]; then
 	# disable udev during the installer process

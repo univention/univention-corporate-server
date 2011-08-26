@@ -126,6 +126,12 @@ else
 					chown root:adm /instmnt/var/log/univention/installer.log
 					chmod 640 /instmnt/var/log/univention/installer.log
 				fi
+
+				if [ -e /tmp/debootstrap.log.gz ]; then
+					cp /tmp/debootstrap.log.gz /instmnt/var/log/univention/
+					chown root:adm /instmnt/var/log/univention/debootstrap.log.gz
+					chmod 640 /instmnt/var/log/univention/debootstrap.log.gz
+				fi
 			fi
 			if [ -e /tmp/logging ]; then
 				/bin/sh $i </dev/tty1 2>&1 | tee -a /instmnt/var/log/univention/installation.log

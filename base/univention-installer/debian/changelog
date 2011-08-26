@@ -1,3 +1,9 @@
+univention-installer (7.0.40-1) unstable; urgency=low
+
+  * save debootstrap.log in /var/log/univention (Bug #23283) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 26 Aug 2011 16:02:45 +0200
+
 univention-installer (7.0.39-1) unstable; urgency=low
 
   * fixed some english translations (Bug #23204)
