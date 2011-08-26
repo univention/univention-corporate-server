@@ -123,9 +123,8 @@ class object(content):
 		else:
 			self.default = defaultLanguage
 
-
-		self.elements.append(textline(_('Select a language for your system'),self.minY-1,self.minX+2))
-		self.elements.append(textline(_('and if supported for the installer:'),self.minY,self.minX+2))
+		self.elements.append(textline(_('Select system language'),self.minY-1,self.minX+2))
+		self.elements.append(textline(_('(also applies to the installation process for supported languages):'),self.minY,self.minX+2))
 		self.add_elem('LANGUAGE',select(dict, self.minY+2, self.minX+2, WIDTH, HEIGHT, selectedLine))
 
 		self.move_focus(self.get_elem_id('LANGUAGE'))

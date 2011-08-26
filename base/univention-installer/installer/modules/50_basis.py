@@ -139,7 +139,7 @@ class object(content):
 					self.guessed[ 'ldap_base' ] = self.all_results['ldap_base']+'already_initialize'
 
 		# windom
-		self.add_elem('TXT_WINDOMAIN', textline(_('Windows domain:'), self.minY+index, self.minX+2))#8
+		self.add_elem('TXT_WINDOMAIN', textline(_('Windows domain name:'), self.minY+index, self.minX+2))#8
 		index += 1
 		self.add_elem('IN_WINDOMAIN', input(self.all_results['windows_domain'], self.minY+index, self.minX+2,30))#9
 		index += 2

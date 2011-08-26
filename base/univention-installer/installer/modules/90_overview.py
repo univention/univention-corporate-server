@@ -68,9 +68,9 @@ class object(content):
 			role="Basesystem              "
 
 		just=16
-		self.elements.append(textline(_('This is the last step of the interactive installation'), self.minY+0, self.minX+2))
-		self.elements.append(textline(_('part. Please check all settings carefully. During the'), self.minY+1, self.minX+2))
-		self.elements.append(textline(_('next step software packages will be installed and'), self.minY+2, self.minX+2))
+		self.elements.append(textline(_('This is the last step of the interactive installation.'), self.minY+0, self.minX+2))
+		self.elements.append(textline(_('Please check all settings carefully. During the next'), self.minY+1, self.minX+2))
+		self.elements.append(textline(_('phase software packages will be installed and'), self.minY+2, self.minX+2))
 		self.elements.append(textline(_('(pre-)configured.'), self.minY+3, self.minX+2))
 
 		head = _("System role") + ":"
