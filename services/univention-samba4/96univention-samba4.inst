@@ -53,11 +53,17 @@ set_machine_secret() {
 	samba-tool setpassword "${hostname}\$" --newpassword="$(cat /etc/machine.secret)"
 
 	## 2. store password locally in secrets.ldb
+	current_kvn=$(ldbsearch -H /var/lib/samba/private/secrets.ldb samAccountName="${hostname}\$" msDS-KeyVersionNumber | sed -n 's/msDS-KeyVersionNumber: \(.*\)/\1/p')
+	new_kvno=$(($current_kvn + 1))
+
 	ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
 	dn: flatname=${windows_domain},cn=Primary Domains
 	changetype: modify
 	replace: secret
 	secret:< file:///etc/machine.secret
+	-
+	replace: msDS-KeyVersionNumber
+	msDS-KeyVersionNumber: $new_kvno
 	-
 	%EOF
 }
