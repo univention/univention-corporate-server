@@ -116,19 +116,26 @@ class Module( base.Page ):
 											 umc_tools.SIZE_SMALL )
 		self.__startups = startup.List()
 		self.active = ActiveProcess()
+		init_req = None
 		for name, cmd in module[ 'commands' ].items():
-			if cmd[ 'startup' ] or name == init_cmd:
+			if cmd[ 'startup' ]:
 				req = umcp.Command( args = [ name ], incomplete = True )
 				# add returns the position of new startup command
-				pos = self.__startups.add( req, cmd[ 'short_description' ], cmd[ 'long_description' ],
+				self.__startups.add( req, cmd[ 'short_description' ], cmd[ 'long_description' ],
 										   cmd[ 'priority' ], cmd[ 'caching' ] )
 				# if current command is init_cmd then select this as new active tab
-				if name == init_cmd:
-					self.selected = pos
+			elif name == init_cmd:
+				init_req = umcp.Command( args = [ name ], incomplete = True )
+				if not self.categorylist_hide:
+					self.selected = self.__startups.add( init_req, cmd[ 'short_description' ], cmd[ 'long_description' ],
+													   cmd[ 'priority' ], cmd[ 'caching' ] )
 
 		# run command of first category
-		cmd = self.__startups[ self.selected ]
-		self.active.single( client.request_send( cmd.request ) )
+		if init_req and self.categorylist_hide:
+			self.active.single( client.request_send( init_req ) )
+		else:
+			cmd = self.__startups[ self.selected ]
+			self.active.single( client.request_send( cmd.request ) )
 		self.categories = self.__startups.categories()
 
 	def focused( self ):
