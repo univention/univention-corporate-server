@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.22-1) unstable; urgency=low
+
+  * try to copy samba4.secret during join from any UCS domaincontroller
+    offering the S4 Connector service (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Aug 2011 09:24:20 +0200
+
 univention-s4-connector (6.0.21-1) unstable; urgency=low
 
   * Bug #22862: Allow the user creation on UCS without the samba attribues
