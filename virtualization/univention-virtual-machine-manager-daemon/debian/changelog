@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.326-1) unstable; urgency=low
+
+  * Add missing update of xen profiles with rtcoffset (svn23656, Bug #22033)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 29 Aug 2011 13:26:46 +0200
+
 univention-virtual-machine-manager-daemon (0.9.325-1) unstable; urgency=low
 
   * Redirect error message from kill in uvmmd-check.sh to prevent cron

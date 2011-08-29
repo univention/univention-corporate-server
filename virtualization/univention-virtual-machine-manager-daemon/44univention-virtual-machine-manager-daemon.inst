@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="5"
+VERSION="6"
 
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
@@ -203,7 +203,7 @@ create_xen_profile() {
 		--set pvdisk=1 \
 		--set pvcdrom=1 \
 		--set pvinterface=1
-	if [ "$JS_LAST_EXECUTED_VERSION" -lt 4 ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
+	if [ "$JS_LAST_EXECUTED_VERSION" -lt "$VERSION" ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
 		if [ "$uvmm_profile_autoupdate" != "false" ]; then
 			# update profile settings if uvmm/profile/autoupdate is not set to false
 			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
@@ -308,9 +308,9 @@ create_hvm_profile "Other (64 Bit)" "other-" "kvm" "x86_64" "512MB" "0" "0" "0" 
 
 # Re-link certificates
 rm -rf /etc/pki/libvirt/clientcert.pem
-ln -sf /etc/univention/ssl/$hostname.$domainname/cert.pem /etc/pki/libvirt/clientcert.pem
+ln -sf "/etc/univention/ssl/$hostname.$domainname/cert.pem" /etc/pki/libvirt/clientcert.pem
 rm -rf /etc/pki/libvirt/private/clientkey.pem
-ln -sf /etc/univention/ssl/$hostname.$domainname/private.key /etc/pki/libvirt/private/clientkey.pem
+ln -sf "/etc/univention/ssl/$hostname.$domainname/private.key" /etc/pki/libvirt/private/clientkey.pem
 
 if [ ! -e /etc/runit/univention/univention-virtual-machine-manager-daemon ]; then
 	ln -s /etc/runit/univention-virtual-machine-manager-daemon /etc/runit/univention/univention-virtual-machine-manager-daemon
