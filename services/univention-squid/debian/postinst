@@ -37,12 +37,12 @@
 # the proxy user needs to be in the group winbindd_priv to be able to access winbind
 adduser proxy winbindd_priv
 
-ucr squid/transparentproxy?false
+ucr set squid/transparentproxy?false
 ucr set squid/ldapauth?no
 ucr set squid/cache?yes
 
-/etc/init.d/squid stop
-/etc/init.d/squid start
+/etc/init.d/squid3 stop
+/etc/init.d/squid3 start
 
 call_joinscript /usr/lib/univention-install/79univention-squid.inst
 
