@@ -1,3 +1,10 @@
+univention-samba4 (1.0.20-1) experimental; urgency=low
+
+  * only include existing files into smb.conf (Bug #23158)
+  * don't ship 95univention-samba_local_config
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Aug 2011 16:37:03 +0200
+
 univention-samba4 (1.0.19-8) experimental; urgency=low
 
   * avoid Samba version number in server/string (Bug #23158)
