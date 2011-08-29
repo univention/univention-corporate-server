@@ -1,3 +1,9 @@
+univention-samba4 (1.0.20-3) experimental; urgency=low
+
+  * fix indentation of includes (Bug #23158)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Aug 2011 16:56:05 +0200
+
 univention-samba4 (1.0.20-2) experimental; urgency=low
 
   * remove ucr registrtion of 95univention-samba_local_config (Bug #23158)
