@@ -161,7 +161,7 @@ elif [ "$server_role" = "domaincontroller_backup" ] || [ "$server_role" = "domai
 	samba-tool join "$domainname" DC -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 
 	## Adding this CNAME is currently necessary, probably this will be done automagically with bind9 dlz-dlopen on samba4
-	server_object_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname='${hostname}\$' \
+	server_object_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${hostname}\$" \
 						serverReferenceBL | ldapsearch-wrapper | sed -n 's/^serverReferenceBL: \(.*\)/\1/p')
 	NTDS_objectGUID=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$server_object_dn" \
 						"CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')

@@ -1,3 +1,9 @@
+univention-samba4 (1.0.23-5) experimental; urgency=low
+
+  * fix quoting (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Aug 2011 20:43:47 +0200
+
 univention-samba4 (1.0.23-4) experimental; urgency=low
 
   * pick the correct server object in the sites definition by following
