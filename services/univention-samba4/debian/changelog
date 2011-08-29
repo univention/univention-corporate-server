@@ -1,3 +1,9 @@
+univention-samba4 (1.0.20-4) experimental; urgency=low
+
+  * fix smb.conf.d/99univention-samba_local_shares (Bug #23158)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Aug 2011 17:08:26 +0200
+
 univention-samba4 (1.0.20-3) experimental; urgency=low
 
   * fix indentation of includes (Bug #23158)
