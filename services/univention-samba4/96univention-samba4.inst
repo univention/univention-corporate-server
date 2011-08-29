@@ -160,6 +160,14 @@ elif [ "$server_role" = "domaincontroller_backup" ] || [ "$server_role" = "domai
 	extract_binddn_and_bindpwd_from_args "$@"
 	samba-tool join "$domainname" DC -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 
+	## Adding this CNAME is currently necessary, probably this will be done automagically with bind9 dlz-dlopen on samba4
+	NTDS_objectGUID="$(ldbsearch -H /var/lib/samba/private/sam.ldb \
+						-b "CN=$hostname,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,$ldap_base"
+						"CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')"
+
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname \
+						add cname "$NTDS_objectGUID._msdcs" "$hostname.$domainname."
+
 	# set_machine_secret
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
