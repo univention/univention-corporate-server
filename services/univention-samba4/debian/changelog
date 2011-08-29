@@ -1,3 +1,9 @@
+univention-samba4 (1.0.19-8) experimental; urgency=low
+
+  * avoid Samba version number in server/string (Bug #23158)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Aug 2011 09:33:23 +0200
+
 univention-samba4 (1.0.19-7) experimental; urgency=low
 
   * only try univention-s4search with connector/s4/ldap/binddn if

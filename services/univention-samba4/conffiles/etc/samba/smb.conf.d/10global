@@ -14,7 +14,7 @@ if server_role in ('domaincontroller_master', 'domaincontroller_backup', 'domain
 elif server_role == 'memberserver':
 	print '\tserver role = member server'
 
-samba_serverstring = configRegistry.get('samba/serverstring', 'Samba %v - Univention Corporate Server')
+samba_serverstring = configRegistry.get('samba/serverstring', 'Univention Corporate Server')
 print '\tserver string =', samba_serverstring
 @!@
 	workgroup	= @%@windows/domain@%@
