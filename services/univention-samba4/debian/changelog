@@ -1,3 +1,10 @@
+univention-samba4 (1.0.23-2) experimental; urgency=low
+
+  * fix quoting (Bug #23360)
+  * determine samba_ldap_base from ldapsearch -s base
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Aug 2011 19:13:32 +0200
+
 univention-samba4 (1.0.23-1) experimental; urgency=low
 
   * try set_machine_secret with updated key version number (Bug #23360)
