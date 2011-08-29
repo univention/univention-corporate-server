@@ -67,7 +67,7 @@ if [ -n "$s4connectorservicehosts" ]; then
 			continue
 		fi
 		univention-scp $HOSTPWD "-r $HOSTACCOUNT@$s4chost:/etc/samba4.secret /etc/"
-		if [ $? == 0]; then
+		if [ $? = 0]; then
 			break
 		fi
 	done
