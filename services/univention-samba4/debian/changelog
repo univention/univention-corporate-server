@@ -1,3 +1,10 @@
+univention-samba4 (1.0.23-4) experimental; urgency=low
+
+  * pick the correct server object in the sites definition by following
+    the backlink from the machine object of the new DC (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Aug 2011 20:14:15 +0200
+
 univention-samba4 (1.0.23-3) experimental; urgency=low
 
   * the current version of set_machine_secret breaks DRS replication
