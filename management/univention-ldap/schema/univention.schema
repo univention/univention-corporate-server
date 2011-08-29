@@ -151,7 +151,7 @@ objectclass ( 1.3.6.1.4.1.10176.73 NAME 'univentionWindows'
 	SUP 'univentionHost' AUXILIARY
 	DESC 'Univention windows host'
 	MUST ( cn )
-	MAY ( univentionWindowsReinstall ) )
+	MAY ( univentionServerRole $ univentionWindowsReinstall ) )
 
 objectclass ( 1.3.6.1.4.1.10176.74 NAME 'univentionMemberServer'
 	SUP 'univentionHost' AUXILIARY

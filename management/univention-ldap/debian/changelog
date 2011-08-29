@@ -1,3 +1,10 @@
+univention-ldap (8.0.24-1) unstable; urgency=low
+
+  * Added attribute univentionServerRole to objectclass
+    univentionWindows (Bug #23162)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Aug 2011 07:52:18 +0200
+
 univention-ldap (8.0.23-1) unstable; urgency=low
 
   * fix base.ldif (Bug #23111)
