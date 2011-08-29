@@ -29,7 +29,7 @@
 
 eval "$(univention-config-registry shell ldap/server/name windows/domain hostname connector/s4/ldap/.*)"
 
-if [ -n "$connector_s4_ldap_binddn" ] && [ -n "$connector_s4_ldap_bindpw" ] ; then
+if [ -n "$connector_s4_ldap_binddn" ] && [ -n "$connector_s4_ldap_bindpw" ] && [ -r "$connector_s4_ldap_bindpw" ]; then
 	option_simplebinddn="--simple-bind-dn=$connector_s4_ldap_binddn"
 	option_simplebindpw="--password=$(cat $connector_s4_ldap_bindpw)"
 	set -- "$option_simplebinddn" "$option_simplebindpw" "$@"

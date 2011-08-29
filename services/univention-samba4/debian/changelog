@@ -1,3 +1,10 @@
+univention-samba4 (1.0.19-7) experimental; urgency=low
+
+  * only try univention-s4search with connector/s4/ldap/binddn if
+    the file specified by connector/s4/ldap/bindpw exists (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Aug 2011 09:27:23 +0200
+
 univention-samba4 (1.0.19-6) experimental; urgency=low
 
   * the current version of set_machine_secret breaks DRS replication
