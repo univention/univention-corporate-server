@@ -63,6 +63,7 @@ for i in \
 	computers/thinclient \
 	computers/trustaccount \
 	computers/windows \
+	computers/windows_domaincontroller \
 	dhcp/dhcp \
 	groups/group \
 	mail/domain \

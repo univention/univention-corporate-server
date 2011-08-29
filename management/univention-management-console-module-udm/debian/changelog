@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.100-1) unstable; urgency=low
+
+  * Set default search property for windows_domaincontroller to name
+    (Bug #23162)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Aug 2011 08:00:32 +0200
+
 univention-management-console-module-udm (1.0.99-1) unstable; urgency=low
 
   * map boolean syntax types to strings when adding or modifying an
