@@ -90,8 +90,9 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// for the layout of the selected object type, then we can render the page
 		var params = {
 			objectType: this.objectType,
-			objectDN: this.ldapName
+			objectDN: this.ldapName || null
 		};
+
 		var commands = [
 			this.umcpCommand('udm/properties', params),
 			this.umcpCommand('udm/layout', params),
@@ -131,8 +132,9 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			if ('ComplexInput' == iprop.type) {
 				// handle complex widgets
 				iprop.type = 'MultiInput';
-			}
-			if (iprop.multivalue && 'MultiInput' != iprop.type) {
+			} else if ( 'LinkList' == iprop.type ) {
+				iprop.multivalue = false;
+			} else if (iprop.multivalue && 'MultiInput' != iprop.type) {
 				// handle multivalue inputs
 				iprop.subtypes = [{
 					type: iprop.type,

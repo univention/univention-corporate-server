@@ -56,6 +56,7 @@ class Widget( object ):
 
 	def name( self, syntax ):
 		if self._name is None and callable( self._widget_func ):
+			MODULE.info( 'The widget name for syntax %s is %s' % ( syntax.name, self._widget_func( syntax ) ) )
 			return self._widget_func( syntax )
 		return self._name
 
@@ -67,9 +68,9 @@ __widgets = (
 	Widget( 'CheckBox', ( udm_syntax.OkOrNot, udm_syntax.TrueFalseUp, udm_syntax.boolean ), False ),
 	Widget( 'PasswordInputBox', ( udm_syntax.passwd, udm_syntax.userPasswd ), '' ),
 	Widget( 'DateBox', udm_syntax.iso8601Date, '1970-01-01' ),
+	Widget( None, ( udm_syntax.LDAP_Search, ), [], subclasses = False, widget_func = lambda syn: syn.viewonly and 'LinkList' or 'ComboBox' ),
 	Widget( 'ComboBox', udm_syntax.select, [] ),
 	Widget( 'TextBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', subclasses = False ),
-	Widget( None, ( udm_syntax.LDAP_Search, ), [], subclasses = False, widget_func = lambda syn: syn.viewonly and 'ButtonList' or 'ComboBox' ),
 	Widget( 'ComboBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn, udm_syntax.module ), '' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
 	Widget( 'MultiInput', udm_syntax.complex, None ),

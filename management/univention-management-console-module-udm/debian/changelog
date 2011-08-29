@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.101-1) unstable; urgency=low
+
+  * verify that the command option objectDN is never set to undefined
+    (instead null must be used); Bug #23222
+  * Fixes in halding LDAP_Search syntax (view-only mode)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 29 Aug 2011 10:00:15 +0200
+
 univention-management-console-module-udm (1.0.100-1) unstable; urgency=low
 
   * Set default search property for windows_domaincontroller to name

@@ -287,10 +287,12 @@ class UDM_Module( object ):
 				obj = self.get( ldap_dn )
 				if hasattr( obj, 'layout' ):
 					layout = obj.layout
+				else:
+					layout = getattr( self.module, 'layout', [] )
 		else:
 			layout = getattr( self.module, 'layout', [] )
 
-		if isinstance( layout[ 0 ], udm.tab ):
+		if layout and isinstance( layout[ 0 ], udm.tab ):
 			return self._parse_old_layout( layout )
 
 		return layout
@@ -608,9 +610,9 @@ def read_syntax_choices( syntax_name, options = {} ):
 				else:
 					label = 'Unknown attribute %s' % display
 			if syntax.viewonly:
-				syntax.choices.append( { 'id' : dn, 'label' : label } )
+				syntax.choices.append( { 'objectType' : module.name, 'id' : dn, 'label' : label, 'icon' : 'udm-%s' % module.name.replace( '/', '-' ) } )
 			else:
-				syntax.choices.append( { 'objectType' : module.name, 'id' : id, 'label' : label } )
+				syntax.choices.append( { 'objectType' : module.name, 'id' : id, 'label' : label, 'icon' : 'udm-%s' % module.name.replace( '/', '-' ) } )
 		return syntax.choices
 	return map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syn, 'choices', [] ) )
 
