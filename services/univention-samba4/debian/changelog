@@ -1,3 +1,10 @@
+univention-samba4 (1.0.27-1) experimental; urgency=low
+
+  * recognize authentication options in univention-s4search to avoid
+    intransparent credential mixup (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 30 Aug 2011 18:17:44 +0200
+
 univention-samba4 (1.0.26-2) experimental; urgency=low
 
   * ldap bind with machine credentials, DCPWD is unavailable in joinscript

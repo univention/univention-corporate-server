@@ -31,32 +31,65 @@ eval "$(univention-config-registry shell ldap/server/name windows/domain hostnam
 
 LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH
 
-if [ -n "$connector_s4_ldap_binddn" ] && [ -n "$connector_s4_ldap_bindpw" ] && [ -r "$connector_s4_ldap_bindpw" ]; then
+## check for option -U to avoid letting --simple-bind-dn taking precedence
+optspec=":-:d:k:A:PU:"
+while getopts "$optspec" option; do
+	case "${option}" in
+		d) debug=true;;
+		k) credentials_given=true;;
+		A) credentials_given=true;;
+		P) credentials_given=true;;
+		U) credentials_given=true;;
+		-)
+			case "${OPTARG}" in
+				authentication-file|authentication-file=*)
+					credentials_given=true;;
+				machine-pass|machine-pass=*)
+					credentials_given=true;;
+				password|password=*)
+					credentials_given=true;;
+				simple-bind-dn|simple-bind-dn=*)
+					credentials_given=true;;
+				user|user=*)
+					credentials_given=true;;
+			esac;;
+	esac
+done
 
-	option_simplebinddn="--simple-bind-dn=$connector_s4_ldap_binddn"
-	option_simplebindpw="--password=$(cat $connector_s4_ldap_bindpw)"
-	set -- "$option_simplebinddn" "$option_simplebindpw" "$@"
+if ! [ "$credentials_given" = 'true' ]; then
+	if [ -n "$connector_s4_ldap_binddn" ] && \
+		[ -n "$connector_s4_ldap_bindpw" ] && [ -r "$connector_s4_ldap_bindpw" ]; then
 
-else
-	if [ -r '/etc/samba4.secret' ]; then
+		option_simplebinddn="--simple-bind-dn=$connector_s4_ldap_binddn"
+		option_simplebindpw="--password=$(cat $connector_s4_ldap_bindpw)"
+		set -- "$option_simplebinddn" "$option_simplebindpw" "$@"
 
-		sampassword=$(cat /etc/samba4.secret)
-		samaccount="${windows_domain}/ucs-s4sync"
+	else
+		if [ -r '/etc/samba4.secret' ]; then
 
-	elif [ -r '/etc/machine.secret' ]; then
+			sampassword=$(cat /etc/samba4.secret)
+			samaccount="${windows_domain}/ucs-s4sync"
 
-		## currently the password in the secrets.ldb is set to machine.secret only on provision host, so we need to look it up from the secrets.ldb
-		# sampassword=$(cat /etc/machine.secret)
-		sampassword=$(ldbsearch -H /var/lib/samba/private/secrets.ldb samAccountName="${hostname}\$" secret | sed -n 's/secret: \(.*\)/\1/p')
-		samaccount="${windows_domain}/${hostname}\$"
+		elif [ -r '/etc/machine.secret' ]; then
 
-	fi
-	if [ -n "$samaccount" ]; then
+			## currently the password in the secrets.ldb is set to machine.secret only on provision host, so we need to look it up from the secrets.ldb
+			# sampassword=$(cat /etc/machine.secret)
+			sampassword=$(ldbsearch -H /var/lib/samba/private/secrets.ldb samAccountName="${hostname}\$" secret | sed -n 's/secret: \(.*\)/\1/p')
+			samaccount="${windows_domain}/${hostname}\$"
 
-		option_samcredentials="-U$samaccount%$sampassword"
-		set -- "$option_samcredentials" "$@"
+		fi
+		if [ -n "$samaccount" ]; then
 
+			option_samcredentials="-U$samaccount%$sampassword"
+			set -- "$option_samcredentials" "$@"
+
+		fi
 	fi
 fi
 
 ldbsearch -H "ldaps://$ldap_server_name" "$@"
+
+if [ "$debug" = 'true' ]; then
+	echo "### Output of: ldbsearch -H ldaps://$ldap_server_name $@"
+fi
+
