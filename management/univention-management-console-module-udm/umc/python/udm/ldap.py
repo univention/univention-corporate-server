@@ -431,6 +431,19 @@ class UDM_Module( object ):
 
 		return typelist
 
+	@property
+	def flavor( self ):
+		"""Tries to guess the flavor for a given module"""
+		if self.name.startswith( 'container/' ):
+			return 'navigation'
+		base, name = split_module_name( self.name )
+		for module in filter( lambda x: x.startswith( base ), udm_modules.modules.keys() ):
+			mod = UDM_Module( module )
+			children = getattr( mod.module, 'childmodules', [] )
+			if self.name in children:
+				return mod.name
+		return None
+
 class UDM_Settings( object ):
 	"""Provides access to different kinds of settings regarding UDM"""
 
@@ -610,9 +623,9 @@ def read_syntax_choices( syntax_name, options = {} ):
 				else:
 					label = 'Unknown attribute %s' % display
 			if syntax.viewonly:
-				syntax.choices.append( { 'objectType' : module.name, 'id' : dn, 'label' : label, 'icon' : 'udm-%s' % module.name.replace( '/', '-' ) } )
+				syntax.choices.append( { 'module' : 'udm', 'flavor' : module.flavor, 'objectType' : module.name, 'id' : dn, 'label' : label, 'icon' : 'udm-%s' % module.name.replace( '/', '-' ) } )
 			else:
-				syntax.choices.append( { 'objectType' : module.name, 'id' : id, 'label' : label, 'icon' : 'udm-%s' % module.name.replace( '/', '-' ) } )
+				syntax.choices.append( { 'module' : 'udm', 'flavor' : module.flavor, 'objectType' : module.name, 'id' : id, 'label' : label, 'icon' : 'udm-%s' % module.name.replace( '/', '-' ) } )
 		return syntax.choices
 	return map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syn, 'choices', [] ) )
 

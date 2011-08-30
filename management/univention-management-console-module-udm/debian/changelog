@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.102-1) unstable; urgency=low
+
+  * adapt return value for LDAP_Search choices for LinkList widget; Bug #23369
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 30 Aug 2011 14:34:05 +0200
+
 univention-management-console-module-udm (1.0.101-1) unstable; urgency=low
 
   * verify that the command option objectDN is never set to undefined
