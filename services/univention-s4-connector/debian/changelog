@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.22-5) unstable; urgency=low
+
+  * autostart the connector only on first system running this joinscript
+  * register the service only on first system (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 30 Aug 2011 09:34:00 +0200
+
 univention-s4-connector (6.0.22-4) unstable; urgency=low
 
   * perform initial setup tasks only if the joining host is the first

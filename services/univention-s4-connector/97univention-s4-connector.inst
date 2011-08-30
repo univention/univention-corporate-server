@@ -49,8 +49,10 @@ univention-config-registry set \
 	connector/s4/ldap/socket?/var/lib/samba/private/ldap_priv/ldapi
 
 s4connectorservicehosts=$(univention-ldapsearch -LLL -D "$binddn" -y "$DCPWD" '(&(univentionService=S4 Connector)(objectClass=univentionDomainController))' cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no udm module computers/dc
-if [ -n "$s4connectorservicehosts" ]; then
 
+if [ -n "$s4connectorservicehosts" ]; then	## there already is a system providing this service
+
+	## copy /etc/samba4.secret required by univention-s4search if connector/s4/ldap/binddn is set.
 	HOSTPWD="/etc/machine.secret"
 	HOSTACCOUNT="$hostname\$"
 	for s4chost in $s4connectorservicehosts; do
@@ -66,20 +68,24 @@ if [ -n "$s4connectorservicehosts" ]; then
 		echo "ERROR: Failed to copy /etc/samba4.secret. Please copy it manually from the main host running the Samba4 Connector."
 	fi
 
-else:	## first system to provide this service
+	## Don't autostart S4 Connector on other host by default, more config to be done for this to be useful
+	univention-config-registry set \
+		set connector/s4/autostart=no
+
+else:										## we are first system to provide this service
 
 	if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 		/usr/share/univention-heimdal/salt_krb5Keys 
 		/usr/sbin/univention-password_sync_ucs_to_s4 Administrator	## this account already exists in Samba4, set UCS password for it
 	fi
 
-	# create an admin user for synchronisation
+	## create an admin user for synchronisation
 	samba-tool newuser ucs-s4sync "$(cat /etc/samba4.secret)" -U Administrator%$(cat /etc/samba4.secret)
 	samba-tool group addmembers "Domain Admins" ucs-s4sync #maybe we could use a more restrict group?
 
-fi
+	ucs_addServiceToLocalhost "S4 Connector" "$@"
 
-ucs_addServiceToLocalhost "S4 Connector" "$@"
+fi
 
 /etc/init.d/univention-s4-connector crestart || true
 
