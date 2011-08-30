@@ -38,10 +38,6 @@ joinscript_init
 
 eval "$(univention-config-registry shell ldap/master samba4/ldap/base)"
 
-# create an admin user for synchronisation
-samba-tool newuser ucs-s4sync "$(cat /etc/samba4.secret)" -U Administrator%$(cat /etc/samba4.secret)
-samba-tool group addmembers "Domain Admins" ucs-s4sync #maybe we could use a more restrict group?
-
 univention-config-registry set \
 	connector/s4/ldap/host?"$ldap_master" \
 	connector/s4/ldap/base?"$samba4_ldap_base" \
@@ -52,13 +48,9 @@ univention-config-registry set \
 	connector/s4/ldap/protocol?ldapi \
 	connector/s4/ldap/socket?/var/lib/samba/private/ldap_priv/ldapi
 
-if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
-	/usr/share/univention-heimdal/salt_krb5Keys 
-	/usr/sbin/univention-password_sync_ucs_to_s4 Administrator	## this account already exists in Samba4, set UCS password for it
-fi
-
 s4connectorservicehosts=$(univention-ldapsearch -LLL -D "$binddn" -y "$DCPWD" '(&(univentionService=S4 Connector)(objectClass=univentionDomainController))' cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no udm module computers/dc
 if [ -n "$s4connectorservicehosts" ]; then
+
 	HOSTPWD="/etc/machine.secret"
 	HOSTACCOUNT="$hostname\$"
 	for s4chost in $s4connectorservicehosts; do
@@ -73,6 +65,18 @@ if [ -n "$s4connectorservicehosts" ]; then
 	if ! [ -r /etc/samba4.secret ]; then
 		echo "ERROR: Failed to copy /etc/samba4.secret. Please copy it manually from the main host running the Samba4 Connector."
 	fi
+
+else:	## first system to provide this service
+
+	if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
+		/usr/share/univention-heimdal/salt_krb5Keys 
+		/usr/sbin/univention-password_sync_ucs_to_s4 Administrator	## this account already exists in Samba4, set UCS password for it
+	fi
+
+	# create an admin user for synchronisation
+	samba-tool newuser ucs-s4sync "$(cat /etc/samba4.secret)" -U Administrator%$(cat /etc/samba4.secret)
+	samba-tool group addmembers "Domain Admins" ucs-s4sync #maybe we could use a more restrict group?
+
 fi
 
 ucs_addServiceToLocalhost "S4 Connector" "$@"

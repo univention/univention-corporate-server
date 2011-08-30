@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.22-4) unstable; urgency=low
+
+  * perform initial setup tasks only if the joining host is the first
+    to provide the S4 Connector service (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 30 Aug 2011 09:24:38 +0200
+
 univention-s4-connector (6.0.22-3) unstable; urgency=low
 
   * lookup of service record can be done on local host (Bug #23360)
