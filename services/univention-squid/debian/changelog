@@ -1,3 +1,9 @@
+univention-squid (5.0.2-5) unstable; urgency=low
+
+  * Drop conffiles registration, it's a template anyway (Bug #22576)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 30 Aug 2011 15:35:21 +0200
+
 univention-squid (5.0.2-4) unstable; urgency=low
 
   * Fix UCR template registration (Bug #22576)
