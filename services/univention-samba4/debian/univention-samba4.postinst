@@ -51,7 +51,13 @@ if [ "$1" = "configure" ]; then
 	elif [ -n "$2" ]; then
 
 		univention-config-registry commit /etc/samba/smb.conf
-		/etc/init.d/samba4 crestart
+
+		if [ -r /var/run/samba.pid ]; then
+			processname=$(ps -p $(cat /var/run/samba.pid) -o comm= )
+			if [ "$processname" = 'samba' ]; then
+				/etc/init.d/samba4 restart
+			fi
+		fi
 
 	fi
 fi
