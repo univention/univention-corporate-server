@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.22-7) unstable; urgency=low
+
+  * take care of whitespace when iterating over DNs (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 30 Aug 2011 10:21:04 +0200
+
 univention-s4-connector (6.0.22-6) unstable; urgency=low
 
   * use udm to search for service record (Bug #23360)

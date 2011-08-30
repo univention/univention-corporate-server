@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention S4 Connector
 #  join script
@@ -56,7 +56,7 @@ if [ -n "$s4connectorservicehost_dns" ]; then	## there already is a system provi
 	HOSTPWD="/etc/machine.secret"
 	HOSTACCOUNT="$hostname\$"
 
-	for s4chost_dn in $s4connectorservicehosts; do
+	echo "$s4connectorservicehosts" | while read s4chost_dn; do
 
 		s4chost=$(echo "$s4chost_dn" | sed -n 's/cn=\([^,]*\).*/\1/p')
 
@@ -67,6 +67,7 @@ if [ -n "$s4connectorservicehost_dns" ]; then	## there already is a system provi
 		if [ $? = 0]; then
 			break
 		fi
+
 	done
 	if ! [ -r /etc/samba4.secret ]; then
 		echo "ERROR: Failed to copy /etc/samba4.secret. Please copy it manually from the main host running the Samba4 Connector."
