@@ -1,3 +1,9 @@
+univention-grub (5.0.0-8) unstable; urgency=low
+
+  * Fix name of univention-lib binary package (Bug #22115)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 30 Aug 2011 11:12:02 +0200
+
 univention-grub (5.0.0-7) unstable; urgency=low
 
   * ucslint fixes (Bug #22115)
