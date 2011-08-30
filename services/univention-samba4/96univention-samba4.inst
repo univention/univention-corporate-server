@@ -111,78 +111,88 @@ univention-config-registry set samba/quota/command='None'	# currently unsupporte
 
 LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH
 
-if [ "$server_role" = "domaincontroller_master" ]; then
+## stop samba3 services and heimdal-kdc if present
+if [ -x /etc/init.d/samba ]; then
+	/etc/init.d/samba stop
+	univention-config-registry set samba/autostart=no
+fi
+if [ -x /etc/init.d/winbind ]; then
+	/etc/init.d/winbind stop
+	univention-config-registry set winbind/autostart=no
+fi
+if [ -x /etc/init.d/heimdal-kdc ]; then
+	/etc/init.d/heimdal-kdc stop
+	univention-config-registry set kerberos/autostart=no
+fi
+
+
+case "$server_role" in
+	domaincontroller_*)
+		domaincontroller=true; break;;
+esac
+
+if [ "$domaincontroller" = 'true' ]; then
+
+	## check if we there already is a **domaincontroller** providing the service "Samba 4"
+	samba4servicedcs=$(ldapsearch -ZZ -LLL -D "$binddn" -y "$DCPWD" "(&(univentionService=${NAME})(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no udm module computers/dc
+
+	if [ -z "$samba4servicedcs" ]; then	## we are the first domainctontroller to provide this service
+
+		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+			## Provision Samba4
+			/usr/share/univention-samba4/scripts/setup-s4.sh
+
+			## The first samba 4 DC should provide the domainname as netbios alias
+			univention-config-registry set samba/netbios/aliases?"$domainname"
+		fi
+
+	else	## otherwise we will simply join the new DC
+
+		if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
+			## remove slapd from port 389 on upgrade
+			if [ -n "$slapd_port" ]; then
+				univention-config-registry set slapd/port="$(remove_port "$slapd_port" 389)"
+			fi
+			if [ -n "$slapd_port_ldaps" ]; then
+				univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)"
+			fi
+
+			/etc/init.d/slapd crestart
+			sleep 1
+		fi
+
+		extract_binddn_and_bindpwd_from_args "$@"
+		samba-tool join "$domainname" DC -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
+
+		## Adding this CNAME is currently necessary, probably this will be done automagically with dlz-dlopen on samba4
+		server_object_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${hostname}\$" \
+							serverReferenceBL | ldapsearch-wrapper | sed -n 's/^serverReferenceBL: \(.*\)/\1/p')
+		NTDS_objectGUID=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$server_object_dn" \
+							"CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')
+		/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists "$domainname" \
+							add cname "$NTDS_objectGUID._msdcs" "$hostname.$domainname."
+
+		# set_machine_secret	## currently disabled, seems to break DRS replication
+	fi
+
+
+	## Kerberos keytab adjustments for Samba 4
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-		## Provision Samba4
-		/usr/share/univention-samba4/scripts/setup-s4.sh
-
 		## Create kerberos service entries for sshd and slapd (ssh and ldapsearch -Y GSSAPI)
 		add_servicePrincipals "host/$hostname.$domainname" "ldap/$hostname.$domainname"
 	fi
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
-		let_samba4_manage_etc_krb5_keytab
-	fi
-
-	## The first samba 4 DC should provide the domainname as netbios alias
-	res="$(univention-directory-manager computers/computer list "$@" --filter "(univentionService=${NAME})" | sed -ne 's|^DN: ||p')"
-	if [ -z "$res" ]; then
-		ucr set samba/netbios/aliases?"$domainname"
-	fi
-
-	# set_machine_secret
-
-elif [ "$server_role" = "domaincontroller_backup" ] || [ "$server_role" = "domaincontroller_slave" ]; then
-
-	if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
-		if [ -x /etc/init.d/samba ]; then
-			/etc/init.d/samba stop
-		fi
-		if [ -x /etc/init.d/winbind ]; then
-			/etc/init.d/winbind stop
-		fi
-		univention-config-registry set samba/autostart=no winbind/autostart=no kerberos/autostart=no
-
-		/etc/init.d/heimdal-kdc stop
-
-		if [ -n "$slapd_port" ]; then
-			univention-config-registry set slapd/port="$(remove_port "$slapd_port" 389)"
-		fi
-		if [ -n "$slapd_port_ldaps" ]; then
-			univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)"
-		fi
-
-		/etc/init.d/slapd crestart
-		sleep 1
-	fi
-
-	extract_binddn_and_bindpwd_from_args "$@"
-	samba-tool join "$domainname" DC -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
-
-	## Adding this CNAME is currently necessary, probably this will be done automagically with bind9 dlz-dlopen on samba4
-	server_object_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${hostname}\$" \
-						serverReferenceBL | ldapsearch-wrapper | sed -n 's/^serverReferenceBL: \(.*\)/\1/p')
-	NTDS_objectGUID=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$server_object_dn" \
-						"CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')
-	/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists "$domainname" \
-						add cname "$NTDS_objectGUID._msdcs" "$hostname.$domainname."
-
-	# set_machine_secret
-
-	if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
-		## Create kerberos service entries for sshd and slapd (ssh and ldapsearch -Y GSSAPI)
-		add_servicePrincipals "host/$hostname.$domainname" "ldap/$hostname.$domainname"
-
 		let_samba4_manage_etc_krb5_keytab
 	fi
 
 elif [ "$server_role" = "memberserver" ]; then
 
 	extract_binddn_and_bindpwd_from_args "$@"
-	samba-tool join "$domainname" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
+	samba-tool join "$domainname" MEMBER -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 
-	# set_machine_secret
+	# set_machine_secret	## currently disabled
 
 fi
 
