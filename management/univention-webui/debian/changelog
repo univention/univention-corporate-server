@@ -1,3 +1,9 @@
+univention-webui (4.0.73-1) unstable; urgency=low
+
+  * preserve $_GET over backend restart (Bug #23446)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 30 Aug 2011 17:22:43 +0200
+
 univention-webui (4.0.72-1) unstable; urgency=low
 
   * added support for Firefox 6 (Bug #21934)

@@ -253,7 +253,12 @@ function umc_checkbox_toggle( ids, value ) {
 	}
 
 	function show_headertext() {
-		echo '<form name="content" id="'.$this->body_class.'" method="post" enctype="multipart/form-data" action="'.$this->port.'://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/index.php">';
+		if ($this->ref_config->number < 1) {
+			$append = htmlspecialchars('?'.http_build_query($_GET));
+		} else {
+			$append = '';
+		}
+		echo '<form name="content" id="'.$this->body_class.'" method="post" enctype="multipart/form-data" action="'.$this->port.'://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/index.php'.$append.'">';
 		echo '
 		<div id="wrapper">
 ';
