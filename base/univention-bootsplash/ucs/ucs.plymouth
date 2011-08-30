@@ -5,7 +5,7 @@ ModuleName=script
 
 [script]
 ImageDir=/usr/share/plymouth/themes/ucs
-ScriptFile=/usr/share/plymouth/themes/ucs/script.script
+ScriptFile=/usr/share/plymouth/themes/ucs/ucs.script
 
 [script-env-vars]
 example_env_var=example env var value

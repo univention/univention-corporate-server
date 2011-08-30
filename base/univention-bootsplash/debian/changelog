@@ -1,30 +1,36 @@
+univention-bootsplash (4.0.1-1) unstable; urgency=low
+
+  * new bootsplash layout (Bug #22117) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 30 Aug 2011 11:24:28 +0200
+
 univention-bootsplash (4.0.0-6) unstable; urgency=low
 
-  * disabled bootsplash logging with lsb-base-logging.sh (Bug #20138)
+  * disabled bootsplash logging with lsb-base-logging.sh (Bug #22117)
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Aug 2011 14:01:09 +0200
 
 univention-bootsplash (4.0.0-5) unstable; urgency=low
 
-  * more boot messages via lsb-base-logging.sh (Bug #20138) 
+  * more boot messages via lsb-base-logging.sh (Bug #22117) 
 
  -- Felix Botner <botner@univention.de>  Fri, 22 Jul 2011 13:49:29 +0200
 
 univention-bootsplash (4.0.0-4) unstable; urgency=low
 
-  * added plymouth theme and lsb-base-logging.sh (Bug #20138)
+  * added plymouth theme and lsb-base-logging.sh (Bug #22117)
 
  -- Felix Botner <botner@univention.de>  Thu, 21 Jul 2011 12:56:40 +0200
  
 univention-bootsplash (4.0.0-3) unstable; urgency=low
 
-  * fixed debian/rules (Bug #20138)
+  * fixed debian/rules (Bug #22117)
 
  -- Felix Botner <botner@univention.de>  Tue, 28 Jun 2011 14:42:31 +0200
 
 univention-bootsplash (4.0.0-2) unstable; urgency=low
 
-  * UCS 3.0 (Bug #20138)
+  * UCS 3.0 (Bug #22117)
   * use plymouth instead of usplash
 
  -- Felix Botner <botner@univention.de>  Tue, 28 Jun 2011 13:51:54 +0200
