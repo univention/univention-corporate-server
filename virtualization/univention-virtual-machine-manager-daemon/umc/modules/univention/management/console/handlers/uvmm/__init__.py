@@ -935,7 +935,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				# 1) this requires both libvirt.VIR_DOMAIN_DEVICE_MODIFY_LIVE | libvirt.VIR_DOMAIN_DEVICE_MODIFY_CONFIG,
 				# 2) xend barfs with "xend_post: error from xen daemon: (xend.err 'Device 832 not connected')" in File "/usr/lib/python2.5/site-packages/xen/xend/XendDomainInfo.py", line 1218, in device_configure
 				if dev.device in (uvmmn.Disk.DEVICE_FLOPPY, uvmmn.Disk.DEVICE_CDROM) and not is_xen:
-					change_cmd = umcp.SimpleCommand('uvmm/drive/media/change', options=copy.copy(object.options))
+					change_cmd = umcp.SimpleCommand('uvmm/drive/media/change')
+					change_cmd.options['group'] = object.options['group']
+					change_cmd.options['node'] = object.options['node']
+					change_cmd.options['domain'] = object.options['domain']
 					change_cmd.options['drive-type'] = uvmmn.Disk.map_device(id=dev.device)
 					if pool and pool.name:
 						change_cmd.options['pool-name'] = pool.name

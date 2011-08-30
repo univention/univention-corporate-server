@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.327-2) unstable; urgency=low
+
+  * Fix bug in media change handling (Bug #21763)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 30 Aug 2011 16:57:54 +0200
+
 univention-virtual-machine-manager-daemon (0.9.327-1) unstable; urgency=low
 
   * Remember last selections and inputs in DriveWizard (Bug #21763)

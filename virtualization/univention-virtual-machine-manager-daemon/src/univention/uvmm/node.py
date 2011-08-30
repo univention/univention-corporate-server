@@ -1089,7 +1089,15 @@ def domain_define( uri, domain ):
 						if rv != 0:
 							warnings.append(_('Failed to update device.'))
 					except libvirt.libvirtError, e:
-						if e.get_error_code() != libvirt.VIR_ERR_OPERATION_INVALID:
+						if e.get_error_code() == libvirt.VIR_ERR_OPERATION_INVALID:
+							pass
+						elif e.get_error_code() == libvirt.VIR_ERR_OPERATION_FAILED:
+							# could not change media on drive-ide0-0-0: Device 'drive-ide0-0-0' is locked\r\n
+							raise NodeError(_('Error updating domain "%(domain)s": %(error)s'), domain=domain.uuid, error=e.get_error_message())
+						elif e.get_error_code() == libvirt.VIR_ERR_SYSTEM_ERROR:
+							# unable to open disk path /dev/cdrom: No medium found
+							raise NodeError(_('Error updating domain "%(domain)s": %(error)s'), domain=domain.uuid, error=e.get_error_message())
+						else:
 							raise
 		except libvirt.libvirtError, e:
 			logger.error(e)

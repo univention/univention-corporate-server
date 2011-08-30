@@ -372,8 +372,6 @@ class DriveCommands( object ):
 
 		assert disk.device in (uvmmn.Disk.DEVICE_CDROM, uvmmn.Disk.DEVICE_FLOPPY)
 
-		res = self.uvmm_domain_overview(request, finish=False)
-
 		# Show selection for new image
 		if action is None:
 			self.media_wizard.reset()
@@ -400,12 +398,14 @@ class DriveCommands( object ):
 
 				# Return response
 				if self.uvmm.is_error(resp):
+					res = self.uvmm_domain_overview(request, finish=False)
 					res.status(301)
-					return self.finished(request.id(), res, report=resp.msg)
+					return self.finished(request.id(), res, report=resp.msg.strip()) # BUG: the report is not shown if it has a trailing \r\n ?
 			return self.uvmm_domain_overview(request)
 
 		# navigating in the wizard ...
 		page = self.media_wizard.setup(request)
+		res = self.uvmm_domain_overview(request, finish=False)
 		res.dialog[0].set_dialog(page)
 		if not result:
 			res.status(201)
