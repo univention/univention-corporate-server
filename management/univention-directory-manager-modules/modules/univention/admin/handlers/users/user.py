@@ -2047,7 +2047,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				if self.oldinfo.get( 'gecos', '' ):
 					old_gecos = prop._replace( prop.base_default, self.oldinfo )
 					if old_gecos == self.oldinfo.get( 'gecos', '' ):
-						ml.append( ( 'gecos', self.oldinfo.get( 'gecos', [ '' ] )[ 0 ], gecos( self ) ) )
+						ml.append( ( 'gecos', self.oldinfo.get( 'gecos', [ '' ] )[ 0 ], gecos ) )
 
 		# shadowlastchange=self.oldattr.get('shadowLastChange',[str(long(time.time())/3600/24)])[0]
 

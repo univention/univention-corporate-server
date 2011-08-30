@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.63-1) unstable; urgency=low
+
+  * fixed error when setting default value for gecos via the CLI (Bug #23431)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 30 Aug 2011 12:10:09 +0200
+
 univention-directory-manager-modules (7.0.62-1) unstable; urgency=low
 
   * Samba4 needs to generate the samba attributes. If a S4 Connector
