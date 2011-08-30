@@ -1,3 +1,10 @@
+univention-squid (5.0.2-3) unstable; urgency=low
+
+  * Update template (Bug #22576)
+  * Add Breaks on "squid" to ensure that Squid 2.5 is being removed during update
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 30 Aug 2011 11:48:30 +0200
+
 univention-squid (5.0.2-2) unstable; urgency=low
 
   * make ucs_lint even more happy (Bug #17519)
