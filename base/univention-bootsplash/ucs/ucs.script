@@ -2,9 +2,15 @@
 
 # background image
 bg.image = Image("bg.png");
-bg.sprite = Sprite(bg_image);
+bg.sprite = Sprite(bg.image);
 resized.bg.image = bg.image.Scale(Window.GetWidth(), Window.GetHeight());
 bg.sprite.SetImage(resized.bg.image);
+
+# navi
+navi.image = Image("navi.png");
+navi.sprite = Sprite(navi.image);
+resized.navi.image = navi.image.Scale(Window.GetWidth(), 37);
+navi.sprite.SetImage(resized.navi.image);
 
 # box image
 box.image = Image("logo-box.png");
