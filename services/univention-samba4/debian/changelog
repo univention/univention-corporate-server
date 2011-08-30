@@ -1,3 +1,10 @@
+univention-samba4 (1.0.24-1) experimental; urgency=low
+
+  * use SAM account password stored in secrets.ldb for univention-s4search
+    (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 30 Aug 2011 09:52:42 +0200
+
 univention-samba4 (1.0.23-5) experimental; urgency=low
 
   * fix quoting (Bug #23360)
