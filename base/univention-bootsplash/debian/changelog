@@ -1,3 +1,9 @@
+univention-bootsplash (4.0.4-1) unstable; urgency=low
+
+  * more layout changes (Bug #22117) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 30 Aug 2011 16:21:52 +0200
+
 univention-bootsplash (4.0.3-1) unstable; urgency=low
 
   * more layout changes (Bug #22117) 
