@@ -36,3 +36,4 @@
 
 remove_ucr_template /boot/grub/menu.lst
 
+exit 0
