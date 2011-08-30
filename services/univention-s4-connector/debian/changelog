@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.22-10) unstable; urgency=low
+
+  * adjust joinscript version for MS2 (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 30 Aug 2011 19:28:15 +0200
+
 univention-s4-connector (6.0.22-9) unstable; urgency=low
 
   * set service name in joinscript (Bug #23360)
