@@ -101,20 +101,20 @@ class DriveWizard( umcd.IWizard ):
 		# PAGE_OLD=2: Select existing image
 		page = umcd.Page( self.title )
 		page.options.append( umcd.Text( '' ) ) # will be replaced with pool selection button
-		page.options.append( umcd.make( ( 'vol-name', self.image_syntax ) ) )
+		page.options.append( umcd.make( ( 'vol-name-old', self.image_syntax ) ) )
 		self.append( page )
 
 		# PAGE_NEW=3: [Only new HD] Select name and size
 		page = umcd.Page( self.title, _( 'Each hard drive image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). The newly create image will have the specified name and size provided by the following settings. Currently these was been set to default images. It has to be ensured that there is enough space left in the defined storage pool.' ) )
 		page.options.append( umcd.Text( '' ) ) # will be replaced with pool selection button
 		page.options.append(umcd.Text('')) # will be replaced with driver type selection button
-		page.options.append( umcd.make( ( 'vol-name', umc.String( _( 'Filename' ) ) ) ) )
+		page.options.append( umcd.make( ( 'vol-name-new', umc.String( _( 'Filename' ) ) ) ) )
 		page.options.append( umcd.make( ( 'image-size', umc.String( _( 'Size (default unit MB)' ), regex = MemorySize.SIZE_REGEX ) ) ) )
 		self.append( page )
 
 		# PAGE_MANUAL=4: Enter block device
 		page = umcd.Page( self.title, _( 'To bind the drive to a local device the filename of the associated block device must be specified.' ) )
-		page.options.append( umcd.make( ( 'vol-name', umc.String( _( 'Device filename' ) ) ) ) )
+		page.options.append( umcd.make( ( 'vol-name-dev', umc.String( _( 'Device filename' ) ) ) ) )
 		self.append( page )
 
 		# PAGE_SUMMARY=5: Show summary
@@ -234,21 +234,18 @@ class DriveWizard( umcd.IWizard ):
 			self.type_selected(object)
 
 		if self.current == DriveWizard.PAGE_SUMMARY:
-			drive_type = object.options['drive-type']
-			pool_name = object.options['pool-name']
-			pool_path = self._get_pool_path(pool_name)
-			vol_path = object.options['vol-path']
+			r = self.request_data(object)
 
 			page.options = options = []
 			conf = umcd.List()
-			conf.add_row([umcd.HTML('<i>%s</i>' % _('Drive type')), self._disk_type_text(drive_type)])
-			if pool_path:
-				conf.add_row([umcd.HTML('<i>%s</i>' % _('Storage pool')), _('path: %(path)s') % {'path': pool_path}])
-				conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), vol_path])
-				conf.add_row([umcd.HTML('<i>%s</i>' % _('Image format')), object.options['driver-type']])
-				conf.add_row([umcd.HTML('<i>%s</i>' % _('Image size')), object.options['image-size']])
-			elif vol_path:
-				conf.add_row([umcd.HTML('<i>%s</i>' % _('Device filename')), vol_path])
+			conf.add_row([umcd.HTML('<i>%s</i>' % _('Drive type')), self._disk_type_text(r.drive_type)])
+			if r.pool_path:
+				conf.add_row([umcd.HTML('<i>%s</i>' % _('Storage pool')), _('path: %(path)s') % {'path': r.pool_path}])
+				conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), r.vol_path])
+				conf.add_row([umcd.HTML('<i>%s</i>' % _('Image format')), r.driver_type])
+				conf.add_row([umcd.HTML('<i>%s</i>' % _('Image size')), r.vol_size])
+			elif r.vol_path:
+				conf.add_row([umcd.HTML('<i>%s</i>' % _('Device filename')), r.vol_path])
 			else:
 				conf.add_row([umcd.HTML('<i>%s</i>' % _('Device filename')), '-'])
 			options.append(conf)
@@ -256,15 +253,18 @@ class DriveWizard( umcd.IWizard ):
 		return umcd.IWizard.setup( self, object, prev = prev, next = next, finish = finish, cancel = cancel )
 
 	def set_defaults( self, object ):
-		for opt in ( 'existing-or-new-disk', 'drive-type' ):
-			if opt in object.options:
-				del object.options[ opt ]
-		object.options[ 'pool-name' ] = 'default'
+		# Do not reset these values to reduce click count on mass install sessions
+		#for opt in ( 'existing-or-new-disk', 'drive-type' ):
+		#	if opt in object.options:
+		#		del object.options[ opt ]
+		#object.options[ 'pool-name' ] = 'default'
 		if object.options.get('diskspace'):
 			object.options[ 'image-size' ] = object.options['diskspace'] # use the diskspace value from profile
 		else:
 			object.options[ 'image-size' ] = '12GB' # default
-		object.options['vol-name'] = None
+		object.options['vol-name-old'] = None
+		object.options['vol-name-new'] = None
+		object.options['vol-name-dev'] = None
 
 	def action( self, object ):
 		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.DW.action(current: %s)' % str( self.current ) )
@@ -282,10 +282,10 @@ class DriveWizard( umcd.IWizard ):
 			pool_name = object.options['pool-name'] = 'default'
 		drive_type = object.options['drive-type']
 		if drive_type == 'cdrom':
-			vols = self.uvmm.storage_pool_volumes(self.node_uri, pool_name, drive_type )
+			vols = self.uvmm.storage_pool_volumes(self.node_uri, pool_name, 'cdrom')
 		else:
 			vols = self.uvmm.storage_pool_volumes(self.node_uri, pool_name, 'disk' )
-		ud.debug( ud.ADMIN, ud.INFO, 'UVMM.DW.ps: volumdes=%s' % map(str, vols))
+		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.DW.ps: volumes=%s' % map(str, vols))
 		choices = []
 		for vol in vols:
 			basename = os.path.basename( vol.source )
@@ -323,7 +323,7 @@ class DriveWizard( umcd.IWizard ):
 	def type_selected(self, object):
 		"""Update list of allowed driver types."""
 		driver_type = object.options['driver-type']
-		vol_name = object.options.get('vol-name', None)
+		vol_name = object.options.get('vol-name-new', None)
 		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.DW.ts(type=%s name=%s)' % (driver_type, vol_name))
 		if vol_name: # reuse existing image name
 			base_name = vol_name.split('.', 1)[0]
@@ -337,7 +337,7 @@ class DriveWizard( umcd.IWizard ):
 			else:
 				suffix = '.%s' % driver_type
 			vol_name = self.uvmm.next_drive_name(self.node_uri, self.domain_name, suffix=suffix, temp_drives=self.blacklist)
-		object.options['vol-name'] = vol_name
+		object.options['vol-name-new'] = vol_name
 		return self[self.current]
 
 	def _disk_type_text( self, disk_type ):
@@ -351,9 +351,43 @@ class DriveWizard( umcd.IWizard ):
 		else:
 			return _('unknown')
 
+	def request_data(self, request):
+		"""Read values from request and normalize to local variables."""
+		class d:
+			mode = request.options['existing-or-new-disk']
+			drive_type = request.options['drive-type']
+			pool_name = None
+			pool_path = None
+			vol_name = None
+			vol_path = None
+			vol_size = None
+			driver_type = 'RAW'
+			if mode == 'disk-new':
+				assert drive_type == 'disk'
+				pool_name = request.options['pool-name']
+				pool_path = self._get_pool_path(pool_name)
+				vol_name = request.options['vol-name-new']
+				vol_path = os.path.join(pool_path, vol_name)
+				vol_size = request.options['image-size']
+				driver_type = request.options['driver-type']
+			elif mode == 'disk-exists':
+				pool_name = request.options['pool-name']
+				pool_path = self._get_pool_path(pool_name)
+				vol_name = request.options['vol-name-old']
+				vol_path = os.path.join(pool_path, vol_name)
+				vol_size = request.options['image-size']
+				driver_type = request.options['driver-type']
+			elif mode == 'disk-block':
+				vol_path = request.options['vol-name-dev']
+			elif mode == 'disk-empty':
+				pass
+			else:
+				raise ValueError('Invalid selection "%s"' % mode)
+		return d
+
 	def next( self, object ):
 		"""Validate current page, pre-fill state, switch to next page."""
-		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.DW.next(pool-name=%(pool-name)s drive-type=%(drive-type)s vol-name=%(vol-name)s)' % ddict(object.options))
+		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.DW.next(pool-name=%(pool-name)s drive-type=%(drive-type)s vol-name-old=%(vol-name-old)s -new=%(vol-name-new)s -dev=%(vol-name-dev)s)' % ddict(object.options))
 		# by default no paravirtual drive:
 		object.options.setdefault('drive-paravirtual', False)
 		object.options.setdefault('cdrom-paravirtual', False)
@@ -363,34 +397,30 @@ class DriveWizard( umcd.IWizard ):
 			self.current = DriveWizard.PAGE_HD
 
 		elif self.current == DriveWizard.PAGE_HD: # new or existing disk image?
-			if object.options[ 'existing-or-new-disk' ] == 'disk-new':
+			mode = object.options['existing-or-new-disk']
+			if mode == 'disk-new':
 				self.current = DriveWizard.PAGE_NEW
-			elif object.options[ 'existing-or-new-disk' ] == 'disk-exists':
+			elif mode == 'disk-exists':
 				self.current = DriveWizard.PAGE_OLD
-			elif object.options[ 'existing-or-new-disk' ] == 'disk-block':
+			elif mode == 'disk-block':
 				self.current = DriveWizard.PAGE_MANUAL
-				object.options['pool-name'] = None
-				if object.options[ 'drive-type' ] == 'disk':
-					object.options['vol-name'] = '/dev/'
-				elif object.options['drive-type'] == 'cdrom':
-					object.options['vol-name'] = '/dev/cdrom'
-				elif object.options['drive-type'] == 'floppy':
-					object.options['vol-name'] = '/dev/fd0'
-				object.options['driver-type'] = 'RAW'
-			elif object.options[ 'existing-or-new-disk' ] == 'disk-empty':
+				drive_type = object.options['drive-type']
+				if drive_type == 'disk':
+					object.options['vol-name-dev'] = '/dev/'
+				elif drive_type == 'cdrom':
+					object.options['vol-name-dev'] = '/dev/cdrom'
+				elif drive_type == 'floppy':
+					object.options['vol-name-dev'] = '/dev/fd0'
+			elif mode == 'disk-empty':
 				self.current = DriveWizard.PAGE_SUMMARY
-				object.options['pool-name'] = None
-				object.options['vol-name'] = None
-				object.options['vol-path'] = None
-				object.options['driver-type'] = 'RAW'
 			else:
-				raise ValueError('Invalid selection "%s"' % object.options['existing-or-new-disk'])
+				raise ValueError('Invalid selection "%s"' % mode)
 
 		elif self.current == DriveWizard.PAGE_OLD: # select existing disk image
 			drive_type = object.options['drive-type']
 			pool_name = object.options['pool-name']
 			pool_path = self._get_pool_path(pool_name)
-			vol_name = object.options['vol-name']
+			vol_name = object.options['vol-name-old']
 			if drive_type == 'cdrom':
 				vols = self.uvmm.storage_pool_volumes(self.node_uri, pool_name, 'cdrom')
 			else:
@@ -427,7 +457,7 @@ class DriveWizard( umcd.IWizard ):
 		elif self.current == DriveWizard.PAGE_NEW: # create new disk image
 			pool_name = object.options['pool-name']
 			pool_path = self._get_pool_path(pool_name)
-			vol_name = object.options['vol-name']
+			vol_name = object.options['vol-name-new']
 			vol_path = os.path.join(pool_path, vol_name)
 			# TODO: Bug #19281
 			# vol_bytes = MemorySize.str2num(object.options['image-size'], unit='MB')
@@ -458,13 +488,14 @@ class DriveWizard( umcd.IWizard ):
 			self.current = DriveWizard.PAGE_SUMMARY
 
 		elif self.current == DriveWizard.PAGE_MANUAL: # local-device
-			vol_name = object.options['vol-name']
+			vol_name = object.options['vol-name-dev']
 			if vol_name.startswith('/'):
 				vol_path = vol_name
 			else:
 				vol_path = '/dev/' + vol_name
 			object.options['pool-name'] = None
 			object.options['vol-path'] = vol_path
+			object.options['driver-type'] = 'RAW'
 			self.current = DriveWizard.PAGE_SUMMARY
 
 		else:
@@ -516,44 +547,40 @@ class DriveWizard( umcd.IWizard ):
 	def finish( self, object ):
 		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.DW.finish(%r)' % ddict(object.options))
 		# collect information about the drive
-		drive_type = object.options['drive-type']
-		pool_name = object.options['pool-name']
-		vol_name = object.options['vol-name']
-		vol_path = object.options['vol-path']
-		image_size = object.options.get('image-size')
-		driver_type = object.options['driver-type'].lower()
+		r = self.request_data(object)
+		r.driver_type = r.driver_type.lower()
 
 		disk = uvmmp.Disk()
-		disk.source = vol_path
+		disk.source = r.vol_path
 
-		is_file_pool = self._is_file_pool(pool_name)
+		is_file_pool = self._is_file_pool(r.pool_name)
 		if is_file_pool:
 			disk.type = uvmmp.Disk.TYPE_FILE
 		else:
 			disk.type = uvmmp.Disk.TYPE_BLOCK
 			disk.target_bus = 'ide'
 
-		if drive_type == 'disk':
+		if r.drive_type == 'disk':
 			disk.device = uvmmp.Disk.DEVICE_DISK
 			driver_pv = object.options[ 'drive-paravirtual' ]
-		elif drive_type == 'cdrom':
+		elif r.drive_type == 'cdrom':
 			disk.device = uvmmp.Disk.DEVICE_CDROM
-			driver_type = 'raw' # ISOs need driver/@type='raw'
+			r.driver_type = 'raw' # ISOs need driver/@type='raw'
 			driver_pv = object.options[ 'cdrom-paravirtual' ]
-		elif drive_type == 'floppy':
+		elif r.drive_type == 'floppy':
 			disk.device = uvmmp.Disk.DEVICE_FLOPPY
 			disk.target_bus = 'fdc'
 			driver_pv = None
 		else:
-			raise ValueError('Invalid drive-type "%s"' % drive_type)
+			raise ValueError('Invalid drive-type "%s"' % r.drive_type)
 
 		if self.node_uri.startswith('qemu'):
 			disk.driver = 'qemu'
-			disk.driver_type = driver_type
-			if driver_pv and drive_type != 'floppy' and disk.type != uvmmn.Disk.TYPE_BLOCK:
+			disk.driver_type = r.driver_type
+			if driver_pv and r.drive_type != 'floppy' and disk.type != uvmmn.Disk.TYPE_BLOCK:
 				disk.target_bus = 'virtio'
 		elif self.node_uri.startswith('xen'):
-			if driver_pv and drive_type != 'floppy' and disk.type != uvmmn.Disk.TYPE_BLOCK:
+			if driver_pv and r.drive_type != 'floppy' and disk.type != uvmmn.Disk.TYPE_BLOCK:
 				disk.target_bus = 'xen'
 			elif self.domain_virttech.pv() and not driver_pv:
 				# explicitly set ide bus
@@ -567,12 +594,12 @@ class DriveWizard( umcd.IWizard ):
 				configRegistry = ucr.ConfigRegistry()
 				configRegistry.load()
 				# Use tapdisk2 by default, but not for empty CDROM drives
-				if vol_path is not None and configRegistry.is_true('uvmm/xen/images/tap2', True):
+				if r.vol_path is not None and configRegistry.is_true('uvmm/xen/images/tap2', True):
 					disk.driver = 'tap2'
-					if driver_type == 'raw':
+					if r.driver_type == 'raw':
 						disk.driver_type = 'aio'
 					else: # qcow vhd
-						disk.driver_type = driver_type
+						disk.driver_type = r.driver_type
 				else:
 					disk.driver = 'file'
 					disk.driver_type = None # only raw support
@@ -581,8 +608,8 @@ class DriveWizard( umcd.IWizard ):
 		else:
 			raise ValueError('Unknown virt-tech "%s"' % self.node_uri)
 
-		if image_size:
-			disk.size = MemorySize.str2num(image_size, unit='MB')
+		if r.vol_size:
+			disk.size = MemorySize.str2num(r.vol_size, unit='MB')
 
 		self._result = disk
 		return umcd.WizardResult()
