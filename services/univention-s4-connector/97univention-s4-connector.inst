@@ -38,6 +38,8 @@ joinscript_init
 
 eval "$(univention-config-registry shell ldap/master samba4/ldap/base)"
 
+NAME="S4 Connector"
+
 univention-config-registry set \
 	connector/s4/ldap/host?"$ldap_master" \
 	connector/s4/ldap/base?"$samba4_ldap_base" \
@@ -88,7 +90,7 @@ else										## we are first system to provide this service
 	samba-tool newuser ucs-s4sync "$(cat /etc/samba4.secret)" -U Administrator%$(cat /etc/samba4.secret)
 	samba-tool group addmembers "Domain Admins" ucs-s4sync #maybe we could use a more restrict group?
 
-	ucs_addServiceToLocalhost "S4 Connector" "$@"
+	ucs_addServiceToLocalhost "${NAME}" "$@"
 
 fi
 
