@@ -57,8 +57,7 @@ if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 	/usr/sbin/univention-password_sync_ucs_to_s4 Administrator	## this account already exists in Samba4, set UCS password for it
 fi
 
-s4connectorservicehosts="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
-	/usr/bin/univention-ldapsearch -LLL "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
+s4connectorservicehosts=$(univention-ldapsearch -LLL -D "$binddn" -y "$DCPWD" '(&(univentionService=S4 Connector)(objectClass=univentionDomainController))' cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no udm module computers/dc
 if [ -n "$s4connectorservicehosts" ]; then
 	HOSTPWD="/etc/machine.secret"
 	HOSTACCOUNT="$hostname\$"
