@@ -1,5 +1,5 @@
 Type: file
-File: etc/squid/squid.conf
+File: etc/squid3/squid.conf
 Variables: ldap/base
 Variables: ldap/server/name
 Variables: squid/cache
