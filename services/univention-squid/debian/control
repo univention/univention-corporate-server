@@ -6,7 +6,7 @@ Build-Depends: debhelper, univention-config-dev, ucslint
 
 Package: univention-squid
 Architecture: all
-Depends: squid3, univention-config, winbind
+Depends: squid3, univention-config, winbind, python-ipaddr
 Breaks: squid
 Recommends: univention-nagios-squid
 Suggests: univention-firewall

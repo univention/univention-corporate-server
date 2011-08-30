@@ -1,3 +1,10 @@
+univention-squid (5.0.2-7) unstable; urgency=low
+
+  * More template changes for new network syntax (Bug #22576)
+  * Add dependency on python-ipaddr for network calculation in UCR template	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 30 Aug 2011 16:38:21 +0200
+
 univention-squid (5.0.2-6) unstable; urgency=low
 
   * Adapt template: 0.0.0.0/0.0.0.0 no longer permitted in ACL syntax, use CIDR
