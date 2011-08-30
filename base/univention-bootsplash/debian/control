@@ -8,7 +8,7 @@ Standards-Version: 3.8.2
 Package: univention-bootsplash
 Architecture: all
 Pre-Depends: univention-config-registry
-Depends: plymouth, plymouth-themes-all, console-setup
+Depends: plymouth, plymouth-themes-all
 Description: UCS - bootsplash
  Univention Bootsplash manages splashimages on bootup.
  .
