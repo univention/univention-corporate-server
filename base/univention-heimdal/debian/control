@@ -8,7 +8,7 @@ Build-Depends: debhelper (>> 7), ucslint, univention-config-dev
 Package: univention-heimdal-kdc
 Architecture: all
 Pre-Depends: heimdal-kdc (>> 0.6.3)
-Depends: univention-config-registry, shell-univention-lib, libsasl2-modules-gssapi-heimdal, heimdal-servers, python-univention, python-univention-heimdal, univention-directory-listener, univention-directory-manager-tools, python-cracklib
+Depends: univention-config-registry, shell-univention-lib, libsasl2-modules-gssapi-heimdal, heimdal-servers, python-univention, python-univention-heimdal, univention-directory-listener, univention-directory-manager-tools, python-cracklib, univention-heimdal-common
 Description: UCS - Kerberos KDC
  This package installs a Kerberos Key Distribution Center
  (KDC) using LDAP for the key storage.
@@ -24,6 +24,18 @@ Depends: univention-config-registry, libsasl2-modules-gssapi-heimdal, heimdal-cl
 Description: UCS - Kerberos member server
  This package configures the computer as a Kerberos member
  server.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-heimdal-common
+Architecture: all
+Depends: univention-config-registry, heimdal-clients
+Breaks: univention-heimdal-kdc (<=5.0.5-1), univention-heimdal-member (<=5.0.5-1)
+Description: UCS - Kerberos common package
+ This package configures Kerberos
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

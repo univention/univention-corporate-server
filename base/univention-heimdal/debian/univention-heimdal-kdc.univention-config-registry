@@ -1,19 +1,4 @@
 Type: file
-File: etc/krb5.conf
-Variables: kerberos/realm
-Variables: ldap/server/name
-Variables: ldap/server/addition
-Variables: kerberos/kdc
-Variables: kerberos/adminserver
-Variables: kerberos/v4tickets
-Variables: kerberos/kadmin/default/keys
-Variables: kerberos/defaults/enctypes/tgs
-Variables: kerberos/defaults/enctypes/tkt
-Variables: kerberos/defaults/enctypes/permitted
-Variables: kerberos/afscell
-Variables: kerberos/allow/weak/crypto
-
-Type: file
 File: etc/heimdal-kdc/kdc.conf
 Variables: kerberos/enable/kerberos4
 Variables: kerberos/enable/524

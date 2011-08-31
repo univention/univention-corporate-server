@@ -1,21 +1,3 @@
-[kerberos/adminserver]
-Description[de]=Kerberos Admin-Server für den Realm
-Description[en]=Kerberos admin server for the realm
-Type=str
-Categories=service-heimdal
-
-[kerberos/kdc]
-Description[de]=Liste von KDCs für den Realm
-Description[en]=List of KDC's for the realm
-Type=str
-Categories=service-heimdal
-
-[kerberos/realm]
-Description[de]=Kerberos Realm der Domäne
-Description[en]=Kerberos realm of the domain
-Type=str
-Categories=service-heimdal
-
 [kerberos/password/quality/check]
 Description[de]=Die Passwortstärkenüberprüfung über cracklib2 kann über den Wert 'yes' aktiviert werden.
 Description[en]=Check of password strength by cracklib2 can be activated by setting this value to 'yes'.
@@ -70,18 +52,6 @@ Description[en]=The minimum amount of upper case characters in the new password 
 Type=str
 Categories=System
 
-[kerberos/afscell]
-Description[de]=Der Name der AFS-Zelle, einer administrativen Einheit im AFS-Dateisystem
-Description[en]=The name of the AFS cell, an administrative unit in the AFS filesystem
-Type=str
-Categories=System
-
-[kerberos/v4tickets]
-Description[de]=Konfiguriert, ob Tickets im veralteten Kerberos-Format 4 ausgestellt werden sollen
-Description[en]=Configures, whether tickets should be issued in the deprecated Kerberos format 4
-Type=str
-Categories=System
-
 [kerberos/enable/kerberos4]
 Description[de]=Aktiviert das veraltete Kerberos-Format 4
 Description[en]=Activates the deprecated Kerberos format 4
@@ -97,35 +67,5 @@ Categories=System
 [kerberos/enable/kaserver]
 Description[de]=Kaserver ist die vom AFS-Dateisystem verwendete Kerberos 4 Protokollvariante.
 Description[en]=Kaserver is the Kerberos 4 protocol variant used in the AFS file system.
-Type=str
-Categories=System
-
-[kerberos/kadmin/default/keys]
-Description[de]=Vom Kadmin-Dienst unterstütze Schlüsseltypen
-Description[en]=Keytypes supported by kadmin
-Type=str
-Categories=System
-
-[kerberos/defaults/enctypes/tgs]
-Description[de]=Die Verschlüsselungsvariante im Session-Key für Service Tickets.
-Description[en]=The encryption types for the session key of service tickets.
-Type=str
-Categories=System
-
-[kerberos/defaults/enctypes/tkt]
-Description[de]=Die Verschlüsselungsvariante im Session-Key für das Ticket Granting Ticket.
-Description[en]=The encryption types for the session key of the ticket granting ticket.
-Type=str
-Categories=System
-
-[kerberos/defaults/enctypes/permitted]
-Description[de]=Die von Services verwendbaren Verschlüsselungsvarianten.
-Description[en]=The encryption types permitted for services.
-Type=str
-Categories=System
-
-[kerberos/allow/weak/crypto]
-Description[de]=Mit der Einstellung "no", "false" oder "0" wird die Erzeugung von single-DES Keys unterbunden.
-Description[en]=Setting this key to "no", "false" oder "0" disables the generation of single-DES keys.
 Type=str
 Categories=System
