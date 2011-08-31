@@ -43,18 +43,23 @@ append_dot_mydomain = no
 @!@
 import re
 
+print 'mydestination = %s' % configRegistry.get('mail/postfix/mydestination', '$myhostname, localhost.$mydomain, localhost')
+print 'mynetworks = %s' % configRegistry.get('mail/postfix/mynetworks', '127.0.0.0/8')
+
+print
+
 print 'masquerade_domains = %s' % configRegistry.get('postfix/masquerade/domains', '$mydomain')
 print 'masquerade_exceptions = %s' % configRegistry.get('postfix/masquerade/exceptions', 'root')
 
 print
 
-default_transport_maps = 'hash:/etc/postfix/transport, ldap:/etc/postfix/ldap.transport'
-print 'transport_maps = %s' % configRegistry.get('mail/postfix/maps/transport', default_transport_maps )
+transport_maps = re.split(',\s*', configRegistry.get('mail/postfix/maps/transport', 'hash:/etc/postfix/transport' ))
+if configRegistry.is_true('mail/postfix/transport/ldap/enabled',False):
+	transport_maps.append('ldap:/etc/postfix/ldap.transport')
+print 'transport_maps = %s' % ',\n        '.join(transport_maps)
 
-print
-
-print 'mydestination = %s' % configRegistry.get('mail/postfix/mydestination', '$myhostname, localhost.$mydomain, localhost')
-print 'mynetworks = %s' % configRegistry.get('mail/postfix/mynetworks', '127.0.0.0/8')
+if configRegistry.get('mail/postfix/relay/domains'):
+	print 'relay_domains = %s' % configRegistry.get('mail/postfix/relay/domains')
 @!@
 
 # we need to name a smtp relay host to which we forward non-local
