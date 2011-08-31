@@ -178,6 +178,16 @@ Multifile: etc/postfix/ldap.virtual
 Subfile: etc/postfix/ldap.virtual.d/10_base
 
 Type: multifile
+Multifile: etc/postfix/ldap.virtualdomains
+User: postfix
+Group: root
+Mode: 0440
+
+Type: subfile
+Multifile: etc/postfix/ldap.virtualdomains
+Subfile: etc/postfix/ldap.virtualdomains.d/10_base
+
+Type: multifile
 Multifile: etc/postfix/ldap.sharedfolderlocal
 User: postfix
 Group: root
