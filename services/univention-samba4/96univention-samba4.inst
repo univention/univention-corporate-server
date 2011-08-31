@@ -175,6 +175,9 @@ if [ "$domaincontroller" = 'true' ]; then
 	fi
 
 
+	## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
+	univention-config-registry set samba4/ldap/base="DC=$(echo "$kerberos_realm" | sed 's/\./,DC=/g')"
+
 	## Kerberos keytab adjustments for Samba 4
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then

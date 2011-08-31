@@ -143,8 +143,6 @@ S3_DOMAIN_SID="$(univention-ldapsearch -x objectclass=sambadomain sambaSID | sed
 					--function-level=2008_R2 \
 					--adminpass="$adminpw" --server-role='domain controller'	\
 					--machinepass="$(</etc/machine.secret)" >>$LOGFILE 2>&1
-# the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
-univention-config-registry set samba4/ldap/base="DC=${kerberos_realm/./,DC=}" >>$LOGFILE 2>&1
 
 if [ ! -d /etc/phpldapadmin ]; then
 	mkdir /etc/phpldapadmin

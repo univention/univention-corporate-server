@@ -1,3 +1,10 @@
+univention-samba4 (1.0.29-2) experimental; urgency=low
+
+  * add script to check essential DNS records for Samba 4
+  * set samba4/ldap/base on all Samba 4 DCs (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 31 Aug 2011 14:30:00 +0200
+
 univention-samba4 (1.0.29-1) experimental; urgency=low
 
   * call setup-dns-in-ucsldap.sh explicitely from joinscript
