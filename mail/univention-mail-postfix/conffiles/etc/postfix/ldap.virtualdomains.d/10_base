@@ -1,13 +1,12 @@
 @%@UCRWARNING=# @%@
 #
-# LDAP Alias support (without recipient canonical rewrite)
+# LDAP Virtual Domains
 #
 
 server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
 search_base = @%@ldap/base@%@
-query_filter = (&(objectClass=univentionKolabMail)(|(mailAlternativeAddress=*@%s)(mailPrimaryAddress=*@%s))(!(univentionCanonicalRecipientRewriteEnabled=1)))
-#query_filter = (&(objectClass=univentionMail)(|(mailAlternativeAddress=*@%s)(mailPrimaryAddress=*@%s))(!(univentionCanonicalRecipientRewriteEnabled=1)))
-result_attribute = mailPrimaryAddress
+query_filter = (&(objectClass=univentionMailDomainname)(cn=%s))
+result_attribute = cn
 result_format = %s
 search_timeout = @%@mail/postfix/ldap/timeout@%@
 scope = sub
