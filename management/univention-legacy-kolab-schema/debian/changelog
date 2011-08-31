@@ -1,0 +1,5 @@
+univention-legacy-kolab-schema (1.0.0-1) unstable; urgency=low
+
+  * initial import (Bug #22436)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 31 Aug 2011 14:44:47 +0200
