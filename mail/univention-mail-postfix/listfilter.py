@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4 -u
+#!/usr/bin/python2.6 -u
 #
 # Univention mail Postfix Policy
 #  check allowed email senders for groups and distlist
