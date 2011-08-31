@@ -1,4 +1,4 @@
-@%@UCRHEADER=# @%@
+@%@UCRWARNING=# @%@
 
 # The message_size_limit parameter limits the total size in bytes of
 # a message, including envelope information. Default is 10240000

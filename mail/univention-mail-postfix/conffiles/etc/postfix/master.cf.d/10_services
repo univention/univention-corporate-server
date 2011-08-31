@@ -1,4 +1,4 @@
-@%@UCRHEADER=# @%@
+@%@UCRWARNING=# @%@
 
 # ==========================================================================
 # service type	private	unpriv	chroot	wakeup	maxproc	command + args

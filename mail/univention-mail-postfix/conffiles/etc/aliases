@@ -1,4 +1,4 @@
-@%@UCRHEADER=# @%@
+@%@UCRWARNING=# @%@
 
 @!@
 for key in configRegistry.keys():
