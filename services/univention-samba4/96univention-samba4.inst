@@ -36,6 +36,8 @@ joinscript_init
 
 . /usr/share/univention-lib/all.sh
 
+LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary for ldbtools
+
 eval "$(univention-config-registry shell)"
 
 NAME="Samba 4"
@@ -109,8 +111,6 @@ univention-config-registry commit /etc/samba/smb.conf		# 03univention-directory-
 
 univention-config-registry set samba/quota/command='None'	# currently unsupported in samba4
 
-LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH
-
 ## stop samba3 services and heimdal-kdc if present
 if [ -x /etc/init.d/samba ]; then
 	/etc/init.d/samba stop
@@ -142,6 +142,9 @@ if [ "$domaincontroller" = 'true' ]; then
 			## Provision Samba4
 			/usr/share/univention-samba4/scripts/setup-s4.sh
 
+			## Adding DNS records is currently necessary, probably this will can be avoided with dlz-dlopen on samba4
+			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh
+
 			## The first samba 4 DC should provide the domainname as netbios alias
 			univention-config-registry set samba/netbios/aliases?"$domainname"
 		fi
@@ -164,13 +167,9 @@ if [ "$domaincontroller" = 'true' ]; then
 		extract_binddn_and_bindpwd_from_args "$@"
 		samba-tool join "$domainname" DC -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 
-		## Adding this CNAME is currently necessary, probably this will be done automagically with dlz-dlopen on samba4
-		server_object_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${hostname}\$" \
-							serverReferenceBL | ldapsearch-wrapper | sed -n 's/^serverReferenceBL: \(.*\)/\1/p')
-		NTDS_objectGUID=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$server_object_dn" \
-							"CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')
-		/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists "$domainname" \
-							add cname "$NTDS_objectGUID._msdcs" "$hostname.$domainname."
+		## Adding DNS records is currently necessary, probably this will be done automagically with dlz-dlopen on samba4
+		## see https://wiki.samba.org/index.php/Samba4/HOWTO/Join_a_domain_as_a_DC#A_note_on_DNS_updates
+		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh
 
 		# set_machine_secret	## currently disabled, seems to break DRS replication
 	fi

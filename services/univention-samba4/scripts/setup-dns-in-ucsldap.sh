@@ -32,6 +32,8 @@
 
 SCRIPTDIR=/usr/share/univention-samba4/scripts
 
+LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary for ldbtools
+
 eval "$(univention-config-registry shell)"
 
 # LDB_URI="ldapi:///var/lib/samba/private/ldap_priv/ldapi"	# seems to open a bit too late after samba4 startup
@@ -43,8 +45,10 @@ if ! ldbsearch -H "$LDB_URI" -b $domaindn -s base dn 2>/dev/null| grep -qi ^"dn:
 	exit 1
 fi
 
-## TODO: extract some GUIDs
-NTDS_objectGUID="$(ldbsearch -H "$LDB_URI" -b "CN=$hostname,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,$domaindn" "CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')"
+server_object_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${hostname}\$" \
+							serverReferenceBL | ldapsearch-wrapper | sed -n 's/^serverReferenceBL: \(.*\)/\1/p')
+NTDS_objectGUID=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$server_object_dn" \
+							"CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')
 
 case "${LDB_URI%%:*}" in
 	ldapi|LDAPI)
@@ -63,7 +67,6 @@ Partition_GUID="$(ldbsearch -H "$LDB_URI" -b "CN=$windows_domain,CN=Partitions,C
 ### global catalog servers
 ##_gc._tcp                IN SRV 0 100 3268       qamaster
 /usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv gc tcp 0 100 3268 $hostname.$domainname.
-## TODO: next three service records need msdcs.ipProtocol.patch for syntax.py
 ## _gc._tcp.Default-First-Site-Name._sites IN SRV 0 100 3268       qamaster
 /usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv gc._tcp.Default-First-Site-Name sites 0 100 3268 $hostname.$domainname.
 ## _ldap._tcp.gc._msdcs    IN SRV 0 100 3268       qamaster
@@ -99,7 +102,7 @@ fi
 /usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos._tcp.Default-First-Site-Name sites 0 100 88 $hostname.$domainname.
 ## _kerberos._tcp.Default-First-Site-Name._sites.dc._msdcs IN SRV 0 100 88 qamaster
 /usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos._tcp.Default-First-Site-Name._sites.dc msdcs 0 100 88 $hostname.$domainname.
-## TODO: the next two might collide with /usr/lib/univention-install/15univention-heimdal-kdc.inst
+## TODO: the next two might collide/duplicate the ones created by 15univention-heimdal-kdc.inst
 ## _kerberos._tcp          IN SRV 0 100 88         qamaster
 /usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos tcp 0 100 88 $hostname.$domainname.
 ## _kerberos._udp          IN SRV 0 100 88         qamaster

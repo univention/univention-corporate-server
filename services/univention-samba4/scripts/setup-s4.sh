@@ -29,6 +29,8 @@
 
 . /usr/share/univention-lib/all.sh
 
+LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary for ldbtools
+
 eval "$(univention-config-registry shell)"
 
 usage(){ echo "$0 [-h|--help] [-w <samba4-admin password file>] [-W]"; exit 1; }
@@ -136,8 +138,6 @@ fi
 
 S3_DOMAIN_SID="$(univention-ldapsearch -x objectclass=sambadomain sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
 
-export LDB_MODULES_PATH=/usr/lib/samba/ldb/
-
 # /usr/share/samba/setup/upgradeprovision --full --realm="$kerberos_realm" -s /etc/samba/smb.conf.samba3
 /usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$S3_DOMAIN_SID" \
 					--function-level=2008_R2 \
@@ -152,10 +152,5 @@ fi
 if [ ! -e /etc/phpldapadmin/config.php ]; then
 	cp /var/lib/samba/private/phpldapadmin-config.php /etc/phpldapadmin/config.php
 fi
-
-## TODO: Join-Script candidate: DNS-Setup
-"${SCRIPTDIR}/setup-dns-in-ucsldap.sh" >>$LOGFILE 2>&1
-
-/etc/init.d/samba4 restart >>$LOGFILE 2>&1	# somehow this currently is necessary to avoid 'Failed to listen on 0.0.0.0:445 - NT_STATUS_ADDRESS_ALREADY_ASSOCIATED'
 
 exit 0
