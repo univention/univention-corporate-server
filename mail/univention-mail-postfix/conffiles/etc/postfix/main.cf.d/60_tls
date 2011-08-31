@@ -3,8 +3,11 @@ smtpd_use_tls = yes
 smtpd_tls_auth_only = yes
 smtpd_starttls_timeout = 300s
 smtpd_timeout = 300s
-smtpd_tls_cert_file = /etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/cert.pem
-smtpd_tls_key_file = /etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/private.key
+@!@
+fqdn = '%s.%s' % (baseConfig.get('hostname'), baseConfig.get('domainname'))
+print 'smtpd_tls_cert_file = %s' % baseConfig.get('mail/postfix/ssl/certificate', '/etc/univention/ssl/%s/cert.pem' % fqdn)
+print 'smtpd_tls_key_file = %s' % baseConfig.get('mail/postfix/ssl/key', '/etc/univention/ssl/%s/private.key' % fqdn)
+@!@
 smtpd_tls_received_header = no
 smtpd_tls_session_cache_timeout = 3600s
 
