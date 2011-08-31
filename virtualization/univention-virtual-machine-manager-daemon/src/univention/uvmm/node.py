@@ -279,6 +279,10 @@ class Domain(object):
 						s.ctime = int(ctime)
 						snapshots[name] = s
 		self.pd.snapshots = snapshots
+		if self.node.pd.supports_suspend:
+			self.pd.suspended = domain.hasManagedSaveImage(0)
+		else:
+			self.pd.suspended = None
 
 	def update_ldap(self):
 		"""Update annotations from LDAP."""
@@ -1353,6 +1357,9 @@ def domain_snapshot_revert(uri, domain, snapshot):
 		dom_stat = node.domains[domain]
 		if dom_stat.pd.snapshots is None:
 			raise NodeError(_('Snapshot not supported "%(node)s"'), node=uri)
+		if dom.hasManagedSaveImage(0):
+			logger.warning('Domain "%(domain)s" saved state will be removed.' % {'domain':domain})
+			dom.managedSaveRemove(0)
 		old_state = dom_stat.key()
 		snap = dom.snapshotLookupByName(snapshot, 0)
 		r = dom.revertToSnapshot(snap, 0)

@@ -300,6 +300,7 @@ class Data_Domain(object):
 		self.graphics = [] # node.Graphics
 		self.annotations = {}
 		self.snapshots = None # ID: Data_Snapshot
+		self.suspended = None # True|False
 class Data_Node(object):
 	"""Container for node statistics."""
 	def __init__(self):

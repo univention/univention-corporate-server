@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (0.9.329-1) unstable; urgency=low
+
+  * Prohibit snapshotting suspended domains (Bug #22072)
+  * Rename "Start" to "Resume" for suspended domains (Bug #20853)
+  * Update translation and fix bad wording of new-instance-wizard title.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 31 Aug 2011 10:56:19 +0200
+
 univention-virtual-machine-manager-daemon (0.9.328-1) unstable; urgency=low
 
   * UMC module: Limit the image names in the wizards to get a fancy

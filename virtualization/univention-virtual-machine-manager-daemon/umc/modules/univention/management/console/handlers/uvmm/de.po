@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.321-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-08-25 12:46+0200\n"
+"POT-Creation-Date: 2011-08-31 09:13+0200\n"
 "PO-Revision-Date: 2011-08-25 12:47+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -326,7 +326,7 @@ msgstr "Neuen Sicherungspunkt erstellen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:606
 msgid "Create new virtual instance"
-msgstr "Erstellen neuer virtuellen Instanz"
+msgstr "Neue virtuelle Maschine erstellen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/types.py:112
 msgid "Croatian"
@@ -1049,6 +1049,10 @@ msgstr "Zustand der virtuellen Instanz aus Sicherungspunkt wiederherstellen"
 msgid "Restore virtual instance"
 msgstr "Wiederherstellen einer virtuellen Instanz"
 
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:623
+msgid "Resume"
+msgstr "Wiederherstellen"
+
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1543
 msgid "Resynchronisation has failed!"
 msgstr "Resynchronisation fehlgeschlagen"
@@ -1177,12 +1181,16 @@ msgstr "Slowenisch"
 msgid ""
 "Snapshoting the instance <i>%(domain)s</i> to <i>%(snapshot)s</i> failed"
 msgstr ""
-"Das Sichern der virtuellen Instanz <i>%(domain)s</i> in <i>%(snapshot)s</i> "
+"Das Speichern der virtuellen Maschine <i>%(domain)s</i> in <i>%(snapshot)s</i> "
 "ist fehlgeschlagen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1152
 msgid "Snapshots"
 msgstr "Sicherungspunkte"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:534
+msgid "Snapshots can not be created for suspended domains."
+msgstr "Sicherungspunkte können nicht für gespeicherte virtuelle Maschinen angelegt werden."
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1281
 msgid "Some information of the virtual instance could not be saved!<br/>"

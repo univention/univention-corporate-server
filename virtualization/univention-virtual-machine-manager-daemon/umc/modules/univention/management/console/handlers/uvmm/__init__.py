@@ -530,13 +530,16 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		table = umcd.List( default_type = 'uvmm_table' )
 
 		# button: create new snapshot
-		opts = copy.copy( object.options )
-		create_cmd = umcp.SimpleCommand( 'uvmm/domain/snapshot/create', options = opts )
-		create_cmd.incomplete = True
-		create_act = [umcd.Action(create_cmd),]#
-		btn = umcd.LinkButton( _( 'Create new snapshot' ), 'uvmm/add', actions = create_act )
-		btn.set_size( umct.SIZE_SMALL )
-		table.add_row( [ btn  ] )
+		if getattr(domain_info, 'suspended', None):
+			table.add_row([umcd.InfoBox(_('Snapshots can not be created for suspended domains.'))])
+		else:
+			opts = copy.copy( object.options )
+			create_cmd = umcp.SimpleCommand( 'uvmm/domain/snapshot/create', options = opts )
+			create_cmd.incomplete = True
+			create_act = [umcd.Action(create_cmd),]#
+			btn = umcd.LinkButton( _( 'Create new snapshot' ), 'uvmm/add', actions = create_act )
+			btn.set_size( umct.SIZE_SMALL )
+			table.add_row( [ btn  ] )
 
 		# listing of existing snapshots
 		lst = umcd.List( default_type = 'uvmm_table' )
@@ -616,7 +619,11 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			opts = copy.copy( cmd_opts )
 			opts[ 'state' ] = 'RUN'
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
-			buttons.append( umcd.LinkButton( _( 'Start' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
+			if getattr(domain_info, 'suspended', None):
+				txt = _('Resume')
+			else:
+				txt = _('Start')
+			buttons.append(umcd.LinkButton(txt, actions=[umcd.Action(cmd), umcd.Action(overview_cmd)]))
 			buttons.append( comma )
 
 		# VNC? if running and activated
@@ -694,7 +701,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		# migrate? if parameter set and state is not paused and more than two physical servers are available
 		if len(grouplist) < 2:
 			ud.debug( ud.ADMIN, ud.INFO, 'Migration button is disabled. At least two servers with the same virtualization technologie in this group are required.' )
-		elif self._show_op( 'migrate', node_uri ) and operations and domain_info.state != 3:
+		elif self._show_op('migrate', node_uri) and operations and domain_info.state != 3 and not getattr(domain_info, 'suspended', None):
 			cmd = umcp.SimpleCommand( 'uvmm/domain/migrate', options = { 'group' : options['group'], 'grouplist': grouplist, 'source' : node_info.name, 'domain' : domain_info.name } )
 			buttons.append( umcd.LinkButton( _( 'Migrate' ), actions = [ umcd.Action( cmd ) ] ) )
 			buttons.append( comma )
