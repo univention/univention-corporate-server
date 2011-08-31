@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-08 20:12+0100\n"
+"POT-Creation-Date: 2011-08-31 09:48+0200\n"
 "PO-Revision-Date: 2009-08-04 17:18+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -38,386 +38,419 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.3\n"
 
-#: computer.py:53 computer.py:60
+#: computer.py:56 computer.py:74
 msgid "Computer"
 msgstr "Rechner"
 
-#: computer.py:54
+#: computer.py:57
 msgid "Add, edit and delete computers"
 msgstr "Hinzufügen, Bearbeiten und Löschen von Rechnern."
 
-#: computer.py:55
+#: computer.py:58
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: computer.py:55
+#: computer.py:58
 msgid "Add Computer"
 msgstr "Rechner hinzufügen"
 
-#: computer.py:55
+#: computer.py:58
 msgid "Search"
 msgstr "Suchen"
 
-#: computer.py:55
+#: computer.py:58
 msgid "Search computer(s)"
 msgstr "Rechner suchen"
 
-#: computer.py:68 thinclient.py:56 trustaccount.py:55
+#: computer.py:82 thinclient.py:58 trustaccount.py:57
 msgid "Name"
 msgstr "Name"
 
-#: computer.py:78 domaincontroller_backup.py:177
-#: domaincontroller_master.py:177 domaincontroller_slave.py:177
-#: ipmanagedclient.py:139 macos.py:148 managedclient.py:157
-#: memberserver.py:177 mobileclient.py:157 thinclient.py:138 windows.py:146
+#: computer.py:92 domaincontroller_backup.py:184
+#: domaincontroller_master.py:184 domaincontroller_slave.py:184
+#: ipmanagedclient.py:141 macos.py:147 managedclient.py:159
+#: memberserver.py:184 mobileclient.py:159 thinclient.py:140
+#: windows_domaincontroller.py:202 windows.py:182
 msgid "DNS alias"
 msgstr "DNS-Alias"
 
-#: computer.py:88 domaincontroller_backup.py:76 domaincontroller_master.py:76
-#: domaincontroller_slave.py:76 ipmanagedclient.py:67 macos.py:76
-#: managedclient.py:76 memberserver.py:76 mobileclient.py:76 thinclient.py:66
-#: trustaccount.py:65 windows.py:74
+#: computer.py:102 domaincontroller_backup.py:83 domaincontroller_master.py:83
+#: domaincontroller_slave.py:83 ipmanagedclient.py:69 macos.py:75
+#: managedclient.py:78 memberserver.py:83 mobileclient.py:78 thinclient.py:68
+#: trustaccount.py:67 windows_domaincontroller.py:83 windows.py:83
 msgid "Description"
 msgstr "Beschreibung"
 
-#: computer.py:97 domaincontroller_backup.py:94 domaincontroller_master.py:94
-#: domaincontroller_slave.py:94 ipmanagedclient.py:76 macos.py:85
-#: managedclient.py:94 memberserver.py:94 mobileclient.py:94 thinclient.py:75
-#: windows.py:83
+#: computer.py:111 domaincontroller_backup.py:101
+#: domaincontroller_master.py:101 domaincontroller_slave.py:101
+#: ipmanagedclient.py:78 macos.py:84 managedclient.py:96 memberserver.py:101
+#: mobileclient.py:96 thinclient.py:77 windows_domaincontroller.py:119
+#: windows.py:119
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: computer.py:107 domaincontroller_backup.py:114
-#: domaincontroller_master.py:114 domaincontroller_slave.py:114
-#: ipmanagedclient.py:96 managedclient.py:114 memberserver.py:114
-#: mobileclient.py:114 thinclient.py:95 windows.py:103
+#: computer.py:121 domaincontroller_backup.py:121
+#: domaincontroller_master.py:121 domaincontroller_slave.py:121
+#: ipmanagedclient.py:98 managedclient.py:116 memberserver.py:121
+#: mobileclient.py:116 thinclient.py:97 windows_domaincontroller.py:139
+#: windows.py:139
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#: computer.py:117 domaincontroller_backup.py:272
-#: domaincontroller_master.py:272 domaincontroller_slave.py:272
-#: ipmanagedclient.py:160 macos.py:213 managedclient.py:252
-#: memberserver.py:272 mobileclient.py:252 thinclient.py:159 windows.py:200
+#: computer.py:131 domaincontroller_backup.py:289
+#: domaincontroller_master.py:289 domaincontroller_slave.py:289
+#: ipmanagedclient.py:162 macos.py:212 managedclient.py:265
+#: memberserver.py:289 mobileclient.py:265 thinclient.py:161
+#: windows_domaincontroller.py:267 windows.py:258
 msgid "Inventory number"
 msgstr "Inventarnummer"
 
-#: domaincontroller_backup.py:52
+#: domaincontroller_backup.py:54
 msgid "Computer: Domain Controller Backup"
 msgstr "Rechner: Domänencontroller Backup"
 
-#: domaincontroller_backup.py:56 domaincontroller_master.py:56
-#: domaincontroller_slave.py:56 macos.py:56 managedclient.py:56
-#: memberserver.py:56 mobileclient.py:56
+#: domaincontroller_backup.py:58 domaincontroller_master.py:58
+#: domaincontroller_slave.py:58 macos.py:55 managedclient.py:58
+#: memberserver.py:58 mobileclient.py:58 windows_domaincontroller.py:58
+#: windows.py:58
 msgid "Posix account"
 msgstr "Posix Konto"
 
-#: domaincontroller_backup.py:60 domaincontroller_master.py:60
-#: domaincontroller_slave.py:60 macos.py:60 managedclient.py:60
-#: memberserver.py:60 mobileclient.py:60
+#: domaincontroller_backup.py:62 domaincontroller_master.py:62
+#: domaincontroller_slave.py:62 macos.py:59 managedclient.py:62
+#: memberserver.py:62 mobileclient.py:62 windows_domaincontroller.py:62
+#: windows.py:62
 msgid "Kerberos principal"
 msgstr "Kerberos Prinzipal"
 
 #: domaincontroller_backup.py:66 domaincontroller_master.py:66
-#: domaincontroller_slave.py:66
-msgid "Domain controller name"
-msgstr "Domänencontroller Name"
-
-#: domaincontroller_backup.py:85 domaincontroller_master.py:85
-#: domaincontroller_slave.py:85 ipmanagedclient.py:181 macos.py:234
-#: managedclient.py:85 memberserver.py:85 mobileclient.py:85 thinclient.py:180
-#: windows.py:221
-msgid "Domain"
-msgstr "Domäne"
-
-#: domaincontroller_backup.py:104 domaincontroller_master.py:104
-#: domaincontroller_slave.py:104 ipmanagedclient.py:86 macos.py:95
-#: managedclient.py:104 memberserver.py:104 mobileclient.py:104
-#: thinclient.py:85 windows.py:93
-msgid "Network"
-msgstr "Netzwerk"
-
-#: domaincontroller_backup.py:124 domaincontroller_master.py:124
-#: domaincontroller_slave.py:124 memberserver.py:124
-msgid "System role"
-msgstr "Systemrolle"
-
-#: domaincontroller_backup.py:134 domaincontroller_master.py:134
-#: domaincontroller_slave.py:134 memberserver.py:134
-msgid "Service"
-msgstr "Dienst"
-
-#: domaincontroller_backup.py:144 domaincontroller_master.py:144
-#: domaincontroller_slave.py:144 ipmanagedclient.py:106 macos.py:115
-#: managedclient.py:124 memberserver.py:144 mobileclient.py:124
-#: thinclient.py:105 windows.py:113
-msgid "Forward zone for DNS entry"
-msgstr "Forward Zone für DNS-Eintrag"
-
-#: domaincontroller_backup.py:155 domaincontroller_master.py:155
-#: domaincontroller_slave.py:155 ipmanagedclient.py:117 macos.py:126
-#: managedclient.py:135 memberserver.py:155 mobileclient.py:135
-#: thinclient.py:116 windows.py:124
-msgid "Reverse zone for DNS entry"
-msgstr "Reverse Zone für DNS-Eintrag"
-
-#: domaincontroller_backup.py:166 domaincontroller_master.py:166
-#: domaincontroller_slave.py:166 ipmanagedclient.py:128 macos.py:137
-#: managedclient.py:146 memberserver.py:166 mobileclient.py:146
-#: thinclient.py:127 windows.py:135
-msgid "Zone for DNS alias"
-msgstr "Zone für DNS-Alias"
-
-#: domaincontroller_backup.py:187 domaincontroller_master.py:187
-#: domaincontroller_slave.py:187 ipmanagedclient.py:149 macos.py:158
-#: managedclient.py:167 memberserver.py:187 mobileclient.py:167
-#: thinclient.py:148 windows.py:156
-msgid "DHCP service"
-msgstr "Service für DHCP-Eintrag"
-
-#: domaincontroller_backup.py:198 domaincontroller_master.py:198
-#: domaincontroller_slave.py:198 macos.py:169 managedclient.py:178
-#: memberserver.py:198 mobileclient.py:178
-msgid "Password"
-msgstr "Passwort"
-
-#: domaincontroller_backup.py:209 domaincontroller_master.py:209
-#: domaincontroller_slave.py:209 macos.py:180 managedclient.py:189
-#: memberserver.py:209 mobileclient.py:189
-msgid "Unix home directory"
-msgstr "Unix Heimatverzeichnis"
-
-#: domaincontroller_backup.py:220 domaincontroller_master.py:220
-#: domaincontroller_slave.py:220 macos.py:191 managedclient.py:200
-#: memberserver.py:220 mobileclient.py:200
-msgid "Login shell"
-msgstr "Anmelde-Shell"
-
-#: domaincontroller_backup.py:231 domaincontroller_master.py:231
-#: domaincontroller_slave.py:231 macos.py:202 managedclient.py:211
-#: memberserver.py:231 mobileclient.py:211
-msgid "Primary group"
-msgstr "Primäre Gruppe"
-
-#: domaincontroller_backup.py:242 domaincontroller_master.py:242
-#: domaincontroller_slave.py:242 managedclient.py:222 memberserver.py:242
-#: mobileclient.py:222 windows.py:189
-msgid "(Re-)install on next boot"
-msgstr "(Neu-)Installieren bei nächstem Systemstart"
-
-#: domaincontroller_backup.py:252 domaincontroller_master.py:252
-#: domaincontroller_slave.py:252 managedclient.py:232 memberserver.py:252
-#: mobileclient.py:232
-msgid "Interactive installation"
-msgstr "Interaktive Installation"
-
-#: domaincontroller_backup.py:262 domaincontroller_master.py:262
-#: domaincontroller_slave.py:262 managedclient.py:242 memberserver.py:262
-#: mobileclient.py:242
-msgid "Name of installation profile"
-msgstr "Eindeutiger Installationsprofilname"
-
-#: domaincontroller_backup.py:262 domaincontroller_master.py:262
-#: domaincontroller_slave.py:262 managedclient.py:242 memberserver.py:262
-#: mobileclient.py:242
-msgid "additional start options"
-msgstr "Erweiterte Startoptionen"
-
-#: domaincontroller_backup.py:282 domaincontroller_backup.py:324
-#: domaincontroller_master.py:282 domaincontroller_master.py:324
-#: domaincontroller_slave.py:282 domaincontroller_slave.py:324
-#: ipmanagedclient.py:170 ipmanagedclient.py:207 macos.py:223 macos.py:267
-#: managedclient.py:262 managedclient.py:301 memberserver.py:282
-#: memberserver.py:324 mobileclient.py:262 mobileclient.py:301
-#: thinclient.py:169 thinclient.py:206 windows.py:210 windows.py:254
-msgid "Groups"
-msgstr "Gruppen"
-
-#: domaincontroller_backup.py:294 domaincontroller_master.py:294
-#: domaincontroller_slave.py:294 ipmanagedclient.py:191 macos.py:244
-#: managedclient.py:274 memberserver.py:294 mobileclient.py:274
-#: thinclient.py:190 trustaccount.py:86 windows.py:231
-msgid "General"
-msgstr "Allgemein"
-
-#: domaincontroller_backup.py:294 domaincontroller_master.py:294
-#: domaincontroller_slave.py:294 ipmanagedclient.py:191 macos.py:244
-#: managedclient.py:274 memberserver.py:294 mobileclient.py:274
-#: thinclient.py:190
-msgid "Basic settings"
-msgstr "Rechnerkonto-Einstellungen"
-
-#: domaincontroller_backup.py:299 domaincontroller_master.py:299
-#: domaincontroller_slave.py:299 ipmanagedclient.py:196 macos.py:249
-#: managedclient.py:279 memberserver.py:299 mobileclient.py:279
-#: thinclient.py:195 windows.py:236
-msgid "IP"
-msgstr "IP"
-
-#: domaincontroller_backup.py:302 domaincontroller_master.py:302
-#: domaincontroller_slave.py:302 macos.py:252 managedclient.py:282
-#: memberserver.py:302 mobileclient.py:282
-msgid "Account"
-msgstr "Konto"
-
-#: domaincontroller_backup.py:306 domaincontroller_master.py:306
-#: domaincontroller_slave.py:306 macos.py:256 managedclient.py:286
-#: memberserver.py:306 mobileclient.py:286
-msgid "Unix account"
-msgstr "Unix-Konto"
-
-#: domaincontroller_backup.py:306 domaincontroller_master.py:306
-#: domaincontroller_slave.py:306 macos.py:256 managedclient.py:286
-#: memberserver.py:306 mobileclient.py:286
-msgid "Unix account settings"
-msgstr "Unix-Konto-Einstellungen"
-
-#: domaincontroller_backup.py:309 domaincontroller_master.py:309
-#: domaincontroller_slave.py:309 ipmanagedclient.py:199 macos.py:259
-#: managedclient.py:289 memberserver.py:309 mobileclient.py:289
-#: thinclient.py:198 windows.py:243
-msgid "DNS"
-msgstr "DNS"
-
-#: domaincontroller_backup.py:309 domaincontroller_master.py:309
-#: domaincontroller_slave.py:309 ipmanagedclient.py:199 macos.py:259
-#: managedclient.py:289 memberserver.py:309 mobileclient.py:289
-#: thinclient.py:198 windows.py:243
-msgid "DNS Forward and Reverse Lookup Zone"
-msgstr "DNS Forward und Reverse Lookup Zone"
-
-#: domaincontroller_backup.py:314 domaincontroller_master.py:314
-#: domaincontroller_slave.py:314 ipmanagedclient.py:204 macos.py:264
-#: managedclient.py:294 memberserver.py:314 mobileclient.py:294
-#: thinclient.py:203 windows.py:248
-msgid "DHCP"
-msgstr "DHCP"
-
-#: domaincontroller_backup.py:317 domaincontroller_master.py:317
-#: domaincontroller_slave.py:317 memberserver.py:317
-msgid "Services"
-msgstr "Dienste"
-
-#: domaincontroller_backup.py:320 domaincontroller_master.py:320
-#: domaincontroller_slave.py:320 managedclient.py:297 memberserver.py:320
-#: mobileclient.py:297 windows.py:251
-msgid "Deployment"
-msgstr "(Re)installation"
-
-#: domaincontroller_backup.py:324 domaincontroller_master.py:324
-#: ipmanagedclient.py:207 macos.py:267 managedclient.py:301
-#: memberserver.py:324 mobileclient.py:301 thinclient.py:206 windows.py:254
-msgid "Group memberships"
-msgstr "Gruppenmitgliedschaften"
-
-#: domaincontroller_backup.py:603 domaincontroller_backup.py:606
-#: domaincontroller_master.py:601 domaincontroller_master.py:604
-#: domaincontroller_slave.py:601 domaincontroller_slave.py:604
-#: managedclient.py:566 managedclient.py:569 memberserver.py:588
-#: memberserver.py:591 mobileclient.py:562 mobileclient.py:565
-msgid "Open Univention Management Console on this computer"
-msgstr "Univention Management Console auf diesem Rechner öffnen"
-
-#: domaincontroller_master.py:52
-msgid "Computer: Domain Controller Master"
-msgstr "Rechner: Domänencontroller Master"
-
-#: domaincontroller_slave.py:52
-msgid "Computer: Domain Controller Slave"
-msgstr "Rechner: Domänencontroller Slave"
-
-#: domaincontroller_slave.py:324
-msgid "Group Memberships"
-msgstr "Gruppenmitgliedschaften"
-
-#: ipmanagedclient.py:51
-msgid "Computer: IP managed client"
-msgstr "Rechner: IP-Managed-Client"
-
-#: ipmanagedclient.py:57
-msgid "IP managed client name"
-msgstr "Name des IP-Managed-Client"
-
-#: macos.py:52
-msgid "Computer: Mac OS X Client"
-msgstr "Rechner: Mac OS X Client"
-
-#: macos.py:66
-msgid "Client name"
-msgstr "Rechnername"
-
-#: macos.py:105
-msgid "IP Address"
-msgstr "IP-Adresse"
-
-#: managedclient.py:52
-msgid "Computer: Managed Client"
-msgstr "Rechner: Managed Client"
-
-#: managedclient.py:66 mobileclient.py:66 windows.py:64 windows.py:354
-#: windows.py:365
-msgid "Hostname"
-msgstr "Rechnername"
-
-#: memberserver.py:52
-msgid "Computer: Member Server"
-msgstr "Rechner: Member-Server"
-
-#: memberserver.py:66
-msgid "Member server name"
-msgstr "Name des Member-Servers"
-
-#: mobileclient.py:52
-msgid "Computer: Mobile Client"
-msgstr "Rechner: Mobile Client"
-
-#: thinclient.py:50
-msgid "Computer: Thin Client"
-msgstr "Rechner: Thin Client"
-
-#: trustaccount.py:49
-msgid "Computer: Domain trust account"
-msgstr "Rechner: Domain Trust Account"
-
-#: trustaccount.py:74
-msgid "Machine Password"
-msgstr "Rechner Passwort"
-
-#: trustaccount.py:86
-msgid "Basic Values"
-msgstr "Grundeinstellungen"
-
-#: trustaccount.py:89
-msgid "Domain trust account"
-msgstr "Domain Trust Account"
-
-#: trustaccount.py:89
-msgid "Trust account settings"
-msgstr "Domain Trust Account-Einstellungen"
-
-#: windows.py:54
-msgid "Computer: Windows"
-msgstr "Rechner: Windows"
-
-#: windows.py:58
+#: domaincontroller_slave.py:66 memberserver.py:66
+#: windows_domaincontroller.py:66 windows.py:66
 msgid "Samba account"
 msgstr "Samba-Konto"
 
-#: windows.py:167
-msgid "Machine account group"
-msgstr "Primäre Rechnergruppe"
+#: domaincontroller_backup.py:73 domaincontroller_master.py:73
+#: domaincontroller_slave.py:73
+msgid "Domain controller name"
+msgstr "Domänencontroller Name"
 
-#: windows.py:178
+#: domaincontroller_backup.py:92 domaincontroller_master.py:92
+#: domaincontroller_slave.py:92 ipmanagedclient.py:183 macos.py:233
+#: managedclient.py:87 memberserver.py:92 mobileclient.py:87 thinclient.py:182
+#: windows_domaincontroller.py:110 windows.py:110
+msgid "Domain"
+msgstr "Domäne"
+
+#: domaincontroller_backup.py:111 domaincontroller_master.py:111
+#: domaincontroller_slave.py:111 ipmanagedclient.py:88 macos.py:94
+#: managedclient.py:106 memberserver.py:111 mobileclient.py:106
+#: thinclient.py:87 windows_domaincontroller.py:129 windows.py:129
+msgid "Network"
+msgstr "Netzwerk"
+
+#: domaincontroller_backup.py:131 domaincontroller_master.py:131
+#: domaincontroller_slave.py:131 memberserver.py:131
+#: windows_domaincontroller.py:149
+msgid "System role"
+msgstr "Systemrolle"
+
+#: domaincontroller_backup.py:141 domaincontroller_master.py:141
+#: domaincontroller_slave.py:141 memberserver.py:141
+#: windows_domaincontroller.py:159
+msgid "Service"
+msgstr "Dienst"
+
+#: domaincontroller_backup.py:151 domaincontroller_master.py:151
+#: domaincontroller_slave.py:151 ipmanagedclient.py:108 macos.py:114
+#: managedclient.py:126 memberserver.py:151 mobileclient.py:126
+#: thinclient.py:107 windows_domaincontroller.py:169 windows.py:149
+msgid "Forward zone for DNS entry"
+msgstr "Forward Zone für DNS-Eintrag"
+
+#: domaincontroller_backup.py:162 domaincontroller_master.py:162
+#: domaincontroller_slave.py:162 ipmanagedclient.py:119 macos.py:125
+#: managedclient.py:137 memberserver.py:162 mobileclient.py:137
+#: thinclient.py:118 windows_domaincontroller.py:180 windows.py:160
+msgid "Reverse zone for DNS entry"
+msgstr "Reverse Zone für DNS-Eintrag"
+
+#: domaincontroller_backup.py:173 domaincontroller_master.py:173
+#: domaincontroller_slave.py:173 ipmanagedclient.py:130 macos.py:136
+#: managedclient.py:148 memberserver.py:173 mobileclient.py:148
+#: thinclient.py:129 windows_domaincontroller.py:191 windows.py:171
+msgid "Zone for DNS alias"
+msgstr "Zone für DNS-Alias"
+
+#: domaincontroller_backup.py:194 domaincontroller_master.py:194
+#: domaincontroller_slave.py:194 ipmanagedclient.py:151 macos.py:157
+#: managedclient.py:169 memberserver.py:194 mobileclient.py:169
+#: thinclient.py:150 windows_domaincontroller.py:212 windows.py:192
+msgid "DHCP service"
+msgstr "Service für DHCP-Eintrag"
+
+#: domaincontroller_backup.py:205 domaincontroller_master.py:205
+#: domaincontroller_slave.py:205 macos.py:168 managedclient.py:180
+#: memberserver.py:205 mobileclient.py:180 windows_domaincontroller.py:223
+#: windows.py:203
+msgid "Password"
+msgstr "Passwort"
+
+#: domaincontroller_backup.py:216 domaincontroller_master.py:216
+#: domaincontroller_slave.py:216 macos.py:179 managedclient.py:191
+#: memberserver.py:216 mobileclient.py:191 windows_domaincontroller.py:234
+#: windows.py:225
+msgid "Unix home directory"
+msgstr "Unix Heimatverzeichnis"
+
+#: domaincontroller_backup.py:227 domaincontroller_master.py:227
+#: domaincontroller_slave.py:227 macos.py:190 managedclient.py:202
+#: memberserver.py:227 mobileclient.py:202 windows_domaincontroller.py:245
+#: windows.py:236
+msgid "Login shell"
+msgstr "Anmelde-Shell"
+
+#: domaincontroller_backup.py:238 domaincontroller_master.py:238
+#: domaincontroller_slave.py:238 macos.py:201 managedclient.py:213
+#: memberserver.py:238 mobileclient.py:213 windows_domaincontroller.py:256
+#: windows.py:247
+msgid "Primary group"
+msgstr "Primäre Gruppe"
+
+#: domaincontroller_backup.py:249 domaincontroller_master.py:249
+#: domaincontroller_slave.py:249 managedclient.py:224 memberserver.py:249
+#: mobileclient.py:224
+msgid "(Re-)install on next boot"
+msgstr "(Neu-)Installieren bei nächstem Systemstart"
+
+#: domaincontroller_backup.py:259 domaincontroller_master.py:259
+#: domaincontroller_slave.py:259 managedclient.py:234 memberserver.py:259
+#: mobileclient.py:234
+msgid "Interactive installation"
+msgstr "Interaktive Installation"
+
+#: domaincontroller_backup.py:269 domaincontroller_master.py:269
+#: domaincontroller_slave.py:269 managedclient.py:244 memberserver.py:269
+#: mobileclient.py:244
+msgid "additional start options"
+msgstr "Erweiterte Startoptionen"
+
+#: domaincontroller_backup.py:279 domaincontroller_master.py:279
+#: domaincontroller_slave.py:279 managedclient.py:255 memberserver.py:279
+#: mobileclient.py:255
+msgid "Name of installation profile"
+msgstr "Eindeutiger Installationsprofilname"
+
+#: domaincontroller_backup.py:299 domaincontroller_backup.py:342
+#: domaincontroller_master.py:299 domaincontroller_master.py:342
+#: domaincontroller_slave.py:299 domaincontroller_slave.py:342
+#: ipmanagedclient.py:172 ipmanagedclient.py:210 macos.py:222 macos.py:267
+#: managedclient.py:275 managedclient.py:315 memberserver.py:299
+#: memberserver.py:342 mobileclient.py:275 mobileclient.py:315
+#: thinclient.py:171 thinclient.py:209 windows_domaincontroller.py:277
+#: windows_domaincontroller.py:317 windows.py:268 windows.py:306
+msgid "Groups"
+msgstr "Gruppen"
+
+#: domaincontroller_backup.py:312 domaincontroller_master.py:312
+#: domaincontroller_slave.py:312 ipmanagedclient.py:194 macos.py:244
+#: managedclient.py:288 memberserver.py:312 mobileclient.py:288
+#: thinclient.py:193 trustaccount.py:89 windows_domaincontroller.py:290
+#: windows.py:281
+msgid "General"
+msgstr "Allgemein"
+
+#: domaincontroller_backup.py:312 domaincontroller_master.py:312
+#: domaincontroller_slave.py:312 ipmanagedclient.py:194 macos.py:244
+#: managedclient.py:288 memberserver.py:312 mobileclient.py:288
+#: thinclient.py:193 windows_domaincontroller.py:290 windows.py:281
+msgid "Basic settings"
+msgstr "Rechnerkonto-Einstellungen"
+
+#: domaincontroller_backup.py:317 domaincontroller_master.py:317
+#: domaincontroller_slave.py:317 ipmanagedclient.py:199 macos.py:249
+#: managedclient.py:293 memberserver.py:317 mobileclient.py:293
+#: thinclient.py:198 windows_domaincontroller.py:296 windows.py:287
+msgid "IP"
+msgstr "IP"
+
+#: domaincontroller_backup.py:320 domaincontroller_master.py:320
+#: domaincontroller_slave.py:320 macos.py:252 managedclient.py:296
+#: memberserver.py:320 mobileclient.py:296 windows_domaincontroller.py:299
+#: windows.py:290
+msgid "Account"
+msgstr "Konto"
+
+#: domaincontroller_backup.py:324 domaincontroller_master.py:324
+#: domaincontroller_slave.py:324 macos.py:256 managedclient.py:300
+#: memberserver.py:324 mobileclient.py:300 windows_domaincontroller.py:303
+#: windows.py:295
+msgid "Unix account"
+msgstr "Unix-Konto"
+
+#: domaincontroller_backup.py:324 domaincontroller_master.py:324
+#: domaincontroller_slave.py:324 macos.py:256 managedclient.py:300
+#: memberserver.py:324 mobileclient.py:300 windows_domaincontroller.py:303
+#: windows.py:295
+msgid "Unix account settings"
+msgstr "Unix-Konto-Einstellungen"
+
+#: domaincontroller_backup.py:327 domaincontroller_master.py:327
+#: domaincontroller_slave.py:327 ipmanagedclient.py:202 macos.py:259
+#: managedclient.py:303 memberserver.py:327 mobileclient.py:303
+#: thinclient.py:201 windows_domaincontroller.py:306 windows.py:298
+msgid "DNS"
+msgstr "DNS"
+
+#: domaincontroller_backup.py:327 domaincontroller_master.py:327
+#: domaincontroller_slave.py:327 ipmanagedclient.py:202 macos.py:259
+#: managedclient.py:303 memberserver.py:327 mobileclient.py:303
+#: thinclient.py:201 windows_domaincontroller.py:306 windows.py:298
+msgid "DNS Forward and Reverse Lookup Zone"
+msgstr "DNS Forward und Reverse Lookup Zone"
+
+#: domaincontroller_backup.py:332 domaincontroller_master.py:332
+#: domaincontroller_slave.py:332 ipmanagedclient.py:207 macos.py:264
+#: managedclient.py:308 memberserver.py:332 mobileclient.py:308
+#: thinclient.py:206 windows_domaincontroller.py:311 windows.py:303
+msgid "DHCP"
+msgstr "DHCP"
+
+#: domaincontroller_backup.py:335 domaincontroller_master.py:335
+#: domaincontroller_slave.py:335 memberserver.py:335
+#: windows_domaincontroller.py:314
+msgid "Services"
+msgstr "Dienste"
+
+#: domaincontroller_backup.py:338 domaincontroller_master.py:338
+#: domaincontroller_slave.py:338 managedclient.py:311 memberserver.py:338
+#: mobileclient.py:311
+msgid "Deployment"
+msgstr "(Re)installation"
+
+#: domaincontroller_backup.py:342 domaincontroller_master.py:342
+#: domaincontroller_slave.py:342 ipmanagedclient.py:210 macos.py:267
+#: managedclient.py:315 memberserver.py:342 mobileclient.py:315
+#: thinclient.py:209 windows_domaincontroller.py:317 windows.py:306
+msgid "Group memberships"
+msgstr "Gruppenmitgliedschaften"
+
+#: domaincontroller_backup.py:675 domaincontroller_master.py:672
+#: domaincontroller_slave.py:674 managedclient.py:586 memberserver.py:658
+#: mobileclient.py:583
+msgid "Open Univention Management Console on this computer"
+msgstr "Univention Management Console auf diesem Rechner öffnen"
+
+#: domaincontroller_master.py:54
+msgid "Computer: Domain Controller Master"
+msgstr "Rechner: Domänencontroller Master"
+
+#: domaincontroller_slave.py:54
+msgid "Computer: Domain Controller Slave"
+msgstr "Rechner: Domänencontroller Slave"
+
+#: ipmanagedclient.py:53
+msgid "Computer: IP managed client"
+msgstr "Rechner: IP-Managed-Client"
+
+#: ipmanagedclient.py:59
+msgid "IP managed client name"
+msgstr "Name des IP-Managed-Client"
+
+#: macos.py:51
+msgid "Computer: Mac OS X Client"
+msgstr "Rechner: Mac OS X Client"
+
+#: macos.py:65
+msgid "Client name"
+msgstr "Rechnername"
+
+#: macos.py:104
+msgid "IP Address"
+msgstr "IP-Adresse"
+
+#: managedclient.py:54
+msgid "Computer: Managed Client"
+msgstr "Rechner: Managed Client"
+
+#: managedclient.py:68 mobileclient.py:68
+msgid "Hostname"
+msgstr "Rechnername"
+
+#: memberserver.py:54
+msgid "Computer: Member Server"
+msgstr "Rechner: Member-Server"
+
+#: memberserver.py:73
+msgid "Member server name"
+msgstr "Name des Member-Servers"
+
+#: mobileclient.py:54
+msgid "Computer: Mobile Client"
+msgstr "Rechner: Mobile Client"
+
+#: thinclient.py:52
+msgid "Computer: Thin Client"
+msgstr "Rechner: Thin Client"
+
+#: trustaccount.py:51
+msgid "Computer: Domain trust account"
+msgstr "Rechner: Domain Trust Account"
+
+#: trustaccount.py:76
+msgid "Machine Password"
+msgstr "Rechner Passwort"
+
+#: trustaccount.py:89
+msgid "Basic Values"
+msgstr "Grundeinstellungen"
+
+#: trustaccount.py:92
+msgid "Domain trust account"
+msgstr "Domain Trust Account"
+
+#: trustaccount.py:92
+msgid "Trust account settings"
+msgstr "Domain Trust Account-Einstellungen"
+
+#: windows_domaincontroller.py:54
+msgid "Computer: Windows Domaincontroller"
+msgstr "Rechner: Windows Domänencontroller"
+
+#: windows_domaincontroller.py:73
+msgid "Windows domaincontroller name"
+msgstr "Windows Domänencontroller Name"
+
+#: windows_domaincontroller.py:92 windows.py:92
+msgid "Operating system"
+msgstr "Betriebssystem"
+
+#: windows_domaincontroller.py:101 windows.py:101
+msgid "Operating system version"
+msgstr "Betriebssystem-Version"
+
+#: windows.py:54
+msgid "Computer: Windows Workstation/Server"
+msgstr "Rechner: Windows Workstation/Server"
+
+#: windows.py:73
+msgid "Windows workstation/server name"
+msgstr "Windows Workstaation/Server Name"
+
+#: windows.py:214
 msgid "Initialize password with hostname"
 msgstr "Passwort mit dem Rechnernamen initialisieren"
 
-#: windows.py:231
-msgid "Windows computer"
-msgstr "Windows-Rechner"
+#~ msgid "Group Memberships"
+#~ msgstr "Gruppenmitgliedschaften"
 
-#: windows.py:239
-msgid "Machine account"
-msgstr "Rechnerkonto"
+#~ msgid "Machine account group"
+#~ msgstr "Primäre Rechnergruppe"
 
-#: windows.py:239
-msgid "Machine account settings"
-msgstr "Rechnerkonto-Einstellungen"
+#~ msgid "Windows computer"
+#~ msgstr "Windows-Rechner"
+
+#~ msgid "Machine account"
+#~ msgstr "Rechnerkonto"
+
+#~ msgid "Machine account settings"
+#~ msgstr "Rechnerkonto-Einstellungen"
