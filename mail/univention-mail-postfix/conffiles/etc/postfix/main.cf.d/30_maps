@@ -1,32 +1,34 @@
 @!@
+import re
 sender_canonical_maps = []
-val = configRegistry.get('mail/maps/canonical/sender/enable','').split(' ')
+val = re.split('[, ]+', configRegistry.get('mail/maps/canonical/sender/enable',''))
 if 'file' in val:
 	sender_canonical_maps.append('hash:/etc/postfix/canonical_sender')
 if 'ldap' in val:
 	sender_canonical_maps.append('ldap:ldapcanonicalsender')
 if sender_canonical_maps:
-	val_classes = [ x for x in configRegistry.get('mail/maps/canonical/sender/classes','').split(' ') if x ]
+	val_classes = [ x for x in re.split('[, ]+', configRegistry.get('mail/maps/canonical/sender/classes','')) if x ]
 	if val_classes:
 		print 'sender_canonical_classes = %s' % ', '.join(val_classes)
 	print 'sender_canonical_maps = %s' % ', '.join(sender_canonical_maps)
 
 recipient_canonical_maps = []
-val = configRegistry.get('mail/maps/canonical/recipient/enable','').split(' ')
+val = re.split('[, ]+', configRegistry.get('mail/maps/canonical/recipient/enable',''))
 if 'file' in val:
 	recipient_canonical_maps.append('hash:/etc/postfix/canonical_recipient')
 if 'ldap' in val:
 	recipient_canonical_maps.append('ldap:ldapcanonicalrecipient')
 if recipient_canonical_maps:
-	val_classes = [ x for x in configRegistry.get('mail/maps/canonical/recipient/classes','').split(' ') if x ]
+	val_classes = [ x for x in re.split('[, ]+', configRegistry.get('mail/maps/canonical/recipient/classes','')) if x ]
 	if val_classes:
 		print 'recipient_canonical_classes = %s' % ', '.join(val_classes)
 	print 'recipient_canonical_maps = %s' % ', '.join(recipient_canonical_maps)
 
+default_virtual_maps = 'hash:/etc/postfix/virtual, ldap:ldapgroups, ldap:ldapdistlist, ldap:ldapsharedfolderremote, ldap:ldapsharedfolderlocal, ldap:ldapvirtual'
+virtual_maps = re.split(',\s*',	configRegistry.get('mail/postfix/maps/virtual', default_virtual_maps ))
 if 'ldap' in val:
-	print 'virtual_maps = hash:/etc/postfix/virtual, ldap:ldapgroups, ldap:ldapdistlist, ldap:ldapsharedfolderremote, ldap:ldapsharedfolderlocal, ldap:ldapvirtual, ldap:ldapvirtualwithcanonical'
-else:
-	print 'virtual_maps = hash:/etc/postfix/virtual, ldap:ldapgroups, ldap:ldapdistlist, ldap:ldapsharedfolderremote, ldap:ldapsharedfolderlocal, ldap:ldapvirtual'
+	virtual_maps.append('ldap:ldapvirtualwithcanonical')
+print 'virtual_maps = %s' % ', '.join(virtual_maps)
 @!@
 
 canonical_maps = hash:/etc/postfix/canonical
