@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.64-1) unstable; urgency=low
+
+  * Added udm module for Windows DCs: computers/windows_domaincontroller
+    (Bug #23477)
+  * Adjust comouter/windows to other computer/-modules (Bug #23476)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Aug 2011 07:57:57 +0200
+
 univention-directory-manager-modules (7.0.63-1) unstable; urgency=low
 
   * fixed error when setting default value for gecos via the CLI (Bug #23431)

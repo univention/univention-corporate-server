@@ -44,6 +44,7 @@ import univention.admin.handlers.computers.macos
 import univention.admin.handlers.computers.mobileclient
 import univention.admin.handlers.computers.ipmanagedclient
 import univention.admin.handlers.computers.windows
+import univention.admin.handlers.computers.windows_domaincontroller
 import univention.admin.handlers.computers.domaincontroller_master
 import univention.admin.handlers.computers.domaincontroller_backup
 import univention.admin.handlers.computers.domaincontroller_slave
@@ -56,7 +57,18 @@ wizardmenustring=_("Computer")
 wizarddescription=_("Add, edit and delete computers")
 wizardoperations={"add":[_("Add"), _("Add Computer")],"find":[_("Search"), _("Search computer(s)")]}
 
-childmodules=["computers/managedclient","computers/macos","computers/thinclient","computers/windows","computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver", "computers/mobileclient", "computers/trustaccount", "computers/ipmanagedclient"]
+childmodules=[	"computers/managedclient",
+				"computers/macos",
+				"computers/thinclient",
+				"computers/windows",
+				"computers/domaincontroller_master",
+				"computers/domaincontroller_backup",
+				"computers/domaincontroller_slave",
+				"computers/memberserver",
+				"computers/windows_domaincontroller",
+				"computers/mobileclient",
+				"computers/trustaccount",
+				"computers/ipmanagedclient"]
 
 childs=0
 short_description=_('Computer')

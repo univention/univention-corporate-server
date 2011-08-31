@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  admin module for the windows hosts
+#  admin module for Windows servers
 #
 # Copyright 2004-2011 Univention GmbH
 #
@@ -46,12 +46,12 @@ import univention.admin.handlers.networks.network
 translation=univention.admin.localization.translation('univention.admin.handlers.computers')
 _=translation.translate
 
-module='computers/windows'
+module='computers/windows_domaincontroller'
 operations=['add','edit','remove','search','move']
 usewizard=1
 docleanup=1
 childs=0
-short_description=_('Computer: Windows Workstation/Server')
+short_description=_('Computer: Windows Domaincontroller')
 long_description=''
 options={
 	'posix': univention.admin.option(
@@ -70,7 +70,7 @@ options={
 }
 property_descriptions={
 	'name': univention.admin.property(
-			short_description=_('Windows workstation/server name'),
+			short_description=_('Windows domaincontroller name'),
 			long_description='',
 			syntax=univention.admin.syntax.dnsName_umlauts,
 			multivalue=0,
@@ -145,6 +145,26 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'serverRole': univention.admin.property(
+			short_description=_('System role'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'service': univention.admin.property(
+			short_description=_('Service'),
+			long_description='',
+			syntax=univention.admin.syntax.service,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'dnsEntryZoneForward': univention.admin.property(
 			short_description=_('Forward zone for DNS entry'),
 			long_description='',
@@ -209,17 +229,6 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 			dontsearch=1
-		),
-	'ntCompatibility': univention.admin.property(
-			short_description=_('Initialize password with hostname'),
-			long_description='Needed To Join NT4 Worstations',
-			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
-			options=[],
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			identifies=0
 		),
 	'unixhome': univention.admin.property(
 			short_description=_('Unix home directory'),
@@ -289,7 +298,6 @@ layout = [
 		] ),
 	Tab( _( 'Account' ), _( 'Account' ), advanced = True, layout = [
 		'password',
-		'ntCompatibility',
 		'primaryGroup'
 		] ),
 	Tab( _( 'Unix account' ), _( 'Unix account settings' ), advanced = True, layout = [
@@ -303,10 +311,13 @@ layout = [
 	Tab( _( 'DHCP' ), _( 'DHCP' ), layout = [
 		'dhcpEntryZone'
 		] ),
+	Tab( _( 'Services' ), _( 'Services' ), advanced = True, layout = [
+		'service',
+		] ),
 	Tab( _( 'Groups' ), _( 'Group memberships' ), advanced = True, layout = [
 		'groups',
 		] )
-]
+ ]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
@@ -315,12 +326,13 @@ mapping.register('operationgSystem', 'univenitonOperatingSystem', None, univenti
 mapping.register('operationgSystemVersion', 'univentionOperatingSystemVersion', None, univention.admin.mapping.ListToString)
 mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.ListToString)
 mapping.register('inventoryNumber', 'univentionInventoryNumber')
+mapping.register('serverRole', 'univentionServerRole')
 mapping.register('mac', 'macAddress' )
 mapping.register('ip', 'aRecord' )
 mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
 mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
 mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString)
-
+mapping.register('service', 'univentionService')
 
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
@@ -403,7 +415,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		else:
 			self.modifypassword=0
 			if 'posix' in self.options:
-				res=univention.admin.config.getDefaultValue(self.lo, 'computerGroup', position=self.position)
+				res=univention.admin.config.getDefaultValue(self.lo, 'univentionDefaultDomainControllerGroup', position=self.position)
 				if res:
 					self['primaryGroup']=res
 					#self.save()
@@ -468,7 +480,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 			self.modifypassword=0
 		if 'samba' in self.options:
-			acctFlags=univention.admin.samba.acctFlags(flags={'W':1})
+			acctFlags=univention.admin.samba.acctFlags(flags={'S':1})
 			self.machineSid = self.getMachineSid(self.lo, self.position, self.uidNum)
 			self.alloc.append(('sid',self.machineSid))
 			ocs.append('sambaSamAccount')
@@ -478,8 +490,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			self.old_samba_option = True
 
 		al.insert(0, ('objectClass', ocs))
-		# new since UCS 3.0, old Windows clients don't have this attribute
-		al.append(('univentionServerRole', '', 'windows_client'))
+		al.append(('univentionServerRole', '', 'windows_domaincontroller'))
 		return al
 
 	def _ldap_post_create(self):
@@ -554,10 +565,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		ml=univention.admin.handlers.simpleComputer._ldap_modlist( self )
 
 		self.nagios_ldap_modlist(ml)
-
-		if self.hasChanged('ntCompatibility') and self['ntCompatibility'] == '1':
-			self['password'] = self['name'].replace('$','').lower()
-			self.modifypassword = 1
 
 		if self.modifypassword and self['password']:
 			if 'kerberos' in self.options:
@@ -639,7 +646,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		filter=univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'univentionHost'),
 			univention.admin.filter.expression('objectClass', 'univentionWindows'),
-			univention.admin.filter.conjunction('!',[univention.admin.filter.expression('univentionServerRole', 'windows_domaincontroller')]),
+			univention.admin.filter.expression('univentionServerRole', 'windows_domaincontroller'),
 			])
 
 		if filter_s:
@@ -652,4 +659,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-	return 'univentionHost' in attr.get('objectClass', []) and 'univentionWindows' in attr.get('objectClass', []) and not 'windows_domaincontroller' in attr.get('univentionServerRole', [])
+	return 'univentionHost' in attr.get('objectClass', []) and 'univentionWindows' in attr.get('objectClass', []) and 'windows_domaincontroller' in attr.get('univentionServerRole', [])
