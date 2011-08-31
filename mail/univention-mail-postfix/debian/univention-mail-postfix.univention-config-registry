@@ -46,10 +46,6 @@ Variables: mail/postfix/maps/virtual
 
 Type: subfile
 Multifile: etc/postfix/main.cf
-Subfile: etc/postfix/main.cf.d/40_ldap
-
-Type: subfile
-Multifile: etc/postfix/main.cf
 Subfile: etc/postfix/main.cf.d/50_restrictions
 
 Type: subfile
@@ -133,6 +129,9 @@ Variables: mail/maps/transport/.*
 
 Type: multifile
 Multifile: etc/postfix/ldap.groups
+User: postfix
+Group: root
+Mode: 0440
 
 Type: subfile
 Multifile: etc/postfix/ldap.groups
@@ -140,6 +139,9 @@ Subfile: etc/postfix/ldap.groups.d/10_base
 
 Type: multifile
 Multifile: etc/postfix/ldap.transport
+User: postfix
+Group: root
+Mode: 0440
 
 Type: subfile
 Multifile: etc/postfix/ldap.transport
@@ -147,18 +149,15 @@ Subfile: etc/postfix/ldap.transport.d/10_base
 
 Type: multifile
 Multifile: etc/postfix/ldap.virtualwithcanonical
+User: postfix
+Group: root
+Mode: 0440
 
 Type: subfile
 Multifile: etc/postfix/ldap.virtualwithcanonical
 Subfile: etc/postfix/ldap.virtualwithcanonical.d/10_base
 
 Type: multifile
-Multifile: etc/postfix/transport
-
-Type: subfile
-Multifile: etc/postfix/transport
-Subfile: etc/postfix/transport.d/10_base
-
 Multifile: etc/postfix/ldap.sharedfolderremote
 User: postfix
 Group: root
