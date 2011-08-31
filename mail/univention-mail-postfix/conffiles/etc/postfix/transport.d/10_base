@@ -10,18 +10,6 @@ for key in configRegistry.keys():
 			print '%-30s %s' % (domain, transp)
 		else:
 			print val
-
-# TODO FIXME
-#fqdn='%s.%s' % (configRegistry['hostname'], configRegistry['domainname'])
-#if configRegistry.has_key('mail/hosteddomains'):
-# 	all_hosted_domains = re.split('[ ,]+', configRegistry['mail/hosteddomains'])
-# 	for hosted_domain in all_hosted_domains:
-# 		print '%-30s kolabmailboxfilter' % (hosted_domain)
-# 	if not fqdn in all_hosted_domains:
-# 		print '%-30s local' % ( fqdn )
-#else:
-# 	print '%-30s kolabmailboxfilter' % (configRegistry['domainname'])
-# 	print '%-30s local' % ( fqdn )
 @!@
 
 
