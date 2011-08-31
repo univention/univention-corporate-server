@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Mail Postfix
+# Univention Mail Server
 #  join script
 #
-# Copyright 2005-2011 Univention GmbH
+# Copyright 2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -37,10 +37,14 @@ joinscript_init
 
 eval "$(ucr shell)"
 
-res="$(udm container/dc list $@ --dn "$ldap_base" | grep ".*mailRelay: " | awk -F ': ' '{print $2}')"
+# set default mailserver if unset at ldap root object
+res="$(udm container/dc list "$@" --dn "$ldap_base" | grep ".*mailRelay: " | awk -F ': ' '{print $2}')"
 if [ "$res" = "None" ]; then
-	udm container/dc modify $@ --dn "$ldap_base" --set mailRelay="$hostname.$domainname"
+	udm container/dc modify "$@" --dn "$ldap_base" --set mailRelay="$hostname.$domainname"
 fi
+
+# add service to my host object
+ucs_addServiceToLocalhost "Mail Server" "$@"
 
 joinscript_save_current_version
 
