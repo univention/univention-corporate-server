@@ -41,6 +41,7 @@ Variables: mail/postfix/smtp/hostlookup
 Type: subfile
 Multifile: etc/postfix/main.cf
 Subfile: etc/postfix/main.cf.d/30_maps
+Variables: mail/postfix/maps/virtual
 
 Type: subfile
 Multifile: etc/postfix/main.cf
@@ -48,11 +49,13 @@ Subfile: etc/postfix/main.cf.d/40_ldap
 
 Type: subfile
 Multifile: etc/postfix/main.cf
-Subfile: etc/postfix/main.cf.d/50_kolab
+Subfile: etc/postfix/main.cf.d/50_restrictions
 
 Type: subfile
 Multifile: etc/postfix/main.cf
 Subfile: etc/postfix/main.cf.d/60_tls
+Variables: mail/postfix/ssl/certificate
+Variables: mail/postfix/ssl/key
 
 Type: subfile
 Multifile: etc/postfix/main.cf
@@ -81,10 +84,6 @@ Subfile: etc/postfix/master.cf.d/10_services
 Type: subfile
 Multifile: etc/postfix/master.cf
 Subfile: etc/postfix/master.cf.d/30_antivir
-
-Type: subfile
-Multifile: etc/postfix/master.cf
-Subfile: etc/postfix/master.cf.d/60_kolab
 
 Type: subfile
 Multifile: etc/postfix/master.cf
