@@ -36,6 +36,7 @@ Variables: mail/postfix/smtpd/restrictions/recipient/.*
 Type: subfile
 Multifile: etc/postfix/main.cf
 Subfile: etc/postfix/main.cf.d/10_general
+Variables: mail/postfix/smtp/hostlookup
 
 Type: subfile
 Multifile: etc/postfix/main.cf
