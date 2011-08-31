@@ -1,3 +1,10 @@
+univention-samba4 (1.0.30-2) experimental; urgency=low
+
+  * add copyright header to check_essential_samba4_dns_records.sh
+    (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 31 Aug 2011 18:19:56 +0200
+
 univention-samba4 (1.0.30-1) experimental; urgency=low
 
   * this package replaces univention-heimdal-kdc (Bug #22600)
