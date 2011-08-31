@@ -37,6 +37,7 @@ univention-config-registry set \
 	postfix/autostart?yes \
 	mail/postfix/virtual/enabled=no \
 	mail/postfix/transport/ldap/enabled=no \
+	mail/postfix/inet/interfaces?127.0.0.1 \
 	mail/maps/canonical/sender/classes?header_sender \
 	mail/postfix/ldap/timeout?15 \
 	mail/postfix/policy/listfilter?no \

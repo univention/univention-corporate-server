@@ -41,6 +41,8 @@ Variables: mail/postfix/maps/transport
 Variables: mail/postfix/mydestination
 Variables: mail/postfix/relay/domains
 Variables: mail/postfix/transport/ldap/enabled
+Variables: mail/postfix/inet/interfaces
+Variables: mail/postfix/inet/protocols
 
 Type: subfile
 Multifile: etc/postfix/main.cf

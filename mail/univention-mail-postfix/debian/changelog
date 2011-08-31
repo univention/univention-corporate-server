@@ -1,5 +1,12 @@
+univention-mail-postfix (6.0.1-1) unstable; urgency=low
+
+  * added UCR variables mail/postfix/inet/interfaces and
+    mail/postfix/inet/protocols (Bug #10527)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 31 Aug 2011 19:12:35 +0200
+
 univention-mail-postfix (6.0.0-0) unstable; urgency=low
 
-  * bumped version for UCS 3.0
+  * bumped version for UCS 3.0 (Bug #22369)
 
  -- Sönke Schwardt <schwardt@univention.de>  Tue, 03 May 2011 17:25:24 +0200

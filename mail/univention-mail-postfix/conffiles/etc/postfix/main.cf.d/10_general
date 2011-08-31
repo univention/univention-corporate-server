@@ -43,6 +43,12 @@ append_dot_mydomain = no
 @!@
 import re
 
+if configRegistry.get('mail/postfix/inet/interfaces'):
+	print 'inet_interfaces = %s' % configRegistry.get('mail/postfix/inet/interfaces')
+print 'inet_protocols = %s' % configRegistry.get('mail/postfix/inet/protocols', 'ipv4')
+
+print
+
 print 'mydestination = %s' % configRegistry.get('mail/postfix/mydestination', '$myhostname, localhost.$mydomain, localhost')
 print 'mynetworks = %s' % configRegistry.get('mail/postfix/mynetworks', '127.0.0.0/8')
 
