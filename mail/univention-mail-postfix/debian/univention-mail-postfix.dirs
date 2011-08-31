@@ -1,3 +1,2 @@
-usr/lib/univention-install/
-etc/univention/daemons/
+usr/lib/univention-install
 usr/share/univention-mail-postfix

@@ -1,15 +1,36 @@
 Source: univention-mail-postfix
 Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
-Standards-Version: 3.5.5
-Build-Depends: debhelper, univention-config-dev
+Build-Depends: debhelper (>> 7), 
+  univention-config-dev, 
+  ucslint
+Standards-Version: 3.8.2
 
 Package: univention-mail-postfix
 Architecture: all
-Depends: postfix, postfix-ldap, sasl2-bin, univention-kolab2-framework, libpam-univentionmailcyrus, univention-antivir-mail, univention-spamassassin, univention-config-registry
+Depends: postfix, 
+  postfix-ldap, 
+  sasl2-bin, 
+  libpam-univentionmailcyrus, 
+  univention-config-registry
 Conflicts: univention-mail, univention-mail-postfix-forward, exim4, exim4-base, exim4-config
-Provides: univention-mail-postfix, univention-mail-postfix-forward
+Provides: univention-mail-postfix-forward
 Replaces: univention-mail-postfix-forward
+Description: UCS - postfix configuration
+ This package contains a basic configuration for the postfix
+ mail transport agent.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-mail-server
+Architecture: all
+Depends: univention-mail-postfix, univention-antivir-mail, univention-spamassassin
+Conflicts: univention-mail-postfix-kolab2
+Provides: univention-mail-postfix-kolab2
+Replaces: univention-mail-postfix-kolab2
 Description: UCS - postfix configuration
  This package contains the configuration for the postfix
  mail transport agent.
