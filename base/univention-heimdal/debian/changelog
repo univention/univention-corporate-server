@@ -1,3 +1,10 @@
+univention-heimdal (5.0.6-2) unstable; urgency=low
+
+  * univention-heimdal-kdc.conffiles should be constructed at build-time
+    from univention-heimdal-kdc.univention-config-registry (Bug #22600)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 31 Aug 2011 18:09:35 +0200
+
 univention-heimdal (5.0.6-1) unstable; urgency=low
 
   * new package univention-heimdal-common to ship /etc/krb5.conf
