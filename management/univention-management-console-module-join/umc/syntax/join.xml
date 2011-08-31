@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <definitions>
+  	<syntax base="String" name="Join-Query-Scope">
+  		<!--  should allow only values 'scripts' and 'logview' -->
+  	</syntax>
+  	<syntax base="StringList" name="Join-Invoke-Scripts">
+  	</syntax>
+  </definitions>
+</umc>

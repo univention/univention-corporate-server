@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="join" icon="join" version="1.0">
+	<name>Domain join</name>
+	<description>Show overview of join scripts</description>
+	<categories>
+	  <category name="system"/>
+	</categories>
+	<command name="join/query" function="query">
+		<attribute name="scope" syntax="Join-Query-Scope"/>
+	</command>
+	<command name="join/run" function="run">
+		<attribute name="scripts" syntax="Join-Run-Scripts"/>
+	</command>
+	<command name="join/join" function="join">
+		<attribute name="host" syntax="String"/>
+		<attribute name="user" syntax="String"/>
+		<attribute name="pass" syntax="String"/>
+	</command>
+  </module>
+</umc>
