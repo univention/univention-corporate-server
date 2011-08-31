@@ -1,3 +1,9 @@
+univention-lib (1.0.16-3) unstable; urgency=low
+
+  * Fix template removal in remove_ucr_template (Bug #22611)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 31 Aug 2011 17:19:44 +0200
+
 univention-lib (1.0.16-2) unstable; urgency=low
 
   * New function remove_ucr_template to remove a template for

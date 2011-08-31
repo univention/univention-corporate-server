@@ -20,6 +20,6 @@ remove_ucr_template () {
 	fi
 
 	if [ -e /etc/univention/templates/files/"$1" ] ; then
-	    mv /etc/univention/templates/files/"$1" /etc/univention/templates/removed/"$1".template
+	    mv /etc/univention/templates/files/"$1" /etc/univention/templates/removed/`basename "$1"`.template
 	fi
 }
