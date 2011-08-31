@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os
+import subprocess
 
 var = 'mail/archivefolder'
 cmd = '/usr/sbin/univention-cyrus-mkdir'
@@ -39,4 +39,4 @@ def handler(configRegistry, changes):
 	folder = configRegistry.get(var)
 	if folder:
 		print '', folder
-		os.system('%s %s' % (cmd, folder))
+		subprocess.call([cmd, folder])
