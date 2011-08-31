@@ -30,7 +30,7 @@ myorigin = @%@hostname@%@.@%@domainname@%@
 @!@
 print 'smtp_helo_name = %s' % configRegistry.get('mail/smtp/helo/name', '%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname')))
 print
-if configRegistry.is_false('mail/postfix/dnslookups', True):
+if configRegistry.is_false('mail/postfix/dnslookups', False):
 	print 'disable_dns_lookups = yes'
 if configRegistry.is_true('mail/postfix/softbounce', False):
 	print 'soft_bounce = yes'
@@ -53,18 +53,9 @@ print 'transport_maps = %s' % configRegistry.get('mail/postfix/maps/transport', 
 
 print
 
-all_hosted_domains = set()
-all_hosted_domains.update( re.split('[ ,]+', configRegistry.get('mail/hosteddomains','')) )
-all_hosted_domains.update( re.split('[ ,]+', configRegistry.get('mail/postfix/mydomains','')) )
-all_hosted_domains = ', '.join([ x for x in all_hosted_domains if x ])
-if not all_hosted_domains:
-	all_hosted_domains = '$mydomain'
-
-print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, localhost, %s' % all_hosted_domains
+print 'mydestination = %s' % configRegistry.get('mail/postfix/mydestination', '$myhostname, localhost.$mydomain, localhost')
 print 'mynetworks = %s' % configRegistry.get('mail/postfix/mynetworks', '127.0.0.0/8')
 @!@
-
-# relay_domains = $mydestination
 
 # we need to name a smtp relay host to which we forward non-local
 # mails. smtp authentication is also possible.
