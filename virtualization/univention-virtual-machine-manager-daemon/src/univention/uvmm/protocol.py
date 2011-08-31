@@ -214,7 +214,7 @@ class Request_STORAGE_VOLUMES(Request):
 		self.type = None # DISK CDROM
 
 class Request_STORAGE_VOLUMES_DESTROY(Request):
-	"""List all volumes in pool."""
+	"""Destroy all given volumes in a pool."""
 	def _default(self):
 		self.command = 'STORAGE_VOLUMES_DESTROY'
 		self.uri = None

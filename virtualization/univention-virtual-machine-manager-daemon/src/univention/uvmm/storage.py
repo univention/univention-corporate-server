@@ -236,9 +236,11 @@ def get_all_storage_volumes(conn, domain):
 		source = disk.getElementsByTagName('source')
 		try:
 			source = source[0]
-		except IndexError:
+			vol = source.getAttribute('file')
+			if vol:
+				volumes.append(vol)
+		except LookupError:
 			continue
-		volumes.append(source.getAttribute('file'))
 	return volumes
 
 def destroy_storage_volumes(conn, volumes, ignore_error=False):

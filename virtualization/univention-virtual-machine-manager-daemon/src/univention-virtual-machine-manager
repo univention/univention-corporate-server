@@ -448,16 +448,21 @@ class Client(object):
 		pprint(domain.__dict__)
 		return protocol.Request_DOMAIN_DEFINE(uri=uri, domain=domain)
 
-	def undefine(self, uri, domain):
+	def undefine(self, uri, domain, *volumes):
 		"""
-		%prog undefine <uri> <domain>
+		%prog undefine <uri> <domain> [volumes...]
 
 		Undefine the domain <domain> on the virtualization server specifies by
-		<uri>.
+		<uri> and optionally delete the given <volumes>.
+		All file-volumes of the domain (including shared volumes!) are deleted
+		if "ALL" is given two times.
 		Examples:
 			%prog undefine xen://server.domain.name/ 1-2-3-4-5
+			%prog undefine xen://server.domain.name/ 1-2-3-4-5 ALL ALL
 		"""
-		return protocol.Request_DOMAIN_UNDEFINE(uri=uri, domain=domain, volumes=arguments)
+		if ('ALL', 'ALL') == volumes:
+			volumes = None
+		return protocol.Request_DOMAIN_UNDEFINE(uri=uri, domain=domain, volumes=volumes)
 
 	def pools(self, uri):
 		"""
