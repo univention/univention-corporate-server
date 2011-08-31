@@ -53,3 +53,21 @@ design/usr/share/icons/crystalsvg-univention-23/32x32/apps/kmenu.png usr/share/i
 design/usr/share/icons/crystalsvg-univention-23/48x48/apps/kmenu.png usr/share/icons/crystalsvg-univention-23/48x48/apps/
 design/usr/share/icons/crystalsvg-univention-23/64x64/apps/kmenu.png usr/share/icons/crystalsvg-univention-23/64x64/apps/
 design/usr/share/icons/crystalsvg-univention-23/128x128/apps/kmenu.png usr/share/icons/crystalsvg-univention-23/128x128/apps/
+design/usr/share/wallpapers/UCS-3.0/contents/images/*.png usr/share/wallpapers/UCS-3.0/contents/images/
+design/usr/share/wallpapers/UCS-3.0/contents/screenshot.png usr/share/wallpapers/UCS-3.0/contents/
+design/usr/share/wallpapers/UCS-3.0/metadata.desktop usr/share/wallpapers/UCS-3.0/
+design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1400x1050/background.png usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1400x1050/
+design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1600x1200/*.png usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1600x1200/
+design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1600x1200/description.txt usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1600x1200/
+design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1680x1050/background.png usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1680x1050/
+design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1920x1200/background.png usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1920x1200/
+design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/800x600/background.png usr/share/kde4/apps/ksplash/Themes/UCS-3.0/800x600/
+design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1440x900/background.png usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1440x900/
+design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1280x1024/background.png usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1280x1024/
+design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/640x480/background.png usr/share/kde4/apps/ksplash/Themes/UCS-3.0/640x480/
+design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1920x1080/background.png usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1920x1080/
+design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/Theme.rc usr/share/kde4/apps/ksplash/Themes/UCS-3.0/
+design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1024x768/background.png usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1024x768/ 
+design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/Preview.png usr/share/kde4/apps/ksplash/Themes/UCS-3.0/
+
+
