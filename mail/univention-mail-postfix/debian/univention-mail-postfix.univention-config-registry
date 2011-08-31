@@ -38,11 +38,19 @@ Multifile: etc/postfix/main.cf
 Subfile: etc/postfix/main.cf.d/10_general
 Variables: mail/postfix/smtp/hostlookup
 Variables: mail/postfix/maps/transport
+Variables: mail/postfix/mydestination
+Variables: mail/postfix/relay/domains
+Variables: mail/postfix/transport/ldap/enabled
 
 Type: subfile
 Multifile: etc/postfix/main.cf
 Subfile: etc/postfix/main.cf.d/30_maps
-Variables: mail/postfix/maps/virtual
+Variables: mail/postfix/virtual/alias/domains
+Variables: mail/postfix/virtual/alias/maps
+Variables: mail/postfix/virtual/mailbox/domains
+Variables: mail/postfix/virtual/mailbox/maps
+Variables: mail/postfix/virtual/transport
+Variables: mail/postfix/virtual/enabled
 
 Type: subfile
 Multifile: etc/postfix/main.cf
