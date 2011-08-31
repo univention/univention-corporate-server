@@ -159,15 +159,14 @@ Type: subfile
 Multifile: etc/postfix/transport
 Subfile: etc/postfix/transport.d/10_base
 
-Type: multifile
-Multifile: etc/postfix/ldap.sharefolderremote
+Multifile: etc/postfix/ldap.sharedfolderremote
 User: postfix
 Group: root
 Mode: 0440
 
 Type: subfile
-Multifile: etc/postfix/ldap.sharefolderremote
-Subfile: etc/postfix/ldap.sharefolderremote.d/10_base
+Multifile: etc/postfix/ldap.sharedfolderremote
+Subfile: etc/postfix/ldap.sharedfolderremote.d/10_base
 
 Type: multifile
 Multifile: etc/postfix/ldap.virtual
@@ -180,14 +179,14 @@ Multifile: etc/postfix/ldap.virtual
 Subfile: etc/postfix/ldap.virtual.d/10_base
 
 Type: multifile
-Multifile: etc/postfix/ldap.sharefolderlocal
+Multifile: etc/postfix/ldap.sharedfolderlocal
 User: postfix
 Group: root
 Mode: 0440
 
 Type: subfile
-Multifile: etc/postfix/ldap.sharefolderlocal
-Subfile: etc/postfix/ldap.sharefolderlocal.d/10_base
+Multifile: etc/postfix/ldap.sharedfolderlocal
+Subfile: etc/postfix/ldap.sharedfolderlocal.d/10_base
 
 Type: multifile
 Multifile: etc/postfix/ldap.canonicalrecipient
