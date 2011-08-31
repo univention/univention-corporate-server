@@ -1,0 +1,16 @@
+@%@UCRWARNING=# @%@
+#
+# LDAP Recipient Canonical Maps support
+#
+
+server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
+search_base = @%@ldap/base@%@
+query_filter = (&(univentionCanonicalRecipientRewriteEnabled=1)(|(univentionPublicPrimaryMailAddress=%s)(univentionPublicAlternativeMailAddress=%s)))
+result_attribute = univentionInternalPrimaryMailAddress
+search_timeout = @%@mail/postfix/ldap/timeout@%@
+scope = sub
+version = 3
+bind_dn = @%@ldap/hostdn@%@
+@!@
+print 'bind_pw = %s' % (open('/etc/machine.secret','r').read())
+@!@

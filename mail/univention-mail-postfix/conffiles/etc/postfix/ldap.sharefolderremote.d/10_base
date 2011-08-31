@@ -1,0 +1,18 @@
+@%@UCRWARNING=# @%@
+#
+# LDAP mail2sharedfolder support
+# find mail address for shared imap folders and do not rewrite recipient address if kolabHomeServer is NOT $myhostname
+#
+
+server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
+search_base = @%@ldap/base@%@
+query_filter = (&(objectClass=univentionKolabSharedFolder)(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s))(!(kolabHomeServer=$myhostname)))
+result_attribute = mailPrimaryAddress
+result_format = %s
+search_timeout = @%@mail/postfix/ldap/timeout@%@
+scope = sub
+version = 3
+bind_dn = @%@ldap/hostdn@%@
+@!@
+print 'bind_pw = %s' % (open('/etc/machine.secret','r').read())
+@!@

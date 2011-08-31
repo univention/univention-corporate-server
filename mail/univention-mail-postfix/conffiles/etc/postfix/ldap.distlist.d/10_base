@@ -1,0 +1,17 @@
+@%@UCRWARNING=# @%@
+#
+# LDAP Distributionlist support
+#
+
+server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
+search_base = @%@ldap/base@%@
+domain = $mydestination
+query_filter = (&(objectClass=univentionKolabGroup)(mailPrimaryAddress=%s))
+result_attribute = univentionKolabMember
+search_timeout = @%@mail/postfix/ldap/timeout@%@
+scope = sub
+version = 3
+bind_dn = @%@ldap/hostdn@%@
+@!@
+print 'bind_pw = %s' % (open('/etc/machine.secret','r').read())
+@!@

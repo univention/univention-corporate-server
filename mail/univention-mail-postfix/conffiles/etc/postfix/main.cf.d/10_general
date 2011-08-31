@@ -41,13 +41,18 @@ if configRegistry.get('mail/postfix/smtp/hostlookup'):
 append_dot_mydomain = no
 
 @!@
+import re
+
 print 'masquerade_domains = %s' % configRegistry.get('postfix/masquerade/domains', '$mydomain')
 print 'masquerade_exceptions = %s' % configRegistry.get('postfix/masquerade/exceptions', 'root')
-@!@
 
-transport_maps = hash:/etc/postfix/transport, ldap:ldaphomeservertransport
-@!@
-import re
+print
+
+default_transport_maps = 'hash:/etc/postfix/transport, ldap:/etc/postfix/ldap.transport'
+print 'transport_maps = %s' % configRegistry.get('mail/postfix/maps/transport', default_transport_maps )
+
+print
+
 all_hosted_domains = set()
 all_hosted_domains.update( re.split('[ ,]+', configRegistry.get('mail/hosteddomains','')) )
 all_hosted_domains.update( re.split('[ ,]+', configRegistry.get('mail/postfix/mydomains','')) )

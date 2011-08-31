@@ -1,0 +1,18 @@
+@%@UCRWARNING=# @%@
+#
+# LDAP Transport for multilocation support
+# if mail shall not be delivered locally then send it to kolabHomeServer
+#
+
+server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
+search_base = @%@ldap/base@%@
+query_filter = (&(mailPrimaryAddress=%s)(|(objectClass=kolabInetOrgPerson)(objectClass=univentionKolabSharedFolder))(!(univentionMailHomeServer=$myhostname)))
+result_attribute = kolabHomeServer
+result_format = smtp:[%s]
+search_timeout = @%@mail/postfix/ldap/timeout@%@
+scope = sub
+version = 3
+bind_dn = @%@ldap/hostdn@%@
+@!@
+print 'bind_pw = %s' % (open('/etc/machine.secret','r').read())
+@!@

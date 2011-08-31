@@ -1,0 +1,16 @@
+@%@UCRWARNING=# @%@
+#
+# LDAP Mail Groups
+#
+
+server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
+search_base = @%@ldap/base@%@
+query_filter = (&(mailPrimaryAddress=%s)(objectclass=posixGroup))
+result_attribute = uid
+special_result_attribute = uniqueMember
+scope = sub
+version = 3
+bind_dn = @%@ldap/hostdn@%@
+@!@
+print 'bind_pw = %s' % (open('/etc/machine.secret','r').read())
+@!@

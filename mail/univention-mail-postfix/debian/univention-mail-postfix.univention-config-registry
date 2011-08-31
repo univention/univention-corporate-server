@@ -37,6 +37,7 @@ Type: subfile
 Multifile: etc/postfix/main.cf
 Subfile: etc/postfix/main.cf.d/10_general
 Variables: mail/postfix/smtp/hostlookup
+Variables: mail/postfix/maps/transport
 
 Type: subfile
 Multifile: etc/postfix/main.cf
@@ -91,14 +92,11 @@ Subfile: etc/postfix/master.cf.d/70_policy
 
 Type: multifile
 Multifile: etc/postfix/transport
-Variables: hostname
-Variables: domainname
-Variables: mail/hosteddomains
-Variables: mail/maps/transport/.*
 
 Type: subfile
 Multifile: etc/postfix/transport
 Subfile: etc/postfix/transport.d/10_base
+Variables: mail/maps/transport/.*
 
 Type: file
 File: etc/mailname
@@ -132,3 +130,91 @@ Type: module
 Module: mail_hosteddomains.py
 Variables: mail/hosteddomains
 Variables: mail/maps/transport/.*
+
+Type: multifile
+Multifile: etc/postfix/ldap.groups
+
+Type: subfile
+Multifile: etc/postfix/ldap.groups
+Subfile: etc/postfix/ldap.groups.d/10_base
+
+Type: multifile
+Multifile: etc/postfix/ldap.transport
+
+Type: subfile
+Multifile: etc/postfix/ldap.transport
+Subfile: etc/postfix/ldap.transport.d/10_base
+
+Type: multifile
+Multifile: etc/postfix/ldap.virtualwithcanonical
+
+Type: subfile
+Multifile: etc/postfix/ldap.virtualwithcanonical
+Subfile: etc/postfix/ldap.virtualwithcanonical.d/10_base
+
+Type: multifile
+Multifile: etc/postfix/transport
+
+Type: subfile
+Multifile: etc/postfix/transport
+Subfile: etc/postfix/transport.d/10_base
+
+Type: multifile
+Multifile: etc/postfix/ldap.sharefolderremote
+User: postfix
+Group: root
+Mode: 0440
+
+Type: subfile
+Multifile: etc/postfix/ldap.sharefolderremote
+Subfile: etc/postfix/ldap.sharefolderremote.d/10_base
+
+Type: multifile
+Multifile: etc/postfix/ldap.virtual
+User: postfix
+Group: root
+Mode: 0440
+
+Type: subfile
+Multifile: etc/postfix/ldap.virtual
+Subfile: etc/postfix/ldap.virtual.d/10_base
+
+Type: multifile
+Multifile: etc/postfix/ldap.sharefolderlocal
+User: postfix
+Group: root
+Mode: 0440
+
+Type: subfile
+Multifile: etc/postfix/ldap.sharefolderlocal
+Subfile: etc/postfix/ldap.sharefolderlocal.d/10_base
+
+Type: multifile
+Multifile: etc/postfix/ldap.canonicalrecipient
+User: postfix
+Group: root
+Mode: 0440
+
+Type: subfile
+Multifile: etc/postfix/ldap.canonicalrecipient
+Subfile: etc/postfix/ldap.canonicalrecipient.d/10_base
+
+Type: multifile
+Multifile: etc/postfix/ldap.distlist
+User: postfix
+Group: root
+Mode: 0440
+
+Type: subfile
+Multifile: etc/postfix/ldap.distlist
+Subfile: etc/postfix/ldap.distlist.d/10_base
+
+Type: multifile
+Multifile: etc/postfix/ldap.canonicalsender
+User: postfix
+Group: root
+Mode: 0440
+
+Type: subfile
+Multifile: etc/postfix/ldap.canonicalsender
+Subfile: etc/postfix/ldap.canonicalsender.d/10_base
