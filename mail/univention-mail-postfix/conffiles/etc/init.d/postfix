@@ -48,6 +48,11 @@ running() {
 case "$1" in
     start)
 	log_daemon_msg "Starting Postfix Mail Transport Agent" postfix
+	# check ucr autostart setting
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+		. "/usr/share/univention-config-registry/init-autostart.lib"
+		check_autostart postfix postfix/autostart
+	fi
 	RUNNING=$(running)
 	if [ -n "$RUNNING" ]; then
 	    log_end_msg 0
