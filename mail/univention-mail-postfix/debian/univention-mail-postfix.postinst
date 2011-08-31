@@ -41,13 +41,11 @@ if [ -n "$mail_cyrus" ]; then
 fi
 
 # set UCR variables only on fresh installation or during update from older version
-if [ "$1" = "configure" ] ; then
-	if [ -z "$2" ] ; then
-		univention-config-registry set mail/postfix/smtpd/restrictions/recipient/10="permit_mynetworks" \
-										mail/postfix/smtpd/restrictions/recipient/30="permit_sasl_authenticated" \
-										mail/postfix/smtpd/restrictions/recipient/50="reject_unauth_destination" \
-										mail/postfix/smtpd/restrictions/recipient/70="reject_unlisted_recipient"
-	fi
+if [ "$1" = "configure" -a -z "$2" ] ; then
+	univention-config-registry set mail/postfix/smtpd/restrictions/recipient/10="permit_mynetworks" \
+		mail/postfix/smtpd/restrictions/recipient/30="permit_sasl_authenticated" \
+		mail/postfix/smtpd/restrictions/recipient/50="reject_unauth_destination" \
+		mail/postfix/smtpd/restrictions/recipient/70="reject_unlisted_recipient"
 fi
 
 univention-config-registry set postfix/masquerade/domains?"\$mydomain" \
@@ -82,9 +80,10 @@ adduser postfix sasl
 
 univention-config-registry commit /etc/mailname
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/67univention-mail-postfix.inst || true
-fi
+# TODO FIXME
+# if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+#  	/usr/lib/univention-install/67univention-mail-postfix.inst || true
+# fi
 
 if [ -z "$postfix_autostart" ] || [ "$postfix_autostart" = "yes" ]; then
 	/etc/init.d/postfix restart
