@@ -455,6 +455,8 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: samba pwd expired, set newpwdLastSet to 0")
 			newpwdlastset = "0"
 		else:
+			if not sambaPwdLastSet:
+				sambaPwdLastSet = int(time.time())
 			newpwdlastset = str(univention.s4connector.s4.samba2s4_time(sambaPwdLastSet))
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdlastset in modlist: %s" % newpwdlastset)
 		modlist.append((ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset))
