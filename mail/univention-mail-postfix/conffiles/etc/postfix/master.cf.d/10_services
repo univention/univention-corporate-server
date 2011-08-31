@@ -23,11 +23,7 @@ error     unix  -       -       n       -       -       error
 local     unix  -       n       n       -       -       local
 #virtual   unix  -       n       n       -       -       virtual
 lmtp      unix  -       -       n       -       -       lmtp
-#cyrus    unix  -       n       n       -       -       pipe flags=R user=cyrus argv=/kolab/bin/deliver -e -m ${extension} ${user}
-#uucp     unix  -       n       n       -       -       pipe flags=Fqhu user=uucp argv=/kolab/bin/uux -r -n -z -a$sender - $nexthop!rmail ($recipient)
-#ifmail   unix  -       n       n       -       -       pipe flags=F user=ftn argv=/kolab/bin/ifmail -r $nexthop ($recipient)
-#bsmtp    unix  -       n       n       -       -       pipe flags=Fq. user=foo argv=/kolab/bin/bsmtp -f $sender $nexthop $recipient
-465       inet  n       -       n       -       -       smtpd -v -o smtpd_tls_wrappermode=yes -o smtpd_sasl_auth_enable=yes 
+465       inet  n       -       n       -       -       smtpd -v -o smtpd_tls_wrappermode=yes -o smtpd_sasl_auth_enable=yes
 #587      inet  n       -       n       -       -       smtpd -v -o smtpd_enforce_tls=yes -o smtpd_sasl_auth_enable=yes
 post-cleanup unix  n    -       n       -       0       cleanup -o virtual_maps=
 relay    unix  -       -       n       -       -       smtp
