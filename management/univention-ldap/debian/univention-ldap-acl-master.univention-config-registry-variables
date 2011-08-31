@@ -1,9 +1,3 @@
-[ldap/acl/user/kolab2/change]
-Description[de]=Erlaube Benutzern ihre Kolab-Groupware-Einstellungen im Univention Directory Manager zu ändern
-Description[en]=Allow users to modify their Kolab groupware settings in Univention Directory Manager
-Type=str
-Categories=LDAP
-
 [ldap/acl/user/password/change]
 Description[de]=Erlaube Benutzern ihr Passwort im Univention Directory Manager zu ändern
 Description[en]=Allow users to modify their password in Univention Directory Manager

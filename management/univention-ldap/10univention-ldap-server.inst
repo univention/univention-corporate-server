@@ -159,7 +159,6 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		--append packageList=unidump  \
 		--append packageList=univention-printserver  \
 		--append packageList=univention-printquota  \
-		--append packageList=univention-kolab2  \
 		--append packageList=univention-mail-cyrus  \
 		--append packageList=univention-mail-postfix  \
 		--append packageList=univention-ooffice  \

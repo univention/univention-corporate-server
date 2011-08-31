@@ -83,7 +83,6 @@ univention-config-registry set	ldap/debug/level?0 \
 								ldap/idletimeout?360 \
 								ldap/index/autorebuild?yes \
 								ldap/threads?16 \
-								ldap/acl/user/kolab2/change?yes \
 								ldap/acl/user/password/change?no \
 								ldap/acl/slavepdc?yes \
 								ldap/acl/nestedgroups?yes \
@@ -94,8 +93,8 @@ univention-config-registry set	ldap/debug/level?0 \
 # UDM Property Attributes
 udm_prop_attrs="univentionUDMPropertyVersion,univentionUDMPropertyModule,univentionUDMPropertyShortDescription,univentionUDMPropertyLongDescription,univentionUDMPropertySyntax,univentionUDMPropertyMultivalue,univentionUDMPropertyDefault,univentionUDMPropertyLdapMapping,univentionUDMPropertyObjectClass,univentionUDMPropertyDeleteObjectClass,univentionUDMPropertyValueMayChange,univentionUDMPropertyLayoutTabName,univentionUDMPropertyLayoutOverwriteTab,univentionUDMPropertyLayoutOverwritePosition,univentionUDMPropertyLayoutPosition,univentionUDMPropertyCLIName,univentionUDMPropertyTranslationShortDescription,univentionUDMPropertyTranslationLongDescription,univentionUDMPropertyTranslationTabName,univentionUDMPropertyOptions,univentionUDMPropertyLayoutTabAdvanced,univentionUDMPropertyValueRequired,univentionUDMPropertyHook,univentionUDMPropertyDoNotSearch"
 # recommended index settings
-recommended_ldap_index_eq="objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,sambaSID,sambaPrimaryGroupSID,sambaDomainName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,relativeDomainName,pTRRecord,zoneName,mailPrimaryAddress,mailAlternativeAddress,univentionServerRole,univentionService,kolabHomeServer,automountInformation,sambaAcctFlags,univentionPolicyReference,homeDirectory,$udm_prop_attrs,univentionLicenseModule,cNAMERecord,univentionNagiosHostname,univentionLicenseObject,sambaSIDList,sambaGroupType,univentionShareGid,univentionShareSambaName,univentionShareWriteable,secretary,univentionObjectType"
-recommended_ldap_index_pres="objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,mailPrimaryAddress,mailAlternativeAddress,kolabHomeServer,univentionPolicyReference,homeDirectory,automountInformation,zoneName,relativeDomainName,name,$udm_prop_attrs"
+recommended_ldap_index_eq="objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,sambaSID,sambaPrimaryGroupSID,sambaDomainName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,relativeDomainName,pTRRecord,zoneName,mailPrimaryAddress,mailAlternativeAddress,univentionServerRole,univentionService,univentionMailHomeServer,automountInformation,sambaAcctFlags,univentionPolicyReference,homeDirectory,$udm_prop_attrs,univentionLicenseModule,cNAMERecord,univentionNagiosHostname,univentionLicenseObject,sambaSIDList,sambaGroupType,univentionShareGid,univentionShareSambaName,univentionShareWriteable,secretary,univentionObjectType"
+recommended_ldap_index_pres="objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,mailPrimaryAddress,mailAlternativeAddress,univentionMailHomeServer,univentionPolicyReference,homeDirectory,automountInformation,zoneName,relativeDomainName,name,$udm_prop_attrs"
 recommended_ldap_index_sub="uid,cn,sn,givenName,mail,description,displayName,mailPrimaryAddress,mailAlternativeAddress,default,zoneName,sambaSID,automountInformation"
 recommended_ldap_index_approx="uid,mail,alias,cn,sn,givenName"
 

@@ -31,15 +31,6 @@ Variables: ldap/master
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
-Subfile: etc/ldap/slapd.conf.d/65univention-ldap-server_acl-master-kolab2
-Variables: ldap/server/type
-Variables: ldap/master
-Variables: interfaces/eth0/address
-Variables: ldap/replog
-Variables: ldap/acl/user/kolab2/change
-
-Type: subfile
-Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/70univention-ldap-server_acl-master-end
 Variables: ldap/server/type
 Variables: ldap/master

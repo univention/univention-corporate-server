@@ -573,7 +573,7 @@ objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
-description: Shared folders (Kolab 2)
+description: Shared folders
 cn: folder
 
 dn: cn=domain,cn=mail,@%@ldap/base@%@
@@ -658,17 +658,6 @@ objectClass: univentionPolicyAdminSettings
 objectClass: univentionObject
 univentionObjectType: policies/admin_user
 univentionAdminListWizards: None
-univentionAdminSelfAttributes: kolabVacationText
-univentionAdminSelfAttributes: kolabVacationActive
-univentionAdminSelfAttributes: kolabDeliveryToFolderActive
-univentionAdminSelfAttributes: kolabDeliveryToFolderName
-univentionAdminSelfAttributes: kolabForwardActive
-univentionAdminSelfAttributes: kolabForwardAddress
-univentionAdminSelfAttributes: kolabForwardKeepCopy
-univentionAdminSelfAttributes: kolabVacationAddress
-univentionAdminSelfAttributes: kolabVacationNoReactDomain
-univentionAdminSelfAttributes: kolabInvitationPolicy
-univentionAdminSelfAttributes: kolabForwardUCE
 univentionAdminListWebModules: modself
 univentionAdminMayOverrideSettings: 0
 
