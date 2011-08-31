@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.330-1) unstable; urgency=low
+
+  * make search case-insensitive; Bug #19576
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 31 Aug 2011 16:08:29 +0200
+
 univention-virtual-machine-manager-daemon (0.9.329-1) unstable; urgency=low
 
   * Prohibit snapshotting suspended domains (Bug #22072)

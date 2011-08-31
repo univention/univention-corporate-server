@@ -336,6 +336,7 @@ class Client( notifier.signals.Provider ):
 			raise ConnectionError()
 
 		pattern = str2pat( pattern )
+		pattern_regex = re.compile( fnmatch.translate( pattern ), re.IGNORECASE )
 		groups = self.recv_blocking()
 
 		result = []
@@ -357,17 +358,17 @@ class Client( notifier.signals.Provider ):
 				for domain in node.domains:
 					if domain.name == 'Domain-0':
 						continue
-					if option in ( 'all', 'domains' ) and fnmatch.fnmatch( domain.name, pattern ):
+					if option in ( 'all', 'domains' ) and pattern_regex.match( domain.name ):
 						domains.append( domain )
 						continue
-					if option in ( 'all', 'contacts' ) and fnmatch.fnmatch( domain.annotations.get( 'contact', '' ), pattern ):
+					if option in ( 'all', 'contacts' ) and pattern_regex.match( domain.annotations.get( 'contact', '' ) ):
 						domains.append( domain )
 						continue
-					if option in ( 'all', 'descriptions' ) and fnmatch.fnmatch( domain.annotations.get( 'description', '' ), pattern ):
+					if option in ( 'all', 'descriptions' ) and pattern_regex.match( domain.annotations.get( 'description', '' ) ):
 						domains.append( domain )
 						continue
 
-				if ( option in ( 'all', 'nodes' ) and fnmatch.fnmatch( node.name, pattern ) ) or domains:
+				if ( option in ( 'all', 'nodes' ) and pattern_regex.match( node.name ) ) or domains:
 					result.append( ( node, domains ) )
 
 		return result
