@@ -241,7 +241,10 @@ class DriveWizard( umcd.IWizard ):
 			conf.add_row([umcd.HTML('<i>%s</i>' % _('Drive type')), self._disk_type_text(r.drive_type)])
 			if r.pool_path:
 				conf.add_row([umcd.HTML('<i>%s</i>' % _('Storage pool')), _('path: %(path)s') % {'path': r.pool_path}])
-				conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), r.vol_path])
+				if len(r.vol_path) > 60:
+					conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), umcd.HTML('<p title="%s">%s...</p>' %(r.vol_path, r.vol_path[0:60]))])
+				else:
+					conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), r.vol_path])
 				conf.add_row([umcd.HTML('<i>%s</i>' % _('Image format')), r.driver_type])
 				conf.add_row([umcd.HTML('<i>%s</i>' % _('Image size')), r.vol_size])
 			elif r.vol_path:
@@ -834,7 +837,10 @@ class InstanceWizard( umcd.IWizard ):
 				for pool in self.drive_wizard.storage_pools.values():
 					if pool.path == dir:
 						values['size'] = MemorySize.num2str(dev.size)
-						values['image'] = os.path.basename(dev.source)
+						if len(os.path.basename(dev.source)) > 40:
+							values['image'] = "%s..." % os.path.basename(dev.source)[0:40]
+						else:
+							values['image'] = os.path.basename(dev.source)
 						values['pool'] = pool.name
 						html += _('<li>%(type)s: %(size)s (image file %(image)s in pool %(pool)s)</li>') % values
 						break

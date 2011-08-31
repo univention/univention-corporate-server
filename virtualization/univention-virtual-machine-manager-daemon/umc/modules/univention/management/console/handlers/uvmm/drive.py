@@ -258,7 +258,10 @@ class DriveCommands( object ):
 						driver_type = drive.driver_type
 
 					conf.add_row([umcd.HTML('<i>%s</i>' % _('Storage pool')), pool_name])
-					conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), basename])
+					if len(basename) > 60:
+						conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), umcd.HTML('<p title="%s">%s...</p>' %(basename, basename[0:60]))])
+					else:
+						conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), basename])
 					conf.add_row([umcd.HTML('<i>%s</i>' % _('Image format')), driver_type])
 					conf.add_row([umcd.HTML('<i>%s</i>' % _('Image size')), size])
 
