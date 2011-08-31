@@ -31,27 +31,32 @@
 
 #DEBHELPER#
 
-univention-config-registry set postfix/autostart?yes \
-                               postfix/allow-unauth?yes
+eval "$(univention-config-registry shell)"
+
+univention-config-registry set \
+	postfix/autostart?yes \
+	mail/postfix/virtual/enabled=no \
+	mail/postfix/transport/ldap/enabled=no \
+	mail/maps/canonical/sender/classes?header_sender \
+	mail/postfix/ldap/timeout?15 \
+	mail/postfix/policy/listfilter?no \
+	'postfix/masquerade/domains?$mydomain' \
+	postfix/masquerade/exceptions?root \
+	mail/alias/root?systemmail@$hostname.$domainname \
+    mail/alias/postmaster?root \
+    mail/messagesizelimit?10240000
+
 
 eval "$(univention-config-registry shell)"
 
-if [ -n "$mail_cyrus" ]; then
-	univention-config-registry unset mail/cyrus
-fi
-
-# set UCR variables only on fresh installation or during update from older version
+# set UCR variables only on fresh installations
 if [ "$1" = "configure" -a -z "$2" ] ; then
-	univention-config-registry set mail/postfix/smtpd/restrictions/recipient/10="permit_mynetworks" \
+	univention-config-registry set \
+		mail/postfix/smtpd/restrictions/recipient/10="permit_mynetworks" \
 		mail/postfix/smtpd/restrictions/recipient/30="permit_sasl_authenticated" \
 		mail/postfix/smtpd/restrictions/recipient/50="reject_unauth_destination" \
 		mail/postfix/smtpd/restrictions/recipient/70="reject_unlisted_recipient"
 fi
-
-univention-config-registry set postfix/masquerade/domains?"\$mydomain" \
-                               postfix/masquerade/exceptions?root \
-                               mail/maps/canonical/sender/classes?header_sender \
-                               mail/postfix/ldap/timeout?15
 
 for file in transport virtual canonical access relocated; do
   if [ ! -e /etc/postfix/$file ]; then
@@ -67,30 +72,15 @@ for file in /etc/univention/templates/info/univention-mail-postfix-forward.info 
   fi
 done
 
-univention-config-registry set mail/postfix/policy/listfilter?no
 
 adduser --quiet --system --home /var/lib/systemmail --shell /bin/bash systemmail
-univention-config-registry set ldap/port?389 \
-                               mail/alias/root?systemmail@$hostname.$domainname \
-                               mail/alias/postmaster?root \
-                               mail/messagesizelimit?10240000
 newaliases
-
 adduser postfix sasl
 
 univention-config-registry commit /etc/mailname
 
-# TODO FIXME
-# if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-#  	/usr/lib/univention-install/67univention-mail-postfix.inst || true
-# fi
-
 if [ -z "$postfix_autostart" ] || [ "$postfix_autostart" = "yes" ]; then
 	/etc/init.d/postfix restart
-fi
-
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.4-32; then
-    test -f "/var/cache/univention-config/cache" && rm -f "/var/cache/univention-config/cache"
 fi
 
 exit 0

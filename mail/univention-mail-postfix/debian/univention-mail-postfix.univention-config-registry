@@ -70,8 +70,6 @@ Type: multifile
 Multifile: etc/postfix/master.cf
 Variables: hostname
 Variables: domainname
-Variables: postfix/permithosts
-Variables: postfix/allow-unauth
 Variables: mail/antivir
 Variables: interfaces/eth.*/network
 Variables: interfaces/eth.*/netmask
