@@ -45,8 +45,9 @@ print 'masquerade_domains = %s' % configRegistry.get('postfix/masquerade/domains
 print 'masquerade_exceptions = %s' % configRegistry.get('postfix/masquerade/exceptions', 'root')
 @!@
 
-transport_maps = hash:/etc/postfix/transport, ldap:ldaptransport, ldap:ldaphomeservertransport
+transport_maps = hash:/etc/postfix/transport, ldap:ldaphomeservertransport
 @!@
+import re
 all_hosted_domains = set()
 all_hosted_domains.update( re.split('[ ,]+', configRegistry.get('mail/hosteddomains','')) )
 all_hosted_domains.update( re.split('[ ,]+', configRegistry.get('mail/postfix/mydomains','')) )
@@ -58,7 +59,7 @@ print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, localhost, %s
 print 'mynetworks = %s' % configRegistry.get('mail/postfix/mynetworks', '127.0.0.0/8')
 @!@
 
-relay_domains = $mydestination
+# relay_domains = $mydestination
 
 # we need to name a smtp relay host to which we forward non-local
 # mails. smtp authentication is also possible.
