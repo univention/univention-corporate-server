@@ -1,3 +1,10 @@
+univention-updater (7.0.20-1) unstable; urgency=low
+
+  * use machine secret with ldap/hostdn (Bug #23178)
+  * add lost policyresult flag in maintenance script 
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Sep 2011 13:56:05 +0200
+
 univention-updater (7.0.19-1) unstable; urgency=low
 
   * Hide output of external ucr (Bug #23202)

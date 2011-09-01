@@ -63,11 +63,10 @@ configRegistry.load()
 if os.path.exists(CRON_D):
 	os.unlink(CRON_D)
 
-bindpw_filename = configRegistry.get('bind/bindpw', '/etc/machine.secret')
 ldap_hostdn = configRegistry.get('ldap/hostdn')
 if ldap_hostdn:
 
-	p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', bindpw_filename, '-s', ldap_hostdn], stdout=subprocess.PIPE)
+	p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', ldap_hostdn], stdout=subprocess.PIPE)
 	result = p1.communicate()[0]
 
 	if p1.returncode != 0:

@@ -188,10 +188,7 @@ case "$1" in
 
 		log_action_msg "Starting Univention Updater"
 
-			if [ -z "$bind_bindpw" ]; then
-				bind_bindpw="/etc/machine.secret"
-			fi
-			eval `univention_policy_result -D "$ldap_hostdn" -y "$bind_bindpw" "$ldap_hostdn"`
+			eval `univention_policy_result -D "$ldap_hostdn" -y /etc/machine.secret -s "$ldap_hostdn"`
 			if [ "$1" = stop -a "$univentionInstallationShutdown" = 1 -o "$univentionInstallationStartup" = 1 ]
 			then
 				if [ "$univentionUpdateActivate" = "TRUE" ]
