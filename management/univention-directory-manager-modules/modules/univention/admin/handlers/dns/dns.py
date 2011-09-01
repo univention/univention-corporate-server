@@ -59,9 +59,13 @@ wizarddescription=_("Add, edit and delete DNS objects")
 wizardoperations={"add":[_("Add"), _("Add DNS object")],"find":[_("Search"), _("Search DNS object(s)")]}
 wizardpath="univentionDnsObject"
 wizardsuperordinates=["None","dns/forward_zone","dns/reverse_zone"]
-wizardtypesforsuper={"None":["dns/forward_zone","dns/reverse_zone"],"dns/forward_zone":["dns/alias","dns/host_record","dns/srv_record"],"dns/reverse_zone":["dns/ptr_record"]}
+wizardtypesforsuper = {
+	'None' : [ 'dns/forward_zone', 'dns/reverse_zone' ],
+	'dns/forward_zone' : [ 'dns/alias', 'dns/host_record', 'dns/srv_record', 'dns/txt_record' ],
+	'dns/reverse_zone' : [ 'dns/ptr_record' ]
+	}
 
-childmodules=["dns/forward_zone","dns/reverse_zone","dns/alias","dns/host_record","dns/srv_record","dns/ptr_record"]
+childmodules = [ 'dns/forward_zone', 'dns/reverse_zone', 'dns/alias', 'dns/host_record', 'dns/srv_record', 'dns/ptr_record', 'dns/txt_record' ]
 virtual=1
 options={
 }

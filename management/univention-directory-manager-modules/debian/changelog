@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.66-1) unstable; urgency=low
+
+  * add UDM module dns/txt_record; Bug #14960
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 01 Sep 2011 15:41:46 +0200
+
 univention-directory-manager-modules (7.0.65-1) unstable; urgency=low
 
   * Changed the Samba3 / Samba4 behavior. If the S4 connector is
