@@ -1,3 +1,9 @@
+univention-legacy-kolab-schema (1.0.0-3) unstable; urgency=low
+
+  * remove LDAP attributes only on removal (Bug #22436)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 01 Sep 2011 11:47:44 +0200
+
 univention-legacy-kolab-schema (1.0.0-2) unstable; urgency=low
 
   * changed dependency from univeniton-ldap-config to
