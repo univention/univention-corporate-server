@@ -169,7 +169,7 @@ for s in `/usr/bin/ldapsearch -x -h $ldap_server_name -ZZ -D "$ldap_hostdn" -y /
 	  univentionQuotaHardLimitInodes=0
 	  univentionQuotaSoftLimitInodes=0
 	  univentionQuotaHardLimitSpace=0
-	  eval `/usr/bin/univention_policy_result -D "$ldap_hostdn" -y "$bind_bindpw" -s $s`
+	  eval `/usr/bin/univention_policy_result -D "$ldap_hostdn" -y /etc/machine.secret -s $s`
 	  sharedn[$i]=$s
 	  sharehli[$i]=$univentionQuotaHardLimitInodes
 	  sharesli[$i]=$univentionQuotaSoftLimitInodes
