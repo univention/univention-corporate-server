@@ -1,13 +1,13 @@
 @%@UCRWARNING=# @%@
 #
 # LDAP mail2sharedfolder support
-# rewrite mail address for shared imap folders if kolabHomeServer is $myhostname
+# rewrite mail address for shared imap folders if univentionMailHomeServer is $myhostname
 #
 
 server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
 search_base = @%@ldap/base@%@
-query_filter = (&(objectClass=univentionKolabSharedFolder)(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s))(kolabHomeServer=$myhostname))
-result_attribute = univentionKolabSharedFolderDeliveryAddress
+query_filter = (&(objectClass=univentionMailSharedFolder)(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s))(univentionMailHomeServer=$myhostname))
+result_attribute = univentionMailSharedFolderDeliveryAddress
 result_format = %s
 search_timeout = @%@mail/postfix/ldap/timeout@%@
 scope = sub

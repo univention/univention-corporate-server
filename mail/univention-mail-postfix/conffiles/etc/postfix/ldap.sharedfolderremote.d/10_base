@@ -1,12 +1,12 @@
 @%@UCRWARNING=# @%@
 #
 # LDAP mail2sharedfolder support
-# find mail address for shared imap folders and do not rewrite recipient address if kolabHomeServer is NOT $myhostname
+# find mail address for shared imap folders and do not rewrite recipient address if univentionMailHomeServer is NOT $myhostname
 #
 
 server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
 search_base = @%@ldap/base@%@
-query_filter = (&(objectClass=univentionKolabSharedFolder)(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s))(!(kolabHomeServer=$myhostname)))
+query_filter = (&(objectClass=univentionMailSharedFolder)(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s))(!(univentionMailHomeServer=$myhostname)))
 result_attribute = mailPrimaryAddress
 result_format = %s
 search_timeout = @%@mail/postfix/ldap/timeout@%@

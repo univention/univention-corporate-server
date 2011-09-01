@@ -6,8 +6,8 @@
 server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
 search_base = @%@ldap/base@%@
 domain = $mydestination
-query_filter = (&(objectClass=univentionKolabGroup)(mailPrimaryAddress=%s))
-result_attribute = univentionKolabMember
+query_filter = (&(objectClass=univentionMailList)(mailPrimaryAddress=%s))
+result_attribute = univentionMailListMember
 search_timeout = @%@mail/postfix/ldap/timeout@%@
 scope = sub
 version = 3

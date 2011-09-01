@@ -75,7 +75,7 @@ def listfilter(attr):
 		
 			# get recipient restriction 
 			ldapAttr = ["univentionAllowedEmailGroups", "univentionAllowedEmailUsers"]
-			filter = '(&(mailPrimaryAddress=%s)(|(objectclass=univentionKolabGroup)(objectclass=posixGroup)))' % recipient
+			filter = '(&(mailPrimaryAddress=%s)(|(objectclass=univentionMailList)(objectclass=posixGroup)))' % recipient
 			result = ldap.search(base=options.ldap_base, filter=filter, attr=ldapAttr)
 
 			if result:

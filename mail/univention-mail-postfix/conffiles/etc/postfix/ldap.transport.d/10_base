@@ -1,13 +1,13 @@
 @%@UCRWARNING=# @%@
 #
 # LDAP Transport for multilocation support
-# if mail shall not be delivered locally then send it to kolabHomeServer
+# if mail shall not be delivered locally then send it to univentionMailHomeServer
 #
 
 server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
 search_base = @%@ldap/base@%@
-query_filter = (&(mailPrimaryAddress=%s)(|(objectClass=kolabInetOrgPerson)(objectClass=univentionKolabSharedFolder))(!(univentionMailHomeServer=$myhostname)))
-result_attribute = kolabHomeServer
+query_filter = (&(mailPrimaryAddress=%s)(univentionMailHomeServer=*)(!(univentionMailHomeServer=$myhostname)))
+result_attribute = univentionMailHomeServer
 result_format = smtp:[%s]
 search_timeout = @%@mail/postfix/ldap/timeout@%@
 scope = sub
