@@ -1317,10 +1317,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			searchResult = self.lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr = ['aRecord'])
 			s4connector_present = True
 			if not [ dn for (dn, attr) in searchResult if attr.has_key('aRecord') ]:
-				options['samba'].default = False
 				s4connector_present = False
-		elif s4connector_present:
-			options['samba'].default = False
 
 		self.options=[]
 		if 'objectClass' in self.oldattr:
@@ -1846,7 +1843,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 			self.userSid=None
 			if self.uidNum and 'samba' in self.options:
-
 				if self['sambaRID']:
 					searchResult=self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
 					domainsid=searchResult[0][1]['sambaSID'][0]
@@ -1858,11 +1854,15 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						raise univention.admin.uexceptions.sidAlreadyUsed, ': %s' % self['sambaRID']
 
 				else:
-
-					try:
-						self.userSid=univention.admin.allocators.requestUserSid(self.lo, self.position, self.uidNum)
-					except:
-						pass
+					if s4connector_present:
+						# In this case Samba 4 must create the SID, the s4 connector will sync the
+						# new sambaSID back from Samba 4.
+						self.userSid='S-1-4-%s' % self.uidNum
+					else:
+						try:
+							self.userSid=univention.admin.allocators.requestUserSid(self.lo, self.position, self.uidNum)
+						except:
+							pass
 					if not self.userSid or self.userSid == 'None':
 						num=self.uidNum
 						while not self.userSid or self.userSid == 'None':
