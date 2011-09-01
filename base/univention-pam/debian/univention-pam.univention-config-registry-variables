@@ -178,25 +178,25 @@ Description[en]=The user lock will be saved global if maximum allowed attempts h
 Type=str
 Categories=system-base
 
-[auth/*/restrict]
+[auth/.*/restrict]
 Description[de]=Aktiviert pam_access für diesen Dienst (* -> chfn, chsh, cron, ftp, gdm, kcheckpass, kde, kscreensaver, login, other, passwd, ppp, rlogin, rsh, screen, sshd, su, sudo, ...) und schränkt damit den PAM Zugriff ein. (default: no, außer ftp gdm login other ppp rlogin screen)
 Description[en]=Activates pam_access to restrict access to service (service can be chfn, chsh, cron, ftp, gdm, kcheckpass, kde, kscreensaver, login, other, passwd, ppp, rlogin, rsh, screen, sshd, su, sudo, ...). (default: no, except ftp gdm login other ppp rlogin screen)
 Type=str
 Categories=system-base
 
-[auth/*/accessfile]
+[auth/.*/accessfile]
 Description[de]=Gibt die zu verwendende pam_access Konfigurationsdatei für diesen Dienst an (default: ucr template)
 Description[en]=Defines the pam_access configuration file for this service (default: ucr template)
 Type=str
 Categories=system-base
 
-[auth/*/group/*]
+[auth/.*/group/.*]
 Description[de]=Erlaubt der Gruppe Zugriff auf den Dienst, z.B. "auth/sshd/group/Domain Admins=yes".
 Description[en]=Allows access to service by group, e.g. "auth/sshd/group/Domain Admins=yes".
 Type=str
 Categories=system-base
 
-[auth/*/user/*]
+[auth/.*/user/.*]
 Description[de]=Erlaubt dem Benutzer Zugriff auf den Dienst, z.B. "auth/sshd/user/Administrator=yes".
 Description[en]=Allows access to service by user, e.g. auth/sshd/user/Administrator=yes".
 Type=str

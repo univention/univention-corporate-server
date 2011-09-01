@@ -1,3 +1,9 @@
+univention-pam (5.0.11-1) unstable; urgency=low
+
+  * fixed univention-pam.univention-config-registry-variables (Bug #20138) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 01 Sep 2011 17:26:31 +0200
+
 univention-pam (5.0.10-1) unstable; urgency=low
 
   * use port 7389 for pam_ldap and nssldap by default (Bug #23220)
