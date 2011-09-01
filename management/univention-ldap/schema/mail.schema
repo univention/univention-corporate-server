@@ -45,17 +45,6 @@ attributetype ( 1.3.6.1.4.1.10176.1010.1.3 NAME 'mailGlobalSpamFolder'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
-attributetype ( 1.3.6.1.4.1.10176.1010.1.60 NAME 'univentionMailHomeServer'
-	DESC 'home server of users mailbox'
-	EQUALITY caseIgnoreMatch
-	SUBSTR caseIgnoreSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} SINGLE-VALUE )
-
-objectclass ( 1.3.6.1.4.1.10176.1010.2.1 NAME 'univentionMail'
-	DESC 'Univention Mail Preferences' SUP top AUXILIARY
-	MUST ( uid )
-	MAY ( univentionMailHomeServer $ mailPrimaryAddress $ mailAlternativeAddress $ mailGlobalSpamFolder $ univentionMailUserQuota ) )
-
 attributetype ( 1.3.6.1.4.1.10176.1010.1.10 NAME 'mailRelay'
 	SUBSTR caseIgnoreSubstringsMatch
 	DESC 'Domain Mail Relay'
@@ -109,10 +98,19 @@ objectclass ( 1.3.6.1.4.1.10176.1010.2.40 NAME 'univentionMailCanonicalMaps'
 	      univentionInternalPrimaryMailAddress $ univentionInternalAlternativeMailAddress $ 
 		  univentionPublicPrimaryMailAddress $ univentionPublicAlternativeMailAddress ) )
 
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.60 NAME 'univentionMailHomeServer'
+	DESC 'home server of users mailbox'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} SINGLE-VALUE )
+
 objectclass ( 1.3.6.1.4.1.10176.1010.2.60 NAME 'univentionMailRouting'
 	DESC 'data for routing mails'
 	SUP top AUXILIARY
 	MAY ( univentionMailHomeServer ) )
+
+
 
 attributetype ( 1.3.6.1.4.1.10176.1010.1.70 NAME 'univentionMailserverFQDN'
 	DESC 'list of available mailserver fqdn'
@@ -167,7 +165,7 @@ objectclass ( 1.3.6.1.4.1.10176.1010.2.90
 	NAME 'univentionMailSharedFolder'
 	DESC 'Univention shared folder'
 	SUP top AUXILIARY
-	MAY ( mailPrimaryAddress $ mailAlternativeAddress $ univentionMailUserNamespace $ univentionMailSharedFolderDeliveryAddress $ acl $ cyrus-userquota $ univentionMailHomeServer	) )
+	MAY ( mailPrimaryAddress $ mailAlternativeAddress $ univentionMailUserNamespace $ univentionMailSharedFolderDeliveryAddress $ univentionMailACL $ univentionMailUserQuota $ univentionMailHomeServer ) )
 
 
 attributetype ( 1.3.6.1.4.1.10176.1010.1.100
@@ -190,3 +188,9 @@ objectclass ( 1.3.6.1.4.1.10176.1012.2.1
   DESC 'Univention Mail Domain'
   SUP top STRUCTURAL
   MUST ( cn ) )
+
+
+objectclass ( 1.3.6.1.4.1.10176.1010.2.1 NAME 'univentionMail'
+	DESC 'Univention Mail Preferences' SUP top AUXILIARY
+	MUST ( uid )
+	MAY ( univentionMailHomeServer $ mailPrimaryAddress $ mailAlternativeAddress $ mailGlobalSpamFolder $ univentionMailUserQuota ) )

@@ -1,3 +1,9 @@
+univention-ldap (8.0.28-2) unstable; urgency=low
+
+  * fixed mail.schema (Bug #22483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 01 Sep 2011 16:38:52 +0200
+
 univention-ldap (8.0.28-1) unstable; urgency=low
 
   * fixed mail.schema (Bug #22483)
