@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.14-1) unstable; urgency=low
+
+  * add support for manipulating the columns of a grid; Bug #23209
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 01 Sep 2011 14:17:14 +0200
+
 univention-management-console-frontend (1.0.13-1) unstable; urgency=low
 
   * add widget LinkList to display LDAP_Search in view-only mode; Bug #23369

@@ -136,8 +136,12 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		return footerWidths;
 	},
 
-	buildRendering: function() {
-		this.inherited(arguments);
+	_setColumnsAttr: function ( value ) {
+		this.columns = value;
+		if ( this._grid === undefined ) {
+			console.log( 'Grid: grid not yet defined' );
+			return;
+		}
 
 		// assertions
 		umc.tools.assert(dojo.isArray(this.columns), 'The property columns needs to be defined for umc.widgets.Grid as an array.');
@@ -251,6 +255,13 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			});
 		}
 
+		// set new grid structure
+		this._grid.setStructure( gridColumns );
+	},
+
+	buildRendering: function() {
+		this.inherited(arguments);
+
 		// create right-click context menu
 		var contextMenu = new dijit.Menu({});
 		dojo.forEach(this.actions, function(iaction) {
@@ -279,7 +290,6 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			region: 'center',
 			query: this.query,
 			queryOptions: { ignoreCase: true },
-			structure: gridColumns,
 			rowSelector: '2px',
 			'class': 'umcGrid',
 			plugins : {
@@ -296,8 +306,9 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			canSort: dojo.hitch(this, function(col) {
 				// disable sorting for the action columns
 				return Math.abs(col) - 2 < this.columns.length && Math.abs(col) - 2 >= 0;
-			})
+			}),
 		});
+		this._setColumnsAttr( this.columns );
 		this._grid.setSortIndex(1);
 		this.addChild(this._grid);
 

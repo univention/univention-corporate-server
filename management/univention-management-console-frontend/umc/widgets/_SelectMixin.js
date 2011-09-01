@@ -82,6 +82,26 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		this._loadValues();
 	},
 
+	getAllItems: function() {
+		var _items = [];
+		var store_items = this.store._getItemsArray();
+		for ( var j in store_items ) {
+			var entry = {};
+			var item = store_items[ j ];
+			for ( var i in item ) {
+				if ( item.hasOwnProperty( i ) && dojo.isArray( item[ i ] ) ) {
+					if ( item[ i ].length == 1 ) {
+						entry[ i ] = item[ i ][ 0 ];
+					} else {
+						entry[ i ] = null;
+					}
+				}
+			}
+			_items.push( entry );
+		}
+		return _items;
+	},
+
 	_setValueAttr: function(newVal) {
 		this.inherited(arguments);
 
