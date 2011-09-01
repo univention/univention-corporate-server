@@ -32,8 +32,19 @@
 
 #DEBHELPER#
 
-. /usr/share/univention-lib/all.sh
+# Remove the template for menu.lst, but keep the previous menu.lst file
+# If no menu.lst file exists, the grub2 postinst will assume a fresh
+# install and if we keep the template around, it will overwrite the
+# transition file written by the grub2 postinst
+#
+# This code can be dropped in UCS 3.1
 
-remove_ucr_template /boot/grub/menu.lst
+if [ ! -d /etc/univention/templates/removed/ ] ; then
+    mkdir -p /etc/univention/templates/removed/
+fi
+
+if [ -e /etc/univention/templates/files/boot/grub/menu.lst ] ; then
+    mv /etc/univention/templates/files/boot/grub/menu.lst /etc/univention/templates/removed/menu.lst.template
+fi
 
 exit 0

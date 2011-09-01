@@ -1,3 +1,12 @@
+univention-grub (5.0.0-9) unstable; urgency=low
+
+  * Remove the template for menu.lst, but keep the previous menu.lst file
+    If no menu.lst file exists, the grub2 postinst will assume a fresh
+    install and if we keep the template around, it will overwrite the
+    transition file written by the grub2 postinst  (Bug #22115)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 01 Sep 2011 17:02:47 +0200
+
 univention-grub (5.0.0-8) unstable; urgency=low
 
   * Fix name of univention-lib binary package (Bug #22115)
