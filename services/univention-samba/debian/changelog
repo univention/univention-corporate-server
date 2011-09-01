@@ -1,3 +1,9 @@
+univention-samba (6.0.4-2) unstable; urgency=low
+
+  * avoid checking bind/bindpw, simply use machine.secret (Bug #23178)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Sep 2011 14:56:52 +0200
+
 univention-samba (6.0.4-1) unstable; urgency=low
 
   * use machine account for ldapsearch (Bug #17519)

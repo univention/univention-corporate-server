@@ -102,8 +102,7 @@ def getbytes(string):
 def getPolicyResult(dn, attr):
 	# print 'DEBUG: Starting System call univention-policy-result'
 	policy = {}
-	pwdfilename = baseConfig.get('bind/bindpw', '/etc/machine.secret')
-	p1 = subprocess.Popen(['univention-policy-result', '-D', baseConfig['ldap/hostdn'], '-y', pwdfilename, dn], stdout=subprocess.PIPE)
+	p1 = subprocess.Popen(['univention-policy-result', '-D', baseConfig['ldap/hostdn'], '-y', '/etc/machine.secret', dn], stdout=subprocess.PIPE)
 	p2 = subprocess.Popen(['grep', '-A1', '^Attribute: '+attr], stdin=p1.stdout, stdout=subprocess.PIPE)
 	result = p2.communicate()[0]
 	# if univention-policy-result fails then quit and do not parse output
