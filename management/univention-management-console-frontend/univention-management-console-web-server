@@ -474,6 +474,29 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		self.daemon_context.detach_process = self.options.daemon_mode
 		self.daemon_context.files_preserve = [ debug_fd ]
 
+	def _restart( self ):
+		"""Handler for the restart action. """
+		if self.pidfile.is_locked():
+			CORE.error( 'Stopping UMC web server ...' )
+			self._stop()
+
+		CORE.error( 'Starting UMC web server ...' )
+		self._start()
+
+	def _crestart( self ):
+		"""Handler for the crestart action. """
+		if not self.pidfile.is_locked():
+			CORE.error( 'The UMC web server will not be restarted as it is not running currently' )
+			return
+
+		CORE.error( 'Stopping UMC web server ...' )
+		self._stop()
+		CORE.error( 'Starting UMC web server ...' )
+		self._start()
+
+	DaemonRunner.action_funcs[ 'restart' ] = _restart
+	DaemonRunner.action_funcs[ 'crestart' ] = _crestart
+
 	def _usage_exit( self, argv ):
 		self.parser.error( 'invalid action' )
 		sys.exit( 1 )

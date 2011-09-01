@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.15-1) unstable; urgency=low
+
+  * modified behaviour of action restart and crestart, restart does
+    whatever necessary to have a newly started instance of the UMC server
+    and crestart only restarts the UMC server if currently another
+    instance is running; Bug #23485
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 01 Sep 2011 14:47:40 +0200
+
 univention-management-console-frontend (1.0.14-1) unstable; urgency=low
 
   * add support for manipulating the columns of a grid; Bug #23209
