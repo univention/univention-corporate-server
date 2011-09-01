@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.103-1) unstable; urgency=low
+
+  * show attribute in listing that is used in the search filter; Bug #23209
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 01 Sep 2011 14:20:34 +0200
+
 univention-management-console-module-udm (1.0.102-1) unstable; urgency=low
 
   * adapt return value for LDAP_Search choices for LinkList widget; Bug #23369

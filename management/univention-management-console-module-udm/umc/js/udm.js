@@ -64,6 +64,22 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// a dict of variable -> value entries for relevant UCR variables
 	_ucr: null,
 
+				 		// define grid columns
+	_default_columns: null,
+
+	constructor: function() {
+		this._default_columns = [{
+			name: 'name',
+			label: this._( 'Name' ),
+			description: this._( 'Name of the UDM object.' ),
+			formatter: dojo.hitch(this, 'iconFormatter')
+		}, {
+			name: 'path',
+			label: this._('Path'),
+			description: this._( 'Path of the UDM object.' )
+		}];
+	},
+
 	buildRendering: function() {
 		// call superclass method
 		this.inherited(arguments);
@@ -153,18 +169,6 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			})
 		}];
 
-		// define grid columns
-		var columns = [{
-			name: 'name',
-			label: this._( 'Name' ),
-			description: this._( 'Name of the UDM object.' ),
-			formatter: dojo.hitch(this, 'iconFormatter')
-		}, {
-			name: 'path',
-			label: this._('Path'),
-			description: this._( 'Path of the UDM object.' )
-		}];
-
 		// the navigation needs a slightly modified store that uses the UMCP query
 		// function 'udm/nav/object/query'
 		var store = this.moduleStore;
@@ -178,7 +182,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._grid = new umc.widgets.Grid({
 			region: 'center',
 			actions: actions,
-			columns: columns,
+			columns: this._default_columns,
 			moduleStore: store
 		});
 		titlePane.addChild(this._grid);
@@ -389,6 +393,16 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		return result;
 	},
 
+	identityProperty: function() {
+		items = this._searchWidget._widgets.objectProperty.getAllItems();
+		for ( var i in items ) {
+			if ( items[ i ].identifies ) {
+				return items[ i ];
+			}
+		}
+		return null;
+	},
+
 	filter: function(vals) {
 		// summary:
 		//		Send a new query with the given filter options as specified in the search form
@@ -403,7 +417,19 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			}
 		}
 		else {
+			var identifies = this.identityProperty();
+			var selected_value = this._searchWidget._widgets.objectProperty.get( 'value' );
+			var columns = this._default_columns;
+			if ( identifies == null || selected_value != identifies.id ) {
+				var new_column = {
+					name: selected_value,
+					label: this._searchWidget._widgets.objectProperty.get( 'displayedValue' )
+				};
+				columns = this._default_columns.slice( 0, 1 ).concat( new_column, this._default_columns.slice( 1 ) );
+			}
+
 			this._grid.filter(vals);
+			this._grid.set( 'columns', columns );
 		}
 	},
 

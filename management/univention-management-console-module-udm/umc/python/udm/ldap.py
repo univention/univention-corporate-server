@@ -331,8 +331,8 @@ class UDM_Module( object ):
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if key == 'filler': continue # FIXME: should be removed from all UDM modules
 			item = { 'id' : key, 'label' : prop.short_description, 'description' : prop.long_description, 'syntax' : prop.syntax.name,
-					 'required' : bool( prop.required ), 'editable' : bool( prop.may_change ),
-					 'options' : prop.options, 'searchable' : not prop.dontsearch, 'multivalue' : bool( prop.multivalue ) }
+					 'required' : bool( prop.required ), 'editable' : bool( prop.may_change ), 'options' : prop.options,
+					 'searchable' : not prop.dontsearch, 'multivalue' : bool( prop.multivalue ), 'identifies' : bool( prop.identifies ) }
 
 			# default value
 			if prop.base_default is not None:
