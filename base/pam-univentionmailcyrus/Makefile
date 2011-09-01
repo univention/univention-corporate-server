@@ -65,7 +65,7 @@ dirs:
 $(LIBOBJD): $(LIBSRC)
 
 $(LIBSHARED):	$(LIBOBJD)
-		$(LD_D) -o $@ $(LIBOBJD) $(LINKLIBS) -lpam -lldap
+		$(LD_D) -o $@ $(LIBOBJD) $(LINKLIBS) -lpam -lldap -luniventionpolicy
 
 install: all
 	$(MKDIR) $(DESTDIR)$(SECUREDIR)

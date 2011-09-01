@@ -44,6 +44,7 @@
 #include <signal.h>
 #include <wait.h>
 #include <security/pam_appl.h>
+#include <univention/ldap.h>
 
 #define PAM_SM_AUTH
 
@@ -56,6 +57,9 @@ static char ldap_base[BUFSIZ];
 static unsigned int ldap_port = 389;
 static char fromattr[BUFSIZ];
 static char toattr[BUFSIZ];
+static char binddn[BUFSIZ];
+static char pwfile[BUFSIZ] = "/etc/machine.secret";
+static char bindpw[BUFSIZ];
 
 #define UNIVENTIONMAILCYRUS_QUIET 020
 
@@ -74,6 +78,8 @@ static void _log_err(int err, const char *format, ...)
 static int _pam_parse(int flags, int argc, const char **argv)
 {
    int ctrl = 0;
+   FILE *fp;
+   int len;
 
    /* does the appliction require quiet? */
    if ((flags & PAM_SILENT) == PAM_SILENT)
@@ -95,9 +101,22 @@ static int _pam_parse(int flags, int argc, const char **argv)
 	strncpy(fromattr,*argv+10,BUFSIZ);
       else if (!strncmp(*argv,"to_attr=",8))
 	strncpy(toattr,*argv+8,BUFSIZ);
+      else if (!strncmp(*argv,"binddn=",7))
+	strncpy(binddn,*argv+7,BUFSIZ);
+      else if (!strncmp(*argv,"pwfile=",7))
+	strncpy(pwfile,*argv+7,BUFSIZ);
       else {
 	 _log_err(LOG_ERR, "unknown option; %s", *argv);
       }
+   }
+
+   /* read password from file */
+   if ((fp = fopen(pwfile, "r")) != NULL) {
+     if (fgets(bindpw, 1024, fp) == NULL) {
+       len = strlen(bindpw);
+       if (bindpw[len-1] == '\n')
+         bindpw[len-1] = '\0';
+     }
    }
 
    return ctrl;
@@ -112,14 +131,23 @@ int mapuser(const char *fromuser, char *touser)
    LDAPMessage *res = NULL, *entry;
    char **values = NULL;
    int ret = PAM_SUCCESS;
+   univention_ldap_parameters_t *lp;
+   lp = univention_ldap_new();
+   lp->host = strdup(ldap_host);
+   lp->port = ldap_port;
+   lp->base = strdup(ldap_base);
+   lp->binddn = strdup(binddn);
+   lp->bindpw = strdup(bindpw);
+   lp->start_tls++;
 
    snprintf(filter, BUFSIZ, "(&(%s=%s)(%s=*))", fromattr, fromuser, toattr);
 
-   if ((ld = ldap_init(ldap_host, ldap_port)) == NULL) {
+   if (univention_ldap_open(lp) != 0) {
        _log_err(LOG_NOTICE, "Failed to connect to LDAP server %s:%d", ldap_host, ldap_port);
        ret = PAM_USER_UNKNOWN;
 	   goto cleanup;
    }
+   ld = lp->ld;
    if ((msgid = ldap_search_s(ld, ldap_base, LDAP_SCOPE_SUBTREE, filter, attrs, 0, &res)) != LDAP_SUCCESS) {
        _log_err(LOG_NOTICE, "Failed to query LDAP server: ", filter);
        ret = PAM_USER_UNKNOWN;
