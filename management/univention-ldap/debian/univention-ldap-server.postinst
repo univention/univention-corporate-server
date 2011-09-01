@@ -96,7 +96,7 @@ udm_prop_attrs="univentionUDMPropertyVersion,univentionUDMPropertyModule,univent
 recommended_ldap_index_eq="objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,sambaSID,sambaPrimaryGroupSID,sambaDomainName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,relativeDomainName,pTRRecord,zoneName,mailPrimaryAddress,mailAlternativeAddress,univentionServerRole,univentionService,univentionMailHomeServer,automountInformation,sambaAcctFlags,univentionPolicyReference,homeDirectory,$udm_prop_attrs,univentionLicenseModule,cNAMERecord,univentionNagiosHostname,univentionLicenseObject,sambaSIDList,sambaGroupType,univentionShareGid,univentionShareSambaName,univentionShareWriteable,secretary,univentionObjectType"
 recommended_ldap_index_pres="objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,mailPrimaryAddress,mailAlternativeAddress,univentionMailHomeServer,univentionPolicyReference,homeDirectory,automountInformation,zoneName,relativeDomainName,name,$udm_prop_attrs"
 recommended_ldap_index_sub="uid,cn,sn,givenName,mail,description,displayName,mailPrimaryAddress,mailAlternativeAddress,default,zoneName,sambaSID,automountInformation"
-recommended_ldap_index_approx="uid,mail,alias,cn,sn,givenName"
+recommended_ldap_index_approx="uid,mail,cn,sn,givenName"
 
 if [ "$1" = "configure" -a -z "$2" ]; then
 	# disbale anonymous bind by default
@@ -126,7 +126,11 @@ merge_csv_unique_sorted() {
 	else
 		old="$1"
 	fi
-	echo -n "$(echo  -n "$old,$2" | tr "," "\n" | egrep -v "^$" | sort -u  | tr "\n" "," | sed -e 's/,$//')"
+	echo  -n "$old,$2" | tr "," "\n" | egrep -v "^$" | sort -u  | tr "\n" "," | sed -e 's/,$//'
+}
+
+filter_csv() {
+	echo -n "$1" | tr "," "\n" | egrep -v "^($2)\$" | egrep -v '^$' | tr "\n" "," | sed -e 's/,$//'
 }
 
 if is_ucr_true "ldap/index/autorebuild" ; then
@@ -136,6 +140,13 @@ if is_ucr_true "ldap/index/autorebuild" ; then
 	merged_ldap_index_pres="$(merge_csv_unique_sorted "$ldap_index_pres" "$recommended_ldap_index_pres")"
 	merged_ldap_index_sub="$(merge_csv_unique_sorted "$ldap_index_sub" "$recommended_ldap_index_sub")"
 	merged_ldap_index_approx="$(merge_csv_unique_sorted "$ldap_index_approx" "$recommended_ldap_index_approx")"
+
+	# remove old kolab attributes from index during update to UCS 3.0-0 (Bug #22436)
+	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.26-1 ; then
+		merged_ldap_index_eq="$(filter_csv "$merged_ldap_index_eq" "kolabHomeServer|alias")"
+		merged_ldap_index_pres="$(filter_csv "$merged_ldap_index_pres" "kolabHomeServer|alias")"
+		merged_ldap_index_approx="$(filter_csv "$merged_ldap_index_approx" "kolabHomeServer|alias")"
+	fi
 
 	stop_slapd
 	univention-config-registry set ldap/index/eq="$merged_ldap_index_eq" \

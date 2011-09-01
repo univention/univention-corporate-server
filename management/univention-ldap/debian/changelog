@@ -1,3 +1,11 @@
+univention-ldap (8.0.26-1) unstable; urgency=low
+
+  * removed "alias" from default approx ldap index (Bug #22436)
+  * remove "kolabHomeServer" and "alias" from ldap indices during update
+    to UCS 3.0-0 if automatic index rebuild is enabled (Bug #22436)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 01 Sep 2011 11:30:48 +0200
+
 univention-ldap (8.0.25-1) unstable; urgency=low
 
   * transfered kolab related files to univention-kolab-schema (Bug #22436)
