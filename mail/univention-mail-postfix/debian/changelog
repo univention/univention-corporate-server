@@ -1,6 +1,7 @@
 univention-mail-postfix (6.0.2-1) unstable; urgency=low
 
   * switched LDAP filters to new LDAP objectclasses and attributes (Bug #22369)
+  * do not use content_filter="kolabfilter" for antivir smtpd (Bug #22369)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 01 Sep 2011 15:23:51 +0200
 
