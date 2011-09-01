@@ -1,3 +1,13 @@
+univention-legacy-kolab-schema (1.0.0-2) unstable; urgency=low
+
+  * changed dependency from univeniton-ldap-config to
+    univention-ldap-server (Bug #22436) 
+  * add kolab attributes to ldap indices during installation and remove
+    them on package removal if automatic ldap index rebuild has been
+    enabled
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 01 Sep 2011 11:36:15 +0200
+
 univention-legacy-kolab-schema (1.0.0-1) unstable; urgency=low
 
   * initial import (Bug #22436)
