@@ -1,3 +1,9 @@
+univention-heimdal (5.0.6-3) unstable; urgency=low
+
+  * fix package dependencies (Bug #22600)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Sep 2011 12:02:07 +0200
+
 univention-heimdal (5.0.6-2) unstable; urgency=low
 
   * univention-heimdal-kdc.conffiles should be constructed at build-time
