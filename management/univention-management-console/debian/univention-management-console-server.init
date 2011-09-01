@@ -61,9 +61,11 @@ case "$1" in
 		log_action_end_msg 0
 		;;
 	crestart)
+		log_action_msg "Restarting $NAME (if currently active)"
 		pid="$(cat /var/run/umc-server.pid 2>/dev/null)"
 		if [ -n "$pid" -a -d "/proc/$pid" ]; then
-			$0 restart
+			$DAEMON crestart
+			log_action_end_msg 0
 		else
 			log_action_msg "$NAME is not running, no need to restart."
 		fi
