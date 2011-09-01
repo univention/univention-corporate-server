@@ -1564,6 +1564,7 @@ class s4(univention.s4connector.ucs):
 		if rejected:
 			for id, dn in rejected:
 				premapped_s4_dn = unicode(dn, 'utf8')
+				ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs: Resync rejected dn: %s' % (premapped_s4_dn))
 				try:
 					sync_successfull = False
 					elements = self.__search_s4_changeUSN(id, show_deleted=True)
@@ -1746,7 +1747,7 @@ class s4(univention.s4connector.ucs):
 				old_dn = tmp_object['dn']
 			if hasattr(self.property[property_type], 'position_mapping'):
 				for mapping in self.property[property_type].position_mapping:
-					old_dn=self._subtree_replace(old_dn,mapping[0],mapping[1])
+					old_dn=self._subtree_replace(old_dn.lower(),mapping[1].lower(),mapping[0].lower())
 				old_dn = self._subtree_replace(old_dn,self.lo.base,self.lo_s4.base)
 
 			# the old object was moved in UCS, but does this object exist in S4?
@@ -1769,8 +1770,8 @@ class s4(univention.s4connector.ucs):
 				self._remove_dn_mapping(pre_mapped_ucs_old_dn, unicode(old_dn))
 				self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
-		ud.debug(ud.LDAP, ud.INFO,
-							   'sync from ucs: [%10s] [%10s] %s' % (property_type,object['modtype'], object['dn']))
+		ud.debug(ud.LDAP, ud.PROCESS,
+							   'sync from ucs: [%14s] [%10s] %s' % (property_type,object['modtype'], object['dn']))
 
 		if object.has_key('olddn'):
 			object.pop('olddn') # not needed anymore, will fail object_mapping in later functions

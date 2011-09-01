@@ -1,3 +1,13 @@
+univention-s4-connector (6.0.25-1) unstable; urgency=low
+
+  * Add a mapping for DCs and remove ou=Domain Controllers from the ignore
+    filter (Bug #23162)
+  * Set default debug level to 2 (PROCESS) and show for this debug level
+    a real process (Bug #22861)
+  * Cleanup the list-rejected output (Bug #22861)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 01 Sep 2011 06:20:21 +0200
+
 univention-s4-connector (6.0.24-2) unstable; urgency=low
 
   * joinscript fix (Bug #23360)

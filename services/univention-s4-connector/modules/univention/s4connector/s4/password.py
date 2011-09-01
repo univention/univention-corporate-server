@@ -332,7 +332,7 @@ def _get_integer(str):
 
 def password_sync_ucs_to_s4(s4connector, key, object):
 	_d=ud.function('ldap.s4.password_sync_ucs_to_s4')
-	ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4 called")
+	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4 called")
 	
 	compatible_modstring = univention.s4connector.s4.compatible_modstring
 	try:

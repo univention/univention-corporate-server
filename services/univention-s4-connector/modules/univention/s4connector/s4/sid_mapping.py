@@ -37,7 +37,7 @@ import univention.debug2 as ud
 import univention.s4connector.s4
 
 def sid_to_s4(s4connector, key, object):
-	ud.debug(ud.LDAP, ud.WARN, "sid_to_s4 object: %s" % object)
+	ud.debug(ud.LDAP, ud.INFO, "sid_to_s4 object: %s" % object)
 	# object dn was already mapped to the s4 DN:
 	s4_dn = object['dn']
 	modlist = []
@@ -71,7 +71,7 @@ def sid_to_s4(s4connector, key, object):
 	pass
 	
 def sid_to_ucs(s4connector, key, s4_object):
-	ud.debug(ud.LDAP, ud.WARN, "sid_to_ucs S4: %s" % s4_object)
+	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs S4: %s" % s4_object)
 
 	# modlist
 	ml = []
@@ -81,9 +81,9 @@ def sid_to_ucs(s4connector, key, s4_object):
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_s4: UCS DN %s" % ucs_dn)
 	
 	if s4_object.has_key('attributes') and s4_object['attributes'].has_key('objectSid'):
-		ud.debug(ud.LDAP, ud.WARN, 'sid_to_ucs: objectSid found: %s' % s4_object['attributes']['objectSid'])
+		ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: objectSid found: %s' % s4_object['attributes']['objectSid'])
 	else:
-		ud.debug(ud.LDAP, ud.WARN, 'sid_to_ucs: objectSid not found in attributes!')
+		ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: objectSid not found in attributes!')
 		return
 
 	(ucs_dn, ucs_attributes) = s4connector.lo.lo.search(base=ucs_dn, scope='base', attr=['sambaSID', 'objectClass'])[0]

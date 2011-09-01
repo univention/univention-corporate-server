@@ -664,6 +664,7 @@ class ucs:
 
 		if rejected:
 			for filename, dn in rejected:
+				ud.debug(ud.LDAP, ud.PROCESS, 'sync from ucs:   Resync rejected file: %s' % (filename))
 				try:
 					if self.__sync_file_from_ucs(filename, append_error=' rejected'):
 						try:
@@ -753,7 +754,7 @@ class ucs:
 				ucs_key = attributes.ucs_attribute
 				if ucs_key:
 					value = object['attributes'][attributes.ldap_attribute]
-					ud.debug(ud.LDAP, ud.PROCESS, '__set_values: set attribute, ucs_key: %s - value: %s' % (ucs_key,value))
+					ud.debug(ud.LDAP, ud.INFO, '__set_values: set attribute, ucs_key: %s - value: %s' % (ucs_key,value))
 
 					# check if ucs_key is an custom attribute
 					detected_ca = False
@@ -764,10 +765,10 @@ class ucs:
 					univention.admin.modules.init(self.lo,position,ucs_module)
 					
 					if hasattr(ucs_module, 'ldap_extra_objectclasses'):
-						ud.debug(ud.LDAP, ud.PROCESS, '__set_values: module %s has custom attributes' % ucs_object.module)
+						ud.debug(ud.LDAP, ud.INFO, '__set_values: module %s has custom attributes' % ucs_object.module)
 						for oc, pname, syntax, ldapMapping, deleteValues, deleteObjectClass in ucs_module.ldap_extra_objectclasses:
 							if ucs_key == ucs_module.property_descriptions[pname].short_description:
-								ud.debug(ud.LDAP, ud.PROCESS, '__set_values: detected a custom attribute')
+								ud.debug(ud.LDAP, ud.INFO, '__set_values: detected a custom attribute')
 								detected_ca = True
 								old_value = ''
 								if modtype == 'modify':
@@ -780,10 +781,10 @@ class ucs:
 								else:
 									object['custom_attributes'] = {'modlist' : [(ldapMapping,old_value,value)], 'extraOC' : []}
 								object['custom_attributes']['extraOC'].append(oc);
-								ud.debug(ud.LDAP, ud.PROCESS, '__set_values: extended list of custom attributes: %s' % object['custom_attributes'])
+								ud.debug(ud.LDAP, ud.INFO, '__set_values: extended list of custom attributes: %s' % object['custom_attributes'])
 								continue
 					else:
-						ud.debug(ud.LDAP, ud.PROCESS, '__set_values: module %s has no custom attributes' % ucs_object.module)
+						ud.debug(ud.LDAP, ud.INFO, '__set_values: module %s has no custom attributes' % ucs_object.module)
 
 					if not detected_ca:					
 						if type(value) == type(types.ListType()) and len(value) == 1:
@@ -819,7 +820,7 @@ class ucs:
 					position=univention.admin.uldap.position(self.lo.base)
 					position.setDn(object['dn'])
 					univention.admin.modules.init(self.lo,position,ucs_module)
-					ud.debug(ud.LDAP, ud.WARN, '__set_values: no ldap_attribute defined in %s, we unset the key %s in the ucs-object' % (attributes, ucs_key))
+					ud.debug(ud.LDAP, ud.INFO, '__set_values: no ldap_attribute defined in %s, we unset the key %s in the ucs-object' % (attributes, ucs_key))
 
 					if ucs_key not in mandatory_attrs:
 						ucs_object[ucs_key] = []
@@ -835,7 +836,7 @@ class ucs:
 		if not self.property[property_type].post_attributes:
 			return
 		for attr_key in self.property[property_type].post_attributes.keys():
-			ud.debug(ud.LDAP, ud.PROCESS, '__set_values: mapping for attribute: %s' % attr_key)
+			ud.debug(ud.LDAP, ud.INFO, '__set_values: mapping for attribute: %s' % attr_key)
 			if hasattr(self.property[property_type].post_attributes[attr_key], 'mapping'):
 				set_values(self.property[property_type].post_attributes[attr_key].mapping[1](self, property_type, object))
 			else:
@@ -843,14 +844,14 @@ class ucs:
 
 	def __modify_custom_attributes(self, property_type, object, ucs_object, module, position, modtype = "modify"):
 		if object.has_key('custom_attributes'):
-			ud.debug(ud.LDAP, ud.PROCESS, '__modify_custom_attributes: custom attributes found: %s' % object['custom_attributes'])
+			ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: custom attributes found: %s' % object['custom_attributes'])
 			modlist = object['custom_attributes']['modlist']
 			extraOC = object['custom_attributes']['extraOC']
 
 			# set extra objectClasses
 			if len(extraOC) > 0:
 				oc = self.search_ucs(base = ucs_object.dn, scope='base', attr=['objectClass'])
-				ud.debug(ud.LDAP, ud.PROCESS, '__modify_custom_attributes: should have extraOC %s, got %s' % (extraOC, oc))
+				ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: should have extraOC %s, got %s' % (extraOC, oc))
 				noc = []
 				for i in range(len(oc[0][1]['objectClass'])):
 					noc.append(oc[0][1]['objectClass'][i])
@@ -860,15 +861,15 @@ class ucs:
 						noc.append(extraOC[i])
 
 				if oc[0][1]['objectClass'] != noc:
-					ud.debug(ud.LDAP, ud.PROCESS, '__modify_custom_attributes: modify objectClasses' )
+					ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: modify objectClasses' )
 					modlist.append(('objectClass',oc[0][1]['objectClass'],noc))
 
-			ud.debug(ud.LDAP, ud.PROCESS, '__modify_custom_attributes: modlist: %s' % modlist)
+			ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: modlist: %s' % modlist)
 			self.lo.modify(ucs_object.dn,modlist)
 			
 			return True
 		else:
-			ud.debug(ud.LDAP, ud.PROCESS, '__modify_custom_attributes: no custom attributes found')
+			ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: no custom attributes found')
 			return True
 
 	def add_in_ucs(self, property_type, object, module, position):
@@ -975,7 +976,7 @@ class ucs:
 
 		try:
 			ud.debug(ud.LDAP, ud.PROCESS,
-							   'sync to ucs:   [%10s] [%10s] %s' % (property_type,object['modtype'], object['dn']))
+							   'sync to ucs:   [%14s] [%10s] %s' % (property_type,object['modtype'], object['dn']))
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
 		except: # FIXME: which exception is to be caught?
@@ -1026,7 +1027,7 @@ class ucs:
 									  "failed in post_con_modify_functions")
 				result = False				
 
-			ud.debug(ud.LDAP, ud.PROCESS,
+			ud.debug(ud.LDAP, ud.INFO,
 					       "Return  result for DN (%s)" % object['dn'])
 			return result
 		
