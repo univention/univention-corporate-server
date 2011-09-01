@@ -40,7 +40,6 @@ import sys, subprocess
 configRegistry=univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
-bindpw_filename = configRegistry.get('bind/bindpw', '/etc/machine.secret')
 ldap_hostdn = configRegistry.get('ldap/hostdn')
 
 def exit(result, message = None):
@@ -52,7 +51,7 @@ def exit(result, message = None):
 
 def query_policy(dn):
 	nfsmount = []
-	p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', bindpw_filename, '-s', ldap_hostdn], stdout=subprocess.PIPE)
+	p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', ldap_hostdn], stdout=subprocess.PIPE)
 	result = p1.communicate()[0]
 
 	if p1.returncode != 0:

@@ -1,3 +1,9 @@
+univention-base-files (1.0.17-1) unstable; urgency=low
+
+  * avoid checking bind/bindpw, simply use machine.secret (Bug #23178)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Sep 2011 14:55:08 +0200
+
 univention-base-files (1.0.16-1) unstable; urgency=low
 
   * remove old sysklogd startup links (Bug #23143)
