@@ -42,7 +42,7 @@ merge_csv_unique_sorted() {
 	else
 		old="$1"
 	fi
-	echo -n "$(echo  -n "$old,$2" | tr "," "\n" | egrep -v "^$" | sort -u  | tr "\n" "," | sed -e 's/,$//')"
+	echo  -n "$old,$2" | tr "," "\n" | egrep -v "^$" | sort -u  | tr "\n" "," | sed -e 's/,$//'
 }
 
 if is_ucr_true "ldap/index/autorebuild" ; then

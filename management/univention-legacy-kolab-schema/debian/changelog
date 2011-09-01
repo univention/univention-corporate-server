@@ -1,3 +1,9 @@
+univention-legacy-kolab-schema (1.0.0-4) unstable; urgency=low
+
+  * removed double echo (Bug #22436)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 01 Sep 2011 12:21:46 +0200
+
 univention-legacy-kolab-schema (1.0.0-3) unstable; urgency=low
 
   * remove LDAP attributes only on removal (Bug #22436)
