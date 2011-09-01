@@ -98,13 +98,6 @@ objectclass ( 1.3.6.1.4.1.10176.1011.2.1
 	univentionKolabDisableSieve $
 	univentionKolabDeliveryToFolderActive ) )
 
-# univention mail domain
-objectclass ( 1.3.6.1.4.1.10176.1012.2.1
-  NAME 'univentionMailDomainname'
-  DESC 'Univention mail domain'
-  SUP top STRUCTURAL
-  MUST ( cn ) )
-
 # mailinglist member
 attributetype ( 1.3.6.1.4.1.10176.1013.1.1
   NAME 'univentionKolabMember'
