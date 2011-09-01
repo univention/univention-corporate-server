@@ -68,7 +68,7 @@ def debug( level, msg ):
 		logobj.write( "%s [L%s]: %s\n" % (time.asctime( time.localtime()), printInfo[1], msg) )
 		logobj.flush()
 
-baseconfig = ub.baseConfig()
+baseconfig = ub.ConfigRegistry()
 baseconfig.load()
 
 class LogCollectorClient( object ):

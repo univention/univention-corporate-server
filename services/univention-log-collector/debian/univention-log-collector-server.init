@@ -1,7 +1,6 @@
 #! /bin/sh
 #
 # Univention Log Collector
-#  postinst script
 #
 # Copyright 2007-2011 Univention GmbH
 #
@@ -34,6 +33,8 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 NAME=univention-log-collector-server
 DAEMON=/usr/sbin/log-collector-server.py
 PIDFILE=/var/run/$NAME.pid
+
+. /lib/lsb/init-functions
 
 # Gracefully exit if the package has been removed.
 test -x $DAEMON || exit 0
