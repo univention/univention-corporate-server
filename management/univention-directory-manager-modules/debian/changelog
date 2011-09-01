@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.67-1) unstable; urgency=low
+
+  * Fixed typos for operatingSystem attributes (Bug #23477)
+  * If the S4 connector is installed the samba attribute for a group will
+    be added but with a local SID (Bug #22862).
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 01 Sep 2011 19:52:45 +0200
+
 univention-directory-manager-modules (7.0.66-1) unstable; urgency=low
 
   * add UDM module dns/txt_record; Bug #14960

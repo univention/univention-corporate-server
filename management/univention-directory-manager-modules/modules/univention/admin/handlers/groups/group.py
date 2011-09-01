@@ -42,6 +42,7 @@ import univention.admin.handlers
 import univention.admin.allocators
 import univention.admin.localization
 import univention.debug
+from univention.admin import configRegistry
 
 translation=univention.admin.localization.translation('univention.admin.handlers.groups')
 _=translation.translate
@@ -66,6 +67,15 @@ options={
 			default=1
 		)
 }
+
+# global caching variable
+if configRegistry.is_true('directory/manager/samba3/legacy', False):
+	s4connector_present = False
+elif configRegistry.is_false('directory/manager/samba3/legacy', False):
+	s4connector_present = True
+else:
+	s4connector_present = None
+
 
 module_search_filter=univention.admin.filter.conjunction('&', [
 	univention.admin.filter.expression('objectClass', 'univentionGroup'),
@@ -304,11 +314,22 @@ class object(univention.admin.handlers.simpleLdap):
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		global mapping
 		global property_descriptions
+		global s4connector_present
 
 		self.mapping=mapping
 		self.descriptions=property_descriptions
 
 		self.alloc=[]
+
+		# s4connector_present is a global caching variable than can be
+		# None ==> ldap has not been checked for servers with service "S4 Connector"
+		# True ==> at least one server with IP address (aRecord) is present
+		# False ==> no server is present
+		if s4connector_present == None:
+			searchResult = lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr = ['aRecord'])
+			s4connector_present = True
+			if not [ dn for (dn, attr) in searchResult if attr.has_key('aRecord') ]:
+				s4connector_present = False
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
@@ -317,7 +338,7 @@ class object(univention.admin.handlers.simpleLdap):
 		univention.admin.handlers.simpleLdap.open(self)
 
 		try:
-			caching_timeout = int(univention.admin.baseConfig.get('directory/manager/web/modules/groups/group/caching/uniqueMember/timeout','300'))
+			caching_timeout = int(configRegistry.get('directory/manager/web/modules/groups/group/caching/uniqueMember/timeout','300'))
 			self.cache_uniqueMember.set_timeout( caching_timeout )
 		except:
 			pass
@@ -492,14 +513,20 @@ class object(univention.admin.handlers.simpleLdap):
 					domainsid=searchResult[0][1]['sambaSID'][0]
 					sid = domainsid+'-'+self['sambaRID']
 					self.groupSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
+					self.alloc.append(('sid', self.groupSid))
 				else:
 					num = self.gidNum
-					while not hasattr(self,'groupSid') or not self.groupSid or self.groupSid == 'None':
-						try:
-							self.groupSid = univention.admin.allocators.requestGroupSid(self.lo, self.position, num)
-						except univention.admin.uexceptions.noLock, e:
-							num = str(int(num)+1)
-				self.alloc.append(('sid', self.groupSid))
+					if s4connector_present:
+						# In this case Samba 4 must create the SID, the s4 connector will sync the
+						# new sambaSID back from Samba 4.
+						self.groupSid='S-1-4-%s' % num
+					else:
+						while not hasattr(self,'groupSid') or not self.groupSid or self.groupSid == 'None':
+							try:
+								self.groupSid = univention.admin.allocators.requestGroupSid(self.lo, self.position, num)
+							except univention.admin.uexceptions.noLock, e:
+								num = str(int(num)+1)
+						self.alloc.append(('sid', self.groupSid))
 			else:
 				self.groupSid=None
 
@@ -785,7 +812,7 @@ class object(univention.admin.handlers.simpleLdap):
 			return
 
 		# perform check only if enabled via UCR
-		if univention.admin.baseConfig.get('directory/manager/web/modules/groups/group/checks/circular_dependency','yes').lower() in ('no','false','0'):
+		if configRegistry.get('directory/manager/web/modules/groups/group/checks/circular_dependency','yes').lower() in ('no','false','0'):
 			return
 
 		grpdn2childgrpdns = {}
