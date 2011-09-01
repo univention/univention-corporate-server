@@ -40,7 +40,7 @@ filter_csv() {
 	echo -n "$1" | tr "," "\n" | egrep -v "^($2)\$" | egrep -v '^$' | tr "\n" "," | sed -e 's/,$//'
 }
 
-if [ "$2" = "remove" ] ; then
+if [ "$1" = "remove" ] ; then
 	if is_ucr_true "ldap/index/autorebuild" ; then
 		filtered_ldap_index_eq="$(filter_csv "$ldap_index_eq" "kolabHomeServer|alias")"
 		filtered_ldap_index_pres="$(filter_csv "$ldap_index_pres" "kolabHomeServer|alias")"
