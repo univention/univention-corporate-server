@@ -124,7 +124,6 @@ static int _pam_parse(int flags, int argc, const char **argv)
 
 int mapuser(const char *fromuser, char *touser)
 {
-   LDAP *ld;
    int msgid;
    char filter[BUFSIZ];
    char *attrs[] = {toattr, NULL};
@@ -147,23 +146,22 @@ int mapuser(const char *fromuser, char *touser)
        ret = PAM_USER_UNKNOWN;
 	   goto cleanup;
    }
-   ld = lp->ld;
-   if ((msgid = ldap_search_s(ld, ldap_base, LDAP_SCOPE_SUBTREE, filter, attrs, 0, &res)) != LDAP_SUCCESS) {
+   if ((msgid = ldap_search_s(lp->ld, ldap_base, LDAP_SCOPE_SUBTREE, filter, attrs, 0, &res)) != LDAP_SUCCESS) {
        _log_err(LOG_NOTICE, "Failed to query LDAP server: ", filter);
        ret = PAM_USER_UNKNOWN;
 	   goto cleanup;
    }
-   if (ldap_count_entries(ld, res) != 1) {
-       _log_err(LOG_NOTICE, "No or ambigous result, found %d entries.", ldap_count_entries(ld, res));
+   if (ldap_count_entries(lp->ld, res) != 1) {
+       _log_err(LOG_NOTICE, "No or ambigous result, found %d entries.", ldap_count_entries(lp->ld, res));
        ret = PAM_USER_UNKNOWN;
 	   goto cleanup;
    }
-   if ((entry = ldap_first_entry(ld, res)) == NULL) {
+   if ((entry = ldap_first_entry(lp->ld, res)) == NULL) {
        _log_err(LOG_NOTICE, "LDAP search returned no entries.");
        ret = PAM_USER_UNKNOWN;
 	   goto cleanup;
    }
-   if ((values = ldap_get_values(ld, entry, toattr)) == NULL) {
+   if ((values = ldap_get_values(lp->ld, entry, toattr)) == NULL) {
        _log_err(LOG_NOTICE, "LDAP search returned no values: %s", filter);
        ret = PAM_USER_UNKNOWN;
 	   goto cleanup;
@@ -178,7 +176,7 @@ int mapuser(const char *fromuser, char *touser)
 cleanup:
    if ( values ) ldap_value_free(values);
    if ( res ) ldap_msgfree(res);
-   ldap_unbind(ld);
+   if ( lp->ld ) ldap_unbind(lp->ld);
    return ret;
 }
 
