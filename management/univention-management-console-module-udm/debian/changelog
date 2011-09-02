@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.104-1) unstable; urgency=low
+
+  * add name of current object to tab title; Bug #23216
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 02 Sep 2011 11:06:10 +0200
+
 univention-management-console-module-udm (1.0.103-1) unstable; urgency=low
 
   * show attribute in listing that is used in the search filter; Bug #23209

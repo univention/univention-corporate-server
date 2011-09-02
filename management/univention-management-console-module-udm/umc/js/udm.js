@@ -505,7 +505,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			moduleStore: this.moduleStore,
 			objectType: objectType,
 			ldapName: ldapName,
-			newObjectOptions: newObjOptions
+			newObjectOptions: newObjOptions,
+			moduleWidget: this
 		});
 		this._detailPageCloseHandle = dojo.connect(this._detailPage, 'onClose', this, 'closeDetailPage');
 		this.addChild(this._detailPage);
@@ -516,6 +517,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// summary:
 		//		Closes the detail page for editing UDM objects.
 
+		this.resetTitle();
 		this.selectChild(this._searchPage);
 		if (this._detailPageCloseHandle) {
 			dojo.disconnect(this._detailPageCloseHandle);
