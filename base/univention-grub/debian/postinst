@@ -38,7 +38,13 @@ eval "$(univention-config-registry shell)"
 univention-config-registry unset lilo/vga lilo/boot lilo/append lilo/root lilo/append/acpi 1> /dev/null 
 univention-config-registry unset lilo/append/pci/acpi lilo/compact lilo/default lilo/append 1> /dev/null 
 
-univention-config-registry set grub/memtest86=true
+# Obsolete, has been replaced by grub/gfxmode
+univention-config-registry unset grub/vga  1> /dev/null 
+univention-config-registry set grub/gfxmode=1024x768
+
+# Obsolete, the option is now always displayed
+univention-config-registry unset grub/memtest86  1> /dev/null 
+
 univention-config-registry set grub/timeout?5
 univention-config-registry set kernel/postinst_hook?"/usr/sbin/update-grub"
 univention-config-registry set grub/quiet?"no"
@@ -103,19 +109,5 @@ if [ "$grepcnt" = "0" ] ; then
 		done
 	fi
 fi
-
-# eval "$(univention-config-registry shell)"
-
-# # determine grubdevice
-# # needs to be called after grub-install: devices.map is created by grub-install
-# if [ -z "$grub_groot" ] ; then
-# 	grubdev=$(df -P /boot | sed -ne '$s% .*%%p')
-# 	groot=$(convert "$grubdev")
-# 	if [ -n "$groot" ]
-# 	then
-# 		univention-config-registry set grub/groot="$groot"
-# 	fi
-# fi
-
 
 exit 0

@@ -1,3 +1,18 @@
+univention-grub (5.0.0-10) unstable; urgency=low
+
+  * Make /etc/default/grub a Univention Configuration template. Some grub/*
+    UCR variables are now obsolete: (Bug #22115)
+    - grub/vga has been replaced by grub/gfxmode (the format is different and
+      the variable is initially set to 1024x768, i.e. equivalent to the default
+      setting for grub/vga)
+    - grub/memtest86 is no longer used, the option to run a memory test is always
+      shown
+    - grub/groot, grub/root and grub/boot are no longer needed. Grub 2 performs
+      automatic parsing of filesystems and partitions and this no longer needs to
+      be configured.	    
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 02 Sep 2011 12:31:04 +0200
+
 univention-grub (5.0.0-9) unstable; urgency=low
 
   * Remove the template for menu.lst, but keep the previous menu.lst file

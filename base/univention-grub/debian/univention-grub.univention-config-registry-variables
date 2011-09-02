@@ -1,3 +1,19 @@
+[grub/timeout]
+Description[de]=Wartezeit in Sekunden bevor der Standardkernel gebootet wird
+Description[en]=Timeout in seconds, before automatically booting the default entry
+Type=str
+Categories=system-base
+
+[grub/gfxmode]
+Description[de]=Die Bildschirmauflösung für das Bootmenu, z.B. 1024x768
+Description[en]=Graphical resolution for the boot menu text, e.g. 1024x768
+Type=str
+Categories=system-base
+
+
+
+
+
 [grub/xenhopt]
 Description[de]=Weitere durch den Grub-Bootloader übergebene Xen-Hypervisor Optionen
 Description[en]=Additional Xen hypervisor options passed by the Grub boot loader
@@ -7,42 +23,6 @@ Categories=system-base
 [grub/append]
 Description[de]=Weitere durch den Grub-Bootloader übergebene Kernel-Optionen
 Description[en]=Additional kernel options passed by the Grub boot loader
-Type=str
-Categories=system-base
-
-[grub/groot]
-Description[de]=Boot-Partition (/boot) für Grub-Bootloader (Grub-Notation)
-Description[en]=Boot partition (/boot) for boot loader (Grub notation)
-Type=str
-Categories=system-base
-
-[grub/root]
-Description[de]=Wurzel-Partition (/) für Grub-Bootloader
-Description[en]=Root partition (/) for Grub boot loader
-Type=str
-Categories=system-base
-
-[grub/boot]
-Description[de]=Installationslaufwerk oder -partition für Grub-Bootloader
-Description[en]=Device or partition for Grub boot loader installation
-Type=str
-Categories=system-base
-
-[grub/memtest86]
-Description[de]=Aktiviere/Deaktiviere memtest86 Bootoption
-Description[en]=Enable/Disable memtest86 boot option
-Type=str
-Categories=system-base
-
-[grub/timeout]
-Description[de]=Wartezeit in Sekunden bevor der Standardkernel gebootet wird
-Description[en]=Timeout in seconds, before automatically booting the default entry
-Type=str
-Categories=system-base
-
-[grub/vga]
-Description[de]=Grub VGA-Code
-Description[en]=Grub vga code
 Type=str
 Categories=system-base
 
