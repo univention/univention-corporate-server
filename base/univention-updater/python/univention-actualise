@@ -221,7 +221,7 @@ def getPackageList(configRegistry, job):
 
 	if p1.returncode != 0:
 		print >>sys.stderr, 'failed to execute univention_policy_result'
-		sys.exit(res)
+		sys.exit(p1.returncode)
 
 	for line in result.split('\n'):
 		line=line.strip(' ').replace('"','')

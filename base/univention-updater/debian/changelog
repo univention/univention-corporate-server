@@ -1,3 +1,9 @@
+univention-updater (7.0.21-1) unstable; urgency=low
+
+  * fixed traceback in univention-actualise (Bug #23178)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 02 Sep 2011 10:19:14 +0200
+
 univention-updater (7.0.20-1) unstable; urgency=low
 
   * use machine secret with ldap/hostdn (Bug #23178)
