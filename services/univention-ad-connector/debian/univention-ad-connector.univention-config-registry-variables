@@ -48,13 +48,6 @@ Description[en]=Defines whether the primary e-mail address on user objects in UC
 Type=str
 Categories=service-adcon
 
-[con.*/ad/mapping/user/win2000/description]
-Description[de]=Konfiguriert, ob der Abgleich von Benutzer-Beschreibungen bei der Synchronisation mit Windows 2000 Domänencontrolern aktiviert werden soll.
-Description[en]=Due to limitations in operation with Windows 2000 servers the connector cannot set any object description as blank in Active
-Directory. As a result the synchronisation of descriptions in Windows 2000 mode is deactivated. If this variable is set to "true", descriptions are nevertheless synchronised for users in so far as this is possible.
-Type=str
-Categories=service-adcon
-
 [con.*/ad/mapping/group/primarymail]
 Description[de]=Definiert, ob die primäre Mailadresse an Gruppenobjekten von UCS mit dem Attribut "mail" in Active Directory synchronisiert werden soll. Da "mail" ein multivalue ist kann es zu Problemen bei der Synchronisation kommen, default ist daher "false". Active Directory benötigt ggf. die Exchange-Erweiterung für diese Option. Bei der Installation des Pakets "univention-ad-connector-exchange" wird der Wert auf "true" gesetzt.
 Description[en]=
@@ -65,12 +58,6 @@ Categories=service-adcon
 [con.*/ad/mapping/group/language]
 Description[de]=Definiert, welche Abbildung von Standard-Gruppennamen zwischen UCS (Gruppennamen sind dort immer englisch) und Active Directory genutzt werden soll. Voreingestellt ist das Mapping auf ein deutschsprachiges Active Directory über den Wert "de".
 Description[en]=Defines which form of standard group names should be used between UCS (group names are always English) and Active Directory. The mapping to a Active Directory service in German language is preset using the value "de".
-Type=str
-Categories=service-adcon
-
-[con.*/ad/mapping/group/win2000/description]
-Description[de]=Aufgrund von Einschränkungen im Betrieb mit Windows 2000 Server kann der Connector keine Objektbeschreibungen in Active Directory leersetzen. Daher wird die Synchronisation von Beschreibungen im Windows 2000-Modus deaktiviert. Wird diese Variable auf "true" gesetzt, werden Beschreibungen für Benutzer dennoch, soweit möglich, synchronisiert.
-Description[en]=Controls, whether the description attribute of groups should be synchronised when replicating against Windows 2000.
 Type=str
 Categories=service-adcon
 
