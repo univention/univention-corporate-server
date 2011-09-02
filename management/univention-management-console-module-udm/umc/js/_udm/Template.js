@@ -14,15 +14,22 @@ dojo.declare('umc.modules._udm.Template', null, {
 	//		form fields. References are indicated by using tags '<variable>'.
 	//		Additionally, modifiers can be applied to the content of a variable (e.g.,
 	//		to convert values to upper or lower case) and an index operator enables
-	//		accessing particular character ranges.
+	//		accessing particular character ranges. Global functions in the form of
+	//		'<:command>' are applied in the order they appear. Their position in the
+	//		string does not matter.
 	// example:
 	//		Here some valid examples for variable expansion.
 	//	|	simple:
-	//	|	  <var>               -> 'Univention'
+	//	|	  <var>  -> 'Univention'
+	//	|	  <var2> -> 'Süß'
+	//	|	  <var3> -> '  Foo bar  '
 	//	|	with modifiers:
-	//	|	  <var:lower>         -> 'univention'
-	//	|	  <var:upper>         -> 'UNIVENTION'
-	//	|	  <var:umlauts,upper> -> 'UNIVENTION'
+	//	|	  <var:lower>          -> 'univention'
+	//	|	  <var:upper>          -> 'UNIVENTION'
+	//	|	  <var:umlauts,upper>  -> 'UNIVENTION'
+	//	|	  <var2:umlauts>       -> 'Suess'
+	//	|	  <var2:umlauts,upper> -> 'SUESS'
+	//	|	  <var2:upper,umlauts> -> 'SUEss'
 	//	|	with index operator:
 	//	|	  <var>[0]   -> 'U'
 	//	|	  <var>[-2]  -> 'o'
@@ -30,6 +37,10 @@ dojo.declare('umc.modules._udm.Template', null, {
 	//	|	  <var>[1:]  -> 'nivention'
 	//	|	  <var>[:3]  -> 'Uni'
 	//	|	  <var>[:-3] -> 'Univent'
+	//	|	with trim:
+	//	|	  <var3:trim>    -> 'Foo bar'
+	//	|	global functions:
+	//	|	  <var3> <:trim> -> 'Foo bar'
 	//
 
 	// widgets: Object
@@ -56,7 +67,7 @@ dojo.declare('umc.modules._udm.Template', null, {
 	_umlauts: { 'ä' :'ae', 'Ä' : 'Ae', 'ö' : 'oe', 'Ö' : 'Oe', 'ü' : 'ue', 'Ü' : 'Ue', 'ß' : 'ss', 'Á' : 'A', 'Â' : 'A', 'Ã' : 'A', 'Ä' : 'A', 'Å' : 'A', 'Æ' : 'AE', 'Ç' : 'C', 'È' : 'E', 'É' : 'E', 'Ê' : 'E', 'Ë' : 'E', 'Ì' : 'I', 'Í' : 'I', 'Î' : 'I', 'Ï' : 'I', 'Ð' : 'D', 'Ñ' : 'N', 'Ò' : 'O', 'Ó' : 'O', 'Ô' : 'O', 'Õ' : 'O', 'Ö' : 'O', 'Ù' : 'U', 'Ú' : 'U', 'Û' : 'U', 'à' : 'a', 'â' : 'a', 'á' : 'a', 'ã' : 'a', 'æ' : 'ae', 'ç' : 'c', 'è' : 'e', 'é' : 'e', 'ê' : 'e', 'ë' : 'e', 'ì' : 'i', 'í' : 'i', 'î' : 'i', 'ï' : 'i', 'ñ' : 'n', 'ò' : 'o', 'ó' : 'o', 'ô' : 'o', 'ù' : 'u', 'ú' : 'u', 'û' : 'u', 'ý' : 'y', 'ÿ' : 'y', 'Ĉ' : 'C', 'ĉ' : 'c' },
 
 	// regular expression for matching variable references in the template
-	_regVar: /<(\w+)(:([\w,]*))?>(\[(-?\d*)(:(-?\d*))?\])?/g,
+	_regVar: /<(\w*)(:([\w,]*))?>(\[(-?\d*)(:(-?\d*))?\])?/g,
 
 	constructor: function(props) {
 		// mixin the props
@@ -83,6 +94,7 @@ dojo.declare('umc.modules._udm.Template', null, {
 				templateString: dojo.clone(ival),
 				references: [], // ordered list of widgets that are referenced
 				modifiers: [], // ordered list of string modifiers per reference
+				globalModifiers: [], // string modifiers that are applied on the final string
 				update: function() {
 					// collect all necessary values
 					var vals = [];
@@ -93,19 +105,29 @@ dojo.declare('umc.modules._udm.Template', null, {
 					// the value might be a simple string or an array of strings
 					var newVal;
 					if (dojo.isString(this.templateString)) {
-						newVal = dojo.replace(this.templateString, vals);
+						newVal = this.process(this.templateString, vals);
 					}
 					else if (dojo.isArray(this.templateString)) {
 						newVal = [];
 						dojo.forEach(this.templateString, function(istr) {
-							newVal.push(dojo.replace(istr, vals));
-						});
+							newVal.push(this.process(istr, vals));
+						}, this);
 					}
 
 					this.selfReference.set('value', newVal);
 					if (this.selfReference.setInitialValue) {
 						this.selfReference.setInitialValue(newVal, false);
 					}
+				},
+				process: function(templateStr, vals) {
+					// replace marks in the template string
+					var newStr = dojo.replace(templateStr, vals);
+
+					// apply global modifiers
+					dojo.forEach(this.globalModifiers, function(imodifier) {
+						newStr = imodifier(newStr);
+					});
+					return newStr;
 				}
 			};
 
@@ -147,26 +169,36 @@ dojo.declare('umc.modules._udm.Template', null, {
 						catch (err2) { }
 					}
 
-					// register the reference
-					if (!(refKey in this.widgets)) {
-						// reference does not exist
-						return true;
-					}
-					updater.references.push(this.widgets[refKey]);
+					if (!refKey) {
+						// we have a global modifier (i.e., no reference) ... register the modifier
+						updater.globalModifiers.push(this._getModifiers(modifier, startIdx, endIdx));
 
-					// update the template string
-					if (dojo.isArray(ival)) {
-						updater.templateString[j] = updater.templateString[j].replace(imatch, '{' + nRefs + '}');
+						// update the template string
+						if (dojo.isArray(ival)) {
+							updater.templateString[j] = updater.templateString[j].replace(imatch, '');
+						}
+						else {
+							updater.templateString = updater.templateString.replace(imatch, '');
+						}
 					}
-					else {
-						updater.templateString = updater.templateString.replace(imatch, '{' + nRefs + '}');
+					else if (refKey in this.widgets) {
+						// valid reference... register the reference
+						updater.references.push(this.widgets[refKey]);
+
+						// update the template string
+						if (dojo.isArray(ival)) {
+							updater.templateString[j] = updater.templateString[j].replace(imatch, '{' + nRefs + '}');
+						}
+						else {
+							updater.templateString = updater.templateString.replace(imatch, '{' + nRefs + '}');
+						}
+
+						// register the modifier
+						updater.modifiers.push(this._getModifiers(modifier, startIdx, endIdx));
+
+						// count the matched references
+						++nRefs;
 					}
-
-					// register the modifier
-					updater.modifiers.push(this._getModifiers(modifier, startIdx, endIdx));
-
-					// count the matched references
-					++nRefs;
 				}, this);
 			}, this);
 			if (nRefs) {
@@ -245,6 +277,12 @@ dojo.declare('umc.modules._udm.Template', null, {
 					}
 					return newStr;
 				}));
+				break;
+			case 'trim':
+			case 'strip':
+				modifiers.push(function(str) {
+					return dojo.trim(str);
+				});
 				break;
 			default:
 				// default modifier is a dummy function that does nothing

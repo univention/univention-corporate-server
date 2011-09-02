@@ -394,7 +394,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	identityProperty: function() {
-		items = this._searchWidget._widgets.objectProperty.getAllItems();
+		var items = this._searchWidget._widgets.objectProperty.getAllItems();
 		for ( var i in items ) {
 			if ( items[ i ].identifies ) {
 				return items[ i ];
@@ -420,7 +420,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			var identifies = this.identityProperty();
 			var selected_value = this._searchWidget._widgets.objectProperty.get( 'value' );
 			var columns = this._default_columns;
-			if ( identifies == null || selected_value != identifies.id ) {
+			if ( identifies === null || selected_value != identifies.id ) {
 				var new_column = {
 					name: selected_value,
 					label: this._searchWidget._widgets.objectProperty.get( 'displayedValue' )
