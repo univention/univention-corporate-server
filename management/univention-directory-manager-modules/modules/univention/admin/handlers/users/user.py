@@ -1316,7 +1316,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		if s4connector_present == None:
 			searchResult = self.lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr = ['aRecord'])
 			s4connector_present = True
-			if not [ dn for (dn, attr) in searchResult if attr.has_key('aRecord') ]:
+			if not [ ddn for (ddn, attr) in searchResult if attr.has_key('aRecord') ]:
 				s4connector_present = False
 
 		self.options=[]

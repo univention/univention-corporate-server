@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.68-1) unstable; urgency=low
+
+  * Don't use dn for a temporary name, which will break the computers/*
+    and groups/* creation (Bug #22862)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 02 Sep 2011 08:06:52 +0200
+
 univention-directory-manager-modules (7.0.67-1) unstable; urgency=low
 
   * Fixed typos for operatingSystem attributes (Bug #23477)

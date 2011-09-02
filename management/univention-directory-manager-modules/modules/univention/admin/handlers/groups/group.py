@@ -328,7 +328,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if s4connector_present == None:
 			searchResult = lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr = ['aRecord'])
 			s4connector_present = True
-			if not [ dn for (dn, attr) in searchResult if attr.has_key('aRecord') ]:
+			if not [ ddn for (ddn, attr) in searchResult if attr.has_key('aRecord') ]:
 				s4connector_present = False
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
