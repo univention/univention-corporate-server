@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.16-1) unstable; urgency=low
+
+  * umc.tools.forIn: returning false from within the callback function will break the loop
+  * umc.widgets.Module: The default title is stored in another attribute and can be reset; Bug #23216
+  * minor fixes in javascript syntax
+  * code cleanup
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 02 Sep 2011 11:05:02 +0200
+
 univention-management-console-frontend (1.0.15-1) unstable; urgency=low
 
   * modified behaviour of action restart and crestart, restart does

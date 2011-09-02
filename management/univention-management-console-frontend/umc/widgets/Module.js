@@ -12,6 +12,17 @@ dojo.declare("umc.widgets.Module", [ dijit.layout.StackContainer, umc.widgets._M
 	//		It extends dijit.layout.StackContainer and adds some module specific
 	//		properties/methods.
 
+	// initial title set for the module
+	defaultTitle: null,
+
+	postMixInProperties: function() {
+		this.inherited(arguments);
+		this.defaultTitle = this.title;
+	},
+
+	resetTitle: function() {
+		this.set( 'title', this.defaultTitle );
+	}
 });
 
 

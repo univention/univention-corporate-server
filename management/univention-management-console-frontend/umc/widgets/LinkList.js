@@ -31,25 +31,25 @@ dojo.declare("umc.widgets.LinkList", [ umc.widgets.ContainerWidget, umc.widgets.
 																			 } );
 												if ( ! this.store.hasAttribute( item, 'module' ) ) {
 													console.log( 'LinkList: attribute module is missing');
-													return
+													return;
 												}
 												if ( ! this.store.hasAttribute( item, 'id' ) ) {
 													console.log( 'LinkList: attribute objectDN is missing');
-													return
+													return;
 												}
 												if ( ! this.store.hasAttribute( item, 'objectType' ) ) {
 													console.log( 'LinkList: attribute objectType is missing');
-													return
+													return;
 												}
 												var moduleProps = {
 													flavor : this.store.getValue( item, 'flavor', null ),
 													module : this.store.getValue( item, 'module', null ),
 													openObject: {
 														objectDN : this.store.getValue( item, 'id', null ),
-														objectType : this.store.getValue( item, 'objectType', null ),
+														objectType : this.store.getValue( item, 'objectType', null )
 													}
 												};
-												this.store.getValue( item, 'objectType', null )
+												this.store.getValue( item, 'objectType', null );
 												dojo.connect( btn, "onClick", moduleProps, function () {
 																  dojo.publish( "/umc/modules/open", [ moduleProps.module, moduleProps.flavor, moduleProps ] );
 															  } );
@@ -61,7 +61,7 @@ dojo.declare("umc.widgets.LinkList", [ umc.widgets.ContainerWidget, umc.widgets.
 
 	isValid: function() {
 		return true;
-	},
+	}
 
 });
 

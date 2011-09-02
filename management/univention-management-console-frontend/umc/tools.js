@@ -216,6 +216,7 @@ dojo.mixin(umc.tools, {
 		//		Optionally, a scope can be defined.
 		//		The callback function will be called with the parameters
 		//		callback(/*String*/ key, /*mixed*/ value, /*Object*/ obj).
+		// 		Returning false from within the callback function will break the loop
 		//
 		//		This method is similar to dojox.lang.functional.forIn wher no hasOwnProperty()
 		//		check is carried out.
@@ -223,7 +224,9 @@ dojo.mixin(umc.tools, {
 		scope = scope || dojo.global;
 		for (var i in obj) {
 			if (obj.hasOwnProperty(i) || inheritedProperties) {
-				callback.call(scope, i, obj[i], obj);
+				if ( false === callback.call(scope, i, obj[i], obj ) ) {
+					break;
+				}
 			}
 		}
 	},

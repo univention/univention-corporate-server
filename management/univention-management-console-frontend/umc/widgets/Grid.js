@@ -306,7 +306,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			canSort: dojo.hitch(this, function(col) {
 				// disable sorting for the action columns
 				return Math.abs(col) - 2 < this.columns.length && Math.abs(col) - 2 >= 0;
-			}),
+			})
 		});
 		this._setColumnsAttr( this.columns );
 		this._grid.setSortIndex(1);

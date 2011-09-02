@@ -82,23 +82,31 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		this._loadValues();
 	},
 
+	item2object: function( item ) {
+		// summary:
+		//		Converts a store item to a "normal" dictionary
+		var entry = {};
+
+		umc.tools.forIn( item, function( attr, value ) {
+							 if ( dojo.isArray( value ) && value.length == 1 ) {
+								 entry[ attr ] = value[ 0 ];
+							 } else {
+								 entry[ attr ] = null;
+							 }
+						 } );
+
+		return entry;
+	},
+
 	getAllItems: function() {
+		// summary:
+		//		Converts all store items to "normal" dictionaries
 		var _items = [];
-		var store_items = this.store._getItemsArray();
-		for ( var j in store_items ) {
-			var entry = {};
-			var item = store_items[ j ];
-			for ( var i in item ) {
-				if ( item.hasOwnProperty( i ) && dojo.isArray( item[ i ] ) ) {
-					if ( item[ i ].length == 1 ) {
-						entry[ i ] = item[ i ][ 0 ];
-					} else {
-						entry[ i ] = null;
-					}
-				}
-			}
-			_items.push( entry );
-		}
+
+		dojo.forEach( this.store._getItemsArray(), function ( item ) {
+						  _items.push( this.item2object( item ) );
+					  }, this );
+
 		return _items;
 	},
 
