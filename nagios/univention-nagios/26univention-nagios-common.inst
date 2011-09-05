@@ -88,8 +88,8 @@ then
 	then
 		echo 'HINT: not updating UNIVENTION_LDAP nagios/service because of update30/keep/nagios/univention/ldap'
 	else
-		OLDcheckArgs="$(univention-directory-manager nagios/service list --filter=cn=UNIVENTION_LDAP | grep '^  checkArgs: '    | cut -d' ' -f4-)"
-		OLDcheckCommand="$(univention-directory-manager nagios/service list --filter=cn=UNIVENTION_LDAP | grep '^  checkCommand: ' | cut -d' ' -f4-)"
+		OLDcheckArgs="$(univention-directory-manager nagios/service list "$@" --filter=cn=UNIVENTION_LDAP | grep '^  checkArgs: '    | cut -d' ' -f4-)"
+		OLDcheckCommand="$(univention-directory-manager nagios/service list "$@" --filter=cn=UNIVENTION_LDAP | grep '^  checkCommand: ' | cut -d' ' -f4-)"
 		if [ "$OLDcheckArgs" = "$ldap_base" -a "$OLDcheckCommand" = "check_ldap" ]
 		then
 			univention-directory-manager nagios/service modify "$@" --dn="$NAGIOSCONTAINER" --remove checkArgs="$OLDcheckArgs" --set checkCommand=check_univention_ldap
