@@ -10,6 +10,7 @@ Package: univention-mail-postfix
 Architecture: all
 Depends: postfix, 
   postfix-ldap, 
+  shell-univention-lib,
   sasl2-bin, 
   libpam-univentionmailcyrus, 
   univention-config-registry

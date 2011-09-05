@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.3-1) unstable; urgency=low
+
+  * include univention-lib in joinscript (Bug #22369)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 05 Sep 2011 16:09:25 +0200
+
 univention-mail-postfix (6.0.2-1) unstable; urgency=low
 
   * switched LDAP filters to new LDAP objectclasses and attributes (Bug #22369)
