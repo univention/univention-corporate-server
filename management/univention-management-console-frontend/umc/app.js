@@ -78,10 +78,17 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 
 		// restart the timer for session checking
 		this._checkSessionTimer.start();
+
+		// try to set the locale... switch off automatic error handling
+		// in case we cannot set the locale, we probably need to login
 		umc.tools.umcpCommand('set', {
 			locale: dojo.locale
-		} ).then( dojo.hitch( this, function( data ) {
+		}, false ).then( dojo.hitch( this, function( data ) {
+			// everything went well
 			this.loadModules();
+		} ), dojo.hitch( this, function() {
+			// error occurred, probably we need to login since we are not authorized
+			this.login();
 		} ) );
 	},
 
