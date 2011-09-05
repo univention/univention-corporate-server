@@ -1,3 +1,9 @@
+univention-nagios (5.0.9-1) unstable; urgency=low
+
+  * modify UNIVENTION_LDAP to use machine.secret (Bug #23180)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 05 Sep 2011 15:15:32 +0200
+
 univention-nagios (5.0.8-2) unstable; urgency=low
 
   * renamed nagios/common/servicechecks/autocreate to 

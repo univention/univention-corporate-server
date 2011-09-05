@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -82,7 +82,22 @@ univention-directory-manager nagios/service create "$@" --ignore_exists --positi
 
 univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_SWAP" --set description="Default Service: check if swap device is out of free space" --set checkCommand="check_univention_swap" --set checkArgs='40%!20%' --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" --set normalCheckInterval="10" --set retryCheckInterval="1" --set maxCheckAttempts="1"
 
-univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_LDAP" --set description="Default Service: check if service ldap is ok" --set checkCommand="check_ldap"  --set useNRPE="1" --set checkArgs="$ldap_base" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+if [ "$JS_LAST_EXECUTED_VERSION" -gt 0 -a "$JS_LAST_EXECUTED_VERSION" -lt 2 ]
+then
+	if is_ucr_true update30/keep/nagios/univention/ldap
+	then
+		echo 'HINT: not updating UNIVENTION_LDAP nagios/service because of update30/keep/nagios/univention/ldap'
+	else
+		OLDcheckArgs="$(univention-directory-manager nagios/service list --filter=cn=UNIVENTION_LDAP | grep '^  checkArgs: '    | cut -d' ' -f4-)"
+		OLDcheckCommand="$(univention-directory-manager nagios/service list --filter=cn=UNIVENTION_LDAP | grep '^  checkCommand: ' | cut -d' ' -f4-)"
+		if [ "$OLDcheckArgs" = "$ldap_base" -a "$OLDcheckCommand" = "check_ldap" ]
+		then
+			univention-directory-manager nagios/service modify "$@" --dn="$NAGIOSCONTAINER" --remove checkArgs="$OLDcheckArgs" --set checkCommand=check_univention_ldap
+		fi
+	fi
+else
+	univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_LDAP" --set description="Default Service: check if service ldap is ok" --set checkCommand="check_univention_ldap"  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+fi
 
 univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_NTP" --set description="Default Service: check if service ntp is ok" --set checkCommand="check_ntp" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
 
