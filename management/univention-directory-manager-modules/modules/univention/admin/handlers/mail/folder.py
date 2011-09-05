@@ -50,8 +50,20 @@ short_description=_('Mail: IMAP folder')
 long_description=''
 
 module_search_filter=univention.admin.filter.conjunction('&', [
-	univention.admin.filter.expression('objectClass', 'kolabSharedFolder'),
+	univention.admin.filter.expression('objectClass', 'univentionMailSharedFolder'),
 	])
+
+
+ldap_search_mailhomeserver = univention.admin.syntax.LDAP_Search(
+	filter = '(&(objectClass=univentionHost)(univentionService=Mail Server))',
+	attribute = [ 'computers/computer: fqdn' ],
+	value='computers/computer: fqdn' )
+
+ldap_search_maildomain = univention.admin.syntax.LDAP_Search(
+	filter = '(objectClass=univentionMailDomainname)',
+	attribute = [ 'mail/domain: name' ],
+	value='mail/domain: name' )
+
 
 property_descriptions={
 	'name': univention.admin.property(
@@ -66,7 +78,7 @@ property_descriptions={
 	'mailDomain': univention.admin.property(
 			short_description=_('Mail domain'),
 			long_description='',
-			syntax=univention.admin.syntax.mailDomain,
+			syntax=ldap_search_maildomain,
 			multivalue=0,
 			required=1,
 			may_change=0,
@@ -99,10 +111,10 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 		),
-	'kolabHomeServer': univention.admin.property(
-			short_description=_('Kolab home server'),
+	'mailHomeServer': univention.admin.property(
+			short_description=_('Mail home server'),
 			long_description='',
-			syntax=univention.admin.syntax.kolabHomeServer,
+			syntax=ldap_search_mailhomeserver,
 			multivalue=0,
 			required=1,
 			may_change=1,
@@ -128,24 +140,13 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 		),
-	'folderType': univention.admin.property(
-			short_description=_('IMAP folder type'),
-			long_description='',
-			syntax=univention.admin.syntax.mail_folder_type,
-			multivalue=0,
-			required=0,
-			dontsearch=0,
-			may_change=1,
-			identifies=0,
-		),
 }
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
 		[ "name" , "mailDomain" ],
-		[ "kolabHomeServer", "cyrus-userquota" ],
-		[ "folderType", "mailPrimaryAddress" ],
-		"userNamespace",
+		[ "mailHomeServer", "cyrus-userquota" ],
+		[ "mailPrimaryAddress", "userNamespace" ],
 		] ),
 	Tab( _( 'Access Rights'),_('Access rights for shared folder'), layout = [
 		"sharedFolderUserACL",
@@ -154,11 +155,10 @@ layout = [
 	]
 
 mapping=univention.admin.mapping.mapping()
-mapping.register('cyrus-userquota', 'cyrus-userquota', None, univention.admin.mapping.ListToString)
-mapping.register('kolabHomeServer', 'kolabHomeServer', None, univention.admin.mapping.ListToString)
-mapping.register('userNamespace', 'univentionKolabUserNamespace', None, univention.admin.mapping.ListToString)
+mapping.register('cyrus-userquota', 'univentionMailUserQuota', None, univention.admin.mapping.ListToString)
+mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
+mapping.register('userNamespace', 'univentionMailUserNamespace', None, univention.admin.mapping.ListToString)
 mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
-mapping.register('folderType', 'univentionKolabSharedFolderType', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
@@ -230,9 +230,9 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if self[ 'mailPrimaryAddress' ]:
 			if self[ 'userNamespace' ] == 'TRUE':
-				al.append(('univentionKolabSharedFolderDeliveryAddress', '%s+%s@%s' % ( self['name'].split('/',1)[0], self[ 'name' ], self[ 'mailDomain' ] ) ) )
+				al.append(('univentionMailSharedFolderDeliveryAddress', '%s+%s@%s' % ( self['name'].split('/',1)[0], self[ 'name' ], self[ 'mailDomain' ] ) ) )
 			else:
-				al.append(('univentionKolabSharedFolderDeliveryAddress', 'univentioninternalpostuser+shared/%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] ) ) )
+				al.append(('univentionMailSharedFolderDeliveryAddress', 'univentioninternalpostuser+shared/%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] ) ) )
 
 			address = '%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] )
 			if self[ 'userNamespace' ] != 'TRUE' or self[ 'mailPrimaryAddress' ] != address:
@@ -243,8 +243,7 @@ class object(univention.admin.handlers.simpleLdap):
 					univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', value = self[ 'mailPrimaryAddress' ] )
 					raise univention.admin.uexceptions.mailAddressUsed
 
-		ocs.append('kolabSharedFolder')
-		ocs.append('univentionKolabSharedFolder')
+		ocs.append('univentionMailSharedFolder')
 
 		al.insert(0, ('objectClass', ocs))
 		al.append(('cn', "%s@%s" % (self.info['name'], self.info['mailDomain'])))
@@ -261,7 +260,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_modlist(self):
 		# we get a list of modifications to be done (called 'ml' down below)
 		# this lists looks like this:
-		# [('kolabHomeServer', [u'ugs-master.hosts.invalid'], u'ugs-master.hosts.invalid'), ('cyrus-userquota', u'100', u'101')]
+		# [('univentionMailHomeServer', [u'ugs-master.hosts.invalid'], u'ugs-master.hosts.invalid'), ('univentionMailUserQuota', u'100', u'101')]
 		# we can modify those entries to conform to the LDAP schema
 
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
@@ -283,12 +282,12 @@ class object(univention.admin.handlers.simpleLdap):
 				if i == 'mailPrimaryAddress': break
 			else:
 				if self[ 'userNamespace' ] == 'TRUE':
-					ml.append( ( 'univentionKolabSharedFolderDeliveryAddress',
-								 self.oldattr.get( 'univentionKolabSharedFolderDeliveryAddress', [] ),
+					ml.append( ( 'univentionMailSharedFolderDeliveryAddress',
+								 self.oldattr.get( 'univentionMailSharedFolderDeliveryAddress', [] ),
 								 [ '%s+%s@%s' % ( self['name'].split('/',1)[0], self[ 'name' ], self[ 'mailDomain' ] ) ] ) )
 				else:
-					ml.append( ( 'univentionKolabSharedFolderDeliveryAddress',
-								 self.oldattr.get( 'univentionKolabSharedFolderDeliveryAddress', [] ),
+					ml.append( ( 'univentionMailSharedFolderDeliveryAddress',
+								 self.oldattr.get( 'univentionMailSharedFolderDeliveryAddress', [] ),
 								 [ 'univentioninternalpostuser+shared/%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] ) ] ) )
 
 				address = '%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] )
@@ -301,7 +300,7 @@ class object(univention.admin.handlers.simpleLdap):
 						raise univention.admin.uexceptions.mailAddressUsed
 
 		if not self[ 'mailPrimaryAddress' ]:
-			ml.append( ( 'univentionKolabSharedFolderDeliveryAddress', self.oldattr.get( 'univentionKolabSharedFolderDeliveryAddress', [] ), [] ) )
+			ml.append( ( 'univentionMailSharedFolderDeliveryAddress', self.oldattr.get( 'univentionMailSharedFolderDeliveryAddress', [] ), [] ) )
 
 		rewrite_acl = False
 		new_acls_tmp = []
@@ -324,7 +323,7 @@ class object(univention.admin.handlers.simpleLdap):
 			for (a, b, c) in ml:
 				if a in ['sharedFolderUserACL', 'sharedFolderGroupACL']:
 					ml.remove((a, b, c))
-			ml.append( ( 'acl', self.oldattr.get( 'acl', [] ), new_acls_tmp ) )
+			ml.append( ( 'univentionMailACL', self.oldattr.get( 'univentionMailACL', [] ), new_acls_tmp ) )
 
 		return ml
 
@@ -332,7 +331,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('cn', '*'),
-		univention.admin.filter.expression('objectClass', 'kolabSharedFolder')
+		univention.admin.filter.expression('objectClass', 'univentionMailSharedFolder')
 		])
 
 	if filter_s:
@@ -346,4 +345,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-	return 'kolabSharedFolder' in attr.get('objectClass', [])
+	return 'univentionMailSharedFolder' in attr.get('objectClass', [])

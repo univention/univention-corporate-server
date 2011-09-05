@@ -84,6 +84,12 @@ childs=0
 short_description=_('User')
 long_description=''
 
+ldap_search_mailhomeserver = univention.admin.syntax.LDAP_Search(
+	filter = '(&(objectClass=univentionHost)(univentionService=Mail Server))',
+	attribute = [ 'computers/computer: fqdn' ],
+	value='computers/computer: fqdn' )
+
+
 options={
 	'posix': univention.admin.option(
 			short_description=_('POSIX account'),
@@ -527,6 +533,17 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'mailHomeServer': univention.admin.property(
+			short_description=_('Mail home server'),
+			long_description='',
+			syntax=ldap_search_mailhomeserver,
+			multivalue=0,
+			options=['mail'],
+			required=0,
+			dontsearch=0,
+			may_change=1,
+			identifies=0,
+		),
 	'mailPrimaryAddress': univention.admin.property(
 			short_description=_('Primary e-mail address'),
 			long_description='',
@@ -537,17 +554,6 @@ property_descriptions={
 			dontsearch=0,
 			may_change=1,
 			identifies=0,
-		),
-	'mailGlobalSpamFolder': univention.admin.property(
-			short_description=_('Use global spam folder'),
-			long_description=_('Move Spam to a global spam folder instead of a local folder'),
-			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
-			options=['mail'],
-			required=0,
-			may_change=1,
-			dontsearch=1,
-			identifies=0
 		),
 	'mailAlternativeAddress': univention.admin.property(
 			short_description=_('Alternative e-mail addresses'),
@@ -930,7 +936,7 @@ layout = [
 	Tab(_( 'Mail' ), _( 'Mail preferences' ), advanced = True, layout = [
 		Group( _( 'Advanced settings' ), layout = [
 			'mailAlternativeAddress',
-			'mailGlobalSpamFolder',
+			'mailHomeServer',
 			], ),
 		] ),
 	Tab( _( 'Certificate' ), _( 'Certificate' ), advanced = True, layout = [
@@ -1187,7 +1193,7 @@ mapping.register('organisation', 'o', None, univention.admin.mapping.ListToStrin
 
 mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToLowerString)
 mapping.register('mailAlternativeAddress', 'mailAlternativeAddress', univention.admin.mapping.ListToLowerListUniq)
-mapping.register('mailGlobalSpamFolder', 'mailGlobalSpamFolder', None, univention.admin.mapping.ListToString)
+mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
 
 mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
 mapping.register('e-mail', 'mail')

@@ -47,7 +47,7 @@ childs=0
 short_description=_('Mail: Mailing lists')
 long_description=''
 
-module_search_filter=univention.admin.filter.expression('objectClass', 'univentionKolabGroup'),
+module_search_filter=univention.admin.filter.expression('objectClass', 'univentionMailList'),
 
 property_descriptions={
 	'name': univention.admin.property(
@@ -127,7 +127,7 @@ layout = [
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('members', 'univentionKolabMember')
+mapping.register('members', 'univentionMailMember')
 mapping.register('mailAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
@@ -173,7 +173,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_addlist(self):
 		ocs=['top']
 		al=[]
-		ocs.append('univentionKolabGroup')
+		ocs.append('univentionMailList')
 		# mail address MUST be unique
 		if self[ 'mailAddress' ]:
 			try:
@@ -211,11 +211,11 @@ class object(univention.admin.handlers.simpleLdap):
 
 		return ml
 
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'univentionKolabGroup')
+		univention.admin.filter.expression('objectClass', 'univentionMailList')
 		])
 
 	if filter_s:
@@ -229,6 +229,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-	
-	return 'univentionKolabGroup' in attr.get('objectClass', [])
+
+	return 'univentionMailList' in attr.get('objectClass', [])
 

@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.69-1) unstable; urgency=low
+
+  * removed kolab related attributes from udm modules mail/folder,
+    mail/lists and users/user (Bug #22873)
+  * migrated code to new LDAP attribute names and object classes
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 05 Sep 2011 16:07:41 +0200
+
 univention-directory-manager-modules (7.0.68-1) unstable; urgency=low
 
   * Don't use dn for a temporary name, which will break the computers/*
