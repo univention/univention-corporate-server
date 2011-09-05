@@ -1,3 +1,9 @@
+univention-updater (6.0.104-1) unstable; urgency=low
+
+  * update UCR variable update/available in univention-actualise (Bug #22956)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 05 Sep 2011 11:21:21 +0200
+
 univention-updater (6.0.103-1) unstable; urgency=low
 
   * prevent recursion problem if UpdateError exception is raised (Bug #22956)
