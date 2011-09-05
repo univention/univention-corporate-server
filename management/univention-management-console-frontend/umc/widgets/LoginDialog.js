@@ -18,6 +18,8 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 	_form: null,
 	_container: null,
 
+	'class': 'umcLoginDialog',
+
 	// use the framework wide translation file
 	i18nClass: 'umc.app',
 

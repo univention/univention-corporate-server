@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-08-09 12:09+0200\n"
+"POT-Creation-Date: 2011-09-05 14:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,12 +21,12 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
-#: umc/widgets/Grid.js:387
+#: umc/widgets/Grid.js:409
 #, python-format
 msgid "%d objects selected"
 msgstr ""
 
-#: umc/widgets/Grid.js:384
+#: umc/widgets/Grid.js:406
 msgid "1 object selected"
 msgstr ""
 
@@ -39,7 +39,7 @@ msgstr "<br>Fehlernachricht des Servers: <i>%s</i>"
 msgid "About UMC"
 msgstr "Über UMC"
 
-#: umc/tools.js:244
+#: umc/tools.js:247
 msgid "An assert statement failed"
 msgstr "Ein Assert-Anweisung schlug fehl"
 
@@ -75,11 +75,11 @@ msgstr "Bestätigungen"
 msgid "Could not fulfill the request."
 msgstr "Die Anfrage konnte nicht ausgeführt werden."
 
-#: umc/widgets/LoginDialog.js:55
+#: umc/widgets/LoginDialog.js:57
 msgid "English"
 msgstr "Englisch"
 
-#: umc/widgets/LoginDialog.js:54
+#: umc/widgets/LoginDialog.js:56
 msgid "German"
 msgstr "Deutsch"
 
@@ -154,11 +154,11 @@ msgstr "Interner Server-Fehler: Der Modulprozess starb unerwartet."
 msgid "Internal server error: The service is temporarily not available."
 msgstr "Interner Server-Fehler: Der Dienst is zeitweise nicht erreichbar!"
 
-#: umc/widgets/LoginDialog.js:59
+#: umc/widgets/LoginDialog.js:61
 msgid "Language"
 msgstr "Sprache"
 
-#: umc/widgets/LoginDialog.js:64
+#: umc/widgets/LoginDialog.js:66
 msgid "Login"
 msgstr "Anmelden"
 
@@ -171,15 +171,15 @@ msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
-#: umc/widgets/Grid.js:224 umc/widgets/Grid.js:225
+#: umc/widgets/Grid.js:234 umc/widgets/Grid.js:235
 msgid "More actions"
 msgstr "Weitere Aktionen"
 
-#: umc/widgets/Grid.js:247 umc/widgets/Grid.js:506
+#: umc/widgets/Grid.js:262 umc/widgets/Grid.js:540
 msgid "More..."
 msgstr "Weitere..."
 
-#: umc/widgets/Grid.js:390 umc/widgets/Grid.js:443
+#: umc/widgets/Grid.js:412 umc/widgets/Grid.js:477
 msgid "No object selected"
 msgstr ""
 
@@ -195,11 +195,11 @@ msgstr "Ok"
 msgid "Overview"
 msgstr "Übersicht"
 
-#: umc/widgets/LoginDialog.js:49
+#: umc/widgets/LoginDialog.js:51
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/widgets/SearchForm.js:22 umc/widgets/LoginDialog.js:72
+#: umc/widgets/SearchForm.js:22 umc/widgets/LoginDialog.js:74
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -221,11 +221,11 @@ msgstr ""
 "Das Benutzerkonto kannt nicht verwendet werden, seine Gültigkeit ist "
 "ausgelaufen."
 
-#: umc/widgets/LoginDialog.js:58
+#: umc/widgets/LoginDialog.js:60
 msgid "The language for the login session."
 msgstr "Die Sprache für die Anmeldesitzung."
 
-#: umc/widgets/LoginDialog.js:48
+#: umc/widgets/LoginDialog.js:50
 msgid "The password of your domain account."
 msgstr "Das Passwort Ihres Domänen-Kontos."
 
@@ -238,7 +238,7 @@ msgstr "Die Passworte stimmen nicht überein, bitte versuchen Sie es erneut."
 msgid "The total cost was %.2f EUR!"
 msgstr ""
 
-#: umc/widgets/LoginDialog.js:43
+#: umc/widgets/LoginDialog.js:45
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
@@ -265,7 +265,7 @@ msgstr ""
 msgid "User: %s"
 msgstr "Benutzer: %s"
 
-#: umc/widgets/LoginDialog.js:44
+#: umc/widgets/LoginDialog.js:46
 msgid "Username"
 msgstr "Benutzername"
 
@@ -294,7 +294,7 @@ msgstr ""
 msgid "Webfrontend error: The specified request is unknown."
 msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht bekannt."
 
-#: umc/widgets/LoginDialog.js:101
+#: umc/widgets/LoginDialog.js:103
 msgid ""
 "Welcome to the Univention Management Console. Please enter your domain "
 "username and password for login!"

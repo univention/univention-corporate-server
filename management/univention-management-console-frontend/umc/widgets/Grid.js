@@ -60,6 +60,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 
 	_contextItem: null,
 	_contextItemID: null,
+	_contextMenu: null,
 
 	// temporary cell to estimate width of text for columns
 	_tmpCell: null,
@@ -197,6 +198,11 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 				description: iaction.description,
 				editable: false,
 				formatter: dojo.hitch(this, function(key, rowIndex) {
+					// do not show buttons in case the row is disabled
+					if (this._grid.rowSelectCell.disabled(rowIndex)) {
+						return '';
+					}
+
 					// by default only create a button with icon
 					var props = { iconClass: iaction.iconClass };
 					if (!props.iconClass) {
@@ -229,6 +235,11 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 				width: this._getHeaderWidth(this._('More actions')) + 'px',
 				editable: false,
 				formatter: dojo.hitch(this, function(key, rowIndex) {
+					// do not show buttons in case the row is disabled
+					if (this._grid.rowSelectCell.disabled(rowIndex)) {
+						return '';
+					}
+
 					// get corresponding item
 					var item = this._grid.getItem(rowIndex);
 
@@ -263,7 +274,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		this.inherited(arguments);
 
 		// create right-click context menu
-		var contextMenu = new dijit.Menu({});
+		this._contextMenu = new dijit.Menu({});
 		dojo.forEach(this.actions, function(iaction) {
 			// make sure we get all context actions
 			if (false === iaction.isContextAction) {
@@ -280,7 +291,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 					}
 				})
 			});
-			contextMenu.addChild(item);
+			this._contextMenu.addChild(item);
 		}, this);
 
 		// create the grid
@@ -300,7 +311,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 					styles: 'text-align: center;'
 				},
 				menus: {
-					rowMenu: contextMenu
+					rowMenu: this._contextMenu
 				}
 			},
 			canSort: dojo.hitch(this, function(col) {
@@ -419,6 +430,18 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		var item = this._grid.getItem(evt.rowIndex);
 		this._contextItem = item;
 		this._contextItemID = this._dataStore.getValue(item, this.moduleStore.idProperty);
+
+		// in case the row is disabled, disable the context menu items
+		if (this._grid.rowSelectCell.disabled(evt.rowIndex)) {
+			dojo.forEach(this._contextMenu.getChildren(), function(iitem) {
+				iitem.set('disabled', true);
+			});
+		}
+		else {
+			dojo.forEach(this._contextMenu.getChildren(), function(iitem) {
+				iitem.set('disabled', false);
+			});
+		}
 	},
 
 	_createFooter: function() {

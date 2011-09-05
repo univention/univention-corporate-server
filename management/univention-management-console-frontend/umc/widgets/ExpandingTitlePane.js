@@ -24,6 +24,9 @@ dojo.declare("umc.widgets.ExpandingTitlePane", dijit.layout.BorderContainer, {
 	// internal reference to the main container to which child elements are added
 	_contentContainer: null,
 
+	// internal reference to the ContentPane that holds the title
+	_titlePane: null,
+
 	_userProps: null,
 
 	constructor: function(props) {
@@ -44,12 +47,12 @@ dojo.declare("umc.widgets.ExpandingTitlePane", dijit.layout.BorderContainer, {
 		this.inherited(arguments);
 
 		// create the title element... style it to look like the head of a dijit.TitlePane
-		var titlePane = new dijit.layout.ContentPane({
+		this._titlePane = new dijit.layout.ContentPane({
 			'class': 'dijitTitlePaneTitle',
 			content: '<div class="dijitTitlePaneTitleFocus">' + this.title + '</div>',
 			region: 'top'
 		});
-		this.inherited('addChild', [ titlePane ]);
+		this.inherited('addChild', [ this._titlePane ]);
 
 		// create the container for the main content... add css classes to be similar
 		// the dijit.TitlePane container
@@ -81,6 +84,13 @@ dojo.declare("umc.widgets.ExpandingTitlePane", dijit.layout.BorderContainer, {
 	layout: function() {
 		this.inherited(arguments);
 		this._contentContainer.layout();
+	},
+
+	_setTitleAttr: function(newTitle) {
+		this.title = newTitle;
+		if (this._titlePane) {
+			this._titlePane.set('content', '<div class="dijitTitlePaneTitleFocus">' + this.title + '</div>');
+		}
 	}
 });
 
