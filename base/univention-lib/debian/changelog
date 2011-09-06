@@ -1,3 +1,9 @@
+univention-lib (1.0.16-5) unstable; urgency=low
+
+  * ldapsearch filter for uid2dn conversion has been updated (Bug #19975)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 06 Sep 2011 11:23:25 +0200
+
 univention-lib (1.0.16-4) unstable; urgency=low
 
   * Add bandaid for removal directory (Bug #22611)

@@ -54,14 +54,14 @@ ucs_getAttrOfDN() { # <attr> <dn>
 # e.g. ucs_convertUID2DN "testuser"
 #
 ucs_convertUID2DN() { # <uid>
-	local uid=$(echo -n "$1"|base64 -w 0)
+	local uid="$1"
 	if ! shift 1
 	then
 		echo "ucs_convertUID2DN: wrong number of arguments" >&2
 		return 2
 	fi
 	if [ -n "$uid" ]; then
-		ldapsearch -x "$@" -LLL "uid=$(echo -n "$uid"|base64 -d)" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's/dn: //p'
+		ldapsearch -x "$@" -LLL "(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*\$))(uid=$uid))" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's/dn: //p'
 	fi
 }
 
