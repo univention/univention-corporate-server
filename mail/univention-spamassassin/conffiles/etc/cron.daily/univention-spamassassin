@@ -33,6 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 @!@
 if baseConfig.has_key('mail/antispam/learndaily') and baseConfig['mail/antispam/learndaily'] == 'yes':

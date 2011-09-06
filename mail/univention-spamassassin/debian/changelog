@@ -1,3 +1,9 @@
+univention-spamassassin (3.0.4-1) unstable; urgency=low
+
+  * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Mar 2011 15:41:35 +0100
+
 univention-spamassassin (3.0.3-1) unstable; urgency=low
 
   * made spam/ham folder configurable via mail/cyrus/folder/* ucr vars Bug #18767
