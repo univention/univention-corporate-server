@@ -120,6 +120,16 @@ class Entry(object):
 		self.passno = int(passno)
 		self.comment = comment
 
+	def __str__( self ):
+		if self.uuid:
+			return 'UUID=%s\t%s\t%s\t%s\t%d\t%d\t%s' % \
+			       ( self.uuid, self.mount_point, self.type,  ','.join( self.options ),
+			         self.dump, self.passno, self.comment )
+		else:
+			return '%s\t%s\t%s\t%s\t%d\t%d\t%s' % \
+			       ( self.spec, self.mount_point, self.type,  ','.join( self.options ),
+			         self.dump, self.passno, self.comment )
+
 class InvalidEntry(Exception):
 	pass
 

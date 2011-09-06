@@ -37,6 +37,7 @@ import math
 
 import notifier.popen
 import univention.management.console as umc
+from univention.management.console.log import MODULE
 
 import fstab
 

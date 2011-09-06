@@ -7,21 +7,22 @@
 		<category name="system"/>
 	</categories>
 	<command name="quota/partitions/query" function="quota_list">
+		<return syntax="Dictionary"/> <!-- TODO -->
+	</command>
+	<command name="quota/partitions/show" function="quota_partition_show">
+		<attribute name="partitions" syntax="Dictionary"/>
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/partition/show" function="quota_partition_show">
-		<attribute name="partition" syntax="Quota-Partition"/>
+	<command name="quota/partitions/activate" function="quota_partition_activate">
+		<attribute name="partitions" syntax="Dictionary"/>
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/partition/activate" function="quota_partition_activate">
-		<attribute name="partition" syntax="Quota-Partition"/>
+	<command name="quota/partitions/deactivate" function="quota_partition_deactivate">
+		<attribute name="partitions" syntax="Dictionary"/>
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/partition/deactivate" function="quota_partition_deactivate">
-		<attribute name="partition" syntax="Quota-Partition"/>
-		<return syntax="Dictionary"/>
-	</command>
-	<command name="quota/user/set" function="quota_user_set">
+	<!-- TODO -->
+	<command name="quota/users/set" function="quota_user_set">
 		<attribute name="user" syntax="Quota-User"/>
 		<attribute name="partition" syntax="Quota-Partition"/>
 		<attribute name="block_soft" syntax="Quota-Block-Soft"/>
@@ -30,12 +31,12 @@
 		<attribute name="file_hard" syntax="Quota-File-Hard"/>
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/user/remove" function="quota_user_remove">
+	<command name="quota/users/remove" function="quota_user_remove">
 		<attribute name="user" syntax="Quota-User"/>
 		<attribute name="partition" syntax="Quota-Partition"/>
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/user/show" function="quota_user_show">
+	<command name="quota/users/show" function="quota_user_show">
 		<attribute name="user" syntax="Quota-User"/>
 		<attribute name="partition" syntax="Quota-Partition"/>
 		<return syntax="Dictionary"/>

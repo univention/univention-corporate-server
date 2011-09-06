@@ -36,6 +36,8 @@ import notifier
 
 # univention
 import univention.management.console as umc
+from univention.management.console.log import MODULE
+from univention.management.console.protocol.definitions import *
 
 # internal
 import tools
@@ -80,7 +82,7 @@ class Commands(object):
 
 	def quota_partition_activate(self, request):
 		cb = notifier.Callback(self._quota_partition_activate, request)
-		tools.activate_quota(request.options['partition'], True, cb)
+		tools.activate_quota(request.options['partitions'], True, cb)
 
 	def _quota_partition_activate(self, thread, result, request):
 		messages = []
@@ -94,11 +96,12 @@ class Commands(object):
 			else:
 				messages.append(_('Quota support successfully activated for device %s') % dev)
 		report = '\n'.join(messages)
-		self.finished(request.id(), [], report, success = not failed)
+		request.status = SUCCESS # TODO
+		self.finished(request.id, report, success = not failed)
 
 	def quota_partition_deactivate(self, request):
 		cb = notifier.Callback(self._quota_partition_deactivate, request)
-		tools.activate_quota(request.options['partition'], False, cb)
+		tools.activate_quota(request.options['partitions'], False, cb)
 
 	def _quota_partition_deactivate(self, thread, result, request):
 		messages = []
@@ -112,4 +115,5 @@ class Commands(object):
 			else:
 				messages.append(_('Quota support successfully deactivated for device %s') % dev)
 		report = '\n'.join(messages)
-		self.finished(request.id(), [], report, success = not failed)
+		request.status = SUCCESS # TODO
+		self.finished(request.id, report, success = not failed)

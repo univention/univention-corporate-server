@@ -4,6 +4,7 @@ dojo.provide("umc.modules._quota.OverviewPage");
 
 dojo.require("umc.i18n");
 dojo.require("umc.widgets.Page");
+dojo.require("umc.tools");
 
 dojo.declare("umc.modules._quota.OverviewPage", [ umc.widgets.Page, umc.i18n.Mixin ], {
 
@@ -21,40 +22,50 @@ dojo.declare("umc.modules._quota.OverviewPage", [ umc.widgets.Page, umc.i18n.Mix
 		var actions = [{
 			name: 'activateQuota',
 			label: this._('Activate'),
-			isStandardAction: true
+			isStandardAction: true,
+			callback: dojo.hitch(this, function() {
+				var partitions = this._grid.getSelectedIDs();
+				umc.tools.umcpCommand('quota/partitions/activate', {"partitions" : partitions}).then(dojo.hitch(this, function() {
+					umc.dialog.notify(this._('quota/partitions/activate'));
+				}));
+			})
 			// TODO isMultiAction useful?
 		}, {
 			name: 'deactivateQuota',
 			label: this._('Deactivate'),
-			isStandardAction: true
-			// TODO isMultiAction useful?
+			isStandardAction: true,
+			callback: dojo.hitch(this, function() {
+				var partitions = this._grid.getSelectedIDs();
+				umc.tools.umcpCommand('quota/partitions/deactivate', {"partitions" : partitions}).then(dojo.hitch(this, function() {
+					umc.dialog.notify(this._('quota/partitions/deactivate'));
+				}));
+			})
 		}, {
 			name: 'configureQuota',
 			label: this._('Configure'),
 			isStandardAction: false
-			// TODO isMultiAction useful?
 		}];
 
 		var columns = [{
 			name: 'partitionDevice',
 			label: this._('Partition'),
-			width: 'auto' // adjust won't work correctly
+			width: 'auto' // TODO adjust won't work correctly
 		}, {
 			name: 'mountPoint',
 			label: this._('Mount point'),
-			width: 'auto' // adjust won't work correctly
+			width: 'auto'
 		}, {
 			name: 'inUse',
 			label: this._('Quota'),
-			width: 'auto' // adjust won't work correctly
+			width: 'auto'
 		}, {
 			name: 'partitionSize',
 			label: this._('Size'),
-			width: 'auto' // adjust won't work correctly
+			width: 'auto'
 		}, {
 			name: 'freeSpace',
 			label: this._('Free'),
-			width: 'auto' // adjust won't work correctly
+			width: 'auto'
 		}];
 
 		this._grid = new umc.widgets.Grid({
@@ -67,5 +78,5 @@ dojo.declare("umc.modules._quota.OverviewPage", [ umc.widgets.Page, umc.i18n.Mix
 			}
 		});
 		titlePane.addChild(this._grid);
-	},
+	}
 });
