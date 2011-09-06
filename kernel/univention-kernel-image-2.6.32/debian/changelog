@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.32 (1.0.15-5) unstable; urgency=low
+
+  * Update kernel for 2.4-3 (Bug #23258)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Sep 2011 08:31:15 +0200
+
 univention-kernel-image-2.6.32 (1.0.15-4) unstable; urgency=low
 
   * Bump version (Bug #22998)

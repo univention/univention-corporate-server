@@ -27,26 +27,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-PACKAGE_NAME=univention-kernel-modules-2.6.32
+PACKAGE_NAME := univention-kernel-modules-2.6.32
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
+configure:
 
-	touch configure-stamp
-
-build: configure-stamp build-stamp
-build-stamp:
-	dh_testdir
-	touch $@
-build-ext-%:
-	dh_testdir
-	make
-	touch $@
+build:
 
 clean:
 	dh_testdir
-	dh_testroot
 	dh_clean
 
 install:
@@ -96,4 +84,3 @@ binary-arch: build install
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install configure
-
