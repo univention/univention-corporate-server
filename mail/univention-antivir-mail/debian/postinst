@@ -56,6 +56,7 @@ univention-baseconfig set mail/antivir/banned/double_ext?"yes"	\
 univention-config-registry set mail/antivir/amavis/autostart?"yes"
 univention-config-registry set mail/antivir/clamav-daemon/autostart?"yes"
 univention-config-registry set mail/antivir/clamav-freshclam/autostart?"yes"
+univention-config-registry set 'mail/antispam/bodysizelimit?300'
 
 #DEBHELPER#
 

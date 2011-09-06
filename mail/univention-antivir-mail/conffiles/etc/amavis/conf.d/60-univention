@@ -260,17 +260,7 @@ $insert_received_line = 1;        # behave like MTA: insert 'Received:' header
 # AMAVIS-CLIENT PROTOCOL INPUT SETTINGS (e.g. with sendmail milter)
 #   (used with amavis helper clients like amavis-milter.c and amavis.c,
 #   NOT needed for Postfix and Exim  or dual-sendmail - keep it undefined.)
-@!@
-lineA = '$unix_socketname = "/var/lib/amavis/amavisd.sock"; # amavis helper protocol socket'
-lineB = '$unix_socketname = undef;         # disable listening on a unix socket'
-if baseConfig.has_key('scalix/smtpfilter') and baseConfig['scalix/smtpfilter'].lower() in ['yes', 'true']:
-       print '%s' % lineA
-       print '#%s' % lineB
-else:
-       print '#%s' % lineA
-       print '%s' % lineB
-@!@
-                                  # (default is undef, i.e. disabled)
+$unix_socketname = "/var/lib/amavis/amavisd.sock"; # amavis helper protocol socket
 
 # Do we receive quoted or raw addresses from the helper program?
 # (does not apply to SMTP;  defaults to true)
@@ -1195,7 +1185,7 @@ $sa_timeout = 300;         # default is 120 seconds
 # AWL (auto whitelisting), requires spamassassin 2.44 or better
 # $sa_auto_whitelist = 1;   # defaults to undef
 
-$sa_mail_body_size_limit = 150*1024;  # don't waste time on SA is mail is larger
+$sa_mail_body_size_limit = @%@mail/antispam/bodysizelimit@%@*1024;  # don't waste time on SA is mail is larger
                             # (less than 1% of spam is > 64k)
                             # default: undef, no limitations
 
