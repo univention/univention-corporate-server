@@ -1,3 +1,9 @@
+univention-x-core (6.0.3-1) unstable; urgency=low
+
+  * set xorg/autodetect=yes in postinst Bug #19035 
+
+ -- Felix Botner <botner@univention.de>  Wed, 07 Sep 2011 15:34:40 +0200
+
 univention-x-core (6.0.2-1) unstable; urgency=low
 
   * merged changes from ucd 3.1 hotfix (Bug #22432)
