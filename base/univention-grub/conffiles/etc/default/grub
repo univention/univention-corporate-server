@@ -1,0 +1,34 @@
+@%@UCRWARNING=# @%@
+
+# update-grub is automatically run through a Univention Configuration
+# Registry module upon modification
+
+GRUB_DEFAULT=0
+GRUB_TIMEOUT=@%@grub/timeout@%@
+GRUB_DISTRIBUTOR=Univention
+
+GRUB_CMDLINE_LINUX_DEFAULT=@!@
+defoptions=''
+if baseConfig.get('grub/quiet', "False").lower() in ['yes', 'true', '1']:
+        defoptions += ' quiet'
+if baseConfig.get('grub/loglevel', False):
+        defoptions += ' loglevel=%s' % baseConfig['grub/loglevel']
+print defoptions
+@!@
+
+GRUB_CMDLINE_LINUX=@%@grub/append@%@
+GRUB_CMDLINE_XEN=@%@grub/xenhopt@%@
+
+# The resolution used on graphical terminal
+# note that you can use only modes which your graphic card supports via VBE
+# you can see them in real GRUB with the command `vbeinfo'
+#GRUB_GFXMODE=640x480
+
+# Uncomment if you don't want GRUB to pass "root=UUID=xxx" parameter to Linux
+#GRUB_DISABLE_LINUX_UUID=true
+
+# Uncomment to disable generation of recovery mode menu entries
+#GRUB_DISABLE_LINUX_RECOVERY="true"
+
+# Uncomment to get a beep at grub start
+#GRUB_INIT_TUNE="480 440 1"

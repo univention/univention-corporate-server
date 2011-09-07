@@ -10,30 +10,26 @@ Description[en]=Graphical resolution for the boot menu text, e.g. 1024x768
 Type=str
 Categories=system-base
 
-
-
-
-
 [grub/xenhopt]
-Description[de]=Weitere durch den Grub-Bootloader übergebene Xen-Hypervisor Optionen
-Description[en]=Additional Xen hypervisor options passed by the Grub boot loader
+Description[de]=Diese Optionen werden an den Xen-Hypervisor weitergegeben, , z.B.. dom0_mem=1024M
+Description[en]=These options are passed to the Xen hypervisor, e.g. dom0_mem=1024M
 Type=str
 Categories=system-base
 
 [grub/append]
-Description[de]=Weitere durch den Grub-Bootloader übergebene Kernel-Optionen
-Description[en]=Additional kernel options passed by the Grub boot loader
+Description[de]=Zu übergebende Optionen für den Linux-Kernel
+Description[en]=Options to be passed to the Linux kernel
 Type=str
 Categories=system-base
 
 [grub/quiet]
-Description[de]=Kernel-Option "quiet" für den Standardkernel
-Description[en]=Kernel option "quiet" for the default entry
+Description[de]=Kernel-Option, um die meisten Meldungen während des Systemstarts zu unterdrücken
+Description[en]=Kernel option to suppress most messages during startup
 Type=str
 Categories=system-base
 
 [grub/loglevel]
-Description[de]=Alle Kernel Meldungen mit einem Loglevel kleiner als der hier angegebene werden auf der Konsole ausgegeben.
-Description[en]=All kernel messages with a loglevel smaller than the loglevel will be printed to the console.
+Description[de]=Alle Kernelmeldungen mit einem Loglevel kleiner als der hier angegebene werden auf der Konsole ausgegeben (0 fuer Notfallmeldungen bis 7 fuer Debugmeldungen).
+Description[en]=All kernel messages with a loglevel smaller than the loglevel will be printed to the console (ranging from 0 for emergency messages to 7 for debugging).
 Type=str
 Categories=system-base
