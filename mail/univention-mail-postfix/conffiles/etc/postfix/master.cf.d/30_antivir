@@ -8,7 +8,6 @@ smtp-amavis unix -      -       n     -       2  smtp
 
 127.0.0.1:10025 inet n	-		n	  -		  -	 smtpd
 	-o content_filter=
-	-o cleanup_service_name=post-cleanup
 	-o local_recipient_maps=
 	-o relay_recipient_maps=
 	-o smtpd_restriction_classes=

@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.5-1) unstable; urgency=low
+
+  * do not use special cleanup service for amavis (Bug #22876)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 07 Sep 2011 15:39:05 +0200
+
 univention-mail-postfix (6.0.4-1) unstable; urgency=low
 
   * do not set virtual_alias_domains (Bug #22369)

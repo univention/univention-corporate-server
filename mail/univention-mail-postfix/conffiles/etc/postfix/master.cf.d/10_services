@@ -25,7 +25,6 @@ local     unix  -       n       n       -       -       local
 lmtp      unix  -       -       n       -       -       lmtp
 465       inet  n       -       n       -       -       smtpd -v -o smtpd_tls_wrappermode=yes -o smtpd_sasl_auth_enable=yes
 #587      inet  n       -       n       -       -       smtpd -v -o smtpd_enforce_tls=yes -o smtpd_sasl_auth_enable=yes
-post-cleanup unix  n    -       n       -       0       cleanup -o virtual_maps=
 relay    unix  -       -       n       -       -       smtp
 trace    unix  -       -       n       -       0       bounce
 proxymap  unix -       -       n       -       -       proxymap
