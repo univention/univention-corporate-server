@@ -2,6 +2,12 @@ univention-squid (5.0.2-7) unstable; urgency=low
 
   * More template changes for new network syntax (Bug #22576)
   * Add dependency on python-ipaddr for network calculation in UCR template	
+  * Update refresh_pattern from the Debian squeeze standard configuration
+  * Explicitely configure the logfiles to new log names below /var/log/squid3.
+    Since the log format is different external packages should be adapted anyway.
+    If the paths were set to old versions from UCS 2.4, we would need to patch
+    the logrotate configs shipped with the Debian package	 
+  * Introduce a new UCR variable squid/debug/level for easier debugging	
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 30 Aug 2011 16:38:21 +0200
 

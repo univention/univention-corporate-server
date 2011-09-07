@@ -4,6 +4,12 @@ Description[en]=Port that squid listens on
 Type=str
 Categories=service-webproxy
 
+[squid/debug/level]
+Description[de]=Detailgrad der Logmeldungen (ALL protokolliert alle Funktionsebenen, hinter dem Komma folgt ein Wert zwischen 1 und 9)
+Description[en]=Verbosity of log messages (ALL logs all functionality levels, behind the comma is a value between 1 and 9)
+Type=str
+Categories=service-webproxy
+
 
 
 
