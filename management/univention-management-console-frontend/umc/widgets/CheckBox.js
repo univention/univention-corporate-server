@@ -7,7 +7,7 @@ dojo.require("umc.widgets._FormWidgetMixin");
 
 dojo.declare("umc.widgets.CheckBox", [ dijit.form.CheckBox, umc.widgets._FormWidgetMixin ], {
 	// by default, the checkbox is turned off
-	value: 'false', 
+	value: 'false',
 
 	// the widget's class name as CSS class
 	'class': 'umcCheckBox',

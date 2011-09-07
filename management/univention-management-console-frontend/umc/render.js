@@ -190,11 +190,39 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 
 					// add the widget or button surrounded with a LabelPane
 					if (widget) {
-						elContainer.addChild(new umc.widgets.LabelPane({
+						var label = new umc.widgets.LabelPane({
 							label: widget.label,
 							content: widget,
 							style: widget.align ? 'float: ' + widget.align : ''
-						}));
+						});
+						// add show and hide function to widget
+						dojo.mixin( widget, {
+							visible: null,
+							_setVisibleAttr: function( /* Bool*/ visible ) {
+								var parent = dijit.getEnclosingWidget( this.domNode.parentNode );
+								if ( !parent ) {
+									console.log( 'Could not find parent widget for ' + this );
+									return;
+								}
+								dojo.toggleClass( parent.domNode, 'dijitHidden', ! visible );
+							},
+							_getVisibleAttr: function() {
+								var parent = dijit.getEnclosingWidget( this.domNode.parentNode );
+								if ( !parent ) {
+									console.log( 'Could not find parent widget for ' + this );
+									return;
+								}
+								return dojo.hasClass( parent.domNode, 'dijitHidden' );
+							},
+							show: function() {
+								this._setVisibleAttr( true );
+							},
+							hide: function() {
+								this._setVisibleAttr( false );
+							}
+						} );
+						// add to layout
+						elContainer.addChild( label );
 						widget._isRendered = true;
 					} else if (button) {
 						if (nWidgetsWithLabel) {

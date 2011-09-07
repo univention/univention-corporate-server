@@ -17,12 +17,10 @@ dojo.declare("umc.widgets.ComboBox", [ dijit.form.FilteringSelect, umc.widgets._
 	// no auto completion, otherwise this gets weired in combination with the '*${0}*' search
 	autoComplete: false,
 
-	_setValueAttr: function(val) {
-		//console.log('# ComboBox: ' + this.name + '.set("value", "' + val + '")');
-		this.inherited(arguments);
-	}
+	// _setValueAttr: function(val) {
+	// 	//console.log('# ComboBox: ' + this.name + '.set("value", "' + val + '")');
+	// 	this.inherited(arguments);
+	// }
 });
-
-
 
 

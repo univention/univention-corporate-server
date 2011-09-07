@@ -92,6 +92,14 @@ dojo.declare("umc.widgets.Form", [
 		this._dependencyMap = {};
 	},
 
+	showWidget: function( widget_name, /* bool? */ visibility ) {
+		if ( ! widget_name in self._widgets ) {
+			console.log( 'Form.showWidget: could not find widget ' + widget_name );
+			return;
+		}
+		self._widgets[ widget_name ].set( 'visible', visibility );
+	},
+
 	buildRendering: function() {
 		this.inherited(arguments);
 

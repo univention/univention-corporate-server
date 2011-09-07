@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.20-1) unstable; urgency=low
+
+  * add widget WidgetGroup combining a set of widgets
+  * umc.render.widget: add property visible to hide/show the widget including the label
+  * add support for options of UDM modules; Bug #23196
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 07 Sep 2011 14:57:23 +0200
+
 univention-management-console-frontend (1.0.19-1) unstable; urgency=low
 
   * added specific CSS classes for all widgets
