@@ -158,6 +158,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 			var elList = null;
 			if (dojo.isString(el)) {
 				elList = [el];
+				layout[iel] = elList;
 			}
 			else if (dojo.isArray(el)) {
 				elList = el;
@@ -197,7 +198,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 						});
 						// add show and hide function to widget
 						dojo.mixin( widget, {
-							visible: null,
+							visible: true,
 							_setVisibleAttr: function( /* Bool*/ visible ) {
 								var parent = dijit.getEnclosingWidget( this.domNode.parentNode );
 								if ( !parent ) {
@@ -212,7 +213,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 									console.log( 'Could not find parent widget for ' + this );
 									return;
 								}
-								return dojo.hasClass( parent.domNode, 'dijitHidden' );
+								return ! dojo.hasClass( parent.domNode, 'dijitHidden' );
 							},
 							show: function() {
 								this._setVisibleAttr( true );
@@ -247,15 +248,14 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 			}
 			// for Object (i.e., a grouping box)
 			else if (dojo.isObject(el) && el.layout) {
-				//console.log('### layout - recursive call');
-				//console.log(el);
-				globalContainer.addChild(new dijit.TitlePane({
+				el.$refTitlePane$ = new dijit.TitlePane({
 					title: el.label,
 					'class': 'umcFormLevel' + iLevel,
 					toggleable: iLevel < 1,
 					open: undefined === el.open ? true : el.open,
 					content: this.layout(el.layout, widgets, buttons, iLevel + 1)
-				}));
+				});
+				globalContainer.addChild( el.$refTitlePane$ );
 			}
 		}
 

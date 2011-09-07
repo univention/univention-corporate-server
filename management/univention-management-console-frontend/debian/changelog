@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.21-1) unstable; urgency=low
+
+  * umc.render.layout: extend layout definition with references to the
+    TitlePane objects
+  * add TabContainer widget that supports hiding/showing of Childs; Bug #23196
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 07 Sep 2011 20:27:52 +0200
+
 univention-management-console-frontend (1.0.20-1) unstable; urgency=low
 
   * add widget WidgetGroup combining a set of widgets
