@@ -1,11 +1,11 @@
 #!/bin/sh
 
-@%@BCWARNING=#@%@
+@%@UCRWARNING=# @%@
 
 # Univention Spamassassin
 #  learn script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,48 +33,36 @@
 # <http://www.gnu.org/licenses/>.
 
 @!@
-print 'CYRUSVER="%s"' % baseConfig.get("mail/cyrus/version")
 print 'SA_LEARN="/usr/bin/sa-learn"'
 
 spamFolder = baseConfig.get("mail/cyrus/folder/spam", "Spam")
 if not spamFolder: spamFolder = "Spam"
-if not spamFolder.lower() == "none": 
+if not spamFolder.lower() == "none":
 	print 'SPAMFOLDER="%s"' % spamFolder
 else:
 	print "SPAMFOLDER="" # disabled via mail/cyrus/folder/spam"
 
 hamFolder = baseConfig.get("mail/cyrus/folder/ham", "Ham")
 if not hamFolder: hamFolder = "Ham"
-if not hamFolder.lower() == "none": 
+if not hamFolder.lower() == "none":
 	print 'HAMFOLDER="%s"' % hamFolder
 else:
-	print "HAMFOLDER="" #  disabled via mail/cyrus/folder/ham"	
+	print "HAMFOLDER="" #  disabled via mail/cyrus/folder/ham"
 @!@
 
-if [ ! -f /var/lib/amavis/.spamassassin/bayes_toks ]; then	
+if [ ! -f /var/lib/amavis/.spamassassin/bayes_toks ]; then
 	touch /var/lib/amavis/.spamassassin/bayes_toks
 	chown amavis:amavis /var/lib/amavis/.spamassassin/bayes_toks
 	chmod 600 /var/lib/amavis/.spamassassin/bayes_toks
 fi
 
-if [ "$CYRUSVER" = "2.2" ]; then
-	if [ -n "$SPAMFOLDER" ]; then
-		find /var/spool/cyrus/mail/domain/ -wholename \*/\*/\*/user/\*/"$SPAMFOLDER" \
-			-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --spam {} \;
-	fi
+# Cyrus 2.2
+if [ -n "$SPAMFOLDER" ]; then
+	find /var/spool/cyrus/mail/domain/ -wholename \*/\*/\*/user/\*/"$SPAMFOLDER" \
+		-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --spam {} \;
+fi
 
-	if [ -n "$HAMFOLDER" ]; then
-		find /var/spool/cyrus/mail/domain/ -wholename \*/\*/\*/user/\*/"$HAMFOLDER" \
-			-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --ham {} \;
-	fi
-else
-	if [ -n "$SPAMFOLDER" ]; then
-		find /var/spool/cyrus/mail/ -wholename \*/user/\*/"$SPAMFOLDER" \
-			-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --spam {} \;
-	fi
-
-	if [ -n "$HAMFOLDER" ]; then
-		find /var/spool/cyrus/mail/ -wholename \*/user/\*/"$HAMFOLDER" \
-			-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --ham {} \;
-	fi
+if [ -n "$HAMFOLDER" ]; then
+	find /var/spool/cyrus/mail/domain/ -wholename \*/\*/\*/user/\*/"$HAMFOLDER" \
+		-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --ham {} \;
 fi
