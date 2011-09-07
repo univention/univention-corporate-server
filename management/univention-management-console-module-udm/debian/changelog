@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.107-1) unstable; urgency=low
+
+  * support hiding of TitlePanes and Tabs; Bug #23196
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 07 Sep 2011 20:28:35 +0200
+
 univention-management-console-module-udm (1.0.106-1) unstable; urgency=low
 
   * fix LDAP_Search syntax handling

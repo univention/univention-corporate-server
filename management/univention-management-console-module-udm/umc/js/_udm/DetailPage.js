@@ -5,7 +5,6 @@ dojo.provide("umc.modules._udm.DetailPage");
 dojo.require("dijit.TitlePane");
 dojo.require("dijit.layout.BorderContainer");
 dojo.require("dijit.layout.ContentPane");
-dojo.require("dijit.layout.TabContainer");
 dojo.require("dojo.string");
 dojo.require("dojo.DeferredList");
 dojo.require("umc.i18n");
@@ -16,6 +15,7 @@ dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.WidgetGroup");
 dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Page");
+dojo.require("umc.widgets.TabContainer");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
 dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widgets._WidgetsInWidgetsMixin, umc.i18n.Mixin ], {
@@ -128,7 +128,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		//		be edited by the user.
 
 		// create detail page
-		this._tabs = new dijit.layout.TabContainer({
+		this._tabs = new umc.widgets.TabContainer({
 			nested: true,
 			region: 'center'
 		});
@@ -227,8 +227,6 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// connect to onChange for the options property if it exists
 		if ( '$options$' in widgets ) {
 			this._optionsWidget = widgets.$options$;
-			// required when creating a new object
-			this._optionsWidget.set( 'value', option_values );
 			this.connect( this._optionsWidget, 'onChange', 'onOptionsChanged' );
 		}
 
@@ -256,6 +254,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 			// add rendered layout to subtab and register subtab
 			var subTabWidgets = umc.render.layout(ilayout.layout, widgets);
+			ilayout.$refSubTab$ = subTab;
 			dojo.style(subTabWidgets.domNode, 'overflow', 'auto');
 			subTab.addChild(subTabWidgets);
 			this._tabs.addChild(subTab);
@@ -276,6 +275,13 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				}
 			}
 		}, this);
+		console.log( layout );
+		this._layoutMap = layout;
+
+		if ( '$options$' in widgets ) {
+			// required when creating a new object
+			this._optionsWidget.set( 'value', option_values );
+		}
 
 		// #### Policies
 		// in case we have policies that apply to the current object, we need an extra
@@ -467,11 +473,15 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 	onOptionsChanged: function( newValue, widgetName ) {
 		var activeOptions = [];
+
+		// retrieve active options
 		umc.tools.forIn( this._optionsWidget.get( 'value' ), function( item, value ) {
 			if ( value === true ) {
 				activeOptions.push( item );
 			}
 		} );
+
+		// hide/show widgets
 		umc.tools.forIn( this._propertyOptionMap, dojo.hitch( this, function( prop, options ) {
 			var visible = false;
 			if ( ! dojo.isArray( options ) || ! options.length  ) {
@@ -484,6 +494,73 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				} );
 			}
 			this._form._widgets[ prop ].set( 'visible' , visible );
+		} ) );
+
+		// hide/show title panes
+		this._visibilityTitlePanes( this._layoutMap );
+		this._visibility
+		// dojo.forEach( this._tabs.getChildren(), dojo.hitch( this, function( tab ) {
+		// 	dojo.forEach( dojo.query( 'div[widgetid*=dijit_TitlePane]', tab.domNode ), dojo.hitch( this, function( node ) {
+		// 		this._visibilityTitlePane( dijit.getEnclosingWidget( node ) );
+		// 	} ) );
+		// } ) );
+	},
+
+	_anyVisibleWidget: function( titlePane ) {
+		var visible = false;
+		dojo.forEach( titlePane.layout, dojo.hitch( this, function( element ) {
+			if ( dojo.isArray( element ) ) {
+				dojo.forEach( element, dojo.hitch( this, function( property ) {
+					if ( property in this._form._widgets ) {
+						if ( this._form._widgets[ property ].get( 'visible' ) === true ) {
+							visible = true;
+							return false;
+						}
+					}
+				} ) );
+				// if there is a visible widget there is no need to check the other widgets
+				if ( visible ) {
+					return false;
+				}
+			} else if ( dojo.isObject( element ) ) {
+				if ( this._anyVisibleWidget( element ) ) {
+					dojo.toggleClass( element.$refTitlePane$.domNode, 'dijitHidden', false );
+					visible = true;
+					return false;
+				} else {
+					dojo.toggleClass( element.$refTitlePane$.domNode, 'dijitHidden', true );
+				}
+			}
+		} ) );
+
+		return visible;
+	},
+
+	_visibilityTitlePanes: function( layout ) {
+		dojo.forEach( layout, dojo.hitch( this, function( tab ) {
+			if ( dojo.isObject( tab ) ) {
+				var visible = false;
+				dojo.forEach( tab.layout, dojo.hitch( this, function( element ) {
+					if ( dojo.isArray( element ) ) {
+						// ignore for now
+						visible = true;
+						return;
+					}
+					if ( this._anyVisibleWidget( element ) ) {
+						dojo.toggleClass( element.$refTitlePane$.domNode, 'dijitHidden', false );
+						visible = true;
+					} else {
+						console.log( 'Hiding:' );
+						console.log( element );
+						dojo.toggleClass( element.$refTitlePane$.domNode, 'dijitHidden', true );
+					}
+				} ) );
+				if ( ! visible ) {
+					this._tabs.hideChild( tab.$refSubTab$ );
+				} else {
+					this._tabs.showChild( tab.$refSubTab$ );
+				}
+			}
 		} ) );
 	},
 
