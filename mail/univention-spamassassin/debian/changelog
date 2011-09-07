@@ -1,3 +1,9 @@
+univention-spamassassin (4.0.0-1) unstable; urgency=low
+
+  * set mail/antivir/spam during installation/removal (Bug #22876)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 07 Sep 2011 15:42:15 +0200
+
 univention-spamassassin (4.0.0-0) unstable; urgency=low
 
   * bumped version for UCS 3.0 (Bug #22876)
