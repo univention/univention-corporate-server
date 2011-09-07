@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.6-1) unstable; urgency=low
+
+  * added listener module hosteddomains.py (Bug #22876)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 07 Sep 2011 18:26:47 +0200
+
 univention-mail-postfix (6.0.5-1) unstable; urgency=low
 
   * do not use special cleanup service for amavis (Bug #22876)

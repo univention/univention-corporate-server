@@ -1,1 +1,2 @@
 67univention-mail-server.inst /usr/lib/univention-install
+hosteddomains.py /usr/lib/univention-directory-listener/system
