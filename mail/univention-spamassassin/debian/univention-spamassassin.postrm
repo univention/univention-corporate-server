@@ -33,7 +33,7 @@
 
 #DEBHELPER#
 
-ucr unset mail/antispam
+ucr set mail/antivir/spam=no
 
 if [ -x /etc/init.d/postfix ]; then
 	/etc/init.d/postfix restart
