@@ -1,3 +1,11 @@
+univention-base-files (1.0.18-1) unstable; urgency=low
+
+  * recommend bash-completion, locales, ntpdate, rdate, acl, xfsprogs,
+    lsof, console-data, kbd, console-common, bzip2, psmisc and 
+    lsb-base (Bug #23434)
+
+ -- Felix Botner <botner@univention.de>  Wed, 07 Sep 2011 11:26:26 +0200
+
 univention-base-files (1.0.17-1) unstable; urgency=low
 
   * avoid checking bind/bindpw, simply use machine.secret (Bug #23178)
