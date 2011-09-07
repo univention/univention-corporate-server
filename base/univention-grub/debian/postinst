@@ -53,23 +53,6 @@ univention-config-registry set grub/loglevel?"0"
 # New installation, the 
 if [ "$1" = configure -a -z "$2" ];  then
 
-#	rootdevice=$(awk '$2=="/" {print $1}' /etc/fstab)
-#        univention-config-registry set grub/root=$rootdevice
-
-#        root2fstype=$(awk '$2=="/" {print $3}' /etc/fstab)
-
-#        if [ -n "$root2fstype" ]; then
-#                if [ -n "$grub_append" ]; then
-#                        grub_append="$grub_append root2fstype=$root2fstype "
-#                else
-#                        grub_append="root2fstype=$root2fstype "
-#                fi
-#        fi
-
-#        if [ -n "$grub_append" ]; then
-#                univention-config-registry set grub/append="$grub_append"
-#        fi
-
 	# invoke grub-mkdevicemap (required for KVM machines
 	grub-mkdevicemap $grub_boot
 	# source the update-grub file, so we could use the grub helper functions
@@ -77,20 +60,6 @@ if [ "$1" = configure -a -z "$2" ];  then
 		/usr/sbin/grub-install --no-floppy "$grub_boot"
 	fi
 	update-grub
-
-# # Upgrade from an earlier version
-# elif [ -z "$2" ]; then
-#         # root fs type for quota support on xfs
-#         root2fstype=$(awk '$2=="/" {print $3}' /etc/fstab)
-#         if [ -n "$root2fstype" ]; then
-#                 append="$append root2fstype=$root2fstype "
-#         fi
-#         univention-config-registry set grub/append="$append splash=silent"
-
-#         rootdevice=$(awk '$2=="/" {print $1}' /etc/fstab)
-# 	univention-config-registry set grub/root="$rootdevice"
-
-# 	univention-config-registry set grub/vga=791
 fi
 
 
