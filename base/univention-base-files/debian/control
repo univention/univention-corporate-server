@@ -26,7 +26,7 @@ Depends: univention-config,
  lsb-base,
  ${misc:Depends}
 Conflicts: univention-config-registry (<= 7.0.7),
- univention-config (<= 7.0.8),
+ univention-config (<= 7.0.8), console-tools
 Replaces: univention-config-registry (<= 7.0.7),
  univention-config (<= 7.0.8)
 Provides: univention-config-registry
