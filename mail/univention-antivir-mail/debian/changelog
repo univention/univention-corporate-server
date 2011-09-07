@@ -1,3 +1,9 @@
+univention-antivir-mail (4.0.0-0) unstable; urgency=low
+
+  * bumped version (Bug #22876)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 06 Sep 2011 15:37:10 +0200
+
 univention-antivir-mail (3.0.2-1) unstable; urgency=low
 
   * make spamassasin size limit configurable via UCR (Bug #23066)

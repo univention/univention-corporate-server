@@ -1,10 +1,9 @@
-#! /bin/sh
-# postinst script for univention-antivir-mail
+#!/bin/sh
 #
 # Univention AntiVir Mail
 #  rules file for the univention-antivir-mail debian package
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,19 +31,19 @@
 # <http://www.gnu.org/licenses/>.
 
 
-univention-baseconfig set mail/antivir/scanner?clamav
-univention-baseconfig set mail/antivir?yes
-univention-baseconfig set mail/antispam/requiredhits?5.0
+univention-baseconfig set mail/antivir/scanner?clamav \
+			 			 mail/antivir?yes \
+			 			 mail/antispam/requiredhits?5.0
 
 # set correct permissions for clamav
 adduser clamav amavis || true
 chown clamav /var/run/clamav/ || true
 
-univention-baseconfig set clamav/archive/maxfiles?1000
-univention-baseconfig set clamav/archive/maxfilesize?10M
-univention-baseconfig set clamav/archive/maxrecursion?5
-univention-baseconfig set clamav/database/mirror?"db.local.clamav.net database.clamav.net"
-univention-baseconfig set clamav/checks?24
+univention-baseconfig set clamav/archive/maxfiles?1000 \
+						 clamav/archive/maxfilesize?10M \
+						 clamav/archive/maxrecursion?5 \
+						 clamav/database/mirror?"db.local.clamav.net database.clamav.net" \
+						 clamav/checks?24
 
 univention-baseconfig set mail/antivir/banned/double_ext?"yes"	\
 			  mail/antivir/banned/basic_ext?"yes"	\
@@ -53,10 +52,10 @@ univention-baseconfig set mail/antivir/banned/double_ext?"yes"	\
 			  mail/antivir/banned/mime_type?"no"	\
 			  mail/antivir/banned/rfc2046?"yes"
 
-univention-config-registry set mail/antivir/amavis/autostart?"yes"
-univention-config-registry set mail/antivir/clamav-daemon/autostart?"yes"
-univention-config-registry set mail/antivir/clamav-freshclam/autostart?"yes"
-univention-config-registry set 'mail/antispam/bodysizelimit?300'
+univention-config-registry set mail/antivir/amavis/autostart?"yes" \
+								mail/antivir/clamav-daemon/autostart?"yes" \
+								mail/antivir/clamav-freshclam/autostart?"yes" \
+								'mail/antispam/bodysizelimit?300'
 
 #DEBHELPER#
 
