@@ -28,6 +28,9 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 
 	i18nClass: 'umc.app',
 
+	// the widget's class name as CSS class
+	'class': 'umcPasswordInputBox',
+
 	_firstWidget: null,
 
 	_secondWidget: null,

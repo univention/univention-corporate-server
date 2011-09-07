@@ -10,6 +10,9 @@ dojo.declare("umc.widgets.Tree", dijit.Tree, {
 	// description:
 	//		This code has been imported from: http://bugs.dojotoolkit.org/ticket/11065
 
+	// the widget's class name as CSS class
+	'class': 'umcTree',
+
 	/** 
 	 * Unset tree's attributes but leave the widget untouched. 
 	 * This code is copied from dijit.Tree's .destroy()-method. 

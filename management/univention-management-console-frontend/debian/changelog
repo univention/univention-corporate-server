@@ -1,3 +1,13 @@
+univention-management-console-frontend (1.0.19-1) unstable; urgency=low
+
+  * added specific CSS classes for all widgets
+  * added handler to hide tooltips for onClick events
+  * extended umc.widgets._SelectMixin to work with data grids
+  * adapted MultiSelect to work with dojox.grid.EnhancedGrid
+  (Bug #22461, Bug #23195)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 07 Sep 2011 12:25:35 +0200
+
 univention-management-console-frontend (1.0.18-1) unstable; urgency=low
 
   * fixed empty screen after fresh login (Bug #23339)

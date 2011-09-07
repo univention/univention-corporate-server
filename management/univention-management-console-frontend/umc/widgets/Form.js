@@ -61,6 +61,9 @@ dojo.declare("umc.widgets.Form", [
 	//		can be loaded/saved by the form itself.
 	moduleStore: null,
 
+	// the widget's class name as CSS class
+	'class': 'umcForm',
+
 	_widgets: null,
 
 	_buttons: null,

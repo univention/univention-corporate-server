@@ -63,6 +63,9 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 	//		'name' property of the button.
 	options: [],
 
+	// the widget's class name as CSS class
+	'class': 'umcConfirmDialog',
+
 	// our own settings
 	closable: false,
 

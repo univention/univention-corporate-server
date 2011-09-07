@@ -56,11 +56,10 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 	//_isInitialized: false,
 
-	constructor: function() {
-		// The store needs to be available already at construction time, otherwise an
-		// error will be thrown. We need to define it here, in order to create a new
-		// store for each instance.
-		this.store = new dojo.data.ItemFileWriteStore({
+	_valuesLoaded: false,
+
+	_createStore: function() {
+		return new dojo.data.ItemFileWriteStore({
 			data: {
 				identifier: 'id',
 				label: 'label',
@@ -68,6 +67,13 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 			},
 			clearOnClose: true
 		});
+	},
+
+	constructor: function() {
+		// The store needs to be available already at construction time, otherwise an
+		// error will be thrown. We need to define it here, in order to create a new
+		// store for each instance.a
+		this.store = this._createStore();
 	},
 
 	postMixInProperties: function() {
@@ -101,19 +107,14 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	getAllItems: function() {
 		// summary:
 		//		Converts all store items to "normal" dictionaries
-		var _items = [];
-
-		dojo.forEach( this.store._getItemsArray(), function ( item ) {
-						  _items.push( this.item2object( item ) );
-					  }, this );
-
-		return _items;
+		return dojo.map( this.store._getItemsArray(), function ( item ) {
+			return this.item2object( item );
+		}, this );
 	},
 
 	_setValueAttr: function(newVal) {
 		this.inherited(arguments);
 
-		//console.log('# _SelectMixin: '+this.name+'._initialValue=' + this._initialValue);
 		// store the value as intial value after the widget has been intialized
 		//if (this._isInitialized) {
 		//	this._saveInitialValue();
@@ -123,8 +124,6 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	_saveInitialValue: function() {
 		// rember the intial value since it will be overridden by the dojo
 		// methods since at initialization time the store is empty
-		//console.log('# _SelectMixin: '+this.name+'._saveInitialValue(): "'+this.value+'"');
-		//console.log('# _isInitialized: "'+this._isInitialized);
 		this._initialValue = this.value;
 	},
 
@@ -132,7 +131,6 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		// summary:
 		//		Forces to set this given initial value.
 		setValue = undefined === setValue ? true : setValue;
-		//console.log('# _SelectMixin: '+this.name+'.setInitialValue(): "'+value+'"');
 		this._initialValue = value;
 		if (setValue) {
 			this.set('value', value);
@@ -140,8 +138,6 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	},
 
 	_setCustomValue: function() {
-		//console.log('# _SelectMixin: '+this.name+'._setCustomValue()');
-		//console.log('# _SelectMixin: '+this.name+'._initialValue=' + this._initialValue);
 		if (null === this._initialValue || undefined === this._initialValue) {
 			this._initialValue = this._firstValueInList;
 			//this._isAutoValue = true;
@@ -151,15 +147,22 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	},
 
 	_clearValues: function() {
-		// clear the store, see:
-		//   http://mail.dojotoolkit.org/pipermail/dojo-interest/2011-January/052159.html
-		this.store.save();
-		this.store.data = {
-			identifier: 'id',
-			label: 'label',
-			items: []
-		};
-		this.store.close();
+		if ('setStore' in this) {
+			// there is a method 'setStore' (data grids) which can be used to create a new store object
+			var newStore = this._createStore();
+			this.setStore(newStore, {});
+		}
+		else {
+			// otherwise (combo box) clear the store as described in:
+			//   http://mail.dojotoolkit.org/pipermail/dojo-interest/2011-January/052159.html
+			this.store.save();
+			this.store.data = {
+				identifier: 'id',
+				label: 'label',
+				items: []
+			};
+			this.store.close();
+		}
 
 		//if (this._isAutoValue) {
 		//	// reset the _initialValue in case we chose it automatically
@@ -266,8 +269,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	},
 
 	_loadValues: function(/*Object?*/ _dependValues) {
-		//console.log('# _SelectMixin: '+this.name+'.loadValues');
-		//console.log('# _SelectMixin: '+this.name+'._initialValue=' + this._initialValue);
+		this._valuesLoaded = true;
 		this._clearValues();
 		this._setStaticValues();
 
@@ -294,11 +296,12 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		}
 
 		// mixin additional options for the UMCP command
+		var res;
 		if (this.dynamicOptions && dojo.isObject(this.dynamicOptions)) {
 			dojo.mixin(params, this.dynamicOptions);
 		}
 		else if (this.dynamicOptions && dojo.isFunction(this.dynamicOptions)) {
-			var res = this.dynamicOptions();
+			res = this.dynamicOptions();
 			umc.tools.assert(res && dojo.isObject(res), 'The return type of a function specified by umc.widgets._SelectMixin.dynamicOptions() needs to return a dictionary: ' + dojo.toJson(res));
 			dojo.mixin(params, res);
 		}
@@ -306,32 +309,72 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		// add all dynamic values which need to be queried via UMCP asynchronously
 		if (dojo.isString(this.dynamicValues) && this.dynamicValues) {
 			this.umcpCommand(this.dynamicValues, params).then(dojo.hitch(this, function(data) {
-				//console.log('# dynamicValues(' + this.dynamicValues + '): ' + data.result);
 				this._setDynamicValues(data.result);
 				this.onDynamicValuesLoaded(data.result);
 
-				// initialization is done
-				this.onInitialized();
+				// values have been loaded
+				this.onValuesLoaded(this.getAllItems());
 			}));
 		}
+		else if (this.dynamicValues && dojo.isFunction(this.dynamicValues)) {
+			// execute the specified function
+			res = this.dynamicValues(params);
+			umc.tools.assert(res && dojo.isArray(res), 'The return type of a function specified by umc.widgets._SelectMixin.dynamicValues() needs to return an array: ' + dojo.toJson(res));
+			this._setDynamicValues(res);
+			this.onDynamicValuesLoaded(res);
+
+			// values have been loaded
+			this.onValuesLoaded(this.getAllItems());
+		}
 		else {
-			// initialization is done
-			this.onInitialized();
+			// values have been loaded
+			this.onValuesLoaded(this.getAllItems());
 		}
 	},
 
 	onDynamicValuesLoaded: function(values) {
-		// event stub
+		// summary:
+		//		This event is triggered when the dynamic values (and only the dynamic values)
+		//		have been loaded.
+		// values:
+		//		Array containing all dynamic values.
 	},
 
-	onInitialized: function() {
-		// initilization is done
+	onValuesLoaded: function(values) {
+		// summary:
+		//		This event is triggered when all values (static and dynamic) have been loaded.
+		// values:
+		//		Array containing all dynamic and static values.
+
+		// if we can (data grid), perform a refresh
+		//if (dojo.isFunction(this._refresh)) {
+		//	this._refresh();
+		//}
+
 		// if the value is not set (undefined/null), automatically choose the first element in the list
-		//console.log('# _SelectMixin: '+this.name+'.onInitialized: _firstValueInList=' + this._firstValueInList);
 		if (null === this.value || undefined === this.value) {
 			this.set('value', this._firstValueInList);
 		}
-		//console.log('# _SelectMixin: '+this.name+'._initialValue=' + this._initialValue);
+	},
+
+	// setter for staticValues
+	_setDynamicValuesAttr: function(newVals) {
+		this.dynamicValues = newVals;
+
+		// we only need to call _loadValues() if it has been called before
+		if (this._valuesLoaded) {
+			this._loadValues();
+		}
+	},
+
+	// setter for staticValues
+	_setStaticValuesAttr: function(newVals) {
+		this.staticValues = newVals;
+
+		// we only need to call _loadValues() if it has been called before
+		if (this._valuesLoaded) {
+			this._loadValues();
+		}
 	}
 });
 

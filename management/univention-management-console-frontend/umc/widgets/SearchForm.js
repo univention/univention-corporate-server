@@ -12,6 +12,9 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 
 	i18nClass: 'umc.app',
 
+	// the widget's class name as CSS class
+	'class': 'umcSearchForm',
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 

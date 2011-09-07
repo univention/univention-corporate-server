@@ -35,6 +35,9 @@ dojo.declare("umc.widgets.MixedInput", [
 	//		Disables the widget for user input.
 	disabled: false,
 
+	// the widget's class name as CSS class
+	'class': 'umcMixedInput',
+
 	// store the original properties as specified by the user
 	_userProperties: null,
 

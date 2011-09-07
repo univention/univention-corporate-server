@@ -16,6 +16,9 @@ dojo.declare("umc.widgets.Text", [ dijit._Widget, dijit._Templated ], {
 	//		String which contains the text (or HTML code) to be rendered.
 	content: '',
 
+	// the widget's class name as CSS class
+	'class': 'umcTex',
+
 	_setContentAttr: function(content) {
 		this.content = content;
 		this.contentNode.innerHTML = content;

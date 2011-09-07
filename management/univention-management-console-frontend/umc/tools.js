@@ -509,6 +509,26 @@ dojo.mixin(umc.tools, {
 	isTrue: function(/*mixed*/ input) {
 		//('yes', 'true', '1', 'enable', 'enabled', 'on')
 		return !this.isFalse(input);
+	},
+
+	explodeDn: function(dn, noTypes) {
+		// summary:
+		//		Splits the parts of an LDAP DN into an array.
+		// dn: String
+		//		LDAP DN as String.
+		// noTypes: Boolean?
+		//		If set to true, the type part ('.*=') of each LDAP DN part will be removed.
+
+		var res = [];
+		if (dojo.isString(dn)) {
+			res = dn.split(',');
+		}
+		if (noTypes) {
+			res = dojo.map(res, function(x) {
+				return x.slice(x.indexOf('=')+1);
+			});
+		}
+		return res;
 	}
 });
 

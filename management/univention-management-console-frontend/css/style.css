@@ -301,3 +301,7 @@ form {
 	border-width: 2px;
 	border-bottom-width: 0;
 }
+
+.umcMultiSelect {
+	width: 25em;
+}

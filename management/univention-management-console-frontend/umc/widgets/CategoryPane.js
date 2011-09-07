@@ -17,6 +17,9 @@ dojo.declare( "umc.widgets._CategoryItem", [dijit.layout.ContentPane, dijit._Con
 	label: '',
 	description: '',
 
+	// the widget's class name as CSS class
+	'class': 'umcCategoryItem',
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 		dojo.mixin(this, {
@@ -63,6 +66,9 @@ dojo.declare( "umc.widgets.CategoryPane", [dijit.TitlePane, dijit._Container], {
 	// title: String
 	//		Title of category for which the modules shall be displayed
 	title: '',
+
+	// the widget's class name as CSS class
+	'class': 'umcCategoryPane',
 
 	postMixInProperties: function() {
 		this.inherited(arguments);

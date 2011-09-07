@@ -9,6 +9,9 @@ dojo.declare("umc.widgets.CheckBox", [ dijit.form.CheckBox, umc.widgets._FormWid
 	// by default, the checkbox is turned off
 	value: 'false', 
 
+	// the widget's class name as CSS class
+	'class': 'umcCheckBox',
+
 	_setValueAttr: function(newValue) {
 		this.set('checked', newValue == '0' || newValue == 'false' || newValue == 'FALSE' || !newValue ? false : true);
 	},

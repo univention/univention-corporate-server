@@ -20,6 +20,9 @@ dojo.declare("umc.widgets.LinkList", [ umc.widgets.ContainerWidget, umc.widgets.
 
 	i18nClass: 'umc.app',
 
+	// the widget's class name as CSS class
+	'class': 'umcLinkList',
+
 	onDynamicValuesLoaded: function() {
 		this.store.fetch( {
 						  onComplete: dojo.hitch( this, function ( items ) {

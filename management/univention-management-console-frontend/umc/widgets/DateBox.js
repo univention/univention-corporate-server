@@ -14,6 +14,9 @@ dojo.declare("umc.widgets.DateBox", [
 	umc.widgets._FormWidgetMixin,
 	umc.widgets._WidgetsInWidgetsMixin
 ], {
+	// the widget's class name as CSS class
+	'class': 'umcDateBox',
+
 	_dateBox: null,
 
 	buildRendering: function() {

@@ -5,7 +5,21 @@ dojo.provide("umc.widgets.Button");
 dojo.require("dijit.form.Button");
 
 dojo.declare("umc.widgets.Button", dijit.form.Button, {
-	type: 'button'
+	// defaultButton: Boolean
+	//		If set to 'true', button will be rendered as default, i.e., submit button.
+	defaultButton: false,
+
+	// the widget's class name as CSS class
+	'class': 'umcButton',
+
+	type: 'button',
+
+	constructor: function(props) {
+		dojo.mixin(this, props);
+		if (this.defaultButton) {
+			this['class'] = 'umcSubmitButton';
+		}
+	}
 });
 
 

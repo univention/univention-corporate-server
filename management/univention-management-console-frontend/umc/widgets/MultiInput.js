@@ -17,13 +17,17 @@ dojo.declare("umc.widgets.MultiInput", [
 	umc.i18n.Mixin
 ], {
 	// summary:
-	//		Simple widget that displays a widget/HTML code with a label above.
+	//		Widget for a small list of simple and complex entries. An entry can be one or
+	//		multiple input fields (TextBox, ComboBox, etc.).
 
 	// subtypes: Object[]
 	//		Essentially an array of object that describe the widgets for one element
 	//		of the MultiInput widget, the 'name' needs not to be specified, this
 	//		property is passed to umc.render.widgets().
 	subtypes: null,
+
+	// the widget's class name as CSS class
+	'class': 'umcMultiInput',
 
 	name: '',
 

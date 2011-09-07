@@ -301,7 +301,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			region: 'center',
 			query: this.query,
 			queryOptions: { ignoreCase: true },
-			rowSelector: '2px',
+			//rowSelector: '2px',
 			'class': 'umcGrid',
 			plugins : {
 				indirectSelection: {

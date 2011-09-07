@@ -22,6 +22,9 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 	//		a dijit._Widget instance.
 	content: '',
 
+	// the widget's class name as CSS class
+	'class': 'umcLabelPane',
+
 	// label: String
 	label: null,
 

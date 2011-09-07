@@ -8,6 +8,9 @@ dojo.require("umc.widgets._SelectMixin");
 dojo.require("umc.widgets._FormWidgetMixin");
 
 dojo.declare("umc.widgets.ComboBox", [ dijit.form.FilteringSelect, umc.widgets._SelectMixin, umc.widgets._FormWidgetMixin ], {
+	// the widget's class name as CSS class
+	'class': 'umcComboBox',
+
 	// search for the substring when typing
 	queryExpr: '*${0}*',
 

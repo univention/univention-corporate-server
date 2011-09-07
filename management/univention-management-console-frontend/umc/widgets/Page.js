@@ -32,6 +32,9 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 	//		Title of the page. This option is necessary for tab pages.
 	title: '',
 
+	// the widget's class name as CSS class
+	'class': 'umcPage',
+
 	gutters: false,
 
 	//style: 'width: 100%; height: 100%;',

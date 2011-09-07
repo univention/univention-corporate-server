@@ -18,6 +18,9 @@ dojo.declare("umc.widgets.ExpandingTitlePane", dijit.layout.BorderContainer, {
 	//		Title displayed in the header element of the widget.
 	title: '',
 
+	// the widget's class name as CSS class
+	'class': 'umcExpandingTitlePane',
+
 	// gutters are set to false by default
 	gutters: false,
 

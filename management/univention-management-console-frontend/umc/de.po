@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-05 15:35+0200\n"
+"POT-Creation-Date: 2011-09-07 11:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/widgets/PasswordInputBox.js:48
+#: umc/widgets/PasswordInputBox.js:51
 #, python-format
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
@@ -38,6 +38,10 @@ msgstr "<br>Fehlernachricht des Servers: <i>%s</i>"
 #: umc/app.js:344
 msgid "About UMC"
 msgstr "Über UMC"
+
+#: umc/widgets/GroupOwnership.js:50
+msgid "Add"
+msgstr ""
 
 #: umc/tools.js:247
 msgid "An assert statement failed"
@@ -199,11 +203,15 @@ msgstr "Übersicht"
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/widgets/SearchForm.js:22 umc/widgets/LoginDialog.js:74
+#: umc/widgets/GroupOwnership.js:56
+msgid "Remove"
+msgstr ""
+
+#: umc/widgets/SearchForm.js:25 umc/widgets/LoginDialog.js:74
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: umc/widgets/SearchForm.js:25
+#: umc/widgets/SearchForm.js:28
 msgid "Search"
 msgstr "Suchen"
 
@@ -229,7 +237,7 @@ msgstr "Die Sprache für die Anmeldesitzung."
 msgid "The password of your domain account."
 msgstr "Das Passwort Ihres Domänen-Kontos."
 
-#: umc/widgets/PasswordInputBox.js:51
+#: umc/widgets/PasswordInputBox.js:54
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passworte stimmen nicht überein, bitte versuchen Sie es erneut."
 
