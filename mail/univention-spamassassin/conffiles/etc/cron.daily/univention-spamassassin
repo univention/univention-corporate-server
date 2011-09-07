@@ -1,12 +1,12 @@
 #!/bin/sh
 
-@%@BCWARNING=#@%@
+@%@UCRWARNING=# @%@
 
 #
 # Univention Spamassassin
 #  learn Spam/Ham from global mail spam folder
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -36,7 +36,7 @@
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 @!@
-if baseConfig.has_key('mail/antispam/learndaily') and baseConfig['mail/antispam/learndaily'] == 'yes':
+if configRegistry.is_true('mail/antispam/learndaily', False):
 	print '/usr/sbin/univention-sa-learn >> /var/log/univention/spamassassin-learn.log'
 @!@
 

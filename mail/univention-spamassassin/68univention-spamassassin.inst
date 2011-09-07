@@ -3,7 +3,7 @@
 # Univention Spamassassin
 #  join script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,22 +32,16 @@
 
 VERSION=1
 
-touch /usr/lib/univention-install/.index.txt
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
 
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
-fi
+eval "$(ucr shell)"
 
-test -n "`grep "univention-spamassassin v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+p="$(makepasswd --chars 8)"
 
-eval `univention-baseconfig shell`
+udm users/user create "$@" --ignore_exists --position "cn=users,$ldap_base" --option mail --option person --set username=spam --set mailPrimaryAddress="spam@$domainname" --set lastname="Spam IMAP Account" --set password="$p" --set locked=all
 
-p=`makepasswd --chars 8`
-
-univention-admin users/user create $@ --position "cn=users,$ldap_base" --option mail --option person --set username=spam --set mailPrimaryAddress=spam@$domainname --set lastname="Spam IMAP Account" --set password=$p --set locked=all
-
-test -n "`grep "univention-spamassassin v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-spamassassin v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+joinscript_save_current_version
 
 exit 0
 

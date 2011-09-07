@@ -2,11 +2,14 @@ Source: univention-spamassassin
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev
+Build-Depends: debhelper (>> 7), 
+  univention-config-dev, 
+  ucslint
+Standards-Version: 3.8.2
 
 Package: univention-spamassassin
 Architecture: all
-Depends: univention-config-registry, spamassassin (>= 3.0.4), spamc
+Depends: univention-config-registry, spamassassin (>= 3.0.4), spamc, makepasswd
 Description: univention mail antispam
  univention mail antispam module
  .

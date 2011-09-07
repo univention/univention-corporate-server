@@ -3,7 +3,7 @@
 # Univention Spamassassin
 #  postrm script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,11 +31,9 @@
 # <http://www.gnu.org/licenses/>.
 # postrm script for univention-spamassassin
 
-set -e
-
 #DEBHELPER#
 
-univention-baseconfig unset mail/antispam
+ucr unset mail/antispam
 
 if [ -x /etc/init.d/postfix ]; then
 	/etc/init.d/postfix restart

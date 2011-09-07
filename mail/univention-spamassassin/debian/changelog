@@ -1,3 +1,9 @@
+univention-spamassassin (4.0.0-0) unstable; urgency=low
+
+  * bumped version for UCS 3.0 (Bug #22876)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 06 Sep 2011 17:05:11 +0200
+
 univention-spamassassin (3.0.4-1) unstable; urgency=low
 
   * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)

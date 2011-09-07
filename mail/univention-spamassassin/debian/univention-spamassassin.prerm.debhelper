@@ -1,5 +1,0 @@
-
-if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
-	test -x /usr/sbin/univention-config-registry && univention-config-registry unregister univention-spamassassin || true
-fi
-

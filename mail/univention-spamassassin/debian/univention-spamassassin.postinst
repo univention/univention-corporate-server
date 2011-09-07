@@ -1,9 +1,8 @@
-#!/bin/sh
-#
+#! /bin/sh
 # Univention Spamassassin
-#  create spamfolder script
+#  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,11 +29,32 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval `univention-baseconfig shell mail/antispam/globalfolder`
+eval "$(univention-config-registry shell)"
 
+. /usr/share/univention-lib/all.sh
 
-if [ -n "$mail_antispam_globalfolder" ]; then
-	echo "Creating folder $mail_antispam_globalfolder"
-	/usr/sbin/univention-cyrus-mkdir $mail_antispam_globalfolder
+create_logfile_if_missing /var/log/univention/spamassassin-learn.log "root:adm" 640
+
+if [ -f /var/spool/procmail/user/procmail.spam@domain ]; then
+	mv /var/spool/procmail/user/procmail.spam@domain /var/spool/procmail/user/procmail.spam@$domainname
 fi
+
+adduser --quiet --system --home /var/lib/spamd --shell /bin/bash spamd
+chown -R spamd:nogroup /var/spool/procmail
+
+univention-config-registry set mail/antispam?yes \
+	mail/antispam/requiredhits?5.0 \
+	mail/antispam/learndaily?no \
+	mail/antispam/rules/autoupdate?yes \
+	mail/antispam/autostart?yes
+
+if [ -x /etc/init.d/postfix ]; then
+	/etc/init.d/postfix reload || true
+fi
+
+#DEBHELPER#
+
+call_joinscript 68univention-spamassassin.inst
+
+exit 0
 
