@@ -30,5 +30,6 @@ GRUB_GFXMODE=@%@grub/gfxmode@%@
 # Uncomment to disable generation of recovery mode menu entries
 #GRUB_DISABLE_LINUX_RECOVERY="true"
 
-# Uncomment to get a beep at grub start
-#GRUB_INIT_TUNE="480 440 1"
+# This option passes the video configured in Grub (through grub/gfxmode) to
+# the Linux kernel
+GRUB_GFXPAYLOAD_LINUX=keep

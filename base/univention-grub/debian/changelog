@@ -1,3 +1,11 @@
+univention-grub (5.0.0-15) unstable; urgency=low
+
+  * Activate gfxpayload=keep in the template for /etc/default/grub. This way
+    the video mode selected for Grub is also activated when booting the Linux
+    kernel. This is needed for later bootsplash steps. Bug #22115	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 07 Sep 2011 16:27:02 +0200
+
 univention-grub (5.0.0-14) unstable; urgency=low
 
   * Integrate grub/gfxmode into the template for /etc/default/grub (Bug #22115)
