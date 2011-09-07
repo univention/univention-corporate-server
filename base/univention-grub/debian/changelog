@@ -1,3 +1,9 @@
+univention-grub (5.0.0-11) unstable; urgency=low
+
+  * Fix installation path for splash image
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 07 Sep 2011 09:19:10 +0200
+
 univention-grub (5.0.0-10) unstable; urgency=low
 
   * Make /etc/default/grub a Univention Configuration template. Some grub/*
