@@ -12,8 +12,7 @@ Architecture: all
 Depends: univention-config,
  python-ipaddr,
  rsyslog,
- ${misc:Depends}
-Recommends: bash-completion,
+ bash-completion,
  locales,
  ntpdate, rdate,
  acl,
@@ -25,6 +24,7 @@ Recommends: bash-completion,
  bzip2,
  psmisc,
  lsb-base,
+ ${misc:Depends}
 Conflicts: univention-config-registry (<= 7.0.7),
  univention-config (<= 7.0.8),
 Replaces: univention-config-registry (<= 7.0.7),
