@@ -13,6 +13,7 @@ dojo.require("umc.modules._udm.Template");
 dojo.require("umc.render");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.widgets.WidgetGroup");
 dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
@@ -67,12 +68,18 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 	// (used to display user input errors)
 	_propertySubTabMap: null,
 
+	// dict that saves the options that must be set for a property to be available
+	_propertyOptionMap: null,
+
 	// array that stores extra references to all sub tabs
 	// (necessary to reset change sub tab titles [when displaying input errors])
 	_detailPages: null,
 
 	// reference to the policies tab
 	_policiesTab: null,
+
+	// the widget of the options if available
+	_optionsWidget: null,
 
 	// reference to the template object in order to monitor user input changes
 	_template: null,
@@ -128,7 +135,13 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 		// parse the widget configurations
 		var properties = [];
+		var optionMap = {};
 		dojo.forEach(_properties, function(iprop) {
+			// ignore internal properties
+			if ( iprop.id.slice( 0, 1 ) == '$' && iprop.id.slice( -1 ) == '$' ) {
+				properties.push(iprop);
+				return;
+			}
 			if ('ComplexInput' == iprop.type) {
 				// handle complex widgets
 				iprop.type = 'MultiInput';
@@ -145,8 +158,11 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				iprop.type = 'MultiInput';
 			}
 			properties.push(iprop);
+			optionMap[ iprop.id ] = iprop.options;
 		}, this);
+		this._propertyOptionMap = optionMap;
 
+		// ### Advanved settings
 		// parse the layout configuration... we would like to group all groups of advanced
 		// settings on a special sub tab
 		var advancedGroup = {
@@ -170,8 +186,51 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			layout.push(advancedGroup);
 		}
 
+		// ### Options
+		var option_values = {};
+		var option_prop = null;
+		dojo.forEach( properties, function( item ) {
+			if ( item.id == '$options$' ) {
+				option_prop = item;
+				return false;
+			}
+		} );
+		if ( option_prop && option_prop.widgets.length > 0 ) {
+			var optiontab = {
+				label: this._( '[Options]' ),
+				description: this._( 'Options describing the basic features of the object' ),
+				layout: [ '$options$' ]
+			};
+			layout.push( optiontab );
+
+			var option_widgets = [];
+			var option_layout = [];
+			var create = this.ldapName === undefined;
+			dojo.forEach( option_prop.widgets, function ( option ) {
+				option_widgets.push( dojo.mixin( {
+					disabled: create ? false : ! option.editable
+				}, option ) );
+				option_values[ option.id ] = option.value;
+				option_layout.push( option.id );
+			} );
+			option_prop.widgets = option_widgets;
+			option_prop.layout = option_layout;
+		} else {
+			properties = dojo.filter( properties, function( item ) {
+				return item.id != '$options$';
+			} );
+		}
+
 		// render all widgets
-		var widgets = umc.render.widgets(properties);
+		var widgets = umc.render.widgets( properties );
+
+		// connect to onChange for the options property if it exists
+		if ( '$options$' in widgets ) {
+			this._optionsWidget = widgets.$options$;
+			// required when creating a new object
+			this._optionsWidget.set( 'value', option_values );
+			this.connect( this._optionsWidget, 'onChange', 'onOptionsChanged' );
+		}
 
 		// find property identifying the object
 		umc.tools.forIn( widgets, function( name, widget ) {
@@ -218,6 +277,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			}
 		}, this);
 
+		// #### Policies
 		// in case we have policies that apply to the current object, we need an extra
 		// sub tab that groups all policies together
 		if (this.ldapName && policies && policies.length) {
@@ -386,7 +446,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		if (_template && _template.length > 0) {
 			// remove first the template's LDAP-DN
 			_template = _template[0];
-			delete _template['ldap-dn'];
+			delete _template.$dn$;
 			template = dojo.mixin(template, _template);
 		}
 
@@ -403,6 +463,28 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				this._receivedObjFormData = this._form.gatherFormValues();
 			}));
 		}
+	},
+
+	onOptionsChanged: function( newValue, widgetName ) {
+		var activeOptions = [];
+		umc.tools.forIn( this._optionsWidget.get( 'value' ), function( item, value ) {
+			if ( value === true ) {
+				activeOptions.push( item );
+			}
+		} );
+		umc.tools.forIn( this._propertyOptionMap, dojo.hitch( this, function( prop, options ) {
+			var visible = false;
+			if ( ! dojo.isArray( options ) || ! options.length  ) {
+				visible = true;
+			} else {
+				dojo.forEach( options, function( option ) {
+					if ( activeOptions.indexOf( option ) != -1 ) {
+						visible = true;
+					}
+				} );
+			}
+			this._form._widgets[ prop ].set( 'visible' , visible );
+		} ) );
 	},
 
 	validateChanges: function(e) {

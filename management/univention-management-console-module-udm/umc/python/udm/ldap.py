@@ -153,6 +153,9 @@ class UDM_Module( object ):
 		try:
 			obj.open()
 			MODULE.info( 'Creating LDAP object' )
+			if '$options$' in ldap_object:
+				obj.options = filter( lambda option: ldap_object[ '$options$' ][ option ] == True, ldap_object[ '$options$' ].keys() )
+				del ldap_object[ '$options$' ]
 			for key, value in ldap_object.items():
 				obj[ key ] = value
 			obj.create()
@@ -179,8 +182,12 @@ class UDM_Module( object ):
 		"""Modifies a LDAP object"""
 		lo, po = get_ldap_connection()
 
-		obj = self.module.object( None, lo, po, dn = ldap_object.get( 'ldap-dn' ) )
-		del ldap_object[ 'ldap-dn' ]
+		obj = self.module.object( None, lo, po, dn = ldap_object.get( '$dn$' ) )
+		del ldap_object[ '$dn$' ]
+		if '$options$' in ldap_object:
+			obj.options = map( lambda option: ldap_object[ '$options$' ][ option ] == True, ldap_object[ '$options$' ].keys() )
+			del ldap_object[ '$options$' ]
+
 		try:
 			obj.open()
 			MODULE.info( 'Modifying LDAP object %s' % obj.dn )
@@ -327,7 +334,7 @@ class UDM_Module( object ):
 	@property
 	def properties( self ):
 		"""All properties of the UDM module"""
-		props = [ { 'id' : 'ldap-dn', 'type' : 'HiddenInput', 'label' : '', 'searchable' : False } ]
+		props = [ { 'id' : '$dn$', 'type' : 'HiddenInput', 'label' : '', 'searchable' : False } ]
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if key == 'filler': continue # FIXME: should be removed from all UDM modules
 			item = { 'id' : key, 'label' : prop.short_description, 'description' : prop.long_description, 'syntax' : prop.syntax.name,
@@ -347,18 +354,42 @@ class UDM_Module( object ):
 			# read UCR configuration
 			item.update( widget( prop.syntax ) )
 			props.append( item )
-		props.sort( key = operator.itemgetter( 'label' ) )
+		props.append( {	'id' : '$options$', 'type' : 'WidgetGroup', 'widgets' : self.get_options() } )
+
 		return props
+
+	def get_options( self, object_dn = None, udm_object = None ):
+		"""Returns the options of the module. If an LDAP DN or an UDM
+		object instance is given the values of the options are set"""
+		if object_dn is None and udm_object is None:
+			obj_options = None
+		else:
+			if udm_object is None:
+				obj = module.get( object_dn )
+			else:
+				obj = udm_object
+			obj_options = getattr( obj, 'options', {} )
+
+		options = []
+		for name, opt in self.options.items():
+			if obj_options is None:
+				value = bool( opt.default )
+			else:
+				value = name in obj_options
+			options.append( {
+				'id'	: name,
+				'type'  : 'CheckBox',
+				'label'	: opt.short_description,
+				'value'	: value,
+				'editable' : bool( opt.editable )
+				} )
+
+		return options
 
 	@property
 	def options( self ):
 		"""List of defined options"""
-		opts = []
-		for key, option in getattr( self.module, 'options', {} ).items():
-			item = { 'id' : key, 'label' : option.short_description, 'default' : option.default }
-			opts.append( item )
-		opts.sort( key = operator.itemgetter( 'label' ) )
-		return opts
+		return getattr( self.module, 'options', {} )
 
 	@property
 	def operations( self ):
@@ -581,7 +612,7 @@ def read_syntax_choices( syntax_name, options = {} ):
 		lo, po = get_ldap_connection()
 		syntax = udm_syntax.LDAP_Search( options[ 'syntax' ], options[ 'filter' ], options[ 'attributes' ], options[ 'base' ], options[ 'value' ], options[ 'viewonly' ], options[ 'empty' ] )
 
-		if 'ldap-dn' in options:
+		if '$dn$' in options:
 			# TODO: get LDAP object
 			#obj = 
 			# update choices
@@ -597,7 +628,7 @@ def read_syntax_choices( syntax_name, options = {} ):
 				dn, store_pattern, display_attr = item
 
 			if display_attr:
-				mod_display, display = split_module_attr( display_attr[ 0 ] )
+				mod_display, display = split_module_attr( display_attr )
 				module = get_module( mod_display, dn )
 			else:
 				module = get_module( None, dn )

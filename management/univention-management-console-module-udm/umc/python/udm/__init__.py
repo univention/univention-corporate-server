@@ -85,14 +85,16 @@ class Instance( Base ):
 		if not isinstance( result, BaseException ):
 			self.finished( request.id, result )
 		else:
-			self.finished( request.id, None, str( result ), False )
+			msg = str( result ) + '\n' + '\n'.join( thread.trace )
+			MODULE.error( 'An internal error occurred: %s' % msg )
+			self.finished( request.id, None, msg, False )
 
 	def add( self, request ):
 		"""Creates LDAP objects.
 
 		requests.options = [ { 'options' : {}, 'object' : {} }, ... ]
 
-		return: [ { 'ldap-dn' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
+		return: [ { '$dn$' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
 		"""
 
 		def _thread( request ):
@@ -107,9 +109,9 @@ class Instance( Base ):
 				module = self._get_module( request, object_type = options.get( 'objectType' ) )
 				try:
 					dn = module.create( properties, container = options.get( 'container' ), superordinate = options.get( 'superordinate' ) )
-					result.append( { 'ldap-dn' : dn, 'success' : True } )
+					result.append( { '$dn$' : dn, 'success' : True } )
 				except UDM_Error, e:
-					result.append( { 'ldap-dn' : e.args[ 1 ], 'success' : False, 'details' : str( e.args[ 0 ] ) } )
+					result.append( { '$dn$' : e.args[ 1 ], 'success' : False, 'details' : str( e.args[ 0 ] ) } )
 
 			return result
 
@@ -122,7 +124,7 @@ class Instance( Base ):
 
 		requests.options = [ { 'options' : {}, 'object' : {} }, ... ]
 
-		return: [ { 'ldap-dn' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
+		return: [ { '$dn$' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
 		"""
 
 		def _thread( request ):
@@ -134,18 +136,18 @@ class Instance( Base ):
 				if options is None:
 					options = {}
 				properties = obj.get( 'object', {} )
-				if not properties.get( 'ldap-dn' ):
+				if not properties.get( '$dn$' ):
 					raise UMC_OptionMissing( _( 'LDAP DN of object missing' ) )
-				ldap_dn = properties[ 'ldap-dn' ]
+				ldap_dn = properties[ '$dn$' ]
 				module = get_module( request.flavor, ldap_dn )
 				if module is None:
 					raise UMC_OptionTypeError( _( 'Could not find a matching UDM module for the LDAP object %s' ) % ldap_dn )
 				MODULE.info( 'Modifying LDAP object %s' % ldap_dn )
 				try:
 					module.modify( properties )
-					result.append( { 'ldap-dn' : ldap_dn, 'success' : True } )
+					result.append( { '$dn$' : ldap_dn, 'success' : True } )
 				except UDM_Error, e:
-					result.append( { 'ldap-dn' : ldap_dn, 'success' : False, 'details' : str( e ) } )
+					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e ) } )
 
 			return result
 
@@ -158,7 +160,7 @@ class Instance( Base ):
 
 		requests.options = [ <LDAP DN>, ... ]
 
-		return: [ { 'ldap-dn' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
+		return: [ { '$dn$' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
 		"""
 
 		def _thread( request ):
@@ -166,13 +168,13 @@ class Instance( Base ):
 			for ldap_dn in request.options:
 				module = get_module( request.flavor, ldap_dn )
 				if module is None:
-					result.append( { 'ldap-dn' : ldap_dn, 'success' : False, 'details' : _( 'LDAP object could not be identified' ) } )
+					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : _( 'LDAP object could not be identified' ) } )
 					continue
 				try:
 					module.remove( ldap_dn )
-					result.append( { 'ldap-dn' : ldap_dn, 'success' : True } )
+					result.append( { '$dn$' : ldap_dn, 'success' : True } )
 				except UDM_Error, e:
-					result.append( { 'ldap-dn' : ldap_dn, 'success' : False, 'details' : str( e ) } )
+					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e ) } )
 
 		thread = notifier.threads.Simple( 'Get', notifier.Callback( _thread, request ),
 										  notifier.Callback( self._thread_finished, request ) )
@@ -183,7 +185,7 @@ class Instance( Base ):
 
 		requests.options = [ <LDAP DN>, ... ]
 
-		return: [ { 'ldap-dn' : <LDAP DN>, <object properties> }, ... ]
+		return: [ { '$dn$' : <LDAP DN>, <object properties> }, ... ]
 		"""
 
 		def _thread( request ):
@@ -198,7 +200,10 @@ class Instance( Base ):
 					for passwd in module.password_properties:
 						if passwd in props:
 							del props[ passwd ]
-					props[ 'ldap-dn' ] = obj.dn
+					props[ '$dn$' ] = obj.dn
+					props[ '$options$' ] = {}
+					for opt in module.get_options( udm_object = obj ):
+						props[ '$options$' ][ opt[ 'id' ] ] = opt[ 'value' ]
 					result.append( props )
 			return result
 
@@ -215,7 +220,7 @@ class Instance( Base ):
 		  'container' -- the base container where the search should be started (default: LDAP base)
 		  'superordinate' -- the superordinate object for the search (default: None)
 
-		return: [ { 'ldap-dn' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
+		return: [ { '$dn$' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
 		"""
 
 		def _thread( request ):
@@ -244,7 +249,7 @@ class Instance( Base ):
 					MODULE.warn( 'Could not identify LDAP object %s (flavor: %s). The object is ignored.' % ( obj.dn, request.flavor ) )
 					continue
 				entries.append( {
-					'ldap-dn' : obj.dn,
+					'$dn$' : obj.dn,
 					'objectType' : module.name,
 					'name' : obj[ module.identifies ],
 					'path' : ldap_dn2path( obj.dn ),
@@ -359,7 +364,7 @@ class Instance( Base ):
 		module = self._get_module( request )
 		properties = module.properties
 		if request.options.get( 'searchable', False ):
-			properties = filter( lambda prop: prop[ 'searchable' ], properties )
+			properties = filter( lambda prop: prop.get( 'searchable', False ), properties )
 		self.finished( request.id, properties )
 
 	def options( self, request ):
@@ -393,6 +398,9 @@ class Instance( Base ):
 
 			result = []
 			for property_name, value in request.options.get( 'properties' ).items():
+				# ignore special properties named like $.*$, e.g. $options$
+				if property_name.startswith( '$' ) and property_name.endswith( '$' ):
+					continue
 				property_obj = module.get_property( property_name )
 
 				if property_obj is None:
@@ -497,7 +505,7 @@ class Instance( Base ):
 		requests.options = {}
 		  'container' -- the base container where the search should be started (default: LDAP base)
 
-		return: [ { 'ldap-dn' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
+		return: [ { '$dn$' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
 		"""
 		if not 'container' in request.options:
 			raise UMC_OptionMissing( "The option 'container' is required" )
@@ -507,7 +515,7 @@ class Instance( Base ):
 			for module, obj in list_objects( container ):
 				if obj is None or module.childs:
 					continue
-				entries.append( { 'ldap-dn' : obj.dn, 'objectType' : module.name, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) } )
+				entries.append( { '$dn$' : obj.dn, 'objectType' : module.name, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) } )
 
 			return entries
 
@@ -554,4 +562,23 @@ class Instance( Base ):
 										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
+	def object_options( self, request ):
+		"""Returns the options known by the given objectType. If an LDAP
+		DN is passed the current values for the options of this object
+		are returned, otherwise the default values for the options are
+		returned."""
+		object_type = request.options.get( 'objectType' )
+		if not object_type:
+			raise UMC_OptionMissing( 'The object type is missing' )
+		object_dn = request.options.get( 'objectDN' )
 
+		def _thread( object_type, object_dn ):
+			module = UDM_Module( object_type )
+			if module.module is None:
+				raise UMC_OptionTypeError( 'The given object type is not valid' )
+
+			return module.get_option( object_dn )
+
+		thread = notifier.threads.Simple( 'ObjectOptions', notifier.Callback( _thread, object_type, object_dn ),
+										  notifier.Callback( self._thread_finished, request ) )
+		thread.run()

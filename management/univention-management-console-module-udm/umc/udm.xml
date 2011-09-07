@@ -104,5 +104,9 @@
 	  <attribute name="objectDN" syntax="String" required="True"/>
 	  <attribute name="policyType" syntax="String" required="True"/>
 	</command>
+	<command name="udm/object/options" function="object_options">
+	  <attribute name="objectType" syntax="String" required="True"/>
+	  <attribute name="objectDN" syntax="String" required="False"/>
+	</command>
   </module>
 </umc>

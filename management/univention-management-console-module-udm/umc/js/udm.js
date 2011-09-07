@@ -43,7 +43,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	openObject: null,
 
 	// the property field that acts as unique identifier: the LDAP DN
-	idProperty: 'ldap-dn',
+	idProperty: '$dn$',
 
 	// internal reference to the search page
 	_searchPage: null,

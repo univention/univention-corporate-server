@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.106-1) unstable; urgency=low
+
+  * fix LDAP_Search syntax handling
+  * add support for UDM object options; Bug #23196
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 05 Sep 2011 11:07:19 +0200
+
 univention-management-console-module-udm (1.0.105-1) unstable; urgency=low
 
   * extended template mechanism to use also default values (Bug #23192)
