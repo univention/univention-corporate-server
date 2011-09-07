@@ -1,3 +1,10 @@
+univention-grub (5.0.0-14) unstable; urgency=low
+
+  * Integrate grub/gfxmode into the template for /etc/default/grub (Bug #22115)
+  * Fix escaping for grub/append and grub/xenhopt
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 07 Sep 2011 15:24:07 +0200
+
 univention-grub (5.0.0-13) unstable; urgency=low
 
   * Integrate UCR template for /etc/default/grub and map the already existing
@@ -8,7 +15,7 @@ univention-grub (5.0.0-13) unstable; urgency=low
     - grub/quiet
     - grub/loglevel
   * Improve Univention Configuration registry variable descriptions	
-  * Various ucslint cleanups	
+  * Various ucslint cleanups
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 07 Sep 2011 14:35:56 +0200
 
