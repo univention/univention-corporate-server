@@ -30,7 +30,7 @@
 UPDATER_LOG="/var/log/univention/updater.log"
 UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
-PACKAGES_TO_BE_PURGED="kcontrol libusplash0 univention-usplash-theme usplash"
+PACKAGES_TO_BE_PURGED="kcontrol libusplash0 univention-usplash-theme usplash libnjb5 console-tools"
 
 check_and_install ()
 {
