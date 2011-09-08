@@ -42,6 +42,7 @@ from univention.management.console.modules import Base, UMC_OptionTypeError, UMC
 from univention.management.console.log import MODULE
 
 import univention.admin.modules as udm_modules
+import univention.admin.objects as udm_objects
 import univention.admin.uexceptions as udm_errors
 
 from .ldap import UDM_Error, UDM_Module, UDM_Settings, ldap_dn2path, get_module, read_syntax_choices, list_objects
@@ -248,13 +249,15 @@ class Instance( Base ):
 				if module is None:
 					MODULE.warn( 'Could not identify LDAP object %s (flavor: %s). The object is ignored.' % ( obj.dn, request.flavor ) )
 					continue
-				entries.append( {
+				entry = {
 					'$dn$' : obj.dn,
 					'objectType' : module.name,
-					'name' : obj[ module.identifies ],
-					'path' : ldap_dn2path( obj.dn ),
-					request.options[ 'objectProperty' ] : obj[ request.options[ 'objectProperty' ] ]
-				} )
+					'name' : udm_objects.description( obj ),
+					'path' : ldap_dn2path( obj.dn )
+					}
+				if request.options[ 'objectProperty' ] != 'name':
+					entry[ request.options[ 'objectProperty' ] ] = obj[ request.options[ 'objectProperty' ] ]
+				entries.append( entry )
 			return entries
 
 		thread = notifier.threads.Simple( 'Query', notifier.Callback( _thread, request ),
