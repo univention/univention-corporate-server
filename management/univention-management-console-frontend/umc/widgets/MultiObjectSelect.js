@@ -15,7 +15,7 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 	// summary:
 	//		???
 
-	searchWidgets: [],
+	queryWidgets: [],
 
 	queryCommand: '',
 
@@ -25,6 +25,8 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 	// function(ids) { ... }
 	// may return dojo.Deferred
 	formatter: function(ids) { return ids; },
+
+	autoSearch: true,
 
 	name: '',
 
@@ -51,12 +53,14 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		// if 'formatter' is a string, parse it
 		if (dojo.isString(this.formatter)) {
 			// string may start with 'javascript:'
-			if (0 == this.formatter.indexOf('javascript:')) {
+			if (0 === this.formatter.indexOf('javascript:')) {
 				// evaluate string as javascript code
 				var str = this.formatter.substr(11);
 				this._formatter = eval(str);
 			}
-			console.log('ERROR: The attribute umc.widgets.MultiObjectSelect.formatter could not been evaluated. Ignoring error: ' + this.formatter);
+			else {
+				console.log('ERROR: The attribute umc.widgets.MultiObjectSelect.formatter could not been evaluated. Ignoring error: ' + this.formatter);
+			}
 		}
 		else if (dojo.isFunction(this.formatter)) {
 			this._formatter = this.formatter;
@@ -76,14 +80,15 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		container = new umc.widgets.ContainerWidget({});
 		container.addChild(new umc.widgets.Button({
 			label: this._('Add'),
-			iconClass: 'dijitIconNewTask',
+			//iconClass: 'dijitIconNewTask',
 			onClick: dojo.hitch(this, function() {
 				if (!this._detailDialog) {
 					// dialog does not exist, create a new one
 					this._detailDialog = new umc.widgets._MultiObjectSelectDetailDialog({
-						widgets: this.searchWidgets,
+						widgets: this.queryWidgets,
 						queryCommand: this.queryCommand,
-						queryOptions: this.queryOptions || {}
+						queryOptions: this.queryOptions || {},
+						autoSearch: this.autoSearch
 					});
 
 					// register the event handler
@@ -94,7 +99,7 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		}));
 		container.addChild(new umc.widgets.Button({
 			label: this._('Remove'),
-			iconClass: 'dijitIconDelete',
+			//iconClass: 'dijitIconDelete',
 			onClick: dojo.hitch(this, '_removeSelectedElements')
 		}));
 		this.addChild(container);
@@ -129,7 +134,7 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		var map = {};
 		dojo.forEach(newValues, function(iid) {
 			map[iid] = true;
-		})
+		});
 
 		// only add elements that do not exist already
 		dojo.forEach(values, function(iid) {
@@ -172,6 +177,8 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 
 	queryOptions: {},
 
+	autoSearch: true,
+
 	i18nClass: 'umc.app',
 
 	'class': 'umcMultiObjectSelectDetailDialog',
@@ -206,7 +213,14 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 		this._form = new umc.widgets.SearchForm({
 			widgets: this.widgets,
 			layout: layout,
-			onSearch: dojo.hitch(this, 'search')
+			onSearch: dojo.hitch(this, 'search'),
+			onValuesInitialized: dojo.hitch(this, function() {
+				// trigger the search if autoSearch is specified and as soon as all form
+				// elements have been initialized
+				if (this.autoSearch) {
+					this.search(this._form.gatherFormValues());
+				}
+			})
 		});
 		this._container.addChild(this._form);
 
@@ -222,7 +236,7 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 				var ids = this._multiSelect.get('value');
 				if (ids.length) {
 					// only trigger event if there are more then 0 entries
-					this.onAdd(ids)
+					this.onAdd(ids);
 				}
 
 				// hide the dialog

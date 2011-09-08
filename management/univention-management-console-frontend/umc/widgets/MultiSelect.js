@@ -14,10 +14,6 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 	//		This class represents a MultiSelect widget. Essentially, it adapts a DataGrid
 	//		to the behaviour expected from a MultiSelect widget.
 
-	// autoHeight: Integer
-	//		The maximum number of rows that are visible.
-	autoHeight: 5,
-
 	// size: Integer
 	//		The attribute 'size' is mapped to 'autoHeight'.
 
@@ -44,6 +40,9 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 
 	// the widget's class name as CSS class
 	'class': 'umcMultiSelect',
+
+	// force the height of the widget
+	height: '110px',
 
 	postCreate: function() {
 		this.inherited(arguments);
@@ -101,7 +100,16 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 			vars.push(this.store.getValue(items[iitem], 'id'));
 		}
 		return vars; // String[]
-	}
+	},
+
+	/*adaptHeight: function() {
+		this.inherited(arguments);
+		console.log('# adaptHeight');
+		if (this.height) {
+			console.log('# height', this.height, parseInt(this.height, 10));
+			this.scroller.windowHeight = parseInt(this.height, 10);
+		}
+	}*/
 });
 
 

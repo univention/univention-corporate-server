@@ -76,6 +76,8 @@ dojo.declare("umc.widgets.Form", [
 
 	'class': 'umcNoBorder',
 
+	_initializingElements: 0,
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -93,11 +95,11 @@ dojo.declare("umc.widgets.Form", [
 	},
 
 	showWidget: function( widget_name, /* bool? */ visibility ) {
-		if ( ! widget_name in self._widgets ) {
+		if ( ! widget_name in this._widgets ) {
 			console.log( 'Form.showWidget: could not find widget ' + widget_name );
 			return;
 		}
-		self._widgets[ widget_name ].set( 'visible', visibility );
+		this._widgets[ widget_name ].set( 'visible', visibility );
 	},
 
 	buildRendering: function() {
@@ -136,6 +138,34 @@ dojo.declare("umc.widgets.Form", [
 			else if (dojo.isObject(this.widgets)) {
 				this._widgets = this.widgets;
 			}
+		}
+
+		// send an event when all dynamic elements have been initialized
+		this._initializingElements = 0;
+		umc.tools.forIn(this._widgets, function(iname, iwidget) {
+			// only consider elements that load values dynamically
+			if ('onValuesLoaded' in iwidget && !iwidget._valuesLoaded) {
+				//console.log('iwidget:', iwidget.name);
+				++this._initializingElements
+				var handle = this.connect(iwidget, 'onValuesLoaded', dojo.hitch(this, function() {
+					//console.log('onValuesLoaded:', iwidget.name, iwidget.get('value'));
+					// disconnect from the signal
+					this.disconnect(handle);
+
+					// decrement the internal counter
+					--this._initializingElements;
+
+					// send event when the last element has been initialized
+					if (0 === this._initializingElements) {
+						this.onValuesInitialized();
+					}
+				}));
+			}
+		}, this);
+
+		// maybe all elements are already initialized
+		if (!this._initializingElements) {
+			this.onValuesInitialized();
 		}
 	},
 
@@ -297,6 +327,10 @@ dojo.declare("umc.widgets.Form", [
 
 	onLoaded: function(/*Boolean*/ success) {
 		// event stub
+	},
+
+	onValuesInitialized: function() {
+		console.log('### onValuesInitialized');
 	}
 });
 

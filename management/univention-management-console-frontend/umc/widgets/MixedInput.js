@@ -154,6 +154,8 @@ dojo.declare("umc.widgets.MixedInput", [
 			this._widget.set('value', values);
 		}
 		this._widget.startup();
+
+		this.onValuesLoaded();
 	},
 
 	_setValueAttr: function(newVal) {
@@ -194,6 +196,10 @@ dojo.declare("umc.widgets.MixedInput", [
 		if (this._widget) {
 			umc.tools.delegateCall(this, arguments, this._widget);
 		}
+	},
+
+	onValuesLoaded: function() {
+		// event stub
 	}
 });
 

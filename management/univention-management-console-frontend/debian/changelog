@@ -1,3 +1,15 @@
+univention-management-console-frontend (1.0.23-1) unstable; urgency=low
+
+  * added onValuesInitialized event to umc.widgets.Form
+  * fixes for MultiObjectSelect widget
+  * added support for dojo.Deferred and javascript functions to
+    umc.widgets._SelectMixin
+  * added onValuesLoaded event to umc.widgets.MixedInput
+  * support widgets with absolute module path in umc.render.widgets
+  (Bug #22461, Bug #23195)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 08 Sep 2011 19:10:41 +0200
+
 univention-management-console-frontend (1.0.22-1) unstable; urgency=low
 
   * added MultiObjectSelect widget

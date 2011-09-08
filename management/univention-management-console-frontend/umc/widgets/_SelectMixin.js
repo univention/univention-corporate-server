@@ -14,10 +14,11 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	//		method.
 	umcpCommand: umc.tools.umcpCommand,
 
-	// dynamicValues: String
-	//		UMCP command to query data from. Can be mixed with staticValues
-	//		property. Command is expected to return an array in the same
-	//		format as for staticValues.
+	// dynamicValues: String|Function
+	//		Either an UMCP command to query data from or a javascript function.
+	//		The javascript function may return an array or a dojo.Deferred object.
+	//		The format is in either case expected to have the same format as for
+	//		staticValues. Dynamic values may be mixed with staticValues.
 	dynamicValues: null,
 
 	// dynamicOptions: Object?|Function?
@@ -30,7 +31,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	//		Array of id/label objects containing predefined values, e.g.
 	//		[ { id: 'de', label: 'German' }, { id: 'en', label: 'English' } ].
 	//		Can be mixed with dynamicValues with the predefined values being
-	//		displayed first.
+	//		displayed first. May also be only an array with strings (i.e., id==label).
 	staticValues: [],
 
 	// depends: String?|String[]?
@@ -296,35 +297,43 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		}
 
 		// mixin additional options for the UMCP command
-		var res;
 		if (this.dynamicOptions && dojo.isObject(this.dynamicOptions)) {
 			dojo.mixin(params, this.dynamicOptions);
 		}
 		else if (this.dynamicOptions && dojo.isFunction(this.dynamicOptions)) {
-			res = this.dynamicOptions();
+			var res = this.dynamicOptions();
 			umc.tools.assert(res && dojo.isObject(res), 'The return type of a function specified by umc.widgets._SelectMixin.dynamicOptions() needs to return a dictionary: ' + dojo.toJson(res));
 			dojo.mixin(params, res);
 		}
 
-		// add all dynamic values which need to be queried via UMCP asynchronously
+		// get the dynamic values
+		var deferredOrValues = null;
 		if (dojo.isString(this.dynamicValues) && this.dynamicValues) {
-			this.umcpCommand(this.dynamicValues, params).then(dojo.hitch(this, function(data) {
-				this._setDynamicValues(data.result);
-				this.onDynamicValuesLoaded(data.result);
+			// query dynamic values via UMCP
+			deferredOrValues = this.umcpCommand(this.dynamicValues, params).then(function(data) {
+				// only return the data array
+				return data.result;
+			});
+		}
+		else if (this.dynamicValues && dojo.isFunction(this.dynamicValues)) {
+			// query dynamic values via the specified javascript function
+			deferredOrValues = this.dynamicValues(params);
+		}
+
+		if (deferredOrValues && (dojo.isArray(deferredOrValues) ||
+				(dojo.isObject(deferredOrValues) && 'then' in deferredOrValues && 'cancel' in deferredOrValues))) {
+			dojo.when(deferredOrValues, dojo.hitch(this, function(res) {
+				// callback handler
+				// update dynamic values
+				this._setDynamicValues(res);
+				this.onDynamicValuesLoaded(res);
 
 				// values have been loaded
 				this.onValuesLoaded(this.getAllItems());
+			}), dojo.hitch(this, function() {
+				// error handler
+				this.onValuesLoaded(this.getAllItems());
 			}));
-		}
-		else if (this.dynamicValues && dojo.isFunction(this.dynamicValues)) {
-			// execute the specified function
-			res = this.dynamicValues(params);
-			umc.tools.assert(res && dojo.isArray(res), 'The return type of a function specified by umc.widgets._SelectMixin.dynamicValues() needs to return an array: ' + dojo.toJson(res));
-			this._setDynamicValues(res);
-			this.onDynamicValuesLoaded(res);
-
-			// values have been loaded
-			this.onValuesLoaded(this.getAllItems());
 		}
 		else {
 			// values have been loaded

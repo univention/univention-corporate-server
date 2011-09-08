@@ -58,12 +58,18 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 		delete conf.id;
 
 		var WidgetClass = undefined;
+		var path;
 		try {
 			// include the corresponding module for the widget
-			dojo['require']('umc.widgets.' + widgetConf.type);
+			path = widgetConf.type;
+			if (path.indexOf('.') < 0) {
+				// the name does not contain a dot, thus we need to add 'umc.widgets.' as path prefix
+				path = 'umc.widgets.' + path;
+			}
+			dojo['require'](path);
 
 			// create the new widget according to its type
-			WidgetClass = dojo.getObject('umc.widgets.' + widgetConf.type);
+			WidgetClass = dojo.getObject(path);
 		}
 		catch (error) { }
 		if (!WidgetClass) {
