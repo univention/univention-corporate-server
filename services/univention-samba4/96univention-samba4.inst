@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -136,20 +136,17 @@ if [ "$domaincontroller" = 'true' ]; then
 	## check if we there already is a **domaincontroller** providing the service "Samba 4"
 	samba4servicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=${NAME})(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
 
+	localSamba4servicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=${NAME})(objectClass=univentionDomainController)(cn=$hostname))" cn | sed -n 's/^cn: \(.*\)/\1/p')
+
 	if [ -z "$samba4servicedcs" ]; then	## we are the first domainctontroller to provide this service
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 			## Provision Samba4
 			/usr/share/univention-samba4/scripts/setup-s4.sh
 
-			## Adding DNS records is currently necessary, probably this will can be avoided with dlz-dlopen on samba4
-			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh
-
-			## The first samba 4 DC should provide the domainname as netbios alias
-			univention-config-registry set samba/netbios/aliases?"$domainname"
 		fi
 
-	else	## otherwise we will simply join the new DC
+	elif [ -z "$localSamba4servicedcs" ]; then	## otherwise we will simply join the new DC
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
 			## remove slapd from port 389 on upgrade
@@ -167,13 +164,25 @@ if [ "$domaincontroller" = 'true' ]; then
 		extract_binddn_and_bindpwd_from_args "$@"
 		samba-tool join "$domainname" DC -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 
-		## Adding DNS records is currently necessary, probably this will be done automagically with dlz-dlopen on samba4
-		## see https://wiki.samba.org/index.php/Samba4/HOWTO/Join_a_domain_as_a_DC#A_note_on_DNS_updates
-		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh
-
 		# set_machine_secret	## currently disabled, seems to break DRS replication
 	fi
 
+	## Adding DNS records is currently necessary, probably this will can be avoided with dlz-dlopen on samba4
+	## see https://wiki.samba.org/index.php/Samba4/HOWTO/Join_a_domain_as_a_DC#A_note_on_DNS_updates
+	/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh
+
+	# The windows clients connect to //$domainname/sysvol for GPOs during logon
+	# Register the local ips for the forward zone, skip with 'ucr set samba4/dns/domain/register=false'
+	is_ucr_true samba4/dns/domain/register
+	if [ $? != 1 ]; then
+		zone="$(udm dns/forward_zone list "$@" --filter zoneName="$domainname" | sed -ne 's|^DN: ||p')"
+		if [ -n "$zone" ]; then
+			IPs=$(LC_ALL=C host $hostname.$domainname | LC_ALL=C cut -d' ' -f4)
+			for ip in $IPs; do
+				udm dns/forward_zone modify "$@" --ignore_exists --dn "$zone" --append a="$ip"
+			done
+		fi
+	fi
 
 	## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
 	univention-config-registry set samba4/ldap/base="DC=$(echo "$kerberos_realm" | sed 's/\./,DC=/g')"

@@ -1,3 +1,10 @@
+univention-samba4 (1.0.31-1) experimental; urgency=low
+
+  * Register local ips to the forward zone (Bug #23481)
+  * Don't join a local DC twice
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Sep 2011 17:34:50 +0200
+
 univention-samba4 (1.0.30-2) experimental; urgency=low
 
   * add copyright header to check_essential_samba4_dns_records.sh
