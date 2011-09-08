@@ -29,6 +29,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/all.sh
+
+# Bug 22369: remove all UCR remains from univention-mail-postfix-forward and univention-mail-postfix-kolab2
+#            Required during update step to UCS 3.0-0.
+# Note: empty $2 (on initial install) is also less-than, because lt "[treats] an empty version as earlier than any version"
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 6.0.7 ; then
+	remove_ucr_template /etc/postfix/main.cf
+	remove_ucr_template /etc/postfix/master.cf
+	remove_ucr_info_file univention-mail-postfix-forward.info
+	remove_ucr_info_file univention-mail-postfix-kolab2.info
+fi
+
 #DEBHELPER#
 
 eval "$(univention-config-registry shell)"
@@ -64,13 +76,6 @@ for file in transport virtual canonical access relocated; do
       touch /etc/postfix/$file
   fi
   postmap /etc/postfix/$file
-done
-
-for file in /etc/univention/templates/info/univention-mail-postfix-forward.info /etc/univention/templates/info/univention-mail-postfix.info /etc/univention/templates/files/etc/postfix/main.cf /var/cache/univention-config/cache /etc/univention/templates/files/etc/postfix/master.cf
-  do
-  if [ -e $file ]; then
-      rm $file || true
-  fi
 done
 
 

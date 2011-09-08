@@ -1,3 +1,10 @@
+univention-mail-postfix (6.0.7-2) unstable; urgency=low
+
+  * remove all UCR remains from univention-mail-postfix-forward and
+    univention-mail-postfix-kolab2 (Bug #22369)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 08 Sep 2011 14:34:58 +0200
+
 univention-mail-postfix (6.0.7-1) unstable; urgency=low
 
   * update ldap tables after server password change (Bug #22369) (Bug #23362)
