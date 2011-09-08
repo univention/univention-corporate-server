@@ -1,1 +1,2 @@
 listfilter.py /usr/share/univention-mail-postfix
+usr/lib/univention-server/server_password_change.d/univention-mail-server usr/lib/univention-server/server_password_change.d/

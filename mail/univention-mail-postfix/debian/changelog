@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.7-1) unstable; urgency=low
+
+  * update ldap tables after server password change (Bug #22369) (Bug #23362)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 08 Sep 2011 11:44:57 +0200
+
 univention-mail-postfix (6.0.6-1) unstable; urgency=low
 
   * added listener module hosteddomains.py (Bug #22876)
