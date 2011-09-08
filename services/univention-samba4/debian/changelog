@@ -1,3 +1,9 @@
+univention-samba4 (1.0.33-1) experimental; urgency=low
+
+  * Search for dns forward zone first (Bug #23481)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Sep 2011 21:37:06 +0200
+
 univention-samba4 (1.0.32-1) experimental; urgency=low
 
   * Search via univention-ldapsearch because the nameserver is not ready
