@@ -136,7 +136,7 @@ then
     fi
 
     echo "-- initialise UCR"
-    univention-config-registry set "$CONFIGBASENAME"/ad/ldap/port?389 "$CONFIGBASENAME"/ad/ldap/ssl?yes "$CONFIGBASENAME"/ad/listener/dir?/var/lib/univention-"$CONFIGBASENAME"/ad "$CONFIGBASENAME"/ad/mapping/group/language?de "$CONFIGBASENAME"/ad/mapping/group/primarymail?false "$CONFIGBASENAME"/ad/mapping/group/win2000/description?false "$CONFIGBASENAME"/ad/mapping/syncmode?sync "$CONFIGBASENAME"/ad/mapping/user/primarymail?false "$CONFIGBASENAME"/ad/mapping/user/win2000/description?false "$CONFIGBASENAME"/ad/poll/sleep?5 "$CONFIGBASENAME"/ad/retryrejected?10 "$CONFIGBASENAME"/debug/function?0 "$CONFIGBASENAME"/debug/level?1 "$CONFIGBASENAME"/password/service/encoding?iso8859-15
+    univention-config-registry set "$CONFIGBASENAME"/ad/ldap/port?389 "$CONFIGBASENAME"/ad/ldap/ssl?yes "$CONFIGBASENAME"/ad/listener/dir?/var/lib/univention-"$CONFIGBASENAME"/ad "$CONFIGBASENAME"/ad/mapping/group/language?de "$CONFIGBASENAME"/ad/mapping/group/primarymail?false "$CONFIGBASENAME"/ad/mapping/syncmode?sync "$CONFIGBASENAME"/ad/mapping/user/primarymail?false "$CONFIGBASENAME"/ad/poll/sleep?5 "$CONFIGBASENAME"/ad/retryrejected?10 "$CONFIGBASENAME"/debug/function?0 "$CONFIGBASENAME"/debug/level?1 "$CONFIGBASENAME"/password/service/encoding?iso8859-15
     
     echo "-- copy mapping"
     mkdir -p /etc/univention/"$CONFIGBASENAME"/ad
@@ -201,10 +201,8 @@ then
     univention-config-registry unset "$CONFIGBASENAME"/ad/listener/dir 
     univention-config-registry unset "$CONFIGBASENAME"/ad/mapping/group/language 
     univention-config-registry unset "$CONFIGBASENAME"/ad/mapping/group/primarymail 
-    univention-config-registry unset "$CONFIGBASENAME"/ad/mapping/group/win2000/description 
     univention-config-registry unset "$CONFIGBASENAME"/ad/mapping/syncmode 
     univention-config-registry unset "$CONFIGBASENAME"/ad/mapping/user/primarymail 
-    univention-config-registry unset "$CONFIGBASENAME"/ad/mapping/user/win2000/description 
     univention-config-registry unset "$CONFIGBASENAME"/ad/poll/sleep 
     univention-config-registry unset "$CONFIGBASENAME"/ad/retryrejected 
     univention-config-registry unset "$CONFIGBASENAME"/debug/function 

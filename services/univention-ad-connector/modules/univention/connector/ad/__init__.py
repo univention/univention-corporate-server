@@ -429,26 +429,6 @@ def encode_object_sid(sid_string, encode_in_base64=True):
 
     return binary_encoding
 
-def encode_object_sid_to_binary_ldapfilter(sid_string):
-    binary_encoding = ""
-
-    # The first two bytes do not seem to follow the expected binary LDAP filter
-    # conversion scheme. Thus, we skip them and prepend the encoding of "1-5"
-    # statically
-
-    ud.debug(ud.LDAP, ud.INFO,"encode_object_sid_to_binary %s:" % str(sid_string))
-
-    
-    for i in sid_string.split("-")[3:]:
-        j = hex(int(i))
-        hex_repr = (((8-len(j[2:]))*"0") + j[2:])
-
-        binary_encoding_chunk  = '\\' + hex_repr[6:8] + "\\" + hex_repr[4:6] + "\\" + hex_repr[2:4] + "\\" + hex_repr[0:2]
-        binary_encoding += binary_encoding_chunk
-
-    return "\\01\\05\\00\\00\\00\\00\\00\\05" + binary_encoding
-
-
 
 def encode_list(list, encoding):
 	newlist=[]
@@ -805,13 +785,6 @@ class ad(univention.connector.ucs):
 		'''
 		_d=ud.function('ldap.__dn_from_deleted_object')
 
-		# In Windows 2000 there's no lastKnownParent attribute. Thus, we have to map the
-		# relevant object according to the objectGUID of the removed object
-		if self.baseConfig.has_key('%s/ad/windows_version' % self.CONFIGBASENAME) and self.baseConfig['%s/ad/windows_version' % self.CONFIGBASENAME] == "win2000":
-			ud.debug(ud.LDAP, ud.INFO, "__dn_from_deleted_object: DN fallback to w2k-mode: get dn from GUID-mapping-cache")
-			#GUID = object['objectGUID'][0] #the GUID is given
-			return self._get_DN_for_GUID(GUID)
-
 		# FIXME: should be called recursively, if containers are deleted subobjects have lastKnowParent in deletedObjects
  		rdn = object['dn'][:string.find(object['dn'],'DEL:')-3]
  		if object['attributes'].has_key('lastKnownParent'):
@@ -928,8 +901,6 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO,
 								   "set_primary_group_to_ucs_user: AD rid: %s"%ad_group_rid)
 			object_sid_string = str(self.ad_sid) + "-" + str(ad_group_rid)
-			if self.baseConfig.has_key('%s/ad/windows_version' % self.CONFIGBASENAME) and self.baseConfig['%s/ad/windows_version' % self.CONFIGBASENAME] == "win2000":
-				object_sid_string = encode_object_sid_to_binary_ldapfilter(object_sid_string)
 
 			ldap_group_ad = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,
 								   "objectSid=" + object_sid_string,
@@ -1028,9 +999,6 @@ class ad(univention.connector.ucs):
 							   "primary_group_sync_to_ucs: AD rid: %s"%ad_group_rid)
 
 		object_sid_string = str(self.ad_sid) + "-" + str(ad_group_rid)
-
-		if self.baseConfig.has_key('%s/ad/windows_version' % self.CONFIGBASENAME) and self.baseConfig['%s/ad/windows_version' % self.CONFIGBASENAME] == "win2000":
-			object_sid_string = encode_object_sid_to_binary_ldapfilter(object_sid_string)
 
 		ldap_group_ad = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,
 							   ('objectSID=' + object_sid_string),
@@ -1878,15 +1846,9 @@ class ad(univention.connector.ucs):
 			for yank_empty_attr in attrs_to_remove_from_ad_object:
 				if ad_object.has_key(yank_empty_attr):
 					if value != None:
-						# the description attribute in w2k is managed internally by AD and cannot
-						# be removed directly. Thus we set it to "x" instead
-						# This is configurable by config registry
-						if yank_empty_attr != "description" or not (self.baseConfig.has_key('%s/ad/windows_version' % self.CONFIGBASENAME) and self.baseConfig['%s/ad/windows_version' % self.CONFIGBASENAME] == "win2000"):
+						if yank_empty_attr != "description":
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Empty value can be set")
 							modlist_empty_attrs.append((ldap.MOD_REPLACE, yank_empty_attr, ""))
-						else:
-							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Value for description reset to a 'x' instead of removing attribute due to w2k limitations")
-							modlist_empty_attrs.append((ldap.MOD_REPLACE, yank_empty_attr, "x"))
 
 			if len(modlist_empty_attrs) > 0:
 				ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Attributes were removed in UCS LDAP, removing them in AD likewise: %s " % str(modlist_empty_attrs))

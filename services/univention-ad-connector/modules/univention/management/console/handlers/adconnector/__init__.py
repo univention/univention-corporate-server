@@ -91,8 +91,6 @@ command_description = {
 			'ad_ldap_binddn': umc.String( _('DN of replication user') ),
 			'ad_ldap_bindpw': umc.Password( _('Password of replication user'), required = False ),
 			'ad_poll_sleep': umc.String( _('Poll Interval (seconds)'), regex = '^[0-9]+$' ),
-			'ad_windows_version': UMC_AD_StaticSelection( title=_('Version of Windows server'),
-													choices = ( ( 'win2000', _( 'Windows 2000' ) ), ( 'win2003', _( 'Windows 2003/2008' ) ) ) ),
 			'ad_retry_rejected': umc.String( _('Retry interval for rejected objects'), regex = '^[0-9]+$' ),
 			'ad_kerberosdomain': umc.String( _('Kerberos domain of Active Directory server'), required = False ),
 			# Workaround for Bug #13139: '_0_' up to '_4_' is a workaround
@@ -216,27 +214,6 @@ class handler(umch.simpleHandler):
 				if val:
 					debugmsg( ud.ADMIN, ud.INFO, 'setting %s=%s' % (ucrkey, val) )
 					univention.config_registry.handler_set( [ u'%s=%s' % (ucrkey, val) ] )
-
-			# special handling for connector/ad/windows_version
-			umckey = 'ad_windows_version'
-			ucrkey = 'connector/ad/windows_version'
-			val = obj.options.get( umckey )
-			if val == 'win2000':
-				debugmsg( ud.ADMIN, ud.INFO, 'setting %s=%s' % (ucrkey, val) )
-				univention.config_registry.handler_set( [ u'%s=%s' % (ucrkey, val) ] )
-				debugmsg( ud.ADMIN, ud.INFO, 'setting ldap port to 636 and activate ldaps' )
-				univention.config_registry.handler_set( [ u'connector/ad/ldap/ldaps=yes', u'connector/ad/ldap/port=636' ] )
-			else:
-				debugmsg( ud.ADMIN, ud.INFO, 'unsetting %s' % (ucrkey) )
-				univention.config_registry.handler_unset( [ u'%s' % ucrkey ] )
-
-				self.configRegistry.load() # reload UCR cache
-				if self.configRegistry.get('connector/ad/ldap/ldaps'):
-					debugmsg( ud.ADMIN, ud.INFO, 'unsetting connector/ad/ldap/ldaps' )
-					univention.config_registry.handler_unset( [ u'connector/ad/ldap/ldaps' ] )
-				if self.configRegistry.get('connector/ad/ldap/port') == '636':
-					debugmsg( ud.ADMIN, ud.INFO, 'setting ldap port to 389' )
-					univention.config_registry.handler_set( [ u'connector/ad/ldap/port=389' ] )
 
 			if not obj.options.get('ad_ldap_bindpw') in [ None, '', DO_NOT_CHANGE_PWD ]:
 				fn = self.configRegistry.get('connector/ad/ldap/bindpw', FN_BINDPW)
@@ -573,10 +550,6 @@ class handler(umch.simpleHandler):
 		inp_ldap_bindpw = umcd.make( self['adconnector/configure']['ad_ldap_bindpw'], default = curval )
 		list_id.append( inp_ldap_bindpw.id() )
 
-		# ask for windows version
-		inp_windows_version = umcd.make( self['adconnector/configure']['ad_windows_version'], default = self.configRegistry.get('connector/ad/windows_version', 'win2003') )
-		list_id.append( inp_windows_version.id() )
-
 		# ask for kerberos domain
 		kerberosdomain = self.configRegistry.get('connector/ad/mapping/kerberosdomain', '')
 		if not kerberosdomain and self.guessed_baseDN:
@@ -637,7 +610,6 @@ class handler(umch.simpleHandler):
 		list_items.add_row( [ inp_ldap_host ] )
 		list_items.add_row( [ inp_ldap_base, btn_guess ] )
 		list_items.add_row( [ inp_ldap_binddn, inp_ldap_bindpw ] )
-		list_items.add_row( [ inp_windows_version, inp_kerberosdomain ] )
 		list_items.add_row( [ inp_mapping_language, inp_sync_mode ] )
 		list_items.add_row( [ inp_poll_sleep, inp_retry_rejected ] )
 		list_items.add_row( [ inp_debug_level, inp_debug_function ] )

@@ -808,7 +808,6 @@ class ucs:
 					ud.debug(ud.LDAP, ud.WARN, '__set_values: no ucs_attribute found in %s' % attributes)
 			else:
 				# the value isn't set in the ad directory, but it could be set in ucs, so we should delete it on ucs side
-				#if self.baseConfig['connector/ad/windows_version'] != 'win2000':
 				
 				# prevent value resets of mandatory attributes
 				mandatory_attrs = ['lastname']

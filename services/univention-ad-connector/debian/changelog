@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.5-2) unstable; urgency=low
+
+  * Remove support for Windows 2000 has been removed (Bug #21486)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 08 Sep 2011 18:25:02 +0200
+
 univention-ad-connector (6.0.5-1) unstable; urgency=low
 
   * Initialize udm modules (Bug #22439)

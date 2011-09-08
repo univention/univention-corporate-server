@@ -67,12 +67,6 @@ Description[en]=Defines the synchronisation mode; "read" (reading only from Acti
 Type=str
 Categories=service-adcon
 
-[con.*/ad/windows_version]
-Description[de]=Die Art der LDAP-Datenbankzugriffe unterscheidet sich zwischen Windows 2000 und Windows 2003/2008. Um gegen ein Active Directory aus Windows 2000 synchronisieren zu können, muss diese Variable auf "win2000" konfiguriert werden.
-Description[en]=The type of LDAP database accesses is different between Windows 2000 and Windows 2003/2008. This variable must be set to "win2000" to synchronise against an Active Directory from Windows 2000.
-Type=str
-Categories=service-adcon
-
 [con.*/ad/ldap/base]
 Description[de]=Die LDAP-Basis-DN des Active Directory-Servers
 Description[en]=The LDAP base DN of the Active Directory server.
