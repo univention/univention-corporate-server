@@ -216,3 +216,13 @@ if [ -z "$bootloader_device" ] ; then
 	[ -n "$partitions_device" ] && bootloader_device="/dev/$partitions_device"
 fi
 
+if [ -n "$bootloader_device" ]; then
+	python2.6 /sbin/univention-config-registry set grub/boot?$bootloader_device
+else
+	echo
+	echo
+	echo "ERROR: bootloader_device has not been set!"
+	echo
+	echo
+	sleep 15s
+fi
