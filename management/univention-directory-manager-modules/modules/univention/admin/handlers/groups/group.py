@@ -834,7 +834,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if set_intersection:
 			childdn = list(set_intersection)[0]
 			# get cn for first detected object
-			childobj = univention.admin.objects.get(grp_module, self.co, self.lo, position='', dn=childdn, arg='')
+			childobj = univention.admin.objects.get(grp_module, self.co, self.lo, position='', dn=childdn)
 			childcn = childobj.info.get('name','UNKNOWN')
 			raise univention.admin.uexceptions.circularGroupDependency('%s ==> %s ==> %s' % (childcn, cn, childcn))
 
@@ -853,7 +853,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _check_group_childs_for_recursion(self, grp_module, grpdn2childgrpdns, dn, parents=[]):
 		if not dn in grpdn2childgrpdns:
-			grpobj = univention.admin.objects.get(grp_module, self.co, self.lo, position='', dn=dn, arg='')
+			grpobj = univention.admin.objects.get(grp_module, self.co, self.lo, position='', dn=dn)
 			grpobj.open()
 			childs = grpobj.info.get('nestedGroup',[])
 			grpdn2childgrpdns[ dn ] = childs
@@ -869,7 +869,7 @@ class object(univention.admin.handlers.simpleLdap):
 				grpdn2cn = { self.dn.lower(): self.info.get('name','UNKNOWN') }
 				for x in dnCircle:
 					if not x.lower() in grpdn2cn:
-						xobj = univention.admin.objects.get(grp_module, self.co, self.lo, position='', dn=x, arg='')
+						xobj = univention.admin.objects.get(grp_module, self.co, self.lo, position='', dn=x)
 						grpdn2cn[ x.lower() ] = xobj.info.get('name','UNKNOWN')
 					cnCircle.append( grpdn2cn[x.lower()] )
 				raise univention.admin.uexceptions.circularGroupDependency(' ==> '.join(cnCircle))
