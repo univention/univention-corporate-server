@@ -352,7 +352,7 @@ class UDM_Module( object ):
 					item[ 'default' ] = str( prop.base_default )
 
 			# read UCR configuration
-			item.update( widget( prop.syntax ) )
+			item.update( widget( prop.syntax, item ) )
 			props.append( item )
 		props.append( {	'id' : '$options$', 'type' : 'WidgetGroup', 'widgets' : self.get_options() } )
 
@@ -586,14 +586,15 @@ def read_syntax_choices( syntax_name, options = {} ):
 
 	syn = udm_syntax.__dict__[ syntax_name ]
 
-	if hasattr( syn, 'udm_module' ):
-		MODULE.info( 'Found syntax class %s with udm_module attribute (= %s)' % ( syntax_name, syn.udm_module ) )
-		module = UDM_Module( syn.udm_module )
-		if module is None:
-			syn.choices = ()
-			return
-		MODULE.info( 'Found syntax %s with udm_module property' % syntax_name )
-		syn.choices = map( lambda obj: ( obj.dn, udm_objects.description( obj ) ), module.search() )
+	if hasattr( syn, 'udm_modules' ):
+		MODULE.info( 'Found syntax class %s with udm_module attribute (= %s)' % ( syntax_name, syn.udm_modules ) )
+		syn.choices = []
+		for udm_module in syn.udm_modules:
+			module = UDM_Module( syn.udm_module )
+			if module is None:
+				continue
+			MODULE.info( 'Found syntax %s with udm_module property' % syntax_name )
+			syn.choices.extend( map( lambda obj: ( obj.dn, udm_objects.description( obj ) ), module.search() ) )
 	elif issubclass( syn, udm_syntax.ldapDn ) and hasattr( syn, 'searchFilter' ):
 		lo, po = get_ldap_connection()
 		try:

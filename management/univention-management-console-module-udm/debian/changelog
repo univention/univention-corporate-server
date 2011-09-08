@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.109-1) unstable; urgency=low
+
+  * add mapping for widget MultiObjectSelect; Bug #23195
+  * first step in supporting syntax shareHost
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 08 Sep 2011 12:31:24 +0200
+
 univention-management-console-module-udm (1.0.108-1) unstable; urgency=low
 
   * also show policies tab when creating new objects; Bug #22439

@@ -54,10 +54,10 @@ class Widget( object ):
 		else:
 			return inspect.isclass( syntax ) and syntax in self._syntax_classes or type( syntax ) in self._syntax_classes
 
-	def name( self, syntax ):
+	def name( self, syntax, udm_property ):
 		if self._name is None and callable( self._widget_func ):
-			MODULE.info( 'The widget name for syntax %s is %s' % ( syntax.name, self._widget_func( syntax ) ) )
-			return self._widget_func( syntax )
+			MODULE.info( 'The widget name for syntax %s is %s' % ( syntax.name, self._widget_func( syntax, udm_property ) ) )
+			return self._widget_func( syntax, udm_property )
 		return self._name
 
 	@property
@@ -68,21 +68,24 @@ __widgets = (
 	Widget( 'CheckBox', ( udm_syntax.OkOrNot, udm_syntax.TrueFalseUp, udm_syntax.boolean ), False ),
 	Widget( 'PasswordInputBox', ( udm_syntax.passwd, udm_syntax.userPasswd ), '' ),
 	Widget( 'DateBox', udm_syntax.iso8601Date, '1970-01-01' ),
-	Widget( None, ( udm_syntax.LDAP_Search, ), [], subclasses = False, widget_func = lambda syn: syn.viewonly and 'LinkList' or 'ComboBox' ),
+	Widget( None, ( udm_syntax.LDAP_Search, ), [], subclasses = False, widget_func = lambda syn, prop: syn.viewonly and 'LinkList' or 'ComboBox' ),
 	Widget( 'ComboBox', udm_syntax.select, [] ),
 	Widget( 'TextBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', subclasses = False ),
-	Widget( 'ComboBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn, udm_syntax.module ), '' ),
+	Widget( None, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn, udm_syntax.module ), '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
 	Widget( 'MultiInput', udm_syntax.complex, None ),
 	)
 
-def choices( syntax ):
+def choices( syntax, udm_property ):
 	"""Returns the choices attribute of the property's syntax as a list
 	of dictionaries with id and label keys. If the attribute is not
 	available an empty list is returned."""
 	MODULE.info( 'Find choices for syntax %s' % syntax )
 	if type( syntax ) in ( type, ) and issubclass( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
-		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__name__ } }
+		if not udm_property[ 'multivalue' ]:
+			return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__name__ } }
+		else:
+			return { 'objectType' : syntax.udm_modules[ 0 ] }
 
 	if isinstance( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
 		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__ } }
@@ -95,25 +98,25 @@ def choices( syntax ):
 
 	return { 'staticValues' : map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syntax, 'choices', [] ) ) }
 
-def subsyntaxes( syntax ):
+def subsyntaxes( syntax, udm_property ):
 	"""Returns a list of dictionaries describing the the sub types of a
 	complex syntax"""
 	def subtypes_dict( item ):
-		elem = widget( item[ 1 ] )
+		elem = widget( item[ 1 ], udm_property )
 		elem[ 'label' ] = item[ 0 ]
 		return elem
 
 	return map( subtypes_dict, getattr( syntax, 'subsyntaxes', [] ) )
 
-def widget( syntax ):
+def widget( syntax, udm_property ):
 	"""Returns a widget description as a dictionary"""
 	global __widgets
 
 	for widget in __widgets:
 		if syntax in widget:
-			descr = { 'type' : widget.name( syntax ) }
-			values = choices( syntax )
-			subtypes = subsyntaxes( syntax )
+			descr = { 'type' : widget.name( syntax, udm_property ) }
+			values = choices( syntax, udm_property )
+			subtypes = subsyntaxes( syntax, udm_property )
 			if values:
 				MODULE.info( "Syntax %s has the following choices: %s" % ( syntax.name, values ) )
 				descr.update( values )
