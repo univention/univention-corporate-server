@@ -1,3 +1,10 @@
+univention-management-console (4.0.54-1) unstable; urgency=low
+
+  * only root can run the STATISTICS command
+  * catch InvalidArgumentsError when parsing UMCP command; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 08 Sep 2011 09:24:51 +0200
+
 univention-management-console (4.0.53-1) unstable; urgency=low
 
   * modified behaviour of action restart and crestart, restart does

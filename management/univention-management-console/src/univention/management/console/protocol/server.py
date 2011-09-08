@@ -44,7 +44,7 @@ import notifier.signals as signals
 from OpenSSL import *
 
 # internal packages
-from .message import Message, Response, IncompleteMessageError, ParseError, UnknownCommandError
+from .message import Message, Response, IncompleteMessageError, ParseError, UnknownCommandError, InvalidArgumentsError
 from .session import State, Processor
 from .definitions import *
 
@@ -152,6 +152,12 @@ class MagicBucket( object ):
 			res = Response( msg )
 			res.status = BAD_REQUEST_NOT_FOUND
 			self._response( res, state )
+		except InvalidArgumentsError, e:
+			CORE.error( 'Invalid arguments to UMCP command: %s' % str( e ) )
+			state.requests[ msg.id ] = msg
+			res = Response( msg )
+			res.status = BAD_REQUEST_INVALID_ARGS
+			self._response( res, state )
 
 		return True
 
@@ -172,7 +178,7 @@ class MagicBucket( object ):
 			response = Response( msg )
 			try:
 				pwent = pwd.getpwnam( state.username )
-				if not pwent.pw_uid in ( 0, 2005 ):
+				if not pwent.pw_uid in ( 0, ):
 					raise KeyError
 				CORE.info( 'Sending statistic data to client' )
 				response.status = SUCCESS
