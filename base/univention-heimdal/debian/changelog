@@ -1,3 +1,9 @@
+univention-heimdal (5.0.7-1) unstable; urgency=low
+
+  * Re-added salt_krb5Keys (Bug #22600)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Sep 2011 11:42:34 +0200
+
 univention-heimdal (5.0.6-3) unstable; urgency=low
 
   * fix package dependencies (Bug #22600)
