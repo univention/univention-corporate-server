@@ -1,3 +1,10 @@
+univention-bind (6.0.9-1) unstable; urgency=low
+
+  * At the moment the bind and bind-proxy version must be equal
+    (Bug #2136)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Sep 2011 21:49:29 +0200
+
 univention-bind (6.0.8-1) unstable; urgency=low
 
   * add service entry (Bug #2136)
