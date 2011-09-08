@@ -524,22 +524,30 @@ class Instance( Base ):
 		thread.run()
 
 	def object_policies( self, request ):
-		object_type = request.options.get( 'objectType' )
-		if not object_type:
-			raise UMC_OptionMissing( 'The object type is missing' )
-		object_dn = request.options.get( 'objectDN' )
-		if not object_dn:
-			raise UMC_OptionMissing( 'The object LDAP DN is missing' )
-		policy_type = request.options.get( 'policyType' )
-		if not object_dn:
-			raise UMC_OptionMissing( 'The policy type is missing' )
+		"""Returns a virtual policy object containing the values that
+		the given object or container inherits"""
+		def _thread( request ):
+			object_type = request.options.get( 'objectType' )
+			if not object_type:
+				raise UMC_OptionMissing( 'The object type is missing' )
+			object_dn = request.options.get( 'objectDN' )
+			container = request.options.get( 'container' )
+			policy_type = request.options.get( 'policyType' )
+			if not policy_type:
+				raise UMC_OptionMissing( 'The policy type is missing' )
 
-		def _thread( object_type, object_dn, policy_type ):
-			module = UDM_Module( object_type )
-			if module.module is None:
-				raise UMC_OptionTypeError( 'The given object type is not valid' )
 
-			obj = module.get( object_dn )
+			if object_dn:
+				module = UDM_Module( object_type )
+				if module.module is None:
+					raise UMC_OptionTypeError( 'The given object type is not valid' )
+				obj = module.get( object_dn )
+			elif container:
+				module = get_module( None, container )
+				if module.module is None:
+					raise UMC_OptionTypeError( 'The given object type is not valid' )
+				obj = module.get( container )
+
 			if obj is None:
 				raise UMC_OptionTypeError( 'The object could not be found' )
 
@@ -558,7 +566,7 @@ class Instance( Base ):
 
 			return infos
 
-		thread = notifier.threads.Simple( 'ObjectPolicies', notifier.Callback( _thread, object_type, object_dn, policy_type ),
+		thread = notifier.threads.Simple( 'ObjectPolicies', notifier.Callback( _thread, request ),
 										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 

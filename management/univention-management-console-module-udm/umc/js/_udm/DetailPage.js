@@ -286,7 +286,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// #### Policies
 		// in case we have policies that apply to the current object, we need an extra
 		// sub tab that groups all policies together
-		if (this.ldapName && policies && policies.length) {
+		if (policies && policies.length) {
 			this._policiesTab = new umc.widgets.Page({
 				title: this._('[Policies]'),
 				headerText: this._('Properties inherited from policies'),
@@ -307,7 +307,8 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				commands.push(this.umcpCommand('udm/layout', params));
 				commands.push(this.umcpCommand('udm/object/policies', {
 					objectType: this.objectType,
-					objectDN: this.ldapName,
+					objectDN: this.ldapName || null,
+					container: this.newObjectOptions ? this.newObjectOptions.container : null,
 					policyType: ipolicy.objectType
 				}));
 			}, this);
