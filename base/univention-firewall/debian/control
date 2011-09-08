@@ -11,7 +11,7 @@ Architecture: all
 Depends: univention-config-registry, python2.6, iptables
 Description: UCS - firewall integration
  This package contains scripts to combine iptables with
- univention-baseconfig
+ univention-config-registry.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

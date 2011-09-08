@@ -1,3 +1,9 @@
+univention-firewall (4.0.1-2) unstable; urgency=low
+
+  * Wording fixes (Bug #9698)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 08 Sep 2011 19:26:31 +0200
+
 univention-firewall (4.0.1-1) unstable; urgency=low
 
   * Add missing install file (Bug #22433)
