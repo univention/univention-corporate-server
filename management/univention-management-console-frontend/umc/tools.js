@@ -529,6 +529,19 @@ dojo.mixin(umc.tools, {
 			});
 		}
 		return res;
+	},
+
+	inheritsFrom: function(/*Object*/ _o, /*String*/ c) {
+		// summary:
+		//		Returns true in case object _o inherits from class c.
+		var o = _o;
+		while (o) {
+			if (o.declaredClass == c) {
+				return true;
+			}
+			o = o.__proto__;
+		}
+		return undefined;
 	}
 });
 

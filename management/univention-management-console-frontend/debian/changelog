@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.24-1) unstable; urgency=low
+
+  * fixed refreshing problems with data grids in tabs (Bug #23195)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 08 Sep 2011 21:18:34 +0200
+
 univention-management-console-frontend (1.0.23-1) unstable; urgency=low
 
   * added onValuesInitialized event to umc.widgets.Form

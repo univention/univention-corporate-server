@@ -100,7 +100,7 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 			vars.push(this.store.getValue(items[iitem], 'id'));
 		}
 		return vars; // String[]
-	},
+	}
 
 	/*adaptHeight: function() {
 		this.inherited(arguments);

@@ -3,6 +3,7 @@
 dojo.provide("umc.widgets.TabContainer");
 
 dojo.require("dijit.layout.TabContainer");
+dojo.require("umc.tools");
 
 dojo.declare("umc.widgets.TabContainer", dijit.layout.TabContainer, {
 	// summary:
@@ -25,6 +26,26 @@ dojo.declare("umc.widgets.TabContainer", dijit.layout.TabContainer, {
 
 	showChild: function( child ) {
 		this._setVisibilityOfChild( child, true );
+	},
+
+	startup: function() {
+		this.inherited(arguments);
+
+		// FIXME: Workaround for refreshing problems with datagrids when they are rendered
+		//        on an inactive tab.
+
+		// iterate over all tabs
+		dojo.forEach(this.getChildren(), dojo.hitch(this, function(ipage) {
+			// find all widgets that inherit from dojox.grid._Grid on the tab
+			dojo.forEach(ipage.getDescendants(), dojo.hitch(this, function(iwidget) {
+				if (umc.tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
+					// hook to onShow event
+					this.connect(ipage, 'onShow', function() {
+						iwidget.startup();
+					});
+				}
+			}));
+		}));
 	}
 });
 

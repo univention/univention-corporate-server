@@ -146,7 +146,7 @@ dojo.declare("umc.widgets.Form", [
 			// only consider elements that load values dynamically
 			if ('onValuesLoaded' in iwidget && !iwidget._valuesLoaded) {
 				//console.log('iwidget:', iwidget.name);
-				++this._initializingElements
+				++this._initializingElements;
 				var handle = this.connect(iwidget, 'onValuesLoaded', dojo.hitch(this, function() {
 					//console.log('onValuesLoaded:', iwidget.name, iwidget.get('value'));
 					// disconnect from the signal
