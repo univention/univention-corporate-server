@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.72-1) unstable; urgency=low
+
+  * Added ip addresses to forward zones (Bug #23554)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Sep 2011 15:49:35 +0200
+
 univention-directory-manager-modules (7.0.71-1) unstable; urgency=low
 
   * extend UDM syntax classes based on ldapDn to support a list of UDM

@@ -170,6 +170,15 @@ property_descriptions={
 			required=0,
 			may_change=1
 		),
+	'a': univention.admin.property(
+			short_description=_('IP Address'),
+			long_description='',
+			syntax=univention.admin.syntax.ipAddress,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1
+		),
 }
 
 layout = [
@@ -185,6 +194,9 @@ layout = [
 		] ),
 	Tab( _( 'Name servers'), _('Additional name servers'), layout = [
 		'nameserver'
+		] ),
+	Tab(_('IP addresses'), _('IP addresses of the zone'), layout = [
+		'a'
 		] ),
 	Tab( _( 'MX records' ), _( 'Mail exchanger records' ), layout = [
 		'mx'
@@ -212,6 +224,7 @@ mapping.register('nameserver', 'nSRecord')
 mapping.register('zonettl', 'dNSTTL', None, univention.admin.mapping.ListToString)
 mapping.register('mx', 'mXRecord', mapMX, unmapMX)
 mapping.register('txt', 'tXTRecord', None, univention.admin.mapping.ListToString)
+mapping.register('a', 'aRecord')
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module

@@ -218,6 +218,10 @@ msgstr "IP-Adressen"
 msgid "IP addresses of the host"
 msgstr "IP-Adressen des Rechners"
 
+#: forward_zone.py:198
+msgid "IP addresses of the zone"
+msgstr "IP-Adressen der Zone"
+
 #: host_record.py:107
 msgid "Mail"
 msgstr "Mail"
