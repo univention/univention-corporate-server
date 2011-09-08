@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
@@ -40,6 +40,8 @@ fi
 touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-ldap-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+. /usr/share/univention-lib/all.sh
 
 eval "$(univention-config-registry shell)"
 
@@ -237,6 +239,8 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		--append packageList=valgrind  \
 		--append packageList=dpatch
 fi
+
+ucs_addServiceToLocalhost 'LDAP' "$@"
 
 test -n "`grep "univention-ldap-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-server v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 

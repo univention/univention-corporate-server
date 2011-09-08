@@ -1,3 +1,9 @@
+univention-samba (6.0.5-1) unstable; urgency=low
+
+  * add service entry (Bug #2136)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 08 Sep 2011 20:51:52 +0200
+
 univention-samba (6.0.4-2) unstable; urgency=low
 
   * avoid checking bind/bindpw, simply use machine.secret (Bug #23178)

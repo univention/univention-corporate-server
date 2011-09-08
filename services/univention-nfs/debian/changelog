@@ -1,3 +1,9 @@
+univention-nfs (4.0.3-1) unstable; urgency=low
+
+  * add service entry (Bug #2136)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 08 Sep 2011 20:52:26 +0200
+
 univention-nfs (4.0.2-1) unstable; urgency=low
 
   * ldapsearch with machine account bind Bug #17519)

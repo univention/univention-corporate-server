@@ -1,3 +1,9 @@
+univention-dhcp (6.0.4-1) unstable; urgency=low
+
+  * add service entry (Bug #2136)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 08 Sep 2011 20:53:57 +0200
+
 univention-dhcp (6.0.3-1) unstable; urgency=low
 
   * add univention-join dependency (Bug #23004)

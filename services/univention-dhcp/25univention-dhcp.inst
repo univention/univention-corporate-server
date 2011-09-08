@@ -30,10 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
+
+. /usr/share/univention-lib/all.sh
 
 eval "$(univention-config-registry shell)"
 
@@ -82,6 +84,8 @@ if [ -n "$interfaces_eth3_network" -a -n "$interfaces_eth3_netmask" ]; then
 fi
 
 ln -s /etc/runit/univention-dhcp /etc/runit/univention/univention-dhcp  >/dev/null 2>&1
+
+ucs_addServiceToLocalhost 'DHCP' "$@"
 
 joinscript_save_current_version
 

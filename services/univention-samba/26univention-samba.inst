@@ -30,10 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=5
+VERSION=6
 
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
+
+. /usr/share/univention-lib/all.sh
 
 rm -f /var/cache/samba/dont_start >/dev/null 2>&1
 
@@ -164,6 +166,7 @@ if [ $winbind_was_running -eq 1 ]; then
 	/etc/init.d/winbind start >/dev/null 2>&1
 fi
 
+ucs_addServiceToLocalhost 'Samba 3' "$@"
 
 # sync netlogon share
 /usr/share/univention-samba/slave-sync >>/var/log/univention/samba-sync.log

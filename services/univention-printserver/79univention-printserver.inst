@@ -30,9 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=6
+VERSION=7
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
+
+. /usr/share/univention-lib/all.sh
 
 eval "$(univention-config-registry shell)"
 
@@ -3906,6 +3908,8 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 		fi
 	fi
 fi
+
+ucs_addServiceToLocalhost 'Print' "$@"
 
 joinscript_save_current_version
 

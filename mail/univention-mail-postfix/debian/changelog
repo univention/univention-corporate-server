@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.8-1) unstable; urgency=low
+
+  * change service entry name (Bug #2136)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 08 Sep 2011 20:49:15 +0200
+
 univention-mail-postfix (6.0.7-3) unstable; urgency=low
 
   * added univention-sasl as dependency (Bug #23565)

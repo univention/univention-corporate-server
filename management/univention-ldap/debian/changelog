@@ -1,3 +1,9 @@
+univention-ldap (8.0.32-1) unstable; urgency=low
+
+  * add service entry (Bug #2136)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 08 Sep 2011 20:54:09 +0200
+
 univention-ldap (8.0.31-2) unstable; urgency=low
 
   * updated list of default LDAP indices (Bug #23483)

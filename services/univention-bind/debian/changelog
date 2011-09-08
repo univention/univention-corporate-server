@@ -1,3 +1,9 @@
+univention-bind (6.0.8-1) unstable; urgency=low
+
+  * add service entry (Bug #2136)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 08 Sep 2011 20:53:38 +0200
+
 univention-bind (6.0.7-1) unstable; urgency=low
 
   * provide default for ldap/server/port in bind listener (Bug #23360)

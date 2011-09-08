@@ -1,3 +1,9 @@
+univention-printserver (5.0.2-1) unstable; urgency=low
+
+  * add service entry (Bug #2136)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 08 Sep 2011 20:49:54 +0200
+
 univention-printserver (5.0.1-1) unstable; urgency=low
 
   * use machine account for ldapsearch (Bug #17519)

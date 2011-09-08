@@ -30,10 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
+
+. /usr/share/univention-lib/all.sh
 
 eval "$(univention-config-registry shell)"
 
@@ -49,6 +51,8 @@ if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
 	univention-directory-manager shares/share create "$@" --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --set name=homes --set path=/home --set sambaName=homes --set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1
 	univention-config-registry unset create/home/share
 fi
+
+ucs_addServiceToLocalhost 'NFS' "$@"
 
 joinscript_save_current_version
 
