@@ -56,6 +56,31 @@ remove_ucr_template () {
 	fi
 
 	if [ -e /etc/univention/templates/files/"$1" ] ; then
-	    mv /etc/univention/templates/files/"$1" /etc/univention/templates/removed/`basename "$1"`.template
+	    mv /etc/univention/templates/files/"$1" "/etc/univention/templates/removed/$(basename "$1").template.$(date +%Y%m%d_%H%M%S_%N)"
+	fi
+}
+
+#
+# removes a UCR info file and moves it to /etc/univention/templates/removed
+#
+# remove_ucr_info_file <filename-of-info-file>
+# e.g. remove_ucr_info_file univention-obsolete-package.info
+#
+remove_ucr_info_file () {
+
+	# /etc/univention/templates/removed/ is created through univention-config-registry, but depending on update
+	# order it may not yet exist. This can be removed after UCS 3.0
+	if [ ! -d /etc/univention/templates/removed/ ] ; then
+	    mkdir -p /etc/univention/templates/removed/
+	fi
+
+	if [ -e "$1" ] ; then
+	    mv "$1" /etc/univention/templates/removed/
+	fi
+
+	if [ -e /etc/univention/templates/info/"$1" ] ; then
+	    # unregister info file before moving
+		ucr unregister "$(basename "$1" .info)"
+	    mv /etc/univention/templates/info/"$1" "/etc/univention/templates/removed/$(basename "$1").$(date +%Y%m%d_%H%M%S_%N)"
 	fi
 }
