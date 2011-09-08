@@ -46,6 +46,9 @@ import mtab
 
 _ = umc.Translation('univention-management-console-modules-quota').translate
 
+# TODO exception handling
+# TODO comments
+
 class Commands(object):
 	def quota_partition_show(self, request):
 		fs = fstab.File()

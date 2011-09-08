@@ -6,7 +6,7 @@
 	<categories>
 		<category name="system"/>
 	</categories>
-	<command name="quota/partitions/query" function="quota_list">
+	<command name="quota/query" function="quota_list">
 		<return syntax="Dictionary"/> <!-- TODO -->
 	</command>
 	<command name="quota/partitions/show" function="quota_partition_show">
