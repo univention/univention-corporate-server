@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.7-3) unstable; urgency=low
+
+  * added univention-sasl as dependency (Bug #23565)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 08 Sep 2011 20:17:38 +0200
+
 univention-mail-postfix (6.0.7-2) unstable; urgency=low
 
   * remove all UCR remains from univention-mail-postfix-forward and
