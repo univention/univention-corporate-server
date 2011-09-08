@@ -175,13 +175,10 @@ if [ "$domaincontroller" = 'true' ]; then
 	# Register the local ips for the forward zone, skip with 'ucr set samba4/dns/domain/register=false'
 	is_ucr_true samba4/dns/domain/register
 	if [ $? != 1 ]; then
-		zone="$(udm dns/forward_zone list "$@" --filter zoneName="$domainname" | sed -ne 's|^DN: ||p')"
-		if [ -n "$zone" ]; then
-			IPs=$(LC_ALL=C host $hostname.$domainname | LC_ALL=C cut -d' ' -f4)
-			for ip in $IPs; do
-				udm dns/forward_zone modify "$@" --ignore_exists --dn "$zone" --append a="$ip"
-			done
-		fi
+		IPs=$(univention-ldapsearch "(&(relativeDomainname=$hostname)(zoneName=$domainname))" aRecord | sed -ne 's|^aRecord: ||p')
+		for ip in $IPs; do
+			udm dns/forward_zone modify "$@" --ignore_exists --dn "$zone" --append a="$ip"
+		done
 	fi
 
 	## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use

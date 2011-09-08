@@ -1,3 +1,10 @@
+univention-samba4 (1.0.32-1) experimental; urgency=low
+
+  * Search via univention-ldapsearch because the nameserver is not ready
+    and host  will fail (Bug #23481)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Sep 2011 19:22:26 +0200
+
 univention-samba4 (1.0.31-1) experimental; urgency=low
 
   * Register local ips to the forward zone (Bug #23481)
