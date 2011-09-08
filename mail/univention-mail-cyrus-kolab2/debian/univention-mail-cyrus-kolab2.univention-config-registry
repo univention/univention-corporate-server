@@ -1,0 +1,126 @@
+Type: file
+File: etc/imapd/imapd.conf
+Variables: mail/cyrus/mailbox/rename
+Variables: mail/cyrus/murder/backend/id
+Variables: mail/cyrus/admins
+Variables: mail/cyrus/imap/admins
+Variables: mail/cyrus/imap/quotawarnpercent
+Variables: mail/cyrus/imap/quotawarnkb
+Variables: mail/cyrus/loginrealms
+Variables: mail/cyrus/idlemethod
+Variables: mail/hosteddomains
+Variables: domainname
+Variables: mail/cyrus/imap/lookup_groups
+Variables: mail/cyrus/murder/master
+Variables: hostname
+Variables: mail/cyrus/murder/backends
+Variables: mail/cyrus/murder/frontends
+Variables: ldap/base
+Variables: ldap/server
+Variables: ldap/port
+User: cyrus
+Group: sasl
+Mode: 0640
+
+Type: file
+File: etc/imapd/pam_ldap_imap.conf
+Variables: hostname
+Variables: domainname
+Variables: ldap/base
+Variables: ldap/server/name
+
+Type: file
+File: etc/pam.d/imap
+Variables: ldap/base
+Variables: ldap/server/name
+Variables: mail/cyrus/imap/quotawarnpercent
+Variables: mail/cyrus/imap/quotawarnkb
+Variables: mail/cyrus/imap/quota
+
+Type: file
+File: etc/pam.d/pop
+Variables: ldap/base
+Variables: ldap/server/name
+Variables: mail/cyrus/imap/quotawarnpercent
+Variables: mail/cyrus/imap/quotawarnkb
+Variables: mail/cyrus/imap/quota
+
+Type: file
+File: etc/pam.d/sieve
+Variables: ldap/base
+Variables: ldap/server/name
+
+Type: file
+File: etc/default/saslauthd
+
+Type: multifile
+Multifile: etc/imapd/cyrus.conf
+Variables: hostname
+Variables: domainname
+Variables: mail/cyrus/murder/master
+Variables: mail/cyrus/murder/backends
+Variables: mail/cyrus/murder/backend/id
+Variables: mail/cyrus/murder/backend/interface
+Variables: mail/cyrus/murder/frontends
+Variables: mail/cyrus/murder/frontend/id
+Variables: mail/cyrus/murder/frontend/interface
+Variables: mail/cyrus/imap
+Variables: mail/cyrus/imap/maxchilds
+Variables: mail/cyrus/pop
+Variables: mail/cyrus/pop/maxchilds
+Variables: mail/cyrus/sieve/listen_host
+Variables: mail/cyrus/sieve/maxchilds
+
+Type: subfile
+Multifile: etc/imapd/cyrus.conf
+Subfile: etc/imapd/cyrus.conf.d/10_START_spool
+Variables: hostname
+Variables: domainname
+Variables: mail/cyrus/murder/master
+Variables: mail/cyrus/murder/backends
+Variables: mail/cyrus/murder/backend/id
+
+Type: subfile
+Multifile: etc/imapd/cyrus.conf
+Subfile: etc/imapd/cyrus.conf.d/20_SERVICES_spool
+Variables: hostname
+Variables: domainname
+Variables: mail/cyrus/murder/master
+Variables: mail/cyrus/murder/backends
+Variables: mail/cyrus/murder/backend/id
+Variables: mail/cyrus/murder/backend/interface
+Variables: mail/cyrus/murder/frontends
+Variables: mail/cyrus/murder/frontend/id
+Variables: mail/cyrus/imap
+Variables: mail/cyrus/imap/maxchilds
+Variables: mail/cyrus/pop
+Variables: mail/cyrus/pop/maxchilds
+Variables: mail/cyrus/sieve/listen_host
+Variables: mail/cyrus/sieve/maxchilds
+
+Type: subfile
+Multifile: etc/imapd/cyrus.conf
+Subfile: etc/imapd/cyrus.conf.d/30_EVENT_spool
+Variables: hostname
+Variables: domainname
+Variables: mail/cyrus/murder/master
+Variables: mail/cyrus/murder/backends
+Variables: mail/cyrus/murder/backend/id
+
+Type: subfile
+Multifile: etc/imapd/cyrus.conf
+Subfile: etc/imapd/cyrus.conf.d/90_FINISH
+
+Type: file
+File: etc/default/cyrus2.2
+
+Type: file
+File: etc/init.d/cyrus2.2
+
+Type: file
+File: etc/cron.d/univention-cyrus-squatter
+Variables: mail/cyrus/squatter/cron
+
+Type: file
+File: etc/cron.d/univention-cyrus-backup-metadata
+Variables: mail/cyrus/backup-metadata/cron

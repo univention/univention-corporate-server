@@ -1,0 +1,138 @@
+[mail/cyrus/admins]
+Description[de]=Liste von Benutzern mit Administratorrechten
+Description[en]=List of users with administrative rigths
+Type=str
+Categories=service-mail
+
+[mail/cyrus/imap/admins]
+Description[de]=Liste von Benutzern mit Administratorrechten im IMAP
+Description[en]=List of users with administrative rigths in IMAP
+Type=str
+Categories=service-mail
+
+[mail/cyrus/loginrealms]
+Description[de]=Liste alternativer Domänen aus denen sich Benutzer anmelden dürfen
+Description[en]=List of remote realms whose users may authenticate
+Type=str
+Categories=service-mail
+
+[mail/cyrus/imap]
+Description[de]=Aktiviert/Deaktiviert den IMAP-Daemon
+Description[en]=Enable/Disable the IMAP-Daemon
+Type=str
+Categories=service-mail
+
+[mail/cyrus/imap/lookup_groups]
+Description[de]=Gruppenauflösung wenn auth_unix verwendet wird
+Description[en]=Look up groups when using auth_unix
+Type=str
+Categories=service-mail,system-network
+
+[mail/cyrus/imap/quota]
+Description[de]=Aktiviert/Deaktiert Mailquota
+Description[en]=Enable/Disable mailquota
+Type=str
+Categories=service-mail,system-network
+
+[mail/cyrus/imap/quotawarnpercent]
+Description[de]=Prozent des Quotaverbrauchs ab dem der Server Warnmeldungen generiert
+Description[en]=The percent of quota utilization over which the server generates warnings
+Type=str
+Categories=service-mail
+
+[mail/cyrus/imap/quotawarnkb]
+Description[de]=Maximaler freier Speicher (in kB) ab dem Warnmeldungen generiert werden
+Description[en]=The maximum amount of free space (in kB) in which to give a quota warning
+Type=str
+Categories=service-mail
+
+[mail/cyrus/imap/quotainterval]
+Description[de]=Setzt das Zeitintervall, in welchem auf Mailquotaeinstellungen geprüft wird (Minuten)
+Description[en]=Sets time interval for checking mailquota settings (minutes)
+Type=str
+Categories=service-mail
+
+
+[mail/cyrus/idlemethod]
+Description[de]=Zu verwendendes Backend für das IDLE Kommando ("no", "poll", "idled")
+Description[en]=The idle backend to use for IDLE command ("no", "poll", "idled")
+Type=str
+Categories=service-mail
+
+[mail/cyrus/pop]
+Description[de]=Aktiviert/Deaktiviert den POP3-Daemon
+Description[en]=Enable/Disable the POP3-Daemon
+Type=str
+Categories=service-mail
+
+[mail/cyrus/imap/maxchilds]
+Description[de]=Maximale Anzahl von IMAPd Instanzen
+Description[en]=Maximum amount of IMAPd instances
+Type=str
+Categories=service-mail
+
+[mail/cyrus/pop/maxchilds]
+Description[de]=Maximale Anzahl von POP3d Instanzen
+Description[en]=Maximum amount of POP3d instances
+Type=str
+Categories=service-mail
+
+[mail/cyrus/sieve/maxchilds]
+Description[de]=Maximale Anzahl von Sieve Instanzen
+Description[en]=Maximum amount of sieve instances
+Type=str
+Categories=service-mail
+
+[mail/cyrus/sieve/listen_host]
+Description[de]=Von Sieve zu belegender UNIX oder Internetsocket
+Description[en]=UNIX or internet socket for sieve to listen on
+Type=str
+Categories=service-mail
+
+[mail/cyrus/autostart]
+Description[de]=Definiert ob Cyrus beim Booten des Rechners gestartet wird
+Description[en]=Defines if cyrus should be started when booting the computer
+Type=str
+Categories=service-mail
+
+[mail/cyrus/squatter/cron]
+Description[de]=Definiert den Intervall, in der Indexservice squatter Mails indiziert
+Description[en]=Defines the interval to have the indexservice squatter process mails
+Type=str
+Categories=service-mail
+
+[mail/cyrus/backup-metadata/cron]
+Description[de]=Definiert das Intervall, in der die Mailbox und Annotations Datenbanken gesichert werden
+Description[en]=Defines the interval to backup the mailbox and annotations database files
+Type=str
+Categories=service-mail
+
+[mail/cyrus/mailbox/rename]
+Description[de]=Definiert, ob eine Cyrus Mailbox umbenannt werden soll, wenn eine primäre Mailadresse geändert wurde
+Description[en]=Defines if a cyrus mailbox should be renamed, if a primary mailaddress was modified
+Type=str
+Categories=service-mail
+
+[mail/cyrus/mailbox/delete]
+Description[de]=Definiert, ob eine Cyrus Mailbox gelöscht werden soll, wenn eine primäre Mailadresse entfernt oder ein Benutzerobjekt gelöscht wurde
+Description[en]=Defines if a cyrus mailbox should be deleted, if a primary mailaddress was removed or a user object has been deleted
+Type=str
+Categories=service-mail
+
+[mail/cyrus/folder/spam]
+Description[de]=Name des IMAP-Ordners für Spam-Mails, der beim Anlegen eines Mail-Kontos automatisch erzeugt wird (default: Spam). Achtung: diese Variable sollte nicht geändert werden, nachdem bereits Mail-Konten angelegt wurden.
+Description[en]=Name of IMAP folder for spam mails that is created automatically when creating a new mail account (default: Spam). Attention: this variable should not be changed after mail accounts have been created.
+Type=str
+Categories=service-mail
+
+[mail/cyrus/folder/ham]
+Description[de]=Name des IMAP-Ordners für Ham-Mails, der beim Anlegen eines Mail-Kontos automatisch erzeugt wird (default: Ham).
+Description[en]=Name of IMAP folder for ham mails that is created automatically when creating a new mail account (default: Ham).
+Type=str
+Categories=service-mail
+
+[mail/cyrus/folder/predefined_folders]
+Description[de]=Eine semikolon-separierte Liste mit IMAP-Ordner-Namen, die beim Anlegen eines Mail-Accounts automatisch erzeugt werden (default: none).
+Description[en]=A semicolon-separated list of IMAP folder names that are created automatically when creating a new mail account (default: none).
+Type=str
+Categories=service-mail
