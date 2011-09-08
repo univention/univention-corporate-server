@@ -29,7 +29,7 @@ Description: UCS: nagios server support
 
 Package: univention-nagios-client
 Architecture: any
-Depends: univention-nagios-common (= ${binary:Version}), nagios-plugins, nagios-nrpe-server, sed, grep, coreutils, cron, raidutils, univention-config-registry, python-univention-directory-manager, univention-directory-listener, ${python:Depends}, ${misc:Depends}, shell-univention-lib
+Depends: univention-nagios-common (= ${binary:Version}), nagios-plugins, nagios-nrpe-server, sed, grep, coreutils, cron, raidutils, univention-config-registry, python-univention-directory-manager, univention-directory-listener, ${python:Depends}, ${misc:Depends}, shell-univention-lib, dnsutils
 XB-Python-Version: ${python:Versions}
 Conflicts: nagios2 (<< 3.0)
 Breaks: nagios2 (<< 3.0)
