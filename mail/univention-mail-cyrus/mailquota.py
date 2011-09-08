@@ -1,8 +1,8 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Mail Cyrus
-#  admin module: policy for mail quota configuration
+# Univention Mail Cyrus Kolab2
+#  admin module: policies for mail quota configuration
 #
 # Copyright 2004-2010 Univention GmbH
 #

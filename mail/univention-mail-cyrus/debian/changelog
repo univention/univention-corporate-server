@@ -1,384 +1,668 @@
-univention-mail-cyrus (3.0.6-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (3.0.25-1) unstable; urgency=low
 
-  * only create symlink in usr/sbin/univention-cyrus-mkdir if source files exist;
-    changes applied from Bug #21271 (Bug #21314)
+  * fixed renaming of folder subscriptions in
+    univention-cyrus-mailbox-rename (Bug #21923)
 
- -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Jan 2011 10:40:05 +0100
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 21 Mar 2011 15:39:33 +0100
 
-univention-mail-cyrus (3.0.5-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (3.0.24-1) unstable; urgency=low
 
-  * fixed postinst, restart cyrus server (Bug #18814) 
+  * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
 
- -- Felix Botner <botner@univention.de>  Tue, 17 Aug 2010 15:08:40 +0200
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 17:54:33 +0100
 
-univention-mail-cyrus (3.0.4-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (3.0.23-1) unstable; urgency=low
 
-  * Use univention-config-registry instead of univention-baseconfig in
-    postinst and set mail/cyrus/imap/quotainterval by default during
-    installation (Bug #15220)
+  * split CONF (imapd.conf and cyrus.conf) into CONF (imapd.conf)
+    and MASTERCONF (cyrus.conf) in cyrus configuration Bug #21067
 
- -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 Aug 2010 20:48:35 +0200
+ -- Felix Botner <botner@univention.de>  Mon, 03 Jan 2011 11:59:25 +0100
 
-univention-mail-cyrus (3.0.3-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (3.0.22-1) unstable; urgency=low
 
-  *  fixed name of quotainterval variable (Bug #15220)
+  * fixed usage of murder hostname Bug #19767 
 
- -- Tim Petersen <petersen@univention.de>  Thu, 12 Aug 2010 08:25:59 +0200
+ -- Felix Botner <botner@univention.de>  Thu, 02 Dec 2010 16:58:06 +0100
 
-univention-mail-cyrus (3.0.2-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (3.0.21-3) unstable; urgency=low
 
-  * added check interval for mailquota checks (Bug #15220) 
+  * fixed ucr var description for mail/cyrus/folder/predefined_folders,
+    mail/cyrus/folder/ham and mail/cyrus/folder/spam Bug # 18767
 
- -- Tim Petersen <petersen@univention.de>  Tue, 28 Jul 2010 11:10:59 +0200
+ -- Felix Botner <botner@univention.de>  Tue, 30 Nov 2010 15:32:18 +0100
 
-univention-mail-cyrus (3.0.1-1.1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (3.0.20-2) unstable; urgency=low
 
-  * fixed postinst, restart cyrus server (Bug #18814) 
+  * fixed univention-cyrus-mkdir Bug #19767
 
- -- Felix Botner <botner@univention.de>  Tue, 20 Jul 2010 16:14:59 +0200
+ -- Felix Botner <botner@univention.de>  Tue, 30 Nov 2010 12:33:49 +0100
 
-univention-mail-cyrus (3.0.1-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (3.0.19-1) unstable; urgency=low
 
-  * add UCR variable mail/cyrus/userlogfiles (Bug #18666)
+  * use mail/hosteddomains OR mail/cyrus/loginrealms in imapd.conf
+    template (two lines starting with "loginrealms:" cause an error)
+    Bug #18415
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 20 Jul 2010 14:38:04 +0200
+ -- Felix Botner <botner@univention.de>  Mon, 15 Nov 2010 11:48:25 +0100
 
-univention-mail-cyrus (3.0.0-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (3.0.18-1) unstable; urgency=low
+
+  * fixed univention-cyrus-mkdir Bug #19767 
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Nov 2010 11:32:57 +0100
+
+univention-mail-cyrus-kolab2 (3.0.17-2) unstable; urgency=low
+
+  * removed mail/cyrus/folder/(sent|drafts|trash) Bug #18767
+
+ -- Felix Botner <botner@univention.de>  Tue, 09 Nov 2010 17:57:47 +0100
+
+univention-mail-cyrus-kolab2 (3.0.16-1) unstable; urgency=low
+
+  * made cyrus standard folder configurable via mail/cyrus/folder/* ucr vars Bug #18767
+
+ -- Felix Botner <botner@univention.de>  Tue, 09 Nov 2010 08:55:59 +0100
+
+univention-mail-cyrus-kolab2 (3.0.15-2) unstable; urgency=low
+
+  * fixed univention-cyrus-mkdir Bug #19767 
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Oct 2010 16:45:25 +0200
+
+univention-mail-cyrus-kolab2 (3.0.15-1) unstable; urgency=low
+
+  * use python imaplib in univention-cyrus-mkdir instead of pexpect and
+    cyradm Bug #19767
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Oct 2010 11:44:45 +0200
+
+univention-mail-cyrus-kolab2 (3.0.14-2) unstable; urgency=low
+
+  * gzip cyrus mailbox backup files Bug #20120 
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Sep 2010 12:31:48 +0200
+
+univention-mail-cyrus-kolab2 (3.0.14-1) unstable; urgency=low
+
+  * added cron job for backing up the cyrus mailbox Bug #20120
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Sep 2010 11:26:48 +0200
+
+univention-mail-cyrus-kolab2 (3.0.13-1) unstable; urgency=low
+
+  * set mail/antispam/globalfolder in postinst
+  * create sieve script for user with mail address from
+    mail/antispam/globalfolder, but never use global
+    spam folder for this user (Bug #19592)
+
+ -- Felix Botner <botner@univention.de>  Tue, 28 Sep 2010 17:51:25 +0200
+
+univention-mail-cyrus-kolab2 (3.0.12-1) unstable; urgency=low
+
+  * check kolabHomeServer in cyrus-sieve.py (Bug #19785) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 07 Sep 2010 13:17:44 +0200
+
+univention-mail-cyrus-kolab2 (3.0.11-1) unstable; urgency=low
+
+  * Don't overwrite mail/cyrus/imap/quotainterval during updates (Bug
+    #15520)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 Aug 2010 20:52:25 +0200
+
+univention-mail-cyrus-kolab2 (3.0.10-1) unstable; urgency=low
+
+  * fixed name of quotainterval variable (Bug #15220)
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 12 Aug 2010 08:16:29 +0200
+
+univention-mail-cyrus-kolab2 (3.0.9-1) unstable; urgency=low
+
+  * added possibility to set quota off (Bug #15220)
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 19 Jul 2010 08:50:29 +0200
+
+univention-mail-cyrus-kolab2 (3.0.8-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 13:07:29 +0200
+
+univention-mail-cyrus-kolab2 (3.0.7-1) unstable; urgency=low
+
+  * fix cyrus-sieve.py to not do create_cyrus_mailbox()
+    if mailbox renaming is enabled (Bug #17348)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 21 Jun 2010 13:33:56 +0200
+
+univention-mail-cyrus-kolab2 (3.0.6-2) unstable; urgency=low
+
+  * fixed typo (Bug #17315)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 14 May 2010 13:51:00 +0200
+
+univention-mail-cyrus-kolab2 (3.0.5-1) unstable; urgency=low
+
+  * fixed renaming (Bug #17315)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 14 May 2010 12:32:26 +0200
+
+univention-mail-cyrus-kolab2 (3.0.4-1) unstable; urgency=low
+
+  * consider subscription files as well on rename (Bug #17315)
+  * rewrite subscription files to new mailPrimaryAddress on rename
+
+ -- Arvid Requate <requate@univention.de>  Fri, 15 Jan 2010 10:17:58 +0100
+
+univention-mail-cyrus-kolab2 (3.0.3-1) unstable; urgency=low
+
+  * unregistered mail/cyrus/mailbox/delete from imapd.conf
+  * modified subprocess.calls to work without shell (Bug #17315)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 14 Jan 2010 14:09:27 +0100
+
+univention-mail-cyrus-kolab2 (3.0.2-1) unstable; urgency=low
+
+  * add code for mail/cyrus/mailbox/rename and mail/cyrus/mailbox/delete
+  * new scripts univention-cyrus-mailbox-rename and -delete (Bug #17315)
+  * adjusted cyrus.py listener module to scrip mailbox creation if rename
+  * new listener module cyrus-mailboxrename.py (Bug #17315)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 13 Jan 2010 17:37:55 +0100
+
+univention-mail-cyrus-kolab2 (3.0.1-1) unstable; urgency=low
+
   * bump version for UCS 2.4
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 15:33:57 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 18 Jun 2010 13:07:21 +0200
 
-univention-mail-cyrus (2.0.9-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (2.0.10-1) unstable; urgency=low
 
-  * replaced every pam_heimdal.so with pam_krb5.so, (Bug #17901)
+  * fixed set-quota skript, Bug #15220
 
- -- Tim Petersen <petersen@univention.de>  Thu, 18 Mar 2010 11:18:07 +0100
+ -- Tim Petersen <petersen@univention.de>  Mon, 31 May 2010 15:36:01 +0100
 
-univention-mail-cyrus (2.0.8-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (2.0.9-1) unstable; urgency=low
 
-  * generate new /etc/cyrus.secret only for this update and if $1 == configure, (Bug #17859)
+  * added time intervall for mailquota checks, Bug #15220
 
- -- Tim Petersen <petersen@univention.de>  Thu, 18 Mar 2010 08:20:07 +0100
+ -- Tim Petersen <petersen@univention.de>  Mon, 31 May 2010 14:17:01 +0100
 
-univention-mail-cyrus (2.0.7-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (2.0.8-1) unstable; urgency=low
 
-  * added dependency on whois, generate new /etc/cyrus.secret only for this update, (Bug #17859)
+  * be sure the sieve script for the user will be written, even if the
+    user is a standard mail user on a kolab system. Bug #17811
 
- -- Tim Petersen <petersen@univention.de>  Thu, 11 Mar 2010 15:40:07 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 08 Mar 2010 15:00:01 +0100
 
-univention-mail-cyrus (2.0.6-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (2.0.7-2) unstable; urgency=low
 
-  * add auth_ldap_group configuration (Bug 1667) to resolve group ACLs (Bug #17216)
+  * fix traceback in cyrus-sieve Listener for unset mail/antispam/globalfolder (Bug #16770)
 
- -- Arvid Requate <requate@univention.de>  Mon, 25 Jan 2010 18:14:07 +0100
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Jan 2010 17:58:09 +0100
 
-univention-mail-cyrus (2.0.5-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (2.0.7-1) unstable; urgency=low
 
-  * added UCR Header, Bug #17816
-  
- -- Tim Petersen <petersen@univention.de>  Wed, 10 Mar 2010 10:57:39 +0200
+  * set idlemethod in imapd.conf via UCR variable mail/cyrus/idlemethod (Bug #14828)
 
-univention-mail-cyrus (2.0.4-1) unstable; urgency=low
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 30 Nov 2009 10:11:16 +0100
+
+univention-mail-cyrus-kolab2 (2.0.6-3) unstable; urgency=low
+
+  * fixed cyrus services template (Bug: #16015) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Oct 2009 11:05:41 +0200
+
+univention-mail-cyrus-kolab2 (2.0.6-2) unstable; urgency=low
+
+  * added @%@BCWARNING=# @%@ to config template (Bug: #15116) 
+
+ -- Felix Botner <botner@univention.de>  Fri,  9 Oct 2009 16:34:03 +0200
+
+univention-mail-cyrus-kolab2 (2.0.6-1) unstable; urgency=low
 
   * fixed wrong behaviour of univention-cyrus-set-quota if user's mail
     address contains dots (Bug 14701)
-  
- -- Sönke Schwardt <schwardt@univention.de>  Wed, 30 Sep 2009 16:14:39 +0200
 
-univention-mail-cyrus (2.0.3-2) unstable; urgency=low
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 30 Sep 2009 16:09:38 +0200
 
-  * added @%@BCWARNING=# @%@ to config template (Bug: #15116)
+univention-mail-cyrus-kolab2 (2.0.5-1) unstable; urgency=low
 
- -- Felix Botner <botner@univention.de>  Mon, 28 Sep 2009 15:38:11 +0200
+  * enabled idled in cyrus.conf (IMAP IDLE) (Bug: #14828)
 
-univention-mail-cyrus (2.0.3-1) unstable; urgency=low
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 23 Sep 2009 12:05:56 +0200
+
+univention-mail-cyrus-kolab2 (2.0.4-1) unstable; urgency=low
 
   * update the saslauthd configuration for the new upstream package. Bug
     #15461
 
- -- Stefan Gohmann <gohmann@univention.de>  Thu,  3 Sep 2009 10:26:42 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  3 Sep 2009 10:26:15 +0200
 
-univention-mail-cyrus (2.0.2-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (2.0.3-1) unstable; urgency=low
+
+  * slight adaption of usage-output of univention-cyrus-mkdir (Bug #15313)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Tue, 18 Aug 2009 09:51:22 +0200
+
+univention-mail-cyrus-kolab2 (2.0.2-1) unstable; urgency=low
 
   * have every user automatically get a Ham-folder (Bug #15313)
-  * fix wrong call to init-script in postinst
 
- -- Daniel Hofmann <dhofmann@univention.de>  Tue, 18 Aug 2009 09:50:01 +0200
+ -- Daniel Hofmann <dhofmann@univention.de>  Tue, 18 Aug 2009 09:12:21 +0200
 
-univention-mail-cyrus (2.0.1-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (2.0.1-1) unstable; urgency=low
 
   * provide new UCR category service-mail (Bug #13505)
 
- -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 07:55:38 +0200
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 08:13:54 +0200
 
-univention-mail-cyrus (2.0.0-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (2.0.0-1) unstable; urgency=low
 
   * Make init script LSB-compliant (Bug #14421)
 
- -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue,  2 Jun 2009 14:26:53 +0200
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  2 Jun 2009 14:34:06 +0200
 
-univention-mail-cyrus (1.0.3-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (1.0.14-1) unstable; urgency=low
 
-  * new default (400) for imap/pop/sieve maxchild value (Bug: #13665)
+  * new default (400) for imap/pop/sieve maxchild value (Bug: #13665) 
 
- -- Felix Botner <botner@univention.de>  Mon,  4 May 2009 11:16:23 +0200
+ -- Felix Botner <botner@univention.de>  Mon,  4 May 2009 11:26:29 +0200
 
-univention-mail-cyrus (1.0.2-4) unstable; urgency=low
+univention-mail-cyrus-kolab2 (1.0.13-7) unstable; urgency=low
 
-  * new autostart test in init script 
+  * fix missing parenthesis in is_cyrus_murder_backend (Bug #14148)
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 28 Oct 2008 14:30:52 +0100
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Apr 2009 16:03:15 +0200
 
-univention-mail-cyrus (1.0.2-3) unstable; urgency=low
+univention-mail-cyrus-kolab2 (1.0.13-6) unstable; urgency=low
+
+  * fix is_cyrus_murder_backend return value (Bug #14148)
+  * fix missing arguments in move_cyrus_murder_mailbox call
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Apr 2009 14:07:42 +0200
+
+univention-mail-cyrus-kolab2 (1.0.13-5) unstable; urgency=low
+
+  * fix FQDN canonicalization rule for backend/hostname (Bug #14178)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 15 Apr 2009 14:01:35 +0200
+
+univention-mail-cyrus-kolab2 (1.0.13-4) unstable; urgency=low
+
+  * use subprocess.call instead of os.popen for movemailbox (Bug #14181)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 15 Apr 2009 13:07:14 +0200
+
+univention-mail-cyrus-kolab2 (1.0.13-3) unstable; urgency=low
+
+  * supply FQDN to unviention-cyrus-murder-movemailbox, important for setups
+    with DNS subdomain structure (Bug #14178)
+  * remove syntax error
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Apr 2009 16:59:38 +0200
+
+univention-mail-cyrus-kolab2 (1.0.13-2) unstable; urgency=low
+
+  * use univention-cyrus-murder-movemailbox only if murder is configured
+    (Bug #14148)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Apr 2009 14:32:33 +0200
+
+univention-mail-cyrus-kolab2 (1.0.13-1) unstable; urgency=low
+
+  * Version bump for UCS 2.2-1 Cyrus Murder integration (Bug #10439)
+  * merge for Cyrus Murder integration form customer branch2.1
+
+ -- Arvid Requate <requate@univention.de>  Mon,  6 Apr 2009 19:37:06 +0200
+
+univention-mail-cyrus-kolab2 (1.0.12-7) unstable; urgency=low
+
+  * don't remove the sieve script from the user automatically. Closes
+    Bug #11617
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Dec 2008 14:37:33 +0100
+
+univention-mail-cyrus-kolab2 (1.0.12-6) unstable; urgency=low
+
+  * fixed new[univentionKolabUserNamespace] dictionary query
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon,  8 Dec 2008 12:15:24 +0100
+
+univention-mail-cyrus-kolab2 (1.0.12-5) unstable; urgency=low
+
+  * Fixed problem when cyrus-sieve tries to remove sieve skript-folder.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 16:58:26 +0100
+
+univention-mail-cyrus-kolab2 (1.0.12-4) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 12:58:37 +0100
+
+univention-mail-cyrus-kolab2 (1.0.12-3) unstable; urgency=low
+
+  * fixed hardcoded domainname in postinst (Bug #11584)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 07 Nov 2008 15:28:05 +0100
+
+univention-mail-cyrus-kolab2 (1.0.12-2) unstable; urgency=low
+
+  * new autostart test in init script
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 28 Oct 2008 14:21:26 +0100
+
+univention-mail-cyrus-kolab2 (1.0.12-1) unstable; urgency=low
+
+  * create /etc/kolab2cal.htpasswd if missing
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 22 Sep 2008 16:31:33 +0200
+
+univention-mail-cyrus-kolab2 (1.0.11-2) unstable; urgency=low
+
+  * only permission "p" for anyone as default for shared folders
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Fri, 15 Aug 2008 10:56:53 +0200
+
+univention-mail-cyrus-kolab2 (1.0.11-1) unstable; urgency=low
+
+  * small fixes: deleting folders and setting acls
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Jul 2008 13:50:30 +0200
+
+univention-mail-cyrus-kolab2 (1.0.10-1) unstable; urgency=low
+
+  * set at least "lrsp" permission for user "anyone" to shared folder with
+    mail address
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 03 Jul 2008 13:34:32 +0200
+
+univention-mail-cyrus-kolab2 (1.0.9-1) unstable; urgency=low
+
+  * fixed creation of shared folder in "user" scope
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 03 Jul 2008 12:20:45 +0200
+
+univention-mail-cyrus-kolab2 (1.0.8-1) unstable; urgency=low
+
+  * set IMAP shared folder type
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 03 Jul 2008 12:18:37 +0200
+
+univention-mail-cyrus-kolab2 (1.0.7-1) unstable; urgency=low
+
+  * added postuser to imapd.conf template (required for mail delivery to
+    shared folders)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 26 Jun 2008 14:01:00 +0200
+
+univention-mail-cyrus-kolab2 (1.0.6-3) unstable; urgency=low
+
+  * change the owner of the sieve directories to cyrus.mail instead of
+    mail.cyrus
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 May 2008 10:44:22 +0200
+
+univention-mail-cyrus-kolab2 (1.0.6-2) unstable; urgency=low
+
+  * fixed typo in univention-cyrus-mkdir
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 May 2008 10:32:38 +0200
+
+univention-mail-cyrus-kolab2 (1.0.6-1) unstable; urgency=low
+
+  * The sieve directory owner should be cyrus. In the postinst we call a
+    chown -R if /var/spool/cyrus/sieve/no_chmod_on_upgrade doesn't
+    exist.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 May 2008 08:16:17 +0200
+
+univention-mail-cyrus-kolab2 (1.0.5-5) unstable; urgency=low
+
+  * Add a dependency on whois, since mkpasswd is used during postinst.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 26 Nov 2007 13:04:19 +0100
+
+univention-mail-cyrus-kolab2 (1.0.5-4) unstable; urgency=low
 
   * change package priotiry from optional to standard
 
- -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Sep 2007 09:14:34 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Sep 2007 09:16:30 +0200
 
-univention-mail-cyrus (1.0.2-2) unstable; urgency=low
+univention-mail-cyrus-kolab2 (1.0.5-3) unstable; urgency=low
+
+  * added config registry header to /etc/init.d/cyrus2.2
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 31 Aug 2007 14:00:01 +0200
+
+univention-mail-cyrus-kolab2 (1.0.5-2) unstable; urgency=low
 
   * renamed /etc/univention/ssl/udsCA to /etc/univention/ssl/ucsCA
 
- -- Sönke Schwardt <schwardt@univention.de>  Wed, 22 Aug 2007 14:12:12 +0200
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 22 Aug 2007 14:13:08 +0200
 
-univention-mail-cyrus (1.0.2-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (1.0.5-1) unstable; urgency=low
 
   * add option to run squatter indexing tool regularly using cron
 
- -- Wolf Wiegand <wiegand@univention.de>  Tue, 21 Aug 2007 09:12:51 +0200
+ -- Wolf Wiegand <wiegand@univention.de>  Tue, 21 Aug 2007 09:05:19 +0200
 
-univention-mail-cyrus (1.0.1-3) unstable; urgency=low
+univention-mail-cyrus-kolab2 (1.0.4-1) unstable; urgency=low
 
-  * Adapt to Univention Directory Listener.
+  * add sieve pam file
+  * cleanup the cyrus and cyrus-sieve listener modules
+  * chown the sieve directory to cyrus:mail, so the cyrus dameon could
+    write new sieve scripts. This is needed for the horde application
+    ingo
 
- -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 11:52:08 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Aug 2007 08:39:49 +0200
 
-univention-mail-cyrus (1.0.1-2) unstable; urgency=low
+univention-mail-cyrus-kolab2 (1.0.3-1) unstable; urgency=low
+
+  * rename pam_heimdal to pam_krb5
+  * rename the init script from cyrus22 to cyrus2.2
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Aug 2007 11:07:15 +0200
+
+univention-mail-cyrus-kolab2 (1.0.2-3) unstable; urgency=low
+
+  * Adapt to Univention Directory Listener
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 13:02:29 +0200
+
+univention-mail-cyrus-kolab2 (1.0.2-2) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-
     baseconfig
 
- -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:45:32 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:45:33 +0200
 
-univention-mail-cyrus (1.0.1-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (1.0.2-1) unstable; urgency=low
 
   * add version number to join script
 
- -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 11:27:50 +0200
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 11:43:46 +0200
 
-univention-mail-cyrus (1.0.0-9) unstable; urgency=low
+univention-mail-cyrus-kolab2 (1.0.1-1) unstable; urgency=low
 
-  * fixed an umlaut
+  * add service description
+  * add configuration registry variable mail/cyrus/autostart tos et start type
 
- -- Janis Meybohm <meybohm@univention.de>  Tue, 24 Jul 2007 12:00:54 +0200
+ -- Andreas Büsching <buesching@univention.de>  Wed, 25 Jul 2007 13:31:46 +0200
 
-univention-mail-cyrus (1.0.0-8) unstable; urgency=low
-
-  * change categories to mail
-
- -- Janis Meybohm <meybohm@univention.de>  Thu, 19 Jul 2007 12:52:54 +0200
-
-univention-mail-cyrus (1.0.0-6) unstable; urgency=low
-
-  * convert to utf-8
-
- -- Janis Meybohm <meybohm@univention.de>  Wed, 18 Jul 2007 11:30:09 +0200
-
-univention-mail-cyrus (1.0.0-5) unstable; urgency=low
+univention-mail-cyrus-kolab2 (1.0.0-6) unstable; urgency=low
 
   * added descriptions for config registry variables
 
- -- Janis Meybohm <meybohm@univention.de>  Tue, 17 Jul 2007 17:00:58 +0200
+ -- Janis Meybohm <meybohm@univention.de>  Fri, 20 Jul 2007 16:38:55 +0200
 
-univention-mail-cyrus (1.0.0-4) unstable; urgency=low
+univention-mail-cyrus-kolab2 (1.0.0-5) unstable; urgency=low
+
+  * removed conflicts to old cyrus21* packages as this is handled by the new
+    cyrus-*-2.2 packages
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 03 Jul 2007 15:39:27 +0200
+
+univention-mail-cyrus-kolab2 (1.0.0-4) unstable; urgency=low
 
   * encoded files utf-8
 
- -- Janis Meybohm <meybohm@univention.de>  Thu, 28 Jun 2007 10:32:17 +0200
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 28 Jun 2007 10:35:09 +0200
 
-univention-mail-cyrus (1.0.0-3) unstable; urgency=low
+univention-mail-cyrus-kolab2 (1.0.0-3) unstable; urgency=low
 
   * call exit 0 at the end of the postinst scripts
 
- -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 14:10:24 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 14:12:15 +0200
 
-univention-mail-cyrus (1.0.0-2) unstable; urgency=low
+univention-mail-cyrus-kolab2 (1.0.0-2) unstable; urgency=low
 
   * upgrade dependency list
 
- -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 11:17:34 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 11:16:31 +0200
 
-univention-mail-cyrus (1.0.0-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
 
- -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Jun 2007 16:35:56 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Jun 2007 16:37:14 +0200
 
-univention-mail-cyrus (0.13-21) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.6-20) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas BÃŒsching <buesching@univention.de>  Fri,  1 Dec 2006 10:48:39 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri,  1 Dec 2006 12:58:17 +0100
 
-univention-mail-cyrus (0.13-20) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.6-18) unstable; urgency=low
 
-  * corrected univention-cyrus-mkdir (use password from parameter list)
+  * don't write a sieve script if univentionKolabDisableSieve was set
 
- -- Lars Rehe <lars@anton.knut.univention.de>  Wed,  4 Oct 2006 12:55:54 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Oct 2006 17:31:37 +0200
 
-univention-mail-cyrus (0.13-19) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.6-16) unstable; urgency=low
 
-  * added string.lower to cyrus.py for mailbox creation 
+  * added string.lower to cyrus.py for mail box creation
 
- -- Bastian Neumann <neumann@univention.de>  Wed, 30 Aug 2006 09:47:45 +0200
+ -- Bastian Neumann <neumann@univention.de>  Wed, 30 Aug 2006 09:45:39 +0200
 
-univention-mail-cyrus (0.13-18) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.6-15) unstable; urgency=low
 
-  * added string.lower to univention-cyrus-mkdir for creating/modifying mail
-    and sieve path for domainpart entry
+  * added string.lower for domainpart in listener
+
+ -- Bastian Neumann <neumann@univention.de>  Wed, 23 Aug 2006 17:08:19 +0200
+
+univention-mail-cyrus-kolab2 (0.6-14) unstable; urgency=low
+
+  * added string.lower to univention-cyrus-mkdir for creating mail and
+    sieve path for domain name
 
 
- -- Bastian Neumann <neumann@univention.de>  Tue, 22 Aug 2006 13:47:02 +0200
+ -- Bastian Neumann <neumann@univention.de>  Tue, 22 Aug 2006 13:39:36 +0200
 
-univention-mail-cyrus (0.13-17) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.6-13) unstable; urgency=low
 
-  * added string.lower to univention-cyrus-mkdir for creating/modifying mail
-    and sieve path 
+  * added string.lower to univention-cyrus-mkdir for creating mail and
+    sieve path
 
- -- Bastian Neumann <neumann@univention.de>  Tue, 22 Aug 2006 11:57:39 +0200
+ -- Bastian Neumann <neumann@univention.de>  Tue, 22 Aug 2006 11:35:45 +0200
 
-univention-mail-cyrus (0.13-16) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.6-12) unstable; urgency=low
 
   * added cyrus imapd to the univention console service list
 
- -- Stefan Gohmann <gohmann@univention.de>  Wed,  9 Aug 2006 07:28:23 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  9 Aug 2006 07:29:24 +0200
 
-univention-mail-cyrus (0.13-13) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.6-10) unstable; urgency=low
 
-  * more support for cyrus21 and cyrus22
+  * add baseconfig variable mail/cyrus/admins; used to modify the list of
+    cyrus admins.
 
- -- Stefan Gohmann <gohmann@univention.de>  Thu,  4 May 2006 15:20:15 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 15 Jun 2006 13:19:19 +0200
 
-univention-mail-cyrus (0.13-12) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.6-9) unstable; urgency=low
+
+  * create shared folder if servername was changend in LDAP
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri,  5 May 2006 21:01:56 +0200
+
+univention-mail-cyrus-kolab2 (0.6-7) unstable; urgency=low
+
+  * set cyrus version in baseconfig to ensure backward-compatibility
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 27 Apr 2006 12:58:58 +0200
+
+univention-mail-cyrus-kolab2 (0.6-6) unstable; urgency=low
 
   * added support for creation of mailboxes on remote cyrus servers
 
- -- Lars Rehe <lars@anton.knut.univention.de>  Mon, 10 Apr 2006 11:58:12 +0200
+ -- Lars Rehe <lars@anton.knut.univention.de>  Mon, 10 Apr 2006 11:59:22 +0200
 
-univention-mail-cyrus (0.13-5) unstable; urgency=low
-
-  * remove double registration of etc/pam.d/pop
-
- -- Martin Kuehl <kuehl@univention.de>  Tue,  4 Apr 2006 14:57:58 +0200
-
-univention-mail-cyrus (0.13-4) unstable; urgency=low
-
-  * fixed problem with wrong path for sieve scrips for mail addresses
-    containing dots
-
- -- Wolf Wiegand <wiegand@univention.de>  Mon, 27 Mar 2006 13:20:02 +0200
-
-univention-mail-cyrus (0.13-3) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.6-2) unstable; urgency=low
 
   * new baseconfig variable mail/cyrus/imap/lookup_groups: can disable lookup
     of UNIX groups via LDAP
 
- -- Andreas Büsching <buesching@univention.de>  Sun,  5 Mar 2006 04:02:54 +0100
+ -- Andreas Büsching <buesching@univention.de>  Sun,  5 Mar 2006 04:22:21 +0100
 
-univention-mail-cyrus (0.13-2) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.6-1) unstable; urgency=low
 
-  * improved quota-setting script
+  * create spam-filter sieve-script for non-groupware users
 
- -- Martin Kuehl <kuehl@univention.de>  Thu,  2 Mar 2006 10:11:49 +0100
+ -- Martin Kuehl <kuehl@univention.de>  Tue, 28 Feb 2006 10:54:25 +0100
 
-univention-mail-cyrus (0.13-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.5-24) unstable; urgency=low
 
-  * Fixed a a bug in univention-cyrus-set-quota, which resulted in not being
-    able to login via IMAP anymore if quotas were activated
+  * fixed problems with shared folder names containing spaces
 
- -- Alexander Reelsen <reelsen@univention.de>  Mon, 16 Jan 2006 17:06:55 +0100
+ -- Martin Kuehl <kuehl@univention.de>  Tue, 28 Feb 2006 10:21:28 +0100
 
-univention-mail-cyrus (0.13-0) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.5-23) unstable; urgency=low
 
-  * support for cyrus21 and cyrus22
+  * fixed problem with wrong path for sieve scrips for mail addresses
+    containing dots
 
- -- Ingo Steuwer <steuwer@univention.de>  Thu, 17 Nov 2005 10:05:02 +0100
+ -- Wolf Wiegand <wolf@anton.knut.univention.de>  Tue, 21 Feb 2006 12:57:08 +0100
 
-univention-mail-cyrus (0.12-3) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.5-22) unstable; urgency=low
 
-  * debian/univention-mail-cyrus.univention-baseconfig: fixed typo. the
-    variables are challed maxchilds and maxclients
+  * auto accept meetings
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 10 Nov 2005 14:52:03 +0100
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 31 Jan 2006 14:23:19 +0100
 
-univention-mail-cyrus (0.12-2) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.5-0) unstable; urgency=low
 
-  * add baseconfig variables mail/cyrus/(imap|pop|sieve)/maxchilds to control
-    the maximum number of spawned child processes. Default value (is not set)
-    is 50
+  * switched to new Schema-Definition (using univention-OIDs)
 
- -- Andreas Büsching <buesching@univention.de>  Mon,  7 Nov 2005 12:00:15 +0100
+ -- Ingo Steuwer <steuwer@univention.de>  Tue,  6 Dec 2005 09:14:05 +0100
 
-univention-mail-cyrus (0.12-1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.4-20) unstable; urgency=low
 
-  * removed old sasl dependencies
+  * Fixed vacation handling in sieve-script module
 
- -- Stefan Gohmann <gohmann@univention.de>  Thu,  3 Nov 2005 10:27:47 +0100
+ -- Janis Meybohm <meybohm@univention.de>  Thu,  6 Oct 2005 11:28:01 +0200
 
-univention-mail-cyrus (0.12-0) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.4-19) unstable; urgency=low
 
-  * added working pam-configuration for sieve
-  * sieve-listening hosts can be set by baseconfig
+  * Added shared folder listener module and python-pexpect scripts for cyradm
 
- -- Ingo Steuwer <steuwer@univention.de>  Wed,  2 Nov 2005 13:53:43 +0100
+ -- Alexander Reelsen <reelsen@univention.de>  Fri, 30 Sep 2005 11:23:13 +0200
 
-univention-mail-cyrus (0.11) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.4-17) unstable; urgency=low
 
-  * using cyrus21 or cyrus22
+  * added listener modules
 
- -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 Sep 2005 09:27:13 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Sep 2005 07:39:43 +0200
 
-univention-mail-cyrus (0.7) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.2) unstable; urgency=low
 
-  * support for mail quotas
+  * cross relam login support
+  * diffrent config directory support
 
- -- Lars Rehe <lars@anton.knut.univention.de>  Wed,  6 Jul 2005 11:26:32 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Sep 2005 07:24:27 +0200
 
-univention-mail-cyrus (0.6) unstable; urgency=low
-
-  * correct spam filter
-
- -- Stefan Gohmann <gohmann@univention.de>  Tue,  5 Jul 2005 14:01:18 +0200
-
-univention-mail-cyrus (0.5) unstable; urgency=low
-
-  * Test-Version für Quotas
-
- -- Lars Rehe <rehe@univention.de>  Fri, 27 May 2005 14:50:41 +0200
-
-univention-mail-cyrus (0.4) unstable; urgency=low
-
-  * Use libpam-univentionmailcyrus module.
-
- -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 22 Mar 2005 09:44:03 +0100
-
-univention-mail-cyrus (0.3) unstable; urgency=low
-
-  * freebusy can access through ftp only in chroot
-
- -- Ingo Steuwer <steuwer@univention.de>  Fri, 12 Nov 2004 15:15:20 +0100
-
-univention-mail-cyrus (0.2) unstable; urgency=low
-
-  * disabled password changing for freebusy-account 
-
- -- Sven Dreyer <dreyer@univention.de>  Thu,  7 Oct 2004 09:37:28 +0200
-
-univention-mail-cyrus (0.1) unstable; urgency=low
+univention-mail-cyrus-kolab2 (0.1) unstable; urgency=low
 
   * Initial release
 
- -- Stefan Gohmann <gohmann@univention.de>  Thu,  1 Jul 2004 08:23:05 +0200
-
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Sep 2005 15:41:58 +0200

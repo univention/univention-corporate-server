@@ -1,8 +1,8 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Mail Cyrus
-#  helper script: set mail quota for a user
+# Univention Mail Cyrus Kolab2
+#  helper script: sets quota information for a given user
 #
 # Copyright 2004-2010 Univention GmbH
 #
@@ -35,12 +35,12 @@ adminuser=0
 import os, string, pwd, grp, sys, univention_baseconfig, ldap, tempfile, posix, subprocess, time
 from pexpect import *
 
-
-
 baseConfig = univention_baseconfig.baseConfig()
 baseConfig.load()
 
+
 cyrus_user='cyrus'
+hostname='localhost'
 
 if posix.environ.has_key('USER'):
 	user_name=posix.environ['USER']
@@ -60,7 +60,7 @@ if posix.environ.has_key('USER'):
 			subprocess.Popen(['touch /var/cache/cyrusquota%s' % user_name], shell=True)
 
 else:
-    sys.exit(1)
+	sys.exit(1)
 
 if user_name == 'root' or user_name == 'cyrus':
 	sys.exit(0)
@@ -92,17 +92,10 @@ l.unbind()
 univentionMQ='0'
 
 mail=mail.strip()
+domainpart=mail.split('@')[1]
+userpart=mail.split('@')[0].replace( '.', '^' )
 
-if baseConfig.has_key('mail/cyrus/version') and baseConfig['mail/cyrus/version'] == '2.2':
-	#cyrus 22
-	domainpart=mail.split('@')[1]
-	userpart=mail.split('@')[0].replace( '.', '^' )
-	path='/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domainpart[0], domainpart, userpart[0], userpart)
-else:
-	#cyrus21
-	path='/var/spool/cyrus/mail/%s/user/%s'%(mail[0],mail.replace('.','^'))
-
-if os.path.exists(path):
+if os.path.exists('/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domainpart[0], domainpart, userpart[0], userpart)):
 
 	tempfile=tempfile.mktemp()
 
@@ -126,7 +119,6 @@ if os.path.exists(path):
 	os.remove(tempfile)
 
 else:
-	#+++# Das Mail-Verzeichnis existiert nicht.
 	pass
 
 user_name=user_name.strip()
@@ -136,7 +128,10 @@ if univentionMQ != '0':
 	if password[-1] == '\n':
 		password=password[0:-1]
 
-	child = spawn('/usr/bin/cyradm -u %s localhost' % (cyrus_user))
+	if baseConfig.has_key('mail/cyrus/murder/backend/hostname') and baseConfig['mail/cyrus/murder/backend/hostname']:
+		hostname = baseConfig['mail/cyrus/murder/backend/hostname']
+
+	child = spawn('/usr/bin/cyradm -u %s %s' % (cyrus_user, hostname))
 	i=0
 	while not i == 3:
 		i = child.expect(['IMAP Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)
@@ -148,12 +143,15 @@ if univentionMQ != '0':
 			child.sendline('exit')
 		elif i == 2:
 			sys.exit(1)
-else:
+else: #unset quota
 	password=open('/etc/cyrus.secret').read()
 	if password[-1] == '\n':
 		password=password[0:-1]
 
-	child = spawn('/usr/bin/cyradm -u %s localhost' % (cyrus_user))
+	if baseConfig.has_key('mail/cyrus/murder/backend/hostname') and baseConfig['mail/cyrus/murder/backend/hostname']:
+		hostname = baseConfig['mail/cyrus/murder/backend/hostname']
+
+	child = spawn('/usr/bin/cyradm -u %s %s' % (cyrus_user, hostname))
 	i=0
 	while not i == 3:
 		i = child.expect(['IMAP Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)

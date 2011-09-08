@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Mail Cyrus
-#  listener module: creating mailboxes
+# Univention Mail Cyrus Kolab2
+#  listener module: creating mailboxes and sieve scripts
 #
 # Copyright 2004-2010 Univention GmbH
 #
@@ -31,12 +31,26 @@
 # <http://www.gnu.org/licenses/>.
 
 import listener
-import os, string, pwd, grp, univention.debug
+import os, string, pwd, grp, univention.debug, subprocess
 
 name='cyrus'
-description='Create default imap folders and sieve mail filters'
+description='Create default imap folders'
 filter='(&(objectClass=univentionMail)(uid=*))'
-attributes=['uid', 'mailPrimaryAddress', 'mailGlobalSpamFolder']
+attributes=['uid', 'mailPrimaryAddress', 'mailGlobalSpamFolder', 'kolabHomeServer']
+
+def is_groupware_user(new):
+	if new.has_key('objectClass'):
+		for oc in new['objectClass']:
+			if oc.lower() == 'kolabinetorgperson':
+				return True
+	return False
+
+def is_cyrus_murder_backend():
+	if (listener.baseConfig.get('mail/cyrus/murder/master') and listener.baseConfig.get('mail/cyrus/murder/backend/hostname')):
+	# ucr currently gives '' if not set, might change to None
+		return True
+	else:
+		return False
 
 def create_cyrus_userlogfile(mailaddress):
 	userlogfiles = listener.baseConfig.get('mail/cyrus/userlogfiles')
@@ -51,57 +65,62 @@ def create_cyrus_userlogfile(mailaddress):
 		os.chmod(path,0750)
 		os.chown(path,cyrus_id, mail_id)
 
-def handler(dn, new, old):
+def create_cyrus_mailbox(new):
 	if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0]:
-		listener.setuid(0)
-
 		try:
+			listener.setuid(0)
+
 			p = os.popen('/usr/sbin/univention-cyrus-mkdir %s' % (string.lower(new['mailPrimaryAddress'][0])))
 			p.close()
 
 			create_cyrus_userlogfile(string.lower(new['mailPrimaryAddress'][0]))
-
-			listener.unsetuid()
-		except:
-			pass
-
-
-		if listener.baseConfig.has_key('mail/cyrus/version') and listener.baseConfig['mail/cyrus/version']=='2.2':
-			user_name = new['mailPrimaryAddress'][0]
-		else:
-			user_name = (new['mailPrimaryAddress'][0]).replace('.','^')
-		if listener.baseConfig.has_key('mail/cyrus/version') and listener.baseConfig['mail/cyrus/version']=='2.2':
-			userpart=user_name.split('@')[0]
-			domainpart=user_name.split('@')[1]
-			userpart=userpart.replace('.', '^')
-			sieve_path = '/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domainpart[0], domainpart, userpart[0], userpart)
-		else:
-			sieve_path = '/var/spool/sieve/%s/%s' % (user_name[0], user_name)
-		active_spam_rule = 'default'
-		global_spam_rule = 'global.sieve.script'
-		local_spam_rule  = 'local.sieve.script'
-
-		sieve_script = ''
-		if new.has_key('mailGlobalSpamFolder') and new['mailGlobalSpamFolder'][0] == '1':
-			sieve_script = '%s/%s' % (sieve_path, global_spam_rule)
-		else:
-			sieve_script = '%s/%s' % (sieve_path, local_spam_rule)
-
-		listener.setuid(0)
-		try:
-			active_symlink = '%s/%s' % (sieve_path, active_spam_rule)
-			try:
-				os.remove(active_symlink)
-			except:
-				pass
-			cyrus_id = pwd.getpwnam('cyrus')[2]
-			mail_id  = grp.getgrnam('mail')[2]
-			os.symlink(sieve_script, active_symlink)
-			os.chown(sieve_script, cyrus_id, mail_id)
-
-			if listener.baseConfig.has_key('mail/cyrus/version') and listener.baseConfig['mail/cyrus/version']=='2.2':
-				os.system('/usr/lib/cyrus/bin/sievec %s %s%s >/tmp/foo' % (active_symlink, active_symlink, "bc"))
-				os.chown("%s%s"%(active_symlink,'bc'), cyrus_id, mail_id)
-				os.chown("%s%s"%(active_symlink,'bc'), cyrus_id, mail_id)
 		finally:
 			listener.unsetuid()
+
+def move_cyrus_murder_mailbox(new, old):
+	if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0] and old.has_key('mailPrimaryAddress') and old['mailPrimaryAddress'][0]:
+		try:
+			listener.setuid(0)
+
+			oldemail=string.lower(old['mailPrimaryAddress'][0])
+			localCyrusMurderBackendFQDN = listener.baseConfig.get('mail/cyrus/murder/backend/hostname')
+			if ( localCyrusMurderBackendFQDN.find('.') == -1 ):
+				localCyrusMurderBackendFQDN = '%s.%s' % (listener.baseConfig.get('mail/cyrus/murder/backend/hostname'), listener.baseConfig.get('domainname'))
+
+			returncode = subprocess.call("/usr/sbin/univention-cyrus-murder-movemailbox %s %s" % (oldemail, localCyrusMurderBackendFQDN), shell=True)
+
+			if ( returncode != 0 ):
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: Cyrus Murder mailbox rename failed for %s' % (name, oldemail))
+
+			create_cyrus_userlogfile(string.lower(new['mailPrimaryAddress'][0]))
+		finally:
+			listener.unsetuid()
+
+def handler(dn, new, old):
+	fqdn = '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
+	if new and (is_groupware_user(new) and new.has_key('kolabHomeServer') and new['kolabHomeServer'][0] == fqdn) or (not is_groupware_user(new)):
+		if not old:
+				create_cyrus_mailbox(new)
+		else:
+			old_mailPrimaryAddress = old.get('mailPrimaryAddress', [''])[0]
+			if not is_cyrus_murder_backend():
+				mailboxrename = listener.baseConfig.get('mail/cyrus/mailbox/rename')
+				if old_mailPrimaryAddress and mailboxrename and mailboxrename.lower() in ['true', 'yes']:
+					# cyrus-mailboxrename.py will take care of this case
+					pass
+				else:
+					create_cyrus_mailbox(new)
+			else:
+				if (is_groupware_user(new) and (not is_groupware_user(old))):
+				# if the groupware option changed to yes
+					create_cyrus_mailbox(new)
+					# FIXME: case for mailbox rename
+				else: # the groupware option is unchanged or changed to no
+					# no behaviour change here just a bit improved readability
+					old_kolabHomeServer = old.get('kolabHomeServer', [''])[0]
+					if (old_kolabHomeServer and old_kolabHomeServer != fqdn):
+						# the kolabHomeServer changed:
+						move_cyrus_murder_mailbox(new, old)
+					#elif (old_kolabHomeServer == fqdn):
+						# cyrus-mailboxrename.py will take care of this case
+
