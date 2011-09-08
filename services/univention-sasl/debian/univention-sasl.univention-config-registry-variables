@@ -1,0 +1,5 @@
+[mail/saslauthd/threads]
+Description[de]=Konfiguriert die Anzahl der gestarteten saslauthd-Threads. Wird die Variable auf 0 gesetzt, wird für jede Verbindung ein neuer Prozess geforkt.
+Description[en]=Configures the amount of saslauthd threads to be started. If the variable is set to 0, a process is forked for every connection.
+Type=str
+Categories=system-services

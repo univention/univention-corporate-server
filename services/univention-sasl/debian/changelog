@@ -1,0 +1,5 @@
+univention-sasl (1.0.0-0) unstable; urgency=low
+
+  * initial version (Bug #23565)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 08 Sep 2011 19:20:58 +0200
