@@ -1556,13 +1556,13 @@ class moduleSearch(ldapDn):
 	description='FIXME'
 
 class groupDn(ldapDn):
-	udm_module = 'groups/group'
+	udm_modules = ( 'groups/group', )
 
 class userDn(ldapDn):
-	udm_module = 'users/user'
+	udm_modules = ( 'users/user', )
 
 class hostDn(ldapDn):
-	udm_module = 'computers/computer'
+	udm_modules = ( 'computers/computer', )
 
 class userID(integer):
 	searchFilter='(&(uid=*)(objectClass=posixAccount)(!(objectClass=univentionHost)))'
@@ -1572,8 +1572,8 @@ class groupID(integer):
 	searchFilter='(&(cn=*)(objectClass=posixGroup))'
 	description=_('Group ID')
 
-class shareHost(string):
-	pass
+class shareHost( ldapDn ):
+	udm_modules = ( 'computers/domaincontroll_master', 'computers/domaincontroll_backup', 'computers/domaincontroll_slave', 'computers/membesrver' )
 
 class windowsTerminalServer(string):
 	searchFilter='(&(cn=*)(objectClass=univentionWindows))'
@@ -1612,7 +1612,7 @@ class primaryGroup2(ldapDn):
 	description=_('Primary Group')
 
 class network(ldapDnOrNone):
-	udm_module = 'networks/network'
+	udm_modules = ( 'networks/network', )
 	description=_('Network')
 
 
@@ -1625,7 +1625,7 @@ class dnsEntryReverse(ldapDnOrNone):
 	description=_('DNS Entry Reverse')
 
 class dhcpService( ldapDnOrNone ):
-	udm_module = 'dhcp/service'
+	udm_modules = ( 'dhcp/service', )
 
 class dhcpEntry( complex ):
 	subsyntaxes= ( ( _( 'DHCP-Service' ), dhcpService ), ( _( 'IP address' ), ipAddress ), ( _( 'MAC address' ), macAddress ) )

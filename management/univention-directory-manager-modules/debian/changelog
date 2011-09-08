@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.71-1) unstable; urgency=low
+
+  * extend UDM syntax classes based on ldapDn to support a list of UDM
+    modules to search for; Bug #23222
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 08 Sep 2011 12:29:37 +0200
+
 univention-directory-manager-modules (7.0.70-1) unstable; urgency=low
 
   * fix a call to objects.get using the old API; Bug #22879
