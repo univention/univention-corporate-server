@@ -60,6 +60,9 @@ if [ "$1" = configure -a -z "$2" ];  then
 		/usr/sbin/grub-install --no-floppy "$grub_boot"
 	fi
 	update-grub
+	# grub/boot is set in the installer and need for the initial passing of
+	# the boot loader device. It can not be safely removed since grub2 doesn't use it
+	univention-config-registry unset grub/boot
 fi
 
 
