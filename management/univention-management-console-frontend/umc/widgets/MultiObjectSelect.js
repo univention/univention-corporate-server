@@ -11,7 +11,7 @@ dojo.require("umc.render");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
-dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc.i18n.Mixin ], {
+dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc.i18n.Mixin, umc.widgets._FormWidgetMixin ], {
 	// summary:
 	//		???
 
@@ -125,12 +125,13 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 	},
 
 	_getValueAttr: function() {
-		return this._values;
+		// return a copy
+		return dojo.clone(this._values);
 	},
 
 	_addElements: function(values) {
 		// get all current entries
-		var newValues = this.get('value');
+		var newValues = this._values;
 		var map = {};
 		dojo.forEach(newValues, function(iid) {
 			map[iid] = true;

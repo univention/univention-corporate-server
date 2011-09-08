@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.25-1) unstable; urgency=low
+
+  * fixed _getValueAttr in umc.widgets.MultiObjectSelect (Bug #23195)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 08 Sep 2011 21:36:36 +0200
+
 univention-management-console-frontend (1.0.24-1) unstable; urgency=low
 
   * fixed refreshing problems with data grids in tabs (Bug #23195)
