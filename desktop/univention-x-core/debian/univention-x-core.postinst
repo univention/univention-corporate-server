@@ -89,7 +89,7 @@ if [ -n "$univentionXKeyboardLayout" ]; then
 fi
 
 univention-config-registry set	xorg/device/driver?vesa \
-							xorg/autodetect=yes \
+							xorg/autodetect?yes \
 							xorg/resolution?1024x768 \
 							xorg/screen/DefaultDepth?16 \
 							xorg/monitor/HorizSync?30-70 \
@@ -140,6 +140,12 @@ univention-config-registry set	xorg/device/driver?vesa \
 							xorg/device/VendorName?All \
 							xorg/device/BoardName?All \
 							xorg/module/load?"bitmap;ddc;dri;extmod;freetype;glx;int10;vbe;dbe;GLcore;xie;pex5;speedo;type1;record"
+
+# set xorg/autodetect to yes on update to 3.0-0 Bug #19035
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.3-1; then
+	univention-config-registry set xorg/autodetect=yes
+fi
+
 
 #DEBHELPER#
 
