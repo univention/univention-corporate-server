@@ -1439,7 +1439,7 @@ class ad(univention.connector.ucs):
 			# user enabled in UCS
 			if ldap_object_ad.has_key('userAccountControl') and (int(ldap_object_ad['userAccountControl'][0]) & 2 ) > 0:
 				#user disabled in AD -> change
-				res=str(int(ldap_object_ad['userAccountControl'][0]) + 2)
+				res=str(int(ldap_object_ad['userAccountControl'][0]) - 2)
 				modlist.append((ldap.MOD_REPLACE, 'userAccountControl', [res]))
 
 		# account expires
