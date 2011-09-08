@@ -147,6 +147,8 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				iprop.type = 'MultiInput';
 			} else if ( 'LinkList' == iprop.type ) {
 				iprop.multivalue = false;
+			} else if ( iprop.type.indexOf('MultiObjectSelect') >= 0 ) {
+				iprop.multivalue = false;
 			} else if (iprop.multivalue && 'MultiInput' != iprop.type) {
 				// handle multivalue inputs
 				iprop.subtypes = [{

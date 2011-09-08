@@ -1,3 +1,12 @@
+univention-management-console-module-udm (1.0.110-1) unstable; urgency=low
+
+  * save UCR variables globally
+  * display MultiObjectSelect properly
+  * added umc.modules._udm.MultiObjectSelect
+  (Bug #23195)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 08 Sep 2011 19:16:40 +0200
+
 univention-management-console-module-udm (1.0.109-1) unstable; urgency=low
 
   * add mapping for widget MultiObjectSelect; Bug #23195

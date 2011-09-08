@@ -64,7 +64,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// a dict of variable -> value entries for relevant UCR variables
 	_ucr: null,
 
-				 		// define grid columns
+	// define grid columns
 	_default_columns: null,
 
 	constructor: function() {
@@ -87,7 +87,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		if ('navigation' == this.moduleFlavor) {
 			// for the UDM navigation, we only query the UCR variables
 			umc.tools.ucr('directory/manager/web*').then(dojo.hitch(this, function(ucr) {
-				this._ucr = ucr;
+				// save the ucr variables locally and also globally
+				this._ucr = umc.modules._udm.ucr = ucr;
 				this.renderSearchPage();
 			}));
 		}
@@ -102,7 +103,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			])).then(dojo.hitch(this, function(results) {
 				var containers = results[0][0] ? results[0][1] : [];
 				var superordinates = results[1][0] ? results[1][1] : [];
-				this._ucr = results[2][0] ? results[2][1] : {};
+				this._ucr = umc.modules._udm.ucr = results[2][0] ? results[2][1] : {};
 				this.renderSearchPage(containers.result, superordinates.result);
 			}));
 		}
@@ -362,10 +363,10 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// check whether we have autosearch activated 
 		if ('navigation' != this.moduleFlavor && umc.tools.isTrue(autoSearch)) {
-			// connect to the onChange event of the form elemet for the object property value
-			var tmpHandel = this.connect(this._searchWidget._widgets.objectPropertyValue, 'onChange', function() {
+			// connect to the onValuesInitialized event of the form
+			var handle = this.connect(this._searchWidget, 'onValuesInitialized', function() {
 				this.filter(this._searchWidget.gatherFormValues());
-				this.disconnect(tmpHandel);
+				this.disconnect(handle);
 			});
 		}
 	},
