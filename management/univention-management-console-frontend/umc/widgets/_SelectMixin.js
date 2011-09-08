@@ -368,6 +368,16 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	},
 
 	// setter for staticValues
+	_setDynamicOptionsAttr: function(newOpts) {
+		this.dynamicOptions = newOpts;
+
+		// we only need to call _loadValues() if it has been called before
+		if (this._valuesLoaded) {
+			this._loadValues();
+		}
+	},
+
+	// setter for staticValues
 	_setStaticValuesAttr: function(newVals) {
 		this.staticValues = newVals;
 

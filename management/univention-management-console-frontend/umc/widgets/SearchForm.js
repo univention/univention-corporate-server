@@ -32,18 +32,8 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 			}];
 		}
 
-		// layout the buttons in the same row as the form (if there is only one row)
-		if (dojo.isArray(this.layout)) {
-			var layout = this.layout;
-			if (1 == layout.length) {
-				layout = layout[0];
-				if (!dojo.isArray(layout)) {
-					layout = [ layout ];
-				}
-				this.layout[0] = layout;
-			}
-			layout.push('reset', 'submit');
-		}
+		// add the buttons in a new row
+		this.layout.push(['reset', 'submit']);
 	},
 
 	onSearch: function(values) {

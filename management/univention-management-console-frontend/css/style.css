@@ -51,7 +51,6 @@ form {
 	padding: 9px;
 	font-size: 15px;
 	color: #fff;
-	
 	background: url(../images/bg/top-link.png) repeat-y left 5px;
 }
 .umcHeader .dijitButtonHover,
@@ -305,3 +304,8 @@ form {
 .umcMultiSelect {
 	width: 25em;
 }
+
+.umcCheckBox {
+	margin-right: 23.5em !important;
+}
+

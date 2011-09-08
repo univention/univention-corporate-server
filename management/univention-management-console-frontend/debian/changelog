@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.22-1) unstable; urgency=low
+
+  * added MultiObjectSelect widget
+  * added icons for +/- buttons in MultiValue
+  * fixed CSS code for CheckBox
+  (Bug #22461, Bug #23195)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 08 Sep 2011 11:38:46 +0200
+
 univention-management-console-frontend (1.0.21-1) unstable; urgency=low
 
   * umc.render.layout: extend layout definition with references to the

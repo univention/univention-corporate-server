@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-07 11:28+0200\n"
+"POT-Creation-Date: 2011-09-07 17:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,8 +39,12 @@ msgstr "<br>Fehlernachricht des Servers: <i>%s</i>"
 msgid "About UMC"
 msgstr "Über UMC"
 
-#: umc/widgets/GroupOwnership.js:50
+#: umc/widgets/MultiObjectSelect.js:49
 msgid "Add"
+msgstr ""
+
+#: umc/widgets/MultiObjectSelect.js:136
+msgid "Add new object"
 msgstr ""
 
 #: umc/tools.js:247
@@ -203,7 +207,7 @@ msgstr "Übersicht"
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/widgets/GroupOwnership.js:56
+#: umc/widgets/MultiObjectSelect.js:62
 msgid "Remove"
 msgstr ""
 

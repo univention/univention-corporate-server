@@ -166,9 +166,9 @@ dojo.declare("umc.widgets.MultiInput", [
 		// create 'new' button
 		var btn = this.adopt(dijit.form.Button, {
 			disabled: this.disabled,
-			label: '<b>+</b>',
-			//iconClass: 'dijitIconNewTask',
-			onClick: dojo.hitch(this, '_appendElements', 1)
+			iconClass: 'dijitIconNewTask',
+			onClick: dojo.hitch(this, '_appendElements', 1),
+			'class': 'umcMultiInputAddButton'
 		});
 
 		// wrap a button with a LabelPane
@@ -228,9 +228,9 @@ dojo.declare("umc.widgets.MultiInput", [
 			// add a 'remove' button at the end of the row
 			var button = this.adopt(dijit.form.Button, {
 				disabled: this.disabled,
-				label: '<b>-</b>',
-				//iconClass: 'dijitIconDelete',
-				onClick: dojo.hitch(this, '_removeElement', irow)
+				iconClass: 'dijitIconDelete',
+				onClick: dojo.hitch(this, '_removeElement', irow),
+				'class': 'umcMultiInputRemoveButton'
 			});
 			rowContainer.addChild(new umc.widgets.LabelPane({
 				content: button,

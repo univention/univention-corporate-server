@@ -9,7 +9,7 @@ dojo.require("dojox.grid.EnhancedGrid");
 dojo.require("dojox.grid.cells");
 dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
 
-dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._SelectMixin ], {
+dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._SelectMixin, umc.widgets.StandbyMixin ], {
 	// summary:
 	//		This class represents a MultiSelect widget. Essentially, it adapts a DataGrid
 	//		to the behaviour expected from a MultiSelect widget.
@@ -61,7 +61,6 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 	},
 
 	_setValueAttr: function(/*String|String[]*/ values) {
-		console.log('# MultiSelect set value:', values);
 		// in case we have a string, assume it is a comma separated list of values
 		// and transform it into an array
 		if (dojo.isString(values)) {
