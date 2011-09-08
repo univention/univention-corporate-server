@@ -38,8 +38,7 @@ fi
 eval "$(univention-config-registry shell)"
 
 univention-config-registry set \
-	bootsplash/theme?"ucs" \
-	grub/vga?791
+	bootsplash/theme?"ucs"
 
 # TODO grub2 configuration 
 # splash in GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"

@@ -1,3 +1,9 @@
+univention-bootsplash (4.0.4-2) unstable; urgency=low
+
+  * Do not set the obsolete grub/vga variable any longer (Bug #22115)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 08 Sep 2011 10:08:33 +0200
+
 univention-bootsplash (4.0.4-1) unstable; urgency=low
 
   * more layout changes (Bug #22117) 
