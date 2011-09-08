@@ -40,7 +40,7 @@ univention-config-registry unset lilo/append/pci/acpi lilo/compact lilo/default 
 
 # Obsolete, has been replaced by grub/gfxmode
 univention-config-registry unset grub/vga  1> /dev/null 
-univention-config-registry set grub/gfxmode=1024x768
+univention-config-registry set grub/gfxmode=1024x768@16
 
 # Obsolete, the option is now always displayed
 univention-config-registry unset grub/memtest86  1> /dev/null 
