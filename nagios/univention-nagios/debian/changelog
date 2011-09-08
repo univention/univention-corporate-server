@@ -1,3 +1,9 @@
+univention-nagios (5.0.10-1) unstable; urgency=low
+
+  * modify UNIVENTION_LDAP to support different slapd port (Bug #23541)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 08 Sep 2011 11:04:44 +0200
+
 univention-nagios (5.0.9-5) unstable; urgency=low
 
   * modify UNIVENTION_LDAP to use machine.secret (Bug #23180)
