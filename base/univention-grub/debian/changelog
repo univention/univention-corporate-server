@@ -1,3 +1,9 @@
+univention-grub (5.0.2-1) unstable; urgency=low
+
+  * fixed typo (Bug #22117)
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 Sep 2011 12:13:23 +0200
+
 univention-grub (5.0.1-1) unstable; urgency=low
 
   * added ucr var grub/bootsplash (Bug #22117) 

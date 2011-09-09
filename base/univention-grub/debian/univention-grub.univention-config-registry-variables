@@ -36,6 +36,6 @@ Categories=system-base
 
 [grub/bootsplash]
 Description[de]=Definiert, ob ein Bootsplash angezeigt werden soll (splash) oder nicht (leer oder nosplash).
-Description[en]=Defines whether to display a bootplash (splah) or not (empty or nosplash).
+Description[en]=Defines whether to display a bootplash (splash) or not (empty or nosplash).
 Type=str
 Categories=system-base
