@@ -208,6 +208,22 @@ class complex( ISyntax ):
 				s.append(syntax().any())
 		return s
 
+class UDM_Modules( ISyntax ):
+	udm_modules = ()
+	key = 'dn'
+	label = 'dn'
+	regex = re.compile( '^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$' )
+	empty_value = False
+	error_message = _( "Not a valid LDAP DN" )
+
+	@classmethod
+	def parse( self, text ):
+		if not self.empty_value and not text:
+			raise univention.admin.uexceptions.valueError( _( 'An empty value is not allowed' ) )
+		if not text or self.regex.match( text ) != None:
+			return text
+		raise univention.admin.uexceptions.valueError( self.error_message )
+
 class none(simple):
 	pass
 
@@ -1555,7 +1571,7 @@ class soundModule(select):
 class moduleSearch(ldapDn):
 	description='FIXME'
 
-class groupDn(ldapDn):
+class groupDn( UDM_Modules ):
 	udm_modules = ( 'groups/group', )
 
 class userDn(ldapDn):
@@ -1572,8 +1588,13 @@ class groupID(integer):
 	searchFilter='(&(cn=*)(objectClass=posixGroup))'
 	description=_('Group ID')
 
-class shareHost( ldapDn ):
-	udm_modules = ( 'computers/domaincontroll_master', 'computers/domaincontroll_backup', 'computers/domaincontroll_slave', 'computers/membesrver' )
+class shareHost( UDM_Modules ):
+	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
+	key = '%(fqdn)s'
+	label = '%(fqdn)s'
+	empty_value = True
+	regex = re.compile( '(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
+	error_message = _( 'Not a valid FQDN' )
 
 class windowsTerminalServer(string):
 	searchFilter='(&(cn=*)(objectClass=univentionWindows))'
@@ -1616,19 +1637,41 @@ class network(ldapDnOrNone):
 	description=_('Network')
 
 
-class dnsEntry(ldapDnOrNone):
-	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
-	description=_('DNS Entry')
+# class dnsEntry(ldapDnOrNone):
+# 	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
+# 	description=_('DNS Entry')
 
-class dnsEntryReverse(ldapDnOrNone):
-	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
-	description=_('DNS Entry Reverse')
+# class dnsEntryReverse(ldapDnOrNone):
+# 	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
+# 	description=_('DNS Entry Reverse')
+
+class IP_AddressList( select ):
+	choices = ()
+
+class DNS_ForwardZone( select ):
+	udm_modules = ( 'dns/forward_zone', )
+
+class DNS_ReverseZone( select ):
+	udm_modules = ( 'dns/reverse_zone', )
+
+class dnsEntry( complex ):
+ 	description=_('DNS Entry')
+	subsyntaxes = ( ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'IP address' ), IP_AddressList ) )
+
+class dnsEntryReverse( complex ):
+ 	description=_('DNS Entry Reverse')
+	subsyntaxes = ( ( _( 'DNS reverse zone' ), DNS_ReverseZone ), ( _( 'IP address' ), IP_AddressList ) )
+
+class dnsEntryAlias( complex ):
+	description=_('DNS Entry Alias')
+	subsyntaxes = ( ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'Alias' ), hostName ) )
+
 
 class dhcpService( ldapDnOrNone ):
 	udm_modules = ( 'dhcp/service', )
 
 class dhcpEntry( complex ):
-	subsyntaxes= ( ( _( 'DHCP-Service' ), dhcpService ), ( _( 'IP address' ), ipAddress ), ( _( 'MAC address' ), macAddress ) )
+	subsyntaxes= ( ( _( 'DHCP-Service' ), dhcpService ), ( _( 'IP address' ), IP_AddressList ), ( _( 'MAC address' ), macAddress ) )
 	description=_( 'DHCP Entry' )
 
 	@classmethod
@@ -1647,21 +1690,21 @@ class dhcpEntryNetwork(ldapDnOrNone):
 	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
 	description=_('DHCP Entry')
 
-class dnsEntryAlias(ldapDnOrNone):
-	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
-	description=_('DNS Entry Alias')
-	# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
-	hostname='[a-zA-Z][a-zA-Z0-9-_]+'
-	domainname=hostname + '(?:\.' + hostname + ')*'
-	ava='[^=,]+=[^=,]+'
-	ldapDn=ava + '(?:,' + ava + ')*'
-	_re = re.compile('^' + domainname + ' ' + ldapDn + ' ' + hostname + '$')
+# class dnsEntryAlias(ldapDnOrNone):
+# 	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
+# 	description=_('DNS Entry Alias')
+# 	# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
+# 	hostname='[a-zA-Z][a-zA-Z0-9-_]+'
+# 	domainname=hostname + '(?:\.' + hostname + ')*'
+# 	ava='[^=,]+=[^=,]+'
+# 	ldapDn=ava + '(?:,' + ava + ')*'
+# 	_re = re.compile('^' + domainname + ' ' + ldapDn + ' ' + hostname + '$')
 
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		raise univention.admin.uexceptions.valueError,_("Entry does not have dnsEntryAlias Syntax: %s") % text
+# 	@classmethod
+# 	def parse(self, text):
+# 		if self._re.match(text) != None:
+# 			return text
+# 		raise univention.admin.uexceptions.valueError,_("Entry does not have dnsEntryAlias Syntax: %s") % text
 
 class share(ldapDnOrNone):
 	searchFilter='(objectClass=univentionShare)'

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.73-1) unstable; urgency=low
+
+  * first step in cleaning up the syntax classes; Bug #23329
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 09 Sep 2011 11:39:37 +0200
+
 univention-directory-manager-modules (7.0.72-2) unstable; urgency=low
 
   * Remove policy for Univention Windows Installer (Bug #17625)
