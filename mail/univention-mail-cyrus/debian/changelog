@@ -1,3 +1,11 @@
+univention-mail-cyrus (4.0.1-1) unstable; urgency=low
+
+  * added server password change hook
+  * copy machine.secret to /etc/cyrus-ldap.secret in join script
+    (Bug #23560)
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 Sep 2011 15:01:31 +0200
+
 univention-mail-cyrus (4.0.0-1) unstable; urgency=low
 
   * renamed package

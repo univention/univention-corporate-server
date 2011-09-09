@@ -1,4 +1,5 @@
 usr/sbin
 usr/lib/univention-directory-listener/system
 usr/lib/univention-install
-var/cache/univention-mail-cyrus/
+var/cache/univention-mail-cyrus
+usr/lib/univention-server/server_password_change.d

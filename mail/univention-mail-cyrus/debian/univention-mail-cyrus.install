@@ -3,3 +3,4 @@ cyrus.py usr/lib/univention-directory-listener/system/
 cyrus-shared-folder.py usr/lib/univention-directory-listener/system/
 cyrus-mailboxrename.py usr/lib/univention-directory-listener/system/
 81univention-mail-cyrus.inst usr/lib/univention-install/
+univention-mail-cyrus usr/lib/univention-server/server_password_change.d/
