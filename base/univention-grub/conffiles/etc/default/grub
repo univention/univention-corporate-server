@@ -16,7 +16,7 @@ if baseConfig.get('grub/loglevel', False):
 print defoptions
 @!@
 
-GRUB_CMDLINE_LINUX="@%@grub/append@%@"
+GRUB_CMDLINE_LINUX="@%@grub/append@%@ @%@grub/bootsplash@%@"
 GRUB_CMDLINE_XEN="@%@grub/xenhopt@%@"
 
 # The resolution used on graphical terminal
