@@ -159,6 +159,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				}];
 				iprop.type = 'MultiInput';
 			}
+			iprop.disabled = this.ldapName === undefined ? false :  ! iprop.editable;
 			properties.push(iprop);
 			optionMap[ iprop.id ] = iprop.options;
 		}, this);
