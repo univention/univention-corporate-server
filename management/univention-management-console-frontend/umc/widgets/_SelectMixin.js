@@ -322,6 +322,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 		if (deferredOrValues && (dojo.isArray(deferredOrValues) ||
 				(dojo.isObject(deferredOrValues) && 'then' in deferredOrValues && 'cancel' in deferredOrValues))) {
+			this.onLoadDynamicValues();
 			dojo.when(deferredOrValues, dojo.hitch(this, function(res) {
 				// callback handler
 				// update dynamic values
@@ -332,6 +333,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 				this.onValuesLoaded(this.getAllItems());
 			}), dojo.hitch(this, function() {
 				// error handler
+				this.onDynamicValuesLoaded([]);
 				this.onValuesLoaded(this.getAllItems());
 			}));
 		}
@@ -339,6 +341,12 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 			// values have been loaded
 			this.onValuesLoaded(this.getAllItems());
 		}
+	},
+
+	onLoadDynamicValues: function() {
+		// summary:
+		//		This event is triggered when a query is set to load the dynamic values (and 
+		//		only the dynamic values).
 	},
 
 	onDynamicValuesLoaded: function(values) {

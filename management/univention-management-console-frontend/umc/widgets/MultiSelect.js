@@ -42,7 +42,8 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 	'class': 'umcMultiSelect',
 
 	// force the height of the widget
-	height: '110px',
+	//height: '110px',
+	autoHeight: 5,
 
 	postCreate: function() {
 		this.inherited(arguments);
@@ -100,6 +101,20 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 			vars.push(this.store.getValue(items[iitem], 'id'));
 		}
 		return vars; // String[]
+	},
+
+	onLoadDynamicValues: function() {
+		this.inherited(arguments);
+
+		// start standby animation
+		this.standby(true);
+	},
+
+	onValuesLoaded: function(values) {
+		this.inherited(arguments);
+
+		// stop standby animation
+		this.standby(false);
 	}
 
 	/*adaptHeight: function() {

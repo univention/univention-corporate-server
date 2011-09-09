@@ -106,18 +106,13 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 	},
 
 	_setValueAttr: function(_values) {
-		// when the ids are transformed, show the standby anmination...
-		// switch off the animation in success and error case
-		this._multiSelect.standby(true);
-
 		// handle possible dojo.Deferred object returned by the formatter
 		dojo.when(this._formatter(_values), dojo.hitch(this, function(values) {
+			// sort the array according to the labels
+			values.sort(umc.tools.cmpObjects('label'));
+
 			// callback handler
-			this._multiSelect.standby(false);
 			this._multiSelect.set('staticValues', values);
-		}), dojo.hitch(this, function() {
-			// error handler
-			this._multiSelect.standby(false);
 		}));
 
 		// cache the specified values for any case
@@ -226,7 +221,10 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 		this._container.addChild(this._form);
 
 		// for visualizing the search results, use a MultiSelect
-		this._multiSelect = new umc.widgets.MultiSelect({});
+		this._multiSelect = new umc.widgets.MultiSelect({
+			autoHeight: false,
+			height: '110px'
+		});
 		this._container.addChild(this._multiSelect);
 
 		// add the final buttons to close the dialog
@@ -242,11 +240,21 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 
 				// hide the dialog
 				this.hide();
+
+				// unselect all elements
+				this._multiSelect.set('value', []);
 			})
 		}));
 		this._container.addChild(new umc.widgets.Button({
 			label: this._('Close'),
-			onClick: dojo.hitch(this, 'hide')
+			onClick: dojo.hitch(this, function() {
+				// hide the dialog
+				this.hide();
+
+				// unselect all elements
+				this._multiSelect.set('value', []);
+
+			})
 		}));
 	},
 

@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.27-1) unstable; urgency=low
+
+  * MultiObjectSelect: added element sorting, automatic standby animations
+    (Bug #23195)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 09 Sep 2011 11:13:25 +0200
+
 univention-management-console-frontend (1.0.26-1) unstable; urgency=low
 
   * added favicon
