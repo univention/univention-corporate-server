@@ -228,10 +228,7 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 		this._container.addChild(this._form);
 
 		// for visualizing the search results, use a MultiSelect
-		this._multiSelect = new umc.widgets.MultiSelect({
-			autoHeight: false,
-			height: '110px'
-		});
+		this._multiSelect = new umc.widgets.MultiSelect({});
 		this._container.addChild(this._multiSelect);
 
 		// add the final buttons to close the dialog

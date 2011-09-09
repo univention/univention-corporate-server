@@ -35,17 +35,17 @@ dojo.declare("umc.widgets.TabContainer", dijit.layout.TabContainer, {
 		//        on an inactive tab.
 
 		// iterate over all tabs
-		dojo.forEach(this.getChildren(), dojo.hitch(this, function(ipage) {
+		dojo.forEach(this.getChildren(), function(ipage) {
 			// find all widgets that inherit from dojox.grid._Grid on the tab
-			dojo.forEach(ipage.getDescendants(), dojo.hitch(this, function(iwidget) {
+			dojo.forEach(ipage.getDescendants(), function(iwidget) {
 				if (umc.tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
 					// hook to onShow event
 					this.connect(ipage, 'onShow', function() {
 						iwidget.startup();
 					});
 				}
-			}));
-		}));
+			}, this);
+		}, this);
 	}
 });
 

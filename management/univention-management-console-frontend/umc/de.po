@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-09 11:12+0200\n"
+"POT-Creation-Date: 2011-09-09 12:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,11 +39,11 @@ msgstr "<br>Fehlernachricht des Servers: <i>%s</i>"
 msgid "About UMC"
 msgstr "Über UMC"
 
-#: umc/widgets/MultiObjectSelect.js:82 umc/widgets/MultiObjectSelect.js:232
+#: umc/widgets/MultiObjectSelect.js:89 umc/widgets/MultiObjectSelect.js:236
 msgid "Add"
 msgstr ""
 
-#: umc/widgets/MultiObjectSelect.js:195
+#: umc/widgets/MultiObjectSelect.js:202
 msgid "Add new object"
 msgstr ""
 
@@ -71,7 +71,7 @@ msgstr ""
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
-#: umc/widgets/MultiObjectSelect.js:249
+#: umc/widgets/MultiObjectSelect.js:253
 msgid "Close"
 msgstr ""
 
@@ -211,7 +211,7 @@ msgstr "Übersicht"
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/widgets/MultiObjectSelect.js:101
+#: umc/widgets/MultiObjectSelect.js:108
 msgid "Remove"
 msgstr ""
 

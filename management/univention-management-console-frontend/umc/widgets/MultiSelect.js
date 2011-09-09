@@ -42,8 +42,7 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 	'class': 'umcMultiSelect',
 
 	// force the height of the widget
-	//height: '110px',
-	autoHeight: 5,
+	height: '110px',
 
 	postMixinProperties: function() {
 		this.inherited(arguments);
