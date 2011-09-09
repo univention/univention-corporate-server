@@ -37,12 +37,9 @@ dojo.declare("umc.widgets.WidgetGroup", umc.widgets.ContainerWidget, {
 
 		// register onChange event
 		umc.tools.forIn( this._widgets, function( iname, iwidget ) {
-			// ignore elements that start with '__'
-			if ( '__' != iname.substr( 0, 2 )) {
-				this.connect( iwidget, 'onChange', dojo.hitch( this, function( newValue ) {
-					this.onChange( newValue, iname );
-				} ) );
-			}
+			this.connect( iwidget, 'onChange', dojo.hitch( this, function( newValue ) {
+				this.onChange( newValue, iname );
+			} ) );
 		}, this );
 		// start processing the layout information
 		this._container.placeAt(this.containerNode);
@@ -52,10 +49,7 @@ dojo.declare("umc.widgets.WidgetGroup", umc.widgets.ContainerWidget, {
 	_getValueAttr: function() {
 		var vals = {};
 		umc.tools.forIn( this._widgets, function( iname, iwidget ) {
-			// ignore elements that start with '__'
-			if ( '__' != iname.substr( 0, 2 )) {
-				vals[ iname ] = iwidget.get( 'value' );
-			}
+			vals[ iname ] = iwidget.get( 'value' );
 		}, this );
 
 		return vals;
@@ -63,10 +57,7 @@ dojo.declare("umc.widgets.WidgetGroup", umc.widgets.ContainerWidget, {
 
 	_setValueAttr: function( value ) {
 		umc.tools.forIn( this._widgets, function( iname, iwidget ) {
-			// ignore elements that start with '__'
-			if ( '__' != iname.substr( 0, 2 )) {
-				iwidget.set( 'value', value[ iname ] );
-			}
+			iwidget.set( 'value', value[ iname ] );
 		}, this );
 	},
 

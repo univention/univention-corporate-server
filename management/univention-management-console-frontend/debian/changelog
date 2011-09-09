@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.26-1) unstable; urgency=low
+
+  * added favicon
+  * GroupWidget: removed check for widgets starting with '__'
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 09 Sep 2011 10:06:35 +0200
+
 univention-management-console-frontend (1.0.25-1) unstable; urgency=low
 
   * fixed _getValueAttr in umc.widgets.MultiObjectSelect (Bug #23195)
