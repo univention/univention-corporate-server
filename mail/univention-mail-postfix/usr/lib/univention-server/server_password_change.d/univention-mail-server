@@ -48,5 +48,6 @@ if [ "$1" = "postchange" ] ; then
 	if [ "$mail_postfix_stoppedbyserverpasswordchange" = "yes" ] ; then
 		echo "starting postfix after server password change" | logger -t "server-password-change"
 		/etc/init.d/postfix start
+		ucr unset mail/postfix/stoppedbyserverpasswordchange
 	fi
 fi
