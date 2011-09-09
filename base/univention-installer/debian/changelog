@@ -1,3 +1,9 @@
+univention-installer (7.0.41-1) unstable; urgency=low
+
+  * removed vga kernel options, use gfxpaxload=keep instead (Bug #22707) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 Sep 2011 09:16:43 +0200
+
 univention-installer (7.0.40-3) unstable; urgency=low
 
   * Still set grub/boot, it's needed for the passing of the boot device from the installer
