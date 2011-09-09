@@ -5,6 +5,8 @@ html {
 body {
 	font-family: Helvetica, "Helvetica Neue", Arial, Geneva, sans-serif;
 	color: #414142;
+	/* disable scrollbars for the main window, long combo boxes may cause scrollbars to be shown */
+	overflow: hidden;
 }
 
 a {
@@ -308,4 +310,12 @@ form {
 .umcCheckBox {
 	margin-right: 23.5em !important;
 }
+
+/* force scrollbars for grids, otherwise vertical scrollbars may be shown is particular circumstances */
+.umcGrid .dojoxGridScrollbox {
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+
 

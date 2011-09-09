@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.28-1) unstable; urgency=low
+
+  * disabled scrollbars for the main window
+  * forced vertical scrollbars for grids
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 09 Sep 2011 11:35:50 +0200
+
 univention-management-console-frontend (1.0.27-1) unstable; urgency=low
 
   * MultiObjectSelect: added element sorting, automatic standby animations
