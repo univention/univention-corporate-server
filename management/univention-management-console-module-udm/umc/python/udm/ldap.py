@@ -140,6 +140,8 @@ class UDM_Module( object ):
 				po.setDn( container )
 			except udm_errors.noObject, e:
 				raise UMC_CommandError( str( e ) )
+		else:
+			container = po.getBase()
 
 		if superordinate is not None:
 			mod = get_module( self.name, superordinate )
@@ -148,6 +150,8 @@ class UDM_Module( object ):
 				superordinate = mod.get( superordinate )
 			else:
 				raise UMC_OptionTypeError( _( 'Could not find an UDM module for the superordinate object %s' ) % superordinate )
+		else:
+			superordinate = udm_objects.get_superordinate( self.module, None, lo, container )
 
 		obj = self.module.object( None, lo, po, superordinate = superordinate )
 		try:

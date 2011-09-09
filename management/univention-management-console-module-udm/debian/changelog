@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.116-1) unstable; urgency=low
+
+  * automatically determine superordinate when creating objects and no
+    superordinate is given; Bug #23564
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 09 Sep 2011 14:24:31 +0200
+
 univention-management-console-module-udm (1.0.115-1) unstable; urgency=low
 
   * automatically determine superordinate when modifying objects; Bug #23564
