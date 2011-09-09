@@ -1,4 +1,4 @@
-Copyright 2005-2010 Univention GmbH
+Copyright 2005-2011 Univention GmbH
 
 http://www.univention.de/
 
@@ -25,12 +25,3 @@ You should have received a copy of the GNU Affero General Public
 License with the Debian GNU/Linux or Univention distribution in file
 /usr/share/common-licenses/AGPL-3; if not, see
 <http://www.gnu.org/licenses/>.
-
-=============================================================================
-
-conffiles/etc/init.d/cyrus22:
-
-Is based on a script from Moraes Holschuh <hmh@debian.org>
-
-#		Copr. 2001 by Henrique de Moraes Holschuh <hmh@debian.org>
-#		Distributed under the GPL version 2

@@ -1,3 +1,14 @@
+univention-mail-cyrus (4.0.0-1) unstable; urgency=low
+
+  * renamed package
+  * package cleanup for UCS 3.0-0 
+  * removed kolab2 stuff
+  * changed ldap attributes and objectclasses 
+  * fixed, changed templates
+    (Bug #23560)
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Sep 2011 17:44:42 +0200
+
 univention-mail-cyrus-kolab2 (3.0.25-1) unstable; urgency=low
 
   * fixed renaming of folder subscriptions in

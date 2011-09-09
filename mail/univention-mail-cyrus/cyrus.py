@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Mail Cyrus Kolab2
+# Univention Mail Cyrus
 #  listener module: creating mailboxes and sieve scripts
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -36,14 +36,7 @@ import os, string, pwd, grp, univention.debug, subprocess
 name='cyrus'
 description='Create default imap folders'
 filter='(&(objectClass=univentionMail)(uid=*))'
-attributes=['uid', 'mailPrimaryAddress', 'mailGlobalSpamFolder', 'kolabHomeServer']
-
-def is_groupware_user(new):
-	if new.has_key('objectClass'):
-		for oc in new['objectClass']:
-			if oc.lower() == 'kolabinetorgperson':
-				return True
-	return False
+attributes=['uid', 'mailPrimaryAddress', 'univentionMailHomeServer']
 
 def is_cyrus_murder_backend():
 	if (listener.baseConfig.get('mail/cyrus/murder/master') and listener.baseConfig.get('mail/cyrus/murder/backend/hostname')):
@@ -98,7 +91,11 @@ def move_cyrus_murder_mailbox(new, old):
 
 def handler(dn, new, old):
 	fqdn = '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
-	if new and (is_groupware_user(new) and new.has_key('kolabHomeServer') and new['kolabHomeServer'][0] == fqdn) or (not is_groupware_user(new)):
+	if new:
+
+		if new.has_key('univentionMailHomeServer') and new['univentionMailHomeServer'][0] and new['univentionMailHomeServer'][0] != fqdn:
+			return
+
 		if not old:
 				create_cyrus_mailbox(new)
 		else:
@@ -111,16 +108,10 @@ def handler(dn, new, old):
 				else:
 					create_cyrus_mailbox(new)
 			else:
-				if (is_groupware_user(new) and (not is_groupware_user(old))):
-				# if the groupware option changed to yes
-					create_cyrus_mailbox(new)
-					# FIXME: case for mailbox rename
-				else: # the groupware option is unchanged or changed to no
-					# no behaviour change here just a bit improved readability
-					old_kolabHomeServer = old.get('kolabHomeServer', [''])[0]
-					if (old_kolabHomeServer and old_kolabHomeServer != fqdn):
-						# the kolabHomeServer changed:
-						move_cyrus_murder_mailbox(new, old)
-					#elif (old_kolabHomeServer == fqdn):
-						# cyrus-mailboxrename.py will take care of this case
+				oldHomeServer = old.get('univentionMailHomeServer', [''])[0]
+				if (oldHomeServer and oldHomeServer != fqdn):
+					# the univentionMailHomeServer changed:
+					move_cyrus_murder_mailbox(new, old)
+				#elif (oldHomeServer == fqdn):
+					# cyrus-mailboxrename.py will take care of this case
 

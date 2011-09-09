@@ -1,9 +1,9 @@
-#! /bin/sh
+#!/bin/sh
 #
 # Univention Mail Cyrus
 #  join script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,22 +32,20 @@
 
 VERSION=1
 
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
-fi
+. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/all.sh
+joinscript_init
 
-touch /usr/lib/univention-install/.index.txt
-
-test -n "`grep "univention-mail-cyrus v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
-
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 cp /etc/univention/ssl/$hostname.$domainname/cert.pem /var/lib/cyrus/
 cp /etc/univention/ssl/$hostname.$domainname/private.key /var/lib/cyrus/
 chmod 600 /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key
 chown cyrus /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key
 
-test -n "`grep "univention-mail-cyrus v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-mail-cyrus v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+# add service to my host object
+ucs_addServiceToLocalhost "IMAP Server" "$@"
+
+joinscript_save_current_version
 
 exit 0

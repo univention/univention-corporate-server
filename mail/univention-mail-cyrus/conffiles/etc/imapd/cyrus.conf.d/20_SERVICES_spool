@@ -16,7 +16,7 @@ else:
 	frontend_emailId = "%s@%s" % ('.'.join([ baseConfig['hostname'], baseConfig.get('domainname','undefined') ]) , baseConfig.get('domainname','undefined'))
 
 # If we run without a Cyrus Murder Master MUPDATE server
-# or if we have registered as a 'kolab2' service provider (aka 'backend' or 'spool')
+# or if we have registered as a service provider (aka 'backend' or 'spool')
 if not (baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyrus/murder/master'] != '') \
    or (baseConfig.has_key('mail/cyrus/murder/backends') \
        and backend_emailId in baseConfig['mail/cyrus/murder/backends'].split(' ')):

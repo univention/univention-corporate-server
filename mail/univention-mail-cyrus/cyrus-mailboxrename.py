@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Mail Cyrus Kolab2
+# Univention Mail Cyrus
 #  listener module: renaming mailboxes
 #
-# Copyright 2010 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -36,14 +36,7 @@ import os, string, pwd, grp, univention.debug, subprocess, glob
 name='cyrus-mailboxrename'
 description='Rename default imap folders'
 filter='(&(objectClass=univentionMail)(uid=*))'
-attributes=['uid', 'mailPrimaryAddress', 'mailGlobalSpamFolder', 'kolabHomeServer']
-
-def is_groupware_user(new):
-	if new.has_key('objectClass'):
-		for oc in new['objectClass']:
-			if oc.lower() == 'kolabinetorgperson':
-				return True
-	return False
+attributes=['uid', 'mailPrimaryAddress', 'univentionMailHomeServer']
 
 def is_cyrus_murder_backend():
 	if (listener.baseConfig.get('mail/cyrus/murder/master') and listener.baseConfig.get('mail/cyrus/murder/backend/hostname')):
@@ -106,13 +99,13 @@ def cyrus_usermailbox_delete(old):
 def handler(dn, new, old):
 	fqdn = '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
 	if old:
-		old_kolabHomeserver = old.get('kolabHomeServer', [''])[0]
+		oldHomeserver = old.get('univentionMailHomeServer', [''])[0]
 		old_mailPrimaryAddress = old.get('mailPrimaryAddress', [''])[0]
-		if (is_groupware_user(old) and old_mailPrimaryAddress and old_kolabHomeserver == fqdn) or (not is_groupware_user(old)):
+		if old_mailPrimaryAddress and oldHomeserver == fqdn:
 			# Old mailbox is local to this host
 			if new:
-				new_kolabHomeserver = new.get('kolabHomeServer', [''])[0]
-				if (is_groupware_user(new) and new_kolabHomeserver == fqdn) or (not is_groupware_user(new)):
+				newHomeserver = new.get('univentionMailHomeServer', [''])[0]
+				if newHomeserver == fqdn:
 					# this host continues hosting the mailbox
 					new_mailPrimaryAddress = new.get('mailPrimaryAddress', [''])[0]
 					if new_mailPrimaryAddress:
@@ -123,8 +116,8 @@ def handler(dn, new, old):
 					else: # old_mailPrimaryAddress was removed:
 						cyrus_usermailbox_delete(old)
 				else:
-					# this is true if is_groupware_user(new) and new_kolabHomeserver != fqdn):
-					# Must not delete mailbox without checking if new_kolabHomeServer might call move_cyrus_murder_mailbox
+					# this is true if is_groupware_user(new) and newHomeserver != fqdn):
+					# Must not delete mailbox without checking if newHomeServer might call move_cyrus_murder_mailbox
 					#if not is_cyrus_murder_backend():
 					#	cyrus_usermailbox_delete(old)
 					pass

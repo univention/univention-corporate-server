@@ -1,10 +1,10 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
-# Univention Mail Cyrus Kolab2
+# Univention Mail Cyrus
 #  helper script: create mailboxes
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -38,8 +38,17 @@ import grp
 import os
 import optparse
 import univention.config_registry
+import time
 
-jobPath="/var/spool/cyrus/jobs/mailbox/create/user"
+jobPath = "/var/spool/cyrus/jobs/mailbox/create/user"
+cr = univention.config_registry.ConfigRegistry()
+cr.load()
+sieveSpamFilter =  """# Univention Sieve Script - generated on %s
+require ["fileinto", "vacation"];
+if header :matches "X-Spam-Status" "Yes,*" {
+	fileinto "INBOX/%s";
+	stop;
+}""" % (time.asctime(time.localtime()), cr.get('mail/cyrus/folder/spam', "Spam"))
 
 # save mailbox name if creation failed
 def failed(mailBox, remote, e):
@@ -50,9 +59,6 @@ def failed(mailBox, remote, e):
 		fd = os.open(path, os.O_CREAT)
 		os.close(fd)
 	sys.exit(1)
-
-cr = univention.config_registry.ConfigRegistry()
-cr.load()
 
 # options
 password = ""
@@ -99,10 +105,23 @@ if not remote:
 	sieve = '/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domain[0], domain, fsUser[0], fsUser)
 	if not os.path.exists(sieve):
 		os.makedirs(sieve, mode=0777)
-		cyrus_id=pwd.getpwnam('cyrus')[2]
-		mail_id=grp.getgrnam('mail')[2]
-		os.chown(sieve, cyrus_id, mail_id)
+		cyrusId=pwd.getpwnam('cyrus')[2]
+		mailId=grp.getgrnam('mail')[2]
+		os.chown(sieve, cyrusId, mailId)
 
+		# create default spam sieve script
+		if cr.is_true("mail/cyrus/sieve/spam", True):
+			sieveScript = os.path.join(sieve, "default.script")
+			sieveBc = os.path.join(sieve, "default.bc")
+			sieveLink = os.path.join(sieve, "defaultbc")
+			FILE = open(sieveScript, "w")
+			FILE.writelines(sieveSpamFilter)
+			FILE.close()
+			os.system("/usr/lib/cyrus/bin/sievec %s %s" % (sieveScript, sieveBc))
+			os.symlink("default.bc", sieveLink)
+			os.chown(sieveScript, cyrusId, mailId)
+			os.chown(sieveBc, cyrusId, mailId)
+	
 # overwrite hostname if mail/cyrus/murder/backend/hostname 
 if not remote:
 	murder = cr.get("mail/cyrus/murder/backend/hostname", "")

@@ -3,7 +3,7 @@
 # Univention Mail Cyrus
 #  postinst script for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,114 +29,57 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-ucs_role=$(ucr get server/role)
+
+# update to 3.0-0 cleanup Bug #23560
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; then
+	continue
+fi 
+
+dpkg-statoverride --add cyrus sasl 640 /etc/univention/templates/files/etc/imapd/imapd.conf || true
+
+#DEBHELPER#
 
 if [ -e /etc/sasldb2 ]; then
 	chown root.sasl /etc/sasldb2
 fi
-
-univention-config-registry set	ldap/port?389 \
-								mail/cyrus?yes \
-								mail/cyrus/sieve/listen_host?localhost \
-								mail/cyrus/userlogfiles?yes \
-								mail/cyrus/imap/quotainterval?60
-
-dpkg-statoverride --add root sasl 660 /etc/sasldb2 || true
-
-
-#DEBHELPER#
-
-CHROOT=/var/spool/postfix
-
-addgroup --system postfix || true
-
-adduser --system --home ${CHROOT} --no-create-home --disabled-password --ingroup postfix postfix
-
-adduser postfix mail
-
-if [ -e /etc/postfix/transport ]; then
-	postmap /etc/postfix/transport
-fi
-
-eval `univention-config-registry shell hostname domainname`
+eval "$(univention-config-registry shell hostname domainname server/role)"
 
 cp /etc/univention/ssl/$hostname.$domainname/cert.pem /var/lib/cyrus/ || true
 cp /etc/univention/ssl/$hostname.$domainname/private.key /var/lib/cyrus/ || true
 chmod 600 /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
 chown cyrus /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
 
-univention-config-registry commit /etc/cyrus.conf
-univention-config-registry commit /etc/imapd.conf
-univention-config-registry commit /etc/default/saslauthd
+univention-config-registry set mail/cyrus?yes \
+	mail/cyrus/autostart?yes \
+	mail/cyrus/imap?yes \
+	mail/cyrus/imap/lookup_groups?yes \
+	mail/cyrus/pop?yes \
+	mail/cyrus/sieve/listen_host?all \
+	mail/cyrus/idlemethod?idled \
+	mail/cyrus/imap/quotainterval?60 \
+	mail/cyrus/mailbox/rename?no \
+	mail/cyrus/mailbox/delete?no \
+	mail/cyrus/backup-metadata/cron?"15 3 * * *" \
+	mail/cyrus/squatter/cron?"#30 3 * * Sun" \
+	mail/cyrus/ldap/pwfile?"/etc/cyrus-ldap.secret" \
+	mail/cyrus/sieve/spam?true
 
-chown -R cyrus:mail /etc/univention/templates/files/var/spool/sieve
-chmod 600 /etc/univention/templates/files/var/spool/sieve/*
-
-univention-config-registry set mail/antispam/globalfolder="spam@$domainname"
-
-# Mail-Quota
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.5; then
-	univention-config-registry set	mail/cyrus/imap/quota?"yes" \
-									mail/cyrus/imap/quotawarnpercent?90 \
-									mail/cyrus/imap/quotawarnkb?0 \
-									mail/cyrus/imap/quotainterval?60
+# new installations
+if [ "$1" = "configure" -a -z "$2" ]; then
+	univention-config-registry set mail/cyrus/imap/quota?"yes" \
+		mail/cyrus/imap/quotawarnpercent?90 \
+		mail/cyrus/imap/quotawarnkb?0 \
+		mail/cyrus/squatter/cron?"30 3 * * Sun"
 fi
 
-if [ "$1" = configure -a -z "$2" ] ; then
-       # default for new installs
-	univention-config-registry set mail/cyrus/squatter/cron?"30 3 * * Sun"
-else
-	univention-config-registry set mail/cyrus/squatter/cron?"#30 3 * * Sun"
-fi
 
-
-if [ -x /etc/init.d/postfix ]; then
-	/etc/init.d/postfix restart
-fi
-
-/etc/init.d/saslauthd stop
-/etc/init.d/saslauthd start
-
-univention-config-registry commit /etc/init.d/cyrus21 || true
-univention-config-registry commit /etc/init.d/cyrus2.2 || true
-killall -15 cyrmaster
-cyrver=`univention-config-registry get mail/cyrus/version`
-if [ "$cyrver" == "2.2" ]; then
-    /etc/init.d/cyrus2.2 restart
-else
-    /etc/init.d/cyrus21 restart
-fi
-
-/etc/init.d/univention-directory-listener crestart
-
-#freebusy
-freebusy_pwd=`mkpasswd --hash=md5 -s freebusy`
-useradd -d /var/freebusy -p "$freebusy_pwd" freebusy
-passwd -n 99999 freebusy
-mkdir -p /var/freebusy/var
-# prepare chroot-jail, look if user freebusy is already set to ftp/chroot
-(cd /var/freebusy/var; ln -s ../ freebusy)
-chown -R freebusy /var/freebusy
-if [ `univention-config-registry dump | egrep  "^ftp/chroot.*freebusy$" | wc -m` -lt 1 ];
-	then
-	i=0;
-	while [ `univention-config-registry get "ftp/chroot$i" | wc -m` -gt 1 ];
-	  do
-	  ((i=i+1));
-	done;
-	univention-config-registry set ftp/chroot$i=freebusy;
-fi
-# allow ftp for freebusy
-if [ `univention-config-registry dump | egrep  "^ftp/allow.*freebusy$" | wc -m` -lt 1 ];
-	then
-	i=0;
-	while [ `univention-config-registry get "ftp/allow$i" | wc -m` -gt 1 ];
-	  do
-	  ((i=i+1));
-	done;
-	univention-config-registry set ftp/allow$i=freebusy;
-fi
-
+CHROOT=/var/spool/postfix
+addgroup --system postfix || true
+adduser --system --home ${CHROOT} --no-create-home --disabled-password --ingroup postfix postfix 
+adduser postfix mail 
+dpkg-statoverride --add root sasl 660 /etc/sasldb2 || true
+	
+# create cyrus password
 if [ ! -e /etc/cyrus.secret ]; then
 	TMP=$(tempfile)
 	makepasswd --nocrypt > $TMP
@@ -145,31 +88,41 @@ if [ ! -e /etc/cyrus.secret ]; then
 	rm -f $TMP
 	usermod -p "$PASSWD_CRYPT" cyrus
 	echo "$PASSWD" >/etc/cyrus.secret
-	chown cyrus /etc/cyrus.secret
 	chmod 600  /etc/cyrus.secret
 fi
+chown cyrus /etc/cyrus.secret
 
-if [ -e /etc/cyrus.secret ] && [ "$1" = configure ]&& dpkg --compare-versions "$2" lt "2.0.7-1"; then
-	TMP=$(tempfile)
-	cat /etc/cyrus.secret > $TMP
-	PASSWD=$(cat $TMP)
-	PASSWD_CRYPT=$(mkpasswd --hash=md5 -s < $TMP)
-	rm -f $TMP
-	usermod -p "$PASSWD_CRYPT" cyrus
-	chown cyrus /etc/cyrus.secret
-	chmod 600  /etc/cyrus.secret
-fi
-
-
+# if creatings of imap accounts fails, info will be stored here
 if [ ! -d /var/spool/cyrus/jobs/mailbox/create/user ]; then
 	mkdir -p /var/spool/cyrus/jobs/mailbox/create/user
 fi
-
 if [ ! -d /var/spool/cyrus/jobs/mailbox/create/admin ]; then
 	mkdir -p /var/spool/cyrus/jobs/mailbox/create/admin
 fi
 
+# restart saslauthd
+if [ -x /etc/init.d/saslauthd ]; then
+	/etc/init.d/saslauthd stop || true
+	sleep 1
+	/etc/init.d/saslauthd start || true
+fi
 
-chown cyrus:mail /var/spool/sieve/*sieve
+# run join script
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/81univention-mail-cyrus.inst || true
+fi
+
+# restart cyrus
+if [ -x /etc/init.d/cyrus2.2 ]; then
+	/etc/init.d/cyrus2.2 restart
+fi
+if [ -x /etc/init.d/cyrus-imapd ]; then
+	/etc/init.d/cyrus-imapd restart
+fi
+
+# restart listener
+if [ -x /etc/init.d/univention-directory-listener ]; then
+	/etc/init.d/univention-directory-listener crestart
+fi
 
 exit 0

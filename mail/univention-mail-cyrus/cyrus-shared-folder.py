@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Mail Cyrus Kolab2
+# Univention Mail Cyrus
 #  listener module: manages shared folders
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -39,9 +39,9 @@ ip=listener.baseConfig['interfaces/eth0/address']
 
 name='cyrus-shared-folder'
 description='Create shared folders'
-filter='(&(objectClass=kolabSharedFolder)(|(kolabHomeServer=%s)(kolabHomeServer=%s.%s)))' % (ip, hostname, domainname)
+filter='(&(objectClass=univentionMailSharedFolder)(|(univentionMailHomeServer=%s)(univentionMailHomeServer=%s.%s)))' % (ip, hostname, domainname)
 
-directory='/var/cache/univention-mail-cyrus-kolab2/'
+directory='/var/cache/univention-mail-cyrus/'
 
 modrdn='1'
 
@@ -72,8 +72,8 @@ def handler(dn, new, old, command):
 		pass
 
 	# is this a outlook compatible folder?
-	if ( new and new.has_key("univentionKolabUserNamespace") and new[ 'univentionKolabUserNamespace' ][ 0 ] == 'TRUE' ) or \
-			( old and old.has_key("univentionKolabUserNamespace") and old[ 'univentionKolabUserNamespace' ][ 0 ] == 'TRUE' ):
+	if ( new and new.has_key("univentionMailUserNamespace") and new[ 'univentionMailUserNamespace' ][ 0 ] == 'TRUE' ) or \
+			( old and old.has_key("univentionMailUserNamespace") and old[ 'univentionMailUserNamespace' ][ 0 ] == 'TRUE' ):
 		outlook = '-o'
 	else:
 		outlook = ''
@@ -83,15 +83,6 @@ def handler(dn, new, old, command):
 		try:
 			listener.setuid(0)
 			p = os.popen( '/usr/sbin/univention-cyrus-set-acl %s %s \'%s\' %s' % ( outlook, mailbox, email, policy ) )
-			p.close()
-			listener.unsetuid()
-		except:
-			pass
-
-	def setfoldertype(mailbox, foldertype):
-		try:
-			listener.setuid(0)
-			p = os.popen( '/usr/sbin/univention-cyrus-set-foldertype-shared %s %s %s' % ( outlook, mailbox, foldertype ) )
 			p.close()
 			listener.unsetuid()
 		except:
@@ -139,8 +130,8 @@ def handler(dn, new, old, command):
 		return (entry[:last_space], entry[last_space+1:])
 
 	# Create a new shared folder
-	if (new and not old) or (not old.has_key('kolabHomeServer')) or (new.has_key('kolabHomeServer') and old.has_key('kolabHomeServer') and new['kolabHomeServer'] != old['kolabHomeServer']\
-									 and new['kolabHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname,domainname)]):
+	if (new and not old) or (not old.has_key('univentionMailHomeServer')) or (new.has_key('univentionMailHomeServer') and old.has_key('univentionMailHomeServer') and new['univentionMailHomeServer'] != old['univentionMailHomeServer']\
+									 and new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname,domainname)]):
 
 		if new.has_key('cn') and new['cn'][0]:
 
@@ -185,16 +176,13 @@ def handler(dn, new, old, command):
 				if new.has_key('cyrus-userquota') and new['cyrus-userquota'][0]:
 					setquota(name, new['cyrus-userquota'][0])
 
-				if new.has_key('univentionKolabSharedFolderType') and new['univentionKolabSharedFolderType'][0]:
-					setfoldertype(name, new.get('univentionKolabSharedFolderType')[0])
-
 				listener.unsetuid()
 
 			except:
 				pass
 
 	# Delete existing shared folder
-	if (old and not new) or (not new.has_key('kolabHomeServer')) or (not new['kolabHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname,domainname)]):
+	if (old and not new) or (not new.has_key('univentionMailHomeServer')) or (not new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname,domainname)]):
 
 		try:
 			listener.setuid(0)
@@ -210,15 +198,12 @@ def handler(dn, new, old, command):
 	# Different possibilities
 	# 1. The shared folder name changed
 	# 2. the quota changed
-	# 3. the kolabdeleteflag changed
+	# 3. the deleteflag changed
 	# 4. readers were added
 	# 5. readers were removed
 	# 6. reader permissions were changed
 	if old and new:
 		name = '"%s"' % new['cn'][0]
-
-		if new.has_key('univentionKolabSharedFolderType') and new['univentionKolabSharedFolderType'][0]:
-			setfoldertype(name, new.get('univentionKolabSharedFolderType')[0])
 
 		if old.has_key('cyrus-userquota') and old['cyrus-userquota'][0] and not new.has_key('cyrus-userquota'):
 			setquota(name, "none")
