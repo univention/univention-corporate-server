@@ -1,3 +1,9 @@
+univention-sasl (1.0.0-1) unstable; urgency=low
+
+  * set compat version to 7 (Bug #23565)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 09 Sep 2011 17:45:30 +0200
+
 univention-sasl (1.0.0-0) unstable; urgency=low
 
   * initial version (Bug #23565)
