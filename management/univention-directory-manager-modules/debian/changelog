@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.218-1) unstable; urgency=low
+
+  * fixed univention-sync-memberuid (Bug #23281)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 09 Sep 2011 12:06:11 +0200
+
 univention-directory-manager-modules (6.0.217-1) unstable; urgency=low
 
   * added samba privilege SeSecurityPrivilege Bug #2619

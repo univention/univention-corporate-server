@@ -70,9 +70,19 @@ if options.test:
 for grp in groups:
 	dn, attrs = grp
 	old = []
+	new = []
 	if attrs.has_key( 'memberUid' ):
 		old = attrs[ 'memberUid' ]
-	new = map( lambda x: x[ x.find( '=' ) + 1 : x.find( ',' ) ], attrs.get( 'uniqueMember', [] ) )
+
+	for uniqueMember in attrs.get( 'uniqueMember', [] ):
+		result = lo.search_s( uniqueMember, ldap.SCOPE_BASE, '(objectclass=*)' )
+		if not result:
+			ud.debug( ud.ADMIN, ud.ERROR, 'empty result for uniqueMember %s' % uniqueMember)
+			print 'ERROR: empty result for uniqueMember %s' % uniqueMember
+			continue
+		uniqueMemberAttrs = result[0][1]
+		if uniqueMemberAttrs.get('uid'):
+			new.append( uniqueMemberAttrs['uid'][0] )
 
 	old.sort()
 	new.sort()
