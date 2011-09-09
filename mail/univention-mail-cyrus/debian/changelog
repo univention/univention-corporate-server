@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.3-1) unstable; urgency=low
+
+  * and removed transition package univention-mail-cyrus-kolab2 (Bug #23560) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 Sep 2011 16:03:28 +0200
+
 univention-mail-cyrus (4.0.2-1) unstable; urgency=low
 
   * added transition package univention-mail-cyrus-kolab2 (Bug #23560)
