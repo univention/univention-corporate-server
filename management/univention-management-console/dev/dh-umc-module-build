@@ -66,7 +66,7 @@ def do_package( package, core ):
 		for module in modules:
 			for po_file in module.js_po_files:
 				# using python as language seems to work better than perl
-				dh_umc.create_po_file( po_file, package, module.js_module_file, 'python' )
+				dh_umc.create_po_file( po_file, package, module.js_files, 'python' )
 				dh_umc.create_json_file( po_file )
 
 	# build xml PO files
