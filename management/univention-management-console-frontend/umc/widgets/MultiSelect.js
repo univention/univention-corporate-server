@@ -19,7 +19,7 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 
 	// value: String[]
 	//		The widgets value, an array of strings containing all elements that are selected.
-	value: [],
+	value: null,
 
 	// we need the plugin for selection via checkboxes
 	plugins : {
@@ -44,6 +44,12 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 	// force the height of the widget
 	//height: '110px',
 	autoHeight: 5,
+
+	postMixinProperties: function() {
+		if (!dojo.isArray(this.value)) {
+			this.value = [];
+		}
+	},
 
 	postCreate: function() {
 		this.inherited(arguments);

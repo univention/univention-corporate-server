@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.29-1) unstable; urgency=low
+
+  * removed static reference to value in MultiObjectSelect (Bug #23195)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 09 Sep 2011 12:30:51 +0200
+
 univention-management-console-frontend (1.0.28-1) unstable; urgency=low
 
   * disabled scrollbars for the main window
