@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.115-1) unstable; urgency=low
+
+  * automatically determine superordinate when modifying objects; Bug #23564
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 09 Sep 2011 14:07:29 +0200
+
 univention-management-console-module-udm (1.0.114-1) unstable; urgency=low
 
   * deactivate widgets if editalbe is false when an object is edited; Bug #23572

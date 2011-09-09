@@ -182,7 +182,9 @@ class UDM_Module( object ):
 		"""Modifies a LDAP object"""
 		lo, po = get_ldap_connection()
 
-		obj = self.module.object( None, lo, po, dn = ldap_object.get( '$dn$' ) )
+		superordinate = udm_objects.get_superordinate( self.module, None, lo, ldap_object[ '$dn$' ] )
+		MODULE.info( 'Modifying object %s with superordinate %s' % ( ldap_object[ '$dn$' ], superordinate ) )
+		obj = self.module.object( None, lo, po, dn = ldap_object.get( '$dn$' ), superordinate = superordinate )
 		del ldap_object[ '$dn$' ]
 		if '$options$' in ldap_object:
 			obj.options = filter( lambda option: ldap_object[ '$options$' ][ option ] == True, ldap_object[ '$options$' ].keys() )
