@@ -46,6 +46,9 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 	autoHeight: 5,
 
 	postMixinProperties: function() {
+		this.inherited(arguments);
+
+		// in case 'value' is not specified, generate a new array
 		if (!dojo.isArray(this.value)) {
 			this.value = [];
 		}

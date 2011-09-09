@@ -30,7 +30,7 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 
 	name: '',
 
-	value: [],
+	value: null,
 
 	i18nClass: 'umc.app',
 
@@ -50,6 +50,13 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 	_detailDialog: null,
 
 	postMixInProperties: function() {
+		this.inherited(arguments);
+
+		// in case 'value' is not specified, generate a new array
+		if (!dojo.isArray(this.value)) {
+			this.value = [];
+		}
+
 		// if 'formatter' is a string, parse it
 		if (dojo.isString(this.formatter)) {
 			// string may start with 'javascript:'
