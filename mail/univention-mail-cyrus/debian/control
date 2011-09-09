@@ -7,6 +7,19 @@ Build-Depends: debhelper (>> 7),
  ucslint
 Standards-Version: 3.8.2
 
+Package: univention-mail-cyrus-kolab2
+Architecture: all
+Depends: univention-mail-cyrus (= ${binary:Version})
+Description: UCS - imap configuration transition package
+ Package for upgrading from old package univention-mail-cyrus-kolab2 to
+ the new package univention-mail-cyrus.  This package can be purged at
+ anytime once the univention-mail-cyrus package has been installed.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
 Package: univention-mail-cyrus
 Architecture: all
 Depends: univention-config-registry, 
@@ -24,7 +37,7 @@ Depends: univention-config-registry,
  shell-univention-lib (>> 1.0.16)
 Conflicts: univention-mail-cyrus-imap, 
  univention-mail-cyrus-pop,
- univention-mail-cyrus-kolab2
+ univention-mail-cyrus-kolab2 (<< ${binary:Version})
 Provides: univention-mail-cyrus-kolab2,
  univention-mail-cyrus-pop,
  univention-mail-cyrus-imap
