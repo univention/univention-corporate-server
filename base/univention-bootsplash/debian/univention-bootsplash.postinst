@@ -58,7 +58,7 @@ fi
 
 
 univention-config-registry set \
-	bootsplash/theme?"ucs"
+	bootsplash/theme?"ucs" \
 	grub/bootsplash?splash
 
 #DEBHELPER#
