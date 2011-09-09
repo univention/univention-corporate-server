@@ -1,3 +1,10 @@
+univention-bootsplash (4.0.5-1) unstable; urgency=low
+
+  * set grub/bootsplash according to splash config in grub/append
+  * remove splash stuff from grub/append (Bug #22117)
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 Sep 2011 10:07:17 +0200
+
 univention-bootsplash (4.0.4-2) unstable; urgency=low
 
   * Do not set the obsolete grub/vga variable any longer (Bug #22115)

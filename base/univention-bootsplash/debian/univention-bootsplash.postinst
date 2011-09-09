@@ -30,31 +30,43 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# update to ucs 3.0 with plymouth
+eval "$(univention-config-registry shell)"
+
+# update to ucs 3.0 with plymouth, can be removed after 3.0-0
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; then
 	univention-config-registry set bootsplash/theme="ucs"
+
+	splash=false
+	if echo $grub_append | grep -iq '\<splash\>'; then   
+		splash=true
+	fi
+	if echo $grub_append | grep -iq '\<splash=silent\>'; then
+		splash=true
+	fi
+	if echo $grub_append | grep -iq '\<nosplash\>'; then
+		splash=false
+	fi
+	# remove splash stuff from grub/append
+	new=$(echo $grub_append | sed 's|\<nosplash\>||g;s|\<splash=silent\>||g;s|\<splash\>||g')
+	univention-config-registry set grub/append="$new"
+	if [ "true" = "$splash" ]; then
+		univention-config-registry set grub/bootsplash=splash
+	else
+		univention-config-registry set grub/bootsplash=nosplash
+	fi
 fi
 
-eval "$(univention-config-registry shell)"
 
 univention-config-registry set \
 	bootsplash/theme?"ucs"
-
-# TODO grub2 configuration 
-# splash in GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
-#if [ -z "`echo $grub_append | grep splash`" ] ; then
-#	univention-baseconfig set grub/append="splash $grub_append"
-#fi
-
+	grub/bootsplash?splash
 
 #DEBHELPER#
 
 update-initramfs -u
 
-if [ -x /usr/bin/update-grub2 ]; then
-	update-grub2
-elif [ -x /sbin/lilo ]; then
-	lilo
+if [ -x /usr/bin/update-grub ]; then
+	update-grub
 fi
 
 exit 0
