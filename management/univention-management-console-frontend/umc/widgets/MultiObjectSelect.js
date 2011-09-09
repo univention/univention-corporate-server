@@ -199,7 +199,7 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
-		this.title = this._('Add new object');
+		this.title = this._('Add objects');
 	},
 
 	buildRendering: function() {

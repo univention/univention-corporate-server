@@ -391,27 +391,20 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		// standby animation when loading data
 		this.connect(this._grid, "_onFetchComplete", function() {
 			this.standby(false);
+			this._grid.selection.clear();
+			this._updateFooterContent();
 		});
 		this.connect(this._grid, "_onFetchError", function() {
 			this.standby(false);
+			this._grid.selection.clear();
+			this._updateFooterContent();
 		});
 
 		// when a cell gets modified, save the changes directly back to the server
 		this.connect(this._grid, 'onApplyCellEdit', dojo.hitch(this._dataStore, 'save'));
 
 		// disable edit menu in case there is more than one item selected
-		this.connect(this._grid, 'onSelectionChanged', function() {
-			var nItems = this._grid.selection.getSelectedCount();
-			if (1 == nItems) {
-				this._footerLegend.set('content', this._('1 object selected'));
-			}
-			else if (1 < nItems) {
-				this._footerLegend.set('content', this._('%d objects selected', nItems));
-			}
-			else {
-				this._footerLegend.set('content', this._('No object selected'));
-			}
-		});
+		this.connect(this._grid, 'onSelectionChanged', '_updateFooterContent');
 
 		/*// disable edit menu in case there is more than one item selected
 		this.connect(this._grid, 'onSelectionChanged', function() {
@@ -423,6 +416,20 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		// -> handle context menus when clicked in the last column
 		// -> call custom handler when clicked on any other cell
 		this.connect(this._grid, 'onCellContextMenu', '_updateContextItem');
+	},
+
+	_updateFooterContent: function() {
+		var nItems = this._grid.selection.getSelectedCount();
+		var nItemsTotal = this._grid.rowCount;
+		if (1 == nItemsTotal) {
+			this._footerLegend.set('content', this._('%d of 1 object selected', nItems));
+		}
+		else if (1 < nItemsTotal) {
+			this._footerLegend.set('content', this._('%d of %d objects selected', nItems, nItemsTotal));
+		}
+		else {
+			this._footerLegend.set('content', this._('No object found'));
+		}
 	},
 
 	_updateContextItem: function(evt) {

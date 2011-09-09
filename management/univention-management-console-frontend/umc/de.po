@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-09 12:58+0200\n"
+"POT-Creation-Date: 2011-09-09 15:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,14 +21,15 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
-#: umc/widgets/Grid.js:409
+#: umc/widgets/Grid.js:428
 #, python-format
-msgid "%d objects selected"
-msgstr ""
+msgid "%d of %d objects selected"
+msgstr "%d von %d Objekten ausgewählt"
 
-#: umc/widgets/Grid.js:406
-msgid "1 object selected"
-msgstr ""
+#: umc/widgets/Grid.js:425
+#, python-format
+msgid "%d of 1 object selected"
+msgstr "%d von 1 Objekt ausgewählt"
 
 #: umc/tools.js:197
 #, python-format
@@ -41,11 +42,11 @@ msgstr "Über UMC"
 
 #: umc/widgets/MultiObjectSelect.js:89 umc/widgets/MultiObjectSelect.js:236
 msgid "Add"
-msgstr ""
+msgstr "Hinzufügen"
 
 #: umc/widgets/MultiObjectSelect.js:202
-msgid "Add new object"
-msgstr ""
+msgid "Add objects"
+msgstr "Objekte hinzufügen"
 
 #: umc/tools.js:247
 msgid "An assert statement failed"
@@ -73,7 +74,7 @@ msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
 #: umc/widgets/MultiObjectSelect.js:253
 msgid "Close"
-msgstr ""
+msgstr "Schließen"
 
 #: umc/dialog.js:174
 msgid "Confirmation"
@@ -187,13 +188,17 @@ msgstr "Modul-Hilfetexte"
 msgid "More actions"
 msgstr "Weitere Aktionen"
 
-#: umc/widgets/Grid.js:262 umc/widgets/Grid.js:540
+#: umc/widgets/Grid.js:262 umc/widgets/Grid.js:547
 msgid "More..."
 msgstr "Weitere..."
 
-#: umc/widgets/Grid.js:412 umc/widgets/Grid.js:477
+#: umc/widgets/Grid.js:431
+msgid "No object found"
+msgstr "Keine Objekte wurden gefunden"
+
+#: umc/widgets/Grid.js:484
 msgid "No object selected"
-msgstr ""
+msgstr "Kein Objekt ausgewählt"
 
 #: umc/dialog.js:86
 msgid "Notification"
@@ -213,7 +218,7 @@ msgstr "Passwort"
 
 #: umc/widgets/MultiObjectSelect.js:108
 msgid "Remove"
-msgstr ""
+msgstr "Entfernen"
 
 #: umc/widgets/SearchForm.js:25 umc/widgets/LoginDialog.js:74
 msgid "Reset"

@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.31-1) unstable; urgency=low
+
+  * added missing translations
+  * added number of elements queried to the footer of umc.widgets.Grid
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 09 Sep 2011 15:35:37 +0200
+
 univention-management-console-frontend (1.0.30-1) unstable; urgency=low
 
   * fixed height of MultiSelect elements (Bug #23195)
