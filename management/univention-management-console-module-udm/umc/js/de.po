@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-08 16:54+0200\n"
+"POT-Creation-Date: 2011-09-08 21:19+0200\n"
 "PO-Revision-Date: 2011-09-07 20:25+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr "Alle Container"
 msgid "All types"
 msgstr "All Objekttypen"
 
-#: umc/js/udm.js:466
+#: umc/js/udm.js:465
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -36,7 +36,7 @@ msgstr "Abbrechen"
 msgid "Container"
 msgstr "Container"
 
-#: umc/js/udm.js:161 umc/js/udm.js:327 umc/js/udm.js:456
+#: umc/js/udm.js:161 umc/js/udm.js:327 umc/js/udm.js:455
 msgid "Delete"
 msgstr "Löschen"
 
@@ -80,16 +80,16 @@ msgstr "Pfad"
 msgid "Path of the UDM object."
 msgstr "Pfad des UDM-Objektes"
 
-#: umc/js/udm.js:451
+#: umc/js/udm.js:450
 #, python-format
 msgid "Please confirm the removal of the %d selected objects!"
 msgstr "Bitte bestätigen Sie das Löschen der %d ausgewählten Objekte!"
 
-#: umc/js/udm.js:453
+#: umc/js/udm.js:452
 msgid "Please confirm the removal of the selected object!"
 msgstr "Bitte bestätigen Sie das Löschen des ausgewählten Objektes"
 
-#: umc/js/udm.js:483
+#: umc/js/udm.js:482
 msgid ""
 "Please select a container in the navigation bar. The new object will be "
 "placed at this location."

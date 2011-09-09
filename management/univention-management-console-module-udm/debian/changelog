@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.112-1) unstable; urgency=low
+
+  * fixed getAlterValues() in DetailPage, comparison of old and new values
+    now works with dicts, as well (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 09 Sep 2011 10:37:29 +0200
+
 univention-management-console-module-udm (1.0.111-1) unstable; urgency=low
 
   * UDM module objects may have a description method returning a name,

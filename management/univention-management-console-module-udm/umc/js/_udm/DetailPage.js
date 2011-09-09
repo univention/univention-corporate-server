@@ -673,16 +673,11 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			// existing object .. get only the values that changed
 			umc.tools.forIn(vals, dojo.hitch(this, function(iname, ival) {
 				var oldVal = this._receivedObjFormData[iname];
-				if (dojo.isArray(ival)) {
-					if (dojo.toJson(ival) != dojo.toJson(oldVal)) {
-						newVals[iname] = ival;
-					}
-				}
-				// string .. ignore if empty and if it was not given before
-				else {
-					if (oldVal != ival) {
-						newVals[iname] = ival;
-					}
+
+				// check whether old values and new values differ...
+				// convert to JSON since we may have dicts/arrays as value
+				if (dojo.toJson(ival) != dojo.toJson(oldVal)) {
+					newVals[iname] = ival;
 				}
 			}));
 
