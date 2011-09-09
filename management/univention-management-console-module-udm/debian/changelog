@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.113-1) unstable; urgency=low
+
+  * first step in cleanup the syntax/widget mapping; Bug #23329
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 09 Sep 2011 11:43:01 +0200
+
 univention-management-console-module-udm (1.0.112-1) unstable; urgency=low
 
   * fixed getAlterValues() in DetailPage, comparison of old and new values
