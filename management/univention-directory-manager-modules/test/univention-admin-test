@@ -549,7 +549,6 @@ then
 	module_list policies/pwhistory $LINENO
 	module_list policies/sound $LINENO
 	module_list policies/thinclient $LINENO
-	module_list policies/windowsinstallation $LINENO
 	module_list policies/xfree $LINENO
 fi
 iscorrect="1"
@@ -4397,71 +4396,6 @@ then
 
 	############################################################################
 	############################################################################
-	# policies/windowsinstallation
-	############################################################################
-	############################################################################
-
-	############################################################################
-	# create policies/windowsinstallation
-	############################################################################
-	prequiredclasses="univentionHost"
-	pprohibitedclasses="posixAcount"
-	pfixedattributes="univentionWindowsInstallationUnattendFile"
-	pname="testpolicywindowsinstallation"
-	punattend="unattend.txt"
-
-	adminwrap $LINENO policies/windowsinstallation create \
-	--set requiredObjectClasses=$prequiredclasses  \
-	--set prohibitedObjectClasses=$pprohibitedclasses  \
-	--set fixedAttributes=$pfixedattributes  \
-	--set name=$pname  \
-	--set unattendFile=$punattend \
-	--position \"cn=policies,$ldap_base\" 
-
-	ckthere "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyWindowsInstallation))" "$pname" "object classes" $LINENO
-
-	ckthere "cn=$pname,cn=policies" "base" "(requiredObjectClasses=$prequiredclasses)" "$pname" "required object classes" $LINENO
-
-	ckthere "cn=$pname,cn=policies" "base" "(prohibitedObjectClasses=$pprohibitedclasses)" "$pname" "prohibited object classes" $LINENO
-
-	ckthere "cn=$pname,cn=policies" "base" "(fixedAttributes=$pfixedattributes)" "$pname" "fixed attributes" $LINENO
-
-	ckthere "cn=$pname,cn=policies" "base" "(univentionWindowsInstallationUnattendFile=$punattend)" "$pname" "unattend file" $LINENO
-
-	############################################################################
-	# modify policies/windowsinstallation
-	############################################################################
-	prequiredclasses="uasth"
-	pprohibitedclasses="kbv"
-	pname="testpolicywindowsinstallation"
-	punattend="iloveyou.txt"
-
-	adminwrap $LINENO policies/windowsinstallation modify \
-	--set requiredObjectClasses=$prequiredclasses  \
-	--set prohibitedObjectClasses=$pprohibitedclasses  \
-	--remove fixedAttributes=$pfixedattributes \
-	--set name=$pname  \
-	--set unattendFile=$punattend \
-	--dn \"cn=$pname,cn=policies,$ldap_base\" 
-
-	ckthere "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyWindowsInstallation))" "$pname" "object classes" $LINENO
-
-	ckthere "cn=$pname,cn=policies" "base" "(requiredObjectClasses=$prequiredclasses)" "$pname" "required object classes" $LINENO
-
-	ckthere "cn=$pname,cn=policies" "base" "(prohibitedObjectClasses=$pprohibitedclasses)" "$pname" "prohibited object classes" $LINENO
-
-	cknthere "cn=$pname,cn=policies" "base" "(fixedAttributes=$pfixedattributes)" "$pname" "fixed attributes" $LINENO
-
-	ckthere "cn=$pname,cn=policies" "base" "(univentionWindowsInstallationUnattendFile=$punattend)" "$pname" "unattend file" $LINENO
-
-	adminwrap $LINENO policies/windowsinstallation remove --dn \"cn=$pname,cn=policies,$ldap_base\" 
-
-	cknthere "cn=$pname,cn=policies" "base" "(objectclass=*)" "$pname" "existence" $LINENO
-	
-	policy_append_remove_test $LINENO windowsinstallation
-
-	############################################################################
-	############################################################################
 	# policies/xfree
 	############################################################################
 	############################################################################
@@ -5937,7 +5871,6 @@ then
 			"policies slavepackages" \
 			"policies sound" \
 			"policies thinclient" \
-			"policies windowsinstallation" \
 			"policies xfree" \
 			settings_customattribute \
 			settings_packages \

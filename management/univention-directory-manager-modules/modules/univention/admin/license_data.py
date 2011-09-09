@@ -164,7 +164,6 @@ modules = {
 	'policies/slavepackages': Attributes( UCS ),
 	'policies/sound': Attributes( UCS ),
 	'policies/thinclient': Attributes( UCS ),
-	'policies/windowsinstallation': Attributes( UCS ),
 	'policies/xfree': Attributes( UCS ),
 	'settings/admin': Attributes(),
 	'settings/cn': Attributes(),
