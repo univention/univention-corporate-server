@@ -42,8 +42,7 @@ dojo.declare("umc.modules._udm.MultiObjectSelect", [ umc.widgets.MultiObjectSele
 				label: umc.tools.explodeDn(idn, true).shift() || ''
 			};
 		});
-		console.log('# dnList:', dnList, '->', tmp);
-		return tmp
+		return tmp;
 	},
 
 	postMixInProperties: function() {

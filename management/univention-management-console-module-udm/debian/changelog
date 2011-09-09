@@ -1,3 +1,12 @@
+univention-management-console-module-udm (1.0.117-1) unstable; urgency=low
+
+  * removed debug output
+  * extended validation and handling of error case when saving an object
+  * added German translations
+  (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 09 Sep 2011 12:51:04 +0200
+
 univention-management-console-module-udm (1.0.116-1) unstable; urgency=low
 
   * automatically determine superordinate when creating objects and no

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-08 21:19+0200\n"
+"POT-Creation-Date: 2011-09-09 12:48+0200\n"
 "PO-Revision-Date: 2011-07-27 12:35+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,7 +40,7 @@ msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 msgid "No flavor or valid UDM module name specified"
 msgstr "Keine gültige Variante oder existierendes UDM-Modul wurde angegeben"
 
-#: umc/python/udm/ldap.py:423
+#: umc/python/udm/ldap.py:424
 msgid "None"
 msgstr "Keins"
 

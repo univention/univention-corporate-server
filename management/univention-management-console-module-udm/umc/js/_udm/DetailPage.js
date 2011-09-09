@@ -224,6 +224,16 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			} );
 		}
 
+		// special case for password, it is only required when a new user is added
+		if (!this.newObjectOptions) {
+			dojo.forEach(properties, function(iprop) {
+				if ('password' == iprop.id) {
+					iprop.required = false;
+					return false;
+				}
+			});
+		}
+
 		// render all widgets
 		var widgets = umc.render.widgets( properties );
 
@@ -278,7 +288,6 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				}
 			}
 		}, this);
-		console.log( layout );
 		this._layoutMap = layout;
 
 		if ( '$options$' in widgets ) {
@@ -502,7 +511,6 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 		// hide/show title panes
 		this._visibilityTitlePanes( this._layoutMap );
-		this._visibility
 		// dojo.forEach( this._tabs.getChildren(), dojo.hitch( this, function( tab ) {
 		// 	dojo.forEach( dojo.query( 'div[widgetid*=dijit_TitlePane]', tab.domNode ), dojo.hitch( this, function( node ) {
 		// 		this._visibilityTitlePane( dijit.getEnclosingWidget( node ) );
@@ -554,8 +562,6 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 						dojo.toggleClass( element.$refTitlePane$.domNode, 'dijitHidden', false );
 						visible = true;
 					} else {
-						console.log( 'Hiding:' );
-						console.log( element );
 						dojo.toggleClass( element.$refTitlePane$.domNode, 'dijitHidden', true );
 					}
 				} ) );
@@ -591,52 +597,92 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			}
 		});
 
+		// check whether all required properties are set
+		var errMessage = '' + this._('The following properties need to be specified:') + '<ul>';
+		var allValuesGiven = true;
+		umc.tools.forIn(this._form._widgets, function(iname, iwidget) {
+			// check whether a required property is set
+			var tmpVal = dojo.toJson(iwidget.get('value'));
+			if (iwidget.required && (tmpVal == '""' || tmpVal == '[]' || tmpVal == '{}')) {
+				// value is empty
+				allValuesGiven = false;
+				errMessage += '<li>' + iwidget.label + '</li>';
+			}
+		}, this);
+		errMessage += '</ul>';
+
+		// print out an error message if not all required properties are given
+		if (!allValuesGiven) {
+			umc.dialog.alert(errMessage);
+			return;
+		}
+
 		// before storing the values, make a syntax check of the user input on the server side
 		var params = {
 			objectType: this._editedObjType,
 			properties: valsNoID
 		};
 		this.umcpCommand('udm/validate', params).then(dojo.hitch(this, function(data) {
-			var validation = data.result;
-			var allValid = true;
-			dojo.forEach(data.result, function(iprop) {
-				// make sure the form element exists
-				var iwidget = this._form._widgets[iprop.property];
-				if (!iwidget) {
-					return true;
-				}
-
-				// iprop.valid and iprop.details may be arrays for properties with
-				// multiple values... set all 'true' values to 'null' in order to reset
-				// the original items validation mechanism
-				var iallValid = iprop.valid;
-				var ivalid = iprop.valid === true ? null : iprop.valid;
-				if (dojo.isArray(ivalid)) {
-					for (var i = 0; i < ivalid.length; ++i) {
-						iallValid = iallValid && ivalid[i];
-						ivalid[i] = ivalid[i] === true ? null : ivalid[i];
-					}
-				}
-				allValid = allValid && iallValid;
-
-				// check whether form element is valid
-				iwidget.setValid(ivalid, iprop.details);
-				if (!iallValid) {
-					// mark the title of the subtab (in case we have not done it already)
-					var ipage = this._propertySubTabMap[iprop.property];
-					if (ipage && !ipage.$titleOrig$) {
-						// store the original title
-						ipage.$titleOrig$ = ipage.title;
-						ipage.set('title', '<span style="color:red">' + ipage.title + ' (!)</span>');
-					}
-				}
-			}, this);
-
 			// if all elements are valid, save element
-			if (allValid) {
+			if (this._parseValidation(data.result)) {
 				this.saveChanges(vals);
 			}
 		}));
+	},
+
+	_parseValidation: function(validationList) {
+		// summary:
+		//		Parse the returned data structure from validation/put/add and check
+		//		whether all entries could be validated successfully.
+
+		var allValid = true;
+		var errMessage = this._('The following properties could not be validated:') + '<ul>';
+		dojo.forEach(validationList, function(iprop) {
+			// make sure the form element exists
+			var iwidget = this._form._widgets[iprop.property];
+			if (!iwidget) {
+				return true;
+			}
+
+			// iprop.valid and iprop.details may be arrays for properties with
+			// multiple values... set all 'true' values to 'null' in order to reset
+			// the original items validation mechanism
+			var iallValid = iprop.valid;
+			var ivalid = iprop.valid === true ? null : iprop.valid;
+			if (dojo.isArray(ivalid)) {
+				for (var i = 0; i < ivalid.length; ++i) {
+					iallValid = iallValid && ivalid[i];
+					ivalid[i] = ivalid[i] === true ? null : ivalid[i];
+				}
+			}
+			allValid = allValid && iallValid;
+
+			// check whether form element is valid
+			iwidget.setValid(ivalid, iprop.details);
+			if (!iallValid) {
+				// mark the title of the subtab (in case we have not done it already)
+				var ipage = this._propertySubTabMap[iprop.property];
+				if (ipage && !ipage.$titleOrig$) {
+					// store the original title
+					ipage.$titleOrig$ = ipage.title;
+					ipage.set('title', '<span style="color:red">' + ipage.title + ' (!)</span>');
+				}
+
+				// update the global error message
+				errMessage += '<li>' + this._("%(attribute)s: %(message)s\n", {
+					attribute: iwidget.label,
+					message: iprop.details || this._('Error')
+				}) + '</li>';
+			}
+		}, this);
+		errMessage += '</ul>';
+
+		if (!allValid) {
+			// upon error, show error message
+			umc.dialog.alert(errMessage);
+		}
+
+		return allValid;
 	},
 
 	saveChanges: function(vals) {
@@ -650,8 +696,13 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		else {
 			deffered = this.moduleStore.put(vals);
 		}
-		deffered.then(dojo.hitch(this, function() {
-			this.onClose();
+		deffered.then(dojo.hitch(this, function(result) {
+			if (result.success) {
+				this.onClose();
+			}
+			else {
+				umc.dialog.alert(this._('The object could not be saved: %(details)s', result));
+			}
 		}));
 	},
 
