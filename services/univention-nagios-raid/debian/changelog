@@ -1,4 +1,4 @@
-univention-nagios-raid (1.1.1-1) unstable; urgency=low
+univention-nagios-raid (1.0.2-1) unstable; urgency=low
 
   * automatically register client for nagios service if a RAID exists and
     the nagios contact e-mail address is set; Bug #22472
