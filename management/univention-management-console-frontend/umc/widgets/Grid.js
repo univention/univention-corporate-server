@@ -41,6 +41,9 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 	//		'description': text for tooltip;
 	//		'type': defaults to string, otherwise checkbox, icon, ...???;
 	//		'editable': whether or not the field can be edited by the user;
+	//		'canExecute': function that specifies whether an action can be excuted for
+	//		              a particular item; the function receives a dict of all item
+	//		              properties as parameter
 	columns: null,
 
 	// query: Object?
@@ -185,7 +188,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			// adapt the query object to show all elements
 		}, this);
 
-		// add an additional columns for standard actions
+		// add additional columns for standard actions
 		dojo.forEach(this.actions, function(iaction) {
 			// get all standard context actions
 			if (!(iaction.isStandardAction && (false !== iaction.isContextAction))) {
@@ -211,11 +214,17 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 					}
 
 					// add callback handler
+					var item = this._grid.getItem(rowIndex);
 					if (iaction.callback) {
-						var item = this._grid.getItem(rowIndex);
 						props.onClick = dojo.hitch(this, function() {
 							iaction.callback([key], [item]);
 						});
+					}
+
+					// call canExecute to make sure the action can be executed
+					if (iaction.canExecute && !iaction.canExecute(item)) {
+						// the action cannot be executed... return an empty string
+						return '';
 					}
 
 					// return final button
@@ -246,6 +255,13 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 					// create context menu
 					var menu = dijit.Menu({});
 					dojo.forEach(tmpActions, function(iaction) {
+						// call canExecute to make sure the action can be executed
+						if (iaction.canExecute && !iaction.canExecute(item)) {
+							// the action cannot be executed... return an empty string
+							return true;
+						}
+
+						// add the menu entry
 						menu.addChild(new dijit.MenuItem({
 							label: iaction.label,
 							iconClass: iaction.iconClass,
@@ -256,6 +272,11 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 							})
 						}));
 					}, this);
+
+					// we only need to display the drop-down button if it is populated
+					if (0 === menu.getChildren().length) {
+						return '';
+					}
 
 					// by default only create a button with icon
 					return new dijit.form.DropDownButton({
@@ -438,17 +459,14 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		this._contextItem = item;
 		this._contextItemID = this._dataStore.getValue(item, this.moduleStore.idProperty);
 
-		// in case the row is disabled, disable the context menu items
-		if (this._grid.rowSelectCell.disabled(evt.rowIndex)) {
-			dojo.forEach(this._contextMenu.getChildren(), function(iitem) {
-				iitem.set('disabled', true);
-			});
-		}
-		else {
-			dojo.forEach(this._contextMenu.getChildren(), function(iitem) {
-				iitem.set('disabled', false);
-			});
-		}
+		// in case the row is disabled, or in case the action cannot be executed,
+		// disable the context menu items
+		var rowDisabled = this._grid.rowSelectCell.disabled(evt.rowIndex);
+		dojo.forEach(this._contextMenu.getChildren(), function(iMenuItem, i) {
+			var iaction = this.actions[i];
+			var idisabled = rowDisabled || (iaction.canExecute && !iaction.canExecute(item));
+			iMenuItem.set('disabled', idisabled);
+		}, this);
 	},
 
 	_createFooter: function() {
