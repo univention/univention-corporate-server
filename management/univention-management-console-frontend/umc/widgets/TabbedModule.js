@@ -2,7 +2,7 @@
 
 dojo.provide("umc.widgets.TabbedModule");
 
-dojo.require("dijit.layout.TabContainer");
+dojo.require("umc.widgets.TabContainer");
 dojo.require("umc.widgets._ModuleMixin");
 dojo.require("umc.widgets.StandbyMixin");
 

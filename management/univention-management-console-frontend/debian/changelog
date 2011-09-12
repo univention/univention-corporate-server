@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.33-1) unstable; urgency=low
+
+  * fixed missing require in umc.widgets.TabbedModule (Bug #22461)
+  * fixed header width calculation in umc.widgets.Grid (Bug #23340)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 12 Sep 2011 17:02:03 +0200
+
 univention-management-console-frontend (1.0.32-1) unstable; urgency=low
 
   * added 'canExecute' property for columns in umc.widgets.Grid

@@ -99,6 +99,9 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	openModule: function(/*String|Object*/ module, /*String?*/ flavor, /*Object?*/ props) {
 		// summary:
 		//		Open a new tab for the given module.
+		// description:
+		//		This method is subscribed to the channel '/umc/modules/open' in order to
+		//		open modules from other modules without requiring 'umc.app'.
 		// module:
 		//		Module ID as string
 		// props:

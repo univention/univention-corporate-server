@@ -65,8 +65,9 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 	_contextItemID: null,
 	_contextMenu: null,
 
-	// temporary cell to estimate width of text for columns
+	// temporary div elements to estimate width of text for columns
 	_tmpCell: null,
+	_tmpCellHeader: null,
 
 	_footerCells: null,
 
@@ -104,10 +105,12 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 	},
 
 	_getHeaderWidth: function(text) {
-		// if we don not have a temporary cell yet, create it
-		if (!this._tmpCell) {
-			this._tmpCell = dojo.create('th', { 'class': 'dojoxGridCell dijitOffScreen' });
-			dojo.place(this._tmpCell, dojo.body());
+		// if we do not have a temporary cell yet, create it
+		if (!this._tmpCell && !this._tmpCellHeader) {
+			this._tmpCellHeader = dojo.create('div', { 'class': 'dojoxGridHeader dijitOffScreen' });
+			this._tmpCell = dojo.create('div', { 'class': 'dojoxGridCell' });
+			dojo.place(this._tmpCell, this._tmpCellHeader);
+			dojo.place(this._tmpCellHeader, dojo.body());
 		}
 
 		// set the text
@@ -601,6 +604,9 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 
 	unitialize: function() {
 		// remove the temporary cell from the DOM
+		if (this._tmpCellHeader) {
+			dojo.destroy(this._tmpCellHeader);
+		}
 		if (this._tmpCell) {
 			dojo.destroy(this._tmpCell);
 		}

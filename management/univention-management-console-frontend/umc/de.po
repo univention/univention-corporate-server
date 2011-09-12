@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-12 15:05+0200\n"
+"POT-Creation-Date: 2011-09-12 16:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,12 +21,12 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
-#: umc/widgets/Grid.js:449
+#: umc/widgets/Grid.js:452
 #, python-format
 msgid "%d of %d objects selected"
 msgstr "%d von %d Objekten ausgewählt"
 
-#: umc/widgets/Grid.js:446
+#: umc/widgets/Grid.js:449
 #, python-format
 msgid "%d of 1 object selected"
 msgstr "%d von 1 Objekt ausgewählt"
@@ -36,7 +36,7 @@ msgstr "%d von 1 Objekt ausgewählt"
 msgid "<br>Server error message: <i>%s</i>"
 msgstr "<br>Fehlernachricht des Servers: <i>%s</i>"
 
-#: umc/app.js:344
+#: umc/app.js:347
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -80,7 +80,7 @@ msgstr "Schließen"
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:374
+#: umc/app.js:377
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -106,11 +106,11 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/app.js:340
+#: umc/app.js:343
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/app.js:358
+#: umc/app.js:361
 #, python-format
 msgid "Host: %(host)s.%(domain)s"
 msgstr ""
@@ -180,23 +180,23 @@ msgstr "Anmelden"
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:382
+#: umc/app.js:385
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
-#: umc/widgets/Grid.js:243 umc/widgets/Grid.js:244
+#: umc/widgets/Grid.js:246 umc/widgets/Grid.js:247
 msgid "More actions"
 msgstr "Weitere Aktionen"
 
-#: umc/widgets/Grid.js:283 umc/widgets/Grid.js:565
+#: umc/widgets/Grid.js:286 umc/widgets/Grid.js:568
 msgid "More..."
 msgstr "Weitere..."
 
-#: umc/widgets/Grid.js:452
+#: umc/widgets/Grid.js:455
 msgid "No object found"
 msgstr "Keine Objekte wurden gefunden"
 
-#: umc/widgets/Grid.js:502
+#: umc/widgets/Grid.js:505
 msgid "No object selected"
 msgstr "Kein Objekt ausgewählt"
 
@@ -208,7 +208,7 @@ msgstr "Hinweis"
 msgid "Ok"
 msgstr "Ok"
 
-#: umc/app.js:288 umc/app.js:289
+#: umc/app.js:291 umc/app.js:292
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -263,7 +263,7 @@ msgstr ""
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
-#: umc/app.js:367
+#: umc/app.js:370
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -271,7 +271,7 @@ msgstr "Tooltips"
 msgid "Translate me!"
 msgstr ""
 
-#: umc/app.js:291
+#: umc/app.js:294
 msgid ""
 "Univention Management Console is a modularly designed, web-based application "
 "for the administration of objects in your Univention Corporate Server domain "
@@ -281,7 +281,7 @@ msgstr ""
 "für die Administrierung von Objekten in der Univention-Corporate-Server-"
 "Domäne und individueller Univention-Corporate-Server-Systeme."
 
-#: umc/app.js:390
+#: umc/app.js:393
 #, python-format
 msgid "User: %s"
 msgstr "Benutzer: %s"
