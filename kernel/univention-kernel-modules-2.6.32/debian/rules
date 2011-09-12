@@ -50,7 +50,7 @@ install:
 			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
 			m-a -t -l $$kversion prepare; \
 			m-a -f -u /tmp -l $$kversion -t build $$m; \
-			mv /tmp/usr_src/modules/*.deb ../result/ || mv /tmp/*.deb ../result/; \
+			[ -d ../result ] && mv /tmp/usr_src/modules/*.deb ../result/ || mv /tmp/usr_src/modules/*.deb ../ || mv /tmp/*.deb ../; \
 		done \
 	done
 
@@ -61,7 +61,7 @@ install:
 			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
 			m-a -t -l $$kversion prepare; \
 			m-a -f -u /tmp -l $$kversion -t a-b $$m; \
-			mv /tmp/usr_src/modules/*.deb ../result/ || mv /tmp/*.deb ../result/; \
+			[ -d ../result ] && mv /tmp/usr_src/modules/*.deb ../result/ || mv /tmp/usr_src/modules/*.deb ../ || mv /tmp/*.deb ../result/; \
 		done \
 	done
 
