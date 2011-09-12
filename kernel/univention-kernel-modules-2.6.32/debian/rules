@@ -45,23 +45,25 @@ install:
 
 # vmware-kernel-source and vmware-server-kernel-source have been deactivated
 
+	echo "PWD: `pwd`"
 	for m in avm-capi-fcpci-modules; do \
 		for i in $$(ls -d /usr/src/linux-headers-* | grep -v "\-common" ); do \
 			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
 			m-a -t -l $$kversion prepare; \
 			m-a -f -u /tmp -l $$kversion -t build $$m; \
-			[ -d ../result ] && mv /tmp/usr_src/modules/*.deb ../result/ || mv /tmp/usr_src/modules/*.deb ../deb || mv /tmp/*.deb ../deb/; \
+			[ -d ../result ] && mv /tmp/usr_src/modules/*.deb ../result/ || mv /tmp/usr_src/modules/*.deb ../deb/ || mv /tmp/*.deb ../deb/; \
 		done \
 	done
 
 # vmware-kernel-source and vmware-server-kernel-source have been deactivated
 	# don't build the vmware serverview modules for the xen kernel
+	echo "PWD: `pwd`"
 	for m in srvmagt-modules ; do \
 		for i in $$(ls -d /usr/src/linux-headers-* | grep -v "\-common" | grep -v "xen"); do \
 			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
 			m-a -t -l $$kversion prepare; \
 			m-a -f -u /tmp -l $$kversion -t a-b $$m; \
-			[ -d ../result ] && mv /tmp/usr_src/modules/*.deb ../result/ || mv /tmp/usr_src/modules/*.deb ../deb || mv /tmp/*.deb ../deb/; \
+			[ -d ../result ] && mv /tmp/usr_src/modules/*.deb ../result/ || mv /tmp/usr_src/modules/*.deb ../deb/ || mv /tmp/*.deb ../deb/; \
 		done \
 	done
 
