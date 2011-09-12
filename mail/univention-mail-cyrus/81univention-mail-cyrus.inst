@@ -44,7 +44,7 @@ chmod 600 /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key
 chown cyrus /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key
 
 # add service to my host object
-ucs_addServiceToLocalhost "IMAP Server" "$@"
+ucs_addServiceToLocalhost "IMAP" "$@"
 
 # copy machine.secret
 dest="/etc/cyrus-ldap.secret"

@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.4-1) unstable; urgency=low
+
+  * register "IMAP" service (Bug #23560)
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 Sep 2011 16:15:50 +0200
+
 univention-mail-cyrus (4.0.3-1) unstable; urgency=low
 
   * and removed transition package univention-mail-cyrus-kolab2 (Bug #23560) 
