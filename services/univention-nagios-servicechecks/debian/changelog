@@ -1,7 +1,13 @@
+univention-nagios-servicechecks (1.0.6-2) unstable; urgency=low
+
+  * bumped version (Bug #22935 #22934)
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Sep 2011 09:18:11 +0200
+
 univention-nagios-servicechecks (1.0.6-1) unstable; urgency=low
 
-  * fixed authentication check in squid/dansguardian plugin Bug #22935
-    Bug #22934 
+  * fixed authentication check in squid/dansguardian plugin (Bug #22935
+    #22934)
 
  -- Felix Botner <botner@univention.de>  Wed, 29 Jun 2011 16:43:52 +0200
 
