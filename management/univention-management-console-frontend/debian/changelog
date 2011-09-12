@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.34-1) unstable; urgency=low
+
+  * added CSS classes, fixed LabelPane for check boxes (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 12 Sep 2011 18:35:44 +0200
+
 univention-management-console-frontend (1.0.33-1) unstable; urgency=low
 
   * fixed missing require in umc.widgets.TabbedModule (Bug #22461)

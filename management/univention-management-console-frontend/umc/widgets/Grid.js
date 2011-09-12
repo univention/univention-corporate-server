@@ -379,7 +379,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 
 		// add the toolbar to the bottom of the widget
 		var toolBar = new umc.widgets.ContainerWidget({
-			region: 'bottom'
+			region: 'bottom',
+			'class': 'umcGridToolBar'
 		});
 		this.addChild(toolBar);
 
@@ -395,7 +396,6 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		// add a footer for the grid
 		this._footer = new umc.widgets.ContainerWidget({
 			region: 'bottom',
-			style: 'padding: 3px 0;',
 			'class': 'umcGridFooter'
 		});
 		this.addChild(this._footer);

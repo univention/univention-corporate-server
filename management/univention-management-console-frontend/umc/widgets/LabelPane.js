@@ -10,11 +10,12 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 	// summary:
 	//		Simple widget that displays a widget/HTML code with a label above.
 
-	//TODO: don't use float, use display:inline-block; we need a hack for IE7 here, see:
-	//      http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
+	// don't use float, use display:inline-block; we need a hack for IE7 here, see:
+	//   http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
 	templateString: '<div style="display:inline-block;vertical-align:top;zoom:1;*display:inline;" class="umcLabelPane">' +
-		'<div dojoAttachPoint="labelNode" class="umcLabelPaneLabelNode" style="display:block;"></div>' +
-		'<div dojoAttachPoint="containerNode,contentNode" style="display:block;"></div>' +
+		'<div dojoAttachPoint="labelNodeTop" class="umcLabelPaneLabelNode umcLabelPaneLabeNodeTop" style="display:block;"></div>' +
+		'<span dojoAttachPoint="containerNode,contentNode" style=""></span>' +
+		'<span dojoAttachPoint="labelNodeRight" class="umcLabelPaneLabelNode umcLabelPaneLabeNodeRight" style=""></span>' +
 		'</div>',
 
 	// content: String|dijit._Widget
@@ -28,12 +29,14 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 	// label: String
 	label: null,
 
-	labelNode: null,
+	labelNodeTop: null,
+
+	labelNodeRight: null,
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
-		// if we have a widget as content and label is not specified, use the widget's 
+		// if we have a widget as content and label is not specified, use the widget's
 		// label attribute and watch it for changes
 		if (null === this.label && this.content && dojo.isString(this.content.label)) {
 			this.label = this.content.label || '';
@@ -42,7 +45,7 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 					this.set('label', newVal || '');
 				}));
 			}
-		} 
+		}
 		else if (!dojo.isString(this.label)) {
 			this.label = '';
 		}
@@ -52,13 +55,24 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 		var label = _label;
 
 		// if we have a widget which is required, add the string ' (*)' to the label
-		if (dojo.getObject('domNode', false, this.content) && 
-				dojo.getObject('declaredClass', false, this.content) && 
+		if (dojo.getObject('domNode', false, this.content) &&
+				dojo.getObject('declaredClass', false, this.content) &&
 				dojo.getObject('required', false, this.content)) {
 			label = label + ' (*)';
 		}
 		this.label = label;
-		this.labelNode.innerHTML = label;
+
+		// only for check boxes, place the label right of the widget
+		if (umc.tools.inheritsFrom(this.content, 'dijit.form.CheckBox')) {
+			this.labelNodeRight.innerHTML = label;
+			if (label) {
+				this.labelNodeTop.innerHTML = '&nbsp;';
+				dojo.addClass(this.domNode, 'umcLabelPaneCheckBox');
+			}
+		}
+		else {
+			this.labelNodeTop.innerHTML = label;
+		}
 	},
 
 	_setContentAttr: function(content) {

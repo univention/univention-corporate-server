@@ -38,6 +38,10 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 	buildRendering: function() {
 		this.inherited(arguments);
 
+		// adjust CSS classes for the title
+		dojo.addClass(this.titleNode, 'umcLoginDialogTitle');
+		dojo.addClass(this.titleBar, 'umcLoginDialogTitleBar');
+
 		var widgets = [{
 			type: 'TextBox',
 			name: 'username',

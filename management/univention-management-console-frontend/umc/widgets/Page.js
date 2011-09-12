@@ -32,6 +32,10 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 	//		Title of the page. This option is necessary for tab pages.
 	title: '',
 
+	// noFooter: Boolean
+	//		Disable the page footer.
+	noFooter: false,
+
 	// the widget's class name as CSS class
 	'class': 'umcPage',
 
@@ -80,32 +84,34 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 			});
 		}
 
-		// create the footer container(s)
-		this._footer = new umc.widgets.ContainerWidget({
-			region: 'bottom',
-			'class': 'umcPageFooter'
-		});
-		this.addChild(this._footer);
-		var footerLeft = new umc.widgets.ContainerWidget({
-			style: 'float: left'
-		});
-		this._footer.addChild(footerLeft);
-		var footerRight = new umc.widgets.ContainerWidget({
-			style: 'float: right'
-		});
-		this._footer.addChild(footerRight);
+		if (!this.noFooter) {
+			// create the footer container(s)
+			this._footer = new umc.widgets.ContainerWidget({
+				region: 'bottom',
+				'class': 'umcPageFooter'
+			});
+			this.addChild(this._footer);
+			var footerLeft = new umc.widgets.ContainerWidget({
+				style: 'float: left'
+			});
+			this._footer.addChild(footerLeft);
+			var footerRight = new umc.widgets.ContainerWidget({
+				style: 'float: right'
+			});
+			this._footer.addChild(footerRight);
 
-		// render all buttons and add them to the footer
-		if (this.footerButtons && dojo.isArray(this.footerButtons) && this.footerButtons.length) {
-			var buttons = umc.render.buttons(this.footerButtons);
-			dojo.forEach(buttons._order, function(ibutton) {
-				if ('submit' == ibutton.type) {
-					footerRight.addChild(ibutton);
-				}
-				else {
-					footerLeft.addChild(ibutton);
-				}
-			}, this);
+			// render all buttons and add them to the footer
+			if (this.footerButtons && dojo.isArray(this.footerButtons) && this.footerButtons.length) {
+				var buttons = umc.render.buttons(this.footerButtons);
+				dojo.forEach(buttons._order, function(ibutton) {
+					if ('submit' == ibutton.type) {
+						footerRight.addChild(ibutton);
+					}
+					else {
+						footerLeft.addChild(ibutton);
+					}
+				}, this);
+			}
 		}
 	},
 
