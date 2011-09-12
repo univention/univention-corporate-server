@@ -34,18 +34,9 @@ eval "$(/usr/sbin/univention-config-registry shell)"
 
 unset univentionDesktopProfile
 # remove quotes from startup script filename
-univentionAutoStartScript=`echo $univentionAutoStartScript | sed 's/^"//;s/"$//'`
+univentionAutoStartScript=$(echo $univentionAutoStartScript | sed 's/^"//;s/"$//')
 
 other () {
-
-	if [ -z "$ldap_port" ]; then
-		ldap_port=389
-	fi
-
-	if /bin/netcat -q0 -w4 $ldap_server_name $ldap_port </dev/null >/dev/null 2>&1; then
-		userdn=`ldapsearch -x -h $ldap_server_name -p $ldap_port -b $ldap_base "(&(uid=$USER)(objectClass=posixAccount))" -LLL dn | ldapsearch-wrapper | grep dn | sed -e 's/dn: //g'`
-		eval `univention_policy_result -h $ldap_server_name -s $userdn`
-	fi
 
 	export G_BROKEN_FILENAMES=1
 
@@ -53,25 +44,21 @@ other () {
 		if [ -n "$locale_default" ]; then
 			export LANG=$(echo $locale_default | awk -F ':' '{print $1}')
 		else
-			export LANG=de_DE@euro
+			export LANG=de_DE.UTF-8
 		fi
 	fi
+
 	if [ $USER = "root" ]; then
-    	export PATH=/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/usr/games
+	    	export PATH=/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/usr/games
 	else
-    	export PATH=/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/usr/games
+    		export PATH=/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/usr/games
 	fi
 
-	if [ -e $HOME/.kde/share/config/ksmserverrc ]
-	then
-		mv $HOME/.kde/share/config/ksmserverrc $HOME/.kde/share/config/ksmserverrc_SAVE
-		cat $HOME/.kde/share/config/ksmserverrc_SAVE | sed -e 's/=evolution,/=kshell,evolution,/' > $HOME/.kde/share/config/ksmserverrc
-		rm $HOME/.kde/share/config/ksmserverrc_SAVE
+	if [ -e $HOME/.kde/share/config/ksmserverrc ]; then
+		sed -i 's/=evolution,/=kshell,evolution,/' HOME/.kde/share/config/ksmserverrc
 	fi
-	univention-skel
 
-	if [ -z "$univentionAutoStartScript" -o "$univentionAutoStartScript" = "none" -o "$univentionAutoStartScript" = "None" ]
-	then
+	if [ -z "$univentionAutoStartScript" -o "$univentionAutoStartScript" = "none" -o "$univentionAutoStartScript" = "None" ]; then
 		exec startkde
 	else
 		/etc/gdm/Autostart/$univentionAutoStartScript
