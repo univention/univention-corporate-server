@@ -51,6 +51,7 @@ install:
 			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
 			m-a -t -l $$kversion prepare; \
 			m-a -f -u /tmp -l $$kversion -t build $$m; \
+			echo "PWD2:" ; pwd ; find ../../ ; \
 			[ -d ../result ] && mv /tmp/usr_src/modules/*.deb ../result/ || mv /tmp/usr_src/modules/*.deb ../../deb/ || mv /tmp/*.deb ../deb/; \
 		done \
 	done
@@ -63,6 +64,7 @@ install:
 			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
 			m-a -t -l $$kversion prepare; \
 			m-a -f -u /tmp -l $$kversion -t a-b $$m; \
+			echo "PWD3:" ; pwd ; find ../../ ; \
 			[ -d ../result ] && mv /tmp/usr_src/modules/*.deb ../result/ || mv /tmp/usr_src/modules/*.deb ../../deb/ || mv /tmp/*.deb ../deb/; \
 		done \
 	done
