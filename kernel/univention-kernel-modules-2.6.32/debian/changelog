@@ -1,3 +1,9 @@
+univention-kernel-modules-2.6.32 (1.0.1-4) unstable; urgency=low
+
+  * fixed result directory (Bug #23587)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 12 Sep 2011 14:16:31 +0200
+
 univention-kernel-modules-2.6.32 (1.0.1-3) unstable; urgency=low
 
   * Update kernel for 2.4-3 (Bug #23258)
