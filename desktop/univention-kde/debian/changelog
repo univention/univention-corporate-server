@@ -1,3 +1,11 @@
+univention-kde (6.0.3-1) unstable; urgency=low
+
+  * proper use of univention-ldapsearch and univention_policy_result in 
+    univention-set-kdedirs (Bug #22882)
+  * save univentionAutoStartScript policy in .univention-environment
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Sep 2011 14:15:13 +0200
+
 univention-kde (6.0.2-1) unstable; urgency=low
 
   * new ucs kde theme (Bug #22882)
