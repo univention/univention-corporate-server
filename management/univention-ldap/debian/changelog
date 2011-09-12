@@ -1,3 +1,9 @@
+univention-ldap (8.0.33-1) unstable; urgency=low
+
+  * Start slapd after creating the index (Bug #23588)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Sep 2011 14:57:58 +0200
+
 univention-ldap (8.0.32-1) unstable; urgency=low
 
   * add service entry (Bug #2136)
