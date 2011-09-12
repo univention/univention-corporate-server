@@ -17,7 +17,7 @@ if not baseConfig.has_key('homedir/create') or not baseConfig['homedir/create'] 
 	print 'session    optional   pam_runasroot.so user program=/usr/bin/univention-skel'
 
 	if baseConfig.is_true('auth/kdeprofile', False):
-		print 'session required pam_runasroot.so user program=/usr/share/univention-kde/univention-set-kdedirs'
+		print 'session required pam_runasroot.so program=/usr/share/univention-kde/univention-set-kdedirs'
 		print 'session required pam_env.so envfile=$HOME/.univention-environment'
 @!@
 

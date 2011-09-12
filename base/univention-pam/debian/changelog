@@ -1,3 +1,10 @@
+univention-pam (5.0.12-1) unstable; urgency=low
+
+  * run univention-set-kdedirs as root in pam.d/common-session
+    (univention_policy_result) (Bug #22882)
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Sep 2011 14:25:16 +0200
+
 univention-pam (5.0.11-1) unstable; urgency=low
 
   * fixed univention-pam.univention-config-registry-variables (Bug #20138) 
