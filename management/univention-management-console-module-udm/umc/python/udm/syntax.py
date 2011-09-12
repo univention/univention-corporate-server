@@ -31,7 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import copy
 import inspect
 
 import univention.admin.syntax as udm_syntax
@@ -72,7 +71,6 @@ __widgets = (
 	Widget( None, ( udm_syntax.LDAP_Search, ), [], subclasses = False, widget_func = lambda syn, prop: syn.viewonly and 'LinkList' or 'ComboBox' ),
 	Widget( 'ComboBox', udm_syntax.select, [] ),
 	Widget( 'TextBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', subclasses = False ),
-	Widget( None, udm_syntax.UDM_Modules, '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
 	Widget( None, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn, udm_syntax.module ), '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
 	Widget( 'MultiInput', udm_syntax.complex, None ),
@@ -83,21 +81,17 @@ def choices( syntax, udm_property ):
 	of dictionaries with id and label keys. If the attribute is not
 	available an empty list is returned."""
 	MODULE.info( 'Find choices for syntax %s' % syntax )
-	if inspect.isclass( syntax ) and issubclass( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn, udm_syntax.UDM_Modules ) ):
+	if type( syntax ) in ( type, ) and issubclass( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
 		if not udm_property[ 'multivalue' ]:
 			return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__name__ } }
 		else:
-			if syntax not in ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ):
-				return { 'objectType' : syntax.udm_modules[ 0 ] }
-			return {}
+			return { 'objectType' : syntax.udm_modules[ 0 ] }
+
 	if isinstance( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
 		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__ } }
 
 	if isinstance( syntax, udm_syntax.module ):
 		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__, 'options' : { 'module' : syntax.module_type, 'filter' : str( syntax.filter ) } } }
-
-	if inspect.isclass( syntax ) and issubclass( syntax, udm_syntax.select ) and hasattr( syntax, 'udm_modules' ):
-		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.name } }
 
 	if isinstance( syntax, udm_syntax.LDAP_Search ):
 		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__, 'options' : { 'syntax' : syntax.name, 'filter' : syntax.filter, 'viewonly' : syntax.viewonly, 'base' : syntax.base, 'value' : syntax.value, 'attributes' : syntax.attributes, 'empty' : syntax.addEmptyValue } } }
@@ -107,10 +101,8 @@ def choices( syntax, udm_property ):
 def subsyntaxes( syntax, udm_property ):
 	"""Returns a list of dictionaries describing the the sub types of a
 	complex syntax"""
-	udm_prop = copy.copy( udm_property )
-	udm_prop[ 'multivalue' ] = False
 	def subtypes_dict( item ):
-		elem = widget( item[ 1 ], udm_prop )
+		elem = widget( item[ 1 ], udm_property )
 		elem[ 'label' ] = item[ 0 ]
 		return elem
 

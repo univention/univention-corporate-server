@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.118-1) unstable; urgency=low
+
+  * Undo r26719 (Bug #23329)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Sep 2011 14:29:21 +0200
+
 univention-management-console-module-udm (1.0.117-1) unstable; urgency=low
 
   * removed debug output

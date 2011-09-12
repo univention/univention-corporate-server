@@ -191,14 +191,13 @@ class UDM_Module( object ):
 		obj = self.module.object( None, lo, po, dn = ldap_object.get( '$dn$' ), superordinate = superordinate )
 		del ldap_object[ '$dn$' ]
 		if '$options$' in ldap_object:
-			obj.options = filter( lambda option: ldap_object[ '$options$' ][ option ] == True, ldap_object[ '$options$' ].keys() )
+			obj.options = map( lambda option: ldap_object[ '$options$' ][ option ] == True, ldap_object[ '$options$' ].keys() )
 			del ldap_object[ '$options$' ]
 
 		try:
 			obj.open()
 			MODULE.info( 'Modifying LDAP object %s' % obj.dn )
 			for key, value in ldap_object.items():
-				MODULE.info( 'Setting property %s ot %s' % ( key, value ) )
 				obj[ key ] = value
 			obj.modify()
 		except udm_errors.base, e:
@@ -593,56 +592,15 @@ def read_syntax_choices( syntax_name, options = {} ):
 
 	syn = udm_syntax.__dict__[ syntax_name ]
 
-	if issubclass( syn, udm_syntax.UDM_Modules ):
-		syn.choices = []
-		def map_choice( obj ):
-			obj.open()
-			if syn.key == 'dn':
-				key = obj.dn
-			else:
-				try:
-					key = syn.key % obj.info
-				except KeyError:
-					key = obj.dn
-			if syn.label is None:
-				label = udm_objects.description( obj )
-			else:
-				try:
-					label = syn.label % obj.info
-				except KeyError:
-					label = udm_objects.description( obj )
-
-			return ( key, label )
-		for udm_module in syn.udm_modules:
-			module = UDM_Module( udm_module )
-			if module is None:
-				continue
-			MODULE.info( 'Found syntax %s with udm_module property' % syntax_name )
-			syn.choices.extend( map( map_choice, module.search() ) )
-		if syn.empty_value:
-			syn.choices.insert( 0, ( None, '' ) )
 	if hasattr( syn, 'udm_modules' ):
 		MODULE.info( 'Found syntax class %s with udm_module attribute (= %s)' % ( syntax_name, syn.udm_modules ) )
 		syn.choices = []
-		def map_choice( obj ):
-			obj.open()
-			try:
-				key = getattr( syn, 'key' ) % obj.info
-			except ( AttributeError, KeyError ):
-				key = obj.dn
-			try:
-				label = syn.label % obj.info
-			except ( AttributeError, KeyError ):
-				label = udm_objects.description( obj )
-
-			return ( key, label )
-
 		for udm_module in syn.udm_modules:
-			module = UDM_Module( udm_module )
+			module = UDM_Module( syn.udm_module )
 			if module is None:
 				continue
 			MODULE.info( 'Found syntax %s with udm_module property' % syntax_name )
-			syn.choices.extend( map( map_choice, module.search() ) )
+			syn.choices.extend( map( lambda obj: ( obj.dn, udm_objects.description( obj ) ), module.search() ) )
 	elif issubclass( syn, udm_syntax.ldapDn ) and hasattr( syn, 'searchFilter' ):
 		lo, po = get_ldap_connection()
 		try:
