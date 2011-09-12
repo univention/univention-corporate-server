@@ -52,7 +52,7 @@ install:
 			m-a -t -l $$kversion prepare; \
 			m-a -f -u /tmp -l $$kversion -t build $$m; \
 			echo "PWD2:" ; pwd ; find ../../ ; \
-			[ -d ../result ] && mv /tmp/usr_src/modules/*.deb ../result/ || mv /tmp/usr_src/modules/*.deb ../../deb/ || mv /tmp/*.deb ../deb/; \
+			[ -d ../result ] && mv /tmp/usr_src/modules/*.deb ../result/ || mv /tmp/usr_src/modules/*.deb ../ || mv /tmp/*.deb ../deb/; \
 		done \
 	done
 
@@ -65,7 +65,7 @@ install:
 			m-a -t -l $$kversion prepare; \
 			m-a -f -u /tmp -l $$kversion -t a-b $$m; \
 			echo "PWD3:" ; pwd ; find ../../ ; \
-			[ -d ../result ] && mv /tmp/usr_src/modules/*.deb ../result/ || mv /tmp/usr_src/modules/*.deb ../../deb/ || mv /tmp/*.deb ../deb/; \
+			[ -d ../result ] && mv /tmp/usr_src/modules/*.deb ../result/ || mv /tmp/usr_src/modules/*.deb ../ || mv /tmp/*.deb ../deb/; \
 		done \
 	done
 
