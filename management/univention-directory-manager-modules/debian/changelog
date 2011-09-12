@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.74-1) unstable; urgency=low
+
+  * Undo last commit because it breaks the installation (Bug #23329)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Sep 2011 06:46:09 +0200
+
 univention-directory-manager-modules (7.0.73-1) unstable; urgency=low
 
   * first step in cleaning up the syntax classes; Bug #23329
