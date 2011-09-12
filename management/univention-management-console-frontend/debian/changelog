@@ -1,6 +1,8 @@
 univention-management-console-frontend (1.0.32-1) unstable; urgency=low
 
-  * added 'canExecute' property for columns in umc.widgets.Grid (Bug #22461)
+  * added 'canExecute' property for columns in umc.widgets.Grid
+  * make TabbedModule inherit from umc.widgets.TabContainer
+  (Bug #22461)
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 12 Sep 2011 15:17:11 +0200
 
