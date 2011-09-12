@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.119-1) unstable; urgency=low
+
+  * added an action to edit an UDM object in a new tab (Bug #23340)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 12 Sep 2011 17:05:27 +0200
+
 univention-management-console-module-udm (1.0.118-1) unstable; urgency=low
 
   * Undo r26719 (Bug #23329)

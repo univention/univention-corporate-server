@@ -157,6 +157,20 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}
 			})
 		}, {
+			name: 'editNewTab',
+			label: this._('Edit in new tab'),
+			description: this._( 'Open a new tab in order to edit the UDM object.' ),
+			isMultiAction: false,
+			callback: dojo.hitch(this, function(ids, items) {
+				var moduleProps = {
+					openObject: {
+						objectType: items[0].objectType,
+						objectDN: ids[0]
+					}
+				};
+				dojo.publish('/umc/modules/open', [ this.moduleID, this.moduleFlavor, moduleProps ]);
+			})
+		}, {
 			name: 'delete',
 			label: this._( 'Delete' ),
 			description: this._( 'Deleting the selected UDM object.' ),
