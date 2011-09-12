@@ -11,6 +11,7 @@ dojo.require("umc.modules._quota.PartitionPage");
 
 dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
+	idProperty: 'partitionDevice',
 	moduleStore: null,
 	_overviewPage: null,
 	_partitionPage: null,
@@ -24,7 +25,7 @@ dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	renderOverviewPage: function() {
 		this._overviewPage = new umc.widgets.Page({
 			moduleStore: this.moduleStore,
-			headerText: this._('Filesystem quotas'),
+			headerText: this._('List partitions'),
 			helpText: this._('Set, unset and modify filesystem quota')
 		});
 		this.addChild(this._overviewPage);
@@ -37,13 +38,13 @@ dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var actions = [{
 			name: 'activate',
 			label: this._('Activate'),
-			iconClass: 'dijitIconNewTask',
+			iconClass: 'dijitIconNewTask', //TODO
 			isStandardAction: true,
 			isMultiAction: true,
 			callback: dojo.hitch(this, function() {
 				var partitions = this._grid.getSelectedIDs();
 				umc.tools.umcpCommand('quota/partitions/activate', {"partitions" : partitions}).then(dojo.hitch(this, function() {
-					umc.dialog.notify(this._('quota/partitions/activate'));
+					//umc.dialog.notify(this._('quota/partitions/activate'));
 				}));
 			})
 		}, {
@@ -83,7 +84,7 @@ dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'inUse',
 			label: this._('Quota'),
-			width: 'adjust'
+			width: '85px'
 		}, {
 			name: 'partitionSize',
 			label: this._('Size'),

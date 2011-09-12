@@ -83,7 +83,7 @@ class File(list):
 	def __parse(self, line):
 		fields = line.split(None, 7)
 		if len(fields) < 4:
-			raise InvalidEntry(' The following is not a valid fstab entry: %s' % line)
+			raise InvalidEntry('The following is not a valid fstab entry: %s' % line) #TODO
 		entry = Entry(*fields[: 4])
 		if len(fields) > 4:
 			dump = fields[4]

@@ -46,7 +46,6 @@ import user
 
 _ = umc.Translation('univention-management-console-modules-quota').translate
 
-#TODO exception handling
 #TODO comments
 
 class Instance(umcm.Base, partition.Commands, user.Commands):
@@ -56,27 +55,41 @@ class Instance(umcm.Base, partition.Commands, user.Commands):
 		user.Commands.__init__(self)
 
 	def quota_list(self, request):
-		fs = fstab.File()
-		mt = mtab.File()
-		partitions = fs.get(['xfs', 'ext3', 'ext2'], False) #TODO ext4?
-		result = []
-		for partition in partitions:
-			listEntry = {}
-			if partition.uuid:
-				listEntry['partitionDevice'] = partition.uuid
-			else:
-				listEntry['partitionDevice'] = partition.spec
-			listEntry['mountPoint'] = partition.mount_point
-			listEntry['partitionSize'] = '-'
-			listEntry['freeSpace'] = '-'
-			listEntry['inUse'] = 'False'
-			isMounted = mt.get(partition.spec)
-			if isMounted:
-				deviceInfo = df.DeviceInfo(partition.mount_point)
-				listEntry['partitionSize'] = tools.block2byte(deviceInfo.size(), 1)
-				listEntry['freeSpace'] = tools.block2byte(deviceInfo.free(), 1)
-				listEntry['inUse'] = str(('usrquota' in isMounted.options))
-			result.append(listEntry)
+		result = ''
+		message = ''
+		try:
+			fs = fstab.File()
+			mt = mtab.File()
 
-		request.status = SUCCESS
-		self.finished(request.id, result)
+		except IOError as error:
+			MODULE.error('Could not open {0}'.format(error.filename))
+			message = _('Could not open {0}'.format(error.filename))
+			request.status = MODULE_ERR
+
+		#except InvalidEntry as error: #TODO
+		#	pass
+
+		else:
+			partitions = fs.get(['xfs', 'ext3', 'ext2'], False) #TODO ext4?
+			result = []
+			for partition in partitions:
+				listEntry = {}
+				if partition.uuid:
+					listEntry['partitionDevice'] = partition.uuid
+				else:
+					listEntry['partitionDevice'] = partition.spec
+				listEntry['mountPoint'] = partition.mount_point
+				listEntry['partitionSize'] = '-'
+				listEntry['freeSpace'] = '-'
+				listEntry['inUse'] = _('Deactivated')
+				isMounted = mt.get(partition.spec)
+				if isMounted:
+					deviceInfo = df.DeviceInfo(partition.mount_point)
+					listEntry['partitionSize'] = tools.block2byte(deviceInfo.size(), 1)
+					listEntry['freeSpace'] = tools.block2byte(deviceInfo.free(), 1)
+					if 'usrquota' in isMounted.options:
+						listEntry['inUse'] = _('Activated')
+				result.append(listEntry)
+			request.status = SUCCESS
+
+		self.finished(request.id, result, message)
