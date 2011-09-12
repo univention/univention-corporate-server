@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.120-1) unstable; urgency=low
+
+  * adjust the design (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 12 Sep 2011 18:17:21 +0200
+
 univention-management-console-module-udm (1.0.119-1) unstable; urgency=low
 
   * added an action to edit an UDM object in a new tab (Bug #23340)

@@ -261,6 +261,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			// create a new page, i.e., subtab
 			var subTab = new umc.widgets.Page({
 				title: ilayout.label || ilayout.name, //TODO: 'name' should not be necessary
+				noFooter: true,
 				headerText: ilayout.description || ilayout.label || ilayout.name,
 				helpText: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren.'
 			});
@@ -301,6 +302,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		if (policies && policies.length) {
 			this._policiesTab = new umc.widgets.Page({
 				title: this._('[Policies]'),
+				noFooter: true,
 				headerText: this._('Properties inherited from policies'),
 				helpText: this._('List of all object properties that are inherited by policies. The values cannot be edited directly. In order to edit a policy, click on the "edit" button to open a particular policy in a new tab.')
 			});
@@ -434,6 +436,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			style: 'float: left'
 		}]);
 		var footer = new umc.widgets.ContainerWidget({
+			'class': 'umcPageFooter',
 			region: 'bottom'
 		});
 		dojo.forEach(buttons._order, function(i) {
