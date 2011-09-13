@@ -239,7 +239,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			actions: actions,
 			columns: this._default_columns,
 			moduleStore: store,
-			footerCaption: dojo.hitch(this, function(nItems, nItemsTotal) {
+			footerFormatter: dojo.hitch(this, function(nItems, nItemsTotal) {
 				// generate the caption for the grid footer
 				var map = {
 					nSelected: nItems,
