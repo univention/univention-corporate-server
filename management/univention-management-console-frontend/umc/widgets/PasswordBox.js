@@ -2,10 +2,10 @@
 
 dojo.provide("umc.widgets.PasswordBox");
 
-dojo.require("dijit.form.ValidationTextBox");
+dojo.require("umc.widgets.TextBox");
 dojo.require("umc.widgets._FormWidgetMixin");
 
-dojo.declare("umc.widgets.PasswordBox", [ dijit.form.ValidationTextBox, umc.widgets._FormWidgetMixin ], {
+dojo.declare("umc.widgets.PasswordBox", [ umc.widgets.TextBox, umc.widgets._FormWidgetMixin ], {
 	type: 'password',
 
 	// the widget's class name as CSS class

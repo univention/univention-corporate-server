@@ -13,9 +13,9 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 	// don't use float, use display:inline-block; we need a hack for IE7 here, see:
 	//   http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
 	templateString: '<div style="display:inline-block;vertical-align:top;zoom:1;*display:inline;" class="umcLabelPane">' +
-		'<div dojoAttachPoint="labelNodeTop" class="umcLabelPaneLabelNode umcLabelPaneLabeNodeTop" style="display:block;"></div>' +
+		'<div class="umcLabelPaneLabelNode umcLabelPaneLabeNodeTop" style="display:block;"><label dojoAttachPoint="labelNodeTop" for=""></label></div>' +
 		'<span dojoAttachPoint="containerNode,contentNode" style=""></span>' +
-		'<span dojoAttachPoint="labelNodeRight" class="umcLabelPaneLabelNode umcLabelPaneLabeNodeRight" style=""></span>' +
+		'<span class="umcLabelPaneLabelNode umcLabelPaneLabeNodeRight" style=""><label dojoAttachPoint="labelNodeRight" for=""><label></span>' +
 		'</div>',
 
 	// content: String|dijit._Widget
@@ -62,16 +62,22 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 		}
 		this.label = label;
 
+		// set the labels' 'for' attribute
+		if (dojo.getObject('id', false, this.content) && dojo.getObject('declaredClass', false, this.content)) {
+			dojo.attr(this.labelNodeRight, 'for', this.content.id);
+			dojo.attr(this.labelNodeTop, 'for', this.content.id);
+		}
+
 		// only for check boxes, place the label right of the widget
 		if (umc.tools.inheritsFrom(this.content, 'dijit.form.CheckBox')) {
-			this.labelNodeRight.innerHTML = label;
+			dojo.attr(this.labelNodeRight, 'innerHTML', label);
 			if (label) {
-				this.labelNodeTop.innerHTML = '&nbsp;';
+				dojo.attr(this.labelNodeTop, 'innerHTML', '&nbsp;');
 				dojo.addClass(this.domNode, 'umcLabelPaneCheckBox');
 			}
 		}
 		else {
-			this.labelNodeTop.innerHTML = label;
+			dojo.attr(this.labelNodeTop, 'innerHTML', label);
 		}
 	},
 
