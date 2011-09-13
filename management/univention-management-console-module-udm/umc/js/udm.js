@@ -73,11 +73,16 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			label: this._( 'Name' ),
 			description: this._( 'Name of the UDM object.' ),
 			formatter: dojo.hitch(this, 'iconFormatter')
-		}, {
-			name: 'path',
-			label: this._('Path'),
-			description: this._( 'Path of the UDM object.' )
 		}];
+
+		// we only need the path column for any module except the navigation
+		if ('navigation' != this.moduleFlavor) {
+			this._default_columns.push({
+				name: 'path',
+				label: this._('Path'),
+				description: this._( 'Path of the UDM object.' )
+			});
+		}
 	},
 
 	buildRendering: function() {
@@ -214,94 +219,90 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		var umcpCmd = dojo.hitch(this, 'umcpCommand');
 		var widgets = [];
-		var layout = [];
+		var layout = [ [], [] ]; // layout with two rows
 
+		// check whether we need to display containers or superordinates
+		var objTypeDependencies = [];
+		var objTypes = [];
 		if ('navigation' == this.moduleFlavor) {
-			// for the navigation we need a different search form
-			widgets = [];
-			layout = [];
+			// nothing to do :)
 		}
-		else {
-
-			// check whether we need to display containers or superordinates
-			var objTypeDependencies = [];
-			var objTypes = [];
-			if (superordinates && superordinates.length) {
-				// superordinates...
-				widgets.push({
-					type: 'ComboBox',
-					name: 'superordinate',
-					description: this._( 'The superordinate in which the search is carried out.' ),
-					label: this._('Superordinate'),
-					value: superordinates[0].id || superordinates[0],
-					staticValues: superordinates,
-					umcpCommand: umcpCmd
-				});
-				layout.push('superordinate');
-				objTypeDependencies.push('superordinate');
-			}
-			else if (containers && containers.length) {
-				// containers...
-				containers.unshift({ id: 'all', label: this._( 'All containers' ) });
-				widgets.push({
-					type: 'ComboBox',
-					name: 'container',
-					description: this._( 'The container in which the query is executed.' ),
-					label: this._('Container'),
-					value: containers[0].id || containers[0],
-					staticValues: containers,
-					umcpCommand: umcpCmd
-				});
-				layout.push('container');
-				objTypes.push({ id: this.moduleFlavor, label: this._( 'All types' ) });
-			}
-
-			// add remaining elements of the search form
-			widgets = widgets.concat([{
+		else if (superordinates && superordinates.length) {
+			// superordinates...
+			widgets.push({
 				type: 'ComboBox',
-				name: 'objectType',
-				description: this._( 'The type of the UDM object.' ),
-				label: this._('Object type'),
-				//value: objTypes.length ? this.moduleFlavor : undefined,
-				staticValues: objTypes,
-				dynamicValues: 'udm/types',
-				umcpCommand: umcpCmd,
-				depends: objTypeDependencies,
-				onChange: dojo.hitch(this, function(newObjType) {
-					// update the object property depending on the updated object type
-					var newObjProperty = this._ucr['directory/manager/web/modules/' + newObjType + '/search/default'] || '';
-					var objPropertyWidget = this._searchWidget._widgets.objectProperty;
-					objPropertyWidget.setInitialValue(newObjProperty || undefined, false);
-					var objTypeWidget = this._searchWidget._widgets.objectType;
-					objTypeWidget.setInitialValue(null, false);
-				})
-			}, {
-				type: 'ComboBox',
-				name: 'objectProperty',
-				description: this._( 'The object property on which the query is filtered.' ),
-				label: this._( 'Object property' ),
-				dynamicValues: 'udm/properties',
-				dynamicOptions: { searchable: true },
-				umcpCommand: umcpCmd,
-				depends: 'objectType',
-				value: autoObjProperty
-			}, {
-				type: 'MixedInput',
-				name: 'objectPropertyValue',
-				description: this._( 'The value for the specified object property on which the query is filtered.' ),
-				label: this._( 'Property value' ),
-				dynamicValues: 'udm/values',
-				umcpCommand: umcpCmd,
-				depends: [ 'objectProperty', 'objectType' ]
-			}]);
-			layout = layout.concat([ 'objectType', 'objectProperty', 'objectPropertyValue' ]);
+				name: 'superordinate',
+				description: this._( 'The superordinate in which the search is carried out.' ),
+				label: this._('Superordinate'),
+				value: superordinates[0].id || superordinates[0],
+				staticValues: superordinates,
+				umcpCommand: umcpCmd
+			});
+			layout[0].push('superordinate');
+			objTypeDependencies.push('superordinate');
 		}
+		else if (containers && containers.length) {
+			// containers...
+			containers.unshift({ id: 'all', label: this._( 'All containers' ) });
+			widgets.push({
+				type: 'ComboBox',
+				name: 'container',
+				description: this._( 'The container in which the query is executed.' ),
+				label: this._('Container'),
+				value: containers[0].id || containers[0],
+				staticValues: containers,
+				umcpCommand: umcpCmd
+			});
+			layout[0].push('container');
+			objTypes.push({ id: this.moduleFlavor, label: this._( 'All types' ) });
+		}
+
+		// add remaining elements of the search form
+		widgets = widgets.concat([{
+			type: 'ComboBox',
+			name: 'objectType',
+			description: this._( 'The type of the UDM object.' ),
+			label: this._('Object type'),
+			//value: objTypes.length ? this.moduleFlavor : undefined,
+			staticValues: objTypes,
+			dynamicValues: 'udm/types',
+			umcpCommand: umcpCmd,
+			depends: objTypeDependencies,
+			onChange: dojo.hitch(this, function(newObjType) {
+				// update the object property depending on the updated object type
+				var newObjProperty = this._ucr['directory/manager/web/modules/' + newObjType + '/search/default'] || '';
+				var objPropertyWidget = this._searchWidget._widgets.objectProperty;
+				objPropertyWidget.setInitialValue(newObjProperty || undefined, false);
+				var objTypeWidget = this._searchWidget._widgets.objectType;
+				objTypeWidget.setInitialValue(null, false);
+			})
+		}, {
+			type: 'ComboBox',
+			name: 'objectProperty',
+			description: this._( 'The object property on which the query is filtered.' ),
+			label: this._( 'Object property' ),
+			dynamicValues: 'udm/properties',
+			dynamicOptions: { searchable: true },
+			umcpCommand: umcpCmd,
+			depends: 'objectType',
+			value: autoObjProperty
+		}, {
+			type: 'MixedInput',
+			name: 'objectPropertyValue',
+			description: this._( 'The value for the specified object property on which the query is filtered.' ),
+			label: this._( 'Property value' ),
+			dynamicValues: 'udm/values',
+			umcpCommand: umcpCmd,
+			depends: [ 'objectProperty', 'objectType' ]
+		}]);
+		layout[0].push('objectType');
+		layout[1].push('objectProperty', 'objectPropertyValue');
 
 		// generate the search widget
 		this._searchWidget = new umc.widgets.SearchForm({
 			region: 'top',
 			widgets: widgets,
-			layout: [ layout ],
+			layout: layout,
 			onSearch: dojo.hitch(this, 'filter')
 		});
 		titlePane.addChild(this._searchWidget);
@@ -518,6 +519,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._detailPage = new umc.modules._udm.DetailPage({
 			umcpCommand: dojo.hitch(this, 'umcpCommand'),
 			moduleStore: this.moduleStore,
+			moduleFlavor: this.moduleFlavor,
 			objectType: objectType,
 			ldapName: ldapName,
 			newObjectOptions: newObjOptions,

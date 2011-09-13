@@ -31,6 +31,10 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 	//		Reference to the module's module store.
 	moduleStore: null,
 
+	// moduleFlavor: String
+	//		Flavor of the module
+	moduleFlavor: this.moduleFlavor,
+
 	// objectType: String
 	//		The object type of the UDM object that is edited.
 	objectType: null,

@@ -1,3 +1,12 @@
+univention-management-console-module-udm (1.0.121-1) unstable; urgency=low
+
+  * added moduleFlavor to DetailPage
+  * enabled search for also for the navigation
+  * removed 'path' column for the navigation
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 13 Sep 2011 15:15:24 +0200
+
 univention-management-console-module-udm (1.0.120-1) unstable; urgency=low
 
   * adjust the design (Bug #22881)
