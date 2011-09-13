@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-ucr\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-08-04 12:59+0200\n"
+"POT-Creation-Date: 2011-09-06 11:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgid ""
 "specified."
 msgstr ""
 
-#: umc/python/ucr/__init__.py:139
+#: umc/python/ucr/__init__.py:136
 #, python-format
 msgid "The UCR variable %(key)s could not be found"
 msgstr ""

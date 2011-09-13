@@ -149,7 +149,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._searchWidget = new umc.widgets.SearchForm({
 			region: 'top',
 			widgets: widgets,
-			layout: [[ 'category', 'key', 'filter' ]],
+			layout: [[ 'category', 'key' ], [ 'filter', 'submit', 'reset' ]],
 			onSearch: dojo.hitch(this._grid, 'filter')
 		});
 		titlePane.addChild(this._searchWidget);
