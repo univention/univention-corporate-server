@@ -205,7 +205,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		if ( option_prop && option_prop.widgets.length > 0 ) {
 			var optiontab = {
 				label: this._( '[Options]' ),
-				description: this._( 'Options describing the basic features of the object' ),
+				description: this._( 'Options describing the basic features of the UDM object' ),
 				layout: [ '$options$' ]
 			};
 			layout.push( optiontab );
@@ -708,7 +708,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				this.onClose();
 			}
 			else {
-				umc.dialog.alert(this._('The object could not be saved: %(details)s', result));
+				umc.dialog.alert(this._('The UDM object could not be saved: %(details)s', result));
 			}
 		}));
 	},

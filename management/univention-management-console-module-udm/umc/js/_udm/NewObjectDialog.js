@@ -32,6 +32,10 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 	//		can be specified via this property.
 	selectedContainer: { id: '', label: '', path: '' },
 
+	// UDM object type name in singular and plural
+	objectNameSingular: '',
+	objectNamePlural: '',
+
 	// internal reference to the dialog's form
 	_form: null,
 
@@ -44,7 +48,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 		// mixin the dialog title
 		dojo.mixin(this, {
 			//style: 'max-width: 450px'
-			title: this._( 'New UDM-Object' )
+			title: this._( 'New %s', this.objectNameSingular )
 		});
 	},
 
@@ -97,13 +101,13 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 					type: 'ComboBox',
 					name: 'superordinate',
 					label: 'Superordinate',
-					description: this._('The corresponding superordinate for the new object.'),
+					description: this._('The corresponding superordinate for the new %s.', this.objectNameSingular),
 					staticValues: superordinates
 				}, {
 					type: 'ComboBox',
 					name: 'objectType',
 					label: 'Object type',
-					description: this._('The exact object type of the new object.'),
+					description: this._('The exact object type of the new %s.', this.objectNameSingular),
 					umcpCommand: this.umcpCommand,
 					dynamicValues: 'udm/types',
 					depends: 'superordinate'
@@ -116,7 +120,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 					type: 'ComboBox',
 					name: 'container',
 					label: 'Container',
-					description: this._('The container in which the object shall be created.'),
+					description: this._('The container in which the UDM object shall be created.'),
 					staticValues: containers
 				});
 				layout.push('container');
@@ -127,7 +131,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 						type: 'ComboBox',
 						name: 'objectType',
 						label: 'Object type',
-						description: this._('The exact object type of the new object.'),
+						description: this._('The exact object type of the new UDM object.'),
 						staticValues: types
 					});
 					layout.push('objectType');
@@ -139,8 +143,8 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 					widgets.push({
 						type: 'ComboBox',
 						name: 'objectTemplate',
-						label: 'Object template',
-						description: this._('A template defines rules for default property values.'),
+						label: this._('%s template', this.objectNameSingular),
+						description: this._('A template defines rules for default object properties.'),
 						staticValues: templates
 					});
 					layout.push('objectTemplate');
@@ -157,13 +161,13 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 				type: 'ComboBox',
 				name: 'objectType',
 				label: 'Object type',
-				description: this._('The exact object type of the new object.'),
+				description: this._('The exact object type of the new UDM object.'),
 				staticValues: types
 			}, {
 				type: 'ComboBox',
 				name: 'objectTemplate',
 				label: 'Object template',
-				description: this._('A template defines rules for default property values.'),
+				description: this._('A template defines rules for default object properties.'),
 				depends: 'objectType',
 				umcpCommand: this.umcpCommand,
 				dynamicValues: 'udm/templates',
@@ -175,14 +179,15 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 		// buttons
 		var buttons = [{
 			name: 'add',
-			label: this._('Add new object'),
+			label: this._('Add'),
+			'default': true,
 			callback: dojo.hitch(this, function() {
 				this.onDone(this._form.gatherFormValues());
 				this.destroyRecursive();
 			})
 		}, {
 			name: 'close',
-			label: this._('Close dialog'),
+			label: this._('Close'),
 			callback: dojo.hitch(this, function() {
 				this.destroyRecursive();
 			})
@@ -197,7 +202,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 		var container = new umc.widgets.ContainerWidget({});
 		if ('navigation' == this.moduleFlavor) {
 			container.addChild(new umc.widgets.Text({
-				content: this._('<p>The object will be created in the the container:</p><p><i>%s</i></p>', this.selectedContainer.path)
+				content: this._('<p>The UDM object will be created in the the container:</p><p><i>%s</i></p>', this.selectedContainer.path)
 			}));
 		}
 		container.addChild(this._form);

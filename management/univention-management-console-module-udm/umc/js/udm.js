@@ -67,6 +67,10 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// define grid columns
 	_default_columns: null,
 
+	// UDM object type name in singular and plural
+	objectNameSingular: '',
+	objectNamePlural: '',
+
 	constructor: function() {
 		this._default_columns = [{
 			name: 'name',
@@ -83,6 +87,37 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				description: this._( 'Path of the UDM object.' )
 			});
 		}
+	},
+
+	postMixInProperties: function() {
+		this.inherited(arguments);
+
+		// name for the objects in the current module
+		var objNames = {
+			'users/user': [ this._('user'), this._('users') ],
+			'groups': [ this._('group'), this._('groups') ],
+			'computers': [ this._('computer'), this._('computers') ],
+			'networks': [ this._('network object'), this._('network objects') ],
+			'dns': [ this._('DNS object'), this._('DNS objects') ],
+			'dhcp': [ this._('DHCP object'), this._('DHCP objects') ],
+			'shares/share': [ this._('share'), this._('shares') ],
+			'shares/print': [ this._('printer'), this._('printers') ],
+			'mail': [ this._('mail object'), this._('mail objects') ],
+			'nagios': [ this._('Nagios object'), this._('Nagios objects') ],
+			'policies': [ this._('policy'), this._('policies') ],
+			'default': [ this._('UDM object'), this._('UDM objects') ]
+		};
+
+		// get the correct entry from the lists above
+		this.objectNameSingular = objNames['default'][0];
+		this.objectNamePlural = objNames['default'][1];
+		umc.tools.forIn(objNames, function(ikey, ival) {
+			if (this.moduleFlavor.indexOf(ikey) >= 0) {
+				this.objectNameSingular = ival[0];
+				this.objectNamePlural = ival[1];
+				return false;
+			}
+		}, this);
 	},
 
 	buildRendering: function() {
@@ -131,7 +166,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		});
 		this.addChild(this._searchPage);
 		var titlePane = new umc.widgets.ExpandingTitlePane({
-			title: this._('Entries'),
+			title: this._('Search for %s', this.objectNamePlural),
 			design: 'sidebar'
 		});
 		this._searchPage.addChild(titlePane);
@@ -143,8 +178,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// define actions
 		var actions = [{
 			name: 'add',
-			label: this._( 'Add' ),
-			description: this._( 'Adding a new UDM object.' ),
+			label: this._( 'Add %s', this.objectNameSingular ),
+			description: this._( 'Add a new %s.', this.objectNameSingular ),
 			iconClass: 'dijitIconNewTask',
 			isContextAction: false,
 			isStandardAction: true,
@@ -152,7 +187,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'edit',
 			label: this._( 'Edit' ),
-			description: this._( 'Edit the UDM object.' ),
+			description: this._( 'Edit the %s.', this.objectNameSingular ),
 			iconClass: 'dijitIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
@@ -164,7 +199,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'editNewTab',
 			label: this._('Edit in new tab'),
-			description: this._( 'Open a new tab in order to edit the UDM object.' ),
+			description: this._( 'Open a new tab in order to edit the UDM-object' ),
 			isMultiAction: false,
 			callback: dojo.hitch(this, function(ids, items) {
 				var moduleProps = {
@@ -178,7 +213,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'delete',
 			label: this._( 'Delete' ),
-			description: this._( 'Deleting the selected UDM object.' ),
+			description: this._( 'Deleting the selected %s.', this.objectNamePlural ),
 			isStandardAction: true,
 			isMultiAction: true,
 			iconClass: 'dijitIconDelete',
@@ -203,7 +238,23 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			region: 'center',
 			actions: actions,
 			columns: this._default_columns,
-			moduleStore: store
+			moduleStore: store,
+			footerCaption: dojo.hitch(this, function(nItems, nItemsTotal) {
+				// generate the caption for the grid footer
+				var map = {
+					nSelected: nItems,
+					nTotal: nItemsTotal,
+					objPlural: this.objectNamePlural,
+					objSingular: this.objectNameSingular
+				};
+				if (1 == nItemsTotal) {
+					return this._('%(nSelected)d of 1 %(objSingular)s selected', map);
+				}
+				else if (1 < nItemsTotal) {
+					return this._('%(nSelected)d of %(nTotal)d %(objPlural)s selected', map);
+				}
+				return this._('No %(objPlural)s could be found', map);
+			})
 		});
 		titlePane.addChild(this._grid);
 
@@ -212,7 +263,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		//
 
 		// get configured search values
-		var autoObjProperty = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/default'] || 
+		var autoObjProperty = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/default'] ||
 			this._ucr['directory/manager/web/modules/default'];
 		var autoSearch = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/autosearch'] ||
 			this._ucr['directory/manager/web/modules/autosearch'];
@@ -248,7 +299,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				type: 'ComboBox',
 				name: 'container',
 				description: this._( 'The container in which the query is executed.' ),
-				label: this._('Container'),
+				label: this._('Search in:'),
 				value: containers[0].id || containers[0],
 				staticValues: containers,
 				umcpCommand: umcpCmd
@@ -297,6 +348,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}]);
 		layout[0].push('objectType');
 		layout[1].push('objectProperty', 'objectPropertyValue');
+
+		// add also the buttons (specified by the search form itself) to the layout
+		layout[1].push('submit', 'reset');
 
 		// generate the search widget
 		this._searchWidget = new umc.widgets.SearchForm({
@@ -376,7 +430,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		this._searchPage.startup();
 
-		// check whether we have autosearch activated 
+		// hide the 'objectType' combo box in case it shows only one value
+		var handle = this.connect(this._searchWidget._widgets.objectType, 'onValuesLoaded', function(values) {
+			this._searchWidget._widgets.objectType.set('visible', values.length > 1);
+		});
+
+		// check whether we have autosearch activated
 		if ('navigation' != this.moduleFlavor && umc.tools.isTrue(autoSearch)) {
 			// connect to the onValuesInitialized event of the form
 			var handle = this.connect(this._searchWidget, 'onValuesInitialized', function() {
@@ -462,9 +521,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}
 
 		// let user confirm deletion
-		var msg = this._('Please confirm the removal of the %d selected objects!', ids.length);
+		var msg = this._('Please confirm the removal of the %d selected %s!', ids.length, this.objectNamePlural);
 		if (ids.length == 1) {
-			msg = this._('Please confirm the removal of the selected object!');
+			msg = this._('Please confirm the removal of the selected %s!', this.objectNameSingular);
 		}
 		umc.dialog.confirm(msg, [{
 			label: this._('Delete'),
@@ -508,7 +567,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				// when the options are specified, create a new detail page
 				options.objectType = options.objectType || this.moduleFlavor; // default objectType is the module flavor
 				this.createDetailPage(options.objectType, undefined, options);
-			})
+			}),
+			objectNamePlural: this.objectNamePlural,
+			objectNameSingular: this.objectNameSingular
 		});
 	},
 
