@@ -34,9 +34,17 @@ GRUB_GFXMODE=@%@grub/gfxmode@%@
 # the Linux kernel
 GRUB_GFXPAYLOAD_LINUX=keep
 
-# Background Image
+# Background image and menu color
 @!@
 if baseConfig.get('grub/backgroundimage', ''):
 	print 'GRUB_BACKGROUND="%s"' % baseConfig["grub/backgroundimage"]
+if baseConfig.get('grub/color/normal', ''):
+	print 'GRUB_COLOR_NORMAL="%s"' % baseConfig["grub/color/normal"]
+if baseConfig.get('grub/color/highlight', ''):
+	print 'GRUB_COLOR_HIGHLIGHT="%s"' % baseConfig["grub/color/highlight"]
+if baseConfig.get('grub/menu/color/normal', ''):
+	print 'GRUB_MENU_COLOR_NORMAL="%s"' % baseConfig["grub/menu/color/normal"]
+if baseConfig.get('grub/menu/color/highlight', ''):
+	print 'GRUB_MENU_COLOR_HIGHLIGHT="%s"' % baseConfig["grub/menu/color/highlight"]
 @!@
 

@@ -1,3 +1,10 @@
+univention-grub (5.0.4-1) unstable; urgency=low
+
+  * added grub/color/normal, grub/color/highlight, grub/menu/color/normal
+    and grub/menu/color/highlight (Bug #23405)
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 Sep 2011 16:39:53 +0200
+
 univention-grub (5.0.3-1) unstable; urgency=low
 
   * added grub/backgroundimage (Bug #23405) 

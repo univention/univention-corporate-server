@@ -45,3 +45,27 @@ Description[de]=Definiert das Hintergrundbild für den Bootmanager grub.
 Description[en]=Defines the background image for the bootmanager grub.
 Type=str
 Categories=system-base
+
+[grub/color/normal]
+Description[de]=Farben für den "normalen" Vorder-und Hintergrund im grub Terminal.
+Description[en]=This variable contains the "normal" foreground and background grub terminal colors.
+Type=str
+Categories=system-base
+
+[grub/color/highlight]
+Description[de]=Farben für den hervorgehobenen Vorder-und Hintergrund im grub Terminal.
+Description[en]=This variable contains the "highlight" foreground and background grub terminal colors.
+Type=str
+Categories=system-base
+
+[grub/menu/color/normal]
+Description[de]=Farben für den "normalen" Vorder-und Hintergrund eines nicht markierten grub Menüeintrag.
+Description[en]=This variable contains the foreground and background colors to be used for non-highlighted grub menu entries.
+Type=str
+Categories=system-base
+
+[grub/menu/color/highlight]
+Description[de]=Farben für den Vorder-und Hintergrund eines markierten grub Menüeintrag.
+Description[en]=This variable contains the foreground and background colors to be used for the highlighted grub menu entry.
+Type=str
+Categories=system-base

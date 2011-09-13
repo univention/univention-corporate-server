@@ -45,11 +45,16 @@ univention-config-registry set grub/gfxmode=1024x768@16
 # Obsolete, the option is now always displayed
 univention-config-registry unset grub/memtest86  1> /dev/null 
 
-univention-config-registry set grub/timeout?5
-univention-config-registry set kernel/postinst_hook?"/usr/sbin/update-grub"
-univention-config-registry set grub/quiet?"no"
-univention-config-registry set grub/loglevel?"0"
-univention-config-registry set grub/backgroundimage?"/boot/grub/uniboot.png"
+univention-config-registry set grub/timeout?5 \
+	kernel/postinst_hook?"/usr/sbin/update-grub" \
+	grub/quiet?"no"  \
+	grub/loglevel?"0" \
+	grub/backgroundimage?"/boot/grub/uniboot.png" \
+	grub/color/normal?"black/black" \
+	grub/color/highlight?"black/black" \
+	grub/menu/color/normal?"black/black" \
+	grub/menu/color/highlight?"white/dark-gray"
+
 
 # New installation, the 
 if [ "$1" = configure -a -z "$2" ];  then

@@ -9,3 +9,7 @@ Variables: grub/loglevel
 Variables: grub/gfxmode
 Variables: grub/bootsplash
 Variables: grub/backgroundimage
+Variables: grub/color/normal
+Variables: grub/color/highlight
+Variables: grub/menu/color/normal
+Variables: grub/menu/color/highlight
