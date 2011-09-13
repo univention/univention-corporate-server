@@ -66,7 +66,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 					var res = dojo.getObject('result', false, data);
 
 					// send event when changes occurred
-					if (!this._noEvents && ('remove' == type || 'put' == type)) {
+					if (!this._noEvents && ('remove' == type || 'put' == type || 'add' == type)) {
 						this.onChange();
 					}
 

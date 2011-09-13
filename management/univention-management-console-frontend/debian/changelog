@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.38-1) unstable; urgency=low
+
+  * added emitting onChange signal for 'add' action umc.store.UmcpModuleStore
+    (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 13 Sep 2011 14:40:56 +0200
+
 univention-management-console-frontend (1.0.37-1) unstable; urgency=low
 
   * fixed timeout problem between webserver and frontend
