@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.39-1) unstable; urgency=low
+
+  * added umc.tools.capitalize() (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 13 Sep 2011 16:20:20 +0200
+
 univention-management-console-frontend (1.0.38-1) unstable; urgency=low
 
   * added emitting onChange signal for 'add' action umc.store.UmcpModuleStore

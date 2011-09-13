@@ -542,6 +542,15 @@ dojo.mixin(umc.tools, {
 			o = o.__proto__;
 		}
 		return undefined;
+	},
+
+	capitalize: function(/*String*/ str) {
+		// summary:
+		//		Return a string with the first letter in upper case.
+		if (!dojo.isString(str)) {
+			return str;
+		}
+		return str.slice(0, 1).toUpperCase() + str.slice(1);
 	}
 });
 
