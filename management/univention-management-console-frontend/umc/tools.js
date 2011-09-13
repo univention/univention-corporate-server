@@ -299,7 +299,7 @@ dojo.mixin(umc.tools, {
 			var o = {
 				attr: '',
 				desc: 1,
-				ignCase: false
+				ignCase: true
 			};
 
 			// entry for ordering can by a String or an Object
@@ -309,7 +309,7 @@ dojo.mixin(umc.tools, {
 			else if (dojo.isObject(args[i]) && 'attribute' in args[i]) {
 				o.attr = args[i].attribute;
 				o.desc = (args[i].descending ? -1 : 1);
-				o.ignCase = args[i].ignoreCase;
+				o.ignCase = undefined === args[i].ignoreCase ? true : args[i].ignoreCase;
 			}
 			else {
 				// error case
