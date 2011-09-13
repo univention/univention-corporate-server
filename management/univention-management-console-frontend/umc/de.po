@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-13 11:40+0200\n"
+"POT-Creation-Date: 2011-09-13 12:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,11 +72,15 @@ msgstr ""
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
+#: umc/app.js:411
+msgid "Cancel"
+msgstr ""
+
 #: umc/widgets/MultiObjectSelect.js:253
 msgid "Close"
 msgstr "Schließen"
 
-#: umc/dialog.js:174
+#: umc/dialog.js:178
 msgid "Confirmation"
 msgstr "Bestätigung"
 
@@ -87,6 +91,10 @@ msgstr "Bestätigungen"
 #: umc/tools.js:151
 msgid "Could not fulfill the request."
 msgstr "Die Anfrage konnte nicht ausgeführt werden."
+
+#: umc/app.js:403
+msgid "Do you really want to logout?"
+msgstr ""
 
 #: umc/widgets/LoginDialog.js:61
 msgid "English"
@@ -179,6 +187,10 @@ msgstr "Anmelden"
 #, python-format
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
+
+#: umc/app.js:404
+msgid "Logout"
+msgstr ""
 
 #: umc/app.js:385
 msgid "Module help description"

@@ -57,9 +57,10 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 
 	// options: Object[]
 	//		Array of objects with all available choices (=buttons). Each entry must have the
-	//		property 'label' and may have a 'callback', i.e., a user specified
-	//		function that is called. The callback will receive as parameter the
-	//		option chosen, i.e., an integer or - if specified - the corresponding
+	//		property 'label' and may have a 'callback', i.e., a user specified function
+	//		that is called. The optional property 'default' renders the corresponding
+	//		button in the style of a submit button. The callback will receive as parameter
+	//		the option chosen, i.e., an integer or - if specified - the corresponding
 	//		'name' property of the button.
 	options: [],
 
@@ -93,6 +94,7 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 		dojo.forEach(this.options, dojo.hitch(this, function(ichoice, idx) {
 			buttons.addChild(new umc.widgets.Button({
 				label: ichoice.label,
+				defaultButton: true === ichoice['default'],
 				onClick: dojo.hitch(this, function(values) {
 					// the response is either a custom response or the choice (button) index
 					var response = ichoice.name || idx;

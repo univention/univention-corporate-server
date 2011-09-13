@@ -400,8 +400,17 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			label: '<img src="images/logout.png">',
 			'class': 'umcHeaderButton',
 			onClick: dojo.hitch(this, function() {
-				this.closeSession();
-				window.location.reload();
+				umc.dialog.confirm(this._('Do you really want to logout?'), [{
+					label: this._('Logout'),
+					auto: true,
+					callback: dojo.hitch(this, function() {
+						this.closeSession();
+						window.location.reload();
+					})
+				}, {
+					label: this._('Cancel'),
+					'default': true
+				}]);
 			})
 		}));
 

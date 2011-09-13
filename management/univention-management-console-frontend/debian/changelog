@@ -1,3 +1,13 @@
+univention-management-console-frontend (1.0.36-1) unstable; urgency=low
+
+  * added new option property 'auto' for choices in umc.dialog.confirm()
+    in order to distinguish between default button style and automatically
+    executed actions
+  * added confirmation dialog for logout
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 13 Sep 2011 12:18:44 +0200
+
 univention-management-console-frontend (1.0.35-1) unstable; urgency=low
 
   * fixed focus for mouse clicks on labels (Bug #22881)

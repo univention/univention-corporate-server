@@ -115,10 +115,14 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		// options:
 		//		Array of objects describing the possible choices. Array is passed to
 		//		umc.widgets.ConfirmDialog as 'options' parameter. The property 'label' needs
-		//		to be specified. The properties 'callback', 'name' and 'default' are optional.
-		//		If one single (!) item is specified with the property 'default=true' and
+		//		to be specified. The properties 'callback', 'name', 'auto', and 'default' are
+		//		optional.
+		//		The property 'default' renders the button for the default choice in the style
+		//		of a submit button.
+		//		If one single (!) item is specified with the property 'auto=true' and
 		//		confirmations are switched off in the user preferences, the dialog is not shown
 		//		and the callback function for this default option is executed directly.
+		//
 		// example:
 		//		A simple example that uses the 'default' property.
 		// |	umc.dialog.confirm(msg, [{
@@ -156,7 +160,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 			var response = undefined;
 			dojo.forEach(options, function(i, idx) {
 				// check for default option
-				if (true === i['default']) {
+				if (true === i.auto) {
 					cb = i.callback;
 					response = i.name || idx;
 					return false; // break loop
