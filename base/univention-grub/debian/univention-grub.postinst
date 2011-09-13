@@ -49,6 +49,7 @@ univention-config-registry set grub/timeout?5
 univention-config-registry set kernel/postinst_hook?"/usr/sbin/update-grub"
 univention-config-registry set grub/quiet?"no"
 univention-config-registry set grub/loglevel?"0"
+univention-config-registry set grub/backgroundimage?"/boot/grub/uniboot.png"
 
 # New installation, the 
 if [ "$1" = configure -a -z "$2" ];  then

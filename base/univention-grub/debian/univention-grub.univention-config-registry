@@ -8,3 +8,4 @@ Variables: grub/quiet
 Variables: grub/loglevel
 Variables: grub/gfxmode
 Variables: grub/bootsplash
+Variables: grub/backgroundimage

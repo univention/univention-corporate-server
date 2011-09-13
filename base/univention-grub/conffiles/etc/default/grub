@@ -33,3 +33,10 @@ GRUB_GFXMODE=@%@grub/gfxmode@%@
 # This option passes the video configured in Grub (through grub/gfxmode) to
 # the Linux kernel
 GRUB_GFXPAYLOAD_LINUX=keep
+
+# Background Image
+@!@
+if baseConfig.get('grub/backgroundimage', ''):
+	print 'GRUB_BACKGROUND="%s"' % baseConfig["grub/backgroundimage"]
+@!@
+

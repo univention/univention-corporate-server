@@ -39,3 +39,9 @@ Description[de]=Definiert, ob ein Bootsplash angezeigt werden soll (splash) oder
 Description[en]=Defines whether to display a bootplash (splash) or not (empty or nosplash).
 Type=str
 Categories=system-base
+
+[grub/backgroundimage]
+Description[de]=Definiert das Hintergrundbild für den Bootmanager grub.
+Description[en]=Defines the background image for the bootmanager grub.
+Type=str
+Categories=system-base

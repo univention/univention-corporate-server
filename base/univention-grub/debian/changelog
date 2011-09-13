@@ -1,3 +1,9 @@
+univention-grub (5.0.3-1) unstable; urgency=low
+
+  * added grub/backgroundimage (Bug #23405) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 Sep 2011 11:27:20 +0200
+
 univention-grub (5.0.2-1) unstable; urgency=low
 
   * fixed typo (Bug #22117)
