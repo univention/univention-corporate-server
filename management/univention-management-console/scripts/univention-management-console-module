@@ -43,6 +43,11 @@ import sys
 
 import notifier
 
+import univention.config_registry as ucr
+
+configRegistry = ucr.ConfigRegistry()
+configRegistry.load()
+
 if __name__ == '__main__':
 	if os.getuid() != 0:
 		sys.stderr.write( '%s must be started as root\n' % os.path.basename( sys.argv[ 0 ] ) )
@@ -85,6 +90,15 @@ if __name__ == '__main__':
 	if not options.socket:
 		raise SystemError( 'socket name is missing' )
 
-	module = umcp.ModuleServer( options.socket, options.module, check_acls = False )
+	# get the timeout
+	session_timeout = 300
+	try:
+		session_timeout = int( configRegistry.get( 'umc/http/session/timeout', 300 ) )
+	except TypeError, ValueError:
+		CORE.error( 'Failed to read session timeout from UCR variable umc/http/session/timeout. Using default of 300 seconds' )
+	# add a few seconds offset in order to avoid mismatches with the JavaScript frontend
+	session_timeout += 5;
+
+	module = umcp.ModuleServer( options.socket, options.module, check_acls = False, timeout = session_timeout )
 
 	notifier.loop()
