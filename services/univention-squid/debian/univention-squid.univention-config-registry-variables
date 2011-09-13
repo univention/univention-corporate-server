@@ -10,9 +10,6 @@ Description[en]=Verbosity of log messages (ALL logs all functionality levels, be
 Type=str
 Categories=service-webproxy
 
-
-
-
 [squid/virusscan]
 Description[de]=Virenscanner für squid aktivieren
 Description[en]=Activate virus scanner for squid
