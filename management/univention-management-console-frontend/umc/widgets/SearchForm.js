@@ -32,8 +32,24 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 			}];
 		}
 
-		// add the buttons in a new row
-		this.layout.push(['reset', 'submit']);
+		// add the buttons in a new row in case they have not been specified in the layout
+		var buttonsExist = false;
+		var stack = [this.layout];
+		while (stack.length) {
+			var el = stack.pop();
+			if (dojo.isArray(el)) {
+				dojo.forEach(el, function(i) {
+					stack.push(i);
+				});
+			}
+			else if ('reset' == el || 'submit' == el) {
+				buttonsExist = true;
+				break;
+			}
+		}
+		if (!buttonsExist) {
+			this.layout.push(['reset', 'submit']);
+		}
 	},
 
 	onSearch: function(values) {

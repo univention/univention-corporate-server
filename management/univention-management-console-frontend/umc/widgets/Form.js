@@ -94,6 +94,12 @@ dojo.declare("umc.widgets.Form", [
 		this._dependencyMap = {};
 	},
 
+	getWidget: function( /*String*/ widget_name) {
+		// summary:
+		//		Return a reference to the widget with the specified name.
+		return this._widgets[widget_name]; // Widget|undefined
+	},
+
 	showWidget: function( widget_name, /* bool? */ visibility ) {
 		if ( ! widget_name in this._widgets ) {
 			console.log( 'Form.showWidget: could not find widget ' + widget_name );
@@ -330,7 +336,7 @@ dojo.declare("umc.widgets.Form", [
 	},
 
 	onValuesInitialized: function() {
-		console.log('### onValuesInitialized');
+		// event stub
 	}
 });
 

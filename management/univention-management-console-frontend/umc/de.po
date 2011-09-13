@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-13 12:18+0200\n"
+"POT-Creation-Date: 2011-09-13 21:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,12 +21,12 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
-#: umc/widgets/Grid.js:452
+#: umc/widgets/Grid.js:475
 #, python-format
 msgid "%d of %d objects selected"
 msgstr "%d von %d Objekten ausgewählt"
 
-#: umc/widgets/Grid.js:449
+#: umc/widgets/Grid.js:472
 #, python-format
 msgid "%d of 1 object selected"
 msgstr "%d von 1 Objekt ausgewählt"
@@ -74,7 +74,7 @@ msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
 #: umc/app.js:411
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: umc/widgets/MultiObjectSelect.js:253
 msgid "Close"
@@ -190,25 +190,25 @@ msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
 #: umc/app.js:404
 msgid "Logout"
-msgstr ""
+msgstr "Abmelden"
 
 #: umc/app.js:385
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
-#: umc/widgets/Grid.js:246 umc/widgets/Grid.js:247
+#: umc/widgets/Grid.js:258 umc/widgets/Grid.js:259
 msgid "More actions"
 msgstr "Weitere Aktionen"
 
-#: umc/widgets/Grid.js:286 umc/widgets/Grid.js:568
+#: umc/widgets/Grid.js:302 umc/widgets/Grid.js:604
 msgid "More..."
 msgstr "Weitere..."
 
-#: umc/widgets/Grid.js:455
+#: umc/widgets/Grid.js:478
 msgid "No object found"
 msgstr "Keine Objekte wurden gefunden"
 
-#: umc/widgets/Grid.js:505
+#: umc/widgets/Grid.js:532
 msgid "No object selected"
 msgstr "Kein Objekt ausgewählt"
 

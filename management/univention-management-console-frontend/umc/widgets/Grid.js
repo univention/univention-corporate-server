@@ -31,6 +31,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 	//		be used in the grid.
 	//		TODO: explain isContextAction, isStandardAction, isMultiAction
 	//		TODO: explain also the 'adjust' value for columns
+	//		TODO: iconClass, label -> may be of type string or function
 	actions: null,
 
 	// columns: Object[]
@@ -54,6 +55,12 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 	// moduleStore: umc.store.UmcpModuleStore
 	//		Object store for module requests using UMCP commands.
 	moduleStore: null,
+
+	// footerFormatter: Function?
+	//		Function that is called with two parameters: the number of selected objects,
+	//		total number of objects. The function is expected to return a string that
+	//		will be displayed in the grid footer.
+	footerFormatter: null,
 
 	// use the framework wide translation file
 	i18nClass: 'umc.app',
@@ -197,10 +204,11 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			if (!(iaction.isStandardAction && (false !== iaction.isContextAction))) {
 				return;
 			}
+			var ilabel = dojo.isFunction(iaction.label) ? iaction.label() : iaction.label;
 			gridColumns.push({
 				field: this.moduleStore.idProperty,
-				name: iaction.label,
-				width: this._getHeaderWidth(iaction.label) + 'px',
+				name: ilabel,
+				width: this._getHeaderWidth(ilabel) + 'px',
 				description: iaction.description,
 				editable: false,
 				formatter: dojo.hitch(this, function(key, rowIndex) {
@@ -209,15 +217,19 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 						return '';
 					}
 
+					// get icon and label (these properties may be functions)
+					var item = this._grid.getItem(rowIndex);
+					var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass(item) : iaction.iconClass;
+					var ilabel = dojo.isFunction(iaction.label) ? iaction.label(item) : iaction.label;
+
 					// by default only create a button with icon
-					var props = { iconClass: iaction.iconClass };
+					var props = { iconClass: iiconClass };
 					if (!props.iconClass) {
 						// no icon is set, set a label instead
-						props = { label: iaction.label };
+						props = { label: ilabel };
 					}
 
 					// add callback handler
-					var item = this._grid.getItem(rowIndex);
 					if (iaction.callback) {
 						props.onClick = dojo.hitch(this, function() {
 							iaction.callback([key], [item]);
@@ -264,10 +276,14 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 							return true;
 						}
 
+						// get icon and label (these properties may be functions)
+						var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass(item) : iaction.iconClass;
+						var ilabel = dojo.isFunction(iaction.label) ? iaction.label(item) : iaction.label;
+
 						// add the menu entry
 						menu.addChild(new dijit.MenuItem({
-							label: iaction.label,
-							iconClass: iaction.iconClass,
+							label: ilabel,
+							iconClass: iiconClass,
 							onClick: dojo.hitch(this, function() {
 								if (iaction.callback) {
 									iaction.callback([key], [item]);
@@ -305,10 +321,14 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 				return;
 			}
 
+			// get icon and label (these properties may be functions)
+			var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass() : iaction.iconClass;
+			var ilabel = dojo.isFunction(iaction.label) ? iaction.label() : iaction.label;
+
 			// create a new menu item
 			var item = new dijit.MenuItem({
-				label: iaction.label,
-				iconClass: iaction.iconClass,
+				label: ilabel,
+				iconClass: iiconClass,
 				onClick: dojo.hitch(this, function() {
 					if (iaction.callback) {
 						iaction.callback([this._contextItemID], [this._contextItem]);
@@ -445,7 +465,10 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 	_updateFooterContent: function() {
 		var nItems = this._grid.selection.getSelectedCount();
 		var nItemsTotal = this._grid.rowCount;
-		if (1 == nItemsTotal) {
+		if (dojo.isFunction(this.footerFormatter)) {
+			this._footerLegend.set('content', this.footerFormatter(nItems, nItemsTotal));
+		}
+		else if (1 == nItemsTotal) {
 			this._footerLegend.set('content', this._('%d of 1 object selected', nItems));
 		}
 		else if (1 < nItemsTotal) {
@@ -468,7 +491,11 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		dojo.forEach(this._contextMenu.getChildren(), function(iMenuItem, i) {
 			var iaction = this.actions[i];
 			var idisabled = rowDisabled || (iaction.canExecute && !iaction.canExecute(item));
+			var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass(item) : iaction.iconClass;
+			var ilabel = dojo.isFunction(iaction.label) ? iaction.label(item) : iaction.label;
 			iMenuItem.set('disabled', idisabled);
+			iMenuItem.set('label', ilabel);
+			iMenuItem.set('iconClass', iiconClass);
 		}, this);
 	},
 
@@ -512,14 +539,18 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			if (!(iaction.isStandardAction && (false !== iaction.isContextAction))) {
 				return;
 			}
-		
+
 			// only add action if it is a multi action
 			if (iaction.isMultiAction) {
+				// get icon and label (these properties may be functions)
+				var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass() : iaction.iconClass;
+				var ilabel = dojo.isFunction(iaction.label) ? iaction.label() : iaction.label;
+
 				// by default only create a button with icon
-				var props = { iconClass: iaction.iconClass };
+				var props = { iconClass: iiconClass };
 				if (!props.iconClass) {
 					// no icon is set, set a label instead
-					props = { label: iaction.label };
+					props = { label: ilabel };
 				}
 
 				// add callback handler
@@ -549,9 +580,14 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		if (tmpActions.length) {
 			var moreActionsMenu = dijit.Menu({});
 			dojo.forEach(tmpActions, function(iaction) {
+				// get icon and label (these properties may be functions)
+				var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass() : iaction.iconClass;
+				var ilabel = dojo.isFunction(iaction.label) ? iaction.label() : iaction.label;
+
+				// create menu entry
 				moreActionsMenu.addChild(new dijit.MenuItem({
-					label: iaction.label,
-					iconClass: iaction.iconClass,
+					label: ilabel,
+					iconClass: iiconClass,
 					onClick: dojo.hitch(this, function() {
 						if (iaction.callback) {
 							iaction.callback([this._contextItemID], [this._contextItem]);

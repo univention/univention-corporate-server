@@ -114,7 +114,10 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 		return buttons; // Object
 	},
 
-	button: function(/*Object*/ buttonConf) {
+	button: function(/*Object*/ _buttonConf) {
+		// make a local copy of the config object
+		var buttonConf = dojo.mixin({}, _buttonConf);
+
 		// specific button types need special care: submit, reset
 		var buttonClassName = 'Button';
 		if ('submit' == buttonConf.name) {
@@ -127,6 +130,12 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 		// load the java script code for the button class
 		dojo['require']('umc.widgets.' + buttonClassName);
 		var ButtonClass = dojo.getObject('umc.widgets.' + buttonClassName);
+
+		// get icon and label (these properties may be functions)
+		var iiconClass = buttonConf.iconClass;
+		var ilabel = buttonConf.label;
+		buttonConf.iconClass = dojo.isFunction(iiconClass) ? iiconClass() : iiconClass;
+		buttonConf.label = dojo.isFunction(ilabel) ? ilabel() : ilabel;
 
 		// render the button
 		var button = new ButtonClass(buttonConf);

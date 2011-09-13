@@ -1,3 +1,13 @@
+univention-management-console-frontend (1.0.40-1) unstable; urgency=low
+
+  * Grid: added function support for action properties 'iconClass' and 'label'
+  * Grid: added function footerFormatter()
+  * Form: added method getWidget()
+  * SearchForm: added support for layouting buttons
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 13 Sep 2011 21:30:13 +0200
+
 univention-management-console-frontend (1.0.39-1) unstable; urgency=low
 
   * added umc.tools.capitalize() (Bug #22881)
