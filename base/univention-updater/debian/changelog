@@ -1,3 +1,9 @@
+univention-updater (6.0.105-1) unstable; urgency=low
+
+  * reverted patch of Bug #15630
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 13 Sep 2011 16:37:32 +0200
+
 univention-updater (6.0.104-1) unstable; urgency=low
 
   * update UCR variable update/available in univention-actualise (Bug #22956)

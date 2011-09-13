@@ -129,16 +129,6 @@ command_description = {
 			'component_version': umc.String(_('Version'), required = False, regex = COMPONENT_VERSION_FORMAT),
 		},
 	),
-	'update/components_remove': umch.command(
-		short_description = _('Remove component'),
-		method = 'components_remove',
-		values = {
-			'component_name': umc.String(_('Name')),
-		},
-		confirm=umch.Confirm( _('Confirm deletion'),
-							 _('Delete selected component?')
-							 ),
-	),
 	'update/install_release_updates': umch.command(
 		short_description = _('Installs a release update'),
 		method = 'install_release_updates',
@@ -360,41 +350,6 @@ class handler(umch.simpleHandler):
 
 			self.finished(object.id(), None)
 
-
-	def components_remove(self, request):
-		_d = ud.function('update.handler.components_remove')
-		component_name = request.options.get('component_name', '')
-		ud.debug(ud.ADMIN, ud.INFO, 'Removing component %s' % component_name)
-		report = _('Removal of component <i>%s</i> failed!') % component_name
-		if component_name:
-			unsetlist = []
-			UCRVBase = 'repository/online/component/%s' % component_name
-
-			ucr  = univention.config_registry.ConfigRegistry()
-			ucr.load()
-
-			unsetlist = [ x for x in ucr.keys() if x.startswith('%s/' % UCRVBase) ]
-			if UCRVBase in ucr.keys():
-				unsetlist.append( UCRVBase )
-
-			ud.debug(ud.ADMIN, ud.INFO, 'Unset the following component settings: %s' % unsetlist)
-			if unsetlist:
-				univention.config_registry.handler_unset(unsetlist)
-
-			p1 = subprocess.Popen(['apt-get','-qq','update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, env={"LC_ALL": "C", "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"})
-			(stdout,stderr) = p1.communicate()
-			ud.debug(ud.ADMIN, ud.PROCESS, 'run "apt-get update", the returncode is %d' % p1.returncode)
-			if stderr:
-				ud.debug(ud.ADMIN, ud.PROCESS, 'stderr=%s' % stderr)
-			if stdout:
-				ud.debug(ud.ADMIN, ud.INFO, 'stdout=%s' % stdout)
-			ud.debug(ud.ADMIN, ud.INFO, 'And reinit the updater modul')
-			self._reinit()
-			report = _('Component <i>%s</i> has been removed successfully!') % component_name
-
-		res = umcp.Response( request )
-		res.status(201)
-		self.finished(request.id(), res, report = str(report))
 
 	def components_settings(self, object):
 		_d = ud.function('update.handler.components_settings')
@@ -1157,13 +1112,7 @@ class handler(umch.simpleHandler):
 					req.set_flag('web:startup_dialog', True)
 					req.set_flag('web:startup_referrer', True)
 					req.set_flag('web:startup_format', _('Modify component %s' )  % description )
-					btn_configure = umcd.Button(_('Configure'), 'update/gear', actions=[umcd.Action(req)])
-
-					cmd_rm = umcp.Command( args = ['update/components_remove'], opts = { 'component_name': component_name } )
-					cmd_overview = umcp.Command( args = ['update/settings'] )
-					btn_rm = umcd.Button( _('Delete'), 'actions/ok', actions = [ umcd.Action( cmd_rm ), umcd.Action( cmd_overview ) ] )
-
-					btnlist = [ btn_configure, btn_rm ]
+					btnlist = [ umcd.Button(_('Configure'), 'update/gear', actions=[umcd.Action(req)]) ]
 					txt = umcd.Text(_('This component is disabled.'))
 					if component.get('activated', '').lower() in ['yes', 'true', '1', 'enable', 'enabled', 'on']:
 
