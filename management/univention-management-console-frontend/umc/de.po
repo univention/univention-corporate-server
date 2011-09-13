@@ -94,7 +94,7 @@ msgstr "Die Anfrage konnte nicht ausgeführt werden."
 
 #: umc/app.js:403
 msgid "Do you really want to logout?"
-msgstr ""
+msgstr "Möchten Sie sich wirklich abmelden?"
 
 #: umc/widgets/LoginDialog.js:61
 msgid "English"
