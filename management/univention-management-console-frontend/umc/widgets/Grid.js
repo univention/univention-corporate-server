@@ -32,6 +32,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 	//		TODO: explain isContextAction, isStandardAction, isMultiAction
 	//		TODO: explain also the 'adjust' value for columns
 	//		TODO: iconClass, label -> may be of type string or function
+	//		      they are called either per item (with a dict as parameter) or
+	//		      once as column caption (without any parameters)
 	actions: null,
 
 	// columns: Object[]

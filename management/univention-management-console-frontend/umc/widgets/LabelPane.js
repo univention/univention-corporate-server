@@ -72,7 +72,7 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 		if (umc.tools.inheritsFrom(this.content, 'dijit.form.CheckBox')) {
 			dojo.attr(this.labelNodeRight, 'innerHTML', label);
 			if (label) {
-				dojo.attr(this.labelNodeTop, 'innerHTML', '&nbsp;');
+				dojo.attr(this.labelNodeTop, 'innerHTML', '');
 				dojo.addClass(this.domNode, 'umcLabelPaneCheckBox');
 			}
 		}

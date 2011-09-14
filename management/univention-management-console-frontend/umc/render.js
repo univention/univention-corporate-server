@@ -274,8 +274,8 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 			}
 		}
 
-		// add buttons if specified
-		if (buttons) {
+		// add buttons if specified and if they have not been added in the layout already
+		if (buttons && 0 == iLevel) {
 			// add all buttons that have not been rendered so far to a separate container
 			// and respect their correct order (i.e., using the interal array field _order)
 			var buttonContainer = new umc.widgets.ContainerWidget({});

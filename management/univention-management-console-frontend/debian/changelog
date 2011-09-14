@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.41-1) unstable; urgency=low
+
+  * fixed incorrect rendering for buttons in render.layout()
+  * Grid: added documentation
+  * LabelPane: removed blank label for checkboxes
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 14 Sep 2011 14:04:14 +0200
+
 univention-management-console-frontend (1.0.40-1) unstable; urgency=low
 
   * Grid: added function support for action properties 'iconClass' and 'label'
