@@ -308,7 +308,7 @@ form {
 }
 
 .umcLabelPaneCheckBox {
-	margin-right: 25em;
+	width: 25em;
 }
 
 /* force scrollbars for grids, otherwise vertical scrollbars may be shown is particular circumstances */

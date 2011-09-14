@@ -335,7 +335,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 					if (iaction.callback) {
 						iaction.callback([this._contextItemID], [this._contextItem]);
 					}
-				})
+				}),
+				_action: iaction
 			});
 			this._contextMenu.addChild(item);
 		}, this);
@@ -491,7 +492,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		// disable the context menu items
 		var rowDisabled = this._grid.rowSelectCell.disabled(evt.rowIndex);
 		dojo.forEach(this._contextMenu.getChildren(), function(iMenuItem, i) {
-			var iaction = this.actions[i];
+			var iaction = iMenuItem._action;
 			var idisabled = rowDisabled || (iaction.canExecute && !iaction.canExecute(item));
 			var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass(item) : iaction.iconClass;
 			var ilabel = dojo.isFunction(iaction.label) ? iaction.label(item) : iaction.label;

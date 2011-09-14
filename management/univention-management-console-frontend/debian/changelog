@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.43-1) unstable; urgency=low
+
+  * fixed styling problems with checkboxes
+  * fixed wrong labels in grid context menu
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 14 Sep 2011 17:07:24 +0200
+
 univention-management-console-frontend (1.0.42-1) unstable; urgency=low
 
   * fixed hiding tooltip on mouse click
