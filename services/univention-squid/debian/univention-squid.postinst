@@ -40,6 +40,17 @@ adduser proxy winbindd_priv
 # Remove old templates for Squid 2, can be removed in UCS 3.1
 remove_ucr_template /etc/squid/squid.conf
 
+if [ -e /etc/squid3/local.conf ] ; then
+    mv /etc/squid/local.conf /etc/squid3/local.conf
+fi
+
+rmdir /etc/squid 2> /dev/null
+
+LOCALINCLUDE=/etc/squid3/local.conf
+if [ ! -e "$LOCALINCLUDE" ]; then
+	echo "# add local config here" >> "$LOCALINCLUDE"
+fi
+
 ucr set squid/transparentproxy?false
 ucr set squid/ldapauth?no
 ucr set squid/cache?yes
