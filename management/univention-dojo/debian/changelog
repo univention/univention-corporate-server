@@ -1,3 +1,10 @@
+univention-dojo (5.0.4-1) unstable; urgency=low
+
+  * added patch in order to fix unwanted focus in dojox.grid.EnhancedGrid
+    (Bug #23195)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 14 Sep 2011 14:28:38 +0200
+
 univention-dojo (5.0.3-1) unstable; urgency=low
 
   * added patch to fix ucs-lint errors (Bug #22461)

@@ -47,6 +47,7 @@ build: $(DOJO_DIR)
 $(DOJO_DIR):
 	tar xzf $@.tar.gz
 	patch -p0 < fix_bashism.patch
+	patch -p0 < fix_grid_focus.patch
 	
 all: install
 

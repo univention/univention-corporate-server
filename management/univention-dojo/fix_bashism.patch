@@ -1,3 +1,4 @@
+this patch fixes bashism errors in dojo scripts
 --- dojo-release-1.6.1-src.orig/dojox/mobile/build/build.sh	2011-01-07 22:16:10.000000000 +0100
 +++ dojo-release-1.6.1-src/dojox/mobile/build/build.sh	2011-07-20 09:53:20.000000000 +0200
 @@ -33,13 +33,13 @@
