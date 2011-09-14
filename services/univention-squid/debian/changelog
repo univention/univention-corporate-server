@@ -1,3 +1,10 @@
+univention-squid (5.0.2-10) unstable; urgency=low
+
+  * Fix typo in postinst (Bug #22576) 
+  * Fix names of authentication helpers	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 14 Sep 2011 09:24:06 +0200
+
 univention-squid (5.0.2-9) unstable; urgency=low
 
   * Fix syntax in template (Bug #22576) 
