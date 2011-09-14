@@ -414,13 +414,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			})
 		}));
 
-		// the footer
-		var footer = new umc.widgets.ContainerWidget({
-			'class': 'umcFooter',
-			region: 'bottom'
-		});
-		topContainer.addChild(footer);
-
 		// put everything together
 		topContainer.startup();
 
