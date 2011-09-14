@@ -37,6 +37,9 @@
 # the proxy user needs to be in the group winbindd_priv to be able to access winbind
 adduser proxy winbindd_priv
 
+# Remove old templates for Squid 2, can be removed in UCS 3.1
+remove_ucr_template /etc/squid/squid.conf
+
 ucr set squid/transparentproxy?false
 ucr set squid/ldapauth?no
 ucr set squid/cache?yes
