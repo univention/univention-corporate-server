@@ -111,3 +111,19 @@ Description[de]=Erlaubt die Definition einer Filtergruppe anhand einer IP-Adress
 Description[en]=
 Type=str
 Categories=service-webproxy
+
+[dansguardian/language]
+Description[de]=Ist hier eine der unter /etc/dansguardian/languages verfügbaren Sprachen gesetzt, werden die Fehler- und Statusmeldungen für Benutzer internationalisiert angezeigt
+Description[en]=If one of the languages below /etc/dansguardian/languages is set, error and status messages are displayed internationalised.
+Type=str
+Categories=service-webproxy
+
+[dansguardian/loglevel]
+Description[de]=Detailgrade der Logmeldungen (0= keine, 1=nur abgewiesene Anfragen, 2=alle Klartext-Anfragen, 3=alle Anfragen (inkl. HTTPS))
+Description[en]=Verbosiry of log messages (0=none, 1=only denied requests, 2=all clear text requests, 3=all requests, inkl. HTTPS)
+Type=str
+Categories=service-webproxy
+
+
+
+

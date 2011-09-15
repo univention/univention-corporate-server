@@ -4,6 +4,10 @@ Variables: squid/virusscan
 Variables: dansguardian/virus/notifyemail
 Variables: squid/httpport
 Variables: squid/.*auth
+Variables: squid/ldapauth
+Variables: squid/basicauth
+Variables: squid/ntlmauth
+Variables: dansguardian/groups/system
 Variables: web/antivir/scanner
 Variables: dansguardian/loglevel
 Variables: dansguardian/language
