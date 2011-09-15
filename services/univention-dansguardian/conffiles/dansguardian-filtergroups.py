@@ -1,9 +1,9 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 #
-# Univention AntiVir Web
+# Univention Dansguardian
 #  Univention Configuration Registry Module to write filter group configuration
 #
-# Copyright 2009-2010 Univention GmbH
+# Copyright 2009-2011 Univention GmbH
 #
 # http://www.univention.de/
 #

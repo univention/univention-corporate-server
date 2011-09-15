@@ -3,7 +3,7 @@
 # Univention Scalix
 #  preinst script for the debian package
 #
-# Copyright 2006-2010 Univention GmbH
+# Copyright 2006-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-set -e
 
 #DEBHELPER#
 

@@ -1,3 +1,9 @@
+univention-antivir-web (5.0.0-1) unstable; urgency=low
+
+  * Update for UCS 3.0 (Bug #22576)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 15 Sep 2011 09:27:26 +0200
+
 univention-antivir-web (4.0.4-3) unstable; urgency=low
 
   * fixed typo in bannediplist template (Bug #20331) 
