@@ -35,87 +35,32 @@
 
 #DEBHELPER#
 
-case "$1" in
-    configure)
+ucr set squid/virusscan?yes
+ucr set squid/contentscan?yes
 
-        CONFREG=univention-config-registry
-
-        if dpkg --compare-versions "$2" lt-nl "2.0.0-1"; then
-                # Merge pre-UCS2.0-settings:
-                eval $($CONFREG shell proxy/redirect proxy/antivir/scanner proxy/antivir/virusscanner proxy/antivir/scannerpath proxy/antivir/viruscmd proxy/antivir/alert)
-
-                [ $proxy_redirect ] && ( $CONFREG set squid/virusscan=$proxy_redirect ; $CONFREG set squid/contentscan=false )
-                [ $proxy_antivir_scanner ] && (
-                        [ $proxy_antivir_scanner != clamav ] || echo Warning: Different virus scanners than clamav are not supported anymore by univention-antivir-web
-                        )
-                [ $proxy_antivir_virusscanner -o $proxy_antivir_scannerpath -o $proxy_antivir_viruscmd -o $proxy_antivir_alert ] && (
-                        echo Warning: Different virus scanners than clamav are not supported anymore by univention-antivir-web
-                        )
-        fi
-
-        $CONFREG set squid/virusscan?yes
-        $CONFREG set squid/contentscan?yes
-
-	/etc/init.d/squid restart
-	eval $($CONFREG shell squid/virusscan squid/contentscan)
-	if [ "$squid_virusscan" = yes -o "$squid_contentscan" = yes ]; then
-		unset freshclam_active
-		if [ -x /etc/init.d/clamav-freshclam ]; then
-			# if freshclam is active stop it for a second to avoid locking problem on /var/lib/clamav
-			/etc/init.d/clamav-freshclam status | grep -q "is running" && freshclam_active=1
-			[ "$freshclam_active" = 1 ] && /etc/init.d/clamav-freshclam stop
-		fi
-		/etc/init.d/dansguardian restart
-		[ "$freshclam_active" = 1 ] && /etc/init.d/clamav-freshclam start
+/etc/init.d/squid restart
+eval $(ucr shell squid/virusscan squid/contentscan)
+if [ "$squid_virusscan" = yes -o "$squid_contentscan" = yes ]; then
+	unset freshclam_active
+	if [ -x /etc/init.d/clamav-freshclam ]; then
+		# if freshclam is active stop it for a second to avoid locking problem on /var/lib/clamav
+		/etc/init.d/clamav-freshclam status | grep -q "is running" && freshclam_active=1
+		[ "$freshclam_active" = 1 ] && /etc/init.d/clamav-freshclam stop
 	fi
+	/etc/init.d/dansguardian restart
+	[ "$freshclam_active" = 1 ] && /etc/init.d/clamav-freshclam start
+fi
 
-	if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	 	/usr/lib/univention-install/79univention-antivir-web.inst
-	fi
-
-    ;;
-
-    abort-upgrade|abort-remove|abort-deconfigure)
-
-    ;;
-
-    *)
-        echo "postinst called with unknown argument \`$1'" >&2
-        exit 1
-    ;;
-esac
+call_joinscript 79univention-antivir-web.inst
 
 /etc/init.d/univention-directory-listener crestart
 
 # default group for web access
-$CONFREG set dansguardian/groups?www-access
+ucr set dansguardian/groups?www-access
 # use system groups for filter groups
-$CONFREG set dansguardian/groups/system?yes
+ucr set dansguardian/groups/system?yes
 
 # activate clamav virus scanner by default, if not already set
-$CONFREG set dansguardian/virusscanner?clamav
-
-# rewrite old UCR variables
-if [ "$1" = "configure" -a -n "$2" ]; then
-	if dpkg --compare-versions "$2" le "2.0.1-7"; then
-		eval $($CONFREG shell squid/contentscan/bannedextensions squid/contentscan/bannedclientips squid/contentscan/bannedmimetypes squid/contentscan/bannedsites squid/contentscan/bannedurls squid/contentscan/whitelist/ip squid/contentscan/whitelist/user squid/virusscan/whitelist/extensions squid/virusscan/whitelist/mimetypes squid/virusscan/whitelist/sites squid/virusscan/whitelist/urls squid/virusscan/notifymail)
-		$CONFREG set "dansguardian/groups/www-access/banned/extensions?$squid_contentscan_bannedextensions" \
-			"dansguardian/groups/www-access/banned/ipaddresses?$squid_contentscan_bannedclientips" \
-			"dansguardian/groups/www-access/banned/mimetypes?$squid_contentscan_bannedmimetypes" \
-			"dansguardian/groups/www-access/banned/sites?$squid_contentscan_bannedsites" \
-			"dansguardian/groups/www-access/banned/urls?$squid_contentscan_bannedurls" \
-			"dansguardian/groups/www-access/exception/ipaddresses?$squid_contentscan_whitelist_ip" \
-			"dansguardian/groups/www-access/exception/users?$squid_contentscan_whitelist_user" \
-			"dansguardian/groups/www-access/exception/extensions?$squid_contentscan_whitelist_extensions" \
-			"dansguardian/groups/www-access/exception/mimetypes?$squid_contentscan_whitelist_mimetypes" \
-			"dansguardian/groups/www-access/exception/sites?$squid_contentscan_whitelist_sites" \
-			"dansguardian/groups/www-access/exception/urls?$squid_contentscan_whitelist_urls" \
-			"dansguardian/virus/exception/urls?$squid_virusscan_whitelist_urls" \
-			"dansguardian/virus/exception/extensions?$squid_virusscan_whitelist_extensions" \
-			"dansguardian/virus/exception/sites?$squid_virusscan_whitelist_sites" \
-			"dansguardian/virus/exception/mimetypes?$squid_virusscan_whitelist_mimetypes" \
-			"dansguardian/virus/notifyemail?$squid_virusscan_whitelist_mimetypes"
-	fi
-fi
+ucr set dansguardian/virusscanner?clamav
 
 exit 0

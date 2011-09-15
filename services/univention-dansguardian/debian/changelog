@@ -1,6 +1,7 @@
 univention-antivir-web (5.0.0-1) unstable; urgency=low
 
   * Update for UCS 3.0 (Bug #22576)
+  * Remove old transition code from postinst	
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 15 Sep 2011 09:27:26 +0200
 
