@@ -17,6 +17,7 @@ univention-dansguardian (5.0.0-1) unstable; urgency=low
     - dansguardian/language	
     - dansguardian/loglevel	
     - dansguardian/virusscanner
+    - dansguardian/auth/ip
 	
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 15 Sep 2011 09:27:26 +0200
 
