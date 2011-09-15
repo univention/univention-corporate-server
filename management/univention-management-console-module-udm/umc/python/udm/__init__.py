@@ -516,8 +516,9 @@ class Instance( Base ):
 		if not 'container' in request.options:
 			raise UMC_OptionMissing( "The option 'container' is required" )
 
-		if 'None' != request.options.get('objectType', '') and :
+		if 'None' != request.options.get('objectType', ''):
 			# we need to search for a specific objectType, then we should call the standard query
+			request.options['superordinate'] = None
 			self.query(request)
 			return
 
