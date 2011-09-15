@@ -37,6 +37,7 @@ attributetype ( 1.3.6.1.4.1.10176.1196
 	DESC 'failover peer'
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
+# SUP dhcpService
 objectclass ( 1.3.6.1.4.1.10176.1197
 	NAME 'univentionDhcpService'
 	DESC 'Service object that represents the actual DHCP Service configuration. This is a container object.'
@@ -46,6 +47,7 @@ objectclass ( 1.3.6.1.4.1.10176.1197
 		dhcpGroupDN $ dhcpHostDN $  dhcpClassesDN $ dhcpOptionsDN $
 		dhcpStatements ) )
 
+# SUP dhcpPool
 objectclass ( 1.3.6.1.4.1.10176.1193
 	NAME 'univentionDhcpPool'
 	DESC 'This stores configuration information about a pool.'
@@ -55,6 +57,7 @@ objectclass ( 1.3.6.1.4.1.10176.1193
 		univentionDhcpFailoverPeer)
 	X-NDS_CONTAINMENT ('dhcpSubnet' 'dhcpSharedNetwork') )
 
+# SUP dhcpHost MUST ( dhcpHWAddress ) MAY ( univentionDhcpFixedAddress )
 objectclass ( 1.3.6.1.4.1.10176.1198
 	NAME 'univentionDhcpHost'
 	DESC 'This represents information about a particular client'
@@ -69,6 +72,7 @@ attributetype ( 1.3.6.1.4.1.1016.1199.1
 	DESC 'Option Broadcast Address'
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
+# SUP dhcpSubnet MAY ( univentionDhcpBroadcastAddress )
 objectclass ( 1.3.6.1.4.1.1016.1199
 	NAME 'univentionDhcpSubnet'
 	DESC 'This class defines a subnet. This is a container object.'

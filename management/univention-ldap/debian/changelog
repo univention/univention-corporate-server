@@ -1,3 +1,18 @@
+univention-ldap (8.0.34-1) unstable; urgency=low
+
+  * Update DHCP-LDAP-schema (Bug #22112)
+    +IPv6-Attribute
+    ±/dhcpHWAddress/s/IA5/Directory/ (Bug #15211)
+    +/dhcpService#dhcpPrimaryDN/s/MUST/MAY/
+    +/dhcpServer#dhcpServiceDN/s/MUST/MAY/
+  * Update Univention-DHCP-LDAP-schema
+    ±univentionDhcpService SUP dhcpService
+    ±univentionDhcpPool SUP dhcpPool
+    ±univentionuniventionDhcpSubnet SUP dhcpSubnet + uDhcpBroadcastAddress
+    ±univentionDhcpHost SUP dhcpHost + dhcpHWAddress + uDhcpFixedAddress
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Sep 2011 10:42:50 +0200
+
 univention-ldap (8.0.33-1) unstable; urgency=low
 
   * Start slapd after creating the index (Bug #23588)
