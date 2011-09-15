@@ -22,6 +22,22 @@ dojo.require("umc.modules._udm.NewObjectDialog");
 dojo.require("umc.modules._udm.TreeModel");
 dojo.require("umc.modules._udm.DetailPage");
 
+(function() {
+	dojo.setObject('umc.modules._udm.setDynamicValues', function(dict) {
+		// return the list specified by the property '$name$'
+		// make sure that elements do not exist twice
+		var tmpMap = {};
+		var list =  dojo.filter(dict[dict.$name$], function(ival) {
+			if (!(ival in tmpMap)) {
+				tmpMap[ival] = true;
+				return true;
+			}
+			return false;
+		});
+		return list;
+	});
+})();
+
 dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// summary:
 	//		Module to interface (Univention Directory Manager) UDM objects.

@@ -103,7 +103,7 @@ def choices( syntax, udm_property ):
 		return { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__, 'options' : { 'syntax' : syntax.name, 'filter' : syntax.filter, 'viewonly' : syntax.viewonly, 'base' : syntax.base, 'value' : syntax.value, 'attributes' : syntax.attributes, 'empty' : syntax.addEmptyValue } } }
 
 	if inspect.isclass( syntax ) and issubclass( syntax, udm_syntax.select ) and hasattr( syntax, 'depends' ):
-		return { 'dynamicValues' : 'javascript:umc.modules._udm.setDynamicValues', 'depends': syntax.depends }
+		return { 'dynamicValues' : 'javascript:umc.modules._udm.setDynamicValues', 'dynamicOptions' : { '$name$' : syntax.depends }, 'depends': syntax.depends }
 
 	return { 'staticValues' : map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syntax, 'choices', [] ) ) }
 

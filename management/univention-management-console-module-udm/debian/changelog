@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.127-1) unstable; urgency=low
+
+  * added JavaScript callback function for DHCP and IP entries
+  * added parameter to syntax class
+  (Bug #23194)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 15 Sep 2011 22:53:20 +0200
+
 univention-management-console-module-udm (1.0.126-1) unstable; urgency=low
 
   * minor fixes in handling base syntax UDM_Modules; Bug #23329
