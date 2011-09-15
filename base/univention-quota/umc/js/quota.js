@@ -65,11 +65,9 @@ dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			iconClass: 'dijitIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
-			callback: dojo.hitch(this, function() {
-				var partitions = this._grid.getSelectedIDs();
-				umc.tools.umcpCommand('quota/partitions/show', {"partitions" : partitions}).then(dojo.hitch(this, function() {
-					umc.dialog.notify(this._('quota/partitions/show'));
-				}));
+			callback: dojo.hitch(this, function(ids) {
+				this.createPartitionPage(ids[0]);
+				this.selectChild(this._partitionPage);
 			})
 		}];
 
@@ -109,11 +107,13 @@ dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._overviewPage.startup();
 	},
 
-	createPartitionPage: function() {
-		this._partitionPage = new umc.widgets.modules._quota.PartitionPage({
-			moduleStore: this.moduleStore,
-			headerText: this._('Partition: (%s)'),
+	createPartitionPage: function(id) {
+		this._partitionPage = new umc.modules._quota.PartitionPage({
+			partitionDevice: id,
+			moduleStore: this.getModuleStore('id', this.moduleID + '/partitions'),
+			headerText: this._('Partition: '),
 			helpText: this._('Set, unset and modify filesystem quota')
 		});
+		this.addChild(this._partitionPage);
 	}
 });

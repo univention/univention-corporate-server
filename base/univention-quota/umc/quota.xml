@@ -9,7 +9,7 @@
 	<command name="quota/query" function="quota_list">
 		<return syntax="Dictionary"/> <!-- TODO -->
 	</command>
-	<command name="quota/partitions/show" function="quota_partition_show">
+	<command name="quota/partitions/query" function="quota_partition_show">
 		<attribute name="partitions" syntax="Dictionary"/>
 		<return syntax="Dictionary"/>
 	</command>

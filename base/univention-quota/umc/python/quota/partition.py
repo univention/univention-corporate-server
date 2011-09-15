@@ -46,30 +46,34 @@ import mtab
 
 _ = umc.Translation('univention-management-console-modules-quota').translate
 
-# TODO exception handling
-# TODO comments
+#TODO exception handling
+#TODO comments
 
 class Commands(object):
 	def quota_partition_show(self, request):
 		fs = fstab.File()
 		mt = mtab.File()
-		part = fs.find(spec = request.options['partition'])
+		part = fs.find(spec = request.options['partitionDevice'])
 		mounted = mt.get(part.spec)
 
 		if mounted and 'usrquota' in mounted.options:
-			cb = notifier.Callback(self._quota_partition_show, request.id(),
-			                       request.options['partition'])
-			tools.repquota(request.options['partition'], cb)
+			cb = notifier.Callback(self._quota_partition_show, request.id,
+			                       request.options['partitionDevice'], request)
+			tools.repquota(request.options['partitionDevice'], cb)
 		else:
-			self.finished(request.id(), (part, []))
+			result = ''
+			request.status = SUCCESS
+			self.finished(request.id, result)
 
-	def _quota_partition_show(self, pid, status, result, id, partition):
+	def _quota_partition_show(self, pid, status, result, id, partition,
+	                          request):
 		'''This function is invoked when a repquota process has died and
 		there is output to parse that is restructured as UMC Dialog'''
 
 		# general information
 		devs = fstab.File()
 		part = devs.find(spec = partition)
+		MODULE.warn(str(result))
 
 		# skip header
 		try:
@@ -79,44 +83,36 @@ class Commands(object):
 		except:
 			pass
 
+		MODULE.warn(str(result[header + 1]))
 		quotas = tools.repquota_parse(partition, result[header + 1 :])
+		MODULE.warn(str(quotas[0]['user']))
+		MODULE.warn(str(quotas))
 
-		self.finished(id, (part, quotas))
+		request.status = SUCCESS
+		self.finished(id, quotas)
+		#self.finished(id, (part, quotas))
 
 	def quota_partition_activate(self, request):
 		cb = notifier.Callback(self._quota_partition_activate, request)
 		tools.activate_quota(request.options['partitions'], True, cb)
 
-	def _quota_partition_activate(self, thread, result, request):
-		messages = []
-		failed = False
-		for dev, info in result.items():
-			success, message = info
-			if not success:
-				messages.append(_('Activating quota for device %(device)s failed: %(message)s') % \
-				                 {'device' : dev, 'message' : message})
-				failed = True
-			else:
-				messages.append(_('Quota support successfully activated for device %s') % dev)
-		report = '\n'.join(messages)
-		request.status = SUCCESS # TODO
-		self.finished(request.id, report, success = not failed)
-
 	def quota_partition_deactivate(self, request):
-		cb = notifier.Callback(self._quota_partition_deactivate, request)
+		cb = notifier.Callback(self._quota_partition_activate, request)
 		tools.activate_quota(request.options['partitions'], False, cb)
 
-	def _quota_partition_deactivate(self, thread, result, request):
-		messages = []
+	def _quota_partition_activate(self, thread, cbResult, request):
+		result = []
 		failed = False
-		for dev, info in result.items():
-			success, message = info
+		for partitionDevice, partitionInfo in cbResult.items():
+			(success, message, ) = partitionInfo
 			if not success:
-				messages.append(_('Deactivating quota for device %(device)s failed: %(message)s') % \
-				                 {'device' : dev, 'message' : message})
 				failed = True
-			else:
-				messages.append(_('Quota support successfully deactivated for device %s') % dev)
-		report = '\n'.join(messages)
-		request.status = SUCCESS # TODO
-		self.finished(request.id, report, success = not failed)
+			result.append({'partitionDevice': partitionDevice,
+			               'success': str(success),
+			               'message': message,
+			               })
+		if not failed:
+			request.status = SUCCESS
+		else:
+			request.status = MODULE_ERR
+		self.finished(request.id, result)

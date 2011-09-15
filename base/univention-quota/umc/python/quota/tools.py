@@ -44,20 +44,22 @@ import fstab
 _ = umc.Translation('univention-management-console-modules-quota').translate
 
 class UserQuota(object):
-	def __init__(self, partition, user, bused, bsoft, bhard, btime,
-		         fused, fsoft, fhard, ftime):
-		self.partition = partition
+	def __init__(self, partitionDevice, user, sizeLimitUsed, sizeLimitSoft,
+	             sizeLimitHard, sizeLimitTime, fileLimitUsed, fileLimitSoft,
+	             fileLimitHard, fileLimitTime):
+		self.id = '{0}@{1}'.format(partitionDevice, user)
+		self.partitionDevice = partitionDevice
 		self.user = user
-		self.bused = bused
-		self.bsoft = bsoft
-		self.bhard = bhard
+		self.sizeLimitUsed = sizeLimitUsed
+		self.sizeLimitSoft = sizeLimitSoft
+		self.sizeLimitHard = sizeLimitHard
 
-		self.fused = fused
-		self.fsoft = fsoft
-		self.fhard = fhard
+		self.fileLimitUsed = fileLimitUsed
+		self.fileLimitSoft = fileLimitSoft
+		self.fileLimitHard = fileLimitHard
 
-		self.set_time('btime', btime)
-		self.set_time('ftime', ftime)
+		self.set_time('sizeLimitTime', sizeLimitTime)
+		self.set_time('fileLimitTime', fileLimitTime)
 
 	def set_time(self, time, value):
 		if not value:
@@ -93,18 +95,21 @@ def repquota_parse(partition, output):
 	if not output:
 		return result
 
-	regex = re.compile('(?P<user>[^ ]*) *[-+]+ *(?P<bused>[0-9]*) *(?P<bsoft>[0-9]*) *(?P<bhard>[0-9]*) *((?P<btime>([0-9]*days|none|[0-9]{2}:[0-9]{2})))? *(?P<fused>[0-9]*) *(?P<fsoft>[0-9]*) *(?P<fhard>[0-9]*) *((?P<ftime>([0-9]*days|none|[0-9]{2}:[0-9]{2})))?')
+	regex = re.compile('(?P<user>[^ ]*) *[-+]+ *(?P<sizeLimitUsed>[0-9]*) *(?P<sizeLimitSoft>[0-9]*) *(?P<sizeLimitHard>[0-9]*) *((?P<sizeLimitTime>([0-9]*days|none|[0-9]{2}:[0-9]{2})))? *(?P<fileLimitUsed>[0-9]*) *(?P<fileLimitSoft>[0-9]*) *(?P<fileLimitHard>[0-9]*) *((?P<fileLimitTime>([0-9]*days|none|[0-9]{2}:[0-9]{2})))?')
 	for line in output:
 		matches = regex.match(line)
 		if not matches:
 			break
 		grp = matches.groupdict()
-		if not grp['user'] or grp['user'] == 'root':
-			continue
-		info = UserQuota(partition, grp['user'], grp['bused'], grp['bsoft'],
-		                 grp['bhard'], grp['btime'], grp['fused'], grp['fsoft'],
-		                 grp['fhard'], grp['ftime'])
-		result.append(info)
+		grp['sizeLimitTime'] = str(grp['sizeLimitTime'])
+		grp['fileLimitTime'] = str(grp['fileLimitTime'])
+		grp['id'] = '{0}@{1}'.format(grp['user'], partition)
+		#if not grp['user'] or grp['user'] == 'root':
+		#	continue
+		#info = UserQuota(partition, grp['user'], grp['bused'], grp['bsoft'],
+		#                 grp['bhard'], grp['btime'], grp['fused'],
+		#                 grp['fsoft'], grp['fhard'], grp['ftime'])
+		result.append(grp)
 	return result
 
 def setquota(partition, user, bsoft, bhard, fsoft, fhard, callback):
