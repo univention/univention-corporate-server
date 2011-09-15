@@ -216,7 +216,7 @@ class complex( ISyntax ):
 class UDM_Modules( ISyntax ):
 	udm_modules = ()
 	key = 'dn'
-	label = 'dn'
+	label = None
 	regex = re.compile( '^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$' )
 	empty_value = False
 	error_message = _( "Not a valid LDAP DN" )
@@ -1633,13 +1633,23 @@ class primaryGroup2(ldapDn):
 	searchFilter='objectClass=posixGroup'
 	description=_('Primary Group')
 
-class network(ldapDnOrNone):
+class network( UDM_Modules ):
 	udm_modules = ( 'networks/network', )
 	description=_('Network')
+	label = '%(name)s'
+	empty_value = True
 
 class IP_AddressList( select ):
 	choices = ()
 	depends = 'ip'
+
+	@classmethod
+	def parse( cls, text ):
+		return text
+
+class MAC_AddressList( select ):
+	choices = ()
+	depends = 'mac'
 
 	@classmethod
 	def parse( cls, text ):
@@ -1669,7 +1679,7 @@ class dhcpService( ldapDnOrNone ):
 	udm_modules = ( 'dhcp/service', )
 
 class dhcpEntry( complex ):
-	subsyntaxes= ( ( _( 'DHCP-Service' ), dhcpService ), ( _( 'IP address' ), IP_AddressList ), ( _( 'MAC address' ), macAddress ) )
+	subsyntaxes= ( ( _( 'DHCP-Service' ), dhcpService ), ( _( 'IP address' ), IP_AddressList ), ( _( 'MAC address' ), MAC_AddressList ) )
 	description=_( 'DHCP Entry' )
 
 	@classmethod
