@@ -90,6 +90,25 @@ dojo.declare("umc.widgets.Form", [
 			}, this);
 		}
 
+		// in case no submit button has been defined, we define one and hide it
+		// this allows us to connect to the onSubmit event in any case
+		var submitButtonDefined = false;
+		dojo.forEach(this.buttons, function(ibutton) {
+			if ('submit' == ibutton.name) {
+				submitButtonDefined = true;
+				return false; // break loop
+			}
+		});
+		if (!submitButtonDefined) {
+			// no submit button defined, add a hidden one :)
+			this.buttons = dojo.isArray(this.buttons) ? this.buttons : [];
+			this.buttons.push({
+				label: 'submit',
+				name: 'submit',
+				style: 'height: 0; overflow: hidden; margin: 0; padding: 0;' // using display=none will prevent button from being called
+			})
+		}
+
 		// initiate _dependencyMap
 		this._dependencyMap = {};
 	},
