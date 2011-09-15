@@ -1,0 +1,28 @@
+@%@BCWARNING=#@%@
+
+# Filter Groups List file for DansGuardian
+#
+# Format is <user>=filter<1-9> where 1-9 are the groups
+#
+# Eg:
+# daniel=filter2
+#
+# This file is only of use if you have more than 1 filter group
+#
+
+@!@
+groups = configRegistry.get( 'dansguardian/groups', 'www-access' ).split( ';' )
+
+if configRegistry.get( 'dansguardian/groups/system', 'yes' ).lower() in ( 'on', 'yes', '1' ):
+	for grp in groups:
+		print grp
+else:
+	begin = 'dansguardian/groups/'
+	end = '/members'
+	for key in configRegistry.keys():
+		if key.startswith( begin ) and key.endswith( end ):
+			group = key[ len( begin ) : -len( end ) ]
+			fgroup = 'filter%d' % ( groups.index( group ) + 1 )
+			for member in configRegistry[ key ].split( ',' ):
+				print '%s=%s' % ( member, fgroup )
+@!@

@@ -1,0 +1,96 @@
+[dansguardian/virus/notifyemail]
+Description[de]=Benachrichtigungsadresse bei von squid gefundenen Viren
+Description[en]=
+Type=str
+Categories=service-webproxy
+
+[dansguardian/groups/.*/banned/extensions]
+Description[de]=Geblockte Dateiendungen in squid
+Description[en]=
+Type=str
+Categories=service-webproxy
+
+[dansguardian/groups/.*/banned/ipaddresses]
+Description[de]=Rechneradressen, denen der Zugriff auf squid verboten wird
+Description[en]=
+Type=str
+Categories=service-webproxy
+
+[dansguardian/groups/.*/banned/mimetypes]
+Description[de]=Geblockte MIME-Types in squid
+Description[en]=
+Type=str
+Categories=service-webproxy
+
+[dansguardian/groups/.*/banned/sites]
+Description[de]=In squid geblockte Webseiten
+Description[en]=
+Type=str
+Categories=service-webproxy
+
+[dansguardian/groups/.*/banned/urls]
+Description[de]=In squid geblockte URLs
+Description[en]=
+Type=str
+Categories=service-webproxy
+
+[dansguardian/groups/.*/exception/ipaddresses]
+Description[de]=Rechneradressen, deren Zugriffe nicht durch squid gefiltert werden
+Description[en]=
+Type=str
+Categories=service-webproxy
+
+[dansguardian/groups/.*/exception/user]
+Description[de]=Benutzernamen, deren Zugriffe nicht durch squid gefiltert werden
+Description[en]=
+Type=str
+Categories=service-webproxy
+
+[dansguardian/groups/.*/exception/extension]
+Description[de]=Dateiendungen, die nicht von squid auf Viren geprüft werden
+Description[en]=
+Type=str
+Categories=service-webproxy
+
+[dansguardian/groups/.*/exception/mimetypes]
+Description[de]=MIME-Types, die nicht von squid auf Viren geprüft werden
+Description[en]=
+Type=str
+Categories=service-webproxy
+
+[dansguardian/groups/.*/exception/sites]
+Description[de]=Webseiten, bei denen squid nicht auf Viren prüft
+Description[en]=
+Type=str
+Categories=service-webproxy
+
+[dansguardian/groups/.*/exception/urls]
+Description[de]=URLs, bei denen squid nicht auf URLs prüft
+Description[en]=
+Type=str
+Categories=service-webproxy
+
+[dansguardian/virus/exception/extensions]
+Description[de]==Dateiendungen die nicht auf Viren geprüft werden
+Description[en]=The Virus scanning code will ignore files with these extensions
+Type=str
+Categories=service-webproxy
+
+[dansguardian/virus/exception/mimetypes]
+Description[de]=MIME-Types die nicht auf Viren geprüft werden
+Description[en]=MIME types the virus scanning code ignores
+Type=str
+Categories=service-webproxy
+
+[dansguardian/virus/exception/sites]
+Description[de]=Webseiten die nicht auf Viren geprüft werden
+Description[en]=Sites in virus exception list will not be virus scanned
+Type=str
+Categories=service-webproxy
+
+[dansguardian/virus/exception/urls]
+Description[de]=URLs die nicht auf Viren geprüft werden
+Description[en]=URLs in exception virus list will not be virus scanned
+Type=str
+Categories=service-webproxy
+

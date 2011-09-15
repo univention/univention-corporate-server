@@ -1,0 +1,14 @@
+@%@BCWARNING=#@%@
+
+#Users names, who, if basic
+#proxy authentication is
+#enabled, will automatically
+#not be filtered
+
+@!@
+if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
+	group = configRegistry.get( 'dansguardian/current/group' )
+	exception = configRegistry.get( 'dansguardian/groups/%s/exception/users' % group, '' )
+	for entry in exception.split( ' ' ):
+		print entry
+@!@

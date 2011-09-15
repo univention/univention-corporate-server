@@ -1,0 +1,26 @@
+@%@BCWARNING=#@%@
+
+#IP addresses of computers to not filter
+#and just pass requests straight through to
+#
+#These would be servers which
+#need unfiltered access for
+#updates.  Also administrator
+#workstations which need to
+#download programs and check
+#out blocked sites should be
+#put here.
+#
+#Only put IP addresses here,
+#not host names
+#
+#This is not the IP of web servers
+#you don't want to filter.
+
+@!@
+if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
+	group = configRegistry.get( 'dansguardian/current/group' )
+	exception = configRegistry.get( 'dansguardian/groups/%s/exception/ipaddresses' % group, '' )
+	for entry in exception.split( ' ' ):
+		print entry
+@!@

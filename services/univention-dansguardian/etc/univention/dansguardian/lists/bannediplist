@@ -1,0 +1,18 @@
+@%@BCWARNING=#@%@
+
+#IP addresses of client machines to
+#disallow web access to
+#
+#Only put IP addresses here,
+#not host names
+#
+#This is not the IP of web servers
+#you want to filter.
+
+@!@
+if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
+	group = configRegistry.get( 'dansguardian/current/group' )
+	banned = configRegistry.get( 'dansguardian/groups/%s/banned/ipaddresses' % group, '' )
+	for entry in banned.split( ' ' ):
+		print entry
+@!@

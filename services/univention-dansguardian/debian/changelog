@@ -1,0 +1,198 @@
+univention-antivir-web (4.0.4-3) unstable; urgency=low
+
+  * fixed typo in bannediplist template (Bug #20331) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Aug 2011 14:48:06 +0200
+
+univention-antivir-web (4.0.4-2) unstable; urgency=low
+
+  * fixed dansguardianfX.conf to support banned/ipaddresses
+    and exception/ipaddresses  (Bug #20331)
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Jun 2011 12:38:09 +0200
+
+univention-antivir-web (4.0.4-1) unstable; urgency=low
+
+  * fixed ucr variables registration and documentation (Bug #20331)
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Jun 2011 11:57:46 +0200
+
+univention-antivir-web (4.0.3-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 23 Jun 2010 15:52:12 +0200
+
+univention-antivir-web (4.0.2-1) unstable; urgency=low
+
+  * only register to nagios service if nagios is enabled for host object
+    (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 23 Jun 2010 10:21:23 +0200
+
+univention-antivir-web (4.0.1-2) unstable; urgency=low
+
+  * call join script during installation (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 01 Jun 2010 11:22:57 +0200
+
+univention-antivir-web (4.0.1-1) unstable; urgency=low
+
+  * added join script for registering to nagios service check (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 May 2010 15:08:19 +0200
+
+univention-antivir-web (4.0.0-1) unstable; urgency=low
+
+  * bumped version für UCS 2.4
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 May 2010 15:07:39 +0200
+
+univention-antivir-web (3.0.9-1) unstable; urgency=low
+
+  * fixed typos in two UCR templates (Bug #13850)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 02 Nov 2009 14:59:58 +0100
+
+univention-antivir-web (3.0.8-1) unstable; urgency=low
+
+  * register UCR template for filter groups (Bug #15484)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 29 Oct 2009 13:58:23 +0100
+
+univention-antivir-web (3.0.7-1) unstable; urgency=low
+
+  * fixed hashbash of dansguardian-filtergroups.py (Bug: #14709)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 14 Oct 2009 17:05:24 +0200
+
+univention-antivir-web (3.0.6-1) unstable; urgency=low
+
+  * renamed a few UCR variables: functionality has moved from squid to
+    dansguardian (Bug #15887)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 13 Oct 2009 10:56:30 +0200
+
+univention-antivir-web (3.0.5-1) unstable; urgency=low
+
+  * add support for several virus scanners (Bug #13675)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  5 Oct 2009 15:14:19 +0200
+
+univention-antivir-web (3.0.4-1) unstable; urgency=low
+
+  * activate usage of system groups by default (Bug #15484)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Sep 2009 09:14:56 +0200
+
+univention-antivir-web (3.0.3-1) unstable; urgency=low
+
+  * add support for filter groups defined by ip addresses and networks
+    (Bug #15739)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 25 Sep 2009 21:32:05 +0200
+
+univention-antivir-web (3.0.2-1) unstable; urgency=low
+
+  * merged with customer scope: provied enhanced configuration options for
+    dansguardian und squid; Bug #13850
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 25 Sep 2009 20:55:19 +0200
+
+univention-antivir-web (3.0.1-2) unstable; urgency=low
+
+  * moved UCR category service-webproxy to univention-squid (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 11:34:18 +0200
+
+univention-antivir-web (3.0.1-1) unstable; urgency=low
+
+  * provide new UCR category service-webproxy (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 11:08:09 +0200
+
+univention-antivir-web (3.0.0-0) unstable; urgency=low
+
+  * bump version for UCS 2.3
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 08:20:32 +0200
+
+univention-antivir-web (2.0.1-7) unstable; urgency=low
+
+  * temporarily deactivate freshclam before restarting dansguardian to avoid locking conflict on /var/lib/clamav
+
+ -- Arvid Requate <requate@univention.de>  Fri, 29 Aug 2008 19:08:34 +0200
+
+univention-antivir-web (2.0.1-6) unstable; urgency=low
+
+  * fix registration of config registry variables and configuration file
+    diversions
+  * add missing arguments to univention-config-registry-calls in postinst
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 25 Oct 2007 14:55:09 +0200
+
+univention-antivir-web (2.0.1-2) unstable; urgency=low
+
+  * fix error in postinst script
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 18 Oct 2007 14:18:31 +0200
+
+univention-antivir-web (2.0.1-1) unstable; urgency=low
+
+  * fixed copyright
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 23 Aug 2007 14:08:54 +0200
+
+univention-antivir-web (2.0.1-0) unstable; urgency=low
+
+  * add support for dansguardian
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed,  1 Aug 2007 16:21:49 +0200
+
+univention-antivir-web (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policy
+  * remove viralator.cgi and squirm configuration
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon, 30 Jul 2007 13:09:11 +0200
+
+univention-antivir-web (1.0-8) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 23 Nov 2006 17:27:12 +0100
+
+univention-antivir-web (1.0-6) unstable; urgency=low
+
+  * new version of virlator which includes support for clamav
+  * added dependencies to virus-scanners
+  * scan .pif-files
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 14 Mar 2005 15:07:31 +0100
+
+univention-antivir-web (1.0-4) unstable; urgency=low
+
+  * Fix permission of CGI
+  * German language support
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu,  9 Sep 2004 09:38:47 +0200
+
+univention-antivir-web (1.0-3) unstable; urgency=low
+
+  * Added -i3 flag to kavscanner
+  * Extended list of files to scan
+  * Added Proxy support
+
+ -- Sven Dreyer <dreyer@univention.de>  Fri, 16 Jul 2004 11:49:14 +0200
+
+univention-antivir-web (1.0-2) unstable; urgency=low
+
+  * Added dependency to kav4fileservers
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu, 15 Jul 2004 08:07:35 +0200
+
+univention-antivir-web (1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu, 28 Aug 2003 11:43:45 +0200

@@ -1,0 +1,11 @@
+@%@BCWARNING=#@%@
+
+#Exception Virus extension list
+# The Virus scanning code will ignore files with these extensions.
+
+@!@
+if baseConfig.get('squid/virusscan', 'no').lower() in [ 'yes', 'true' ]:
+        if not baseConfig.get('dansguardian/virus/exception/extensions', '') == '':
+                for extension in baseConfig['dansguardian/virus/exception/extensions'].split(" "):
+                        print extension
+@!@

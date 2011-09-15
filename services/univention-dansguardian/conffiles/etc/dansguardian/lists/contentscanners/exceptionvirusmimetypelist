@@ -1,0 +1,11 @@
+@%@BCWARNING=#@%@
+
+# MIME types the virus scanning code ignores.
+
+@!@
+if baseConfig.get('squid/virusscan', 'no').lower() in [ 'yes', 'true' ]:
+        if not baseConfig.get('dansguardian/virus/exception/mimetypes', '') == '':
+                for extension in baseConfig['dansguardian/virus/exception/mimetypes'].split(" "):
+                        print extension
+@!@
+

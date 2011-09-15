@@ -1,0 +1,32 @@
+@%@BCWARNING=#@%@
+
+# banned MIME types
+
+@!@
+if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
+	group = configRegistry.get( 'dansguardian/current/group' )
+	banned = configRegistry.get( 'dansguardian/groups/%s/banned/mimetypes' % group, '' )
+	for entry in banned.split( ' ' ):
+		print entry
+
+	if not banned:
+		# print default config file entry
+		print '''
+audio/mpeg
+audio/x-mpeg
+audio/x-pn-realaudio
+audio/x-wav
+video/mpeg
+video/x-mpeg2
+video/acorn-replay
+video/quicktime
+video/x-msvideo
+video/msvideo
+application/gzip
+application/x-gzip
+application/zip
+application/compress
+application/x-compress
+application/java-vm
+'''
+@!@

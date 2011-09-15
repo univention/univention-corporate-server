@@ -1,0 +1,48 @@
+Type: file
+File: etc/dansguardian/dansguardian.conf
+Variables: squid/virusscan
+Variables: dansguardian/virus/notifyemail
+Variables: squid/httpport
+Variables: squid/.*auth
+Variables: web/antivir/scanner
+Variables: dansguardian/loglevel
+Variables: dansguardian/language
+Variables: dansguardian/groups
+Variables: dansguardian/virusscanner
+Variables: dansguardian/auth/ip
+Variables: hostname
+Variables: domainname
+
+Type: file
+File: etc/dansguardian/lists/filtergroupslist
+Variables: dansguardian/groups
+
+Type: file
+File: etc/dansguardian/lists/contentscanners/exceptionvirusextensionlist
+Variables: squid/virusscan
+Variables: dansguardian/virus/exception/extensions
+
+Type: file
+File: etc/dansguardian/lists/contentscanners/exceptionvirusmimetypelist
+Variables: squid/virusscan
+Variables: dansguardian/virus/exception/mimetypes
+
+Type: file
+File: etc/dansguardian/lists/contentscanners/exceptionvirussitelist
+Variables: squid/virusscan
+Variables: dansguardian/virus/exception/sites
+
+Type: file
+File: etc/dansguardian/lists/contentscanners/exceptionvirusurllist
+Variables: squid/virusscan
+Variables: dansguardian/virus/exception/urls
+
+Type: file
+File: etc/dansguardian/lists/authplugins/ipgroups
+Variables: dansguardian/groups/.*/addresses
+
+Type: module
+Module: dansguardian-filtergroups.py
+Variables: squid/contentscan
+Variables: dansguardian/groups
+Variables: dansguardian/groups/.*/contentscanner/.*list
