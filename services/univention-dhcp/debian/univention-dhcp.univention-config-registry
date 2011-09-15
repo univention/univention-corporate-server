@@ -1,6 +1,7 @@
 Type: file
-File: etc/dhcp3/dhcpd.conf
+File: etc/dhcp/dhcpd.conf
 Variables: ldap/base
+Variables: ldap/hostdn
 Variables: dhcpd/ldap/base
 Variables: ldap/server/name
 Variables: ldap/server/port
@@ -9,4 +10,8 @@ Variables: dhcpd/ddns.*
 Variables: domainname
 
 Type: file
-File: etc/init.d/dhcp3-server
+File: etc/init.d/isc-dhcp-server
+
+Type: file
+File: etc/logrotate.d/univention-dhcp
+Variables: log/rotate/univention/compress

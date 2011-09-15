@@ -40,8 +40,31 @@ if [ ! -e /var/log/univention/dhcp.log ] ; then
 	chmod 640 /var/log/univention/dhcp.log
 fi
 
+update-rc.d -f isc-dhcp-server remove >/dev/null 2>&1
 update-rc.d -f dhcp3-server remove >/dev/null 2>&1
 update-rc.d -f dhcp remove >/dev/null 2>&1
+
+dpkg-maintscript-helper mv_conffile "/etc/dhcp3/local.conf" "/etc/dhcp/local.conf" 6.0.0~ univention-dhcp -- "$@"
+dpkg-maintscript-helper mv_conffile "/etc/dhcp3/univention.conf" "/etc/dhcp/univention.conf" 6.0.0~ univention-dhcp -- "$@"
+dpkg-maintscript-helper rm_conffile "/etc/univention/templates/files/etc/dhcp3/dhcpd.conf" 6.0.0~ univention-dhcp -- "$@"
+dpkg-maintscript-helper rm_conffile "/etc/univention/templates/files/etc/init.d/dhcp3-server" 6.0.0~ univention-dhcp -- "$@"
+
+case "$1" in
+configure)
+	# UCR unregister old template
+	if dpkg --compare-versions "$2" lt-nl "6.0.0"
+	then
+		if [ -n "$(dpkg-divert --list /etc/dhcp3/dhcpd.conf)" ]
+		then
+			rm -f /etc/dhcp3/dhcpd.conf && dpkg-divert --quiet --rename --divert /etc/dhcp3/dhcpd.conf.debian --remove /etc/dhcp3/dhcpd.conf
+		fi
+		if [ -n "$(dpkg-divert --list /etc/init.d/dhcp3-server)" ]
+		then
+			rm -f /etc/init.d/dhcp3-server && dpkg-divert --quiet --rename --divert /etc/init.d/dhcp3-server.debian --remove /etc/init.d/dhcp3-server
+		fi
+	fi
+	;;
+esac
 
 eval "$(univention-config-registry shell)"
 
@@ -63,18 +86,17 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 fi
 
 if [ "$1" = "configure" -a -n "$2" ]
-	then
-	/etc/init.d/univention-dhcp crestart
+then
+	invoke-rc.d univention-dhcp crestart
 else
-	/etc/init.d/univention-dhcp start || true
+	invoke-rc.d univention-dhcp start || true
 fi
 
 if [ "$1" = "configure" ]; then
 	if test -f /etc/init.d/univention-directory-listener
-		then
-		/etc/init.d/univention-directory-listener crestart || true
+	then
+		invoke-rc.d univention-directory-listener crestart || true
 	fi
 fi
 
 exit 0
-

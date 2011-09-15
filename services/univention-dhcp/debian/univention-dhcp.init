@@ -30,6 +30,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+### BEGIN INIT INFO
+# Provides:          univention-dhcp
+# Required-Start:    $remote_fs $network $syslog
+# Required-Stop:     $remote_fs $network $syslog
+# Should-Start:      $local_fs slapd $named
+# Should-Stop:       $local_fs slapd
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: DHCP server
+# Description:       Dynamic Host Configuration Protocol Server
+### END INIT INFO
+
 if [ ! -e /etc/runit/univention/univention-dhcp ]; then
 	exit 0
 fi
@@ -68,9 +80,9 @@ case "$1" in
 			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart dhcpd dhcpd/autostart
 		fi
-		if sv status /etc/runit/univention-dhcp | grep ^run: > /dev/null 2>&1
-			then
-			$0 restart
+		if sv status /etc/runit/univention-dhcp | grep -q ^run:
+		then
+			"$0" restart
 		else
 			log_action_msg "sv status return no running dhcpd, don't need to restart."
 		fi

@@ -1,4 +1,7 @@
-#! /bin/sh -e
+#! /bin/sh
+#
+# Univention DHCP
+#  ppreinst script
 #
 # Copyright 2004-2011 Univention GmbH
 #
@@ -27,4 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-exec /usr/sbin/dhcpd -q -f >>/var/log/daemon.log
+set -e
+
+#DEBHELPER#
+
+dpkg-maintscript-helper mv_conffile "/etc/dhcp3/local.conf" "/etc/dhcp/local.conf" 6.0.0~ univention-dhcp -- "$@"
+dpkg-maintscript-helper mv_conffile "/etc/dhcp3/univention.conf" "/etc/dhcp/univention.conf" 6.0.0~ univention-dhcp -- "$@"
+dpkg-maintscript-helper rm_conffile "/etc/univention/templates/files/etc/dhcp3/dhcpd.conf" 6.0.0~ univention-dhcp -- "$@"
+dpkg-maintscript-helper rm_conffile "/etc/univention/templates/files/etc/init.d/dhcp3-server" 6.0.0~ univention-dhcp -- "$@"
+
+exit 0

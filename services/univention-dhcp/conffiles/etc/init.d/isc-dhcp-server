@@ -28,5 +28,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-exit 0
+### BEGIN INIT INFO
+# Provides:          isc-dhcp-server
+# Required-Start:    $remote_fs $network $syslog
+# Required-Stop:     $remote_fs $network $syslog
+# Should-Start:      $local_fs slapd $named
+# Should-Stop:       $local_fs slapd
+# Default-Start:
+# Default-Stop:      1
+# Short-Description: DHCP server
+# Description:       Dynamic Host Configuration Protocol Server
+### END INIT INFO
 
+exit 0

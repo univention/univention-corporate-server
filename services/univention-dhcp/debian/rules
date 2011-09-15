@@ -35,16 +35,14 @@ override_dh_auto_install:
 	dh_auto_install
 	touch ${D}/etc/runit/univention-dhcp/down
 	univention-install-config-registry
-	univention-install-config-registry-info
-	univention-install-service-info
 
 override_dh_clean:
 	dh_clean
-	rm -f debian/univention-dhcp.conffiles
+	$(RM) debian/univention-dhcp.conffiles
 
 override_dh_auto_test:
 	dh_auto_test
-	ucslint
+	[ -x /usr/bin/ucslint ] && ucslint
 
 %:
 	dh $@

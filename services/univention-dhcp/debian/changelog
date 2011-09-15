@@ -1,3 +1,14 @@
+univention-dhcp (6.0.5-1) unstable; urgency=low
+
+  * s|/etc/dhcp3|/etc/dhcp| (Bug #22112)
+  * Add logrotate (Bug #18002)
+  * debian/compat: 7
+  * debian/changelog: Fix description
+  * Add LSB headers to init scripts.
+  * debian/control: Drop Pre-Depends: netmask.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 12 Sep 2011 15:16:18 +0200
+
 univention-dhcp (6.0.4-1) unstable; urgency=low
 
   * add service entry (Bug #2136)
@@ -103,43 +114,43 @@ univention-dhcp (3.0.4-3) unstable; urgency=low
 
 univention-dhcp (3.0.4-2) unstable; urgency=low
 
-  * new autostart test in init script 
+  * new autostart test in init script
 
  -- Felix Botner <fbotner@omar.knut.univention.de>  Tue, 28 Oct 2008 11:39:40 +0100
 
 univention-dhcp (3.0.4-1) unstable; urgency=low
 
-  * fixed minor syntax errors in dhcpd configuration 
+  * fixed minor syntax errors in dhcpd configuration
 
  -- Andreas B�sching <buesching@univention.de>  Wed, 16 Jan 2008 17:35:16 +0100
 
 univention-dhcp (3.0.3-1) unstable; urgency=low
 
-  * add default value for option 'ddns-hostname' 
+  * add default value for option 'ddns-hostname'
 
  -- Andreas B�sching <buesching@univention.de>  Sun, 13 Jan 2008 11:30:07 +0100
 
 univention-dhcp (3.0.2-1) unstable; urgency=low
 
-  * add missing config line if dynamic DNS is activated 
+  * add missing config line if dynamic DNS is activated
 
  -- Andreas Büsching <buesching@univention.de>  Sun, 11 Nov 2007 11:31:18 +0100
 
 univention-dhcp (3.0.1-2) unstable; urgency=low
 
-  * fixed a few typos 
+  * fixed a few typos
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 26 Oct 2007 15:15:41 +0200
 
 univention-dhcp (3.0.1-1) unstable; urgency=low
 
-  * fied two minor bugs in dhcpd.conf template (ddns options) 
+  * fied two minor bugs in dhcpd.conf template (ddns options)
   * register dhcpd/ddns.* variables
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 26 Oct 2007 14:47:57 +0200
 
 univention-dhcp (3.0.0-1) unstable; urgency=low
-  
+
   * imported from UCS 2.0 branch
   * add support for setting dynamic DNS options via configuration registry
 
@@ -180,7 +191,7 @@ univention-dhcp (2.0.4-3) unstable; urgency=low
 
 univention-dhcp (2.0.4-2) unstable; urgency=low
 
-  * add service description file 
+  * add service description file
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 18 Jul 2007 15:19:36 +0200
 

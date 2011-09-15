@@ -2,6 +2,6 @@ usr/lib/univention-directory-listener/system
 usr/lib/univention-install
 etc/runit/univention
 etc/runit/univention-dhcp
-etc/dhcp3
+etc/dhcp
 etc/init.d
 etc/univention/daemons/

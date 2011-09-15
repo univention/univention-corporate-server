@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 #
 # Univention DHCP
 #  join script
@@ -32,62 +32,50 @@
 
 VERSION=2
 
-. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-join/joinscripthelper.lib || exit 1
 joinscript_init
 
 . /usr/share/univention-lib/all.sh
 
 eval "$(univention-config-registry shell)"
 
-old=$(univention-directory-manager policies/dhcp_routing list "$@" --filter cn=default-settings | grep routers | sed -e 's|.*routers: ||')
+old=$(univention-directory-manager policies/dhcp_routing list "$@" --filter cn=default-settings | sed -ne 's|.*routers: ||p')
 if [ -z "$old" -a -n "$gateway" ]; then
-	univention-directory-manager policies/dhcp_routing modify "$@" --ignore_exists --dn "cn=default-settings,cn=routing,cn=dhcp,cn=policies,$ldap_base" --set name=default-settings --set routers=$gateway
+	univention-directory-manager policies/dhcp_routing modify "$@" --ignore_exists \
+		--dn "cn=default-settings,cn=routing,cn=dhcp,cn=policies,$ldap_base" \
+		--set name=default-settings \
+		--set routers="$gateway"
 fi
 
+univention-directory-manager dhcp/service create "$@" --ignore_exists \
+	--position "cn=dhcp,$ldap_base" \
+	--set service="$domainname" || exit 1
+univention-directory-manager dhcp/server create "$@" --ignore_exists \
+	--superordinate "cn=$domainname,cn=dhcp,$ldap_base" \
+	--set server="$hostname" || exit 1
 
-
-univention-directory-manager dhcp/service create "$@" --ignore_exists --position "cn=dhcp,$ldap_base" --set service=$domainname
-if [ $? != 0 ]; then exit 1; fi
-univention-directory-manager dhcp/server create "$@" --ignore_exists --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --set server=$hostname
-if [ $? != 0 ]; then exit 1; fi
-
-if [ -n "$interfaces_eth0_network" -a -n "$interfaces_eth0_netmask" ]; then
-	univention-directory-manager dhcp/sharedsubnet list "$@" --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --filter "subnet=$interfaces_eth0_network" | grep ^DN
-	if [ $? = 1 ]; then
-		univention-directory-manager dhcp/subnet create "$@" --ignore_exists --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --set subnet=$interfaces_eth0_network --set subnetmask=$interfaces_eth0_netmask
-		if [ $? != 0 ]; then exit 1; fi
+for var in "${!interfaces_*}"
+do
+	case "$var" in
+	interfaces_*_network) network="${!var}" var=${var%work}mask netmask="${!var}" ;;
+	*) continue ;;
+	esac
+	[ -n "$network" -a -n "$netmask" ] || continue
+	if ! univention-directory-manager dhcp/sharedsubnet list "$@" \
+		--superordinate "cn=$domainname,cn=dhcp,$ldap_base" \
+		--filter "subnet=$network" | grep -q ^DN
+	then
+		univention-directory-manager dhcp/subnet create "$@" --ignore_exists \
+			--superordinate "cn=$domainname,cn=dhcp,$ldap_base" \
+			--set subnet=$network \
+			--set subnetmask="$netmask" || exit 1
 	fi
-fi
+done
 
-if [ -n "$interfaces_eth1_network" -a -n "$interfaces_eth1_netmask" ]; then
-	univention-directory-manager dhcp/sharedsubnet list "$@" --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --filter "subnet=$interfaces_eth1_network" | grep ^DN
-	if [ $? = 1 ]; then
-		univention-directory-manager dhcp/subnet create "$@" --ignore_exists --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --set subnet=$interfaces_eth1_network --set subnetmask=$interfaces_eth1_netmask
-		if [ $? != 0 ]; then exit 1; fi
-	fi
-fi
-
-if [ -n "$interfaces_eth2_network" -a -n "$interfaces_eth2_netmask" ]; then
-	univention-directory-manager dhcp/sharedsubnet list "$@" --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --filter "subnet=$interfaces_eth2_network" | grep ^DN
-	if [ $? = 1 ]; then
-		univention-directory-manager dhcp/subnet create "$@" --ignore_exists --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --set subnet=$interfaces_eth2_network --set subnetmask=$interfaces_eth2_netmask
-		if [ $? != 0 ]; then exit 1; fi
-	fi
-fi
-
-if [ -n "$interfaces_eth3_network" -a -n "$interfaces_eth3_netmask" ]; then
-	univention-directory-manager dhcp/sharedsubnet list "$@" --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --filter "subnet=$interfaces_eth3_network" | grep ^DN
-	if [ $? = 1 ]; then
-		univention-directory-manager dhcp/subnet create "$@" --ignore_exists --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --set subnet=$interfaces_eth3_network --set subnetmask=$interfaces_eth3_netmask
-		if [ $? != 0 ]; then exit 1; fi
-	fi
-fi
-
-ln -s /etc/runit/univention-dhcp /etc/runit/univention/univention-dhcp  >/dev/null 2>&1
+ln -s /etc/runit/univention-dhcp /etc/runit/univention/univention-dhcp >/dev/null 2>&1
 
 ucs_addServiceToLocalhost 'DHCP' "$@"
 
 joinscript_save_current_version
 
 exit 0
-

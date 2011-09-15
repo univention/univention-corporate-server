@@ -30,32 +30,44 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-name='dhcp'
-description='Restart the dhcp service if a dhcp subnet or a policy was changed'
-filter='(|(objectClass=univentionDhcpSubnet)(objectClass=univentionDhcpService)(objectClass=univentionPolicyDhcpBoot)(objectClass=univentionPolicyDhcpDns)(objectClass=univentionPolicyDhcpDnsUpdate)(objectClass=univentionPolicyDhcpLeaseTime)(objectClass=univentionPolicyDhcpNetbios)(objectClass=univentionPolicyDhcpRouting)(objectClass=univentionPolicyDhcpScope)(objectClass=univentionPolicyDhcpStatements)(objectClass=univentionDhcpPool)(cn=dhcp)(objectClass=domain))'
-attributes=[]
+name = 'dhcp'
+description = 'Restart the dhcp service if a dhcp subnet or a policy was changed'
+filter = '''(|
+	(objectClass=univentionDhcpSubnet)
+	(objectClass=univentionDhcpService)
+	(objectClass=univentionPolicyDhcpBoot)
+	(objectClass=univentionPolicyDhcpDns)
+	(objectClass=univentionPolicyDhcpDnsUpdate)
+	(objectClass=univentionPolicyDhcpLeaseTime)
+	(objectClass=univentionPolicyDhcpNetbios)
+	(objectClass=univentionPolicyDhcpRouting)
+	(objectClass=univentionPolicyDhcpScope)
+	(objectClass=univentionPolicyDhcpStatements)
+	(objectClass=univentionDhcpPool)
+	(cn=dhcp)
+	(objectClass=domain)
+	)'''.replace('\n', '').replace('\t', '')
+attributes = []
 
-import listener, univention_baseconfig
-import univention.debug
-
+import listener
+from univention.config_registry import ConfigRegistry
+import univention.debug as ud
 
 def handler(dn, new, old):
 	pass
 
 def postrun():
-	baseConfig = univention_baseconfig.baseConfig()
-	baseConfig.load()
+	ucr = ConfigRegistry()
+	ucr.load()
 
-	if baseConfig.has_key("dhcpd/autostart") and ( baseConfig["dhcpd/autostart"] in ["yes", "true", '1']):
-		if baseConfig.has_key('dhcpd/restart/listener') and baseConfig['dhcpd/restart/listener'] in ['yes', 'true', '1']:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'DHCP: Restarting server')
+	if ucr.is_true("dhcpd/autostart", False):
+		if ucr.is_trze('dhcpd/restart/listener', False):
+			ud.debug(ud.LISTENER, ud.INFO, 'DHCP: Restarting server')
 			try:
 				listener.run('/etc/init.d/univention-dhcp', ['univention-dhcp', 'restart'], uid=0)
 			except Exception, e:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'The restart of the DHCP server failed: %s' % str(e))
+				ud.debug(ud.ADMIN, ud.WARN, 'The restart of the DHCP server failed: %s' % str(e))
 		else:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'DHCP: the automatic restart of the dhcp server by the listener is disabled. Set dhcpd/restart/listener to true to enable this option.')
+			ud.debug(ud.ADMIN, ud.INFO, 'DHCP: the automatic restart of the dhcp server by the listener is disabled. Set dhcpd/restart/listener to true to enable this option.')
 	else:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'DHCP: dcpd disabled in baseconfig - not started.')
-
-
+		ud.debug(ud.LISTENER, ud.INFO, 'DHCP: dcpd disabled in config_registry - not started.')

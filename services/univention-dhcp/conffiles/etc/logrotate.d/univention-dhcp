@@ -1,0 +1,12 @@
+/var/log/univention/dhcp.log {
+       weekly
+       missingok
+       rotate @%@log/rotate/weeks@%@
+       create 640 root adm
+       @!@
+if configRegistry.is_true("log/rotate/univention/compress", True): print "compress"
+       @!@
+       lastaction
+               test -x /usr/bin/sv && test -e /etc/runit/univention/univention-dhcp && sv term univention-dhcp || true
+       endscript
+}
