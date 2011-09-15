@@ -1,12 +1,13 @@
-Source: univention-antivir-web
+Source: univention-dansguardian
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper, univention-config-dev, ucslint
 
-Package: univention-antivir-web
+Package: univention-dansguardian
 Architecture: all
 Depends: univention-squid, dansguardian
+Breaks: univention-antivir-web
 Recommends: univention-nagios-dansguardian
 Description: univention antivirus web
  univention antivirus web module
