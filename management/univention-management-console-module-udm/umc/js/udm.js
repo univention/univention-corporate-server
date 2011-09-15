@@ -247,13 +247,15 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					objPlural: this.objectNamePlural,
 					objSingular: this.objectNameSingular
 				};
-				if (1 == nItemsTotal) {
-					return this._('%(nSelected)d of 1 %(objSingular)s selected', map);
+				if (0 == nItemsTotal) {
+					return this._('No %(objPlural)s could be found', map);
 				}
-				else if (1 < nItemsTotal) {
-					return this._('%(nSelected)d of %(nTotal)d %(objPlural)s selected', map);
+				else if (1 == nItems) {
+					return this._('%(nSelected)d %(objSingular)s of %(nTotal)d selected', map);
 				}
-				return this._('No %(objPlural)s could be found', map);
+				else {
+					return this._('%(nSelected)d %(objPlural)s of %(nTotal)d selected', map);
+				}
 			})
 		});
 		titlePane.addChild(this._grid);
@@ -276,7 +278,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var objTypeDependencies = [];
 		var objTypes = [];
 		if ('navigation' == this.moduleFlavor) {
-			// nothing to do :)
+			// add the type 'None' to objTypeas
+			objTypes.push({ id: 'None', label: this._( 'All types' ) });
 		}
 		else if (superordinates && superordinates.length) {
 			// superordinates...
@@ -322,9 +325,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			onChange: dojo.hitch(this, function(newObjType) {
 				// update the object property depending on the updated object type
 				var newObjProperty = this._ucr['directory/manager/web/modules/' + newObjType + '/search/default'] || '';
-				var objPropertyWidget = this._searchWidget._widgets.objectProperty;
+				var objPropertyWidget = this._searchForm._widgets.objectProperty;
 				objPropertyWidget.setInitialValue(newObjProperty || undefined, false);
-				var objTypeWidget = this._searchWidget._widgets.objectType;
+				var objTypeWidget = this._searchForm._widgets.objectType;
 				objTypeWidget.setInitialValue(null, false);
 			})
 		}, {
@@ -350,16 +353,23 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		layout[1].push('objectProperty', 'objectPropertyValue');
 
 		// add also the buttons (specified by the search form itself) to the layout
-		layout[1].push('submit', 'reset');
+		if ('navigation' == this.moduleFlavor) {
+			// put the buttons in the first row for the navigation
+			layout[0].push('submit', 'reset');
+		}
+		else {
+			// append the buttons to the last row otherwise
+			layout[1].push('submit', 'reset');
+		}
 
 		// generate the search widget
-		this._searchWidget = new umc.widgets.SearchForm({
+		this._searchForm = new umc.widgets.SearchForm({
 			region: 'top',
 			widgets: widgets,
 			layout: layout,
 			onSearch: dojo.hitch(this, 'filter')
 		});
-		titlePane.addChild(this._searchWidget);
+		titlePane.addChild(this._searchForm);
 
 		// generate the navigation pane for the navigation module
 		if ('navigation' == this.moduleFlavor) {
@@ -431,15 +441,24 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._searchPage.startup();
 
 		// hide the 'objectType' combo box in case it shows only one value
-		var handle = this.connect(this._searchWidget._widgets.objectType, 'onValuesLoaded', function(values) {
-			this._searchWidget._widgets.objectType.set('visible', values.length > 1);
+		this.connect(this._searchForm._widgets.objectType, 'onValuesLoaded', function(values) {
+			this._searchForm._widgets.objectType.set('visible', values.length > 1);
 		});
+
+		// show/hide object property filter for the navigation
+		if ('navigation' == this.moduleFlavor) {
+			this.connect(this._searchForm._widgets.objectType, 'onChange', function(val) {
+				this._searchForm._widgets.objectProperty.set('visible', 'None' != val);
+				this._searchForm._widgets.objectPropertyValue.set('visible', 'None' != val);
+				this.layout();
+			});
+		}
 
 		// check whether we have autosearch activated
 		if ('navigation' != this.moduleFlavor && umc.tools.isTrue(autoSearch)) {
 			// connect to the onValuesInitialized event of the form
-			var handle = this.connect(this._searchWidget, 'onValuesInitialized', function() {
-				this.filter(this._searchWidget.gatherFormValues());
+			var handle = this.connect(this._searchForm, 'onValuesInitialized', function() {
+				this.filter(this._searchForm.gatherFormValues());
 				this.disconnect(handle);
 			});
 		}
@@ -469,7 +488,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	identityProperty: function() {
-		var items = this._searchWidget._widgets.objectProperty.getAllItems();
+		var items = this._searchForm._widgets.objectProperty.getAllItems();
 		for ( var i in items ) {
 			if ( items[ i ].identifies ) {
 				return items[ i ];
@@ -478,27 +497,29 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		return null;
 	},
 
-	filter: function(vals) {
+	filter: function() {
 		// summary:
 		//		Send a new query with the given filter options as specified in the search form
 		//		and (for the UDM navigation) the selected container.
 
+		var vals = this._searchForm.gatherFormValues();
 		if ('navigation' == this.moduleFlavor) {
 			var items = this._tree.get('selectedItems');
 			if (items.length) {
-				this._grid.filter({
+				dojo.mixin(vals, {
 					container: items[0].id
 				});
+				this._grid.filter(vals);
 			}
 		}
 		else {
 			var identifies = this.identityProperty();
-			var selected_value = this._searchWidget._widgets.objectProperty.get( 'value' );
+			var selected_value = this._searchForm._widgets.objectProperty.get( 'value' );
 			var columns = this._default_columns;
 			if ( identifies === null || selected_value != identifies.id ) {
 				var new_column = {
 					name: selected_value,
-					label: this._searchWidget._widgets.objectProperty.get( 'displayedValue' )
+					label: this._searchForm._widgets.objectProperty.get( 'displayedValue' )
 				};
 				columns = this._default_columns.slice( 0, 1 ).concat( new_column, this._default_columns.slice( 1 ) );
 			}

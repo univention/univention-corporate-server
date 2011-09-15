@@ -239,7 +239,7 @@ class Instance( Base ):
 				else:
 					raise UMC_OptionTypeError( _( 'Could not find an UDM module for the superordinate object %s' ) % superordinate )
 
-			result = module.search( request.options.get( 'container' ), request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ], superordinate )
+			result = module.search( request.options.get( 'container' ), request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ], request.options['superordinate'] )
 
 			entries = []
 			for obj in result:
@@ -507,11 +507,19 @@ class Instance( Base ):
 
 		requests.options = {}
 		  'container' -- the base container where the search should be started (default: LDAP base)
+		  'objectType' -- the object type that should be displayed (optional)
+		  'objectProperty' -- the object property that should be scaned (optional)
+		  'objectPropertyValue' -- the filter that should b found in the property (optional)
 
 		return: [ { '$dn$' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
 		"""
 		if not 'container' in request.options:
 			raise UMC_OptionMissing( "The option 'container' is required" )
+
+		if 'None' != request.options.get('objectType', '') and :
+			# we need to search for a specific objectType, then we should call the standard query
+			self.query(request)
+			return
 
 		def _thread( container ):
 			entries = []
