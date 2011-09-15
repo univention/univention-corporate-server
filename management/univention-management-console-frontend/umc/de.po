@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-15 13:47+0200\n"
+"POT-Creation-Date: 2011-09-15 15:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,8 +32,8 @@ msgid "1 object of %d selected"
 msgstr "1 Objekt von %d ausgewählt"
 
 #: umc/tools.js:199
-#, python-format
-msgid "<br>Server error message: <i>%s</i>"
+#, fuzzy, python-format
+msgid "<p>Server error message:<p><p>%s</p>"
 msgstr "<br>Fehlernachricht des Servers: <i>%s</i>"
 
 #: umc/app.js:347
