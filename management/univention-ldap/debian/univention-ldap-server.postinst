@@ -122,15 +122,15 @@ fi
 
 merge_csv_unique_sorted() {
 	if [ "$1" = "none" ]; then
-		old=''
+		local old=
 	else
-		old="$1"
+		local old="$1"
 	fi
-	echo  -n "$old,$2" | tr "," "\n" | egrep -v "^$" | sort -u  | tr "\n" "," | sed -e 's/,$//'
+	echo "$old,$2" | tr ',' '\n' | sort -u | tr '\n' ',' | sed -re 's/^,|(,){2,}|,$/\1/g'
 }
 
 filter_csv() {
-	echo -n "$1" | tr "," "\n" | egrep -v "^($2)\$" | egrep -v '^$' | tr "\n" "," | sed -e 's/,$//'
+	echo -n "$1" | tr ',' '\n' | egrep -v "^($2)\$" | tr '\n' ',' | sed -re 's/^,|(,){2,}|,$/\1/g'
 }
 
 if is_ucr_true "ldap/index/autorebuild" ; then

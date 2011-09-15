@@ -30,19 +30,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
-eval `univention-config-registry shell`
+eval "$(univention-config-registry shell server/role)"
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	ldapbackupname="/var/univention-backup/ldap-backup_$(date +%Y%m%d).ldif"
 
-	ldapbackupname="/var/univention-backup/ldap-backup_`date +%Y%m%d`.ldif"
+	touch "$ldapbackupname"
+	chmod 600 "$ldapbackupname"
 
-	touch $ldapbackupname
-
-	chmod 600 $ldapbackupname
-
-	slapcat >$ldapbackupname 2>&1 || echo "LDAP could not be dumped!"
-
-	gzip -9 $ldapbackupname 2>/dev/null
-
+	slapcat >"$ldapbackupname" 2>&1
+	rc=$?
+	gzip -9 "$ldapbackupname" 2>/dev/null
+	if [ $rc -ne 0 ]
+	then
+		echo "LDAP could not be dumped!" >&2
+		exit 1
+	fi
 fi
