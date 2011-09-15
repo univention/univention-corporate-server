@@ -4,7 +4,6 @@ dojo.provide("umc.widgets.MultiInput");
 
 dojo.require("dijit.form.Button");
 dojo.require("umc.widgets.ContainerWidget");
-//dojo.require("umc.widgets.HiddenInput");
 dojo.require("umc.tools");
 dojo.require("umc.render");
 dojo.require("umc.widgets._FormWidgetMixin");
@@ -110,14 +109,17 @@ dojo.declare("umc.widgets.MultiInput", [
 		}, this);
 	},
 
-	_setValueAttr: function(vals) {
-		// remove all empty elements at the end
-		while (vals.length && !vals[vals.length - 1]) {
-			vals.pop();
-		}
+	_setValueAttr: function(_vals) {
+		// remove all empty elements
+		var vals = dojo.filter(_vals, function(ival) {
+			return (dojo.isString(ival) && '' !== ival) || (dojo.isArray(ival) && ival.length);
+		});
 
 		// append an empty element
-		this._setAllValues(vals.concat(['']));
+		vals.push([]);
+
+		// set the values
+		this._setAllValues(vals);
 	},
 
 	_getAllValues: function() {
@@ -130,18 +132,26 @@ dojo.declare("umc.widgets.MultiInput", [
 				isSet = isSet || ('' !== val);
 				rowVals.push(val);
 			}
-			vals.push(isSet ? rowVals.join(this.delimiter) : '');
+			if (this.delimiter) {
+				// delimiter is given, represent rows as strings 
+				// ... and empty rows as empty string
+				vals.push(isSet ? rowVals.join(this.delimiter) : '');
+			}
+			else {
+				// delimiter is not given, represent rows as arrays
+				// ... and empty rows as empty array
+				vals.push(isSet ? rowVals : []);
+			}
 		}
 		return vals;
 	},
 
 	_getValueAttr: function() {
-		// remove the last empty entries
+		// only return non-empty entries
 		var vals = this._getAllValues();
-		while (vals.length && !vals[vals.length - 1]) {
-			vals.pop();
-		}
-		return vals;
+		return dojo.filter(vals, function(ival) {
+			return (dojo.isString(ival) && '' !== ival) || (dojo.isArray(ival) && ival.length);
+		});
 	},
 
 	_removeNewButton: function() {

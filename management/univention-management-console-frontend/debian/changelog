@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.47-1) unstable; urgency=low
+
+  * added support in MultiInput for true arrays (if delimiter is not given)
+    (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 15 Sep 2011 17:07:42 +0200
+
 univention-management-console-frontend (1.0.46-1) unstable; urgency=low
 
   * fixed jslint warnings
