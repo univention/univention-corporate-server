@@ -1,4 +1,4 @@
-@%@BCWARNING=#@%@
+@%@UCRWARNING=#@%@
 # IP-Group list
 # Used by the IP-based auth plugin to assign IP addresses to filter groups.
 #

@@ -1,4 +1,4 @@
-@%@BCWARNING=#@%@
+@%@UCRWARNING=#@%@
 
 #URLs in exception virus list will not be virus scanned
 #Don't bother with the www. or

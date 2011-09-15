@@ -105,3 +105,9 @@ Description[de]=Wenn zur Definition von Filtergruppen keine LDAP-/Systemgruppen 
 Description[en]=If no system/LDAP groups are used (UCR variable dansguardian/groups/system) to define the filter groups, this variable can be used to define a filter group.
 Type=str
 Categories=service-webproxy
+
+[dansguardian/groups/%s/addresses]
+Description[de]=Erlaubt die Definition einer Filtergruppe anhand einer IP-Adresse, möglich ist die Angabe einzelner Adressen, eines Subnetzes (z.B. 192.168.1.0/255.255.255.0) oder eines IP-Bereichs (z.B. 192.168.1.0-192.168.1.255)
+Description[en]=
+Type=str
+Categories=service-webproxy
