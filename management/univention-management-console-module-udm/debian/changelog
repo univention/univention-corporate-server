@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.125-1) unstable; urgency=low
+
+  * do not send the delimiter for complex syntax type as this is only
+    required for the CLI; Bug #23329
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 15 Sep 2011 16:27:44 +0200
+
 univention-management-console-module-udm (1.0.124-1) unstable; urgency=low
 
   * add support for complex syntax fields; Bug #23329

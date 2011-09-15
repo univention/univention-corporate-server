@@ -134,7 +134,6 @@ def widget( syntax, udm_property ):
 			if subtypes:
 				MODULE.info( "Syntax %s has the following sub-types: %s" % ( syntax.name, subtypes ) )
 				descr[ 'subtypes' ] = subtypes
-				descr[ 'delimiter' ] = syntax.delimiter
 			return descr
 
 	if hasattr( syntax, '__name__' ):
