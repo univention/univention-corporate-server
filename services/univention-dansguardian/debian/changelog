@@ -6,6 +6,7 @@ univention-dansguardian (5.0.0-1) unstable; urgency=low
   * Remove old transition code from postinst
   * Minimise rules file with dh	
   * Review UCR templates and UCR registrations, fixup many template registrations
+    and genereal cleanups	
   * Add overrides file for ucslint to silence the error that squid/%s isn't registered
     for conffiles/etc/dansguardian/dansguardian.conf. The Python inline code does some
     clever parsing, which ucslint fails to grok
@@ -15,6 +16,7 @@ univention-dansguardian (5.0.0-1) unstable; urgency=low
     - dansguardian/groups/.*/addresses
     - dansguardian/language	
     - dansguardian/loglevel	
+    - dansguardian/virusscanner
 	
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 15 Sep 2011 09:27:26 +0200
 

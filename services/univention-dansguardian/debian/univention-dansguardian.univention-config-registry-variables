@@ -71,26 +71,26 @@ Type=str
 Categories=service-webproxy
 
 [dansguardian/virus/exception/extensions]
-Description[de]==Dateiendungen die nicht auf Viren geprüft werden
-Description[en]=The Virus scanning code will ignore files with these extensions
+Description[de]=Dateiendungen, die nicht auf Viren geprüft werden
+Description[en]=The file extensions are ignored during virus scans
 Type=str
 Categories=service-webproxy
 
 [dansguardian/virus/exception/mimetypes]
-Description[de]=MIME-Types die nicht auf Viren geprüft werden
-Description[en]=MIME types the virus scanning code ignores
+Description[de]=MIME-Types, die nicht auf Viren geprüft werden
+Description[en]=These MIME types are ignored during virus scans
 Type=str
 Categories=service-webproxy
 
 [dansguardian/virus/exception/sites]
-Description[de]=Webseiten die nicht auf Viren geprüft werden
-Description[en]=Sites in virus exception list will not be virus scanned
+Description[de]=Webseiten, die nicht auf Viren geprüft werden
+Description[en]=The websites are ignored during virus scans
 Type=str
 Categories=service-webproxy
 
 [dansguardian/virus/exception/urls]
-Description[de]=URLs die nicht auf Viren geprüft werden
-Description[en]=URLs in exception virus list will not be virus scanned
+Description[de]=URLs, die nicht auf Viren geprüft werden
+Description[en]=The URLs are ignored during virus scans
 Type=str
 Categories=service-webproxy
 
@@ -124,6 +124,14 @@ Description[en]=Verbosiry of log messages (0=none, 1=only denied requests, 2=all
 Type=str
 Categories=service-webproxy
 
+[dansguardian/virusscanner]
+Description[de]=Der zur Malware-Erkennung zu verwendende Scanner (clamav, clamdscan, icapscan, kavdscan, commandlinescan)
+Description[en]=The scanner to be used for malware detection (clamav, clamdscan, icapscan, kavdscan, commandlinescan)
+Type=str
+Categories=service-webproxy
 
-
-
+[dansguardian/auth/ip]
+Description[de]=Aktiviert die IP-basierte Authentifizierung
+Description[en]=Activates IP-based authentication
+Type=str
+Categories=service-webproxy

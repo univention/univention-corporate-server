@@ -18,6 +18,11 @@ Variables: hostname
 Variables: domainname
 
 Type: file
+File: etc/dansguardian/dansguardianf1.conf
+Variables: squid/virusscan/notifyemail
+Variables: domainname
+
+Type: file
 File: etc/dansguardian/lists/filtergroupslist
 Variables: dansguardian/groups
 Variables: dansguardian/groups/system
