@@ -91,10 +91,11 @@ class ISyntax( object ):
 	def type( cls ):
 		return cls.__name__
 
-class simple( ISyntax ):
 	@classmethod
 	def tostring(self, text):
 		return text
+
+class simple( ISyntax ):
 	@classmethod
 	def new(self):
 		return ''
@@ -109,13 +110,12 @@ class select( ISyntax ):
 
 	@classmethod
 	def parse(self, text):
+		# for the UDM CLI
+		if not hasattr( self, 'choices' ):
+			return text
 		for choice in self.choices:
 			if choice[0] == text:
 				return text
-
-	@classmethod
-	def tostring(self, text):
-		return text
 
 	@classmethod
 	def new(self):
@@ -130,19 +130,26 @@ class complex( ISyntax ):
 	# possible delimiters:
 	# delimiter = '='   ==> single string is used to concatenate all subitems
 	# delimiter = [ '', ': ', '=', '' ] ==> list of strings: e.g. 4 delimiter strings given to concatenate 3 subitems
+	min_elements = None
+
 	@classmethod
 	def parse(self, texts):
 		parsed=[]
 
-		if len(texts) < len(self.subsyntaxes):
+		if self.min_elements is not None:
+			count = self.min_elements
+		else:
+			count = len( self.subsyntaxes )
+
+		if len(texts) < count:
 			raise univention.admin.uexceptions.valueInvalidSyntax, _("not enough arguments")
 			p=s.parse(texts[i])
 
-		if len(texts) > len(self.subsyntaxes):
+		if len(texts) > len( self.subsyntaxes ):
 			raise univention.admin.uexceptions.valueInvalidSyntax, _("too many arguments")
 			p=s.parse(texts[i])
 
-		for i in range(0, len(self.subsyntaxes)):
+		for i in range( 0, count ):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i,self.subsyntaxes[i],  texts))
 			if type( self.subsyntaxes[i][1] ) == types.InstanceType:
 				s=self.subsyntaxes[i][1]
@@ -163,7 +170,6 @@ class complex( ISyntax ):
 		if len(self.subsyntaxes) != len(texts):
 			return ''
 		else:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: text: %s' % str(texts) )
 			for i in range(0,len(texts)):
 				if  texts[i]:
 					if type( self.subsyntaxes[i][1] ) == types.InstanceType:
@@ -192,7 +198,6 @@ class complex( ISyntax ):
 	def new(self):
 		s=[]
 		for desc, syntax in self.subsyntaxes:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: syntax is %s, text is %s, type is %s' % (syntax, desc, type(syntax)) )
 			if type( syntax ) == types.InstanceType:
 				s.append(syntax.new())
 			else:
@@ -207,6 +212,22 @@ class complex( ISyntax ):
 			else:
 				s.append(syntax().any())
 		return s
+
+class UDM_Modules( ISyntax ):
+	udm_modules = ()
+	key = 'dn'
+	label = 'dn'
+	regex = re.compile( '^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$' )
+	empty_value = False
+	error_message = _( "Not a valid LDAP DN" )
+
+	@classmethod
+	def parse( self, text ):
+		if not self.empty_value and not text:
+			raise univention.admin.uexceptions.valueError( _( 'An empty value is not allowed' ) )
+		if not text or self.regex.match( text ) != None:
+			return text
+		raise univention.admin.uexceptions.valueError( self.error_message )
 
 class none(simple):
 	pass
@@ -229,10 +250,6 @@ class module( ISyntax ):
 				self.filter=mymodule.syntax_filter
 			if self.description == '':
 				self.description=mymodule.short_description
-
-	@classmethod
-	def tostring(self, text):
-		return text
 
 	@classmethod
 	def new(self):
@@ -1555,7 +1572,7 @@ class soundModule(select):
 class moduleSearch(ldapDn):
 	description='FIXME'
 
-class groupDn(ldapDn):
+class groupDn( UDM_Modules ):
 	udm_modules = ( 'groups/group', )
 
 class userDn(ldapDn):
@@ -1572,8 +1589,13 @@ class groupID(integer):
 	searchFilter='(&(cn=*)(objectClass=posixGroup))'
 	description=_('Group ID')
 
-class shareHost( ldapDn ):
-	udm_modules = ( 'computers/domaincontroll_master', 'computers/domaincontroll_backup', 'computers/domaincontroll_slave', 'computers/membesrver' )
+class shareHost( UDM_Modules ):
+	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
+	key = '%(fqdn)s'
+	label = '%(fqdn)s'
+	empty_value = True
+	regex = re.compile( '(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
+	error_message = _( 'Not a valid FQDN' )
 
 class windowsTerminalServer(string):
 	searchFilter='(&(cn=*)(objectClass=univentionWindows))'
@@ -1615,20 +1637,39 @@ class network(ldapDnOrNone):
 	udm_modules = ( 'networks/network', )
 	description=_('Network')
 
+class IP_AddressList( select ):
+	choices = ()
+	depends = 'ip'
 
-class dnsEntry(ldapDnOrNone):
-	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
-	description=_('DNS Entry')
+	@classmethod
+	def parse( cls, text ):
+		return text
 
-class dnsEntryReverse(ldapDnOrNone):
-	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
-	description=_('DNS Entry Reverse')
+class DNS_ForwardZone( select ):
+	udm_modules = ( 'dns/forward_zone', )
+
+class DNS_ReverseZone( select ):
+	udm_modules = ( 'dns/reverse_zone', )
+
+class dnsEntry( complex ):
+ 	description=_('DNS Entry')
+	subsyntaxes = ( ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'IP address' ), IP_AddressList ) )
+	min_elements = 1
+
+class dnsEntryReverse( complex ):
+ 	description=_('DNS Entry Reverse')
+	subsyntaxes = ( ( _( 'DNS reverse zone' ), DNS_ReverseZone ), ( _( 'IP address' ), IP_AddressList ) )
+
+class dnsEntryAlias( complex ):
+	description=_('DNS Entry Alias')
+	subsyntaxes = ( ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'Alias' ), hostName ) )
+
 
 class dhcpService( ldapDnOrNone ):
 	udm_modules = ( 'dhcp/service', )
 
 class dhcpEntry( complex ):
-	subsyntaxes= ( ( _( 'DHCP-Service' ), dhcpService ), ( _( 'IP address' ), ipAddress ), ( _( 'MAC address' ), macAddress ) )
+	subsyntaxes= ( ( _( 'DHCP-Service' ), dhcpService ), ( _( 'IP address' ), IP_AddressList ), ( _( 'MAC address' ), macAddress ) )
 	description=_( 'DHCP Entry' )
 
 	@classmethod
@@ -1646,22 +1687,6 @@ class dnsEntryReverseNetwork(ldapDnOrNone):
 class dhcpEntryNetwork(ldapDnOrNone):
 	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
 	description=_('DHCP Entry')
-
-class dnsEntryAlias(ldapDnOrNone):
-	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
-	description=_('DNS Entry Alias')
-	# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
-	hostname='[a-zA-Z][a-zA-Z0-9-_]+'
-	domainname=hostname + '(?:\.' + hostname + ')*'
-	ava='[^=,]+=[^=,]+'
-	ldapDn=ava + '(?:,' + ava + ')*'
-	_re = re.compile('^' + domainname + ' ' + ldapDn + ' ' + hostname + '$')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		raise univention.admin.uexceptions.valueError,_("Entry does not have dnsEntryAlias Syntax: %s") % text
 
 class share(ldapDnOrNone):
 	searchFilter='(objectClass=univentionShare)'

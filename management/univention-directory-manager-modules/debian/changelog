@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.75-1) unstable; urgency=low
+
+  * converted the DNS und DHCP syntax types to complex; Bug #23329
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 15 Sep 2011 16:17:42 +0200
+
 univention-directory-manager-modules (7.0.74-1) unstable; urgency=low
 
   * Undo last commit because it breaks the installation (Bug #23329)

@@ -664,6 +664,8 @@ class simpleLdap(base):
 				self._ldap_post_create()
 			except Exception, e:
 				# ensure that there is no lock left
+				import sys, traceback
+				univention.debug.debug( univention.debug.ADMIN, univention.debug.ERROR, "Post-modify operation failed: %s" % '\n'.join( traceback.extract_tb( sys.exc_info()[ 2 ] ) ) )
 				self.cancel()
 				self.remove()
 				raise e
@@ -1104,7 +1106,8 @@ class simpleComputer( simpleLdap ):
 						if results:
 							for result in results:
 								for ip in zoneName[ 1 ]:
-									self[ 'dnsEntryZoneForward' ].append( result+' '+ip )
+									self[ 'dnsEntryZoneForward' ].append( [ result, ip ] )
+							univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'dnsEntryZoneForward: %s' % str( self[ 'dnsEntryZoneForward' ] ) )
 
 			except univention.admin.uexceptions.insufficientInformation, msg:
 				self[ 'dnsEntryZoneForward' ] = [ ]
@@ -1119,7 +1122,7 @@ class simpleComputer( simpleLdap ):
 							poscomponents = univention.admin.uldap.explodeDn( dn,0 )
 							poscomponents.pop( 0 )
 							ip = self.__ip_from_ptr( attr[ 'zoneName' ][ 0 ], attr[ 'relativeDomainName' ][ 0 ] )
-							entry = '%s %s' % ( string.join( poscomponents,',' ), ip )
+							entry = [ string.join( poscomponents, ',' ), ip ]
 							if not entry in self[ 'dnsEntryZoneReverse' ]:
 								self[ 'dnsEntryZoneReverse' ].append( entry )
 					except univention.admin.uexceptions.insufficientInformation, msg:
@@ -1166,12 +1169,12 @@ class simpleComputer( simpleLdap ):
 							poscomponents.pop( 0 )
 							if attr.has_key( 'univentionDhcpFixedAddress' ):
 								for ip in attr[ 'univentionDhcpFixedAddress' ]:
-									entry = '%s %s %s' % ( string.join( poscomponents,',' ), ip, macAddress )
+									entry = [ string.join( poscomponents,',' ), ip, macAddress ]
 									if not entry in self[ 'dhcpEntryZone' ]:
 										self[ 'dhcpEntryZone' ].append( entry )
 
 							else:
-								entry = '%s %s' % ( string.join( poscomponents,',' ), macAddress )
+								entry = [ string.join( poscomponents,',' ), macAddress ]
 								if not entry in self[ 'dhcpEntryZone' ]:
 									self[ 'dhcpEntryZone' ].append( entry )
 						univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'open: DHCP; self[ dhcpEntryZone ] = "%s"' % self[ 'dhcpEntryZone' ] )
@@ -1345,24 +1348,19 @@ class simpleComputer( simpleLdap ):
 		return dn
 
 	def __split_dns_line( self, entry ):
-
-		ip = entry.split( ' ' )[ -1 ]
-
-
-		if self.__is_ip ( ip ):
-			zone = string.join( entry.split( ' ' )[ :-1 ], ' ' )
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Split entry [%s] into zone [%s] and ip [%s]' % (entry, zone, ip))
-			return ( zone, ip )
+		zone = entry[ 0 ]
+		if len( entry ) > 1:
+			ip = self.__is_ip( entry[ 1 ] ) and entry[ 1 ] or None
 		else:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Split entry [%s] into zone [%s] and ip [%s]' % (entry, entry, None))
-			return ( entry, None )
+			ip = None
+
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Split entry %s into zone %s and ip %s' % ( entry, entry, ip ) )
+		return ( zone, ip )
 
 	def __split_dns_alias_line( self, entry ):
-
-		entry_parts = entry.split( ' ' )
-		dnsForwardZone = entry_parts[ 0 ]
-		dnsAliasZoneContainer = string.join(entry_parts[ 1:-1 ], ',')
-		alias = entry_parts[ -1 ]
+		dnsForwardZone = entry[ 0 ]
+		dnsAliasZoneContainer = string.join( entry[ 1 : -1 ], ',' )
+		alias = entry[ -1 ]
 
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Split entry [%s] into dnsForwardZone [%s], dnsAliasZoneContainer [%s] and alias [%s]' % (entry, dnsForwardZone, dnsAliasZoneContainer, alias))
 		return ( dnsForwardZone, dnsAliasZoneContainer, alias )
@@ -1485,7 +1483,7 @@ class simpleComputer( simpleLdap ):
 	def check_common_name_length(self):
 		if len(self['ip']) > 0 and len(self['dnsEntryZoneForward']) > 0:
 			for zone in self['dnsEntryZoneForward']:
-				zoneName = univention.admin.uldap.explodeDn(zone, 1)[0]
+				zoneName = univention.admin.uldap.explodeDn( zone[ 0 ], 1 )[ 0 ]
 				if len(zoneName) + len(self['name']) >= 63:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: length of Common Name is too long: %d' % (len(zoneName) + len(self['name']) + 1))
 					raise univention.admin.uexceptions.commonNameTooLong
@@ -1517,7 +1515,6 @@ class simpleComputer( simpleLdap ):
 				zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
 				zone.open( )
 				zone.modify( )
-					
 
 	def __add_dns_forward_object( self, name, zoneDn, ip ):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object: zoneDn="%s", name="%s", ip="%s"' % ( zoneDn, name, ip ) )
@@ -2184,13 +2181,13 @@ class simpleComputer( simpleLdap ):
 						self.network_object = network_object
 					if network_object['dnsEntryZoneForward']:
 						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1:
-							self['dnsEntryZoneForward']='%s %s' % (network_object['dnsEntryZoneForward'], self[ 'ip' ][ 0 ] )
+							self[ 'dnsEntryZoneForward' ] = [ [ network_object['dnsEntryZoneForward'], self[ 'ip' ][ 0 ] ], ]
 					if network_object['dnsEntryZoneReverse']:
 						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1:
-							self['dnsEntryZoneReverse'] = '%s %s' % (network_object['dnsEntryZoneReverse'], self[ 'ip' ][ 0 ] )
+							self['dnsEntryZoneReverse'] = [ [ network_object['dnsEntryZoneReverse'], self[ 'ip' ][ 0 ] ], ]
 					if network_object['dhcpEntryZone']:
 						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1 and self.has_key('mac') and self[ 'mac' ] and len( self[ 'mac' ] ) == 1:
-							self['dhcpEntryZone'] = '%s %s %s' % ( network_object['dhcpEntryZone'], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] )
+							self[ 'dhcpEntryZone' ] = [ [ network_object['dhcpEntryZone'], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] ], ]
 						else:
 							self.__saved_dhcp_entry = network_object['dhcpEntryZone']
 
@@ -2208,13 +2205,13 @@ class simpleComputer( simpleLdap ):
 				if value and self.network_object:
 					if self.network_object['dnsEntryZoneForward']:
 						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1:
-							self['dnsEntryZoneForward']='%s %s' % (self.network_object['dnsEntryZoneForward'], self[ 'ip' ][ 0 ] )
+							self[ 'dnsEntryZoneForward' ] = [ [ self.network_object['dnsEntryZoneForward'], self[ 'ip' ][ 0 ] ], ]
 					if self.network_object['dnsEntryZoneReverse']:
 						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1:
-							self['dnsEntryZoneReverse'] = '%s %s' % (self.network_object['dnsEntryZoneReverse'], self[ 'ip' ][ 0 ] )
+							self['dnsEntryZoneReverse'] = [ [ self.network_object['dnsEntryZoneReverse'], self[ 'ip' ][ 0 ] ] ]
 					if self.network_object['dhcpEntryZone']:
 						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1 and self.has_key('mac') and self[ 'mac' ] and len( self[ 'mac' ] ) > 0:
-							self['dhcpEntryZone'] = '%s %s %s' % ( self.network_object['dhcpEntryZone'], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] )
+							self['dhcpEntryZone'] = [ [ self.network_object['dhcpEntryZone'], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] ], ]
 						else:
 							self.__saved_dhcp_entry = self.network_object['dhcpEntryZone']
 			if not self.ip or self.ip == None:
@@ -2223,9 +2220,9 @@ class simpleComputer( simpleLdap ):
 		elif key == 'mac' and self.__saved_dhcp_entry:
 			if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1 and self[ 'mac' ] and len( self[ 'mac' ] ) > 0:
 				if type( value ) == type( [ ] ):
-					self['dhcpEntryZone'] = '%s %s %s' % ( self.__saved_dhcp_entry, self[ 'ip' ][ 0 ], value[ 0 ] )
+					self['dhcpEntryZone'] = [ [ self.__saved_dhcp_entry, self[ 'ip' ][ 0 ], value[ 0 ] ], ]
 				else:
-					self['dhcpEntryZone'] = '%s %s %s' % ( self.__saved_dhcp_entry, self[ 'ip' ][ 0 ], value )
+					self['dhcpEntryZone'] = [ [ self.__saved_dhcp_entry, self[ 'ip' ][ 0 ], value ], ]
 
 		super(simpleComputer, self).__setitem__(key, value)
 		if raise_after:

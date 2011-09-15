@@ -174,6 +174,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
+		self.open()
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
@@ -203,6 +204,11 @@ class object(univention.admin.handlers.simpleLdap):
 						self['sharedFolderGroupACL'].append(acl)
 		self.save()
 
+
+	def description( self ):
+		"""Returns a name that identifies the object. This may be used
+		to override the default value that is the property marked with identifies = True"""
+		return '%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] )
 
 	def _ldap_pre_create(self):
 		self.dn='cn=%s@%s,%s' % (self.info['name'], self.info['mailDomain'], self.position.getDn())
