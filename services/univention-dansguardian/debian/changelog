@@ -5,7 +5,11 @@ univention-dansguardian (5.0.0-1) unstable; urgency=low
     malware scanning, but also policy-based web filtering	 
   * Remove old transition code from postinst
   * Minimise rules file with dh	
-
+  * Review UCR templates and UCR registrations, fixup many template registrations
+  * The following UCR variables are now properly documented in UCR descriptions:
+    - dansguardian/groups/system
+    - dansguardian/groups/.*/members
+	
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 15 Sep 2011 09:27:26 +0200
 
 univention-antivir-web (4.0.4-3) unstable; urgency=low

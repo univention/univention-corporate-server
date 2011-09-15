@@ -38,8 +38,10 @@
 ucr set squid/virusscan?yes
 ucr set squid/contentscan?yes
 
-/etc/init.d/squid restart
-eval $(ucr shell squid/virusscan squid/contentscan)
+/etc/init.d/squid3 restart
+
+eval "$(ucr shell squid/virusscan squid/contentscan)"
+
 if [ "$squid_virusscan" = yes -o "$squid_contentscan" = yes ]; then
 	unset freshclam_active
 	if [ -x /etc/init.d/clamav-freshclam ]; then
@@ -51,7 +53,7 @@ if [ "$squid_virusscan" = yes -o "$squid_contentscan" = yes ]; then
 	[ "$freshclam_active" = 1 ] && /etc/init.d/clamav-freshclam start
 fi
 
-call_joinscript 79univention-antivir-web.inst
+call_joinscript 79univention-dansguardian.inst
 
 /etc/init.d/univention-directory-listener crestart
 

@@ -16,6 +16,8 @@ Variables: domainname
 Type: file
 File: etc/dansguardian/lists/filtergroupslist
 Variables: dansguardian/groups
+Variables: dansguardian/groups/system
+Variables: dansguardian/groups/.*/members
 
 Type: file
 File: etc/dansguardian/lists/contentscanners/exceptionvirusextensionlist
@@ -40,6 +42,7 @@ Variables: dansguardian/virus/exception/urls
 Type: file
 File: etc/dansguardian/lists/authplugins/ipgroups
 Variables: dansguardian/groups/.*/addresses
+Variables: dansguardian/groups
 
 Type: module
 Module: dansguardian-filtergroups.py

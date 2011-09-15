@@ -94,3 +94,14 @@ Description[en]=URLs in exception virus list will not be virus scanned
 Type=str
 Categories=service-webproxy
 
+[dansguardian/groups/system]
+Description[de]=Ist diese Option aktiviert, werden Standard-Systemgruppen aus dem LDAP für die Filtergruppen verwendet
+Description[en]=If this option is activated, standard system groups from LDAP are used as filter groups
+Type=str
+Categories=service-webproxy
+
+[dansguardian/groups/.*/members]
+Description[de]=Wenn zur Definition von Filtergruppen keine LDAP-/Systemgruppen verwendet werden (UCR-Variable dansguardian/groups/system), kann mit dieser Variable eine Filtergruppe definiert werden.
+Description[en]=If no system/LDAP groups are used (UCR variable dansguardian/groups/system) to define the filter groups, this variable can be used to define a filter group.
+Type=str
+Categories=service-webproxy

@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 #
-# Univention AntiVir Web
-#  rules file for the univention-antivir-web debian package
+# univention-dansgurdian
+#  rules file for the univention-dansguardian package
 #
 # Copyright 2001-2011 Univention GmbH
 #
@@ -30,61 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#export DH_VERBOSE=1
+override_dh_auto_test:
+	ucslint
+	dh_auto_test
 
-TEMPLATES=$(shell find etc/ -name '*list' -o -name '*.conf')
-PACKAGE=univention-antivir-web
-
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-
-	touch configure-stamp
-
-
-build: build-stamp install-templates
-
-build-stamp: configure-stamp
-	dh_testdir
-
-	touch build-stamp
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-
-	dh_clean
-
-install-templates:
-	@for i in $(TEMPLATES); do \
-		o=debian/$(PACKAGE)/$$i; \
-		install -d "`dirname $$o`"; \
-		install -m640 $$i $$o; \
-	done
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_installdirs
-
-	install -m 0755 79univention-antivir-web.inst $(CURDIR)/debian/univention-antivir-web/usr/lib/univention-install/
-
+override_dh_auto_install:
+	dh_auto_install
 	univention-install-config-registry
 
-binary-indep: build install
-# We have nothing to do by default.
-
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_strip
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure install-templates
+%:
+	dh $@
