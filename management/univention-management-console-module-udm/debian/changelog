@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.124-1) unstable; urgency=low
+
+  * add support for complex syntax fields; Bug #23329
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 15 Sep 2011 16:21:01 +0200
+
 univention-management-console-module-udm (1.0.123-1) unstable; urgency=low
 
   * added search form for UDM navigation (Bug #23335)
