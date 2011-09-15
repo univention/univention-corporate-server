@@ -196,7 +196,7 @@ dojo.mixin(umc.tools, {
 			}
 			// all other cases
 			else {
-				umc.dialog.alert('<p>' + this._statusMessages[status] + '<p>' + (message ? this._('<p>Server error message:<p><p>%s</p>', message) : ''));
+				umc.dialog.alert('<p>' + this._statusMessages[status] + '</p>' + (message ? '<p>' + this._('Server error message:') + '</p><p class="umcServerErrorMessage">' + message + '</p>' : ''));
 			}
 		}
 		else if (undefined !== status) {

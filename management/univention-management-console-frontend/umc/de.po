@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-15 15:09+0200\n"
+"POT-Creation-Date: 2011-09-15 15:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,11 +30,6 @@ msgstr "%d Objekte von %d ausgewählt"
 #, python-format
 msgid "1 object of %d selected"
 msgstr "1 Objekt von %d ausgewählt"
-
-#: umc/tools.js:199
-#, fuzzy, python-format
-msgid "<p>Server error message:<p><p>%s</p>"
-msgstr "<br>Fehlernachricht des Servers: <i>%s</i>"
 
 #: umc/app.js:347
 msgid "About UMC"
@@ -239,6 +234,10 @@ msgstr "Zurücksetzen"
 #: umc/widgets/SearchForm.js:26
 msgid "Search"
 msgstr "Suchen"
+
+#: umc/tools.js:199
+msgid "Server error message:"
+msgstr "Fehlernachricht des Servers:"
 
 #: umc/tools.js:162
 msgid "Specified locale is not available."

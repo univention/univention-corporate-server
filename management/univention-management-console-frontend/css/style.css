@@ -317,5 +317,8 @@ form {
 	overflow-x: hidden;
 }
 
-
+/* special styling for server error messages in the dialog box */
+.umcServerErrorMessage {
+	color: #888;
+}
 
