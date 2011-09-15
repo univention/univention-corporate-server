@@ -59,6 +59,8 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 	_valuesLoaded: false,
 
+	_deferredOrValues: null,
+
 	_createStore: function() {
 		return new dojo.data.ItemFileWriteStore({
 			data: {
@@ -281,7 +283,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		// check whether all necessary values are specified
 		var params = {};
 		var nDepValues = 0;
-		if (dependList.length && dojo.isObject(_dependValues)) {
+		if (dependList.length && dojo.isObject(_dependValues) && _dependValues) {
 			// check whether all necessary values are specified
 			for (var i = 0; i < dependList.length; ++i) {
 				if (_dependValues[dependList[i]]) {
@@ -306,21 +308,18 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 			dojo.mixin(params, res);
 		}
 
-		// get the dynamic values
-		var deferredOrValues = null;
-		if (dojo.isString(this.dynamicValues) && this.dynamicValues) {
-			// query dynamic values via UMCP
-			deferredOrValues = this.umcpCommand(this.dynamicValues, params).then(function(data) {
-				// only return the data array
-				return data.result;
-			});
+		// get the dynamic values, block concurrent events for value loading
+		var func = umc.tools.stringOrFunction(this.dynamicValues, this.umcpCommand);
+		var deferredOrValues = this._deferredOrValues ? null : func(params);
+		if (!deferredOrValues) {
+			// another request is pending
+			return;
 		}
-		else if (this.dynamicValues && dojo.isFunction(this.dynamicValues)) {
-			// query dynamic values via the specified javascript function
-			deferredOrValues = this.dynamicValues(params);
-		}
+		this._deferredOrValues = deferredOrValues;
 
-		if (deferredOrValues && (dojo.isArray(deferredOrValues) ||
+		// make sure we have an array or a dojo.Deferred object
+		if (deferredOrValues &&
+				(dojo.isArray(deferredOrValues) ||
 				(dojo.isObject(deferredOrValues) && 'then' in deferredOrValues && 'cancel' in deferredOrValues))) {
 			this.onLoadDynamicValues();
 			dojo.when(deferredOrValues, dojo.hitch(this, function(res) {
@@ -331,21 +330,30 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 				// values have been loaded
 				this.onValuesLoaded(this.getAllItems());
+
+				// unblock value loading
+				this._deferredOrValues = null;
 			}), dojo.hitch(this, function() {
 				// error handler
 				this.onDynamicValuesLoaded([]);
 				this.onValuesLoaded(this.getAllItems());
+
+				// unblock value loading
+				this._deferredOrValues = null;
 			}));
 		}
 		else {
 			// values have been loaded
 			this.onValuesLoaded(this.getAllItems());
+
+			// unblock value loading
+			this._deferredOrValues = null;
 		}
 	},
 
 	onLoadDynamicValues: function() {
 		// summary:
-		//		This event is triggered when a query is set to load the dynamic values (and 
+		//		This event is triggered when a query is set to load the dynamic values (and
 		//		only the dynamic values).
 	},
 

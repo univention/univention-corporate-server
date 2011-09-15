@@ -28,6 +28,8 @@ dojo.declare("umc.widgets.MultiInput", [
 	// the widget's class name as CSS class
 	'class': 'umcMultiInput',
 
+	depends: null,
+
 	name: '',
 
 	value: null,
@@ -46,6 +48,30 @@ dojo.declare("umc.widgets.MultiInput", [
 
 	_newButton: null,
 
+	_lastDepends: null,
+
+	_createHandler: function(ifunc) {
+		// This handler will be called by all subwidgets of the MultiInput widget.
+		// When the first request comes in, we will execute the function to compute
+		// the dynamic values. We cound the requests in order to know when all
+		// subwidgets will have sent their request.
+		var _nRequests = Infinity;
+		var _valueOrDeferred = null;
+
+		return function(iname, options) {
+			_nRequests++;
+			// in case all subwidgets have sent their requests, reset the counter
+			if (_nRequests > this._widgets.length) {
+				// upon first call, execute the function for the dynamic values
+				_valueOrDeferred = ifunc(options);
+				_nRequests = 1;
+			}
+
+			// return the value
+			return _valueOrDeferred;
+		};
+	},
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -56,6 +82,24 @@ dojo.declare("umc.widgets.MultiInput", [
 		// initiate other properties
 		this._rowContainers = [];
 		this._widgets = [];
+
+		// we need to rewire the dependencies through this widget to the row widgets
+		this.depends = [];
+		dojo.forEach(this.subtypes, function(iwidget, i) {
+			// gather all dependencies so form can notify us
+			dojo.forEach(umc.tools.stringOrArray(iwidget.depends), function(idep) {
+				if (dojo.indexOf(this.depends, idep) < 0) {
+					this.depends.push(idep);
+				}
+			}, this);
+
+			// parse the dynamic value function and create a handler
+			var ifunc = umc.tools.stringOrFunction(iwidget.dynamicValues, this.umcpCommand || umc.tools.umcpCommand);
+			var handler = dojo.hitch(this, this._createHandler(ifunc, iwidget));
+
+			// replace the widget handler for dynamicValues with our version
+			iwidget.dynamicValues = handler;
+		}, this);
 	},
 
 	buildRendering: function() {
@@ -63,6 +107,18 @@ dojo.declare("umc.widgets.MultiInput", [
 
 		// add empty element
 		this._appendElements(1);
+	},
+
+	_loadValues: function(depends) {
+		// delegate the call to _loadValues to all widgets
+		this._lastDepends = depends;
+		dojo.forEach(this._widgets, function(iwidgets) {
+			dojo.forEach(iwidgets, function(jwidget) {
+				if ('_loadValues' in jwidget) {
+					jwidget._loadValues(depends);
+				}
+			});
+		});
 	},
 
 	_setAllValues: function(_valList) {
@@ -148,10 +204,17 @@ dojo.declare("umc.widgets.MultiInput", [
 
 	_getValueAttr: function() {
 		// only return non-empty entries
-		var vals = this._getAllValues();
-		return dojo.filter(vals, function(ival) {
-			return (dojo.isString(ival) && '' !== ival) || (dojo.isArray(ival) && ival.length);
+		var vals = [];
+		dojo.forEach(this._getAllValues(), function(ival) {
+			if (dojo.isString(ival) && '' !== ival) {
+				vals.push(ival);
+			}
+			else if (dojo.isArray(ival) && ival.length) {
+				// if we only have one subtype, do not use arrays as representation
+				vals.push(1 == ival.length ? ival[0] : ival);
+			}
 		});
+		return vals;
 	},
 
 	_removeNewButton: function() {
@@ -208,7 +271,8 @@ dojo.declare("umc.widgets.MultiInput", [
 				widgetConfs.push(dojo.mixin({}, iwidget, {
 					disabled: this.disabled,
 					name: iname,
-					value: ''
+					value: '',
+					dynamicValues: dojo.partial(iwidget.dynamicValues, iname)
 				}));
 
 				// add the name of the widget to the list of widget names
@@ -224,15 +288,18 @@ dojo.declare("umc.widgets.MultiInput", [
 			var hasSubTypeLabels = false;
 			dojo.forEach(order, function(iname) {
 				// add widget to row container (wrapped by a LabelPane)
+				var iwidget = widgets[iname];
 				hasSubTypeLabels = hasSubTypeLabels || widgets[iname].label;
 				rowContainer.addChild(new umc.widgets.LabelPane({
 					disabled: this.disabled,
-					content: widgets[iname],
+					content: iwidget,
 					label: irow !== 0 ? '' : null // only keep the label for the first row
 				}));
 
 				// register to 'onChange' events
-				this.connect(widgets[iname], 'onChange', 'onChange');
+				this.connect(iwidget, 'onChange', function() {
+					this.onChange(this.get('value'));
+				});
 			}, this);
 
 			// add a 'remove' button at the end of the row
@@ -246,12 +313,20 @@ dojo.declare("umc.widgets.MultiInput", [
 				content: button,
 				label: irow === 0 && hasSubTypeLabels ? '&nbsp;' : '' // only keep the label for the first row
 			}));
-			rowContainer.startup();
 
 			// add row
-			this.addChild(rowContainer);
-			this._rowContainers.push(rowContainer);
 			this._widgets.push(visibleWidgets);
+			this._rowContainers.push(rowContainer);
+			rowContainer.startup();
+			this.addChild(rowContainer);
+
+			// call the _loadValues method by hand
+			dojo.forEach(order, function(iname) {
+				var iwidget = widgets[iname];
+				if ('_loadValues' in iwidget) {
+					iwidget._loadValues(this._lastDepends);
+				}
+			}, this);
 		}
 
 		// update the number of render elements
@@ -334,6 +409,10 @@ dojo.declare("umc.widgets.MultiInput", [
 		if (this._widget) {
 			umc.tools.delegateCall(this, arguments, this._widget);
 		}
+	},
+
+	onChange: function(newValue) {
+		// stub for onChange event
 	}
 });
 

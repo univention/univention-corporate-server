@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.48-1) unstable; urgency=low
+
+  * added umc.tools.stringOrArray()/stringOrFunction()
+  * MultiInput: added support for delegating events to subwidgets
+  (Bug #23194)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 15 Sep 2011 21:51:47 +0200
+
 univention-management-console-frontend (1.0.47-1) unstable; urgency=low
 
   * added support in MultiInput for true arrays (if delimiter is not given)

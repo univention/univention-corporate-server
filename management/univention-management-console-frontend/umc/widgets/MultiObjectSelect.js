@@ -57,21 +57,8 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 			this.value = [];
 		}
 
-		// if 'formatter' is a string, parse it
-		if (dojo.isString(this.formatter)) {
-			// string may start with 'javascript:'
-			if (0 === this.formatter.indexOf('javascript:')) {
-				// evaluate string as javascript code
-				var str = this.formatter.substr(11);
-				this._formatter = eval(str);
-			}
-			else {
-				console.log('ERROR: The attribute umc.widgets.MultiObjectSelect.formatter could not been evaluated. Ignoring error: ' + this.formatter);
-			}
-		}
-		else if (dojo.isFunction(this.formatter)) {
-			this._formatter = this.formatter;
-		}
+		// convert 'formatter' to a function
+		this._formatter = umc.tools.stringOrFunction(this.formatter);
 	},
 
 	buildRendering: function() {

@@ -553,6 +553,61 @@ dojo.mixin(umc.tools, {
 			return str;
 		}
 		return str.slice(0, 1).toUpperCase() + str.slice(1);
+	},
+
+	stringOrArray: function(/*String|String[]*/ input) {
+		// summary:
+		//		Transforms a string to an array containing the string as element
+		//		and if input is an array, the array is not modified. In any other
+		//		case, the function returns an empty array.
+
+		if (dojo.isString(input)) {
+			return [ input ];
+		}
+		if (dojo.isArray(input)) {
+			return input;
+		}
+		return [];
+	},
+
+	stringOrFunction: function(/*String|Function*/ input, /*Function?*/ umcpCommand) {
+		// summary:
+		//		Transforms a string starting with 'javascript:' to a javascript
+		//		function, otherwise to an UMCP command function (if umcpCommand)
+		//		is specified, and leaves a function a function.
+		//		Anything else will be converted to a dummy function.
+
+		if (dojo.isFunction(input)) {
+			return input;
+		}
+		if (dojo.isString(input)) {
+			if (0 === input.indexOf('javascript:')) {
+				// string starts with 'javascript:' to indicate a reference to a javascript function
+				try {
+					// evaluate string as javascript code and execute function
+					return eval(input.substr(11));
+				}
+				catch (err) {
+					// will return dummy function at the end...
+				}
+			}
+			else if (umcpCommand) {
+				// we have a reference to an ucmpCommand, we can try to execute the string as an
+				// UMCP command... return function that is ready to query dynamic values via UMCP
+				return function(params) {
+					return umcpCommand(input, params).then(function(data) {
+						// only return the data array
+						return data.result;
+					});
+				};
+			}
+
+			// print error message
+			console.log('ERROR: The string could not be evaluated as javascript code. Ignoring error: ' + input);
+		}
+
+		// return dummy function
+		return function() {};
 	}
 });
 
