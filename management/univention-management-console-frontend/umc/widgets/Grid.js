@@ -468,18 +468,20 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 	_updateFooterContent: function() {
 		var nItems = this._grid.selection.getSelectedCount();
 		var nItemsTotal = this._grid.rowCount;
+		var msg = '';
 		if (dojo.isFunction(this.footerFormatter)) {
-			this._footerLegend.set('content', this.footerFormatter(nItems, nItemsTotal));
-		}
-		else if (1 == nItemsTotal) {
-			this._footerLegend.set('content', this._('%d of 1 object selected', nItems));
-		}
-		else if (1 < nItemsTotal) {
-			this._footerLegend.set('content', this._('%d of %d objects selected', nItems, nItemsTotal));
+			msg = this.footerFormatter(nItems, nItemsTotal);
 		}
 		else {
-			this._footerLegend.set('content', this._('No object found'));
+			var msg = this._('%d objects of %d selected', nItems, nItemsTotal);
+			if (0 == nItemsTotal) {
+				msg = this._('No objects could be found');
+			}
+			else if (1 == nItems) {
+				msg = this._('1 object of %d selected', nItemsTotal);
+			}
 		}
+		this._footerLegend.set('content', msg);
 	},
 
 	_updateContextItem: function(evt) {
