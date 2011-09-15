@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.126-1) unstable; urgency=low
+
+  * minor fixes in handling base syntax UDM_Modules; Bug #23329
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 15 Sep 2011 17:55:15 +0200
+
 univention-management-console-module-udm (1.0.125-1) unstable; urgency=low
 
   * do not send the delimiter for complex syntax type as this is only

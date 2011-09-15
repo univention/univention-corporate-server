@@ -606,6 +606,8 @@ def read_syntax_choices( syntax_name, options = {} ):
 					key = obj.dn
 			if syn.label is None:
 				label = udm_objects.description( obj )
+			elif syn.label == 'dn':
+				label = obj.dn
 			else:
 				try:
 					label = syn.label % obj.info
@@ -621,7 +623,7 @@ def read_syntax_choices( syntax_name, options = {} ):
 			syn.choices.extend( map( map_choice, module.search() ) )
 		if syn.empty_value:
 			syn.choices.insert( 0, ( None, '' ) )
-	if hasattr( syn, 'udm_modules' ):
+	elif hasattr( syn, 'udm_modules' ):
 		MODULE.info( 'Found syntax class %s with udm_module attribute (= %s)' % ( syntax_name, syn.udm_modules ) )
 		syn.choices = []
 		def map_choice( obj ):
