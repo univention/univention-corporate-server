@@ -16,8 +16,6 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 	'class': 'umcSearchForm',
 
 	postMixInProperties: function() {
-		this.inherited(arguments);
-
 		// in case no buttons are defined, define the standard buttons: 'submit' and 'reset'
 		if (!this.buttons) {
 			this.buttons = [{
@@ -50,6 +48,8 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 		if (!buttonsExist) {
 			this.layout.push(['reset', 'submit']);
 		}
+
+		this.inherited(arguments);
 	},
 
 	onSearch: function(values) {

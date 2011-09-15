@@ -179,8 +179,10 @@ dojo.mixin(umc.tools, {
 		var message = '';
 		try {
 			var jsonResponse = dojo.getObject('responseText', false, error) || '{}';
+			// replace all newlines with '<br>'
+			jsonResponse = jsonResponse.replace(/\n/g, '<br>');
 			var response = dojo.fromJson(jsonResponse);
-			status = parseInt(dojo.getObject('status', false, response) || _status, 10);
+			status = parseInt(dojo.getObject('status', false, response) || _status, 10) || status;
 			message = dojo.getObject('message', false, response) || '';
 		}
 		catch (_err) { }
@@ -194,7 +196,7 @@ dojo.mixin(umc.tools, {
 			}
 			// all other cases
 			else {
-				umc.dialog.alert(this._statusMessages[status] + (message ? this._('<br>Server error message: <i>%s</i>', message) : ''));
+				umc.dialog.alert('<p>' + this._statusMessages[status] '<p>' + (message ? this._('<p>Server error message:<p><p>%s</p>', message) : ''));
 			}
 		}
 		else if (undefined !== status) {

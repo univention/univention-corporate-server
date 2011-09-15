@@ -54,7 +54,7 @@ configRegistry.load()
 try:
 	_session_timeout = int( configRegistry.get( 'umc/http/session/timeout', 300 ) )
 except TypeError, ValueError:
-	CORE.error( 'Failed to read session timeout from UCR variable umc/http/session/timeout. Using default of 300 seconds' )
+	CORE.process( 'Failed to read session timeout from UCR variable umc/http/session/timeout. Using default of 300 seconds' )
 	_session_timeout = 300
 _thread_http = None
 _queue_send = Queue.Queue()
@@ -68,7 +68,7 @@ class SessionClient(object):
 		if self.client.connect():
 			CORE.info( 'SessionClient: connected to UMC server' )
 		else:
-			CORE.error( 'SessionClient: connection to UMC server failed' )
+			CORE.process( 'SessionClient: connection to UMC server failed' )
 		self._auth_response = None
 		self._auth_response_queue = None
 		self._requestid2response_queue = {}
@@ -97,7 +97,7 @@ class SessionClient(object):
 		return False
 
 	def _authenticated(self, success, status, message):
-		CORE.error('SessionClient: _authenticated: success=%s  status=%s  message=%s' % (success, status, message) )
+		CORE.process('SessionClient: _authenticated: success=%s  status=%s  message=%s' % (success, status, message) )
 		self._auth_response.status = status
 		self._auth_response_queue.put( self._auth_response )
 		# release queue object
@@ -112,7 +112,7 @@ class SessionClient(object):
 
 	def _response(self, response):
 		if not response.id in self._requestid2response_queue:
-			CORE.error('SessionClient: could not find request id for response %s, status %d:' % ( str( response.id ), response.status ) )
+			CORE.process('SessionClient: could not find request id for response %s, status %d:' % ( str( response.id ), response.status ) )
 		else:
 			CORE.info('SessionClient: got response with id=%s and status=%s' % ( response.id, response.status ) )
 			self._requestid2response_queue[ response.id ].put( response )
@@ -149,15 +149,15 @@ class UMCP_Dispatcher( object ):
 				return
 
 			if not type(queuerequest.sessionid) == str and queuerequest.sessionid is not None:
-				CORE.error('UMCP_Dispatcher: check_queue: got invalid sessionid: %s' % repr(queuerequest.sessionid))
+				CORE.process('UMCP_Dispatcher: check_queue: got invalid sessionid: %s' % repr(queuerequest.sessionid))
 			if not isinstance(queuerequest.request, umcp.Request):
-				CORE.error('UMCP_Dispatcher: check_queue: got invalid UMCP request: %s' % repr(queuerequest.request))
+				CORE.process('UMCP_Dispatcher: check_queue: got invalid UMCP request: %s' % repr(queuerequest.request))
 			if not isinstance(queuerequest.response_queue, Queue.Queue):
-				CORE.error('UMCP_Dispatcher: check_queue: got invalid response_queue: %s' % repr(queuerequest.response_queue))
+				CORE.process('UMCP_Dispatcher: check_queue: got invalid response_queue: %s' % repr(queuerequest.response_queue))
 
 			# stop here if sessionid is missing or unknown and request is no AUTH request
 			if ( not queuerequest.sessionid or not queuerequest.sessionid in UMCP_Dispatcher.sessions.keys() ) and not queuerequest.request.command == 'AUTH':
-				CORE.error('UMCP_Dispatcher: check_queue: invalid session: sessionid=%s' % repr(queuerequest.sessionid))
+				CORE.process('UMCP_Dispatcher: check_queue: invalid session: sessionid=%s' % repr(queuerequest.sessionid))
 				response = umcp.Response( queuerequest.request )
 				response.status = 401 # set status to unauthorized
 				queuerequest.response_queue.put( response )
@@ -223,8 +223,11 @@ def update_session_cookie(cookiejar, sessionid):
 class CPgeneric(object):
 	name = 'CPgeneric'
 
+	# NOTE: only use CORE.process, _not_ CORE.error; since CORE.error writes as
+	#       well to /var/log/syslog, this seems to cause problems with cherrypy.
+	#       (Bug #22634)
 	_logOptions = {
-		'error': CORE.error,
+		'error': CORE.process,
 		'warn': CORE.warn,
 		'info': CORE.info,
 	}
@@ -289,7 +292,11 @@ class CPgeneric(object):
 
 		# something bad happened
 		self._log('error', 'response status code: %s' % response.status)
-		raise cherrypy.HTTPError(response.status, response.message)
+		self._log('error', 'response message: %s' % response.message)
+		message = response.message
+		if isinstance(message, basestring):
+			message = message.replace('"', "'")
+		raise cherrypy.HTTPError(response.status, message)
 
 
 class CPGet(CPgeneric):
@@ -352,7 +359,7 @@ class CPAuth(object):
 		CORE.info('CPRoot/auth: got new auth request (%s:%s <=> %s)' % (remote.ip, remote.port, remote.name))
 
 		if not cherrypy.request.headers.get(u"Content-Length", u""):
-			CORE.error('CPRoot/auth: missing Content-Length header')
+			CORE.process('CPRoot/auth: missing Content-Length header')
 			raise cherrypy.HTTPError(411)
 
 		# TODO FIXME check body length and stop here if too much data has been sent by client
@@ -365,7 +372,7 @@ class CPAuth(object):
 		try:
 			json = simplejson.loads(body)
 		except ValueError:
-			CORE.error('CPRoot/auth: cannot parse JSON body')
+			CORE.process('CPRoot/auth: cannot parse JSON body')
 			raise cherrypy.HTTPError(400, 'Invalid JSON document')
 
 		CORE.info('CPRoot/command: request: command=%s' % cherrypy.request.path_info )
@@ -391,8 +398,11 @@ class CPAuth(object):
 			update_session_cookie(cherrypy.response.cookie, response.body['sessionid'])
 			return ""
 
-		CORE.error('CPRoot/auth: username: %s, status code: %s' % (json.get('username'), response.status))
-		raise cherrypy.HTTPError(response.status, response.message)
+		CORE.process('CPRoot/auth: username: %s, status code: %s' % (json.get('username'), response.status))
+		message = response.message
+		if isinstance(message, basestring):
+			message = message.replace('"', "'")
+		raise cherrypy.HTTPError(response.status, message)
 
 class CPRoot(object):
 	def index(self):
@@ -461,7 +471,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 			self.stderr_path = os.path.devnull
 		else:
 			self.stdin_path = '/dev/stdin'
-			self.stdout_path = '/dev/stderr'
+			self.stdout_path = '/dev/stdout'
 			self.stderr_path = '/dev/stderr'
 		self.pidfile_path = '/var/run/umc-web-server.pid'
 		self.pidfile_timeout = 10
@@ -474,21 +484,21 @@ class UMC_HTTP_Daemon(DaemonRunner):
 	def _restart( self ):
 		"""Handler for the restart action. """
 		if self.pidfile.is_locked():
-			CORE.error( 'Stopping UMC web server ...' )
+			CORE.process( 'Stopping UMC web server ...' )
 			self._stop()
 
-		CORE.error( 'Starting UMC web server ...' )
+		CORE.process( 'Starting UMC web server ...' )
 		self._start()
 
 	def _crestart( self ):
 		"""Handler for the crestart action. """
 		if not self.pidfile.is_locked():
-			CORE.error( 'The UMC web server will not be restarted as it is not running currently' )
+			CORE.process( 'The UMC web server will not be restarted as it is not running currently' )
 			return
 
-		CORE.error( 'Stopping UMC web server ...' )
+		CORE.process( 'Stopping UMC web server ...' )
 		self._stop()
-		CORE.error( 'Starting UMC web server ...' )
+		CORE.process( 'Starting UMC web server ...' )
 		self._start()
 
 	DaemonRunner.action_funcs[ 'restart' ] = _restart
@@ -520,6 +530,6 @@ if __name__ == '__main__':
 	try:
 		http_daemon.do_action()
 	except DaemonRunnerStopFailureError, e:
-		CORE.error( 'Failed to shutdown server gracefully (may be its already dead): %s' % str( e ) )
+		CORE.process( 'Failed to shutdown server gracefully (may be its already dead): %s' % str( e ) )
 	except DaemonRunnerStartFailureError, e:
-		CORE.error( 'Failed to start server: %s' % str( e ) )
+		CORE.process( 'Failed to start server: %s' % str( e ) )

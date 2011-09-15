@@ -473,8 +473,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 			msg = this.footerFormatter(nItems, nItemsTotal);
 		}
 		else {
-			var msg = this._('%d objects of %d selected', nItems, nItemsTotal);
-			if (0 == nItemsTotal) {
+			msg = this._('%d objects of %d selected', nItems, nItemsTotal);
+			if (0 === nItemsTotal) {
 				msg = this._('No objects could be found');
 			}
 			else if (1 == nItems) {

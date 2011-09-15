@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-15 09:52+0200\n"
+"POT-Creation-Date: 2011-09-15 13:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgstr "%d Objekte von %d ausgewählt"
 msgid "1 object of %d selected"
 msgstr "1 Objekt von %d ausgewählt"
 
-#: umc/tools.js:197
+#: umc/tools.js:199
 #, python-format
 msgid "<br>Server error message: <i>%s</i>"
 msgstr "<br>Fehlernachricht des Servers: <i>%s</i>"
@@ -48,18 +48,18 @@ msgstr "Hinzufügen"
 msgid "Add objects"
 msgstr "Objekte hinzufügen"
 
-#: umc/tools.js:247
+#: umc/tools.js:249
 msgid "An assert statement failed"
 msgstr "Ein Assert-Anweisung schlug fehl"
 
-#: umc/tools.js:206
+#: umc/tools.js:208
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
 "Ein Fehler trat während des Verbindungsaufbaus zum Server auf, bitte "
 "versuchen Sie es später noch einmal."
 
-#: umc/tools.js:202
+#: umc/tools.js:204
 #, python-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
@@ -232,11 +232,11 @@ msgstr "Passwort"
 msgid "Remove"
 msgstr "Entfernen"
 
-#: umc/widgets/SearchForm.js:25 umc/widgets/LoginDialog.js:78
+#: umc/widgets/SearchForm.js:23 umc/widgets/LoginDialog.js:78
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: umc/widgets/SearchForm.js:28
+#: umc/widgets/SearchForm.js:26
 msgid "Search"
 msgstr "Suchen"
 

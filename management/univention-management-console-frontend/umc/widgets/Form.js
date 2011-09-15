@@ -106,7 +106,7 @@ dojo.declare("umc.widgets.Form", [
 				label: 'submit',
 				name: 'submit',
 				style: 'height: 0; overflow: hidden; margin: 0; padding: 0;' // using display=none will prevent button from being called
-			})
+			});
 		}
 
 		// initiate _dependencyMap

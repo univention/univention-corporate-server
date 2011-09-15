@@ -1,3 +1,14 @@
+univention-management-console-frontend (1.0.46-1) unstable; urgency=low
+
+  * fixed jslint warnings
+  * fixed error handling for tracebacks in web server and umc.tools
+  * changed error logging in web server from CORE.error to CORE.process;
+    since CORE.error writes as well to /var/log/syslog, this seems to have
+    caused problems with cherrypy
+  (Bug #22634)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 15 Sep 2011 14:52:05 +0200
+
 univention-management-console-frontend (1.0.45-1) unstable; urgency=low
 
   * Form: added support for onSubmit event event when no 'submit' button
