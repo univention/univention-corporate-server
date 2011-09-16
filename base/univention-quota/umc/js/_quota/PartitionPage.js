@@ -89,8 +89,9 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 			region: 'top',
 			widgets: widgets,
 			layout: [['filter']],
-			onSearch: dojo.hitch(this, function() {
-				this._grid.filter();
+			onSearch: dojo.hitch(this, function(data) {
+				data.partitionDevice = this.partitionDevice;
+				this._grid.filter(data);
 			})
 		});
 
@@ -98,6 +99,13 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		// Grid
 		//
 		var actions = [{
+			name: 'add',
+			label: this._('Add'),
+			iconClass: 'dijitIconNewTask',
+			isContextAction: false,
+			isStandardAction: true,
+			isMultiAction: false
+		}, {
 			name: 'configure',
 			label: this._('Configure'),
 			iconClass: 'dijitIconEdit',

@@ -33,6 +33,7 @@
 
 # external
 import notifier
+from fnmatch import fnmatch
 
 # univention
 import univention.management.console as umc
@@ -88,8 +89,13 @@ class Commands(object):
 		MODULE.warn(str(quotas[0]['user']))
 		MODULE.warn(str(quotas))
 
+		erg = []
+		for listEntry in quotas:
+			if fnmatch(listEntry['user'], request.options['filter']):
+				erg.append(listEntry)
+
 		request.status = SUCCESS
-		self.finished(id, quotas)
+		self.finished(id, erg)
 		#self.finished(id, (part, quotas))
 
 	def quota_partition_activate(self, request):

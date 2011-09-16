@@ -111,7 +111,7 @@ dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._partitionPage = new umc.modules._quota.PartitionPage({
 			partitionDevice: id,
 			moduleStore: this.getModuleStore('id', this.moduleID + '/partitions'),
-			headerText: this._('Partition: '),
+			headerText: this._('Partition: %s', id),
 			helpText: this._('Set, unset and modify filesystem quota')
 		});
 		this.addChild(this._partitionPage);
