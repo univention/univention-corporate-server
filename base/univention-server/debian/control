@@ -82,7 +82,7 @@ Depends: univention-config-registry,
  univention-firewall,
  univention-grub,
  univention-archive-key,
- univention-ifplugd | univention-network-manager
+ univention-ifplugd | univention-network-manager,
  univention-management-console-module-udm,
  univention-management-console
 Conflicts: exim
