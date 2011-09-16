@@ -30,7 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
 
 wait_for_dns(){
 eval "$(univention-config-registry shell)"
@@ -39,59 +41,44 @@ if [ "$server_role" != "domaincontroller_master" ]
     continue=1; while [ $continue = "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
 fi
 }
-
-touch /usr/lib/univention-install/.index.txt
-
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
-fi
-
-test -n "`grep "univention-bind v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
-
 eval "$(univention-config-registry shell)"
 
 if test -z "$ldap_server_ip" -a -z "$ldap_server_name"; then
 	exit 1
 fi
 
-wait_for_dns
-#search for existing zone
+if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
+	wait_for_dns
+	#search for existing zone
 
-zone="$(univention-directory-manager dns/forward_zone list "$@" --filter zone=$domainname | grep ^DN:)"
+	zone="$(univention-directory-manager dns/forward_zone list "$@" --filter zone=$domainname | grep ^DN:)"
 
-if [ -z "$zone" ]; then
-	/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists $domainname add zone root@$domainname. 1 28800 7200 604800 10800 $hostname.$domainname.
+	if [ -z "$zone" ]; then
+		/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists $domainname add zone root@$domainname. 1 28800 7200 604800 10800 $hostname.$domainname.
+		if [ $? != 0 ]; then exit 1; fi
+	fi
+
+
+	wait_for_dns
+	/usr/share/univention-admin-tools/univention-dnsedit "$@" $domainname add a $hostname $interfaces_eth0_address
 	if [ $? != 0 ]; then exit 1; fi
+
+	reversezone=`univention-ipcalc --netmask $interfaces_eth0_netmask --ip $interfaces_eth0_address --output reverse --calcdns`
+	if [ -z "$reversezone" ]; then exit 1; fi
+	ptr=`univention-ipcalc --netmask $interfaces_eth0_netmask --ip $interfaces_eth0_address --output pointer --calcdns`
+	if [ -z "$ptr" ]; then exit 1; fi
+
+	/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists --reverse $reversezone add zone root@$domainname. 1 28800 7200 604800 10800 $hostname.$domainname.
+	if [ $? != 0 ]; then exit 1; fi
+	/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists --reverse $reversezone add ptr $ptr $hostname.$domainname.
+	if [ $? != 0 ]; then exit 1; fi
+
+
+	univention-config-registry set dns/master/address=127.0.0.1 dns/master/port?7777
 fi
-
-
-wait_for_dns
-/usr/share/univention-admin-tools/univention-dnsedit "$@" $domainname add a $hostname $interfaces_eth0_address
-if [ $? != 0 ]; then exit 1; fi
-
-reversezone=`univention-ipcalc --netmask $interfaces_eth0_netmask --ip $interfaces_eth0_address --output reverse --calcdns`
-if [ -z "$reversezone" ]; then exit 1; fi
-ptr=`univention-ipcalc --netmask $interfaces_eth0_netmask --ip $interfaces_eth0_address --output pointer --calcdns`
-if [ -z "$ptr" ]; then exit 1; fi
-
-/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists --reverse $reversezone add zone root@$domainname. 1 28800 7200 604800 10800 $hostname.$domainname.
-if [ $? != 0 ]; then exit 1; fi
-/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists --reverse $reversezone add ptr $ptr $hostname.$domainname.
-if [ $? != 0 ]; then exit 1; fi
-
-
-univention-config-registry set dns/master/address=127.0.0.1 dns/master/port?7777
-
-update-rc.d -f bind9 remove >/dev/null 2>&1
-update-rc.d -f bind remove >/dev/null 2>&1
-killall named >/dev/null 2>&1
-
 
 ln -s /etc/runit/univention-bind /etc/runit/univention/univention-bind >/dev/null 2>&1
 
-sleep 10
-
-test -n "`grep "univention-bind v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-bind v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+joinscript_save_current_version
 
 exit 0

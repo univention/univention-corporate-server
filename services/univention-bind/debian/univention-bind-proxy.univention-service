@@ -1,6 +1,0 @@
-[univention-bind-proxy]
-description[de]=DNS-Proxy-Server
-description[en]=DNS Proxy Server
-icon=service/bind-proxy
-programs=/usr/sbin/named -c /etc/bind/named.conf.proxy
-start_type=bind/autostart

@@ -30,40 +30,38 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/all.sh
+
 #DEBHELPER#
 
 chmod g+w /etc/bind
 chmod g+w /etc/bind/*
 
-univention-config-registry set 'bind/autostart?yes'
+univention-config-registry set 'bind/autostart?yes' \
+								'nameserver/external?false'
 
-if [ "$1" = "configure" -a -n "$2" ]; then
-	/etc/init.d/univention-bind crestart
-else
-	if [ "$1" = "configure" ]
-		then
-		echo "wait for runsv to sync..."
-		count=0
-		until runsvstat /etc/runit/univention-bind > /dev/null 2>&1 || test $count -gt 10
-		  do
-		  sleep 1
-		  count=$((count+1))
-		done
-		# runsv has 10 seconds to sync, if it hasn't there will be a warning
-		/etc/init.d/univention-bind start
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10; then
+	# Update to UCS 3.0
+	univention-config-registry set dns/backend=ldap
+	echo "# add local zones here" >> /etc/bind/local.conf.samba4
+	update-rc.d -f univention-bind-proxy disable
+	update-rc.d -f univention-bind disable
+	update-rc.d bind9 defaults 15 85
+fi
+
+if [ "$1" = "configure" ]; then
+	if [ -n "$2" ]; then
+		/etc/init.d/bind9 crestart
+	else
+		echo "# add local zones here" >> /etc/bind/local.conf
+		echo "# add local zones here" >> /etc/bind/local.conf.proxy
+		echo "# add local zones here" >> /etc/bind/local.conf.samba4
+		/etc/init.d/bind9 start
 	fi
+	/etc/init.d/univention-directory-listener crestart
 fi
 
-if [ "$1" = "configure" -a -z "$2" ]; then
-	echo "# add local zones here" >> /etc/bind/local.conf
-fi
-
-if [ "$1" = "configure" ]
-	then
-	if test -f /etc/init.d/univention-directory-listener
-		then
-		/etc/init.d/univention-directory-listener crestart
-		fi
-fi
+call_joinscript 05univention-bind.inst
+call_joinscript 90univention-bind.inst
 
 exit 0

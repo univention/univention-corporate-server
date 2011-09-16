@@ -1,2 +1,3 @@
 90univention-bind-proxy.inst usr/lib/univention-install
 conffiles/etc/runit/univention-bind-proxy/run etc/runit/univention-bind-proxy
+conffiles/etc/runit/univention-bind-samba4/run etc/runit/univention-bind-samba4

@@ -1,0 +1,20 @@
+@%@UCRWARNING=# @%@
+
+options {
+        tkey-gssapi-keytab "/var/lib/samba/private/dns.keytab";
+@!@
+dns_allow_query = configRegistry.get('dns/allow/query')
+dns_allow_query_cache = configRegistry.get('dns/allow/query/cache')
+if dns_allow_query:
+	print '\tallow-query { %s; };' % dns_allow_query
+if dns_allow_query_cache:
+	print '\tallow-recursion { %s; };' % dns_allow_query_cache
+	print '\tallow-query-cache { %s; };' % dns_allow_query_cache
+@!@};
+
+dlz "deadlock.local.zone" {
+        database "dlopen /usr/lib/samba/libdlz_bind9.so";
+};
+
+include "/etc/bind/local.conf.samba4";
+

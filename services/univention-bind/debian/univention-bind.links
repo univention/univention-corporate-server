@@ -1,1 +1,6 @@
 /usr/share/univention-runit/sleep-dynamic etc/runit/univention-bind/finish
+/usr/share/univention-runit/sleep-dynamic etc/runit/univention-bind-proxy/finish
+/usr/share/univention-runit/sleep-dynamic etc/runit/univention-bind-samba4/finish
+/etc/init.d/bind9 etc/init.d/univention-bind
+/etc/init.d/bind9 etc/init.d/univention-bind-proxy
+/etc/init.d/bind9 etc/init.d/univention-bind

@@ -1,4 +1,5 @@
 #!/bin/sh
+@%@UCRWARNING=# @%@
 #
 # Copyright 2001-2011 Univention GmbH
 #
@@ -27,11 +28,83 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 #
-@%@UCRWARNING=# @%@
 
-echo "The init script /etc/init.d/bind9 was disabled."
-echo "Please start and stop the domain name server via"
-echo "   /etc/init.d/univention-bind-proxy"
+eval "$(univention-config-registry shell dns/backend)"
 
-exit 0
+. /lib/lsb/init-functions
 
+sv_action ()
+{
+	if [ -e /etc/runit/univention/$2 ]; then
+		 sv $1 $2 >>/var/log/daemon.log
+	fi
+}
+
+
+case "$1" in
+	start)
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			. "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart univention-bind-proxy bind/autostart
+		fi
+		log_action_msg "Starting bind9 daemon:"
+		if [ "$dns_backend" = "samba4" ]; then
+			sv_action up univention-bind-samba4
+		elif [ "$dns_backend" = "ldap" ]; then
+			sv_action up univention-bind
+			sv_action up univention-bind-proxy
+		fi
+		log_action_end_msg 0
+		;;
+	stop)
+		log_action_msg "Stopping bind9 daemon: "
+		sv_action down univention-bind-proxy
+		sv_action down univention-bind
+		sv_action down univention-bind-samba4
+		log_action_end_msg 0
+		;;
+	restart|force-reload)
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			. "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart univention-bind-proxy bind/autostart
+		fi
+
+		log_action_msg "Restarting bind9 daemon: "
+		if [ "$dns_backend" = "samba4" ]; then
+			sv_action stop univention-bind
+			sv_action stop univention-bind-proxy
+			sv_action restart univention-bind-samba4
+		elif [ "$dns_backend" = "ldap" ]; then
+			sv_action stop univention-bind-samba4
+			sv_action restart univention-bind
+			sv_action restart univention-bind-proxy
+		fi
+		log_action_end_msg 0
+		;;
+	crestart)
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			. "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart univention-bind-proxy bind/autostart
+		fi
+		if [ "$dns_backend" = "samba4" ]; then
+			if sv status univention-bind-samba4 | grep ^run: > /dev/null 2>&1; then
+				$0 restart
+			fi
+		elif [ "$dns_backend" = "ldap" ]; then
+			if sv status univention-bind | grep ^run: > /dev/null 2>&1; then
+				$0 restart
+			fi
+
+			if sv status univention-bind-proxy | grep ^run: > /dev/null 2>&1; then
+				$0 restart
+			fi
+		fi
+		;;
+	*)
+		log_action_msg "Usage: /etc/init.d/bind9 {start|stop|restart|crestart|force-reload}"
+		exit 1
+		;;
+esac

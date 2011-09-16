@@ -3,3 +3,26 @@ File: etc/bind/named.conf
 
 Type: file
 File: etc/runit/univention-bind/run
+
+Type: file
+File: etc/runit/univention-bind-proxy/run
+
+Type: file
+File: etc/runit/univention-bind-samba4/run
+
+Type: file
+File: etc/bind/named.conf.proxy
+Variables: dns/forwarder1
+Variables: dns/forwarder2
+Variables: dns/forwarder3
+Variables: dns/allow/query
+Variables: dns/allow/query/cache
+
+Type: file
+File: etc/bind/named.conf.samba4
+Variables: dns/allow/query
+Variables: dns/allow/query/cache
+
+Type: file
+Mode: 755
+File: etc/init.d/bind9

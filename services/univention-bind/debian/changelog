@@ -1,3 +1,15 @@
+univention-bind (6.0.10-1) unstable; urgency=low
+
+  * Integrate Samba 4 support. Now the bind backend can be configured
+    via dns/backend, by default it will be set to ldap. Once samba4 will
+    be installed the backend will be set to samba4 (Bug #23168, Bug
+    #23358)
+  * Cleanup packages and integrate univention-bind-proxy into
+    univention-bind. The daemons can now be started with
+    /etc/init.d/bind9
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Sep 2011 18:03:06 +0200
+
 univention-bind (6.0.9-1) unstable; urgency=low
 
   * At the moment the bind and bind-proxy version must be equal

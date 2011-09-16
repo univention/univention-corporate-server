@@ -2,5 +2,5 @@
 description[de]=DNS-Server
 description[en]=DNS Server
 icon=service/bind
-programs=/usr/sbin/named -c /etc/bind/named.conf
+programs=/usr/sbin/named -c /etc/bind/
 start_type=bind/autostart

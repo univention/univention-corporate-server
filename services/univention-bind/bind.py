@@ -130,7 +130,13 @@ def clean():
 		listener.unsetuid()
 
 def postrun():
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'DNS: Updating univention.conf')
+	baseConfig = univention_baseconfig.baseConfig()
+	baseConfig.load()
+
+	if baseConfig.get('dns/backend') in ['samba4', 'none']:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'bind: Skip postrun')
+		return
+
 	listener.setuid(0)
 	try:
 		fp = open(named_conf_file, 'w')

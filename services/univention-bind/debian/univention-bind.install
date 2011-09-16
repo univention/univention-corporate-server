@@ -1,3 +1,5 @@
 bind.py usr/lib/univention-directory-listener/system
 05univention-bind.inst usr/lib/univention-install
 etc/bind/db.root.fake etc/bind
+90univention-bind.inst usr/lib/univention-install
+conffiles/etc/runit/univention-bind-proxy/run etc/runit/univention-bind-proxy

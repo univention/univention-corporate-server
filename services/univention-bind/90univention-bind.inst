@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# Univention Bind Proxy
+# Univention Bind
 #  join script
 #
 # Copyright 2001-2011 Univention GmbH
@@ -30,18 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
-
-touch /usr/lib/univention-install/.index.txt
-
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
-fi
-
-test -n "`grep "univention-bind v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || exit 1
-
-test -n "`grep "univention-bind-proxy v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+VERSION=1
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
 
 . /usr/share/univention-lib/all.sh
 
@@ -50,6 +41,8 @@ eval "$(univention-config-registry shell)"
 if test -z "$ldap_server_ip" -a -z "$ldap_server_name"; then
 	exit 1
 fi
+
+univention-config-registry bind9/backend?ldap
 
 if [ -z "$nameserver_external" -o "$nameserver_external" = false -o "$nameserver_external" = no ]; then
 	if [ "$nameserver1" = "$dns_forwarder1" ]; then
@@ -80,13 +73,13 @@ if [ -z "$nameserver_external" -o "$nameserver_external" = false -o "$nameserver
 	fi
 fi
 
-update-rc.d -f bind9 remove >/dev/null 2>&1
-update-rc.d -f bind remove >/dev/null 2>&1
-
 if [ ! -e /etc/runit/univention/univention-bind-proxy ]; then
 	ln -s /etc/runit/univention-bind-proxy /etc/runit/univention/univention-bind-proxy
 fi
 
+if [ ! -e /etc/runit/univention/univention-bind-samba4 ]; then
+	ln -s /etc/runit/univention-bind-samba4 /etc/runit/univention/univention-bind-samba4
+fi
 old=`univention-directory-manager policies/dhcp_dns list "$@" --filter cn=default-settings | grep domain_name_servers | sed -e 's|.*domain_name_servers: ||'`
 if [ -z "$old" -o "$old" = "None" ]; then
 		univention-directory-manager policies/dhcp_dns modify "$@" --ignore_exists --dn "cn=default-settings,cn=dns,cn=dhcp,cn=policies,$ldap_base" --set name=default-settings --set domain_name=$domainname --set domain_name_servers=$interfaces_eth0_address
@@ -94,6 +87,6 @@ fi
 
 ucs_addServiceToLocalhost 'DNS' "$@"
 
-test -n "`grep "univention-bind-proxy v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-bind-proxy v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+joinscript_save_current_version
 
 exit 0
