@@ -1,3 +1,9 @@
+univention-installer (7.0.43-1) unstable; urgency=low
+
+  * Remove univention-bind-proxy from packages_list.py (Bug #23358)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Sep 2011 19:28:48 +0200
+
 univention-installer (7.0.42-1) unstable; urgency=low
 
   * Reduce desktop packages (Bug #23585)

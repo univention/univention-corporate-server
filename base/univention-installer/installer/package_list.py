@@ -114,11 +114,11 @@ PackageList=[
 			[
 				{
 					'Name': _('DNS'),
-					'Packages': ['univention-bind', 'univention-bind-proxy', 'bind9'],
+					'Packages': ['univention-bind'],
 					'Edition': [ 'ucs' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
-					'Description': _("DNS Server and Proxy"),
+					'Description': _("DNS Server"),
 				},
 				{
 					'Name': _('DHCP'),
