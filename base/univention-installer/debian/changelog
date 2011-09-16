@@ -1,3 +1,9 @@
+univention-installer (7.0.42-1) unstable; urgency=low
+
+  * Reduce desktop packages (Bug #23585)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Sep 2011 19:20:19 +0200
+
 univention-installer (7.0.41-1) unstable; urgency=low
 
   * removed vga kernel options, use gfxpaxload=keep instead (Bug #22707) 
