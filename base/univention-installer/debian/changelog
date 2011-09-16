@@ -1,3 +1,9 @@
+univention-installer (7.0.44-1) unstable; urgency=low
+
+  * Reduce software selection for the UCS installer (Bug #23594)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Sep 2011 20:33:05 +0200
+
 univention-installer (7.0.43-1) unstable; urgency=low
 
   * Remove univention-bind-proxy from packages_list.py (Bug #23358)
