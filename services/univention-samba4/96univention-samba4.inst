@@ -211,7 +211,7 @@ fi
 
 if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	ucr set dns/backend=samba4
-	if [ -x /etc/init.d/bind9 ], then
+	if [ -x /etc/init.d/bind9 ]; then
 		/etc/init.d/bind9 restart
 	fi
 fi

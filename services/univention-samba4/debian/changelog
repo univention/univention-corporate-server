@@ -1,3 +1,9 @@
+univention-samba4 (1.0.35-1) experimental; urgency=low
+
+  * Fixed typo in 96univention-samba4.inst (Bug #23168)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Sep 2011 20:14:51 +0200
+
 univention-samba4 (1.0.34-1) experimental; urgency=low
 
   * Use samba4 backend for bind (Bug #23168)
