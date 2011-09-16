@@ -1,3 +1,9 @@
+univention-grub (5.0.5-1) unstable; urgency=low
+
+  * added grub background image uniboot.png (Bug #23405)
+
+ -- Felix Botner <botner@univention.de>  Fri, 16 Sep 2011 11:07:26 +0200
+
 univention-grub (5.0.4-1) unstable; urgency=low
 
   * added grub/color/normal, grub/color/highlight, grub/menu/color/normal
