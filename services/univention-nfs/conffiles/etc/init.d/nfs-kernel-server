@@ -54,12 +54,6 @@ RPCMOUNTDOPTS=
 # If we should be started by heartbeat exit here
 eval "$(/usr/sbin/univention-config-registry shell)"
 
-if [ $nfsserver_ha_master ]
-	then
-	echo "nfs-server is managed by heartbeat"
-	exit 0
-fi
-
 # See how we were called.
 case "$1" in
   start)

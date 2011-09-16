@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 override_dh_auto_clean:
-	rm -f debian/univention-nfs-server-ha.conffiles debian/univention-nfs-server.conffiles
+	rm -f debian/univention-nfs-server.conffiles
 	dh_auto_clean
 
 override_dh_auto_install:
