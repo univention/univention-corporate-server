@@ -57,7 +57,9 @@ dojo.declare("umc.widgets.WidgetGroup", umc.widgets.ContainerWidget, {
 
 	_setValueAttr: function( value ) {
 		umc.tools.forIn( this._widgets, function( iname, iwidget ) {
-			iwidget.set( 'value', value[ iname ] );
+			if (iname in value) {
+				iwidget.set( 'value', value[ iname ] );
+			}
 		}, this );
 	},
 

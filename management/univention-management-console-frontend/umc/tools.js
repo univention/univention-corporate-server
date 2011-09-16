@@ -233,6 +233,39 @@ dojo.mixin(umc.tools, {
 		}
 	},
 
+	mapWalk: function(/*Array*/ array, /*Function*/ callback, /*Object?*/ scope) {
+		// summary:
+		//		Equivalent to dojo.map(), however this function is intended to be used
+		//		with multi-dimensional arrays.
+
+		// make sure we have an array
+		if (!dojo.isArray(array)) {
+			return callback.call(scope, array);
+		}
+
+		// clone array and walk through it
+		scope = scope || dojo.global;
+		var res = dojo.clone(array)
+		var stack = [ res ];
+		while (stack.length) {
+			// new array, go through its elements
+			var iarray = stack.pop();
+			dojo.forEach(iarray, function(iobj, i) {
+				if (dojo.isArray(iobj)) {
+					// put arrays on the stack
+					stack.push(iobj);
+				}
+				else {
+					// map object
+					iarray[i] = callback.call(scope, iobj);
+				}
+			});
+		}
+
+		// return the final array
+		return res;
+	},
+
 	assert: function(/* boolean */ booleanValue, /* string? */ message){
 		// summary:
 		// 		Throws an exception if the assertion fails.

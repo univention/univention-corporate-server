@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.51-1) unstable; urgency=low
+
+  * added umc.tools.mapWalk
+  * WidgetGroup: fixed _setValueAttr for emtpy dicts
+  (Bug #23632)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 16 Sep 2011 14:41:04 +0200
+
 univention-management-console-frontend (1.0.50-1) unstable; urgency=low
 
   * LabelPane: fixed watch handling for 'label' changes (Bug #22881)
