@@ -40,6 +40,7 @@
 
 #include "internal.h"
 
+/** Deep-free univention_policy_result. */
 static void univention_policy_result_free(struct univention_policy_result_s *o) {
 	if (o) {
 		FREE(o->policy_dn);
@@ -50,6 +51,7 @@ static void univention_policy_result_free(struct univention_policy_result_s *o) 
 	}
 }
 
+/** Deep-free univention_policy_attribute_list. */
 static void univention_policy_attribute_list_free(struct univention_policy_attribute_list_s *o) {
 	if (o) {
 		if (o->values) {
@@ -60,6 +62,7 @@ static void univention_policy_attribute_list_free(struct univention_policy_attri
 	}
 }
 
+/** Deep-free univention_policy_list. */
 static void univention_policy_list_free(struct univention_policy_list_s *o) {
 	if (o) {
 		struct univention_policy_attribute_list_s *cur, *next;
@@ -69,6 +72,15 @@ static void univention_policy_list_free(struct univention_policy_list_s *o) {
 			univention_policy_attribute_list_free(cur);
 		}
 		FREE(o);
+	}
+}
+
+/** Debug print dn. **/
+static void dprint_dn(LDAP *ld, LDAPMessage *entry) {
+	char *l_dn;
+	if ((l_dn = ldap_get_dn(ld, entry)) != NULL) {
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ALL, "DN: %s", l_dn);
+		ldap_memfree(l_dn);
 	}
 }
 
@@ -196,157 +208,160 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 {
 	int		rc;
 	LDAPMessage	*res;
-	struct  timeval	timeout;
-	LDAPMessage	*e;
-	BerElement	*ber;
-	char		*a;
-	struct berval		**vals;
-	int		entry_count;
+	struct  timeval	timeout = {.tv_sec=10, .tv_usec=0};
 
 	univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "considering policy: %s", dn);
 
-	timeout.tv_sec = 10;
-	timeout.tv_usec = 0;
+	rc = ldap_search_ext_s(ld, dn, LDAP_SCOPE_BASE, "(objectClass=univentionPolicy)", NULL, 0, NULL, NULL, &timeout, 0, &res);
+	if (rc == LDAP_NO_SUCH_OBJECT) {
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Not found");
+	} else if (rc != LDAP_SUCCESS) {
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "ldap_search_ext_s returned ERROR");
+	} else {
+		LDAPMessage	*entry;
 
-	if (( rc = ldap_search_ext_s( ld, dn, LDAP_SCOPE_BASE, "(objectClass=univentionPolicy)", NULL, 0, NULL, NULL, &timeout, 0, &res )) != LDAP_SUCCESS ) {
-		if ( rc == LDAP_NO_SUCH_OBJECT ) {
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Not found");
-		} else {
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "ldap_search_ext_s returned ERROR");
-		}
-	}
-	if ((entry_count = ldap_count_entries( ld, res )) > 0) {
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "count = %d", entry_count);
-		/* iterate over all policies */
-		for ( e = ldap_first_entry( ld, res ); e != NULL; e = ldap_next_entry( ld, e ) ) {
-			char *l_dn;
+		/* BASE search returns at most one entry. */
+		for (entry = ldap_first_entry(ld, res);
+			 entry != NULL;
+			 entry = ldap_next_entry(ld, entry)) {
+
 			struct univention_policy_list_s *policy = NULL;
 			char **fixed_attributes = NULL;
 			char **empty_attributes = NULL;
+			struct berval **vals;
 			bool apply = true;
 			int i;
 
-			if( ( l_dn = ldap_get_dn(ld, e) ) != NULL ) {
-				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ALL, "DN: %s", l_dn);
-				ldap_memfree( l_dn );
-			}
+			dprint_dn(ld, entry);
 
 			/* iterate over attributes of policy and parse general policy attributes. */
-			for (a = ldap_first_attribute(ld, e, &ber); a != NULL; a = ldap_next_attribute(ld, e, ber)) {
-				if ( ( vals = ldap_get_values_len( ld, e, a ) ) != NULL ) {
-					if (strcmp(a, "objectClass") == 0) {
-						for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++)
-							if (strcmp(vals[i]->bv_val, "top") != 0 && strcmp(vals[i]->bv_val, "univentionPolicyReference") != 0) {
-								policy = univention_policy_list_get(&handle->policies, vals[i]->bv_val);
-								univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "current policy type is %s", policy->name);
-							}
-					} else if (strcmp(a, "requiredObjectClasses") == 0) {
-						for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
-							if (!in_string_array(object_classes, vals[i]->bv_val)) {
-								univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "objectclass %s is required", vals[i]->bv_val);
-								apply = false;
-								break;
-							}
-						}
-					} else if (strcmp(a, "prohibitedObjectClasses") == 0) {
-						for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
-							if (in_string_array(object_classes, vals[i]->bv_val)) {
-								univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "objectclass %s is prohibited", vals[i]->bv_val);
-								apply = false;
-								break;
-							}
-						}
-					} else if (strcmp(a, "fixedAttributes") == 0 && fixed_attributes == NULL) {
-						int fa_count = ldap_count_values_len(vals);
-						if ((fixed_attributes = calloc(fa_count + 1, sizeof(char*))) == NULL)
-							perror("calloc");
-						for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++)
-							fixed_attributes[i] = strdup(vals[i]->bv_val);
-						fixed_attributes[i] = NULL;
-					} else if (strcmp(a, "emptyAttributes") == 0 && empty_attributes == NULL) {
-						int ea_count = ldap_count_values_len(vals);
-						if ((empty_attributes = calloc(ea_count + 1, sizeof(char*))) == NULL)
-							perror("calloc");
-						for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++)
-							empty_attributes[i] = strdup(vals[i]->bv_val);
-						empty_attributes[i] = NULL;
-					}
-					ldap_value_free_len( vals );
+			if ((vals = ldap_get_values_len(ld, entry, "objectClass")) != NULL) {
+				for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
+					if (!strcmp(vals[i]->bv_val, "top")) continue;
+					if (!strcmp(vals[i]->bv_val, "univentionPolicyReference")) continue;
+					if (!strcmp(vals[i]->bv_val, "univentionObject")) continue;
+
+					policy = univention_policy_list_get(&handle->policies, vals[i]->bv_val);
+					univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "current policy type is %s", policy->name);
 				}
-				ldap_memfree( a );
+				ldap_value_free_len(vals);
 			}
-			if ( ber != NULL ) {
-				ber_free( ber, 0 );
+			if ((vals = ldap_get_values_len(ld, entry, "requiredObjectClasses")) != NULL) {
+				for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
+					if (!in_string_array(object_classes, vals[i]->bv_val)) {
+						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "objectclass %s is required", vals[i]->bv_val);
+						apply = false;
+						break;
+					}
+				}
+				ldap_value_free_len(vals);
+			}
+			if (apply && (vals = ldap_get_values_len(ld, entry, "prohibitedObjectClasses")) != NULL) {
+				for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
+					if (in_string_array(object_classes, vals[i]->bv_val)) {
+						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "objectclass %s is prohibited", vals[i]->bv_val);
+						apply = false;
+						break;
+					}
+				}
+				ldap_value_free_len(vals);
+			}
+			if (fixed_attributes == NULL && (vals = ldap_get_values_len(ld, entry, "fixedAttributes")) != NULL) {
+				i = ldap_count_values_len(vals);
+				if ((fixed_attributes = calloc(i + 1, sizeof(char *))) == NULL)
+					perror("calloc");
+				for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++)
+					fixed_attributes[i] = strdup(vals[i]->bv_val);
+				fixed_attributes[i] = NULL;
+				ldap_value_free_len(vals);
+			}
+			if (empty_attributes == NULL && (vals = ldap_get_values_len(ld, entry, "emptyAttributes")) != NULL) {
+				i = ldap_count_values_len(vals);
+				if ((empty_attributes = calloc(i + 1, sizeof(char *))) == NULL)
+					perror("calloc");
+				for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++)
+					empty_attributes[i] = strdup(vals[i]->bv_val);
+				empty_attributes[i] = NULL;
+				ldap_value_free_len(vals);
 			}
 
 			if (policy != NULL && apply) {
+				char *attr;
+				BerElement *ber;
+
 				univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "applying policy: %s", dn);
 
 				/* clear attributes defined in emptyAttributes; empty value entries
 				 * will be removed by _cleanup; they are necessary for now to mark that
 				 * attribute has been set (even though empty) */
 				for (i = 0; empty_attributes != NULL && empty_attributes[i] != NULL; i++) {
-					//univention_policy_attribute_list_remove(&policy->attributes, empty_attributes[i]);
-					struct univention_policy_attribute_list_s* attr;
+#if 0
+					univention_policy_attribute_list_remove(&policy->attributes, empty_attributes[i]);
+#endif
+					struct univention_policy_attribute_list_s* policy_attr;
 
-					a = empty_attributes[i];
-					univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "considering %s/%s", policy->name, a);
-					attr = univention_policy_attribute_list_get(&policy->attributes, a);
-					if (attr->values == NULL || in_string_array(fixed_attributes, a)) {
-						univention_policy_result_free(attr->values);
-						if ((attr->values = malloc(sizeof(univention_policy_result_t))) == NULL)
+					univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "considering %s/%s", policy->name, empty_attributes[i]);
+					policy_attr = univention_policy_attribute_list_get(&policy->attributes, empty_attributes[i]);
+					if (policy_attr->values == NULL || in_string_array(fixed_attributes, empty_attributes[i])) {
+						univention_policy_result_free(policy_attr->values);
+						if ((policy_attr->values = malloc(sizeof(univention_policy_result_t))) == NULL)
 							perror("malloc");
 
-						attr->values->policy_dn = strdup(dn);
-						attr->values->count = 0;
-						attr->values->values = calloc(attr->values->count + 1, sizeof(char*));
-						attr->values->values[0] = NULL;
+						policy_attr->values->policy_dn = strdup(dn);
+						policy_attr->values->count = 0;
+						policy_attr->values->values = calloc(policy_attr->values->count + 1, sizeof(char*));
+						policy_attr->values->values[0] = NULL;
 					} else {
 						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "not setting attribute");
 					}
 				}
 
 				/* iterate over attributes of policy and parse remaining attributes. */
-				for (a = ldap_first_attribute(ld, e, &ber); a != NULL; a = ldap_next_attribute(ld, e, ber)) {
-					if ( ( vals = ldap_get_values_len( ld, e, a ) ) != NULL ) {
-						if (strcmp(a, "objectClass") != 0 && strcmp(a, "requiredObjectClasses") != 0 &&
-								strcmp(a, "prohibitedObjectClasses") != 0 && strcmp(a, "fixedAttributes") != 0 &&
-								strcmp(a, "emptyAttributes") != 0 && strcmp(a, "cn") != 0 && strcmp(a, "univentionObjectType") != 0) {
-							struct univention_policy_attribute_list_s* attr;
-							univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "considering %s/%s", policy->name, a);
-							attr = univention_policy_attribute_list_get(&policy->attributes, a);
-							if (attr->values == NULL || in_string_array(fixed_attributes, a)) {
-								univention_policy_result_free(attr->values);
-								if ((attr->values = malloc(sizeof(univention_policy_result_t))) == NULL)
-									perror("malloc");
+				for (attr = ldap_first_attribute(ld, entry, &ber);
+					 attr != NULL;
+					 attr = ldap_next_attribute(ld, entry, ber)) {
 
-								univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "setting attribute");
-								attr->values->policy_dn = strdup(dn);
-								attr->values->count = ldap_count_values_len(vals);
-								attr->values->values = calloc(attr->values->count + 1, sizeof(char*));
-								for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
-									attr->values->values[i] = strdup(vals[i]->bv_val);
-								}
-								attr->values->values[i] = NULL;
-							} else {
-								univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "not setting attribute");
+					if (strcmp(attr, "cn") &&
+						strcmp(attr, "objectClass") &&
+						strcmp(attr, "fixedAttributes") &&
+						strcmp(attr, "emptyAttributes") &&
+						strcmp(attr, "requiredObjectClasses") &&
+						strcmp(attr, "prohibitedObjectClasses") &&
+						strcmp(attr, "univentionObjectType") &&
+						(vals = ldap_get_values_len(ld, entry, attr)) != NULL) {
+
+						struct univention_policy_attribute_list_s* policy_attr;
+
+						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "considering %s/%s", policy->name, attr);
+						policy_attr = univention_policy_attribute_list_get(&policy->attributes, attr);
+						if (policy_attr->values == NULL || in_string_array(fixed_attributes, attr)) {
+							univention_policy_result_free(policy_attr->values);
+							if ((policy_attr->values = malloc(sizeof(univention_policy_result_t))) == NULL)
+								perror("malloc");
+
+							univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "setting attribute");
+							policy_attr->values->policy_dn = strdup(dn);
+							policy_attr->values->count = ldap_count_values_len(vals);
+							policy_attr->values->values = calloc(policy_attr->values->count + 1, sizeof(char*));
+							for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
+								policy_attr->values->values[i] = strdup(vals[i]->bv_val);
 							}
+							policy_attr->values->values[i] = NULL;
+						} else {
+							univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "not setting attribute");
 						}
 						ldap_value_free_len( vals );
 					}
-					ldap_memfree( a );
+					ldap_memfree(attr);
 				}
-				if ( ber != NULL ) {
-					ber_free( ber, 0 );
+				if (ber != NULL) {
+					ber_free(ber, 0);
+					ber = NULL;
 				}
 			} /* apply */
 			FREE_ARRAY(fixed_attributes);
 			FREE_ARRAY(empty_attributes);
 		}
-		ldap_memfree(e);
-	}
-	else {
-		univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "No objectClass=univentionPolicyReference found");
 	}
 
 	ldap_msgfree( res );
@@ -362,111 +377,65 @@ univention_policy_handle_t* univention_policy_open(LDAP* ld, const char *base, c
 	int rc;
 	LDAPMessage *res;
 
-	struct  timeval	timeout;
-	LDAPMessage	*e;
-	BerElement	*ber;
-	char		*a;
+	struct timeval timeout = {.tv_sec=10, .tv_usec=0};
+	LDAPMessage	*entry;
 	struct berval		**vals;
 	int		i;
-	int		entry_count;
+	const char *filter = "(objectClass=*)";
 	char*		attrs[] = {"objectClass", "univentionPolicyReference", NULL};
 
 	univention_policy_handle_t*	handle;
 	char **object_classes = NULL;
-	int policy_count = 0;
-	char **policies = NULL;
 
 	univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "univention_policy_open with dn = %s", dn);
 	if ((handle = malloc(sizeof(univention_policy_handle_t))) == NULL)
 		return NULL;
 	handle->policies = NULL;
 
-	timeout.tv_sec = 10;
-	timeout.tv_usec = 0;
-
 	/* iterate over all parent tree nodes. */
 	for (pdn = dn; pdn != NULL; pdn = parent_dn(pdn)) {
-		const char *filter;
-
 		univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "processing dn %s", pdn);
 
-		if (pdn == dn)
-			filter = "(objectClass=*)";
-		else
-			filter = "(objectClass=univentionPolicyReference)";
+		rc = ldap_search_ext_s(ld, pdn, LDAP_SCOPE_BASE, filter, attrs, 0, NULL, NULL, &timeout, 0, &res);
+		if (rc == LDAP_NO_SUCH_OBJECT) {
+			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Not found");
+		} else if (rc != LDAP_SUCCESS) {
+			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "%s: %s", pdn, ldap_err2string(rc));
+			ldap_msgfree(res);
+			univention_policy_close(handle);
+			return NULL;
+		} else {
+			/* BASE search returns at most one entry. */
+			for (entry = ldap_first_entry(ld, res);
+				 entry != NULL;
+				 entry = ldap_next_entry(ld, entry)) {
 
-		if (( rc = ldap_search_ext_s( ld, pdn, LDAP_SCOPE_BASE, filter, attrs, 0, NULL, NULL, &timeout, 0, &res)) != LDAP_SUCCESS ) {
-			if ( rc == LDAP_NO_SUCH_OBJECT ) {
-				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Not found");
-			} else if ( rc != LDAP_SUCCESS ) {
-				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "%s: %s", pdn, ldap_err2string(rc));
-				ldap_msgfree(res);
-				univention_policy_close(handle);
-				return NULL;
-			}
-		}
-		if ( (entry_count = ldap_count_entries( ld, res )) > 0 ) {
-			/* iterate over all policy entries. */
-			for ( e = ldap_first_entry( ld, res ); e != NULL; e = ldap_next_entry( ld, e ) ) {
-				char *l_dn;
+				dprint_dn(ld, entry);
 
-				if( ( l_dn = ldap_get_dn(ld, e) ) != NULL ) {
-					univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ALL, "DN: %s", l_dn);
-					ldap_memfree( l_dn );
-				}
-
-				/* iterate over all attributes to find 'objectClass' and 'univentionPolicyReference'. */
-				for (a = ldap_first_attribute(ld, e, &ber); a != NULL; a = ldap_next_attribute(ld, e, ber)) {
-					if ( ( vals = ldap_get_values_len( ld, e, a ) ) != NULL ) {
-						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, " attibute: %s", a);
-						if (strcmp(a, "objectClass") == 0 && pdn == dn) {
-							int oc_count;
-							univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "get object classes for %s", pdn);
-							oc_count = ldap_count_values_len(vals);
-							if (object_classes != NULL) {
-								univention_debug(UV_DEBUG_POLICY, UV_DEBUG_ERROR, " object classes redefined: %p", object_classes);
-								FREE_ARRAY(object_classes);
-							}
-							if ((object_classes = calloc(oc_count + 1, sizeof(char*))) == NULL)
-								perror("calloc");
-							for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL) && i < oc_count; i++) {
-								univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "   object class: %s", vals[i]->bv_val);
-								object_classes[i] = strdup(vals[i]->bv_val);
-							}
-							object_classes[i] = NULL;
-						} else if (strcmp(a, "univentionPolicyReference") == 0 ) {
-							univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "found policies for %s", pdn);
-							policy_count = ldap_count_values_len(vals);
-							if (policies != NULL) {
-								univention_debug(UV_DEBUG_POLICY, UV_DEBUG_ERROR, " policies redefined: %p", policies);
-								FREE_ARRAY(policies);
-							}
-							if ((policies = calloc(policy_count + 1, sizeof(char*))) == NULL)
-								perror("calloc");
-							for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL && i < policy_count); i++) {
-								univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "   policy: %s", vals[i]->bv_val);
-								policies[i] = strdup(vals[i]->bv_val);
-							}
-							policies[i] = NULL;
-						}
-						ldap_value_free_len( vals );
+				/* only get all 'objectClass' attributes from dn. */
+				if (pdn == dn && (vals = ldap_get_values_len(ld, entry, "objectClass")) != NULL) {
+					univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "get object classes for %s", pdn);
+					i = ldap_count_values_len(vals);
+					if ((object_classes = calloc(i + 1, sizeof(char *))) == NULL)
+						perror("calloc");
+					for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
+						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "   object class: %s", vals[i]->bv_val);
+						object_classes[i] = strdup(vals[i]->bv_val);
 					}
-					ldap_memfree( a );
+					object_classes[i] = NULL;
+					ldap_value_free_len(vals);
 				}
-				univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "processing policies for %s", pdn);
-				if (policies != NULL) {
-					for (i = 0; policies[i] != NULL && i <= policy_count; i++) {
-						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "%s", policies[i]);
-						univention_policy_merge(ld, policies[i], handle, object_classes);
+
+				/* iterate over all 'univentionPolicyReference' attributes. */
+				if ((vals = ldap_get_values_len(ld, entry, "univentionPolicyReference")) != NULL) {
+					univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "found policies for %s", pdn);
+					for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
+						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "   policy: %s", vals[i]->bv_val);
+						univention_policy_merge(ld, vals[i]->bv_val, handle, object_classes);
 					}
-				}
-				FREE_ARRAY(object_classes);
-				FREE_ARRAY(policies);
-				if (ber != NULL) {
-					ber_free(ber, 0);
+					ldap_value_free_len(vals);
 				}
 			}
-			ldap_memfree(e);
 		}
 
 		ldap_msgfree( res );
@@ -474,7 +443,10 @@ univention_policy_handle_t* univention_policy_open(LDAP* ld, const char *base, c
 
 		if (strcmp(pdn, base) == 0)
 			break;
+
+		filter = "(objectClass=univentionPolicyReference)";
 	}
+	FREE_ARRAY(object_classes);
 
 	univention_policy_cleanup(handle);
 
