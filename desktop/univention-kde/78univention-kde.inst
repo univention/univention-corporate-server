@@ -41,8 +41,6 @@ eval "$(univention-config-registry shell)"
 
 univention-directory-manager settings/default modify "$@" --dn "cn=default,cn=univention,$ldap_base" \
 	--append defaultKdeProfiles="none" \
-	--append defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.restricted" \
-	--append defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.lockeddown" \
 	--append defaultKdeProfiles="/usr/share/univention-kde-profiles/kde4-menu" \
 	--append defaultKdeProfiles="/usr/share/univention-kde-profiles/ucs-3.0" \
 

@@ -1,3 +1,10 @@
+univention-kde (6.0.4-1) unstable; urgency=low
+
+  * Some more package cleanups and reduce to a server desktop
+    (Bug #22882, Bug #23585)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Sep 2011 19:09:27 +0200
+
 univention-kde (6.0.3-1) unstable; urgency=low
 
   * proper use of univention-ldapsearch and univention_policy_result in 

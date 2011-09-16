@@ -1,6 +1,0 @@
-[$Version]
-update_info=klipper-kconfigxt.upd:KlipperNoSpacesInKeyNames
-
-[General]
-Number of Actions=0
-Version=v0.9.7

@@ -1,9 +1,0 @@
-[$Version]
-update_info=kaccel.upd:kde3.3/r1,mouse_cursor_theme.upd:kde3.4.99,kwin.upd:kde3.2Xinerama,kded.upd:kde3.0
-
-[DirSelect Dialog]
-DirSelectDialog Size=400,450
-History Items[$e]=file:///usr/share/wallpapers/
-
-[KShortcutsDialog Settings]
-Dialog Size=600,480

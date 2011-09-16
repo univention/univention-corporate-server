@@ -44,8 +44,6 @@ design/usr/share/apps/kthememanager/themes/Plastik-Univention-Green21/*.png usr/
 design/usr/share/apps/kthememanager/themes/Plastik-Univention-Green21/*.xml usr/share/apps/kthememanager/themes/Plastik-Univention-Green21/
 design/usr/share/apps/kthememanager/themes/Plastik-Univention-23/*.png usr/share/apps/kthememanager/themes/Plastik-Univention-23/
 design/usr/share/apps/kthememanager/themes/Plastik-Univention-23/*.xml usr/share/apps/kthememanager/themes/Plastik-Univention-23/
-univention-kde-profile-builder usr/bin/
-univention-kde-profile-builder-dialog usr/bin/
 78univention-kde.inst usr/lib/univention-install/
 design/usr/share/icons/crystalsvg-univention-23/16x16/apps/kmenu.png usr/share/icons/crystalsvg-univention-23/16x16/apps/
 design/usr/share/icons/crystalsvg-univention-23/22x22/apps/kmenu.png usr/share/icons/crystalsvg-univention-23/22x22/apps/

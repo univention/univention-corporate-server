@@ -1,5 +1,0 @@
-[$Version]
-update_info=plasma_popupapplet_fix_groups.upd:PlasmaPopupAppletFixGroups2
-
-[Applet Browser]
-used=,notifier,systemtray,digital-clock,tasks,pager,launcher,showdesktop,folderview,systemloadviewer,system-monitor_applet,calculator,frame

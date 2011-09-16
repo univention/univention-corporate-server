@@ -1,9 +1,0 @@
-[Number]
-NumberOfWindows=1
-
-[WindowProperties1]
-ClassName=KMixWindow
-Height 768=307
-ObjectName=KMixWindow
-State=AAAA/wAAAAD9AAAAAP//////////AAAABAAAAAQAAAAIAAAACPwAAAAA
-Width 1024=512

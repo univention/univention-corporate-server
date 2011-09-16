@@ -1,9 +1,0 @@
-[General]
-PastQueries=konsole,
-
-[Interface]
-Height 768=255
-Width 1024=420
-
-[PlasmaRunnerManager]
-LaunchCounts=1 services_kde4-konsole.desktop
