@@ -43,15 +43,15 @@
 
 static void usage(void)
 {
-	fprintf(stderr, "Usage: univention_policy_result [-h -D -w -s] dn\n");
-	fprintf(stderr, "\t-h\thost\n");
-	fprintf(stderr, "\t-D\tbinddn\n");
-	fprintf(stderr, "\t-w\tbindpw\n");
-	fprintf(stderr, "\t-y\tpasswordfile\n");
+	fprintf(stderr, "Usage: univention_policy_result [-h <hostdn>] [-D <binddn>] [-w <bindpw> | -y <pwfile>] [-s | -b] dn\n");
+	fprintf(stderr, "  -h host    LDAP server\n");
+	fprintf(stderr, "  -D binddn  bind DN\n");
+	fprintf(stderr, "  -w bindpw  bind password\n");
+	fprintf(stderr, "  -y pwfile  Read password from file\n");
 
-	fprintf(stderr, "\t-s\tShell output\n");
-	fprintf(stderr, "\t-b\tConfiguration Registry output\n");
-	fprintf(stderr, "\t-d\tEnable debug\n");
+	fprintf(stderr, "  -s         Shell output\n");
+	fprintf(stderr, "  -b         Basic output\n");
+	fprintf(stderr, "  -d         Enable debug\n");
 }
 
 #define MAX_PASSWORD_SIZE 256
@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
 	univention_ldap_parameters_t* ldap_parameters;
 	univention_policy_handle_t* handle;
 	char opt_debug = 0;
-    char output = OUTPUT_VERBOSE;
+	char output = OUTPUT_VERBOSE;
 	LDAPMessage	*res;
 	struct  timeval	timeout;
 
@@ -171,7 +171,7 @@ int main(int argc, char* argv[])
 
 	dn = argv[argc - 1];
 
-	if (univention_ldap_open(ldap_parameters) != 0) {
+	if ((rc = univention_ldap_open(ldap_parameters)) != 0) {
 		if (output == OUTPUT_VERBOSE) {
 			printf("Return 1 %s\n\n", dn);
 		}

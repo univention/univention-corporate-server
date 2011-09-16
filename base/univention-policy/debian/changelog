@@ -1,3 +1,12 @@
+univention-policy (5.0.6-1) unstable; urgency=low
+
+  * Fix documentation (Bug #23178)
+  * Return error value of failed LDAP-bind.
+  * Rename count-variables to prevent shadowing.
+  * Tighten Build-Depedns on u-debug .
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 Sep 2011 12:28:47 +0200
+
 univention-policy (5.0.5-1) unstable; urgency=low
 
   * add univentionObjecType to list of ignored attributes; Bug #23155

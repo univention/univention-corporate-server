@@ -1,6 +1,5 @@
 .\"                                      Hey, EMACS: -*- nroff -*-
-.TH UNIVENTION_POLICY_RESULT 1 2011-05-19 UCS
-
+.TH UNIVENTION_POLICY_RESULT 1 2011-09-15 UCS
 .SH NAME
 univention_policy_result \- policy aggregator
 
@@ -8,7 +7,7 @@ univention_policy_result \- policy aggregator
 .B univention_policy_result
 .BI \fR[\fP\-h\  ldaphost \fR]\fP
 .BI \fR[\fP\-D\  bind-dn \fR]\fP
-.BI \fR[\fP\-w\  bind-password \fR]\fP
+[\fB\-w\fP \fIbind-password\fP | \fB\-y\fP \fIpassword-file\fP]
 .RB [ \-s | \-b ]
 .RB [ \-d ]
 .I dn
@@ -23,13 +22,16 @@ It is a tool to calculate and show the result of applying all policies to the ob
 A summary of options is included below.
 .TP
 .BI \-h\  ldaphost
-Specify an alternate host on which the ldap server is running.
+Specify an alternate host on which the LDAP server is running.
 .TP
 .BI \-D\  binddn
 Use the Distinguished Name \fIbinddn\fP to bind to the LDAP directory.
 .TP
 .BI \-w\  passwd
 Use \fIpasswd\fP as the password for simple authentication..
+.TP
+.BI \-y\  password-file
+Read password for simplce authentication from \fIfile\fP.
 .TP
 .B \-s
 Convert key/value pairs into shell compatible format, e.g. ';' and '\-' are replaced by '_' for keys.
@@ -44,7 +46,7 @@ Turn on verbose debugging output.
 Distinguished Name of the entity, for which the result of applied policies should be determined.
 .SH BUG
 Univention Config Registry variable names are not hex-unencoded when using \fB\-s\fP.
-.p
+.br
 Multi valued fields are exported as multiple single valued fields with the same name when using \fB\-s\fP.
 
 .SH SEE ALSO
