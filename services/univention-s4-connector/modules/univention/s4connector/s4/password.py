@@ -413,7 +413,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 				modlist.append((ldap.MOD_REPLACE, 'userPrincipalName', krb5Principal))
 		else:
 			if userPrincipalName_attr:	## old and not new
-				modlist.append((ldap.MOD_SELETE, 'userPrincipalName', userPrincipalName_attr))
+				modlist.append((ldap.MOD_DELETE, 'userPrincipalName', userPrincipalName_attr))
 
 	if not ucsNThash == s4NThash:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: NT Hash S4: %s NT Hash UCS: %s" % (s4NThash, ucsNThash))

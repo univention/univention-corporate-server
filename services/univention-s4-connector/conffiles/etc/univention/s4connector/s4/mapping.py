@@ -34,14 +34,35 @@ import univention.s4connector.s4
 import univention.s4connector.s4.mapping
 import univention.s4connector.s4.password
 import univention.s4connector.s4.sid_mapping
+import univention.s4connector.s4.dns
 
 global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base@%@',
 			'cn=shares,@%@ldap/base@%@','cn=printers,@%@ldap/base@%@',
 			'cn=networks,@%@ldap/base@%@', 'cn=kerberos,@%@ldap/base@%@',
-			'cn=dhcp,@%@ldap/base@%@', 'cn=dns,@%@ldap/base@%@',
+			'cn=dhcp,@%@ldap/base@%@',
 			'cn=mail,@%@ldap/base@%@',
 			'cn=samba,@%@ldap/base@%@','cn=nagios,@%@ldap/base@%@',
-			'cn=System,@%@connector/s4/ldap/base@%@',
+			'CN=RAS and IAS Servers Access Check,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=FileLinks,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=WinsockServices,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=RID Manager$,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=Dfs-Configuration,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=Server,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=ComPartitionSets,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=ComPartitions,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=IP Security,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=DFSR-GlobalSettings,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=DomainUpdates,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=Password Settings Container,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=Default Domain Policy,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=File Replication Service,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=RpcServices,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=Meetings,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=Policies,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=AdminSDHolder,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=WMIPolicy,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=BCKUPKEY_c490e871-a375-4b76-bd24-711e9e49fe5e Secret,CN=System,@%@connector/s4/ldap/base@%@',
+			'CN=BCKUPKEY_PREFERRED Secret,CN=System,@%@connector/s4/ldap/base@%@',
 			'ou=Grp Policy Users,@%@connector/s4/ldap/base@%@',
 			'cn=Builtin,@%@connector/s4/ldap/base@%@',
 			'cn=ForeignSecurityPrincipals,@%@connector/s4/ldap/base@%@',
@@ -183,9 +204,17 @@ s4_mapping = {
 
 			con_create_objectclass=['top', 'group'],
 
-			post_con_modify_functions=[ univention.s4connector.s4.group_members_sync_from_ucs, univention.s4connector.s4.object_memberships_sync_from_ucs ],
+			post_con_modify_functions=[
+							univention.s4connector.s4.sid_mapping.sid_to_s4,
+							univention.s4connector.s4.group_members_sync_from_ucs,
+							univention.s4connector.s4.object_memberships_sync_from_ucs
+							],
 
-			post_ucs_modify_functions=[ univention.s4connector.s4.group_members_sync_to_ucs, univention.s4connector.s4.object_memberships_sync_to_ucs ],
+			post_ucs_modify_functions=[
+							univention.s4connector.s4.sid_mapping.sid_to_ucs,
+							univention.s4connector.s4.group_members_sync_to_ucs,
+							univention.s4connector.s4.object_memberships_sync_to_ucs
+							],
 
 			dn_mapping_function=[ univention.s4connector.s4.group_dn_mapping ],
 
@@ -236,6 +265,15 @@ s4_mapping = {
 								  ],
 
 			#post_con_create_functions = [ univention.connector.s4.computers.
+			post_con_modify_functions=[
+							univention.s4connector.s4.sid_mapping.sid_to_s4,
+							# univention.s4connector.s4.password.password_sync_ucs_to_s4,
+						    ],
+
+			post_ucs_modify_functions=[
+							univention.s4connector.s4.sid_mapping.sid_to_ucs,
+							# univention.s4connector.s4.password.password_sync_s4_to_ucs,
+						    ],
 
 			attributes= {
 					'cn': univention.s4connector.attribute (
@@ -280,6 +318,15 @@ s4_mapping = {
 								  ],
 
 			#post_con_create_functions = [ univention.connector.s4.computers.
+			post_con_modify_functions=[
+							univention.s4connector.s4.sid_mapping.sid_to_s4,
+							# univention.s4connector.s4.password.password_sync_ucs_to_s4,
+						    ],
+
+			post_ucs_modify_functions=[
+							univention.s4connector.s4.sid_mapping.sid_to_ucs,
+							# univention.s4connector.s4.password.password_sync_s4_to_ucs,
+						    ],
 
 			attributes= {
 					'cn': univention.s4connector.attribute (
@@ -324,6 +371,15 @@ s4_mapping = {
 								  ],
 
 			#post_con_create_functions = [ univention.connector.s4.computers.
+			post_con_modify_functions=[
+							univention.s4connector.s4.sid_mapping.sid_to_s4,
+							# univention.s4connector.s4.password.password_sync_ucs_to_s4,
+						    ],
+
+			post_ucs_modify_functions=[
+							univention.s4connector.s4.sid_mapping.sid_to_ucs,
+							# univention.s4connector.s4.password.password_sync_s4_to_ucs,
+						    ],
 
 			attributes= {
 					'cn': univention.s4connector.attribute (
@@ -367,6 +423,15 @@ s4_mapping = {
 								  ],
 
 			#post_con_create_functions = [ univention.connector.s4.computers.
+			post_con_modify_functions=[
+							univention.s4connector.s4.sid_mapping.sid_to_s4,
+							# univention.s4connector.s4.password.password_sync_ucs_to_s4,
+						    ],
+
+			post_ucs_modify_functions=[
+							univention.s4connector.s4.sid_mapping.sid_to_ucs,
+							# univention.s4connector.s4.password.password_sync_s4_to_ucs,
+						    ],
 
 			attributes= {
 					'cn': univention.s4connector.attribute (
@@ -417,6 +482,15 @@ s4_mapping = {
 			con_create_attributes=[('userAccountControl', ['4096'])],
 
 			#post_con_create_functions = [ univention.connector.s4.computers.
+			post_con_modify_functions=[
+							univention.s4connector.s4.sid_mapping.sid_to_s4,
+							# univention.s4connector.s4.password.password_sync_ucs_to_s4,
+						    ],
+
+			post_ucs_modify_functions=[
+							univention.s4connector.s4.sid_mapping.sid_to_ucs,
+							# univention.s4connector.s4.password.password_sync_s4_to_ucs,
+						    ],
 
 			attributes= {
 					'cn': univention.s4connector.attribute (
@@ -442,6 +516,29 @@ s4_mapping = {
 							con_attribute='operatingSystemVersion'
 						),
 				},
+
+		),
+	'dns': univention.s4connector.property (
+			ucs_default_dn='cn=dns,@%@ldap/base@%@',
+			con_default_dn='CN=MicrosoftDNS,CN=System,@%@connector/s4/ldap/base@%@',
+			ucs_module='dns/dns',
+			
+			identify=univention.s4connector.s4.dns.identify,
+
+			sync_mode='@%@connector/s4/mapping/syncmode@%@',
+
+			scope='sub',
+
+			con_search_filter='(|(objectClass=dnsNode)(objectClass=dnsZone))',
+
+			position_mapping = [( ',cn=dns,@%@ldap/base@%@', ',CN=MicrosoftDNS,CN=System,@%@connector/s4/ldap/base@%@' )],
+
+			ignore_filter='',
+
+			ignore_subtree = global_ignore_subtree,
+			
+			con_sync_function = univention.s4connector.s4.dns.ucs2con,
+			ucs_sync_function = univention.s4connector.s4.dns.con2ucs,
 
 		),
 	'container': univention.s4connector.property (
