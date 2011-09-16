@@ -54,6 +54,7 @@ global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base
 			'CN=DFSR-GlobalSettings,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=DomainUpdates,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=Password Settings Container,CN=System,@%@connector/s4/ldap/base@%@',
+			'DC=RootDNSServers,CN=MicrosoftDNS,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=Default Domain Policy,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=File Replication Service,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=RpcServices,CN=System,@%@connector/s4/ldap/base@%@',
@@ -533,7 +534,7 @@ s4_mapping = {
 
 			position_mapping = [( ',cn=dns,@%@ldap/base@%@', ',CN=MicrosoftDNS,CN=System,@%@connector/s4/ldap/base@%@' )],
 
-			ignore_filter='',
+			ignore_filter='(DC=_ldap._tcp.Default-First-Site-Name._site)',
 
 			ignore_subtree = global_ignore_subtree,
 			

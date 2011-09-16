@@ -1,3 +1,11 @@
+univention-s4-connector (6.0.27-1) unstable; urgency=low
+
+  * Exclude DC=RootDNSServers,CN=MicrosoftDNS,CN=System (Bug #23357)
+  * Print tracebacks direct into s4-connector.log
+  * Ignore DC=_ldap._tcp.Default-First-Site-Name._site
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Sep 2011 11:39:29 +0200
+
 univention-s4-connector (6.0.26-1) unstable; urgency=low
 
   * Added SID mapping for computers and groups (Bug #23162, Bug #22861)

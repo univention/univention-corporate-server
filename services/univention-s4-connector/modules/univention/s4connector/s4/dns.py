@@ -439,8 +439,8 @@ def ucs_ptr_record_create(s4connector, object):
 		superordinate=univention.admin.objects.get_superordinate('dns/ptr_record', None, s4connector.lo, searchResult[0][0])
 		newRecord= univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
-		if set(newRecord['ptr']) != set(ptr):
-			newRecord['ptr']=ptr
+		if set(newRecord['ptr_record']) != set(ptr):
+			newRecord['ptr_record']=ptr[0]
 			newRecord.modify()
 		else:
 			ud.debug(ud.LDAP, ud.INFO, 'ucs_ptr_record_create: do not modify host record')
@@ -455,7 +455,7 @@ def ucs_ptr_record_create(s4connector, object):
 		newRecord= univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord['name']=relativeDomainName
-		newRecord['ptr']=ptr
+		newRecord['ptr_record']=ptr[0]
 		newRecord.create()
 	
 
@@ -491,8 +491,8 @@ def ucs_cname_create(s4connector, object):
 		superordinate=univention.admin.objects.get_superordinate('dns/alias', None, s4connector.lo, searchResult[0][0])
 		newRecord= univention.admin.handlers.dns.alias.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
-		if set(newRecord['c']) != set(c):
-			newRecord['cname']=c
+		if set(newRecord['cname']) != set(c):
+			newRecord['cname']=c[0]
 			newRecord.modify()
 		else:
 			ud.debug(ud.LDAP, ud.INFO, 'ucs_cname_create: do not modify host record')
@@ -635,8 +635,9 @@ def ucs_zone_create(s4connector, object, dns_type):
 		for k in ['serial', 'refresh', 'retry', 'expire', 'ttl']:
 			if set(soa[k]) != set(zone[k]):
 				zone[k] = soa[k]
-		if set(a) != set(zone['a']):
-			zone['a'] = a
+		if dns_type == 'forward_zone':
+			if set(a) != set(zone['a']):
+				zone['a'] = a
 	else:
 		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
 

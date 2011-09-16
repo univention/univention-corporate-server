@@ -151,7 +151,7 @@ def main():
 			print "         UCS DN: %s" % univention.s4connector.s4.encode_attrib(s4.get_dn_by_con(dn)).encode('latin')
 		else:
 			print "         UCS DN: %s" % univention.s4connector.s4.encode_attrib(s4.get_dn_by_con(dn)).encode('latin')
-	i+=1
+		i+=1
 
 	if not found_rejected:
 		print "\nThere may be no rejected DNs if the connector is in progress, to be\nsure stop the connector before running this script.\n"

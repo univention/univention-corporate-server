@@ -441,22 +441,11 @@ class ucs:
 		'''
 		print traceback with ud.debug, level is i.e. ud.INFO
 		'''
-		exc_info = sys.exc_info()
 		_d=ud.function('ldap._debug_traceback')
-		tracebackFile = '/var/log/univention/%s-s4-tracebacks.log' % self.CONFIGBASENAME
+		exc_info = sys.exc_info()
 
-		ud.debug(ud.LDAP, level , text)
-		ud.debug(ud.LDAP, level , ' --  for details see %s -- ' % tracebackFile)		
-		
-		lines = apply(traceback.format_exception, exc_info)
-		text = text + '\n'
-		for line in lines:
-			text += line
-
-		text = str( time.asctime(time.localtime())) + "\n" + text
-                f = open( tracebackFile, 'a' )
-                print >>f, text
-                f.close()			
+		ud.debug(ud.LDAP, level, text)
+		ud.debug(ud.LDAP, level, traceback.format_exc())
 
 
 	def _get_rdn(self,dn):
