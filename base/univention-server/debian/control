@@ -10,6 +10,8 @@ Standards-Version: 3.5.2
 Package: univention-server-master
 Architecture: all
 Pre-Depends: univention-ssl
+Recommends: univention-nagios-client,
+ python-univention-license
 Depends: univention-config-registry,
  univention-join,
  univention-ldap-server,
@@ -36,7 +38,9 @@ Depends: univention-config-registry,
  univention-firewall,
  univention-grub,
  univention-archive-key,
- univention-ifplugd | univention-network-manager
+ univention-ifplugd | univention-network-manager,
+ univention-management-console-module-udm,
+ univention-management-console
 Conflicts: exim
 Description: UCS - master domain controller
  This package installs a UCS master domain controller.
@@ -48,6 +52,9 @@ Description: UCS - master domain controller
 
 Package: univention-server-backup
 Architecture: all
+Recommends: univention-nagios-client,
+ univention-bind,
+ python-univention-license
 Depends: univention-config-registry,
  univention-join,
  univention-ssl,
@@ -76,6 +83,8 @@ Depends: univention-config-registry,
  univention-grub,
  univention-archive-key,
  univention-ifplugd | univention-network-manager
+ univention-management-console-module-udm,
+ univention-management-console
 Conflicts: exim
 Description: UCS - backup domain controller
  This package installs a UCS backup domain controller.
@@ -89,6 +98,9 @@ Description: UCS - backup domain controller
 
 Package: univention-server-slave
 Architecture: all
+Recommends: univention-management-console,
+ univention-bind,
+ univention-nagios-client
 Depends: univention-config-registry,
  univention-join,
  univention-ldap-server,
@@ -127,6 +139,8 @@ Description: UCS - slave domain controller
 
 Package: univention-server-member
 Architecture: all
+Recommends: univention-management-console,
+ univention-nagios-client
 Depends: univention-config-registry,
  univention-join,
  univention-showload,
@@ -160,6 +174,8 @@ Description: UCS - member server
 Package: univention-mobile-client
 Architecture: all
 Conflicts: univention-application-server
+Recommends: univention-management-console,
+ univention-nagios-client
 Depends: univention-policy-tools,
  univention-updater,
  ldap-utils,
@@ -207,6 +223,8 @@ Replaces: univention-fat-client,
  univention-fat-client-small
 Provides: univention-fat-client,
  univention-fat-client-small
+Recommends: univention-management-console,
+ univention-nagios-client
 Depends: univention-policy-tools,
  univention-updater,
  ldap-utils,
