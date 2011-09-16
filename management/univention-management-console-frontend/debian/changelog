@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.52-1) unstable; urgency=low
+
+  * umc.widgets.Grid: add a default action that is invoked when clicking
+    on an item; Bug #22881
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 16 Sep 2011 19:21:21 +0200
+
 univention-management-console-frontend (1.0.51-1) unstable; urgency=low
 
   * added umc.tools.mapWalk

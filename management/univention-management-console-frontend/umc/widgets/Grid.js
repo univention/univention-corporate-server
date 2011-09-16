@@ -70,6 +70,11 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 	// turn off gutters by default
 	gutters: false,
 
+	// defaultAction: Function/String a default action that is executed
+	//		when clicking on a row (not on the checkbox or action
+	//		buttons)
+	defaultAction: 'edit',
+
 	_contextItem: null,
 	_contextItemID: null,
 	_contextMenu: null,
@@ -366,6 +371,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 				return Math.abs(col) - 2 < this.columns.length && Math.abs(col) - 2 >= 0;
 			})
 		});
+		this.connect( this._grid, 'onRowClick', '_onRowClick' );
 		this._setColumnsAttr( this.columns );
 		this._grid.setSortIndex(1);
 		this.addChild(this._grid);
@@ -463,6 +469,28 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		// -> handle context menus when clicked in the last column
 		// -> call custom handler when clicked on any other cell
 		this.connect(this._grid, 'onCellContextMenu', '_updateContextItem');
+	},
+
+	_onRowClick: function( ev ) {
+		// default action should not be executed when clicked on selector or action cells
+		if ( ev.cellIndex === 0 || ev.cellIndex > this.columns.length ) {
+			return true;
+		}
+		var item = this._grid.getItem( ev.rowIndex );
+		var identity = item[ this.moduleStore.idProperty ];
+
+		if (dojo.isFunction( this.defaultAction ) ) {
+			this.defaultAction( [ identity ], [ item ] );
+		} else {
+			dojo.forEach( this.actions, dojo.hitch( this, function( action ) {
+				if ( action.name == this.defaultAction) {
+					if ( action.callback ) {
+						action.callback( [ identity ], [ item ] );
+					}
+					return false;
+				}
+			} ) );
+		}
 	},
 
 	_updateFooterContent: function() {
