@@ -14,6 +14,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 
 	moduleStore: null,
 	partitionDevice: null,
+	footerButtons: null,
 	_form: null,
 	_grid: null,
 	_searchForm: null,
@@ -30,6 +31,15 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		titlePane.addChild(this._form);
 		titlePane.addChild(this._searchForm);
 		titlePane.addChild(this._grid);
+	},
+
+	postMixInProperties: function() {
+		this.inherited(arguments);
+		this.footerButtons = [{
+			name: 'close',
+			label: this._('Close'),
+			callback: dojo.hitch(this, 'onClose')
+		}];
 	},
 
 	postCreate: function() {
@@ -167,5 +177,9 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 				partitionDevice: this.partitionDevice
 			}
 		});
+	},
+
+	onClose: function() {
+	 return true;
 	}
 });
