@@ -1669,6 +1669,7 @@ class dnsEntry( complex ):
 class dnsEntryReverse( complex ):
  	description=_('DNS Entry Reverse')
 	subsyntaxes = ( ( _( 'DNS reverse zone' ), DNS_ReverseZone ), ( _( 'IP address' ), IP_AddressList ) )
+	min_elements = 1
 
 class dnsEntryAlias( complex ):
 	description=_('DNS Entry Alias')

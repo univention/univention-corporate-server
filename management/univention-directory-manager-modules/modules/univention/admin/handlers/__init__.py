@@ -665,7 +665,7 @@ class simpleLdap(base):
 			except Exception, e:
 				# ensure that there is no lock left
 				import sys, traceback
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.ERROR, "Post-modify operation failed: %s" % '\n'.join( traceback.extract_tb( sys.exc_info()[ 2 ] ) ) )
+				univention.debug.debug( univention.debug.ADMIN, univention.debug.ERROR, "Post-modify operation failed: %s" % '\n'.join( traceback.format_tb( sys.exc_info()[ 2 ] ) ) )
 				self.cancel()
 				self.remove()
 				raise e
