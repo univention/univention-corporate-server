@@ -311,7 +311,7 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 					if ( ( vals = ldap_get_values_len( ld, e, a ) ) != NULL ) {
 						if (strcmp(a, "objectClass") != 0 && strcmp(a, "requiredObjectClasses") != 0 &&
 								strcmp(a, "prohibitedObjectClasses") != 0 && strcmp(a, "fixedAttributes") != 0 &&
-								strcmp(a, "emptyAttributes") != 0 && strcmp(a, "cn") != 0) {
+								strcmp(a, "emptyAttributes") != 0 && strcmp(a, "cn") != 0 && strcmp(a, "univentionObjectType") != 0) {
 							struct univention_policy_attribute_list_s* attr;
 							univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "considering %s/%s", policy->name, a);
 							attr = univention_policy_attribute_list_get(&policy->attributes, a);

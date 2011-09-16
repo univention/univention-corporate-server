@@ -1,3 +1,9 @@
+univention-policy (5.0.5-1) unstable; urgency=low
+
+  * add univentionObjecType to list of ignored attributes; Bug #23155
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 16 Sep 2011 11:46:44 +0200
+
 univention-policy (5.0.4-1) unstable; urgency=low
 
   * Move policy_result.py from univention-lib to univention-policy
@@ -193,6 +199,4 @@ univention-policy (0.1.0) unstable; urgency=low
 
  -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 20 May 2003 13:49:40 +0200
 
-Local variables:
-mode: debian-changelog
-End:
+
