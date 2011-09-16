@@ -25,6 +25,16 @@ Depends: univention-config,
  psmisc,
  lsb-base,
  ${misc:Depends}
+Recommends: vim,
+ emacs23,
+ less,
+ elinks,
+ wget,
+ nmap, 
+ zip,
+ unzip,
+ eject,
+ locate
 Conflicts: univention-config-registry (<= 7.0.7),
  univention-config (<= 7.0.8), console-tools
 Replaces: univention-config-registry (<= 7.0.7),
