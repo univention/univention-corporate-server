@@ -5,10 +5,12 @@ dojo.provide("umc.modules._quota.PartitionPage");
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.ExpandingTitlePane");
+dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.SearchForm");
 dojo.require("umc.widgets.Text");
+dojo.require("umc.modules._quota.DetailDialog");
 
 dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mixin ], {
 
@@ -18,6 +20,8 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 	_form: null,
 	_grid: null,
 	_searchForm: null,
+	_detailDialog: null,
+	_detailDialogCloseHandle: null,
 
 	buildRendering: function() {
 		this.inherited(arguments);
@@ -110,11 +114,12 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		//
 		var actions = [{
 			name: 'add',
-			label: this._('Add'),
+			label: this._('Add user'),
 			iconClass: 'dijitIconNewTask',
 			isContextAction: false,
 			isStandardAction: true,
-			isMultiAction: false
+			isMultiAction: false,
+			callback: dojo.hitch(this, 'createDetailDialog')
 		}, {
 			name: 'configure',
 			label: this._('Configure'),
@@ -179,7 +184,29 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		});
 	},
 
+	createDetailDialog: function(id) {
+		this._detailDialog = new umc.modules._quota.DetailDialog({
+			title: this._('Add quota setting for a user on partition')
+		});
+		this._detailDialogCloseHandle = this.connect(this._detailDialog, 'onClose', 'closeDetailDialog');
+		this.addChild(this._detailDialog);
+	},
+
+	closeDetailDialog: function() {
+		this.resetTitle();
+		this.selectChild(this._overviewPage);
+		if (this._detailDialogCloseHandle) {
+			this.disconnect(this._detailDialogCloseHandle);
+			this._detailDialogCloseHandle = null;
+		}
+		if (this._detailDialog) {
+			this.removeChild(this._detailDialog);
+			this._detailDialog.destroyRecursive();
+			this._detailDialog = null;
+		}
+	},
+
 	onClose: function() {
-	 return true;
+		return true;
 	}
 });
