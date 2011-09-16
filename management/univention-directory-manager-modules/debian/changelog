@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.78-1) unstable; urgency=low
+
+  * Added a parameter update_zone to prevent the serial number increase.
+    This is needed for the S4 connector (Bug #23357)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Sep 2011 11:23:36 +0200
+
 univention-directory-manager-modules (7.0.77-1) unstable; urgency=low
 
   * dnsEntryZoneReverse: allow just the LDAP DN to be specified

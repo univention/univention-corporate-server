@@ -83,12 +83,14 @@ class object(univention.admin.handlers.simpleLdap):
 	module=module
 
 	def _updateZone(self):
-		self.superordinate.open()
-		self.superordinate.modify()
+		if self.update_zone:
+			self.superordinate.open()
+			self.superordinate.modify()
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [], update_zone = True  ):
 		self.mapping=mapping
 		self.descriptions=property_descriptions
+		self.update_zone = update_zone
 
 		if not superordinate:
 			raise univention.admin.uexceptions.insufficientInformation, _( 'superordinate object not present' )
