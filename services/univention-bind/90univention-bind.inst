@@ -42,7 +42,7 @@ if test -z "$ldap_server_ip" -a -z "$ldap_server_name"; then
 	exit 1
 fi
 
-univention-config-registry bind9/backend?ldap
+univention-config-registry set dns/backend?ldap
 
 if [ -z "$nameserver_external" -o "$nameserver_external" = false -o "$nameserver_external" = no ]; then
 	if [ "$nameserver1" = "$dns_forwarder1" ]; then
