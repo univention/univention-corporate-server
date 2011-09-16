@@ -38,9 +38,9 @@ ln -sf /etc/machine.secret /etc/libnss-ldap.secret
 ln -sf /etc/machine.secret /etc/pam_ldap.secret
 
 univention-config-registry set \
-	nscd/passwd/size?3001 \
-	nscd/group/size?3001 \
-	nscd/hosts/size?3001 \
+	nscd/passwd/size?6007 \
+	nscd/group/size?9001 \
+	nscd/hosts/size?6007 \
 	nscd/passwd/positive_time_to_live?600 \
 	nscd/group/positive_time_to_live?3600 \
 	nscd/hosts/positive_time_to_live?3600 \
