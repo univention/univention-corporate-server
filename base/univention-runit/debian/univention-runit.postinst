@@ -1,9 +1,9 @@
-#!/usr/bin/make -f
+#! /bin/sh
 #
-# Univention RunIt
-#  prerm script for the debian package
+# Univention Runit
+#  postinst script for the univention-runit debian package
 #
-# Copyright 2003-2011 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,13 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_installinit:
-	dh_installinit --no-start --no-restart-on-upgrade --update-rcd-params="defaults 13 25"
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.2-0; then
+	update-rc.d -f univention-runit remove >/dev/null
+fi
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
+#DEBHELPER#
 
-%:
-	dh $@
+
+exit 0
 

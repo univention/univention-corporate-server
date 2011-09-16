@@ -1,3 +1,9 @@
+univention-runit (4.0.2-1) unstable; urgency=low
+
+  * Start univention-runit after bind9 (Bug #23358)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Sep 2011 18:28:09 +0200
+
 univention-runit (4.0.1-1) unstable; urgency=low
 
   * Add missing install file (Bug #22433)
