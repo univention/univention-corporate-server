@@ -332,7 +332,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			type: 'ComboBox',
 			name: 'objectType',
 			description: this._( 'The type of the UDM object.' ),
-			label: this._('Object type'),
+			label: this._('%s type', umc.tools.capitalize(this.objectNameSingular)),
 			//value: objTypes.length ? this.moduleFlavor : undefined,
 			staticValues: objTypes,
 			dynamicValues: 'udm/types',

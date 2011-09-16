@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-16 10:46+0200\n"
+"POT-Creation-Date: 2011-09-16 11:48+0200\n"
 "PO-Revision-Date: 2011-09-07 20:25+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,6 +31,11 @@ msgstr "%(nSelected)d %(objSingular)s von %(nTotal)d ist ausgewählt"
 #, python-format
 msgid "%s template"
 msgstr "%s-Vorlage"
+
+#: umc/js/udm.js:335
+#, python-format
+msgid "%s type"
+msgstr "%styp"
 
 #: umc/js/_udm/NewObjectDialog.js:205
 #, python-format
@@ -78,7 +83,7 @@ msgstr "Zurück zur Navigation"
 msgid "Back to search"
 msgstr "Zurück zur Suche"
 
-#: umc/js/udm.js:589
+#: umc/js/udm.js:591
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -108,7 +113,7 @@ msgstr "DNS-Objekt"
 msgid "DNS objects"
 msgstr "DNS-Objekte"
 
-#: umc/js/udm.js:231 umc/js/udm.js:435 umc/js/udm.js:579
+#: umc/js/udm.js:231 umc/js/udm.js:437 umc/js/udm.js:581
 msgid "Delete"
 msgstr "Löschen"
 
@@ -117,7 +122,7 @@ msgstr "Löschen"
 msgid "Deleting the selected %s."
 msgstr "Die ausgewählten %s löschen"
 
-#: umc/js/udm.js:205 umc/js/udm.js:428
+#: umc/js/udm.js:205 umc/js/udm.js:430
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -179,10 +184,6 @@ msgstr "Kein"
 msgid "Object property"
 msgstr "Objekteigenschaft"
 
-#: umc/js/udm.js:335
-msgid "Object type"
-msgstr "Objekttyp"
-
 #: umc/js/udm.js:218
 msgid "Open a new tab in order to edit the UDM-object"
 msgstr "Öffnet einen neuen Tab, in dem das UDM-Objekt bearbeitet werden kann."
@@ -199,17 +200,17 @@ msgstr "Pfad"
 msgid "Path of the UDM object."
 msgstr "Pfad des UDM-Objektes"
 
-#: umc/js/udm.js:574
+#: umc/js/udm.js:576
 #, python-format
 msgid "Please confirm the removal of the %d selected %s!"
 msgstr "Bitte bestätigen Sie das Löschen der %d ausgewählten %s!"
 
-#: umc/js/udm.js:576
+#: umc/js/udm.js:578
 #, python-format
 msgid "Please confirm the removal of the selected %s!"
 msgstr "Bitte bestätigen Sie das Löschen des/der ausgewählten %s!"
 
-#: umc/js/udm.js:606
+#: umc/js/udm.js:608
 msgid ""
 "Please select a container in the navigation bar. The new object will be "
 "placed at this location."
@@ -225,11 +226,11 @@ msgstr "Durch Richtlinien ererbte Eigenschaften"
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: umc/js/udm.js:362 umc/js/udm.js:376 umc/js/_udm/MultiObjectSelect.js:77
+#: umc/js/udm.js:362 umc/js/udm.js:378 umc/js/_udm/MultiObjectSelect.js:77
 msgid "Property value"
 msgstr "Eigenschaftswert"
 
-#: umc/js/udm.js:442
+#: umc/js/udm.js:444
 msgid "Reload"
 msgstr "Neu laden"
 
@@ -297,7 +298,7 @@ msgstr "Das übergeordnete Objekt, für welches die Suche ausgeführt wird."
 msgid "The type of the UDM object."
 msgstr "Der Type des UDM-Objektes."
 
-#: umc/js/udm.js:375 umc/js/_udm/MultiObjectSelect.js:76
+#: umc/js/udm.js:377 umc/js/_udm/MultiObjectSelect.js:76
 msgid ""
 "The value for the specified object property on which the query is filtered."
 msgstr "Der Wert der Objekteigenschaft, nach der gesucht wird."
@@ -324,11 +325,11 @@ msgstr "[Richtlinien]"
 
 #: umc/js/udm.js:115
 msgid "computer"
-msgstr "Computer"
+msgstr "Rechner"
 
 #: umc/js/udm.js:115
 msgid "computers"
-msgstr "Computer"
+msgstr "Rechner"
 
 #: umc/js/_udm/DetailPage.js:403
 msgid "edit"
@@ -404,3 +405,6 @@ msgstr "Benutzer"
 
 #~ msgid "New UDM-Object"
 #~ msgstr "Neues UDM-Objekt"
+
+#~ msgid "Object type"
+#~ msgstr "Objekttyp"
