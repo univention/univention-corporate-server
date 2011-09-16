@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.50-1) unstable; urgency=low
+
+  * LabelPane: fixed watch handling for 'label' changes (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 16 Sep 2011 11:32:24 +0200
+
 univention-management-console-frontend (1.0.49-1) unstable; urgency=low
 
   * fixed hiding tooltip on mouse click (Bug #22881)
