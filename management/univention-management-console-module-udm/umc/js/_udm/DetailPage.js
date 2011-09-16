@@ -464,7 +464,11 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		var template = {};
 		dojo.forEach(_properties, function(iprop) {
 			if (iprop['default']) {
-				template[iprop.id] = iprop['default'];
+				var defVal = iprop['default'];
+				if (dojo.isString(defVal) && iprop.multivalue) {
+					defVal = [ defVal ];
+				}
+				template[iprop.id] = defVal;
 			}
 		});
 

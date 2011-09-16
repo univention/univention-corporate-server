@@ -91,7 +91,7 @@ dojo.declare('umc.modules._udm.Template', null, {
 			var updater = {
 				key: ikey,
 				selfReference: this.widgets[ikey],
-				templateString: dojo.clone(ival),
+				templateVal: dojo.clone(ival),
 				references: [], // ordered list of widgets that are referenced
 				modifiers: [], // ordered list of string modifiers per reference
 				globalModifiers: [], // string modifiers that are applied on the final string
@@ -104,12 +104,12 @@ dojo.declare('umc.modules._udm.Template', null, {
 
 					// the value might be a simple string or an array of strings
 					var newVal;
-					if (dojo.isString(this.templateString)) {
-						newVal = this.process(this.templateString, vals);
+					if (dojo.isString(this.templateVal)) {
+						newVal = this.process(this.templateVal, vals);
 					}
-					else if (dojo.isArray(this.templateString)) {
+					else if (dojo.isArray(this.templateVal)) {
 						newVal = [];
-						dojo.forEach(this.templateString, function(istr) {
+						dojo.forEach(this.templateVal, function(istr) {
 							newVal.push(this.process(istr, vals));
 						}, this);
 					}
@@ -131,77 +131,9 @@ dojo.declare('umc.modules._udm.Template', null, {
 				}
 			};
 
-			// try to match all variable references... the template value might be a string
-			// or an array of strings
-			var nRefs = 0;
-			var tmpVals = dojo.isArray(ival) ? ival : [ival];
-			dojo.forEach(tmpVals, function(jval, j) {
-				var matches = jval.match(this._regVar);
-				dojo.forEach(matches, function(imatch) {
-					// parse the matched reference
-					this._regVar.lastIndex = 0; // start matching in any case from the string beginning
-					var match = this._regVar.exec(imatch);
-
-					// we have a value with variable reference...
-					// parse the variable reference and get the correct indeces
-					var refKey = match[1];
-					var modifier = match[3];
-					var startIdx = 0;
-					var endIdx = Infinity;
-					try {
-						startIdx = !match[5] ? 0 : parseInt(match[5], 10);
-					}
-					catch (err1) { }
-
-					// check whether the user specified an end index
-					if (!match[6] && dojo.isString(match[5])) {
-						// nope... index points to one single character
-						endIdx = startIdx + 1;
-						if (0 === endIdx) {
-							// startIdx == -1
-							endIdx = Infinity;
-						}
-					}
-					else if (match[6]) {
-						try {
-							endIdx = !match[7] && match[7] !== '0' ? Infinity : parseInt(match[7], 10);
-						}
-						catch (err2) { }
-					}
-
-					if (!refKey) {
-						// we have a global modifier (i.e., no reference) ... register the modifier
-						updater.globalModifiers.push(this._getModifiers(modifier, startIdx, endIdx));
-
-						// update the template string
-						if (dojo.isArray(ival)) {
-							updater.templateString[j] = updater.templateString[j].replace(imatch, '');
-						}
-						else {
-							updater.templateString = updater.templateString.replace(imatch, '');
-						}
-					}
-					else if (refKey in this.widgets) {
-						// valid reference... register the reference
-						updater.references.push(this.widgets[refKey]);
-
-						// update the template string
-						if (dojo.isArray(ival)) {
-							updater.templateString[j] = updater.templateString[j].replace(imatch, '{' + nRefs + '}');
-						}
-						else {
-							updater.templateString = updater.templateString.replace(imatch, '{' + nRefs + '}');
-						}
-
-						// register the modifier
-						updater.modifiers.push(this._getModifiers(modifier, startIdx, endIdx));
-
-						// count the matched references
-						++nRefs;
-					}
-				}, this);
-			}, this);
-			if (nRefs) {
+			// match all variable references
+			this._parse(updater)
+			if (updater.references.length) {
 				// we have a dynamic value with variable references
 				updaters.push(updater);
 			}
@@ -246,6 +178,73 @@ dojo.declare('umc.modules._udm.Template', null, {
 
 			// save initial value
 			this._lastValues[iwidget.name] = iwidget.get('value');
+		}, this);
+	},
+
+	_parse: function(updater) {
+		// templateVal can be a string, an array, or a multi-dimensional array
+		// ... iterate over its elements
+		updater.templateVal = umc.tools.mapWalk(updater.templateVal, function(istr) {
+			// do not modify dicts
+			if (!dojo.isString(istr)) {
+				return istr;
+			}
+
+			// search for references
+			var matches = istr.match(this._regVar);
+			dojo.forEach(matches, function(imatch) {
+				// parse the matched reference
+				this._regVar.lastIndex = 0; // start matching in any case from the string beginning
+				var match = this._regVar.exec(imatch);
+
+				// we have a value with variable reference...
+				// parse the variable reference and get the correct indeces
+				var refKey = match[1];
+				var modifier = match[3];
+				var startIdx = 0;
+				var endIdx = Infinity;
+				try {
+					startIdx = !match[5] ? 0 : parseInt(match[5], 10);
+				}
+				catch (err1) { }
+
+				// check whether the user specified an end index
+				if (!match[6] && dojo.isString(match[5])) {
+					// nope... index points to one single character
+					endIdx = startIdx + 1;
+					if (0 === endIdx) {
+						// startIdx == -1
+						endIdx = Infinity;
+					}
+				}
+				else if (match[6]) {
+					try {
+						endIdx = !match[7] && match[7] !== '0' ? Infinity : parseInt(match[7], 10);
+					}
+					catch (err2) { }
+				}
+
+				if (!refKey) {
+					// we have a global modifier (i.e., no reference) ... register the modifier
+					updater.globalModifiers.push(this._getModifiers(modifier, startIdx, endIdx));
+
+					// update the template string
+					istr = istr.replace(imatch, '');
+				}
+				else if (refKey in this.widgets) {
+					// valid reference... register the reference
+					updater.references.push(this.widgets[refKey]);
+
+					// update the template string
+					istr = istr.replace(imatch, '{' + (updater.references.length - 1) + '}');
+
+					// register the modifier
+					updater.modifiers.push(this._getModifiers(modifier, startIdx, endIdx));
+				}
+			}, this);
+
+			// return modified string
+			return istr;
 		}, this);
 	},
 

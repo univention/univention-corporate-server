@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.130-1) unstable; urgency=low
+
+  * fixed problems with Template for multi-dimensional arrays (Bug #23632)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 16 Sep 2011 15:19:46 +0200
+
 univention-management-console-module-udm (1.0.129-1) unstable; urgency=low
 
   * adapted captions (Bug #22881)
