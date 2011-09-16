@@ -1,3 +1,9 @@
+univention-python (6.0.13-1) unstable; urgency=low
+
+  * add univentionObjecType to list of ignored attributes; Bug #23155
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 16 Sep 2011 12:12:59 +0200
+
 univention-python (6.0.12-1) unstable; urgency=low
 
   * getPolicies: ensure that the objectClass univentionObject is excluded

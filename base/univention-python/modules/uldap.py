@@ -363,7 +363,7 @@ class access:
 					fixedattrs[ptype]={}
 
 				for key, value in pattrs.items():
-					if key in ['requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn']:
+					if key in ( 'requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType' ):
 						continue
 					if key not in fixedattrs[ptype]:
 						univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "getPolicies: %s sets: %s=%s" % (pdn, key, value))
