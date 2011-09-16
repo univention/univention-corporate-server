@@ -20,8 +20,11 @@ dojo.require("umc.tools");
 // connect to the master tooltip's domNode onlick event in order to
 // trigger the fade out animation.
 (function() {
-	var hdl = dojo.connect(dijit, 'showTooltip', function(innerHTML, aroundNode) {
-		dojo.connect(dijit._masterTT.domNode, 'onclick', dojo.hitch(dijit._masterTT, 'hide', aroundNode));
+	// this does not work correctly, only hides tooltip once
+	//var hdl = dojo.connect(dijit, 'showTooltip', function(innerHTML, aroundNode) {
+	//	dojo.connect(dijit._masterTT.domNode, 'onclick', dojo.hitch(dijit._masterTT, 'hide', aroundNode));
+	var hdl = dojo.connect(dijit, 'showTooltip', function() {
+		dojo.connect(dijit._masterTT.domNode, 'onclick', dijit._masterTT.fadeOut, 'play');
 
 		// disconnect from 'showTooltip', we only need to register the handler once
 		dojo.disconnect(hdl);
