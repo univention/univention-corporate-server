@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.128-1) unstable; urgency=low
+
+  * added dynamic change of property value label in the search form 
+    (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 16 Sep 2011 11:29:55 +0200
+
 univention-management-console-module-udm (1.0.127-1) unstable; urgency=low
 
   * added JavaScript callback function for DHCP and IP entries

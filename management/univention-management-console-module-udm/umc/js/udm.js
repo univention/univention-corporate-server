@@ -350,12 +350,27 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			type: 'ComboBox',
 			name: 'objectProperty',
 			description: this._( 'The object property on which the query is filtered.' ),
-			label: this._( 'Object property' ),
+			label: this._( 'Property' ),
 			dynamicValues: 'udm/properties',
 			dynamicOptions: { searchable: true },
 			umcpCommand: umcpCmd,
 			depends: 'objectType',
-			value: autoObjProperty
+			value: autoObjProperty,
+			onChange: dojo.hitch(this, function(newVal) {
+				// get the current label of objectPropertyValue
+				var widget = this._searchForm.getWidget('objectProperty');
+				var label = this._( 'Property value' );
+				dojo.forEach(widget.getAllItems(), function(iitem) {
+					if (newVal == iitem.id) {
+						label = iitem.label;
+						return false;
+					}
+				});
+
+				// update the label of objectPropertyValue
+				widget = this._searchForm.getWidget('objectPropertyValue');
+				widget.set('label', label);
+			})
 		}, {
 			type: 'MixedInput',
 			name: 'objectPropertyValue',
