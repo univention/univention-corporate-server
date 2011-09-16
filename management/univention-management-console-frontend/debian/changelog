@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.53-1) unstable; urgency=low
+
+  * if a function is defined for defaultAction of umc.widgets.Grid it may
+    return the name of a action. In that case the action will be invoked;
+    Bug #22881
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 16 Sep 2011 19:43:32 +0200
+
 univention-management-console-frontend (1.0.52-1) unstable; urgency=low
 
   * umc.widgets.Grid: add a default action that is invoked when clicking

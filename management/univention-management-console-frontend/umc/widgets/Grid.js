@@ -479,11 +479,15 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		var item = this._grid.getItem( ev.rowIndex );
 		var identity = item[ this.moduleStore.idProperty ];
 
+		var defaultAction = null;
 		if (dojo.isFunction( this.defaultAction ) ) {
-			this.defaultAction( [ identity ], [ item ] );
+			defaultAction = this.defaultAction( [ identity ], [ item ] );
 		} else {
+			defaultAction = this.defaultAction;
+		}
+		if ( defaultAction ) {
 			dojo.forEach( this.actions, dojo.hitch( this, function( action ) {
-				if ( action.name == this.defaultAction) {
+				if ( action.name == defaultAction ) {
 					if ( action.callback ) {
 						action.callback( [ identity ], [ item ] );
 					}
