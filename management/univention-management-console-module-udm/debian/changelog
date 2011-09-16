@@ -1,3 +1,13 @@
+univention-management-console-module-udm (1.0.131-1) unstable; urgency=low
+
+  * add 'all' property to search forms of all flavors. If selected the
+    objectPropertyValue will be hidden
+  * override defaultAction for Grid: if the selected object is a
+    superordinate the search will be invoked with this object as
+    superordinate otherwise the action edit will be invoked; Bug #22881
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 16 Sep 2011 19:50:46 +0200
+
 univention-management-console-module-udm (1.0.130-1) unstable; urgency=low
 
   * fixed problems with Template for multi-dimensional arrays (Bug #23632)

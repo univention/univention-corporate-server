@@ -255,7 +255,7 @@ class Instance( Base ):
 					'name' : udm_objects.description( obj ),
 					'path' : ldap_dn2path( obj.dn )
 					}
-				if request.options[ 'objectProperty' ] != 'name':
+				if request.options[ 'objectProperty' ] not in ( 'name', 'None' ):
 					entry[ request.options[ 'objectProperty' ] ] = obj[ request.options[ 'objectProperty' ] ]
 				entries.append( entry )
 			return entries
@@ -274,8 +274,11 @@ class Instance( Base ):
 		"""
 		module = self._get_module( request )
 		property_name = request.options.get( 'objectProperty' )
-
-		self.finished( request.id, module.get_default_values( property_name ) )
+		if property_name == 'None':
+			result = None
+		else:
+			result = module.get_default_values( property_name )
+		self.finished( request.id, result )
 
 	def containers( self, request ):
 		"""Returns the list of default containers for the given object

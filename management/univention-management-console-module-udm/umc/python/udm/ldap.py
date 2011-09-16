@@ -212,7 +212,7 @@ class UDM_Module( object ):
 			container = po.getBase()
 		elif container is None:
 			container = ''
-		if attribute is None:
+		if attribute is None or attribute == 'None':
 			if filter:
 				filter_s = str( filter )
 			else:

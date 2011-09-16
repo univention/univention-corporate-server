@@ -263,7 +263,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					objPlural: this.objectNamePlural,
 					objSingular: this.objectNameSingular
 				};
-				if (0 == nItemsTotal) {
+				if (0 === nItemsTotal) {
 					return this._('No %(objPlural)s could be found', map);
 				}
 				else if (1 == nItems) {
@@ -272,8 +272,30 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				else {
 					return this._('%(nSelected)d %(objPlural)s of %(nTotal)d selected', map);
 				}
-			})
+			}),
+			defaultAction: dojo.hitch( this, function( keys, items ) {
+				if ( undefined !== this._searchForm._widgets.superordinate ) {
+					var found = false;
+					this._searchForm._widgets.superordinate.store.fetch( { onItem: dojo.hitch( this, function( item ) {
+						if ( this._searchForm._widgets.superordinate.store.getValue( item, 'id' ) == keys[ 0 ] ) {
+							var handle = this.connect( this._searchForm._widgets.objectPropertyValue, 'onValuesLoaded', dojo.hitch( this, function() {
+								this.filter(this._searchForm.gatherFormValues());
+								this.disconnect(handle);
+							} ) );
+							this._searchForm._widgets.superordinate.set( 'value', keys[ 0 ] );
+							found = true;
+							return false;
+						}
+					} ) } )
+					if ( found === false ) {
+						return 'edit';
+					}
+				} else {
+					return 'edit';
+				}
+			} )
 		});
+
 		titlePane.addChild(this._grid);
 
 		//
@@ -293,9 +315,11 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// check whether we need to display containers or superordinates
 		var objTypeDependencies = [];
 		var objTypes = [];
+		var objProperties = [];
 		if ('navigation' == this.moduleFlavor) {
 			// add the type 'None' to objTypeas
 			objTypes.push({ id: 'None', label: this._( 'All types' ) });
+			objProperties.push({ id: 'None', label: this._( 'All properties' ) });
 		}
 		else if (superordinates && superordinates.length) {
 			// superordinates...
@@ -310,6 +334,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			});
 			layout[0].push('superordinate');
 			objTypeDependencies.push('superordinate');
+			objTypes.push({ id: this.moduleFlavor, label: this._( 'All types' ) });
+			objProperties.push({ id: 'None', label: this._( 'All properties' ) });
 		}
 		else if (containers && containers.length) {
 			// containers...
@@ -325,6 +351,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			});
 			layout[0].push('container');
 			objTypes.push({ id: this.moduleFlavor, label: this._( 'All types' ) });
+			objProperties.push({ id: 'None', label: this._( 'All properties' ) });
 		}
 
 		// add remaining elements of the search form
@@ -351,6 +378,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'objectProperty',
 			description: this._( 'The object property on which the query is filtered.' ),
 			label: this._( 'Property' ),
+			staticValues: objProperties,
 			dynamicValues: 'udm/properties',
 			dynamicOptions: { searchable: true },
 			umcpCommand: umcpCmd,
@@ -547,7 +575,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			var identifies = this.identityProperty();
 			var selected_value = this._searchForm._widgets.objectProperty.get( 'value' );
 			var columns = this._default_columns;
-			if ( identifies === null || selected_value != identifies.id ) {
+			if ( 'None' != selected_value && ( identifies === null || selected_value != identifies.id ) ) {
 				var new_column = {
 					name: selected_value,
 					label: this._searchForm._widgets.objectProperty.get( 'displayedValue' )
