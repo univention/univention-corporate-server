@@ -1,3 +1,9 @@
+univention-system-setup (5.0.5-1) unstable; urgency=low
+
+  * Some more cleanups (Bug #22587)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 17 Sep 2011 07:36:15 +0200
+
 univention-system-setup (5.0.4-1) unstable; urgency=low
 
   * store backup-join and slave-join.secret without newline (Bug #14186)

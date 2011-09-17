@@ -34,7 +34,7 @@
 import sys, os, string, getopt
 import types, traceback, thread
 import curses, curses.ascii
-import md5, apt_pkg, tempfile
+import apt_pkg, tempfile
 import univention_baseconfig
 import datetime
 
@@ -88,7 +88,7 @@ univention_ox_integration_oxae=baseConfig.get('univention-ox-directory-integrati
 if univention_ox_integration_oxae.lower() in ['true', 'yes', '1']:
 	cmdline['edition']=['oxae']
 else:
-	cmdline['edition']=['scalix','ugs']
+	cmdline['edition']=['ucs']
 
 # check for architecture and save the architecture in the cmdline dictonary
 f=os.popen('/bin/uname -m')
@@ -341,10 +341,10 @@ class mods:
 		self.baseconfig['packages']=[]
 
 		installed_packages=[]
-		packages = package_cache.Packages
+		packages = package_cache.packages
 		for package in packages:
-			if package.CurrentState == 6 and package.InstState == 0:
-				installed_packages.append(package.Name)
+			if package.current_state == 6 and package.inst_state == 0:
+				installed_packages.append(package.name)
 
 		import package_list
 		for category in package_list.PackageList:
@@ -586,7 +586,7 @@ os.dup2(1, tmp_file2)
 os.dup2(tmp_file1, 1)
 
 apt_pkg.init()
-package_cache = apt_pkg.GetCache()
+package_cache = apt_pkg.Cache()
 
 os.dup2(tmp_file2, 1)
 os.close(tmp_file1)
@@ -664,28 +664,17 @@ stdscr.refresh()
 
 cmdline['loaded_modules']=[]
 
-# these modules are disabled at the moment
-#				'partition':		'12_partition',
-#				'modules':			'01_modules',
-#				'role':				'10_role',
-#				'ssl':				'30_ssl',
-#				'join':				'31_join',
-#				'system_settings':	'70_system_settings'
-
-name_mapping={  'timezone':			'04_timezone',
-				'keyboard':			'05_keyboard',
-				'language':			'06_language',
-				'defaultlocale':		'07_dl',
-				'basis':			'11_basis',
-				'security':			'50_security',
-				'net':				'20_net',
-				'ssl':				'30_ssl',
-				'software':			'60_software' }
+name_mapping={  'timezone':			'20_timezone',
+				'keyboard':			'25_keyboard',
+				'language':			'05_language',
+				'basis':			'50_basis',
+				'net':				'70_net',
+				'software':			'85_software' }
 
 if cmdline.has_key('modules'):
 	for i in cmdline['modules'].split(','):
 		if i.strip() == 'all':
-			cmdline['modules'] = 'timezone, keyboard,language,defaultlocale,basis,net,security,software'
+			cmdline['modules'] = 'timezone, keyboard,language,basis,net,software'
 
 debug( '[%s] Calling %s' % (time.ctime(),sys.argv))
 if sys.argv[0].split('/')[-1] == 'univention-system-setup':
