@@ -11,6 +11,7 @@ Package: univention-server-master
 Architecture: all
 Pre-Depends: univention-ssl
 Recommends: univention-nagios-client,
+ openssh-server,
  python-univention-license
 Depends: univention-config-registry,
  univention-join,
@@ -54,6 +55,7 @@ Package: univention-server-backup
 Architecture: all
 Recommends: univention-nagios-client,
  univention-bind,
+ openssh-server,
  python-univention-license
 Depends: univention-config-registry,
  univention-join,
@@ -100,6 +102,7 @@ Package: univention-server-slave
 Architecture: all
 Recommends: univention-management-console,
  univention-bind,
+ openssh-server,
  univention-nagios-client
 Depends: univention-config-registry,
  univention-join,
@@ -140,6 +143,7 @@ Description: UCS - slave domain controller
 Package: univention-server-member
 Architecture: all
 Recommends: univention-management-console,
+ openssh-server,
  univention-nagios-client
 Depends: univention-config-registry,
  univention-join,
@@ -175,6 +179,7 @@ Package: univention-mobile-client
 Architecture: all
 Conflicts: univention-application-server
 Recommends: univention-management-console,
+ openssh-server,
  univention-nagios-client
 Depends: univention-policy-tools,
  univention-updater,
@@ -224,6 +229,7 @@ Replaces: univention-fat-client,
 Provides: univention-fat-client,
  univention-fat-client-small
 Recommends: univention-management-console,
+ openssh-server,
  univention-nagios-client
 Depends: univention-policy-tools,
  univention-updater,
@@ -264,6 +270,7 @@ Description: UCS - Managed Client
 
 Package: univention-basesystem
 Architecture: all
+Recommends: openssh-server
 Depends: univention-updater,
  univention-grub,
  univention-archive-key,
