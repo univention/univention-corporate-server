@@ -1,3 +1,11 @@
+univention-installer (7.0.50-1) unstable; urgency=low
+
+  * Use force-confold for server roles packages as well, otherwise
+    installation will be waiting for an answer while installing openssh-
+    server (Bug #23594)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 17 Sep 2011 14:40:44 +0200
+
 univention-installer (7.0.49-1) unstable; urgency=low
 
   * Consider the software selection (Bug #23594)

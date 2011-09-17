@@ -115,19 +115,19 @@ cat >>/instmnt/install_packages.sh <<__EOT__
 export DEBIAN_FRONTEND=noninteractive
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-server-master --yes
+	apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-server-master --yes
 elif [ "$server_role" = "domaincontroller_backup" ]; then
-	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-server-backup --yes
+	apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-server-backup --yes
 elif [ "$server_role" = "domaincontroller_slave" ]; then
-	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-server-slave --yes
+	apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-server-slave --yes
 elif [ "$server_role" = "memberserver" ]; then
-	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-server-member --yes
+	apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-server-member --yes
 elif [ "$server_role" = "managed_client" ]; then
-	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-managed-client --yes
+	apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-managed-client --yes
 elif [ "$server_role" = "mobile_client" ]; then
-	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-mobile-client univention-network-manager --yes
+	apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-mobile-client univention-network-manager --yes
 elif [ "$server_role" = "basesystem" ]; then
-	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-basesystem --yes
+	apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-basesystem --yes
 fi
 
 $PIPE dpkg --configure -a
