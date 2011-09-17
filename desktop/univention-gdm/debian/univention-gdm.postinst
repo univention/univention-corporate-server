@@ -33,7 +33,7 @@
 eval "$(univention-config-registry shell)"
 
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" -o ""$server_role" = "basesystem" ]; then
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" -o "$server_role" = "basesystem" ]; then
 	univention-config-registry set	gdm/menu/system?false \
 									gdm/menu/securesystem?true
 else

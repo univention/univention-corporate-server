@@ -1,3 +1,9 @@
+univention-gdm (8.0.5-2) unstable; urgency=low
+
+  * postinst: fixed typo from last commit (Bug #23640)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 17 Sep 2011 16:57:04 +0200
+
 univention-gdm (8.0.5-1) unstable; urgency=low
 
   * Disable system reboot on server roles (Bug #23640)
