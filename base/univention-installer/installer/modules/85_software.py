@@ -403,6 +403,10 @@ class object(content):
 
 	def input(self,key):
 
+		current_category=self._get_category_by_index(self.current)
+		if current_category:
+			self._save_packages(current_category, self.get_elem('packages_%s' % current_category).result())
+
 		if hasattr(self,"sub"):
 			res=self.sub.input(key)
 			if res == 'next' or res == 'prev':
@@ -443,9 +447,13 @@ class object(content):
 		result={}
 		p_list=[]
 		for c in self.categories.keys():
+			self.debug('c: %s' % c)
 			index=self.categories[c][1]
+			self.debug('\tindex: %s' % index)
 			for key in self.packages[index].keys():
+				self.debug('\t\tkey: %s' % key)
 				if self.packages[index][key][2] == 1:
+					self.debug('\t\t\tself.packages[index][key][2] ->  %s' % self.packages[index][key][2])
 					for p in self.packages[index][key][4]:
 						p_list.append(p)
 		result['packages'] = string.join(p_list, ' ')
