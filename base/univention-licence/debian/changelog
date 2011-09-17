@@ -1,3 +1,10 @@
+univention-licence (4.0.3-1) unstable; urgency=low
+
+  * lib/license_ldap.c: switch to ldap library from univentionpolicy
+    (Bug #23179)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 17 Sep 2011 19:52:00 +0200
+
 univention-licence (4.0.2-1) unstable; urgency=low
 
   * lib/license_ldap.c: use UCR to get the ldap/basedn (Bug #23179)
