@@ -1,3 +1,9 @@
+univention-licence (4.0.2-1) unstable; urgency=low
+
+  * lib/license_ldap.c: use UCR to get the ldap/basedn (Bug #23179)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 17 Sep 2011 17:57:01 +0200
+
 univention-licence (4.0.1-1) unstable; urgency=low
 
   * replace ldap/port by ldap/server/port (Bug #20026)

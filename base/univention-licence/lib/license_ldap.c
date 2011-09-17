@@ -37,7 +37,7 @@ int univention_license_ldap_init(void)
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "Can't open LDAP Connection.");
 			return 0;
 		}
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "Connected to:%s:%i. BaseDN:%s.",ldap_server,ldap_port,univention_license_ldap_get_basedn());
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "Connected to:%s:%i.",ldap_server,ldap_port);
 	}
 	
 	//get the baseDN from LDAPServer
@@ -69,25 +69,8 @@ void univention_license_ldap_free(void)
 */
 char* univention_license_ldap_get_basedn(void)
 {
+	baseDN = univention_config_get_string("ldap/base");
 	
-	if (baseDN == NULL)
-	{
-		lStrings* strings = NULL;
-		strings = univention_license_ldap_get_strings("", "namingContexts");
-		if (strings != NULL)
-		{
-			if (strings->num > 0)
-			{
-				baseDN = strdup(strings->line[0]);
-			}
-			else
-				univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "Can't get the BaseDN from LDAP-Server!");
-			univention_licenseStrings_free(strings);
-			strings = NULL;
-		}
-		else
-			univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "Can't get strings from LDAP-Server!");
-	}
 	return baseDN;
 }
 

@@ -1,4 +1,4 @@
-#! /bin/sh -e
+#! /bin/bash -e
 #
 # Univention License
 #  Shell Script to generate Univention License Keys
