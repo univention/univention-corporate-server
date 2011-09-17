@@ -1,3 +1,10 @@
+univention-bind (6.0.12-1) unstable; urgency=low
+
+  * Change the server password in the zone files while rotating the
+    server password (Bug #23176)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 17 Sep 2011 12:45:21 +0200
+
 univention-bind (6.0.11-1) unstable; urgency=low
 
   * Set dns/backend to ldap by default (Bug #23358)

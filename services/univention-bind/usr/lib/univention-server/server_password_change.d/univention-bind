@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+# Univention Bind
+#
+# Copyright 2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+eval "$(ucr shell)"
+
+if [ -n "$bind_bindpw" -a "$bind_bindpw" != "/etc/machine.secret" ] || [ "$bind_binddn = "None" || "$bind_binddn = "none" ]; then
+	# Skip the passwdord change
+	exit 0
+fi
+
+if [ "$1" = "prechange" ] ; then
+	# start / stop bind9 only if the ldap backend is configured
+	if [ "$dns_backend" = "ldap" ]; then
+		if /etc/init.d/bind9 status | grep -q "is running" ; then
+			ucr set dns/bind9/stoppedbyserverpasswordchange=yes >/dev/null
+			echo "stopping bind9 due to upcoming server password change" | logger -t "server-password-change"
+			/etc/init.d/bind9 stop >/dev/null
+		fi
+	fi
+fi
+
+if [ "$1" = "postchange" ] ; then
+	# update zone files
+	sed -i "s|\!x-bindpw=\(.*\),x-tls|\!x-bindpw=$(cat /etc/machine.secret),x-tls|" /etc/bind/univention.conf.d/*
+	
+	if [ "$dns_backend" = "ldap" ]; then
+		# start bind9 only if it has been stopped by this script
+		if [ "$dns_bind9_stoppedbyserverpasswordchange" = "yes" ] ; then
+			echo "starting bind9 after server password change" | logger -t "server-password-change"
+			/etc/init.d/bind9 start >/dev/null
+			ucr unset dns/bind9/stoppedbyserverpasswordchange >/dev/null
+		fi
+	fi
+fi

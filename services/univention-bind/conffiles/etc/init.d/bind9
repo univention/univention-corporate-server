@@ -103,8 +103,19 @@ case "$1" in
 			fi
 		fi
 		;;
+	status)
+		if	sv status univention-bind-samba4 | grep ^run: > /dev/null 2>&1 ||
+		sv status univention-bind | grep ^run: > /dev/null 2>&1 ||
+		sv status univention-bind-proxy | grep ^run: > /dev/null 2>&1; then
+			log_success_msg "bind9 is running"
+			exit 0
+		else
+ 			log_success_msg "bind9 is not running"
+			exit 3
+		fi
+		;;
 	*)
-		log_action_msg "Usage: /etc/init.d/bind9 {start|stop|restart|crestart|force-reload}"
+		log_action_msg "Usage: /etc/init.d/bind9 {start|stop|restart|crestart|force-reload|status}"
 		exit 1
 		;;
 esac
