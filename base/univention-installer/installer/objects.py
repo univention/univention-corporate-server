@@ -902,14 +902,12 @@ class radiobutton:
 			self.set(1)
 		elif input == curses.KEY_UP:
 			self.set(-1)
-		elif input == 32:
+		elif input == 32 or input == 10:
 			self.select()
 		elif input == 338: # PGDN
 			self.set(self.visible[1]-1)
 		elif input == 339: # PGUP
 			self.set(-(self.visible[1]-1))
-		elif input == 10:
-			return 'tab'
 		self.draw()
 
 

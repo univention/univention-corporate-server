@@ -1,3 +1,9 @@
+univention-installer (7.0.46-1) unstable; urgency=low
+
+  * Reduce the software selection (Bug #23594)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 17 Sep 2011 10:57:50 +0200
+
 univention-installer (7.0.45-1) unstable; urgency=low
 
   * Fixed typo in packages_list.py (Bug #23594)
