@@ -1,3 +1,9 @@
+univention-installer (7.0.48-1) unstable; urgency=low
+
+  * More software selection fixes and translation (Bug #23594)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 17 Sep 2011 12:47:34 +0200
+
 univention-installer (7.0.47-1) unstable; urgency=low
 
   * More software selection fixes and translation (Bug #23594)

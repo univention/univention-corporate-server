@@ -82,6 +82,7 @@ PackageList=[
 				{
 					'Name': _('Active Directory Connector'),
 					'Packages': ['univention-ad-connector'],
+					'Edition': [ 'ucs' ],
 					'EditionDisable': [ 'oxae' ],
 					'Active': [ ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],

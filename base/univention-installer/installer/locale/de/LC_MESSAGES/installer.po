@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-17 12:04+0200\n"
+"POT-Creation-Date: 2011-09-17 12:46+0200\n"
 "PO-Revision-Date: 2009-03-09 17:07+0100\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -273,7 +273,7 @@ msgstr "Samba 4 Dienste"
 
 #: installer/package_list.py:75
 msgid "Samba 3 server"
-msgstr "Samba 4 Server"
+msgstr "Samba 3 Server"
 
 #: installer/package_list.py:80
 msgid "Samba Services"
