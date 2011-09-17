@@ -152,8 +152,8 @@ PackageList=[
 					'Description': _('Print server based on cups'),
 				},
 				{
-					'Name': _('Web proxy server Squid)'),
-					'Packages': ['univention-squid', 'squid'],
+					'Name': _('Web proxy server (Squid)'),
+					'Packages': ['univention-squid'],
 					'Edition': [ 'ucs' ],
 					'Active': [ ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
@@ -177,7 +177,7 @@ PackageList=[
 	'Packages':
 			[
 				{
-					'Name': _('Network monitoring server (Nagios)'),
+					'Name': _('Network monitoring (Nagios)'),
 					'Packages': ['univention-nagios-server', 'univention-nagios-client'],
 					'Edition': [ 'ucs' ],
 					'Active': [ 'domaincontroller_master' ],

@@ -338,19 +338,18 @@ class object(content):
 			self.add_elem('packages_%s' % k, checkbox(p, self.minY+pos,self.minX+5, 45, 14, self.getSelected(k))) #5
 			pos += (len(p) + 1)
 
-		self.add_elem('headline', textline(_('You can choose to install software of the following'), self.minY,self.minX))
-		self.add_elem('headline2', textline(_('predefined software package'), self.minY+1,self.minX))
+		self.add_elem('headline', textline(_('Please select the software components you want to install.'), self.minY,self.minX))
 
 		if self.cmdline.has_key('mode') and self.cmdline['mode'] == 'setup':
-			self.add_elem('F12_button', button(_("F12-Accept changes"),self.minY+17,self.pos_x+65, align='right')) #6
+			self.add_elem('F12_button', button(_("F12-Accept changes"),self.pos_y+self.height-2,self.pos_x+self.width-2, align='right')) #6
 			self.debug('moaded_modules=%s' % self.cmdline['loaded_modules'])
 			if self.cmdline.has_key('loaded_modules') and len(self.cmdline['loaded_modules']) >1:
-				self.add_elem('F11_button', button(_("F11-Back"),self.minY+17,self.pos_x+2, align='left')) #7
+				self.add_elem('F11_button', button(_("F11-Back"),self.pos_y+self.height-2,self.pos_x+4, align='left')) #7
 			else:
-				self.add_elem('F11_button', textline("",self.minY+17,self.pos_x+2, align='left')) #7
+				self.add_elem('F11_button', textline("",self.pos_y+self.height-2,self.pos_x+4,align='left')) #7
 		else:
-			self.add_elem('F12_button', button(_("F12-Next"),self.minY+17,self.pos_x+65, align='right')) #6
-			self.add_elem('F11_button', button(_("F11-Back"),self.minY+17,self.pos_x+2, align='left')) #7
+			self.add_elem('F12_button', button(_("F12-Next"),self.pos_y+self.height-2,self.pos_x+self.width-2, align='right')) #6
+			self.add_elem('F11_button', button(_("F11-Back"),self.pos_y+self.height-2,self.pos_x+4, align='left')) #7
 		self.current=self.get_elem_id('F12_button')
 		self.get_elem('F12_button').set_on()
 
