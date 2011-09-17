@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.78-2) unstable; urgency=low
+
+  * Removed groupware opton from users/user license check (Bug
+    #23179,Bug #23642)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 17 Sep 2011 18:19:23 +0200
+
 univention-directory-manager-modules (7.0.78-1) unstable; urgency=low
 
   * Added a parameter update_zone to prevent the serial number increase.

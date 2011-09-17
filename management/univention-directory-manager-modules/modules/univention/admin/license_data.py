@@ -187,10 +187,5 @@ modules = {
 	'shares/printergroup': Attributes( UCS ),
 	'shares/share': Attributes( [UCS, OXAE] ),
 	'users/passwd': Attributes(),
-	'users/user': Attributes( options =
-				{
-					( UCS, ) : ( ( 'mail', True ), ( 'groupware', False ) ),
-					( UGS, ) : ( ( 'mail', True ), ( 'groupware', True ) ),
-					( UCS, UGS ) : ( ( 'mail', True ), ( 'groupware', moreGroupware ) ),
-				} )
+	'users/user': Attributes( ),
 }
