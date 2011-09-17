@@ -1,3 +1,9 @@
+univention-kde (6.0.5-1) unstable; urgency=low
+
+  * Added univention-gdm to recommends (Bug #23594)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 17 Sep 2011 13:00:46 +0200
+
 univention-kde (6.0.4-1) unstable; urgency=low
 
   * Some more package cleanups and reduce to a server desktop
