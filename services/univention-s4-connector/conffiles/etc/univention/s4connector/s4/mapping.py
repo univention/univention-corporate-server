@@ -239,7 +239,7 @@ s4_mapping = {
 					),
 				},
 		),
-	'domaincontroller_master': univention.s4connector.property (
+	'dc_master': univention.s4connector.property (
 			ucs_default_dn='cn=computers,@%@ldap/base@%@',
 			con_default_dn='OU=Domain Controllers,@%@connector/s4/ldap/base@%@',
 			ucs_module='computers/domaincontroller_master',
@@ -292,7 +292,7 @@ s4_mapping = {
 				},
 
 		),
-	'domaincontroller_backup': univention.s4connector.property (
+	'dc_backup': univention.s4connector.property (
 			ucs_default_dn='cn=computers,@%@ldap/base@%@',
 			con_default_dn='OU=Domain Controllers,@%@connector/s4/ldap/base@%@',
 			ucs_module='computers/domaincontroller_backup',
@@ -345,7 +345,7 @@ s4_mapping = {
 				},
 
 		),
-	'domaincontroller_slave': univention.s4connector.property (
+	'dc_slave': univention.s4connector.property (
 			ucs_default_dn='cn=computers,@%@ldap/base@%@',
 			con_default_dn='OU=Domain Controllers,@%@connector/s4/ldap/base@%@',
 			ucs_module='computers/domaincontroller_slave',
@@ -398,7 +398,7 @@ s4_mapping = {
 				},
 
 		),
-	'windowsdomaincontroller': univention.s4connector.property (
+	'windowsdc': univention.s4connector.property (
 			ucs_default_dn='cn=computers,@%@ldap/base@%@',
 			con_default_dn='OU=Domain Controllers,@%@connector/s4/ldap/base@%@',
 			ucs_module='computers/windows_domaincontroller',

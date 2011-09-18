@@ -82,6 +82,17 @@ import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.dns.ptr_record
 
 ''' HELPER functions '''
+def __append_dot(str):
+	if str[-1] != '.':
+		str += '.'
+	return str
+
+def __remove_dot(str):
+	if str[-1] == '.':
+		return str[:-1]
+	else:
+		return str
+
 def __get_zone_name(object):
 	zoneName=object['attributes'].get('zoneName')
 	if not zoneName:
@@ -163,7 +174,7 @@ def __unpack_soaRecord(object):
 		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_SOA:
 			soa['mname']=ndrRecord.data.mname
-			soa['rname']=ndrRecord.data.mname
+			soa['rname']=ndrRecord.data.rname
 			soa['serial']=str(ndrRecord.data.serial)
 			soa['refresh']=str(ndrRecord.data.refresh)
 			soa['retry']=str(ndrRecord.data.retry)
@@ -185,12 +196,12 @@ def __unpack_nsRecord(object):
 		dnsRecord=dnsRecord.encode('latin1')
 		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_NS:
-			ns.append(ndrRecord.data)
+			ns.append(__append_dot(ndrRecord.data))
 	return ns
 
 def __pack_cName(object, dnsRecords):
 	for c in object['attributes'].get('cNAMERecord', []):
-		c=univention.s4connector.s4.compatible_modstring(c)
+		c=univention.s4connector.s4.compatible_modstring(__remove_dot(c))
 		c_record=CName(c)
 		dnsRecords.append(ndr_pack(c_record))
 
@@ -201,7 +212,7 @@ def __unpack_cName(object):
 		dnsRecord=dnsRecord.encode('latin1')
 		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_CNAME:
-			c.append(ndrRecord.data)
+			c.append(__append_dot(ndrRecord.data))
 	return c
 
 def __pack_sRVrecord(object, dnsRecords):
@@ -211,7 +222,7 @@ def __pack_sRVrecord(object, dnsRecords):
 		priority=int(srv[0])
 		weight=int(srv[1])
 		port=int(srv[2])
-		target=srv[3]
+		target=__remove_dot(srv[3])
 		s=SRVRecord(target, port, priority, weight)
 		dnsRecords.append(ndr_pack(s))
 
@@ -222,12 +233,12 @@ def __unpack_sRVrecord(object):
 		dnsRecord=dnsRecord.encode('latin1')
 		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_SRV:
-			srv.append([str(ndrRecord.data.wPriority), str(ndrRecord.data.wWeight), str(ndrRecord.data.wPort), ndrRecord.data.nameTarget])
+			srv.append([str(ndrRecord.data.wPriority), str(ndrRecord.data.wWeight), str(ndrRecord.data.wPort), __append_dot(ndrRecord.data.nameTarget)])
 	return srv
 
 def __pack_ptrRecord(object, dnsRecords):
 	for ptr in object['attributes'].get('pTRRecord', []):
-		ptr=univention.s4connector.s4.compatible_modstring(ptr)
+		ptr=univention.s4connector.s4.compatible_modstring(__remove_dot(ptr))
 		ptr_record=PTRRecord(ptr)
 		dnsRecords.append(ndr_pack(ptr_record))
 
@@ -238,7 +249,7 @@ def __unpack_ptrRecord(object):
 		dnsRecord=dnsRecord.encode('latin1')
 		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_PTR:
-			ptr.append(ndrRecord.data)
+			ptr.append(__append_dot(ndrRecord.data))
 	return ptr
 
 ''' Create a forward zone in Samaba 4 '''
