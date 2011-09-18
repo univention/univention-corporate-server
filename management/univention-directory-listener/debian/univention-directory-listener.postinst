@@ -72,6 +72,15 @@ if [ -e /var/lib/univention-ldap/replog/replog ]; then
 	chmod 600 /var/lib/univention-ldap/replog/replog
 fi
 
+# The listener will stop the replication if a failed.ldif
+# and this file exist. If only the failed.ldif exists
+# the listener will write all changes into the failed.ldif
+# https://forge.univention.org/bugzilla/show_bug.cgi?id=22867
+if [ ! -e /var/lib/univention-ldap/notify/transaction ]; then
+	mkdir -p /var/lib/univention-ldap/notify/
+	touch /var/lib/univention-ldap/notify/transaction
+fi
+
 call_joinscript 03univention-directory-listener.inst
 
 

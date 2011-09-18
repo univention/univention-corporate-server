@@ -1,3 +1,10 @@
+univention-directory-listener (6.0.9-1) unstable; urgency=low
+
+  * Stop the replication on a DC slave as well if a failed.ldif exists
+    (Bug #22867)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 18 Sep 2011 10:25:18 +0200
+
 univention-directory-listener (6.0.8-2) unstable; urgency=low
 
   * fix copyright (Bug #23160)
