@@ -1,3 +1,9 @@
+univention-dhcp (6.0.5-4) unstable; urgency=low
+
+  * Fix fallback to default LDAP port (Bug 22112)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 19 Sep 2011 14:49:19 +0200
+
 univention-dhcp (6.0.5-3) unstable; urgency=low
 
   * debian/control: Depends univention-lib (Bug #21265)
