@@ -66,7 +66,7 @@ def getAdminConnection(start_tls=2, decode_ignorelist=[]):
 	bindpw=open('/etc/ldap.secret').read()
 	if bindpw[-1] == '\n':
 		bindpw=bindpw[0:-1]
-	port = int(ucr.get('ldap/master/port', '389'))
+	port = int(ucr.get('ldap/master/port', '7389'))
 	lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
 	return lo
 
@@ -76,7 +76,7 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[]):
 	bindpw=open('/etc/ldap-backup.secret').read()
 	if bindpw[-1] == '\n':
 		bindpw=bindpw[0:-1]
-	port = int(ucr.get('ldap/master/port', '389'))
+	port = int(ucr.get('ldap/master/port', '7389'))
 	try:
 		lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
 	except ldap.SERVER_DOWN, e:
@@ -97,11 +97,11 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True):
 
 	if ldap_master:
 		# Connect to DC Master
-		port = int(ucr.get('ldap/master/port', '389'))
+		port = int(ucr.get('ldap/master/port', '7389'))
 		lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
 	else:
 		# Connect to ldap/server/name
-		port = int(ucr.get('ldap/server/port', '389'))
+		port = int(ucr.get('ldap/server/port', '7389'))
 		try:
 			lo=access(host=ucr['ldap/server/name'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
 		except ldap.SERVER_DOWN, e:
