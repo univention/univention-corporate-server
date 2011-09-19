@@ -88,6 +88,12 @@ if [ ! -e /etc/runit/univention/univention-bind-samba4 ]; then
 	ln -s /etc/runit/univention-bind-samba4 /etc/runit/univention/univention-bind-samba4
 fi
 
+if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
+	# these might be hangovers from the installation
+	pkill /usr/bin/named
+	sleep 3
+fi
+
 # Restart the bind9 daemon and wait for a few seconds
 /etc/init.d/bind9 restart
 wait_for_dns
