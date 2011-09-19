@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.55-1) unstable; urgency=low
+
+  * use locales with language and territory; Bug #23645
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 19 Sep 2011 18:15:38 +0200
+
 univention-management-console-frontend (1.0.54-1) unstable; urgency=low
 
   * _SelectMixin: added options sortDynamicValues and sortStaticValues
