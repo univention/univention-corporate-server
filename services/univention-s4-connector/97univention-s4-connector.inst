@@ -77,7 +77,7 @@ if [ -n "$s4connectorservicehost_dns" ]; then	## there already is a system provi
 
 	## Don't autostart S4 Connector on other host by default, more config to be done for this to be useful
 	univention-config-registry set \
-		set connector/s4/autostart=no
+		set connector/s4/autostart?no
 
 else										## we are first system to provide this service
 
@@ -91,6 +91,9 @@ else										## we are first system to provide this service
 	samba-tool group addmembers "Domain Admins" ucs-s4sync #maybe we could use a more restrict group?
 
 	ucs_addServiceToLocalhost "${NAME}" "$@"
+
+	univention-config-registry set \
+		set connector/s4/autostart?yes
 
 fi
 
