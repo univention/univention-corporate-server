@@ -55,7 +55,7 @@ parser.add_option("-b", "--base-dn", help="ldap base dn", dest="basedn", action=
 def ldapbind (binddn):
 	bindpw=open('/etc/ldap.secret').read()
 	bindpw = bindpw.split("\n")[0]
-	lo=ldap.open('localhost', 389)
+	lo=ldap.open('localhost', 7389)
 	try:
 		lo.simple_bind_s(binddn, bindpw)
 	except:

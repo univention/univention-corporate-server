@@ -46,7 +46,7 @@ baseDN=baseConfig['ldap/base']
 
 print "using baseDN",baseDN
 
-lo=ldap.open('localhost', 389)
+lo=ldap.open('localhost', 7389)
 bindpw=open('/etc/ldap.secret').read()
 if bindpw[-1] == '\n':
 	bindpw=bindpw[0:-1]

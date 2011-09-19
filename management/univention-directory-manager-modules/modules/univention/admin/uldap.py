@@ -53,7 +53,7 @@ explodeDn=univention.uldap.explodeDn
 def getBaseDN(host='localhost', port=None, uri=None):
 	if not uri:
 		if not port:
-			port = int(configRegistry.get('ldap/server/port', 389))
+			port = int(configRegistry.get('ldap/server/port', 7389))
 		uri = "ldap://%s:%s" % (host, port)
 	l=ldap.initialize(uri)
 	result=l.search_s('',ldap.SCOPE_BASE,'objectClass=*',['NamingContexts'])
@@ -240,7 +240,7 @@ class access:
 			self.lo=lo
 		else:
 			if not port:
-				port = int(configRegistry.get('ldap/server/port', 389))
+				port = int(configRegistry.get('ldap/server/port', 7389))
 			try:
 				self.lo=univention.uldap.access(host, port, base, binddn, bindpw, start_tls)
 			except ldap.INVALID_CREDENTIALS,ex:
