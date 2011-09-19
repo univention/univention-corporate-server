@@ -159,7 +159,7 @@ class Processor( signals.Provider ):
 
 		self.__killtimer = {}
 
-		lo = ldap.open( ucr[ 'ldap/server/name' ], int( ucr.get( 'ldap/server/port', 389 ) ) )
+		lo = ldap.open( ucr[ 'ldap/server/name' ], int( ucr.get( 'ldap/server/port', 7389 ) ) )
 
 		try:
 			self.lo = univention.uldap.getMachineConnection( ldap_master = False )
