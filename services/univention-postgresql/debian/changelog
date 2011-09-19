@@ -1,3 +1,9 @@
+univention-postgresql (4.0.1-1) unstable; urgency=low
+
+  * Explicitly set file permissions for pg_hba.conf
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 19 Sep 2011 09:19:50 +0200
+
 univention-postgresql (4.0.0-0) unstable; urgency=low
 
   * support PostgreSQL 8.4

@@ -2,6 +2,9 @@ Type: multifile
 Multifile: etc/postgresql/7.4/main/pg_hba.conf
 Variables: interfaces/eth0/network
 Variables: interfaces/eth0/netmask
+User: postgres
+Group: postgres
+Mode: 0640
 
 Type: subfile
 Multifile: etc/postgresql/7.4/main/pg_hba.conf
@@ -33,6 +36,9 @@ Type: multifile
 Multifile: etc/postgresql/8.3/main/pg_hba.conf
 Variables: interfaces/eth0/network
 Variables: interfaces/eth0/netmask
+User: postgres
+Group: postgres
+Mode: 0640
 
 Type: subfile
 Multifile: etc/postgresql/8.3/main/pg_hba.conf
@@ -56,6 +62,9 @@ Variables: postgres8/listenaddress
 
 Type: multifile
 Multifile: etc/postgresql/8.4/main/pg_hba.conf
+User: postgres
+Group: postgres
+Mode: 0640
 
 Type: subfile
 Multifile: etc/postgresql/8.4/main/pg_hba.conf
