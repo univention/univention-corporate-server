@@ -1,6 +1,12 @@
+univention-dhcp (6.0.5-5) unstable; urgency=low
+
+  * debian/control: Depends on new u-join for /etc/m.s w/o \n (Bug #22112)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 19 Sep 2011 15:55:58 +0200
+
 univention-dhcp (6.0.5-4) unstable; urgency=low
 
-  * Fix fallback to default LDAP port (Bug 22112)
+  * Fix fallback to default LDAP port (Bug #22112)
   * Fix removing diverted template targets.
   * debian/control: Force dhcpd3-server upgrade.
 
