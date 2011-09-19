@@ -2,4 +2,4 @@ etc/bootsplash/themes/domaincontroller_slave/config/*cfg etc/bootsplash/themes/d
 etc/bootsplash/themes/domaincontroller_slave/images/*jpg etc/bootsplash/themes/domaincontroller_slave/images/
 server_password_change usr/lib/univention-server/
 univention-ldap-server-available usr/sbin/
-
+usr/lib/univention-server/server_password_change.d/README.API usr/lib/univention-server/server_password_change.d/

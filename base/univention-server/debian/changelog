@@ -1,3 +1,9 @@
+univention-server (7.0.7-1) unstable; urgency=low
+
+  * execute password change hooks (Bug #23362)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 19 Sep 2011 15:27:16 +0200
+
 univention-server (7.0.6-1) unstable; urgency=low
 
   * Added openssh-server to recommends (Bug #23594)

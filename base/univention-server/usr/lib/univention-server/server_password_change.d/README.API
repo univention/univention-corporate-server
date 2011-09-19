@@ -1,0 +1,8 @@
+server_password_change hook scripts
+
+Scripts must have a name matching ^[A-Za-z0-9_-]+$ and be executable
+Each script will be called (via run-parts) with parameter "prechange"
+before the password is changed and then either with "nochange" if the
+change failed, or "postchange" if the password was changed.  Old and
+new passwords can be found in /etc/machine.secret.old and
+/etc/machine.secret
