@@ -1,3 +1,9 @@
+univention-directory-policy (5.0.3-1) unstable; urgency=low
+
+  * use port 7389 as default for ldap/server/port (Bug #23231)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Sep 2011 18:33:05 +0200
+
 univention-directory-policy (5.0.2-1) unstable; urgency=low
 
   * Fixed typo in last commit: Added dependency to shell-univention-lib

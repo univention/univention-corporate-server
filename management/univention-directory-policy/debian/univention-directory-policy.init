@@ -39,7 +39,7 @@ case "$1" in
 		eval "$(univention-config-registry shell)"
 
 		if [ -z "$ldap_server_port" ]; then
-			ldap_server_port=389
+			ldap_server_port=7389
 		fi
 		if /bin/netcat -q0 -w4 $ldap_server_name $ldap_server_port </dev/null >/dev/null 2>&1; then
 			run-parts /usr/lib/univention-directory-policy >>/var/log/univention/ldap-policy.log 2>&1
