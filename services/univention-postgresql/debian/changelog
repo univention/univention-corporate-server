@@ -1,3 +1,9 @@
+univention-postgresql (4.0.2-1) unstable; urgency=low
+
+  * reduced shared_buffers to match kernel's SHMMAX (Bug #23343)
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Sep 2011 10:37:34 +0200
+
 univention-postgresql (4.0.1-1) unstable; urgency=low
 
   * Explicitly set file permissions for pg_hba.conf
