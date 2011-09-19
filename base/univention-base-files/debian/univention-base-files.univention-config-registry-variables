@@ -172,9 +172,9 @@ Description[en]=IPv6 address of the network interface
 Type=str
 Categories=system-network
 
-[interfaces/eth.*/ipv6/.*/netmask]
-Description[de]=IPv6-Netzmaske der Netzschnittstelle (CIDR-Notation)
-Description[en]=IPv6 netmask of the network interface (CIDR notation)
+[interfaces/eth.*/ipv6/.*/prefix]
+Description[de]=IPv6-Präfix der Netzschnittstelle (CIDR-Notation)
+Description[en]=IPv6 prefix of the network interface (CIDR notation)
 Type=str
 Categories=system-network
 

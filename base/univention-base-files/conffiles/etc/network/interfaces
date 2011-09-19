@@ -114,7 +114,7 @@ try:
 except ValueError:
 	print '# WARNING: %r is not a valid IPv6 address! (from UCRV ipv6/gateway)' % (gateway, )
 
-# UCRV format: interfaces/$DEVICE/ipv6/$NAME/{address,netmask}
+# UCRV format: interfaces/$DEVICE/ipv6/$NAME/{address,prefix}
 #                   0        1      2    3           4
 ipv6_interfaces = collections.defaultdict(set)
 for key in configRegistry:
@@ -126,38 +126,38 @@ for interface in ipv6_interfaces:
 	interface_addresses = []
 	for name in sorted(ipv6_interfaces[interface]):
 		address = configRegistry.get('interfaces/%s/ipv6/%s/address' % (interface, name, ))
-		netmask = configRegistry.get('interfaces/%s/ipv6/%s/netmask' % (interface, name, ))
+		prefix = configRegistry.get('interfaces/%s/ipv6/%s/prefix' % (interface, name, ))
 		parsedAddress = None
-		parsedNetwork = None
+		parsedPrefix = None
 		try:
 			if address:
 				parsedAddress = ipaddr.IPv6Address(address)
 		except ValueError:
 			print '# WARNING: %r is not a valid IPv6 address! (from UCRV interfaces/%s/ipv6/%s/address)' % (address, interface, name, )
 		try:
-			if parsedAddress and netmask:
-				parsedNetwork = ipaddr.IPv6Network(address + '/' + netmask)
+			if parsedAddress and prefix:
+				parsedPrefix = ipaddr.IPv6Network(address + '/' + prefix)
 		except ValueError:
-			print '# WARNING: %r is not a valid IPv6 netmask (should be integer 0-128)! (from UCRV interfaces/%s/ipv6/%s/netmask)' % (netmask, interface, name, )
-		if address is not None and netmask is not None:
-			interface_addresses.append((name, address, netmask, parsedNetwork, ))
+			print '# WARNING: %r is not a valid IPv6 prefix (should be integer 0-128)! (from UCRV interfaces/%s/ipv6/%s/prefix)' % (prefix, interface, name, )
+		if address is not None and prefix is not None:
+			interface_addresses.append((name, address, prefix, parsedPrefix, ))
 	if interface_addresses:
 		print
 		auto(interface)
 		print 'iface %s inet6 static' % (interface, )
 		# check if gateway is local on this interface
 		if not gateway_found and parsedGateway:
-			if [True for (n, a, nm, parsedNetmask, ) in interface_addresses if parsedNetmask and parsedGateway in parsedNetmask]:
+			if [True for (n, a, nm, parsedPrefix, ) in interface_addresses if parsedPrefix and parsedGateway in parsedPrefix]:
 				print '\tgateway %s' % gateway
 				gateway_found = True
-		((name, address, netmask, parsedNetmask, ), interface_addresses, ) = (interface_addresses[0], interface_addresses[1:], )
+		((name, address, prefix, parsedPrefix, ), interface_addresses, ) = (interface_addresses[0], interface_addresses[1:], )
 		# first address is a special case
 		print '# %s' % (name, )
 		print '\taddress %s' % address
-		print '\tnetmask %s' % netmask
+		print '\tnetmask %s' % prefix
 		# rest via up/down commands
-		for (name, address, netmask, parsedNetmask, ) in interface_addresses:
+		for (name, address, prefix, parsedPrefix, ) in interface_addresses:
 			print '# %s' % (name, )
-			print '\tup   /sbin/ip addr add %s/%s dev %s' % (address, netmask, interface, )
-			print '\tdown /sbin/ip addr del %s/%s dev %s' % (address, netmask, interface, )
+			print '\tup   /sbin/ip addr add %s/%s dev %s' % (address, prefix, interface, )
+			print '\tdown /sbin/ip addr del %s/%s dev %s' % (address, prefix, interface, )
 @!@

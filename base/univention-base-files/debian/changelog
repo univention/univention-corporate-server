@@ -1,3 +1,9 @@
+univention-base-files (1.0.24-1) unstable; urgency=low
+
+  * change netmask to prefix for IPv6 (Bug #22871)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 19 Sep 2011 12:57:43 +0200
+
 univention-base-files (1.0.23-1) unstable; urgency=low
 
   * added template etc/default/keyboard 
