@@ -113,7 +113,7 @@ dojo.declare("umc.modules.mrtg", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], {
 			{
 				grid.addChild(new dijit.layout.ContentPane({
 					content: 	dojox.string.sprintf(
-									"<h1 style='white-space:nowrap;'>%s: %s<h1>",
+									"<h2 style='white-space:nowrap;'>%s: %s<h2>",
 									this._("Period"),
 									tab_setup[i].label)
 				}));
