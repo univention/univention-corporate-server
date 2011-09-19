@@ -29,7 +29,7 @@
 # <http://www.gnu.org/licenses/>.
 
 eval "$(univention-config-registry shell ldap/master)"
-nc -z $ldap_master 389 2> /dev/null
+nc -z $ldap_master 7389 2> /dev/null
 
 if [ $? = 1 ]; then
     echo "LDAP master not available"
