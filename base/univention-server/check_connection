@@ -66,14 +66,14 @@ action () {
 connection_okay=0
 
 if [ -n "$ldap_server_name" ]; then
-	if /bin/netcat -q0 -w4 $ldap_server_name 389 </dev/null >/dev/null 2>&1; then
+	if /bin/netcat -q0 -w4 $ldap_server_name 7389 </dev/null >/dev/null 2>&1; then
 		connection_okay=1
 	fi
 fi
 
 if [ -n "$ldap_server_addition" ] && [ $connection_okay = 0 ]; then
 	for h in  $ldap_server_addition; do
-		if /bin/netcat -q0 -w4 $h 389 </dev/null >/dev/null 2>&1; then
+		if /bin/netcat -q0 -w4 $h 7389 </dev/null >/dev/null 2>&1; then
 			connection_okay=1
 			break
 		fi

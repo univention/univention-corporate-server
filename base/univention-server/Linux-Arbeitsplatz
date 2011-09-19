@@ -33,7 +33,7 @@
 eval "$(/usr/sbin/univention-config-registry shell)"
 
 if [ -z "$ldap_port" ]; then
-	ldap_port=389
+	ldap_port=7389
 fi
 
 userdn="$(ldapsearch -x -h $ldap_server_name -p $ldap_port -b $ldap_base "(&(uid=$USER)(objectClass=posixAccount))" -LLL dn | grep dn | sed -e 's/dn: //g')"

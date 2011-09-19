@@ -1,3 +1,9 @@
+univention-server (7.0.8-1) unstable; urgency=low
+
+  * use port 7389 as default for ldap/server/port (Bug #23231)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Sep 2011 18:26:01 +0200
+
 univention-server (7.0.7-1) unstable; urgency=low
 
   * execute password change hooks (Bug #23362)
