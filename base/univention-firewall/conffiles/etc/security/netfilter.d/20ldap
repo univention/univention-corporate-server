@@ -32,8 +32,14 @@
 
 @!@
 if baseConfig.has_key('security/services/ldap') and baseConfig['security/services/ldap'] == 'disabled':
-	print '/sbin/iptables -A INPUT  -p tcp --dport 389 -j REJECT'
-	print '/sbin/iptables -A INPUT  -p udp --dport 389 -j REJECT'
-	print '/sbin/iptables -A INPUT  -p tcp --dport 636 -j REJECT'
-	print '/sbin/iptables -A INPUT  -p udp --dport 636 -j REJECT'
+
+	for port in baseConfig.get('slapd/port', '').split(','):
+		port = port.strip()
+		for transport in ('tcp', 'udp'):
+			print '/sbin/iptables -A INPUT  -p %s --dport %s -j REJECT'	% (transport, port)
+
+	for port in baseConfig.get('slapd/port/ldaps', '').split(','):
+		port = port.strip()
+		for transport in ('tcp', 'udp'):
+			print '/sbin/iptables -A INPUT  -p %s --dport %s -j REJECT'	% (transport, port)
 @!@
