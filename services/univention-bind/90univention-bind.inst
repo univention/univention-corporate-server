@@ -42,6 +42,13 @@ if test -z "$ldap_server_ip" -a -z "$ldap_server_name"; then
 	exit 1
 fi
 
+wait_for_dns(){
+if [ "$server_role" != "domaincontroller_master" ]
+    then
+    continue=1; while [ $continue = "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
+fi
+}
+
 univention-config-registry set dns/backend?ldap
 
 if [ -z "$nameserver_external" -o "$nameserver_external" = false -o "$nameserver_external" = no ]; then
@@ -80,6 +87,11 @@ fi
 if [ ! -e /etc/runit/univention/univention-bind-samba4 ]; then
 	ln -s /etc/runit/univention-bind-samba4 /etc/runit/univention/univention-bind-samba4
 fi
+
+# Restart the bind9 daemon and wait for a few seconds
+/etc/init.d/bind9 restart
+wait_for_dns
+
 old=`univention-directory-manager policies/dhcp_dns list "$@" --filter cn=default-settings | grep domain_name_servers | sed -e 's|.*domain_name_servers: ||'`
 if [ -z "$old" -o "$old" = "None" ]; then
 		univention-directory-manager policies/dhcp_dns modify "$@" --ignore_exists --dn "cn=default-settings,cn=dns,cn=dhcp,cn=policies,$ldap_base" --set name=default-settings --set domain_name=$domainname --set domain_name_servers=$interfaces_eth0_address

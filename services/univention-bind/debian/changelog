@@ -1,3 +1,10 @@
+univention-bind (6.0.13-1) unstable; urgency=low
+
+  * Restart bind9 daemon in 90univention-bind.inst and wait for the dns
+    replicaton (Bug #23358)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Sep 2011 07:07:55 +0200
+
 univention-bind (6.0.12-1) unstable; urgency=low
 
   * Change the server password in the zone files while rotating the
