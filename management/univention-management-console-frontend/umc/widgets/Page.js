@@ -173,6 +173,7 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 				// remove the text from the layout and destroy widget
 				this.removeChild(this._helpTextPane);
 				this._helpTextPane.destroyRecursive();
+				this._helpTextPane = null;
 				//this.layout();
 			})
 		}).play();
