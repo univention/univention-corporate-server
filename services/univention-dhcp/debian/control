@@ -15,6 +15,7 @@ Depends: univention-config (>= 7),
  univention-directory-listener,
  univention-runit (>= 0.2),
  univention-join,
+ shell-univention-lib (>= 1.0.3-1),
  ${misc:Depends}
 Conflicts: univention-dns
 Replaces: univention-dns
