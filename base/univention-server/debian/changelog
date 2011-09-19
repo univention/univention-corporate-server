@@ -1,3 +1,9 @@
+univention-server (7.0.9-1) unstable; urgency=low
+
+  * Use ldap/server/port instead of ldap/port (Bug #23711)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Sep 2011 19:40:41 +0200
+
 univention-server (7.0.8-1) unstable; urgency=low
 
   * use port 7389 as default for ldap/server/port (Bug #23231)
