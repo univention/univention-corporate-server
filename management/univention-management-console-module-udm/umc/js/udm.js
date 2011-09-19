@@ -286,7 +286,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 							found = true;
 							return false;
 						}
-					} ) } )
+					} ) } );
 					if ( found === false ) {
 						return 'edit';
 					}
@@ -643,6 +643,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			umcpCommand: dojo.hitch(this, 'umcpCommand'),
 			moduleFlavor: this.moduleFlavor,
 			selectedContainer: selectedContainer,
+			defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null,
 			onDone: dojo.hitch(this, function(options) {
 				// when the options are specified, create a new detail page
 				options.objectType = options.objectType || this.moduleFlavor; // default objectType is the module flavor

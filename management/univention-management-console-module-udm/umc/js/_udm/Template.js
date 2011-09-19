@@ -132,7 +132,7 @@ dojo.declare('umc.modules._udm.Template', null, {
 			};
 
 			// match all variable references
-			this._parse(updater)
+			this._parse(updater);
 			if (updater.references.length) {
 				// we have a dynamic value with variable references
 				updaters.push(updater);

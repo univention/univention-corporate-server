@@ -32,6 +32,10 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 	//		can be specified via this property.
 	selectedContainer: { id: '', label: '', path: '' },
 
+	// defaultObjectType: String
+	//		The object type that is selected by default.
+	defaultObjectType: null,
+
 	// UDM object type name in singular and plural
 	objectNameSingular: '',
 	objectNamePlural: '',
@@ -107,6 +111,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 					type: 'ComboBox',
 					name: 'objectType',
 					label: 'Object type',
+					value: this.defaultObjectType,
 					description: this._('The exact object type of the new %s.', this.objectNameSingular),
 					umcpCommand: this.umcpCommand,
 					dynamicValues: 'udm/types',
@@ -130,6 +135,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 					widgets.push({
 						type: 'ComboBox',
 						name: 'objectType',
+						value: this.defaultObjectType,
 						label: 'Object type',
 						description: this._('The exact object type of the new UDM object.'),
 						staticValues: types
