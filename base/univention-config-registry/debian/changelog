@@ -1,3 +1,9 @@
+univention-config-registry (7.0.16-3) unstable; urgency=low
+
+  * debian/control: Tighten dependency on p-u-c-r (Bug #23202)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 19 Sep 2011 12:42:54 +0200
+
 univention-config-registry (7.0.16-2) unstable; urgency=low
 
   * Add a new sub directory for UCR templates, which are removed during

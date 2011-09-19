@@ -29,7 +29,9 @@ Description: UCS transitional package - base configuration
 
 Package: univention-config
 Architecture: all
-Depends: python-univention, pciutils, python-univention-config-registry,
+Depends: python-univention,
+ pciutils,
+ python-univention-config-registry (= ${source:Version}),
  ${misc:Depends}, ${python:Depends}
 Replaces: univention-config-registry (<< 7.0.9~)
 Description: UCS - configuration manager
