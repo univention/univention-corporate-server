@@ -1,3 +1,9 @@
+univention-pam (5.0.14-1) unstable; urgency=low
+
+  * added password change script (Bug #23366)
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Sep 2011 09:19:09 +0200
+
 univention-pam (5.0.13-1) unstable; urgency=low
 
   * new host, group and passwd nscd cache size (Bug #21358)
