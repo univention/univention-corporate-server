@@ -1,3 +1,9 @@
+univention-installer (7.0.52-1) unstable; urgency=low
+
+  * At the momemnt Samba4 is not allowed on a memberserver (Bug #22559)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Sep 2011 20:06:30 +0200
+
 univention-installer (7.0.51-2) unstable; urgency=low
 
   * Set focus to first object (Bug #23594)

@@ -60,7 +60,7 @@ PackageList=[
 					'Packages': ['univention-samba4'],
 					'Edition': [ 'ucs' ],
 					'Active': [ ],
-					'Possible': [ 'domaincontroller_slave', 'memberserver' ],
+					'Possible': [ 'domaincontroller_slave'],
 					'Description': _("Samba 4 Services"),
 				},
 				{
