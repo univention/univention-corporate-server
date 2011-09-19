@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.133-1) unstable; urgency=low
+
+  * MultiObjectSelect: added change of label for search property (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 19 Sep 2011 12:54:16 +0200
+
 univention-management-console-module-udm (1.0.132-1) unstable; urgency=low
 
   * added evaluation of UCR variable for default object type when adding a new

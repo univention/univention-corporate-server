@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-19 12:12+0200\n"
+"POT-Creation-Date: 2011-09-19 12:46+0200\n"
 "PO-Revision-Date: 2011-09-07 20:25+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -231,7 +231,8 @@ msgstr "Durch Richtlinien ererbte Eigenschaften"
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: umc/js/udm.js:390 umc/js/udm.js:406 umc/js/_udm/MultiObjectSelect.js:77
+#: umc/js/udm.js:390 umc/js/udm.js:406 umc/js/_udm/MultiObjectSelect.js:76
+#: umc/js/_udm/MultiObjectSelect.js:92
 msgid "Property value"
 msgstr "Eigenschaftswert"
 
@@ -303,7 +304,7 @@ msgstr "Das übergeordnete Objekt, für welches die Suche ausgeführt wird."
 msgid "The type of the UDM object."
 msgstr "Der Type des UDM-Objektes."
 
-#: umc/js/udm.js:405 umc/js/_udm/MultiObjectSelect.js:76
+#: umc/js/udm.js:405 umc/js/_udm/MultiObjectSelect.js:91
 msgid ""
 "The value for the specified object property on which the query is filtered."
 msgstr "Der Wert der Objekteigenschaft, nach der gesucht wird."

@@ -69,7 +69,22 @@ dojo.declare("umc.modules._udm.MultiObjectSelect", [ umc.widgets.MultiObjectSele
 			dynamicValues: 'udm/properties',
 			dynamicOptions: { searchable: true },
 			umcpCommand: dojo.hitch(this, 'umcpCommand'),
-			value: autoObjProperty //TODO
+			value: autoObjProperty, //TODO
+			onChange: dojo.hitch(this, function(newVal) {
+				// get the current label of objectPropertyValue
+				var widget = this.getQueryWidget('objectProperty');
+				var label = this._( 'Property value' );
+				dojo.forEach(widget.getAllItems(), function(iitem) {
+					if (newVal == iitem.id) {
+						label = iitem.label;
+						return false;
+					}
+				});
+
+				// update the label of objectPropertyValue
+				widget = this.getQueryWidget('objectPropertyValue');
+				widget.set('label', label);
+			})
 		}, {
 			type: 'MixedInput',
 			name: 'objectPropertyValue',
