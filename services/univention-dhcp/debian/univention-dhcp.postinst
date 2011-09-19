@@ -51,17 +51,17 @@ dpkg-maintscript-helper rm_conffile "/etc/univention/templates/files/etc/init.d/
 
 case "$1" in
 configure)
-	# UCR unregister old template
+	# Remove files diverted by old templates
 	if dpkg --compare-versions "$2" lt-nl "6.0.0"
 	then
-		if [ -n "$(dpkg-divert --list /etc/dhcp3/dhcpd.conf)" ]
-		then
-			rm -f /etc/dhcp3/dhcpd.conf && dpkg-divert --quiet --rename --divert /etc/dhcp3/dhcpd.conf.debian --remove /etc/dhcp3/dhcpd.conf
-		fi
-		if [ -n "$(dpkg-divert --list /etc/init.d/dhcp3-server)" ]
-		then
-			rm -f /etc/init.d/dhcp3-server && dpkg-divert --quiet --rename --divert /etc/init.d/dhcp3-server.debian --remove /etc/init.d/dhcp3-server
-		fi
+		for f in /etc/dhcp3/dhcpd.conf /etc/init.d/dhcp3-server
+		do
+			if [ -n "$(dpkg-divert --list "$f")" ]
+			then
+				[ -f "$f" ] && [ -f "$f".debian ] && rm -f "$f"
+				dpkg-divert --quiet --rename --divert "$f".debian --remove "$f"
+			fi
+		done
 	fi
 	;;
 esac

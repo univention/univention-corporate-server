@@ -19,6 +19,7 @@ Depends: univention-config (>= 7),
  ${misc:Depends}
 Conflicts: univention-dns
 Replaces: univention-dns
+Breaks: dhcp3-server (<< 4)
 Description: UCS - DHCP server
  This package installs a DHCP server that uses LDAP for
  its configuration.
