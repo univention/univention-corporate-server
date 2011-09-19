@@ -47,7 +47,7 @@ case "$1" in
 		fi
 
 		log_action_cont_msg "ldap[$ldap_server_name]"
-		ldap_server_port=${ldap_server_port:-389}
+		ldap_server_port=${ldap_server_port:-7389}
 		if ! netcat -q0 -w4 "$ldap_server_name" $ldap_server_port </dev/null >/dev/null 2>&1
 		then
 			log_action_end_msg 1

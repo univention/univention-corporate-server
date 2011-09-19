@@ -1,3 +1,9 @@
+univention-updater (7.0.23-1) unstable; urgency=low
+
+  * use port 7389 a default for ldap/server/port (Bug #23231)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Sep 2011 17:20:24 +0200
+
 univention-updater (7.0.22-1) unstable; urgency=low
 
   * purge packages libnjb5 and console-tools in postup.sh (Bug #22601)
