@@ -69,7 +69,7 @@ msgstr "Erweiterte Einstellungen"
 
 #: umc/js/udm.js:342
 msgid "All containers"
-msgstr "Allen Containern"
+msgstr "Alle Container"
 
 #: umc/js/udm.js:322 umc/js/udm.js:338 umc/js/udm.js:354
 #, fuzzy
