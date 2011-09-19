@@ -54,7 +54,7 @@ univention-directory-manager dhcp/server create "$@" --ignore_exists \
 	--superordinate "cn=$domainname,cn=dhcp,$ldap_base" \
 	--set server="$hostname" || exit 1
 
-for var in "${!interfaces_*}"
+for var in ${!interfaces_*} # no quotes!
 do
 	case "$var" in
 	interfaces_*_network) network="${!var}" var=${var%work}mask netmask="${!var}" ;;

@@ -1,3 +1,10 @@
+univention-dhcp (6.0.5-2) unstable; urgency=low
+
+  * Fix spelling of is_true (Bug #22122)
+  * Fix quoting of ${!...}.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 19 Sep 2011 10:46:38 +0200
+
 univention-dhcp (6.0.5-1) unstable; urgency=low
 
   * s|/etc/dhcp3|/etc/dhcp| (Bug #22112)

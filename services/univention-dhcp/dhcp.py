@@ -61,7 +61,7 @@ def postrun():
 	ucr.load()
 
 	if ucr.is_true("dhcpd/autostart", False):
-		if ucr.is_trze('dhcpd/restart/listener', False):
+		if ucr.is_true('dhcpd/restart/listener', False):
 			ud.debug(ud.LISTENER, ud.INFO, 'DHCP: Restarting server')
 			try:
 				listener.run('/etc/init.d/univention-dhcp', ['univention-dhcp', 'restart'], uid=0)
