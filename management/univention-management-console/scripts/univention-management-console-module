@@ -33,6 +33,7 @@
 
 from univention.management.console.log import MODULE, log_init
 from univention.management.console.config import MODULE_DEBUG_LEVEL, ucr
+from univention.lib.i18n import Locale
 
 from daemon.daemon import DaemonContext
 from optparse import OptionParser
@@ -75,10 +76,11 @@ if __name__ == '__main__':
 
 	localeok = False
 	try:
-		locale.setlocale( locale.LC_MESSAGES, locale.normalize( options.language ) )
+		locale_obj = Locale( options.language )
+		locale.setlocale( locale.LC_MESSAGES, str( locale_obj ) )
 		localeok = True
 	except:
-		MODULE.error( 'The specified locale is not available (cmdline: %s)' % options.language )
+		MODULE.error( 'The specified locale is not available (cmdline: %s)' % str( locale_obj ) )
 
 	import univention.management.console.protocol as umcp
 

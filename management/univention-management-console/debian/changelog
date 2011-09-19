@@ -1,3 +1,9 @@
+univention-management-console (4.0.58-1) unstable; urgency=low
+
+  * support modification of locale of UCM module process; Bug #23645
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 19 Sep 2011 18:17:33 +0200
+
 univention-management-console (4.0.57-1) unstable; urgency=low
 
   * use different UCR variable for UMC module server timeout; Bug #22881

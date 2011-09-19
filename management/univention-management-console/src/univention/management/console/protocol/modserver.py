@@ -39,6 +39,8 @@ from ..acl import ACLs
 from ..module import Module
 from ..log import MODULE
 
+from univention.lib.i18n import Locale
+
 import univention.config_registry
 
 configRegistry = univention.config_registry.ConfigRegistry()
@@ -174,9 +176,11 @@ class ModuleServer( Server ):
 				elif key == 'locale' and value is not None:
 					self.__locale = value
 					try:
-						locale.setlocale( locale.LC_MESSAGES, locale.normalize( self.__locale ) )
+						locale_obj = Locale( value )
+						locale.setlocale( locale.LC_MESSAGES, str( locale_obj ) )
+						MODULE.info( "Setting specified locale (%s)" % str( locale_obj ) )
 					except locale.Error:
-						MODULE.warn( "Specified locale is not available (%s)" % self.__locale )
+						MODULE.warn( "Specified locale is not available (%s)" % str( locale_obj ) )
 						# specified locale is not available -> using system locale
 						# resp.status = BAD_REQUEST_UNAVAILABLE_LOCALE
 						# resp.message = status_description( resp.status )
