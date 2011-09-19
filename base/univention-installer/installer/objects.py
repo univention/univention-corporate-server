@@ -1238,9 +1238,10 @@ class content:
 			self.layout()
 			#if not hasattr(self,"sub"):
 			#	self.tab() # activate next (usable) input-element
-			if self.current==0 and not hasattr(self,"sub"):  # if next input-element is 'back' activate 'next'
-				self.tab()
-				self.tab()
+			if not hasattr(self, 'skip_tab') or not self.skip_tab:
+				if self.current==0 and not hasattr(self,"sub"):  # if next input-element is 'back' activate 'next'
+					self.tab()
+					self.tab()
 
 		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
 		self.header.draw()
