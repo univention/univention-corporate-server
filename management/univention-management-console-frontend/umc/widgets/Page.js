@@ -44,7 +44,6 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 	//style: 'width: 100%; height: 100%;',
 
 	_helpTextPane: null,
-	_helpTextShown: true,
 	_subscriptionHandle: null,
 	_footer: null,
 
@@ -53,9 +52,6 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 
 		// remove title from the attributeMap
 		delete this.attributeMap.title;
-
-		// get user preferences for the module helpText
-		this._helpTextShown = umc.tools.preferences('moduleHelpText');
 	},
 
 	buildRendering: function() {
@@ -68,20 +64,10 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 			'class': 'umcPageHeader'
 		}));
 
-		// put the help text in a Text widget and then add it to the container
-		this._helpTextPane = new umc.widgets.Text({
-			content: this.helpText || '',
-			region: 'top',
-			'class': 'umcPageHelpText'
-		});
-		this.addChild(this._helpTextPane);
-
-		// hide the help text if specified
-		if (!this._helpTextShown) {
-			dojo.style(this._helpTextPane.domNode, {
-				opacity: 0,
-				display: 'none'
-			});
+		if (umc.tools.preferences('moduleHelpText') && this.helpText) {
+			// display the module helpText
+			this._createHelpTextPane();
+			this.addChild(this._helpTextPane, 1);
 		}
 
 		if (!this.noFooter) {
@@ -104,7 +90,7 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 			if (this.footerButtons && dojo.isArray(this.footerButtons) && this.footerButtons.length) {
 				var buttons = umc.render.buttons(this.footerButtons);
 				dojo.forEach(buttons._order, function(ibutton) {
-					if ('submit' == ibutton.type) {
+					if ('submit' == ibutton.type || ibutton.defaultButton) {
 						footerRight.addChild(ibutton);
 					}
 					else {
@@ -134,6 +120,14 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 		dojo.unsubscribe(this._subscriptionHandle);
 	},
 
+	_createHelpTextPane: function() {
+		this._helpTextPane = new umc.widgets.Text({
+			content: this.helpText,
+			region: 'top',
+			'class': 'umcPageHelpText'
+		});
+	},
+
 	addChild: function(child) {
 		// use 'center' as default region
 		if (!child.region) {
@@ -144,29 +138,30 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 
 	showDescription: function() {
 		// if we don't have a help text, ignore call
-		if (!this._helpTextPane || this._helpTextShown) {
+		if (this._helpTextPane || !this.helpText) {
 			return;
 		}
 
+		// put the help text in a Text widget and then add it to the container
 		// make the node transparent, yet displayable
+		this._createHelpTextPane();
 		dojo.style(this._helpTextPane.domNode, {
 			opacity: 0,
 			display: 'block'
 		});
-		this._helpTextShown = true;
-		this.layout();
+		this.addChild(this._helpTextPane, 1);
+		//this.layout();
 
 		// fade in the help text
 		dojo.fadeIn({
 			node: this._helpTextPane.domNode,
 			duration: 500
 		}).play();
-
 	},
 
 	hideDescription: function() {
-		// if we don't have a help text or the help text is already hidden, ignore call
-		if (!this._helpTextPane || !this._helpTextShown) {
+		// if we don't have a help text visible, ignore call
+		if (!this._helpTextPane) {
 			return;
 		}
 
@@ -175,14 +170,12 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 			node: this._helpTextPane.domNode,
 			duration: 500,
 			onEnd: dojo.hitch(this, function() {
-				this._helpTextShown = false;
-				dojo.style(this._helpTextPane.domNode, {
-					display: 'none'
-				});
-				this.layout();
+				// remove the text from the layout and destroy widget
+				this.removeChild(this._helpTextPane);
+				this._helpTextPane.destroyRecursive();
+				//this.layout();
 			})
 		}).play();
-
 	}
 });
 

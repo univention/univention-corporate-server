@@ -118,6 +118,12 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		return dojo.clone(this._values);
 	},
 
+	getQueryWidget: function(name) {
+		// summary:
+		//		Return the widget according to the specified name.
+		return this._detailDialog._form.getWidget(name);
+	},
+
 	_addElements: function(values) {
 		// get all current entries
 		var newValues = this._values;

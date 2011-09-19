@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.54-1) unstable; urgency=low
+
+  * _SelectMixin: added options sortDynamicValues and sortStaticValues
+  * MultiObjectSelect: added method getQueryWidge()
+  * Page: remove the widget that displays help text from the layout
+  (Bug #22881, Bug #23662)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 19 Sep 2011 12:52:27 +0200
+
 univention-management-console-frontend (1.0.53-1) unstable; urgency=low
 
   * if a function is defined for defaultAction of umc.widgets.Grid it may

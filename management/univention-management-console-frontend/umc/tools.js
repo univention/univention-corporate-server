@@ -245,7 +245,7 @@ dojo.mixin(umc.tools, {
 
 		// clone array and walk through it
 		scope = scope || dojo.global;
-		var res = dojo.clone(array)
+		var res = dojo.clone(array);
 		var stack = [ res ];
 		while (stack.length) {
 			// new array, go through its elements

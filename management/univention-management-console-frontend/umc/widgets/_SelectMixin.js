@@ -27,12 +27,20 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	//		a reference of a function returning a dictionary can also be specified.
 	dynamicOptions: null,
 
+	// sortDynamicValues: Boolean
+	//		Controls whether dynamic values are sorted automatically.
+	sortDynamicValues: true,
+
 	// staticValues: Object[]
 	//		Array of id/label objects containing predefined values, e.g.
 	//		[ { id: 'de', label: 'German' }, { id: 'en', label: 'English' } ].
 	//		Can be mixed with dynamicValues with the predefined values being
 	//		displayed first. May also be only an array with strings (i.e., id==label).
 	staticValues: [],
+
+	// sortStaticValues: Boolean
+	//		Controls whether static values are sorted automatically.
+	sortStaticValues: false,
 
 	// depends: String?|String[]?
 	//		Specifies that values need to be loaded dynamically depending on
@@ -212,6 +220,14 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		// convert items to the correct format
 		var staticValues = this._convertItems(this.staticValues);
 
+		if (this.sortStaticValues) {
+			// sort items according to their displayed name
+			staticValues.sort(umc.tools.cmpObjects({
+				attribute: 'label',
+				ignoreCase: true
+			}));
+		}
+
 		// add all static values to the store
 		this._ids = {};
 		dojo.forEach(staticValues, function(iitem) {
@@ -241,11 +257,13 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		// convert items to the correct format
 		var items = this._convertItems(values);
 
-		// sort items according to their displayed name
-		items.sort(umc.tools.cmpObjects({
-			attribute: 'label',
-			ignoreCase: true
-		}));
+		if (this.sortDynamicValues) {
+			// sort items according to their displayed name
+			items.sort(umc.tools.cmpObjects({
+				attribute: 'label',
+				ignoreCase: true
+			}));
+		}
 
 		// add items to the store
 		dojo.forEach(items, function(iitem) {
