@@ -55,7 +55,10 @@ class Locale( object ):
 		if not regex:
 			raise AttributeError( 'attribute does not match locale specification language[_territory][.codeset][@modifier]' )
 
+		self.codeset = 'UTF-8' # default encoding
 		for key, value in regex.groupdict().items():
+			if value is None:
+				continue
 			setattr( self, key, value )
 
 	def __nonzero__( self ):
