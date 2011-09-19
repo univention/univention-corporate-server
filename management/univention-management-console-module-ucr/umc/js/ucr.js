@@ -100,13 +100,11 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var columns = [{
 			name: 'key',
 			label: this._( 'UCR variable' ),
-			description: this._( 'Unique name of the UCR variable' ),
-			editable: false
+			description: this._( 'Unique name of the UCR variable' )
 		}, {
 			name: 'value',
 			label: this._( 'Value' ),
-			description: this._( 'Value of the UCR variable' ),
-			editable: true
+			description: this._( 'Value of the UCR variable' )
 		}];
 
 		// generate the data grid

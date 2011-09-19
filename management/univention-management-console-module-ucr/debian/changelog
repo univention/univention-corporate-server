@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (1.0.24-1) unstable; urgency=low
+
+  * disabled inline editing in the grid in favor of default actions (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 19 Sep 2011 14:34:00 +0200
+
 univention-management-console-module-ucr (1.0.23-1) unstable; urgency=low
 
   * added the description of the UCR variable in the dialog (Bug #22881)
