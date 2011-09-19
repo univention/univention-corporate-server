@@ -535,7 +535,7 @@ def connect(ldif=0):
 		listener.setuid(0)
 
 		local_ip='127.0.0.1'
-		local_port=listener.baseConfig.get('slapd/port', '389').split(',')[0]
+		local_port=listener.baseConfig.get('slapd/port', '7389').split(',')[0]
 		
 		try:
 			connection=ldap.open(local_ip, int(local_port))

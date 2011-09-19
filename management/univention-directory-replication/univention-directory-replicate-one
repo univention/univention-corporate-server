@@ -448,7 +448,7 @@ if len(sys.argv) > 2:
 	ldapServer = sys.argv[2]
 
 #bind to remote server
-lomaster = ldap.open(ldapServer, 389)
+lomaster = ldap.open(ldapServer, 7389)
 bindpw = open('/etc/machine.secret').read()
 if bindpw[-1] == '\n':
 	bindpw=bindpw[0:-1]

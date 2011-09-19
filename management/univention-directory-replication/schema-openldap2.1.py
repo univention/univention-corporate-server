@@ -127,7 +127,7 @@ if __name__ == '__main__':
 	baseConfig = univention_baseconfig.baseConfig( )
 	baseConfig.load( )
 
-	lo = ldap.open(baseConfig['ldap/master'], 389)
+	lo = ldap.open(baseConfig['ldap/master'], 7389)
 
 	res = lo.search_s( 'cn=Subschema', ldap.SCOPE_BASE, '(objectClass=*)', [ '*', '+' ] )
 	for dn, attr in res:
