@@ -11,7 +11,9 @@ dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.SearchForm");
 dojo.require("umc.widgets.StandbyMixin");
+dojo.require("umc.widgets.Text");
 dojo.require("umc.widgets.ExpandingTitlePane");
+dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
 dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// summary:
@@ -179,8 +181,10 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 });
 
-dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
+dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.StandbyMixin, umc.widgets._WidgetsInWidgetsMixin, umc.i18n.Mixin ], {
 	_form: null,
+
+	_description: null,
 
 	// use i18n information from umc.modules.ucr
 	i18nClass: 'umc.modules.ucr',
@@ -193,7 +197,6 @@ dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.Standb
 
 		dojo.mixin(this, {
 			title: this._( 'Edit UCR variable' )
-			//style: 'max-width: 450px'
 		});
 	},
 
@@ -211,6 +214,14 @@ dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.Standb
 			name: 'value',
 			description: this._( 'Value of UCR variable' ),
 			label: this._( 'Value' )
+		}, {
+			type: 'Text',
+			name: 'description',
+			description: this._( 'Description of the UCR variable' ),
+			label: this._( 'Description:' )
+		}, {
+			type: 'HiddenInput',
+			name: 'description[' + dojo.locale + ']'
 //		}, {
 //			type: 'MultiSelect',
 //			name: 'categories',
@@ -235,22 +246,40 @@ dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.Standb
 			})
 		}];
 
-		var layout = [['key'], ['value']];//, ['categories']];
+		var layout = ['key', 'value', 'description'];//, ['categories']];
 
-		this._form = new umc.widgets.Form({
+		this._form = this.adopt(umc.widgets.Form, {
 			style: 'width: 100%',
 			widgets: widgets,
 			buttons: buttons,
 			layout: layout,
 			moduleStore: this.moduleStore,
 			cols: 1
-		}).placeAt(this.containerNode);
+		});
+		this._form.placeAt(this.containerNode);
 
 		// simple handler to disable standby mode
-		dojo.connect(this._form, 'onLoaded', this, function() {
+		this.connect(this._form, 'onLoaded', function() {
+			// display the description text
+			var descWidget = this._form.getWidget('description');
+			var text = this._form.getWidget('description[' + dojo.locale + ']').get('value');
+			if (text) {
+				// we have description, update the description field
+				descWidget.set('visible', true);
+				descWidget.set('content', '<i>' + text + '</i>');
+			}
+			else {
+				// no description -> hide widget and label
+				descWidget.set('visible', false);
+				descWidget.set('content', '');
+			}
+
+			// disable the loading animation
+			this._position();
 			this.standby(false);
 		});
-		dojo.connect(this._form, 'onSaved', this, function() {
+		this.connect(this._form, 'onSaved', function() {
+			this._position();
 			this.standby(false);
 		});
 
@@ -262,6 +291,10 @@ dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.Standb
 			emptyValues[ikey] = '';
 		});
 		this._form.setFormValues(emptyValues);
+		var descWidget = this._form.getWidget('description');
+		descWidget.set('content', '');
+		descWidget.set('visible', false);
+		this._position();
 	},
 
 	newVariable: function() {
