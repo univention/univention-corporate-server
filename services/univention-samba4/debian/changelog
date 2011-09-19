@@ -1,3 +1,9 @@
+univention-samba4 (1.0.38-4) experimental; urgency=low
+
+  * Use $samba4_function_level instead of samba4_function_level (Bug #23360)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Sep 2011 21:36:43 +0200
+
 univention-samba4 (1.0.38-3) experimental; urgency=low
 
   * currently homes/groups/printers shares are not provided (Bug #23570)
