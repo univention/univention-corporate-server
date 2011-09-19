@@ -1,0 +1,69 @@
+#! /bin/sh
+@%@UCRWARNING=# @%@
+
+### BEGIN INIT INFO
+# Provides:          samba4
+# Required-Start:    $network $local_fs $remote_fs
+# Required-Stop:     $network $local_fs $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: start Samba daemons 
+### END INIT INFO
+
+#
+# Start/stops the Samba daemon (samba).
+# Adapted from the Samba 3 packages.
+#
+
+PIDDIR=/var/run/samba
+SAMBAPID=$PIDDIR/samba.pid
+
+# clear conflicting settings from the environment
+unset TMPDIR
+
+# See if the daemon and the config file are there
+test -x /usr/sbin/samba -a -r /etc/samba/smb.conf || exit 0
+
+. /lib/lsb/init-functions
+
+case "$1" in
+	start)
+		log_daemon_msg "Starting Samba 4 daemon" "samba"
+		# Make sure we have our PIDDIR, even if it's on a tmpfs
+		install -o root -g root -m 755 -d $PIDDIR
+
+		if ! start-stop-daemon --start --quiet --oknodo --exec /usr/sbin/samba -- -D >/dev/null; then
+			log_end_msg 1
+			exit 1
+		fi
+
+		log_end_msg 0
+		;;
+	stop)
+		log_daemon_msg "Stopping Samba 4 daemon" "samba"
+
+		start-stop-daemon --stop --quiet --name samba $SAMBAPID
+		# Wait a little and remove stale PID file
+		sleep 1
+		if [ -f $SAMBAPID ] && ! ps h `cat $SAMBAPID` > /dev/null
+		then
+			# Stale PID file (samba was succesfully stopped),
+			# remove it (should be removed by samba itself IMHO.)
+			rm -f $SAMBAPID
+		fi
+
+		log_end_msg 0
+
+		;;
+	restart|force-reload)
+		$0 stop
+		sleep 1
+		$0 start
+		;;
+	*)
+		echo "Usage: /etc/init.d/samba {start|stop|restart|force-reload}"
+		exit 1
+		;;
+esac
+
+exit 0
