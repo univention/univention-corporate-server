@@ -43,6 +43,7 @@ if [ "$1" = "configure" ]; then
 		# only set this for new installations
 		if [ "$server_role" = "domaincontroller_master" ]; then
 			univention-config-registry set windows/wins-support=yes
+			univention-config-registry set samba/function/level?2003
 		else
 			univention-config-registry set windows/wins-support?no
 			univention-config-registry set windows/wins-server?$ldap_master
