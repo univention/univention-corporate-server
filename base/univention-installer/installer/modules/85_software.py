@@ -142,6 +142,7 @@ class object(content):
 
 	def _init_categories(self):
 		self.categories={}
+		self.category_order=[]
 		count=0
 		for i in range(0,len( NewPackageList )):
 			found=0
@@ -170,6 +171,7 @@ class object(content):
 								off=off+1
 						found=1
 			if found==1:
+				self.category_order.append(NewPackageList[i]['Category'])
 				if on and not off:
 					self.categories[NewPackageList[i]['Category']]=[NewPackageList[i]['Category'], count, 2, NewPackageList[i]['Description']]
 				elif off and not on:
@@ -260,34 +262,6 @@ class object(content):
 				l.append(self.categories[c][1])
 		return l
 
-	def _check_checkbox3(self):
-		for c in self.categories.keys():
-			packages_enabled=0
-			packages_disabled=0
-			category_index=self._get_category_by_name(c)
-			for p in self.packages[self.categories[c][1]]:
-				if self.packages[category_index][p][2] == 1:
-					packages_enabled=packages_enabled+1
-				else:
-					packages_disabled=packages_disabled+1
-			if packages_enabled == 0 and packages_disabled > 0:
-				self.categories[c][2]=0
-			elif packages_enabled > 0 and packages_disabled == 0:
-				self.categories[c][2]=2
-			else:
-				self.categories[c][2]=1
-
-	def _get_status(self):
-		half=[]
-		full=[]
-		for c in self.categories.keys():
-			if self.categories[c][2]==1:
-				half.append(self.categories[c][1])
-			elif self.categories[c][2]==2:
-				full.append(self.categories[c][1])
-
-		return half,full
-
 	def getSelected(self, category):
 		selected=[]
 		for c in self.categories.keys():
@@ -298,24 +272,6 @@ class object(content):
 			if self.packages[index][key][2] == 1:
 				selected.append(self.packages[index][key][1])
 		return selected
-
-	def _set_package_status(self, category, status):
-		keylist=[]
-		for c in self.categories.keys():
-			if c == category:
-				index=self.categories[c][1]
-		for key in self.packages[index].keys():
-			self.packages[index][key][2]=status
-			keylist.append(key)
-		for c in self.categories.keys():
-			if c != category:
-				i=self.categories[c][1]
-				for k in self.packages[i].keys():
-					if self.packages[i][k][0] in keylist:
-						self.debug('found: %s' % str(self.packages[i][k]))
-						self.packages[i][k][2]=status
-
-
 
 	def getPackages(self, category):
 		for i in self.categories.keys():
@@ -333,7 +289,7 @@ class object(content):
 		self._init_packages()
 
 		pos = 3
-		for k in self.categories.keys():
+		for k in self.category_order:
 			p = self.getPackages(k)
 			self.add_elem('packages_%s' % k, checkbox(p, self.minY+pos,self.minX+5, 45, 14, self.getSelected(k))) #5
 			pos += (len(p) + 1)
@@ -429,7 +385,12 @@ class object(content):
 			#space
 			self.elements[self.current].key_event(key)
 		else:
-			return self.elements[self.current].key_event(key)
+			self.elements[self.current].key_event(key)
+
+		# Save the package status again
+		current_category=self._get_category_by_index(self.current)
+		if current_category:
+			self._save_packages(current_category, self.get_elem('packages_%s' % current_category).result())
 
 	def incomplete(self):
 		return 0

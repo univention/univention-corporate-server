@@ -1,3 +1,10 @@
+univention-installer (7.0.51-1) unstable; urgency=low
+
+  * Consider the software selection (Bug #23594)
+  * Removed unused code in 85_software.py
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Sep 2011 07:31:43 +0200
+
 univention-installer (7.0.50-1) unstable; urgency=low
 
   * Use force-confold for server roles packages as well, otherwise
