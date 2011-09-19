@@ -130,7 +130,7 @@ Description[en]=Limits Samba to listen only on the interfaces listed in samba/in
 Type=str
 Categories=service-samba
 
-[samba/function/level]
+[samba4/function/level]
 Description[de]=Legt vor der Installation des ersten Samba 4 Domaincontrollers den Funktionslevel der Domäne fest.
 Description[en]=Determines the functional level of the Samba 4 domain at the time of installation of the first Samba4 domain controller.
 Type=str
