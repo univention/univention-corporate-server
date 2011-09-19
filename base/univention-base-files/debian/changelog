@@ -1,3 +1,10 @@
+univention-base-files (1.0.23-1) unstable; urgency=low
+
+  * added template etc/default/keyboard 
+    (load /etc/console/boottime.kmap.gz in setupcon) (Bug #23647)
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Sep 2011 11:28:58 +0200
+
 univention-base-files (1.0.22-1) unstable; urgency=low
 
   * Rename ucr module locale.py to set_locale.py (Bug #23328)
