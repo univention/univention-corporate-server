@@ -58,7 +58,7 @@ wait_named () {
 
 wait_named
 /usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists \
-	"$domainname" add srv ldap tcp 0 0 389 "$hostname.$domainname." || exit 1
+	"$domainname" add srv ldap tcp 0 0 7389 "$hostname.$domainname." || exit 1
 
 wait_named
 /usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists \
