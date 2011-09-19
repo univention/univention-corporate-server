@@ -136,8 +136,6 @@ if [ "$domaincontroller" = 'true' ]; then
 	## check if we there already is a **domaincontroller** providing the service "Samba 4"
 	samba4servicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=${NAME})(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
 
-	localSamba4servicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=${NAME})(objectClass=univentionDomainController)(cn=$hostname))" cn | sed -n 's/^cn: \(.*\)/\1/p')
-
 	if [ -z "$samba4servicedcs" ]; then	## we are the first domainctontroller to provide this service
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
@@ -146,7 +144,7 @@ if [ "$domaincontroller" = 'true' ]; then
 
 		fi
 
-	elif [ -z "$localSamba4servicedcs" ]; then	## otherwise we will simply join the new DC
+	else	## otherwise we will simply join the new DC
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
 			## remove slapd from port 389 on upgrade
