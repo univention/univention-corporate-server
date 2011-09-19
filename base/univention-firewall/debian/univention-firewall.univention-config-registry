@@ -77,6 +77,8 @@ Variables: security/services/https
 Type: file
 File: etc/security/netfilter.d/20ldap
 Variables: security/services/ldap
+Variables: slapd/port
+Variables: slapd/port/ldaps
 
 Type: file
 File: etc/security/netfilter.d/20postgres
