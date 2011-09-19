@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (1.0.22-1) unstable; urgency=low
+
+  * added confirmation dialog when deleting UVR variables (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 19 Sep 2011 13:37:27 +0200
+
 univention-management-console-module-ucr (1.0.21-1) unstable; urgency=low
 
   * fixed buttons for search form (Bug #22881)

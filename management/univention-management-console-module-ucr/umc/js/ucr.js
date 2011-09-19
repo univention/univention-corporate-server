@@ -4,6 +4,7 @@ dojo.provide("umc.modules.ucr");
 
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
+dojo.require("umc.dialog");
 dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.Module");
@@ -77,9 +78,19 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			isStandardAction: true,
 			isMultiAction: true,
 			callback: dojo.hitch(this, function(ids) {
-				var transaction = this.moduleStore.transaction();
-				dojo.forEach(ids, dojo.hitch(this.moduleStore, 'remove'));
-				transaction.commit();
+				umc.dialog.confirm(this._('Are you sure to delete the %d select UCR variable(s)?', ids.length), [{
+					label: this._('Delete'),
+					callback: dojo.hitch(this, function() {
+						// remove the selected elements via a transaction on the module store
+						var transaction = this.moduleStore.transaction();
+						dojo.forEach(ids, dojo.hitch(this.moduleStore, 'remove'));
+						transaction.commit();
+					})
+				}, {
+					label: this._('Cancel'),
+					'default': true
+				}]);
+
 			})
 		}];
 
