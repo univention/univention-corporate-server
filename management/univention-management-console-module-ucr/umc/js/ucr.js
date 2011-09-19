@@ -196,7 +196,8 @@ dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.Standb
 		this.inherited(arguments);
 
 		dojo.mixin(this, {
-			title: this._( 'Edit UCR variable' )
+			title: this._( 'Edit UCR variable' ),
+			style: 'max-width: 400px'
 		});
 	},
 
