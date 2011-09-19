@@ -1655,11 +1655,15 @@ class MAC_AddressList( select ):
 	def parse( cls, text ):
 		return text
 
-class DNS_ForwardZone( select ):
+class DNS_ForwardZone( UDM_Modules ):
+ 	description=_('DNS forward zone')
 	udm_modules = ( 'dns/forward_zone', )
+	empty_value = True
 
-class DNS_ReverseZone( select ):
+class DNS_ReverseZone( UDM_Modules ):
+ 	description=_('DNS reverse zone')
 	udm_modules = ( 'dns/reverse_zone', )
+	empty_value = True
 
 class dnsEntry( complex ):
  	description=_('DNS Entry')
@@ -1671,13 +1675,18 @@ class dnsEntryReverse( complex ):
 	subsyntaxes = ( ( _( 'DNS reverse zone' ), DNS_ReverseZone ), ( _( 'IP address' ), IP_AddressList ) )
 	min_elements = 1
 
+class DNS_ForwardZoneList( select ):
+	depends = 'dnsEntryZoneForward'
+
 class dnsEntryAlias( complex ):
 	description=_('DNS Entry Alias')
-	subsyntaxes = ( ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'Alias' ), hostName ) )
+	subsyntaxes = ( ( _( 'Zone of existing host record' ), DNS_ForwardZoneList ), ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'Alias' ), hostName ) )
 
-
-class dhcpService( ldapDnOrNone ):
+class dhcpService( UDM_Modules ):
 	udm_modules = ( 'dhcp/service', )
+	description=_('DHCP service')
+	label = '%(name)s'
+	empty_value = True
 
 class dhcpEntry( complex ):
 	subsyntaxes= ( ( _( 'DHCP-Service' ), dhcpService ), ( _( 'IP address' ), IP_AddressList ), ( _( 'MAC address' ), MAC_AddressList ) )
@@ -1686,18 +1695,6 @@ class dhcpEntry( complex ):
 	@classmethod
 	def parse( self, value ):
 		return value
-
-class dnsEntryNetwork(ldapDnOrNone):
-	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
-	description=_('DNS Entry')
-
-class dnsEntryReverseNetwork(ldapDnOrNone):
-	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
-	description=_('DNS Entry Reverse')
-
-class dhcpEntryNetwork(ldapDnOrNone):
-	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
-	description=_('DHCP Entry')
 
 class share(ldapDnOrNone):
 	searchFilter='(objectClass=univentionShare)'

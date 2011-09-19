@@ -104,7 +104,7 @@ property_descriptions={
 	'dnsEntryZoneForward': univention.admin.property(
 			short_description=_('DNS forward lookup zone'),
 			long_description='',
-			syntax=univention.admin.syntax.dnsEntryNetwork,
+			syntax=univention.admin.syntax.DNS_ForwardZone,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -115,7 +115,7 @@ property_descriptions={
 	'dnsEntryZoneReverse': univention.admin.property(
 			short_description=_('DNS reverse lookup zone'),
 			long_description='',
-			syntax=univention.admin.syntax.dnsEntryReverseNetwork,
+			syntax=univention.admin.syntax.DNS_ReverseZone,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -126,7 +126,7 @@ property_descriptions={
 	'dhcpEntryZone': univention.admin.property(
 			short_description=_('DHCP service'),
 			long_description='',
-			syntax=univention.admin.syntax.dhcpEntryNetwork,
+			syntax=univention.admin.syntax.dhcpService,
 			multivalue=0,
 			options=[],
 			required=0,

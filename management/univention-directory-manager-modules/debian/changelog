@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.80-1) unstable; urgency=low
+
+  * define new DNS Alias syntax based on complex; Bug #23673
+  * let more syntax classes base on UDM_Modules instead of ldapDn(None)
+  * updated german translation
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 19 Sep 2011 20:02:51 +0200
+
 univention-directory-manager-modules (7.0.79-1) unstable; urgency=low
 
   * use port 7389 as default for ldap/server/port (Bug #23231)
