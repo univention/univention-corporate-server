@@ -43,10 +43,18 @@ if test -z "$ldap_server_ip" -a -z "$ldap_server_name"; then
 fi
 
 wait_for_dns(){
-if [ "$server_role" != "domaincontroller_master" ]
-    then
-    continue=1; while [ $continue = "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
-fi
+	if [ "$server_role" != "domaincontroller_master" ]; then
+		continue=1
+		while [ $continue = "1" ];do
+			echo "wait for named ?"
+			timeout=`LC_ALL=C host -W 1 $ldap_master 2>&1| grep "has address "`
+			if [ -n "$timeout" ]; then
+				continue=0
+			else
+				sleep 1
+			fi;
+		done
+	fi
 }
 
 univention-config-registry set dns/backend?ldap

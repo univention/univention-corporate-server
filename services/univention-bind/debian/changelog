@@ -1,3 +1,9 @@
+univention-bind (6.0.18-1) unstable; urgency=low
+
+  * Update wait_for_dns function (Bug #23357)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Sep 2011 16:24:34 +0200
+
 univention-bind (6.0.17-1) unstable; urgency=low
 
   * Register ucr variables like ucslint said (Bug #23168)
