@@ -1,3 +1,9 @@
+univention-installer (7.0.54-1) unstable; urgency=low
+
+  * do not always format all partitions in profile installation (Bug #23491)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 20 Sep 2011 16:49:55 +0200
+
 univention-installer (7.0.53-1) unstable; urgency=low
 
   * replaced networking module: new module is IPv6 capable (Bug ##22872)
