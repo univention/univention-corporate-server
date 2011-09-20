@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Installer
-#  installer module: network configuration
+#  installer module: system configuration
 #
 # Copyright 2004-2011 Univention GmbH
 #
@@ -36,52 +36,100 @@
 # Results of this module need to be stored in the dictionary self.result (variablename:value[,value1,value2])
 #
 
-import objects, re, string, curses
+
+import re
+import curses
+import objects
 from objects import *
 from local import _
 import inspect
-import os, subprocess, threading
-import time, tempfile
+import tempfile
+import ipaddr
+import subprocess
+import threading
+
+PATH_SYS_CLASS_NET = '/sys/class/net'
+LEN_IPv4_ADDR = 15
+LEN_IPv6_ADDR = 40
+
+class NetworkInterface(object):
+	def __init__(self, name):
+		self.name = name
+		self.macaddr = None      # MAC address
+		self.IPv4_addr = None    # IPv4 address
+		self.IPv4_dhcp = False   # DHCP
+		self.IPv6_addr = None    # IPv6 address
+		self.IPv6_ra = False     # accept router advertisements?
+
+	def __str__(self):
+		return 'NetIf(%s)' % self.name
+
+	def __repr__(self):
+		return 'NetIf(%s)' % self.name
+
+
+def cmp_NetworkInterfaces(x,y):
+	"""
+	Compare function for network interface names
+	Interfaces starting with "eth" will be listed first. All other
+	interfaces will be listed alphabetically.
+	e.g. eth0, eth1, atm0, atm1, tunnel0, wlan0, wlan1
+	"""
+	if x.name.startswith('eth') and not y.name.startswith('eth'):
+		return -1
+	elif not x.name.startswith('eth') and y.name.startswith('eth'):
+		return 1
+
+	return cmp(x.name, y.name)
+
 
 class object(content):
+	def __init__(self, *args, **kwargs):
+		content.__init__(self, *args, **kwargs)
+		self.debug('__init__()')
 
-	def __init__(self,max_y,max_x,last=(1,1), file='/tmp/installer.log', cmdline={}):
-		content.__init__(self,max_y,max_x,last, file, cmdline)
+		self.interfaces = []
+		self.current_interface = None
+		self.ask_forwarder = True
 
-		if self.cmdline.has_key('mode') and self.cmdline['mode'] == 'setup':
-			self.already_redraw=1
-		else:
-			self.already_redraw=0
+		# boolean: True, if edition "oxae" is specified
+		self.is_ox = 'oxae' in self.cmdline.get('edition',[])
 
-		self.ox = False
-		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxae':
-			self.ox = True
-
-		self.interfaces=[]
-
-		#For more nameservers and dns-forwarders
-		self.dns={}
 
 	def depends(self):
-		return {'system_role': ['domaincontroller_master', 'domaincontroller_backup','domaincontroller_slave','memberserver','basesystem','managed_client','mobile_client'] }
+		self.debug('depends()')
+		return {'system_role': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem', 'managed_client', 'mobile_client'] }
 
 
 	def debug(self, txt):
+		"""
+		print special debug message with current code line
+		"""
 		info = inspect.getframeinfo(inspect.currentframe().f_back)[0:3]
 		line = info[1]
 		content.debug(self, 'NETWORK:%d: %s' % (line,txt))
 
-##	Overloading this method  prevents the ESC-Key to close a window that has a sub or warning window
 	def kill_subwin(self):
-#		if hasattr(self.sub, 'sub'):
-#			self.sub.sub.exit()
-		if hasattr(self.sub, 'warn'):
-			delattr(self.sub,'warn')
+		"""
+		Overloading method kill_subwin() to prevent that the user is able to close a subwindow by
+		pressing ESC key if a subsubwindow is present.
+		"""
+		if hasattr(self.sub, 'sub'):
+			delattr(self.sub,'sub')
 			self.draw()
-		else:
+		elif hasattr(self.sub, 'exit'):
 			self.sub.exit()
+			self.draw()
+		elif hasattr(self, 'sub'):
+			delattr(self,'sub')
+			self.draw()
+		self.draw()
+
 
 	def dhclient(self, interface, timeout=None):
+		"""
+		perform DHCP request for specified interface
+		"""
 		self.debug('DHCP broadcast on %s' % interface)
 		tempfilename = tempfile.mkstemp( '.out', 'dhclient.', '/tmp' )[1]
 		pidfilename = tempfile.mkstemp( '.pid', 'dhclient.', '/tmp' )[1]
@@ -128,115 +176,197 @@ class object(content):
 		os.unlink(tempfilename)
 		return dhcp_dict
 
-	def start(self):
-		if 'system_role' in self.all_results and (self.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'fatclient', 'mobileclient', 'managedclient']):
-			self.serversystem=False
+
+	def detect_interfaces(self):
+		"""
+		Function to detect network interfaces in local sysfs.
+		The loopback interface "lo" will be filtered out.
+		"""
+		self.debug('detect_interfaces()')
+		self.interfaces = []
+
+		dirnames = os.listdir(PATH_SYS_CLASS_NET)
+		for dirname in dirnames:
+			if os.path.isdir( os.path.join(PATH_SYS_CLASS_NET, dirname) ) and dirname.startswith('eth'):
+				self.interfaces.append( NetworkInterface(dirname) )
+				self.debug('Adding interface %s' % dirname )
+				# try to read mac address of interface
+				try:
+					self.interfaces[-1].macaddr = open(os.path.join(PATH_SYS_CLASS_NET, dirname, 'address'),'r').read().strip()
+					self.debug('MAC address: %s' % self.interfaces[-1].macaddr)
+				except:
+					pass
+
+		self.interfaces.sort( cmp_NetworkInterfaces )
+
+		if len(self.interfaces):
+			# at least one interface has been found
+			if (self.current_interface == None) or (self.current_interface > len(self.interfaces)):
+				self.current_interface = 0   # no interface has been set before or current interface does not exist anymore ==> set to 0
 		else:
-			self.serversystem=True
+			self.current_interface = None
 
-		for i in range(0,4):
-			if self.all_results.has_key('eth%d_type' % i) and (self.all_results['eth%d_type' % i] == 'dynamic' or self.all_results['eth%d_type' % i] == 'dhcp'):
-				self.interfaces.append(['eth%d' % i,
-										self.all_results.get('eth%d_ip' % i,''),
-										self.all_results.get('eth%d_netmask' % i,''),
-										self.all_results.get('eth%d_broadcast' % i, ''),
-										self.all_results.get('eth%d_network' % i, ''),
-										'dynamic', 0])
-			elif self.all_results.has_key('eth%d_ip' % i) and self.all_results['eth%d_ip' % i] and self.all_results.has_key('eth%d_netmask' % i) and self.all_results.has_key('eth%d_broadcast' % i) and self.all_results.has_key('eth%d_network' % i):
-				self.interfaces.append(['eth%d' % i, self.all_results['eth%d_ip' % i], self.all_results['eth%d_netmask' % i], self.all_results['eth%d_broadcast' % i], self.all_results['eth%d_network' % i], 'static', 0])
-			for j in range(0,4):
-				if self.all_results.has_key('eth%d:%d_type' % (i,j)) and self.all_results['eth%d:%d_type' % (i,j)] and (self.all_results['eth%d:%d_type' % (i,j)] == 'dynamic' or self.all_results['eth%d:%d_type' % (i,j)] == 'dhcp'):
-					self.interfaces.append(['eth%d:%d' % (i,j), '', '', '', '', 'dynamic', 'virtual'])
-				elif self.all_results.has_key('eth%d:%d_ip' % (i,j)) and self.all_results['eth%d:%d_ip' % (i,j)] and self.all_results.has_key('eth%d:%d_netmask' % (i,j)) and self.all_results.has_key('eth%d:%d_broadcast' % (i,j)) and self.all_results.has_key('eth%d:%d_network' % (i,j)):
-					self.interfaces.append(['eth%d:%d' % (i,j), self.all_results['eth%d:%d_ip' % (i,j)], self.all_results['eth%d:%d_netmask' % (i,j)], self.all_results['eth%d:%d_broadcast' % (i,j)], self.all_results['eth%d:%d_network' % (i,j)], 'static', 'virtual'])
-				elif self.all_results.has_key('eth%d_%d_ip' % (i,j)) and self.all_results.has_key('eth%d_%d_ip' % (i,j)) and self.all_results.has_key('eth%d_%d_netmask' % (i,j)) and self.all_results.has_key('eth%d_%d_broadcast' % (i,j)) and self.all_results.has_key('eth%d_%d_network' % (i,j)):
-					self.interfaces.append(['eth%d:%d' % (i,j), self.all_results['eth%d_%d_ip' % (i,j)], self.all_results['eth%d_%d_netmask' % (i,j)], self.all_results['eth%d_%d_broadcast' % (i,j)], self.all_results['eth%d_%d_network' % (i,j)], 'static', 'virtual'])
+	def get_interface(self, name):
+		"""
+		get interface object with specified name
+		"""
+		for i in self.interfaces:
+			if i.name == name:
+				return i
+		return None
 
-		if self.all_results.has_key('gateway'):
-			self.container['Gateway']=[]
-			self.container['Gateway'].append(self.all_results['gateway'])
-		if self.all_results.has_key('proxy_http'):
-			self.container['proxy_http']=[]
-			self.container['proxy_http'].append(self.all_results['proxy_http'])
-		if self.all_results.has_key('nameserver_1'):
-			self.container['Nameserver']=[]
-			self.container['Nameserver'].append(self.all_results['nameserver_1'])
-		if self.all_results.has_key('dns_forwarder_1'):
-			self.container['DNS-Forwarder']=[]
-			self.container['DNS-Forwarder'].append(self.all_results['dns_forwarder_1'])
+	def is_proxy(self, proxy):
+		if proxy and proxy != 'http://' and proxy != 'https://':
+			if not proxy.startswith('http://') and not proxy.startswith('https://'):
+				self.debug('is_proxy() ==> INVALID PROXY ==> %s' % proxy)
+				return False
+		return True
 
-		for key in  ['nameserver_2', 'nameserver_3', 'dns_forwarder_2', 'dns_forwarder_3']:
-			if self.all_results.has_key(key):
-				self.dns[key]=self.all_results[key]
 
-		if self.cmdline:
-			if self.cmdline.has_key('interface'):
-				self.mode='edit'
-				self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight-8,'edit')
-				self.sub.draw()
+	def is_ipaddr(self, addr):
+		try:
+			x = ipaddr.IPAddress(addr)
+		except ValueError:
+			return False
+		return True
 
-	def checkname(self):
-		return ['gateway','eth0_ip','eth0_netmask','eth0_broadcast','eth0_network']
+	def is_ipv4addr(self, addr):
+		try:
+			x = ipaddr.IPv4Address(addr)
+		except ValueError:
+			return False
+		return True
 
-	def modvars(self):
-		return ['gateway','eth0_type', 'eth0_ip','eth0_netmask','eth0_broadcast','eth0_network', 'proxy_http', 'nameserver_1', 'nameserver_2', 'nameserver_3', 'dns_forwarder_1', 'dns_forwarder_2', 'dns_forwarder_3' ]
+	def is_ipv4netmask(self, addr_netmask):
+		try:
+			x = ipaddr.IPv4Network(addr_netmask)
+		except (ipaddr.NetmaskValueError, ipaddr.AddressValueError):
+			return False
+		return True
+
+	def is_ipv6addr(self, addr):
+		try:
+			x = ipaddr.IPv6Address(addr)
+		except ValueError:
+			return False
+		return True
+
+	def is_ipv6netmask(self, addr_netmask):
+		try:
+			x = ipaddr.IPv6Network(addr_netmask)
+		except (ipaddr.NetmaskValueError, ipaddr.AddressValueError):
+			return False
+		return True
+
+
+	def start(self):
+		self.debug('start()')
+		self.debug('all_results=%r' % self.all_results)
+
+		# system is server if not one of specified roles
+		self.serversystem = not( self.all_results.get('system_role') in ['managed_client', 'mobile_client', 'fatclient', 'mobileclient', 'managedclient'] )
+
+		# read interface information from system
+		self.detect_interfaces()
+
+		# get all interface names used in self.all_results
+		REinterfaces = re.compile('^eth(\d+)_')
+		iface_list= set([ 'eth%s' % REinterfaces.search(i).group(1) for i in self.all_results.keys() if REinterfaces.search(i) ])
+		for name in iface_list:
+			# try to get IPv4 address by reading IP address and netmask...
+			addr_netmask = '%s/%s' % (self.all_results.get('%s_ip' % name), self.all_results.get('%s_netmask' % name))
+			try:
+				IPv4_addr = ipaddr.IPv4Network(addr_netmask)
+			except (ipaddr.AddressValueError, ipaddr.NetmaskValueError):
+				pass
+			else:
+				# ... all other values (broadcast and network) get calculated
+				self.container['%s_ip' % name] = str(IPv4_addr.ip)
+				self.container['%s_netmask' % name] = str(IPv4_addr.netmask)
+				self.container['%s_broadcast' % name] = str(IPv4_addr.broadcast)
+				self.container['%s_network' % name] = str(IPv4_addr.network)
+
+			# set DHCP flag
+			self.container['%s_type' % name] = ''
+			IPv4_dhcp = ( self.all_results.get('%s_type' % name) in [ 'dynamic', 'dhcp' ] )
+			if IPv4_dhcp:
+				self.container['%s_type' % name] = 'dynamic'
+
+
+			# set RA flag
+			IPv6_ra = ( self.all_results.get('%s_acceptra' % name,'').lower().strip() in [ '1', 'yes', 'true' ] )
+			self.container['%s_acceptra' % name] = str(IPv6_ra).lower()
+			# try to get IPv4 address
+			addr_netmask = '%s/%s' % (self.all_results.get('%s_ip6' % name), self.all_results.get('%s_prefix6' % name))
+			try:
+				IPv6_addr = ipaddr.IPv6Network(addr_netmask)
+			except (ipaddr.AddressValueError, ipaddr.NetmaskValueError):
+				pass
+			else:
+				self.container['%s_ip6' % name] = str(IPv6_addr.ip)
+				self.container['%s_prefix6' % name] = str(IPv6_addr.prefixlen)
+
+		for key in  ['gateway', 'gateway6', 'proxy_http', 'nameserver_1', 'nameserver_2', 'nameserver_3', 'dns_forwarder_1', 'dns_forwarder_2', 'dns_forwarder_3']:
+			if self.all_results.get(key):
+				self.container[key] = self.all_results.get(key)
+
+	def put_result(self, results):
+		self.debug('put_result()')
+		content.put_result(self, results)
 
 	def profile_prerun(self):
-		self.already_redraw=1
-		if self.all_results.has_key('gateway'):
-			self.container['Gateway']=[]
-			self.container['Gateway'].append(self.all_results['gateway'])
-		if self.all_results.has_key('nameserver_1'):
-			self.container['Nameserver']=[]
-			self.container['Nameserver'].append(self.all_results['nameserver_1'])
-		if self.all_results.has_key('dns_forwarder_1'):
-			self.container['DNS-Forwarder']=[]
-			self.container['DNS-Forwarder'].append(self.all_results['dns_forwarder_1'])
-		if self.all_results.has_key('proxy_http'):
-			self.container['proxy_http']=[]
-			self.container['proxy_http'].append(self.all_results['proxy_http'])
+		self.debug('profile_prerun()')
 
-		for key in  ['nameserver_2', 'nameserver_3', 'dns_forwarder_2', 'dns_forwarder_3']:
-			if self.all_results.has_key(key):
-				self.dns[key]=self.all_results[key]
+		self.start()
 
-		for i in range(0,4):
-			for j in range(0,4):
-				for ekey in ['type', 'ip','netmask','broadcast','network']:
-					key='eth%d:%d_%s' % (i,j,ekey)
-					if self.all_results.has_key(key):
-						self.container[key]=self.all_results[key]
-			for ekey in ['type', 'ip','netmask','broadcast','network']:
-				key='eth%d_%s' % (i,ekey)
-				if self.all_results.has_key(key):
-					self.container[key]=self.all_results[key]
 
 	def profile_complete(self):
-		if self.check('gateway') | self.check('nameserver_1') | self.check('nameserver_2') | self.check('nameserver_3') | \
-			self.check('dns_forwarder_1') | self.check('dns_forwarder_2') | self.check('dns_forwarder_3') | \
-			self.check('eth0_type') | self.check( 'eth0_ip') | self.check('eth0_netmask') | self.check('eth0_broadcast') | self.check('eth0_network') | \
-			self.check('eth1_type') | self.check( 'eth1_ip') | self.check('eth1_netmask') | self.check('eth1_broadcast') | self.check('eth1_network') | \
-			self.check('eth2_type') | self.check( 'eth2_ip') | self.check('eth2_netmask') | self.check('eth2_broadcast') | self.check('eth2_network') | \
-			self.check('eth3_type') | self.check( 'eth3_ip') | self.check('eth3_netmask') | self.check('eth3_broadcast') | self.check('eth3_network'):
-			return False
-		invalid=_("Following value is invalid: ")
-		if not self.all_results['gateway'].strip() == '':
-			if not self.is_ip(self.all_results['gateway']):
-				if not self.ignore('gateway'):
-					self.message=invalid+_("Gateway")
-					return False
-		if not self.all_results['nameserver_1'].strip() == '':
-			if not self.is_ip(self.all_results['nameserver_1']):
-				if not self.ignore('nameserver_1'):
-					self.message=invalid+_("Name server")
-					return False
-		if not self.all_results['dns_forwarder_1'].strip() == '':
-			if not self.all_results['dns_forwarder_1']:
-				if not self.ignore('dsn_forwarder_1'):
-					self.message=invalid+_("DNS Forwarder")
+		self.debug('profile_complete()')
+		REeth = re.compile('^eth[0-9]+_(type|ip|netmask|broadcast|network|ip6|prefix6|acceptra)$')
+
+		for key in [ 'gateway6', 'gateway', 'nameserver_1', 'nameserver_2', 'nameserver_3',
+					 'dns_forwarder_1', 'dns_forwarder_2', 'dns_forwarder_3',
+					 ]:
+			if self.check(key):
+				self.debug('check failed for %s' % key)
+				return False
+
+		# check variables for existing interfaces
+		for iface in self.interfaces:
+			self.debug('testing interface %s' % (iface.name))
+			for key in [ '%s_type', '%s_ip', '%s_netmask', '%s_broadcast', '%s_network', '%s_ip6', '%s_prefix6', '%s_acceptra' ]:
+				var = key % iface.name
+				if self.check(var):
+					self.debug('check failed for %s' % (var))
 					return False
 
-		proxy = self.all_results['proxy_http'].strip()
+			# check if all four values have been specified for this interface
+			cnt = 0
+			keylist = [ '%s_ip', '%s_netmask', '%s_broadcast', '%s_network' ]
+			for key in keylist:
+				var = key % iface.name
+				if self.all_results.get(var):
+					cnt += 1
+			if cnt > 0 and cnt < len(keylist):
+				self.debug('Interface %s: count=%s' % (iface.name, cnt))
+				self.message = _('Not all IPv4 values have been specified for interface %s' % iface.name)
+				return False
+
+		invalid = _("Following value is invalid: ")
+
+		for key, name in ( ('gateway', _('IPv4 Gateway')),
+						   ('gateway6', _('IPv6 Gateway')),
+						   ('nameserver_1', _('Domain DNS Server')),
+						   ('dns_forwarder_1', _('External DNS Server')),
+						   ):
+			self.debug('testing %s' % key)
+			if self.all_results.get(key) and not self.is_ipaddr(self.all_results.get(key,'')):
+				if not self.ignore(key):
+					self.message = invalid + name
+					self.debug(self.message)
+					return False
+
+		proxy = self.all_results.get('proxy_http','').strip()
 		self.debug('PROXY=%s' % proxy)
 		if proxy and proxy !='http://' and proxy !='https://':
 			if not (proxy.startswith('http://') or proxy.startswith('https://')):
@@ -245,865 +375,665 @@ class object(content):
 					self.message=invalid+_('Proxy, example http://10.201.1.1:8080')
 					return False
 
-		_re=re.compile('eth.*_ip')
-		_re2=re.compile('eth.*_type')
-		interfaces=[]
-		complete=[]
-		for key in self.all_results.keys():
-			self.debug('check key = [%s]' % key)
-			if _re.match(key) and len(self.all_results[key]) > 0:
-				self.debug('re match')
-				key=key.replace('_ip', '')
-				if not key in interfaces:
-					interfaces.append(key)
-					self.debug('append interface %s' % key)
-			elif _re2.match(key) and len(self.all_results[key]) > 0:
-				self.debug('re2 match')
-				complete.append(key.replace('_type',''))
 
-		for i in interfaces:
-			ip='%s_ip' % i
-			netmask='%s_netmask' % i
-			broadcast='%s_broadcast' % i
-			network='%s_network' % i
-			keys=self.all_results.keys()
-			if ip in keys and broadcast in keys and network in keys and netmask in keys:
-				complete.append(i)
+		complete_cnt = 0
+		REinterfaces = re.compile('^eth(\d+)_')
+		iface_list= set([ 'eth%s' % REinterfaces.search(i).group(1) for i in self.all_results.keys() if REinterfaces.search(i) ])
+		for name in iface_list:
+			ipv4complete = False
+			for key in ('ip', 'netmask', 'broadcast', 'network'):
+				if not self.all_results.get('%s_%s' % (name, key)):
+					break
+			else:
+				ipv4complete = True
+			ipv6complete = False
+			for key in ('ip6', 'prefix6'):
+				if not self.all_results.get('%s_%s' % (name, key)):
+					break
+			else:
+				ipv6complete = True
+			if ipv4complete or ipv6complete:
+				complete_cnt += 1
 
-		if len(complete) < 1:
+		if complete_cnt < 1:
 			if not self.ignore('interfaces'):
-				self.message=_("You have to add one or more Network interfaces.")
+				self.message = _("You have to configure one or more network interfaces.")
 				return False
 
 		return True
 
-	def profile_f12_run(self):
-		# send the F12 key event to the subwindow
-		if hasattr(self, 'sub'):
-			self.sub.input(276)
-			self.sub.exit()
-			return 1
 
-	def formdict(self, interfaces):
-		tmpinterfaces=[]
-		self.mapping=[]
-		count=0
-		interfaces.sort()
-		vorher=''
-		for l  in interfaces:
-
-			if not l[0].startswith(vorher) and not l[0].split(':')[0].startswith(vorher.split(':')[0]):
-				tmpinterfaces.append('   %s' %_('New Virtual Device'))
-				self.mapping.append([_('New Virtual Device'),count])
-				count+=1
-
-			if l[5] == 'dynamic':
-				if l[6] == 'virtual':
-					tmpinterfaces.append('   %-10s %s' %(l[0], _('Dynamic (DHCP)')))
-				else:
-					tmpinterfaces.append('%-10s %s' %(l[0], _('Dynamic (DHCP)')))
-			else:
-				if l[6] == 'virtual':
-					tmpinterfaces.append('   %-10s%-18s%-16s' %(l[0], l[1], l[2]))
-				else:
-					tmpinterfaces.append('%-10s%-18s%-16s' %(l[0], l[1], l[2]))
-
-			self.mapping.append([l[0],count])
-
-			vorher=l[0]
-			count+=1
-
-		tmpinterfaces.append('   %s'%_('New Virtual Device'))
-		self.mapping.append([_('New Virtual Device'), count])
-		count+=1
-		tmpinterfaces.append(_('New Device'))
-		self.mapping.append([_('New Device'),count])
-		count+=1
-		return tmpinterfaces
-
-	def addinterface(self, dev, ip, netm, broad, netw, mode, virtual=''):
-		#Add an interface to the list
-		if ip == '' and not mode in ['dynamic', 'dhcp']:
-			return 1
-		remove_list=[]
-		for i in range(0,len(self.interfaces)):
-			if self.interfaces[i][0] == dev:
-				remove_list.append(self.interfaces[i])
-		for i in range(0,len(remove_list)):
-			self.interfaces.remove(remove_list[i])
-		self.debug('Adding Interface %s with Options [%s, %s, %s, %s, %s, %s]'%(dev, ip, netm, broad, netw, mode, virtual))
-		self.interfaces.append([dev, ip, netm, broad, netw, mode, virtual])
-		self.redraw()
-		return 1
-
-	def delinterface(self):
-		device=self.ifaceselected()
-		self.debug('Deleting Interface: "%s"'%self.ifaceselected())
-		if device:
-			self.interfaces.remove(device)
-			self.redraw()
-
-	def redraw(self):
-		#For secure redrawing of the main window. Saving all values.
-		self.debug('Redrawing Main Window')
-		self.container['Gateway']=[self.elements[8].result().strip()]
-		self.container['Nameserver']=[self.elements[10].result().strip()]
-		if self.ask_forwarder:
-			self.container['DNS-Forwarder']=[self.elements[13].result().strip()]
-			self.container['proxy_http']=[self.elements[16].result().strip()]
-		else:
-			self.container['proxy_http']=[self.elements[13].result().strip()]
-		self.container['current']=self.current
-		if self.already_redraw:
-			self.already_redraw=1
-			self.layout()
-		else:
-			self.already_redraw=1
-			self.layout()
-			self.elements[3].set_off()
-			self.elements[0].set_off()
-			self.current=8
-			self.elements[8].set_on()
-		self.draw()
-
-	def nextiface(self, iface=''):
-		'''
-		Generate the next available real or virtual interface.
-		'''
-		self.debug('NetxInterface')
-		if len(self.interfaces) < 1: #nextiface is called the first time, dont return eth0+1
-			return 'eth0'
-		if iface == '': #Get the next real interface
-			count=0
-			for dev in self.interfaces:
-				if dev[0].startswith('eth') and dev[6] == '': #Real Interface
-					if dev[0][3:] >= count:
-						count=int(dev[0][3:])
-			count+=1
-			return 'eth%d'%count
-		elif iface and iface.startswith('eth'):
-			count=[]
-			#example: [device, ip, netmask, broadcast, network, mode, virtual='']
-			for dev in self.interfaces:
-				if dev[0].startswith(iface) and dev[6] == 'virtual': #Virtual interface
-					count.append(int(dev[0].split(':')[1]))
-			i=0
-			for i in range(0,len(count)):
-				if i != count[i]:
-					break
-				i+=1
-			return '%s:%d' %(iface,i)
-		else:
-			return 1
-
-	def getnext(self):
-		'''
-		Get the next interface to configure, uses nextiface()
-		'''
-		self.debug('Getnext')
-		line=self.elements[3].result()[0]
-		self.debug('Line: %s'%self.elements[3].result())
-		if line:
-			entry=self.mapping[line][0].strip()
-			if entry == _('New Device'):
-				dev=self.nextiface()
-				return [entry, dev]
-			elif entry == _('New Virtual Device'):
-				device=self.mapping[line-1][0].strip() #Get line-1
-				if len(device.split(':')) > 1:
-					device=device[:device.rfind(':')]
-				dev=self.nextiface(device)
-				return [entry, dev]
-			elif entry.startswith('eth'):
-				self.debug('NextIface="%s"'%self.nextiface())
-				return ['',self.nextiface()]
-		else:
-			return ['',self.nextiface()]
-
-	def ifaceselected(self):
-		'''
-		Get the selected line from the selectbox and check if it is an interface
-		'''
-		line=self.elements[3].result()[0]
-		entry=self.mapping[line][0].strip()
-		device=[]
-		if entry == _('New Device'):
-			return 0
-		elif entry == _('New Virtual Device'):
-			return 0
-		elif entry.startswith('eth'):
-			for i in range(0,len(self.interfaces)):
-				if self.interfaces[i][0] == entry:
-					device=self.interfaces[i]
-					break
-			return device
-		else:
-			return 0
+	#def std_button():
+	#def draw():
+	#def help():
 
 	def layout(self):
-		MAXIP=18
+		self.debug('layout()')
+
+		## clear layout
 		self.elements=[]
+		self.element_index={}
+		self.default_ipv4_was_set = False
+
+		# add default buttons
 		self.std_button()
-		text=_('Device        IP               Netmask')
-		self.elements.append(textline(text,self.minY,self.minX+2)) #2
 
-		self.elements.append(select(self.formdict(self.interfaces),self.minY+1,self.minX+2,self.maxWidth-4,4))#3
-		self.elements.append(button(_('F2-Add'),self.minY+6,self.minX+2,13))#4
-		self.elements.append(button(_('F3-Edit'),self.minY+6,self.minX+(self.width/2)-3,align="middle"))#5
-		self.elements.append(button(_('F4-Delete'),self.minY+6,self.minX+(self.width)-4,align="right"))#6
+		# create cardbox with one card for each interface
+		cardwidth = 75
+		box = cardbox(self, self.pos_y+1, self.pos_x+2, 18, cardwidth )
+		cards = {}
+		for i in xrange(len(self.interfaces)):
+			# get interface object
+			iface = self.interfaces[i]
+			# create new card
+			card = box.append_card(iface.name)
+			cards[iface.name] = card
 
-		# - Gateway
-		if not self.container.has_key('Gateway'):
-			gateway_str=''
-		else:
-			gateway_str='%s' % self.container['Gateway'][0]
-		self.add_elem('netobject.TXT_GATEWAY', textline(_('Gateway'),self.minY+10,self.minX+2)) #7
-		self.add_elem('netobject.INPUT_GATEWAY', input(gateway_str,self.minY+10,self.minX+20,MAXIP+8)) #8
+			# headline
+			card.add_elem('TXT_NETIF1', textline(_('Settings for interface "%s"') % iface.name, 0, 1, position_parent=card))
 
-		# - Nameserver
-		if not self.container.has_key('Nameserver'):
-			nameserver1_str=''
-		else:
-			nameserver1_str='%s' % self.container['Nameserver'][0]
-		self.add_elem('netobject.TXT_NAMESERVER1', textline(_('Name server'),self.minY+12,self.minX+2)) #9
-		self.add_elem('netobject.INPUT_NAMESERVER1', input(nameserver1_str,self.minY+12,self.minX+20,MAXIP+8)) #10
-		self.elements.append(button(_('More'),self.minY+12,self.minX+(self.width)-4,align="right")) #11
+			if iface.macaddr:
+				card.add_elem('TXT_NETMAC1', textline(_('MAC address: %s') % iface.macaddr, 0, cardwidth-3, align='right', position_parent=card))
 
-		proxyY=14
+			# ADD CHECKBOX
+			val_ipv4={_('Enable IPv4'): ['CB_IPv4', 0]}
+			val_ipv4_cb = []
+			# activate checkbox if IPv4 address is present
+			if self.container.get('%s_ip' % iface.name) or self.container.get('%s_type' % iface.name) in ['dynamic', 'dhcp']:
+				val_ipv4_cb = [0]
+			card.add_elem('CB_IPv4', checkbox(val_ipv4, 2, 1, 30, 2, val_ipv4_cb, position_parent=card))
 
-		if 'system_role' in self.all_results and not (self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave']):
-			self.ask_forwarder=False
-		else:
-			self.ask_forwarder=True
 
-		if self.ox:
-			self.ask_forwarder=False
+			# IPv4 DHCP
+			cb_ipv4dhcp = []
+			if self.container.get('%s_type' % iface.name) in ['dynamic', 'dhcp']:
+				cb_ipv4dhcp = [0]
+			val_ipv4dhcp={_('Dynamic (DHCP)'): ['dynamic',0]}
+			card.add_elem('CB_IPv4DHCP', checkbox(val_ipv4dhcp, 4, 3, 18,2, cb_ipv4dhcp, position_parent=card))
+			card.add_elem('BTN_DHCLIENT', button('F5-'+_('DHCP Query'), 4, 27, position_parent=card))
 
+			# IPv4 Address
+			val_ipv4addr = self.container.get('%s_ip' % iface.name, '')
+			card.add_elem('TXT_IPv4ADDR', textline(_('IPv4 address'), 5, 3, position_parent=card))
+			card.add_elem('INP_IPv4ADDR', input(val_ipv4addr, 5, 21, LEN_IPv4_ADDR+4, position_parent=card))
+
+			val_ipv4netmask = self.container.get('%s_netmask' % iface.name, '')
+			card.add_elem('TXT_IPv4NETMASK', textline(_('Netmask'), 6, 3, position_parent=card))
+			card.add_elem('INP_IPv4NETMASK', input(val_ipv4netmask, 6, 21, LEN_IPv4_ADDR+4, position_parent=card))
+
+			# activate checkbox if IPv6 address is present
+			val_ipv6={_('Enable IPv6'): ['dynamic', 0]}
+			val_ipv6_cb = []
+			if self.container.get('%s_ip6' % iface.name) or self.container.get('%s_acceptra' % iface.name) == 'true':
+				val_ipv6_cb = [0]
+			card.add_elem('CB_IPv6', checkbox(val_ipv6, 8, 1, 30, 2, val_ipv6_cb, position_parent=card))
+
+			# activate checkbox if dynamic interface config is enabled
+			val_ipv6ra={_('Dynamic (accept router advertisements)'): ['CB_IPv6_RA', 0]}
+			val_ipv6ra_cb = []
+			if self.container.get('%s_acceptra' % iface.name) == 'true':
+				val_ipv6ra_cb = [0]
+			card.add_elem('CB_IPv6RA', checkbox(val_ipv6ra, 10, 3, 50, 2, val_ipv6ra_cb, position_parent=card))
+
+			# IPv6 address
+			val_ipv6addr = self.container.get('%s_ip6' % iface.name, '')
+			card.add_elem('TXT_IPv6ADDR', textline(_('IPv6 address'), 11, 3, position_parent=card))
+			card.add_elem('INP_IPv6ADDR', input(val_ipv6addr, 11, 21, LEN_IPv6_ADDR+3, position_parent=card))
+
+			# IPv6 prefix
+			val_ipv6prefix = self.container.get('%s_prefix6' % iface.name, '')
+			card.add_elem('TXT_IPv6PREFIX', textline(_('IPv6 prefix'), 12, 3, position_parent=card))
+			card.add_elem('INP_IPv6PREFIX', input(val_ipv6prefix, 12, 21, 7, position_parent=card))
+
+		self.cards = cards
+		self.add_elem('CARDBOX1', box)
+		box.set_card(0)
+
+		self.add_elem('BTN_IF_PREV', button(_('F2-Previous Interface'), self.pos_y+19, self.pos_x+10))
+		self.add_elem('BTN_IF_NEXT', button(_('F3-Next Interface'), self.pos_y+19, self.pos_x+45))
+
+		#
+		# Global Settings
+		#
+
+		# offset for global settings
+		offsetGy = self.pos_y + 22
+		offsetGx = self.pos_x + 2
+
+		self.add_elem('TXT_GLOBALSETTINGS', textline(_('Global Network Settings'), offsetGy, offsetGx))
+
+		# - IPv4 Gateway
+		val_gateway4 = self.container.get('gateway', '')
+		offsetGy += 2
+		self.add_elem('TXT_GATEWAY4', textline(_('IPv4 Gateway'), offsetGy, offsetGx+2))
+		self.add_elem('INP_GATEWAY4', input(val_gateway4, offsetGy, offsetGx+22, LEN_IPv6_ADDR+3))
+
+		# - IPv6 Gateway
+		val_gateway6 = self.container.get('gateway6','')
+		offsetGy += 1
+		self.add_elem('TXT_GATEWAY6', textline(_('IPv6 Gateway'), offsetGy, offsetGx+2))
+		self.add_elem('INP_GATEWAY6', input(val_gateway6, offsetGy, offsetGx+22, LEN_IPv6_ADDR+3))
+
+		offsetGy += 1
+		# True, if system role is domaincontroller or system is an OX system
+		self.ask_domainnameserver = ( self.all_results.get('system_role') not in ['domaincontroller_master'] ) or self.is_ox
+		self.debug('ask_domainnameserver=%s  (%s, %s)' % (self.ask_domainnameserver, self.all_results.get('system_role'), self.is_ox))
+		if self.ask_domainnameserver:
+			offsetGy += 1
+			# - Domain Nameserver
+			val_nameserver1 = self.container.get('nameserver_1','')
+			self.add_elem('TXT_NAMESERVER1', textline(_('Domain DNS Server'), offsetGy, offsetGx+2))
+			self.add_elem('INP_NAMESERVER1', input(val_nameserver1, offsetGy, offsetGx+22, LEN_IPv6_ADDR+3))
+			self.add_elem('BTN_MORE_NAMESERVER', button(_('More'), offsetGy, offsetGx+22+LEN_IPv6_ADDR+4))
+
+		# True, if system role is domaincontroller or system is an OX system
+		self.ask_forwarder = ( self.all_results.get('system_role') in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'] ) and not self.is_ox
+		self.debug('ask_forwarder=%s  (%s, %s)' % (self.ask_forwarder, self.all_results.get('system_role'), self.is_ox))
 		if self.ask_forwarder:
-			proxyY=16
+			offsetGy += 1
 			# - DNS Forwarder
-			self.elements.append(textline(_('DNS Forwarder'),self.minY+14,self.minX+2)) #12
-			if not self.container.has_key('DNS-Forwarder'):
-				self.elements.append(input('',self.minY+14,self.minX+20,MAXIP+8)) #13
-			else:
-				self.elements.append(input('%s'%self.container['DNS-Forwarder'][0],self.minY+14,self.minX+20,MAXIP+8)) #13
-			self.elements.append(button(_('More'),self.minY+14,self.minX+(self.width)-4,align="right")) #14
+			val_forwarder1 = self.container.get('dns_forwarder_1','')
+			self.add_elem('TXT_FORWARDER1', textline(_('External DNS Server'), offsetGy, offsetGx+2))
+			self.add_elem('INP_FORWARDER1', input(val_forwarder1, offsetGy, offsetGx+22, LEN_IPv6_ADDR+3))
+			self.add_elem('BTN_MORE_FORWARDER', button(_('More'), offsetGy, offsetGx+22+LEN_IPv6_ADDR+4))
 
 		# - Proxy
-		self.elements.append(textline(_('HTTP proxy'),self.minY+proxyY,self.minX+2)) #15
-		if not self.container.has_key('proxy_http'):
-			self.elements.append(input('http://',self.minY+proxyY,self.minX+20,MAXIP+8)) #16
-		else:
-			self.elements.append(input('%s'%self.container['proxy_http'][0],self.minY+proxyY,self.minX+20,MAXIP+8)) #16
+		offsetGy += 2
+		val_proxyhttp = self.container.get('proxy_http','http://')
+		self.add_elem('TXT_PROXYHTTP', textline(_('HTTP proxy'), offsetGy, offsetGx+2))
+		self.add_elem('INP_PROXYHTTP', input(val_proxyhttp, offsetGy, offsetGx+22, LEN_IPv6_ADDR+3))
 
-		if not self.already_redraw:
-			#add first device
-			init=1
-			for i in range(0, len(self.interfaces)):
-				if self.interfaces[i][0].startswith('eth'):
-					init=0
-			if init:
-				if os.system('/bin/ifconfig -a| grep eth0 >/dev/null') != 0:
-					self.debug("could not find eth0")
-					msglist=[_('Currently no network card could be detected. Depending on'),
-							 _('the selected services and system role an operative network'),
-							 _('card is required to successfully complete the installation.'),
-							 _('Please check the network card of the computer.'),
-							 _('If a network card is installed, try to load additional'),
-							 _('kernel modules at the beginning of the installation.'),
-							 _('If the installation will be continued without operative'),
-							 _('network card, a virtual dummy network card will be loaded'),
-							 _('automatically to complete installation.'),
-							 ]
-					self.sub=msg_win(self, self.pos_y+4, self.pos_x-16, self.width+12, self.height-18, msglist)
-					self.needs_draw_all = True
-					self.sub.draw()
-				else:
-					self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight-8)
-					self.sub.draw()
+		self.update_widget_states()
+
+
+	def update_widget_states(self):
+		"""
+		Update disabled/enabled status of elements depending on other elements
+		"""
+
+		# if any interface has ipv4 enabled then enable ipv4 gateway
+		self.ipv4_found = False
+		for card in self.cards.values():
+			self.ipv4_found = self.ipv4_found or card.get_elem('CB_IPv4').result()
+		if self.ipv4_found:
+			self.get_elem('INP_GATEWAY4').enable()
+		else:
+			self.get_elem('INP_GATEWAY4').disable()
+
+		# if any interface has ipv6 enabled then enable ipv6 gateway
+		self.ipv6_found = False
+		for card in self.cards.values():
+			self.ipv6_found = self.ipv6_found or card.get_elem('CB_IPv6').result()
+		if self.ipv6_found:
+			self.get_elem('INP_GATEWAY6').enable()
+		else:
+			self.get_elem('INP_GATEWAY6').disable()
+
+		# if no interface has been configured, and first interface is visible then activate IPv4 for first interface
+		if not self.default_ipv4_was_set and not self.ipv4_found and not self.ipv6_found and self.get_elem('CARDBOX1').get_card().name == self.interfaces[0].name:
+			self.get_elem('CB_IPv4').select()
+			self.default_ipv4_was_set = True
+
+		# if IPv6 checkbox is present...
+		if self.elem_exists('CB_IPv6'):
+			if self.get_elem('CB_IPv6').result():
+				# IPv6 is enabled ==> enable CB for router advertisements
+				self.get_elem('CB_IPv6RA').enable()
+				for name in [ 'INP_IPv6ADDR', 'INP_IPv6PREFIX' ]:
+					if self.get_elem('CB_IPv6RA').result():
+						# router advertisements are on ==> turn off IPv6 address fields
+						self.get_elem(name).disable()
+					else:
+						# router advertisements are off ==> turn on IPv6 address fields
+						self.get_elem(name).enable()
+			else:
+				# IPv6 is disabled ==> turn off all IPv6 elements
+				for name in [ 'CB_IPv6RA', 'INP_IPv6ADDR', 'INP_IPv6PREFIX' ]:
+					self.get_elem(name).set_off()
+					self.get_elem(name).disable()
+
+		# if IPv4 checkbox is present...
+		if self.elem_exists('CB_IPv4'):
+			if self.get_elem('CB_IPv4').result():
+				# IPv4 is enabled ==> enable CB for DHCP
+				self.get_elem('CB_IPv4DHCP').enable()
+				self.get_elem('BTN_DHCLIENT').enable()
+				for name in [ 'INP_IPv4ADDR', 'INP_IPv4NETMASK' ]:
+					if self.get_elem('CB_IPv4DHCP').result():
+						# dhcp is on ==> turn off IPv4 address fields
+						self.get_elem(name).disable()
+					else:
+						# dhcp is off ==> turn on IPv4 address fields
+						self.get_elem(name).enable()
+			else:
+				for name in [ 'CB_IPv4DHCP', 'BTN_DHCLIENT', 'INP_IPv4ADDR', 'INP_IPv4NETMASK' ]:
+					self.get_elem(name).set_off()
+					self.get_elem(name).disable()
+
+		# enable more button if at least forwarder1 has been set
+		if self.elem_exists('INP_FORWARDER1'):
+			if self.get_elem('INP_FORWARDER1').result().strip():
+				self.get_elem('BTN_MORE_FORWARDER').enable()
+			else:
+				self.get_elem('BTN_MORE_FORWARDER').disable()
+
+		# enable more button if at least nameserver1 has been set
+		if self.elem_exists('INP_NAMESERVER1'):
+			if self.get_elem('INP_NAMESERVER1').result().strip():
+				self.get_elem('BTN_MORE_NAMESERVER').enable()
+			else:
+				self.get_elem('BTN_MORE_NAMESERVER').disable()
+
+		# set focus to current element
+		self.elements[self.current].set_on()
+		# copy values from elements to self.container to prevent data loss if user switches to previous installer module via F11
+		self.copy_elem_to_container()
+		# redraw all elements
+		self.draw()
+
+
+	def copy_elem_to_container(self):
+		"""
+		Copy values of current elements to self.container.
+		This is required in input() to prevent data loss if user switches to previous installer modules by pressing key F11
+		"""
+		card = self.get_elem('CARDBOX1').get_card()
+		name = card.name
+
+		# reset old values
+		self.container['%s_ip' % name] = ''
+		self.container['%s_netmask' % name] = ''
+		# IPv4
+		if card.get_elem('CB_IPv4DHCP').result():
+			self.container['%s_type' % name] = 'dynamic'
+			if self.serversystem:
+				self.container['%s_ip' % name] = card.get_elem('INP_IPv4ADDR').result().strip()
+				self.container['%s_netmask' % name] = card.get_elem('INP_IPv4NETMASK').result().strip()
+		else:
+			self.container['%s_type' % name] = ''
+			self.container['%s_ip' % name] =  card.get_elem('INP_IPv4ADDR').result().strip()
+			self.container['%s_netmask' % name] =  card.get_elem('INP_IPv4NETMASK').result().strip()
+
+		# IPv6
+		if card.get_elem('CB_IPv6RA').result():
+			self.container['%s_acceptra' % name] = 'true'
+		else:
+			self.container['%s_ip6' % name] = card.get_elem('INP_IPv6ADDR').result().strip()
+			self.container['%s_prefix6' % name] = card.get_elem('INP_IPv6PREFIX').result().strip()
+
+		keylist = [ [ 'INP_GATEWAY4', 'gateway' ],
+					[ 'INP_GATEWAY6', 'gateway6' ],
+					[ 'INP_FORWARDER1', 'dns_forwarder_1' ],
+					[ 'INP_NAMESERVER1', 'nameserver_1' ],
+					[ 'INP_PROXYHTTP', 'proxy_http' ],
+					]
+
+		for elem, key in keylist:
+			if self.elem_exists(elem):
+				self.container[key] = self.get_elem(elem).result().strip()
+
+
+	def tab(self):
+		"""
+		tab() get's called if tabulator key has been pressed
+		"""
+		if self.current == self.get_elem_id('INP_IPv4ADDR'): # if focus is on IPv4 address field
+			if not self.get_elem('CB_IPv4DHCP').result(): # and if DHCP is disabled
+				addr = self.get_elem('INP_IPv4ADDR').result().strip()
+				if addr and self.is_ipv4addr(addr): # and a valid IPv4 address has been entered
+					element = self.get_elem('INP_IPv4NETMASK')
+					if not(element.result()): # and netmask is empty ==> then set default netmask
+						element.text='255.255.255.0'
+						element.set_cursor(len(element.text))
+		content.tab(self)
 
 	def input(self,key):
-		#self.debug('DEBUG: input(net object): %d' % key)
-		if hasattr(self,"sub"):
-			resultkey=self.sub.input(key)
-			if not resultkey:
-				self.subresult=self.sub.get_result()
-				self.sub.exit()
-				self.draw()
-			elif resultkey == 'tab':
-				self.sub.tab()
-		elif key == 266:# F2 - Add
-			self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight-8)
-			self.sub.draw()
-		elif key == 267:# F3 - Edit
-			if self.ifaceselected():
-				self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight-8,'edit')
-				self.sub.draw()
-			else:
-				pass
-		elif key == 268:# F4 - Delete
-			self.delinterface()
-		elif key in [ 10, 32 ] and self.btn_next():
-			return 'next'
-		elif key in [ 10, 32 ] and self.btn_back():
-			return 'prev'
-		elif key in [ 10, 32 ] and self.elements[4].usable() and self.elements[4].get_status():# Enter & Button: Add
-			if not self.ifaceselected():
-				self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight-8)
-				self.sub.draw()
-			else:
-				pass
-		elif key in [ 10, 32 ] and self.elements[5].usable() and self.elements[5].get_status():# Enter & Button: Edit
-			if self.ifaceselected():
-				self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight-8,'edit')
-				self.sub.draw()
-			else:
-				pass
-		elif key in [ 10, 32 ] and self.elements[6].usable() and self.elements[6].get_status():# Enter & Button: Delete
-			self.delinterface()
-		elif key in [ 10, 32 ] and self.elements[11].usable() and self.elements[11].get_status():# Enter & Button: More Nameserver
-			if not self.elements[10].result().strip() == '' and self.is_ip(self.elements[10].result().strip()):
-				self.sub=self.more(self,self.minY+4,self.minX+3,self.maxWidth-10,self.maxHeight-8, _("Name server"))
-				self.sub.draw()
-			else:
-				#DNS-Forwarder input is not filled
-				pass
-		elif key in [ 10, 32 ] and self.elements[14].usable() and self.elements[14].get_status():# Enter & Button: More DNS-Forwarder
-			if not self.elements[13].result().strip() == '' and self.is_ip(self.elements[13].result().strip()):
-				self.sub=self.more(self,self.minY+4,self.minX+3,self.maxWidth-10,self.maxHeight-8, _("DNS Forwarder"))
-				self.sub.draw()
-			else:
-				#DNS-Forwarder input is not filled
-				pass
+		"""
+		input handling
+		"""
+		self.debug('input(%d)' % key)
 
-		elif key == curses.KEY_DOWN or key == curses.KEY_UP:
-			self.elements[3].key_event(key)
-		elif key == 10 and self.elements[self.current].usable():
-			return self.elements[self.current].key_event(key)
+		if hasattr(self,'sub'):
+			self.sub.key_event(key)
+			return 1
+		elif key == 10 and self.btn_next():
+			return 'next'
+		elif key == 10 and self.btn_back():
+			return 'prev'
+		elif key == curses.KEY_F2 or ( key in [ 10 ] and self.get_elem('BTN_IF_PREV').get_status() ):
+			self.get_elem('CARDBOX1').prev_card()
+			self.update_widget_states()
+			self.draw()
+		elif key == curses.KEY_F3 or ( key in [ 10 ] and self.get_elem('BTN_IF_NEXT').get_status() ):
+			self.get_elem('CARDBOX1').next_card()
+			self.update_widget_states()
+			self.draw()
+		elif key == curses.KEY_F5 or ( key in [ 10 ] and self.get_elem('BTN_DHCLIENT').get_status() ):
+			self.act = dhclient_active(self, _('DHCP Query'), _('Please wait ...'), name='act')
+			self.act.draw()
+			if not self.dhcpanswer:
+				self.draw()
+				self.sub = warning(_('No DHCP answer, please check DHCP server and network connectivity.'), self.pos_y+39, self.pos_x+93)
+				self.sub.draw()
+			else:
+				addr_elem = self.get_elem('INP_IPv4ADDR')
+				if addr_elem.result():
+					self.elements[self.current].set_off()		# reset actual focus highlight
+					self.current = self.get_elem_id('BTN_DHCLIENT')	# set the tab cursor
+					self.elements[self.current].set_on()		# set actual focus highlight
+				self.draw()
+		elif key in [ 10 ] and self.ask_domainnameserver and self.get_elem('BTN_MORE_NAMESERVER').get_status(): # Enter & Button: "[More]" Nameserver
+			self.sub = morewindow(self, self.minY, self.minX+16, self.maxWidth-7, self.maxHeight-8, morewindow.DOMAINDNS)
+			self.sub.draw()
+		elif key in [ 10 ] and self.ask_forwarder and self.get_elem('BTN_MORE_FORWARDER').get_status(): # Enter & Button: "[More]" Forwarder
+			self.sub = morewindow(self, self.minY, self.minX+16, self.maxWidth-7, self.maxHeight-8, morewindow.EXTERNALDNS)
+			self.sub.draw()
 		else:
-			self.elements[self.current].key_event(key)
+			val = self.elements[self.current].key_event(key)
+			# update widgets because checkboxes may have changed
+			self.update_widget_states()
+			return val
+
+
 
 	def incomplete(self):
-		invalid=_("Following value is invalid: ")
-		if not self.elements[8].result().strip() == '':
-			if not self.is_ip(self.elements[8].result()):
-				return invalid+_("Gateway")
-		if not self.elements[10].result().strip() == '':
-			if not self.is_ip(self.elements[10].result()):
-				return invalid+_("Name server")
-		if self.ask_forwarder:
-			if not self.elements[13].result().strip() == '':
-				if not self.is_ip(self.elements[13].result()):
-					return invalid+_("DNS Forwarder")
-			proxy_position = 16
-		else:
-			proxy_position = 13
-	
-		if self.elements[proxy_position]:
-			proxy = self.elements[proxy_position].result().strip()
-			self.debug('PROXY=%s' % proxy)
-			if proxy and not proxy.startswith('http://') and not proxy.startswith('https://'):
-				self.debug('INVALID PROXY!')
-				return invalid+_('Proxy, example http://10.201.1.1:8080')
+		self.debug('incomplete()')
 
-		if len(self.interfaces) == 0:
-			return _("You have to add one or more network interfaces.")
+		invalid = _('Following value is invalid: ')
+		invalid_value = _('An invalid value has been entered for interface %(interface)s: %(elemname)s')
+
+		# nothing configured?
+		if not self.ipv4_found and not self.ipv6_found:
+			return _('At least one interface must be configured.')
+
+		# check every interface if config is complete
+		for name, card in self.cards.items():
+			if card.get_elem('CB_IPv4').result():
+				self.debug('DHCP: %s' % card.get_elem('CB_IPv4DHCP').result())
+				dhcp = bool(card.get_elem('CB_IPv4DHCP').result())
+				addr = card.get_elem('INP_IPv4ADDR').result().strip()
+				netmask = card.get_elem('INP_IPv4NETMASK').result().strip()
+				self.debug('%s: DHCP:%s  %s/%s' % (name, dhcp, addr, netmask))
+				# check values agains IPv4 syntax
+				if addr and not self.is_ipv4addr(addr):
+					return invalid_value % { 'interface': name, 'elemname': _('IPv4 Address') }
+				if netmask and not self.is_ipv4netmask('%s/%s' % (addr, netmask)):
+					return invalid_value % { 'interface': name, 'elemname': _('IPv4 Netmask') }
+				# at least dhcp or valid IPv4 has to be set
+				if not(dhcp or (addr and netmask)):
+					return _('Neither DHCP is activated nor an IPv4 address with netmask has been entered for interface "%s".') % name
+
+			if card.get_elem('CB_IPv6').result():
+				acceptra = bool(card.get_elem('CB_IPv6RA').result())
+				addr = card.get_elem('INP_IPv6ADDR').result().strip()
+				prefix = card.get_elem('INP_IPv6PREFIX').result().strip()
+				self.debug('%s: RA:%s  %s/%s' % (name, acceptra, addr, prefix))
+				# check values agains IPv6 syntax
+				if addr and not self.is_ipv6addr(addr):
+					return invalid_value % { 'interface': name, 'elemname': _('IPv6 Address') }
+				if prefix and not self.is_ipv6netmask('%s/%s' % (addr, prefix)):
+					return invalid_value % { 'interface': name, 'elemname': _('IPv6 Prefix') }
+				# at least acceptra or valid IPv6 has to be set
+				if not(acceptra or (addr and prefix)):
+					return _('Neither accepting router advertisements is activated nor an IPv6 address with prefix has been entered for interface "%s".') % name
+
+
+		testlist = []  # list of 3-tuples ( profile name, descriptive name, is_required? )
+		if self.ipv4_found:
+			testlist.append( [ 'gateway', _('IPv4 Gateway'), False ] )
+		if self.ipv6_found:
+			testlist.append( [ 'gateway6', _('IPv6 Gateway'), False ] )
+		if self.ask_forwarder:
+			testlist.append( [ 'dns_forwarder_1', _('External DNS Server'), False ] )
+		if self.ask_domainnameserver:
+			testlist.append( [ 'nameserver_1', _('Domain DNS Server'), True ] )
+
+		for key, name, required in testlist:
+			if self.container.get(key) or required:
+				if key.endswith('6'):
+					if not self.is_ipv6addr( self.container.get(key) ):
+						self.debug('no valid IPv6 address: %s=%s' % (key, self.container.get(key)))
+						return invalid + name
+				else:
+					if not self.is_ipv4addr( self.container.get(key) ):
+						self.debug('no valid IPv4 address: %s=%s' % (key, self.container.get(key)))
+						return invalid + name
+
+		proxy = self.container.get('proxy_http','')
+		if not self.is_proxy(proxy):
+			return invalid+_('Proxy, example http://10.201.1.1:8080')
+
 		return 0
 
+
+	def addr_netmask2result(self, name, addr, netmask, copyOnError=False):
+		"""
+		Converts given ipv4 address and netmask to dict with result variables.
+		If address or netmask is not IPv4 compliant, these values will still be copied, if copyOnError is True.
+		In this case the keys '*_broadcast' and '*_network' will contain an empty string.
+
+		>>> addr_netmask2result('eth0', '192.168.0.58', '255.255.255.0')
+		{ 'eth0_ip': '192.168.0.58',
+		  'eth0_netmask': '255.255.255.0',
+		  'eth0_broadcast': '192.168.0.255',
+		  'eth0_network': '192.168.0.0'  }
+		"""
+		result = {}
+		try:
+			IPv4_addr = ipaddr.IPv4Network( '%s/%s' % (addr, netmask) )
+		except (ipaddr.AddressValueError, ipaddr.NetmaskValueError):
+			if copyOnError:
+				result['%s_ip' % name] = addr
+				result['%s_netmask' % name] = netmask
+				result['%s_broadcast' % name] = ''
+				result['%s_network' % name] = ''
+			else:
+				return None
+		else:
+			result['%s_ip' % name] = str(IPv4_addr.ip)
+			result['%s_netmask' % name] = str(IPv4_addr.netmask)
+			result['%s_broadcast' % name] = str(IPv4_addr.broadcast)
+			result['%s_network' % name] = str(IPv4_addr.network)
+
+		return result
+
+
+	def result(self):
+		"""
+		copy result from self.container to result
+		"""
+		self.debug('result()')
+		self.debug('==> container = %r' % self.container)
+		result = {}
+
+		# copy common keys to result (default value is '')
+		keylist = [ 'gateway', 'gateway6', 'proxy_http',
+					'dns_forwarder_1', 'dns_forwarder_2', 'dns_forwarder_3',
+					'nameserver_1', 'nameserver_2', 'nameserver_3' ]
+		for key in keylist:
+			result[key] = self.container.get(key,'')
+
+		# copy all eth* values to result
+		for key,val in self.container.items():
+			if key.startswith('eth'):
+				result[key] = self.container.get(key)
+
+		for key,val in result.items():
+			self.debug('[%s]="%s"' % (key,val))
+
+		return result
+
+
 	def helptext(self):
-		return _('Network \n \n In this module the network configuration is done. \n \n Select \"New Interface\" to add a new interface. Select \"New Virtual Interface\" to create a new virtual interface. \n \n Interface: \n Select the interface you want to configure. \n \n Dynamic (DHCP): \n Mark this field if you want this interface to retrieve its IP configuration via DHCP (Dynamic Host Configuration Protocol). \n \n Static: \n Mark this field if you want this interface to be configured manually. \n \n Enter IP, netmask, broadcast and network address of this interface. \n\n Gateway: \n Default gateway to be use. \n \n Name server: \n Enter the IP address of the primary name server, if you are adding a system to an existing domain. \n More: \n Enter additional name servers \n \n DNS Forwarder: \n Enter the IP address of a DNS server to forward queries to. \n More: \n Enter additional DNS forwarders \n \n HTTP-Proxy: \n Enter the IP address and port number for the HTTP-Proxy (example: http://192.168.1.123:5858)')
+		self.debug('helptext()')
+
+		return _('Network \n \n In this module the network configuration is done. \n \n In the upper part, all detected interfaces are show. By pressing F2 or F3 the next/previous interface can be selected. \n \n For each interface an IPv4 address with netmask and/or IPv6 address with prefix can be entered. \n The configuration of interfaces can also be done automatically: \n \n Dynamic (DHCP): \n   Mark this field if you want this interface to retrieve its IPv4 configuration via DHCP (Dynamic Host Configuration Protocol). \n \n Dynamic (accept router advertisements): \n   Mark this field if you want this interface to retrieve its IPv6 configuration via ND (IPv6 neighbour discovery) \n\n IPv4 Gateway: \n Default gateway to be used for IPv4 traffic. \n IPv6 Gateway: \n Default gateway to be used for IPv6 traffic. \n \n Domain DNS server: \n Enter the IP address of the primary name server, if you are adding a system to an existing UCS domain. \n More: \n Enter additional name servers \n \n External DNS server: \n Enter the IP address of a DNS server to forward queries to. \n More: \n Enter additional DNS forwarders \n \n HTTP-Proxy: \n Enter IP address and port number of HTTP-Proxy to be used (example: http://192.168.1.123:5858)')
+
 
 	def modheader(self):
 		return _('Network')
 
+
 	def profileheader(self):
 		return 'Network'
 
-	def is_hostname(self, host):
-		if len(host) < 1:
-			return 0
-		valid=1
-		for i in host:
-			if i.isdigit() or i in ['!', '#','*','.',':',';']:
-				valid=0
-				break
-		return valid
 
-	def is_port(self, port):
-		if len(port) < 1:
-			return 0
-		for i in port:
-			if not i.isdigit():
-				return 0
-		return 1
 
-	def is_ip(self, ip):
-		test=ip.split('.')
-		if len(test) != 4:
-			return 0
+class dhclient_active(act_win):
+	# dhclient activity indicator window
+	def __init__(self,parent,header,text,name):
+		# set this further right to avoid backdrop on left_menu, which fails to be redrawn
+		self.pos_x = parent.minX+10
+		self.pos_y = parent.minY+2
+		act_win.__init__(self,parent,header,text,name)
+
+	def function(self):
+		# dhclient call and result evaluation
+		interface = self.parent.get_elem('CARDBOX1').get_card().name
+		dhcp_dict = self.parent.dhclient(interface, 45)
+		ip_str = dhcp_dict.get('address') or ''
+		if not ip_str:
+			self.parent.dhcpanswer = False
 		else:
-			for i in test:
-				if not i.isdigit() or int(i) < 0 or int(i) > 255:
-					return 0
-		return 1
+			self.parent.dhcpanswer = True
 
-	def result(self):
-		result={}
-		if self.elements[8].result().strip():
-			result['gateway']='%s' %self.elements[8].result().strip()
-		else:
-			result['gateway']=''
-		if self.elements[10].result().strip():
-			result['nameserver_1']='%s' %self.elements[10].result().strip()
-		else:
-			result['nameserver_1']=''
-		if self.ask_forwarder:
-			if self.elements[13].result().strip():
-				result['dns_forwarder_1']='%s' %self.elements[13].result().strip()
-			else:
-				result['dns_forwarder_1']=''
+			ip_input = self.parent.get_elem('INP_IPv4ADDR')
+			ip_input.text = dhcp_dict.get('address') or ''
+			ip_input.set_cursor(len(ip_input.text))
+			ip_input.paste_text()
+			ip_input.draw()
 
-			proxy = self.elements[16].result().strip()
-		else:
-			result['dns_forwarder_1']=''
-			proxy = self.elements[13].result().strip()
+			netmask_input = self.parent.get_elem('INP_IPv4NETMASK')
+			netmask_input.text = dhcp_dict.get('netmask') or ''
+			netmask_input.set_cursor(len(netmask_input.text))
+			netmask_input.paste_text()
+			netmask_input.draw()
 
-		result['proxy_http']=''
-		if proxy and  proxy != 'http://' and proxy != 'https://':
-			result['proxy_http']='%s' % proxy
+			gateway_str = dhcp_dict.get('gateway') or ''
+			if gateway_str:
+				gateway_input = self.parent.get_elem('INP_GATEWAY4')
+				gateway_input.text = gateway_str
+				gateway_input.set_cursor(len(gateway_input.text))
+				gateway_input.paste_text()
+				gateway_input.draw()
 
-		#Fill in more Forwarders and Nameservers
-		for key in self.dns.keys():
-			self.debug('[%s]=%s'%(key,self.dns[key]))
-			result[key]=self.dns[key]
+			nameserver1_str = dhcp_dict.get('nameserver_1') or ''
+			if nameserver1_str:
+				nameserver1_input = self.parent.get_elem('INP_NAMESERVER1')
+				nameserver1_input.text = nameserver1_str
+				nameserver1_input.set_cursor(len(nameserver1_input.text))
+				nameserver1_input.paste_text()
+				nameserver1_input.draw()
 
-		#Fill in interfaces
-		#example: [device, ip, netmask, broadcast, network, mode, virtual='']
-		for dev in self.interfaces:
-			if dev[6] == 'virtual':
-				device=dev[0].replace(':','_')
-			else:
-				device=dev[0]
+			nameserver2_str = dhcp_dict.get('nameserver_2') or ''
+			if nameserver2_str:
+				self.parent.parent.dns['nameserver_2'] = nameserver2_str
 
-			if dev[5] in [ 'dynamic', 'dhcp']:
-				result['%s_type'%device]=dev[5]
-				if self.serversystem:
-					result['%s_ip'%device]=dev[1]
-					result['%s_netmask'%device]=dev[2]
-					result['%s_broadcast'%device]=dev[3]
-					result['%s_network'%device]=dev[4]
-			else:
-				result['%s_type'%device]=''
-				result['%s_ip'%device]=dev[1]
-				result['%s_netmask'%device]=dev[2]
-				result['%s_broadcast'%device]=dev[3]
-				result['%s_network'%device]=dev[4]
+			nameserver3_str = dhcp_dict.get('nameserver_3') or ''
+			if nameserver3_str:
+				self.parent.parent.dns['nameserver_3'] = nameserver3_str
 
-		for i in range(0,4):
-			for val in ['ip', 'netmask', 'broadcast', 'network']:
-				if not result.has_key('eth%d_%s' % (i,val)):
-					result['eth%s_%s' % (i,val)]=''
-			for j in range(0,4):
-				for val in ['ip', 'netmask', 'broadcast', 'network']:
-					if not result.has_key('eth%d_%d_%s' % (i,j,val)):
-						result['eth%d_%d_%s' % (i,j,val)]=''
+
+class morewindow(subwin):
+	DOMAINDNS = 'nameserver'
+	EXTERNALDNS = 'forwarder'
+
+	def __init__(self, parent, pos_y, pos_x, width, height, fieldtype):
+		self.type = fieldtype
+		if self.type == self.DOMAINDNS:
+			self.name = _('Domain DNS Server')
+			self.containerkey = 'nameserver_%d'
+		elif self.type == self.EXTERNALDNS:
+			self.name = _('External DNS Server')
+			self.containerkey = 'dns_forwarder_%d'
+		self.values = []
+		subwin.__init__(self, parent, pos_y, pos_x, width, height)
+
+	def get_values(self):
+		self.values = []
+		for i in xrange(1,3+1):
+			self.values.append( self.parent.container.get(self.containerkey % i,'') )
+
+	def layout(self):
+		MAXIP = 19
+
+		self.get_values()
+
+		# 1. Nameserver/DNS-Fwd
+		self.add_elem('TXT1', textline( _('1. %s') % self.name, self.pos_y+2, self.pos_x+2))
+		self.add_elem('TXT2', textline( _('2. %s') % self.name, self.pos_y+3, self.pos_x+2))
+		self.add_elem('TXT3', textline( _('3. %s') % self.name, self.pos_y+4, self.pos_x+2))
+		self.add_elem('VALUE1', textline(self.values[0], self.pos_y+2, self.pos_x+30))
+		self.add_elem('VALUE2', input(self.values[1], self.pos_y+3, self.pos_x+29, MAXIP))
+		self.add_elem('VALUE3', input(self.values[2], self.pos_y+4, self.pos_x+29, MAXIP))
+
+		self.add_elem('BTN_CANCEL', button('ESC-'+_('Cancel'), self.pos_y+7, self.pos_x+8))
+		self.add_elem('BTN_OK', button('F12-'+_('Ok'), self.pos_y+7, self.pos_x+(self.width)-8, 13, align="right"))
+
+		self.current = self.get_elem_id('VALUE2')
+		self.elements[self.current].set_on()
+
+	def helptext(self):
+		return self.parent.helptext()
+
+	def modheader(self):
+		return _( ' More %ss' ) % self.name
+
+	def profileheader(self):
+		return ' More %ss' % self.name
+
+	def put_result(self):
+		result = {}
+
+		for i in xrange(2,3+1):
+			val = self.get_elem('VALUE%d' % i).result().strip()
+			self.parent.container[self.containerkey % i] = val
+			result[self.containerkey % i] = val
 
 		return result
 
-	class edit(subwin):
-		def __init__(self,parent,pos_y,pos_x,width,heigh,mode=''):
-			self.mode=mode
-			self.tabinit=0
-			subwin.__init__(self,parent,pos_y,pos_x,width,heigh)
+	def incomplete(self):
+		missing = _('The following value is missing: ')
+		invalid = _('The following value is invalid: ')
 
-		def layout(self):
-			self.minY=self.parent.minY
-			self.minX=self.parent.minX-16
-			self.maxWidth=self.parent.maxWidth
-			self.maxHeight=self.parent.maxHeight
-			MAXIP=18
-			#example: [device, ip, netmask, broadcast, network, mode, virtual='']
-			if self.mode == 'edit':
-				if not self.parent.cmdline.has_key('interface'): # The windows are not yet created in direct interface edit mode
-					device=self.parent.ifaceselected()
-				else:
-					for i in range(0,len(self.parent.interfaces)):
-						if self.parent.interfaces[i][0] == self.parent.cmdline['interface']:
-							device=self.parent.interfaces[i]
+		# check for valid IP address
+		for i in xrange(2,3+1):
+			val = self.get_elem('VALUE%d' % i).result().strip()
+			# IP address has to meet IPv4 or IPv6 syntax AND
+			# values like "0.0.0.0", "255.255.255.255" and "::" are not allowed
+			if val and not(self.parent.is_ipaddr(val) and val != '0.0.0.0' and val != '255.255.255.255' and val != '::'):
+				return '%s%d. %s' % (invalid, i, self.name)
+			self.values[i-1] = val
 
-			if self.mode == 'edit':
-				interface_str=device[0]
-			else:
-				interface_str=self.parent.getnext()[1]
+		# check if first and third value is set
+		if self.values[2] and not self.values[1]:
+			return '%s%d. %s' % (missing, 2, self.name)
 
-			if len(interface_str.strip().split(':')) > 1:
-				virtual='virtual'
-			else:
-				virtual=''
+		return None
 
-			if self.mode == 'edit':
-				ip_str=device[1]
-				netmask_str=device[2]
-				if device[5] == "static":
-					dhcp_checkbox_value=[]
-				else:
-					dhcp_checkbox_value=[0]
-			else:
-				ip_str=''
-				netmask_str=''
-				if self.parent.serversystem:
-					dhcp_checkbox_value=[]
-				else:
-					dhcp_checkbox_value=[0]
-
-			self.add_elem('edit.TXT_INTERFACE', textline(_('Device:'),self.pos_y+2,self.pos_x+2))#0
-			self.add_elem('edit.INPUT_INTERFACE', input(interface_str, self.pos_y+2, self.pos_x+10, 10))#1
-
-			if not virtual:
-				dict={_('Dynamic (DHCP)'): ['dynamic',0]}
-				self.add_elem('edit.CHECKBOX_DHCP', checkbox(dict,self.pos_y+2,self.pos_x+31,18,2,dhcp_checkbox_value))#5
-				# CHECKBOX_DHCP will return ['dynamic'] or []
-
-			self.add_elem('edit.TXT_IP', textline(_('IP address:'), self.pos_y+4, self.pos_x+2))#1
-			self.add_elem('edit.INPUT_IP', input(ip_str, self.pos_y+4, self.pos_x+14, MAXIP+1))#2
-
-			self.add_elem('edit.TXT_NETMASK', textline(_('Netmask:'), self.pos_y+5, self.pos_x+2))#3
-			self.add_elem('edit.INPUT_NETMASK', input(netmask_str, self.pos_y+5, self.pos_x+14, MAXIP+1))#4
-			if not virtual:
-				self.add_elem('edit.BUTTON_DHCLIENT', button('F5-'+_('DHCP Query'),self.pos_y+5,self.pos_x+(self.width)-4,align='right')) #12
-
-			self.add_elem('edit.BUTTON_OK', button('F12-'+_('Ok'),self.pos_y+7,self.pos_x+(self.width)-4,align='right')) #11
-			self.add_elem('edit.BUTTON_CANCEL', button('ESC-'+_('Cancel'),self.pos_y+7,self.pos_x+4)) #12
-
-			if not dhcp_checkbox_value:
-				self.enable()	# enable the main edit textboxes
-				self.current=self.get_elem_id('edit.INPUT_IP')	# set the tab cursor
-			else:
-				self.disable()	# disable the main edit textboxes
-				self.current=self.get_elem_id('edit.BUTTON_DHCLIENT')	# set the tab cursor
-
-			self.elements[self.current].set_on()		# set the focus highlight
-
-		def disable(self):
-			self.get_elem('edit.INPUT_IP').disable()
-			self.get_elem('edit.INPUT_NETMASK').disable()
-
-		def enable(self):
-			self.get_elem('edit.INPUT_IP').enable()
-			self.get_elem('edit.INPUT_NETMASK').enable()
-
-		def tab(self):
-			if not (self.elem_exists('edit.CHECKBOX_DHCP') and 'dynamic' in self.get_elem('edit.CHECKBOX_DHCP').result()) and self.tabinit <= 1:
-				if self.current == self.get_elem_id('edit.INPUT_IP'):
-					ip_str=self.get_elem('edit.INPUT_IP').result().strip()
-					if ip_str and self.parent.is_ip(ip_str):
-						element=self.get_elem('edit.INPUT_NETMASK')
-						if not (element.text):
-							element.text='255.255.255.0'
-							element.set_cursor(len(element.text))
-						self.tabinit=1	# traditional flag of unknown function
-			subwin.tab(self)
-
-		def ipcalc(self, ip, netmask):
-			ip_list=ip.split('.')
-			netmask_list=netmask.split('.')
-			net=[]
-			wildcard=[]
-			pointerok=0
-			broadcast=[]
-			for i in range(4):
-				try:
-					int(ip_list[i])
-				except ValueError:
-					return ["",""]
-				if netmask_list[i] == '255':
-					net.append(ip_list[i])
-					wildcard.append(0)
-					broadcast.append(ip_list[i])
-				else:
-					net.append(str(int(ip_list[i]) & int(netmask_list[i])))
-					if not pointerok:
-						pointer=ip_list[i:]
-						pointerok=1
-					pointer.reverse()
-					calc = 255 - int(netmask_list[i])
-					if not calc:
-						wildcard.append(0)
-					wildcard.append(calc)
-					calc = int(wildcard[i]) ^ int(net[i])
-					if calc == '0' and i == '4':
-						broadcast.append(str('255'))
-					else:
-						broadcast.append(str(calc))
-			return [string.join(net,'.'),string.join(broadcast,'.')]
-
-		def helptext(self):
-			return self.parent.helptext()
-
-		def modheader(self):
-			return _(' Interface configuration')
-
-		def profileheader(self):
-			return ' Interface configuration'
-
-		def put_result(self):
-			result={}
-			virtual=''
-			interface_str=self.get_elem('edit.INPUT_INTERFACE').result().strip()
-			ip_str=self.get_elem('edit.INPUT_IP').result().strip()
-			netmask_str=self.get_elem('edit.INPUT_NETMASK').result().strip()
-			(network_str, broadcast_str)=self.ipcalc(ip_str, netmask_str)
-			dhcp_str='static'	# default
-			if len(interface_str.split(':')) > 1:
-				virtual='virtual'
-			else:
-				if 'dynamic' in self.get_elem('edit.CHECKBOX_DHCP').result():
-					dhcp_str='dynamic'
-
-			interface_parameters=[ip_str, netmask_str, broadcast_str, network_str, dhcp_str, virtual]
-			#example: result['eth0']=[ip, netmask, broadcast, network, mode]
-			result[interface_str]=interface_parameters
-			#example: [device, ip, netmask, broadcast, network, mode, virtual='']
-			self.parent.addinterface(interface_str, *interface_parameters)
-			return result
-
-		def incomplete(self):
-			missing=_('The following value is missing: ')
-			invalid=_('The following value is invalid: ')
-			#Device
-			ethregexp=re.compile('^eth[0-9]+:[0-9]+$|^eth[0-9]+$')
-
-			interface_str=self.get_elem('edit.INPUT_INTERFACE').result().strip()
-			if interface_str == '':
-				return missing+_('Device')
-			elif not re.match(ethregexp, interface_str):
-				return invalid+_('Device')
-
-			ip_str=self.get_elem('edit.INPUT_IP').result().strip()
-			netmask_str=self.get_elem('edit.INPUT_NETMASK').result().strip()
-			if self.elem_exists('edit.CHECKBOX_DHCP') and 'dynamic' in self.get_elem('edit.CHECKBOX_DHCP').result():
-				# CHECKBOX_DHCP returned ['dynamic']
-				if self.parent.serversystem:
-					#IP
-					if ip_str == '':
-						return _('For a server role an IP address must be determined at this point, please press F5 or deselect the DHCP option.')
-					elif not self.parent.is_ip(ip_str.strip('\n')):
-						return invalid+_('IP address')
-					#Netmask
-					elif netmask_str == '':
-						return missing+_('Netmask')
-					elif not self.parent.is_ip(netmask_str.strip('\n')):
-						return invalid+_('Netmask')
-					else:
-						return 0
-				else:
-						return 0
-			else:
-				# CHECKBOX_DHCP is not present (virtual interface) or returned []
-				#IP
-				if ip_str == '':
-					return missing+_('IP address')
-				elif not self.parent.is_ip(ip_str.strip('\n')):
-					return invalid+_('IP address')
-				#Netmask
-				elif netmask_str == '':
-					return missing+_('Netmask')
-				elif not self.parent.is_ip(netmask_str.strip('\n')):
-					return invalid+_('Netmask')
-				else:
-					return 0
-
-
-		def input(self,key):
-			#self.parent.debug('DEBUG: input(edit): %d' % key)
-			if hasattr(self,'warn'):
-				if not self.warn.key_event(key):
-					delattr(self,"warn")
-				self.parent.draw()
-				self.draw()
-			ok_button=self.get_elem('edit.BUTTON_OK')
-			cancel_button=self.get_elem('edit.BUTTON_CANCEL')
-			if ( key in [ 10, 32 ] and ok_button.usable() and ok_button.get_status() ) or key == 276: # Ok
-				if self.incomplete() != 0:
-					self.warn=warning(self.incomplete(),self.pos_y+25,self.pos_x+90)
-					self.warn.draw()
-					return 1
-				self.put_result()
-				return 0
-			elif key in [ 10, 32 ] and cancel_button.usable() and cancel_button.get_status(): #Cancel
-				return 0
-			elif ( key in [ 10, 32 ] and self.elem_exists('edit.BUTTON_DHCLIENT') and self.get_elem('edit.BUTTON_DHCLIENT').usable() and self.get_elem('edit.BUTTON_DHCLIENT').get_status() ) or key == 269: # F5
-				self.act = self.dhclient_active(self,_('DHCP Query'),_('Please wait ...'),name='act')
-				self.act.draw()
-				if not self.dhcpanswer:
-					self.parent.draw()
-					self.draw()
-					self.warn=warning(_('No DHCP answer, please check DHCP server and network connectivity.'),self.pos_y+25,self.pos_x+90)
-					self.warn.draw()
-				else:
-					input_ip=self.get_elem('edit.INPUT_IP')
-					if input_ip.result():
-						self.elements[self.current].set_off()		# reset actual focus highlight
-						self.current=self.get_elem_id('edit.BUTTON_OK')	# set the tab cursor
-						self.elements[self.current].set_on()		# reset actual focus highlight
-					self.parent.draw()
-					self.draw()
-			elif key in [ 10, 32 ] and self.elem_exists('edit.CHECKBOX_DHCP') and self.get_elem('edit.CHECKBOX_DHCP').usable() and self.get_elem('edit.CHECKBOX_DHCP').active: #Space in Checkbox
-				dhcp_checkbox=self.get_elem('edit.CHECKBOX_DHCP')
-				self.elements[self.current].key_event(32)	# send the event to the widget
-				self.elements[self.current].set_off()		# reset actual focus highlight
-				if dhcp_checkbox.result():
-					self.disable()
-					self.current=self.get_elem_id('edit.BUTTON_DHCLIENT')	# set the tab cursor
-				else:
-					self.enable()
-					self.current=self.get_elem_id('edit.INPUT_IP')	# set the tab cursor
-				self.get_elem_by_id(self.current).set_on()	# set the focus highlight
-				self.draw()
-			elif self.elements[self.current].usable():
-				self.elements[self.current].key_event(key)
+	def input(self,key):
+		if hasattr(self,'sub'):
+			self.sub.key_event(key)
 			return 1
-
-		class dhclient_active(act_win):
-			# dhclient activity indicator window
-			def __init__(self,parent,header,text,name):
-				# set this further right to avoid backdrop on left_menu, which fails to be redrawn
-				self.pos_x=parent.minX+17
-				self.pos_y=parent.minY+5
-				act_win.__init__(self,parent,header,text,name)
-
-			def function(self):
-				# dhclient call and result evaluation
-				interface=self.parent.get_elem('edit.INPUT_INTERFACE').result().strip()
-				dhcp_dict=self.parent.parent.dhclient(interface, 45)
-				ip_str=dhcp_dict.get('address') or ''
-				if not ip_str:
-					self.parent.dhcpanswer=False
-				else:
-					self.parent.dhcpanswer=True
-					ip_input=self.parent.get_elem('edit.INPUT_IP')
-					ip_input.text=dhcp_dict.get('address') or ''
-					ip_input.set_cursor(len(ip_input.text))
-					ip_input.paste_text()
-					ip_input.draw()
-					netmask_input=self.parent.get_elem('edit.INPUT_NETMASK')
-					netmask_input.text=dhcp_dict.get('netmask') or ''
-					netmask_input.set_cursor(len(netmask_input.text))
-					netmask_input.paste_text()
-					netmask_input.draw()
-					gateway_str=dhcp_dict.get('gateway') or ''
-					if gateway_str:
-						gateway_input=self.parent.parent.get_elem('netobject.INPUT_GATEWAY')
-						gateway_input.text=gateway_str
-						gateway_input.set_cursor(len(gateway_input.text))
-						gateway_input.paste_text()
-						gateway_input.draw()
-					nameserver1_str=dhcp_dict.get('nameserver_1') or ''
-					if nameserver1_str:
-						nameserver1_input=self.parent.parent.get_elem('netobject.INPUT_NAMESERVER1')
-						nameserver1_input.text=nameserver1_str
-						nameserver1_input.set_cursor(len(nameserver1_input.text))
-						nameserver1_input.paste_text()
-						nameserver1_input.draw()
-					nameserver2_str=dhcp_dict.get('nameserver_2') or ''
-					if nameserver2_str:
-						self.parent.parent.dns['nameserver_2']=nameserver2_str
-					nameserver3_str=dhcp_dict.get('nameserver_3') or ''
-					if nameserver3_str:
-						self.parent.parent.dns['nameserver_3']=nameserver3_str
-
-	class more(subwin):
-		def __init__(self,parent,pos_y,pos_x,width,heigh,type):
-			self.type=type
-			subwin.__init__(self,parent,pos_y,pos_x,width,heigh)
-		def layout(self):
-			MAXIP=18
-			# 1. Nameserver/DNS-Fwd
-			self.elements.append(textline( _('1. %s') % self.type,self.pos_y+2,self.pos_x+2)) #0
-			if self.type == 'Nameserver':
-				server=self.parent.elements[10].result().strip()
-			elif self.type == 'DNS-Forwarder':
-				server=self.parent.elements[13].result().strip()
-			else:
-				server=''
-			self.elements.append(textline(server,self.pos_y+2,self.pos_x+20)) #1
-			# 2.Nameserver/DNS-Fwd
-			self.elements.append(textline( _('2. %s') % self.type,self.pos_y+3,self.pos_x+2)) #2
-			if self.type == 'Nameserver' and self.parent.dns.has_key('nameserver_2') and self.parent.dns['nameserver_2']:
-				self.elements.append(input(self.parent.dns['nameserver_2'],self.pos_y+3,self.pos_x+20,MAXIP)) #3
-			elif self.type == 'DNS-Forwarder' and self.parent.dns.has_key('dns_forwarder_2') and self.parent.dns['dns_forwarder_2']:
-				self.elements.append(input(self.parent.dns['dns_forwarder_2'],self.pos_y+3,self.pos_x+20,MAXIP)) #3
-			else:
-				self.elements.append(input('',self.pos_y+3,self.pos_x+20,MAXIP)) #3
-			# 3. Nameserver/DNS-Fwd
-			self.elements.append(textline(_('3. %s') % self.type,self.pos_y+4,self.pos_x+2)) #4
-			if self.type == 'Nameserver' and self.parent.dns.has_key('nameserver_3') and self.parent.dns['nameserver_3']:
-				self.elements.append(input(self.parent.dns['nameserver_3'],self.pos_y+4,self.pos_x+20,MAXIP)) #5
-			elif self.type == 'DNS-Forwarder' and self.parent.dns.has_key('dns_forwarder_3') and self.parent.dns['dns_forwarder_3']:
-				self.elements.append(input(self.parent.dns['dns_forwarder_3'],self.pos_y+4,self.pos_x+20,MAXIP)) #5
-			else:
-				self.elements.append(input('',self.pos_y+4,self.pos_x+20,MAXIP)) #5
-
-			self.elements.append(button('F12-'+_('Ok'),self.pos_y+7,self.pos_x+8,13)) #6
-			self.elements.append(button('ESC-'+_('Cancel'),self.pos_y+7,self.pos_x+(self.width)-8,align="right")) #7
-
-			self.current=3
-			self.elements[self.current].set_on()
-		def helptext(self):
-			return self.parent.helptext()
-
-		def modheader(self):
-			return _( ' More %ss' ) % self.type
-
-		def profileheader(self):
-			return ' More %ss' % self.type
-
-		def put_result(self):
-			result={}
-			i=2
-			string=''
-			if self.type == 'Nameserver':
-				string='nameserver_'
-			elif self.type == 'DNS-Forwarder':
-				string='dns_forwarder_'
-			else:
-				string='error'
-			result['%s%d'%(string,i)]=[self.elements[3].result().strip()]
-			self.parent.dns['%s%d'%(string,i)]=self.elements[3].result().strip()
-			i+=1
-			result['%s%d'%(string,i)]=[self.elements[5].result().strip()]
-			self.parent.dns['%s%d'%(string,i)]=self.elements[5].result().strip()
-			return result
-		def incomplete(self):
-			missing=_('The following value is missing: ')
-			invalid=_('The following value is invalid: ')
-			if not self.elements[3].result().strip() == '':
-				if not self.parent.is_ip(self.elements[3].result()):
-					return invalid+'2. %s'%self.type
-			if not self.elements[5].result().strip() == '':
-				if self.elements[3].result().strip() == '':
-					return missing+'2. %s'%self.type
-				elif not self.parent.is_ip(self.elements[5].result()):
-					return invalid+'3. %s'%self.type
-			return 0
-		def input(self,key):
-			if hasattr(self,'warn'):
-				if not self.warn.key_event(key):
-					delattr(self,"warn")
-				self.parent.draw()
-				self.draw()
-			if ( key in [ 10, 32 ] and self.elements[6].usable() and self.elements[6].get_status() ) or key == 276: #Ok
-				if self.incomplete() != 0:
-					self.parent.debug('incompl: %s'%self.incomplete())
-					self.warn=warning(self.incomplete(),self.pos_y+25,self.pos_x+90)
-					self.warn.draw()
-					return 1
-				self.put_result()
-				return 0
-			elif key in [ 10, 32 ] and self.elements[7].usable() and self.elements[7].get_status(): #Cancel
-				return 0
-			elif key == 10 and self.elements[self.current].usable():
-				return self.elements[self.current].key_event(key)
-			elif self.elements[self.current].usable():
-				self.elements[self.current].key_event(key)
+		elif ( key in [ 10 ] and self.get_elem('BTN_OK').get_status() ) or key == 276: #Ok
+			msg = self.incomplete()
+			if msg:
+				self.parent.debug('more() incomplete: %s' % msg)
+				self.sub = warning(msg, self.pos_y+15, self.pos_x+90)
+				self.sub.draw()
 				return 1
+			self.put_result()
+			return 0
+		elif key in [ 10 ] and self.get_elem('BTN_CANCEL').get_status(): #Cancel
+			return 0
+		elif key == 10 and self.elements[self.current].usable():
+			return self.elements[self.current].key_event(key)
+		elif self.elements[self.current].usable():
+			self.elements[self.current].key_event(key)
+			return 1
+		return 1
+
+	def draw(self):
+		subwin.draw(self)
+		if hasattr(self,"sub"):
+			self.sub.draw()
