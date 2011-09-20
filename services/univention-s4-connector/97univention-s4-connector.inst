@@ -66,7 +66,7 @@ if [ -n "$s4connectorservicehost_dns" ]; then	## there already is a system provi
 			continue
 		fi
 		univention-scp $HOSTPWD "-r $HOSTACCOUNT@$s4chost:/etc/samba4.secret /etc/"
-		if [ $? = 0]; then
+		if [ $? = 0 ]; then
 			break
 		fi
 
