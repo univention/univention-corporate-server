@@ -168,8 +168,9 @@ class licenseWrongBaseDn(base):
 
 class licenseGPLversion(base):
 	message=_('The license check is disabled. Your are using the GPL version without any support or maintenance by Univention.')
+
 class freeForPersonalUse(base):
-	message=_('Free for personal use edition.')
+	message='Free for personal use edition.'
 
 class licenseAccounts(base):
 	message=_('Too many user accounts')

@@ -864,10 +864,10 @@ class ipRange(complex):
 			return ''
 
 class ipProtocol(select):
-	choices=[('tcp', _('TCP')), ('udp', _('UDP'))]
+	choices=[ ( 'tcp', 'TCP' ), ('udp', 'UDP' ) ]
 
 class ipProtocolSRV(select):
-	choices=[(_('tcp'), 'TCP'), (_('udp'), 'UDP'), (_('msdcs'), 'MSDCS'), (_('sites'), 'SITES')]
+	choices=[ ( 'tcp', 'TCP' ), ( 'udp', 'UDP' ), ( 'msdcs', 'MSDCS' ), ( 'sites', 'SITES' ) ]
 
 class absolutePath(simple):
 	min_length=1
@@ -1689,7 +1689,7 @@ class dhcpService( UDM_Modules ):
 	empty_value = True
 
 class dhcpEntry( complex ):
-	subsyntaxes= ( ( _( 'DHCP-Service' ), dhcpService ), ( _( 'IP address' ), IP_AddressList ), ( _( 'MAC address' ), MAC_AddressList ) )
+	subsyntaxes= ( ( _( 'DHCP service' ), dhcpService ), ( _( 'IP address' ), IP_AddressList ), ( _( 'MAC address' ), MAC_AddressList ) )
 	description=_( 'DHCP Entry' )
 
 	@classmethod
@@ -2529,7 +2529,7 @@ class LDAP_Search( select ):
 				self.values.append( ( dn, self.attributes ) )
 
 class nfsMounts(complex):
-	subsyntaxes=[(_('NFS-Share'), LDAP_Search( filter = 'objectClass=univentionShareNFS', attribute = [ 'shares/share: printablename' ], value = 'shares/share: dn' )), ('Mount point', string)]
+	subsyntaxes=[(_('NFS share'), LDAP_Search( filter = 'objectClass=univentionShareNFS', attribute = [ 'shares/share: printablename' ], value = 'shares/share: dn' )), ('Mount point', string)]
 	all_required=1
 
 class languageCode(string):
