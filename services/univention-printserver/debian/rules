@@ -44,7 +44,7 @@ override_dh_auto_test:
 	dh_auto_test
 
 override_dh_auto_install:
-	for i in $$(ls /usr/share/foomatic/db/source/driver/ | sed 's|\.xml$$||' | grep xes); do foomatic-compiledb -d /tmp/foomatic-rip/ -f -t ppd -j 5 "$$i"; done
+	for i in $$(ls /usr/share/foomatic/db/source/driver/ | sed 's|\.xml$$||' | grep xes); do foomatic-compiledb -d $$(pwd)/foomatic-rip/ -f -t ppd -j 5 "$$i"; done
 	ls /tmp/foomatic-rip/
 	dh_auto_install
 	univention-install-config-registry

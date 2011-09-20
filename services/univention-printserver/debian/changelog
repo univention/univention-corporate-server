@@ -1,4 +1,4 @@
-univention-printserver (5.0.2-3) unstable; urgency=low
+univention-printserver (5.0.2-4) unstable; urgency=low
 
   * added univention-foomatic-ppds (Bug #22584) 
 
