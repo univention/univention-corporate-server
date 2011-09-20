@@ -12,6 +12,26 @@ if dns_allow_query_cache:
 	print '\tallow-query-cache { %s; };' % dns_allow_query_cache
 @!@};
 
+@!@
+if configRegistry.get('dns/forwarder1') or configRegistry.get('dns/forwarder2') or configRegistry.get('dns/forwarder3'):
+	print 'zone "." {'
+	print '    type forward;'
+	print '    forwarders {'
+	if configRegistry['dns/forwarder1']:
+		print configRegistry['dns/forwarder1']+';'
+	if configRegistry['dns/forwarder2']:
+		print configRegistry['dns/forwarder2']+';'
+	if configRegistry['dns/forwarder3']:
+		print configRegistry['dns/forwarder3']+';'
+	print '};'
+	print '};'
+elif configRegistry.is_true('dns/fakeroot', True):
+	print 'zone "." {'
+	print '    type master;'
+	print '    file "/etc/bind/db.root.fake";'
+	print '};'
+@!@
+
 dlz "deadlock.local.zone" {
         database "dlopen /usr/lib/samba/libdlz_bind9.so";
 };
