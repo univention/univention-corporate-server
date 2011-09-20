@@ -1,3 +1,9 @@
+univention-dhcp (6.0.5-6) unstable; urgency=low
+
+  * Abort on old LDAP DHCP schema (Bug #23718)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 20 Sep 2011 14:51:06 +0200
+
 univention-dhcp (6.0.5-5) unstable; urgency=low
 
   * debian/control: Depends on new u-join for /etc/m.s w/o \n (Bug #22112)

@@ -39,6 +39,17 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
+# Bug #23718:
+# The isc-dhcpd-ldap uses a LDAP-filter like (!(|(objectClass=dhcpXXX)(...))), which returns no result if dhcpXXX is not known to the LDAP server.
+# dhcpTSigKey and dhcpFailOverPeer are only defines with univention-ldap-config_8.0.34-1.
+if [ 2 -ne "$(ldapsearch -xLLL -D "$ldap_hostdn" -y "$(cat /etc/machine.secret)" -b 'cn=Subschema' -s base objectClasses | ldapsearch-wrapper | egrep -c "objectClasses: \( [0-9.]+ NAME '(dhcpTSigKey|dhcpFailOverPeer)'")" ]
+then
+	echo "The LDAP schema for DHCP is too old." >&2
+	echo "objectClasses 'dhcpTSigKey' and 'dhcpFailOverPeer' are not found." >&2
+	echo "Make sure univention-ldap-config (from UCS-2.4-4 or later) is installed." >&2
+	exit 1
+fi
+
 old=$(univention-directory-manager policies/dhcp_routing list "$@" --filter cn=default-settings | sed -ne 's|.*routers: ||p')
 if [ -z "$old" -a -n "$gateway" ]; then
 	univention-directory-manager policies/dhcp_routing modify "$@" --ignore_exists \
