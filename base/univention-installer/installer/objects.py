@@ -163,7 +163,7 @@ class button(baseObject_2):
 			self.indent=0
 
 
-class bool(baseObject):
+class boolitem(baseObject):
 	def set_indent(self,text):
 		self.indent = 0
 
@@ -1090,7 +1090,7 @@ class radiobutton:
 			self.scrollbar = scrollbar(self.pos_y,pos_x+width+5,visible,len(list))
 
 		for i in range(len(list)):
-			self.button.append(bool('[ ]', self.pos_y+i, self.pos_x,4))
+			self.button.append(boolitem('[ ]', self.pos_y+i, self.pos_x,4))
 			if i in self.selected:
 				self.button[i].set_text('[X]')
 			self.desc.append(description(list[i], self.pos_y+i, self.pos_x+4,width))
@@ -1230,7 +1230,7 @@ class checkbox3(radiobutton):
 			self.scrollbar = scrollbar(self.pos_y,pos_x+width+5,visible,len(list))
 
 		for i in range(len(list)):
-			self.button.append(bool('[ ]', self.pos_y+i, self.pos_x,4))
+			self.button.append(boolitem('[ ]', self.pos_y+i, self.pos_x,4))
 			if i in self.selected_half:
 				self.button[i].set_text('[/]')
 			elif i in self.selected_full:
