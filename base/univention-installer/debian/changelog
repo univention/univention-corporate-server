@@ -1,3 +1,11 @@
+univention-installer (7.0.53-1) unstable; urgency=low
+
+  * replaced networking module: new module is IPv6 capable (Bug ##22872)
+  * setup IPv6 addresses / gateway during installation
+  * several layout fixes in installer
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 20 Sep 2011 16:35:21 +0200
+
 univention-installer (7.0.52-1) unstable; urgency=low
 
   * At the momemnt Samba4 is not allowed on a memberserver (Bug #22559)
