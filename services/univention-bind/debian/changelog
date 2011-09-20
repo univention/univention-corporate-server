@@ -1,3 +1,9 @@
+univention-bind (6.0.17-1) unstable; urgency=low
+
+  * Register ucr variables like ucslint said (Bug #23168)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Sep 2011 10:01:30 +0200
+
 univention-bind (6.0.16-1) unstable; urgency=low
 
   * Use forwarder configuration in named.conf.samba4 as well
