@@ -320,5 +320,7 @@ form {
 /* special styling for server error messages in the dialog box */
 .umcServerErrorMessage {
 	color: #888;
+	overflow: auto;
+	max-height: 200px;
 }
 

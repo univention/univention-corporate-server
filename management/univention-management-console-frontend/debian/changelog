@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.58-1) unstable; urgency=low
+
+  * added support for scrollbars in long server messages (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 20 Sep 2011 12:46:33 +0200
+
 univention-management-console-frontend (1.0.57-1) unstable; urgency=low
 
   * allow for horizontal scrolling in the main window (Bug #22881)
