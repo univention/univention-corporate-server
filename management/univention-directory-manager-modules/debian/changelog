@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.82-1) unstable; urgency=low
+
+  * fix nagios with IP addresses on forward zones (Bug #23725)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 20 Sep 2011 18:08:31 +0200
+
 univention-directory-manager-modules (7.0.81-1) unstable; urgency=low
 
   * updated german translation; Bug #23673

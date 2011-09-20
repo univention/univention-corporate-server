@@ -376,7 +376,7 @@ class object(univention.admin.handlers.simpleLdap):
 			for hostdn in self.info['assignedHosts']:
 				aRecords = self.lo.getAttr(hostdn, 'aRecord')
 				if aRecords and aRecords[0]:
-					res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*))' % aRecords[0])
+					res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*)(!(relativeDomainName=@)))' % aRecords[0])
 					if res:
 						fqdn = res[0][1]['relativeDomainName'][0]+'.'+res[0][1]['zoneName'][0]
 						hostlist.append(fqdn)
