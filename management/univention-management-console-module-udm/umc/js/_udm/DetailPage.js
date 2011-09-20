@@ -609,12 +609,13 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		});
 
 		// check whether all required properties are set
-		var errMessage = '' + this._('The following properties need to be specified:') + '<ul>';
+		var errMessage = '' + this._('The following properties need to be specified or are invalid:') + '<ul>';
 		var allValuesGiven = true;
 		umc.tools.forIn(this._form._widgets, function(iname, iwidget) {
-			// check whether a required property is set
+			// check whether a required property is set or a property is invalid
 			var tmpVal = dojo.toJson(iwidget.get('value'));
-			if (iwidget.required && (tmpVal == '""' || tmpVal == '[]' || tmpVal == '{}')) {
+			var isEmpty = tmpVal == '""' || tmpVal == '[]' || tmpVal == '{}';
+			if ((isEmpty && iwidget.required) || (!isEmpty && iwidget.isValid && false === iwidget.isValid())) {
 				// value is empty
 				allValuesGiven = false;
 				errMessage += '<li>' + iwidget.label + '</li>';

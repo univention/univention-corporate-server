@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-20 12:05+0200\n"
+"POT-Creation-Date: 2011-09-20 15:14+0200\n"
 "PO-Revision-Date: 2011-09-07 20:25+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_udm/DetailPage.js:683
+#: umc/js/_udm/DetailPage.js:684
 #, python-format
 msgid "%(attribute)s: %(message)s\n"
 msgstr ""
@@ -72,9 +72,8 @@ msgid "All containers"
 msgstr "Alle Container"
 
 #: umc/js/udm.js:327 umc/js/udm.js:343 umc/js/udm.js:359
-#, fuzzy
 msgid "All properties"
-msgstr "Allen Containern"
+msgstr "Alle Containern"
 
 #: umc/js/udm.js:326 umc/js/udm.js:342 umc/js/udm.js:358
 msgid "All types"
@@ -140,7 +139,7 @@ msgstr "Bearbeiten in neuem Tab"
 msgid "Edit the %s."
 msgstr "%s bearbeiten"
 
-#: umc/js/_udm/DetailPage.js:685
+#: umc/js/_udm/DetailPage.js:686
 msgid "Error"
 msgstr "Fehler"
 
@@ -257,7 +256,7 @@ msgstr "Suche in:"
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
-#: umc/js/_udm/DetailPage.js:715
+#: umc/js/_udm/DetailPage.js:716
 #, python-format
 msgid "The UDM object could not be saved: %(details)s"
 msgstr "Das UDM-Objekt konnte nicht gespeichert werden: %(details)s"
@@ -284,13 +283,13 @@ msgstr "Der genaue Objekttyp des neuen %s."
 msgid "The exact object type of the new UDM object."
 msgstr "Der genaue Objekttyp des neuen UDM-Objektes."
 
-#: umc/js/_udm/DetailPage.js:650
+#: umc/js/_udm/DetailPage.js:651
 msgid "The following properties could not be validated:"
 msgstr "Die folgenden Eigenschaften konnten nicht validiert werden:"
 
 #: umc/js/_udm/DetailPage.js:612
-msgid "The following properties need to be specified:"
-msgstr "Die folgenden Eigenschaften müssen angegeben werden:"
+msgid "The following properties need to be specified or are invalid:"
+msgstr "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
 
 #: umc/js/udm.js:384 umc/js/_udm/MultiObjectSelect.js:67
 msgid "The object property on which the query is filtered."
