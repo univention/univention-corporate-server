@@ -57,8 +57,8 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			type: 'ComboBox',
 			name: 'language',
 			staticValues: [
-				{ id: 'de_DE', label: this._('German') },
-				{ id: 'en_US', label: this._('English') }
+				{ id: 'de-DE', label: this._('German') },
+				{ id: 'en-US', label: this._('English') }
 			],
 			value: dojo.locale.substring(0, 5),
 			description: this._('The language for the login session.'),

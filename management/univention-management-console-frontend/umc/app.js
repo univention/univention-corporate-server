@@ -82,7 +82,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// try to set the locale... switch off automatic error handling
 		// in case we cannot set the locale, we probably need to login
 		umc.tools.umcpCommand('set', {
-			locale: dojo.locale
+			locale: dojo.locale.replace('-', '_')
 		}, false ).then( dojo.hitch( this, function( data ) {
 			// everything went well
 			this.loadModules();
