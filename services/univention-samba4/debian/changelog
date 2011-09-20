@@ -1,3 +1,9 @@
+univention-samba4 (1.0.38-5) experimental; urgency=low
+
+  * set samba4_function_level on first DC (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Sep 2011 10:25:32 +0200
+
 univention-samba4 (1.0.38-4) experimental; urgency=low
 
   * Use $samba4_function_level instead of samba4_function_level (Bug #23360)

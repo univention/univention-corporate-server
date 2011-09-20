@@ -138,9 +138,14 @@ fi
 
 S3_DOMAIN_SID="$(univention-ldapsearch -x objectclass=sambadomain sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
 
+if [ -z "$samba4_function_level" ]; then
+	samba4_function_level=2003
+	univention-config-registry set samba4/function/level="$samba4_function_level"
+fi
+
 # /usr/share/samba/setup/upgradeprovision --full --realm="$kerberos_realm" -s /etc/samba/smb.conf.samba3
 /usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$S3_DOMAIN_SID" \
-					--function-level=$samba4_function_level \
+					--function-level="$samba4_function_level" \
 					--adminpass="$adminpw" --server-role='domain controller'	\
 					--machinepass="$(</etc/machine.secret)" >>$LOGFILE 2>&1
 
