@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 import listener, os, pwd, types, time, univention.debug
+import univention.config_registry
 
 hostname = listener.baseConfig['hostname']
 domainname = listener.baseConfig['domainname']
@@ -58,9 +59,11 @@ def clean():
 def handler(dn, new, old):
 	global keytab
 
-	## don't do anything here if Samba 4 is installed
-	samba4_function_level = listener.baseConfig.get('samba4/function/level')
-	if samba4_function_level:
+	## don't do anything here if this system is joined as a Samba 4 DC 
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+	samba4_role = ucr.get('samba4/role', '')
+	if samba4_role.upper() == 'DC':
 		return
 
 	if server_role == 'memberserver':
