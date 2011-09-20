@@ -1,3 +1,9 @@
+univention-installer (7.0.55-1) unstable; urgency=low
+
+  * set gfxpaxload=keep also in grub-kernel-version.template (Bug #22707)
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Sep 2011 19:05:32 +0200
+
 univention-installer (7.0.54-1) unstable; urgency=low
 
   * do not always format all partitions in profile installation (Bug #23491)
