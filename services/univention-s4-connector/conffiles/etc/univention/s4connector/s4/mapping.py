@@ -239,247 +239,247 @@ s4_mapping = {
 					),
 				},
 		),
-	'dc_master': univention.s4connector.property (
-			ucs_default_dn='cn=computers,@%@ldap/base@%@',
-			con_default_dn='OU=Domain Controllers,@%@connector/s4/ldap/base@%@',
-			ucs_module='computers/domaincontroller_master',
-
-			sync_mode='@%@connector/s4/mapping/syncmode@%@',
-
-			position_mapping = [( ',cn=dc,cn=computers,@%@ldap/base@%@', ',ou=Domain Controllers,@%@connector/s4/ldap/base@%@' )],
-
-			scope='sub',
-
-			con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=532480)(operatingSystem=Univention Corporate Server - DC Master))',
-
-			match_filter='(|(&(objectClass=univentionDomainController)(univentionServerRole=master))(&(objectClass=computer)(operatingSystem=Univention Corporate Server - DC Master)))',
-
-			ignore_filter='',
-
-			ignore_subtree = global_ignore_subtree,
-			
-			con_create_objectclass=['top', 'computer' ],
-
-			con_create_attributes=[
-									('userAccountControl', ['532480']),
-									('operatingSystem', ['Univention Corporate Server - DC Master']),
-								  ],
-
-			#post_con_create_functions = [ univention.connector.s4.computers.
-			post_con_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_s4,
-							univention.s4connector.s4.password.password_sync_ucs_to_s4,
-						    ],
-
-			post_ucs_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_ucs,
-							univention.s4connector.s4.password.password_sync_s4_to_ucs,
-						    ],
-
-			attributes= {
-					'cn': univention.s4connector.attribute (
-							ucs_attribute='name',
-							ldap_attribute='cn',
-							con_attribute='cn',
-							required=1,
-							compare_function=univention.s4connector.compare_lowercase,
-						),
-					'samAccountName': univention.s4connector.attribute (
-							ldap_attribute='uid',
-							con_attribute='sAMAccountName',
-							compare_function=univention.s4connector.compare_lowercase,
-						),
-					'description': univention.s4connector.attribute (
-							ucs_attribute='description',
-							ldap_attribute='description',
-							con_attribute='description'
-						),
-				},
-
-		),
-	'dc_backup': univention.s4connector.property (
-			ucs_default_dn='cn=computers,@%@ldap/base@%@',
-			con_default_dn='OU=Domain Controllers,@%@connector/s4/ldap/base@%@',
-			ucs_module='computers/domaincontroller_backup',
-
-			sync_mode='@%@connector/s4/mapping/syncmode@%@',
-
-			scope='sub',
-
-			con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=532480)(operatingSystem=Univention Corporate Server - DC Backup))',
-
-			match_filter='(|(&(objectClass=univentionDomainController)(univentionServerRole=backup))(&(objectClass=computer)(operatingSystem=Univention Corporate Server - DC Backup)))',
-
-			position_mapping = [( ',cn=dc,cn=computers,@%@ldap/base@%@', ',ou=Domain Controllers,@%@connector/s4/ldap/base@%@' )],
-
-			ignore_filter='',
-
-			ignore_subtree = global_ignore_subtree,
-			
-			con_create_objectclass=['top', 'computer' ],
-
-			con_create_attributes=[
-									('userAccountControl', ['532480']),
-									('operatingSystem', ['Univention Corporate Server - DC Backup']),
-								  ],
-
-			#post_con_create_functions = [ univention.connector.s4.computers.
-			post_con_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_s4,
-							univention.s4connector.s4.password.password_sync_ucs_to_s4,
-						    ],
-
-			post_ucs_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_ucs,
-							univention.s4connector.s4.password.password_sync_s4_to_ucs,
-						    ],
-
-			attributes= {
-					'cn': univention.s4connector.attribute (
-							ucs_attribute='name',
-							ldap_attribute='cn',
-							con_attribute='cn',
-							required=1,
-							compare_function=univention.s4connector.compare_lowercase,
-						),
-					'samAccountName': univention.s4connector.attribute (
-							ldap_attribute='uid',
-							con_attribute='sAMAccountName',
-							compare_function=univention.s4connector.compare_lowercase,
-						),
-					'description': univention.s4connector.attribute (
-							ucs_attribute='description',
-							ldap_attribute='description',
-							con_attribute='description'
-						),
-				},
-
-		),
-	'dc_slave': univention.s4connector.property (
-			ucs_default_dn='cn=computers,@%@ldap/base@%@',
-			con_default_dn='OU=Domain Controllers,@%@connector/s4/ldap/base@%@',
-			ucs_module='computers/domaincontroller_slave',
-
-			sync_mode='@%@connector/s4/mapping/syncmode@%@',
-
-			scope='sub',
-
-			con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=532480)(operatingSystem=Univention Corporate Server - DC Slave))',
-
-			match_filter='(|(&(objectClass=univentionDomainController)(univentionServerRole=slave))(&(objectClass=computer)(operatingSystem=Univention Corporate Server - DC Slave)))',
-
-			ignore_filter='',
-
-			position_mapping = [( ',cn=dc,cn=computers,@%@ldap/base@%@', ',ou=Domain Controllers,@%@connector/s4/ldap/base@%@' )],
-
-			ignore_subtree = global_ignore_subtree,
-			
-			con_create_objectclass=['top', 'computer' ],
-
-			con_create_attributes=[
-									('userAccountControl', ['532480']),
-									('operatingSystem', ['Univention Corporate Server - DC Slave']),
-								  ],
-
-			#post_con_create_functions = [ univention.connector.s4.computers.
-			post_con_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_s4,
-							univention.s4connector.s4.password.password_sync_ucs_to_s4,
-						    ],
-
-			post_ucs_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_ucs,
-							univention.s4connector.s4.password.password_sync_s4_to_ucs,
-						    ],
-
-			attributes= {
-					'cn': univention.s4connector.attribute (
-							ucs_attribute='name',
-							ldap_attribute='cn',
-							con_attribute='cn',
-							required=1,
-							compare_function=univention.s4connector.compare_lowercase,
-						),
-					'samAccountName': univention.s4connector.attribute (
-							ldap_attribute='uid',
-							con_attribute='sAMAccountName',
-							compare_function=univention.s4connector.compare_lowercase,
-						),
-					'description': univention.s4connector.attribute (
-							ucs_attribute='description',
-							ldap_attribute='description',
-							con_attribute='description'
-						),
-				},
-
-		),
-	'windowsdc': univention.s4connector.property (
-			ucs_default_dn='cn=computers,@%@ldap/base@%@',
-			con_default_dn='OU=Domain Controllers,@%@connector/s4/ldap/base@%@',
-			ucs_module='computers/windows_domaincontroller',
-
-			sync_mode='@%@connector/s4/mapping/syncmode@%@',
-
-			scope='sub',
-
-			con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=532480))',
-
-			match_filter='(|(&(objectClass=univentionHost)(univentionServerRole=windows_domaincontroller))(&(objectClass=computer)(!(|(operatingSystem=Samba)(operatingSystem=Univention*)))))',
-
-			position_mapping = [( ',cn=dc,cn=computers,@%@ldap/base@%@', ',ou=Domain Controllers,@%@connector/s4/ldap/base@%@' )],
-
-			ignore_filter='',
-
-			ignore_subtree = global_ignore_subtree,
-			
-			con_create_objectclass=['top', 'computer' ],
-
-			con_create_attributes=[
-									('userAccountControl', ['532480']),
-								  ],
-
-			#post_con_create_functions = [ univention.connector.s4.computers.
-			post_con_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_s4,
-							univention.s4connector.s4.password.password_sync_ucs_to_s4,
-						    ],
-
-			post_ucs_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_ucs,
-							univention.s4connector.s4.password.password_sync_s4_to_ucs,
-						    ],
-
-			attributes= {
-					'cn': univention.s4connector.attribute (
-							ucs_attribute='name',
-							ldap_attribute='cn',
-							con_attribute='cn',
-							required=1,
-							compare_function=univention.s4connector.compare_lowercase,
-						),
-					'samAccountName': univention.s4connector.attribute (
-							ldap_attribute='uid',
-							con_attribute='sAMAccountName',
-							compare_function=univention.s4connector.compare_lowercase,
-						),
-					'description': univention.s4connector.attribute (
-							ucs_attribute='description',
-							ldap_attribute='description',
-							con_attribute='description'
-						),
-					'operatingSystem': univention.s4connector.attribute (
-							ucs_attribute='operatingSystem',
-							ldap_attribute='univentionOperatingSystem',
-							con_attribute='operatingSystem'
-						),
-					'operatingSystemVersion': univention.s4connector.attribute (
-							ucs_attribute='operatingSystemVersion',
-							ldap_attribute='univentionOperatingSystemVersion',
-							con_attribute='operatingSystemVersion'
-						),
-				},
-
-		),
+	#'dc_master': univention.s4connector.property (
+	#		ucs_default_dn='cn=computers,@%@ldap/base@%@',
+	#		con_default_dn='OU=Domain Controllers,@%@connector/s4/ldap/base@%@',
+	#		ucs_module='computers/domaincontroller_master',
+	#
+	#		sync_mode='@%@connector/s4/mapping/syncmode@%@',
+	#
+	#		position_mapping = [( ',cn=dc,cn=computers,@%@ldap/base@%@', ',ou=Domain Controllers,@%@connector/s4/ldap/base@%@' )],
+	#
+	#		scope='sub',
+	#
+	#		con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=532480)(operatingSystem=Univention Corporate Server - DC Master))',
+	#
+	#		match_filter='(|(&(objectClass=univentionDomainController)(univentionServerRole=master))(&(objectClass=computer)(operatingSystem=Univention Corporate Server - DC Master)))',
+	#
+	#		ignore_filter='',
+	#
+	#		ignore_subtree = global_ignore_subtree,
+	#		
+	#		con_create_objectclass=['top', 'computer' ],
+	#
+	#		con_create_attributes=[
+	#								('userAccountControl', ['532480']),
+	#								('operatingSystem', ['Univention Corporate Server - DC Master']),
+	#							  ],
+	#
+	#		#post_con_create_functions = [ univention.connector.s4.computers.
+	#		post_con_modify_functions=[
+	#						univention.s4connector.s4.sid_mapping.sid_to_s4,
+	#						univention.s4connector.s4.password.password_sync_ucs_to_s4,
+	#					    ],
+	#
+	#		post_ucs_modify_functions=[
+	#						univention.s4connector.s4.sid_mapping.sid_to_ucs,
+	#						univention.s4connector.s4.password.password_sync_s4_to_ucs,
+	#					    ],
+	#
+	#		attributes= {
+	#				'cn': univention.s4connector.attribute (
+	#						ucs_attribute='name',
+	#						ldap_attribute='cn',
+	#						con_attribute='cn',
+	#						required=1,
+	#						compare_function=univention.s4connector.compare_lowercase,
+	#					),
+	#				'samAccountName': univention.s4connector.attribute (
+	#						ldap_attribute='uid',
+	#						con_attribute='sAMAccountName',
+	#						compare_function=univention.s4connector.compare_lowercase,
+	#					),
+	#				'description': univention.s4connector.attribute (
+	#						ucs_attribute='description',
+	#						ldap_attribute='description',
+	#						con_attribute='description'
+	#					),
+	#			},
+	#
+	#	),
+	#'dc_backup': univention.s4connector.property (
+	#		ucs_default_dn='cn=computers,@%@ldap/base@%@',
+	#		con_default_dn='OU=Domain Controllers,@%@connector/s4/ldap/base@%@',
+	#		ucs_module='computers/domaincontroller_backup',
+	#
+	#		sync_mode='@%@connector/s4/mapping/syncmode@%@',
+	#
+	#		scope='sub',
+	#
+	#		con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=532480)(operatingSystem=Univention Corporate Server - DC Backup))',
+	#
+	#		match_filter='(|(&(objectClass=univentionDomainController)(univentionServerRole=backup))(&(objectClass=computer)(operatingSystem=Univention Corporate Server - DC Backup)))',
+	#
+	#		position_mapping = [( ',cn=dc,cn=computers,@%@ldap/base@%@', ',ou=Domain Controllers,@%@connector/s4/ldap/base@%@' )],
+	#
+	#		ignore_filter='',
+	#
+	#		ignore_subtree = global_ignore_subtree,
+	#		
+	#		con_create_objectclass=['top', 'computer' ],
+	#
+	#		con_create_attributes=[
+	#								('userAccountControl', ['532480']),
+	#								('operatingSystem', ['Univention Corporate Server - DC Backup']),
+	#							  ],
+	#
+	#		#post_con_create_functions = [ univention.connector.s4.computers.
+	#		post_con_modify_functions=[
+	#						univention.s4connector.s4.sid_mapping.sid_to_s4,
+	#						univention.s4connector.s4.password.password_sync_ucs_to_s4,
+	#					    ],
+	#
+	#		post_ucs_modify_functions=[
+	#						univention.s4connector.s4.sid_mapping.sid_to_ucs,
+	#						univention.s4connector.s4.password.password_sync_s4_to_ucs,
+	#					    ],
+	#
+	#		attributes= {
+	#				'cn': univention.s4connector.attribute (
+	#						ucs_attribute='name',
+	#						ldap_attribute='cn',
+	#						con_attribute='cn',
+	#						required=1,
+	#						compare_function=univention.s4connector.compare_lowercase,
+	#					),
+	#				'samAccountName': univention.s4connector.attribute (
+	#						ldap_attribute='uid',
+	#						con_attribute='sAMAccountName',
+	#						compare_function=univention.s4connector.compare_lowercase,
+	#					),
+	#				'description': univention.s4connector.attribute (
+	#						ucs_attribute='description',
+	#						ldap_attribute='description',
+	#						con_attribute='description'
+	#					),
+	#			},
+	#
+	#	),
+	#'dc_slave': univention.s4connector.property (
+	#		ucs_default_dn='cn=computers,@%@ldap/base@%@',
+	#		con_default_dn='OU=Domain Controllers,@%@connector/s4/ldap/base@%@',
+	#		ucs_module='computers/domaincontroller_slave',
+	#
+	#		sync_mode='@%@connector/s4/mapping/syncmode@%@',
+	#
+	#		scope='sub',
+	#
+	#		con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=532480)(operatingSystem=Univention Corporate Server - DC Slave))',
+	#
+	#		match_filter='(|(&(objectClass=univentionDomainController)(univentionServerRole=slave))(&(objectClass=computer)(operatingSystem=Univention Corporate Server - DC Slave)))',
+	#
+	#		ignore_filter='',
+	#
+	#		position_mapping = [( ',cn=dc,cn=computers,@%@ldap/base@%@', ',ou=Domain Controllers,@%@connector/s4/ldap/base@%@' )],
+	#
+	#		ignore_subtree = global_ignore_subtree,
+	#		
+	#		con_create_objectclass=['top', 'computer' ],
+	#
+	#		con_create_attributes=[
+	#								('userAccountControl', ['532480']),
+	#								('operatingSystem', ['Univention Corporate Server - DC Slave']),
+	#							  ],
+	#
+	#		#post_con_create_functions = [ univention.connector.s4.computers.
+	#		post_con_modify_functions=[
+	#						univention.s4connector.s4.sid_mapping.sid_to_s4,
+	#						univention.s4connector.s4.password.password_sync_ucs_to_s4,
+	#					    ],
+	#
+	#		post_ucs_modify_functions=[
+	#						univention.s4connector.s4.sid_mapping.sid_to_ucs,
+	#						univention.s4connector.s4.password.password_sync_s4_to_ucs,
+	#					    ],
+	#
+	#		attributes= {
+	#				'cn': univention.s4connector.attribute (
+	#						ucs_attribute='name',
+	#						ldap_attribute='cn',
+	#						con_attribute='cn',
+	#						required=1,
+	#						compare_function=univention.s4connector.compare_lowercase,
+	#					),
+	#				'samAccountName': univention.s4connector.attribute (
+	#						ldap_attribute='uid',
+	#						con_attribute='sAMAccountName',
+	#						compare_function=univention.s4connector.compare_lowercase,
+	#					),
+	#				'description': univention.s4connector.attribute (
+	#						ucs_attribute='description',
+	#						ldap_attribute='description',
+	#						con_attribute='description'
+	#					),
+	#			},
+	#
+	#	),
+	#'windowsdc': univention.s4connector.property (
+	#		ucs_default_dn='cn=computers,@%@ldap/base@%@',
+	#		con_default_dn='OU=Domain Controllers,@%@connector/s4/ldap/base@%@',
+	#		ucs_module='computers/windows_domaincontroller',
+	#
+	#		sync_mode='@%@connector/s4/mapping/syncmode@%@',
+	#
+	#		scope='sub',
+	#
+	#		con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=532480)(!(|(operatingSystem=Samba)(operatingSystem=Univention*))))',
+	#
+	#		match_filter='(&(|(&(objectClass=univentionHost)(univentionServerRole=windows_domaincontroller))(&(objectClass=computer))(!(|(operatingSystem=Samba)(operatingSystem=Univention*)))))',
+	#
+	#		position_mapping = [( ',cn=dc,cn=computers,@%@ldap/base@%@', ',ou=Domain Controllers,@%@connector/s4/ldap/base@%@' )],
+	#
+	#		ignore_filter='',
+	#
+	#		ignore_subtree = global_ignore_subtree,
+	#		
+	#		con_create_objectclass=['top', 'computer' ],
+	#
+	#		con_create_attributes=[
+	#								('userAccountControl', ['532480']),
+	#							  ],
+	#
+	#		#post_con_create_functions = [ univention.connector.s4.computers.
+	#		post_con_modify_functions=[
+	#						univention.s4connector.s4.sid_mapping.sid_to_s4,
+	#						#univention.s4connector.s4.password.password_sync_ucs_to_s4,
+	#					    ],
+	#
+	#		post_ucs_modify_functions=[
+	#						univention.s4connector.s4.sid_mapping.sid_to_ucs,
+	#						#univention.s4connector.s4.password.password_sync_s4_to_ucs,
+	#					    ],
+	#
+	#		attributes= {
+	#				'cn': univention.s4connector.attribute (
+	#						ucs_attribute='name',
+	#						ldap_attribute='cn',
+	#						con_attribute='cn',
+	#						required=1,
+	#						compare_function=univention.s4connector.compare_lowercase,
+	#					),
+	#				'samAccountName': univention.s4connector.attribute (
+	#						ldap_attribute='uid',
+	#						con_attribute='sAMAccountName',
+	#						compare_function=univention.s4connector.compare_lowercase,
+	#					),
+	#				'description': univention.s4connector.attribute (
+	#						ucs_attribute='description',
+	#						ldap_attribute='description',
+	#						con_attribute='description'
+	#					),
+	#				'operatingSystem': univention.s4connector.attribute (
+	#						ucs_attribute='operatingSystem',
+	#						ldap_attribute='univentionOperatingSystem',
+	#						con_attribute='operatingSystem'
+	#					),
+	#				'operatingSystemVersion': univention.s4connector.attribute (
+	#						ucs_attribute='operatingSystemVersion',
+	#						ldap_attribute='univentionOperatingSystemVersion',
+	#						con_attribute='operatingSystemVersion'
+	#					),
+	#			},
+	#
+	#	),
 	'windowscomputer': univention.s4connector.property (
 			ucs_default_dn='cn=computers,@%@ldap/base@%@',
 			con_default_dn='cn=computers,@%@connector/s4/ldap/base@%@',
