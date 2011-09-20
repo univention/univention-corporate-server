@@ -1,3 +1,9 @@
+univention-management-console (4.0.60-1) unstable; urgency=low
+
+  * umc-acls: also load existing pickle file for disallow action; Bug #22881
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 20 Sep 2011 18:24:36 +0200
+
 univention-management-console (4.0.59-1) unstable; urgency=low
 
   * use port 7389 as default for ldap/server/port (Bug #23231)

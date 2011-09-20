@@ -66,7 +66,7 @@ if not operation in OPERATIONS:
 	sys.exit( 1 )
 
 filename = os.path.join( _cache_dir, options.user )
-if os.path.isfile( filename ) and operation in ( 'show', 'allow', 'remove' ):
+if os.path.isfile( filename ) and operation in ( 'show', 'allow', 'disallow', 'remove' ):
 	try:
 		fd = open( filename )
 		acls = cPickle.load( fd )
