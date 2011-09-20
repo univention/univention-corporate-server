@@ -888,7 +888,7 @@ class border:
 
 class help_win:
 	def __init__(self, text, max_y, max_x):
-		self.width = 40
+		self.width = 60
 		self.height = 20
 		self.text_height = 15
 		self.text=text.replace('\n',' ### ').split()
