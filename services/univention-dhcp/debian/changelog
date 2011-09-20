@@ -1,3 +1,9 @@
+univention-dhcp (6.0.5-7) unstable; urgency=low
+
+  * s/-y/-w/ for UCS-2.4 compatibility (Bug #23718)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 20 Sep 2011 17:25:38 +0200
+
 univention-dhcp (6.0.5-6) unstable; urgency=low
 
   * Abort on old LDAP DHCP schema (Bug #23718)
