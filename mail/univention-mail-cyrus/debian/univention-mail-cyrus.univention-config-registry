@@ -20,6 +20,8 @@ Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/hostdn
 Variables: mail/cyrus/ldap/pwfile
+Variables: mail/cyrus/ssl/certificate
+Variables: mail/cyrus/ssl/key
 User: cyrus
 Group: sasl
 Mode: 0640

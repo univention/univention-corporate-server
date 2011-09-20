@@ -148,3 +148,15 @@ Description[de]=Definiert, ob beim Anlegen einer Mailbox ein Sieve-Skript erstel
 Description[en]=Defines whether or not to create a sieve script for every new mailbox, which moves spam mails into the spam folder (default: true)
 Type=str
 Categories=service-mail
+
+[mail/cyrus/ssl/certificate]
+Description[de]=Vollständiger Dateiname des SSL-Zertifikats, das von Cyrus für SSL-Verbindungen verwendet wird (Default: /var/lib/cyrus/cert.pem)
+Description[en]=Pathname of SSL certificate that is used by Cyrus to establish SSL connections (default: /var/lib/cyrus/cert.pem)
+Type=str
+Categories=service-mail
+
+[mail/cyrus/ssl/key]
+Description[de]=Vollständiger Dateiname der SSL-Schlüsseldatei, das von Cyrus für SSL-Verbindungen verwendet wird (Default: /var/lib/cyrus/private.key)
+Description[en]=Pathname of SSL key file that is used by Cyrus to establish SSL connections (default: /var/lib/cyrus/cert.pem)
+Type=str
+Categories=service-mail
