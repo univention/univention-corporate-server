@@ -465,7 +465,7 @@ class Instance( Base ):
 
 		if not request.options.get( 'container' ):
 			ldap_base = ucr.get( 'ldap/base' )
-			self.finished( request.id, [ { 'id' : ldap_base, 'label' : ldap_dn2path( ldap_base ), 'icon' : 'udm-container-dc' } ] )
+			self.finished( request.id, [ { 'id' : ldap_base, 'label' : ldap_dn2path( ldap_base ), 'icon' : 'udm-container-dc', 'objectType' : 'container/dc' } ] )
 			return
 
 		def _thread( container ):

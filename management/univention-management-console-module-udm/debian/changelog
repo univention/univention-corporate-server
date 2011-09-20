@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.136-1) unstable; urgency=low
+
+  * fixed return value for base container (udm/nav/container/query); Bug #22881
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 20 Sep 2011 14:20:54 +0200
+
 univention-management-console-module-udm (1.0.135-1) unstable; urgency=low
 
   * changed icon sizes in overview to 50x50, removed 24x24, 32x32, 64x64
