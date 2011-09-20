@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.57-1) unstable; urgency=low
+
+  * allow for horizontal scrolling in the main window (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 20 Sep 2011 12:35:06 +0200
+
 univention-management-console-frontend (1.0.56-1) unstable; urgency=low
 
   * changed icon sizes in overview to 50x50, removed 24x24, 32x32, 64x64

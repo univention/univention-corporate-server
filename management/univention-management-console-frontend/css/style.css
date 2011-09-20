@@ -6,7 +6,7 @@ body {
 	font-family: Helvetica, "Helvetica Neue", Arial, Geneva, sans-serif;
 	color: #414142;
 	/* disable scrollbars for the main window, long combo boxes may cause scrollbars to be shown */
-	overflow: hidden;
+	overflow-y: hidden;
 }
 
 a {
