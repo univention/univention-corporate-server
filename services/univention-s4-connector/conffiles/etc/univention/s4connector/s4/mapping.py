@@ -284,6 +284,11 @@ s4_mapping = {
 							required=1,
 							compare_function=univention.s4connector.compare_lowercase,
 						),
+					'samAccountName': univention.s4connector.attribute (
+							ldap_attribute='uid',
+							con_attribute='sAMAccountName',
+							compare_function=univention.s4connector.compare_lowercase,
+						),
 					'description': univention.s4connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
@@ -335,6 +340,11 @@ s4_mapping = {
 							ldap_attribute='cn',
 							con_attribute='cn',
 							required=1,
+							compare_function=univention.s4connector.compare_lowercase,
+						),
+					'samAccountName': univention.s4connector.attribute (
+							ldap_attribute='uid',
+							con_attribute='sAMAccountName',
 							compare_function=univention.s4connector.compare_lowercase,
 						),
 					'description': univention.s4connector.attribute (
@@ -390,6 +400,11 @@ s4_mapping = {
 							required=1,
 							compare_function=univention.s4connector.compare_lowercase,
 						),
+					'samAccountName': univention.s4connector.attribute (
+							ldap_attribute='uid',
+							con_attribute='sAMAccountName',
+							compare_function=univention.s4connector.compare_lowercase,
+						),
 					'description': univention.s4connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
@@ -440,6 +455,11 @@ s4_mapping = {
 							ldap_attribute='cn',
 							con_attribute='cn',
 							required=1,
+							compare_function=univention.s4connector.compare_lowercase,
+						),
+					'samAccountName': univention.s4connector.attribute (
+							ldap_attribute='uid',
+							con_attribute='sAMAccountName',
 							compare_function=univention.s4connector.compare_lowercase,
 						),
 					'description': univention.s4connector.attribute (
@@ -499,6 +519,11 @@ s4_mapping = {
 							ldap_attribute='cn',
 							con_attribute='cn',
 							required=1,
+							compare_function=univention.s4connector.compare_lowercase,
+						),
+					'samAccountName': univention.s4connector.attribute (
+							ldap_attribute='uid',
+							con_attribute='sAMAccountName',
 							compare_function=univention.s4connector.compare_lowercase,
 						),
 					'description': univention.s4connector.attribute (
