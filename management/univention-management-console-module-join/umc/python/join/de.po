@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-08-30 16:54+0200\n"
+"POT-Creation-Date: 2011-09-20 12:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,31 +13,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/join/__init__.py:217
+#: umc/python/join/__init__.py:213
 msgid "Another join operation is in progress"
 msgstr "Es wird gerade eine andere Join Operation ausgeführt"
 
-#: umc/python/join/__init__.py:416
+#: umc/python/join/__init__.py:408
 #, python-format
 msgid "Removing temp file: %s"
 msgstr "Lösche temporäre Datei: "
 
-#: umc/python/join/__init__.py:333
+#: umc/python/join/__init__.py:327
 msgid "due"
 msgstr "fällig"
 
-#: umc/python/join/__init__.py:359
+#: umc/python/join/__init__.py:353
 msgid "never run"
 msgstr "noch nie ausgeführt"
 
-#: umc/python/join/__init__.py:342
+#: umc/python/join/__init__.py:336
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/join/__init__.py:332 umc/python/join/__init__.py:361
+#: umc/python/join/__init__.py:326 umc/python/join/__init__.py:355
 msgid "run"
 msgstr "ausführen"
 
-#: umc/python/join/__init__.py:335
+#: umc/python/join/__init__.py:329
 msgid "successful"
 msgstr "erfolgreich"

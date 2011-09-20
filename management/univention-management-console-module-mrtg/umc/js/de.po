@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-mrtg\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-08-18 08:39+0200\n"
+"POT-Creation-Date: 2011-09-19 15:04+0200\n"
 "PO-Revision-Date: 2011-08-18 09:15+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,76 +13,76 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/mrtg.js:43
+#: umc/js/mrtg.js:38
 msgid "Load"
 msgstr "Last"
 
-#: umc/js/mrtg.js:55
+#: umc/js/mrtg.js:50
 msgid "Memory"
 msgstr "Hauptspeicher"
 
-#: umc/js/mrtg.js:56
+#: umc/js/mrtg.js:51
 msgid "Memory usage"
 msgstr "Auslastung des Hauptspeichers"
 
-#: umc/js/mrtg.js:51
+#: umc/js/mrtg.js:46
 msgid "Number of active terminal server sessions"
 msgstr "Anzahl der aktiven Terminalserver Sitzungen"
 
-#: umc/js/mrtg.js:120
+#: umc/js/mrtg.js:117
 msgid "Period"
 msgstr "Zeitraum"
 
-#: umc/js/mrtg.js:49
+#: umc/js/mrtg.js:44
 msgid "Sessions"
 msgstr "Sitzungen"
 
-#: umc/js/mrtg.js:99
+#: umc/js/mrtg.js:96
 msgid "Statistics"
 msgstr "Statistiken"
 
-#: umc/js/mrtg.js:61
+#: umc/js/mrtg.js:56
 msgid "Swap"
 msgstr "Swap"
 
-#: umc/js/mrtg.js:62
+#: umc/js/mrtg.js:57
 msgid "Swap space"
 msgstr "Auslagerungsspeicher"
 
-#: umc/js/mrtg.js:44
+#: umc/js/mrtg.js:39
 #, fuzzy
 msgid "System load"
 msgstr "Systemauslastung"
 
-#: umc/js/mrtg.js:45
+#: umc/js/mrtg.js:40
 #, fuzzy
 msgid "System load in percent"
 msgstr "Systemauslastung in Prozent"
 
-#: umc/js/mrtg.js:50
+#: umc/js/mrtg.js:45
 msgid "Terminal server sessions"
 msgstr "Terminalserver Sitzungen"
 
-#: umc/js/mrtg.js:63
+#: umc/js/mrtg.js:58
 msgid "Utilization of swap space in percent"
 msgstr "Auslastung des Auslagerungsspeichers in Prozent"
 
-#: umc/js/mrtg.js:57
+#: umc/js/mrtg.js:52
 msgid "Utilization of system memory in percent"
 msgstr "Auslastung des Hauptspeichers in Prozent"
 
-#: umc/js/mrtg.js:72
+#: umc/js/mrtg.js:67
 msgid "previous day"
 msgstr "vergangener Tag"
 
-#: umc/js/mrtg.js:80
+#: umc/js/mrtg.js:75
 msgid "previous month"
 msgstr "vergangener Monat"
 
-#: umc/js/mrtg.js:76
+#: umc/js/mrtg.js:71
 msgid "previous week"
 msgstr "vergangene Woche"
 
-#: umc/js/mrtg.js:84
+#: umc/js/mrtg.js:79
 msgid "previous year"
 msgstr "vergangenes Jahr"

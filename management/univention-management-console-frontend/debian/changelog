@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.56-1) unstable; urgency=low
+
+  * changed icon sizes in overview to 50x50, removed 24x24, 32x32, 64x64
+    (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 20 Sep 2011 12:18:52 +0200
+
 univention-management-console-frontend (1.0.55-1) unstable; urgency=low
 
   * use locales with language and territory; Bug #23645

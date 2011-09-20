@@ -24,7 +24,7 @@ dojo.declare( "umc.widgets._CategoryItem", [dijit.layout.ContentPane, dijit._Con
 		this.inherited(arguments);
 		dojo.mixin(this, {
 			baseClass: 'modLaunchButton',
-			'class': umc.tools.getIconClass(this.modIcon, 64),
+			'class': umc.tools.getIconClass(this.modIcon, 50),
 			content: '<div>' + this.label + '</div>'
 		});
 	},

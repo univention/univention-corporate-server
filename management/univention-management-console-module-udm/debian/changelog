@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.135-1) unstable; urgency=low
+
+  * changed icon sizes in overview to 50x50, removed 24x24, 32x32, 64x64
+    (r27002, Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 20 Sep 2011 12:22:48 +0200
+
 univention-management-console-module-udm (1.0.134-1) unstable; urgency=low
 
   * setDynamicValues: add special handling for syntax dnsEntryZoneForward; Bug #23673

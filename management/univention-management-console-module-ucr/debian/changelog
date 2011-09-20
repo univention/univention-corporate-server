@@ -1,3 +1,10 @@
+univention-management-console-module-ucr (1.0.25-1) unstable; urgency=low
+
+  * changed icon sizes in overview to 50x50, removed 24x24, 32x32, 64x64
+    (r27002, Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 20 Sep 2011 12:22:41 +0200
+
 univention-management-console-module-ucr (1.0.24-1) unstable; urgency=low
 
   * disabled inline editing in the grid in favor of default actions (Bug #22881)

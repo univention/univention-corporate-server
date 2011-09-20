@@ -82,7 +82,7 @@ build-dev: build-common
 
 build-common: i18n
 	@# scale all icons
-	for s in 16x16 24x24 32x32 64x64; do \
+	for s in 16x16 50x50; do \
 		mkdir -p "$(buildDir)/images/icons/$$s"; \
 		for i in icons/*.png; do \
 			dest="$(buildDir)/images/icons/$$s/$${i##*/}"; \
