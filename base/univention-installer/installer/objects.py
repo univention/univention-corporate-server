@@ -1822,7 +1822,8 @@ class subwin:
 	def tab(self):
 		# sometime default is not usable
 		if hasattr(self,"sub"):
-			self.sub.tab()
+			if hasattr(self.sub,'tab'):
+				self.sub.tab()
 		elif len(self.elements)>0:
 			while not self.elements[self.current].usable():
 				self.current = (self.current+1)%len(self.elements)
