@@ -1,3 +1,9 @@
+univention-join (4.0.14-1) unstable; urgency=low
+
+  * Support for ldap/master/port on memberserver (Bug #20026)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Sep 2011 14:15:19 +0200
+
 univention-join (4.0.13-3) unstable; urgency=low
 
   * keep ownership and mode when migrating .secret files (Bug #14186)
