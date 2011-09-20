@@ -2,12 +2,12 @@ Source: univention-printserver
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7), univention-config-dev, python2.6, python2.6-dev, python-support, ucslint
+Build-Depends: debhelper (>> 7), univention-config-dev, python2.6, python2.6-dev, python-support, ucslint, foomatic-filters-ppds, foomatic-filters, foomatic-db-gutenprint, foomatic-db-engine, foomatic-db
 Standards-Version: 3.8.2
 
 Package: univention-printserver
 Architecture: all
-Depends: univention-config-registry (>=0.06), cups, cups-client, cups-bsd, foomatic-filters-ppds, foomatic-db-gutenprint, foomatic-db-hpijs, cups-driver-gutenprint, univention-directory-listener, univention-printclient, openprinting-ppds, linuxprinting.org-ppds, hp-ppd, hpijs-ppds, python-pexpect, ${python:Depends}, shell-univention-lib
+Depends: univention-config-registry (>=0.06), cups, cups-client, cups-bsd, foomatic-filters-ppds, foomatic-db-gutenprint, foomatic-db-hpijs, cups-driver-gutenprint, univention-directory-listener, univention-printclient, openprinting-ppds, linuxprinting.org-ppds, hp-ppd, hpijs-ppds, python-pexpect, ${python:Depends}, shell-univention-lib, openprinting-ppds-extra
 Conflicts: univention-management-console (<<0.9.33-1)
 Recommends: univention-nagios-cups
 Description: UCS - print server
@@ -24,6 +24,16 @@ Architecture: all
 Depends: univention-printserver, cups-pdf, shell-univention-lib
 Description: UCS - print server addons for pdf pseudo printer
  This packages provides configs and settings for a PDF printer.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-foomatic-ppds
+Architecture: all
+Description: UCS - foomatic ppds
+ This packages provides foomatic printer ppds.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

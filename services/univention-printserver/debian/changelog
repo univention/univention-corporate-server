@@ -1,3 +1,9 @@
+univention-printserver (5.0.2-1.1) unstable; urgency=low
+
+  * added univention-foomatic-ppds (Bug #22584) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Sep 2011 08:37:10 +0200
+
 univention-printserver (5.0.2-1) unstable; urgency=low
 
   * add service entry (Bug #2136)
