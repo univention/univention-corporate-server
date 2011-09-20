@@ -55,6 +55,14 @@ univention-config-registry set grub/timeout?5 \
 	grub/menu/color/normal?"black/black" \
 	grub/menu/color/highlight?"white/dark-gray"
 
+# grub needs to read the file unicode.pf2 for gfxmode,
+# /usr/share/grub/unicode.pf2 is the default, but /
+# can be on a fs grub can't read (cryptsetup), so 
+# /boot/grub/unicode.pf2 is better
+if [ ! -f /boot/grub/unicode.pf2 -a -f /usr/share/grub/unicode.pf2 ]; then
+	cp /usr/share/grub/unicode.pf2 /boot/grub/unicode.pf2
+fi
+
 
 # New installation, the 
 if [ "$1" = configure -a -z "$2" ];  then
