@@ -223,7 +223,20 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	if [ -x /etc/init.d/bind9 ]; then
 		/etc/init.d/bind9 restart
 	fi
+
+	# Wait until the local S4 contains the DNS record
+	continue=1
+	while [ $continue = "1" ];do
+		echo "wait for named ?"
+		timeout=`LC_ALL=C host -W 1 $ldap_master 2>&1| grep "has address "`
+		if [ -n "$timeout" ]; then
+			continue=0
+		else
+			sleep 1
+		fi;
+	done
 fi
+
 
 ucs_addServiceToLocalhost "${NAME}" "$@"
 
