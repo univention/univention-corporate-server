@@ -1,3 +1,11 @@
+univention-mail-cyrus (4.0.6-1) unstable; urgency=low
+
+  * added UCR variables mail/cyrus/ssl/certificate and mail/cyrus/ssl/key
+    (Bug #21867)
+
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 20 Sep 2011 17:22:49 +0200
+
 univention-mail-cyrus (4.0.5-1) unstable; urgency=low
 
   * made server password change hook executable (Bug #23560) 
