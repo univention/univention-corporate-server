@@ -708,8 +708,6 @@ class cardbox:
 		self.pad.bkgd(" ",curses.color_pair(4))
 		self.pad.border(curses.MY_VLINE,curses.MY_VLINE,curses.MY_HLINE,curses.MY_HLINE,curses.EDGE_TL,curses.EDGE_TR,curses.EDGE_BL,curses.EDGE_BR)
 
-#ACS_TTEE, ACS_BTEE, ACS_RTEE, ACS_LTEE,
-
 	def draw(self):
 		pos = 1
 		for i in xrange(len(self.cards)):
@@ -783,6 +781,12 @@ class cardbox:
 			if obj in obj2name:
 				self.parent.element_index[obj2name[obj]] = index
 			index += 1
+
+		# add names from card to name2index of parent
+		for name, index in self.cards[self.active].element_index.items():
+			obj = self.cards[self.active].elements[index]
+			i = self.parent.elements.index(obj)
+			self.parent.element_index[name] = i
 
 	def fix_active_element(self, old_active_element):
 		self.parent.current = None
@@ -1093,19 +1097,6 @@ class radiobutton:
 
 		self.current=0
 		self.draw()
-
-# 	def update_pos(self, delta_y, delta_x):
-# 		"""
-# 		update position (required by card/cardbox class to implement relative positions)
-# 		"""
-# 		self.pos_x += delta_x
-# 		self.pos_y += delta_y
-# 		for obj in self.button:
-# 			obj.pos_x += delta_x
-# 			obj.pos_y += delta_y
-# 		for obj in self.desc:
-# 			obj.pos_x += delta_x
-# 			obj.pos_y += delta_y
 
 	def set_on(self):
 		if len(self.button):
