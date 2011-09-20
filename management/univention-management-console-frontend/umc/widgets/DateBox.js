@@ -44,6 +44,15 @@ dojo.declare("umc.widgets.DateBox", [
 		this._dateBox.set('value', newVal);
 	},
 
+	isValid: function() {
+		// use the property 'valid' in case it has been set
+		// otherwise fall back to the default
+		if (null !== this.valid) {
+			return this.get('valid');
+		}
+		return this._dateBox.isValid();
+	},
+
 	_setBlockOnChangeAttr: function(/*Boolean*/ value) {
 		// execute the inherited functionality in the widget's scope
 		umc.tools.delegateCall(this, arguments, this._dateBox);
