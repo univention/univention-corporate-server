@@ -41,6 +41,9 @@ import copy
 import re
 from local import _
 
+class InstallerCursesException(Exception): pass
+class CardboxInvalidCardIndex(InstallerCursesException): pass
+
 class dummy:
 	def __init__(self):
 		pass
@@ -58,7 +61,7 @@ class dummy:
 		return 0
 
 class baseObject:
-	def __init__(self, text, pos_y, pos_x, width, status=0, align='left'):
+	def __init__(self, text, pos_y, pos_x, width, status=0, align='left', position_parent=None):
 		self.width = width
 		self.set_indent(text)
 		if align == 'middle':
@@ -68,6 +71,9 @@ class baseObject:
 		else:
 			self.pos_x=pos_x
 		self.pos_y=pos_y
+		if position_parent:
+			self.pos_y += position_parent.child_pos_y
+			self.pos_x += position_parent.child_pos_x
 
 		self.text=text
 		self.pad = curses.newpad(1, width)
@@ -138,10 +144,10 @@ class baseObject_2(baseObject):
 
 
 class button(baseObject_2):
-	def __init__(self, text, pos_y, pos_x, width=-1, status=0, align='left'):
+	def __init__(self, text, pos_y, pos_x, width=-1, status=0, align='left', position_parent=None):
 		if width == -1:
 			width=len(text)+2+3
-		baseObject_2. __init__(self, text, pos_y, pos_x, width, status, align)
+		baseObject_2. __init__(self, text, pos_y, pos_x, width, status, align, position_parent=position_parent)
 
 	def set_text(self, text):
 		self.pad.erase()
@@ -166,13 +172,13 @@ class bool(baseObject):
 
 
 class input(baseObject_2):
-	def __init__(self, text, pos_y, pos_x, width, status=0, align='left'):
+	def __init__(self, text, pos_y, pos_x, width, status=0, align='left', position_parent=None):
 		self.cursor=len(text)
 		self.invert=curses.newpad(2,2)
 		self.invert.bkgd(" ",curses.color_pair(3))
 		self.start=0
 		self.first=1
-		baseObject_2.__init__(self, text, pos_y, pos_x, width)
+		baseObject_2.__init__(self, text, pos_y, pos_x, width, position_parent=position_parent)
 
 	def key_event(self, input):
 		if input == curses.KEY_BACKSPACE:
@@ -547,7 +553,7 @@ class mselect(select):
 			self.list[self.current].set_off()
 
 class textline:
-	def __init__(self, text, pos_y, pos_x, align='left', width=0):
+	def __init__(self, text, pos_y, pos_x, align='left', width=0, position_parent=None):
 		self.width=len(text)
 		if width:
 			self.width=width
@@ -559,6 +565,9 @@ class textline:
 		else:
 			self.pos_x=pos_x
 		self.pos_y=pos_y
+		if position_parent:
+			self.pos_y += position_parent.child_pos_y
+			self.pos_x += position_parent.child_pos_x
 		self.text=text
 		self.height=1
 		self.pad=curses.newpad(self.height, self.width+2)
@@ -618,6 +627,238 @@ class modline(textline):
 		self.pad.bkgd(" ",curses.color_pair(4))
 	def active(self):
 		self.pad.bkgd(" ",curses.color_pair(5))
+
+class card:
+	def __init__(self, parent, name, pos_y, pos_x, child_pos_y, child_pos_x):
+		self.parent = parent
+		self.name = name
+		self.elements = []
+		self.element_index = {}
+		self.pos_x=pos_x
+		self.pos_y=pos_y
+		self.width = len(name)+2
+		self.height = 2
+		self.child_pos_x=child_pos_x
+		self.child_pos_y=child_pos_y
+		self.pad = curses.newpad(3, len(name)+2)
+		self.pad.bkgd(" ",curses.color_pair(4))
+		self.pad.border(curses.MY_VLINE,curses.MY_VLINE,curses.MY_HLINE,curses.MY_HLINE,curses.EDGE_TL,curses.EDGE_TR,curses.EDGE_BL,curses.EDGE_BR)
+		self.pad.addstr(1,1,name)
+
+	# removes all widgets from window
+	def reset_layout(self):
+		self.elements = []
+		self.element_index = {}
+
+	# adds widget to window and assigns name to it
+	def add_elem(self, name, element):
+		"""
+		Add element to card with given name.
+		Please note that <element> has to provide argument position_parent=OBJ which
+		is required to define <element>'s position relative to upper left corner of <position_parent>.
+		"""
+		self.element_index[name] = len(self.elements)
+		self.elements.append( element )
+
+	# returns widget addressed by name
+	def get_elem(self, name):
+		return self.elements[ self.element_index[ name ] ]
+
+	# tests if widget addressed by name exists
+	def elem_exists(self, name):
+		return self.element_index.has_key(name)
+
+	# returns widget id (old behaviour) of widget addressed by name
+	def get_elem_id(self, name):
+		if self.element_index.has_key(name):
+			return self.element_index[ name ]
+		return None
+
+	# returns widget addressed by widget id
+	def get_elem_by_id(self, id):
+		return self.elements[ id ]
+
+	def draw_tab(self):
+		"""
+		draw header/tab for this card
+		"""
+		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
+
+	def draw(self):
+		"""
+		draw content of card
+		"""
+		for elem in self.elements:
+			elem.draw()
+
+	def usable(self):
+		return 0
+
+class cardbox:
+	def __init__(self, parent, pos_y, pos_x, height, width):
+		self.parent = parent
+		self.cards = []
+		self.cardwidth = 0
+		self.active = None
+		self.pos_x=pos_x
+		self.pos_y=pos_y
+		self.width = width
+		self.height = height
+		self.pad = curses.newpad(self.height-2, self.width)
+		self.pad.bkgd(" ",curses.color_pair(4))
+		self.pad.border(curses.MY_VLINE,curses.MY_VLINE,curses.MY_HLINE,curses.MY_HLINE,curses.EDGE_TL,curses.EDGE_TR,curses.EDGE_BL,curses.EDGE_BR)
+
+#ACS_TTEE, ACS_BTEE, ACS_RTEE, ACS_LTEE,
+
+	def draw(self):
+		pos = 1
+		for i in xrange(len(self.cards)):
+			width = self.cards[i].width
+			if pos >= self.width or pos+width >= self.width:
+				continue
+			# draw header/tab of all cards
+			self.cards[i].draw_tab()
+			# make tabs realistic
+			if i == self.active:
+				self.pad.addch(0,pos,curses.EDGE_BR)
+				for cpos in xrange(pos+1,pos+width-1):
+					self.pad.addch(0,cpos," ")
+				self.pad.addch(0,pos+width-1,curses.EDGE_BL)
+			else:
+				self.pad.addch(0,pos,curses.ACS_BTEE)
+				for cpos in xrange(pos+1,pos+width-1):
+					self.pad.addch(0,cpos,curses.MY_HLINE)
+				self.pad.addch(0,pos+width-1,curses.ACS_BTEE)
+			pos += width
+
+		self.pad.refresh(0,0,self.pos_y+2,self.pos_x,self.pos_y+self.height-1,self.pos_x+self.width)
+		# draw content of active card
+		self.cards[self.active].draw()
+
+	def append_card(self, name):
+		newcard = card(self.parent, name, self.pos_y, self.pos_x + 1 + self.cardwidth, self.pos_y+3, self.pos_x+1)
+		self.cards.append(newcard)
+		if self.active == None:
+			self.active = 0
+			self.add_current_elements_to_parent()
+		self.cardwidth += len(name)+2
+		return self.cards[-1]
+
+	def remove_current_elements_from_parent(self):
+		# save elem2name to be able to recover name2index later on
+		obj2name = {}
+		for name, index in self.parent.element_index.items():
+			obj2name[ self.parent.elements[index] ] = name
+
+		# remove cards elements from parent's element list
+		for obj in self.cards[self.active].elements:
+			if obj in self.parent.elements:
+				self.parent.elements.remove(obj)
+
+		# rebuild name2index of parent
+		self.parent.element_index = {}
+		index = 0
+		for obj in self.parent.elements:
+			if obj in obj2name:
+				self.parent.element_index[obj2name[obj]] = index
+			index += 1
+
+	def add_current_elements_to_parent(self):
+		# save elem2name to be able to recover name2index later on
+		obj2name = {}
+		for name, index in self.parent.element_index.items():
+			obj2name[ self.parent.elements[index] ] = name
+
+		# find self (cardbox) in parent's elements; if not found then return
+		if not self in self.parent.elements:
+			return
+		i = self.parent.elements.index(self)
+		# add card's elements to parent's elements just behind cardbox element
+		self.parent.elements[i+1:i+1] = self.cards[self.active].elements
+
+		# rebuild name2index of parent
+		self.parent.element_index = {}
+		index = 0
+		for obj in self.parent.elements:
+			if obj in obj2name:
+				self.parent.element_index[obj2name[obj]] = index
+			index += 1
+
+	def fix_active_element(self, old_active_element):
+		self.parent.current = None
+		for i in xrange(len(self.parent.elements)):
+			elem = self.parent.elements[i]
+			# if old_active_element is still set then the "current" element is not on any card ==> set all other elements to off
+			if old_active_element and elem.usable() and elem != old_active_element:
+				elem.set_off()
+			# activate old_active_element and update "current"
+			elif old_active_element and elem.usable() and elem == old_active_element:
+				elem.set_on()
+				self.parent.current = i
+			# if old_active_element is not set then the "current" element has been on removed card ==> update "current"
+			elif not old_active_element and elem.usable() and elem.active:
+				self.parent.current = i
+		if self.parent.current == None:
+			for i in xrange(1, len(self.parent.elements)):
+				if self.parent.elements[i].usable():
+					self.parent.current = i
+					self.parent.elements[i].set_on()
+					break
+
+	def next_card(self):
+		# remember old active element
+		old_active_element = self.parent.elements[self.parent.current]
+		# remove current tab from elements
+		self.remove_current_elements_from_parent()
+		# if active element has been removed, then unset old_active_element
+		if not old_active_element in self.parent.elements:
+			old_active_element = None
+		# set new card
+		self.active = (self.active+1) % len(self.cards)
+		# add new current tab to elements
+		self.add_current_elements_to_parent()
+		# set new active
+		self.fix_active_element(old_active_element)
+
+	def prev_card(self):
+		# remember old active element
+		old_active_element = self.parent.elements[self.parent.current]
+		# remove current tab from elements
+		self.remove_current_elements_from_parent()
+		# if active element has been removed, then unset old_active_element
+		if not old_active_element in self.parent.elements:
+			old_active_element = None
+		# set new card
+		self.active = (self.active-1) % len(self.cards)
+		# add new current tab to elements
+		self.add_current_elements_to_parent()
+		# set new active
+		self.fix_active_element(old_active_element)
+
+	def set_card(self, index):
+		if (0 <= index) and (index < len(self.cards)):
+			# remember old active element
+			old_active_element = self.parent.elements[self.parent.current]
+			# remove current tab from elements
+			self.remove_current_elements_from_parent()
+			# if active element has been removed, then unset old_active_element
+			if not old_active_element in self.parent.elements:
+				old_active_element = None
+			# set new card
+			self.active = index
+			# add new current tab to elements
+			self.add_current_elements_to_parent()
+			# set new active
+			self.fix_active_element(old_active_element)
+		else:
+			raise CardboxInvalidCardIndex()
+
+	def get_card(self, index):
+		return self.cards[index]
+
+	def usable(self):
+		return 0
+
 
 class border:
 	def __init__(self, pos_y, pos_x, width, height):
@@ -810,13 +1051,16 @@ class hLine:
 		return 0
 
 class radiobutton:
-	def __init__(self,dict,pos_y,pos_x,width,visible,selected=[0],fixed=[]):
+	def __init__(self,dict,pos_y,pos_x,width,visible,selected=[0],fixed=[], position_parent=None):
 		# UNSORTED:
 		#    dict[ DESCRIPTION ] = [ RETURNVALUE ]
 		# SORTED:
 		#    dict[ DESCRIPTION ] = [ RETURNVALUE, POSITION-AS-INT ]
 		self.pos_x=pos_x
 		self.pos_y=pos_y
+		if position_parent:
+			self.pos_y += position_parent.child_pos_y
+			self.pos_x += position_parent.child_pos_x
 		self.visible=[0,visible]
 		if len(selected) > 0 and str(selected[0]).isalpha():
 			self.selected=[dict.values().index(selected)]
@@ -849,6 +1093,19 @@ class radiobutton:
 
 		self.current=0
 		self.draw()
+
+# 	def update_pos(self, delta_y, delta_x):
+# 		"""
+# 		update position (required by card/cardbox class to implement relative positions)
+# 		"""
+# 		self.pos_x += delta_x
+# 		self.pos_y += delta_y
+# 		for obj in self.button:
+# 			obj.pos_x += delta_x
+# 			obj.pos_y += delta_y
+# 		for obj in self.desc:
+# 			obj.pos_x += delta_x
+# 			obj.pos_y += delta_y
 
 	def set_on(self):
 		if len(self.button):
