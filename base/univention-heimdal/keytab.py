@@ -40,7 +40,7 @@ ldap_master = listener.baseConfig['ldap/master']
 
 name='keytab'
 description='Kerberos 5 keytab maintainance'
-filter='(&(objectClass=krb5Principal)(objectClass=krb5KDCEntry)(krb5KeyVersionNumber=*)(|(krb5PrincipalName=host/%s@%s)(krb5PrincipalName=ldap/%s@%s)(krb5PrincipalName=host/%s.%s@%s)(krb5PrincipalName=ldap/%s.%s@%s)(krb5PrincipalName=host/%s.%s@%s)(krb5PrincipalName=ldap/%s.%s@%s))(!(univentionService=Samba 4)))' % (hostname, realm, hostname, realm, hostname, domainname, realm, hostname, domainname, realm, hostname, listener.baseConfig['ldap/base'].replace('dc=','').replace(',','.'), realm, hostname, listener.baseConfig['ldap/base'].replace('dc=','').replace(',','.'), realm)
+filter='(&(objectClass=krb5Principal)(objectClass=krb5KDCEntry)(krb5KeyVersionNumber=*)(|(krb5PrincipalName=host/%s@%s)(krb5PrincipalName=ldap/%s@%s)(krb5PrincipalName=host/%s.%s@%s)(krb5PrincipalName=ldap/%s.%s@%s)(krb5PrincipalName=host/%s.%s@%s)(krb5PrincipalName=ldap/%s.%s@%s)))' % (hostname, realm, hostname, realm, hostname, domainname, realm, hostname, domainname, realm, hostname, listener.baseConfig['ldap/base'].replace('dc=','').replace(',','.'), realm, hostname, listener.baseConfig['ldap/base'].replace('dc=','').replace(',','.'), realm)
 
 etypes = ['des-cbc-crc', 'des-cbc-md4', 'des3-cbc-sha1', 'des-cbc-md5', 'arcfour-hmac-md5']
 listener.setuid(0)
@@ -57,6 +57,11 @@ def clean():
 
 def handler(dn, new, old):
 	global keytab
+
+	## don't do anything here if Samba 4 is installed
+	samba4_function_level = listener.baseConfig.get('samba4/function/level')
+	if samba4_function_level:
+		return
 
 	if server_role == 'memberserver':
 		listener.setuid(0)

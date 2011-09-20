@@ -1,3 +1,10 @@
+univention-heimdal (5.0.8-2) unstable; urgency=low
+
+  * keytab listener module only modifies keytab on hosts that do not
+    have samba4/function/level set (Bug #22600)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Sep 2011 10:18:15 +0200
+
 univention-heimdal (5.0.8-1) unstable; urgency=low
 
   * keytab listener module only modifies keytab on hosts that do not
