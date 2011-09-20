@@ -1560,7 +1560,8 @@ class content:
 		while not self.elements[self.current].usable():
 			self.current = (self.current+1)%len(self.elements)
 		if hasattr(self,"sub"):
-			self.sub.tab()
+			if hasattr(self.sub,"tab"):
+				self.sub.tab()
 		else:
 			self.elements[self.current].set_off()
 			self.elements[self.current].draw()
