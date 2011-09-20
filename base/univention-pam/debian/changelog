@@ -1,3 +1,9 @@
+univention-pam (5.0.15-1) unstable; urgency=low
+
+  * made univention-nscd executable (Bug #23366) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Sep 2011 10:24:42 +0200
+
 univention-pam (5.0.14-1) unstable; urgency=low
 
   * added password change script (Bug #23366)
