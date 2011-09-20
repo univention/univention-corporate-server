@@ -135,3 +135,9 @@ Description[de]=Legt vor der Installation des ersten Samba 4 Domaincontrollers d
 Description[en]=Determines the functional level of the Samba 4 domain at the time of installation of the first Samba4 domain controller.
 Type=str
 Categories=service-samba
+
+[samba4/role]
+Description[de]=Legt vor dem Join eines Samba 4 Systems die Rolle des Systems fest (z.B. DC oder MEMBER).
+Description[en]=Determines the role a Samba 4 system will be joined as into the Samba4 domain (e.g. DC or MEMBER).
+Type=str
+Categories=service-samba

@@ -126,12 +126,23 @@ if [ -x /etc/init.d/heimdal-kdc ]; then
 fi
 
 
-case "$server_role" in
-	domaincontroller_*)
-		domaincontroller=true; break;;
-esac
+if [ -z "$samba4_role" ]; then
+	case "$server_role" in
+		domaincontroller_*)
+			domaincontroller=true; break;;
+	esac
 
-if [ "$domaincontroller" = 'true' ]; then
+	if [ "$domaincontroller" = 'true' ]; then
+		samba4_role='DC'
+	elif [ "$server_role" = "memberserver" ]; then
+		samba4_role='MEMBER'
+	fi
+
+	univention-config-registry set samba4/role="$samba4_role"
+fi
+
+
+if [ "$samba4_role" = 'DC' ]; then
 
 	## check if we there already is a **domaincontroller** providing the service "Samba 4"
 	samba4servicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=${NAME})(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
@@ -160,7 +171,7 @@ if [ "$domaincontroller" = 'true' ]; then
 		fi
 
 		extract_binddn_and_bindpwd_from_args "$@"
-		samba-tool join "$domainname" DC -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
+		samba-tool join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 
 		# set_machine_secret	## currently disabled, seems to break DRS replication
 	fi
@@ -196,10 +207,10 @@ if [ "$domaincontroller" = 'true' ]; then
 		let_samba4_manage_etc_krb5_keytab
 	fi
 
-elif [ "$server_role" = "memberserver" ]; then
+elif [ "$samba4_role" = "MEMBER" ]; then
 
 	extract_binddn_and_bindpwd_from_args "$@"
-	samba-tool join "$domainname" MEMBER -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
+	samba-tool join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 
 	# set_machine_secret	## currently disabled
 
