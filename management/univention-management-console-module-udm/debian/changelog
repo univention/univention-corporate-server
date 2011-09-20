@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.134-1) unstable; urgency=low
+
+  * setDynamicValues: add special handling for syntax dnsEntryZoneForward; Bug #23673
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 20 Sep 2011 08:27:09 +0200
+
 univention-management-console-module-udm (1.0.133-1) unstable; urgency=low
 
   * MultiObjectSelect: added change of label for search property (Bug #22881)

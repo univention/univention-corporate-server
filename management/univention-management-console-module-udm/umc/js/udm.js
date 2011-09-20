@@ -34,6 +34,11 @@ dojo.require("umc.modules._udm.DetailPage");
 			}
 			return false;
 		});
+		if ( dict.$name$ == 'dnsEntryZoneForward' ) {
+			list = dojo.map( list, function( item ) {
+				return umc.tools.explodeDn( item[ 0 ], true )[ 0 ];
+			} );
+		}
 		return list;
 	});
 })();
