@@ -857,7 +857,12 @@ class cardbox:
 		else:
 			raise CardboxInvalidCardIndex()
 
-	def get_card(self, index):
+	def get_card(self, index=None):
+		"""
+		returns current card or specified card if index!=None
+		"""
+		if index == None:
+			return self.cards[self.active]
 		return self.cards[index]
 
 	def usable(self):
