@@ -268,12 +268,12 @@ s4_mapping = {
 			#post_con_create_functions = [ univention.connector.s4.computers.
 			post_con_modify_functions=[
 							univention.s4connector.s4.sid_mapping.sid_to_s4,
-							# univention.s4connector.s4.password.password_sync_ucs_to_s4,
+							univention.s4connector.s4.password.password_sync_ucs_to_s4,
 						    ],
 
 			post_ucs_modify_functions=[
 							univention.s4connector.s4.sid_mapping.sid_to_ucs,
-							# univention.s4connector.s4.password.password_sync_s4_to_ucs,
+							univention.s4connector.s4.password.password_sync_s4_to_ucs,
 						    ],
 
 			attributes= {
@@ -321,12 +321,12 @@ s4_mapping = {
 			#post_con_create_functions = [ univention.connector.s4.computers.
 			post_con_modify_functions=[
 							univention.s4connector.s4.sid_mapping.sid_to_s4,
-							# univention.s4connector.s4.password.password_sync_ucs_to_s4,
+							univention.s4connector.s4.password.password_sync_ucs_to_s4,
 						    ],
 
 			post_ucs_modify_functions=[
 							univention.s4connector.s4.sid_mapping.sid_to_ucs,
-							# univention.s4connector.s4.password.password_sync_s4_to_ucs,
+							univention.s4connector.s4.password.password_sync_s4_to_ucs,
 						    ],
 
 			attributes= {
@@ -374,12 +374,12 @@ s4_mapping = {
 			#post_con_create_functions = [ univention.connector.s4.computers.
 			post_con_modify_functions=[
 							univention.s4connector.s4.sid_mapping.sid_to_s4,
-							# univention.s4connector.s4.password.password_sync_ucs_to_s4,
+							univention.s4connector.s4.password.password_sync_ucs_to_s4,
 						    ],
 
 			post_ucs_modify_functions=[
 							univention.s4connector.s4.sid_mapping.sid_to_ucs,
-							# univention.s4connector.s4.password.password_sync_s4_to_ucs,
+							univention.s4connector.s4.password.password_sync_s4_to_ucs,
 						    ],
 
 			attributes= {
@@ -426,12 +426,12 @@ s4_mapping = {
 			#post_con_create_functions = [ univention.connector.s4.computers.
 			post_con_modify_functions=[
 							univention.s4connector.s4.sid_mapping.sid_to_s4,
-							# univention.s4connector.s4.password.password_sync_ucs_to_s4,
+							univention.s4connector.s4.password.password_sync_ucs_to_s4,
 						    ],
 
 			post_ucs_modify_functions=[
 							univention.s4connector.s4.sid_mapping.sid_to_ucs,
-							# univention.s4connector.s4.password.password_sync_s4_to_ucs,
+							univention.s4connector.s4.password.password_sync_s4_to_ucs,
 						    ],
 
 			attributes= {
