@@ -803,7 +803,7 @@ class cardbox:
 			elif not old_active_element and elem.usable() and elem.active:
 				self.parent.current = i
 		if self.parent.current == None:
-			for i in xrange(1, len(self.parent.elements)):
+			for i in xrange(2, len(self.parent.elements)):
 				if self.parent.elements[i].usable():
 					self.parent.current = i
 					self.parent.elements[i].set_on()
