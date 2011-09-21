@@ -1,3 +1,9 @@
+univention-printserver (5.0.3-1) unstable; urgency=low
+
+  * new printermodels in join script (Bug #22584) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Sep 2011 09:38:04 +0200
+
 univention-printserver (5.0.2-6) unstable; urgency=low
 
   * added univention-foomatic-ppds (Bug #22584) 
