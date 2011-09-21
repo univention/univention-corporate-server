@@ -1,3 +1,17 @@
+univention-ad-connector (6.0.6-1) unstable; urgency=low
+
+  * Write tracebacks into connector.log (Bug #13047)
+  * Cleanup debug messages and set the debug level to 2 by default
+  * mapping.py: Remove object_memberships_sync_from_ucs from the list of
+    post_con_modify_functions because the group object will changed if
+    the groupmember ship was changed on UCS. This will improve the sync
+    performance (Bug #21010, Bug #18619)
+  * poll_ucs: Create a list of all DNs which should be synced in this
+    run. If the DN will synced later skip the sync for this object at
+    this point (Bug #21010, Bug #18619)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 17 Sep 2011 15:02:15 +0200
+
 univention-ad-connector (6.0.5-3) unstable; urgency=low
 
   * Fix incorrect setting of userAccountControl flag (Bug #23153)

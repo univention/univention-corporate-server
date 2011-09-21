@@ -147,17 +147,30 @@ def main():
 	#	sys.exit(1)
 
 	found_rejected = False
+	i=1
 	print "\n\tUCS rejected\n"
 	for filename,dn in ad.list_rejected_ucs():
 		found_rejected = True
-		print "%s" % univention.connector.ad.encode_attrib(dn).encode('latin')
-		print "\t-> %s" % univention.connector.ad.encode_attrib(ad.get_dn_by_ucs(dn)).encode('latin')
+		print "%5d:   UCS DN: %s" % (i, univention.connector.ad.encode_attrib(dn).encode('latin'))
+		ad_dn = univention.connector.ad.encode_attrib(ad.get_dn_by_ucs(dn)).encode('latin')
+		if ad_dn:
+			print "          AD DN: %s" % ad_dn
+		else:
+			print "          AD DN: <not found>"
+		print "         Filename: %s\n" % filename
+		i+=1
 
-	print "\n\tAD rejected\n"
+	i=1
+	print "\nAD rejected\n"
 	for id,dn in ad.list_rejected():
 		found_rejected = True
-		print "%s" % univention.connector.ad.encode_attrib(dn).encode('latin')
-		print "\t-> %s" % univention.connector.ad.encode_attrib(ad.get_dn_by_con(dn)).encode('latin')
+		print "%5d:    AD DN: %s" % (i,univention.connector.ad.encode_attrib(dn).encode('latin'))
+		ucs_dn = univention.connector.ad.encode_attrib(ad.get_dn_by_con(dn)).encode('latin')
+		if ucs_dn:
+			print "         UCS DN: %s" % ucs_dn
+		else:
+			print "         UCS DN: <not found>"
+		i+=1
 
 	if not found_rejected:
 		print "\nThere may be no rejected DNs if the connector is in progress, to be\nsure stop the connector before running this script.\n"

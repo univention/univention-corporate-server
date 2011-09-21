@@ -39,8 +39,14 @@ description='AD Connector replication'
 filter='(objectClass=*)'
 attributes=[]
 
+
 # use the modrdn listener extension
 modrdn="1"
+
+# While initialize copy all group objects into a list:
+# https://forge.univention.org/bugzilla/show_bug.cgi?id=18619#c5
+init_mode = False
+group_objects = []
 
 dirs = [listener.baseConfig['connector/ad/listener/dir']]
 if listener.baseConfig.has_key('connector/listener/additionalbasenames') and listener.baseConfig['connector/listener/additionalbasenames']:
@@ -53,6 +59,8 @@ if listener.baseConfig.has_key('connector/listener/additionalbasenames') and lis
 			       
 
 def handler(dn, new, old, command):
+
+	global group_objects
 
 	listener.setuid(0)
 	try:
@@ -76,6 +84,9 @@ def handler(dn, new, old, command):
 				object=(dn, new, old, old_dn)
 
 				filename=os.path.join(directory,"%f"%time.time())
+	
+				if new and 'univentionGroup' in new.get('objectClass', []):
+					group_objects.append(object)
 
 				f=open(filename, 'w+')
 				os.chmod(filename, 0600)
@@ -97,12 +108,30 @@ def clean():
 			for filename in os.listdir(directory):
 				if filename != "tmp":
 					os.remove(os.path.join(directory,filename))
-			for filename in os.listdir(os.path.join(directory,'tmp')):
-				os.remove(os.path.join(directory,filename))
+			if os.path.exists(os.path.join(directory,'tmp')):
+				for filename in os.listdir(os.path.join(directory,'tmp')):
+					os.remove(os.path.join(directory,filename))
 	finally:
 		listener.unsetuid()
 
+def postrun():
+	global init_mode
+	if init_mode:
+		listener.setuid(0)
+		try:
+			init_mode = False
+			for object in group_objects:
+				for directory in dirs:
+					filename=os.path.join(directory,"%f"%time.time())
+					f=open(filename, 'w+')
+					os.chmod(filename, 0600)
+					cPickle.dump(object, f)
+					f.close()
+		finally:
+			listener.unsetuid()
 
 def initialize():
+	global init_mode
+	init_mode = True
 	clean()
 

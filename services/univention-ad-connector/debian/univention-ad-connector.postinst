@@ -42,7 +42,7 @@ univention-config-registry set connector/ad/listener/dir?/var/lib/univention-con
 			connector/ad/ldap/port?389 \
 			connector/ad/ldap/ssl?yes \
 			connector/debug/function?0 \
-			connector/debug/level?1 \
+			connector/debug/level?2 \
 			connector/password/service/encoding?"iso8859-15" \
 			connector/ad/mapping/user/primarymail?false \
 			connector/ad/mapping/group/primarymail?false connector/ad/mapping/group/language?de \

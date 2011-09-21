@@ -1540,6 +1540,7 @@ class ad(univention.connector.ucs):
 		if rejected:
 			for id, dn in rejected:
 				premapped_ad_dn = unicode(dn, 'utf8')
+				ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs: Resync rejected dn: %s' % (premapped_ad_dn))
 				try:
 					sync_successfull = False
 					elements = self.__search_ad_changeUSN(id, show_deleted=True)
@@ -1675,6 +1676,7 @@ class ad(univention.connector.ucs):
 
 					else:
 						self.save_rejected(object)
+						self.__update_lastUSN(object)
 				else:
 					self.__update_lastUSN(object)
 
@@ -1745,8 +1747,8 @@ class ad(univention.connector.ucs):
 				self._remove_dn_mapping(pre_mapped_ucs_old_dn, unicode(old_dn))
 				self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
-		ud.debug(ud.LDAP, ud.INFO,
-							   'sync from ucs: [%10s] [%10s] %s' % (property_type,object['modtype'], object['dn']))
+		ud.debug(ud.LDAP, ud.PROCESS,
+							   'sync from ucs: [%14s] [%10s] %s' % (property_type,object['modtype'], object['dn']))
 
 		if object.has_key('olddn'):
 			object.pop('olddn') # not needed anymore, will fail object_mapping in later functions

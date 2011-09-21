@@ -43,10 +43,9 @@ Description: UCS - Modules for connector sychronisation
 
 Package: univention-ad-connector
 Architecture: all
-Pre-Depends: univention-config-registry,
+Depends: univention-config-registry,
  python-univention-connector-ad (= ${binary:Version}),
  shell-univention-lib (>= 1.0.6)
-Depends: shell-univention-lib
 Description: UCS - Modules for sync ucs and active directory
  This package contains the modules that implement the
  features of Univention AD Connector.

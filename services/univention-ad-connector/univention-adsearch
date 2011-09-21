@@ -152,11 +152,11 @@ if configRegistry.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and configRegistry[
     start_tls = 0
 
 ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, ca_file )
-lo = ldap.ldapobject.SmartLDAPObject(uri=ldapuri,
-                                     start_tls = start_tls,
-                                     tls_cacertfile = ca_file)
 
-#lo = ldap.initialize(ldapuri)
+lo = ldap.initialize(ldapuri)
+
+if start_tls > 0:
+	lo.start_tls_s()
 
 
 lo.set_option(ldap.OPT_REFERRALS,0)
