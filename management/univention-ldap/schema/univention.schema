@@ -335,3 +335,13 @@ objectclass ( 1.3.6.1.4.1.10176.1000.306.2.1 NAME 'univentionConsoleCategory'
 	MUST ( cn )
 	MAY ( description )
 	DESC 'Univention Console category' )
+
+attributetype ( 1.3.6.1.4.1.10176.600 NAME 'univentionSambaPrivilegeList'
+	DESC 'Samba Privileges List'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{64} )
+
+objectclass ( 1.3.6.1.4.1.10176.60 NAME 'univentionSambaPrivileges'
+	SUP top AUXILIARY
+	MAY ( univentionSambaPrivilegeList )
+	DESC 'Samba Privileges' )

@@ -1,3 +1,11 @@
+univention-ldap (8.0.37-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+   [ Felix Botner ]
+    * added univentionSambaPrivilegeList attribute Bug #2619
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 15:46:30 +0200
+
 univention-ldap (8.0.36-1) unstable; urgency=low
 
   * create basic objects for domaincontroller_master during join only
