@@ -130,10 +130,10 @@ PackageList=[
 			[
 				{
 					'Name': _('Mail server'),
-					'Packages': ['univention-mail-postfix', 'univention-mail-cyrus'],
+					'Packages': ['univention-mail-server'],
 					'Edition': [ 'ucs' ],
 					'Active': [''], 
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Description': _('Standard mail services with postfix and cyrus (SMTP/POP/IMAP)'),
 				},
 				{

@@ -36,6 +36,12 @@ default_packages="dhcp-client openssh-client"
 
 if [ -n "$system_role" ]; then
 	export server_role="$system_role"
+
+	# always install univention-mail-postfix, except for base systems
+	if [ ! "$server_role" = "basesystem" ]; then
+		default_packages="$default_packages univention-mail-postfix"
+	fi
+
 fi
 
 PIPE="yes yes '' |"
