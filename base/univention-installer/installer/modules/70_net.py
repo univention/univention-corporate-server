@@ -831,9 +831,7 @@ class object(content):
 		try:
 			IPv4_addr = ipaddr.IPv4Network( '%s/%s' % (addr, netmask) )
 		except (ipaddr.AddressValueError, ipaddr.NetmaskValueError), e:
-			self.debug('got exception while parsing "%s/%s": %s' % (addr, netmask, str(e)))
 			if copyOnError:
-				self.debug('using fallback')
 				result['%s_ip' % name] = addr
 				result['%s_netmask' % name] = netmask
 				result['%s_broadcast' % name] = ''
