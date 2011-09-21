@@ -305,7 +305,7 @@ class object(content):
 			self.add_elem('F12_button', button(_("F12-Next"),self.pos_y+self.height-2,self.pos_x+self.width-2, align='right')) #6
 			self.add_elem('F11_button', button(_("F11-Back"),self.pos_y+self.height-2,self.pos_x+4, align='left')) #7
 
-		self.add_elem('headline', textline(_('Please select the software components you want to install.'), self.minY-11,self.minX+3))
+		self.add_elem('headline', textline(_('Please select the software components you want to install:'), self.minY-11,self.minX+3))
 
 		self.current=0
 		self.elements[0].set_on()
