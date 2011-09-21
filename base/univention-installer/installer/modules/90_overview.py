@@ -77,13 +77,11 @@ class object(content):
 		else:
 			role="Basesystem              "
 
+		self.all_results['packages'] = ''
+
 		msg = _('This is the last step of the interactive installation. Please check all settings carefully. During the next phase software packages will be installed and (pre-)configured.')
-		linecnt = self.minY-11
-		# wrap lines
-		lines = textwrap.wrap(msg, MAXLENGTH)
-		for line in lines:
-			self.add_elem('LINE%d' % linecnt, textline(line, linecnt, self.minX+5))
-			linecnt += 1
+		self.add_elem('TextArea', textarea(msg, self.minY-11, self.minX+5, 5, MAXLENGTH))
+		linecnt = self.minY - 11 + self.get_elem('TextArea').get_number_of_lines()
 
 		just=21
 		ifjust=19

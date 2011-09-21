@@ -2241,6 +2241,9 @@ class object(content):
 
 			self.container['dict']=dict
 
+			msg = _('This module is used for partitioning the existing hard drives. It is recommended to use at least two partitions - one for the root file system, and one for the swap area.\n\nPlease note:\nIf automatic partitioning has been selected, all the data stored on these hard drives will be lost during this process! Should the proposed partitioning be undesirable, it can be rejected by pressing the F5 function key.')
+
+			self.add_elem('TA_desc', textarea(msg, self.minY, self.minX, 10, self.maxWidth+11))
 			self.add_elem('SEL_part', select(dict,self.minY+1,self.minX,self.maxWidth+11,14,self.container['selected'])) #1
 			self.add_elem('BT_create', button(_('F2-Create'),self.minY+16,self.minX,18)) #2
 			self.add_elem('BT_edit', button(_('F3-Edit'),self.minY+16,self.minX+(self.width/2)-4,align="middle")) #3

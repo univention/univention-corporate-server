@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import textwrap
 import curses
 import thread
 import traceback
@@ -597,6 +598,70 @@ class textline:
 	def set_pos(self,pos_y,pos_x):
 		self.pos_y=pos_y
 		self.pos_x=pos_x
+
+class textarea:
+	def __init__(self, text, pos_y, pos_x, height, width, align='left', position_parent=None, drop_whitespace=True):
+		self.width = width
+		self.height = height
+		self.drop_whitespace = drop_whitespace
+
+		if align == 'middle':
+			self.pos_x = pos_x-(self.width/2)
+		elif align == 'right':
+			self.pos_x = pos_x-self.width
+		else:
+			self.pos_x = pos_x
+		self.pos_y=pos_y
+		if position_parent:
+			self.pos_y += position_parent.child_pos_y
+			self.pos_x += position_parent.child_pos_x
+		self.text=text
+		self.pad=curses.newpad(self.height, self.width+1)
+		self.bgcolor()
+
+		self.update_lines()
+
+	def update_lines(self):
+		self.lines = []
+		for parts in self.text.split('\n'):
+			wrappedlines = textwrap.wrap(parts, self.width, drop_whitespace=self.drop_whitespace)
+			if wrappedlines:
+				self.lines.extend( wrappedlines )
+			else:
+				self.lines.extend( [''] )
+		self.bgcolor()
+		i=0
+		for line in self.lines:
+			self.pad.addstr(i, 0, line)
+			i += 1
+			if i >= self.height:
+				break
+
+	def bgcolor(self):
+		self.pad.bkgd(" ",curses.color_pair(4))
+
+	def set_text(self, text):
+		self.text=text
+		self.update_lines()
+
+	def get_text(self):
+		return self.text
+
+	def get_number_of_lines(self):
+		if len(self.lines) > self.height:
+			return self.height
+		return len(self.lines)
+
+	def draw(self):
+		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
+
+	def usable(self):
+		return 0
+
+	def set_pos(self,pos_y,pos_x):
+		self.pos_y=pos_y
+		self.pos_x=pos_x
+
 
 
 class description(textline):

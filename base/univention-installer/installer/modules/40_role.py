@@ -103,10 +103,8 @@ class object(content):
 			self.elements.append(textline('[ ] %s' % _('Member server'),self.minY-6,self.minX+7,40,40))#6
 			self.elements.append(textline('[ ] %s' % _('Base system'),self.minY-5,self.minX+7,40,40))#7
 
-		self.empty_elem = textline('', self.minY, self.minX)
-		for i in xrange(0,20):
-			self.add_elem('LINE%d' % i, self.empty_elem)
 		self.add_elem('TXT_DESCRIPTION', textline('Further information for selected system role:', self.minY-3, self.minX+5))
+		self.add_elem('TEXTAREA', dummy())
 
 		self.update_description()
 
@@ -118,23 +116,14 @@ class object(content):
 			'memberserver': _('Member servers are members of a LDAP domain and offer services such as file storage for the domain. Member servers do not contain a copy of the LDAP directory. It only stores a copy of its own and the public SSL certificate of the root CA.'),
 			'basesystem': _('A base system is an independent system. It is not a member of a domain and does not maintain trust relationships with other servers or domains. A base system is thus suitable for services which are operated outside of the trust context of the domain, such as a web server or a firewall. The services of a base system cannot be configured over the UCS management system. However, it is possible to configure DNS and DHCP settings for base systems via the Univention management system as long as the base system is entered as an IP managed client in the directory service.'),
 			}
-		# clear existing lines
-		for key, idx in self.element_index.items():
-			if key.startswith('LINE'):
-				self.elements[idx] = self.empty_elem
 
 		# get current role
 		selected_role = self.get_elem('RADIO').get_focus()[1]
 		self.debug('ROLE: selected_role=%r' % selected_role)
 
-		i = 0
-		# wrap lines
-		lines = textwrap.wrap(descriptions.get(selected_role,'UNKNOWN'), MAXLENGTH)
-		for line in lines:
-			idx = self.get_elem_id('LINE%d' % i)
-			if idx != None:
-				self.elements[idx] = textline(line, self.minY-1+i, self.minX+6)
-			i += 1
+		# overwrite existing textarea
+		idx = self.get_elem_id('TEXTAREA')
+		self.elements[idx] = textarea( descriptions.get(selected_role,'UNKNOWN'), self.minY-1, self.minX+6, 15, MAXLENGTH)
 
 
 	def input(self,key):
