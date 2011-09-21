@@ -37,21 +37,22 @@ import univention.admin.uldap
 import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
+import univention.admin.handlers.settings.printermodel as printermodel
 import univention.admin.localization
 
-import univention.debug
+import univention.debug as ud
 import univention.admin.uexceptions
 
 translation=univention.admin.localization.translation('univention.admin.handlers.shares')
 _=translation.translate
 
 class printerACLTypes(univention.admin.syntax.select):
-        name='printerACLTypes'
-        choices=[
+		name='printerACLTypes'
+		choices=[
 		('allow all',_('Allow all users.')),
-                ('allow',_('Allow only choosen users/groups.')),
-                ('deny',_('Deny choosen users/groups.')),
-                ]
+				('allow',_('Allow only choosen users/groups.')),
+				('deny',_('Deny choosen users/groups.')),
+				]
 
 module='shares/printer'
 operations=['add','edit','remove','search','move']
@@ -115,12 +116,22 @@ property_descriptions={
 	'model': univention.admin.property(
 			short_description=_('Printer model'),
 			long_description='',
-			syntax=univention.admin.syntax.printersList,
+			syntax=univention.admin.syntax.PrinterDriverList,
 			multivalue=0,
 			options=[],
 			required=1,
 			may_change=1,
 			identifies=0
+		),
+	'producer': univention.admin.property(
+			short_description = _( 'Printer producer' ),
+			long_description = '',
+			syntax=univention.admin.syntax.PrinterProducerList,
+			multivalue = False,
+			options=[],
+			required = False,
+			may_change = True,
+			identifies = False
 		),
 	'sambaName': univention.admin.property(
 			short_description=_('Samba name'),
@@ -198,18 +209,19 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'General settings' ), layout = [
-                [ 'name', 'spoolHost'],
-                [ 'sambaName', 'uri' ],
-                [ 'location',  'description' ],
-                [ 'setQuota', 'model' ],
-                [ 'pagePrice', 'jobPrice' ],
-                ] ),
+				[ 'name', 'sambaName'],
+				[ 'spoolHost', 'uri' ],
+				[ 'producer', 'model' ],
+				[ 'location',  'description' ],
+				[ 'setQuota', ],
+				[ 'pagePrice', 'jobPrice' ],
+				] ),
 	Tab( _( 'Access control' ), _( 'Access control for users and groups' ), layout = [
-                'ACLtype',
-                'ACLUsers',
-                'ACLGroups',
-                ] ),
-        ]
+				'ACLtype',
+				'ACLUsers',
+				'ACLGroups',
+				] ),
+		]
 
 def boolToString(value):
 	if value == '1':
@@ -251,6 +263,12 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
+		models = printermodel.lookup( self.co, self.lo, 'printerModel="%s*' % self[ 'model' ] )
+		ud.debug( ud.ADMIN, ud.ERROR, "printermodel: %s" % str( models ) )
+		if not models or len( models ) > 1:
+			self[ 'producer' ] = []
+		else:
+			self[ 'producer' ] = models[ 0 ].dn
 		self.save()
 
 	def _ldap_pre_create(self):

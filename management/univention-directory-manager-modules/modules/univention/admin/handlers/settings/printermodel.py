@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import shlex
+
 from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.filter
@@ -81,21 +83,15 @@ layout = [
 		] ),
 	]
 
-def unmapDriverList(old):
-	str=[]
-	for i in old:
-		tmp=i.split('" "')
-		tmp[0]+='"'
-		tmp[1]='"'+tmp[1]
-		str.append(tmp)
-	return str
+def unmapDriverList( old ):
+	return map( lambda x: shlex.split( x ), old )
 
 def mapDriverList(old):
 	str=[]
 	for i in old:
-		str.append('"%s" "%s"' % (i[0].replace('"',''), i[1].replace('"','')))
+		str.append('"%s" "%s"' % ( i[ 0 ], i[ 1 ] ) )
 	return str
-		
+
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
@@ -118,7 +114,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [ ('objectClass', ['top', 'univentionPrinterModels']) ]
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [

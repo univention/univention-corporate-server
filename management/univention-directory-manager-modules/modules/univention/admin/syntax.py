@@ -213,8 +213,9 @@ class complex( ISyntax ):
 				s.append(syntax().any())
 		return s
 
-class UDM_Modules( ISyntax ):
+class UDM_Objects( ISyntax ):
 	udm_modules = ()
+	udm_filter = ''
 	key = 'dn'
 	label = None
 	regex = re.compile( '^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$' )
@@ -226,6 +227,24 @@ class UDM_Modules( ISyntax ):
 		if not self.empty_value and not text:
 			raise univention.admin.uexceptions.valueError( _( 'An empty value is not allowed' ) )
 		if not text or self.regex.match( text ) != None:
+			return text
+		raise univention.admin.uexceptions.valueError( self.error_message )
+
+class UDM_ComplexAttribute( ISyntax ):
+	udm_module =None
+	udm_filter = ''
+	attribute = None
+	key_index = 0
+	label_index = 0
+	regex = None
+	empty_value = False
+	error_message = _( 'Invalid value' )
+
+	@classmethod
+	def parse( self, text ):
+		if not self.empty_value and not text:
+			raise univention.admin.uexceptions.valueError( _( 'An empty value is not allowed' ) )
+		if not text or not self.regex or self.regex.match( text ) != None:
 			return text
 		raise univention.admin.uexceptions.valueError( self.error_message )
 
@@ -1126,8 +1145,17 @@ class printerModel(complex):
 	subsyntaxes=[(_('Driver'), string), (_('Description'), string)]
 	all_required=1
 
-class printersList(string):
-	pass
+class PrinterDriverList( UDM_ComplexAttribute ):
+	udm_module = 'settings/printermodel'
+	attribute = 'printmodel'
+	key_index = 0
+	label_index = 1
+	udm_filter = 'dn'
+	depends = 'producer'
+
+class PrinterProducerList( UDM_Objects ):
+	udm_modules = ( 'settings/printermodel', )
+	label = '%(name)s'
 
 class printerURI(string):
 	pass
@@ -1572,7 +1600,7 @@ class soundModule(select):
 class moduleSearch(ldapDn):
 	description='FIXME'
 
-class groupDn( UDM_Modules ):
+class groupDn( UDM_Objects ):
 	udm_modules = ( 'groups/group', )
 
 class userDn(ldapDn):
@@ -1589,7 +1617,7 @@ class groupID(integer):
 	searchFilter='(&(cn=*)(objectClass=posixGroup))'
 	description=_('Group ID')
 
-class shareHost( UDM_Modules ):
+class shareHost( UDM_Objects ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
 	key = '%(fqdn)s'
 	label = '%(fqdn)s'
@@ -1633,7 +1661,7 @@ class primaryGroup2(ldapDn):
 	searchFilter='objectClass=posixGroup'
 	description=_('Primary Group')
 
-class network( UDM_Modules ):
+class network( UDM_Objects ):
 	udm_modules = ( 'networks/network', )
 	description=_('Network')
 	label = '%(name)s'
@@ -1655,12 +1683,12 @@ class MAC_AddressList( select ):
 	def parse( cls, text ):
 		return text
 
-class DNS_ForwardZone( UDM_Modules ):
+class DNS_ForwardZone( UDM_Objects ):
  	description=_('DNS forward zone')
 	udm_modules = ( 'dns/forward_zone', )
 	empty_value = True
 
-class DNS_ReverseZone( UDM_Modules ):
+class DNS_ReverseZone( UDM_Objects ):
  	description=_('DNS reverse zone')
 	udm_modules = ( 'dns/reverse_zone', )
 	empty_value = True
@@ -1682,7 +1710,7 @@ class dnsEntryAlias( complex ):
 	description=_('DNS Entry Alias')
 	subsyntaxes = ( ( _( 'Zone of existing host record' ), DNS_ForwardZoneList ), ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'Alias' ), hostName ) )
 
-class dhcpService( UDM_Modules ):
+class dhcpService( UDM_Objects ):
 	udm_modules = ( 'dhcp/service', )
 	description=_('DHCP service')
 	label = '%(name)s'

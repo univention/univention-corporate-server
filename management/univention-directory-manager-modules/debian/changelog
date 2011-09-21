@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.83-1) unstable; urgency=low
+
+  * shares/printer: provide virtual property producer, use different
+    syntax for printermodel; Bug #23646
+  * cleanup in syntax classes
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 21 Sep 2011 11:22:00 +0200
+
 univention-directory-manager-modules (7.0.82-1) unstable; urgency=low
 
   * fix nagios with IP addresses on forward zones (Bug #23725)
