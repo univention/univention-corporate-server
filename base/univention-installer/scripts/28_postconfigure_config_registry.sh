@@ -32,6 +32,12 @@
 
 . /tmp/installation_profile
 
+# export SSL variables so they are available in subshells (Bug #22846)
+SSL_VARIABLES="$(set | sed -rne 's/^(ssl_.*)=.*$/\1/p')"
+if [ -n "$SSL_VARIABLES" ] ; then
+	export $SSL_VARIABLES
+fi
+
 architecture=`/bin/uname -m`
 
 acpi_off=`grep "acpi=off" /proc/cmdline`
