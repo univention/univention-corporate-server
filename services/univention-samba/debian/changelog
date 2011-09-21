@@ -1,3 +1,20 @@
+univention-samba (6.0.6-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+   [ Felix Botner ]
+    * don't remove all privileges if object is new 
+      (Bug #2619)  
+    * added samba privilege SeSecurityPrivilege
+    * don't remove all privileges if new object has
+      none (remove only the old privileges)
+      (Bug #2619)
+    * added samba-privileges.py listener plugin Bug #2619 
+   [ Arvid Requate ]
+    * increment join script version (Bug #22246)
+    * revert colateral damage of 5.0.15-1 (Bug #22246)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 14:52:18 +0200
+
 univention-samba (6.0.5-1) unstable; urgency=low
 
   * add service entry (Bug #2136)

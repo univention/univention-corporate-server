@@ -1,4 +1,5 @@
 samba-shares.py usr/lib/univention-directory-listener/system
+samba-privileges.py usr/lib/univention-directory-listener/system
 vampire/remove-samba-account usr/share/univention-samba/
 vampire/purge_users_and_groups usr/share/univention-samba/
 vampire/fix_primary_groups usr/share/univention-samba/

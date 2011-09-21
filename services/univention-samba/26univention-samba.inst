@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=6
+VERSION=7
 
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
@@ -121,6 +121,7 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	
 	# set default printer permissions
 	net rpc rights -U${samba_account}%${samba_pwd} grant Printer-Admins SePrintOperatorPrivilege
+	net rpc rights -U${samba_account}%${samba_pwd} grant Administrator SePrintOperatorPrivilege
 
 fi
 
