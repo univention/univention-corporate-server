@@ -1,3 +1,18 @@
+univention-installer (7.0.67-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+
+   [ Sönke Schwardt-Krummrich ]
+    * only switch from /dev/tty1 to /dev/hvc0 if /dev/hvc0 exists 
+      (Bug #21984) 
+
+   [ Felix Botner ]
+    * wait for device in installer/network.sh Bug #22505
+    * sleep wait for network in installer/network.sh Bug #22505 
+    * fixed installer/network.sh Bug #22505
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 20:42:36 +0200
+
 univention-installer (7.0.66-1) unstable; urgency=low
 
   * updated translations (Bug #23120)

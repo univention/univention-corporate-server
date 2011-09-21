@@ -37,6 +37,7 @@ if [ -n "$ip_cmdline" ]; then
 	_ip=`cat /proc/cmdline | sed -e 's|.*ip=||g' | awk -F ':' '{print $1}'`
 	_netmask=`cat /proc/cmdline | sed -e 's|.*ip=||g' | awk -F ':' '{print $4}'`
 	_gateway=`cat /proc/cmdline | sed -e 's|.*ip=||g' | awk -F ':' '{print $3}'`
+	_networksleep=`cat /proc/cmdline | sed -nre 's/^.*\bnetworksleep=([^ ]+)\b.*$/\1/p'`
 
 	echo -n " lo "
 	ifconfig lo 127.0.0.1 up
@@ -51,6 +52,12 @@ if [ -n "$ip_cmdline" ]; then
 	if [ ! "$_gateway" = "0.0.0.0" ] ; then
 		route add default gw $_gateway
 	fi
+
+	if [ -z "$_networksleep" ]; then
+		_networksleep=10
+	fi
+	sleep $_networksleep
+
 fi
 
 echo ""

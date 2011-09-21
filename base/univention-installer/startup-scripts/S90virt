@@ -63,7 +63,7 @@ then
 
 	# console: maybe there is a better solution (changing
         # inittab) but at this point we can not reload inittab
-	if [ ! -d /sys/devices/virtual/graphics/fb0 ]; then	
+	if [ ! -d /sys/devices/virtual/graphics/fb0 -a -e /dev/hvc0 ]; then	
 	        rm /dev/tty1
         	ln -s /dev/hvc0 /dev/tty1
 	fi
