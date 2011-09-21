@@ -1,3 +1,16 @@
+univention-config-registry (7.0.18-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+
+   [ Philipp Hahn ]
+    * Fix manual pages.
+
+   [ Sönke Schwardt-Krummrich ]
+    * added additional argument to be able to load registry info *without*
+      user customized values (Bug #22755)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 20:51:12 +0200
+
 univention-config-registry (7.0.17-1) unstable; urgency=low
 
   * add strict mode to UCR, enable on new install (Bug #18006)
