@@ -36,10 +36,13 @@
 # Results of this module need to be stored in the dictionary self.result (variablename:value[,value1,value2])
 #
 
+import textwrap
 import objects
 from objects import *
 from local import _
 import string
+
+MAXLENGTH = 65
 
 class object(content):
 	def checkname(self):
@@ -52,6 +55,13 @@ class object(content):
 		return {}
 
 	def layout(self):
+		self.debug('OVERVIEW: layout()')
+		self.debug('OVERVIEW: all_results=%r' % self.all_results)
+
+		self.reset_layout()
+
+		self.std_button()
+
 		if self.all_results['system_role'] == 'domaincontroller_master':
 			role="Domaincontroller Master "
 		elif self.all_results['system_role'] == 'domaincontroller_backup':
@@ -67,40 +77,79 @@ class object(content):
 		else:
 			role="Basesystem              "
 
-		just=16
-		self.elements.append(textline(_('This is the last step of the interactive installation.'), self.minY+0, self.minX+2))
-		self.elements.append(textline(_('Please check all settings carefully. During the next'), self.minY+1, self.minX+2))
-		self.elements.append(textline(_('phase software packages will be installed and'), self.minY+2, self.minX+2))
-		self.elements.append(textline(_('(pre-)configured.'), self.minY+3, self.minX+2))
+		msg = _('This is the last step of the interactive installation. Please check all settings carefully. During the next phase software packages will be installed and (pre-)configured.')
+		linecnt = self.minY-11
+		# wrap lines
+		lines = textwrap.wrap(msg, MAXLENGTH)
+		for line in lines:
+			self.add_elem('LINE%d' % linecnt, textline(line, linecnt, self.minX+5))
+			linecnt += 1
 
+		just=21
+		ifjust=19
+
+		linecnt += 1
 		head = _("System role") + ":"
-		self.elements.append(textline('%s %s' % (head.ljust(just), role) , self.minY+5, self.minX+2))
+		self.elements.append(textline('%s %s' % (head.ljust(just), role), linecnt, self.minX+5))
+
+		linecnt += 1
 		head = _('Hostname') + ":"
-		self.elements.append(textline('%s %s' % (head.ljust(just), self.all_results['hostname']) , self.minY+6, self.minX+2))
+		self.elements.append(textline('%s %s' % (head.ljust(just), self.all_results['hostname']), linecnt, self.minX+5))
+
+		linecnt += 1
 		head = _('Domain name') + ":"
-		self.elements.append(textline('%s %s' % (head.ljust(just), self.all_results['domainname']) , self.minY+7, self.minX+2))
-		count=2
+		self.elements.append(textline('%s %s' % (head.ljust(just), self.all_results['domainname']), linecnt, self.minX+5))
+
+		linecnt += 2
+		self.add_elem('TXT1', textline( _('Settings of interface eth0:'), linecnt, self.minX+5))
+
+		head = _("IPv4 address") + ":"
+		linecnt += 1
 		if self.all_results.has_key('eth0_type') and self.all_results['eth0_type'] == 'dynamic':
-			head = _("eth0 Network") + ":"
-			self.elements.append(textline('%s %s' % (head.ljust(just), _('dynamic')), self.minY+9, self.minX+2))
+			self.elements.append(textline('%s %s' % (head.ljust(ifjust), _('configuration via DHCP')), linecnt, self.minX+7))
 		else:
-			head = _("eth0 IP") + ":"
-			self.elements.append(textline('%s %s' % (head.ljust(just), self.all_results['eth0_ip']) , self.minY+9, self.minX+2))
-			head = _("eth0 netmask") + ":"
-			self.elements.append(textline('%s %s' % (head.ljust(just), self.all_results['eth0_netmask']) , self.minY+10, self.minX+2))
-			count=count+1
+			self.elements.append(textline('%s %s' % (head.ljust(ifjust), self.all_results['eth0_ip']), linecnt, self.minX+7))
 
-		gateway=''
-		if self.all_results.has_key('gateway'):
-			gateway=self.all_results['gateway']
-		head = _("Gateway") + ":"
-		self.elements.append(textline('%s %s' % (head.ljust(just), gateway) , self.minY+8+count, self.minX+2))
-		nameserver=''
-		if self.all_results.has_key('nameserver_1'):
-			nameserver=self.all_results['nameserver_1']
-		head = _('Nameserver1') + ":"
-		self.elements.append(textline('%s %s' % (head.ljust(just), nameserver) , self.minY+9+count, self.minX+2))
+			linecnt += 1
+			head = _("IPv4 netmask") + ":"
+			self.elements.append(textline('%s %s' % (head.ljust(ifjust), self.all_results['eth0_netmask']), linecnt, self.minX+7))
 
+		head = _("IPv6 address") + ":"
+		if self.all_results.get('eth0_acceptra') in ['true']:
+			linecnt += 1
+			self.elements.append(textline('%s %s' % (head.ljust(ifjust), _('configuration via router advertisements')), linecnt, self.minX+7))
+		else:
+			if self.all_results.get('eth0_ip6') and self.all_results.get('eth0_prefix6'):
+				linecnt += 1
+				self.elements.append(textline('%s %s/%s' % (head.ljust(ifjust), self.all_results['eth0_ip6'], self.all_results['eth0_prefix6']), linecnt, self.minX+7))
+
+		linecnt += 1
+
+		gateway = self.all_results.get('gateway6')
+		if gateway:
+			linecnt += 1
+			head = _("IPv4 Gateway") + ":"
+			self.elements.append(textline('%s %s' % (head.ljust(just), gateway) , linecnt, self.minX+5))
+
+		gateway6 = self.all_results.get('gateway6')
+		if gateway6:
+			linecnt += 1
+			head = _("IPv6 Gateway") + ":"
+			self.elements.append(textline('%s %s' % (head.ljust(just), gateway6) , linecnt, self.minX+5))
+
+		nameserver = self.all_results.get('nameserver_1')
+		if nameserver:
+			linecnt += 1
+			head = _('Domain DNS Server') + ":"
+			self.elements.append(textline('%s %s' % (head.ljust(just), nameserver) , linecnt, self.minX+5))
+
+		linecnt += 1
+		extnameserver = self.all_results.get('dns_forwarder_1')
+		if extnameserver:
+			head = _('External DNS Server') + ":"
+			self.elements.append(textline('%s %s' % (head.ljust(just), extnameserver) , linecnt, self.minX+5))
+
+		linecnt += 2
 		internet_files=[]
 		if 'msttcorefonts' in self.all_results['packages']:
 			internet_files.append('Microsoft Fonts')
@@ -110,12 +159,11 @@ class object(content):
 			internet_files.append('Flashplugin')
 
 		if not internet_files:
-			self.elements.append(textline(_('No package will download files from the internet.'), self.minY+11+count, self.minX+2))
+			self.elements.append(textline(_('No package will download files from the internet.'), linecnt, self.minX+5))
 		else:
 			for p in internet_files:
-				self.elements.append(textline(_('%s will download files.') % p , self.minY+11+count, self.minX+2))
-				count=count+1
-
+				self.elements.append(textline(_('%s will download files.') % p, linecnt, self.minX+5))
+				linecnt += 1
 
 	def draw(self):
 		self.layout()
