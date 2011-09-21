@@ -288,10 +288,10 @@ class object(content):
 		self._init_categories()
 		self._init_packages()
 
-		pos = 3
+		pos = 0
 		for k in self.category_order:
 			p = self.getPackages(k)
-			self.add_elem('packages_%s' % k, checkbox(p, self.minY+pos,self.minX+5, 45, 14, self.getSelected(k))) #5
+			self.add_elem('packages_%s' % k, checkbox(p, self.minY-9+pos,self.minX+6, 45, 14, self.getSelected(k))) #5
 			pos += (len(p) + 1)
 
 		if self.cmdline.has_key('mode') and self.cmdline['mode'] == 'setup':
@@ -305,7 +305,7 @@ class object(content):
 			self.add_elem('F12_button', button(_("F12-Next"),self.pos_y+self.height-2,self.pos_x+self.width-2, align='right')) #6
 			self.add_elem('F11_button', button(_("F11-Back"),self.pos_y+self.height-2,self.pos_x+4, align='left')) #7
 
-		self.add_elem('headline', textline(_('Please select the software components you want to install.'), self.minY,self.minX))
+		self.add_elem('headline', textline(_('Please select the software components you want to install.'), self.minY-11,self.minX+3))
 
 		self.current=0
 		self.elements[0].set_on()

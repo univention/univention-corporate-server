@@ -40,8 +40,8 @@ import objects
 from objects import *
 from local import _
 
-HEIGHT = 13
-WIDTH = 38
+HEIGHT = 25
+WIDTH = 40
 
 class object(content):
 	def checkname(self):
@@ -195,13 +195,22 @@ class object(content):
 
 		dict, default_position, showAll = self.create_timezone_list(self.timezone_default)
 
-		self.add_elem('CBX', checkbox({_('Show all available timezones'):' '},self.minY+3+HEIGHT,self.minX+2,WIDTH, 1, []))
-		self.elements.append(textline(_('Select a time zone:'),self.minY-1,self.minX+2))
-		self.add_elem('ZONES',select(dict, self.minY+2, self.minX+2, WIDTH, HEIGHT, default_position, longline=1))
+		self.elements.append(textline(_('Select a time zone:'), self.minY-11, self.minX+5))
+		self.add_elem('ZONES',select(dict, self.minY-9, self.minX+5, WIDTH, HEIGHT, default_position, longline=1))
+		self.add_elem('CBX', checkbox({_('Show all available timezones'):['yes', 0]},self.minY-8+HEIGHT, self.minX+5, WIDTH, 1, []))
 
 		self.move_focus(self.get_elem_id('ZONES'))
 
-		self._timezone = True
+	def update_elem_zones(self):
+		idx = self.get_elem_id('ZONES')
+		cbx = self.get_elem('CBX')
+		all_zones = bool(cbx.result())
+		if self.all_results.has_key('timezone'):
+			self.timezone_default = self.all_results['timezone']
+
+		dict, default_position, showAll = self.create_timezone_list(self.timezone_default, all_zones)
+		elem = select(dict, self.minY-9, self.minX+5, WIDTH, HEIGHT, default_position, longline=1)
+		self.elements[idx] = elem
 
 	def input(self,key):
 
@@ -211,35 +220,13 @@ class object(content):
 			return 'prev'
 		elif key in [ 10, 32 ] and self.get_elem('CBX').active:
 			self.elements[self.current].key_event(key)
+			self.update_elem_zones()
 			self.draw()
 		else:
 			return self.elements[self.current].key_event(key)
 
-	def draw(self):
-
-		if hasattr(self, '_timezone'):
-			zones = self.get_elem('ZONES')
-			cbx = self.get_elem('CBX')
-			if zones:
-				for e in self.elements:
-					if e == zones:
-						del self.elements[self.elements.index(e)]
-
-            # chebox selected -> all zones
-			if " " in cbx.result():
-				all = True
-			# checkbox unselected -> short list
-			else:
-				all = False
-
-			if self.all_results.has_key('timezone'):
-				self.timezone_default = self.all_results['timezone']
-
-			dict, default_position, showAll = self.create_timezone_list(self.timezone_default, all)
-			self.add_elem('ZONES',select(dict,self.minY+2,self.minX+2,WIDTH,HEIGHT, default_position, longline=1))
-
-		content.draw(self)
-
+#	def draw(self):
+#		content.draw(self)
 
 	def incomplete(self):
 		return 0

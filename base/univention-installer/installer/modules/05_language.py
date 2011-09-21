@@ -40,8 +40,8 @@ import objects
 from objects import *
 from local import _
 import linecache
-HEIGHT = 13
-WIDTH = 38
+HEIGHT = 26
+WIDTH = 40
 
 class object(content):
 
@@ -123,9 +123,9 @@ class object(content):
 		else:
 			self.default = defaultLanguage
 
-		self.elements.append(textline(_('Select system language'),self.minY-1,self.minX+2))
-		self.elements.append(textline(_('(also applies to the installation process for supported languages):'),self.minY,self.minX+2))
-		self.add_elem('LANGUAGE',select(dict, self.minY+2, self.minX+2, WIDTH, HEIGHT, selectedLine))
+		self.elements.append(textline(_('Select system language'),self.minY-11,self.minX+5))
+		self.elements.append(textline(_('(also applies to the installation process for supported languages):'),self.minY-10,self.minX+5))
+		self.add_elem('LANGUAGE',select(dict, self.minY-8, self.minX+5, WIDTH, HEIGHT, selectedLine))
 
 		self.move_focus(self.get_elem_id('LANGUAGE'))
 

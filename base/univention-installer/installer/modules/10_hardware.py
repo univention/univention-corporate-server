@@ -153,17 +153,17 @@ class object(content):
 					self.selected.append(self.count)
 			self.count=self.count+1
 
-		self.elements.append(textline(_('Check devices for UCS CD:'),self.minY+1,self.minX+2)) #2
-		self.elements.append(checkbox(cds, self.minY+3, self.minX+2, 45, 10, self.selected)) #3
-		self.elements.append(button(_('F2-Add'), self.minY+12, self.minX+2,align="left")) #4
+		self.elements.append(textline(_('Check devices for UCS CD:'),self.minY-11,self.minX+5)) #2
+		self.elements.append(checkbox(cds, self.minY-9, self.minX+5, 45, 10, self.selected)) #3
+		self.elements.append(button(_('F2-Add'), self.minY+2, self.minX+5, align="left")) #4
 		if self.activate_network:
-			self.elements.append(button(_('F3-Add'), self.minY+14, self.minX+2,align="left")) #5
+			self.elements.append(button(_('F3-Add'), self.minY+3, self.minX+5, align="left")) #5
 		else:
 			self.elements.append( dummy() )
-		self.elements.append(button(_('F4-Rescan'), self.minY+14+(2*self.activate_network), self.minX+2,align="left")) #6
-		self.elements.append(textline(_('CD-ROM Device'), self.minY+12, self.minX+7+len(_('F2-Add')))) #7
+		self.elements.append(button(_('F4-Rescan'), self.minY+3+self.activate_network, self.minX+5, align="left")) #6
+		self.elements.append(textline(_('CD-ROM Device'), self.minY+2, self.minX+12+len(_('F2-Add')))) #7
 		if self.activate_network:
-			self.elements.append(textline(_('Network Device'), self.minY+14, self.minX+7+len(_('F2-Add')))) #8
+			self.elements.append(textline(_('Network Device'), self.minY+3, self.minX+12+len(_('F2-Add')))) #8
 		else:
 			self.elements.append( dummy() )
 
@@ -222,11 +222,11 @@ class object(content):
 		elif key in [ 10, 32 ] and self.btn_back():
 			return 'prev'
 		elif (key in [ 10, 32 ] and self.elements[4].get_status()) or key == 266: #cdrom F2
-			self.sub=self.added_device(self,self.minY,self.minX,38,5)
+			self.sub = self.added_device(self, self.minY, self.minX+8, 38, 5)
 			self.sub.draw()
 			pass
 		elif self.activate_network and (key in [ 10, 32 ] and self.elements[5].get_status()) or key == 267: #network
-			self.sub=self.added_network_device(self,self.minY,self.minX,50,13)
+			self.sub = self.added_network_device(self, self.minY-2, self.minX+8, 50, 13)
 			self.sub.draw()
 			pass
 		elif (key in [ 10, 32 ] and self.elements[6].get_status()) or key == 268: #rescan

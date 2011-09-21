@@ -104,7 +104,7 @@ class object(content):
 	def layout(self):
 		self.oxae = (self.cmdline.get('edition') and self.cmdline['edition'][0] == 'oxae')
 
-		index = 0
+		index = -11
 
 		fqdn = ''
 		if self.all_results['hostname'] or self.all_results['domainname']:
@@ -112,49 +112,49 @@ class object(content):
 
 		# fqdn
 		self.add_elem('TXT_FQDN', 
-			textline(_('Fully qualified domain name (e.g. host.example.com):'), self.minY+index, self.minX+2))#2
+			textline(_('Fully qualified domain name (e.g. host.example.com):'), self.minY+index, self.minX+5))#2
 		index += 1
-		self.add_elem('IN_FQDN', input(fqdn, self.minY+index, self.minX+2,30))#3
+		self.add_elem('IN_FQDN', input(fqdn, self.minY+index, self.minX+5,30))#3
 		index += 2
 
 		# oxae maildomain
 		if self.oxae:
 			self.add_elem('TXT_MAILDOMAIN',
-				textline(_('Mail domain (e.g. example.com):'), self.minY+index, self.minX+2))#4
+				textline(_('Mail domain (e.g. example.com):'), self.minY+index, self.minX+5))#4
 			index += 1
 			self.add_elem('IN_MAILDOMAIN',
-				input(self.all_results.get('ox_primary_maildomain',''), self.minY+index, self.minX+2,30))#5
+				input(self.all_results.get('ox_primary_maildomain',''), self.minY+index, self.minX+5,30))#5
 			index += 2
 
 		# ucs ldap base
 		if self.all_results.has_key('system_role') and self.all_results['system_role'] == 'domaincontroller_master':
 			if not self.oxae:
 				self.add_elem('TXT_LDAPBASE', 
-					textline(_('LDAP base:'), self.minY+index, self.minX+2))#6
+					textline(_('LDAP base:'), self.minY+index, self.minX+5))#6
 				index += 1
 				self.add_elem('IN_LDAPBASE', 
-					input(self.all_results['ldap_base'], self.minY+index, self.minX+2,30))#7
+					input(self.all_results['ldap_base'], self.minY+index, self.minX+5,30))#7
 				index += 2
 				if self.all_results.has_key('ldap_base') and self.all_results['ldap_base']:
 					self.guessed[ 'ldap_base' ] = self.all_results['ldap_base']+'already_initialize'
 
 		# windom
-		self.add_elem('TXT_WINDOMAIN', textline(_('Windows domain name:'), self.minY+index, self.minX+2))#8
+		self.add_elem('TXT_WINDOMAIN', textline(_('Windows domain name:'), self.minY+index, self.minX+5))#8
 		index += 1
-		self.add_elem('IN_WINDOMAIN', input(self.all_results['windows_domain'], self.minY+index, self.minX+2,30))#9
+		self.add_elem('IN_WINDOMAIN', input(self.all_results['windows_domain'], self.minY+index, self.minX+5,30))#9
 		index += 2
 		if self.all_results.has_key('windows_domain') and self.all_results['windows_domain']:
 			self.guessed[ 'windows_domain' ] = self.all_results['windows_domain']+'already_initialize'
 
 		# password
-		self.add_elem('TXT_ROOTPW1', textline(_('Root password:'),self.minY+index,self.minX+2)) #10
+		self.add_elem('TXT_ROOTPW1', textline(_('Root password:'),self.minY+index,self.minX+5)) #10
 		index += 1
-		self.add_elem('IN_ROOTPW1', password(self.all_results['root_password'],self.minY+index,self.minX+2,30)) #11
+		self.add_elem('IN_ROOTPW1', password(self.all_results['root_password'],self.minY+index,self.minX+5,30)) #11
 		index += 2
 
-		self.add_elem('TXT_ROOTPW2', textline(_('Root password (retype):'),self.minY+index,self.minX+2)) #12
+		self.add_elem('TXT_ROOTPW2', textline(_('Root password (retype):'),self.minY+index,self.minX+5)) #12
 		index += 1
-		self.add_elem('IN_ROOTPW2', password(self.all_results['root_password'],self.minY+index,self.minX+2,30)) #13
+		self.add_elem('IN_ROOTPW2', password(self.all_results['root_password'],self.minY+index,self.minX+5,30)) #13
 		index += 1
 
 	def tab(self):

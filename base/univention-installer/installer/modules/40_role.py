@@ -36,9 +36,13 @@
 # Results of this module need to be stored in the dictionary self.result (variablename:value[,value1,value2])
 #
 
+import curses
+import textwrap
 import objects
 from objects import *
 from local import _
+
+MAXLENGTH=65
 
 class object(content):
 	def checkname(self):
@@ -73,7 +77,8 @@ class object(content):
 		oxae = False
 		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxae':
 			oxae = True
-		self.elements.append(textline(_('Select the system role:'), self.minY, self.minX+2))#2
+
+		self.elements.append(textline(_('Select the system role:'), self.minY-11, self.minX+5))#2
 		dict={}
 		dict[_('Master domain controller')]=['domaincontroller_master',0]
 		if not oxae:
@@ -89,14 +94,47 @@ class object(content):
 		else:
 			select=0
 
-		self.elements.append(radiobutton(dict,self.minY+1,self.minX+2,40,10,[select]))#3
+		self.add_elem('RADIO', radiobutton(dict,self.minY-9,self.minX+7,40,10,[select]))#3
 		self.elements[3].current=select
 
 		if oxae:
-			self.elements.append(textline('[ ] %s' % _('Backup domain controller'),self.minY+2,self.minX+2,40,40))#4
-			self.elements.append(textline('[ ] %s' % _('Slave domain controller'),self.minY+3,self.minX+2,40,40))#5
-			self.elements.append(textline('[ ] %s' % _('Member server'),self.minY+4,self.minX+2,40,40))#6
-			self.elements.append(textline('[ ] %s' % _('Base system'),self.minY+5,self.minX+2,40,40))#7
+			self.elements.append(textline('[ ] %s' % _('Backup domain controller'),self.minY-8,self.minX+7,40,40))#4
+			self.elements.append(textline('[ ] %s' % _('Slave domain controller'),self.minY-7,self.minX+7,40,40))#5
+			self.elements.append(textline('[ ] %s' % _('Member server'),self.minY-6,self.minX+7,40,40))#6
+			self.elements.append(textline('[ ] %s' % _('Base system'),self.minY-5,self.minX+7,40,40))#7
+
+		self.empty_elem = textline('', self.minY, self.minX)
+		for i in xrange(0,20):
+			self.add_elem('LINE%d' % i, self.empty_elem)
+		self.add_elem('TXT_DESCRIPTION', textline('Further information for selected system role:', self.minY-3, self.minX+5))
+
+		self.update_description()
+
+	def update_description(self, redraw=False):
+		descriptions = {
+			'domaincontroller_master': _('The domain controller master (DC master for short) contains the original dataset for the entire LDAP directory. Changes to the LDAP directory are only performed on this server. For this reason, this must be the first system to be commissioned and there can only be one of them within a domain. In addition, the Root Certification Authority (root CA) is also on the DC master. All SSL certificates created are archived on the DC master.'),
+			'domaincontroller_backup': _('Servers with the role of domain controller backup (DC backup for short) contain a replicated copy of the entire LDAP directory, which cannot be changed as all write accesses occur exclusively on the DC master. A copy of all SSL certificates including the private key of the root CA is kept on the DC backup. The DC backup is as such a backup copy of the DC master.  If the DC master should collapse completely, running a special command allows the DC backup to take over the role of the DC master permanently in a very short time.'),
+			'domaincontroller_slave': _('Each domain controller slave (DC slave for short) contains a replicated copy of the entire LDAP directory, which cannot be changed as all write accesses occur on the DC master. The copy can either contain the entire directory or be limited to the files required by a location through selective replication. The DC slave only stores a copy of its own and the public SSL certificate of the root CA. A DC slave system cannot be promoted to a DC master.'),
+			'memberserver': _('Member servers are members of a LDAP domain and offer services such as file storage for the domain. Member servers do not contain a copy of the LDAP directory. It only stores a copy of its own and the public SSL certificate of the root CA.'),
+			'basesystem': _('A base system is an independent system. It is not a member of a domain and does not maintain trust relationships with other servers or domains. A base system is thus suitable for services which are operated outside of the trust context of the domain, such as a web server or a firewall. The services of a base system cannot be configured over the UCS management system. However, it is possible to configure DNS and DHCP settings for base systems via the \ucsUMS{} as long as the base system is entered as an IP managed client in the directory service.'),
+			}
+		# clear existing lines
+		for key, idx in self.element_index.items():
+			if key.startswith('LINE'):
+				self.elements[idx] = self.empty_elem
+
+		# get current role
+		selected_role = self.get_elem('RADIO').get_focus()[1]
+		self.debug('ROLE: selected_role=%r' % selected_role)
+
+		i = 0
+		# wrap lines
+		lines = textwrap.wrap(descriptions.get(selected_role,'UNKNOWN'), MAXLENGTH)
+		for line in lines:
+			idx = self.get_elem_id('LINE%d' % i)
+			if idx != None:
+				self.elements[idx] = textline(line, self.minY-1+i, self.minX+6)
+			i += 1
 
 
 	def input(self,key):
@@ -106,6 +144,16 @@ class object(content):
 			return 'next'
 		elif key in [10,32] and self.btn_back():
 			return 'prev'
+		elif key in [10,32] and self.get_elem('RADIO').active:
+			val = self.elements[self.current].key_event(key)
+			self.update_description()
+			self.draw()
+			return val
+		elif key in [curses.KEY_UP, curses.KEY_DOWN] and self.get_elem('RADIO').active:
+			val = self.elements[self.current].key_event(key)
+			self.update_description()
+			self.draw()
+			return val
 		else:
 			return self.elements[self.current].key_event(key)
 

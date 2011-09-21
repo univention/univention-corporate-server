@@ -41,8 +41,8 @@ import string
 from objects import *
 from local import _
 
-HEIGHT = 13
-WIDTH = 38
+HEIGHT = 25
+WIDTH = 40
 
 class object(content):
 	def checkname(self):
@@ -120,7 +120,7 @@ class object(content):
 			mapCounter = mapCounter + 1
 
 		return dict, default_position, showAll
-		
+
 	def layout(self):
 
 		if self.all_results.has_key('keymap'):
@@ -130,40 +130,28 @@ class object(content):
 
 		dict, default_position, showAll = self.create_kmap_list(default_value)
 
-		self.add_elem('CBX', checkbox({_('Show all available keyboard layouts'):' '},self.minY+3+HEIGHT,self.minX+2,WIDTH, 1, []))
-		self.elements.append(textline(_('Select your keyboard layout:'),self.minY-1,self.minX+2))
-		self.add_elem('MAPS',select(dict,self.minY+2,self.minX+2,WIDTH,HEIGHT, default_position))
+		self.elements.append(textline(_('Select your keyboard layout:'), self.minY-11, self.minX+5))
+		self.add_elem('MAPS',select(dict,self.minY-9, self.minX+5, WIDTH, HEIGHT, default_position))
+		self.add_elem('CBX', checkbox({_('Show all available keyboard layouts'):' '}, self.minY-8+HEIGHT, self.minX+5, WIDTH, 1, []))
 
 		self.move_focus(self.get_elem_id('MAPS'))
 
-		self._keymap = True
+# 	def draw(self):
+# 		content.draw(self)
 
-	def draw(self):
+	def update_elem_maps(self):
+		idx = self.get_elem_id('MAPS')
+		cbx = self.get_elem('CBX')
+		all_kmaps = bool(cbx.result())
+		if self.all_results.get('keymap'):
+			default_value = self.all_results.get('keymap')
+		else:
+			default_value = self.cmdline.get("DEFAULT_LANGUAGE_EN", "German")
 
-		if hasattr(self, '_keymap'):
-			maps = self.get_elem('MAPS')
-			cbx = self.get_elem('CBX')
-			if maps:
-				for e in self.elements:
-					if e == maps:
-						del self.elements[self.elements.index(e)]
-	
-			# chebox selected -> all zones
-			if " " in cbx.result():
-				all = True
-			# checkbox unselected -> short list
-			else:
-				all = False
+		dict, default_position, showAll = self.create_kmap_list(default_value, all_kmaps)
+		elem = select(dict, self.minY-9, self.minX+5, WIDTH, HEIGHT, default_position, longline=1)
+		self.elements[idx] = elem
 
-			if self.all_results.has_key('keymap'):
-				default_value = self.all_results['keymap']
-			else:
-				default_value = self.cmdline.get("DEFAULT_LANGUAGE_EN", "German")
-			dict, default_position, showAll = self.create_kmap_list(default_value, all)
-			self.add_elem('MAPS',select(dict,self.minY+2,self.minX+2,WIDTH,HEIGHT, default_position))
-
-		content.draw(self)
-			
 	def input(self,key):
 		if key in [ 10, 32 ] and self.btn_next():
 			return 'next'
@@ -171,6 +159,7 @@ class object(content):
 			return 'prev'
 		elif key in [ 10, 32 ] and self.get_elem('CBX').active:
 			self.elements[self.current].key_event(key)
+			self.update_elem_maps()
 			self.draw()
 		else:
 			return self.elements[self.current].key_event(key)

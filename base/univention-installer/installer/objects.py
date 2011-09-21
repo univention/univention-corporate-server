@@ -1187,6 +1187,14 @@ class radiobutton:
 	def result(self):
 		return self.dict[self.desc[self.selected[0]].get_text()][0]
 
+	def get_focus(self):
+		"""
+		Returns index of radiobutton that has currently focus. Additionally the result value of that radiobutton will be returned.
+		>>> obj.get_focus(self)
+		[ 3, 'resulttext' ]
+		"""
+		return [ self.current, self.dict[self.desc[self.current].get_text()][0] ]
+
 
 class checkbox(radiobutton):
 	def select(self):
