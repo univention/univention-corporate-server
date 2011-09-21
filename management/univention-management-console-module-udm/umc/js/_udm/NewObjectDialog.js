@@ -76,7 +76,9 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 		}
 		else {
 			// for the UDM navigation, only query object types
-			this.umcpCommand('udm/types').then(dojo.hitch(this, function(data) {
+			this.umcpCommand('udm/types', {
+				container: this.selectedContainer.id
+			}).then(dojo.hitch(this, function(data) {
 				this._renderForm(data.result);
 			}));
 		}
@@ -99,37 +101,38 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 		var layout = [];
 
 		if ('navigation' != this.moduleFlavor) {
-			// if we have superordinates, we don't need containers
+			// we need the container in any case
+			widgets.push({
+				type: 'ComboBox',
+				name: 'container',
+				label: 'Container',
+				description: this._('The container in which the UDM object shall be created.'),
+				staticValues: containers
+			});
+			layout.push('container');
+
 			if (superordinates.length) {
-				widgets = [{
+				// we have superordinates
+				widgets.push({
 					type: 'ComboBox',
 					name: 'superordinate',
 					label: 'Superordinate',
-					description: this._('The corresponding superordinate for the new %s.', this.objectNameSingular),
+					description: this._('The corresponding %s superordinate.', this.objectNameSingular),
 					staticValues: superordinates
 				}, {
 					type: 'ComboBox',
 					name: 'objectType',
 					label: 'Object type',
 					value: this.defaultObjectType,
-					description: this._('The exact object type of the new %s.', this.objectNameSingular),
+					description: this._('The exact %s type.', this.objectNameSingular),
 					umcpCommand: this.umcpCommand,
 					dynamicValues: 'udm/types',
 					depends: 'superordinate'
-				}];
-				layout = [ 'superordinate', 'objectType' ];
-			}
-			// no superordinates, then we need a container in any case
-			else {
-				widgets.push({
-					type: 'ComboBox',
-					name: 'container',
-					label: 'Container',
-					description: this._('The container in which the UDM object shall be created.'),
-					staticValues: containers
 				});
-				layout.push('container');
-
+				layout.push('superordinate', 'objectType');
+			}
+			else {
+				// no superordinates
 				// object types
 				if (types.length) {
 					widgets.push({
@@ -137,7 +140,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 						name: 'objectType',
 						value: this.defaultObjectType,
 						label: 'Object type',
-						description: this._('The exact object type of the new UDM object.'),
+						description: this._('The exact %s type.', this.objectNameSingular),
 						staticValues: types
 					});
 					layout.push('objectType');

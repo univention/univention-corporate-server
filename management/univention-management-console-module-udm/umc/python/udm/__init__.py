@@ -44,10 +44,13 @@ from univention.management.console.log import MODULE
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.uexceptions as udm_errors
+from univention.management.console.protocol.definitions import *
 
-from .ldap import UDM_Error, UDM_Module, UDM_Settings, ldap_dn2path, get_module, read_syntax_choices, list_objects
+from .ldap import UDM_Error, UDM_Module, UDM_Settings, ldap_dn2path, get_module, read_syntax_choices, list_objects, get_ldap_connection
 
 _ = Translation( 'univention-management-console-modules-udm' ).translate
+
+
 
 class Instance( Base ):
 	def __init__( self ):
@@ -331,10 +334,11 @@ class Instance( Base ):
 		self.finished( request.id, result )
 
 	def types( self, request ):
-		"""Returns the list of object types matching the given flavor.
+		"""Returns the list of object types matching the given flavor or container.
 
 		requests.options = {}
-		  'superordinate' -- if available only types for the given superordinate are returned
+		  'superordinate' -- if available only types for the given superordinate are returned (not for the navigation)
+		  'container' -- if available only types suitable for the given container are returned (only for the navigation)
 
 		return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
 		"""
@@ -346,7 +350,41 @@ class Instance( Base ):
 			else:
 				self.finished( request.id, module.child_modules )
 		else:
-			self.finished( request.id, map( lambda module: { 'id' : module[ 0 ], 'label' : getattr( module[ 1 ], 'short_description', module[ 0 ] ) }, udm_modules.modules.items() ) )
+			container = request.options.get( 'container' )
+			if not container:
+				# no container is specified, return all existing object types
+				MODULE.info('no container specified, returning all object types')
+				self.finished( request.id, map( lambda module: { 'id' : module[ 0 ], 'label' : getattr( module[ 1 ], 'short_description', module[ 0 ] ) }, udm_modules.modules.items() ) )
+				return
+
+			if 'None' == container:
+				# if 'None' is given, use the LDAP base
+				container = ucr.get( 'ldap/base' )
+				MODULE.info('no container == \'None\', set LDAP base as container')
+
+			# create a list of modules that can be created
+			# ... all container types except container/dc
+			allowed_modules = set([m for m in udm_modules.containers if udm_modules.name(m) != 'container/dc'])
+
+			# the container may be a superordinate or have one as its parent
+			# (or grandparent, ....)
+			lo, po = get_ldap_connection()
+			superordinate = udm_modules.find_superordinate(container, None, lo)
+			if superordinate:
+				# there is a superordinate... add its subtypes to the list of allowed modules
+				MODULE.info('container has a superordinate: %s' % superordinate)
+				allowed_modules.update(udm_modules.subordinates(superordinate))
+			else:
+				# add all types that do not have a superordinate
+				MODULE.info('container has no superordinate')
+				allowed_modules.update(filter(lambda mod: not udm_modules.superordinate(mod), udm_modules.modules.values()))
+
+			# make sure that the object type can be created
+			allowed_modules = filter(lambda mod: udm_modules.supports(mod, 'add'), allowed_modules)
+			MODULE.info('all modules that are allowed: %s' % [udm_modules.name(mod) for mod in allowed_modules])
+
+			# return the final list of object types
+			self.finished( request.id, map( lambda module: { 'id' : udm_modules.name(module), 'label' : getattr( module, 'short_description', udm_modules.name(module) ) }, allowed_modules ) )
 
 	def layout( self, request ):
 		"""Returns the layout information for the given object type.
@@ -530,7 +568,7 @@ class Instance( Base ):
 			for module, obj in list_objects( container ):
 				if obj is None or module.childs:
 					continue
-				entries.append( { '$dn$' : obj.dn, 'objectType' : module.name, 'name' : obj[ module.identifies ], 'path' : ldap_dn2path( obj.dn ) } )
+				entries.append( { '$dn$' : obj.dn, 'objectType' : module.name, 'name' : udm_objects.description(obj), 'path' : ldap_dn2path( obj.dn ) } )
 
 			return entries
 

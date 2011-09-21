@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-19 12:07+0200\n"
+"POT-Creation-Date: 2011-09-21 17:06+0200\n"
 "PO-Revision-Date: 2011-07-27 12:35+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,31 +12,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/udm/__init__.py:145
+#: umc/python/udm/__init__.py:148
 #, python-format
 msgid "Could not find a matching UDM module for the LDAP object %s"
 msgstr ""
 "Es konnte kein passendes UDM-Modul für das LDAP-Object %s gefunden werden"
 
-#: umc/python/udm/__init__.py:240 umc/python/udm/ldap.py:152
+#: umc/python/udm/__init__.py:243 umc/python/udm/ldap.py:152
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""
 "Es konnte kein UDM-modul für das übergeordnete Objekt %s gefunden werden"
 
-#: umc/python/udm/__init__.py:105 umc/python/udm/__init__.py:135
+#: umc/python/udm/__init__.py:108 umc/python/udm/__init__.py:138
 msgid "Invalid object definition"
 msgstr "Ungültige Objektdefinition"
 
-#: umc/python/udm/__init__.py:141
+#: umc/python/udm/__init__.py:144
 msgid "LDAP DN of object missing"
 msgstr "Die LDAP-DN des Objektes fehlt"
 
-#: umc/python/udm/__init__.py:172
+#: umc/python/udm/__init__.py:175
 msgid "LDAP object could not be identified"
 msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 
-#: umc/python/udm/__init__.py:78
+#: umc/python/udm/__init__.py:81
 msgid "No flavor or valid UDM module name specified"
 msgstr "Keine gültige Variante oder existierendes UDM-Modul wurde angegeben"
 
@@ -44,7 +44,7 @@ msgstr "Keine gültige Variante oder existierendes UDM-Modul wurde angegeben"
 msgid "None"
 msgstr "Keins"
 
-#: umc/python/udm/__init__.py:413
+#: umc/python/udm/__init__.py:451
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
