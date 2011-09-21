@@ -9,7 +9,6 @@ Package: univention-samba4
 Architecture: all
 Conflicts: samba, 
  univention-samba
-Replaces: univention-heimdal-kdc
 Depends: univention-config-registry,
  shell-univention-lib (>> 1.0.6),
  python-univention (>= 6.0.9-3),

@@ -1,3 +1,9 @@
+univention-samba4 (1.0.42-1) unstable; urgency=low
+
+  * remove "Replaces" approach for univention-heimdal-kdc (Bug #22600)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Sep 2011 16:23:56 +0200
+
 univention-samba4 (1.0.41-4) unstable; urgency=low
 
   * add cron.d file (Bug #23359)
