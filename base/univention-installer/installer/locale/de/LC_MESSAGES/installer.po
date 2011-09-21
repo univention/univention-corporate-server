@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-20 20:27+0200\n"
-"PO-Revision-Date: 2011-09-20 20:44+0200\n"
+"POT-Creation-Date: 2011-09-20 21:14+0200\n"
+"PO-Revision-Date: 2011-09-20 21:18+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -152,8 +152,7 @@ msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 #: installer/main.py:282 installer/objects.py:2009
 #: installer/modules/10_hardware.py:279 installer/modules/10_hardware.py:313
 #: installer/modules/15_profile.py:56 installer/modules/65_partition.py:4186
-#: installer/modules/65_partition.py:4202 installer/modules/70_net3.py:972
-#: installer/modules/70_net.py:971
+#: installer/modules/65_partition.py:4202 installer/modules/70_net.py:976
 #: ../univention-system-setup/usr/sbin/univention-system-setup:160
 #: ../univention-system-setup/usr/sbin/univention-system-setup:187
 #: ../univention-system-setup/usr/sbin/univention-system-setup:206
@@ -431,8 +430,8 @@ msgstr "Suche CD-ROM-Laufwerk"
 #: installer/modules/65_partition.py:2011
 #: installer/modules/65_partition.py:3223
 #: installer/modules/65_partition.py:3228
-#: installer/modules/65_partition.py:3232 installer/modules/70_net3.py:713
-#: installer/modules/70_net.py:712 installer/modules/85_software.py:138
+#: installer/modules/65_partition.py:3232 installer/modules/70_net.py:717
+#: installer/modules/85_software.py:138
 msgid "Please wait ..."
 msgstr "Bitte warten ..."
 
@@ -508,8 +507,7 @@ msgstr "Quellmedium"
 #: installer/modules/15_profile.py:57 installer/modules/65_partition.py:3660
 #: installer/modules/65_partition.py:3707
 #: installer/modules/65_partition.py:3961
-#: installer/modules/65_partition.py:4000 installer/modules/70_net3.py:971
-#: installer/modules/70_net.py:970
+#: installer/modules/65_partition.py:4000 installer/modules/70_net.py:975
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -1555,165 +1553,173 @@ msgstr ""
 "Bitte wählen Sie ein anderes \n"
 "Dateisystem."
 
-#: installer/modules/70_net3.py:353 installer/modules/70_net.py:352
+#: installer/modules/70_net.py:352
 #, python-format
 msgid "Not all IPv4 values have been specified for interface %s"
 msgstr "Die IPv4-Angaben für Interface %s sind nicht vollständig."
 
-#: installer/modules/70_net3.py:356 installer/modules/70_net3.py:743
-#: installer/modules/70_net.py:355 installer/modules/70_net.py:742
+#: installer/modules/70_net.py:355 installer/modules/70_net.py:747
 msgid "Following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
-#: installer/modules/70_net3.py:358 installer/modules/70_net3.py:509
-#: installer/modules/70_net3.py:784 installer/modules/70_net.py:357
-#: installer/modules/70_net.py:508 installer/modules/70_net.py:783
+#: installer/modules/70_net.py:357 installer/modules/70_net.py:508
+#: installer/modules/70_net.py:788
 msgid "IPv4 Gateway"
 msgstr "IPv4-Gateway"
 
-#: installer/modules/70_net3.py:359 installer/modules/70_net3.py:515
-#: installer/modules/70_net3.py:786 installer/modules/70_net.py:358
-#: installer/modules/70_net.py:514 installer/modules/70_net.py:785
+#: installer/modules/70_net.py:358 installer/modules/70_net.py:514
+#: installer/modules/70_net.py:790
 msgid "IPv6 Gateway"
 msgstr "IPv6-Gateway"
 
-#: installer/modules/70_net3.py:360 installer/modules/70_net3.py:526
-#: installer/modules/70_net3.py:790 installer/modules/70_net3.py:945
 #: installer/modules/70_net.py:359 installer/modules/70_net.py:525
-#: installer/modules/70_net.py:789 installer/modules/70_net.py:944
+#: installer/modules/70_net.py:794 installer/modules/70_net.py:949
 msgid "Domain DNS Server"
 msgstr "Domänen-DNS-Server"
 
-#: installer/modules/70_net3.py:361 installer/modules/70_net3.py:537
-#: installer/modules/70_net3.py:788 installer/modules/70_net3.py:948
 #: installer/modules/70_net.py:360 installer/modules/70_net.py:536
-#: installer/modules/70_net.py:787 installer/modules/70_net.py:947
+#: installer/modules/70_net.py:792 installer/modules/70_net.py:952
 msgid "External DNS Server"
 msgstr "Externer DNS-Server"
 
-#: installer/modules/70_net3.py:376 installer/modules/70_net3.py:805
-#: installer/modules/70_net.py:375 installer/modules/70_net.py:804
+#: installer/modules/70_net.py:375 installer/modules/70_net.py:809
 msgid "Proxy, example http://10.201.1.1:8080"
 msgstr "Proxy, z.B. http://10.201.1.1:8080"
 
-#: installer/modules/70_net3.py:401 installer/modules/70_net.py:400
+#: installer/modules/70_net.py:400
 msgid "You have to configure one or more network interfaces."
 msgstr "Es muss mindestens ein Netzwerk-Interface konfiguriert werden."
 
-#: installer/modules/70_net3.py:434 installer/modules/70_net.py:433
+#: installer/modules/70_net.py:433
 #, python-format
 msgid "Settings for interface \"%s\""
 msgstr "Einstellungen für Interface \"%s\""
 
-#: installer/modules/70_net3.py:437 installer/modules/70_net.py:436
+#: installer/modules/70_net.py:436
 #, python-format
 msgid "MAC address: %s"
 msgstr "MAC-Adresse: %s"
 
-#: installer/modules/70_net3.py:440 installer/modules/70_net.py:439
+#: installer/modules/70_net.py:439
 msgid "Enable IPv4"
 msgstr "IPv4 aktivieren"
 
-#: installer/modules/70_net3.py:452 installer/modules/70_net.py:451
+#: installer/modules/70_net.py:451
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
-#: installer/modules/70_net3.py:454 installer/modules/70_net3.py:713
-#: installer/modules/70_net.py:453 installer/modules/70_net.py:712
+#: installer/modules/70_net.py:453 installer/modules/70_net.py:717
 msgid "DHCP Query"
 msgstr "DHCP Anfrage"
 
-#: installer/modules/70_net3.py:458 installer/modules/70_net.py:457
+#: installer/modules/70_net.py:457
 msgid "IPv4 address"
 msgstr "IPv4-Adresse"
 
-#: installer/modules/70_net3.py:462 installer/modules/70_net.py:461
+#: installer/modules/70_net.py:461
 msgid "Netmask"
 msgstr "Netzmaske"
 
-#: installer/modules/70_net3.py:466 installer/modules/70_net.py:465
+#: installer/modules/70_net.py:465
 msgid "Enable IPv6"
 msgstr "IPv6 aktivieren"
 
-#: installer/modules/70_net3.py:473 installer/modules/70_net.py:472
+#: installer/modules/70_net.py:472
 msgid "Dynamic (accept router advertisements)"
 msgstr "Dynamisch (Router Advertisements akzeptieren)"
 
-#: installer/modules/70_net3.py:481 installer/modules/70_net.py:480
+#: installer/modules/70_net.py:480
 msgid "IPv6 address"
 msgstr "IPv6-Adresse"
 
-#: installer/modules/70_net3.py:486 installer/modules/70_net.py:485
+#: installer/modules/70_net.py:485
 msgid "IPv6 prefix"
 msgstr "IPv6-Prefix"
 
-#: installer/modules/70_net3.py:493 installer/modules/70_net.py:492
+#: installer/modules/70_net.py:492
 msgid "F2-Previous Interface"
 msgstr "F2-Vorheriges Interface"
 
-#: installer/modules/70_net3.py:494 installer/modules/70_net.py:493
+#: installer/modules/70_net.py:493
 msgid "F3-Next Interface"
 msgstr "F3-Nächstes Interface"
 
-#: installer/modules/70_net3.py:504 installer/modules/70_net.py:503
+#: installer/modules/70_net.py:503
 msgid "Global Network Settings"
 msgstr "Globale Netzwerk-Einstellungen"
 
-#: installer/modules/70_net3.py:528 installer/modules/70_net3.py:539
 #: installer/modules/70_net.py:527 installer/modules/70_net.py:538
 msgid "More"
 msgstr "Mehr"
 
-#: installer/modules/70_net3.py:544 installer/modules/70_net.py:543
+#: installer/modules/70_net.py:543
 msgid "HTTP proxy"
 msgstr "HTTP-Proxy"
 
-#: installer/modules/70_net3.py:717 installer/modules/70_net.py:716
+#: installer/modules/70_net.py:547
+msgid ""
+"Currently no network card could be detected. Depending on the selected "
+"services and system role an operative network card is required to "
+"successfully complete the installation.\n"
+"Please check the network card of the computer. If a network card is "
+"installed, try to load additional kernel modules manually. If the "
+"installation will be continued without operative network card, a virtual "
+"dummy network card will be loaded automatically to complete installation."
+msgstr ""
+"Es konnte zum aktuellen Zeitpunkt keine Netzwerkkarte gefunden werden. Abhängig von den ausgewählten Diensten und der Systemrolle kann es zu Fehlern bei der Installation kommen.\n"
+"Prüfen Sie die Netzwerkkarte dieses Systems. Falls eine Netzwerkkarte installiert ist, sollte versucht werden, manuell Kerneltreiber nachzuladen. Wird die Installation ohne funktionierende Netzwerkkarte fortgesetzt, wird automatisch eine virtuelle Netzwerkkarte geladen, um die Installation erfolgreich beenden zu können."
+
+#: installer/modules/70_net.py:721
 msgid "No DHCP answer, please check DHCP server and network connectivity."
 msgstr ""
 "Keine DHCP-Antwort, bitte DHCP-Server und Netzwerkverbindung überprüfen."
 
-#: installer/modules/70_net3.py:744 installer/modules/70_net.py:743
+#: installer/modules/70_net.py:748
 #, python-format
 msgid ""
 "An invalid value has been entered for interface %(interface)s: %(elemname)s"
-msgstr "Ein ungültiger Wert wurde für Interface %(interface)s angegeben: %(elemname)s"
+msgstr ""
+"Ein ungültiger Wert wurde für Interface %(interface)s angegeben: %(elemname)s"
 
-#: installer/modules/70_net3.py:748 installer/modules/70_net.py:747
+#: installer/modules/70_net.py:752
 msgid "At least one interface must be configured."
 msgstr "Es muss mindestens ein Interface konfiguriert werden."
 
-#: installer/modules/70_net3.py:760 installer/modules/70_net.py:759
+#: installer/modules/70_net.py:764
 msgid "IPv4 Address"
 msgstr "IPv4-Adresse"
 
-#: installer/modules/70_net3.py:762 installer/modules/70_net.py:761
+#: installer/modules/70_net.py:766
 msgid "IPv4 Netmask"
 msgstr "IPv4-Netzmaske"
 
-#: installer/modules/70_net3.py:765 installer/modules/70_net.py:764
+#: installer/modules/70_net.py:769
 #, python-format
 msgid ""
 "Neither DHCP is activated nor an IPv4 address with netmask has been entered "
 "for interface \"%s\"."
-msgstr "Es wurde weder DHCP aktiviert noch wurde eine gültige IPv4-Adresse inkl. Netzmaske für Interface \"%s\" angegeben."
+msgstr ""
+"Es wurde weder DHCP aktiviert noch wurde eine gültige IPv4-Adresse inkl. "
+"Netzmaske für Interface \"%s\" angegeben."
 
-#: installer/modules/70_net3.py:774 installer/modules/70_net.py:773
+#: installer/modules/70_net.py:778
 msgid "IPv6 Address"
 msgstr "IPv6-Adresse"
 
-#: installer/modules/70_net3.py:776 installer/modules/70_net.py:775
+#: installer/modules/70_net.py:780
 msgid "IPv6 Prefix"
 msgstr "IPv6-Prefix"
 
-#: installer/modules/70_net3.py:779 installer/modules/70_net.py:778
+#: installer/modules/70_net.py:783
 #, python-format
 msgid ""
 "Neither accepting router advertisements is activated nor an IPv6 address "
 "with prefix has been entered for interface \"%s\"."
-msgstr "Es wurden weder die IPv6 Router Advertisements aktiviert noch eine gültige IPv6 Adresse inl. Prefix für Interface \"%s\" angegeben."
+msgstr ""
+"Es wurden weder die IPv6 Router Advertisements aktiviert noch eine gültige "
+"IPv6 Adresse inl. Prefix für Interface \"%s\" angegeben."
 
-#: installer/modules/70_net3.py:871 installer/modules/70_net.py:870
+#: installer/modules/70_net.py:875
 msgid ""
 "Network \n"
 " \n"
@@ -1758,18 +1764,24 @@ msgstr ""
 " \n"
 " In diesem Modul wird die Netzwerk-Interfaces konfiguriert.\n"
 " \n"
-" Im oberen teil werden alle erkannten Interfaces angezeigt. Mit den Tasten F2 und F3 kann zum nächsten/vorherigen Interface gewechselt werden.\n"
+" Im oberen teil werden alle erkannten Interfaces angezeigt. Mit den Tasten "
+"F2 und F3 kann zum nächsten/vorherigen Interface gewechselt werden.\n"
 " \n"
-" Für jedes Interface kann eine IPv4-Adresse inkl. Netzmaske und/oder eine IPv6-Adresse inkl. Prefix angegeben werden.\n"
-" Die Konfiguration der Interfaces kann auch automatisch durchgeführt werden:\n"
+" Für jedes Interface kann eine IPv4-Adresse inkl. Netzmaske und/oder eine "
+"IPv6-Adresse inkl. Prefix angegeben werden.\n"
+" Die Konfiguration der Interfaces kann auch automatisch durchgeführt "
+"werden:\n"
 "\n"
 " Dynamisch (DHCP):  \n"
-" Bitte markieren Sie dieses Feld, wenn die IPv4-Konfiguration via DHCP (Dynamic Host Configuration Protocol) zugeteilt werden soll. \n"
+" Bitte markieren Sie dieses Feld, wenn die IPv4-Konfiguration via DHCP "
+"(Dynamic Host Configuration Protocol) zugeteilt werden soll. \n"
 " \n"
 " Dynamisch (Router Advertisements akzeptieren):\n"
-" Bitte markieren Sie dieses Feld, wenn die IPv6-Konfiguration via ND (IPv6 Neighbour Discovery) zugeteilt werden soll. \n"
+" Bitte markieren Sie dieses Feld, wenn die IPv6-Konfiguration via ND (IPv6 "
+"Neighbour Discovery) zugeteilt werden soll. \n"
 "\n"
-" Bitte geben Sie IP-Adresse, Netzmaske, Broadcast und das Netzwerk an, wenn Sie sich für die statische IP-Adresse entschieden haben.\n"
+" Bitte geben Sie IP-Adresse, Netzmaske, Broadcast und das Netzwerk an, wenn "
+"Sie sich für die statische IP-Adresse entschieden haben.\n"
 "\n"
 " IPv4-Gateway: \n"
 " Das Defaultgateway, welches für IPv4-Traffic verwendet werden soll.\n"
@@ -1777,48 +1789,52 @@ msgstr ""
 " Das Defaultgateway, welches für IPv6-Traffic verwendet werden soll.\n"
 " \n"
 " Domänen-DNS-Server: \n"
-" Geben Sie die IP-Adresse für den primären Nameserver an, falls Sie ein neues System in eine bestehende UCS-Domäne installieren möchten. \n"
+" Geben Sie die IP-Adresse für den primären Nameserver an, falls Sie ein "
+"neues System in eine bestehende UCS-Domäne installieren möchten. \n"
 " Mehr: \n"
-" Geben Sie weitere IP-Adressen an, wenn Ihr System mehrere Nameserver nutzen soll.  \n"
+" Geben Sie weitere IP-Adressen an, wenn Ihr System mehrere Nameserver nutzen "
+"soll.  \n"
 "  \n"
 " Externer DNS-Server: \n"
 " Geben Sie die IP-Adresse für einen DNS-Forwarder an. \n"
 " Mehr: \n"
-" Wenn das System mehrere DNS-Forwarder nutzen soll, geben Sie weitere IP-Adressen an. \n"
+" Wenn das System mehrere DNS-Forwarder nutzen soll, geben Sie weitere IP-"
+"Adressen an. \n"
 " \n"
 " HTTP-Proxy: \n"
-" Geben Sie die Transportadresse (IP-Adresse:Port) an, um einen HTTP-Proxy zu nutzen. z.B: http://192.168.1.123:3128"
+" Geben Sie die Transportadresse (IP-Adresse:Port) an, um einen HTTP-Proxy zu "
+"nutzen. z.B: http://192.168.1.123:3128"
 
-#: installer/modules/70_net3.py:875 installer/modules/70_net.py:874
+#: installer/modules/70_net.py:879
 msgid "Network"
 msgstr "Netzwerk"
 
-#: installer/modules/70_net3.py:964 installer/modules/70_net.py:963
+#: installer/modules/70_net.py:968
 #, python-format
 msgid "1. %s"
 msgstr "1. %s"
 
-#: installer/modules/70_net3.py:965 installer/modules/70_net.py:964
+#: installer/modules/70_net.py:969
 #, python-format
 msgid "2. %s"
 msgstr "2. %s"
 
-#: installer/modules/70_net3.py:966 installer/modules/70_net.py:965
+#: installer/modules/70_net.py:970
 #, python-format
 msgid "3. %s"
 msgstr "3. %s"
 
-#: installer/modules/70_net3.py:981 installer/modules/70_net.py:980
+#: installer/modules/70_net.py:985
 #, python-format
 msgid " More %ss"
 msgstr "Weitere %s"
 
-#: installer/modules/70_net3.py:997 installer/modules/70_net.py:996
-#: installer/modules/80_join.py:51 installer/modules/80_join.py:138
+#: installer/modules/70_net.py:1001 installer/modules/80_join.py:51
+#: installer/modules/80_join.py:138
 msgid "The following value is missing: "
 msgstr "Der folgende Wert fehlt:"
 
-#: installer/modules/70_net3.py:998 installer/modules/70_net.py:997
+#: installer/modules/70_net.py:1002
 msgid "The following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 

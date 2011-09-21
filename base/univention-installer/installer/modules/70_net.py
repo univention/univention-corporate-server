@@ -49,6 +49,7 @@ import subprocess
 import threading
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
+PATH_SYS_CLASS_NET = '/tmp/class/net'
 LEN_IPv4_ADDR = 15
 LEN_IPv6_ADDR = 40
 
@@ -89,7 +90,7 @@ class object(content):
 		self.debug('__init__()')
 
 		self.interfaces = []
-		self.current_interface = None
+		self.dummy_interface = False
 		self.ask_forwarder = True
 
 		# boolean: True, if edition "oxae" is specified
@@ -199,12 +200,11 @@ class object(content):
 
 		self.interfaces.sort( cmp_NetworkInterfaces )
 
-		if len(self.interfaces):
-			# at least one interface has been found
-			if (self.current_interface == None) or (self.current_interface > len(self.interfaces)):
-				self.current_interface = 0   # no interface has been set before or current interface does not exist anymore ==> set to 0
-		else:
-			self.current_interface = None
+		if not self.interfaces:
+			self.debug('No interface has been found')
+			self.interfaces.append( NetworkInterface('eth0') )
+			self.debug('Dummy interface has been added')
+			self.dummy_interface = True
 
 	def get_interface(self, name):
 		"""
@@ -542,6 +542,11 @@ class object(content):
 		val_proxyhttp = self.container.get('proxy_http','http://')
 		self.add_elem('TXT_PROXYHTTP', textline(_('HTTP proxy'), offsetGy, offsetGx+2))
 		self.add_elem('INP_PROXYHTTP', input(val_proxyhttp, offsetGy, offsetGx+22, LEN_IPv6_ADDR+3))
+
+		if self.dummy_interface:
+			msg = _('Currently no network card could be detected. Depending on the selected services and system role an operative network card is required to successfully complete the installation.\nPlease check the network card of the computer. If a network card is installed, try to load additional kernel modules manually. If the installation will be continued without operative network card, a virtual dummy network card will be loaded automatically to complete installation.')
+			self.sub = warning(msg, self.pos_y+39, self.pos_x+93)
+			self.sub.draw()
 
 		self.update_widget_states()
 
