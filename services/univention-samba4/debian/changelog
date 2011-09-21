@@ -1,3 +1,9 @@
+univention-samba4 (1.0.41-2) unstable; urgency=low
+
+  * sysvol replication cronjob (Bug #23359)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Sep 2011 15:13:40 +0200
+
 univention-samba4 (1.0.41-1) unstable; urgency=low
 
   * updated sketch of sysvol replication scripts (Bug #23359)

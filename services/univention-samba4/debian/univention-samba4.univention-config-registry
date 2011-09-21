@@ -49,3 +49,8 @@ Variables: samba/share/groups
 Variables: samba/share/printers
 Variables: samba/share/netlogon
 Variables: samba/share/sysvol
+
+Type: file
+File: etc/cron.d/sysvol-sync
+Variables: samba4/sysvol/sync/interval
+Variables: samba4/sysvol/sync/jitter

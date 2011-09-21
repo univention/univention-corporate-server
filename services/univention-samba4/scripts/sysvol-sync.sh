@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Samba4
-#  postinst script
+#  helper script: synchronize sysvol
 #
 # Copyright 2004-2011 Univention GmbH
 #
@@ -30,40 +30,34 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/share/univention-lib/all.sh
+eval $(/usr/sbin/univention-config-registry shell hostname samba4/sysvol/sync/host)
 
-#DEBHELPER#
+SYSVOL_PATH='/var/lib/samba/sysvol'
+SYSVOL_SYNCDIR='/var/cache/univention-samba4/sysvol-sync'
 
-univention-config-registry set samba/debug/level?0 \
-	samba4/sysvol/sync/cron?"*/5 * * * *" \
-	samba4/sysvol/sync/jitter?60
-
-if [ "$1" = "configure" ]; then
-
-	if [ -z "$2" ]; then
-
-		# only set this for new installations
-		if [ "$server_role" = "domaincontroller_master" ]; then
-			univention-config-registry set windows/wins-support=yes
-		else
-			univention-config-registry set windows/wins-support?no
-			univention-config-registry set windows/wins-server?$ldap_master
-		fi
-
-	elif [ -n "$2" ]; then
-
-		univention-config-registry commit /etc/samba/smb.conf
-
-		if [ -r /var/run/samba.pid ]; then
-			processname=$(ps -p $(cat /var/run/samba.pid) -o comm= )
-			if [ "$processname" = 'samba' ]; then
-				/etc/init.d/samba4 restart
-			fi
-		fi
-
-	fi
+if ! [ -d "$SYSVOL_SYNCDIR" ]; then
+	mkdir -p "$SYSVOL_SYNCDIR"
+	chgrp 'DC Slave Hosts' "$SYSVOL_SYNCDIR"
+	chmod g+w "$SYSVOL_SYNCDIR"
 fi
 
-call_joinscript 96univention-samba4.inst
+## merge updates pushed to us by other s4DCs
+for importdir in find "${SYSVOL_SYNCDIR}" -mindepth 1 -maxdepth 1 -type d; do
+	rsync -auAX "$importdir"/ "$SYSVOL_PATH"
+done
 
-exit 0
+for s4dc in $samba4_sysvol_sync_host; do	## usually there should only be one..
+	if [ "$s4dc" = "$hostname" ]; then
+		continue
+	fi
+	## pull from parent s4dc
+	univention-ssh-rsync /etc/machine.secret -auAX \
+		"${hostname}\$"@"${s4dc}":"${SYSVOL_PATH}"/ "$SYSVOL_PATH"
+
+	## push to parent s4dc
+	univention-ssh /etc/machine.secret "${hostname}\$"@"${s4dc}" \
+		mkdir "${SYSVOL_SYNCDIR}/${hostname}"
+
+	univention-ssh-rsync /etc/machine.secret -aAX --delete \
+		"$SYSVOL_PATH"/ "${hostname}\$"@"${s4dc}":"${SYSVOL_SYNCDIR}/${hostname}"
+done
