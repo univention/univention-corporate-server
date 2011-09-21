@@ -128,9 +128,6 @@ if [ ! -z "$update_custom_postup" ]; then
 	fi
 fi
 
-# hotfix for Bug #19153 ; not required after UCS 2.4-0
-echo "/usr/share/univention-updater/univention-updater-check > /dev/null 2> /dev/null" | at now + 2 minute 2>> "$UPDATER_LOG" >> "$UPDATER_LOG"
-
 if [ -x /usr/sbin/univention-check-templates ]; then
 	/usr/sbin/univention-check-templates >>"$UPDATER_LOG" 2>&1
 	rc=$?

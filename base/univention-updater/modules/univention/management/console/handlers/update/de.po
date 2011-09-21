@@ -203,7 +203,7 @@ msgstr "Der Updatevorgang ist fehlgeschlagen."
 #: __init__.py:556 __init__.py:596 __init__.py:636
 #, python-format
 msgid ""
-"An error occured during update preparation. Please check %(logfile)s "
+"An error occurred during update preparation. Please check %(logfile)s "
 "carefully."
 msgstr ""
 "Ein Fehler ist bei den Updatevorbereitungen aufgetreten. Die Logdatei %"
@@ -212,7 +212,7 @@ msgstr ""
 #: __init__.py:558 __init__.py:598 __init__.py:638
 #, python-format
 msgid ""
-"An error occured during pre-update checks in preup.sh. Please check %"
+"An error occurred during pre-update checks in preup.sh. Please check %"
 "(logfile)s carefully."
 msgstr ""
 "Ein Fehler ist während der Ausführung des Updateskripts preup.sh "
@@ -220,7 +220,7 @@ msgstr ""
 
 #: __init__.py:560 __init__.py:600 __init__.py:640
 #, python-format
-msgid "An error occured during update. Please check %(logfile)s carefully."
+msgid "An error occurred during update. Please check %(logfile)s carefully."
 msgstr ""
 "Ein Fehler ist während des Updates aufgetreten. Die Logdatei %(logfile)s "
 "sollte geprüft werden."
@@ -228,7 +228,7 @@ msgstr ""
 #: __init__.py:562 __init__.py:602 __init__.py:642
 #, python-format
 msgid ""
-"An error occured in post-update script postup.sh. Please check %(logfile)s "
+"An error occurred in post-update script postup.sh. Please check %(logfile)s "
 "carefully."
 msgstr ""
 "Ein Fehler ist während der Ausführung des Updateskripts postup.sh "
@@ -236,7 +236,7 @@ msgstr ""
 
 #: __init__.py:564 __init__.py:604 __init__.py:644
 #, python-format
-msgid "An error occured. Please check %(logfile)s carefully."
+msgid "An error occurred. Please check %(logfile)s carefully."
 msgstr ""
 "Ein Fehler ist aufgetreten. Die Logdatei %(logfile)s sollte geprüft werden."
 
@@ -276,7 +276,7 @@ msgstr ""
 #: __init__.py:674
 #, python-format
 msgid ""
-"An error occured during package update. Please check %(logfile)s carefully."
+"An error occurred during package update. Please check %(logfile)s carefully."
 msgstr ""
 "Ein Fehler ist während des Updates aufgetreten. Die Logdatei %(logfile)s "
 "sollte geprüft werden."
@@ -314,7 +314,7 @@ msgstr "Installation fehlgeschlagen"
 #: __init__.py:700
 #, python-format
 msgid ""
-"An error occured during package installation. Please check %(logfile)s "
+"An error occurred during package installation. Please check %(logfile)s "
 "carefully."
 msgstr ""
 "Ein Fehler ist während der Installation aufgetreten. Die Logdatei %(logfile)"
@@ -480,7 +480,7 @@ msgstr ""
 
 #: __init__.py:912 __init__.py:973
 #, python-format
-msgid "An error occured during network operation: %s"
+msgid "An error occurred during network operation: %s"
 msgstr "Ein Fehler ist während einer Netzwerk-Operation aufgetreten: %s"
 
 #: __init__.py:920

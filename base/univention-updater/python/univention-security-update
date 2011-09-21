@@ -176,6 +176,8 @@ if __name__ == '__main__':
 					sys.exit(1)	# reversed: 1=update available
 				else:
 					sys.exit(0)	# reversed: 0=no updates
+			except SystemExit:
+				raise
 			except Exception, e:
 				dprint(traceback.format_exc(), [fp_debug])
 				dprint("Failure to query repository: %s" % e)
@@ -238,7 +240,7 @@ if __name__ == '__main__':
 				nextupdate = updater.security_update_available()
 			except univention.updater.ConfigurationError, e:
 				dprint(traceback.format_exc(), [fp_debug])
-				dprint('Error: an error occured during the update: %s.\n\tPlease check the logfile %s' % (e, LOGFILE), [fp_debug, sys.stderr])
+				dprint('Error: an error occurred during the update: %s.\n\tPlease check the logfile %s' % (e, LOGFILE), [fp_debug, sys.stderr])
 				update_status( status='FAILED', errorsource='SETTINGS' )
 				sys.exit( 1 )
 
@@ -252,8 +254,8 @@ if __name__ == '__main__':
 				break
 
 			secver = updater.current_version
-			secver.patchlevel = int(nextupdate[len('sec'):])
-			dprint( 'Update to Security Update %s' % secver, [fp_debug,sys.stdout] )
+			secver.patchlevel = nextupdate
+			dprint( 'Update to Security Update %d.%d sec%d' % (secver.major, secver.minor, secver.patchlevel), [fp_debug,sys.stdout] )
 
 			remove_temporary_sources_list()
 			sources_list_entries = updater.security_update_temporary_sources_list()
@@ -299,8 +301,8 @@ if __name__ == '__main__':
 					if ret:
 						sys.exit( ret )
 
-		update_ucr_updatestatus()
 		update_status( status='DONE' )
 	finally:
 		if not univention.updater.tools.updater_lock_release(lock):
 			print 'WARNING: updater-lock already released!'
+		update_ucr_updatestatus()

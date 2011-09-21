@@ -379,32 +379,49 @@ def main():
 				else:
 					os.system('/usr/sbin/univention-pkgdb-scan > /dev/null')
 
+def update_ucr_updatestatus():
+	try:
+		if configRegistry.is_true('update/umc/updateprocess/easy', False):
+			devnull = open(os.path.devnull, 'w' )
+			subprocess.call( '/usr/share/univention-updater/univention-updater-check', stdout = devnull, stderr = devnull )
+			devnull.close()
+	except:
+		dprint('Warning: calling univention-updater-check failed.')
+
 if __name__ == '__main__':
+	do_ucr_update = False
 	try:
 		lock = univention.updater.tools.updater_lock_acquire()
 	except univention.updater.tools.LockingError, e:
 		print >>sys.stderr, e
 		sys.exit(5)
+	# use nested try-finally-try-except since python2.4 does not support http://www.python.org/dev/peps/pep-0341/
 	try:
-		failure = '/var/lib/univention-updater/update-failed'
-		if os.path.exists(failure):
-			print 'univention-actualise: univention-updater failed, stopping...'
-			print '    remove `%s\' to proceed' % failure
-			sys.exit(2)
-
 		try:
-			for root, dirs, files in os.walk('/etc/apt/sources.list.d'):
-				for file in [file for file in files if file.startswith('00_ucs_temporary_')]:
-					filename = os.path.join(root, file)
-					print 'Warning: Deleting `%s` from incomplete update.' % filename
-					os.remove(filename)
-				del dirs[:]
-		except:
-			print 'Failed, aborting.'
-			sys.exit(2)
+			failure = '/var/lib/univention-updater/update-failed'
+			if os.path.exists(failure):
+				print 'univention-actualise: univention-updater failed, stopping...'
+				print '	   remove `%s\' to proceed' % failure
+				sys.exit(2)
 
-		main()
-		sys.exit(0)
+			try:
+				for root, dirs, files in os.walk('/etc/apt/sources.list.d'):
+					for file in [file for file in files if file.startswith('00_ucs_temporary_')]:
+						filename = os.path.join(root, file)
+						print 'Warning: Deleting `%s` from incomplete update.' % filename
+						os.remove(filename)
+					del dirs[:]
+			except:
+				print 'Failed, aborting.'
+				sys.exit(2)
+
+			main()
+		except SystemExit, e:
+			if e.args[0] == 0:
+				do_ucr_update = True
+
 	finally:
 		if not univention.updater.tools.updater_lock_release(lock):
 			print 'WARNING: updater-lock already released!'
+		if do_ucr_update:
+			update_ucr_updatestatus()

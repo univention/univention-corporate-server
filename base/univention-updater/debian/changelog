@@ -1,3 +1,51 @@
+univention-updater (7.0.25-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+
+   [ Sönke Schwardt-Krummrich ]
+    * reverted patch of Bug #15630
+    * update UCR variable update/available in univention-actualise (Bug #22956)
+    * prevent recursion problem if UpdateError exception is raised (Bug #22956)
+    * do also fetch preup.sh/postup.sh of security updates if
+      repository/mirror/version/start has been set to "X.Y.0" (Bug #23084)
+    * use correct prefix when storing downloaded component's
+      preup.sh/postup.sh into local repository (Bug #23084)
+    * fixed conflict of update_ucr_updatestatus() and locking files (Bug #22956)
+    * check for release and security updates in univention-updater-check
+    * fixed error message in univention-security-update
+    * fixed misleading message of univention-security-update (Bug #22577)
+    * use correct component server when downloading component's
+      preup.sh/postup.sh into local repository (Bug #23084)
+    * do also test /univention-repository/ and self.repository_prefix for
+      components (Bug #22929)
+    * fixed traceback in univention-updater if
+      repository/online/component/$comp/version is set (Bug #22530)
+    * fixed logic bug in univention-upgrade so univention-updater does not
+      always announce an available security update (Bug #22144) (Bug #22145)
+    * component's "name" field is now readonly (Bug #20176)
+    * added possibility to remove configured component (Bug #15630)
+    * do not stop update if non-"current"-component is unavailable (Bug #22567)
+    * prune old kernel during update (Bug #22093)
+
+   [ Philipp Hahn ]
+    * Hide output of external ucr (Bug #23202)
+    * Use external ucr instead of internal ucr (Bug #23202)
+    * Fix writing to closed fd_log (Bug #23259)
+    * Fix wrong release number (Bug #21843)
+    * Reload ucr Python module after upgrade (Bug #23202)
+    * Fix spelling mistake: occur_r_ed (Bug #22225)
+
+   [ Felix Botner ]
+    * preup/postup cleanups for 2.4-3 (Bug #23082)
+
+   [ Janek Walkenhorst ]
+    * do not show proxy password on boot (Bug #22458)
+    * add jitter to univention-maintenance cron job (Bug #22010)
+    * fix --ignoressh and --ignoreterm with local repository (Bug #22016)
+    * add --ignoressh and --ignoreterm to univention-upgrade (Bug #22191)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 20:31:17 +0200
+
 univention-updater (7.0.24-1) unstable; urgency=low
 
   * move purge of nagios2 to postup (Bug #23260)
@@ -1917,7 +1965,7 @@ univention-updater (4.0.40-1) unstable; urgency=low
 
 univention-updater (4.0.39-1) unstable; urgency=low
 
-  * fixed a bug in univention-updater that occured on systems with a local
+  * fixed a bug in univention-updater that occurred on systems with a local
     repository when running 'univention-updater cdrom' (Bug #12511)
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 12 Mar 2009 10:43:04 +0100

@@ -506,7 +506,7 @@ class UniventionUpdater:
 				assert self.server.access('')
 			except DownloadError, e:
 				uri, code = e
-				raise ConfigurationError(uri, 'non-existing prefix')
+				raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (str(self.repository_prefix), str(uri)))
 		except ConfigurationError, e:
 			if self.check_access:
 				raise
@@ -589,7 +589,14 @@ class UniventionUpdater:
 		for server, ver in self._iterate_version_repositories(mmp_version, mmp_version, self.parts, archs):
 			result.append(ver.deb())
 		for component in components:
-			repos = self.get_component_repositories(component, [mmp_version], False)
+			repos = []
+			try:
+				repos = self.get_component_repositories(component, [mmp_version], False)
+			except (ConfigurationError, ProxyError, DownloadError):
+				# if component is marked as required (UCR variable "version" contains "current")
+				# then raise error, otherwise ignore it
+				if component in current_components:
+					raise
 			if not repos and component in current_components:
 				server = self._get_component_server(component)
 				uri = server.join('%s/component/%s/' % (version, component))
@@ -608,7 +615,11 @@ class UniventionUpdater:
 		return sources_list
 
 	def get_all_available_security_updates(self):
-		'''Returns a list of all available security updates for current major.minor version'''
+		'''Returns a list of all available security updates for current major.minor version
+	       as integer
+		   >>> updater.get_all_available_security_updates()
+		   [3, 4, 5]
+		'''
 		result = []
 		archs = ['all', 'extern'] + self.architectures
 		for sp in xrange(self.security_patchlevel + 1, 99):
@@ -621,14 +632,16 @@ class UniventionUpdater:
 		return result
 
 	def security_update_available(self, version=None):
-		'''Check for the security version for the current version'''
+		'''Check for the security version for the current version.
+	       Returns next available security update number (integer) or False if no security update is available.
+		'''
 		if version:
 			start = end = version
 		else:
 			start = end = UCS_Version( (self.version_major, self.version_minor, self.security_patchlevel+1) )
 		archs = ['all', 'extern'] + self.architectures
 		for server, ver in self._iterate_security_repositories(start, end, self.parts, archs):
-			return 'sec%(patchlevel)s' % ver
+			return ver.patchlevel
 		return False
 
 	@property
@@ -909,8 +922,14 @@ class UniventionUpdater:
 
 			struct = UCSRepoPool(prefix=server, patch=component)
 			for version in versions:
-				for ver in self._iterate_versions(struct, version, version, parts, archs, server):
-					yield server, ver
+				try:
+					for ver in self._iterate_versions(struct, version, version, parts, archs, server):
+						yield server, ver
+				except (ConfigurationError, ProxyError, DownloadError):
+					# if component is marked as required (UCR variable "version" contains "current")
+					# then raise error, otherwise ignore it
+					if component in self.get_current_components():
+						raise
 
 	def print_version_repositories( self, clean = False, dists = False, start = None, end = None ):
 		'''Return a string of Debian repository statements for all UCS versions
@@ -1076,30 +1095,35 @@ class UniventionUpdater:
 
 		server = UCSHttpServer(server=server, port=port, prefix='', username=username, password=password)
 		try:
-			# allow None as a component prefix
-			if not prefix:
-				server2 = server + '/univention-repository/'
+			# if prefix.lower() == 'none' ==> use no prefix
+			if prefix and prefix.lower() == 'none':
 				try:
-					assert server2.access('')
-					server = server2
+					assert server.access('')
 				except DownloadError, e:
-					ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-					if self.repository_prefix:
-						server3 = server + self.repository_prefix
-						try:
-							assert server3.access('')
-							server = server3
-						except DownloadError, e:
-							ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-				return server # already validated or implicit /
-			elif prefix.lower() != 'none':
-				server = server + prefix
-			# Validate server settings
-			try:
-				assert server.access('')
-			except DownloadError, e:
-				uri, code = e
-				raise ConfigurationError(uri, 'non-existing prefix')
+					uri, code = e
+					raise ConfigurationError(uri, 'absent prefix forced - component %s not found: %s' % (str(component), str(uri)))
+			else:
+				# build list of possible repository prefixes
+				test_server_list = []
+				test_server_list.append( server + '/univention-repository/' )    # first test
+				if self.repository_prefix:
+					test_server_list.append( server + self.repository_prefix )   # second test (only if repository_prefix is defined)
+				test_server_list.append( server )                                # last guess :-)
+
+				for testserver in test_server_list:
+					if prefix:
+						testserver = testserver + prefix  # append prefix if defined
+
+					try:
+						assert testserver.access('')
+						server = testserver               # testserver is valid ==> save it
+						break                             # server is valid ==> stop loop here; "else" statement will not match
+					except DownloadError, e:
+						ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+						uri, code = e
+				else:
+					raise ConfigurationError(uri, 'non-existing component prefix: %s' % (str(uri)))
+
 		except ConfigurationError, e:
 			if self.check_access:
 				raise
@@ -1117,6 +1141,10 @@ class UniventionUpdater:
 					mm_versions = self._releases_in_range(start, end)
 				versions |= set(mm_versions)
 			else:
+				if '-' in version:
+					version = UCS_Version(version)
+				else:
+					version = UCS_Version('%s-0' % version)
 				versions.add(version)
 		return versions
 

@@ -96,22 +96,31 @@ class UniventionMirror( UniventionUpdater ):
 		parts = self.parts
 		archs = ('all',)
 
-		repos = self._iterate_version_repositories(start, end, parts, archs)
+		repos = self._iterate_version_repositories(start, end, parts, archs) # returns generator
 
+		start_sec = UCS_Version((start.major, start.minor, 1))  # security updates start with 'sec1'
 		end_sec = UCS_Version((end.major, end.minor, 99)) # get all available for mirror
 		hotfixes = self.hotfixes
-		sec = self._iterate_security_repositories(start, end_sec, parts, archs, hotfixes)
+		sec = self._iterate_security_repositories(start_sec, end_sec, parts, archs, hotfixes) # returns generator
 
 		components = self.get_components()
-		comp = self._iterate_component_repositories(components, start, end, archs)
+		comp = self._iterate_component_repositories(components, start, end, archs, for_mirror_list=True) # returns generator
 
-		all_repos = itertools.chain(repos, sec, comp)
+		all_repos = itertools.chain(repos, sec, comp) # concatenate all generators into a single one
 		for server, struct, phase, path, script in UniventionUpdater.get_sh_files(all_repos):
 			assert script is not None, 'No script'
-			filename = os.path.join(self.repository_path, 'mirror', path)
-			if os.path.exists(filename):
-				ud.debug(ud.NETWORK, ud.ALL, "Script already exists, skipping: %s" % filename)
-				continue
+
+			# use prefix if defined - otherwise file will be stored in wrong directory
+			if server.prefix:
+				filename = os.path.join(self.repository_path, 'mirror', server.prefix, path)
+			else:
+				filename = os.path.join(self.repository_path, 'mirror', path)
+
+			# Check disabled, otherwise files won't get refetched if they change on upstream server
+			#if os.path.exists(filename):
+			# 	ud.debug(ud.NETWORK, ud.ALL, "Script already exists, skipping: %s" % filename)
+			# 	continue
+
 			dirname = os.path.dirname(filename)
 			try:
 				os.makedirs(dirname, 0755)
@@ -122,11 +131,8 @@ class UniventionMirror( UniventionUpdater ):
 					raise
 			fd = open(filename, "w")
 			try:
-				wsize = fd.write(script)
-				if wsize == len(script):
-					ud.debug(ud.ADMIN, ud.INFO, "Successfully mirrored script: %s" % filename)
-				else:
-					ud.debug(ud.ADMIN, ud.ERROR, "Error writing script: %s" % filename)
+				fd.write(script)
+				ud.debug(ud.ADMIN, ud.INFO, "Successfully mirrored script: %s" % filename)
 			finally:
 				fd.close()
 

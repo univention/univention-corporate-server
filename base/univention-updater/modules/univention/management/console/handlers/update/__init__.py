@@ -549,15 +549,15 @@ class handler(umch.simpleHandler):
 						logfile = ', '.join( FN_LIST_UPGRADE_LOG )
 
 						if status.get('errorsource') in ['PREPARATION', 'SETTINGS']:
-							headline_msg = _('An error occured during update preparation. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred during update preparation. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 						elif status.get('errorsource') in ['PREUP']:
-							headline_msg = _('An error occured during pre-update checks in preup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred during pre-update checks in preup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 						elif status.get('errorsource') in ['UPDATE']:
-							headline_msg = _('An error occured during update. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred during update. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 						elif status.get('errorsource') in ['POSTUP']:
-							headline_msg = _('An error occured in post-update script postup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred in post-update script postup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 						else:
-							headline_msg = _('An error occured. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 
 						txt_version_from_to = status.get('TXT_VERSION_FROM_TO','')
 						if txt_version_from_to:
@@ -589,15 +589,15 @@ class handler(umch.simpleHandler):
 						logfile = '/var/log/univention/updater.log'
 
 						if status.get('errorsource') in ['PREPARATION', 'SETTINGS']:
-							headline_msg = _('An error occured during update preparation. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred during update preparation. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 						elif status.get('errorsource') in ['PREUP']:
-							headline_msg = _('An error occured during pre-update checks in preup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred during pre-update checks in preup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 						elif status.get('errorsource') in ['UPDATE']:
-							headline_msg = _('An error occured during update. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred during update. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 						elif status.get('errorsource') in ['POSTUP']:
-							headline_msg = _('An error occured in post-update script postup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred in post-update script postup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 						else:
-							headline_msg = _('An error occured. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 
 						txt_version_from_to = status.get('TXT_VERSION_FROM_TO','')
 						if txt_version_from_to:
@@ -629,15 +629,15 @@ class handler(umch.simpleHandler):
 						logfile = '/var/log/univention/security-updates.log'
 
 						if status.get('errorsource') in ['PREPARATION', 'SETTINGS']:
-							headline_msg = _('An error occured during update preparation. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred during update preparation. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 						elif status.get('errorsource') in ['PREUP']:
-							headline_msg = _('An error occured during pre-update checks in preup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred during pre-update checks in preup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 						elif status.get('errorsource') in ['UPDATE']:
-							headline_msg = _('An error occured during update. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred during update. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 						elif status.get('errorsource') in ['POSTUP']:
-							headline_msg = _('An error occured in post-update script postup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred in post-update script postup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 						else:
-							headline_msg = _('An error occured. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+							headline_msg = _('An error occurred. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 
 						txt_version_from_to = status.get('TXT_VERSION_FROM_TO','')
 						if txt_version_from_to:
@@ -667,7 +667,7 @@ class handler(umch.simpleHandler):
 						# update failed
 						headline = _('Update failed')
 						logfile = '/var/log/univention/updater.log'
-						headline_msg = _('An error occured during package update. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						headline_msg = _('An error occurred during package update. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 
 		elif windowtype == 'install-component':
 			cur_running_status = self.__is_univention_install_running()
@@ -693,7 +693,7 @@ class handler(umch.simpleHandler):
 						# update failed
 						headline = _('Installation failed')
 						logfile = '/var/log/univention/actualise.log'
-						headline_msg = _('An error occured during package installation. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						headline_msg = _('An error occurred during package installation. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 
 		else:
 			cur_running_status = None
@@ -707,7 +707,7 @@ class handler(umch.simpleHandler):
 				fn = object.options.get(key)
 				# some security checks
 				if not fn.startswith('/var/log/univention/'):
-					self.finished(object.id(), 'invalid filename%s: access not allowed by UMC module' % fn)
+					self.finished(object.id(), 'invalid filename %s: access not allowed by UMC module' % fn)
 					return
 				else:
 					# create fd if fd is not present
@@ -904,7 +904,7 @@ class handler(umch.simpleHandler):
 				errormsg = _( 'The connection to the repository server failed: %s. Please check the repository settings and the network connection.' ) % str( e[ 1 ] )
 			except Exception, e:
 				ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % (traceback.format_exc()))
-				errormsg = _( 'An error occured during network operation: %s' ) % traceback.format_exc().replace('%','§')
+				errormsg = _( 'An error occurred during network operation: %s' ) % traceback.format_exc().replace('%','§')
 
 			if errormsg:
 				list_update_release.add_row([ errormsg ])
@@ -965,7 +965,7 @@ class handler(umch.simpleHandler):
 				errormsg = _( 'The connection to the repository server failed: %s. Please check the repository settings and the network connection.' ) % str( e[ 1 ] )
 			except Exception, e:
 				ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % traceback.format_exc().replace('%','§'))
-				errormsg = _( 'An error occured during network operation: %s') % traceback.format_exc()
+				errormsg = _( 'An error occurred during network operation: %s') % traceback.format_exc()
 
 			if errormsg:
 				list_update_security.add_row([ errormsg ])
@@ -973,7 +973,7 @@ class handler(umch.simpleHandler):
 				if available_security_updates:
 					btn_install_security_update = umcd.Button(_('Install available security updates'), 'actions/install', actions = [umcd.Action(self.__get_warning_request({'type': 'security'}))])
 					txt = _('The currently installed security update version is %(old)s and the most recent security update version is %(new)s.')
-					list_update_security.add_row([umcd.Text(txt % {'old':self.updater.security_patchlevel, 'new': available_security_updates[-1].replace('sec','') })])
+					list_update_security.add_row([umcd.Text(txt % {'old':self.updater.security_patchlevel, 'new': available_security_updates[-1] })])
 					list_update_security.add_row([btn_install_security_update])
 				else:
 					txt = umcd.Text( _('The currently installed security update version is %(old)s and no further security updates are available.') % { 'old': self.updater.security_patchlevel } )
@@ -1209,7 +1209,10 @@ class handler(umch.simpleHandler):
 		frame_release = umcd.Frame([list_release], _('Component settings'))
 
 		inpt_activated = umcd.make(self['update/components_settings']['component_activated'], default = activated)
-		inpt_name = umcd.make(self['update/components_settings']['component_name'], default = name)
+		if name:
+			inpt_name = umcd.make_readonly(self['update/components_settings']['component_name'], default = name)
+		else:
+			inpt_name = umcd.make(self['update/components_settings']['component_name'], default = name)
 		inpt_description = umcd.make(self['update/components_settings']['component_description'], default = description)
 		# TODO: add a check button
 		inpt_server = umcd.make(self['update/components_settings']['component_server'], default = server)

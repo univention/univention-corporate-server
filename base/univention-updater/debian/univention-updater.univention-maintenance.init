@@ -57,6 +57,7 @@ case "$1" in
 		then
 			repository_server="${proxy_http#http://}"
 			repository_server="${repository_server%:*}" # strip port
+			repository_server="${repository_server##*@}" # strip login information
 			log_action_cont_msg "proxy[${repository_server}]"
 		else
 			repository_server="$repository_online_server"

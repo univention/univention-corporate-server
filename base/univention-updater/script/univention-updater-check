@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Updater
 #  update check script
@@ -30,11 +30,27 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if /usr/sbin/univention-updater net --silent --check ; then
-	# return $? == 0  if system is uptodate
-	/usr/sbin/univention-config-registry set update/available=no
+eval "$(ucr shell)"
+
+if [ "$1" = "--silent" ] ; then
+	exec > /dev/null 2> /dev/null
+fi
+
+if [ "$update_umc_updateprocess_easy" = "yes" -o "$update_umc_updateprocess_easy" = "true" -o "$update_umc_updateprocess_easy" = "enabled" -o "$update_umc_updateprocess_easy" = "enable" ] ; then
+	# univention-upgrade can handle UCR variable update/available on its own
+	univention-upgrade --check --setucr
 else
-	# return $? == 1  if system is requires at least one update
+	if /usr/sbin/univention-updater net --silent --check ; then
+		# return $? == 0  if system is uptodate
+		# return $? == 1  if system is requires at least one update
+		if /usr/sbin/univention-security-update net --check ; then
+			# return $? == 0  if system is uptodate
+			# return $? == 1  if system is requires at least one update
+			/usr/sbin/univention-config-registry set update/available=no
+			exit 0
+		fi
+	fi
+	# all other cases ==> release or security update is available
 	/usr/sbin/univention-config-registry set update/available=yes
 fi
 

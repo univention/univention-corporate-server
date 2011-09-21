@@ -267,13 +267,19 @@ def update_ucr_updatestatus():
 	except:
 		dprint('Warning: calling univention-updater-check failed.')
 
-def call_local(updateto=None, clean=None):
+def call_local(updateto=None, clean=None, ignoressh=False, ignoreterm=False, ignorereleasenotes=False):
 	"""Call updater in "local" mode."""
 	calllocal = [sys.argv[0], 'local']
 	if updateto:
 		calllocal += ['--updateto', '%s' % updateto]
 	if not clean:
 		calllocal.append('--no-clean')
+	if ignoressh:
+		calllocal.append('--ignoressh')
+	if ignoreterm:
+		calllocal.append('--ignoreterm')
+	if ignorereleasenotes:
+		calllocal.append('--ignore-releasenotes')
 	os.execv(sys.argv[0], calllocal)
 	dprint('Fatal: failed to exec: %r' % calllocal)
 	sys.exit(1)
@@ -421,7 +427,7 @@ def main():
 				fp_debug.close()
 				raise UpdateError('Failed to execute "univention-repository-update net"', errorsource='PREPARATION')
 
-			call_local(updateto=updateto, clean=clean)
+			call_local(updateto=updateto, clean=clean, ignoressh=ignoressh, ignoreterm=ignoreterm, ignorereleasenotes=ignorereleasenotes)
 		updater = UniventionUpdater()
 		nextversion = update_available('net', baseConfig, cdrom_mount_point, iso=iso, updater=updater)
 	else:
@@ -464,7 +470,7 @@ def main():
 				fp_debug.close()
 				raise UpdateError('Failed to execute "univention-repository-update cdrom"', errorsource='UPDATE')
 
-			call_local(updateto=updateto, clean=clean)
+			call_local(updateto=updateto, clean=clean, ignoressh=ignoressh, ignoreterm=ignoreterm, ignorereleasenotes=ignorereleasenotes)
 		else:
 			dprint('Error: You are trying to install from a cdrom/dvd image')
 			dprint('       but a local repository was not found. If you want to')
@@ -546,6 +552,8 @@ if __name__ == '__main__':
 		usage()
 		sys.exit(0)
 
+	do_ucr_update = True
+
 	fd_log = open(LOGNAME, 'a+')
 	try:
 		lock = univention.updater.tools.updater_lock_acquire()
@@ -556,7 +564,6 @@ if __name__ == '__main__':
 		try:
 			try:
 				main()
-				update_ucr_updatestatus()
 			except ConfigurationError, e:
 				msg = 'Update aborted due to configuration error: %s' % e
 				raise UpdateError(msg, errorsource='SETTINGS')
@@ -588,14 +595,19 @@ if __name__ == '__main__':
 			print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
 			subprocess.call(['touch', failure])
 			reenable_apache2_and_umc()
+			# disable update of UCR variable update/available to prevent call loop of univention-updater
+			# (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
+			do_ucr_update = False
 			sys.exit(1)
 		except KeyboardInterrupt:
 			update_status( status='FAILED' )
 			dprint("\nUpdate aborted by user (ctrl-c)\n")
 			reenable_apache2_and_umc()
+			# disable update of UCR variable update/available to prevent call loop of univention-updater
+			# (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
+			do_ucr_update = False
 			sys.exit(1)
 		except UpToDateNoError, error:
-			update_ucr_updatestatus()
 			update_status( status='DONE' )
 			if os.path.exists(failure):
 				os.unlink(failure)
@@ -604,6 +616,11 @@ if __name__ == '__main__':
 				if error.reboot is not None:
 					subprocess.call(['at', '-f', '/var/lib/univention-updater/reboot.at', '--', '%s' % error.reboot])
 			sys.exit(0)
+		except SystemExit:
+			# disable update of UCR variable update/available to prevent call loop of univention-updater
+			# (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
+			do_ucr_update = False
+			raise
 	finally:
 		if not univention.updater.tools.updater_lock_release(lock):
 			print 'WARNING: updater-lock already released!'
@@ -611,4 +628,6 @@ if __name__ == '__main__':
 			remove_temporary_sources_list()
 		except:
 			print >>sys.stderr, "Failed to remove %s." % TMPSOURCE
+		if do_ucr_update:
+			update_ucr_updatestatus()
 		fd_log.close()

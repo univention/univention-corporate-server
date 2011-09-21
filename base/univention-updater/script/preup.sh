@@ -37,7 +37,6 @@ date >&3
 
 eval "$(univention-config-registry shell)" >&3 2>&3
 
-# Bug #16454: Workaround to remove source.list on failed upgrades
 cleanup () {
 	# remove statoverride for UMC and apache in case of error during preup script
 	if [ -e /usr/sbin/univention-management-console-server ]; then
@@ -50,55 +49,6 @@ cleanup () {
 	fi
 }
 trap cleanup EXIT
-
-# Bug #21993: Check for suspend KVM instances
-if [ yes != "$update24_ignorekvm" ] && which kvm >/dev/null && which virsh >/dev/null
-then
-	running= suspended= virtio=
-	for vm in $(LC_ALL=C virsh -c qemu:///system list --all | sed -e '1,2d' -nre 's/^ *[-0-9]+ +(.+) (no state|running|idle|paused|in shutdown|shut off|crashed)$/\1/p')
-	do
-		if [ -S "/var/lib/libvirt/qemu/$vm.monitor" ]
-		then
-			running="${running:+$running }'$vm'"
-		elif [ -s "/var/lib/libvirt/qemu/save/$vm.save" ]
-		then
-			suspended="${suspended:+$suspended }'$vm'"
-		fi
-		if grep -q "<target.* bus='virtio'.*/>\|<model.* type='virtio'.*/>" "/etc/libvirt/qemu/$vm.xml"
-		then
-			virtio="${virtio:+$virtio }'$vm'"
-		fi
-	done
-	if [ -n "$running" ] || [ -n "$suspended" ] || [ -n "$virtio" ]
-	then
-		echo "\
-WARNING: Qemu-kvm will be updated to version 0.14, which is incompatible with
-previous versions. Virtual machines running Windows and using VirtIO must be
-updated to use at least version 1.1.16 of the VirtIO driver for Windows.
-
-All virtual machines should be turned off before updating. Please use UVMM or
-virsh to turn off all running and suspended virtual machines.
-
-This check can be disabled by setting the Univention Configuration Registry
-variable \"update24/ignorekvm\" to \"yes\"."
-		if [ -n "$virtio" ]
-		then
-			echo "VMs using virtio: $virtio" | fmt
-		fi
-		if [ -n "$running" ]
-		then
-			echo "Running VMs: $running" | fmt
-		fi
-		if [ -n "$suspended" ]
-		then
-			echo "Suspended VMs: $suspended" | fmt
-		fi
-	fi
-	if [ -n "$running" ] || [ -n "$suspended" ]
-	then
-		exit 1
-	fi
-fi
 
 ###########################################################################
 # RELEASE NOTES SECTION (Bug #19584)
@@ -278,6 +228,46 @@ if [ ! -z "$update_custom_preup" ]; then
 	fi
 fi
 
+#################### Bug #22093
+
+get_latest_kernel_pkg () {
+	# returns latest kernel package for given kernel version
+	# currently running kernel is NOT included!
+
+	kernel_version="$1"
+
+	latest_dpkg=""
+	latest_kver=""
+	for kver in $(COLUMNS=200 dpkg -l linux-image-${kernel_version}-ucs\* 2>/dev/null | grep linux-image- | awk '{ print $2 }' | sort -n | grep -v "linux-image-$(uname -r)") ; do
+		dpkgver="$(apt-cache show $kver | sed -nre 's/Version: //p')"
+		if dpkg --compare-versions "$dpkgver" gt "$latest_dpkg" ; then
+			latest_dpkg="$dpkgver"
+			latest_kver="$kver"
+		fi
+	done
+	echo "$latest_kver"
+}
+
+pruneOldKernel () {
+	# removes all kernel packages of given kernel version
+	# EXCEPT currently running kernel and latest kernel package
+	# ==> at least one and at most two kernel should remain for given kernel version
+	kernel_version="$1"
+
+	ignore_kver="$(get_latest_kernel_pkg "$kernel_version")"
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes remove --purge $(COLUMNS=200 dpkg -l linux-image-${kernel_version}-ucs\* 2>/dev/null | grep linux-image- | awk '{ print $2 }' | sort -n | egrep -v "linux-image-$(uname -r)|$ignore_kver" | tr "\n" " ") >>/var/log/univention/updater.log 2>&1
+}
+
+if [ "$update24_pruneoldkernel" = "yes" -o "$univention_ox_directory_integration_oxae" = "true" ]; then
+	echo "Purging old kernel..." | tee -a /var/log/univention/updater.log
+	pruneOldKernel "2.6.18"
+	pruneOldKernel "2.6.26"
+	pruneOldKernel "2.6.32"
+	echo "done" | tee -a /var/log/univention/updater.log
+fi
+
+#####################
+
 check_space(){
 	partition=$1
 	size=$2
@@ -289,8 +279,13 @@ check_space(){
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
         echo "         This may interrupt the update and result in an inconsistent system!"
     	echo "         If neccessary you can skip this check by setting the value of the"
-		echo "         baseconfig variable update24/checkfilesystems to \"no\"."
+		echo "         config registry variable update24/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
+		if [ "$partition" = "/boot" -a ! "$update24_pruneoldkernel" = "yes" -a ! "$univention_ox_directory_integration_oxae" = "true" ] ; then
+			echo "         Old kernel versions on /boot can be pruned automatically during"
+			echo "         next update attempt by setting config registry variable"
+			echo "         update24/pruneoldkernel to \"yes\"."
+		fi
 		echo ""
 		# kill the running univention-updater process
 		exit 1
@@ -309,7 +304,7 @@ if [ ! "$update24_checkfilesystems" = "no" ]
 then
 
 	check_space "/var/cache/apt/archives" "700000" "0,7 GB"
-	check_space "/boot" "55000" "55 MB"
+	check_space "/boot" "50000" "50 MB"
 	check_space "/" "1500000" "1,5 GB"
 
 else

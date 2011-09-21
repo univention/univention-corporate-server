@@ -85,7 +85,7 @@ def update_status(**kwargs):
 		dprint('Warning: cannot update %s' % FN_STATUS)
 
 
-def performUpdate(updateto=None, checkForUpdates=False):
+def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoreterm=False):
 	updater = UniventionUpdater()
 
 	if updateto:
@@ -141,7 +141,13 @@ def performUpdate(updateto=None, checkForUpdates=False):
 				# perform release update (only one step!)
 				dprint('Starting update to UCS version %s at %s...' % (version_next, time.ctime()))
 				time.sleep(1)
-				retcode = subprocess.call('univention-updater net --updateto %s' % version_next, shell=True)
+				params = []
+				if ignoressh:
+					params.append(' --ignoressh')
+				if ignoreterm:
+					params.append(' --ignoreterm')
+				params = ''.join(params)
+				retcode = subprocess.call('univention-updater net --updateto %s%s' % (version_next, params, ), shell=True)
 				if retcode:
 					dprint('exitcode of univention-updater: %s' % retcode)
 					dprint('ERROR: update failed. Please check /var/log/univention/updater.log')
@@ -196,16 +202,16 @@ def performUpdate(updateto=None, checkForUpdates=False):
 		#######################################################################
 		# reinit updater module
 		updater.ucr_reinit()
-		current_security_update = None
+		current_security_update = 0
 		next_security_update = updater.security_update_available()
-		while next_security_update > current_security_update:
+		while next_security_update and ( next_security_update != current_security_update ):
 			# updates available ==> stop here in "check-mode"
 			if checkForUpdates:
 				dprint('Security update has been found.')
 				return True
 
 			# perform security update
-			dprint('Starting security update %s at %s...' % (next_security_update, time.ctime()))
+			dprint('Starting security update sec%s at %s...' % (next_security_update, time.ctime()))
 			time.sleep(1)
 			retcode = subprocess.call('univention-security-update net', shell=True)
 			if retcode:
@@ -213,7 +219,7 @@ def performUpdate(updateto=None, checkForUpdates=False):
 				dprint('ERROR: update failed. Please check /var/log/univention/security-updates.log')
 				update_status( status='FAILED', errorsource='UPDATE' )
 				sys.exit(1)
-			dprint('Security update finished %s at %s...' % (next_security_update, time.ctime()))
+			dprint('Security update finished sec%s at %s...' % (next_security_update, time.ctime()))
 			time.sleep(1)
 
 			updater.ucr_reinit()
@@ -236,6 +242,8 @@ def main():
 	parser.add_option("--updateto", dest="updateto", default=None, action="store", help="update up to specified version")
 	parser.add_option("--check", dest="check", default=False, action="store_true", help="check if updates are available")
 	parser.add_option("--setucr", dest="setucr", default=False, action="store_true", help="if set, variable update/available will be updated if --check is specified too")
+	parser.add_option("--ignoressh", dest="ignoressh", default=False, action="store_true", help="pass --ignoressh to univention-updater")
+	parser.add_option("--ignoreterm", dest="ignoreterm", default=False, action="store_true", help="pass --ignoreterm to univention-updater")
 	(options, args) = parser.parse_args()
 
 	try:
@@ -249,14 +257,14 @@ def main():
 
 	if options.check:
 		try:
-			update_available = performUpdate(options.updateto, checkForUpdates=True)
+			update_available = performUpdate(options.updateto, checkForUpdates=True, ignoressh=options.ignoressh, ignoreterm=options.ignoreterm)
 		except SystemExit, e:
 			sys.exit(e)
 		except ConfigurationError, e:
 			print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
 			sys.exit(3)
 		except Exception, e:
-			print 'An error occured - stopping here.'
+			print 'An error occurred - stopping here.'
 			import traceback
 			print >>logfd, 'Traceback in univention-upgrade:'
 			print >>logfd, traceback.format_exc()
@@ -273,7 +281,7 @@ def main():
 			sys.exit(1)
 	else:
 		try:
-			performUpdate(options.updateto)
+			performUpdate(options.updateto, ignoressh=options.ignoressh, ignoreterm=options.ignoreterm)
 		except SystemExit, e:
 			sys.exit(e)
 		except ConfigurationError, e:
@@ -282,7 +290,7 @@ def main():
 			sys.exit(3)
 		except Exception, e:
 			update_status( status='FAILED' )
-			print 'An error occured - stopping here.'
+			print 'An error occurred - stopping here.'
 			import traceback
 			print >>logfd, 'Traceback in univention-upgrade:'
 			print >>logfd, traceback.format_exc()
@@ -291,14 +299,14 @@ def main():
 
 		# check for new updates after updating ; update UCR variable
 		try:
-			update_available = performUpdate(options.updateto, checkForUpdates=True)
+			update_available = performUpdate(options.updateto, checkForUpdates=True, ignoressh=options.ignoressh, ignoreterm=options.ignoreterm)
 		except SystemExit, e:
 			sys.exit(e)
 		except ConfigurationError, e:
 			print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
 			sys.exit(3)
 		except Exception, e:
-			print 'An error occured - stopping here.'
+			print 'An error occurred - stopping here.'
 			import traceback
 			print >>logfd, 'Traceback in univention-upgrade:'
 			print >>logfd, traceback.format_exc()
