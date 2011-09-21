@@ -6,6 +6,7 @@ Variables: server/role
 Variables: kerberos/realm
 Variables: windows/domain
 Variables: samba/.*
+Variables: samba4/.*
 Variables: windows/wins-.*
 
 Type: subfile
@@ -52,5 +53,5 @@ Variables: samba/share/sysvol
 
 Type: file
 File: etc/cron.d/sysvol-sync
-Variables: samba4/sysvol/sync/interval
+Variables: samba4/sysvol/sync/cron
 Variables: samba4/sysvol/sync/jitter

@@ -1,3 +1,9 @@
+univention-samba4 (1.0.41-3) unstable; urgency=low
+
+  * fix name of samba4/sysvol/sync/cron (Bug #23359)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Sep 2011 15:39:18 +0200
+
 univention-samba4 (1.0.41-2) unstable; urgency=low
 
   * sysvol replication cronjob (Bug #23359)
