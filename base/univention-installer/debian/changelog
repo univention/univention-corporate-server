@@ -1,3 +1,10 @@
+univention-installer (7.0.64-1) unstable; urgency=low
+
+  * fixes for networking module (Bug #22872)
+  * resizing of overview module (Bug #23120)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 21 Sep 2011 16:33:51 +0200
+
 univention-installer (7.0.63-1) unstable; urgency=low
 
   * Check that domainname contains at least one dot (Bug #23334)
