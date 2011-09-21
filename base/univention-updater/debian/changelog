@@ -1,3 +1,9 @@
+univention-updater (7.0.24-1) unstable; urgency=low
+
+  * move purge of nagios2 to postup (Bug #23260)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 21 Sep 2011 18:25:19 +0200
+
 univention-updater (7.0.23-1) unstable; urgency=low
 
   * use port 7389 a default for ldap/server/port (Bug #23231)

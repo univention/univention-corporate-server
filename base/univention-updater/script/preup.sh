@@ -342,7 +342,7 @@ if dpkg -l lilo >&3 2>&3 ; then
 fi
 
 # remove old packages that causes conflicts
-olddebs="python2.4-dns alsa-headers nagios2 nagios2-common nagios2-doc"
+olddebs="python2.4-dns alsa-headers"
 for deb in $olddebs; do
 	if dpkg -l "$deb" >&3 2>&3; then
 		dpkg -P "$deb" >&3 2>&3
