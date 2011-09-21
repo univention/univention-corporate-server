@@ -1435,7 +1435,7 @@ class content:
 		self.minX=self.max_x/2-28
 		self.minY=self.max_y/2-4
 		self.maxWidth=56
-		self.maxHeight=17
+		self.maxHeight=28
 		self.maxX=self.minX+66
 		self.maxY=self.minY+27
 		self.cmdline=cmdline
