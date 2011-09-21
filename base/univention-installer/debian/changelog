@@ -1,3 +1,14 @@
+univention-installer (7.0.68-1) unstable; urgency=low
+
+  * updated translations (Bug #23120)
+  * added new widget textarea (Bug #23120)
+  * increased height of content window (Bug #23120)
+  * fixed headline (Bug #23120)
+  * do not set proxy_http with values "http://" or "https://" (Bug #23756)
+  * resizing of partitioning modules (Bug #23120)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 21 Sep 2011 20:58:50 +0200
+
 univention-installer (7.0.67-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3
