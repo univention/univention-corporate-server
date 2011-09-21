@@ -72,7 +72,7 @@ class object(content):
 
 		j = 0
 		for i in msg:
-			self.elements.append(textline(i,self.minY+j,self.minX+2))
+			self.elements.append(textline(i,self.minY-11+j,self.minX+5))
 			j = j + 1
 
 	def input(self,key):

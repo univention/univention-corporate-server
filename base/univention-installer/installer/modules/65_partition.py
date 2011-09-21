@@ -81,6 +81,7 @@ class object(content):
 	def __init__(self,max_y,max_x,last=(1,1), file='/tmp/installer.log', cmdline={}):
 		self.written=0
 		content.__init__(self,max_y,max_x,last, file, cmdline)
+		self.debug('init(): max_y=%s  max_x=%s' % (max_y, max_x))
 
 	def MiB2MB(self, mb):
 		return mb * 1024.0 * 1024.0 / 1000.0 / 1000.0
@@ -423,7 +424,7 @@ class object(content):
 		return self.container['result']
 
 	def layout(self):
-		self.sub=self.partition(self,self.minY-2,self.minX-20,self.maxWidth+20,self.maxHeight+5)
+		self.sub=self.partition(self,self.minY-12,self.minX,self.maxWidth+20,self.maxHeight+5)
 		self.sub.draw()
 
 	def input(self,key):
@@ -1898,7 +1899,7 @@ class object(content):
 			else:
 				msglist = [ _('Not enough disk space found for /boot!'),
 							_('Auto partitioning aborted.') ]
-				self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
+				self.sub = msg_win(self,self.pos_y+8,self.pos_x+5,self.maxWidth,6, msglist)
 				self.draw()
 				return
 
@@ -1958,7 +1959,7 @@ class object(content):
 				self.parent.debug('AUTOPART: DISK=%s' % self.container['disk'])
 				msglist = [ _('Not enough disk space found for /boot!'),
 							_('Auto partitioning aborted.') ]
-				self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
+				self.sub = msg_win(self,self.pos_y+8,self.pos_x+5,self.maxWidth,6, msglist)
 				self.draw()
 				return
 
@@ -2002,7 +2003,7 @@ class object(content):
 						_('Further information can be found in the'),
 						_('Support & Knowledge Base: http://sdb.univention.de.')
 						]
-				self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
+				self.sub = msg_win(self,self.pos_y+11,self.pos_x+5,self.maxWidth,6, msglist)
 				self.draw()
 		def check_lvm_msg(self):
 			# check if LVM config has to be read
@@ -2020,7 +2021,7 @@ class object(content):
 					msglist = [ _('WARNING: not enough free space for auto partitioning!'),
 								_('Auto partitioning has been disabled!')
 								]
-					self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
+					self.sub = msg_win(self,self.pos_y+11,self.pos_x+5,self.maxWidth,6, msglist)
 					self.draw()
 
 			# ask for auto partitioning
@@ -2033,7 +2034,7 @@ class object(content):
 						  _('unsuitable press F5 to restart partitioning.')
 						  ]
 				self.container['autopartition'] = False
-				self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+2, self.width-4, self.height-15, msglist, default='yes', callback_yes=self.auto_partitioning)
+				self.sub = yes_no_win(self, self.pos_y+9, self.pos_x+2, self.width-4, self.height-25, msglist, default='yes', callback_yes=self.auto_partitioning)
 				self.draw()
 
 			# show warning if LVM1 volumes are detected
@@ -2042,13 +2043,13 @@ class object(content):
 				msglist = [ _('LVM1 volumes detected. To use LVM1 volumes all'),
 							_('existing LVM1 snapshots have to be removed!'),
 							_('Otherwise kernel is unable to mount them!') ]
-				self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
+				self.sub = msg_win(self,self.pos_y+11,self.pos_x+5,self.maxWidth,6, msglist)
 				self.draw()
 
 			# if more than one volume group is present, ask which one to use
 			if not self.container['lvm']['ucsvgname'] and len(self.container['lvm']['vg'].keys()) > 1 and not hasattr(self,'sub'):
 				self.parent.debug('requesting user input: more that one LVMVG found')
-				self.sub = self.ask_lvm_vg(self,self.minY+2,self.minX+5,self.maxWidth,self.maxHeight-3)
+				self.sub = self.ask_lvm_vg(self,self.minY+5,self.minX+5,self.maxWidth,self.maxHeight-3)
 				self.draw()
 
 			# if only one volume group os present, use it
@@ -2062,7 +2063,7 @@ class object(content):
 			if self.container['lvm']['enabled'] == None and not hasattr(self,'sub'):
 				msglist=[ _('No LVM volume group found on current system.'),
 						  _('Do you want to use LVM2?') ]
-				self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-15, msglist, default='yes',
+				self.sub = yes_no_win(self, self.pos_y+11, self.pos_x+4, self.width-8, self.height-25, msglist, default='yes',
 									  callback_yes=self.ask_lvm_enable_callback, callback_no=self.ask_lvm_enable_callback)
 				self.draw()
 
@@ -2080,6 +2081,7 @@ class object(content):
 				self.sub.draw()
 
 		def modheader(self):
+			return ''
 			return _(' Partitioning dialog ')
 
 		def profileheader(self):
@@ -2088,8 +2090,8 @@ class object(content):
 		def layout(self):
 			self.reset_layout()
 			self.container=self.parent.container
-			self.minY=self.parent.minY
-			self.minX=self.parent.minX-16
+			self.minY=self.parent.minY-11
+			self.minX=self.parent.minX+4
 			self.maxWidth=self.parent.maxWidth
 			self.maxHeight=self.parent.maxHeight
 
@@ -2107,7 +2109,7 @@ class object(content):
 			head5=self.get_col(_('Mount point'),col5,'l')
 			head6=self.get_col(_('Size(MB)'),col6)
 			text = '%s %s %s %s %s %s'%(head1,head2,head3,head4,head5,head6)
-			self.add_elem('TXT_0', textline(text,self.minY,self.minX+2)) #0
+			self.add_elem('TXT_0', textline(text,self.minY+11,self.minX+2)) #0
 
 			device=self.container['disk'].keys()
 			device.sort()
@@ -2244,14 +2246,14 @@ class object(content):
 			msg = _('This module is used for partitioning the existing hard drives. It is recommended to use at least two partitions - one for the root file system, and one for the swap area.\n\nPlease note:\nIf automatic partitioning has been selected, all the data stored on these hard drives will be lost during this process! Should the proposed partitioning be undesirable, it can be rejected by pressing the F5 function key.')
 
 			self.add_elem('TA_desc', textarea(msg, self.minY, self.minX, 10, self.maxWidth+11))
-			self.add_elem('SEL_part', select(dict,self.minY+1,self.minX,self.maxWidth+11,14,self.container['selected'])) #1
-			self.add_elem('BT_create', button(_('F2-Create'),self.minY+16,self.minX,18)) #2
-			self.add_elem('BT_edit', button(_('F3-Edit'),self.minY+16,self.minX+(self.width/2)-4,align="middle")) #3
-			self.add_elem('BT_delete', button(_('F4-Delete'),self.minY+16,self.minX+(self.width)-7,align="right")) #4
-			self.add_elem('BT_reset', button(_('F5-Reset changes'),self.minY+17,self.minX,30)) #5
-			self.add_elem('BT_write', button(_('F6-Write partitions'),self.minY+17,self.minX+(self.width)-37,30)) #6
-			self.add_elem('BT_back', button(_('F11-Back'),self.minY+18,self.minX,30)) #7
-			self.add_elem('BT_next', button(_('F12-Next'),self.minY+18,self.minX+(self.width)-37,30)) #8
+			self.add_elem('SEL_part', select(dict,self.minY+12,self.minX,self.maxWidth+11,14,self.container['selected'])) #1
+			self.add_elem('BT_create', button(_('F2-Create'),self.minY+28,self.minX,18)) #2
+			self.add_elem('BT_edit', button(_('F3-Edit'),self.minY+28,self.minX+(self.width/2)-4,align="middle")) #3
+			self.add_elem('BT_delete', button(_('F4-Delete'),self.minY+28,self.minX+(self.width)-7,align="right")) #4
+			self.add_elem('BT_reset', button(_('F5-Reset changes'),self.minY+29,self.minX,30)) #5
+			self.add_elem('BT_write', button(_('F6-Write partitions'),self.minY+29,self.minX+(self.width)-37,30)) #6
+			self.add_elem('BT_back', button(_('F11-Back'),self.minY+30,self.minX,30)) #7
+			self.add_elem('BT_next', button(_('F12-Next'),self.minY+30,self.minX+(self.width)-37,30)) #8
 			if self.startIt:
 				self.parent.scan_extended_size()
 				self.parent.debug('SCAN_EXT: %s' % self.container['temp'])
@@ -2368,11 +2370,11 @@ class object(content):
 					self.parent.debug('create')
 					if self.resolve_type(type) == 'free' and self.possible_type(self.container['disk'][disk],part):
 						self.parent.debug('create (%s)' % type)
-						self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
+						self.sub=self.edit(self,self.minY+5,self.minX+4,self.maxWidth,self.maxHeight-8)
 						self.sub.draw()
 					elif selected[0] == 'lvm_vg_free':
 						self.parent.debug('create lvm!')
-						self.sub=self.edit_lvm_lv(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
+						self.sub=self.edit_lvm_lv(self,self.minY+5,self.minX+4,self.maxWidth,self.maxHeight-8)
 						self.sub.draw()
 				elif key == 267:# F3 - Edit
 					self.parent.debug('edit')
@@ -2381,15 +2383,15 @@ class object(content):
 						if 'lvm' in self.parent.container['disk'][item[1]]['partitions'][item[2]]['flag']:
 							self.parent.debug('edit lvm pv not allowed')
 							msglist=[ _('LVM physical volumes cannot be modified!'), _('If necessary delete this partition.') ]
-							self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-14, msglist)
+							self.sub = msg_win(self, self.pos_y+11, self.pos_x+4, self.width-8, self.height-25, msglist)
 							self.sub.draw()
 						else:
 							self.parent.debug('edit! (%s)' % type)
-							self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
+							self.sub=self.edit(self,self.minY+5,self.minX+4,self.maxWidth,self.maxHeight-8)
 							self.sub.draw()
 					elif selected[0] == 'lvm_lv':
 						self.parent.debug('edit lvm!')
-						self.sub=self.edit_lvm_lv(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
+						self.sub=self.edit_lvm_lv(self,self.minY+5,self.minX+4,self.maxWidth,self.maxHeight-8)
 						self.sub.draw()
 				elif key == 268:# F4 - Delete
 					self.parent.debug('delete (%s)' % type)
@@ -2398,7 +2400,7 @@ class object(content):
 						self.part_delete(self.get_elem('SEL_part').result()[0])
 					elif type == PARTTYPE_EXTENDED:
 						self.parent.debug('delete ext!')
-						self.sub=self.del_extended(self,self.minY+4,self.minX-2,self.maxWidth+16,self.maxHeight-5)
+						self.sub=self.del_extended(self,self.minY+9,self.minX-2,self.maxWidth+16,self.maxHeight-17)
 						self.sub.draw()
 
 				elif key == 269:# F5 - Reset changes
@@ -2409,12 +2411,12 @@ class object(content):
 					if hasattr(self,"sub"):
 						self.sub.draw()
 				elif key == 270:# F6 - Write Partitions
-					self.sub=self.verify(self,self.minY+(self.maxHeight/8),self.minX+(self.maxWidth/8),self.maxWidth,self.maxHeight-7)
+					self.sub=self.verify(self,self.minY+(self.maxHeight/3),self.minX+(self.maxWidth/8),self.maxWidth,self.maxHeight-18)
 					self.sub.draw()
 
 				elif key == 276:
 					if len(self.container['history']) or self.parent.test_changes():
-						self.sub=self.verify_exit(self,self.minY+(self.maxHeight/8)+2,self.minX+(self.maxWidth/8),self.maxWidth,self.maxHeight-7)
+						self.sub=self.verify_exit(self,self.minY+(self.maxHeight/3),self.minX+(self.maxWidth/8),self.maxWidth,self.maxHeight-18)
 						self.sub.draw()
 					else:
 						return 'next'
@@ -2428,7 +2430,7 @@ class object(content):
 								if 'lvm' in self.parent.container['disk'][item[1]]['partitions'][item[2]]['flag']:
 									self.parent.debug('edit lvm pv not allowed')
 									msglist=[ _('LVM physical volumes cannot be modified!'), _('If necessary delete this partition.') ]
-									self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-14, msglist)
+									self.sub = msg_win(self, self.pos_y+11, self.pos_x+4, self.width-8, self.height-25, msglist)
 									self.sub.draw()
 								else:
 									self.parent.debug('edit!')
@@ -2438,7 +2440,7 @@ class object(content):
 								self.parent.debug('edit lvm!')
 								self.sub=self.edit_lvm_lv(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 								self.sub.draw()
-								
+
 					elif self.get_elem('BT_create').get_status():#create
 						if self.resolve_type(type) is 'free' and self.possible_type(self.container['disk'][disk],part):
 							self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
@@ -2449,7 +2451,7 @@ class object(content):
 							if 'lvm' in self.parent.container['disk'][item[1]]['partitions'][item[2]]['flag']:
 								self.parent.debug('edit lvm pv not allowed')
 								msglist=[ _('LVM physical volumes cannot be modified!'), _('If necessary delete this partition.') ]
-								self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-14, msglist)
+								self.sub = msg_win(self, self.pos_y+11, self.pos_x+4, self.width-8, self.height-25, msglist)
 								self.sub.draw()
 							else:
 								self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
@@ -2462,7 +2464,7 @@ class object(content):
 						if type == PARTTYPE_PRIMARY or type == PARTTYPE_LOGICAL or type == PARTTYPE_LVM_LV:
 							self.part_delete(self.get_elem('SEL_part').result()[0])
 						elif type == PARTTYPE_EXTENDED:
-							self.sub=self.del_extended(self,self.minY+4,self.minX-2,self.maxWidth+16,self.maxHeight-5)
+							self.sub=self.del_extended(self,self.minY+9,self.minX-2,self.maxWidth+16,self.maxHeight-17)
 							self.sub.draw()
 					elif self.get_elem('BT_reset').get_status():#reset changes
 						self.parent.start()
@@ -2531,7 +2533,7 @@ class object(content):
 						msglist = [ _('Unable to remove physical volume from'),
 									_('volume group "%s"!') % pv['vg'],
 									_('Physical volume contains physical extents in use!') ]
-						self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-13, msglist)
+						self.sub = msg_win(self, self.pos_y+11, self.pos_x+4, self.width-8, self.height-24, msglist)
 						self.draw()
 						return True
 
@@ -2544,7 +2546,7 @@ class object(content):
 									_('Physical volume contains physical extents in use!'),
 									_('Please use "pvmove" to move data to other'),
 									_('physical volumes.') ]
-						self.sub = msg_win(self, self.pos_y+3, self.pos_x+4, self.width-8, self.height-13, msglist)
+						self.sub = msg_win(self, self.pos_y+11, self.pos_x+4, self.width-8, self.height-24, msglist)
 						self.draw()
 						return True
 					else:
@@ -3215,7 +3217,7 @@ class object(content):
 				msg = []
 				for err in error.split('\n'):
 					msg.append(err[:60])
-				self.sub = msg_win(self,self.pos_y+1,self.pos_x+1,self.width-1,2,msg)
+				self.sub = msg_win(self,self.pos_y+6,self.pos_x+1,self.width-1,2,msg)
 				self.parent.start()
 				self.draw()
 				return False
@@ -3241,11 +3243,11 @@ class object(content):
 		class active(act_win):
 			def __init__(self,parent,header,text,name='act',action=None):
 				if action=='read_lvm':
-					self.pos_x=parent.minX+(parent.maxWidth/2)-20
-					self.pos_y=parent.minY+5
+					self.pos_x=parent.minX+(parent.maxWidth/2)-18
+					self.pos_y=parent.minY+11
 				else:
-					self.pos_x=parent.minX+(parent.maxWidth/2)-15
-					self.pos_y=parent.minY+5
+					self.pos_x=parent.minX+(parent.maxWidth/2)-13
+					self.pos_y=parent.minY+11
 				self.action = action
 				act_win.__init__(self,parent,header,text,name)
 
