@@ -658,6 +658,11 @@ class object(content):
 			self.container['%s_ip' % name] =  card.get_elem('INP_IPv4ADDR').result().strip()
 			self.container['%s_netmask' % name] =  card.get_elem('INP_IPv4NETMASK').result().strip()
 
+		# calculate broadcast and network
+		result = self.addr_netmask2result( name, self.container.get('%s_ip' % name,''), self.container.get('%s_netmask' % name,''))
+		if result:
+			self.container.update(result)
+
 		# IPv6
 		if card.get_elem('CB_IPv6RA').result():
 			self.container['%s_acceptra' % name] = 'true'
@@ -825,8 +830,10 @@ class object(content):
 		result = {}
 		try:
 			IPv4_addr = ipaddr.IPv4Network( '%s/%s' % (addr, netmask) )
-		except (ipaddr.AddressValueError, ipaddr.NetmaskValueError):
+		except (ipaddr.AddressValueError, ipaddr.NetmaskValueError), e:
+			self.debug('got exception while parsing "%s/%s": %s' % (addr, netmask, str(e)))
 			if copyOnError:
+				self.debug('using fallback')
 				result['%s_ip' % name] = addr
 				result['%s_netmask' % name] = netmask
 				result['%s_broadcast' % name] = ''
