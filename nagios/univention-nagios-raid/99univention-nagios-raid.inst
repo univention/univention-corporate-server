@@ -67,7 +67,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 
 		# test if raid exists
 		if [ -f /proc/mdstat ]; then
-			univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_RAID,cn=nagios,$ldap_base"
+			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_RAID,cn=nagios,$ldap_base"
 		fi
 	fi	
 fi
