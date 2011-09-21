@@ -49,7 +49,6 @@ import subprocess
 import threading
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
-PATH_SYS_CLASS_NET = '/tmp/class/net'
 LEN_IPv4_ADDR = 15
 LEN_IPv6_ADDR = 40
 
