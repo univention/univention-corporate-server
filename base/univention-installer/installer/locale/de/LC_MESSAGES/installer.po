@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-17 12:46+0200\n"
-"PO-Revision-Date: 2009-03-09 17:07+0100\n"
+"POT-Creation-Date: 2011-09-20 20:27+0200\n"
+"PO-Revision-Date: 2011-09-20 20:44+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -149,11 +149,11 @@ msgstr ""
 msgid "A Python Exception has occured!"
 msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 
-#: installer/main.py:282 installer/objects.py:1752
+#: installer/main.py:282 installer/objects.py:2009
 #: installer/modules/10_hardware.py:279 installer/modules/10_hardware.py:313
 #: installer/modules/15_profile.py:56 installer/modules/65_partition.py:4186
-#: installer/modules/65_partition.py:4202 installer/modules/70_net.py:775
-#: installer/modules/70_net.py:1047
+#: installer/modules/65_partition.py:4202 installer/modules/70_net3.py:972
+#: installer/modules/70_net.py:971
 #: ../univention-system-setup/usr/sbin/univention-system-setup:160
 #: ../univention-system-setup/usr/sbin/univention-system-setup:187
 #: ../univention-system-setup/usr/sbin/univention-system-setup:206
@@ -186,55 +186,55 @@ msgstr " F1-Hilfe | F11-Zurück | F12-Starte Installation | Strg+c-Abbruch"
 msgid " F1-Help | F11-Back | F12-Next | Strg+c-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Weiter | Strg+c-Abbruch"
 
-#: installer/objects.py:691
+#: installer/objects.py:941
 msgid " Help"
 msgstr " Hilfe"
 
 #
-#: installer/objects.py:694
+#: installer/objects.py:944
 msgid " Esc-Quit Dialog"
 msgstr " Esc-Dialog beenden"
 
-#: installer/objects.py:751
+#: installer/objects.py:1001
 msgid " Warning"
 msgstr " Warnung"
 
-#: installer/objects.py:755
+#: installer/objects.py:1005
 msgid " End"
 msgstr " Ende"
 
-#: installer/objects.py:1171 installer/modules/65_partition.py:2251
-#: installer/modules/85_software.py:351
+#: installer/objects.py:1424 installer/modules/65_partition.py:2251
+#: installer/modules/85_software.py:305
 msgid "F12-Next"
 msgstr "F12-Weiter"
 
-#: installer/objects.py:1175 installer/modules/85_software.py:344
+#: installer/objects.py:1428 installer/modules/85_software.py:298
 msgid "F12-Accept changes"
 msgstr "F12-Änderungen akzeptieren"
 
-#: installer/objects.py:1177
+#: installer/objects.py:1430
 msgid "F12-Start Recover Shell"
 msgstr "F12-Recover Shell starten"
 
-#: installer/objects.py:1179
+#: installer/objects.py:1432
 msgid "F12-Start installation"
 msgstr "F12-Installation starten"
 
-#: installer/objects.py:1182 installer/modules/65_partition.py:2250
-#: installer/modules/85_software.py:347 installer/modules/85_software.py:352
+#: installer/objects.py:1435 installer/modules/65_partition.py:2250
+#: installer/modules/85_software.py:301 installer/modules/85_software.py:306
 msgid "F11-Back"
 msgstr "F11-Zurück"
 
-#: installer/objects.py:1260 installer/objects.py:1548
+#: installer/objects.py:1515 installer/objects.py:1804
 msgid "Sorry, no help for this module."
 msgstr "Es existiert keine Hilfe für dieses Modul"
 
-#: installer/objects.py:1703 installer/modules/65_partition.py:4033
+#: installer/objects.py:1960 installer/modules/65_partition.py:4033
 #: installer/modules/65_partition.py:4154
 msgid "Yes"
 msgstr "Ja"
 
-#: installer/objects.py:1704 installer/modules/65_partition.py:4034
+#: installer/objects.py:1961 installer/modules/65_partition.py:4034
 #: installer/modules/65_partition.py:4155
 msgid "No"
 msgstr "Nein"
@@ -283,113 +283,113 @@ msgstr "Samba-Dienste"
 msgid "Active Directory Connector"
 msgstr "Active Directory Connector"
 
-#: installer/package_list.py:88
+#: installer/package_list.py:89
 msgid "Sync users and groups with Active Directory"
 msgstr "Benutzer und Gruppen mit Active Directory synchronisieren"
 
-#: installer/package_list.py:93
+#: installer/package_list.py:94
 msgid "Virtualization"
 msgstr "Virtualisierung"
 
-#: installer/package_list.py:95
+#: installer/package_list.py:96
 msgid "Univention virtualization"
 msgstr "Univention Virtualisierung"
 
-#: installer/package_list.py:99
+#: installer/package_list.py:100
 msgid "Management server for KVM or Xen"
-msgstr ""
+msgstr "Management-Server für KVM oder Xen"
 
-#: installer/package_list.py:104
+#: installer/package_list.py:105
 msgid "UMC module for managing virtualization servers and virtual instances"
 msgstr ""
 "UMC Modul für die Verwaltung von Virtualisierungsservern und virtuellen "
 "Instanzen"
 
-#: installer/package_list.py:107
+#: installer/package_list.py:108
 msgid "KVM virtualization server"
 msgstr "KVM Virtualisierungsserver"
 
-#: installer/package_list.py:112
+#: installer/package_list.py:113
 msgid "Sets up a virtualization server based on KVM"
 msgstr "Richtet einen auf KVM basierenden Virtualisierungsserver ein"
 
-#: installer/package_list.py:115
+#: installer/package_list.py:116
 msgid "Xen virtualization server"
 msgstr "Xen Virtualisierungsserver"
 
-#: installer/package_list.py:120
+#: installer/package_list.py:121
 msgid "Sets up a virtualization server based on Xen"
 msgstr "Richtet einen auf Xen basierenden Virtualisierungsserver ein"
 
-#: installer/package_list.py:125
+#: installer/package_list.py:126
 msgid "System services"
 msgstr "Systemdienste"
 
-#: installer/package_list.py:127
+#: installer/package_list.py:128
 msgid "Additional Services"
 msgstr "Weitere Dienste"
 
-#: installer/package_list.py:131
+#: installer/package_list.py:132
 msgid "Mail server"
 msgstr "Mail-Server"
 
-#: installer/package_list.py:136
+#: installer/package_list.py:137
 msgid "Standard mail services with postfix and cyrus (SMTP/POP/IMAP)"
 msgstr "Standard Mail-Dienste mit Postfix und Cyrus (SMTP/POP/IMAP)"
 
-#: installer/package_list.py:139
+#: installer/package_list.py:140
 msgid "DHCP server"
 msgstr "DHCP-Server"
 
-#: installer/package_list.py:144
+#: installer/package_list.py:145
 msgid "DHCP Server"
 msgstr "DHCP-Server"
 
-#: installer/package_list.py:147
+#: installer/package_list.py:148
 msgid "Print server (Cups)"
 msgstr "Druckserver (Cups)"
 
-#: installer/package_list.py:152
+#: installer/package_list.py:153
 msgid "Print server based on cups"
 msgstr "Druckserver basierend auf CUPS"
 
-#: installer/package_list.py:155
+#: installer/package_list.py:156
 msgid "Web proxy server (Squid)"
 msgstr "Web-Proxy-Server (Squid)"
 
-#: installer/package_list.py:160
+#: installer/package_list.py:161
 msgid "Web Proxy Services"
 msgstr "Web-Proxy-Dienste"
 
-#: installer/package_list.py:163
+#: installer/package_list.py:164
 msgid "Bacula (Backup)"
 msgstr "Bacula (Backup)"
 
-#: installer/package_list.py:168
+#: installer/package_list.py:169
 msgid "Network based Backup Software"
 msgstr "Netzwerk basierte Backup Software"
 
-#: installer/package_list.py:174
+#: installer/package_list.py:175
 msgid "Monitoring"
 msgstr "Überwachung"
 
-#: installer/package_list.py:176
+#: installer/package_list.py:177
 msgid "Monitoring services"
 msgstr "Überwachungsdienste"
 
-#: installer/package_list.py:180
+#: installer/package_list.py:181
 msgid "Network monitoring (Nagios)"
 msgstr "Netzwerküberwachung (Nagios)"
 
-#: installer/package_list.py:185
+#: installer/package_list.py:186
 msgid "Host, service and network monitoring program (server software)"
 msgstr "Rechner-, Dienste- und Netzwerk-Überwachungsdienst (Server Software)"
 
-#: installer/package_list.py:188
+#: installer/package_list.py:189
 msgid "Software installation monitor"
 msgstr "Paketstatus-Überwachung"
 
-#: installer/package_list.py:193
+#: installer/package_list.py:194
 msgid "Univention packagestatus database"
 msgstr "Univention Paketstatus Datenbank"
 
@@ -431,8 +431,8 @@ msgstr "Suche CD-ROM-Laufwerk"
 #: installer/modules/65_partition.py:2011
 #: installer/modules/65_partition.py:3223
 #: installer/modules/65_partition.py:3228
-#: installer/modules/65_partition.py:3232 installer/modules/70_net.py:936
-#: installer/modules/85_software.py:138
+#: installer/modules/65_partition.py:3232 installer/modules/70_net3.py:713
+#: installer/modules/70_net.py:712 installer/modules/85_software.py:138
 msgid "Please wait ..."
 msgstr "Bitte warten ..."
 
@@ -453,7 +453,7 @@ msgid "Check devices for UCS CD:"
 msgstr "Suche nach UCS-Medium"
 
 #: installer/modules/10_hardware.py:158 installer/modules/10_hardware.py:164
-#: installer/modules/10_hardware.py:166 installer/modules/70_net.py:451
+#: installer/modules/10_hardware.py:166
 msgid "F2-Add"
 msgstr "F2-Neu"
 
@@ -508,8 +508,8 @@ msgstr "Quellmedium"
 #: installer/modules/15_profile.py:57 installer/modules/65_partition.py:3660
 #: installer/modules/65_partition.py:3707
 #: installer/modules/65_partition.py:3961
-#: installer/modules/65_partition.py:4000 installer/modules/70_net.py:776
-#: installer/modules/70_net.py:1048
+#: installer/modules/65_partition.py:4000 installer/modules/70_net3.py:971
+#: installer/modules/70_net.py:970
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -1103,8 +1103,7 @@ msgstr "Möchten Sie LVM2 verwenden?"
 msgid " Partitioning dialog "
 msgstr "Partitionierung"
 
-#: installer/modules/65_partition.py:2103 installer/modules/70_net.py:878
-#: installer/modules/70_net.py:880
+#: installer/modules/65_partition.py:2103
 msgid "Device"
 msgstr "Gerät"
 
@@ -1159,11 +1158,11 @@ msgstr "LVM-Medien-Gruppe"
 msgid "F2-Create"
 msgstr "F2-Erstellen"
 
-#: installer/modules/65_partition.py:2246 installer/modules/70_net.py:452
+#: installer/modules/65_partition.py:2246
 msgid "F3-Edit"
 msgstr "F3-Editieren"
 
-#: installer/modules/65_partition.py:2247 installer/modules/70_net.py:453
+#: installer/modules/65_partition.py:2247
 msgid "F4-Delete"
 msgstr "F4-Löschen"
 
@@ -1556,256 +1555,272 @@ msgstr ""
 "Bitte wählen Sie ein anderes \n"
 "Dateisystem."
 
-#: installer/modules/70_net.py:222 installer/modules/70_net.py:587
+#: installer/modules/70_net3.py:353 installer/modules/70_net.py:352
+#, python-format
+msgid "Not all IPv4 values have been specified for interface %s"
+msgstr "Die IPv4-Angaben für Interface %s sind nicht vollständig."
+
+#: installer/modules/70_net3.py:356 installer/modules/70_net3.py:743
+#: installer/modules/70_net.py:355 installer/modules/70_net.py:742
 msgid "Following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
-#: installer/modules/70_net.py:226 installer/modules/70_net.py:460
-#: installer/modules/70_net.py:590 installer/modules/90_overview.py:96
-msgid "Gateway"
-msgstr "Gateway"
+#: installer/modules/70_net3.py:358 installer/modules/70_net3.py:509
+#: installer/modules/70_net3.py:784 installer/modules/70_net.py:357
+#: installer/modules/70_net.py:508 installer/modules/70_net.py:783
+msgid "IPv4 Gateway"
+msgstr "IPv4-Gateway"
 
-#: installer/modules/70_net.py:231 installer/modules/70_net.py:468
-#: installer/modules/70_net.py:566 installer/modules/70_net.py:593
-msgid "Name server"
-msgstr "Nameserver"
+#: installer/modules/70_net3.py:359 installer/modules/70_net3.py:515
+#: installer/modules/70_net3.py:786 installer/modules/70_net.py:358
+#: installer/modules/70_net.py:514 installer/modules/70_net.py:785
+msgid "IPv6 Gateway"
+msgstr "IPv6-Gateway"
 
-#: installer/modules/70_net.py:236 installer/modules/70_net.py:485
-#: installer/modules/70_net.py:573 installer/modules/70_net.py:597
-msgid "DNS Forwarder"
-msgstr "DNS-Forwarder"
+#: installer/modules/70_net3.py:360 installer/modules/70_net3.py:526
+#: installer/modules/70_net3.py:790 installer/modules/70_net3.py:945
+#: installer/modules/70_net.py:359 installer/modules/70_net.py:525
+#: installer/modules/70_net.py:789 installer/modules/70_net.py:944
+msgid "Domain DNS Server"
+msgstr "Domänen-DNS-Server"
 
-#: installer/modules/70_net.py:245 installer/modules/70_net.py:607
+#: installer/modules/70_net3.py:361 installer/modules/70_net3.py:537
+#: installer/modules/70_net3.py:788 installer/modules/70_net3.py:948
+#: installer/modules/70_net.py:360 installer/modules/70_net.py:536
+#: installer/modules/70_net.py:787 installer/modules/70_net.py:947
+msgid "External DNS Server"
+msgstr "Externer DNS-Server"
+
+#: installer/modules/70_net3.py:376 installer/modules/70_net3.py:805
+#: installer/modules/70_net.py:375 installer/modules/70_net.py:804
 msgid "Proxy, example http://10.201.1.1:8080"
 msgstr "Proxy, z.B. http://10.201.1.1:8080"
 
-#: installer/modules/70_net.py:275
-msgid "You have to add one or more Network interfaces."
-msgstr "Sie müssen ein oder mehrere Netzwerk Interfaces angeben "
+#: installer/modules/70_net3.py:401 installer/modules/70_net.py:400
+msgid "You have to configure one or more network interfaces."
+msgstr "Es muss mindestens ein Netzwerk-Interface konfiguriert werden."
 
-#: installer/modules/70_net.py:296 installer/modules/70_net.py:297
-#: installer/modules/70_net.py:316 installer/modules/70_net.py:317
-#: installer/modules/70_net.py:411 installer/modules/70_net.py:432
-msgid "New Virtual Device"
-msgstr "Neues virtuelles Interface"
+#: installer/modules/70_net3.py:434 installer/modules/70_net.py:433
+#, python-format
+msgid "Settings for interface \"%s\""
+msgstr "Einstellungen für Interface \"%s\""
 
-#: installer/modules/70_net.py:302 installer/modules/70_net.py:304
-#: installer/modules/70_net.py:763
+#: installer/modules/70_net3.py:437 installer/modules/70_net.py:436
+#, python-format
+msgid "MAC address: %s"
+msgstr "MAC-Adresse: %s"
+
+#: installer/modules/70_net3.py:440 installer/modules/70_net.py:439
+msgid "Enable IPv4"
+msgstr "IPv4 aktivieren"
+
+#: installer/modules/70_net3.py:452 installer/modules/70_net.py:451
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
-#: installer/modules/70_net.py:319 installer/modules/70_net.py:320
-#: installer/modules/70_net.py:408 installer/modules/70_net.py:430
-msgid "New Device"
-msgstr "Neues Interface"
+#: installer/modules/70_net3.py:454 installer/modules/70_net3.py:713
+#: installer/modules/70_net.py:453 installer/modules/70_net.py:712
+msgid "DHCP Query"
+msgstr "DHCP Anfrage"
 
-#: installer/modules/70_net.py:447
-msgid "Device        IP               Netmask"
-msgstr "Interface     IP               Netzmaske"
+#: installer/modules/70_net3.py:458 installer/modules/70_net.py:457
+msgid "IPv4 address"
+msgstr "IPv4-Adresse"
 
-#: installer/modules/70_net.py:470 installer/modules/70_net.py:490
+#: installer/modules/70_net3.py:462 installer/modules/70_net.py:461
+msgid "Netmask"
+msgstr "Netzmaske"
+
+#: installer/modules/70_net3.py:466 installer/modules/70_net.py:465
+msgid "Enable IPv6"
+msgstr "IPv6 aktivieren"
+
+#: installer/modules/70_net3.py:473 installer/modules/70_net.py:472
+msgid "Dynamic (accept router advertisements)"
+msgstr "Dynamisch (Router Advertisements akzeptieren)"
+
+#: installer/modules/70_net3.py:481 installer/modules/70_net.py:480
+msgid "IPv6 address"
+msgstr "IPv6-Adresse"
+
+#: installer/modules/70_net3.py:486 installer/modules/70_net.py:485
+msgid "IPv6 prefix"
+msgstr "IPv6-Prefix"
+
+#: installer/modules/70_net3.py:493 installer/modules/70_net.py:492
+msgid "F2-Previous Interface"
+msgstr "F2-Vorheriges Interface"
+
+#: installer/modules/70_net3.py:494 installer/modules/70_net.py:493
+msgid "F3-Next Interface"
+msgstr "F3-Nächstes Interface"
+
+#: installer/modules/70_net3.py:504 installer/modules/70_net.py:503
+msgid "Global Network Settings"
+msgstr "Globale Netzwerk-Einstellungen"
+
+#: installer/modules/70_net3.py:528 installer/modules/70_net3.py:539
+#: installer/modules/70_net.py:527 installer/modules/70_net.py:538
 msgid "More"
 msgstr "Mehr"
 
-#: installer/modules/70_net.py:493
+#: installer/modules/70_net3.py:544 installer/modules/70_net.py:543
 msgid "HTTP proxy"
 msgstr "HTTP-Proxy"
 
-#: installer/modules/70_net.py:508
-msgid "Currently no network card could be detected. Depending on"
-msgstr "Es konnte zum aktuellen Zeitpunkt keine Netzwerkkarte gefunden"
+#: installer/modules/70_net3.py:717 installer/modules/70_net.py:716
+msgid "No DHCP answer, please check DHCP server and network connectivity."
+msgstr ""
+"Keine DHCP-Antwort, bitte DHCP-Server und Netzwerkverbindung überprüfen."
 
-#: installer/modules/70_net.py:509
-msgid "the selected services and system role an operative network"
-msgstr "werden. Abhängig von den ausgewählten Diensten und der"
+#: installer/modules/70_net3.py:744 installer/modules/70_net.py:743
+#, python-format
+msgid ""
+"An invalid value has been entered for interface %(interface)s: %(elemname)s"
+msgstr "Ein ungültiger Wert wurde für Interface %(interface)s angegeben: %(elemname)s"
 
-#: installer/modules/70_net.py:510
-msgid "card is required to successfully complete the installation."
-msgstr "Systemrolle kann es zu Fehlern bei der Installation kommen."
+#: installer/modules/70_net3.py:748 installer/modules/70_net.py:747
+msgid "At least one interface must be configured."
+msgstr "Es muss mindestens ein Interface konfiguriert werden."
 
-#: installer/modules/70_net.py:511
-msgid "Please check the network card of the computer."
-msgstr "Prüfen Sie die Netzwerkkarte dieses Systems. Falls eine"
+#: installer/modules/70_net3.py:760 installer/modules/70_net.py:759
+msgid "IPv4 Address"
+msgstr "IPv4-Adresse"
 
-#: installer/modules/70_net.py:512
-msgid "If a network card is installed, try to load additional"
-msgstr "Netzwerkkarte installiert ist, sollte versucht werden,"
+#: installer/modules/70_net3.py:762 installer/modules/70_net.py:761
+msgid "IPv4 Netmask"
+msgstr "IPv4-Netzmaske"
 
-#: installer/modules/70_net.py:513
-msgid "kernel modules at the beginning of the installation."
-msgstr "Kerneltreiber zu Beginn der Installation nachzuladen."
+#: installer/modules/70_net3.py:765 installer/modules/70_net.py:764
+#, python-format
+msgid ""
+"Neither DHCP is activated nor an IPv4 address with netmask has been entered "
+"for interface \"%s\"."
+msgstr "Es wurde weder DHCP aktiviert noch wurde eine gültige IPv4-Adresse inkl. Netzmaske für Interface \"%s\" angegeben."
 
-#: installer/modules/70_net.py:514
-msgid "If the installation will be continued without operative"
-msgstr "Wird die Installation ohne funktionierende Netzwerkkarte"
+#: installer/modules/70_net3.py:774 installer/modules/70_net.py:773
+msgid "IPv6 Address"
+msgstr "IPv6-Adresse"
 
-#: installer/modules/70_net.py:515
-msgid "network card, a virtual dummy network card will be loaded"
-msgstr "fortgesetzt, wird automatisch eine virtuelle Netzwerkkarte"
+#: installer/modules/70_net3.py:776 installer/modules/70_net.py:775
+msgid "IPv6 Prefix"
+msgstr "IPv6-Prefix"
 
-#: installer/modules/70_net.py:516
-msgid "automatically to complete installation."
-msgstr "geladen, um die Installation erfolgreich beenden zu können."
+#: installer/modules/70_net3.py:779 installer/modules/70_net.py:778
+#, python-format
+msgid ""
+"Neither accepting router advertisements is activated nor an IPv6 address "
+"with prefix has been entered for interface \"%s\"."
+msgstr "Es wurden weder die IPv6 Router Advertisements aktiviert noch eine gültige IPv6 Adresse inl. Prefix für Interface \"%s\" angegeben."
 
-#: installer/modules/70_net.py:610
-msgid "You have to add one or more network interfaces."
-msgstr "Sie müssen ein oder mehrere Netzwerk-Interfaces angeben."
-
-#: installer/modules/70_net.py:614
+#: installer/modules/70_net3.py:871 installer/modules/70_net.py:870
 msgid ""
 "Network \n"
 " \n"
 " In this module the network configuration is done. \n"
 " \n"
-" Select \"New Interface\" to add a new interface. Select \"New Virtual "
-"Interface\" to create a new virtual interface. \n"
+" In the upper part, all detected interfaces are show. By pressing F2 or F3 "
+"the next/previous interface can be selected. \n"
 " \n"
-" Interface: \n"
-" Select the interface you want to configure. \n"
+" For each interface an IPv4 address with netmask and/or IPv6 address with "
+"prefix can be entered. \n"
+" The configuration of interfaces can also be done automatically: \n"
 " \n"
 " Dynamic (DHCP): \n"
-" Mark this field if you want this interface to retrieve its IP configuration "
-"via DHCP (Dynamic Host Configuration Protocol). \n"
+"   Mark this field if you want this interface to retrieve its IPv4 "
+"configuration via DHCP (Dynamic Host Configuration Protocol). \n"
 " \n"
-" Static: \n"
-" Mark this field if you want this interface to be configured manually. \n"
-" \n"
-" Enter IP, netmask, broadcast and network address of this interface. \n"
+" Dynamic (accept router advertisements): \n"
+"   Mark this field if you want this interface to retrieve its IPv6 "
+"configuration via ND (IPv6 neighbour discovery) \n"
 "\n"
-" Gateway: \n"
-" Default gateway to be use. \n"
+" IPv4 Gateway: \n"
+" Default gateway to be used for IPv4 traffic. \n"
+" IPv6 Gateway: \n"
+" Default gateway to be used for IPv6 traffic. \n"
 " \n"
-" Name server: \n"
+" Domain DNS server: \n"
 " Enter the IP address of the primary name server, if you are adding a system "
-"to an existing domain. \n"
+"to an existing UCS domain. \n"
 " More: \n"
 " Enter additional name servers \n"
 " \n"
-" DNS Forwarder: \n"
+" External DNS server: \n"
 " Enter the IP address of a DNS server to forward queries to. \n"
 " More: \n"
 " Enter additional DNS forwarders \n"
 " \n"
 " HTTP-Proxy: \n"
-" Enter the IP address and port number for the HTTP-Proxy (example: "
+" Enter IP address and port number of HTTP-Proxy to be used (example: "
 "http://192.168.1.123:5858)"
 msgstr ""
 "Netzwerk \n"
 " \n"
-" In diesem Modul wird die Netzwerk-Konfiguration eingetragen. \n"
+" In diesem Modul wird die Netzwerk-Interfaces konfiguriert.\n"
 " \n"
-" Wählen Sie das Feld \"Neues Interface\", um eine neue Netzwerkkarte "
-"hinzuzufügen, oder \"Neues virtuelles Interface\", um eine virtuelle "
-"Netzwerkkarte zu erstellen.\n"
+" Im oberen teil werden alle erkannten Interfaces angezeigt. Mit den Tasten F2 und F3 kann zum nächsten/vorherigen Interface gewechselt werden.\n"
 " \n"
-" Gerät: \n"
-" Wählen Sie das zu konfigurierende Netzwerk-Interface. \n"
-" \n"
+" Für jedes Interface kann eine IPv4-Adresse inkl. Netzmaske und/oder eine IPv6-Adresse inkl. Prefix angegeben werden.\n"
+" Die Konfiguration der Interfaces kann auch automatisch durchgeführt werden:\n"
+"\n"
 " Dynamisch (DHCP):  \n"
-" Bitte markieren Sie dieses Feld, wenn die IP-Konfiguration via DHCP "
-"zugeteilt werden soll. \n"
+" Bitte markieren Sie dieses Feld, wenn die IPv4-Konfiguration via DHCP (Dynamic Host Configuration Protocol) zugeteilt werden soll. \n"
 " \n"
-" Statisch: \n"
-" Das System benutzt eine statische IP-Adresse. \n"
+" Dynamisch (Router Advertisements akzeptieren):\n"
+" Bitte markieren Sie dieses Feld, wenn die IPv6-Konfiguration via ND (IPv6 Neighbour Discovery) zugeteilt werden soll. \n"
 "\n"
-" Bitte geben Sie IP-Adresse, Netzmaske, Broadcast und das Netzwerk an, wenn "
-"Sie sich für die statische IP-Adresse entschieden haben.\n"
+" Bitte geben Sie IP-Adresse, Netzmaske, Broadcast und das Netzwerk an, wenn Sie sich für die statische IP-Adresse entschieden haben.\n"
 "\n"
-" Gateway: \n"
-" Geben Sie eine IP-Adresse für das Gateway ein. \n"
+" IPv4-Gateway: \n"
+" Das Defaultgateway, welches für IPv4-Traffic verwendet werden soll.\n"
+" IPv6-Gateway: \n"
+" Das Defaultgateway, welches für IPv6-Traffic verwendet werden soll.\n"
 " \n"
-" Nameserver: \n"
-" Geben Sie die IP-Adresse für den primären Nameserver an, falls Sie ein "
-"neues System in eine bestehende Domäne installieren möchten. \n"
+" Domänen-DNS-Server: \n"
+" Geben Sie die IP-Adresse für den primären Nameserver an, falls Sie ein neues System in eine bestehende UCS-Domäne installieren möchten. \n"
 " Mehr: \n"
-" Geben Sie weitere IP Adressen an, wenn Ihr System mehrere Nameserver nutzen "
-"soll.  \n"
+" Geben Sie weitere IP-Adressen an, wenn Ihr System mehrere Nameserver nutzen soll.  \n"
 "  \n"
-" DNS-Forwarder: \n"
-" Geben Sie die IP Adresse für den DNS-Forwarder an. \n"
+" Externer DNS-Server: \n"
+" Geben Sie die IP-Adresse für einen DNS-Forwarder an. \n"
 " Mehr: \n"
-" Wenn das System mehrere DNS-Forwarder nutzen soll, geben Sie weitere IP "
-"Adressen an. \n"
+" Wenn das System mehrere DNS-Forwarder nutzen soll, geben Sie weitere IP-Adressen an. \n"
 " \n"
 " HTTP-Proxy: \n"
-" Geben Sie die Transportadresse (IP-Adresse:Port) an, um einen HTTP-Proxy zu "
-"nutzen. z.B: http://192.168.1.123:3128"
+" Geben Sie die Transportadresse (IP-Adresse:Port) an, um einen HTTP-Proxy zu nutzen. z.B: http://192.168.1.123:3128"
 
-#: installer/modules/70_net.py:617
+#: installer/modules/70_net3.py:875 installer/modules/70_net.py:874
 msgid "Network"
 msgstr "Netzwerk"
 
-#: installer/modules/70_net.py:759
-msgid "Device:"
-msgstr "Gerät:"
-
-#: installer/modules/70_net.py:767
-msgid "IP address:"
-msgstr "IP-Adresse:"
-
-#: installer/modules/70_net.py:770
-msgid "Netmask:"
-msgstr "Netzmaske:"
-
-#: installer/modules/70_net.py:773 installer/modules/70_net.py:936
-msgid "DHCP Query"
-msgstr "DHCP Anfrage"
-
-#: installer/modules/70_net.py:844
-msgid " Interface configuration"
-msgstr " Interface Konfiguration"
-
-#: installer/modules/70_net.py:871 installer/modules/70_net.py:1078
-#: installer/modules/80_join.py:51 installer/modules/80_join.py:138
-msgid "The following value is missing: "
-msgstr "Der folgende Wert fehlt:"
-
-#: installer/modules/70_net.py:872 installer/modules/70_net.py:1079
-msgid "The following value is invalid: "
-msgstr "Die folgende Eingabe ist ungültig: "
-
-#: installer/modules/70_net.py:889
-msgid ""
-"For a server role an IP address must be determined at this point, please "
-"press F5 or deselect the DHCP option."
-msgstr ""
-"Für Serversysteme muss an dieser Stelle eine IP-Adresse festgelegt werden, "
-"bitte F5 drücken oder DHCP-Option abwählen."
-
-#: installer/modules/70_net.py:891 installer/modules/70_net.py:905
-#: installer/modules/70_net.py:907
-msgid "IP address"
-msgstr "IP-Adresse"
-
-#: installer/modules/70_net.py:894 installer/modules/70_net.py:896
-#: installer/modules/70_net.py:910 installer/modules/70_net.py:912
-msgid "Netmask"
-msgstr "Netzmaske"
-
-#: installer/modules/70_net.py:941
-msgid "No DHCP answer, please check DHCP server and network connectivity."
-msgstr ""
-"Keine DHCP-Antwort, bitte DHCP-Server und Netzwerkverbindung überprüfen."
-
-#: installer/modules/70_net.py:1022
+#: installer/modules/70_net3.py:964 installer/modules/70_net.py:963
 #, python-format
 msgid "1. %s"
 msgstr "1. %s"
 
-#: installer/modules/70_net.py:1031
+#: installer/modules/70_net3.py:965 installer/modules/70_net.py:964
 #, python-format
 msgid "2. %s"
 msgstr "2. %s"
 
-#: installer/modules/70_net.py:1039
+#: installer/modules/70_net3.py:966 installer/modules/70_net.py:965
 #, python-format
 msgid "3. %s"
 msgstr "3. %s"
 
-#: installer/modules/70_net.py:1056
+#: installer/modules/70_net3.py:981 installer/modules/70_net.py:980
 #, python-format
 msgid " More %ss"
 msgstr "Weitere %s"
+
+#: installer/modules/70_net3.py:997 installer/modules/70_net.py:996
+#: installer/modules/80_join.py:51 installer/modules/80_join.py:138
+msgid "The following value is missing: "
+msgstr "Der folgende Wert fehlt:"
+
+#: installer/modules/70_net3.py:998 installer/modules/70_net.py:997
+msgid "The following value is invalid: "
+msgstr "Die folgende Eingabe ist ungültig: "
 
 #: installer/modules/80_join.py:60 installer/modules/80_join.py:84
 #: installer/modules/80_join.py:142
@@ -1863,12 +1878,12 @@ msgstr "Join-Einstellungen"
 msgid "Preparing package list"
 msgstr "Bereite Paketliste vor"
 
-#: installer/modules/85_software.py:341
+#: installer/modules/85_software.py:308
 msgid "Please select the software components you want to install."
 msgstr ""
 "Bitte wählen Sie die Softwarekomponenten aus, die Sie installieren möchten."
 
-#: installer/modules/85_software.py:434
+#: installer/modules/85_software.py:403
 msgid ""
 "Software \n"
 " \n"
@@ -1880,7 +1895,7 @@ msgstr ""
 " Bitte wählen Sie die Softwarekomponenten die Sie installieren möchten. Sie "
 "können in den folgenden Schritten die Details für manche Module ändern."
 
-#: installer/modules/85_software.py:437 installer/modules/XX00_example.py:86
+#: installer/modules/85_software.py:406 installer/modules/XX00_example.py:86
 msgid "Software"
 msgstr "Software"
 
@@ -1923,6 +1938,10 @@ msgstr "eth0 IP"
 #: installer/modules/90_overview.py:89
 msgid "eth0 netmask"
 msgstr "eth0 Netzmaske"
+
+#: installer/modules/90_overview.py:96
+msgid "Gateway"
+msgstr "Gateway"
 
 #: installer/modules/90_overview.py:101
 msgid "Nameserver1"
@@ -2056,6 +2075,67 @@ msgstr "Verarbeite postrun-Skripte"
 msgid "Processing %s "
 msgstr "Verarbeite %s"
 
+#~ msgid "Name server"
+#~ msgstr "Nameserver"
+
+#~ msgid "DNS Forwarder"
+#~ msgstr "DNS-Forwarder"
+
+#~ msgid "You have to add one or more Network interfaces."
+#~ msgstr "Sie müssen ein oder mehrere Netzwerk Interfaces angeben "
+
+#~ msgid "New Virtual Device"
+#~ msgstr "Neues virtuelles Interface"
+
+#~ msgid "New Device"
+#~ msgstr "Neues Interface"
+
+#~ msgid "Device        IP               Netmask"
+#~ msgstr "Interface     IP               Netzmaske"
+
+#~ msgid "Currently no network card could be detected. Depending on"
+#~ msgstr "Es konnte zum aktuellen Zeitpunkt keine Netzwerkkarte gefunden"
+
+#~ msgid "the selected services and system role an operative network"
+#~ msgstr "werden. Abhängig von den ausgewählten Diensten und der"
+
+#~ msgid "card is required to successfully complete the installation."
+#~ msgstr "Systemrolle kann es zu Fehlern bei der Installation kommen."
+
+#~ msgid "Please check the network card of the computer."
+#~ msgstr "Prüfen Sie die Netzwerkkarte dieses Systems. Falls eine"
+
+#~ msgid "If a network card is installed, try to load additional"
+#~ msgstr "Netzwerkkarte installiert ist, sollte versucht werden,"
+
+#~ msgid "kernel modules at the beginning of the installation."
+#~ msgstr "Kerneltreiber zu Beginn der Installation nachzuladen."
+
+#~ msgid "If the installation will be continued without operative"
+#~ msgstr "Wird die Installation ohne funktionierende Netzwerkkarte"
+
+#~ msgid "network card, a virtual dummy network card will be loaded"
+#~ msgstr "fortgesetzt, wird automatisch eine virtuelle Netzwerkkarte"
+
+#~ msgid "automatically to complete installation."
+#~ msgstr "geladen, um die Installation erfolgreich beenden zu können."
+
+#~ msgid "Device:"
+#~ msgstr "Gerät:"
+
+#~ msgid "Netmask:"
+#~ msgstr "Netzmaske:"
+
+#~ msgid " Interface configuration"
+#~ msgstr " Interface Konfiguration"
+
+#~ msgid ""
+#~ "For a server role an IP address must be determined at this point, please "
+#~ "press F5 or deselect the DHCP option."
+#~ msgstr ""
+#~ "Für Serversysteme muss an dieser Stelle eine IP-Adresse festgelegt "
+#~ "werden, bitte F5 drücken oder DHCP-Option abwählen."
+
 #~ msgid "Samba 4"
 #~ msgstr "Samba 4"
 
@@ -2108,9 +2188,6 @@ msgstr "Verarbeite %s"
 
 #~ msgid "Samba"
 #~ msgstr "Samba"
-
-#~ msgid "Terminal server"
-#~ msgstr "Terminalserver"
 
 #~ msgid "X-Window-System Client for Terminal Services"
 #~ msgstr "X-Window-System Client für Terminal-Dienste"

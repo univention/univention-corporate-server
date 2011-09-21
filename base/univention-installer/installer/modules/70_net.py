@@ -349,7 +349,7 @@ class object(content):
 					cnt += 1
 			if cnt > 0 and cnt < len(keylist):
 				self.debug('Interface %s: count=%s' % (iface.name, cnt))
-				self.message = _('Not all IPv4 values have been specified for interface %s' % iface.name)
+				self.message = _('Not all IPv4 values have been specified for interface %s') % iface.name
 				return False
 
 		invalid = _("Following value is invalid: ")
