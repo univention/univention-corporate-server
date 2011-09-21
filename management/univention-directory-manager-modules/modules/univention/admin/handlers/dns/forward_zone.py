@@ -184,16 +184,14 @@ property_descriptions={
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
 		'zone',
+		'nameserver',
 		'zonettl'
 		] ),
 	Tab( _( 'Start of Authority' ), _( 'Primary name server information' ), layout = [
 		'contact',
-		[ 'nameserver', 'serial' ],
+		'serial',
 		[ 'refresh', 'retry' ],
 		[ 'expire', 'ttl' ]
-		] ),
-	Tab( _( 'Name servers'), _('Additional name servers'), layout = [
-		'nameserver'
 		] ),
 	Tab(_('IP addresses'), _('IP addresses of the zone'), layout = [
 		'a'
