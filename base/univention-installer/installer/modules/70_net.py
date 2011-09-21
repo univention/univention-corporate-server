@@ -575,7 +575,8 @@ class object(content):
 
 		# if no interface has been configured, and first interface is visible then activate IPv4 for first interface
 		if not self.default_ipv4_was_set and not self.ipv4_found and not self.ipv6_found and self.get_elem('CARDBOX1').get_card().name == self.interfaces[0].name:
-			self.get_elem('CB_IPv4').select()
+			self.get_elem('CB_IPv4').select()  # activate IPv4
+			self.move_focus( self.get_elem_id('INP_IPv4ADDR') )  # set focus to IPv4 address
 			self.default_ipv4_was_set = True
 
 		# if IPv6 checkbox is present...
