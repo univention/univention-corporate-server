@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.61-1) unstable; urgency=low
+
+  * add widget ComplexInput for single value properties with a syntax
+    absed on complex; Bug #23688
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 21 Sep 2011 16:20:40 +0200
+
 univention-management-console-frontend (1.0.60-1) unstable; urgency=low
 
   * fixed locale problem (dojo needs 'de-de' and the server 'de_DE') 
