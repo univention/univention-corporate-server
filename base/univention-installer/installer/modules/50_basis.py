@@ -310,6 +310,12 @@ class object(content):
 					self.move_focus( self.get_elem_id('IN_FQDN') )
 				return _("Please enter a valid fully qualified domain name in lowercase (e.g. host.example.com).")
 
+		if domainname.find('.') == -1:
+			if not self.ignore('domainname'):
+				if focus:
+					self.move_focus( self.get_elem_id('IN_FQDN') )
+				return _("Please enter a valid fully qualified domain name containing at least two dots.")
+
 		if len(hostname.strip()+domainname.strip()) >= 63:
 			if not self.ignore('hostname') and not self.ignore('domainname'):
 				if focus:

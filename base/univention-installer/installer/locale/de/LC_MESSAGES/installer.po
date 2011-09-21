@@ -749,6 +749,14 @@ msgstr ""
 "Bitte geben Sie einen klein-geschriebenen und vollständigen Rechnernamen an "
 "(z.B. host.example.com)."
 
+#: installer/modules/50_basis.py:292 installer/modules/50_basis.py:312
+msgid ""
+"Please enter a valid fully qualified domain name containing at least two "
+"dots."
+msgstr ""
+"Bitte geben Sie einen vollständigen Rechnernamen an, der mindestens zwei "
+"Punkte enthält."
+
 #: installer/modules/50_basis.py:298
 msgid ""
 "A valid netbios name can not be longer than 15 characters. If samba is "
