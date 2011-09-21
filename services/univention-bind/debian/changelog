@@ -1,3 +1,11 @@
+univention-bind (6.0.20-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+   [ Felix Botner ]
+    * reload zone if zone exists in /var/cache/bind in bind.py Bug #22346
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 15:29:40 +0200
+
 univention-bind (6.0.19-1) unstable; urgency=low
 
   * Write univention.conf.proxy although dns/backend is set to samba4
