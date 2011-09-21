@@ -35,6 +35,7 @@ override_dh_auto_build:
 	dh_auto_build
 	gcc -o usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper.c
 	gcc -o usr/lib/nagios/plugins/check_univention_ldap_suidwrapper       usr/lib/nagios/plugins/check_univention_ldap_suidwrapper.c
+	gcc -o usr/lib/nagios/plugins/check_univention_winbind_suidwrapper usr/lib/nagios/plugins/check_univention_winbind_suidwrapper.c
 
 DS=$(CURDIR)/debian/univention-nagios-server
 DC=$(CURDIR)/debian/univention-nagios-client
@@ -43,6 +44,7 @@ override_dh_fixperms:
 	dh_fixperms
 	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper
 	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_ldap_suidwrapper
+	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_winbind_suidwrapper
 
 override_dh_auto_clean:
 	dh_auto_clean

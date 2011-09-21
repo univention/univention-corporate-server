@@ -4,6 +4,7 @@ usr/lib/nagios/plugins/check_univention_i2o_raid usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_nfsstatus usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_ssl_certificate usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_winbind usr/lib/nagios/plugins/
+usr/lib/nagios/plugins/check_univention_winbind_suidwrapper usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_smbd usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_nmbd usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_joinstatus usr/lib/nagios/plugins/

@@ -1,3 +1,17 @@
+univention-nagios (5.0.12-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+   [ Felix Botner ]
+    * respect changes of univentionNagiosEmail in nagios-server.py
+      (Bug #22853)
+   [ Sönke Schwardt ]
+    * switch from check_univention_winbind to
+      check_univention_winbind_suidwrapper in NRPE config files during
+      update to version 4.0.13-* (Bug #21800)
+    * added suidwrapper for check_univention_winbind (Bug #21800)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 15:05:47 +0200
+
 univention-nagios (5.0.11-2) unstable; urgency=low
 
   * add dependency for nslookup (Bug #23543)

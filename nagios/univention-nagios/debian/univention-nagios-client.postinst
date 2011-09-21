@@ -53,6 +53,18 @@ if [ "$1" = "configure" ]; then
     done
 fi
 
+# switch from check_univention_winbind to check_univention_winbind_suidwrapper during update to version 4.0.13-*
+# Bug #21800
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.13; then
+	for fn in /etc/nagios/nrpe.univention.d/*.cfg ; do
+		if egrep -q "/usr/lib/nagios/plugins/check_univention_winbind( |$)" "$fn" ; then
+			echo -n "Updating $fn ..."
+			sed -i -e 's,/usr/lib/nagios/plugins/check_univention_winbind,/usr/lib/nagios/plugins/check_univention_winbind_suidwrapper,' "$fn"
+			echo " done"
+		fi
+	done
+fi
+
 if [ "$1" = "configure" ]; then
 	if test -f /etc/init.d/univention-directory-listener
 		then
