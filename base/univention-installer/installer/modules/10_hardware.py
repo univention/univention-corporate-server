@@ -410,14 +410,14 @@ class object(content):
 				#for dev in self.parent.container['cdrom_devices']:
 				for dev in result_list:
 					if dev.startswith('nfs:'):
-						time.sleep(int(self.cmdline.get('nfsdelay','0')))
+						time.sleep(int(self.parent.cmdline.get('nfsdelay','0')))
 						dev=dev.replace('nfs:', '')
 						res=os.system('/bin/mount -t nfs %s /mnt -o exec >/dev/null 2>&1' % dev)
 						if res == 0:
 							if os.path.exists('/mnt/.univention_install'):
 								self.parent.container['cdrom_device']='nfs:%s' % dev
 					elif dev.startswith('smbfs:'):
-						time.sleep(int(self.cmdline.get('nfsdelay','0')))
+						time.sleep(int(self.parent.cmdline.get('nfsdelay','0')))
 						dev=dev.replace('smbfs:', '')
 						res=os.system('/bin/mount -t smbfs %s /mnt -o exec >/dev/null 2>&1' % dev)
 						if res == 0:
