@@ -303,7 +303,6 @@ int do_connection(univention_ldap_parameters_t *lp)
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Failed to find \"(objectClass=univentionBase)\" on LDAP server %s:%d", lp->host, lp->port);
 		} else {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Failed to search for \"(objectClass=univentionBase)\" on LDAP server %s:%d with message %s", lp->host, lp->port, ldap_err2string(rc));
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Base: [%s]", lp->base);
 		}
 		return 1;
 	}
@@ -493,7 +492,9 @@ int main(int argc, char* argv[])
 
 	while (do_connection(lp) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to ldap server (%s)", lp->host);
-		free(lp->host);
+		if (lp->host != NULL) {
+			free(lp->host);
+		}	
 		if ( lp->ld != NULL ) {
 			ldap_unbind_ext(lp->ld, NULL, NULL);
 		}

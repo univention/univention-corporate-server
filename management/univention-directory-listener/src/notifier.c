@@ -78,6 +78,7 @@ static int connect_to_ldap(univention_ldap_parameters_t *lp,
 
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to ldap server (%s)", lp->host);
 		free(lp->host);
+		lp->host = NULL;
 		lp->ld = NULL;
 
 		if (suspend_connect(server_list, server_list_entries)) {

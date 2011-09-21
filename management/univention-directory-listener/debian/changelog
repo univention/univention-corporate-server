@@ -1,3 +1,11 @@
+univention-directory-listener (6.0.10-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+   [ Stefan Gohmann ]
+     * Fixed double free (Bug #22579)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 17:38:04 +0200
+
 univention-directory-listener (6.0.9-1) unstable; urgency=low
 
   * Stop the replication on a DC slave as well if a failed.ldif exists
