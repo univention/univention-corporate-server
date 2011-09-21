@@ -42,6 +42,11 @@ attributes=[]
 # use the modrdn listener extension
 modrdn="1"
 
+# While initialize copy all group objects into a list:
+# https://forge.univention.org/bugzilla/show_bug.cgi?id=18619#c5
+s4_init_mode = False
+group_objects = []
+
 dirs = [listener.baseConfig['connector/s4/listener/dir']]
 if listener.baseConfig.has_key('connector/listener/additionalbasenames') and listener.baseConfig['connector/listener/additionalbasenames']:
 	for configbasename in listener.baseConfig['connector/listener/additionalbasenames'].split(' '):
@@ -53,6 +58,8 @@ if listener.baseConfig.has_key('connector/listener/additionalbasenames') and lis
 			       
 
 def handler(dn, new, old, command):
+
+	global group_objects
 
 	listener.setuid(0)
 	try:
@@ -76,6 +83,9 @@ def handler(dn, new, old, command):
 				object=(dn, new, old, old_dn)
 
 				filename=os.path.join(directory,"%f"%time.time())
+	
+				if new and 'univentionGroup' in new.get('objectClass', []):
+					group_objects.append(object)
 
 				f=open(filename, 'w+')
 				os.chmod(filename, 0600)
@@ -103,7 +113,24 @@ def clean():
 	finally:
 		listener.unsetuid()
 
+def postrun():
+	global s4_init_mode
+	if s4_init_mode:
+		listener.setuid(0)
+		try:
+			s4_init_mode = False
+			for object in group_objects:
+				for directory in dirs:
+					filename=os.path.join(directory,"%f"%time.time())
+					f=open(filename, 'w+')
+					os.chmod(filename, 0600)
+					cPickle.dump(object, f)
+					f.close()
+		finally:
+			listener.unsetuid()
 
 def initialize():
+	global s4_init_mode
+	s4_init_mode = True
 	clean()
 

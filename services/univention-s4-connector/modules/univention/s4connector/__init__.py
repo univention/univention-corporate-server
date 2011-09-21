@@ -691,7 +691,27 @@ class ucs:
 		# dummy
 		pass
 
-	
+	def _generate_dn_list_from(self, files):
+		'''
+		Save all filenames in a dictonary with dn as key
+		If more than one pickle file was created for one DN we could skip the first one
+		'''
+		self.dn_list = {}
+		for listener_file in files:
+			filename = os.path.join(self.listener_dir, listener_file)
+			if not filename == "%s/tmp" % self.baseConfig['%s/s4/listener/dir' % self.CONFIGBASENAME]:
+				if not filename in self.rejected_files:
+					try:
+						f=file(filename,'r')
+					except IOError: # file not found so there's nothing to sync
+						continue
+
+					dn,new,old,old_dn=cPickle.load(f)
+					if not self.dn_list.get(dn):
+						self.dn_list[dn]=[filename]
+					else:
+						self.dn_list[dn].append(filename)
+
 	def poll_ucs(self):
 		'''
 		poll changes from UCS: iterates over files exported by directory-listener module
@@ -701,7 +721,7 @@ class ucs:
 
 		change_counter = 0
 
-		rejected_files = self._list_rejected_filenames_ucs()
+		self.rejected_files = self._list_rejected_filenames_ucs()
 
 		print "--------------------------------------"
 		print "try to sync %s changes from UCS" % (len(os.listdir(self.listener_dir))-1)
@@ -710,23 +730,45 @@ class ucs:
 		done_counter = 0
 		files = os.listdir(self.listener_dir)
 		files.sort()
+
+		# Create a dictonary with all DNs
+		self._generate_dn_list_from(files)
+
 		for listener_file in files:
 			sync_successfull = False
 			delete_file = False
 			filename = os.path.join(self.listener_dir, listener_file)
 			if not filename == "%s/tmp" % self.baseConfig['%s/s4/listener/dir' % self.CONFIGBASENAME]:
-				if not filename in rejected_files:
+				if not filename in self.rejected_files:
 					try:
-						sync_successfull = self.__sync_file_from_ucs(filename)
-					except (ldap.SERVER_DOWN, SystemExit):
-						raise
-					except: # FIXME: which exception is to be caught?
-						self._save_rejected_ucs(filename, 'unknown')
-						self._debug_traceback(ud.WARN,
-											 "sync failed, saved as rejected \n\t%s" % filename)					
-				if sync_successfull:
-					os.remove(os.path.join(self.listener_dir,listener_file))
-					change_counter += 1
+						f=file(filename,'r')
+					except IOError: # file not found so there's nothing to sync
+						continue
+
+					dn,new,old,old_dn=cPickle.load(f)
+
+					if len(self.dn_list.get(dn, [])) < 2:
+						# If the list contains more then one file, the DN will be synced later
+						try:
+							sync_successfull = self.__sync_file_from_ucs(filename)
+						except (ldap.SERVER_DOWN, SystemExit):
+							raise
+						except: # FIXME: which exception is to be caught?
+							self._save_rejected_ucs(filename, 'unknown')
+							self._debug_traceback(ud.WARN,
+												 "sync failed, saved as rejected \n\t%s" % filename)					
+						if sync_successfull:
+							os.remove(os.path.join(self.listener_dir,listener_file))
+							change_counter += 1
+					else:
+						os.remove(os.path.join(filename))
+						try:
+							ud.debug(ud.LDAP, ud.PROCESS, 'Drop %s. The DN %s will synced later' % (filename, dn))
+						except:
+							ud.debug(ud.LDAP, ud.PROCESS, 'Drop %s. The object will synced later' % (filename))
+
+					if self.dn_list.get(dn):
+						self.dn_list[dn].remove(filename)
 
 				done_counter += 1
 				print "%s"%done_counter,
@@ -734,10 +776,10 @@ class ucs:
 
 		print ""	
 		
-		rejected_files = self._list_rejected_filenames_ucs()
+		self.rejected_files = self._list_rejected_filenames_ucs()
 		
-		if rejected_files:
-			print "Changes from UCS: %s (%s saved rejected)" % (change_counter, len(rejected_files))
+		if self.rejected_files:
+			print "Changes from UCS: %s (%s saved rejected)" % (change_counter, len(self.rejected_files))
 		else:
 			print "Changes from UCS: %s (%s saved rejected)" % (change_counter, '0')
 		print "--------------------------------------"

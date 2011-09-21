@@ -1,3 +1,12 @@
+univention-s4-connector (6.0.34-1) unstable; urgency=low
+
+  * Merged from AD Connector:
+    - poll_ucs: Create a list of all DNs which should be synced in this
+      run. If the DN will synced later skip the sync for this object at
+      this point (Bug #21010, Bug #18619)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 10:56:04 +0200
+
 univention-s4-connector (6.0.33-1) unstable; urgency=low
 
   * Disable DC synchronisation (Bug #23162)
