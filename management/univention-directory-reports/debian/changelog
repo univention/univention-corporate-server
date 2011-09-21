@@ -1,3 +1,11 @@
+univention-directory-reports (4.0.5-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+   [ Sönke Schwardt-Krummrich ]
+    * fixed header of CSV report (Bug #18589)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 16:14:12 +0200
+
 univention-directory-reports (4.0.4-1) unstable; urgency=low
 
   * Use bash for postinst (Bug #22439)
