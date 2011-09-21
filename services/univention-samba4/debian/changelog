@@ -1,3 +1,9 @@
+univention-samba4 (1.0.43-1) unstable; urgency=low
+
+  * set operatingSystem attribute after provision (Bug #23158)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Sep 2011 17:57:41 +0200
+
 univention-samba4 (1.0.42-1) unstable; urgency=low
 
   * remove "Replaces" approach for univention-heimdal-kdc (Bug #22600)

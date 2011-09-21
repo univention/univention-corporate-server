@@ -70,6 +70,19 @@ set_machine_secret() {
 	%EOF
 }
 
+set_operatingSystem_attribute() {
+	## Warning: editing sam.ldb via tdb should only be done when samba4 is not running!
+	ldbmodify -H tdb:///var/lib/samba/private/sam.ldb <<-%EOF
+	dn: CN=$hostname,OU=Domain Controllers,$samba4_ldap_base
+	changetype: modify
+	replace: operatingSystem
+	operatingSystem: Univention Corporate Server
+	-
+	replace: operatingSystemVersion
+	operatingSystemVersion: 3.0
+	%EOF
+}
+
 let_samba4_manage_etc_krb5_keytab() {
 	## Let samba4 manage /etc/krb5.keytab
 	if [ -e /etc/krb5.keytab ]; then
@@ -144,14 +157,22 @@ fi
 
 if [ "$samba4_role" = 'DC' ]; then
 
+	## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
+	samba4_ldap_base="DC=$(echo "$kerberos_realm" | sed 's/\./,DC=/g')"
+	univention-config-registry set samba4/ldap/base="$samba4_ldap_base"
+
 	## check if we there already is a **domaincontroller** providing the service "Samba 4"
 	samba4servicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=${NAME})(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
+
+	/etc/init.d/samba4 stop
 
 	if [ -z "$samba4servicedcs" ]; then	## we are the first domainctontroller to provide this service
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 			## Provision Samba4
 			/usr/share/univention-samba4/scripts/setup-s4.sh
+
+			set_operatingSystem_attribute
 
 		fi
 
@@ -200,9 +221,6 @@ if [ "$samba4_role" = 'DC' ]; then
 			done
 		fi
 	fi
-
-	## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
-	univention-config-registry set samba4/ldap/base="DC=$(echo "$kerberos_realm" | sed 's/\./,DC=/g')"
 
 	## Kerberos keytab adjustments for Samba 4
 
