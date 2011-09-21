@@ -1,3 +1,15 @@
+univention-installer (7.0.61-1) unstable; urgency=low
+
+  * fixes for networking module (Bug #22872)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 21 Sep 2011 14:28:10 +0200
+
+univention-installer (7.0.60-1) unstable; urgency=low
+
+  * resizing of installer modules (Bug #23120)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 21 Sep 2011 14:27:36 +0200
+
 univention-installer (7.0.59-1) unstable; urgency=low
 
   * fixed ssl settings in profile based installation (Bug #22846)
