@@ -1,4 +1,4 @@
-[cupsys]
+[cups]
 description[de]=Druck-Server
 description[en]=Print Server
 icon=service/cups

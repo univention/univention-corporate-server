@@ -1,3 +1,15 @@
+univention-printserver (5.0.5-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+   [ Alexander Kläser ]
+    * renamed service from 'cupsys' to 'cups' in order to match the service name
+      necessary for invoke-rc.d (Bug #20286)
+   [ Janek Walkenhorst ]
+    * fix error message in listener.log and cups/error_log when modifying
+      printers with model None or smb (Bug #22547)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 14:57:34 +0200
+
 univention-printserver (5.0.4-1) unstable; urgency=low
 
   * fixed join script (Bug #22584) 
