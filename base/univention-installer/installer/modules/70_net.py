@@ -831,7 +831,7 @@ class object(content):
 		result = {}
 		try:
 			IPv4_addr = ipaddr.IPv4Network( '%s/%s' % (addr, netmask) )
-		except (ipaddr.AddressValueError, ipaddr.NetmaskValueError), e:
+		except Exception: # dirty hack: catch all exceptions - ipaddr throws sometime other exceptions than ipaddr.AddressValueError and ipaddr.NetmaskValueError
 			if copyOnError:
 				result['%s_ip' % name] = addr
 				result['%s_netmask' % name] = netmask
