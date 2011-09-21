@@ -1,3 +1,10 @@
+univention-bind (6.0.19-1) unstable; urgency=low
+
+  * Write univention.conf.proxy although dns/backend is set to samba4
+    (Bug #23168)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 06:37:26 +0200
+
 univention-bind (6.0.18-1) unstable; urgency=low
 
   * Update wait_for_dns function (Bug #23357)

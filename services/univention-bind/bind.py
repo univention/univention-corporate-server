@@ -133,10 +133,6 @@ def postrun():
 	baseConfig = univention_baseconfig.baseConfig()
 	baseConfig.load()
 
-	if baseConfig.get('dns/backend') in ['samba4', 'none']:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'bind: Skip postrun')
-		return
-
 	listener.setuid(0)
 	try:
 		fp = open(named_conf_file, 'w')
@@ -151,6 +147,12 @@ def postrun():
 				if f.endswith('.proxy'):
 					fp.write('include "%s";\n' % os.path.join(named_conf_dir, f))
 		fp.close()
+
+		if baseConfig.get('dns/backend') in ['samba4', 'none']:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'DNS: Skip zone reload')
+			listener.unsetuid()
+			return
+
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'DNS: Reloading BIND')
 		restart=False
 		for file in os.listdir('/var/cache/univention-bind-proxy'):
