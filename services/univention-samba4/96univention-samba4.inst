@@ -70,15 +70,16 @@ set_machine_secret() {
 	%EOF
 }
 
-set_operatingSystem_attribute() {
+operatingSystem_attribute() {
+	operation="$1"
 	## Warning: editing sam.ldb via tdb should only be done when samba4 is not running!
 	ldbmodify -H tdb:///var/lib/samba/private/sam.ldb <<-%EOF
 	dn: CN=$hostname,OU=Domain Controllers,$samba4_ldap_base
 	changetype: modify
-	replace: operatingSystem
+	$operation: operatingSystem
 	operatingSystem: Univention Corporate Server
 	-
-	replace: operatingSystemVersion
+	$operation: operatingSystemVersion
 	operatingSystemVersion: 3.0
 	%EOF
 }
@@ -172,7 +173,7 @@ if [ "$samba4_role" = 'DC' ]; then
 			## Provision Samba4
 			/usr/share/univention-samba4/scripts/setup-s4.sh
 
-			set_operatingSystem_attribute
+			operatingSystem_attribute modify
 
 		fi
 
@@ -194,13 +195,15 @@ if [ "$samba4_role" = 'DC' ]; then
 		extract_binddn_and_bindpwd_from_args "$@"
 		samba-tool join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 
+		operatingSystem_attribute add
+
 		# set_machine_secret	## currently disabled, seems to break DRS replication
 
 		## determine default sysvol parent for this host from univentionService="S4 Connector"
 		if [ -z "$samba4_sysvol_sync_host" ]; then
 			s4connectorservicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')      ## currently there is no u-d-m module computers/dc
-			if [ -n "$samba4_sysvol_sync_host" ]; then
-				univention-config-registry set samba4/sysvol/sync/host="$samba4_sysvol_sync_host"
+			if [ -n "$s4connectorservicedcs" ]; then
+				univention-config-registry set samba4/sysvol/sync/host="$s4connectorservicedcs"
 			fi
 		fi
 	fi
