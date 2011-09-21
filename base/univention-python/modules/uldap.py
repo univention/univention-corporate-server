@@ -158,11 +158,7 @@ class access:
 		else:
 			self.decode_ignorelist = decode_ignorelist
 
-		if not ca_certfile or self.uri.startswith('ldapi://'):
-			self.__open()
-		else:
-			self.__smart_open()
-			pass
+		self.__open(ca_certfile)
 
 	def __encode_pwd(self, pwd):
 		if isinstance( pwd, unicode ):
@@ -177,20 +173,7 @@ class access:
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'bind binddn=%s' % self.binddn)
 		self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
 
-	def __smart_open(self):
-		_d=univention.debug.function('uldap.__smart_open host=%s port=%d base=%s' % (self.host, self.port, self.base))
-
-		if not hasattr(self, 'protocol'):
-			self.protocol = 'ldap'
-
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
-
-		ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, self.ca_certfile )
-		self.lo=ldap.ldapobject.SmartLDAPObject(uri=self.uri, start_tls=self.start_tls, tls_cacertfile=self.ca_certfile)
-		if not self.uri.startswith('ldapi://'):
-			self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
-
-	def __open(self):
+	def __open(self, ca_certfile):
 		_d=univention.debug.function('uldap.__open host=%s port=%d base=%s' % (self.host, self.port, self.base))
 
 		if not hasattr(self, 'protocol'):
@@ -198,6 +181,9 @@ class access:
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
 		self.lo=ldap.initialize(self.uri)
+
+		if ca_certfile:
+			self.lo.set_option( ldap.OPT_X_TLS_CACERTFILE, ca_certfile )
 
 		if self.protocol.lower() != 'ldaps':
 			if self.start_tls == 1:

@@ -1,3 +1,10 @@
+univention-python (6.0.15-1) unstable; urgency=low
+
+  * SmartLDAPObject is no longer part of python-ldap. Removed from
+    uldap.py (Bug #17588)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 10:34:49 +0200
+
 univention-python (6.0.14-1) unstable; urgency=low
 
   * use port 7389 as default for ldap/server/port and ldap/master/port
