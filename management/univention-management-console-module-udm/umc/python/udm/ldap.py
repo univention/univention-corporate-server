@@ -135,7 +135,12 @@ class UDM_Module( object ):
 		"""Creates a LDAP object"""
 		lo, po = get_ldap_connection()
 
-		if container is not None:
+		if superordinate is not None:
+			try:
+				po.setDn( superordinate )
+			except udm_errors.noObject, e:
+				raise UMC_CommandError( str( e ) )
+		elif container is not None:
 			try:
 				po.setDn( container )
 			except udm_errors.noObject, e:

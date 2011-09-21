@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.139-1) unstable; urgency=low
+
+  * udm/add: when a superordinate is given it defines the position of the
+    new object; Bug #23564
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 21 Sep 2011 12:00:07 +0200
+
 univention-management-console-module-udm (1.0.138-1) unstable; urgency=low
 
   * handle new syntax classes UDM_Objects and UDM_ComplexAttributes; Bug #23646
