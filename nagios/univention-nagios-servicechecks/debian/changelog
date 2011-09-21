@@ -1,3 +1,13 @@
+univention-nagios-servicechecks (2.0.1-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+   [ Felix Botner ]
+    * bumped version (Bug #22935 #22934)
+    * fixed authentication check in squid/dansguardian plugin (Bug #22935
+      #22934)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 15:11:43 +0200
+
 univention-nagios-servicechecks (2.0.1-0) unstable; urgency=low
 
   * use host account for ldapsearch  (Bug #17519)
