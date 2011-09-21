@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.63-1) unstable; urgency=low
+
+  * add setValid function to ComplexInput; Bug #23688
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 21 Sep 2011 20:00:52 +0200
+
 univention-management-console-frontend (1.0.62-1) unstable; urgency=low
 
   * umc.render: added special treatment for HiddenInput widgets

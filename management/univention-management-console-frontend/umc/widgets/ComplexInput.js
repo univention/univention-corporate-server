@@ -89,7 +89,17 @@ dojo.declare("umc.widgets.ComplexInput", umc.widgets.ContainerWidget, {
 	onChange: function( newValue, widgetName ) {
 		console.log( 'INFO: ComplexInput: onChange ' + newValue );
 		// event stub
-	}
+	},
+
+	setValid: function(/*Boolean|Boolean[]*/ areValid, /*String?|String[]?*/ messages) {
+		// summary:
+		//		Set all child elements to valid/invalid.
+		dojo.forEach( this._order, function( iname, i ) {
+			var imessage = dojo.isArray(messages) ? messages[i] : messages;
+			var iisValid = dojo.isArray(areValid) ? areValid[i] : areValid;
+			this._widgets[ iname ].setValid( iisValid, imessage );
+		}, this );
+	},
 
 });
 
