@@ -667,7 +667,10 @@ class object(content):
 		# IPv6
 		if card.get_elem('CB_IPv6RA').result():
 			self.container['%s_acceptra' % name] = 'true'
+			self.container['%s_ip6' % name] = ''
+			self.container['%s_prefix6' % name] = ''
 		else:
+			self.container['%s_acceptra' % name] = ''
 			self.container['%s_ip6' % name] = card.get_elem('INP_IPv6ADDR').result().strip()
 			self.container['%s_prefix6' % name] = card.get_elem('INP_IPv6PREFIX').result().strip()
 
@@ -695,6 +698,7 @@ class object(content):
 					if not(element.result()): # and netmask is empty ==> then set default netmask
 						element.text='255.255.255.0'
 						element.set_cursor(len(element.text))
+						self.copy_elem_to_container()
 		content.tab(self)
 
 	def input(self,key):
