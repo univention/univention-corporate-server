@@ -43,15 +43,17 @@ translation=univention.admin.localization.translation('univention/admin')
 _=translation.translate
 
 modules={}
+superordinates=set()  # list of all module names (strings) that are superordinates
 containers=[]
 
 def update():
 	'''scan handler modules'''
-	global modules
+	global modules, superordinates
 	modules={}
+	superordinates=set()
 
 	def _walk(root, dir, files):
-		global modules
+		global modules, superordinates
 		for file in files:
 			if not file.endswith('.py') or file.startswith('__'):
 				continue
@@ -65,6 +67,12 @@ def update():
 			modules[m.module]=m
 			if isContainer(m):
 				containers.append(m)
+
+			# update the list of superordinates
+			superordinate = superordinate_name(m)
+			if superordinate:
+				superordinates.add(superordinate)
+
 
 	for p in sys.path:
 		dir=os.path.join(p, 'univention/admin/handlers')
@@ -637,6 +645,20 @@ def subordinates(module):
 	return [mod for mod in modules.values()
 		if superordinate_name(mod) == name(module) and not isContainer(mod)]
 
+def find_superordinate( dn, co, lo ):
+	'''For a given DN, search in the LDAP path whether this LDAP object is
+	below an object that is a superordinate or is a superordinate itself.
+	Returns the superordinate module or None.'''
+
+	# walk up the ldap path and stop if we find an object type that is a superordinate
+	while dn:
+		attr = lo.get( dn )
+		module = identifyOne(dn, attr) 
+		if isSuperordinate(module):
+			return get(module)
+		dn = lo.parentDn( dn )
+	return None
+
 def layout(module_name, object=None):
 	'''return layout of properties'''
 	module = get(module_name)
@@ -749,6 +771,9 @@ def quickDescription(module_name, dn):
 	module = get(module_name)
 	rdn = univention.admin.uldap.explodeDn(dn, 1)[0]
 	return getattr(module, 'quickDescription', rdn)
+
+def isSuperordinate(module):
+	return name(module) in superordinates
 
 def isContainer(module):
 	return name(module).startswith('container/')

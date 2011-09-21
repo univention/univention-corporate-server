@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.84-1) unstable; urgency=low
+
+  * modules.univention.admin.modules: added functions isSuperordinate(),
+    find_superordinate() (Bug #23200)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 21 Sep 2011 17:17:18 +0200
+
 univention-directory-manager-modules (7.0.83-1) unstable; urgency=low
 
   * shares/printer: provide virtual property producer, use different
