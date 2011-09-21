@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-21 15:32+0200\n"
+"POT-Creation-Date: 2011-09-21 17:55+0200\n"
 "PO-Revision-Date: 2011-09-07 20:25+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,12 +27,13 @@ msgstr "%(nSelected)d %(objPlural)s von %(nTotal)d sind ausgewählt"
 msgid "%(nSelected)d %(objSingular)s of %(nTotal)d selected"
 msgstr "%(nSelected)d %(objSingular)s von %(nTotal)d ist ausgewählt"
 
-#: umc/js/_udm/NewObjectDialog.js:155
+#: umc/js/_udm/NewObjectDialog.js:155 umc/js/_udm/NewObjectDialog.js:178
 #, python-format
 msgid "%s template"
 msgstr "%s-Vorlage"
 
-#: umc/js/udm.js:367
+#: umc/js/udm.js:367 umc/js/_udm/NewObjectDialog.js:125
+#: umc/js/_udm/NewObjectDialog.js:142 umc/js/_udm/NewObjectDialog.js:172
 #, python-format
 msgid "%s type"
 msgstr "%styp"
@@ -100,6 +101,10 @@ msgstr ""
 #: umc/js/_udm/NewObjectDialog.js:199
 msgid "Close"
 msgstr "Schließen"
+
+#: umc/js/_udm/NewObjectDialog.js:108
+msgid "Container"
+msgstr "Container"
 
 #: umc/js/udm.js:123
 msgid "DHCP object"
@@ -252,7 +257,7 @@ msgstr "%s suchen"
 msgid "Search in:"
 msgstr "Suche in:"
 
-#: umc/js/udm.js:335
+#: umc/js/udm.js:335 umc/js/_udm/NewObjectDialog.js:119
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
@@ -270,14 +275,13 @@ msgid "The container in which the query is executed."
 msgstr "Der Container, in dem die Suche ausgeführt wird."
 
 #: umc/js/_udm/NewObjectDialog.js:120
-#, fuzzy, python-format
-msgid "The corresponding %s superordinate."
-msgstr "Das dem neuen %s zugewiesene übergeordnete Objekt."
+msgid "The corresponding superordinate for the UDM object."
+msgstr "Das dem neuen UDM-Objekt zugewiesene übergeordnete Objekt."
 
 #: umc/js/_udm/NewObjectDialog.js:127 umc/js/_udm/NewObjectDialog.js:143
 #, python-format
 msgid "The exact %s type."
-msgstr ""
+msgstr "Der genaue %styp"
 
 #: umc/js/_udm/NewObjectDialog.js:173
 msgid "The exact object type of the new UDM object."
@@ -403,14 +407,14 @@ msgstr "Benutzer"
 #~ msgid "Close dialog"
 #~ msgstr "Dialog schließen"
 
-#~ msgid "Container"
-#~ msgstr "Container"
-
 #~ msgid "Entries"
 #~ msgstr "Einträge"
 
 #~ msgid "New UDM-Object"
 #~ msgstr "Neues UDM-Objekt"
+
+#~ msgid "Object template"
+#~ msgstr "Objekttyp"
 
 #~ msgid "Object type"
 #~ msgstr "Objekttyp"

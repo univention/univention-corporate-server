@@ -105,7 +105,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 			widgets.push({
 				type: 'ComboBox',
 				name: 'container',
-				label: 'Container',
+				label: this._('Container'),
 				description: this._('The container in which the UDM object shall be created.'),
 				staticValues: containers
 			});
@@ -116,13 +116,13 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 				widgets.push({
 					type: 'ComboBox',
 					name: 'superordinate',
-					label: 'Superordinate',
-					description: this._('The corresponding %s superordinate.', this.objectNameSingular),
+					label: this._('Superordinate'),
+					description: this._('The corresponding superordinate for the UDM object.', this.objectNameSingular),
 					staticValues: superordinates
 				}, {
 					type: 'ComboBox',
 					name: 'objectType',
-					label: 'Object type',
+					label: this._('%s type', umc.tools.capitalize(this.objectNameSingular)),
 					value: this.defaultObjectType,
 					description: this._('The exact %s type.', this.objectNameSingular),
 					umcpCommand: this.umcpCommand,
@@ -139,7 +139,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 						type: 'ComboBox',
 						name: 'objectType',
 						value: this.defaultObjectType,
-						label: 'Object type',
+						label: this._('%s type', umc.tools.capitalize(this.objectNameSingular)),
 						description: this._('The exact %s type.', this.objectNameSingular),
 						staticValues: types
 					});
@@ -152,7 +152,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 					widgets.push({
 						type: 'ComboBox',
 						name: 'objectTemplate',
-						label: this._('%s template', this.objectNameSingular),
+						label: this._('%s template', umc.tools.capitalize(this.objectNameSingular)),
 						description: this._('A template defines rules for default object properties.'),
 						staticValues: templates
 					});
@@ -169,13 +169,13 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 			}, {
 				type: 'ComboBox',
 				name: 'objectType',
-				label: 'Object type',
+				label: this._('%s type', umc.tools.capitalize(this.objectNameSingular)),
 				description: this._('The exact object type of the new UDM object.'),
 				staticValues: types
 			}, {
 				type: 'ComboBox',
 				name: 'objectTemplate',
-				label: 'Object template',
+				label: this._('%s template', umc.tools.capitalize(this.objectNameSingular)),
 				description: this._('A template defines rules for default object properties.'),
 				depends: 'objectType',
 				umcpCommand: this.umcpCommand,
