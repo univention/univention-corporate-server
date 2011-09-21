@@ -135,7 +135,7 @@ def create_certificate(name, serverUidNumber, domainname):
 		return
 
 	try:
-		gidNumber = int(pwd.getpwnam('%s$' % (name) )[3])
+		gidNumber = int(grp.getgrnam('DC Backup Hosts')[2])
 	except:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % name)
 		gidNumber = 0

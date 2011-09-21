@@ -38,6 +38,9 @@ fi
 
 SSL_PATH=/etc/univention/ssl
 
+# copy root certificate to /var/www (linked to by overview.html)
+cp "$SSL_PATH/ucsCA/CAcert.pem" /var/www/ucs-root-ca.crt || true
+
 # copy ssl directory
 univention-ssh-rsync /etc/machine.secret -az --delete -e ssh "$hostname\$@$ldap_master:$SSL_PATH/*" "$SSL_PATH"
 

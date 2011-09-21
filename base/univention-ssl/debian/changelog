@@ -1,3 +1,16 @@
+univention-ssl (6.0.5-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+
+   [ Janek Walkenhorst ]
+    * sync root certificate to /var/www (Bug #22909)
+
+   [ Moritz Muehlenhoff ]
+    * Modify gencertificate listener module so that the SSL certificates are
+      owned by the "DC Backup Hosts" group (Bug #22068)	 
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 20:39:31 +0200
+
 univention-ssl (6.0.4-1) unstable; urgency=low
 
   * Set execute permissions for /usr/share/univention-ssl/ssl-sync
