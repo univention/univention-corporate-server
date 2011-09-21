@@ -577,6 +577,7 @@ class ucs:
 
 	def get_ucs_ldap_object(self, dn):
 		_d=ud.function('ldap.get_ucs_ldap_object')
+
 		if type(dn) == type(u''):
 			searchdn = dn
 		else:
@@ -984,7 +985,7 @@ class ucs:
 			else:
 				raise
 
-	def sync_to_ucs(self, property_type, object, premapped_ad_dn):
+	def sync_to_ucs(self, property_type, object, premapped_ad_dn, retry = True):
 		_d=ud.function('ldap.sync_to_ucs')
 		# this function gets an object from the ad class, which should be converted into a ucs modul
 
@@ -993,10 +994,19 @@ class ucs:
 			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
 			return True
 
-		if object.has_key('olddn'):
-			old_object = self.get_ucs_object(property_type,object['olddn'])
-		else:
-			old_object = self.get_ucs_object(property_type,object['dn'])
+		try:
+			if object.has_key('olddn'):
+				old_object = self.get_ucs_object(property_type,object['olddn'])
+			else:
+				old_object = self.get_ucs_object(property_type,object['dn'])
+		except (ldap.SERVER_DOWN, SystemExit):
+			# LDAP idletimeout? try once again
+			if retry:
+				self.open_ucs( )
+				return self.sync_to_ucs(property_type, object, premapped_ad_dn, False)
+			else:
+				raise
+
 		if old_object and object['modtype'] == 'add':
 			object['modtype'] = 'modify'
 		if not old_object and object['modtype'] == 'modify':
@@ -1008,7 +1018,12 @@ class ucs:
 			ud.debug(ud.LDAP, ud.PROCESS,
 							   'sync to ucs:   [%14s] [%10s] %s' % (property_type,object['modtype'], object['dn']))
 		except (ldap.SERVER_DOWN, SystemExit):
-			raise
+			# LDAP idletimeout? try once again
+			if retry:
+				self.open_ucs( )
+				return self.sync_to_ucs(property_type, object, premapped_ad_dn, False)
+			else:
+				raise
 		except: # FIXME: which exception is to be caught?
 			ud.debug(ud.LDAP, ud.PROCESS,'sync to ucs...')
 		
@@ -1051,7 +1066,12 @@ class ucs:
 					for f in self.property[property_type].post_ucs_modify_functions:
 						f(self, property_type, object)
 			except (ldap.SERVER_DOWN, SystemExit):
-				raise
+				# LDAP idletimeout? try once again
+				if retry:
+					self.open_ucs( )
+					return self.sync_to_ucs(property_type, object, premapped_ad_dn, False)
+				else:
+					raise
 			except: # FIXME: which exception is to be caught?
 				self._debug_traceback(ud.ERROR,
 									  "failed in post_con_modify_functions")
@@ -1071,7 +1091,12 @@ class ucs:
 			ud.debug(ud.LDAP, ud.ERROR, "Value may not change: %s (%s)" % (msg,object['dn']))
 			return False
 		except (ldap.SERVER_DOWN, SystemExit):
-			raise
+			# LDAP idletimeout? try once again
+			if retry:
+				self.open_ucs( )
+				return self.sync_to_ucs(property_type, object, premapped_ad_dn, False)
+			else:
+				raise
 		except: # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.ERROR, "Unknown Exception during sync_to_ucs")
 			return False

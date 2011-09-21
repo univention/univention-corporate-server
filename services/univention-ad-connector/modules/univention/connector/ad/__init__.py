@@ -133,10 +133,14 @@ def ad2unix_time(l):
 	return time.strftime("%d.%m.%y",time.gmtime((l-d)/10000000))
 
 def samba2ad_time(l):
+	if l in [0,1]:
+		return l
 	d=116444736000000000L #difference between 1601 and 1970
 	return long(time.mktime(time.gmtime(l+3600)))*10000000+d
 
 def ad2samba_time(l):
+	if l == 0:
+		return l
 	d=116444736000000000L #difference between 1601 and 1970
 	return long(((l-d))/10000000)
 
@@ -539,6 +543,7 @@ def explode_unicode_dn(dn, notypes=0):
 				last_found += 1
 			ret.append(dn[last_found:last])
 			last_found = last			
+	ret.append(dn[last+1:])                                                                                                      
 	
 	return ret
 
@@ -1509,7 +1514,6 @@ class ad(univention.connector.ucs):
 		_d=ud.function('ldap.initialize')
 		print "--------------------------------------"
 		print "Initialize sync from AD"
-		self.resync_rejected()
 		if self._get_lastUSN() == 0: # we startup new
 			ud.debug(ud.LDAP, ud.INFO, "initialize AD: last USN is 0, sync all")
 			# query highest USN in LDAP
@@ -1523,6 +1527,7 @@ class ad(univention.connector.ucs):
 			self._set_lastUSN(max(highestCommittedUSN,self._get_lastUSN()))
 			ud.debug(ud.LDAP, ud.INFO, "initialize AD: sync of all objects finished, lastUSN is %d", self.__get_highestCommittedUSN())
 		else:
+			self.resync_rejected()
 			polled=self.poll()		
 		print "--------------------------------------"
 		
@@ -1584,6 +1589,7 @@ class ad(univention.connector.ucs):
 		'''
 		_d=ud.function('ldap.poll')
 		# search from last_usn for changes
+
 		change_count = 0
 		changes = []
 		try:
@@ -1599,6 +1605,8 @@ class ad(univention.connector.ucs):
 		sys.stdout.flush()
 		done_counter = 0
 		object = None
+		lastUSN = self._get_lastUSN()
+		newUSN = lastUSN
 
 		for element in changes:
 			try:
@@ -1664,7 +1672,7 @@ class ad(univention.connector.ucs):
 
 					if sync_successfull:
 						change_count+=1
-						self.__update_lastUSN(object)
+						newUSN = max( self.__get_change_usn(object), newUSN)
 						try:
 							GUID = old_element[1]['objectGUID'][0]
 							self._set_DN_for_GUID(GUID,old_element[0])
@@ -1678,7 +1686,7 @@ class ad(univention.connector.ucs):
 						self.save_rejected(object)
 						self.__update_lastUSN(object)
 				else:
-					self.__update_lastUSN(object)
+					newUSN = max( self.__get_change_usn(object), newUSN)
 
 				done_counter += 1
 				print "%s"%done_counter,
@@ -1688,6 +1696,9 @@ class ad(univention.connector.ucs):
 			sys.stdout.flush()
 				
 		print ""
+
+		if newUSN != lastUSN:
+			self._set_lastUSN(newUSN)
 
 		# return number of synced objects
 		rejected = self._list_rejected()

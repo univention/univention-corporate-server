@@ -1,3 +1,35 @@
+univention-ad-connector (6.0.7-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+   [ Stefan Gohmann ]
+    * Rename UCR variable ad/password/timestamp/ignorereset to
+      ad/password/timestamp/syncreset (Bug #22751)
+    * Fixed typo s/ignorreset/ignorereset/g (Bug #22751)
+    * More password timestamp handling and some cleanups (Bug #22751)
+    * Added missing brackets (Bug #22751)
+    * Set default values in postinst for
+      connector/ad/password/timestamp/.* (Bug #22751)
+    * Also added two UCR variables to handle the password reset in the
+      timestamp check mode (Bug #22751)
+    * Sync the passwords only if the timestamp is newer. The bahavior can
+      configured with the UCR variable connector/ad/password/timestamp/check.
+      Default is false (Bug #22751)
+    * Consider empty sambaLMPassword attributes to prevent sync loops
+      (Bug #22749)
+    * No longer use sambaPwdMustChange to calculate the password end time
+      (Bug #18187)
+    * explode_unicode_dn: Also retrun last dn component. Thanks to Joerg
+      Steffens for the patch (Bug #21000)
+    * Resync rejected objects not before the sync is initialized
+      (Bug #22622)
+    * Set lastUSN to internal.cfg not before the search result was
+      completely synced, otherwise the USN handling can become confused
+      (Bug #22622)
+    * Retry the synchonisation if the local idletimeout occurs
+      (Bug #22622)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 15:43:17 +0200
+
 univention-ad-connector (6.0.6-1) unstable; urgency=low
 
   * Write tracebacks into connector.log (Bug #13047)

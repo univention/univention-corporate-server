@@ -120,3 +120,22 @@ Description[de]=Konfiguriert auf welches Attribut im Active Directory das Attrib
 Description[en]=Controls the Active Directory attribute to which the UCS attribute Organisation is mapped (as standard: company)
 Type=str
 Categories=service-adcon
+
+[con.*/ad/password/timestamp/check]
+Description[de]=Die Variable gibt an, ob die Passwortsynchronisation nur erfolgt, wenn das zu synchronisierende Passwort neuer ist. Bitte beachten Sie, dass das Zurücksetzen der Passwörter dann nicht mehr eindeutig erkennt werden kann, das Verhalten kann über con.*/ad/password/timestamp/ignorreset/.* gesteuert werden (default: false)
+Description[en]=The variable specifies that the password synchronisation only performs if the sync password newer is. Please note the password reset won't discovered in all cases, the programm behavior can configured by con.*/ad/password/timestamp/ignorreset/.* (default: false)
+Type=bool
+Categories=service-adcon
+
+[con.*/ad/password/timestamp/syncreset/ucs]
+Description[de]=Wenn das Passwort im UCS zurückgesetzt wurde, so wird das Passwort nicht nach Active Directory zurücksynchronisiert, wenn diese Variable auf false gesetzt ist (default: true)
+Description[en]=If the user password was reset in UCS the password won't be synced to Active Directory if this variable is set to false (default: true)
+Type=bool
+Categories=service-adcon
+
+[con.*/ad/password/timestamp/syncreset/ad]
+Description[de]=Wenn das Passwort im Active Directory zurückgesetzt wurde, so wird das Passwort nicht nach UCS zurücksynchronisiert, wenn diese Variable auf false gesetzt ist (default: true)
+Description[en]=If the user password was reset in Active Directory the password won't be synced to UCS if this variable is set to false (default: true)
+Type=bool
+Categories=service-adcon
+
