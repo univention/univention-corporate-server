@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.143-1) unstable; urgency=low
+
+  * support adding objects with no superordinate; Bug #23679
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 21 Sep 2011 20:25:41 +0200
+
 univention-management-console-module-udm (1.0.142-1) unstable; urgency=low
 
   * support ComplexInput widget; Bug #23688

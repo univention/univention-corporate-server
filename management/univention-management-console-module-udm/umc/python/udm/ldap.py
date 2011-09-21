@@ -35,6 +35,7 @@ import operator
 import threading
 
 from univention.management.console import Translation
+from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 
 import univention.admin as udm
 import univention.admin.modules as udm_modules
@@ -135,7 +136,7 @@ class UDM_Module( object ):
 		"""Creates a LDAP object"""
 		lo, po = get_ldap_connection()
 
-		if superordinate is not None:
+		if superordinate not in ( None, 'None' ):
 			try:
 				po.setDn( superordinate )
 			except udm_errors.noObject, e:
@@ -148,7 +149,7 @@ class UDM_Module( object ):
 		else:
 			container = po.getBase()
 
-		if superordinate is not None:
+		if superordinate not in ( None, 'None' ):
 			mod = get_module( self.name, superordinate )
 			if mod is not None:
 				MODULE.info( 'Found UDM module for superordinate' )
