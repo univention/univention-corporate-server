@@ -33,85 +33,102 @@
 eval $(/usr/sbin/univention-config-registry shell hostname samba4/sysvol/sync/interval)
 
 if [ -z "$samba4_sysvol_sync_interval" ]; then
-	samba4_sysvol_sync_interval=5;
+	samba4_sysvol_sync_interval=60;	# seconds between checking sysvol changes on all s4DCs
 fi
 
 SYSVOL_PATH='/var/lib/samba/sysvol'
 SYSVOL_SYNCDIR='/var/cache/univention-samba4/sysvol-sync'
-
-## snapshot current state of local sysvol into an export directory
 exportdir="$SYSVOL_SYNCDIR/export"
-if ! [ -d "$exportdir" ]; then
-	mkdir -p "$exportdir"
-	rsync -a "$SYSVOL_PATH"/ "$exportdir"
-	# check again if something changed meanwhile
-	while diff -qr "$SYSVOL_PATH" "$exportdir"; do
-		rsync -a --delete "$SYSVOL_PATH"/ "$exportdir"
-	done
-fi
 
-s4connectorservicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')      ## currently there is no u-d-m module computers/dc
-s4connectorservicedcs=$(echo "$s4connectorservicedcs"| awk -v hostname="${hostname}" '{ for (i=1; i<=NF; i++) { if ($i != hostname){ print $i } } }')	## filter out this hostname
+export_local_sysvol() {
+	if ! [ -d "$exportdir" ]; then
+		mkdir -p "$exportdir"
+	fi
 
-sync_sysvol_from_s4chost() {
-	for s4chost in $s4connectorservicedcs; do	## usually there should only be one..
-		### TODO: this code is basically the same as in gpo-sync-master.sh
-		### import sysvol from $host
-
-		## temporary target directory for sysvol of $host
-		importdir="$SYSVOL_SYNCDIR/import/$s4chost"
-		# temporary backup directory for sysvol of $s4chost
-		oldimportdir="$SYSVOL_SYNCDIR/import/$s4chost.bak"
-
-		if ! [ -d "$oldimportdir" ]; then
-			mkdir -p "$oldimportdir"
-		fi
-
-		if ! [ -d "$importdir" ]; then
-			mkdir -p "$importdir"
-		else
-			rsync -aAX --delete "$importdir/" "$oldimportdir"
-		fi
-
-		## read $s4dc:$exportdir into temporary import directory to minimise temporary files in local sysvol
-		univention-ssh-rsync /etc/machine.secret -aAX --delete --copy-dest="$oldimportdir" \
-			"${hostname}\$"@"${s4chost}":"${exportdir}"/ "$importdir"
-		
+	## check if something changed in the sysvol with respect to the last export
+	sysvol_updated=0
+	if diff -qr "$exportdir" "$SYSVOL_PATH"; then
+		### export sysvol for $s4dc
+		## snapshot modified local sysvol for export to other hosts into the export directory
+		tmpdir=$(mktemp -d $SYSVOL_SYNCDIR/tmp.XXXXXXXXXX)
+		chmod g+rx,o+rx "$tmpdir"
+		rsync -aAX --delete "$SYSVOL_PATH"/ "$tmpdir"
 		## check again if something changed meanwhile
-		tmpdir=$(mktemp -d "$importdir".XXXXXXXXXX)
-		univention-ssh-rsync /etc/machine.secret -aAX --delete --copy-dest="$importdir" \
-			"${hostname}\$"@"${s4chost}":"${exportdir}"/ "$tmpdir"
-		while diff -qr "$importdir" "$tmpdir"; do
-			rsync -aAX --delete "$tmpdir" "$importdir"
-			## check again if something changed meanwhile
-			univention-ssh-rsync /etc/machine.secret -aAX --delete --copy-dest="$importdir" \
-			"${hostname}\$"@"${s4chost}":"${exportdir}"/ "$tmpdir"
+		while diff -qr "$SYSVOL_PATH" "$tmpdir"; do
+			rsync -aAX --delete "$SYSVOL_PATH"/ "$tmpdir"
 		done
-		rm -rf "$tmpdir"
+		mv "$exportdir" "$exportdir".tmp && mv "$tmpdir" "$exportdir" && rm -rf "$exportdir".tmp
 
-		## check if something changed in the sysvol of $s4chost with repect to the local active sysvol
-		if diff -qr "$oldimportdir" "$importdir"; then
-			## check if the current sysvol of $s4chost differs from the local active sysvol
-			if diff -qr "$SYSVOL_PATH" "$importdir"; then
-				## hot-merge the files into the local active sysvol
-				## this potentially destroys changes in the local active sysvol, so avoid deleting (newer) files
-				rsync -auAX "$importdir/" "$SYSVOL_PATH"
+		sysvol_updated=1
+	fi
+	return "$sysvol_updated"
+}
 
-				### re-export sysvol for $s4chost
-				## snapshot modified local sysvol for export to other hosts into the export directory
-				tmpdir=$(mktemp -d $SYSVOL_SYNCDIR/tmp.XXXXXXXXXX)
-				chmod g+rx,o+rx "$tmpdir"
-				rsync -aAX --delete "$SYSVOL_PATH"/ "$tmpdir"
-				mv "$exportdir" "$exportdir".tmp && mv "$tmpdir" "$exportdir" && rm -rf "$exportdir".tmp
-				sysvol_updated=1
-			fi
-		fi
+sync_sysvol_from_host() {
+	s4dc="$1"
+
+	### TODO: this code is basically the same as in gpo-sync-master.sh
+	### import sysvol from $host
+
+	## temporary target directory for sysvol of $host
+	importdir="$SYSVOL_SYNCDIR/import/$s4dc"
+	# temporary backup directory for sysvol of $s4dc
+	oldimportdir="$SYSVOL_SYNCDIR/import/$s4dc.bak"
+
+	if ! [ -d "$oldimportdir" ]; then
+		mkdir -p "$oldimportdir"
+	fi
+
+	if ! [ -d "$importdir" ]; then
+		mkdir -p "$importdir"
+	else
+		rsync -aAX --delete "$importdir/" "$oldimportdir"
+	fi
+
+	## read $s4dc:$exportdir into temporary import directory to minimise temporary files in local sysvol
+	univention-ssh-rsync /etc/machine.secret -aAX --delete --copy-dest="$oldimportdir" \
+		"${hostname}\$"@"${s4dc}":"${exportdir}"/ "$importdir"
+	
+	## check again if something changed meanwhile
+	tmpdir=$(mktemp -d "$importdir".XXXXXXXXXX)
+	univention-ssh-rsync /etc/machine.secret -aAX --delete --copy-dest="$importdir" \
+		"${hostname}\$"@"${s4dc}":"${exportdir}"/ "$tmpdir"
+	while diff -qr "$importdir" "$tmpdir"; do
+		rsync -aAX --delete "$tmpdir" "$importdir"
+		## check again if something changed meanwhile
+		univention-ssh-rsync /etc/machine.secret -aAX --delete --copy-dest="$importdir" \
+		"${hostname}\$"@"${s4dc}":"${exportdir}"/ "$tmpdir"
 	done
+	rm -rf "$tmpdir"
 
-	## currently don't notify the $s4chost if the local sysvol changed, polling only
+	sysvol_updated=0
+	## check if something changed in the sysvol of $s4dc
+	if diff -qr "$oldimportdir" "$importdir"; then
+		## check if the current sysvol of $s4dc differs from the local active sysvol
+		if diff -qr "$SYSVOL_PATH" "$importdir"; then
+			## hot-merge the files into the local active sysvol
+			## this potentially destroys changes in the local active sysvol, so avoid deleting (newer) files
+			rsync -auAX "$importdir/" "$SYSVOL_PATH"
+
+			### re-export sysvol for $s4dc
+			## snapshot modified local sysvol for export to other hosts into the export directory
+			tmpdir=$(mktemp -d $SYSVOL_SYNCDIR/tmp.XXXXXXXXXX)
+			chmod g+rx,o+rx "$tmpdir"
+			rsync -aAX --delete "$SYSVOL_PATH"/ "$tmpdir"
+			mv "$exportdir" "$exportdir".tmp && mv "$tmpdir" "$exportdir" && rm -rf "$exportdir".tmp
+
+			sysvol_updated=1
+		fi
+	fi
+
+	## currently don't notify the $s4dc if the local sysvol changed, polling only
+	return "$sysvol_updated"
 }
 
 ## create a $triggerfile for inotify
+s4connectorservicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')      ## currently there is no u-d-m module computers/dc
+s4connectorservicedcs=$(echo "$s4connectorservicedcs"| awk -v hostname="${hostname}" '{ for (i=1; i<=NF; i++) { if ($i != hostname){ print $i } } }')	## filter out this hostname
+
 for s4chost in $s4connectorservicedcs; do	## TODO: there should only be one..
 	triggerdir="$SYSVOL_SYNCDIR/trigger"
 	triggerfile="$triggerdir/$s4chost"
@@ -124,13 +141,45 @@ for s4chost in $s4connectorservicedcs; do	## TODO: there should only be one..
 	fi
 done
 
-## import sysvol from $s4chost when inotify detects a modification of "$triggerfile"
-export LANG=C
+## import sysvol from $s4chost when inotify detects a write to "$triggerfile"
+## monitor triggerfile:
+inotify_fifo=$(mktemp "$SYSVOL_SYNCDIR/inotify_fifo.XXXXXXXXXX")
+mkfifo "$inotify_fifo"
+inotifywait -m -r -e CLOSE_WRITE --format "%f" "$triggerdir" >"$inotify_fifo" 2>/dev/null &
+inotifypid="$!"
+
+cleanup() {
+	kill "$inotifypid"
+	rm -f "$inotify_fifo"
+}
+
+sigterm() { echo SIGTERM; cleanup; exit 1; }
+sigint() { echo SIGINT; cleanup; exit 1; }
+trap sigterm TERM
+trap sigint INT
+
+while read written_filename; do
+	if host "$written_filename" >/dev/null; then
+		change_on_host="$written_filename"
+	fi
+done <"$inotify_fifo" &
+
+interval_timelag=0 	## the calculated time difference between the polling loop and the trigger filestamp
 while true; do
-	 inotifywatch -e modify -r "$triggerfile" -t"$samba4_sysvol_sync_interval" 2>&1 \
-			| grep -q 'No events occurred.' > /dev/null
-	if ! [ $? = 0 ]; then
-		sync_sysvol_from_s4chost
+	## snapshot current state of local sysvol into the export directory
+	export_local_sysvol
+
+	## sleep and try to sync polling interval with trigger to reduce the time lag
+	sleep $(("$samba4_sysvol_sync_interval" - "$interval_timelag"))
+
+	if [ -n "$change_on_host" ]; then
+		s4chost="$change_on_host"
+		unset change_on_host
+		## measure the time lag between the trigger filestamp and our current time
+		trigger_timestamp_epoch=$(date +%s -r "$triggerdir/$s4chost")
+		current_time_epoch=$(date +%s)
+		delay=$(($current_time_epoch - $trigger_timestamp_epoch))
+		interval_timelag=$(("$samba4_sysvol_sync_interval" - "$delay"%"$samba4_sysvol_sync_interval"))
+		sync_sysvol_from_host "$s4chost"
 	fi
 done
-
