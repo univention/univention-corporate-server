@@ -865,7 +865,13 @@ class object(content):
 					'dns_forwarder_1', 'dns_forwarder_2', 'dns_forwarder_3',
 					'nameserver_1', 'nameserver_2', 'nameserver_3' ]
 		for key in keylist:
-			result[key] = self.container.get(key,'')
+			if key == 'proxy_http':
+				if not self.container.get(key) in ['http://', 'https://']:
+					result[key] = self.container.get(key,'')
+				else:
+					result[key] = ''
+			else:
+				result[key] = self.container.get(key,'')
 
 		# copy all eth* values to result
 		for key,val in self.container.items():
