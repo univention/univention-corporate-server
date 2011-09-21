@@ -1,0 +1,5 @@
+univention-horde4 (1.0.0-1) unstable; urgency=low
+
+  * initial release (Bug #22151)
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Sep 2011 15:31:34 +0200

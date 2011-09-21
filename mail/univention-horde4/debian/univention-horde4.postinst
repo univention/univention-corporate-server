@@ -1,0 +1,82 @@
+#!/bin/sh
+#
+# Univention horde webclient
+#  postinst script for the debian package
+#
+# Copyright 2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+#DEBHELPER#
+
+. /usr/share/univention-lib/all.sh
+
+eval "$(univention-config-registry shell)"
+
+univention-config-registry set \
+	horde/sql/persistent?true \
+	horde/sql/username?"'horde'" \
+	horde/sql/hostspec?"'localhost'" \
+	horde/sql/port?5432 \
+	horde/sql/protocol?"'unix'" \
+	horde/sql/database?"'hordedb'" \
+	horde/sql/charset?"'utf-8'" \
+	horde/sql/splitread?false \
+	horde/sql/phptype?"'pgsql'" \
+	horde/testdisable?true \
+	horde/auth/admins?"array('Administrator')" \
+	horde/mailer/params/host?"'localhost'" \
+	horde/mailer/params/port?25 \
+	horde/mailer/params/auth?true \
+	horde/mailer/type?"'smtp'" \
+	horde/log/enabled?true \
+	horde/log/type?"'file'" \
+	horde/log/priority?LOG_ERR \
+	horde/log/name?"'/var/log/horde/horde.log'" \
+	horde/log/params/append?true \
+	horde/auth/params/app?"'imp'" \
+	horde/auth/driver?"'application'" \
+	horde/imap/hostspec?"'localhost'" \
+	horde/imap/hordeauth?"'full'" \
+	horde/imap/port?143 \
+	horde/imap/secure?"'tls'" \
+	horde/imap/quota/driver?"'imap'" \
+	horde/imap/quota/params/userhierarchy?"'user.'" \
+	horde/imap/acl/driver?"'rfc2086'" \
+	horde/folder/spam?"'Spam'" \
+	horde/folder/trash?"'Trash'" \
+	horde/folder/drafts?"'Drafts'" \
+	horde/folder/sent?"'Sent'"
+
+
+
+call_joinscript 85univention-horde4.inst
+
+if [ -x /etc/init.d/apache2 ]; then
+	/etc/init.d/apache2 reload
+fi
+
+exit 0

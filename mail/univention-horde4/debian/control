@@ -1,0 +1,17 @@
+Source: univention-horde4
+Section: univention
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.8.2
+Build-Depends: debhelper, univention-config-dev, ucslint
+
+Package: univention-horde4
+Architecture: all
+Depends: pear-horde-channel, php-horde-role, php-horde-webmail, php5-pgsql, univention-postgresql, shell-univention-lib, php-net-sieve, php5-imagick, php5-tidy
+Description: UCS - horde4 webclient
+ This package installs and configures the horde4
+ webclient.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

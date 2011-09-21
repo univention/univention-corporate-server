@@ -1,0 +1,8 @@
+/etc/univention/templates/files/etc/postgresql/7.4/main/pg_hba.conf.d/11-horde_user
+/etc/univention/templates/files/etc/postgresql/8.3/main/pg_hba.conf.d/11-horde_user
+/etc/univention/templates/files/etc/postgresql/8.4/main/pg_hba.conf.d/11-horde_user
+/etc/univention/templates/files/var/www/ucs-overview/de.html.d/60horde-de.html
+/etc/univention/templates/files/var/www/ucs-overview/en.html.d/60horde-en.html
+/etc/univention/templates/files/etc/horde4/horde/conf.d/10-ucs.php
+/etc/univention/templates/files/etc/horde4/imp/backends.d/10-ucs.php
+/etc/univention/templates/files/etc/horde4/imp/prefs.d/10-ucs.php

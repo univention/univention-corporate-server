@@ -1,0 +1,79 @@
+#!/bin/sh
+#
+# Univention horde webclient
+#  join script
+#
+# Copyright 2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+VERSION=1
+
+. /usr/share/univention-lib/all.sh
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+eval "$(univention-config-registry shell)"
+
+# horde password
+if [ ! -e /etc/horde.secret ]; then
+	touch /etc/horde.secret
+	chmod 600 /etc/horde.secret
+	chown www-data /etc/horde.secret
+	makepasswd > /etc/horde.secret
+fi
+passwd=$(cat /etc/horde.secret)
+univention-config-registry commit /etc/horde4/horde/conf.d/10-ucs.php
+
+# horde db
+su - postgres -c "createuser --adduser --no-createdb '$horde_sql_username'"
+su - postgres -c "psql -c \"ALTER USER horde WITH PASSWORD '$passwd';\" template1" 
+su - postgres -c "createdb -T template0 --encoding UNICODE --owner '$horde_sql_username' '$horde_sql_database'"
+
+# horde pear configuration
+pear config-set horde_dir /usr/share/horde4
+
+# initial horde configuration
+/usr/share/univention-horde4/univention-horde4-configuration "Administrator"
+
+
+# horde needs write permissions to /usr/share/horde4/static
+if ! dpkg-statoverride --list /usr/share/horde4/static; then 
+	dpkg-statoverride --force --update --add www-data www-data 700 /usr/share/horde4/static
+fi
+
+# horde needs write permissions to the log dir
+if ! dpkg-statoverride --list /var/log/horde; then
+	dpkg-statoverride --force --update --add www-data www-data 700 /var/log/horde
+fi
+
+# add service to my host object
+ucs_addServiceToLocalhost Horde4"" "$@"
+
+joinscript_save_current_version
+
+exit 0
+

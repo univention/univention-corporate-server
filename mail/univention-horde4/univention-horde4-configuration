@@ -1,0 +1,75 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Univention horde4 webclient
+ *  This script finishes the installation of Horde Groupware Webmail Edition.
+ * 
+ * Copyright 2011 Univention GmbH
+ * 
+ * http://www.univention.de/
+ * 
+ * All rights reserved.
+ * 
+ * The source code of this program is made available
+ * under the terms of the GNU Affero General Public License version 3
+ * (GNU AGPL V3) as published by the Free Software Foundation.
+ * 
+ * Binary versions of this program provided by Univention to you as
+ * well as other copyrighted, protected or trademarked materials like
+ * Logos, graphics, fonts, specific documentations and configurations,
+ * cryptographic keys etc. are subject to a license agreement between
+ * you and Univention and not subject to the GNU AGPL V3.
+ * 
+ * In the case you use this program under the terms of the GNU AGPL V3,
+ * the program is provided in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public
+ * License with the Debian GNU/Linux or Univention distribution in file
+ * /usr/share/common-licenses/AGPL-3; if not, see
+ *  <http://www.gnu.org/licenses/>.
+ */
+
+if (! isset($argv[1])) {
+	echo "usage: $argv[0] email-address\n";
+	exit(1);
+}
+
+// Enable error reporting.
+$error_level = E_ALL & ~E_STRICT;
+if (defined('E_DEPRECATED')) {
+    $error_level &= ~E_DEPRECATED;
+}
+ini_set('error_reporting', $error_level);
+ini_set('display_errors', 1);
+
+require_once 'PEAR/Config.php';
+require_once PEAR_Config::singleton()
+    ->get('horde_dir', null, 'pear.horde.org') . '/lib/Application.php';
+
+// Load the CLI environment.
+$cli = new Horde_Core_Cli();
+if (!$cli->runningFromCLI()) {
+    $cli->fatal('This script must be run from the command line.');
+}
+
+// Start.
+$cli->writeln();
+$cli->writeln($cli->yellow($cli->bold('Installing Horde Groupware Webmail Edition')));
+
+$bundle = new Horde_Bundle($cli);
+$bundle->init();
+$bundle->migrateDb();
+$bundle->writeAllConfigs();
+$vars = new Horde_Variables();
+new Horde_Config_Form($vars, 'horde', true);
+$vars->auth__admins = $argv[1];
+$vars->auth__driver = "application";
+$bundle->writeConfig($vars);
+
+// Finished.
+$cli->writeln();
+$cli->writeln($cli->yellow($cli->bold('Thank you for using Horde Groupware Webmail Edition!')));
+$cli->writeln();

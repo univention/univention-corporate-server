@@ -1,0 +1,3 @@
+85univention-horde4.inst usr/lib/univention-install/
+univention-horde4 etc/apache2/conf.d/
+univention-horde4-configuration usr/share/univention-horde4/

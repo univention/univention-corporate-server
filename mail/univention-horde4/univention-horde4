@@ -1,0 +1,6 @@
+Alias /horde4 "/usr/share/horde4"
+<Directory /usr/share/horde4/>
+        AddType application/x-httpd-php .php
+        DirectoryIndex index.php
+        allow from all
+</Directory>
