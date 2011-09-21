@@ -20,6 +20,7 @@ Variables: ldap/base
 Variables: ldap/port
 Variables: ldap/server
 Variables: mail/smtp/helo/name
+Variables: mail/smtp/VRFY/disabled
 Variables: mail/localmailboxsizelimit
 Variables: postfix/masquerade/domains
 Variables: postfix/masquerade/exceptions
@@ -43,6 +44,7 @@ Variables: mail/postfix/relay/domains
 Variables: mail/postfix/transport/ldap/enabled
 Variables: mail/postfix/inet/interfaces
 Variables: mail/postfix/inet/protocols
+Variables: mail/smtp/VRFY/disabled
 
 Type: subfile
 Multifile: etc/postfix/main.cf

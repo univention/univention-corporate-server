@@ -171,3 +171,9 @@ Description[de]=Mechanismen, die der Postfix SMTP client verwendet, um die IP-Ad
 Description[en]=What mechanisms are used when the Postfix SMTP client tries to look up a host's IP address (default: dns)
 Type=str
 Categories=service-mail
+
+[mail/smtp/VRFY/disabled]
+Description[de]=Der Wert "yes" deaktiviert das SMTP-Kommando "VRFY" in Postfix.
+Description[en]=If set to "yes" the SMTP command "VRFY" gets disabled in postfix.
+Type=bool
+Categories=service-mail
