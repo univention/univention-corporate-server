@@ -759,8 +759,8 @@ except KeyboardInterrupt:
 except:
 	info = sys.exc_info()
 
-	err_height = 17
-	err_width = 72
+	err_height = 20
+	err_width = 92
 	err_min_x=(max_x/2)-(err_width/2) - 1
 	err_min_y=(max_y/2)-(err_height/2)
 	try:
