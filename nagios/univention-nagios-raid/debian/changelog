@@ -1,3 +1,12 @@
+univention-nagios-raid (2.0.1-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+   [ Andreas Büsching ]
+    * automatically register client for nagios service if a RAID exists and
+      the nagios contact e-mail address is set; Bug #22472
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 15:10:18 +0200
+
 univention-nagios-raid (2.0.0-0) unstable; urgency=low
 
   * update to UCS 3.0 policies (Bug #14594)
