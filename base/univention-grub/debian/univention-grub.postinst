@@ -50,10 +50,10 @@ univention-config-registry set grub/timeout?5 \
 	grub/quiet?"no"  \
 	grub/loglevel?"0" \
 	grub/backgroundimage?"/boot/grub/uniboot.png" \
-	grub/color/normal?"black/black" \
-	grub/color/highlight?"black/black" \
-	grub/menu/color/normal?"black/black" \
-	grub/menu/color/highlight?"white/dark-gray"
+	grub/color/normal?"dark-gray/black" \
+	grub/color/highlight?"dark-gray/black" \
+	grub/menu/color/normal?"dark-gray/black" \
+	grub/menu/color/highlight?"white/green"
 
 # grub needs to read the file unicode.pf2 for gfxmode,
 # /usr/share/grub/unicode.pf2 is the default, but /

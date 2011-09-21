@@ -1,3 +1,9 @@
+univention-grub (5.0.7-1) unstable; urgency=low
+
+  * changed grub menu color (Bug #23405) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Sep 2011 08:59:05 +0200
+
 univention-grub (5.0.6-1) unstable; urgency=low
 
   * copy font file to /boot/grub (Bug #23405) 
