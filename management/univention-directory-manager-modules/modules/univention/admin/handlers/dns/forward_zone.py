@@ -208,6 +208,10 @@ layout = [
 
 def mapMX(old):
 	lst = []
+	if old == '*':
+		return str('*')
+	if type(old) is list and len(old) == 2 and type(old[0]) is unicode and type(old[1]) is unicode:
+		return str('%s %s' % (old[0], old[1], ))
 	for entry in old:
 		lst.append( '%s %s' % (entry[0], entry[1]) )
 	return lst

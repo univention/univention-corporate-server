@@ -1,3 +1,42 @@
+univention-directory-manager-modules (7.0.85-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+
+   [ Sönke Schwardt-Krummrich ]
+     * fixed univention-sync-memberuid (Bug #23281)
+     * update groups if a computer object gets renamed (Bug #21882)
+     * fixed tracebacks if a computer object gets renamed (Bug #21878)
+     * fixed lookup of users with mailAlternativeAddress filter (Bug #22764)
+
+   [ Andreas Büsching ]
+     * the search filter for the attribute fqdn does not require to contain a
+       '.' anymore; Bug #22139
+     * search for fqdn: just modify filter if filter_s is of type string; Bug #22139
+     * add functionality to search for the read-only attribute fqdn of
+       computer objects; Bug #22139
+
+   [ Janek Walkenhorst ]
+     * update license handling: deactivated accounts are not counted (Bug #22457)
+     * fix "type or value exists" when moving computer objects (Bug #18419)
+     * fix search for forward_zone->mXRecord (Bug #22659)
+
+   [ Alexander Kläser ]
+     * fixed KeyError when converting LDAP error message to string (Bug #21642)
+     * added debug output for LDAP modifications and added logging of complete
+       error message for LDAP errors (both for debug level ALL)
+     * added the complete LDAP error message ('desc' and 'info') when raising an 
+       exception
+       (Bug #21642)
+     * fixed displaying DHCP entries when MAC address ist not given (Bug #21958)
+     * added empty method cancel() to univention.admin.handlers.simpleLdap since
+       it is called there and the subclass does not necessarily provide an
+       implementation (Bug #21070)
+     * fixed updating DHCP entries when changing the MAC or IP address of a UDM
+       computer object; the bug caused DHCP objects to be created in the LDAP root
+       (Bug #20315)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 17:10:17 +0200
+
 univention-directory-manager-modules (7.0.84-1) unstable; urgency=low
 
   * modules.univention.admin.modules: added functions isSuperordinate(),

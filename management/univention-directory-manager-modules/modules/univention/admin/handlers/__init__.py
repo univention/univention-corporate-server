@@ -840,7 +840,7 @@ class simpleLdap(base):
 				members=self.lo.getAttr(group, 'uniqueMember')
 				newmembers=[]
 				for member in members:
-					if not member.lower() == olddn.lower():
+					if not member.lower() in (olddn.lower(), self.dn.lower(), ):
 						newmembers.append(member)
 				newmembers.append(self.dn)
 				self.lo.modify(group, [('uniqueMember', members, newmembers)])
@@ -995,6 +995,10 @@ class simpleLdap(base):
 	def savePolicyObjects(self):
 		self._update_policies()
 		self.closePolicyObjects()
+
+	def cancel(self):
+		# method stub which is implemented by subclasses (see Bug #21070)
+		pass
 
 
 class simpleComputer( simpleLdap ):
@@ -1155,8 +1159,11 @@ class simpleComputer( simpleLdap ):
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dnsEntryZoneAlias: %s' % self[ 'dnsEntryZoneAlias' ] )
 
 			if self[ 'mac' ]:
-
 				for macAddress in self[ 'mac' ]:
+					# mac address may be an empty string (Bug #21958)
+					if not macAddress:
+						continue
+
 					univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'open: DHCP; we have a mac address: %s' % macAddress )
 					ethernet = 'ethernet '+ macAddress
 					searchFilter = '(&(dhcpHWAddress=%s)(objectClass=univentionDhcpHost))'% ( ethernet )
@@ -1208,6 +1215,7 @@ class simpleComputer( simpleLdap ):
 
 		tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
 		if not position:
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.WARN, 'could not access network object and given position is "None", using LDAP root as position for DHCP entry')
 			position = tmppos.getBase( )
 		results = self.lo.search( base = position, scope = 'domain', attr = [ 'univentionDhcpFixedAddress' ], filter = 'dhcpHWAddress=%s' % ethernet, unique = 0 )
 
@@ -1259,6 +1267,9 @@ class simpleComputer( simpleLdap ):
 
 	def __rename_dns_object( self, position = None, old_name = None, new_name = None ):
 		for dns_line in self[ 'dnsEntryZoneForward' ]:
+			# dns_line may be the empty string
+			if not dns_line:
+				continue
 			dn, ip = self.__split_dns_line( dns_line )
 			results = self.lo.searchDn( base = dn, scope = 'domain', filter = 'aRecord=%s' % ip, unique = 0 )
 			for result in results:
@@ -1267,6 +1278,9 @@ class simpleComputer( simpleLdap ):
 				object[ 'name' ] = new_name
 				object.modify( )
 		for dns_line in self[ 'dnsEntryZoneReverse' ]:
+			# dns_line may be the empty string
+			if not dns_line:
+				continue
 			dn, ip = self.__split_dns_line( dns_line )
 			results = self.lo.searchDn( base = dn, scope = 'domain', filter = '(|(pTRRecord=%s)(pTRRecord=%s.*))' % (old_name, old_name), unique = 0 )
 			for result in results:
@@ -1274,7 +1288,10 @@ class simpleComputer( simpleLdap ):
 				object.open( )
 				object[ 'ptr_record' ] = object[ 'ptr_record' ].replace( old_name, new_name )
 				object.modify( )
-		for entry in self[ 'dnsentryzonealias' ]:
+		for entry in self[ 'dnsEntryZoneAlias' ]:
+			# entry may be the empty string
+			if not entry:
+				continue
 			dnsforwardzone, dnsaliaszonecontainer, alias = entry
 			results = self.lo.searchdn( base = dnsaliaszonecontainer, scope = 'domain', filter = 'relativedomainname=%s' % alias, unique = 0 )
 			for result in results:
@@ -1287,6 +1304,9 @@ class simpleComputer( simpleLdap ):
 		module = univention.admin.modules.get( 'dhcp/host' )
 		tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
 		for mac in self[ 'mac' ]:
+			# mac may be the empty string
+			if not mac:
+				continue
 			ethernet = 'ethernet %s' % mac
 
 			results = self.lo.searchDn( base = tmppos.getBase( ), scope = 'domain', filter = 'dhcpHWAddress=%s' % ethernet, unique = 0 )
@@ -1687,9 +1707,9 @@ class simpleComputer( simpleLdap ):
 						dn = self.__remove_from_dhcp_object(  None, self[ 'name' ], entry,  self[ 'mac' ][ 0 ])
 						try:
 							dn = string.join(dn.split(',')[1:],',')
+							self.__modify_dhcp_object( dn, self[ 'name' ], self.__changes[ 'ip' ][ 'add' ][ 0 ],  self[ 'mac' ][ 0 ] )
 						except:
-							dn = None
-						self.__modify_dhcp_object( dn, self[ 'name' ], self.__changes[ 'ip' ][ 'add' ][ 0 ],  self[ 'mac' ][ 0 ] )
+							pass
 				else:
 					# remove the dns objects
 					self.__remove_dns_forward_object( self[ 'name' ], None, entry )
@@ -1710,6 +1730,7 @@ class simpleComputer( simpleLdap ):
 
 		if self.__changes[ 'name' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: name has changed' )
+			self.__update_groups_after_namechange()
 			self.__rename_dhcp_object( position = None, old_name = self.__changes[ 'name' ][ 0 ], new_name = self.__changes[ 'name' ][ 1 ] )
 			self.__rename_dns_object( position = None, old_name = self.__changes[ 'name' ][ 0 ], new_name = self.__changes[ 'name' ][ 1 ] )
 			pass
@@ -1800,25 +1821,43 @@ class simpleComputer( simpleLdap ):
 			ml.append( ( 'sn', self.oldattr.get( 'sn', [ None ] )[ 0 ], self[ 'name' ] ) )
 			self.__changes[ 'name' ] = ( self.oldattr.get( 'sn', [ None ] )[ 0 ], self[ 'name' ] )
 
-		# remove the corresponding dhcp-entries when removing an IP or MAC address (bug #18966)
 		if self.hasChanged('ip') or self.hasChanged('mac'):
-			# get all IP addresses that have been removed
-			removedIPs = []
-			if self.oldinfo.has_key('ip'):
-				removedIPs = [ ip for ip in self.oldinfo['ip'] if ip and ip not in self['ip'] ]
+			if len(self.info['ip']) == 1 and len(self.info['mac']) == 1 and len(self.info['dhcpEntryZone']):
+				# In this special case, we assume the mapping between ip/mac address to be
+				# unique. The dhcp entry needs to contain the mac address (as sepcified by
+				# the ldap search for dhcp entries), the ip address may not correspond to 
+				# the ip address associated with the computer ldap object, but this would 
+				# be erroneous anyway. We therefore update the dhcp entry to correspond to 
+				# the current ip and mac address. (Bug #20315)
+				entry = self.info['dhcpEntryZone'][0]
+				dn, ip, mac = self.__split_dhcp_line(entry)
+				if dn and ip and mac:
+					self.info['dhcpEntryZone'] = [ '%s %s %s' % (dn, self.info['ip'][0], self.info['mac'][0]) ]
+				else:
+					self.info['dhcpEntryZone'] = []
+			else:
+				# in all other cases, we remove old dhcp entries that do not match ip or
+				# mac addresses (Bug #18966)
 
-			# get all MAC addresses that have been removed
-			removedMACs = []
-			if self.oldinfo.has_key('mac'):
-				removedMACs = [ mac for mac in self.oldinfo['mac'] if mac and mac not in self['mac'] ]
+				# get all IP addresses that have been removed
+				removedIPs = []
+				if self.oldinfo.has_key('ip'):
+					removedIPs = [ ip for ip in self.oldinfo['ip'] if ip and ip not in self['ip'] ]
 
-			# remove all DHCP-entries that have been associated with any of these IP/MAC addresses
-			newDhcpEntries = []
-			for entry in self['dhcpEntryZone']:
-				dn, ip, mac = entry
-				if ip not in removedIPs and mac not in removedMACs:
-					newDhcpEntries.append(entry)
-			self['dhcpEntryZone'] = newDhcpEntries
+				# get all MAC addresses that have been removed
+				removedMACs = []
+				if self.oldinfo.has_key('mac'):
+					removedMACs = [ mac for mac in self.oldinfo['mac'] if mac and mac not in self['mac'] ]
+
+				# remove all DHCP-entries that have been associated with any of these IP/MAC addresses
+				newDhcpEntries = []
+				for entry in self['dhcpEntryZone']:
+					dn, ip, mac = entry
+					if ip not in removedIPs and mac not in removedMACs:
+						newDhcpEntries.append(entry)
+
+				# update the value
+				self.info['dhcpEntryZone'] = newDhcpEntries
 
 		if self.hasChanged( 'dhcpEntryZone' ):
 			if self.oldinfo.has_key( 'dhcpEntryZone' ):
@@ -2013,6 +2052,49 @@ class simpleComputer( simpleLdap ):
 		for group in groups:
 			groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
 			groupObject.fast_member_remove( [ self.dn ], self.oldattr.get('uid',[]), ignore_license=1 )
+
+
+	def __update_groups_after_namechange(self):
+		oldname = self.oldinfo.get('name')
+		newname = self.info.get('name')
+		if not oldname:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, '__update_groups_after_namechange: oldname is empty')
+			return
+
+		# Since self.dn is not updated yet, self.dn contains still the old DN.
+		# Thats why olddn and newdn get reassebled from scratch.
+		olddn = 'cn=%s,%s' % (oldname, ','.join(univention.admin.uldap.explodeDn( self.dn, 0 )[1:]))
+		newdn = 'cn=%s,%s' % (newname, ','.join(univention.admin.uldap.explodeDn( self.dn, 0 )[1:]))
+
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: olddn=%s' % olddn)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: newdn=%s' % newdn)
+
+		for group in self.info.get('groups',[]):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: grp=%s' % group)
+
+			# Using the UDM groups/group object does not work at this point. The computer object has already been renamed.
+			# During open() of groups/group each member is checked if it exists. Because the computer object with "olddn" is missing,
+			# it won't show up in groupobj['hosts']. That's why the uniqueMember/memberUid updates is done directly via
+			# self.lo.modify()
+
+			oldUniqueMembers = self.lo.getAttr(group, 'uniqueMember')
+			newUniqueMembers = copy.deepcopy(oldUniqueMembers)
+			if olddn in newUniqueMembers:
+				newUniqueMembers.remove(olddn)
+			if not newdn in newUniqueMembers:
+				newUniqueMembers.append(newdn)
+
+			oldUid = '%s$' % oldname
+			newUid = '%s$' % newname
+			oldMemberUids = self.lo.getAttr(group, 'memberUid')
+			newMemberUids = copy.deepcopy(oldMemberUids)
+			if oldUid in newMemberUids:
+				newMemberUids.remove(oldUid)
+			if not newUid in newMemberUids:
+				newMemberUids.append(newUid)
+
+			self.lo.modify(group, [('uniqueMember', oldUniqueMembers, newUniqueMembers), ('memberUid', oldMemberUids, newMemberUids)])
+
 
 	def update_groups(self):
 		if not self.hasChanged('groups') and \

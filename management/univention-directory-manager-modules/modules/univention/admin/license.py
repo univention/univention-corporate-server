@@ -76,9 +76,9 @@ class License( object ):
 			}
 		self.filters = {
 			License.CLIENT : '(|(objectClass=univentionThinClient)(objectClass=univentionClient)(objectClass=univentionMobileClient)(objectClass=univentionWindows)(objectClass=univentionMacOSClient))',
-			License.ACCOUNT : '(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount)(objectClass=univentionMail))(!(uidNumber=0))(!(uid=*$)))',
+			License.ACCOUNT : '(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount)(objectClass=univentionMail))(!(uidNumber=0))(!(uid=*$))(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
 			License.DESKTOP :'(|(objectClass=univentionThinClient)(&(objectClass=univentionClient)(objectClass=posixAccount))(objectClass=univentionMobileClient))',
-			License.GROUPWARE : '(&(objectclass=kolabInetOrgPerson)(kolabHomeServer=*))',
+			License.GROUPWARE : '(&(objectclass=kolabInetOrgPerson)(kolabHomeServer=*)(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
 		}
 		self.__selected = False
 

@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import re
 import types
 import univention.admin.uexceptions
 
@@ -203,6 +204,32 @@ def walk(filter, expression_walk_function=None, conjunction_walk_function=None, 
 	elif filter._type_ == 'expression':
 		if expression_walk_function:
 			expression_walk_function(filter, arg)
+
+FQDN_REGEX = re.compile( '^(.*?)\(?fqdn=([^)]+)\)?(.*)$' )
+def replace_fqdn_filter( filter_s ):
+	'''
+	Replaces a filter expression for the read-only attribute fqdn. If no
+	such expression can be found the unmodified filter is returned.
+
+	fqdn=host.doain.tld -> (&(cn=host)(associatedDomain=domain.tld))
+	'''
+	if not isinstance( filter_s, basestring ):
+		return filter_s
+	if filter_s.find( 'fqdn=' ) != -1:
+		match = FQDN_REGEX.match( str( filter_s ) )
+		if match:
+			prefix, value, suffix = match.groups()
+			if value.find( '.' ) >= 0:
+				host, domain = value.split( '.', 1 )
+				operator = '&'
+			else:
+				host = value
+				domain = value
+				operator = '|'
+			fqdn_filter = '(%s(cn=%s)(associatedDomain=%s))' % ( operator, host, domain )
+			return prefix + fqdn_filter + suffix
+
+	return filter_s
 
 if __name__ == '__main__':
 	import doctest
