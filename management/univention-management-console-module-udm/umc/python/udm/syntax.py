@@ -72,11 +72,11 @@ __widgets = (
 	Widget( None, ( udm_syntax.LDAP_Search, ), [], subclasses = False, widget_func = lambda syn, prop: syn.viewonly and 'LinkList' or 'ComboBox' ),
 	Widget( 'ComboBox', udm_syntax.select, [] ),
 	Widget( 'TextBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', subclasses = False ),
-	Widget( None, udm_syntax.UDM_Objects, '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
-	Widget( 'ComboBox', udm_syntax.UDM_ComplexAttribute, '' ),
+	Widget( None, udm_syntax.UDM_Objects, '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and len( syn.udm_modules ) == 1 and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
+	Widget( 'ComboBox', udm_syntax.UDM_Attribute, '' ),
 	Widget( None, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn, udm_syntax.module ), '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
-	Widget( 'MultiInput', udm_syntax.complex, None ),
+	Widget( None, udm_syntax.complex, None, widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'MultiInput' or 'ComplexInput' ),
 	)
 
 def choices( syntax, udm_property ):
@@ -85,20 +85,15 @@ def choices( syntax, udm_property ):
 	available an empty list is returned."""
 	MODULE.info( 'Find choices for syntax %s' % syntax )
 	opts = None
-	if inspect.isclass( syntax ) and issubclass( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn, udm_syntax.UDM_Objects, udm_syntax.UDM_ComplexAttribute ) ):
-		if not udm_property[ 'multivalue' ]:
-			opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__name__ } }
+	if inspect.isclass( syntax ) and issubclass( syntax, ( udm_syntax.UDM_Objects, udm_syntax.UDM_Attribute ) ):
+		if issubclass( syntax, udm_syntax.UDM_Objects ) and udm_property[ 'multivalue' ] and len( syntax.udm_modules ) == 1:
+			opts = { 'objectType' : syntax.udm_modules[ 0 ] }
 		else:
-			if syntax not in ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ):
-				opts = { 'objectType' : syntax.udm_modules[ 0 ] }
-			else:
-				opts = {}
-	elif isinstance( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
-		opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__ } }
-
+			opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__name__ } }
+	elif isinstance( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ) or inspect.isclass( syntax ) and issubclass( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
+		opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : inspect.isclass( syntax ) and syntax.__name__ or syntax.__class__.__name__ } }
 	elif isinstance( syntax, udm_syntax.module ):
 		opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__, 'options' : { 'module' : syntax.module_type, 'filter' : str( syntax.filter ) } } }
-
 	elif inspect.isclass( syntax ) and issubclass( syntax, udm_syntax.select ) and hasattr( syntax, 'udm_modules' ):
 		opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.name } }
 
@@ -112,7 +107,7 @@ def choices( syntax, udm_property ):
 		if 'dynamicOptions' not in opts:
 			opts[ 'dynamicOptions' ] = {}
 
-		opts[ 'dynamicOptions' ][ '$name' ] = syntax.depends
+		opts[ 'dynamicOptions' ][ '$name$' ] = syntax.depends
 		opts[ 'depends' ] = syntax.depends
 
 	if isinstance( opts, dict ):

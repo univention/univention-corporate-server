@@ -631,7 +631,7 @@ def read_syntax_choices( syntax_name, options = {} ):
 			syn.choices.extend( map( map_choice, module.search( filter = syn.udm_filter % options ) ) )
 		if syn.empty_value:
 			syn.choices.insert( 0, ( None, '' ) )
-	elif issubclass( syn, udm_syntax.UDM_ComplexAttribute ):
+	elif issubclass( syn, udm_syntax.UDM_Attribute ):
 		syn.choices = []
 		def filter_choice( obj ):
 			# if attributes does not exist or is empty
@@ -640,7 +640,9 @@ def read_syntax_choices( syntax_name, options = {} ):
 		def map_choice( obj ):
 			obj.open()
 			MODULE.info( 'Loading choices from %s: %s' % ( obj.dn, obj.info ) )
-			return map( lambda x: ( x[ syn.key_index ], x[ syn.label_index ] ), obj.info[ syn.attribute ] )
+			if syn.is_complex:
+				return map( lambda x: ( x[ syn.key_index ], x[ syn.label_index ] ), obj.info[ syn.attribute ] )
+			return map( lambda x: ( x, x ), obj.info[ syn.attribute ] )
 
 		module = UDM_Module( syn.udm_module )
 		if module is None:

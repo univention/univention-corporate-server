@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.142-1) unstable; urgency=low
+
+  * support ComplexInput widget; Bug #23688
+  * fixed validation of complex values
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 21 Sep 2011 20:12:40 +0200
+
 univention-management-console-module-udm (1.0.141-1) unstable; urgency=low
 
   * fixed translations (Bug #22883)

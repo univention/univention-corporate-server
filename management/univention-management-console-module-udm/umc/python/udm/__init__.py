@@ -451,7 +451,7 @@ class Instance( Base ):
 					raise UMC_OptionMissing( _( 'Property %s not found' ) % property_name )
 
 				# check each element if 'value' is a list
-				if isinstance(value, (tuple, list)):
+				if isinstance(value, (tuple, list)) and property_obj.multivalue:
 					subResults = []
 					subDetails = []
 					for ival in value:

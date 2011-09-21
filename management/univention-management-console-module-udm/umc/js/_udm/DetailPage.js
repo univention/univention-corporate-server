@@ -146,10 +146,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				properties.push(iprop);
 				return;
 			}
-			if ('ComplexInput' == iprop.type) {
-				// handle complex widgets
-				iprop.type = 'MultiInput';
-			} else if ( 'LinkList' == iprop.type ) {
+			if ( 'LinkList' == iprop.type ) {
 				iprop.multivalue = false;
 			} else if ( iprop.type.indexOf('MultiObjectSelect') >= 0 ) {
 				iprop.multivalue = false;
@@ -379,10 +376,6 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					dojo.forEach(iproperties, function(jprop) {
 						var name = jprop.id || jprop.name;
 						if (name in usedProperties) {
-							if ('ComplexInput' == jprop.type) {
-								// handle complex widgets
-								jprop.type = 'MultiInput';
-							}
 							if (jprop.multivalue && 'MultiInput' != jprop.type) {
 								// handle multivalue inputs
 								jprop.subtypes = [{ type: jprop.type }];
