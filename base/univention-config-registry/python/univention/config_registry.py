@@ -127,6 +127,10 @@ class ConfigRegistry( dict ):
 		for reg in self._registry.values():
 			if isinstance( reg, _ConfigRegistry ):
 				reg.load()
+		strict = self.is_true('ucr/encoding/strict')
+		for reg in self._registry.values():
+			if isinstance( reg, _ConfigRegistry ):
+				reg.strict_encoding = strict
 
 	def save( self ):
 		registry = self._registry[self._write_registry]
@@ -243,6 +247,7 @@ class _ConfigRegistry( dict ):
 		self.__create_base_conf()
 		self.backup_file = self.file + '.bak'
 		self.lock_filename = self.file + '.lock'
+		self.strict_encoding = False # will be set by <ConfigRegistry> for each <_ConfigRegistry> - <True> means the backend files are valid UTF-8 and should stay that way --> only accept valid UTF-8
 
 	def load(self):
 		self.clear()
@@ -322,6 +327,12 @@ class _ConfigRegistry( dict ):
 			return dict.__getitem__( self, key )
 		except KeyError:
 			return ''
+
+	def __setitem__(self, key, value):
+		if self.strict_encoding:
+			key.decode('UTF-8') # only accept valid UTF-8 encoded bytes
+			value.decode('UTF-8') # only accept valid UTF-8 encoded bytes
+		return dict.__setitem__(self, key, value)
 
 	def removeInvalidChars (self, seq):
 		for letter in invalid_value_chars:

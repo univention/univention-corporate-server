@@ -40,4 +40,9 @@ fi
 
 #DEBHELPER#
 
+if [ "$1" = 'configure' -a -z "$2" ]
+then # fresh installation
+	univention-config-registry set 'ucr/encoding/strict?true'
+fi
+
 exit 0
