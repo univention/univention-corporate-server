@@ -117,14 +117,13 @@ Variables: postfix/autostart
 
 Type: file
 File: etc/pam.d/smtp
+Variables: ldap/base
+Variables: ldap/server/name
+Variables: ldap/server/port
+Variables: ldap/hostdn
 
 Type: file
 File: etc/postfix/sasl/smtpd.conf
-
-Type: file
-File: etc/postfix/sasl/pam_ldap_smtp.conf
-Variables: ldap/server/name
-Variables: ldap/base
 
 Type: module
 Module: create-archivefolder.py
