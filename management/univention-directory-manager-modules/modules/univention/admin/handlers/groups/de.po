@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-15 13:51+0200\n"
-"PO-Revision-Date: 2010-04-15 13:46+0200\n"
+"POT-Creation-Date: 2011-09-21 20:07+0200\n"
+"PO-Revision-Date: 2011-09-21 20:08+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -38,147 +38,138 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.3\n"
 
-#: group.py:44
+#: group.py:53
 msgid "Groups"
 msgstr "Gruppen"
 
-#: group.py:45
+#: group.py:54
 msgid "Add, edit and delete groups"
 msgstr "Hinzufügen, Bearbeiten und Löschen von Gruppen"
 
-#: group.py:46
+#: group.py:55
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: group.py:46
+#: group.py:55
 msgid "Add group object"
 msgstr "Gruppe hinzufügen"
 
-#: group.py:46
+#: group.py:55
 msgid "Search"
 msgstr "Suchen"
 
-#: group.py:46
+#: group.py:55
 msgid "Search group object(s)"
 msgstr "Suche Gruppen Objekt(e)"
 
-#: group.py:49
+#: group.py:58
 msgid "Group"
 msgstr "Gruppe"
 
-#: group.py:53
+#: group.py:62
 msgid "Posix group"
 msgstr "Posix-Gruppe"
 
-#: group.py:57
+#: group.py:66
 msgid "Samba group"
 msgstr "Samba-Gruppe"
 
-#: group.py:68
+#: group.py:86
 msgid "Name"
 msgstr "Name"
 
-#: group.py:78
+#: group.py:96
 msgid "Group ID"
 msgstr "Gruppen-ID"
 
-#: group.py:88
+#: group.py:106
 msgid "Relative ID"
 msgstr "Relative ID"
 
-#: group.py:98
+#: group.py:116
 msgid "Samba group type"
 msgstr "Samba Gruppentyp"
 
-#: group.py:109
+#: group.py:127
 msgid "Description"
 msgstr "Beschreibung"
 
-#: group.py:119
+#: group.py:137
 msgid "Users"
 msgstr "Benutzer"
 
-#: group.py:
-msgid "Allowed groups"
-msgstr "Berechtigte Gruppen"
-
-#: group.py:
-msgid "Allowed users"
-msgstr "Berechtigte Benutzer"
-
-#: group.py:
-msgid "Users that are allowed to send e-mails to the group"
-msgstr "Benutzer die berechtigt sind E-Mails an diese Gruppe zu versenden"
-
-#: group.py:
-msgid "Groups that are allowed to send e-mails to the group"
-msgstr "Gruppen die berechtigt sind E-Mails an diese Gruppe zu versenden"
-
-#: group.py:
-msgid "Allowed e-mail users"
-msgstr "Berechtigte E-Mail Benutzer"
-
-#: group.py:
-msgid "Allowed e-mail groups"
-msgstr "Berechtigte E-Mail Gruppen"
-
-#: group.py:130
+#: group.py:148
 msgid "Hosts"
 msgstr "enthaltene Rechner"
 
-#: group.py:142
+#: group.py:160
 msgid "Mail address"
 msgstr "Mail-Adresse"
 
-#: group.py:153 group.py:191
+#: group.py:171 group.py:231
 msgid "Member of"
 msgstr "Mitglied von"
 
-#: group.py:164
+#: group.py:182
 msgid "Nested group"
 msgstr "enthaltene Gruppe"
 
-#: group.py:177
+#: group.py:193
+msgid "Allowed e-mail users"
+msgstr "Berechtigte E-Mail Benutzer"
+
+#: group.py:204
+msgid "Allowed e-mail groups"
+msgstr "Berechtigte E-Mail Gruppen"
+
+#: group.py:217
 msgid "General"
 msgstr "Allgemein"
 
-#: group.py:177
+#: group.py:217
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: group.py:182
+#: group.py:222
 msgid "Members"
 msgstr "Mitglieder"
 
-#: group.py:182
+#: group.py:222
 msgid "Members of this Group"
 msgstr "Mitglieder dieser Gruppe"
 
-#: group.py:185
+#: group.py:225
 msgid "Host members"
 msgstr "enthaltene Rechner"
 
-#: group.py:185
+#: group.py:225
 msgid "Host members of this group"
 msgstr "in dieser Gruppe enthaltene Rechner"
 
-#: group.py:188
+#: group.py:228
 msgid "Nested groups"
 msgstr "enthaltene Gruppen"
 
-#: group.py:188
+#: group.py:228
 msgid "Membership of other groups"
 msgstr "Mitgliedschaft von weiteren Gruppen"
 
-#: group.py:191
+#: group.py:231
 msgid "Membership in other groups"
 msgstr "Mitgliedschaft in weiteren Gruppen"
 
-#~ msgid "Group: Group"
-#~ msgstr "Gruppe: Gruppe"
+#: group.py:234
+msgid "Allowed users"
+msgstr "Berechtigte Benutzer"
 
-#~ msgid "memberOf"
-#~ msgstr "Mitgliedschaft in"
+#: group.py:234
+msgid "Users that are allowed to send e-mails to the group"
+msgstr "Benutzer die berechtigt sind E-Mails an diese Gruppe zu versenden"
 
-#~ msgid "Group Manager"
-#~ msgstr "Gruppenverwaltung"
+#: group.py:237
+msgid "Allowed groups"
+msgstr "Berechtigte Gruppen"
+
+#: group.py:237
+msgid "Groups that are allowed to send e-mails to the group"
+msgstr "Gruppen die berechtigt sind E-Mails an diese Gruppe zu versenden"

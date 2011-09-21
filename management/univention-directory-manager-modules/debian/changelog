@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.86-1) unstable; urgency=low
+
+  * shares/printer: redefine syntax for uri and driver; Bug #23688
+  * cleanup in syntax classes
+  * updated german translation
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 21 Sep 2011 20:10:14 +0200
+
 univention-directory-manager-modules (7.0.85-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3

@@ -105,7 +105,7 @@ property_descriptions={
 	'host': univention.admin.property(
 			short_description=_('Host'),
 			long_description=_('The computer that exports this share'),
-			syntax=univention.admin.syntax.shareHost,
+			syntax=univention.admin.syntax.UCS_Server,
 			multivalue=0,
 			options=[],
 			required=1,

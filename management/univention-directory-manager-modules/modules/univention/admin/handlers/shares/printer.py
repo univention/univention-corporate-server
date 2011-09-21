@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import re
 import string
 
 from univention.admin.layout import Tab, Group
@@ -47,12 +48,12 @@ translation=univention.admin.localization.translation('univention.admin.handlers
 _=translation.translate
 
 class printerACLTypes(univention.admin.syntax.select):
-		name='printerACLTypes'
-		choices=[
-		('allow all',_('Allow all users.')),
-				('allow',_('Allow only choosen users/groups.')),
-				('deny',_('Deny choosen users/groups.')),
-				]
+	name='printerACLTypes'
+	choices=[
+			('allow all',_('Allow all users.')),
+			('allow',_('Allow only choosen users/groups.')),
+			('deny',_('Deny choosen users/groups.')),
+			]
 
 module='shares/printer'
 operations=['add','edit','remove','search','move']
@@ -96,7 +97,7 @@ property_descriptions={
 	'spoolHost': univention.admin.property(
 			short_description=_('Spool host'),
 			long_description='',
-			syntax=univention.admin.syntax.spoolHost,
+			syntax=univention.admin.syntax.UCS_Server,
 			multivalue=1,
 			options=[],
 			required=1,
@@ -104,14 +105,14 @@ property_descriptions={
 			identifies=0
 		),
 	'uri': univention.admin.property(
-			short_description=_('Protocol'),
-			long_description='',
-			syntax=univention.admin.syntax.printerURI,
-			multivalue=0,
-			options=[],
-			required=1,
-			may_change=1,
-			identifies=0
+			short_description = _( 'Connection' ),
+			long_description = '',
+			syntax=univention.admin.syntax.PrinterURI,
+			multivalue = False,
+			options = [],
+			required = True,
+			may_change = True,
+			identifies = False
 		),
 	'model': univention.admin.property(
 			short_description=_('Printer model'),
@@ -210,7 +211,8 @@ property_descriptions={
 layout = [
 	Tab( _( 'General' ), _( 'General settings' ), layout = [
 				[ 'name', 'sambaName'],
-				[ 'spoolHost', 'uri' ],
+				'spoolHost',
+				'uri',
 				[ 'producer', 'model' ],
 				[ 'location',  'description' ],
 				[ 'setQuota', ],
@@ -234,12 +236,23 @@ def stringToBool(value):
 	else:
 		return '0'
 
+regex_uri = re.compile( '(?P<schema>[a-z]*://?)(?P<dest>.*)' )
+
+def unmapPrinterURI( value ):
+	match = regex_uri.match( value[ 0 ] )
+	if match:
+		return match.group( 1, 2 )
+	return ( '', '' )
+
+def mapPrinterURI( value ):
+	return ''.join( value )
+
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('location', 'univentionPrinterLocation', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('spoolHost', 'univentionPrinterSpoolHost')
-mapping.register('uri', 'univentionPrinterURI', None, univention.admin.mapping.ListToString)
+mapping.register( 'uri', 'univentionPrinterURI', mapPrinterURI, unmapPrinterURI )
 mapping.register('model', 'univentionPrinterModel', None, univention.admin.mapping.ListToString)
 mapping.register('sambaName', 'univentionPrinterSambaName', None, univention.admin.mapping.ListToString)
 mapping.register('setQuota', 'univentionPrinterQuotaSupport', None, univention.admin.mapping.ListToString)

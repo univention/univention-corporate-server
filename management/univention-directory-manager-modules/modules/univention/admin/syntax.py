@@ -230,10 +230,11 @@ class UDM_Objects( ISyntax ):
 			return text
 		raise univention.admin.uexceptions.valueError( self.error_message )
 
-class UDM_ComplexAttribute( ISyntax ):
+class UDM_Attribute( ISyntax ):
 	udm_module =None
 	udm_filter = ''
 	attribute = None
+	is_complex = False
 	key_index = 0
 	label_index = 0
 	regex = None
@@ -1145,9 +1146,10 @@ class printerModel(complex):
 	subsyntaxes=[(_('Driver'), string), (_('Description'), string)]
 	all_required=1
 
-class PrinterDriverList( UDM_ComplexAttribute ):
+class PrinterDriverList( UDM_Attribute ):
 	udm_module = 'settings/printermodel'
 	attribute = 'printmodel'
+	is_complex = True
 	key_index = 0
 	label_index = 1
 	udm_filter = 'dn'
@@ -1157,8 +1159,13 @@ class PrinterProducerList( UDM_Objects ):
 	udm_modules = ( 'settings/printermodel', )
 	label = '%(name)s'
 
-class printerURI(string):
-	pass
+class PrinterProtocol( UDM_Attribute ):
+	udm_module = 'settings/printeruri'
+	attribute = 'printeruri'
+	is_complex = False
+
+class PrinterURI( complex ):
+	subsyntaxes = ( ( _( 'Protocol' ), PrinterProtocol ), ( _( 'Destination' ), string ) )
 
 class packageList(string):
 	pass
@@ -1597,16 +1604,13 @@ class soundModule(select):
 		( 'snd-opl3sa2', 'Yamaha OPL3SA2+' ),
 	]
 
-class moduleSearch(ldapDn):
-	description='FIXME'
-
 class groupDn( UDM_Objects ):
 	udm_modules = ( 'groups/group', )
 
-class userDn(ldapDn):
+class userDn( UDM_Objects ):
 	udm_modules = ( 'users/user', )
 
-class hostDn(ldapDn):
+class hostDn( UDM_Objects ):
 	udm_modules = ( 'computers/computer', )
 
 class userID(integer):
@@ -1617,12 +1621,12 @@ class groupID(integer):
 	searchFilter='(&(cn=*)(objectClass=posixGroup))'
 	description=_('Group ID')
 
-class shareHost( UDM_Objects ):
+class UCS_Server( UDM_Objects ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
 	key = '%(fqdn)s'
 	label = '%(fqdn)s'
 	empty_value = True
-	regex = re.compile( '(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
+	regex = re.compile( '(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z]{2,})$)' ) #'(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
 	error_message = _( 'Not a valid FQDN' )
 
 class windowsTerminalServer(string):
