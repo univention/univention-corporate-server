@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.138-1) unstable; urgency=low
+
+  * handle new syntax classes UDM_Objects and UDM_ComplexAttributes; Bug #23646
+  * automagically determine superordinate when removuing objects; Bug #23564
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 21 Sep 2011 11:23:46 +0200
+
 univention-management-console-module-udm (1.0.137-1) unstable; urgency=low
 
   * respect javascript validation method of widgets (Bug #23649)

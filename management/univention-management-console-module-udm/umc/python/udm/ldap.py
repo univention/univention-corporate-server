@@ -173,7 +173,8 @@ class UDM_Module( object ):
 		"""Removes a LDAP object"""
 		lo, po = get_ldap_connection()
 
-		obj = self.module.object( None, lo, po, dn = ldap_dn )
+		superordinate = udm_objects.get_superordinate( self.module, None, lo, ldap_dn )
+		obj = self.module.object( None, lo, po, dn = ldap_dn, superordinate = superordinate )
 		try:
 			obj.open()
 			MODULE.info( 'Removing LDAP object %s' % ldap_dn )
@@ -593,10 +594,11 @@ def read_syntax_choices( syntax_name, options = {} ):
 
 	syn = udm_syntax.__dict__[ syntax_name ]
 
-	if issubclass( syn, udm_syntax.UDM_Modules ):
+	if issubclass( syn, udm_syntax.UDM_Objects ):
 		syn.choices = []
 		def map_choice( obj ):
 			obj.open()
+
 			if syn.key == 'dn':
 				key = obj.dn
 			else:
@@ -615,12 +617,36 @@ def read_syntax_choices( syntax_name, options = {} ):
 					label = udm_objects.description( obj )
 
 			return ( key, label )
+
 		for udm_module in syn.udm_modules:
 			module = UDM_Module( udm_module )
 			if module is None:
 				continue
 			MODULE.info( 'Found syntax %s with udm_module property' % syntax_name )
-			syn.choices.extend( map( map_choice, module.search() ) )
+			syn.choices.extend( map( map_choice, module.search( filter = syn.udm_filter % options ) ) )
+		if syn.empty_value:
+			syn.choices.insert( 0, ( None, '' ) )
+	elif issubclass( syn, udm_syntax.UDM_ComplexAttribute ):
+		syn.choices = []
+		def filter_choice( obj ):
+			# if attributes does not exist or is empty
+			return syn.attribute in obj.info and obj.info[ syn.attribute ]
+
+		def map_choice( obj ):
+			obj.open()
+			MODULE.info( 'Loading choices from %s: %s' % ( obj.dn, obj.info ) )
+			return map( lambda x: ( x[ syn.key_index ], x[ syn.label_index ] ), obj.info[ syn.attribute ] )
+
+		module = UDM_Module( syn.udm_module )
+		if module is None:
+			return
+		MODULE.info( 'Found syntax %s with udm_module property' % syntax_name )
+		if syn.udm_filter == 'dn':
+			syn.choices = map_choice( module.get( options[ syn.depends ] ) )
+		else:
+			for element in map( map_choice, filter( filter_choice, module.search( filter = syn.udm_filter % options ) ) ):
+				for item in element:
+					syn.choices.append( item )
 		if syn.empty_value:
 			syn.choices.insert( 0, ( None, '' ) )
 	elif hasattr( syn, 'udm_modules' ):
@@ -657,10 +683,11 @@ def read_syntax_choices( syntax_name, options = {} ):
 			dn_list = lo.explodeDn( dn )
 			syn.choices.append( ( dn, dn_list[ 0 ].split( '=', 1 )[ 1 ] ) )
 	elif issubclass( syn, udm_syntax.module ):
-		module = UDM_Module( options[ 'module' ] )
-		syn.choices = map( lambda obj: ( obj.dn, udm_objects.description( obj ) ), module.search( filter = options[ 'filter' ] ) )
+		module = UDM_Module( options[ 'options' ][ 'module' ] )
+		syn.choices = map( lambda obj: ( obj.dn, udm_objects.description( obj ) ), module.search( filter = options[ 'options' ][ 'filter' ] ) )
 	elif issubclass( syn, udm_syntax.LDAP_Search ):
 		lo, po = get_ldap_connection()
+		options = options.get( 'options', {} )
 		syntax = udm_syntax.LDAP_Search( options[ 'syntax' ], options[ 'filter' ], options[ 'attributes' ], options[ 'base' ], options[ 'value' ], options[ 'viewonly' ], options[ 'empty' ] )
 
 		if '$dn$' in options:

@@ -452,7 +452,7 @@ class Instance( Base ):
 			raise UMC_OptionMissing( "The option 'syntax' is required" )
 
 		def _thread( request ):
-			return read_syntax_choices( request.options[ 'syntax' ], request.options.get( 'options', {} ) )
+			return read_syntax_choices( request.options[ 'syntax' ], request.options )
 
 		thread = notifier.threads.Simple( 'SyntaxChoice', notifier.Callback( _thread, request ),
 										  notifier.Callback( self._thread_finished, request ) )
