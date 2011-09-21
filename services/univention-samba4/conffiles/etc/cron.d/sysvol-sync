@@ -1,0 +1,7 @@
+@%@UCRWARNING=# @%@
+
+SHELL=/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+@%@samba4/sysvol/sync/cron@%@ root /usr/sbin/jitter @%@samba4/sysvol/sync/jitter@%@  /usr/share/univention-samba4/scripts/sysvol-sync >>/var/log/univention/sysvol-sync.log 2>&1
+

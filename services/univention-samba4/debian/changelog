@@ -1,3 +1,9 @@
+univention-samba4 (1.0.41-4) unstable; urgency=low
+
+  * add cron.d file (Bug #23359)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Sep 2011 15:54:37 +0200
+
 univention-samba4 (1.0.41-3) unstable; urgency=low
 
   * fix name of samba4/sysvol/sync/cron (Bug #23359)
