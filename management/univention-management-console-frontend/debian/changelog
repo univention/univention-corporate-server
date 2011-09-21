@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.62-1) unstable; urgency=low
+
+  * umc.render: added special treatment for HiddenInput widgets
+  * Form: removed dojo mixins, added elementValue() method
+  (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 21 Sep 2011 17:14:55 +0200
+
 univention-management-console-frontend (1.0.61-1) unstable; urgency=low
 
   * add widget ComplexInput for single value properties with a syntax

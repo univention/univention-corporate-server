@@ -12,12 +12,12 @@ dojo.require("umc.tools");
 dojo.require("umc.render");
 
 dojo.declare("umc.widgets.Form", [
-		dijit.form.Form,
-		dojox.form.manager._Mixin,
+		dijit.form.Form
+/*		dojox.form.manager._Mixin,
 		dojox.form.manager._ValueMixin,
 		dojox.form.manager._EnableMixin,
 		dojox.form.manager._DisplayMixin,
-		dojox.form.manager._ClassMixin
+		dojox.form.manager._ClassMixin*/
 ], {
 	// summary:
 	//		Encapsulates a complete form, offers unified access to elements as
@@ -270,6 +270,24 @@ dojo.declare("umc.widgets.Form", [
 				console.log(dojo.replace("WARNING: Could not set the property '{0}': {1}", [iname, ival]));
 			}
 		}, this);
+	},
+
+	elementValue: function(element, newVal) {
+		// summary:
+		//		Get or set the value for the specified form element.
+		var widget = this.getWidget(element);
+		if (!widget) {
+			return undefined;
+		}
+
+		if (undefined === newVal) {
+			// no value defined, return the current value
+			return widget.get('value');
+		}
+
+		// otherwise set the value
+		widget.set('value', newVal);
+		return widget;
 	},
 
 	_updateDependencies: function(publisherName) {

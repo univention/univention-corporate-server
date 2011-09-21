@@ -204,8 +204,13 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 						return true;
 					}
 
-					// add the widget or button surrounded with a LabelPane
-					if (widget) {
+					if (widget && umc.tools.inheritsFrom(widget, 'umc.widgets.HiddenInput')) {
+						// do wrap HiddenInput field with LabelPane
+						elContainer.addChild(widget);
+						widget._isRendered = true;
+					}
+					else if (widget) {
+						// add the widget or button surrounded with a LabelPane
 						var label = new umc.widgets.LabelPane({
 							label: widget.label,
 							content: widget,
