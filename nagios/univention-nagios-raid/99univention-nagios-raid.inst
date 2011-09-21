@@ -63,7 +63,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 	else
 		role=$server_role
 	fi
-	if [ "`univention-directory-manager computers/$role list --filter=name=$hostname | grep nagiosContactEmail`" ]; then 
+	if [ "`univention-directory-manager computers/$role list "$@" --filter=name=$hostname | grep nagiosContactEmail`" ]; then 
 
 		# test if raid exists
 		if [ -f /proc/mdstat ]; then
