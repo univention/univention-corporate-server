@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-21 16:21+0200\n"
-"PO-Revision-Date: 2011-09-21 16:22+0200\n"
+"POT-Creation-Date: 2011-09-21 17:44+0200\n"
+"PO-Revision-Date: 2011-09-21 17:46+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -679,7 +679,18 @@ msgid ""
 "DC master should collapse completely, running a special command allows the "
 "DC backup to take over the role of the DC master permanently in a very short "
 "time."
-msgstr "Auf Servern mit der Rolle Domänencontroller Backup (kurz DC Backup) befindet sich eine replizierte Kopie des gesamten LDAP-Verzeichnisses, die nicht verändert werden kann, da alle Schreibzugriffe grundsätzlich am DC Master durchgeführt werden. Ausserdem wird eine Kopie aller SSL-Zertifikate einschließlich des privaten Schlüssels der Root-CA auf dem DC Backup vorgehalten. Der DC Backup dient somit als Sicherheitskopie des DC Master.  Sollte der DC Master dauerhaft ausfallen, kann ein DC Backup innerhalb kürzester Zeit durch Aufruf eines Befehls die Rolle des DC Master dauerhaft übernehmen. Dies ist nur notwendig, wenn Änderungen am LDAP-Verzeichnis vorgenommen oder neue Zertifikate ausgestellt werden sollen, weil diese Aufgaben nur von einem DC Master durchgeführt werden können."
+msgstr ""
+"Auf Servern mit der Rolle Domänencontroller Backup (kurz DC Backup) befindet "
+"sich eine replizierte Kopie des gesamten LDAP-Verzeichnisses, die nicht "
+"verändert werden kann, da alle Schreibzugriffe grundsätzlich am DC Master "
+"durchgeführt werden. Ausserdem wird eine Kopie aller SSL-Zertifikate "
+"einschließlich des privaten Schlüssels der Root-CA auf dem DC Backup "
+"vorgehalten. Der DC Backup dient somit als Sicherheitskopie des DC Master.  "
+"Sollte der DC Master dauerhaft ausfallen, kann ein DC Backup innerhalb "
+"kürzester Zeit durch Aufruf eines Befehls die Rolle des DC Master dauerhaft "
+"übernehmen. Dies ist nur notwendig, wenn Änderungen am LDAP-Verzeichnis "
+"vorgenommen oder neue Zertifikate ausgestellt werden sollen, weil diese "
+"Aufgaben nur von einem DC Master durchgeführt werden können."
 
 #: installer/modules/40_role.py:117
 msgid ""
@@ -690,7 +701,14 @@ msgid ""
 "replication. The DC slave only stores a copy of its own and the public SSL "
 "certificate of the root CA. A DC slave system cannot be promoted to a DC "
 "master."
-msgstr "Auf einem Domänencontroller Slave (kurz DC Slave) befindet sich eine replizierte Kopie des LDAP-Verzeichnisses, die nicht verändert werden kann, da alle Schreibzugriffe am DC Master durchgeführt werden. Die Kopie kann das gesamte Verzeichnis umfassen oder durch selektive Replikation auf an einem Standort benötigte Daten eingeschränkt werden. Auf einem DC Slave wird nur das eigene und das öffentliche SSL-Zertifikat der Root-CA vorgehalten. Ein DC Slave-System kann nicht zum DC Master hochgestuft werden."
+msgstr ""
+"Auf einem Domänencontroller Slave (kurz DC Slave) befindet sich eine "
+"replizierte Kopie des LDAP-Verzeichnisses, die nicht verändert werden kann, "
+"da alle Schreibzugriffe am DC Master durchgeführt werden. Die Kopie kann das "
+"gesamte Verzeichnis umfassen oder durch selektive Replikation auf an einem "
+"Standort benötigte Daten eingeschränkt werden. Auf einem DC Slave wird nur "
+"das eigene und das öffentliche SSL-Zertifikat der Root-CA vorgehalten. Ein "
+"DC Slave-System kann nicht zum DC Master hochgestuft werden."
 
 #: installer/modules/40_role.py:118
 msgid ""
@@ -714,7 +732,16 @@ msgid ""
 "is possible to configure DNS and DHCP settings for base systems via the "
 "Univention management system as long as the base system is entered as an IP "
 "managed client in the directory service."
-msgstr "Ein Basissystem ist ein eigenständiges System. Es ist nicht Mitglied einer Domäne und unterhält keine Vertrauensbeziehungen zu anderen Servern oder Domänen. Ein Basissystem bietet sich somit für Dienste an, die außerhalb des Vertrauenskontextes der Domäne betrieben werden, etwa als Web-Server oder Firewall. Die Dienste eines Basissystems können nicht über das UCS-Managementsystem konfiguriert werden. Es können aber DNS- und DHCP-Einstellungen für Basissysteme über das Univention Management System, sofern das betreffende Basissystem als IP-Managed-Client im Verzeichnisdienst eingetragen wurde."
+msgstr ""
+"Ein Basissystem ist ein eigenständiges System. Es ist nicht Mitglied einer "
+"Domäne und unterhält keine Vertrauensbeziehungen zu anderen Servern oder "
+"Domänen. Ein Basissystem bietet sich somit für Dienste an, die außerhalb des "
+"Vertrauenskontextes der Domäne betrieben werden, etwa als Web-Server oder "
+"Firewall. Die Dienste eines Basissystems können nicht über das UCS-"
+"Managementsystem konfiguriert werden. Es können aber DNS- und DHCP-"
+"Einstellungen für Basissysteme über das Univention Management System, sofern "
+"das betreffende Basissystem als IP-Managed-Client im Verzeichnisdienst "
+"eingetragen wurde."
 
 #: installer/modules/40_role.py:164
 msgid ""
@@ -769,7 +796,7 @@ msgstr ""
 "ist nicht Mitglied der Domäne und kann nicht über das UCS Managementsystem "
 "verwaltet werden."
 
-#: installer/modules/40_role.py:167 installer/modules/90_overview.py:96
+#: installer/modules/40_role.py:167 installer/modules/90_overview.py:92
 msgid "System role"
 msgstr "Systemrolle"
 
@@ -813,14 +840,6 @@ msgstr ""
 "Bitte geben Sie einen klein-geschriebenen und vollständigen Rechnernamen an "
 "(z.B. host.example.com)."
 
-#: installer/modules/50_basis.py:292 installer/modules/50_basis.py:312
-msgid ""
-"Please enter a valid fully qualified domain name containing at least two "
-"dots."
-msgstr ""
-"Bitte geben Sie einen vollständigen Rechnernamen an, der mindestens zwei "
-"Punkte enthält."
-
 #: installer/modules/50_basis.py:298
 msgid ""
 "A valid netbios name can not be longer than 15 characters. If samba is "
@@ -837,37 +856,45 @@ msgstr ""
 
 #: installer/modules/50_basis.py:317
 msgid ""
+"Please enter a valid fully qualified domain name containing at least two "
+"dots."
+msgstr ""
+"Bitte geben Sie einen vollständigen Rechnernamen an, der mindestens zwei "
+"Punkte enthält."
+
+#: installer/modules/50_basis.py:323
+msgid ""
 "The length of fully qualified domain name is greater than 63 characters."
 msgstr "Die Länge von System und Domänennamen ist größer als 63 Zeichen."
 
-#: installer/modules/50_basis.py:323
+#: installer/modules/50_basis.py:329
 msgid "Hostname is equal to domain name."
 msgstr "Systemname ist gleich Domänennamen."
 
-#: installer/modules/50_basis.py:329
+#: installer/modules/50_basis.py:335
 msgid "Please enter the LDAP base."
 msgstr "Bitte geben Sie die LDAP-Basis an."
 
-#: installer/modules/50_basis.py:334
+#: installer/modules/50_basis.py:340
 msgid ""
 "Syntax-Error. Please enter a LDAP base according to this format: dc=test,"
 "dc=net "
 msgstr ""
 "Syntax-Fehler. Bitte geben Sie die LDAP-Basis wie folgt an: dc=test,dc=net "
 
-#: installer/modules/50_basis.py:354
+#: installer/modules/50_basis.py:360
 msgid "Please enter a Password."
 msgstr "Bitte geben Sie ein Passwort an."
 
-#: installer/modules/50_basis.py:359
+#: installer/modules/50_basis.py:365
 msgid "Please retype the Password."
 msgstr "Bitte geben Sie das Passwort nochmal an."
 
-#: installer/modules/50_basis.py:364
+#: installer/modules/50_basis.py:370
 msgid "Passwords do not match."
 msgstr "Passwörter stimmen nicht überein."
 
-#: installer/modules/50_basis.py:369
+#: installer/modules/50_basis.py:375
 msgid ""
 "Your password is too short. For security reasons, your password must contain "
 "at least 8 characters."
@@ -875,23 +902,23 @@ msgstr ""
 "Ihr Passwort ist zu kurz. Aus Sicherheitsgründen sollte Ihr Passwort "
 "mindestens 8 Zeichen lang sein."
 
-#: installer/modules/50_basis.py:373
+#: installer/modules/50_basis.py:379
 msgid "Illegal password: A password may only contain ascii characters."
 msgstr "Ungültiges Passwort: Nur ASCII Zeichen sind erlaubt."
 
-#: installer/modules/50_basis.py:379 installer/modules/50_basis.py:384
+#: installer/modules/50_basis.py:385 installer/modules/50_basis.py:390
 msgid "Illegal password: A password may not contain blanks."
 msgstr "Ungültiges Passwort: Leerzeichen nicht möglich"
 
-#: installer/modules/50_basis.py:389 installer/modules/50_basis.py:394
+#: installer/modules/50_basis.py:395 installer/modules/50_basis.py:400
 msgid "Illegal password: A password may not contain back slashes."
 msgstr "Ungültiges Passwort: Leerzeichen nicht möglich"
 
-#: installer/modules/50_basis.py:399 installer/modules/50_basis.py:404
+#: installer/modules/50_basis.py:405 installer/modules/50_basis.py:410
 msgid "Illegal password: A password may not contain quotation marks."
 msgstr "Ungültiges Passwort: Anführungszeichen nicht möglich"
 
-#: installer/modules/50_basis.py:439
+#: installer/modules/50_basis.py:445
 msgid ""
 "Settings  \n"
 " \n"
@@ -903,7 +930,7 @@ msgstr ""
 " Konfiguration grundlegender Einstellungen wie vollständigem Rechnernamen, "
 "Maildomäne, Windowsdomäne und Root-Passwort."
 
-#: installer/modules/50_basis.py:441
+#: installer/modules/50_basis.py:447
 msgid ""
 "Settings  \n"
 " \n"
@@ -915,7 +942,7 @@ msgstr ""
 " Konfiguration grundlegender Einstellungen wie Hostname, Domänenname, LDAP-"
 "Basis und Root-Passwort."
 
-#: installer/modules/50_basis.py:444
+#: installer/modules/50_basis.py:450
 msgid "Settings"
 msgstr "Optionen"
 
@@ -1635,24 +1662,24 @@ msgid "Following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
 #: installer/modules/70_net.py:356 installer/modules/70_net.py:507
-#: installer/modules/70_net.py:797 installer/modules/90_overview.py:139
+#: installer/modules/70_net.py:797 installer/modules/90_overview.py:131
 msgid "IPv4 Gateway"
 msgstr "IPv4-Gateway"
 
 #: installer/modules/70_net.py:357 installer/modules/70_net.py:513
-#: installer/modules/70_net.py:799 installer/modules/90_overview.py:145
+#: installer/modules/70_net.py:799 installer/modules/90_overview.py:137
 msgid "IPv6 Gateway"
 msgstr "IPv6-Gateway"
 
 #: installer/modules/70_net.py:358 installer/modules/70_net.py:524
 #: installer/modules/70_net.py:803 installer/modules/70_net.py:958
-#: installer/modules/90_overview.py:151
+#: installer/modules/90_overview.py:143
 msgid "Domain DNS Server"
 msgstr "Domänen-DNS-Server"
 
 #: installer/modules/70_net.py:359 installer/modules/70_net.py:535
 #: installer/modules/70_net.py:801 installer/modules/70_net.py:961
-#: installer/modules/90_overview.py:157
+#: installer/modules/90_overview.py:149
 msgid "External DNS Server"
 msgstr "Externer DNS-Server"
 
@@ -1686,7 +1713,7 @@ msgstr "Dynamisch (DHCP)"
 msgid "DHCP Query"
 msgstr "DHCP Anfrage"
 
-#: installer/modules/70_net.py:456 installer/modules/90_overview.py:112
+#: installer/modules/70_net.py:456 installer/modules/90_overview.py:106
 msgid "IPv4 address"
 msgstr "IPv4-Adresse"
 
@@ -1702,7 +1729,7 @@ msgstr "IPv6 aktivieren"
 msgid "Dynamic (accept router advertisements)"
 msgstr "Dynamisch (Router Advertisements akzeptieren)"
 
-#: installer/modules/70_net.py:479 installer/modules/90_overview.py:123
+#: installer/modules/70_net.py:479 installer/modules/90_overview.py:117
 msgid "IPv6 address"
 msgstr "IPv6-Adresse"
 
@@ -1995,51 +2022,47 @@ msgstr ""
 msgid "Software"
 msgstr "Software"
 
-#: installer/modules/90_overview.py:83
+#: installer/modules/90_overview.py:80
 msgid ""
 "This is the last step of the interactive installation. Please check all "
 "settings carefully. During the next phase software packages will be "
 "installed and (pre-)configured."
-msgstr ""
+msgstr "Dies ist der letzte Schritt der interaktiven Installation. Alle Einstellungen sollten nochmals geprüft werden. Im nächsten Schritt werden die Software-Pakete installiert und konfiguriert."
 
-#: installer/modules/90_overview.py:100
+#: installer/modules/90_overview.py:96
 msgid "Hostname"
 msgstr "Systemname"
 
-#: installer/modules/90_overview.py:104
+#: installer/modules/90_overview.py:100
 msgid "Domain name"
 msgstr "Domänenname"
 
-#: installer/modules/90_overview.py:108
-#, fuzzy
+#: installer/modules/90_overview.py:104
 msgid "Settings of interface eth0:"
-msgstr "Einstellungen für Interface \"%s\""
+msgstr "Einstellungen für Interface eth0:"
 
-#: installer/modules/90_overview.py:115
-#, fuzzy
+#: installer/modules/90_overview.py:109
 msgid "configuration via DHCP"
-msgstr "Aktualisiere Konfiguration"
+msgstr "Konfiguration über DHCP"
 
-#: installer/modules/90_overview.py:120
-#, fuzzy
+#: installer/modules/90_overview.py:114
 msgid "IPv4 netmask"
 msgstr "IPv4-Netzmaske"
 
-#: installer/modules/90_overview.py:126
-#, fuzzy
+#: installer/modules/90_overview.py:120
 msgid "configuration via router advertisements"
-msgstr "Dynamisch (Router Advertisements akzeptieren)"
+msgstr "Konfiguration über Router Advertisements"
 
-#: installer/modules/90_overview.py:172
+#: installer/modules/90_overview.py:162
 msgid "No package will download files from the internet."
 msgstr "Es werden keine Dateien aus dem Internet geladen"
 
-#: installer/modules/90_overview.py:175
+#: installer/modules/90_overview.py:165
 #, python-format
 msgid "%s will download files."
 msgstr "%s wird Dateien aus dem Internet laden"
 
-#: installer/modules/90_overview.py:197
+#: installer/modules/90_overview.py:184
 msgid ""
 "Overview \n"
 " \n"
@@ -2049,7 +2072,7 @@ msgstr ""
 " \n"
 " Installationseinstellungen"
 
-#: installer/modules/90_overview.py:200
+#: installer/modules/90_overview.py:187
 msgid "Overview"
 msgstr "Überblick"
 
