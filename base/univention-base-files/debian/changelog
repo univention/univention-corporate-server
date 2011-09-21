@@ -1,3 +1,15 @@
+univention-base-files (1.0.25-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+
+   [ Philipp Hahn ]
+    * Fix unsafe quoting in u-d-policy (Bug #22644)
+
+   [ Sönke Schwardt-Krummrich ]
+    * set some mission critical UCR variables to readonly
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 21:06:50 +0200
+
 univention-base-files (1.0.24-1) unstable; urgency=low
 
   * change netmask to prefix for IPv6 (Bug #22871)

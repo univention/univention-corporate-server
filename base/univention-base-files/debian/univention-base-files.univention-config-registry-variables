@@ -75,6 +75,7 @@ Description[de]=DNS-Domäne
 Description[en]=DNS domain
 Type=str
 Categories=system-network
+ReadOnly=yes
 
 [domain/domainname]
 Description[de]=Lokale-Domäne
@@ -93,6 +94,7 @@ Description[de]=Windows Domänenname
 Description[en]=Windows domainname
 Type=str
 Categories=system-network
+ReadOnly=yes
 
 [gateway]
 Description[de]=Standard-IPv4-Gateway
@@ -111,6 +113,7 @@ Description[de]=Name des Rechners
 Description[en]=Name of the computer
 Type=str
 Categories=system-network
+ReadOnly=yes
 
 [interfaces/eth.*/address]
 Description[de]=IPv4-Adresse der Netzschnittstelle
@@ -280,12 +283,14 @@ Description[de]=Basis DN des LDAP-Verzeichnis
 Description[en]=Base DN of the LDAP directory
 Type=str
 Categories=service-ldap
+ReadOnly=yes
 
 [ldap/hostdn]
 Description[de]=DN dieses Rechners
 Description[en]=DN of this machine
 Type=str
 Categories=service-ldap
+ReadOnly=yes
 
 [ldap/policy/cron]
 Description[de]=Cronjob-Intervall für das regelmäßige Ausführen der Univention Directory Policy-Skripte
