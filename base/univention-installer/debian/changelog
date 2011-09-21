@@ -1,3 +1,9 @@
+univention-installer (7.0.62-1) unstable; urgency=low
+
+  * set default focus to IPv4 address field (Bug #22872)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 21 Sep 2011 14:40:47 +0200
+
 univention-installer (7.0.61-1) unstable; urgency=low
 
   * fixes for networking module (Bug #22872)
