@@ -1,3 +1,9 @@
+univention-installer (7.0.56-1) unstable; urgency=low
+
+  * changed grub menu color (Bug #22707) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Sep 2011 08:52:17 +0200
+
 univention-installer (7.0.55-1) unstable; urgency=low
 
   * set gfxpaxload=keep also in grub-kernel-version.template (Bug #22707)
