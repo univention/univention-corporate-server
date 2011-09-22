@@ -30,7 +30,7 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-09-21 20:02+0200\n"
-"PO-Revision-Date: 2011-09-20 12:17+0200\n"
+"PO-Revision-Date: 2011-09-22 09:22+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -245,9 +245,8 @@ msgid "An empty value is not allowed"
 msgstr "Ein leerer Wert ist nicht erlaubt!"
 
 #: syntax.py:242
-#, fuzzy
 msgid "Invalid value"
-msgstr "Falsche Syntax"
+msgstr "Ungültiger Wert"
 
 #: syntax.py:351
 msgid "Value must be a number!"
@@ -547,9 +546,8 @@ msgid "Description"
 msgstr "Beschreibung"
 
 #: syntax.py:1168
-#, fuzzy
 msgid "Destination"
-msgstr "Beschreibung"
+msgstr "Ziel"
 
 #: syntax.py:1223
 msgid "Invitation Policy"
