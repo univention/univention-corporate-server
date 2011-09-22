@@ -29,6 +29,7 @@ Description: UCS - postfix configuration
 Package: univention-mail-server
 Architecture: all
 Depends: univention-mail-postfix, univention-antivir-mail, univention-spamassassin, univention-sasl, univention-mail-cyrus
+Recommends: univention-horde4
 Conflicts: univention-mail-postfix-kolab2
 Description: UCS - postfix configuration
  This package contains the configuration for the postfix

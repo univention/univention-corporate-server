@@ -1,3 +1,10 @@
+univention-mail-postfix (6.0.13-1) unstable; urgency=low
+
+  * made 67univention-mail-server.inst executable 
+  * recommends univention-horde4 (Bug #22151)
+
+ -- Felix Botner <botner@univention.de>  Thu, 22 Sep 2011 10:03:13 +0200
+
 univention-mail-postfix (6.0.12-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3
