@@ -111,7 +111,7 @@ class MsgWindow(object):
 			if len(line) > self.textwidth:
 				line = line[:self.textwidth]
 			try:
-				self.win.addstr( i, self.border + 2, line.decode('utf-8').encode('latin-1') )
+				self.win.addstr( i, self.border + 2, line )
 			except:
 				pass
 			i += 1
