@@ -1515,7 +1515,7 @@ class content:
 	def layout_reset(self):
 		#self.debug('(content)layout_reset')
 		self.elements=[]
-		self.element_index=[]
+		self.element_index={}
 		self.std_button()
 		self.layout()
 		self.draw()
