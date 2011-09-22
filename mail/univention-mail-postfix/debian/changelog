@@ -1,6 +1,9 @@
 univention-mail-postfix (6.0.14-1) unstable; urgency=low
 
   * create mail domain object in join script if no object exists in LDAP (Bug #22369)
+  * do not throw traceback in UCR templates if machine.secret is missing
+  * renamed server-password-change script and call it in join script to
+    take over new server password
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 22 Sep 2011 11:20:04 +0200
 
