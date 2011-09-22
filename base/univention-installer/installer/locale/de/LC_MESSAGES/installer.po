@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-21 20:43+0200\n"
-"PO-Revision-Date: 2011-09-21 20:46+0200\n"
+"POT-Creation-Date: 2011-09-22 09:44+0200\n"
+"PO-Revision-Date: 2011-09-22 09:44+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -152,7 +152,7 @@ msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 #: installer/main.py:282 installer/objects.py:2082
 #: installer/modules/10_hardware.py:279 installer/modules/10_hardware.py:313
 #: installer/modules/15_profile.py:56 installer/modules/65_partition.py:4191
-#: installer/modules/65_partition.py:4207 installer/modules/70_net.py:985
+#: installer/modules/65_partition.py:4207 installer/modules/70_net.py:991
 #: ../univention-system-setup/usr/sbin/univention-system-setup:160
 #: ../univention-system-setup/usr/sbin/univention-system-setup:187
 #: ../univention-system-setup/usr/sbin/univention-system-setup:206
@@ -507,7 +507,7 @@ msgstr "Quellmedium"
 #: installer/modules/15_profile.py:57 installer/modules/65_partition.py:3665
 #: installer/modules/65_partition.py:3712
 #: installer/modules/65_partition.py:3966
-#: installer/modules/65_partition.py:4005 installer/modules/70_net.py:984
+#: installer/modules/65_partition.py:4005 installer/modules/70_net.py:990
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -1262,7 +1262,11 @@ msgid ""
 "hard drives will be lost during this process! Should the proposed "
 "partitioning be undesirable, it can be rejected by pressing the F5 function "
 "key."
-msgstr "In diese Einstellungsmaske wird die Partitionierung der vorhandenen Festplatten vorgenommen. Es wird empfohlen, mindestens zwei Partitionen zu verwenden - eine für das Root-Dateisystem, eine für den Swap-Bereich.\\n \\nAchtung:\\nWurde die automatische Partitionierung gewählt, gehen auf diesen Festplatten alle Daten verloren! Sollte der Partitionierungsvorschlag unpassend sein, kann er durch die Funktionstaste F5 verworfen werden."
+msgstr ""
+"In diese Einstellungsmaske wird die Partitionierung der vorhandenen Festplatten vorgenommen. Es wird empfohlen, mindestens zwei Partitionen zu verwenden - eine für das Root-Dateisystem, eine für den Swap-Bereich.\n"
+"\n"
+"Achtung:\n"
+"Wurde die automatische Partitionierung gewählt, gehen auf diesen Festplatten alle Daten verloren! Sollte der Partitionierungsvorschlag unpassend sein, kann er durch die Funktionstaste F5 verworfen werden."
 
 #: installer/modules/65_partition.py:2250
 msgid "F2-Create"
@@ -1685,13 +1689,13 @@ msgid "IPv6 Gateway"
 msgstr "IPv6-Gateway"
 
 #: installer/modules/70_net.py:358 installer/modules/70_net.py:524
-#: installer/modules/70_net.py:803 installer/modules/70_net.py:958
+#: installer/modules/70_net.py:803 installer/modules/70_net.py:964
 #: installer/modules/90_overview.py:141
 msgid "Domain DNS Server"
 msgstr "Domänen-DNS-Server"
 
 #: installer/modules/70_net.py:359 installer/modules/70_net.py:535
-#: installer/modules/70_net.py:801 installer/modules/70_net.py:961
+#: installer/modules/70_net.py:801 installer/modules/70_net.py:967
 #: installer/modules/90_overview.py:147
 msgid "External DNS Server"
 msgstr "Externer DNS-Server"
@@ -1839,7 +1843,7 @@ msgstr ""
 "Es wurden weder die IPv6 Router Advertisements aktiviert noch eine gültige "
 "IPv6 Adresse inl. Prefix für Interface \"%s\" angegeben."
 
-#: installer/modules/70_net.py:884
+#: installer/modules/70_net.py:890
 msgid ""
 "Network \n"
 " \n"
@@ -1925,36 +1929,36 @@ msgstr ""
 " Geben Sie die Transportadresse (IP-Adresse:Port) an, um einen HTTP-Proxy zu "
 "nutzen. z.B: http://192.168.1.123:3128"
 
-#: installer/modules/70_net.py:888
+#: installer/modules/70_net.py:894
 msgid "Network"
 msgstr "Netzwerk"
 
-#: installer/modules/70_net.py:977
+#: installer/modules/70_net.py:983
 #, python-format
 msgid "1. %s"
 msgstr "1. %s"
 
-#: installer/modules/70_net.py:978
+#: installer/modules/70_net.py:984
 #, python-format
 msgid "2. %s"
 msgstr "2. %s"
 
-#: installer/modules/70_net.py:979
+#: installer/modules/70_net.py:985
 #, python-format
 msgid "3. %s"
 msgstr "3. %s"
 
-#: installer/modules/70_net.py:994
+#: installer/modules/70_net.py:1000
 #, python-format
 msgid " More %ss"
 msgstr "Weitere %s"
 
-#: installer/modules/70_net.py:1010 installer/modules/80_join.py:51
+#: installer/modules/70_net.py:1016 installer/modules/80_join.py:51
 #: installer/modules/80_join.py:138
 msgid "The following value is missing: "
 msgstr "Der folgende Wert fehlt:"
 
-#: installer/modules/70_net.py:1011
+#: installer/modules/70_net.py:1017
 msgid "The following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 

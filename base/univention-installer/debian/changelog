@@ -1,3 +1,9 @@
+univention-installer (7.0.69-1) unstable; urgency=low
+
+  * fixed translation (Bug #23120)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 22 Sep 2011 09:45:51 +0200
+
 univention-installer (7.0.68-1) unstable; urgency=low
 
   * updated translations (Bug #23120)
