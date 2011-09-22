@@ -41,7 +41,7 @@ univention-config-registry set \
 	horde/sql/username?"'horde'" \
 	horde/sql/hostspec?"'localhost'" \
 	horde/sql/port?5432 \
-	horde/sql/protocol?"'unix'" \
+	horde/sql/protocol?"'tcp'" \
 	horde/sql/database?"'hordedb'" \
 	horde/sql/charset?"'utf-8'" \
 	horde/sql/splitread?false \
