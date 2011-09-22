@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.90-1) unstable; urgency=low
+
+  * fixed ldapsearch syntax for mailHomeServer (Bug #22873)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 22 Sep 2011 16:04:07 +0200
+
 univention-directory-manager-modules (7.0.89-1) unstable; urgency=low
 
   * dns/txt_record: fixed typo in default value for zonettl; Bug #23682

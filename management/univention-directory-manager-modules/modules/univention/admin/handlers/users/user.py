@@ -85,7 +85,7 @@ short_description=_('User')
 long_description=''
 
 ldap_search_mailhomeserver = univention.admin.syntax.LDAP_Search(
-	filter = '(&(objectClass=univentionHost)(univentionService=Mail Server))',
+	filter = '(&(objectClass=univentionHost)(univentionService=Mail))',
 	attribute = [ 'computers/computer: fqdn' ],
 	value='computers/computer: fqdn' )
 
