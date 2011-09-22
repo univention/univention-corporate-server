@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.14-1) unstable; urgency=low
+
+  * create mail domain object in join script if no object exists in LDAP (Bug #22369)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 22 Sep 2011 11:20:04 +0200
+
 univention-mail-postfix (6.0.13-1) unstable; urgency=low
 
   * made 67univention-mail-server.inst executable 

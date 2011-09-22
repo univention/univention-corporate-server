@@ -82,12 +82,6 @@ Description[en]=Maximum size of any local mailbox or maildir file (specified in 
 Type=str
 Categories=service-mail
 
-[mail/postfix/mydomains]
-Description[de]=Internet Domäne für diesen Mailserver
-Description[en]=Internet domain name of this mail system
-Type=str
-Categories=service-mail
-
 [postfix/masquerade/domains]
 Description[de]=Liste von Domänen für die Masquerading aktiviert ist
 Description[en]=List of domains for which masquerading is enabled
@@ -176,4 +170,10 @@ Categories=service-mail
 Description[de]=Der Wert "yes" deaktiviert das SMTP-Kommando "VRFY" in Postfix.
 Description[en]=If set to "yes" the SMTP command "VRFY" gets disabled in postfix.
 Type=bool
+Categories=service-mail
+
+[mail/default/domains]
+Description[de]=Leerzeichenseparierte Liste mit Maildomänen, die während der Installation von univention-mail-server im LDAP angelegt werden (Default: $domainname)
+Description[en]=Space separated list of mail domains that will be created during installation of univention-mail-server in LDAP (default: $domainname)
+Type=str
 Categories=service-mail
