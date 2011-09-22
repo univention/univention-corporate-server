@@ -32,12 +32,6 @@
 
 . /tmp/installation_profile
 
-# export SSL variables so they are available in subshells (Bug #22846)
-SSL_VARIABLES="$(set | sed -rne 's/^(ssl_.*)=.*$/\1/p')"
-if [ -n "$SSL_VARIABLES" ] ; then
-	export $SSL_VARIABLES
-fi
-
 architecture=`/bin/uname -m`
 
 acpi_off=`grep "acpi=off" /proc/cmdline`
@@ -239,11 +233,6 @@ else
 	fi
 fi
 
-# get all profile variables with leading "ssl_" and set them as UCR variables with leading "ssl/"
-set | grep ^ssl_ | while read ; do 
-    ucr set "$(echo $REPLY | sed -e 's,^ssl_,ssl/,')"
-done
-
 if [ -n "$acpi_off" ]; then
 	univention-config-registry set "\$(univention-config-registry get grub/append) acpi=off"
 fi
@@ -290,6 +279,12 @@ univention-config-registry commit
 
 
 __EOT__
+
+# get all profile variables with leading "ssl_" and set them as UCR variables with leading "ssl/"
+set | grep ^ssl_ | while read ; do
+    echo "univention-config-registry set $(echo "$REPLY" | sed -e 's,^ssl_,ssl/,')" >> /instmnt/postconfigure_config_registry.sh
+done
+
 
 chmod +x /instmnt/postconfigure_config_registry.sh
 chroot /instmnt ./postconfigure_config_registry.sh
