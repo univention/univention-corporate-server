@@ -129,7 +129,7 @@ PackageList=[
 	'Packages':
 			[
 				{
-					'Name': _('Mail server'),
+					'Name': _('Mail server (Postfix, Cyrus IMAPd, Horde 4)'),
 					'Packages': ['univention-mail-server'],
 					'Edition': [ 'ucs' ],
 					'Active': [''], 

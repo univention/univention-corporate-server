@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-22 09:44+0200\n"
+"POT-Creation-Date: 2011-09-22 09:48+0200\n"
 "PO-Revision-Date: 2011-09-22 09:44+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -329,8 +329,8 @@ msgid "Additional Services"
 msgstr "Weitere Dienste"
 
 #: installer/package_list.py:132
-msgid "Mail server"
-msgstr "Mail-Server"
+msgid "Mail server (Postfix, Cyrus IMAPd, Horde 4)"
+msgstr "Mail-Server (Postfix, Cyrus IMAPd, Horde 4)"
 
 #: installer/package_list.py:137
 msgid "Standard mail services with postfix and cyrus (SMTP/POP/IMAP)"
@@ -1263,10 +1263,14 @@ msgid ""
 "partitioning be undesirable, it can be rejected by pressing the F5 function "
 "key."
 msgstr ""
-"In diese Einstellungsmaske wird die Partitionierung der vorhandenen Festplatten vorgenommen. Es wird empfohlen, mindestens zwei Partitionen zu verwenden - eine für das Root-Dateisystem, eine für den Swap-Bereich.\n"
+"In diese Einstellungsmaske wird die Partitionierung der vorhandenen "
+"Festplatten vorgenommen. Es wird empfohlen, mindestens zwei Partitionen zu "
+"verwenden - eine für das Root-Dateisystem, eine für den Swap-Bereich.\n"
 "\n"
 "Achtung:\n"
-"Wurde die automatische Partitionierung gewählt, gehen auf diesen Festplatten alle Daten verloren! Sollte der Partitionierungsvorschlag unpassend sein, kann er durch die Funktionstaste F5 verworfen werden."
+"Wurde die automatische Partitionierung gewählt, gehen auf diesen Festplatten "
+"alle Daten verloren! Sollte der Partitionierungsvorschlag unpassend sein, "
+"kann er durch die Funktionstaste F5 verworfen werden."
 
 #: installer/modules/65_partition.py:2250
 msgid "F2-Create"
@@ -2199,6 +2203,9 @@ msgstr "Verarbeite postrun-Skripte"
 #, python-format
 msgid "Processing %s "
 msgstr "Verarbeite %s"
+
+#~ msgid "Mail server"
+#~ msgstr "Mail-Server"
 
 #~ msgid "This is the last step of the interactive installation."
 #~ msgstr "Dies ist der letzte Schritt der interaktiven"
