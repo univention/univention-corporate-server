@@ -939,7 +939,10 @@ class dhclient_active(act_win):
 
 			nameserver1_str = dhcp_dict.get('nameserver_1') or ''
 			if nameserver1_str:
-				nameserver1_input = self.parent.get_elem('INP_NAMESERVER1')
+				if self.parent.elem_exists('INP_NAMESERVER1'):
+					nameserver1_input = self.parent.get_elem('INP_NAMESERVER1')
+				else:
+					nameserver1_input = self.parent.get_elem('INP_FORWARDER1')
 				nameserver1_input.text = nameserver1_str
 				nameserver1_input.set_cursor(len(nameserver1_input.text))
 				nameserver1_input.paste_text()
@@ -947,11 +950,16 @@ class dhclient_active(act_win):
 
 			nameserver2_str = dhcp_dict.get('nameserver_2') or ''
 			if nameserver2_str:
-				self.parent.parent.dns['nameserver_2'] = nameserver2_str
+				if self.parent.elem_exists('INP_NAMESERVER1'):
+					self.parent.container['nameserver_2'] = nameserver2_str
 
 			nameserver3_str = dhcp_dict.get('nameserver_3') or ''
 			if nameserver3_str:
-				self.parent.parent.dns['nameserver_3'] = nameserver3_str
+				if self.parent.elem_exists('INP_NAMESERVER1'):
+					self.parent.containers['nameserver_3'] = nameserver3_str
+
+			# update widgets and save values
+			self.parent.update_widget_states()
 
 
 class morewindow(subwin):
