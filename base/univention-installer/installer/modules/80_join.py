@@ -72,23 +72,23 @@ class object(content):
 		return {'system_role': ['domaincontroller_backup','domaincontroller_slave','memberserver','managed_client','mobile_client'] }
 
 	def layout(self):
-		self.elements.append(textline(_('Start join at the end of installation.'),self.minY,self.minX+2)) #2
-		self.elements.append(checkbox({" ": [" ", 0]},self.minY+1,self.minX+2,4, 1, [0])) #3
+		self.elements.append(textline(_('Start join at the end of installation.'),self.minY-11, self.minX+5)) #2
+		self.elements.append(checkbox({" ": [" ", 0]},self.minY-10,self.minX+5,4, 1, [0])) #3
 
-		self.elements.append(checkbox({" ": [" ", 0]},self.minY+4,self.minX+2,4, 1, [0])) #4
-		self.elements.append(textline(_('Search Domain controller Master in DNS'),self.minY+3,self.minX+2)) #5
+		self.elements.append(checkbox({" ": [" ", 0]},self.minY-7,self.minX+5,4, 1, [0])) #4
+		self.elements.append(textline(_('Search Domain controller Master in DNS'),self.minY-8,self.minX+5)) #5
 
-		self.elements.append(textline(_('Hostname of Domain controller Master'),self.minY+6,self.minX+2)) #6
-		self.elements.append(input('',self.minY+7,self.minX+2,30)) #7
+		self.elements.append(textline(_('Hostname of Domain controller Master'),self.minY-5,self.minX+5)) #6
+		self.elements.append(input('',self.minY-4,self.minX+5,30)) #7
 
-		self.elements.append(textline(_('Join account'),self.minY+9,self.minX+2)) #8
-		self.elements.append(input('Administrator',self.minY+10,self.minX+2,30)) #9
+		self.elements.append(textline(_('Join account'),self.minY-2,self.minX+5)) #8
+		self.elements.append(input('Administrator',self.minY-1,self.minX+5,30)) #9
 
-		self.elements.append(textline(_('Password'),self.minY+12,self.minX+2)) #10
-		self.elements.append(password('',self.minY+13,self.minX+2,30)) #11
+		self.elements.append(textline(_('Password'),self.minY+1,self.minX+5)) #10
+		self.elements.append(password('',self.minY+2,self.minX+5,30)) #11
 
-		self.elements.append(textline(_('Password (retype)'),self.minY+15,self.minX+2)) #12
-		self.elements.append(password('',self.minY+16,self.minX+2,30)) #13
+		self.elements.append(textline(_('Password (retype)'),self.minY+4,self.minX+5)) #12
+		self.elements.append(password('',self.minY+5,self.minX+5,30)) #13
 		self.join_host_search_disabled=1
 		self.elements[7].disable()
 		self.join_disabled=0
