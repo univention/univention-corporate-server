@@ -773,7 +773,7 @@ class cardbox:
 		self.pad.bkgd(" ",curses.color_pair(4))
 		self.pad.border(curses.MY_VLINE,curses.MY_VLINE,curses.MY_HLINE,curses.MY_HLINE,curses.EDGE_TL,curses.EDGE_TR,curses.EDGE_BL,curses.EDGE_BR)
 
-	def draw(self):
+	def draw(self, onlyChilds=False):
 		pos = 1
 		for i in xrange(len(self.cards)):
 			width = self.cards[i].width
@@ -794,7 +794,8 @@ class cardbox:
 				self.pad.addch(0,pos+width-1,curses.ACS_BTEE)
 			pos += width
 
-		self.pad.refresh(0,0,self.pos_y+2,self.pos_x,self.pos_y+self.height-1,self.pos_x+self.width)
+		if not onlyChilds:
+			self.pad.refresh(0,0,self.pos_y+2,self.pos_x,self.pos_y+self.height-1,self.pos_x+self.width)
 		# draw content of active card
 		self.cards[self.active].draw()
 

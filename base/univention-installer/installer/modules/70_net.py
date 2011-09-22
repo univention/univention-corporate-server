@@ -633,8 +633,8 @@ class object(content):
 		self.elements[self.current].set_on()
 		# copy values from elements to self.container to prevent data loss if user switches to previous installer module via F11
 		self.copy_elem_to_container()
-		# redraw all elements
-		self.draw()
+		# redraw all elements of cardbox
+		self.get_elem('CARDBOX1').draw(onlyChilds=True)
 
 
 	def copy_elem_to_container(self):

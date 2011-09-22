@@ -1,3 +1,9 @@
+univention-installer (7.0.72-1) unstable; urgency=low
+
+  * reduce flickering in networking module by optimized redrawing (Bug #22872)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 22 Sep 2011 10:17:49 +0200
+
 univention-installer (7.0.71-1) unstable; urgency=low
 
   * fixed traceback if layout gets rebuild (Bug #22872)
