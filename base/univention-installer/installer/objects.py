@@ -794,7 +794,11 @@ class cardbox:
 				self.pad.addch(0,pos+width-1,curses.ACS_BTEE)
 			pos += width
 
-		if not onlyChilds:
+		if onlyChilds:
+			# draw only top line of border
+			self.pad.refresh(0,0,self.pos_y+2,self.pos_x,self.pos_y+2,self.pos_x+self.width)
+		else:
+			# draw complete pad
 			self.pad.refresh(0,0,self.pos_y+2,self.pos_x,self.pos_y+self.height-1,self.pos_x+self.width)
 		# draw content of active card
 		self.cards[self.active].draw()
