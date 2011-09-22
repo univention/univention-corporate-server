@@ -46,6 +46,9 @@ fi
 
 eval "$(ucr shell)"
 
+# add random id to default SSL common name (Bug #22846)
+random_id="$(tr -d -c '[:alnum:]' < /dev/urandom | head -c8)"
+
 country="$(echo "$locale_default"  | cut -c 1-2)"
 
 univention-config-registry set ssl/country?"${country:-DE}" \
@@ -53,7 +56,7 @@ univention-config-registry set ssl/country?"${country:-DE}" \
 					ssl/locality?"${country:-DE}" \
 					ssl/organization?"${country:-DE}" \
 					ssl/organizationalunit?"Univention Corporate Server" \
-					ssl/common?"Univention Corporate Server Root CA" \
+					ssl/common?"Univention Corporate Server Root CA (ID=$random_id)" \
 					ssl/email?"ssl@$domainname" \
 					ssl/default/days?1825 \
 					ssl/validity/warning?30 \

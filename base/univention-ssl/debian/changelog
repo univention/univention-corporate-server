@@ -1,3 +1,9 @@
+univention-ssl (6.0.6-1) unstable; urgency=low
+
+  * add random id to default SSL common name (Bug #22846)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 22 Sep 2011 15:09:23 +0200
+
 univention-ssl (6.0.5-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3
