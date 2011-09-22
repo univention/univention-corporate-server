@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.88-2) unstable; urgency=low
+
+  * added Bug #7813 to corresponding changelog entry
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 22 Sep 2011 11:21:20 +0200
+
 univention-directory-manager-modules (7.0.88-1) unstable; urgency=low
 
   * fixed to fuzzy entries in german translation; Bug #23688
@@ -307,7 +313,8 @@ univention-directory-manager-modules (7.0.52-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.51-1) unstable; urgency=low
 
-  * dns/host_record: fix identify function to really match host records; Bug #22439
+  * dns/host_record: fix identify function to really match host records; 
+    Bug #22439, Bug #7813
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 10 Aug 2011 13:45:48 +0200
 
