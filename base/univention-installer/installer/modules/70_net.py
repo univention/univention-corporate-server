@@ -881,6 +881,11 @@ class object(content):
 		for key,val in result.items():
 			self.debug('[%s]="%s"' % (key,val))
 
+		# copy dns_forwarder_* to nameserver_* if domainnameserver widget has been disabled (e.g. on DC master)
+		if not self.ask_domainnameserver:
+			for src, dest in [ ['dns_forwarder_1', 'nameserver_1'], ['dns_forwarder_2', 'nameserver_2'], ['dns_forwarder_3', 'nameserver_3'] ]:
+				result[dest] = result[src]
+
 		return result
 
 
