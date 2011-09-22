@@ -71,6 +71,10 @@ if ! udm mail/domain list "$@" | grep -q "^DN:" ; then
 	done
 fi
 
+# call server password change script - system was likely not joined before package installation
+/usr/lib/univention-server/server_password_change.d/50univention-mail-server prechange
+/usr/lib/univention-server/server_password_change.d/50univention-mail-server postchange
+
 joinscript_save_current_version
 
 exit 0
