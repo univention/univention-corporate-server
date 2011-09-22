@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.89-1) unstable; urgency=low
+
+  * dns/txt_record: fixed typo in default value for zonettl; Bug #23682
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 22 Sep 2011 13:32:38 +0200
+
 univention-directory-manager-modules (7.0.88-2) unstable; urgency=low
 
   * added Bug #7813 to corresponding changelog entry

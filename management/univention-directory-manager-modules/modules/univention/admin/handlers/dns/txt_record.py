@@ -69,7 +69,7 @@ property_descriptions={
 			required = False,
 			may_change = True,
 			identifies = False,
-			default  =  ( '8False6FalseFalse', [] )
+			default  =  ( '80600', [] )
 		),
 	'txt': univention.admin.property(
 			short_description = _('Text Record'),
