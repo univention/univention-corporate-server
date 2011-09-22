@@ -69,9 +69,9 @@ univention-config-registry set \
 	horde/folder/spam?"'Spam'" \
 	horde/folder/trash?"'Trash'" \
 	horde/folder/drafts?"'Drafts'" \
-	horde/folder/sent?"'Sent'"
-
-
+	horde/folder/sent?"'Sent'" \
+	horde/group/driver?"'Sql'" \
+	horde/share/driver?"'Sqlng'"
 
 call_joinscript 85univention-horde4.inst
 

@@ -1,3 +1,10 @@
+univention-horde4 (1.0.1-1) unstable; urgency=low
+
+  * added horde/group/driver and horde/share/driver to
+    conf.d/10-ucs.php (Bug #22151)
+
+ -- Felix Botner <botner@univention.de>  Thu, 22 Sep 2011 09:38:25 +0200
+
 univention-horde4 (1.0.0-1) unstable; urgency=low
 
   * initial release (Bug #22151)

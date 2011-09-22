@@ -48,5 +48,9 @@ setVar("$conf['log']['type']", "horde/log/type")
 setVar("$conf['log']['priority']", "horde/log/priority")
 setVar("$conf['log']['name']", "horde/log/name")
 setVar("$conf['log']['params']['append']", "horde/log/params/append")
+
+# driver
+setVar("$conf['group']['driver']", "horde/group/driver")
+setVar("$conf['share']['driver']", "horde/share/driver")
 @!@
 
