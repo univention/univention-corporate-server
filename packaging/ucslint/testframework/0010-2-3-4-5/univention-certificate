@@ -99,7 +99,7 @@ fi
 
 cd /etc/univention/ssl
 
-source /usr/share/univention-ssl/make-certificates.sh
+. /usr/share/univention-ssl/make-certificates.sh
 
 case "$command" in
 	"new")

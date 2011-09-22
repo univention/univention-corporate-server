@@ -1,3 +1,10 @@
+ucslint (2.0.14-1) unstable; urgency=low
+
+  * removed bashism is testframework (Bug #23005)
+  * updated tests
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 22 Sep 2011 14:14:15 +0200
+
 ucslint (2.0.13-1) unstable; urgency=low
 
   * respect variable registrations on subfiles (Bug #23429)

@@ -1,7 +1,7 @@
 E:0004-12: conffiles/etc/lilo.conf: template file contains variables that are not registered in file entry:
 	- not/in/info/file/registered/file/configregistry
 	- not/in/info/file/registered/file/baseconfig
-E:0004-29: conffiles/etc/hosts.d/99-ucs-test: template file contains variables that are not registered in multifile entry:
+E:0004-29: conffiles/etc/hosts.d/99-ucs-test: template file contains variables that are not registered in multifile or subfile entry:
 	- not/in/info/file/registered/configregistryA1
 	- not/in/info/file/registered/configregistryB1
 	- not/in/info/file/registered/baseconfigC1
