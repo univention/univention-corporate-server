@@ -54,8 +54,8 @@ print 'mynetworks = %s' % configRegistry.get('mail/postfix/mynetworks', '127.0.0
 
 print
 
-print 'masquerade_domains = %s' % configRegistry.get('postfix/masquerade/domains', '$mydomain')
-print 'masquerade_exceptions = %s' % configRegistry.get('postfix/masquerade/exceptions', 'root')
+print 'masquerade_domains = %s' % configRegistry.get('mail/postfix/masquerade/domains', '$mydomain')
+print 'masquerade_exceptions = %s' % configRegistry.get('mail/postfix/masquerade/exceptions', 'root')
 
 print
 

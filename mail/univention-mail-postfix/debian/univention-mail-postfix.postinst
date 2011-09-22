@@ -45,6 +45,16 @@ fi
 
 eval "$(univention-config-registry shell)"
 
+# migration from old variables while updating to UCS 3.0 (Bug #22369)
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.15; then
+	if [ -n "$postfix_masquerade_domains" -a -z "$mail_postfix_masquerade_domains" ] ; then
+		ucr set "mail/postfix/masquerade/domains=$postfix_masquerade_domains"
+	fi
+	if [ -n "$postfix_masquerade_exceptions" -a -z "$mail_postfix_masquerade_exceptions" ] ; then
+		ucr set "mail/postfix/masquerade/exceptions=$postfix_masquerade_exceptions"
+	fi
+fi
+
 univention-config-registry set \
 	postfix/autostart?yes \
 	mail/postfix/virtual/enabled=no \
@@ -53,8 +63,8 @@ univention-config-registry set \
 	mail/maps/canonical/sender/classes?header_sender \
 	mail/postfix/ldap/timeout?15 \
 	mail/postfix/policy/listfilter?no \
-	'postfix/masquerade/domains?$mydomain' \
-	postfix/masquerade/exceptions?root \
+	'mail/postfix/masquerade/domains?$mydomain' \
+	mail/postfix/masquerade/exceptions?root \
 	mail/alias/root?systemmail@$hostname.$domainname \
     mail/alias/postmaster?root \
     mail/messagesizelimit?10240000

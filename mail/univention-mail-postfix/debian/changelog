@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.15-1) unstable; urgency=low
+
+  * renamed postfix/masquerade/* to mail/postfix/masquerade/* (Bug #22369)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 22 Sep 2011 15:37:52 +0200
+
 univention-mail-postfix (6.0.14-1) unstable; urgency=low
 
   * create mail domain object in join script if no object exists in LDAP (Bug #22369)
