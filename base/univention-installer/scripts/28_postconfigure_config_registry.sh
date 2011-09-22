@@ -281,8 +281,8 @@ univention-config-registry commit
 __EOT__
 
 # get all profile variables with leading "ssl_" and set them as UCR variables with leading "ssl/"
-set | grep ^ssl_ | while read ; do
-    echo "univention-config-registry set $(echo "$REPLY" | sed -e 's,^ssl_,ssl/,')" >> /instmnt/postconfigure_config_registry.sh
+set | grep ^ssl_ | while read line ; do
+    echo "univention-config-registry set $(echo "$line" | sed -e 's,^ssl_,ssl/,')" >> /instmnt/postconfigure_config_registry.sh
 done
 
 
