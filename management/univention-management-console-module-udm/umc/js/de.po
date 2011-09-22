@@ -74,7 +74,7 @@ msgstr "Alle Container"
 
 #: umc/js/udm.js:327 umc/js/udm.js:343 umc/js/udm.js:359
 msgid "All properties"
-msgstr "Alle Containern"
+msgstr "Alle Eigenschaften"
 
 #: umc/js/udm.js:326 umc/js/udm.js:342 umc/js/udm.js:358
 msgid "All types"

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.144-1) unstable; urgency=low
+
+  * fixed typo (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 22 Sep 2011 19:35:29 +0200
+
 univention-management-console-module-udm (1.0.143-1) unstable; urgency=low
 
   * support adding objects with no superordinate; Bug #23679
