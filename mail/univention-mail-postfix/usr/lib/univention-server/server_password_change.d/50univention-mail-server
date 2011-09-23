@@ -39,7 +39,7 @@ if [ "$1" = "prechange" ] ; then
 	fi
 fi
 
-if [ "$1" = "postchange" ] ; then
+if [ "$1" = "postchange" -o "$1" = "nochange" ] ; then
 	# update ldap query definitions
 	for fn in /etc/postfix/ldap.* ; do
 		ucr commit $fn
