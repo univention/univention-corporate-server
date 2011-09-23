@@ -1,3 +1,10 @@
+univention-samba4 (1.0.46-1) unstable; urgency=low
+
+  * Don't use samba4 as dns/backend. This will break the DRS replication
+    (Bug #23786)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Sep 2011 08:35:47 +0200
+
 univention-samba4 (1.0.45-1) unstable; urgency=low
 
   * call univention-dnsedit with join credentials (Bug #23360)
