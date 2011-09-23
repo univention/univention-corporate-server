@@ -1,3 +1,9 @@
+univention-management-console (4.0.60-2) unstable; urgency=low
+
+  * added umc join module as dependency of umc-server (Bug #22895)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 23 Sep 2011 18:44:06 +0200
+
 univention-management-console (4.0.60-1) unstable; urgency=low
 
   * umc-acls: also load existing pickle file for disallow action; Bug #22881
