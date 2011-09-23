@@ -30,52 +30,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-PACKAGE=univention-nagios-ad-connector
+override_dh_auto_build:
+	make check_univention_ad_connector_suidwrapper
+	dh_auto_build
 
-build: build-stamp
+override_dh_fixperms:
+	dh_fixperms
+	chmod 4775 debian/univention-nagios-ad-connector/usr/lib/nagios/plugins/check_univention_ad_connector_suidwrapper
 
-build-stamp:
-	dh_testdir
-	touch build-stamp
-	gcc -o check_univention_ad_connector_suidwrapper check_univention_ad_connector_suidwrapper.c
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp check_univention_ad_connector_suidwrapper
-	dh_clean
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-	dh_install
-
-	install -m 0755 99univention-nagios-ad-connector.inst debian/$(PACKAGE)/usr/lib/univention-install/
-	install -m 0755 check_univention_ad_connector debian/$(PACKAGE)/usr/lib/nagios/plugins/
-	install -m 4755 check_univention_ad_connector_suidwrapper debian/$(PACKAGE)/usr/lib/nagios/plugins/
-
+override_dh_auto_install:
+	dh_auto_install
 	univention-install-config-registry
 	univention-install-config-registry-info
 
-binary-indep: build install
-	dh_testdir 
-	dh_testroot 
-	dh_installchangelogs
-	dh_installdocs 
-	dh_installexamples 
-	dh_link 
-	dh_compress 
-	dh_fixperms -X/usr/lib/nagios/plugins/check_univention_ad_connector_suidwrapper
-	dh_shlibdeps 
-	dh_installdeb 
-	dh_gencontrol 
-	dh_md5sums 
-	dh_builddeb 
-
-binary-arch: build install
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
-
+%:
+	dh $@

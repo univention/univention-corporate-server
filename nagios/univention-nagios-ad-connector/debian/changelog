@@ -1,3 +1,10 @@
+univention-nagios-ad-connector (2.0.0-1) unstable; urgency=low
+
+  * ported package to UCS 3.0 ; Bug #14739
+  * bumped version
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 23 Sep 2011 16:13:35 +0200
+
 univention-nagios-ad-connector (1.0.1-1) unstable; urgency=low
 
   * adapted output for additional connectors; set architecture=any
