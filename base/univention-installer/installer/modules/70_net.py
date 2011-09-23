@@ -705,10 +705,16 @@ class object(content):
 		"""
 		input handling
 		"""
-		self.debug('input(%d)' % key)
+		self.debug('input(%d)  sub=%s' % (key, hasattr(self,'sub')))
 
 		if hasattr(self,'sub'):
-			self.sub.key_event(key)
+			if hasattr(self.sub, 'input'):
+				val = self.sub.input(key)
+				if not val:
+					del self.sub
+					self.draw()
+			elif hasattr(self.sub, 'key_event'):
+				self.sub.key_event(key)
 			return 1
 		elif key == 10 and self.btn_next():
 			return 'next'
@@ -737,10 +743,10 @@ class object(content):
 					self.elements[self.current].set_on()		# set actual focus highlight
 				self.draw()
 		elif key in [ 10 ] and self.ask_domainnameserver and self.get_elem('BTN_MORE_NAMESERVER').get_status(): # Enter & Button: "[More]" Nameserver
-			self.sub = morewindow(self, self.minY, self.minX+16, self.maxWidth-7, self.maxHeight-8, morewindow.DOMAINDNS)
+			self.sub = morewindow(self, self.minY, self.minX+16, self.maxWidth-7, self.maxHeight-18, morewindow.DOMAINDNS)
 			self.sub.draw()
 		elif key in [ 10 ] and self.ask_forwarder and self.get_elem('BTN_MORE_FORWARDER').get_status(): # Enter & Button: "[More]" Forwarder
-			self.sub = morewindow(self, self.minY, self.minX+16, self.maxWidth-7, self.maxHeight-8, morewindow.EXTERNALDNS)
+			self.sub = morewindow(self, self.minY, self.minX+16, self.maxWidth-7, self.maxHeight-18, morewindow.EXTERNALDNS)
 			self.sub.draw()
 		else:
 			val = self.elements[self.current].key_event(key)
@@ -1045,13 +1051,14 @@ class morewindow(subwin):
 		return None
 
 	def input(self,key):
+		self.parent.debug('morewindow: input(): %s  sub=%s' % (key,hasattr(self,'sub')))
 		if hasattr(self,'sub'):
 			self.sub.key_event(key)
 			return 1
 		elif ( key in [ 10 ] and self.get_elem('BTN_OK').get_status() ) or key == 276: #Ok
 			msg = self.incomplete()
 			if msg:
-				self.parent.debug('more() incomplete: %s' % msg)
+				self.parent.debug('morewindow() incomplete: %s' % msg)
 				self.sub = warning(msg, self.pos_y+15, self.pos_x+90)
 				self.sub.draw()
 				return 1
