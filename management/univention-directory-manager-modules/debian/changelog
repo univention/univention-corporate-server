@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.91-1) unstable; urgency=low
+
+  * Call computers/windows_domaincontroller lookup function in
+    computers/computer lookup (Bug #23477)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Sep 2011 19:51:20 +0200
+
 univention-directory-manager-modules (7.0.90-1) unstable; urgency=low
 
   * fixed ldapsearch syntax for mailHomeServer (Bug #22873)

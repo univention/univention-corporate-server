@@ -181,7 +181,18 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		if filter_s:
 			res+=lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 	else:
-		return univention.admin.handlers.computers.macos.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.thinclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.managedclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.mobileclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.windows.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.domaincontroller_master.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.domaincontroller_backup.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.domaincontroller_slave.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.memberserver.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.ipmanagedclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.trustaccount.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+		return univention.admin.handlers.computers.macos.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
+				univention.admin.handlers.computers.thinclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
+				univention.admin.handlers.computers.managedclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
+				univention.admin.handlers.computers.mobileclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
+				univention.admin.handlers.computers.windows.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
+				univention.admin.handlers.computers.domaincontroller_master.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
+				univention.admin.handlers.computers.domaincontroller_backup.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
+				univention.admin.handlers.computers.domaincontroller_slave.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
+				univention.admin.handlers.computers.memberserver.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
+				univention.admin.handlers.computers.ipmanagedclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
+				univention.admin.handlers.computers.trustaccount.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
+				univention.admin.handlers.computers.windows_domaincontroller.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 	return res
 
 def identify(dn, attr, canonical=0):
