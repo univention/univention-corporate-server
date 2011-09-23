@@ -163,7 +163,7 @@ class Processor( signals.Provider ):
 
 		try:
 			self.lo = univention.uldap.getMachineConnection( ldap_master = False )
-		except ldap.LDAPError:
+		except ldap.LDAPError, IOError:
 			self.lo = None
 
 		# read the ACLs

@@ -1,3 +1,10 @@
+univention-management-console (4.0.61-1) unstable; urgency=low
+
+  * catch exception IOError when trying to open an LDAP connection. This
+    may fail on systems that are not joined yet; Bug #22881
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 23 Sep 2011 18:58:15 +0200
+
 univention-management-console (4.0.60-2) unstable; urgency=low
 
   * added umc join module as dependency of umc-server (Bug #22895)
