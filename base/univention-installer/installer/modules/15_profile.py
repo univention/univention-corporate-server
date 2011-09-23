@@ -255,8 +255,8 @@ class object(content):
 
 		text='%-32s%18s'%(_('Filename'),_('Size'))#52 zeichen!
 
-		self.elements.append(textline(text,self.pos_y+2,self.pos_x+3)) #2
-		self.elements.append(select(self.files,self.pos_y+3,self.pos_x+3,52,17)) #3
+		self.elements.append(textline(text,self.pos_y+2,self.pos_x+6)) #2
+		self.elements.append(select(self.files,self.pos_y+3,self.pos_x+6,52,17)) #3
 
 		self.elements[self.current].set_off()
 		self.current=3

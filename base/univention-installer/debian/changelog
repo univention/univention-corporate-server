@@ -1,3 +1,9 @@
+univention-installer (7.0.76-2) unstable; urgency=low
+
+  * resizing update (Bug #23120)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 23 Sep 2011 11:45:24 +0200
+
 univention-installer (7.0.76-1) unstable; urgency=low
 
   * resizing update (Bug #23120)
