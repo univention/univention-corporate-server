@@ -1,0 +1,18 @@
+univention-nagios-ad-connector (1.0.1-1) unstable; urgency=low
+
+  * adapted output for additional connectors; set architecture=any
+    (Ticket #2011030710000951)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 16 Mar 2011 17:07:53 +0100
+
+univention-nagios-ad-connector (1.0.0-2) unstable; urgency=low
+
+  * version bump (Ticket #2011030710000951)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 15 Mar 2011 10:22:27 +0100
+
+univention-nagios-ad-connector (1.0.0-1) unstable; urgency=low
+
+  * Initial release (Ticket #2011030710000951)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 11 Mar 2011 14:06:50 +0100

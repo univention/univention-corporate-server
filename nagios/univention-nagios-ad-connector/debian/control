@@ -1,0 +1,18 @@
+Source: univention-nagios-ad-connector
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev
+Standards-Version: 3.5.2
+
+Package: univention-nagios-ad-connector
+Architecture: any
+Depends: univention-nagios-client
+Description: nagios plugin for Univention AD connector
+ This package installs a nagios plugin to monitor the state
+ of Univention Active Directory (AD) connectors.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
