@@ -2,8 +2,8 @@ Source: univention-ad-connector
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Standards-Version: 3.5.5
-Build-Depends: debhelper (>> 7), ucslint, python2.6-dev, python-support, univention-config-dev
+Standards-Version: 3.7.2
+Build-Depends: debhelper (>= 7.0.50~), ucslint, python2.6-dev, python-support, univention-config-dev
 
 Package: python-univention-connector
 Architecture: all
@@ -46,6 +46,7 @@ Architecture: all
 Depends: univention-config-registry,
  python-univention-connector-ad (= ${binary:Version}),
  shell-univention-lib (>= 1.0.6)
+Recommends: univention-nagios-ad-connector
 Description: UCS - Modules for sync ucs and active directory
  This package contains the modules that implement the
  features of Univention AD Connector.

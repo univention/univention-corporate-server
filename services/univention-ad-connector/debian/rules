@@ -68,7 +68,7 @@ override_dh_auto_install:
 	install -D -m644 windows/ucs-ad-connector/msi-package/UCS\ AD\ Connector\ 64bit/out/installscript.mm/MSI/setup.msi $(AD_TOOLS_DEST)/usr/share/univention-ad-connector/ucs-ad-connector-64bit.msi
 
 override_dh_installinit:
-	dh_installinit -a --no-start -u"defaults 97"
+	dh_installinit --no-start -u"defaults 97"
 
 override_dh_fixperms:
 	dh_fixperms -X/var/www/univention-ad-connector

@@ -1,3 +1,10 @@
+univention-ad-connector (6.0.8-1) unstable; urgency=low
+
+  * recommend package univention-nagios-ad-connector
+  * fix installation of AD connector init script; Bug #14739
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 23 Sep 2011 16:27:27 +0200
+
 univention-ad-connector (6.0.7-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3
