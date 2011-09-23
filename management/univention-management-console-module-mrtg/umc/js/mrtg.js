@@ -86,14 +86,13 @@ dojo.declare("umc.modules.mrtg", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], {
 			var tab = new umc.widgets.Page({
 				title:			page_setup[idx].label,
 				headerText:		page_setup[idx].heading,
-				helpText:		page_setup[idx].desc,
 				closable:		false
 				});
 			this.addChild(tab);
 
 			// Title pane without rollup/down
 			var cont = new umc.widgets.ExpandingTitlePane({
-				title:			this._("Statistics")
+				title:			page_setup[idx].desc
 			});
 			tab.addChild(cont);
 			

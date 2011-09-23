@@ -1,3 +1,9 @@
+univention-management-console-module-mrtg (1.0.3-1) unstable; urgency=low
+
+  * adapted German translations, moved help text into TitlePane (Bug #22848)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 23 Sep 2011 15:39:25 +0200
+
 univention-management-console-module-mrtg (1.0.2-1) unstable; urgency=low
 
   * changed icon sizes in overview to 50x50, removed 24x24, 32x32, 64x64
