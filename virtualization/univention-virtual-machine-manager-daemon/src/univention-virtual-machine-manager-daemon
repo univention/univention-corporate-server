@@ -192,11 +192,14 @@ if __name__ == '__main__':
 			help=_('HOST and PORT number of the SSL encrypted TCP socket'))
 	parser.add_option_group(socket_group)
 
-	ldap_group = OptionGroup(parser, _('LDAP options'))
-	ldap_group.add_option('-c', '--cache',
+	cache_group = OptionGroup(parser, _('Cache options'))
+	cache_group.add_option('-c', '--cache',
 			action='store', dest='cache', default="/var/cache/univention-virtual-machine-manager-daemon",
-			help=_('LDAP cache directory [%(default)s]') % {'default':'%default'})
-	parser.add_option_group(ldap_group)
+			help=_('cache directory [%(default)s]') % {'default':'%default'})
+	cache_group.add_option('-C', '--clean',
+			action='store_true', dest='clean', default=False,
+			help=_('Do not load cached state'))
+	parser.add_option_group(cache_group)
 
 	daemon_group = OptionGroup(parser, _('Daemon options'))
 	daemon_group.add_option('-p', '--pidfile',
@@ -260,11 +263,11 @@ if __name__ == '__main__':
 		node_add(uri)
 
 	# Add nodes from LDAP
-	from univention.uvmm.uvmm_ldap import ldap_cached, ldap_uris, LdapError
+	from univention.uvmm.uvmm_ldap import cached, ldap_uris, LdapError
 	try:
-		if options.cache != '':
+		if options.cache != '' and not options.clean:
 			get_ldap_uris = lambda:ldap_uris()
-			uris = ldap_cached("%s/ldap.pic" % (options.cache,), get_ldap_uris)
+			uris = cached("%s/ldap.pic" % (options.cache,), get_ldap_uris)
 		else:
 			uris = ldap_uris()
 

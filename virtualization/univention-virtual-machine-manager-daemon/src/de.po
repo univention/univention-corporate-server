@@ -340,12 +340,12 @@ msgstr "Fehlende Argumente"
 
 #: src/univention-virtual-machine-manager-daemon:198
 #, python-format
-msgid "LDAP cache directory [%(default)s]"
-msgstr "Verzeichnis für LDAP-Zwischenspeicher [%(default)s]"
+msgid "cache directory [%(default)s]"
+msgstr "Verzeichnis für Zwischenspeicher [%(default)s]"
 
 #: src/univention-virtual-machine-manager-daemon:195
-msgid "LDAP options"
-msgstr "LDAP-Optionen"
+msgid "Cache options"
+msgstr "Zwischenspeicher-Optionen"
 
 #: src/univention/uvmm/uvmm_ldap.py:135
 msgid "No SERVICES defined."
@@ -431,6 +431,10 @@ msgstr "Lesen der ini-Datei überspringen"
 #, python-format
 msgid "Snapshot not supported \"%(node)s\""
 msgstr "\"%(node)s\" unterstützt keine Sicherungspunkte."
+
+#: src/univention-virtual-machine-manager-daemon:201
+msgid "Do not load cached state"
+msgstr "Zwischengespeicherten Zustand nicht laden"
 
 #: src/univention/uvmm/client.py:109
 msgid "Timed out while closing socket."

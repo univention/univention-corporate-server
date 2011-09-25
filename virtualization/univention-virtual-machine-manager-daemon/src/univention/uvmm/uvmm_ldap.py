@@ -83,7 +83,7 @@ def ldap2fqdn(ldap_result):
 		domain = ldap_result[ 'associatedDomain' ][ 0 ]
 	return "%s.%s" % (ldap_result['cn'][0], domain)
 
-def ldap_cached(cachefile, func):
+def cached(cachefile, func, exception=LdapConnectionError):
 	"""Cache result of function or return cached result on LdapConnectionException."""
 	try:
 		result = func()
@@ -112,8 +112,8 @@ def ldap_cached(cachefile, func):
 	except IOError, e:
 		# LdapError("Error writing %(file)s: %(msg)e", file=cachefile, msg=e)
 		pass
-	except LdapConnectionError, msg:
-		logger.info('Using cached LDAP data "%s"' % (cachefile,))
+	except exception, msg:
+		logger.info('Using cached data "%s"' % (cachefile,))
 		try:
 			file = open("%s" % (cachefile,), "r")
 			try:
@@ -122,10 +122,10 @@ def ldap_cached(cachefile, func):
 				file.close()
 		except IOError, e:
 			if e.errno != errno.ENOENT:
-				raise LdapConnectionError(_('Error reading %(file)s: %(msg)s'), file=cachefile, msg=e)
+				raise exception(_('Error reading %(file)s: %(msg)s'), file=cachefile, msg=e)
 			raise msg
 		except EOFError:
-			raise LdapConnectionError(_('Error reading incomplete %(file)s.'), file=cachefile)
+			raise exception(_('Error reading incomplete %(file)s.'), file=cachefile)
 
 	return result
 
