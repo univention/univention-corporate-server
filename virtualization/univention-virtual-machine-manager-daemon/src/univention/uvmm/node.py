@@ -417,38 +417,38 @@ class Node(object):
 	"""Container for node statistics."""
 	def __init__(self, uri):
 		self.pd = Data_Node() # public data
-		self.uri = uri
+		self.pd.uri = uri
 		self.conn = None
 		self.domains = {}
 		self.config_frequency = Nodes.IDLE_FREQUENCY
 		self.current_frequency = Nodes.IDLE_FREQUENCY
 		self.domainCB = None
 		self.timerEvent = threading.Event()
-		self.timer = threading.Thread(group=None, target=self.run, name=self.uri, args=(), kwargs={})
+		self.timer = threading.Thread(group=None, target=self.run, name=self.pd.uri, args=(), kwargs={})
 		self.timer.start()
 	
 	def run(self):
 		"""Handle regular poll. Also checks connection liveness."""
-		logger.info("timer_callback(%s) start" % (self.uri,))
+		logger.info("timer_callback(%s) start" % (self.pd.uri,))
 		try:
 			while self.timer is not None:
 				try:
-					logger.debug("timer_callback: %s" % (self.uri,))
+					logger.debug("timer_callback: %s" % (self.pd.uri,))
 					self.update_autoreconnect()
 				except Exception, e:
-					logger.error("%s: Exception in timer_callbck", (self.uri,), exc_info=True)
+					logger.error("%s: Exception in timer_callbck", (self.pd.uri,), exc_info=True)
 					# don't crash the event handler
 				self.timerEvent.clear()
 				self.timerEvent.wait(self.current_frequency / 1000.0)
 		finally:
-			logger.debug("timer_callback(%s) terminated" % (self.uri,))
+			logger.debug("timer_callback(%s) terminated" % (self.pd.uri,))
 
 	def update_autoreconnect(self):
 		"""(Re-)connect after connection broke."""
 		try:
 			if self.conn is None:
-				self.conn = libvirt.open(self.uri)
-				logger.info("Connected to '%s'" % (self.uri,))
+				self.conn = libvirt.open(self.pd.uri)
+				logger.info("Connected to '%s'" % (self.pd.uri,))
 				self.update_once()
 				self._register_default_pool()
 				# reset timer after successful re-connect
@@ -459,7 +459,7 @@ class Node(object):
 			self.pd.last_try = time.time()
 			# double timer interval until maximum
 			hz = min(self.current_frequency * 2, Nodes.BEBO_FREQUENCY)
-			logger.warning("'%s' broken? next check in %s. %s" % (self.uri, ms(hz), e))
+			logger.warning("'%s' broken? next check in %s. %s" % (self.pd.uri, ms(hz), e))
 			if hz > self.current_frequency:
 				self.current_frequency = hz
 			if self.conn is not None:
@@ -477,7 +477,7 @@ class Node(object):
 				self.conn = None
 
 	def __eq__(self, other):
-		return (self.uri, self.pd.name) == (other.uri, other.pd.name)
+		return (self.pd.uri, self.pd.name) == (other.pd.uri, other.pd.name)
 
 	def __del__(self):
 		"""Free Node and deregister callbacks."""
@@ -519,14 +519,14 @@ class Node(object):
 				self.pd.supports_suspend = True
 			except libvirt.libvirtError, e:
 				if e.get_error_code() != libvirt.VIR_ERR_NO_SUPPORT:
-					logger.error('%s: Exception testing managedSave' % (self.uri,), exc_info=True)
+					logger.error('%s: Exception testing managedSave' % (self.pd.uri,), exc_info=True)
 			# As of libvirt-0.8.5 Xen doesn't support snapshot-*, but test dom0
 			try:
 				d.snapshotListNames(0)
 				self.pd.supports_snapshot = True
 			except libvirt.libvirtError, e:
 				if e.get_error_code() != libvirt.VIR_ERR_NO_SUPPORT:
-					logger.error('%s: Exception testing snapshots' % (self.uri,), exc_info=True)
+					logger.error('%s: Exception testing snapshots' % (self.pd.uri,), exc_info=True)
 
 		def domain_callback(conn, dom, event, detail, node):
 			try:
@@ -548,7 +548,7 @@ class Node(object):
 						# during migration events are not ordered causal
 						pass
 			except Exception, e:
-				logger.error('%s: Exception handling callback' % (self.uri,), exc_info=True)
+				logger.error('%s: Exception handling callback' % (self.pd.uri,), exc_info=True)
 				# don't crash the event handler
 
 		self.conn.domainEventRegister(domain_callback, self)
@@ -563,7 +563,7 @@ class Node(object):
 			while wait:
 				timer.join(1.0) # wait for up to 1 second until Thread terminates
 				if timer.isAlive():
-					logger.debug("timer still alive: %s" % (self.uri,))
+					logger.debug("timer still alive: %s" % (self.pd.uri,))
 				else:
 					wait = False
 		if self.domainCB is not None:

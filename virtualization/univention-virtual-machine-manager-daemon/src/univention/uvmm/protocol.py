@@ -305,6 +305,7 @@ class Data_Node(object):
 	"""Container for node statistics."""
 	def __init__(self):
 		self.name = None
+		self.uri = None
 		self.phyMem = None
 		self.curMem = None
 		self.maxMem = None

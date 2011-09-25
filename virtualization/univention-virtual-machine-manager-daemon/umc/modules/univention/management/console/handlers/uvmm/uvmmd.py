@@ -352,7 +352,6 @@ class Client( notifier.signals.Provider ):
 				node = self.get_node_info( uri )
 				if not node:
 					continue
-				node.uri = uri
 
 				domains = []
 				for domain in node.domains:
