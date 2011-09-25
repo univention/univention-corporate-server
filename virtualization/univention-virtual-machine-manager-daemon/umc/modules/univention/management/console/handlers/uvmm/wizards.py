@@ -284,10 +284,13 @@ class DriveWizard( umcd.IWizard ):
 		if not pool_name:
 			pool_name = object.options['pool-name'] = 'default'
 		drive_type = object.options['drive-type']
-		if drive_type == 'cdrom':
-			vols = self.uvmm.storage_pool_volumes(self.node_uri, pool_name, 'cdrom')
-		else:
-			vols = self.uvmm.storage_pool_volumes(self.node_uri, pool_name, 'disk' )
+		try:
+			if drive_type == 'cdrom':
+				vols = self.uvmm.storage_pool_volumes(self.node_uri, pool_name, 'cdrom')
+			else:
+				vols = self.uvmm.storage_pool_volumes(self.node_uri, pool_name, 'disk' )
+		except uvmmd.UvmmError, e:
+			vols = ()
 		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.DW.ps: volumes=%s' % map(str, vols))
 		choices = []
 		for vol in vols:
@@ -339,7 +342,10 @@ class DriveWizard( umcd.IWizard ):
 				suffix = ''
 			else:
 				suffix = '.%s' % driver_type
-			vol_name = self.uvmm.next_drive_name(self.node_uri, self.domain_name, suffix=suffix, temp_drives=self.blacklist)
+			try:
+				vol_name = self.uvmm.next_drive_name(self.node_uri, self.domain_name, suffix=suffix, temp_drives=self.blacklist)
+			except uvmmd.UvmmError, e:
+				vol_name = 'ERROR'
 		object.options['vol-name-new'] = vol_name
 		return self[self.current]
 
@@ -424,10 +430,13 @@ class DriveWizard( umcd.IWizard ):
 			pool_name = object.options['pool-name']
 			pool_path = self._get_pool_path(pool_name)
 			vol_name = object.options['vol-name-old']
-			if drive_type == 'cdrom':
-				vols = self.uvmm.storage_pool_volumes(self.node_uri, pool_name, 'cdrom')
-			else:
-				vols = self.uvmm.storage_pool_volumes(self.node_uri, pool_name, 'disk')
+			try:
+				if drive_type == 'cdrom':
+					vols = self.uvmm.storage_pool_volumes(self.node_uri, pool_name, 'cdrom')
+				else:
+					vols = self.uvmm.storage_pool_volumes(self.node_uri, pool_name, 'disk')
+			except uvmmd.UvmmError, e:
+				vols = ()
 
 			for vol in vols:
 				if os.path.basename(vol.source) == vol_name:
@@ -442,7 +451,10 @@ class DriveWizard( umcd.IWizard ):
 				if vol_name in self.blacklist:
 					is_used = self.domain_name
 				else:
-					is_used = self.uvmm.is_image_used(self.node_uri, vol_path)
+					try:
+						is_used = self.uvmm.is_image_used(self.node_uri, vol_path)
+					except uvmmd.UvmmError, e:
+						is_used = self.domain_name # FIXME: need proper error handling
 				if is_used in (object.options.get('domain', ''), object.options.get('name', '')):
 					msg = _('The selected image is already used by this virtual instance and therefor can not be used.')
 					return umcd.WizardResult(False, msg)
@@ -473,11 +485,17 @@ class DriveWizard( umcd.IWizard ):
 			if vol_name in self.blacklist:
 				is_used = self.domain_name
 			else:
-				is_used = self.uvmm.is_image_used(self.node_uri, vol_path)
+				try:
+					is_used = self.uvmm.is_image_used(self.node_uri, vol_path)
+				except uvmmd.UvmmError, e:
+					is_used = self.domain_name # FIXME: need proper error handling
 			if is_used in (object.options.get('domain', ''), object.options.get('name', '')):
 				msg = _('The selected image is already used by this virtual instance and therefor can not be used.')
 				return umcd.WizardResult(False, msg)
-			volumes = self.uvmm.storage_pool_volumes(self.node_uri, pool_name)
+			try:
+				volumes = self.uvmm.storage_pool_volumes(self.node_uri, pool_name)
+			except uvmmd.UvmmError, e:
+				volumes = ()
 			for volume in volumes:
 				if volume.source == vol_path:
 					if is_used:
@@ -624,7 +642,10 @@ class DriveWizard( umcd.IWizard ):
 		try:
 			return self._storage_pools
 		except AttributeError:
-			storage_pools = self.uvmm.storage_pools(self.node_uri)
+			try:
+				storage_pools = self.uvmm.storage_pools(self.node_uri)
+			except uvmmd.UvmmError, e:
+				storage_pools = ()
 			self._storage_pools = dict([(p.name, p) for p in storage_pools])
 			return self._storage_pools
 
@@ -764,8 +785,11 @@ class InstanceWizard( umcd.IWizard ):
 			if len( object.options[ 'name' ] ) > MAX_NAME_LENGTH:
 				object.options[ 'name' ] = object.options[ 'name' ][ : MAX_NAME_LENGTH ]
 				return umcd.WizardResult( False, _( 'The name of a virtual instance may not be longer than %(maxlength)d characters!' ) % { 'maxlength' : MAX_NAME_LENGTH } )
-			if not self.uvmm.is_domain_name_unique( self.node_uri, object.options[ 'name' ] ):
-				return umcd.WizardResult( False, _( 'The chosen name for the virtual instance is not unique. Another one should be chosen.' ) )
+			try:
+				if not self.uvmm.is_domain_name_unique( self.node_uri, object.options[ 'name' ] ):
+					return umcd.WizardResult( False, _( 'The chosen name for the virtual instance is not unique. Another one should be chosen.' ) )
+			except uvmmd.UvmmError, e:
+				return umcd.WizardResult(False, _('The chosen name for the virtual instance could not be checked for uniqueness.'))
 			mem_size = MemorySize.str2num( object.options[ 'memory' ], unit = 'MB' )
 			four_mb = MemorySize.str2num( '4', unit = 'MB' )
 			if mem_size < four_mb:

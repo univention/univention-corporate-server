@@ -59,6 +59,10 @@ class ConnectionError(UvmmError):
 	"""UVMM-request was not successful because of broken connection."""
 	pass
 
+class CommandError(UvmmError):
+	"""UVMM-request was not successful because the comand was not successful."""
+	pass
+
 class Bus( object ):
 	"""Periphery bus like IDE-, SCSI-, Xen-, VirtIO- und FDC-Bus."""
 	def __init__( self, name, prefix, default = False, unsupported = ( node.Disk.DEVICE_FLOPPY, ) ):
@@ -205,8 +209,8 @@ class Client( notifier.signals.Provider ):
 			notifier.step()
 		self.signal_disconnect( 'received', self._signal_received )
 
-		if self.is_error( self._packet ):
-			ud.debug( ud.ADMIN, ud.INFO, 'UVMM: failure received: %s' % self._packet.msg )
+		if isinstance(self._packet, protocol.Response_ERROR):
+			raise CommandError(self._packet.msg)
 
 		return self._packet
 
@@ -226,9 +230,6 @@ class Client( notifier.signals.Provider ):
 			if retry:
 				return self.send( packet, False )
 
-	def is_error( self, response ):
-		return isinstance( response, protocol.Response_ERROR )
-
 	def get_node_info( self, node_uri ):
 		"""Retrieve information for node_uri."""
 		if node_uri is None:
@@ -236,12 +237,11 @@ class Client( notifier.signals.Provider ):
 			return None
 		req = protocol.Request_NODE_QUERY()
 		req.uri = node_uri
-		self.send(req.pack())
-		node_info = self.recv_blocking()
-
-		if self.is_error( node_info ):
-			return None
-
+		try:
+			self.send(req.pack())
+			node_info = self.recv_blocking()
+		except UvmmError, e:
+			raise
 		return node_info.data
 
 	def is_domain_name_unique( self, node_uri, domain_name ):
@@ -288,8 +288,6 @@ class Client( notifier.signals.Provider ):
 		retries = 10
 		while retries:
 			node_info = self.get_node_info( node_uri )
-			if not node_info:
-				return ( None, None )
 			for domain_info in node_info.domains:
 				if domain_info.name == domain_name_or_uuid or domain_info.uuid == domain_name_or_uuid:
 					return (node_info, domain_info )
@@ -299,23 +297,30 @@ class Client( notifier.signals.Provider ):
 
 	def __node_name2uri(self, node_name):
 		req = protocol.Request_GROUP_LIST()
-		self.send(req.pack())
-		groups = self.recv_blocking()
+		try:
+			self.send(req.pack())
+			groups = self.recv_blocking()
+		except UvmmError, e:
+			raise
 
 		tree_data = []
 		for group_name in groups.data:
 			group = []
 			req = protocol.Request_NODE_LIST()
 			req.group = group_name
-			self.send(req.pack())
-			node_uris = self.recv_blocking()
+			try:
+				self.send(req.pack())
+				node_uris = self.recv_blocking()
+			except UvmmError, e:
+				raise
 			for node_uri in node_uris.data:
 				domains = []
 				req = protocol.Request_NODE_QUERY()
 				req.uri = node_uri
-				self.send(req.pack())
-				node_info = self.recv_blocking()
-				if self.is_error( node_info ):
+				try:
+					self.send(req.pack())
+					node_info = self.recv_blocking()
+				except UvmmError, e:
 					continue
 				if node_info.data.name == node_name:
 					return node_uri
@@ -337,25 +342,38 @@ class Client( notifier.signals.Provider ):
 		return (node_uri, node_name)
 
 	def search( self, pattern, option ):
-		"""Search for instances matching pattern."""
+		"""
+		Search for instances matching pattern.
+		'pattern' is a wildcard-pattern.
+		'option' is one of 'all', 'domains', 'contacts', 'description', 'nodes'
+		specifying the category where 'pattern' must match.
+
+		Returns a list of 2-tuples: [(nod_info, [domain_info,...]),...].
+		"""
 		pattern = str2pat( pattern )
 		pattern_regex = re.compile( fnmatch.translate( pattern ), re.IGNORECASE )
 
 		req = protocol.Request_GROUP_LIST()
-		self.send(req.pack())
-		groups = self.recv_blocking()
+		try:
+			self.send(req.pack())
+			groups = self.recv_blocking()
+		except UvmmError, e:
+			raise
 
 		result = []
 		groups.data.sort()
 		for group_name in groups.data:
-			group = []
 			req = protocol.Request_NODE_LIST()
 			req.group = group_name
-			self.send(req.pack())
-			node_uris = self.recv_blocking()
+			try:
+				self.send(req.pack())
+				node_uris = self.recv_blocking()
+			except UvmmError, e:
+				raise
 			for uri in node_uris.data:
-				node = self.get_node_info( uri )
-				if not node:
+				try:
+					node = self.get_node_info( uri )
+				except UvmmError, e:
 					continue
 
 				domain_infos = []
@@ -377,24 +395,28 @@ class Client( notifier.signals.Provider ):
 
 		return result
 
-	def get_group_info( self, group ):
+	def get_group_info(self, group_name):
 		"""Return dict {node_uri: node_info} for all available hosts in group."""
-		req = protocol.Request_NODE_LIST()
-		req.group = group
-		self.send(req.pack())
-		node_uris = self.recv_blocking()
-
 		group = {}
-		if self.is_error( node_uris ):
+
+		req = protocol.Request_NODE_LIST()
+		req.group = group_name
+		try:
+			self.send(req.pack())
+			node_uris = self.recv_blocking()
+		except UvmmError, e:
+			ud.debug(ud.ADMIN, ud.ERROR, '*** %s' % e)
 			return group
 		for node_uri in node_uris.data:
 			req = protocol.Request_NODE_QUERY()
 			req.uri = node_uri
-			self.send(req.pack())
-			node_info = self.recv_blocking()
-
-			if not self.is_error( node_info ):
-				group[node_uri] = node_info.data
+			try:
+				self.send(req.pack())
+				node_info = self.recv_blocking()
+			except UvmmError, e:
+				ud.debug(ud.ADMIN, ud.ERROR, '*** %s' % e)
+				continue
+			group[node_uri] = node_info.data
 
 		return group
 
@@ -431,27 +453,33 @@ class Client( notifier.signals.Provider ):
 		"""
 
 		req = protocol.Request_GROUP_LIST()
-		self.send(req.pack())
-		groups = self.recv_blocking()
+		try:
+			self.send(req.pack())
+			groups = self.recv_blocking()
+		except UvmmError, e:
+			raise
 
 		tree_data = {}
 		for group_name in groups.data:
 			req = protocol.Request_NODE_LIST()
 			req.group = group_name
-			self.send(req.pack())
-			node_uris = self.recv_blocking()
+			try:
+				self.send(req.pack())
+				node_uris = self.recv_blocking()
+			except UvmmError, e:
+				raise
 
 			tree_data[group_name] = group = {}
 			for node_uri in node_uris.data:
 				domains = {}
 				req = protocol.Request_NODE_QUERY()
 				req.uri = node_uri
-				self.send(req.pack())
-				node_info = self.recv_blocking()
-
-				state[node_uri] = node_info.data.last_try - node_info.data.last_update
-				if self.is_error(node_info):
+				try:
+					self.send(req.pack())
+					node_info = self.recv_blocking()
+				except UvmmError, e:
 					age = float('infinity')
+					continue
 				else:
 					age = node_info.data.last_try - node_info.data.last_update
 					for domain_info in node_info.data.domains:
@@ -466,8 +494,11 @@ class Client( notifier.signals.Provider ):
 		req.domain = domain_uuid
 		# RUN PAUSE SHUTDOWN RESTART
 		req.state = state
-		self.send(req.pack())
-		return self.recv_blocking()
+		try:
+			self.send(req.pack())
+			self.recv_blocking()
+		except UvmmError, e:
+			raise
 
 	def __next_letter( self, char, exclude = [] ):
 		char = chr( ord( char ) + 1 )
@@ -555,24 +586,34 @@ class Client( notifier.signals.Provider ):
 		req = protocol.Request_DOMAIN_DEFINE()
 		req.uri = node_uri
 		req.domain = data
-		self.send(req.pack())
-		return self.recv_blocking()
+		try:
+			self.send(req.pack())
+			response = self.recv_blocking()
+			return response # (.data=UUID, .messages=warnings)
+		except UvmmError, e:
+			raise
 
 	def domain_migrate( self, source, dest, domain_uuid ):
 		req = protocol.Request_DOMAIN_MIGRATE()
 		req.uri = source
 		req.domain = domain_uuid
 		req.target_uri = dest
-		self.send(req.pack())
-		return self.recv_blocking()
+		try:
+			self.send(req.pack())
+			self.recv_blocking()
+		except UvmmError, e:
+			raise
 
 	def domain_undefine( self, node_uri, domain_uuid, drives ):
 		req = protocol.Request_DOMAIN_UNDEFINE()
 		req.uri = node_uri
 		req.domain = domain_uuid
 		req.volumes = drives
-		self.send(req.pack())
-		return self.recv_blocking()
+		try:
+			self.send(req.pack())
+			return self.recv_blocking()
+		except UvmmError, e:
+			raise
 
 	def domain_save(self, node_uri, domain_uuid):
 		req = protocol.Request_DOMAIN_SAVE()
@@ -580,8 +621,11 @@ class Client( notifier.signals.Provider ):
 		req.domain = domain_uuid
 		snapshot_dir = umc.registry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' )
 		req.statefile = os.path.join( snapshot_dir, '%s.snapshot' % domain_uuid )
-		self.send(req.pack())
-		return self.recv_blocking()
+		try:
+			self.send(req.pack())
+			self.recv_blocking()
+		except UvmmError, e:
+			raise
 
 	def domain_restore(self, node_uri, domain_uuid):
 		req = protocol.Request_DOMAIN_RESTORE()
@@ -589,8 +633,11 @@ class Client( notifier.signals.Provider ):
 		req.domain = domain_uuid
 		snapshot_dir = umc.registry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' )
 		req.statefile = os.path.join( snapshot_dir, '%s.snapshot' % domain_uuid )
-		self.send(req.pack())
-		return self.recv_blocking()
+		try:
+			self.send(req.pack())
+			self.recv_blocking()
+		except UvmmError, e:
+			raise
 
 	def domain_snapshot_create(self, node_uri, domain_uuid, snapshot_name):
 		"""Create new snapshot of domain."""
@@ -598,10 +645,11 @@ class Client( notifier.signals.Provider ):
 		req.uri = node_uri
 		req.domain = domain_uuid
 		req.snapshot = snapshot_name
-		self.send(req.pack())
-		response = self.recv_blocking()
-		if self.is_error(response):
-			raise UvmmError(response.msg)
+		try:
+			self.send(req.pack())
+			response = self.recv_blocking()
+		except UvmmError, e:
+			raise
 
 	def domain_snapshot_revert(self, node_uri, domain_uuid, snapshot_name):
 		"""Revert to snapshot of domain."""
@@ -609,10 +657,11 @@ class Client( notifier.signals.Provider ):
 		req.uri = node_uri
 		req.domain = domain_uuid
 		req.snapshot = snapshot_name
-		self.send(req.pack())
-		response = self.recv_blocking()
-		if self.is_error(response):
-			raise UvmmError(response.msg)
+		try:
+			self.send(req.pack())
+			self.recv_blocking()
+		except UvmmError, e:
+			raise
 
 	def domain_snapshot_delete(self, node_uri, domain_uuid, snapshot_name):
 		"""Delete snapshot of domain."""
@@ -620,42 +669,43 @@ class Client( notifier.signals.Provider ):
 		req.uri = node_uri
 		req.domain = domain_uuid
 		req.snapshot = snapshot_name
-		self.send(req.pack())
-		response = self.recv_blocking()
-		if self.is_error(response):
-			raise UvmmError(response.msg)
+		try:
+			self.send(req.pack())
+			response = self.recv_blocking()
+		except UvmmError, e:
+			raise
 
 	def storage_pools(self, node_uri):
 		"""Get pools of node."""
 		req = protocol.Request_STORAGE_POOLS(uri=node_uri)
-		self.send(req.pack())
-		response = self.recv_blocking()
-		if self.is_error( response ):
-			raise UvmmError(response.msg)
-		return response.data
+		try:
+			self.send(req.pack())
+			response = self.recv_blocking()
+			return response.data
+		except UvmmError, e:
+			raise
 
 	def storage_pool_volumes( self, node_uri, pool, type = None ):
 		req = protocol.Request_STORAGE_VOLUMES()
 		req.uri = node_uri
 		req.pool = pool
 		req.type = type
-		self.send(req.pack())
-		response = self.recv_blocking()
-		if not self.is_error( response ):
+		try:
+			self.send(req.pack())
+			response = self.recv_blocking()
 			return response.data
-
-		return []
+		except UvmmError, e:
+			return []
 
 	def storage_volumes_destroy( self, node_uri, volumes ):
 		req = protocol.Request_STORAGE_VOLUMES_DESTROY()
 		req.uri = node_uri
 		req.volumes = volumes
-		self.send(req.pack())
-		response = self.recv_blocking()
-		if not self.is_error( response ):
-			return True
-
-		return False
+		try:
+			self.send(req.pack())
+			self.recv_blocking()
+		except UvmmError, e:
+			raise
 
 if __name__ == '__main__':
 	import doctest

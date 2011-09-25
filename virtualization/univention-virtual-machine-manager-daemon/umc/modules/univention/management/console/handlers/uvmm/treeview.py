@@ -96,7 +96,10 @@ class TreeView( object ):
 		'current' is a prefix of the n-tuple (group_name, node_uri, domain_uuid) of the currently selected item.
 		Additionally fills in some 'missing' request.options-parameters from UVMMd-data.
 		"""
-		node_tree = uvmm_client.get_node_tree()
+		try:
+			node_tree = uvmm_client.get_node_tree()
+		except uvmmd.UvmmError, e:
+			raise
 
 		tree_view = []
 		for group_name, nodes in sorted(node_tree.items(), key=lambda (group_name, nodes): group_name):

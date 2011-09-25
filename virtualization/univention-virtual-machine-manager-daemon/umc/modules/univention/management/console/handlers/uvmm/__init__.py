@@ -450,7 +450,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 		blind = umcd.List( default_type = 'uvmm_table' )
 		blind.add_row( [ form ] )
-		results = self.uvmm.search( object.options[ 'pattern' ], object.options[ 'option' ] )
+		try:
+			results = self.uvmm.search( object.options[ 'pattern' ], object.options[ 'option' ] )
+		except uvmmd.UvmmError, e:
+			results = ()
 		result_list = umcd.List()
 		result_list.set_header( [ umcd.Cell( umcd.Text( '' ), attributes = { 'width' : '20px' } ), umcd.HTML( _( 'Instance' ), attributes = { 'width': '100%', 'type' : 'umc_nowrap' } ), umcd.HTML( _( 'CPU usage' ) , attributes = { 'type' : 'umc_nowrap', 'align' : 'right' } ), umcd.HTML( _( 'Memory' ) , attributes = { 'type' : 'umc_nowrap' , 'align' : 'right' } ), '' ] )
 		object.options[ 'group' ] = 'default'
@@ -600,7 +603,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		buttons = []
 		overview_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % overview, options = options )
 		comma = umcd.HTML( '&nbsp;' )
-		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+		try: # TODO
+			node_uri, node_name = self.uvmm.node_uri_name(options['node'])
+		except uvmmd.UvmmError, e:
+			return buttons
 
 		# Start? if state is not running, blocked or paused
 		cmd_opts = {'group' : options['group'], 'node': node_info.uri, 'domain': domain_info.uuid}
@@ -740,14 +746,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			return
 		self.domain_wizard.reset()
 
-		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-		if not node_uri:
-			self.set_content( res, umcd.InfoBox( _( 'The physical server is not available at the moment' ) ) )
-			self.finished(object.id(), res)
-			return
-
-		node_info = self.uvmm.get_node_info( node_uri )
-		if not node_info:
+		try:
+			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+			node_info = self.uvmm.get_node_info( node_uri )
+		except uvmmd.UvmmError, e:
 			self.set_content( res, umcd.InfoBox( _( 'The physical server is not available at the moment' ) ) )
 			self.finished(object.id(), res)
 			return
@@ -805,7 +807,11 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 	def _dlg_domain_settings( self, object, node_info, domain_info ):
 		"""Create domain setting widgets."""
 		domain_is_off = 5 == domain_info.state
-		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+		try: # TODO
+			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+		except uvmmd.UvmmError, e:
+			return []
+
 		is_xen = node_uri.startswith('xen')
 
 		content = umcd.List( default_type = 'uvmm_settings_table' )
@@ -875,7 +881,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		disk_list.set_header( [ _( 'Type' ), _( 'Image' ), _( 'Size' ), _( 'Pool' ), '' ] )
 		if domain_info and domain_info.disks:
 			defaults = []
-			storages = self.uvmm.storage_pools(node_uri)
+			try:
+				storages = self.uvmm.storage_pools(node_uri)
+			except uvmmd.UvmmError, e:
+				storages = ()
 			storage_volumes = {}
 			first = True
 			for dev in domain_info.disks:
@@ -896,7 +905,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 						continue
 					values[ 'pool' ] = pool.name
 					if not pool.name in storage_volumes:
-						storage_volumes[ pool.name ] = self.uvmm.storage_pool_volumes(node_uri, pool.name)
+						try:
+							storage_volumes[ pool.name ] = self.uvmm.storage_pool_volumes(node_uri, pool.name)
+						except uvmmd.UvmmError, e:
+							continue
 					for vol in storage_volumes[ pool.name ]:
 						if vol.source == dev.source:
 							dev.size = vol.size
@@ -1099,10 +1111,11 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			return
 		self.domain_wizard.reset()
 
-		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-		if not node_uri:
+		try:
+			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
+		except uvmmd.UvmmError, e:
 			return self.uvmm_node_overview( object )
-		node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
 
 		blind_table = umcd.List( default_type = 'uvmm_table' )
 
@@ -1165,47 +1178,45 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			return
 
 		content = umcd.List()
-		src_uri, src_name = self.uvmm.node_uri_name(object.options['source'])
 		domain_uuid = object.options['domain']
-		if 'dest' in object.options:
-			dest_uri, dest_name = self.uvmm.node_uri_name(object.options['dest'])
-			ud.debug(ud.ADMIN, ud.INFO, 'Domain migrate: %s # %s -> %s' % (src_uri, domain_uuid, dest_uri))
-			resp = self.uvmm.domain_migrate( src_uri, dest_uri, domain_uuid )
-		else:
-			node_info, domain_info = self.uvmm.get_domain_info_ext(src_uri, domain_uuid)
-			dest_node_select.update_choices(object.options.get('grouplist', set()))
-			content.add_row([umcd.Text(_('Migrate virtual instance %(domain)s from physical server %(source)s to:') % {'domain': domain_info.name, 'source': src_name} , attributes={'colspan': '2'})])
-			dest = umcd.make( self[ 'uvmm/domain/migrate' ][ 'dest' ] )
-			content.add_row( [ dest, '' ] )
-			cmd_migrate = umcd.Action(umcp.SimpleCommand('uvmm/domain/migrate', options=object.options), [dest.id()])
-			cmd_success = umcd.Action(umcp.SimpleCommand('uvmm/domain/overview', options=object.options), [dest.id()], status_range=umcd.Action.SUCCESS)
-			cmd_failure = umcd.Action(umcp.SimpleCommand('uvmm/domain/overview', options=object.options), status_range=umcd.Action.FAILURE)
+		try:
+			src_uri, src_name = self.uvmm.node_uri_name(object.options['node'])
+			if 'dest' in object.options:
+				dest_uri, dest_name = self.uvmm.node_uri_name(object.options['dest'])
+				ud.debug(ud.ADMIN, ud.INFO, 'Domain migrate: %s # %s -> %s' % (src_uri, domain_uuid, dest_uri))
+				self.uvmm.domain_migrate( src_uri, dest_uri, domain_uuid )
+			else:
+				node_info, domain_info = self.uvmm.get_domain_info_ext(src_uri, domain_uuid)
+				dest_node_select.update_choices(object.options.get('grouplist', set()))
+				content.add_row([umcd.Text(_('Migrate virtual instance %(domain)s from physical server %(source)s to:') % {'domain': domain_info.name, 'source': src_name} , attributes={'colspan': '2'})])
+				dest = umcd.make( self[ 'uvmm/domain/migrate' ][ 'dest' ] )
+				content.add_row( [ dest, '' ] )
 
-			content.add_row(['', umcd.Button(_('Migrate'), actions=[cmd_migrate, cmd_success, cmd_failure], default=True)])
-			sec = umcd.Section( _( 'Migrate %(domain)s' ) % object.options,  content, attributes = { 'width' : '100%' } )
-			self.set_content( res, sec, location = False, refresh = False )
-			resp = None
+				cmd_migrate = umcd.Action(umcp.SimpleCommand('uvmm/domain/migrate', options=object.options), [dest.id()])
+				cmd_success = umcd.Action(umcp.SimpleCommand('uvmm/domain/overview', options=object.options), [dest.id()], status_range=umcd.Action.SUCCESS)
+				cmd_failure = umcd.Action(umcp.SimpleCommand('uvmm/domain/overview', options=object.options), status_range=umcd.Action.FAILURE)
 
-		if resp and self.uvmm.is_error( resp ):
-			res.status( 301 )
-			ud.debug( ud.ADMIN, ud.INFO, 'Domain migrate: error: %s' % str( resp.msg ) )
-			self.finished( object.id(), res, report = str( resp.msg ) )
-		else:
+				content.add_row(['', umcd.Button(_('Migrate'), actions=[cmd_migrate, cmd_success, cmd_failure], default=True)])
+				sec = umcd.Section(_('Migrate %(domain)s') % {'domain': domain_info.name}, content, attributes={'width': '100%'})
+				self.set_content( res, sec, location = False, refresh = False )
 			self.finished( object.id(), res )
+		except uvmmd.UvmmError, e:
+			res.status( 301 )
+			ud.debug(ud.ADMIN, ud.INFO, 'Domain migrate: error: %s' % str(e))
+			self.finished(object.id(), res, report=str(e))
 
 	def uvmm_domain_configure( self, object, create = False ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure' )
 		res = umcp.Response( object )
 
-		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-		node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
-		if domain_info is None:
-			if create:
+		try:
+			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+			node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
+			if domain_info is None and create:
 				domain_info = uuv_proto.Data_Domain()
-			elif 'domain-uuid' in object.options:
-				node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain-uuid' ] )
-
-		if not domain_info:
+			else:
+				raise uvmmd.UvmmError()
+		except uvmmd.UvmmError, e:
 			( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
 			if not success:
 				self.finished(object.id(), res)
@@ -1265,15 +1276,15 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			non_vncs = filter(lambda gfx: gfx.type != uuv_node.Graphic.TYPE_VNC, domain_info.graphics)
 			domain_info.graphics = non_vncs
 
-		resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
-
-		if self.uvmm.is_error( resp ):
+		try:
+			resp = self.uvmm.domain_configure(node_uri, domain_info)
+		except uvmmd.UvmmError, e:
 			res.status( 301 )
-			self.finished( object.id(), res, report = resp.msg )
+			self.finished(object.id(), res, report=str(e))
 		else:
 			if resp.messages:
 				res.status( 201 )
-				msg = _( 'Some information of the virtual instance could not be saved!<br/>' ) + '<br/>'.join( [ str( _uvmm_locale( text ) ) for text in resp.messages ] )
+				msg = _('Some information of the virtual instance could not be saved!<br/>') + '<br/>'.join([str(_uvmm_locale(text)) for text in resp.messages])
 			else:
 				msg = ''
 			self.finished( object.id(), res, report = msg )
@@ -1282,15 +1293,15 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		ud.debug(ud.ADMIN, ud.INFO, 'Domain State: changing %(domain)s to %(state)s' % object.options)
 		res = umcp.Response( object )
 
-		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
 		domain_uuid = object.options['domain']
 		state = object.options['state']
-		resp = self.uvmm.domain_set_state(node_uri, domain_uuid, state)
-		ud.debug(ud.ADMIN, ud.INFO, 'Domain State: change to %s' % state)
-
-		if self.uvmm.is_error( resp ):
+		try:
+			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+			self.uvmm.domain_set_state(node_uri, domain_uuid, state)
+			ud.debug(ud.ADMIN, ud.INFO, 'Domain State: change to %s' % state)
+		except uvmmd.UvmmError, e:
 			res.status( 301 )
-			self.finished( object.id(), res, report = str( resp.msg ) )
+			self.finished(object.id(), res, report=str(e))
 		else:
 			self.finished( object.id(), res )
 
@@ -1307,12 +1318,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			self.uvmm_node_overview( object )
 			return
 
-		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-		if not node_uri:
-			return self.uvmm_node_overview( object )
-
-		node_info = self.uvmm.get_node_info( node_uri )
-		if not node_info:
+		try:
+			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+			node_info = self.uvmm.get_node_info( node_uri )
+		except uvmmd.UvmmError, e:
 			return self.uvmm_node_overview( object )
 
 		if not 'action' in object.options:
@@ -1324,8 +1333,9 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 		# domain wizard finished?
 		if self.domain_wizard.result():
-			resp = self.uvmm.domain_configure( object.options[ 'node' ], self.domain_wizard.result() )
-			if self.uvmm.is_error( resp ):
+			try:
+				resp = self.uvmm.domain_configure(node_uri, self.domain_wizard.result() )
+			except uvmmd.UvmmError, e:
 				# FIXME: something went wrong. We have to erase als 'critical' data and restart with the drive wizard part
 				self.domain_wizard._result = None
 				self.domain_wizard.current = 1
@@ -1334,9 +1344,9 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				page = self.domain_wizard.setup( object )
 				res.dialog[ 0 ].set_dialog( page )
 				res.status( 301 )
-				self.finished( object.id(), res, report = resp.msg )
+				self.finished(object.id(), res, report=str(e))
 			else:
-				object.options['domain'] = resp.data # UUID
+				object.options['domain'] = resp.data
 				self.uvmm_domain_overview( object )
 			return
 		else:
@@ -1358,12 +1368,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			self.finished(object.id(), res)
 			return
 
-		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-		if not node_uri:
-			return self.uvmm_node_overview( object )
-
-		node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
-		if not node_info:
+		try:
+			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+			node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
+		except uvmmd.UvmmError, e:
 			return self.uvmm_node_overview( object )
 
 		boxes = []
@@ -1399,32 +1407,30 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		self.finished(object.id(), res)
 
 	def uvmm_domain_remove( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Domain remove' )
+		ud.debug(ud.ADMIN, ud.INFO, 'Domain remove %(domain)s' % object.options)
 		res = umcp.Response( object )
 
-		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-		if not node_uri:
-			return self.uvmm_node_overview( object )
-		domain_uuid = object.options['domain']
+		domain = domain_uuid = object.options['domain']
+		try:
+			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, domain_uuid)
+			domain = domain_info.name
 
-		# shutdown machine before removing it
-		self.uvmm.domain_set_state(node_uri, domain_uuid, 'SHUTDOWN')
+			# shutdown machine before removing it
+			self.uvmm.domain_set_state(node_uri, domain_uuid, 'SHUTDOWN')
 
-		# remove domain
-		resp = self.uvmm.domain_undefine(node_uri, domain_uuid, object.options['drives'])
-
-		node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, domain_uuid)
-		if self.uvmm.is_error( resp ):
+			# remove domain
+			self.uvmm.domain_undefine(node_uri, domain_uuid, object.options['drives'])
+		except uvmmd.UvmmError, e:
 			res.status( 301 )
-			self.finished(object.id(), res, report=_('Removing the instance <i>%(domain)s</i> failed') % {'domain': domain_info.name})
+			self.finished(object.id(), res, report=_('Removing the instance <i>%(domain)s</i> failed') % {'domain': domain})
 		else:
 			res.status( 201 )
-			self.finished(object.id(), res, report=_('The instance <i>%(domain)s</i> was removed successfully') % {'domain': domain_info.name})
+			self.finished(object.id(), res, report=_('The instance <i>%(domain)s</i> was removed successfully') % {'domain': domain})
 
 	def uvmm_domain_snapshot_create(self, object):
 		"""Create new snapshot of domain."""
-		ud.debug(ud.ADMIN, ud.INFO, 'Domain snapshot create')
-		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+		ud.debug(ud.ADMIN, ud.INFO, 'Domain snapshot create %(domain)s' % object.options)
 		domain_uuid = object.options['domain']
 		try:
 			snapshot_name = object.options['snapshot']
@@ -1432,12 +1438,17 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			snapshot_name = None
 			object.incomplete = True
 
-		if object.incomplete:
-			(success, res) = TreeView.safely_get_tree(self.uvmm, object, ('group', 'node', 'domain'))
-			if not success:
-				self.finished(object.id(), res)
-				return
+		try:
+			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+			if object.incomplete:
+				(success, res) = TreeView.safely_get_tree(self.uvmm, object, ('group', 'node', 'domain'))
+				if not success:
+					raise uvmmd.UvmmError()
+		except uvmmd.UvmmError, e:
+			self.finished(object.id(), res)
+			return
 
+		if object.incomplete:
 			snapshot_cel = umcd.make(self['uvmm/domain/snapshot/create']['snapshot'], attributes={'colspan': '2'})
 
 			opts = copy.copy(object.options)
@@ -1462,9 +1473,9 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			self.finished(object.id(), res)
 		else:
 			res = umcp.Response(object)
-			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, domain_uuid)
 			try:
-				resp = self.uvmm.domain_snapshot_create(node_uri, domain_uuid, snapshot_name)
+				node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, domain_uuid)
+				self.uvmm.domain_snapshot_create(node_uri, domain_uuid, snapshot_name)
 				res.status(201)
 				report = _('The instance <i>%(domain)s</i> was snapshoted to <i>%(snapshot)s</i> successfully')
 			except uvmmd.UvmmError, e:
@@ -1475,15 +1486,15 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 	def uvmm_domain_snapshot_revert(self, object):
 		"""Revert to snapshot of domain."""
-		ud.debug(ud.ADMIN, ud.INFO, 'Domain snapshot revert')
-		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+		ud.debug(ud.ADMIN, ud.INFO, 'Domain snapshot revert %(domain)s' % object.options)
 		domain_uuid = object.options['domain']
 		snapshot_name = object.options['snapshot']
 
 		res = umcp.Response(object)
-		node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, domain_uuid)
 		try:
-			resp = self.uvmm.domain_snapshot_revert(node_uri, domain_uuid, snapshot_name)
+			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, domain_uuid)
+			self.uvmm.domain_snapshot_revert(node_uri, domain_uuid, snapshot_name)
 			res.status(201)
 			report = _('The instance <i>%(domain)s</i> was reverted to snapshot <i>%(snapshot)s</i> successfully')
 		except uvmmd.UvmmError, e:
@@ -1494,39 +1505,42 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 	def uvmm_domain_snapshot_delete(self, object):
 		"""Delete snapshot of domain."""
-		ud.debug(ud.ADMIN, ud.INFO, 'Domain snapshot delete')
-		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+		ud.debug(ud.ADMIN, ud.INFO, 'Domain snapshot delete %(domain)s %(snapshot)s' % object.options)
 		domain_uuid = object.options['domain']
 		snapshot = object.options['snapshot']
 		failure = []
 		success = []
 		res = umcp.Response(object)
 
-		ud.debug(ud.ADMIN, ud.ERROR, 'Domain snapshot delete: %s' % str(snapshot))
-		node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, domain_uuid)
-		for snapshot in snapshot:
-			try:
-				resp = self.uvmm.domain_snapshot_delete(node_uri, domain_uuid, snapshot)
-				success.append( snapshot )
-			except uvmmd.UvmmError, e:
-				failure.append( snapshot )
+		try:
+			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, domain_uuid)
+			for snapshot in snapshot:
+				try:
+					self.uvmm.domain_snapshot_delete(node_uri, domain_uuid, snapshot)
+					success.append( snapshot )
+				except uvmmd.UvmmError, e:
+					failure.append( snapshot )
+			# all snapshots could be deleted
+			if success and not failure:
+				res.status( 201 )
+				if len( success ) == 1:
+					report = _( 'The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> was deleted successfully' ) % { 'snapshot' : success[ 0 ], 'domain': domain_info.name }
+				else:
+					report = _( 'All selected snapshots of instance <i>%(domain)s</i> were deleted successfully:<br/>%(snapshots)s' ) % { 'snapshots' : ', '.join( success ), 'domain': domain_info.name }
+			elif success and failure:
+				res.status( 301 )
+				report = _( 'Not all of the selected snapshots of instance <i>%(domain)s</i> could be deleted! The following snapshots still exists:<br/>%(snapshots)s' ) % { 'snapshots' : ', '.join( failure ), 'domain': domain_info.name }
+			else:
+				res.status( 301 )
+				if len( failure ) == 1:
+					report = _( 'The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> could not be deleted' ) % { 'snapshot' : failure[ 0 ], 'domain': domain_info.name }
+				else:
+					report = _( 'The selected snapshots of instance <i>%(domain)s</i> could not be deleted:<br/>%(snapshots)s' ) % { 'snapshots' : ', '.join( failure ), 'domain': domain_info.name }
+		except uvmmd.UvmmError, e:
+			res.status( 301 )
+			report = _('Instance <i>%(domain)s</i> is unavailable')
 
-		# all snapshots could be deleted
-		if success and not failure:
-			res.status( 201 )
-			if len( success ) == 1:
-				report = _( 'The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> was deleted successfully' ) % { 'snapshot' : success[ 0 ], 'domain': domain_info.name }
-			else:
-				report = _( 'All selected snapshots of instance <i>%(domain)s</i> were deleted successfully:<br/>%(snapshots)s' ) % { 'snapshots' : ', '.join( success ), 'domain': domain_info.name }
-		elif success and failure:
-			res.status( 301 )
-			report = _( 'Not all of the selected snapshots of instance <i>%(domain)s</i> could be deleted! The following snapshots still exists:<br/>%(snapshots)s' ) % { 'snapshots' : ', '.join( failure ), 'domain': domain_info.name }
-		else:
-			res.status( 301 )
-			if len( failure ) == 1:
-				report = _( 'The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> could not be deleted' ) % { 'snapshot' : failure[ 0 ], 'domain': domain_info.name }
-			else:
-				report = _( 'The selected snapshots of instance <i>%(domain)s</i> could not be deleted:<br/>%(snapshots)s' ) % { 'snapshots' : ', '.join( failure ), 'domain': domain_info.name }
 		self.finished( object.id(), res, report = report )
 
 	def uvmm_daemon_restart( self, object ):
