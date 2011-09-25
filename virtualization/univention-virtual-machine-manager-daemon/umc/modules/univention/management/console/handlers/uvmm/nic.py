@@ -123,10 +123,10 @@ class NIC_Commands( object ):
 		if not success:
 			self.finished(object.id(), res)
 			return
-		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
 		if not node_uri:
 			return self.uvmm_node_overview( object )
-		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+		node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
 
 		report = ''
 		if object.incomplete:
@@ -134,7 +134,7 @@ class NIC_Commands( object ):
 		else:
 			iface = self.createNIC( object.options )
 			domain_info.interfaces.append( iface )
-			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
+			resp = self.uvmm.domain_configure(node_uri, domain_info)
 			if self.uvmm.is_error( resp ):
 				res.status( 301 )
 				report = _( 'Failed to add network interface: %s' ) % str( resp.msg )
@@ -214,13 +214,13 @@ class NIC_Commands( object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Network interface remove' )
 		res = umcp.Response( object )
 
-		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
 		if not node_uri:
 			return self.uvmm_node_overview( object )
-		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+		node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
 		domain_info = self.removeNIC( domain_info, object.options )
 
-		resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
+		resp = self.uvmm.domain_configure(node_uri, domain_info )
 		report = ''
 		if self.uvmm.is_error( resp ):
 			res.status( 301 )
@@ -233,10 +233,10 @@ class NIC_Commands( object ):
 		if not success:
 			self.finished(object.id(), res)
 			return
-		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
 		if not node_uri:
 			return self.uvmm_node_overview( object )
-		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+		node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
 
 		report = ''
 		if object.incomplete:
@@ -249,10 +249,8 @@ class NIC_Commands( object ):
 			for key in ( 'nictype', 'driver', 'source', 'mac' ):
 				object.options[ key ] = object.options[ 'old-%s' % key ]
 			domain_info = self.replaceNIC( domain_info, iface, object.options )
-			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
+			resp = self.uvmm.domain_configure(node_uri, domain_info )
 			if self.uvmm.is_error( resp ):
 				res.status( 301 )
 				report = _( 'Failed to modify network interface: %s' ) % str( resp.msg )
 		self.finished( object.id(), res, report = report )
-
-

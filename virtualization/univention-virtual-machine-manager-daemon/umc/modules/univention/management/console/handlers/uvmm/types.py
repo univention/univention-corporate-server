@@ -32,9 +32,11 @@
 # <http://www.gnu.org/licenses/>.
 
 import copy
+import operator
 
 import univention.management.console as umc
 import univention.management.console.dialog as umcd
+from uvmmd import Client
 
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
@@ -212,7 +214,7 @@ class NodeSelect( umc.StaticSelection ):
 		umc.StaticSelection.__init__( self, label, required = required, may_change = may_change )
 
 	def choices( self ):
-		return map( lambda x: ( x, x ), self._choices )
+		return sorted([(uri, Client._uri2name(uri)) for uri in self._choices], key=operator.itemgetter(1))
 
 	def update_choices(self, nodes):
 		self._choices = nodes

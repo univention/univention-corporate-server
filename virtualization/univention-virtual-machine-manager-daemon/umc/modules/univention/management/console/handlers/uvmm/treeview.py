@@ -129,14 +129,14 @@ class TreeView( object ):
 					icon = 'uvmm/node'
 				if node_is_off:
 					icon += '-off'
-				options = {'group': group_name, 'node': node_name} # FIXME: node_name→node_uri
+				options = {'group': group_name, 'node': node_uri}
 				link = TreeView.button_create(node_name_short, icon, 'uvmm/node/overview', options, current)
 				group_view.append(link)
 
 				domain_view = []
 				group_view.append(domain_view)
 
-				options = {'group': group_name, 'node': node_name, 'domain': 'NONE'} # FIXME: node_name→node_uri
+				options = {'group': group_name, 'node': node_uri, 'domain': 'NONE'}
 				link = TreeView.button_create(_('Add'), 'uvmm/add', 'uvmm/domain/create', options, current)
 				domain_view.append(link)
 
@@ -156,7 +156,7 @@ class TreeView( object ):
 						icon = 'uvmm/domain-paused'
 					else:
 						icon = 'uvmm/domain'
-					options = {'group': group_name, 'node': node_name, 'domain': domain_info.name, 'domain-uuid': domain_uuid} # FIXME: node_name→node_uri
+					options = {'group': group_name, 'node': node_uri, 'domain': domain_uuid}
 					link = TreeView.button_create(domain_info.name, icon, 'uvmm/domain/overview', options, current)
 					domain_view.append(link)
 

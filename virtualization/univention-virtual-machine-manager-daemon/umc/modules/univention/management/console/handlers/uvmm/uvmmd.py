@@ -122,6 +122,7 @@ class Client( notifier.signals.Provider ):
 			self.connect()
 
 	def is_connected( self ):
+		"""Check if the UVMMd connection is connected."""
 		if not self._socket:
 			return False
 
@@ -166,6 +167,7 @@ class Client( notifier.signals.Provider ):
 		return self.connect()
 
 	def _receive( self, socket ):
+		"""Internal function called by the notifier when data is available for reading from the UVMMd socket connection."""
 		if not self._socket:
 			self.connect()
 
@@ -179,7 +181,7 @@ class Client( notifier.signals.Provider ):
 		packet = protocol.Packet.parse( self._buffer )
 
 		# waiting for rest of packet
-		if packet == None:
+		if packet is None:
 			return True
 
 		( length, res ) = packet
@@ -193,6 +195,7 @@ class Client( notifier.signals.Provider ):
 		return True
 
 	def _signal_received( self, res ):
+		"""Internal function called when a full Response packet is available."""
 		self._packet = res
 
 	def recv_blocking( self ):
@@ -294,11 +297,7 @@ class Client( notifier.signals.Provider ):
 			retries -= 1
 		return ( None, None )
 
-	def get_domain_info( self, node_uri, domain_name ):
-		node_info, domain_info = self.get_domain_info_ext( node_uri, domain_name )
-		return domain_info
-
-	def node_name2uri( self, node_name ):
+	def __node_name2uri(self, node_name):
 		req = protocol.Request_GROUP_LIST()
 		self.send(req.pack())
 		groups = self.recv_blocking()
@@ -323,12 +322,27 @@ class Client( notifier.signals.Provider ):
 
 		return None
 
-	def search( self, pattern, option ):
-		req = protocol.Request_GROUP_LIST()
-		self.send(req.pack())
+	def node_uri_name(self, node_uri_or_node_name):
+		"""Normalize node_uri_or_node_name to 2-tuple (node_uri, node_name)."""
+		pos = node_uri_or_node_name.find('://')
+		if pos >= 0:
+			node_uri = node_uri_or_node_name
+			node_name = node_uri_or_node_name[pos + 3:]
+			pos = node_name.find('/')
+			if pos >= 0:
+				node_name = node_name[:pos]
+		else:
+			node_name = node_uri_or_node_name
+			node_uri = self.__node_name2uri(node_name)
+		return (node_uri, node_name)
 
+	def search( self, pattern, option ):
+		"""Search for instances matching pattern."""
 		pattern = str2pat( pattern )
 		pattern_regex = re.compile( fnmatch.translate( pattern ), re.IGNORECASE )
+
+		req = protocol.Request_GROUP_LIST()
+		self.send(req.pack())
 		groups = self.recv_blocking()
 
 		result = []
@@ -344,31 +358,33 @@ class Client( notifier.signals.Provider ):
 				if not node:
 					continue
 
-				domains = []
-				for domain in node.domains:
+				domain_infos = []
+				for domain_info in node_info.domains:
 					if domain.name == 'Domain-0':
 						continue
-					if option in ( 'all', 'domains' ) and pattern_regex.match( domain.name ):
-						domains.append( domain )
+					if option in ( 'all', 'domains' ) and pattern_regex.match( domain_info.name ):
+						domain_infos.append( domain_info )
 						continue
-					if option in ( 'all', 'contacts' ) and pattern_regex.match( domain.annotations.get( 'contact', '' ) ):
-						domains.append( domain )
+					if option in ( 'all', 'contacts' ) and pattern_regex.match( domain_info.annotations.get( 'contact', '' ) ):
+						domain_infos.append( domain_info )
 						continue
-					if option in ( 'all', 'descriptions' ) and pattern_regex.match( domain.annotations.get( 'description', '' ) ):
-						domains.append( domain )
+					if option in ( 'all', 'descriptions' ) and pattern_regex.match( domain_info.annotations.get( 'description', '' ) ):
+						domain_infos.append( domain_info )
 						continue
 
-				if ( option in ( 'all', 'nodes' ) and pattern_regex.match( node.name ) ) or domains:
-					result.append( ( node, domains ) )
+				if ( option in ( 'all', 'nodes' ) and pattern_regex.match( node_info.name ) ) or domain_infos:
+					result.append( ( node_info, domain_infos ) )
 
 		return result
 
 	def get_group_info( self, group ):
+		"""Return dict {node_uri: node_info} for all available hosts in group."""
 		req = protocol.Request_NODE_LIST()
 		req.group = group
 		self.send(req.pack())
 		node_uris = self.recv_blocking()
-		group = []
+
+		group = {}
 		if self.is_error( node_uris ):
 			return group
 		for node_uri in node_uris.data:
@@ -376,20 +392,25 @@ class Client( notifier.signals.Provider ):
 			req.uri = node_uri
 			self.send(req.pack())
 			node_info = self.recv_blocking()
+
 			if not self.is_error( node_info ):
-				group.append( node_info.data )
+				group[node_uri] = node_info.data
 
 		return group
 
 	@staticmethod
-	def _uri2name( uri ):
-		"""Strip schema and path from uri."""
+	def _uri2name(uri, short=False):
+		"""Strip schema and path from uri. Optionally return only host-name without domain-name."""
 		i = uri.find('://')
 		if i >= 0:
 			uri = uri[i + 3:]
-		j = uri.find('/')
-		if j >= 0:
-			uri = uri[:j]
+		i = uri.find('/')
+		if i >= 0:
+			uri = uri[:i]
+		if short:
+			i = uri.find('.')
+			if i >= 0:
+				uri = uri[:i]
 		return uri
 
 	def get_node_tree( self ):
@@ -439,12 +460,10 @@ class Client( notifier.signals.Provider ):
 
 		return tree_data
 
-	def domain_set_state( self, node_name, domain_name, state ):
-		node_uri = self.node_name2uri( node_name )
-		domain_info = self.get_domain_info( node_uri, domain_name )
+	def domain_set_state( self, node_uri, domain_uuid, state ):
 		req = protocol.Request_DOMAIN_STATE()
 		req.uri = node_uri
-		req.domain = domain_info.uuid
+		req.domain = domain_uuid
 		# RUN PAUSE SHUTDOWN RESTART
 		req.state = state
 		self.send(req.pack())
@@ -529,12 +548,12 @@ class Client( notifier.signals.Provider ):
 				if bus.connect( dev ):
 					break
 
-	def domain_configure( self, node_name, data ):
-		req = protocol.Request_DOMAIN_DEFINE()
-		req.uri = self.node_name2uri( node_name )
+	def domain_configure( self, node_uri, data ):
 		ud.debug(ud.ADMIN, ud.INFO, 'disks to send: %s' % data.disks)
 		ud.debug(ud.ADMIN, ud.INFO, 'interfaces to send: %s' % data.interfaces)
 		self._verify_device_files( data )
+		req = protocol.Request_DOMAIN_DEFINE()
+		req.uri = node_uri
 		req.domain = data
 		self.send(req.pack())
 		return self.recv_blocking()
@@ -555,51 +574,51 @@ class Client( notifier.signals.Provider ):
 		self.send(req.pack())
 		return self.recv_blocking()
 
-	def domain_save( self, node_name, domain_info ):
+	def domain_save(self, node_uri, domain_uuid):
 		req = protocol.Request_DOMAIN_SAVE()
-		req.uri = self.node_name2uri( node_name )
-		req.domain = domain_info.uuid
+		req.uri = node_uri
+		req.domain = domain_uuid
 		snapshot_dir = umc.registry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' )
-		req.statefile = os.path.join( snapshot_dir, '%s.snapshot' % domain_info.uuid )
+		req.statefile = os.path.join( snapshot_dir, '%s.snapshot' % domain_uuid )
 		self.send(req.pack())
 		return self.recv_blocking()
 
-	def domain_restore( self, node_name, domain_info ):
+	def domain_restore(self, node_uri, domain_uuid):
 		req = protocol.Request_DOMAIN_RESTORE()
-		req.uri = self.node_name2uri( node_name )
-		req.domain = domain_info.uuid
+		req.uri = node_uri
+		req.domain = domain_uuid
 		snapshot_dir = umc.registry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' )
-		req.statefile = os.path.join( snapshot_dir, '%s.snapshot' % domain_info.uuid )
+		req.statefile = os.path.join( snapshot_dir, '%s.snapshot' % domain_uuid )
 		self.send(req.pack())
 		return self.recv_blocking()
 
-	def domain_snapshot_create(self, node_uri, domain_info, snapshot_name):
+	def domain_snapshot_create(self, node_uri, domain_uuid, snapshot_name):
 		"""Create new snapshot of domain."""
 		req = protocol.Request_DOMAIN_SNAPSHOT_CREATE()
 		req.uri = node_uri
-		req.domain = domain_info.uuid
+		req.domain = domain_uuid
 		req.snapshot = snapshot_name
 		self.send(req.pack())
 		response = self.recv_blocking()
 		if self.is_error(response):
 			raise UvmmError(response.msg)
 
-	def domain_snapshot_revert(self, node_uri, domain_info, snapshot_name):
+	def domain_snapshot_revert(self, node_uri, domain_uuid, snapshot_name):
 		"""Revert to snapshot of domain."""
 		req = protocol.Request_DOMAIN_SNAPSHOT_REVERT()
 		req.uri = node_uri
-		req.domain = domain_info.uuid
+		req.domain = domain_uuid
 		req.snapshot = snapshot_name
 		self.send(req.pack())
 		response = self.recv_blocking()
 		if self.is_error(response):
 			raise UvmmError(response.msg)
 
-	def domain_snapshot_delete(self, node_uri, domain_info, snapshot_name):
+	def domain_snapshot_delete(self, node_uri, domain_uuid, snapshot_name):
 		"""Delete snapshot of domain."""
 		req = protocol.Request_DOMAIN_SNAPSHOT_DELETE()
 		req.uri = node_uri
-		req.domain = domain_info.uuid
+		req.domain = domain_uuid
 		req.snapshot = snapshot_name
 		self.send(req.pack())
 		response = self.recv_blocking()

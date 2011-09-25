@@ -56,11 +56,11 @@ class DriveCommands( object ):
 		if not success:
 			self.finished(object.id(), res)
 			return
-		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
 		if not node_uri:
 			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_create: node %(node)s not found' % request.options)
 			return self.uvmm_node_overview( object )
-		node_info = self.uvmm.get_node_info( node_uri )
+		node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
 
 		# user cancelled the wizard
 		if object.options.get( 'action' ) == 'cancel':
@@ -71,7 +71,6 @@ class DriveCommands( object ):
 
 		# starting the wizard
 		if not 'action' in object.options:
-			domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
 			self.drive_wizard.reset()
 			self.drive_wizard.drive_type_select.floppies = domain_info.os_type == 'hvm'
 			self.drive_wizard.domain_name = object.options['domain']
@@ -84,9 +83,8 @@ class DriveCommands( object ):
 		# wizard finished?
 		new_disk = self.drive_wizard.result()
 		if new_disk:
-			domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
 			domain_info.disks.append( new_disk )
-			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
+			resp = self.uvmm.domain_configure(node_uri, domain_info )
 			self.drive_wizard.reset()
 			if self.uvmm.is_error( resp ):
 				res = self.uvmm_domain_overview( object, finish = False )
@@ -117,7 +115,7 @@ class DriveCommands( object ):
 		else:
 			res = umcp.Response( object )
 
-		node_uri = self.uvmm.node_name2uri(object.options['node'])
+		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
 		if not node_uri:
 			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_remove: node %(node)s not found' % request.options)
 			return self.uvmm_node_overview(object)
@@ -173,7 +171,7 @@ class DriveCommands( object ):
 			self.finished(object.id(), res)
 		else:
 			domain_info.disks = new_disks
-			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
+			resp = self.uvmm.domain_configure(node_uri, domain_info )
 
 			if self.uvmm.is_error( resp ):
 				res.status( 301 )
@@ -197,7 +195,7 @@ class DriveCommands( object ):
 		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_edit(%s)' % object.options)
 		res = umcp.Response( object )
 
-		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
 		if not node_uri:
 			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_edit: node %(node)s not found' % request.options)
 			return self.uvmm_node_overview( object )
@@ -308,7 +306,7 @@ class DriveCommands( object ):
 					ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_edit: new target bus: %s' % disk.target_bus)
 					break
 
-		resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
+		resp = self.uvmm.domain_configure(node_uri, domain_info )
 
 		if self.uvmm.is_error( resp ):
 			res.status( 301 )
@@ -322,11 +320,11 @@ class DriveCommands( object ):
 		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_bootdevice(%(disk)s)' % object.options)
 		res = umcp.Response( object )
 
-		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
 		if not node_uri:
 			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_bootdevice: node %(node)s not found' % request.options)
 			return self.uvmm_node_overview( object )
-		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+		node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
 		new_disks = []
 		for disk in domain_info.disks:
 			if disk.target_dev != object.options[ 'disk' ]:
@@ -335,7 +333,7 @@ class DriveCommands( object ):
 				ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_bootdevice: new found')
 				new_disks.insert(0, disk)
 		domain_info.disks = new_disks
-		resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
+		resp = self.uvmm.domain_configure(node_uri, domain_info )
 
 		if self.uvmm.is_error( resp ):
 			res.status( 301 )
@@ -348,7 +346,7 @@ class DriveCommands( object ):
 		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_media_change(%(target_dev)s of domain %(domain)s on node %(node)s; action=%(action)s)' % ddict(request.options))
 
 		action = request.options.get('action')
-		node = request.options['node']
+		node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
 		domain_name = request.options['domain']
 		target_dev = request.options['target_dev']
 
@@ -359,7 +357,6 @@ class DriveCommands( object ):
 			return self.uvmm_domain_overview(request)
 
 		# Find node...
-		node_uri = self.uvmm.node_name2uri(node)
 		if not node_uri:
 			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_media_change: node %(node)s not found' % request.options)
 			return self.uvmm_node_overview(request)
@@ -396,7 +393,7 @@ class DriveCommands( object ):
 				disk.type = new_disk.type # FILE | BLOCK
 				disk.source = new_disk.source
 				disk.driver = new_disk.driver # file | qemu | tap2
-				resp = self.uvmm.domain_configure(node, domain_info)
+				resp = self.uvmm.domain_configure(node_uri, domain_info)
 				self.media_wizard.reset()
 
 				# Return response
