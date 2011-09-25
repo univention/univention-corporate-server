@@ -139,9 +139,10 @@ class TreeView( object ):
 				domain_view = []
 				group_view.append(domain_view)
 
-				options = {'group': group_name, 'node': node_uri, 'domain': 'NONE'}
-				link = TreeView.button_create(_('Add'), 'uvmm/add', 'uvmm/domain/create', options, current)
-				domain_view.append(link)
+				if not node_is_off:
+					options = {'group': group_name, 'node': node_uri, 'domain': 'NONE'}
+					link = TreeView.button_create(_('Add'), 'uvmm/add', 'uvmm/domain/create', options, current)
+					domain_view.append(link)
 
 				for domain_uuid, domain_info in sorted(domains.items(), key=lambda (domain_uuid, domain_info): domain_info.name):
 					is_current_domain = is_current_node and domain_uuid == request.options.get('domain')

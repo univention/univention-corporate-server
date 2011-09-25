@@ -502,14 +502,21 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		table = umcd.List( default_type = 'uvmm_table')
 		table.set_header( [ _( 'Physical server' ), _( 'CPU usage' ), _( 'Memory usage' ) ] )
 		for node_uri, node_info in sorted(nodes.items(), key=lambda (k, v): v.name):
-			node_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : group_name, 'node' : node_info.name } )
+			node_opt = {'group': group_name, 'node': node_info.name}
+			node_cmd = umcp.SimpleCommand('uvmm/node/overview', options=node_opt)
 			node_btn = umcd.LinkButton( node_info.name, actions = [ umcd.Action( node_cmd ) ] )
-			if node_uri.startswith( 'xen' ):
-				cpu_usage = percentage( lambda: float( node_info.cpu_usage ) / 10.0, width = 150 )
+
+			if node_info.last_update < node_info.last_try:
+				info_icon = umcd.Image('actions/critical', size=umct.SIZE_SMALL)
+				info_txt = umcd.Text(_('The physical server is not available at the moment'))
+				table.add_row([node_btn, info_icon, info_txt])
 			else:
-				cpu_usage = umcd.HTML( '<i>%s</i>' % _( 'not available' ) )
-			mem_usage = percentage( lambda: float( node_info.curMem ) / node_info.phyMem * 100, '%s / %s' % ( MemorySize.num2str( node_info.curMem ), MemorySize.num2str( node_info.phyMem ) ), width = 150 )
-			table.add_row( [ node_btn, cpu_usage, mem_usage ] )
+				if node_uri.startswith( 'xen' ):
+					cpu_usage = percentage( lambda: float( node_info.cpu_usage ) / 10.0, width = 150 )
+				else:
+					cpu_usage = umcd.HTML( '<i>%s</i>' % _( 'not available' ) )
+				mem_usage = percentage( lambda: float( node_info.curMem ) / node_info.phyMem * 100, '%s / %s' % ( MemorySize.num2str( node_info.curMem ), MemorySize.num2str( node_info.phyMem ) ), width = 150 )
+				table.add_row( [ node_btn, cpu_usage, mem_usage ] )
 		self.set_content( res, table )
 		self.finished(object.id(), res)
 
@@ -601,16 +608,17 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 	def _create_domain_buttons( self, options, node_info, domain_info, overview = 'node', operations = False, remove_failure = 'domain' ):
 		"""Create buttons to manage domain."""
 		buttons = []
-		overview_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % overview, options = options )
-		comma = umcd.HTML( '&nbsp;' )
 		try: # TODO
 			node_uri, node_name = self.uvmm.node_uri_name(options['node'])
 		except uvmmd.UvmmError, e:
 			return buttons
+		node_is_off = node_info.last_update < node_info.last_try
+		overview_cmd = umcp.SimpleCommand('uvmm/%s/overview' % overview, options=options)
+		comma = umcd.HTML('&nbsp;')
 
 		# Start? if state is not running, blocked or paused
 		cmd_opts = {'group' : options['group'], 'node': node_info.uri, 'domain': domain_info.uuid}
-		if not domain_info.state in ( 1, 2, 3 ):
+		if not node_is_off and not domain_info.state in ( 1, 2, 3 ):
 			opts = copy.copy( cmd_opts )
 			opts[ 'state' ] = 'RUN'
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
@@ -622,7 +630,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			buttons.append( comma )
 
 		# VNC? if running and activated
-		if self._show_op( 'vnc', node_uri ) and domain_info.state in ( 1, 2 ) and domain_info.graphics and domain_info.graphics[ 0 ].port != -1:
+		if not node_is_off and self._show_op( 'vnc', node_uri ) and domain_info.state in ( 1, 2 ) and domain_info.graphics and domain_info.graphics[ 0 ].port != -1:
 			vnc = domain_info.graphics[0]
 			host = node_info.name
 			try:
@@ -658,7 +666,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			buttons.append( comma )
 
 		# Suspend? if state is running or idle
-		if self._show_op( 'suspend', node_uri ) and hasattr(node_info, 'supports_suspend') and node_info.supports_suspend and domain_info.state in (1, 2):
+		if not node_is_off and self._show_op( 'suspend', node_uri ) and hasattr(node_info, 'supports_suspend') and node_info.supports_suspend and domain_info.state in (1, 2):
 			opts = copy.copy(cmd_opts)
 			opts['state'] = 'SUSPEND'
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
@@ -666,7 +674,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			buttons.append(comma)
 
 		# Resume? if state is paused
-		if self._show_op( 'pause', node_uri ) and domain_info.state in ( 3, ):
+		if not node_is_off and self._show_op( 'pause', node_uri ) and domain_info.state in ( 3, ):
 			opts = copy.copy( cmd_opts )
 			opts[ 'state' ] = 'RUN'
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
@@ -674,7 +682,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			buttons.append( comma )
 
 		# Pause? if state is running or idle
-		if self._show_op( 'pause', node_uri ) and domain_info.state in ( 1, 2):
+		if not node_is_off and self._show_op( 'pause', node_uri ) and domain_info.state in ( 1, 2):
 			opts = copy.copy( cmd_opts )
 			opts[ 'state' ] = 'PAUSE'
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
@@ -688,7 +696,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		for node_uri2, node_info2 in self.uvmm.get_group_info(group_name).items():
 			if node_uri == node_uri2: # do not migrate to self
 				continue
-			if node_info2.last_update < node_info2.last_try: # do not migrate to offline nodes
+			if node_info2.last_update < node_info2.last_try: # do not migrato to offline nodes
 				continue
 			if node_type & set([capability.domain_type for capability in node_info2.capabilities]):
 				grouplist.add(node_uri2)
@@ -703,7 +711,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			buttons.append( comma )
 
 		# Stop? if state is not stopped
-		if not domain_info.state in ( 4, 5 ):
+		if not node_is_off and not domain_info.state in ( 4, 5 ):
 			opts = copy.copy( cmd_opts )
 			opts[ 'state' ] = 'SHUTDOWN'
 			cmd = umcp.SimpleCommand( 'uvmm/domain/stop', options = opts )
@@ -711,7 +719,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			buttons.append( comma )
 
 		# Remove? always
-		if operations:
+		if not node_is_off and operations:
 			opts = copy.copy( cmd_opts )
 			cmd = umcp.SimpleCommand( 'uvmm/domain/remove/images', options = opts )
 			buttons.append( umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( cmd ), ] ) )
@@ -753,20 +761,29 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			self.set_content( res, umcd.InfoBox( _( 'The physical server is not available at the moment' ) ) )
 			self.finished(object.id(), res)
 			return
+		node_is_off = node_info.last_update < node_info.last_try
 
 		content = umcd.List( attributes = { 'width' : '100%' }, default_type = 'uvmm_table' )
 
-		node_table = umcd.List( attributes = { 'width' : '100%' }, default_type = 'uvmm_table' )
-		# node_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : node_info.name } )
-		# node_btn = umcd.LinkButton( node.name, actions = [ umcd.Action( node_cmd ) ] )
-		if node_uri.startswith( 'xen' ):
-			cpu_usage = percentage( lambda: float( node_info.cpu_usage ) / 10.0, width = 150 )
+		node_header = _('%s (Physical server)') % self.uvmm._uri2name(node_uri, short=True)
+		node_table = umcd.List(attributes={'width': '100%'}, default_type='uvmm_table')
+		if node_is_off:
+			info_txt = umcd.InfoBox(_('The physical server is not available at the moment'), icon='actions/critical', size=umct.SIZE_MEDIUM)
+			node_table.add_row([info_txt])
 		else:
-			cpu_usage = umcd.HTML( '<i>%s</i>' % _( 'not available' ) )
-		mem_usage = percentage( lambda: float( node_info.curMem ) / node_info.phyMem * 100, '%s / %s' % ( MemorySize.num2str( node_info.curMem ), MemorySize.num2str( node_info.phyMem ) ), width = 150 )
-		# node_table.add_row( [ _( 'Physical server' ), node_btn ] )
-		node_table.add_row( [ umcd.HTML('<b>%s</b>' % _( 'CPU usage' ), attributes = {'type':'umc_nowrap'}), umcd.Cell( cpu_usage, attributes = { 'width' : '50%', 'type': 'umc_nowrap' } ) ,  umcd.HTML('<b>%s</b>' % _( 'Memory' ), attributes = {'type':'umc_nowrap'}), umcd.Cell( mem_usage, attributes = { 'width' : '50%' } ) ] )
-		content.add_row( [ umcd.Section( _( '%s (Physical server)' ) % node_info.name.split('.')[0], node_table, attributes = { 'width' : '100%' } ) ] )
+			# node_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : node_info.name } )
+			# node_btn = umcd.LinkButton( node.name, actions = [ umcd.Action( node_cmd ) ] )
+			if node_uri.startswith( 'xen' ):
+				cpu_usage = percentage( lambda: float( node_info.cpu_usage ) / 10.0, width = 150 )
+			else:
+				cpu_usage = umcd.HTML( '<i>%s</i>' % _( 'not available' ) )
+			mem_usage = percentage( lambda: float( node_info.curMem ) / node_info.phyMem * 100, '%s / %s' % ( MemorySize.num2str( node_info.curMem ), MemorySize.num2str( node_info.phyMem ) ), width = 150 )
+			node_table.add_row([
+				umcd.HTML('<b>%s</b>' % _('CPU usage'), attributes={'type':'umc_nowrap'}),
+				umcd.Cell(cpu_usage, attributes={'width': '50%', 'type': 'umc_nowrap' }),
+				umcd.HTML('<b>%s</b>' % _('Memory'), attributes={'type':'umc_nowrap'}),
+				umcd.Cell(mem_usage, attributes={'width' : '50%'})])
+		content.add_row([umcd.Section(node_header, node_table, attributes={'width': '100%'})])
 
 		table = umcd.List( attributes = { 'type' : 'umc_mini_padding' }, default_type = 'uvmm_table' )
 		num_buttons = 0
@@ -774,7 +791,8 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			# ignore XEN Domain-0
 			if domain_info.name == 'Domain-0':
 				continue
-			domain_cmd = umcp.SimpleCommand('uvmm/domain/overview', options={'group': object.options['group'], 'node': node_uri, 'domain': domain_info.uuid})
+			domain_opt = {'group': object.options['group'], 'node': node_uri, 'domain': domain_info.uuid}
+			domain_cmd = umcp.SimpleCommand('uvmm/domain/overview', options=domain_opt)
 			domain_icon = 'uvmm/domain'
 			if domain_info.state in ( 1, 2 ):
 				domain_icon = 'uvmm/domain-on'
@@ -914,6 +932,8 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 							dev.size = vol.size
 							break
 					break
+				else:
+					pool = None # fallback when Node is offline
 
 				if not dev.size:
 					values[ 'size' ] = _( 'unknown' )
@@ -1116,6 +1136,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
 		except uvmmd.UvmmError, e:
 			return self.uvmm_node_overview( object )
+		node_is_off = node_info.last_update < node_info.last_try
 
 		blind_table = umcd.List( default_type = 'uvmm_table' )
 
@@ -1148,7 +1169,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			buttons = self._create_domain_buttons( object.options, node_info, domain_info, overview = 'domain', operations = True )
 			ops.add_row( buttons )
 
-			snapshots = self._create_domain_snapshots( object, node_info, domain_info )
+			if node_is_off:
+				snapshots = ()
+			else:
+				snapshots = self._create_domain_snapshots( object, node_info, domain_info )
 
 			tab = umcd.List( default_type = 'uvmm_table' )
 			tab.add_row(w_status + w_cpu)
@@ -1161,9 +1185,15 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			if snapshots:
 				blind_table.add_row( [ umcd.Section( _( 'Snapshots' ), snapshots, hideable = True, hidden = True, name = 'domain.snapshots' ) ] )
 
-			content = self._dlg_domain_settings( object, node_info, domain_info )
-			for line in content:
-				blind_table.add_row( line )
+			if node_is_off:
+				info_txt = umcd.InfoBox(_('The physical server is not available at the moment'), icon='actions/critical', size=umct.SIZE_MEDIUM)
+				blind_table.add_row([info_txt])
+				info_txt = umcd.HTML(_('''<p>For fail over the virtual machine can be migrated to another physical server re-using the last known configuration and all disk images. This can result in <strong>data corruption</strong> if the images are <strong>concurrently used</strong> by multiple running instances! Therefore the failed server <strong>must be blocked from accessing the image files</strong>, for example by blocking access to the shared storage or by disconnecting the network.</p><p>When the server is restored, all its previous virtual instances will be shown again. Any duplicates have to be cleaned up manually by migrating the instances back to the server or by deleting them. Make sure that shared images are not delete.</p>'''))
+				blind_table.add_row([info_txt])
+			else:
+				content = self._dlg_domain_settings( object, node_info, domain_info )
+				for line in content:
+					blind_table.add_row( line )
 
 		self.set_content( res, blind_table )
 		if finish:

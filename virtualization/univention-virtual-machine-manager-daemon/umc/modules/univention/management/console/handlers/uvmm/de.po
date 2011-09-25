@@ -34,70 +34,96 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.321-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-08-31 09:13+0200\n"
-"PO-Revision-Date: 2011-08-25 12:47+0200\n"
+"POT-Creation-Date: 2011-09-25 22:02+0200\n"
+"PO-Revision-Date: 2011-09-25 21:28+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:644
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:654
 #, python-format
 msgid "%(dn)s on %(nn)s"
 msgstr "%(dn)s auf %(nn)s"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:770
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:768
 #, python-format
 msgid "%s (Physical server)"
 msgstr "%s (Physikalischer Server)"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:812
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:869
 #, python-format
 msgid "<li>%(type)s: %(size)s (image file %(image)s in pool %(pool)s)</li>"
 msgstr ""
 "<li>%(type)s: %(size)s (Image-Datei %(image)s im Speicherbereich %(pool)s)</"
 "li>"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:818
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:875
 #, python-format
 msgid "<li>%(type)s: empty device</li>"
 msgstr "<li>%(type)s: leeres Gerät</li>"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:816
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:873
 #, python-format
 msgid "<li>%(type)s: local device %(device)s</li>"
 msgstr "<li>%(type)s: lokales Gerät %(device)s</li>"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:743
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1191
+msgid ""
+"<p>For fail over the virtual machine can be migrated to another physical "
+"server re-using the last known configuration and all disk images. This can "
+"result in <strong>data corruption</strong> if the images are "
+"<strong>concurrently used</strong> by multiple running instances! Therefore "
+"the failed server <strong>must be blocked from accessing the image files</"
+"strong>, for example by blocking access to the shared storage or by "
+"disconnecting the network.</p><p>When the server is restored, all its "
+"previous virtual instances will be shown again. Any duplicates have to be "
+"cleaned up manually by migrating the instances back to the server or by "
+"deleting them. Make sure that shared images are not delete.</p>"
+msgstr ""
+"<p>Für die Ausfallsicherung kann die virtuelle Maschine anhand der letzten "
+"Konfiguration und unter Verwendung aller Festplatten-Images auf einen "
+"anderen physikalischen Server migriert werden. Dies kann zu "
+"<strong>Datenkorruption</strong> führen, wenn die Image-Dateien "
+"<strong>gleichzeitig</strong> von mehreren Instanzen genutzt werden! Deshalb "
+"muß der <strong>Zugriff des Servers auf die Image-Dateien unterbunden</"
+"strong> werden, z.B. durch Blockieren des Zugriffs auf den gemeinsamen "
+"Speicherbereich oder durch abklemmen des Netzwerks.</p><p>Wenn der Server "
+"reaktiviert wird, werden alle seine virtuellen Instanzen erneut angezeigt. "
+"Alle Duplikate müssen von Hand aufgeräumt werden, entweder durch "
+"Zurückmigrieren oder Löschen der Instanz. Stellen Sie dabei sicher, dass "
+"keine mehrfach eingebundenen Image-Dateien gelöscht werden.</p>"
+
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:797
 msgid "A virtual instance must at least have 4 MB memory."
 msgstr "Eine virtuelle Instanz muss mindestens 4 MB Speicher haben."
 
-#: umc/modules/univention/management/console/handlers/uvmm/nic.py:114
-#: umc/modules/univention/management/console/handlers/uvmm/treeview.py:183
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:905
+#: umc/modules/univention/management/console/handlers/uvmm/nic.py:115
+#: umc/modules/univention/management/console/handlers/uvmm/treeview.py:144
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:962
 msgid "Add"
 msgstr "Hinzufügen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:72
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:637
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:688
 msgid "Add drive"
 msgstr "Laufwerk hinzufügen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:895
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:952
 #, python-format
 msgid "Add drive to <i>%(name)s</i>"
 msgstr "Laufwerk zu <i>%(name)s</i> hinzufügen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:875
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:895
 msgid "Add new drive"
 msgstr "Neues Laufwerk hinzufügen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:961
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:992
 msgid "Add new network interface"
 msgstr "Neue Netzwerkschnittstelle hinzufügen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/nic.py:115
+#: umc/modules/univention/management/console/handlers/uvmm/nic.py:116
 msgid "Adding network interface"
 msgstr "Hinzufügen einer Netzwerkschnittstelle"
 
@@ -105,11 +131,11 @@ msgstr "Hinzufügen einer Netzwerkschnittstelle"
 msgid "Advanved kernel configuration"
 msgstr "Erweiterte Kernelkonfiguration verwenden"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:92
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:94
 msgid "All"
 msgstr "Alle"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:221
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:224
 msgid ""
 "All image files are stored in so-called storage pools. They can be stored in "
 "a local directory, an LVM partition or a share (e.g. using iSCSI, NFS or "
@@ -119,7 +145,7 @@ msgstr ""
 "ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder eine "
 "Freigabe (beispielsweise eingebunden über iSCSI, NFS oder CIFS) sein. "
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1524
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1560
 #, python-format
 msgid ""
 "All selected snapshots of instance <i>%(domain)s</i> were deleted "
@@ -128,7 +154,7 @@ msgstr ""
 "Alle ausgewählten Sicherungspunkte der virtuellen Instanz <i>%(domain)s</i> "
 "wurden erfolgreich gelöscht:<br/>%(snapshots)s"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:451
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:502
 #, python-format
 msgid ""
 "An image with this name already exists and is used by virtual instance %"
@@ -138,7 +164,7 @@ msgstr ""
 "Instanz %(domain)s verwendet. Der Name für ein neues Image muß eindeutig "
 "sein."
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:453
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:504
 msgid ""
 "An unused image with this name already exists. The name must be unique for a "
 "new image."
@@ -146,7 +172,7 @@ msgstr ""
 "Ein unbenutztes Image mit diesem Namen existiert bereits. Der Name für ein "
 "neues Image muß eindeutig sein."
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:98
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:100
 msgid "Arabic"
 msgstr "Arabisch"
 
@@ -174,25 +200,25 @@ msgstr "Sind Sie sicher, dass der Sicherungspunkt gelöscht werden soll?"
 msgid "Are you sure that the virtual instance should be removed?"
 msgstr "Sind Sie sicher, dass die virtuelle Instanz gelöscht werden soll?"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:791
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:845
 msgid "Attached drives"
 msgstr "Eingebundene Laufwerk"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:136
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:138
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:174
 msgid "Boot order"
 msgstr "Bootreihenfolge"
 
-#: umc/modules/univention/management/console/handlers/uvmm/nic.py:63
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:980
+#: umc/modules/univention/management/console/handlers/uvmm/nic.py:64
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1011
 msgid "Bridge"
 msgstr "Bridge"
 
-#: umc/modules/univention/management/console/handlers/uvmm/nic.py:70
+#: umc/modules/univention/management/console/handlers/uvmm/nic.py:71
 msgid "By default the private network is 192.168.122.0/24"
 msgstr "Vorgegeben ist das private Netzwerk 192.168.122.0/24"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:619
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:670
 msgid ""
 "By selecting a profile for the virtual instance most of the settings will be "
 "set to default values. In the following steps some of these values might be "
@@ -209,40 +235,40 @@ msgstr ""
 "werden, dass ein Profil mit der korrekten Architektur ausgewählt wird, da "
 "diese Option nachträglich nicht geändert werden kann."
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:155
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:157
 msgid "CD/DVD-ROM"
 msgstr "CD/DVD-ROM"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:137
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:731
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:348
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:799
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:139
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:742
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:357
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:853
 msgid "CDROM drive"
 msgstr "CDROM-Laufwerk"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:459
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:508
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:769
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:800
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1135
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:458
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:503
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:782
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:817
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1166
 msgid "CPU usage"
 msgstr "CPU-Auslastung"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:628
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:779
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:679
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:833
 msgid "CPUs"
 msgstr "CPUs"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:156
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:169
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:280
-#: umc/modules/univention/management/console/handlers/uvmm/nic.py:116
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1396
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1449
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:158
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:171
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:294
+#: umc/modules/univention/management/console/handlers/uvmm/nic.py:117
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1431
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1488
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:944
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:975
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:70
 msgid "Change media"
 msgstr "Medium wechseln"
@@ -259,7 +285,7 @@ msgstr "Ändern des Status einer virtuellen Instanz"
 msgid "Change state of virtual instances"
 msgstr "Ändern des Status von virtuellen Instanzen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:192
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:194
 msgid "Choose existing image"
 msgstr "Auswahl einer vorhandenen Image-Datei"
 
@@ -274,11 +300,11 @@ msgid "Configuration of virtual instances"
 msgstr "Konfiguration der virtuellen Instanzen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:168
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1129
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1160
 msgid "Contact"
 msgstr "Kontakt"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:92
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:94
 msgid "Contact information"
 msgstr "Kontaktinformationen"
 
@@ -286,7 +312,7 @@ msgstr "Kontaktinformationen"
 msgid "Coordinated Universal Time"
 msgstr "Koordinierte Weltzeit"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1456
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1495
 msgid "Create"
 msgstr "Erstellen"
 
@@ -294,7 +320,7 @@ msgstr "Erstellen"
 msgid "Create a new drive"
 msgstr "Erstellen eines neuen Laufwerk"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:191
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:193
 msgid "Create a new image"
 msgstr "Erstellen einer neuen Image-Datei"
 
@@ -304,49 +330,49 @@ msgstr "Erstellen einer Netzwerkschnittstelle"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:125
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:126
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:650
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:771
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:701
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:825
 msgid "Create a virtual instance"
 msgstr "Erstellen einer virtuellen Instanz"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:653
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:768
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:704
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:822
 #, python-format
 msgid "Create a virtual instance (profile: %(profile)s)"
 msgstr "Erstellen einer virtuellen Instanz: (Profil: %(profile)s)"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:655
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:706
 #, python-format
 msgid "Create a virtual instance <i>%(name)s</i>"
 msgstr "Erstellen einer virtuellen Instanz <i>%(name)s</i>"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:537
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:541
 msgid "Create new snapshot"
 msgstr "Neuen Sicherungspunkt erstellen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:606
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:657
 msgid "Create new virtual instance"
 msgstr "Neue virtuelle Maschine erstellen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:112
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:114
 msgid "Croatian"
 msgstr "Kroatisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:99
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:101
 msgid "Danish"
 msgstr "Dänisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:551
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:555
 msgid "Date"
 msgstr "Datum"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:169
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:171
 msgid "Default (RealTek RTL-8139)"
 msgstr "Voreinstellung (RealTek RTL-8139)"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:158
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:570
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:579
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:160
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:574
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:583
 msgid "Delete"
 msgstr "Löschen"
 
@@ -367,13 +393,13 @@ msgid "Delete the state of a virtual instance"
 msgstr "Sicherungspunkt einer virtuellen Instanz löschen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:167
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1130
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:626
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:779
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1161
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:677
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:833
 msgid "Description"
 msgstr "Beschreibung"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:92
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:94
 msgid "Descriptions"
 msgstr "Beschreibungen"
 
@@ -381,17 +407,17 @@ msgstr "Beschreibungen"
 msgid "Destination host"
 msgstr "Zielserver"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:157
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:168
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:159
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:170
 msgid "Detach"
 msgstr "Aushängen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:180
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:182
 #, python-format
 msgid "Detaching the drive <i>%(drive)s</i> failed"
 msgstr "Das Aushängen des Laufwerks <i>%(drive)s</i> ist fehlgeschlagen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:267
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:281
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:117
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:251
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:253
@@ -399,9 +425,9 @@ msgid "Device filename"
 msgstr "Gerätedateiname"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:159
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:641
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:654
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:788
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:651
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:664
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:842
 msgid "Direct access"
 msgstr "Direktzugriff"
 
@@ -413,26 +439,26 @@ msgstr "Laufwerk"
 msgid "Drive image"
 msgstr "Laufwerk Image-Datei"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:224
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:244
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:227
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:241
 msgid "Drive type"
 msgstr "Laufwerksart"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:167
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:965
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:169
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:996
 msgid "Driver"
 msgstr "Treiber"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1070
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1075
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1100
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1105
 msgid "Drives"
 msgstr "Laufwerke"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:120
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:122
 msgid "Dutch"
 msgstr "Niederländisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:121
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:123
 msgid "Dutch-Belgium"
 msgstr "Niederländisch-Belgien"
 
@@ -478,8 +504,8 @@ msgstr ""
 "Speicherbereich ausgewählt, wird die Liste der verfügbaren ISO-Images "
 "aktualisiert."
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:926
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:997
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:954
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1028
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -487,7 +513,7 @@ msgstr "Bearbeiten"
 msgid "Edit a network interface"
 msgstr "Bearbeiten einer Netzwerkschnittstelle"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:284
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:298
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:263
 msgid "Edit drive"
 msgstr "Laufwerk bearbeiten"
@@ -496,7 +522,7 @@ msgstr "Laufwerk bearbeiten"
 msgid "Edit drive settings"
 msgstr "Bearbeiten der Laufwerkskonfiguration"
 
-#: umc/modules/univention/management/console/handlers/uvmm/nic.py:112
+#: umc/modules/univention/management/console/handlers/uvmm/nic.py:113
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:296
 msgid "Edit network interface"
 msgstr "Bearbeiten einer Netzwerkschnittstelle"
@@ -505,56 +531,56 @@ msgstr "Bearbeiten einer Netzwerkschnittstelle"
 msgid "Eject or change media from device"
 msgstr "Medium eines Geräts auswerfen oder wechseln"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:629
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:680
 msgid "Enable direct access"
 msgstr "Direktzugriff aktivieren"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:103
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:105
 msgid "English-America"
 msgstr "Englisch-Amerika"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:102
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:104
 msgid "English-Britain"
 msgstr "Englisch-Großbritannien"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1460
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1499
 msgid "Enter the name for the snapshot"
 msgstr "Geben die den Namen für den Sicherungspunkt ein"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:105
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:107
 msgid "Estonian"
 msgstr "Estländisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1073
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1078
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1103
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1108
 msgid "Extended Settings"
 msgstr "Erweiterte Einstellungen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:252
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:263
 msgid "Extended format (qcow)"
 msgstr "Erweitertes Format (qcow)"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:250
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:261
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:167
 msgid "Extended format (qcow2)"
 msgstr "Erweitertes Format (qcow2)"
 
-#: umc/modules/univention/management/console/handlers/uvmm/nic.py:140
+#: umc/modules/univention/management/console/handlers/uvmm/nic.py:143
 #, python-format
 msgid "Failed to add network interface: %s"
 msgstr "Hinzufügen der Netzwerkschnittstelle ist fehlgeschlagen: %s"
 
-#: umc/modules/univention/management/console/handlers/uvmm/nic.py:255
+#: umc/modules/univention/management/console/handlers/uvmm/nic.py:262
 #, python-format
 msgid "Failed to modify network interface: %s"
 msgstr "Das Bearbeiten der Netzwerkschnittstelle ist fehlgeschlagen: %s"
 
-#: umc/modules/univention/management/console/handlers/uvmm/nic.py:227
+#: umc/modules/univention/management/console/handlers/uvmm/nic.py:232
 #, python-format
 msgid "Failed to remove network interface: %s"
 msgstr "Entfernen der Netzwerkschnittstelle ist fehlgeschlagen: %s"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:107
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:109
 msgid "Faroese"
 msgstr "Färöisch"
 
@@ -566,11 +592,11 @@ msgstr "Dateiname"
 msgid "Filter"
 msgstr "Filter"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:106
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:108
 msgid "Finnish"
 msgstr "Finnisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:160
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:162
 msgid "Floppy drive"
 msgstr "Diskettenlaufwerk"
 
@@ -583,35 +609,35 @@ msgstr ""
 "werden. Dabei sollte ein Festplatten-Image immer nur von einer virtuellen "
 "Instanz zur Zeit verwendet werden."
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:108
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:110
 msgid "French"
 msgstr "Französisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:109
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:111
 msgid "French-Belgium"
 msgstr "Französisch-Belgien"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:110
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:112
 msgid "French-Canada"
 msgstr "Französisch-Kanada"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:111
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:113
 msgid "French-Switzerland"
 msgstr "Französisch-Schweiz"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:59
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:61
 msgid "Full virtualization (KVM)"
 msgstr "Voll-Virtualisierung (KVM)"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:60
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:62
 msgid "Full virtualization (XEN)"
 msgstr "Voll-Virtualisierung (XEN)"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:100
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:102
 msgid "German"
 msgstr "Deutsch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:101
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:103
 msgid "German-Switzerland"
 msgstr "Deutsch-Schweiz"
 
@@ -619,12 +645,12 @@ msgstr "Deutsch-Schweiz"
 msgid "Globally available"
 msgstr "Global verfügbar"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:137
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:155
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:139
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:157
 msgid "Hard drive"
 msgstr "Festplatte"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:222
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:225
 msgid ""
 "Hard drive images can be administrated in two ways on KVM systems; by "
 "default images are saved in the <i>Extended format (qcow2)</i>. This format "
@@ -651,15 +677,15 @@ msgstr ""
 "(raw)</i> auf ein Festplatten-Image zugegriffen werden. <p>Auf Xen-Systemen "
 "steht nur das <i>Einfache Format</i> zur Verfügung."
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:113
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:115
 msgid "Hungarian"
 msgstr "Ungarisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:114
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:116
 msgid "Icelandic"
 msgstr "Isländisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:313
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:319
 msgid ""
 "If the required image is not found it might be added by copying the file "
 "into the storage pool, e.g. to /var/lib/libvirt/images/ which is the "
@@ -673,47 +699,54 @@ msgstr ""
 "gewechselt und zu dieser wieder zurückgesprungen werden. Das neue ISO-Image "
 "sollte angezeigt werden."
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:879
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:899
 msgid "Image"
 msgstr "Image"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:261
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:273
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:275
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:245
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:247
 msgid "Image filename"
 msgstr "Image-Datei"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:262
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:276
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:76
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:188
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:248
 msgid "Image format"
 msgstr "Image-Format"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:404
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:446
 msgid "Image not found"
 msgstr "Image-Datei nicht gefunden"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:263
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:277
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:249
 msgid "Image size"
 msgstr "Image-Größe"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:234
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:244
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:459
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:800
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:458
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:817
 msgid "Instance"
 msgstr "Instanz"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:92
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1572
+#, python-format
+msgid "Instance <i>%(domain)s</i> is unavailable"
+msgstr "Die virtuellen Instanz <i>%(domain)s</i> ist nicht verfügbar"
+
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:94
 msgid "Instance names"
 msgstr "Instanznamen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:115
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:117
 msgid "Italian"
 msgstr "Italienisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:116
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:118
 msgid "Japanese"
 msgstr "Japanisch"
 
@@ -729,15 +762,15 @@ msgstr "Kernelparameter"
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:118
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:120
 msgid "Latvian"
 msgstr "Lettisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:117
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:119
 msgid "Lithuanian"
 msgstr "Litauisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:241
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:252
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:144
 msgid "Local directory"
 msgstr "Lokales Verzeichnis"
@@ -746,17 +779,17 @@ msgstr "Lokales Verzeichnis"
 msgid "Local time zone"
 msgstr "Lokale Zeitzone"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:378
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:377
 msgid "Location:"
 msgstr "Ort:"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:292
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:303
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:965
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:996
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:119
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:121
 msgid "Macedonian"
 msgstr "Mazedonisch"
 
@@ -765,33 +798,33 @@ msgid "Media image"
 msgstr "Medien-Datei"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:157
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:459
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:769
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:800
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:779
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:458
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:784
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:817
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:833
 msgid "Memory"
 msgstr "Speicher"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:627
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:678
 msgid "Memory (in MB)"
 msgstr "Arbeitsspeicher (in MB)"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:508
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1134
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:503
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1165
 msgid "Memory usage"
 msgstr "Arbeitsspeichernutzung"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:699
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1189
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:710
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1229
 msgid "Migrate"
 msgstr "Migrieren"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1190
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1230
 #, python-format
 msgid "Migrate %(domain)s"
 msgstr "Migriere %(domain)s"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1179
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1221
 #, python-format
 msgid "Migrate virtual instance %(domain)s from physical server %(source)s to:"
 msgstr ""
@@ -803,7 +836,7 @@ msgstr ""
 msgid "Migration of virtual instances"
 msgstr "Migration von virtuellen Instanzen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1068
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1098
 msgid ""
 "Most settings of the virtual instance can not be modified while it is "
 "running."
@@ -811,24 +844,24 @@ msgstr ""
 "Die meißten Einstellungen einer virtuellen Instanz können nicht geändert "
 "werden, solange diese läuft."
 
-#: umc/modules/univention/management/console/handlers/uvmm/nic.py:63
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:982
+#: umc/modules/univention/management/console/handlers/uvmm/nic.py:64
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1013
 msgid "NAT"
 msgstr "NAT"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:156
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:551
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:625
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:779
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:555
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:676
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:833
 msgid "Name"
 msgstr "Name"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:137
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:139
 msgid "Network"
 msgstr "Netzwerk"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1071
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1076
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1101
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1106
 msgid "Network Interfaces"
 msgstr "Netzwerkschnittstellen"
 
@@ -840,11 +873,11 @@ msgstr "Neues Laufwerk"
 msgid "New network interface"
 msgstr "Neue Netzwerkschnittstelle"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:194
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:196
 msgid "No media"
 msgstr "Kein Medium"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:693
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:744
 msgid ""
 "No profiles could be found! Please check your installation and run all join "
 "scripts, e.g. using univention-run-join-scripts."
@@ -853,7 +886,7 @@ msgstr ""
 "führen Sie alle Joinskripte aus, z.B. mit Hilfe von univention-run-join-"
 "scripts."
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:677
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:728
 msgid ""
 "No profiles could be found! These are required to create new virtual "
 "instances. Ensure that the LDAP server can be reached."
@@ -862,11 +895,11 @@ msgstr ""
 "virtuelle Instanzen anzulegen. Stellen Sie sicher, daß der LDAP-Server "
 "erreichbar ist."
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:122
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:124
 msgid "Norwegian"
 msgstr "Norwegisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1527
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1563
 #, python-format
 msgid ""
 "Not all of the selected snapshots of instance <i>%(domain)s</i> could be "
@@ -881,11 +914,11 @@ msgid "Number of CPUs"
 msgstr "Anzahl der CPUs"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:166
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1117
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1148
 msgid "Operating System"
 msgstr "Betriebssystem"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1150
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1184
 msgid "Operations"
 msgstr "Operationen"
 
@@ -894,19 +927,19 @@ msgstr "Operationen"
 msgid "Overview"
 msgstr "Überblick"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:173
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:175
 msgid "Paravirtual device (virtio)"
 msgstr "Paravirtualisiertes Gerät (virtio)"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:172
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:174
 msgid "Paravirtual device (xen)"
 msgstr "Paravirtualisiertes Gerät (xen)"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:271
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:285
 msgid "Paravirtual drive"
 msgstr "Paravirtualisiertes Laufwerk"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:223
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:226
 msgid ""
 "Paravirtualisation is a special variant of virtualisation in which the "
 "virtualised operating system is adapted to the underlying virtualisation "
@@ -924,7 +957,7 @@ msgstr ""
 "installiert werden, siehe <a href=\"http://wiki.univention.de/index.php?"
 "title=UVMM_Technische_Details\"> Univention Wiki. </a>"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:61
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:63
 msgid "Paravirtualization (XEN)"
 msgstr "Paravirtualisierung (XEN)"
 
@@ -932,38 +965,38 @@ msgstr "Paravirtualisierung (XEN)"
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:679
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:689
 msgid "Pause"
 msgstr "Pausieren"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:508
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:503
 msgid "Physical server"
 msgstr "Physikalischer Server"
 
-#: umc/modules/univention/management/console/handlers/uvmm/treeview.py:142
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:92
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:360
+#: umc/modules/univention/management/console/handlers/uvmm/treeview.py:109
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:94
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:362
 msgid "Physical servers"
 msgstr "Physikalische Server"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:123
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:125
 msgid "Polish"
 msgstr "Polnisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:879
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:899
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:149
 msgid "Pool"
 msgstr "Speicherbereich"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:124
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:126
 msgid "Portuguese"
 msgstr "Portugiesisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:125
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:127
 msgid "Portuguese-Brasil"
 msgstr "Portugiesisch-Brasilien"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:610
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:661
 msgid "Profiles"
 msgstr "Profile"
 
@@ -975,14 +1008,14 @@ msgstr "RAM-Disk"
 msgid "RTC reference"
 msgstr "RTC Referenz"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:407
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:403
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:714
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:918
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:996
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1397
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:725
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:946
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1027
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1432
 msgid "Remove"
 msgstr "Löschen"
 
@@ -1017,7 +1050,7 @@ msgstr "Sicherungspunkt löschen"
 msgid "Remove snapshots"
 msgstr "Sicherungspunkte löschen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1401
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1436
 #, python-format
 msgid "Remove the virtual instance %(instance)s?"
 msgstr "Virtuelle Instanz %(instance)s löschen?"
@@ -1030,7 +1063,7 @@ msgstr "Löschen einer virtuellen Instanz"
 msgid "Removes a drive"
 msgstr "Ein Laufwerk entfernen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1421
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1456
 #, python-format
 msgid "Removing the instance <i>%(domain)s</i> failed"
 msgstr ""
@@ -1049,19 +1082,19 @@ msgstr "Zustand der virtuellen Instanz aus Sicherungspunkt wiederherstellen"
 msgid "Restore virtual instance"
 msgstr "Wiederherstellen einer virtuellen Instanz"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:623
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:626
 msgid "Resume"
 msgstr "Wiederherstellen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1543
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1583
 msgid "Resynchronisation has failed!"
 msgstr "Resynchronisation fehlgeschlagen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1086
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1116
 msgid "Resynchronize"
 msgstr "Resynchronisation"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:565
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:569
 msgid "Revert"
 msgstr "Wiederherstellen"
 
@@ -1069,7 +1102,7 @@ msgstr "Wiederherstellen"
 msgid "Revert to snapshot"
 msgstr "Sicherungspunkt wiederherstellen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1495
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1532
 #, python-format
 msgid ""
 "Reverting to snapshot <i>%(snapshot)s</i> of instance <i>%(domain)s</i> "
@@ -1078,13 +1111,13 @@ msgstr ""
 "Das Wiederherstellen des Sicherungspunktes <i>%(snapshot)s</i> der "
 "virtuellen Instanz <i>%(domain)s</i> ist fehlgeschlagen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:126
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:128
 msgid "Russian"
 msgstr "Russisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:279
-#: umc/modules/univention/management/console/handlers/uvmm/nic.py:111
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1079
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:293
+#: umc/modules/univention/management/console/handlers/uvmm/nic.py:112
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1109
 msgid "Save"
 msgstr "Speichern"
 
@@ -1096,13 +1129,13 @@ msgstr "Speichern einer virtuellen Instanz"
 msgid "Saves the state of a virtual instance"
 msgstr "Zustand der virtuellen Instanz sichern"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:312
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:326
 msgid "Saving the drive configuration has failed"
 msgstr "Das Speichern der Laufwerkskonfiguration ist fehlgeschlagen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:98
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:99
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:413
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:409
 msgid "Search"
 msgstr "Suchen"
 
@@ -1110,15 +1143,15 @@ msgstr "Suchen"
 msgid "Search in"
 msgstr "Suchen in"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:492
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:486
 msgid "Search results"
 msgstr "Suchergebnisse"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:579
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:583
 msgid "Selection"
 msgstr "Auswahl"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:931
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:959
 msgid "Set as boot device"
 msgstr "Als Boot-Medium setzen"
 
@@ -1127,14 +1160,14 @@ msgstr "Als Boot-Medium setzen"
 msgid "Set drive as boot device"
 msgstr "Das Laufwerk ans Boot-Medium setzen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:339
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:355
 #, python-format
 msgid "Setting the drive <i>%(drive)s</i> as boot device as failed"
 msgstr ""
 "Das Setzen des Laufwerks <i>%(drive)s</i> als Boot-Medium ist fehlgeschlagen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1072
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1077
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1102
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1107
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -1157,14 +1190,14 @@ msgstr "Anzeigen der Instanzinformationen"
 msgid "Show physical server information"
 msgstr "Anzeigen der physikalischen Server-Informationen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:248
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:259
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:158
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:169
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:173
 msgid "Simple format (raw)"
 msgstr "Einfaches Format (raw)"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:879
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:899
 msgid "Size"
 msgstr "Größe"
 
@@ -1172,27 +1205,29 @@ msgstr "Größe"
 msgid "Size (default unit MB)"
 msgstr "Größe (Standardeinheit MB)"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:127
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:129
 msgid "Slovene"
 msgstr "Slowenisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1475
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1513
 #, python-format
 msgid ""
 "Snapshoting the instance <i>%(domain)s</i> to <i>%(snapshot)s</i> failed"
 msgstr ""
-"Das Speichern der virtuellen Maschine <i>%(domain)s</i> in <i>%(snapshot)s</i> "
-"ist fehlgeschlagen"
+"Das Speichern der virtuellen Maschine <i>%(domain)s</i> in <i>%(snapshot)s</"
+"i> ist fehlgeschlagen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1152
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1186
 msgid "Snapshots"
 msgstr "Sicherungspunkte"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:534
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:535
 msgid "Snapshots can not be created for suspended domains."
-msgstr "Sicherungspunkte können nicht für gespeicherte virtuelle Maschinen angelegt werden."
+msgstr ""
+"Sicherungspunkte können nicht für gespeicherte virtuelle Maschinen angelegt "
+"werden."
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1281
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1317
 msgid "Some information of the virtual instance could not be saved!<br/>"
 msgstr ""
 "Einige der Informationen zur virtuellen Instanz konnten nicht gespeichert "
@@ -1200,24 +1235,24 @@ msgstr ""
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:291
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:302
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:965
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:996
 msgid "Source"
 msgstr "Quelle"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:104
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:106
 msgid "Spanish"
 msgstr "Spanisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:619
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:628
 msgid "Start"
 msgstr "Starten"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1116
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1147
 msgid "Status"
 msgstr "Status"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:243
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:707
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:718
 msgid "Stop"
 msgstr "Beenden"
 
@@ -1235,25 +1270,32 @@ msgstr ""
 "Betriebssystem zuvor herunterzufahren. Soll die virtuelle Instanz beendet "
 "werden?"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:260
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:271
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:74
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:246
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:243
 msgid "Storage pool"
 msgstr "Speicherbereich"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:663
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:673
 msgid "Suspend"
 msgstr "Speichern & Beenden"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:128
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:130
 msgid "Swedish"
 msgstr "Schwedisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:129
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:131
 msgid "Thai"
 msgstr "Thailand"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:738
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:792
+msgid ""
+"The chosen name for the virtual instance could not be checked for uniqueness."
+msgstr ""
+"Der gewählte Name für die virtuelle Instanz konnte nicht auf Eindeutigkeit "
+"überprüft werden."
+
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:790
 msgid ""
 "The chosen name for the virtual instance is not unique. Another one should "
 "be chosen."
@@ -1261,7 +1303,7 @@ msgstr ""
 "Der gewählte Name ist nicht eindeutig, daher sollte ein anderer gewählt "
 "werden."
 
-#: umc/modules/univention/management/console/handlers/uvmm/treeview.py:172
+#: umc/modules/univention/management/console/handlers/uvmm/treeview.py:86
 msgid ""
 "The connection to the Univention Virtual Machine Manager service could not "
 "be established. Please verify that it is started. You may use the UMC "
@@ -1271,7 +1313,7 @@ msgstr ""
 "hergestellt werden. Bitte prüfen Sie, ob der Dienst gestartet ist. Dafür "
 "können Sie das UMC Dienste-Modul verwenden."
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:191
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:193
 #, python-format
 msgid ""
 "The drive <i>%(drive)s</i> was detached and image <i>%(image)s</i> removed "
@@ -1280,7 +1322,7 @@ msgstr ""
 "Das Laufwerk <i>%(drive)s</i> wurde ausgehängt und die Datei <i>%(image)s</"
 "i> erfolgreich gelöscht."
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:188
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:190
 #, python-format
 msgid ""
 "The drive <i>%(drive)s</i> was detached successfully, but removing the image "
@@ -1289,16 +1331,16 @@ msgstr ""
 "Das Laufwerk <i>%(drive)s</i> wurde ausgehängt, aber das Löschen des Images "
 "<i>%(image)s</i> ist fehlgeschlagen. Es muß manuell entfernt werden."
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:193
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:195
 #, python-format
 msgid "The drive <i>%(drive)s</i> was detached successfully."
 msgstr "Das Laufwerk <i>%(drive)s</i> wurde erfolgreich ausgehängt."
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:315
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:329
 msgid "The drive configuration has been saved successfully"
 msgstr "Die Laufwerkskonfiguration wurde erfolgreich gespeichert"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:163
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:165
 msgid ""
 "The drive will be detached from the virtual instance and the associated "
 "local device will be kept as is."
@@ -1306,11 +1348,11 @@ msgstr ""
 "Das Laufwerk wird im folgenden Schritt ausgehängt wobei das verknüpfte "
 "lokale Gerät unverändert bleibt."
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:165
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:167
 msgid "The drive will be detached from the virtual instance."
 msgstr "Das Laufwerk wird im folgenden Schritt ausgehängt."
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:155
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:157
 #, python-format
 msgid ""
 "The drive will be detached from the virtual instance.<br/>Additionally the "
@@ -1327,7 +1369,7 @@ msgstr "Das folgende Laufwerk wird eingebunden:"
 msgid "The following drive will be updated:"
 msgstr "Das folgende Laufwerk wird aktualisiert:"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:624
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:675
 msgid ""
 "The following settings were read from the selected profile and can be "
 "modified now."
@@ -1335,7 +1377,7 @@ msgstr ""
 "Die folgenden Einstellungen wurden aus dem ausgewählten Profil gelesen und "
 "können nun angepasst werden."
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1087
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1117
 msgid ""
 "The information about the virtual instance could not be retrieved. Clicking "
 "the refresh button will retry to collect the information. If this does not "
@@ -1346,12 +1388,12 @@ msgstr ""
 "werden. Sollte dies nicht funktionieren, kann eine Resynchronisation über "
 "die folgende Schaltfläche ausgeführt werden."
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1424
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1459
 #, python-format
 msgid "The instance <i>%(domain)s</i> was removed successfully"
 msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde erfolgreich gelöscht"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1492
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1529
 #, python-format
 msgid ""
 "The instance <i>%(domain)s</i> was reverted to snapshot <i>%(snapshot)s</i> "
@@ -1360,7 +1402,7 @@ msgstr ""
 "Die virtuelle Instanz <i>%(domain)s</i> wurde auf den Sicherungspunkt <i>%"
 "(snapshot)s</i> zurückgesetzt."
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1472
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1510
 #, python-format
 msgid ""
 "The instance <i>%(domain)s</i> was snapshoted to <i>%(snapshot)s</i> "
@@ -1369,7 +1411,7 @@ msgstr ""
 "Die virtuelle Instanz <i>%(domain)s</i> wurde im Sicherungspunkt <i>%"
 "(snapshot)s</i> gesichert."
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:315
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:321
 msgid ""
 "The list of available images is empty! To add an image the file needs to be "
 "copied into the storage pool, e.g. to /var/lib/libvirt/images/ which is the "
@@ -1383,7 +1425,7 @@ msgstr ""
 "Seite des Assistenten gewechselt und zu dieser wieder zurückgesprungen "
 "werden. Die neue Image-Datei sollte angezeigt werden."
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:736
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:787
 #, python-format
 msgid ""
 "The name of a virtual instance may not be longer than %(maxlength)d "
@@ -1391,11 +1433,11 @@ msgid ""
 msgstr ""
 "Der Name einer virtuellen Instanz darf maximal %(maxlength)d Zeichen haben!"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:733
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:784
 msgid "The name of the virtual instance should be modified"
 msgstr "Der Name der virtuellen Instanz sollte angepasst werden"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:746
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:800
 #, python-format
 msgid ""
 "The physical server does not have that much memory. As a suggestion the a "
@@ -1404,12 +1446,14 @@ msgstr ""
 "Der physikalische Server hat nicht so viel Arbeitspeicher. Als Vorschlag "
 "wurde die Speichermenge auf 75% des verfügbaren Arbeitsspeichers gesetzt."
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:748
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:754
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:511
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:761
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:771
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1189
 msgid "The physical server is not available at the moment"
 msgstr "Der physikalische Server ist momentan nicht erreichbar"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:419
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:464
 #, python-format
 msgid ""
 "The selected image is already used by the virtual instance %(domain)s. It "
@@ -1420,8 +1464,8 @@ msgstr ""
 "verwendet. Es sollte eventuell ein anderes Image verwendet werden, da "
 "ansonsten Probleme nicht ausgeschlossen werden können."
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:414
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:445
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:459
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:493
 msgid ""
 "The selected image is already used by this virtual instance and therefor can "
 "not be used."
@@ -1429,7 +1473,7 @@ msgstr ""
 "Das ausgewählte Image wird bereits von dieser virtuellen Instanz verwendet "
 "und kann daher nicht verwendet werden."
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:703
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:754
 msgid ""
 "The selected profile could not be read! Without the information the new "
 "virtual instance can not be created. Ensure that the LDAP server can be "
@@ -1439,7 +1483,7 @@ msgstr ""
 "kann die neue Instanz nicht erstellt werden. Stellen Sie sicher, daß der "
 "LDAP-Server erreichbar ist."
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1533
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1569
 #, python-format
 msgid ""
 "The selected snapshots of instance <i>%(domain)s</i> could not be deleted:"
@@ -1448,7 +1492,7 @@ msgstr ""
 "Die ausgewählten Sicherungspunkte der virtuellen Instanz <i>%(domain)s</i> "
 "konnten nicht gelöscht werden:<br/>%(snapshots)s"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:689
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:740
 msgid ""
 "The server does not have the virtualization extension (Intel VT or AMD-V). "
 "For virtualization with KVM this extension is required."
@@ -1457,7 +1501,7 @@ msgstr ""
 "V). Für die Virtualisierung mit KVM wird eine Virtualisierungs-Erweiterung "
 "benötigt."
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:685
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:736
 msgid ""
 "The server does not have the virtualization extension (Intel VT or AMD-V). "
 "Only profiles using paravirtualization will work."
@@ -1465,7 +1509,7 @@ msgstr ""
 "Der Server hat keine CPU mit Virtualisierungs-Erweiterung (Intel VT oder AMD-"
 "V). Nur Profile für Paravirtualisierung werden angezeigt."
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1531
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1567
 #, python-format
 msgid ""
 "The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> could not be "
@@ -1474,7 +1518,7 @@ msgstr ""
 "Der Sicherungspunkt <i>%(snapshot)s</i> der virtuelle Instanz <i>%(domain)s</"
 "i> konnte nicht gelöscht werden"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1522
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1558
 #, python-format
 msgid ""
 "The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> was deleted "
@@ -1483,7 +1527,7 @@ msgstr ""
 "Der Sicherungspunkt <i>%(snapshot)s</i> der virtuelle Instanz <i>%(domain)s</"
 "i> wurde erfolgreich gelöscht"
 
-#: umc/modules/univention/management/console/handlers/uvmm/nic.py:88
+#: umc/modules/univention/management/console/handlers/uvmm/nic.py:89
 msgid ""
 "The source is the name of the network interface on the phyiscal server that "
 "is configured for bridging. By default it is eth0."
@@ -1491,7 +1535,7 @@ msgstr ""
 "Die Quelle ist der Name der Netzwerkschnittstelle des pyhsikalischen Server "
 "die als Bridge konfiguriert ist. Normalerweise ist dies eth0."
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:633
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:684
 msgid ""
 "The virtual instance will be created with the settings shown below. The "
 "button <i>Add drive</i> can be used to attach another drive."
@@ -1500,11 +1544,11 @@ msgstr ""
 "angelegt. Über die Schaltfläche <i>Laufwerk hinzufügen</i> kann ein weiteres "
 "Laufwerk eingebunden werden."
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:547
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:551
 msgid "There are no snapshots available"
 msgstr "Es sind keine Sicherungspunkte verfügbar"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:430
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:426
 msgid ""
 "This module provides a management interface for physical servers that are "
 "registered within the UCS domain.\n"
@@ -1542,11 +1586,11 @@ msgstr ""
 "Um das Laufwerk an ein lokales Gerät zu binden, muss der Dateiname der "
 "zugehörigen Gerätedatei angeben werden."
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:130
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:132
 msgid "Turkish"
 msgstr "Türkisch"
 
-#: umc/modules/univention/management/console/handlers/uvmm/nic.py:59
+#: umc/modules/univention/management/console/handlers/uvmm/nic.py:60
 msgid ""
 "Two types of network interfaces are support. The first one is <i>Bridge</i> "
 "that requires a static network connection on the physical server that is "
@@ -1578,16 +1622,16 @@ msgstr ""
 "wird. Weitere Details zur Netzwerkkonfiguration sind in <a href=\"http://sdb."
 "univention.de/1172\" target=\"_blank\">diesem Artikel</a> zu finden."
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:965
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:996
 msgid "Typ"
 msgstr "Typ"
 
-#: umc/modules/univention/management/console/handlers/uvmm/nic.py:67
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:879
+#: umc/modules/univention/management/console/handlers/uvmm/nic.py:68
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:899
 msgid "Type"
 msgstr "Typ"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:156
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:158
 msgid "Type of drive"
 msgstr "Art des Laufwerks"
 
@@ -1595,15 +1639,15 @@ msgstr "Art des Laufwerks"
 msgid "Univention Virtual Machine Manager"
 msgstr "Univention Virtual Machine Manager"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:177
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:179
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:671
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:681
 msgid "Unpause"
 msgstr "Fortführen"
 
-#: umc/modules/univention/management/console/handlers/uvmm/types.py:193
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:195
 msgid "Use a local device"
 msgstr "Verwenden eines lokalen Gerätes"
 
@@ -1611,11 +1655,11 @@ msgstr "Verwenden eines lokalen Gerätes"
 msgid "User"
 msgstr "Benutzer"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:254
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:265
 msgid "VMWare Disk"
 msgstr "VMware Disk"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:256
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:267
 msgid "Virtual Hard Disk"
 msgstr "Virtuelle Festplatte"
 
@@ -1623,7 +1667,7 @@ msgstr "Virtuelle Festplatte"
 msgid "Virtual Machines (UVMM)"
 msgstr "Virtuelle Maschinen (UVMM)"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1149
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1183
 #, python-format
 msgid "Virtual instance %(domain)s - <i>%(tech)s</i>"
 msgstr "Virtuelle Instanz %(domain)s - <i>%(tech)s</i>"
@@ -1636,7 +1680,7 @@ msgstr "Virtualisierungstechnik"
 msgid "What type of drive should be created?"
 msgstr "Welche Art von Laufwerk soll erstellt werden?"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1376
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1411
 msgid ""
 "When removing a virtual instance the disk images bind to it may be removed "
 "also. Please select the disks that should be remove with the virtual "
@@ -1648,7 +1692,7 @@ msgstr ""
 "die entfernt werden sollen. Stellen Sie sicher, dass keins der Images von "
 "einer anderen Instanz genutzt wird."
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:785
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:839
 msgid "activated"
 msgstr "aktiviert"
 
@@ -1661,7 +1705,7 @@ msgstr "abgestürzt"
 msgid "currently not available"
 msgstr "momentan nicht verfügbar"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:787
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:841
 msgid "deactivated"
 msgstr "deaktiviert"
 
@@ -1669,15 +1713,15 @@ msgstr "deaktiviert"
 msgid "domain"
 msgstr "Domäne"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:733
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:350
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:801
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:744
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:359
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:855
 msgid "floppy drive"
 msgstr "Diskettenlaufwerk"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:729
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:346
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:797
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:740
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:355
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:851
 msgid "hard drive"
 msgstr "Festplatte"
 
@@ -1685,12 +1729,12 @@ msgstr "Festplatte"
 msgid "idle"
 msgstr "idle"
 
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:516
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:766
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:517
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:779
 msgid "not available"
 msgstr "nicht verfügbar"
 
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:246
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:243
 #, python-format
 msgid "path: %(path)s"
 msgstr "Pfad: %(path)s"
@@ -1718,13 +1762,13 @@ msgstr "ausgeschaltet"
 msgid "snapshot name"
 msgstr "Name für den Sicherungspunkt"
 
-#: umc/modules/univention/management/console/handlers/uvmm/drive.py:238
+#: umc/modules/univention/management/console/handlers/uvmm/drive.py:249
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:324
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:735
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:911
-#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:984
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:352
-#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:803
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:746
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:939
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1015
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:361
+#: umc/modules/univention/management/console/handlers/uvmm/wizards.py:857
 msgid "unknown"
 msgstr "Unbekannt"
 
@@ -1831,6 +1875,9 @@ msgstr "Unbekannter Wert"
 
 #~ msgid "Stop virtual instance"
 #~ msgstr " Beendet einer virtuellen Instanz"
+
+#~ msgid "The server is currently offline!"
+#~ msgstr "Der Virtualisierungsserver ist momentan nicht erreichbar!"
 
 #~ msgid ""
 #~ "The settings shown below are all read from the selected profile. Please "
