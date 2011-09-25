@@ -1,3 +1,9 @@
+univention-management-console (3.0.112-1) unstable; urgency=low
+
+  * Add small critical icons (Bug #23092)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 23 Sep 2011 17:28:53 +0200
+
 univention-management-console (3.0.111-1) unstable; urgency=low
 
   * Fix handling of init_umccmd for modules that hide the category list;
