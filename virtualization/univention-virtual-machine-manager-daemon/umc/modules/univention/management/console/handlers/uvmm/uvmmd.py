@@ -215,15 +215,13 @@ class Client( notifier.signals.Provider ):
 			self._socket.send( packet )
 		except:
 			ud.debug( ud.ADMIN, ud.WARN, 'UVMM: send failed' )
-			if not self.is_connected():
-				ud.debug( ud.ADMIN, ud.INFO, 'UVMM: try to reconnect' )
-				if not self.reconnect():
-					return False
-				if retry:
-					return self.send( packet, False )
-			else:
-				return False
-		return True
+			if self.is_connected():
+				raise ConnectionError("Faild to send")
+			ud.debug( ud.ADMIN, ud.INFO, 'UVMM: try to reconnect' )
+			if not self.reconnect():
+				raise ConnectionError("Faild to reconnect")
+			if retry:
+				return self.send( packet, False )
 
 	def is_error( self, response ):
 		return isinstance( response, protocol.Response_ERROR )
@@ -235,8 +233,7 @@ class Client( notifier.signals.Provider ):
 			return None
 		req = protocol.Request_NODE_QUERY()
 		req.uri = node_uri
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 		node_info = self.recv_blocking()
 
 		if self.is_error( node_info ):
@@ -303,9 +300,7 @@ class Client( notifier.signals.Provider ):
 
 	def node_name2uri( self, node_name ):
 		req = protocol.Request_GROUP_LIST()
-		if not self.send( req.pack() ):
-			raise ConnectionError()
-
+		self.send(req.pack())
 		groups = self.recv_blocking()
 
 		tree_data = []
@@ -313,15 +308,13 @@ class Client( notifier.signals.Provider ):
 			group = []
 			req = protocol.Request_NODE_LIST()
 			req.group = group_name
-			if not self.send( req.pack() ):
-				raise ConnectionError()
+			self.send(req.pack())
 			node_uris = self.recv_blocking()
 			for node_uri in node_uris.data:
 				domains = []
 				req = protocol.Request_NODE_QUERY()
 				req.uri = node_uri
-				if not self.send( req.pack() ):
-					raise ConnectionError()
+				self.send(req.pack())
 				node_info = self.recv_blocking()
 				if self.is_error( node_info ):
 					continue
@@ -332,8 +325,7 @@ class Client( notifier.signals.Provider ):
 
 	def search( self, pattern, option ):
 		req = protocol.Request_GROUP_LIST()
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 
 		pattern = str2pat( pattern )
 		pattern_regex = re.compile( fnmatch.translate( pattern ), re.IGNORECASE )
@@ -345,8 +337,7 @@ class Client( notifier.signals.Provider ):
 			group = []
 			req = protocol.Request_NODE_LIST()
 			req.group = group_name
-			if not self.send( req.pack() ):
-				raise ConnectionError()
+			self.send(req.pack())
 			node_uris = self.recv_blocking()
 			for uri in node_uris.data:
 				node = self.get_node_info( uri )
@@ -375,8 +366,7 @@ class Client( notifier.signals.Provider ):
 	def get_group_info( self, group ):
 		req = protocol.Request_NODE_LIST()
 		req.group = group
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 		node_uris = self.recv_blocking()
 		group = []
 		if self.is_error( node_uris ):
@@ -384,8 +374,7 @@ class Client( notifier.signals.Provider ):
 		for node_uri in node_uris.data:
 			req = protocol.Request_NODE_QUERY()
 			req.uri = node_uri
-			if not self.send( req.pack() ):
-				raise ConnectionError()
+			self.send(req.pack())
 			node_info = self.recv_blocking()
 			if not self.is_error( node_info ):
 				group.append( node_info.data )
@@ -414,9 +403,7 @@ class Client( notifier.signals.Provider ):
 		 ],
 		]"""
 		req = protocol.Request_GROUP_LIST()
-		if not self.send( req.pack() ):
-			raise ConnectionError()
-
+		self.send(req.pack())
 		groups = self.recv_blocking()
 
 		tree_data = []
@@ -425,8 +412,7 @@ class Client( notifier.signals.Provider ):
 			group = []
 			req = protocol.Request_NODE_LIST()
 			req.group = group_name
-			if not self.send( req.pack() ):
-				raise ConnectionError()
+			self.send(req.pack())
 			node_uris = self.recv_blocking()
 			nodes = [(Client._uri2name( uri ), uri) for uri in node_uris.data]
 			nodes.sort()
@@ -434,8 +420,7 @@ class Client( notifier.signals.Provider ):
 				domains = []
 				req = protocol.Request_NODE_QUERY()
 				req.uri = node_uri
-				if not self.send( req.pack() ):
-					raise ConnectionError()
+				self.send(req.pack())
 				node_info = self.recv_blocking()
 
 				if self.is_error( node_info ):
@@ -457,8 +442,7 @@ class Client( notifier.signals.Provider ):
 		req.domain = domain_info.uuid
 		# RUN PAUSE SHUTDOWN RESTART
 		req.state = state
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 		return self.recv_blocking()
 
 	def __next_letter( self, char, exclude = [] ):
@@ -547,8 +531,7 @@ class Client( notifier.signals.Provider ):
 		ud.debug(ud.ADMIN, ud.INFO, 'interfaces to send: %s' % data.interfaces)
 		self._verify_device_files( data )
 		req.domain = data
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 		return self.recv_blocking()
 
 	def domain_migrate( self, source, dest, domain_uuid ):
@@ -556,8 +539,7 @@ class Client( notifier.signals.Provider ):
 		req.uri = source
 		req.domain = domain_uuid
 		req.target_uri = dest
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 		return self.recv_blocking()
 
 	def domain_undefine( self, node_uri, domain_uuid, drives ):
@@ -565,8 +547,7 @@ class Client( notifier.signals.Provider ):
 		req.uri = node_uri
 		req.domain = domain_uuid
 		req.volumes = drives
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 		return self.recv_blocking()
 
 	def domain_save( self, node_name, domain_info ):
@@ -575,8 +556,7 @@ class Client( notifier.signals.Provider ):
 		req.domain = domain_info.uuid
 		snapshot_dir = umc.registry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' )
 		req.statefile = os.path.join( snapshot_dir, '%s.snapshot' % domain_info.uuid )
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 		return self.recv_blocking()
 
 	def domain_restore( self, node_name, domain_info ):
@@ -585,8 +565,7 @@ class Client( notifier.signals.Provider ):
 		req.domain = domain_info.uuid
 		snapshot_dir = umc.registry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' )
 		req.statefile = os.path.join( snapshot_dir, '%s.snapshot' % domain_info.uuid )
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 		return self.recv_blocking()
 
 	def domain_snapshot_create(self, node_uri, domain_info, snapshot_name):
@@ -595,8 +574,7 @@ class Client( notifier.signals.Provider ):
 		req.uri = node_uri
 		req.domain = domain_info.uuid
 		req.snapshot = snapshot_name
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 		response = self.recv_blocking()
 		if self.is_error(response):
 			raise UvmmError(response.msg)
@@ -607,8 +585,7 @@ class Client( notifier.signals.Provider ):
 		req.uri = node_uri
 		req.domain = domain_info.uuid
 		req.snapshot = snapshot_name
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 		response = self.recv_blocking()
 		if self.is_error(response):
 			raise UvmmError(response.msg)
@@ -619,8 +596,7 @@ class Client( notifier.signals.Provider ):
 		req.uri = node_uri
 		req.domain = domain_info.uuid
 		req.snapshot = snapshot_name
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 		response = self.recv_blocking()
 		if self.is_error(response):
 			raise UvmmError(response.msg)
@@ -628,8 +604,7 @@ class Client( notifier.signals.Provider ):
 	def storage_pools(self, node_uri):
 		"""Get pools of node."""
 		req = protocol.Request_STORAGE_POOLS(uri=node_uri)
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 		response = self.recv_blocking()
 		if self.is_error( response ):
 			raise UvmmError(response.msg)
@@ -640,8 +615,7 @@ class Client( notifier.signals.Provider ):
 		req.uri = node_uri
 		req.pool = pool
 		req.type = type
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 		response = self.recv_blocking()
 		if not self.is_error( response ):
 			return response.data
@@ -652,8 +626,7 @@ class Client( notifier.signals.Provider ):
 		req = protocol.Request_STORAGE_VOLUMES_DESTROY()
 		req.uri = node_uri
 		req.volumes = volumes
-		if not self.send( req.pack() ):
-			raise ConnectionError()
+		self.send(req.pack())
 		response = self.recv_blocking()
 		if not self.is_error( response ):
 			return True
