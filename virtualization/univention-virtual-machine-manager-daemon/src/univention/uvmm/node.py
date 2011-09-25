@@ -254,8 +254,8 @@ class Domain(object):
 		"""Update statistics."""
 		# Full XML definition
 		self.xml2obj( domain )
-		# List of snapshots
 
+		# List of snapshots
 		snapshots = None
 		if self.node.pd.supports_snapshot:
 			has_snapshot_disk = False
@@ -279,6 +279,8 @@ class Domain(object):
 						s.ctime = int(ctime)
 						snapshots[name] = s
 		self.pd.snapshots = snapshots
+
+		# Suspend image
 		if self.node.pd.supports_suspend:
 			self.pd.suspended = domain.hasManagedSaveImage(0)
 		else:
@@ -426,7 +428,7 @@ class Node(object):
 		self.timerEvent = threading.Event()
 		self.timer = threading.Thread(group=None, target=self.run, name=self.pd.uri, args=(), kwargs={})
 		self.timer.start()
-	
+
 	def run(self):
 		"""Handle regular poll. Also checks connection liveness."""
 		logger.info("timer_callback(%s) start" % (self.pd.uri,))
@@ -632,6 +634,7 @@ class Nodes(dict):
 	IDLE_FREQUENCY = 15*1000 # ms
 	USED_FREQUENCY = 10*1000 # ms
 	BEBO_FREQUENCY = 5*60*1000 # ms
+
 	def __init__(self):
 		super(Nodes,self).__init__()
 		self.frequency = -1
@@ -639,62 +642,61 @@ class Nodes(dict):
 		"""x.__delitem__(i) <==> del x[i]"""
 		self[uri].unregister()
 		super(Nodes, self).__delitem__(uri)
+
 	def set_frequency(self, hz):
 		"""Set polling frequency for update."""
 		for node in self.values():
 			node.set_frequency(hz)
 
+	def add(self, uri):
+		"""Add node to watch list.
+		>>> #node_add("qemu:///session")
+		>>> #node_add("xen:///")"""
+		if uri in self:
+			raise NodeError(_('Hypervisor "%(uri)s" is already connected.'), uri=uri)
+
+		node = Node(uri)
+		self[uri] = node
+
+		logger.debug("Hypervisor '%s' added." % (uri,))
+
+	def remove(self, uri):
+		"""Remove node from watch list."""
+		try:
+			del self[uri]
+		except KeyError:
+			raise NodeError(_('Hypervisor "%(uri)s" is not connected.'), uri=uri)
+		logger.debug("Hypervisor '%s' removed." % (uri,))
+
+	def query(self, uri):
+		"""Get domain data from node."""
+		try:
+			node = self[uri]
+			return node
+		except KeyError:
+			raise NodeError(_('Hypervisor "%(uri)s" is not connected.'), uri=uri)
+
+	def frequency(hz=IDLE_FREQUENCY, uri=None):
+		"""Set frequency for polling nodes."""
+		if uri is None:
+			self.set_frequency(hz)
+		else:
+			node = self.query(uri)
+			node.set_frequency(hz)
+
+	def list(self, group):
+		"""Return list of watched nodes."""
+		if group == 'default': # FIXME
+			return self.keys()
+		else:
+			return []
+
 nodes = Nodes()
-
-def node_add(uri):
-	"""Add node to watch list.
-	>>> #node_add("qemu:///session")
-	>>> #node_add("xen:///")"""
-	global nodes
-	if uri in nodes:
-		raise NodeError(_('Hypervisor "%(uri)s" is already connected.'), uri=uri)
-
-	node = Node(uri)
-	nodes[uri] = node
-
-	logger.debug("Hypervisor '%s' added." % (uri,))
-
-def node_remove(uri):
-	"""Remove node from watch list."""
-	global nodes
-	try:
-		del nodes[uri]
-	except KeyError:
-		raise NodeError(_('Hypervisor "%(uri)s" is not connected.'), uri=uri)
-	logger.debug("Hypervisor '%s' removed." % (uri,))
-
-def node_query(uri):
-	"""Get domain data from node."""
-	global nodes
-	try:
-		node = nodes[uri]
-		if node.conn is None:
-			raise NodeError(_('Hypervisor "%(uri)s" is unavailable.'), uri=uri)
-		return node
-	except KeyError:
-		raise NodeError(_('Hypervisor "%(uri)s" is not connected.'), uri=uri)
-
-def node_frequency(hz=Nodes.IDLE_FREQUENCY, uri=None):
-	"""Set frequency for polling nodes."""
-	global nodes
-	if uri is None:
-		nodes.set_frequency(hz)
-	else:
-		node = node_query(uri)
-		node.set_frequency(hz)
-
-def node_list(group):
-	"""Return list of watched nodes."""
-	global nodes
-	if group == 'default': # FIXME
-		return [uri for uri in nodes]
-	else:
-		return []
+node_add = nodes.add
+node_remove = nodes.remove
+node_query = nodes.query
+node_frequency = nodes.frequency
+node_list = nodes.list
 
 def group_list():
 	"""Return list of groups for nodes."""
