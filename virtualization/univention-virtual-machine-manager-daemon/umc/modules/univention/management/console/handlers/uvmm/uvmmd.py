@@ -393,44 +393,49 @@ class Client( notifier.signals.Provider ):
 		return uri
 
 	def get_node_tree( self ):
-		"""Return tree of names for all groups, nodes, and domains.
-		[
-		 [group_name, [
-		               node_name, [domain, ...],
-		               node_name, None,
-		               ...
-		              ],
-		 ],
-		]"""
+		"""Return a 'tree', which is a nested dict of names for all groups,
+		nodes and domains including 'age' of node_info and 'state' from
+		domain_info.
+		tree = {
+			group_name: {
+				node_uri: (age, {
+					domain_uuid: domain_info,
+					...
+					}),
+				node_uri: (age, {}),
+				...
+			},
+			...
+		}
+		"""
+
 		req = protocol.Request_GROUP_LIST()
 		self.send(req.pack())
 		groups = self.recv_blocking()
 
-		tree_data = []
-		groups.data.sort()
+		tree_data = {}
 		for group_name in groups.data:
-			group = []
 			req = protocol.Request_NODE_LIST()
 			req.group = group_name
 			self.send(req.pack())
 			node_uris = self.recv_blocking()
-			nodes = [(Client._uri2name( uri ), uri) for uri in node_uris.data]
-			nodes.sort()
-			for (node_name, node_uri) in nodes:
-				domains = []
+
+			tree_data[group_name] = group = {}
+			for node_uri in node_uris.data:
+				domains = {}
 				req = protocol.Request_NODE_QUERY()
 				req.uri = node_uri
 				self.send(req.pack())
 				node_info = self.recv_blocking()
 
-				if self.is_error( node_info ):
-					group.extend( [node_name, None ]  )
+				state[node_uri] = node_info.data.last_try - node_info.data.last_update
+				if self.is_error(node_info):
+					age = float('infinity')
 				else:
-					node_info.data.domains.sort(lambda a, b: cmp(a.name, b.name))
+					age = node_info.data.last_try - node_info.data.last_update
 					for domain_info in node_info.data.domains:
-						domains.append( domain_info.name )
-					group.extend( [ node_name, domains ] )
-			tree_data.append( [ group_name, group ] )
+						domains[domain_info.uuid] = domain_info
+				group[node_uri] = (age, domains)
 
 		return tree_data
 

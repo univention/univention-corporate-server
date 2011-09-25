@@ -433,7 +433,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			return umcd.make( self[ 'uvmm/search' ][ key ], default = object.options.get( key, default ) )
 
 		ud.debug( ud.ADMIN, ud.INFO, 'Search' )
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, tuple() )
+		( success, res ) = TreeView.safely_get_tree( self.uvmm, object )
 		if not success:
 			self.finished(object.id(), res)
 			return
