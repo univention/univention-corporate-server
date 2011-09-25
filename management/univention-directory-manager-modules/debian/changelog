@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.92-1) unstable; urgency=low
+
+  * fixed search for DNS service records when using a filter for the name
+    attribute that is of syntax complex; Bug #23593
+  * minor fix in simpleComputer for DHCP entries
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 25 Sep 2011 17:43:31 +0200
+
 univention-directory-manager-modules (7.0.91-1) unstable; urgency=low
 
   * Call computers/windows_domaincontroller lookup function in

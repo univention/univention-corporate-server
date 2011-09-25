@@ -1832,7 +1832,7 @@ class simpleComputer( simpleLdap ):
 				entry = self.info['dhcpEntryZone'][0]
 				dn, ip, mac = self.__split_dhcp_line(entry)
 				if dn and ip and mac:
-					self.info['dhcpEntryZone'] = [ '%s %s %s' % (dn, self.info['ip'][0], self.info['mac'][0]) ]
+					self.info['dhcpEntryZone'] = [ dn, self.info['ip'][0], self.info['mac'][0] ]
 				else:
 					self.info['dhcpEntryZone'] = []
 			else:

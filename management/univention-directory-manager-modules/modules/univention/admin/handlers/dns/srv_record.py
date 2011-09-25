@@ -97,7 +97,9 @@ def unmapName(old):
 	return [service, protocol]
 
 def mapName(old):
-	return('_%s._%s' % (old[0], old[1]))
+	if isinstance( old, basestring ):
+		return old
+	return '_%s._%s' % ( old[ 0 ], old[ 1 ] )
 
 def unmapLocation(old):
 	new=[]
