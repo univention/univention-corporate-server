@@ -252,7 +252,7 @@ class Domain(object):
 
 	def update_expensive(self, domain):
 		"""Update statistics."""
-		# Full XML efinition
+		# Full XML definition
 		self.xml2obj( domain )
 		# List of snapshots
 
@@ -466,13 +466,13 @@ class Node(object):
 				try:
 					self.conn.domainEventDeregister(self.domainCB)
 				except Exception, e:
-					logger.error("%s: Exception in domainEventRegister", (self.uri,), exc_info=True)
+					logger.error("%s: Exception in domainEventDeregister" % (self.pd.uri,), exc_info=True)
 					pass
 				self.domainCB = None
 				try:
 					self.conn.close()
 				except Exception, e:
-					logger.error('%s: Exception in conn.close', (self.uri,), exc_info=True)
+					logger.error('%s: Exception in conn.close' % (self.pd.uri,), exc_info=True)
 					pass
 				self.conn = None
 
@@ -501,7 +501,7 @@ class Node(object):
 		info = self.conn.getInfo()
 		self.pd.phyMem = long(info[1]) << 20 # MiB
 		self.pd.cpus = info[2]
-		self.pd.cores = info[4:8]
+		self.pd.cores = tuple(info[4:8])
 		xml = self.conn.getCapabilities()
 		self.pd.capabilities = DomainTemplate.list_from_xml(xml)
 		type = self.conn.getType()
@@ -978,7 +978,7 @@ def _domain_edit(node, dom_stat, xml):
 		if domain_devices_graphic.attrib.get('passwd') != graphics.passwd:
 			domain_devices_graphic.attrib['passwd'] = graphics.passwd
 			live_updates.append(domain_devices_graphic)
-	
+
 	if dom_stat.domain_type in ('kvm'): # 'qemu'
 		models = set()
 		for iface in dom_stat.interfaces:
@@ -1068,7 +1068,7 @@ def domain_define( uri, domain ):
 			pass # New domain with pre-configured UUID
 		else:
 			old_stat = dom.key()
-	
+
 	new_xml, live_updates = _domain_edit(node, domain, old_xml)
 
 	# create new disks
@@ -1080,7 +1080,7 @@ def domain_define( uri, domain ):
 				create_storage_volume(conn, domain, disk)
 			except StorageError, e:
 				raise NodeError(e)
-	
+
 	# update running domain definition
 	if old_dom and live_updates:
 		try:

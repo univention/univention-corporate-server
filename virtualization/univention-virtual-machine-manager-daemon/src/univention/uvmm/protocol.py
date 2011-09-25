@@ -310,9 +310,9 @@ class Data_Node(object):
 		self.maxMem = None
 		self.cpu_usage = None
 		self.cpus = None
-		self.cores = [None, None, None, None]
+		self.cores = (None, None, None, None)
 		self.domains = [] # Data_Domain
-		self.capabilities = {} # node.DomainTemplate
+		self.capabilities = [] # node.DomainTemplate
 		self.last_try = 0.0
 		self.last_update = 0.0
 		self.supports_suspend = False
