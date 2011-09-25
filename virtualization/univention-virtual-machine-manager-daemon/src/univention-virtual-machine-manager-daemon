@@ -248,7 +248,10 @@ if __name__ == '__main__':
 	virEventLoopPureStart()
 	virEventLoopPureRegister()
 
-	from univention.uvmm.node import node_add
+	from univention.uvmm.node import node_add, nodes
+	if not options.clean and options.cache != '':
+		nodes.set_cache(options.cache)
+
 	# Add nodes from .ini file
 	for section in config.sections():
 		if section.startswith("poller:"):
@@ -265,7 +268,7 @@ if __name__ == '__main__':
 	# Add nodes from LDAP
 	from univention.uvmm.uvmm_ldap import cached, ldap_uris, LdapError
 	try:
-		if options.cache != '' and not options.clean:
+		if not options.clean and options.cache != '':
 			get_ldap_uris = lambda:ldap_uris()
 			uris = cached("%s/ldap.pic" % (options.cache,), get_ldap_uris)
 		else:

@@ -41,7 +41,7 @@ import socket
 import logging
 from xml.dom.minidom import parseString
 import math
-from helpers import TranslatableException, ms, N_ as _
+from helpers import TranslatableException, ms, N_ as _, uri_encode, uri_decode
 from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
 import univention.admin.uexceptions
 import traceback
@@ -51,10 +51,17 @@ from storage import create_storage_pool, create_storage_volume, destroy_storage_
 from protocol import Data_Domain, Data_Node, Data_Snapshot, _map, Disk, Interface, Graphic
 from network import network_start, network_find_by_bridge, NetworkError
 import os
+import stat
+import operator
+import errno
 try:
 	import xml.etree.ElementTree as ET
 except ImportError:
 	import elementtree.ElementTree as ET
+try:
+	import cPickle as pickle
+except ImportError:
+	import pickle
 QEMU_URI = 'http://libvirt.org/schemas/domain/qemu/1.0'
 QEMU_PXE_PREFIX = '/usr/share/kvm/pxe'
 
@@ -180,18 +187,44 @@ class DomainTemplate(object):
 		'''Return True if domain matches os_type, arch and domain_type.'''
 		return self.arch == domain.arch and self.domain_type == domain.domain_type and self.os_type == domain.os_type
 
-class Domain(object):
+class PersistentCached(object):
+	"""Abstract class to implement caching."""
+	def cache_file_name(self, suffix='.pic'):
+		raise NotImplementedError()
+
+	def cache_save(self, data):
+		"""Save public data to cache."""
+		new_name = self.cache_file_name(suffix='.new')
+		old_name = self.cache_file_name()
+		fd = os.open(new_name, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, stat.S_IREAD | stat.S_IWRITE)
+		try:
+			os.write(fd, data)
+		finally:
+			os.close(fd)
+		os.rename(new_name, old_name)
+
+	def cache_purge(self):
+		"""Purge public data from cache."""
+		old_name = self.cache_file_name()
+		new_name = self.cache_file_name(suffix='.old')
+		os.rename(old_name, new_name)
+
+class Domain(PersistentCached):
 	"""Container for domain statistics."""
 	CPUTIMES = (10, 60, 5*60) # 10s 60s 5m
 	def __init__(self, domain, node):
 		self.node = node
-		self.pd = Data_Domain() # public data
-		self.pd.uuid = domain.UUIDString()
-		self.pd.os_type = domain.OSType()
 		self._time_stamp = 0.0
 		self._time_used = 0L
 		self._cpu_usage = 0
-		self.update(domain)
+		self._cache_id = None
+		self.pd = Data_Domain()
+		if isinstance(domain, libvirt.virDomain):
+			self.pd.uuid = domain.UUIDString()
+			self.pd.os_type = domain.OSType()
+			self.update(domain)
+		elif isinstance(domain, basestring): # XML
+			self.xml2obj(domain)
 		self.update_ldap()
 
 	def __eq__(self, other):
@@ -199,8 +232,8 @@ class Domain(object):
 
 	def update(self, domain):
 		"""Update statistics which may change often."""
-		id = domain.ID()
-		self.pd.name = domain.name()
+		if self.pd.name is None:
+			self.pd.name = domain.name()
 		for i in range(5):
 			info = domain.info()
 			if info[0] != libvirt.VIR_DOMAIN_NOSTATE: # ignore =?= libvirt's transient error
@@ -253,7 +286,15 @@ class Domain(object):
 	def update_expensive(self, domain):
 		"""Update statistics."""
 		# Full XML definition
-		self.xml2obj( domain )
+		xml = domain.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+		cache_id = hash(xml)
+		if self._cache_id != cache_id:
+			try:
+				self.cache_save(xml)
+				self._cache_id = cache_id
+			except IOError, e:
+				logger.warning("Failed to cache domain %s: %s" % (self.pd.uuid, e))
+			self.xml2obj(xml)
 
 		# List of snapshots
 		snapshots = None
@@ -293,14 +334,15 @@ class Domain(object):
 		except LdapError, e:
 			self.pd.annotations = {}
 
-	def xml2obj( self, domain ):
+	def xml2obj(self, xml):
 		"""Parse XML into python object."""
-		xml = domain.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
 		doc = parseString(xml)
 		devices = doc.getElementsByTagName( 'devices' )[ 0 ]
 		self.pd.domain_type = doc.documentElement.getAttribute('type')
 		if not self.pd.domain_type:
 			logger.error("Failed /domain/@type from %s" % xml)
+		self.pd.uuid = doc.getElementsByTagName('uuid')[0].firstChild.nodeValue
+		self.pd.name = doc.getElementsByTagName('name')[0].firstChild.nodeValue
 		os = doc.getElementsByTagName( 'os' )
 		if os:
 			os = os[ 0 ]
@@ -415,17 +457,80 @@ class Domain(object):
 		"""Return a unique key for this domain and generation."""
 		return hash((self.pd.uuid, self._time_stamp))
 
-class Node(object):
+	def cache_file_name(self, uuid=None, suffix='.xml'):
+		"""Return the path of the domain cache file."""
+		if uuid is None:
+			uuid = self.pd.uuid
+		return os.path.join(self.node.cache_dom_dir(), uuid + suffix)
+
+class _DomainDict(dict):
+	"""Dictionary for handling domains of a node and their persistent cache."""
+	def __delitem__(self, uuid):
+		"""x.__delitem__(i) <==> del x[i]"""
+		domStat = super(_DomainDict, self).pop(uuid)
+		try:
+			domStat.cache_purge()
+		except OSError, e:
+			if e.errno != errno.ENOENT:
+				logger.warning("Failed to remove cached domain '%s#%s': %s", domStat.node.pd.uri, uuid, e)
+
+class Node(PersistentCached):
 	"""Container for node statistics."""
-	def __init__(self, uri):
-		self.pd = Data_Node() # public data
-		self.pd.uri = uri
+	def __init__(self, uri, cache_dir=None):
+		self.cache_dir = cache_dir
+		self.domains = _DomainDict()
 		self.conn = None
-		self.domains = {}
 		self.config_frequency = Nodes.IDLE_FREQUENCY
 		self.current_frequency = Nodes.IDLE_FREQUENCY
 		self.domainCB = None
 		self.timerEvent = threading.Event()
+		try:
+			# Calculate base cache dir for node
+			cache_dom_dir = self.cache_dom_dir(uri)
+			try:
+				os.mkdir(cache_dom_dir, 0700) # contains VNC password
+			except OSError, e:
+				if e.errno != errno.EEXIST:
+					raise
+
+			# Load cached node info
+			cache_file_name = self.cache_file_name(uri)
+			f = open(cache_file_name, 'r')
+			try:
+				self.pd = pickle.load(f)
+			finally:
+				f.close()
+			assert self.pd.uri == uri
+			logger.debug("Loaded from cache '%s'", self.pd.uri)
+
+			# Load cached domains info
+			for root, dirs, files in os.walk(cache_dom_dir):
+				for fname in files:
+					if not fname.endswith('.xml'):
+						continue
+					p = os.path.join(root, fname)
+					try:
+						f = open(p, 'r')
+						try:
+							xml = f.read()
+						finally:
+							f.close()
+						assert xml
+						assert isinstance(xml, basestring)
+						domStat = Domain(xml, self)
+						assert domStat.cache_file_name() == p
+						self.domains[domStat.pd.uuid] = domStat
+						logger.debug("Loaded from cache '%s#%s'", self.pd.uri, domStat.pd.uuid)
+					except (IOError, AssertionError), e:
+						logger.warning("Failed to load cached domain %s: %s" % (p, e))
+				del dirs[:] # just that direcory; no recursion
+		except (IOError, pickle.PickleError), e:
+			logger.warning("Failed to load cached state of %s: %s" % (uri, e))
+			self.pd = Data_Node() # public data
+			self.pd.uri = uri
+		self._cache_id = self.calc_cache_id()
+
+		# schedule periodic update
 		self.timer = threading.Thread(group=None, target=self.run, name=self.pd.uri, args=(), kwargs={})
 		self.timer.start()
 
@@ -540,8 +645,10 @@ class Node(object):
 					domStat = Domain(dom, node=self)
 					self.domains[uuid] = domStat
 				elif event == libvirt.VIR_DOMAIN_EVENT_UNDEFINED:
-					if uuid in self.domains:
+					try:
 						del self.domains[uuid]
+					except KeyError:
+						pass
 				else: # VIR_DOMAIN_EVENT_STARTED _SUSPENDED _RESUMED _STOPPED
 					try:
 						domStat = self.domains[uuid]
@@ -616,6 +723,15 @@ class Node(object):
 		self.pd.maxMem = maxMem
 		self.pd.cpu_usage = min(1000, cpu_usage)
 
+		cache_id = self.calc_cache_id()
+		if self._cache_id != cache_id:
+			try:
+				data = pickle.dumps(self.pd)
+				self.cache_save(data)
+				self._cache_id = cache_id
+			except IOError, e:
+				logger.exception("Failed to write cached node %s: %s" % (self.pd.uri, e))
+
 	def wait_update(self, domain, state_key, timeout=10):
 		"""Wait until domain gets updated."""
 		while timeout > 0:
@@ -629,6 +745,22 @@ class Node(object):
 		else:
 			logger.warning('Timeout waiting for update.')
 
+	def calc_cache_id(self):
+		"""Calculate key for disk cache."""
+		key = hash((self.pd.phyMem, self.pd.cores, self.pd.supports_suspend, self.pd.supports_snapshot))
+		key ^= reduce(operator.xor, map(hash, self.domains.keys()), 0)
+		return key
+
+	def cache_file_name(self, uri=None, suffix='.pic'):
+		"""Return the path of the node cache file."""
+		if uri is None:
+			uri = self.pd.uri
+		return os.path.join(self.cache_dir, uri_encode(uri) + suffix)
+
+	def cache_dom_dir(self, uri=None):
+		"""Return the path of the domain cache directory of the node."""
+		return self.cache_file_name(uri, suffix='.d')
+
 class Nodes(dict):
 	"""Handle registered nodes."""
 	IDLE_FREQUENCY = 15*1000 # ms
@@ -638,6 +770,8 @@ class Nodes(dict):
 	def __init__(self):
 		super(Nodes,self).__init__()
 		self.frequency = -1
+		self.cache_dir = None
+
 	def __delitem__(self, uri):
 		"""x.__delitem__(i) <==> del x[i]"""
 		self[uri].unregister()
@@ -648,6 +782,10 @@ class Nodes(dict):
 		for node in self.values():
 			node.set_frequency(hz)
 
+	def set_cache(self, cache):
+		"""Register a cache."""
+		self.cache_dir = cache
+
 	def add(self, uri):
 		"""Add node to watch list.
 		>>> #node_add("qemu:///session")
@@ -655,7 +793,7 @@ class Nodes(dict):
 		if uri in self:
 			raise NodeError(_('Hypervisor "%(uri)s" is already connected.'), uri=uri)
 
-		node = Node(uri)
+		node = Node(uri, cache_dir=self.cache_dir)
 		self[uri] = node
 
 		logger.debug("Hypervisor '%s' added." % (uri,))
@@ -1279,6 +1417,7 @@ def domain_undefine(uri, domain, volumes=[]):
 			# libvirt returns an 'internal error' when no save image exists
 			if e.get_error_code() != libvirt.VIR_ERR_INTERNAL_ERROR:
 				logger.debug(e)
+		del node.domains[domain]
 		dom.undefine()
 	except libvirt.libvirtError, e:
 		logger.error(e)
@@ -1289,16 +1428,29 @@ def domain_migrate(source_uri, domain, target_uri):
 	try:
 		source_node = node_query(source_uri)
 		source_conn = source_node.conn
-		source_dom = source_conn.lookupByUUIDString(domain)
-		for t in range(10):
-			source_state = source_dom.info()[0]
-			if source_state != libvirt.VIR_DOMAIN_NOSTATE:
-				break
-			time.sleep(1)
+		if source_conn is not None:
+			source_dom = source_conn.lookupByUUIDString(domain)
+			for t in range(10):
+				source_state = source_dom.info()[0]
+				if source_state != libvirt.VIR_DOMAIN_NOSTATE:
+					break
+				time.sleep(1)
 		target_node = node_query(target_uri)
 		target_conn = target_node.conn
 
-		if source_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED):
+		if source_conn is None: # offline node
+			domStat = source_node.domains[domain]
+			try:
+				p = domStat.cache_file_name()
+				f = open(p, 'r')
+				try:
+					xml = f.read()
+				finally:
+					f.close()
+				target_conn.defineXML(xml)
+			except IOError, e:
+				raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=e)
+		elif source_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED):
 			# running domains are live migrated
 			flags = libvirt.VIR_MIGRATE_LIVE | libvirt.VIR_MIGRATE_PERSIST_DEST | libvirt.VIR_MIGRATE_UNDEFINE_SOURCE
 			target_dom = source_dom.migrate(target_conn, flags, None, None, 0)

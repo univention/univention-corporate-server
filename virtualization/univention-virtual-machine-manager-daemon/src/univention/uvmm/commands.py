@@ -87,8 +87,6 @@ class _Commands:
 			local_data = node.node_query(request.uri)
 			if local_data is None:
 				raise CommandError('NODE_QUERY', _('unknown node %(uri)s'), uri=request.uri)
-			if local_data.conn is None:
-				raise CommandError('NODE_QUERY', _('Node %(uri)s is not available'), uri=request.uri)
 
 			pkg_data = copy.copy(local_data.pd)
 			pkg_data.domains = [d.pd for d in local_data.domains.values()]

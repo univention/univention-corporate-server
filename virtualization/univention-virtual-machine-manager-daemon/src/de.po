@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager 0.9.321-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-08-25 12:46+0200\n"
+"POT-Creation-Date: 2011-09-23 18:49+0200\n"
 "PO-Revision-Date: 2011-08-25 12:47+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -57,7 +57,11 @@ msgstr "Authentifizierung fehlgeschlagen"
 msgid "Authentication protocol violated"
 msgstr "Authentifizierungsprotokoll verletzt"
 
-#: src/univention/uvmm/commands.py:356
+#: src/univention-virtual-machine-manager-daemon:195
+msgid "Cache options"
+msgstr "Zwischenspeicher-Optionen"
+
+#: src/univention/uvmm/commands.py:354
 #, python-format
 msgid "Command \"%(command)s\" is restricted"
 msgstr "Kommando \"%(command)s\" ist verboten"
@@ -94,17 +98,17 @@ msgstr "Keine Antwort für \"%(uri)s\""
 msgid "Could not send request: %(errno)d"
 msgstr "Konnte Socket nicht öffnen: %(errno)d"
 
-#: src/univention-virtual-machine-manager-daemon:201
+#: src/univention-virtual-machine-manager-daemon:204
 msgid "Daemon options"
 msgstr "Dämonoptionen"
 
-#: src/univention/uvmm/node.py:1297
+#: src/univention/uvmm/node.py:1448
 #, python-format
 msgid "Domain \"%(domain)s\" in state \"%(state)s\" can not be migrated"
 msgstr ""
 "Domain \"%(domain)s\" im Zustand \"%(state)s\" kann nicht migriert werden"
 
-#: src/univention/uvmm/node.py:1042
+#: src/univention/uvmm/node.py:1185
 #, python-format
 msgid "Domain name \"%(domain)s\" already used by \"%(uuid)s\""
 msgstr "Domain-Name \"%(domain)s\" wird bereits von \"%(uuid)s\" verwendet"
@@ -113,7 +117,7 @@ msgstr "Domain-Name \"%(domain)s\" wird bereits von \"%(uuid)s\" verwendet"
 msgid "EOS while waiting for answer."
 msgstr "Ende des Datenstroms beim Warten auf eine Antwort"
 
-#: src/univention/uvmm/node.py:1335
+#: src/univention/uvmm/node.py:1486
 #, python-format
 msgid "Error creating \"%(domain)s\" snapshot: %(error)s"
 msgstr "Fehler beim Sichern der Domäne \"%(domain)s\": %(error)s"
@@ -133,18 +137,18 @@ msgstr ""
 "Fehler beim Erzeugen des Speichermediums \"%(name)s\" für \"%(domain)s\": %"
 "(error)s"
 
-#: src/univention/uvmm/node.py:1117
+#: src/univention/uvmm/node.py:1268
 #, python-format
 msgid "Error defining domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Definieren der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1375 src/univention/uvmm/node.py:1384
+#: src/univention/uvmm/node.py:1529 src/univention/uvmm/node.py:1538
 #, python-format
 msgid "Error deleting \"%(domain)s\" snapshot: %(error)s"
 msgstr ""
 "Fehler beim Löschen des Sciherungsstandes von \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/storage.py:199 src/univention/uvmm/storage.py:300
+#: src/univention/uvmm/storage.py:199 src/univention/uvmm/storage.py:302
 #, python-format
 msgid "Error listing pools at \"%(uri)s\": %(error)s"
 msgstr "Fehler beim Anzeigen der Speicherbereiche von \"%(uri)s\": %(error)s"
@@ -164,17 +168,17 @@ msgstr ""
 "Fehler beim Finden der Speichermediums \"%(volume)s\" von \"%(domain)s\": %"
 "(error)s"
 
-#: src/univention/uvmm/node.py:1215
+#: src/univention/uvmm/node.py:1366
 #, python-format
 msgid "Error managing domain \"%(domain)s\""
 msgstr "Fehler beim Verwalten der Domäne \"%(domain)s\""
 
-#: src/univention/uvmm/node.py:1218 src/univention/uvmm/node.py:1221
+#: src/univention/uvmm/node.py:1369 src/univention/uvmm/node.py:1372
 #, python-format
 msgid "Error managing domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Verwalten der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1314
+#: src/univention/uvmm/node.py:1465
 #, python-format
 msgid "Error migrating domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Migrieren der Domäne \"%(domain)s\": %(error)s"
@@ -194,7 +198,7 @@ msgstr "Fehler beim Lesen der unvollständigen Datei %(file)s"
 msgid "Error removing %(file)s.old: %(msg)s"
 msgstr "Fehler beim Entfernen der Datei %(file)s.old: %(msg)s"
 
-#: src/univention/uvmm/node.py:1108
+#: src/univention/uvmm/node.py:1259
 #, python-format
 msgid "Error removing domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Löschen der Domäne \"%(domain)s\": %(error)s"
@@ -209,7 +213,7 @@ msgstr "Fehler beim Umbenennen der Datei %(file)s.new: %(msg)s"
 msgid "Error renaming %(file)s: %(msg)s"
 msgstr "Fehler beim Umbenennen der Datei %(file)s: %(msg)s"
 
-#: src/univention/uvmm/node.py:1249
+#: src/univention/uvmm/node.py:1400
 #, python-format
 msgid "Error restoring domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Wiederherstellen der Domäne \"%(domain)s\": %(error)s"
@@ -224,17 +228,17 @@ msgstr "Fehler beim Auslesen der aktiven Netzwerke: %(error)s"
 msgid "Error retrieving list of networks: %(error)s"
 msgstr "Fehler beim Auslesen der Netzwerke: %(error)s"
 
-#: src/univention/uvmm/node.py:1047 src/univention/uvmm/node.py:1056
+#: src/univention/uvmm/node.py:1190 src/univention/uvmm/node.py:1199
 #, python-format
 msgid "Error retrieving old domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Auslesen der alten Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1352 src/univention/uvmm/node.py:1358
+#: src/univention/uvmm/node.py:1506 src/univention/uvmm/node.py:1512
 #, python-format
 msgid "Error reverting \"%(domain)s\" to snapshot: %(error)s"
 msgstr "Fehler beim Wiederherstellen der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1235
+#: src/univention/uvmm/node.py:1386
 #, python-format
 msgid "Error saving domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Speichern der Domäne \"%(domain)s\": %(error)s"
@@ -244,17 +248,18 @@ msgstr "Fehler beim Speichern der Domäne \"%(domain)s\": %(error)s"
 msgid "Error starting network %(name)s: %(error)s"
 msgstr "Fehler beim Starten des Netzwerks %(name)s: %(error)s"
 
-#: src/univention/uvmm/node.py:1271
+#: src/univention/uvmm/node.py:1422
 #, python-format
 msgid "Error undefining domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Löschen der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1402 src/univention/uvmm/node.py:1419
+#: src/univention/uvmm/node.py:1556 src/univention/uvmm/node.py:1573
 #, python-format
 msgid "Error updating domain \"%(domain)s\""
 msgstr "Fehler beim Aktualisieren der Domäne \"%(domain)s\""
 
-#: src/univention/uvmm/node.py:1096
+#: src/univention/uvmm/node.py:1239 src/univention/uvmm/node.py:1242
+#: src/univention/uvmm/node.py:1247
 #, python-format
 msgid "Error updating domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Aktualisieren der Domäne \"%(domain)s\": %(error)s"
@@ -278,56 +283,51 @@ msgstr "Fehler: %(exception)s"
 msgid "Failed to fork daemon."
 msgstr "Dämon konnte sich nicht abspalten."
 
-#: src/univention/uvmm/node.py:1090
+#: src/univention/uvmm/node.py:1233
 msgid "Failed to update device."
 msgstr "Dämon Gerät nicht aktualisieren."
 
-#: src/univention/uvmm/node.py:1136 src/univention/uvmm/node.py:1139
+#: src/univention/uvmm/node.py:1287 src/univention/uvmm/node.py:1290
 msgid "Failed to update the additionally information in the LDAP directory."
 msgstr ""
 "Die Aktualisierung zusätzlicher Informationen im LDAP-Verzeichnis ist "
 "fehlgeschlagen."
 
-#: src/univention/uvmm/node.py:1424
+#: src/univention/uvmm/node.py:1578
 #, python-format
 msgid "Failto to update domain \"%(domain)s\""
 msgstr "Aktualisieren der Domäne \"%(domain)s\" fehlgeschlagen"
 
-#: src/univention-virtual-machine-manager-daemon:207
+#: src/univention-virtual-machine-manager-daemon:210
 msgid "Fork into background"
 msgstr "Abspalten in den Hintergrund"
 
-#: src/univention-virtual-machine-manager:568
+#: src/univention-virtual-machine-manager:573
 #: src/univention-virtual-machine-manager-daemon:192
 msgid "HOST and PORT number of the SSL encrypted TCP socket"
 msgstr "RECHNER und PORT-Nummer für die SSL verschlüsselte TCP Verbindung"
 
-#: src/univention-virtual-machine-manager:565
+#: src/univention-virtual-machine-manager:570
 #: src/univention-virtual-machine-manager-daemon:189
 msgid "HOST and PORT number of the TCP socket"
 msgstr "RECHNER und PORT-Nummer für die TCP Verbindung"
 
-#: src/univention-virtual-machine-manager:564
-#: src/univention-virtual-machine-manager:567
+#: src/univention-virtual-machine-manager:569
+#: src/univention-virtual-machine-manager:572
 #: src/univention-virtual-machine-manager-daemon:188
 #: src/univention-virtual-machine-manager-daemon:191
 msgid "HOST:PORT"
 msgstr "RECHNER:PORT"
 
-#: src/univention/uvmm/node.py:651
+#: src/univention/uvmm/node.py:793
 #, python-format
 msgid "Hypervisor \"%(uri)s\" is already connected."
 msgstr "Verbindung zum Hypervisor \"%(uri)s\" besteht bereits."
 
-#: src/univention/uvmm/node.py:664 src/univention/uvmm/node.py:676
+#: src/univention/uvmm/node.py:805 src/univention/uvmm/node.py:814
 #, python-format
 msgid "Hypervisor \"%(uri)s\" is not connected."
 msgstr "Noch keine Verbindung zum Hypervisor \"%(uri)s\"."
-
-#: src/univention/uvmm/node.py:673
-#, python-format
-msgid "Hypervisor \"%(uri)s\" is unavailable."
-msgstr "Verbindung zum Hypervisor \"%(uri)s\" ist gestört."
 
 #: src/univention/uvmm/protocol.py:77
 #, python-format
@@ -338,31 +338,17 @@ msgstr "Inkompatible Version: %(major)d.%(minor)d"
 msgid "Insufficient arguments"
 msgstr "Fehlende Argumente"
 
-#: src/univention-virtual-machine-manager-daemon:198
-#, python-format
-msgid "cache directory [%(default)s]"
-msgstr "Verzeichnis für Zwischenspeicher [%(default)s]"
-
-#: src/univention-virtual-machine-manager-daemon:195
-msgid "Cache options"
-msgstr "Zwischenspeicher-Optionen"
-
 #: src/univention/uvmm/uvmm_ldap.py:135
 msgid "No SERVICES defined."
 msgstr "Keine Dienste(SERVICES) definiert."
 
-#: src/univention-virtual-machine-manager:586
+#: src/univention-virtual-machine-manager:591
 msgid "No mode specified"
 msgstr "Kein Modus angegeben"
 
 #: src/univention-virtual-machine-manager:140
 msgid "No nodes found."
 msgstr "Keine Knoten gefunden."
-
-#: src/univention/uvmm/commands.py:91
-#, python-format
-msgid "Node %(uri)s is not available"
-msgstr "Knoten %(uri)s ist nicht verfügbar"
 
 #: src/univention/uvmm/protocol.py:86
 #, python-format
@@ -393,7 +379,7 @@ msgstr "PAM Information: %(msg)s"
 msgid "Packet is no UVMM Request: %(type)s"
 msgstr "Paket ist keine UVMM-Anfrage: %(type)s"
 
-#: src/univention-virtual-machine-manager:562
+#: src/univention-virtual-machine-manager:567
 msgid "Path to the UNIX socket"
 msgstr "Pfad zum UNIX-Socket"
 
@@ -402,32 +388,32 @@ msgstr "Pfad zum UNIX-Socket"
 msgid "Path to the UNIX socket [%(default)s]"
 msgstr "Pfad zum UNIX-Socket [%(default)s]"
 
-#: src/univention-virtual-machine-manager-daemon:216
+#: src/univention-virtual-machine-manager-daemon:219
 #, python-format
 msgid "Path to the ini-file [%(default)s]"
 msgstr "Pfad zur ini-Datei [%(default)s]"
 
-#: src/univention-virtual-machine-manager-daemon:210
+#: src/univention-virtual-machine-manager-daemon:213
 msgid "Path to the log-file"
 msgstr "Pfad zur Log-Datei"
 
-#: src/univention-virtual-machine-manager-daemon:204
+#: src/univention-virtual-machine-manager-daemon:207
 #, python-format
 msgid "Path to the pid-file [%(default)s]"
 msgstr "Pfad zur pid-Datei [%(default)s]"
 
-#: src/univention-virtual-machine-manager:571
-#: src/univention-virtual-machine-manager-daemon:213
+#: src/univention-virtual-machine-manager:576
+#: src/univention-virtual-machine-manager-daemon:216
 msgid "Print additional information"
 msgstr "Ausführliche Informationen ausgeben"
 
-#: src/univention-virtual-machine-manager-daemon:219
+#: src/univention-virtual-machine-manager-daemon:222
 msgid "Skip reading ini-file"
 msgstr "Lesen der ini-Datei überspringen"
 
-#: src/univention/uvmm/node.py:1321 src/univention/uvmm/node.py:1326
-#: src/univention/uvmm/node.py:1342 src/univention/uvmm/node.py:1347
-#: src/univention/uvmm/node.py:1365 src/univention/uvmm/node.py:1370
+#: src/univention/uvmm/node.py:1472 src/univention/uvmm/node.py:1477
+#: src/univention/uvmm/node.py:1493 src/univention/uvmm/node.py:1498
+#: src/univention/uvmm/node.py:1519 src/univention/uvmm/node.py:1524
 #, python-format
 msgid "Snapshot not supported \"%(node)s\""
 msgstr "\"%(node)s\" unterstützt keine Sicherungspunkte."
@@ -458,7 +444,7 @@ msgstr "Timeout beim Empfangen von Daten."
 msgid "Timed out while sending data."
 msgstr "Timeout beim Senden von Daten."
 
-#: src/univention-virtual-machine-manager:574
+#: src/univention-virtual-machine-manager:579
 msgid "Timeout in seconds for UVMM commands"
 msgstr "Timeout in Sekunden für UVMM Kommandos"
 
@@ -467,23 +453,23 @@ msgstr "Timeout in Sekunden für UVMM Kommandos"
 msgid "Unknown PAM type: %(type)s"
 msgstr "Unbekannter PAM-Typ: %(type)s"
 
-#: src/univention/uvmm/commands.py:360
+#: src/univention/uvmm/commands.py:358
 #, python-format
 msgid "Unknown command \"%(command)s"
 msgstr "Unbekannter Befehl \"%(command)s\""
 
-#: src/univention/uvmm/node.py:350
+#: src/univention/uvmm/node.py:409
 #, python-format
 msgid "Unknown disk type: %(type)d"
 msgstr "Unbekannter Laufwerkstyp: %(type)d"
 
 #: src/univention-virtual-machine-manager:191
-#: src/univention-virtual-machine-manager:588
+#: src/univention-virtual-machine-manager:593
 #, python-format
 msgid "Unknown mode \"%(mode)s\""
 msgstr "Unbekannter Modus \"%(mode)s\""
 
-#: src/univention/uvmm/node.py:1178
+#: src/univention/uvmm/node.py:1329
 #, python-format
 msgid "Unsupported state transition %(cur_state)s to %(next_state)s"
 msgstr "Ungültiger Zustandsübergang von %(cur_state)s zu %(next_state)s"
@@ -495,46 +481,51 @@ msgstr ""
 "Speicherbereichstyp \"%(pool_type)s\" wird nicht unterstützt für \"%(domain)s"
 "\""
 
-#: src/univention/uvmm/commands.py:153
+#: src/univention-virtual-machine-manager-daemon:198
+#, python-format
+msgid "cache directory [%(default)s]"
+msgstr "Verzeichnis für Zwischenspeicher [%(default)s]"
+
+#: src/univention/uvmm/commands.py:151
 #, python-format
 msgid "definition != Domain: %(domain)s"
 msgstr "definition != Domain: %(domain)s"
 
-#: src/univention/uvmm/commands.py:170 src/univention/uvmm/commands.py:185
-#: src/univention/uvmm/commands.py:200 src/univention/uvmm/commands.py:215
-#: src/univention/uvmm/commands.py:236 src/univention/uvmm/commands.py:251
-#: src/univention/uvmm/commands.py:266 src/univention/uvmm/commands.py:281
-#: src/univention/uvmm/commands.py:294
+#: src/univention/uvmm/commands.py:168 src/univention/uvmm/commands.py:183
+#: src/univention/uvmm/commands.py:198 src/univention/uvmm/commands.py:213
+#: src/univention/uvmm/commands.py:234 src/univention/uvmm/commands.py:249
+#: src/univention/uvmm/commands.py:264 src/univention/uvmm/commands.py:279
+#: src/univention/uvmm/commands.py:292
 #, python-format
 msgid "domain != string: %(domain)s"
 msgstr "domain != Zeichenkette: %(domain)s"
 
-#: src/univention/uvmm/commands.py:121
+#: src/univention/uvmm/commands.py:119
 #, python-format
 msgid "group != string: %(group)s"
 msgstr "group != Zeichenkette: %(group)s"
 
-#: src/univention/uvmm/commands.py:108
+#: src/univention/uvmm/commands.py:106
 #, python-format
 msgid "hz != int: %(hz)s"
 msgstr "hz != Ganzzahl: %(hz)s"
 
-#: src/univention-virtual-machine-manager:559
+#: src/univention-virtual-machine-manager:564
 msgid "show this help message and exit"
 msgstr "Anzeigen dieses Hilfetextes und beenden"
 
-#: src/univention/uvmm/commands.py:253 src/univention/uvmm/commands.py:268
-#: src/univention/uvmm/commands.py:283
+#: src/univention/uvmm/commands.py:251 src/univention/uvmm/commands.py:266
+#: src/univention/uvmm/commands.py:281
 #, python-format
 msgid "snapshot != string: %(snapshot)s"
 msgstr "snapshot != Zeichenkette: %(snapshot)s"
 
-#: src/univention/uvmm/commands.py:187 src/univention/uvmm/commands.py:202
+#: src/univention/uvmm/commands.py:185 src/univention/uvmm/commands.py:200
 #, python-format
 msgid "statefile != string: %(file)s"
 msgstr "statefile != Zeichenkette: %(file)s"
 
-#: src/univention/uvmm/commands.py:238
+#: src/univention/uvmm/commands.py:236
 #, python-format
 msgid "target_uri != string: %(uri)s"
 msgstr "target_uri != Zeichenkette: %(uri)s"
@@ -544,24 +535,24 @@ msgstr "target_uri != Zeichenkette: %(uri)s"
 msgid "unknown node %(uri)s"
 msgstr "Unbekannter Knoten %(uri)s"
 
-#: src/univention/uvmm/commands.py:172
+#: src/univention/uvmm/commands.py:170
 #, python-format
 msgid "unsupported state: %(state)s"
 msgstr "Unbekannter Zustand: %(state)s"
 
 #: src/univention/uvmm/commands.py:59 src/univention/uvmm/commands.py:71
-#: src/univention/uvmm/commands.py:83 src/univention/uvmm/commands.py:110
-#: src/univention/uvmm/commands.py:151 src/univention/uvmm/commands.py:168
-#: src/univention/uvmm/commands.py:183 src/univention/uvmm/commands.py:198
-#: src/univention/uvmm/commands.py:213 src/univention/uvmm/commands.py:234
-#: src/univention/uvmm/commands.py:249 src/univention/uvmm/commands.py:264
-#: src/univention/uvmm/commands.py:279 src/univention/uvmm/commands.py:305
-#: src/univention/uvmm/commands.py:319 src/univention/uvmm/commands.py:335
+#: src/univention/uvmm/commands.py:83 src/univention/uvmm/commands.py:108
+#: src/univention/uvmm/commands.py:149 src/univention/uvmm/commands.py:166
+#: src/univention/uvmm/commands.py:181 src/univention/uvmm/commands.py:196
+#: src/univention/uvmm/commands.py:211 src/univention/uvmm/commands.py:232
+#: src/univention/uvmm/commands.py:247 src/univention/uvmm/commands.py:262
+#: src/univention/uvmm/commands.py:277 src/univention/uvmm/commands.py:303
+#: src/univention/uvmm/commands.py:317 src/univention/uvmm/commands.py:333
 #, python-format
 msgid "uri != string: %(uri)s"
 msgstr "uri != Zeichenkette: %(uri)s"
 
-#: src/univention-virtual-machine-manager:554
+#: src/univention-virtual-machine-manager:559
 #, python-format
 msgid "usage: %%prog [options] {%(modes)s} uri"
 msgstr "Aufruf: %%prog [Optionen] {%(modes)s} uri"
@@ -570,12 +561,12 @@ msgstr "Aufruf: %%prog [Optionen] {%(modes)s} uri"
 msgid "usage: %prog [options] [uri...]"
 msgstr "Aufruf: %prog [Optionen] [uri...]"
 
-#: src/univention/uvmm/commands.py:217
+#: src/univention/uvmm/commands.py:215
 #, python-format
 msgid "volumes != list or None: %(volumes)s"
 msgstr "volumes != Liste oder None: %(volumes)s"
 
-#: src/univention/uvmm/commands.py:221 src/univention/uvmm/commands.py:338
+#: src/univention/uvmm/commands.py:219 src/univention/uvmm/commands.py:336
 #, python-format
 msgid "volumes[] != string: %(volume)s"
 msgstr "volumes[] != Zeichenkette: %(volume)s"
@@ -598,6 +589,9 @@ msgstr "volumes[] != Zeichenkette: %(volume)s"
 #~ msgid "Frequency required"
 #~ msgstr "Frequenz erwartet"
 
+#~ msgid "Hypervisor \"%(uri)s\" is unavailable."
+#~ msgstr "Verbindung zum Hypervisor \"%(uri)s\" ist gestört."
+
 #~ msgid "Illegal URI: %(uri)s"
 #~ msgstr "Fehlerhafte URI: %(uri)s"
 
@@ -609,6 +603,9 @@ msgstr "volumes[] != Zeichenkette: %(volume)s"
 
 #~ msgid "No LDAP server in ldap/server/name."
 #~ msgstr "Kein LDAP-Server in ldap/server/name."
+
+#~ msgid "Node %(uri)s is not available"
+#~ msgstr "Knoten %(uri)s ist nicht verfügbar"
 
 #~ msgid "Pool name required"
 #~ msgstr "Name für Speicherbereich erwartet"

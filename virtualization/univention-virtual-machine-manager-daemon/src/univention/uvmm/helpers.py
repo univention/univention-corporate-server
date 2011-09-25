@@ -131,6 +131,26 @@ def match_self(uris):
 			pass
 	return False
 
+def uri_encode(uri):
+	"""
+	Encode URI for file-system compatibility.
+	>>> uri_encode('qemu+ssh://user:univention@test.knut.univention.de/system?no_verify=1')
+	'qemu%2bssh%3a%2f%2fuser%3aunivention%40test%2eknut%2eunivention%2ede%2fsystem%3fno%5fverify%3d1'
+	"""
+	return ''.join([c.isalnum() and c or '%%%02x' % ord(c) for c in uri])
+
+def uri_decode(uri):
+	"""
+	Decode URI for file-system compatibility.
+	>>> uri_decode('qemu%2bssh%3a%2f%2fuser%3aunivention%40test%2eknut%2eunivention%2ede%2fsystem%3fno%5fverify%3d1')
+	'qemu+ssh://user:univention@test.knut.univention.de/system?no_verify=1'
+	"""
+	i = uri.find('%')
+	if i >= 0:
+		return uri[:i] + chr(int(uri[i+1:i+3], 16)) + uri_decode(uri[i+3:])
+	else:
+		return uri
+
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()
