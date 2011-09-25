@@ -138,7 +138,7 @@ src/messages.pot: $(shell find src/univention/uvmm -name \*.py)
 
 
 IMAGES_12 := domain group node
-IMAGES_16 := add domain-on domain-paused domain group node node-off refresh
+IMAGES_16 := add domain-off domain-on domain-paused domain group node node-off refresh
 IMAGES_64 := module
 
 SIZES := 12 16 24 64

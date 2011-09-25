@@ -21,6 +21,7 @@ Depends: univention-ssl,
 Recommends: libvirt-bin,
  univention-nagios-uvmmd,
  univention-management-console
+Breaks: univention-management-console-themes (<< 3.0.112-1)
 XB-Python-Version: ${python:Versions}
 Description: Univention Virtual Machine Manager Daemon
  This package contains the Univention Virtual Machine Manager Daemon
