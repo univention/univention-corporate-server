@@ -116,6 +116,11 @@ def match_self(uris):
 	False
 	"""
 	global __self_set
+	try:
+		__self_set
+	except NameError, e:
+		from os import uname
+		__self_set = set((FQDN, uname()[1]))
 	for uri in uris:
 		if 'all' == uri:
 			return True
