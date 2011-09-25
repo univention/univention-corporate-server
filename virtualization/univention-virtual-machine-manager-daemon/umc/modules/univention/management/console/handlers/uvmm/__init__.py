@@ -180,7 +180,7 @@ command_description = {
 		long_description = _( 'Migration of virtual instances' ),
 		method = 'uvmm_domain_migrate',
 		values = { 'domain' : umc.String( _( 'domain' ) ),
-				   'source' : umc.String( 'source node' ),
+				   'node' : umc.String( 'source node' ),
 				   'dest' : dest_node_select,
 				  },
 		),
@@ -354,20 +354,20 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			value = default
 		return value
 
-	def __get_path_item( self, object, key ):
-		# FIXME: should be removed if UVMMd supports groups
-		if key == 'group' and object.options[ key ] == 'default':
-			return _( 'Physical servers' )
-		elif key == 'node': # in ( 'node', 'dest', 'source' ):
-			text = object.options[ key ]
-			if '.' in text:
-				text = text[ : text.find( '.' ) ]
-			return text
-
-		return object.options[ key ]
-
 	def set_content( self, object, content, location = True, refresh = True, search = True ):
-		# create position links
+		"""Set content, add position links, add refresh link, add search link."""
+		def get_path_item(key):
+			# FIXME: should be removed if UVMMd supports groups
+			if key == 'group' and object.options[key] == 'default':
+				return _( 'Physical servers' )
+			elif key == 'node':
+				text = object.options[ key ]
+				if '.' in text:
+					text = text[ : text.find( '.' ) ]
+				return text
+
+			return object.options[key]
+
 		lst = umcd.List( attributes = { 'width' : '100%', 'type' : 'umc_mini_padding umc_nowrap' }, default_type = 'uvmm_table' )
 		row = []
 		if location:
@@ -378,23 +378,20 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			row.append( umcd.Cell( umcd.HTML( '<b>%s</b>' % _( 'Location:' ) ), attributes = { 'type' : 'umc_nowrap' } ) )
 			if 'group' in object.options:
 				keys.append( 'group' )
-				for key in  ( 'node', 'dest', 'source' ):
-					if key in object.options:
-						options[ 'node' ] = object.options[ key ]
-						keys.append( 'node' )
-						if 'domain' in object.options and object.options[ 'domain' ] != 'NONE':
-							keys.append( 'domain' )
-						break
+				if 'node' in object.options:
+					keys.append( 'node' )
+					if 'domain' in object.options and object.options[ 'domain' ] != 'NONE':
+						keys.append( 'domain' )
 			opts = {}
 			for key in keys[ : -1 ]:
 				opts[ key ] = object.options[ key ]
 				cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % key , options = copy.copy( opts ) )
-				lnk = umcd.LinkButton( self.__get_path_item( object, key ) , actions = [ umcd.Action( cmd ) ] )
+				lnk = umcd.LinkButton(get_path_item(key), actions=[umcd.Action(cmd)])
 				row.append( umcd.Cell( lnk, attributes = { 'type' : 'umc_nowrap' } ) )
 				row.append( slash )
 			refresh = keys[ -1 ]
 			opts[ keys[ -1 ] ] = object.options[ keys[ -1 ] ]
-			row.append( umcd.Cell( umcd.Text( self.__get_path_item( object, refresh ) ), attributes = { 'type' : 'umc_nowrap', 'width' : '100%' } ) )
+			row.append(umcd.Cell(umcd.Text(get_path_item(refresh)), attributes={'type': 'umc_nowrap', 'width': '100%'}))
 		else:
 			row.append( umcd.Cell( umcd.Text( '' ), attributes = { 'type' : 'umc_nowrap', 'width' : '100%' } ) )
 
@@ -687,22 +684,23 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			buttons.append( comma )
 
 		# be sure only servers with the same virtualization technology are considered
-		node_type = []
-		for capability in node_info.capabilities:
-			if not capability.domain_type in node_type:
-				node_type.append(capability.domain_type)
-
-		grouplist = []
-		for domain_member in self.uvmm.get_group_info( options[ 'group' ] ):
-			for capability in domain_member.capabilities:
-				if capability.domain_type in node_type:
-					if not domain_member in grouplist:
-						grouplist.append(domain_member)
+		group_name = options['group']
+		grouplist = set()
+		node_type = set([capability.domain_type for capability in node_info.capabilities])
+		for node_uri2, node_info2 in self.uvmm.get_group_info(group_name).items():
+			if node_uri == node_uri2: # do not migrate to self
+				continue
+			if node_info2.last_update < node_info2.last_try: # do not migrate to offline nodes
+				continue
+			if node_type & set([capability.domain_type for capability in node_info2.capabilities]):
+				grouplist.add(node_uri2)
 		# migrate? if parameter set and state is not paused and more than two physical servers are available
-		if len(grouplist) < 2:
+		if len(grouplist) == 0:
+			# FIXME: rate limit
 			ud.debug( ud.ADMIN, ud.INFO, 'Migration button is disabled. At least two servers with the same virtualization technologie in this group are required.' )
 		elif self._show_op('migrate', node_uri) and operations and domain_info.state != 3 and not getattr(domain_info, 'suspended', None):
-			cmd = umcp.SimpleCommand( 'uvmm/domain/migrate', options = { 'group' : options['group'], 'grouplist': grouplist, 'source' : node_info.name, 'domain' : domain_info.name } )
+			opt = {'group': group_name, 'grouplist': grouplist, 'node': node_info.name, 'domain': domain_info.name}
+			cmd = umcp.SimpleCommand( 'uvmm/domain/migrate', options=opt)
 			buttons.append( umcd.LinkButton( _( 'Migrate' ), actions = [ umcd.Action( cmd ) ] ) )
 			buttons.append( comma )
 
@@ -1101,11 +1099,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		"""Single domain overview."""
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain overview' )
 
-		migrate = object.options.get( 'migrate' )
-		if migrate == 'success':
+		try:
 			object.options[ 'node' ] = object.options[ 'dest' ]
-		elif  migrate == 'failure':
-			object.options[ 'node' ] = object.options[ 'source' ]
+		except KeyError:
+			pass
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
 		if not success:
 			self.finished(object.id(), res)
@@ -1172,7 +1169,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 	def uvmm_domain_migrate( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain migrate' )
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'source', 'domain' ) )
+		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
 		if not success:
 			self.finished(object.id(), res)
 			return
@@ -1185,18 +1182,15 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			ud.debug( ud.ADMIN, ud.INFO, 'Domain migrate: %s, %s, %s' % ( src_uri, dest_uri, domain_info ) )
 			resp = self.uvmm.domain_migrate( src_uri, dest_uri, domain_info.uuid )
 		else:
-			dest_node_select.update_choices( [ domain_info.name for domain_info in object.options.get('grouplist') ], object.options[ 'source' ] )
+			dest_node_select.update_choices([domain_info.name for domain_info in object.options.get('grouplist', ())])
 			content.add_row( [ umcd.Text( _( 'Migrate virtual instance %(domain)s from physical server %(source)s to:' ) % object.options , attributes = { 'colspan' : '2' } ) ] )
 			dest = umcd.make( self[ 'uvmm/domain/migrate' ][ 'dest' ] )
 			content.add_row( [ dest, '' ] )
-			opts = copy.copy( object.options )
-			opts[ 'migrate' ] = 'success'
-			cmd_success = umcd.Action( umcp.SimpleCommand( 'uvmm/domain/overview', options = opts ), [ dest.id(), ], status_range = umcd.Action.SUCCESS )
-			opts2 = copy.copy( object.options )
-			opts2[ 'migrate' ] = 'failure'
-			cmd_failure = umcd.Action( umcp.SimpleCommand( 'uvmm/domain/overview', options = opts2 ), status_range = umcd.Action.FAILURE )
+			cmd_migrate = umcd.Action(umcp.SimpleCommand('uvmm/domain/migrate', options=object.options), [dest.id()])
+			cmd_success = umcd.Action(umcp.SimpleCommand('uvmm/domain/overview', options=object.options), [dest.id()], status_range=umcd.Action.SUCCESS)
+			cmd_failure = umcd.Action(umcp.SimpleCommand('uvmm/domain/overview', options=object.options), status_range=umcd.Action.FAILURE)
 
-			content.add_row( [ '', umcd.Button( _( 'Migrate' ), actions = [ umcd.Action( umcp.SimpleCommand( 'uvmm/domain/migrate', options = object.options ), [ dest.id() ] ), cmd_success, cmd_failure ], default = True ) ] )
+			content.add_row(['', umcd.Button(_('Migrate'), actions=[cmd_migrate, cmd_success, cmd_failure], default=True)])
 			sec = umcd.Section( _( 'Migrate %(domain)s' ) % object.options,  content, attributes = { 'width' : '100%' } )
 			self.set_content( res, sec, location = False, refresh = False )
 			resp = None

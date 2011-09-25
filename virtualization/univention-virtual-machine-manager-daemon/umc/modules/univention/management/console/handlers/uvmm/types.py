@@ -214,10 +214,8 @@ class NodeSelect( umc.StaticSelection ):
 	def choices( self ):
 		return map( lambda x: ( x, x ), self._choices )
 
-	def update_choices( self, nodes, ignore ):
+	def update_choices(self, nodes):
 		self._choices = nodes
-		if ignore in self._choices:
-			self._choices.remove( ignore )
 
 class RtcOffsetSelect(umc.StaticSelection):
 	"""List of RTC offsets."""
