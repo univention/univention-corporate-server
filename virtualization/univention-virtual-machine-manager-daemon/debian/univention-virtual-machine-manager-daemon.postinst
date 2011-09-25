@@ -37,7 +37,8 @@ univention-config-registry set "uvmm/pool/default/path?/var/lib/libvirt/images" 
 			"uvmm/umc/vnc?internal" \
 			"uvmm/umc/show/pause?xen" \
             "uvmm/check/interval?2" \
-            "uvmm/check/timeout?10"
+            "uvmm/check/timeout?10" \
+            "auth/uvmmd/accessfile?/etc/security/access-uvmmd.conf"
 
 case "$1" in
     configure)
@@ -87,8 +88,6 @@ then
     /usr/lib/univention-install/44univention-virtual-machine-manager-daemon.inst || true
 fi
 
-univention-config-registry set auth/uvmmd/accessfile?/etc/security/access-uvmmd.conf
-
 #DEBHELPER#
 
 if [ -x /etc/init.d/univention-virtual-machine-manager-daemon ] && [ -d "/etc/runit/univention/univention-virtual-machine-manager-daemon/supervise" ]; then
@@ -104,10 +103,6 @@ fi
 
 if [ -x /etc/init.d/univention-management-console-server ]; then
     invoke-rc.d univention-management-console-server crestart
-fi
-
-if [ -x /etc/init.d/apache2 ]; then
-    invoke-rc.d apache2 restart || true
 fi
 
 exit 0

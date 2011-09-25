@@ -39,6 +39,7 @@ clean:
 	$(MAKE) clean
 	rm -f *~
 	$(RM) debian/univention-virtual-machine-manager-daemon.conffiles
+	$(RM) debian/python-univention-virtual-machine-manager.conffiles
 	dh_clean
 
 install:
@@ -60,6 +61,7 @@ binary-indep: build install
 	dh_installinit --no-start
 	dh_installchangelogs
 	univention-install-config-registry
+	chmod 0700 debian/univention-virtual-machine-manager-daemon/var/cache/univention-virtual-machine-manager-daemon
 	dh_link
 	dh_compress
 	dh_installdeb
