@@ -1,3 +1,10 @@
+univention-samba4 (1.0.48-1) unstable; urgency=low
+
+  * start samba daemon before modifying secrets.ldb, trying to cure
+    Bug #22963 Comment 3
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Sep 2011 09:50:28 +0200
+
 univention-samba4 (1.0.47-3) unstable; urgency=low
 
   * use samba4/debug/level instead of samba/debug/level (Bug #22559)

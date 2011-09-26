@@ -225,6 +225,9 @@ if [ "$samba4_role" = 'DC' ]; then
 		fi
 	fi
 
+	## Start samba daemon
+	/etc/init.d/samba4 start
+
 	## Kerberos keytab adjustments for Samba 4
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
