@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-21 17:55+0200\n"
+"POT-Creation-Date: 2011-09-26 14:19+0200\n"
 "PO-Revision-Date: 2011-09-07 20:25+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_udm/DetailPage.js:684
+#: umc/js/_udm/DetailPage.js:677
 #, python-format
 msgid "%(attribute)s: %(message)s\n"
 msgstr ""
@@ -64,7 +64,7 @@ msgstr "%s hinzufügen"
 msgid "Add a new %s."
 msgstr "%s neu hinzufügen."
 
-#: umc/js/_udm/DetailPage.js:177
+#: umc/js/_udm/DetailPage.js:174
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
@@ -80,11 +80,11 @@ msgstr "Alle Eigenschaften"
 msgid "All types"
 msgstr "Alle Objekttypen"
 
-#: umc/js/_udm/DetailPage.js:438
+#: umc/js/_udm/DetailPage.js:431
 msgid "Back to navigation"
 msgstr "Zurück zur Navigation"
 
-#: umc/js/_udm/DetailPage.js:438
+#: umc/js/_udm/DetailPage.js:431
 msgid "Back to search"
 msgstr "Zurück zur Suche"
 
@@ -92,7 +92,7 @@ msgstr "Zurück zur Suche"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/_udm/DetailPage.js:402
+#: umc/js/_udm/DetailPage.js:395
 #, python-format
 msgid "Click to edit the inherited properties of the policy: %s"
 msgstr ""
@@ -144,11 +144,11 @@ msgstr "Bearbeiten in neuem Tab"
 msgid "Edit the %s."
 msgstr "%s bearbeiten"
 
-#: umc/js/_udm/DetailPage.js:686
+#: umc/js/_udm/DetailPage.js:679
 msgid "Error"
 msgstr "Fehler"
 
-#: umc/js/_udm/DetailPage.js:311
+#: umc/js/_udm/DetailPage.js:308
 msgid ""
 "List of all object properties that are inherited by policies. The values "
 "cannot be edited directly. In order to edit a policy, click on the \"edit\" "
@@ -197,7 +197,7 @@ msgstr "Objekteigenschaft"
 msgid "Open a new tab in order to edit the UDM-object"
 msgstr "Öffnet einen neuen Tab, in dem das UDM-Objekt bearbeitet werden kann."
 
-#: umc/js/_udm/DetailPage.js:208
+#: umc/js/_udm/DetailPage.js:205
 msgid "Options describing the basic features of the UDM object"
 msgstr "Optionen für grundlegenden UDM-Objekt-Eigenschaften"
 
@@ -227,7 +227,7 @@ msgstr ""
 "Bitte wählen Sie einen Container in der Navigations-Leiste aus. Das neue "
 "Objekte wird an dieser Stelle erzeugt."
 
-#: umc/js/_udm/DetailPage.js:310
+#: umc/js/_udm/DetailPage.js:307
 msgid "Properties inherited from policies"
 msgstr "Durch Richtlinien ererbte Eigenschaften"
 
@@ -244,7 +244,7 @@ msgstr "Eigenschaftswert"
 msgid "Reload"
 msgstr "Neu laden"
 
-#: umc/js/_udm/DetailPage.js:434
+#: umc/js/_udm/DetailPage.js:427
 msgid "Save changes"
 msgstr "Änderungen speichern"
 
@@ -261,7 +261,7 @@ msgstr "Suche in:"
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
-#: umc/js/_udm/DetailPage.js:716
+#: umc/js/_udm/DetailPage.js:709
 #, python-format
 msgid "The UDM object could not be saved: %(details)s"
 msgstr "Das UDM-Objekt konnte nicht gespeichert werden: %(details)s"
@@ -287,11 +287,11 @@ msgstr "Der genaue %styp"
 msgid "The exact object type of the new UDM object."
 msgstr "Der genaue Objekttyp des neuen UDM-Objektes."
 
-#: umc/js/_udm/DetailPage.js:651
+#: umc/js/_udm/DetailPage.js:644
 msgid "The following properties could not be validated:"
 msgstr "Die folgenden Eigenschaften konnten nicht validiert werden:"
 
-#: umc/js/_udm/DetailPage.js:612
+#: umc/js/_udm/DetailPage.js:605
 msgid "The following properties need to be specified or are invalid:"
 msgstr ""
 "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
@@ -321,15 +321,15 @@ msgstr "UDM-Objekt"
 msgid "UDM objects"
 msgstr "UDM-Objekte"
 
-#: umc/js/_udm/DetailPage.js:176
+#: umc/js/_udm/DetailPage.js:173
 msgid "[Advanced settings]"
 msgstr "[Erweiterte Einstellungen]"
 
-#: umc/js/_udm/DetailPage.js:207
+#: umc/js/_udm/DetailPage.js:204
 msgid "[Options]"
 msgstr "[Optionen]"
 
-#: umc/js/_udm/DetailPage.js:308
+#: umc/js/_udm/DetailPage.js:305
 msgid "[Policies]"
 msgstr "[Richtlinien]"
 
@@ -341,7 +341,7 @@ msgstr "Rechner"
 msgid "computers"
 msgstr "Rechner"
 
-#: umc/js/_udm/DetailPage.js:403
+#: umc/js/_udm/DetailPage.js:396
 msgid "edit"
 msgstr "bearbeiten"
 

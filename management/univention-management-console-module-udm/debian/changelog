@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.145-1) unstable; urgency=low
+
+  * nav/object/query: added check for superordinate (Bug #23335)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 26 Sep 2011 16:33:08 +0200
+
 univention-management-console-module-udm (1.0.144-1) unstable; urgency=low
 
   * fixed typo (Bug #22881)

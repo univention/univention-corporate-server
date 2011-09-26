@@ -559,7 +559,12 @@ class Instance( Base ):
 
 		if 'None' != request.options.get('objectType', ''):
 			# we need to search for a specific objectType, then we should call the standard query
-			request.options['superordinate'] = None
+			# we also need to get the correct superordinate
+			lo, po = get_ldap_connection()
+			superordinate = udm_objects.get_superordinate( request.options['objectType'], None, lo, request.options['container'] )
+			if superordinate:
+				superordinate = superordinate.dn
+			request.options['superordinate'] = superordinate
 			self.query(request)
 			return
 
