@@ -1,3 +1,9 @@
+univention-samba4 (1.0.47-1) unstable; urgency=low
+
+  * fix modification of attribute operatingSystem on master (Bug #23158)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Sep 2011 09:32:56 +0200
+
 univention-samba4 (1.0.46-1) unstable; urgency=low
 
   * Don't use samba4 as dns/backend. This will break the DRS replication

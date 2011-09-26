@@ -173,7 +173,7 @@ if [ "$samba4_role" = 'DC' ]; then
 			## Provision Samba4
 			/usr/share/univention-samba4/scripts/setup-s4.sh
 
-			operatingSystem_attribute modify
+			operatingSystem_attribute replace
 
 		fi
 
