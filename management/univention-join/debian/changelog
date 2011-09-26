@@ -1,3 +1,9 @@
+univention-join (4.0.15-1) unstable; urgency=low
+
+  * set ldap/server/port on all system roles (Bug #23231)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Sep 2011 11:06:32 +0200
+
 univention-join (4.0.14-1) unstable; urgency=low
 
   * Support for ldap/master/port on memberserver (Bug #20026)
