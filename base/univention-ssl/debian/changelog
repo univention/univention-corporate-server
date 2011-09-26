@@ -1,3 +1,9 @@
+univention-ssl (6.0.7-1) unstable; urgency=low
+
+  * make-certificates.ssl uses now ssl/common for certificate CN (Bug #22846)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 26 Sep 2011 12:10:59 +0200
+
 univention-ssl (6.0.6-1) unstable; urgency=low
 
   * add random id to default SSL common name (Bug #22846)

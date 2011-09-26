@@ -41,7 +41,7 @@ else
 fi
 
 CA=ucsCA
-DEFAULT_DAYS=$(/usr/sbin/univention-baseconfig get ssl/default/days)
+DEFAULT_DAYS=$(/usr/sbin/univention-config-registry get ssl/default/days)
 if [ -z "$DEFAULT_DAYS" ]; then
 	DEFAULT_DAYS=1825
 fi
@@ -69,7 +69,7 @@ mk_config () {
     touch $outfile;
     chmod 0600 $outfile;
 
-	eval `univention-baseconfig shell ssl/country ssl/state ssl/locality ssl/organization ssl/organizationalunit ssl/email`
+	eval "$(univention-config-registry shell ssl/country ssl/state ssl/locality ssl/organization ssl/organizationalunit ssl/email)"
 
 
     cat <<EOF >>$outfile
@@ -277,8 +277,10 @@ init () {
 	echo "01" > ${CA}/serial;
 	touch ${CA}/index.txt;
 
+	eval "$(ucr shell ssl/common)"
+
 	# make the root-CA configuration file
-	mk_config openssl.cnf $PASSWD $DEFAULT_DAYS "Univention Corporate Server Root CA"
+	mk_config openssl.cnf $PASSWD $DEFAULT_DAYS "$ssl_common"
 
 
 	openssl genrsa -des3 -passout pass:"$PASSWD" -out ${CA}/private/CAkey.pem 2048
@@ -296,7 +298,7 @@ init () {
 
 	find ${CA} -type f | xargs chmod 600
 	find ${CA} -type d | xargs chmod 700
-	
+
 	chmod 755 ${CA}
 	chmod 644 ${CA}/CAcert.pem
 	#generate empty crl at installation time	
@@ -397,7 +399,7 @@ gencert () {
 	    revoke_cert "$2";
 	fi;
 
-	days=$(/usr/sbin/univention-baseconfig get ssl/default/days)
+	days=$(/usr/sbin/univention-config-registry get ssl/default/days)
 	if [ -z "$days" ]; then
 		days=$DEFAULT_DAYS
 	fi
