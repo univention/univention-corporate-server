@@ -23,6 +23,8 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 	// use the framework wide translation file
 	i18nClass: 'umc.app',
 
+	availableLanguages: null,
+
 	postMixInProperties: function() {
 		dojo.mixin(this, {
 			closable: false,
@@ -33,6 +35,29 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			dimensions: [300, 270]
 		});
 
+		dojo.mixin(this, {
+			availableLanguages: [
+				{ id: 'de-DE', label: this._('German') },
+				{ id: 'en-US', label: this._('English') }
+			] } );
+	},
+
+	defaultLang: function () {
+		var exact_match = dojo.filter( this.availableLanguages, function( item ) { return dojo.locale == item.id; } );
+		if ( exact_match.length > 0 ) {
+			console.log( 'found exact match', exact_match[ 0 ].id );
+			return exact_match[ 0 ].id;
+		}
+		var default_language = 'en-US'; // fallback
+		dojo.forEach( this.availableLanguages, function( lang ) {
+			if ( lang.id.indexOf( dojo.locale ) === 0 ) {
+				default_language = lang.id;
+				console.log( 'found match', lang.id );
+				return false;
+			}
+		}, this );
+
+		return default_language;
 	},
 
 	buildRendering: function() {
@@ -41,6 +66,10 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		// adjust CSS classes for the title
 		dojo.addClass(this.titleNode, 'umcLoginDialogTitle');
 		dojo.addClass(this.titleBar, 'umcLoginDialogTitleBar');
+
+		console.log( dojo.cookie('UMCLang') );
+		console.log( this.defaultLang() );
+		var default_lang = dojo.cookie('UMCLang') || this.defaultLang();
 
 		var widgets = [{
 			type: 'TextBox',
@@ -56,11 +85,8 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		}, {
 			type: 'ComboBox',
 			name: 'language',
-			staticValues: [
-				{ id: 'de-DE', label: this._('German') },
-				{ id: 'en-US', label: this._('English') }
-			],
-			value: dojo.locale.substring(0, 5),
+			staticValues: this.availableLanguages,
+			value: default_lang,
 			description: this._('The language for the login session.'),
 			label: this._('Language')
 		}];

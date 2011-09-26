@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.65-1) unstable; urgency=low
+
+  * read the default language for the web frontend from the browser
+    defaults and pre-selected it in the login dialog; Bug #23818
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 26 Sep 2011 19:21:29 +0200
+
 univention-management-console-frontend (1.0.64-1) unstable; urgency=low
 
   * umc.widgets.TitlePane: added hook to call Grids' startup method when the
