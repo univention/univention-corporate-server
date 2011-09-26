@@ -33,7 +33,7 @@
 eval "$(univention-config-registry shell)"
 
 univention-config-registry set ldap/server/name=$hostname.$domainname \
-					ldap/server/port=7389 \
+					ldap/server/port?7389 \
 					ldap/server/type=master \
 					server/password/interval?21 \
 					bootsplash/theme?domaincontroller_master

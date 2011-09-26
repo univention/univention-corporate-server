@@ -1,3 +1,9 @@
+univention-server (7.0.10-2) unstable; urgency=low
+
+  * set ldap/server/port conditionally (Bug #23231)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Sep 2011 11:11:33 +0200
+
 univention-server (7.0.10-1) unstable; urgency=low
 
   * set ldap/server/port in univention-server-master.postinst (Bug #23231)
