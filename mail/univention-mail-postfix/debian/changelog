@@ -1,4 +1,4 @@
-univention-mail-postfix (6.0.16-3) unstable; urgency=low
+univention-mail-postfix (6.0.17-1) unstable; urgency=low
 
   * added UCR variables mail/postfix/ssl/certificate and
     mail/postfix/ssl/key (Bug #21867)
