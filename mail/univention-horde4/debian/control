@@ -27,7 +27,9 @@ Depends: pear-horde-channel,
  php5-idn,
  php-http-webdav-server,
  libssh2-php,
- php-net-ldap
+ php-net-ldap,
+ php-net-smtp,
+ php-cache
 Description: UCS - horde4 webclient
  This package installs and configures the horde4
  webclient.
