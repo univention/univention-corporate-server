@@ -1,3 +1,17 @@
+univention-directory-manager-modules (7.0.94-1) unstable; urgency=low
+
+  * simpleComputer: re-add __split_dhcp_entry to filter the case that no
+    IP adress is given; Bug #23329
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 26 Sep 2011 12:07:33 +0200
+
+univention-directory-manager-modules (7.0.93-1) unstable; urgency=low
+
+  * the shares/printer module loads the available printer URIs from LDAP
+    to be able to split the printer URI when reading from LDAP; Bug #23688
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 25 Sep 2011 18:21:50 +0200
+
 univention-directory-manager-modules (7.0.92-1) unstable; urgency=low
 
   * fixed search for DNS service records when using a filter for the name

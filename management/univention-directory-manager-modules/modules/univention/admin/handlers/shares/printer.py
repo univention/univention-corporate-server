@@ -39,6 +39,7 @@ import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.settings.printermodel as printermodel
+import univention.admin.handlers.settings.printeruri as printeruri
 import univention.admin.localization
 
 import univention.debug as ud
@@ -236,13 +237,20 @@ def stringToBool(value):
 	else:
 		return '0'
 
-regex_uri = re.compile( '(?P<schema>[a-z]*://?)(?P<dest>.*)' )
+_AVAILABLE_PRINTER_SCHEMAS = []
 
 def unmapPrinterURI( value ):
-	match = regex_uri.match( value[ 0 ] )
-	if match:
-		return match.group( 1, 2 )
-	return ( '', '' )
+	if not value:
+		return ( '', '' )
+	schema = ''
+	dest = ''
+	for sch in _AVAILABLE_PRINTER_SCHEMAS:
+		if value[ 0 ].startswith( sch ):
+			schema = sch
+			dest = value[ 0 ][ len( sch ) : ]
+			break
+
+	return ( schema, dest )
 
 def mapPrinterURI( value ):
 	return ''.join( value )
@@ -275,6 +283,15 @@ class object(univention.admin.handlers.simpleLdap):
 		self.save()
 
 	def open(self):
+		global _AVAILABLE_PRINTER_SCHEMAS
+		# find the printer uris
+		if not _AVAILABLE_PRINTER_SCHEMAS:
+			printer_uris = printeruri.lookup( self.co, self.lo, '' )
+			_AVAILABLE_PRINTER_SCHEMAS = []
+			for uri in printer_uris:
+				_AVAILABLE_PRINTER_SCHEMAS.extend( uri[ 'printeruri' ] )
+
+		# find the producer
 		univention.admin.handlers.simpleLdap.open(self)
 		models = printermodel.lookup( self.co, self.lo, 'printerModel="%s*' % self[ 'model' ] )
 		ud.debug( ud.ADMIN, ud.ERROR, "printermodel: %s" % str( models ) )
@@ -282,6 +299,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self[ 'producer' ] = []
 		else:
 			self[ 'producer' ] = models[ 0 ].dn
+
 		self.save()
 
 	def _ldap_pre_create(self):

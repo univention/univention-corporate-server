@@ -1002,6 +1002,8 @@ class simpleLdap(base):
 
 
 class simpleComputer( simpleLdap ):
+	MAC_REGEX = re.compile( '^([0-9a-fA-F]{2}[:-]){5}[0-9a-fA-F]{2}$' )
+	IP_REGEX = re.compile( '^([0-9]{1,3}\.){3}[0-9]{1,3}$' )
 
 	def __init__( self, co, lo, position, dn = '', superordinate = None, attributes = [] ):
 		simpleLdap.__init__( self, co, lo, position, dn, superordinate, attributes )
@@ -1044,22 +1046,10 @@ class simpleComputer( simpleLdap ):
 		return '%s.%s' % ( string.join( zoneName, '.' ) , string.join( relativeDomainName, '.' ) )
 
 	def __is_mac( self, mac ):
-		_re = re.compile( '^[ 0-9a-fA-F ][ 0-9a-fA-F ]??$' )
-		m = mac.split( ':' )
-		if len( m) == 6:
-			for i in range(0,6):
-				if not _re.match( m[ i ] ):
-					return False
-			return True
-		return False
+		return mac is not None and simpleComputer.MAC_REGEX.match( mac ) is not None
 
 	def __is_ip( self, ip ):
-		_re = re.compile( '^[ 0-9 ]+\.[ 0-9 ]+\.[ 0-9 ]+\.[ 0-9 ]+$' )
-		if _re.match ( ip ):
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'IP[%s]? -> Yes' % ip )
-			return True
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'IP[%s]? -> No' % ip )
-		return False
+		return ip is not None and simpleComputer.IP_REGEX.match( ip ) is not None
 
 	def open( self ):
 		simpleLdap.open( self )
@@ -1367,6 +1357,15 @@ class simpleComputer( simpleLdap ):
 
 		return dn
 
+	def __split_dhcp_line( self, entry ):
+		if self.__is_mac ( entry[ -1 ] ):
+			if self.__is_ip ( entry[ -2 ] ):
+				return entry
+			else:
+				return ( entry[ 0 ], None, entry[ -1 ] )
+
+		return ( entry[ 0 ], None, None )
+
 	def __split_dns_line( self, entry ):
 		zone = entry[ 0 ]
 		if len( entry ) > 1:
@@ -1374,7 +1373,7 @@ class simpleComputer( simpleLdap ):
 		else:
 			ip = None
 
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Split entry %s into zone %s and ip %s' % ( entry, entry, ip ) )
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Split entry %s into zone %s and ip %s' % ( entry, zone, ip ) )
 		return ( zone, ip )
 
 	def __remove_dns_reverse_object( self, name, dnsEntryZoneReverse , ip ):
@@ -1629,7 +1628,7 @@ class simpleComputer( simpleLdap ):
 
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'remove' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: removed: %s' % entry )
-			dn, ip, mac = entry
+			dn, ip, mac = self.__split_dhcp_line( entry )
 			if not ip and not mac and not self.__multiip:
 				self.__remove_from_dhcp_object( dn,  mac = self[ 'mac' ][ 0 ] )
 			else:
@@ -1637,7 +1636,7 @@ class simpleComputer( simpleLdap ):
 
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'add' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % entry )
-			dn, ip, mac = entry
+			dn, ip, mac = __split_dhcp_line( entry )
 			if not ip and not mac and not self.__multiip:
 				self.__modify_dhcp_object( dn, self[ 'name' ], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] )
 			else:
@@ -1822,6 +1821,7 @@ class simpleComputer( simpleLdap ):
 			self.__changes[ 'name' ] = ( self.oldattr.get( 'sn', [ None ] )[ 0 ], self[ 'name' ] )
 
 		if self.hasChanged('ip') or self.hasChanged('mac'):
+
 			if len(self.info['ip']) == 1 and len(self.info['mac']) == 1 and len(self.info['dhcpEntryZone']):
 				# In this special case, we assume the mapping between ip/mac address to be
 				# unique. The dhcp entry needs to contain the mac address (as sepcified by
@@ -1829,10 +1829,10 @@ class simpleComputer( simpleLdap ):
 				# the ip address associated with the computer ldap object, but this would 
 				# be erroneous anyway. We therefore update the dhcp entry to correspond to 
 				# the current ip and mac address. (Bug #20315)
-				entry = self.info['dhcpEntryZone'][0]
-				dn, ip, mac = self.__split_dhcp_line(entry)
+				dn, ip, mac = self.__split_dhcp_line( self.info['dhcpEntryZone'][0] )
+
 				if dn and ip and mac:
-					self.info['dhcpEntryZone'] = [ dn, self.info['ip'][0], self.info['mac'][0] ]
+					self.info['dhcpEntryZone'] = [ [ dn, self.info['ip'][0], self.info['mac'][0] ] ]
 				else:
 					self.info['dhcpEntryZone'] = []
 			else:
@@ -1852,7 +1852,7 @@ class simpleComputer( simpleLdap ):
 				# remove all DHCP-entries that have been associated with any of these IP/MAC addresses
 				newDhcpEntries = []
 				for entry in self['dhcpEntryZone']:
-					dn, ip, mac = entry
+					dn, ip, mac = self.__split_dhcp_line( entry )
 					if ip not in removedIPs and mac not in removedMACs:
 						newDhcpEntries.append(entry)
 
@@ -1866,7 +1866,7 @@ class simpleComputer( simpleLdap ):
 						self.__changes[ 'dhcpEntryZone' ][ 'remove' ].append( entry )
 			for entry in self.info[ 'dhcpEntryZone' ]:
 				#check if line is valid
-				dn, ip, mac = entry
+				dn, ip, mac = self.__split_dhcp_line( entry )
 				if dn and ip and mac:
 					if not self.oldinfo.has_key( 'dhcpEntryZone' ) or not entry in self.oldinfo[ 'dhcpEntryZone' ]:
 						self.__changes[ 'dhcpEntryZone' ][ 'add' ].append( entry )
@@ -1958,7 +1958,7 @@ class simpleComputer( simpleLdap ):
 	def _ldap_post_create(self):
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'remove' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: removed: %s' % entry )
-			dn, ip, mac = entry
+			dn, ip, mac = self.__split_dhcp_line( entry )
 			if not ip and not mac and not self.__multiip:
 				self.__remove_from_dhcp_object( dn,  mac = self[ 'mac' ][ 0 ] )
 			else:
@@ -1966,7 +1966,7 @@ class simpleComputer( simpleLdap ):
 
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'add' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % entry )
-			dn, ip, mac = entry
+			dn, ip, mac = self.__split_dhcp_line( entry )
 			if not ip and not mac and not self.__multiip:
 				if len( self[ 'ip' ] ) > 0 and len( self[ 'mac' ] ) > 0:
 					self.__modify_dhcp_object( dn, self[ 'name' ], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] )
@@ -1974,6 +1974,7 @@ class simpleComputer( simpleLdap ):
 				self.__modify_dhcp_object( dn, self[ 'name' ], ip, mac )
 
 
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'CRUNCHY: post create: DNS changes: %s' % str( self.__changes[ 'dnsEntryZoneForward' ] ) )
 		for entry in self.__changes[ 'dnsEntryZoneForward' ][ 'remove' ]:
 			dn, ip = self.__split_dns_line( entry )
 			if not ip and not self.__multiip:
@@ -2191,7 +2192,7 @@ class simpleComputer( simpleLdap ):
 
 		if self['dhcpEntryZone']:
 			for dhcpEntryZone in self['dhcpEntryZone']:
-				dn, ip, mac = dhcpEntryZone
+				dn, ip, mac = self.__split_dns_line( dhcpEntryZone )
 				try:
 					self.__remove_from_dhcp_object( dn, self[ 'name' ],  None, mac )
 				except Exception,e:
