@@ -1,3 +1,9 @@
+univention-samba4 (1.0.47-2) unstable; urgency=low
+
+  * increase default for samba/debug/level (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Sep 2011 09:34:42 +0200
+
 univention-samba4 (1.0.47-1) unstable; urgency=low
 
   * fix modification of attribute operatingSystem on master (Bug #23158)
