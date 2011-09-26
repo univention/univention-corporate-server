@@ -93,7 +93,7 @@ else										## we are first system to provide this service
 	ucs_addServiceToLocalhost "${NAME}" "$@"
 
 	univention-config-registry set \
-		set connector/s4/autostart?yes
+		connector/s4/autostart?yes
 
 fi
 
