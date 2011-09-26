@@ -20,7 +20,7 @@ print '\tserver string =', samba_serverstring
 	workgroup	= @%@windows/domain@%@
 	realm		= @%@kerberos/realm@%@
 
-	debug level = @%@samba/debug/level@%@
+	debug level = @%@samba4/debug/level@%@
 @!@
 for key, smbstring in [('samba/interfaces','interfaces'),
 		       ('samba/charset/dos', 'dos charset'),

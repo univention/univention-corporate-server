@@ -1,3 +1,9 @@
+univention-samba4 (1.0.47-3) unstable; urgency=low
+
+  * use samba4/debug/level instead of samba/debug/level (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Sep 2011 09:37:19 +0200
+
 univention-samba4 (1.0.47-2) unstable; urgency=low
 
   * increase default for samba/debug/level (Bug #22559)

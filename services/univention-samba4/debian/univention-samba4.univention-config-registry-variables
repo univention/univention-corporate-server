@@ -118,9 +118,9 @@ Description[en]=Enable/Disable Samba start on bootup
 Type=str
 Categories=service-samba
 
-[samba/debug/level]
-Description[de]=Debug Level für Samba Prozesse
-Description[en]=Debug level for samba processes
+[samba4/debug/level]
+Description[de]=Debug Level für Samba 4 Prozesse
+Description[en]=Debug level for samba 4 processes
 Type=str
 Categories=service-samba
 
