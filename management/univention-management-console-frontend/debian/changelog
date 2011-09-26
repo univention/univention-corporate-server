@@ -1,3 +1,13 @@
+univention-management-console-frontend (1.0.64-1) unstable; urgency=low
+
+  * umc.widgets.TitlePane: added hook to call Grids' startup method when the
+    TitlePane is opened; this fixes rendering problems
+  * umc.render: changed dijit.TitlePane to umc.widgets.TitlePane
+  * fixed jslint errors
+  (Bug #23195)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 26 Sep 2011 13:37:45 +0200
+
 univention-management-console-frontend (1.0.63-1) unstable; urgency=low
 
   * add setValid function to ComplexInput; Bug #23688

@@ -2,12 +2,12 @@
 
 dojo.provide("umc.render");
 
-dojo.require("dijit.TitlePane");
 dojo.require("umc.i18n");
+dojo.require("umc.tools");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.LabelPane");
+dojo.require("umc.widgets.TitlePane");
 dojo.require("umc.widgets.Tooltip");
-dojo.require("umc.tools");
 
 dojo.mixin(umc.render, new umc.i18n.Mixin({
 	// use the framework wide translation file
@@ -268,7 +268,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 			}
 			// for Object (i.e., a grouping box)
 			else if (dojo.isObject(el) && el.layout) {
-				el.$refTitlePane$ = new dijit.TitlePane({
+				el.$refTitlePane$ = new umc.widgets.TitlePane({
 					title: el.label,
 					'class': 'umcFormLevel' + iLevel,
 					toggleable: iLevel < 1,

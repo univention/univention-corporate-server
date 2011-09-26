@@ -99,8 +99,7 @@ dojo.declare("umc.widgets.ComplexInput", umc.widgets.ContainerWidget, {
 			var iisValid = dojo.isArray(areValid) ? areValid[i] : areValid;
 			this._widgets[ iname ].setValid( iisValid, imessage );
 		}, this );
-	},
-
+	}
 });
 
 
