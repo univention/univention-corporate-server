@@ -1,3 +1,9 @@
+univention-lib (1.0.19-1) unstable; urgency=low
+
+  * fixed locking code (Bug #19972)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 26 Sep 2011 15:18:12 +0200
+
 univention-lib (1.0.18-1) unstable; urgency=low
 
   * set default encoding for locales to UTF-8; Bug #23645

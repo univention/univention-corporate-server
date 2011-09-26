@@ -54,7 +54,7 @@ def get_lock(name, nonblocking=False):
 	fn = "/var/run/%s.pid" % name
 	fd = open(fn, 'w')
 	try:
-		if nonblocking == 1:
+		if nonblocking:
 			fcntl.lockf(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
 		else:
 			fcntl.lockf(fd, fcntl.LOCK_EX)
