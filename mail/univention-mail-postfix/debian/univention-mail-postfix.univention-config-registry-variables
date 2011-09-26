@@ -177,3 +177,15 @@ Description[de]=Leerzeichenseparierte Liste mit Maildomänen, die während der I
 Description[en]=Space separated list of mail domains that will be created during installation of univention-mail-server in LDAP (default: $domainname)
 Type=str
 Categories=service-mail
+
+[mail/cyrus/ssl/certificate]
+Description[de]=Vollständiger Dateiname des SSL-Zertifikats, das von Postfix für SSL-Verbindungen verwendet wird (Default: /etc/univention/ssl/<FQDN>/cert.pem)
+Description[en]=Pathname of SSL certificate that is used by Postfix to establish SSL connections (default: /etc/univention/ssl/<FQDN>/cert.pem)
+Type=str
+Categories=service-mail
+
+[mail/cyrus/ssl/key]
+Description[de]=Vollständiger Dateiname der SSL-Schlüsseldatei, das von Postfix für SSL-Verbindungen verwendet wird (Default: /etc/univention/ssl/<FQDN>/private.key)
+Description[en]=Pathname of SSL key file that is used by Postfix to establish SSL connections (default: /etc/univention/ssl/<FQDN>/private.key)
+Type=str
+Categories=service-mail
