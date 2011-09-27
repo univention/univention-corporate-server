@@ -76,11 +76,8 @@ class object(content):
 			file = open('/lib/univention-installer/locale/languagelist')
 		languages = file.readlines()
 		
-		# preselected language
-		try:
-			presLanguage = linecache.getline("locale/selectedlanguage", 1).strip('\n')
-		except:
-			presLanguage = linecache.getline("/lib/univention-installer/locale/selectedlanguage", 1).strip('\n')
+		# preselected language (kernel option lang)
+		presLanguage = self.cmdline.get("lang", "en")
 		
 		counter = 0
 		for line in languages:

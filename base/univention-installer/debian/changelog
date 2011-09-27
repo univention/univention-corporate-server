@@ -1,3 +1,10 @@
+univention-installer (7.0.78-1) unstable; urgency=low
+
+  * changed pre selected installer language to english
+    (configurable via "lang" kernel paramter) (Bug #22869)
+
+ -- Felix Botner <botner@univention.de>  Tue, 27 Sep 2011 13:40:28 +0200
+
 univention-installer (7.0.77-1) unstable; urgency=low
 
   * resizing update (Bug #23120)
