@@ -780,7 +780,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			info_txt = umcd.InfoBox(_('The physical server is not available at the moment'), icon='actions/critical', size=umct.SIZE_MEDIUM)
 			node_table.add_row([info_txt])
 		else:
-			# node_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : node_info.name } )
+			# node_cmd = umcp.SimpleCommand('uvmm/node/overview', options={'group': object.options['group'], 'node': node_info.uri})
 			# node_btn = umcd.LinkButton( node.name, actions = [ umcd.Action( node_cmd ) ] )
 			if node_uri.startswith( 'xen' ):
 				cpu_usage = percentage( lambda: float( node_info.cpu_usage ) / 10.0, width = 150 )
