@@ -1,3 +1,9 @@
+univention-pam (5.0.16-2) unstable; urgency=low
+
+  * fixed last commit (Bug #21358)
+
+ -- Felix Botner <botner@univention.de>  Tue, 27 Sep 2011 14:06:47 +0200
+
 univention-pam (5.0.16-1) unstable; urgency=low
 
   * increase nscd cache sizes if pre 3.0 default values

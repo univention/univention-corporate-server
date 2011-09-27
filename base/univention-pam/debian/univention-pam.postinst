@@ -46,7 +46,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.15-1; 
 		univention-config-registry set \
 			nscd/passwd/size=6007 \
 			nscd/group/size=56003 \
-			nscd/hosts/size?6007 \
+			nscd/hosts/size=6007 \
 			nscd/group/maxdbsize=62914560
 	fi
 fi
