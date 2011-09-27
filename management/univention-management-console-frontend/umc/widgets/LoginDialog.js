@@ -43,19 +43,29 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 	},
 
 	defaultLang: function () {
-		var exact_match = dojo.filter( this.availableLanguages, function( item ) { return dojo.locale == item.id; } );
+		var lowercase_locale = dojo.locale.toLowerCase();
+		var exact_match = dojo.filter( this.availableLanguages, function( item ) { return lowercase_locale == item.id.toLowerCase(); } );
 		if ( exact_match.length > 0 ) {
-			console.log( 'found exact match', exact_match[ 0 ].id );
 			return exact_match[ 0 ].id;
 		}
-		var default_language = 'en-US'; // fallback
+
+		// fallbacks
+		var default_language = null; 
+
+		// if dojo.locale is 'de' or 'de-XX' choose the first locale that starts with 'de'
+		var short_locale = lowercase_locale.slice( 0, 2 );
 		dojo.forEach( this.availableLanguages, function( lang ) {
-			if ( lang.id.indexOf( dojo.locale ) === 0 ) {
+			if ( lang.id.toLowerCase().indexOf(short_locale ) === 0 ) {
 				default_language = lang.id;
-				console.log( 'found match', lang.id );
 				return false;
 			}
 		}, this );
+
+		if ( null === default_language ) {
+			default_language = 'en-US';
+		}
+
+		console.log( 'new locale ' + default_language );
 
 		return default_language;
 	},
