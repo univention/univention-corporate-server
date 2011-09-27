@@ -372,13 +372,13 @@ class Client( notifier.signals.Provider ):
 				raise
 			for uri in node_uris.data:
 				try:
-					node = self.get_node_info( uri )
+					node_info = self.get_node_info( uri )
 				except UvmmError, e:
 					continue
 
 				domain_infos = []
 				for domain_info in node_info.domains:
-					if domain.name == 'Domain-0':
+					if domain_info.name == 'Domain-0':
 						continue
 					if option in ( 'all', 'domains' ) and pattern_regex.match( domain_info.name ):
 						domain_infos.append( domain_info )
