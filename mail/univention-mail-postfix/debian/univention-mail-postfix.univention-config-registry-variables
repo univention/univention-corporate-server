@@ -185,7 +185,7 @@ Type=str
 Categories=service-mail
 
 [mail/cyrus/ssl/key]
-Description[de]=Vollständiger Dateiname der SSL-Schlüsseldatei, das von Postfix für SSL-Verbindungen verwendet wird (Default: /etc/univention/ssl/<FQDN>/private.key)
+Description[de]=Vollständiger Dateiname der SSL-Schlüsseldatei, die von Postfix für SSL-Verbindungen verwendet wird (Default: /etc/univention/ssl/<FQDN>/private.key)
 Description[en]=Pathname of SSL key file that is used by Postfix to establish SSL connections (default: /etc/univention/ssl/<FQDN>/private.key)
 Type=str
 Categories=service-mail

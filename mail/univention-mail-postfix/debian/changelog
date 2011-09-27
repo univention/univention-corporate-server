@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.17-2) unstable; urgency=low
+
+  * fixed typo in UCR variable description (Bug #21867)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 27 Sep 2011 10:15:45 +0200
+
 univention-mail-postfix (6.0.17-1) unstable; urgency=low
 
   * added UCR variables mail/postfix/ssl/certificate and
