@@ -113,6 +113,9 @@ for package in $PACKAGES_TO_BE_PURGED; do
 	fi
 done
 
+# remove old sysklogd startup links (Bug #23143)
+update-rc.d -f sysklogd remove
+
 # executes custom postup script (always required)
 if [ ! -z "$update_custom_postup" ]; then
 	if [ -f "$update_custom_postup" ]; then

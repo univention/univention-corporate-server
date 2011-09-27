@@ -60,10 +60,6 @@ if [ "$1" = configure -a -z "$2" ]; then
 else
 	# update
 	univention-config-registry set syslog/mail/mirrorto/syslog?yes
-	if dpkg --compare-versions "$2" lt 1.0.16-1
-	then
-		update-rc.d -f sysklogd remove
-	fi
 fi
 
 # this must be done _before_ dephelper runs

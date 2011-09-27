@@ -1,3 +1,9 @@
+univention-updater (7.0.27-1) unstable; urgency=low
+
+  * postup.sh: remove old sysklogd startup links (Bug #23143)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 27 Sep 2011 17:02:09 +0200
+
 univention-updater (7.0.26-1) unstable; urgency=low
 
   * preup.sh: replaced update24_* variables with update30_*; Bug #23276

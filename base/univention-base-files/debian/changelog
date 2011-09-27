@@ -1,3 +1,10 @@
+univention-base-files (1.0.25-2) unstable; urgency=low
+
+  * remove removal of old sysklogd startup links (Bug #23143)
+    (moved to updater postup.sh)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 27 Sep 2011 17:02:39 +0200
+
 univention-base-files (1.0.25-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3
