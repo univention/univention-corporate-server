@@ -32,15 +32,30 @@
 
 . /usr/share/univention-lib/all.sh
 
+eval "$(univention-config-registry shell)"
+
 # /etc/libnss-ldap.secret is required for rootbinddn in /etc/libnss-ldap.conf
 ln -sf /etc/machine.secret /etc/libnss-ldap.secret
 # /etc/pam_ldap.secret is required for rootbinddn in /etc/pam_ldap.conf
 ln -sf /etc/machine.secret /etc/pam_ldap.secret
 
+# Update to UCS 3.0, increase nscd cache sizes if pre 3.0 default values
+# are used. Bug #21358
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.15-1; then
+	if [ "$nscd_passwd_size" = "3001" -a "$nscd_group_size" = "3001" -a "$nscd_hosts_size" = "3001" ]; then
+		univention-config-registry set \
+			nscd/passwd/size=6007 \
+			nscd/group/size=56003 \
+			nscd/hosts/size?6007 \
+			nscd/group/maxdbsize=62914560
+	fi
+fi
+
 univention-config-registry set \
 	nscd/passwd/size?6007 \
-	nscd/group/size?9001 \
+	nscd/group/size?56003 \
 	nscd/hosts/size?6007 \
+	nscd/group/maxdbsize?62914560 \
 	nscd/passwd/positive_time_to_live?600 \
 	nscd/group/positive_time_to_live?3600 \
 	nscd/hosts/positive_time_to_live?3600 \
