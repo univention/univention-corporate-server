@@ -1240,7 +1240,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				cmd_success = umcd.Action(umcp.SimpleCommand('uvmm/domain/overview', options=object.options), [dest.id()], status_range=umcd.Action.SUCCESS)
 				cmd_failure = umcd.Action(umcp.SimpleCommand('uvmm/domain/overview', options=object.options), status_range=umcd.Action.FAILURE)
 
-				content.add_row(['', umcd.Button(_('Migrate'), actions=[cmd_migrate, cmd_success, cmd_failure], default=True)])
+				content.add_row([umcd.Button(_('Cancel'), actions=[cmd_failure]), umcd.Button(_('Migrate'), actions=[cmd_migrate, cmd_success, cmd_failure], default=True)])
 				sec = umcd.Section(_('Migrate %(domain)s') % {'domain': domain_info.name}, content, attributes={'width': '100%'})
 				self.set_content( res, sec, location = False, refresh = False )
 			self.finished( object.id(), res )
@@ -1414,6 +1414,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			res = tv.get_tree_response(TreeView.LEVEL_DOMAIN)
 			node_uri = tv.node_uri
 			domain_info = tv.domain_info
+			domain_uuid = tv.domain_uuid
 			node_info = tv.node_info
 		except (uvmmd.UvmmError, KeyError), e:
 			return self.uvmm_node_overview( object )
@@ -1426,9 +1427,20 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			lst.add_row([''])
 			defaults = []
 			for disk in domain_info.disks:
-				if not disk.source: continue
+				if not disk.source:
+					continue
 				static_options = { 'drives' : disk.source }
 				default = disk.device == uvmmn.Disk.DEVICE_DISK and disk.type == uvmmn.Disk.TYPE_FILE
+				if default: # expensive check for shared disks
+					for (group_name2, nodes_infos2) in tv.node_tree.items():
+						for (node_uri2, node_info2) in nodes_infos2.items():
+							for (domain_uuid2, domain_info2) in node_info2.domains.items():
+								if (node_uri, domain_uuid) == (node_uri2, domain_uuid2):
+									continue # skip self
+								for disk2 in domain_info2.disks:
+									if disk.source == disk2.source:
+										default = False
+										break
 				chk_button = umcd.Checkbox(static_options=static_options, default=default)
 				chk_button.set_text( '%s: %s' % ( self._drive_name( disk.device ), disk.source ) )
 				boxes.append( chk_button.id() )
