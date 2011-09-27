@@ -41,14 +41,13 @@ import socket
 import logging
 from xml.dom.minidom import parseString
 import math
-from helpers import TranslatableException, ms, N_ as _, uri_encode, uri_decode
+from helpers import TranslatableException, ms, N_ as _, uri_encode
 from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
 import univention.admin.uexceptions
-import traceback
 from univention.uvmm.eventloop import *
 import threading
-from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError, storage_pools, get_storage_pool_info
-from protocol import Data_Domain, Data_Node, Data_Snapshot, _map, Disk, Interface, Graphic
+from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError, storage_pools
+from protocol import Data_Domain, Data_Node, Data_Snapshot, Disk, Interface, Graphic
 from network import network_start, network_find_by_bridge, NetworkError
 import os
 import stat
@@ -1410,7 +1409,7 @@ def domain_undefine(uri, domain, volumes=[]):
 		dom = conn.lookupByUUIDString(domain)
 		_domain_backup(dom)
 		if volumes is None:
-			volumes = get_all_storage_volumes(conn, dom,)
+			volumes = get_all_storage_volumes(dom)
 		destroy_storage_volumes(conn, volumes, ignore_error=True)
 		try:
 			if dom.hasManagedSaveImage(0):

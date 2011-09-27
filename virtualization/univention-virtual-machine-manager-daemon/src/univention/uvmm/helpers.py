@@ -40,6 +40,10 @@ __all__ = [
 		'FQDN',
 		'uri_netloc',
 		'match_self',
+		'uri_encode',
+		'uri_decode',
+		'TimeoutError',
+		'timeout',
 		]
 
 import gettext
@@ -150,6 +154,51 @@ def uri_decode(uri):
 		return uri[:i] + chr(int(uri[i+1:i+3], 16)) + uri_decode(uri[i+3:])
 	else:
 		return uri
+
+import sys
+import time
+import threading
+
+class TimeoutError(Exception):
+	pass
+
+class timeout(object):
+	"""
+	Call a function in another thread and wait for its completion.  If the
+	functions doesn't return in the maximum allowed time, raise an
+	TimeoutError.
+
+	>>> timeout(time.sleep, timeout=2.0)(1.0)
+	>>> timeout(time.sleep, timeout=1.0)(-1.0)
+	Traceback (most recent call last):
+	IOError: [Errno 22] Invalid argument
+	>>> timeout(time.sleep, timeout=1.0)(2.0)
+	Traceback (most recent call last):
+	TimeoutError: <built-in function sleep>
+	"""
+	def __init__(self, target, timeout=10.0):
+		self.target = target
+		self.timeout = timeout
+		self.result = None
+		self.exception = None
+
+	def __call__(self, *args, **kwargs):
+		thread = threading.Thread(target=self.run, args=args, kwargs=kwargs)
+		thread.daemon = True
+		thread.start()
+		thread.join(self.timeout)
+		if thread.isAlive():
+			raise TimeoutError(self.target)
+		elif self.exception:
+			raise self.exception[0], self.exception[1], self.exception[2]
+		else:
+			return self.result
+
+	def run(self, *args, **kwargs):
+		try:
+			self.result = self.target(*args, **kwargs)
+		except Exception, e:
+			self.exception = sys.exc_info()
 
 if __name__ == '__main__':
 	import doctest

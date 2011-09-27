@@ -301,9 +301,10 @@ class _Commands:
 		"""List all pools."""
 		if not isinstance(request.uri, basestring):
 			raise CommandError('STORAGE_POOLS', _('uri != string: %(uri)s'), uri=request.uri)
-		logger.debug('STORAGE_POOLS %s]' % (request.uri,))
+		logger.debug('STORAGE_POOLS %s' % (request.uri,))
 		try:
-			pools = storage.storage_pools(request.uri)
+			node_stat = node.node_query(request.uri)
+			pools = storage.storage_pools(node_stat)
 			res = protocol.Response_DUMP()
 			res.data = pools
 			return res
@@ -317,7 +318,8 @@ class _Commands:
 			raise CommandError( 'STORAGE_VOLUMES' , _( 'uri != string: %(uri)s' ), uri = request.uri )
 		logger.debug('STORAGE_VOLUMES %s]' % request.uri )
 		try:
-			volumes = storage.get_storage_volumes( request.uri, request.pool, request.type )
+			node_stat = node.node_query(request.uri)
+			volumes = storage.get_storage_volumes(node_stat, request.pool, request.type)
 			res = protocol.Response_DUMP()
 			res.data = volumes
 			return res
