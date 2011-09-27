@@ -1,3 +1,9 @@
+univention-horde4 (1.0.5-1) unstable; urgency=low
+
+  * fixed ucs overview (Bug #22151) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 27 Sep 2011 11:51:04 +0200
+
 univention-horde4 (1.0.4-1) unstable; urgency=low
 
   * more php dependencies (Bug #22151) 
