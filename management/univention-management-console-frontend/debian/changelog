@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.66-1) unstable; urgency=low
+
+  * fixed missing UMC icon for overview page (Bug #23188)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 27 Sep 2011 14:49:20 +0200
+
 univention-management-console-frontend (1.0.65-1) unstable; urgency=low
 
   * read the default language for the web frontend from the browser
