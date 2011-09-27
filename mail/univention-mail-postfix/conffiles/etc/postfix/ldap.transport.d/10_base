@@ -6,7 +6,7 @@
 
 server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
 search_base = @%@ldap/base@%@
-query_filter = (&(mailPrimaryAddress=%s)(univentionMailHomeServer=*)(!(univentionMailHomeServer=$myhostname)))
+query_filter = (&(mailPrimaryAddress=%s)(univentionMailHomeServer=*)(!(univentionMailHomeServer=@%@hostname@%@.@%@domainname@%@)))
 result_attribute = univentionMailHomeServer
 result_format = smtp:[%s]
 search_timeout = @%@mail/postfix/ldap/timeout@%@

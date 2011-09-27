@@ -1,12 +1,12 @@
 @%@UCRWARNING=# @%@
 #
 # LDAP mail2sharedfolder support
-# rewrite mail address for shared imap folders if univentionMailHomeServer is $myhostname
+# rewrite mail address for shared imap folders if univentionMailHomeServer is my fqdn
 #
 
 server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
 search_base = @%@ldap/base@%@
-query_filter = (&(objectClass=univentionMailSharedFolder)(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s))(univentionMailHomeServer=$myhostname))
+query_filter = (&(objectClass=univentionMailSharedFolder)(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s))(univentionMailHomeServer=@%@hostname@%@.@%@domainname@%@))
 result_attribute = univentionMailSharedFolderDeliveryAddress
 result_format = %s
 search_timeout = @%@mail/postfix/ldap/timeout@%@

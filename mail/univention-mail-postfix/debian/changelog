@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.19-1) unstable; urgency=low
+
+  * postfix variables do not get parsed in ldap tables (Bug #22369)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 27 Sep 2011 14:52:12 +0200
+
 univention-mail-postfix (6.0.18-1) unstable; urgency=low
 
   * reload cyrus-imapd in listener module hosteddomains.py (Bug #22876)
