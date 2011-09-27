@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
-univention-baseconfig set mail/antivir/scanner?clamav \
+univention-config-registry set mail/antivir/scanner?clamav \
 			 			 mail/antivir?yes \
 			 			 mail/antispam/requiredhits?5.0
 
@@ -39,13 +39,13 @@ univention-baseconfig set mail/antivir/scanner?clamav \
 adduser clamav amavis || true
 chown clamav /var/run/clamav/ || true
 
-univention-baseconfig set clamav/archive/maxfiles?1000 \
+univention-config-registry set clamav/archive/maxfiles?1000 \
 						 clamav/archive/maxfilesize?10M \
 						 clamav/archive/maxrecursion?5 \
 						 clamav/database/mirror?"db.local.clamav.net database.clamav.net" \
 						 clamav/checks?24
 
-univention-baseconfig set mail/antivir/banned/double_ext?"yes"	\
+univention-config-registry set mail/antivir/banned/double_ext?"yes"	\
 			  mail/antivir/banned/basic_ext?"yes"	\
 			  mail/antivir/banned/long_ext?"no"	\
 			  mail/antivir/banned/file_type?"no"	\
