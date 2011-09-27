@@ -1,3 +1,9 @@
+univention-net-installer (5.0.1-1) unstable; urgency=low
+
+  * fixed rules file (Bug #22576) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 27 Sep 2011 14:55:37 +0200
+
 univention-net-installer (5.0.0-1) unstable; urgency=low
 
   * Update for UCS 3.0 (Bug #22576)
