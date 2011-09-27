@@ -39,8 +39,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			for fn in filenames:
 				if fn.endswith('~'):
 					continue
+
+				if fn.endswith('.py'): # add all files to list that end with ".py"
+					py_files.append( os.path.join( dirpath, fn ) )
+					continue
+
 				try:
-					content = open( os.path.join( dirpath, fn), 'r').read(100)
+					content = open( os.path.join( dirpath, fn), 'r').read(100)  # add all files that contain a hashbang in first line
 					if content.startswith('#!'):
 						py_files.append( os.path.join( dirpath, fn ) )
 				except:

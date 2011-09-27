@@ -1,3 +1,9 @@
+ucslint (2.0.16-1) unstable; urgency=low
+
+  * also check python files without hashbang (Bug #22437)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 27 Sep 2011 11:10:31 +0200
+
 ucslint (2.0.15-1) unstable; urgency=low
 
   * removed outdated tests (Bug #23005)
