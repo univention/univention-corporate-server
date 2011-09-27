@@ -1,3 +1,9 @@
+ucslint (2.0.15-1) unstable; urgency=low
+
+  * removed outdated tests (Bug #23005)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 27 Sep 2011 10:34:42 +0200
+
 ucslint (2.0.14-1) unstable; urgency=low
 
   * removed bashism is testframework (Bug #23005)
