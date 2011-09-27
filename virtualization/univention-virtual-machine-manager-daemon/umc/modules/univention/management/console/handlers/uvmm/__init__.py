@@ -62,6 +62,10 @@ from drive import *
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
+try:
+	TreeView.SHOW_LEVEL = int(configRegistry.get('uvmm/umc/show/treeview'))
+except Exception:
+	pass
 
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 _uvmm_locale = umc.Translation('univention.virtual.machine.manager').translate

@@ -49,6 +49,7 @@ class TreeView( object ):
 	"""
 	LEVELS = ( '', 'group', 'node', 'domain', )
 	LEVEL_ROOT, LEVEL_GROUP, LEVEL_NODE, LEVEL_DOMAIN = range(len(LEVELS))
+	SHOW_LEVEL = LEVEL_DOMAIN
 
 	def __init__(self, uvmm_client, request):
 		"""Create new instance associated with UVMMd."""
@@ -211,6 +212,17 @@ class TreeView( object ):
 
 			group_view = []
 			tree_view.append(group_view)
+
+			if TreeView.SHOW_LEVEL < TreeView.LEVEL_NODE:
+				try:
+					self._node_info = node_infos[self.node_uri]
+					self.request.options.setdefault('group', group_name)
+					self._domain_info = self._node_info.domains[self.domain_uuid]
+					self.request.options.setdefault('domain_name', self._domain_info.name)
+				except KeyError, e:
+					pass
+				continue
+
 			for (node_uri, node_info) in sorted(node_infos.items(), key=lambda (node_uri, node_info): uvmmd.Client._uri2name(node_uri)): # sort by FQDN
 				try:
 					is_current_node = node_uri == self.node_uri
@@ -234,6 +246,15 @@ class TreeView( object ):
 					options = {'group': group_name, 'node': node_uri, 'domain': 'NONE'}
 					link = TreeView.button_create(_('Add'), 'uvmm/add', 'uvmm/domain/create', options, current)
 					domain_view.append(link)
+
+				if TreeView.SHOW_LEVEL < TreeView.LEVEL_DOMAIN:
+					if is_current_node:
+						try:
+							self._domain_info = node_info.domains[self.domain_uuid]
+							self.request.options.setdefault('domain_name', self._domain_info.name)
+						except KeyError, e:
+							pass
+					continue
 
 				for (domain_uuid, domain_info) in sorted(node_info.domains.items(), key=lambda (domain_uuid, domain_info): domain_info.name):
 					try:
