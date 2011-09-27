@@ -60,12 +60,43 @@ class TreeView( object ):
 	@staticmethod
 	def button_create( text, icon, command, options, current ):
 		"""Create button."""
-		cmd = umcp.SimpleCommand( command, options = copy.copy( options ) )
-		action = umcd.Action( cmd )
+		cmd = umcp.SimpleCommand(command, options=copy.copy(options))
+		action = umcd.Action(cmd)
 		highlight = current == TreeView.__get_item_path(options)
-		link = umcd.LinkButton( text, icon, actions = [ action ], current = highlight, attributes = { 'class' : 'umc_nowrap' } )
-		link.set_size( umct.SIZE_SMALL )
 
+		link = umcd.LinkButton(text, icon, actions=[action], current=highlight, attributes={'class': 'umc_nowrap'})
+		link.set_size(umct.SIZE_SMALL)
+		return link
+
+	@staticmethod
+	def button_create_node(group_name, node_uri, node_is_off, current=None):
+		node_name_short = uvmmd.Client._uri2name(node_uri, short=True)
+		if node_uri.startswith('qemu'):
+			icon = 'uvmm/node-kvm'
+		elif node_uri.startswith('xen'):
+			icon = 'uvmm/node-xen'
+		else:
+			icon = 'uvmm/node'
+		if node_is_off:
+			icon += '-off'
+
+		options = {'group': group_name, 'node': node_uri}
+		link = TreeView.button_create(node_name_short, icon, 'uvmm/node/overview', options, current)
+		return link
+
+	@staticmethod
+	def button_create_domain(group_name, node_uri, node_is_off, domain_info, current=None):
+		if node_is_off:
+			icon = 'uvmm/domain-off'
+		elif domain_info.state in (1, 2):
+			icon = 'uvmm/domain-on'
+		elif domain_info.state in (3,):
+			icon = 'uvmm/domain-paused'
+		else:
+			icon = 'uvmm/domain'
+
+		options = {'group': group_name, 'node': node_uri, 'domain': domain_info.uuid}
+		link = TreeView.button_create(domain_info.name, icon, 'uvmm/domain/overview', options, current)
 		return link
 
 	@staticmethod
@@ -124,16 +155,7 @@ class TreeView( object ):
 				node_name_short = uvmmd.Client._uri2name(node_uri, short=True)
 				node_is_off = age > 0
 
-				if node_uri.startswith('qemu'):
-					icon = 'uvmm/node-kvm'
-				elif node_uri.startswith('xen'):
-					icon = 'uvmm/node-xen'
-				else:
-					icon = 'uvmm/node'
-				if node_is_off:
-					icon += '-off'
-				options = {'group': group_name, 'node': node_uri}
-				link = TreeView.button_create(node_name_short, icon, 'uvmm/node/overview', options, current)
+				link = TreeView.button_create_node(group_name, node_uri, node_is_off, current)
 				group_view.append(link)
 
 				domain_view = []
@@ -152,16 +174,7 @@ class TreeView( object ):
 
 					if domain_info.name == 'Domain-0':
 						continue
-					if node_is_off:
-						icon = 'uvmm/domain-off'
-					elif domain_info.state in (1, 2):
-						icon = 'uvmm/domain-on'
-					elif domain_info.state in (3,):
-						icon = 'uvmm/domain-paused'
-					else:
-						icon = 'uvmm/domain'
-					options = {'group': group_name, 'node': node_uri, 'domain': domain_uuid}
-					link = TreeView.button_create(domain_info.name, icon, 'uvmm/domain/overview', options, current)
+					link = TreeView.button_create_domain(group_name, node_uri, node_is_off, domain_info, current)
 					domain_view.append(link)
 
 		table = umcd.SimpleTreeTable(collapsible=TreeView.LEVEL_NODE)

@@ -455,32 +455,34 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		except uvmmd.UvmmError, e:
 			results = ()
 		result_list = umcd.List()
-		result_list.set_header( [ umcd.Cell( umcd.Text( '' ), attributes = { 'width' : '20px' } ), umcd.HTML( _( 'Instance' ), attributes = { 'width': '100%', 'type' : 'umc_nowrap' } ), umcd.HTML( _( 'CPU usage' ) , attributes = { 'type' : 'umc_nowrap', 'align' : 'right' } ), umcd.HTML( _( 'Memory' ) , attributes = { 'type' : 'umc_nowrap' , 'align' : 'right' } ), '' ] )
-		object.options[ 'group' ] = 'default'
-		results.sort( key = operator.itemgetter( 0 ), cmp = lambda a, b: cmp( a.name.lower(), b.name.lower() ) )
+		result_list.set_header([
+			umcd.Cell(umcd.Text(''), attributes={'width': '20px'}),
+			umcd.HTML(_('Instance'), attributes={'width': '100%', 'type': 'umc_nowrap'}),
+			umcd.HTML(_('CPU usage'), attributes={'type': 'umc_nowrap', 'align': 'right'}),
+			umcd.HTML(_('Memory') , attributes={'type': 'umc_nowrap', 'align': 'right'}),
+			''
+			])
+
+		group_name = 'default' # FIXME
+		results.sort(key=lambda (node_info, domain_infos): node_info.name.lower())
 		for node_info, domain_infos in results:
-			opts = copy.copy( object.options )
-			if node_info.uri.startswith( 'xen:' ):
-				icon = 'uvmm/node-xen'
-			else:
-				icon = 'uvmm/node-kvm'
-			opts[ 'node' ] = node_info.name
-			text = uvmmd.Client._uri2name(node_info.uri, short=True)
-			node_btn = TreeView.button_create( text, icon, 'uvmm/node/overview', opts, False )
+			node_is_off = node_info.last_update < node_info.last_try
+			node_btn = TreeView.button_create_node(group_name, node_info.uri, node_is_off)
 			result_list.add_row( [ umcd.Cell( node_btn, attributes = { 'colspan' : '5' } ) ] )
-			domain_infos.sort( cmp = lambda a, b: cmp( a.name.lower(), b.name.lower() ) )
+
+			domain_infos.sort(key=lambda domain_info: domain_info.name.lower())
 			for domain_info in domain_infos:
-				domain_opts = copy.copy( opts )
-				domain_opts[ 'domain' ] = domain_info.uuid
-				icon = 'uvmm/domain'
-				if domain_info.state in ( 1, 2 ):
-					icon = 'uvmm/domain-on'
-				elif domain_info.state in ( 3, ):
-					icon = 'uvmm/domain-paused'
-				domain_btn = TreeView.button_create( domain_info.name, icon, 'uvmm/domain/overview', domain_opts, False )
+				domain_btn = TreeView.button_create_domain(group_name, node_info.uri, node_is_off, domain_info)
+				domain_opts = {'group': group_name, 'node': node_info.uri, 'domain': domain_info.uuid}
 				buttons = self._create_domain_buttons( domain_opts, node_info, domain_info, remove_failure = 'node' )
 				cputime = percentage( lambda: float( domain_info.cputime[ 0 ] ) / 10, width = 80 )
-				result_list.add_row( [ '', domain_btn, umcd.Cell( cputime, attributes = { 'type' : 'umc_mini_padding', 'align': 'center' } ), umcd.Cell( umcd.Number( MemorySize.num2str( domain_info.maxMem ) ), attributes = { 'type' : 'umc_mini_padding umc_nowrap', 'align': 'right' } ), umcd.Cell( buttons, attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) ] )
+				result_list.add_row([
+					'',
+					domain_btn,
+					umcd.Cell(cputime, attributes={'type': 'umc_mini_padding', 'align': 'center'}),
+					umcd.Cell(umcd.Number(MemorySize.num2str(domain_info.maxMem)), attributes={'type': 'umc_mini_padding umc_nowrap', 'align': 'right'}),
+					umcd.Cell(buttons, attributes={'type': 'umc_mini_padding umc_nowrap'})
+					])
 
 		# blind.add_row( [ umcd.Frame( [ result_list ], _( 'Search results' ) ) ] )
 		blind.add_row( [ umcd.Section( _( 'Search results' ), result_list ) ] )
@@ -507,9 +509,8 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			node_btn = umcd.LinkButton( node_info.name, actions = [ umcd.Action( node_cmd ) ] )
 
 			if node_info.last_update < node_info.last_try:
-				info_icon = umcd.Image('actions/critical', size=umct.SIZE_SMALL)
-				info_txt = umcd.Text(_('The physical server is not available at the moment'))
-				table.add_row([node_btn, info_icon, info_txt])
+				info_txt = umcd.InfoBox(_('The physical server is not available at the moment'), columns=2, icon='actions/critical', size=umct.SIZE_SMALL)
+				table.add_row([node_btn, info_txt])
 			else:
 				if node_uri.startswith( 'xen' ):
 					cpu_usage = percentage( lambda: float( node_info.cpu_usage ) / 10.0, width = 150 )
