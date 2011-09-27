@@ -1,3 +1,9 @@
+univention-config-registry (7.0.19-1) unstable; urgency=low
+
+  * add strict mode to UCR: friendly error message (Bug #18006)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 27 Sep 2011 16:20:38 +0200
+
 univention-config-registry (7.0.18-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3

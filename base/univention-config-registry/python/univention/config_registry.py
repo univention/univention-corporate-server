@@ -66,6 +66,9 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
          univention-config-registry überschrieben werden.
          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):'''
 
+class StrictModeException(Exception):
+	pass
+
 def warning_string(prefix='# ', width=80, srcfiles=set(), enforce_ascii=False):
 	res = []
 
@@ -330,8 +333,14 @@ class _ConfigRegistry( dict ):
 
 	def __setitem__(self, key, value):
 		if self.strict_encoding:
-			key.decode('UTF-8') # only accept valid UTF-8 encoded bytes
-			value.decode('UTF-8') # only accept valid UTF-8 encoded bytes
+			try:
+				key.decode('UTF-8') # only accept valid UTF-8 encoded bytes
+			except UnicodeError:
+				raise StrictModeException('variable name is not UTF-8 encoded')
+			try:
+				value.decode('UTF-8') # only accept valid UTF-8 encoded bytes
+			except UnicodeError:
+				raise StrictModeException('value is not UTF-8 encoded')
 		return dict.__setitem__(self, key, value)
 
 	def removeInvalidChars (self, seq):
@@ -1611,4 +1620,9 @@ def main(args):
 		exception_occured();
 
 if __name__ == '__main__':
-	main(sys.argv[1:])
+	try:
+		main(sys.argv[1:])
+	except StrictModeException, e:
+		print 'Error: UCR is running in strict mode and thus cannot accept the given input:'
+		print e
+		sys.exit(1)

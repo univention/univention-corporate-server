@@ -38,4 +38,9 @@ import univention.config_registry as ub
 if __name__ == '__main__' and not os.path.exists('/etc/univention/disable_baseconfig') and not os.path.exists('/etc/univention/disable_config_registry'):
 	if os.path.basename(sys.argv[0]) == 'univention-baseconfig':
 		print >>sys.stderr, 'WARNING: univention-baseconfig is deprectaed by univention-config-registry.'
-	ub.main(sys.argv[1:])
+	try:
+		ub.main(sys.argv[1:])
+	except ub.StrictModeException, e:
+		print 'Error: UCR is running in strict mode and thus cannot accept the given input:'
+		print e
+		sys.exit(1)
