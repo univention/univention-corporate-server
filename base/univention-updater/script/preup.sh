@@ -74,7 +74,7 @@ fi
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
-	if [ "$update24_ignoressh" != "yes" ]; then
+	if [ "$update30_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or run univention-updater with \"--ignoressh\" to ignore it."
 		exit 1
@@ -82,7 +82,7 @@ if [ -n "$SSH_CLIENT" ]; then
 fi
 
 if [ "$TERM" = "xterm" ]; then
-	if [ "$update24_ignoreterm" != "yes" ]; then
+	if [ "$update30_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or run univention-updater with \"--ignoreterm\" to ignore it."
 		exit 1
@@ -258,7 +258,7 @@ pruneOldKernel () {
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes remove --purge $(COLUMNS=200 dpkg -l linux-image-${kernel_version}-ucs\* 2>/dev/null | grep linux-image- | awk '{ print $2 }' | sort -n | egrep -v "linux-image-$(uname -r)|$ignore_kver" | tr "\n" " ") >>/var/log/univention/updater.log 2>&1
 }
 
-if [ "$update24_pruneoldkernel" = "yes" -o "$univention_ox_directory_integration_oxae" = "true" ]; then
+if [ "$update30_pruneoldkernel" = "yes" -o "$univention_ox_directory_integration_oxae" = "true" ]; then
 	echo "Purging old kernel..." | tee -a /var/log/univention/updater.log
 	pruneOldKernel "2.6.18"
 	pruneOldKernel "2.6.26"
@@ -279,12 +279,12 @@ check_space(){
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
         echo "         This may interrupt the update and result in an inconsistent system!"
     	echo "         If neccessary you can skip this check by setting the value of the"
-		echo "         config registry variable update24/checkfilesystems to \"no\"."
+		echo "         config registry variable update30/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
-		if [ "$partition" = "/boot" -a ! "$update24_pruneoldkernel" = "yes" -a ! "$univention_ox_directory_integration_oxae" = "true" ] ; then
+		if [ "$partition" = "/boot" -a ! "$update30_pruneoldkernel" = "yes" -a ! "$univention_ox_directory_integration_oxae" = "true" ] ; then
 			echo "         Old kernel versions on /boot can be pruned automatically during"
 			echo "         next update attempt by setting config registry variable"
-			echo "         update24/pruneoldkernel to \"yes\"."
+			echo "         update30/pruneoldkernel to \"yes\"."
 		fi
 		echo ""
 		# kill the running univention-updater process
@@ -300,7 +300,7 @@ fi
 mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
 
 # check space on filesystems
-if [ ! "$update24_checkfilesystems" = "no" ]
+if [ ! "$update30_checkfilesystems" = "no" ]
 then
 
 	check_space "/var/cache/apt/archives" "700000" "0,7 GB"

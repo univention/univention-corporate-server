@@ -1,3 +1,9 @@
+univention-updater (7.0.26-1) unstable; urgency=low
+
+  * preup.sh: replaced update24_* variables with update30_*; Bug #23276
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 27 Sep 2011 10:07:49 +0200
+
 univention-updater (7.0.25-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3
