@@ -49,6 +49,14 @@ cp /etc/univention/ssl/$hostname.$domainname/private.key /var/lib/cyrus/ || true
 chmod 600 /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
 chown cyrus /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
 
+# new installations
+if [ "$1" = "configure" -a -z "$2" ]; then
+	univention-config-registry set mail/cyrus/imap/quota?"yes" \
+		mail/cyrus/imap/quotawarnpercent?90 \
+		mail/cyrus/imap/quotawarnkb?0 \
+		mail/cyrus/squatter/cron?"30 3 * * Sun"
+fi
+
 univention-config-registry set mail/cyrus?yes \
 	mail/cyrus/autostart?yes \
 	mail/cyrus/imap?yes \
@@ -63,15 +71,6 @@ univention-config-registry set mail/cyrus?yes \
 	mail/cyrus/squatter/cron?"#30 3 * * Sun" \
 	mail/cyrus/ldap/pwfile?"/etc/cyrus-ldap.secret" \
 	mail/cyrus/sieve/spam?true
-
-# new installations
-if [ "$1" = "configure" -a -z "$2" ]; then
-	univention-config-registry set mail/cyrus/imap/quota?"yes" \
-		mail/cyrus/imap/quotawarnpercent?90 \
-		mail/cyrus/imap/quotawarnkb?0 \
-		mail/cyrus/squatter/cron?"30 3 * * Sun"
-fi
-
 
 CHROOT=/var/spool/postfix
 addgroup --system postfix || true
