@@ -380,6 +380,7 @@ class Disk(object):
 		self.target_dev = ''	# disk/target/@dev
 		self.target_bus = None	# disk/target/@bus
 		self.size = None # not defined
+		self.pool = None
 
 	@staticmethod
 	def map_device(id=None, name=None):

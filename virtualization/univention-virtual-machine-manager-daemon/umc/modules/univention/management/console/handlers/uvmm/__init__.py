@@ -908,11 +908,6 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		disk_list.set_header( [ _( 'Type' ), _( 'Image' ), _( 'Size' ), _( 'Pool' ), '' ] )
 		if domain_info and domain_info.disks:
 			defaults = []
-			try:
-				storages = self.uvmm.storage_pools(node_uri)
-			except uvmmd.UvmmError, e:
-				storages = ()
-			storage_volumes = {}
 			first = True
 			for dev in domain_info.disks:
 				remove_cmd = umcp.SimpleCommand( 'uvmm/drive/remove', options = copy.copy( object.options ) )
@@ -925,29 +920,14 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				values[ 'type' ] = self._drive_name( dev.device )
 
 				values[ 'image' ] = os.path.basename( dev.source )
-				dir = os.path.dirname( dev.source )
-				values[ 'pool' ] = dir
-				for pool in storages:
-					if pool.path != dir:
-						continue
-					values[ 'pool' ] = pool.name
-					if not pool.name in storage_volumes:
-						try:
-							storage_volumes[ pool.name ] = self.uvmm.storage_pool_volumes(node_uri, pool.name)
-						except uvmmd.UvmmError, e:
-							continue
-					for vol in storage_volumes[ pool.name ]:
-						if vol.source == dev.source:
-							dev.size = vol.size
-							break
-					break
+				values['pool'] = getattr(dev, 'pool', None) or os.path.dirname(dev.source)
+				size = getattr(dev, 'size', None)
+				if not dev.source:
+					values['size'] = _('empty')
+				elif size:
+					values['size'] = MemorySize.num2str(size)
 				else:
-					pool = None # fallback when Node is offline
-
-				if not dev.size:
-					values[ 'size' ] = _( 'unknown' )
-				else:
-					values[ 'size' ] = MemorySize.num2str( dev.size )
+					values['size'] = _('unknown')
 
 				buttons = []
 				if domain_is_off:
@@ -977,8 +957,8 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 					change_cmd.options['node'] = node_uri
 					change_cmd.options['domain'] = object.options['domain']
 					change_cmd.options['drive-type'] = uvmmn.Disk.map_device(id=dev.device)
-					if pool and pool.name:
-						change_cmd.options['pool-name'] = pool.name
+					if getattr(dev, 'pool', False):
+						change_cmd.options['pool-name'] = dev.pool
 					change_cmd.options['vol-name'] = os.path.basename(dev.source)
 					change_cmd.options['target_dev'] = dev.target_dev
 					change_btn = umcd.LinkButton(_('Change media'), actions=[umcd.Action(change_cmd)])

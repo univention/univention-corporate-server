@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.333-3) unstable; urgency=low
+
+  * Fix storage timeout for offline nodes (Bug #23092)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 27 Sep 2011 19:35:00 +0200
+
 univention-virtual-machine-manager-daemon (0.9.333-2) unstable; urgency=low
 
   * Fix missing node_name for offline nodes (Bug #23092)

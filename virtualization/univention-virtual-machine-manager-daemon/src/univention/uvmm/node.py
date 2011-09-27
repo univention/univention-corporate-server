@@ -296,6 +296,20 @@ class Domain(PersistentCached):
 				logger.warning("Failed to cache domain %s: %s" % (self.pd.uuid, e))
 			self.xml2obj(xml)
 
+		# Determine size and pool
+		for dev in self.pd.disks:
+			if not dev.source:
+				continue
+			try:
+				conn = domain.connect()
+				vol = conn.storageVolLookupByPath(dev.source)
+				dev.size = vol.info()[1] # (type, capacity, allocation)
+				pool = vol.storagePoolLookupByVolume()
+				dev.pool = pool.name()
+			except libvirt.libvirtError, e:
+				if e.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_VOL:
+					logger.warning('Failed to query disk %s#%s: %s', self.pd.uri, dev.source, e.get_error_message())
+
 		# List of snapshots
 		snapshots = None
 		if self.node.pd.supports_snapshot:
