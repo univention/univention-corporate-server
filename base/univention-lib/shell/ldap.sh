@@ -30,11 +30,11 @@
 
 #
 # ucs_getAttrOfDN returns the attribute value of an LDAP object
-# ucs_getAttrOfDN <attributename> <DN>
+# ucs_getAttrOfDN <attributename> <DN> [<ldapsearch-credentials>]
 # e.g. ucs_getAttrOfDN "krb5PasswordEnd" "uid=testuser,cn=users,dc=test,dc=system"
 # ==> 20110622112559Z
 #
-ucs_getAttrOfDN() { # <attr> <dn>
+ucs_getAttrOfDN() { # <attr> <dn> [<ldapsearch-credentials>]
 	local attr="$1"
 	local base="$2"
 	if ! shift 2
@@ -43,17 +43,17 @@ ucs_getAttrOfDN() { # <attr> <dn>
 		return 2
 	fi
 	if [ -n "$attr" ]; then
-		ldapsearch -x "$@" -s base -b "$base" -LLL "$attr" \
+		univention-ldapsearch -x "$@" -s base -b "$base" -LLL "$attr" \
 			| ldapsearch-wrapper | ldapsearch-decode64 | sed -ne "s/^$attr: //p"
 	fi
 }
 
 #
 # ucs_convertUID2DN returns DN of user object for specified UID
-# ucs_convertUID2DN <uid>
+# ucs_convertUID2DN <uid> [<ldapsearch-credentials>]
 # e.g. ucs_convertUID2DN "testuser"
 #
-ucs_convertUID2DN() { # <uid>
+ucs_convertUID2DN() { # <uid> [<ldapsearch-credentials>]
 	local uid="$1"
 	if ! shift 1
 	then
@@ -61,16 +61,16 @@ ucs_convertUID2DN() { # <uid>
 		return 2
 	fi
 	if [ -n "$uid" ]; then
-		ldapsearch -x "$@" -LLL "(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*\$))(uid=$uid))" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's/dn: //p'
+		univention-ldapsearch -x "$@" -LLL "(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*\$))(uid=$uid))" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's/dn: //p'
 	fi
 }
 
 #
 # ucs_convertUID2DN returns UID of user object for specified DN
-# ucs_convertUID2DN <user dn>
+# ucs_convertUID2DN <user dn> [<ldapsearch-credentials>]
 # e.g. ucs_convertUID2DN "uid=testuser,cn=users,dc=test,dc=system"
 #
-ucs_convertDN2UID() { # <userdn>
+ucs_convertDN2UID() { # <userdn> [<ldapsearch-credentials>]
 	local userdn="$1"
 	if ! shift 1
 	then
@@ -82,10 +82,10 @@ ucs_convertDN2UID() { # <userdn>
 
 #
 # ucs_getGroupMembersDirect returns all members of specified group
-# ucs_getGroupMembersDirect <group dn>
+# ucs_getGroupMembersDirect <group dn> [<ldapsearch-credentials>]
 # e.g. ucs_getGroupMembersDirect "cn=Domain Admins,cn=groups,dc=test,dc=system"
 #
-ucs_getGroupMembersDirect() { # <groupDN>
+ucs_getGroupMembersDirect() { # <groupDN> [<ldapsearch-credentials>]
 	local groupdn="$1"
 	if ! shift 1
 	then
@@ -97,12 +97,12 @@ ucs_getGroupMembersDirect() { # <groupDN>
 
 #
 # ucs_getGroupMembersDirect returns all members of specified group and of all nested groups
-# ucs_getGroupMembersDirect <group dn>
+# ucs_getGroupMembersDirect <group dn> [<ldapsearch-credentials>]
 # e.g. ucs_getGroupMembersDirect "cn=Domain Admins,cn=groups,dc=test,dc=system"
 #
 # optional environment: ldap_binddn and ldap_bindpw
 #
-ucs_getGroupMembersRecursive(){ # <groupDN>
+ucs_getGroupMembersRecursive(){ # <groupDN> [<ldapsearch-credentials>]
 	local reply
 	local ldif
 	local groupdn="$1"
@@ -113,7 +113,7 @@ ucs_getGroupMembersRecursive(){ # <groupDN>
 	fi
 	ucs_getGroupMembersDirect "$groupdn" "$@" | while read reply
 	do
-		ldif=$(ldapsearch -x "$@" -LLL -b "$reply" '(!(objectClass=univentionGroup))' dn | sed -ne "s/^dn: //p")
+		ldif=$(univention-ldapsearch -x "$@" -LLL -b "$reply" '(!(objectClass=univentionGroup))' dn | sed -ne "s/^dn: //p")
 		if [ "$?" != 0 ]; then	## don't recurse in case of error
 			break
 		fi
