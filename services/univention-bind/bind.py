@@ -70,9 +70,6 @@ def ldap_auth_string(baseConfig):
 
 	account=baseConfig.get('bind/binddn', baseConfig.get('ldap/hostdn')).replace(',', '%2c')
 
-	if account == 'None':
-		return ''
-
 	pwdfile=baseConfig.get('bind/bindpw', '/etc/machine.secret')
 	pwd=open(pwdfile).readlines()
 

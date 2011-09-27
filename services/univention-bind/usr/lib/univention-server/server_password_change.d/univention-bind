@@ -31,7 +31,7 @@
 
 eval "$(ucr shell)"
 
-if [ -n "$bind_bindpw" -a "$bind_bindpw" != "/etc/machine.secret" ] || [ "$bind_binddn = "None" || "$bind_binddn = "none" ]; then
+if [ -n "$bind_bindpw" -a "$bind_bindpw" != "/etc/machine.secret" ]; then
 	# Skip the passwdord change
 	exit 0
 fi

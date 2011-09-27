@@ -1,3 +1,10 @@
+univention-bind (6.0.21-1) unstable; urgency=low
+
+  * Fixed quoting error in server password change script (Bug #23176)
+  * No longer consider None for bind/binddn (Bug #23176)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Sep 2011 07:29:38 +0200
+
 univention-bind (6.0.20-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3
