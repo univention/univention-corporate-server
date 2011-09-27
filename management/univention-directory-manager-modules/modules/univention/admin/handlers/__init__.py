@@ -1636,7 +1636,7 @@ class simpleComputer( simpleLdap ):
 
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'add' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % entry )
-			dn, ip, mac = __split_dhcp_line( entry )
+			dn, ip, mac = self.__split_dhcp_line( entry )
 			if not ip and not mac and not self.__multiip:
 				self.__modify_dhcp_object( dn, self[ 'name' ], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] )
 			else:

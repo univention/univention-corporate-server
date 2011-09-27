@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.95-1) unstable; urgency=low
+
+  * simpleComputer: fix call to __split_dhcp_entry (add missing self.); Bug #23329
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 27 Sep 2011 16:46:52 +0200
+
 univention-directory-manager-modules (7.0.94-1) unstable; urgency=low
 
   * simpleComputer: re-add __split_dhcp_entry to filter the case that no
