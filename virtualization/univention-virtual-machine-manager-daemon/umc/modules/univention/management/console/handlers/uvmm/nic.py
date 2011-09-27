@@ -120,14 +120,12 @@ class NIC_Commands( object ):
 
 	def uvmm_nic_create( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Network interface create' )
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
-		if not success:
-			self.finished(object.id(), res)
-			return
+		tv = TreeView(self.uvmm, object)
 		try:
-			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
-		except UvmmError, e:
+			res = tv.get_tree_response(TreeView.LEVEL_DOMAIN)
+			node_uri = tv.node_uri
+			domain_info = tv.domain_info
+		except (uvmmd.UvmmError, KeyError), e:
 			return self.uvmm_node_overview( object )
 
 		report = ''
@@ -234,14 +232,12 @@ class NIC_Commands( object ):
 
 	def uvmm_nic_edit( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Network interface edit' )
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
-		if not success:
-			self.finished(object.id(), res)
-			return
+		tv = TreeView(self.uvmm, object)
 		try:
-			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
-		except UvmmError, e:
+			res = tv.get_tree_response(TreeView.LEVEL_DOMAIN)
+			node_uri = tv.node_uri
+			domain_info = tv.domain_info
+		except (uvmmd.UvmmError, KeyError), e:
 			return self.uvmm_node_overview( object )
 
 		report = ''

@@ -420,8 +420,12 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 	def uvmm_overview( self, object ):
 		"""Toplevel overview: show info."""
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object )
-		if success:
+		tv = TreeView(self.uvmm, object)
+		try:
+			res = tv.get_tree_response(TreeView.LEVEL_ROOT)
+		except uvmmd.UvmmError, e:
+			res = tv.get_failure_response(e)
+		else:
 			self.domain_wizard.reset()
 			self.set_content( res, umcd.ModuleDescription( 'Univention Virtual Machine Manager (UVMM)', _( 'This module provides a management interface for physical servers that are registered within the UCS domain.\nThe tree view on the left side shows an overview of all existing physical servers and the residing virtual instances. By selecting one of the physical servers statistics of the current state are displayed to get an impression of the health of the hardware system. Additionally actions like start, stop, suspend and resume for each virtual instance can be invoked on each of the instances.\nAlso possible is direct access to virtual instances. Therefor it must be activated in the configuration.\nEach virtual instance entry in the tree view provides access to detailed information und gives the possibility to change the configuration or state and migrated it to another physical server.' ) ), location = False, refresh = False )
 		self.finished( object.id(), res )
@@ -432,8 +436,11 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			return umcd.make( self[ 'uvmm/search' ][ key ], default = object.options.get( key, default ) )
 
 		ud.debug( ud.ADMIN, ud.INFO, 'Search' )
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object )
-		if not success:
+		tv = TreeView(self.uvmm, object)
+		try:
+			res = tv.get_tree_response(TreeView.LEVEL_ROOT)
+		except uvmmd.UvmmError, e:
+			res = tv.get_failure_response(e)
 			self.finished(object.id(), res)
 			return
 		pattern = _widget( 'pattern', '*' )
@@ -494,17 +501,20 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		"""Group overview: show nodes of group with utilization."""
 		group_name = object.options['group']
 		ud.debug(ud.ADMIN, ud.INFO, 'Group overview of %s' % (group_name,))
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', ) )
-		if not success:
+		tv = TreeView(self.uvmm, object)
+		try:
+			res = tv.get_tree_response(TreeView.LEVEL_GROUP)
+			nodes = tv.node_tree[group_name]
+		except (uvmmd.UvmmError, KeyError), e:
+			res = tv.get_failure_response(e)
 			self.finished(object.id(), res)
 			return
 		self.domain_wizard.reset()
-		nodes = self.uvmm.get_group_info(group_name)
 
 		table = umcd.List( default_type = 'uvmm_table')
 		table.set_header( [ _( 'Physical server' ), _( 'CPU usage' ), _( 'Memory usage' ) ] )
 		for node_uri, node_info in sorted(nodes.items(), key=lambda (k, v): v.name):
-			node_opt = {'group': group_name, 'node': node_info.name}
+			node_opt = {'group': group_name, 'node': node_uri}
 			node_cmd = umcp.SimpleCommand('uvmm/node/overview', options=node_opt)
 			node_btn = umcd.LinkButton( node_info.name, actions = [ umcd.Action( node_cmd ) ] )
 
@@ -749,19 +759,17 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 	def uvmm_node_overview( self, object ):
 		"""Node overview: show node utilization and all domains."""
 		ud.debug( ud.ADMIN, ud.INFO, 'Node overview' )
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node' ) )
-		if not success:
+		tv = TreeView(self.uvmm, object)
+		try:
+			res = tv.get_tree_response(TreeView.LEVEL_NODE)
+			node_uri = tv.node_uri
+			node_info = tv.node_info
+		except (uvmmd.UvmmError, KeyError), e:
+			self.set_content( res, umcd.InfoBox( _( 'The physical server is not available at the moment' ) ) )
 			self.finished(object.id(), res)
 			return
 		self.domain_wizard.reset()
 
-		try:
-			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-			node_info = self.uvmm.get_node_info( node_uri )
-		except uvmmd.UvmmError, e:
-			self.set_content( res, umcd.InfoBox( _( 'The physical server is not available at the moment' ) ) )
-			self.finished(object.id(), res)
-			return
 		node_is_off = node_info.last_update < node_info.last_try
 
 		content = umcd.List( attributes = { 'width' : '100%' }, default_type = 'uvmm_table' )
@@ -788,7 +796,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 		table = umcd.List( attributes = { 'type' : 'umc_mini_padding' }, default_type = 'uvmm_table' )
 		num_buttons = 0
-		for domain_info in sorted( node_info.domains, key = operator.attrgetter( 'name' ) ):
+		for (domain_uuid, domain_info) in sorted(node_info.domains.items(), key=lambda (domain_uuid, domain_info): domain_info.name.lower()):
 			# ignore XEN Domain-0
 			if domain_info.name == 'Domain-0':
 				continue
@@ -1126,17 +1134,17 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			object.options[ 'node' ] = object.options[ 'dest' ]
 		except KeyError:
 			pass
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
-		if not success:
-			self.finished(object.id(), res)
-			return
+
+		tv = TreeView(self.uvmm, object)
+		try:
+			res = tv.get_tree_response(TreeView.LEVEL_DOMAIN)
+			node_uri = tv.node_uri
+			domain_info = tv.domain_info
+			node_info = tv.node_info
+		except (uvmmd.UvmmError, KeyError), e:
+			return self.uvmm_node_overview( object )
 		self.domain_wizard.reset()
 
-		try:
-			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
-		except uvmmd.UvmmError, e:
-			return self.uvmm_node_overview( object )
 		node_is_off = node_info.last_update < node_info.last_try
 
 		blind_table = umcd.List( default_type = 'uvmm_table' )
@@ -1203,21 +1211,26 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 	def uvmm_domain_migrate( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain migrate' )
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
-		if not success:
+		tv = TreeView(self.uvmm, object)
+		try:
+			res = tv.get_tree_response(TreeView.LEVEL_DOMAIN)
+			src_uri = tv.node_uri
+			src_name = tv.node_name
+			domain_info = tv.domain_info
+			domain_uuid = tv.domain_uuid
+			node_info = tv.node_info
+		except (uvmmd.UvmmError, KeyError), e:
+			res = tv.get_failure_response(e)
 			self.finished(object.id(), res)
 			return
 
 		content = umcd.List()
-		domain_uuid = object.options['domain']
 		try:
-			src_uri, src_name = self.uvmm.node_uri_name(object.options['node'])
 			if 'dest' in object.options:
 				dest_uri, dest_name = self.uvmm.node_uri_name(object.options['dest'])
 				ud.debug(ud.ADMIN, ud.INFO, 'Domain migrate: %s # %s -> %s' % (src_uri, domain_uuid, dest_uri))
 				self.uvmm.domain_migrate( src_uri, dest_uri, domain_uuid )
 			else:
-				node_info, domain_info = self.uvmm.get_domain_info_ext(src_uri, domain_uuid)
 				dest_node_select.update_choices(object.options.get('grouplist', set()))
 				content.add_row([umcd.Text(_('Migrate virtual instance %(domain)s from physical server %(source)s to:') % {'domain': domain_info.name, 'source': src_name} , attributes={'colspan': '2'})])
 				dest = umcd.make( self[ 'uvmm/domain/migrate' ][ 'dest' ] )
@@ -1240,16 +1253,21 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure' )
 		res = umcp.Response( object )
 
+		tv = TreeView(self.uvmm, object)
 		try:
-			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-			node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
-			if domain_info is None and create:
-				domain_info = uuv_proto.Data_Domain()
-			else:
-				raise uvmmd.UvmmError()
-		except uvmmd.UvmmError, e:
-			( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
-			if not success:
+			node_uri = tv.node_uri
+			try:
+				domain_info = tv.domain_info
+			except (uvmmd.UvmmError, KeyError), e:
+				if create:
+					domain_info = uuv_proto.Data_Domain()
+				else:
+					raise
+		except (uvmmd.UvmmError, KeyError), e:
+			try:
+				res = tv.get_tree_response(TreeView.LEVEL_NODE)
+			except uvmmd.UvmmError, e:
+				res = tv.get_failure_response(e)
 				self.finished(object.id(), res)
 				return
 			table = umcd.List( default_type = 'uvmm_table' )
@@ -1338,21 +1356,18 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 	def uvmm_domain_create( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain create' )
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
-		if not success:
-			self.finished(object.id(), res)
-			return
-
 		# user cancelled the wizard
 		if object.options.get( 'action' ) == 'cancel':
 			self.drive_wizard.reset()
 			self.uvmm_node_overview( object )
 			return
 
+		tv = TreeView(self.uvmm, object)
 		try:
-			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-			node_info = self.uvmm.get_node_info( node_uri )
-		except uvmmd.UvmmError, e:
+			res = tv.get_tree_response(TreeView.LEVEL_DOMAIN)
+			node_uri = tv.node_uri
+			node_info = tv.node_info
+		except (uvmmd.UvmmError, KeyError), e:
 			return self.uvmm_node_overview( object )
 
 		if not 'action' in object.options:
@@ -1394,15 +1409,13 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 	def uvmm_domain_remove_images( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain remove images' )
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
-		if not success:
-			self.finished(object.id(), res)
-			return
-
+		tv = TreeView(self.uvmm, object)
 		try:
-			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-			node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
-		except uvmmd.UvmmError, e:
+			res = tv.get_tree_response(TreeView.LEVEL_DOMAIN)
+			node_uri = tv.node_uri
+			domain_info = tv.domain_info
+			node_info = tv.node_info
+		except (uvmmd.UvmmError, KeyError), e:
 			return self.uvmm_node_overview( object )
 
 		boxes = []
@@ -1470,12 +1483,15 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			object.incomplete = True
 
 		try:
-			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+			tv = TreeView(self.uvmm, object)
 			if object.incomplete:
-				(success, res) = TreeView.safely_get_tree(self.uvmm, object, ('group', 'node', 'domain'))
-				if not success:
-					raise uvmmd.UvmmError()
-		except uvmmd.UvmmError, e:
+				res = tv.get_tree_response(TreeView.LEVEL_DOMAIN)
+			else:
+				domain_info = tv.domain_info
+				node_info = tv.node_info
+			node_uri = tv.node_uri
+		except (uvmmd.UvmmError, KeyError), e:
+			res = tv.get_failure_response(e)
 			self.finished(object.id(), res)
 			return
 
@@ -1505,7 +1521,6 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		else:
 			res = umcp.Response(object)
 			try:
-				node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, domain_uuid)
 				self.uvmm.domain_snapshot_create(node_uri, domain_uuid, snapshot_name)
 				res.status(201)
 				report = _('The instance <i>%(domain)s</i> was snapshoted to <i>%(snapshot)s</i> successfully')

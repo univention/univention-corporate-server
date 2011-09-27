@@ -436,55 +436,52 @@ class Client( notifier.signals.Provider ):
 		return uri
 
 	def get_node_tree( self ):
-		"""Return a 'tree', which is a nested dict of names for all groups,
-		nodes and domains including 'age' of node_info and 'state' from
-		domain_info.
+		"""
+		Return a 'tree', which is a list of all node_infos.
+		node_info.domains is converted to a dict(domain_uuid: domain_info).
+		Unreachable nodes are represented as empty node_info.
 		tree = {
 			group_name: {
-				node_uri: (age, {
-					domain_uuid: domain_info,
-					...
-					}),
-				node_uri: (age, {}),
+				node_uri: node_info,
 				...
 			},
-			...
 		}
 		"""
 
 		req = protocol.Request_GROUP_LIST()
 		try:
 			self.send(req.pack())
-			groups = self.recv_blocking()
+			res = self.recv_blocking()
+			groups = res.data
 		except UvmmError, e:
 			raise
 
 		tree_data = {}
-		for group_name in groups.data:
+		for group_name in groups:
 			req = protocol.Request_NODE_LIST()
 			req.group = group_name
 			try:
 				self.send(req.pack())
-				node_uris = self.recv_blocking()
+				res = self.recv_blocking()
+				node_uris = res.data
 			except UvmmError, e:
 				raise
 
 			tree_data[group_name] = group = {}
-			for node_uri in node_uris.data:
-				domains = {}
+			for node_uri in node_uris:
 				req = protocol.Request_NODE_QUERY()
 				req.uri = node_uri
 				try:
 					self.send(req.pack())
-					node_info = self.recv_blocking()
+					res = self.recv_blocking()
+					node_info = res.data
+					node_info.domains = dict(((domain_info.uuid, domain_info) for domain_info in node_info.domains))
 				except UvmmError, e:
-					age = float('infinity')
-					continue
-				else:
-					age = node_info.data.last_try - node_info.data.last_update
-					for domain_info in node_info.data.domains:
-						domains[domain_info.uuid] = domain_info
-				group[node_uri] = (age, domains)
+					node_info = protocol.Data_node()
+					node_info.uri = node_uri
+					node_info.last_try = time.time()
+					node_info.domains = {}
+				group[node_uri] = node_info
 
 		return tree_data
 

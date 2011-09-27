@@ -53,14 +53,13 @@ class DriveCommands( object ):
 	def uvmm_drive_create( self, object ):
 		"""Create new drive using a wizard."""
 		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_create(action=%(action)s)' % ddict(object.options))
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
-		if not success:
-			self.finished(object.id(), res)
-			return
+		tv = TreeView(self.uvmm, object)
 		try:
-			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
-		except UvmmError, e:
+			res = tv.get_tree_response(TreeView.LEVEL_DOMAIN)
+			node_uri = tv.node_uri
+			domain_info = tv.domain_info
+			node_info = tv.node_info
+		except (uvmmd.UvmmError, KeyError), e:
 			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_create: node %(node)s#%(domains)s not found' % request.options)
 			return self.uvmm_node_overview( object )
 
@@ -110,17 +109,20 @@ class DriveCommands( object ):
 		"""Remove drive from domain and optionally delete used image."""
 		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_remove(%(disk)s)' % ddict(object.options))
 
+		tv = TreeView(self.uvmm, object)
 		if object.incomplete:
-			( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
-			if not success:
+			try:
+				res = tv.get_tree_response(TreeView.LEVEL_DOMAIN)
+			except UvmmError, e:
+				res = tv.get_failure_response(e)
 				self.finished(object.id(), res)
 				return
 		else:
 			res = umcp.Response( object )
 
 		try:
-			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
+			node_uri = tv.node_uri
+			domain_info = tv.domain_info
 		except UvmmError, e:
 			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_remove: node %(node)s#%(domain)s not found' % object.options)
 			return self.uvmm_node_overview(object)
@@ -199,10 +201,11 @@ class DriveCommands( object ):
 		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_edit(%s)' % object.options)
 		res = umcp.Response( object )
 
+		tv = TreeView(self.uvmm, object)
 		try:
-			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
-			node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
-		except UvmmError, e:
+			node_uri = tv.node_uri
+			domain_info = tv.domain_info
+		except (uvmmd.UvmmError, KeyError), e:
 			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_edit: node %(node)s#%(somain)s not found' % request.options)
 			return self.uvmm_node_overview( object )
 
@@ -216,8 +219,10 @@ class DriveCommands( object ):
 			return self.finished(object.id(), res)
 
 		if object.incomplete:
-			( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
-			if not success:
+			try:
+				res = tv.get_tree_response(TreeView.LEVEL_DOMAIN)
+			except UvmmError, e:
+				res = tv.get_failure_response(e)
 				self.finished(object.id(), res)
 				return
 			conf = umcd.List( default_type = 'uvmm_table' )

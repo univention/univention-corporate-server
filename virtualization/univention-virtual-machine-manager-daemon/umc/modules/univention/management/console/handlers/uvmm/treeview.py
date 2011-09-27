@@ -43,17 +43,72 @@ import uvmmd
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
 class TreeView( object ):
+	"""
+	Query UVMMd for all groups/nodes/domains and create tree-view.
+	Save queried data for later calls.
+	"""
 	LEVELS = ( '', 'group', 'node', 'domain', )
 	LEVEL_ROOT, LEVEL_GROUP, LEVEL_NODE, LEVEL_DOMAIN = range(len(LEVELS))
 
+	def __init__(self, uvmm_client, request):
+		"""Create new instance associated with UVMMd."""
+		self.uvmm_client = uvmm_client
+		self.request = request
+		self.node_tree = None
+
+	@property
+	def group_name(self):
+		group_name = self.request.options['group']
+		return group_name
+
+	@property
+	def node_uri(self):
+		node_uri = self.request.options['node']
+		return node_uri
+
+	@property
+	def node_name(self):
+		node_name = uvmmd.Client._uri2name(self.node_uri)
+		return node_name
+
+	@property
+	def node_name_short(self):
+		node_short_name = uvmmd.Client._uri2name(self.node_uri, short=True)
+		return node_short_name
+
+	@property
+	def node_info(self):
+		try:
+			return self._node_info
+		except AttributeError, e:
+			self._node_info = self.uvmm_client.get_node_info(self.node_uri)
+			return self._node_info
+
+	@property
+	def domain_uuid(self):
+		domain_uuid = self.request.options['domain']
+		return domain_uuid
+
+	@property
+	def domain_info(self):
+		try:
+			return self._domain_info
+		except AttributeError, e:
+			self._node_info, self._domain_info = self.uvmm_client.get_domain_info_ext(self.node_uri, self.domain_uuid)
+			return self._domain_info
+
+	def __nonzero__(self):
+		"""Return success status."""
+		return self.node_tree is not None
+
 	@staticmethod
-	def __get_item_path(options, current=LEVELS[1:]):
+	def __get_item_path(options, levels=LEVELS[1:]):
 		"""Calculate /group/node/domain path."""
 		path = ()
-		for level in current:
-			if level in options:
-				path += (options[level],)
-			else:
+		for level_name in levels:
+			try:
+				path += (options[level_name],)
+			except KeyError:
 				break
 		return path
 
@@ -99,42 +154,52 @@ class TreeView( object ):
 		link = TreeView.button_create(domain_info.name, icon, 'uvmm/domain/overview', options, current)
 		return link
 
-	@staticmethod
-	def safely_get_tree(uvmm_client, request, current=()):
+	def get_failure_response(self, exception=None):
 		"""
-		Create TreeView.
-		'current' is a list of parameter names ('group', 'node', 'domain') passed via 'request.options' to determin the currenty selected item.
+		Return a response indicating an error in the last request to UVMMd.
+		The exception is currently ignored.
 		"""
-		res = umcp.Response(request)
-		success = True
+		info_txt = _('The connection to the Univention Virtual Machine Manager service could not be established. Please verify that it is started. You may use the UMC service module therefor.')
+		info_box = umcd.InfoBox(info_txt)
 
-		current_path = TreeView.__get_item_path(request.options, current)
-		try:
-			table = TreeView.get_tree(uvmm_client, request, current=current_path)
-		except uvmmd.ConnectionError:
-			table = umcd.SimpleTreeTable()
-			table.set_tree_data( [] )
-			table.set_dialog( umcd.InfoBox( _( 'The connection to the Univention Virtual Machine Manager service could not be established. Please verify that it is started. You may use the UMC service module therefor.' ) ) )
-			success = False
-		res.dialog = umcd.Dialog( [ table ], attributes = { 'type' : 'uvmm_frame' } )
+		table = umcd.SimpleTreeTable()
+		table.set_tree_data([])
+		table.set_dialog(info_box)
 
-		return ( success, res )
+		res = umcp.Response(self.request)
+		res.dialog = umcd.Dialog([table], attributes={'type': 'uvmm_frame'})
+		return res
 
-	@staticmethod
-	def get_tree(uvmm_client, request, current):
+	def get_tree_response(self, level):
+		"""
+		Return a response containing a dialog with the TreeView.
+		"""
+		current = TreeView.LEVELS[1 : level + 1]
+		current_path = TreeView.__get_item_path(self.request.options, current)
+
+		table = self.get_tree(current=current_path)
+
+		res = umcp.Response(self.request)
+		res.dialog = umcd.Dialog([table], attributes={'type': 'uvmm_frame'})
+		return res
+
+	def get_tree(self, current):
 		"""
 		Create TreeView.
 		'current' is a prefix of the n-tuple (group_name, node_uri, domain_uuid) of the currently selected item.
 		Additionally fills in some 'missing' request.options-parameters from UVMMd-data.
 		"""
 		try:
-			node_tree = uvmm_client.get_node_tree()
+			self.node_tree = node_tree = self.uvmm_client.get_node_tree()
 		except uvmmd.UvmmError, e:
 			raise
 
 		tree_view = []
-		for group_name, nodes in sorted(node_tree.items(), key=lambda (group_name, nodes): group_name):
-			is_current_group = group_name == request.options.get('group')
+		for (group_name, node_infos) in sorted(node_tree.items(), key=lambda (group_name, node_infos): group_name):
+			try:
+				is_current_group = group_name == self.group_name
+			except KeyError, e:
+				is_current_group = False
 			# FIXME: should be removed if UVVMd supports groups
 			if group_name == 'default':
 				group_label = _('Physical servers')
@@ -146,14 +211,18 @@ class TreeView( object ):
 
 			group_view = []
 			tree_view.append(group_view)
-			for node_uri, (age, domains) in sorted(nodes.items(), key=lambda (node_uri, (age, domains)): uvmmd.Client._uri2name(node_uri)): # sort by FQDN
-				is_current_node = node_uri == request.options.get('node')
+			for (node_uri, node_info) in sorted(node_infos.items(), key=lambda (node_uri, node_info): uvmmd.Client._uri2name(node_uri)): # sort by FQDN
+				try:
+					is_current_node = node_uri == self.node_uri
+				except KeyError, e:
+					is_current_node = False
 				if is_current_node:
 					# Fill in missing 'group' from UVMMd data
-					request.options.setdefault('group', group_name)
+					self._node_info = node_info
+					self.request.options.setdefault('group', group_name)
 
 				node_name_short = uvmmd.Client._uri2name(node_uri, short=True)
-				node_is_off = age > 0
+				node_is_off = node_info.last_update < node_info.last_try
 
 				link = TreeView.button_create_node(group_name, node_uri, node_is_off, current)
 				group_view.append(link)
@@ -166,11 +235,15 @@ class TreeView( object ):
 					link = TreeView.button_create(_('Add'), 'uvmm/add', 'uvmm/domain/create', options, current)
 					domain_view.append(link)
 
-				for domain_uuid, domain_info in sorted(domains.items(), key=lambda (domain_uuid, domain_info): domain_info.name):
-					is_current_domain = is_current_node and domain_uuid == request.options.get('domain')
+				for (domain_uuid, domain_info) in sorted(node_info.domains.items(), key=lambda (domain_uuid, domain_info): domain_info.name):
+					try:
+						is_current_domain = is_current_node and domain_uuid == self.domain_uuid
+					except KeyError, e:
+						is_current_domain = False
 					# Fill in missing 'domain_name' from UVMMd data
 					if is_current_domain:
-						request.options.setdefault('domain_name', domain_info.name)
+						self._domain_info = domain_info
+						self.request.options.setdefault('domain_name', domain_info.name)
 
 					if domain_info.name == 'Domain-0':
 						continue
