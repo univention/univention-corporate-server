@@ -1,3 +1,11 @@
+univention-management-console-module-top (1.0.11-1) unstable; urgency=low
+
+  * Check if process exist
+  * Modify layout of search widget
+  * Add confirmation dialog
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 27 Sep 2011 11:48:27 +0200
+
 univention-management-console-module-top (1.0.10-1) unstable; urgency=low
 
   * changed icon sizes in overview to 50x50, removed 24x24, 32x32, 64x64

@@ -74,6 +74,7 @@ class Instance(umcm.Base):
 		self.finished(request.id, processes)
 
 	def kill(self, request):
+		message = ''
 		signal = request.options.get('signal', 'SIGTERM')
 		pidList = request.options.get('pid', [])
 		for pid in pidList:
@@ -87,7 +88,8 @@ class Instance(umcm.Base):
 				request.status = SUCCESS
 				success = True
 			except psutil.NoSuchProcess, error:
+				message = _('No process found with PID {0}'.format(pid))
 				success = False
 				MODULE.error(str(error))
 				request.status = MODULE_ERR
-		self.finished(request.id, success)
+		self.finished(request.id, success, message=message)

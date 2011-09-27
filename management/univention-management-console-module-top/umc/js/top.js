@@ -5,6 +5,7 @@ dojo.provide("umc.modules.top");
 dojo.require("dojox.string.sprintf");
 dojo.require("umc.dialog");
 dojo.require("umc.i18n");
+dojo.require("umc.dialog");
 dojo.require("umc.widgets.ExpandingTitlePane");
 dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.Page");
@@ -26,9 +27,17 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			signal: signal,
 			pid: pids
 		};
-		this.umcpCommand('top/kill', params).then(dojo.hitch(this, function(data) {
-			umc.dialog.notify(this._('Signal (%s) sent successfully', signal));
-		}));
+		var msg = this._('Please confirm sending %s to the %s selected processes!', signal, pids.length);
+		umc.dialog.confirm(msg, [{
+			label: this._('OK'),
+			callback: dojo.hitch(this, function() {
+				this.umcpCommand('top/kill', params).then(dojo.hitch(this, function(data) {
+					umc.dialog.notify(this._('Signal (%s) sent successfully', signal));
+				}));
+			})
+		}, {
+			label: this._('Cancel')
+		}]);
 	},
 
 	buildRendering: function() {
@@ -130,7 +139,7 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._searchWidget = new umc.widgets.SearchForm({
 			region: 'top',
 			widgets: widgets,
-			layout: [['category', 'filter']],
+			layout: [[ 'category', 'filter', 'submit', 'reset' ]],
 			onSearch: dojo.hitch(this._grid, 'filter')
 		});
 
