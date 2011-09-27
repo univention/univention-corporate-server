@@ -138,7 +138,7 @@ src/messages.pot: $(shell find src/univention/uvmm -name \*.py)
 
 
 IMAGES_12 := domain group node
-IMAGES_16 := add domain-off domain-on domain-paused domain group node node-off refresh
+IMAGES_16 := add domain-off domain-on domain-paused domain group node node-off node-kvm node-kvm-off node-xen node-xen-off refresh search
 IMAGES_64 := module
 
 SIZES := 12 16 24 64
@@ -153,8 +153,11 @@ define CONVERT_template
 endef
 $(foreach size,$(SIZES),$(eval $(call CONVERT_template,$(size))))
 
+%.svg: %.svgz
+	gzip -dc <$< >$@
+
 %.gif: %.png
-	convert $< $@
+	convert $< -channel A -threshold 75% $@
 
 endif
 
