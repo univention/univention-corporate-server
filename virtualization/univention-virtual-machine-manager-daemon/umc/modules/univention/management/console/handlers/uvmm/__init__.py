@@ -1407,21 +1407,12 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			lst.add_row([''])
 			defaults = []
 			for disk in domain_info.disks:
-				if not disk.source:
+				try:
+					do_delete = self._is_disk_deleteable(disk, tv)
+				except (TypeError, ValueError), e:
 					continue
 				static_options = { 'drives' : disk.source }
-				default = disk.device == uvmmn.Disk.DEVICE_DISK and disk.type == uvmmn.Disk.TYPE_FILE
-				if default: # expensive check for shared disks
-					for (group_name2, nodes_infos2) in tv.node_tree.items():
-						for (node_uri2, node_info2) in nodes_infos2.items():
-							for (domain_uuid2, domain_info2) in node_info2.domains.items():
-								if (node_uri, domain_uuid) == (node_uri2, domain_uuid2):
-									continue # skip self
-								for disk2 in domain_info2.disks:
-									if disk.source == disk2.source:
-										default = False
-										break
-				chk_button = umcd.Checkbox(static_options=static_options, default=default)
+				chk_button = umcd.Checkbox(static_options=static_options, default=do_delete)
 				chk_button.set_text( '%s: %s' % ( self._drive_name( disk.device ), disk.source ) )
 				boxes.append( chk_button.id() )
 				lst.add_row( [ umcd.Cell( umcd.Text( '' ), attributes = { 'width' : '10' } ), umcd.Cell( chk_button, attributes = { 'colspan' : '2' } ) ] )

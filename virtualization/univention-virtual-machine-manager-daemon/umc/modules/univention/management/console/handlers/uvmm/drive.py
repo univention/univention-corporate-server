@@ -143,7 +143,10 @@ class DriveCommands( object ):
 		if object.incomplete:
 			# remove domain
 			# if the attached drive could be removed successfully the user should be ask, if the image should be removed
-			is_shared_image = rm_disk.device in (uvmmn.Disk.DEVICE_CDROM, uvmmn.Disk.DEVICE_FLOPPY)
+			try:
+				do_delete = self._is_disk_deleteable(rm_disk, tv)
+			except (TypeError, ValueError), e:
+				do_delete = False
 			lst = umcd.List( default_type = 'uvmm_table' )
 
 			opts = copy.copy( object.options )
@@ -158,8 +161,8 @@ class DriveCommands( object ):
 			if rm_disk.source and rm_disk.type != uvmmn.Disk.TYPE_BLOCK:
 				lst.add_row([umcd.Cell(umcd.HTML(_('The drive will be detached from the virtual instance.<br/>Additionally the associated image <i>%(image)s</i> may be deleted permanently.') % {'image': rm_disk.source}), attributes={'colspan': '3'})])
 				btn_cancel = umcd.Button(_('Cancel'), actions=[umcd.Action(overview)])
-				btn_detach = umcd.Button(_('Detach'), actions=[umcd.Action(detach), umcd.Action(overview)], default=is_shared_image)
-				btn_delete = umcd.Button(_('Delete'), actions=[umcd.Action(remove), umcd.Action(overview)], default=not is_shared_image)
+				btn_detach = umcd.Button(_('Detach'), actions=[umcd.Action(detach), umcd.Action(overview)], default=not do_delete)
+				btn_delete = umcd.Button(_('Delete'), actions=[umcd.Action(remove), umcd.Action(overview)], default=do_delete)
 				lst.add_row( [ '' ] )
 				lst.add_row([btn_cancel, '', umcd.Cell(btn_detach, attributes={'align': 'right', 'colspan': '2'}), umcd.Cell(btn_delete, attributes={'align': 'right'})])
 			else:
@@ -430,3 +433,28 @@ class DriveCommands( object ):
 		else:
 			report = ''
 		self.finished(request.id(), res, report=report)
+
+	def _is_disk_deleteable(self, disk, tv):
+		"""
+		Check if disk is shared.
+		Raises ValueError if technically impossible (missing functionality)
+		Raises TypeError if policy incompatible.
+		Returns False if images is shared.
+		"""
+		if not disk.source:
+			raise ValueError('no source')
+		if getattr(disk, 'pool', None) is None:
+			raise ValueError('no pool')
+		if disk.type != uvmmn.Disk.TYPE_FILE: # FIXME: block-devices should work also as long as they are in a pool than can handle this
+			raise TypeError('not a file')
+		if disk.device != uvmmn.Disk.DEVICE_DISK:
+			raise TypeError('not a disk')
+		for (group_name2, nodes_infos2) in tv.node_tree.items():
+			for (node_uri2, node_info2) in nodes_infos2.items():
+				for (domain_uuid2, domain_info2) in node_info2.domains.items():
+					if (tv.node_uri, tv.domain_uuid) == (node_uri2, domain_uuid2):
+						continue # skip self
+					for disk2 in domain_info2.disks:
+						if disk.source == disk2.source:
+							return False
+		return True
