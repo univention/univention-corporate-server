@@ -1,3 +1,10 @@
+univention-directory-notifier (6.0.4-1) unstable; urgency=low
+
+  * Restart listener and notifier in 15univention-directory-notifier-post.inst
+    (Bug #23826)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Sep 2011 12:19:02 +0200
+
 univention-directory-notifier (6.0.3-1) unstable; urgency=low
 
   * Fixed bashisms (Bug #22431)

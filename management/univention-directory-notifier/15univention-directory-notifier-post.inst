@@ -54,6 +54,14 @@ if [ ! -e /var/lib/univention-ldap/$i.lock ]; then
 	chmod 600 /var/lib/univention-ldap/$i.lock
 fi
 
+if [ -x /etc/init.d/univention-directory-notifier ]; then
+	/etc/init.d/univention-directory-notifier restart
+fi
+
+if [ -x /etc/init.d/univention-directory-listener ]; then
+	/etc/init.d/univention-directory-listener restart
+fi
+
 test -n "`grep "univention-directory-notifier-post v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-directory-notifier-post v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
