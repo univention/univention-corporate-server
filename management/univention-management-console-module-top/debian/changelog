@@ -1,8 +1,15 @@
+univention-management-console-module-top (1.0.12-1) unstable; urgency=low
+
+  * Fixed translation (Bug #22850)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 28 Sep 2011 16:26:24 +0200
+
 univention-management-console-module-top (1.0.11-1) unstable; urgency=low
 
   * Check if process exist
   * Modify layout of search widget
   * Add confirmation dialog
+  (Bug #22850)
 
  -- Jascha Geerds <geerds@univention.de>  Tue, 27 Sep 2011 11:48:27 +0200
 
@@ -18,6 +25,7 @@ univention-management-console-module-top (1.0.9-1) unstable; urgency=low
   * Fix command column
   * Fix missing import
   * Change notify message
+  (Bug #22850)
 
  -- Jascha Geerds <geerds@univention.de>  Mon, 15 Aug 2011 16:45:38 +0200
 
