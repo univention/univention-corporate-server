@@ -1,3 +1,9 @@
+univention-samba4 (1.0.52-1) unstable; urgency=low
+
+  * On RODCs register only specific DNS reords (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 28 Sep 2011 16:21:25 +0200
+
 univention-samba4 (1.0.51-1) unstable; urgency=low
 
   * disable sysvol share on samba4/role=MEMBER (Bug #23570)
