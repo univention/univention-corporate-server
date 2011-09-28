@@ -842,7 +842,7 @@ msgid ""
 "Most settings of the virtual instance can not be modified while it is "
 "running."
 msgstr ""
-"Die meißten Einstellungen einer virtuellen Instanz können nicht geändert "
+"Die meisten Einstellungen einer virtuellen Instanz können nicht geändert "
 "werden, solange diese läuft."
 
 #: umc/modules/univention/management/console/handlers/uvmm/nic.py:64
