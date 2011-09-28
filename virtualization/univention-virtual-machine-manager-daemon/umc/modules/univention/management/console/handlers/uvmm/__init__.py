@@ -1028,6 +1028,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				opts[ 'source' ] = iface.source
 				opts[ 'mac' ] = iface.mac_address
 				opts[ 'driver' ] = iface.model
+				opts[ 'target' ] = iface.target
 				remove_cmd = umcp.SimpleCommand( 'uvmm/nic/remove', options = opts )
 				edit_cmd = umcp.SimpleCommand( 'uvmm/nic/edit', options = opts )
 				edit_cmd.incomplete = True

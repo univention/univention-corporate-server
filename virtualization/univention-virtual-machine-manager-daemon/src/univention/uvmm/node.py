@@ -440,7 +440,7 @@ class Domain(PersistentCached):
 				dev.script = script[ 0 ].getAttribute( 'path' )
 			target = iface.getElementsByTagName( 'target' )
 			if target:
-				dev.target_dev = target[ 0 ].getAttribute( 'dev' )
+				dev.target = target[ 0 ].getAttribute( 'dev' )
 			model = iface.getElementsByTagName( 'model' )
 			if model:
 				dev.model = model[ 0 ].getAttribute( 'type' )

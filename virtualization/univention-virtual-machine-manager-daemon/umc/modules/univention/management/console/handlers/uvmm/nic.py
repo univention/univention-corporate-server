@@ -208,6 +208,8 @@ class NIC_Commands( object ):
 			iface.model = options['driver']
 		if options[ 'mac' ]:
 			iface.mac_address = options[ 'mac' ]
+		if options.get('target'):
+			iface.target = options['target']
 
 		return iface
 
