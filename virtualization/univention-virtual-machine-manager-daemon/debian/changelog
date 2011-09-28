@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.333-7) unstable; urgency=low
+
+  * Revert last commit and fix real problem (Ticket#: 2011092810002962)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Sep 2011 18:51:40 +0200
+
 univention-virtual-machine-manager-daemon (0.9.333-6) unstable; urgency=low
 
   * Fix exception for unknown network interface (Ticket#: 2011092810002962)

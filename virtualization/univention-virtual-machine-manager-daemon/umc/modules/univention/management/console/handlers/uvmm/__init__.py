@@ -1025,9 +1025,9 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			for iface in domain_info.interfaces:
 				opts = copy.copy( object.options )
 				opts[ 'nictype' ] = iface.map_type( id = iface.type )
-				opts[ 'source' ] = iface.source or _('unknown')
-				opts[ 'mac' ] = iface.mac_address or _('unknown')
-				opts[ 'driver' ] = iface.model or _('unknown')
+				opts[ 'source' ] = iface.source
+				opts[ 'mac' ] = iface.mac_address
+				opts[ 'driver' ] = iface.model
 				remove_cmd = umcp.SimpleCommand( 'uvmm/nic/remove', options = opts )
 				edit_cmd = umcp.SimpleCommand( 'uvmm/nic/edit', options = opts )
 				edit_cmd.incomplete = True
@@ -1039,7 +1039,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 					nic_type = _( 'NAT' )
 				else:
 					nic_type = _( 'unknown' )
-				nic_source = iface.source
+				nic_source = iface.source or _('unknown')
 				if iface.model:
 					nic_driver = iface.model
 				else:
@@ -1055,7 +1055,13 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				else:
 					buttons = []
 
-				nic_list.add_row( [ nic_type, iface.source, nic_driver_select.description( nic_driver ), iface.mac_address, buttons ] )
+				nic_list.add_row([
+					nic_type,
+					nic_source,
+					nic_driver_select.description(nic_driver),
+					iface.mac_address,
+					buttons
+					])
 
 		nic_sec.add_row( [ nic_list ] )
 
