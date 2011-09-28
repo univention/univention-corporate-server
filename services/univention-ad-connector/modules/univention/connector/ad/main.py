@@ -231,6 +231,7 @@ def connect():
 				print "Can't contact LDAP server during ucs-poll, sync not possible."
 				connected = False
  				sys.stdout.flush()
+				change_counter=0
 
 			try:
 				change_counter+=ad.poll()
@@ -238,6 +239,7 @@ def connect():
 				print "Can't contact LDAP server during ad-poll, sync not possible."
 				connected = False
  				sys.stdout.flush()
+				change_counter=0
 
 			if change_counter > 0:
 				retry_rejected=0
