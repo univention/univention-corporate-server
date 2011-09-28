@@ -132,7 +132,7 @@ def do_package(package):
 	f_postrm = open(extFile(package, 'postrm.debhelper'), 'a')
 	f_postrm.write('# Automatically added by univention-install-config-registry\n')
 	f_postrm.write('if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then\n')
-	f_postrm.write(' rm -f "/etc/univention/templates/info/%s.info"\n' % package)
+	f_postrm.write(' mv "/etc/univention/templates/info/%s.info" /etc/univention/templates/removed/\n' % package)
 	f_postrm.write('fi\n')
 	f_postrm.write('# End automatically added section\n')
 	f_postrm.close()

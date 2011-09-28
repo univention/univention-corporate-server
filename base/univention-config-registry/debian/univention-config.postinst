@@ -32,10 +32,10 @@
 
 rm -f /var/cache/univention-config/cache
 
-# Bug #22524: remove obsolete univention-baseconfig.info
+# Bug #22524: move obsolete univention-baseconfig.info
 if [ -f /etc/univention/templates/info/univention-baseconfig.info ]
 then
-	rm -f /etc/univention/templates/info/univention-baseconfig.info
+	mv /etc/univention/templates/info/univention-baseconfig.info /etc/univention/templates/removed/
 fi
 
 #DEBHELPER#
