@@ -43,6 +43,8 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 	},
 
 	defaultLang: function () {
+		// dojo.locale is set in the index.html either via the query string in the URL,
+		// via a cookie, or via dojo automatically
 		var lowercase_locale = dojo.locale.toLowerCase();
 		var exact_match = dojo.filter( this.availableLanguages, function( item ) { return lowercase_locale == item.id.toLowerCase(); } );
 		if ( exact_match.length > 0 ) {
@@ -50,7 +52,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		}
 
 		// fallbacks
-		var default_language = null; 
+		var default_language = null;
 
 		// if dojo.locale is 'de' or 'de-XX' choose the first locale that starts with 'de'
 		var short_locale = lowercase_locale.slice( 0, 2 );
@@ -77,9 +79,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		dojo.addClass(this.titleNode, 'umcLoginDialogTitle');
 		dojo.addClass(this.titleBar, 'umcLoginDialogTitleBar');
 
-		console.log( dojo.cookie('UMCLang') );
-		console.log( this.defaultLang() );
-		var default_lang = dojo.cookie('UMCLang') || this.defaultLang();
+		var default_lang = this.defaultLang();
 
 		var widgets = [{
 			type: 'TextBox',
@@ -187,8 +187,6 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			password: password
 		}).then(dojo.hitch(this, function(data) {
 			// disable standby in any case
-			//console.log('# _authenticate - ok');
-			//console.log(data);
 			this.standby(false);
 
 			// make sure that we got data
@@ -196,8 +194,6 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			this.hide();
 		}), dojo.hitch(this, function(error) {
 			// disable standby in any case
-			//console.log('# _authenticate - error');
-			//console.log(error);
 			this.standby(false);
 		}));
 	},

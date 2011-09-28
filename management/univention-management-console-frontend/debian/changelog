@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.68-1) unstable; urgency=low
+
+  * removed cookie query in umc.widgets.LoginDialog (Bug #23818)
+  * added umc/build.js to index.html (the built js-file had not been used)
+    (Bug #23852)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 28 Sep 2011 15:15:00 +0200
+
 univention-management-console-frontend (1.0.67-1) unstable; urgency=low
 
   * fixed default locale determination; Bug #23818

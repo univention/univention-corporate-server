@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-19 12:47+0200\n"
+"POT-Creation-Date: 2011-09-28 14:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,11 +91,11 @@ msgstr "Die Anfrage konnte nicht ausgeführt werden."
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
-#: umc/widgets/LoginDialog.js:61
+#: umc/widgets/LoginDialog.js:41
 msgid "English"
 msgstr "Englisch"
 
-#: umc/widgets/LoginDialog.js:60
+#: umc/widgets/LoginDialog.js:40
 msgid "German"
 msgstr "Deutsch"
 
@@ -170,11 +170,11 @@ msgstr "Interner Server-Fehler: Der Modulprozess starb unerwartet."
 msgid "Internal server error: The service is temporarily not available."
 msgstr "Interner Server-Fehler: Der Dienst is zeitweise nicht erreichbar!"
 
-#: umc/widgets/LoginDialog.js:65
+#: umc/widgets/LoginDialog.js:101
 msgid "Language"
 msgstr "Sprache"
 
-#: umc/widgets/LoginDialog.js:70
+#: umc/widgets/LoginDialog.js:106
 msgid "Login"
 msgstr "Anmelden"
 
@@ -219,7 +219,7 @@ msgstr "Ok"
 msgid "Overview"
 msgstr "Übersicht"
 
-#: umc/widgets/LoginDialog.js:55
+#: umc/widgets/LoginDialog.js:94
 msgid "Password"
 msgstr "Passwort"
 
@@ -227,7 +227,7 @@ msgstr "Passwort"
 msgid "Remove"
 msgstr "Entfernen"
 
-#: umc/widgets/SearchForm.js:23 umc/widgets/LoginDialog.js:78
+#: umc/widgets/SearchForm.js:23 umc/widgets/LoginDialog.js:114
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -253,11 +253,11 @@ msgstr ""
 "Das Benutzerkonto kannt nicht verwendet werden, seine Gültigkeit ist "
 "ausgelaufen."
 
-#: umc/widgets/LoginDialog.js:64
+#: umc/widgets/LoginDialog.js:100
 msgid "The language for the login session."
 msgstr "Die Sprache für die Anmeldesitzung."
 
-#: umc/widgets/LoginDialog.js:54
+#: umc/widgets/LoginDialog.js:93
 msgid "The password of your domain account."
 msgstr "Das Passwort Ihres Domänen-Kontos."
 
@@ -270,7 +270,7 @@ msgstr "Die Passworte stimmen nicht überein, bitte versuchen Sie es erneut."
 msgid "The total cost was %.2f EUR!"
 msgstr ""
 
-#: umc/widgets/LoginDialog.js:49
+#: umc/widgets/LoginDialog.js:88
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
@@ -297,7 +297,7 @@ msgstr ""
 msgid "User: %s"
 msgstr "Benutzer: %s"
 
-#: umc/widgets/LoginDialog.js:50
+#: umc/widgets/LoginDialog.js:89
 msgid "Username"
 msgstr "Benutzername"
 
@@ -326,7 +326,7 @@ msgstr ""
 msgid "Webfrontend error: The specified request is unknown."
 msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht bekannt."
 
-#: umc/widgets/LoginDialog.js:107
+#: umc/widgets/LoginDialog.js:143
 msgid ""
 "Welcome to the Univention Management Console. Please enter your domain "
 "username and password for login!"
