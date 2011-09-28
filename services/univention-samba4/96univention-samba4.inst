@@ -317,6 +317,8 @@ elif [ "$samba4_role" = "MEMBER" ]; then
 
 	extract_binddn_and_bindpwd_from_args "$@"
 	samba-tool join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
+	univention-config-registry set samba/share/netlogon?no \
+									samba/share/sysvol?no
 
 	# set_machine_secret	## currently disabled
 
