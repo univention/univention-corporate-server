@@ -1,3 +1,11 @@
+univention-samba4 (1.0.49-1) unstable; urgency=low
+
+  * add options to setup-dns-in-ucsldap allowing to add DNS records
+    specific for DC, RODC, GC, ROGC and the PDC emulator respectively
+    (Bug #23360)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 28 Sep 2011 14:35:00 +0200
+
 univention-samba4 (1.0.48-1) unstable; urgency=low
 
   * start samba daemon before modifying secrets.ldb, trying to cure
