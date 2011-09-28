@@ -1,7 +1,7 @@
 
 	; domain
 @!@
-if configRegistry['samba4/role'] = 'MEMBER':
+if configRegistry['samba4/role'] == 'MEMBER':
 	print '\tsecurity = ads'
 
 	print '\tpreferred master = no'
