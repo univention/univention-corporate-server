@@ -1025,9 +1025,9 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			for iface in domain_info.interfaces:
 				opts = copy.copy( object.options )
 				opts[ 'nictype' ] = iface.map_type( id = iface.type )
-				opts[ 'source' ] = iface.source
-				opts[ 'mac' ] = iface.mac_address
-				opts[ 'driver' ] = iface.model
+				opts[ 'source' ] = iface.source or _('unknown')
+				opts[ 'mac' ] = iface.mac_address or _('unknown')
+				opts[ 'driver' ] = iface.model or _('unknown')
 				remove_cmd = umcp.SimpleCommand( 'uvmm/nic/remove', options = opts )
 				edit_cmd = umcp.SimpleCommand( 'uvmm/nic/edit', options = opts )
 				edit_cmd.incomplete = True

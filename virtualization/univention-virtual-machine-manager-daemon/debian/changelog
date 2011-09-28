@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.333-6) unstable; urgency=low
+
+  * Fix exception for unknown network interface (Ticket#: 2011092810002962)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Sep 2011 17:38:52 +0200
+
 univention-virtual-machine-manager-daemon (0.9.333-5) unstable; urgency=low
 
   * Fix traceback in {cpu,mem}_usage calculation (Bug #23843)
