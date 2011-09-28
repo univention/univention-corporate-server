@@ -30,13 +30,177 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-24 18:02+0100\n"
-"PO-Revision-Date: 2011-01-24 18:03+0100\n"
+"POT-Creation-Date: 2011-09-28 17:48+0200\n"
+"PO-Revision-Date: 2011-09-28 17:49+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
+
+#: unidialog.py:121
+#, python-format
+msgid "error while modifying: %s %s"
+msgstr "Während des Bearbeitens ist ein Fehler aufgetreten: %s %s"
+
+#: pages/overview.py:52
+msgid "Overview"
+msgstr "Überblick"
+
+#: pages/startup.py:52
+msgid "Bugreport: Univention Management Console Traceback"
+msgstr "Fehlerbericht: Univention Management Console Traceback"
+
+#: pages/startup.py:53
+msgid ""
+"\n"
+"Please take a second to provide the following information\n"
+"\n"
+"1) Steps to reproduce the failure\n"
+"\n"
+"2) Expected result\n"
+"\n"
+"3) Actual result\n"
+"\n"
+"----------\n"
+"\n"
+msgstr ""
+"\n"
+"Bitte nehmen Sie sich eine Sekunde Zeit um die folgenden Informationen "
+"einzutragen\n"
+"\n"
+"1) Schritte, um den Fehler zu reproduzieren\n"
+"\n"
+"2) Erwartetes Ergebnis\n"
+"\n"
+"3) Beobachtetes Ergebnis\n"
+"\n"
+
+#: pages/startup.py:96
+#, python-format
+msgid "Report this error to %s &lt;%s&gt;"
+msgstr "Diesen Fehler an %s &lt;%s&gt; melden"
+
+#: pages/startup.py:101
+msgid "An error has occured"
+msgstr "Ein Fehler ist aufgetreten"
+
+#: pages/startup.py:111 pages/module.py:153
+msgid "Information"
+msgstr "Hinweis"
+
+#: pages/module.py:152
+msgid "The operation is still in progress. Please wait ..."
+msgstr "Der Vorgang ist noch nicht abgeschlossen. Bitte warten ..."
+
+#: pages/module.py:307
+msgid "Messages"
+msgstr "Meldungen"
+
+#: mapping/buttons.py:184 mapping/buttons.py:259
+msgid "Execute"
+msgstr "Ausführen"
+
+#: mapping/buttons.py:185
+msgid "Perform action on selected objects."
+msgstr "Aktion mit ausgewählten Objekten ausführen"
+
+#: mapping/buttons.py:187
+msgid "Invert selection"
+msgstr "Auswahl umkehren"
+
+#: mapping/buttons.py:188
+msgid "Select all"
+msgstr "Alle auswählen"
+
+#: mapping/buttons.py:195 mapping/buttons.py:197
+msgid "Selected objects ..."
+msgstr "Ausgewählte Objekte ..."
+
+#: mapping/buttons.py:313 mapping/buttons.py:403 mapping/buttons.py:471
+msgid "Select"
+msgstr "Auswählen"
+
+#: mapping/buttons.py:314 mapping/buttons.py:404 mapping/buttons.py:472
+msgid "Select entry"
+msgstr "Auswählen eines Eintrags"
+
+#: mapping/structural.py:54 mapping/structural.py:62 mapping/structural.py:71
+msgid "<Error>"
+msgstr "<Fehler>"
+
+#: mapping/dynamics.py:97
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: mapping/dynamics.py:210
+msgid "Entries:"
+msgstr "Einträge:"
+
+#: mapping/dynamics.py:211
+#, python-format
+msgid "Current entries for '%s'"
+msgstr "Existierende Einträge für '%s'"
+
+#: mapping/dynamics.py:354
+msgid "any"
+msgstr "Alle"
+
+#: mapping/dynamics.py:355
+msgid "none"
+msgstr "Keine"
+
+#: mapping/dynamics.py:368
+msgid "Enter search filter"
+msgstr "Suchfilter"
+
+#: mapping/dynamics.py:376
+msgid "Display"
+msgstr "Anzeigen"
+
+#: mapping/dynamics.py:377
+msgid "Property"
+msgstr "Eigenschaft"
+
+#: mapping/dynamics.py:377
+msgid "Select attribute"
+msgstr "Wählen Sie ein Attribut aus"
+
+#: mapping/dynamics.py:497
+msgid "All"
+msgstr "Alles"
+
+#: mapping/dynamics.py:497
+msgid "Select objects to add"
+msgstr "Wählen Sie die Objekte zum Hinzufügen aus."
+
+#: mapping/dynamics.py:498
+msgid "Current"
+msgstr "Aktuell"
+
+#: mapping/dynamics.py:498
+msgid "Select objects to remove"
+msgstr "Wählen Sie die zu entfernenden Objekte aus."
+
+#: mapping/dynamics.py:641
+msgid "Select a file"
+msgstr "Datei auswählen"
+
+#: mapping/dynamics.py:642
+msgid "Upload file"
+msgstr "Datei hochladen"
+
+#: mapping/dynamics.py:642
+msgid "Upload selected file"
+msgstr "Ausgewählte Datei hochladen"
+
+#: mapping/dynamics.py:647
+msgid "Remove"
+msgstr "Entfernen"
+
+#: mapping/dynamics.py:647
+msgid "Delete file"
+msgstr "Datei entfernen"
 
 #: modconsole.py:149
 msgid "Help"
@@ -65,7 +229,9 @@ msgstr "Neustart erforderlich"
 #: modconsole.py:211
 msgid ""
 "This system has been updated recently. A reboot is required to finish update."
-msgstr "Dieses System wurde kürzlich aktualisiert. Ein Neustart des Systems ist erforderlich, um das Update abzuschließen."
+msgstr ""
+"Dieses System wurde kürzlich aktualisiert. Ein Neustart des Systems ist "
+"erforderlich, um das Update abzuschließen."
 
 #: modconsole.py:223
 msgid "Session Timeout"
@@ -215,166 +381,6 @@ msgstr "Authentisierungsfehler: %s"
 #: modconsole.py:710
 msgid "Logout successful."
 msgstr "Abmeldung erfolgreich"
-
-#: unidialog.py:121
-#, python-format
-msgid "error while modifying: %s %s"
-msgstr "Während des Bearbeitens ist ein Fehler aufgetreten: %s %s"
-
-#: pages/module.py:145
-msgid "The operation is still in progress. Please wait ..."
-msgstr "Der Vorgang ist noch nicht abgeschlossen. Bitte warten ..."
-
-#: pages/module.py:146 pages/startup.py:111
-msgid "Information"
-msgstr "Hinweis"
-
-#: pages/module.py:296
-msgid "Messages"
-msgstr "Meldungen"
-
-#: pages/overview.py:52
-msgid "Overview"
-msgstr "Überblick"
-
-#: pages/startup.py:52
-msgid "Bugreport: Univention Management Console Traceback"
-msgstr "Fehlerbericht: Univention Management Console Traceback"
-
-#: pages/startup.py:53
-msgid ""
-"\n"
-"Please take a second to provide the following information\n"
-"\n"
-"1) Steps to reproduce the failure\n"
-"\n"
-"2) Expected result\n"
-"\n"
-"3) Actual result\n"
-"\n"
-"----------\n"
-"\n"
-msgstr ""
-"\n"
-"Bitte nehmen Sie sich eine Sekunde Zeit um die folgenden Informationen "
-"einzutragen\n"
-"\n"
-"1) Schritte, um den Fehler zu reproduzieren\n"
-"\n"
-"2) Erwartetes Ergebnis\n"
-"\n"
-"3) Beobachtetes Ergebnis\n"
-"\n"
-
-#: pages/startup.py:96
-#, python-format
-msgid "Report this error to %s &lt;%s&gt;"
-msgstr "Diesen Fehler an %s &lt;%s&gt; melden"
-
-#: pages/startup.py:101
-msgid "An error has occured"
-msgstr "Ein Fehler ist aufgetreten"
-
-#: mapping/buttons.py:181 mapping/buttons.py:256
-msgid "Execute"
-msgstr "Ausführen"
-
-#: mapping/buttons.py:182
-msgid "Perform action on selected objects."
-msgstr "Aktion mit ausgewählten Objekten ausführen"
-
-#: mapping/buttons.py:184
-msgid "Invert selection"
-msgstr "Auswahl umkehren"
-
-#: mapping/buttons.py:185
-msgid "Select all"
-msgstr "Alle auswählen"
-
-#: mapping/buttons.py:192 mapping/buttons.py:194
-msgid "Selected objects ..."
-msgstr "Ausgewählte Objekte ..."
-
-#: mapping/buttons.py:310 mapping/buttons.py:400 mapping/buttons.py:468
-msgid "Select"
-msgstr "Auswählen"
-
-#: mapping/buttons.py:311 mapping/buttons.py:401 mapping/buttons.py:469
-msgid "Select entry"
-msgstr "Auswählen eines Eintrags"
-
-#: mapping/dynamics.py:97
-msgid "Add"
-msgstr "Hinzufügen"
-
-#: mapping/dynamics.py:210
-msgid "Entries:"
-msgstr "Einträge:"
-
-#: mapping/dynamics.py:211
-#, python-format
-msgid "Current entries for '%s'"
-msgstr "Existierende Einträge für '%s'"
-
-#: mapping/dynamics.py:353
-msgid "any"
-msgstr "Alle"
-
-#: mapping/dynamics.py:354
-msgid "none"
-msgstr "Keine"
-
-#: mapping/dynamics.py:367
-msgid "Enter search filter"
-msgstr "Suchfilter"
-
-#: mapping/dynamics.py:375
-msgid "Display"
-msgstr "Anzeigen"
-
-#: mapping/dynamics.py:376
-msgid "Property"
-msgstr "Eigenschaft"
-
-#: mapping/dynamics.py:376
-msgid "Select attribute"
-msgstr "Wählen Sie ein Attribut aus"
-
-#: mapping/dynamics.py:496
-msgid "All"
-msgstr "Alles"
-
-#: mapping/dynamics.py:496
-msgid "Select objects to add"
-msgstr "Wählen Sie die Objekte zum Hinzufügen aus."
-
-#: mapping/dynamics.py:497
-msgid "Current"
-msgstr "Aktuell"
-
-#: mapping/dynamics.py:497
-msgid "Select objects to remove"
-msgstr "Wählen Sie die zu entfernenden Objekte aus."
-
-#: mapping/dynamics.py:640
-msgid "Select a file"
-msgstr "Datei auswählen"
-
-#: mapping/dynamics.py:641
-msgid "Upload file"
-msgstr "Datei hochladen"
-
-#: mapping/dynamics.py:641
-msgid "Upload selected file"
-msgstr "Ausgewählte Datei hochladen"
-
-#: mapping/dynamics.py:646
-msgid "Remove"
-msgstr "Entfernen"
-
-#: mapping/dynamics.py:646
-msgid "Delete file"
-msgstr "Datei entfernen"
 
 #~ msgid "OK"
 #~ msgstr "OK"

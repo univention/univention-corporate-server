@@ -50,19 +50,31 @@ def rows_map( storage, umcp_part ):
 		args = {}
 		if isinstance( elem, ( list, tuple ) ):
 			for item in elem:
-				part.append( storage.to_uniparts( item ) )
-				args.update( utils.layout_attrs( storage, item, default_type = default_type ) )
+				if item is None:
+					part.append( text( '', {}, { 'text' : [ _( '<Error>' ) ] } ) )
+				else:
+					part.append( storage.to_uniparts( item ) )
+					args.update( utils.layout_attrs( storage, item, default_type = default_type ) )
 		elif isinstance( elem, umcd.Cell ):
 			if isinstance( elem.item, ( list, tuple ) ):
 				for item in elem.item:
-					part.append( storage.to_uniparts( item ) )
-					args.update( utils.layout_attrs( storage, elem, default_type = default_type ) )
+					if item is None:
+						part.append( text( '', {}, { 'text' : [ _( '<Error>' ) ] } ) )
+					else:
+						part.append( storage.to_uniparts( item ) )
+						args.update( utils.layout_attrs( storage, elem, default_type = default_type ) )
 			else:
-				part.append( storage.to_uniparts( elem.item ) )
-				args.update( utils.layout_attrs( storage, elem, default_type = default_type ) )
+				if elem.item is None:
+					part.append( text( '', {}, { 'text' : [ _( '<Error>' ) ] } ) )
+				else:
+					part.append( storage.to_uniparts( elem.item ) )
+					args.update( utils.layout_attrs( storage, elem, default_type = default_type ) )
 		else:
-			part.append( storage.to_uniparts( elem ) )
-			args = utils.layout_attrs( storage, elem, default_type = default_type )
+			if elem is None:
+				part.append( text( '', {}, { 'text' : [ _( '<Error>' ) ] } ) )
+			else:
+				part.append( storage.to_uniparts( elem ) )
+				args = utils.layout_attrs( storage, elem, default_type = default_type )
 		row.append( tablecol( '', args, { 'obs' : part } ) )
 
 	row_args = { 'type' : 'umc_list_row' }

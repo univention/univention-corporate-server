@@ -1,3 +1,10 @@
+univention-management-console (3.0.113-1) unstable; urgency=low
+
+  * check that elements of a table are valid (not None); otherwise show an
+    error text; Bug #23857
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 28 Sep 2011 18:04:43 +0200
+
 univention-management-console (3.0.112-1) unstable; urgency=low
 
   * Add small critical icons (Bug #23092)
