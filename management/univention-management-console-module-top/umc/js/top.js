@@ -27,11 +27,16 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			signal: signal,
 			pid: pids
 		};
-		var msg = this._('Please confirm sending %s to the %s selected processes!', signal, pids.length);
+		if (pids.length == 1) {
+			var msg = this._('Please confirm sending %s to the selected process!', signal);
+		}
+		else {
+			var msg = this._('Please confirm sending %(sig)s to the %(pids)s selected processes!', {sig: signal, pid: pids.length});
+		}
 		umc.dialog.confirm(msg, [{
 			label: this._('OK'),
 			callback: dojo.hitch(this, function() {
-				this.umcpCommand('top/kill', params).then(dojo.hitch(this, function(data) {
+				this.umcpCommand('top/kill', params).then(dojo.hitch(this, function() {
 					umc.dialog.notify(this._('Signal (%s) sent successfully', signal));
 				}));
 			})

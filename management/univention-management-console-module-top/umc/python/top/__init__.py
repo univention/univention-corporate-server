@@ -40,11 +40,11 @@ import univention.management.console.modules as umcm
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
-_ = umc.Translation('univention-management-console-modules-top').translate
+_ = umc.Translation('univention-management-console-module-top').translate
 
 class Instance(umcm.Base):
-	def init(self):
-		uit.set_language(str(self.locale))
+	def __init__(self):
+		umcm.Base.__init__(self)
 
 	def query(self, request):
 		category = request.options.get('category', 'all')
@@ -74,22 +74,26 @@ class Instance(umcm.Base):
 		self.finished(request.id, processes)
 
 	def kill(self, request):
+		failed = []
 		message = ''
 		signal = request.options.get('signal', 'SIGTERM')
 		pidList = request.options.get('pid', [])
 		for pid in pidList:
-			pid = int(pid)
 			try:
-				process = psutil.Process(pid)
+				process = psutil.Process(int(pid))
 				if signal == 'SIGTERM':
 					process.kill(15)
 				elif signal == 'SIGKILL':
 					process.kill(9)
-				request.status = SUCCESS
-				success = True
 			except psutil.NoSuchProcess, error:
-				message = _('No process found with PID {0}'.format(pid))
-				success = False
+				failed.append(pid)
 				MODULE.error(str(error))
-				request.status = MODULE_ERR
+		if not failed:
+			request.status = SUCCESS
+			success = True
+		else:
+			request.status = MODULE_ERR
+			failed = ', '.join(failed)
+			message = _('No process found with PID %s') % (failed)
+			success = False
 		self.finished(request.id, success, message=message)
