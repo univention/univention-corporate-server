@@ -25,8 +25,8 @@ Depends: univention-config-registry,
 Conflicts: univention-mail-cyrus-imap, 
  univention-mail-cyrus-pop,
  univention-mail-cyrus-kolab2
-Breaks: univention-mail-cyrus-imap (<< ${binary:Version}),
- univention-mail-cyrus-pop (<< ${binary:Version})
+Provides: univention-mail-cyrus-imap,
+ univention-mail-cyrus-pop
 Replaces: univention-mail-cyrus-pop,
  univention-mail-cyrus-imap
 Description: UCS - imap configuration

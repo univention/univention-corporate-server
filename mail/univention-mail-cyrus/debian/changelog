@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.10-1) unstable; urgency=low
+
+  * fixed debian dependencies (Bug #23560) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 28 Sep 2011 13:08:29 +0200
+
 univention-mail-cyrus (4.0.9-1) unstable; urgency=low
 
   * fixed postinst (Bug #23560) 
