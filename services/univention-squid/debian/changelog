@@ -1,3 +1,9 @@
+univention-squid (5.0.2-13) unstable; urgency=low
+
+  * Fix join script invocation (Bug #19737)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 28 Sep 2011 15:23:08 +0200
+
 univention-squid (5.0.2-12) unstable; urgency=low
 
   * Reinstate the local configuration file that already existed in UCS 2.4

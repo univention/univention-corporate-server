@@ -59,6 +59,6 @@ ucr set squid/debug/level?ALL,1
 /etc/init.d/squid3 stop
 /etc/init.d/squid3 start
 
-call_joinscript /usr/lib/univention-install/79univention-squid.inst
+call_joinscript 79univention-squid.inst
 
 exit 0
