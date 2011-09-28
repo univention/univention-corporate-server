@@ -1,3 +1,9 @@
+univention-horde4 (1.0.6-1) unstable; urgency=low
+
+  * create horde log file with proper permissions (Bug #22151) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 28 Sep 2011 13:53:40 +0200
+
 univention-horde4 (1.0.5-1) unstable; urgency=low
 
   * fixed ucs overview (Bug #22151) 

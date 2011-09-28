@@ -36,6 +36,8 @@
 
 eval "$(univention-config-registry shell)"
 
+create_logfile_if_missing /var/log/horde/horde.log "www-data:adm" 640
+
 univention-config-registry set \
 	horde/sql/persistent?true \
 	horde/sql/username?"'horde'" \
