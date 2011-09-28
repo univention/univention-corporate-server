@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.68-2) unstable; urgency=low
+
+  * version bump (Bug #23818)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 28 Sep 2011 16:31:14 +0200
+
 univention-management-console-frontend (1.0.68-1) unstable; urgency=low
 
   * removed cookie query in umc.widgets.LoginDialog (Bug #23818)
