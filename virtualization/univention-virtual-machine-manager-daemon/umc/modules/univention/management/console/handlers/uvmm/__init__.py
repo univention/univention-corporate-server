@@ -486,12 +486,19 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				domain_btn = TreeView.button_create_domain(group_name, node_info.uri, node_is_off, domain_info)
 				domain_opts = {'group': group_name, 'node': node_info.uri, 'domain': domain_info.uuid}
 				buttons = self._create_domain_buttons( domain_opts, node_info, domain_info, remove_failure = 'node' )
-				cputime = percentage( lambda: float( domain_info.cputime[ 0 ] ) / 10, width = 80 )
+				try:
+					cpu_usage = percentage(float(domain_info.cputime[0]) / 10, width=80)
+				except (ArithmeticError, ValueError, TypeError), e:
+					cpu_usage = umcd.HTML('<i>%s</i>' % _('not available'))
+				try:
+					mem_usage = umcd.Number(MemorySize.num2str(domain_info.maxMem))
+				except (ArithmeticError, ValueError, TypeError), e:
+					mem_usage = umcd.HTML('<i>%s</i>' % _('not available'))
 				result_list.add_row([
 					'',
 					domain_btn,
-					umcd.Cell(cputime, attributes={'type': 'umc_mini_padding', 'align': 'center'}),
-					umcd.Cell(umcd.Number(MemorySize.num2str(domain_info.maxMem)), attributes={'type': 'umc_mini_padding umc_nowrap', 'align': 'right'}),
+					umcd.Cell(cpu_usage, attributes={'type': 'umc_mini_padding', 'align': 'center'}),
+					umcd.Cell(mem_usage, attributes={'type': 'umc_mini_padding umc_nowrap', 'align': 'right'}),
 					umcd.Cell(buttons, attributes={'type': 'umc_mini_padding umc_nowrap'})
 					])
 
@@ -527,10 +534,16 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				table.add_row([node_btn, info_txt])
 			else:
 				if node_uri.startswith( 'xen' ):
-					cpu_usage = percentage( lambda: float( node_info.cpu_usage ) / 10.0, width = 150 )
+					try:
+						cpu_usage = percentage(float(node_info.cpu_usage) / 10.0, width=150)
+					except (ArithmeticError, ValueError, TypeError), e:
+						cpu_usage = umcd.HTML('<i>%s</i>' % _('not available'))
 				else:
 					cpu_usage = umcd.HTML( '<i>%s</i>' % _( 'not available' ) )
-				mem_usage = percentage( lambda: float( node_info.curMem ) / node_info.phyMem * 100, '%s / %s' % ( MemorySize.num2str( node_info.curMem ), MemorySize.num2str( node_info.phyMem ) ), width = 150 )
+				try:
+					mem_usage = percentage(float(node_info.curMem) / node_info.phyMem * 100, '%s / %s' % (MemorySize.num2str(node_info.curMem), MemorySize.num2str(node_info.phyMem)), width=150)
+				except (ArithmeticError, ValueError, TypeError), e:
+					mem_usage = umcd.HTML('<i>%s</i>' % _('not available'))
 				table.add_row( [ node_btn, cpu_usage, mem_usage ] )
 		self.set_content( res, table )
 		self.finished(object.id(), res)
@@ -787,10 +800,16 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			# node_cmd = umcp.SimpleCommand('uvmm/node/overview', options={'group': object.options['group'], 'node': node_info.uri})
 			# node_btn = umcd.LinkButton( node.name, actions = [ umcd.Action( node_cmd ) ] )
 			if node_uri.startswith( 'xen' ):
-				cpu_usage = percentage( lambda: float( node_info.cpu_usage ) / 10.0, width = 150 )
+				try:
+					cpu_usage = percentage(float(node_info.cpu_usage) / 10.0, width=150)
+				except (ArithmeticError, ValueError, TypeError), e:
+					cpu_usage = umcd.HTML('<i>%s</i>' % _('not available'))
 			else:
 				cpu_usage = umcd.HTML( '<i>%s</i>' % _( 'not available' ) )
-			mem_usage = percentage( lambda: float( node_info.curMem ) / node_info.phyMem * 100, '%s / %s' % ( MemorySize.num2str( node_info.curMem ), MemorySize.num2str( node_info.phyMem ) ), width = 150 )
+			try:
+				mem_usage = percentage(float(node_info.curMem) / node_info.phyMem * 100, '%s / %s' % (MemorySize.num2str(node_info.curMem), MemorySize.num2str(node_info.phyMem)), width=150)
+			except (ArithmeticError, ValueError, TypeError), e:
+				mem_usage = umcd.HTML('<i>%s</i>' % _('not available'))
 			node_table.add_row([
 				umcd.HTML('<b>%s</b>' % _('CPU usage'), attributes={'type':'umc_nowrap'}),
 				umcd.Cell(cpu_usage, attributes={'width': '50%', 'type': 'umc_nowrap' }),
@@ -829,7 +848,21 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			if not len( table.get_content() ):
 				table.set_header( [ umcd.HTML( _('Instance'), attributes = { 'width': '100%', 'type' : 'umc_nowrap'} ), umcd.HTML( _('CPU usage') , attributes = { 'type' : 'umc_nowrap' , 'align':'right'} ), umcd.HTML( _('Memory') , attributes = { 'type' : 'umc_nowrap' , 'align':'right'} ) ] )
 
-			table.add_row( [ umcd.Cell( domain_btn, attributes = { 'type' : 'umc_mini_padding', 'width': '100%' } ), umcd.Cell( percentage( lambda: float( domain_info.cputime[ 0 ] ) / 10, width = 80 ), attributes = { 'type' : 'umc_mini_padding', 'align': 'center' } ), umcd.Cell( umcd.Number( MemorySize.num2str( domain_info.maxMem ) ), attributes = { 'type' : 'umc_mini_padding umc_nowrap', 'align': 'right' } ), umcd.Cell( buttons, attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) ], attributes = { 'type' : 'umc_mini_padding' } )# + buttons )
+			try:
+				cpu_usage = percentage(float(domain_info.cputime[0]) / 10, width=80)
+			except (ArithmeticError, ValueError, TypeError), e:
+				cpu_usage = umcd.HTML('<i>%s</i>' % _('not available'))
+			try:
+				mem_usage = umcd.Number(MemorySize.num2str(domain_info.maxMem))
+			except (ArithmeticError, ValueError, TypeError), e:
+				mem_usage = umcd.HTML('<i>%s</i>' % _('not available'))
+			table.add_row([
+				umcd.Cell(domain_btn, attributes={'type': 'umc_mini_padding', 'width': '100%'}),
+				umcd.Cell(cpu_usage, attributes={'type': 'umc_mini_padding', 'align': 'center'}),
+				umcd.Cell(mem_usage, attributes={'type': 'umc_mini_padding umc_nowrap', 'align': 'right'}),
+				umcd.Cell(buttons, attributes={'type': 'umc_mini_padding umc_nowrap'})
+				],
+				attributes={'type': 'umc_mini_padding'})# + buttons )
 
 		content.add_row( [ umcd.Cell( table, attributes = { 'colspan' : '2' } ), ] )
 		self.set_content( res, content )
@@ -1153,10 +1186,16 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			w_contact = [umcd.HTML('<b>%s</b>' % _('Contact')), contact ]
 			w_description = [umcd.HTML('<b>%s</b>' % _('Description')), getattr(domain_info, 'annotations', {}).get('description', '' )]
 
-			mem_usage = percentage( lambda: int( float( domain_info.curMem ) / domain_info.maxMem * 100 ), label = '%s / %s' % ( MemorySize.num2str( domain_info.curMem ), MemorySize.num2str( domain_info.maxMem ) ), width = 130 )
-			cpu_usage = percentage( lambda: float( domain_info.cputime[ 0 ] ) / 10, width = 130 )
-			w_mem = [umcd.HTML('<b>%s</b>' % _('Memory usage')), mem_usage]
-			w_cpu = [umcd.HTML('<b>%s</b>' % _('CPU usage')), cpu_usage]
+			try:
+				mem_usage = percentage(int(float(domain_info.curMem) / domain_info.maxMem * 100 ), label='%s / %s' % (MemorySize.num2str(domain_info.curMem), MemorySize.num2str(domain_info.maxMem)), width=130)
+				w_mem = [umcd.HTML('<b>%s</b>' % _('Memory usage')), mem_usage]
+			except Exception, e:
+				w_mem = [umcd.HTML('<i>%s</i>' % _('currently not available'))]
+			try:
+				cpu_usage = percentage(float(domain_info.cputime[0]) / 10, width=130)
+				w_cpu = [umcd.HTML('<b>%s</b>' % _('CPU usage')), cpu_usage]
+			except Exception, e:
+				w_cpu = [umcd.HTML('<i>%s</i>' % _('currently not available'))]
 
 			ops = umcd.List( default_type = 'uvmm_table' )
 			buttons = self._create_domain_buttons( object.options, node_info, domain_info, overview = 'domain', operations = True )
