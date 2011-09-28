@@ -75,7 +75,7 @@ class NIC_Commands( object ):
 		ids.append( nic_type.id() )
 
 		default_driver = object.options.get( 'driver', None )
-		if default_driver == None:
+		if default_driver is None:
 			if domain_info.os_type in ( 'xen', 'linux' ):
 				default_driver = 'netfront'
 			else:
@@ -114,7 +114,10 @@ class NIC_Commands( object ):
 		else:
 			btn_text = _( 'Add' )
 			title = _( 'Adding network interface' )
-		nic_list.add_row( [ umcd.Button( _( 'Cancel' ), actions = [ umcd.Action( overview_cmd ) ] ), umcd.Cell( umcd.Button( btn_text, actions = [ umcd.Action( cmd, ids ), umcd.Action( overview_cmd ) ], default = True ), attributes = { 'align' : 'right' } ) ] )
+		nic_list.add_row([
+			umcd.Button(_('Cancel'), actions=[umcd.Action(overview_cmd)]),
+			umcd.Cell(umcd.Button(btn_text, actions=[umcd.Action(cmd, ids), umcd.Action(overview_cmd)], default=True), attributes={'align': 'right'})
+			])
 
 		response.dialog[ 0 ].set_dialog( umcd.Section( title, nic_list, attributes = { 'width' : '100%' } ) )
 
@@ -166,6 +169,8 @@ class NIC_Commands( object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'NIC identify: NOT found' )
 
 	def removeNIC( self, domain_info, options ):
+		"""Remove NIC matching options.target."""
+		ud.debug(ud.ADMIN, ud.INFO, 'NIC remove(%r)' % (options,))
 		typ, src, mac = self.optionsNIC( options )
 
 		interfaces = []
@@ -178,7 +183,8 @@ class NIC_Commands( object ):
 		return domain_info
 
 	def replaceNIC( self, domain_info, new_iface, options ):
-		ud.debug( ud.ADMIN, ud.INFO, 'NIC replace' )
+		"""Replace NIC matching options.target by new_iface."""
+		ud.debug(ud.ADMIN, ud.INFO, 'NIC replace(%r)' % (options,))
 		typ, src, mac = self.optionsNIC( options )
 
 		interfaces = []
@@ -195,7 +201,8 @@ class NIC_Commands( object ):
 		return domain_info
 
 	def createNIC( self, options ):
-		ud.debug( ud.ADMIN, ud.INFO, 'NIC create' )
+		"""Create Interface instance from options."""
+		ud.debug(ud.ADMIN, ud.INFO, 'NIC create(%r)' % (options,))
 		iface = uvmmn.Interface()
 		if options[ 'nictype' ].startswith( 'network:' ):
 			typ, src = options[ 'nictype' ].split( ':', 1 )

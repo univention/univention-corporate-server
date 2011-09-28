@@ -1038,6 +1038,12 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 					nic_type = _( 'Bridge' )
 				elif iface.type == uvmmn.Interface.TYPE_NETWORK:
 					nic_type = _( 'NAT' )
+				elif iface.type == uvmmn.Interface.TYPE_USER:
+					nic_type = _('User')
+				elif iface.type == uvmmn.Interface.TYPE_ETHERNET:
+					nic_type = _('TUN')
+				elif iface.type == uvmmn.Interface.TYPE_DIRECT:
+					nic_type = _('Direct')
 				else:
 					nic_type = _( 'unknown' )
 				nic_source = iface.source or _('unknown')
@@ -1049,12 +1055,11 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 					else:
 						nic_driver = 'rtl8139'
 
+				buttons = []
 				if domain_is_off:
-					remove_cmd.options[ 'iface' ] = copy.copy( iface.source )
-					buttons = [ umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ), umcd.Action( overview_cmd ) ] ),
-								umcd.LinkButton( _( 'Edit' ), actions = [ umcd.Action( edit_cmd ) ] ) ]
-				else:
-					buttons = []
+					buttons.append(umcd.LinkButton(_('Remove'), actions=[umcd.Action(remove_cmd), umcd.Action(overview_cmd)]))
+					if iface.type in (uvmmn.Interface.TYPE_BRIDGE, uvmmn.Interface.TYPE_NETWORK):
+						buttons.append(umcd.LinkButton(_('Edit'), actions=[umcd.Action(edit_cmd)]))
 
 				nic_list.add_row([
 					nic_type,

@@ -32,10 +32,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-3\n"
+"Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-27 19:27+0200\n"
-"PO-Revision-Date: 2011-09-27 19:29+0200\n"
+"POT-Creation-Date: 2011-09-28 19:21+0200\n"
+"PO-Revision-Date: 2011-09-28 19:23+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -425,6 +425,10 @@ msgstr "Das Aushängen des Laufwerks <i>%(drive)s</i> ist fehlgeschlagen"
 msgid "Device filename"
 msgstr "Gerätedateiname"
 
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1046
+msgid "Direct"
+msgstr "Direkt"
+
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:159
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:662
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:675
@@ -551,6 +555,10 @@ msgstr "Geben die den Namen für den Sicherungspunkt ein"
 #: umc/modules/univention/management/console/handlers/uvmm/types.py:107
 msgid "Estonian"
 msgstr "Estländisch"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1044
+msgid "TUN"
+msgstr "TUN"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1092
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1097

@@ -1083,6 +1083,8 @@ def _domain_edit(node, dom_stat, xml):
 			domain_devices_interface_source = update(domain_devices_interface, 'source', '', _changes=changes, bridge=interface.source, network=None, dev=None)
 		elif interface.type == Interface.TYPE_NETWORK:
 			domain_devices_interface_source = update(domain_devices_interface, 'source', '', _changes=changes, bridge=None, network=interface.source, dev=None)
+		elif interface.type == Interface.TYPE_ETHERNET:
+			domain_devices_interface_source = update(domain_devices_interface, 'source', None, _changes=changes, bridge=None, network=None, dev=interface.source)
 		elif interface.type == Interface.TYPE_DIRECT:
 			domain_devices_interface_source = update(domain_devices_interface, 'source', '', _changes=changes, bridge=None, network=None, dev=interface.source)
 		else:
