@@ -211,9 +211,10 @@ else
 	if [ -n "$ldap_base" ]; then
 		univention-config-registry set ldap/base="$ldap_base"
 	fi
+
+	univention-config-registry set ldap/master/port?7389 ## provide default for univention-join
 	if [ -n "$domain_controller_ip" ]; then
 		univention-config-registry set ldap/master/ip=$domain_controller_ip
-		univention-config-registry set ldap/master/port=7389
 	fi
 
 	univention-config-registry set ldap/server/type=slave
