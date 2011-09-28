@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.36-1) unstable; urgency=low
+
+  * Avoid an endless sync loop while restarting the Samba 4 daemon
+    (Bug #18619)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Sep 2011 07:15:39 +0200
+
 univention-s4-connector (6.0.35-1) unstable; urgency=low
 
   * fix warning in joinscript (Bug #23360)

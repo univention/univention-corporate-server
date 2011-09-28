@@ -732,6 +732,9 @@ def _identify_dns_con_object(s4connector, object):
 				
 			else:
 				dnsRecords=object['attributes'].get('dnsRecord')
+				if not dnsRecords:
+					return None
+
 				dns_types=[]
 				for dnsRecord in dnsRecords:
 					dnsRecord=dnsRecord.encode('latin1')
