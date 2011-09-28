@@ -2,7 +2,6 @@ Type: multifile
 Multifile: etc/samba/smb.conf
 Variables: hostname
 Variables: domainname
-Variables: server/role
 Variables: kerberos/realm
 Variables: windows/domain
 Variables: samba/.*
@@ -44,7 +43,7 @@ Subfile: etc/samba/smb.conf.d/99univention-samba_local_shares
 Type: file
 File: etc/samba/base.conf
 Variables: kerberos/realm
-Variables: server/role
+Variables: samba4/role
 Variables: samba/share/home
 Variables: samba/share/groups
 Variables: samba/share/printers

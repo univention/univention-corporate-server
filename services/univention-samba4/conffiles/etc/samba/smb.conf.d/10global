@@ -8,10 +8,10 @@ if configRegistry.get('samba/netbios/name'):
 else:
 	print '\tnetbios name = %s' % configRegistry['hostname']
 
-server_role = configRegistry.get('server/role')
-if server_role in ('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'):
+samba4_role = configRegistry.get('samba4/role')
+if samba4_role in ('DC', 'RODC'):
 	print '\tserver role = domain controller'
-elif server_role == 'memberserver':
+elif samba4_role == 'MEMBER':
 	print '\tserver role = member server'
 
 samba_serverstring = configRegistry.get('samba/serverstring', 'Univention Corporate Server')

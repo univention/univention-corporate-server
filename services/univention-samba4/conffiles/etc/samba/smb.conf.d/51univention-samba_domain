@@ -1,20 +1,14 @@
 
 	; domain
 @!@
-if configRegistry['server/role'] != 'memberserver':
-	if configRegistry.has_key( 'samba/role' ) and configRegistry[ 'samba/role' ].lower() == 'bdc':
-		print '\tsecurity = user'
-
-	else:
-		print '\tsecurity = user'
-
-	print '\tpreferred master = %s' % configRegistry.get('samba/preferred/master', 'yes')
-	print '\tlocal master = %s' % configRegistry.get('samba/local/master', 'yes')
-else:
+if configRegistry['samba4/role'] = 'MEMBER':
 	print '\tsecurity = ads'
 
 	print '\tpreferred master = no'
 	print '\tlocal master = no'
+else:
+	print '\tpreferred master = %s' % configRegistry.get('samba/preferred/master', 'yes')
+	print '\tlocal master = %s' % configRegistry.get('samba/local/master', 'yes')
 
 
 if configRegistry.is_true('windows/wins-support'):

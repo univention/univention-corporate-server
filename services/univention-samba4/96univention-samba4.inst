@@ -201,6 +201,7 @@ if [ "$samba4_role" = 'DC' ]; then
 
 		## Adding DNS records is currently necessary, probably this will can be avoided with dlz-dlopen on samba4
 		## see https://wiki.samba.org/index.php/Samba4/HOWTO/Join_a_domain_as_a_DC#A_note_on_DNS_updates
+		# TODO this is non-standard: by definition of FSMO roles, there can only be one PDC emulator in the domain
 		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc --pdc "$@"
 
 		operatingSystem_attribute add
@@ -215,6 +216,74 @@ if [ "$samba4_role" = 'DC' ]; then
 			fi
 		fi
 
+	fi
+
+	# The windows clients connect to //$domainname/sysvol for GPOs during logon
+	# Register the local ips for the forward zone, skip with 'ucr set samba4/dns/domain/register=false'
+	is_ucr_true samba4/dns/domain/register
+	if [ $? != 1 ]; then
+		zone="$(udm dns/forward_zone list "$@" --filter zoneName="$domainname" | sed -ne 's|^DN: ||p')"
+		if [ -n "$zone" ]; then
+			IPs=$(univention-ldapsearch "(&(relativeDomainname=$hostname)(zoneName=$domainname))" aRecord | sed -ne 's|^aRecord: ||p')
+			for ip in $IPs; do
+				udm dns/forward_zone modify "$@" --ignore_exists --dn "$zone" --append a="$ip"
+			done
+		fi
+	fi
+
+	## Start samba daemon
+	/etc/init.d/samba4 start
+
+	## Kerberos keytab adjustments for Samba 4
+
+	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+		## Create kerberos service entries for sshd and slapd (ssh and ldapsearch -Y GSSAPI)
+		add_servicePrincipals "host/$hostname.$domainname" "ldap/$hostname.$domainname"
+	fi
+
+	if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
+		let_samba4_manage_etc_krb5_keytab
+	fi
+
+elif [ "$samba4_role" = "RODC" ]; then
+
+	## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
+	samba4_ldap_base="DC=$(echo "$kerberos_realm" | sed 's/\./,DC=/g')"
+	univention-config-registry set samba4/ldap/base="$samba4_ldap_base"
+
+	/etc/init.d/samba4 stop
+
+	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+		## remove slapd from port 389 on upgrade
+		if [ -n "$slapd_port" ]; then
+			univention-config-registry set slapd/port="$(remove_port "$slapd_port" 389)"
+		fi
+		if [ -n "$slapd_port_ldaps" ]; then
+			univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)"
+		fi
+
+		/etc/init.d/slapd crestart
+		sleep 1
+	fi
+
+	extract_binddn_and_bindpwd_from_args "$@"
+	samba-tool join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
+
+	## Adding DNS records is currently necessary, probably this will can be avoided with dlz-dlopen on samba4
+	## see https://wiki.samba.org/index.php/Samba4/HOWTO/Join_a_domain_as_a_DC#A_note_on_DNS_updates
+	# TODO this is non-standard: by definition of FSMO roles, there can only be one PDC emulator in the domain
+	/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc --pdc "$@"
+
+	operatingSystem_attribute add
+
+	# set_machine_secret	## currently disabled, seems to break DRS replication
+
+	## determine default sysvol parent for this host from univentionService="S4 Connector"
+	if [ -z "$samba4_sysvol_sync_host" ]; then
+		s4connectorservicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')      ## currently there is no u-d-m module computers/dc
+		if [ -n "$s4connectorservicedcs" ]; then
+			univention-config-registry set samba4/sysvol/sync/host="$s4connectorservicedcs"
+		fi
 	fi
 
 	# The windows clients connect to //$domainname/sysvol for GPOs during logon

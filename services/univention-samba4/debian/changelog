@@ -1,3 +1,10 @@
+univention-samba4 (1.0.50-1) unstable; urgency=low
+
+  * configure smb.conf according to samba4/role
+  * add RODC support to joinscript (Bug #22559)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 28 Sep 2011 15:04:24 +0200
+
 univention-samba4 (1.0.49-1) unstable; urgency=low
 
   * add options to setup-dns-in-ucsldap allowing to add DNS records
