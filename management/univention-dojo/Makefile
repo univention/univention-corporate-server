@@ -48,6 +48,7 @@ $(DOJO_DIR):
 	tar xzf $@.tar.gz
 	patch -p0 < fix_bashism.patch
 	patch -p0 < fix_grid_focus.patch
+	patch -p0 < fix_normalizeLocale.patch
 	
 all: install
 

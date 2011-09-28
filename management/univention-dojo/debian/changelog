@@ -1,3 +1,9 @@
+univention-dojo (5.0.5-1) unstable; urgency=low
+
+  * added patch for dojo.i18n.normalizeLocale() (Bug #23818)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 28 Sep 2011 16:30:05 +0200
+
 univention-dojo (5.0.4-1) unstable; urgency=low
 
   * added patch in order to fix unwanted focus in dojox.grid.EnhancedGrid
