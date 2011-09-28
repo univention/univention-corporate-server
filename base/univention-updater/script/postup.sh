@@ -30,7 +30,8 @@
 UPDATER_LOG="/var/log/univention/updater.log"
 UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
-PACKAGES_TO_BE_PURGED="kcontrol libusplash0 univention-usplash-theme usplash libnjb5 console-tools nagios2 nagios2-common nagios2-doc"
+PACKAGES_TO_BE_PURGED="kcontrol libusplash0 univention-usplash-theme usplash libnjb5 console-tools"
+PACKAGES_TO_BE_REMOVED="nagios2 nagios2-common nagios2-doc"
 
 check_and_install ()
 {
@@ -110,6 +111,13 @@ for package in $PACKAGES_TO_BE_PURGED; do
 	dpkg -P $package 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
 	if [ ! 0 -eq $? ]; then
 		echo "Puring package $package failed: $?" >> "$UPDATER_LOG"
+	fi
+done
+
+for package in $PACKAGES_TO_BE_REMOVED; do
+	dpkg --remove "$package" 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
+	if [ ! 0 -eq $? ]; then
+		echo "Removing package $package failed: $?" >> "$UPDATER_LOG"
 	fi
 done
 
