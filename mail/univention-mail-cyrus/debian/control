@@ -22,15 +22,30 @@ Depends: univention-config-registry,
  python-pexpect,
  univention-sasl,
  shell-univention-lib (>> 1.0.16)
-Conflicts: univention-mail-cyrus-imap, 
- univention-mail-cyrus-pop,
- univention-mail-cyrus-kolab2
-Provides: univention-mail-cyrus-imap,
- univention-mail-cyrus-pop
-Replaces: univention-mail-cyrus-pop,
- univention-mail-cyrus-imap
+Conflicts: univention-mail-cyrus-kolab2
+Replaces: univention-mail-cyrus-pop, univention-mail-cyrus-imap
 Description: UCS - imap configuration
  The UCS cyrus imapd mail package
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-mail-cyrus-pop
+Architecture: all
+Description: UCS - transition package
+ UCS - transition package
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-mail-cyrus-imap
+Architecture: all
+Description: UCS - transition package
+ UCS - transition package
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
