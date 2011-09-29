@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.9-2) unstable; urgency=low
+
+  * Fix removal of w2k support (Bug #21486)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 29 Sep 2011 10:34:51 +0200
+
 univention-ad-connector (6.0.9-1) unstable; urgency=low
 
   * Avoid an endless sync loop while restarting AD (Bug #18619)
