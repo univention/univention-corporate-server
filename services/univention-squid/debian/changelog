@@ -1,3 +1,9 @@
+univention-squid (5.0.2-15) unstable; urgency=low
+
+  * Fix permissions of join script (Bug #19737)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 29 Sep 2011 09:55:55 +0200
+
 univention-squid (5.0.2-14) unstable; urgency=low
 
   * Fix permissions of join script (Bug #19737)
