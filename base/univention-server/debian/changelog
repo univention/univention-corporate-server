@@ -1,3 +1,9 @@
+univention-server (7.0.11-1) unstable; urgency=low
+
+  * Removed Linux-Arbeitsplatz script (Bug #23711)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Sep 2011 21:05:57 +0200
+
 univention-server (7.0.10-2) unstable; urgency=low
 
   * set ldap/server/port conditionally (Bug #23231)
