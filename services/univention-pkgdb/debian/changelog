@@ -1,3 +1,12 @@
+univention-pkgdb (5.0.4-1) unstable; urgency=low
+
+  * remove python2.4 call - use hash-bang (Bug #22525)
+  * remove deprecation warnings
+  * fix password handling for no newline
+  * fix postgresql reload
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 29 Sep 2011 17:09:00 +0200
+
 univention-pkgdb (5.0.3-1) unstable; urgency=low
 
   * added postgres 8.4 pg_hba config template (Bug #23343) 

@@ -201,7 +201,7 @@ def sql_create_connectstring( dbsrvname, sysname, pwdfile='/etc/machine.secret' 
 	try:
 		# versuche den machine-account zu nutzen
 		pgdbpwfile = open(pwdfile,'r')
-		pgdbpw = pgdbpwfile.readline()[:-1]
+		pgdbpw = pgdbpwfile.readline().rstrip('\n')
 		pgdbpwfile.close()
 		# 'host:database:user:password:opt:tty'
 		pkgdb_connect_string = dbsrvname+':pkgdb:'+sysname+':'+pgdbpw
@@ -220,7 +220,7 @@ def sql_create_localconnectstring( sysname  ):
 	try:
 		# gibt es lokal das passwort von pkgdbu, dann nutze dieses
 		pgdbpwfile = open('/etc/postgresql/pkgdb.secret','r')
-		pgdbpw = pgdbpwfile.readline()[:-1]
+		pgdbpw = pgdbpwfile.readline().rstrip('\n')
 		pgdbpwfile.close()
 		# 'host:database:user:password:opt:tty'
 		pkgdb_connect_string = ':pkgdb:pkgdbu:'+pgdbpw
@@ -809,14 +809,14 @@ def main(args):
 		# Packages auslesen
 		# ------------------------------------------------------------------------------
 		apt_pkg.init()
-		cache = apt_pkg.GetCache()
-		packages = cache.Packages
+		cache = apt_pkg.Cache()
+		packages = cache.packages
 		pkg_i_lst = []
 		pkg_n_lst = []
 		for package in packages:
-			package_name = package.Name
+			package_name = package.name
 
-			package_selectedstate = package.SelectedState
+			package_selectedstate = package.selected_state
 			# Definitions for Package::SelectedState
 			# pkgSTATE_Unkown		0
 			# pkgSTATE_Install		1
@@ -824,14 +824,14 @@ def main(args):
 			# pkgSTATE_DeInstall		3
 			# pkgSTATE_Purge		4
 
-			package_inststate = package.InstState
+			package_inststate = package.inst_state
 			# Definitions for Package::InstState
 			# pkgSTATE_Ok			0
 			# pkgSTATE_ReInstReq		1
 			# pkgSTATE_Hold			2
 			# pkgSTATE_HoldReInstReq	3
 
-			package_currentstate = package.CurrentState
+			package_currentstate = package.current_state
 			# Definitions for Package::CurrentState
 			# pkgSTATE_NotInstalled		0
 			# pkgSTATE_UnPacked		1
@@ -848,8 +848,8 @@ def main(args):
 			#      these states { `C'  - half-configured (an error happened);\n"
 			#        are broken { `I'  - half-installed (an error happened).\n"
 
-			if package.CurrentVer:
-				package_verstr = package.CurrentVer.VerStr
+			if package.current_ver:
+				package_verstr = package.current_ver.ver_str
 				package_status = 'i'
 				pkg_i_lst.append((package_name,package_verstr,package_selectedstate,package_inststate,package_currentstate))
 			else:
@@ -975,14 +975,14 @@ def main(args):
 		# Packages auslesen
 		# ------------------------------------------------------------------------------
 		apt_pkg.init()
-		cache = apt_pkg.GetCache()
-		packages = cache.Packages
+		cache = apt_pkg.Cache()
+		packages = cache.packages
 		pkg_i_lst = []
 		pkg_n_lst = []
 		for package in packages:
-			package_name = package.Name
+			package_name = package.name
 
-			package_selectedstate = package.SelectedState
+			package_selectedstate = package.selected_state
 			# Definitions for Package::SelectedState
 			# pkgSTATE_Unkown		0
 			# pkgSTATE_Install		1
@@ -990,14 +990,14 @@ def main(args):
 			# pkgSTATE_DeInstall		3
 			# pkgSTATE_Purge		4
 
-			package_inststate = package.InstState
+			package_inststate = package.inst_state
 			# Definitions for Package::InstState
 			# pkgSTATE_Ok			0
 			# pkgSTATE_ReInstReq		1
 			# pkgSTATE_Hold			2
 			# pkgSTATE_HoldReInstReq	3
 
-			package_currentstate = package.CurrentState
+			package_currentstate = package.current_state
 			# Definitions for Package::CurrentState
 			# pkgSTATE_NotInstalled		0
 			# pkgSTATE_UnPacked		1
@@ -1014,8 +1014,8 @@ def main(args):
 			#      these states { `C'  - half-configured (an error happened);\n"
 			#        are broken { `I'  - half-installed (an error happened).\n"
 
-			if package.CurrentVer:
-				package_verstr = package.CurrentVer.VerStr
+			if package.current_ver:
+				package_verstr = package.current_ver.ver_str
 				package_status = 'i'
 				pkg_i_lst.append((package_name,package_verstr,package_selectedstate,package_inststate,package_currentstate))
 			else:

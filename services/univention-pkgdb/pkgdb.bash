@@ -50,7 +50,7 @@ if [ -e /etc/postgresql/pkgdb.secret ] ;then
   # always create a new password
   rm /etc/postgresql/pkgdb.secret
 fi
-makepasswd --char 16 >/etc/postgresql/pkgdb.secret
+makepasswd --char 16 | tr -d '\n' >/etc/postgresql/pkgdb.secret
 chmod ug=r,o= /etc/postgresql/pkgdb.secret
 chown postgres:www-data /etc/postgresql/pkgdb.secret
 pkgdbu=`su - postgres -c "psql template1 -c \"select * from pg_user where usename='pkgdbu'\""|awk '/ pkgdbu /{print $1}'`

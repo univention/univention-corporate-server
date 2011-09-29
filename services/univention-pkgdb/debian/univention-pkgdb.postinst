@@ -41,13 +41,7 @@ then
     /var/lib/postgres/pkgdb.bash
   fi
 
-  if [ -x /etc/init.d/postgresql-8.3 ]; then
-    /etc/init.d/postgresql-8.3 reload
-  fi
-  if [ -x /etc/init.d/postgresql-7.4 ]; then
-    /etc/init.d/postgresql-7.4 reload
-  fi
-	
+	invoke-rc.d postgresql reload
 fi
 
 if [ -z "$2" ]; then
