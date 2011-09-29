@@ -129,7 +129,6 @@ univentionPolicyObject: cn=config-registry,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=default-settings,cn=thinclient,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=xfree,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=mail,cn=policies,@%@ldap/base@%@
-univentionPolicyObject: cn=windowsinstallations,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=users,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=pwhistory,cn=users,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=default-settings,cn=pwhistory,cn=users,cn=policies,@%@ldap/base@%@
@@ -589,12 +588,6 @@ objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: mailinglists
-
-dn: cn=windowsinstallations,cn=policies,@%@ldap/base@%@
-objectClass: organizationalRole
-objectClass: univentionObject
-univentionObjectType: container/cn
-cn: windowsinstallations
 
 dn: cn=dns,@%@ldap/base@%@
 objectClass: organizationalRole
