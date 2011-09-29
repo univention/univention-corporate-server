@@ -49,7 +49,7 @@ resolutions["1920x1200"] = 1
 resolutions["1920x1080"] = 1
 
 defaultRes = "1280x1024"
-realResolution = baseConfig.get("xorg/resolution", defaultRes)
+realResolution = configRegistry.get("xorg/resolution", defaultRes)
 resolution = realResolution
 
 # no predefined resolution found use defaultRes images
@@ -63,12 +63,13 @@ if resolution == "800x600":
 	font = "Sans 13"
 
 system = language = autostart = False
-if baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
+if configRegistry.has_key('gdm/menu/system') and configRegistry['gdm/menu/system'] == 'true':
 	system = True
-if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true':
+if configRegistry.has_key('gdm/menu/language') and configRegistry['gdm/menu/language'] == 'true':
 	language = True
-if baseConfig.get( 'univentionAutoStartScript', 'none' ).lower() != 'none':
+if configRegistry.get( 'univentionAutoStartScript', 'none' ).lower() != 'none':
 	autostart = True
+
 
 maxX, maxY = realResolution.split("x")
 maxX = int(maxX)
@@ -233,11 +234,14 @@ print '\t\t\t\t</item>'
 print '\t\t\t\t<item type="rect">'
 print '\t\t\t\t\t<pos y="50%" anchor="w" width="15px"/>'
 print '\t\t\t\t</item>'
-print '\t\t\t\t<!-- shutdown -->'
-print '\t\t\t\t<item type="pixmap" id="halt_button" button="true">'
-print '\t\t\t\t\t<pos x="100%" y="50%" width="25" height="25" anchor="e"/>'
-print '\t\t\t\t\t<normal file="shutdown.png"/>'
-print '\t\t\t\t</item>'
+
+if system:
+	print '\t\t\t\t<!-- shutdown -->'
+	print '\t\t\t\t<item type="pixmap" id="halt_button" button="true">'
+	print '\t\t\t\t\t<pos x="100%" y="50%" width="25" height="25" anchor="e"/>'
+	print '\t\t\t\t\t<normal file="shutdown.png"/>'
+	print '\t\t\t\t</item>'
+
 print '\t\t\t</box>'
 print '\t\t</item>'
 
