@@ -44,8 +44,25 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 	//style: 'width: 100%; height: 100%;',
 
 	_helpTextPane: null,
+	_headerTextPane: null,
 	_subscriptionHandle: null,
 	_footer: null,
+
+	_setHelpTextAttr: function(newVal) {
+		this.helpText = newVal;
+		if (this._helpTextPane) {
+			this._helpTextPane.set('content', newVal);
+			this.layout();
+		}
+	},
+
+	_setHeaderTextAttr: function(newVal) {
+		this.headerText = newVal;
+		if (this._headerTextPane) {
+			this._headerTextPane.set('content', '<h1>' + newVal + '</h1>');
+			this.layout();
+		}
+	},
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
@@ -58,11 +75,12 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 		this.inherited(arguments);
 
 		// add the header
-		this.addChild(new umc.widgets.Text({
+		this._headerTextPane = new umc.widgets.Text({
 			content: '<h1>' + this.headerText + '</h1>',
 			region: 'top',
 			'class': 'umcPageHeader'
-		}));
+		});
+		this.addChild(this._headerTextPane);
 
 		if (umc.tools.preferences('moduleHelpText') && this.helpText) {
 			// display the module helpText
