@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.70-1) unstable; urgency=low
+
+  * fixed translation (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 29 Sep 2011 20:53:50 +0200
+
 univention-management-console-frontend (1.0.69-1) unstable; urgency=low
 
   * added set-handlers for helpText and headerText in umc.widgets.Page

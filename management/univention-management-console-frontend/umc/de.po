@@ -168,7 +168,7 @@ msgstr "Interner Server-Fehler: Der Modulprozess starb unerwartet."
 
 #: umc/tools.js:165
 msgid "Internal server error: The service is temporarily not available."
-msgstr "Interner Server-Fehler: Der Dienst is zeitweise nicht erreichbar!"
+msgstr "Interner Server-Fehler: Der Dienst is momentan nicht erreichbar!"
 
 #: umc/widgets/LoginDialog.js:101
 msgid "Language"
