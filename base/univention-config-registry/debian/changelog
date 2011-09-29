@@ -1,3 +1,10 @@
+univention-config-registry (7.0.21-1) unstable; urgency=low
+
+  * While updating to UCS 3.0 the normal UCR import may fail. For this
+    case the pyshared file will be imported directly (Bug #23588)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Sep 2011 14:34:58 +0200
+
 univention-config-registry (7.0.20-1) unstable; urgency=low
 
   * Move obsolte files to /etc/univention/templates/removed/ (Bug #22524,#21263)
