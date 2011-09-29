@@ -146,6 +146,11 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 					),
 					"""
 @!@
+					'description': univention.connector.attribute (
+						ucs_attribute='description',
+						ldap_attribute='description',
+						con_attribute='description',
+					),
 					'street': univention.connector.attribute (
 							ucs_attribute='street',
 							ldap_attribute='street',
@@ -210,6 +215,11 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 							con_attribute='sAMAccountName',
 							required=1,
 							compare_function=univention.connector.compare_lowercase,
+						),
+					'description': univention.connector.attribute (
+							ucs_attribute='description',
+							ldap_attribute='description',
+							con_attribute='description',
 						),
 						@!@
 if baseConfig.has_key('connector/ad/mapping/group/primarymail') and baseConfig['connector/ad/mapping/group/primarymail'] in ['yes','true']:

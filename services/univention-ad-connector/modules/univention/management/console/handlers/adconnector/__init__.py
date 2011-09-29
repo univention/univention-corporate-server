@@ -610,6 +610,7 @@ class handler(umch.simpleHandler):
 		list_items.add_row( [ inp_ldap_host ] )
 		list_items.add_row( [ inp_ldap_base, btn_guess ] )
 		list_items.add_row( [ inp_ldap_binddn, inp_ldap_bindpw ] )
+-		list_items.add_row( [ inp_kerberosdomain ] )
 		list_items.add_row( [ inp_mapping_language, inp_sync_mode ] )
 		list_items.add_row( [ inp_poll_sleep, inp_retry_rejected ] )
 		list_items.add_row( [ inp_debug_level, inp_debug_function ] )
