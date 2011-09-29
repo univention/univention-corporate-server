@@ -62,11 +62,6 @@ attributetype ( 1.3.6.1.4.1.10176.208 NAME 'univentionDefaultKdeProfiles'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
-attributetype ( 1.3.6.1.4.1.10176.215 NAME 'univentionDefaultMailHomeServer'
-	DESC 'Mail Home Server'
-	EQUALITY caseIgnoreIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
-
 attributetype ( 1.3.6.1.4.1.10176.216 NAME 'univentionDefaultScalixMailnode'
 	DESC 'Scalix Mailnode'
 	EQUALITY caseIgnoreIA5Match

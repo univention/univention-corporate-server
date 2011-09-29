@@ -1,3 +1,10 @@
+univention-ldap (8.0.39-1) unstable; urgency=low
+
+  * removed attribute univentionDefaultMailHomeServer from
+    univention-default.schema (Bug #23483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 29 Sep 2011 21:40:44 +0200
+
 univention-ldap (8.0.38-2) unstable; urgency=low
 
   * Remove the policy container cn=windowsinstallations since univention-windows-installer
