@@ -215,6 +215,14 @@ class handler(umch.simpleHandler):
 					debugmsg( ud.ADMIN, ud.INFO, 'setting %s=%s' % (ucrkey, val) )
 					univention.config_registry.handler_set( [ u'%s=%s' % (ucrkey, val) ] )
 
+			self.configRegistry.load() # reload UCR cache
+			if self.configRegistry.get('connector/ad/ldap/ldaps'):
+				debugmsg( ud.ADMIN, ud.INFO, 'unsetting connector/ad/ldap/ldaps' )
+				univention.config_registry.handler_unset( [ u'connector/ad/ldap/ldaps' ] )
+			if self.configRegistry.get('connector/ad/ldap/port') == '636':
+				debugmsg( ud.ADMIN, ud.INFO, 'setting ldap port to 389' )
+				univention.config_registry.handler_set( [ u'connector/ad/ldap/port=389' ] )
+
 			if not obj.options.get('ad_ldap_bindpw') in [ None, '', DO_NOT_CHANGE_PWD ]:
 				fn = self.configRegistry.get('connector/ad/ldap/bindpw', FN_BINDPW)
 				try:
