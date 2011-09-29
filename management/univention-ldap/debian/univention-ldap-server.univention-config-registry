@@ -1,6 +1,8 @@
 Type: file
 File: etc/init.d/slapd
 Variables: ldap/server/type
+Variables: slapd/port
+Variables: slapd/port/ldaps
 Variables: ldap/database/type
 Variables: ldap/schema/export
 Variables: ldap/replog

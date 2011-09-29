@@ -16,6 +16,19 @@ Description[en]=Path to LDAP transaction log file
 Type=str
 Categories=service-ldap
 
+[slapd/port]
+Description[de]=Port des LDAP-Servers slapd, beispielsweise 389,7389
+Description[en]=Port of LDAP server slapd, e.g. 389,7389
+Type=str
+Categories=service-ldap
+
+[slapd/port/ldaps]
+Description[de]=Port des LDAP-Servers slapd für ldaps, beispielsweise 636,7636
+Description[en]=Port of LDAP server slapd for ldaps, e.g. 636,7636
+Type=str
+Categories=service-ldap
+
+
 [ldap/port]
 Description[de]=Port des LDAP-Servers slapd
 Description[en]=Port of the LDAP server slapd
