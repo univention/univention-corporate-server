@@ -1859,9 +1859,8 @@ class ad(univention.connector.ucs):
 			for yank_empty_attr in attrs_to_remove_from_ad_object:
 				if ad_object.has_key(yank_empty_attr):
 					if value != None:
-						if yank_empty_attr != "description":
-							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Empty value can be set")
-							modlist_empty_attrs.append((ldap.MOD_REPLACE, yank_empty_attr, ""))
+						ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Empty value can be set")
+						modlist_empty_attrs.append((ldap.MOD_REPLACE, yank_empty_attr, ""))
 
 			if len(modlist_empty_attrs) > 0:
 				ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Attributes were removed in UCS LDAP, removing them in AD likewise: %s " % str(modlist_empty_attrs))
