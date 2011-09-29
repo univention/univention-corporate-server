@@ -35,7 +35,6 @@ eval $(/usr/sbin/univention-config-registry shell hostname samba4/sysvol/sync/ho
 SYSVOL_PATH='/var/lib/samba/sysvol'
 SYSVOL_SYNCDIR='/var/cache/univention-samba4/sysvol-sync'
 
-/usr/share/univention-samba4/scripts/set_sysvol_ntacls.py "$SYSVOL_PATH"	# set the xattrs to the defined NTACLs
 SYSVOL_SDDL=$(samba-tool acl nt get --as-sddl  /var/lib/samba/sysvol)
 
 if ! [ -d "$SYSVOL_SYNCDIR" ]; then
@@ -48,7 +47,6 @@ fi
 for importdir in $(find "${SYSVOL_SYNCDIR}" -mindepth 1 -maxdepth 1 -type d); do
 	## these directories were written by a non-privileged account, so the xattrs are missing
 	samba-tool acl nt set "$SYSVOL_SDDL" "$importdir" > /dev/null 2>&1
-	/usr/share/univention-samba4/scripts/set_sysvol_ntacls.py "$importdir"	# set the xattrs to the defined NTACLs
 	rsync -auAX "$importdir"/ "$SYSVOL_PATH"
 done
 

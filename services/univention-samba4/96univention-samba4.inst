@@ -155,6 +155,7 @@ if [ -z "$samba4_role" ]; then
 	univention-config-registry set samba4/role="$samba4_role"
 fi
 
+SYSVOL_PATH='/var/lib/samba/sysvol'
 
 if [ "$samba4_role" = 'DC' ]; then
 
@@ -245,6 +246,8 @@ if [ "$samba4_role" = 'DC' ]; then
 		let_samba4_manage_etc_krb5_keytab
 	fi
 
+	/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH"	# set the xattrs to a predefined NTACL
+
 elif [ "$samba4_role" = "RODC" ]; then
 
 	## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
@@ -312,6 +315,8 @@ elif [ "$samba4_role" = "RODC" ]; then
 	if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
 		let_samba4_manage_etc_krb5_keytab
 	fi
+
+	/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH"	# set the xattrs to a predefined NTACL
 
 elif [ "$samba4_role" = "MEMBER" ]; then
 

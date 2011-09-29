@@ -21,7 +21,12 @@ print '\tserver string =', samba_serverstring
 	realm		= @%@kerberos/realm@%@
 
 	debug level = @%@samba4/debug/level@%@
+
 @!@
+if not configRegistry.is_true('samba4/xattr'):
+	print '\t; configure xattr emulation, should be diabled if / has been mounted with option user_xattr'
+	print '\tposix:eadb = /var/lib/samba/private/eadb.tdb'
+
 for key, smbstring in [('samba/interfaces','interfaces'),
 		       ('samba/charset/dos', 'dos charset'),
 		       ('samba/charset/unix', 'unix charset'),
@@ -32,15 +37,11 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 	if configRegistry.get(key):
 		print '\t%s = %s' % (smbstring, configRegistry[key])
 @!@
-
 	tls enabled	= Yes
 	tls keyfile	= /etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/private.key
 	tls certfile	= /etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/cert.pem
 	tls cafile	= /etc/univention/ssl/ucsCA/CAcert.pem
 	tls crlfile	=
 	tls dh params file	= 
-
-	; configure xattr emulation, should be diabled if / has been mounted with option user_xattr
-	posix:eadb = /var/lib/samba/private/eadb.tdb
 
 ; ---------------------</10global>------------------------

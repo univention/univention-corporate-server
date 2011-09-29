@@ -1,3 +1,10 @@
+univention-samba4 (1.0.54-5) unstable; urgency=low
+
+  * xattr emulation can be deactivated by UCR:samba4/xattr=true
+  * set ntacl on the sysvol folder only once after join (Bug #23359)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Sep 2011 13:35:25 +0200
+
 univention-samba4 (1.0.54-4) unstable; urgency=low
 
   * install *.py scripts as well (Bug #23359)

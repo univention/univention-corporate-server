@@ -55,10 +55,10 @@ import optparse
 import samba.getopt
 
 def test_setntacl(lp, dir):
-	## 1. Grant Full File Access (FA) to Domain Admins (DA) : (A;OICI;FA;;;DA)
-	##    where FA = 0x1f01ff, see libcli/security/security.h
-	## 2. Grant File Read Access (FR) to Domain Users (DU) : (A;OICI;FR;;;DU)
-	##    where FR = 0x120089, see libcli/security/security.h
+	## 1. ACE: Grant Full File Access (FA) to Domain Admins (DA) : (A;OICI;FA;;;DA)
+	##         where FA = 0x1f01ff, see libcli/security/security.h
+	## 2. ACE: Grant File Read Access (FR) to Domain Users (DU) : (A;OICI;FR;;;DU)
+	##         where FR = 0x120089, see libcli/security/security.h
 	acl = "O:LAG:DAD:(A;OICI;0x001f01ff;;;DA)(A;OICI;0x00120089;;;DU)"
 	ntacl = xattr.NTACL()
 	ntacl.version = 1
@@ -76,7 +76,7 @@ def test_getntacl(dir):
 	anysid = security.dom_sid(security.SID_NT_SELF)
 	print "getacl:", facl.info.as_sddl(anysid)
 
-parser = optparse.OptionParser("set_sysvol_ntacls.py [options] <directory>")
+parser = optparse.OptionParser("set_sysvol_ntacl.py [options] <directory>")
 parser.add_option("-v", "--verbose", action="store_true")
 opts, args = parser.parse_args()
 
