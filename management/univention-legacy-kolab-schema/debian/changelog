@@ -1,7 +1,13 @@
+univention-legacy-kolab-schema (1.0.2-1) unstable; urgency=low
+
+  * added transitional schema file (Bug #23483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 29 Sep 2011 20:21:43 +0200
+
 univention-legacy-kolab-schema (1.0.1-1) unstable; urgency=low
 
   * took over objectclass univentionMailDomainname from legacy package
-    (Bug #22483)
+    (Bug #23483)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 01 Sep 2011 13:54:14 +0200
 
