@@ -1,3 +1,10 @@
+univention-ldap (7.0.23-1) unstable; urgency=low
+
+  * In preparation for the UCS 3.0 update start the slapd by default on
+    port 389 and 7389 (Bug #23220)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Sep 2011 18:28:01 +0200
+
 univention-ldap (7.0.22-2) unstable; urgency=low
 
   * removed univentionSambaPrivilegeList from ldap index 

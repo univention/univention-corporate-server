@@ -16,7 +16,6 @@
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 DAEMON=/usr/sbin/slapd
-PORT=389
 SLAPDCONF=/etc/ldap/slapd.conf
 
 . /lib/lsb/init-functions
@@ -169,10 +168,16 @@ if configRegistry.get('ldap/replog', '').lower() in ('true', 'yes'):
     log_action_msg "Starting ldap server(s): slapd"
 	(
 @!@
+uris=['ldapi:///']
+for p in configRegistry.get('slapd/port', '7389').split(','):
+	uris.append('ldap://0.0.0.0:%s/' % p)
+for p in configRegistry.get('slapd/port/ldaps', '7636').split(','):
+	uris.append('ldaps://0.0.0.0:%s/' % p)
+print '\turis="%s"' % ' '.join(uris)
 if configRegistry.get('ldap/maxopenfiles'):
 	print '\t\tulimit -n %s' % configRegistry['ldap/maxopenfiles']
 @!@		start-stop-daemon --start --quiet --pidfile "$pidfile" \
-			--exec $DAEMON -- -h "ldap:/// ldapi:/// ldaps:///"
+			--exec $DAEMON -- -h "${uris}"
 	)
 
 	test -e /var/run/slapd/ldapi && ln -sf /var/run/slapd/ldapi /var/run/ldapi

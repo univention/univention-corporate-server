@@ -73,7 +73,10 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 fi
 
 univention-config-registry set ldap/debug/level?0
-univention-config-registry set ldap/port?389
+univention-config-registry set ldap/port?389 \
+								slapd/port?"7389,389" \
+								slapd/port/ldaps?"7636,636"
+
 univention-config-registry set ldap/database/type?bdb
 univention-config-registry set ldap/sizelimit?400000
 univention-config-registry set ldap/cachesize?20000
