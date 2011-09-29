@@ -14,15 +14,32 @@ Depends: postfix,
   sasl2-bin, 
   libpam-univentionmailcyrus, 
   univention-config-registry
-Conflicts: univention-mail, univention-mail-postfix-forward, univention-mail-postfix-kolab2, exim4, exim4-base, exim4-config
+Conflicts: univention-mail, 
+  exim4, 
+  exim4-base, 
+  exim4-config,
+  univention-mail-postfix-forward (<< 6.0), 
+  univention-mail-postfix-kolab2
+Replaces: univention-mail-postfix-forward (<< 6.0)
 Provides: univention-mail-postfix-forward
-Replaces: univention-mail-postfix-forward
 Description: UCS - postfix configuration
  This package contains a basic configuration for the postfix
  mail transport agent.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-mail-postfix-forward
+Architecture: all
+Depends: univention-mail-postfix
+Description: Transitional package for univention-mail-postfix-forward
+ This is a transitional package for univention-mail-postfix-forward, 
+ and can be safely removed after the installation is complete.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
