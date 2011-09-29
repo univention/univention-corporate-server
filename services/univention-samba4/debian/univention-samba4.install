@@ -1,3 +1,4 @@
 scripts/*.sh usr/share/univention-samba4/scripts
+scripts/*.py usr/share/univention-samba4/scripts
 96univention-samba4.inst usr/lib/univention-install
 univention-s4search usr/sbin/
