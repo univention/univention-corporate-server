@@ -38,7 +38,6 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.0-1; t
 	remove_ucr_template /etc/imapd.conf
 	remove_ucr_template /etc/cyrus.conf
 	remove_ucr_template /etc/init.d/cyrus21
-	remove_ucr_template /etc/init.d/cyrus2.2
 	remove_ucr_template /var/spool/sieve/global.sieve
 	remove_ucr_template /var/spool/sieve/local.sieve
 	remove_ucr_info_file univention-mail-cyrus-pop.info

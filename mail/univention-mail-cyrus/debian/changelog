@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.13-1) unstable; urgency=low
+
+  * fixed last commit (Bug #23560) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Sep 2011 14:01:39 +0200
+
 univention-mail-cyrus (4.0.12-1) unstable; urgency=low
 
   * remove old ucr templates and info files (Bug #23560)
