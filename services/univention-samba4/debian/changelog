@@ -1,3 +1,9 @@
+univention-samba4 (1.0.54-1) unstable; urgency=low
+
+  * set ntacls on sysvol using xattr emulation for now (Bug #23359)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Sep 2011 11:32:59 +0200
+
 univention-samba4 (1.0.53-2) unstable; urgency=low
 
   * fix syntax error (Bug #22559)

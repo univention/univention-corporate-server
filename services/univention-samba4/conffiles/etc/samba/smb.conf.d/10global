@@ -40,5 +40,7 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 	tls crlfile	=
 	tls dh params file	= 
 
+	; configure xattr emulation, should be diabled if / has been mounted with option user_xattr
+	posix:eadb = /var/lib/samba/private/eadb.tdb
 
 ; ---------------------</10global>------------------------
