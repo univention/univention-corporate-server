@@ -44,6 +44,7 @@ import re
 class object(content):
 	def __init__(self, max_y, max_x, last, file, cmdline):
 		self.hostname_last_warning = ''
+		self.domainname_last_warning = ''
 		self.guessed = {}
 		content.__init__(self, max_y, max_x, last, file, cmdline)
 		self.interactive=False

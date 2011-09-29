@@ -1,3 +1,9 @@
+univention-installer (7.0.79-3) unstable; urgency=low
+
+  * initialize self.domainname_last_warning (Bug #23334)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Sep 2011 14:14:41 +0200
+
 univention-installer (7.0.79-2) unstable; urgency=low
 
   * Display warning only once if domainname does not contain at least one
