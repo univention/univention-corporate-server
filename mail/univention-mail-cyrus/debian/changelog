@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.12-1) unstable; urgency=low
+
+  * remove old ucr templates and info files (Bug #23560)
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Sep 2011 12:54:08 +0200
+
 univention-mail-cyrus (4.0.11-1) unstable; urgency=low
 
   * added transition packages for u-m-c-imap/pop (Bug #23560)

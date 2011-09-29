@@ -30,9 +30,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/all.sh
+
 # update to 3.0-0 cleanup Bug #23560
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; then
-	continue
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.0-1; then
+	remove_ucr_template /etc/pam_ldap_imap.conf
+	remove_ucr_template /etc/imapd.conf
+	remove_ucr_template /etc/cyrus.conf
+	remove_ucr_template /etc/init.d/cyrus21
+	remove_ucr_template /etc/init.d/cyrus2.2
+	remove_ucr_template /var/spool/sieve/global.sieve
+	remove_ucr_template /var/spool/sieve/local.sieve
+	remove_ucr_info_file univention-mail-cyrus-pop.info
+	remove_ucr_info_file univention-mail-cyrus-imap.info
 fi 
 
 dpkg-statoverride --add cyrus sasl 640 /etc/univention/templates/files/etc/imapd/imapd.conf || true

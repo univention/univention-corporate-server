@@ -34,6 +34,7 @@ Description: UCS - imap configuration
 
 Package: univention-mail-cyrus-pop
 Architecture: all
+Depends: univention-mail-cyrus
 Description: UCS - transition package
  UCS - transition package
  .
@@ -44,6 +45,7 @@ Description: UCS - transition package
 
 Package: univention-mail-cyrus-imap
 Architecture: all
+Depends: univention-mail-cyrus
 Description: UCS - transition package
  UCS - transition package
  .
