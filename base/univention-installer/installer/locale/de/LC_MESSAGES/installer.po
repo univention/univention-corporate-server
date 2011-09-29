@@ -856,11 +856,11 @@ msgstr ""
 
 #: installer/modules/50_basis.py:317
 msgid ""
-"Please enter a valid fully qualified domain name containing at least two "
-"dots."
+"Samba 4 requires the fully qualified domain name to contain at least "
+"two dots (e.g. host.example.com)."
 msgstr ""
-"Bitte geben Sie einen vollständigen Rechnernamen an, der mindestens zwei "
-"Punkte enthält."
+"Samba 4 verlangt, dass der vollständige Domänenname mindestens zwei "
+"Punkte enthält (z.B. host.example.com)."
 
 #: installer/modules/50_basis.py:323
 msgid ""
