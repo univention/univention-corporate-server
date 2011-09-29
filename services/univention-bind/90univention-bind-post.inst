@@ -54,6 +54,20 @@ wait_for_dns(){
 				sleep 1
 			fi;
 		done
+	
+		# Wait for SRV records too
+		continue=1
+		while [ $continue = "1" ];do
+			echo "wait for named ?"
+			timeout=`LC_ALL=C host -t SRV -W 1 _ldap._tcp.$domainname 2>&1| grep "has SRV record"`
+			if [ -n "$timeout" ]; then
+				continue=0
+			else
+				sleep 1
+			fi;
+		done
+
+		nscd -i hosts
 	fi
 }
 
