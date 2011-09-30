@@ -555,29 +555,34 @@ class object(content):
 		Update disabled/enabled status of elements depending on other elements
 		"""
 
-		# if any interface has ipv4 enabled then enable ipv4 gateway
+		# check if any interface has IPv4 enabled
 		self.ipv4_found = False
 		for card in self.cards.values():
 			self.ipv4_found = self.ipv4_found or card.get_elem('CB_IPv4').result()
-		if self.ipv4_found:
-			self.get_elem('INP_GATEWAY4').enable()
-		else:
-			self.get_elem('INP_GATEWAY4').disable()
 
-		# if any interface has ipv6 enabled then enable ipv6 gateway
+		# check if any interface has IPv6 enabled
 		self.ipv6_found = False
 		for card in self.cards.values():
 			self.ipv6_found = self.ipv6_found or card.get_elem('CB_IPv6').result()
-		if self.ipv6_found:
-			self.get_elem('INP_GATEWAY6').enable()
-		else:
-			self.get_elem('INP_GATEWAY6').disable()
 
 		# if no interface has been configured, and first interface is visible then activate IPv4 for first interface
 		if not self.default_ipv4_was_set and not self.ipv4_found and not self.ipv6_found and self.get_elem('CARDBOX1').get_card().name == self.interfaces[0].name:
 			self.get_elem('CB_IPv4').select()  # activate IPv4
 			self.move_focus( self.get_elem_id('INP_IPv4ADDR') )  # set focus to IPv4 address
 			self.default_ipv4_was_set = True
+			self.ipv4_found = True
+
+		# if any interface has IPv4 enabled then enable ipv4 gateway
+		if self.ipv4_found:
+			self.get_elem('INP_GATEWAY4').enable()
+		else:
+			self.get_elem('INP_GATEWAY4').disable()
+
+		# if any interface has IPv6 enabled then enable ipv6 gateway
+		if self.ipv6_found:
+			self.get_elem('INP_GATEWAY6').enable()
+		else:
+			self.get_elem('INP_GATEWAY6').disable()
 
 		# if IPv6 checkbox is present...
 		if self.elem_exists('CB_IPv6'):
@@ -635,6 +640,9 @@ class object(content):
 		self.copy_elem_to_container()
 		# redraw all elements of cardbox
 		self.get_elem('CARDBOX1').draw(onlyChilds=True)
+
+		for name in [ 'INP_GATEWAY4', 'INP_GATEWAY6' ]:
+			self.get_elem(name).draw()
 
 
 	def copy_elem_to_container(self):
