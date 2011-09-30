@@ -724,19 +724,19 @@ class object(content):
 			elif hasattr(self.sub, 'key_event'):
 				self.sub.key_event(key)
 			return 1
-		elif key == 10 and self.btn_next():
+		elif key in [ 10, 32 ] and self.btn_next():
 			return 'next'
-		elif key == 10 and self.btn_back():
+		elif key in [ 10, 32 ] and self.btn_back():
 			return 'prev'
-		elif key == curses.KEY_F2 or ( key in [ 10 ] and self.get_elem('BTN_IF_PREV').get_status() ):
+		elif key == curses.KEY_F2 or ( key in [ 10, 32 ] and self.get_elem('BTN_IF_PREV').get_status() ):
 			self.get_elem('CARDBOX1').prev_card()
 			self.update_widget_states()
 			self.draw()
-		elif key == curses.KEY_F3 or ( key in [ 10 ] and self.get_elem('BTN_IF_NEXT').get_status() ):
+		elif key == curses.KEY_F3 or ( key in [ 10, 32 ] and self.get_elem('BTN_IF_NEXT').get_status() ):
 			self.get_elem('CARDBOX1').next_card()
 			self.update_widget_states()
 			self.draw()
-		elif key == curses.KEY_F5 or ( key in [ 10 ] and self.get_elem('BTN_DHCLIENT').get_status() ):
+		elif key == curses.KEY_F5 or ( key in [ 10, 32 ] and self.get_elem('BTN_DHCLIENT').get_status() ):
 			self.act = dhclient_active(self, _('DHCP Query'), _('Please wait ...'), name='act')
 			self.act.draw()
 			if not self.dhcpanswer:
@@ -750,10 +750,10 @@ class object(content):
 					self.current = self.get_elem_id('BTN_DHCLIENT')	# set the tab cursor
 					self.elements[self.current].set_on()		# set actual focus highlight
 				self.draw()
-		elif key in [ 10 ] and self.ask_domainnameserver and self.get_elem('BTN_MORE_NAMESERVER').get_status(): # Enter & Button: "[More]" Nameserver
+		elif key in [ 10, 32 ] and self.ask_domainnameserver and self.get_elem('BTN_MORE_NAMESERVER').get_status(): # Enter & Button: "[More]" Nameserver
 			self.sub = morewindow(self, self.minY, self.minX+16, self.maxWidth-7, self.maxHeight-18, morewindow.DOMAINDNS)
 			self.sub.draw()
-		elif key in [ 10 ] and self.ask_forwarder and self.get_elem('BTN_MORE_FORWARDER').get_status(): # Enter & Button: "[More]" Forwarder
+		elif key in [ 10, 32 ] and self.ask_forwarder and self.get_elem('BTN_MORE_FORWARDER').get_status(): # Enter & Button: "[More]" Forwarder
 			self.sub = morewindow(self, self.minY, self.minX+16, self.maxWidth-7, self.maxHeight-18, morewindow.EXTERNALDNS)
 			self.sub.draw()
 		else:
