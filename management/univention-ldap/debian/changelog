@@ -1,3 +1,10 @@
+univention-ldap (8.0.39-2) unstable; urgency=low
+
+  * removed attribute univentionDefaultMailHomeServer from
+    univention-default.schema (Bug #23483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 30 Sep 2011 14:46:58 +0200
+
 univention-ldap (8.0.39-1) unstable; urgency=low
 
   * removed attribute univentionDefaultMailHomeServer from

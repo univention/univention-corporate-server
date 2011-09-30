@@ -71,7 +71,7 @@ objectclass	( 1.3.6.1.4.1.10176.201 NAME 'univentionDefault'
 	DESC 'Default user entries'
 	SUP top  STRUCTURAL
 	MUST cn
-	MAY ( univentionDefaultGroup $ univentionDefaultComputerGroup $ univentionDefaultDomainControllerGroup $ univentionDefaultKdeProfiles $ univentionDefaultMemberserverGroup $ univentionDefaultClientGroup $ univentionDefaultDomainControllerMasterGroup $ univentionDefaultMailHomeServer $ univentionDefaultScalixMailnode ) )
+	MAY ( univentionDefaultGroup $ univentionDefaultComputerGroup $ univentionDefaultDomainControllerGroup $ univentionDefaultKdeProfiles $ univentionDefaultMemberserverGroup $ univentionDefaultClientGroup $ univentionDefaultDomainControllerMasterGroup $ univentionDefaultScalixMailnode ) )
 
 attributetype ( 1.3.6.1.4.1.10176.1030.3.1.1 NAME 'univentionXResolutionChoices'
 	DESC 'X resolution [client]'
