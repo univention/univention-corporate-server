@@ -7,7 +7,7 @@ Standards-Version: 3.8.2
 
 Package: univention-kde
 Architecture: all
-Recommends: kde-l10n-de, okular, univention-gdm, univention-mozilla-firefox, univention-flashplugin
+Recommends: kde-l10n-de, okular, univention-gdm, univention-mozilla-firefox, univention-flashplugin, univention-x-core
 Depends: univention-config-registry, kde-standard (>= 5:66), univention-kde-setdirs
 Description: UCS - KDE desktop
  This package installs the KDE desktop.
