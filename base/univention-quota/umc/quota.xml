@@ -13,6 +13,10 @@
 		<attribute name="partitions" syntax="Dictionary"/>
 		<return syntax="Dictionary"/>
 	</command>
+	<command name="quota/partitions/info" function="quota_partition_info">
+		<attribute name="partitions" syntax="Dictionary"/>
+		<return syntax="Dictionary"/>
+	</command>
 	<command name="quota/partitions/activate" function="quota_partition_activate">
 		<attribute name="partitions" syntax="Dictionary"/>
 		<return syntax="Dictionary"/>
@@ -21,7 +25,6 @@
 		<attribute name="partitions" syntax="Dictionary"/>
 		<return syntax="Dictionary"/>
 	</command>
-	<!-- TODO -->
 	<command name="quota/users/set" function="quota_user_set">
 		<attribute name="user" syntax="Quota-User"/>
 		<attribute name="partition" syntax="Quota-Partition"/>

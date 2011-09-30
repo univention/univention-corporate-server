@@ -46,8 +46,6 @@ import user
 
 _ = umc.Translation('univention-management-console-modules-quota').translate
 
-#TODO comments
-
 class Instance(umcm.Base, partition.Commands, user.Commands):
 	def __init__(self):
 		umcm.Base.__init__(self)
@@ -60,15 +58,12 @@ class Instance(umcm.Base, partition.Commands, user.Commands):
 		try:
 			fs = fstab.File()
 			mt = mtab.File()
-
 		except IOError as error:
 			MODULE.error('Could not open {0}'.format(error.filename))
 			message = _('Could not open {0}'.format(error.filename))
 			request.status = MODULE_ERR
-
 		#except InvalidEntry as error: #TODO
 		#	pass
-
 		else:
 			partitions = fs.get(['xfs', 'ext3', 'ext2'], False) #TODO ext4?
 			result = []
@@ -91,5 +86,4 @@ class Instance(umcm.Base, partition.Commands, user.Commands):
 						listEntry['inUse'] = _('Activated')
 				result.append(listEntry)
 			request.status = SUCCESS
-
 		self.finished(request.id, result, message)

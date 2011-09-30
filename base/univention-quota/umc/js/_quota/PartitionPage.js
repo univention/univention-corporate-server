@@ -10,7 +10,6 @@ dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.SearchForm");
 dojo.require("umc.widgets.Text");
-dojo.require("umc.modules._quota.DetailDialog");
 
 dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mixin ], {
 
@@ -20,8 +19,6 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 	_form: null,
 	_grid: null,
 	_searchForm: null,
-	_detailDialog: null,
-	_detailDialogCloseHandle: null,
 
 	buildRendering: function() {
 		this.inherited(arguments);
@@ -42,7 +39,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		this.footerButtons = [{
 			name: 'close',
 			label: this._('Close'),
-			callback: dojo.hitch(this, 'onClose')
+			callback: dojo.hitch(this, 'onClosePage')
 		}];
 	},
 
@@ -89,9 +86,6 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 	},
 
 	renderGrid: function() {
-		//
-		// SearchForm
-		//
 		var widgets = [{
 			type: 'TextBox',
 			name: 'filter',
@@ -102,16 +96,13 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		this._searchForm = new umc.widgets.SearchForm({
 			region: 'top',
 			widgets: widgets,
-			layout: [['filter']],
+			layout: [['filter', 'submit', 'reset']],
 			onSearch: dojo.hitch(this, function(data) {
 				data.partitionDevice = this.partitionDevice;
 				this._grid.filter(data);
 			})
 		});
 
-		//
-		// Grid
-		//
 		var actions = [{
 			name: 'add',
 			label: this._('Add user'),
@@ -119,16 +110,22 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 			isContextAction: false,
 			isStandardAction: true,
 			isMultiAction: false,
-			callback: dojo.hitch(this, 'createDetailDialog')
+			callback: dojo.hitch(this, function() {
+				this.onShowDetailPage({'partitionDevice': this.partitionDevice});
+			})
 		}, {
 			name: 'configure',
 			label: this._('Configure'),
 			iconClass: 'dijitIconEdit',
 			isStandardAction: true,
-			isMultiAction: false
+			isMultiAction: false,
+			callback: dojo.hitch(this, function() {
+				var userData = this._grid.getSelectedItems();
+				this.onShowDetailPage({'partitionDevice': this.partitionDevice, 'userData': userData});
+			})
 		}, {
 			name: 'remove',
-			label: this._('Remove quota settings'),
+			label: this._('Remove'),
 			iconClass: 'dijitIconDelete',
 			isStandardAction: true,
 			isMultiAction: true
@@ -176,37 +173,29 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 			region: 'center',
 			actions: actions,
 			columns: columns,
-			moduleStore: this.moduleStore,
-			query: {
-				filter: '*',
-				partitionDevice: this.partitionDevice
-			}
+			moduleStore: this.moduleStore
 		});
 	},
 
-	createDetailDialog: function(id) {
-		this._detailDialog = new umc.modules._quota.DetailDialog({
-			title: this._('Add quota setting for a user on partition')
-		});
-		this._detailDialogCloseHandle = this.connect(this._detailDialog, 'onClose', 'closeDetailDialog');
-		this.addChild(this._detailDialog);
-	},
-
-	closeDetailDialog: function() {
-		this.resetTitle();
-		this.selectChild(this._overviewPage);
-		if (this._detailDialogCloseHandle) {
-			this.disconnect(this._detailDialogCloseHandle);
-			this._detailDialogCloseHandle = null;
-		}
-		if (this._detailDialog) {
-			this.removeChild(this._detailDialog);
-			this._detailDialog.destroyRecursive();
-			this._detailDialog = null;
-		}
-	},
-
-	onClose: function() {
+	onShowDetailPage: function(data) {
 		return true;
+	},
+
+	onClosePage: function() {
+		return true;
+	},
+
+	init: function(partitionDevice) {
+		this.partitionDevice = partitionDevice;
+		umc.tools.umcpCommand('quota/partitions/info', {'partitionDevice': this.partitionDevice}).then(dojo.hitch(this, function(data) {
+			this._form.getWidget('mountPointValue').set('content', data.result.mountPoint);
+			this._form.getWidget('filesystemValue').set('content', data.result.filesystem);
+			this._form.getWidget('optionsValue').set('content', data.result.options);
+		}));
+		this.set('headerText', this._('Partition: %s', this.partitionDevice));
+		this._grid.filter({
+			filter: '*',
+			partitionDevice: this.partitionDevice
+		});
 	}
 });

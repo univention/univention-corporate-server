@@ -31,40 +31,49 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# external
-import notifier
 from fnmatch import fnmatch
+import notifier
 
-# univention
-import univention.management.console as umc
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
+import univention.management.console as umc
 
-# internal
-import tools
 import fstab
 import mtab
+import tools
 
-_ = umc.Translation('univention-management-console-modules-quota').translate
-
-#TODO exception handling
-#TODO comments
+_ = umc.Translation('univention-management-console-module-quota').translate
 
 class Commands(object):
-	def quota_partition_show(self, request):
+	def quota_partition_info(self, request):
+		message = ''
 		fs = fstab.File()
 		mt = mtab.File()
 		part = fs.find(spec = request.options['partitionDevice'])
 		mounted = mt.get(part.spec)
-
+		result = {}
+		if mounted:
+			result['mountPoint'] = mounted.mount_point
+			result['filesystem'] = mounted.type
+			result['options'] = mounted.options
+			request.status = SUCCESS
+		else:
+			request.status = MODULE_ERR
+		self.finished(request.id, result, message)
+	def quota_partition_show(self, request):
+		message = ''
+		fs = fstab.File()
+		mt = mtab.File()
+		part = fs.find(spec = request.options['partitionDevice'])
+		mounted = mt.get(part.spec)
 		if mounted and 'usrquota' in mounted.options:
 			cb = notifier.Callback(self._quota_partition_show, request.id,
 			                       request.options['partitionDevice'], request)
 			tools.repquota(request.options['partitionDevice'], cb)
 		else:
-			result = ''
-			request.status = SUCCESS
-			self.finished(request.id, result)
+			request.status = MODULE_ERR
+			MODULE.error('partition is not mounted') # TODO
+			self.finished(request.id, message)
 
 	def _quota_partition_show(self, pid, status, result, id, partition,
 	                          request):
@@ -74,7 +83,6 @@ class Commands(object):
 		# general information
 		devs = fstab.File()
 		part = devs.find(spec = partition)
-		MODULE.warn(str(result))
 
 		# skip header
 		try:
@@ -83,12 +91,7 @@ class Commands(object):
 				header += 1
 		except:
 			pass
-
-		MODULE.warn(str(result[header + 1]))
 		quotas = tools.repquota_parse(partition, result[header + 1 :])
-		MODULE.warn(str(quotas[0]['user']))
-		MODULE.warn(str(quotas))
-
 		erg = []
 		for listEntry in quotas:
 			if fnmatch(listEntry['user'], request.options['filter']):
@@ -117,8 +120,8 @@ class Commands(object):
 			               'success': str(success),
 			               'message': message,
 			               })
-		if not failed:
-			request.status = SUCCESS
-		else:
+		if failed:
 			request.status = MODULE_ERR
+		else:
+			request.status = SUCCESS
 		self.finished(request.id, result)

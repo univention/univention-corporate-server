@@ -8,6 +8,7 @@ dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.Page");
 
 dojo.require("umc.modules._quota.PartitionPage");
+dojo.require("umc.modules._quota.DetailPage");
 
 dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
@@ -15,12 +16,13 @@ dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	moduleStore: null,
 	_overviewPage: null,
 	_partitionPage: null,
-	_partitionPageCloseHandle: null,
-	_userDialog: null,
+	_detailPage: null,
 
 	buildRendering: function() {
 		this.inherited(arguments);
 		this.renderOverviewPage();
+		this.renderPartitionPage();
+		this.renderDetailPage();
 	},
 
 	renderOverviewPage: function() {
@@ -39,25 +41,25 @@ dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var actions = [{
 			name: 'activate',
 			label: this._('Activate'),
-			iconClass: 'dijitIconNewTask', //TODO
+			iconClass: 'dijitIconNewTask', // TODO
 			isStandardAction: true,
 			isMultiAction: true,
 			callback: dojo.hitch(this, function() {
 				var partitions = this._grid.getSelectedIDs();
-				umc.tools.umcpCommand('quota/partitions/activate', {"partitions" : partitions}).then(dojo.hitch(this, function() {
-					//umc.dialog.notify(this._('quota/partitions/activate'));
+				umc.tools.umcpCommand('quota/partitions/activate', {"partitions" : partitions}).then(dojo.hitch(this, function(result) {
+					umc.dialog.notify(this._('Quota support successfully activated'));
 				}));
 			})
 		}, {
 			name: 'deactivate',
 			label: this._('Deactivate'),
-			iconClass: 'dijitIconDelete',
+			iconClass: 'dijitIconDelete', // TODO
 			isStandardAction: true,
 			isMultiAction: true,
 			callback: dojo.hitch(this, function() {
 				var partitions = this._grid.getSelectedIDs();
 				umc.tools.umcpCommand('quota/partitions/deactivate', {"partitions" : partitions}).then(dojo.hitch(this, function() {
-					umc.dialog.notify(this._('quota/partitions/deactivate'));
+					umc.dialog.notify(this._('Quota support successfully deactivated'));
 				}));
 			})
 		}, {
@@ -66,8 +68,8 @@ dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			iconClass: 'dijitIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
-			callback: dojo.hitch(this, function(ids) {
-				this.createPartitionPage(ids[0]);
+			callback: dojo.hitch(this, function(partitionDevice) {
+				this._partitionPage.init(partitionDevice[0]);
 				this.selectChild(this._partitionPage);
 			})
 		}];
@@ -108,28 +110,31 @@ dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._overviewPage.startup();
 	},
 
-	createPartitionPage: function(id) {
+	renderPartitionPage: function() {
+		var partitionDevice = '';
 		this._partitionPage = new umc.modules._quota.PartitionPage({
-			partitionDevice: id,
 			moduleStore: this.getModuleStore('id', this.moduleID + '/partitions'),
-			headerText: this._('Partition: %s', id),
+			headerText: this._('Partition: %s', partitionDevice),
 			helpText: this._('Set, unset and modify filesystem quota')
 		});
-		this._partitionPageCloseHandle = this.connect(this._partitionPage, 'onClose', 'closePartitionPage');
 		this.addChild(this._partitionPage);
+		this.connect(this._partitionPage, 'onClosePage', function() {
+			this.selectChild(this._overviewPage);
+		});
+		this.connect(this._partitionPage, 'onShowDetailPage', function(data) {
+			this._detailPage.init(data);
+			this.selectChild(this._detailPage);
+		});
 	},
 
-	closePartitionPage: function() {
-		this.resetTitle();
-		this.selectChild(this._overviewPage);
-		if (this._partitionPageCloseHandle) {
-			this.disconnect(this._partitionPageCloseHandle);
-			this._partitionPageCloseHandle = null;
-		}
-		if (this._partitionPage) {
-			this.removeChild(this._partitionPage);
-			this._partitionPage.destroyRecursive();
-			this._partitionPage = null;
-		}
+	renderDetailPage: function() {
+		this._detailPage = new umc.modules._quota.DetailPage({
+			headerText: this._('Add quota setting for a user on partition'),
+			helpText: this._('Add quota setting for a user on partition')
+		});
+		this.addChild(this._detailPage);
+		this.connect(this._detailPage, 'onClosePage', function() {
+			this.selectChild(this._partitionPage);
+		});
 	}
 });
