@@ -44,6 +44,10 @@ import string
 
 MAXLENGTH = 65
 
+def ljust_utf8(msg, just):
+	return msg.decode('utf-8').ljust(just).encode('utf-8')
+
+
 class object(content):
 	def checkname(self):
 		return ['']
@@ -88,15 +92,15 @@ class object(content):
 
 		linecnt += 1
 		head = _("System role") + ":"
-		self.elements.append(textline('%s %s' % (head.ljust(just), role), linecnt, self.minX+5))
+		self.elements.append(textline('%s %s' % (ljust_utf8(head, just), role), linecnt, self.minX+5))
 
 		linecnt += 1
 		head = _('Hostname') + ":"
-		self.elements.append(textline('%s %s' % (head.ljust(just), self.all_results['hostname']), linecnt, self.minX+5))
+		self.elements.append(textline('%s %s' % (ljust_utf8(head, just), self.all_results['hostname']), linecnt, self.minX+5))
 
 		linecnt += 1
 		head = _('Domain name') + ":"
-		self.elements.append(textline('%s %s' % (head.ljust(just), self.all_results['domainname']), linecnt, self.minX+5))
+		self.elements.append(textline('%s %s' % (ljust_utf8(head, just), self.all_results['domainname']), linecnt, self.minX+5))
 
 		linecnt += 2
 		self.add_elem('TXT1', textline( _('Settings of interface eth0:'), linecnt, self.minX+5))
@@ -104,22 +108,22 @@ class object(content):
 		head = _("IPv4 address") + ":"
 		linecnt += 1
 		if self.all_results.has_key('eth0_type') and self.all_results['eth0_type'] == 'dynamic':
-			self.elements.append(textline('%s %s' % (head.ljust(ifjust), _('configuration via DHCP')), linecnt, self.minX+7))
+			self.elements.append(textline('%s %s' % (ljust_utf8(head, ifjust), _('configuration via DHCP')), linecnt, self.minX+7))
 		else:
-			self.elements.append(textline('%s %s' % (head.ljust(ifjust), self.all_results['eth0_ip']), linecnt, self.minX+7))
+			self.elements.append(textline('%s %s' % (ljust_utf8(head, ifjust), self.all_results['eth0_ip']), linecnt, self.minX+7))
 
 			linecnt += 1
 			head = _("IPv4 netmask") + ":"
-			self.elements.append(textline('%s %s' % (head.ljust(ifjust), self.all_results['eth0_netmask']), linecnt, self.minX+7))
+			self.elements.append(textline('%s %s' % (ljust_utf8(head, ifjust), self.all_results['eth0_netmask']), linecnt, self.minX+7))
 
 		head = _("IPv6 address") + ":"
 		if self.all_results.get('eth0_acceptra') in ['true']:
 			linecnt += 1
-			self.elements.append(textline('%s %s' % (head.ljust(ifjust), _('configuration via router advertisements')), linecnt, self.minX+7))
+			self.elements.append(textline('%s %s' % (ljust_utf8(head, ifjust), _('configuration via router advertisements')), linecnt, self.minX+7))
 		else:
 			if self.all_results.get('eth0_ip6') and self.all_results.get('eth0_prefix6'):
 				linecnt += 1
-				self.elements.append(textline('%s %s/%s' % (head.ljust(ifjust), self.all_results['eth0_ip6'], self.all_results['eth0_prefix6']), linecnt, self.minX+7))
+				self.elements.append(textline('%s %s/%s' % (ljust_utf8(head, ifjust), self.all_results['eth0_ip6'], self.all_results['eth0_prefix6']), linecnt, self.minX+7))
 
 		linecnt += 1
 
@@ -127,25 +131,25 @@ class object(content):
 		if gateway:
 			linecnt += 1
 			head = _("IPv4 Gateway") + ":"
-			self.elements.append(textline('%s %s' % (head.ljust(just), gateway) , linecnt, self.minX+5))
+			self.elements.append(textline('%s %s' % (ljust_utf8(head, just), gateway) , linecnt, self.minX+5))
 
 		gateway6 = self.all_results.get('gateway6')
 		if gateway6:
 			linecnt += 1
 			head = _("IPv6 Gateway") + ":"
-			self.elements.append(textline('%s %s' % (head.ljust(just), gateway6) , linecnt, self.minX+5))
+			self.elements.append(textline('%s %s' % (ljust_utf8(head, just), gateway6) , linecnt, self.minX+5))
 
 		nameserver = self.all_results.get('nameserver_1')
 		if nameserver:
 			linecnt += 1
 			head = _('Domain DNS Server') + ":"
-			self.elements.append(textline('%s %s' % (head.ljust(just), nameserver) , linecnt, self.minX+5))
+			self.elements.append(textline('%s %s' % (ljust_utf8(head, just), nameserver) , linecnt, self.minX+5))
 
 		linecnt += 1
 		extnameserver = self.all_results.get('dns_forwarder_1')
 		if extnameserver:
 			head = _('External DNS Server') + ":"
-			self.elements.append(textline('%s %s' % (head.ljust(just), extnameserver) , linecnt, self.minX+5))
+			self.elements.append(textline('%s %s' % (ljust_utf8(head, just), extnameserver) , linecnt, self.minX+5))
 
 		linecnt += 2
 		internet_files=[]
