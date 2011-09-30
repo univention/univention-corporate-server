@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
@@ -45,7 +45,7 @@ if [ "$res" = "None" ]; then
 fi
 
 # add service to my host object
-ucs_addServiceToLocalhost "Mail" "$@"
+ucs_addServiceToLocalhost "SMTP" "$@"
 
 
 # create initial mail domain object(s) if missing

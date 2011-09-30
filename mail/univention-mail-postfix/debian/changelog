@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.21-1) unstable; urgency=low
+
+  * rename service "Mail" to "SMTP" (Bug #2136)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 30 Sep 2011 12:25:10 +0200
+
 univention-mail-postfix (6.0.20-1) unstable; urgency=low
 
   * added transitional package for univention-mail-postfix-forward (Bug #10527)
