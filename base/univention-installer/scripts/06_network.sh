@@ -124,18 +124,21 @@ for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
 		prefix="$(set | egrep "^${network_device}_prefix6=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g")"
 		acceptra="$(set | egrep "^${network_device}_acceptra=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g")"
 
-    	if [ -n "$address" -a -n "$prefix" ] ; then
-			python2.6 /sbin/univention-config-registry set interfaces/$network_device/ipv6/base/address=$address interfaces/$network_device/ipv6/base/prefix=$prefix
-			ip -6 addr add "$address/$prefix" dev "${network_device}"
-    	fi
+		python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/acceptRA=false"
 		if [ -n "$acceptra" ] ; then
-			python2.6 /sbin/univention-config-registry set interfaces/$network_device/ipv6/acceptRA=$acceptra
 			if [ "$acceptra" = "true" ] ; then
+				python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/acceptRA=$acceptra"
 				sysctl -w "net.ipv6.conf.${network_device}.accept_ra=1"
 			else
 				sysctl -w "net.ipv6.conf.${network_device}.accept_ra=0"
 			fi
 		fi
+
+    	if [ -n "$address" -a -n "$prefix" ] ; then
+			python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/base/address=$address" "interfaces/$network_device/ipv6/base/prefix=$prefix"
+			ip link set "$network_device" up
+			ip -6 addr add "$address/$prefix" dev "${network_device}"
+    	fi
     done
 done
 
@@ -152,8 +155,8 @@ if [ -n "$gateway" ]; then
 fi
 # set IPv6 gateway
 if [ -n "$gateway6" ]; then
-	python2.6 /sbin/univention-config-registry set ipv6/gateway=$gateway6
-	ip -6 route add ::/0 via "$gateway6"
+	python2.6 /sbin/univention-config-registry set "ipv6/gateway=$gateway6"
+	ip -6 route add ::/0 via "$gateway6" 
 fi
 
 
