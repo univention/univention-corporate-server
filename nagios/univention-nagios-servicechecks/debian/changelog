@@ -1,3 +1,9 @@
+univention-nagios-servicechecks (2.0.2-1) unstable; urgency=low
+
+  * harmonise container check in join script (Bug #23180)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 30 Sep 2011 16:00:33 +0200
+
 univention-nagios-servicechecks (2.0.1-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3

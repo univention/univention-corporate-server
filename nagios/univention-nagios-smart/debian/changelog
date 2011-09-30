@@ -1,3 +1,9 @@
+univention-nagios-smart (2.0.1-1) unstable; urgency=low
+
+  * harmonise container check in join script (Bug #23180)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 30 Sep 2011 15:59:15 +0200
+
 univention-nagios-smart (2.0.0-0) unstable; urgency=low
 
   * update to UCS 3.0 policies (Bug #14594)

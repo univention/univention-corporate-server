@@ -38,6 +38,8 @@ eval "$(univention-config-registry shell)"
 
 if ! univention-ldapsearch -xLLL -s base -b "cn=nagios,$ldap_base" dn >/dev/null 2>&1 ; then
 	echo "Creation of nagios service skipped - cannot find container cn=nagios,$ldap_base (ldapsearch error $?)"
+	# stop here and do not save current joinscript version
+	exit 0
 else
 	# create nagios service for AD connector
 	univention-directory-manager nagios/service create "$@" --ignore_exists \
