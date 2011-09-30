@@ -1,3 +1,9 @@
+univention-management-console (4.0.61-2) unstable; urgency=low
+
+  * added ACLs for root to allow using the online update module (Bug #22460)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 30 Sep 2011 15:43:33 +0200
+
 univention-management-console (4.0.61-1) unstable; urgency=low
 
   * catch exception IOError when trying to open an LDAP connection. This

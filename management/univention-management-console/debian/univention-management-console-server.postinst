@@ -46,7 +46,8 @@ univention-config-registry set \
             --command 'join/*' \
 			--command 'ucr/*' \
 			--command 'mrtg/*' \
-			--command 'service/*'
+			--command 'service/*' \
+			--command 'online/*'
 
 # ucslint needs this
 exit 0
