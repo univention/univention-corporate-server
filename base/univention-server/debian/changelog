@@ -1,3 +1,9 @@
+univention-server (7.0.12-1) unstable; urgency=low
+
+  * remove obsolete HA in server_password_change (Bug #23362)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 30 Sep 2011 12:50:58 +0200
+
 univention-server (7.0.11-1) unstable; urgency=low
 
   * Removed Linux-Arbeitsplatz script (Bug #23711)
