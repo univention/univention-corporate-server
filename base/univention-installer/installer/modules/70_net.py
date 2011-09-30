@@ -690,8 +690,10 @@ class object(content):
 					]
 
 		for elem, key in keylist:
-			if self.elem_exists(elem):
+			if self.elem_exists(elem) and self.get_elem(elem).usable():
 				self.container[key] = self.get_elem(elem).result().strip()
+			else:
+				self.container[key] = ''
 
 
 	def tab(self):
