@@ -121,6 +121,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 			isMultiAction: false,
 			callback: dojo.hitch(this, function() {
 				var userData = this._grid.getSelectedItems();
+				console.log(userData);
 				this.onShowDetailPage({'partitionDevice': this.partitionDevice, 'userData': userData});
 			})
 		}, {
@@ -190,7 +191,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		umc.tools.umcpCommand('quota/partitions/info', {'partitionDevice': this.partitionDevice}).then(dojo.hitch(this, function(data) {
 			this._form.getWidget('mountPointValue').set('content', data.result.mountPoint);
 			this._form.getWidget('filesystemValue').set('content', data.result.filesystem);
-			this._form.getWidget('optionsValue').set('content', data.result.options);
+			this._form.getWi0dget('optionsValue').set('content', data.result.options);
 		}));
 		this.set('headerText', this._('Partition: %s', this.partitionDevice));
 		this._grid.filter({

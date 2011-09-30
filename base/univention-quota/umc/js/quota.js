@@ -4,29 +4,26 @@ dojo.provide("umc.modules.quota");
 
 dojo.require("umc.i18n");
 dojo.require("umc.widgets.Grid");
-dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.Page");
+dojo.require("umc.widgets.TabbedModule");
 
-dojo.require("umc.modules._quota.PartitionPage");
-dojo.require("umc.modules._quota.DetailPage");
+dojo.require("umc.modules._quota.PageContainer");
 
-dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
+dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], {
 
 	idProperty: 'partitionDevice',
 	moduleStore: null,
 	_overviewPage: null,
-	_partitionPage: null,
-	_detailPage: null,
+	_pageContainer: null,
 
 	buildRendering: function() {
 		this.inherited(arguments);
 		this.renderOverviewPage();
-		this.renderPartitionPage();
-		this.renderDetailPage();
 	},
 
 	renderOverviewPage: function() {
 		this._overviewPage = new umc.widgets.Page({
+			title: this._('Partitions'),
 			moduleStore: this.moduleStore,
 			headerText: this._('List partitions'),
 			helpText: this._('Set, unset and modify filesystem quota')
@@ -69,8 +66,8 @@ dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			isStandardAction: true,
 			isMultiAction: false,
 			callback: dojo.hitch(this, function(partitionDevice) {
-				this._partitionPage.init(partitionDevice[0]);
-				this.selectChild(this._partitionPage);
+				this.createPageContainer(partitionDevice[0]);
+				// this._partitionPage.init(partitionDevice[0]);
 			})
 		}];
 
@@ -110,31 +107,15 @@ dojo.declare("umc.modules.quota", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._overviewPage.startup();
 	},
 
-	renderPartitionPage: function() {
-		var partitionDevice = '';
-		this._partitionPage = new umc.modules._quota.PartitionPage({
-			moduleStore: this.getModuleStore('id', this.moduleID + '/partitions'),
-			headerText: this._('Partition: %s', partitionDevice),
-			helpText: this._('Set, unset and modify filesystem quota')
+	createPageContainer: function(partitionDevice) {
+		this._pageContainer = new umc.modules._quota.PageContainer({
+			title: partitionDevice,
+			closable: true,
+			moduleID: this.moduleID,
+			partitionDevice: partitionDevice
 		});
-		this.addChild(this._partitionPage);
-		this.connect(this._partitionPage, 'onClosePage', function() {
-			this.selectChild(this._overviewPage);
-		});
-		this.connect(this._partitionPage, 'onShowDetailPage', function(data) {
-			this._detailPage.init(data);
-			this.selectChild(this._detailPage);
-		});
-	},
-
-	renderDetailPage: function() {
-		this._detailPage = new umc.modules._quota.DetailPage({
-			headerText: this._('Add quota setting for a user on partition'),
-			helpText: this._('Add quota setting for a user on partition')
-		});
-		this.addChild(this._detailPage);
-		this.connect(this._detailPage, 'onClosePage', function() {
-			this.selectChild(this._partitionPage);
-		});
+		this.addChild(this._pageContainer);
+		this.selectChild(this._pageContainer);
+		// this.showChild(this._pageContainer);
 	}
 });
