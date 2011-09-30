@@ -35,18 +35,15 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 		var widgets = [{
 			type: 'TextBox',
 			name: 'user',
-			value: this._('User')
+			label: this._('User')
 		}, {
 			type: 'TextBox',
 			name: 'partitionDevice',
-			value: this._('Partition')
-		}, {
-			type: 'Text',
-			name: 'sizeLimitSoftText',
-			content: this._('Data size soft limit')
+			label: this._('Partition')
 		}, {
 			type: 'NumberSpinner',
-			name: 'sizeLimitSoftSpinner',
+			name: 'sizeLimitSoft',
+			label: this._('Data size soft limit'),
 			value: 0,
 			smallDelta: 10,
 			largeDelta: 100,
@@ -54,36 +51,27 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 				min: 0
 			}
 		}, {
-			type: 'Text',
-			name: 'sizeLimitHardText',
-			content: this._('Data size hard limit')
-		}, {
 			type: 'NumberSpinner',
-			name: 'sizeLimitHardSpinner',
+			name: 'sizeLimitHard',
+			label: this._('Data size hard limit'),
 			smallDelta: 10,
 			largeDelta: 100,
 			constraints: {
 				min: 0
 			}
 		}, {
-			type: 'Text',
-			name: 'fileLimitSoftText',
-			content: this._('Files soft limit')
-		}, {
 			type: 'NumberSpinner',
-			name: 'fileLimitSoftSpinner',
+			name: 'fileLimitSoft',
+			label: this._('Files soft limit'),
 			smallDelta: 10,
 			largeDelta: 100,
 			constraints: {
 				min: 0
 			}
 		}, {
-			type: 'Text',
-			name: 'fileLimitHardText',
-			content: this._('Files hard limit')
-		}, {
 			type: 'NumberSpinner',
-			name: 'fileLimitHardSpinner',
+			name: 'fileLimitHard',
+			label: this._('Files hard limit'),
 			smallDelta: 10,
 			largeDelta: 100,
 			constraints: {
@@ -101,7 +89,7 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 			callback: dojo.hitch(this, 'onClosePage')
 		}];
 
-		var layout = [['user', 'partitionDevice'], ['sizeLimitSoftText', 'sizeLimitHardText'], ['sizeLimitSoftSpinner', 'sizeLimitHardSpinner'], ['fileLimitSoftText', 'fileLimitHardText'], ['fileLimitSoftSpinner', 'fileLimitHardSpinner'], ['set', 'cancel']];
+		var layout = [['user', 'partitionDevice'], ['sizeLimitSoft', 'sizeLimitHard'], ['fileLimitSoft', 'fileLimitHard'], ['set', 'cancel']];
 
 		this._form = new umc.widgets.Form({
 			region: 'top',
@@ -122,18 +110,18 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 		if (data.userData) {
 			this._form.getWidget('user').setValue(data.userData[0].user);
 			this._form.getWidget('user').set('disabled', true);
-			this._form.getWidget('sizeLimitSoftSpinner').setValue(data.userData[0].sizeLimitSoft);
-			this._form.getWidget('sizeLimitHardSpinner').setValue(data.userData[0].sizeLimitHard);
-			this._form.getWidget('fileLimitSoftSpinner').setValue(data.userData[0].fileLimitSoft);
-			this._form.getWidget('fileLimitHardSpinner').setValue(data.userData[0].fileLimitHard);
+			this._form.getWidget('sizeLimitSoft').setValue(data.userData[0].sizeLimitSoft);
+			this._form.getWidget('sizeLimitHard').setValue(data.userData[0].sizeLimitHard);
+			this._form.getWidget('fileLimitSoft').setValue(data.userData[0].fileLimitSoft);
+			this._form.getWidget('fileLimitHard').setValue(data.userData[0].fileLimitHard);
 		}
 		else {
 			this._form.getWidget('user').setValue('');
 			this._form.getWidget('user').set('disabled', false);
-			this._form.getWidget('sizeLimitSoftSpinner').setValue('0');
-			this._form.getWidget('sizeLimitHardSpinner').setValue('0');
-			this._form.getWidget('fileLimitSoftSpinner').setValue('0');
-			this._form.getWidget('fileLimitHardSpinner').setValue('0');
+			this._form.getWidget('sizeLimitSoft').setValue('0');
+			this._form.getWidget('sizeLimitHard').setValue('0');
+			this._form.getWidget('fileLimitSoft').setValue('0');
+			this._form.getWidget('fileLimitHard').setValue('0');
 		}
 	}
 });
