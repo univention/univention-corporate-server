@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.73-1) unstable; urgency=low
+
+  * TextBox: added dynamicValue feature (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 30 Sep 2011 12:08:33 +0200
+
 univention-management-console-frontend (1.0.72-1) unstable; urgency=low
 
   * added NumberSpinner class (Bug #22881)

@@ -121,7 +121,7 @@ dojo.declare("umc.widgets.Form", [
 
 	showWidget: function( widget_name, /* bool? */ visibility ) {
 		if ( ! widget_name in this._widgets ) {
-			console.log( 'Form.showWidget: could not find widget ' + widget_name );
+			//console.log( 'Form.showWidget: could not find widget ' + widget_name );
 			return;
 		}
 		this._widgets[ widget_name ].set( 'visible', visibility );
@@ -206,7 +206,7 @@ dojo.declare("umc.widgets.Form", [
 
 			// loop over all dependencies and cache the dependencies as a map from
 			// publishers -> receivers
-			var depends = dojo.isArray(iwidget.depends) ? iwidget.depends : [ iwidget.depends ];
+			var depends = umc.tools.stringOrArray(iwidget.depends);
 			dojo.forEach(depends, dojo.hitch(this, function(idep) {
 				this._dependencyMap[idep] = this._dependencyMap[idep] || [];
 				this._dependencyMap[idep].push(iwidget);

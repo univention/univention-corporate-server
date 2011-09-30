@@ -113,7 +113,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 					ignore = true;
 					return false;
 				}
-			}, this)
+			}, this);
 			if (ignore) {
 				return true;
 			}
@@ -332,11 +332,6 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		// mixin additional options for the UMCP command
 		if (this.dynamicOptions && dojo.isObject(this.dynamicOptions)) {
 			dojo.mixin(params, this.dynamicOptions);
-		}
-		else if (this.dynamicOptions && dojo.isFunction(this.dynamicOptions)) {
-			var res = this.dynamicOptions();
-			umc.tools.assert(res && dojo.isObject(res), 'The return type of a function specified by umc.widgets._SelectMixin.dynamicOptions() needs to return a dictionary: ' + dojo.toJson(res));
-			dojo.mixin(params, res);
 		}
 
 		// get the dynamic values, block concurrent events for value loading
