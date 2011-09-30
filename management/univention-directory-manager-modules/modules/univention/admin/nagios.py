@@ -146,7 +146,7 @@ class Support( object ):
 			fqdn = '%s.%s' % (self.oldattr['cn'][0], self.oldattr['associatedDomain'][0])
 
 		elif self.oldattr.has_key('aRecord') and self.oldattr['aRecord']:
-			res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*)(!(relativeDomainName=@)))' % self.oldattr['aRecord'][0])
+			res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*)(&(!(relativeDomainName=@))(!(relativeDomainName=*.*))))' % self.oldattr['aRecord'][0])
 			if not res:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'nagios.py: NGAS: couldn''t find fqdn of %s' % self.dn)
 			else:
@@ -210,7 +210,7 @@ class Support( object ):
 				else:
 					aRecords = self.lo.getAttr(parentdn, 'aRecord')
 					if aRecords and aRecords[0]:
-						res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*)(!(relativeDomainName=@)))' % aRecords[0])
+						res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*)(&(!(relativeDomainName=@))(!(relativeDomainName=*.*))))' % aRecords[0])
 						if res:
 							fqdn = res[0][1]['relativeDomainName'][0]+'.'+res[0][1]['zoneName'][0]
 							parentlist.append(fqdn)
@@ -305,7 +305,7 @@ class Support( object ):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'nagios.py: NMSL: couldn\'t get aRecord of %s' % self.dn)
 				return
 
-			res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*)(!(relativeDomainName=@)))' % arecord)
+			res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*)(&(!(relativeDomainName=@))(!(relativeDomainName=*.*))))' % arecord)
 			if not res:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'nagios.py: NMSL: couldn''t find fqdn of %s (aRecord=%s)' % (self.dn, arecord))
 				for i,j in self.alloc:
@@ -352,7 +352,7 @@ class Support( object ):
 			fqdn = '%s.%s' % (self.oldattr['cn'][0], self.oldattr['associatedDomain'][0])
 
 		elif self.oldattr.has_key('aRecord') and self.oldattr['aRecord']:
-			res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*)(!(relativeDomainName=@)))' % self.oldattr['aRecord'][0])
+			res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*)(&(!(relativeDomainName=@))(!(relativeDomainName=*.*))))' % self.oldattr['aRecord'][0])
 			if not res:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'nagios.py: NRHFS: couldn''t find fqdn of %s' % self.dn)
 			else:
@@ -377,7 +377,7 @@ class Support( object ):
 			fqdn = '%s.%s' % (self.oldattr['cn'][0], self.oldattr['associatedDomain'][0])
 
 		elif self.oldattr.has_key('aRecord') and self.oldattr['aRecord']:
-			res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*)(!(relativeDomainName=@)))' % self.oldattr['aRecord'][0])
+			res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*)(&(!(relativeDomainName=@))(!(relativeDomainName=*.*))))' % self.oldattr['aRecord'][0])
 			if not res:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'nagios.py: NRHFP: couldn''t find fqdn of %s' % self.dn)
 			else:
