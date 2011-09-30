@@ -127,7 +127,7 @@ class object(content):
 
 		linecnt += 1
 
-		gateway = self.all_results.get('gateway6')
+		gateway = self.all_results.get('gateway')
 		if gateway:
 			linecnt += 1
 			head = _("IPv4 Gateway") + ":"
