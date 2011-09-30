@@ -58,6 +58,11 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 
 		// hide the header
 		dojo.query('.dojoxGridHeader', this.domNode).style('height', '0px');
+
+		// send an onChange event when the selection has changed
+		dojo.connect(this, 'onSelectionChanged', function() {
+			this.onChange(this.get('value'));
+		});
 	},
 
 	_getSizeAttr: function() {
@@ -111,6 +116,27 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 		return vars; // String[]
 	},
 
+	getSelectedItems: function() {
+		// summary:
+		//		Returns all select items is array of dicts (with id and label entries)
+		var vals = this.get('value');
+		if (!dojo.isArray(vals)) {
+			return [];
+		}
+
+		// create a map of the selected ids
+		var map = {};
+		dojo.forEach(vals, function(iid) {
+			map[iid] = true;
+		});
+
+		// get all store items and find the labels for the selected ones
+		var items = dojo.filter(this.getAllItems(), function(iitem) {
+			return iitem.id in map;
+		});
+		return items;
+	},
+
 	onLoadDynamicValues: function() {
 		this.inherited(arguments);
 
@@ -123,6 +149,10 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 
 		// stop standby animation
 		this.standby(false);
+	},
+
+	onChange: function(newValues) {
+		// event stub
 	}
 
 	/*adaptHeight: function() {

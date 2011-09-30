@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.71-1) unstable; urgency=low
+
+  * MultiSelect: added onChange event and getSelectedItems()
+  * _SelectMixin: remove internal item properties in getAllItems()
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 30 Sep 2011 10:54:08 +0200
+
 univention-management-console-frontend (1.0.70-1) unstable; urgency=low
 
   * fixed translation (Bug #22883)

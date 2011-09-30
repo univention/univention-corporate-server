@@ -105,12 +105,25 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		var entry = {};
 
 		umc.tools.forIn( item, function( attr, value ) {
-							 if ( dojo.isArray( value ) && value.length == 1 ) {
-								 entry[ attr ] = value[ 0 ];
-							 } else {
-								 entry[ attr ] = null;
-							 }
-						 } );
+			// make sure the following default internal store item properties are ignored
+			// (as defined in dojo.data.ItemFileReadStore)
+			var ignore = false;
+			dojo.forEach(['_storeRefPropName', '_itemNumPropName', '_rootItemPropName', '_reverseRefMap'], function(ikey) {
+				if (this.store[ikey] == attr) {
+					ignore = true;
+					return false;
+				}
+			}, this)
+			if (ignore) {
+				return true;
+			}
+
+			if ( dojo.isArray( value ) && value.length == 1 ) {
+				entry[ attr ] = value[ 0 ];
+			} else {
+				entry[ attr ] = null;
+			}
+		}, this );
 
 		return entry;
 	},
