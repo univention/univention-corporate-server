@@ -1,6 +1,3 @@
 univention/Linux-Arbeitsplatz etc/gdm/Sessions/
 univention/Linux-Arbeitsplatz.desktop etc/gdm/Sessions/
-univention/rdesktop etc/gdm/Autostart/
-univention/citrix etc/gdm/Autostart/
-univention/nx etc/gdm/Autostart/
 univention/autostart usr/share/univention-gdm-sessions/

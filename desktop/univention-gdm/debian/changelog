@@ -1,3 +1,9 @@
+univention-gdm (8.0.7-1) unstable; urgency=low
+
+  * removed autostart scripts (Bug #22882) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 30 Sep 2011 10:29:46 +0200
+
 univention-gdm (8.0.6-1) unstable; urgency=low
 
   * Display shutdown button only if the system menu is enabled
