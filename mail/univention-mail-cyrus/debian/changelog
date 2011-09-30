@@ -1,3 +1,11 @@
+univention-mail-cyrus (4.0.14-2) unstable; urgency=low
+
+  * rename /usr/lib/cyrus/cyrus-db-types.active
+  * fixed conffiles/etc/imapd/cyrus.conf.d/10_START_spool
+  * remove ucr template for /etc/init.d/cyrus2.2 (Bug #23560)
+
+ -- Felix Botner <botner@univention.de>  Fri, 30 Sep 2011 13:01:34 +0200
+
 univention-mail-cyrus (4.0.13-1) unstable; urgency=low
 
   * fixed last commit (Bug #23560) 
