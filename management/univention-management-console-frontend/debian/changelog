@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.72-1) unstable; urgency=low
+
+  * added NumberSpinner class (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 30 Sep 2011 11:30:55 +0200
+
 univention-management-console-frontend (1.0.71-1) unstable; urgency=low
 
   * MultiSelect: added onChange event and getSelectedItems()
