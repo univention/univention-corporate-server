@@ -8,6 +8,42 @@ dojo.require("dojo.store.util.QueryResults");
 dojo.require("dojo.store.Observable");
 dojo.require("dojo.data.ObjectStore");
 
+
+// internal dict of static module store references
+umc.store._moduleStores = {};
+
+umc.store.getModuleStore = function(/*String*/ idProperty, /*String*/ storePath, /*String?*/ moduleFlavor) {
+	// summary:
+	//		Returns (and if necessary creates) a singleton instance of umc.store.UmcpModuleStore
+	//		for the given path to the store and (if specified) the given flavor.
+	// idProperty: String
+	//		Indicates the property to use as the identity property.
+	//		The values of this property need to be unique.
+	// storePath: String?
+	//		UMCP URL of the module where query, set, remove, put, and add
+	//		methods can be found. By default this is the module ID.
+	// moduleFlavor: String?
+	//		Specifies the module flavor which may need to be communicated to
+	//		the server via `umc.tool.umcpCommand()`.
+	//		(Is specified automatically.)
+
+	// create a singleton for the module store for each flavor; this is to ensure that
+	// the correct flavor of the module is send to the server
+	var stores = dojo.getObject('umc.store._moduleStores', true);
+	var key = storePath + '@' + (moduleFlavor || 'default');
+	if (!stores[key]) {
+		// the store does not exist, we need to create a new singleton
+		stores[key] = dojo.store.Observable(new umc.store.UmcpModuleStore({
+			idProperty: idProperty,
+			storePath: storePath,
+			umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor ) {
+				return umc.tools.umcpCommand( commandStr, dataObj, handleErrors, flavor || moduleFlavor );
+			}
+		}));
+	}
+	return stores[key];
+};
+
 dojo.declare("umc.store.UmcpModuleStore", null, {
 	// idProperty: String
 	//		Indicates the property to use as the identity property. 
