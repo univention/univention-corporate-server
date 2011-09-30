@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-22 09:48+0200\n"
-"PO-Revision-Date: 2011-09-30 11:49+0200\n"
+"POT-Creation-Date: 2011-09-30 12:12+0200\n"
+"PO-Revision-Date: 2011-09-30 12:13+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -107,7 +107,7 @@ msgstr "Zusätzliche Informationen: http://www.univention.de/dokumentation.html"
 
 #: installer/end.py:202
 msgid "Support & Knowledge Base: http://sdb.univention.de"
-msgstr ""
+msgstr "Support & Knowledge Base: http://sdb.univention.de"
 
 #: installer/end.py:216
 msgid "Some problems occurred during installation!"
@@ -149,10 +149,10 @@ msgstr ""
 msgid "A Python Exception has occured!"
 msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 
-#: installer/main.py:282 installer/objects.py:2082
+#: installer/main.py:282 installer/objects.py:2087
 #: installer/modules/10_hardware.py:279 installer/modules/10_hardware.py:313
 #: installer/modules/15_profile.py:56 installer/modules/65_partition.py:4191
-#: installer/modules/65_partition.py:4207 installer/modules/70_net.py:991
+#: installer/modules/65_partition.py:4207 installer/modules/70_net.py:1010
 #: ../univention-system-setup/usr/sbin/univention-system-setup:160
 #: ../univention-system-setup/usr/sbin/univention-system-setup:187
 #: ../univention-system-setup/usr/sbin/univention-system-setup:206
@@ -185,55 +185,55 @@ msgstr " F1-Hilfe | F11-Zurück | F12-Starte Installation | Strg+c-Abbruch"
 msgid " F1-Help | F11-Back | F12-Next | Strg+c-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Weiter | Strg+c-Abbruch"
 
-#: installer/objects.py:1006
+#: installer/objects.py:1011
 msgid " Help"
 msgstr " Hilfe"
 
 #
-#: installer/objects.py:1009
+#: installer/objects.py:1014
 msgid " Esc-Quit Dialog"
 msgstr " Esc-Dialog beenden"
 
-#: installer/objects.py:1066
+#: installer/objects.py:1071
 msgid " Warning"
 msgstr " Warnung"
 
-#: installer/objects.py:1070
+#: installer/objects.py:1075
 msgid " End"
 msgstr " Ende"
 
-#: installer/objects.py:1497 installer/modules/65_partition.py:2256
+#: installer/objects.py:1502 installer/modules/65_partition.py:2256
 #: installer/modules/85_software.py:305
 msgid "F12-Next"
 msgstr "F12-Weiter"
 
-#: installer/objects.py:1501 installer/modules/85_software.py:298
+#: installer/objects.py:1506 installer/modules/85_software.py:298
 msgid "F12-Accept changes"
 msgstr "F12-Änderungen akzeptieren"
 
-#: installer/objects.py:1503
+#: installer/objects.py:1508
 msgid "F12-Start Recover Shell"
 msgstr "F12-Recover Shell starten"
 
-#: installer/objects.py:1505
+#: installer/objects.py:1510
 msgid "F12-Start installation"
 msgstr "F12-Installation starten"
 
-#: installer/objects.py:1508 installer/modules/65_partition.py:2255
+#: installer/objects.py:1513 installer/modules/65_partition.py:2255
 #: installer/modules/85_software.py:301 installer/modules/85_software.py:306
 msgid "F11-Back"
 msgstr "F11-Zurück"
 
-#: installer/objects.py:1588 installer/objects.py:1877
+#: installer/objects.py:1593 installer/objects.py:1882
 msgid "Sorry, no help for this module."
 msgstr "Es existiert keine Hilfe für dieses Modul"
 
-#: installer/objects.py:2033 installer/modules/65_partition.py:4038
+#: installer/objects.py:2038 installer/modules/65_partition.py:4038
 #: installer/modules/65_partition.py:4159
 msgid "Yes"
 msgstr "Ja"
 
-#: installer/objects.py:2034 installer/modules/65_partition.py:4039
+#: installer/objects.py:2039 installer/modules/65_partition.py:4039
 #: installer/modules/65_partition.py:4160
 msgid "No"
 msgstr "Nein"
@@ -392,15 +392,15 @@ msgstr "Paketstatus-Überwachung"
 msgid "Univention packagestatus database"
 msgstr "Univention Paketstatus Datenbank"
 
-#: installer/modules/05_language.py:126
+#: installer/modules/05_language.py:123
 msgid "Select system language"
 msgstr "Bitte wählen Sie die System-Sprache aus"
 
-#: installer/modules/05_language.py:127
+#: installer/modules/05_language.py:124
 msgid "(also applies to the installation process for supported languages):"
 msgstr "(gilt auch für den Installer, sofern unterstützt):"
 
-#: installer/modules/05_language.py:145
+#: installer/modules/05_language.py:142
 msgid ""
 "Language \n"
 " \n"
@@ -410,7 +410,7 @@ msgstr ""
 " \n"
 " Wählen Sie eine Sprache für das System."
 
-#: installer/modules/05_language.py:148
+#: installer/modules/05_language.py:145
 msgid "Language"
 msgstr "Sprache"
 
@@ -430,7 +430,7 @@ msgstr "Suche CD-ROM-Laufwerk"
 #: installer/modules/65_partition.py:2012
 #: installer/modules/65_partition.py:3228
 #: installer/modules/65_partition.py:3233
-#: installer/modules/65_partition.py:3237 installer/modules/70_net.py:726
+#: installer/modules/65_partition.py:3237 installer/modules/70_net.py:732
 #: installer/modules/85_software.py:138
 msgid "Please wait ..."
 msgstr "Bitte warten ..."
@@ -507,7 +507,7 @@ msgstr "Quellmedium"
 #: installer/modules/15_profile.py:57 installer/modules/65_partition.py:3665
 #: installer/modules/65_partition.py:3712
 #: installer/modules/65_partition.py:3966
-#: installer/modules/65_partition.py:4005 installer/modules/70_net.py:990
+#: installer/modules/65_partition.py:4005 installer/modules/70_net.py:1009
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -651,6 +651,10 @@ msgstr "Memberserver"
 #: installer/modules/40_role.py:88 installer/modules/40_role.py:104
 msgid "Base system"
 msgstr "Basissystem"
+
+#: installer/modules/40_role.py:106
+msgid "Further information for selected system role:"
+msgstr "Weitere Informationen über die ausgewählte Systemrolle:"
 
 #: installer/modules/40_role.py:113
 msgid ""
@@ -796,43 +800,43 @@ msgstr ""
 "ist nicht Mitglied der Domäne und kann nicht über das UCS Managementsystem "
 "verwaltet werden."
 
-#: installer/modules/40_role.py:156 installer/modules/90_overview.py:90
+#: installer/modules/40_role.py:156 installer/modules/90_overview.py:94
 msgid "System role"
 msgstr "Systemrolle"
 
-#: installer/modules/50_basis.py:115
+#: installer/modules/50_basis.py:116
 msgid "Fully qualified domain name (e.g. host.example.com):"
 msgstr "Vollständiger Rechnername (z.B. host.example.com):"
 
-#: installer/modules/50_basis.py:123
+#: installer/modules/50_basis.py:124
 msgid "Mail domain (e.g. example.com):"
 msgstr "Maildomäne (z.B. example.com):"
 
-#: installer/modules/50_basis.py:133
+#: installer/modules/50_basis.py:134
 msgid "LDAP base:"
 msgstr "LDAP-Basis"
 
-#: installer/modules/50_basis.py:142
+#: installer/modules/50_basis.py:143
 msgid "Windows domain name:"
 msgstr "Windows-Domäne:"
 
-#: installer/modules/50_basis.py:150
+#: installer/modules/50_basis.py:151
 msgid "Root password:"
 msgstr "Root-Passwort:"
 
-#: installer/modules/50_basis.py:155
+#: installer/modules/50_basis.py:156
 msgid "Root password (retype):"
 msgstr "Passwort (zur Bestätigung bitte nochmal eingeben):"
 
-#: installer/modules/50_basis.py:280
+#: installer/modules/50_basis.py:281
 msgid "Please enter a valid windows domain name."
 msgstr "Bitte geben Sie einen gültigen Windows Domain Namen an."
 
-#: installer/modules/50_basis.py:286
+#: installer/modules/50_basis.py:287
 msgid "The length of the windows domain name is greater than 14 characters."
 msgstr "Die Länge des Windows Domain Names ist größer als 14 Zeichen."
 
-#: installer/modules/50_basis.py:292 installer/modules/50_basis.py:311
+#: installer/modules/50_basis.py:293 installer/modules/50_basis.py:312
 msgid ""
 "Please enter a valid fully qualified domain name in lowercase (e.g. host."
 "example.com)."
@@ -840,7 +844,7 @@ msgstr ""
 "Bitte geben Sie einen klein-geschriebenen und vollständigen Rechnernamen an "
 "(z.B. host.example.com)."
 
-#: installer/modules/50_basis.py:298
+#: installer/modules/50_basis.py:299
 msgid ""
 "A valid netbios name can not be longer than 15 characters. If samba is "
 "installed, the hostname should be shortened."
@@ -848,53 +852,53 @@ msgstr ""
 "Ein gültiger NetBIOS Name darf nicht länger als 15 Zeichen sein. Wenn Samba "
 "installiert wird, sollte der Rechnername gekürzt werden"
 
-#: installer/modules/50_basis.py:305
+#: installer/modules/50_basis.py:306
 msgid "Please enter a valid mail domain in lowercase (e.g. example.com)."
 msgstr ""
 "Bitte geben Sie eine gültige, klein-geschriebenen Maildomäne an (z.B. "
 "example.com)."
 
-#: installer/modules/50_basis.py:317
+#: installer/modules/50_basis.py:321
 msgid ""
-"Samba 4 requires the fully qualified domain name to contain at least "
-"two dots (e.g. host.example.com)."
+"Samba 4 requires the fully qualified domain name to contain at least two "
+"dots (e.g. host.example.com)."
 msgstr ""
-"Samba 4 verlangt, dass der vollständige Domänenname mindestens zwei "
-"Punkte enthält (z.B. host.example.com)."
+"Samba 4 verlangt, dass der vollständige Domänenname mindestens zwei Punkte "
+"enthält (z.B. host.example.com)."
 
-#: installer/modules/50_basis.py:323
+#: installer/modules/50_basis.py:327
 msgid ""
 "The length of fully qualified domain name is greater than 63 characters."
 msgstr "Die Länge von System und Domänennamen ist größer als 63 Zeichen."
 
-#: installer/modules/50_basis.py:329
+#: installer/modules/50_basis.py:333
 msgid "Hostname is equal to domain name."
 msgstr "Systemname ist gleich Domänennamen."
 
-#: installer/modules/50_basis.py:335
+#: installer/modules/50_basis.py:339
 msgid "Please enter the LDAP base."
 msgstr "Bitte geben Sie die LDAP-Basis an."
 
-#: installer/modules/50_basis.py:340
+#: installer/modules/50_basis.py:344
 msgid ""
 "Syntax-Error. Please enter a LDAP base according to this format: dc=test,"
 "dc=net "
 msgstr ""
 "Syntax-Fehler. Bitte geben Sie die LDAP-Basis wie folgt an: dc=test,dc=net "
 
-#: installer/modules/50_basis.py:360
+#: installer/modules/50_basis.py:364
 msgid "Please enter a Password."
 msgstr "Bitte geben Sie ein Passwort an."
 
-#: installer/modules/50_basis.py:365
+#: installer/modules/50_basis.py:369
 msgid "Please retype the Password."
 msgstr "Bitte geben Sie das Passwort nochmal an."
 
-#: installer/modules/50_basis.py:370
+#: installer/modules/50_basis.py:374
 msgid "Passwords do not match."
 msgstr "Passwörter stimmen nicht überein."
 
-#: installer/modules/50_basis.py:375
+#: installer/modules/50_basis.py:379
 msgid ""
 "Your password is too short. For security reasons, your password must contain "
 "at least 8 characters."
@@ -902,23 +906,23 @@ msgstr ""
 "Ihr Passwort ist zu kurz. Aus Sicherheitsgründen sollte Ihr Passwort "
 "mindestens 8 Zeichen lang sein."
 
-#: installer/modules/50_basis.py:379
+#: installer/modules/50_basis.py:383
 msgid "Illegal password: A password may only contain ascii characters."
 msgstr "Ungültiges Passwort: Nur ASCII Zeichen sind erlaubt."
 
-#: installer/modules/50_basis.py:385 installer/modules/50_basis.py:390
+#: installer/modules/50_basis.py:389 installer/modules/50_basis.py:394
 msgid "Illegal password: A password may not contain blanks."
 msgstr "Ungültiges Passwort: Leerzeichen nicht möglich"
 
-#: installer/modules/50_basis.py:395 installer/modules/50_basis.py:400
+#: installer/modules/50_basis.py:399 installer/modules/50_basis.py:404
 msgid "Illegal password: A password may not contain back slashes."
 msgstr "Ungültiges Passwort: Leerzeichen nicht möglich"
 
-#: installer/modules/50_basis.py:405 installer/modules/50_basis.py:410
+#: installer/modules/50_basis.py:409 installer/modules/50_basis.py:414
 msgid "Illegal password: A password may not contain quotation marks."
 msgstr "Ungültiges Passwort: Anführungszeichen nicht möglich"
 
-#: installer/modules/50_basis.py:445
+#: installer/modules/50_basis.py:449
 msgid ""
 "Settings  \n"
 " \n"
@@ -930,7 +934,7 @@ msgstr ""
 " Konfiguration grundlegender Einstellungen wie vollständigem Rechnernamen, "
 "Maildomäne, Windowsdomäne und Root-Passwort."
 
-#: installer/modules/50_basis.py:447
+#: installer/modules/50_basis.py:451
 msgid ""
 "Settings  \n"
 " \n"
@@ -942,7 +946,7 @@ msgstr ""
 " Konfiguration grundlegender Einstellungen wie Hostname, Domänenname, LDAP-"
 "Basis und Root-Passwort."
 
-#: installer/modules/50_basis.py:450
+#: installer/modules/50_basis.py:454
 msgid "Settings"
 msgstr "Optionen"
 
@@ -1146,11 +1150,11 @@ msgstr "gefunden werden! Bitte überprüfen Sie die Festplatte oder"
 
 #: installer/modules/65_partition.py:2003
 msgid "Further information can be found in the"
-msgstr "Partitionierung. Weiter Informationen finden Sie in der"
+msgstr "Partitionierung. Weitere Informationen finden Sie in der"
 
 #: installer/modules/65_partition.py:2004
 msgid "Support & Knowledge Base: http://sdb.univention.de."
-msgstr ""
+msgstr "Support & Knowledge Base: http://sdb.univention.de."
 
 #: installer/modules/65_partition.py:2012
 msgid "Detecting LVM devices"
@@ -1263,10 +1267,14 @@ msgid ""
 "partitioning be undesirable, it can be rejected by pressing the F5 function "
 "key."
 msgstr ""
-"In dieser Einstellungsmaske wird die Partitionierung der vorhandenen Festplatten vorgenommen. Es wird empfohlen, mindestens zwei Partitionen zu verwenden - eine für das Root-Dateisystem, eine für den Swap-Bereich.\n"
+"In dieser Einstellungsmaske wird die Partitionierung der vorhandenen "
+"Festplatten vorgenommen. Es wird empfohlen, mindestens zwei Partitionen zu "
+"verwenden - eine für das Root-Dateisystem, eine für den Swap-Bereich.\n"
 "\n"
 "Achtung:\n"
-"Wurde die automatische Partitionierung gewählt, gehen auf diesen Festplatten alle Daten verloren! Sollte der Partitionierungsvorschlag unpassend sein, kann er durch die Funktionstaste F5 verworfen werden."
+"Wurde die automatische Partitionierung gewählt, gehen auf diesen Festplatten "
+"alle Daten verloren! Sollte der Partitionierungsvorschlag unpassend sein, "
+"kann er durch die Funktionstaste F5 verworfen werden."
 
 #: installer/modules/65_partition.py:2250
 msgid "F2-Create"
@@ -1674,33 +1682,33 @@ msgstr ""
 msgid "Not all IPv4 values have been specified for interface %s"
 msgstr "Die IPv4-Angaben für Interface %s sind nicht vollständig."
 
-#: installer/modules/70_net.py:354 installer/modules/70_net.py:756
+#: installer/modules/70_net.py:354 installer/modules/70_net.py:762
 msgid "Following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
 #: installer/modules/70_net.py:356 installer/modules/70_net.py:507
-#: installer/modules/70_net.py:797 installer/modules/90_overview.py:129
+#: installer/modules/70_net.py:803 installer/modules/90_overview.py:133
 msgid "IPv4 Gateway"
 msgstr "IPv4-Gateway"
 
 #: installer/modules/70_net.py:357 installer/modules/70_net.py:513
-#: installer/modules/70_net.py:799 installer/modules/90_overview.py:135
+#: installer/modules/70_net.py:805 installer/modules/90_overview.py:139
 msgid "IPv6 Gateway"
 msgstr "IPv6-Gateway"
 
 #: installer/modules/70_net.py:358 installer/modules/70_net.py:524
-#: installer/modules/70_net.py:803 installer/modules/70_net.py:964
-#: installer/modules/90_overview.py:141
+#: installer/modules/70_net.py:809 installer/modules/70_net.py:983
+#: installer/modules/90_overview.py:145
 msgid "Domain DNS Server"
 msgstr "Domänen-DNS-Server"
 
 #: installer/modules/70_net.py:359 installer/modules/70_net.py:535
-#: installer/modules/70_net.py:801 installer/modules/70_net.py:967
-#: installer/modules/90_overview.py:147
+#: installer/modules/70_net.py:807 installer/modules/70_net.py:986
+#: installer/modules/90_overview.py:151
 msgid "External DNS Server"
 msgstr "Externer DNS-Server"
 
-#: installer/modules/70_net.py:374 installer/modules/70_net.py:818
+#: installer/modules/70_net.py:374 installer/modules/70_net.py:824
 msgid "Proxy, example http://10.201.1.1:8080"
 msgstr "Proxy, z.B. http://10.201.1.1:8080"
 
@@ -1726,11 +1734,11 @@ msgstr "IPv4 aktivieren"
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
-#: installer/modules/70_net.py:452 installer/modules/70_net.py:726
+#: installer/modules/70_net.py:452 installer/modules/70_net.py:732
 msgid "DHCP Query"
 msgstr "DHCP Anfrage"
 
-#: installer/modules/70_net.py:456 installer/modules/90_overview.py:104
+#: installer/modules/70_net.py:456 installer/modules/90_overview.py:108
 msgid "IPv4 address"
 msgstr "IPv4-Adresse"
 
@@ -1746,7 +1754,7 @@ msgstr "IPv6 aktivieren"
 msgid "Dynamic (accept router advertisements)"
 msgstr "Dynamisch (Router Advertisements akzeptieren)"
 
-#: installer/modules/70_net.py:479 installer/modules/90_overview.py:115
+#: installer/modules/70_net.py:479 installer/modules/90_overview.py:119
 msgid "IPv6 address"
 msgstr "IPv6-Adresse"
 
@@ -1793,31 +1801,31 @@ msgstr ""
 "automatisch eine virtuelle Netzwerkkarte geladen, um die Installation "
 "erfolgreich beenden zu können."
 
-#: installer/modules/70_net.py:730
+#: installer/modules/70_net.py:736
 msgid "No DHCP answer, please check DHCP server and network connectivity."
 msgstr ""
 "Keine DHCP-Antwort, bitte DHCP-Server und Netzwerkverbindung überprüfen."
 
-#: installer/modules/70_net.py:757
+#: installer/modules/70_net.py:763
 #, python-format
 msgid ""
 "An invalid value has been entered for interface %(interface)s: %(elemname)s"
 msgstr ""
 "Ein ungültiger Wert wurde für Interface %(interface)s angegeben: %(elemname)s"
 
-#: installer/modules/70_net.py:761
+#: installer/modules/70_net.py:767
 msgid "At least one interface must be configured."
 msgstr "Es muss mindestens ein Interface konfiguriert werden."
 
-#: installer/modules/70_net.py:773
+#: installer/modules/70_net.py:779
 msgid "IPv4 Address"
 msgstr "IPv4-Adresse"
 
-#: installer/modules/70_net.py:775
+#: installer/modules/70_net.py:781
 msgid "IPv4 Netmask"
 msgstr "IPv4-Netzmaske"
 
-#: installer/modules/70_net.py:778
+#: installer/modules/70_net.py:784
 #, python-format
 msgid ""
 "Neither DHCP is activated nor an IPv4 address with netmask has been entered "
@@ -1826,15 +1834,15 @@ msgstr ""
 "Es wurde weder DHCP aktiviert noch wurde eine gültige IPv4-Adresse inkl. "
 "Netzmaske für Interface \"%s\" angegeben."
 
-#: installer/modules/70_net.py:787
+#: installer/modules/70_net.py:793
 msgid "IPv6 Address"
 msgstr "IPv6-Adresse"
 
-#: installer/modules/70_net.py:789
+#: installer/modules/70_net.py:795
 msgid "IPv6 Prefix"
 msgstr "IPv6-Prefix"
 
-#: installer/modules/70_net.py:792
+#: installer/modules/70_net.py:798
 #, python-format
 msgid ""
 "Neither accepting router advertisements is activated nor an IPv6 address "
@@ -1843,7 +1851,7 @@ msgstr ""
 "Es wurden weder die IPv6 Router Advertisements aktiviert noch eine gültige "
 "IPv6 Adresse inl. Prefix für Interface \"%s\" angegeben."
 
-#: installer/modules/70_net.py:890
+#: installer/modules/70_net.py:901
 msgid ""
 "Network \n"
 " \n"
@@ -1929,36 +1937,36 @@ msgstr ""
 " Geben Sie die Transportadresse (IP-Adresse:Port) an, um einen HTTP-Proxy zu "
 "nutzen. z.B: http://192.168.1.123:3128"
 
-#: installer/modules/70_net.py:894
+#: installer/modules/70_net.py:905
 msgid "Network"
 msgstr "Netzwerk"
 
-#: installer/modules/70_net.py:983
+#: installer/modules/70_net.py:1002
 #, python-format
 msgid "1. %s"
 msgstr "1. %s"
 
-#: installer/modules/70_net.py:984
+#: installer/modules/70_net.py:1003
 #, python-format
 msgid "2. %s"
 msgstr "2. %s"
 
-#: installer/modules/70_net.py:985
+#: installer/modules/70_net.py:1004
 #, python-format
 msgid "3. %s"
 msgstr "3. %s"
 
-#: installer/modules/70_net.py:1000
+#: installer/modules/70_net.py:1019
 #, python-format
 msgid " More %ss"
 msgstr "Weitere %s"
 
-#: installer/modules/70_net.py:1016 installer/modules/80_join.py:51
+#: installer/modules/70_net.py:1035 installer/modules/80_join.py:51
 #: installer/modules/80_join.py:138
 msgid "The following value is missing: "
 msgstr "Der folgende Wert fehlt:"
 
-#: installer/modules/70_net.py:1017
+#: installer/modules/70_net.py:1036
 msgid "The following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
@@ -2038,7 +2046,7 @@ msgstr ""
 msgid "Software"
 msgstr "Software"
 
-#: installer/modules/90_overview.py:82
+#: installer/modules/90_overview.py:86
 msgid ""
 "This is the last step of the interactive installation. Please check all "
 "settings carefully. During the next phase software packages will be "
@@ -2048,40 +2056,40 @@ msgstr ""
 "Einstellungen sollten nochmals geprüft werden. Im nächsten Schritt werden "
 "die Software-Pakete installiert und konfiguriert."
 
-#: installer/modules/90_overview.py:94
+#: installer/modules/90_overview.py:98
 msgid "Hostname"
 msgstr "Systemname"
 
-#: installer/modules/90_overview.py:98
+#: installer/modules/90_overview.py:102
 msgid "Domain name"
 msgstr "Domänenname"
 
-#: installer/modules/90_overview.py:102
+#: installer/modules/90_overview.py:106
 msgid "Settings of interface eth0:"
 msgstr "Einstellungen für Interface eth0:"
 
-#: installer/modules/90_overview.py:107
+#: installer/modules/90_overview.py:111
 msgid "configuration via DHCP"
 msgstr "Konfiguration über DHCP"
 
-#: installer/modules/90_overview.py:112
+#: installer/modules/90_overview.py:116
 msgid "IPv4 netmask"
 msgstr "IPv4-Netzmaske"
 
-#: installer/modules/90_overview.py:118
+#: installer/modules/90_overview.py:122
 msgid "configuration via router advertisements"
 msgstr "Konfiguration über Router Advertisements"
 
-#: installer/modules/90_overview.py:160
+#: installer/modules/90_overview.py:164
 msgid "No package will download files from the internet."
 msgstr "Es werden keine Dateien aus dem Internet geladen"
 
-#: installer/modules/90_overview.py:163
+#: installer/modules/90_overview.py:167
 #, python-format
 msgid "%s will download files."
 msgstr "%s wird Dateien aus dem Internet laden"
 
-#: installer/modules/90_overview.py:182
+#: installer/modules/90_overview.py:186
 msgid ""
 "Overview \n"
 " \n"
@@ -2091,7 +2099,7 @@ msgstr ""
 " \n"
 " Installationseinstellungen"
 
-#: installer/modules/90_overview.py:185
+#: installer/modules/90_overview.py:189
 msgid "Overview"
 msgstr "Überblick"
 

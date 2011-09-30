@@ -103,7 +103,7 @@ class object(content):
 			self.elements.append(textline('[ ] %s' % _('Member server'),self.minY-6,self.minX+7,40,40))#6
 			self.elements.append(textline('[ ] %s' % _('Base system'),self.minY-5,self.minX+7,40,40))#7
 
-		self.add_elem('TXT_DESCRIPTION', textline('Further information for selected system role:', self.minY-3, self.minX+5))
+		self.add_elem('TXT_DESCRIPTION', textline( _('Further information for selected system role:'), self.minY-3, self.minX+5))
 		self.add_elem('TEXTAREA', dummy())
 
 		self.update_description()
