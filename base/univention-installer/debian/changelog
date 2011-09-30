@@ -1,3 +1,18 @@
+univention-installer (7.0.79-4) unstable; urgency=low
+
+  * fixed typo in translation string (Bug #22870)
+  * fixed justification in overview module (Bug #22870)
+  * do not display IPv6 gateway value at "IPv4 gateway" in overview module
+    (Bug #22872)
+  * fixed missing translation (Bug #22870)
+  * set correct state of gateway4/gateway6 elements (Bug #22872)
+  * enable space key on buttons (Bug #22872)
+  * do not save nameserver/proxy if widget is disabled (Bug #22872)
+  * always set acceptra (Bug #22872)
+  * activate IPv6 interface if configured (Bug #22872)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 30 Sep 2011 16:06:18 +0200
+
 univention-installer (7.0.79-3) unstable; urgency=low
 
   * initialize self.domainname_last_warning (Bug #23334)
