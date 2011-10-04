@@ -36,7 +36,9 @@ import os
 import Queue
 from optparse import OptionParser
 import simplejson
+import signal
 import sys
+import time
 import threading
 import uuid
 
@@ -503,6 +505,23 @@ class UMC_HTTP_Daemon(DaemonRunner):
 
 	DaemonRunner.action_funcs[ 'restart' ] = _restart
 	DaemonRunner.action_funcs[ 'crestart' ] = _crestart
+
+	def _terminate_daemon_process( self ):
+		""" Terminate the daemon process specified in the current PID file.
+			"""
+		pid = self.pidfile.read_pid()
+		try:
+			os.kill( pid, signal.SIGTERM )
+		except OSError, exc:
+			raise DaemonRunnerStopFailureError(	"Failed to terminate %(pid)d: %(exc)s" % vars() )
+
+		if self.pidfile.is_locked():
+			CORE.process( 'The UMC web server is still running. Will wait for 5 seconds' )
+			time.sleep( 5 )
+			if self.pidfile.is_locked():
+				CORE.process( 'The UMC web server is still running. Kill it!' )
+				os.kill( pid, signal.SIGKILL )
+				self.pidfile.break_lock()
 
 	def _usage_exit( self, argv ):
 		self.parser.error( 'invalid action' )

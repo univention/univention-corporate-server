@@ -46,8 +46,8 @@ invoke-rc.d apache2 restart
 univention-config-registry unset umc/web/timeout umc/web/language umc/web/response/timeout umc/raw/debug/level umc/raw/response/timeout umc/module/watchdog/timeout >/dev/null || true
 
 # provide new settings
-univention-config-registry set "umc/http/session/timeout?600"
-univention-config-registry set "umc/module/timeout?600"
+univention-config-registry set "umc/http/session/timeout?600" \
+	umc/http/autostart?yes
 
 if dpkg --compare-versions "$2" lt-nl 1.0.8-1; then
 	ucr unregister univention-directory-manager || true

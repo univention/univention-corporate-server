@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.75-1) unstable; urgency=low
+
+  * kill web server after 5 seconds if it is unwilling to terminate; Bug #22634
+  * support UCR variable ucm/http/autostart to control start of UMC web server
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 04 Oct 2011 17:38:46 +0200
+
 univention-management-console-frontend (1.0.74-1) unstable; urgency=low
 
   * moved umc.widgets._ModuleMixin.getModuleStore() to umc.store (Bug #22881)

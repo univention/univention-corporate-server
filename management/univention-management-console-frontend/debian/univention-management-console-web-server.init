@@ -41,6 +41,11 @@ fi
 
 case "$1" in
 	start)
+		# check UCR autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			. "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart listener"$NAME" umc/http/autostart
+		fi
 		log_action_msg "Starting $NAME"
 		$DAEMON start
 		log_action_end_msg 0
@@ -51,11 +56,21 @@ case "$1" in
 		log_action_end_msg 0
 		;;
 	restart)
+		# check UCR autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			. "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart listener"$NAME" umc/http/autostart
+		fi
 		log_action_msg "Restarting $NAME"
 		$DAEMON restart
 		log_action_end_msg 0
 		;;
 	crestart)
+		# check UCR autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			. "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart listener"$NAME" umc/http/autostart
+		fi
 		log_action_msg "Restarting $NAME (if currently active)"
 		pid="$(cat /var/run/umc-web-server.pid)"
 		if [ -n "$pid" -a -d "/proc/$pid" ]; then
