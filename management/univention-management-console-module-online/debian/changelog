@@ -1,0 +1,5 @@
+univention-management-console-module-online (1.0.0-1) unstable; urgency=low
+
+  * Initial release (Bug #22898)
+
+ -- Frank Greif <fg@it25.de>  Tue, 04 Oct 2011 12:23:57 +0200
