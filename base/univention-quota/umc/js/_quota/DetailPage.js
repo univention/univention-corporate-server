@@ -26,6 +26,19 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 		titlePane.addChild(this._form);
 	},
 
+	postMixInProperties: function() {
+		this.inherited(arguments);
+		this.footerButtons = [{
+			name: 'cancel',
+			label: this._('Back to partition'),
+			callback: dojo.hitch(this, 'onClosePage')
+		}, {
+			name: 'submit',
+			label: this._('Save changes'),
+			callback: dojo.hitch(this, 'onClosePage')
+		}];
+	},
+
 	postCreate: function() {
 		this.inherited(arguments);
 		this.startup();
@@ -79,22 +92,11 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 			}
 		}];
 
-		var buttons = [{
-			name: 'set',
-			label: this._('Set'),
-			callback: dojo.hitch(this, 'onClosePage')
-		}, {
-			name: 'cancel',
-			label: this._('Cancel'),
-			callback: dojo.hitch(this, 'onClosePage')
-		}];
-
-		var layout = [['user', 'partitionDevice'], ['sizeLimitSoft', 'sizeLimitHard'], ['fileLimitSoft', 'fileLimitHard'], ['set', 'cancel']];
+		var layout = [['user', 'partitionDevice'], ['sizeLimitSoft', 'sizeLimitHard'], ['fileLimitSoft', 'fileLimitHard']];
 
 		this._form = new umc.widgets.Form({
 			region: 'top',
 			widgets: widgets,
-			buttons: buttons,
 			layout: layout
 		});
 	},
