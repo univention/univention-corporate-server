@@ -106,15 +106,17 @@ class object(content):
 		self.add_elem('TXT1', textline( _('Settings of interface eth0:'), linecnt, self.minX+5))
 
 		head = _("IPv4 address") + ":"
-		linecnt += 1
 		if self.all_results.has_key('eth0_type') and self.all_results['eth0_type'] == 'dynamic':
+			linecnt += 1
 			self.elements.append(textline('%s %s' % (ljust_utf8(head, ifjust), _('configuration via DHCP')), linecnt, self.minX+7))
 		else:
-			self.elements.append(textline('%s %s' % (ljust_utf8(head, ifjust), self.all_results['eth0_ip']), linecnt, self.minX+7))
+			if self.all_results.get('eth0_ip'):
+				linecnt += 1
+				self.elements.append(textline('%s %s' % (ljust_utf8(head, ifjust), self.all_results['eth0_ip']), linecnt, self.minX+7))
 
-			linecnt += 1
-			head = _("IPv4 netmask") + ":"
-			self.elements.append(textline('%s %s' % (ljust_utf8(head, ifjust), self.all_results['eth0_netmask']), linecnt, self.minX+7))
+				linecnt += 1
+				head = _("IPv4 netmask") + ":"
+				self.elements.append(textline('%s %s' % (ljust_utf8(head, ifjust), self.all_results['eth0_netmask']), linecnt, self.minX+7))
 
 		head = _("IPv6 address") + ":"
 		if self.all_results.get('eth0_acceptra') in ['true']:
