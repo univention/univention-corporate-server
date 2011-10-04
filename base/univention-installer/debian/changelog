@@ -1,3 +1,11 @@
+univention-installer (7.0.81-2) unstable; urgency=low
+
+  * allow IPv6 addresses as DNS server (Bug #22872)
+  * increased width of "more" window in networking module
+  * only show IPv4 address in overview if value has been set
+  
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 04 Oct 2011 13:48:17 +0200
+
 univention-installer (7.0.81-1) unstable; urgency=low
 
   * update modheader, footer and std_buttons on draw()
