@@ -38,6 +38,7 @@ import os
 import polib
 
 from .log import LOCALE
+from .config import ucr
 
 from univention.lib.i18n import Locale
 
@@ -92,7 +93,14 @@ class I18N_Manager( dict ):
 	def __init__( self ):
 		lang, codeset = getdefaultlocale()
 		if lang is None:
-			lang = 'de_DE'
+			# get default locale from UCR
+			default_locale = ucr.get( 'locale/default' )
+			# cut at colon
+			colon = default_locale.find( ':' )
+			if colon != -1:
+				lang = default_locale[ : colon ]
+			else:
+				lang = default_locale
 		self.locale = Locale( lang )
 
 	def set_locale( self, locale ):

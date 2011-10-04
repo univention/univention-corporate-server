@@ -1,3 +1,12 @@
+univention-management-console (4.0.62-1) unstable; urgency=low
+
+  * ensure that modules init method is just invoked once; Bug #22460
+  * pass the LDAP DN of the current user to the module
+  * support UCR variable umc/server/autostart to control start of UMC server
+  * default locale for the backend is read from locale/default
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 04 Oct 2011 17:32:48 +0200
+
 univention-management-console (4.0.61-2) unstable; urgency=low
 
   * added ACLs for root to allow using the online update module (Bug #22460)

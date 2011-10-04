@@ -59,6 +59,7 @@ class Base( signals.Provider, Translation ):
 		self.signal_new( 'success' )
 		self.signal_new( 'failure' )
 		self._username = None
+		self._user_dn = None
 		self._password = None
 		self.__acls = None
 		self.__requests = {}
@@ -67,6 +68,11 @@ class Base( signals.Provider, Translation ):
 	def _set_username( self, username ):
 		self._username = username
 	username = property( fset = _set_username )
+
+	def _set_user_dn( self, user_dn ):
+		self._user_dn = user_dn
+		MODULE.info( 'Setting user LDAP DN %s' % self._user_dn )
+	user_dn = property( fset = _set_user_dn )
 
 	def _set_password( self, password ):
 		self._password = password

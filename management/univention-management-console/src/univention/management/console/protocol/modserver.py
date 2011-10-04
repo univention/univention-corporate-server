@@ -65,6 +65,7 @@ class ModuleServer( Server ):
 		self.__check_acls = check_acls
 		self.__queue = ''
 		self.__username = None
+		self.__user_dn = None
 		self.__password = None
 		self._load_module()
 		Server.__init__( self, ssl = False, unix = socket, magic = False, load_ressources = False )
@@ -170,8 +171,10 @@ class ModuleServer( Server ):
 					self.__handler.username = self.__username
 				elif key == 'credentials':
 					self.__username = value[ 'username' ]
+					self.__user_dn = value[ 'user_dn' ]
 					self.__password = value[ 'password' ]
 					self.__handler.username = self.__username
+					self.__handler.user_dn = self.__user_dn
 					self.__handler.password = self.__password
 				elif key == 'locale' and value is not None:
 					self.__locale = value
@@ -190,16 +193,16 @@ class ModuleServer( Server ):
 					resp.status = BAD_REQUEST_INVALID_OPTS
 					break
 
-				# if SET command contains 'acls', commands' and
-				# 'credentials' it is the initialization of the module
-				# process
-				if 'acls' in msg.options and 'commands' in msg.options and 'credentials' in msg.options:
-					try:
-						self.__handler.init()
-					except Exception, e:
-						import traceback
-						resp.status = MODULE_ERR
-						resp.message = _( 'The init function of the module has failed: %s' ) % traceback.format_stack()
+			# if SET command contains 'acls', commands' and
+			# 'credentials' it is the initialization of the module
+			# process
+			if 'acls' in msg.options and 'commands' in msg.options and 'credentials' in msg.options:
+				try:
+					self.__handler.init()
+				except Exception, e:
+					import traceback
+					resp.status = MODULE_ERR
+					resp.message = _( 'The init function of the module has failed: %s' ) % traceback.format_stack()
 			self.response( resp )
 
 			if not self.__active_requests and self.__timer == None:

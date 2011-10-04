@@ -149,6 +149,7 @@ class Processor( signals.Provider ):
 	def __init__( self, username, password ):
 		self.__username = username
 		self.__password = password
+		self.__user_dn = None
 		signals.Provider.__init__( self )
 		self.core_i18n = Translation( 'univention-management-console' )
 		self.i18n = I18N_Manager()
@@ -163,7 +164,13 @@ class Processor( signals.Provider ):
 
 		try:
 			self.lo = univention.uldap.getMachineConnection( ldap_master = False )
-		except ldap.LDAPError, IOError:
+			ldap_dn = self.lo.searchDn( '(&(uid=%s)(objectClass=posixAccount))' % self.__username )
+			if ldap_dn:
+				self.__user_dn = ldap_dn[ 0 ]
+				CORE.info( 'The LDAP DN for user %s is %s' % ( self.__username, self.__user_dn ) )
+			else:
+				CORE.info( 'The LDAP DN for user %s could not be found' % self.__username )
+		except ( ldap.LDAPError, IOError ): # problems connection to LDAP server or the server is not joined (machine.secret is missing)
 			self.lo = None
 
 		# read the ACLs
@@ -389,7 +396,7 @@ class Processor( signals.Provider ):
 			options = {
 				'acls' : self.acls.json(),
 				'commands' : self.__command_list[ mod.name ].json(),
-				'credentials' : { 'username' : self.__username, 'password' : self.__password },
+				'credentials' : { 'username' : self.__username, 'password' : self.__password, 'user_dn' : self.__user_dn },
 				}
 			if str( self.i18n.locale ):
 				options[ 'locale' ] = str( self.i18n.locale )
