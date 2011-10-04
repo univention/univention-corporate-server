@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-21 20:02+0200\n"
-"PO-Revision-Date: 2011-09-22 09:22+0200\n"
+"POT-Creation-Date: 2011-10-04 10:25+0200\n"
+"PO-Revision-Date: 2011-10-04 10:26+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -236,7 +236,7 @@ msgstr "Zu viele Parameter"
 msgid "Invalid syntax"
 msgstr "Falsche Syntax"
 
-#: syntax.py:223 syntax.py:1190 syntax.py:1262
+#: syntax.py:223 syntax.py:1201 syntax.py:1273
 msgid "Not a valid LDAP DN"
 msgstr "Kein gültiger LDAP-DN"
 
@@ -347,7 +347,7 @@ msgstr ""
 msgid "Only the first letter of the username may be uppercase!"
 msgstr "Nur der erste Buchstabe des Benutzernames darf groß geschrieben sein!"
 
-#: syntax.py:722 syntax.py:1027 syntax.py:1036 syntax.py:1046
+#: syntax.py:722 syntax.py:1038 syntax.py:1047 syntax.py:1057
 msgid "Value may not contain other than numbers, letters and dots!"
 msgstr "Der Wert darf nur Zahlen, Buchstaben und Punkte enthalten."
 
@@ -374,38 +374,42 @@ msgid "Empty password not allowed!"
 msgstr "Ein leeres Passwort ist nicht erlaubt!"
 
 #: syntax.py:771
-msgid "Not a valid hostname!"
-msgstr "Kein gültiger Hostname"
+msgid "This is not a valid hostname."
+msgstr "Dies ist kein gültiger Hostname"
 
-#: syntax.py:785
+#: syntax.py:782
+msgid "This is not a valid DNS entry name."
+msgstr "Dies ist kein gültiger Name für einen DNS-Eintrag"
+
+#: syntax.py:796
 msgid "Not a valid windows hostname!"
 msgstr "Kein gültiger Windows-Hostname"
 
-#: syntax.py:797 syntax.py:800
+#: syntax.py:808 syntax.py:811
 msgid "Not a valid IP address!"
 msgstr "Keine gültige IP-Adresse"
 
-#: syntax.py:829
+#: syntax.py:840
 msgid "Not a valid hostname or IP address!"
 msgstr "Kein gültiger Hostname oder IP-Adresse"
 
-#: syntax.py:873
+#: syntax.py:884
 msgid "Not a valid netmask!"
 msgstr "Keine gültige Netzwerkmaske."
 
-#: syntax.py:876
+#: syntax.py:887
 msgid "First Address"
 msgstr "Erste Adresse"
 
-#: syntax.py:876
+#: syntax.py:887
 msgid "Last Address"
 msgstr "Letzte Adresse"
 
-#: syntax.py:902
+#: syntax.py:913
 msgid "Not an absolute path!"
 msgstr "Keine absolute Pfadangabe"
 
-#: syntax.py:908
+#: syntax.py:919
 msgid ""
 "Not a valid email address! (No \"@\"-character to separate local-part and "
 "domain-part)"
@@ -413,20 +417,20 @@ msgstr ""
 "Keine gültige E-Mail-Adresse! (Kein \"@\"-Zeichen zum Trennen der "
 "Adressteile vorhanden)"
 
-#: syntax.py:920
+#: syntax.py:931
 msgid "Not a valid email address!"
 msgstr "Keine gültige E-Mail-Adresse"
 
-#: syntax.py:939
+#: syntax.py:950
 msgid "The given date does not conform to iso8601, example: \"2009-01-01\"."
 msgstr ""
 "Das eingegebene Datum entspricht nicht ISO 8601, Beispiel: \"2009-01-01\"."
 
-#: syntax.py:987
+#: syntax.py:998
 msgid "Not a valid Date"
 msgstr "Kein gültiges Datum"
 
-#: syntax.py:1001
+#: syntax.py:1012
 msgid ""
 "An IP subnet consists of one to three numbers ranging from 0 to 255 "
 "separated by dots."
@@ -434,7 +438,7 @@ msgstr ""
 "Ein IP-Subnetz muss mit ein bis drei Zahlen zwischen 0 und 255 angegeben "
 "werden, die mit einem Punkt getrennt werden."
 
-#: syntax.py:1016
+#: syntax.py:1027
 msgid ""
 "The name of a reverse zone consists of the reversed subnet address followed "
 "by .in-addr.arpa. Example: \"0.168.192.in-addr.arpa\""
@@ -442,94 +446,94 @@ msgstr ""
 "Der Name einer Reverse Lookup Zone besteht aus dem inversen Subnetz, gefolgt "
 "von .in-addr.arpa. z.B.: \"0.168.192.in-addr.arpa\""
 
-#: syntax.py:1024
+#: syntax.py:1035
 msgid "Missing value!"
 msgstr "Fehlender Wert!"
 
-#: syntax.py:1051
+#: syntax.py:1062
 msgid "Key"
 msgstr "Schlüssel"
 
-#: syntax.py:1051
+#: syntax.py:1062
 msgid "Value"
 msgstr "Wert"
 
-#: syntax.py:1055 syntax.py:1073
+#: syntax.py:1066 syntax.py:1084
 msgid "Priority"
 msgstr "Priorität"
 
-#: syntax.py:1055
+#: syntax.py:1066
 msgid "Mail Server"
 msgstr "Mail-Server"
 
-#: syntax.py:1064
+#: syntax.py:1075
 msgid "Service"
 msgstr "Dienst"
 
-#: syntax.py:1064 syntax.py:1168
+#: syntax.py:1075 syntax.py:1179
 msgid "Protocol"
 msgstr "Protokoll"
 
-#: syntax.py:1069
+#: syntax.py:1080
 msgid "Street"
 msgstr "Straße"
 
-#: syntax.py:1069
+#: syntax.py:1080
 msgid "Postal code"
 msgstr "Postleitzahl"
 
-#: syntax.py:1069
+#: syntax.py:1080
 msgid "City"
 msgstr "Stadt"
 
-#: syntax.py:1073
+#: syntax.py:1084
 msgid "Weight"
 msgstr "Gewichtung"
 
-#: syntax.py:1073
+#: syntax.py:1084
 msgid "Port"
 msgstr "Port"
 
-#: syntax.py:1073
+#: syntax.py:1084
 msgid "Server"
 msgstr "Server"
 
-#: syntax.py:1083
+#: syntax.py:1094
 msgid "Not a valid time format"
 msgstr "Keine gültige Zeitangabe"
 
-#: syntax.py:1097
+#: syntax.py:1108
 msgid "Not a valid time interval"
 msgstr "Kein gültiges Zeitintervall"
 
-#: syntax.py:1102
+#: syntax.py:1113
 msgid "Ethernet"
 msgstr "Ethernet"
 
-#: syntax.py:1102
+#: syntax.py:1113
 msgid "FDDI"
 msgstr "FDDI"
 
-#: syntax.py:1102
+#: syntax.py:1113
 msgid "Token-Ring"
 msgstr "Token-Ring"
 
-#: syntax.py:1111 syntax.py:1127
+#: syntax.py:1122 syntax.py:1138
 msgid ""
 "Value must have 6 two digit hexadecimal numbers separated by \"-\" or \":\" !"
 msgstr ""
 "Der Wert muss 6 mal 2 Hexadezimalwerte beinhalten, die mit einem \"-\" oder "
 "\":\"getrennt werden"
 
-#: syntax.py:1130
+#: syntax.py:1141
 msgid "Type"
 msgstr "Typ"
 
-#: syntax.py:1130
+#: syntax.py:1141
 msgid "Address"
 msgstr "Adresse"
 
-#: syntax.py:1143
+#: syntax.py:1154
 msgid ""
 "Value may not contain other than numbers, letters, underscore (\"_\") and "
 "minus (\"-\")!"
@@ -537,35 +541,35 @@ msgstr ""
 "Der Wert darf nur Zahlen, Buchstaben, Unterstriche (\"_\") und Minuszeichen "
 "(\"-\") enthalten."
 
-#: syntax.py:1146
+#: syntax.py:1157
 msgid "Driver"
 msgstr "Treiber"
 
-#: syntax.py:1146
+#: syntax.py:1157
 msgid "Description"
 msgstr "Beschreibung"
 
-#: syntax.py:1168
+#: syntax.py:1179
 msgid "Destination"
 msgstr "Ziel"
 
-#: syntax.py:1223
+#: syntax.py:1234
 msgid "Invitation Policy"
 msgstr "Richtlinie für Einladungen"
 
-#: syntax.py:1232
+#: syntax.py:1243
 msgid "Shared folder user ACL"
 msgstr "Benutzer ACLs für gemeinsame Ordner"
 
-#: syntax.py:1239 syntax.py:1251
+#: syntax.py:1250 syntax.py:1262
 msgid "Not a valid shared folder ACL"
 msgstr "Keine gültige ACL für gemeinsame Ordner"
 
-#: syntax.py:1244
+#: syntax.py:1255
 msgid "Shared folder group ACL"
 msgstr "Gruppen ACLs für gemeinsame Ordner"
 
-#: syntax.py:1281
+#: syntax.py:1292
 msgid ""
 "Value consists of two integer numbers separated by an \"x\" (e.g. \"1024x768"
 "\")"
@@ -573,399 +577,399 @@ msgstr ""
 "Der Wert muss zwei ganzzahlige Werte mit einem \"x\" dazwischen beinhalten "
 "(z.B. \"1024x768\")"
 
-#: syntax.py:1290
+#: syntax.py:1301
 msgid ""
 "Value consists of two integer numbers separated by a \"-\" (e.g. \"30-70\")"
 msgstr ""
 "Der Wert muss aus zwei durch ein \"-\" getrennte ganzzahlige Werte bestehen "
 "(z.B. \"30-70\")"
 
-#: syntax.py:1368
+#: syntax.py:1379
 msgid "Left of primary display"
 msgstr "Links vom primären Monitor"
 
-#: syntax.py:1369
+#: syntax.py:1380
 msgid "Right of primary display"
 msgstr "Rechts vom primären Monitor"
 
-#: syntax.py:1370
+#: syntax.py:1381
 msgid "Above primary display"
 msgstr "Über dem primären Monitor"
 
-#: syntax.py:1371
+#: syntax.py:1382
 msgid "Below primary display"
 msgstr "Unter dem primären Monitor"
 
-#: syntax.py:1618
+#: syntax.py:1629
 msgid "User ID"
 msgstr "Benutzer-ID"
 
-#: syntax.py:1622
+#: syntax.py:1633
 msgid "Group ID"
 msgstr "Gruppen-ID"
 
-#: syntax.py:1630
+#: syntax.py:1641
 msgid "Not a valid FQDN"
 msgstr "kein gültiger vollqualifizierter Domänenname"
 
-#: syntax.py:1634
+#: syntax.py:1645
 msgid "Windows Terminal Server Hosts"
 msgstr "Windows Terminalserver"
 
-#: syntax.py:1638
+#: syntax.py:1649
 msgid "Linux Terminal Server Hosts"
 msgstr "Linux Terminalserver"
 
-#: syntax.py:1642
+#: syntax.py:1653
 msgid "Authentication Server"
 msgstr "Authentisierungsserver"
 
-#: syntax.py:1646
+#: syntax.py:1657
 msgid "File Server"
 msgstr "Fileserver"
 
-#: syntax.py:1662 syntax.py:1666
+#: syntax.py:1673 syntax.py:1677
 msgid "Primary Group"
 msgstr "Primäre Gruppe"
 
-#: syntax.py:1670
+#: syntax.py:1681
 msgid "Network"
 msgstr "Netzwerk"
 
-#: syntax.py:1691 syntax.py:1702 syntax.py:1715
+#: syntax.py:1702 syntax.py:1713 syntax.py:1726
 msgid "DNS forward zone"
 msgstr "DNS Forward Zone"
 
-#: syntax.py:1696 syntax.py:1707
+#: syntax.py:1707 syntax.py:1718
 msgid "DNS reverse zone"
 msgstr "DNS Reverse Zone"
 
-#: syntax.py:1701
+#: syntax.py:1712
 msgid "DNS Entry"
 msgstr "DNS-Eintrag"
 
-#: syntax.py:1702 syntax.py:1707 syntax.py:1724
+#: syntax.py:1713 syntax.py:1718 syntax.py:1735
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#: syntax.py:1706
+#: syntax.py:1717
 msgid "DNS Entry Reverse"
 msgstr "Reverse Lookup DNS-Eintrag"
 
-#: syntax.py:1714
+#: syntax.py:1725
 msgid "DNS Entry Alias"
 msgstr "Alias DNS-Eintrag"
 
-#: syntax.py:1715
+#: syntax.py:1726
 msgid "Zone of existing host record"
 msgstr "Zone des existierenden Host-Eintrags"
 
-#: syntax.py:1715
+#: syntax.py:1726
 msgid "Alias"
 msgstr "Alias"
 
-#: syntax.py:1719 syntax.py:1724
+#: syntax.py:1730 syntax.py:1735
 msgid "DHCP service"
 msgstr "DHCP-Dienst"
 
-#: syntax.py:1724
+#: syntax.py:1735
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: syntax.py:1725
+#: syntax.py:1736
 msgid "DHCP Entry"
 msgstr "DHCP-Eintrag"
 
-#: syntax.py:1733
+#: syntax.py:1744
 msgid "Share"
 msgstr "Freigabe"
 
-#: syntax.py:2121 syntax.py:2139 syntax.py:2152 syntax.py:2189 syntax.py:2247
+#: syntax.py:2132 syntax.py:2150 syntax.py:2163 syntax.py:2200 syntax.py:2258
 msgid "all"
 msgstr "Alle"
 
-#: syntax.py:2122
+#: syntax.py:2133
 msgid "January"
 msgstr "Januar"
 
-#: syntax.py:2123
+#: syntax.py:2134
 msgid "February"
 msgstr "Februar"
 
-#: syntax.py:2124
+#: syntax.py:2135
 msgid "March"
 msgstr "März"
 
-#: syntax.py:2125
+#: syntax.py:2136
 msgid "April"
 msgstr "April"
 
-#: syntax.py:2126
+#: syntax.py:2137
 msgid "May"
 msgstr "Mai"
 
-#: syntax.py:2127
+#: syntax.py:2138
 msgid "June"
 msgstr "Juni"
 
-#: syntax.py:2128
+#: syntax.py:2139
 msgid "July"
 msgstr "Juli"
 
-#: syntax.py:2129
+#: syntax.py:2140
 msgid "August"
 msgstr "August"
 
-#: syntax.py:2130
+#: syntax.py:2141
 msgid "September"
 msgstr "September"
 
-#: syntax.py:2131
+#: syntax.py:2142
 msgid "October"
 msgstr "Oktober"
 
-#: syntax.py:2132
+#: syntax.py:2143
 msgid "November"
 msgstr "November"
 
-#: syntax.py:2133
+#: syntax.py:2144
 msgid "December"
 msgstr "Dezember"
 
-#: syntax.py:2140
+#: syntax.py:2151
 msgid "Monday"
 msgstr "Montag"
 
-#: syntax.py:2141
+#: syntax.py:2152
 msgid "Tuesday"
 msgstr "Dienstag"
 
-#: syntax.py:2142
+#: syntax.py:2153
 msgid "Wednesday"
 msgstr "Mittwoch"
 
-#: syntax.py:2143
+#: syntax.py:2154
 msgid "Thursday"
 msgstr "Donnerstag"
 
-#: syntax.py:2144
+#: syntax.py:2155
 msgid "Friday"
 msgstr "Freitag"
 
-#: syntax.py:2145
+#: syntax.py:2156
 msgid "Saturday"
 msgstr "Samstag"
 
-#: syntax.py:2146
+#: syntax.py:2157
 msgid "Sunday"
 msgstr "Sonntag"
 
-#: syntax.py:2288
+#: syntax.py:2299
 msgid "Domain Group"
 msgstr "Globale Gruppe"
 
-#: syntax.py:2289
+#: syntax.py:2300
 msgid "Local Group"
 msgstr "Lokale Gruppe"
 
-#: syntax.py:2290
+#: syntax.py:2301
 msgid "Well-Known Group"
 msgstr "Bekannte Gruppe"
 
-#: syntax.py:2298 syntax.py:2304 syntax.py:2309
+#: syntax.py:2309 syntax.py:2315 syntax.py:2320
 msgid "Soft limit"
 msgstr "Soft-Limit"
 
-#: syntax.py:2298 syntax.py:2304 syntax.py:2309
+#: syntax.py:2309 syntax.py:2315 syntax.py:2320
 msgid "Hard limit"
 msgstr "Hard-Limit"
 
-#: syntax.py:2298 syntax.py:2309
+#: syntax.py:2309 syntax.py:2320
 msgid "Group"
 msgstr "Gruppe"
 
-#: syntax.py:2304
+#: syntax.py:2315
 msgid "User"
 msgstr "Benutzer"
 
-#: syntax.py:2324
+#: syntax.py:2335
 msgid "synchronous"
 msgstr "synchron"
 
-#: syntax.py:2325
+#: syntax.py:2336
 msgid "asynchronous"
 msgstr "asynchron"
 
-#: syntax.py:2337
+#: syntax.py:2348
 #, python-format
 msgid "\"%s\" is not a Univention Admin Module."
 msgstr "\"%s\" ist kein Univention Admin Modul"
 
-#: syntax.py:2374 syntax.py:2596
+#: syntax.py:2385 syntax.py:2607
 msgid "None"
 msgstr "Keine"
 
-#: syntax.py:2378
+#: syntax.py:2389
 msgid "About"
 msgstr "Über"
 
-#: syntax.py:2378
+#: syntax.py:2389
 msgid "Browse"
 msgstr "Navigation"
 
-#: syntax.py:2378
+#: syntax.py:2389
 msgid "Wizards"
 msgstr "Assistenten"
 
-#: syntax.py:2378
+#: syntax.py:2389
 msgid "Personal Settings"
 msgstr "Persönliche Einstellungen"
 
-#: syntax.py:2392
+#: syntax.py:2403
 msgid "No Reboot"
 msgstr "Nicht neu starten"
 
-#: syntax.py:2393
+#: syntax.py:2404
 msgid "Immediately"
 msgstr "Sofort"
 
-#: syntax.py:2398
+#: syntax.py:2409
 msgid "Groupware Account"
 msgstr "Groupware Konto"
 
-#: syntax.py:2399
+#: syntax.py:2410
 msgid "Kerberos Principal"
 msgstr "Kerberos Prinzipal"
 
-#: syntax.py:2400
+#: syntax.py:2411
 msgid "Personal Information"
 msgstr "Persönliche Information"
 
-#: syntax.py:2401
+#: syntax.py:2412
 msgid "Samba Account"
 msgstr "Samba Konto"
 
-#: syntax.py:2402
+#: syntax.py:2413
 msgid "POSIX Account"
 msgstr "POSIX Konto"
 
-#: syntax.py:2403
+#: syntax.py:2414
 msgid "Mail Account"
 msgstr "Mail Konto"
 
-#: syntax.py:2410
+#: syntax.py:2421
 msgid "Disconnect"
 msgstr "Trennen"
 
-#: syntax.py:2411
+#: syntax.py:2422
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: syntax.py:2418
+#: syntax.py:2429
 msgid "All Clients"
 msgstr "Von jedem Client"
 
-#: syntax.py:2419
+#: syntax.py:2430
 msgid "Previously used Client"
 msgstr "Nur von vorherigem Client"
 
-#: syntax.py:2426 syntax.py:2436
+#: syntax.py:2437 syntax.py:2447
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: syntax.py:2427
+#: syntax.py:2438
 msgid "Enabled: Input: on, Message: on"
 msgstr "Aktiviert: Eingabe: ein, Benachrichtigen: ein"
 
-#: syntax.py:2428
+#: syntax.py:2439
 msgid "Enabled: Input: on, Message: off"
 msgstr "Aktiviert: Eingabe: an, Benachrichtigen: aus"
 
-#: syntax.py:2429
+#: syntax.py:2440
 msgid "Enabled: Input: off, Message: on"
 msgstr "Aktiviert: Eingabe: aus, Benachrichtigen: an"
 
-#: syntax.py:2430
+#: syntax.py:2441
 msgid "Enabled: Input: off, Message: off"
 msgstr "Aktiviert: Eingabe: aus, Benachrichtigen: aus"
 
-#: syntax.py:2437
+#: syntax.py:2448
 msgid "Enabled: Set by Caller"
 msgstr "Aktiviert: Set by Caller"
 
-#: syntax.py:2438
+#: syntax.py:2449
 msgid "Enabled: No Call Back"
 msgstr "Aktiviert: No Call Back"
 
-#: syntax.py:2564
+#: syntax.py:2575
 msgid "NFS share"
 msgstr "NFS-Freigabe"
 
-#: syntax.py:2577
+#: syntax.py:2588
 msgid "Language code must be in format \"xx_XX\"!"
 msgstr "Sprach-Code muss im Format \"xx_XX\" angegeben werden!"
 
-#: syntax.py:2582 syntax.py:2586 syntax.py:2589 syntax.py:2592
+#: syntax.py:2593 syntax.py:2597 syntax.py:2600 syntax.py:2603
 msgid "Language code (e.g. en_US)"
 msgstr "Sprachcode (z.B. de_DE)"
 
-#: syntax.py:2582
+#: syntax.py:2593
 msgid "Text"
 msgstr "Text"
 
-#: syntax.py:2586
+#: syntax.py:2597
 msgid "Translated short description"
 msgstr "Übersetzte Kurzbeschreibung"
 
-#: syntax.py:2589
+#: syntax.py:2600
 msgid "Translated long description"
 msgstr "Übersetzte Langbeschreibung"
 
-#: syntax.py:2592
+#: syntax.py:2603
 msgid "Translated tab name"
 msgstr "Übersetzter Karteikartenname"
 
-#: syntax.py:2597
+#: syntax.py:2608
 msgid "All disabled"
 msgstr "Alle deaktiviert"
 
-#: syntax.py:2599
+#: syntax.py:2610
 msgid "Windows disabled"
 msgstr "Windows deaktiviert"
 
-#: syntax.py:2600
+#: syntax.py:2611
 msgid "Kerberos disabled"
 msgstr "Kerberos deaktiviert"
 
-#: syntax.py:2601
+#: syntax.py:2612
 msgid "POSIX disabled"
 msgstr "POSIX deaktiviert"
 
-#: syntax.py:2602
+#: syntax.py:2613
 msgid "Windows and POSIX disabled"
 msgstr "Windows und POSIX deaktiviert"
 
-#: syntax.py:2603
+#: syntax.py:2614
 msgid "Windows and Kerberos disabled"
 msgstr "Windows und Kerberos deaktiviert"
 
-#: syntax.py:2604
+#: syntax.py:2615
 msgid "POSIX and Kerbeors disabled"
 msgstr "POSIX und Kerberos deaktiviert"
 
-#: syntax.py:2609
+#: syntax.py:2620
 msgid "None locked login method"
 msgstr "Kein gesperrtes Anmeldeverfahren"
 
-#: syntax.py:2610
+#: syntax.py:2621
 msgid "Locked all login method"
 msgstr "Alle Anmeldeverfahren sind gesperrt"
 
-#: syntax.py:2611
+#: syntax.py:2622
 msgid "Locked Windows/Kerberos only"
 msgstr "Nur Windows/Kerberos gesperrt"
 
-#: syntax.py:2612
+#: syntax.py:2623
 msgid "Locked POSIX/LDAP only"
 msgstr "Nur POSIX/LDAP gesperrt"
 

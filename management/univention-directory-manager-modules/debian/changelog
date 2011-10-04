@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.99-1) unstable; urgency=low
+
+  * DNS entries may start with digits; Bug #23841
+  * updated german translation
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 04 Oct 2011 17:41:31 +0200
+
 univention-directory-manager-modules (7.0.98-1) unstable; urgency=low
 
   * fix univentionService rename from Mail to SMTP (Bug #2136)

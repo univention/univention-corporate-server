@@ -761,14 +761,25 @@ class hostName(simple):
 	min_length=0
 	max_length=0
 	# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
-	_re = re.compile("(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$")
+	_re = re.compile("(^[a-zA-Z0-9])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$")
 
 	@classmethod
 	def parse(self, text):
 		if self._re.match(text) != None:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _("Not a valid hostname!")
+			raise univention.admin.uexceptions.valueError, _("This is not a valid hostname.")
+
+class DNS_Name(simple):
+	# Regular expression for DNS entries (based on RFC 1123)
+	_re = re.compile("(^[a-zA-Z0-9])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$")
+
+	@classmethod
+	def parse(self, text):
+		if self._re.match(text) != None:
+			return text
+		else:
+			raise univention.admin.uexceptions.valueError, _("This is not a valid DNS entry name.")
 
 class windowsHostName(simple):
 	min_length=0
@@ -1712,7 +1723,7 @@ class DNS_ForwardZoneList( select ):
 
 class dnsEntryAlias( complex ):
 	description=_('DNS Entry Alias')
-	subsyntaxes = ( ( _( 'Zone of existing host record' ), DNS_ForwardZoneList ), ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'Alias' ), hostName ) )
+	subsyntaxes = ( ( _( 'Zone of existing host record' ), DNS_ForwardZoneList ), ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'Alias' ), DNS_Name ) )
 
 class dhcpService( UDM_Objects ):
 	udm_modules = ( 'dhcp/service', )
