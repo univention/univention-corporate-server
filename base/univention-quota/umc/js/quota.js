@@ -116,6 +116,5 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 		});
 		this.addChild(this._pageContainer);
 		this.selectChild(this._pageContainer);
-		// this.showChild(this._pageContainer);
 	}
 });

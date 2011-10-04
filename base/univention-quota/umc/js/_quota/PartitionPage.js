@@ -20,10 +20,19 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 	_grid: null,
 	_searchForm: null,
 
+	_getPartitionInfo: function() {
+		umc.tools.umcpCommand('quota/partitions/info', {'partitionDevice': this.partitionDevice}).then(dojo.hitch(this, function(data) {
+			this._form.getWidget('mountPointValue').set('content', data.result.mountPoint);
+			this._form.getWidget('filesystemValue').set('content', data.result.filesystem);
+			this._form.getWidget('optionsValue').set('content', data.result.options);
+		}));
+	},
+
 	buildRendering: function() {
 		this.inherited(arguments);
 		this.renderForm();
 		this.renderGrid();
+		this._getPartitionInfo();
 
 		var titlePane = new umc.widgets.ExpandingTitlePane({
 			title: this._('Quota settings')
@@ -32,15 +41,6 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		titlePane.addChild(this._form);
 		titlePane.addChild(this._searchForm);
 		titlePane.addChild(this._grid);
-	},
-
-	postMixInProperties: function() {
-		this.inherited(arguments);
-		this.footerButtons = [{
-			name: 'close',
-			label: this._('Close'),
-			callback: dojo.hitch(this, 'onClosePage')
-		}];
 	},
 
 	postCreate: function() {
@@ -174,7 +174,11 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 			region: 'center',
 			actions: actions,
 			columns: columns,
-			moduleStore: this.moduleStore
+			moduleStore: this.moduleStore,
+			query: {
+				filter: '*',
+				partitionDevice: this.partitionDevice
+			}
 		});
 	},
 
@@ -184,19 +188,5 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 
 	onClosePage: function() {
 		return true;
-	},
-
-	init: function(partitionDevice) {
-		this.partitionDevice = partitionDevice;
-		umc.tools.umcpCommand('quota/partitions/info', {'partitionDevice': this.partitionDevice}).then(dojo.hitch(this, function(data) {
-			this._form.getWidget('mountPointValue').set('content', data.result.mountPoint);
-			this._form.getWidget('filesystemValue').set('content', data.result.filesystem);
-			this._form.getWi0dget('optionsValue').set('content', data.result.options);
-		}));
-		this.set('headerText', this._('Partition: %s', this.partitionDevice));
-		this._grid.filter({
-			filter: '*',
-			partitionDevice: this.partitionDevice
-		});
 	}
 });

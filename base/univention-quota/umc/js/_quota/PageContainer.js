@@ -18,7 +18,6 @@ dojo.declare("umc.modules._quota.PageContainer", [ dijit.layout.StackContainer, 
 	buildRendering: function(partitionDevice) {
 		this.inherited(arguments);
 		this.renderPartitionPage();
-		this._partitionPage.init(this.partitionDevice);
 		this.renderDetailPage();
 	},
 
@@ -28,17 +27,13 @@ dojo.declare("umc.modules._quota.PageContainer", [ dijit.layout.StackContainer, 
 	},
 
 	renderPartitionPage: function() {
-		var partitionDevice = '';
 		this._partitionPage = new umc.modules._quota.PartitionPage({
 			partitionDevice: this.partitionDevice,
 			moduleStore: umc.store.getModuleStore('id', this.moduleID + '/partitions'),
-			headerText: this._('Partition: %s', partitionDevice),
+			headerText: this._('Partition: %s', this.partitionDevice),
 			helpText: this._('Set, unset and modify filesystem quota')
 		});
 		this.addChild(this._partitionPage);
-		this.connect(this._partitionPage, 'onClosePage', function() {
-			this.selectChild(this._overviewPage);
-		});
 		this.connect(this._partitionPage, 'onShowDetailPage', function(data) {
 			this._detailPage.init(data);
 			this.selectChild(this._detailPage);
