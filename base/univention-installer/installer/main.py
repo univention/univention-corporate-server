@@ -380,6 +380,15 @@ class mods:
 			else:
 				self.modview[i][0].bgcolor()
 			self.modview[i][0].draw()
+
+		# refresh header, footer and buttons (language update)
+		self.footline1=self.footer((0,0))
+		self.footline2=self.footer((0,1))
+		self.footline3=self.footer((1,0)) 
+		self.footline4=self.footer((1,1)) 
+		self.obj[self.current].std_button()
+		self.obj[self.current].refresh_modheader()
+
 		if self.current == len(self.modules)-1 and self.current == 0:
 			self.window.refresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 			self.footline1.draw()

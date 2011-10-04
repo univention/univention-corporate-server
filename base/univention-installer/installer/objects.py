@@ -1467,6 +1467,8 @@ class content:
 		f.write(str+'\n')
 		f.close()
 
+	def refresh_modheader(self):
+		self.header=textline(self.modheader(), self.pos_y, self.pos_x+self.width-len(self.modheader())-2)
 
 	# removes all widgets from window
 	def reset_layout(self):
