@@ -1,3 +1,9 @@
+univention-lib (1.0.20-2) unstable; urgency=low
+
+  * Remove a diversion if it exists (Bug #22611)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 04 Oct 2011 11:34:49 +0200
+
 univention-lib (1.0.20-1) unstable; urgency=low
 
   * use univention-ldapsearch instead of ldapsearch for authenticated ldap

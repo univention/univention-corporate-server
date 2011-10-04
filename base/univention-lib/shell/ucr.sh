@@ -51,6 +51,11 @@ remove_ucr_template () {
 	    mkdir -p /etc/univention/templates/removed/
 	fi
 
+	# Test, whether a divert exists. If so, remove it 
+	if [ `dpkg-divert --list $1 | wc -l` != 0 ] ; then
+	    dpkg-divert --remove "$1"
+	fi
+
 	if [ -e "$1" ] ; then
 	    mv "$1" /etc/univention/templates/removed/
 	fi
