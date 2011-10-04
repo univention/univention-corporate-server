@@ -77,8 +77,9 @@ def postrun():
 		# reload cyrus-imapd if UCR variable changed
 		listener.setuid(0)
 		try:
-			if os.path.isfile('/etc/init.d/cyrus-imapd'):
-				listener.run('/etc/init.d/cyrus-imapd', ['cyrus-imapd', 'reload'], uid=0)
+			for fn in [ '/etc/init.d/cyrus-imapd', '/etc/init.d/cyrus2.2' ]:
+				if os.path.isfile(fn):
+					listener.run(fn, [os.path.basename(fn), 'reload'], uid=0)
 		finally:
 			listener.unsetuid()
 		reload = False
