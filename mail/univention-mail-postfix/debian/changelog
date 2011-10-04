@@ -2,6 +2,7 @@ univention-mail-postfix (6.0.22-1) unstable; urgency=low
 
   * fixed delivery for shared folders (Bug #22369)
   * reload cyrus2.2 and cyrus2.4 if list of domains changes (Bug #22369)
+  * fixed LDAP filter for mailing lists (Bug #22369)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 04 Oct 2011 15:43:15 +0200
 

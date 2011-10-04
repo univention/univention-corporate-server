@@ -6,7 +6,7 @@
 server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
 search_base = @%@ldap/base@%@
 query_filter = (&(objectClass=univentionMailList)(mailPrimaryAddress=%s))
-result_attribute = univentionMailListMember
+result_attribute = univentionMailMember
 search_timeout = @%@mail/postfix/ldap/timeout@%@
 scope = sub
 version = 3
