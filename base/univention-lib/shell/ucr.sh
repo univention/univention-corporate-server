@@ -74,10 +74,6 @@ remove_ucr_info_file () {
 	    mkdir -p /etc/univention/templates/removed/
 	fi
 
-	if [ -e "$1" ] ; then
-	    mv "$1" /etc/univention/templates/removed/
-	fi
-
 	if [ -e /etc/univention/templates/info/"$1" ] ; then
 	    # unregister info file before moving
 		ucr unregister "$(basename "$1" .info)"
