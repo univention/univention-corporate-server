@@ -753,10 +753,10 @@ class object(content):
 					self.elements[self.current].set_on()		# set actual focus highlight
 				self.draw()
 		elif key in [ 10, 32 ] and self.ask_domainnameserver and self.get_elem('BTN_MORE_NAMESERVER').get_status(): # Enter & Button: "[More]" Nameserver
-			self.sub = morewindow(self, self.minY, self.minX+16, self.maxWidth-7, self.maxHeight-18, morewindow.DOMAINDNS)
+			self.sub = morewindow(self, self.minY, self.minX+1, self.maxWidth+18, self.maxHeight-18, morewindow.DOMAINDNS)
 			self.sub.draw()
 		elif key in [ 10, 32 ] and self.ask_forwarder and self.get_elem('BTN_MORE_FORWARDER').get_status(): # Enter & Button: "[More]" Forwarder
-			self.sub = morewindow(self, self.minY, self.minX+16, self.maxWidth-7, self.maxHeight-18, morewindow.EXTERNALDNS)
+			self.sub = morewindow(self, self.minY, self.minX+1, self.maxWidth+18, self.maxHeight-18, morewindow.EXTERNALDNS)
 			self.sub.draw()
 		else:
 			val = self.elements[self.current].key_event(key)
@@ -808,25 +808,29 @@ class object(content):
 					return _('Neither accepting router advertisements is activated nor an IPv6 address with prefix has been entered for interface "%s".') % name
 
 
-		testlist = []  # list of 3-tuples ( profile name, descriptive name, is_required? )
+		testlist = []  # list of 3-tuples ( profile name, descriptive name, is_required?, address type ('4', '6', '46') )
 		if self.ipv4_found:
-			testlist.append( [ 'gateway', _('IPv4 Gateway'), False ] )
+			testlist.append( [ 'gateway', _('IPv4 Gateway'), False, '4' ] )
 		if self.ipv6_found:
-			testlist.append( [ 'gateway6', _('IPv6 Gateway'), False ] )
+			testlist.append( [ 'gateway6', _('IPv6 Gateway'), False, '6' ] )
 		if self.ask_forwarder:
-			testlist.append( [ 'dns_forwarder_1', _('External DNS Server'), False ] )
+			testlist.append( [ 'dns_forwarder_1', _('External DNS Server'), False, '46' ] )
 		if self.ask_domainnameserver:
-			testlist.append( [ 'nameserver_1', _('Domain DNS Server'), True ] )
+			testlist.append( [ 'nameserver_1', _('Domain DNS Server'), True, '46' ] )
 
-		for key, name, required in testlist:
+		for key, name, required, addrtype in testlist:
 			if self.container.get(key) or required:
-				if key.endswith('6'):
+				if addrtype == '6':
 					if not self.is_ipv6addr( self.container.get(key) ):
 						self.debug('no valid IPv6 address: %s=%s' % (key, self.container.get(key)))
 						return invalid + name
-				else:
+				elif addrtype == '4':
 					if not self.is_ipv4addr( self.container.get(key) ):
 						self.debug('no valid IPv4 address: %s=%s' % (key, self.container.get(key)))
+						return invalid + name
+				else:
+					if not self.is_ipaddr( self.container.get(key) ):
+						self.debug('no valid IPv4/IPv6 address: %s=%s' % (key, self.container.get(key)))
 						return invalid + name
 
 		proxy = self.container.get('proxy_http','')
@@ -1004,7 +1008,7 @@ class morewindow(subwin):
 			self.values.append( self.parent.container.get(self.containerkey % i,'') )
 
 	def layout(self):
-		MAXIP = 19
+		MAXIP = LEN_IPv6_ADDR + 3
 
 		self.get_values()
 
@@ -1012,7 +1016,7 @@ class morewindow(subwin):
 		self.add_elem('TXT1', textline( _('1. %s') % self.name, self.pos_y+2, self.pos_x+2))
 		self.add_elem('TXT2', textline( _('2. %s') % self.name, self.pos_y+3, self.pos_x+2))
 		self.add_elem('TXT3', textline( _('3. %s') % self.name, self.pos_y+4, self.pos_x+2))
-		self.add_elem('VALUE1', textline(self.values[0], self.pos_y+2, self.pos_x+30))
+		self.add_elem('VALUE1', textline(self.values[0][:LEN_IPv6_ADDR+1], self.pos_y+2, self.pos_x+30))  # limit length of IP address
 		self.add_elem('VALUE2', input(self.values[1], self.pos_y+3, self.pos_x+29, MAXIP))
 		self.add_elem('VALUE3', input(self.values[2], self.pos_y+4, self.pos_x+29, MAXIP))
 
