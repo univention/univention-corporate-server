@@ -46,11 +46,9 @@ import univention.admin.objects as udm_objects
 import univention.admin.uexceptions as udm_errors
 from univention.management.console.protocol.definitions import *
 
-from .ldap import UDM_Error, UDM_Module, UDM_Settings, ldap_dn2path, get_module, read_syntax_choices, list_objects, get_ldap_connection
+from .ldap import UDM_Error, UDM_Module, UDM_Settings, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, LDAP_ConnectionError, set_credentials
 
 _ = Translation( 'univention-management-console-modules-udm' ).translate
-
-
 
 class Instance( Base ):
 	def __init__( self ):
@@ -60,8 +58,11 @@ class Instance( Base ):
 	def init( self ):
 		'''Initialize the module. Invoked when ACLs, commands and
 		credentials are available'''
+		set_credentials( self._user_dn, self._password )
+
 		if self._username is not None:
-			self.settings = UDM_Settings( self._username )
+			self.settings = UDM_Settings( self._user_dn )
+
 
 	def _get_module( self, request, object_type = None ):
 		"""Tries to determine to UDM module to use. If no specific
@@ -193,10 +194,12 @@ class Instance( Base ):
 		"""
 
 		def _thread( request ):
+			MODULE.info( 'Thread for udm/get request is running' )
 			result = []
 			for ldap_dn in request.options:
 				module = get_module( request.flavor, ldap_dn )
 				if module is None:
+					MODULE.error( 'A module for the LDAP DN %s could not be found' % ldap_dn )
 					continue
 				obj = module.get( ldap_dn )
 				if obj:
@@ -209,8 +212,11 @@ class Instance( Base ):
 					for opt in module.get_options( udm_object = obj ):
 						props[ '$options$' ][ opt[ 'id' ] ] = opt[ 'value' ]
 					result.append( props )
+				else:
+					MODULE.error( 'The LDAP object for the LDAP DN %s could not be found' % ldap_dn )
 			return result
 
+		MODULE.info( 'Starting thread for udm/get request' )
 		thread = notifier.threads.Simple( 'Get', notifier.Callback( _thread, request ),
 										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
@@ -333,6 +339,7 @@ class Instance( Base ):
 
 		self.finished( request.id, result )
 
+	@LDAP_Connection
 	def types( self, request ):
 		"""Returns the list of object types matching the given flavor or container.
 
@@ -368,8 +375,7 @@ class Instance( Base ):
 
 			# the container may be a superordinate or have one as its parent
 			# (or grandparent, ....)
-			lo, po = get_ldap_connection()
-			superordinate = udm_modules.find_superordinate(container, None, lo)
+			superordinate = udm_modules.find_superordinate(container, None, ldap_connection)
 			if superordinate:
 				# there is a superordinate... add its subtypes to the list of allowed modules
 				MODULE.info('container has a superordinate: %s' % superordinate)
@@ -543,6 +549,7 @@ class Instance( Base ):
 										  notifier.Callback( _finish, request ) )
 		thread.run()
 
+	@LDAP_Connection
 	def nav_object_query( self, request ):
 		"""Returns a list of objects in a LDAP container (scope: one)
 
@@ -560,8 +567,7 @@ class Instance( Base ):
 		if 'None' != request.options.get('objectType', ''):
 			# we need to search for a specific objectType, then we should call the standard query
 			# we also need to get the correct superordinate
-			lo, po = get_ldap_connection()
-			superordinate = udm_objects.get_superordinate( request.options['objectType'], None, lo, request.options['container'] )
+			superordinate = udm_objects.get_superordinate( request.options['objectType'], None, ldap_connection, request.options['container'] )
 			if superordinate:
 				superordinate = superordinate.dn
 			request.options['superordinate'] = superordinate

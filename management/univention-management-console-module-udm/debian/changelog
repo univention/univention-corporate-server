@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.146-1) unstable; urgency=low
+
+  * use the user of the UMC session for the LDAP connection
+  * The decorator LDAP_Connection re-opens an LDAP connection if it was closed; Bug #23203
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 04 Oct 2011 17:46:57 +0200
+
 univention-management-console-module-udm (1.0.145-1) unstable; urgency=low
 
   * nav/object/query: added check for superordinate (Bug #23335)
