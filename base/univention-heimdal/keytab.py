@@ -63,7 +63,7 @@ def handler(dn, new, old):
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
 	samba4_role = ucr.get('samba4/role', '')
-	if samba4_role.upper() == 'DC':
+	if samba4_role.upper() in ('DC', 'RODC'):
 		return
 
 	if server_role == 'memberserver':

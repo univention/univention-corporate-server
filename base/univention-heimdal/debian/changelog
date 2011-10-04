@@ -1,3 +1,9 @@
+univention-heimdal (5.0.8-4) unstable; urgency=low
+
+  * listener should not handle keytab in Samba 4 RODCs (Bug #22600)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Oct 2011 10:09:10 +0200
+
 univention-heimdal (5.0.8-3) unstable; urgency=low
 
   * keytab listener module only modifies keytab on hosts that do not
