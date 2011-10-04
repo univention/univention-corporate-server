@@ -35,7 +35,6 @@
 #DEBHELPER#
 
 univention-config-registry set samba4/debug/level?2 \
-	samba4/sysvol/sync/cron?"*/5 * * * *" \
 	samba4/sysvol/sync/jitter?60
 
 if [ "$1" = "configure" ]; then

@@ -246,6 +246,8 @@ if [ "$samba4_role" = 'DC' ]; then
 	fi
 
 	/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH"	# set the xattrs to a predefined NTACL
+	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
+
 
 elif [ "$samba4_role" = "RODC" ]; then
 
@@ -316,6 +318,7 @@ elif [ "$samba4_role" = "RODC" ]; then
 	fi
 
 	/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH"	# set the xattrs to a predefined NTACL
+	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
 
 elif [ "$samba4_role" = "MEMBER" ]; then
 
