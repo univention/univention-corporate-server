@@ -132,7 +132,7 @@ class object(content):
 
 		self.elements.append(textline(_('Select your keyboard layout:'), self.minY-11, self.minX+5))
 		self.add_elem('MAPS',select(dict,self.minY-9, self.minX+5, WIDTH, HEIGHT, default_position))
-		self.add_elem('CBX', checkbox({_('Show all available keyboard layouts'):' '}, self.minY-8+HEIGHT, self.minX+5, WIDTH, 1, []))
+		self.add_elem('CBX', checkbox({_('Show all available keyboard layouts'):' '}, self.minY-8+HEIGHT, self.minX+5, 60, 1, []))
 
 		self.move_focus(self.get_elem_id('MAPS'))
 
