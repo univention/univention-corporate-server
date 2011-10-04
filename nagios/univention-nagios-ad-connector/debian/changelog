@@ -1,3 +1,10 @@
+univention-nagios-ad-connector (2.0.2-1) unstable; urgency=low
+
+  * only register nagios check with host if the UCR variable
+    nagios/client/autoregister is not "no"; Bug #14739
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 04 Oct 2011 18:50:38 +0200
+
 univention-nagios-ad-connector (2.0.1-1) unstable; urgency=low
 
   * harmonise container check in join script (Bug #23180)
