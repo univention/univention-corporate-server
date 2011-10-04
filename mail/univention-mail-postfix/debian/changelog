@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.22-1) unstable; urgency=low
+
+  * fixed delivery for shared folders (Bug #22369)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 04 Oct 2011 15:43:15 +0200
+
 univention-mail-postfix (6.0.21-1) unstable; urgency=low
 
   * rename service "Mail" to "SMTP" (Bug #2136)
