@@ -44,7 +44,7 @@ import tools
 import partition
 import user
 
-_ = umc.Translation('univention-management-console-modules-quota').translate
+_ = umc.Translation('univention-management-console-module-quota').translate
 
 class Instance(umcm.Base, partition.Commands, user.Commands):
 	def __init__(self):

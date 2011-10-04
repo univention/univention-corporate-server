@@ -38,7 +38,7 @@ import fstab
 
 import univention.management.console as umc
 
-_ = umc.Translation('univention-management-console-modules-quota').translate
+_ = umc.Translation('univention-management-console-module-quota').translate
 
 class Commands(object):
 	def quota_user_show(self, request):
