@@ -434,7 +434,7 @@ msgstr "Rechner: Windows Workstation/Server"
 
 #: windows.py:73
 msgid "Windows workstation/server name"
-msgstr "Windows Workstaation/Server Name"
+msgstr "Windows Workstation/Server Name"
 
 #: windows.py:214
 msgid "Initialize password with hostname"
