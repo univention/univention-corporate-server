@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.98-1) unstable; urgency=low
+
+  * fix univentionService rename from Mail to SMTP (Bug #2136)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 04 Oct 2011 16:49:42 +0200
+
 univention-directory-manager-modules (7.0.97-1) unstable; urgency=low
 
   * Fixed typo in german workstation translation (Bug #23476)
