@@ -1502,7 +1502,7 @@ class content:
 		#self.debug('(content)std_button')
 		if self.last[1] == 1:
 			text=_('F12-Next')
-			self.elements.append(button(text, self.pos_y+self.height-2, self.pos_x+self.width-2,align='right'))
+			next_element = button(text, self.pos_y+self.height-2, self.pos_x+self.width-2,align='right')
 		else:
 			if self.cmdline.has_key('mode') and self.cmdline['mode'] == 'setup':
 				text=_('F12-Accept changes')
@@ -1510,14 +1510,27 @@ class content:
 				text=_('F12-Start Recover Shell')
 			else:
 				text=_('F12-Start installation')
-			self.elements.append(button(text, self.pos_y+self.height-2, self.pos_x+self.width-2,align='right'))
+			next_element = button(text, self.pos_y+self.height-2, self.pos_x+self.width-2,align='right')
 		if self.last[0] == 1 :
 			text=_('F11-Back')
-			self.elements.append(button(text, self.pos_y+self.height-2, self.pos_x+4))
+			back_element = button(text, self.pos_y+self.height-2, self.pos_x+4)
 		else:
-			self.elements.append(textline('', self.pos_y+self.height-2, self.pos_x+5))
+			back_element = textline('', self.pos_y+self.height-2, self.pos_x+5)
+
+		# add new __NEXT_BUTTON__ element or overwrite existing
+		if self.elem_exists("__NEXT_BUTTON__"):
+			self.elements[self.get_elem_id("__NEXT_BUTTON__")] = next_element
+		else:
+			self.add_elem("__NEXT_BUTTON__", next_element)
+
+		# add new __BACK_BUTTON__ element or overwrite existing
+		if self.elem_exists("__BACK_BUTTON__"):
+			self.elements[self.get_elem_id("__BACK_BUTTON__")] = back_element
+		else:
+			self.add_elem("__BACK_BUTTON__", back_element)
+
 		self.current=0
-		self.elements[self.current].set_on();
+		self.elements[self.get_elem_id("__NEXT_BUTTON__")].set_on();
 
 	def layout_reset(self):
 		#self.debug('(content)layout_reset')
