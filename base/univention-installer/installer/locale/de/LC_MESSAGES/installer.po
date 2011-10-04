@@ -860,11 +860,14 @@ msgstr ""
 
 #: installer/modules/50_basis.py:321
 msgid ""
-"Samba 4 requires the fully qualified domain name to contain at least two "
-"dots (e.g. host.example.com)."
+"For Active Directory domains the fully qualified domain name must have "
+"at least two dots (e.g. host.example.com). This warning is shown only "
+"once, the installation can be continued with the name currently given."
 msgstr ""
-"Samba 4 verlangt, dass der vollständige Domänenname mindestens zwei Punkte "
-"enthält (z.B. host.example.com)."
+"Für Active Directory Domänen muss der vollständige Domänenname "
+"mindestens zwei Punkte enthalten (z.B. host.example.com). Dies ist eine "
+"einmalige Warnung, die Installation kann mit dem aktuell gewählten Namen "
+"fortgesetzt werden."
 
 #: installer/modules/50_basis.py:327
 msgid ""

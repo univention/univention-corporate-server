@@ -318,7 +318,7 @@ class object(content):
 					self.domainname_last_warning = domainname
 					if focus:
 						self.move_focus( self.get_elem_id('IN_FQDN') )
-					return _("Samba 4 requires the fully qualified domain name to contain at least two dots (e.g. host.example.com).")
+					return _("For Active Directory domains the fully qualified domain name must have at least two dots (e.g. host.example.com). This warning is shown only once, the installation can be continued with the name currently given.")
 
 		if len(hostname.strip()+domainname.strip()) >= 63:
 			if not self.ignore('hostname') and not self.ignore('domainname'):
