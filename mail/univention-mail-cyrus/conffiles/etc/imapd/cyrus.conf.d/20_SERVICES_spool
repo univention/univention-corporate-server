@@ -95,5 +95,5 @@ elif baseConfig.has_key('mail/cyrus/murder/frontends') and frontend_emailId in b
 @!@
 
 	# this one is needed for the notification services
-#notify		cmd="notifyd" listen="/var/run/cyrus/socket/notify" proto="udp" prefork=1
+#notify		cmd="notifyd -C /etc/imapd/imapd.conf" listen="/var/run/cyrus/socket/notify" proto="udp" prefork=1
 

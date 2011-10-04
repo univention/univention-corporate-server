@@ -117,7 +117,7 @@ if not remote:
 			FILE = open(sieveScript, "w")
 			FILE.writelines(sieveSpamFilter)
 			FILE.close()
-			os.system("/usr/lib/cyrus/bin/sievec %s %s" % (sieveScript, sieveBc))
+			os.system("/usr/lib/cyrus/bin/sievec -C /etc/imapd/imapd.conf %s %s" % (sieveScript, sieveBc))
 			os.symlink("default.bc", sieveLink)
 			os.chown(sieveScript, cyrusId, mailId)
 			os.chown(sieveBc, cyrusId, mailId)

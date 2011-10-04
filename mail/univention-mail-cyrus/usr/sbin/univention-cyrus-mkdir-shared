@@ -76,7 +76,7 @@ child = spawn('/usr/bin/cyradm -u %s %s' % (cyrus_user, hostname))
 i=0
 a=0
 while not i == 3:
-	i = child.expect(['IMAP Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)
+	i = child.expect(['Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)
 	if i == 0:
 		child.sendline(password)
 	elif i == 1:
