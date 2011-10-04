@@ -1,4 +1,4 @@
-univention-installer (7.0.81-2) unstable; urgency=low
+univention-installer (7.0.82-1) unstable; urgency=low
 
   * allow IPv6 addresses as DNS server (Bug #22872)
   * increased width of "more" window in networking module
