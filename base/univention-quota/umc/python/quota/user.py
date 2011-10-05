@@ -52,7 +52,6 @@ class Commands(object):
 
 	def _quota_user_show(self, pid, status, result, request):
 		devs = fstab.File()
-		lst = umcd.List()
 
 		# check user and partition option for existance
 		username = None
@@ -70,7 +69,7 @@ class Commands(object):
 		else:
 			user_quota = result[0]
 
-		self.finished(request.id(), user_quota)
+		self.finished(request.id, user_quota)
 
 	def quota_user_set(self, request):
 		tools.setquota(request.options['partition'], request.options['user'],
@@ -82,11 +81,11 @@ class Commands(object):
 	def _quota_user_set(self, pid, status, result, request):
 		if not status:
 			text = _('Successfully set quota settings')
-			self.finished(request.id(), [], report = text, success = True)
+			self.finished(request.id, [], report = text, success = True)
 		else:
 			text = _('Failed to modify quota settings for user %(user)s on partition %(partition)s') % \
 			         request.options
-			self.finished(request.id(), [], report = text, success = False)
+			self.finished(request.id, [], report = text, success = False)
 
 	def quota_user_remove(self, request):
 		if request.options['user']:
@@ -94,7 +93,7 @@ class Commands(object):
 			tools.setquota(request.options['partition'], user, 0, 0, 0, 0,
 			               notifier.Callback(self._quota_user_remove, request))
 		else:
-			self.finished(request.id(), [])
+			self.finished(request.id, [])
 
 	def _quota_user_remove(self, pid, status, result, request):
 		if not status:
@@ -104,8 +103,8 @@ class Commands(object):
 				               0, 0, 0, 0, notifier.Callback(self._quota_user_remove, request))
 				return
 			text = _('Successfully removed quota settings')
-			self.finished(request.id(), [], report = text, success = True)
+			self.finished(request.id, [], report = text, success = True)
 		else:
 			text = _('Failed to remove quota settings for user %(user)s on partition %(partition)s') % \
 			         request.options
-			self.finished(request.id(), [], report = text, success = False)
+			self.finished(request.id, [], report = text, success = False)
