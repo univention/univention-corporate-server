@@ -11,7 +11,8 @@ Architecture: all
 Depends: postfix, 
   postfix-ldap, 
   shell-univention-lib (>> 1.0.16),
-  sasl2-bin, 
+  sasl2-bin,
+  bsd-mailx,
   libpam-univentionmailcyrus, 
   univention-config-registry
 Conflicts: univention-mail, 
