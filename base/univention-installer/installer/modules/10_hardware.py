@@ -132,7 +132,7 @@ class object(content):
 		status = activity(self.minY+2,self.minX+2,20)
 
 		self.debug('not has_key cdrom_device')
-		self.elements=[]
+		self.reset_layout()
 		self.std_button()
 		cds={}
 		self.count=0

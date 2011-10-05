@@ -283,7 +283,7 @@ class object(content):
 	def layout(self):
 		self.packages=[]
 		self.categories=[]
-		self.elements=[]
+		self.reset_layout()
 
 		self._init_categories()
 		self._init_packages()

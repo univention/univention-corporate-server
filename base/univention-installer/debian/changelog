@@ -1,3 +1,9 @@
+univention-installer (7.0.85-1) unstable; urgency=low
+
+  * added reset_layout to clear layout in some modules (Bug #22869) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 05 Oct 2011 09:46:00 +0200
+
 univention-installer (7.0.84-1) unstable; urgency=low
 
   * fixed std_buttons() (Bug #22869) 

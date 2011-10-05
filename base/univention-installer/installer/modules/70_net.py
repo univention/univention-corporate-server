@@ -410,8 +410,7 @@ class object(content):
 		self.debug('layout()')
 
 		## clear layout
-		self.elements=[]
-		self.element_index={}
+		self.reset_layout()
 		self.default_ipv4_was_set = False
 
 		# add default buttons

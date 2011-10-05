@@ -245,7 +245,7 @@ class object(content):
 	def layout(self):
 		status = activity(self.minY+2,self.minX+2,20)
 
-		self.elements=[]
+		self.reset_layout()
 		self.std_button()
 		selected=[]
 
