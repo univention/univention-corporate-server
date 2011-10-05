@@ -129,12 +129,20 @@ PackageList=[
 	'Packages':
 			[
 				{
-					'Name': _('Mail server (Postfix, Cyrus IMAPd, Horde 4)'),
+					'Name': _('Mail server (Postfix, Cyrus IMAPd)'),
 					'Packages': ['univention-mail-server'],
 					'Edition': [ 'ucs' ],
-					'Active': [''], 
+					'Active': [''],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Description': _('Standard mail services with postfix and cyrus (SMTP/POP/IMAP)'),
+				},
+				{
+					'Name': _('Webmailer (Horde4)'),
+					'Packages': ['univention-horde4'],
+					'Edition': [ 'ucs' ],
+					'Active': [''],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Description': _('Groupware based on Horde4 framework'),
 				},
 				{
 					'Name': _('DHCP server'),
@@ -145,12 +153,12 @@ PackageList=[
 					'Description': _("DHCP Server"),
 				},
 				{
-					'Name': _('Print server (Cups)'),
+					'Name': _('Print server (CUPS)'),
 					'Packages': ['univention-printserver', 'cups'],
 					'Edition': [ 'ucs' ],
 					'Active': [ ],
 					'Possible': ['all'],
-					'Description': _('Print server based on cups'),
+					'Description': _('Print server based on CUPS'),
 				},
 				{
 					'Name': _('Web proxy server (Squid)'),

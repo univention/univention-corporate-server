@@ -1,3 +1,10 @@
+univention-installer (7.0.86-1) unstable; urgency=low
+
+  * use separate entries in software selection module for mailstack and
+    horde webmailer (Bug #23932)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 05 Oct 2011 14:00:56 +0200
+
 univention-installer (7.0.85-1) unstable; urgency=low
 
   * added reset_layout to clear layout in some modules (Bug #22869) 
