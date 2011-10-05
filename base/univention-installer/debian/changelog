@@ -1,5 +1,6 @@
 univention-installer (7.0.90-1) unstable; urgency=low
 
+  * set boot flag on /boot in autopartition setup (Bug #22768)
   * increased size of /boot to 300 MB (Bug #23957)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 05 Oct 2011 17:23:26 +0200
