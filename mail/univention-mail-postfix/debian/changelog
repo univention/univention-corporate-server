@@ -1,6 +1,6 @@
-univention-mail-postfix (6.0.23-2) unstable; urgency=low
+univention-mail-postfix (6.0.24-1) unstable; urgency=low
 
-  * added dependency to bsd-mailx (Bug #23815)
+  * added recommends to bsd-mailx in univention-mail-server (Bug #23815)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 05 Oct 2011 16:33:11 +0200
 
