@@ -42,9 +42,8 @@ _ = umc.Translation('univention-management-console-module-quota').translate
 
 class Commands(object):
 	def quota_user_show(self, request):
-		if request.options.has_key('partition') and \
-		   request.options.has_key('user'):
-			tools.repquota(request.options['partition'],
+		if request.options.get('partitionDevice', 'user'):
+			tools.repquota(request.options['partitionDevice'],
 			               notifier.Callback(self._quota_user_show, request),
 			               request.options['user'])
 		else:
@@ -55,11 +54,11 @@ class Commands(object):
 
 		# check user and partition option for existance
 		username = None
-		if request.options.has_key('user') and request.options['user']:
+		if request.options.get('user') and request.options['user']:
 			username = request.options['user']
 		device = None
-		if request.options.has_key('partition') and request.options['partition']:
-			device = devs.find(spec = request.options['partition'])
+		if request.options.get('partitionDevice') and request.options['partitionDevice']:
+			device = devs.find(spec = request.options['partitionDevice'])
 
 		# quota options
 		result = tools.repquota_parse(device, result)
@@ -72,7 +71,7 @@ class Commands(object):
 		self.finished(request.id, user_quota)
 
 	def quota_user_set(self, request):
-		tools.setquota(request.options['partition'], request.options['user'],
+		tools.setquota(request.options['partitionDevice'], request.options['user'],
 		               tools.byte2block(request.options['block_soft']),
 		               tools.byte2block(request.options['block_hard']),
 		               request.options['file_soft'], request.options['file_hard'],
@@ -83,14 +82,14 @@ class Commands(object):
 			text = _('Successfully set quota settings')
 			self.finished(request.id, [], report = text, success = True)
 		else:
-			text = _('Failed to modify quota settings for user %(user)s on partition %(partition)s') % \
+			text = _('Failed to modify quota settings for user %(user)s on partition %(partitionDevice)s') % \
 			         request.options
 			self.finished(request.id, [], report = text, success = False)
 
 	def quota_user_remove(self, request):
 		if request.options['user']:
 			user = request.options['user'].pop(0)
-			tools.setquota(request.options['partition'], user, 0, 0, 0, 0,
+			tools.setquota(request.options['partitionDevice'], user, 0, 0, 0, 0,
 			               notifier.Callback(self._quota_user_remove, request))
 		else:
 			self.finished(request.id, [])
@@ -99,12 +98,12 @@ class Commands(object):
 		if not status:
 			if request.options['user']:
 				user = request.options['user'].pop(0)
-				tools.setquota(request.options['partition'], user,
+				tools.setquota(request.options['partitionDevice'], user,
 				               0, 0, 0, 0, notifier.Callback(self._quota_user_remove, request))
 				return
 			text = _('Successfully removed quota settings')
 			self.finished(request.id, [], report = text, success = True)
 		else:
-			text = _('Failed to remove quota settings for user %(user)s on partition %(partition)s') % \
+			text = _('Failed to remove quota settings for user %(user)s on partition %(partitionDevice)s') % \
 			         request.options
 			self.finished(request.id, [], report = text, success = False)

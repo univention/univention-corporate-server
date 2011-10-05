@@ -43,33 +43,33 @@ import fstab
 
 _ = umc.Translation('univention-management-console-modules-quota').translate
 
-class UserQuota(object):
+class UserQuota(dict):
 	def __init__(self, partitionDevice, user, sizeLimitUsed, sizeLimitSoft,
 	             sizeLimitHard, sizeLimitTime, fileLimitUsed, fileLimitSoft,
 	             fileLimitHard, fileLimitTime):
-		self.id = '{0}@{1}'.format(partitionDevice, user)
-		self.partitionDevice = partitionDevice
-		self.user = user
-		self.sizeLimitUsed = sizeLimitUsed
-		self.sizeLimitSoft = sizeLimitSoft
-		self.sizeLimitHard = sizeLimitHard
+		self['id'] = '{0}@{1}'.format(partitionDevice, user)
+		self['partitionDevice'] = partitionDevice
+		self['user'] = user
+		self['sizeLimitUsed'] = sizeLimitUsed
+		self['sizeLimitSoft'] = sizeLimitSoft
+		self['sizeLimitHard'] = sizeLimitHard
 
-		self.fileLimitUsed = fileLimitUsed
-		self.fileLimitSoft = fileLimitSoft
-		self.fileLimitHard = fileLimitHard
+		self['fileLimitUsed'] = fileLimitUsed
+		self['fileLimitSoft'] = fileLimitSoft
+		self['fileLimitHard'] = fileLimitHard
 
 		self.set_time('sizeLimitTime', sizeLimitTime)
 		self.set_time('fileLimitTime', fileLimitTime)
 
 	def set_time(self, time, value):
 		if not value:
-			self.__dict__[time] = '-'
+			self[time] = '-'
 		elif value == 'none':
-			self.__dict__[time] = _('Expired')
+			self[time] = _('Expired')
 		elif value.endswith('days'):
-			self.__dict__[time] = _('%s Days') % value[:-4]
+			self[time] = _('%s Days') % value[:-4]
 		elif ':' in value:
-			self.__dict__[time] = value
+			self[time] = value
 
 def repquota(partition, callback, user = None):
 	args = ''
