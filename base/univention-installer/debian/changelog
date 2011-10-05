@@ -1,3 +1,9 @@
+univention-installer (7.0.90-1) unstable; urgency=low
+
+  * increased size of /boot to 300 MB (Bug #23957)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 05 Oct 2011 17:23:26 +0200
+
 univention-installer (7.0.89-1) unstable; urgency=low
 
   * fixed vga=788 kernel parameter (Bug #23767) 

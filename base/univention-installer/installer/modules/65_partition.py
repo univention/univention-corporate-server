@@ -51,7 +51,7 @@ import inspect
 import subprocess
 
 # some autopartitioning config values
-PARTSIZE_BOOT = 200           # size of /boot partition
+PARTSIZE_BOOT = 300          # size of /boot partition
 PARTSIZE_SYSTEM_MIN = 4096   # minimum free space for system
 PARTSIZE_SWAP_MIN = 192      # lower swap partition limit: 192MB
 PARTSIZE_SWAP_MAX = 2048     # limit swap partition to 2048MB
