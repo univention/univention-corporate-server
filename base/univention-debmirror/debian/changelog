@@ -1,3 +1,9 @@
+univention-debmirror (5.0.0-2) unstable; urgency=low
+
+  * Run join script and postinst with bash (Bug #23927)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 05 Oct 2011 09:13:01 +0200
+
 univention-debmirror (5.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22431)
