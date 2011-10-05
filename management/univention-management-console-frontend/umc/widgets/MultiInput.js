@@ -186,7 +186,9 @@ dojo.declare("umc.widgets.MultiInput", [
 			for (j = 0; j < this._widgets[i].length; ++j) {
 				val = this._widgets[i][j].get('value');
 				isSet = isSet || ('' !== val);
-				rowVals.push(val);
+				if (!umc.tools.inheritsFrom(this._widgets[i][j], 'umc.widgets.Button')) {
+					rowVals.push(val);
+				}
 			}
 			if (this.delimiter) {
 				// delimiter is given, represent rows as strings 
@@ -268,19 +270,34 @@ dojo.declare("umc.widgets.MultiInput", [
 			dojo.forEach(this.subtypes, function(iwidget, i) {
 				// add the widget configuration dict to the list of widgets
 				var iname = '__' + this.name + '-' + irow + '-' + i;
-				widgetConfs.push(dojo.mixin({}, iwidget, {
+				var iconf = dojo.mixin({}, iwidget, {
 					disabled: this.disabled,
 					name: iname,
 					value: '',
 					dynamicValues: dojo.partial(iwidget.dynamicValues, iname)
-				}));
+				});
+				widgetConfs.push(iconf);
 
 				// add the name of the widget to the list of widget names
 				order.push(iname);
 			}, this);
 
-			// render the widgets and layout them
+			// render the widgets
 			var widgets = umc.render.widgets(widgetConfs);
+
+			// if we have a button, we need to pass the value and index if the
+			// current element
+			umc.tools.forIn(widgets, function(ikey, iwidget) {
+				var myrow = irow;
+				if (umc.tools.inheritsFrom(iwidget, 'umc.widgets.Button') && dojo.isFunction(iwidget.callback)) {
+					var callbackOrg = iwidget.callback;
+					iwidget.callback = dojo.hitch(this, function() {
+						callbackOrg(this.get('value')[myrow], myrow);
+					});
+				}
+			}, this);
+
+			// layout widgets
 			var visibleWidgets = dojo.map(order, function(iname) {
 				return widgets[iname];
 			});

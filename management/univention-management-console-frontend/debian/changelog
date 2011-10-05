@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.77-1) unstable; urgency=low
+
+  * added property 'callback' to Button
+  * MultiList: added support for Button elements
+    (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 05 Oct 2011 18:15:55 +0200
+
 univention-management-console-frontend (1.0.76-1) unstable; urgency=low
 
   * fixed build problem with _SelectMixin (LinkList used dojo.provide instead
