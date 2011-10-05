@@ -1,3 +1,10 @@
+univention-check-printers (5.0.0-1) unstable; urgency=low
+
+  * Run univention-check-printers with bash. Otherwise the build fails, since
+    ucslint detects a bashism (Bug #23844)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 05 Oct 2011 13:26:20 +0200
+
 univention-check-printers (5.0.0-0) unstable; urgency=low
 
   * bump version for UCS 3.0

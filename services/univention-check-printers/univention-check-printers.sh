@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Check Printers
 #  script monitoring local printers and re-activates stopped printers
