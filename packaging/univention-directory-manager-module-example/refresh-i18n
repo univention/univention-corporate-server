@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 #
 # Univention I18N updater
 #  Refresh gettext entries

@@ -1,3 +1,10 @@
+univention-directory-manager-module-example (3.0.1-2) unstable; urgency=low
+
+  * Modify refresh-i18n to use bash, fixes build since ucslint detects a
+    bashism (Fixed as part of Bug #23844)	  
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 05 Oct 2011 12:30:00 +0200
+
 univention-directory-manager-module-example (3.0.1-1) unstable; urgency=low
 
   * debian/rules: Fix ucslint invocation (Bug #22431)
