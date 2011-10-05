@@ -147,27 +147,17 @@ class object(content):
 			head = _('Domain DNS Server') + ":"
 			self.elements.append(textline('%s %s' % (ljust_utf8(head, just), nameserver) , linecnt, self.minX+5))
 
-		linecnt += 1
 		extnameserver = self.all_results.get('dns_forwarder_1')
 		if extnameserver:
+			linecnt += 1
 			head = _('External DNS Server') + ":"
 			self.elements.append(textline('%s %s' % (ljust_utf8(head, just), extnameserver) , linecnt, self.minX+5))
 
 		linecnt += 2
-		internet_files=[]
-		if 'msttcorefonts' in self.all_results['packages']:
-			internet_files.append('Microsoft Fonts')
-		if 'univention-windows-installer' in self.all_results['packages']:
-			internet_files.append('Windows Installer')
-		if 'univention-flashplugin' in self.all_results['packages']:
-			internet_files.append('Flashplugin')
+		cb_val = {_('Update system after installation'): ['update_system_after_installation', 0]}
+		cb_selection = []
+		self.add_elem('CB_UPDATE', checkbox(cb_val, linecnt, self.minX+5, 55, 2, cb_selection))
 
-		if not internet_files:
-			self.elements.append(textline(_('No package will download files from the internet.'), linecnt, self.minX+5))
-		else:
-			for p in internet_files:
-				self.elements.append(textline(_('%s will download files.') % p, linecnt, self.minX+5))
-				linecnt += 1
 
 	def draw(self):
 		self.layout()
@@ -195,4 +185,7 @@ class object(content):
 
 	def result(self):
 		result={}
+		# If checkbox is off, the result of CB_UPDATE is empty, otherwise CB_UPDATE returns 'update_system_after_installation'
+		# The return value gets converted to 'true' or 'false'
+		result['update_system_after_installation'] = str(bool(self.get_elem('CB_UPDATE').result())).lower()
 		return result
