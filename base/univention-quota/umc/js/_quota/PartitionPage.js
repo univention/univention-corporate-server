@@ -111,7 +111,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 			isStandardAction: true,
 			isMultiAction: false,
 			callback: dojo.hitch(this, function() {
-				this.onShowDetailPage({'partitionDevice': this.partitionDevice});
+				this.onShowDetailPage();
 			})
 		}, {
 			name: 'configure',
@@ -120,9 +120,8 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 			isStandardAction: true,
 			isMultiAction: false,
 			callback: dojo.hitch(this, function() {
-				var userData = this._grid.getSelectedItems();
-				console.log(userData);
-				this.onShowDetailPage({'partitionDevice': this.partitionDevice, 'userData': userData});
+				var user = this._grid.getSelectedItems()[0].user;
+				this.onShowDetailPage(user);
 			})
 		}, {
 			name: 'remove',

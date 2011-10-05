@@ -109,7 +109,7 @@ def repquota_parse(partition, output):
 		#info = UserQuota(partition, grp['user'], grp['bused'], grp['bsoft'],
 		#                 grp['bhard'], grp['btime'], grp['fused'],
 		#                 grp['fsoft'], grp['fhard'], grp['ftime'])
-		result.append(grp)
+		result.append(info)
 	return result
 
 def setquota(partition, user, bsoft, bhard, fsoft, fhard, callback):

@@ -34,14 +34,15 @@ dojo.declare("umc.modules._quota.PageContainer", [ dijit.layout.StackContainer, 
 			helpText: this._('Set, unset and modify filesystem quota')
 		});
 		this.addChild(this._partitionPage);
-		this.connect(this._partitionPage, 'onShowDetailPage', function(data) {
-			this._detailPage.init(data);
+		this.connect(this._partitionPage, 'onShowDetailPage', function(user) {
+			this._detailPage.init(user);
 			this.selectChild(this._detailPage);
 		});
 	},
 
 	renderDetailPage: function() {
 		this._detailPage = new umc.modules._quota.DetailPage({
+			partitionDevice: this.partitionDevice,
 			headerText: this._('Add quota setting for a user on partition'),
 			helpText: this._('Add quota setting for a user on partition')
 		});
