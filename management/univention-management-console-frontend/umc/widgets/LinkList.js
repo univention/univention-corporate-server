@@ -4,7 +4,7 @@ dojo.provide("umc.widgets.LinkList");
 
 dojo.require("dijit.form.Button");
 dojo.require("umc.widgets.ContainerWidget");
-dojo.provide("umc.widgets._SelectMixin");
+dojo.require("umc.widgets._SelectMixin");
 dojo.require("umc.tools");
 dojo.require("umc.render");
 

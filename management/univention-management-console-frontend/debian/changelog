@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.76-1) unstable; urgency=low
+
+  * fixed build problem with _SelectMixin (LinkList used dojo.provide instead
+    of dojo.require) (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 05 Oct 2011 11:19:09 +0200
+
 univention-management-console-frontend (1.0.75-1) unstable; urgency=low
 
   * kill web server after 5 seconds if it is unwilling to terminate; Bug #22634
