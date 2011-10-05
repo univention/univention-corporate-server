@@ -772,7 +772,7 @@ class hostName(simple):
 
 class DNS_Name(simple):
 	# Regular expression for DNS entries (based on RFC 1123)
-	_re = re.compile("(^[a-zA-Z0-9])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$")
+	_re = re.compile("(^[a-zA-Z0-9])(([a-zA-Z0-9-_.]*)([a-zA-Z0-9]$))?$")
 
 	@classmethod
 	def parse(self, text):

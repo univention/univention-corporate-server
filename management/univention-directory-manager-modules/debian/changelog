@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.100-1) unstable; urgency=low
+
+  * allowing '.' in DNS entries (not hostnames); Bug #23841
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 05 Oct 2011 15:46:04 +0200
+
 univention-directory-manager-modules (7.0.99-1) unstable; urgency=low
 
   * DNS entries may start with digits; Bug #23841
