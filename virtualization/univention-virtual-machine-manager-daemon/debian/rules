@@ -39,6 +39,7 @@ clean:
 	$(MAKE) clean
 	rm -f *~
 	$(RM) debian/univention-virtual-machine-manager-daemon.conffiles
+	$(RM) debian/python-univention-virtual-machine-manager.conffiles
 	dh_clean
 
 install:
@@ -47,9 +48,6 @@ install:
 	dh_clean -k
 	dh_installdirs
 	$(MAKE) DESTDIR=debian/tmp install
-
-	install -m 0644 uvmm.py     debian/$(PACKAGE_NAME)/usr/lib/univention-directory-listener/system/
-	install -m 0755 44univention-virtual-machine-manager-daemon.inst debian/$(PACKAGE_NAME)/usr/lib/univention-install/
 
 binary-arch:
 
@@ -60,11 +58,10 @@ binary-indep: build install
 	dh_installexamples
 	dh_install --sourcedir=debian/tmp --list-missing
 	dh_pycentral -i
-	dh_installinit
+	dh_installinit --no-start
 	dh_installchangelogs
 	univention-install-config-registry
-	univention-install-config-registry-info
-	univention-install-service-info
+	chmod 0700 debian/univention-virtual-machine-manager-daemon/var/cache/univention-virtual-machine-manager-daemon
 	dh_link
 	dh_compress
 	dh_installdeb

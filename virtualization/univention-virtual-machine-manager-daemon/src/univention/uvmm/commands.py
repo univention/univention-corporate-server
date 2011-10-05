@@ -87,8 +87,6 @@ class _Commands:
 			local_data = node.node_query(request.uri)
 			if local_data is None:
 				raise CommandError('NODE_QUERY', _('unknown node %(uri)s'), uri=request.uri)
-			if local_data.conn is None:
-				raise CommandError('NODE_QUERY', _('Node %(uri)s is not available'), uri=request.uri)
 
 			pkg_data = copy.copy(local_data.pd)
 			pkg_data.domains = [d.pd for d in local_data.domains.values()]
@@ -213,12 +211,15 @@ class _Commands:
 			raise CommandError('DOMAIN_UNDEFINE', _('uri != string: %(uri)s'), uri=request.uri)
 		if not isinstance(request.domain, basestring):
 			raise CommandError('DOMAIN_UNDEFINE', _('domain != string: %(domain)s'), domain=request.domain)
-		if not isinstance(request.volumes, (list, tuple)):
-			raise CommandError('DOMAIN_UNDEFINE', _('volumes != list: %(volumes)s'), volumes=request.volumes)
-		for vol in request.volumes:
-			if not isinstance(vol, basestring):
-				raise CommandError('DOMAIN_UNDEFINE', _('volumes[] != string: %(volume)s'), volume=vol)
-		logger.debug('DOMAIN_UNDEFINE %s#%s [%s]' % (request.uri, request.domain, ','.join(request.volumes)))
+		if not request.volumes is None and not isinstance(request.volumes, (list, tuple)):
+			raise CommandError('DOMAIN_UNDEFINE', _('volumes != list or None: %(volumes)s'), volumes=request.volumes)
+		if not request.volumes is None:
+			for vol in request.volumes:
+				if not isinstance(vol, basestring):
+					raise CommandError('DOMAIN_UNDEFINE', _('volumes[] != string: %(volume)s'), volume=vol)
+			logger.debug('DOMAIN_UNDEFINE %s#%s [%s]' % (request.uri, request.domain, ','.join(request.volumes)))
+		else:
+			logger.debug('DOMAIN_UNDEFINE %s#%s None (-> all volumes will be removed)' % (request.uri, request.domain))
 		try:
 			node.domain_undefine(request.uri, request.domain, request.volumes)
 		except node.NodeError, e:
@@ -285,13 +286,25 @@ class _Commands:
 			raise CommandError('DOMAIN_SNAPSHOT_DELETE', e)
 
 	@staticmethod
+	def DOMAIN_UPDATE(server, request):
+		"""Trigger update of domain."""
+		if not isinstance(request.domain, basestring):
+			raise CommandError( 'DOMAIN_UPDATE', _('domain != string: %(domain)s'), domain=request.domain)
+		logger.debug('DOMAIN_UPDATE %s' % request.domain)
+		try:
+			node.domain_update(request.domain)
+		except node.NodeError, e:
+			raise CommandError('DOMAIN_UPDATE', e)
+
+	@staticmethod
 	def STORAGE_POOLS(server, request):
 		"""List all pools."""
 		if not isinstance(request.uri, basestring):
 			raise CommandError('STORAGE_POOLS', _('uri != string: %(uri)s'), uri=request.uri)
-		logger.debug('STORAGE_POOLS %s]' % (request.uri,))
+		logger.debug('STORAGE_POOLS %s' % (request.uri,))
 		try:
-			pools = storage.storage_pools(request.uri)
+			node_stat = node.node_query(request.uri)
+			pools = storage.storage_pools(node_stat)
 			res = protocol.Response_DUMP()
 			res.data = pools
 			return res
@@ -305,7 +318,8 @@ class _Commands:
 			raise CommandError( 'STORAGE_VOLUMES' , _( 'uri != string: %(uri)s' ), uri = request.uri )
 		logger.debug('STORAGE_VOLUMES %s]' % request.uri )
 		try:
-			volumes = storage.get_storage_volumes( request.uri, request.pool, request.type )
+			node_stat = node.node_query(request.uri)
+			volumes = storage.get_storage_volumes(node_stat, request.pool, request.type)
 			res = protocol.Response_DUMP()
 			res.data = volumes
 			return res

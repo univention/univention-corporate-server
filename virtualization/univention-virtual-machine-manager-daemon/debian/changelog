@@ -1,3 +1,916 @@
+univention-virtual-machine-manager-daemon (0.9.333-7) unstable; urgency=low
+
+  * Revert last commit and fix real problem (Ticket#: 2011092810002962)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Sep 2011 18:51:40 +0200
+
+univention-virtual-machine-manager-daemon (0.9.333-6) unstable; urgency=low
+
+  * Fix exception for unknown network interface (Ticket#: 2011092810002962)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Sep 2011 17:38:52 +0200
+
+univention-virtual-machine-manager-daemon (0.9.333-5) unstable; urgency=low
+
+  * Fix traceback in {cpu,mem}_usage calculation (Bug #23843)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Sep 2011 14:52:13 +0200
+
+univention-virtual-machine-manager-daemon (0.9.333-4) unstable; urgency=low
+
+  * Fix spelling mistake (Bug #23092)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Sep 2011 08:42:36 +0200
+
+univention-virtual-machine-manager-daemon (0.9.333-3) unstable; urgency=low
+
+  * Fix storage timeout for offline nodes (Bug #23092)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 27 Sep 2011 19:35:00 +0200
+
+univention-virtual-machine-manager-daemon (0.9.333-2) unstable; urgency=low
+
+  * Fix missing node_name for offline nodes (Bug #23092)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 27 Sep 2011 12:19:58 +0200
+
+univention-virtual-machine-manager-daemon (0.9.333-1) unstable; urgency=low
+
+  * Support offline nodes (Bug #23092)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 21 Sep 2011 09:57:57 +0200
+
+univention-virtual-machine-manager-daemon (0.9.332-1) unstable; urgency=low
+
+  * Wait after kill to prevent cron mails (Bug #22008)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Sep 2011 11:42:36 +0200
+
+univention-virtual-machine-manager-daemon (0.9.331-1) unstable; urgency=low
+
+  * Ignore disk without file sources in get_all_storage_volumes() (Bug #19574)
+  * Fix handling of volumes for 'undefine' in UVMM-CLI (Bug #22262)
+  * Correct wrong comment in protocol specification.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 31 Aug 2011 17:34:13 +0200
+
+univention-virtual-machine-manager-daemon (0.9.330-1) unstable; urgency=low
+
+  * make search case-insensitive; Bug #19576
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 31 Aug 2011 16:08:29 +0200
+
+univention-virtual-machine-manager-daemon (0.9.329-1) unstable; urgency=low
+
+  * Prohibit snapshotting suspended domains (Bug #22072)
+  * Rename "Start" to "Resume" for suspended domains (Bug #20853)
+  * Update translation and fix bad wording of new-instance-wizard title.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 31 Aug 2011 10:56:19 +0200
+
+univention-virtual-machine-manager-daemon (0.9.328-1) unstable; urgency=low
+
+  * UMC module: Limit the image names in the wizards to get a fancy
+    layout (Bug #22786)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 31 Aug 2011 07:18:10 +0200
+
+univention-virtual-machine-manager-daemon (0.9.327-2) unstable; urgency=low
+
+  * Fix bug in media change handling (Bug #21763)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 30 Aug 2011 16:57:54 +0200
+
+univention-virtual-machine-manager-daemon (0.9.327-1) unstable; urgency=low
+
+  * Remember last selections and inputs in DriveWizard (Bug #21763)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 30 Aug 2011 10:32:57 +0200
+
+univention-virtual-machine-manager-daemon (0.9.326-1) unstable; urgency=low
+
+  * Add missing update of xen profiles with rtcoffset (svn23656, Bug #22033)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 29 Aug 2011 13:26:46 +0200
+
+univention-virtual-machine-manager-daemon (0.9.325-1) unstable; urgency=low
+
+  * Redirect error message from kill in uvmmd-check.sh to prevent cron
+    mails (Bug #22008)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 26 Aug 2011 12:18:19 +0200
+
+univention-virtual-machine-manager-daemon (0.9.324-2) unstable; urgency=low
+
+  * Also add icon in drive wizard (Bug #23417)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 25 Aug 2011 13:19:57 +0200
+
+univention-virtual-machine-manager-daemon (0.9.324-1) unstable; urgency=low
+
+  * Fix creating local device (Bug #21763)
+  * Fix spelling of en_GB (Bug #22964)
+  * Update translation.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 25 Aug 2011 13:13:14 +0200
+
+univention-virtual-machine-manager-daemon (0.9.323-1) unstable; urgency=low
+
+  * UMC module: add icon to all add buttons (snapshos, drives and network interfaces); Bug #23417
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 24 Aug 2011 12:25:56 +0200
+
+univention-virtual-machine-manager-daemon (0.9.322-1) unstable; urgency=low
+
+  * Update multi-threaded (Bug #23088)
+  * src/univention/uvmm/eventloop.py: Synchronize
+  	331d7b09a7724528bf398bc4043648e01203960f from upstream.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 23 Aug 2011 15:56:52 +0200
+
+univention-virtual-machine-manager-daemon (0.9.321-1) unstable; urgency=low
+
+  * Implement disk/source change (Bug #21763)
+    - Change <disk>-identifier from source/@file|@dev to target/@dev.
+    - Handle <source> elements for empty CDROM/floppy drives.
+    - Allow changeing of contact, description, os, VNC password.
+  * Rewrite DriveWizard:
+    - Only check in next()
+    - Update page in setup()
+  * Fix Xen-arch bug on change (Bug #22004)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 19 Aug 2011 17:33:39 +0200
+
+univention-virtual-machine-manager-daemon (0.9.320-2) unstable; urgency=low
+
+  * Revert part of accidental svn26114 to wizards.py (Bug #22002)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 16 Aug 2011 10:40:29 +0200
+
+univention-virtual-machine-manager-daemon (0.9.320-1) unstable; urgency=low
+
+  * Log start of UVMMd in u/v-m-m-d-errors.log (Bug #22002)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Aug 2011 16:13:57 +0200
+
+univention-virtual-machine-manager-daemon (0.9.319-2) unstable; urgency=low
+
+  * Depend on newer u-v-m-m-schema for rtcoffset (Bug #22033)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Aug 2011 11:31:50 +0200
+
+univention-virtual-machine-manager-daemon (0.9.319-1) unstable; urgency=low
+
+  * Depend on newer u-v-m-m-schema for rtcoffset (Bug #22033)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Aug 2011 10:29:24 +0200
+
+univention-virtual-machine-manager-daemon (0.9.318-1) unstable; urgency=low
+
+  * Don't display the architecture field on a xen machine (Bug #22004)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 Aug 2011 10:31:38 +0200
+
+univention-virtual-machine-manager-daemon (0.9.317-1) unstable; urgency=low
+
+  * Wait for VNC server after start (Bug #22034, Bug #19174)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2011 19:00:03 +0200
+
+univention-virtual-machine-manager-daemon (0.9.316-1) unstable; urgency=low
+
+  * Re-link client certificates in join script (Bug #22509)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2011 15:54:17 +0200
+
+univention-virtual-machine-manager-daemon (0.9.315-1) unstable; urgency=low
+
+  * Add missing convert of /domain/devices/disk/driver/@cache to Disk.CACHE_*
+    identifier (Bug #23125)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Aug 2011 10:56:04 +0200
+
+univention-virtual-machine-manager-daemon (0.9.314-1) unstable; urgency=low
+
+  * Added a timeout parameter for univention-virtual-machine-manager to
+    avoid endless blocking for domain updates (Bug #22777, Bug #22788)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 27 Jul 2011 07:14:44 +0200
+
+univention-virtual-machine-manager-daemon (0.9.313-1) unstable; urgency=low
+
+  * updated german translation; Bug #21927
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 26 Jul 2011 09:28:28 +0200
+
+univention-virtual-machine-manager-daemon (0.9.312-2) unstable; urgency=low
+
+  * Support more VNC keyboad layouts (Bug #22964)
+  * Fix VNC port parsing in UVMM-CLI (Bug #22362)
+  * Kill uvmm-cli-process by PID, not by name.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 26 Jul 2011 09:43:13 +0200
+
+univention-virtual-machine-manager-daemon (0.9.312-1) unstable; urgency=low
+
+  * Don't restart UVMMd too fast (Bug #21935)
+  * Remove set -e from postinst
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Jul 2011 08:04:15 +0200
+
+univention-virtual-machine-manager-daemon (0.9.311-1) unstable; urgency=low
+
+  * Merge from DVS scope (Bug #22788, Bug #22786):
+   [ Stefan Gohmann ]
+    * Added two timeout parameters to UVMM_ClientSSLSocket: ssl_timeout and
+      tcp_timeout (Bug #22416)
+    * UMC module: Limit the image name to get a fancy layout (Bug #22787)
+   [ Arvid Requate ]
+    * don't wait for uvmm cli process to finish, to avoid blocking of
+      listener (Bug #22778)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Jul 2011 06:48:46 +0200
+
+univention-virtual-machine-manager-daemon (0.9.310-1) unstable; urgency=low
+
+  * Redirect stdout and stderr in uvmm-check.sh to prevent cron mails
+    (Bug #22008)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Jul 2011 06:39:52 +0200
+
+univention-virtual-machine-manager-daemon (0.9.309-1) unstable; urgency=low
+
+  * Restart UVMMd in 44univention-virtual-machine-manager-daemon.inst
+    (Bug #21935)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Jul 2011 06:33:43 +0200
+
+univention-virtual-machine-manager-daemon (0.9.308-1) unstable; urgency=low
+
+  * add a regular expression to the memory size setting of a virtual
+    instance to ensure the given value is valid; Bug #21927
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 25 Jul 2011 16:24:39 +0200
+
+univention-virtual-machine-manager-daemon (0.9.307-1) unstable; urgency=low
+
+  * ensure that missing domain information will not crash the backend; Bug #21956
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 25 Jul 2011 14:57:25 +0200
+
+univention-virtual-machine-manager-daemon (0.9.306-1) unstable; urgency=low
+
+  * search function: fixed node button and sort the result list; Bug #19576
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 21 Apr 2011 17:28:44 +0200
+
+univention-virtual-machine-manager-daemon (0.9.305-1) unstable; urgency=low
+
+  * Add configuration for RTC-offset (Bug #22033, Bug #22259)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 21 Apr 2011 09:33:58 +0200
+
+univention-virtual-machine-manager-daemon (0.9.304-1) unstable; urgency=low
+
+  * Allow UUID of new domains to be pre-configured (Bug #22270)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Apr 2011 16:09:09 +0200
+
+univention-virtual-machine-manager-daemon (0.9.303-1) unstable; urgency=low
+
+  * fixed type test for the volumes arguments to DOMAIN_UNDEFINE (None is
+    allowed also); Bug #22262
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 19 Apr 2011 11:33:51 +0200
+
+univention-virtual-machine-manager-daemon (0.9.302-1) unstable; urgency=low
+
+  * Fix error message on redefinition (Bug #22218)
+  * Wait for update after state transition (Bug #19174)
+  * Fix comparison for None.
+  * Throw more specific ValueError instead of Exception.
+  * Fix bad English wording.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 14 Apr 2011 08:24:39 +0200
+
+univention-virtual-machine-manager-daemon (0.9.301-1) unstable; urgency=low
+
+  * Allow the users of UVMM Nodes to logon to uvmm (Bug #22215)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 13 Apr 2011 20:08:30 +0200
+
+univention-virtual-machine-manager-daemon (0.9.300-2) unstable; urgency=low
+
+  * UMC module: add a search function; Bug #19576
+  * bump version for UCS 2.4-3
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 06 Apr 2011 09:05:26 +0200
+
+univention-virtual-machine-manager-daemon (0.9.215-1) unstable; urgency=low
+
+  * Set CDROM as pv device for xen profiles (Bug #19136)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Apr 2011 15:09:06 +0200
+
+univention-virtual-machine-manager-daemon (0.9.214-1) unstable; urgency=low
+
+  * Allow snapshots for instance which use a floppy device (Bug #22061)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Apr 2011 08:48:46 +0200
+
+univention-virtual-machine-manager-daemon (0.9.213-1) unstable; urgency=low
+
+  * Initialize driver_pv while adding a floppy device. This prevents a
+    python exception (Bug #19136)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Apr 2011 07:56:48 +0200
+
+univention-virtual-machine-manager-daemon (0.9.212-1) unstable; urgency=low
+
+  * fixed typo in join script; Bug #19136
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 31 Mar 2011 10:49:20 +0200
+
+univention-virtual-machine-manager-daemon (0.9.211-1) unstable; urgency=low
+
+  * interpret new profile option pvcdrom; Bug #19136
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 31 Mar 2011 09:32:27 +0200
+
+univention-virtual-machine-manager-daemon (0.9.210-1) unstable; urgency=low
+
+  * UCS KVM profiles: do not use para-virtual devices; Bug #19136
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 30 Mar 2011 17:15:19 +0200
+
+univention-virtual-machine-manager-daemon (0.9.209-1) unstable; urgency=low
+
+  * change default for 'on reboot' from destroy to restart; Bug #20253
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 30 Mar 2011 14:43:33 +0200
+
+univention-virtual-machine-manager-daemon (0.9.208-1) unstable; urgency=low
+
+  * fixed typo in error message; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 29 Mar 2011 15:14:33 +0200
+
+univention-virtual-machine-manager-daemon (0.9.207-1) unstable; urgency=low
+
+  * activate required networks when starting an instance; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 29 Mar 2011 11:46:15 +0200
+
+univention-virtual-machine-manager-daemon (0.9.206-1) unstable; urgency=low
+
+  * Xen PV profiles: activate flags fpr para-virtual disks and interfaces;
+  * explicitly set bus ide if profile for Xen PV requests fully
+    virtualizied devices; Bug #19136
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Mar 2011 13:31:32 +0200
+
+univention-virtual-machine-manager-daemon (0.9.205-1) unstable; urgency=low
+
+  * automatically activate network 'default' if required; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Mar 2011 12:10:26 +0200
+
+univention-virtual-machine-manager-daemon (0.9.204-1) unstable; urgency=low
+
+  * Reset currentMemory on memory changes (Bug #20253)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 Mar 2011 11:28:26 +0200
+
+univention-virtual-machine-manager-daemon (0.9.203-2) unstable; urgency=low
+
+  * changed default value for uvmm/check/timeout in postinst script from 5 to 
+    10 seconds (Bug #21998)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Mar 2011 16:49:55 +0100
+
+univention-virtual-machine-manager-daemon (0.9.203-1) unstable; urgency=low
+
+  * Fix handling of Block Device Storage Pools (Bug #19574)
+  * Add Cancel to remote & detach block device confirmation dialog (Bug #21264)
+  * Update translations.
+  * Onyl suggest file based disks for deletion (Bug #19561)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 25 Mar 2011 11:04:22 +0100
+
+univention-virtual-machine-manager-daemon (0.9.202-1) unstable; urgency=low
+
+  * Fixed description related to /dev (Bug #19574)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Mar 2011 09:02:14 +0100
+
+univention-virtual-machine-manager-daemon (0.9.201-1) unstable; urgency=low
+
+  * Undo r23086 which breaks LVM support. Do not strip /dev from block
+    device name (Bug #19574)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Mar 2011 08:16:41 +0100
+
+univention-virtual-machine-manager-daemon (0.9.200-1) unstable; urgency=low
+
+  * fixed typo in exception name; Bug #21947
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 Mar 2011 17:18:24 +0100
+
+univention-virtual-machine-manager-daemon (0.9.199-1) unstable; urgency=low
+
+  * updated description for adding block devices; Bug #19574
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 Mar 2011 17:13:37 +0100
+
+univention-virtual-machine-manager-daemon (0.9.198-1) unstable; urgency=low
+
+  * floppy drives and block devices can not be modified
+  * default NIC driver for xen pv instances is 'netfront'
+  * by default do not suggest to remove device files when deleting an
+    instance
+  * KVM: floppies and block devices may not use virtio
+  * Xen PV: block devices must be attached as pv devices; Bug #19574
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 Mar 2011 17:01:15 +0100
+
+univention-virtual-machine-manager-daemon (0.9.197-1) unstable; urgency=low
+
+  * Keep modifications to Domain XML (Bug #20253)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Mar 2011 14:49:43 +0100
+
+univention-virtual-machine-manager-daemon (0.9.196-1) unstable; urgency=low
+
+  * reset drive wizard values before each invocation; Bug #21718
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 22 Mar 2011 09:51:14 +0100
+
+univention-virtual-machine-manager-daemon (0.9.195-1) unstable; urgency=low
+
+  * if no interface model is set, the default is rtl8139; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 22 Mar 2011 08:58:57 +0100
+
+univention-virtual-machine-manager-daemon (0.9.194-1) unstable; urgency=low
+
+  * allow modifying the configuration of an instance if snapshots available; Bug #21636
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 22 Mar 2011 08:39:05 +0100
+
+univention-virtual-machine-manager-daemon (0.9.193-1) unstable; urgency=low
+
+  * permissions for volumes (owner and group) must be set as numeric IDs; Bug #21529
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 21 Mar 2011 16:49:11 +0100
+
+univention-virtual-machine-manager-daemon (0.9.192-1) unstable; urgency=low
+
+  * fixed automatic allaction of drive device names
+  * add device bus fdc for floppy drives
+  * update german translation
+  * drive wizard: support floppy drives; Bug #19515
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 21 Mar 2011 15:47:03 +0100
+
+univention-virtual-machine-manager-daemon (0.9.191-1) unstable; urgency=low
+
+  * strip /dev/ from block device options in web frontend
+  * if entered path for block device is not absolute prepend /dev/; Bug #19574
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 18 Mar 2011 17:25:25 +0100
+
+univention-virtual-machine-manager-daemon (0.9.190-1) unstable; urgency=low
+
+  * The profile options for para-virtual devices were not interpreted anymore
+  * reduce list of NIC drivers
+  * always show driver in NIC overview; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 18 Mar 2011 16:25:25 +0100
+
+univention-virtual-machine-manager-daemon (0.9.189-1) unstable; urgency=low
+
+  * Make the migration layout more standard (Bug #21865)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Mar 2011 16:19:41 +0100
+
+univention-virtual-machine-manager-daemon (0.9.188-1) unstable; urgency=low
+
+  * Don't overwrite the group parameter for the migration command,
+    because the group parameter is needed to build the tree (Bug #21865
+    and Bug #20901)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Mar 2011 15:31:37 +0100
+
+univention-virtual-machine-manager-daemon (0.9.187-1) unstable; urgency=low
+
+  * Skip unavailable nodes in treeview (Bug #21743)
+  * Also store description in XML domain data for debugging.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Mar 2011 11:45:58 +0100
+
+univention-virtual-machine-manager-daemon (0.9.186-3) unstable; urgency=low
+
+  * Split help text into three rows (Bug #21879)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 18 Mar 2011 13:43:59 +0100
+
+univention-virtual-machine-manager-daemon (0.9.186-2) unstable; urgency=low
+
+  * Added missing check script from last commit (Bug #21874)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Mar 2011 10:48:38 +0100
+
+univention-virtual-machine-manager-daemon (0.9.186-1) unstable; urgency=low
+
+  * Added a simple uvmmd check scripts which restarts the uvmmd if the
+    daemon does not answer. Self-healing software ... (Bug #21874)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Mar 2011 10:23:30 +0100
+
+univention-virtual-machine-manager-daemon (0.9.185-2) unstable; urgency=low
+
+  * Add help text to hard disk settings dialogue (Bug #21879)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 18 Mar 2011 08:55:22 +0100
+
+univention-virtual-machine-manager-daemon (0.9.185-1) unstable; urgency=low
+
+  * The function get_node_info already checks if a UMC error occurs and do
+    some more checks before using node_info (Bug #21712)
+  * Prevent a keyerror exception (Bug #21701)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Mar 2011 12:23:44 +0100
+
+univention-virtual-machine-manager-daemon (0.9.184-1) unstable; urgency=low
+
+  * Only consider servers with the same virtualization technology for
+    the migration (Bug #20901)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Mar 2011 09:45:17 +0100
+
+univention-virtual-machine-manager-daemon (0.9.183-1) unstable; urgency=low
+
+  * Show migration button only if more than one physical server is
+    available (Bug #20901)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Mar 2011 08:16:01 +0100
+
+univention-virtual-machine-manager-daemon (0.9.182-1) unstable; urgency=low
+
+  * Added the arch automatic and change the default 32 bit profiles to
+    this arch. On a i386 physical server those VMs will be created as 64
+    bit systems. So the virtualisation technologie must not emulate a 32
+    bit CPU which will fail in some cases (Bug #21383)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Mar 2011 07:21:45 +0100
+
+univention-virtual-machine-manager-daemon (0.9.181-1) unstable; urgency=low
+
+  * Only log CRITICAL errors to stderr by default (Bug #21662)
+  * Improve internal exception logging.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Mar 2011 12:25:44 +0100
+
+univention-virtual-machine-manager-daemon (0.9.180-2) unstable; urgency=low
+
+  * Fix typo (Bug #19788)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 15 Mar 2011 15:29:19 +0100
+
+univention-virtual-machine-manager-daemon (0.9.180-1) unstable; urgency=low
+
+  * Some more minor layout issues for the domain view (Bug #21617)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Mar 2011 09:05:42 +0100
+
+univention-virtual-machine-manager-daemon (0.9.179-1) unstable; urgency=low
+
+  * Changes for the node overview site: (Bug #21617, Bug #20018)
+    - change padding
+    - put CPU usage and memory usage in one line
+    - add the hostname to the section
+    - show the description in the tooltip
+    - cut the VM name at 22 chars
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Mar 2011 06:50:22 +0100
+
+univention-virtual-machine-manager-daemon (0.9.178-1) unstable; urgency=low
+
+  * Fix network driver selection (Bug #19573)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Mar 2011 14:35:26 +0100
+
+univention-virtual-machine-manager-daemon (0.9.177-1) unstable; urgency=low
+
+  * debian/control: Fix dependencies and recommend UMC (Bug #21783)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Mar 2011 11:49:22 +0100
+
+univention-virtual-machine-manager-daemon (0.9.176-1) unstable; urgency=low
+
+  * Handle SIGHUP using runit (Bug #20465)
+  * Quote logfile name (Bug #21663)
+  * Fix spelling mistake 'be_c_ause' (Bug #20901)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Mar 2011 11:15:45 +0100
+
+univention-virtual-machine-manager-daemon (0.9.175-1) unstable; urgency=low
+
+  * added package "Recommends:" to univention-nagios-uvmmd (Bug #21328)
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Mar 2011 11:02:38 +0100
+
+univention-virtual-machine-manager-daemon (0.9.174-1) unstable; urgency=low
+
+  * Restart uvmmd only if the join was successful (Bug #21633)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Mar 2011 09:55:47 +0100
+
+univention-virtual-machine-manager-daemon (0.9.173-1) unstable; urgency=low
+
+  * Added univention-virtual-machine-manager-schema as dependency
+    (Bug #21740, Bug #21690)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Mar 2011 09:33:24 +0100
+
+univention-virtual-machine-manager-daemon (0.9.172-1) unstable; urgency=low
+
+  * Rename the xen profile too (Bug #19133)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Mar 2011 08:24:36 +0100
+
+univention-virtual-machine-manager-daemon (0.9.171-1) unstable; urgency=low
+
+  * Rename KVM profiles from Univention Corporate Server 2.4 to UCS 2.4
+    (Bug #19133)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Mar 2011 08:18:45 +0100
+
+univention-virtual-machine-manager-daemon (0.9.170-1) unstable; urgency=low
+
+  * Added description into the the wizard (Bug #20018)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Mar 2011 07:54:42 +0100
+
+univention-virtual-machine-manager-daemon (0.9.169-1) unstable; urgency=low
+
+  * Show the image size and a more meaningful description for the driver
+    type (Bug #21591)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Mar 2011 07:24:50 +0100
+
+univention-virtual-machine-manager-daemon (0.9.168-1) unstable; urgency=low
+
+  * Disable PXE-BIOS when networks-boot is not selected (Bug #20898)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Mar 2011 16:24:15 +0100
+
+univention-virtual-machine-manager-daemon (0.9.167-1) unstable; urgency=low
+
+  * Check if driver_pv is set to '1' for paravirtualization (Bug #21591)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Mar 2011 15:17:41 +0100
+
+univention-virtual-machine-manager-daemon (0.9.166-2) unstable; urgency=low
+
+  * Fixed typo in german translation (Bug #20068)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Mar 2011 09:32:59 +0100
+
+univention-virtual-machine-manager-daemon (0.9.166-1) unstable; urgency=low
+
+  * Show a message if the CPU extension is missing and show only
+    supported profiles (Bug #20068)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Mar 2011 09:20:48 +0100
+
+univention-virtual-machine-manager-daemon (0.9.165-1) unstable; urgency=low
+
+  * Fix support for default PXE-boot with KVM (Bug #20898)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Mar 2011 08:54:07 +0100
+
+univention-virtual-machine-manager-daemon (0.9.164-1) unstable; urgency=low
+
+  * Removed needless parameter for uvmm.domain_configure (Bug #21591)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Mar 2011 06:43:08 +0100
+
+univention-virtual-machine-manager-daemon (0.9.163-1) unstable; urgency=low
+
+  * code cleanup
+  * minor fixes in layout; Bug #21677
+  * support editing of interfaces and drives; Bug #21591
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 07 Mar 2011 18:05:57 +0100
+
+univention-virtual-machine-manager-daemon (0.9.162-1) unstable; urgency=low
+
+  * Fixed new socket creation from last commit (Bug #20375)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Mar 2011 17:07:26 +0100
+
+univention-virtual-machine-manager-daemon (0.9.161-1) unstable; urgency=low
+
+  * Create a new socket to uvmmd if the send failed (Bug #20375)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Mar 2011 14:12:03 +0100
+
+univention-virtual-machine-manager-daemon (0.9.160-1) unstable; urgency=low
+
+  * uvmm_ldap.py: cleanup ldap code and use the new getMachineConnection
+    funktion (Bug #21559)
+  * removed --ldap-base option from univention-virtual-machine-manager
+    and univention-virtual-machine-manager-daemon (Bug #21559)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Mar 2011 10:28:54 +0100
+
+univention-virtual-machine-manager-daemon (0.9.159-1) unstable; urgency=low
+
+  * diskspace: fixed traceback if no profile was selected (Bug #21517)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Mar 2011 06:20:18 +0100
+
+univention-virtual-machine-manager-daemon (0.9.158-1) unstable; urgency=low
+
+  * show interpreted amount of memory in summary of instance wizard; Bug #19151
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 03 Mar 2011 15:57:22 +0100
+
+univention-virtual-machine-manager-daemon (0.9.157-1) unstable; urgency=low
+
+  * reduce paddings to fix layout issues; Bug #21617
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 03 Mar 2011 14:42:15 +0100
+
+univention-virtual-machine-manager-daemon (0.9.156-1) unstable; urgency=low
+
+  * Fix exception during rename 2 (Bug #21677, Bug #21701)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 03 Mar 2011 10:32:50 +0100
+
+univention-virtual-machine-manager-daemon (0.9.155-1) unstable; urgency=low
+
+  * Do not change the RAM setting in the UVMM profiles if
+    uvmm/profile/autoupdate is set to false (Bug #21517)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Mar 2011 09:41:11 +0100
+
+univention-virtual-machine-manager-daemon (0.9.154-1) unstable; urgency=low
+
+  * Added disk space to the UVMM profiles (Bug #21517)
+  * Change default values for ram in the profiles to the system
+    requirements (Bug #21517)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Mar 2011 09:20:14 +0100
+
+univention-virtual-machine-manager-daemon (0.9.153-1) unstable; urgency=low
+
+  * Fix exception during rename (Bug #21677)
+  * Update German translations.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 01 Mar 2011 12:40:15 +0100
+
+univention-virtual-machine-manager-daemon (0.9.152-1) unstable; urgency=low
+
+  * Ignore EOF detected by OpenSSL (Bug #20467)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 01 Mar 2011 09:58:16 +0100
+
+univention-virtual-machine-manager-daemon (0.9.151-1) unstable; urgency=low
+
+  * removed network interface configuration from the settings section; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 01 Mar 2011 09:23:48 +0100
+
+univention-virtual-machine-manager-daemon (0.9.150-1) unstable; urgency=low
+
+  * Remove saved state on VM deletion (Bug #21564)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 01 Mar 2011 08:27:44 +0100
+
+univention-virtual-machine-manager-daemon (0.9.149-1) unstable; urgency=low
+
+  * Exec the runit job (Bug #21663)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 01 Mar 2011 08:18:37 +0100
+
+univention-virtual-machine-manager-daemon (0.9.148-1) unstable; urgency=low
+
+  * drive wizard: add option to create paravirtual drives; Bug #21591
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Feb 2011 17:24:21 +0100
+
+univention-virtual-machine-manager-daemon (0.9.147-1) unstable; urgency=low
+
+  * Start uvmmd via runit (Bug #21663)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Feb 2011 16:51:48 +0100
+
+univention-virtual-machine-manager-daemon (0.9.146-2) unstable; urgency=low
+
+  * Change logfile to /var/log/univention/uvmmd.log (Bug #21662)
+  * Properly close files to synchronize for Python sanity.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 Feb 2011 12:11:50 +0100
+
+univention-virtual-machine-manager-daemon (0.9.146-1) unstable; urgency=low
+
+  * Log STDOUT, STDERR to file and re-open on SIGHUP (Bug #21662)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 Feb 2011 10:35:23 +0100
+
+univention-virtual-machine-manager-daemon (0.9.145-1) unstable; urgency=low
+
+  * Convert logrotate file to template (Bug #20465)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 Feb 2011 08:27:40 +0100
+
+univention-virtual-machine-manager-daemon (0.9.144-1) unstable; urgency=low
+
+  * By default UVMM creates Xen images as blktap2 devices. If the UCR
+    variable uvmm/xen/images/tap2 is set to false the old loopback
+    device will be used (Bug #19345)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Feb 2011 20:34:38 +0100
+
+univention-virtual-machine-manager-daemon (0.9.143-1) unstable; urgency=low
+
+  * Reopen logfiles on SIGHUP (Bug #20465)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 25 Feb 2011 10:29:25 +0100
+
+univention-virtual-machine-manager-daemon (0.9.142-1) unstable; urgency=low
+
+  * Fix s/domStat/dom_stat/ (Bug #21658)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 25 Feb 2011 09:47:08 +0100
+
+univention-virtual-machine-manager-daemon (0.9.141-1) unstable; urgency=low
+
+  * fixed a problem creating new network interfaces; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 20 Feb 2011 13:10:59 +0100
+
+univention-virtual-machine-manager-daemon (0.9.140-1) unstable; urgency=low
+
+  * shorten operating system in UCS profiles
+  * UMC modul: do not wrap operating system field; Bug #19133
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 20 Feb 2011 12:27:40 +0100
+
+univention-virtual-machine-manager-daemon (0.9.139-1) unstable; urgency=low
+
+  * use machine account to write instance information to the LDAP server; Bug #21560
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 11 Feb 2011 09:17:58 +0100
+
+univention-virtual-machine-manager-daemon (0.9.138-1) unstable; urgency=low
+
+  * Fix PacketError handling (Bug #21534)
+  * Fix common UVMM API (Bug #21331)
+  * Reduce number of LDAP queries (Bug #19319)
+  * Rename listener script for consistency.
+  * debian/control: Fix descriptions and dependencies.
+  * debian/rules, Makefile: Prepare for debhelper7.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Feb 2011 13:03:31 +0100
+
+univention-virtual-machine-manager-daemon (0.9.137-1) unstable; urgency=low
+
+  * add UCR variables uvmm/volume/permissions/(mode|owner|group) to set
+    the permissions for newly created hard drive images; Bug #21529
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 09 Feb 2011 19:20:56 +0100
+
+univention-virtual-machine-manager-daemon (0.9.136-1) unstable; urgency=low
+
+  * Implement common function as UVMM API (Bug #21331)
+  * debian/control: Tighten dependency between UVMM packages.
+  * Add support for PXE-boot with KVM (Bug #20898)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 09 Feb 2011 15:14:36 +0100
+
+univention-virtual-machine-manager-daemon (0.9.135-1) unstable; urgency=low
+
+  * UMC drive wizard: verify that drive device is set; Bug #19574
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 08 Feb 2011 16:43:39 +0100
+
+univention-virtual-machine-manager-daemon (0.9.134-1) unstable; urgency=low
+
+  * extend LDAP filter for search of manageable hosts: ensure that the
+    host should be managed by this node; Bug #19532
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 07 Feb 2011 15:45:29 +0100
+
+univention-virtual-machine-manager-daemon (0.9.133-1) unstable; urgency=low
+
+  * add link to SDB article explaining the network interface settings
+  * adapt german translation; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 07 Feb 2011 09:07:44 +0100
+
 univention-virtual-machine-manager-daemon (0.9.132-1) unstable; urgency=low
 
   * fixed a problem with translations in the boot device list; Bug #20887

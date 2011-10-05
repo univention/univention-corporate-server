@@ -32,9 +32,11 @@
 # <http://www.gnu.org/licenses/>.
 
 import copy
+import operator
 
 import univention.management.console as umc
 import univention.management.console.dialog as umcd
+from uvmmd import Client
 
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
@@ -86,10 +88,49 @@ class ArchSelect( umc.StaticSelection ):
 	def update_choices( self, types ):
 		self._choices = types
 
+class SearchOptions( umc.StaticSelection ):
+	"""List of search options."""
+	def choices( self ):
+		return ( ( 'all', _( 'All' ) ), ( 'nodes', _( 'Physical servers' ) ), ( 'domains', _( 'Instance names' ) ), ( 'contacts', _( 'Contact information' ) ), ( 'descriptions', _( 'Descriptions' ) ) )
+
 class KBLayoutSelect( umc.StaticSelection ):
 	"""List of keyboard layouts."""
 	def choices( self ):
-		return ( ( 'de', _( 'German' ) ), ( 'en-us', _( 'American' ) ) )
+		return (
+				('ar', _('Arabic')),
+				('da', _('Danish')),
+				('de', _('German')),
+				('de-ch', _('German-Switzerland')),
+				('en-gb', _('English-Britain')),
+				('en-us', _('English-America')),
+				('es', _('Spanish')),
+				('et', _('Estonian')),
+				('fi', _('Finnish')),
+				('fo', _('Faroese')),
+				('fr', _('French')),
+				('fr-be', _('French-Belgium')),
+				('fr-ca', _('French-Canada')),
+				('fr-ch', _('French-Switzerland')),
+				('hr', _('Croatian')),
+				('hu', _('Hungarian')),
+				('is', _('Icelandic')),
+				('it', _('Italian')),
+				('ja', _('Japanese')),
+				('lt', _('Lithuanian')),
+				('lv', _('Latvian')),
+				('mk', _('Macedonian')),
+				('nl', _('Dutch')),
+				('nl-be', _('Dutch-Belgium')),
+				('no', _('Norwegian')),
+				('pl', _('Polish')),
+				('pt', _('Portuguese')),
+				('pt-br', _('Portuguese-Brasil')),
+				('ru', _('Russian')),
+				('sl', _('Slovene')),
+				('sv', _('Swedish')),
+				('th', _('Thai')),
+				('tr', _('Turkish')),
+				)
 
 class BootDeviceSelect( umc.StaticSelection ):
 	"""List of devices to boot from."""
@@ -111,51 +152,57 @@ class NumberSelect( umc.StaticSelection ):
 
 class DriveTypeSelect( umc.StaticSelection ):
 	"""List of block device types."""
+	def __init__( self ):
+		self.floppies = True
+		self._types = ( ( 'disk', _( 'Hard drive' ) ), ( 'cdrom', _( 'CD/DVD-ROM' ) ) )
+		umc.StaticSelection.__init__( self, _( 'Type of drive' ) )
+
 	def choices( self ):
-		return ( ( 'disk', _( 'Hard drive' ) ), ( 'cdrom', _( 'CD/DVD-ROM' ) ) )
+		if self.floppies:
+			return self._types + ( ( 'floppy', _( 'Floppy drive' ) ), )
+
+		return self._types
 
 class NIC_DriverSelect( umc.StaticSelection ):
 	"""List of network interface drivers."""
 	def __init__( self, virttech = None ):
 		umc.StaticSelection.__init__( self, _( 'Driver' ) )
 		self.virttech = virttech
-		self._xen = ( ( 'auto', _( 'Automatic' ) ),
-					   ( 'netfront', _( 'Para virtual Device' ) ),
-					   ( 'rtl8139', 'RealTek RTL-8139' ),
+		self._list = ( ( 'rtl8139', _( 'Default (RealTek RTL-8139)' ) ),
 					   ( 'e1000', 'Intel PRO/1000' ),
-					   ( 'ne2k_pci', 'PCI NE2000' ),
-					   ( 'pcnet', 'PCnet32, PCnetPCI' )
 					   )
-		self._kvm = ( ( 'auto', _( 'Automatic' ) ),
-					   ( 'virtio', _( 'Para virtual Device' ) ),
-					   ( 'rtl8139', 'RealTek RTL-8139' ),
-					   ( 'e1000', 'Intel PRO/1000' ),
-					   ( 'i82551', 'Intel 82551' ),
-					   ( 'i82557b', 'Intel EtherExpress Pro 10/100B' ),
-					   ( 'i82559er', 'Intel 82559ER' ),
-					   ( 'ne2k_pci', 'PCI NE2000' ),
-					   ( 'pcnet', 'PCnet32, PCnetPCI' )
-					   )
+		self._xen = ( ( 'netfront', _( 'Paravirtual device (xen)' ) ), )
+		self._kvm = ( ( 'virtio', _( 'Paravirtual device (virtio)' ) ), )
+		self._all = self._kvm + self._xen + self._list
+
+	def description( self, key ):
+		return dict( self._all ).get( key, _( 'Unknown' ) )
 
 	def choices( self ):
 		if self.virttech == 'xen':
-			return self._xen
+			return self._xen + self._list
 		elif self.virttech in ( 'kvm', 'qemu' ):
-			return self._kvm
+			return self._kvm + self._list
 		return ()
 
 class DiskSelect( umc.StaticSelection ):
 	"""Select between creating a new, reusing an existing image or integrating a local block device."""
 	def __init__( self ):
 		umc.StaticSelection.__init__(self, '' )
-		self._default = [ ( 'disk-new', _( 'Create a new image' ) ), ( 'disk-exists', _( 'Choose existing image' ) ), ( 'disk-block', _( 'Use a local device' ) ) ]
+		self._default = [
+				('disk-new', _('Create a new image')),
+				('disk-exists', _('Choose existing image')),
+				('disk-block', _('Use a local device')),
+				('disk-empty', _('No media')),
+				]
 		self._choices = None
 		self.set_choices()
 
 	def set_choices( self, with_new = True ):
-		self._choices = copy.copy( self._default )
-		if not with_new:
-			del self._choices[ 0 ]
+		if with_new:
+			self._choices = self._default[0:3]
+		else:
+			self._choices = self._default[1:4]
 
 	def choices( self ):
 		return self._choices
@@ -167,13 +214,21 @@ class NodeSelect( umc.StaticSelection ):
 		umc.StaticSelection.__init__( self, label, required = required, may_change = may_change )
 
 	def choices( self ):
-		return map( lambda x: ( x, x ), self._choices )
+		return sorted([(uri, Client._uri2name(uri)) for uri in self._choices], key=operator.itemgetter(1))
 
-	def update_choices( self, nodes, ignore ):
+	def update_choices(self, nodes):
 		self._choices = nodes
-		if ignore in self._choices:
-			self._choices.remove( ignore )
 
+class RtcOffsetSelect(umc.StaticSelection):
+	"""List of RTC offsets."""
+	def choices(self):
+		return (
+				('utc', _('Coordinated Universal Time')),
+				('localtime', _('Local time zone')),
+				)
+
+# Copy factory method for widget creation
+umcd.copy( umc.StaticSelection, SearchOptions )
 umcd.copy( umc.StaticSelection, DynamicSelect )
 umcd.copy( umc.StaticSelection, VirtTechSelect )
 umcd.copy( umc.StaticSelection, KBLayoutSelect )
@@ -184,3 +239,4 @@ umcd.copy( umc.StaticSelection, NodeSelect )
 umcd.copy( umc.StaticSelection, DiskSelect )
 umcd.copy( umc.StaticSelection, ArchSelect )
 umcd.copy( umc.StaticSelection, NIC_DriverSelect )
+umcd.copy(umc.StaticSelection, RtcOffsetSelect)

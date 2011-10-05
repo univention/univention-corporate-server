@@ -1,4 +1,7 @@
 etc
+usr/lib/univention-directory-listener
+usr/lib/univention-install
+usr/lib/univention-virtual-machine-manager-daemon
 usr/sbin
 usr/share/univention-management-console
 usr/share/pyshared/univention/management

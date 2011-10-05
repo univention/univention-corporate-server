@@ -34,10 +34,35 @@
 import re
 import math
 
+import univention.management.console as umc
 import univention.management.console.dialog as umcd
 
+_ = umc.Translation('univention.management.console.handlers.uvmm').translate
+
 def percentage( percent, label = None, width = 100 ):
-	return umcd.Progressbar( percent, label = label, attributes = { 'width' : '%dpx' % width } )
+	if isinstance( percent, basestring ):
+		percent = float( percent )
+	elif callable( percent ):
+		try:
+			percent = percent()
+		except:
+			return umcd.HTML( '<i>%s</i>' % _( 'currently not available' ) )
+	elif percent is None:
+		return umcd.HTML( '<i>%s</i>' % _( 'currently not available' ) )
+	try:
+		return umcd.Progressbar( percent, label = label, attributes = { 'width' : '%dpx' % width } )
+	except:
+		return umcd.HTML( '<i>%s</i>' % _( 'unknown value' ) )
+
+def str2pat( string ):
+	if not string:
+		return '*'
+	if not string[ -1 ] == '*':
+		string += '*'
+	if not string[ 0 ] == '*':
+		string = '*' + string
+
+	return string
 
 class MemorySize( object ):
 	"""Parse and convert size with optional prefix from and to numbers."""
@@ -111,6 +136,37 @@ class MemorySize( object ):
 		if num == -1:
 			return ''
 		return MemorySize.num2str( num )
+
+class VirtTech( object ):
+	def __init__( self, virttech = None ):
+		self.reset()
+		if virttech:
+			self.__call__( virttech )
+
+	def reset( self ):
+		self.domain = None
+		self.os = None
+
+	def __call__( self, virttech ):
+		if virttech == None:
+			self.reset()
+			return
+		if virttech.find( '-' ) < 0:
+			raise AttributeError( 'wrong format of attribute' )
+		self.domain, self.os = virttech.split( '-', 1 )
+
+	def pv( self ):
+		return self.os in ( 'xen', 'linux' )
+
+	def hvm( self ):
+		return self.os == 'hvm'
+
+class ddict(dict):
+	"""Wrapper for dictionary with default value for unset keys."""
+	def __init__(self, *args, **kwargs):
+		dict.__init__(self, *args, **kwargs)
+	def __getitem__(self, key):
+		return self.get(key, '<UNSET>')
 
 if __name__ == '__main__':
 	import doctest

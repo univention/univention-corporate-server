@@ -80,6 +80,14 @@ Skip reading ini-file.
 .TP
 .I /var/run/uvmmd.pid
 
+.SH SIGNALS
+.TP
+.B SIGHUP
+Close and reopen all logfiles.
+.TP
+.B SIGUSR1
+Re-execute the daemon process.
+
 .SH BUGS
 Bugs can be reported using the Univention Bugzilla bug-tracker at
 .BR https://forge.univention.org/bugzilla/enter_bug.cgi?product=UCS&component=Virtual+Machine+Manager+(UVMM) .

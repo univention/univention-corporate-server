@@ -77,11 +77,15 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 			while not self.eos:
 				try:
 					data = self.request.recv(1024)
-				except socket.error, (err, msg):
+				except socket.error, (err, errmsg):
 					if err == errno.EINTR:
 						continue
 					else:
 						raise
+				except SSL.SysCallError, (err, errmsg):
+					if err == -1: # and errmsg == 'Unexpected EOF': # Bug 20467
+						self.eos = True
+						break
 				logger.debug('[%d] Data recveived: %d' % (self.client_id, len(data)))
 				if data == '':
 					self.eos = True
@@ -91,8 +95,10 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 					packet = protocol.Packet.parse(buffer)
 					if packet == None:
 						continue # waiting
-				except protocol.PacketError, (msg,):
-					logger.error("[%d] Invalid packet received: %s" % (self.client_id, msg,))
+				except protocol.PacketError, e: # (translatable_text, dict):
+					logger.warning("[%d] Invalid packet received: %s" % (self.client_id, e))
+					if logger.isEnabledFor(logging.DEBUG):
+						logger.debug("[%d] Dump: %r" % (self.client_id, data))
 					break
 
 				logger.debug('[%d] Received packet.' % (self.client_id,))
@@ -102,7 +108,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 				if isinstance(command, protocol.Request):
 					res = self.handle_command(command)
 				else:
-					logger.error('[%d] Packet is no UVMM Request. Ignored.' % (self.client_id,))
+					logger.warning('[%d] Packet is no UVMM Request. Ignored.' % (self.client_id,))
 					res = protocol.Response_ERROR()
 					res.translatable_text = _('Packet is no UVMM Request: %(type)s')
 					res.values = {
@@ -116,7 +122,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 				logger.debug('[%d] Done.' % (self.client_id,))
 		except EOFError:
 			pass
-		except socket.error, (err, msg):
+		except socket.error, (err, errmsg):
 			if err != errno.ECONNRESET:
 				logger.error('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
 				raise
@@ -395,8 +401,13 @@ def unix(options):
 	while keep_running:
 		try:
 			rlist, wlist, xlist = select.select(sockets.keys(), [], [], None)
-			for socket in rlist:
-				sockets[socket].handle_request()
+			for fd in rlist:
+				sockets[fd].handle_request()
+		except (select.error, socket.error), (err, errmsg):
+			if err == errno.EINTR:
+				continue
+			else:
+				raise
 		except KeyboardInterrupt:
 			keep_running = False
 

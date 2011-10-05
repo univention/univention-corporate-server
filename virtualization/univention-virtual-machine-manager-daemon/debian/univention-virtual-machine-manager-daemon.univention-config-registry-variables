@@ -40,8 +40,50 @@ Description[en]=Show snapshots in UMC module.
 Type=bool
 Categories=uvmm
 
+[uvmm/umc/show/treeview]
+Description[de]=Begrenzt die Anzahl der Ebenen in der Baumansicht: 1=Gruppe, 2=Server, 3=VMs.
+Description[en]=Limits the number of levels in the tree view: 1=group, 2=server, 3=VMs.
+Type=int
+Category=uvmm
+
 [uvmm/umc/show/vnc]
 Description[de]=Zeigt VNC-Link im UMC-Modul an.
 Description[en]=Show VNC-Link in UMC module.
 Type=bool
+Categories=uvmm
+
+[uvmm/volume/permissions/mode]
+Description[en]=Defines the file mode permissions as an octal number for new hard drive images that are created in a storage pool
+Description[de]=Definiert die Berechtigungen als Oktalzahl, die für neu erzeugte Festplatten-Images verwendet werden
+Type=int
+Categories=uvmm
+
+[uvmm/volume/permissions/owner]
+Description[en]=Defines the numeric owner ID for new hard drive images that are created in a storage pool
+Description[de]=Definiert den numerische Besitzer-ID, der für neu erzeugte Festplatten-Images verwendet wird
+Type=int
+Categories=uvmm
+
+[uvmm/volume/permissions/group]
+Description[en]=Defines the numeric group ID for new hard drive images that are created in a storage pool
+Description[de]=Definiert die numerische Gruppen-ID, die für neu erzeugte Festplatten-Images verwendet wird
+Type=int
+Categories=uvmm
+
+[uvmm/xen/images/tap2]
+Description[de]=Xen Images als blktap2 Devices anlegen. Ab UCS 2.4-2 ist dies unterstützt und standardmäßig aktiviert.
+Description[en]=Create Xen images as blktap2 devices. It is supported and enabled by default since UCS 2.4-2.
+Type=bool
+Categories=uvmm
+
+[uvmm/check/interval]
+Description[de]=Intervall in Minuten für die Überprüfung des UVMM-Dienstes. 0 deaktiviert die Prüfung.
+Description[en]=Interval in minutes for the check of the UVMM daemon. 0 disables the check.
+Type=int
+Categories=uvmm
+
+[uvmm/check/timeout]
+Description[de]=Timeout in Sekunden in dem der UVMM-Dienst auf die Überprüfung antworten muss (Default: 5)
+Description[en]=Timeout in seconds in which the UVMM daemon must reply on the check (Default: 5)
+Type=int
 Categories=uvmm

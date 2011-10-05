@@ -1,0 +1,24 @@
+#! /bin/sh -e
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+DAEMON=/usr/sbin/univention-virtual-machine-manager-daemon  # Introduce the server's location here
+NAME="uvmmd"              # Introduce the short server's name here
+LOGDIR=/var/log/univention # Log directory to use
+
+LOGFILE="$LOGDIR/virtual-machine-manager-daemon-errors.log"  # Server logfile
+
+# virConnSetErrorFunc() is not exposed to the Python API, so
+# libvirt always logs errors to STDERR in addition to UVMMds error handling.
+export LIBVIRT_DEBUG=error # libvirt default error log level for stderr
+export LIBVIRT_LOG_OUTPUTS=4:file:/dev/null # additional libvirt errors are ignored
+
+DAEMON_OPTS="-s 0.0.0.0"        # Additional options given to the server
+
+if [ -f "/etc/default/$NAME" ] ; then
+	. "/etc/default/$NAME"
+fi
+
+exec >>"$LOGFILE" 2>&1
+echo "=== $$ === $(date --rfc-2822) ==="
+exec "$DAEMON" -l "$LOGFILE" $DAEMON_OPTS

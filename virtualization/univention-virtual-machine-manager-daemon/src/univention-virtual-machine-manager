@@ -41,6 +41,10 @@ from univention.uvmm.helpers import TranslatableException, _, N_
 import PAM
 from getpass import getpass
 from pprint import pprint
+try:
+	import xml.etree.ElementTree as ET
+except ImportError:
+	import elementtree.ElementTree as ET
 __builtins__._ = _
 
 class ParameterModeError(TranslatableException):
@@ -55,15 +59,15 @@ def create_socket(options):
 			host, port = options.ssl.rsplit(':', 1)
 		else:
 			host, port = options.ssl, 2106
-		sock = client.UVMM_ClientSSLSocket(host, int(port))
+		sock = client.UVMM_ClientSSLSocket(host, int(port), tcp_timeout=options.timeout, ssl_timeout=options.timeout)
 	elif options.tcp:
 		if ':' in options.tcp:
 			host, port = options.tcp.rsplit(':', 1)
 		else:
 			host, port = options.tcp, 2105
-		sock = client.UVMM_ClientTCPSocket(host, int(port))
+		sock = client.UVMM_ClientTCPSocket(host, int(port), timeout=options.timeout)
 	else:
-		sock = client.UVMM_ClientUnixSocket(options.socket)
+		sock = client.UVMM_ClientUnixSocket(options.socket, timeout=options.timeout)
 	if options.verbose:
 		print >>sys.stderr, "sock=%s" % (sock,)
 	return sock
@@ -126,7 +130,7 @@ def from_ldap(options):
 	"""Add all nodes registered in LDAP."""
 	from univention.uvmm.uvmm_ldap import ldap_uris, LdapError
 	try:
-		uris = ldap_uris(options.ldap_uri)
+		uris = ldap_uris()
 	except LdapError, (translatable_text, dict):
 		print >>sys.stderr, "ERROR:"
 		print >>sys.stderr, _(translatable_text) % dict
@@ -340,10 +344,6 @@ class Client(object):
 			%prog define qemu://server.domain.name/system ./domain.xml
 			%prog define xen://server.domain.name/ '<domain type="xen"><name>Name</name>...</domain>'
 		"""
-		try:
-			import xml.etree.ElementTree as ET
-		except ImportError:
-			import elementtree.ElementTree as ET
 		if file_or_xml.startswith('<'):
 			root = ET.fromstring(file_or_xml)
 		else:
@@ -365,12 +365,15 @@ class Client(object):
 			except AttributeError: pass
 			except KeyError: pass
 		else:
-			raise "Unknown os/typ='%s'" % (domain.os_type,)
+			raise "Unknown os/type='%s'" % (domain.os_type,)
 		try: domain.bootloader = root.findtext('bootloader')
 		except AttributeError: pass
 		try: domain.bootloader_args = root.findtext('bootloader_args')
 		except AttributeError: pass
 		domain.maxMem = int(root.findtext('memory')) << 10 # KiB
+		try: domain.rtc_offset = root.find('clock').attrib['offset']
+		except AttributeError: pass
+		except KeyError: pass
 		from univention.uvmm.node import Disk, Interface, Graphic
 		for disk in root.find('devices').findall('disk'):
 			d = Disk()
@@ -410,7 +413,7 @@ class Client(object):
 			try: i.source = interface.find('source').attrib['bridge']
 			except AttributeError: pass
 			except KeyError: pass
-			try: i.target = interface.find('script').attrib['path']
+			try: i.script = interface.find('script').attrib['path']
 			except AttributeError: pass
 			except KeyError: pass
 			try: i.target = interface.find('target').attrib['dev']
@@ -423,8 +426,10 @@ class Client(object):
 		for graphics in root.find('devices').findall('graphics'):
 			g = Graphic()
 			g.type = g.map_type(name=graphics.attrib['type'])
-			try: g.port = graphics.attrib['port']
+			try: g.port = int(graphics.attrib['port'])
 			except KeyError: pass
+			except ValueError: pass
+			except TypeError: pass
 			try: g.autoport = graphics.attrib['autoport'] == 'yes'
 			except KeyError: pass
 			try: g.keymap = graphics.attrib['keymap']
@@ -443,16 +448,21 @@ class Client(object):
 		pprint(domain.__dict__)
 		return protocol.Request_DOMAIN_DEFINE(uri=uri, domain=domain)
 
-	def undefine(self, uri, domain):
+	def undefine(self, uri, domain, *volumes):
 		"""
-		%prog undefine <uri> <domain>
+		%prog undefine <uri> <domain> [volumes...]
 
 		Undefine the domain <domain> on the virtualization server specifies by
-		<uri>.
+		<uri> and optionally delete the given <volumes>.
+		All file-volumes of the domain (including shared volumes!) are deleted
+		if "ALL" is given two times.
 		Examples:
 			%prog undefine xen://server.domain.name/ 1-2-3-4-5
+			%prog undefine xen://server.domain.name/ 1-2-3-4-5 ALL ALL
 		"""
-		return protocol.Request_DOMAIN_UNDEFINE(uri=uri, domain=domain, volumes=arguments)
+		if ('ALL', 'ALL') == volumes:
+			volumes = None
+		return protocol.Request_DOMAIN_UNDEFINE(uri=uri, domain=domain, volumes=volumes)
 
 	def pools(self, uri):
 		"""
@@ -526,6 +536,16 @@ class Client(object):
 		"""
 		return protocol.Request_DOMAIN_SNAPSHOT_DELETE(uri=uri, domain=domain, snapshot=snapshot)
 
+	def domain_update(self, domain):
+		"""
+		%prog domain_update <domain>
+
+		Trigger an update of the domain specified by its UUID <domain>.
+		Examples:
+			%prog ldap_update 1-2-3-4-5
+		"""
+		return protocol.Request_DOMAIN_UPDATE(domain=domain)
+
 if __name__ == '__main__':
 	locale.setlocale(locale.LC_ALL, '')
 
@@ -554,9 +574,9 @@ if __name__ == '__main__':
 	parser.add_option( '-v', '--verbose',
 			action='store_true', dest='verbose', default=False,
 			help=_('Print additional information'))
-	parser.add_option('-b', '--ldap-base',
-			action='store', dest='ldap_uri', metavar=_("ldap://HOST:PORT/BASE"),
-			help=_('LDAP-uri for searching initial nodes'))
+	parser.add_option( '-T', '--timeout',
+			action='store', dest='timeout', default=0, type="int",
+			help=_('Timeout in seconds for UVMM commands'))
 
 	(options, arguments) = parser.parse_args()
 

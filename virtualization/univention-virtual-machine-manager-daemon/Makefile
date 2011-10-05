@@ -3,7 +3,7 @@
 VERSION := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 UVMM := univention-virtual-machine-manager
 
-MODULES=$(shell find umc/modules/univention/management -name '*.py')
+MODULES := $(shell find umc/modules/univention/management -name '*.py')
 PO_FILES := $(shell find umc/modules/univention/management src -name '*.po')
 MO_FILES := $(PO_FILES:%.po=%.mo)
 IMAGES := $(shell find umc/images -name '*.gif' -o -name '*.png')
@@ -24,11 +24,21 @@ install:: install-modules install-locales install-images
 	install -m 0755 -d $(DESTDIR)/usr/sbin
 	install -m 0755 -t $(DESTDIR)/usr/sbin src/univention-virtual-machine-manager-daemon
 	install -m 0755 -t $(DESTDIR)/usr/sbin src/univention-virtual-machine-manager
+	$(RM) $(DESTDIR)/usr/sbin/uvmm
 	ln -s univention-virtual-machine-manager $(DESTDIR)/usr/sbin/uvmm
 	install -m 0755 -d $(DESTDIR)/var/www
 	install -m 0444 -t $(DESTDIR)/var/www TightVncViewer.jar
 	install -m 0755 -d $(DESTDIR)/usr/share/man/man8
+	install -m 0755 -d $(DESTDIR)/usr/lib/univention-virtual-machine-manager-daemon
+	install -m 0755 -t $(DESTDIR)/usr/lib/univention-virtual-machine-manager-daemon uvmmd-check.sh
 	install -m 0644 -t $(DESTDIR)/usr/share/man/man8 doc/*.8
+	install -m 0755 -d $(DESTDIR)/usr/lib/univention-directory-listener/system
+	install -m 0644 -t $(DESTDIR)/usr/lib/univention-directory-listener/system uvmmd-nodes.py
+	install -m 0644 -t $(DESTDIR)/usr/lib/univention-directory-listener/system uvmmd-ldap.py
+	install -m 0755 -d $(DESTDIR)/usr/lib/univention-install
+	install -m 0755 -t $(DESTDIR)/usr/lib/univention-install 44univention-virtual-machine-manager-daemon.inst
+	install -m 0755 -d $(DESTDIR)/etc/runit/univention-virtual-machine-manager-daemon
+	install -m 0755 univention-virtual-machine-manager-daemon.runit $(DESTDIR)/etc/runit/univention-virtual-machine-manager-daemon/run
 
 .PHONY: uninstall
 uninstall:
@@ -40,12 +50,24 @@ uninstall:
 	-rmdir -p $(DESTDIR)/usr/share/pyshared/univention/uvmm
 	$(RM) $(DESTDIR)/etc/univention/uvmmd.ini
 	-rmdir -p $(DESTDIR)/etc/univention
+	$(RM) $(DESTDIR)/var/www/TightVncViewer.jar
+	-rmdir -p $(DESTDIR)/var/www
+	$(RM) $(DESTDIR)/usr/lib/univention-virtual-machine-manager-daemon/uvmmd-check.sh
+	-rmdir -p $(DESTDIR)/usr/lib/univention-virtual-machine-manager-daemon
+	$(RM) $(DESTDIR)/usr/lib/univention-directory-listener/system/uvmmd-nodes.py
+	$(RM) $(DESTDIR)/usr/lib/univention-directory-listener/system/uvmmd-ldap.py
+	-rmdir -p $(DESTDIR)/usr/lib/univention-directory-listener/system
+	$(RM) $(DESTDIR)/usr/lib/univention-install/44univention-virtual-machine-manager-daemon.inst
+	-rmdir -p $(DESTDIR)/usr/lib/univention-install
+	$(RM) $(DESTDIR)/etc/runit/univention-virtual-machine-manager-daemon/run
+	-rmdir -p $(DESTDIR)/etc/runit/univention-virtual-machine-manager-daemon
 
 .PHONY: clean
 clean::
 	find -name \*.pyc -exec $(RM) {} +
 	$(RM) src/virtual-machine-manager-daemon.log
 	$(RM) $(MO_FILES)
+	$(RM) tags
 
 .PHONY: modules
 modules: $(MODULES)
@@ -80,9 +102,12 @@ install-locales: $(MO_FILES)
 		install -m 644 $$i $$o;\
 	done
 
+DIRS := src umc/modules/univention/management/console/handlers/$(MODULENAME)
+clean::
+	$(RM) $(foreach d,$(DIRS),$(d)/messages.pot)
+
 ifeq ($(M),1)
 LANGUAGES := de
-DIRS := src umc/modules/univention/management/console/handlers/$(MODULENAME)
 
 .PHONY: maintainer-locales
 maintainer-locales: $(foreach d,$(DIRS),$(d)/messages.pot)
@@ -111,12 +136,9 @@ src/messages.pot: $(shell find src/univention/uvmm -name \*.py)
 		--copyright-holder="Univention GmbH" \
 		$^
 
-clean::
-	$(RM) $(foreach d,$(DIRS),$(d)/messages.pot)
-
 
 IMAGES_12 := domain group node
-IMAGES_16 := add domain-on domain-paused domain group node node-off refresh
+IMAGES_16 := add domain-off domain-on domain-paused domain group node node-off node-kvm node-kvm-off node-xen node-xen-off refresh search
 IMAGES_64 := module
 
 SIZES := 12 16 24 64
@@ -131,7 +153,13 @@ define CONVERT_template
 endef
 $(foreach size,$(SIZES),$(eval $(call CONVERT_template,$(size))))
 
+%.svg: %.svgz
+	gzip -dc <$< >$@
+
 %.gif: %.png
-	convert $< $@
+	convert $< -channel A -threshold 75% $@
 
 endif
+
+tags: $(shell find src umc -name \*.py)
+	ctags-exuberant -o $@ $^

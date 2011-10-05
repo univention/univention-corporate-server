@@ -5,35 +5,40 @@ Maintainer: Univention GmbH <packages@univention.de>
 Uploaders: Philipp Hahn <hahn@univention.de>,
  Andreas Büsching <buesching@univention.de>,
 Standards-Version: 3.5.5
-Build-Depends: debhelper,
+Build-Depends: debhelper (>= 7.0.50),
  python-all-dev, python-central,
  univention-config-dev
 XS-Python-Version: 2.4
 
 Package: univention-virtual-machine-manager-daemon
 Architecture: all
-Depends: libvirt-bin,
- univention-ssl,
+Depends: univention-ssl,
  python-elementtree,
- python-pam,
- python-univention-virtual-machine-manager,
- univention-virtual-machine-manager-schema,
+ python-univention (>>5.0.10),
+ univention-virtual-machine-manager-schema (>= 1.0.32-1),
+ python-univention-virtual-machine-manager (= ${source:Version}),
  ${python:Depends}, ${misc:Depends}
+Recommends: libvirt-bin,
+ univention-nagios-uvmmd,
+ univention-management-console
+Breaks: univention-management-console-themes (<< 3.0.112-1)
 XB-Python-Version: ${python:Versions}
 Description: Univention Virtual Machine Manager Daemon
  This package contains the Univention Virtual Machine Manager Daemon
- used to collect informations from a farm of virtualization servers. It
- is used by the UMC module UVMM for managing virtualization servers.
+ used to collect informations from a farm of virtualization servers.
+ .
+ This package also includes the Univention Management Console module
+ for managing virtualization servers of an UCS domain.
 
 Package: python-univention-virtual-machine-manager
 Architecture: all
 Depends: python-libvirt,
- python-univention-management-console (>= 3.0.71),
  python-openssl,
+ python-pam,
+ python-univention-directory-manager (>>6.0.103),
  ${python:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
-Description: Univention Virtual Machine Manager Daemon
+Description: Univention Virtual Machine Manager Daemon - Python bindings
  This package contains the Univention Virtual Machine Manager Daemon
- used to collect informations from a farm of virtualization servers. It
- is used by the UMC module UVMM for managing virtualization servers.
+ Python bindings used to communicate with the daemon.

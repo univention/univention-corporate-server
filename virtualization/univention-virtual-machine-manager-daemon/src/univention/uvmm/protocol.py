@@ -78,9 +78,12 @@ class Packet(object):
 		if len(buffer) < offset + SIZE + length:
 			return None
 		(data,) = struct.unpack('%ds' % length, buffer[offset + SIZE:offset + SIZE + length])
-		packet = pickle.loads(data)
+		try:
+			packet = pickle.loads(data)
+		except Exception, e:
+			raise PacketError(_('Not a valid Packet: %(msg)s'), msg=str(e))
 		if not isinstance(packet, Packet):
-			raise PacketError(_('Not a Packet'))
+			raise PacketError(_('Not a Packet: %(type)s'), type=type(packet))
 		else:
 			return (SIZE + length, packet)
 
@@ -190,6 +193,12 @@ class Request_DOMAIN_SNAPSHOT_DELETE(Request):
 		self.domain = None
 		self.snapshot = None
 
+class Request_DOMAIN_UPDATE(Request):
+	"""Trigger update of domain."""
+	def _default(self):
+		self.command = 'DOMAIN_UPDATE'
+		self.domain = None
+
 class Request_STORAGE_POOLS(Request):
 	"""List all pools."""
 	def _default(self):
@@ -205,7 +214,7 @@ class Request_STORAGE_VOLUMES(Request):
 		self.type = None # DISK CDROM
 
 class Request_STORAGE_VOLUMES_DESTROY(Request):
-	"""List all volumes in pool."""
+	"""Destroy all given volumes in a pool."""
 	def _default(self):
 		self.command = 'STORAGE_VOLUMES_DESTROY'
 		self.uri = None
@@ -269,6 +278,7 @@ class Data_Domain(object):
 		self.domain_type = None # xen, qemu, kvm
 		self.arch = 'i686' # i686, x86_64
 		self.os_type = None # linux(=Xen-PV), hvm(=Xen-FV)
+		self.rtc_offset = None
 
 		# Xen-PV
 		self.kernel = None
@@ -290,18 +300,20 @@ class Data_Domain(object):
 		self.graphics = [] # node.Graphics
 		self.annotations = {}
 		self.snapshots = None # ID: Data_Snapshot
+		self.suspended = None # True|False
 class Data_Node(object):
 	"""Container for node statistics."""
 	def __init__(self):
 		self.name = None
+		self.uri = None
 		self.phyMem = None
 		self.curMem = None
 		self.maxMem = None
 		self.cpu_usage = None
 		self.cpus = None
-		self.cores = [None, None, None, None]
+		self.cores = (None, None, None, None)
 		self.domains = [] # Data_Domain
-		self.capabilities = {} # node.DomainTemplate
+		self.capabilities = [] # node.DomainTemplate
 		self.last_try = 0.0
 		self.last_update = 0.0
 		self.supports_suspend = False
@@ -322,3 +334,139 @@ class Data_Snapshot(object):
 	def __init__(self):
 		self.name = None
 		self.ctime = 0 # UNIX time
+
+def _map(dictionary, id=None, name=None):
+	"""Map id to name or reverse using the dictionary."""
+	if id is not None and id in dictionary:
+		return dictionary[id]
+	if name:
+		for key, value in dictionary.items():
+			if name == value:
+				return key
+	return ''
+
+class Disk(object):
+	'''Container for disk objects'''
+	DEVICE_DISK, DEVICE_CDROM, DEVICE_FLOPPY = range(3)
+	DEVICE_MAP = {
+			DEVICE_DISK: 'disk',
+			DEVICE_CDROM: 'cdrom',
+			DEVICE_FLOPPY: 'floppy',
+			}
+
+	TYPE_FILE, TYPE_BLOCK = range(2)
+	TYPE_MAP = {
+			TYPE_FILE: 'file',
+			TYPE_BLOCK: 'block',
+			}
+
+	CACHE_DEFAULT, CACHE_NONE, CACHE_WT, CACHE_WB, CACHE_UNSAFE = range(5)
+	CACHE_MAP = {
+			CACHE_DEFAULT: 'default',
+			CACHE_NONE: 'none', # off
+			CACHE_WT: 'writethrough',
+			CACHE_WB: 'writeback',
+			CACHE_UNSAFE: 'unsafe',
+			}
+
+	def __init__(self):
+		self.type = Disk.TYPE_FILE	# disk/@type
+		self.device = Disk.DEVICE_DISK	# disk/@device
+		self.driver = None	# disk/driver/@name
+		self.driver_type = None	# disk/driver/@type
+		self.driver_cache = Disk.CACHE_DEFAULT	# disk/driver/@cache
+		self.source = ''	# disk/source/@file | disk/source/@dev
+		self.readonly = False	# disk/readonly
+		self.target_dev = ''	# disk/target/@dev
+		self.target_bus = None	# disk/target/@bus
+		self.size = None # not defined
+		self.pool = None
+
+	@staticmethod
+	def map_device(id=None, name=None):
+		return _map(Disk.DEVICE_MAP, id, name)
+
+	@staticmethod
+	def map_type(id=None, name=None):
+		return _map(Disk.TYPE_MAP, id, name)
+
+	@staticmethod
+	def map_cache(id=None, name=None):
+		return _map(Disk.CACHE_MAP, id, name)
+
+	def __str__(self):
+		return 'Disk(device=%s, type=%s, driver=%s, source=%s, target=%s, size=%s)' % (Disk.map_device(id=self.device), Disk.map_type(id=self.type), self.driver, self.source, self.target_dev, self.size)
+
+class Interface(object):
+	'''Container for interface objects'''
+	TYPE_BRIDGE, TYPE_NETWORK, TYPE_USER, TYPE_ETHERNET, TYPE_DIRECT = range(5)
+	TYPE_MAP = {
+			TYPE_BRIDGE: 'bridge',
+			TYPE_NETWORK: 'network',
+			TYPE_USER: 'user',
+			TYPE_ETHERNET: 'ethernet',
+			TYPE_DIRECT: 'direct',
+			}
+
+	def __init__(self):
+		self.type = Interface.TYPE_BRIDGE
+		self.mac_address = None
+		self.source = None
+		self.target = None
+		self.script = None
+		self.model = None
+
+	@staticmethod
+	def map_type(id=None, name=None):
+		return _map(Interface.TYPE_MAP, id, name)
+
+	def __str__(self):
+		return 'Interface(type=%s, mac=%s, source=%s, target=%s, script=%s, model=%s)' % (Interface.map_type(id=self.type), self.mac_address, self.source, self.target, self.script, self.model)
+
+class Graphic(object):
+	'''Container for graphic objects'''
+	TYPE_VNC, TYPE_SDL, TYPE_SPICE, TYPE_RDP, TYPE_DESKTOP = range(5)
+	TYPE_MAP = {
+			TYPE_VNC: 'vnc',
+			TYPE_SDL: 'sdl',
+			TYPE_SPICE: 'spice',
+			TYPE_RDP: 'rdp',
+			TYPE_DESKTOP: 'desktop',
+			}
+
+	def __init__(self):
+		self.type = Graphic.TYPE_VNC
+		self.port = -1
+		self.autoport = True
+		self.keymap = 'de'
+		self.listen = None
+		self.passwd = None
+		#self.passwdValidTo = None
+		#self.socket = None
+		# sdl | desktop:
+		#self.display = None
+		#self.xauth = None
+		#self.fullscreen = None
+		# spice:
+		#self.channels = []
+		# rdp:
+		#self.replaceUser = None
+		#self.multiUser = None
+
+	@staticmethod
+	def map_type(id=None, name=None):
+		return _map(Graphic.TYPE_MAP, id, name)
+
+	def __str__(self):
+		return 'Graphic(type=%s, port=%s, autoport=%s, keymap=%s, listen=%s, passwd=%s' % (Graphic.map_type(id=self.type), self.port, self.autoport, self.keymap, self.listen, bool(self.passwd))
+
+# TODO: this object definition is not complete!
+class Network( object ):
+	'''Container for Network objects.'''
+
+	def __init__( self ):
+		self.name = None
+		self.uuid = None
+		self.bridge = None
+
+

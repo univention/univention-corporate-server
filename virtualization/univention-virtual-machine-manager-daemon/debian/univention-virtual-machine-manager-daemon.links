@@ -1,1 +1,2 @@
 usr/share/man/man8/univention-virtual-machine-manager.8 usr/share/man/man8/uvmm.8
+usr/share/univention-runit/sleep-dynamic etc/runit/univention-virtual-machine-manager-daemon/finish

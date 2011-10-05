@@ -1,0 +1,21 @@
+@%@BCWARNING=# @%@
+
+# /var/log/univention/uvmmd.log
+/var/log/univention/virtual-machine-manager-daemon.log /var/log/univention/virtual-machine-manager-daemon-errors.log {
+	rotate @%@log/rotate/weeks@%@
+	weekly
+	compress
+	delaycompress
+	missingok
+	notifempty
+	create 640 root adm
+	postrotate
+		if [ -e /etc/runit/univention-virtual-machine-manager-daemon/supervise/pid ]
+		then
+			sv hup univention-virtual-machine-manager-daemon
+		elif [ -e /var/run/uvmmd.pid ]
+		then
+			kill -HUP "`cat /var/run/uvmmd.pid`"
+		fi
+	endscript
+}

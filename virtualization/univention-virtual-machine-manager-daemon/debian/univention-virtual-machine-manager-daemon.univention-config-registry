@@ -4,3 +4,11 @@ File: etc/security/access-uvmmd.conf
 Type: file
 File: etc/pam.d/uvmmd
 Variables: auth/uvmmd/accessfile
+
+Type: file
+File: etc/logrotate.d/univention-virtual-machine-manager-daemon
+Variables: log/rotate/weeks
+
+Type: file
+File: etc/cron.d/univention-virtual-machine-manager-daemon
+Variables: uvmm/check/interval

@@ -38,8 +38,14 @@ This module implements functions to handle storage on nodes. This is independent
 import libvirt
 import logging
 from xml.dom.minidom import getDOMImplementation, parseString
-from helpers import TranslatableException, N_ as _
+from helpers import TranslatableException, N_ as _, TimeoutError, timeout
+from protocol import Disk, Data_Pool
 import os.path
+import univention.config_registry as ucr
+import time
+
+configRegistry = ucr.ConfigRegistry()
+configRegistry.load()
 
 logger = logging.getLogger('uvmmd.storage')
 
@@ -131,20 +137,34 @@ def create_storage_volume(conn, domain, disk):
 	doc = parseString(xml)
 	pool_type = doc.firstChild.getAttribute('type')
 	if pool_type == 'dir':
-		if hasattr(disk, 'driver_type') and disk.driver_type not in (None, 'iso'):
+		if hasattr(disk, 'driver_type') and disk.driver_type not in (None, 'iso', 'aio'):
 			values['type'] = disk.driver_type
 		else:
 			values['type'] = 'raw'
+		# permissions
+		permissions = '<permissions>\n'
+		found = True
+		for access in ( 'owner', 'group', 'mode' ):
+			value = configRegistry.get( 'uvmm/volume/permissions/%s' % access, None )
+			if value and value.isdigit():
+				permissions += '<%(tag)s>%(value)s</%(tag)s>\n' % { 'tag' : access, 'value' : value }
+				found = True
+		if found:
+			permissions += '</permissions>'
+		else:
+			permissions = ''
+
 		template = '''
 		<volume>
-			<name>%(name)s</name>
+			<name>%%(name)s</name>
 			<allocation>0</allocation>
-			<capacity>%(size)ld</capacity>
+			<capacity>%%(size)ld</capacity>
 			<target>
-				<format type="%(type)s"/>
+				<format type="%%(type)s"/>
+				%s
 			</target>
 		</volume>
-		'''
+		''' % permissions
 	elif pool_type == 'logical':
 		template = '''
 		<volume>
@@ -169,17 +189,21 @@ def create_storage_volume(conn, domain, disk):
 		logger.error(e)
 		raise StorageError(_('Error creating storage volume "%(name)s" for "%(domain)s": %(error)s'), name=disk.source, domain=domain.name, error=e.get_error_message())
 
-def get_storage_volumes( uri, pool_name, type = None ):
-	from node import Disk, node_query
-
-	node = node_query( uri )
+def get_storage_volumes(node, pool_name, type=None):
+	"""Get 'protocol.Disk' instance for all Storage Volumes in named pool of given type."""
+	if node.conn is None:
+		raise StorageError(_('Error listing volumes at "%(uri)s": %(error)s'), uri=node.uri, error='no connection')
+	volumes = []
 	try:
-		pool = node.conn.storagePoolLookupByName(pool_name)
+		pool = timeout(node.conn.storagePoolLookupByName)(pool_name)
 		pool.refresh(0)
+	except TimeoutError, e:
+		logger.warning('libvirt connection "%s" timeout: %s', node.pd.uri, e)
+		node.pd.last_try = time.time()
+		return volumes
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise StorageError(_('Error listing pools at "%(uri)s": %(error)s'), uri=uri, error=e.get_error_message())
-	volumes = []
+		raise StorageError(_('Error listing volumes at "%(uri)s": %(error)s'), uri=node.pd.uri, error=e.get_error_message())
 	for name in pool.listVolumes():
 		disk = Disk()
 		vol = pool.storageVolLookupByName( name )
@@ -204,15 +228,25 @@ def get_storage_volumes( uri, pool_name, type = None ):
 
 	return volumes
 
-def get_all_storage_volumes(conn, domain):
+def get_all_storage_volumes(domain):
 	"""Retrieve all referenced storage volumes."""
 	volumes = []
 	doc = parseString(domain.XMLDesc(0))
-	devices = doc.getElementsByTagName('devices')[0]
+	devices = doc.getElementsByTagName('devices')
+	try:
+		devices = devices[0]
+	except IndexError:
+		return volumes
 	disks = devices.getElementsByTagName('disk')
 	for disk in disks:
-		source = disk.getElementsByTagName('source')[0]
-		volumes.append(source.getAttribute('file'))
+		source = disk.getElementsByTagName('source')
+		try:
+			source = source[0]
+			vol = source.getAttribute('file')
+			if vol:
+				volumes.append(vol)
+		except LookupError:
+			continue
 	return volumes
 
 def destroy_storage_volumes(conn, volumes, ignore_error=False):
@@ -240,9 +274,9 @@ def destroy_storage_volumes(conn, volumes, ignore_error=False):
 				logger.error("Error deleting volume: %s. Ignored." % e.get_error_message())
 				raise
 
-def get_storage_pool_info( node, name ):
-	from protocol import Data_Pool
-	p = node.conn.storagePoolLookupByName( name )
+def __get_storage_pool_info(conn, name):
+	"""Get 'protocol.Data_Pool' instance for named pool."""
+	p = conn.storagePoolLookupByName( name )
 	xml = p.XMLDesc( 0 )
 	doc = parseString( xml )
 	pool = Data_Pool()
@@ -253,22 +287,22 @@ def get_storage_pool_info( node, name ):
 	pool.path = doc.getElementsByTagName( 'path' )[ 0 ].firstChild.nodeValue
 	pool.active = p.isActive() == 1
 	pool.type = doc.firstChild.getAttribute('type') # pool/@type
-
 	return pool
 
-def storage_pools( uri = None, node = None ):
-	"""List all pools."""
-	from node import node_query
-
+def storage_pools(node):
+	"""Get 'protocol.Data_Pool' instance for all pools."""
+	if node.conn is None:
+		raise StorageError(_('Error listing pools at "%(uri)s": %(error)s'), uri=node.pd.uri, error='no connection')
 	try:
-		if uri and not node:
-			node = node_query( uri )
-		conn = node.conn
 		pools = []
-		for name in conn.listStoragePools() + conn.listDefinedStoragePools():
-			pool = get_storage_pool_info( node, name )
+		for name in timeout(node.conn.listStoragePools)() + timeout(node.conn.listDefinedStoragePools)():
+			pool = __get_storage_pool_info(node.conn, name)
 			pools.append( pool )
+		return pools
+	except TimeoutError, e:
+		logger.warning('libvirt connection "%s" timeout: %s', node.pd.uri, e)
+		node.pd.last_try = time.time()
 		return pools
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise StorageError(_('Error listing pools at "%(uri)s": %(error)s'), uri=uri, error=e.get_error_message())
+		raise StorageError(_('Error listing pools at "%(uri)s": %(error)s'), uri=node.uri, error=e.get_error_message())

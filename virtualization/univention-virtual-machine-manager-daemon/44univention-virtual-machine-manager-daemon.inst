@@ -30,14 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="3"
+VERSION="6"
 
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
 declare -a CREDENTIALS=("$@")
 
-eval "$(univention-config-registry shell ldap/base server/role ldap/hostdn)"
+eval "$(univention-config-registry shell)"
 NAME="Virtual Machine Manager"
 
 # add service
@@ -99,7 +99,6 @@ univention-directory-manager container/cn create "$@" \
 kernel=$(readlink -e /vmlinuz)
 
 # determin keyboard layout
-eval "$(ucr shell locale/keymap)"
 while [ -n "$locale_keymap" ]
 do
 	for virttech in xen/qemu kvm qemu
@@ -124,7 +123,12 @@ create_hvm_profile() {
 	local virttech="$3"
 	local arch="$4"
 	local ram="$5"
-	local pv="$6"
+	local pvdisk="$6"
+	local pvcdrom="$7"
+	local pvif="$8"
+	local diskspace="$9"
+	shift 9
+	local rtcoffset="$1"
 	# create machine profile
 	univention-directory-manager uvmm/profile create "${CREDENTIALS[@]}" \
 		--ignore_exists \
@@ -136,19 +140,39 @@ create_hvm_profile() {
 		--set cpus=1 \
 		--set virttech="${virttech}-hvm" \
 		--set ram="${ram}" \
+		--set diskspace="${diskspace}" \
 		--set interface=eth0 \
 		--append bootdev=cdrom \
 		--append bootdev=hd \
+		--set rtcoffset="$rtcoffset" \
 		--set vnc=1 \
 		--set kblayout="${locale_keymap}" \
-		--set pvdisk="$pv" \
-		--set pvinterface="$pv"
-	if [ "$VERSION" = "3" ]; then
-		univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
-			--dn "cn=${cn},cn=${virttech},cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-			--set os="$cn" \
-			--set pvdisk="$pv" \
-			--set pvinterface="$pv"
+		--set pvdisk="$pvdisk" \
+		--set pvcdrom="$pvcdrom" \
+		--set pvinterface="$pvif"
+	if [ "$JS_LAST_EXECUTED_VERSION" -lt "$VERSION" ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
+		if [ "$uvmm_profile_autoupdate" != "false" ]; then
+			# update profile settings if uvmm/profile/autoupdate is not set to false
+			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
+				--dn "cn=${cn},cn=${virttech},cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+				--set diskspace="${diskspace}" \
+				--set arch="${arch}" \
+				--set ram="${ram}" \
+				--set os="$cn" \
+				--set rtcoffset="$rtcoffset" \
+				--set pvdisk="$pvdisk" \
+				--set pvcdrom="$pvcdrom" \
+				--set pvinterface="$pvif"
+		else
+			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
+				--dn "cn=${cn},cn=${virttech},cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+				--set diskspace="${diskspace}" \
+				--set os="$cn" \
+				--set rtcoffset="$rtcoffset" \
+				--set pvdisk="$pvdisk" \
+				--set pvcdrom="$pvcdrom" \
+				--set pvinterface="$pvif"
+		fi
 	fi
 }
 
@@ -157,6 +181,8 @@ create_xen_profile() {
 	local prefix="$2"
 	local arch="$3"
 	local ram="$4"
+	local diskspace="$5"
+	local rtcoffset="$6"
 	# create machine profile
 	univention-directory-manager uvmm/profile create "${CREDENTIALS[@]}" \
 		--ignore_exists \
@@ -168,51 +194,129 @@ create_xen_profile() {
 		--set cpus=1 \
 		--set virttech="xen-xen" \
 		--set ram="${ram}" \
+		--set diskspace="${diskspace}" \
 		--set interface=eth0 \
 		--set vnc=1 \
 		--set kblayout="${locale_keymap}" \
-		--set advkernelconf=FALSE
-	if [ "$VERSION" = "3" ]; then
-		univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
-			--dn "cn=${cn},cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-			--set os="$cn"
+		--set advkernelconf=FALSE \
+		--set rtcoffset="$rtcoffset" \
+		--set pvdisk=1 \
+		--set pvcdrom=1 \
+		--set pvinterface=1
+	if [ "$JS_LAST_EXECUTED_VERSION" -lt "$VERSION" ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
+		if [ "$uvmm_profile_autoupdate" != "false" ]; then
+			# update profile settings if uvmm/profile/autoupdate is not set to false
+			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
+				--dn "cn=${cn},cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+				--set diskspace="${diskspace}" \
+				--set arch="${arch}" \
+				--set ram="${ram}" \
+				--set os="${cn}" \
+				--set rtcoffset="$rtcoffset" \
+				--set pvdisk=1 \
+				--set pvcdrom=1 \
+				--set pvinterface=1
+		else
+			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
+				--dn "cn=${cn},cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+				--set diskspace="${diskspace}" \
+				--set os="${cn}" \
+				--set rtcoffset="$rtcoffset" \
+				--set pvdisk=1 \
+				--set pvcdrom=1 \
+				--set pvinterface=1
+		fi
 	fi
 }
 
-create_hvm_profile "Microsoft Windows XP" "winxp-" "xen" "i686" "512MB" "0"
-create_hvm_profile "Microsoft Windows XP" "winxp-" "kvm" "i686" "512MB" "0"
+# http://support.microsoft.com/kb/314865/de
+#   Mindestens 64 MB RAM (128 MB werden empfohlen)
+#   Mindestens 1,5 GB Speicherplatz auf der Festplatte
+create_hvm_profile "Microsoft Windows XP" "winxp-" "xen" "automatic" "512MB" "0" "0" "0" "10GB" "localtime"
+create_hvm_profile "Microsoft Windows XP" "winxp-" "kvm" "automatic" "512MB" "0" "0" "0" "10GB" "localtime"
 
-create_hvm_profile "Microsoft Windows 7" "win7-" "xen" "i686" "768MB" "0"
-create_hvm_profile "Microsoft Windows 7 (64 Bit)" "win7-64-" "xen" "x86_64" "768MB" "0"
-create_hvm_profile "Microsoft Windows 7" "win7-" "kvm" "i686" "768MB" "0"
-create_hvm_profile "Microsoft Windows 7 (64 Bit)" "win7-64-" "kvm" "x86_64" "768MB" "0"
+# http://windows.microsoft.com/de-DE/windows7/products/system-requirements
+#   1 GB RAM (32-Bit) oder 2 GB RAM (64-Bit)
+#   16 GB verfügbarer Festplattenspeicher (32-Bit) oder 20 GB (64-Bit)
+#   Windows XP-Modus erfordert zusätzliche 1 GB RAM und 15 GB zusätzlichen verfügbaren Festplattenspeicher. 
+create_hvm_profile "Microsoft Windows 7" "win7-" "xen" "automatic" "1024MB" "0" "0" "0" "32GB" "localtime"
+create_hvm_profile "Microsoft Windows 7 (64 Bit)" "win7-64-" "xen" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
+create_hvm_profile "Microsoft Windows 7" "win7-" "kvm" "automatic" "1024MB" "0" "0" "0" "32GB" "localtime"
+create_hvm_profile "Microsoft Windows 7 (64 Bit)" "win7-64-" "kvm" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
 
-create_hvm_profile "Microsoft Windows 2003" "w2k3-" "xen" "i686" "768MB" "0"
-create_hvm_profile "Microsoft Windows 2003" "w2k3-" "kvm" "i686" "768MB" "0"
+# http://technet.microsoft.com/de-de/windowsserver/bb430827.aspx
+#   Speicher
+#        mindestens 128 MB Arbeitsspeicher erforderlich; Maximum: 32 GB für x86-basierte PCs mit der 32-Bit-Version und 64 GB für Itanium-basierte PCs mit der 64-Bit-Version
+#   Festplatte
+#        1,5 GB verfügbarer Speicherplatz auf der Festplatte bei x86-basierten PCs; 2 GB für Itanium-basierte PCs; wenn die Installation über ein Netzwerk erfolgt, ist zusätzlicher Speicherplatz erforderlich
+# http://technet.microsoft.com/de-de/library/cc739866%28WS.10%29.aspx
+#   64bit: Speicher Mindestens 1 GB, höchstens 1024 GB (1 TB) RAM.
+create_hvm_profile "Microsoft Windows 2003" "w2k3-" "xen" "automatic" "1024MB" "0" "0" "0" "20GB" "localtime"
+create_hvm_profile "Microsoft Windows 2003" "w2k3-" "kvm" "automatic" "1024MB" "0" "0" "0" "20GB" "localtime"
 
-create_hvm_profile "Microsoft Windows 2003 R2 (64 Bit)" "w2k3r2-" "xen" "x86_64" "768MB" "0"
-create_hvm_profile "Microsoft Windows 2003 R2 (64 Bit)" "w2k3r2-" "kvm" "x86_64" "768MB" "0"
+# http://technet.microsoft.com/de-de/windowsserver/bb430827.aspx
+# Speicher
+#    mindestens 128 MB Arbeitsspeicher erforderlich; 256 MB oder mehr empfohlen; höchstens 64 GB für x86-basierte Computer; höchstens 2 TB für x64- und ia64-Computer
+# Festplatte
+#    1,2 GB für Netzwerkinstallation; 2,9 GB für Installation von CD
+create_hvm_profile "Microsoft Windows 2003 R2 (64 Bit)" "w2k3r2-" "xen" "x86_64" "768MB" "0" "0" "0" "20GB" "localtime"
+create_hvm_profile "Microsoft Windows 2003 R2 (64 Bit)" "w2k3r2-" "kvm" "x86_64" "768MB" "0" "0" "0" "20GB" "localtime"
 
-create_hvm_profile "Microsoft Windows 2008" "w2k8-" "xen" "i686" "1024MB" "0"
-create_hvm_profile "Microsoft Windows 2008" "w2k8-" "kvm" "i686" "1024MB" "0"
+# http://msdn.microsoft.com/en-us/windowsserver/cc196364.aspx
+#   Memory
+#     Minimum: 512MB RAM
+#     Recommended: 2GB RAM or greater
+#     Maximum (32-bit systems): 4GB (Standard) or 64GB (Enterprise and Datacenter)
+#     Maximum (64-bit systems): 32GB (Standard) or 1TB (Enterprise, Datacenter) and 2TB (Itanium-Based Systems)
+#   Available Disk Space
+#     Minimum: 10GB
+#      Recommended: 40GB or greater
+create_hvm_profile "Microsoft Windows 2008" "w2k8-" "xen" "automatic" "2048MB" "0" "0" "0" "48GB" "localtime"
+create_hvm_profile "Microsoft Windows 2008" "w2k8-" "kvm" "automatic" "2048MB" "0" "0" "0" "48GB" "localtime"
 
-create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "xen" "x86_64" "1024MB" "0"
-create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64" "1024MB" "0"
+# http://www.microsoft.com/windowsserver2008/en/us/system-requirements.aspx
+#   Memory
+#  	  Minimum: 512 MB RAM 
+#     Maximum: 8 GB (Foundation) or 32 GB (Standard) or 2 TB (Enterprise, Datacenter, and Itanium-Based Systems)
+#   Disc Space
+#     Minimum: 32 GB or greater
+#     Note: Computers with more than 16 GB of RAM will require more disk space for paging, hibernation, and dump files 
+create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "xen" "x86_64" "2048MB" "0" "0" "0" "48GB" "localtime"
+create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64" "2048MB" "0" "0" "0" "48GB" "localtime"
 
-create_xen_profile "Univention Corporate Server 2.4" "ucs24-" "i686" "512MB"
-create_xen_profile "Univention Corporate Server 2.4 (64 Bit)" "ucs24-64-" "x86_64" "512MB"
+if [ -n "$JS_LAST_EXECUTED_VERSION" ] && [ "$JS_LAST_EXECUTED_VERSION" -lt 4 ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
+	# rename from Univention Corporate Server 2.4 to UCS 2.4
+	univention-directory-manager uvmm/profile modify "$@" --dn "cn=Univention Corporate Server 2.4 (64 Bit),cn=kvm,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" --set name="UCS 2.4 (64 Bit)"
+	univention-directory-manager uvmm/profile modify "$@" --dn "cn=Univention Corporate Server 2.4,cn=kvm,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" --set name="UCS 2.4"
+	univention-directory-manager uvmm/profile modify "$@" --dn "cn=Univention Corporate Server 2.4 (64 Bit),cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" --set name="UCS 2.4 (64 Bit)"
+	univention-directory-manager uvmm/profile modify "$@" --dn "cn=Univention Corporate Server 2.4,cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" --set name="UCS 2.4"
+fi
 
-create_hvm_profile "Univention Corporate Server 2.4" "ucs24-" "kvm" "i686" "512MB" "1"
-create_hvm_profile "Univention Corporate Server 2.4 (64 Bit)" "ucs24-64-" "kvm" "x86_64" "512MB" "1"
+create_xen_profile "UCS 2.4" "ucs24-" "automatic" "1024MB" "20GB" "utc"
+create_xen_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "x86_64" "1024MB" "20GB" "utc"
 
-create_hvm_profile "Other" "other-" "xen" "i686" "256MB" "0"
-create_hvm_profile "Other" "other-" "kvm" "i686" "256MB" "0"
+create_hvm_profile "UCS 2.4" "ucs24-" "kvm" "automatic" "1024MB" "1" "0" "1" "20GB" "utc"
+create_hvm_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
 
-create_hvm_profile "Other (64 Bit)" "other-" "xen" "x86_64" "256MB" "0"
-create_hvm_profile "Other (64 Bit)" "other-" "kvm" "x86_64" "256MB" "0"
+create_hvm_profile "Other" "other-" "xen" "automatic" "512MB" "0" "0" "0" "20GB" "utc"
+create_hvm_profile "Other" "other-" "kvm" "automatic" "512MB" "0" "0" "0" "20GB" "utc"
 
+create_hvm_profile "Other (64 Bit)" "other-" "xen" "x86_64" "512MB" "0" "0" "0" "20GB" "utc"
+create_hvm_profile "Other (64 Bit)" "other-" "kvm" "x86_64" "512MB" "0" "0" "0" "20GB" "utc"
 
 # TODO: profiles for xen-xen
+
+# Re-link certificates
+rm -rf /etc/pki/libvirt/clientcert.pem
+ln -sf "/etc/univention/ssl/$hostname.$domainname/cert.pem" /etc/pki/libvirt/clientcert.pem
+rm -rf /etc/pki/libvirt/private/clientkey.pem
+ln -sf "/etc/univention/ssl/$hostname.$domainname/private.key" /etc/pki/libvirt/private/clientkey.pem
+
+if [ ! -e /etc/runit/univention/univention-virtual-machine-manager-daemon ]; then
+	ln -s /etc/runit/univention-virtual-machine-manager-daemon /etc/runit/univention/univention-virtual-machine-manager-daemon
+fi
+
+invoke-rc.d univention-virtual-machine-manager-daemon restart 
 
 joinscript_save_current_version
 

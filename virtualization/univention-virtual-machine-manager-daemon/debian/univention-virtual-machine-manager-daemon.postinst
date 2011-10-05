@@ -31,13 +31,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-set -e
-
 eval "$(univention-config-registry shell hostname domainname server/role)"
 
 univention-config-registry set "uvmm/pool/default/path?/var/lib/libvirt/images" \
 			"uvmm/umc/vnc?internal" \
-			"uvmm/umc/show/pause?xen"
+			"uvmm/umc/show/pause?xen" \
+            "uvmm/check/interval?2" \
+            "uvmm/check/timeout?10" \
+            "auth/uvmmd/accessfile?/etc/security/access-uvmmd.conf"
 
 case "$1" in
     configure)
@@ -47,6 +48,29 @@ case "$1" in
     ln -sf /etc/univention/ssl/$hostname.$domainname/private.key /etc/pki/libvirt/private/clientkey.pem
     rm -rf /etc/pki/CA/cacert.pem
     ln -sf /etc/univention/ssl/ucsCA/CAcert.pem /etc/pki/CA/cacert.pem
+    invoke-rc.d univention-directory-listener stop
+	# Rename listener from "uvmm" to "uvmmd-nodes"
+	if dpkg --compare-versions "$2" lt-nl 0.9.138
+	then
+		old=/var/lib/univention-directory-listener/handlers/uvmm
+		new=/var/lib/univention-directory-listener/handlers/uvmmd-nodes
+		if [ -e "$old" ]
+		then
+			if [ -e "$new" ]
+			then
+				rm -f "$old"
+			else
+				mv "$old" "$new"
+			fi
+		fi
+	fi
+
+	if dpkg --compare-versions "$2" lt-nl 0.9.147; then
+        if [ -f "/usr/share/univention-join/.joined" ] && [ ! -e /etc/runit/univention/univention-virtual-machine-manager-daemon ]; then
+            ln -s /etc/runit/univention-virtual-machine-manager-daemon /etc/runit/univention/univention-virtual-machine-manager-daemon
+        fi
+    fi
+
     invoke-rc.d univention-directory-listener restart
     ;;
 
@@ -64,16 +88,21 @@ then
     /usr/lib/univention-install/44univention-virtual-machine-manager-daemon.inst || true
 fi
 
-univention-config-registry set auth/uvmmd/accessfile?/etc/security/access-uvmmd.conf
-
 #DEBHELPER#
+
+if [ -x /etc/init.d/univention-virtual-machine-manager-daemon ] && [ -d "/etc/runit/univention/univention-virtual-machine-manager-daemon/supervise" ]; then
+    # don't restart too fast
+    sleep 10
+
+    if [ "$1" = "configure" ] && [ -z "$2" ]; then
+        invoke-rc.d univention-virtual-machine-manager-daemon crestart
+    elif [ "$1" = "configure" ] && [ -n "$2" ]; then
+        invoke-rc.d univention-virtual-machine-manager-daemon restart 
+    fi
+fi
 
 if [ -x /etc/init.d/univention-management-console-server ]; then
     invoke-rc.d univention-management-console-server crestart
-fi
-
-if [ -x /etc/init.d/apache2 ]; then
-    invoke-rc.d apache2 restart || true
 fi
 
 exit 0
