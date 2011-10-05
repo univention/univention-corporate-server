@@ -69,3 +69,9 @@ Description[de]=Farben für den Vorder-und Hintergrund eines markierten grub Men
 Description[en]=This variable contains the foreground and background colors to be used for the highlighted grub menu entry.
 Type=str
 Categories=system-base
+
+[grub/vga]
+Description[de]=Grub VGA-Code
+Description[en]=Grub vga code
+Type=str
+Categories=system-base

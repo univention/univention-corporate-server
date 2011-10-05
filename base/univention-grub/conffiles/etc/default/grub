@@ -7,13 +7,15 @@ GRUB_DEFAULT=0
 GRUB_TIMEOUT=@%@grub/timeout@%@
 GRUB_DISTRIBUTOR=Univention
 
-GRUB_CMDLINE_LINUX_DEFAULT=@!@
+@!@
 defoptions=''
 if baseConfig.get('grub/quiet', "False").lower() in ['yes', 'true', '1']:
-        defoptions += ' quiet'
+	defoptions += ' quiet'
 if baseConfig.get('grub/loglevel', False):
-        defoptions += ' loglevel=%s' % baseConfig['grub/loglevel']
-print defoptions
+	defoptions += ' loglevel=%s' % baseConfig['grub/loglevel']
+if baseConfig.get('grub/vga', False):
+	defoptions += ' vga=%s' % baseConfig['grub/vga']
+print 'GRUB_CMDLINE_LINUX_DEFAULT="%s"' % defoptions
 @!@
 
 GRUB_CMDLINE_LINUX="@%@grub/append@%@ @%@grub/bootsplash@%@"
@@ -32,7 +34,7 @@ GRUB_GFXMODE=@%@grub/gfxmode@%@
 
 # This option passes the video configured in Grub (through grub/gfxmode) to
 # the Linux kernel
-GRUB_GFXPAYLOAD_LINUX=keep
+#GRUB_GFXPAYLOAD_LINUX=keep
 
 # Background image and menu color
 @!@

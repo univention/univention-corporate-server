@@ -1,3 +1,9 @@
+univention-grub (5.0.8-1) unstable; urgency=low
+
+  * reactivated grub/vga (Bug #23767) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 05 Oct 2011 16:27:00 +0200
+
 univention-grub (5.0.7-1) unstable; urgency=low
 
   * changed grub menu color (Bug #23405) 
