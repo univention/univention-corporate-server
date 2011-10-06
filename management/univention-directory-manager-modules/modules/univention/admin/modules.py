@@ -38,6 +38,7 @@ import univention.admin.uldap
 import univention.admin.syntax
 import univention.admin.hook
 import univention.admin.localization
+from univention.admin.layout import Tab
 
 translation=univention.admin.localization.translation('univention/admin')
 _=translation.translate
@@ -173,7 +174,7 @@ def init(lo, position, module, template_object=None):
 		#if module.initialized: # reload custom attributes
 		removetab = []
 		for tab in module.layout:
-			if tab.short_description in custom_fields.keys():
+			if tab.description in custom_fields.keys():
 				removetab.append(tab)
 		for tab in removetab:
 			module.layout.remove(tab)
@@ -477,8 +478,8 @@ def update_extended_attributes(lo, module, position):
 		# remove fields on tabs marked for replacement
 		removetab = []
 		for tab in module.layout:
-			if tab.short_description in overwriteTabList:
-				tab.set_fields( [] )
+			if tab.description in overwriteTabList:
+				tab.layout = []
 
 		for tabname in properties4tabs.keys():
 			priofields = properties4tabs[tabname]
@@ -488,12 +489,12 @@ def update_extended_attributes(lo, module, position):
 			currentTab = None
 			# get existing fields if tab has not been overwritten
 			for tab in module.layout:
-				ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: tabname=%s   tab.short=%s' % (tabname, tab.short_description) )
+				ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: tabname=%s   tab.short=%s' % (tabname, tab.description) )
 
-				if tab.short_description == tabname:
+				if tab.description == tabname:
 					currentTab = tab
 					# found tab in layout
-					fields = currentTab.get_fields()
+					fields = currentTab.layout
 					# get last line
 					if len(fields) > 0:
 						if len(fields[-1]) == 1:
@@ -574,7 +575,7 @@ def update_extended_attributes(lo, module, position):
 			if lastfield:
 				fields.append([lastfield])
 				ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: one custom field added %s'% fields)
-			currentTab.set_fields(fields)
+			currentTab.layout = fields
 			ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: layout for tab %s finished: %s'% (tabname, fields) )
 
 	# check for properties with the syntax class LDAP_Search
