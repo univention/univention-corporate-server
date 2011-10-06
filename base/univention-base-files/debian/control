@@ -19,8 +19,8 @@ Depends: univention-config,
  xfsprogs,
  lsof,
  console-data, 
- kbd, 
  console-common,
+ console-tools,
  bzip2,
  psmisc,
  lsb-base,
@@ -36,7 +36,7 @@ Recommends: vim,
  eject,
  locate
 Conflicts: univention-config-registry (<= 7.0.7),
- univention-config (<= 7.0.8), console-tools
+ univention-config (<= 7.0.8)
 Replaces: univention-config-registry (<= 7.0.7),
  univention-config (<= 7.0.8)
 Provides: univention-config-registry
