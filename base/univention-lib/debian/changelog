@@ -1,3 +1,10 @@
+univention-lib (1.0.21-1) unstable; urgency=low
+
+  * added python script to get primary mail from
+    uid or primary mail (Bug #23739)
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Oct 2011 19:04:46 +0200
+
 univention-lib (1.0.20-2) unstable; urgency=low
 
   * Remove a diversion if it exists (Bug #22611)
