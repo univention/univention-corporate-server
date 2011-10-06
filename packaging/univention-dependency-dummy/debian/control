@@ -9,8 +9,7 @@ Build-Depends: debhelper (>= 7.0.50~),
 Package: univention-dependency-dummy
 Architecture: all
 Provides: univention-system-setup,
- univention-grub,
- univention-archive-key
+ univention-grub
 Description: temporary development package
  This package was build to provide a target for missing package dependencies.
  Please note: this package is designed for development only!

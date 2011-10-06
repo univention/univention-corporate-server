@@ -1,3 +1,9 @@
+univention-dependency-dummy (0.0.0.0.0-8) unstable; urgency=low
+
+  * Removed univention-archive-key from provides (Bug #23926)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 06 Oct 2011 14:10:35 +0200
+
 univention-dependency-dummy (0.0.0.0.0-7) unstable; urgency=low
 
   * Removed univention-shares from provides (Bug #22431)
