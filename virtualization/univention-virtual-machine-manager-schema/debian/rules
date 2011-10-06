@@ -30,77 +30,38 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-PYVERS := $(shell pyversions -vr)
-
-package=univention-virtual-machine-manager-schema
-
+UVMM_SCHEMA=univention-virtual-machine-manager-schema
 PO_FILES := $(shell find modules -name '*.po')
-MO_FILES := $(PO_FILES:%.po=%.mo)
+MO_FILES := $(foreach po,$(PO_FILES),modules/i18n/$(notdir $(po:.po=))/LC_MESSAGES/$(UVMM_SCHEMA).mo)
+MY_FILES := $(foreach po,$(PO_FILES),$(notdir $(po:.po=)))
 
-%.mo: %.po
-	msgfmt -o $@ $<
+define build_mo
+modules/i18n/$(1)/LC_MESSAGES/$(UVMM_SCHEMA).mo: modules/univention/admin/handlers/uvmm/$(1).po
+	mkdir -p $$(dir $$@)
+	msgfmt --check --output-file $$@ $$<
+endef
 
-build: build-stamp $(MO_FILES)
-build-stamp:
-	dh_testdir
-	touch $@
+$(foreach po,$(PO_FILES),$(eval $(call build_mo,$(notdir $(po:.po=)))))
 
-clean:
+%:
+	@echo $(PO_FILES)
+	@echo $(MO_FILES)
+	@echo $(MY_FILES)
+	dh $@
+
+override_dh_auto_build: $(MO_FILES)
+	dh-umc-module-build
+	dh_auto_build
+
+override_dh_auto_install:
+	dh-umc-module-install
+	univention-install-config-registry
+	dh_auto_install
+
+clean::
 	dh_testdir
 	rm -f build-stamp
 	dh_clean
 	$(RM) debian/python-univention-directory-manager-uvmm.conffiles
 	$(RM) $(MO_FILES)
 
-install: install-stamp
-install-stamp: build-stamp $(PYVERS:%=install-ext-%)
-install-ext-%:
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	install -m 0644 schema/univention-virtual-machine-manager.schema debian/${package}/usr/share/univention-ldap/schema/
-	install -m 0755 40univention-virtual-machine-manager-schema.inst debian/${package}/usr/lib/univention-install/
-
-	@for i in $(shell find modules/univention/admin/ -name '*.py'); do\
-		o=debian/python-univention-directory-manager-uvmm/usr/lib/python$*/site-packages/$${i#modules/}; \
-		install -d "`dirname $$o`";\
-		install -m755 $$i $$o;\
-	done
-	@for i in $(MO_FILES); do\
-		lang=`basename $$i .mo`;\
-		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`;\
-		o=debian/python-univention-directory-manager-uvmm/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
-		install -d "`dirname $$o`";\
-		install -m 644 $$i $$o;\
-	done
-
-	univention-install-config-registry
-
-binary-indep: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs
-	dh_installexamples
-	dh_installmenu
-	dh_installcron
-	dh_installman
-	dh_installinfo
-	dh_installchangelogs
-	dh_pycentral
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-
-binary-arch: build install
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
