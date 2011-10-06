@@ -1,12 +1,18 @@
+univention-x-core (6.0.5-1) unstable; urgency=low
+
+  * remove xorg/keyboard ucr vars (Bug #23961) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Oct 2011 15:06:45 +0200
+
 univention-x-core (6.0.4-1) unstable; urgency=low
 
-  * set xorg/autodetect=yes on update to 3.0-0 Bug #19035
+  * set xorg/autodetect=yes on update to 3.0-0 (Bug #19035)
 
  -- Felix Botner <botner@univention.de>  Thu, 08 Sep 2011 11:21:08 +0200
 
 univention-x-core (6.0.3-1) unstable; urgency=low
 
-  * set xorg/autodetect=yes in postinst Bug #19035 
+  * set xorg/autodetect=yes in postinst (Bug #19035)
 
  -- Felix Botner <botner@univention.de>  Wed, 07 Sep 2011 15:34:40 +0200
 

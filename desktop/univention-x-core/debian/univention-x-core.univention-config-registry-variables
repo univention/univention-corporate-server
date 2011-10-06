@@ -126,44 +126,6 @@ Description[en]=Width and height of the picture area of the monitor (in millimet
 Type=str
 Categories=system-desktop
 
-
-[xorg/keyboard/.*]
-Description[de]=Xorg Tastatur-Sektion
-Description[en]=Xorg keyboard section
-Type=str
-Categories=system-desktop
-
-[xorg/keyboard/options/.*]
-Description[de]=Xorg Tastaturoptionen
-Description[en]=Xorg keyboard options
-Type=str
-Categories=system-desktop
-
-[xorg/keyboard/options/XkbLayout]
-Description[de]=XKB Tastaturlayout, normalerweise der Ländercode
-Description[en]=XKB keyboard layout name, usually the country or language code
-Type=str
-Categories=system-desktop
-
-[xorg/keyboard/options/XkbVariant]
-Description[de]=XKB Tastaturvarianten
-Description[en]=XKB keyboard variant components
-Type=str
-Categories=system-desktop
-
-[xorg/keyboard/options/XkbModel]
-Description[de]=XKB Tastaturmodell
-Description[en]=XKB keyboard model name
-Type=str
-Categories=system-desktop
-
-[xorg/keyboard/options/XkbRules]
-Description[de]=XKB Regeldatei die verwendet wird um alle Xkb-Optionen zu interpretieren
-Description[en]=XKB rules file to use for interpreting the Xkb-options
-Type=str
-Categories=system-desktop
-
-
 [xorg/device/.*]
 Description[de]=Xorg Grafikkarten-Sektion
 Description[en]=Xorg graphics device section

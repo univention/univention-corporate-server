@@ -97,7 +97,6 @@ univention-config-registry set	xorg/device/driver?vesa \
 							xorg/serverflags/options/AllowMouseOpenFail?true \
 							xorg/serverflags/options/AllowEmptyInput?false \
 							xorg/keyboard/options/XkbLayout?de \
-							xorg/keyboard/options/XkbRules?xorg \
 							xorg/keyboard/options/XkbModel?pc105 \
 							\
 							xorg/mouse/serial1/Identifier?"Serial Mouse" \
