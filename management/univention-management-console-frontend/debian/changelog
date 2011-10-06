@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.79-1) unstable; urgency=low
+
+  * fixed double call to custom callback handlers for Buttons (side effect
+    from changes in version 1.0.77-1) (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 06 Oct 2011 18:59:31 +0200
+
 univention-management-console-frontend (1.0.78-1) unstable; urgency=low
 
   * Form: added method clearFormValues() (Bug #22881)

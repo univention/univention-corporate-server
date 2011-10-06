@@ -140,11 +140,6 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 		// render the button
 		var button = new ButtonClass(buttonConf);
 
-		// connect event handler for onClick .. yet only for normal buttons
-		if ('Button' == buttonClassName) {
-			button.connect(button, 'onClick', buttonConf.callback);
-		}
-
 		// done, return the button
 		return button; // umc.widgets.Button
 	},

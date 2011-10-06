@@ -224,14 +224,15 @@ dojo.declare("umc.widgets.Form", [
 
 		// register callbacks for onSubmit and onReset events
 		umc.tools.forIn({ 'submit': 'onSubmit', 'reset': 'onReset' }, function(ibutton, ievent) {
-			var customCallback = dojo.getObject(ibutton + '.callback', false, this._buttons);
-			if (customCallback) {
+			var callbackOrg = dojo.getObject(ibutton + '.callback', false, this._buttons);
+			if (callbackOrg) {
+				this._buttons[ibutton].callback = function() { };
 				this.connect(this, ievent, function(e) {
 					// prevent standard form submission
 					e.preventDefault();
 
 					// if there is a custom callback, call it with all form values
-					customCallback(this.gatherFormValues());
+					callbackOrg(this.gatherFormValues());
 				});
 			}
 		}, this);
