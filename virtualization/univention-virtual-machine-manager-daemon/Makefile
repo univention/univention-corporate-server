@@ -33,18 +33,18 @@
 UVMM := univention-virtual-machine-manager
 
 PO_FILES := $(shell find src -name '*.po')
-MO_FILES := $(foreach po,$(PO_FILES),src/i18n/$(shell basename $(po) .po)/LC_MESSAGES/$(UVMM).mo)
+MO_FILES := $(foreach po,$(PO_FILES),src/i18n/$(notdir $(po:.po=))/LC_MESSAGES/$(UVMM).mo)
 
 .PHONY: all
 all:: $(MO_FILES)
 
 define build_mo
 src/i18n/$(1)/LC_MESSAGES/$(UVMM).mo: src/$(1).po
-	mkdir -p $$(shell dirname $$@)
+	mkdir -p $$(dir $$@)
 	msgfmt --check --output-file $$@ $$<
 endef
 
-$(foreach po,$(PO_FILES),$(eval $(call build_mo,$(shell basename $(po) .po))))
+$(foreach po,$(PO_FILES),$(eval $(call build_mo,$(notdir $(po:.po=)))))
 
 .PHONY: clean
 clean::
