@@ -5,7 +5,7 @@ univention-virtual-machine-manager-daemon (1.0.0-3) unstable; urgency=low
   * make init script compatible with dash
   * replace python2.4 with python2.6 in shebang
 
- --
+ -- Andreas Büsching <buesching@univention.de>  Thu, 06 Oct 2011 17:03:30 +0200
 
 univention-virtual-machine-manager-daemon (1.0.0-2) unstable; urgency=low
 
