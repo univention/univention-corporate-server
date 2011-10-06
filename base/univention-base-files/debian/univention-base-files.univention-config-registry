@@ -181,6 +181,13 @@ Variables: xorg/keyboard/options/XkbVariant
 Variables: xorg/keyboard/options/XkbOptions
 Variables: locale/keymap
 
+Type: module
+Module: xkbKeyboard.py
+Variables: xorg/keyboard/options/XkbModel
+Variables: xorg/keyboard/options/XkbLayout
+Variables: xorg/keyboard/options/XkbVariant
+Variables: xorg/keyboard/options/XkbOptions
+
 Type: file
 File: etc/kernel-img.conf
 Variables: kernel/do_initrd
