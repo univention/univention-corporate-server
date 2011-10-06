@@ -6879,7 +6879,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"postscript/Oce/Oce-PPC5115PS/1/OP5115_2.ppd.gz\" \"Oce PPC for 5115 PS2\"" \
 	--append printmodel="\"postscript/Oce/Oce-VarioPrint_2090PS/1/OCVP2090.ppd.gz\" \"Oce VarioPrint 2090 PS3\"" \
 	--append printmodel="\"postscript/Oce/Oce-PPC3114PS/1/OP3114_3.ppd.gz\" \"Oce PPC for 3114 PS3\"" \
-	--append printmodel="\"postscript/Oce/Oce-VarioPrint_2110PS/1/OCVP2110.ppd.gz\" \"Océ VarioPrint 2110 PS3\"" \
+	--append printmodel="\"postscript/Oce/Oce-VarioPrint_2110PS/1/OCVP2110.ppd.gz\" \"Oce VarioPrint 2110 PS3\"" \
 	--append printmodel="\"postscript/Oce/Oce-VarioPrint_2045PS/1/OCVP2045.ppd.gz\" \"Oce VarioPrint 2045 PS3\"" \
 	--append printmodel="\"postscript/Oce/Oce-8465PS/1/OC8465_3.ppd.gz\" \"Oce 8465 PS3\"" \
 	--append printmodel="\"postscript/Oce/Oce-PPC5160PS/1/OP5160_2.ppd.gz\" \"Oce PPC for 5160 PS2\"" \
@@ -6887,7 +6887,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"postscript/Oce/Oce-8445PS/1/OC8445_3.ppd.gz\" \"Oce 8445 PS3\"" \
 	--append printmodel="\"postscript/Oce/Oce-VarioPrint_2060PS/1/OCVP2060.ppd.gz\" \"Oce VarioPrint 2060 PS3\"" \
 	--append printmodel="\"postscript/Oce/Oce-PPC3113PS/1/OP3113_3.ppd.gz\" \"Oce PPC for 3113 PS3\"" \
-	--append printmodel="\"postscript/Oce/Oce-VarioPrint_2100PS/1/OCVP2100.ppd.gz\" \"Océ VarioPrint 2100 PS3\"" \
+	--append printmodel="\"postscript/Oce/Oce-VarioPrint_2100PS/1/OCVP2100.ppd.gz\" \"Oce VarioPrint 2100 PS3\"" \
 	--append printmodel="\"postscript/Oce/Oce-PPC3094PS/1/OP3094_3.ppd.gz\" \"Oce PPC for 3094 PS3\"" \
 	--append printmodel="\"postscript/Oce/Oce-VarioPrint_2105PS/1/OCVP2105.ppd.gz\" \"Oce VarioPrint 2105 PS3\"" \
 	--append printmodel="\"postscript/Oce/Oce-VarioPrint_2065PS/1/OCVP2065.ppd.gz\" \"Oce VarioPrint 2065 PS3\"" \

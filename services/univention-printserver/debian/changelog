@@ -1,3 +1,10 @@
+univention-printserver (5.0.6-1) unstable; urgency=low
+
+  * fixed description of VarioPrint 2110 PS3 
+    and VarioPrint 2100 PS3 (Bug #23110) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Oct 2011 10:12:59 +0200
+
 univention-printserver (5.0.5-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3
