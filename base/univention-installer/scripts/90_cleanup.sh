@@ -42,7 +42,6 @@ chmod 1777 /instmnt/tmp
 rm -f /instmnt/*.sh
 rm -f /instmnt/.log
 rm -f /instmnt/start
-rm -Rf /instmnt/srv
 rm -Rf /instmnt/initrd
 rm -Rf /instmnt/dead.letter
 /bin/sync
