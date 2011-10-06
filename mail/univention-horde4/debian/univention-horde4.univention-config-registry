@@ -50,3 +50,6 @@ File: etc/horde4/imp/prefs.d/10-ucs.php
 User: www-data
 Mode: 640
 Variables: horde/.*
+
+Type: file
+File: etc/horde4/imp/hooks.php

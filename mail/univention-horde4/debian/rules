@@ -30,6 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+override_dh_auto_build:
+	make univention-horde-login-wrapper
+	dh_auto_build
+
 override_dh_auto_install:
 	univention-install-config-registry
 	dh_auto_install

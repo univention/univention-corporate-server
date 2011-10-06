@@ -77,6 +77,9 @@ univention-config-registry set \
 
 call_joinscript 85univention-horde4.inst
 
+# make login wrapper executable for www-data
+dpkg-statoverride --add --update --quiet root www-data 4750 /usr/share/univention-horde4/univention-horde-login-wrapper
+
 if [ -x /etc/init.d/apache2 ]; then
 	/etc/init.d/apache2 reload
 fi
