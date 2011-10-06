@@ -1,3 +1,11 @@
+univention-installer (7.0.91-1) unstable; urgency=low
+
+  * set XkbLayout and XkbVariant depending on default_locale
+    from profile during installation (Bug #23961)
+ 
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Oct 2011 15:37:18 +0200
+
 univention-installer (7.0.90-2) unstable; urgency=low
 
   * Do not remove /srv in the cleanup script (Bug #23965)

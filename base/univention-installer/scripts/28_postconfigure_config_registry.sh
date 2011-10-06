@@ -41,6 +41,14 @@ grub_append=`cat /proc/cmdline | sed -e 's|.* profile||;s|.* usb||;s|.* floppy||
 version_version=`cat /instmnt/sourcedevice/.univention_install | grep VERSION | sed -e 's|VERSION=||'`
 version_patchlevel=`cat /instmnt/sourcedevice/.univention_install | grep PATCHLEVEL | sed -e 's|PATCHLEVEL=||'`
 
+# get x keyboard config
+if [ -n "$locale_default" ]; then
+	myLocale=$(echo "$locale_default" | awk -F : '{print $1}')
+	
+	xkbLayout=$(sh /lib/univention-installer/locale/locale2xkblayout.sh --layout "$myLocale")
+	xkbVariant=$(sh /lib/univention-installer/locale/locale2xkblayout.sh --variant "$myLocale")
+fi
+
 if [ -n "$system_role" ]; then
 	export server_role="$system_role"
 fi
@@ -264,7 +272,14 @@ ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
 mkdir -p /etc/console
 
 univention-config-registry set locale/keymap="$keymap"
-univention-config-registry set xorg/keyboard/options/XkbLayout=$(echo $keymap | sed -e 's|-.*||')
+
+if [ -n "$xkbVariant" ]; then
+	univention-config-registry set xorg/keyboard/options/XkbVariant="$xkbVariant"
+fi
+
+if [ -n "$xkbLayout" ]; then
+	univention-config-registry set xorg/keyboard/options/XkbLayout="$xkbLayout"
+fi
 
 if [ -n "$ox_primary_maildomain" ] ; then
 	univention-config-registry set ox/mail/domain/primary=$ox_primary_maildomain
