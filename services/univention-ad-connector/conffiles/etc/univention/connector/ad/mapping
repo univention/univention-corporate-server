@@ -64,7 +64,7 @@ ad_mapping = {
 
 			con_search_filter='(&(objectClass=user)(!objectClass=computer))',
 			match_filter='(|(&(objectClass=posixAccount)(objectClass=sambaSamAccount))(objectClass=user))',
-			ignore_filter='(|(uid=root)(uid=Administrator)(cn=Administrator)(CN=Administrator)(userAccountControl=2080)(uid=pcpatch)(cn=pcpatch)(CN=pcpatch))',
+			ignore_filter='(|(uid=root)(uid=Administrator)(cn=Administrator)(CN=Administrator)(userAccountControl=2080)(uid=pcpatch)(cn=pcpatch)(CN=pcpatch)(cn=krbtgt))',
 
 			ignore_subtree = global_ignore_subtree,
 			

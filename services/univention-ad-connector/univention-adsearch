@@ -35,6 +35,7 @@
 import sys, codecs, os
 import univention.config_registry
 from ldap.controls import LDAPControl
+from ldap.controls import SimplePagedResultsControl
 import ldap
 
 def encode_object_sid(sid_string, encode_in_base64=True):
@@ -149,9 +150,9 @@ ca_file = configRegistry['%s/ad/ldap/certificate' % CONFIGBASENAME]
 
 start_tls = 2
 if configRegistry.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and configRegistry['%s/ad/ldap/ssl' % CONFIGBASENAME] == "no":
-    start_tls = 0
-
-ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, ca_file )
+	start_tls = 0
+else:
+	ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, ca_file )
 
 lo = ldap.initialize(ldapuri)
 
@@ -165,6 +166,11 @@ lo.simple_bind_s(login_dn, login_pw)
 
 # LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
 lc1 = LDAPControl('1.2.840.113556.1.4.417',criticality=1)
+page_size = 1000
+
+lc2 = SimplePagedResultsControl(
+  ldap.LDAP_CONTROL_PAGE_OID,True,(page_size,'')
+)
 
 filter = ""
 
@@ -175,9 +181,31 @@ for i in filter_tmp.split(","):
 	filter += (j[0] + "=" + j[1])
 
 if filter_attributes:
-	res = lo.search_ext_s(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME],ldap.SCOPE_SUBTREE,filter.encode('utf8'),filter_attributes,serverctrls=[lc1])
+	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME],ldap.SCOPE_SUBTREE,filter.encode('utf8'),filter_attributes,serverctrls=[lc1,lc2])
 else:
-	res = lo.search_ext_s(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME],ldap.SCOPE_SUBTREE,filter.encode('utf8'),serverctrls=[lc1])
+	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME],ldap.SCOPE_SUBTREE,filter.encode('utf8'),serverctrls=[lc1,lc2])
+
+res = []
+while True:
+	rtype, rdata, rmsgid, serverctrls = lo.result3(msgid)
+	res += rdata
+	pctrls = [
+		c
+		for c in serverctrls
+		if c.controlType == ldap.LDAP_CONTROL_PAGE_OID
+    ]
+	if pctrls:
+		est, cookie = pctrls[0].controlValue
+		if cookie:
+			lc2.controlValue = (page_size, cookie)
+			if filter_attributes:
+				msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), filter_attributes, serverctrls=[lc1,lc2])
+			else:
+				msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), serverctrls=[lc1,lc2])
+		else:
+			break
+	else:
+		break
 
 n_results = len(res)
 n_referrals = 0

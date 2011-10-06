@@ -38,6 +38,10 @@ import univention.uldap
 import univention.connector
 import univention.debug2 as ud
 from ldap.controls import LDAPControl
+from ldap.controls import SimplePagedResultsControl
+
+# page results
+PAGE_SIZE=1000
 
 def activate_user (connector, key, object):
         # set userAccountControl to 544
@@ -712,16 +716,52 @@ class ad(univention.connector.ucs):
 
 		return max(usnchanged,usncreated)
 
-	def __search_ad(self, show_deleted=False, filter=''):
+	def __search_ad(self, base=None, scope=ldap.SCOPE_SUBTREE, filter='', attrlist= [], show_deleted=False):
 		'''
 		search ad
 		'''
 		_d=ud.function('ldap.__search_ad')
+
+		if not base:
+			base=self.lo_ad.base
+
 		ctrls=[]
+		ctrls.append(SimplePagedResultsControl(ldap.LDAP_CONTROL_PAGE_OID,True,(PAGE_SIZE,'')))
+
 		if show_deleted:
 			# LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
 			ctrls.append(LDAPControl('1.2.840.113556.1.4.417',criticality=1))
-		return encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,filter,serverctrls=ctrls))
+
+		ud.debug(ud.LDAP, ud.INFO, "Search AD with filter: %s" % filter)
+		msgid = self.lo_ad.lo.search_ext(base, scope, filter, attrlist, serverctrls=ctrls, timeout=-1, sizelimit=0)
+
+		res = []
+		pages = 0
+		while True:
+			pages += 1
+			rtype, rdata, rmsgid, serverctrls = self.lo_ad.lo.result3(msgid)
+			res += rdata
+
+			pctrls = [
+				c
+				for c in serverctrls
+				if c.controlType == ldap.LDAP_CONTROL_PAGE_OID
+			]
+			if pctrls:
+				est, cookie = pctrls[0].controlValue
+				if cookie:
+					if pages > 1:
+						ud.debug(ud.LDAP, ud.PROCESS, "AD search continues, already found %s objects" % len(res))
+					ctrls[0].controlValue = (PAGE_SIZE, cookie)
+					msgid = self.lo_ad.lo.search_ext(base, scope, filter, attrlist, serverctrls=ctrls, timeout=-1, sizelimit=0)
+				else:
+					break
+			else:
+				ud.debug(ud.LDAP, ud.WARN, "AD ignores PAGE_RESULTS")
+				break
+
+		
+		return encode_ad_resultlist(res)
 		
 
 	def __search_ad_changes(self, show_deleted=False, filter=''):
@@ -746,19 +786,28 @@ class ad(univention.connector.ucs):
 
 
 		# search fpr objects with uSNCreated and uSNChanged in the known range
-
-		returnObjects = []
 		try:
-			returnObjects = search_ad_changes_by_attribute( 'uSNCreated', lastUSN+1 )
-			returnObjects += search_ad_changes_by_attribute( 'uSNChanged', lastUSN+1 )
+			if lastUSN > 0:
+				# During the init phase we have to search for created and changed objects
+				# but we need to sync the objects only once
+				returnObjects = search_ad_changes_by_attribute( 'uSNCreated', lastUSN+1 )
+				for changedObject in search_ad_changes_by_attribute( 'uSNChanged', lastUSN+1 ):
+					if changedObject not in returnObjects:
+						returnObjects.append(changedObject)
+			else:
+				# Every object has got a uSNCreated
+				returnObjects = search_ad_changes_by_attribute( 'uSNCreated', lastUSN+1 )
+
 		except (ldap.SERVER_DOWN, SystemExit):		
 			raise
-		except: # FIXME: which exception is to be caught?
-		        # AD can`t return > 1000 results, we are going to split the search
+		except ldap.SIZELIMIT_EXCEEDED:
+			# The LDAP control page results was not sucessful. Without this control 
+			# AD does not return more than 1000 results. We are going to split the
+			# search.
 			highestCommittedUSN = self.__get_highestCommittedUSN()
 			tmpUSN=lastUSN
-			ud.debug(ud.LDAP, ud.INFO,
-					       "__search_ad_changes: need to split results. highest USN is %s, lastUSN is %s"%(highestCommittedUSN,lastUSN))
+			ud.debug(ud.LDAP, ud.PROCESS,
+					       "Need to split results. highest USN is %s, lastUSN is %s"%(highestCommittedUSN,lastUSN))
 			while (tmpUSN != highestCommittedUSN):
 				lastUSN=tmpUSN
 				tmpUSN+=999
@@ -767,8 +816,14 @@ class ad(univention.connector.ucs):
 
 				ud.debug(ud.LDAP, ud.INFO, "__search_ad_changes: search between USNs %s and %s"%(lastUSN+1,tmpUSN))
 
-				returnObjects += search_ad_changes_by_attribute( 'uSNCreated', lastUSN+1, tmpUSN )
-				returnObjects += search_ad_changes_by_attribute( 'uSNChanged', lastUSN+1, tmpUSN )
+				if lastUSN > 0:
+					returnObjects += search_ad_changes_by_attribute( 'uSNCreated', lastUSN+1, tmpUSN )
+					for changedObject in search_ad_changes_by_attribute( 'uSNChanged', lastUSN+1, tmpUSN ):
+						if changedObject not in returnObjects:
+							returnObjects.append(changedObject)
+				else:
+					# Every object has got a uSNCreated
+					returnObjects += search_ad_changes_by_attribute( 'uSNCreated', lastUSN+1, tmpUSN )
 				
 		return returnObjects
 
@@ -895,9 +950,7 @@ class ad(univention.connector.ucs):
 		'''
 		_d=ud.function('ldap.set_primary_group_to_ucs_user')
 
-		ad_group_rid_resultlist = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,
-							   'samaccountname=%s' % compatible_modstring(object_ucs['username']),
-							   timeout=-1, sizelimit=0))
+		ad_group_rid_resultlist = self.__search_ad(base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter='samaccountname=%s' % compatible_modstring(object_ucs['username']), attrlist=['dn', 'primaryGroupID'])
 
 		if not ad_group_rid_resultlist[0][0] in ['None','',None]:
 
@@ -907,9 +960,7 @@ class ad(univention.connector.ucs):
 								   "set_primary_group_to_ucs_user: AD rid: %s"%ad_group_rid)
 			object_sid_string = str(self.ad_sid) + "-" + str(ad_group_rid)
 
-			ldap_group_ad = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,
-								   "objectSid=" + object_sid_string,
-								   timeout=-1, sizelimit=0))
+			ldap_group_ad = self.__search_ad( base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter="objectSid=" + object_sid_string)
 
 			if not ldap_group_ad[0][0]:
 				ud.debug(ud.LDAP, ud.ERROR, "ad.set_primary_group_to_ucs_user: Primary Group in AD not found (not enough rights?), sync of this object will fail!")
@@ -970,7 +1021,8 @@ class ad(univention.connector.ucs):
 			if ldap_object_ad_group.has_key('member'):
 				for member in ldap_object_ad_group['member']:
 					if compatible_modstring(object['dn']).lower() == compatible_modstring(member).lower():
-						is_member = True # FIXME: should left the for-loop here for better perfomance
+						is_member = True
+						break
 
 			if not is_member: # add as member
 				ad_members = []
@@ -1005,9 +1057,8 @@ class ad(univention.connector.ucs):
 
 		object_sid_string = str(self.ad_sid) + "-" + str(ad_group_rid)
 
-		ldap_group_ad = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,
-							   ('objectSID=' + object_sid_string),
-							   timeout=-1, sizelimit=0))
+		ldap_group_ad = self.__search_ad( base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter='objectSID=' + object_sid_string)
+
 
 		ucs_group = self._object_mapping('group',{'dn':ldap_group_ad[0][0],'attributes':ldap_group_ad[0][1]})
 
@@ -1084,8 +1135,7 @@ class ad(univention.connector.ucs):
 		else:
 			ucs_members = []
 
-		ud.debug(ud.LDAP, ud.INFO,
-							   "ucs_members: %s" % ucs_members)
+		ud.debug(ud.LDAP, ud.INFO, "ucs_members: %s" % ucs_members)
 
 		# remove members which have this group as primary group (set same gidNumber)
 		prim_members_ucs = self.lo.lo.search(filter='gidNumber=%s'%ldap_object_ucs['gidNumber'][0],attr=['gidNumber'])
@@ -1102,8 +1152,7 @@ class ad(univention.connector.ucs):
 			if  prim_object[0].lower() in ucs_members:
 				ucs_members.remove(prim_object[0].lower())
 
-		ud.debug(ud.LDAP, ud.INFO,
-							   "group_members_sync_from_ucs: clean ucs_members: %s" % ucs_members)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: clean ucs_members: %s" % ucs_members)
 
 		ldap_object_ad = self.get_object(object['dn'])
 		if not ldap_object_ad:
@@ -1200,10 +1249,8 @@ class ad(univention.connector.ucs):
 		add_members = ad_members_from_ucs
 		del_members = []
 
-		ud.debug(ud.LDAP, ud.INFO,
-							   "group_members_sync_from_ucs: members to add initialized: %s" % add_members)
-		ud.debug(ud.LDAP, ud.INFO,
-							   "group_members_sync_from_ucs: members to del initialized: %s" % del_members)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to add initialized: %s" % add_members)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to del initialized: %s" % del_members)
 
 		for member_dn in ad_members:
 			if member_dn.lower() in ad_members_from_ucs:
@@ -1212,17 +1259,14 @@ class ad(univention.connector.ucs):
 				del_members.append(member_dn)
 
 		
-		ud.debug(ud.LDAP, ud.INFO,
-							   "group_members_sync_from_ucs: members to add: %s" % add_members)
-		ud.debug(ud.LDAP, ud.INFO,
-							   "group_members_sync_from_ucs: members to del: %s" % del_members)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to add: %s" % add_members)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to del: %s" % del_members)
 
 		if add_members or del_members:
 			ad_members = ad_members + add_members
 			for member in del_members:
 				ad_members.remove(member)
-			ud.debug(ud.LDAP, ud.INFO,
-								   "group_members_sync_from_ucs: members result: %s" % ad_members)
+			ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members result: %s" % ad_members)
 
 			modlist_members = []
 			for member in ad_members:
@@ -1291,17 +1335,13 @@ class ad(univention.connector.ucs):
 		group_rid = group_sid[string.rfind(group_sid,"-")+1:]
 
 		# search for members who have this as their primaryGroup
-		prim_members_ad = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,
-							     'primaryGroupID=%s'%group_rid,
-							     timeout=-1, sizelimit=0))
-
+		prim_members_ad = self.__search_ad(filter='primaryGroupID=%s'%group_rid, attrlist=['dn'])
 
 		for prim_dn, prim_object in prim_members_ad:
 			if not prim_dn in ['None','',None]: # filter referrals
 				ad_members.append(prim_dn)
 
-		ud.debug(ud.LDAP, ud.INFO,
-							   "group_members_sync_to_ucs: ad_members %s" % ad_members)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ad_members %s" % ad_members)
 
 		ucs_members_from_ad = { 'user' : [], 'group': [] }
 		
@@ -1323,11 +1363,15 @@ class ad(univention.connector.ucs):
 				except: # FIXME: which exception is to be caught?
 					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: failed to get dn from ucs, assume object doesn't exist")
 				
+		# build an internal cache
+		cache={}
+
 		# check if members in UCS don't exist in AD, if true they need to be added in UCS
 		for member_dn in ucs_members:
 			if not (member_dn.lower() in ucs_members_from_ad['user'] or member_dn.lower() in ucs_members_from_ad['group']):
 				try:
-					ucs_object = {'dn':member_dn,'modtype':'modify','attributes':self.lo.get(member_dn)}
+					cache[member_dn] = self.lo.get(member_dn)
+					ucs_object = {'dn':member_dn,'modtype':'modify','attributes':cache[member_dn]}
 
 					if self._ignore_object(key, object):
 						continue
@@ -1364,7 +1408,11 @@ class ad(univention.connector.ucs):
 			elif member_dn.lower() in ucs_members_from_ad['group']:
 				add_members['group'].remove(member_dn.lower())
 			else:
-				ucs_object = {'dn':member_dn,'modtype':'modify','attributes':self.lo.get(member_dn)}
+				ucs_object_attr=cache.get(member_dn)
+				if not ucs_object_attr:
+					ucs_object_attr = self.lo.get(member_dn)
+					cache[member_dn] = ucs_object_attr
+				ucs_object = {'dn':member_dn,'modtype':'modify','attributes':ucs_object_attr}
 
 				# TODO: check if ucs_object is really an user
 				if not self._ignore_object('user', ucs_object):
@@ -1397,8 +1445,6 @@ class ad(univention.connector.ucs):
 				ud.debug(ud.LDAP, ud.INFO,
 						       "group_members_sync_to_ucs: members %s result: %s" % (key,modlist_members[key]) )
 
-			ucs_admin_object=univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
-			ucs_admin_object.open()
 			ucs_admin_object['users'] = modlist_members['user']
 			ucs_admin_object['nestedGroup'] = modlist_members['group']
 			ucs_admin_object.modify()
@@ -1515,7 +1561,7 @@ class ad(univention.connector.ucs):
 		print "--------------------------------------"
 		print "Initialize sync from AD"
 		if self._get_lastUSN() == 0: # we startup new
-			ud.debug(ud.LDAP, ud.INFO, "initialize AD: last USN is 0, sync all")
+			ud.debug(ud.LDAP, ud.PROCESS, "initialize AD: last USN is 0, sync all")
 			# query highest USN in LDAP
 			highestCommittedUSN = self.__get_highestCommittedUSN()
 
@@ -1830,19 +1876,19 @@ class ad(univention.connector.ucs):
  			attrs_to_remove_from_ad_object = []
 			attrs_which_should_be_mapped = []
 
- 			if hasattr(self.property['container'], 'post_attributes') and self.property['ou'].post_attributes != None:
+ 			if self.property.has_key('container') and hasattr(self.property['container'], 'post_attributes') and self.property['ou'].post_attributes != None:
 				for ac in self.property['container'].post_attributes.keys():
 					attrs_which_should_be_mapped.append(self.property['container'].post_attributes[ac].con_attribute)
 
-			if hasattr(self.property['ou'], 'post_attributes') and self.property['ou'].post_attributes != None:
+			if self.property.has_key('ou') and hasattr(self.property['ou'], 'post_attributes') and self.property['ou'].post_attributes != None:
 				for ac in self.property['ou'].post_attributes.keys():
 					attrs_which_should_be_mapped.append(self.property['ou'].post_attributes[ac].con_attribute)
 
- 			if hasattr(self.property['group'], 'post_attributes') and self.property['group'].post_attributes != None:
+ 			if self.property.has_key('group') and hasattr(self.property['group'], 'post_attributes') and self.property['group'].post_attributes != None:
 				for ac in self.property['group'].post_attributes.keys():
 					attrs_which_should_be_mapped.append(self.property['group'].post_attributes[ac].con_attribute)
 
- 			if hasattr(self.property['user'], 'post_attributes') and self.property['user'].post_attributes != None:
+ 			if self.property.has_key('user') and hasattr(self.property['user'], 'post_attributes') and self.property['user'].post_attributes != None:
 				for ac in self.property['user'].post_attributes.keys():
 					attrs_which_should_be_mapped.append(self.property['user'].post_attributes[ac].con_attribute)
 

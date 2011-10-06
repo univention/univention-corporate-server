@@ -139,3 +139,14 @@ Description[en]=If the user password was reset in Active Directory the password 
 Type=bool
 Categories=service-adcon
 
+[con.*/ldap/server]
+Description[de]=Der Fully Qualified Domain Name des UCS LDAP Servers. Wenn der Wert nicht gesetzt ist, wird der DC Master verwendet. Dieser Wert sollte nur im write Modus angepasst werden.
+Description[en]=The fully qualified domain name of the UCS LDAP server. If the value is not set, the DC master will be used. This value should only changed in write mode.
+Type=string
+Categories=service-adcon
+
+[con.*/ldap/port]
+Description[de]=TCP-Port über den der LDAP-Dienst des AD-Servers erreichbar ist. Dieser Wert sollte nur im write Modus angepasst werden.
+Description[en]=The port of the LDAP service of the Active Directory server. This value should only changed in write mode.
+Type=str
+Categories=service-adcon

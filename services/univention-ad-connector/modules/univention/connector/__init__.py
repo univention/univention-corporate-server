@@ -229,7 +229,7 @@ class ucs:
 
 		self.CONFIGBASENAME = CONFIGBASENAME
 
-		self.ucs_no_recode=['krb5Key','userPassword','pwhistory','sambaNTPassword','sambaLMPassword']
+		self.ucs_no_recode=['krb5Key','userPassword','pwhistory','sambaNTPassword','sambaLMPassword', 'userCertificate']
 
 		self.baseConfig=baseConfig
 		self.property=_property
@@ -261,7 +261,14 @@ class ucs:
 		if bindpw[-1] == '\n':
 			bindpw=bindpw[0:-1]
 
-		self.lo=univention.admin.uldap.access(host=self.baseConfig['ldap/master'], base=self.baseConfig['ldap/base'], binddn='cn=admin,'+self.baseConfig['ldap/base'], bindpw=bindpw, start_tls=2)
+		host = self.baseConfig.get('%s/ldap/server' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master'))
+
+		try:
+			port = int(self.baseConfig.get('%s/ldap/port' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master/port')))
+		except:
+			port = 7389
+
+		self.lo=univention.admin.uldap.access(host=host, port=port, base=self.baseConfig['ldap/base'], binddn='cn=admin,'+self.baseConfig['ldap/base'], bindpw=bindpw, start_tls=2)
 
 	def search_ucs( self, filter = '(objectClass=*)', base = '', scope = 'sub', attr = [], unique = 0, required = 0, timeout = -1, sizelimit = 0 ):
 		try:
@@ -625,6 +632,8 @@ class ucs:
 		for key in self.property.keys():
 			if self.property[key].ucs_module:
 				self.modules[key]=univention.admin.modules.get(self.property[key].ucs_module)
+				position=univention.admin.uldap.position(self.lo.base)
+				univention.admin.modules.init(self.lo, position, self.modules[key])
 			else:
 				self.modules[key]=None
 		
@@ -747,10 +756,11 @@ class ucs:
 							change_counter += 1
 					else:
 						os.remove(os.path.join(filename))
+						# Show the drop process message only if in write or sync mode
 						try:
-							ud.debug(ud.LDAP, ud.PROCESS, 'Drop %s. The DN %s will synced later' % (filename, dn))
+							ud.debug(ud.LDAP, ud.INFO, 'Drop %s. The DN %s will synced later' % (filename, dn))
 						except:
-							ud.debug(ud.LDAP, ud.PROCESS, 'Drop %s. The object will synced later' % (filename))
+							ud.debug(ud.LDAP, ud.INFO, 'Drop %s. The object will synced later' % (filename))
 
 					if self.dn_list.get(dn):
 						self.dn_list[dn].remove(filename)
@@ -790,9 +800,6 @@ class ucs:
 					detected_ca = False
 
 					ucs_module = self.modules[property_type]
-					position=univention.admin.uldap.position(self.lo.base)
-					position.setDn(object['dn'])
-					univention.admin.modules.init(self.lo,position,ucs_module)
 					
 					if hasattr(ucs_module, 'ldap_extra_objectclasses'):
 						ud.debug(ud.LDAP, ud.INFO, '__set_values: module %s has custom attributes' % ucs_object.module)
@@ -848,9 +855,7 @@ class ucs:
 				ucs_key = attributes.ucs_attribute
 				if ucs_object.has_key(ucs_key):
 					ucs_module = self.modules[property_type]
-					position=univention.admin.uldap.position(self.lo.base)
-					position.setDn(object['dn'])
-					univention.admin.modules.init(self.lo,position,ucs_module)
+
 					ud.debug(ud.LDAP, ud.INFO, '__set_values: no ldap_attribute defined in %s, we unset the key %s in the ucs-object' % (attributes, ucs_key))
 
 					if ucs_key not in mandatory_attrs:
@@ -907,8 +912,6 @@ class ucs:
 		_d=ud.function('ldap.add_in_ucs')
 		ucs_object=module.object(None, self.lo, position=position)
 		ucs_object.open()
-		if hasattr(ucs_object,'set_uid_umlauts'): # activate umlauts
-			   ucs_object.set_uid_umlauts()
 		self.__set_values(property_type,object,ucs_object, modtype='add')
 		for function in self.property[property_type].ucs_create_functions:
 			function(self, property_type, ucs_object)

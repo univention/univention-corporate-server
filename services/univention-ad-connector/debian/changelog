@@ -1,3 +1,30 @@
+univention-ad-connector (6.0.9-2.1) unstable; urgency=low
+
+  * Support page control for the AD search. This increase the initialize
+    performance (Bug #23734)
+  * Don't synchonisze all objects during the init twice, only search for
+    uSNCreated objects and not for uSNCreated and uSNChanged objects
+    (Bug #23734)
+  * Adapt prepare-new-instance to UCS 3.0 (Bug #23814)
+  * Don't try to decode the userCertificate value (Bug #23612)
+  * The tools univention-connector-list-rejected and univention-adsearch
+    can now be used when connector/ad/ldap/certificate is not set and
+    connector/ad/ssl is false (Bug #23580)
+  * Build an internal membership cache while synchonize the members from
+    AD to UCS. So every AD member will get once instead of twice. Also
+    don't open the UDM group module twice (Bug #21010)
+  * Check if properties defined in the mapping file. Thanks to Joerg
+    Steffens for the patch (Bug #21001)
+  * Added user krbtgt to ignore list (Bug #20516)
+  * Make the ldap sever configurable (Bug #18136)
+  * No longer call set_uid_umlauts and cleanup the module initialize
+    (Bug #21032, Bug #20599)
+  * prepare-new-instance now changes all variables in the new mapping
+    file (Bug #22057)
+  * Don't recreate the certificate (Bug #23969)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 06 Oct 2011 16:02:32 +0200
+
 univention-ad-connector (6.0.9-2) unstable; urgency=low
 
   * Fix removal of w2k support (Bug #21486)
@@ -52,7 +79,8 @@ univention-ad-connector (6.0.7-1) unstable; urgency=low
 univention-ad-connector (6.0.6-1) unstable; urgency=low
 
   * Write tracebacks into connector.log (Bug #13047)
-  * Cleanup debug messages and set the debug level to 2 by default
+  * Cleanup debug messages and set the debug level to 2 by default 
+    (Bug #20971)
   * mapping.py: Remove object_memberships_sync_from_ucs from the list of
     post_con_modify_functions because the group object will changed if
     the groupmember ship was changed on UCS. This will improve the sync
