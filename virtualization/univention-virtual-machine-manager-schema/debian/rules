@@ -30,11 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-PYVERS=$(shell pyversions -vr)
+PYVERS := $(shell pyversions -vr)
 
 package=univention-virtual-machine-manager-schema
 
-MO_FILES=$(shell find modules -name '*.po' | sed 's/\.po/\.mo/g')
+PO_FILES := $(shell find modules -name '*.po')
+MO_FILES := $(PO_FILES:%.po=%.mo)
 
 %.mo: %.po
 	msgfmt -o $@ $<
@@ -42,13 +43,14 @@ MO_FILES=$(shell find modules -name '*.po' | sed 's/\.po/\.mo/g')
 build: build-stamp $(MO_FILES)
 build-stamp:
 	dh_testdir
-	touch build-stamp
+	touch $@
 
 clean:
 	dh_testdir
-	dh_testroot
 	rm -f build-stamp
 	dh_clean
+	$(RM) debian/python-univention-directory-manager-uvmm.conffiles
+	$(RM) $(MO_FILES)
 
 install: install-stamp
 install-stamp: build-stamp $(PYVERS:%=install-ext-%)

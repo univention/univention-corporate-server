@@ -1,3 +1,78 @@
+univention-virtual-machine-manager-schema (1.0.32-1) unstable; urgency=low
+
+  * Tighten dependencies on p-u-d-m-uvmm (Bug #22033)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Aug 2011 11:25:35 +0200
+
+univention-virtual-machine-manager-schema (1.0.31-1) unstable; urgency=low
+
+  * profile schema: add LDAP attribute for clock offset (Bug #22259)
+  * slapd.conf: Check if file exists before including it.
+  * debian/rules: No need to be root to clean, cleanup
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 21 Apr 2011 07:40:03 +0200
+
+univention-virtual-machine-manager-schema (1.0.30-1) unstable; urgency=low
+
+  * profile schema: add LDAP attribute for PV CDROM drives; Bug #19136
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 31 Mar 2011 08:46:53 +0200
+
+univention-virtual-machine-manager-schema (1.0.29-1) unstable; urgency=low
+
+  * Added the arch automatic and change the default 32 bit profiles to
+    this arch. On a i386 physical server those VMs will be created as 64
+    bit systems. So the virtualisation technologie must not emulate a 32
+    bit CPU which will fail in some cases (Bug #21383)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Mar 2011 07:21:56 +0100
+
+univention-virtual-machine-manager-schema (1.0.28-1) unstable; urgency=low
+
+  * Give memberserver access to uvmm objects (Bug #21560)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Mar 2011 12:19:51 +0100
+
+univention-virtual-machine-manager-schema (1.0.27-1) unstable; urgency=low
+
+  * Use ldap attribue univentionVirtualMachineDescription instead of
+    description (Bug #20018)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Mar 2011 07:58:35 +0100
+
+univention-virtual-machine-manager-schema (1.0.26-1) unstable; urgency=low
+
+  * Kill the udm cli daemon in postinst otherwise the new udm handlers
+    are not available (Bug #21740)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Mar 2011 07:14:41 +0100
+
+univention-virtual-machine-manager-schema (1.0.25-1) unstable; urgency=low
+
+  * Added disk space to the UVMM profiles (Bug #21517)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Mar 2011 09:07:56 +0100
+
+univention-virtual-machine-manager-schema (1.0.24-1) unstable; urgency=low
+
+  * remove default value for extended attribute ManageableBy; Bug #19532
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 20 Feb 2011 12:32:48 +0100
+
+univention-virtual-machine-manager-schema (1.0.23-1) unstable; urgency=low
+
+  * fixed typo in LDAP ACLs; Bug #21560
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 11 Feb 2011 09:16:11 +0100
+
+univention-virtual-machine-manager-schema (1.0.22-1) unstable; urgency=low
+
+  * add attribute and object class for additional host information
+  * add extend attribute to define list of management nodes for a
+    virtualisation host; Bug #19532
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 07 Feb 2011 15:43:13 +0100
+
 univention-virtual-machine-manager-schema (1.0.21-1) unstable; urgency=low
 
   * fixed syntax of attribute contact in module uvmm/info; Bug #20018

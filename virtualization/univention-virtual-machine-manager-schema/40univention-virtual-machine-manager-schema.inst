@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 
 NAME="univention-virtual-machine-manager-schema"
 
@@ -44,6 +44,43 @@ univention-directory-manager container/cn create "$@" \
 	--ignore_exists \
 	--position="cn=custom attributes,cn=univention,$ldap_base" \
 	--set name=UVMM
+
+univention-directory-manager settings/syntax create "$@" --ignore_exists \
+	--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
+	--set name="ManagementServer" \
+	--set attribute="computers/computer: fqdn" \
+	--set value="computers/computer: fqdn" \
+	--set filter="univentionService=Virtual Machine Manager" \
+	--set viewonly=FALSE
+
+univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
+	--set name=ManageableBy \
+	--set objectClass="univentionVirtualMachineHostOC" \
+	--set ldapMapping="univentionVirtualMachineManageableBy" \
+	--append module="computers/domaincontroller_master" \
+	--append module="computers/domaincontroller_backup" \
+	--append module="computers/domaincontroller_slave" \
+	--append module="computers/memberserver" \
+	--append module="computers/managedclient" \
+	--append module="computers/mobileclient" \
+	--set overwritePosition="0" \
+	--set overwriteTab="0" \
+	--set version="2" \
+	--set valueRequired="0" \
+	--set CLIName="ManageableBy" \
+	--set shortDescription="Manageable by" \
+	--set longDescription="Server ist manageable by the following Systems" \
+	--set 'translationShortDescription="de_DE" "Verwaltbar durch"' \
+	--set 'translationLongDescription="de_DE" "Server ist verwaltbar durch die folgenden Systeme"' \
+	--set doNotSearch="0" \
+	--set tabName="UVMM" \
+	--set syntax="ManagementServer" \
+	--set tabAdvanced="1" \
+	--set mayChange="1" \
+	--set multivalue="1" \
+	--set deleteObjectClass="0" \
+	--set tabPosition="1"
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
@@ -72,7 +109,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 if [ $? != 0 ]; then exit 1; fi
 
 # kill running UDM daemon
-ps -ef | grep "/usr/bin/python.*univention-cli-server$" | awk '{print $2}' | while read clipid; do kill $clipid >/dev/null 2>&1; done
+pkill -f "python.\.. /usr/share/univention-directory-manager-tools/univention-cli-server" || true
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "$ldap_base" \

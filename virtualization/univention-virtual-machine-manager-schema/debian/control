@@ -8,7 +8,7 @@ XS-Python-Version: 2.4
 
 Package: univention-virtual-machine-manager-schema
 Architecture: all
-Depends: python-univention-directory-manager-uvmm,
+Depends: python-univention-directory-manager-uvmm (= ${source:Version}),
  ${python:Depends}, ${misc:Depends}
 Enhances: univention-ldap-config
 Description: UCS - Univention Virtual Machine Manager schema definitions
