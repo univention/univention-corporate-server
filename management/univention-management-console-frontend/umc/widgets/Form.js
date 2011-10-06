@@ -257,6 +257,24 @@ dojo.declare("umc.widgets.Form", [
 		return vals;
 	},
 
+	clearFormValues: function() {
+		// clear all values based on or list of widgets
+		umc.tools.forIn(this._widgets, function(iname, iwidget) {
+			// value could be a string, an array, or a dict... query first the value
+			// and reset the value accordingly
+			var val = iwidget.get('value');
+			if (dojo.isString(val)) {
+				iwidget.set('value', '');
+			}
+			else if (dojo.isArray(val)) {
+				iwidget.set('value', []);
+			}
+			else if (dojo.isObject(val)) {
+				iwidget.set('value', {});
+			}
+		}, this);
+	},
+
 	setFormValues: function(values) {
 		// set all values based on or list of widgets
 		umc.tools.forIn(values, function(iname, ival) {
