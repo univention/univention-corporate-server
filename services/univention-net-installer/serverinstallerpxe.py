@@ -31,7 +31,7 @@
 
 import univention.config_registry
 
-baseConfig=univention.config_registry.baseConfig()
+baseConfig=univention.config_registry.ConfigRegistry()
 
 name='serverinstallerpxe'
 description='PXE configuration for the Server installer'

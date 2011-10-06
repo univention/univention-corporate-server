@@ -1,3 +1,9 @@
+univention-net-installer (5.0.1-4) unstable; urgency=low
+
+  * Fix UCR import (Bug #22576)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 06 Oct 2011 15:18:07 +0200
+
 univention-net-installer (5.0.1-3) unstable; urgency=low
 
   * Create var/lib/univention-client-boot/pxelinux.cfg to make univention-net-installer
