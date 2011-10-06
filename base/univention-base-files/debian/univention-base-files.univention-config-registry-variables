@@ -531,3 +531,28 @@ Description[de]=Definiert, ob Log-Meldungen aus dem Bereich mail in der Log-Date
 Description[en]=Specifies whether log messages from the facility mail should be saved in /var/log/syslog.
 Type=bool
 Categories=system-base
+
+[xorg/keyboard/options/XkbLayout]
+Description[de]=XKB Tastaturlayout, normalerweise der Ländercode
+Description[en]=XKB keyboard layout name, usually the country or language code
+Type=str
+Categories=system-desktop
+
+[xorg/keyboard/options/XkbVariant]
+Description[de]=XKB Tastaturvarianten
+Description[en]=XKB keyboard variant components
+Type=str
+Categories=system-desktop
+
+[xorg/keyboard/options/XkbModel]
+Description[de]=XKB Tastaturmodell
+Description[en]=XKB keyboard model name
+Type=str
+Categories=system-desktop
+
+[xorg/keyboard/options/XkbOptions]
+Description[de]=Xorg Tastaturoptionen
+Description[en]=Xorg keyboard options
+Type=str
+Categories=system-desktop
+

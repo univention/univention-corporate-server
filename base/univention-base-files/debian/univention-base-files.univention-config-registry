@@ -175,6 +175,10 @@ Variables: locale/keymap
 
 Type: file
 File: etc/default/keyboard
+Variables: xorg/keyboard/options/XkbModel
+Variables: xorg/keyboard/options/XkbLayout
+Variables: xorg/keyboard/options/XkbVariant
+Variables: xorg/keyboard/options/XkbOptions
 Variables: locale/keymap
 
 Type: file
