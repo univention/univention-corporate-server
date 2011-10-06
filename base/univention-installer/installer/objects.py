@@ -1981,7 +1981,7 @@ class subwin:
 
 
 class yes_no_win(subwin):
-	def __init__(self,parent,pos_y,pos_x,width,height, msglist=[], align='middle', callback_yes=None, callback_no=None, default='yes', *args, **kwargs):
+	def __init__(self,parent,pos_y,pos_x,width,height, msglist=[], align='middle', callback_yes=None, callback_no=None, default='yes', btn_name_yes=None, btn_name_no=None, *args, **kwargs):
 		# adjust size if width and height is too small
 		for line in msglist:
 			if width < len(line)+4:
@@ -1997,7 +1997,15 @@ class yes_no_win(subwin):
 		self.kwargs = kwargs
 		self.win_incomplete = True
 
-		if default in [ 'YES', 'yes' ]:
+		self.btn_name_yes = _('Yes')
+		if btn_name_yes:
+			self.btn_name_yes = btn_name_yes
+
+		self.btn_name_no = _('No')
+		if btn_name_no:
+			self.btn_name_no = btn_name_no
+
+		if default.lower() == 'yes':
 			self.default = 'BT_YES'
 		else:
 			self.default = 'BT_NO'
@@ -2050,8 +2058,8 @@ class yes_no_win(subwin):
 			y+=1
 		y+=1
 
-		self.add_elem('BT_YES', button(_("Yes"),self.pos_y+y,self.pos_x+13,15,align='middle'))
-		self.add_elem('BT_NO', button(_("No"),self.pos_y+y,self.pos_x+self.width-13,15,align='middle'))
+		self.add_elem('BT_YES', button(self.btn_name_yes, self.pos_y+y, self.pos_x+4, len(self.btn_name_yes)+5, align='left'))
+		self.add_elem('BT_NO', button(self.btn_name_no, self.pos_y+y, self.pos_x+self.width-3, len(self.btn_name_no)+5, align='right'))
 
 		self.current = self.get_elem_id( self.default )
 		self.elements[ self.current ].set_on()

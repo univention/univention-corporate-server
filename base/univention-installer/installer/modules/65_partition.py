@@ -77,6 +77,9 @@ EXPERIMENTAL_FSTYPES = ['btrfs']
 ALLOWED_BOOT_FSTYPES = ['xfs','ext2','ext3']
 ALLOWED_ROOT_FSTYPES = ['xfs','ext2','ext3','ext4','btrfs']
 
+DISKLABEL_GPT = 'GPT'
+DISKLABEL_UNKNOWN = 'UNKNOWN'
+
 class object(content):
 	def __init__(self,max_y,max_x,last=(1,1), file='/tmp/installer.log', cmdline={}):
 		self.written=0
@@ -560,11 +563,15 @@ class object(content):
 		return 'Partitioning'
 
 	def start(self):
+		# self.container['problemdisk'][<devicename>] = set([DISKLABEL_GPT, DISKLABEL_UNKNOWN, ...])
+
 		self.container={}
 		self.container['min_size']=float(1)
 		self.container['debug']=''
 		self.container['profile']={}
-		self.container['disk']=self.read_devices()
+		disks, problemdisks = self.read_devices()
+		self.container['disk']=disks
+		self.container['problemdisk']=problemdisks
 		self.container['history']=[]
 		self.container['temp']={}
 		self.container['selected']=1
@@ -577,6 +584,7 @@ class object(content):
 		self.container['lvm']['ucsvgname'] = None
 		self.container['lvm']['lvmconfigread'] = False
 		self.container['disk_checked'] = False
+		self.container['partitiontable_checked'] = False
 
 	def profile_autopart(self, disklist_blacklist = [], part_delete = 'all' ):
 		self.debug('PROFILE BASED AUTOPARTITIONING: full_disk')
@@ -1474,12 +1482,16 @@ class object(content):
 		self.debug('devices=%s' % devices)
 
 		diskList={}
+		diskProblemList={}
+		devices_remove={}
+
 		_re_warning=re.compile('^Warning: Unable to open .*')
 		_re_error=re.compile('^Error: .* unrecognised disk label')
-		devices_remove={}
+		_re_disklabel=re.compile('^Partition Table: (.*)$', re.I | re.M)  # case insensitive & ^ matches on \n
+
 		for dev in devices:
 			dev=dev.strip()
-			p = os.popen('/sbin/parted -s %s unit B p 2>&1 | grep [a-z]'% dev)
+			p = os.popen('/sbin/parted -s %s unit B print 2>&1 | grep [a-z]'% dev)
 
 			first_line=p.readline().strip()
 			self.debug('first line: [%s]' % first_line)
@@ -1489,14 +1501,12 @@ class object(content):
 				devices_remove[dev] = 1
 				continue
 			elif _re_error.match(first_line):
-				os.system('/sbin/install-mbr -f %s 2>/dev/null 1>/dev/null' % dev)
-				p = os.popen('/sbin/parted %s unit B p 2>&1 | grep [a-z]'% dev)
-				first_line=p.readline()
-				if _re_error.match(first_line):
-					self.debug('Firstline starts with error')
-					self.debug('Remove device %s' % dev)
-					devices_remove[dev] = 1
-					continue
+				self.debug('Firstline starts with error')
+				self.debug('Device %s contains unknown disk label' % dev)
+				self.debug('Removing device %s' % dev)
+				diskProblemList[dev] = diskProblemList.get(dev, set()) | set([DISKLABEL_UNKNOWN]) # add new problem to list
+				devices_remove[dev] = 1
+				continue
 
 			# get CHS geometry
 			geometry = None
@@ -1534,14 +1544,24 @@ class object(content):
 					mb_size = tmpsize['position']
 					continue
 
+				# check for GPT partition table
+				match = _re_disklabel.match(line)
+				if match and match.group(1).lower().strip() in 'gpt':
+					self.debug('Device %s uses GPT' % dev)
+					self.debug('Removing device %s' % dev)
+					diskProblemList[dev] = diskProblemList.get(dev, set()) | set([DISKLABEL_GPT]) # add new problem to list
+					devices_remove[dev] = 1
+					continue
+
 				if not _re_int.match(line):
 					if _re_error.match(line):
 						self.debug('Line starts with Error: [%s]' % line)
-						self.debug('Remove device %s' % dev)
+						self.debug('Removing device %s' % dev)
 						devices_remove[dev] = 1
 					continue
-				line=line.strip()
 
+				if devices_remove.get(dev):
+					continue
 
 				cols=line.split()
 				num=cols[0]
@@ -1643,7 +1663,8 @@ class object(content):
 				del diskList[d]
 		self.debug('devices=%s' % devices)
 		self.debug('diskList=%s' % diskList)
-		return diskList
+		self.debug('diskProblemList=%s' % diskProblemList)
+		return diskList, diskProblemList
 
 
 	def scan_extended_size(self):
@@ -1781,9 +1802,8 @@ class object(content):
 		def __init__(self,parent,pos_y,pos_x,width,height):
 			self.part_objects = {}
 			subwin.__init__(self,parent,pos_y,pos_x,width,height)
-			if not self.container["disk"] and not self.container['disk_checked']:
-				self.container['disk_checked'] = True
-				self.no_devices_msg()
+			self.check_partition_table_msg()
+			self.no_devices_msg()
 			self.check_lvm_msg()
 			self.ERROR = False
 
@@ -1997,14 +2017,90 @@ class object(content):
 			self.parent.set_lvm( (result == 'BT_YES') )
 
 		def no_devices_msg(self):
-			if not hasattr(self,'sub'):
-				msglist = [ 	_('WARNING: No devices or valid partitions found!'),
-						_('Please check your harddrive or partitioning.'),
-						_('Further information can be found in the'),
-						_('Support & Knowledge Base: http://sdb.univention.de.')
-						]
-				self.sub = msg_win(self,self.pos_y+11,self.pos_x+5,self.maxWidth,6, msglist)
-				self.draw()
+			if not self.container["disk"] and not self.container['disk_checked']:
+				if not hasattr(self,'sub'):
+					self.container['disk_checked'] = True
+					self.parent.set_lvm( False )
+					msglist = [		_('WARNING: No devices or valid partitions found!'),
+							_('Please check your harddrive or partitioning.'),
+							_('Further information can be found in the'),
+							_('Support & Knowledge Base: http://sdb.univention.de.')
+							]
+					self.sub = msg_win(self,self.pos_y+11,self.pos_x+5,self.maxWidth,6, msglist)
+					self.draw()
+
+		def install_fresh_mbr(self, result, device=None):
+			self.parent.debug('Trying to install fresh MBR on device %s' % device)
+			if not os.path.exists(device):
+				self.parent.debug('ERROR: device %s does not exist!' % device)
+			else:
+				command = ['/sbin/parted', '-s', device, 'mklabel', 'msdos']
+				self.parent.debug('Calling %s' % command)
+				proc = subprocess.Popen(command,bufsize=0,shell=False,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+				(stdout, stderr) = proc.communicate()
+				self.parent.debug('===(exitcode=%d)====> %s\nSTDERR:\n=> %s\nSTDOUT:\n=> %s' %
+										 (proc.returncode, command, stderr.replace('\n','\n=> '), stdout.replace('\n','\n=> ')))
+			self.container['problemdisk'][device].discard(DISKLABEL_UNKNOWN)
+			self.container['problemdisk'][device].discard(DISKLABEL_GPT)
+			self.parent.debug('performing restart of module')
+			self.parent.start()
+			#self.parent.layout()
+			self.parent.debug('module restart done')
+			self.container['lvm']['lvmconfigread'] = False
+			self.container['autopartition'] == None
+
+
+		def check_partition_table_msg(self):
+			if self.container['partitiontable_checked']:
+				# already checked and approved by user
+				return
+
+			self.parent.debug('check_partition_table_msg()')
+			for dev in self.container['problemdisk']:
+				self.parent.debug('Checking problems for device %s ==> %s' % (dev, self.container['problemdisk'][dev]))
+
+				if DISKLABEL_UNKNOWN in self.container['problemdisk'][dev]:  # search for specific problem in set() of errors
+					self.parent.debug('requesting user input: unknown disklabel ==> write new MBR?')
+					msglist=[ _('No valid partition table found on device %s.') % dev,
+							  _('Install empty MBR to device %s ?') % dev,
+							  '',
+							  _('WARNING: By choosing "Write MBR" existing data'),
+							  _('on device %s will be lost.') % dev,
+							  ]
+					self.sub = yes_no_win(self, self.pos_y+9, self.pos_x+2, self.width-4, self.height-25, msglist, default='no',
+										  btn_name_yes=_('Write MBR'), btn_name_no=_('Ignore Device'),
+										  callback_yes=self.install_fresh_mbr, device=dev)
+					self.draw()
+					self.container['problemdisk'][dev].discard(DISKLABEL_UNKNOWN)
+					break
+
+				if DISKLABEL_GPT in self.container['problemdisk'][dev]:  # search for specific problem in set() of errors
+					self.parent.debug('requesting user input: GPT found ==> ignore or install empty MBR?')
+					msglist=[ _('A GUID partition table (GPT) has been found on device %s.') % dev,
+							  _('GPT devices are not supported by the interactive installation.'),
+							  _('You can proceed by ignoring this device or by removing'),
+							  _('the existing GPT and writing an empty MBR.'),
+							  '',
+							  _('WARNING: By choosing "Write MBR" existing data'),
+							  _('on device %s will be lost.') % dev,
+							  '',
+							  _('HINT: Further information for an installation'),
+							  _('on a device with GPT can be found in the'),
+							  _('Support & Knowledge Base: http://sdb.univention.de.'),
+							  '',
+							  '',
+							  _('Write an empty MBR to device %s ?') % dev,
+							  ]
+					self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+2, self.width-4, self.height-25, msglist, default='no',
+										  btn_name_yes=_('Write MBR'), btn_name_no=_('Ignore Device'),
+										  callback_yes=self.install_fresh_mbr, device=dev)
+					self.draw()
+					self.container['problemdisk'][dev].discard(DISKLABEL_GPT)
+					break
+			else:
+				# only set check==True if all checks have been made
+				self.container['partitiontable_checked'] = True
+
 		def check_lvm_msg(self):
 			# check if LVM config has to be read
 			if not self.container['lvm']['lvmconfigread']:
@@ -2296,6 +2392,8 @@ class object(content):
 
 		def input(self,key):
 			self.parent.debug('partition.input: key=%d' % key)
+			self.check_partition_table_msg()
+			self.no_devices_msg()
 			self.check_lvm_msg()
 			if hasattr(self,"sub"):
 				rtest=self.sub.input(key)
