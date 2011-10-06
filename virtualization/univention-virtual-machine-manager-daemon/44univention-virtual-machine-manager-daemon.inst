@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Virtual Machine Manager Daemon
 #  join script
@@ -35,6 +35,7 @@ VERSION="6"
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
+# does not work with dash
 declare -a CREDENTIALS=("$@")
 
 eval "$(univention-config-registry shell)"

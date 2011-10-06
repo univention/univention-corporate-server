@@ -15,7 +15,6 @@ XS-Python-Version: 2.6
 Package: univention-virtual-machine-manager-daemon
 Architecture: all
 Depends: univention-ssl,
- python-elementtree,
  python-univention (>>5.0.10),
  univention-virtual-machine-manager-schema (>= 1.0.32-1),
  python-univention-virtual-machine-manager (= ${source:Version}),
@@ -35,7 +34,6 @@ Depends: python-libvirt,
  python-univention-directory-manager (>>6.0.103),
  ${python:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
-XB-Python-Version: ${python:Versions}
 Description: Univention Virtual Machine Manager Daemon - Python bindings
  This package contains the Univention Virtual Machine Manager Daemon
  Python bindings used to communicate with the daemon.

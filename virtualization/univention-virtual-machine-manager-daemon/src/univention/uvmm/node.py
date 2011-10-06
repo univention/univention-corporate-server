@@ -54,10 +54,7 @@ import stat
 import operator
 import errno
 import re
-try:
-	import xml.etree.ElementTree as ET
-except ImportError:
-	import elementtree.ElementTree as ET
+import xml.etree.ElementTree as ET
 try:
 	import cPickle as pickle
 except ImportError:

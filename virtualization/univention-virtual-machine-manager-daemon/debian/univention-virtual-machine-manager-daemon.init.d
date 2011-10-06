@@ -53,7 +53,7 @@ PIDFILE=/var/run/$NAME.pid
 test -x "$DAEMON" || exit 0
 
 if [ ! -e /etc/runit/univention/univention-virtual-machine-manager-daemon ]; then
-        exit 0
+	exit 0
 fi
 
 
@@ -79,7 +79,7 @@ case "$1" in
 	start)
 		# check ucr autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-			source "/usr/share/univention-config-registry/init-autostart.lib"
+			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart $NAME $NAME/autostart
 		fi
 
@@ -95,7 +95,7 @@ case "$1" in
 	restart|force-reload)
 		# check ucr autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-			source "/usr/share/univention-config-registry/init-autostart.lib"
+			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart $NAME $NAME/autostart
 		fi
 		log_daemon_msg "Restarting $DESC" "$NAME"
@@ -105,7 +105,7 @@ case "$1" in
     crestart)
         # check ucr autostart setting
         if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-            source "/usr/share/univention-config-registry/init-autostart.lib"
+            . "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart $NAME $NAME/autostart
         fi
 		if running ; then
