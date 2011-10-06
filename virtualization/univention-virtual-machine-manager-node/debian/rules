@@ -31,54 +31,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-build:
+%:
+	dh $@
 
-clean:
-	dh_testdir
-	dh_clean
-	$(RM) debian/univention-virtual-machine-manager-node-*{pre,post}{inst,rm}.debhelper
-	$(RM) debian/univention-virtual-machine-manager-node-*.conffiles
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	install -m 0644 libvirtd-acl.py debian/univention-virtual-machine-manager-node-common/usr/lib/univention-directory-listener/system/
-	install -m 0755 univention-virtual-machine-manager-restore.py debian/univention-virtual-machine-manager-node-common/usr/sbin/univention-virtual-machine-manager-restore
-	@for virttech in xen kvm; do \
-		install -m 0755 44univention-virtual-machine-manager-node-$$virttech.inst debian/univention-virtual-machine-manager-node-$$virttech/usr/lib/univention-install/; \
-	done
-	install -m 0755 43univention-virtual-machine-manager-node-common.inst debian/univention-virtual-machine-manager-node-common/usr/lib/univention-install/
-
-	install -m 755 conffiles/etc/runit/univention-libvirt/run debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/
-	touch debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/down
-	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/finish
-	install -m 755 conffiles/etc/modprobe.d/loop debian/univention-virtual-machine-manager-node-common/etc/modprobe.d/
-
-# Build architecture-independent files here.
-binary-indep: build install
-
-# Build architecture-dependent files here.
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs
-	dh_installdocs
-	dh_installinit --no-restart-on-upgrade
-#	dh_install
+override_dh_auto_install:
 	univention-install-config-registry
 	univention-install-config-registry-info
 	univention-install-service-info
-	dh_link
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
+	touch debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/down
+	dh_auto_install
 
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+override_dh_installinit:
+	dh_installinit --no-restart-on-upgrade
+
+override_dh_auto_clean:
+	$(RM) debian/univention-virtual-machine-manager-node-*{pre,post}{inst,rm}.debhelper
+	$(RM) debian/univention-virtual-machine-manager-node-*.conffiles
+	dh_auto_clean

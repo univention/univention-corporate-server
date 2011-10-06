@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-node (1.0.0-1) unstable; urgency=low
+
+  * bump version and adapt packaging for UCS 3.0; Bug #22893
+  * set executable flag for join scripts
+  * make init script compatible with dash
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 06 Oct 2011 13:01:53 +0200
+
 univention-virtual-machine-manager-node (0.1.33-1) unstable; urgency=low
 
   * Re-synchronize init.d/u-v-m-m-n-kvm with xen scripts (Bug #21969)
