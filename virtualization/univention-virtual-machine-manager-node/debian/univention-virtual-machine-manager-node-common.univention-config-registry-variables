@@ -15,3 +15,27 @@ Description[de]=Definiert, ob der libvirt-Dienst automatisch gestartet werden so
 Description[en]=Defines if the libvirt service should be started automatically
 Type=str
 Categories=uvmm,system-services
+
+[uvmm/libvirt/action/uris]
+Description[de]=URIs für die Verwaltung von Gästen
+Description[en]=URIs to check for running guests
+Type=str
+Categories=uvmm
+
+[uvmm/libvirt/action/boot]
+Description[de]=Aktion für Gäste beim Hochfahren des Hosts
+Description[en]=Action for guests taken on host boot
+Type=str
+Categories=uvmm
+
+[uvmm/libvirt/action/shutdown]
+Description[de]=Aktion für Gäste beim Herunterfahren des Hosts
+Description[en]=Action for guests taken on host shutdown
+Type=str
+Categories=uvmm
+
+[uvmm/libvirt/action/shutdown_timeout]
+Description[de]=Wartezeit für das Herunterfahren der Gäste
+Description[en]=Timeout for waiting for guest to shut down
+Type=str
+Categories=uvmm

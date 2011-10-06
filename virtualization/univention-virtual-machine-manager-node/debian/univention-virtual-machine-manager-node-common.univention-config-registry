@@ -11,3 +11,7 @@ File: etc/default/libvirt-bin
 Type: module
 Module: uvmm_restore.py
 Variables: uvmm/backup/directory
+
+Type: file
+File: etc/default/libvirt-guests
+Variables: uvmm/libvirt/action/*

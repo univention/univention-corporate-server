@@ -45,7 +45,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m 0644 uvmm-node.py debian/univention-virtual-machine-manager-node-common/usr/lib/univention-directory-listener/system/
+	install -m 0644 libvirtd-acl.py debian/univention-virtual-machine-manager-node-common/usr/lib/univention-directory-listener/system/
 	install -m 0755 univention-virtual-machine-manager-restore.py debian/univention-virtual-machine-manager-node-common/usr/sbin/univention-virtual-machine-manager-restore
 	@for virttech in xen kvm; do \
 		install -m 0755 44univention-virtual-machine-manager-node-$$virttech.inst debian/univention-virtual-machine-manager-node-$$virttech/usr/lib/univention-install/; \
@@ -56,8 +56,6 @@ install: build
 	touch debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/down
 	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/finish
 	install -m 755 conffiles/etc/modprobe.d/loop debian/univention-virtual-machine-manager-node-common/etc/modprobe.d/
-
-	install -m 755 kvm.wrap debian/univention-virtual-machine-manager-node-kvm/usr/bin/kvm
 
 # Build architecture-independent files here.
 binary-indep: build install

@@ -1,3 +1,105 @@
+univention-virtual-machine-manager-node (0.1.33-1) unstable; urgency=low
+
+  * Re-synchronize init.d/u-v-m-m-n-kvm with xen scripts (Bug #21969)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2011 16:51:12 +0200
+
+univention-virtual-machine-manager-node (0.1.32-1) unstable; urgency=low
+
+  * Remove kvm wrapper (Bug #22303)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 05 Aug 2011 16:47:45 +0200
+
+univention-virtual-machine-manager-node (0.1.31-1) unstable; urgency=low
+
+  * add user libvirt-qemu to group cdrom (Bug #23052)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 29 Jul 2011 12:32:19 +0200
+
+univention-virtual-machine-manager-node (0.1.30-1) unstable; urgency=low
+
+  * Removed duplicated UCR descriptions (Bug #21733)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Mar 2011 16:24:53 +0100
+
+univention-virtual-machine-manager-node (0.1.29-1) unstable; urgency=low
+
+  * Fixed typo in UCR description (Bug #21733)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Mar 2011 16:20:50 +0100
+
+univention-virtual-machine-manager-node (0.1.28-1) unstable; urgency=low
+
+  * Set URI to an empty value if the shutdown action is set to ignore
+    (Bug #21733)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Mar 2011 16:17:11 +0100
+
+univention-virtual-machine-manager-node (0.1.27-1) unstable; urgency=low
+
+  * Use UCR variable uvmm/kvm/qemu/group instead of uvmm/kvm/udev/group to
+    define owner group of /dev/kvm; Bug #21212
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 21 Mar 2011 15:58:14 +0100
+
+univention-virtual-machine-manager-node (0.1.24-1) unstable; urgency=low
+
+  * Added patch from Philipp, remove /var/run/libvirtd.pid if libvirtd
+    is not running (Bug #21758)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 Mar 2011 16:07:17 +0100
+
+univention-virtual-machine-manager-node (0.1.23-2) unstable; urgency=low
+
+  * Fix naming of ucr in libvirtd-acl.py (Bug #19828)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Mar 2011 13:41:04 +0100
+
+univention-virtual-machine-manager-node (0.1.23-1) unstable; urgency=low
+
+  * Disable no_irqchip parameter by default because this makes some
+    trouble (Bug #21602, Bug #21860, Bug #21130)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Mar 2011 09:12:34 +0100
+
+univention-virtual-machine-manager-node (0.1.22-1) unstable; urgency=low
+
+  * added package "Recommends:" to nagios plugins (Bug #21328) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Mar 2011 11:05:23 +0100
+
+univention-virtual-machine-manager-node (0.1.21-1) unstable; urgency=low
+
+  * Move UCR temaplate etc/default/libvirt-guests to common package
+    (Bug #21733)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Mar 2011 12:14:36 +0100
+
+univention-virtual-machine-manager-node (0.1.20-1) unstable; urgency=low
+
+  * Allow migration between all VM hosts (Bug #19828)
+  * Rename listener script for consistency.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Feb 2011 09:01:43 +0100
+
+univention-virtual-machine-manager-node (0.1.19-2) unstable; urgency=low
+
+  * fixed typo in template of qemu.conf; Bug #21212
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 08 Feb 2011 16:02:25 +0100
+
+univention-virtual-machine-manager-node (0.1.19-1) unstable; urgency=low
+
+  * add support for adjusting the ownership of the qemu processes; Bug #21212
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 08 Feb 2011 15:17:39 +0100
+
+univention-virtual-machine-manager-node (0.1.18-5) unstable; urgency=low
+
+  * Configure KVM to suspend VMs on host shutdown (Bug #21501)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Feb 2011 12:43:07 +0100
+
 univention-virtual-machine-manager-node (0.1.18-4) unstable; urgency=low
 
   * add dependency to dnsmasq-base; Bug #19573

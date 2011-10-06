@@ -5,4 +5,17 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 source /etc/default/libvirt-bin
 
+if [ -f /var/run/libvirtd.pid ]; then
+	read pid </var/run/libvirtd.pid || pid=
+	if [ -d "/proc/$pid" ]; then
+		exe=$(readlink /proc/$pid/exe)
+		if [ /usr/sbin/libvirtd = "$exe" ]; then
+			echo "ERROR: libvirtd running $pid"
+			exit 1
+		fi
+	fi
+	rm -f /var/run/libvirtd.pid
+fi
+
+
 exec /usr/sbin/libvirtd ${libvirtd_opts/-d/}

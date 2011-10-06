@@ -10,8 +10,20 @@ Description[en]=Defines which network interface should be used for the bridge
 Type=str
 Categories=uvmm
 
-[uvmm/kvm/no_irqchip]
-Description[de]=Deaktiviert die in-Kernel-APIC-Unterstützung
-Description[en]=Deactivates the in-kernel APIC support
+[uvmm/kvm/qemu/user]
+Description[de]=Definiert den Benutzer als der die QEMU Prozesse laufen
+Description[en]=Defines the user that owns the QEMU processes
+Type=str
+Categories=uvmm
+
+[uvmm/kvm/qemu/group]
+Description[de]=Definiert die Gruppe unter der die QEMU Prozesse laufen
+Description[en]=Defines the group that owns the QEMU processes
+Type=str
+Categories=uvmm
+
+[uvmm/kvm/qemu/dynamic_ownership]
+Description[de]=Auf False gesetzt wird die Anpassung des Benutzers und der Gruppe der Festplatten-Images deaktiviert
+Description[en]=Set to False deactivates the adjustment of the file ownership of the hard drive images
 Type=bool
 Categories=uvmm
