@@ -4,7 +4,7 @@
 # Univention Virtual Machine Manager
 #  UDM Virtual Machine Manager Profiles
 #
-# Copyright 2010 Univention GmbH
+# Copyright 2010,2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,6 +35,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.syntax
 import univention.admin.localization
+from univention.admin.layout import Tab, Group
 
 translation=univention.admin.localization.translation('univention.admin.handlers.uvmm')
 _=translation.translate
@@ -292,24 +293,24 @@ property_descriptions={
 }
 
 layout = [
-	univention.admin.tab( _('General'), _('Virtual machine profile'),
-						  [ [ univention.admin.field( "name" ), univention.admin.field( "os" ) ],
-							[ univention.admin.field( "name_prefix" ), ],
-							[ univention.admin.field( "txt_hardware" ), ],
-							[ univention.admin.field( "arch" ), univention.admin.field( "cpus" ) ],
-							[ univention.admin.field( "ram" ), univention.admin.field( "diskspace" ) ],
-							[ univention.admin.field( "interface" ), univention.admin.field('rtcoffset') ],
-							[ univention.admin.field( "vnc" ), univention.admin.field( "kblayout" ) ],
-							[ univention.admin.field( "txt_boot" ), ],
-							[ univention.admin.field( "bootdev" ), ],
-							[ univention.admin.field( "advkernelconf" ), ],
-							[ univention.admin.field( "kernel" ), univention.admin.field( "kernel_parameter" ) ],
-							[ univention.admin.field( "initramfs" ), ],
-							[ univention.admin.field( "txt_virt" ), ],
-							[ univention.admin.field( "virttech" ), ],
-							[ univention.admin.field( "pvdisk" ), univention.admin.field( "pvinterface" ) ],
-							[ univention.admin.field( "pvcdrom" ), ],
-							] )
+	Tab( _( 'General' ), _( 'Virtual machine profile' ), layout = [
+		[ "name", "os" ],
+		"name_prefix",
+		"txt_hardware",
+		[ "arch", "cpus" ],
+		[ "ram", "diskspace" ],
+		[ "interface", 'rtcoffset' ],
+		[ "vnc", "kblayout" ],
+		"txt_boot",
+		"bootdev",
+		"advkernelconf",
+		[ "kernel", "kernel_parameter" ],
+		"initramfs",
+		"txt_virt",
+		"virttech",
+		[ "pvdisk", "pvinterface" ],
+		"pvcdrom",
+		] )
 	]
 
 def list2str( lst ):
@@ -345,7 +346,7 @@ mapping.register('rtcoffset', 'univentionVirtualMachineProfileRTCOffset', None, 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
+	def __init__( self, co, lo, position, dn = '', superordinate = None, attributes = [] ):
 		global mapping
 		global property_descriptions
 

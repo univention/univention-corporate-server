@@ -33,7 +33,6 @@
 UVMM_SCHEMA=univention-virtual-machine-manager-schema
 PO_FILES := $(shell find modules -name '*.po')
 MO_FILES := $(foreach po,$(PO_FILES),modules/i18n/$(notdir $(po:.po=))/LC_MESSAGES/$(UVMM_SCHEMA).mo)
-MY_FILES := $(foreach po,$(PO_FILES),$(notdir $(po:.po=)))
 
 define build_mo
 modules/i18n/$(1)/LC_MESSAGES/$(UVMM_SCHEMA).mo: modules/univention/admin/handlers/uvmm/$(1).po
@@ -44,17 +43,12 @@ endef
 $(foreach po,$(PO_FILES),$(eval $(call build_mo,$(notdir $(po:.po=)))))
 
 %:
-	@echo $(PO_FILES)
-	@echo $(MO_FILES)
-	@echo $(MY_FILES)
 	dh $@
 
 override_dh_auto_build: $(MO_FILES)
-	dh-umc-module-build
 	dh_auto_build
 
 override_dh_auto_install:
-	dh-umc-module-install
 	univention-install-config-registry
 	dh_auto_install
 

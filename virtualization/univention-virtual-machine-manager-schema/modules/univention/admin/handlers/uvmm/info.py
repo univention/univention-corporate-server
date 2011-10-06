@@ -37,6 +37,7 @@ import univention.admin.handlers
 import univention.admin.syntax
 import univention.admin.localization
 import univention.admin.uexceptions
+from univention.admin.layout import Tab, Group
 
 translation=univention.admin.localization.translation('univention.admin.handlers.uvmm')
 _=translation.translate
@@ -92,15 +93,12 @@ property_descriptions={
 }
 
 
-layout=[
-	univention.admin.tab( _('General'), _('Virtual machine information'),
-	      [
-			[ univention.admin.field( "uuid" ), univention.admin.field( "contact" ) ],
-			[ univention.admin.field( "os" ), univention.admin.field( "description" ) ],
-		  ] )
+layout = [
+	Tab( _( 'General' ), _( 'Virtual machine information' ), layout = [
+		[ "uuid", "contact" ],
+		[ "os", "description" ],
+		] )
 	]
-
-
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('uuid', 'univentionVirtualMachineUUID', None, univention.admin.mapping.ListToString)
@@ -112,7 +110,7 @@ mapping.register('contact', 'univentionVirtualMachineContact', None, univention.
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
+	def __init__( self, co, lo, position, dn = '', superordinate = None, attributes = [] ):
 		global mapping
 		global property_descriptions
 
