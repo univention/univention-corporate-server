@@ -1,3 +1,10 @@
+univention-base-files (1.0.26-2) unstable; urgency=low
+
+  * Remove /srv. It is properly created by base-files, but the cleanup script of
+    univention-installer used to remove it. (Bug #23965)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 06 Oct 2011 13:36:41 +0200
+
 univention-base-files (1.0.26-1) unstable; urgency=low
 
   * removed kbd, added console-tools (Bug #23858) 
