@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.0-1) unstable; urgency=low
+
+  * bump version and adapt packaging for UCS 3.0
+  * add template for new UMC module based on UDM module; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 06 Oct 2011 10:32:23 +0200
+
 univention-virtual-machine-manager-daemon (0.9.333-7) unstable; urgency=low
 
   * Revert last commit and fix real problem (Ticket#: 2011092810002962)

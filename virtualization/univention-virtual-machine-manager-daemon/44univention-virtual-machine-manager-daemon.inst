@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 #
-# Univention Management Console UCSvirt
+# Univention Virtual Machine Manager Daemon
 #  join script
 #
-# Copyright 2010 Univention GmbH
+# Copyright 2010,2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -50,27 +50,6 @@ univention-directory-manager  settings/service create "$@" --ignore_exists \
 univention-directory-manager "computers/$server_role" modify "$@" \
 	--dn "$ldap_hostdn" \
 	--append service="$NAME"
-
-# create operations
-univention-directory-manager settings/console_operation create "$@" --ignore_exists \
-	--position cn="operations,cn=console,cn=univention,$ldap_base" \
-	--set name="uvmm" \
-	--set description="Univention Virtual Machine Manager" \
-	--append operation="uvmm/*"
-
-# create acls
-univention-directory-manager settings/console_acl create "$@" --ignore_exists \
-	--position cn="acls,cn=console,cn=univention,$ldap_base" \
-	--set name="uvmm-all" \
-	--set category="Virtualization" \
-	--set ldapbase="$ldap_base" \
-	--set command="uvmm/*" \
-	--set description="All UVMM Operations"
-
-# default policies
-univention-directory-manager policies/console_access modify "$@" --ignore_exists \
-	--dn cn="default-admin,cn=console,cn=policies,$ldap_base" \
-	--append allow="cn=uvmm-all,cn=acls,cn=console,cn=univention,$ldap_base"
 
 # create containers for additional UVMM objects
 univention-directory-manager container/cn create "$@" \
@@ -283,14 +262,6 @@ create_hvm_profile "Microsoft Windows 2008" "w2k8-" "kvm" "automatic" "2048MB" "
 #     Note: Computers with more than 16 GB of RAM will require more disk space for paging, hibernation, and dump files 
 create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "xen" "x86_64" "2048MB" "0" "0" "0" "48GB" "localtime"
 create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64" "2048MB" "0" "0" "0" "48GB" "localtime"
-
-if [ -n "$JS_LAST_EXECUTED_VERSION" ] && [ "$JS_LAST_EXECUTED_VERSION" -lt 4 ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
-	# rename from Univention Corporate Server 2.4 to UCS 2.4
-	univention-directory-manager uvmm/profile modify "$@" --dn "cn=Univention Corporate Server 2.4 (64 Bit),cn=kvm,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" --set name="UCS 2.4 (64 Bit)"
-	univention-directory-manager uvmm/profile modify "$@" --dn "cn=Univention Corporate Server 2.4,cn=kvm,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" --set name="UCS 2.4"
-	univention-directory-manager uvmm/profile modify "$@" --dn "cn=Univention Corporate Server 2.4 (64 Bit),cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" --set name="UCS 2.4 (64 Bit)"
-	univention-directory-manager uvmm/profile modify "$@" --dn "cn=Univention Corporate Server 2.4,cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" --set name="UCS 2.4"
-fi
 
 create_xen_profile "UCS 2.4" "ucs24-" "automatic" "1024MB" "20GB" "utc"
 create_xen_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "x86_64" "1024MB" "20GB" "utc"

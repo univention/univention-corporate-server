@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="uvmm" icon="uvmm/module" version="1.0">
+	<name>Virtual machines</name>
+	<description>Manages virtual machines</description>
+	<categories>
+	  <category name="domain"/>
+	</categories>
+	<command name="uvmm/query" function="query">
+	</command>
+  </module>
+</umc>

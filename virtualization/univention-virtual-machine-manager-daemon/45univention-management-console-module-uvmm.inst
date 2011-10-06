@@ -1,7 +1,7 @@
-#!/usr/bin/make -f
+#!/bin/sh
 #
-# Univention Virtual Machine Manager Daemon
-#  rules file for the univention-virtual-machine-manager-daemon package
+# Univention Virtual Machine Manager UMC modul
+#  join script
 #
 # Copyright 2010,2011 Univention GmbH
 #
@@ -30,16 +30,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-%:
-	dh $@
+VERSION="1"
 
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
 
-override_dh_auto_install:
-	dh-umc-module-install
-	dh_auto_install
+eval "$(univention-config-registry shell)"
 
-override_dh_perms:
-	chmod 0700 debian/tmp/var/cache/univention-virtual-machine-manager-daemon
+umc_init
+umc_operation_create "uvmm" "Univention Virtual Machine Manager" "uvmm/*"
+umc_acl_create "uvmm-all" "Virtualization" "All operations" "uvmm/*"
+umc_policy_append "default-admin" "uvmm-all"
+
+invoke-rc.d univention-virtual-machine-manager-daemon restart 
+
+joinscript_save_current_version
+
+exit 0

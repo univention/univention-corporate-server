@@ -1,66 +1,50 @@
 #!/usr/bin/make -f
+#
+# Univention Virtual Machine Manager
+#  makefile
+#
+# Copyright 2010,2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
 
-VERSION := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 UVMM := univention-virtual-machine-manager
 
-MODULES := $(shell find umc/modules/univention/management -name '*.py')
-PO_FILES := $(shell find umc/modules/univention/management src -name '*.po')
-MO_FILES := $(PO_FILES:%.po=%.mo)
-IMAGES := $(shell find umc/images -name '*.gif' -o -name '*.png')
-MODULENAME=uvmm
+PO_FILES := $(shell find src -name '*.po')
+MO_FILES := $(foreach po,$(PO_FILES),src/i18n/$(shell basename $(po) .po)/LC_MESSAGES/$(UVMM).mo)
 
 .PHONY: all
-all:: $(MO_FILES) $(IMAGES)
+all:: $(MO_FILES)
 
-%.mo:	%.po
-	msgfmt --check --output-file $@ $<
+define build_mo
+src/i18n/$(1)/LC_MESSAGES/$(UVMM).mo: src/$(1).po
+	mkdir -p $$(shell dirname $$@)
+	msgfmt --check --output-file $$@ $$<
+endef
 
-.PHONY: install
-install:: install-modules install-locales install-images
-	install -m 0755 -d $(DESTDIR)/etc/univention
-	install -m 0755 -t $(DESTDIR)/etc/univention src/uvmmd.ini
-	install -m 0755 -d $(DESTDIR)/usr/share/pyshared/univention/uvmm
-	install -m 0644 -t $(DESTDIR)/usr/share/pyshared/univention/uvmm src/univention/uvmm/*.py
-	install -m 0755 -d $(DESTDIR)/usr/sbin
-	install -m 0755 -t $(DESTDIR)/usr/sbin src/univention-virtual-machine-manager-daemon
-	install -m 0755 -t $(DESTDIR)/usr/sbin src/univention-virtual-machine-manager
-	$(RM) $(DESTDIR)/usr/sbin/uvmm
-	ln -s univention-virtual-machine-manager $(DESTDIR)/usr/sbin/uvmm
-	install -m 0755 -d $(DESTDIR)/var/www
-	install -m 0444 -t $(DESTDIR)/var/www TightVncViewer.jar
-	install -m 0755 -d $(DESTDIR)/usr/share/man/man8
-	install -m 0755 -d $(DESTDIR)/usr/lib/univention-virtual-machine-manager-daemon
-	install -m 0755 -t $(DESTDIR)/usr/lib/univention-virtual-machine-manager-daemon uvmmd-check.sh
-	install -m 0644 -t $(DESTDIR)/usr/share/man/man8 doc/*.8
-	install -m 0755 -d $(DESTDIR)/usr/lib/univention-directory-listener/system
-	install -m 0644 -t $(DESTDIR)/usr/lib/univention-directory-listener/system uvmmd-nodes.py
-	install -m 0644 -t $(DESTDIR)/usr/lib/univention-directory-listener/system uvmmd-ldap.py
-	install -m 0755 -d $(DESTDIR)/usr/lib/univention-install
-	install -m 0755 -t $(DESTDIR)/usr/lib/univention-install 44univention-virtual-machine-manager-daemon.inst
-	install -m 0755 -d $(DESTDIR)/etc/runit/univention-virtual-machine-manager-daemon
-	install -m 0755 univention-virtual-machine-manager-daemon.runit $(DESTDIR)/etc/runit/univention-virtual-machine-manager-daemon/run
-
-.PHONY: uninstall
-uninstall:
-	$(RM) $(DESTDIR)/usr/sbin/univention-virtual-machine-manager
-	$(RM) $(DESTDIR)/usr/sbin/uvmm
-	$(RM) $(DESTDIR)/usr/sbin/univention-virtual-machine-manager-daemon
-	-rmdir -p $(DESTDIR)/usr/sbin
-	$(RM) $(DESTDIR)/usr/share/pyshared/univention/uvmm/*
-	-rmdir -p $(DESTDIR)/usr/share/pyshared/univention/uvmm
-	$(RM) $(DESTDIR)/etc/univention/uvmmd.ini
-	-rmdir -p $(DESTDIR)/etc/univention
-	$(RM) $(DESTDIR)/var/www/TightVncViewer.jar
-	-rmdir -p $(DESTDIR)/var/www
-	$(RM) $(DESTDIR)/usr/lib/univention-virtual-machine-manager-daemon/uvmmd-check.sh
-	-rmdir -p $(DESTDIR)/usr/lib/univention-virtual-machine-manager-daemon
-	$(RM) $(DESTDIR)/usr/lib/univention-directory-listener/system/uvmmd-nodes.py
-	$(RM) $(DESTDIR)/usr/lib/univention-directory-listener/system/uvmmd-ldap.py
-	-rmdir -p $(DESTDIR)/usr/lib/univention-directory-listener/system
-	$(RM) $(DESTDIR)/usr/lib/univention-install/44univention-virtual-machine-manager-daemon.inst
-	-rmdir -p $(DESTDIR)/usr/lib/univention-install
-	$(RM) $(DESTDIR)/etc/runit/univention-virtual-machine-manager-daemon/run
-	-rmdir -p $(DESTDIR)/etc/runit/univention-virtual-machine-manager-daemon
+$(foreach po,$(PO_FILES),$(eval $(call build_mo,$(shell basename $(po) .po))))
 
 .PHONY: clean
 clean::
@@ -68,46 +52,11 @@ clean::
 	$(RM) src/virtual-machine-manager-daemon.log
 	$(RM) $(MO_FILES)
 	$(RM) tags
-
-.PHONY: modules
-modules: $(MODULES)
-
-.PHONY: install-modules
-install-modules: modules
-	install -d $(DESTDIR)/usr/share/pyshared/univention/management/console/handlers/$(MODULENAME)
-	install -m 0644 -t $(DESTDIR)/usr/share/pyshared/univention/management/console/handlers/$(MODULENAME) umc/modules/univention/management/console/handlers/$(MODULENAME)/*.py
-
-.PHONY: install-images
-install-images: $(IMAGES)
-	for i in $^; do\
-		dest=`dirname $$i | sed 's,^umc/,,'`;\
-		o=$(DESTDIR)/usr/share/univention-management-console/www/themes/$$dest;\
-		install -d "$$o";\
-		install -m 0644 $$i $$o;\
-	done
-
-.PHONY: install-locales
-install-locales: $(MO_FILES)
-	for i in $(filter umc/modules/%,$^); do\
-		lang=`basename $$i .mo`;\
-		domain=`dirname $$i | sed 's,^umc/modules/,,;s,/,-,g'`;\
-		o=$(DESTDIR)/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
-		install -d "`dirname $$o`";\
-		install -m 644 $$i $$o;\
-	done
-	for i in $(filter src/%,$^); do\
-		lang=`basename $$i .mo`;\
-		o=$(DESTDIR)/usr/share/locale/$$lang/LC_MESSAGES/$(UVMM).mo;\
-		install -d "`dirname $$o`";\
-		install -m 644 $$i $$o;\
-	done
-
-DIRS := src umc/modules/univention/management/console/handlers/$(MODULENAME)
-clean::
-	$(RM) $(foreach d,$(DIRS),$(d)/messages.pot)
+	$(RM) src/messages.pot
 
 ifeq ($(M),1)
 LANGUAGES := de
+VERSION := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 
 .PHONY: maintainer-locales
 maintainer-locales: $(foreach d,$(DIRS),$(d)/messages.pot)
@@ -118,8 +67,6 @@ define I18N_template
 	msgmerge --update --sort-output $$@ $$<
 endef
 $(foreach lang,$(LANGUAGES),$(eval $(call I18N_template,$(lang))))
-
-umc/modules/univention/management/console/handlers/$(MODULENAME)/messages.pot: $(shell find umc/modules/univention/management/console/handlers/$(MODULENAME) -name \*.py)
 
 src/messages.pot: src/univention-virtual-machine-manager
 src/messages.pot: src/univention-virtual-machine-manager-daemon
@@ -137,14 +84,11 @@ src/messages.pot: $(shell find src/univention/uvmm -name \*.py)
 		$^
 
 
-IMAGES_12 := domain group node
-IMAGES_16 := add domain-off domain-on domain-paused domain group node node-off node-kvm node-kvm-off node-xen node-xen-off refresh search
-IMAGES_64 := module
+SVGS := $(shell find umc/icons/scalable/ -name "*.svg" -o -name "*.svgz")
+SIZES := 16 50
+FORMATS := png
 
-SIZES := 12 16 24 64
-FORMATS := png gif
-
-IMAGES := $(foreach format,$(FORMATS),$(foreach size,$(SIZES),$(foreach img,$(IMAGES_$(size)),umc/images/default/$(size)x$(size)/$(MODULENAME)/$(img).$(format))))
+IMAGES := $(foreach size,$(SIZES),$(foreach img,$(SVGS),umc/icons/$(size)x$(size)/$(img).png))
 all:: $(IMAGES)
 
 define CONVERT_template
@@ -155,9 +99,6 @@ $(foreach size,$(SIZES),$(eval $(call CONVERT_template,$(size))))
 
 %.svg: %.svgz
 	gzip -dc <$< >$@
-
-%.gif: %.png
-	convert $< -channel A -threshold 75% $@
 
 endif
 

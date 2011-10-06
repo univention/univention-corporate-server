@@ -4,11 +4,13 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Uploaders: Philipp Hahn <hahn@univention.de>,
  Andreas Büsching <buesching@univention.de>,
-Standards-Version: 3.5.5
-Build-Depends: debhelper (>= 7.0.50),
- python-all-dev, python-central,
- univention-config-dev
-XS-Python-Version: 2.4
+Standards-Version: 3.7.2
+Build-Depends: debhelper (>= 7.0.50~),
+ python-support,
+ python-all-dev,
+ univention-config-dev,
+ univention-management-console-dev
+XS-Python-Version: 2.6
 
 Package: univention-virtual-machine-manager-daemon
 Architecture: all
@@ -20,15 +22,10 @@ Depends: univention-ssl,
  ${python:Depends}, ${misc:Depends}
 Recommends: libvirt-bin,
  univention-nagios-uvmmd,
- univention-management-console
-Breaks: univention-management-console-themes (<< 3.0.112-1)
-XB-Python-Version: ${python:Versions}
+ univention-management-console-module-uvmm (= ${source:Version})
 Description: Univention Virtual Machine Manager Daemon
  This package contains the Univention Virtual Machine Manager Daemon
  used to collect informations from a farm of virtualization servers.
- .
- This package also includes the Univention Management Console module
- for managing virtualization servers of an UCS domain.
 
 Package: python-univention-virtual-machine-manager
 Architecture: all
@@ -42,3 +39,12 @@ XB-Python-Version: ${python:Versions}
 Description: Univention Virtual Machine Manager Daemon - Python bindings
  This package contains the Univention Virtual Machine Manager Daemon
  Python bindings used to communicate with the daemon.
+
+Package: univention-management-console-module-uvmm
+Architecture: all
+Depends: univention-management-console-server,
+ python-univention-virtual-machine-manager (= ${source:Version}),
+ ${python:Depends}, ${misc:Depends}
+Description: Univention Virtual Machine Manager UMC module
+ This package contains the Univention Virtual Machine Manager Daemon
+ UMC module.

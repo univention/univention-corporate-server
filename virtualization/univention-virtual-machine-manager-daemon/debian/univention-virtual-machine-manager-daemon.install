@@ -1,10 +1,6 @@
-etc
-usr/lib/univention-directory-listener
-usr/lib/univention-install
-usr/lib/univention-virtual-machine-manager-daemon
-usr/sbin
-usr/share/univention-management-console
-usr/share/pyshared/univention/management
-usr/share/locale/de/LC_MESSAGES/univention-management-console-handlers-uvmm.mo
-usr/share/man/man8
-var/www
+src/uvmmd.ini etc
+TightVncViewer.jar var/www
+src/univention-virtual-machine-manager-daemon src/univention-virtual-machine-manager usr/sbin
+uvmmd-check.sh usr/lib/univention-virtual-machine-manager-daemon
+uvmmd-nodes.py uvmmd-ldap.py usr/lib/univention-directory-listener/system
+44univention-virtual-machine-manager-daemon.inst usr/lib/univention-install

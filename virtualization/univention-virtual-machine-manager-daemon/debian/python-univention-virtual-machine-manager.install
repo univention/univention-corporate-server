@@ -1,2 +1,2 @@
-usr/share/pyshared/univention/uvmm
-usr/share/locale/de/LC_MESSAGES/univention-virtual-machine-manager.mo
+src/univention/uvmm/*.py usr/share/pyshared/univention/uvmm
+src/i18n/* usr/share/locale/
