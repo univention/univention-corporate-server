@@ -16,6 +16,7 @@ dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.SearchForm");
 dojo.require("umc.widgets.Tree");
+dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
 dojo.require("umc.modules._udm.Template");
 dojo.require("umc.modules._udm.NewObjectDialog");
@@ -43,7 +44,7 @@ dojo.require("umc.modules._udm.DetailPage");
 	});
 })();
 
-dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
+dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidgetsMixin, umc.i18n.Mixin ], {
 	// summary:
 	//		Module to interface (Univention Directory Manager) UDM objects.
 	// description:
@@ -87,6 +88,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	// define grid columns
 	_default_columns: null,
+
+	// button to navigate back to the list of superordinates
+	_upButton: null,
 
 	// UDM object type name in singular and plural
 	objectNameSingular: '',
@@ -529,6 +533,38 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				this._searchForm._widgets.objectProperty.set('visible', 'None' != val);
 				this._searchForm._widgets.objectPropertyValue.set('visible', 'None' != val);
 				this.layout();
+			});
+		}
+
+		// add an additional 'up' button when the user selected a superordinate
+		// for the search scope
+		if (this._searchForm.getWidget('superordinate')) {
+			this.connect(this._searchForm.getWidget('superordinate'), 'onChange', function(val) {
+				if ('None' == val) {
+					// top view, no superordinate selected -> remove the button
+					if (this._upButton) {
+						this._grid._toolbar.removeChild(this._upButton);
+						this.orphan(this._upButton, true);
+						this._upButton = null;
+					}
+				}
+				else if (dojo.isString(val)) {
+					// a superordinate has been selected -> add the button
+					this._upButton = this.adopt(umc.widgets.Button, {
+						label: this._('Show all superordinates'),
+						callback: dojo.hitch(this, function() {
+							this._searchForm.getWidget('superordinate').set('value', 'None');
+
+							// we can relaunch the search after all search form values
+							// have been updated
+							var handle = this.connect(this._searchForm.getWidget('objectPropertyValue'), 'onValuesLoaded', function() {
+								this.filter();
+								this.disconnect(handle);
+							});
+						})
+					});
+					this._grid._toolbar.addChild(this._upButton, 0);
+				}
 			});
 		}
 
