@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.82-1) unstable; urgency=low
+
+  * extended Makefile to generate a debug.html (Bug #23827)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Oct 2011 16:09:38 +0200
+
 univention-management-console-frontend (1.0.81-1) unstable; urgency=low
 
   * _SelectMixin: fixed problems with accessing this.value for MultiSelect
