@@ -36,15 +36,15 @@ import os, sys
 try:
 	import univention.config_registry as ub
 except ImportError, e:
-	# Woraround for the UCS 3.0:
+	# Workaround for UCS 3.0:
 	#   While updating to UCS 3.0 the normal UCR import may fail. For this
-	#   case the pyshared file will be  imported directly
+	#   case the pyshared file will be imported directly
 	sys.path.append('/usr/share/pyshared')
 	import univention.config_registry as ub
 
 if __name__ == '__main__' and not os.path.exists('/etc/univention/disable_baseconfig') and not os.path.exists('/etc/univention/disable_config_registry'):
 	if os.path.basename(sys.argv[0]) == 'univention-baseconfig':
-		print >>sys.stderr, 'WARNING: univention-baseconfig is deprectaed by univention-config-registry.'
+		print >>sys.stderr, 'WARNING: univention-baseconfig is deprecated by univention-config-registry.'
 	try:
 		ub.main(sys.argv[1:])
 	except ub.StrictModeException, e:

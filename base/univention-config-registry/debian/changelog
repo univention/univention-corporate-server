@@ -1,3 +1,9 @@
+univention-config-registry (7.0.22-1) unstable; urgency=low
+
+  * fix typo in deprecation warning (Bug #23807)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 07 Oct 2011 10:13:47 +0200
+
 univention-config-registry (7.0.21-1) unstable; urgency=low
 
   * While updating to UCS 3.0 the normal UCR import may fail. For this
