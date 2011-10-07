@@ -994,9 +994,11 @@ class morewindow(subwin):
 		self.type = fieldtype
 		if self.type == self.DOMAINDNS:
 			self.name = _('Domain DNS Server')
+			self.title = _(' More Domain DNS Servers')
 			self.containerkey = 'nameserver_%d'
 		elif self.type == self.EXTERNALDNS:
 			self.name = _('External DNS Server')
+			self.title = _(' More External DNS Servers')
 			self.containerkey = 'dns_forwarder_%d'
 		self.values = []
 		subwin.__init__(self, parent, pos_y, pos_x, width, height)
@@ -1029,10 +1031,10 @@ class morewindow(subwin):
 		return self.parent.helptext()
 
 	def modheader(self):
-		return _( ' More %ss' ) % self.name
+		return self.title
 
 	def profileheader(self):
-		return ' More %ss' % self.name
+		return self.title
 
 	def put_result(self):
 		result = {}
