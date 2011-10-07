@@ -1,8 +1,15 @@
+univention-ad-connector (6.0.10-1) unstable; urgency=low
+
+  * Set the MIME type for cert.pem and for private.key and add a comment
+    to cert.pem (Bug #23378)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Oct 2011 07:33:39 +0200
+
 univention-ad-connector (6.0.9-2.1) unstable; urgency=low
 
   * Support page control for the AD search. This increase the initialize
     performance (Bug #23734)
-  * Don't synchonisze all objects during the init twice, only search for
+  * Don't synchonize all objects during the init twice, only search for
     uSNCreated objects and not for uSNCreated and uSNChanged objects
     (Bug #23734)
   * Adapt prepare-new-instance to UCS 3.0 (Bug #23814)
