@@ -99,7 +99,7 @@ def LDAP_Connection( func ):
 			_ldap_connection = lo
 			_ldap_position = po
 			return ret
-		except univention.admin.uexceptions.base, e:
+		except udm_errors.base, e:
 			MODULE.info( 'LDAP operation for user %s has failed' % _user_dn )
 			try:
 				lo = udm_uldap.access( host = ucr.get( 'ldap/master' ), binddn= _user_dn, bindpw = _password )
@@ -114,7 +114,7 @@ def LDAP_Connection( func ):
 				_ldap_connection = lo
 				_ldap_position = po
 				return ret
-			except univention.admin.uexceptions.base, e:
+			except udm_errors.base, e:
 				raise LDAP_ConnectionError( str( e ) )
 
 		return []
