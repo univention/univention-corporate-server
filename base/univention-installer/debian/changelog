@@ -1,3 +1,9 @@
+univention-installer (7.0.95-1) unstable; urgency=low
+
+  * check if at least one partition is bootable (Bug #19226)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 07 Oct 2011 12:45:13 +0200
+
 univention-installer (7.0.94-1) unstable; urgency=low
 
   * fixed F5 button if no valid device has been found (Bug #22312)

@@ -446,14 +446,20 @@ class object(content):
 		boot_fs=None
 		root_fs_type=None
 		boot_fs_type=None
+		bootable_cnt=0
 		mpoint_temp=[]
 		for disk in self.container['disk'].keys():
 			for part in self.container['disk'][disk]['partitions']:
 				if self.container['disk'][disk]['partitions'][part]['num'] > 0 : # only valid partitions
+
+					if 'boot' in self.container['disk'][disk]['partitions'][part]['flag']:
+						bootable_cnt += 1
+
 					if len(self.container['disk'][disk]['partitions'][part]['mpoint'].strip()):
 						if self.container['disk'][disk]['partitions'][part]['mpoint'] in mpoint_temp:
 							return _("Double mount point '%s'") % self.container['disk'][disk]['partitions'][part]['mpoint']
 						mpoint_temp.append(self.container['disk'][disk]['partitions'][part]['mpoint'])
+
 					if self.container['disk'][disk]['partitions'][part]['mpoint'] == '/':
 						root_fs_type=self.container['disk'][disk]['partitions'][part]['fstype']
 						if not self.container['disk'][disk]['partitions'][part]['fstype'] in ALLOWED_ROOT_FSTYPES:
@@ -480,9 +486,12 @@ class object(content):
 						root_fs = lv['fstype']
 					root_device=1
 
+		if not bootable_cnt:
+			return _('One partition must be flagged as bootable. This should usually be /boot.')
+
 		if not root_device:
 			#self.move_focus( 1 )
-			return _('Missing \'/\' as mount point')
+			return _("Missing '/' as mount point")
 
 		if root_fs:
 			#self.move_focus( 1 )
