@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.334-2) unstable; urgency=low
+
+  * Fix reference to object→request (Bug #23934)
+  * Fix undefined 'domain_name' variable.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 07 Oct 2011 09:55:10 +0200
+
 univention-virtual-machine-manager-daemon (0.9.334-1) unstable; urgency=low
 
   * Fix undefines 'action' variable (Bug #23934)

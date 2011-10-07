@@ -373,13 +373,13 @@ class DriveCommands( object ):
 			del request.options['action']
 			return self.uvmm_domain_overview(request)
 
+		domain_name = request.options['domain']
 		try:
-			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
+			node_uri, node_name = self.uvmm.node_uri_name(request.options['node'])
 			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, domain_name)
 		except UvmmError, e:
 			ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_media_change: node %(node)s#%(domain)s not found' % request.options)
 			return self.uvmm_node_overview(request)
-		domain_name = request.options['domain']
 		target_dev = request.options['target_dev']
 
 		# Find disk...
