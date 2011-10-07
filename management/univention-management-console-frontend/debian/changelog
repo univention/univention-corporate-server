@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.80-1) unstable; urgency=low
+
+  * fixed submit callback for Forms without specified buttons (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Oct 2011 10:28:58 +0200
+
 univention-management-console-frontend (1.0.79-1) unstable; urgency=low
 
   * fixed double call to custom callback handlers for Buttons (side effect

@@ -224,17 +224,19 @@ dojo.declare("umc.widgets.Form", [
 
 		// register callbacks for onSubmit and onReset events
 		umc.tools.forIn({ 'submit': 'onSubmit', 'reset': 'onReset' }, function(ibutton, ievent) {
-			var callbackOrg = dojo.getObject(ibutton + '.callback', false, this._buttons);
-			if (callbackOrg) {
+			var orgCallback = dojo.getObject(ibutton + '.callback', false, this._buttons);
+			if (orgCallback) {
 				this._buttons[ibutton].callback = function() { };
-				this.connect(this, ievent, function(e) {
-					// prevent standard form submission
-					e.preventDefault();
-
-					// if there is a custom callback, call it with all form values
-					callbackOrg(this.gatherFormValues());
-				});
 			}
+			this.connect(this, ievent, function(e) {
+				// prevent standard form submission
+				e.preventDefault();
+
+				// if there is a custom callback, call it with all form values
+				if (dojo.isFunction(orgCallback)) {
+					orgCallback(this.gatherFormValues());
+				}
+			});
 		}, this);
 	},
 
@@ -284,9 +286,6 @@ dojo.declare("umc.widgets.Form", [
 				if (this._widgets[iname].setInitialValue) {
 					this._widgets[iname].setInitialValue(ival, false);
 				}
-			}
-			else {
-				console.log(dojo.replace("WARNING: Could not set the property '{0}': {1}", [iname, ival]));
 			}
 		}, this);
 	},
