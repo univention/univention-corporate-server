@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.81-1) unstable; urgency=low
+
+  * _SelectMixin: fixed problems with accessing this.value for MultiSelect
+    (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Oct 2011 15:28:40 +0200
+
 univention-management-console-frontend (1.0.80-1) unstable; urgency=low
 
   * fixed submit callback for Forms without specified buttons (Bug #22881)

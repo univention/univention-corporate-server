@@ -148,7 +148,13 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	_saveInitialValue: function() {
 		// rember the intial value since it will be overridden by the dojo
 		// methods since at initialization time the store is empty
-		this._initialValue = this.value;
+		try {
+			this._initialValue = this.get('value');
+		}
+		catch (error) {
+			// failed to access 'value', probably too early in the widget construction 
+			// (e.g., DOM elements are not ready yet)
+		}
 	},
 
 	setInitialValue: function(value, setValue) {
@@ -403,7 +409,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		//}
 
 		// if the value is not set (undefined/null), automatically choose the first element in the list
-		if (null === this.value || undefined === this.value) {
+		if (null === this.get('value') || undefined === this.get('value')) {
 			this.set('value', this._firstValueInList);
 		}
 	},
