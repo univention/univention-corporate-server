@@ -186,7 +186,6 @@ def doit(arglist):
 		object=univention.admin.handlers.users.user.object(co, lo, position=position)
 		object.options=['posix', 'person', 'mail']
 		object.open()
-		object.set_uid_umlauts()
 		object['username']=user
 		try:
 			object['lastname']=codecs.ascii_decode(user)[0]
@@ -261,10 +260,9 @@ def doit(arglist):
 		out.append(status('Adding machine %s' % codecs.utf_8_encode(machine)[0]))
 		object=univention.admin.handlers.computers.windows.object(co, lo, position=position)
 		univention.admin.objects.open(object)
-		object.options=[]
-		object.set_name_umlauts()
+		object.options=['posix']
 		object['name']=machine
-		object['machineAccountGroup']=univention.admin.config.getDefaultValue(lo, 'computerGroup')
+		object['primaryGroup']=univention.admin.config.getDefaultValue(lo, 'computerGroup')
 		object.create()
 		nscd_invalidate('hosts')
 		nscd_invalidate('passwd')

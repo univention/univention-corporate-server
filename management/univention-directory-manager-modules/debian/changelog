@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.102-1) unstable; urgency=low
+
+  * Removed set_uid_umlauts from adduser.py and adjust adduser.py to 3.0
+    changes (Bug #23987)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Oct 2011 10:45:54 +0200
+
 univention-directory-manager-modules (7.0.101-1) unstable; urgency=low
 
   * fixed a few missing adaptions to the new Tab class API; Bug #22893
