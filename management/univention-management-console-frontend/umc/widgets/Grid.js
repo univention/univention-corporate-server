@@ -87,7 +87,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 	_footerCells: null,
 
 	// ContainerWidget that holds all buttons
-	_toolBar: null,
+	_toolbar: null,
 
 	_footer: null,
 
@@ -411,15 +411,15 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		var buttons = umc.render.buttons(buttonsCfg);
 
 		// add the toolbar to the bottom of the widget
-		this._toolBar = new umc.widgets.ContainerWidget({
+		this._toolbar = new umc.widgets.ContainerWidget({
 			region: 'bottom',
 			'class': 'umcGridToolBar'
 		});
-		this.addChild(this._toolBar);
+		this.addChild(this._toolbar);
 
 		// add buttons to toolbar
 		dojo.forEach(buttons.$order$, function(ibutton) {
-			this._toolBar.addChild(ibutton);
+			this._toolbar.addChild(ibutton);
 		}, this);
 
 		//
