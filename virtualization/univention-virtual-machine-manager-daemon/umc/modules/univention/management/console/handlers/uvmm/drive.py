@@ -74,7 +74,7 @@ class DriveCommands( object ):
 		if not 'action' in object.options:
 			self.drive_wizard.reset()
 			self.drive_wizard.drive_type_select.floppies = domain_info.os_type == 'hvm'
-			self.drive_wizard.domain_name = object.options['domain']
+			self.drive_wizard.domain_name = domain_info.name
 			self.drive_wizard.domain_virttech( '%s-%s' % ( domain_info.domain_type, domain_info.os_type ) )
 			self.drive_wizard.blacklist = [] # does query domains
 			self.drive_wizard.set_node( node_uri, node_info )

@@ -2,8 +2,9 @@ univention-virtual-machine-manager-daemon (0.9.334-2) unstable; urgency=low
 
   * Fix reference to object→request (Bug #23934)
   * Fix undefined 'domain_name' variable.
+  * Use domain-name instead of UUID for new drived (Bug #23906)
 
- -- Philipp Hahn <hahn@univention.de>  Fri, 07 Oct 2011 09:55:10 +0200
+ -- Philipp Hahn <hahn@univention.de>  Fri, 07 Oct 2011 10:18:23 +0200
 
 univention-virtual-machine-manager-daemon (0.9.334-1) unstable; urgency=low
 
