@@ -143,6 +143,21 @@ class _Commands:
 		server.eos = True
 
 	@staticmethod
+	def DOMAIN_LIST( server, request ):
+		"""Return a list of available domains of a given node."""
+		if not isinstance( request.uri, basestring ):
+			raise CommandError( 'DOMAIN_LIST', _( 'uri != string: %(uri)s' ), uri = request.uri )
+
+		logger.debug('DOMAIN_LIST %s' % request.uri )
+		try:
+			domains = node.domain_list( request.uri )
+			res = protocol.Response_DUMP()
+			res.data = domains
+			return res
+		except node.NodeError, e:
+			raise CommandError('DOMAIN_DEFINE', e)
+
+	@staticmethod
 	def DOMAIN_DEFINE(server, request):
 		"""Define new domain on node."""
 		if not isinstance(request.uri, basestring):

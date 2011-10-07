@@ -127,6 +127,11 @@ class Request_BYE(Request):
 	"""Disconnect client."""
 	def _default(self):
 		self.command = 'BYE'
+class Request_DOMAIN_LIST(Request):
+	"""List domains."""
+	def _default(self):
+		self.command = 'DOMAIN_LIST'
+		self.uri = None
 class Request_DOMAIN_DEFINE(Request):
 	"""Define new or replace old domain."""
 	def _default(self):

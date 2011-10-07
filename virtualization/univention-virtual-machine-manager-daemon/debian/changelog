@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.1-1) unstable; urgency=low
+
+  * add command domains: returning a list of domains of a node; Bug #23931
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 07 Oct 2011 09:53:36 +0200
+
 univention-virtual-machine-manager-daemon (1.0.0-4) unstable; urgency=low
 
   * fix installation of runit start script; Bug #22893
