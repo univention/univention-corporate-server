@@ -653,18 +653,22 @@ class object(content):
 		name = card.name
 
 		# reset old values
+		self.container['%s_type' % name] = ''
 		self.container['%s_ip' % name] = ''
 		self.container['%s_netmask' % name] = ''
+		self.container['%s_network' % name] = ''
+		self.container['%s_broadcast' % name] = ''
 		# IPv4
-		if card.get_elem('CB_IPv4DHCP').result():
-			self.container['%s_type' % name] = 'dynamic'
-			if self.serversystem:
-				self.container['%s_ip' % name] = card.get_elem('INP_IPv4ADDR').result().strip()
-				self.container['%s_netmask' % name] = card.get_elem('INP_IPv4NETMASK').result().strip()
-		else:
-			self.container['%s_type' % name] = ''
-			self.container['%s_ip' % name] =  card.get_elem('INP_IPv4ADDR').result().strip()
-			self.container['%s_netmask' % name] =  card.get_elem('INP_IPv4NETMASK').result().strip()
+		if card.get_elem('CB_IPv4').result():
+			if card.get_elem('CB_IPv4DHCP').result():
+				self.container['%s_type' % name] = 'dynamic'
+				if self.serversystem:
+					self.container['%s_ip' % name] = card.get_elem('INP_IPv4ADDR').result().strip()
+					self.container['%s_netmask' % name] = card.get_elem('INP_IPv4NETMASK').result().strip()
+			else:
+				self.container['%s_type' % name] = ''
+				self.container['%s_ip' % name] =  card.get_elem('INP_IPv4ADDR').result().strip()
+				self.container['%s_netmask' % name] =  card.get_elem('INP_IPv4NETMASK').result().strip()
 
 		# calculate broadcast and network
 		result = self.addr_netmask2result( name, self.container.get('%s_ip' % name,''), self.container.get('%s_netmask' % name,''))
@@ -672,12 +676,12 @@ class object(content):
 			self.container.update(result)
 
 		# IPv6
+		self.container['%s_acceptra' % name] = ''
+		self.container['%s_ip6' % name] = ''
+		self.container['%s_prefix6' % name] = ''
 		if card.get_elem('CB_IPv6RA').result():
 			self.container['%s_acceptra' % name] = 'true'
-			self.container['%s_ip6' % name] = ''
-			self.container['%s_prefix6' % name] = ''
 		else:
-			self.container['%s_acceptra' % name] = ''
 			self.container['%s_ip6' % name] = card.get_elem('INP_IPv6ADDR').result().strip()
 			self.container['%s_prefix6' % name] = card.get_elem('INP_IPv6PREFIX').result().strip()
 
