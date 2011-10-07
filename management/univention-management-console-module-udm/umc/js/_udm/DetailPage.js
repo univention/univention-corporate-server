@@ -604,10 +604,22 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			}
 		});
 
+		// reset settings from last validation
+		umc.tools.forIn(this._form._widgets, function(iname, iwidget) {
+			if (iwidget.setValid) {
+				iwidget.setValid(null);
+			}
+		}, this);
+
 		// check whether all required properties are set
 		var errMessage = '' + this._('The following properties need to be specified or are invalid:') + '<ul>';
 		var allValuesGiven = true;
 		umc.tools.forIn(this._form._widgets, function(iname, iwidget) {
+			// ignore widgets that are not visible
+			if (!iwidget.get('visible')) {
+				return true;
+			}
+
 			// check whether a required property is set or a property is invalid
 			var tmpVal = dojo.toJson(iwidget.get('value'));
 			var isEmpty = tmpVal == '""' || tmpVal == '[]' || tmpVal == '{}';
@@ -615,6 +627,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				// value is empty
 				allValuesGiven = false;
 				errMessage += '<li>' + iwidget.label + '</li>';
+				this._setWidgetInvalid(iname);
 			}
 		}, this);
 		errMessage += '</ul>';
@@ -668,13 +681,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			// check whether form element is valid
 			iwidget.setValid(ivalid, iprop.details);
 			if (!iallValid) {
-				// mark the title of the subtab (in case we have not done it already)
-				var ipage = this._propertySubTabMap[iprop.property];
-				if (ipage && !ipage.$titleOrig$) {
-					// store the original title
-					ipage.$titleOrig$ = ipage.title;
-					ipage.set('title', '<span style="color:red">' + ipage.title + ' (!)</span>');
-				}
+				this._setWidgetInvalid(iprop.property);
 
 				// update the global error message
 				errMessage += '<li>' + this._("%(attribute)s: %(message)s\n", {
@@ -691,6 +698,22 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		}
 
 		return allValid;
+	},
+
+	_setWidgetInvalid: function(name) {
+		// get the widget
+		var widget = this._form.getWidget(name);
+		if (!widget) {
+			return;
+		}
+
+		// mark the title of the subtab (in case we have not done it already)
+		var page = this._propertySubTabMap[name];
+		if (page && !page.$titleOrig$) {
+			// store the original title
+			page.$titleOrig$ = page.title;
+			page.set('title', '<span style="color:red">' + page.title + ' (!)</span>');
+		}
 	},
 
 	saveChanges: function(vals) {
