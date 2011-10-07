@@ -1,3 +1,9 @@
 @%@UCRWARNING=# @%@
 
-root@@%@kerberos/realm@%@ all
+@!@
+adminusers=configRegistry.get('kerberos/adminusers')
+if adminusers:
+	for au in adminusers.split(','):
+		print '%s all' % au.strip()
+@!@
+

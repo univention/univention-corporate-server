@@ -5,6 +5,7 @@ Variables: ldap/server/name
 Variables: ldap/server/addition
 Variables: kerberos/kdc
 Variables: kerberos/adminserver
+Variables: kerberos/kpasswdserver
 Variables: kerberos/v4tickets
 Variables: kerberos/kadmin/default/keys
 Variables: kerberos/defaults/enctypes/tgs

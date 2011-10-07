@@ -1,3 +1,14 @@
+univention-heimdal (5.0.9-1) unstable; urgency=low
+
+  * Added kpasswd_server to krb5.conf which is set via
+    kerberos/kpasswdserver
+  * Removed root from kadmind.acl and added a UCR variable
+    kerberos/adminusers to configure the admin users (Bug #19021)
+  * Fixed the database defintion to the 'label' syntax which was changed
+    in heimdal 1.3 (Bug #22108)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Oct 2011 09:55:08 +0200
+
 univention-heimdal (5.0.8-4) unstable; urgency=low
 
   * listener should not handle keytab in Samba 4 RODCs (Bug #22600)

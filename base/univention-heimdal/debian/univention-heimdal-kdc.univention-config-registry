@@ -7,6 +7,7 @@ Variables: kerberos/password/quality/check
 
 Type: file
 File: etc/heimdal-kdc/kadmind.acl
+Variables: kerberos/adminusers
 
 Type: file
 File: etc/init.d/heimdal-kdc

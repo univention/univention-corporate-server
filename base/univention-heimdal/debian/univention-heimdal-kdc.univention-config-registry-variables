@@ -69,3 +69,9 @@ Description[de]=Kaserver ist die vom AFS-Dateisystem verwendete Kerberos 4 Proto
 Description[en]=Kaserver is the Kerberos 4 protocol variant used in the AFS file system.
 Type=str
 Categories=System
+
+[kerberos/adminusers]
+Description[de]=Liste der Kerberos Adminbenutzer, die in kadmind.acl eingetragen werden
+Description[en]=List of kerberos adminusers which will be added to kadmind.acl
+Type=str
+Categories=System

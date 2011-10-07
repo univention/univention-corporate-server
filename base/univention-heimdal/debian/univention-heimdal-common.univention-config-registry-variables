@@ -4,6 +4,12 @@ Description[en]=Kerberos admin server for the realm
 Type=str
 Categories=service-heimdal
 
+[kerberos/kpasswdserver]
+Description[de]=Kerberos Passwort-Server für den Realm
+Description[en]=Kerberos password server for the realm
+Type=str
+Categories=service-heimdal
+
 [kerberos/kdc]
 Description[de]=Liste von KDCs für den Realm
 Description[en]=List of KDC's for the realm
