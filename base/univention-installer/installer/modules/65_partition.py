@@ -2408,22 +2408,25 @@ class object(content):
 					return 'next'
 				elif rtest == 'tab':
 					self.sub.tab()
-			elif not len(self.get_elem('SEL_part').list) and key in [ 10, 32, 276 ]:
-				if self.get_elem('BT_reset').get_status():#reset changes
-					self.parent.start()
-					self.parent.layout()
-					self.get_elem_by_id(self.current).set_on()
-					self.get_elem('SEL_part').set_off()
-					if hasattr(self,"sub"):
-						self.sub.draw()
-				elif self.get_elem('BT_back').get_status():#back
-					return 'prev'
-				elif self.get_elem('BT_next').get_status() or key == 276:#next
-					if len(self.container['history']) or self.parent.test_changes():
-						self.sub=self.verify_exit(self,self.minY+(self.maxHeight/8)+2,self.minX+(self.maxWidth/8),self.maxWidth,self.maxHeight-7)
-						self.sub.draw()
-					else:
-						return 'next'
+
+			elif key == 269 or self.get_elem('BT_reset').get_status(): # F5 - reset changes
+				self.parent.start()
+				self.parent.layout()
+				self.get_elem_by_id(self.current).set_on()
+				self.get_elem('SEL_part').set_off()
+				if hasattr(self,"sub"):
+					self.sub.draw()
+				return 1
+
+			elif self.get_elem('BT_back').get_status():#back
+				return 'prev'
+
+			elif self.get_elem('BT_next').get_status() or key == 276: # F12 - next
+				if len(self.container['history']) or self.parent.test_changes():
+					self.sub=self.verify_exit(self,self.minY+(self.maxHeight/3),self.minX+(self.maxWidth/8),self.maxWidth,self.maxHeight-18)
+					self.sub.draw()
+				else:
+					return 'next'
 
 			elif key == 260:
 				#move left
@@ -2436,6 +2439,7 @@ class object(content):
 					self.get_elem_by_id(active-1).set_on()
 					self.current=active-1
 					self.draw()
+
 			elif key == 261:
 				#move right
 				active=0
@@ -2474,6 +2478,7 @@ class object(content):
 						self.parent.debug('create lvm!')
 						self.sub=self.edit_lvm_lv(self,self.minY+5,self.minX+4,self.maxWidth,self.maxHeight-8)
 						self.sub.draw()
+
 				elif key == 267:# F3 - Edit
 					self.parent.debug('edit')
 					if self.resolve_type(type) == 'primary' or self.resolve_type(type) == 'logical':
@@ -2501,23 +2506,10 @@ class object(content):
 						self.sub=self.del_extended(self,self.minY+9,self.minX-2,self.maxWidth+16,self.maxHeight-17)
 						self.sub.draw()
 
-				elif key == 269:# F5 - Reset changes
-					self.parent.start()
-					self.parent.layout()
-					self.get_elem_by_id(self.current).set_on()
-					self.get_elem('SEL_part').set_off()
-					if hasattr(self,"sub"):
-						self.sub.draw()
-				elif key == 270:# F6 - Write Partitions
+				elif key == 270 or self.get_elem('BT_write').get_status(): # F6 - Write Partitions
 					self.sub=self.verify(self,self.minY+(self.maxHeight/3),self.minX+(self.maxWidth/8),self.maxWidth,self.maxHeight-18)
 					self.sub.draw()
 
-				elif key == 276:
-					if len(self.container['history']) or self.parent.test_changes():
-						self.sub=self.verify_exit(self,self.minY+(self.maxHeight/3),self.minX+(self.maxWidth/8),self.maxWidth,self.maxHeight-18)
-						self.sub.draw()
-					else:
-						return 'next'
 				elif key in [ 10, 32 ]:
 					if self.get_elem('SEL_part').get_status():
 						if self.resolve_type(type) == 'extended':
@@ -2543,6 +2535,7 @@ class object(content):
 						if self.resolve_type(type) is 'free' and self.possible_type(self.container['disk'][disk],part):
 							self.sub=self.edit(self,self.minY+6,self.minX+4,self.maxWidth,self.maxHeight-8)
 							self.sub.draw()
+
 					elif self.get_elem('BT_edit').get_status():#edit
 						if self.resolve_type(type) == 'primary' or self.resolve_type(type) == 'logical':
 							item = self.part_objects[ self.get_elem('SEL_part').result()[0] ]
@@ -2558,32 +2551,17 @@ class object(content):
 							self.parent.debug('edit lvm!')
 							self.sub=self.edit_lvm_lv(self,self.minY+6,self.minX+4,self.maxWidth,self.maxHeight-8)
 							self.sub.draw()
+
 					elif self.get_elem('BT_delete').get_status():#delete
 						if type == PARTTYPE_PRIMARY or type == PARTTYPE_LOGICAL or type == PARTTYPE_LVM_LV:
 							self.part_delete(self.get_elem('SEL_part').result()[0])
 						elif type == PARTTYPE_EXTENDED:
 							self.sub=self.del_extended(self,self.minY+9,self.minX-2,self.maxWidth+16,self.maxHeight-17)
 							self.sub.draw()
-					elif self.get_elem('BT_reset').get_status():#reset changes
-						self.parent.start()
-						self.parent.layout()
-						self.get_elem_by_id(self.current).set_on()
-						self.get_elem('SEL_part').set_off()
-						if hasattr(self,"sub"):
-							self.sub.draw()
-					elif self.get_elem('BT_write').get_status():#write changes
-						self.sub=self.verify(self,self.minY+(self.maxHeight/8),self.minX+(self.maxWidth/8),self.maxWidth,self.maxHeight-7)
-						self.sub.draw()
-					elif self.get_elem('BT_back').get_status():#back
-						return 'prev'
-					elif self.get_elem('BT_next').get_status():#next
-						if len(self.container['history']) or self.parent.test_changes():
-							self.sub=self.verify_exit(self,self.minY+(self.maxHeight/8)+2,self.minX+(self.maxWidth/8),self.maxWidth,self.maxHeight-7)
-							self.sub.draw()
-						else:
-							return 'next'
+
 					elif key == 10 and self.get_elem_by_id(self.current).usable():
 						return self.get_elem_by_id(self.current).key_event(key)
+
 				elif key == curses.KEY_DOWN or key == curses.KEY_UP:
 					self.get_elem('SEL_part').key_event(key)
 				else:

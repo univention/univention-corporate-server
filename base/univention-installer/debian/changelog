@@ -1,3 +1,9 @@
+univention-installer (7.0.94-1) unstable; urgency=low
+
+  * fixed F5 button if no valid device has been found (Bug #22312)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 07 Oct 2011 10:22:35 +0200
+
 univention-installer (7.0.93-1) unstable; urgency=low
 
   * show GPT warning and ask user to write an empty MBR (Bug #22312)
