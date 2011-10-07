@@ -1,3 +1,9 @@
+ucs-test-tools (1.0.3-1) unstable; urgency=low
+
+  * Fix for UCS-3.0 API changes in UDM (Bug #23980)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 07 Oct 2011 08:33:27 +0200
+
 ucs-test-tools (1.0.2-1) unstable; urgency=low
 
   * Change directory structure (Bug #21607)
@@ -15,4 +21,3 @@ ucs-test-tools (1.0.0-1) unstable; urgency=low
   * Initial Release (Bug #21607)
 
  -- Jascha Geerds <geerds@univention.de>  Tue, 10 May 2011 11:04:28 +0200
-

@@ -36,6 +36,7 @@ import univention.debug
 import univention.admin
 import univention.admin.modules
 import univention.admin.objects
+import univention.admin.config
 import univention.admin.uldap
 import ldap
 import operator
@@ -50,6 +51,7 @@ config = univention.admin.config.config()
 access, position = univention.admin.uldap.getAdminConnection()
 
 # position of groups and users in LDAP dit
+univention.admin.modules.update()
 gp = univention.admin.uldap.position(position.getDn())
 gp.setDn("cn=groups,%s" % position.getBase())
 
