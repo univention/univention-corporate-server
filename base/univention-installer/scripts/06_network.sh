@@ -111,6 +111,28 @@ for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
 
 		ifconfig $network_device $address netmask $netmask broadcast $broadcast up
     done
+
+	# set IPv6 acceptra
+    set | egrep "${ifaceregex}acceptra=" | while read line; do
+    	network_device=`echo $line | sed -e 's|_acceptra.*||'`
+    	if [ -z "$network_device" ]; then
+    		continue
+    	fi
+
+    	acceptra="$(echo $line | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g")"
+
+		python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/acceptRA=false"
+		if [ -n "$acceptra" ] ; then
+			if [ "$acceptra" = "true" ] ; then
+				python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/acceptRA=$acceptra"
+				sysctl -w "net.ipv6.conf.${network_device}.accept_ra=1"
+			else
+				sysctl -w "net.ipv6.conf.${network_device}.accept_ra=0"
+			fi
+		fi
+		ip link set "$network_device" up
+	done
+
 	# set IPv6 address
     set | egrep "${ifaceregex}ip6=" | while read line; do
 
@@ -122,17 +144,6 @@ for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
 
     	address="$(echo $line | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g")"
 		prefix="$(set | egrep "^${network_device}_prefix6=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g")"
-		acceptra="$(set | egrep "^${network_device}_acceptra=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g")"
-
-		python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/acceptRA=false"
-		if [ -n "$acceptra" ] ; then
-			if [ "$acceptra" = "true" ] ; then
-				python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/acceptRA=$acceptra"
-				sysctl -w "net.ipv6.conf.${network_device}.accept_ra=1"
-			else
-				sysctl -w "net.ipv6.conf.${network_device}.accept_ra=0"
-			fi
-		fi
 
     	if [ -n "$address" -a -n "$prefix" ] ; then
 			python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/base/address=$address" "interfaces/$network_device/ipv6/base/prefix=$prefix"
