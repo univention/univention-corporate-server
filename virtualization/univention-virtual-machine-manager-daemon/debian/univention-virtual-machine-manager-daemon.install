@@ -1,7 +1,7 @@
-src/uvmmd.ini etc
+src/uvmmd.ini etc/univention
 TightVncViewer.jar var/www
 src/univention-virtual-machine-manager-daemon src/univention-virtual-machine-manager usr/sbin
 uvmmd-check.sh usr/lib/univention-virtual-machine-manager-daemon
 uvmmd-nodes.py uvmmd-ldap.py usr/lib/univention-directory-listener/system
 44univention-virtual-machine-manager-daemon.inst usr/lib/univention-install
-conffiles/etc/runit etc/
+conffiles/etc/runit/ etc/

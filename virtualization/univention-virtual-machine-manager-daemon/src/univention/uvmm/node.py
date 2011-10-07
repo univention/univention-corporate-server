@@ -770,7 +770,7 @@ class Node(PersistentCached):
 		return os.path.join(self.cache_dir, uri_encode(uri) + suffix)
 
 	def domain_list( self ):
-		return map( lambda dom: ( dom.pd.uuid, dom.pd.name ), self.domains )
+		return map( lambda dom: ( self.domains[ dom ].pd.uuid, self.domains[ dom ].pd.name ), self.domains )
 
 	def cache_dom_dir(self, uri=None):
 		"""Return the path of the domain cache directory of the node."""
@@ -1315,6 +1315,12 @@ def domain_list( uri ):
 	"""Returns a list of domains. For each domain a tuple with UUID and name is add to the list."""
 	node = node_query(uri)
 	return node.domain_list()
+
+def domain_info( uri, domain ):
+	"""Return detailed information of a domain."""
+
+	node = node_query( uri )
+	return node.domains[ domain ].pd
 
 def domain_state(uri, domain, state):
 	"""Change running state of domain on node and wait for updated state."""

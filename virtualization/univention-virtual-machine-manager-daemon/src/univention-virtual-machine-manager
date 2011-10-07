@@ -331,6 +331,16 @@ class Client(object):
 		"""
 		return protocol.Request_DOMAIN_LIST( uri = uri )
 
+	def domain_info( self, uri, domain ):
+		"""
+		%prog domain <uri> <domain>
+
+		Return detailed information about a domain
+		Examples:
+			%prog domain_info xen://server.domain.name/ a0087e58-92db-6457-679a-ed81a43defcb
+		"""
+		return protocol.Request_DOMAIN_INFO( uri = uri, domain = domain )
+
 	def state(self, uri, domain, state):
 		"""
 		%prog state <uri> <domain> <state>

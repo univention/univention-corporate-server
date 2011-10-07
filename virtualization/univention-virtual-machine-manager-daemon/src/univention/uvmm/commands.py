@@ -158,6 +158,23 @@ class _Commands:
 			raise CommandError('DOMAIN_DEFINE', e)
 
 	@staticmethod
+	def DOMAIN_INFO( server, request ):
+		"""Return detailed information about a domain."""
+		if not isinstance( request.uri, basestring ):
+			raise CommandError( 'DOMAIN_INFO', _( 'uri != string: %(uri)s' ), uri = request.uri )
+		if not isinstance( request.domain, basestring ):
+			raise CommandError( 'DOMAIN_INFO', _( 'domain != string: %(domain)s' ), domain = request.domain )
+
+		logger.debug('DOMAIN_INFO %s %s' % ( request.uri, request.domain ) )
+		try:
+			domain_info = node.domain_info( request.uri, request.domain )
+			res = protocol.Response_DUMP()
+			res.data = domain_info
+			return res
+		except node.NodeError, e:
+			raise CommandError('DOMAIN_INFO', e)
+
+	@staticmethod
 	def DOMAIN_DEFINE(server, request):
 		"""Define new domain on node."""
 		if not isinstance(request.uri, basestring):

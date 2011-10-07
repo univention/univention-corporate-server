@@ -132,6 +132,12 @@ class Request_DOMAIN_LIST(Request):
 	def _default(self):
 		self.command = 'DOMAIN_LIST'
 		self.uri = None
+class Request_DOMAIN_INFO(Request):
+	"""Detailed information of a domain."""
+	def _default(self):
+		self.command = 'DOMAIN_INFO'
+		self.uri = None
+		self.domain = None
 class Request_DOMAIN_DEFINE(Request):
 	"""Define new or replace old domain."""
 	def _default(self):
