@@ -124,7 +124,7 @@ def group_members(name='Domain Users', uniqueMember=None, memberUid=None):
 	try:
 		r_type, r_data = access.lo.lo.modify_s(dn, ml)
 	except ldap.NO_SUCH_ATTRIBUTE, e:
-		print >>sys.err, e
+		print >>sys.stderr, e
 	return dn
 
 def create():
