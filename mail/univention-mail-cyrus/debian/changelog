@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.16-1) unstable; urgency=low
+
+  * create a proper sieve script (Bug #23741) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Oct 2011 16:23:36 +0200
+
 univention-mail-cyrus (4.0.15-1) unstable; urgency=low
 
   * fixed pexpect in usr/sbin/univention-cyrus-* scripts (Bug #23560) 
