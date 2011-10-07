@@ -367,12 +367,12 @@ class DriveCommands( object ):
 		ud.debug(ud.ADMIN, ud.INFO, 'UVMM.drive_media_change(%(target_dev)s of domain %(domain)s on node %(node)s; action=%(action)s)' % ddict(request.options))
 
 		# user cancelled the wizard
+		action = request.options.get('action')
 		if action == 'cancel':
 			self.media_wizard.reset()
 			del request.options['action']
 			return self.uvmm_domain_overview(request)
 
-		action = request.options.get('action')
 		try:
 			node_uri, node_name = self.uvmm.node_uri_name(object.options['node'])
 			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, domain_name)

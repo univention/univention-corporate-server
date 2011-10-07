@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.334-1) unstable; urgency=low
+
+  * Fix undefines 'action' variable (Bug #23934)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 07 Oct 2011 09:17:46 +0200
+
 univention-virtual-machine-manager-daemon (0.9.333-7) unstable; urgency=low
 
   * Revert last commit and fix real problem (Ticket#: 2011092810002962)
