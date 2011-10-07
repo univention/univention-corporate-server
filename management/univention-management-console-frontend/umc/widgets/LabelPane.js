@@ -41,10 +41,13 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 		if (null === this.label) {
 			this.label = this.content.label || '';
 		}
-		// register watch handler for label changes
+		// register watch handler for label and visibility changes
 		if (dojo.getObject('content.watch', false, this)) {
 			this.content.watch('label', dojo.hitch(this, function(attr, oldVal, newVal) {
 				this.set('label', newVal || '');
+			}));
+			this.content.watch('visible', dojo.hitch(this, function(attr, oldVal, newVal) {
+				dojo.toggleClass(this.domNode, 'dijitHidden', !newVal);
 			}));
 		}
 		else if (!dojo.isString(this.label)) {

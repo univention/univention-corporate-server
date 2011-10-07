@@ -214,27 +214,11 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 						// add show and hide function to widget
 						dojo.mixin( widget, {
 							visible: true,
-							_setVisibleAttr: function( /* Bool*/ visible ) {
-								var parent = dijit.getEnclosingWidget( this.domNode.parentNode );
-								if ( !parent ) {
-									console.log( 'Could not find parent widget for ' + this );
-									return;
-								}
-								dojo.toggleClass( parent.domNode, 'dijitHidden', ! visible );
-							},
-							_getVisibleAttr: function() {
-								var parent = dijit.getEnclosingWidget( this.domNode.parentNode );
-								if ( !parent ) {
-									console.log( 'Could not find parent widget for ' + this );
-									return;
-								}
-								return ! dojo.hasClass( parent.domNode, 'dijitHidden' );
-							},
 							show: function() {
-								this._setVisibleAttr( true );
+								this.set( 'visible', true );
 							},
 							hide: function() {
-								this._setVisibleAttr( false );
+								this.set( 'visible', false );
 							},
 							$refLabel$: label
 						} );

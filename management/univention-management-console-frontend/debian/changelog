@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.84-1) unstable; urgency=low
+
+  * made LabelPane watch visibility changes of its assigned form widget
+    (Bug #23881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Oct 2011 18:07:03 +0200
+
 univention-management-console-frontend (1.0.83-2) unstable; urgency=low
 
   * changed internal variables from _order, _isRendered to $order$,
@@ -7,8 +14,8 @@ univention-management-console-frontend (1.0.83-2) unstable; urgency=low
 
 univention-management-console-frontend (1.0.83-1) unstable; urgency=low
 
-  * a reference to the corresponding Label widget is now added to each rendered
-    widget ($labelRef$) (Bug #23779)
+  * a reference to the corresponding LabelPane widget is now added to each
+    rendered widget ($labelRef$) (Bug #23779)
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Oct 2011 16:50:51 +0200
 
