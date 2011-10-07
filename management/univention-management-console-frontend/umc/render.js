@@ -102,12 +102,12 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 
 		// render all buttons
 		var buttons = {
-			_order: [] // internal field to store the correct order of the buttons
+			$order$: [] // internal field to store the correct order of the buttons
 		};
 		dojo.forEach(buttonsConf, function(i) {
 			var btn = this.button(i);
 			buttons[i.name] = btn;
-			buttons._order.push(btn);
+			buttons.$order$.push(btn);
 		}, this);
 
 		// return buttons
@@ -194,7 +194,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 					// make sure the widget/button has not been already rendered
 					var widget = widgets ? widgets[jel] : null;
 					var button = buttons ? buttons[jel] : null;
-					if ((widget && widget._isRendered) || (button && button._isRendered)) {
+					if ((widget && widget.$isRendered$) || (button && button.$isRendered$)) {
 						console.log(dojo.replace("WARNING in umc.render.layout: The widget '{0}' has been referenced more than once in the layout. Ignoring error.", [jel]));
 						return true;
 					}
@@ -202,7 +202,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 					if (widget && umc.tools.inheritsFrom(widget, 'umc.widgets.HiddenInput')) {
 						// do wrap HiddenInput field with LabelPane
 						elContainer.addChild(widget);
-						widget._isRendered = true;
+						widget.$isRendered$ = true;
 					}
 					else if (widget) {
 						// add the widget or button surrounded with a LabelPane
@@ -240,7 +240,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 						} );
 						// add to layout
 						elContainer.addChild( label );
-						widget._isRendered = true;
+						widget.$isRendered$ = true;
 					} else if (button) {
 						if (nWidgetsWithLabel) {
 							// if buttons are displayed along with widgets, we need to add a '&nbps;'
@@ -257,7 +257,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 							}
 							elContainer.addChild(button);
 						}
-						button._isRendered = true;
+						button.$isRendered$ = true;
 					}
 				}, this);
 				globalContainer.addChild(elContainer);
@@ -278,12 +278,12 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 		// add buttons if specified and if they have not been added in the layout already
 		if (buttons && 0 === iLevel) {
 			// add all buttons that have not been rendered so far to a separate container
-			// and respect their correct order (i.e., using the interal array field _order)
+			// and respect their correct order (i.e., using the interal array field $order$)
 			var buttonContainer = new umc.widgets.ContainerWidget({});
-			dojo.forEach(buttons._order, function(ibutton) {
-				if (!ibutton._isRendered) {
+			dojo.forEach(buttons.$order$, function(ibutton) {
+				if (!ibutton.$isRendered$) {
 					buttonContainer.addChild(ibutton);
-					ibutton._isRendered = true;
+					ibutton.$isRendered$ = true;
 				}
 			});
 			globalContainer.addChild(buttonContainer);

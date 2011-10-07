@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.150-1) unstable; urgency=low
+
+  * adaptations to changes in umc.render (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Oct 2011 16:59:50 +0200
+
 univention-management-console-module-udm (1.0.149-1) unstable; urgency=low
 
   * added handler to hide objectPropetyValue search form widget when all

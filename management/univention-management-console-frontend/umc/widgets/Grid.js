@@ -414,7 +414,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		this.addChild(toolBar);
 
 		// add buttons to toolbar
-		dojo.forEach(buttons._order, function(ibutton) {
+		dojo.forEach(buttons.$order$, function(ibutton) {
 			toolBar.addChild(ibutton);
 		});
 

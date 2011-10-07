@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.83-2) unstable; urgency=low
+
+  * changed internal variables from _order, _isRendered to $order$,
+    $isRendered$ in umc.render (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Oct 2011 17:00:42 +0200
+
 univention-management-console-frontend (1.0.83-1) unstable; urgency=low
 
   * a reference to the corresponding Label widget is now added to each rendered

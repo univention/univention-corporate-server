@@ -107,7 +107,7 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 			// render all buttons and add them to the footer
 			if (this.footerButtons && dojo.isArray(this.footerButtons) && this.footerButtons.length) {
 				var buttons = umc.render.buttons(this.footerButtons);
-				dojo.forEach(buttons._order, function(ibutton) {
+				dojo.forEach(buttons.$order$, function(ibutton) {
 					if ('submit' == ibutton.type || ibutton.defaultButton) {
 						footerRight.addChild(ibutton);
 					}
