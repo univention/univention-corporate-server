@@ -20,8 +20,9 @@ dojo.require("umc.tools");
 dojo.require("umc.render");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.StandbyMixin");
+dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
-dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin, umc.widgets.StandbyMixin ], {
+dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._WidgetsInWidgetsMixin, umc.i18n.Mixin, umc.widgets.StandbyMixin ], {
 	// summary:
 	//		Encapsulates a complex grid with store, UMCP commands and action buttons;
 	//		offers easy access to select items etc.
@@ -84,6 +85,9 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 	_tmpCellHeader: null,
 
 	_footerCells: null,
+
+	// ContainerWidget that holds all buttons
+	_toolBar: null,
 
 	_footer: null,
 
@@ -305,7 +309,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 					}
 
 					// by default only create a button with icon
-					return new dijit.form.DropDownButton({
+					return this.adopt(dijit.form.DropDownButton, {
 						label: this._('More...'),
 						dropDown: menu
 					});
@@ -407,16 +411,16 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.i18n.Mixin,
 		var buttons = umc.render.buttons(buttonsCfg);
 
 		// add the toolbar to the bottom of the widget
-		var toolBar = new umc.widgets.ContainerWidget({
+		this._toolBar = new umc.widgets.ContainerWidget({
 			region: 'bottom',
 			'class': 'umcGridToolBar'
 		});
-		this.addChild(toolBar);
+		this.addChild(this._toolBar);
 
 		// add buttons to toolbar
 		dojo.forEach(buttons.$order$, function(ibutton) {
-			toolBar.addChild(ibutton);
-		});
+			this._toolBar.addChild(ibutton);
+		}, this);
 
 		//
 		// create combo button for all actions

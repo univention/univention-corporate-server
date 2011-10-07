@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.85-1) unstable; urgency=low
+
+  * added removal of Grid row menus upon Grid destruction
+  * make Grid toolbar accessible from outside
+  (Bug #23881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Oct 2011 18:41:44 +0200
+
 univention-management-console-frontend (1.0.84-1) unstable; urgency=low
 
   * made LabelPane watch visibility changes of its assigned form widget
