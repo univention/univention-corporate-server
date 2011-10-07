@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.103-1) unstable; urgency=low
+
+  * settings/extended_attribute: remove unsupported layout structure; Bug #23981
+  * Tab: make advanced a writable property; Bug #23982
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 07 Oct 2011 10:36:12 +0200
+
 univention-directory-manager-modules (7.0.102-1) unstable; urgency=low
 
   * Removed set_uid_umlauts from adduser.py and adjust adduser.py to 3.0

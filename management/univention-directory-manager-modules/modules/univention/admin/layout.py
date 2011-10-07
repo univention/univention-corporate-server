@@ -63,6 +63,10 @@ class Tab( ILayoutElement ):
 	def advanced( self ):
 		return self[ 'advanced' ]
 
+	@advanced.setter
+	def advaned( self, value ):
+		self[ 'advanced' ] = value
+
 class Group( ILayoutElement ):
 	pass
 

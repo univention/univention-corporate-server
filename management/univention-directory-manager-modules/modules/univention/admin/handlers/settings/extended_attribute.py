@@ -342,11 +342,10 @@ layout = [
 		] ),
 	Tab(_('UDM Web'),_('Settings for UDM web interface'), layout = [
 		[ "tabName", "tabPosition" ],
-		[ "translationTabName", [ "overwritePosition",
-								  "fullWidth",
-								  "overwriteTab",
-								  "tabAdvanced",
-								  "addEmptyValue" ] ]
+		"translationTabName",
+		[ "overwritePosition", "fullWidth" ],
+		[ "overwriteTab", "tabAdvanced" ],
+		"addEmptyValue"
 		] ),
 	Tab(_('UDM General'),_('UDM related settings'), layout = [
 		[ "CLIName", "hook" ],
