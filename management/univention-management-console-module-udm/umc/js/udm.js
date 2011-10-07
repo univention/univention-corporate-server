@@ -509,6 +509,20 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			this._searchForm._widgets.objectType.set('visible', values.length > 1);
 		});
 
+		// hide the 'objectPropertyValue' combo box in case 'all properties' are shown
+		this.connect(this._searchForm._widgets.objectProperty, 'onChange', function(val) {
+			var labelWidget = this._searchForm._widgets.objectPropertyValue.$refLabel$;
+			if ('None' == val) {
+				// we need to set the height to 0 in order not to affect the position
+				// of the buttons... $refLabel$ is the reference to the Label widget
+				dojo.style(labelWidget.domNode, { height:0, overflow:'hidden' });
+			}
+			else {
+				// restore the height
+				dojo.style(labelWidget.domNode, { height:'auto', overflow:'visible' });
+			}
+		});
+
 		// show/hide object property filter for the navigation
 		if ('navigation' == this.moduleFlavor) {
 			this.connect(this._searchForm._widgets.objectType, 'onChange', function(val) {

@@ -510,7 +510,10 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					}
 				} );
 			}
-			this._form._widgets[ prop ].set( 'visible' , visible );
+			var iwidget = this._form.getWidget( prop );
+			if (iwidget) {
+				iwidget.set( 'visible' , visible );
+			}
 		} ) );
 
 		// hide/show title panes

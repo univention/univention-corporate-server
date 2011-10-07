@@ -1,3 +1,12 @@
+univention-management-console-module-udm (1.0.149-1) unstable; urgency=low
+
+  * added handler to hide objectPropetyValue search form widget when all
+    properties are searched for
+  * minor bug fix to avoid reference to undefined
+  (Bug #23779)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Oct 2011 16:52:27 +0200
+
 univention-management-console-module-udm (1.0.148-1) unstable; urgency=low
 
   * fixed typo in exception name; Bug #23203
