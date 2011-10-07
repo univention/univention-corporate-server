@@ -235,7 +235,8 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 							},
 							hide: function() {
 								this._setVisibleAttr( false );
-							}
+							},
+							$refLabel$: label
 						} );
 						// add to layout
 						elContainer.addChild( label );

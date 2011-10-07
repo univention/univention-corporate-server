@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.83-1) unstable; urgency=low
+
+  * a reference to the corresponding Label widget is now added to each rendered
+    widget ($labelRef$) (Bug #23779)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Oct 2011 16:50:51 +0200
+
 univention-management-console-frontend (1.0.82-1) unstable; urgency=low
 
   * extended Makefile to generate a debug.html (Bug #23827)
