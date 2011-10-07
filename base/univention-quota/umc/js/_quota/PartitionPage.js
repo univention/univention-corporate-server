@@ -120,15 +120,29 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 			isStandardAction: true,
 			isMultiAction: false,
 			callback: dojo.hitch(this, function() {
-				var user = this._grid.getSelectedItems()[0].user;
-				this.onShowDetailPage(user);
+				var userQuota = this._grid.getSelectedItems()[0];
+				this.onShowDetailPage(userQuota);
 			})
 		}, {
 			name: 'remove',
 			label: this._('Remove'),
 			iconClass: 'dijitIconDelete',
 			isStandardAction: true,
-			isMultiAction: true
+			isMultiAction: true,
+			callback: dojo.hitch(this, function() {
+				var transaction = this.moduleStore.transaction();
+				dojo.forEach(this._grid.getSelectedIDs(), function(iid) {
+					this.moduleStore.remove(iid);
+				}, this);
+				transaction.commit();
+			// 	var users = dojo.map(this._grid.getSelectedItems(), function(iitem) {
+			// 		return iitem.user;
+			// 	});
+			// 	umc.tools.umcpCommand('quota/partitions/info', {'partitionDevice': this.partitionDevice}).then(dojo.hitch(this, function(data) {
+			// 		console.log('command executed');
+			// 	}));
+			// 	console.log(users);
+			})
 		}];
 
 		var columns = [{

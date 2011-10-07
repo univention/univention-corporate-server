@@ -29,13 +29,13 @@ dojo.declare("umc.modules._quota.PageContainer", [ dijit.layout.StackContainer, 
 	renderPartitionPage: function() {
 		this._partitionPage = new umc.modules._quota.PartitionPage({
 			partitionDevice: this.partitionDevice,
-			moduleStore: umc.store.getModuleStore('id', this.moduleID + '/partitions'),
+			moduleStore: umc.store.getModuleStore('id', this.moduleID + '/users'),
 			headerText: this._('Partition: %s', this.partitionDevice),
 			helpText: this._('Set, unset and modify filesystem quota')
 		});
 		this.addChild(this._partitionPage);
-		this.connect(this._partitionPage, 'onShowDetailPage', function(user) {
-			this._detailPage.init(user);
+		this.connect(this._partitionPage, 'onShowDetailPage', function(userQuota) {
+			this._detailPage.init(userQuota);
 			this.selectChild(this._detailPage);
 		});
 	},

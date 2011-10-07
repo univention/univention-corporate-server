@@ -109,15 +109,15 @@ def repquota_parse(partition, output):
 		#info = UserQuota(partition, grp['user'], grp['bused'], grp['bsoft'],
 		#                 grp['bhard'], grp['btime'], grp['fused'],
 		#                 grp['fsoft'], grp['fhard'], grp['ftime'])
-		result.append(info)
+		result.append(grp)
 	return result
 
-def setquota(partition, user, bsoft, bhard, fsoft, fhard, callback):
-	cmd = '/usr/sbin/setquota -u %s %d %d %d %d %s' % (user, int(bsoft), int(bhard),
-	                                                   int(fsoft), int(fhard), partition)
-	proc = notifier.popen.RunIt(cmd)
-	proc.signal_connect('finished', callback)
-	proc.start()
+def setquota(partition, user, bsoft, bhard, fsoft, fhard):
+	cmd = ('/usr/sbin/setquota', '-u', user, str(bsoft), str(bhard),
+	       str(fsoft), str(fhard), partition)
+	MODULE.error(str(cmd))
+	result = subprocess.call(cmd)
+	return result
 
 def activate_quota(partition, activate, callback):
 	if not isinstance(partition, list):
@@ -197,19 +197,5 @@ def block2byte(size, block_size = 1024):
 	return '%.1f%s' % (size, _units[unit])
 
 def byte2block(size, block_size = 1024):
-	global _units, _size_regex
-
-	match = _size_regex.match(size)
-	if not match:
-		return ''
-
-	grp = match.groupdict()
-
-	size = float(grp['size'])
-	factor = 0
-	if grp.has_key('unit') and grp['unit'] in _units:
-		while _units[factor] != grp['unit']:
-			factor +=1
-	size = size * math.pow(1024, factor)
-
+	size = float(size) * math.pow(1024, 2)
 	return long(size / float(block_size))

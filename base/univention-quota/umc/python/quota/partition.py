@@ -38,6 +38,7 @@ from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 import univention.management.console as umc
 
+import df
 import fstab
 import mtab
 import tools
@@ -45,7 +46,40 @@ import tools
 _ = umc.Translation('univention-management-console-module-quota').translate
 
 class Commands(object):
-	def quota_partition_info(self, request):
+	def getPartitions(self, request):
+		result = []
+		resultMessage = ''
+		try:
+			fs = fstab.File()
+			mt = mtab.File()
+		except IOError as error:
+			MODULE.error('Could not open {0}'.format(error.filename))
+			resultMessage = _('Could not open {0}'.format(error.filename))
+			request.status = MODULE_ERR
+		else:
+			partitions = fs.get(['xfs', 'ext3', 'ext2'], False) # TODO ext4?
+			for partition in partitions:
+				listEntry = {}
+				if partition.uuid:
+					listEntry['partitionDevice'] = partition.uuid
+				else:
+					listEntry['partitionDevice'] = partition.spec
+				listEntry['mountPoint'] = partition.mount_point
+				listEntry['partitionSize'] = '-'
+				listEntry['freeSpace'] = '-'
+				listEntry['inUse'] = _('Deactivated')
+				mountedPartition = mt.get(partition.spec) # TODO rename?
+				if mountedPartition:
+					infoPartition = df.DeviceInfo(partition.mount_point) # TODO rename?
+					listEntry['partitionSize'] = tools.block2byte(infoPartition.size(), 1)
+					listEntry['freeSpace'] = tools.block2byte(infoPartition.free(), 1)
+					if 'usrquota' in mountedPartition.options:
+						listEntry['inUse'] = _('Activated')
+				result.append(listEntry)
+			request.status = SUCCESS
+		self.finished(request.id, result, resultMessage)
+
+	def getPartitionInfo(self, request):
 		message = ''
 		fs = fstab.File()
 		mt = mtab.File()
@@ -60,56 +94,16 @@ class Commands(object):
 		else:
 			request.status = MODULE_ERR
 		self.finished(request.id, result, message)
-	def quota_partition_show(self, request):
-		message = ''
-		fs = fstab.File()
-		mt = mtab.File()
-		part = fs.find(spec = request.options['partitionDevice'])
-		mounted = mt.get(part.spec)
-		if mounted and 'usrquota' in mounted.options:
-			cb = notifier.Callback(self._quota_partition_show, request.id,
-			                       request.options['partitionDevice'], request)
-			tools.repquota(request.options['partitionDevice'], cb)
-		else:
-			request.status = MODULE_ERR
-			MODULE.error('partition is not mounted') # TODO
-			self.finished(request.id, message)
 
-	def _quota_partition_show(self, pid, status, result, id, partition,
-	                          request):
-		'''This function is invoked when a repquota process has died and
-		there is output to parse that is restructured as UMC Dialog'''
-
-		# general information
-		devs = fstab.File()
-		part = devs.find(spec = partition)
-
-		# skip header
-		try:
-			header = 0
-			while not result[header].startswith('----'):
-				header += 1
-		except:
-			pass
-		quotas = tools.repquota_parse(partition, result[header + 1 :])
-		erg = []
-		for listEntry in quotas:
-			if fnmatch(listEntry['user'], request.options['filter']):
-				erg.append(listEntry)
-
-		request.status = SUCCESS
-		self.finished(id, erg)
-		#self.finished(id, (part, quotas))
-
-	def quota_partition_activate(self, request):
-		cb = notifier.Callback(self._quota_partition_activate, request)
+	def activatePartitions(self, request):
+		cb = notifier.Callback(self._activatePartitions, request)
 		tools.activate_quota(request.options['partitions'], True, cb)
 
-	def quota_partition_deactivate(self, request):
-		cb = notifier.Callback(self._quota_partition_activate, request)
+	def deactivatePartitions(self, request):
+		cb = notifier.Callback(self._activatePartitions, request)
 		tools.activate_quota(request.options['partitions'], False, cb)
 
-	def _quota_partition_activate(self, thread, cbResult, request):
+	def _activatePartitions(self, thread, cbResult, request):
 		result = []
 		failed = False
 		for partitionDevice, partitionInfo in cbResult.items():

@@ -6,26 +6,27 @@
 	<categories>
 		<category name="system"/>
 	</categories>
-	<command name="quota/query" function="quota_list">
-		<return syntax="Dictionary"/> <!-- TODO -->
-	</command>
-	<command name="quota/partitions/query" function="quota_partition_show">
+	<command name="quota/partitions/query" function="getPartitions">
 		<attribute name="partitions" syntax="Dictionary"/>
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/partitions/info" function="quota_partition_info">
+	<command name="quota/partitions/info" function="getPartitionInfo">
 		<attribute name="partitions" syntax="Dictionary"/>
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/partitions/activate" function="quota_partition_activate">
+	<command name="quota/partitions/activate" function="activatePartitions">
 		<attribute name="partitions" syntax="Dictionary"/>
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/partitions/deactivate" function="quota_partition_deactivate">
+	<command name="quota/partitions/deactivate" function="deactivatePartitions">
 		<attribute name="partitions" syntax="Dictionary"/>
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/users/set" function="quota_user_set">
+	<command name="quota/users/query" function="getUsers">
+		<attribute name="partitions" syntax="Dictionary"/>
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="quota/users/set" function="setUser">
 		<attribute name="user" syntax="Quota-User"/>
 		<attribute name="partition" syntax="Quota-Partition"/>
 		<attribute name="block_soft" syntax="Quota-Block-Soft"/>
@@ -34,12 +35,7 @@
 		<attribute name="file_hard" syntax="Quota-File-Hard"/>
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/users/remove" function="quota_user_remove">
-		<attribute name="user" syntax="Quota-User"/>
-		<attribute name="partition" syntax="Quota-Partition"/>
-		<return syntax="Dictionary"/>
-	</command>
-	<command name="quota/users/show" function="quota_user_show">
+	<command name="quota/users/remove" function="removeUsers">
 		<attribute name="user" syntax="Quota-User"/>
 		<attribute name="partition" syntax="Quota-Partition"/>
 		<return syntax="Dictionary"/>

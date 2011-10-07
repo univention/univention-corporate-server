@@ -3,6 +3,7 @@
 dojo.provide("umc.modules.quota");
 
 dojo.require("umc.i18n");
+dojo.require("umc.store");
 dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.TabbedModule");
@@ -19,6 +20,11 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 	buildRendering: function() {
 		this.inherited(arguments);
 		this.renderOverviewPage();
+	},
+
+	postMixInProperties: function() {
+		this.inherited(arguments);
+		this.moduleStore = umc.store.getModuleStore(this.idProperty, this.moduleID + '/partitions');
 	},
 
 	renderOverviewPage: function() {

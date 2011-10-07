@@ -36,7 +36,7 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 		}, {
 			name: 'submit',
 			label: this._('Save changes'),
-			callback: dojo.hitch(this, 'onClosePage')
+			callback: dojo.hitch(this, 'onSetQuota')
 		}];
 	},
 
@@ -53,7 +53,9 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 		}, {
 			type: 'TextBox',
 			name: 'partitionDevice',
-			label: this._('Partition')
+			label: this._('Partition'),
+			value: this.partitionDevice,
+			disabled: true
 		}, {
 			type: 'NumberSpinner',
 			name: 'sizeLimitSoft',
@@ -106,32 +108,23 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 		return true;
 	},
 
-	init: function(user) {
-		var options = {
-			'partitionDevice': this.partitionDevice,
-			'user': user
-		};
-		umc.tools.umcpCommand('quota/users/show', options).then(dojo.hitch(this, function(data) {
-			console.log(data.result);
-			this._form.setFormValues(data.result);
+	onSetQuota: function() {
+		var values = this._form.gatherFormValues();
+		console.log(values);
+		umc.tools.umcpCommand('quota/users/set', values).then(dojo.hitch(this, function(data) {
+			console.log("Durchgeführt");
 		}));
-		// this._form.getWidget('partitionDevice').setValue(data.partitionDevice);
-		// this._form.getWidget('partitionDevice').set('disabled', true);
-		// if (data.userData) {
-		// 	this._form.getWidget('user').setValue(data.userData[0].user);
-		// 	this._form.getWidget('user').set('disabled', true);
-		// 	this._form.getWidget('sizeLimitSoft').setValue(data.userData[0].sizeLimitSoft);
-		// 	this._form.getWidget('sizeLimitHard').setValue(data.userData[0].sizeLimitHard);
-		// 	this._form.getWidget('fileLimitSoft').setValue(data.userData[0].fileLimitSoft);
-		// 	this._form.getWidget('fileLimitHard').setValue(data.userData[0].fileLimitHard);
-		// }
-		// else {
-		// 	this._form.getWidget('user').setValue('');
-		// 	this._form.getWidget('user').set('disabled', false);
-		// 	this._form.getWidget('sizeLimitSoft').setValue('0');
-		// 	this._form.getWidget('sizeLimitHard').setValue('0');
-		// 	this._form.getWidget('fileLimitSoft').setValue('0');
-		// 	this._form.getWidget('fileLimitHard').setValue('0');
-		// }
+	},
+
+	init: function(userQuota) {
+		if (userQuota) {
+			this._form.setFormValues(userQuota);
+			this._form.getWidget('user').set('disabled', true);
+		}
+		else {
+			this._form.clearFormValues();
+			this._form.getWidget('user').set('disabled', false);
+		}
+		this._form.getWidget('partitionDevice').setValue(this.partitionDevice);
 	}
 });

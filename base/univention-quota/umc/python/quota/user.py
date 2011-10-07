@@ -31,79 +31,123 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from fnmatch import fnmatch
 import notifier
-
-import tools
-import fstab
+import notifier.threads
 
 import univention.management.console as umc
+from univention.management.console.log import MODULE
+from univention.management.console.protocol.definitions import *
+
+import fstab
+import mtab
+import tools
 
 _ = umc.Translation('univention-management-console-module-quota').translate
 
 class Commands(object):
-	def quota_user_show(self, request):
-		if request.options.get('partitionDevice', 'user'):
-			tools.repquota(request.options['partitionDevice'],
-			               notifier.Callback(self._quota_user_show, request),
-			               request.options['user'])
-		else:
-			self._quota_user_show(0, 0, None, request)
+	def getUsers(self, request):
+		resultMessage = ''
 
-	def _quota_user_show(self, pid, status, result, request):
+		fs = fstab.File()
+		mt = mtab.File()
+		part = fs.find(spec = request.options['partitionDevice'])
+		mounted = mt.get(part.spec)
+		if mounted and 'usrquota' in mounted.options:
+			cb = notifier.Callback(self._getUsers, request.id,
+			                       request.options['partitionDevice'], request)
+			tools.repquota(request.options['partitionDevice'], cb)
+		else:
+			request.status = MODULE_ERR
+			MODULE.error('partition is not mounted') # TODO
+			self.finished(request.id, resultMessage)
+
+	def _getUsers(self, pid, status, result, id, partition,
+	                          request):
+		'''This function is invoked when a repquota process has died and
+		there is output to parse that is restructured as UMC Dialog'''
+		# general information
 		devs = fstab.File()
+		part = devs.find(spec = partition)
 
-		# check user and partition option for existance
-		username = None
-		if request.options.get('user') and request.options['user']:
-			username = request.options['user']
-		device = None
-		if request.options.get('partitionDevice') and request.options['partitionDevice']:
-			device = devs.find(spec = request.options['partitionDevice'])
+		# skip header
+		try:
+			header = 0
+			while not result[header].startswith('----'):
+				header += 1
+		except:
+			pass
+		quotas = tools.repquota_parse(partition, result[header + 1 :])
+		MODULE.error(str(quotas))
+		erg = []
+		for listEntry in quotas:
+			if fnmatch(listEntry['user'], request.options['filter']):
+				erg.append(listEntry)
+		request.status = SUCCESS
+		self.finished(id, erg)
 
-		# quota options
-		result = tools.repquota_parse(device, result)
-		if not result:
-			user_quota = tools.UserQuota(device, username, '0', '0', '0', None,
-			                            '0', '0', '0', None)
-		else:
-			user_quota = result[0]
+	def setUser(self, request):
+		def _thread(request):
+			result = tools.setquota(request.options['partitionDevice'], request.options['user'],
+						   tools.byte2block(request.options['sizeLimitSoft']),
+						   tools.byte2block(request.options['sizeLimitHard']),
+						   request.options['fileLimitSoft'], request.options['fileLimitHard'])
+			MODULE.error(str(result))
+			return result
+		MODULE.error('setUser')
+		thread = notifier.threads.Simple('Set', notifier.Callback(_thread, request),
+		                                 notifier.Callback(self._setUser, request))
+		thread.run()
 
-		self.finished(request.id, user_quota)
-
-	def quota_user_set(self, request):
-		tools.setquota(request.options['partitionDevice'], request.options['user'],
-		               tools.byte2block(request.options['block_soft']),
-		               tools.byte2block(request.options['block_hard']),
-		               request.options['file_soft'], request.options['file_hard'],
-		               notifier.Callback(self._quota_user_set, request))
-
-	def _quota_user_set(self, pid, status, result, request):
-		if not status:
-			text = _('Successfully set quota settings')
-			self.finished(request.id, [], report = text, success = True)
-		else:
-			text = _('Failed to modify quota settings for user %(user)s on partition %(partitionDevice)s') % \
-			         request.options
-			self.finished(request.id, [], report = text, success = False)
-
-	def quota_user_remove(self, request):
-		if request.options['user']:
-			user = request.options['user'].pop(0)
-			tools.setquota(request.options['partitionDevice'], user, 0, 0, 0, 0,
-			               notifier.Callback(self._quota_user_remove, request))
-		else:
+	def _setUser(self, thread, result, request):
+		if not isinstance(result, BaseException):
+			request.status = SUCCESS
 			self.finished(request.id, [])
-
-	def _quota_user_remove(self, pid, status, result, request):
-		if not status:
-			if request.options['user']:
-				user = request.options['user'].pop(0)
-				tools.setquota(request.options['partitionDevice'], user,
-				               0, 0, 0, 0, notifier.Callback(self._quota_user_remove, request))
-				return
-			text = _('Successfully removed quota settings')
-			self.finished(request.id, [], report = text, success = True)
 		else:
-			text = _('Failed to remove quota settings for user %(user)s on partition %(partitionDevice)s') % \
-			         request.options
-			self.finished(request.id, [], report = text, success = False)
+			msg = str( result ) + '\n' + '\n'.join( thread.trace )
+			MODULE.error( 'An internal error occurred: %s' % msg )
+			self.finished( request.id, None, msg, False )
+		# if not result:
+		# 	text = _('Successfully set quota settings')
+		# 	self.finished(request.id, [], report = text, success = True)
+		# else:
+		# 	text = _('Failed to modify quota settings for user %(user)s on partition %(partitionDevice)s') % \
+		# 	         request.options
+		# 	self.finished(request.id, [], report = text, success = False)
+
+	def removeUsers(self, request):
+		def _thread(request):
+			failed = []
+			for userID in request.options: # TODO rename userID
+				(user, partitionDevice) = userID.split('@')
+				success = tools.setquota(partitionDevice, user, '0', '0', '0', '0')
+				MODULE.error(str(success))
+				if not success:
+					failed.append((user, partitionDevice))
+			return failed
+
+		thread = notifier.threads.Simple('Remove', notifier.Callback(_thread, request),
+		                                 notifier.Callback(self._removeUsers, request))
+		thread.run()
+
+	def _removeUsers(self, thread, result, request):
+		if not isinstance(result, BaseException):
+			request.status = SUCCESS
+			self.finished(request.id, result)
+		else:
+			msg = str( result ) + '\n' + '\n'.join( thread.trace )
+			MODULE.error( 'An internal error occurred: %s' % msg )
+			request.status = MODULE_ERR
+			self.finished( request.id, None, msg, False )
+		# if not status:
+		# 	if request.options['user']:
+		# 		user = request.options['user'].pop(0)
+		# 		tools.setquota(request.options['partitionDevice'], user,
+		# 		               0, 0, 0, 0, notifier.Callback(self._removeUsers, request))
+		# 		return
+		# 	text = _('Successfully removed quota settings')
+		# 	self.finished(request.id, [], report = text, success = True)
+		# else:
+		# 	text = _('Failed to remove quota settings for user %(user)s on partition %(partitionDevice)s') % \
+		# 	         request.options
+		# 	self.finished(request.id, [], report = text, success = False)
