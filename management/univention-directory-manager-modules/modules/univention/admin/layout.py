@@ -64,7 +64,7 @@ class Tab( ILayoutElement ):
 		return self[ 'advanced' ]
 
 	@advanced.setter
-	def advaned( self, value ):
+	def advanced( self, value ):
 		self[ 'advanced' ] = value
 
 class Group( ILayoutElement ):
