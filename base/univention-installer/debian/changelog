@@ -1,3 +1,13 @@
+univention-installer (7.0.96-1) unstable; urgency=low
+
+  * always set acceptra and start interface (Bug #22872)
+  * fixed title of additional DNS server (Bug #22872)
+  * reset IPv4/IPv6 values if protocol gets deactivated (Bug #22872)
+  * limit text length to avoid exceptions (Bug #22872)
+  * on basesystem ask for external DNS server (Bug #22872)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 07 Oct 2011 15:26:43 +0200
+
 univention-installer (7.0.95-1) unstable; urgency=low
 
   * check if at least one partition is bootable (Bug #19226)
