@@ -514,7 +514,7 @@ class object(content):
 
 		offsetGy += 1
 		# True, if system role is domaincontroller or system is an OX system
-		self.ask_domainnameserver = ( self.all_results.get('system_role') not in ['domaincontroller_master'] ) or self.is_ox
+		self.ask_domainnameserver = ( self.all_results.get('system_role') not in ['domaincontroller_master', 'basesystem'] ) or self.is_ox
 		self.debug('ask_domainnameserver=%s  (%s, %s)' % (self.ask_domainnameserver, self.all_results.get('system_role'), self.is_ox))
 		if self.ask_domainnameserver:
 			offsetGy += 1
@@ -525,7 +525,7 @@ class object(content):
 			self.add_elem('BTN_MORE_NAMESERVER', button(_('More'), offsetGy, offsetGx+22+LEN_IPv6_ADDR+4))
 
 		# True, if system role is domaincontroller or system is an OX system
-		self.ask_forwarder = ( self.all_results.get('system_role') in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'] ) and not self.is_ox
+		self.ask_forwarder = ( self.all_results.get('system_role') in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'basesystem'] ) and not self.is_ox
 		self.debug('ask_forwarder=%s  (%s, %s)' % (self.ask_forwarder, self.all_results.get('system_role'), self.is_ox))
 		if self.ask_forwarder:
 			offsetGy += 1
