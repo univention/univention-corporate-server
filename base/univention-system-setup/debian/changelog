@@ -1,3 +1,9 @@
+univention-system-setup (5.0.7-1) unstable; urgency=low
+
+  * fixed reference to proxy/http in net/18proxy (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Oct 2011 15:44:25 +0200
+
 univention-system-setup (5.0.6-1) unstable; urgency=low
 
   * use port 7389 as default for ldap/server/port (Bug #23231)

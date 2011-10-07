@@ -37,13 +37,13 @@ if [ "$check_ldap_access" = "1" ]; then
 	exit 0
 fi
 
-is_variable_set "proxy_http"
+is_variable_set "proxy/http"
 if [ $? = 0 ]; then
 	continue
 fi
 
-old_proxy=$(univention-config-registry get proxy_http)
-var=`get_profile_var proxy_http`
+old_proxy=$(univention-config-registry get proxy/http)
+var=`get_profile_var proxy/http`
 
 if [ -z "$var" ]; then
 	univention-config-registry unset proxy/http
