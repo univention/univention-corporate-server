@@ -9,14 +9,20 @@
 #define COMMAND "/usr/share/pyshared/univention/lib/getMailFromMailOrUid.py"
 
 
-int main ( int argc, char ** argv, char ** envp )
-{
-    if (argc >= 2) {
-        char *cmd[1024] = {COMMAND,argv[1],NULL}; 
-        uid_t uid = getuid();
-        if( setuid(geteuid()) ) perror( "setuid" );
-        execvp(COMMAND,cmd);
-        setuid(uid);
-        exit(1);
-    }
+int main ( int argc, char ** argv, char ** envp ) {
+
+	if (argc >= 2) {
+		int status = 0;
+		int i = 0;
+		uid_t uid = getuid();
+
+		if( setgid(getegid()) ) perror( "setgid" );
+		if( setuid(geteuid()) ) perror( "setuid" );
+		execle(COMMAND, COMMAND, argv[1], (char *)0, (char *)0);
+		setuid(uid);
+		exit(1);
+	}
+
+	exit(0);
+
 }

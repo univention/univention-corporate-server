@@ -1,3 +1,12 @@
+univention-horde4 (1.0.9-1) unstable; urgency=low
+
+  * fixed suid wrapper
+  * set auth admin to empty string in univention-horde4-configuration
+  * added registry.d/10-ucs.php to disable some apps (Bug #23933)
+  * set default page to imp in registry.d/10-ucs.php (Bug #23935)
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Oct 2011 13:09:20 +0200
+
 univention-horde4 (1.0.8-1) unstable; urgency=low
 
   * convert uid to mail in /etc/horde4/imp/hooks.php:preauthenticate()

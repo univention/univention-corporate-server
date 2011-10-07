@@ -41,6 +41,7 @@ setVar("$conf['auth']['driver']", "horde/auth/driver")
 # misc
 setVar("$conf['auth']['admins']", "horde/auth/admins")
 setVar("$conf['testdisable']", "horde/testdisable")
+setVar("$conf['problems']['email']", "horde/problems/mail")
 
 # logging
 setVar("$conf['log']['enabled']", "horde/log/enabled")

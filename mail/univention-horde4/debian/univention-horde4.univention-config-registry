@@ -53,3 +53,15 @@ Variables: horde/.*
 
 Type: file
 File: etc/horde4/imp/hooks.php
+
+Type: file
+File: etc/horde4/horde/registry.d/10-ucs.php
+User: www-data
+Mode: 640
+Variables: horde/.*
+
+Type: file
+File: etc/horde4/imp/conf.d/10-ucs.php
+User: www-data
+Mode: 640
+Variables: horde/.*

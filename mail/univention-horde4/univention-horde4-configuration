@@ -32,11 +32,6 @@
  *  <http://www.gnu.org/licenses/>.
  */
 
-if (! isset($argv[1])) {
-	echo "usage: $argv[0] email-address\n";
-	exit(1);
-}
-
 // Enable error reporting.
 $error_level = E_ALL & ~E_STRICT;
 if (defined('E_DEPRECATED')) {
@@ -65,7 +60,7 @@ $bundle->migrateDb();
 $bundle->writeAllConfigs();
 $vars = new Horde_Variables();
 new Horde_Config_Form($vars, 'horde', true);
-$vars->auth__admins = $argv[1];
+$vars->auth__admins = "";
 $vars->auth__driver = "application";
 $bundle->writeConfig($vars);
 
