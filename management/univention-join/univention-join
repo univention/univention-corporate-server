@@ -36,6 +36,8 @@ export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
 
 eval "$(univention-config-registry shell)"
 
+. /usr/share/univention-lib/all.sh
+
 TYPE=
 REMOVE_PWD_FILE=""
 
@@ -326,20 +328,8 @@ else
 fi
 
 # Search for the standard IP:
-IP=""
-if [ -n "$interfaces_eth0_address" ]; then
-	IP="$interfaces_eth0_address"
-	NETMASK="$interfaces_eth0_netmask"
-elif [ -n "$interfaces_eth1_address" ]; then
-	IP="$interfaces_eth1_address"
-	NETMASK="$interfaces_eth1_netmask"
-elif [ -n "$interfaces_eth2_address" ]; then
-	IP="$interfaces_eth2_address"
-	NETMASK="$interfaces_eth2_netmask"
-elif [ -n "$interfaces_eth3_address" ]; then
-	IP="$interfaces_eth3_address"
-	NETMASK="$interfaces_eth3_netmask"
-fi
+IP="$(get_default_ip_address)"
+NETMASK="$(get_default_netmask)"
 
 if [ -n "$server_role" ]; then
 	if [ -n "$IP" ]; then

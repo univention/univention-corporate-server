@@ -1,3 +1,9 @@
+univention-join (4.0.17-1) unstable; urgency=low
+
+  * Use shell-univention-lib for address determination (Bug #10825)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Oct 2011 08:13:47 +0200
+
 univention-join (4.0.16-1) unstable; urgency=low
 
   * Removed dependency to eth0 (Bug #10825)

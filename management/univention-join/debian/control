@@ -8,7 +8,7 @@ Build-Depends: debhelper, ucslint
 Package: univention-join
 Architecture: all
 Depends: univention-config-registry,
- shell-univention-lib (>= 1.0.6),
+ shell-univention-lib (>= 1.0.22),
  univention-ssh (>= 3.0.1-2),
  tofrodos,
  ldap-utils
