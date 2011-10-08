@@ -101,3 +101,61 @@ is_domain_controller () {
 	role="$(ucr get server/role)"
 	[ "$role" = domaincontroller_master -o "$role" = domaincontroller_backup -o "$role" = domaincontroller_slave ]
 }
+
+#
+# returns the default IP address
+#
+get_default_ip_address () {
+	eval "$(/usr/sbin/univention-config-registry shell \
+					interfaces/eth0/address interfaces/eth1/address \
+					interfaces/eth2/address interfaces/eth3/address \
+					interfaces/eth0/ipv6/base/address interfaces/eth1/ipv6/base/address \
+					interfaces/eth2/ipv6/base/address interfaces/eth4/ipv6/base/address)"
+
+	if [ -n "$interfaces_eth0_address" ]; then
+		echo "$interfaces_eth0_address"
+	elif [ -n "$interfaces_eth1_address" ]; then
+		echo "$interfaces_eth1_address"
+	elif [ -n "$interfaces_eth2_address" ]; then
+		echo "$interfaces_eth2_address"
+	elif [ -n "$interfaces_eth3_address" ]; then
+		echo "$interfaces_eth3_address"
+	elif [ -n "$interfaces_eth0_ipv6_base_address" ]; then
+		echo "$interfaces_eth0_ipv6_base_address"
+	elif [ -n "$interfaces_eth1_ipv6_base_address" ]; then
+		echo "$interfaces_eth1_ipv6_base_address"
+	elif [ -n "$interfaces_eth2_ipv6_base_address" ]; then
+		echo "$interfaces_eth2_ipv6_base_address"
+	elif [ -n "$interfaces_eth3_ipv6_base_address" ]; then
+		echo "$interfaces_eth3_ipv6_base_address"
+	fi
+}
+
+#
+# returns the default netmask
+#
+get_default_netmask () {
+	eval "$(/usr/sbin/univention-config-registry shell \
+					interfaces/eth0/netmask interfaces/eth1/netmask \
+					interfaces/eth2/netmask interfaces/eth3/netmask \
+					interfaces/eth0/ipv6/base/netmask interfaces/eth1/ipv6/base/netmask \
+					interfaces/eth2/ipv6/base/netmask interfaces/eth4/ipv6/base/netmask)"
+
+	if [ -n "$interfaces_eth0_netmask" ]; then
+		echo "$interfaces_eth0_netmask"
+	elif [ -n "$interfaces_eth1_netmask" ]; then
+		echo "$interfaces_eth1_netmask"
+	elif [ -n "$interfaces_eth2_netmask" ]; then
+		echo "$interfaces_eth2_netmask"
+	elif [ -n "$interfaces_eth3_netmask" ]; then
+		echo "$interfaces_eth3_netmask"
+	elif [ -n "$interfaces_eth0_ipv6_base_netmask" ]; then
+		echo "$interfaces_eth0_ipv6_base_netmask"
+	elif [ -n "$interfaces_eth1_ipv6_base_netmask" ]; then
+		echo "$interfaces_eth1_ipv6_base_netmask"
+	elif [ -n "$interfaces_eth2_ipv6_base_netmask" ]; then
+		echo "$interfaces_eth2_ipv6_base_netmask"
+	elif [ -n "$interfaces_eth3_ipv6_base_netmask" ]; then
+		echo "$interfaces_eth3_ipv6_base_netmask"
+	fi
+}
