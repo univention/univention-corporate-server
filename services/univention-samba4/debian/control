@@ -10,7 +10,7 @@ Architecture: all
 Conflicts: samba, 
  univention-samba
 Depends: univention-config-registry,
- shell-univention-lib (>> 1.0.6),
+ shell-univention-lib (>> 1.0.22),
  python-univention (>= 6.0.9-3),
  samba4,
  samba4-clients,

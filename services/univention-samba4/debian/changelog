@@ -1,3 +1,9 @@
+univention-samba4 (1.0.57-1) unstable; urgency=low
+
+  * Removed dependency to eth0 (Bug #10825)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Oct 2011 08:17:57 +0200
+
 univention-samba4 (1.0.56-2) unstable; urgency=low
 
   * enable sysvol-sync cron-job only if samba4/sysvol/sync/cron is set

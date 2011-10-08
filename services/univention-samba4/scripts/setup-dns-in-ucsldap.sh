@@ -29,6 +29,9 @@
 
 ## parse long options from command line arguments into shell variables
 ## and store binddn and bindpwd options in "$@"
+
+. /usr/share/univention-lib/all.sh
+
 optspec="h-:"
 while getopts "$optspec" option; do
     case "${option}" in
@@ -97,6 +100,8 @@ if [ -n "$dc" ] || [ -n "$rodc" ]; then		### determine NTDS_objectGUID
 	NTDS_objectGUID=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$server_object_dn" \
 							"CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')
 fi
+
+IP=$(get_default_ip_address)
 
 if [ -n "$dc" ]; then
 	####### <Non-RODC server> #######
@@ -175,8 +180,10 @@ fi
 
 if [ -n "$gc" ]; then
 	####### <GC server> #######
-	## gc._msdcs               IN A    $interfaces_eth0_address
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-missing-zone $domainname add a gc._msdcs $interfaces_eth0_address
+	## gc._msdcs               IN A    $IP
+	if [ -n "$IP" ]; then
+		/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-missing-zone $domainname add a gc._msdcs $IP
+	fi
 
 	##_gc._tcp                IN SRV 0 100 3268       qamaster
 	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv gc tcp 0 100 3268 $hostname.$domainname.
@@ -192,8 +199,10 @@ fi
 
 if [ -n "$rogc" ]; then
 	####### <RODC GC server> #######
-	## gc._msdcs               IN A    $interfaces_eth0_address
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-missing-zone $domainname add a gc._msdcs $interfaces_eth0_address
+	## gc._msdcs               IN A    $IP
+	if [ -n "$IP" ]; then
+		/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-missing-zone $domainname add a gc._msdcs $IP
+	fi
 
 	## _gc._tcp.Default-First-Site-Name._sites IN SRV 0 100 3268       qamaster
 	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv gc._tcp.Default-First-Site-Name sites 0 100 3268 $hostname.$domainname.
