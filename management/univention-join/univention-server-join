@@ -57,6 +57,7 @@ display_help() {
 	  -hostname <hostname>:    hostname of computer system
 	  -domainname <domainname>:    domainname of computer system
 	  -ip <ip-address>:        IP address of computer system
+	  -netmask <netmask>:      Netmask of computer system
 	  -mac <mac-address>:      MAC address of computer system
 
 	  -bindaccount             UID for Univention Directory Manager (deprecated)
@@ -126,6 +127,11 @@ do
 		"-ip")
 			shift
 			IP=$1
+			shift
+			;;
+		"-netmask")
+			shift
+			NETMASK=$1
 			shift
 			;;
 		"-certs")
@@ -287,7 +293,12 @@ create_entry () {
 }
 
 if [ -n "$IP" ]; then
-	subnet=`univention-ipcalc --ip $IP --netmask $interfaces_eth0_netmask --output network --calcdns`
+	if [ -n "$NETMASK" ]; then
+		subnet=`univention-ipcalc --ip $IP --netmask $NETMASK --output network --calcdns`
+	else
+		# Fallback
+		subnet=`univention-ipcalc --ip $IP --netmask $interfaces_eth0_netmask --output network --calcdns`
+	fi
 	log 0 "	Calculated subnet = $subnet"
 
 	forwardZone=`univention-directory-manager dns/forward_zone list --filter zone=$DOMAINNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep DN | sed -e 's/DN: //g'`

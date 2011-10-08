@@ -199,7 +199,7 @@ if [ "$server_role" = "fatclient" ]; then
 	server_role="client"
 fi
 
-mac_addr=`/sbin/ifconfig  eth0 | grep HWaddr | sed -e "s|.*HWaddr ||"`
+mac_addr="$(LC_ALL=C ifconfig | sed -ne "s|.* HWaddr ||p" | head -n1)"
 if [ -n "$mac_addr" ]; then
 	mac_cmd="-mac $mac_addr"
 fi
@@ -287,20 +287,13 @@ binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
 if [ -z "$binddn" ]; then
 	# Next check is the local ldapi interface
 	binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
-		ldapsearch -x LLL -H ldapi:/// "(&(uid=$DCACCOUNT)(objectClass=person))" dn | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
+		ldapsearch -x -LLL -H ldapi:/// "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
 fi
 
 if [ -z "$binddn" ]; then
 	# Check with anonymous bind
-	ldap_result=$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
-		   "ldapsearch -x -LLL \'\(\&\(uid=$DCACCOUNT\)\(objectClass=person\)\)\' dn")
-	for i in $(echo "$ldap_result" | ldapsearch-wrapper | sed -n 's/^dn: \(.*\)/\1/p'); do
-		   if [ -n "$binddn" ]; then
-				   failed_message "binddn for user $DCACCOUNT not unique, $i and $binddn"
-		   fi
-		   binddn="$i"
-	done
-
+	binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
+		ldapsearch -x -LLL "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
 fi
 
 if [ -z "$binddn" ]; then
@@ -332,10 +325,32 @@ else
 	auth_cmd="-binddn \"$binddn\" -bindpwfile \"$DCPWD\""
 fi
 
+# Search for the standard IP:
+IP=""
+if [ -n "$interfaces_eth0_address" ]; then
+	IP="$interfaces_eth0_address"
+	NETMASK="$interfaces_eth0_netmask"
+elif [ -n "$interfaces_eth1_address" ]; then
+	IP="$interfaces_eth1_address"
+	NETMASK="$interfaces_eth1_netmask"
+elif [ -n "$interfaces_eth2_address" ]; then
+	IP="$interfaces_eth2_address"
+	NETMASK="$interfaces_eth2_netmask"
+elif [ -n "$interfaces_eth3_address" ]; then
+	IP="$interfaces_eth3_address"
+	NETMASK="$interfaces_eth3_netmask"
+fi
+
 if [ -n "$server_role" ]; then
-	if [ -n "$interfaces_eth0_address" ]; then
-		ip_cmd="-ip $interfaces_eth0_address"
+	if [ -n "$IP" ]; then
+		if [ "${master_version:0:1}" -lt 3 ]; then
+			ip_cmd="-ip $IP"
+		else
+			# Since UCS 3.0 it is possible to append the netmask
+			ip_cmd="-ip $IP -netmask $NETMASK"
+		fi
 	fi
+
 	echo -n "Join Computer Account: "
 	univention-scp "$DCPWD" "$DCPWD" "$DCACCOUNT@$DCNAME:$DCPWD" >>/var/log/univention/join.log 2>&1
 	res=`univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/share/univention-join/univention-server-join -role $server_role -hostname $hostname -domainname $domainname $ip_cmd $mac_cmd $position_cmd $auth_cmd 2>>/var/log/univention/join.log`
@@ -458,7 +473,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	echo -e "\033[60Gdone"
 
 	univention-config-registry set ldap/server/name=$hostname.$domainname >>/var/log/univention/join.log 2>&1
-	univention-config-registry set ldap/server/ip=$interfaces_eth0_address >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/server/ip=$IP >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/server/port?7389 >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/master/port?7389 >>/var/log/univention/join.log 2>&1
@@ -561,7 +576,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	echo -e "\033[60Gdone"
 
 	univention-config-registry set ldap/server/name=$hostname.$domainname >>/var/log/univention/join.log 2>&1
-	univention-config-registry set ldap/server/ip=$interfaces_eth0_address >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/server/ip=$IP >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/server/port?7389 >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/master/port?7389 >>/var/log/univention/join.log 2>&1

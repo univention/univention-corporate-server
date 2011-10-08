@@ -1,3 +1,9 @@
+univention-join (4.0.16-1) unstable; urgency=low
+
+  * Removed dependency to eth0 (Bug #10825)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Oct 2011 07:57:57 +0200
+
 univention-join (4.0.15-1) unstable; urgency=low
 
   * set ldap/server/port on all system roles (Bug #23231)
