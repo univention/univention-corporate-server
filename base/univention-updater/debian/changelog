@@ -1,3 +1,10 @@
+univention-updater (7.0.40-1) unstable; urgency=low
+
+  * Use LC_ALL=C for grep case sensitive commands in preup.sh
+    (Bug #23302)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Oct 2011 10:44:08 +0200
+
 univention-updater (7.0.29-1) unstable; urgency=low
 
   * do not purge console-tools (Bug #23858) 

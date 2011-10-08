@@ -313,7 +313,7 @@ fi
 
 
 echo "Checking for the package status"
-dpkg -l 2>&1 | grep "^[a-zA-Z][A-Z] " >&3 2>&3
+dpkg -l 2>&1 | LC_ALL=C grep "^[a-zA-Z][A-Z] " >&3 2>&3
 if [ $? = 0 ]; then
 	echo "ERROR: The package state on this system is inconsistent."
 	echo "       Please run 'dpkg --configure -a' manually"
@@ -372,7 +372,7 @@ for pkg in univention-ssl univention-thin-client-basesystem univention-thin-clie
 	        echo "       Please run 'dpkg --configure -a' manually."
 	        exit 1
 	    fi
-	    dpkg -l 2>&1 | grep "  " | grep -v "^|" | grep "^[a-z]*[A-Z]" >&3 2>&3
+	    dpkg -l 2>&1 | grep "  " | grep -v "^|" | LC_ALL=C grep "^[a-z]*[A-Z]" >&3 2>&3
 	    if [ $? = 0 ]; then
 			echo "failed."
 	        echo "ERROR: pre-update of $pkg failed!"
