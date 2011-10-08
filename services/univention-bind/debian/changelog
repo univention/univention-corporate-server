@@ -1,3 +1,9 @@
+univention-bind (6.0.23-1) unstable; urgency=low
+
+  * Removed dependency to eth0 (Bug #10825)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Oct 2011 08:28:00 +0200
+
 univention-bind (6.0.22-1) unstable; urgency=low
 
   * Update wait_for_dns function (Bug #23357)

@@ -72,6 +72,7 @@ wait_for_dns(){
 }
 
 univention-config-registry set dns/backend?ldap
+IP="$(get_default_ip_address)"
 
 if [ -z "$nameserver_external" -o "$nameserver_external" = false -o "$nameserver_external" = no ]; then
 	if [ "$nameserver1" = "$dns_forwarder1" ]; then
@@ -87,16 +88,16 @@ if [ -z "$nameserver_external" -o "$nameserver_external" = false -o "$nameserver
 		unset nameserver3
 	fi
 
-	if [ "$interfaces_eth0_address" != "$nameserver1" ]; then
+	if [ "$IP" != "$nameserver1" ]; then
 
 		if [ -z "$nameserver1" ]; then
-			univention-config-registry set nameserver1=$interfaces_eth0_address
+			univention-config-registry set nameserver1=$IP
 		elif [ -z "$nameserver2" ]; then
-			univention-config-registry set nameserver2=$nameserver1 nameserver1=$interfaces_eth0_address
+			univention-config-registry set nameserver2=$nameserver1 nameserver1=$IP
 		elif [ -z "$nameserver3" ]; then
-			univention-config-registry set nameserver3=$nameserver2 nameserver2=$nameserver1 nameserver1=$interfaces_eth0_address
+			univention-config-registry set nameserver3=$nameserver2 nameserver2=$nameserver1 nameserver1=$IP
 		else
-			univention-config-registry set nameserver4=$nameserver3 nameserver3=$nameserver2 nameserver2=$nameserver1 nameserver1=$interfaces_eth0_address
+			univention-config-registry set nameserver4=$nameserver3 nameserver3=$nameserver2 nameserver2=$nameserver1 nameserver1=$IP
 		fi
 
 	fi
@@ -122,7 +123,7 @@ wait_for_dns
 
 old=`univention-directory-manager policies/dhcp_dns list "$@" --filter cn=default-settings | grep domain_name_servers | sed -e 's|.*domain_name_servers: ||'`
 if [ -z "$old" -o "$old" = "None" ]; then
-		univention-directory-manager policies/dhcp_dns modify "$@" --ignore_exists --dn "cn=default-settings,cn=dns,cn=dhcp,cn=policies,$ldap_base" --set name=default-settings --set domain_name=$domainname --set domain_name_servers=$interfaces_eth0_address
+		univention-directory-manager policies/dhcp_dns modify "$@" --ignore_exists --dn "cn=default-settings,cn=dns,cn=dhcp,cn=policies,$ldap_base" --set name=default-settings --set domain_name=$domainname --set domain_name_servers=$IP
 fi
 
 ucs_addServiceToLocalhost 'DNS' "$@"

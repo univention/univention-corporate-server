@@ -7,7 +7,12 @@ Standards-Version: 3.8.2
 
 Package: univention-bind
 Architecture: all
-Depends: univention-config-registry (>=7),bind9 (>= 1:9.8.0.P4), univention-directory-manager-tools, univention-runit (>= 0.2), univention-ipcalc
+Depends: univention-config-registry (>=7),
+ bind9 (>= 1:9.8.0.P4),
+ univention-directory-manager-tools,
+ univention-runit (>= 0.2),
+ shell-univention-lib (>= 1.0.23),
+ univention-ipcalc
 Conflicts: univention-dns, univention-bind-proxy
 Replaces: univention-dns, univention-bind-proxy
 Description: UCS - DNS server
