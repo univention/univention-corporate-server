@@ -38,8 +38,11 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-subnet=$(univention-ipcalc --netmask "$interfaces_eth0_netmask" --ip "$interfaces_eth0_address" --output network --calcdns)
-reverse=$(univention-ipcalc --netmask "$interfaces_eth0_netmask" --ip "$interfaces_eth0_address" --output reverse --calcdns)
+IP="$(get_default_ip_address)"
+NETMASK="$(get_default_netmask)"
+
+subnet=$(univention-ipcalc --netmask "$NETMASK" --ip "$IP" --output network --calcdns)
+reverse=$(univention-ipcalc --netmask "$NETMASK" --ip "$IP" --output reverse --calcdns)
 
 wait_named () {
 	sleep ${1:-5}
@@ -83,7 +86,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 				--tls 0 --position "cn=dc,cn=computers,$ldap_base" \
 				--set name="$hostname" \
 				--set domain="$domainname" \
-				--set ip="$interfaces_eth0_address" \
+				--set ip="$IP" \
 				--set dnsEntryZoneForward="$forwardZone" \
 				--set dnsEntryZoneReverse="$reverseZone" \
 				--set password="$computerPassword" \

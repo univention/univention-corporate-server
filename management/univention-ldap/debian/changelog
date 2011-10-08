@@ -1,3 +1,9 @@
+univention-ldap (8.0.40-1) unstable; urgency=low
+
+  * Removed dependency to eth0 (Bug #10825)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Oct 2011 08:31:07 +0200
+
 univention-ldap (8.0.39-3) unstable; urgency=low
 
   * Remove references to now obsolete univention-admin-nagios packages (Bug #9698)
