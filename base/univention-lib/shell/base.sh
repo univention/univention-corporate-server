@@ -159,3 +159,31 @@ get_default_netmask () {
 		echo "$interfaces_eth3_ipv6_base_netmask"
 	fi
 }
+#
+# returns the default network
+#
+get_default_netmask () {
+	eval "$(/usr/sbin/univention-config-registry shell \
+					interfaces/eth0/network interfaces/eth1/network \
+					interfaces/eth2/network interfaces/eth3/network \
+					interfaces/eth0/ipv6/base/network interfaces/eth1/ipv6/base/network \
+					interfaces/eth2/ipv6/base/network interfaces/eth4/ipv6/base/network)"
+
+	if [ -n "$interfaces_eth0_network" ]; then
+		echo "$interfaces_eth0_network"
+	elif [ -n "$interfaces_eth1_network" ]; then
+		echo "$interfaces_eth1_network"
+	elif [ -n "$interfaces_eth2_network" ]; then
+		echo "$interfaces_eth2_network"
+	elif [ -n "$interfaces_eth3_network" ]; then
+		echo "$interfaces_eth3_network"
+	elif [ -n "$interfaces_eth0_ipv6_base_network" ]; then
+		echo "$interfaces_eth0_ipv6_base_network"
+	elif [ -n "$interfaces_eth1_ipv6_base_network" ]; then
+		echo "$interfaces_eth1_ipv6_base_network"
+	elif [ -n "$interfaces_eth2_ipv6_base_network" ]; then
+		echo "$interfaces_eth2_ipv6_base_network"
+	elif [ -n "$interfaces_eth3_ipv6_base_network" ]; then
+		echo "$interfaces_eth3_ipv6_base_network"
+	fi
+}
