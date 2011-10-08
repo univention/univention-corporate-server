@@ -471,7 +471,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 			if realm:
 				ocs.extend(['krb5Principal', 'krb5KDCEntry'])
-				al.append(('krb5PrincipalName', ['host/'+self.info['name']+'.'+kerberos_domain.lower()+'@'+realm]))
+				al.append(('krb5PrincipalName', [self.krb5_principal()]))
 				al.append(('krb5MaxLife', '86400'))
 				al.append(('krb5MaxRenew', '604800'))
 				al.append(('krb5KDCFlags', '126'))
@@ -555,19 +555,13 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.oldinfo = {}
 
 	def krb5_principal(self):
-		if hasattr(self, '__krb5_principal'):
-			return self.__krb5_principal
-		elif self.oldattr.has_key('krb5PrincipalName'):
-			self.__krb5_principal=self.oldattr['krb5PrincipalName'][0]
+		domain=univention.admin.uldap.domain(self.lo, self.position)
+		realm=domain.getKerberosRealm()
+		if self.info.has_key('domain') and self.info['domain']:
+			kerberos_domain=self.info['domain']
 		else:
-			domain=univention.admin.uldap.domain(self.lo, self.position)
-			realm=domain.getKerberosRealm()
-			if self.info.has_key('domain') and self.info['domain']:
-				kerberos_domain=self.info['domain']
-			else:
-				kerberos_domain=domain.getKerberosRealm()
-			self.__krb5_principal=self['name']+'.'+kerberos_domain.lower()+'@'+realm
-		return self.__krb5_principal
+			kerberos_domain=domain.getKerberosRealm()
+		return 'host/' + self['name']+'.'+kerberos_domain.lower()+'@'+realm
 
 	def _ldap_post_modify(self):
 		univention.admin.handlers.simpleComputer.primary_group( self )
@@ -594,21 +588,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		self.nagios_ldap_modlist(ml)
 
-		if self.modifypassword and self['password']:
-			if 'kerberos' in self.options:
-				krb_keys=univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
-				krb_key_version=str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0])+1)
-				ml.append(('krb5Key', self.oldattr.get('password', ['1']), krb_keys))
-				ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
-			if 'posix' in self.options:
-				password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
-				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
-			#The password must be set via net rpc join
-			#if 'samba' in self.options:
-			#	password_nt, password_lm = univention.admin.password.ntlm(self['password'])
-			#	ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
-			#	ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
-
 		if self.hasChanged('name'):
 			if 'posix' in self.options:
 				if hasattr(self, 'uidNum'):
@@ -627,6 +606,24 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 			if 'samba' in self.options:
 				ml.append(('displayName', self.oldattr.get('displayName', [None])[0], self['name']))
+
+			if 'kerberos' in self.options:
+				ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
+
+		if self.modifypassword and self['password']:
+			if 'kerberos' in self.options:
+				krb_keys=univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
+				krb_key_version=str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0])+1)
+				ml.append(('krb5Key', self.oldattr.get('password', ['1']), krb_keys))
+				ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
+			if 'posix' in self.options:
+				password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
+				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
+			#The password must be set via net rpc join
+			#if 'samba' in self.options:
+			#	password_nt, password_lm = univention.admin.password.ntlm(self['password'])
+			#	ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
+			#	ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 
 		# add samba option
 		if 'samba' in self.options and not self.old_samba_option:

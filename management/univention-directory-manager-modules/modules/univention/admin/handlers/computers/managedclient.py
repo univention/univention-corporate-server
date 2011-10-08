@@ -430,7 +430,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 			if realm:
 				ocs.extend(['krb5Principal', 'krb5KDCEntry'])
-				al.append(('krb5PrincipalName', ['host/'+self.info['name']+'.'+realm.lower()+'@'+realm]))
+				al.append(('krb5PrincipalName', [self.krb5_principal()]))
 				al.append(('krb5MaxLife', '86400'))
 				al.append(('krb5MaxRenew', '604800'))
 				al.append(('krb5KDCFlags', '126'))
@@ -499,15 +499,13 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.oldinfo = {}
 
 	def krb5_principal(self):
-		if hasattr(self, '__krb5_principal'):
-			return self.__krb5_principal
-		elif self.oldattr.has_key('krb5PrincipalName'):
-			self.__krb5_principal=self.oldattr['krb5PrincipalName'][0]
+		domain=univention.admin.uldap.domain(self.lo, self.position)
+		realm=domain.getKerberosRealm()
+		if self.info.has_key('domain') and self.info['domain']:
+			kerberos_domain=self.info['domain']
 		else:
-			domain=univention.admin.uldap.domain(self.lo, self.position)
-			realm=domain.getKerberosRealm()
-			self.__krb5_principal=self['name']+'@'+realm
-		return self.__krb5_principal
+			kerberos_domain=domain.getKerberosRealm()
+		return 'host/' + self['name']+'.'+kerberos_domain.lower()+'@'+realm
 
 	def _ldap_post_modify(self):
 		univention.admin.handlers.simpleComputer.primary_group( self )
@@ -533,6 +531,25 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		ml=univention.admin.handlers.simpleComputer._ldap_modlist( self )
 		self.nagios_ldap_modlist(ml)
 
+		if self.hasChanged('name'):
+			if 'posix' in self.options:
+				if hasattr(self, 'uidNum'):
+					univention.admin.allocators.confirm(self.lo, self.position, 'uidNumber', self.uidNum)
+				requested_uid="%s$" % self['name']
+				try:
+					self.uid=univention.admin.allocators.request(self.lo, self.position, 'uid', value=requested_uid)
+				except Exception, e:
+					self.cancel()
+					raise univention.admin.uexceptions.uidAlreadyUsed, ': %s' % requested_uid
+					return []
+
+				self.alloc.append(('uid',self.uid))
+
+				ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid))
+
+			if 'kerberos' in self.options:
+				ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
+
 		if self.modifypassword and self['password']:
 			if 'kerberos' in self.options:
 				krb_keys=univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
@@ -542,21 +559,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			if 'posix' in self.options:
 				password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
 				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
-		if self.hasChanged('name'):
-			if 'posix' in self.options:
-				if hasattr(self, 'uidNum'):
-					univention.admin.allocators.confirm(self.lo, self.position, 'uidNumber', self.uidNum)
-				requested_uid="%s$" % self['name']
-				try:
-					self.uid=univention.admin.allocators.request(self.lo, self.position, 'uid', value=requested_uid)
-					self.alloc.append(('uid',self.uid))
-				except Exception, e:
-					self.cancel()
-					raise univention.admin.uexceptions.uidAlreadyUsed, ': %s' % requested_uid
-					return []
-
-				ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid))
-
 		return ml
 
 

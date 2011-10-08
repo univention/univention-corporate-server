@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.105-1) unstable; urgency=low
+
+  * Change the krb5PrincipalName if the name was changed
+    (Bug #22213)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Oct 2011 11:29:45 +0200
+
 univention-directory-manager-modules (7.0.104-1) unstable; urgency=low
 
   * fixed typo; Bug #23982

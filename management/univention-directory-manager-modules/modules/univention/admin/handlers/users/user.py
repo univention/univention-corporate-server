@@ -1746,39 +1746,9 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		self.save()
 
 	def krb5_principal(self):
-		if hasattr(self, '__krb5_principal'):
-			return self.__krb5_principal
-		elif self.oldattr.has_key('krb5PrincipalName'):
-			self.__krb5_principal=self.oldattr['krb5PrincipalName'][0]
-		else:
-			domain=univention.admin.uldap.domain(self.lo, self.position)
-			realm=domain.getKerberosRealm()
-			self.__krb5_principal=self['username']+'@'+realm
-		return self.__krb5_principal
-
-	def set_uid_umlauts(self, mixedcase=1):
-		self.uid_umlauts_mixedcase=mixedcase
-		if mixedcase:
-			self.descriptions['username'] = univention.admin.property(
-				short_description=_('User name'),
-				long_description='',
-				syntax=univention.admin.syntax.uid_umlauts,
-				multivalue=0,
-				required=1,
-				may_change=1,
-				identifies=1
-				)
-		else:
-			self.descriptions['username'] = univention.admin.property(
-				short_description=_('User name'),
-				long_description='',
-				syntax=univention.admin.syntax.uid_umlauts_lower_except_first_letter,
-				multivalue=0,
-				required=1,
-				may_change=1,
-				identifies=1
-				)
-
+		domain=univention.admin.uldap.domain(self.lo, self.position)
+		realm=domain.getKerberosRealm()
+		return self['username']+'@'+realm
 
 	def _ldap_pre_create(self):
 		_d=univention.debug.function('admin.handlers.users.user.object._ldap_pre_create')
@@ -2062,6 +2032,10 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			pwd_change_next_login=1
 		elif self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0':
 			pwd_change_next_login=2
+
+		if self.hasChanged('username'):
+ 			if 'kerberos' in self.options:
+				ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
 
 		if self.modifypassword:
 			# if the password is going to be changed in ldap check password-history
