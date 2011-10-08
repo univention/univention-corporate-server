@@ -1,3 +1,9 @@
+univention-heimdal (5.0.10-1) unstable; urgency=low
+
+  * Added realm to the new label syntax too (Bug #22108)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Oct 2011 08:40:42 +0200
+
 univention-heimdal (5.0.9-1) unstable; urgency=low
 
   * Added kpasswd_server to krb5.conf which is set via
