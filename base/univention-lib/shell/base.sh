@@ -162,7 +162,7 @@ get_default_netmask () {
 #
 # returns the default network
 #
-get_default_netmask () {
+get_default_network () {
 	eval "$(/usr/sbin/univention-config-registry shell \
 					interfaces/eth0/network interfaces/eth1/network \
 					interfaces/eth2/network interfaces/eth3/network \
