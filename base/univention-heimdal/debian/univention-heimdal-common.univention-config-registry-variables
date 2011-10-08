@@ -63,3 +63,45 @@ Description[de]=Mit der Einstellung "no", "false" oder "0" wird die Erzeugung vo
 Description[en]=Setting this key to "no", "false" oder "0" disables the generation of single-DES keys.
 Type=str
 Categories=System
+
+[kerberos/domain_realms]
+Description[de]=domain_realms für Kerberos (mit Komma getrennt) Beispiel: "domain1 = realm1,domain2 = realm2"
+Description[en]=domain_realms for Kerberos (comma separated) example: "domain1 = realm1,domain2 = realm2"
+Type=str
+Categories=System
+
+[kerberos/defaults/dns_lookup_realm]
+Description[de]=Wenn diese Variable auf true gesetzt ist, werden die DNS TXT Einträge zum festellen des Kerberos-Realms eines Hosts genutzt
+Description[en]=Indicate whether DNS TXT records should be used to determine the Kerberos realm of a host. 
+Type=str
+Categories=System
+
+[kerberos/defaults/dns_lookup_kdc]
+Description[de]=Wenn diese Variable auf true gesetzt ist, werden die DNS SRV Einträge zum finden des KDCs genutzt.
+Description[en]=Indicate whether DNS SRV records should be used to locate the KDCs and other servers for a realm.
+Type=str
+Categories=System
+
+[kerberos/defaults/forwardable]
+Description[de]=Wenn diese Variable auf true gesetzt ist, ist das Initialisierungsticket forwardbar
+Description[en]=If this flag is set, initial tickets by default will be forwardable.
+Type=str
+Categories=System
+
+[kerberos/defaults/proxiable]
+Description[de]=Wenn diese Variable auf true gesetzt ist, ist das Initialisierungsticket "proxiable".
+Description[en]=If this flag is set, initial tickets by default will be proxiable. 
+Type=str
+Categories=System
+
+[kerberos/defaults/kdc_timesync]
+Description[de]=Wenn diese Variable auf 1 gesetzt ist, berechnet der Client die Differenz zwischen seiner Zeit und der des Servers
+Description[en]=If this is set to 1 (for true), then client machines will compute the difference between their time and the time returned by the KDC.
+Type=str
+Categories=System
+
+[kerberos/defaults/debug]
+Description[de]=Aktiviert den debug modus
+Description[en]=Activates the debug mode
+Type=str
+Categories=System

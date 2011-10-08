@@ -13,3 +13,10 @@ Variables: kerberos/defaults/enctypes/tkt
 Variables: kerberos/defaults/enctypes/permitted
 Variables: kerberos/afscell
 Variables: kerberos/allow/weak/crypto
+Variables: kerberos/domain_realms
+Variables: kerberos/defaults/dns_lookup_realm
+Variables: kerberos/defaults/dns_lookup_kdc
+Variables: kerberos/defaults/forwardable
+Variables: kerberos/defaults/proxiable
+Variables: kerberos/defaults/kdc_timesync
+Variables: kerberos/defaults/debug
