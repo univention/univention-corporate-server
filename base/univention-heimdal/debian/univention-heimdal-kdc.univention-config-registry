@@ -4,6 +4,7 @@ Variables: kerberos/enable/kerberos4
 Variables: kerberos/enable/524
 Variables: kerberos/enable/kaserver
 Variables: kerberos/password/quality/check
+Variables: kerberos/realm
 
 Type: file
 File: etc/heimdal-kdc/kadmind.acl
