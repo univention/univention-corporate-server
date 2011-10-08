@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.37-1) unstable; urgency=low
+
+  * Removed set_uid_umlauts (Bug #23975)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Oct 2011 14:01:53 +0200
+
 univention-s4-connector (6.0.36-1) unstable; urgency=low
 
   * Avoid an endless sync loop while restarting the Samba 4 daemon

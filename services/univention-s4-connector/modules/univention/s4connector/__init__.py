@@ -921,8 +921,6 @@ class ucs:
 		_d=ud.function('ldap.add_in_ucs')
 		ucs_object=module.object(None, self.lo, position=position)
 		ucs_object.open()
-		if hasattr(ucs_object,'set_uid_umlauts'): # activate umlauts
-			   ucs_object.set_uid_umlauts()
 		self.__set_values(property_type,object,ucs_object, modtype='add')
 		for function in self.property[property_type].ucs_create_functions:
 			function(self, property_type, ucs_object)
