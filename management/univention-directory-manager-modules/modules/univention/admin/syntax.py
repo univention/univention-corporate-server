@@ -107,15 +107,16 @@ class select( ISyntax ):
 	"""Select item from list of choices.
 	self.choice = [(id, _("Display text"), ...]
 	"""
+	empty_value = False
 
 	@classmethod
 	def parse(self, text):
 		# for the UDM CLI
 		if not hasattr( self, 'choices' ):
 			return text
-		for choice in self.choices:
-			if choice[0] == text:
-				return text
+
+		if text in map( lambda x: x[ 0 ], self.choices ) or ( not text and select.empty_value ):
+			return text
 
 	@classmethod
 	def new(self):
@@ -2304,11 +2305,25 @@ class sambaGroupType(select):
 class sambaLogonHours(string):
 	pass
 
+
+class SambaPrivileges( select ):
+	empty_value = True
+	choices = [
+		( 'SeMachineAccountPrivilege', _( 'Add machines to domain' ) ),
+		( 'SeSecurityPrivilege', _( 'Manage auditing and security log' ) ),
+		( 'SeTakeOwnershipPrivilege', _( 'Take ownership of files or other objects' ) ),
+		( 'SeBackupPrivilege', _( 'Back up files and directories' ) ),
+		( 'SeRestorePrivilege', _( 'Restore files and directories' ) ),
+		( 'SeRemoteShutdownPrivilege', _( 'Force shutdown from a remote system' ) ),
+		( 'SePrintOperatorPrivilege', _( 'Manage printers' ) ),
+		( 'SeAddUsersPrivilege', _( 'Add users and groups to the domain' ) ),
+		( 'SeDiskOperatorPrivilege', _( 'Manage disk shares' ) ),
+	]
+
 class printQuotaGroup(complex):
 	searchFilter='(&(cn=*)(objectClass=posixGroup))'
 	subsyntaxes=[(_('Soft limit'), integer), (_('Hard limit'), integer), (_('Group'), string)]
 	all_required=0
-
 
 class printQuotaUser(complex):
 	searchFilter='(&(uid=*)(objectClass=posixAccount)(!(objectClass=univentionHost)))'

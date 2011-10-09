@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.106-1) unstable; urgency=low
+
+  * users/user, groups/group: add attribute sambaPrivileges; Bug #23746
+  * updated german translation
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 09 Oct 2011 19:06:41 +0200
+
 univention-directory-manager-modules (7.0.105-1) unstable; urgency=low
 
   * Change the krb5PrincipalName if the name was changed

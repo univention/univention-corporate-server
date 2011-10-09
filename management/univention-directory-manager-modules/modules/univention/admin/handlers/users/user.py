@@ -200,6 +200,17 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'sambaPrivileges': univention.admin.property(
+			short_description = _( 'Samba privileges' ),
+			long_description = _( 'Manage samba privileges' ),
+			syntax = univention.admin.syntax.SambaPrivileges,
+			multivalue = True,
+			options = [ 'samba' ],
+			required = False,
+			dontsearch = False,
+			may_change = True,
+			identifies = False,
+	),
 	'description': univention.admin.property(
 			short_description=_('Description'),
 			long_description='',
@@ -1192,7 +1203,7 @@ mapping.register('description', 'description', None, univention.admin.mapping.Li
 mapping.register('organisation', 'o', None, univention.admin.mapping.ListToString)
 
 mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToLowerString)
-mapping.register('mailAlternativeAddress', 'mailAlternativeAddress', univention.admin.mapping.ListToLowerListUniq)
+mapping.register('mailAlternativeAddress', 'mailAlternativeAddress', None, univention.admin.mapping.ListToLowerListUniq)
 mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
 
 mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
@@ -1214,6 +1225,7 @@ mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToStr
 mapping.register('sambahome', 'sambaHomePath', None, univention.admin.mapping.ListToString)
 mapping.register('sambaUserWorkstations', 'sambaUserWorkstations', sambaWorkstationsMap, sambaWorkstationsUnmap)
 mapping.register('sambaLogonHours', 'sambaLogonHours', logonHoursMap, logonHoursUnmap)
+mapping.register('sambaPrivileges', 'univentionSambaPrivilegeList')
 mapping.register('scriptpath', 'sambaLogonScript', None, univention.admin.mapping.ListToString)
 mapping.register('profilepath', 'sambaProfilePath', None, univention.admin.mapping.ListToString)
 mapping.register('homedrive', 'sambaHomeDrive', None, univention.admin.mapping.ListToString)
@@ -1969,6 +1981,14 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
+
+
+		# samba privileges
+		if self.hasChanged( 'sambaPrivileges' ) and 'samba' in self.options:
+			o = self.oldattr.get( 'objectClass', [] )
+			# add univentionSambaPrivileges objectclass
+			if self[ 'sambaPrivileges'] and not "univentionSambaPrivileges" in o:
+				ml.insert( 0, ( 'objectClass', '', 'univentionSambaPrivileges' ) )
 
 		shadowLastChangeValue = ''	# if is filled, it will be added to ml in the end
 		sambaPwdLastSetValue = ''	# if is filled, it will be added to ml in the end

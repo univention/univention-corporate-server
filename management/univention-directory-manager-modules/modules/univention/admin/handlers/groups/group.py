@@ -123,6 +123,17 @@ property_descriptions={
 			default=('2',[]),
 			options=['samba']
 		),
+	'sambaPrivileges': univention.admin.property(
+			short_description = _( 'Samba privileges' ),
+			long_description = _( 'Manage samba privileges' ),
+			syntax = univention.admin.syntax.SambaPrivileges,
+			multivalue = True,
+			options = [ 'samba' ],
+			required = False,
+			dontsearch = False,
+			may_change = True,
+			identifies = False,
+	),
 	'description': univention.admin.property(
 			short_description=_('Description'),
 			long_description='',
@@ -236,6 +247,9 @@ layout = [
 		] ),
 	Tab( _( 'Allowed groups' ), _( 'Groups that are allowed to send e-mails to the group' ), advanced = True, layout = [
 		'allowedEmailGroups'
+		] ),
+	Tab( _( 'Windows' ), _( 'Windows account settings' ), advanced = True, layout = [
+		'sambaPrivileges'
 		] )
 ]
 
@@ -244,6 +258,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('sambaGroupType', 'sambaGroupType', None, univention.admin.mapping.ListToString)
 mapping.register('mailAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
+mapping.register('sambaPrivileges', 'univentionSambaPrivilegeList')
 
 def _case_insensitive_in_list(dn, list):
 	for element in list:
@@ -591,6 +606,14 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_modlist( self ):
 
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist( self )
+
+		# samba privileges
+		if self.hasChanged( 'sambaPrivileges' ) and 'samba' in self.options:
+			o = self.oldattr.get( 'objectClass', [] )
+			# add univentionSambaPrivileges objectclass
+			if self[ 'sambaPrivileges'] and not "univentionSambaPrivileges" in o:
+				ml.insert( 0, ( 'objectClass', '', 'univentionSambaPrivileges' ) )
+
 		if self.hasChanged( 'mailAddress' ) and self[ 'mailAddress' ]:
 			for i, j in self.alloc:
 				if i == 'mailPrimaryAddress': break
