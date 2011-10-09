@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.153-1) unstable; urgency=low
+
+  * implement support for default values from settings/default; Bug #23995
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 09 Oct 2011 15:37:58 +0200
+
 univention-management-console-module-udm (1.0.152-1) unstable; urgency=low
 
   * added dynamic button for search within the scope of superordinates

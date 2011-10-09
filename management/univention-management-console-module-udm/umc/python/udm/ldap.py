@@ -154,6 +154,7 @@ class UDM_Module( object ):
 	def __init__( self, module ):
 		"""Initializes the object"""
 		self.load( module )
+		self.settings = UDM_Settings()
 
 	def load( self, module, template_object = None ):
 		"""Tries to load an UDM module with the given name. Optional a
@@ -409,6 +410,10 @@ class UDM_Module( object ):
 						item[ 'default' ] = prop.base_default[ 0 ]
 				else:
 					item[ 'default' ] = str( prop.base_default )
+			elif key == 'primaryGroup': # set default for primaryGroup
+					default_group = self.settings.default_group( self.name )
+					if default_group is not None:
+						item[ 'default' ] = default_group
 
 			# read UCR configuration
 			item.update( widget( prop.syntax, item ) )
@@ -536,12 +541,23 @@ class UDM_Module( object ):
 
 class UDM_Settings( object ):
 	"""Provides access to different kinds of settings regarding UDM"""
+	Singleton = None
+
+	@staticmethod
+	def __new__ ( cls ):
+		if UDM_Settings.Singleton is None:
+			UDM_Settings.Singleton = super( UDM_Settings, cls ).__new__( cls )
+
+		return UDM_Settings.Singleton
 
 	@LDAP_Connection
-	def __init__( self, user_dn ):
+	def __init__( self ):
 		"""Reads the policies for the current user"""
-		self.user_dn = user_dn
-		self.policies = ldap_connection.getPolicies( self.user_dn )
+		if hasattr( self, 'initialized' ):
+			return
+		self.initalized = True
+		self.user_dn = None
+		self.policies = None
 
 		directories = udm_modules.lookup( 'settings/directory', None, ldap_connection, scope = 'sub' )
 		if not directories:
@@ -549,11 +565,36 @@ class UDM_Settings( object ):
 		else:
 			self.directory = directories[ 0 ]
 
+		groups = udm_modules.lookup( 'settings/default', None, ldap_connection, scope = 'sub' )
+		if not groups:
+			self.groups = None
+		else:
+			self.groups = groups[ 0 ]
+
+	@LDAP_Connection
+	def user( self, user_dn ):
+		self.user_dn = user_dn
+		self.policies = ldap_connection.getPolicies( self.user_dn )
+
 	def containers( self, module_name ):
 		"""Returns list of default containers for a given UDM module"""
 		base, name = split_module_name( module_name )
 
 		return map( lambda x: { 'id' : x, 'label' : ldap_dn2path( x ) }, self.directory.info.get( base, [] ) )
+
+	def default_group( self, module_name ):
+		if self.groups is None:
+			return None
+		if module_name == 'users/user':
+			return self.groups[ 'defaultGroup' ]
+		if module_name in ( 'computers/domaincontroller_slave', ):
+			return self.groups[ 'defaultDomainControllerGroup' ]
+		if module_name in ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup' ):
+			return self.groups[ 'defaultDomainControllerMBGroup' ]
+		if module_name in ( 'computers/memberserver', ):
+			return self.groups[ 'defaultMemberServerGroup' ]
+		if module_name.startswith( 'computers/' ):
+			return self.groups[ 'defaultComputerGroup' ]
 
 	def resultColumns( self, module_name ):
 		pass

@@ -60,9 +60,10 @@ class Instance( Base ):
 		credentials are available'''
 		set_credentials( self._user_dn, self._password )
 
+		# read user settings
 		if self._username is not None:
-			self.settings = UDM_Settings( self._user_dn )
-
+			self.settings = UDM_Settings()
+			self.settings.user( self._user_dn )
 
 	def _get_module( self, request, object_type = None ):
 		"""Tries to determine to UDM module to use. If no specific
