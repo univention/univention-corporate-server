@@ -436,7 +436,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			'class': 'umcPageFooter',
 			region: 'bottom'
 		});
-		dojo.forEach(buttons._order, function(i) {
+		dojo.forEach(buttons.$order$, function(i) {
 			footer.addChild(i);
 		});
 		borderLayout.addChild(footer);

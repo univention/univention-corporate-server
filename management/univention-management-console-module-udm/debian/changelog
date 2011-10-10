@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.155-1) unstable; urgency=low
+
+  * revert change in DetailPage as it was based on an old version of
+    umc-frontend; Bug #23996
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Oct 2011 08:36:58 +0200
+
 univention-management-console-module-udm (1.0.154-1) unstable; urgency=low
 
   * re-insert buttons of DetailPage (fixed typo); bug #23996
