@@ -154,6 +154,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		catch (error) {
 			// failed to access 'value', probably too early in the widget construction 
 			// (e.g., DOM elements are not ready yet)
+			this._initialValue = this.value;
 		}
 	},
 

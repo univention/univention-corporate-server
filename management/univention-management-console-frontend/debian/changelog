@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.87-1) unstable; urgency=low
+
+  * fixed problems with choosing English language in the LoginDialog 
+    (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Oct 2011 16:27:18 +0200
+
 univention-management-console-frontend (1.0.86-1) unstable; urgency=low
 
   * _SelectMixin: added check to detect duplicates for dynamic values 
