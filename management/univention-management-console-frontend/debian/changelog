@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.88-1) unstable; urgency=low
+
+  * fixed the UmcpModuleStore's onChange event
+  * fixed reloading error in Tree 
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Oct 2011 18:39:32 +0200
+
 univention-management-console-frontend (1.0.87-1) unstable; urgency=low
 
   * fixed problems with choosing English language in the LoginDialog 

@@ -53,7 +53,7 @@ dojo.declare("umc.widgets.Tree", dijit.Tree, {
 		 * simplify all nodes of paths-array to strings of identifiers because 
 		 * after reload the nodes may have different ids and therefore the 
 		 * paths may not be applied */ 
-		this._reloadPaths = dojo.map(this.get('paths'), dojo.hitch(this, function(path) {
+		var reloadPaths = dojo.map(this.get('paths'), dojo.hitch(this, function(path) {
 			return dojo.map(path, dojo.hitch(this, function(pathItem) {
 				return this.model.getIdentity(pathItem) + '';
 			}));
@@ -88,11 +88,10 @@ dojo.declare("umc.widgets.Tree", dijit.Tree, {
 			/* restore old paths.   
 			 * FIXME: this will result in an error if a formerly selected item 
 			 * is no longer existent in the tree after reloading! */
-			this.set('paths', this._reloadPaths).then(dojo.hitch(this, function() {
+			this.set('paths', reloadPaths).then(dojo.hitch(this, function() {
 				if (this.get('selectedNode')) {
 					this.focusNode(this.get('selectedNode'));
 				}
-				this._reloadPaths = null;
 				dojo.disconnect(this._reloadOnLoadConnect);
 				this._reloadOnLoadConnect = null;
 			}));

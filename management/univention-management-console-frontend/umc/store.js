@@ -242,7 +242,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		var dataModified = false;
 		dojo.forEach(this._groupedTransactions, dojo.hitch(this, function(igroup, i) {
 			// check whether the data is modified
-			dataModified = dataModified || 'remove' == igroup.type || 'put' == igroup.type;
+			dataModified = dataModified || 'remove' == igroup.type || 'put' == igroup.type || 'add' == igroup.type;
 
 			// execute group as one command
 			if (0 === i) {
@@ -266,10 +266,18 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 
 		}));
 
-		// switch back on events and send onChange event
-		this._noEvents = false;
-		if (dataModified) {
-			this.onChange();
+		if (deferred) {
+			// switch back on events
+			this._noEvents = false;
+		} 
+		else {
+			// switch back on events and send onChange event
+			deferred = deferred.then(dojo.hitch(this, function() {
+				this._noEvents = false;
+				if (dataModified) {
+					this.onChange();
+				}
+			}));
 		}
 
 		// remove all transactions 
