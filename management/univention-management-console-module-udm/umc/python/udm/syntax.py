@@ -100,8 +100,11 @@ def choices( syntax, udm_property ):
 	elif isinstance( syntax, udm_syntax.LDAP_Search ):
 		opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__, 'options' : { 'syntax' : syntax.name, 'filter' : syntax.filter, 'viewonly' : syntax.viewonly, 'base' : getattr( syntax, 'base', '' ), 'value' : syntax.value, 'attributes' : syntax.attributes, 'empty' : syntax.addEmptyValue } } }
 
-	elif inspect.isclass( syntax ) and issubclass( syntax, udm_syntax.select ) and hasattr( syntax, 'depends' ):
-		opts = { 'dynamicValues' : 'javascript:umc.modules._udm.setDynamicValues' }
+	elif inspect.isclass( syntax ) and issubclass( syntax, udm_syntax.select ):
+		if hasattr( syntax, 'depends' ):
+			opts = { 'dynamicValues' : 'javascript:umc.modules._udm.setDynamicValues' }
+		if syntax.empty_value and syntax.choices and syntax.choices[ 0 ][ 0 ] != '':
+			syntax.choices.insert( 0, ( '', '' ) )
 
 	if hasattr( syntax, 'depends' ):
 		if 'dynamicOptions' not in opts:

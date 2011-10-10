@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.154-1) unstable; urgency=low
+
+  * re-insert buttons of DetailPage (fixed typo); bug #23996
+  * remove dummy help text
+  * support empty_value attribute of select syntax; Bug #23746
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Oct 2011 08:04:45 +0200
+
 univention-management-console-module-udm (1.0.153-1) unstable; urgency=low
 
   * implement support for default values from settings/default; Bug #23995

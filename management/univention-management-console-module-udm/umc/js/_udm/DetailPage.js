@@ -264,7 +264,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				title: ilayout.label || ilayout.name, //TODO: 'name' should not be necessary
 				noFooter: true,
 				headerText: ilayout.description || ilayout.label || ilayout.name,
-				helpText: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren.'
+				helpText: ''
 			});
 
 			// add rendered layout to subtab and register subtab
@@ -436,7 +436,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			'class': 'umcPageFooter',
 			region: 'bottom'
 		});
-		dojo.forEach(buttons.$order$, function(i) {
+		dojo.forEach(buttons._order, function(i) {
 			footer.addChild(i);
 		});
 		borderLayout.addChild(footer);
