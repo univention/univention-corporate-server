@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.159-1) unstable; urgency=low
+
+  * re-worked the decorator LDAP_Connection; Bug #23203
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Oct 2011 16:20:18 +0200
+
 univention-management-console-module-udm (1.0.158-1) unstable; urgency=low
 
   * open the LDAP-base at startup in the navigation (Bug #23703)

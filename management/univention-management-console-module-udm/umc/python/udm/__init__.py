@@ -341,7 +341,7 @@ class Instance( Base ):
 		self.finished( request.id, result )
 
 	@LDAP_Connection
-	def types( self, request ):
+	def types( self, request, ldap_connection = None, ldap_position = None ):
 		"""Returns the list of object types matching the given flavor or container.
 
 		requests.options = {}
@@ -551,7 +551,7 @@ class Instance( Base ):
 		thread.run()
 
 	@LDAP_Connection
-	def nav_object_query( self, request ):
+	def nav_object_query( self, request, ldap_connection = None, ldap_position = None ):
 		"""Returns a list of objects in a LDAP container (scope: one)
 
 		requests.options = {}

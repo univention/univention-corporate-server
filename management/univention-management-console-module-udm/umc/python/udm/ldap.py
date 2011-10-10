@@ -72,11 +72,22 @@ class LDAP_ConnectionError( Exception ):
 
 def LDAP_Connection( func ):
 	"""This decorator function provides an open LDAP connection that can
-	be accessed via the variable ldap_connection. It reuses an already
-	open connection or creates a new one. If the function fails with an
-	LDAP error the decorators tries to reopen the LDAP connection and
-	invokes the function again. if it still fails an
-	LDAP_ConnectionError is raised."""
+	be accessed via the variable ldap_connection and a vaild position
+	within the LDAP directory in the viariable ldap_position. It reuses
+	an already open connection or creates a new one. If the function
+	fails with an LDAP error the decorators tries to reopen the LDAP
+	connection and invokes the function again. if it still fails an
+	LDAP_ConnectionError is raised.
+
+	When using the decorator the method get to additional keyword arguments.
+
+	example:
+	  @LDAP_Connection
+	  def do_ldap_stuff(, arg1, arg2, ldap_connection = None, ldap_positio = None ):
+		  ...
+		  ldap_connection.searchDn( ..., position = ldap_position )
+		  ...
+	"""
 	def wrapper_func( *args, **kwargs ):
 		global _ldap_connection, _ldap_position, _user_dn, _password
 
@@ -92,8 +103,8 @@ def LDAP_Connection( func ):
 			except Exception, e:
 				raise LDAP_ConnectionError( 'Opening LDAP connection failed: %s' % str( e ) )
 
-		globals()[ 'ldap_connection' ] = lo
-		globals()[ 'ldap_position' ] = po
+		kwargs[ 'ldap_connection' ] = lo
+		kwargs[ 'ldap_position' ] = po
 		try:
 			ret = func( *args, **kwargs )
 			_ldap_connection = lo
@@ -107,8 +118,8 @@ def LDAP_Connection( func ):
 			except Exception, e:
 				raise LDAP_ConnectionError( 'Opening LDAP connection failed: %s' % str( e ) )
 
-			globals()[ 'ldap_connection' ] = lo
-			globals()[ 'ldap_position' ] = po
+			kwargs[ 'ldap_connection' ] = lo
+			kwargs[ 'ldap_position' ] = po
 			try:
 				ret = func( *args, **kwargs )
 				_ldap_connection = lo
@@ -130,7 +141,7 @@ class UDM_ModuleCache( dict ):
 	lock = threading.Lock()
 
 	@LDAP_Connection
-	def get( self, name, template_object = None ):
+	def get( self, name, template_object = None, ldap_connection = None, ldap_position = None ):
 		UDM_ModuleCache.lock.acquire()
 		if name in self:
 			UDM_ModuleCache.lock.release()
@@ -178,7 +189,7 @@ class UDM_Module( object ):
 				return default_value( prop.syntax )
 
 	@LDAP_Connection
-	def create( self, ldap_object, container = None, superordinate = None ):
+	def create( self, ldap_object, container = None, superordinate = None, ldap_connection = None, ldap_position = None ):
 		"""Creates a LDAP object"""
 		if superordinate not in ( None, 'None' ):
 			try:
@@ -220,7 +231,7 @@ class UDM_Module( object ):
 		return obj.dn
 
 	@LDAP_Connection
-	def remove( self, ldap_dn ):
+	def remove( self, ldap_dn, ldap_connection = None, ldap_position = None ):
 		"""Removes a LDAP object"""
 		superordinate = udm_objects.get_superordinate( self.module, None, ldap_connection, ldap_dn )
 		obj = self.module.object( None, ldap_connection, ldap_position, dn = ldap_dn, superordinate = superordinate )
@@ -233,7 +244,7 @@ class UDM_Module( object ):
 			raise UDM_Error( str( e ) )
 
 	@LDAP_Connection
-	def modify( self, ldap_object ):
+	def modify( self, ldap_object, ldap_connection = None, ldap_position = None ):
 		"""Modifies a LDAP object"""
 		superordinate = udm_objects.get_superordinate( self.module, None, ldap_connection, ldap_object[ '$dn$' ] )
 		MODULE.info( 'Modifying object %s with superordinate %s' % ( ldap_object[ '$dn$' ], superordinate ) )
@@ -255,7 +266,7 @@ class UDM_Module( object ):
 			raise UDM_Error( e.message )
 
 	@LDAP_Connection
-	def search( self, container = None, attribute = None, value = None, superordinate = None, scope = 'sub', filter = '' ):
+	def search( self, container = None, attribute = None, value = None, superordinate = None, scope = 'sub', filter = '', ldap_connection = None, ldap_position = None ):
 		"""Searches for LDAP objects based on a search pattern"""
 		if container == 'all':
 			container = ldap_position.getBase()
@@ -276,7 +287,7 @@ class UDM_Module( object ):
 			raise UDM_Error( str( e ) )
 
 	@LDAP_Connection
-	def get( self, ldap_dn = None, superordinate = None, attributes = [] ):
+	def get( self, ldap_dn = None, superordinate = None, attributes = [], ldap_connection = None, ldap_position = None ):
 		"""Retrieves details for a given LDAP object"""
 		try:
 			if ldap_dn is not None:
@@ -551,7 +562,7 @@ class UDM_Settings( object ):
 		return UDM_Settings.Singleton
 
 	@LDAP_Connection
-	def __init__( self ):
+	def __init__( self, ldap_connection = None, ldap_position = None ):
 		"""Reads the policies for the current user"""
 		if hasattr( self, 'initialized' ):
 			return
@@ -572,7 +583,7 @@ class UDM_Settings( object ):
 			self.groups = groups[ 0 ]
 
 	@LDAP_Connection
-	def user( self, user_dn ):
+	def user( self, user_dn, ldap_connection = None, ldap_position = None ):
 		self.user_dn = user_dn
 		self.policies = ldap_connection.getPolicies( self.user_dn )
 
@@ -633,7 +644,7 @@ def ldap_dn2path( ldap_dn ):
 	return '/'.join( path )
 
 @LDAP_Connection
-def get_module( flavor, ldap_dn ):
+def get_module( flavor, ldap_dn, ldap_connection = None, ldap_position = None ):
 	"""Determines an UDM module handling the LDAP object identified by the given LDAP DN"""
 	if flavor is None or flavor == 'navigation':
 		base = None
@@ -647,7 +658,7 @@ def get_module( flavor, ldap_dn ):
 	return UDM_Module( modules[ 0 ] )
 
 @LDAP_Connection
-def list_objects( container ):
+def list_objects( container, ldap_connection = None, ldap_position = None ):
 	"""Returns a list of UDM objects"""
 	try:
 		result = ldap_connection.search( base = container, scope = 'one' )
@@ -679,7 +690,7 @@ def split_module_attr( value ):
 	return value.split( ': ', 1 )
 
 @LDAP_Connection
-def read_syntax_choices( syntax_name, options = {} ):
+def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap_position = None ):
 	if syntax_name not in udm_syntax.__dict__:
 		return None
 
