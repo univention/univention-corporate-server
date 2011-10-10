@@ -220,6 +220,7 @@ class UDM_Objects( ISyntax ):
 	key = 'dn'
 	label = None
 	regex = re.compile( '^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$' )
+	static_values = None
 	empty_value = False
 	error_message = _( "Not a valid LDAP DN" )
 
@@ -1238,29 +1239,33 @@ class kolabInvitationPolicy(string):
 	def parse(self, text):
 		return text
 
-class sharedFolderUserACL(string):
-	_re=re.compile('^([^\s]+@[^\s]+|anyone)+(\s(none|read|post|append|write|all))$')
-	searchFilter='(&(uid=*)(objectClass=posixAccount)(mailPrimaryAddress=*)(!(objectClass=univentionHost)))'
-	description=_('Shared folder user ACL')
+class IMAP_Right( select ):
+	choices = (
+		( 'none', _( 'No access' ) ),
+		( 'read', _( 'Read' ) ),
+		( 'post', _( 'Post' ) ),
+		( 'append', _( 'Append' ) ),
+		( 'write', _( 'Write' ) ),
+		( 'all', _( 'All' ) )
+		)
 
-	@classmethod
-	def parse(self, text):
-		text = text.strip()
-		if self._re.match(text) != None:
-			return text
-		raise univention.admin.uexceptions.valueError,_("Not a valid shared folder ACL")
+class UserMailAddress( UDM_Objects ):
+	udm_modules = ( 'users/user', )
+	udm_filter = '(mailPrimaryAddress=*)'
+	key = '%(mailPrimaryAddress)s'
+	static_values = ( ( 'anyone', _( 'Anyone' ) ), )
+	regex = re.compile( '^([^\s]+@[^\s]+|anyone)$' )
 
-class sharedFolderGroupACL(string):
-	_re=re.compile('^.+(\s(none|read|post|append|write|all))$')
-	searchFilter='(&(cn=*)(objectClass=posixGroup))'
-	description=_('Shared folder group ACL')
+class GroupName( UDM_Objects ):
+	udm_modules = ( 'groups/group', )
+	key = '%(name)s'
+	regex = re.compile( '^.+$' )
 
-	@classmethod
-	def parse(self, text):
-		text = text.strip()
-		if self._re.match(text) != None:
-			return text
-		raise univention.admin.uexceptions.valueError,_("Not a valid shared folder ACL")
+class SharedFolderUserACL( complex ):
+	subsyntaxes = ( ( _( 'User' ), UserMailAddress ), ( _( 'Access right' ), IMAP_Right ) )
+
+class SharedFolderGroupACL( complex ):
+	subsyntaxes = ( ( _( 'Group' ), GroupName ), ( _( 'Access right' ), IMAP_Right ) )
 
 class ldapDnOrNone(simple):
 	_re=re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')

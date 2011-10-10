@@ -36,6 +36,8 @@ import univention.admin.handlers
 import univention.admin.allocators
 import univention.admin.localization
 
+import univention.debug as ud
+
 translation=univention.admin.localization.translation('univention.admin.handlers.mail')
 _=translation.translate
 
@@ -87,7 +89,7 @@ property_descriptions={
 	'sharedFolderUserACL': univention.admin.property(
 			short_description=_('User ACL'),
 			long_description='',
-			syntax=univention.admin.syntax.sharedFolderUserACL,
+			syntax=univention.admin.syntax.SharedFolderUserACL,
 			multivalue=1,
 			required=0,
 			may_change=1,
@@ -96,7 +98,7 @@ property_descriptions={
 	'sharedFolderGroupACL': univention.admin.property(
 			short_description=_('Group ACL'),
 			long_description='',
-			syntax=univention.admin.syntax.sharedFolderGroupACL,
+			syntax=univention.admin.syntax.SharedFolderGroupACL,
 			multivalue=1,
 			required=0,
 			may_change=1,
@@ -191,17 +193,15 @@ class object(univention.admin.handlers.simpleLdap):
 				self['mailDomain']=cn[0].split('@')[1]
 
 			# fetch values for ACLs
-			acls=self.oldattr.get('acl',[])
+			acls=self.oldattr.get('univentionMailACL',[])
 			self['sharedFolderUserACL']=[]
 			self['sharedFolderGroupACL']=[]
 			if acls:
-				_sre_user = univention.admin.syntax.sharedFolderUserACL._re
-				_sre_group = univention.admin.syntax.sharedFolderGroupACL._re
 				for acl in acls:
-					if _sre_user.match(acl):
-						self['sharedFolderUserACL'].append(acl)
-					elif _sre_group.match(acl):
-						self['sharedFolderGroupACL'].append(acl)
+					if acl.find( '@' ) > 0 or acl.startswith( 'anyone' ):
+						self['sharedFolderUserACL'].append( acl.rsplit( ' ', 1 ) )
+					else:
+						self['sharedFolderGroupACL'].append( acl.rsplit( ' ', 1 ) )
 		self.save()
 
 
@@ -311,19 +311,20 @@ class object(univention.admin.handlers.simpleLdap):
 		rewrite_acl = False
 		new_acls_tmp = []
 		for attr in [ 'sharedFolderUserACL', 'sharedFolderGroupACL' ]:
+			ud.debug( ud.ADMIN, ud.INFO, 'ACLs: %s' % str( self[ attr ] ) )
 			if self.hasChanged( attr ):
 				rewrite_acl = True
 				# re-use regular expressions from syntax definitions
 				if attr=='sharedFolderUserACL':
-					_sre = univention.admin.syntax.sharedFolderUserACL._re
+					_sre = univention.admin.syntax.UserMailAddress.regex
 				else:
-					_sre = univention.admin.syntax.sharedFolderGroupACL._re
+					_sre = univention.admin.syntax.GroupName.regex
 				for acl in self[ attr ]:
-					if _sre.match( acl ):
-						new_acls_tmp.append( acl )
+					if _sre.match( acl[ 0 ] ):
+						new_acls_tmp.append( ' '.join( acl ) )
 			else:
 				for acl in self[attr]:
-					new_acls_tmp.append(acl)
+					new_acls_tmp.append( ' '.join( acl ) )
 
 		if rewrite_acl:
 			for (a, b, c) in ml:

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.111-1) unstable; urgency=low
+
+  * mail/folder: support syntax classes for user and group ACLs; Bug #23689
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Oct 2011 13:57:01 +0200
+
 univention-directory-manager-modules (7.0.110-1) unstable; urgency=low
 
   * encode with error handling unicode strings to output encoding (Bug #23475)
