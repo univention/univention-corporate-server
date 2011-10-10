@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.156-1) unstable; urgency=low
+
+  * rendering policies: support groups in tabs; Bug #23660
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Oct 2011 10:40:40 +0200
+
 univention-management-console-module-udm (1.0.155-2) unstable; urgency=low
 
   * removed reference to policies/admin_user in postinst; Bug #23664

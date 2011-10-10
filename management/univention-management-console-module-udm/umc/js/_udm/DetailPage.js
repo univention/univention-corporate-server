@@ -354,17 +354,25 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					// build up a small map that indicates which policy properties will be shown
 					// filter out the property 'name'
 					var usedProperties = {};
-					dojo.forEach(newLayout, function(jlayout, j) {
-						if (dojo.isArray(jlayout)) {
-							dojo.forEach(jlayout, function(klayout, k) {
+				   dojo.forEach(newLayout, function(jlayout, j) {
+					   if ( dojo.isArray( jlayout ) || dojo.isObject( jlayout ) ) {
+						   var nestedLayout = undefined === jlayout.layout ? jlayout : jlayout.layout;
+							dojo.forEach( nestedLayout, function(klayout, k) {
 								if (dojo.isString(klayout)) {
 									if ('name' != klayout) {
 										usedProperties[klayout] = true;
 									}
+								} else if (dojo.isArray(klayout)) {
+									dojo.forEach(klayout, function(llayout, l) {
+										if (dojo.isString(llayout)) {
+											if ('name' != llayout) {
+												usedProperties[llayout] = true;
+											}
+										}
+									} );
 								}
 							});
-						}
-						else if (dojo.isString(jlayout)) {
+						} else if (dojo.isString(jlayout)) {
 							if ('name' != jlayout) {
 								usedProperties[jlayout] = true;
 							}
