@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.85-2) unstable; urgency=low
+
+  * remove old UDM web-page link in apache's configuration; Bug #23301
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Oct 2011 08:38:50 +0200
+
 univention-management-console-frontend (1.0.85-1) unstable; urgency=low
 
   * added removal of Grid row menus upon Grid destruction

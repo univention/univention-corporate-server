@@ -65,6 +65,8 @@ if dpkg --compare-versions "$2" lt-nl 1.0.8-1; then
 		currentMd5="$(md5sum "$path" | sed -e 's/ .*//')"
 		[ "$currentMd5" = "$md5" ] && rm -f "$path"
     done
+	# remove link in apache's sites-enabled
+	rm -f /etc/apache2/sites-enabled/univention-directory-manager
 fi
 
 exit 0
