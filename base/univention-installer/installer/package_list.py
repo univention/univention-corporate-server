@@ -56,7 +56,7 @@ PackageList=[
 	'Packages':
 			[
 				{
-					'Name': _('Samba 4 server'),
+					'Name': _('Active Directory-compatible domaincontroller (Samba 4)'),
 					'Packages': ['univention-samba4'],
 					'Edition': [ 'ucs' ],
 					'Active': [ ],
@@ -64,7 +64,7 @@ PackageList=[
 					'Description': _("Samba 4 Services"),
 				},
 				{
-					'Name': _('Samba 4 server'), # DC Master and DC Backups need the s4 connector for UCS 3,0 MS1 and MS2
+					'Name': _('Active Directory-compatible domaincontroller (Samba 4)'), # DC Master and DC Backups need the s4 connector for UCS 3,0 MS1 and MS2
 					'Packages': ['univention-s4-connector', 'univention-samba4'],
 					'Edition': [ 'ucs' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
@@ -72,11 +72,19 @@ PackageList=[
 					'Description': _("Samba 4 Services"),
 				},
 				{
-					'Name': _('Samba 3 server'),
+					'Name': _('NT-compatible domaincontroller (Samba 3)'),
 					'Packages': ['univention-samba', 'samba'],
 					'Edition': [ 'ucs' ],
 					'Active': [],
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave' ],
+					'Description': _("Samba Services"),
+				},
+				{
+					'Name': _('Windows memberserver (Samba 3 / Samba 4)'),
+					'Packages': ['univention-samba', 'samba'],
+					'Edition': [ 'ucs' ],
+					'Active': [],
+					'Possible': ['memberserver'],
 					'Description': _("Samba Services"),
 				},
 				{
