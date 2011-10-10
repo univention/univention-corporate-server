@@ -32,6 +32,10 @@
 
 import os, heimdal, codecs, types, string, sys
 import smbpasswd
+import univention.config_registry
+
+configRegistry=univention.config_registry.ConfigRegistry()
+configRegistry.load()
 
 def crypt(password):
 	"""return crypt hash"""
@@ -44,14 +48,21 @@ def crypt(password):
 		'6', '7', '8', '9' ]
 	salt = ''
 	urandom = open("/dev/urandom", "r")
-	for i in range(0,8):
-		o = urandom.read(1)
-		salt = salt + valid[(ord(o) % 64)]
-
+	for i in xrange(0, 16): # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
+		o = ord(urandom.read(1))
+		while not o < 256 / len(valid) * len(valid): # make sure not to skew the distribution when using modulo
+			o = ord(urandom.read(1))
+		salt = salt + valid[(o % len(valid))]
 	urandom.close()
 
-	import crypt
-	return crypt.crypt(password.encode('utf-8'), '$1$%s$' % salt)
+	import crypt # UCRV
+	method_id = {'MD5': '1',
+	             'SHA256': '5',
+	             'SHA-256': '5',
+	             'SHA512': '6',
+	             'SHA-512': '6',
+	             }.get(configRegistry.get('password/hashing/method', 'sha-512').upper(), 6)
+	return crypt.crypt(password.encode('utf-8'), '$%s$%s$' % (method_id, salt, ))
 
 def ntlm(password):
 	"""return tuple with NT and LanMan hash"""

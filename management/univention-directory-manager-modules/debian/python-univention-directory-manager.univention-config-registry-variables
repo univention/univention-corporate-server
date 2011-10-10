@@ -21,3 +21,9 @@ Description[de]=In Samba 4 Umgebungen werden die Samba Attribute durch Samba 4 g
 Description[en]=The samba attributes will be generated through Samba 4 in a Samba 4 environment. The UDM will generate the samba attributes if this variale is set to yes
 Type=str
 Categories=management-udm
+
+[password/hashing/method]
+Description[de]=Legt den Algorithmus fest nach dem Passwörter im LDAP-Verzeichnis gespeichert werden. Mögliche Werte sind: "MD5": Weniger sicher als die SHA-Methoden, nicht empfohlen; "SHA-256": sicherer als MD5; "SHA-512": sicherer als MD5, empfohlen. (Standard bei Nicht- oder Falschangabe ist "SHA-512", Großschreibung wird ignoriert)
+Description[en]=Selects the algorithm to use for saving passwords in the LDAP directory. Possible values are: "MD5": Less secure than the SHA methods, not recommended; "SHA-256": more secure than MD5; "SHA-512": more secure than MD5, recommended. (default if not or wrongly set: "SHA-512", capitalisation is ignored)
+Type=str
+Categories=system-password

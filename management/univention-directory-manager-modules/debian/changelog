@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.113-1) unstable; urgency=low
+
+  * make crypt method for passwords in LDAP directory configurable (Bug #23763)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 10 Oct 2011 14:27:51 +0200
+
 univention-directory-manager-modules (7.0.112-1) unstable; urgency=low
 
   * policies/dhcp_routing: add property routers to layout and fix syntax
