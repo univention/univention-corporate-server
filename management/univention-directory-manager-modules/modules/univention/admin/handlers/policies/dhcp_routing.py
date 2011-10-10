@@ -125,6 +125,7 @@ property_descriptions={
 layout = [
 	Tab(_('General'),_('DHCP routing'), layout = [
 		'name',
+		'routers',
 		] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],

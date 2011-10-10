@@ -835,6 +835,7 @@ class hostOrIP(simple):
 		else:
 			return False
 
+	@classmethod
 	def parse(self, text):
 		if self.hostName(text) or self.ipAddress(text):
 			return text

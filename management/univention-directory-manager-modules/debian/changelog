@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.112-1) unstable; urgency=low
+
+  * policies/dhcp_routing: add property routers to layout and fix syntax
+    class hostOrIP; Bug #23693
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Oct 2011 14:10:06 +0200
+
 univention-directory-manager-modules (7.0.111-1) unstable; urgency=low
 
   * mail/folder: support syntax classes for user and group ACLs; Bug #23689
