@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.115-1) unstable; urgency=low
+
+  * make same changes from 7.0.114-1 to dhcp/sharedsubnet; Bug #23678
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Oct 2011 16:49:44 +0200
+
 univention-directory-manager-modules (7.0.114-1) unstable; urgency=low
 
   * support syntax for IP address ranges; Bug #23678
