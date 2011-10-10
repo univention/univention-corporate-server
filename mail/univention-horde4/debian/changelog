@@ -1,3 +1,11 @@
+univention-horde4 (1.0.10-1) unstable; urgency=low
+
+  * activate sieve backend in ingo (Bug #23741)
+  * added default spam rule 
+  * show all mail folders in imp
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Oct 2011 10:25:40 +0200
+
 univention-horde4 (1.0.9-1) unstable; urgency=low
 
   * fixed suid wrapper

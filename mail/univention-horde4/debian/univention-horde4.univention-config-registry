@@ -65,3 +65,17 @@ File: etc/horde4/imp/conf.d/10-ucs.php
 User: www-data
 Mode: 640
 Variables: horde/.*
+
+Type: file
+File: etc/horde4/ingo/backends.d/10-ucs.php
+User: www-data
+Mode: 640
+Variables: horde/.*
+
+Type: file
+File: etc/horde4/ingo/prefs.d/10-ucs.php
+User: www-data
+Mode: 640
+Variables: mail/cyrus/folder/spam
+Variables: mail/antispam/requiredhits
+Variables: horde/.*

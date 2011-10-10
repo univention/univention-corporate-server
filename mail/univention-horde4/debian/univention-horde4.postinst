@@ -83,8 +83,10 @@ univention-config-registry set \
 	horde/nag/status?"'inactive'" \
 	horde/turba/status?"'active'" \
 	horde/menu/apps?"array('imp', 'ingo', 'turba')" \
-	horde/imp/menu/apps_iframe?true
-
+	horde/imp/menu/apps_iframe?true \
+	horde/subscribe/value?0 \
+	horde/ingo/imap/disabled?true \
+	horde/imap/sieve/port?4190
 
 domain=$(echo $mail_hosteddomains | awk '{print $1}')
 if [ -n "$domain" ]; then
