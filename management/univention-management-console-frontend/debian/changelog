@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.86-1) unstable; urgency=low
+
+  * _SelectMixin: added check to detect duplicates for dynamic values 
+    (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Oct 2011 11:46:17 +0200
+
 univention-management-console-frontend (1.0.85-2) unstable; urgency=low
 
   * remove old UDM web-page link in apache's configuration; Bug #23301

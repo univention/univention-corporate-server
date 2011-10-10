@@ -296,6 +296,9 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 				umc.tools.assert(!(iitem.id in this._ids), "umc.widgets._SelectMixin: Entry already previously defined: " + dojo.toJson(iitem));
 				this.store.newItem(iitem);
 
+				// cache the values in a dict
+				this._ids[iitem.id] = iitem.label;
+
 				// set pre-selected item
 				if (iitem.preselected) {
                     this._initialValue = iitem.id;
