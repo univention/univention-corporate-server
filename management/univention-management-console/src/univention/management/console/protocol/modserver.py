@@ -39,12 +39,9 @@ from ..acl import ACLs
 from ..module import Module
 from ..log import MODULE
 
-from univention.lib.i18n import Locale
+from univention.lib.i18n import Locale, NullTranslation
 
-import univention.config_registry
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
+_ = NullTranslation( 'univention.management.console' ).translate
 
 import locale
 import notifier
