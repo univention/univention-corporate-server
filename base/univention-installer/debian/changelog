@@ -1,3 +1,10 @@
+univention-installer (7.0.99-1) unstable; urgency=low
+
+  * Check for package conflicts (S3 and S4 + KVM and Xen) and show a
+    warning for S3 and S4 mix setups (Bug #24000)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Oct 2011 16:36:05 +0200
+
 univention-installer (7.0.98-1) unstable; urgency=low
 
   * Show full package text (Bug #24000)

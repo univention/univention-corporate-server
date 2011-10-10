@@ -138,6 +138,8 @@ class object(content):
 		self.sub = self.active(self,_('Preparing package list'),_('Please wait ...'))
 		self.sub.action='preparing-package-list'
 		self.sub.draw()
+		self.samba3_warning = False
+		self.samba4_warning = False
 
 
 	def _init_categories(self):
@@ -397,6 +399,41 @@ class object(content):
 			self._save_packages(current_category, self.get_elem('packages_%s' % current_category).result())
 
 	def incomplete(self):
+		p_list=[]
+		s3 = s4 = None
+		kvm = xen = None
+		
+		for c in self.categories.keys():
+			index=self.categories[c][1]
+			for key in self.packages[index].keys():
+				if self.packages[index][key][2] == 1:
+					for p in self.packages[index][key][4]:
+						if p == 'univention-samba':
+							s3 = (index, key)
+						elif p == 'univention-samba4':
+							s4 = (index, key)
+						elif p == 'univention-virtual-machine-manager-node-kvm':
+							kvm = (index, key)
+						elif p == 'univention-virtual-machine-manager-node-xen':
+							xen = (index, key)
+						p_list.append(p)
+
+		if xen and kvm:
+			return _('Software conflict!\n\nIt is not allowed to install the software packages %s and %s on one system. Please select only one of these two component.') % (self.packages[kvm[0]][kvm[1]][0], self.packages[xen[0]][xen[1]][0])
+
+		if s3 and s4:
+			return _('Software conflict!\n\nIt is not allowed to install the software packages %s and %s on one system. Please select only one of these two component.') % (self.packages[s4[0]][s4[1]][0], self.packages[s3[0]][s3[1]][0])
+
+		if self.all_results['system_role'] in ['domaincontroller_backup', 'domaincontroller_slave']:
+			if s3 and self.samba3_warning == False:
+				self.samba3_warning = True
+				return _('The software package %s was selected. It is not possible to mix NT and Active Directory compatible domaincontroller.\n\nMake sure the existing UCS domain is NT-compatible (Samba 3). This warning is shown only once.') % (self.packages[s3[0]][s3[1]][0])
+
+			if s4 and self.samba4_warning == False:
+				if self.all_results['system_role'] in ['domaincontroller_backup', 'domaincontroller_slave']:
+					self.samba4_warning = True
+					return _('The software package %s was selected. It is not possible to mix NT and Active Directory compatible domaincontroller.\n\nMake sure the existing UCS domain is Active Directory-compatible (Samba 4). This warning is shown only once.') % (self.packages[s4[0]][s4[1]][0])
+
 		return 0
 
 	def helptext(self):

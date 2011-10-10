@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-10 06:46+0200\n"
+"POT-Creation-Date: 2011-10-10 16:33+0200\n"
 "PO-Revision-Date: 2011-10-07 15:04+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -203,11 +203,11 @@ msgid " End"
 msgstr " Ende"
 
 #: installer/objects.py:1504 installer/modules/65_partition.py:2361
-#: installer/modules/85_software.py:305
+#: installer/modules/85_software.py:307
 msgid "F12-Next"
 msgstr "F12-Weiter"
 
-#: installer/objects.py:1508 installer/modules/85_software.py:298
+#: installer/objects.py:1508 installer/modules/85_software.py:300
 msgid "F12-Accept changes"
 msgstr "F12-Änderungen akzeptieren"
 
@@ -220,7 +220,7 @@ msgid "F12-Start installation"
 msgstr "F12-Installation starten"
 
 #: installer/objects.py:1515 installer/modules/65_partition.py:2360
-#: installer/modules/85_software.py:301 installer/modules/85_software.py:306
+#: installer/modules/85_software.py:303 installer/modules/85_software.py:308
 msgid "F11-Back"
 msgstr "F11-Zurück"
 
@@ -2113,11 +2113,54 @@ msgstr "Join-Einstellungen"
 msgid "Preparing package list"
 msgstr "Bereite Paketliste vor"
 
-#: installer/modules/85_software.py:308
+#: installer/modules/85_software.py:310
 msgid "Please select the software components you want to install:"
 msgstr "Bitte wählen Sie die zu installierenden Softwarekomponenten aus:"
 
-#: installer/modules/85_software.py:403
+#: installer/modules/85_software.py:422 installer/modules/85_software.py:425
+#, python-format
+msgid ""
+"Software conflict!\n"
+"\n"
+"It is not allowed to install the software packages %s and %s on one system. "
+"Please select only one of these two component."
+msgstr ""
+"Software Konflikt!\n"
+"\n"
+"Es ist nicht erlaubt die Software-Pakete %s und %s auf einem System zu "
+"installieren. Bitte wählen Sie nur eine der beiden Komponenten aus."
+
+#: installer/modules/85_software.py:430
+#, python-format
+msgid ""
+"The software package %s was selected. It is not possible to mix NT and "
+"Active Directory compatible domaincontroller.\n"
+"\n"
+"Make sure the existing UCS domain is NT-compatible (Samba 3). This warning "
+"is shown only once."
+msgstr ""
+"Das Software-Paket %s wurde ausgewählt. Es ist nicht möglich NT- und Active "
+"Directory kompatible Domänencontroller zu mischen.\n"
+"\n"
+"Bitte stellen Sie sicher, dass die UCS-Domäne NT-kompatibel ist (Samba 3). "
+"Diese Warnung wird nur einmal angezeigt."
+
+#: installer/modules/85_software.py:435
+#, python-format
+msgid ""
+"The software package %s was selected. It is not possible to mix NT and "
+"Active Directory compatible domaincontroller.\n"
+"\n"
+"Make sure the existing UCS domain is Active Directory-compatible (Samba 4). "
+"This warning is shown only once."
+msgstr ""
+"Das Software-Paket %s wurde ausgewählt. Es ist nicht möglich NT- und Active "
+"Directory kompatible Domänencontroller zu mischen.\n"
+"\n"
+"Bitte stellen Sie sicher, dass die UCS-Domäne Active Directory-kompatibel "
+"ist (Samba 4). Diese Warnung wird nur einmal angezeigt."
+
+#: installer/modules/85_software.py:440
 msgid ""
 "Software \n"
 " \n"
@@ -2129,7 +2172,7 @@ msgstr ""
 " Bitte wählen Sie die Softwarekomponenten die Sie installieren möchten. Sie "
 "können in den folgenden Schritten die Details für manche Module ändern."
 
-#: installer/modules/85_software.py:406 installer/modules/XX00_example.py:86
+#: installer/modules/85_software.py:443 installer/modules/XX00_example.py:86
 msgid "Software"
 msgstr "Software"
 
