@@ -94,7 +94,7 @@ property_descriptions={
 	'ipRange': univention.admin.property(
 			short_description=_('IP Address Range'),
 			long_description='',
-			syntax=univention.admin.syntax.ipRange,
+			syntax=univention.admin.syntax.IP_AddressRange,
 			multivalue=1,
 			dontsearch=1,
 			required=0,
@@ -153,17 +153,11 @@ layout = [
 		] )
 	]
 
-def rangeMap(old):
-	new=[]
-	for i in old:
-		new.append(string.join(i, ' '))
-	return new
+def rangeMap( value ):
+	return map( lambda x: ' '.join( x ), value )
 
-def rangeUnmap(old):
-	new=[]
-	for i in old:
-		new.append(i.split(' '))
-	return new
+def rangeUnmap( value ):
+	return map( lambda x: x.split( ' ' ), value )
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
@@ -173,6 +167,7 @@ mapping.register('nextIp','univentionNextIp', None, univention.admin.mapping.Lis
 mapping.register('dnsEntryZoneForward','univentionDnsForwardZone', univention.admin.mapping.IgnoreNone, univention.admin.mapping.ListToString)
 mapping.register('dnsEntryZoneReverse','univentionDnsReverseZone', univention.admin.mapping.IgnoreNone, univention.admin.mapping.ListToString)
 mapping.register('dhcpEntryZone','univentionDhcpEntry', univention.admin.mapping.IgnoreNone, univention.admin.mapping.ListToString)
+mapping.register('ipRange','univentionIpRange', rangeMap, rangeUnmap )
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
@@ -185,19 +180,6 @@ class object(univention.admin.handlers.simpleLdap):
 		self.descriptions=property_descriptions
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
-
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-
-		self['ipRange']=[]
-		if self.dn:
-			ipRange=self.oldattr.get('univentionIpRange',[])
-			if ipRange:
-				self['ipRange']=[]
-			for i in ipRange:
-				self['ipRange'].append(i.split(' '))
-
-		self.save()
 
 	def stepIp(self):
 		if self['nextIp']:
@@ -227,7 +209,6 @@ class object(univention.admin.handlers.simpleLdap):
 				self['nextIp']=self['ipRange'][0][0]
 				if self['nextIp'].split('.')[3] == '0':
 					self['nextIp']=univention.admin.ipaddress.ip_plus_one(self['ipRange'][0][0])
-				
 			else:
 				if not univention.admin.ipaddress.ip_is_in_network(self['network'], self['netmask'], newIp):
 					self['nextIp']=univention.admin.ipaddress.ip_plus_one(self['network'])

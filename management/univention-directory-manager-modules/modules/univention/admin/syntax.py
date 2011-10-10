@@ -886,16 +886,9 @@ class netmask(simple):
 		if errors:
 			raise univention.admin.uexceptions.valueError, _("Not a valid netmask!")
 
-class ipRange(complex):
-	subsyntaxes=[(_('First Address'), ipAddress), (_('Last Address'), string)]
+class IP_AddressRange( complex ):
+	subsyntaxes = ( ( _( 'First Address' ), ipAddress ), ( _( 'Last Address' ), string ) )
 	all_required=1
-
-	@classmethod
-	def tostring(self, texts):
-		if texts and texts[0] and texts[1]:
-			return texts[0]+'  '+texts[1]
-		else:
-			return ''
 
 class ipProtocol(select):
 	choices=[ ( 'tcp', 'TCP' ), ('udp', 'UDP' ) ]

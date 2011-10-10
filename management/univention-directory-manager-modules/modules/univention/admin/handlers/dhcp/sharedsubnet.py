@@ -83,7 +83,7 @@ property_descriptions={
 	'range': univention.admin.property(
 			short_description=_('Dynamic range'),
 			long_description='',
-			syntax=univention.admin.syntax.ipRange,
+			syntax=univention.admin.syntax.IP_AddressRange,
 			multivalue=1,
 			options=[],
 			required=0,

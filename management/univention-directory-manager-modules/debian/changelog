@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.114-1) unstable; urgency=low
+
+  * support syntax for IP address ranges; Bug #23678
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Oct 2011 16:42:49 +0200
+
 univention-directory-manager-modules (7.0.113-1) unstable; urgency=low
 
   * make crypt method for passwords in LDAP directory configurable (Bug #23763)

@@ -84,7 +84,7 @@ property_descriptions={
 	'range': univention.admin.property(
 			short_description=_('Dynamic range'),
 			long_description='',
-			syntax=univention.admin.syntax.ipRange,
+			syntax=univention.admin.syntax.IP_AddressRange,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -106,22 +106,17 @@ layout = [
 		] ),
 ]
 
-def rangeMap(old):
-	new=[]
-	for i in old:
-		new.append(string.join(i, ' '))
-	return new
+def rangeMap( value ):
+	return map( lambda x: ' '.join( x ), value )
 
-def rangeUnmap(old):
-	new=[]
-	for i in old:
-		new.append(i.split(' '))
-	return new
+def rangeUnmap( value ):
+	return map( lambda x: x.split( ' ' ), value )
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('subnet', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('subnetmask', 'dhcpNetMask', None, univention.admin.mapping.ListToString)
 mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, univention.admin.mapping.ListToString)
+mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
@@ -140,19 +135,6 @@ class object(univention.admin.handlers.simpleLdap):
 			raise univention.admin.uexceptions.insufficientInformation, 'neither dn nor position present'
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
-
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-
-		self['range']=[]
-		if self.dn:
-			dhcpRange=self.oldattr.get('dhcpRange',[])
-			if dhcpRange:
-				self['range']=[]
-			for i in dhcpRange:
-				self['range'].append(i.split(' '))
-
-		self.save()
 
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('subnet'), mapping.mapValue('subnet', self.info['subnet']), self.position.getDn())
