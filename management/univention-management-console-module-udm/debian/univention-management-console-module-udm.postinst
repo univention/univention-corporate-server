@@ -73,7 +73,6 @@ for i in \
 	nagios/service \
 	networks/network \
 	policies/admin_container \
-	policies/admin_user \
 	policies/autostart \
 	policies/clientdevices \
 	policies/console_access \
