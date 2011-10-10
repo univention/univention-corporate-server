@@ -130,7 +130,6 @@ modules = {
 	'nagios/service': Attributes( UCS ),
 	'nagios/timeperiod': Attributes( UCS ),
 	'policies/admin_container': Attributes([ UCS, UGS ]),
-	'policies/admin_user': Attributes([ UCS, UGS ]),
 	'policies/autostart': Attributes( UCS ),
 	'policies/clientdevices': Attributes( UCS ),
 	'policies/clientpackages': Attributes( UCS ),

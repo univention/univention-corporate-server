@@ -2937,40 +2937,6 @@ then
 
     	
 	############################################################################
-	# policies/admin_user
-	############################################################################
-	adminwrap $LINENO policies/admin_user create\
-		--set name=testadminuserpolicy \
-		--set baseDN=\"$ldap_base\" \
-		--set listWizards=shares/print \
-		--set listWebModules=modself \
-		--set selfAttributes=homeShare \
-		--set mayOverrideSettings=1 
-	ckthere "cn=testadminuserpolicy" "base" "(univentionAdminBaseDN=$ldap_base)" "policy/admin_user" "baseDN" $LINENO
-	ckthere "cn=testadminuserpolicy" "base" "(univentionAdminListWizards=shares/print)" "policy/admin_user" "listWizards" $LINENO
-	ckthere "cn=testadminuserpolicy" "base" "(univentionAdminListWebModules=modself)" "policy/admin_user" "listWebModules" $LINENO
-	ckthere "cn=testadminuserpolicy" "base" "(univentionAdminSelfAttributes=homeShare)" "policy/admin_user" "selfAttributes" $LINENO
-	ckthere "cn=testadminuserpolicy" "base" "(univentionAdminMayOverrideSettings=1)" "policy/admin_user" "baseDN" $LINENO
-
-	adminwrap $LINENO policies/admin_user modify\
-		--dn \"cn=testadminuserpolicy,$ldap_base\" \
-		--set baseDN=\"cn=users,$ldap_base\" \
-		--set listWizards=users/user \
-		--set listWebModules=modbrowse \
-		--set selfAttributes=description \
-		--set mayOverrideSettings=0 
-	ckthere "cn=testadminuserpolicy" "base" "(univentionAdminBaseDN=cn=users,$ldap_base)" "policy/admin_user" "baseDN" $LINENO
-	ckthere "cn=testadminuserpolicy" "base" "(univentionAdminListWizards=users/user)" "policy/admin_user" "listWizards" $LINENO
-	ckthere "cn=testadminuserpolicy" "base" "(univentionAdminListWebModules=modbrowse)" "policy/admin_user" "listWebModules" $LINENO
-	ckthere "cn=testadminuserpolicy" "base" "(univentionAdminSelfAttributes=description)" "policy/admin_user" "selfAttributes" $LINENO
-	cknthere "cn=testadminuserpolicy" "base" "(univentionAdminMayOverrideSettings=1)" "policy/admin_user" "mayOverrideSettings" $LINENO
-	
-	adminwrap $LINENO policies/admin_user remove --dn \"cn=testadminuserpolicy,$ldap_base\"
-	cknthere "cn=testadminuserpolicy" "base" "(objectClass=*)" "policy/admin_user" "existence" $LINENO
-							
-	policy_append_remove_test $LINENO admin_user
-	
-	############################################################################
 	# policies/autostart
 	############################################################################
 	adminwrap $LINENO policies/autostart create \
@@ -5842,7 +5808,6 @@ then
 			mail_lists \
 			networks_network \
 			"policies admin_container" \
-			"policies admin_user" \
 			"policies autostart" \
 			"policies clientdevices" \
 			"policies managedclientpackages" \

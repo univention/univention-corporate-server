@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.109-1) unstable; urgency=low
+
+  * syntax classes nagiosServiceDn and nagiosHostsEnabledDn are adapted to
+    UCS 3.0; Bug #23677
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Oct 2011 09:20:50 +0200
+
 univention-directory-manager-modules (7.0.108-1) unstable; urgency=low
 
   * policies/admin_user: this policy is not supported anymore with UCS

@@ -35,7 +35,6 @@ import copy
 from univention.admin.layout import Tab, Group
 import univention.admin.handlers
 import univention.admin.handlers.settings.user
-import univention.admin.handlers.policies.admin_user
 import univention.admin.localization
 import univention.admin.uexceptions
 import univention.admin.uldap
