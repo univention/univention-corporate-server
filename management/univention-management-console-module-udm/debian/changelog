@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.157-1) unstable; urgency=low
+
+  * support static values for syntax classes based von UDM_Object; Bug #23689
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Oct 2011 14:00:22 +0200
+
 univention-management-console-module-udm (1.0.156-1) unstable; urgency=low
 
   * rendering policies: support groups in tabs; Bug #23660

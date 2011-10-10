@@ -102,7 +102,7 @@ def LDAP_Connection( func ):
 		except udm_errors.base, e:
 			MODULE.info( 'LDAP operation for user %s has failed' % _user_dn )
 			try:
-				lo = udm_uldap.access( host = ucr.get( 'ldap/master' ), binddn= _user_dn, bindpw = _password )
+				lo = udm_uldap.access( host = ucr.get( 'ldap/master' ), base = ucr.get( 'ldap/base' ), binddn= _user_dn, bindpw = _password )
 				po = udm_uldap.position( lo.base )
 			except Exception, e:
 				raise LDAP_ConnectionError( 'Opening LDAP connection failed: %s' % str( e ) )
@@ -715,8 +715,11 @@ def read_syntax_choices( syntax_name, options = {} ):
 				continue
 			MODULE.info( 'Found syntax %s with udm_module property' % syntax_name )
 			syn.choices.extend( map( map_choice, module.search( filter = syn.udm_filter % options ) ) )
+		if isinstance( syn.static_values, ( tuple, list ) ):
+			for value in syn.static_values:
+				syn.choices.insert( 0, value )
 		if syn.empty_value:
-			syn.choices.insert( 0, ( None, '' ) )
+			syn.choices.insert( 0, ( '', '' ) )
 	elif issubclass( syn, udm_syntax.UDM_Attribute ):
 		syn.choices = []
 		def filter_choice( obj ):
@@ -740,8 +743,11 @@ def read_syntax_choices( syntax_name, options = {} ):
 			for element in map( map_choice, filter( filter_choice, module.search( filter = syn.udm_filter % options ) ) ):
 				for item in element:
 					syn.choices.append( item )
+		if isinstance( syn.static_values, ( tuple, list ) ):
+			for value in syn.static_values:
+				syn.choices.insert( 0, value )
 		if syn.empty_value:
-			syn.choices.insert( 0, ( None, '' ) )
+			syn.choices.insert( 0, ( '', '' ) )
 	elif hasattr( syn, 'udm_modules' ):
 		MODULE.info( 'Found syntax class %s with udm_module attribute (= %s)' % ( syntax_name, syn.udm_modules ) )
 		syn.choices = []
