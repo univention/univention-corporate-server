@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.107-1) unstable; urgency=low
+
+  * dns/host_record: remove second referenac to attribute 'a' in layout; Bug #23681
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Oct 2011 08:24:39 +0200
+
 univention-directory-manager-modules (7.0.106-1) unstable; urgency=low
 
   * users/user, groups/group: add attribute sambaPrivileges; Bug #23746

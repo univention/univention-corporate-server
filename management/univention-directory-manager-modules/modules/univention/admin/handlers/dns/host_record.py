@@ -106,9 +106,6 @@ layout = [
 		'a',
 		'zonettl'
 		] ),
-	Tab(_('IP addresses'), _('IP addresses of the host'), layout = [
-		'a'
-		] ),
 	Tab(_('Mail'), _('Mail exchangers for this host'), advanced = True, layout = [
 		'mx'
 		] ),
