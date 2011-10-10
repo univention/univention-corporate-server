@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-07 19:01+0200\n"
+"POT-Creation-Date: 2011-10-10 13:38+0200\n"
 "PO-Revision-Date: 2011-09-07 20:25+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_udm/DetailPage.js:687
+#: umc/js/_udm/DetailPage.js:695
 #, python-format
 msgid "%(attribute)s: %(message)s\n"
 msgstr ""
@@ -80,19 +80,19 @@ msgstr "Alle Eigenschaften"
 msgid "All types"
 msgstr "Alle Objekttypen"
 
-#: umc/js/_udm/DetailPage.js:431
+#: umc/js/_udm/DetailPage.js:439
 msgid "Back to navigation"
 msgstr "Zurück zur Navigation"
 
-#: umc/js/_udm/DetailPage.js:431
+#: umc/js/_udm/DetailPage.js:439
 msgid "Back to search"
 msgstr "Zurück zur Suche"
 
-#: umc/js/udm.js:668
+#: umc/js/udm.js:679
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/_udm/DetailPage.js:395
+#: umc/js/_udm/DetailPage.js:403
 #, python-format
 msgid "Click to edit the inherited properties of the policy: %s"
 msgstr ""
@@ -122,7 +122,7 @@ msgstr "DNS-Objekt"
 msgid "DNS objects"
 msgstr "DNS-Objekte"
 
-#: umc/js/udm.js:240 umc/js/udm.js:474 umc/js/udm.js:658
+#: umc/js/udm.js:240 umc/js/udm.js:481 umc/js/udm.js:669
 msgid "Delete"
 msgstr "Löschen"
 
@@ -131,7 +131,7 @@ msgstr "Löschen"
 msgid "Deleting the selected %s."
 msgstr "Die ausgewählten %s löschen"
 
-#: umc/js/udm.js:214 umc/js/udm.js:467
+#: umc/js/udm.js:214 umc/js/udm.js:474
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -144,7 +144,7 @@ msgstr "Bearbeiten in neuem Tab"
 msgid "Edit the %s."
 msgstr "%s bearbeiten"
 
-#: umc/js/_udm/DetailPage.js:689
+#: umc/js/_udm/DetailPage.js:697
 msgid "Error"
 msgstr "Fehler"
 
@@ -209,17 +209,17 @@ msgstr "Pfad"
 msgid "Path of the UDM object."
 msgstr "Pfad des UDM-Objektes"
 
-#: umc/js/udm.js:653
+#: umc/js/udm.js:664
 #, python-format
 msgid "Please confirm the removal of the %d selected %s!"
 msgstr "Bitte bestätigen Sie das Löschen der %d ausgewählten %s!"
 
-#: umc/js/udm.js:655
+#: umc/js/udm.js:666
 #, python-format
 msgid "Please confirm the removal of the selected %s!"
 msgstr "Bitte bestätigen Sie das Löschen des/der ausgewählten %s!"
 
-#: umc/js/udm.js:685
+#: umc/js/udm.js:696
 msgid ""
 "Please select a container in the navigation bar. The new object will be "
 "placed at this location."
@@ -240,11 +240,11 @@ msgstr "Eigenschaft"
 msgid "Property value"
 msgstr "Eigenschaftswert"
 
-#: umc/js/udm.js:481
+#: umc/js/udm.js:488
 msgid "Reload"
 msgstr "Neu laden"
 
-#: umc/js/_udm/DetailPage.js:427
+#: umc/js/_udm/DetailPage.js:435
 msgid "Save changes"
 msgstr "Änderungen speichern"
 
@@ -257,7 +257,7 @@ msgstr "%s suchen"
 msgid "Search in:"
 msgstr "Suche in:"
 
-#: umc/js/udm.js:554
+#: umc/js/udm.js:559
 msgid "Show all superordinates"
 msgstr "Alle übergeordnete Objekte zeigen"
 
@@ -265,7 +265,7 @@ msgstr "Alle übergeordnete Objekte zeigen"
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
-#: umc/js/_udm/DetailPage.js:735
+#: umc/js/_udm/DetailPage.js:743
 #, python-format
 msgid "The UDM object could not be saved: %(details)s"
 msgstr "Das UDM-Objekt konnte nicht gespeichert werden: %(details)s"
@@ -291,11 +291,11 @@ msgstr "Der genaue %styp"
 msgid "The exact object type of the new UDM object."
 msgstr "Der genaue Objekttyp des neuen UDM-Objektes."
 
-#: umc/js/_udm/DetailPage.js:660
+#: umc/js/_udm/DetailPage.js:668
 msgid "The following properties could not be validated:"
 msgstr "Die folgenden Eigenschaften konnten nicht validiert werden:"
 
-#: umc/js/_udm/DetailPage.js:615
+#: umc/js/_udm/DetailPage.js:623
 msgid "The following properties need to be specified or are invalid:"
 msgstr ""
 "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
@@ -345,7 +345,7 @@ msgstr "Rechner"
 msgid "computers"
 msgstr "Rechner"
 
-#: umc/js/_udm/DetailPage.js:396
+#: umc/js/_udm/DetailPage.js:404
 msgid "edit"
 msgstr "bearbeiten"
 

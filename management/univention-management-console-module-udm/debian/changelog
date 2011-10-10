@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.158-1) unstable; urgency=low
+
+  * open the LDAP-base at startup in the navigation (Bug #23703)
+  * added check to ensure that only one button for search within the scope of
+    superordinates is shown (Bug #23996)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Oct 2011 14:02:18 +0200
+
 univention-management-console-module-udm (1.0.157-1) unstable; urgency=low
 
   * support static values for syntax classes based von UDM_Object; Bug #23689

@@ -16,6 +16,8 @@ dojo.declare('umc.modules._udm.TreeModel', null, {
 	//		Reference to the module specific umcpCommand function.
 	umcpCommand: null,
 
+	root: null,
+
 	constructor: function(args) {
 		dojo.mixin(this, args);
 	},
@@ -25,6 +27,7 @@ dojo.declare('umc.modules._udm.TreeModel', null, {
 			var results = dojo.isArray(data.result) ? data.result : [];
 			if (results.length) {
 				onItem(results[0]);
+				this.root = results[0];
 			}
 			else {
 				console.log('WARNING: No top container could be queried for LDAP navigation! Ignoring error.');

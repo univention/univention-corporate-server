@@ -449,11 +449,18 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				model: model,
 				persist: false,
 				// customize the method getIconClass()
-				onClick: dojo.hitch(this, 'filter'),
 				getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
 					return umc.tools.getIconClass(item.icon || 'udm-container-cn');
-				}
+				},
+				onLoad: dojo.hitch(this, function() {
+					// of the tree has been loaded successfully, model.root
+					// is set and we can select the root as active node
+					if (model.root) {
+						this._tree.set('path', [ model.root ]);
+					}
+				})
 			});
+			this._tree.watch('path', dojo.hitch(this, 'filter')); // register for changes of the selected item (= path)
 			var treePane = new dijit.layout.ContentPane({
 				content: this._tree,
 				region: 'left',
@@ -540,16 +547,14 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		// for the search scope
 		if (this._searchForm.getWidget('superordinate')) {
 			this.connect(this._searchForm.getWidget('superordinate'), 'onChange', function(val) {
-				if ('None' == val) {
+				if ('None' == val && this._upButton) {
 					// top view, no superordinate selected -> remove the button
-					if (this._upButton) {
-						this._grid._toolbar.removeChild(this._upButton);
-						this.orphan(this._upButton, true);
-						this._upButton = null;
-					}
+					this._grid._toolbar.removeChild(this._upButton);
+					this.orphan(this._upButton, true);
+					this._upButton = null;
 				}
-				else if (dojo.isString(val)) {
-					// a superordinate has been selected -> add the button
+				if (dojo.isString(val) && 'None' != val && !this._upButton) {
+					// a superordinate has been selected and we do not have a 'up' button so far -> add the button
 					this._upButton = this.adopt(umc.widgets.Button, {
 						label: this._('Show all superordinates'),
 						callback: dojo.hitch(this, function() {
@@ -618,10 +623,10 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		var vals = this._searchForm.gatherFormValues();
 		if ('navigation' == this.moduleFlavor) {
-			var items = this._tree.get('selectedItems');
+			var items = this._tree.get('path');
 			if (items.length) {
 				dojo.mixin(vals, {
-					container: items[0].id
+					container: items[items.length - 1].id
 				});
 				this._grid.filter(vals);
 			}
