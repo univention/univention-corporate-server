@@ -1,3 +1,9 @@
+univention-installer (7.0.98-1) unstable; urgency=low
+
+  * Show full package text (Bug #24000)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Oct 2011 14:57:41 +0200
+
 univention-installer (7.0.97-1) unstable; urgency=low
 
   * package_list.py: Update samba text (Bug #24000)

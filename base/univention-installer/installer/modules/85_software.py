@@ -291,7 +291,7 @@ class object(content):
 		pos = 0
 		for k in self.category_order:
 			p = self.getPackages(k)
-			self.add_elem('packages_%s' % k, checkbox(p, self.minY-9+pos,self.minX+6, 45, 14, self.getSelected(k))) #5
+			self.add_elem('packages_%s' % k, checkbox(p, self.minY-9+pos,self.minX+6, 65, 14, self.getSelected(k))) #5
 			pos += (len(p) + 1)
 
 		if self.cmdline.has_key('mode') and self.cmdline['mode'] == 'setup':
