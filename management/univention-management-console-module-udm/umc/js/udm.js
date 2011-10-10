@@ -80,6 +80,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 	// hierarchy for the UDM navigation module
 	_tree: null,
 
+	// internal variable that indicates that the tree is reloading
+	_reloadingPath: '',
+
 	// reference to the last item in the navigation on which a context menu has been opened
 	_navContextItem: null,
 
@@ -253,9 +256,11 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		// function 'udm/nav/object/query'
 		var store = this.moduleStore;
 		if ('navigation' == this.moduleFlavor) {
-			store = dojo.delegate(this.moduleStore, {
-				storePath: 'udm/nav/object'
-			});
+			store = umc.store.getModuleStore(this.idProperty, 'udm/nav/object', this.moduleFlavor);
+
+			// we need to manually wire the onChange event of this.moduleStore
+			// with the reload of the grid
+			this.connect(this.moduleStore, 'onChange', 'filter');
 		}
 
 		// generate the data grid
@@ -451,16 +456,31 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				// customize the method getIconClass()
 				getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
 					return umc.tools.getIconClass(item.icon || 'udm-container-cn');
-				},
-				onLoad: dojo.hitch(this, function() {
-					// of the tree has been loaded successfully, model.root
-					// is set and we can select the root as active node
-					if (model.root) {
-						this._tree.set('path', [ model.root ]);
-					}
-				})
+				}
 			});
-			this._tree.watch('path', dojo.hitch(this, 'filter')); // register for changes of the selected item (= path)
+			// at the first onLoad event, select the LDAP base (i.e., root) as current node
+			var handle = this.connect(this._tree, 'onLoad', function() {
+				this.disconnect(handle);
+				// if the tree has been loaded successfully, model.root
+				// is set and we can select the root as active node
+				if (this._tree.model.root) {
+					this._tree.set('path', [ this._tree.model.root ]);
+				}
+			});
+			this._tree.watch('path', dojo.hitch(this, function() {
+				// register for changes of the selected item (= path)
+				// only take them into account in case the tree is not reloading
+				if (!this._reloadingPath) {
+					this.filter();
+				}
+				else if (this._reloadingPath == this._path2str(this._tree.get('path'))) {
+					// tree has been reloaded to its last position
+					this._reloadingPath = '';
+				}
+			})); 	
+			// in the case of changes, reload the navigation, as well (could have 
+			// changes referring to container objects)
+			this.connect(this.moduleStore, 'onChange', dojo.hitch(this, 'reloadTree'));
 			var treePane = new dijit.layout.ContentPane({
 				content: this._tree,
 				region: 'left',
@@ -487,9 +507,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			menu.addChild(new dijit.MenuItem({
 				label: this._( 'Reload' ),
 				iconClass: 'dijitIconUndo',
-				onClick: dojo.hitch(this, function() {
-					this._tree.reload();
-				})
+				onClick: dojo.hitch(this, 'reloadTree')
 			}));
 
 			// when we right-click anywhere on the tree, make sure we open the menu
@@ -554,17 +572,25 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 					this._upButton = null;
 				}
 				if (dojo.isString(val) && 'None' != val && !this._upButton) {
+					var label = this._('Show all superordinates');
+					if ('dhcp/dhcp' == this.moduleID) {
+						label = this._('Show all DHCP services');
+					}
+					else if ('dns/dns' == this.moduleID) {
+						label = this._('Show all DNS zones');
+					}
+
 					// a superordinate has been selected and we do not have a 'up' button so far -> add the button
 					this._upButton = this.adopt(umc.widgets.Button, {
-						label: this._('Show all superordinates'),
+						label: label,
 						callback: dojo.hitch(this, function() {
 							this._searchForm.getWidget('superordinate').set('value', 'None');
 
 							// we can relaunch the search after all search form values
 							// have been updated
-							var handle = this.connect(this._searchForm.getWidget('objectPropertyValue'), 'onValuesLoaded', function() {
+							var watchHandle = this.connect(this._searchForm.getWidget('objectPropertyValue'), 'onValuesLoaded', function() {
 								this.filter();
-								this.disconnect(handle);
+								this.disconnect(watchHandle);
 							});
 						})
 					});
@@ -576,11 +602,29 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		// check whether we have autosearch activated
 		if ('navigation' != this.moduleFlavor && umc.tools.isTrue(autoSearch)) {
 			// connect to the onValuesInitialized event of the form
-			var handle = this.connect(this._searchForm, 'onValuesInitialized', function() {
+			var initHandle = this.connect(this._searchForm, 'onValuesInitialized', function() {
 				this.filter(this._searchForm.gatherFormValues());
-				this.disconnect(handle);
+				this.disconnect(initHandle);
 			});
 		}
+	},
+
+	// helper function that converts a path into a string
+	// store original path and reload tree
+	_path2str: function(path) {
+		if (!dojo.isArray(path)) {
+			return '';
+		}
+		return dojo.toJson(dojo.map(path, function(i) {
+			return i.id;
+		}));
+	},
+
+	reloadTree: function() {
+		// set the internal variable that indicates whether the tree is reloading
+		// or not to 'false' as soon as the tree has been reloaded
+		this._reloadingPath = this._path2str(this._tree.get('path'));
+		this._tree.reload();
 	},
 
 	iconFormatter: function(value, rowIndex) {
@@ -623,10 +667,10 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		var vals = this._searchForm.gatherFormValues();
 		if ('navigation' == this.moduleFlavor) {
-			var items = this._tree.get('path');
-			if (items.length) {
+			var path = this._tree.get('path');
+			if (path.length) {
 				dojo.mixin(vals, {
-					container: items[items.length - 1].id
+					container: path[path.length - 1].id
 				});
 				this._grid.filter(vals);
 			}

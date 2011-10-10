@@ -52,7 +52,12 @@ dojo.declare('umc.modules._udm.TreeModel', null, {
 			// sort items alphabetically
 			var results = dojo.isArray(data.result) ? data.result : [];
 			results.sort(umc.tools.cmpObjects('label'));
-			onComplete(results);
+			try {
+				onComplete(results);
+			}
+			catch (error) {
+				// don't do anything
+			}
 		}));
 	}
 });

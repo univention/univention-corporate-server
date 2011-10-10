@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-10 13:38+0200\n"
+"POT-Creation-Date: 2011-10-10 17:42+0200\n"
 "PO-Revision-Date: 2011-09-07 20:25+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,12 @@ msgstr ""
 msgid "%(attribute)s: %(message)s\n"
 msgstr ""
 
-#: umc/js/udm.js:282
+#: umc/js/udm.js:287
 #, python-format
 msgid "%(nSelected)d %(objPlural)s of %(nTotal)d selected"
 msgstr "%(nSelected)d %(objPlural)s von %(nTotal)d sind ausgewählt"
 
-#: umc/js/udm.js:279
+#: umc/js/udm.js:284
 #, python-format
 msgid "%(nSelected)d %(objSingular)s of %(nTotal)d selected"
 msgstr "%(nSelected)d %(objSingular)s von %(nTotal)d ist ausgewählt"
@@ -32,7 +32,7 @@ msgstr "%(nSelected)d %(objSingular)s von %(nTotal)d ist ausgewählt"
 msgid "%s template"
 msgstr "%s-Vorlage"
 
-#: umc/js/udm.js:371 umc/js/_udm/NewObjectDialog.js:125
+#: umc/js/udm.js:376 umc/js/_udm/NewObjectDialog.js:125
 #: umc/js/_udm/NewObjectDialog.js:142 umc/js/_udm/NewObjectDialog.js:172
 #, python-format
 msgid "%s type"
@@ -54,12 +54,12 @@ msgstr "Eine Vorlage definiert Regeln für Vorgabewerte eines neuen Objektes."
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/js/udm.js:206
+#: umc/js/udm.js:209
 #, python-format
 msgid "Add %s"
 msgstr "%s hinzufügen"
 
-#: umc/js/udm.js:207
+#: umc/js/udm.js:210
 #, python-format
 msgid "Add a new %s."
 msgstr "%s neu hinzufügen."
@@ -68,15 +68,15 @@ msgstr "%s neu hinzufügen."
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
-#: umc/js/udm.js:351
+#: umc/js/udm.js:356
 msgid "All containers"
 msgstr "Alle Container"
 
-#: umc/js/udm.js:331 umc/js/udm.js:347 umc/js/udm.js:363
+#: umc/js/udm.js:336 umc/js/udm.js:352 umc/js/udm.js:368
 msgid "All properties"
 msgstr "Alle Eigenschaften"
 
-#: umc/js/udm.js:330 umc/js/udm.js:346 umc/js/udm.js:362
+#: umc/js/udm.js:335 umc/js/udm.js:351 umc/js/udm.js:367
 msgid "All types"
 msgstr "Alle Objekttypen"
 
@@ -88,7 +88,7 @@ msgstr "Zurück zur Navigation"
 msgid "Back to search"
 msgstr "Zurück zur Suche"
 
-#: umc/js/udm.js:679
+#: umc/js/udm.js:725
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -106,40 +106,40 @@ msgstr "Schließen"
 msgid "Container"
 msgstr "Container"
 
-#: umc/js/udm.js:127
+#: umc/js/udm.js:130
 msgid "DHCP object"
 msgstr "DHCP-Objekt"
 
-#: umc/js/udm.js:127
+#: umc/js/udm.js:130
 msgid "DHCP objects"
 msgstr "DHCP-Objekte"
 
-#: umc/js/udm.js:126
+#: umc/js/udm.js:129
 msgid "DNS object"
 msgstr "DNS-Objekt"
 
-#: umc/js/udm.js:126
+#: umc/js/udm.js:129
 msgid "DNS objects"
 msgstr "DNS-Objekte"
 
-#: umc/js/udm.js:240 umc/js/udm.js:481 umc/js/udm.js:669
+#: umc/js/udm.js:243 umc/js/udm.js:498 umc/js/udm.js:715
 msgid "Delete"
 msgstr "Löschen"
 
-#: umc/js/udm.js:241
+#: umc/js/udm.js:244
 #, python-format
 msgid "Deleting the selected %s."
 msgstr "Die ausgewählten %s löschen"
 
-#: umc/js/udm.js:214 umc/js/udm.js:474
+#: umc/js/udm.js:217 umc/js/udm.js:491
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: umc/js/udm.js:226
+#: umc/js/udm.js:229
 msgid "Edit in new tab"
 msgstr "Bearbeiten in neuem Tab"
 
-#: umc/js/udm.js:215
+#: umc/js/udm.js:218
 #, python-format
 msgid "Edit the %s."
 msgstr "%s bearbeiten"
@@ -159,19 +159,19 @@ msgstr ""
 "entsprechenden Richtlinien gesetzt werden. Über den Schalter \"bearbeiten\" "
 "wird ein neuer Reiter mit der entsprechenden Richtlinie geöffnet."
 
-#: umc/js/udm.js:131
+#: umc/js/udm.js:134
 msgid "Nagios object"
 msgstr "Nagios-Objekt"
 
-#: umc/js/udm.js:131
+#: umc/js/udm.js:134
 msgid "Nagios objects"
 msgstr "Nagios-Objekte"
 
-#: umc/js/udm.js:102
+#: umc/js/udm.js:105
 msgid "Name"
 msgstr "Name"
 
-#: umc/js/udm.js:103
+#: umc/js/udm.js:106
 msgid "Name of the UDM object."
 msgstr "Name des UDM-Objektes"
 
@@ -180,7 +180,7 @@ msgstr "Name des UDM-Objektes"
 msgid "New %s"
 msgstr "%s anlegen"
 
-#: umc/js/udm.js:276
+#: umc/js/udm.js:281
 #, python-format
 msgid "No %(objPlural)s could be found"
 msgstr "Es wurden keine %(objPlural)s gefunden"
@@ -193,7 +193,7 @@ msgstr "Kein"
 msgid "Object property"
 msgstr "Objekteigenschaft"
 
-#: umc/js/udm.js:227
+#: umc/js/udm.js:230
 msgid "Open a new tab in order to edit the UDM-object"
 msgstr "Öffnet einen neuen Tab, in dem das UDM-Objekt bearbeitet werden kann."
 
@@ -201,25 +201,25 @@ msgstr "Öffnet einen neuen Tab, in dem das UDM-Objekt bearbeitet werden kann."
 msgid "Options describing the basic features of the UDM object"
 msgstr "Optionen für grundlegenden UDM-Objekt-Eigenschaften"
 
-#: umc/js/udm.js:111
+#: umc/js/udm.js:114
 msgid "Path"
 msgstr "Pfad"
 
-#: umc/js/udm.js:112
+#: umc/js/udm.js:115
 msgid "Path of the UDM object."
 msgstr "Pfad des UDM-Objektes"
 
-#: umc/js/udm.js:664
+#: umc/js/udm.js:710
 #, python-format
 msgid "Please confirm the removal of the %d selected %s!"
 msgstr "Bitte bestätigen Sie das Löschen der %d ausgewählten %s!"
 
-#: umc/js/udm.js:666
+#: umc/js/udm.js:712
 #, python-format
 msgid "Please confirm the removal of the selected %s!"
 msgstr "Bitte bestätigen Sie das Löschen des/der ausgewählten %s!"
 
-#: umc/js/udm.js:696
+#: umc/js/udm.js:742
 msgid ""
 "Please select a container in the navigation bar. The new object will be "
 "placed at this location."
@@ -231,16 +231,16 @@ msgstr ""
 msgid "Properties inherited from policies"
 msgstr "Durch Richtlinien ererbte Eigenschaften"
 
-#: umc/js/udm.js:389
+#: umc/js/udm.js:394
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: umc/js/udm.js:399 umc/js/udm.js:415 umc/js/_udm/MultiObjectSelect.js:76
+#: umc/js/udm.js:404 umc/js/udm.js:420 umc/js/_udm/MultiObjectSelect.js:76
 #: umc/js/_udm/MultiObjectSelect.js:92
 msgid "Property value"
 msgstr "Eigenschaftswert"
 
-#: umc/js/udm.js:488
+#: umc/js/udm.js:505
 msgid "Reload"
 msgstr "Neu laden"
 
@@ -248,20 +248,28 @@ msgstr "Neu laden"
 msgid "Save changes"
 msgstr "Änderungen speichern"
 
-#: umc/js/udm.js:194
+#: umc/js/udm.js:197
 #, python-format
 msgid "Search for %s"
 msgstr "%s suchen"
 
-#: umc/js/udm.js:356
+#: umc/js/udm.js:361
 msgid "Search in:"
 msgstr "Suche in:"
 
-#: umc/js/udm.js:559
+#: umc/js/udm.js:574
+msgid "Show all DHCP services"
+msgstr "Alle DHCP-Dienste zeigen"
+
+#: umc/js/udm.js:577
+msgid "Show all DNS zones"
+msgstr "Alle DNS-Zonen zeigen"
+
+#: umc/js/udm.js:572
 msgid "Show all superordinates"
 msgstr "Alle übergeordnete Objekte zeigen"
 
-#: umc/js/udm.js:339 umc/js/_udm/NewObjectDialog.js:119
+#: umc/js/udm.js:344 umc/js/_udm/NewObjectDialog.js:119
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
@@ -274,7 +282,7 @@ msgstr "Das UDM-Objekt konnte nicht gespeichert werden: %(details)s"
 msgid "The container in which the UDM object shall be created."
 msgstr "Der Container, in dem das UDM-Objekt erzeugt wird."
 
-#: umc/js/udm.js:355
+#: umc/js/udm.js:360
 msgid "The container in which the query is executed."
 msgstr "Der Container, in dem die Suche ausgeführt wird."
 
@@ -300,28 +308,28 @@ msgid "The following properties need to be specified or are invalid:"
 msgstr ""
 "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
 
-#: umc/js/udm.js:388 umc/js/_udm/MultiObjectSelect.js:67
+#: umc/js/udm.js:393 umc/js/_udm/MultiObjectSelect.js:67
 msgid "The object property on which the query is filtered."
 msgstr "Die Objekteigenschaft, nach der gesucht wird."
 
-#: umc/js/udm.js:338
+#: umc/js/udm.js:343
 msgid "The superordinate in which the search is carried out."
 msgstr "Das übergeordnete Objekt, für welches die Suche ausgeführt wird."
 
-#: umc/js/udm.js:370
+#: umc/js/udm.js:375
 msgid "The type of the UDM object."
 msgstr "Der Type des UDM-Objektes."
 
-#: umc/js/udm.js:414 umc/js/_udm/MultiObjectSelect.js:91
+#: umc/js/udm.js:419 umc/js/_udm/MultiObjectSelect.js:91
 msgid ""
 "The value for the specified object property on which the query is filtered."
 msgstr "Der Wert der Objekteigenschaft, nach der gesucht wird."
 
-#: umc/js/udm.js:133
+#: umc/js/udm.js:136
 msgid "UDM object"
 msgstr "UDM-Objekt"
 
-#: umc/js/udm.js:133
+#: umc/js/udm.js:136
 msgid "UDM objects"
 msgstr "UDM-Objekte"
 
@@ -337,11 +345,11 @@ msgstr "[Optionen]"
 msgid "[Policies]"
 msgstr "[Richtlinien]"
 
-#: umc/js/udm.js:124
+#: umc/js/udm.js:127
 msgid "computer"
 msgstr "Rechner"
 
-#: umc/js/udm.js:124
+#: umc/js/udm.js:127
 msgid "computers"
 msgstr "Rechner"
 
@@ -349,59 +357,59 @@ msgstr "Rechner"
 msgid "edit"
 msgstr "bearbeiten"
 
-#: umc/js/udm.js:123
+#: umc/js/udm.js:126
 msgid "group"
 msgstr "Gruppe"
 
-#: umc/js/udm.js:123
+#: umc/js/udm.js:126
 msgid "groups"
 msgstr "Gruppen"
 
-#: umc/js/udm.js:130
+#: umc/js/udm.js:133
 msgid "mail object"
 msgstr "Mail-Objekt"
 
-#: umc/js/udm.js:130
+#: umc/js/udm.js:133
 msgid "mail objects"
 msgstr "Mail-Objekte"
 
-#: umc/js/udm.js:125
+#: umc/js/udm.js:128
 msgid "network object"
 msgstr "Netz-Objekt"
 
-#: umc/js/udm.js:125
+#: umc/js/udm.js:128
 msgid "network objects"
 msgstr "Netz-Objekte"
 
-#: umc/js/udm.js:132
+#: umc/js/udm.js:135
 msgid "policies"
 msgstr "Richtlinien"
 
-#: umc/js/udm.js:132
+#: umc/js/udm.js:135
 msgid "policy"
 msgstr "Richtlinie"
 
-#: umc/js/udm.js:129
+#: umc/js/udm.js:132
 msgid "printer"
 msgstr "Drucker"
 
-#: umc/js/udm.js:129
+#: umc/js/udm.js:132
 msgid "printers"
 msgstr "Drucker"
 
-#: umc/js/udm.js:128
+#: umc/js/udm.js:131
 msgid "share"
 msgstr "Freigabe"
 
-#: umc/js/udm.js:128
+#: umc/js/udm.js:131
 msgid "shares"
 msgstr "Freigaben"
 
-#: umc/js/udm.js:122
+#: umc/js/udm.js:125
 msgid "user"
 msgstr "Benutzer"
 
-#: umc/js/udm.js:122
+#: umc/js/udm.js:125
 msgid "users"
 msgstr "Benutzer"
 
