@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-04 13:37+0100\n"
+"POT-Creation-Date: 2011-10-10 08:44+0200\n"
 "PO-Revision-Date: 2009-11-09 15:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,332 +38,194 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: admin_container.py:48 admin_user.py:49
+#: admin_container.py:49
 msgid "List of Univention Directory Manager modules"
 msgstr "Liste der Directory Manager Module"
 
-#: admin_container.py:61
+#: admin_container.py:62
 msgid "Policy: Univention Directory Manager container settings"
 msgstr "Richtlinie: Univention Directory Manager Container Konfiguration"
 
-#: admin_container.py:62
+#: admin_container.py:63
 msgid "Univention Directory Manager container settings"
 msgstr "Univention Directory Manager Container Konfiguration"
 
-#: admin_container.py:68 admin_user.py:81 autostart.py:66 clientdevices.py:66
-#: console_access.py:67 desktop.py:67 dhcp_boot.py:65 dhcp_dns.py:65
+#: admin_container.py:69 autostart.py:65 clientdevices.py:65
+#: console_access.py:66 desktop.py:66 dhcp_boot.py:65 dhcp_dns.py:65
 #: dhcp_dnsupdate.py:71 dhcp_leasetime.py:66 dhcp_netbios.py:66
-#: dhcp_routing.py:64 dhcp_scope.py:68 dhcp_statements.py:69 ldapserver.py:66
-#: mailquota.py:66 maintenance.py:67 managedclientpackages.py:67
-#: masterpackages.py:67 memberpackages.py:67 mobileclientpackages.py:67
-#: nfsmounts.py:66 policy.py:65 print_quota.py:69 printserver.py:66
-#: pwhistory.py:68 registry.py:63 release.py:66 repositoryserver.py:66
-#: repositorysync.py:67 share_userquota.py:69 slavepackages.py:67 sound.py:67
-#: thinclient.py:71 windowsinstallation.py:66 xfree.py:85
+#: dhcp_routing.py:64 dhcp_scope.py:68 dhcp_statements.py:69 ldapserver.py:65
+#: mailquota.py:65 maintenance.py:66 managedclientpackages.py:66
+#: masterpackages.py:66 memberpackages.py:66 mobileclientpackages.py:66
+#: nfsmounts.py:65 policy.py:65 print_quota.py:68 printserver.py:64
+#: pwhistory.py:67 registry.py:65 release.py:65 repositoryserver.py:65
+#: repositorysync.py:66 share_userquota.py:68 slavepackages.py:66 sound.py:66
+#: thinclient.py:70 xfree.py:85
 msgid "Name"
 msgstr "Name"
 
-#: admin_container.py:78
+#: admin_container.py:79
 msgid "Available Univention Directory Manager modules"
 msgstr "Verfügbare Univention Directory Manager Module"
 
-#: admin_container.py:88 admin_user.py:252 autostart.py:86 clientdevices.py:86
-#: console_access.py:97 desktop.py:117 dhcp_boot.py:96 dhcp_dns.py:95
+#: admin_container.py:89 autostart.py:85 clientdevices.py:85
+#: console_access.py:96 desktop.py:116 dhcp_boot.py:96 dhcp_dns.py:95
 #: dhcp_dnsupdate.py:161 dhcp_leasetime.py:106 dhcp_netbios.py:106
 #: dhcp_routing.py:84 dhcp_scope.py:128 dhcp_statements.py:139
-#: ldapserver.py:86 mailquota.py:86 maintenance.py:167
-#: managedclientpackages.py:97 masterpackages.py:97 memberpackages.py:97
-#: mobileclientpackages.py:97 nfsmounts.py:86 print_quota.py:109
-#: printserver.py:86 pwhistory.py:118 registry.py:83 release.py:96
-#: repositoryserver.py:86 repositorysync.py:127 share_userquota.py:119
-#: slavepackages.py:97 sound.py:97 thinclient.py:131 windowsinstallation.py:86
-#: xfree.py:239
+#: ldapserver.py:85 mailquota.py:85 maintenance.py:166
+#: managedclientpackages.py:96 masterpackages.py:96 memberpackages.py:96
+#: mobileclientpackages.py:96 nfsmounts.py:85 print_quota.py:108
+#: printserver.py:84 pwhistory.py:117 registry.py:85 release.py:95
+#: repositoryserver.py:85 repositorysync.py:126 share_userquota.py:118
+#: slavepackages.py:96 sound.py:96 thinclient.py:130 xfree.py:239
 msgid "Required object classes"
 msgstr "Benötigte Objektklassen"
 
-#: admin_container.py:98 admin_user.py:262 autostart.py:96 clientdevices.py:96
-#: console_access.py:107 desktop.py:127 dhcp_boot.py:106 dhcp_dns.py:105
+#: admin_container.py:99 autostart.py:95 clientdevices.py:95
+#: console_access.py:106 desktop.py:126 dhcp_boot.py:106 dhcp_dns.py:105
 #: dhcp_dnsupdate.py:171 dhcp_leasetime.py:116 dhcp_netbios.py:116
 #: dhcp_routing.py:94 dhcp_scope.py:138 dhcp_statements.py:149
-#: ldapserver.py:96 mailquota.py:96 maintenance.py:177
-#: managedclientpackages.py:107 masterpackages.py:107 memberpackages.py:107
-#: mobileclientpackages.py:107 nfsmounts.py:96 print_quota.py:119
-#: printserver.py:96 pwhistory.py:128 registry.py:93 release.py:106
-#: repositoryserver.py:96 repositorysync.py:137 share_userquota.py:129
-#: slavepackages.py:107 sound.py:107 thinclient.py:141
-#: windowsinstallation.py:96 xfree.py:249
+#: ldapserver.py:95 mailquota.py:95 maintenance.py:176
+#: managedclientpackages.py:106 masterpackages.py:106 memberpackages.py:106
+#: mobileclientpackages.py:106 nfsmounts.py:95 print_quota.py:118
+#: printserver.py:94 pwhistory.py:127 registry.py:95 release.py:105
+#: repositoryserver.py:95 repositorysync.py:136 share_userquota.py:128
+#: slavepackages.py:106 sound.py:106 thinclient.py:140 xfree.py:249
 msgid "Excluded object classes"
 msgstr "Ausgeschlossene Objektklassen"
 
-#: admin_container.py:108 admin_user.py:272 autostart.py:106
-#: clientdevices.py:106 console_access.py:117 desktop.py:137 dhcp_boot.py:116
-#: dhcp_dns.py:115 dhcp_dnsupdate.py:181 dhcp_leasetime.py:126
-#: dhcp_netbios.py:126 dhcp_routing.py:104 dhcp_scope.py:148
-#: dhcp_statements.py:159 ldapserver.py:106 mailquota.py:106
-#: maintenance.py:187 managedclientpackages.py:117 masterpackages.py:117
-#: memberpackages.py:117 mobileclientpackages.py:117 nfsmounts.py:106
-#: print_quota.py:129 printserver.py:106 pwhistory.py:138 registry.py:103
-#: release.py:116 repositoryserver.py:106 repositorysync.py:147
-#: share_userquota.py:139 slavepackages.py:117 sound.py:117 thinclient.py:151
-#: windowsinstallation.py:106 xfree.py:259
+#: admin_container.py:109 autostart.py:105 clientdevices.py:105
+#: console_access.py:116 desktop.py:136 dhcp_boot.py:116 dhcp_dns.py:115
+#: dhcp_dnsupdate.py:181 dhcp_leasetime.py:126 dhcp_netbios.py:126
+#: dhcp_routing.py:104 dhcp_scope.py:148 dhcp_statements.py:159
+#: ldapserver.py:105 mailquota.py:105 maintenance.py:186
+#: managedclientpackages.py:116 masterpackages.py:116 memberpackages.py:116
+#: mobileclientpackages.py:116 nfsmounts.py:105 print_quota.py:128
+#: printserver.py:104 pwhistory.py:137 registry.py:105 release.py:115
+#: repositoryserver.py:105 repositorysync.py:146 share_userquota.py:138
+#: slavepackages.py:116 sound.py:116 thinclient.py:150 xfree.py:259
 msgid "Fixed attributes"
 msgstr "Festgelegte Attribute"
 
-#: admin_container.py:118 admin_user.py:282 autostart.py:116
-#: clientdevices.py:116 console_access.py:127 desktop.py:147 dhcp_boot.py:126
-#: dhcp_dns.py:125 dhcp_dnsupdate.py:191 dhcp_leasetime.py:136
-#: dhcp_netbios.py:136 dhcp_routing.py:114 dhcp_scope.py:158
-#: dhcp_statements.py:169 ldapserver.py:116 mailquota.py:116
-#: maintenance.py:197 managedclientpackages.py:127 masterpackages.py:127
-#: memberpackages.py:127 mobileclientpackages.py:127 nfsmounts.py:116
-#: print_quota.py:139 printserver.py:116 pwhistory.py:148 registry.py:113
-#: release.py:126 repositoryserver.py:116 repositorysync.py:157
-#: share_userquota.py:149 slavepackages.py:127 sound.py:127 thinclient.py:161
-#: windowsinstallation.py:116
+#: admin_container.py:119 autostart.py:115 clientdevices.py:115
+#: console_access.py:126 desktop.py:146 dhcp_boot.py:126 dhcp_dns.py:125
+#: dhcp_dnsupdate.py:191 dhcp_leasetime.py:136 dhcp_netbios.py:136
+#: dhcp_routing.py:114 dhcp_scope.py:158 dhcp_statements.py:169
+#: ldapserver.py:115 mailquota.py:115 maintenance.py:196
+#: managedclientpackages.py:126 masterpackages.py:126 memberpackages.py:126
+#: mobileclientpackages.py:126 nfsmounts.py:115 print_quota.py:138
+#: printserver.py:114 pwhistory.py:147 registry.py:115 release.py:125
+#: repositoryserver.py:115 repositorysync.py:156 share_userquota.py:148
+#: slavepackages.py:126 sound.py:126 thinclient.py:160
 msgid "Empty attributes"
 msgstr "Leere Attribute"
 
-#: admin_container.py:129 admin_user.py:303 autostart.py:137
-#: clientdevices.py:137 console_access.py:148 desktop.py:168 dhcp_dns.py:146
-#: dhcp_routing.py:135 ldapserver.py:137 mailquota.py:137 maintenance.py:218
-#: managedclientpackages.py:148 masterpackages.py:148 memberpackages.py:148
-#: mobileclientpackages.py:148 nfsmounts.py:137 policy.py:75
-#: print_quota.py:160 printserver.py:137 pwhistory.py:169 registry.py:134
-#: release.py:147 repositoryserver.py:137 repositorysync.py:178
-#: share_userquota.py:170 slavepackages.py:148 sound.py:148 thinclient.py:182
-#: windowsinstallation.py:137 xfree.py:449
+#: admin_container.py:131 autostart.py:127 clientdevices.py:127
+#: console_access.py:138 desktop.py:158 dhcp_dns.py:137 dhcp_routing.py:126
+#: ldapserver.py:127 mailquota.py:127 maintenance.py:208
+#: managedclientpackages.py:138 masterpackages.py:138 memberpackages.py:138
+#: mobileclientpackages.py:138 nfsmounts.py:127 policy.py:75
+#: print_quota.py:150 printserver.py:126 pwhistory.py:159 registry.py:127
+#: release.py:137 repositoryserver.py:127 repositorysync.py:168
+#: share_userquota.py:160 slavepackages.py:138 sound.py:138 thinclient.py:172
+#: xfree.py:390 xfree.py:391
 msgid "General"
 msgstr "Allgemein"
 
-#: admin_container.py:129 admin_user.py:303
+#: admin_container.py:131
 msgid "Univention Directory Manager settings"
 msgstr "Univention Directory Manager Konfiguration"
 
-#: admin_container.py:133 admin_user.py:320 autostart.py:141
-#: clientdevices.py:141 console_access.py:152 desktop.py:174 dhcp_boot.py:151
-#: dhcp_dns.py:150 dhcp_dnsupdate.py:219 dhcp_leasetime.py:161
-#: dhcp_netbios.py:161 dhcp_routing.py:138 dhcp_scope.py:185
-#: dhcp_statements.py:196 ldapserver.py:141 mailquota.py:141
-#: maintenance.py:226 managedclientpackages.py:153 masterpackages.py:153
-#: memberpackages.py:153 mobileclientpackages.py:153 nfsmounts.py:141
-#: print_quota.py:165 printserver.py:141 pwhistory.py:174 registry.py:138
-#: release.py:151 repositoryserver.py:141 repositorysync.py:184
-#: share_userquota.py:175 slavepackages.py:153 sound.py:153 thinclient.py:188
-#: windowsinstallation.py:141 xfree.py:469
+#: admin_container.py:135 autostart.py:131 clientdevices.py:131
+#: console_access.py:142 desktop.py:164 dhcp_boot.py:142 dhcp_dns.py:141
+#: dhcp_dnsupdate.py:210 dhcp_leasetime.py:152 dhcp_netbios.py:152
+#: dhcp_routing.py:129 dhcp_scope.py:176 dhcp_statements.py:187
+#: ldapserver.py:131 mailquota.py:131 maintenance.py:216
+#: managedclientpackages.py:143 masterpackages.py:143 memberpackages.py:143
+#: mobileclientpackages.py:143 nfsmounts.py:131 print_quota.py:155
+#: printserver.py:130 pwhistory.py:164 registry.py:131 release.py:141
+#: repositoryserver.py:131 repositorysync.py:174 share_userquota.py:165
+#: slavepackages.py:143 sound.py:143 thinclient.py:178 xfree.py:411
 msgid "Object"
 msgstr "Objekt"
 
-#: admin_user.py:48
-msgid "List of  Univention Directory Manager wizards"
-msgstr "Liste von Web-Directory Manager Assistenten"
-
-#: admin_user.py:50 admin_user.py:141
-msgid "Show these attributes in search results"
-msgstr "Zeige diese Attribute in den Suchergebnissen"
-
-#: admin_user.py:51 admin_user.py:151
-msgid "Show these attributes in the navigation"
-msgstr "Zeige diese Attribute in der Navigation"
-
-#: admin_user.py:52
-msgid "LDAP Base DN"
-msgstr "LDAP Basis DN"
-
-#: admin_user.py:53
-msgid "User may override policy"
-msgstr "Benutzer darf die Richtlinie überschreiben"
-
-#: admin_user.py:54
-msgid "Default policy containers"
-msgstr "Standard Richtlinien-Container"
-
-#: admin_user.py:55
-msgid "Default DNS containers"
-msgstr "Standard DNS-Container"
-
-#: admin_user.py:56
-msgid "Default DHCP containers"
-msgstr "Standard DHCP-Container"
-
-#: admin_user.py:57
-msgid "Default users container"
-msgstr "Standard Benutzer-Container"
-
-#: admin_user.py:58
-msgid "Default groups container"
-msgstr "Standard Gruppen-Container"
-
-#: admin_user.py:59
-msgid "Default computers container"
-msgstr "Standard Rechner-Container"
-
-#: admin_user.py:60
-msgid "Default networks container"
-msgstr "Standard Netz-Container"
-
-#: admin_user.py:61
-msgid "Default shares container"
-msgstr "Standard Freigabe-Container"
-
-#: admin_user.py:62
-msgid "Default printers container"
-msgstr "Standard Drucker-Container"
-
-#: admin_user.py:74
-msgid "Policy: Univention Directory Manager View"
-msgstr "Richtlinie: Univention Directory Manager Ansicht"
-
-#: admin_user.py:75
-msgid "Univention Directory Manager View"
-msgstr "Univention Directory Manager Ansicht"
-
-#: admin_user.py:91
-msgid "Visible Univention Directory Manager wizards"
-msgstr "Liste von Web-Directory Manager Assistenten"
-
-#: admin_user.py:101
-msgid "Visible Univention Directory Manager modules"
-msgstr "Verfügbare Univention Directory Manager Module"
-
-#: admin_user.py:111
-msgid "LDAP base DN"
-msgstr "LDAP Basis DN"
-
-#: admin_user.py:121
-msgid "Allow personal Univention Directory Manager settings"
-msgstr "Erlaube Persönliche Univention Directory Manager Einstellungen"
-
-#: admin_user.py:122
-msgid ""
-"If this option is set users can be provided with the possibility to create "
-"their own personal Univention Directory Manager Settings"
-msgstr ""
-"Wenn diese Option gesetzt ist, dann kann Benutzern die Möglichkeit gegeben "
-"werden persönliche Univention Directory Manager Einstellungen zu erstellen."
-
-#: admin_user.py:131
-msgid "Visible user attributes"
-msgstr "Sichtbare Benutzerattribute"
-
-#: admin_user.py:132
-msgid "Define user attributes that may be altered by user"
-msgstr ""
-"Definiert die Benutzerattribute, die vom Benutzer geändert werden dürfen"
-
-#: admin_user.py:161
-msgid "policy link"
-msgstr "Richtlinien Verknüpfung"
-
-#: admin_user.py:171
-msgid "DNS link"
-msgstr "DNS-Verknüpfung"
-
-#: admin_user.py:181
-msgid "DHCP link"
-msgstr "DHCP-Verknüpfung"
-
-#: admin_user.py:191
-msgid "users link"
-msgstr "Benutzer Verknüpfung"
-
-#: admin_user.py:201
-msgid "groups link"
-msgstr "Gruppen Verknüpfung"
-
-#: admin_user.py:211
-msgid "computers link"
-msgstr "Rechner Verknüpfung"
-
-#: admin_user.py:221
-msgid "networks link"
-msgstr "Netz Verknüpfung"
-
-#: admin_user.py:231
-msgid "shares link"
-msgstr "Freigaben Verknüpfung"
-
-#: admin_user.py:241
-msgid "printers link"
-msgstr "Drucker Verknüpfung"
-
-#: autostart.py:48 autostart.py:76
+#: autostart.py:47 autostart.py:75
 msgid "Autostart session"
 msgstr "Autostart Sitzung"
 
-#: autostart.py:59
+#: autostart.py:58
 msgid "Policy: Autostart"
 msgstr "Richtlinie: Autostart"
 
-#: autostart.py:60 autostart.py:137
+#: autostart.py:59 autostart.py:127
 msgid "Autostart"
 msgstr "Autostart"
 
-#: autostart.py:77
+#: autostart.py:76
 msgid "Session script to be launched by autostart"
 msgstr "Sitzungsskript, das von Autostart ausgeführt werden soll"
 
-#: clientdevices.py:48 clientdevices.py:60 clientdevices.py:137
+#: clientdevices.py:47 clientdevices.py:59 clientdevices.py:127
 msgid "Client devices"
 msgstr "Client-Peripherie"
 
-#: clientdevices.py:59
+#: clientdevices.py:58
 msgid "Policy: Client devices"
 msgstr "Richtlinie: Client-Peripherie"
 
-#: clientdevices.py:76
+#: clientdevices.py:75
 msgid "Activate access to client devices"
 msgstr "Aktiviere den Zugriff auf Client-Peripheriegeräte"
 
-#: console_access.py:48
+#: console_access.py:47
 msgid "Allowed operations"
 msgstr "Erlaube Operationen"
 
-#: console_access.py:49
+#: console_access.py:48
 msgid "Disallowed operations"
 msgstr "Nicht erlaubte Operationen"
 
-#: console_access.py:60
+#: console_access.py:59
 msgid "Policy: UMC access"
 msgstr "Richtlinie: UMC Zugriff"
 
-#: console_access.py:61
+#: console_access.py:60
 msgid "UMC access"
 msgstr "UMC Zugriff"
 
-#: console_access.py:77
+#: console_access.py:76
 msgid "Allow ACL"
 msgstr "Erlaubte Zugriffe"
 
-#: console_access.py:87
+#: console_access.py:86
 msgid "Disallow ACL"
 msgstr "Nicht erlaubte Zugriffe"
 
-#: console_access.py:148 ldapserver.py:137 nfsmounts.py:137 policy.py:75
-#: printserver.py:137
+#: console_access.py:138 ldapserver.py:127 nfsmounts.py:127 policy.py:75
+#: printserver.py:126
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: desktop.py:47 desktop.py:77
+#: desktop.py:46 desktop.py:76
 msgid "Desktop language"
 msgstr "Desktop-Sprache"
 
-#: desktop.py:48 desktop.py:87
+#: desktop.py:47 desktop.py:86
 msgid "Desktop profile"
 msgstr "Desktop-Profil"
 
-#: desktop.py:60
+#: desktop.py:59
 msgid "Policy: Desktop"
 msgstr "Richtlinie: Desktop"
 
-#: desktop.py:61 desktop.py:168
+#: desktop.py:60 desktop.py:158
 msgid "Desktop settings"
 msgstr "Desktop-Einstellungen"
 
-#: desktop.py:97
+#: desktop.py:96
 msgid "Logon scripts"
 msgstr "Login-Skripte"
 
-#: desktop.py:107
+#: desktop.py:106
 msgid "Logout scripts"
 msgstr "Logout-Skripte"
 
@@ -394,11 +256,11 @@ msgstr ""
 msgid "Initial boot file to be loaded by a client"
 msgstr "Erste Datei, die beim Booten vom Client geladen wird"
 
-#: dhcp_boot.py:147
+#: dhcp_boot.py:138
 msgid "Boot"
 msgstr "Boot"
 
-#: dhcp_boot.py:147
+#: dhcp_boot.py:138
 msgid "Boot settings"
 msgstr "Boot-Informationen"
 
@@ -418,7 +280,7 @@ msgstr "Richtlinie: DHCP DNS"
 msgid "DNS"
 msgstr "DNS"
 
-#: dhcp_dns.py:146
+#: dhcp_dns.py:137
 msgid "Basic DNS settings"
 msgstr "Allgemeine DNS-Einstellungen"
 
@@ -510,11 +372,11 @@ msgstr ""
 msgid "Honor the client's intention to do its own update of its A record"
 msgstr "DNS-Aktualisierungen durch Clients erlauben"
 
-#: dhcp_dnsupdate.py:212
+#: dhcp_dnsupdate.py:203
 msgid "DNS Update"
 msgstr "DDNS Aktualisierungen"
 
-#: dhcp_dnsupdate.py:212
+#: dhcp_dnsupdate.py:203
 msgid "Dynamic DNS update"
 msgstr "Dynamische DNS-Aktualisierungen"
 
@@ -552,11 +414,11 @@ msgstr ""
 msgid "Minimum granted lease time"
 msgstr "Minimal garantierte Lease-Zeit"
 
-#: dhcp_leasetime.py:157
+#: dhcp_leasetime.py:148
 msgid "Lease Time"
 msgstr "Lease-Zeit"
 
-#: dhcp_leasetime.py:157
+#: dhcp_leasetime.py:148
 msgid "DHCP lease time"
 msgstr "DHCP Lease-Zeit"
 
@@ -592,11 +454,11 @@ msgstr "NetBIOS over TCP/IP scope parameter"
 msgid "The node type of clients for NetBIOS over TCP/IP"
 msgstr "Der Node Typ der Clients für NetBIOS over TCP/IP"
 
-#: dhcp_netbios.py:157
+#: dhcp_netbios.py:148
 msgid "Netbios"
 msgstr ""
 
-#: dhcp_netbios.py:157
+#: dhcp_netbios.py:148
 msgid "SMB/CIFS name resolution"
 msgstr "Auflösung der SMB/CIFS-Namen"
 
@@ -612,7 +474,7 @@ msgstr "Richtlinie: DHCP Routing"
 msgid "Routing"
 msgstr "Routing"
 
-#: dhcp_routing.py:135
+#: dhcp_routing.py:126
 msgid "DHCP routing"
 msgstr "DHCP Routing"
 
@@ -641,7 +503,7 @@ msgid "Policy: DHCP Allow/Deny"
 msgstr "Richtlinie: DHCP Erlauben/Verbieten"
 
 # l dhcp_scope.py:33 dhcp_scope.py:150
-#: dhcp_scope.py:62 dhcp_scope.py:179
+#: dhcp_scope.py:62 dhcp_scope.py:170
 msgid "Allow/Deny"
 msgstr "Erlauben/Verbieten"
 
@@ -687,7 +549,7 @@ msgstr ""
 "'Verbieten/Ignorieren' bewahrt den DHCP-Server vor Vergabe aller IP-Adressen "
 "an böswillige oder fehlerhafte Clients."
 
-#: dhcp_scope.py:179
+#: dhcp_scope.py:170
 msgid "Allow/Deny/Ignore statements"
 msgstr "Erlauben/Verbieten/Ignorieren-Einstellungen"
 
@@ -770,175 +632,175 @@ msgstr ""
 msgid "Define the IP address of the boot server"
 msgstr "Definiert die IP-Adresse des Boot-Servers"
 
-#: dhcp_statements.py:190
+#: dhcp_statements.py:181
 msgid "DHCP statements"
 msgstr "DHCP Verschiedenes"
 
-#: dhcp_statements.py:190
+#: dhcp_statements.py:181
 msgid "Miscellaneous DHCP statements"
 msgstr "Verschiedene DHCP-Einstellungen"
 
-#: ldapserver.py:48
+#: ldapserver.py:47
 msgid "LDAP Server"
 msgstr "LDAP-Server"
 
-#: ldapserver.py:59
+#: ldapserver.py:58
 msgid "Policy: LDAP server"
 msgstr "Richtlinie: LDAP-Server"
 
-#: ldapserver.py:60 ldapserver.py:76
+#: ldapserver.py:59 ldapserver.py:75
 msgid "LDAP server"
 msgstr "LDAP-Server"
 
-#: mailquota.py:48 mailquota.py:76
+#: mailquota.py:47 mailquota.py:75
 msgid "Quota limit (MB)"
 msgstr "Quota-Limit (MB)"
 
-#: mailquota.py:59
+#: mailquota.py:58
 msgid "Policy: Mail quota"
 msgstr "Richtlinie: Mail-Quota"
 
-#: mailquota.py:60 mailquota.py:137
+#: mailquota.py:59 mailquota.py:127
 msgid "Mail quota"
 msgstr "Mail-Quota"
 
-#: maintenance.py:49 maintenance.py:61
+#: maintenance.py:48 maintenance.py:60
 msgid "Maintenance"
 msgstr "Paketpflege"
 
-#: maintenance.py:60
+#: maintenance.py:59
 msgid "Policy: Maintenance"
 msgstr "Richtlinie: Paketpflege"
 
-#: maintenance.py:77
+#: maintenance.py:76
 msgid "System startup"
 msgstr "Systemstart"
 
-#: maintenance.py:87
+#: maintenance.py:86
 msgid "System shutdown"
 msgstr "System herunterfahren"
 
-#: maintenance.py:97
+#: maintenance.py:96
 msgid "Reboot after maintenance"
 msgstr "Nach Paketpflege neu starten"
 
-#: maintenance.py:107
+#: maintenance.py:106
 msgid "Use Cron settings"
 msgstr "Cron Einstellungen benutzen"
 
-#: maintenance.py:117 repositorysync.py:77
+#: maintenance.py:116 repositorysync.py:76
 msgid "Month"
 msgstr "Monat"
 
-#: maintenance.py:127 repositorysync.py:87
+#: maintenance.py:126 repositorysync.py:86
 msgid "Day"
 msgstr "Tag"
 
-#: maintenance.py:137 repositorysync.py:97
+#: maintenance.py:136 repositorysync.py:96
 msgid "Day of week"
 msgstr "Wochentag"
 
-#: maintenance.py:147 repositorysync.py:107
+#: maintenance.py:146 repositorysync.py:106
 msgid "Hour"
 msgstr "Stunde"
 
-#: maintenance.py:157 repositorysync.py:117
+#: maintenance.py:156 repositorysync.py:116
 msgid "Minute"
 msgstr "Minute"
 
-#: maintenance.py:218
+#: maintenance.py:208
 msgid "Maintenance settings"
 msgstr "Paketpflege Einstellungen"
 
-#: managedclientpackages.py:48 managedclientpackages.py:77
+#: managedclientpackages.py:47 managedclientpackages.py:76
 msgid "Managed client package installation list"
 msgstr "Managed Client Paket Installationsliste"
 
-#: managedclientpackages.py:49 managedclientpackages.py:87
+#: managedclientpackages.py:48 managedclientpackages.py:86
 msgid "Managed client package removal list"
 msgstr "Managed Client Paket Deinstallationsliste"
 
-#: managedclientpackages.py:60
+#: managedclientpackages.py:59
 msgid "Policy: Packages managed client"
 msgstr "Richtlinie: Pakete Managed Client"
 
-#: managedclientpackages.py:61
+#: managedclientpackages.py:60
 msgid "Packages managed client"
 msgstr "Pakete Managed Client"
 
-#: managedclientpackages.py:148
+#: managedclientpackages.py:138
 msgid "Client packages"
 msgstr "Client Pakete"
 
-#: masterpackages.py:48 masterpackages.py:77 memberpackages.py:77
-#: mobileclientpackages.py:48 mobileclientpackages.py:77 slavepackages.py:48
-#: slavepackages.py:77
+#: masterpackages.py:47 masterpackages.py:76 memberpackages.py:76
+#: mobileclientpackages.py:47 mobileclientpackages.py:76 slavepackages.py:47
+#: slavepackages.py:76
 msgid "Package installation list"
 msgstr "Master Pakete Installationsliste"
 
-#: masterpackages.py:49 masterpackages.py:87 memberpackages.py:87
-#: mobileclientpackages.py:49 mobileclientpackages.py:87 slavepackages.py:49
-#: slavepackages.py:87
+#: masterpackages.py:48 masterpackages.py:86 memberpackages.py:86
+#: mobileclientpackages.py:48 mobileclientpackages.py:86 slavepackages.py:48
+#: slavepackages.py:86
 msgid "Package removal list"
 msgstr "Member Pakete Deinstallationsliste"
 
-#: masterpackages.py:60
+#: masterpackages.py:59
 msgid "Policy: Packages Master"
 msgstr "Richtlinie: Pakete Master"
 
-#: masterpackages.py:61
+#: masterpackages.py:60
 msgid "Packages Master"
 msgstr "Pakete Master"
 
-#: masterpackages.py:148
+#: masterpackages.py:138
 msgid "DC Master packages"
 msgstr "Master Pakete"
 
-#: memberpackages.py:48
+#: memberpackages.py:47
 msgid "Member package installation list"
 msgstr "Master Pakete Installationsliste"
 
-#: memberpackages.py:49
+#: memberpackages.py:48
 msgid "Member package removal list"
 msgstr "Member Pakete Deinstallationsliste"
 
-#: memberpackages.py:60
+#: memberpackages.py:59
 msgid "Policy: Packages member server"
 msgstr "Richtlinie: Pakete Member"
 
-#: memberpackages.py:61
+#: memberpackages.py:60
 msgid "Packages member server"
 msgstr "Pakete Member"
 
-#: memberpackages.py:148
+#: memberpackages.py:138
 msgid "Member server packages"
 msgstr "Member Pakete"
 
-#: mobileclientpackages.py:60
+#: mobileclientpackages.py:59
 msgid "Policy: Packages Mobile Client"
 msgstr "Richtlinie: Pakete Mobile Client"
 
-#: mobileclientpackages.py:61
+#: mobileclientpackages.py:60
 msgid "Packages Mobile Client"
 msgstr "Pakete Mobile Client"
 
-#: mobileclientpackages.py:148
+#: mobileclientpackages.py:138
 msgid "Mobile client packages"
 msgstr "Client Pakete"
 
-#: nfsmounts.py:48
+#: nfsmounts.py:47
 msgid "Mount NFS shares"
 msgstr "Einzubindende NFS-Freigaben"
 
-#: nfsmounts.py:59
+#: nfsmounts.py:58
 msgid "Policy: NFS mounts"
 msgstr "Richtlinie: NFS-Freigaben"
 
-#: nfsmounts.py:60
+#: nfsmounts.py:59
 msgid "NFS mounts"
 msgstr "NFS-Freigaben"
 
-#: nfsmounts.py:76
+#: nfsmounts.py:75
 msgid "NFS shares to mount"
 msgstr "NFS-Freigaben einbinden"
 
@@ -970,296 +832,284 @@ msgstr "Suchen"
 msgid "Find Policy Object(s)"
 msgstr "Richtlinien-Objekt(e) suchen"
 
-#: print_quota.py:48
+#: print_quota.py:47
 msgid "Allowed Groups"
 msgstr "Berechtigte Gruppen"
 
-#: print_quota.py:49
+#: print_quota.py:48
 msgid "Allowed Users"
 msgstr "Berechtigte Benutzer"
 
-#: print_quota.py:50
+#: print_quota.py:49
 msgid "Allowed Groups per User"
 msgstr "Berechtigte Gruppen pro Benutzer"
 
-#: print_quota.py:61
+#: print_quota.py:60
 msgid "Policy: Print quota"
 msgstr "Richtlinie: Druck-Quota"
 
-#: print_quota.py:62
+#: print_quota.py:61
 msgid "Print Quota"
 msgstr "Druck-Quota"
 
-#: print_quota.py:63
+#: print_quota.py:62
 msgid "Print Quota for users/groups per printer"
 msgstr "Druck-Quota pro Benutzer/Gruppe für einen Drucker"
 
-#: print_quota.py:79
+#: print_quota.py:78
 msgid "Print quota for groups"
 msgstr "Druck-Quota für Gruppen"
 
-#: print_quota.py:80
+#: print_quota.py:79
 msgid "Soft- and Hardlimit for each allowed group"
 msgstr "Soft- und Hard-Limit für jede berechtigte Gruppe"
 
-#: print_quota.py:89
+#: print_quota.py:88
 msgid "Print quota for groups per user"
 msgstr "Druck-Quota für Gruppen pro Benutzer"
 
-#: print_quota.py:90
+#: print_quota.py:89
 msgid "Soft- and Hardlimit for each member of allowed group"
 msgstr "Soft- und Hard-Limit für jedes Mitglied der berechtigten Gruppe"
 
-#: print_quota.py:99
+#: print_quota.py:98
 msgid "Print quota for users"
 msgstr "Druck-Quota für Benutzer"
 
-#: print_quota.py:100
+#: print_quota.py:99
 msgid "Soft- and Hardlimit for each allowed user"
 msgstr "Soft- und Hard-Limit für jeden berechtigten Benutzer"
 
-#: print_quota.py:160
+#: print_quota.py:150
 msgid "Print quota"
 msgstr "Druck-Quota"
 
-#: print_quota.py:229 print_quota.py:235
+#: print_quota.py:211 print_quota.py:217
 #, python-format
 msgid "%s is not valid. "
 msgstr "%s ist nicht erlaubt. "
 
-#: printserver.py:48 printserver.py:60 printserver.py:76
+#: printserver.py:46 printserver.py:58 printserver.py:74
 msgid "Print server"
 msgstr "Druckserver"
 
-#: printserver.py:59
+#: printserver.py:57
 msgid "Policy: Print server"
 msgstr "Richtlinie: Druckserver"
 
-#: pwhistory.py:48 pwhistory.py:78
+#: pwhistory.py:47 pwhistory.py:77
 msgid "History length"
 msgstr "History-Länge"
 
-#: pwhistory.py:49 pwhistory.py:88
+#: pwhistory.py:48 pwhistory.py:87
 msgid "Password expiry interval"
 msgstr "Passwort-Ablaufintervall"
 
-#: pwhistory.py:50 pwhistory.py:98
+#: pwhistory.py:49 pwhistory.py:97
 msgid "Password length"
 msgstr "Passwort-Länge"
 
-#: pwhistory.py:61
+#: pwhistory.py:60
 msgid "Policy: Passwords"
 msgstr "Richtlinie: Passwort"
 
-#: pwhistory.py:62 pwhistory.py:169
+#: pwhistory.py:61 pwhistory.py:159
 msgid "Passwords"
 msgstr "Passwort-Richtlinie"
 
-#: pwhistory.py:108
+#: pwhistory.py:107
 msgid "Password quality check"
 msgstr "Passwort-Qualitätsprüfung"
 
-#: pwhistory.py:109
+#: pwhistory.py:108
 msgid "Enables/disables password quality checks for example dictonaty entries"
 msgstr ""
 
-#: registry.py:56
+#: registry.py:58
 msgid "Policy: Univention Configuration Registry"
 msgstr "Richtlinie: Univention Configuration Registry"
 
-#: registry.py:57
+#: registry.py:59
 msgid "Univention Configuration Registry"
 msgstr "Univention Configuration Registry"
 
-#: registry.py:73
+#: registry.py:75
 msgid "Configuration Registry"
 msgstr "Configuration Registry"
 
-#: registry.py:134
+#: registry.py:127
 msgid "These configuration settings will be set on the local UCS system."
 msgstr ""
 "Diese Konfigurationseinstellungen werden auf dem lokalen UCS-System gesetzt."
 
-#: release.py:48
+#: release.py:47
 msgid "Release Version"
 msgstr "Release Version"
 
-#: release.py:59
+#: release.py:58
 msgid "Policy: Release"
 msgstr "Richtlinie: Release"
 
-#: release.py:60
+#: release.py:59
 msgid "Release"
 msgstr "Release"
 
-#: release.py:76
+#: release.py:75
 msgid "Activate policy"
 msgstr "Aktiviere die Richtlinie"
 
-#: release.py:86
+#: release.py:85
 msgid "Release version"
 msgstr "Release Version"
 
-#: release.py:147
+#: release.py:137
 msgid "Release updates"
 msgstr "Client Aktualisierungen"
 
-#: repositoryserver.py:48 repositoryserver.py:60 repositoryserver.py:76
+#: repositoryserver.py:47 repositoryserver.py:59 repositoryserver.py:75
 msgid "Repository server"
 msgstr "Repository-Server"
 
-#: repositoryserver.py:59
+#: repositoryserver.py:58
 msgid "Policy: Repository server"
 msgstr "Richtlinie: Repository-Server"
 
-#: repositoryserver.py:137
+#: repositoryserver.py:127
 msgid "Update"
 msgstr "Aktualisieren"
 
-#: repositorysync.py:49 repositorysync.py:61
+#: repositorysync.py:48 repositorysync.py:60
 msgid "Repository synchronisation"
 msgstr "Repository-Synchronisation"
 
-#: repositorysync.py:60
+#: repositorysync.py:59
 msgid "Policy: Repository synchronisation"
 msgstr "Richtlinie: Repository-Synchronisation"
 
-#: repositorysync.py:178
+#: repositorysync.py:168
 msgid "Repository syncronisation settings"
 msgstr "Repository Synchronisationseinstellungen"
 
-#: share_userquota.py:48 share_userquota.py:79
+#: share_userquota.py:47 share_userquota.py:78
 msgid "Soft limit (Bytes)"
 msgstr "Soft-Limit (Anzahl Byte)"
 
-#: share_userquota.py:49 share_userquota.py:89
+#: share_userquota.py:48 share_userquota.py:88
 msgid "Hard limit (Bytes)"
 msgstr "Hard-Limit (Anzahl Byte)"
 
-#: share_userquota.py:50 share_userquota.py:99
+#: share_userquota.py:49 share_userquota.py:98
 msgid "Soft limit (Files)"
 msgstr "Soft-Limit (Anzahl Dateien)"
 
-#: share_userquota.py:51 share_userquota.py:109
+#: share_userquota.py:50 share_userquota.py:108
 msgid "Hard limit (Files)"
 msgstr "Hard-Limit (Anzahl Dateien)"
 
-#: share_userquota.py:62
+#: share_userquota.py:61
 msgid "Policy: User quota"
 msgstr "Richtlinie: Benutzer-Quota"
 
-#: share_userquota.py:63
+#: share_userquota.py:62
 msgid "User quota"
 msgstr "Benutzer-Quota"
 
-#: share_userquota.py:64
+#: share_userquota.py:63
 msgid "Default quota for each user on a share"
 msgstr "Standard-Speicherplatzbegrenzung für jeden User auf der Freigabe"
 
-#: share_userquota.py:80 share_userquota.py:100
+#: share_userquota.py:79 share_userquota.py:99
 msgid "Soft limit. If exceeded users can be warned."
 msgstr ""
 "Weiche Grenze, bei deren Überschreitung der Benutzer gewarnt werden kann"
 
-#: share_userquota.py:90 share_userquota.py:110
+#: share_userquota.py:89 share_userquota.py:109
 msgid "Hard limit. Can not be exceeded."
 msgstr "Harte Grenze, die nicht überschritten werden kann."
 
-#: share_userquota.py:170
+#: share_userquota.py:160
 msgid "Quota"
 msgstr "Speicherplatzbegrenzung für Benutzer"
 
-#: slavepackages.py:60
+#: slavepackages.py:59
 msgid "Policy: Packages Slave"
 msgstr "Richtlinie: Pakete Slave"
 
-#: slavepackages.py:61
+#: slavepackages.py:60
 msgid "Packages Slave"
 msgstr "Pakete Slave"
 
-#: slavepackages.py:148
+#: slavepackages.py:138
 msgid "Slave packages"
 msgstr "Slave Pakete"
 
-#: sound.py:48 sound.py:77
+#: sound.py:47 sound.py:76
 msgid "Sound enabled"
 msgstr "Sound aktivieren"
 
-#: sound.py:49 sound.py:87
+#: sound.py:48 sound.py:86
 msgid "Sound module"
 msgstr "Soundkarten-Treiber"
 
-#: sound.py:60
+#: sound.py:59
 msgid "Policy: Sound"
 msgstr "Richtlinie: Sound"
 
-#: sound.py:61 sound.py:148
+#: sound.py:60 sound.py:138
 msgid "Sound settings"
 msgstr "Sound-Einstellungen"
 
-#: thinclient.py:48 thinclient.py:91
+#: thinclient.py:47 thinclient.py:90
 msgid "File servers"
 msgstr "File-Server"
 
-#: thinclient.py:49 thinclient.py:81
+#: thinclient.py:48 thinclient.py:80
 msgid "Linux terminal servers"
 msgstr "Linux-Terminal-Server"
 
-#: thinclient.py:50 thinclient.py:111
+#: thinclient.py:49 thinclient.py:110
 msgid "Windows terminal servers"
 msgstr "Windows-Terminal-Server"
 
-#: thinclient.py:51 thinclient.py:121
+#: thinclient.py:50 thinclient.py:120
 msgid "Windows domain"
 msgstr "Windows-Domäne"
 
-#: thinclient.py:52 thinclient.py:101
+#: thinclient.py:51 thinclient.py:100
 msgid "Authentication servers"
 msgstr "Authentisierungsserver"
 
-#: thinclient.py:64
+#: thinclient.py:63
 msgid "Policy: Thin client"
 msgstr "Richtlinie: Thin Client"
 
-#: thinclient.py:65
+#: thinclient.py:64
 msgid "Thin client configuration"
 msgstr "Thin-Client-Konfiguration"
 
-#: thinclient.py:82
+#: thinclient.py:81
 msgid "Linux terminal servers of the Thin Client"
 msgstr "Linux-Terminal-Server des Thin Clients"
 
-#: thinclient.py:92
+#: thinclient.py:91
 msgid "File servers of the Thin Client"
 msgstr "File-Server des Thin Clients"
 
-#: thinclient.py:102
+#: thinclient.py:101
 msgid "Authentication servers of the Thin Client"
 msgstr "Authentisierungsserver des Thin Client"
 
-#: thinclient.py:112
+#: thinclient.py:111
 msgid "Windows terminal servers for Windows Login"
 msgstr "Windows-Terminal-Server für die Windows Anmeldung"
 
-#: thinclient.py:122
+#: thinclient.py:121
 msgid "Windows domain for Windows Login"
 msgstr "Windows-Domäne für die Windows Anmeldung"
 
-#: thinclient.py:182
+#: thinclient.py:172
 msgid "Servers to use"
 msgstr "Zu nutzende Server"
-
-#: windowsinstallation.py:48 windowsinstallation.py:76
-msgid "Filename of unattend installation profile"
-msgstr "Name der unattend-Datei"
-
-#: windowsinstallation.py:59
-msgid "Policy: Windows installation"
-msgstr "Richtlinie: Windows-Installation"
-
-#: windowsinstallation.py:60 windowsinstallation.py:137
-msgid "Windows installation"
-msgstr "Windows-Installation"
 
 #: xfree.py:45 xfree.py:379
 msgid "Automatic detection"
@@ -1353,7 +1203,7 @@ msgstr "Größe des virtuellen Desktops im Zwei-Monitor-Betrieb"
 msgid "Policy: Display"
 msgstr "Richtlinie: Display"
 
-#: xfree.py:79 xfree.py:449
+#: xfree.py:79 xfree.py:390
 msgid "Display settings"
 msgstr "Display-Einstellungen"
 
@@ -1385,226 +1235,19 @@ msgstr "Name des sekundären Monitors"
 msgid "RAM on the graphics adapter in kB"
 msgstr "RAM auf der Grafikkarte in kB"
 
-#: xfree.py:398
-msgid "General settings"
-msgstr "Basiseinstellungen"
-
-#: xfree.py:408
+#: xfree.py:397
 msgid "Input devices"
 msgstr "Eingabegeräte"
 
-#: xfree.py:418
+#: xfree.py:400
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
-#: xfree.py:428
+#: xfree.py:403
 msgid "Advanced settings of primary display"
 msgstr "Erweiterte Einstellungen des primären Monitors"
 
-#: xfree.py:438
+#: xfree.py:406
 msgid "Advanced settings of secondary display"
 msgstr "Erweiterte Einstellungen des sekundären Monitors"
 
-#~ msgid "Resolution"
-#~ msgstr "Auflösung"
-
-#~ msgid "Horizontal sync"
-#~ msgstr "Horizontale Synchronisation"
-
-#~ msgid "Vertical refresh"
-#~ msgstr "Vertikale Wiederholfrequenz"
-
-#~ msgid "Display size"
-#~ msgstr "Display-Grösse"
-
-#~ msgid "Display size (mm)"
-#~ msgstr "Display-Grösse (mm)"
-
-#~ msgid "secondaryresolution"
-#~ msgstr "Auflösung"
-
-#~ msgid "VNC"
-#~ msgstr "VNC"
-
-#~ msgid "Linux terminal server"
-#~ msgstr "Linux-Terminal-Server"
-
-#~ msgid "Hard Limit (Bytes)"
-#~ msgstr "Hard-Limit (Anzahl Byte)"
-
-#~ msgid "File server"
-#~ msgstr "File-Server"
-
-#~ msgid "Authentication server"
-#~ msgstr "Authentisierungsserver"
-
-#~ msgid "Windows terminal server"
-#~ msgstr "Windows-Terminal-Server"
-
-#~ msgid "Configuration Registry settings"
-#~ msgstr "Configuration Registry Einstellungen"
-
-#~ msgid "Soft Limit. If exceeded users can be warned."
-#~ msgstr ""
-#~ "Weiche Grenze, bei deren Überschreitung der Benutzer gewarnt werden kann"
-
-#~ msgid "Hard Limit. Can not be exceeded."
-#~ msgstr "Harte Grenze, die nicht überschritten werden kann."
-
-#~ msgid "User Quota Policy"
-#~ msgstr "Benutzer-Quota-Richtlinie"
-
-#~ msgid "Sound Settings"
-#~ msgstr "Sound-Einstellungen"
-
-#~ msgid "Visible Directory Manager wizards"
-#~ msgstr "Sichtbare Web-Directory Manager Assistenten"
-
-#~ msgid "Visible Directory Manager modules"
-#~ msgstr "Sichtbare Directory Manager Module"
-
-#~ msgid "DHCP Statements"
-#~ msgstr "DHCP Verschiedenes"
-
-#~ msgid "Package Removal list"
-#~ msgstr "Slave Pakete Deinstallationsliste"
-
-#~ msgid "Filename of unattend file"
-#~ msgstr "Name der unattend-Datei"
-
-#~ msgid "Policy: Packages Client"
-#~ msgstr "Richtlinie: Pakete Client"
-
-#~ msgid "Packages Client"
-#~ msgstr "Pakete Client"
-
-#~ msgid "Package List"
-#~ msgstr "Paketliste"
-
-#~ msgid "Update Version"
-#~ msgstr "Aktualisierungsversion"
-
-#~ msgid "VNC Export Type"
-#~ msgstr "VNC Display-Freigabetyp"
-
-#~ msgid "VNC Export Viewonly"
-#~ msgstr "VNC Display-Freigabe, nur Anzeigen"
-
-#~ msgid "List LDAP DNs"
-#~ msgstr "Liste von LDAP DNs"
-
-#~ msgid "Accessible LDAP DNs"
-#~ msgstr "Sichtbare LDAP DNs"
-
-#~ msgid "User may override settings"
-#~ msgstr "Benutzer darf Einstellungen überschreiben"
-
-#~ msgid "Allow Browse"
-#~ msgstr "Erlaube Browsen"
-
-#~ msgid "Only list these LDAP DNs"
-#~ msgstr "Liste der ausgewählten LDAP DNs"
-
-#~ msgid "Only list these Wizards"
-#~ msgstr "Liste der ausgewählten Assistenten"
-
-#~ msgid "Allow to browse the DIT"
-#~ msgstr "Erlaube das Browsen im DIT"
-
-#~ msgid "Show self menu entry"
-#~ msgstr "Zeige eigene Menu Einträge"
-
-#~ msgid "Bootp"
-#~ msgstr "Bootp"
-
-#~ msgid "Tell the client it is booting from this server"
-#~ msgstr "Informiert den Client von welchen Server er seine IP erhält."
-
-#~ msgid "Printquota"
-#~ msgstr "Druck-Quota"
-
-#~ msgid "Password-Policy"
-#~ msgstr "Passwort"
-
-#~ msgid "hSync"
-#~ msgstr "Horizontale Zeilenfrequenz"
-
-#~ msgid "vRefresh"
-#~ msgstr "Vertikale Bildwiederholfrequenz"
-
-#~ msgid "Users"
-#~ msgstr "Benutzer"
-
-#~ msgid "User Links"
-#~ msgstr "Benutzer Links"
-
-#~ msgid "Groups"
-#~ msgstr "Berechtigte Gruppen"
-
-#~ msgid "Group Links"
-#~ msgstr "Gruppen Links"
-
-#~ msgid "Computers"
-#~ msgstr "Rechner"
-
-#~ msgid "Computer Links"
-#~ msgstr "Rechner Links"
-
-#~ msgid "Policy Links"
-#~ msgstr "Richtlinien Links"
-
-#~ msgid "DNS Links"
-#~ msgstr "DNS Links"
-
-#~ msgid "DHCP"
-#~ msgstr "DHCP"
-
-#~ msgid "DHCP Links"
-#~ msgstr "DHCP Links"
-
-#~ msgid "Network"
-#~ msgstr "Netzwerk"
-
-#~ msgid "Network Links"
-#~ msgstr "Netzwerk Links"
-
-#~ msgid "Shares"
-#~ msgstr "Freigaben"
-
-#~ msgid "Shares Links"
-#~ msgstr "Freigaben Links"
-
-#~ msgid "Printers"
-#~ msgstr "Drucker"
-
-#~ msgid "Printers Links"
-#~ msgstr "Drucker Links"
-
-#~ msgid "Activate Autostart"
-#~ msgstr "Autostart Aktivieren"
-
-#~ msgid "Activate Autostart Functionality for this Client"
-#~ msgstr "Autostart Funktionalität für diesen Client aktivieren"
-
-#~ msgid "Policy: Printquota-Policy"
-#~ msgstr "Richtlinie: Druck-Quota"
-
-#~ msgid "Printquota-Policy"
-#~ msgstr "Druck-Quota-Richtlinie"
-
-#~ msgid "Policy: Master Packages"
-#~ msgstr "Richtlinie: Master Pakete"
-
-#~ msgid "Policy: Member Packages"
-#~ msgstr "Richtlinie: Member Pakete"
-
-#~ msgid "Miscellaneous"
-#~ msgstr "Verschiedenes"
-
-#~ msgid "Vendor Option Space"
-#~ msgstr "Vendor Option Space"
-
-#~ msgid "From what option space should vendor options be taken"
-#~ msgstr ""
-#~ "Ermöglicht die Vergabe von weiteren, herstellerspezifischen Optionen aus "
-#~ "der angegebenen Definition."

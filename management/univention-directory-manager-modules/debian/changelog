@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.108-1) unstable; urgency=low
+
+  * policies/admin_user: this policy is not supported anymore with UCS
+    3.0; Bug #23664
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Oct 2011 08:48:51 +0200
+
 univention-directory-manager-modules (7.0.107-1) unstable; urgency=low
 
   * dns/host_record: remove second referenac to attribute 'a' in layout; Bug #23681
