@@ -148,6 +148,9 @@ else:
 		rc = 3
 		output = output [:-1]
 	for i in output:
-		print i
+		if type(i) is unicode:
+			print i.encode(sys.stdout.encoding, 'replace')
+		else:
+			print i
 
 sys.exit(rc)

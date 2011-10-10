@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.110-1) unstable; urgency=low
+
+  * encode with error handling unicode strings to output encoding (Bug #23475)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 10 Oct 2011 10:31:26 +0200
+
 univention-directory-manager-modules (7.0.109-1) unstable; urgency=low
 
   * syntax classes nagiosServiceDn and nagiosHostsEnabledDn are adapted to
