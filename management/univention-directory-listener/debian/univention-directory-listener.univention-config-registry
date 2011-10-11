@@ -6,3 +6,7 @@ Variables: listener/ignoremaster
 Variables: ldap/base
 Variables: ldap/port
 Variables: ldap/server/port
+
+Type: file
+File: etc/logrotate.d/univention-directory-listener
+Variables: logrotate/.*

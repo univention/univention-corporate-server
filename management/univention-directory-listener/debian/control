@@ -10,7 +10,8 @@ Depends: ${shlibs:Depends},
  shell-univention-lib (>= 1.0.6),
  univention-runit,
  python2.6-univention | python2.6-univention-2005,
- python2.6-univention-debug
+ python2.6-univention-debug,
+ python-univention-lib (>= 1.0.25-1)
 Conflicts: univention-ldap-listener (<< 2.2.2)
 Description: UCS - Directory Listener
  Univention Directory Listener is a client for the Univention
