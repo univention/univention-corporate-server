@@ -7,7 +7,7 @@ Build-Depends: debhelper (>> 7), univention-config-dev, ucslint
 
 Package: univention-directory-logger
 Architecture: all
-Depends: python-univention, univention-directory-listener, slapd (>= 2.2.30-2)
+Depends: python-univention, univention-directory-listener, slapd (>= 2.2.30-2), python-univention-lib (>= 1.0.25-1)
 Description: UCS - Directory Logger
  Univention Directory Logger is a module for the Univention Directory Listener
  that logs changes to the UCS LDAP Directory as protocol records to a log file.

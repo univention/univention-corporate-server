@@ -2,3 +2,7 @@ Type: subfile
 Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/41univention-directory-logger
 Variables: ldap/logging/dellogdir
+
+Type: file
+File: etc/logrotate.d/univention-directory-logger
+Variables: logrotate/.*

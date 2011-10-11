@@ -1,3 +1,9 @@
+univention-directory-logger (4.0.3-1) unstable; urgency=low
+
+  * added logrotate configuration (Bug #18002)
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 17:25:03 +0200
+
 univention-directory-logger (4.0.2-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3
