@@ -11,5 +11,9 @@ print "/var/log/univention/%s.log {" % name
 for setting in settings.keys():
         print "\t%s" % settings[setting]
 @!@
+
+	lastaction
+		test -x /usr/bin/sv && test -e /etc/runit/univention/univention-directory-listener && sv term univention-directory-listener || true
+	endscript
 }
 
