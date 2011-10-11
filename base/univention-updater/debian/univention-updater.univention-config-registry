@@ -74,3 +74,7 @@ Variables: update/check/cron/entry
 Variables: update/check/cron/debug
 Variables: update/check/boot/enabled
 Variables: update/check/boot/debug
+
+Type: file
+File: etc/logrotate.d/univention-updater
+Variables: logrotate/.*

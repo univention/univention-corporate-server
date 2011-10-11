@@ -6,7 +6,7 @@ Build-Depends: debhelper (>> 7), univention-config-dev, python-all, python-suppo
 
 Package: univention-updater
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}, univention-config-registry, univention-directory-policy, netcat, wget, apt-mirror, at, sed, gzip, screen, python-univention (>> 5.0.6), shell-univention-lib
+Depends: ${python:Depends}, ${misc:Depends}, univention-config-registry, univention-directory-policy, netcat, wget, apt-mirror, at, sed, gzip, screen, python-univention (>> 5.0.6), shell-univention-lib, python-univention-lib (>= 1.0.25-1)
 Provides: ${python:Provides}
 Description: UCS - system upgrading tool
  Univention Updater can upgrade your version of UCS.
