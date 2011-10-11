@@ -1,15 +1,15 @@
-# Warning: This file is auto-generated and might be overwritten by
-#          univention-config-registry.
-#          Please edit the following file instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-config-registry überschrieben werden.
-#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
-#
-#       /etc/univention/templates/files/etc/logrotate.d/heimdal-kdc
-#
+@%@UCRWARNING=# @%@
 
-/var/log/heimdal-kdc.log {
-	rotate @%@log/rotate/weeks@%@
-	weekly
-	compress
+@!@
+import univention.lib.ucrLogrotate
+
+name = "heimdal-kdc"
+settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+
+print "/var/log/univention/%s.log {" % name
+
+for setting in settings.keys():
+	print "\t%s" % settings[setting]
+@!@
 }
+
