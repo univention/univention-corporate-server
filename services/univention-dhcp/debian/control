@@ -16,6 +16,7 @@ Depends: univention-config (>= 7),
  univention-runit (>= 0.2),
  univention-join (>= 4.0.13-3),
  shell-univention-lib (>= 1.0.3-1),
+ python-univention-lib (>= 1.0.25-1),
  ${misc:Depends}
 Conflicts: univention-dns
 Replaces: univention-dns
