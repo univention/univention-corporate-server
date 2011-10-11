@@ -1,3 +1,9 @@
+univention-lib (1.0.28-1) unstable; urgency=low
+
+  * added generation of symlinks in umc_frontend_new_hash (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 11 Oct 2011 17:24:57 +0200
+
 univention-lib (1.0.27-1) unstable; urgency=low
 
   * fixed bashism (Bug #22881)
