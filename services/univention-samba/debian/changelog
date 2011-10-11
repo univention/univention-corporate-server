@@ -1,3 +1,10 @@
+univention-samba (6.0.7-1) unstable; urgency=low
+
+  * Join a S3 memberserver into a s4 domain (Bug #23999)
+  * Updates on S3 / S4 mix setups (Bug #24000)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Oct 2011 07:00:56 +0200
+
 univention-samba (6.0.6-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3

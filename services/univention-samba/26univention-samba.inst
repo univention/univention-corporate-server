@@ -37,6 +37,32 @@ joinscript_init
 
 . /usr/share/univention-lib/all.sh
 
+eval "$(univention-config-registry shell)"
+
+s4setup="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret '(&(univentionService=Samba 4)(objectClass=univentionDomainController))' -LLL dn | sed -ne 's|dn: ||p')"
+if [ -n "$s4setup" ] && is_domain_controller; then
+	# Try to install a S3 DC in a S4 environment ...
+	echo "ERROR: It is not possible to install a samba 3 domaincontroller "
+	echo "       into a samba 4 environment."
+
+	if is_ucr_true samba3/ignore/mixsetup; then
+		echo "WARNING: samba3/ignore/mixsetup is true. Continue as "
+		echo "         requested"
+	else
+		exit 1
+	fi
+fi
+
+# Join as ADS member if the S4 connector ist installed.
+# To overwrite this setting:
+#  ucr set --force samba/domain/security=ads
+#  ucr set --force samba/domain/security=domain
+if [ -n "$s4setup" ]; then
+	univention-config-registry set samba/domain/security=ads
+else
+	univention-config-registry set samba/domain/security=domain
+fi
+
 rm -f /var/cache/samba/dont_start >/dev/null 2>&1
 
 # during installation samba/autostart was set to no to prevent
@@ -51,8 +77,6 @@ nfsd_pid=`pidof nfsd`
 if [ -n "$nfsd_pid" ]; then
 	test -x /etc/init.d/nfs-kernel-server && /etc/init.d/nfs-kernel-server stop
 fi
-
-eval "$(univention-config-registry shell)"
 
 winbind_was_running=0
 if [ -x /etc/init.d/winbind ]; then
@@ -105,15 +129,23 @@ elif [ -e /etc/backup-join.secret ]; then
 	samba_pwd="$(cat /etc/backup-join.secret)"
 fi
 
+
+security="$(univention-config-registry get samba/domain/security)"
+if [ "$security" = "ads" ]; then
+	JOIN_CMD="net ads join"
+else
+	JOIN_CMD="net rpc join"
+fi
+
 if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	if [ $JS_LAST_EXECUTED_VERSION -le 5 ]; then
 		# set the samba option
 		univention-directory-manager computers/$server_role modify "$@" --dn "$ldap_hostdn" --append-option samba --set password="$(cat /etc/machine.secret)"
 	fi
 
-	net rpc join -U${samba_account}%${samba_pwd}
+	$JOIN_CMD -U${samba_account}%${samba_pwd}
 	if [ $? != 0 ]; then
-		net rpc join -U${samba_account}%${samba_pwd} -S${ldap_master}
+		$JOIN_CMD -U${samba_account}%${samba_pwd} -S${ldap_master}
 		if [ $? != 0 ]; then
 			echo "ERROR: Failed to join via net rpc join. Please run \"net rpc join\" manually."
 		fi

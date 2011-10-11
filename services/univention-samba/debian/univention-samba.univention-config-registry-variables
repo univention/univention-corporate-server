@@ -339,3 +339,9 @@ Description[de]=Dieser Parameter steuert die Authentifizierungsmethoden auf eine
 Description[en]=This parameter controls what authentication methods smbd will use when authenticating a user on a memberserver (default: guest sam winbind)
 Type=str
 Categories=service-samba
+
+[samba/domain/security]
+Description[de]=Dieser Parameter steuert den Security-Modus auf einem Memberserver (default: domain)
+Description[en]=This parameter controls which security mode will be useed on a memberserver (default: domain)
+Type=str
+Categories=service-samba
