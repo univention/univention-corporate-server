@@ -128,8 +128,7 @@ Variables: hosts/static/.*
 
 Type: file
 File: etc/logrotate.conf
-Variables: log/rotate/weeks
-Variables: log/rotate/univention/compress
+Variables: logrotate/.*
 
 Type: file
 File: etc/resolv.conf

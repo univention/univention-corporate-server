@@ -35,13 +35,31 @@ test -f "/etc/univention/templates/cache" && rm -f "/etc/univention/templates/ca
 dpkg-statoverride --add root adm 0750 /var/log
 dpkg-statoverride --add root adm 0750 /var/log/univention
 
+# update to UCS 3.0
+# remove log/rotate/weeks and log/rotate/univention/compress and save
+# values in new variables Bug #18002
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.28-1; then
+	eval "$(univention-config-registry shell)"
+	if [ -n "$log_rotate_weeks" ]; then
+		univention-config-registry set logrotate/rotate/count="$log_rotate_weeks"
+		univention-config-registry unset log/rotate/weeks
+	fi
+	if [ -n "$log_rotate_univention_compress" ]; then
+		univention-config-registry set logrotate/compress="$log_rotate_univention_compress"
+		univention-config-registry unset log/rotate/univention/compress
+	fi
+fi
+
 univention-config-registry set ldap/base?dc=univention,dc=unconfigured \
 	ldap/server/name?ds1 \
 	ldap/server/ip?127.0.0.1 \
 	ldap/binaryattributes?"" \
 	browser-cache?0 \
-	log/rotate/weeks?12 \
-	log/rotate/univention/compress?yes \
+	logrotate/rotate?weekly \
+	logrotate/rotate/count?12 \
+	logrotate/compress?yes \
+	logrotate/missingok?yes \
+	logrotate/create?"640 root adm" \
 	nameserver/option/timeout?2 \
 	update/secure_apt?no \
 
