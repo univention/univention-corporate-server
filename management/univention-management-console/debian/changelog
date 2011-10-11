@@ -1,3 +1,10 @@
+univention-management-console (4.0.64-1) unstable; urgency=low
+
+  * added generation of new hash for UMC frontend to postinst scripts in
+    dev/dh-umc-module-install (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 11 Oct 2011 16:24:09 +0200
+
 univention-management-console (4.0.63-1) unstable; urgency=low
 
   * add missing translation function to modserver.py; Bug #22460
