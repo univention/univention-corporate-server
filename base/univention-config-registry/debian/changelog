@@ -1,3 +1,9 @@
+univention-config-registry (7.0.23-1) unstable; urgency=low
+
+  * decode input according to locale setting (Bug #23753)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 10 Oct 2011 17:40:10 +0200
+
 univention-config-registry (7.0.22-1) unstable; urgency=low
 
   * fix typo in deprecation warning (Bug #23807)

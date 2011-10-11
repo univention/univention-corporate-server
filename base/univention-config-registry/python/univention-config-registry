@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import locale
 import os, sys
 
 try:
@@ -42,11 +43,26 @@ except ImportError, e:
 	sys.path.append('/usr/share/pyshared')
 	import univention.config_registry as ub
 
+def convertToUtf8(arguments):
+	'Try to decode as UTF-8, then try to decode with locale encoding. If decoded successful encode with UTF-8.'
+	locale.setlocale(locale.LC_ALL, '')
+	new_arguments = []
+	for argument in arguments:
+		try:
+			argument = argument.decode('UTF-8').encode('UTF-8')
+		except UnicodeError, e:
+			try:
+				argument = argument.decode(locale.nl_langinfo(locale.CODESET)).encode('UTF-8')
+			except UnicodeError, e:
+				pass
+		new_arguments.append(argument)
+	return new_arguments
+
 if __name__ == '__main__' and not os.path.exists('/etc/univention/disable_baseconfig') and not os.path.exists('/etc/univention/disable_config_registry'):
 	if os.path.basename(sys.argv[0]) == 'univention-baseconfig':
 		print >>sys.stderr, 'WARNING: univention-baseconfig is deprecated by univention-config-registry.'
 	try:
-		ub.main(sys.argv[1:])
+		ub.main(convertToUtf8(sys.argv[1:]))
 	except ub.StrictModeException, e:
 		print 'Error: UCR is running in strict mode and thus cannot accept the given input:'
 		print e
