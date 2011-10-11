@@ -16,3 +16,7 @@ Variables: mail/cyrus/folder/ham
 Type: file
 File: etc/cron.daily/univention-spamassassin
 Variables: mail/antispam/learndaily
+
+Type: file
+File: etc/logrotate.d/univention-spamassassin
+Variables: logrotate/.*

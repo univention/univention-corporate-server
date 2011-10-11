@@ -9,7 +9,7 @@ Standards-Version: 3.8.2
 
 Package: univention-spamassassin
 Architecture: all
-Depends: univention-config-registry, spamassassin (>= 3.0.4), spamc, makepasswd
+Depends: univention-config-registry, spamassassin (>= 3.0.4), spamc, makepasswd, python-univention-lib (>= 1.0.25-1)
 Description: univention mail antispam
  univention mail antispam module
  .

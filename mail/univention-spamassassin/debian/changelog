@@ -1,3 +1,9 @@
+univention-spamassassin (4.0.1-1) unstable; urgency=low
+
+  * added logrotate configuration (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 17:00:43 +0200
+
 univention-spamassassin (4.0.0-1) unstable; urgency=low
 
   * set mail/antivir/spam during installation/removal (Bug #22876)
