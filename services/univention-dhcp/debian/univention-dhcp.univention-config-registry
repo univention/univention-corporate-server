@@ -14,4 +14,4 @@ File: etc/init.d/isc-dhcp-server
 
 Type: file
 File: etc/logrotate.d/univention-dhcp
-Variables: log/rotate/univention/compress
+Variables: logrotate/.*

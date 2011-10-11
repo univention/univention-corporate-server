@@ -1,3 +1,9 @@
+univention-dhcp (6.0.6-2) unstable; urgency=low
+
+  * fixed univention-config-registry (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 16:15:05 +0200
+
 univention-dhcp (6.0.6-1) unstable; urgency=low
 
   * added logrotate configuration (Bug #18002)
