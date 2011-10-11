@@ -1,3 +1,12 @@
+univention-directory-manager-modules (7.0.116-1) unstable; urgency=low
+
+  * properties with syntax class UDM_Objects may display a combobox
+    instead of the MultiObjectSelect widget; Bug #23699
+  * shares/printer: cut off slashes at the beginning of destination of
+    protocol is file:/
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 11 Oct 2011 10:17:35 +0200
+
 univention-directory-manager-modules (7.0.115-1) unstable; urgency=low
 
   * make same changes from 7.0.114-1 to dhcp/sharedsubnet; Bug #23678

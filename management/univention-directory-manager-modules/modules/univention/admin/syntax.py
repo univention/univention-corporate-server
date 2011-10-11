@@ -223,6 +223,7 @@ class UDM_Objects( ISyntax ):
 	static_values = None
 	empty_value = False
 	error_message = _( "Not a valid LDAP DN" )
+	simple = False # by default a MultiObjectSelect widget is used; if simple == True a ComboBox is used
 
 	@classmethod
 	def parse( self, text ):
@@ -240,6 +241,7 @@ class UDM_Attribute( ISyntax ):
 	key_index = 0
 	label_index = 0
 	regex = None
+	static_values = None
 	empty_value = False
 	error_message = _( 'Invalid value' )
 
@@ -1196,10 +1198,12 @@ class ldapDn(simple):
 			return text
 		raise univention.admin.uexceptions.valueError,_("Not a valid LDAP DN")
 
-class consoleACL(simple):
-	@classmethod
-	def parse(self, text):
-		return text
+class UMC_ACL( UDM_Objects ):
+	udm_modules = ( 'settings/console_acl', )
+	key = 'dn'
+	label = '%(category)s (%(description)s)'
+	simple = True
+
 class consoleOperations(simple):
 	@classmethod
 	def parse(self, text):

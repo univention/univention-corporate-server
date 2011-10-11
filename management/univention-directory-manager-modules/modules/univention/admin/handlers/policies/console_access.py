@@ -75,7 +75,7 @@ property_descriptions={
 	'allow': univention.admin.property(
 			short_description=_('Allow ACL'),
 			long_description='',
-			syntax=univention.admin.syntax.consoleACL,
+			syntax=univention.admin.syntax.UMC_ACL,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -85,7 +85,7 @@ property_descriptions={
 	'disallow': univention.admin.property(
 			short_description=_('Disallow ACL'),
 			long_description='',
-			syntax=univention.admin.syntax.consoleACL,
+			syntax=univention.admin.syntax.UMC_ACL,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -137,7 +137,8 @@ property_descriptions={
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
 		'name',
-		[ 'allow', 'disallow' ]
+		'allow',
+		'disallow'
 		] ),
 	Tab( _( 'Object' ), _( 'Object' ), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
