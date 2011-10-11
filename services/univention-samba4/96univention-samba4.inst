@@ -40,6 +40,20 @@ LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary 
 
 eval "$(univention-config-registry shell)"
 
+s3setup="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret '(&(univentionService=Samba 3)(objectClass=univentionDomainController))' -LLL dn | sed -ne 's|dn: ||p')"
+if [ -n "$s3setup" ] && is_domain_controller; then
+	# Try to install a S4 DC in a S3 environment ...
+	echo "ERROR: It is not possible to install a samba 4 domaincontroller "
+	echo "       into a samba 3 environment."
+
+	if is_ucr_true samba4/ignore/mixsetup; then
+		echo "WARNING: samba4/ignore/mixsetup is true. Continue as "
+		echo "         requested"
+	else
+		exit 1
+	fi
+fi
+
 NAME="Samba 4"
 
 extract_binddn_and_bindpwd_from_args() {
@@ -139,6 +153,12 @@ if [ -x /etc/init.d/heimdal-kdc ]; then
 	univention-config-registry set kerberos/autostart=no
 fi
 
+# during installation samba4/autostart was set to no to prevent                                                                                                                                     
+# a half configured samba server. Set autostart to yes during first join                                                                                                                           
+if [ "$JS_LAST_EXECUTED_VERSION" = 0 ]; then                                                                                                                                                       
+    univention-config-registry set samba4/autostart=yes                                                                                                                                             
+fi                                                                                                                                                                                                 
+univention-config-registry set samba4/autostart?yes 
 
 if [ -z "$samba4_role" ]; then
 	case "$server_role" in

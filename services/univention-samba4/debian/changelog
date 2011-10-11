@@ -1,3 +1,11 @@
+univention-samba4 (1.0.58-1) unstable; urgency=low
+
+  * Updates on S3 / S4 mix setups (Bug #24000)
+  * Added samba4/autostart handling
+  * Added univention-service file
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Oct 2011 07:01:24 +0200
+
 univention-samba4 (1.0.57-1) unstable; urgency=low
 
   * Removed dependency to eth0 (Bug #10825)

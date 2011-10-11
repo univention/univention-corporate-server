@@ -40,6 +40,7 @@ univention-config-registry set samba4/debug/level?2 \
 if [ "$1" = "configure" ]; then
 
 	if [ -z "$2" ]; then
+    	univention-config-registry set samba4/autostart="no"                                                                                                                                            
 
 		# only set this for new installations
 		if [ "$server_role" = "domaincontroller_master" ]; then
