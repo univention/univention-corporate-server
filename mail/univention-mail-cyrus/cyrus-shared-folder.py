@@ -148,8 +148,8 @@ def handler(dn, new, old, command):
 
 				anyone_acl_set = False
 
-				if new.has_key('acl'):
-					for entry in new['acl']:
+				if new.has_key('univentionMailACL'):
+					for entry in new['univentionMailACL']:
 						(email, policy) = split_acl_entry(entry)
 
 						# Set our new policy
@@ -211,22 +211,22 @@ def handler(dn, new, old, command):
 		if new.has_key('cyrus-userquota') and new['cyrus-userquota'][0]:
 			setquota(name, new['cyrus-userquota'][0])
 
-		if old.has_key('acl') and old['acl'] and not new.has_key('acl'):
-			for line in old['acl']:
+		if old.has_key('univentionMailACL') and old['univentionMailACL'] and not new.has_key('univentionMailACL'):
+			for line in old['univentionMailACL']:
 				(email, policy) = split_acl_entry(line)
 				setacl(name, email, 'none')
 
-		#convert new acls to dict
+		# convert new acls to dict
 		anyone_acl_set = False
 		curacl={}
-		if new.has_key('acl'):
-			for entry in new['acl']:
+		if new.has_key('univentionMailACL'):
+			for entry in new['univentionMailACL']:
 				(email, policy) = split_acl_entry(entry)
 				policy = fix_anyone_acl(new, email, policy)
 				curacl[email]=policy
 
-		if old.has_key('acl'):
-			for entry in old['acl']:
+		if old.has_key('univentionMailACL'):
+			for entry in old['univentionMailACL']:
 				(email, policy) = split_acl_entry(entry)
 				if not curacl.has_key(email):
 					setacl(name, email, 'none')
