@@ -30,6 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+override_dh_auto_install:
+	univention-install-config-registry
+	dh_auto_install 
+
 override_dh_installinit:
 	dh_installinit -punivention-system-setup-boot --no-start -u"defaults 70"
 	dh_installinit -punivention-system-setup-appliance --no-start -u"defaults 75"

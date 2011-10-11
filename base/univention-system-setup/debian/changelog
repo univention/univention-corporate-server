@@ -1,3 +1,9 @@
+univention-system-setup (5.0.8-1) unstable; urgency=low
+
+  * added logrotate configuration (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 16:41:34 +0200
+
 univention-system-setup (5.0.7-1) unstable; urgency=low
 
   * fixed reference to proxy/http in net/18proxy (Bug #22904)

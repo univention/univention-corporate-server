@@ -6,12 +6,13 @@ Standards-Version: 3.8.2
 Build-Depends: debhelper (>= 7.0.50~),
  ucslint,
  python-support,
- python-all
+ python-all,
+ univention-config-dev
 XS-Python-Version: all
 
 Package: univention-system-setup
 Architecture: all
-Depends: univention-installer-modules, ${python:Depends}, ${misc:Depends}, univention-ipcalc, whois, shell-univention-lib
+Depends: univention-installer-modules, ${python:Depends}, ${misc:Depends}, univention-ipcalc, whois, shell-univention-lib, python-univention-lib (>= 1.0.25-1)
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: univention system setup tools
