@@ -6,12 +6,21 @@
 	<categories>
 	  <category name="system"/>
 	</categories>
-	<command name="join/query" function="query">
-		<attribute name="scope" syntax="Join-Query-Scope"/>
+	<!-- should be used only for the grid, so no arg is needed -->
+	<command name="join/scripts/query" function="query">
+		<attribute name="script" syntax="String"/>
 	</command>
+	<!-- Status queries, distinct URLs now -->
+	<command name="join/logview" function="logview">
+		<attribute name="count" syntax="Integer"/>
+	</command>
+	<command name="join/joined" function="joined"/>
+	<command name="join/running" function="running"/>
+	<!-- run one or more script(s) -->
 	<command name="join/run" function="run">
 		<attribute name="scripts" syntax="Join-Run-Scripts"/>
 	</command>
+	<!-- do a domain join -->
 	<command name="join/join" function="join">
 		<attribute name="host" syntax="String"/>
 		<attribute name="user" syntax="String"/>

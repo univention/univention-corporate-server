@@ -1,3 +1,9 @@
+univention-management-console-module-join (1.0.2-1) unstable; urgency=low
+
+  * added patches from Bug #23701
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 11 Oct 2011 11:36:48 +0200
+
 univention-management-console-module-join (1.0.1-1) unstable; urgency=low
 
   * changed icon sizes in overview to 50x50, removed 24x24, 32x32, 64x64

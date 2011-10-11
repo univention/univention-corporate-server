@@ -38,7 +38,7 @@ import univention.management.console.modules as umcm
 
 import re
 from os import stat,listdir,chmod,unlink,path
-from locale import nl_langinfo,D_T_FMT
+from locale import nl_langinfo,D_T_FMT,getlocale,setlocale,LC_ALL
 from time import strftime,localtime,sleep
 from string import join
 from subprocess import Popen
@@ -51,8 +51,6 @@ _ = umc.Translation('univention-management-console-module-join').translate
 class Instance(umcm.Base):
 	def init(self):
 		MODULE.warn("Initializing 'join' module with LANG = '%s'" % self.locale)
-		global _
-		_ = umc.Translation('univention-management-console-module-join',self.locale).translate
 
 		# some constants
 		self._instdir		= '/usr/lib/univention-install'				# where to find *.inst files
@@ -69,7 +67,7 @@ class Instance(umcm.Base):
 		self._process		= None
 
 	def query(self,request):
-		"""Dispatcher for different query scopes."""
+		""" Query to fill the scripts grid. """
 		# ----------- DEBUG -----------------
 		MODULE.info("join/query invoked with:")
 		MODULE.info("   << LANG = '%s'" % self.locale)
@@ -78,34 +76,96 @@ class Instance(umcm.Base):
 		for s in st:
 			MODULE.info("   << %s" % s)
 		# -----------------------------------
-		result = []
-		# please don't bite me, rather tell me how to write a 'case' in Python
-		scope = request.options.get('scope','')
-		# list join scripts and their status
-		if scope == 'scripts':
-			result = self._scripts()
-			request.status = SUCCESS
-		# list join log (or log file stamp, for tail-like display)
-		elif scope == 'logview':
-			# let it fail if arg is not numerical
-			result = self._logview(int(request.options.get('count',10)))
-			request.status = SUCCESS
-		# ask for the join date (file timestamp of the 'joined' status file)
-		elif scope == 'joined':
-			result = self._joined()
-			request.status = SUCCESS
-		# check if a subprocess is running
-		elif scope == 'running':
-			result = self._running()
-			request.status = SUCCESS
-		else:
-			request.status = FAILURE
+		result = self._scripts()
+		request.status = SUCCESS
 
-		# PURE DEBUG: print all that we'll return
+		# ---------- DEBUG --------------
+		MODULE.info("join/query returns:")
 		pp = pprint.PrettyPrinter(indent=4)
 		st = pp.pformat(result).split("\n")
 		for s in st:
 			MODULE.info("   >> %s" % s)
+		# --------------------------------
+
+		self.finished(request.id,result)
+		
+	def joined(self,request):
+		""" returns the (localized) join date/time or
+			the empty string.
+		"""
+		# ----------- DEBUG -----------------
+		MODULE.info("join/joined invoked with:")
+		MODULE.info("   << LANG = '%s'" % self.locale)
+		pp = pprint.PrettyPrinter(indent=4)
+		st = pp.pformat(request.options).split("\n")
+		for s in st:
+			MODULE.info("   << %s" % s)
+		# -----------------------------------
+		
+		result = self._joined()
+		request.status = SUCCESS
+		
+		# ---------- DEBUG --------------
+		MODULE.info("join/joined returns:")
+		pp = pprint.PrettyPrinter(indent=4)
+		st = pp.pformat(result).split("\n")
+		for s in st:
+			MODULE.info("   >> %s" % s)
+		# --------------------------------
+
+		self.finished(request.id,result)
+
+	def running(self,request):
+		""" returns true if a join script is running.
+		"""
+		# ----------- DEBUG -----------------
+		MODULE.info("join/running invoked with:")
+		MODULE.info("   << LANG = '%s'" % self.locale)
+		pp = pprint.PrettyPrinter(indent=4)
+		st = pp.pformat(request.options).split("\n")
+		for s in st:
+			MODULE.info("   << %s" % s)
+		# -----------------------------------
+		
+		result = self._running()
+		request.status = SUCCESS
+		
+		# ---------- DEBUG --------------
+		MODULE.info("join/running returns:")
+		pp = pprint.PrettyPrinter(indent=4)
+		st = pp.pformat(result).split("\n")
+		for s in st:
+			MODULE.info("   >> %s" % s)
+		# --------------------------------
+
+		self.finished(request.id,result)
+
+	def logview(self,request):
+		""" Frontend to the _logview() function: returns
+			either the timestamp of the log file or
+			some log lines.
+		"""
+		# ----------- DEBUG -----------------
+		MODULE.info("join/logview invoked with:")
+		MODULE.info("   << LANG = '%s'" % self.locale)
+		pp = pprint.PrettyPrinter(indent=4)
+		st = pp.pformat(request.options).split("\n")
+		for s in st:
+			MODULE.info("   << %s" % s)
+		# -----------------------------------
+		
+		result = self._logview(int(request.options.get('count',10)))
+		request.status = SUCCESS
+		
+		# ---------- DEBUG --------------
+		# TODO: We should not repeat the whole log into
+		# the module log file!
+		MODULE.info("join/logview returns:")
+		pp = pprint.PrettyPrinter(indent=4)
+		st = pp.pformat(result).split("\n")
+		for s in st:
+			MODULE.info("   >> %s" % s)
+		# --------------------------------
 
 		self.finished(request.id,result)
 
@@ -322,19 +382,16 @@ class Instance(umcm.Base):
 							next								# ... ignore this entry
 					files[fname]['last'] = version
 					if files[fname]['last'] < files[fname]['current']:
-						files[fname]['icon'] = 'join-run'
 						files[fname]['action'] = _('run')
 						files[fname]['status'] = _('due')
 					else:
 						files[fname]['status'] = _('successful')
-						files[fname]['icon'] = 'join-success'
 						files[fname]['action'] = ''
 				else:
 					MODULE.warn("  Script '%s' has no package" % fname)
 					e = {}
 					e['script'] = fname
 					e['status'] = _('not installed')
-					e['icon'] = 'join-error'
 					e['last'] = version
 					files[fname] = e
 		except Exception,ex:
@@ -351,15 +408,12 @@ class Instance(umcm.Base):
 				entry['last'] = '--'
 				if 'current' in entry:
 					entry['status'] = _('never run')
-					entry['icon'] = 'join-run'
 					entry['action'] = _('run')
 			# to avoid double expressions in the JS code, checking for
 			# definedness and non-emptiness of strings: We set all empty
 			# properties to the empty string.
 			if not 'action' in entry:
 				entry['action'] = ''
-			if not 'icon' in entry:
-				entry['icon'] = ''
 			# Return only entries that have a 'current' property.
 			if 'current' in entry:
 				result.append(entry)
