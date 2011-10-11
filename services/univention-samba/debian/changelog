@@ -1,3 +1,9 @@
+univention-samba (6.0.8-1) unstable; urgency=low
+
+  * Adjust idmap configuration to Samba 3.6 (Bug #22561)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Oct 2011 08:39:50 +0200
+
 univention-samba (6.0.7-1) unstable; urgency=low
 
   * Join a S3 memberserver into a s4 domain (Bug #23999)

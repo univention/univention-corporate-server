@@ -25,9 +25,9 @@ if not admindn:
 	else:
 		admindn='cn=backup,%s' % (configRegistry['ldap/base'])
 ldap_server_name=configRegistry.get('ldap/server/name', 'localhost')
-print '\tidmap alloc backend = ldap'
-print '\tidmap alloc config : ldap_user_dn = %s' % (admindn)
-print '\tidmap alloc config : ldap_url = ldap://%s' % (ldap_server_name)
+print '\tidmap backend = ldap'
+print '\tidmap config : ldap_user_dn = %s' % (admindn)
+print '\tidmap config : ldap_url = ldap://%s' % (ldap_server_name)
 # the range for the aloc backend is given by idmap uid/gid above
 
 # replacement for deprecated samba/winbind/trusted/domains/only=yes
