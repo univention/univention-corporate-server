@@ -41,7 +41,8 @@ Depends: univention-config-registry,
  univention-archive-key,
  univention-ifplugd | univention-network-manager,
  univention-management-console-module-udm,
- univention-management-console
+ univention-management-console,
+ python-univention-lib (>= 1.0.25-1)
 Conflicts: exim
 Description: UCS - master domain controller
  This package installs a UCS master domain controller.
@@ -86,7 +87,8 @@ Depends: univention-config-registry,
  univention-archive-key,
  univention-ifplugd | univention-network-manager,
  univention-management-console-module-udm,
- univention-management-console
+ univention-management-console,
+ python-univention-lib (>= 1.0.25-1)
 Conflicts: exim
 Description: UCS - backup domain controller
  This package installs a UCS backup domain controller.
@@ -128,7 +130,8 @@ Depends: univention-config-registry,
  univention-firewall,
  univention-grub,
  univention-archive-key,
- univention-ifplugd | univention-network-manager
+ univention-ifplugd | univention-network-manager,
+ python-univention-lib (>= 1.0.25-1)
 Conflicts: exim
 Description: UCS - slave domain controller
  This package installs a UCS slave domain controller.
@@ -165,7 +168,8 @@ Depends: univention-config-registry,
  univention-firewall,
  univention-grub,
  univention-archive-key,
- univention-ifplugd | univention-network-manager
+ univention-ifplugd | univention-network-manager,
+ python-univention-lib (>= 1.0.25-1)
 Conflicts: exim
 Description: UCS - member server
  This package installs a UCS member server.
@@ -210,7 +214,8 @@ Depends: univention-policy-tools,
  univention-system-setup,
  hibernate,
  acpid,
- univention-archive-key
+ univention-archive-key,
+ python-univention-lib (>= 1.0.25-1)
 Description: UCS - Mobile Client
  This is a Meta-package, that sets up a UCS mobile client
  .
@@ -259,7 +264,8 @@ Depends: univention-policy-tools,
  univention-grub,
  univention-system-setup,
  acpid,
- univention-archive-key
+ univention-archive-key,
+ python-univention-lib (>= 1.0.25-1)
 Description: UCS - Managed Client
  This is a Meta-package, that sets up a UCS managed client
  .

@@ -1,2 +1,6 @@
 Type: file
 File: etc/cron.d/univention-server-member
+
+Type: file
+File: etc/logrotate.d/univention-server-password-change
+Variables: logrotate/.*

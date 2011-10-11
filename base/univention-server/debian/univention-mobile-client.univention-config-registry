@@ -1,2 +1,6 @@
 Type: file
 File: etc/cron.d/univention-mobile-client
+
+Type: file
+File: etc/logrotate.d/univention-mobile-client
+Variables: logrotate/.*

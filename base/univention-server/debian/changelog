@@ -1,3 +1,13 @@
+univention-server (7.0.13-1) unstable; urgency=low
+
+  * added logrotate configuration for
+    /var/log/univention/server_password_change.log on master, backup,
+    slave and member, for /var/log/univention/mobile-client.log on
+    mobile clients and /var/log/univention/managed-client.log on 
+    managed clients (Bug #18002)
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 16:26:02 +0200
+
 univention-server (7.0.12-1) unstable; urgency=low
 
   * remove obsolete HA in server_password_change (Bug #23362)
