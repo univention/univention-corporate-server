@@ -44,6 +44,7 @@ from time import strftime,localtime,sleep,time
 from string import join
 from subprocess import Popen
 from hashlib import md5
+from copy import deepcopy
 
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
@@ -104,8 +105,8 @@ INSTALLERS = {
 		'logfile':		'/var/log/univention/updater.log',
 		'statusfile':	'/var/lib/univention-updater/univention-updater.status'
 	},
-	# no API available, and no wrapper-wrapper too (or at least, didn't find one).
-	# Should I write a wrapper, especially to get consistent behaviour in terms of 'logfile' and 'statusfile'?
+	# *** IMPORTANT! *** the arg list from our request contains the COMPONENT name but the command
+	#					here must contain the list of DEFAULTPACKAGES!
 	# cmd = '/usr/share/univention-updater/univention-updater-umc-univention-install %s' % (' '.join(pkglist))
 	'component': {
 		'purpose':		_("Install component '%s'"),
@@ -843,22 +844,30 @@ class Instance(umcm.Base):
 				MODULE.info("   << %s" % s)
 		# -----------------------------------
 		result = None
-		job = 'unknown'
+		job = ''
 		if self._current_job and 'job' in self._current_job:
 			job = self._current_job['job']
 		else:
-			job = request.options.get('job','none')
+			job = request.options.get('job','')
 
 		count = request.options.get('count',0)
 		result = 0 if count < 0 else []
 		if not job in INSTALLERS:
-			MODULE.warn("   ?? Don't know a '%s' job" % job)
+			# job empty: this is the first call I can't avoid
+			if job != '':
+				MODULE.warn("   ?? Don't know a '%s' job" % job)
 		else:
 			if not 'logfile' in INSTALLERS[job]:
 				MODULE.warn("   ?? Job '%s' has no associated log file" % job)
 			else:
 				fname = INSTALLERS[job]['logfile']
-				result = self._logview(fname, count)
+				if count < 0:
+					result = self._logstamp(fname)
+				else:
+					# don't read complete file if we have an 'ignore' count
+					if (count == 0) and (self._current_job['lines']):
+						count = -self._current_job['lines']
+					result = self._logview(fname, count)
 				
 		# again debug, shortened
 		if isinstance(result,int):
@@ -900,7 +909,12 @@ class Instance(umcm.Base):
 		job = request.options.get('job','')
 		result = {}
 		if job in INSTALLERS:
-			result = INSTALLERS[job]
+			# make a copy, not a reference!
+#			result = {}
+#			for arg in INSTALLERS[job]:
+#				result[arg] = INSTALLERS[job][arg]
+			result = deepcopy(INSTALLERS[job])
+				
 			if 'statusfile' in INSTALLERS[job]:
 				try:
 					for line in open(INSTALLERS[job]['statusfile']):
@@ -944,6 +958,10 @@ class Instance(umcm.Base):
 					result['label'] = result['purpose'] % result['detail']
 				else:
 					result['label'] = result['purpose']
+			# Affordance to reboot... hopefully this gets set before
+			# we stop polling on this job status
+			self.ucr.load()		# make it as current as possible
+			result['reboot'] = self.ucr.is_true('update/reboot/required',False)
 
 		# ----------- DEBUG -----------------
 		MODULE.info("online/installer/status returns:")
@@ -979,6 +997,9 @@ class Instance(umcm.Base):
 				MODULE.info("   << %s" % s)
 		# -----------------------------------
 		
+		# Clean up any stored job details ... they're now obsolete.
+		self._current_job = {}
+				
 		result = {}
 		result['status'] = 0		# successful. If not: set result['message'] too.
 		
@@ -999,11 +1020,49 @@ class Instance(umcm.Base):
 			self.finished(request.id,result)
 			return
 		
-		cmd = INSTALLERS[subject]['command']
-		if cmd.find('%') != -1:
-			cmd = cmd % request.options.get('detail','')
-		MODULE.info("   ++ Creating job: '%s'" % cmd)
-		self.__create_at_job(cmd,detail)
+		# We want to limit the amount of logfile data being transferred
+		# to the frontend. So we remember the line count of the associated
+		# log file.
+		if 'logfile' in INSTALLERS[subject]:
+			fname = INSTALLERS[subject]['logfile']
+			count = 0
+			try:
+				file = open(fname,'r')
+				count = 0
+				for line in file:
+					count += 1
+			finally:
+				if file != None:
+					file.close()
+			self._current_job['lines'] = count
+		
+		try:
+			# Assemble the command line, now somewhat complicated:
+			#
+			#	(1)	take the 'command' entry from the INSTALLERS entry of this subject
+			#	(2)	if it doesn't contain a percent sign -> ready.
+			#	(3)	if it contains a percent sign: we must format something:
+			#	(4)	if the subject is about 'component' we must get the 'defaultpackages'
+			#		entry from the UCR tuple named by 'detail' and use that.
+			#	(5)	if not, we can format the 'detail' field into the command.
+			# cmd = '%s' % INSTALLERS[subject]['command']		# I need a copy of this string!
+			cmd = INSTALLERS[subject]['command']
+			if cmd.find('%') != -1:
+				if subject == 'component':
+					# Strictly spoken, we can't arrive here if 'defaultpackages' is not set
+					ucrs = '%s/%s/defaultpackages' % (COMPONENT_BASE,detail)
+					pkgs = self.ucr.get(ucrs,'')
+					cmd = cmd % pkgs
+					MODULE.info("  Resolution of default packages of the '%s' component:" % detail)
+					MODULE.info("     UCRS = '%s'" % ucrs)
+					MODULE.info("     PKGS = '%s'" % pkgs)
+					MODULE.info("     CMD  = '%s'" % cmd)
+				else:
+					cmd = cmd % request.options.get('detail','')
+			MODULE.info("   ++ Creating job: '%s'" % cmd)
+			self.__create_at_job(cmd,detail)
+		except Exception,ex:
+			MODULE.warn("   ERROR: %s" % str(ex))
 		
 		# ----------- DEBUG -----------------
 		MODULE.info("online/installer/execute returns:")
@@ -1243,29 +1302,36 @@ class Instance(umcm.Base):
 #
 # ------------------------------------------------------------------------------
 
+	def _logstamp(self,fname):
+		""" Logfile timestamp. Now a seperate function.
+		"""
+		try:
+			st = stat(fname)
+			if st:
+				MODULE.info("   >> log file stamp = '%s'" % st[9])
+				return st[9]
+			return 0
+		except:
+			return 0
+		
 	def _logview(self,fname,count):
-		"""Contains all functions needed to view or 'tail' an arbitrary text file.
-		Argument 'count' can have different values:
-		< 0 ... return Unix timestamp of log file, to avoid fetching unchanged file.
-		0 ..... return the whole file, splitted into lines.
-		> 0 ... return the last 'count' lines of the file. (a.k.a. tail -n <count>)"""
+		""" Contains all functions needed to view or 'tail' an arbitrary text file.
+			Argument 'count' can have different values:
+			< 0 ... ignore this many lines, return the rest of the file
+			0 ..... return the whole file, splitted into lines.
+			> 0 ... return the last 'count' lines of the file. (a.k.a. tail -n <count>)
+		"""
 		lines = []
-		if count < 0:
-			try:
-				st = stat(fname)
-				if st:
-					MODULE.info("   >> log file stamp = '%s'" % st[9])
-					return st[9]
-				return 0
-			except:
-				return 0
 		try:
 			file = open(fname,'r')
 			for line in file:
-				l = line.rstrip()
-				lines.append(l)
-				if (count) and (len(lines) > count):
-					lines.pop(0)
+				if (count < 0):
+					count += 1
+				else:
+					l = line.rstrip()
+					lines.append(l)
+					if (count > 0) and (len(lines) > count):
+						lines.pop(0)
 		finally:
 			if file != None:
 				file.close()
@@ -1289,6 +1355,7 @@ class Instance(umcm.Base):
 		script = '''
 #:started: %s
 #:detail: %s
+#:command: %s
 dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-web-server
 dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server
 dpkg-statoverride --add root root 0644 /usr/sbin/apache2
@@ -1301,7 +1368,7 @@ dpkg-statoverride --remove /usr/sbin/univention-management-console-web-server
 dpkg-statoverride --remove /usr/sbin/univention-management-console-server
 dpkg-statoverride --remove /usr/sbin/apache2
 chmod +x /usr/sbin/univention-management-console-server /usr/sbin/univention-management-console-web-server /usr/sbin/apache2
-''' % (started,detail,command)
+''' % (started,detail,command,command)
 		p1 = subprocess.Popen( [ 'LC_ALL=C at now', ], stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True )
 		(stdout,stderr) = p1.communicate( script )
 		
@@ -1330,7 +1397,8 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/univention-man
 						cmd = INSTALLERS[inst]['command'].split('%')[0]
 						MODULE.info("   ++ Checking for '%s'" % cmd)
 						if cmd in atout:
-							self._current_job = {}
+# cleaning up is done in 'run_installer()'
+#							self._current_job = {}
 							self._current_job['job'] = inst				# job key
 							self._current_job['running'] = True			# currently running: we have found it per 'at' job
 							self._current_job['time'] = int(time())		# record the last time we've seen this job

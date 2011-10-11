@@ -186,11 +186,10 @@ dojo.declare('umc.modules._online._LogViewer', [
 	// job key can't be an argument here as we don't know it.
 	startWatching: function(interval) {
 		
-		//alert("LogViewer::StartWatching(" + interval + ")");
-		
 		this._check_interval = interval;
 		// clean up any stale display and states from last run
 		this.set('content',this._("... loading log file ..."));
+		
 		this._first_call = 3;
 		this._last_stamp = 0;
 		
@@ -207,8 +206,16 @@ dojo.declare('umc.modules._online._LogViewer', [
 	
 	// effectively stops the polling timer. Can be called from outside (if ProgressPage is being closed)
 	// or from inside (as 'uninitialize' handler)
-	stopWatching: function() {
+	//
+	// Argument 'clean' = TRUE -> also clean up display buffer contents.
+	stopWatching: function(clean) {
+
 		this._check_interval = 0;
+		
+		if ((typeof(clean) != 'undefined') && (clean))
+		{
+			this.set('content',this._("... loading log file ..."));
+		}
 	},
 	
 	uninitialize: function() {

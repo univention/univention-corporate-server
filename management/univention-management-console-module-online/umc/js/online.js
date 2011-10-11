@@ -93,12 +93,25 @@ dojo.declare("umc.modules.online", umc.modules._online.Module, {
 		
 		// waits for the Progress Page to be closed (automatically or by a close button)
 		dojo.connect(this._progress,'stopWatching',dojo.hitch(this, function(tab) {
-			this._updates.refreshPage(true);
 			this.hideChild(this._progress);
 			this.showChild(this._updates);
 			this.showChild(this._components);
 			this.showChild(this._settings);
+			
+			// Revert to the 'Updates' page if the installer action encountered
+			// the 'reboot' affordance.
+			if (! tab)
+			{
+				tab = this._updates;
+			}
 			this.selectChild(tab);
+		}));
+		
+		// waits for the Progress Page to notify us that a job is finished. This
+		// should immediately refresh the 'Updates' and 'Components' pages.
+		dojo.connect(this._progress,'jobFinished',dojo.hitch(this, function() {
+			this._updates.refreshPage(true);
+			this._components.refreshPage();
 		}));
 		
 		// waits for the Progress Page to notify us that a job is running
@@ -210,6 +223,7 @@ dojo.declare("umc.modules.online", umc.modules._online.Module, {
 		
 		this.hideChild(this._details);
 		this.hideChild(this._progress);
+		
 	},
 	
 	// Seperate function that can be called the same way as _call_installer:
@@ -238,7 +252,7 @@ dojo.declare("umc.modules.online", umc.modules._online.Module, {
 					{
 						txt += "<tr>\n";
 						txt += "<td style='padding-left:1em;'>" + upd[i][0] + "</td>\n";
-						txt += "<td style='padding-left:1em;'>" + upd[i][1] + "</td>\n";
+						txt += "<td style='padding-left:1em;padding-right:.5em;'>" + upd[i][1] + "</td>\n";
 						txt += "</tr>\n";
 					}
 				}
@@ -249,7 +263,7 @@ dojo.declare("umc.modules.online", umc.modules._online.Module, {
 					{
 						txt += "<tr>\n";
 						txt += "<td style='padding-left:1em;'>" + ins[i][0] + "</td>\n";
-						txt += "<td style='padding-left:1em;'>" + ins[i][1] + "</td>\n";
+						txt += "<td style='padding-left:1em;padding-right:.5em;'>" + ins[i][1] + "</td>\n";
 						txt += "</tr>\n";
 					}
 				}

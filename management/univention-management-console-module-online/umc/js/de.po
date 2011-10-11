@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-online\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-04 11:44+0200\n"
+"POT-Creation-Date: 2011-10-11 13:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,11 +12,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_online/UpdatesPage.js:164 umc/js/_online/UpdatesPage.js:185
+#: umc/js/_online/UpdatesPage.js:165 umc/js/_online/UpdatesPage.js:186
 msgid "... loading data ..."
 msgstr "... Daten werden geladen ..."
 
-#: umc/js/_online/_LogViewer.js:60 umc/js/_online/_LogViewer.js:193
+#: umc/js/_online/ProgressPage.js:346
+#, fuzzy
+msgid "... loading job data ..."
+msgstr "... Daten werden geladen ..."
+
+#: umc/js/_online/_LogViewer.js:60 umc/js/_online/_LogViewer.js:191
+#: umc/js/_online/_LogViewer.js:217
 msgid "... loading log file ..."
 msgstr "... Protokolldatei wird geladen ..."
 
@@ -44,7 +50,7 @@ msgstr "Zusätzliche Komponenten"
 msgid "Advanced settings"
 msgstr "Weitere Einstellungen"
 
-#: umc/js/online.js:518
+#: umc/js/online.js:532
 msgid ""
 "Alternatively, you may close the current Management Console window, wait "
 "some time, and try to open it again."
@@ -70,7 +76,7 @@ msgstr ""
 "Einstellungen verändern oder Komponenten verwalten. Sie können hier "
 "zuschauen oder den Modul schließen."
 
-#: umc/js/online.js:313
+#: umc/js/online.js:327
 msgid "Attention!"
 msgstr "Warnung!"
 
@@ -78,7 +84,7 @@ msgstr "Warnung!"
 msgid "Available"
 msgstr "Verfügbar"
 
-#: umc/js/_online/UpdatesPage.js:20
+#: umc/js/_online/UpdatesPage.js:21
 msgid "Available system updates"
 msgstr "Verfügbare System-Updates"
 
@@ -86,12 +92,12 @@ msgstr "Verfügbare System-Updates"
 msgid "Basic settings"
 msgstr "Allgemeine Einstellungen"
 
-#: umc/js/online.js:265 umc/js/online.js:342
+#: umc/js/online.js:279 umc/js/online.js:356
 #: umc/js/_online/ComponentsPage.js:293
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/_online/UpdatesPage.js:236 umc/js/_online/UpdatesPage.js:428
+#: umc/js/_online/UpdatesPage.js:237 umc/js/_online/UpdatesPage.js:429
 msgid "Check for package updates"
 msgstr "Paket-Aktualisierungen prüfen"
 
@@ -103,17 +109,17 @@ msgstr "Name der Komponente"
 msgid "Components"
 msgstr "Komponenten"
 
-#: umc/js/online.js:511
+#: umc/js/online.js:525
 msgid "Connection lost!"
 msgstr "Verbindung zum Server abgebrochen!"
 
-#: umc/js/online.js:504
+#: umc/js/online.js:518
 msgid "Connection to server lost. Trying to reconnect."
 msgstr ""
 "Die Verbindung zum Server ist verlorengegangen. Ich versuche, mich wieder "
 "mit dem Server zu verbinden."
 
-#: umc/js/_online/ProgressPage.js:198
+#: umc/js/_online/ProgressPage.js:228
 msgid "Current status file content"
 msgstr "Inhalt der Statusdatei"
 
@@ -141,40 +147,40 @@ msgstr "Deaktivieren"
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: umc/js/online.js:187
+#: umc/js/online.js:200
 msgid "Do you really want to install all available security updates?"
 msgstr ""
 "Möchten Sie wirklich alle verfügbaren Sicherheits-Aktualisierungen "
 "installieren?"
 
-#: umc/js/online.js:179
+#: umc/js/online.js:192
 msgid "Do you really want to install release updates up to version {release}?"
 msgstr ""
 "Möchten Sie wirklich alle Release-Aktualisierungen bis zur Version "
 "'{release}' installieren?"
 
-#: umc/js/online.js:170
+#: umc/js/online.js:183
 msgid "Do you really want to install the '{name}' component?"
 msgstr "Möchten Sie wirklich die Komponente '{name}' installieren?"
 
-#: umc/js/online.js:257
+#: umc/js/online.js:271
 msgid "Do you really want to perform the update/install of the above packages?"
 msgstr ""
 "Möchten Sie wirklich die genannten Pakete aktualisieren bzw. installieren?"
 
-#: umc/js/online.js:200
+#: umc/js/online.js:213
 msgid "Do you really want to upgrade your system?"
 msgstr "Möchten Sie Ihr System jetzt aktualisieren?"
 
-#: umc/js/online.js:335
+#: umc/js/online.js:349
 msgid "Do you really wish to proceed?"
 msgstr "Möchten Sie wirklich fortfahren?"
 
-#: umc/js/_online/UpdatesPage.js:42
+#: umc/js/_online/UpdatesPage.js:43
 msgid "During reboot, the connection to the machine will be lost. "
 msgstr "Während des Neustarts wird die Verbindung zur Maschine verlorengehen. "
 
-#: umc/js/online.js:321
+#: umc/js/online.js:335
 msgid ""
 "During setup, the web server may be stopped, leading to a termination of the "
 "HTTP connection. "
@@ -206,7 +212,7 @@ msgstr "diese Komponente aktivieren"
 msgid "Enable/disable this component"
 msgstr "diese Komponente aktivieren"
 
-#: umc/js/online.js:316
+#: umc/js/online.js:330
 msgid ""
 "In normal case, trouble-free use by users is not possible during the update, "
 "since system services may need to be restarted. "
@@ -214,7 +220,7 @@ msgstr ""
 "Im Normalfall ist während des Updates kein störungsfreies Arbeiten von "
 "Anwendern möglich, da bspw. Dienste neu gestartet werden. "
 
-#: umc/js/_online/UpdatesPage.js:49
+#: umc/js/_online/UpdatesPage.js:50
 msgid ""
 "In order to complete the recently executed installer action, it is required "
 "to reboot the machine."
@@ -226,15 +232,15 @@ msgstr ""
 msgid "Install"
 msgstr "Installieren"
 
-#: umc/js/_online/UpdatesPage.js:427
+#: umc/js/_online/UpdatesPage.js:428
 msgid "Install package updates"
 msgstr "Paket-Aktualisierungen installieren"
 
-#: umc/js/_online/UpdatesPage.js:218
+#: umc/js/_online/UpdatesPage.js:219
 msgid "Install release update"
 msgstr "Release-Aktualisierungen installieren"
 
-#: umc/js/_online/UpdatesPage.js:228
+#: umc/js/_online/UpdatesPage.js:229
 msgid "Install security update"
 msgstr "Sicherheits-Aktualisierungen installieren"
 
@@ -242,7 +248,7 @@ msgstr "Sicherheits-Aktualisierungen installieren"
 msgid "Installed"
 msgstr "Installiert"
 
-#: umc/js/online.js:315
+#: umc/js/online.js:329
 msgid ""
 "Installing an system update is a significant change to this system and could "
 "have impact to other systems. "
@@ -250,7 +256,7 @@ msgstr ""
 "Das Einspielen eines Updates ist eine signifikante Veränderung des "
 "betreffenden Systems, die auch Auswirkungen auf andere Systeme haben kann. "
 
-#: umc/js/online.js:318
+#: umc/js/online.js:332
 msgid ""
 "It is also recommended to evaluate the update in a test environment and to "
 "create a backup of the system."
@@ -258,24 +264,24 @@ msgstr ""
 "Tests in einer Testumgebung und die Erstellung einer Sicherung des Systems "
 "werden ebenfalls empfohlen."
 
-#: umc/js/_online/ProgressPage.js:252
+#: umc/js/_online/ProgressPage.js:286
 msgid "It took {elapsed} to complete.<br/>"
 msgstr "Er hat {elapsed} benötigt.<br/>"
 
-#: umc/js/online.js:323
+#: umc/js/online.js:337
 msgid "Logfiles can be found in the directory /var/log/univention/."
 msgstr "Logdateien können im Verzeichnis /var/log/univention/ gefunden werden."
 
-#: umc/js/_online/UpdatesPage.js:382
+#: umc/js/_online/UpdatesPage.js:383
 msgid "No security updates for the current version are installed."
 msgstr ""
 "Für die aktuelle Version sind keine Sicherheits-Aktualisierungen installiert."
 
-#: umc/js/_online/UpdatesPage.js:404
+#: umc/js/_online/UpdatesPage.js:405
 msgid "None of them are currently enabled."
 msgstr "Davon sind momentan keine aktiviert."
 
-#: umc/js/online.js:322
+#: umc/js/online.js:336
 msgid ""
 "Nonetheless, the update proceeds and the update can be monitored from a new "
 "UMC session. "
@@ -301,16 +307,16 @@ msgstr ""
 msgid "On/Off"
 msgstr "An/Aus"
 
-#: umc/js/_online/UpdatesPage.js:21
+#: umc/js/_online/UpdatesPage.js:22
 msgid "Overview of all updates that affect the system as a whole."
 msgstr ""
 "Überblick über Software-Aktualisierungen, die das System als ganzes betreffen"
 
-#: umc/js/_online/UpdatesPage.js:114 umc/js/_online/UpdatesPage.js:206
+#: umc/js/_online/UpdatesPage.js:115 umc/js/_online/UpdatesPage.js:207
 msgid "Package update status not yet checked"
 msgstr "Der Paket-Aktualisierungsstatus wurde noch nicht geprüft."
 
-#: umc/js/_online/UpdatesPage.js:302
+#: umc/js/_online/UpdatesPage.js:303
 msgid "Package updates"
 msgstr "Paketaktualisierungen"
 
@@ -322,7 +328,7 @@ msgstr "Passwort"
 msgid "Permission denied"
 msgstr "Zugriff verweigert"
 
-#: umc/js/online.js:326
+#: umc/js/online.js:340
 msgid ""
 "Please also consider the release notes, changelogs and references posted in "
 "the <a href='http://forum.univention.de'>Univention Forum</a>."
@@ -339,15 +345,15 @@ msgstr "Bitte geben Sie die Details für die neue Komponente ein."
 msgid "Progress information"
 msgstr "Aktueller Vorgang"
 
-#: umc/js/_online/UpdatesPage.js:251
+#: umc/js/_online/UpdatesPage.js:252
 msgid "Reboot"
 msgstr "Neu starten"
 
-#: umc/js/_online/UpdatesPage.js:268
+#: umc/js/_online/UpdatesPage.js:269
 msgid "Reboot required"
 msgstr "Neustart erforderlich"
 
-#: umc/js/_online/UpdatesPage.js:244 umc/js/_online/ComponentsPage.js:46
+#: umc/js/_online/ComponentsPage.js:46 umc/js/_online/UpdatesPage.js:245
 msgid "Refresh"
 msgstr "Aktualisieren"
 
@@ -355,11 +361,11 @@ msgstr "Aktualisieren"
 msgid "Refresh display to see current values"
 msgstr "Anzeige aktualisieren"
 
-#: umc/js/_online/UpdatesPage.js:276
+#: umc/js/_online/UpdatesPage.js:277
 msgid "Release information"
 msgstr "Aktueller Status"
 
-#: umc/js/_online/UpdatesPage.js:284
+#: umc/js/_online/UpdatesPage.js:285
 msgid "Release updates"
 msgstr "Release-Aktualisierungen"
 
@@ -383,7 +389,7 @@ msgstr "Repository server"
 msgid "Reset"
 msgstr "Rücksetzen"
 
-#: umc/js/_online/UpdatesPage.js:294
+#: umc/js/_online/UpdatesPage.js:295
 msgid "Security updates"
 msgstr "Sicherheits-Aktualisierungen"
 
@@ -395,19 +401,19 @@ msgstr "Einstellungen"
 msgid "Settings for online updates"
 msgstr "Einstellungen für Online-Aktualisierung"
 
-#: umc/js/_online/UpdatesPage.js:455
+#: umc/js/_online/UpdatesPage.js:456
 msgid "Some package updates are available."
 msgstr "Es sind Paket-Aktualisierungen verfügbar."
 
-#: umc/js/_online/UpdatesPage.js:258
+#: umc/js/_online/UpdatesPage.js:259
 msgid "Start Upgrade"
 msgstr "Aktualisierung starten"
 
-#: umc/js/online.js:259
+#: umc/js/online.js:273
 msgid "Start Upgrade?"
 msgstr "Aktualisierung starten?"
 
-#: umc/js/online.js:269 umc/js/online.js:345
+#: umc/js/online.js:283 umc/js/online.js:359
 msgid "Start!"
 msgstr "Start!"
 
@@ -415,7 +421,7 @@ msgstr "Start!"
 msgid "Status"
 msgstr "Status"
 
-#: umc/js/online.js:517
+#: umc/js/online.js:531
 msgid ""
 "The connection to the server was lost. I'm trying to reconnect. Perhaps "
 "you'll be prompted to re-authenticate when the connection is restored."
@@ -424,72 +430,72 @@ msgstr ""
 "wieder aufzunehmen. Wahrscheinlich müssen Sie sich neu anmelden, wenn die "
 "Verbindung wieder hergestellt ist."
 
-#: umc/js/_online/ProgressPage.js:249
+#: umc/js/_online/ProgressPage.js:283
 msgid "The current job (<b>{label}</b>) is now finished.<br/>"
 msgstr "Der aktuelle Vorgang (<b>{label}</b>) ist jetzt beendet.<br/>"
 
-#: umc/js/_online/UpdatesPage.js:357
+#: umc/js/_online/UpdatesPage.js:358
 msgid "The currently installed release version is {ucs_version}"
 msgstr "Die momentan installierte Version ist {ucs_version}"
 
-#: umc/js/_online/UpdatesPage.js:364
+#: umc/js/_online/UpdatesPage.js:365
 msgid ""
 "The currently installed release version is {ucs_version}-"
 "{security_patchlevel}"
 msgstr ""
 "Die momentan installierte Version ist {ucs_version}-{security_patchlevel}"
 
-#: umc/js/online.js:370
+#: umc/js/online.js:384
 msgid "The installer action could not be started [Error {status}]: {message}"
 msgstr ""
 "Der Univention Updater konnte nicht gestartet werden [Fehler {status}]: "
 "{message}"
 
-#: umc/js/_online/ProgressPage.js:145
+#: umc/js/_online/ProgressPage.js:155
 msgid "The job <b>{label}</b> (started {elapsed} ago) is currently running."
 msgstr ""
 "Momentan läuft der Aktualisierungsauftrag <b>{label}</b> (gestartet vor "
 "{elapsed})"
 
-#: umc/js/_online/UpdatesPage.js:40
+#: umc/js/_online/UpdatesPage.js:41
 msgid "The machine is being rebooted right now. "
 msgstr "Der Computer wird jetzt neu gestartet. "
 
-#: umc/js/_online/UpdatesPage.js:385
+#: umc/js/_online/UpdatesPage.js:386
 msgid "The most recent security update is {latest_security_update}."
 msgstr ""
 "Die neueste verfügbare Sicherheits-Aktualisierung ist "
 "{latest_security_update}."
 
-#: umc/js/_online/UpdatesPage.js:402
+#: umc/js/_online/UpdatesPage.js:403
 msgid "The system knows about {components} components."
 msgstr "Dem System sind {components} Komponenten bekannt."
 
-#: umc/js/_online/UpdatesPage.js:398
+#: umc/js/_online/UpdatesPage.js:399
 msgid "There are no components known to this system."
 msgstr "Momentan sind keine Komponenten konfiguriert."
 
-#: umc/js/_online/UpdatesPage.js:456
+#: umc/js/_online/UpdatesPage.js:457
 msgid "There are no package updates available."
 msgstr "Es sind keine Paket-Aktualisierungen verfügbar."
 
-#: umc/js/_online/UpdatesPage.js:170
+#: umc/js/_online/UpdatesPage.js:171
 msgid "There are no release updates available."
 msgstr "Es sind keine Release-Aktualisierungen verfügbar."
 
-#: umc/js/_online/UpdatesPage.js:386
+#: umc/js/_online/UpdatesPage.js:387
 msgid "There are no security updates available for the current release."
 msgstr "Momentan sind keine weiteren Sicherheits-Aktualisierungen verfügbar."
 
-#: umc/js/_online/UpdatesPage.js:373
+#: umc/js/_online/UpdatesPage.js:374
 msgid "There are no updates available."
 msgstr "Es sind keine Aktualisierungen verfügbar."
 
-#: umc/js/_online/UpdatesPage.js:372
+#: umc/js/_online/UpdatesPage.js:373
 msgid "There are updates available."
 msgstr "Es sind Aktualisierungen verfügbar."
 
-#: umc/js/_online/UpdatesPage.js:41
+#: umc/js/_online/UpdatesPage.js:42
 msgid "This may take some time. Please be patient. "
 msgstr "Das kann einige Zeit dauern. Bitte haben Sie ewas Geduld. "
 
@@ -501,7 +507,7 @@ msgstr ""
 "Auf dieser Seite können Sie einstellen, wo Ihr System nach Aktualisierungen "
 "sucht, und welche davon genutzt werden."
 
-#: umc/js/online.js:317
+#: umc/js/online.js:331
 msgid "Thus, updates shouldn't be installed on a live system. "
 msgstr "Deshalb sollten Sie das Update nicht im laufenden Betrieb einspielen. "
 
@@ -517,7 +523,7 @@ msgstr "Univention Updater ist gerade aktiv"
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: umc/js/_online/UpdatesPage.js:460
+#: umc/js/_online/UpdatesPage.js:461
 msgid "Update availability could not be checked."
 msgstr "Verfügbarkeit von Aktualisierungen konnte nicht geprüft werden."
 
@@ -525,7 +531,7 @@ msgstr "Verfügbarkeit von Aktualisierungen konnte nicht geprüft werden."
 msgid "Update in progress"
 msgstr "Aktualisierung läuft"
 
-#: umc/js/_online/UpdatesPage.js:80
+#: umc/js/_online/UpdatesPage.js:81
 msgid "Update system up to release"
 msgstr "System bis zu dieser Version aktualisieren"
 
@@ -533,7 +539,7 @@ msgstr "System bis zu dieser Version aktualisieren"
 msgid "Update-related settings"
 msgstr "Allgemeine Einstellungen"
 
-#: umc/js/_online/UpdatesPage.js:19
+#: umc/js/_online/UpdatesPage.js:20
 msgid "Updates"
 msgstr "Aktualisierungen"
 
@@ -553,7 +559,7 @@ msgstr "'Unmaintained' Repositories benutzen"
 msgid "Username"
 msgstr "Nutzername"
 
-#: umc/js/_online/UpdatesPage.js:43
+#: umc/js/_online/UpdatesPage.js:44
 msgid ""
 "When the connection is back you will be prompted to authenticate yourself "
 "again."
@@ -561,13 +567,13 @@ msgstr ""
 "Wenn die Verbindung wieder hergestellt ist, werden Sie aufgefordert, sich "
 "noch einmal neu anzumelden."
 
-#: umc/js/_online/ProgressPage.js:254
+#: umc/js/_online/ProgressPage.js:288
 msgid "You may return to the overview by clicking the 'back' button now."
 msgstr ""
 "Sie können jetzt zur Übersicht zurückkehren, indem Sie den 'Zurück'-Knopf "
 "drücken."
 
-#: umc/js/_online/ProgressPage.js:149
+#: umc/js/_online/ProgressPage.js:159
 msgid "You're currently watching its log file <b>{logfile}</b>"
 msgstr "Sie sehen die Protokolldatei <b>{logfile}</b>"
 
@@ -575,7 +581,7 @@ msgstr "Sie sehen die Protokolldatei <b>{logfile}</b>"
 msgid "You're editing the details of the component definition."
 msgstr "Sie bearbeiten die Details der Komponenten-Definition."
 
-#: umc/js/online.js:489
+#: umc/js/online.js:503
 msgid ""
 "Your current session has expired, or the connection to the server was lost. "
 "You must authenticate yourself again."
@@ -583,22 +589,22 @@ msgstr ""
 "Ihre aktuelle Sitzung ist abgelaufen, oder die Verbindung zum Server war "
 "verlorengegangen. Sie müssen sich noch einmal neu anmelden."
 
-#: umc/js/_online/UpdatesPage.js:381
+#: umc/js/_online/UpdatesPage.js:382
 msgid "Your system is at security patchlevel {security_patchlevel}."
 msgstr "Ihr System ist auf dem Sicherheits-Patchlevel {security_patchlevel}."
 
-#: umc/js/_online/ProgressPage.js:74 umc/js/_online/DetailsPage.js:25
+#: umc/js/_online/DetailsPage.js:25 umc/js/_online/ProgressPage.js:74
 msgid "back to overview"
 msgstr "zurück zur Übersicht"
 
-#: umc/js/online.js:247
+#: umc/js/online.js:261
 msgid "{count} packages to be installed"
 msgstr "{count} Pakete werden NEU installiert"
 
-#: umc/js/online.js:236
+#: umc/js/online.js:250
 msgid "{count} packages to be updated"
 msgstr "{count} Pakete werden aktualisiert"
 
-#: umc/js/_online/UpdatesPage.js:405
+#: umc/js/_online/UpdatesPage.js:406
 msgid "{enabled} of them are currently enabled."
 msgstr "Davon sind {enabled} Komponenten aktiviert."

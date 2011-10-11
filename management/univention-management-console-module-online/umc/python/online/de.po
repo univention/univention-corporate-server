@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-online\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-04 11:13+0200\n"
+"POT-Creation-Date: 2011-10-11 13:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,55 +12,55 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/online/__init__.py:735
+#: umc/python/online/__init__.py:736
 #, python-format
 msgid "At least one out of %s must be selected."
 msgstr "Wenigstens eine der Kategorien %s muß ausgewählt sein."
 
-#: umc/python/online/__init__.py:1186
+#: umc/python/online/__init__.py:1245
 msgid "Component name is not allowed to be empty."
 msgstr "Komponentenname muß ausgefüllt sein."
 
-#: umc/python/online/__init__.py:741
+#: umc/python/online/__init__.py:742
 #, python-format
 msgid "ERROR: %s"
 msgstr "FEHLER: %s"
 
-#: umc/python/online/__init__.py:729
+#: umc/python/online/__init__.py:730
 msgid "Empty server name not allowed"
 msgstr "Server Name muß ausgefüllt werden."
 
-#: umc/python/online/__init__.py:1191
+#: umc/python/online/__init__.py:1250
 #, python-format
 msgid "Illegal character(s) in component name: '%s'"
 msgstr "Unzulässige Zeichen (%s) im Komponentennamen."
 
-#: umc/python/online/__init__.py:124
+#: umc/python/online/__init__.py:125
 msgid "Install all available updates for the current release"
 msgstr "Alle verfügbaren Aktualisierungen installieren"
 
-#: umc/python/online/__init__.py:117
+#: umc/python/online/__init__.py:118
 msgid "Install all package updates"
 msgstr "Alle Paket-Aktualisierungen installieren"
 
-#: umc/python/online/__init__.py:96
+#: umc/python/online/__init__.py:97
 msgid "Install all security updates"
 msgstr "Alle Sicherheits-Aktualisierungen installieren"
 
-#: umc/python/online/__init__.py:111
+#: umc/python/online/__init__.py:112
 #, python-format
 msgid "Install component '%s'"
 msgstr "Komponente '%s' installieren"
 
-#: umc/python/online/__init__.py:102
+#: umc/python/online/__init__.py:103
 #, python-format
 msgid "Perform release update up to version '%s'"
 msgstr "Release auf Version '%s' aktualisieren"
 
-#: umc/python/online/__init__.py:1200
+#: umc/python/online/__init__.py:1259
 msgid "There is already a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/online/__init__.py:321
+#: umc/python/online/__init__.py:322
 msgid "latest version"
 msgstr "neueste Version"

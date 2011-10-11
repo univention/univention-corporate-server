@@ -10,6 +10,7 @@ dojo.require("umc.modules._online.Page");
 dojo.declare("umc.modules._online.UpdatesPage", umc.modules._online.Page, {
 	
 	i18nClass: 		'umc.modules.online',
+	_last_reboot:	false,
 	
     postMixInProperties: function() {
 
@@ -505,6 +506,13 @@ dojo.declare("umc.modules._online.UpdatesPage", umc.modules._online.Page, {
 		if (typeof(on) == 'string')
 		{
 			on = (on == 'true');
+		}
+		
+		// pop a message up whenever the 'on' value changes
+		if (on != this._last_reboot)
+		{
+			//alert("Reboot affordance changed to " + on);
+			this._last_reboot = on;
 		}
 		
 		var pane = this._form.getChildren()[0].getChildren()[0];

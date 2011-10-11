@@ -75,6 +75,16 @@ dojo.declare("umc.modules._online.ProgressPage", umc.modules._online.Page, {
     		region:		'bottom',
     		onClick:	dojo.hitch(this, function() {
     			var tab = '';
+    			// Especially for the 'install a component' functionality: if we encounter
+    			// that the 'reboot required' flag has been set we don't want to switch
+    			// back to the 'Components' grid but rather to the 'Updates' page. We will
+    			// request this by unsetting the _last_tab property, so the switching
+    			// logic will revert to the first tab of our tab set.
+    			if (this._reboot_required)
+    			{
+    				//alert("Resetting return tab to 'Updates'");
+    				this.last_tab = null;
+    			}
     			if (this.last_tab)
     			{
     				tab = this.last_tab;
@@ -152,13 +162,21 @@ dojo.declare("umc.modules._online.ProgressPage", umc.modules._online.Page, {
 				
 				msg += this._statusfile_data(data.result);
 				
+				// -------------- DEBUG ------------------
+//				for (var v in this._last_job)
+//				{
+//					msg += ("<br/>&nbsp;&nbsp;&nbsp;" + v + "&nbsp;=&nbsp;'" + this._last_job[v] + "'");
+//				}
+				// ---------------------------------------
+				
 				this._head.set('content',msg);
-				this._pane.layout();
 				
 				if (! data.result['running'])
 				{
 					this._allow_close(true);		// does the rest.
 				}
+
+				this._pane.layout();
 			}
 		}
 
@@ -178,7 +196,9 @@ dojo.declare("umc.modules._online.ProgressPage", umc.modules._online.Page, {
 	
 	// takes a status structure as returned from the 'online/installer/status' call,
 	// extracts the fields that came directly from the status file (if any) and
-	// formats them in a readable HTML fashion.
+	// formats them into a one-liner. Returns an empty string if nothing matches.
+	//
+	// FOR TEST: now includes the 'reboot' flag if it is present.
 	_statusfile_data: function(data) {
 		
 		var txt = '';
@@ -190,6 +210,16 @@ dojo.declare("umc.modules._online.ProgressPage", umc.modules._online.Page, {
 			{
 				if (txt.length) { txt += ','; }
 				txt += ' ' + f.substr(1,f.length-2) + "=" + data[f];
+			}
+		}
+		
+		if (data['reboot'])
+		{
+			txt += ' [REBOOT] ';
+			if (! this._reboot_required)		// not set or not true
+			{
+				//alert("Setting REBOOT from _statusfile_data");
+				this._reboot_required = true;
 			}
 		}
 		
@@ -243,6 +273,10 @@ dojo.declare("umc.modules._online.ProgressPage", umc.modules._online.Page, {
 		{
 			if ((this._job_key != '') && (this._last_job))
 			{
+				// First thing to do: notify the Module that the job is finished. So it can already
+				// refresh the 'Updates' and 'Components' pages before the user gets back there.
+				this.jobFinished();
+				
 				// FIXME Manually making empty lines before and after this text; should better be done
 				//		by a style or a style class.
 				var msg = "&nbsp;<br/>";
@@ -256,18 +290,36 @@ dojo.declare("umc.modules._online.ProgressPage", umc.modules._online.Page, {
 				
 				msg += this._statusfile_data(this._last_job);
 				
+				// -------------- DEBUG ------------------
+//				for (var v in this._last_job)
+//				{
+//					msg += ("<br/>&nbsp;&nbsp;&nbsp;" + v + "&nbsp;=&nbsp;'" + this._last_job[v] + "'");
+//				}
+				// ---------------------------------------
+				
 				this._head.set('content',msg);
 				
-				// for the last time: scroll log view to bottom and stop polling timer.
-				this._log.scrollToBottom();
-				this._log.stopWatching();
+				this._log.stopWatching();		// now log is freely scrollable manually
 				
 				//alert("Watching is finished, job is '" + this._job_key + "'");
+				
+				if ((this._last_job) && (this._last_job['reboot']))
+				{
+					var reb = this._last_job['reboot'];
+					if (typeof(reb) == 'string')
+					{
+						reb = (reb == 'true');
+					}
+					if ((! this._reboot_required) || (reb != this._reboot_required))
+					{
+						//alert("setting REBOOT from _allow_close()");
+						this._reboot_required = reb;
+					}
+				}
 				
 				this._last_job = null;	// can be deleted, but this._job_key should be retained!
 			}
 		}
-		this._pane.layout();
 	},
 	
 	// gives a means to restart polling after reauthentication
@@ -281,9 +333,18 @@ dojo.declare("umc.modules._online.ProgressPage", umc.modules._online.Page, {
 	jobStarted: function() {
 	},
 	
+	// This function will be called when the already opened ProgressPage encounters
+	// the end of the current job. The online Module listens here and will refresh
+	// the 'Updates' and 'Components' pages.
+	jobFinished: function() {
+	},
+	
 	// online Module calls this when the ProgressPage is to be opened.
 	startWatching: function(args) {
-		//alert("ProgressPage::startWatching()");
+		
+		// ensure a clean look (and not some stale text from last job)
+		this._head.set('content',this._("... loading job data ..."));
+
 		dojo.mixin(this,args);						// as simple as possible.
 		this._allow_close(false);					// forbid closing this tab.
 		this._log.startWatching(this._interval);	// start logfile tail
@@ -291,10 +352,12 @@ dojo.declare("umc.modules._online.ProgressPage", umc.modules._online.Page, {
 	
 	// online Module listens to this event to close the page
 	// and reopen the named tab.
+	//
+	// This is a good place to reset the log viewer contents too.
 	stopWatching: function(tab) {
 		this._job_key = '';
 		this._last_job = null;
-		this._log.stopWatching();
+		this._log.stopWatching(true);
 	},
 	
 	// lets the timer loop stop when the module is closed.
