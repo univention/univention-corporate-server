@@ -11,7 +11,7 @@ XS-Python-Version: >= 2.6
 
 Package: univention-management-console-module-join
 Architecture: all
-Depends: univention-management-console-server
+Depends: univention-management-console-server, univention-join
 Description: UMC module for system join
  This package contains the UMC module for system join actions.
  .
