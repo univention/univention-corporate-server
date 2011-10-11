@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.161-1) unstable; urgency=low
+
+  * properties with a syntax class based on UDM_Objects may be displayed
+    as MultiInputSelect or combobox; Bug #23699
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 11 Oct 2011 11:16:14 +0200
+
 univention-management-console-module-udm (1.0.160-1) unstable; urgency=low
 
   * added reloading of tree for changes in UDM objects (Bug #23702)

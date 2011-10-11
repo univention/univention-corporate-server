@@ -72,7 +72,7 @@ __widgets = (
 	Widget( None, ( udm_syntax.LDAP_Search, ), [], subclasses = False, widget_func = lambda syn, prop: syn.viewonly and 'LinkList' or 'ComboBox' ),
 	Widget( 'ComboBox', udm_syntax.select, [] ),
 	Widget( 'TextBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', subclasses = False ),
-	Widget( None, udm_syntax.UDM_Objects, '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and len( syn.udm_modules ) == 1 and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
+	Widget( None, udm_syntax.UDM_Objects, '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and len( syn.udm_modules ) == 1 and syn.simple == False and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
 	Widget( 'ComboBox', udm_syntax.UDM_Attribute, '' ),
 	Widget( None, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn, udm_syntax.module ), '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
@@ -86,7 +86,7 @@ def choices( syntax, udm_property ):
 	MODULE.info( 'Find choices for syntax %s' % syntax )
 	opts = None
 	if inspect.isclass( syntax ) and issubclass( syntax, ( udm_syntax.UDM_Objects, udm_syntax.UDM_Attribute ) ):
-		if issubclass( syntax, udm_syntax.UDM_Objects ) and udm_property[ 'multivalue' ] and len( syntax.udm_modules ) == 1:
+		if issubclass( syntax, udm_syntax.UDM_Objects ) and udm_property[ 'multivalue' ] and len( syntax.udm_modules ) == 1 and syntax.simple == False:
 			opts = { 'objectType' : syntax.udm_modules[ 0 ] }
 		else:
 			opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__name__ } }
