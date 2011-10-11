@@ -1,3 +1,9 @@
+univention-system-setup (5.0.8-2) unstable; urgency=low
+
+  * added ucr config (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 16:48:52 +0200
+
 univention-system-setup (5.0.8-1) unstable; urgency=low
 
   * added logrotate configuration (Bug #18002) 
