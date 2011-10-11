@@ -1,3 +1,9 @@
+univention-management-console-module-join (1.0.3-1) unstable; urgency=low
+
+  * added _join.Form (Bug #23701)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 11 Oct 2011 17:41:02 +0200
+
 univention-management-console-module-join (1.0.2-2) unstable; urgency=low
 
   * added dependency to univention-join (Bug #23701)
