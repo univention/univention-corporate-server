@@ -1,8 +1,51 @@
+univention-xen (4.0.0-1) ucs-3-0-0-0; urgency=low
+
+  * Adapt to UCS-3.0 (Bug #18357)
+    - Change do DebHelper-7
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 11 Oct 2011 14:27:34 +0200
+
+univention-xen (3.0.8-2) unstable; urgency=low
+
+  * Load blktap and xen-blkfront during update (Bug #19345)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Mar 2011 14:43:55 +0100
+
+univention-xen (3.0.8-1) unstable; urgency=low
+
+  * Restart xend during update (Bug #19345)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Feb 2011 16:50:32 +0100
+
+univention-xen (3.0.7-1) unstable; urgency=low
+
+  * Fixed typo and load blktap module during update (Bug #19345)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Feb 2011 08:00:06 +0100
+
 univention-xen (3.0.7-1) unstable; urgency=low
 
   * Updated for xen 4.1 (Bug #18357)
 
  -- Markus Groß <gross@univention.de>  Wed, 27 Apr 2011 12:29:54 +0200
+
+univention-xen (3.0.6-3) unstable; urgency=low
+
+  * Load blktap and xen-blkfront by default (Bug #19345)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Feb 2011 07:14:56 +0100
+
+univention-xen (3.0.6-2) unstable; urgency=low
+
+  * Make univention-xen compatible to xen-4.0 (Bug #21306)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Jan 2011 10:37:44 +0100
+
+univention-xen (3.0.6-1) unstable; urgency=low
+
+  * Make univention-xen compatible to xen-4.0 (Bug #21306)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Jan 2011 09:04:36 +0100
 
 univention-xen (3.0.6-1) unstable; urgency=low
 
@@ -65,7 +108,7 @@ univention-xen (2.1.0-1) unstable; urgency=low
 
 univention-xen (2.0.1-1) unstable; urgency=low
 
-  * updated copyright Bug #16818 
+  * updated copyright Bug #16818
 
  -- Felix Botner <botner@univention.de>  Fri, 08 Jan 2010 10:43:47 +0100
 
@@ -202,8 +245,8 @@ univention-xen (0.2.12) unstable; urgency=low
 univention-xen (0.2.11) unstable; urgency=low
 
   * Create /var/lib/xen
-  * Fix configuration of network bridge settings	 
-  * Add dependency on bridge-utils	
+  * Fix configuration of network bridge settings
+  * Add dependency on bridge-utils
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 24 Aug 2007 10:22:37 +0200
 
@@ -236,7 +279,7 @@ univention-xen (0.2.6) unstable; urgency=low
 
   * Depend on Xen 3.1 hypervisor
   * Upgrade xend.conf in Config Registry template
-  * Make the IP range, on which VNC is accesible configurable in Config Registry	
+  * Make the IP range, on which VNC is accesible configurable in Config Registry
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 21 Aug 2007 12:04:00 +0200
 
@@ -276,7 +319,7 @@ univention-xen (0.2) unstable; urgency=low
 
   * Make UCS the default distribution to install
   * Create a initial /usr/lib/xen-tools/univention.d configuration set, based on Etch
-	
+
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 15 Aug 2007 09:38:38 +0200
 
 univention-xen (0.1) unstable; urgency=low
@@ -284,5 +327,3 @@ univention-xen (0.1) unstable; urgency=low
   * Initial Release.
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  14 Aug 2007 16:39:19 +0200
-
-

@@ -29,40 +29,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-build:
+%:
+	dh $@
 
-clean:
-	dh_testdir
-	dh_clean
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	cp -a usr debian/univention-xen
-	find debian/univention-xen/ -regex '.*/.svn' -print0 | xargs -0 rm -rf
-
+override_dh_install:
+	dh_install -X.svn
 	univention-install-config-registry
-	univention-install-config-registry-info
-	univention-install-service-info
-
-binary-arch: build install
-
-binary-indep: build install
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs
-	dh_installexamples ./basis-vmx.cfg
-	dh_link
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure

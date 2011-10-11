@@ -46,4 +46,8 @@ lsmod | grep -qs '\<blktap\>' || modprobe blktap
 
 #DEBHELPER#
 
+if [ -x /etc/init.d/xend ]; then
+	invoke-rc.d xend restart
+fi
+
 exit 0

@@ -2,7 +2,7 @@
 #
 #  This script installs OpenSSH upon the new system.
 #
-#  It must make sure that the server is not running before it exits 
+#  It must make sure that the server is not running before it exits
 # otherwise the temporary mounted directory will not be unmountable.
 #
 # Steve
@@ -26,16 +26,16 @@ fi
 #
 # Log our start
 #
-logMessage Script $0 starting
+logMessage Script "$0" starting
 
 
 #
 #  Install ssh
 #
-installDebianPackage ${prefix} ssh
+installDebianPackage "${prefix}" ssh
 
 
 #
 #  Log our finish
 #
-logMessage Script $0 finished
+logMessage Script "$0" finished

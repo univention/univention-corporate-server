@@ -1,21 +1,12 @@
-# -*- sh -*-
+@%@UCRWARNING=# @%@
 
-# Warning: This file is auto-generated and might be overwritten by
-#          univention-config-registry.
-#          Please edit the following file instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-config-registry überschrieben werden.
-#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
-#
-#         /etc/univention/templates/files/etc/xen/xend-config.sxp
-#
 #
 # Xend configuration file.
 #
 
-# This example configuration is appropriate for an installation that 
+# This example configuration is appropriate for an installation that
 # utilizes a bridged network configuration. Access to xend via http
-# is disabled.  
+# is disabled.
 
 # Commented out entries show the default for that entry, unless otherwise
 # specified.
@@ -23,7 +14,7 @@
 #(logfile /var/log/xen/xend.log)
 #(loglevel DEBUG)
 
-# Uncomment the line below.  Set the value to flask, acm, or dummy to 
+# Uncomment the line below.  Set the value to flask, acm, or dummy to
 # select a security module.
 
 #(xsm_module_name dummy)
@@ -60,25 +51,25 @@
 # Optionally, the TCP Xen-API server can use SSL by specifying the private
 # key and certificate location:
 #
-#                    (9367 pam '' /etc/xen/xen-api.key /etc/xen/xen-api.crt)
+#                    (9367 pam '' xen-api.key xen-api.crt)
 #
 # Default:
 #   (xen-api-server ((unix)))
 @!@
-print '(xen-api-server (%s))' % ( baseConfig.get('xen/server/api', '(unix)'), )
-print '(xend-http-server %s)' % ( baseConfig.get('xen/server/http_server', 'no'), )
-print '(xend-unix-server %s)' % ( baseConfig.get('xen/server/unix_server', 'no'), )
-print '(xend-unix-xmlrpc-server %s)' % ( baseConfig.get('xen/server/xmlrpc_unix', 'yes'), )
-print '(xend-tcp-xmlrpc-server %s)' % ( baseConfig.get('xen/server/xmlrpc_tcp', 'no'), )
-print '(xend-relocation-server %s)' % ( baseConfig.get('xen/server/relocation', 'no'), )
-print '(xend-relocation-ssl-server %s)' % ( baseConfig.get('xen/server/relocation_ssl', 'no'), )
+print '(xen-api-server (%s))' % (configRegistry.get('xen/server/api', '(unix)'), )
+print '(xend-http-server %s)' % (configRegistry.get('xen/server/http_server', 'no'), )
+print '(xend-unix-server %s)' % (configRegistry.get('xen/server/unix_server', 'no'), )
+print '(xend-unix-xmlrpc-server %s)' % (configRegistry.get('xen/server/xmlrpc_unix', 'yes'), )
+print '(xend-tcp-xmlrpc-server %s)' % (configRegistry.get('xen/server/xmlrpc_tcp', 'no'), )
+print '(xend-relocation-server %s)' % (configRegistry.get('xen/server/relocation', 'no'), )
+print '(xend-relocation-ssl-server %s)' % (configRegistry.get('xen/server/relocation_ssl', 'no'), )
 @!@
 #(xend-udev-event-server no)
 
 #(xend-unix-path /var/lib/xend/xend-socket)
 
 
-# Address and port xend should use for the legacy TCP XMLRPC interface, 
+# Address and port xend should use for the legacy TCP XMLRPC interface,
 # if xend-tcp-xmlrpc-server is set.
 #(xend-tcp-xmlrpc-server-address 'localhost')
 #(xend-tcp-xmlrpc-server-port 8006)
@@ -86,8 +77,8 @@ print '(xend-relocation-ssl-server %s)' % ( baseConfig.get('xen/server/relocatio
 # SSL key and certificate to use for the legacy TCP XMLRPC interface.
 # Setting these will mean that this port serves only SSL connections as
 # opposed to plaintext ones.
-#(xend-tcp-xmlrpc-server-ssl-key-file  /etc/xen/xmlrpc.key)
-#(xend-tcp-xmlrpc-server-ssl-cert-file /etc/xen/xmlrpc.crt)
+#(xend-tcp-xmlrpc-server-ssl-key-file  xmlrpc.key)
+#(xend-tcp-xmlrpc-server-ssl-cert-file xmlrpc.crt)
 
 
 # Port xend should use for the HTTP interface, if xend-http-server is set.
@@ -96,8 +87,8 @@ print '(xend-relocation-ssl-server %s)' % ( baseConfig.get('xen/server/relocatio
 # Port xend should use for the relocation interface, if xend-relocation-server
 # is set.
 @!@
-if baseConfig.get('xen/server/relocation', 'no') == 'yes':
-	print '(xend-relocation-port %s)' % ( baseConfig.get('xen/relocation/port', '8002'), )
+if configRegistry.is_true('xen/server/relocation', False):
+	print '(xend-relocation-port %s)' % ( configRegistry.get('xen/relocation/port', '8002'), )
 else:
 	print '#(xend-relocation-port 8002)'
 @!@
@@ -105,16 +96,16 @@ else:
 # Port xend should use for the ssl relocation interface, if
 # xend-relocation-ssl-server is set.
 @!@
-if baseConfig.get('xen/server/relocation_ssl', 'no') == 'yes':
-	print '(xend-relocation-ssl-port %s)' % ( baseConfig.get('xen/relocation/port_ssl', '8003'), )
+if configRegistry.is_true('xen/server/relocation_ssl', False):
+	print '(xend-relocation-ssl-port %s)' % (configRegistry.get('xen/relocation/port_ssl', '8003'),)
 else:
 	print '#(xend-relocation-ssl-port 8003)'
 @!@
 
 # SSL key and certificate to use for the ssl relocation interface, if
 # xend-relocation-ssl-server is set.
-#(xend-relocation-server-ssl-key-file  /etc/xen/xmlrpc.key)
-#(xend-relocation-server-ssl-cert-file  /etc/xen/xmlrpc.crt)
+#(xend-relocation-server-ssl-key-file   xmlrpc.key)
+#(xend-relocation-server-ssl-cert-file  xmlrpc.crt)
 
 # Whether to use ssl as default when relocating.
 #(xend-relocation-ssl no)
@@ -129,6 +120,8 @@ else:
 # Address xend should listen on for relocation-socket connections, if
 # xend-relocation-server is set.
 # Meaning and default as for xend-address above.
+# Also, interface name is allowed (e.g. eth0) there to get the
+# relocation address to be bound on.
 #(xend-relocation-address '')
 
 # The hosts allowed to talk to the relocation port.  If this is empty (the
@@ -145,8 +138,8 @@ else:
 #(xend-relocation-hosts-allow '')
 #(xend-relocation-hosts-allow '^localhost$ ^localhost\\.localdomain$')
 @!@
-if baseConfig.get('xen/relocation/hosts_allow'):
-    print '(xend-relocation-hosts-allow \'%s\')' % ( baseConfig.get('xen/relocation/hosts_allow'), )
+if configRegistry.get('xen/relocation/hosts_allow'):
+    print '(xend-relocation-hosts-allow \'%s\')' % (configRegistry.get('xen/relocation/hosts_allow'),)
 @!@
 
 # The limit (in kilobytes) on the size of the console buffer
@@ -163,19 +156,27 @@ if baseConfig.get('xen/relocation/hosts_allow'):
 #
 # (network-script network-bridge)
 #
-# Your default ethernet device is used as the outgoing interface, by default. 
+# Your default ethernet device is used as the outgoing interface, by default.
 # To use a different one (e.g. eth1) use
 #
 # (network-script 'network-bridge netdev=eth1')
 #
-
-@!@
-if baseConfig.get('xen/bridge/interface', '').lower() not in ('', 'none'):
-    print "(network-script 'network-bridge netdev=@%@xen/bridge/interface@%@')"
-@!@
-
-# The bridge is named xenbr0, by default.  To rename the bridge, use
+# The bridge is named eth0, by default (yes, really!)
 #
+
+# It is normally much better to create the bridge yourself in
+# /etc/network/interfaces.  network-bridge start does nothing if you
+# already have a bridge, and network-bridge stop does nothing if the
+# default bridge name (normally eth0) is not a bridge.  See
+# bridge-utils-interfaces(5) for full information on the syntax in
+# /etc/network/interfaces, but you probably want something like this:
+#    iface xenbr0 inet static
+#        address [etc]
+#        netmask [etc]
+#        [etc]
+#        bridge_ports eth0
+#
+# To have network-bridge create a differently-named bridge, use:
 # (network-script 'network-bridge bridge=<name>')
 #
 # It is possible to use the network-bridge script in more complicated
@@ -185,8 +186,10 @@ if baseConfig.get('xen/bridge/interface', '').lower() not in ('', 'none'):
 #
 
 @!@
-if baseConfig.get('xen/bridge/interface', '') == '':
+if configRegistry.get('xen/bridge/interface', '') == '':
     print "(network-script network-bridge)"
+elif configRegistry.get('xen/bridge/interface', '').lower() != 'none':
+    print "(network-script 'network-bridge netdev=@%@xen/bridge/interface@%@')"
 else:
     print "#(network-script network-bridge)"
 @!@
@@ -202,7 +205,8 @@ else:
 # configuring a new vif, but a value specified here would act as a default.
 #
 # If you are using only one bridge, the vif-bridge script will discover that,
-# so there is no need to specify it explicitly.
+# so there is no need to specify it explicitly.  The default is to use
+# the bridge which is listed first in the output from brctl.
 #
 (vif-script vif-bridge)
 
@@ -227,6 +231,16 @@ else:
 # If enable-dom0-ballooning = no, dom0 will never balloon out.
 (enable-dom0-ballooning yes)
 
+# 32-bit paravirtual domains can only consume physical
+# memory below 168GB. On systems with memory beyond that address,
+# they'll be confined to memory below 128GB.
+# Using total_available_memory (in GB) to specify the amount of memory reserved
+# in the memory pool exclusively for 32-bit paravirtual domains.
+# Additionally you should use dom0_mem = <-Value> as a parameter in 
+# xen kernel to reserve the memory for 32-bit paravirtual domains, default 
+# is "0" (0GB).  
+(total_available_memory 0) 
+
 # In SMP system, dom0 will use dom0-cpus # of CPUS
 # If dom0-cpus = 0, dom0 will take all cpus available
 (dom0-cpus 0)
@@ -242,25 +256,25 @@ else:
 # set this to 0.0.0.0
 
 @!@
-if baseConfig.get('xen/vnc/listen', '') != '':
+if configRegistry.get('xen/vnc/listen', '') != '':
     print "(vnc-listen '@%@xen/vnc/listen@%@')"
 @!@
 
 # The default password for VNC console on HVM domain.
 # Empty string is no authentication.
 @!@
-print '(vncpasswd \'%s\')' % ( baseConfig.get('xen/vnc/password', ''), )
+print '(vncpasswd \'%s\')' % (configRegistry.get('xen/vnc/password', ''),)
 @!@
 
 # The VNC server can be told to negotiate a TLS session
 # to encryption all traffic, and provide x509 cert to
-# clients enalbing them to verify server identity. The
+# clients enabling them to verify server identity. The
 # GTK-VNC widget, virt-viewer, virt-manager and VeNCrypt
 # all support the VNC extension for TLS used in QEMU. The
 # TightVNC/RealVNC/UltraVNC clients do not.
 #
 # To enable this create x509 certificates / keys in the
-# directory /etc/xen/vnc
+# directory ${XEN_CONFIG_DIR} + vnc
 #
 #  ca-cert.pem       - The CA certificate
 #  server-cert.pem   - The Server certificate signed by the CA
@@ -271,7 +285,7 @@ print '(vncpasswd \'%s\')' % ( baseConfig.get('xen/vnc/password', ''), )
 
 # The certificate dir can be pointed elsewhere..
 #
-# (vnc-x509-cert-dir /etc/xen/vnc)
+# (vnc-x509-cert-dir vnc)
 
 # The server can be told to request & validate an x509
 # certificate from the client. Only clients with a cert
@@ -295,3 +309,24 @@ print '(vncpasswd \'%s\')' % ( baseConfig.get('xen/vnc/password', ''), )
 # Path where persistent domain configuration is stored.
 # Default is /var/lib/xend/domains/
 #(xend-domains-path /var/lib/xend/domains)
+
+# Number of seconds xend will wait for device creation and
+# destruction
+#(device-create-timeout 100)
+#(device-destroy-timeout 100)
+
+# When assigning device to HVM guest, we use the strict check for HVM guest by
+# default. (For PV guest, we use loose check automatically if necessary.)
+# When we assign device to HVM guest, if we meet with the co-assignment
+# issues or the ACS issue, we could try changing the option to 'no' -- however,
+# we have to realize this may incur security issue and we can't make sure the
+# device assignment could really work properly even after we do this.
+#(pci-passthrough-strict-check yes)
+
+# If we have a very big scsi device configuration, start of xend is slow,
+# because xend scans all the device paths to build its internal PSCSI device
+# list.  If we need only a few devices for assigning to a guest, we can reduce
+# the scan to this device. Set list list of device paths in same syntax like in
+# command lsscsi, e.g. ('16:0:0:0' '15:0') 
+# (pscsi-device-mask ('*'))
+

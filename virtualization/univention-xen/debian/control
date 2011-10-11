@@ -2,18 +2,18 @@ Source: univention-xen
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper,
+Build-Depends: debhelper (>= 7.0.50~),
  univention-config-dev
 Standards-Version: 3.6.2
 
 Package: univention-xen
 Architecture: i386 amd64
-Depends: xen-tools,
- wget,
- xen-4.1,
+Depends: xen-4.1,
  libc6-xen [i386],
  univention-kernel-image-2.6.32-xen,
- bridge-utils
+ bridge-utils,
+ ${misc:Depends}, ${perl:Depends}
+Suggests: xen-tools, wget
 Description: UCS - Xen configuration and management subsystem
  This packages provides the basic configuration for the
  Xen virtualisation technology.

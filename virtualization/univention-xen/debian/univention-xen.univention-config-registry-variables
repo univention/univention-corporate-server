@@ -3,3 +3,81 @@ Description[de]=Repository zur Installation von Xen-Gastinstanzen
 Description[en]=Repository for the installation of Xen guests
 Type=str
 Categories=service-xen
+
+[xen/bridge/interface]
+Description[de]=Interface für das Bridging, 'none' zum deaktivieren [eth0]
+Description[en]=Interface for bridging, 'none' for disabling [eth0]
+Type=str
+Categories=service-xen
+
+[xen/vnc/listen]
+Description[de]=IP-Adresse für den VNC-Server [127.0.0.1]
+Description[en]=IP-address for the VNC server [127.0.0.1]
+Type=str
+Categories=service-xen
+
+[xen/vnc/password]
+Description[de]=Password für den VNC-Server []
+Description[en]=Password for the VNC server []
+Type=str
+Categories=service-xen
+
+[xen/relocation/hosts_allow]
+Description[de]=Leerzeichen separierte Liste von regulären Ausdrücken der erlaubten Hostnamen
+Description[en]=Space separated list of regular expressions of allowed host names
+Type=str
+Categories=service-xen
+
+[xen/relocation/port]
+Description[de]=Port des unverschlüsselten Xen-Dienst für die (Live-)Migration [8002]
+Description[en]=Port of the unencrypted Xen service for (live-)migration [8002]
+Type=int
+Categories=service-xen
+
+[xen/relocation/port_ssl]
+Description[de]=Port des Xen-Dienst für die (Live-)Migration [8003]
+Description[en]=Port of the encrypted Xen service for (live-)migration [8003]
+Type=int
+Categories=service-xen
+
+[xen/server/relocation]
+Description[de]=Aktiviert/Deaktiviert den unverschlüsselten Xen-Dienst für die (Live-)Migration [no]
+Description[en]=Enable/Disable the unencrypted Xen service for (live-)migration [no]
+Type=bool
+Categories=service-xen
+
+[xen/server/relocation_ssl]
+Description[de]=Aktiviert/Deaktiviert den verschlüsselten Xen-Dienst für die (Live-)Migration [no]
+Description[en]=Enable/Disable the encrypted Xen service for (live-)migration [no]
+Type=bool
+Categories=service-xen
+
+[xen/server/http_server]
+Description[de]=Aktiviert/Deaktiviert den Zugriff zum Xen-Dienst via HTTP [no]
+Description[en]=Enable/Disable access to xend via http [no]
+Type=bool
+Categories=service-xen
+
+[xen/server/unix_server]
+Description[de]=Aktiviert/Deaktiviert den Zugriff zum Xen-Dienst via Unix Socket [no]
+Description[en]=Enable/Disable access to xend via unix socket [no]
+Type=bool
+Categories=service-xen
+
+[xen/server/api]
+Description[de]=Konfiguration der Zugrifskontrolle auf die Xen-Dienste [(unix)]
+Description[en]=Configuration of access control to Xen services [(unix)]
+Type=str
+Categories=service-xen
+
+[xen/server/xmlrpc_unix]
+Description[de]=Aktiviert/Deaktiviert den Xen-XMLRPC-Dienst per Unix-Socket [yes]
+Description[en]=Enable/Disable the Xen XMLRPC service via Unix socket [yes]
+Type=bool
+Categories=service-xen
+
+[xen/server/xmlrpc_tcp]
+Description[de]=Aktiviert/Deaktiviert den Xen-XMLRPC-Dienst per TCP/IP-Socket [no]
+Description[en]=Enable/Disable the Xen XMLRPC service via TCP/IP socket [no]
+Type=bool
+Categories=service-xen
