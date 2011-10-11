@@ -1,3 +1,7 @@
 Type: file
 File: etc/cron.daily/univention-ssl-validity
 Variables: ssl/validity/check
+
+Type: file
+File: etc/logrotate.d/univention-ssl
+Variables: logrotate/.*

@@ -1,3 +1,9 @@
+univention-ssl (6.0.8-1) unstable; urgency=low
+
+  * added logrotate configuration (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 16:33:21 +0200
+
 univention-ssl (6.0.7-1) unstable; urgency=low
 
   * make-certificates.ssl uses now ssl/common for certificate CN (Bug #22846)
