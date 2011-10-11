@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Univention Join
+# Univention Management Console Web Server
 #  postinst script for the debian package
 #
 # Copyright 2004-2011 Univention GmbH
@@ -31,10 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 #DEBHELPER#
-
-# generate a new hash for the UMC frontend in order to avoid caching problems
-. /usr/share/univention-lib/umc.sh
-umc_frontend_new_hash
 
 # add apache modules for redirect to UMC web server
 a2enmod proxy

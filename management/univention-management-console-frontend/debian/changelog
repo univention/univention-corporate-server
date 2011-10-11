@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.90-2) unstable; urgency=low
+
+  * moved hash generation into postinst of the frontend (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 11 Oct 2011 18:25:56 +0200
+
 univention-management-console-frontend (1.0.90-1) unstable; urgency=low
 
   * back to symbolic links, regenerate hashes in postinst script (Bug #22881)
