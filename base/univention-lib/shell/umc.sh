@@ -39,7 +39,7 @@ umc_frontend_new_hash () {
     # create new timestamps for index.html and debug.html in order to
     # avoid caching problems in browsers
     timestamp=$(date +'%Y%d%m%H%M%S')
-    for ifile in {index,debug}.html; do
+    for ifile in index.html debug.html; do
         sed -i 's/\$\(.*\)\$/$'$timestamp'$/' /usr/share/univention-management-console-frontend/$ifile
     done
 }
