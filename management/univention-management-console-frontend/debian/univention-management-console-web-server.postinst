@@ -32,6 +32,10 @@
 
 #DEBHELPER#
 
+# generate a new hash for the UMC frontend in order to avoid caching problems
+. /usr/share/univention-lib/umc.sh
+umc_frontend_new_hash
+
 # add apache modules for redirect to UMC web server
 a2enmod proxy
 a2enmod proxy_connect

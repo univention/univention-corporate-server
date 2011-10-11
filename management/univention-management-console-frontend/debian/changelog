@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.90-1) unstable; urgency=low
+
+  * back to symbolic links, regenerate hashes in postinst script (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 11 Oct 2011 17:23:43 +0200
+
 univention-management-console-frontend (1.0.89-1) unstable; urgency=low
 
   * added trailing and preceding '$' to timestamp hash

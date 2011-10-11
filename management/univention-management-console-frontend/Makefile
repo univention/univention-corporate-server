@@ -80,11 +80,6 @@ build-dev: build-common
 	@# symlinks for installed modules/icons
 	cp -frs /usr/share/univention-management-console-frontend/js/umc/modules/* $(buildDir)/js/umc/modules
 	cp -frs /usr/share/univention-management-console-frontend/images/icons/* $(buildDir)/images/icons/
-	@# symlinks as temporary directories with timestamp
-	for i in js css; do \
-		rm -f "$(buildDir)/$${i}_"*; \
-		ln -s "$$i" "$(buildDir)/$${i}_"'$(timestamp)'; \
-	done;
 
 build-common: i18n
 	@# scale all icons
@@ -97,6 +92,11 @@ build-common: i18n
 			fi; \
 		done; \
 	done
+	@# symlinks as temporary directories with timestamp
+	for i in js css; do \
+		rm -f "$(buildDir)/$${i}_"*; \
+		ln -s "$$i" "$(buildDir)/$${i}_"'$(timestamp)'; \
+	done;
 	@# install JSON translation file for framework
 	for i in "$(CURDIR)/umc/"*.json; do \
 		lang=$${i##*/}; \
