@@ -15,6 +15,7 @@ File: etc/init.d/heimdal-kdc
 
 Type: file
 File: etc/logrotate.d/heimdal-kdc
+Variables: logrotate/.*
 
 Type: file
 File: usr/share/univention-heimdal/check_cracklib.py

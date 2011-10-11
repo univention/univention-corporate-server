@@ -1,3 +1,9 @@
+univention-heimdal (5.0.12-2) unstable; urgency=low
+
+  * fixed univention-config-registry (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 16:14:01 +0200
+
 univention-heimdal (5.0.12-1) unstable; urgency=low
 
   * added logrotate configuration (Bug #18002) 
