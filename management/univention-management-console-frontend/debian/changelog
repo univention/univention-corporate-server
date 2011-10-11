@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.89-1) unstable; urgency=low
+
+  * added trailing and preceding '$' to timestamp hash
+  * replaced symbolic links of js and css directories with an Apache URL
+    rewrite rule
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 11 Oct 2011 15:32:42 +0200
+
 univention-management-console-frontend (1.0.88-1) unstable; urgency=low
 
   * fixed the UmcpModuleStore's onChange event

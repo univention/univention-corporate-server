@@ -32,7 +32,7 @@
 
 jsFiles:=$(shell find umc -name "*.js")
 pkgDir:=/usr/share/univention-management-console-frontend/
-timestamp:=$(shell date +'%Y%d%m%H%M%S')
+timestamp:=$$$(shell date +'%Y%d%m%H%M%S')$$
 version:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 buildDir:=$(CURDIR)/build
 tmpDir:=$(buildDir)/_tmp$(timestamp)
@@ -41,7 +41,7 @@ tmpDir:=$(buildDir)/_tmp$(timestamp)
 
 build: build-common
 	@# create a temp directory
-	mkdir -p "$(tmpDir)"
+	mkdir -p '$(tmpDir)'
 	@# create the module umc.widgets containing a require for all umc widgets
 	@# include all translation files
 	( \
@@ -53,11 +53,11 @@ build: build-common
 			lang=$${lang%.*}; \
 			echo 'dojo.cache("umc", "i18n/'$$lang'/app.json")'; \
 		done; \
-	) > $(tmpDir)/include.js
+	) > '$(tmpDir)/include.js'
 	@# dojo build
-	sed 's|%CURDIR%|$(CURDIR)|g; s|%TIMESTAMP%|$(timestamp)|g' "$(CURDIR)/build_profile.js" > "$(tmpDir)/build_profile.js"
+	sed 's|%CURDIR%|$(CURDIR)|g; s|%TIMESTAMP%|$(timestamp)|g' "$(CURDIR)/build_profile.js" > '$(tmpDir)/build_profile.js'
 	cd /usr/share/univention-dojo/util/buildscripts; \
-	./build.sh profileFile="$(tmpDir)/build_profile.js" releaseDir="$(CURDIR)/build/js" version="$(version)"
+	./build.sh profileFile='$(tmpDir)/build_profile.js' releaseDir="$(CURDIR)/build/js" version="$(version)"
 	@# index page .. replace the HASH with a timestamp
 	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' index.html > "$(buildDir)/index.html"
 	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%/.uncompressed.js/;' index.html > "$(buildDir)/debug.html"
@@ -80,6 +80,11 @@ build-dev: build-common
 	@# symlinks for installed modules/icons
 	cp -frs /usr/share/univention-management-console-frontend/js/umc/modules/* $(buildDir)/js/umc/modules
 	cp -frs /usr/share/univention-management-console-frontend/images/icons/* $(buildDir)/images/icons/
+	@# symlinks as temporary directories with timestamp
+	for i in js css; do \
+		rm -f "$(buildDir)/$${i}_"*; \
+		ln -s "$$i" "$(buildDir)/$${i}_"'$(timestamp)'; \
+	done;
 
 build-common: i18n
 	@# scale all icons
@@ -92,12 +97,6 @@ build-common: i18n
 			fi; \
 		done; \
 	done
-	@# symlinks as temporary directories with timestamp
-	@#TODO: this should be done with an Apache redirection
-	for i in js css; do \
-		rm -f "$(buildDir)/$${i}_"*; \
-		ln -s "$$i" "$(buildDir)/$${i}_$(timestamp)"; \
-	done;
 	@# install JSON translation file for framework
 	for i in "$(CURDIR)/umc/"*.json; do \
 		lang=$${i##*/}; \
@@ -112,7 +111,7 @@ i18n:
 install: build
 	@# copy all files from the build directory .. exclude file of the tmp directory
 	mkdir -p "$(DESTDIR)$(pkgDir)"
-	rsync -rpl --exclude ".svn" --exclude "_tmp$(timestamp)" "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
+	rsync -rpl --exclude ".svn" --exclude "_tmp"'$(timestamp)' "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
 
 clean:
 	rm -rf build
