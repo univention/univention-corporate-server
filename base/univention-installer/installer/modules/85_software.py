@@ -427,12 +427,12 @@ class object(content):
 		if self.all_results['system_role'] in ['domaincontroller_backup', 'domaincontroller_slave']:
 			if s3 and self.samba3_warning == False:
 				self.samba3_warning = True
-				return _('The software package %s was selected. It is not possible to mix NT and Active Directory compatible domaincontroller.\n\nMake sure the existing UCS domain is NT-compatible (Samba 3). This warning is shown only once.') % (self.packages[s3[0]][s3[1]][0])
+				return _('The software package %s was selected. It is not possible to mix NT and Active Directory compatible domaincontroller.\n\nMake sure the existing UCS domain is NT-compatible (Samba 3). This warning is shown only once. The installation can be continued with this selection.') % (self.packages[s3[0]][s3[1]][0])
 
 			if s4 and self.samba4_warning == False:
 				if self.all_results['system_role'] in ['domaincontroller_backup', 'domaincontroller_slave']:
 					self.samba4_warning = True
-					return _('The software package %s was selected. It is not possible to mix NT and Active Directory compatible domaincontroller.\n\nMake sure the existing UCS domain is Active Directory-compatible (Samba 4). This warning is shown only once.') % (self.packages[s4[0]][s4[1]][0])
+					return _('The software package %s was selected. It is not possible to mix NT and Active Directory compatible domaincontroller.\n\nMake sure the existing UCS domain is Active Directory-compatible (Samba 4). This warning is shown only once. The installation can be continued with this selection.') % (self.packages[s4[0]][s4[1]][0])
 
 		return 0
 

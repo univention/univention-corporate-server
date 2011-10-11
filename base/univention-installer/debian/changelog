@@ -1,3 +1,9 @@
+univention-installer (7.0.100-1) unstable; urgency=low
+
+  * Update the S3 / S4 warnings (Bug #24000)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Oct 2011 07:06:00 +0200
+
 univention-installer (7.0.99-1) unstable; urgency=low
 
   * Check for package conflicts (S3 and S4 + KVM and Xen) and show a
