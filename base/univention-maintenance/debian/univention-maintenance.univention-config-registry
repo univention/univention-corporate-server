@@ -7,3 +7,7 @@ File: etc/cron.d/univention-system-stats
 Variables: system/stats
 Variables: system/stats/cron
 Variables: server/role
+
+Type: file
+File: etc/logrotate.d/univention-maintenance
+Variables: logrotate/.*

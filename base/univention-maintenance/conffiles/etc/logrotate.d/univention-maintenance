@@ -1,0 +1,14 @@
+@%@UCRWARNING=# @%@
+
+@!@
+import univention.lib.ucrLogrotate
+
+name = "system-stats"
+settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+
+print "/var/log/univention/%s.log {" % name
+
+for setting in settings.keys():
+        print "\t%s" % settings[setting]
+@!@
+}
