@@ -51,3 +51,9 @@ Description[de]=Wenn diese Variable auf false oder no gesetzt ist, wird die Druc
 Description[en]=If this variable is set to false or no the printer list in cups/restrictedprinters will not be managed automatically (default true).
 Type=str
 Categories=service-cups
+
+[cups/server/alias]
+Description[de]=Spezifiziert einen alternativen Namen, unter dem der Server bekannt ist. Der besondere Name "*" erlaubt die  Verwendung  jedes Namens.
+Description[en]=Specifies an alternate name that the server is known by. The special name "*" allows any name to be used.
+Type=str
+Categories=service-cups

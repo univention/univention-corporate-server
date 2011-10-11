@@ -9,6 +9,7 @@ Variables: cups/location/base
 Variables: cups/location/admin
 Variables: cups/debug/level
 Variables: cups/restrictedprinters
+Variables: cups/server/alias
 Variables: hostname
 Variables: domainname
 

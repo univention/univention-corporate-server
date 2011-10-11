@@ -1,3 +1,10 @@
+univention-printserver (5.0.7-1) unstable; urgency=low
+
+  * added cups/server/alias (default: $hostname.$domainname) to
+    configure ServerAlias in cupsd.conf (Bug #22584) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 10:43:29 +0200
+
 univention-printserver (5.0.6-1) unstable; urgency=low
 
   * fixed description of VarioPrint 2110 PS3 

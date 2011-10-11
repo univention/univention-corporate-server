@@ -33,7 +33,7 @@
 . /usr/share/univention-lib/all.sh
 eval "$(univention-config-registry shell)"
 
-univention-config-registry set cups/server?$hostname.$domainname \
+univention-config-registry set cups/server?"$hostname.$domainname" \
 	cups/admin?"root@"$domainname \
 	cups/systemgroup?"Printer-Admins,lp" \
 	cups/location/base?"networks" \
@@ -41,7 +41,8 @@ univention-config-registry set cups/server?$hostname.$domainname \
 	cups/filedevice?yes \
 	cups/autostart?yes \
 	cups/printserver?yes \
-	cups/debug/level?warn
+	cups/debug/level?warn \
+	cups/server/alias?"$hostname.$domainname"
 
 #DEBHELPER#
 
