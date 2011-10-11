@@ -1,3 +1,9 @@
+univention-spamassassin (4.0.1-3) unstable; urgency=low
+
+  * added debian/compat (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 17:22:46 +0200
+
 univention-spamassassin (4.0.1-2) unstable; urgency=low
 
   * fixed logrotate template (Bug #18002) 
