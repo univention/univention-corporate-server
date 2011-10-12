@@ -19,6 +19,8 @@ Variables: windows/domain
 Variables: samba/.*
 Variables: samba4/.*
 Variables: windows/wins-.*
+Variables: cups/server
+Variables: server/role
 
 Type: subfile
 Multifile: etc/samba/smb.conf
@@ -34,11 +36,19 @@ Subfile: etc/samba/smb.conf.d/31univention-samba_password
 
 Type: subfile
 Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/41univention-samba_printing
+
+Type: subfile
+Multifile: etc/samba/smb.conf
 Subfile: etc/samba/smb.conf.d/51univention-samba_domain
 
 Type: subfile
 Multifile: etc/samba/smb.conf
 Subfile: etc/samba/smb.conf.d/61univention-samba_misc
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/71univention-samba_users
 
 Type: subfile
 Multifile: etc/samba/smb.conf
@@ -54,6 +64,10 @@ Subfile: etc/samba/smb.conf.d/92univention-samba_shares
 
 Type: subfile
 Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/95univention-samba_local_config
+
+Type: subfile
+Multifile: etc/samba/smb.conf
 Subfile: etc/samba/smb.conf.d/99univention-samba_local_shares
 
 Type: file
@@ -64,3 +78,8 @@ Variables: samba4/sysvol/sync/jitter
 Type: file
 File: etc/logrotate.d/univention-samba4
 Variables: logrotate/.*
+
+Type: file
+File: etc/named/samba4.conf
+Variables: domainname
+Variables: kerberos/realm

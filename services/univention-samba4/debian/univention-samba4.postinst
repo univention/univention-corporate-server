@@ -34,13 +34,61 @@
 
 #DEBHELPER#
 
-univention-config-registry set samba4/debug/level?2 \
-	samba4/sysvol/sync/jitter?60
+if [ -z "$2" ]; then
+	mkdir -p /home/groups
+
+	mkdir -p /etc/univention/skel/windows-profiles
+	for dname in Win95 WinNT Win2k WinXP Win2K3 Vista Vista.V2 ; do
+		mkdir -p /etc/univention/skel/windows-profiles/$dname
+	done
+fi
+
+## samba3 defaults copied from univention-samba
+univention-config-registry set \
+	samba/share/home?yes \
+	samba/share/groups?no \
+	samba/adminusers?"administrator join-backup" \
+	samba/encrypt_passwords?yes \
+	samba/use_spnego?yes \
+	samba/client_use_spnego?yes \
+	samba/oplocks?yes \
+	samba/kernel_oplocks?yes \
+	samba/large_readwrite?yes \
+	samba/deadtime?15 \
+	samba/read_raw?yes \
+	samba/write_raw?yes \
+	samba/max_xmit?65535 \
+	samba/getwd_cache?yes \
+	samba/store_dos_attributes?yes \
+	samba/preserve_case?yes \
+	samba/short_preserve_case?yes \
+	samba/guest_account?nobody \
+	samba/map_to_guest?"Bad User"
+
+## more samba3 defaults copied from univention-samba
+if [ "$server_role" != "memberserver" ]
+then
+	if [ -n "$samba_netbios_name" ]
+	then
+		tmphostname=$samba_netbios_name
+	else
+		tmphostname="$hostname"
+	fi
+	univention-config-registry set samba/profileserver?$tmphostname \
+								   samba/profilepath?'%U\windows-profiles\%a' \
+								   samba/homedirserver?$tmphostname \
+								   samba/homedirpath?%U \
+								   samba/homedirletter?I
+fi
+
+univention-config-registry set \
+	samba4/debug/level?2 \
+	samba4/sysvol/sync/jitter?60 \
+	samba4/service/smb?'smbd' \
+	samba4/ntacl/backend?'native'
 
 if [ "$1" = "configure" ]; then
 
-	univention-config-registry set samba4/service/smb?'smbd' \
-							samba4/ntacl/backend?'native'
 
 	if [ -z "$2" ]; then
     	univention-config-registry set samba4/autostart="no"                                                                                                                                            

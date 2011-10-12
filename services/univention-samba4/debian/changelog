@@ -1,3 +1,13 @@
+univention-samba4 (1.0.60-3) unstable; urgency=low
+
+  * add [homes], [printers] and [print$] shares (Bug #22865)
+  * add template sections and options from univention-samba
+    print them only if samba4/service/smb is 'smbd'
+  * set ucr variable defaults as in univention-samba
+  * register and add UCR header to etc/named/samba4.conf
+
+ -- Arvid Requate <requate@univention.de>  Wed, 12 Oct 2011 16:27:02 +0200
+
 univention-samba4 (1.0.60-2) unstable; urgency=low
 
   * adjust scripts/sysvol-sync.sh call to new samba-tool api (Bug #22865)

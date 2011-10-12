@@ -29,17 +29,6 @@ if server_services:
 
 	debug level = @%@samba4/debug/level@%@
 
-@!@
-for key, smbstring in [('samba/interfaces','interfaces'),
-		       ('samba/charset/dos', 'dos charset'),
-		       ('samba/charset/unix', 'unix charset'),
-		       ('samba/socket_options', 'socket options'),
-		       ('samba/netbios/aliases', 'netbios aliases'),
-		       ('', ''),
-		       ('samba/interfaces/bindonly', 'bind interfaces only'),]:
-	if configRegistry.get(key):
-		print '\t%s = %s' % (smbstring, configRegistry[key])
-@!@
 	tls enabled	= Yes
 	tls keyfile	= /etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/private.key
 	tls certfile	= /etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/cert.pem
@@ -47,4 +36,27 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 	tls crlfile	=
 	tls dh params file	= 
 
+@!@
+for key, smbstring in [('samba/interfaces','interfaces'),
+		       ('samba/charset/dos', 'dos charset'),
+		       ('samba/charset/unix', 'unix charset'),
+		       ('samba/socket_options', 'socket options'),
+		       ('samba/netbios/aliases', 'netbios aliases'),
+		       ('samba/interfaces/bindonly', 'bind interfaces only'),]:
+	if configRegistry.get(key):
+		print '\t%s = %s' % (smbstring, configRegistry[key])
+
+## legacy settings for smbd
+if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
+	print '\tsyslog = 0'
+	print '\tmax log size = 1000000'
+
+	for key, smbstring in [
+				   ('samba/charset/display', 'display charset'),
+				   ('samba/enable-privileges', 'enable privileges'),
+				   ]:
+		value = configRegistry.get(key):
+		if value != None:
+			print '\t%s = %s' % (smbstring, value)
+@!@
 ; ---------------------</10global>------------------------

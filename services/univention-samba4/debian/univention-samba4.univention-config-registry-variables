@@ -112,7 +112,7 @@ Description[en]=Enables/disables WINS services of Samba
 Type=str
 Categories=service-samba
 
-[samba/autostart]
+[samba4/autostart]
 Description[de]=Aktiviere/Deaktiviere den Samba Start beim Booten
 Description[en]=Enable/Disable Samba start on bootup
 Type=str
@@ -163,5 +163,137 @@ Categories=service-samba
 [samba4/sysvol/sync/jitter]
 Description[de]=Intervall zur Variation des Zeitpunkts der Sysvol-Replikation (in Sekunden)
 Description[en]=Interval for the variation of the time of sysvol replication (in seconds)
+Type=str
+Categories=service-samba
+
+[samba/charset/display]
+Description[de]=Zeichensatz zum Ausgeben von Nachrichten auf stdout und stderr (sollte gleich mit samba/charset/unix sein)
+Description[en]=Charset used to print messages to stdout and stderr (should be the same as the samba/charset/unix)
+Type=str
+Categories=service-samba
+
+[samba/deadtime]
+Description[de]=Anzahl Minuten nach denen eine Verbindung als abgelaufen angesehen und geschlossen wird
+Description[en]=Time span of inactivity in minutes before a connection is considered dead and eventually disconnected
+Type=str
+Categories=service-samba
+
+[samba/enable-privileges]
+Description[de]=Beachte Privilegien die zu spezifischen SIDs zugeordnet wurden
+Description[en]=Honor privileges assigned to specific SIDs
+Type=str
+Categories=service-samba
+
+[samba/getwd_cache]
+Description[de]=Aktiviere einen Caching-Algorithmus um die Zeit für getwd() Aufrufe zu minimieren
+Description[en]=Enables a caching algorithm to reduce the time taken for getwd() calls
+Type=str
+Categories=service-samba
+
+[samba/guest_account]
+Description[de]=Benutzername, der für den Zugriff auf nicht-authentifizierte Dienste verwendet wird (guest ok)
+Description[en]=Username for unauthenticated services (guest ok)
+Type=str
+Categories=service-samba
+
+[samba/wide_links]
+Description[de]=Konfiguriert, ob symbolische Links verfolgt werden
+Description[en]=Configures, whether symbolic links are followed
+Type=str
+Categories=service-samba
+
+[samba/homedirletter]
+Description[de]=Laufwerk für das Heimatverzeichnis des Benutzers
+Description[en]=Drive for the home directory
+Type=str
+Categories=service-samba
+
+[samba/homedirpath]
+Description[de]=Pfad zum Heimatverzeichnis für Win95/98 oder NT Workstations
+Description[en]=Path to the home directory for Win95/98 or NT workstations
+Type=str
+Categories=service-samba
+
+[samba/homedirserver]
+Description[de]=Vollständiger Domainname des Servers, der die Heimatverzeichnisse bereitstellt
+Description[en]=Fully qualified domain name of the server providing the home directories
+Type=str
+Categories=service-samba
+
+[samba/invalid_users]
+Description[de]=Liste von Benutzern, die sich nicht am Samba-Service anmelden dürfen
+Description[en]=List of users that are not allowed to login to this samba service 
+Type=str
+Categories=service-samba
+
+[samba/kernel_oplocks]
+Description[de]=Verwendung von Kernel Oplocks an- bzw. abschalten
+Description[en]=Turns the use of kernel based oplocks on/off
+Type=str
+Categories=service-samba
+
+[samba/logonscript]
+Description[de]=Pfad zum Netlogon-Script (relativ zum Netlogon-Service)
+Description[en]=Path to netlogon script (relative to the [netlogon] service)
+Type=str
+Categories=service-samba
+
+[samba/map_to_guest]
+Description[de]=Verhalten bei Anmeldung von Benutzern, für die kein gültiger UNIX Benutzer existiert
+Description[en]=What to do with user login requests that don't match a valid UNIX user
+Type=str
+Categories=service-samba
+
+[samba/preserve_case]
+Description[de]=Kontrolliert ob neue Dateinamen mit der Groß-/Kleinschreibung wie vom Client gesendet angelegt oder auf Standard-Groß-/Kleinschreibung geändert werden
+Description[en]=Controls if new filenames are created with the case that the client passes, or if they are forced to be the default case
+Type=str
+Categories=service-samba
+
+[samba/profilepath]
+Description[de]=Verzeichnis in dem die Roaming Profile gespeichert werden
+Description[en]=Specifies the directory where roaming profiles are stored
+Type=str
+Categories=service-samba
+
+[samba/profileserver]
+Description[de]=Samba-Server, auf dem die Roaming-Profile gespeichert werden
+Description[en]=Specifies the samba server where roaming profiles are stored
+Type=str
+Categories=service-samba
+
+[samba/share/groups]
+Description[de]=Aktivieren/Deaktivieren der Gruppenfreigabe
+Description[en]=Enable/Disable the group share
+Type=str
+Categories=service-samba
+
+[samba/share/home]
+Description[de]=Aktivieren/Deaktivieren der Heimatverzeichnissfreigabe
+Description[en]=Enable/Disable the home directory share
+Type=str
+Categories=service-samba
+
+[samba/short_preserve_case]
+Description[de]=Kontrolliert ob neue Dateien nach 8.3 (DOS) Format in Großbuchstaben erstellt oder auf standard Groß/Kleinschreibung geändert werden
+Description[en]=Controls if new files which conform to 8.3 (DOS) syntax are created upper case, or if they are forced to be the default case
+Type=str
+Categories=service-samba
+
+[samba/store_dos_attributes]
+Description[de]=Versuche DOS Attribute aus einem erweiterten Dateisystemattribut zu lesen bevor sie auf UNIX-Rechte abgebildet werden
+Description[en]=Attempt to read DOS attributes from a filesystem extended attribute, before mapping DOS attributes to UNIX permission bits
+Type=str
+Categories=service-samba
+
+[samba/adminusers]
+Description[de]=Liste von Benutzern mit administrativen Rechten in Samba
+Description[en]=List of users with administrative rights in samba
+Type=str
+Categories=service-samba
+
+[samba/cups/encrypt]
+Description[de]=Dieser Parameter steuert ob die Verbindung zu CUPS-Servern verschlüsselt wird oder nicht (gültige Werte: no/yes)
+Description[en]=This parameter controls whether connections to CUPS servers will be encrypted or not (valid values: no/yes)
 Type=str
 Categories=service-samba
