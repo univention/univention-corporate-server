@@ -1,3 +1,22 @@
+univention-installer (7.0.101-2) unstable; urgency=low
+
+  * updated german translation (Bug #3796)
+  * write current locale to /etc/locale.gen to be able to create
+    a locale via locale-gen in ramdisk, otherwise gettext is unable
+    to translate messages (Bug #3796)
+  * clear screen before reboot
+  * generate a locale for selected installer language (Bug #3796)
+  * create small "helper lib" for installer scripts
+  * added new RegExTranslation object for easy translation of debootstrap and apt-get      
+  * small gui update (Bug #3796)
+  * merged success/error message from end.py (Bug #3796)
+  * limit length of error messages
+  * updated script for updating translation files (Bug #3796)
+  * use gettext to translate progress headlines in scripts
+  * pay attention to auto_reboot (Bug #3796)
+     
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 12 Oct 2011 17:56:46 +0200
+
 univention-installer (7.0.101-1) unstable; urgency=low
 
   * added new python script progress.py for displaying progress 
