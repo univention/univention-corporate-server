@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.24-2) unstable; urgency=low
+
+  * removed old UCR variable descriptions (Bug #22369)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 12 Oct 2011 11:06:48 +0200
+
 univention-mail-postfix (6.0.24-1) unstable; urgency=low
 
   * added recommends to bsd-mailx in univention-mail-server (Bug #23815)
