@@ -1,3 +1,9 @@
+univention-samba4 (1.0.60-4) unstable; urgency=low
+
+  * svn add 95univention-samba_local_config (Bug #22865)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 12 Oct 2011 18:29:27 +0200
+
 univention-samba4 (1.0.60-3) unstable; urgency=low
 
   * add [homes], [printers] and [print$] shares (Bug #22865)
