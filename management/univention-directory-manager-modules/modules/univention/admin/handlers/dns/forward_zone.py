@@ -305,7 +305,6 @@ class object(univention.admin.handlers.simpleLdap):
 				self['contact'] = '%s.' % self['contact']
 			ipaddr = re.compile ('^([0-9]{1,3}\.){3}[0-9]{1,3}$') # matches ip addresses - they shouldn't end with a dot!
 			if len (self['nameserver'][0]) > 0 \
-				and ipaddr.match (self['nameserver'][0]) == None \
 				and self['nameserver'][0].find (':') == -1 \
 				and self['nameserver'][0].find ('.') != -1 \
 				and not self['nameserver'][0][-1] == '.':

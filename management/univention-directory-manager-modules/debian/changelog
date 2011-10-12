@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.118-1) unstable; urgency=low
+
+  * dns/forward_zone: Append dot to nameserver entry even if the entry
+    is a ip address otherwise the dns zone transfer will fail
+    (Bug #23945)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 Oct 2011 11:48:21 +0200
+
 univention-directory-manager-modules (7.0.117-1) unstable; urgency=low
 
   * added logrotate configuration (Bug #18002) 
