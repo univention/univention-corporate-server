@@ -57,5 +57,6 @@ def getLogrotateConfig(name, configRegistry):
 
 	_getBoolDefault("logrotate/missingok", "logrotate/" + name + "/missingok", settings, configRegistry)
 	_getBoolDefault("logrotate/compress", "logrotate/" + name + "/compress", settings, configRegistry)
+	_getBoolDefault("logrotate/notifempty", "logrotate/" + name + "/notifempty", settings, configRegistry)
 
 	return settings
