@@ -39,7 +39,7 @@ from univention.management.console.protocol.definitions import *
 import univention.management.console as umc
 
 import df
-import fstab
+from univention.lib import fstab
 import mtab
 import tools
 

@@ -39,7 +39,7 @@ import notifier.popen
 import univention.management.console as umc
 from univention.management.console.log import MODULE
 
-import fstab
+from univention.lib import fstab
 
 _ = umc.Translation('univention-management-console-modules-quota').translate
 

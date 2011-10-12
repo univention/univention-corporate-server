@@ -39,7 +39,7 @@ import univention.management.console as umc
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
-import fstab
+from univention.lib import fstab
 import mtab
 import tools
 
