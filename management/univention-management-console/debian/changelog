@@ -1,3 +1,10 @@
+univention-management-console (4.0.65-2) unstable; urgency=low
+
+  * changed dependency from univention-management-console-module-online to 
+    *-update (Bug #22898)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Oct 2011 13:44:20 +0200
+
 univention-management-console (4.0.65-1) unstable; urgency=low
 
   * added logrotate configuration (Bug #18002) 
