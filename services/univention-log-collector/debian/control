@@ -1,4 +1,4 @@
-Source: univention-log-collector
+ource: univention-log-collector
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
@@ -7,7 +7,7 @@ Build-Depends: debhelper, univention-config-dev, ucslint, python-support
 
 Package: univention-log-collector-server
 Architecture: all
-Depends: gzip, univention-config-registry, ${python:Depends}, ${misc:Depends}, python-pyopenssl
+Depends: gzip, univention-config-registry, ${python:Depends}, ${misc:Depends}, python-pyopenssl, python-univention-lib (>= 1.0.25-1)
 Description: Univention Log Collector Server
  Univention Log Collector - receives logfiles via SSL connection
  .
@@ -18,7 +18,7 @@ Description: Univention Log Collector Server
 
 Package: univention-log-collector-client
 Architecture: all
-Depends: univention-config-registry, ${python:Depends}, ${misc:Depends}, python-pyopenssl
+Depends: univention-config-registry, ${python:Depends}, ${misc:Depends}, python-pyopenssl, python-univention-lib (>= 1.0.25-1)
 Description: Univention Log Collector Client
  Univention Log Collector - Sends logfiles via SSL connection to loghost
  .
