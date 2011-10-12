@@ -43,3 +43,16 @@ Description: perform initial configuration of appliance editions
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-management-console-module-setup
+Architecture: all
+Depends: univention-management-console-server,
+ univention-installer-modules,
+ univention-system-setup (= ${source:Version})
+Description: UMC module for Univention system setup
+ This package contains the UMC module for the Univention system setup.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

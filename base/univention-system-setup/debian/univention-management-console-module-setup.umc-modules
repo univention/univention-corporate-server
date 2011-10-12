@@ -1,0 +1,5 @@
+Module: setup
+Python: umc/python
+Definition: umc/setup.xml
+Javascript: umc/js
+Icons: umc/icons

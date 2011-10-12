@@ -1,9 +1,10 @@
-#!/usr/bin/make -f
+#!/bin/sh
+# -*- coding: utf-8 -*-
 #
-# Univention System Setup
-#  rules file for the debian package
+# Univention Management Console Module setup
+#  join script
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,25 +31,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
+VERSION=1
 
-override_dh_auto_install:
-	dh-umc-module-install
-	univention-install-config-registry
-	dh_auto_install 
+. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/umc.sh
 
-override_dh_installinit:
-	dh_installinit -punivention-system-setup-boot --no-start -u"defaults 70"
-	dh_installinit -punivention-system-setup-appliance --no-start -u"defaults 75"
+joinscript_init
 
-override_dh_fixperms:
-	dh_fixperms
-	find debian/*/usr/lib/univention-system-setup/ -type f -exec chmod +x {} +
+umc_init
+umc_operation_create "setup" "Univention System-Setup" "setup/*"
+umc_acl_create "setup-all" "Setup" "All System-Setup operations" "setup/*"
+umc_policy_append "default-admin" "setup-all"
 
-override_dh_auto_test:
-	ucslint
+joinscript_save_current_version
 
-%:
-	dh $@
+exit 0
+
+
