@@ -32,6 +32,9 @@
 
 . /tmp/installation_profile
 
+# disable kernel messages
+dmesg -n 1
+
 if [ -n "$cdrom_device" ]; then
 	nfs=`echo $cdrom_device | grep "nfs:"`
 	smbfs=`echo $cdrom_device | grep "smbfs:"`
