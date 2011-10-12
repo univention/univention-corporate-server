@@ -34,6 +34,7 @@ forceascii=`cat /proc/cmdline | grep " forceascii"`
 recover=`cat /proc/cmdline | grep " recover"`
 expert_partition=`cat /proc/cmdline | grep "expert_partition"`
 params[${#params[@]}]="--cmdline"
+progparams=()
 
 # disable console blanking
 setterm -powersave off
@@ -54,26 +55,36 @@ fi
 if [ -s /.ucs-edition ]; then
 	params[${#params[@]}]="--edition"
 	params[${#params[@]}]="$(cat /.ucs-edition)"
+	progparams[${#progparams[@]}]="--edition"
+	progparams[${#progparams[@]}]="$(cat /.ucs-edition)"
 fi
 
 if [ -s /.ucs-version ]; then
 	params[${#params[@]}]="--version"
 	params[${#params[@]}]="$(cat /.ucs-version)"
+	progparams[${#progparams[@]}]="--version"
+	progparams[${#progparams[@]}]="$(cat /.ucs-version)"
 fi
 
 if [ -s /.ucs-name ]; then
 	params[${#params[@]}]="--name"
 	params[${#params[@]}]="$(cat /.ucs-name)"
+	progparams[${#progparams[@]}]="--name"
+	progparams[${#progparams[@]}]="$(cat /.ucs-name)"
 fi
 
 if [ -s /.ucs-codename ]; then
 	params[${#params[@]}]="--codename"
 	params[${#params[@]}]="$(cat /.ucs-codename)"
+	progparams[${#progparams[@]}]="--codename"
+	progparams[${#progparams[@]}]="$(cat /.ucs-codename)"
 fi
 
 if [ -s /.ucs-extension ]; then
 	params[${#params[@]}]="--extension"
 	params[${#params[@]}]="$(cat /.ucs-extension)"
+	progparams[${#progparams[@]}]="--extension"
+	progparams[${#progparams[@]}]="$(cat /.ucs-extension)"
 fi
 
 if [ -n "$expert_partition" ]; then
@@ -104,47 +115,7 @@ else
 		echo "------------------------------------------" >> /tmp/installer.log
 		echo "" >> /tmp/installer.log
 
-		lib/univention-installer-scripts.d/00_scripts.sh
-		for i in lib/univention-installer-scripts.d/*; do
-			if [ "$i" = lib/univention-installer-scripts.d/00_scripts.sh ]; then
-				continue
-			fi
-			if [ "$i" = lib/univention-installer-scripts.d/99_reboot.sh ]; then
-				continue
-			fi
-			if [ "$i" = lib/univention-installer-scripts.d/95_completemsg.sh ]; then
-				continue
-			fi
-			if [ -e /tmp/logging ]; then
-				mkdir -p /instmnt/var/log/univention/
-				touch /instmnt/var/log/univention/installation.log
-				chown root:adm /instmnt/var/log/univention/installation.log
-				chmod 640 /instmnt/var/log/univention/installation.log
-
-				if [ -e /tmp/installer.log -a ! -e /instmnt/var/log/univention/installer.log ] ; then
-					cat /tmp/installer.log >> /instmnt/var/log/univention/installer.log
-					chown root:adm /instmnt/var/log/univention/installer.log
-					chmod 640 /instmnt/var/log/univention/installer.log
-				fi
-
-				if [ -e /tmp/debootstrap.log.gz ]; then
-					cp /tmp/debootstrap.log.gz /instmnt/var/log/univention/
-					chown root:adm /instmnt/var/log/univention/debootstrap.log.gz
-					chmod 640 /instmnt/var/log/univention/debootstrap.log.gz
-				fi
-			fi
-			if [ -e /tmp/logging ]; then
-				/bin/sh $i </dev/tty1 2>&1 | tee -a /instmnt/var/log/univention/installation.log
-			else
-				/bin/sh $i </dev/tty1 | tee -a /tmp/installer.log
-			fi
-		done
-		if [ -e /tmp/logging ]; then
-			gzip /instmnt/var/log/univention/installation.log
-			gzip /instmnt/var/log/univention/installer.log
-		fi
-		lib/univention-installer-scripts.d/95_completemsg.sh
-		lib/univention-installer-scripts.d/99_reboot.sh
+		/bin/python2.6 -OO /lib/univention-installer/progress.py "${progparams[@]}"
 
 	done
 fi
