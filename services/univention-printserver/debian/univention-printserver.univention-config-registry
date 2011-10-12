@@ -15,3 +15,7 @@ Variables: domainname
 
 Type: file
 File: etc/pam.d/cups
+
+Type: file
+File: etc/logrotate.d/univention-printserver
+Variables: logrotate/.*
