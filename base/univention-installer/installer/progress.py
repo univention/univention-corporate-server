@@ -58,9 +58,31 @@ fn_language = "/tmp/language"
 
 systemrole2name = {}
 i18n_debootstrap = {}
+i18n_aptget = None
+
+class RegExTranslator(object):
+	def __init__(self):
+		self.regexlist = []
+
+	def add_rule(self, regex, formatstr):
+		self.regexlist.append( [re.compile(regex), formatstr] )
+
+	def translate(self, txt, strict=False):
+		"""
+		translate string "txt" by testing against all regex.
+		If strict is True, None will be returned if nothing matched.
+		If strict is False, "txt" will be returned.
+		"""
+		for regex, format in self.regexlist:
+			match = regex.search(txt)
+			if match:
+				return format % match.groupdict()
+		if strict:
+			return None
+		return txt
 
 def init_translations():
-	global systemrole2name, i18n_debootstrap
+	global systemrole2name, i18n_debootstrap, i18n_aptget
 
 	systemrole2name = { 'domaincontroller_master': _('Master domain controller'),
 						'domaincontroller_backup': _('Backup domain controller'),
@@ -71,13 +93,23 @@ def init_translations():
 						'basesystem': _('Base system'),
 						}
 
-	i18n_debootstrap = { 'Retrieving': _('Retrieving'),
-						 'Validating': _('Validating'),
-						 'Extracting': _('Extracting'),
-						 'Unpacking':  _('Unpacking'),
-						 'Configuring': _('Configuring'),
-						 }
+	i18n_debootstrap = RegExTranslator()
+	i18n_debootstrap.add_rule('I: Retrieving (?P<pkg>.+)', _('Retrieving %(pkg)s') )
+	i18n_debootstrap.add_rule('I: Validating (?P<pkg>.+)', _('Validating %(pkg)s') )
+	i18n_debootstrap.add_rule('I: Extracting (?P<pkg>.+)', _('Extracting %(pkg)s') )
+	i18n_debootstrap.add_rule('I: Unpacking (?P<pkg>.+)', _('Unpacking %(pkg)s') )
+	i18n_debootstrap.add_rule('I: Configuring (?P<pkg>.+)', _('Configuring %(pkg)s') )
 
+	i18n_aptget = RegExTranslator()
+	i18n_aptget.add_rule('^Retrieving file (?P<current>\d+) of (?P<total>\d+)', _('Retrieving file %(current)s of %(total)s') )
+	i18n_aptget.add_rule('^Installing (?P<pkg>\S+)', _('Installing %(pkg)s') )
+	i18n_aptget.add_rule('^Preparing (?P<pkg>\S+)', _('Preparing %(pkg)s') )
+	i18n_aptget.add_rule('^Unpacking (?P<pkg>\S+)', _('Unpacking %(pkg)s') )
+	i18n_aptget.add_rule('^Configuring (?P<pkg>\S+)', _('Configuring %(pkg)s') )
+	i18n_aptget.add_rule('^Installed (?P<pkg>\S+)', _('Installed %(pkg)s') )
+	i18n_aptget.add_rule('^Preparing to configure (?P<pkg>\S+)', _('Preparing to configure %(pkg)s') )
+	i18n_aptget.add_rule('^Running post-installation trigger (?P<pkg>\S+)', _('Running post-installation trigger %(pkg)s') )
+	i18n_aptget.add_rule('^Running (?P<pkg>\S+)', _('Running %(pkg)s') )
 
 
 class ProgressInfo(object):
@@ -415,17 +447,13 @@ Information about %(name)s can be found here:
 
 					if line.startswith('pmstatus:') or line.startswith('dlstatus:'):
 						# display apt-get messages
-						self.progress_msg = line.split(':',4)[3]
+						self.progress_msg = i18n_aptget.translate( line.split(':',4)[3] )
 
 					elif line.startswith('I: '):
-						# translate debootstrap messages ==> I: Retrieving base-files
-						if ' ' in line[3:]:
-							# get action
-							action, pkg = line[3:].split(' ',1)
-							# display action if translation exists
-							if action in i18n_debootstrap:
-								# display debootstrap messages
-								self.progress_msg = '%s %s' % (i18n_debootstrap.get(action), pkg)
+						# translate and return only valid translations (i.e. reg exp matches)
+						msg = i18n_debootstrap.translate(line, strict=True)
+						if msg:
+							self.progress_msg = msg
 
 					elif line.startswith('__JOINSCRIPT__ '):
 						# display name of current joinscript
