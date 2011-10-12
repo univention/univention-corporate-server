@@ -30,7 +30,8 @@ Package: python-univention-directory-manager-cli
 Architecture: all
 Depends: ${python:Depends},
  shell-univention-lib,
- python-univention (>> 5.0.5)
+ python-univention (>> 5.0.5),
+ python-univention-lib (>= 1.0.25-1)
 Provides: ${python:Provides}
 Description: UCS - Modules for administration tools
  This package contains the modules that implement the
