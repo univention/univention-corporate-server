@@ -1,3 +1,9 @@
+univention-join (4.0.19-2) unstable; urgency=low
+
+  * added missing debian/*.umc-modules file (Bug #23701)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Oct 2011 16:42:30 +0200
+
 univention-join (4.0.19-1) unstable; urgency=low
 
   * integrated univention-management-console-module-join into univention-join
