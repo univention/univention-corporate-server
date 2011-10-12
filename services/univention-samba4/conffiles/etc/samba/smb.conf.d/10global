@@ -16,6 +16,13 @@ elif samba4_role == 'MEMBER':
 
 samba_serverstring = configRegistry.get('samba/serverstring', 'Univention Corporate Server')
 print '\tserver string =', samba_serverstring
+
+## build up and set server services option list if non-empty
+server_services=[]
+if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
+	server_services.append('-smb')
+if server_services:
+	print '\tserver services =', ' '.join(server_services)
 @!@
 	workgroup	= @%@windows/domain@%@
 	realm		= @%@kerberos/realm@%@
@@ -23,10 +30,6 @@ print '\tserver string =', samba_serverstring
 	debug level = @%@samba4/debug/level@%@
 
 @!@
-if not configRegistry.is_true('samba4/xattr'):
-	print '\t; configure xattr emulation, should be diabled if / has been mounted with option user_xattr'
-	print '\tposix:eadb = /var/lib/samba/private/eadb.tdb'
-
 for key, smbstring in [('samba/interfaces','interfaces'),
 		       ('samba/charset/dos', 'dos charset'),
 		       ('samba/charset/unix', 'unix charset'),

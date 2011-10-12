@@ -1,3 +1,15 @@
+Type: file
+File: etc/samba/base.conf
+Variables: kerberos/realm
+Variables: samba4/role
+Variables: samba/share/home
+Variables: samba/share/groups
+Variables: samba/share/printers
+Variables: samba/share/netlogon
+Variables: samba/share/sysvol
+Variables: samba4/service/smb
+Variables: samba4/ntacl/backend
+
 Type: multifile
 Multifile: etc/samba/smb.conf
 Variables: hostname
@@ -30,6 +42,10 @@ Subfile: etc/samba/smb.conf.d/61univention-samba_misc
 
 Type: subfile
 Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/80univention-smb-service
+
+Type: subfile
+Multifile: etc/samba/smb.conf
 Subfile: etc/samba/smb.conf.d/91univention-samba_shares
 
 Type: subfile
@@ -39,16 +55,6 @@ Subfile: etc/samba/smb.conf.d/92univention-samba_shares
 Type: subfile
 Multifile: etc/samba/smb.conf
 Subfile: etc/samba/smb.conf.d/99univention-samba_local_shares
-
-Type: file
-File: etc/samba/base.conf
-Variables: kerberos/realm
-Variables: samba4/role
-Variables: samba/share/home
-Variables: samba/share/groups
-Variables: samba/share/printers
-Variables: samba/share/netlogon
-Variables: samba/share/sysvol
 
 Type: file
 File: etc/cron.d/sysvol-sync

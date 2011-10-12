@@ -1,3 +1,13 @@
+univention-samba4 (1.0.60-1) unstable; urgency=low
+
+  * configure samba4/service/smb?'smbd' (Bug #22865)
+  * configure samba4/ntacl/backend?'native', i.e. use xattr to
+    store NTACL. The alternative 'tdb' currently has compatibility issues
+    between the source3 vfs module acl_tdb and the source4 posix:eadb
+  * mount_extfs_with_user_xattr.py in join script
+
+ -- Arvid Requate <requate@univention.de>  Wed, 12 Oct 2011 10:54:00 +0200
+
 univention-samba4 (1.0.59-1) unstable; urgency=low
 
   * added logrotate configuration (Bug #18002) 

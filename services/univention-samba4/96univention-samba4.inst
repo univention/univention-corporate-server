@@ -176,6 +176,7 @@ if [ -z "$samba4_role" ]; then
 fi
 
 SYSVOL_PATH='/var/lib/samba/sysvol'
+/usr/share/univention-samba4/scripts/mount_extfs_with_user_xattr.py
 
 if [ "$samba4_role" = 'DC' ]; then
 
