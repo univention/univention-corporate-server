@@ -122,16 +122,6 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 		),
-	'userNamespace': univention.admin.property(
-			short_description=_( 'Should be visible for Outlook' ),
-			long_description=_( "Outlook does not display folders outside of the 'user' namespace." ),
-			syntax=univention.admin.syntax.TrueFalseUp,
-			multivalue=0,
-			required=0,
-			may_change=0,
-			identifies=0,
-			default=''
-		),
 	'mailPrimaryAddress': univention.admin.property(
 			short_description=_('E-Mail address'),
 			long_description='',
@@ -148,7 +138,7 @@ layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
 		[ "name" , "mailDomain" ],
 		[ "mailHomeServer", "cyrus-userquota" ],
-		[ "mailPrimaryAddress", "userNamespace" ],
+		[ "mailPrimaryAddress" ],
 		] ),
 	Tab( _( 'Access Rights'),_('Access rights for shared folder'), layout = [
 		"sharedFolderUserACL",
@@ -159,7 +149,6 @@ layout = [
 mapping=univention.admin.mapping.mapping()
 mapping.register('cyrus-userquota', 'univentionMailUserQuota', None, univention.admin.mapping.ListToString)
 mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
-mapping.register('userNamespace', 'univentionMailUserNamespace', None, univention.admin.mapping.ListToString)
 mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
@@ -214,9 +203,6 @@ class object(univention.admin.handlers.simpleLdap):
 		self.dn='cn=%s@%s,%s' % (self.info['name'], self.info['mailDomain'], self.position.getDn())
 
 	def _ldap_post_create(self):
-		if self[ 'userNamespace' ] == 'TRUE':
-			address = '%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] )
-			univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', value = address )
 		if self[ 'mailPrimaryAddress' ]:
 			univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', value = self[ 'mailPrimaryAddress' ] )
 
@@ -224,24 +210,11 @@ class object(univention.admin.handlers.simpleLdap):
 		ocs=[]
 		al=[]
 
-		# if the 'user' namespace should be used the folder name must be a unique mail address
-		if self[ 'userNamespace' ] == 'TRUE':
-			address = '%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] )
-			try:
-				self.alloc.append( ( 'mailPrimaryAddress', address ) )
-				univention.admin.allocators.request( self.lo, self.position, 'mailPrimaryAddress', value = address )
-			except:
-				univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', value = address )
-				raise univention.admin.uexceptions.mailAddressUsed
-
 		if self[ 'mailPrimaryAddress' ]:
-			if self[ 'userNamespace' ] == 'TRUE':
-				al.append(('univentionMailSharedFolderDeliveryAddress', '%s+%s@%s' % ( self['name'].split('/',1)[0], self[ 'name' ], self[ 'mailDomain' ] ) ) )
-			else:
-				al.append(('univentionMailSharedFolderDeliveryAddress', 'univentioninternalpostuser+shared/%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] ) ) )
+			al.append(('univentionMailSharedFolderDeliveryAddress', 'univentioninternalpostuser+shared/%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] ) ) )
 
 			address = '%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] )
-			if self[ 'userNamespace' ] != 'TRUE' or self[ 'mailPrimaryAddress' ] != address:
+			if self[ 'mailPrimaryAddress' ] != address:
 				try:
 					self.alloc.append( ( 'mailPrimaryAddress', self[ 'mailPrimaryAddress' ] ) )
 					univention.admin.allocators.request( self.lo, self.position, 'mailPrimaryAddress', value = self[ 'mailPrimaryAddress' ] )
@@ -257,9 +230,6 @@ class object(univention.admin.handlers.simpleLdap):
 		return al
 
 	def _ldap_post_modify(self):
-		if self[ 'userNamespace' ] == 'TRUE':
-			address = '%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] )
-			univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', value = address )
 		if self[ 'mailPrimaryAddress' ]:
 			univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', value = self[ 'mailPrimaryAddress' ] )
 
@@ -271,33 +241,16 @@ class object(univention.admin.handlers.simpleLdap):
 
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
-		if self.hasChanged( 'userNamespace' ) and self[ 'userNamespace' ] == 'TRUE':
-			for i, j in self.alloc:
-				if i == 'mailPrimaryAddress': break
-			else:
-				address = '%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] )
-
-				try:
-					univention.admin.allocators.request( self.lo, self.position, 'mailPrimaryAddress', value = address )
-				except:
-					univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', value = address )
-					raise univention.admin.uexceptions.mailAddressUsed
-
 		if self.hasChanged( 'mailPrimaryAddress' ) and self[ 'mailPrimaryAddress' ]:
 			for i, j in self.alloc:
 				if i == 'mailPrimaryAddress': break
 			else:
-				if self[ 'userNamespace' ] == 'TRUE':
-					ml.append( ( 'univentionMailSharedFolderDeliveryAddress',
-								 self.oldattr.get( 'univentionMailSharedFolderDeliveryAddress', [] ),
-								 [ '%s+%s@%s' % ( self['name'].split('/',1)[0], self[ 'name' ], self[ 'mailDomain' ] ) ] ) )
-				else:
-					ml.append( ( 'univentionMailSharedFolderDeliveryAddress',
-								 self.oldattr.get( 'univentionMailSharedFolderDeliveryAddress', [] ),
-								 [ 'univentioninternalpostuser+shared/%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] ) ] ) )
+				ml.append( ( 'univentionMailSharedFolderDeliveryAddress',
+							 self.oldattr.get( 'univentionMailSharedFolderDeliveryAddress', [] ),
+							 [ 'univentioninternalpostuser+shared/%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] ) ] ) )
 
 				address = '%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] )
-				if self[ 'userNamespace' ] != 'TRUE' or self[ 'mailPrimaryAddress' ] != address:
+				if self[ 'mailPrimaryAddress' ] != address:
 					try:
 						self.alloc.append( ( 'mailPrimaryAddress', self[ 'mailPrimaryAddress' ] ) )
 						univention.admin.allocators.request( self.lo, self.position, 'mailPrimaryAddress', value = self[ 'mailPrimaryAddress' ] )

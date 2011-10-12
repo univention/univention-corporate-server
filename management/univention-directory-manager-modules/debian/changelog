@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.119-1) unstable; urgency=low
+
+  * removed "univentionMailUserNamespace" from mail/folder module (Bug #24020) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 14:14:55 +0200
+
 univention-directory-manager-modules (7.0.118-1) unstable; urgency=low
 
   * dns/forward_zone: Append dot to nameserver entry even if the entry
