@@ -38,6 +38,7 @@ override_dh_auto_test:
 	dh_auto_test
 
 override_dh_install:
+	univention-install-config-registry
 	dh_install
 	sed -i "s/@%@copyright_lastyear@%@/${copyrightyear}/g;s/@%@package_version@%@/${version}/g" debian/univention-join/usr/share/univention-join/univention-server-join
 	sed -i "s/@%@copyright_lastyear@%@/${copyrightyear}/g;s/@%@package_version@%@/${version}/g" debian/univention-join/usr/share/univention-join/univention-join
