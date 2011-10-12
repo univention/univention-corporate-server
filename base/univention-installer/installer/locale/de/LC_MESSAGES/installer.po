@@ -29,44 +29,45 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-11 07:05+0200\n"
-"PO-Revision-Date: 2011-10-07 15:04+0200\n"
+"POT-Creation-Date: 2011-10-12 17:32+0200\n"
+"PO-Revision-Date: 2011-10-12 17:06+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: installer/end.py:152 installer/end.py:229
+#: installer/end.py:152 installer/end.py:229 installer/progress.py:253
+#: installer/progress.py:298
 msgid "The installation has been finished successfully!"
 msgstr "Die Installation wurde erfolgreich abgeschlossen!"
 
-#: installer/end.py:156
+#: installer/end.py:156 installer/progress.py:257
 #, python-format
 msgid "This system has been configured to IP address %s and"
 msgstr "Dieses System wurde auf die IP-Adresse %s konfiguriert"
 
-#: installer/end.py:158
+#: installer/end.py:158 installer/progress.py:259
 msgid "This system has been configured for DHCP usage and"
 msgstr "Dieses System bezieht seine IP-Adresse über DHCP"
 
-#: installer/end.py:161
+#: installer/end.py:161 installer/progress.py:262
 msgid "has not been joined to UCS domain yet."
 msgstr "und ist noch nicht der UCS-Domäne beigetreten."
 
-#: installer/end.py:163
+#: installer/end.py:163 installer/progress.py:264
 msgid "has been joined to UCS domain."
 msgstr "und ist der UCS-Domäne beigetreten."
 
-#: installer/end.py:165
+#: installer/end.py:165 installer/progress.py:266
 msgid "Please remove installation media from drive and"
 msgstr "Bitte entnehmen Sie das Installationsmedium und"
 
-#: installer/end.py:166
+#: installer/end.py:166 installer/progress.py:267
 msgid "press ok to reboot this system."
 msgstr "drücken OK, um das System neu zu starten."
 
-#: installer/end.py:168
+#: installer/end.py:168 installer/progress.py:269
 msgid "Administrative frontends:"
 msgstr "Administrationsoberflächen:"
 
@@ -84,7 +85,7 @@ msgstr "  https://%s/%s/"
 msgid "  Administrative account name: Administrator"
 msgstr "  Administratives Konto: Administrator"
 
-#: installer/end.py:188
+#: installer/end.py:188 installer/progress.py:276
 msgid " Open-Xchange frontend"
 msgstr " Open-Xchange-Oberfläche"
 
@@ -97,7 +98,7 @@ msgstr "  https://%s/ox6/"
 msgid "  Administrative account name: oxadmin"
 msgstr "  Administratives Konto: oxadmin"
 
-#: installer/end.py:195
+#: installer/end.py:195 installer/progress.py:283
 msgid " Univention Management Console"
 msgstr " Univention Management Console"
 
@@ -105,19 +106,19 @@ msgstr " Univention Management Console"
 msgid "Additional information:   http://www.univention.de/dokumentation.html"
 msgstr "Zusätzliche Informationen: http://www.univention.de/dokumentation.html"
 
-#: installer/end.py:202
+#: installer/end.py:202 installer/progress.py:290
 msgid "Support & Knowledge Base: http://sdb.univention.de"
 msgstr "Support & Knowledge Base: http://sdb.univention.de"
 
-#: installer/end.py:216
+#: installer/end.py:216 installer/progress.py:313
 msgid "Some problems occurred during installation!"
 msgstr "Es sind Probleme während der Installation aufgetreten!"
 
-#: installer/end.py:217
+#: installer/end.py:217 installer/progress.py:314
 msgid "Please read the following error messages carefully."
 msgstr "Bitte lesen Sie die folgenden Fehlermeldungen sorgfältig."
 
-#: installer/end.py:218
+#: installer/end.py:218 installer/progress.py:315
 msgid "In case of doubt a reinstallation might be reasonable."
 msgstr "Im Zweifelsfall kann eine Neuinstallation notwendig sein."
 
@@ -404,6 +405,190 @@ msgstr "Paketstatus-Überwachung"
 msgid "Univention packagestatus database"
 msgstr "Univention Paketstatus Datenbank"
 
+#: installer/progress.py:87 installer/modules/40_role.py:83
+msgid "Master domain controller"
+msgstr "Domain Controller Master"
+
+#: installer/progress.py:88 installer/modules/40_role.py:85
+#: installer/modules/40_role.py:101
+msgid "Backup domain controller"
+msgstr "Domain Controller Backup"
+
+#: installer/progress.py:89 installer/modules/40_role.py:86
+#: installer/modules/40_role.py:102
+msgid "Slave domain controller"
+msgstr "Domain Controller Slave"
+
+#: installer/progress.py:90 installer/modules/40_role.py:87
+#: installer/modules/40_role.py:103
+msgid "Member server"
+msgstr "Memberserver"
+
+#: installer/progress.py:91
+msgid "Managed Client"
+msgstr "Managed Client"
+
+#: installer/progress.py:92
+msgid "Mobile Client"
+msgstr "Mobile Client"
+
+#: installer/progress.py:93 installer/modules/40_role.py:88
+#: installer/modules/40_role.py:104
+msgid "Base system"
+msgstr "Basissystem"
+
+#: installer/progress.py:97
+#, python-format
+msgid "Retrieving %(pkg)s"
+msgstr "Hole %(pkg)s"
+
+#: installer/progress.py:98
+#, python-format
+msgid "Validating %(pkg)s"
+msgstr "Überprüfe %(pkg)s"
+
+#: installer/progress.py:99
+#, python-format
+msgid "Extracting %(pkg)s"
+msgstr "Entpacke %(pkg)s"
+
+#: installer/progress.py:100 installer/progress.py:107
+#, python-format
+msgid "Unpacking %(pkg)s"
+msgstr "Entpacke %(pkg)s"
+
+#: installer/progress.py:101 installer/progress.py:108
+#, python-format
+msgid "Configuring %(pkg)s"
+msgstr "Konfiguriere %(pkg)s"
+
+#: installer/progress.py:104
+#, python-format
+msgid "Retrieving file %(current)s of %(total)s"
+msgstr "Hole Datei %(current)s von %(total)s"
+
+#: installer/progress.py:105
+#, python-format
+msgid "Installing %(pkg)s"
+msgstr "Installiere %(pkg)s"
+
+#: installer/progress.py:106
+#, python-format
+msgid "Preparing %(pkg)s"
+msgstr "Bereite %(pkg)s vor"
+
+#: installer/progress.py:109
+#, python-format
+msgid "Installed %(pkg)s"
+msgstr "%(pkg)s wurde installiert"
+
+#: installer/progress.py:110
+#, python-format
+msgid "Preparing to configure %(pkg)s"
+msgstr "Bereite %(pkg)s zur Konfiguration vor"
+
+#: installer/progress.py:111
+#, python-format
+msgid "Running post-installation trigger %(pkg)s"
+msgstr "Starte Post-Installation-Trigger %(pkg)s"
+
+#: installer/progress.py:112
+#, python-format
+msgid "Running %(pkg)s"
+msgstr "Starte %(pkg)s"
+
+#: installer/progress.py:154 installer/progress.py:614
+#: scripts/00_scripts.sh:35
+msgid "Preparing installation"
+msgstr "Installation wird vorbereitet"
+
+#: installer/progress.py:277 installer/progress.py:279
+#, python-format
+msgid "\t https://%s/ox6/"
+msgstr "  https://%s/ox6/"
+
+#: installer/progress.py:280
+msgid "\t Administrative account name: oxadmin"
+msgstr "  Administratives Konto: oxadmin"
+
+#: installer/progress.py:284 installer/progress.py:286
+#, python-format
+msgid "\t https://%s/umc/"
+msgstr "  https://%s/%s/"
+
+#: installer/progress.py:287
+msgid "\t Administrative account name: Administrator"
+msgstr "  Administratives Konto: Administrator"
+
+#: installer/progress.py:289
+msgid ""
+"Additional information:   http://www.univention.de/en/download/documentation/"
+msgstr ""
+"Zusätzliche Informationen: http://www.univention.de/download/documentation/"
+
+#: installer/progress.py:387
+#, python-format
+msgid ""
+"Congratulations! The installation of %(name)s is currently running.\n"
+"\n"
+"Base information of local system:\n"
+"  Hostname:      %(hostname)s\n"
+"  System role:   %(systemrole)s\n"
+"  IP address:    %(address)s\n"
+"\n"
+"\n"
+"Please visit the following websites to learn more about %(name)s:\n"
+"\n"
+"- Quickstart Guide:\n"
+"  http://wiki.univention.de/index.php?title=UCS_Quickstart/en\n"
+"\n"
+"- Manuals and further information:\n"
+"  http://www.univention.de/en/download/documentation/\n"
+"\n"
+"- Forum:\n"
+"  http://forum.univention.de\n"
+"\n"
+"- Support & Knowledge Base:\n"
+"  http://sdb.univention.de\n"
+msgstr ""
+"Herzlichen Glückwunsch! Die Installation von %(name)s wurde gestartet.\n"
+"\n"
+"Basisinformationen des lokalen Systems:\n"
+"  Rechnername:       %(hostname)s\n"
+"  Systemrolle:       %(systemrole)s\n"
+"  IP-Adresse:        %(address)s\n"
+"\n"
+"\n"
+"Bitte besuchen Sie folgenden Webseiten, um mehr über %(name)s zu erfahren:\n"
+"\n"
+"- Quickstart Guide:\n"
+"  http://wiki.univention.de/index.php?title=UCS_Quickstart\n"
+"\n"
+"- Handbücher und weitere Informationen:\n"
+"  http://www.univention.de/download/documentation/\n"
+"\n"
+"- Forum:\n"
+"  http://forum.univention.de\n"
+"\n"
+"- Support & Knowledge Base:\n"
+"  http://sdb.univention.de\n"
+
+#: installer/progress.py:411
+msgid "dynamic"
+msgstr "dynamisch"
+
+#: installer/progress.py:518
+msgid "Current joinscript: "
+msgstr "Aktuelles Joinskript: "
+
+#: installer/progress.py:666
+msgid "Installation complete"
+msgstr "Installation abgeschlossen"
+
+#: installer/progress.py:681
+msgid "Preparing reboot"
+msgstr "Neustart wird vorbereitet"
+
 #: installer/modules/05_language.py:123
 msgid "Select system language"
 msgstr "Bitte wählen Sie die System-Sprache aus"
@@ -643,26 +828,6 @@ msgstr "Tastatur"
 #: installer/modules/40_role.py:81
 msgid "Select the system role:"
 msgstr "Auswahl der zu installierenden Systemrolle:"
-
-#: installer/modules/40_role.py:83
-msgid "Master domain controller"
-msgstr "Domain Controller Master"
-
-#: installer/modules/40_role.py:85 installer/modules/40_role.py:101
-msgid "Backup domain controller"
-msgstr "Domain Controller Backup"
-
-#: installer/modules/40_role.py:86 installer/modules/40_role.py:102
-msgid "Slave domain controller"
-msgstr "Domain Controller Slave"
-
-#: installer/modules/40_role.py:87 installer/modules/40_role.py:103
-msgid "Member server"
-msgstr "Memberserver"
-
-#: installer/modules/40_role.py:88 installer/modules/40_role.py:104
-msgid "Base system"
-msgstr "Basissystem"
 
 #: installer/modules/40_role.py:106
 msgid "Further information for selected system role:"
@@ -2336,6 +2501,95 @@ msgstr "Verarbeite postrun-Skripte"
 msgid "Processing %s "
 msgstr "Verarbeite %s"
 
+#: scripts/02_disk_check.sh:36
+msgid "Preparing target device"
+msgstr "Zielgerät wird vorbereitet"
+
+#: scripts/03_pre_mount.sh:35
+msgid "Mounting source device"
+msgstr "Einbinden des Quelllaufwerks"
+
+#: scripts/04_mounting.sh:35
+msgid "Mounting target devices"
+msgstr "Einbinden des Ziellaufwerks"
+
+#: scripts/06_network.sh:35
+msgid "Configuring network interfaces"
+msgstr "Konfiguration der Netzwerk-Interfaces"
+
+#: scripts/10_debootstrap.sh:35
+msgid "Installing basesystem"
+msgstr "Installation des Basissystems"
+
+#: scripts/12_fstab.sh:35 scripts/14_sources_list.sh:35
+#: scripts/20_preconfigure.sh:35
+msgid "Configuring basesystem"
+msgstr "Konfiguration des Basissystems"
+
+#: scripts/25_install_config_registry.sh:35
+msgid "Installing Univention base packages"
+msgstr "Installiere Univention-Basis-Pakete"
+
+#: scripts/28_postconfigure_config_registry.sh:35
+msgid "Configuring Univention base packages"
+msgstr "Konfiguriere Univention-Basis-Pakete"
+
+#: scripts/31_preinst_hook.sh:35
+msgid "Calling preinstallation hooks"
+msgstr "Ausführen der Pre-Installation-Hooks"
+
+#: scripts/35_kernel.sh:35
+msgid "Installing kernel and bootloader"
+msgstr "Installiere Kernel und Bootloader"
+
+#: scripts/50_packages.sh:35
+msgid "Installing selected software components"
+msgstr "Installiere ausgewählte Softwarekomponenten"
+
+#: scripts/60_xen.sh:36
+msgid "Configuring XEN"
+msgstr "Konfiguriere XEN"
+
+#: scripts/75_join.sh:35
+msgid "Joining system into domain"
+msgstr "Beitritt des Systems in die Domäne"
+
+#: scripts/78_repository.sh:35
+msgid "Configuring online repository"
+msgstr "Einbinden des Online-Repositorys"
+
+#: scripts/80_ldap.sh:35
+msgid "Configuring LDAP server"
+msgstr "Konfiguration des LDAP-Servers"
+
+#: scripts/82_administrator_sync.sh:35
+msgid "Configuring Samba4"
+msgstr "Konfiguration von Samba4"
+
+#: scripts/83_filter_udev_rules.sh:35
+msgid "Updating udev rules"
+msgstr "Aktualisierung der udev-Regeln"
+
+#: scripts/85_postinst_hook.sh:35
+msgid "Calling postinstallation hooks"
+msgstr "Ausführen der Post-Installations-Hooks"
+
+#: scripts/87_locales.sh:35
+msgid "Generating locales"
+msgstr "Generierung der Sprachdateien"
+
+#: scripts/88_clock.sh:35
+msgid "Setting hardware clock"
+msgstr "Setzen der Systemuhr"
+
+#: scripts/89_tests.sh:35
+msgid "Performing system test"
+msgstr "Teste installiertes System"
+
+#: scripts/90_cleanup.sh:35
+msgid "Performing cleanup"
+msgstr "Ausführen von Aufräumarbeiten"
+
 #~ msgid "Samba 4 server"
 #~ msgstr "Samba 4 Server"
 
@@ -2365,9 +2619,6 @@ msgstr "Verarbeite %s"
 
 #~ msgid "eth0 Network"
 #~ msgstr "Netzwerk"
-
-#~ msgid "dynamic"
-#~ msgstr "dynamisch"
 
 #~ msgid "eth0 IP"
 #~ msgstr "eth0 IP"
@@ -2756,12 +3007,6 @@ msgstr "Verarbeite %s"
 #~ msgid "Default language"
 #~ msgstr "Standardsprache"
 
-#~ msgid "Managed client"
-#~ msgstr "Managed Client"
-
-#~ msgid "Mobile client"
-#~ msgstr "Mobile Client"
-
 #~ msgid "Hostname:"
 #~ msgstr "Systemname:"
 
@@ -2877,9 +3122,6 @@ msgstr "Verarbeite %s"
 
 #~ msgid "Packet filter"
 #~ msgstr "Paketfilter"
-
-#~ msgid "Create local repository"
-#~ msgstr "Lokales Repository erstellen"
 
 #~ msgid "Create home share"
 #~ msgstr "Heimatverzeichnis-Freigabe"
@@ -3054,12 +3296,6 @@ msgstr "Verarbeite %s"
 
 #~ msgid "Please restart the computer and try again."
 #~ msgstr "Bitte starten Sie den Rechner neu."
-
-#~ msgid "Installation Log:"
-#~ msgstr "Installations-Protokoll:"
-
-#~ msgid "Installation succeded!"
-#~ msgstr "Die Installation war erfolgreich."
 
 #~ msgid "Please restart the computer."
 #~ msgstr "Bitte starten Sie den Rechnern neu."
