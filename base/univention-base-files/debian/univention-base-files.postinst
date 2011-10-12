@@ -60,6 +60,7 @@ univention-config-registry set ldap/base?dc=univention,dc=unconfigured \
 	logrotate/compress?yes \
 	logrotate/missingok?yes \
 	logrotate/create?"640 root adm" \
+	logrotate/notifempty?yes \
 	nameserver/option/timeout?2 \
 	update/secure_apt?no \
 

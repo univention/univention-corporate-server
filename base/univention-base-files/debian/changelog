@@ -1,3 +1,9 @@
+univention-base-files (1.0.29-2) unstable; urgency=low
+
+  * added logrotate/notifempty (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 12:45:09 +0200
+
 univention-base-files (1.0.29-1) unstable; urgency=low
 
   * new logrotate ucr variables (Bug #18002)

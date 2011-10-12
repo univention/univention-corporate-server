@@ -370,6 +370,12 @@ Description[en]=Rotation interval for system log files
 Type=int
 Categories=system-base
 
+[logrotate/notifempty]
+Description[de]=Leere Logdateien nicht rotieren
+Description[en]=Do not rotate the log if it is empty
+Type=str
+Categories=system-base
+
 [logrotate/compress]
 Description[de]=Definiert, ob die Logdateien in /var/log/univention bei der Rotation komprimiert werden sollen.
 Description[en]=Defines whether to compress log files in /var/log/univention on rotation.
