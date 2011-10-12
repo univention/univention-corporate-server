@@ -1,14 +1,17 @@
 @%@BCWARNING=# @%@
 
-# /var/log/univention/uvmmd.log
-/var/log/univention/virtual-machine-manager-daemon.log /var/log/univention/virtual-machine-manager-daemon-errors.log {
-	rotate @%@log/rotate/weeks@%@
-	weekly
-	compress
+@!@        
+import univention.lib.ucrLogrotate
+
+name = "virtual-machine-manager-daemon*.log"
+settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+
+print "/var/log/univention/%s {" % name
+
+for setting in settings.keys():
+	print "\t%s" % settings[setting]
+@!@
 	delaycompress
-	missingok
-	notifempty
-	create 640 root adm
 	postrotate
 		if [ -e /etc/runit/univention-virtual-machine-manager-daemon/supervise/pid ]
 		then
@@ -18,4 +21,4 @@
 			kill -HUP "`cat /var/run/uvmmd.pid`"
 		fi
 	endscript
-}
+} 

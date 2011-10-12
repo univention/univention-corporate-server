@@ -18,7 +18,7 @@ Depends: univention-ssl,
  python-univention (>>5.0.10),
  univention-virtual-machine-manager-schema (>= 1.0.32-1),
  python-univention-virtual-machine-manager (= ${source:Version}),
- ${python:Depends}, ${misc:Depends}
+ ${python:Depends}, ${misc:Depends}, python-univention-lib (>= 1.0.25-1)
 Recommends: libvirt-bin,
  univention-nagios-uvmmd,
  univention-management-console-module-uvmm (= ${source:Version})
