@@ -54,7 +54,7 @@ MAX_HEIGHT = 37
 MAX_WIDTH = 100
 fn_error_msg = "/tmp/installation_error.log"
 fn_success_msg = "/tmp/installation_success.log"
-language_file = "/tmp/language"
+fn_language = "/tmp/language"
 
 systemrole2name = {}
 i18n_debootstrap = {}
@@ -582,8 +582,6 @@ Information about %(name)s can be found here:
 		self.call_cmd(['/lib/univention-installer-scripts.d/99_reboot.sh'])
 
 
-
-
 def main():
 	parser = optparse.OptionParser( )
 	parser.add_option('-t', '--edition', dest='edition', default='', action='store', help='product edition')
@@ -594,8 +592,8 @@ def main():
 	(options, args) = parser.parse_args()
 
 	# get and set language
-	if os.path.isfile(language_file):
-		language = linecache.getline(language_file, 1).strip('\n')
+	if os.path.isfile(fn_language):
+		language = linecache.getline(fn_language, 1).strip('\n')
 		os.environ['LANGUAGE'] = language
 
 	init_translations()
