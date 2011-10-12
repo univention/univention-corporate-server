@@ -2,7 +2,7 @@ Source: univention-updater
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7), univention-config-dev, python-all, python-support (>= 0.90), ucslint
+Build-Depends: debhelper (>> 7), univention-config-dev, python-all, python-support (>= 0.90), ucslint, univention-management-console-dev
 
 Package: univention-updater
 Architecture: all

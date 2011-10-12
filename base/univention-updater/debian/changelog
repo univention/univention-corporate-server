@@ -1,3 +1,9 @@
+univention-updater (7.0.42-2) unstable; urgency=low
+
+  * added build dependency to univention-management-console-dev (Bug #22898)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Oct 2011 13:17:11 +0200
+
 univention-updater (7.0.42-1) unstable; urgency=low
 
   * merged univention-management-console-module-online into univention-updater
