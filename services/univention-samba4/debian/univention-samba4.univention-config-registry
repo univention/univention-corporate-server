@@ -28,6 +28,10 @@ Subfile: etc/samba/smb.conf.d/10global
 
 Type: subfile
 Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/11univention-smb-service
+
+Type: subfile
+Multifile: etc/samba/smb.conf
 Subfile: etc/samba/smb.conf.d/21univention-samba_winbind
 
 Type: subfile
@@ -49,10 +53,6 @@ Subfile: etc/samba/smb.conf.d/61univention-samba_misc
 Type: subfile
 Multifile: etc/samba/smb.conf
 Subfile: etc/samba/smb.conf.d/71univention-samba_users
-
-Type: subfile
-Multifile: etc/samba/smb.conf
-Subfile: etc/samba/smb.conf.d/80univention-smb-service
 
 Type: subfile
 Multifile: etc/samba/smb.conf
