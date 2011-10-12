@@ -43,7 +43,9 @@ if [ -n "$cdrom_device" ]; then
 	elif [ -n "$smbfs" ]; then
 		/bin/mount -t smbfs `echo $cdrom_device | sed -e 's|smbfs:||'` /mnt
 	else
-		/bin/mount -t iso9660 $cdrom_device /mnt
+		if ! grep -q " /mnt " /proc/mounts ; then
+			/bin/mount -r -t iso9660 "$cdrom_device" /mnt 2>&1
+		fi
 	fi
 fi
 
