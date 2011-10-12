@@ -334,7 +334,7 @@ Base information of local system:
   IP address:    %(address)s
 
 
-Information about %(name)s can be found here:
+Please visit the following websites to learn more about %(name)s:
 
 - Quickstart Guide:
   http://wiki.univention.de/index.php?title=UCS_Quickstart/en
