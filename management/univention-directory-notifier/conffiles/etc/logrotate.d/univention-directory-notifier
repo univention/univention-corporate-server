@@ -1,0 +1,18 @@
+@%@UCRWARNING=# @%@
+
+@!@
+import univention.lib.ucrLogrotate
+
+name = "notifier"
+settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+
+print "/var/log/univention/%s.log {" % name
+
+for setting in settings.keys():
+	print "\t%s" % settings[setting]
+@!@
+
+	lastaction
+		test -x /usr/bin/sv && test -e /etc/runit/univention/univention-directory-notifier && sv term univention-directory-notifier || true
+	endscript
+}
