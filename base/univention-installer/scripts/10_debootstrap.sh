@@ -30,10 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# update progress message
+. /tmp/progress.lib
+echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Installing basesystem")" >&9
+
 . /tmp/installation_profile
 
-echo '__MSG__:Installing basesystem' >&9
-# number of trigger lines ==> 128*Configuring, 128*Unpacking, 65*Extracting, 127*Retrieving, 126*Validating
+# send number of trigger lines to progress process 
+# manually counted ==> 128*Configuring, 128*Unpacking, 65*Extracting, 127*Retrieving, 126*Validating
 echo '__STEPS__:574' >&9
 
 architecture=`/bin/uname -m`

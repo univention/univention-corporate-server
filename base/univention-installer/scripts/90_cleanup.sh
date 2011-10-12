@@ -30,10 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# update progress message
+. /tmp/progress.lib
+echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Performing cleanup")" >&9
+
 . /tmp/installation_profile
 
 sync
-
 
 chmod -R 700 /instmnt/root
 chmod 1777 /instmnt/tmp

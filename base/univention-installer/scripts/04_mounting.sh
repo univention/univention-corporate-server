@@ -30,9 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /tmp/installation_profile
+# update progress message
+. /tmp/progress.lib
+echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Mounting target devices")" >&9
 
-echo '__MSG__:Mounting target devices' >&9
+. /tmp/installation_profile
 
 echo -n "Mounting Partitions: " >>/instmnt/.log
 echo -n "Mounting Partitions: "

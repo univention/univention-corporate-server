@@ -30,7 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-echo '__MSG__:Installing Univention Configuration Registry' >&9
+# update progress message
+. /tmp/progress.lib
+echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Installing Univention base packages")" >&9
 
 cp /etc/univention/base.conf /instmnt/etc/univention/base.conf
 

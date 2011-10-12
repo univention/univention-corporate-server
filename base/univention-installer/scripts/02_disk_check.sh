@@ -30,9 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /tmp/installation_profile
 
-echo '__MSG__:Preparing target device' >&9
+# update progress message
+. /tmp/progress.lib
+echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Preparing target device")" >&9
+
+. /tmp/installation_profile
 
 architecture=`/bin/uname -m`
 

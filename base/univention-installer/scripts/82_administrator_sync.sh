@@ -30,6 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# update progress message
+. /tmp/progress.lib
+echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Configuring Samba4")" >&9
+
 . /tmp/installation_profile
 
 cat >>/instmnt/admin_pwd.sh <<__EOT__

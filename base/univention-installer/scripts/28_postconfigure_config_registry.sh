@@ -30,9 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /tmp/installation_profile
+# update progress message
+. /tmp/progress.lib
+echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Configuring Univention base packages")" >&9
 
-echo '__MSG__:Configuring Univention Configuration Registry' >&9
+. /tmp/installation_profile
 
 architecture=`/bin/uname -m`
 

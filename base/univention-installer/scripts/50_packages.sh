@@ -30,9 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /tmp/installation_profile
+# update progress message
+. /tmp/progress.lib
+echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Installing selected software components")" >&9
 
-echo '__MSG__:Installing selected components' >&9
+. /tmp/installation_profile
 
 default_packages="isc-dhcp-client openssh-client"
 

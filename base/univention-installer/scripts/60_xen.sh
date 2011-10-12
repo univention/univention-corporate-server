@@ -29,13 +29,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# this script is too short to display any message
-#echo '__MSG__:Installing selected components' >&9
-
-
 # Add Xen console
-if test -d /proc/xen
-then
+if test -d /proc/xen ; then
+	# update progress message
+	. /tmp/progress.lib
+    echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Configuring XEN")" >&9
+
     cat <<EOF >>/instmnt/etc/inittab
 hvc0:2345:respawn:/sbin/getty 38400 hvc0
 EOF

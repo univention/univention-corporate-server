@@ -30,9 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /tmp/installation_profile
+# update progress message
+. /tmp/progress.lib
+echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Joining system into domain")" >&9
 
-echo '__MSG__:Joining system into domain' >&9
+. /tmp/installation_profile
 
 if [ -n "$system_role" ]; then
 	export server_role="$system_role"
@@ -82,9 +84,9 @@ if [ "$server_role" != "domaincontroller_master" ] && [ -n "$domain_controller_a
 		chmod 600 \$pwd_file
 		echo "$domain_controller_password" >>\$pwd_file
 		if [ -n "$domain_controller" ]; then
-			/usr/share/univention-join/univention-join -dcname $domain_controller -dcaccount $domain_controller_account -dcpwd \$pwd_file | progress_filter
+			/usr/share/univention-join/univention-join -dcname $domain_controller -dcaccount $domain_controller_account -dcpwd \$pwd_file -simplegui | progress_filter
 		else
-			/usr/share/univention-join/univention-join -dcaccount $domain_controller_account -dcpwd \$pwd_file | progress_filter
+			/usr/share/univention-join/univention-join -dcaccount $domain_controller_account -dcpwd \$pwd_file -simplegui | progress_filter
 		fi
 	fi
 fi
