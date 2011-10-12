@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<umc version="2.0">
-  <definitions>
-  	<syntax base="String" name="Online-Query-Table">
-  		<!--  define regexp that allows query scopes -->
-  	</syntax>
-  </definitions>
-</umc>
