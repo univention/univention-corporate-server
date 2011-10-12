@@ -15,7 +15,8 @@ Depends: univention-config-registry,
  samba4,
  samba4-clients,
  ldb-tools,
- pwgen
+ pwgen,
+ python-univention-lib (>= 1.0.25-1)
 Description: UCS - Samba4 integration package
  This package contains the scripts and patches
  for integration of Samba4 into Univention Corporate Server (UCS)

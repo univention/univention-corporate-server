@@ -1,3 +1,9 @@
+univention-samba4 (1.0.59-1) unstable; urgency=low
+
+  * added logrotate configuration (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 11:40:19 +0200
+
 univention-samba4 (1.0.58-1) unstable; urgency=low
 
   * Updates on S3 / S4 mix setups (Bug #24000)
