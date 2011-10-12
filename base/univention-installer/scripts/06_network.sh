@@ -32,6 +32,8 @@
 
 . /tmp/installation_profile
 
+echo '__MSG__:Configuring network interfaces' >&9
+
 ifconfig lo 127.0.0.1 up
 
 echo

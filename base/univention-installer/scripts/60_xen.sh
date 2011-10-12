@@ -29,14 +29,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# this script is too short to display any message
+#echo '__MSG__:Installing selected components' >&9
+
+
 # Add Xen console
 if test -d /proc/xen
 then
-        cat <<EOF >>/instmnt/etc/inittab
+    cat <<EOF >>/instmnt/etc/inittab
 hvc0:2345:respawn:/sbin/getty 38400 hvc0
 EOF
 
 echo hvc0 >>/instmnt/etc/securetty
-fi 
-
-
+fi

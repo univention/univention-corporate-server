@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+echo '__MSG__:Configuring basesystem' >&9
+
 mkdir -p /instmnt/etc/apt/
 mkdir -p /instmnt/sourcedevice
 ## check for repository structure

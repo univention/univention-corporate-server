@@ -32,6 +32,8 @@
 
 . /tmp/installation_profile
 
+echo '__MSG__:Generating locales' >&9
+
 cat >>/instmnt/locales.sh <<__EOT__
 
 echo "Generating locales (this might take a while)"

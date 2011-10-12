@@ -32,6 +32,8 @@
 
 . /tmp/installation_profile
 
+echo '__MSG__:Configuring Univention Configuration Registry' >&9
+
 architecture=`/bin/uname -m`
 
 acpi_off=`grep "acpi=off" /proc/cmdline`

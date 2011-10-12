@@ -32,6 +32,8 @@
 
 . /tmp/installation_profile
 
+echo '__MSG__:Calling postinstallation hooks' >&9
+
 for i in $postinst_hook; do
 	if [ -e "/instmnt/sourcedevice/script/$i" ]; then
 		mkdir -p /instmnt/etc/univention/postinst

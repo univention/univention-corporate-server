@@ -32,6 +32,8 @@
 
 . /tmp/installation_profile
 
+echo '__MSG__:Mounting source device' >&9
+
 if [ -n "$cdrom_device" ]; then
 	nfs=`echo $cdrom_device | grep "nfs:"`
 	smbfs=`echo $cdrom_device | grep "smbfs:"`

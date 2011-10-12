@@ -32,6 +32,8 @@
 
 . /tmp/installation_profile
 
+echo '__MSG__:Preparing target device' >&9
+
 architecture=`/bin/uname -m`
 
 # Usage: resolve_symlink file

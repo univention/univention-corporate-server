@@ -32,6 +32,7 @@
 
 . /tmp/installation_profile
 
+echo '__MSG__:Installing kernel and bootloader' >&9
 
 PIPE="yes yes '' |"
 

@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+echo '__MSG__:Installing Univention Configuration Registry' >&9
+
 cp /etc/univention/base.conf /instmnt/etc/univention/base.conf
 
 PIPE="yes yes '' |"

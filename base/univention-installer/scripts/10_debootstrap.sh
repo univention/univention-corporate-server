@@ -32,6 +32,10 @@
 
 . /tmp/installation_profile
 
+echo '__MSG__:Installing basesystem' >&9
+# number of trigger lines ==> 128*Configuring, 128*Unpacking, 65*Extracting, 127*Retrieving, 126*Validating
+echo '__STEPS__:574' >&9
+
 architecture=`/bin/uname -m`
 
 if [ -n "$cdrom_device" ]; then

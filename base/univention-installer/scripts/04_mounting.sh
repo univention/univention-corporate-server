@@ -32,6 +32,8 @@
 
 . /tmp/installation_profile
 
+echo '__MSG__:Mounting target devices' >&9
+
 echo -n "Mounting Partitions: " >>/instmnt/.log
 echo -n "Mounting Partitions: "
 

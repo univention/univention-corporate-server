@@ -32,6 +32,8 @@
 
 . /tmp/installation_profile
 
+echo '__MSG__:Configuring online repository' >&9
+
 if [ -n "$system_role" ]; then
 	export server_role="$system_role"
 fi

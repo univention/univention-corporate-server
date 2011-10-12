@@ -40,6 +40,8 @@ cat >>/instmnt/ldap.sh <<__EOT__
 
 
 if [ "$server_role" = "domaincontroller_master" ]; then
+    echo '__MSG__:Configuring LDAP' >&9
+
 	eval "\$(univention-config-registry shell)"
 
 	echo "Create User Administrator"

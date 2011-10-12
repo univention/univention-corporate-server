@@ -32,6 +32,8 @@
 
 . /tmp/installation_profile
 
+echo '__MSG__:Installing selected components' >&9
+
 default_packages="isc-dhcp-client openssh-client"
 
 if [ -n "$system_role" ]; then

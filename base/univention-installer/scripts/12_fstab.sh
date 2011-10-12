@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+echo '__MSG__:Configuring basesystem' >&9
+
 architecture=`/bin/uname -m`
 
 cat >/instmnt/etc/fstab <<__EOT__
