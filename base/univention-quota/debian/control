@@ -30,7 +30,8 @@ Description: UCS - set default-quotas for users
 
 Package: univention-management-console-module-quota
 Architecture: all
-Depends: univention-management-console-server
+Depends: univention-management-console-server,
+ python-univention-lib (>= 1.0.30-1)
 Description: UMC module for filesystem quota
  This package contains the UMC module for the filesystem quota
  .
