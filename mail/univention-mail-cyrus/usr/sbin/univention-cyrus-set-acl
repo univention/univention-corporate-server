@@ -39,7 +39,7 @@ def cyrescape(address):
 	address=address.replace(".","\^")
 	return address.strip()
 def usage():
-	print 'usage: univention-cyrus-set-acl [-o] <shared folder> <email> <permission>'
+	print 'usage: univention-cyrus-set-acl <shared folder> <email> <permission>'
 	sys.exit(1)
 
 import smtplib
@@ -52,10 +52,6 @@ baseConfig.load()
 cyrus_user='cyrus'
 hostname='localhost'
 
-outlook = False
-if len( sys.argv ) > 3 and sys.argv[ 1 ] == '-o':
-	outlook = True
-	sys.argv.remove( '-o' )
 if len(sys.argv) == 4 and sys.argv[1]:
 	shared_name=sys.argv[1].lower()
 	email=sys.argv[2].lower()
@@ -87,12 +83,7 @@ while not i == 3:
 	if i == 0:
 		child.sendline(password)
 	elif i == 1:
-		if not outlook:
-			child.sendline('sam shared/%s %s %s' % (shared_name, email, permission))
-		else:
-			name = shared_name.split( '@', 1 )[ 0 ].split('/', 1)[ 0 ]
-			child.sendline( 'sam user/%s/%s %s %s' % ( name, shared_name, email, permission ) )
-
+		child.sendline('sam shared/%s %s %s' % (shared_name, email, permission))
 		child.sendline('disc')
 		child.sendline('exit')
 	elif i == 2:

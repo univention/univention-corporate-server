@@ -74,24 +74,21 @@ def cyrescape(address):	# only necessary for filesystem level operations
 	return address.strip()
 
 def usage():
-	print 'usage: %s [-ov] [--partition=, --prefix=, --user, --shared] <mailbox> <new mailboxname>' % sys.argv[0].split('/')[-1]
+	print 'usage: %s [-v] [--partition=, --prefix=, --user, --shared] <mailbox> <new mailboxname>' % sys.argv[0].split('/')[-1]
 	sys.exit(1)
 
 try:
-	opts, args = getopt.getopt(sys.argv[1:], "ov", ["outlook", "partition=", "prefix=", "user", "shared"])
+	opts, args = getopt.getopt(sys.argv[1:], "v", ["partition=", "prefix=", "user", "shared"])
 except getopt.GetoptError, err:
 	# print help information and exit:
 	print str(err) # will print something like "option -a not recognized"
 	usage()
-outlook = False
 partition = None
 prefix = 'shared'	# default
 verbose = 0
 for key, val in opts:
 	if key == "-v":
 		verbose += 1
-	elif key in ("-o", "--outlook"):
-		outlook = True
 	elif key in ("--partition"):
 		partition = val
 	elif key in ("--shared"):
@@ -177,27 +174,10 @@ if prefix == 'user':
 
 # create cyradm script
 cmd_list=[]
-if not outlook:
-	if not partition:
-		cmd_list.append('renamemailbox %s/%s %s/%s' % (prefix, src, prefix, dst))
-	else:
-		cmd_list.append('renamemailbox %s/%s %s/%s %s' % (prefix, src, prefix, dst, partition))
+if not partition:
+	cmd_list.append('renamemailbox %s/%s %s/%s' % (prefix, src, prefix, dst))
 else:
-	if prefix == 'shared':
-		srcname = src.split( '@', 1 )[ 0 ]
-		dstname = dst.split( '@', 1 )[ 0 ]
-		if not partition:
-			cmd_list.append('cm user/%s\n' % dst)
-			cmd_list.append('renamemailbox user/%s/%s user/%s/%s' % ( srcname, src, dstname, dst ))
-		else:
-			cmd_list.append('renamemailbox user/%s/%s user/%s/%s %s' % ( srcname, src, dstname, dst, partition ))
-		cmd_list.append('sam user/%s cyrus cd' % src )
-		cmd_list.append('dm user/%s' % src )
-	else:
-		if not partition:
-			cmd_list.append('renamemailbox %s/%s %s/%s' % (prefix, src, prefix, dst))
-		else:
-			cmd_list.append('renamemailbox %s/%s %s/%s %s' % (prefix, src, prefix, dst, partition))
+	cmd_list.append('renamemailbox %s/%s %s/%s %s' % (prefix, src, prefix, dst, partition))
 cmd_list.append('disc')
 cmd_list.append('exit')
 script='\n'.join(cmd_list)

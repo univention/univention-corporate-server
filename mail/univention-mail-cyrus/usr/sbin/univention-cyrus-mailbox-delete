@@ -42,24 +42,21 @@ def cyrescape(address):	# only necessary for filesystem level operations
 	return address.strip()
 
 def usage():
-	print 'usage: %s [-ov] [--user, --shared] <mailbox>' % sys.argv[0].split('/')[-1]
+	print 'usage: %s [-v] [--user, --shared] <mailbox>' % sys.argv[0].split('/')[-1]
 	sys.exit(1)
 
 try:
-	opts, args = getopt.getopt(sys.argv[1:], "ov", ["outlook", "user", "shared"])
+	opts, args = getopt.getopt(sys.argv[1:], "v", ["user", "shared"])
 except getopt.GetoptError, err:
 	# print help information and exit:
 	print str(err) # will print something like "option -a not recognized"
 	usage()
-outlook = False
 partition = None
 prefix = 'shared'	# default
 verbose = 0
 for key, val in opts:
 	if key == "-v":
 		verbose += 1
-	elif key in ("-o", "--outlook"):
-		outlook = True
 	elif key in ("--partition"):
 		partition = val
 	elif key in ("--shared"):
@@ -98,22 +95,8 @@ if partition and partition != 'default' and not configRegistry.get('mail/cyrus/m
 	sys.exit(1)
 
 cmd_list=[]
-if not outlook:
-	cmd_list.append('sam %s/%s cyrus cd' % (prefix, dst))
-	cmd_list.append('dm %s/%s' % (prefix, dst))
-else:
-	if prefix == 'shared':
-		name = dst.split( '@', 1 )[ 0 ].split( '/', 1 )[ 0 ]
-		domain = dst.split( '@', 1)[ 1 ]
-		cmd_list.append( 'sam user/%s/%s cyrus cd' % ( name, dst ) )
-		cmd_list.append( 'dm user/%s/%s' % ( name, dst ) )
-		# do not delete user/foo if folder user/foo/foo/bar is deleted
-		if not '/' in dst.split( '@', 1 )[ 0 ]:
-			cmd_list.append( 'sam user/%s@%s cyrus cd' % (name, domain) )
-			cmd_list.append( 'dm user/%s@%s' % (name, domain) )
-	else:
-		cmd_list.append('sam %s/%s cyrus cd' % (prefix, dst))
-		cmd_list.append('dm %s/%s' % (prefix, dst))
+cmd_list.append('sam %s/%s cyrus cd' % (prefix, dst))
+cmd_list.append('dm %s/%s' % (prefix, dst))
 cmd_list.append('disc')
 cmd_list.append('exit')
 script='\n'.join(cmd_list)

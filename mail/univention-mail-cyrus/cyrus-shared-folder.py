@@ -71,18 +71,11 @@ def handler(dn, new, old, command):
 	except:
 		pass
 
-	# is this a outlook compatible folder?
-	if ( new and new.has_key("univentionMailUserNamespace") and new[ 'univentionMailUserNamespace' ][ 0 ] == 'TRUE' ) or \
-			( old and old.has_key("univentionMailUserNamespace") and old[ 'univentionMailUserNamespace' ][ 0 ] == 'TRUE' ):
-		outlook = '-o'
-	else:
-		outlook = ''
-
 	# Done as function because it is called quite often
 	def setacl(mailbox, email, policy):
 		try:
 			listener.setuid(0)
-			p = os.popen( '/usr/sbin/univention-cyrus-set-acl %s %s \'%s\' %s' % ( outlook, mailbox, email, policy ) )
+			p = os.popen( '/usr/sbin/univention-cyrus-set-acl %s \'%s\' %s' % ( mailbox, email, policy ) )
 			p.close()
 			listener.unsetuid()
 		except:
@@ -91,7 +84,7 @@ def handler(dn, new, old, command):
 	def setquota(mailbox, quota):
 		try:
 			listener.setuid(0)
-			p = os.popen('/usr/sbin/univention-cyrus-set-quota-shared %s %s %s' % ( outlook, mailbox, quota ) )
+			p = os.popen('/usr/sbin/univention-cyrus-set-quota-shared %s %s' % ( mailbox, quota ) )
 			p.close()
 			listener.unsetuid()
 		except:
@@ -140,10 +133,10 @@ def handler(dn, new, old, command):
 				name = '"%s"' % new['cn'][0]
 
 				if not old_dn:
-					p = os.popen( '/usr/sbin/univention-cyrus-mkdir-shared %s %s' % (outlook, name) )
+					p = os.popen( '/usr/sbin/univention-cyrus-mkdir-shared  %s' % name) )
 					p.close()
 				else:
-					p = os.popen( '/usr/sbin/univention-cyrus-rename-mailbox %s %s %s' % (outlook, old_dn, name) )
+					p = os.popen( '/usr/sbin/univention-cyrus-rename-mailbox %s %s' % (old_dn, name) )
 					p.close()
 
 				anyone_acl_set = False
@@ -187,7 +180,7 @@ def handler(dn, new, old, command):
 		try:
 			listener.setuid(0)
 			name = '"%s"' % old['cn'][0]
-			p = os.popen( '/usr/sbin/univention-cyrus-delete-folder %s %s' % (outlook, name) )
+			p = os.popen( '/usr/sbin/univention-cyrus-delete-folder %s' % name )
 			p.close()
 
 			listener.unsetuid()

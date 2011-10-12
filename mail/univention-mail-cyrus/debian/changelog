@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.18-1) unstable; urgency=low
+
+  * removed outlook prefix stuff (Bug #24020) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 14:55:20 +0200
+
 univention-mail-cyrus (4.0.17-1) unstable; urgency=low
 
   * replaced old ldap att acl with univentionMailACL (Bug #23560) 

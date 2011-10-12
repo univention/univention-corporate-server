@@ -39,7 +39,7 @@ def cyrescape(address):
 	address=address.replace(".","\^")
 	return address.strip()
 def usage():
-	print 'usage: univention-cyrus-dump-acl [-o] <FOLDER>'
+	print 'usage: univention-cyrus-dump-acl <FOLDER>'
 	sys.exit(1)
 
 import smtplib
@@ -54,10 +54,6 @@ baseConfig.load()
 cyrus_user='cyrus'
 hostname='localhost'
 
-outlook = False
-if len( sys.argv ) > 2 and sys.argv[ 1 ] == '-o':
-	outlook = True
-	sys.argv.remove( '-o' )
 if len(sys.argv) == 2 and sys.argv[1]:
 	shared_name=sys.argv[1].lower()
 else:
@@ -82,11 +78,7 @@ while not i == 3:
 	elif i == 1:
 		if a == 0:
 			a+=1
-			if not outlook:
-				child.sendline('lam shared/%s' % shared_name)
-			else:
-				name = shared_name.split( '@', 1 )[ 0 ]
-				child.sendline( 'lam user/%s/%s' % ( name, shared_name ) )
+			child.sendline('lam shared/%s' % shared_name)
 			child.expect('>')
 			data = child.before.split('\r\n')
 			# Remove first and last element (no content), then  sort

@@ -39,7 +39,7 @@ def cyrescape(address):
 	address=address.replace(".","\^")
 	return address.strip()
 def usage():
-	print 'usage: univention-cyrus-rename-mailbox [-o] <SHARED FOLDER OLD> <SHARED FOLDER NEW>'
+	print 'usage: univention-cyrus-rename-mailbox <SHARED FOLDER OLD> <SHARED FOLDER NEW>'
 	sys.exit(1)
 
 import smtplib
@@ -54,10 +54,6 @@ baseConfig.load()
 cyrus_user='cyrus'
 hostname='localhost'
 
-outlook = False
-if len( sys.argv ) > 3 and sys.argv[ 1 ] == '-o':
-	outlook = True
-	sys.argv.remove( '-o' )
 if len(sys.argv) == 3 and sys.argv[1]:
 	src=sys.argv[1].lower()
 	dst=sys.argv[2].lower()
@@ -81,17 +77,8 @@ while not i == 3:
 	if i == 0:
 		child.sendline(password)
 	elif i == 1:
-		if not outlook:
-			print 'renamemailbox shared/%s shared/%s' % (src, dst)
-			child.sendline('renamemailbox shared/%s shared/%s' % (src, dst))
-		else:
-			srcname = src.split( '@', 1 )[ 0 ]
-			dstname = dst.split( '@', 1 )[ 0 ]
-			child.sendline( 'cm user/%s' % dst )
-			child.sendline( 'renamemailbox user/%s/%s user/%s/%s' % ( srcname, src, dstname, dst ) )
-			child.sendline( 'sam user/%s cyrus cd' % src )
-			child.sendline( 'dm user/%s' % src )
-
+		print 'renamemailbox shared/%s shared/%s' % (src, dst)
+		child.sendline('renamemailbox shared/%s shared/%s' % (src, dst))
 		child.sendline('disc')
 		child.sendline('exit')
 	elif i == 2:
