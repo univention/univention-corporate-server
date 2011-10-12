@@ -483,6 +483,21 @@ Information about %(name)s can be found here:
 	def call_installer_scripts(self):
 		IGNORE_LIST = [ '00_scripts.sh', '95_completemsg.sh', '99_reboot.sh' ]
 
+		# regenerate locale: 05_language.py wrote locale to /etc/locale.gen
+		self.call_cmd('/sbin/locale-gen 2>&1 >> /tmp/installer.log', shell=True)
+
+		# /etc/locale.gen should contain a string like "de_DE.UTF-8 UTF-8"
+		locale = open('/etc/locale.gen','r').read().strip()
+		if ' ' in locale:
+			locale = locale.split(' ',1)[0]
+
+		# write small helper to /tmp/
+		fd = open('/tmp/progress.lib','w')
+		fd.write('export INSTALLERLOCALE=%s\n' % locale)
+		fd.write('export TEXTDOMAIN="installer"\n')
+		fd.write('export TEXTDOMAINDIR="/lib/univention-installer/locale"\n')
+		fd.close()
+
 		# get list of scripts to be called
 		scripts = [ os.path.join('/lib/univention-installer-scripts.d/', x) for x in os.listdir('/lib/univention-installer-scripts.d/') if x not in IGNORE_LIST ]
 		scripts.sort()
