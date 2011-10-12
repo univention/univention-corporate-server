@@ -1,3 +1,10 @@
+univention-updater (7.0.42-1) unstable; urgency=low
+
+  * merged univention-management-console-module-online into univention-updater
+    as univention-management-console-module-updater (Bug #22898)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Oct 2011 12:46:46 +0200
+
 univention-updater (7.0.41-2) unstable; urgency=low
 
   * fixed logrotate configuration (Bug #18002) 

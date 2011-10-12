@@ -43,6 +43,7 @@ IMAGES:=$(shell find images -name '*.gif' -o -name '*.png')
 	msgfmt --check -o $@ $<
 
 override_dh_auto_build: $(MO_FILES)
+	dh-umc-module-build
 	dh_auto_build
 
 override_dh_install:
@@ -55,6 +56,7 @@ override_dh_install:
 	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-updater/usr/sbin/univention-repository-addpackage
 
 override_dh_auto_install:
+	dh-umc-module-install
 	univention-install-config-registry
 	set -e;\
 	for i in $(IMAGES); do\

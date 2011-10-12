@@ -15,3 +15,15 @@ Description: UCS - system upgrading tool
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-management-console-module-updater
+Architecture: all
+Depends: univention-management-console-server,
+ univention-updater (= ${source:Version})
+Description: UMC module for Univention updater
+ This package contains the UMC module for the Univention updater.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
