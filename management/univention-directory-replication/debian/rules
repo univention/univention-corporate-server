@@ -36,6 +36,7 @@ override_dh_auto_test:
 	dh_auto_test
 
 override_dh_install:
+	univention-install-config-registry
 	dh_install
 	copyrightyear=`date +%Y`
 	sed -i "s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-directory-replication/usr/sbin/univention-directory-replication-resync

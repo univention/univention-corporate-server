@@ -1,3 +1,9 @@
+univention-directory-replication (5.0.4-1) unstable; urgency=low
+
+  * added logrotate configuration (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 09:27:08 +0200
+
 univention-directory-replication (5.0.3-1) unstable; urgency=low
 
   * use port 7389 as default for ldap/server/port (Bug #23231)

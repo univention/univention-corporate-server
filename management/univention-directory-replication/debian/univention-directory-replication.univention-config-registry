@@ -1,0 +1,3 @@
+Type: file
+File: etc/logrotate.d/univention-directory-replication
+Variables: logrotate/.*
