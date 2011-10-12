@@ -146,7 +146,7 @@ class ProgressDialog(object):
 		# during installation, logfile changes from installer.log to /instmnt/.../installation.log
 		self.logfile = '/tmp/installer.log'
 		self.width = MAX_WIDTH
-		self.height = 8
+		self.height = 9
 		self.inbuffer = ''
 		self.redraw_blocked = False
 		self.progress = 0   # progress starts at 0%
@@ -155,6 +155,8 @@ class ProgressDialog(object):
 		self.default_percentage = 0.5
 		self.current_script = None
 		self.profile = {}
+		self.win = None
+		self.infowin = None
 		self.script2progress = { '10_debootstrap.sh': ProgressInfo( percentage=4, steps=1, triggerlist = [ re.compile('^I: (Configuring|Unpacking|Extracting|Retrieving|Validating) ') ] ),
 								 '25_install_config_registry.sh': ProgressInfo( percentage=4, steps=1, triggerlist = [ re.compile('^pmstatus:[^:]+:[.\d]+:(?:Installing|Unpacking|Installed) [^ ]+$'),
 																													   re.compile('^pmstatus:[^:]+:[.\d]+:[^ ]+ (?:wird installiert|wird entpackt|installiert)$') ] ),
@@ -214,6 +216,13 @@ class ProgressDialog(object):
 		self.width = MAX_WIDTH
 		x = 0
 		y = (MAX_HEIGHT - self.height) / 2
+
+		curses.start_color()
+		if curses.can_change_color():
+			# init_color(color_number, r, g, b)
+			curses.init_color(7, 960 , 930 , 910)
+			curses.init_color(1, 816 , 0 , 204)
+			curses.init_color(3, 816 , 0 , 204)
 
 		curses.noecho()
 		curses.curs_set(0)
@@ -391,7 +400,7 @@ Please visit the following websites to learn more about %(name)s:
 		self.win.addstr(4, 3+barlength+1, '%.1f%%' % self.progress , curses.color_pair(1))
 
 		# draw progress message
-		self.win.addstr(5, 3, self.progress_msg.ljust(barlength), curses.color_pair(1))
+		self.win.addstr(6, 3, self.progress_msg.ljust(barlength), curses.color_pair(1))
 
 		self.win.refresh()
 
