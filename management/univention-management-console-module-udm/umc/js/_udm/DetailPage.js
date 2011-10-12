@@ -235,6 +235,12 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			});
 		}
 
+		// make sure that the widget use the flavored umcpCommand
+		dojo.forEach( properties, function( iprop ) {
+			iprop.umcpCommand = this.umcpCommand;
+		}, this );
+
+
 		// render all widgets
 		var widgets = umc.render.widgets( properties );
 
@@ -406,6 +412,11 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 							newProperties.push(jprop);
 						}
 					}, this);
+
+					// make sure that the widget use the flavored umcpCommand
+					dojo.forEach( newProperties, function( iprop ) {
+						iprop.umcpCommand = this.umcpCommand;
+					}, this );
 
 					// render the group of properties
 					var widgets = umc.render.widgets(newProperties);

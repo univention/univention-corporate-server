@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.162-1) unstable; urgency=low
+
+  * ensure that all umcpCommand define a flavor; Bug #23494
+  * adapt join script to new UMC UDM modules for access right management
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 12 Oct 2011 19:26:45 +0200
+
 univention-management-console-module-udm (1.0.161-1) unstable; urgency=low
 
   * properties with a syntax class based on UDM_Objects may be displayed

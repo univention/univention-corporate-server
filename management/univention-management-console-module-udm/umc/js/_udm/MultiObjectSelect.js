@@ -17,13 +17,15 @@ dojo.declare("umc.modules._udm.MultiObjectSelect", [ umc.widgets.MultiObjectSele
 
 	autoSearch: true,
 
+	umcpCommand: umc.tools.umcpCommand,
+
 	queryWidgets: [],
 
 	queryOptions: {},
 
 	queryCommand: function(options) {
 		// return a dojo.Deferred
-		return umc.tools.umcpCommand('udm/query', options).then(function(data) {
+		return this.umcpCommand('udm/query', options).then(function(data) {
 			// transform query to array with id-label-dict entries
 			return dojo.map(data.result, function(iobj) {
 				return {
@@ -67,7 +69,7 @@ dojo.declare("umc.modules._udm.MultiObjectSelect", [ umc.widgets.MultiObjectSele
 			description: this._( 'The object property on which the query is filtered.' ),
 			label: this._( 'Object property' ),
 			dynamicValues: 'udm/properties',
-			dynamicOptions: { searchable: true },
+			dynamicOptions: { searchable: true, objectType : this.objectType },
 			umcpCommand: dojo.hitch(this, 'umcpCommand'),
 			value: autoObjProperty, //TODO
 			onChange: dojo.hitch(this, function(newVal) {
@@ -91,12 +93,13 @@ dojo.declare("umc.modules._udm.MultiObjectSelect", [ umc.widgets.MultiObjectSele
 			description: this._( 'The value for the specified object property on which the query is filtered.' ),
 			label: this._( 'Property value' ),
 			dynamicValues: 'udm/values',
+			dynamicOptions: { objectType : this.objectType },
 			umcpCommand: dojo.hitch(this, 'umcpCommand'),
 			depends: [ 'objectProperty' ]
 		}];
 	},
 
-	umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor ) {
-		return umc.tools.umcpCommand( commandStr, dataObj, handleErrors, flavor || this.objectType );
-	}
+	// _umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor ) {
+	// 	return umc.tools.umcpCommand( commandStr, dataObj, handleErrors, this.objectType );
+	// }
 });
