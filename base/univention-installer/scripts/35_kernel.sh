@@ -31,26 +31,9 @@
 # <http://www.gnu.org/licenses/>.
 
 . /tmp/installation_profile
-architecture=`/bin/uname -m`
-if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-	architecture="powerpc"
-fi
+
 
 PIPE="yes yes '' |"
-
-cat >>/instmnt/install_initrd.sh <<__EOT__
-
-export DEBIAN_FRONTEND=noninteractive
-
-apt-get -y -o APT::Get::AllowUnauthenticated=1 install initrd-tools
-$PIPE dpkg --configure -a
-
-__EOT__
-
-if [ "$architecture" != "powerpc" ]; then
-	chmod +x /instmnt/install_initrd.sh
-	chroot /instmnt ./install_initrd.sh
-fi
 
 #loaded_modules=`cat /proc/modules | awk '{print $1}' | grep -v ^Module`
 #loaded_modules=$(echo $loaded_modules | sed -e 's| |;|g')
@@ -91,17 +74,16 @@ else
 			kernel_package="univention-kernel-image${kernel_extension}-${boot_version}"
 			fallback_kernel_package="univention-kernel-image-2.6.18"
 		fi
-			
+
 	fi
 fi
 
 # install xen kernel on xen virtualization server
 boot_version=`uname -r | awk -F"-" '{print $1}'`
-echo $packages | grep -qi univention-virtual-machine-manager-node-xen
+echo "$packages" | grep -qi univention-virtual-machine-manager-node-xen
 if [ 0 -eq $? ]; then
 	xen_kernel="univention-kernel-image-${boot_version}-xen"
-fi 
-	
+fi
 
 cat >>/instmnt/install_kernel.sh <<__EOT__
 
@@ -111,11 +93,7 @@ if [ -n "$modules" ]; then
 	univention-config-registry set kernel/modules="$modules"
 fi
 
-if [ "$architecture" = "powerpc" ]; then
-	apt-get -y -o APT::Get::AllowUnauthenticated=1 install initramfs-tools parted
-else
-	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-initrd
-fi
+apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install univention-initrd
 
 apt-get -y -o APT::Get::AllowUnauthenticated=1 install $kernel_package
 if [ "\$?" != "0" ]; then
@@ -129,23 +107,6 @@ if [ -n "$xen_kernel" ]; then
 fi
 
 univention-config-registry commit
-
-if [ "$architecture" = "powerpc" ]; then
-	#TODO read PreP partition from profile
-	for disk in vda vdb vdc vdd; do
-		prep=\`parted --script /dev/iseries/\$disk p 2>/dev/null | grep "prep"\`;
-		if [ -n "\$prep" ]; then
-			prep_partition="/dev/iseries/\$disk\`echo \$prep | awk '{print \$1}'\`";
-			break
-		fi
-	done
-
-	if [ -n "\$prep_partition" ]; then
-		dd if=/vmlinux of="\$prep_partition"
-	else
-		echo "Warning: no PreP Partition found"
-	fi
-fi
 
 __EOT__
 
