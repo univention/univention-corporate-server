@@ -85,11 +85,11 @@ excludes="pcmcia-cs libpcre3-udeb udev-udeb libc6-udeb rsyslog"
 includes="postfix"
 # Installing univention base system
 if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-	debootstrap --arch powerpc --include="$includes" --keep-debootstrap-dir --exclude="$excludes" univention /instmnt/ $repo_dir
+	debootstrap --arch powerpc --include="$includes" --keep-debootstrap-dir --exclude="$excludes" univention /instmnt/ $repo_dir 2>&1 | tee /proc/$$/fd/9
 elif [ "$architecture" = "x86_64" ]; then
-	debootstrap --arch amd64   --include="$includes" --keep-debootstrap-dir --exclude="$excludes" univention /instmnt/ $repo_dir
+	debootstrap --arch amd64   --include="$includes" --keep-debootstrap-dir --exclude="$excludes" univention /instmnt/ $repo_dir 2>&1 | tee /proc/$$/fd/9
 else
-	debootstrap --arch i386    --include="$includes" --keep-debootstrap-dir --exclude="$excludes" univention /instmnt/ $repo_dir
+	debootstrap --arch i386    --include="$includes" --keep-debootstrap-dir --exclude="$excludes" univention /instmnt/ $repo_dir 2>&1 | tee /proc/$$/fd/9
 fi
 
 gzip /instmnt/debootstrap/debootstrap.log
