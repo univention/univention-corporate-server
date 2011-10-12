@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -39,9 +39,8 @@ VERSION=1
 joinscript_init
 
 umc_init
-umc_operation_create "updater" "Online Update" "updater/*"
-umc_acl_create "updater-all" "Online Update" "All operations" "updater/*"
-umc_policy_append "default-admin" "updater-all"
+umc_operation_create "updater-all" "Online Update" "" "updater/*"
+umc_policy_append "default-umc-all" "updater-all"
 
 joinscript_save_current_version
 

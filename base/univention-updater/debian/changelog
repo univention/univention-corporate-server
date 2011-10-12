@@ -1,3 +1,9 @@
+univention-updater (7.0.43-1) unstable; urgency=low
+
+  * adapt join script to new UMC UDM modules for access right management; Bug #23494
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 12 Oct 2011 19:32:17 +0200
+
 univention-updater (7.0.42-2) unstable; urgency=low
 
   * added build dependency to univention-management-console-dev (Bug #22898)
