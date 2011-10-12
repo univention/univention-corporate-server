@@ -9,7 +9,8 @@ Architecture: any
 Depends: ${shlibs:Depends},
  shell-univention-lib (>= 1.0.6),
  univention-runit,
- univention-ssl
+ univention-ssl,
+ python-univention-lib (>= 1.0.25-1)
 Conflicts: univention-ldap-notifier (<<2.2.1)
 Description: UCS - Directory Notifier
  Univention Directory Notifier propagates changes on the LDAP

@@ -6,3 +6,7 @@ Variables: notifier/replog/sleep
 Variables: notifier/cache/size
 Variables: notifier/lock/count
 Variables: notifier/lock/time
+
+Type: file
+File: etc/logrotate.d/univention-directory-notifier
+Variables: logrotate/.*
