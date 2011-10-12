@@ -32,7 +32,7 @@
 
 . /tmp/installation_profile
 
-default_packages="dhcp-client openssh-client"
+default_packages="isc-dhcp-client openssh-client"
 
 if [ -n "$system_role" ]; then
 	export server_role="$system_role"
