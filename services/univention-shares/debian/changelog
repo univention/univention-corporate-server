@@ -1,3 +1,9 @@
+univention-shares (5.0.1-1) unstable; urgency=low
+
+  * added logrotate configuration (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 11:44:59 +0200
+
 univention-shares (5.0.0-3) unstable; urgency=low
 
   * Add dh override to install the listener module with
