@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -39,10 +39,9 @@ VERSION=1
 joinscript_init
 
 umc_init
-umc_operation_create "ucr" "UCR" "ucr/*" "ucr/get" "ucr/set" "ucr/query"
-umc_acl_create "ucr-all" "UCR" "All operations" "ucr*"
-umc_acl_create "ucr-query" "UCR" "Searching and displaying details" "ucr/query" "ucr/get"
-umc_policy_append "default-admin" "ucr-all"
+umc_operation_create "ucr-all" "UCR management" "" "ucr/*"
+umc_operation_create "ucr-read" "UCR read-only access" "" "ucr/query"
+umc_policy_append "default-umc-all" "ucr-all"
 
 joinscript_save_current_version
 

@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (1.0.26-1) unstable; urgency=low
+
+  * adapt join script to new UMC UDM modules for access right management; Bug #23494
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 12 Oct 2011 19:34:48 +0200
+
 univention-management-console-module-ucr (1.0.25-1) unstable; urgency=low
 
   * changed icon sizes in overview to 50x50, removed 24x24, 32x32, 64x64
