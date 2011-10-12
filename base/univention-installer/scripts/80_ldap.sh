@@ -40,7 +40,7 @@ cat >>/instmnt/ldap.sh <<__EOT__
 
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	eval \`univention-config-registry shell\`
+	eval "\$(univention-config-registry shell)"
 
 	echo "Create User Administrator"
 	# mailPrimaryAddress is required on ox systems
