@@ -89,21 +89,25 @@ cat >>/instmnt/install_kernel.sh <<__EOT__
 
 export DEBIAN_FRONTEND=noninteractive
 
+echo "PROGRESS: $0: Calculating number of packages"
+PKGCNT="\$(apt-get -y -o APT::Get::AllowUnauthenticated=1 install -s -y --ignore-missing univention-initrd \$kernel_package \$xen_kernel univention-grub | grep "^Inst " | wc -l)"
+echo "__STEPS__:\$((\$PKGCNT * 3))" >&9
+
 if [ -n "$modules" ]; then
 	univention-config-registry set kernel/modules="$modules"
 fi
 
 apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install univention-initrd
 
-apt-get -y -o APT::Get::AllowUnauthenticated=1 install $kernel_package
+apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install $kernel_package
 if [ "\$?" != "0" ]; then
 	if [ -n "$fallback_kernel_package" ]; then
-		apt-get -y -o APT::Get::AllowUnauthenticated=1 install $fallback_kernel_package
+		apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install $fallback_kernel_package
 	fi
 fi
 
 if [ -n "$xen_kernel" ]; then
-	apt-get -y -o APT::Get::AllowUnauthenticated=1 install $xen_kernel
+	apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install $xen_kernel
 fi
 
 univention-config-registry commit
@@ -119,10 +123,10 @@ export DEBIAN_FRONTEND=noninteractive
 
 mount | grep /dev/md 2>&1 1>/dev/null
 if [ 0 -eq \$? ]; then
-	apt-get -y -o APT::Get::AllowUnauthenticated=1 install mdadm
+	apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install mdadm
 fi
 
-apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-grub
+apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install univention-grub
 
 __EOT__
 
