@@ -324,6 +324,10 @@ class ProgressDialog(object):
 
 
 	def show_success_msg(self):
+		# if auto_reboot is set then do not show this message
+		if self.profile.get('auto_reboot','').lower() in ['yes', 'true']:
+			return
+
 		# disable redrawing of windows
 		self.redraw_blocked = True
 
