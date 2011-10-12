@@ -1,4 +1,10 @@
-univention-apache (5.0.2-3.1) unstable; urgency=low
+univention-apache (5.0.3-2) unstable; urgency=low
+
+  * adjusted version number in changelog, version bump (Bug #17128)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Oct 2011 14:51:35 +0200
+
+univention-apache (5.0.3-1) unstable; urgency=low
 
   * adapted mods-available/ssl.conf to allow https connections to localhost
     (Bug #17128)
