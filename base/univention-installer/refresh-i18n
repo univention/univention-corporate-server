@@ -39,16 +39,19 @@ if  [ ! -e ../univention-system-setup/usr/sbin/univention-system-setup ]; then
 fi
 
 
-xgettext -L Python -o $po.pot.tmp installer/*py installer/modules/*.py ../univention-system-setup/usr/sbin/univention-system-setup*
+xgettext -L Python -o $po.py.pot installer/*py installer/modules/*.py ../univention-system-setup/usr/sbin/univention-system-setup*
+xgettext -L Shell -o $po.sh.pot scripts/*.sh
 
-grep "Content-Type: text/plain; charset=CHARSET" $po.pot.tmp
+for fn in $po.py.pot $po.sh.pot ; do
+	if grep "Content-Type: text/plain; charset=CHARSET" $fn ; then
+		echo "Rewriting encoding information from CHARSET to UTF-8"
+		sed "s#Content-Type: text/plain; charset=CHARSET#Content-Type: text/plain; charset=UTF-8#" $fn > $fn.out
+	else
+		mv $fn $fn.out
+	fi
+done
 
-if [ $? -eq 0 ]; then
-	echo "Rewriting encoding information from CHARSET to ISO-8859-15"
-	sed "s#Content-Type: text/plain; charset=CHARSET#Content-Type: text/plain; charset=ISO-8859-15#" $po.pot.tmp > $po.pot
-else
-	mv $po.pot.tmp $po.pot
-fi
+msgcat $po.py.pot.out $po.sh.pot.out > $po.pot
 
 echo "Merging old gettext data with newly introduced strings"
 msgmerge ./installer/locale/$po/LC_MESSAGES/installer.po  $po.pot > $po.pox
@@ -59,7 +62,7 @@ read answ
 if [ -n "$EDITOR" ]; then
     $EDITOR $po.pox
 else
-	nano $po.pox
+	vim $po.pox
 fi
 
 echo "Use this entry? (Y/n)"
@@ -72,4 +75,4 @@ if [ -z "$yn" -o "$yn" = "y" ]; then
     msgfmt -o ./installer/locale/$po/LC_MESSAGES/installer.mo ./installer/locale/$po/LC_MESSAGES/installer.po
 fi
 
-rm -rf $po.pot $po.pox $po.pot
+rm -rf $po.pot $po.pot.tmp2 $po.pox.tmp $po.pox $po.pot $po.pot2
