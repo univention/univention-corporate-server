@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -39,9 +39,10 @@ VERSION=1
 joinscript_init
 
 umc_init
-umc_operation_create "join" "Join" "join/*"
-umc_acl_create "join-all" "Join" "All operations" "join/*"
-umc_policy_append "default-admin" "join-all"
+
+umc_operation_create "join-all" "Join UCS systems" "" "join/*"
+
+umc_policy_append "default-umc-all" "join-all"
 
 joinscript_save_current_version
 
