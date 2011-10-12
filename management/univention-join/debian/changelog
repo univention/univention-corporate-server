@@ -1,3 +1,9 @@
+univention-join (4.0.18-3) unstable; urgency=low
+
+  * added more logrotate configurations (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 10:10:48 +0200
+
 univention-join (4.0.18-2) unstable; urgency=low
 
   * added univention-install-config-registry to rules file (Bug #18002) 
