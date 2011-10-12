@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.120-1) unstable; urgency=low
+
+  * remove old UMC UDM modules; Bug #23494
+  * add new settings/ucm_operationset and policies/umc modules
+  * updated german translation
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 12 Oct 2011 19:04:19 +0200
+
 univention-directory-manager-modules (7.0.119-1) unstable; urgency=low
 
   * removed "univentionMailUserNamespace" from mail/folder module (Bug #24020) 

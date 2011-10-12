@@ -132,6 +132,7 @@ class complex( ISyntax ):
 	# delimiter = '='   ==> single string is used to concatenate all subitems
 	# delimiter = [ '', ': ', '=', '' ] ==> list of strings: e.g. 4 delimiter strings given to concatenate 3 subitems
 	min_elements = None
+	all_required = True
 
 	@classmethod
 	def parse(self, texts):
@@ -179,7 +180,7 @@ class complex( ISyntax ):
 						res=self.subsyntaxes[i][1]().parse(texts[i])
 					if res:
 						newTexts.append(res)
-				elif self.all_required == 1:
+				elif self.all_required == True:
 					return ''
 
 		if not newTexts:
@@ -890,7 +891,6 @@ class netmask(simple):
 
 class IP_AddressRange( complex ):
 	subsyntaxes = ( ( _( 'First Address' ), ipAddress ), ( _( 'Last Address' ), string ) )
-	all_required=1
 
 class ipProtocol(select):
 	choices=[ ( 'tcp', 'TCP' ), ('udp', 'UDP' ) ]
@@ -1198,17 +1198,22 @@ class ldapDn(simple):
 			return text
 		raise univention.admin.uexceptions.valueError,_("Not a valid LDAP DN")
 
-class UMC_ACL( UDM_Objects ):
-	udm_modules = ( 'settings/console_acl', )
-	key = 'dn'
-	label = '%(category)s (%(description)s)'
+class UMC_OperationSet( UDM_Objects ):
+	udm_modules = ( 'settings/umc_operationset', )
+	label = '%(description)s (%(name)s)'
 	simple = True
 
-class consoleOperations(simple):
-	@classmethod
-	def parse(self, text):
-		return text
+class UMC_CommandPattern( complex ):
+	subsyntaxes = ( ( _( 'Command pattern' ), string ), ( _( 'Option Pattern' ), string ) )
+	min_elements = 1
+	all_required = False # empty values are allowed
 
+class LDAP_Server( UDM_Objects ):
+	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave' )
+	label = '%(fqdn)s'
+	simple = True
+
+# FIXME old stuff
 class ldapServer(simple):
 	@classmethod
 	def parse(self, text):
