@@ -247,14 +247,9 @@ class ProgressDialog(object):
 		self.draw_info()
 
 
-	def show_success_msg(self):
-		# disable redrawing of windows
-		self.redraw_blocked = True
-
-		self.infowin.bkgd(curses.color_pair(1))
-		self.infowin.box()
-
+	def create_success_msg(self):
 		msg = []
+
 		msg.append( _('The installation has been finished successfully!') )
 		msg.append( '' )
 
@@ -294,6 +289,53 @@ class ProgressDialog(object):
 		msg.append( _('Additional information:   http://www.univention.de/en/download/documentation/') )
 		msg.append( _('Support & Knowledge Base: http://sdb.univention.de') )
 
+		return msg
+
+
+	def get_success_msg(self):
+		msg = []
+		if os.path.isfile( fn_success_msg ):
+			msg.append( _('The installation has been finished successfully!') )
+			msg.append( '' )
+			try:
+				lines = open(fn_success_msg,'r').readlines()
+				for line in lines:
+					msg.append( line.rstrip('\r\n\t ') )
+			except:
+				pass
+		return msg
+
+
+	def get_error_msg(self):
+		msg = []
+		# does error message exist?
+		if os.path.isfile( fn_error_msg ):
+			msg.append( _('Some problems occurred during installation!') )
+			msg.append( _('Please read the following error messages carefully.') )
+			msg.append( _('In case of doubt a reinstallation might be reasonable.') )
+			msg.append( '' )
+			try:
+				lines = open(fn_error_msg,'r').readlines()
+				for line in lines:
+					msg.append( line.rstrip('\r\n\t ') )
+			except:
+				pass
+		return msg
+
+
+	def show_success_msg(self):
+		# disable redrawing of windows
+		self.redraw_blocked = True
+
+		self.infowin.bkgd(curses.color_pair(1))
+		self.infowin.box()
+
+		msg = self.get_error_msg()
+		if not msg:
+			msg = self.get_success_msg()
+		if not msg:
+			msg = self.create_success_msg()
+
 		max_width = 0
 		for line in msg:
 			if len(line) > max_width:
@@ -301,13 +343,20 @@ class ProgressDialog(object):
 		width = max_width + 4
 		height = len(msg) + 6
 
+		# limit width and height
+		if width >= MAX_WIDTH:
+			width = MAX_WIDTH-2
+		if height >= MAX_HEIGHT:
+			height = MAX_HEIGHT-2
+			msg = msg[:height-6]    # also limit msg list
+
 		self.endwin = curses.newwin(height, width, (MAX_HEIGHT - height) / 2, (MAX_WIDTH - width) / 2)
 		self.endwin.clear()
 		self.endwin.bkgd(curses.color_pair(1))
 		self.endwin.box()
 		y = 2
 		for line in msg:
-			self.endwin.addstr(y, 2, line, curses.color_pair(1))
+			self.endwin.addnstr(y, 2, line, width-4, curses.color_pair(1))
 			y += 1
 		self.endwin.addstr(height - 3, width / 2 - 3,"[ OK ]", curses.color_pair(3))
 		self.endwin.refresh()
