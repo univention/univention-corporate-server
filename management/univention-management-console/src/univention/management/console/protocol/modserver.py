@@ -209,7 +209,7 @@ class ModuleServer( Server ):
 		if msg.arguments:
 			cmd = msg.arguments[ 0 ]
 			cmd_obj = self.command_get( cmd )
-			if cmd_obj and ( not self.__check_acls or self.__acls.is_command_allowed( cmd, options = msg.options ) ):
+			if cmd_obj and ( not self.__check_acls or self.__acls.is_command_allowed( cmd, options = msg.options, flavor = msg.flavor ) ):
 				self.__active_requests += 1
 				self.__handler.execute( cmd_obj.method, msg )
 				if not self.__active_requests and self.__timer == None:

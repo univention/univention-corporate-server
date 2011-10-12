@@ -114,10 +114,10 @@ class Base( signals.Provider, Translation ):
 		if request.id in self.__requests:
 			del self.__requests[ request.id ]
 
-	def permitted( self, command, options ):
+	def permitted( self, command, options, flavor = None ):
 		if not self.__acls:
 			return False
-		return self.__acls.is_command_allowed( command, options = options )
+		return self.__acls.is_command_allowed( command, options = options, flavor = flavor )
 
 	def finished( self, id, response, message = None, success = True ):
 		"""Should be invoked by module to finish the processing of a

@@ -174,6 +174,18 @@ class MagicBucket( object ):
 		elif msg.command == 'AUTH':
 			state.authResponse = Response( msg )
 			state.authenticate( msg.body[ 'username' ],	msg.body[ 'password' ] )
+		elif msg.command == 'GET' and 'ucr' in msg.arguments:
+			response = Response( msg )
+			response.result = {}
+			for value in msg.options:
+				if value[ -1 ] == '*':
+					value = value[ : -1 ]
+					for var in filter( lambda x: x.startswith( value ), ucr.keys() ):
+						response.result[ var ] = ucr.get( var )
+				else:
+					response.result[ value ] = ucr.get( value )
+			response.status = SUCCESS
+			self._response( response, state )
 		elif msg.command == 'STATISTICS':
 			response = Response( msg )
 			try:

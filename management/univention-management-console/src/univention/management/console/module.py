@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import copy
 import os
 import sys
 import xml.parsers.expat
@@ -166,7 +167,7 @@ class XML_Definition( ET.ElementTree ):
 		return None
 
 	def get_command( self, name ):
-		'''Rtrieves details of a command'''
+		'''Retrieves details of a command'''
 		for command in self.findall( 'module/command' ):
 			if command.get( 'name' ) == name:
 				cmd = Command( name, command.get( 'function' ) )
@@ -207,7 +208,7 @@ class Manager( dict ):
 
 	def permitted_commands( self, hostname, acls ):
 		'''Retrieves a list of all modules and commands available
-		according to the ACLs (instance of ConsoleACLs)
+		according to the ACLs (instance of LDAP_ACLs)
 
 		{ id : Module, ... }
 		'''
@@ -215,12 +216,21 @@ class Manager( dict ):
 		modules = {}
 		for module_id in self:
 			mod = self[ module_id ].get_module()
-			for command in self[ module_id ].commands():
-				if acls.is_command_allowed( command, hostname ):
-					if not module_id in modules:
-						modules[ module_id ] = mod
-					cmd = self[ module_id ].get_command( command )
-					modules[ module_id ].commands.append( cmd )
+			for flavor in copy.copy( mod.flavors ):
+				at_least_one_command = False
+				for command in self[ module_id ].commands():
+					if acls.is_command_allowed( command, hostname, flavor = flavor.id ):
+						if not module_id in modules:
+							modules[ module_id ] = mod
+						cmd = self[ module_id ].get_command( command )
+						if not cmd in modules[ module_id ].commands:
+							modules[ module_id ].commands.append( cmd )
+						at_least_one_command = True
+
+				# if there is not one command allowed with this flavor
+				# it should not be shown in the overview
+				if not at_least_one_command:
+					mod.flavors.remove( flavor )
 
 		return modules
 

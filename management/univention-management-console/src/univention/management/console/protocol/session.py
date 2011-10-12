@@ -55,7 +55,7 @@ from .definitions import *
 from ..resources import moduleManager, syntaxManager, categoryManager
 from ..verify import SyntaxVerificationError
 from ..auth import AuthHandler
-from ..acl import ConsoleACLs
+from ..acl import LDAP_ACLs
 from ..log import CORE
 from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, ucr
 from ..locales import I18N, I18N_Manager
@@ -174,7 +174,7 @@ class Processor( signals.Provider ):
 			self.lo = None
 
 		# read the ACLs
-		self.acls = ConsoleACLs( self.lo, self.__username, ucr[ 'ldap/base' ] )
+		self.acls = LDAP_ACLs( self.lo, self.__username, ucr[ 'ldap/base' ] )
 		self.__command_list = moduleManager.permitted_commands( ucr[ 'hostname' ], self.acls )
 
 		self.signal_new( 'response' )
@@ -331,9 +331,9 @@ class Processor( signals.Provider ):
 	def handle_request_command( self, msg ):
 		module_name = self.__is_command_known( msg )
 		if module_name and msg.arguments:
-			if not self.acls.is_command_allowed( msg.arguments[ 0 ], options = msg.options ):
+			if not self.acls.is_command_allowed( msg.arguments[ 0 ], options = msg.options, flavor = msg.flavor ):
 				response = Response( msg )
-				response.status = BAD_REQUEST_NOT_ALLOWED
+				response.status = BAD_REQUEST_FORBIDDEN
 				response.message = status_description( response.status )
 				self.signal_emit( 'response', response )
 				return

@@ -36,9 +36,11 @@ import os
 from optparse import OptionParser
 import sys
 
+from univention.management.console.acl import Rule
+
 import univention.config_registry as ucr
 
-OPERATIONS = ( 'show', 'reset', 'allow', 'disallow', 'remove' )
+OPERATIONS = ( 'show', 'reset', 'allow', 'remove' )
 _cache_dir = '/var/cache/univention-management-console/acls'
 
 configRegistry = ucr.ConfigRegistry()
@@ -66,37 +68,47 @@ if not operation in OPERATIONS:
 	sys.exit( 1 )
 
 filename = os.path.join( _cache_dir, options.user )
-if os.path.isfile( filename ) and operation in ( 'show', 'allow', 'disallow', 'remove' ):
+if os.path.isfile( filename ) and operation in ( 'show', 'allow', 'remove' ):
 	try:
 		fd = open( filename )
 		acls = cPickle.load( fd )
 		print 'loaded pickle file', filename
 	except:
-		acls = { 'allow' : [], 'disallow' : [] }
+		acls = []
 	finally:
 		fd.close()
 else:
-	acls = { 'allow' : [], 'disallow' : [] }
+	acls = []
+
+# convert old format
+new_acls = []
+if isinstance( acls, dict ):
+	for rule in acls[ 'allow' ]:
+		rule = Rule( rule )
+		if not rule in new_acls:
+			new_acls.append( rule )
+else: # check for duplicates
+	for rule in acls:
+		rule = Rule( rule )
+		if not rule in new_acls:
+			new_acls.append( rule )
+acls = new_acls
 
 if operation == 'show':
 	print 'Username: %s' % options.user
-	print '  Allowed:'
-	for acl in acls[ 'allow' ]:
-		print '     Host: %-10s Command: %-15s Options: %s' % ( acl[ 'host' ], acl[ 'command' ], acl[ 'options' ] )
-	print '  Disallowed:'
-	for acl in acls[ 'disallow' ]:
-		print '     Host: %-10s Command: %-15s Options: %s' % ( acl[ 'host' ], acl[ 'command' ], acl[ 'options' ] )
+	for acl in acls:
+		print '     Host: %-10s Command: %-15s Flavor: %-14s Options: %s' % ( acl.host, acl.command, acl.flavor, str( acl.options ) )
 	sys.exit( 0 )
-elif operation in ( 'allow', 'disallow' ):
+elif operation == 'allow':
 	for command in options.commands:
-		rule = { 'fromUser': False, 'host': options.host, 'command': command, 'options': {} }
-		if not rule in acls[ operation ]:
-			acls[ operation ].append( rule )
+		rule = Rule( { 'fromUser': False, 'host': options.host, 'command': command } )
+		if not rule in acls:
+			acls.append( rule )
 			print 'info: rule %s appended' % command
 		else:
 			print 'warning: rule %s already exists' % command
 elif operation == 'remove':
-	acls[ 'allow' ] = filter( lambda item: item.get( 'command' ) not in options.commands,  acls[ 'allow' ] )
+	acls = filter( lambda item: item.command not in options.commands,  acls )
 elif operation == 'reset':
 	pass # nothing todo as the acls dict is already "reset" and will be written in the next step
 
