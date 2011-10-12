@@ -35,7 +35,7 @@ eval $(/usr/sbin/univention-config-registry shell hostname samba4/sysvol/sync/ho
 SYSVOL_PATH='/var/lib/samba/sysvol'
 SYSVOL_SYNCDIR='/var/cache/univention-samba4/sysvol-sync'
 
-SYSVOL_SDDL=$(samba-tool acl nt get --as-sddl  /var/lib/samba/sysvol 2>/dev/null)
+SYSVOL_SDDL=$(samba-tool ntacl get --as-sddl  /var/lib/samba/sysvol 2>/dev/null)
 if [ $? != 0 ]; then
 	SYSVOL_SDDL=''
 fi
@@ -49,7 +49,7 @@ fi
 ## merge updates pushed to us by other s4DCs
 for importdir in $(find "${SYSVOL_SYNCDIR}" -mindepth 1 -maxdepth 1 -type d); do
 	## these directories were written by a non-privileged account, so the xattrs are missing
-	samba-tool acl nt set "$SYSVOL_SDDL" "$importdir" > /dev/null 2>&1
+	samba-tool ntacl set "$SYSVOL_SDDL" "$importdir" > /dev/null 2>&1
 	rsync -auAX "$importdir"/ "$SYSVOL_PATH"
 done
 

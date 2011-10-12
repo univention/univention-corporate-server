@@ -1,3 +1,9 @@
+univention-samba4 (1.0.60-2) unstable; urgency=low
+
+  * adjust scripts/sysvol-sync.sh call to new samba-tool api (Bug #22865)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 12 Oct 2011 15:28:40 +0200
+
 univention-samba4 (1.0.60-1) unstable; urgency=low
 
   * configure samba4/service/smb?'smbd' (Bug #22865)
