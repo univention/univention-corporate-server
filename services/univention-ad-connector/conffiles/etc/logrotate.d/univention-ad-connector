@@ -16,7 +16,7 @@ for setting in settings.keys():
 @!@
 import univention.lib.ucrLogrotate
 
-name = "ad-connector-certificate.log"
+name = "ad-connector-certificate"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 
 print "/var/log/univention/%s.log {" % name
