@@ -3,3 +3,7 @@ File: etc/pam.d/univention-management-console
 Variables: auth/methods
 Variables: auth/passwdcache/max_user
 Variables: auth/passwdcache
+
+Type: file
+File: etc/logrotate.d/univention-management-console
+Variables: logrotate/.*
