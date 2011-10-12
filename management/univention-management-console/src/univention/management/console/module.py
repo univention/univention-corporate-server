@@ -216,7 +216,11 @@ class Manager( dict ):
 		modules = {}
 		for module_id in self:
 			mod = self[ module_id ].get_module()
-			for flavor in copy.copy( mod.flavors ):
+			if not mod.flavors:
+				flavors = [ Flavor( id = None ) ]
+			else:
+				flavors = copy.copy( mod.flavors )
+			for flavor in flavors:
 				at_least_one_command = False
 				for command in self[ module_id ].commands():
 					if acls.is_command_allowed( command, hostname, flavor = flavor.id ):
@@ -229,7 +233,7 @@ class Manager( dict ):
 
 				# if there is not one command allowed with this flavor
 				# it should not be shown in the overview
-				if not at_least_one_command:
+				if not at_least_one_command and mod.flavors:
 					mod.flavors.remove( flavor )
 
 		return modules

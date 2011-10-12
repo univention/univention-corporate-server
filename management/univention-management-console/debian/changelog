@@ -1,3 +1,10 @@
+univention-management-console (4.0.67-1) unstable; urgency=low
+
+  * fix handling of UMC modules without flavors when evaluating
+    permissions of the user; Bug #23494
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 12 Oct 2011 20:23:41 +0200
+
 univention-management-console (4.0.66-1) unstable; urgency=low
 
   * support new UMC UDM modules to set permissions for users and groups; Bug #23494
