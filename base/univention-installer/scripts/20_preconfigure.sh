@@ -94,8 +94,8 @@ shadowconfig on
 if [ -n "$root_password_crypted" ]; then
 	usermod -p "$root_password_crypted" root
 else
-	# usermod -p `mkpasswd $root_password` root
-	usermod -p '`mkpasswd -H md5 $root_password`' root
+	# usermod -p `mkpasswd "$root_password"` root
+	usermod -p '`mkpasswd -H md5 "$root_password"`' root
 fi
 
 export DEBIAN_FRONTEND=noninteractive
