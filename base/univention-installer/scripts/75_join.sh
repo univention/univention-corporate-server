@@ -43,6 +43,12 @@ sync
 
 cat >>/instmnt/join.sh <<__EOT__
 
+progress_filter () {
+	# this pipe redirects stdout to read stdout (/proc/\$\$/fd/1) and modifys a copy
+	# of stdout via sed and pushes the result to filedescriptor 9
+	tee /proc/\$\$/fd/1 | sed -e 's/^Configure /__JOINSCRIPT__ /' >&9
+}
+
 if [ -d /var/lib/univention-ldap/ldap ]; then
 	rm -f /var/lib/univention-ldap/ldap/*
 fi
@@ -66,13 +72,17 @@ if [ "$server_role" != "domaincontroller_master" ] && [ -n "$domain_controller_a
 		fi
 	fi
 	if [ -z "$auto_join" ] || [ "$auto_join" != "FALSE" -a "$auto_join" != "false" -a "$auto_join" != "False" ]; then
+		# send number of join scripts to progress dialog
+		CNT="\$(ls -1 /usr/lib/univention-install/*.inst | wc -l)"
+		echo "__STEPS__:\$CNT" >&9
+
 		pwd_file=\`mktemp\`
 		chmod 600 \$pwd_file
 		echo "$domain_controller_password" >>\$pwd_file
 		if [ -n "$domain_controller" ]; then
-			/usr/share/univention-join/univention-join -dcname $domain_controller -dcaccount $domain_controller_account -dcpwd \$pwd_file
+			/usr/share/univention-join/univention-join -dcname $domain_controller -dcaccount $domain_controller_account -dcpwd \$pwd_file | progress_filter
 		else
-			/usr/share/univention-join/univention-join -dcaccount $domain_controller_account -dcpwd \$pwd_file
+			/usr/share/univention-join/univention-join -dcaccount $domain_controller_account -dcpwd \$pwd_file | progress_filter
 		fi
 	fi
 fi
