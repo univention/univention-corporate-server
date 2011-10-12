@@ -1,3 +1,9 @@
+univention-lib (1.0.30-1) unstable; urgency=low
+
+  * add univention.lib.fstab formerly in univention-quota (Bug #22865)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 12 Oct 2011 13:28:08 +0200
+
 univention-lib (1.0.29-1) unstable; urgency=low
 
   * added logrotate/notifempty to ucrLogrotate helper (Bug #18002) 
