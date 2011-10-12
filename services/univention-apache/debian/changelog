@@ -1,3 +1,10 @@
+univention-apache (5.0.2-3.1) unstable; urgency=low
+
+  * adapted mods-available/ssl.conf to allow https connections to localhost
+    (Bug #17128)
+
+ -- Lukas Walter <lwalter@mammut.knut.univention.de>  Wed, 12 Oct 2011 11:26:39 +0200
+
 univention-apache (5.0.2-3) unstable; urgency=low
 
   * adapted install destinations (Bug #22669)
