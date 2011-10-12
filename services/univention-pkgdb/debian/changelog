@@ -1,3 +1,9 @@
+univention-pkgdb (5.0.6-1) unstable; urgency=low
+
+  * added logrotate configuration (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 10:56:00 +0200
+
 univention-pkgdb (5.0.5-1) unstable; urgency=low
 
   * Removed dependency to eth0 (Bug #10825)

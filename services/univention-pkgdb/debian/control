@@ -11,7 +11,8 @@ Pre-Depends: univention-postgresql (>= 2.0.1-5)
 Depends: univention-config-registry,
  postgresql-client,
  univention-pkgdb-tools,
- shell-univention-lib (>= 1.0.23)
+ shell-univention-lib (>= 1.0.23),
+ python-univention-lib (>= 1.0.25-1)
 Description: UCS - PkgDB
  This package contains server-side-components for the Univention package database.
  .
