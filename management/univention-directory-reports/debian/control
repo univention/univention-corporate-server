@@ -12,7 +12,8 @@ Depends: python-univention-directory-reports,
  texlive,
  texlive-latex-recommended,
  texlive-latex-extra,
- texlive-lang-german
+ texlive-lang-german,
+ python-univention-lib (>= 1.0.25-1)
 Description: Creates reports about Univention Admin objects
  Univention Report Generator creates reports in PDF format using
  LaTex template files that contain a special template syntax to

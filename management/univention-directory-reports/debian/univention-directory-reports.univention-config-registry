@@ -16,3 +16,7 @@ Variables: directory/reports/logo
 
 Type: file
 File: etc/univention/directory/reports/default/de_DE/footer.tex
+
+Type: file
+File: etc/logrotate.d/univention-directory-reports
+Variables: logrotate/.*
