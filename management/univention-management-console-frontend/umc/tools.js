@@ -509,17 +509,8 @@ dojo.mixin(umc.tools, {
 		//		Returns a dojo.Deferred that expects a callback to which is passed
 		//		a dict of variable name -> value entries.
 
-		return this.umcpCommand('ucr/query', {
-		 	filter: query,
-			category: 'all',
-			key: 'key'
-		}).then(function(data) {
-			// fetch all resulting variable into a dict
-			var dict = {};
-			dojo.forEach(data.result, function(i) {
-				dict[i.key] = i.value;
-			});
-			return dict;
+		return this.umcpCommand('get/ucr', dojo.isArray( query ) ? query : [ query ] ).then(function(data) {
+			return data.result;
 		});
 	},
 

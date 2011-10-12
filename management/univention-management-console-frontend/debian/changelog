@@ -1,3 +1,13 @@
+univention-management-console-frontend (1.0.91-1) unstable; urgency=low
+
+  * UMC web server: pass on options for GET command; Bug #23494
+  * use new UMCP GET ucr command for reading UCR variables
+  * remove debug messages
+  * MultiObjectSelect: ensure the umcpCommand is called with the correct
+    context; this require for the UDM modules that overrides the function
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 12 Oct 2011 19:23:13 +0200
+
 univention-management-console-frontend (1.0.90-2) unstable; urgency=low
 
   * moved hash generation into postinst of the frontend (Bug #22881)

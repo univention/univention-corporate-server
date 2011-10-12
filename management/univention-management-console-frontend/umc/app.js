@@ -354,10 +354,10 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			'class': 'umcHeaderButton'
 		});
 		headerRight.addChild(hostInfo);
-		umc.tools.umcpCommand('ucr/get', [ 'domainname', 'hostname' ]).
+		umc.tools.umcpCommand('get/ucr', [ 'domainname', 'hostname' ]).
 			then(dojo.hitch(this, function(data) {
-				this.domainname = data.result[0].value;
-				this.hostname = data.result[1].value;
+				this.domainname = data.result.domainname;
+				this.hostname = data.result.hostname;
 				hostInfo.set('label', this._('Host: %(host)s.%(domain)s', {
 					domain: this.domainname,
 					host: this.hostname

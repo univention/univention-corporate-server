@@ -25,6 +25,8 @@ dojo.declare("umc.widgets.ComplexInput", umc.widgets.ContainerWidget, {
 
 	_order: null,
 
+	umcpCommand: umc.tools.umcpCommand,
+
 	buildRendering: function() {
 		this.inherited(arguments);
 
@@ -38,7 +40,8 @@ dojo.declare("umc.widgets.ComplexInput", umc.widgets.ContainerWidget, {
 				disabled: this.disabled,
 				name: iname,
 				value: '',
-				dynamicValues: widget.dynamicValues
+				dynamicValues: widget.dynamicValues,
+				umcpCommand: this.umcpCommand
 			}));
 
 			// add the name of the widget to the list of widget names

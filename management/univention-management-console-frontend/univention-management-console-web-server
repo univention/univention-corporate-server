@@ -315,7 +315,7 @@ class CPGet(CPgeneric):
 			self._log('error', 'get_request: args is empty')
 			raise cherrypy.HTTPError(404)
 
-		req = umcp.Request( 'GET', arguments = [ args ] )
+		req = umcp.Request( 'GET', arguments = [ args ], options = json.get( 'options', {} ) )
 
 		return req
 

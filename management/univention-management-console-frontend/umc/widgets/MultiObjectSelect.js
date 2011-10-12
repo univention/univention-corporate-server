@@ -80,7 +80,7 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 					// dialog does not exist, create a new one
 					this._detailDialog = new umc.widgets._MultiObjectSelectDetailDialog({
 						widgets: this.queryWidgets,
-						queryCommand: this.queryCommand,
+						queryCommand: dojo.hitch( this, 'queryCommand' ),
 						queryOptions: this.queryOptions || {},
 						autoSearch: this.autoSearch
 					});

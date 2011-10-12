@@ -65,7 +65,6 @@ dojo.declare("umc.widgets.WidgetGroup", umc.widgets.ContainerWidget, {
 
 	// provide 'onChange' method stub in case it does not exist yet
 	onChange: function( newValue, widgetName ) {
-		console.log( 'INFO: WidgetGroup: onChange ' + newValue );
 		// event stub
 	}
 
