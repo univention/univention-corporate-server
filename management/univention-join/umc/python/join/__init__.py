@@ -459,7 +459,7 @@ class Instance(umcm.Base):
 				# Clean up temp files
 				for f in [self._tempscript, self._tempfile, self._passfile ]:
 					if path.exists(f):
-						MODULE.warn(_("Removing temp file: %s" % f))
+						MODULE.warn("Removing temp file: %s" % f)
 						unlink(f)
 			# true if running, false if not.
 			return (self._process != None)
