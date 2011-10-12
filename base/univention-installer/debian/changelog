@@ -1,3 +1,19 @@
+univention-installer (7.0.101-1) unstable; urgency=low
+
+  * added new python script progress.py for displaying progress 
+    dialog (Bug #3796)
+  * disable kernel messages on tty
+  * mount cdrom_device read-only and only once
+  * fixed broken quoting - otherwise interactive prompt appears if
+    root_password is missing
+  * redirect output of debootstrap / apt-get to progress dialog via
+    filedescriptor 9
+  * removed old powerpc architecture stuff
+  * initrd-tools does not exist in squeeze
+  * dhcp-client does not exist any longer - install isc-dhcp-client
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 12 Oct 2011 11:10:35 +0200
+
 univention-installer (7.0.100-1) unstable; urgency=low
 
   * Update the S3 / S4 warnings (Bug #24000)
