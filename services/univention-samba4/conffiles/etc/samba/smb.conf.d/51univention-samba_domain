@@ -1,9 +1,6 @@
-
-	; domain
 @!@
+print '\t; domain service lookup related settings'
 if configRegistry['samba4/role'] == 'MEMBER':
-	print '\tsecurity = ads'
-
 	print '\tpreferred master = no'
 	print '\tlocal master = no'
 else:

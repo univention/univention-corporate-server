@@ -1,13 +1,16 @@
 @!@
-if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
+if configRegistry.get('samba4/service/smb', 'smbd'):
+	print '; ---------------------<smb service configuration>-----------------------'
+
+	if configRegistry['samba4/role'] != 'MEMBER':	## otherwise it's already set in 10global
+		print '\tsecurity = ads'
+
 	print '''
-; ---------------------<80univention-smb-service>------------------------
 	debug hirestimestamp = yes
 	debug pid = yes
 
 	dcerpc endpoint servers = -unixinfo -rpcecho -spoolss -winreg -wkssvc -srvsvc
 
-	security = ads
 	domain logons = yes
 	passdb backend = samba4
 	auth methods = guest samba4
@@ -35,13 +38,11 @@ if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 	rpc_daemon:epmd = disabled
 	rpc_daemon:lsasd = disabled
 
-	rpc_server:tcpip = no
-
-[IPC$]
-	vfs objects = dfs_samba4'''
+	rpc_server:tcpip = no'''
 
 elif configRegistry.get('samba4/service/smb', 'smbd') == 's4':
 	if configRegistry.get('samba4/ntacl/backend', 'native') == 'tdb':
 		print '\tposix:eadb = /var/lib/samba/private/samba4_eadb.tdb'
 
+print '; ---------------------</smb service configuration>----------------------'
 @!@

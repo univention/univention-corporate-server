@@ -1,4 +1,5 @@
 @!@
+print '\t; miscellaneous settings, mostly for file services'
 print '\toplocks = %s' % configRegistry.get('samba/oplocks', 'yes')
 print '\tlarge readwrite = %s' % configRegistry.get('samba/large_readwrite', 'yes')
 print '\tread raw = %s' % configRegistry.get('samba/read_raw', 'yes')
