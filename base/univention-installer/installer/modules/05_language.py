@@ -186,6 +186,12 @@ class object(content):
 		# set language
 		os.environ['LANGUAGE'] = "%s" % language
 
+		# write default_locale to /etc/locale.gen in installer ramdisk
+		# ==> required for translated installation progress dialog
+		fp = open('/etc/locale.gen', 'w')
+		fp.write("%s UTF-8\n" % defaultLocale)
+		fp.close()
+
 		# this is needed for the installation end message
 		fp = open('/tmp/language', 'w')
 		fp.write("%s" % language)
