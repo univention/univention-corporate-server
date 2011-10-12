@@ -142,9 +142,9 @@ if configRegistry.get('ldap/replog', '').lower() in ('true', 'yes'):
 @!@
 uris=['ldapi:///']
 for p in configRegistry.get('slapd/port', '7389').split(','):
-	uris.append('ldap://0.0.0.0:%s/' % p)
+	uris.append('ldap://:%s/' % p)
 for p in configRegistry.get('slapd/port/ldaps', '7636').split(','):
-	uris.append('ldaps://0.0.0.0:%s/' % p)
+	uris.append('ldaps://:%s/' % p)
 print '\turis="%s"' % ' '.join(uris)
 if configRegistry.get('ldap/maxopenfiles'):
 	print '\t\tulimit -n %s' % configRegistry['ldap/maxopenfiles']

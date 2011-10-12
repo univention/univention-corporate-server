@@ -1,3 +1,9 @@
+univention-ldap (8.0.41-1) unstable; urgency=low
+
+  * Listen on ipv4 and ipv6 interfaces (Bug #23942)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 Oct 2011 10:35:03 +0200
+
 univention-ldap (8.0.40-1) unstable; urgency=low
 
   * Removed dependency to eth0 (Bug #10825)
