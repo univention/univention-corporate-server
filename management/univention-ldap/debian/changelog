@@ -1,3 +1,9 @@
+univention-ldap (8.0.42-1) unstable; urgency=low
+
+  * add attributes and object classes for new UMC UDM modules; Bug #23494
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 12 Oct 2011 19:01:22 +0200
+
 univention-ldap (8.0.41-1) unstable; urgency=low
 
   * Listen on ipv4 and ipv6 interfaces (Bug #23942)

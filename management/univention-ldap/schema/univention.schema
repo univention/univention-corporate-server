@@ -346,3 +346,34 @@ objectclass ( 1.3.6.1.4.1.10176.60 NAME 'univentionSambaPrivileges'
 	SUP top AUXILIARY
 	MAY ( univentionSambaPrivilegeList )
 	DESC 'Samba Privileges' )
+
+# new UMC operation object (UCS 3.0)
+attributetype ( 1.3.6.1.4.1.10176.1000.307.1.1
+			  NAME 'umcOperationSetCommand'
+			  DESC 'List of UMC command names and patterns'
+			  EQUALITY caseExactMatch
+			  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.307.1.2
+			  NAME 'umcOperationSetFlavor'
+			  DESC 'Flavor of the UMC module'
+			  EQUALITY caseExactMatch
+			  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.307.1.3
+			  NAME 'umcOperationSetHost'
+			  DESC 'List of host or host group'
+			  EQUALITY caseExactMatch
+			  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.307.1.4
+			  NAME 'umcOperationSetBase'
+			  DESC 'LDAP base used for finding hosts'
+			  EQUALITY caseExactMatch
+			  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+objectclass ( 1.3.6.1.4.1.10176.1000.307.2.1
+			  NAME 'umcOperationSet'
+			  DESC 'Defines a set of UMC operations'
+			  MUST ( cn $ description )
+			  MAY ( umcOperationSetCommand $ umcOperationSetFlavor $ umcOperationSetHost $ umcOperationSetBase ) )
