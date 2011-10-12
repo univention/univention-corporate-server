@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  ucslint,
  python-support,
  python-all,
- univention-config-dev
+ univention-config-dev,
  univention-management-console-dev
 XS-Python-Version: all
 
