@@ -172,3 +172,8 @@ File: etc/default/samba
 
 Type: file
 File: etc/logrotate.d/samba
+Variables: logrotate/.*
+
+Type: file
+File: etc/logrotate.d/univention-samba
+Variables: logrotate/.*

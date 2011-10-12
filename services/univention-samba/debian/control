@@ -20,7 +20,8 @@ Depends: univention-config-registry (>= 0.07),
  univention-samba-local-config,
  python-tdb,
  samba-common-bin,
- shell-univention-lib (>= 1.0.6)
+ shell-univention-lib (>= 1.0.6),
+ python-univention-lib (>= 1.0.25-1)
 Description: UCS - Samba domain controller
  This package contains the configuration for the Samba
  domain controller. It provides authentication, file and
