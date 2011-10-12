@@ -1,4 +1,4 @@
-ource: univention-log-collector
+Source: univention-log-collector
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
