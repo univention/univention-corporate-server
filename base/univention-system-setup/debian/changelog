@@ -1,19 +1,26 @@
+univention-system-setup (5.0.9-2) unstable; urgency=low
+
+  * added missing build dependency to univention-management-console-dev
+    (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Oct 2011 16:51:33 +0200
+
 univention-system-setup (5.0.9-1) unstable; urgency=low
 
-  * integrated univention-management-console-module-setup into 
+  * integrated univention-management-console-module-setup into
     univention-system-setup (Bug #22904)
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Oct 2011 16:37:16 +0200
 
 univention-system-setup (5.0.8-2) unstable; urgency=low
 
-  * added ucr config (Bug #18002) 
+  * added ucr config (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 16:48:52 +0200
 
 univention-system-setup (5.0.8-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 16:41:34 +0200
 
