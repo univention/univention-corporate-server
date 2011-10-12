@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.19-1) unstable; urgency=low
+
+  * fixed acl modification in cyrus-shared-folder (Bug #24034)
+
+ -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 16:45:42 +0200
+
 univention-mail-cyrus (4.0.18-1) unstable; urgency=low
 
   * removed outlook prefix stuff (Bug #24020) 

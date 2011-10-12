@@ -133,7 +133,7 @@ def handler(dn, new, old, command):
 				name = '"%s"' % new['cn'][0]
 
 				if not old_dn:
-					p = os.popen( '/usr/sbin/univention-cyrus-mkdir-shared  %s' % name) )
+					p = os.popen( '/usr/sbin/univention-cyrus-mkdir-shared  %s' % name )
 					p.close()
 				else:
 					p = os.popen( '/usr/sbin/univention-cyrus-rename-mailbox %s %s' % (old_dn, name) )
@@ -215,6 +215,7 @@ def handler(dn, new, old, command):
 		if new.has_key('univentionMailACL'):
 			for entry in new['univentionMailACL']:
 				(email, policy) = split_acl_entry(entry)
+				policy = getpolicy(policy)
 				policy = fix_anyone_acl(new, email, policy)
 				curacl[email]=policy
 
