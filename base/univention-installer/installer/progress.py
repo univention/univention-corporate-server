@@ -579,6 +579,8 @@ Information about %(name)s can be found here:
 
 		os.write(self.fd_write, '__MSG__:%s\n' % _('Preparing reboot'))
 		time.sleep(1)
+		self.stdscr.clear()
+		self.stdscr.refresh()
 		self.call_cmd(['/lib/univention-installer-scripts.d/99_reboot.sh'])
 
 
