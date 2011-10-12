@@ -45,7 +45,8 @@ Package: univention-ad-connector
 Architecture: all
 Depends: univention-config-registry,
  python-univention-connector-ad (= ${binary:Version}),
- shell-univention-lib (>= 1.0.6)
+ shell-univention-lib (>= 1.0.6),
+ python-univention-lib (>= 1.0.25-1)
 Recommends: univention-nagios-ad-connector
 Description: UCS - Modules for sync ucs and active directory
  This package contains the modules that implement the

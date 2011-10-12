@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.11-1) unstable; urgency=low
+
+  * added logrotate configuration (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 10:33:41 +0200
+
 univention-ad-connector (6.0.10-1) unstable; urgency=low
 
   * Set the MIME type for cert.pem and for private.key and add a comment
