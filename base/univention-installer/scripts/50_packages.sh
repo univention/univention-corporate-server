@@ -117,23 +117,40 @@ packages="$packages $default_packages"
 
 cat >>/instmnt/install_packages.sh <<__EOT__
 
+echo "PROGRESS: $0: Calculating number of packages"
+case "$server_role" in
+	domaincontroller_master) pkglist="univention-server-master" ;; 
+	domaincontroller_backup) pkglist="univention-server-backup" ;; 
+	domaincontroller_slave) pkglist="univention-server-slave" ;; 
+	memberserver) pkglist="univention-server-member" ;; 
+	managed_client) pkglist="univention-managed-client" ;; 
+	mobile_client) pkglist="univention-mobile-client" ;; 
+	basesystem) pkglist="univention-basesystem" ;; 
+	*) echo "PROGRESS: $server_role not found" ;;
+esac
+# pkglist is set within chroot environment ==> \$pkglist
+# packages is set by 50_packages.sh ==> $packages
+pkglist="\$pkglist $packages $extra_packages"
+PKGCNT="\$(apt-get -y -o APT::Get::AllowUnauthenticated=1 install -s -y --ignore-missing \$pkglist | grep "^Inst " | wc -l)"
+echo "__STEPS__:\$((\$PKGCNT * 3))" >&9
+
 
 export DEBIAN_FRONTEND=noninteractive
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-server-master --yes
+	apt-get -y -o APT::Status-FD=9 -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-server-master --yes
 elif [ "$server_role" = "domaincontroller_backup" ]; then
-	apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-server-backup --yes
+	apt-get -y -o APT::Status-FD=9 -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-server-backup --yes
 elif [ "$server_role" = "domaincontroller_slave" ]; then
-	apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-server-slave --yes
+	apt-get -y -o APT::Status-FD=9 -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-server-slave --yes
 elif [ "$server_role" = "memberserver" ]; then
-	apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-server-member --yes
+	apt-get -y -o APT::Status-FD=9 -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-server-member --yes
 elif [ "$server_role" = "managed_client" ]; then
-	apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-managed-client --yes
+	apt-get -y -o APT::Status-FD=9 -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-managed-client --yes
 elif [ "$server_role" = "mobile_client" ]; then
-	apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-mobile-client univention-network-manager --yes
+	apt-get -y -o APT::Status-FD=9 -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-mobile-client univention-network-manager --yes
 elif [ "$server_role" = "basesystem" ]; then
-	apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-basesystem --yes
+	apt-get -y -o APT::Status-FD=9 -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-basesystem --yes
 fi
 
 $PIPE dpkg --configure -a
@@ -141,20 +158,20 @@ $PIPE dpkg --configure -a
 
 if [ -n "$packages" ]; then
 	for p in $packages; do
-		apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install \$p
+		apt-get -y -o APT::Status-FD=9 -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install \$p
 		$PIPE dpkg --configure -a
 	done
 fi
 
 if [ -n "$extra_packages" ]; then
 	for p in $extra_packages; do
-		apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install \$p
+		apt-get -y -o APT::Status-FD=9 -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install \$p
 		$PIPE dpkg --configure -a
 	done
 fi
 if [ -n "$local_repository" ]; then
 	if [ "$local_repository" = "true" ] || [ "$local_repository" = "yes" ]; then
-		apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-debmirror
+		apt-get -y -o APT::Status-FD=9 -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-debmirror
 		$PIPE dpkg --configure -a
 	fi
 fi
