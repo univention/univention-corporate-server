@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.38-1) unstable; urgency=low
+
+  * added logrotate configuration (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 11:13:03 +0200
+
 univention-s4-connector (6.0.37-1) unstable; urgency=low
 
   * Removed set_uid_umlauts (Bug #23975)

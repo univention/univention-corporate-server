@@ -27,6 +27,7 @@ Package: univention-s4-connector
 Architecture: all
 Depends: python-univention-connector-s4 (= ${binary:Version}),
  shell-univention-lib (>= 1.0.6),
+ python-univention-lib (>= 1.0.25-1),
  samba4-clients,
  univention-samba4,
  univention-directory-manager-tools,
