@@ -75,7 +75,7 @@ dojo.declare("umc.modules._setup.ServerPage", [ umc.widgets.Page, umc.i18n.Mixin
 		var vals = this._form.gatherFormValues();
 		var parts = vals.fqdn.split('.');
 		vals.hostname = dojo.isString(parts[0]) ? parts[0] : '';
-		vals.domainname = parts.slice(1).join(',');
+		vals.domainname = parts.slice(1).join('.');
 		delete vals.fqdn;
 		return vals;
 	},

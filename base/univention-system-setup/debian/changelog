@@ -1,3 +1,9 @@
+univention-system-setup (5.0.10-1) unstable; urgency=low
+
+  * fixed typo when reassembling domain and hostnames (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Oct 2011 17:22:25 +0200
+
 univention-system-setup (5.0.9-3) unstable; urgency=low
 
   * typo (Bug #22904)
