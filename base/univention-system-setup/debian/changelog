@@ -1,3 +1,12 @@
+univention-system-setup (5.0.11-1) unstable; urgency=low
+
+  * fix 12domainname: (Bug #23371)
+    * fix SRV record handling
+    * fix regex to handle append-only changes
+    * remove obsolete and broken function
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 13 Oct 2011 14:31:33 +0200
+
 univention-system-setup (5.0.10-1) unstable; urgency=low
 
   * fixed typo when reassembling domain and hostnames (Bug #22904)
