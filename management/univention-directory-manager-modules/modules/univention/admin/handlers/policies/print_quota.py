@@ -37,6 +37,7 @@ import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.uexceptions
 import univention.debug
+import string
 
 translation=univention.admin.localization.translation('univention.admin.handlers.policies')
 _=translation.translate
