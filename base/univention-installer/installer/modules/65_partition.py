@@ -74,7 +74,7 @@ PARTTYPE_LVM_VG_FREE = 102
 
 # file systems
 EXPERIMENTAL_FSTYPES = ['btrfs']
-ALLOWED_BOOT_FSTYPES = ['xfs','ext2','ext3']
+ALLOWED_BOOT_FSTYPES = ['xfs','ext2','ext3','ext4']
 ALLOWED_ROOT_FSTYPES = ['xfs','ext2','ext3','ext4','btrfs']
 
 DISKLABEL_GPT = 'GPT'
