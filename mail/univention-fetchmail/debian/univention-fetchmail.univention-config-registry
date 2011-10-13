@@ -1,0 +1,3 @@
+Type: file
+File: etc/default/fetchmail
+Variables: fetchmail/enabled

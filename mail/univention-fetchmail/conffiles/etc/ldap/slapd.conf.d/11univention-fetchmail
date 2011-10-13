@@ -1,0 +1,4 @@
+@!@
+if configRegistry.get('server/role') == "domaincontroller_master":
+	print 'include		/usr/share/univention-ldap/schema/univention-fetchmail.schema'
+@!@

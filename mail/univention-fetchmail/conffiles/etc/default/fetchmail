@@ -1,0 +1,8 @@
+@%@BCWARNING=# @%@
+#
+@!@
+start_daemon = 'no'
+if configRegistry.get('fetchmail/enabled','').lower() in [ '1', 'true', 'yes' ]:
+	start_daemon = 'yes'
+print 'START_DAEMON=%s' % start_daemon
+@!@

@@ -1,0 +1,30 @@
+Source: univention-fetchmail
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends-Indep: debhelper (>> 3.0.0), univention-config-dev
+Standards-Version: 3.5.5
+
+Package: univention-fetchmail
+Architecture: all
+Depends: univention-ldap-server, fetchmail, univention-fetchmail-schema
+Description: Extenions for the User Defintion
+ This package contains additional LDAP schema
+ defining extension for fetchmail management
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-fetchmail-schema
+Architecture: all
+Depends: univention-directory-manager
+Description: Extenions for the User Defintion
+ This package contains additional LDAP schema
+ defining extension for fetchmail management
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
