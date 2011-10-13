@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.165-1) unstable; urgency=low
+
+  * removed rendering of UDM search page when an object is loaded directly
+    (Bug #23557)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Oct 2011 21:03:46 +0200
+
 univention-management-console-module-udm (1.0.164-1) unstable; urgency=low
 
   * added callback functionality and fixed focus management when opening UDM 

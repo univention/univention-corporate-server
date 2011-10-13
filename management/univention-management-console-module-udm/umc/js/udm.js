@@ -152,6 +152,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		// call superclass method
 		this.inherited(arguments);
 
+		// check whether we need to open directly the detail page of a given object
+		if (this.openObject) {
+			this.createDetailPage(this.openObject.objectType, this.openObject.objectDN, undefined, true);
+			return; // do not render the search page
+		}
+
 		if ('navigation' == this.moduleFlavor) {
 			// for the UDM navigation, we only query the UCR variables
 			umc.tools.ucr('directory/manager/web*').then(dojo.hitch(this, function(ucr) {
@@ -174,11 +180,6 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				this._ucr = umc.modules._udm.ucr = results[2][0] ? results[2][1] : {};
 				this.renderSearchPage(containers.result, superordinates.result);
 			}));
-		}
-
-		// check whether we need to open directly the detail page of a given object
-		if (this.openObject) {
-			this.createDetailPage(this.openObject.objectType, this.openObject.objectDN, undefined, true);
 		}
 	},
 
