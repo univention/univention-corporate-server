@@ -2481,16 +2481,8 @@ class nagiosHostsEnabledDn( UDM_Objects ):
 class nagiosServiceDn( UDM_Objects ):
 	udm_modules = ( 'nagios/service', )
 
-class configRegistry(simple):
-	@classmethod
-	def parse(self, text):
-		return text
-
-class configRegistryKey(simple):
-	@classmethod
-	def parse(self, text):
-		return text
-
+class UCR_Variable( complex ):
+	subsyntaxes = ( ( _( 'Variable' ), string ), ( _( 'Value' ), string ) )
 
 class LDAP_Search( select ):
 	"""Selection list from LDAP search.

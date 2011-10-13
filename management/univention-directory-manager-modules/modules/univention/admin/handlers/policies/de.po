@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-12 19:05+0200\n"
-"PO-Revision-Date: 2011-10-12 19:07+0200\n"
+"POT-Creation-Date: 2011-10-13 20:35+0200\n"
+"PO-Revision-Date: 2011-10-13 20:35+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgstr "Univention Directory Manager Container Konfiguration"
 #: dhcp_statements.py:69 ldapserver.py:65 mailquota.py:65 maintenance.py:66
 #: managedclientpackages.py:66 masterpackages.py:66 memberpackages.py:66
 #: mobileclientpackages.py:66 nfsmounts.py:65 policy.py:65 print_quota.py:68
-#: printserver.py:64 pwhistory.py:67 registry.py:65 release.py:65
+#: printserver.py:64 pwhistory.py:67 registry.py:66 release.py:65
 #: repositoryserver.py:65 repositorysync.py:66 share_userquota.py:68
 #: slavepackages.py:66 sound.py:66 thinclient.py:70 umc.py:66 xfree.py:85
 msgid "Name"
@@ -72,7 +72,7 @@ msgstr "Verfügbare Univention Directory Manager Module"
 #: dhcp_statements.py:139 ldapserver.py:85 mailquota.py:85 maintenance.py:166
 #: managedclientpackages.py:96 masterpackages.py:96 memberpackages.py:96
 #: mobileclientpackages.py:96 nfsmounts.py:85 print_quota.py:108
-#: printserver.py:84 pwhistory.py:117 registry.py:85 release.py:95
+#: printserver.py:84 pwhistory.py:117 registry.py:86 release.py:95
 #: repositoryserver.py:85 repositorysync.py:126 share_userquota.py:118
 #: slavepackages.py:96 sound.py:96 thinclient.py:130 umc.py:86 xfree.py:239
 msgid "Required object classes"
@@ -84,7 +84,7 @@ msgstr "Benötigte Objektklassen"
 #: dhcp_scope.py:138 dhcp_statements.py:149 ldapserver.py:95 mailquota.py:95
 #: maintenance.py:176 managedclientpackages.py:106 masterpackages.py:106
 #: memberpackages.py:106 mobileclientpackages.py:106 nfsmounts.py:95
-#: print_quota.py:118 printserver.py:94 pwhistory.py:127 registry.py:95
+#: print_quota.py:118 printserver.py:94 pwhistory.py:127 registry.py:96
 #: release.py:105 repositoryserver.py:95 repositorysync.py:136
 #: share_userquota.py:128 slavepackages.py:106 sound.py:106 thinclient.py:140
 #: umc.py:96 xfree.py:249
@@ -97,7 +97,7 @@ msgstr "Ausgeschlossene Objektklassen"
 #: dhcp_scope.py:148 dhcp_statements.py:159 ldapserver.py:105 mailquota.py:105
 #: maintenance.py:186 managedclientpackages.py:116 masterpackages.py:116
 #: memberpackages.py:116 mobileclientpackages.py:116 nfsmounts.py:105
-#: print_quota.py:128 printserver.py:104 pwhistory.py:137 registry.py:105
+#: print_quota.py:128 printserver.py:104 pwhistory.py:137 registry.py:106
 #: release.py:115 repositoryserver.py:105 repositorysync.py:146
 #: share_userquota.py:138 slavepackages.py:116 sound.py:116 thinclient.py:150
 #: umc.py:106 xfree.py:259
@@ -110,7 +110,7 @@ msgstr "Festgelegte Attribute"
 #: dhcp_scope.py:158 dhcp_statements.py:169 ldapserver.py:115 mailquota.py:115
 #: maintenance.py:196 managedclientpackages.py:126 masterpackages.py:126
 #: memberpackages.py:126 mobileclientpackages.py:126 nfsmounts.py:115
-#: print_quota.py:138 printserver.py:114 pwhistory.py:147 registry.py:115
+#: print_quota.py:138 printserver.py:114 pwhistory.py:147 registry.py:116
 #: release.py:125 repositoryserver.py:115 repositorysync.py:156
 #: share_userquota.py:148 slavepackages.py:126 sound.py:126 thinclient.py:160
 #: umc.py:116
@@ -122,7 +122,7 @@ msgstr "Leere Attribute"
 #: maintenance.py:208 managedclientpackages.py:138 masterpackages.py:138
 #: memberpackages.py:138 mobileclientpackages.py:138 nfsmounts.py:127
 #: policy.py:75 print_quota.py:150 printserver.py:126 pwhistory.py:159
-#: registry.py:127 release.py:137 repositoryserver.py:127
+#: registry.py:128 release.py:137 repositoryserver.py:127
 #: repositorysync.py:168 share_userquota.py:160 slavepackages.py:138
 #: sound.py:138 thinclient.py:172 umc.py:128 xfree.py:390 xfree.py:391
 msgid "General"
@@ -138,7 +138,7 @@ msgstr "Univention Directory Manager Konfiguration"
 #: dhcp_scope.py:176 dhcp_statements.py:187 ldapserver.py:131 mailquota.py:131
 #: maintenance.py:216 managedclientpackages.py:143 masterpackages.py:143
 #: memberpackages.py:143 mobileclientpackages.py:143 nfsmounts.py:131
-#: print_quota.py:155 printserver.py:130 pwhistory.py:164 registry.py:131
+#: print_quota.py:155 printserver.py:130 pwhistory.py:164 registry.py:132
 #: release.py:141 repositoryserver.py:131 repositorysync.py:174
 #: share_userquota.py:165 slavepackages.py:143 sound.py:143 thinclient.py:178
 #: umc.py:132 xfree.py:411
@@ -898,19 +898,23 @@ msgstr "Passwort-Qualitätsprüfung"
 msgid "Enables/disables password quality checks for example dictonaty entries"
 msgstr ""
 
-#: registry.py:58
+#: registry.py:48
+msgid "UCR Variables"
+msgstr "UCR-Variablen"
+
+#: registry.py:59
 msgid "Policy: Univention Configuration Registry"
 msgstr "Richtlinie: Univention Configuration Registry"
 
-#: registry.py:59
+#: registry.py:60
 msgid "Univention Configuration Registry"
 msgstr "Univention Configuration Registry"
 
-#: registry.py:75
+#: registry.py:76
 msgid "Configuration Registry"
 msgstr "Configuration Registry"
 
-#: registry.py:127
+#: registry.py:128
 msgid "These configuration settings will be set on the local UCS system."
 msgstr ""
 "Diese Konfigurationseinstellungen werden auf dem lokalen UCS-System gesetzt."

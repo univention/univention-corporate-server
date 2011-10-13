@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.123-1) unstable; urgency=low
+
+  * re-wrote UCR policy to adapt to new frontend; Bug #23700
+  * add _post_map, _post_unmap and _custom_policy_result_map to simpleLdap
+    to provide a possibility for more complex mappings
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 13 Oct 2011 20:37:27 +0200
+
 univention-directory-manager-modules (7.0.122-1) unstable; urgency=low
 
   * fixed print_quota.py, import string (Bug #21649)

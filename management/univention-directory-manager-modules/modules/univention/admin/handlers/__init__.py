@@ -457,6 +457,7 @@ class simpleLdap(base):
 		if self.oldattr:
 			self._exists = True
 			oldinfo=univention.admin.mapping.mapDict(self.mapping, self.oldattr)
+			oldinfo = self._post_unmap( oldinfo, self.oldattr )
 			if 'univentionPolicyReference' in self.oldattr.get('objectClass', []):
 				self.policies=self.oldattr.get('univentionPolicyReference', [])
 		else:
@@ -502,6 +503,16 @@ class simpleLdap(base):
 		else:
 			return 'none'
 
+	def _post_unmap( self, info, values ):
+		"""This method can be overwritten to define special un-map
+		methods that can not be done with the default mapping API"""
+		return info
+
+	def _post_map( self, modlist, diff ):
+		"""This method can be overwritten to define special map methods
+		that can not be done with the default mapping API"""
+		return modlist
+
 	def _ldap_modlist(self):
 		self.exceptions=[]
 
@@ -543,7 +554,9 @@ class simpleLdap(base):
 				# we can't modify this value during the session.
 				#self.mapping.unregister(desc)
 
-		ml=univention.admin.mapping.mapDiff(self.mapping, self.diff())
+		diff_ml = self.diff()
+		ml = univention.admin.mapping.mapDiff( self.mapping, diff_ml )
+		ml = self._post_map( ml, diff_ml )
 
 		# policies
 		if self.policies != self.oldpolicies:
@@ -2441,7 +2454,6 @@ class simplePolicy(simpleLdap):
 		if not self.resultmode:
 			return
 
-		values = {}
 		self.polinfo_more={}
 		if not self.policy_attrs:
 			if not self.referring_object_dn == self.referring_object_position_dn:
@@ -2452,11 +2464,16 @@ class simplePolicy(simpleLdap):
 				if univention.admin.objects.ocToType(policy_oc) == self.module:
 					self.policy_attrs=attrs
 
-		for attr_name, value_dict in self.policy_attrs.items():
-			values[ attr_name ] = value_dict[ 'value' ]
-			self.polinfo_more[ self.mapping.unmapName( attr_name ) ] = value_dict
+		if hasattr( self, '_custom_policy_result_map' ):
+			self._custom_policy_result_map()
+		else:
+			values = {}
+			for attr_name, value_dict in self.policy_attrs.items():
+				values[ attr_name ] = value_dict[ 'value' ]
+				self.polinfo_more[ self.mapping.unmapName( attr_name ) ] = value_dict
 
-		self.polinfo = univention.admin.mapping.mapDict( self.mapping, values )
+			self.polinfo = univention.admin.mapping.mapDict( self.mapping, values )
+			self.polinfo = self._post_unmap( self.polinfo, values )
 
 	def __getitem__(self, key):
 		if not self.resultmode:

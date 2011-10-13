@@ -183,8 +183,6 @@ class property:
 		else:
 			return None
 
-
-
 	def _replace( self, res, object ):
 		return pattern_replace( res, object )
 

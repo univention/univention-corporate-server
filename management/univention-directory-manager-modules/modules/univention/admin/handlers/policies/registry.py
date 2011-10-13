@@ -45,6 +45,7 @@ _=translation.translate
 class registryFixedAttributes(univention.admin.syntax.select):
 	name='registryFixedAttributes'
 	choices=[
+		( 'registry', _( 'UCR Variables' ) )
 		]
 
 module='policies/registry'
@@ -74,7 +75,7 @@ property_descriptions={
 	'registry': univention.admin.property(
 			short_description=_('Configuration Registry'),
 			long_description='',
-			syntax=univention.admin.syntax.configRegistry,
+			syntax=univention.admin.syntax.UCR_Variable,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -154,59 +155,50 @@ class object(univention.admin.handlers.simplePolicy):
 
 		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes )
 
-		if self.dn:
-			self['registry']=[]
-			for key in self.oldattr.keys():
-				if key.startswith('univentionRegistry;entry-hex-'):
-					key_name=key.split('univentionRegistry;entry-hex-')[1].decode('hex')
-					self.append_registry(key_name, self.oldattr[key][0].strip())
-
 		self.save()
 
-	def append_registry(self, key, value):
-		if not property_descriptions.has_key(key):
-			property_descriptions[key] =  univention.admin.property(
-				short_description=key,
-				long_description='',
-				# we use a different syntax, because the key shouldn't be
-				# shown if the value is empty. Otherwise we might get a lot of
-				# keys during an UDM session.
-				syntax=univention.admin.syntax.configRegistryKey,
-				multivalue=0,
-				options=[],
-				required=0,
-				may_change=1,
-				identifies=0,
-			)
-			layout[0].layout.append([key])
-			layout[0].layout.sort()
+	def _post_unmap( self, info, values ):
+		info[ 'registry' ] = []
+		for key, value in values.items():
+			if key.startswith( 'univentionRegistry;entry-hex-' ):
+				key_name = key.split( 'univentionRegistry;entry-hex-', 1 )[ 1 ].decode( 'hex' )
+				info[ 'registry' ].append( ( key_name, values[ key ][ 0 ].strip() ) )
 
-			mapping.register(key, 'univentionRegistry;entry-hex-%s' % key.encode('hex'), None, univention.admin.mapping.ListToString)
-			self.oldinfo[key] = ''
-		self.info[key] = value
+		return info
 
-	def _ldap_modlist(self):
-		if self.hasChanged('registry'):
-			old_keys = []
-			new_keys = []
-			if self.info.has_key('registry'):
-				for line in self.info['registry']:
-					new_keys.append(line.split('=')[0])
-				if self.oldinfo.has_key('registry'):
-					for line in self.oldinfo['registry']:
-						old_keys.append(line.split('=')[0])
-				for k in old_keys:
-					if not k in new_keys:
-						self.append_registry(k, '')
-				for k in new_keys:
-					for line in self.info['registry']:
-						if line.startswith('%s=' % k ):
-							value=string.join(line.split('=', 1)[1:])
-							self.append_registry(k, value)
-							break
+	def _post_map( self, modlist, diff ):
+		for key, old, new in diff:
+			if key == 'registry':
+				old_dict = dict( old )
+				new_dict = dict( new )
+				for var, value in old_dict.items():
+					attr_name = 'univentionRegistry;entry-hex-%s' % var.encode( 'hex' )
+					if not var in new_dict: # variable has been removed
+						modlist.append( ( attr_name, value, None ) )
+					elif value != new_dict[ var ]: # value has been changed
+						modlist.append( ( attr_name, value, new_dict[ var ] ) )
+				for var, value in new_dict.items():
+					attr_name = 'univentionRegistry;entry-hex-%s' % var.encode( 'hex' )
+					if var not in old_dict: # variable has been added
+						modlist.append( ( attr_name, None, new_dict[ var ] ) )
+				break
 
-		ml=univention.admin.handlers.simplePolicy._ldap_modlist(self)
-		return ml
+		return modlist
+
+	def _custom_policy_result_map( self ):
+		values = {}
+		self.polinfo_more[ 'registry' ] = []
+		for attr_name, value_dict in self.policy_attrs.items():
+			values[ attr_name ] = value_dict[ 'value' ]
+			if attr_name.startswith( 'univentionRegistry;entry-hex-' ):
+				key_name = attr_name.split( 'univentionRegistry;entry-hex-', 1 )[ 1 ].decode( 'hex' )
+				value_dict[ 'value' ].insert( 0, key_name )
+				self.polinfo_more[ 'registry' ].append( value_dict )
+			elif attr_name:
+				self.polinfo_more[ self.mapping.unmapName( attr_name ) ] = value_dict
+
+		self.polinfo = univention.admin.mapping.mapDict( self.mapping, values )
+		self.polinfo = self._post_unmap( self.polinfo, values )
 
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
@@ -236,5 +228,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-
 	return 'univentionPolicyRegistry' in attr.get('objectClass', [])
