@@ -1,3 +1,9 @@
+univention-spamassassin (4.0.3-1) unstable; urgency=low
+
+  * removed user "spam" and its special procmail handling (Bug #23824)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 13 Oct 2011 14:44:22 +0200
+
 univention-spamassassin (4.0.2-1) unstable; urgency=low
 
   * activate mail/antispam/learndaily by default (Bug #24006)

@@ -1,4 +1,0 @@
-files/var/spool/procmail/extract.pl /var/spool/procmail/
-files/var/spool/procmail/procmail.global /var/spool/procmail/
-files/var/spool/procmail/user/procmail.spam@domain /var/spool/procmail/user/
-68univention-spamassassin.inst /usr/lib/univention-install/

@@ -35,12 +35,7 @@ eval "$(univention-config-registry shell)"
 
 create_logfile_if_missing /var/log/univention/spamassassin-learn.log "root:adm" 640
 
-if [ -f /var/spool/procmail/user/procmail.spam@domain ]; then
-	mv /var/spool/procmail/user/procmail.spam@domain /var/spool/procmail/user/procmail.spam@$domainname
-fi
-
 adduser --quiet --system --home /var/lib/spamd --shell /bin/bash spamd
-chown -R spamd:nogroup /var/spool/procmail
 
 univention-config-registry set mail/antivir/spam?yes \
 	mail/antispam/requiredhits?5.0 \
@@ -53,8 +48,6 @@ if [ -x /etc/init.d/postfix ]; then
 fi
 
 #DEBHELPER#
-
-call_joinscript 68univention-spamassassin.inst
 
 exit 0
 
