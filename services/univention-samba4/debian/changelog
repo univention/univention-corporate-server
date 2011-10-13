@@ -1,3 +1,9 @@
+univention-samba4 (1.0.60-8.2) unstable; urgency=low
+
+  * adjust samba-tool domain join to new cli api (Bug #23929)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 13 Oct 2011 10:46:14 +0200
+
 univention-samba4 (1.0.60-8.1) unstable; urgency=low
 
   * Fixed traceback in smb.conf (Bug #22865)
