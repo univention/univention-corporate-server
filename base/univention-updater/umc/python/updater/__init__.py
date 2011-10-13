@@ -491,7 +491,12 @@ class Instance(umcm.Base):
 			#   Inst univention-updater [3.1.1-5] (3.1.1-6.408.200810311159 192.168.0.10)
 			# inst:
 			#   Inst mc (1:4.6.1-6.12.200710211124 oxae-update.open-xchange.com)
-			match = re.search('^Inst (\S+)\s+(.*?)\s*\((\S+)\s.*\)$',line)
+			#
+			# *** FIX ***	the above example lines ignore the fact that there's
+			#				some extra text (occasionally) after the last closing
+			#				parenthesis. Until now, I've seen only a pair of empty
+			#				brackets [], but who knows...
+			match = re.search('^Inst (\S+)\s+(.*?)\s*\((\S+)\s.*\)',line)
 			if match:
 				pkg = match.group(1)
 				old = match.group(2)

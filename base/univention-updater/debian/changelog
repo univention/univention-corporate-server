@@ -1,3 +1,9 @@
+univention-updater (7.0.46-1) unstable; urgency=low
+
+  * applied patch supplied in Bug #24047
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Oct 2011 13:18:02 +0200
+
 univention-updater (7.0.45-1) unstable; urgency=low
 
   * adapted translations (Bug #22898)
