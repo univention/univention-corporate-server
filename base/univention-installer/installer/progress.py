@@ -265,26 +265,36 @@ class ProgressDialog(object):
 
 		msg.append( _('Please remove installation media from drive and' ) )
 		msg.append( _('press ENTER to reboot this system.') )
-		msg.append( '' )
-		msg.append( _('Administrative frontend:') )
-		msg.append( '' )
 
-		fqdn = '%s.%s' % (self.profile.get('hostname'), self.profile.get('domainname'))
-
-		# open xchange stuff
-		if self.profile.get('ox_primary_maildomain'):
-			msg.append( _('  Open-Xchange frontend'))
-			msg.append( _('    https://%s/ox6/') % fqdn[:80] )
-			if self.profile.get('hostaddress'):
-				msg.append( _('    https://%s/ox6/') % self.profile.get('hostaddress') )
-			msg.append( _('  Administrative account name: oxadmin') )
+		# do not display UMC hint on basesystem
+		if self.profile.get('systemrole') not in ['basesystem']:
+			msg.append( '' )
+			msg.append( _('Administrative frontend:') )
 			msg.append( '' )
 
-		msg.append( _('  Univention Management Console') )
-		msg.append( _('    https://%s/umc/') % fqdn[:80] )
-		if self.profile.get('hostaddress'):
-			msg.append( _('    https://%s/umc/') % (self.profile.get('hostaddress')) )
-		msg.append( _('    Administrative account name: Administrator') )
+			fqdn = '%s.%s' % (self.profile.get('hostname'), self.profile.get('domainname'))
+
+			# open xchange stuff
+			if self.profile.get('ox_primary_maildomain'):
+				msg.append( _('  Open-Xchange frontend'))
+				msg.append( _('    https://%s/ox6/') % fqdn[:80] )
+				if self.profile.get('hostaddress'):
+					address = self.profile.get('hostaddress')
+					if ':' in address:
+						address = '[%s]' % address
+					msg.append( _('    https://%s/ox6/') % address )
+				msg.append( _('    Administrative account name: oxadmin') )
+				msg.append( '' )
+
+			msg.append( _('  Univention Management Console') )
+			msg.append( _('    https://%s/umc/') % fqdn[:80] )
+			if self.profile.get('hostaddress'):
+				address = self.profile.get('hostaddress')
+				if ':' in address:
+					address = '[%s]' % address
+				msg.append( _('    https://%s/umc/') % address )
+			msg.append( _('    Administrative account name: Administrator') )
+
 		msg.append( '' )
 		msg.append( _('Additional information:   http://www.univention.de/en/download/documentation/') )
 		msg.append( _('Support & Knowledge Base: http://sdb.univention.de') )

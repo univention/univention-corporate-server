@@ -1,3 +1,11 @@
+univention-installer (7.0.101-4) unstable; urgency=low
+
+  * updated end message (Bug #23955, #3796)
+    - display UMC only on non-basesystem roles
+    - fixed https URL for IPv6 addresses
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 13 Oct 2011 12:28:51 +0200
+
 univention-installer (7.0.101-3) unstable; urgency=low
 
   * display joinscript name also on DC master (Bug #3796)

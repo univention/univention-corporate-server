@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-13 11:37+0200\n"
-"PO-Revision-Date: 2011-10-13 11:39+0200\n"
+"POT-Creation-Date: 2011-10-13 12:26+0200\n"
+"PO-Revision-Date: 2011-10-13 12:27+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,7 +38,7 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 #: installer/end.py:152 installer/end.py:229 installer/progress.py:253
-#: installer/progress.py:298
+#: installer/progress.py:308
 msgid "The installation has been finished successfully!"
 msgstr "Die Installation wurde erfolgreich abgeschlossen!"
 
@@ -94,7 +94,7 @@ msgstr " Open-Xchange-Oberfläche"
 msgid "  https://%s/ox6/"
 msgstr "  https://%s/ox6/"
 
-#: installer/end.py:192 installer/progress.py:280
+#: installer/end.py:192
 msgid "  Administrative account name: oxadmin"
 msgstr "  Administratives Konto: oxadmin"
 
@@ -106,19 +106,19 @@ msgstr " Univention Management Console"
 msgid "Additional information:   http://www.univention.de/dokumentation.html"
 msgstr "Zusätzliche Informationen: http://www.univention.de/dokumentation.html"
 
-#: installer/end.py:202 installer/progress.py:290
+#: installer/end.py:202 installer/progress.py:300
 msgid "Support & Knowledge Base: http://sdb.univention.de"
 msgstr "Support & Knowledge Base: http://sdb.univention.de"
 
-#: installer/end.py:216 installer/progress.py:313
+#: installer/end.py:216 installer/progress.py:323
 msgid "Some problems occurred during installation!"
 msgstr "Es sind Probleme während der Installation aufgetreten!"
 
-#: installer/end.py:217 installer/progress.py:314
+#: installer/end.py:217 installer/progress.py:324
 msgid "Please read the following error messages carefully."
 msgstr "Bitte lesen Sie die folgenden Fehlermeldungen sorgfältig."
 
-#: installer/end.py:218 installer/progress.py:315
+#: installer/end.py:218 installer/progress.py:325
 msgid "In case of doubt a reinstallation might be reasonable."
 msgstr "Im Zweifelsfall kann eine Neuinstallation notwendig sein."
 
@@ -497,7 +497,7 @@ msgstr "Starte Post-Installation-Trigger %(pkg)s"
 msgid "Running %(pkg)s"
 msgstr "Starte %(pkg)s"
 
-#: installer/progress.py:154 installer/progress.py:618
+#: installer/progress.py:154 installer/progress.py:628
 #: scripts/00_scripts.sh:35
 msgid "Preparing installation"
 msgstr "Installation wird vorbereitet"
@@ -523,39 +523,43 @@ msgstr "und ist der UCS-Domäne beigetreten."
 msgid "press ENTER to reboot this system."
 msgstr "drücken ENTER, um das System neu zu starten."
 
-#: installer/progress.py:269
+#: installer/progress.py:272
 msgid "Administrative frontend:"
 msgstr "Administrationsoberfläche:"
 
-#: installer/progress.py:276
+#: installer/progress.py:279
 msgid "  Open-Xchange frontend"
 msgstr " Open-Xchange-Oberfläche"
 
-#: installer/progress.py:277 installer/progress.py:279
+#: installer/progress.py:280 installer/progress.py:285
 #, python-format
 msgid "    https://%s/ox6/"
 msgstr "    https://%s/ox6/"
 
-#: installer/progress.py:283
+#: installer/progress.py:286
+msgid "    Administrative account name: oxadmin"
+msgstr "    Administratives Konto: oxadmin"
+
+#: installer/progress.py:289
 msgid "  Univention Management Console"
 msgstr "  Univention Management Console"
 
-#: installer/progress.py:284 installer/progress.py:286
+#: installer/progress.py:290 installer/progress.py:295
 #, python-format
 msgid "    https://%s/umc/"
 msgstr "    https://%s/umc/"
 
-#: installer/progress.py:287
+#: installer/progress.py:296
 msgid "    Administrative account name: Administrator"
 msgstr "    Administratives Konto: Administrator"
 
-#: installer/progress.py:289
+#: installer/progress.py:299
 msgid ""
 "Additional information:   http://www.univention.de/en/download/documentation/"
 msgstr ""
 "Zusätzliche Informationen: http://www.univention.de/download/documentation/"
 
-#: installer/progress.py:391
+#: installer/progress.py:401
 #, python-format
 msgid ""
 "Congratulations! The installation of %(name)s is currently running.\n"
@@ -602,19 +606,19 @@ msgstr ""
 "- Support & Knowledge Base:\n"
 "  http://sdb.univention.de\n"
 
-#: installer/progress.py:415
+#: installer/progress.py:425
 msgid "dynamic"
 msgstr "dynamisch"
 
-#: installer/progress.py:522
+#: installer/progress.py:532
 msgid "Current joinscript: "
 msgstr "Aktuelles Joinskript: "
 
-#: installer/progress.py:670
+#: installer/progress.py:680
 msgid "Installation complete"
 msgstr "Installation abgeschlossen"
 
-#: installer/progress.py:685
+#: installer/progress.py:695
 msgid "Preparing reboot"
 msgstr "Neustart wird vorbereitet"
 
