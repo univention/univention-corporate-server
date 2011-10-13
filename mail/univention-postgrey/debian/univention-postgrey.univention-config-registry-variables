@@ -1,58 +1,58 @@
-[postfix/greylisting]
+[mail/postfix/greylisting]
 Description[de]=Postfix-Greylisting aktivieren
 Description[en]=Activate postfix greylisting
 Type=str
 Categories=Mail
 
-[postfix/greylisting/delay]
+[mail/postfix/greylisting/delay]
 Description[de]=Wie viele Sekunden soll die Annahme eine E-Mail temporär abgelehnt werden [300]
 Description[en]=How many seconds shall a mail be temporarily rejected [300]
 Type=str
 Categories=Mail
 
-[postfix/greylisting/max-age]
+[mail/postfix/greylisting/max-age]
 Description[de]=Nach wie vielen Tagen ohne Verwendung sollen alte Einträge aus der Datenbank gelöscht werden [35]
 Description[en]=After how many days without use should old entries be removed from the database [35]
 Type=str
 Categories=Mail
 
-[postfix/greylisting/retry-window]
+[mail/postfix/greylisting/retry-window]
 Description[de]=Wie viele Stunden Zeit wird dem sendenden Mailserver gestattet den Versand erneut zu probieren, ehe er wieder greylisted wird [48]
 Description[en]=How many hours is the sending mail server allowed to retry mail transmission, before being greylisted again [48]
 Type=str
 Categories=Mail
 
-[postfix/greylisting/lookup]
+[mail/postfix/greylisting/lookup]
 Description[de]=Mailserver durch vollständige IP-Adresse (host) oder Klasse-C-Subnetz (subnet) identifizieren [host]
 Description[en]=Identify mailserver by complete IP address (host) or class C subnet (subnet) [host]
 Type=str
 Categories=Mail
 
-[postfix/greylisting/privacy]
+[mail/postfix/greylisting/privacy]
 Description[de]=Eine Einwegfunktion auf die Einträge in der Datenbank anwenden um das extrahieren von sensitiven Informationen aus der Datenbank zu verhindern [true]
 Description[en]=Enables one-way hashing of entries in database to thwart extraction of sensitive information [true]
 Type=str
 Categories=Mail
 
-[postfix/greylisting/text]
+[mail/postfix/greylisting/text]
 Description[de]=Ein vom postgrey-Standard abweichender Text für die Ablehnung der E-Mail. Dies bekommen nur Nutzer von inkomatiblen Mailservern zu sehen.
 Description[en]=A text to override the postgrey standard message for mail rejection. This is only visibile to users of incompatible mail servers.
 Type=str
 Categories=Mail
 
-[postfix/greylisting/client/whitelist/auto]
+[mail/postfix/greylisting/client/whitelist/auto]
 Description[de]=Nach wie vielen erfolgreich angenommenen E-Mails wird der Server auf eine automatische Whitelist gesetzt [5]
 Description[en]=After how many successfully accepted mails will the server be automatically whitelisted [5]
 Type=str
 Categories=Mail
 
-[postfix/greylisting/client/whitelist]
+[mail/postfix/greylisting/client/whitelist]
 Description[de]=Dateien die Server enthalten für die kein Greylisting stattfinden soll
 Description[en]=Files containing servers for which no greylisting shall be done
 Type=str
 Categories=Mail
 
-[postfix/greylisting/recipient/whitelist]
+[mail/postfix/greylisting/recipient/whitelist]
 Description[de]=Dateien die Empfänger enthalten für die kein Greylisting stattfinden soll
 Description[en]=Files containing recipients for whom no greylisting shall be done
 Type=str

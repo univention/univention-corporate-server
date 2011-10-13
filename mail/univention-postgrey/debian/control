@@ -1,9 +1,10 @@
 Source: univention-postgrey
-Section: unknown
-Priority: optional
+Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 4.0.0), univention-config-dev
-Standards-Version: 3.6.1
+Build-Depends: debhelper (>> 7), 
+  univention-config-dev, 
+  ucslint
+Standards-Version: 3.8.2
 
 Package: univention-postgrey
 Architecture: all
@@ -11,3 +12,8 @@ Depends: postgrey
 Description: UCS postgrey configuration
  This packages adds specific configuration, espcially client whitelist
  definitions, to the package postgrey.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

@@ -1,13 +1,14 @@
 Type: file
 File: etc/default/postgrey
-Variables: postfix/greylisting/delay
-Variables: postfix/greylisting/max-age
-Variables: postfix/greylisting/retry-window
-Variables: postfix/greylisting/lookup
-Variables: postfix/greylisting/text
-Variables: postfix/greylisting/client/whitelist/auto
-Variables: postfix/greylisting/client/whitelist
-Variables: postfix/greylisting/recipient/whitelist
+Variables: mail/postfix/greylisting/delay
+Variables: mail/postfix/greylisting/max-age
+Variables: mail/postfix/greylisting/retry-window
+Variables: mail/postfix/greylisting/lookup
+Variables: mail/postfix/greylisting/text
+Variables: mail/postfix/greylisting/client/whitelist/auto
+Variables: mail/postfix/greylisting/client/whitelist
+Variables: mail/postfix/greylisting/recipient/whitelist
+Variables: mail/postfix/greylisting/privacy
 
 Type: file
 File: etc/init.d/postgrey
