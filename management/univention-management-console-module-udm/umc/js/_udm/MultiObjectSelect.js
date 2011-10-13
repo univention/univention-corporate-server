@@ -23,6 +23,8 @@ dojo.declare("umc.modules._udm.MultiObjectSelect", [ umc.widgets.MultiObjectSele
 
 	queryOptions: {},
 
+	umcpCommand: umc.tools.ucmpCommand,
+
 	queryCommand: function(options) {
 		// return a dojo.Deferred
 		return this.umcpCommand('udm/query', options).then(function(data) {
@@ -97,7 +99,7 @@ dojo.declare("umc.modules._udm.MultiObjectSelect", [ umc.widgets.MultiObjectSele
 			umcpCommand: dojo.hitch(this, 'umcpCommand'),
 			depends: [ 'objectProperty' ]
 		}];
-	},
+	}
 
 	// _umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor ) {
 	// 	return umc.tools.umcpCommand( commandStr, dataObj, handleErrors, this.objectType );

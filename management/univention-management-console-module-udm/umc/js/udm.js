@@ -73,8 +73,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 	// internal reference to the detail page for editing an UDM object
 	_detailPage: null,
 
-	// internal reference to the signal handle to umc.modules._udm.DetailPage.onClose
-	_detailPageCloseHandle: null,
+	// internal reference to the signal handles of umc.modules._udm.DetailPage
+	_detailPageHandles: null,
 
 	// reference to a `umc.widgets.Tree` instance which is used to display the container
 	// hierarchy for the UDM navigation module
@@ -178,7 +178,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		// check whether we need to open directly the detail page of a given object
 		if (this.openObject) {
-			this.createDetailPage(this.openObject.objectType, this.openObject.objectDN);
+			this.createDetailPage(this.openObject.objectType, this.openObject.objectDN, undefined, true);
 		}
 	},
 
@@ -234,7 +234,11 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 					openObject: {
 						objectType: items[0].objectType,
 						objectDN: ids[0]
-					}
+					},
+					onClose: dojo.hitch(this, function() {
+						this.focusModule();
+						return true;
+					})
 				};
 				dojo.publish('/umc/modules/open', [ this.moduleID, this.moduleFlavor, moduleProps ]);
 			})
@@ -758,7 +762,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		});
 	},
 
-	createDetailPage: function(objectType, ldapName, newObjOptions) {
+	createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable) {
 		// summary:
 		//		Creates and views the detail page for editing UDM objects.
 
@@ -769,9 +773,14 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			objectType: objectType,
 			ldapName: ldapName,
 			newObjectOptions: newObjOptions,
-			moduleWidget: this
+			moduleWidget: this,
+			isClosable: isClosable
 		});
-		this._detailPageCloseHandle = dojo.connect(this._detailPage, 'onClose', this, 'closeDetailPage');
+		this._detailPageHandles = [];
+
+		this._detailPageHandles.push(this.connect(this._detailPage, 'onClose', 'closeDetailPage'));
+		this._detailPageHandles.push(this.connect(this._detailPage, 'onSave', 'onObjectSaved'));
+		this._detailPageHandles.push(this.connect(this._detailPage, 'onFocusModule', 'focusModule'));
 		this.addChild(this._detailPage);
 		this.selectChild(this._detailPage);
 	},
@@ -780,17 +789,32 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		// summary:
 		//		Closes the detail page for editing UDM objects.
 
+		// in case the detail page was "closable", we need to close the module
+		if (this._detailPage && this._detailPage.isClosable) {
+			dojo.publish('/umc/tabs/close', [ this ]);
+			return;
+		}
+
 		this.resetTitle();
 		this.selectChild(this._searchPage);
-		if (this._detailPageCloseHandle) {
-			dojo.disconnect(this._detailPageCloseHandle);
-			this._detailPageCloseHandle = null;
+		if (this._detailPageHandles) {
+			dojo.forEach(this._detailPageHandles, dojo.hitch(this, 'disconnect'));
+			this._detailPageHandles = null;
 		}
 		if (this._detailPage) {
 			this.removeChild(this._detailPage);
 			this._detailPage.destroyRecursive();
 			this._detailPage = null;
 		}
+	},
+
+	focusModule: function() {
+		// focus this module tab
+		dojo.publish("/umc/tabs/focus", [ this ]); 
+	},
+
+	onObjectSaved: function(dn, objectType) {
+		// event stub
 	}
 });
 

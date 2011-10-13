@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.164-1) unstable; urgency=low
+
+  * added callback functionality and fixed focus management when opening UDM 
+    objects in new tab (in the grid and policy settings) (Bug #23557)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Oct 2011 20:50:45 +0200
+
 univention-management-console-module-udm (1.0.163-1) unstable; urgency=low
 
   * support complex policies: multi-values like UCR variables may inherit

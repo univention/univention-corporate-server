@@ -50,6 +50,10 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 	//		the container in wich the object is to be created, the object type etc.
 	newObjectOptions: null,
 
+	// isCloseable: Boolean?
+	//		Specifies whether this 
+	isClosable: false,
+
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.udm',
 
@@ -347,9 +351,12 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					var ipolicyVals = results[i + 2][1].result;
 					var newLayout = [];
 
+					// we only need to show the general properties of the policy... the "advanced"
+					// properties would be rendered on the subtab "advanced settings" which we do
+					// not need in this case
 					dojo.forEach(ilayout, function(jlayout) {
 						if (false === jlayout.advanced) {
-							// we found the general properties of the policy... remember its layout
+							// we found the general properties of the policy
 							newLayout = jlayout.layout;
 
 							// break the loop
@@ -360,23 +367,17 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					// build up a small map that indicates which policy properties will be shown
 					// filter out the property 'name'
 					var usedProperties = {};
-				   dojo.forEach(newLayout, function(jlayout, j) {
+					dojo.forEach(newLayout, function(jlayout, j) {
 					   if ( dojo.isArray( jlayout ) || dojo.isObject( jlayout ) ) {
 						   var nestedLayout = undefined === jlayout.layout ? jlayout : jlayout.layout;
 							dojo.forEach( nestedLayout, function(klayout, k) {
-								if (dojo.isString(klayout)) {
-									if ('name' != klayout) {
-										usedProperties[klayout] = true;
-									}
-								} else if (dojo.isArray(klayout)) {
-									dojo.forEach(klayout, function(llayout, l) {
-										if (dojo.isString(llayout)) {
-											if ('name' != llayout) {
-												usedProperties[llayout] = true;
-											}
+								dojo.forEach(umc.tools.stringOrArray(klayout), function(llayout) {
+									if (dojo.isString(llayout)) {
+										if ('name' != llayout) {
+											usedProperties[llayout] = true;
 										}
-									} );
-								}
+									}
+								});
 							});
 						} else if (dojo.isString(jlayout)) {
 							if ('name' != jlayout) {
@@ -396,17 +397,13 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 								jprop.type = 'MultiInput';
 							}
 							jprop.disabled = true; // policies cannot be edited
-							if (name in ipolicyVals ) {
+							if (name in ipolicyVals) {
 								if ( ! dojo.isArray( ipolicyVals[name] ) ) {
 									jprop.value = ipolicyVals[name].value;
-									var moduleProps = {
-										openObject: {
-											objectType: ipolicy.objectType,
-											objectDN: ipolicyVals[name].policy
-										}
-									};
-									jprop.label += ' (<a href="#" onClick=\'dojo.publish("/umc/modules/open", ["udm", "policies/policy", ' +
-										dojo.toJson(moduleProps) + '])\' title="' +
+									jprop.label += ' (<a href="javascript:void(0)" onclick=\'dijit.byId("' + this.id + '").openPolicy("' + 
+										ipolicy.objectType + '", "' + 
+										ipolicyVals[name].policy + 
+										'")\' title="' +
 										this._('Click to edit the inherited properties of the policy: %s', ipolicyVals[name].policy) +
 										'">' + this._('edit') + '</a>)';
 								} else {
@@ -446,6 +443,14 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		});
 		borderLayout.addChild(this._tabs);
 
+		var closeLabel = this._('Back to search');
+		if ('navigation' == this.moduleFlavor) {
+			closeLabel = this._('Back to navigation')
+		}
+		if (this.isClosable) {
+			closeLabel = this._('Cancel');
+		}
+
 		// buttons
 		var buttons = umc.render.buttons([{
 			name: 'submit',
@@ -453,7 +458,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			style: 'float: right'
 		}, {
 			name: 'close',
-			label: 'navigation' == this.moduleFlavor ? this._('Back to navigation') : this._('Back to search'),
+			label: closeLabel,
 			callback: dojo.hitch(this, 'onClose'),
 			style: 'float: left'
 		}]);
@@ -511,6 +516,28 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				this._receivedObjFormData = this._form.gatherFormValues();
 			}));
 		}
+	},
+
+	openPolicy: function(objectType, objectDN) {
+		var props =  {
+			openObject: {
+				objectType: objectType,
+				objectDN: objectDN
+			},
+			onObjectSaved: dojo.hitch(this, function(dn, objectType) {
+				// we got the modified DN
+				console.log('# Saved DN:', dn, 'objectType:', objectType);
+			}),
+			onClose: dojo.hitch(this, function() {
+				this.onFocusModule();
+				return true;
+			})
+		};
+		dojo.publish("/umc/modules/open", ["udm", "policies/policy", props]);
+	},
+
+	onFocusModule: function() {
+		// event stub
 	},
 
 	onOptionsChanged: function( newValue, widgetName ) {
@@ -755,6 +782,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		deffered.then(dojo.hitch(this, function(result) {
 			if (result.success) {
 				this.onClose();
+				this.onSave(result.$dn$, this.objectType)
 			}
 			else {
 				umc.dialog.alert(this._('The UDM object could not be saved: %(details)s', result));
@@ -799,6 +827,10 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// summary:
 		//		Event is called when the page should be closed.
 		return true;
+	},
+
+	onSave: function(dn, objectType) {
+		// event stub
 	}
 });
 
