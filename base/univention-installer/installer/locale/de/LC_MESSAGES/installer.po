@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-12 17:32+0200\n"
-"PO-Revision-Date: 2011-10-12 17:06+0200\n"
+"POT-Creation-Date: 2011-10-13 11:37+0200\n"
+"PO-Revision-Date: 2011-10-13 11:39+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,20 +42,20 @@ msgstr ""
 msgid "The installation has been finished successfully!"
 msgstr "Die Installation wurde erfolgreich abgeschlossen!"
 
-#: installer/end.py:156 installer/progress.py:257
+#: installer/end.py:156
 #, python-format
 msgid "This system has been configured to IP address %s and"
 msgstr "Dieses System wurde auf die IP-Adresse %s konfiguriert"
 
-#: installer/end.py:158 installer/progress.py:259
+#: installer/end.py:158
 msgid "This system has been configured for DHCP usage and"
 msgstr "Dieses System bezieht seine IP-Adresse über DHCP"
 
-#: installer/end.py:161 installer/progress.py:262
+#: installer/end.py:161
 msgid "has not been joined to UCS domain yet."
 msgstr "und ist noch nicht der UCS-Domäne beigetreten."
 
-#: installer/end.py:163 installer/progress.py:264
+#: installer/end.py:163
 msgid "has been joined to UCS domain."
 msgstr "und ist der UCS-Domäne beigetreten."
 
@@ -63,11 +63,11 @@ msgstr "und ist der UCS-Domäne beigetreten."
 msgid "Please remove installation media from drive and"
 msgstr "Bitte entnehmen Sie das Installationsmedium und"
 
-#: installer/end.py:166 installer/progress.py:267
+#: installer/end.py:166
 msgid "press ok to reboot this system."
 msgstr "drücken OK, um das System neu zu starten."
 
-#: installer/end.py:168 installer/progress.py:269
+#: installer/end.py:168
 msgid "Administrative frontends:"
 msgstr "Administrationsoberflächen:"
 
@@ -85,7 +85,7 @@ msgstr "  https://%s/%s/"
 msgid "  Administrative account name: Administrator"
 msgstr "  Administratives Konto: Administrator"
 
-#: installer/end.py:188 installer/progress.py:276
+#: installer/end.py:188
 msgid " Open-Xchange frontend"
 msgstr " Open-Xchange-Oberfläche"
 
@@ -94,11 +94,11 @@ msgstr " Open-Xchange-Oberfläche"
 msgid "  https://%s/ox6/"
 msgstr "  https://%s/ox6/"
 
-#: installer/end.py:192
+#: installer/end.py:192 installer/progress.py:280
 msgid "  Administrative account name: oxadmin"
 msgstr "  Administratives Konto: oxadmin"
 
-#: installer/end.py:195 installer/progress.py:283
+#: installer/end.py:195
 msgid " Univention Management Console"
 msgstr " Univention Management Console"
 
@@ -497,28 +497,57 @@ msgstr "Starte Post-Installation-Trigger %(pkg)s"
 msgid "Running %(pkg)s"
 msgstr "Starte %(pkg)s"
 
-#: installer/progress.py:154 installer/progress.py:614
+#: installer/progress.py:154 installer/progress.py:618
 #: scripts/00_scripts.sh:35
 msgid "Preparing installation"
 msgstr "Installation wird vorbereitet"
 
+#: installer/progress.py:257
+#, python-format
+msgid "This system has been configured to IP address %s"
+msgstr "Dieses System wurde auf die IP-Adresse %s konfiguriert"
+
+#: installer/progress.py:259
+msgid "This system has been configured for DHCP usage"
+msgstr "Dieses System bezieht seine IP-Adresse über DHCP"
+
+#: installer/progress.py:262
+msgid "and has not been joined to UCS domain yet."
+msgstr "und ist noch nicht der UCS-Domäne beigetreten."
+
+#: installer/progress.py:264
+msgid "and has been joined to UCS domain."
+msgstr "und ist der UCS-Domäne beigetreten."
+
+#: installer/progress.py:267
+msgid "press ENTER to reboot this system."
+msgstr "drücken ENTER, um das System neu zu starten."
+
+#: installer/progress.py:269
+msgid "Administrative frontend:"
+msgstr "Administrationsoberfläche:"
+
+#: installer/progress.py:276
+msgid "  Open-Xchange frontend"
+msgstr " Open-Xchange-Oberfläche"
+
 #: installer/progress.py:277 installer/progress.py:279
 #, python-format
-msgid "\t https://%s/ox6/"
-msgstr "  https://%s/ox6/"
+msgid "    https://%s/ox6/"
+msgstr "    https://%s/ox6/"
 
-#: installer/progress.py:280
-msgid "\t Administrative account name: oxadmin"
-msgstr "  Administratives Konto: oxadmin"
+#: installer/progress.py:283
+msgid "  Univention Management Console"
+msgstr "  Univention Management Console"
 
 #: installer/progress.py:284 installer/progress.py:286
 #, python-format
-msgid "\t https://%s/umc/"
-msgstr "  https://%s/%s/"
+msgid "    https://%s/umc/"
+msgstr "    https://%s/umc/"
 
 #: installer/progress.py:287
-msgid "\t Administrative account name: Administrator"
-msgstr "  Administratives Konto: Administrator"
+msgid "    Administrative account name: Administrator"
+msgstr "    Administratives Konto: Administrator"
 
 #: installer/progress.py:289
 msgid ""
@@ -526,7 +555,7 @@ msgid ""
 msgstr ""
 "Zusätzliche Informationen: http://www.univention.de/download/documentation/"
 
-#: installer/progress.py:387
+#: installer/progress.py:391
 #, python-format
 msgid ""
 "Congratulations! The installation of %(name)s is currently running.\n"
@@ -573,19 +602,19 @@ msgstr ""
 "- Support & Knowledge Base:\n"
 "  http://sdb.univention.de\n"
 
-#: installer/progress.py:411
+#: installer/progress.py:415
 msgid "dynamic"
 msgstr "dynamisch"
 
-#: installer/progress.py:518
+#: installer/progress.py:522
 msgid "Current joinscript: "
 msgstr "Aktuelles Joinskript: "
 
-#: installer/progress.py:666
+#: installer/progress.py:670
 msgid "Installation complete"
 msgstr "Installation abgeschlossen"
 
-#: installer/progress.py:681
+#: installer/progress.py:685
 msgid "Preparing reboot"
 msgstr "Neustart wird vorbereitet"
 
@@ -2589,6 +2618,15 @@ msgstr "Teste installiertes System"
 #: scripts/90_cleanup.sh:35
 msgid "Performing cleanup"
 msgstr "Ausführen von Aufräumarbeiten"
+
+#~ msgid "\t https://%s/ox6/"
+#~ msgstr "  https://%s/ox6/"
+
+#~ msgid "\t Administrative account name: oxadmin"
+#~ msgstr "  Administratives Konto: oxadmin"
+
+#~ msgid "\t Administrative account name: Administrator"
+#~ msgstr "  Administratives Konto: Administrator"
 
 #~ msgid "Samba 4 server"
 #~ msgstr "Samba 4 Server"

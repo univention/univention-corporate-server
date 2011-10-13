@@ -254,37 +254,37 @@ class ProgressDialog(object):
 		msg.append( '' )
 
 		if self.profile.get('hostaddress'):
-			msg.append( _('This system has been configured to IP address %s and') % self.profile.get('hostaddress') )
+			msg.append( _('This system has been configured to IP address %s') % self.profile.get('hostaddress') )
 		else:
-			msg.append( _('This system has been configured for DHCP usage and') )
+			msg.append( _('This system has been configured for DHCP usage') )
 
 		if self.profile.get('auto_join') == 'false':
-			msg.append( _('has not been joined to UCS domain yet.') )
+			msg.append( _('and has not been joined to UCS domain yet.') )
 		else:
-			msg.append( _('has been joined to UCS domain.') )
+			msg.append( _('and has been joined to UCS domain.') )
 
 		msg.append( _('Please remove installation media from drive and' ) )
-		msg.append( _('press ok to reboot this system.') )
+		msg.append( _('press ENTER to reboot this system.') )
 		msg.append( '' )
-		msg.append( _('Administrative frontends:') )
+		msg.append( _('Administrative frontend:') )
 		msg.append( '' )
 
 		fqdn = '%s.%s' % (self.profile.get('hostname'), self.profile.get('domainname'))
 
 		# open xchange stuff
 		if self.profile.get('ox_primary_maildomain'):
-			msg.append( _(' Open-Xchange frontend'))
-			msg.append( _('	 https://%s/ox6/') % fqdn[:80] )
+			msg.append( _('  Open-Xchange frontend'))
+			msg.append( _('    https://%s/ox6/') % fqdn[:80] )
 			if self.profile.get('hostaddress'):
-				msg.append( _('	 https://%s/ox6/') % self.profile.get('hostaddress') )
-			msg.append( _('	 Administrative account name: oxadmin') )
+				msg.append( _('    https://%s/ox6/') % self.profile.get('hostaddress') )
+			msg.append( _('  Administrative account name: oxadmin') )
 			msg.append( '' )
 
-		msg.append( _(' Univention Management Console') )
-		msg.append( _('	 https://%s/umc/') % fqdn[:80] )
+		msg.append( _('  Univention Management Console') )
+		msg.append( _('    https://%s/umc/') % fqdn[:80] )
 		if self.profile.get('hostaddress'):
-			msg.append( _('	 https://%s/umc/') % (self.profile.get('hostaddress')) )
-		msg.append( _('	 Administrative account name: Administrator') )
+			msg.append( _('    https://%s/umc/') % (self.profile.get('hostaddress')) )
+		msg.append( _('    Administrative account name: Administrator') )
 		msg.append( '' )
 		msg.append( _('Additional information:   http://www.univention.de/en/download/documentation/') )
 		msg.append( _('Support & Knowledge Base: http://sdb.univention.de') )
@@ -323,7 +323,7 @@ class ProgressDialog(object):
 		return msg
 
 
-	def show_success_msg(self):
+	def show_ending_msg(self):
 		# if auto_reboot is set then do not show this message
 		if self.profile.get('auto_reboot','').lower() in ['yes', 'true']:
 			return
@@ -380,7 +380,7 @@ class ProgressDialog(object):
 
 
 	def draw_info(self):
-		# redraw disabled by show_success_msg()
+		# redraw disabled by show_ending_msg()
 		if self.redraw_blocked:
 			return
 
@@ -424,7 +424,7 @@ Please visit the following websites to learn more about %(name)s:
 
 
 	def draw(self):
-		# redraw disabled by show_success_msg()
+		# redraw disabled by show_ending_msg()
 		if self.redraw_blocked:
 			return
 
@@ -680,7 +680,7 @@ Please visit the following websites to learn more about %(name)s:
 
 		time.sleep(1)
 
-		self.show_success_msg()
+		self.show_ending_msg()
 
 		os.write(self.fd_write, '__MSG__:%s\n' % _('Preparing reboot'))
 		time.sleep(1)
