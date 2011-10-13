@@ -421,13 +421,31 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 						iprop.umcpCommand = this.umcpCommand;
 					}, this );
 
+					// for the policy group, we need a ComboBox that allows to link an object
+					// to a particular policy
+					newProperties.push({
+						type: 'ComboBox',
+						name: '$policy$',
+						staticValues: [{ id: 'None', label: this._('Inherited') }],
+						dynamicValues: dojo.hitch(this, '_queryPolicies', ipolicy.objectType),
+						label: this._('Select policy configuration'),
+						description: this._('Select a policy that should be directly linked to the current UDM object')
+					});
+					var buttonsConf = [{
+						type: 'Button',
+						name: '$addPolicy$',
+						label: this._('Create new policy')
+					}];
+					newLayout.unshift(['$policy$', '$addPolicy$']);
+
 					// render the group of properties
 					var widgets = umc.render.widgets(newProperties);
+					var buttons = umc.render.buttons(buttonsConf);
 					policiesContainer.addChild(new dijit.TitlePane({
 						title: ipolicy.label,
 						description: ipolicy.description,
 						open: false,
-						content: umc.render.layout(newLayout, widgets)
+						content: umc.render.layout(newLayout, widgets, buttons)
 					}));
 				}
 			}));
@@ -516,6 +534,19 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				this._receivedObjFormData = this._form.gatherFormValues();
 			}));
 		}
+	},
+
+	_queryPolicies: function(objectType) {
+		return this.umcpCommand('udm/query', { 
+			objectType: objectType,
+			container: 'all', 
+			objectProperty: 'None',
+			objectPropertyValue: ''
+		}).then(function(data) {
+			return dojo.map(data.result, function(ientry) {
+				return ientry.$dn$;
+			});
+		});
 	},
 
 	openPolicy: function(objectType, objectDN) {

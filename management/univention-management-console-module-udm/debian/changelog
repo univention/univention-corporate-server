@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.167-1) unstable; urgency=low
+
+  * added ComboBoxes for policy linking (Bug #23557)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Oct 2011 22:05:31 +0200
+
 univention-management-console-module-udm (1.0.166-1) unstable; urgency=low
 
   * udm/get: return a property $polcies$ with a dictionary of all
