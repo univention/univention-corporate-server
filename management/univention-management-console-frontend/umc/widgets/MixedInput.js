@@ -19,11 +19,11 @@ dojo.declare("umc.widgets.MixedInput", [
 	//		method.
 	umcpCommand: umc.tools.umcpCommand,
 
-	// dynamicValues: String
+	// dynamicValues: String|Function
 	//		see description at `umc.widgets._SelectMixin`
 	dynamicValues: null,
 
-	// dynamicOptions: Object?|Function?
+	// dynamicOptions: Object?
 	//		see description at `umc.widgets._SelectMixin`
 	dynamicOptions: null,
 
@@ -55,10 +55,17 @@ dojo.declare("umc.widgets.MixedInput", [
 
 		// only copy the properties that we need, the rest is for the actual form widget
 		this.dynamicValues = props.dynamicValues;
-		umc.tools.assert(this.dynamicValues && dojo.isString(this.dynamicValues), "For MixedInput, the property 'dynamicValues' needs to be specified.");
+		umc.tools.assert(this.dynamicValues && (dojo.isString(this.dynamicValues) || dojo.isFunction(this.dynamicValues)), "For MixedInput, the property 'dynamicValues' needs to be specified.");
 		this.depends = props.depends;
 		//umc.tools.assert(this.depends, "For MixedInput, the property 'depends' needs to be specified.");
 		this.umcpCommand = props.umcpCommand || umc.tools.umcpCommand;
+	},
+
+	buildRendering: function() {
+		this.inherited(arguments);
+
+		// initial widget is a TextBox
+		this._setValues('');
 	},
 
 	postCreate: function() {

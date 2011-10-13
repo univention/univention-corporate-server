@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.93-1) unstable; urgency=low
+
+  * MixedInput: added check for functions to assertion for dynamicValues
+    (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Oct 2011 16:21:20 +0200
+
 univention-management-console-frontend (1.0.92-1) unstable; urgency=low
 
   * fixed doc for _SelectMixin.dynamicOptions (Bug #22461)
