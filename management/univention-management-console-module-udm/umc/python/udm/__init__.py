@@ -212,6 +212,11 @@ class Instance( Base ):
 					props[ '$options$' ] = {}
 					for opt in module.get_options( udm_object = obj ):
 						props[ '$options$' ][ opt[ 'id' ] ] = opt[ 'value' ]
+					props[ '$policies$' ] = {}
+					for policy in obj.policies:
+						pol_mod = get_module( None, policy )
+						if pol_mod and pol_mod.name:
+							props[ '$policies$' ][ pol_mod.name ] = policy
 					result.append( props )
 				else:
 					MODULE.error( 'The LDAP object for the LDAP DN %s could not be found' % ldap_dn )

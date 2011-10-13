@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.166-1) unstable; urgency=low
+
+  * udm/get: return a property $polcies$ with a dictionary of all
+    referenced policies; Bug #23557
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 13 Oct 2011 21:07:57 +0200
+
 univention-management-console-module-udm (1.0.165-1) unstable; urgency=low
 
   * removed rendering of UDM search page when an object is loaded directly
