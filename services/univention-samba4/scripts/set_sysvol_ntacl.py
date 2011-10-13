@@ -55,11 +55,9 @@ import optparse
 import samba.getopt
 
 def test_setntacl(lp, dir):
-	## 1. ACE: Grant Full File Access (FA) to Domain Admins (DA) : (A;OICI;FA;;;DA)
+	## 1. ACE: Grant Full File Access (FA) to Builtin Admins (BA) : (A;OICI;FA;;;BA)
 	##         where FA = 0x1f01ff, see libcli/security/security.h
-	## 2. ACE: Grant File Read Access (FR) to Domain Users (DU) : (A;OICI;FR;;;DU)
-	##         where FR = 0x120089, see libcli/security/security.h
-	acl = "O:LAG:DAD:(A;OICI;0x001f01ff;;;DA)(A;OICI;0x00120089;;;DU)"
+	provision_acl = 'O:LAG:BAD:P(A;OICI;0x001f01ff;;;BA)(A;OICI;0x001200a9;;;SO)(A;OICI;0x001f01ff;;;SY)(A;OICI;0x001200a9;;;AU)'
 	ntacl = xattr.NTACL()
 	ntacl.version = 1
 
@@ -67,7 +65,7 @@ def test_setntacl(lp, dir):
 	from samba.samdb import SamDB
 	samdb = SamDB('/var/lib/samba/private/sam.ldb', lp=lp)
 
-	setntacl(lp, dir, acl, samdb.domain_sid)
+	setntacl(lp, dir, provision_acl, samdb.domain_sid)
 
 def test_getntacl(dir):
 	ntacl = xattr.NTACL()

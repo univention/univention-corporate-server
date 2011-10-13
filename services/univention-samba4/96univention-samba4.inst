@@ -203,6 +203,9 @@ if [ "$samba4_role" = 'DC' ]; then
 
 		operatingSystem_attribute replace
 
+		## Start samba daemon
+		/etc/init.d/samba4 start
+
 	else	## otherwise we will simply join the new DC
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
@@ -237,7 +240,16 @@ if [ "$samba4_role" = 'DC' ]; then
 			fi
 		fi
 
+		## Start samba daemon
+		/etc/init.d/samba4 start
+
+		## set the predefined NTACL which the provision uses on sysvol
+		/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH" 2>/dev/null
+
 	fi
+
+	## activate sysvol replication
+	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
 
 	# The windows clients connect to //$domainname/sysvol for GPOs during logon
 	# Register the local ips for the forward zone, skip with 'ucr set samba4/dns/domain/register=false'
@@ -252,9 +264,6 @@ if [ "$samba4_role" = 'DC' ]; then
 		fi
 	fi
 
-	## Start samba daemon
-	/etc/init.d/samba4 start
-
 	## Kerberos keytab adjustments for Samba 4
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
@@ -265,9 +274,6 @@ if [ "$samba4_role" = 'DC' ]; then
 	if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
 		let_samba4_manage_etc_krb5_keytab
 	fi
-
-	/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH"	# set the xattrs to a predefined NTACL
-	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
 
 
 elif [ "$samba4_role" = "RODC" ]; then
@@ -327,6 +333,12 @@ elif [ "$samba4_role" = "RODC" ]; then
 	## Start samba daemon
 	/etc/init.d/samba4 start
 
+	## set the predefined NTACL which the provision uses on sysvol
+	/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH"	2>/dev/null
+
+	## activate sysvol replication
+	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
+
 	## Kerberos keytab adjustments for Samba 4
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
@@ -337,9 +349,6 @@ elif [ "$samba4_role" = "RODC" ]; then
 	if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
 		let_samba4_manage_etc_krb5_keytab
 	fi
-
-	/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH"	# set the xattrs to a predefined NTACL
-	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
 
 elif [ "$samba4_role" = "MEMBER" ]; then
 

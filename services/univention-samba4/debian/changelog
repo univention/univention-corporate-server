@@ -1,3 +1,10 @@
+univention-samba4 (1.0.60-9) unstable; urgency=low
+
+  * use the NTACL that provision sets for sysvol (Bug #22865)
+  * use the same NTACL on the non-provision DCs
+
+ -- Arvid Requate <requate@univention.de>  Thu, 13 Oct 2011 14:49:12 +0200
+
 univention-samba4 (1.0.60-8.3) unstable; urgency=low
 
   * set same options for sysvol share as for netlogon (Bug #22865)
