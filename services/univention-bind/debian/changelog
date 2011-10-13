@@ -1,3 +1,9 @@
+univention-bind (6.0.24-1) unstable; urgency=low
+
+  * Update the samba4 bind configuration to allow updates (Bug #23161)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Oct 2011 08:35:15 +0200
+
 univention-bind (6.0.23-1) unstable; urgency=low
 
   * Removed dependency to eth0 (Bug #10825)
