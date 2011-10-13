@@ -1,3 +1,10 @@
+univention-samba4 (1.0.60-8.3) unstable; urgency=low
+
+  * set same options for sysvol share as for netlogon (Bug #22865)
+  * use ldbsearch --debug-stderr 2>/dev/null in univention-s4search
+
+ -- Arvid Requate <requate@univention.de>  Thu, 13 Oct 2011 14:18:03 +0200
+
 univention-samba4 (1.0.60-8.2) unstable; urgency=low
 
   * adjust samba-tool domain join to new cli api (Bug #23929)
