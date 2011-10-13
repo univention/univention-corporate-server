@@ -1,3 +1,9 @@
+univention-spamassassin (4.0.2-1) unstable; urgency=low
+
+  * activate mail/antispam/learndaily by default (Bug #24006)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 13 Oct 2011 14:27:24 +0200
+
 univention-spamassassin (4.0.1-3) unstable; urgency=low
 
   * added debian/compat (Bug #18002) 

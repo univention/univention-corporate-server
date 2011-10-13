@@ -44,7 +44,7 @@ chown -R spamd:nogroup /var/spool/procmail
 
 univention-config-registry set mail/antivir/spam?yes \
 	mail/antispam/requiredhits?5.0 \
-	mail/antispam/learndaily?no \
+	mail/antispam/learndaily?yes \
 	mail/antispam/rules/autoupdate?yes \
 	mail/antispam/autostart?yes
 
