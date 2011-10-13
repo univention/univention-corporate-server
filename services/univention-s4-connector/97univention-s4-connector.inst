@@ -87,7 +87,7 @@ else										## we are first system to provide this service
 	fi
 
 	## create an admin user for synchronisation
-	samba-tool newuser ucs-s4sync "$(cat /etc/samba4.secret)" -U Administrator%$(cat /etc/samba4.secret)
+	samba-tool user add ucs-s4sync "$(cat /etc/samba4.secret)" -U Administrator%$(cat /etc/samba4.secret)
 	samba-tool group addmembers "Domain Admins" ucs-s4sync #maybe we could use a more restrict group?
 
 	ucs_addServiceToLocalhost "${NAME}" "$@"

@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.39-1) unstable; urgency=low
+
+  * The samba-tool command newuser was removed in new samba version.
+    Switch to user add (Bug #22861)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Oct 2011 07:39:31 +0200
+
 univention-s4-connector (6.0.38-1) unstable; urgency=low
 
   * added logrotate configuration (Bug #18002) 
