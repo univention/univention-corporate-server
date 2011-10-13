@@ -43,7 +43,7 @@ configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
 # constants
-ARCHITECTURES = ( 'i386', 'amd64', 'all', 'extern' )
+ARCHITECTURES = ( 'i386', 'amd64', 'all' )
 
 class TeeFile( object ):
 	'''Writes the given string to serveral files at once. Could by used
@@ -192,7 +192,7 @@ def get_repo_basedir( packages_dir ):
 	has_arch_dirs = False
 	has_packages = False
 	for entry in os.listdir( packages_dir ):
-		if os.path.isdir( os.path.join( packages_dir, entry ) ) and entry in ( 'i386', 'all', 'amd64', 'extern' ):
+		if os.path.isdir( os.path.join( packages_dir, entry ) ) and entry in ( 'i386', 'all', 'amd64' ):
 			has_arch_dirs = True
 		elif os.path.isfile( os.path.join( packages_dir, entry ) ) and entry == 'Packages':
 			has_packages = True
@@ -203,7 +203,7 @@ def get_repo_basedir( packages_dir ):
 			print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir
 			sys.exit( 1 )
 		head, tail = os.path.split( packages_dir )
-		if tail in ( 'i386', 'all', 'amd64', 'extern' ):
+		if tail in ( 'i386', 'all', 'amd64' ):
 			packages_path = head
 		else:
 			print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir

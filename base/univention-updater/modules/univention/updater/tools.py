@@ -583,7 +583,7 @@ class UniventionUpdater:
 
 		mmp_version = UCS_Version(version)
 		current_components = self.get_current_components()
-		archs = ['all', 'extern'] + self.architectures
+		archs = ['all'] + self.architectures
 
 		result = []
 		for server, ver in self._iterate_version_repositories(mmp_version, mmp_version, self.parts, archs):
@@ -607,7 +607,7 @@ class UniventionUpdater:
 	def security_update_temporary_sources_list(self):
 		'''Create a list of Debian repository statements for the next security update'''
 		start = end = UCS_Version( (self.version_major, self.version_minor, self.security_patchlevel+1) )
-		archs = ['all', 'extern'] + self.architectures
+		archs = ['all'] + self.architectures
 
 		sources_list = []
 		for server, ver in self._iterate_security_repositories(start, end, self.parts, archs):
@@ -621,7 +621,7 @@ class UniventionUpdater:
 		   [3, 4, 5]
 		'''
 		result = []
-		archs = ['all', 'extern'] + self.architectures
+		archs = ['all'] + self.architectures
 		for sp in xrange(self.security_patchlevel + 1, 99):
 			version = UCS_Version( (self.version_major, self.version_minor, sp) )
 			secver = self.security_update_available(version)
@@ -639,7 +639,7 @@ class UniventionUpdater:
 			start = end = version
 		else:
 			start = end = UCS_Version( (self.version_major, self.version_minor, self.security_patchlevel+1) )
-		archs = ['all', 'extern'] + self.architectures
+		archs = ['all'] + self.architectures
 		for server, ver in self._iterate_security_repositories(start, end, self.parts, archs):
 			return ver.patchlevel
 		return False
@@ -952,7 +952,7 @@ class UniventionUpdater:
 		if not end:
 			end = UCS_Version( ( self.version_major, self.version_minor, self.patchlevel ) )
 
-		archs = ['all', 'extern'] + self.architectures
+		archs = ['all'] + self.architectures
 		result = []
 
 		for server, ver in self._iterate_version_repositories(start, end, self.parts, archs, dists):
@@ -1000,7 +1000,7 @@ class UniventionUpdater:
 		else:
 			end = UCS_Version( (self.version_major, self.version_minor, max) )
 
-		archs = ['all', 'extern'] + self.architectures
+		archs = ['all'] + self.architectures
 		result = []
 
 		for server, ver in self._iterate_security_repositories(start, end, self.parts, archs, self.hotfixes):
@@ -1153,7 +1153,7 @@ class UniventionUpdater:
 	       With clean=True, additional clean statements for apt-mirror are added.
 		   Component repositories for mirror.list are returned if for_mirror_list=True.
 		'''
-		archs = ['all', 'extern'] + self.architectures
+		archs = ['all'] + self.architectures
 		result = []
 
 		cleanComponent = False
