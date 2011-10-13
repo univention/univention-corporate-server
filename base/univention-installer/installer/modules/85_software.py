@@ -297,15 +297,15 @@ class object(content):
 			pos += (len(p) + 1)
 
 		if self.cmdline.has_key('mode') and self.cmdline['mode'] == 'setup':
-			self.add_elem('F12_button', button(_("F12-Accept changes"),self.pos_y+self.height-2,self.pos_x+self.width-2, align='right')) #6
+			self.add_elem('__NEXT_BUTTON__', button(_("F12-Accept changes"),self.pos_y+self.height-2,self.pos_x+self.width-2, align='right')) #6
 			self.debug('moaded_modules=%s' % self.cmdline['loaded_modules'])
 			if self.cmdline.has_key('loaded_modules') and len(self.cmdline['loaded_modules']) >1:
-				self.add_elem('F11_button', button(_("F11-Back"),self.pos_y+self.height-2,self.pos_x+4, align='left')) #7
+				self.add_elem('__BACK_BUTTON__', button(_("F11-Back"),self.pos_y+self.height-2,self.pos_x+4, align='left')) #7
 			else:
-				self.add_elem('F11_button', textline("",self.pos_y+self.height-2,self.pos_x+4,align='left')) #7
+				self.add_elem('__BACK_BUTTON__', textline("",self.pos_y+self.height-2,self.pos_x+4,align='left')) #7
 		else:
-			self.add_elem('F12_button', button(_("F12-Next"),self.pos_y+self.height-2,self.pos_x+self.width-2, align='right')) #6
-			self.add_elem('F11_button', button(_("F11-Back"),self.pos_y+self.height-2,self.pos_x+4, align='left')) #7
+			self.add_elem('__NEXT_BUTTON__', button(_("F12-Next"),self.pos_y+self.height-2,self.pos_x+self.width-2, align='right')) #6
+			self.add_elem('__BACK_BUTTON__', button(_("F11-Back"),self.pos_y+self.height-2,self.pos_x+4, align='left')) #7
 
 		self.add_elem('headline', textline(_('Please select the software components you want to install:'), self.minY-11,self.minX+3))
 
@@ -377,9 +377,9 @@ class object(content):
 
 		elif key == 276:
 			return 'next'
-		if key in [ 10, 32 ] and self.get_elem('F12_button').usable() and self.get_elem('F12_button').get_status():
+		if key in [ 10, 32 ] and self.get_elem('__NEXT_BUTTON__').usable() and self.get_elem('__NEXT_BUTTON__').get_status():
 			return 'next'
-		elif key in [ 10, 32 ] and self.get_elem('F11_button').usable() and self.get_elem('F11_button').get_status():
+		elif key in [ 10, 32 ] and self.get_elem('__BACK_BUTTON__').usable() and self.get_elem('__BACK_BUTTON__').get_status():
 			return 'prev'
 		elif key == 258:
 			# down
