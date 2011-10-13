@@ -1,3 +1,9 @@
+univention-samba4 (1.0.60-8.1) unstable; urgency=low
+
+  * Fixed traceback in smb.conf (Bug #22865)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Oct 2011 07:10:15 +0200
+
 univention-samba4 (1.0.60-7) unstable; urgency=low
 
   * register renamed template subfile (Bug #22865)

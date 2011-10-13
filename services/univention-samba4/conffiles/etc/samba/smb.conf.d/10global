@@ -48,7 +48,7 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 		print '\t%s\t= %s' % (smbstring, configRegistry[key])
 
 ## legacy settings for smbd
-if samba4_service_smb == 'smbd':
+if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 	print '\tsyslog\t\t= 0'
 	print '\tmax log size\t= 1000000'
 
