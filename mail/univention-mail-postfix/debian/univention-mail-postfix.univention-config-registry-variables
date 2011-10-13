@@ -70,13 +70,13 @@ Description[en]=Maximum size of any local mailbox or maildir file (specified in 
 Type=str
 Categories=service-mail
 
-[postfix/masquerade/domains]
+[mail/postfix/masquerade/domains]
 Description[de]=Liste von Domänen für die Masquerading aktiviert ist
 Description[en]=List of domains for which masquerading is enabled
 Type=str
 Categories=service-mail
 
-[postfix/masquerade/exceptions]
+[mail/postfix/masquerade/exceptions]
 Description[de]=E-Mail Adressen die vom Masquerading ausgenommen werden
 Description[en]=E-Mail addresses tp except from masquerading
 Type=str
