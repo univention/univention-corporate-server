@@ -1,0 +1,5 @@
+#!/bin/sh
+
+univention-config-registry unset postfix/greylisting
+
+exit 0

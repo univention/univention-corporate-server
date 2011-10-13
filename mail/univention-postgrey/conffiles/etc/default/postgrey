@@ -1,0 +1,35 @@
+@%@UCRWARNING=# @%@
+@!@
+from os.path import exists
+def escapeString(string):
+    return string.replace("'","'\\''")
+SimpleIntChars = set('0123456789')
+def GetSimpleIntUcr(UCRkey, default):
+    string = configRegistry.get(UCRkey, '-')
+    for char in string:
+        if char not in SimpleIntChars:
+            return default
+    return int(string)
+POSTGREY_OPTS = ['--inet=10023']
+POSTGREY_OPTS.append('--delay=%d' % GetSimpleIntUcr('postfix/greylisting/delay', 300))
+POSTGREY_OPTS.append('--max-age=%d' % GetSimpleIntUcr('postfix/greylisting/max-age', 35))
+POSTGREY_OPTS.append('--retry-window=%dh' % GetSimpleIntUcr('postfix/greylisting/retry-window', 48))
+POSTGREY_OPTS.append('--auto-whitelist-clients=%d' % GetSimpleIntUcr('postfix/greylisting/client/whitelist/auto', 5))
+if configRegistry.get('postfix/greylisting/lookup', 'host').lower() == 'subnet':
+    POSTGREY_OPTS.append('--lookup-by-subnet')
+else:
+    POSTGREY_OPTS.append('--lookup-by-host')
+if configRegistry.get('postfix/greylisting/privacy', 'true').lower() in ('true', 'yes', 'enable', 'enabled', '1', ):
+    POSTGREY_OPTS.append('--privacy')
+if 'postfix/greylisting/client/whitelist' in configRegistry:
+    for file in configRegistry['postfix/greylisting/client/whitelist'].split():
+        if exists(file):
+            POSTGREY_OPTS.append('--whitelist-clients=%s' % file)
+if 'postfix/greylisting/recipient/whitelist' in configRegistry:
+    for file in configRegistry['postfix/greylisting/recipient/whitelist'].split():
+        if exists(file):
+            POSTGREY_OPTS.append('--whitelist-recipients=%s' % file)
+print "POSTGREY_OPTS='%s'" % escapeString(' '.join(POSTGREY_OPTS))
+if 'postfix/greylisting/text' in configRegistry:
+    print "POSTGREY_TEXT='%s'" % escapeString(configRegistry['postfix/greylisting/text'])
+@!@

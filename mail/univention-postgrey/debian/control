@@ -1,0 +1,13 @@
+Source: univention-postgrey
+Section: unknown
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 4.0.0), univention-config-dev
+Standards-Version: 3.6.1
+
+Package: univention-postgrey
+Architecture: all
+Depends: postgrey
+Description: UCS postgrey configuration
+ This packages adds specific configuration, espcially client whitelist
+ definitions, to the package postgrey.
