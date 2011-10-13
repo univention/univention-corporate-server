@@ -1,3 +1,12 @@
+univention-installer (7.0.101-3) unstable; urgency=low
+
+  * display joinscript name also on DC master (Bug #3796)
+  * fixed double back/next buttons (Bug #22869)
+  * allow ext4 on /boot (Bug #24013)
+  * updated end message (Bug #3796, Bug #23955)
+  
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 13 Oct 2011 11:52:13 +0200
+
 univention-installer (7.0.101-2) unstable; urgency=low
 
   * updated german translation (Bug #3796)
