@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.121-1) unstable; urgency=low
+
+  * add script univention-remove-old-umc-objects to delete old UMC LDAP
+    objects; Bug #24045
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 13 Oct 2011 10:48:01 +0200
+
 univention-directory-manager-modules (7.0.120-1) unstable; urgency=low
 
   * remove old UMC UDM modules; Bug #23494
