@@ -396,18 +396,24 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 								jprop.type = 'MultiInput';
 							}
 							jprop.disabled = true; // policies cannot be edited
-							if (name in ipolicyVals) {
-								jprop.value = ipolicyVals[name].value;
-								var moduleProps = {
-									openObject: {
-										objectType: ipolicy.objectType,
-										objectDN: ipolicyVals[name].policy
-									}
-								};
-								jprop.label += ' (<a href="#" onClick=\'dojo.publish("/umc/modules/open", ["udm", "policies/policy", ' +
-									dojo.toJson(moduleProps) + '])\' title="' +
-									this._('Click to edit the inherited properties of the policy: %s', ipolicyVals[name].policy) +
-									'">' + this._('edit') + '</a>)';
+							if (name in ipolicyVals ) {
+								if ( ! dojo.isArray( ipolicyVals[name] ) ) {
+									jprop.value = ipolicyVals[name].value;
+									var moduleProps = {
+										openObject: {
+											objectType: ipolicy.objectType,
+											objectDN: ipolicyVals[name].policy
+										}
+									};
+									jprop.label += ' (<a href="#" onClick=\'dojo.publish("/umc/modules/open", ["udm", "policies/policy", ' +
+										dojo.toJson(moduleProps) + '])\' title="' +
+										this._('Click to edit the inherited properties of the policy: %s', ipolicyVals[name].policy) +
+										'">' + this._('edit') + '</a>)';
+								} else {
+									jprop.value = dojo.map( ipolicyVals[name], function( item ) {
+										return item.value;
+									} );
+								}
 							}
 							newProperties.push(jprop);
 						}

@@ -43,40 +43,40 @@ umc_operation_create "udm-all" "UDM - All operations" "" "udm/*"
 
 umc_operation_create "udm-users" "UDM - Users" "users/user" "udm/*:objectType=users/user" "udm/*:!objectType" \
 	"udm/query:objectType=groups/group" "udm/properties:objectType=groups/group" "udm/values:objectType=groups/group" \
-	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*"
+	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
 umc_operation_create "udm-groups" "UDM - Groups" "groups/group" "udm/*:objectType=groups/group" "udm/*:!objectType" \
 	"udm/query:objectType=users/user" "udm/properties:objectType=users/user" "udm/values:objectType=users/user" \
 	"udm/query:objectType=computers/*" "udm/properties:objectType=computers/*" "udm/values:objectType=computers/*" \
-	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*"
+	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
 umc_operation_create "udm-computers" "UDM - Computers" "computers/computer" "udm/*:objectType=computers/*" "udm/*:!objectType" \
 	"udm/query:objectType=groups/group" "udm/properties:objectType=groups/group" "udm/values:objectType=groups/group" \
-	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*"
+	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
 umc_operation_create "udm-printers" "UDM - Printers" "shares/print" "udm/*:objectType=shares/print*" "udm/*:!objectType" \
-	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*"
+	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
 umc_operation_create "udm-shares" "UDM - Shares" "shares/share" "udm/*:objectType=shares/share" "udm/*:!objectType" \
-	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*"
+	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
 umc_operation_create "udm-polcies" "UDM - Policies" "policies/policy" "udm/*:objectType=policies/*" "udm/*:!objectType" \
-	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*"
+	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
 umc_operation_create "udm-mail" "UDM - Policies" "mail/mail" "udm/*:objectType=mail/*" \
-	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*"
+	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
 umc_operation_create "udm-network" "UDM - Network" "networks/network" "udm/*:objectType=networks/network" \
 	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*"
 
 umc_operation_create "udm-dns" "UDM - DNS" "dns/dns" "udm/*:objectType=dns/*" \
-	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*"
+	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
 umc_operation_create "udm-dhcp" "UDM - DNS" "dhcp/dhcp" "udm/*:objectType=dhcp/*" \
-	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*"
+	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
 umc_operation_create "udm-nagios" "UDM - Nagios" "nagios/nagios" "udm/*:objectType=nagios/*" \
-	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*"
+	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
 umc_operation_create "udm-navigation" "UDM - Policies" "navigation" "udm/nav/*"
 

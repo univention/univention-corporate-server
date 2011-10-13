@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.163-1) unstable; urgency=low
+
+  * support complex policies: multi-values like UCR variables may inherit
+    each entry from another policy; Bug #23700
+  * updated operation sets
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 13 Oct 2011 20:39:59 +0200
+
 univention-management-console-module-udm (1.0.162-2) unstable; urgency=low
 
   * fixed typos in join script; Bug #23494
