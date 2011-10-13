@@ -528,7 +528,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 							'class':	'umcConfirmDialog'
 						});
 						this._busy_dialog.attr("content",
-								'<p>' + this._("The connection to the server was lost. I'm trying to reconnect. Perhaps you'll be prompted to re-authenticate when the connection is restored.") + '</p>' +
+								'<p>' + this._("The connection to the server was lost, trying to reconnect. You may need to re-authenticate when the connection is restored.") + '</p>' +
 								'<p>' + this._("Alternatively, you may close the current Management Console window, wait some time, and try to open it again.") + '</p>');
 						this._busy_dialog.show();
 					}

@@ -15,11 +15,11 @@ msgstr ""
 #: umc/python/updater/__init__.py:736
 #, python-format
 msgid "At least one out of %s must be selected."
-msgstr "Wenigstens eine der Kategorien %s muß ausgewählt sein."
+msgstr "Wenigstens eine der %s Kategorien muß ausgewählt sein."
 
 #: umc/python/updater/__init__.py:1245
 msgid "Component name is not allowed to be empty."
-msgstr "Komponentenname muß ausgefüllt sein."
+msgstr "Der Komponentenname muß angegeben werden."
 
 #: umc/python/updater/__init__.py:742
 #, python-format
@@ -28,7 +28,7 @@ msgstr "FEHLER: %s"
 
 #: umc/python/updater/__init__.py:730
 msgid "Empty server name not allowed"
-msgstr "Server Name muß ausgefüllt werden."
+msgstr "Der Servername muß angegeben werden."
 
 #: umc/python/updater/__init__.py:1250
 #, python-format

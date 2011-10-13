@@ -97,7 +97,7 @@ dojo.declare("umc.modules._updater.ComponentsPage", umc.modules._updater.Page, {
             {
             	name:				'install',
             	label:				this._("Install"),
-            	description:		this._("Try to install the component's default package(s)"),
+            	description:		this._("Install the component's default package(s)"),
 //            	iconClass:			'dijitIconPackage',
             	isStandardAction:	true,
             	isMultiAction:		false,

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-11 13:59+0200\n"
+"POT-Creation-Date: 2011-10-13 12:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,8 +54,8 @@ msgid ""
 "Alternatively, you may close the current Management Console window, wait "
 "some time, and try to open it again."
 msgstr ""
-"Natürlich können Sie die Management Console jetzt auch schließen, einige "
-"Zeit warten und dann wieder öffnen."
+"Sie können die Management Console jetzt auch schließen, und später wieder "
+"öffnen."
 
 #: umc/js/_updater/DetailsPage.js:40 umc/js/_updater/SettingsPage.js:33
 msgid "Apply changes"
@@ -72,12 +72,12 @@ msgid ""
 "close the module."
 msgstr ""
 "Solange Univention Updater Ihr System aktualisiert, können Sie keine "
-"Einstellungen verändern oder Komponenten verwalten. Sie können hier "
-"zuschauen oder den Modul schließen."
+"Einstellungen verändern oder Komponenten verwalten. Sie können die "
+"Aktualisierung hier verfolgen oder das Modul schließen."
 
 #: umc/js/updater.js:327
 msgid "Attention!"
-msgstr "Warnung!"
+msgstr "Achtung!"
 
 #: umc/js/_updater/ComponentsPage.js:186
 msgid "Available"
@@ -115,8 +115,8 @@ msgstr "Verbindung zum Server abgebrochen!"
 #: umc/js/updater.js:518
 msgid "Connection to server lost. Trying to reconnect."
 msgstr ""
-"Die Verbindung zum Server ist verlorengegangen. Ich versuche, mich wieder "
-"mit dem Server zu verbinden."
+"Die Verbindung zum Server wurde unterbrochen. Ein erneuter Verbindungsaufbau "
+"wird gestartet."
 
 #: umc/js/_updater/ProgressPage.js:228
 msgid "Current status file content"
@@ -177,15 +177,15 @@ msgstr "Möchten Sie wirklich fortfahren?"
 
 #: umc/js/_updater/UpdatesPage.js:43
 msgid "During reboot, the connection to the machine will be lost. "
-msgstr "Während des Neustarts wird die Verbindung zur Maschine verlorengehen. "
+msgstr "Während des Neustarts wird die Verbindung zur Maschine unterbrochen. "
 
 #: umc/js/updater.js:335
 msgid ""
 "During setup, the web server may be stopped, leading to a termination of the "
 "HTTP connection. "
 msgstr ""
-"Während des Updates kann es vorkommen, dass der Webserver beendet wird und "
-"diese Verbindung unterbrochen wird. "
+"Während des Updates ist es mögich, dass die Verbindung zum Webserver "
+"unterbrochen wird. "
 
 #: umc/js/_updater/ComponentsPage.js:119
 msgid "Edit"
@@ -205,11 +205,11 @@ msgstr "Aktivieren"
 
 #: umc/js/_updater/DetailsPage.js:58
 msgid "Enable this component"
-msgstr "diese Komponente aktivieren"
+msgstr "Diese Komponente aktivieren"
 
 #: umc/js/_updater/ComponentsPage.js:57
 msgid "Enable/disable this component"
-msgstr "diese Komponente aktivieren"
+msgstr "Diese Komponente aktivieren"
 
 #: umc/js/updater.js:330
 msgid ""
@@ -242,6 +242,10 @@ msgstr "Release-Aktualisierungen installieren"
 #: umc/js/_updater/UpdatesPage.js:229
 msgid "Install security update"
 msgstr "Sicherheits-Aktualisierungen installieren"
+
+#: umc/js/_updater/ComponentsPage.js:100
+msgid "Install the component's default package(s)"
+msgstr "Die Standardpakete dieser Komponente installieren"
 
 #: umc/js/_updater/ComponentsPage.js:190
 msgid "Installed"
@@ -386,7 +390,7 @@ msgstr "Repository server"
 
 #: umc/js/_updater/SettingsPage.js:25
 msgid "Reset"
-msgstr "Rücksetzen"
+msgstr "Zurücksetzen"
 
 #: umc/js/_updater/UpdatesPage.js:295
 msgid "Security updates"
@@ -422,12 +426,12 @@ msgstr "Status"
 
 #: umc/js/updater.js:531
 msgid ""
-"The connection to the server was lost. I'm trying to reconnect. Perhaps "
-"you'll be prompted to re-authenticate when the connection is restored."
+"The connection to the server was lost, trying to reconnect. You may need to "
+"re-authenticate when the connection is restored."
 msgstr ""
-"Die Verbindung zum Server ist verlorengegangen. Ich versuche die Verbindung "
-"wieder aufzunehmen. Wahrscheinlich müssen Sie sich neu anmelden, wenn die "
-"Verbindung wieder hergestellt ist."
+"Die Verbindung zum Server ist verlorengegangen. Es wird versucht, die "
+"Verbindung wieder aufzunehmen. Wahrscheinlich müssen Sie sich neu anmelden, "
+"wenn die Verbindung wieder hergestellt ist."
 
 #: umc/js/_updater/ProgressPage.js:283
 msgid "The current job (<b>{label}</b>) is now finished.<br/>"
@@ -503,16 +507,12 @@ msgid ""
 "This page lets you modify essential settings that affect where your system "
 "looks for updates, and which of them it will consider."
 msgstr ""
-"Auf dieser Seite können Sie einstellen, wo Ihr System nach Aktualisierungen "
-"sucht, und welche davon genutzt werden."
+"Auf dieser Seite kann eingestellt werden, von wo das System nach "
+"Aktualisierungen bezieht und welche davon eingebunden werden."
 
 #: umc/js/updater.js:331
 msgid "Thus, updates shouldn't be installed on a live system. "
 msgstr "Deshalb sollten Sie das Update nicht im laufenden Betrieb einspielen. "
-
-#: umc/js/_updater/ComponentsPage.js:100
-msgid "Try to install the component's default package(s)"
-msgstr "Diese Komponente installieren"
 
 #: umc/js/_updater/ProgressPage.js:37
 msgid "Univention Updater is working"
@@ -556,7 +556,7 @@ msgstr "'Unmaintained' Repositories benutzen"
 
 #: umc/js/_updater/DetailsPage.js:93
 msgid "Username"
-msgstr "Nutzername"
+msgstr "Benutzername"
 
 #: umc/js/_updater/UpdatesPage.js:44
 msgid ""
