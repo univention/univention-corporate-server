@@ -21,10 +21,9 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	//		staticValues. Dynamic values may be mixed with staticValues.
 	dynamicValues: null,
 
-	// dynamicOptions: Object?|Function?
+	// dynamicOptions: Object?
 	//		Reference to a dictionary containing options that are passed over to
-	//		the UMCP command specified by `dynamicValues`. Instead of an dictionary,
-	//		a reference of a function returning a dictionary can also be specified.
+	//		the UMCP command specified by `dynamicValues`.
 	dynamicOptions: null,
 
 	// sortDynamicValues: Boolean

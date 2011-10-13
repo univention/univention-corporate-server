@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.92-1) unstable; urgency=low
+
+  * fixed doc for _SelectMixin.dynamicOptions (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Oct 2011 12:28:02 +0200
+
 univention-management-console-frontend (1.0.91-1) unstable; urgency=low
 
   * UMC web server: pass on options for GET command; Bug #23494
