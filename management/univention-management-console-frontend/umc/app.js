@@ -136,6 +136,15 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		tab.startup();
 	},
 
+	focusTab: function(tab) {
+		this._tabContainer.selectChild(tab, true);
+	},
+
+	closeTab: function(tab) {
+		tab.onClose();
+		this._tabContainer.removeChild(tab);
+	},
+
 	onModulesLoaded: function() {
 		this.setupGui();
 	},
@@ -417,8 +426,10 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// put everything together
 		topContainer.startup();
 
-		// subscribe to requests for opening modules
+		// subscribe to requests for opening modules and closing/focusing tabs
 		dojo.subscribe('/umc/modules/open', dojo.hitch(this, 'openModule'));
+		dojo.subscribe('/umc/tabs/close', dojo.hitch(this, 'closeTab'));
+		dojo.subscribe('/umc/tabs/focus', dojo.hitch(this, 'focusTab'));
 
 		// set a flag that GUI has been build up
 		this._isSetupGUI = true;

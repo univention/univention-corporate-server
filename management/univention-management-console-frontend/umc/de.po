@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-10 12:29+0200\n"
+"POT-Creation-Date: 2011-10-13 20:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgstr "%d Objekte von %d ausgewählt"
 msgid "1 object of %d selected"
 msgstr "1 Objekt von %d ausgewählt"
 
-#: umc/app.js:347
+#: umc/app.js:356
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
-#: umc/app.js:411
+#: umc/app.js:420
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -79,7 +79,7 @@ msgstr "Schließen"
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:377
+#: umc/app.js:386
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -87,7 +87,7 @@ msgstr "Bestätigungen"
 msgid "Could not fulfill the request."
 msgstr "Die Anfrage konnte nicht ausgeführt werden."
 
-#: umc/app.js:403
+#: umc/app.js:412
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
@@ -109,11 +109,11 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/app.js:343
+#: umc/app.js:352
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/app.js:361
+#: umc/app.js:370
 #, python-format
 msgid "Host: %(host)s.%(domain)s"
 msgstr ""
@@ -183,11 +183,11 @@ msgstr "Anmelden"
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:404
+#: umc/app.js:413
 msgid "Logout"
 msgstr "Abmelden"
 
-#: umc/app.js:385
+#: umc/app.js:394
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
@@ -215,7 +215,7 @@ msgstr "Hinweis"
 msgid "Ok"
 msgstr "Ok"
 
-#: umc/app.js:291 umc/app.js:292
+#: umc/app.js:300 umc/app.js:301
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -274,7 +274,7 @@ msgstr ""
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
-#: umc/app.js:370
+#: umc/app.js:379
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -282,7 +282,7 @@ msgstr "Tooltips"
 msgid "Translate me!"
 msgstr ""
 
-#: umc/app.js:294
+#: umc/app.js:303
 msgid ""
 "Univention Management Console is a modularly designed, web-based application "
 "for the administration of objects in your Univention Corporate Server domain "
@@ -292,7 +292,7 @@ msgstr ""
 "für die Administrierung von Objekten in der Univention-Corporate-Server-"
 "Domäne und individueller Univention-Corporate-Server-Systeme."
 
-#: umc/app.js:393
+#: umc/app.js:402
 #, python-format
 msgid "User: %s"
 msgstr "Benutzer: %s"
