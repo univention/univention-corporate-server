@@ -338,9 +338,9 @@ class access:
 				raise univention.admin.uexceptions.ldapError, str(msg)
 			raise univention.admin.uexceptions.ldapError, _err2str(msg)
 
-	def getPolicies(self, dn, policies=[], attrs={}, result={}, fixedattrs={}):
+	def getPolicies(self, dn, policies=[], attrs={}, result={}, fixedattrs={} ):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'getPolicies modules dn %s result' % dn)
-		return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs)
+		return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs )
 
 	def add(self, dn, al, exceptions=False):
 		self.__validateLicense()

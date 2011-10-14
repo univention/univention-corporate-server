@@ -2446,20 +2446,28 @@ class simplePolicy(simpleLdap):
 			self.__makeUnique()
 			self.create()
 
-	def policy_result( self ):
+	def policy_result( self, faked_policy_reference = None ):
 		"""This method retrieves the policy values currently effective
 		for this object. If the 'resultmode' is not active the evaluation
-		is cancelled."""
+		is cancelled.
+
+		If faked_policy_reference is given at the top object
+		(referring_object_dn) this policy object temporarily referenced"""
 
 		if not self.resultmode:
 			return
 
 		self.polinfo_more={}
 		if not self.policy_attrs:
+			policies = []
+			if faked_policy_reference:
+				policies.append( faked_policy_reference )
+
+			# the referring object does not exist yet
 			if not self.referring_object_dn == self.referring_object_position_dn:
-				result = self.lo.getPolicies(self.lo.parentDn(self.referring_object_dn), policies=[], attrs={}, result={}, fixedattrs={})
+				result = self.lo.getPolicies( self.lo.parentDn( self.referring_object_dn ), policies = policies )
 			else:
-				result = self.lo.getPolicies(self.referring_object_position_dn, policies=[], attrs={}, result={}, fixedattrs={})
+				result = self.lo.getPolicies( self.referring_object_position_dn, policies = policies )
 			for policy_oc, attrs in result.items():
 				if univention.admin.objects.ocToType(policy_oc) == self.module:
 					self.policy_attrs=attrs

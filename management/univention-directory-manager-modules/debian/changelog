@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.124-1) unstable; urgency=low
+
+  * udm/object/policies: support faking a policy reference; Bug #23557
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 14 Oct 2011 09:59:09 +0200
+
 univention-directory-manager-modules (7.0.123-1) unstable; urgency=low
 
   * re-wrote UCR policy to adapt to new frontend; Bug #23700
