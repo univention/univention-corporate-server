@@ -87,11 +87,11 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[]):
 			raise ldap.SERVER_DOWN, e
 	return lo
 
-def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True):
+def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True, secret_file = "/etc/machine.secret"):
 	ucr = ConfigRegistry()
 	ucr.load()
 
-	bindpw=open('/etc/machine.secret').read()
+	bindpw=open(secret_file).read()
 	if bindpw[-1] == '\n':
 		bindpw=bindpw[0:-1]
 
