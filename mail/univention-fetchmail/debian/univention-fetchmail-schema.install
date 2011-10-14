@@ -1,0 +1,2 @@
+univention-fetchmail.schema usr/share/univention-ldap/schema
+92univention-fetchmail-schema.inst usr/lib/univention-install

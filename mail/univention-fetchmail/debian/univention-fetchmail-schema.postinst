@@ -3,7 +3,7 @@
 # Univention Fetchmail
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 #DEBHELPER#
 
@@ -38,8 +38,7 @@ univention-config-registry commit /etc/ldap/slapd.conf
 
 /etc/init.d/slapd crestart
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ] ; then
-	/usr/lib/univention-install/92univention-fetchmail-schema.inst || true
-fi
+. /usr/share/univention-lib/all.sh
+call_joinscript 92univention-fetchmail-schema.inst
 
 exit 0

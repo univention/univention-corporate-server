@@ -1,5 +1,5 @@
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -25,7 +25,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 #
-name = 'fetchmailExtension'
+name = 'fetchmailrc'
 description = 'write user-configuration to fetchmailrc'
 filter = '(objectClass=univentionFetchmail)'
 attributes = []
@@ -37,7 +37,6 @@ import re
 import ldap
 import univention.config_registry
 
-#sys.setdefaultencoding('iso8859-15')
 fn_fetchmailrc = '/etc/fetchmailrc'
 __initscript = '/etc/init.d/fetchmail'
 

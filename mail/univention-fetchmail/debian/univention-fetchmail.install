@@ -1,0 +1,2 @@
+fetchmailrc.py usr/lib/univention-directory-listener/system
+fetchmailrc etc

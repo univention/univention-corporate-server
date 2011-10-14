@@ -3,7 +3,7 @@
 # Univention fetchmail
 #  join script
 #
-# Copyright 2007-2010 Univention GmbH
+# Copyright 2007-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,70 +32,60 @@
 
 VERSION=1
 
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
-fi
-
-# stores current locale
-unset l
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
 
 # gettext emulating function
 function _()
 {
+	local l
+
 	if test -z "$1"; then
 		return
 	fi
 
 	if test -z "${l}"; then
-		l=$(ucr get locale/default | sed -e 's/^\([a-z]\{2\}\)_[A-Z]\{2\}[.:@].*$/\1/')
+		l="$(ucr get locale/default | sed -e 's/^\([a-z]\{2\}\)_[A-Z]\{2\}[.:@].*$/\1/')"
 		test -z "${l}" && l=en
 	fi
 
-	while true; do
-		case "${1}" in
-			Username)
-				case "${l}" in
-					de) echo Benutzername;;
-					*) echo ${1};;
-				esac
-				break;;
-			Protocol-Types)
-				case "${l}" in
-					de) echo Protokoll-Typen;;
-					*) echo ${1};;
-				esac
-				break;;
-			Protocol)
-				case "${l}" in
-					de) echo Protokoll;;
-					*) echo ${1};;
-				esac
-				break;;
-			Password)
-				case "${l}" in
-					de) echo Passwort;;
-					*) echo ${1};;
-				esac
-				break;;
-			*) echo ${1}
-			break;;
-		esac
-	done
+	case "${1}" in
+		Username)
+			case "${l}" in
+				de) echo Benutzername;;
+				*) echo ${1};;
+			esac
+			;;
+		Protocol-Types)
+			case "${l}" in
+				de) echo Protokoll-Typen;;
+				*) echo ${1};;
+			esac
+			;;
+		Protocol)
+			case "${l}" in
+				de) echo Protokoll;;
+				*) echo ${1};;
+			esac
+			;;
+		Password)
+			case "${l}" in
+				de) echo Passwort;;
+				*) echo ${1};;
+			esac
+			;;
+		*) echo ${1} ;;
+	esac
 }
 
-touch /usr/lib/univention-install/.index.txt
 
-test -n "`grep "univention-fetchmail-schema v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+eval "$(univention-config-registry shell)"
 
-eval $(univention-config-registry shell)
-
-
-univention-directory-manager container/cn create $@ --ignore_exists \
+univention-directory-manager container/cn create "$@" --ignore_exists \
 		--position "cn=custom attributes,cn=univention,$ldap_base" \
 		--set name=mail
 
-univention-directory-manager settings/syntax create $@ --ignore_exists \
+univention-directory-manager settings/syntax create "$@" --ignore_exists \
 		--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" \
 		--set name=UniventionFetchmail-Syntax-ProtocolType \
 		--set filter="(objectClass=univentionBase)" \
@@ -104,7 +94,7 @@ univention-directory-manager settings/syntax create $@ --ignore_exists \
 		--set base="$ldap_base" \
 		--set viewonly=FALSE
 
-univention-directory-manager settings/customattribute create $@ --ignore_exists \
+univention-directory-manager settings/customattribute create "$@" --ignore_exists \
 		--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" \
 		--set name=UniventionFetchmail-ContainerDC-ProtocolTypeList \
 		--set module=container/dc \
@@ -118,7 +108,7 @@ univention-directory-manager settings/customattribute create $@ --ignore_exists 
 
 
 
-univention-directory-manager settings/customattribute create $@ --ignore_exists \
+univention-directory-manager settings/customattribute create "$@" --ignore_exists \
 		--position "cn=custom attributes,cn=univention,$ldap_base" \
 		--set name=UniventionFetchmail-User-Server  \
 		--set module=users/user \
@@ -129,7 +119,7 @@ univention-directory-manager settings/customattribute create $@ --ignore_exists 
 		--set ldapMapping=univentionFetchmailServer \
 		--set shortDescription="$(_ Server)"
 
-univention-directory-manager settings/customattribute create $@ --ignore_exists \
+univention-directory-manager settings/customattribute create "$@" --ignore_exists \
 		--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" \
 		--set name=UniventionFetchmail-User-Protocol \
 		--set module=users/user \
@@ -141,7 +131,7 @@ univention-directory-manager settings/customattribute create $@ --ignore_exists 
 		--set ldapMapping=univentionFetchmailProtocol \
 		--set multivalue=0
 
-univention-directory-manager settings/customattribute create $@ --ignore_exists \
+univention-directory-manager settings/customattribute create "$@" --ignore_exists \
 		--position "cn=custom attributes,cn=univention,$ldap_base" \
 		--set name=UniventionFetchmail-User-Address  \
 		--set module=users/user \
@@ -152,7 +142,7 @@ univention-directory-manager settings/customattribute create $@ --ignore_exists 
 		--set ldapMapping=univentionFetchmailAddress \
 		--set shortDescription="$(_ Username)"
 
-univention-directory-manager settings/customattribute create $@ --ignore_exists \
+univention-directory-manager settings/customattribute create "$@" --ignore_exists \
 		--position "cn=custom attributes,cn=univention,$ldap_base" \
 		--set name=UniventionFetchmail-User-Password  \
 		--set module=users/user \
@@ -171,11 +161,11 @@ if [ -n "$pid" ] ; then
     kill -9 $pid 2> /dev/null > /dev/null
 fi
 
-univention-directory-manager container/dc modify $@ --ignore_exists \
+univention-directory-manager container/dc modify "$@" --ignore_exists \
 		--dn "$ldap_base" \
 		--customattribute $(_ Protocol-Types)=IMAP \
 		--customattribute $(_ Protocol-Types)=POP3
 
-test -n "`grep "univention-fetchmail-schema v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-fetchmail-schema v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+joinscript_save_current_version
 
 exit 0
