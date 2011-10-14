@@ -1,3 +1,9 @@
+univention-postgrey (1.0.1-1) unstable; urgency=low
+
+  * renamed files (Bug #23775)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 14 Oct 2011 12:49:18 +0200
+
 univention-postgrey (1.0.0-0) unstable; urgency=low
 
   * initial release (Bug #23775)
