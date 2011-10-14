@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.172-1) unstable; urgency=low
+
+  * added remaining UDM icons from UCS 2.4 (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 14 Oct 2011 17:18:59 +0200
+
 univention-management-console-module-udm (1.0.171-1) unstable; urgency=low
 
   * allow all policy types for containers (Bug #23557)
