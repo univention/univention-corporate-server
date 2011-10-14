@@ -53,7 +53,6 @@ umc_init () {
 	# containers
 	udm container/cn create $BIND_ARGS --ignore_exists --position cn=univention,$ldap_base --set name=UMC
 	udm container/cn create $BIND_ARGS --ignore_exists --position cn=policies,$ldap_base --set name=UMC --set policyPath=1
-	udm container/cn create $BIND_ARGS --ignore_exists --position cn=UMC,cn=univention,$ldap_base --set name=acls
 	udm container/cn create $BIND_ARGS --ignore_exists --position cn=UMC,cn=univention,$ldap_base --set name=operations
 
 	# default policies
