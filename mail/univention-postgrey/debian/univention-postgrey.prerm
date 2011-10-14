@@ -32,6 +32,6 @@
 
 #DEBHELPER#
 
-univention-config-registry unset mail/postfix/greylisting
+univention-config-registry unset mail/postfix/greylisting=no
 
 exit 0

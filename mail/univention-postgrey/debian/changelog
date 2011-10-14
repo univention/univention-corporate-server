@@ -1,3 +1,9 @@
+univention-postgrey (1.0.1-2) unstable; urgency=low
+
+  * do not unset variable on removal (Bug #23775)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 14 Oct 2011 16:49:08 +0200
+
 univention-postgrey (1.0.1-1) unstable; urgency=low
 
   * renamed files (Bug #23775)
