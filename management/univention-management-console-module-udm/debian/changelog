@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.173-1) unstable; urgency=low
+
+  * add new icons for users, groups and mail; Bug #23218
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 14 Oct 2011 17:19:53 +0200
+
 univention-management-console-module-udm (1.0.172-1) unstable; urgency=low
 
   * added remaining UDM icons from UCS 2.4 (Bug #22881)
