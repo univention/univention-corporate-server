@@ -54,7 +54,7 @@ def listfilter(attr):
 
 	if options.ldap_base and sender and recipient:
 
-		ldap = univention.uldap.getMachineConnection()
+		ldap = univention.uldap.getMachineConnection(ldap_master=False)
 
 		userDn = ""
 		userGroups = []

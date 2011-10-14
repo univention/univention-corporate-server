@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.26-1) unstable; urgency=low
+
+  * do not use ldap_master in listfilter listener module (Bug #23819)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 14 Oct 2011 10:34:50 +0200
+
 univention-mail-postfix (6.0.25-2) unstable; urgency=low
 
   * fixed description of UCR variables (Bug #22369)
