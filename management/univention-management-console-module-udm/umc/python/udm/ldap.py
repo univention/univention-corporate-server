@@ -221,6 +221,8 @@ class UDM_Module( object ):
 			if '$options$' in ldap_object:
 				obj.options = filter( lambda option: ldap_object[ '$options$' ][ option ] == True, ldap_object[ '$options$' ].keys() )
 				del ldap_object[ '$options$' ]
+			if '$policies$' in ldap_object:
+				obj.policies = ldap_object[ '$policies$' ].values()
 			for key, value in ldap_object.items():
 				obj[ key ] = value
 			obj.create()
@@ -260,6 +262,8 @@ class UDM_Module( object ):
 			for key, value in ldap_object.items():
 				MODULE.info( 'Setting property %s ot %s' % ( key, value ) )
 				obj[ key ] = value
+			if '$policies$' in ldap_object:
+				obj.policies = ldap_object[ '$policies$' ].values()
 			obj.modify()
 		except udm_errors.base, e:
 			MODULE.error( 'Failed to modify LDAP object %s' % obj.dn )

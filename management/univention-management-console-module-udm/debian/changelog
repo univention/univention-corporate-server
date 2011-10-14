@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.169-1) unstable; urgency=low
+
+  * udm/add, udm/put: store policy references if given; Bug #23557
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 14 Oct 2011 10:35:15 +0200
+
 univention-management-console-module-udm (1.0.168-1) unstable; urgency=low
 
   * udm/object/policies: support faking a policy reference; Bug #23557
