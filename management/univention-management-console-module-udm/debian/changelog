@@ -1,3 +1,13 @@
+univention-management-console-module-udm (1.0.175-1) unstable; urgency=low
+
+  * added missing icons (as symlink): 
+    - udm-computers-windows_domaincontroller 
+    - udm-policies-umc
+    - udm-dns-txt_record
+  (Bug #23218)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 14 Oct 2011 17:53:26 +0200
+
 univention-management-console-module-udm (1.0.174-1) unstable; urgency=low
 
   * added missing settings/* icons (Bug #23218)
