@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.171-1) unstable; urgency=low
+
+  * allow all policy types for containers (Bug #23557)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 14 Oct 2011 16:37:07 +0200
+
 univention-management-console-module-udm (1.0.170-1) unstable; urgency=low
 
   * added handling for loading/editing/creating new policies from the details

@@ -524,8 +524,15 @@ class UDM_Module( object ):
 		"""Searches in all policy objects for the given object type and
 		returns a list of all matching policy types"""
 
+		policyTypes = []
+		if self.childs:
+			# allow all policies for containers
+			policyTypes = filter( lambda x: x.startswith( 'policies/' ) and x != 'policies/policy', udm_modules.modules )
+		else:
+			policyTypes = udm_modules.policyTypes( self.name )
+
 		policies = []
-		for policy in udm_modules.policyTypes( self.name ):
+		for policy in policyTypes:
 			module = UDM_Module( policy )
 			policies.append( { 'objectType' : policy, 'label' : module.title, 'description' : module.description } )
 
