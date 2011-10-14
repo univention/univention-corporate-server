@@ -63,6 +63,12 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 	// internal reference to the page containing the subtabs for object properties
 	_tabs: null,
 
+	// internal reference to a dict with entries of the form: policy-type -> widgets
+	_policyWidgets: null,
+
+	// dojo.Deferred object of the query and render process for the policy widgets
+	_policyDeferred: null,
+
 	// object properties as they are received from the server
 	_receivedObjOrigData: null,
 
@@ -310,6 +316,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// #### Policies
 		// in case we have policies that apply to the current object, we need an extra
 		// sub tab that groups all policies together
+		this._policyWidgets = {};
 		if (policies && policies.length) {
 			this._policiesTab = new umc.widgets.Page({
 				title: this._('[Policies]'),
@@ -330,25 +337,19 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				var params = { objectType: ipolicy.objectType };
 				commands.push(this.umcpCommand('udm/properties', params));
 				commands.push(this.umcpCommand('udm/layout', params));
-				commands.push(this.umcpCommand('udm/object/policies', {
-					objectType: this.objectType,
-					objectDN: this.ldapName || null,
-					container: this.newObjectOptions ? this.newObjectOptions.container : null,
-					policyType: ipolicy.objectType
-				}));
 			}, this);
 
 			// wait until we have results for all queries
-			(new dojo.DeferredList(commands)).then(dojo.hitch(this, function(results) {
+			this._policyDeferred = (new dojo.DeferredList(commands)).then(dojo.hitch(this, function(results) {
 				// parse the widget configurations
 				var layout = [];
 				var widgetConfs = [];
 				var i;
-				for (i = 0; i < results.length; i += 3) {
-					var ipolicy = policies[Math.floor(i / 3)];
+				for (i = 0; i < results.length; i += 2) {
+					var ipolicy = policies[Math.floor(i / 2)];
+					var ipolicyType = ipolicy.objectType;
 					var iproperties = results[i][1].result;
 					var ilayout = results[i + 1][1].result;
-					var ipolicyVals = results[i + 2][1].result;
 					var newLayout = [];
 
 					// we only need to show the general properties of the policy... the "advanced"
@@ -389,29 +390,15 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					// get only the properties that need to be rendered
 					var newProperties = [];
 					dojo.forEach(iproperties, function(jprop) {
-						var name = jprop.id || jprop.name;
-						if (name in usedProperties) {
+						var jname = jprop.id || jprop.name;
+						if (jname in usedProperties) {
 							if (jprop.multivalue && 'MultiInput' != jprop.type) {
 								// handle multivalue inputs
 								jprop.subtypes = [{ type: jprop.type }];
 								jprop.type = 'MultiInput';
 							}
 							jprop.disabled = true; // policies cannot be edited
-							if (name in ipolicyVals) {
-								if ( ! dojo.isArray( ipolicyVals[name] ) ) {
-									jprop.value = ipolicyVals[name].value;
-									jprop.label += ' (<a href="javascript:void(0)" onclick=\'dijit.byId("' + this.id + '").openPolicy("' + 
-										ipolicy.objectType + '", "' + 
-										ipolicyVals[name].policy + 
-										'")\' title="' +
-										this._('Click to edit the inherited properties of the policy: %s', ipolicyVals[name].policy) +
-										'">' + this._('edit') + '</a>)';
-								} else {
-									jprop.value = dojo.map( ipolicyVals[name], function( item ) {
-										return item.value;
-									} );
-								}
-							}
+							jprop.$orgLabel$ = jprop.label; // we need the original label
 							newProperties.push(jprop);
 						}
 					}, this);
@@ -427,19 +414,22 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 						type: 'ComboBox',
 						name: '$policy$',
 						staticValues: [{ id: 'None', label: this._('Inherited') }],
-						dynamicValues: dojo.hitch(this, '_queryPolicies', ipolicy.objectType),
+						dynamicValues: dojo.hitch(this, '_queryPolicies', ipolicyType),
 						label: this._('Select policy configuration'),
-						description: this._('Select a policy that should be directly linked to the current UDM object')
+						description: this._('Select a policy that should be directly linked to the current UDM object'),
+						onChange: dojo.hitch(this, '_updatePolicy', ipolicyType)
 					});
 					var buttonsConf = [{
 						type: 'Button',
 						name: '$addPolicy$',
-						label: this._('Create new policy')
+						label: this._('Create new policy'),
+						callback: dojo.hitch(this, '_openPolicy', ipolicyType, undefined)
 					}];
 					newLayout.unshift(['$policy$', '$addPolicy$']);
 
 					// render the group of properties
 					var widgets = umc.render.widgets(newProperties);
+					this._policyWidgets[ipolicyType] = widgets;
 					var buttons = umc.render.buttons(buttonsConf);
 					policiesContainer.addChild(new dijit.TitlePane({
 						title: ipolicy.label,
@@ -449,6 +439,11 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					}));
 				}
 			}));
+		}
+		else {
+			// in case there are no policies, we use a dummy Deferred object
+			this._policyDeferred = new dojo.Deferred();
+			this._policyDeferred.resolve();
 		}
 
 		// finished adding sub tabs for now
@@ -463,7 +458,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 		var closeLabel = this._('Back to search');
 		if ('navigation' == this.moduleFlavor) {
-			closeLabel = this._('Back to navigation')
+			closeLabel = this._('Back to navigation');
 		}
 		if (this.isClosable) {
 			closeLabel = this._('Cancel');
@@ -530,10 +525,41 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// load form data
 		if (this.ldapName) {
 			this._form.load(this.ldapName).then(dojo.hitch(this, function(vals) {
+				// save the original data we received from the server
 				this._receivedObjOrigData = vals;
-				this._receivedObjFormData = this._form.gatherFormValues();
+
+				// as soon as the policy widgets are rendered, update the policy values
+				this._policyDeferred.then(dojo.hitch(this, function() {
+					var policies = dojo.getObject('_receivedObjOrigData.$policies$', false, this) || {};
+					umc.tools.forIn(policies, function(ipolicyType, ipolicyDN) {
+						// get the ComboBox to update its value with the new DN
+						if (ipolicyType in this._policyWidgets) {
+							var iwidget = this._policyWidgets[ipolicyType].$policy$;
+							iwidget.setInitialValue(ipolicyDN, true);
+						}
+					}, this);
+				}));
+
+				// save the original form data
+				this._receivedObjFormData = this.getValues();
 			}));
 		}
+	},
+
+	getValues: function() {
+		// get all form values
+		var vals = this._form.gatherFormValues();
+		
+		// get also policy values... can not be handled as standard form entry
+		vals.$policies$ = {};
+		umc.tools.forIn(this._policyWidgets, function(ipolicyType, iwidgets) {
+			var ival = iwidgets.$policy$.get('value');
+			if ('None' != ival) {
+				vals.$policies$[ipolicyType] = ival;
+			}
+		}, this);
+
+		return vals;
 	},
 
 	_queryPolicies: function(objectType) {
@@ -549,21 +575,95 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		});
 	},
 
-	openPolicy: function(objectType, objectDN) {
-		var props =  {
-			openObject: {
-				objectType: objectType,
-				objectDN: objectDN
-			},
-			onObjectSaved: dojo.hitch(this, function(dn, objectType) {
-				// we got the modified DN
-				console.log('# Saved DN:', dn, 'objectType:', objectType);
+	_updatePolicy: function(policyType, policyDN) {
+		// make sure the given policyType exists
+		if (!(policyType in this._policyWidgets)) {
+			return;
+		}
+
+		// evaluate the policy with the given policyType and policyDN
+		this.umcpCommand('udm/object/policies', {
+			objectType: this.objectType,
+			policyDN: 'None' == policyDN || !policyDN ? null : policyDN,
+			policyType: policyType,
+			objectDN: this.ldapName || null,
+			container: this.newObjectOptions ? this.newObjectOptions.container : null
+		}).then(dojo.hitch(this, function(data) {
+			umc.tools.forIn(data.result, function(iname, iinfo) {
+				// ensure that the given property name exists for the policy
+				var iwidget = this._policyWidgets[policyType][iname];
+				if (!iwidget) {
+					return true;
+				}
+
+				// set the value and laben
+				if (!dojo.isArray(iinfo)) {
+					iwidget.set('value', iinfo.value);
+					var label = dojo.replace('{label} (<a href="javascript:void(0)" ' +
+							'onclick=\'dijit.byId("{id}")._openPolicy("{type}", "{dn}")\' ' +
+							'title="{title}: {dn}">{edit}</a>)', {
+						label: iwidget.$orgLabel$,
+						id: this.id,
+						type: policyType,
+						dn: iinfo.policy,
+						title: this._('Click to edit the inherited properties of the policy'),
+						edit: this._('edit')
+					});
+					iwidget.set('label', label);
+				} else {
+					var value = dojo.map( iinfo, function( item ) {
+						return item.value;
+					} );
+					iwidget.set('value', value);
+				}
+			}, this);
+		}));
+	},
+
+	_openPolicy: function(policyType, policyDN) {
+		var props = {
+			onObjectSaved: dojo.hitch(this, function(dn, policyType) {
+				// a new policy was created and should be linked to the current object
+				// or an existing policy was modified
+				if ((policyType in this._policyWidgets)) {
+					// trigger a reload of the dynamicValues
+					var widget = this._policyWidgets[policyType].$policy$;
+					widget.reloadDynamicValues();
+
+					// set the value after the reload has been done
+					var handle = this.connect(widget, 'onValuesLoaded', dojo.hitch(this, function() {
+						this.disconnect(handle);
+						var oldDN = widget.get('value');
+						widget.set('value', dn);
+						if (oldDN == dn) {
+							// we need a manual refresh in case the DN did not change since
+							// the policy might have been edited and therefore its values
+							// need to be reloaded
+							this._updatePolicy(policyType, dn);
+						}
+					}));
+				}
 			}),
 			onClose: dojo.hitch(this, function() {
 				this.onFocusModule();
 				return true;
 			})
 		};
+
+		if (policyDN) {
+			// policyDN is given, open an existing object
+			props.openObject = {
+				objectType: policyType,
+				objectDN: policyDN
+			};
+		}
+		else {
+			// if no DN is given, we are creating a new oject
+			props.newObject = {
+				objectType: policyType
+			};
+		}
+
 		dojo.publish("/umc/modules/open", ["udm", "policies/policy", props]);
 	},
 
@@ -813,7 +913,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		deffered.then(dojo.hitch(this, function(result) {
 			if (result.success) {
 				this.onClose();
-				this.onSave(result.$dn$, this.objectType)
+				this.onSave(result.$dn$, this.objectType);
 			}
 			else {
 				umc.dialog.alert(this._('The UDM object could not be saved: %(details)s', result));
@@ -826,7 +926,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		//		Return a list of object properties that have been altered.
 
 		// get all form values and see which values are new
-		var vals = this._form.gatherFormValues();
+		var vals = this.getValues();
 		var newVals = {};
 		if (this.newObjectOptions) {
 			// get only non-empty values
@@ -838,7 +938,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		}
 		else {
 			// existing object .. get only the values that changed
-			umc.tools.forIn(vals, dojo.hitch(this, function(iname, ival) {
+			umc.tools.forIn(vals, function(iname, ival) {
 				var oldVal = this._receivedObjFormData[iname];
 
 				// check whether old values and new values differ...
@@ -846,7 +946,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				if (dojo.toJson(ival) != dojo.toJson(oldVal)) {
 					newVals[iname] = ival;
 				}
-			}));
+			}, this);
 
 			// set the LDAP DN
 			newVals[this.moduleStore.idProperty] = vals[this.moduleStore.idProperty];

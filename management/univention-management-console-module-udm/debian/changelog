@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.170-1) unstable; urgency=low
+
+  * added handling for loading/editing/creating new policies from the details
+    of an UDM object (Bug #23557)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 14 Oct 2011 16:13:33 +0200
+
 univention-management-console-module-udm (1.0.169-1) unstable; urgency=low
 
   * udm/add, udm/put: store policy references if given; Bug #23557

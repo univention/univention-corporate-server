@@ -202,7 +202,14 @@ class UDM_Module( object ):
 			except udm_errors.noObject, e:
 				raise UMC_CommandError( str( e ) )
 		else:
-			container = ldap_position.getBase()
+			if hasattr( self.module, 'policy_position_dn_prefix' ):
+				container = '%s,cn=policies,%s' % ( self.module.policy_position_dn_prefix, ldap_position.getBase() )
+			elif hasattr( self.module, 'default_containers' ) and self.module.default_containers:
+				container = '%s,%s' % ( self.module.default_containers[ 0 ], ldap_position.getBase() )
+			else:
+				container = ldap_position.getBase()
+
+			ldap_position.setDn( container )
 
 		if superordinate not in ( None, 'None' ):
 			mod = get_module( self.name, superordinate )
@@ -223,6 +230,7 @@ class UDM_Module( object ):
 				del ldap_object[ '$options$' ]
 			if '$policies$' in ldap_object:
 				obj.policies = ldap_object[ '$policies$' ].values()
+				del ldap_object[ '$policies$' ]
 			for key, value in ldap_object.items():
 				obj[ key ] = value
 			obj.create()
@@ -259,6 +267,9 @@ class UDM_Module( object ):
 		try:
 			obj.open()
 			MODULE.info( 'Modifying LDAP object %s' % obj.dn )
+			if '$policies$' in ldap_object:
+				obj.policies = ldap_object[ '$policies$' ].values()
+				del ldap_object[ '$policies$' ]
 			for key, value in ldap_object.items():
 				MODULE.info( 'Setting property %s ot %s' % ( key, value ) )
 				obj[ key ] = value

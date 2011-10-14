@@ -64,6 +64,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 	//		the properties 'objectType' and 'objectDN' (both as strings).
 	openObject: null,
 
+	// newObject: Object?
+	//		If given, the module will open upon start the detail page for editing a new
+	//		object (specified by its objectType). This property is expected to be a dict with
+	//		the properties 'objectType', 'container', 'objectTemplate' (optional), and 
+	//		'superodinate' (optional).
+	newObject: null,
+
 	// the property field that acts as unique identifier: the LDAP DN
 	idProperty: '$dn$',
 
@@ -152,9 +159,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		// call superclass method
 		this.inherited(arguments);
 
-		// check whether we need to open directly the detail page of a given object
+		// check whether we need to open directly the detail page of a given or a new object
 		if (this.openObject) {
 			this.createDetailPage(this.openObject.objectType, this.openObject.objectDN, undefined, true);
+			return; // do not render the search page
+		}
+		if (this.newObject) {
+			this.createDetailPage(this.newObject.objectType, undefined, this.newObject, true);
 			return; // do not render the search page
 		}
 
@@ -766,6 +777,14 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 	createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable) {
 		// summary:
 		//		Creates and views the detail page for editing UDM objects.
+
+		if (newObjOptions) {
+			// make sure that container and superordinate are at least set to null
+			newObjOptions = dojo.mixin({
+				container: null,
+				superordinate: null
+			}, newObjOptions);
+		}
 
 		this._detailPage = new umc.modules._udm.DetailPage({
 			umcpCommand: dojo.hitch(this, 'umcpCommand'),
