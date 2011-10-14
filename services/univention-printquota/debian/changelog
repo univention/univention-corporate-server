@@ -1,3 +1,15 @@
+univention-printquota (4.0.2-1) unstable; urgency=low
+
+  * added dependency to pkipplib and pkpgcounter (Bug #21649) 
+  * added server password change hook
+  * added postgres 8.4 pg_hba.conf subfile template
+  * use univention.uldap.getMachineConnection instead of 
+    univention.uldap.access in univention-printquota-setuser
+  * added listener pykota-groups.py to manage groups in pykota
+  * added listener pykota-users.py to manage users in pykota
+
+ -- Felix Botner <botner@univention.de>  Thu, 13 Oct 2011 13:09:55 +0200
+
 univention-printquota (4.0.1-1) unstable; urgency=low
 
   * use machine account for ldapsearch (Bug #17519)

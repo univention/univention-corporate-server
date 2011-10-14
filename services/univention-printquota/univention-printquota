@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 #
-# Univention Print Quota
-#  postinst script for the debian package
+# Univention pykota
+#   machine password hook script
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,28 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-chmod 0600 /etc/univention/templates/files/etc/pykota/pykotadmin.conf
-#DEBHELPER#
-
-chown -R pykota.pykota /etc/pykota
-chmod -R g+rw /etc/pykota
-
-# should be enabled for cups 1.2
-# chmod o+r /etc/pykota/pykotadmin.conf /etc/pykota/pykota.conf
-
-# if all users have access to /usr/share/pykota/cupspykota thenn 
-# pykota will run as user lp
-dpkg-statoverride --update --add root root 700 /usr/share/pykota/cupspykota >/dev/null || true
-
-adduser lp pykota
-/etc/init.d/cups restart
-
-univention-config-registry set pykota/policy/debug?1
-
-if [ "$1" = "configure" ]; then
-	if test -f /etc/init.d/univention-directory-listener; then
-	/etc/init.d/univention-directory-listener crestart
-	fi
+if [ "$1" = "postchange" ] ; then
+    dest="/etc/pykota.secret"
+    cp /etc/machine.secret "$dest"
+    chown pykota:root "$dest"
+    chmod 600  "$dest"
 fi
-
-exit 0

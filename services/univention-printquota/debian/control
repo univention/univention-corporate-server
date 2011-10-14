@@ -7,7 +7,7 @@ Standards-Version: 3.8.2
 
 Package: univention-printquota
 Architecture: all
-Depends: univention-config-registry, univention-printserver, pykota, univention-printquotadb
+Depends: univention-config-registry, univention-printserver, pykota, univention-printquotadb, pkipplib, pkpgcounter
 Pre-Depends: pykota
 Description: UCS - quotasupport for printserver
  This packages provides the printquota configuration. Quotas

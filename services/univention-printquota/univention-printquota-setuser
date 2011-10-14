@@ -52,7 +52,6 @@ def callEdpykota(options):
 	if not rval == 0:
 		log(1, "WARNING: edpykota returned with %s" % rval)
 
-
 def set_quota(printer, who, soft, hard, group=0):
 	arg=''
 	if group == 1:
@@ -76,8 +75,7 @@ except:
 	log(0, 'exit, To Few Arguments, need username and printer')
 	sys.exit('To Few Arguments, need username and printer')
 
-
-lo = univention.uldap.access(host=bc['ldap/server/name'], base=bc['ldap/base'], binddn=None, bindpw=None, start_tls=2)
+lo = univention.uldap.getMachineConnection(secret_file="/etc/pykota.secret", ldap_master=False)
 try:
 	user_dn,attrs=lo.search('(&(objectClass=person)(uid=%s))' % usr_filter, required=1, unique=1, attr=['uid'])[0]
 except:
@@ -113,7 +111,6 @@ for entry in entries:
 					grp="\"%s\""%grp
 					set_quota(prt_grp_name, grp, s_limit, h_limit, 1)
 					callEdpykota("--add --printer %s %s" % (prt_grp_name, usr_filter))
-					log(3, "called: /usr/bin/edpykota --add --printer %s %s" % (prt_grp_name, usr_filter))
 					has_groupquota = True
 		if policies.has_key('univentionPrintQuotaUsers'):
 			for entry in policies['univentionPrintQuotaUsers']['value']:
@@ -164,15 +161,6 @@ if prt_policies.has_key('univentionPrintQuotaGroupsPerUsers'):
 
 if not has_userquota and has_groupquota:
 	callEdpykota("--add --printer %s %s" % (prt_filter, usr_filter))
-
-
-
-grouplist=[]
-for grp in groups.keys():
-	grouplist.append('"%s"'%grp)
-
-if len(grouplist)>0:
-	callEdpykota("-i %s %s" % (string.join(grouplist,","), usr_filter))
 
 if not has_userquota and not has_groupquota and bc['cups/quota/inform'] == 'yes':
 	message="you are not allowed to use this printer."
