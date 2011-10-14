@@ -1,3 +1,9 @@
+univention-legacy-kolab-schema (1.0.3-1) unstable; urgency=low
+
+  * added missing file (Bug #23483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 14 Oct 2011 11:39:15 +0200
+
 univention-legacy-kolab-schema (1.0.2-1) unstable; urgency=low
 
   * added transitional schema file (Bug #23483)
