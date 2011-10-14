@@ -4,6 +4,8 @@ ucrlist = [ x for x in configRegistry.items() if x[0].startswith('mail/postfix/s
 # add listfilter if enabled by UCR with level "05" (Bug #17954)
 if configRegistry.is_true("mail/postfix/policy/listfilter", False):
 	ucrlist.append( ('mail/postfix/smtpd/restrictions/recipient/05-listfilter', 'check_policy_service unix:private/listfilter') )
+if configRegistry.is_true("mail/postfix/greylisting", False):
+	ucrlist.append( ('mail/postfix/smtpd/restrictions/recipient/40-greylisting', 'check_policy_service inet:127.0.0.1:10023') )
 ucrlist.sort()
 recipient_restrictions = [ x[1] for x in ucrlist ]
 

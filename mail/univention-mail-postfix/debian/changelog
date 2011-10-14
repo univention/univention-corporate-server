@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.27-1) unstable; urgency=low
+
+  * added postgrey as recipient restriction (Bug #23775)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 14 Oct 2011 16:48:16 +0200
+
 univention-mail-postfix (6.0.26-1) unstable; urgency=low
 
   * do not use ldap_master in listfilter listener module (Bug #23819)
