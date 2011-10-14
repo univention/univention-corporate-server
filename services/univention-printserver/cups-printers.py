@@ -272,8 +272,11 @@ def handler(dn, new, old):
 			args.append(new['cn'][0])
 			for a in changes:
 				if a == 'univentionPrinterQuotaSupport':
-					if new.has_key('univentionPrinterQuotaSupport') and new['univentionPrinterQuotaSupport'][0]=='1':
-						pkprinters(["--add","-D","\"%s\""%description,"--charge","%s,%s"%(page_price,job_price), new['cn'][0]])
+					if new.has_key('univentionPrinterQuotaSupport'):
+						if new['univentionPrinterQuotaSupport'][0]=='1':
+							pkprinters(["--add","-D","\"%s\""%description,"--charge","%s,%s"%(page_price,job_price), new['cn'][0]])
+						else:
+							pkprinters(['--delete', new['cn'][0]])
 
 				if a == 'univentionPrinterURI':
 					continue

@@ -1,3 +1,10 @@
+univention-printserver (5.0.9-1) unstable; urgency=low
+
+  * listener cups-printers.py: delete printer in pykota if
+    quota is disabled (Bug #22149)
+
+ -- Felix Botner <botner@univention.de>  Fri, 14 Oct 2011 15:18:24 +0200
+
 univention-printserver (5.0.8-1) unstable; urgency=low
 
   * added logrotate configuration (Bug #18002) 
