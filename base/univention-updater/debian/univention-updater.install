@@ -1,12 +1,13 @@
 python/univention-upgrade usr/sbin/
-python/univention-updater usr/sbin/
+python/univention-updater usr/share/univention-updater/
+python/univention-actualise usr/share/univention-updater/
+python/univention-errata-update usr/share/univention-updater/
 python/univention-repository-create usr/sbin/
 python/univention-repository-merge usr/sbin/
 python/univention-repository-update usr/sbin/
 python/univention-repository-delpackage usr/sbin/
 python/univention-repository-addpackage usr/sbin/
 python/univention-repository-migrate usr/sbin/
-python/univention-actualise usr/sbin/
 
 
 univention-directory-policy/univention-policy-set-repository-server usr/lib/univention-directory-policy/
@@ -20,6 +21,7 @@ script/univention-updater-check usr/share/univention-updater/
 script/set-apache-permissions usr/share/univention-updater/
 script/univention-updater-umc-dist-upgrade usr/share/univention-updater/
 script/univention-updater-umc-univention-install usr/share/univention-updater/
+script/univention-removed usr/share/univention-updater/
 
 script/preup.sh usr/share/univention-updater/
 script/postup.sh usr/share/univention-updater/
@@ -27,6 +29,3 @@ script/postup.sh usr/share/univention-updater/
 41univention-updater.inst usr/lib/univention-install/
 
 modules/univention/updater/*.py usr/share/pyshared/univention/updater/
-
-modules/univention/management/console/handlers/update/*.py usr/share/pyshared/univention/management/console/handlers/update/
-modules/univention/management/console/handlers/update/hooks/.hidden usr/share/pyshared/univention/management/console/handlers/update/hooks/

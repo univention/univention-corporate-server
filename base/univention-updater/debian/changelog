@@ -1,3 +1,15 @@
+univention-updater (7.0.47-1) unstable; urgency=low
+
+  * Merge all update tools to univention-upgrade (Bug #23453)
+  * Rename security to errata (Bug #18693)
+  * Don't restart UMC while installing univention-updater
+  * Removed old UMC module
+  * Move univention-updater, univention-errata-updates and univention-actualise to
+    /usr/share/univention-updater
+  * Set repository/mirror by default to false
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Oct 2011 21:51:09 +0200
+
 univention-updater (7.0.46-1) unstable; urgency=low
 
   * applied patch supplied in Bug #24047

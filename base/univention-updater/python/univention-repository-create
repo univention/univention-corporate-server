@@ -69,11 +69,13 @@ def check_preconditions( options ):
 def  prepare( options ):
 	""" Set local/repository and create directory structure """
 	# set local/repository
-	if configRegistry.get( 'local/repository', 'no' ) != 'yes':
+	if configRegistry.is_false( 'local/repository', True ):
 		ucr.handler_set( [ 'local/repository=yes' ] )
 		configRegistry.load()
-	else:
-		print >> sys.stderr, "Warning: Univention Configuration Registry variable local/repository is already set to yes"
+
+	if configRegistry.is_false( 'repository/mirror', True):
+		ucr.handler_set( [ 'repository/mirror=yes' ] )
+		configRegistry.load()
 
 	# create directory structure
 	try:

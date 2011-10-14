@@ -14,12 +14,12 @@ Variables: repository/online/sources
 Variables: repository/online/httpmethod
 
 Type: file
-File: etc/apt/sources.list.d/18_ucs-online-security.list
-Preinst: 18_ucs-online-security.py
-Postinst: 18_ucs-online-security.py
+File: etc/apt/sources.list.d/18_ucs-online-errata.list
+Preinst: 18_ucs-online-errata.py
+Postinst: 18_ucs-online-errata.py
 Variables: version/version
 Variables: version/patchlevel
-Variables: version/security-patchlevel
+Variables: version/erratalevel
 Variables: local/repository
 Variables: repository/online
 Variables: repository/online/server
@@ -47,7 +47,7 @@ Preinst: apt-mirror.py
 Postinst: apt-mirror.py
 Variables: version/version
 Variables: version/patchlevel
-Variables: version/security-patchlevel
+Variables: version/erratalevel
 Variables: local/repository
 Variables: repository/online
 Variables: repository/online/server

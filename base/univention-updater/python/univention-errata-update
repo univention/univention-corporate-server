@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Updater
-#  security update
+#  errata update
 #
 # Copyright 2004-2011 Univention GmbH
 #
@@ -47,9 +47,9 @@ import univention.updater.tools
 
 updater_status = {}
 
-FN_STATUS = '/var/lib/univention-updater/univention-security-update.status'
-TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_security_update.list'
-LOGFILE = '/var/log/univention/security-updates.log'
+FN_STATUS = '/var/lib/univention-updater/univention-errata-update.status'
+TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_errata_update.list'
+LOGFILE = '/var/log/univention/errata-updates.log'
 
 def update_status(**kwargs):
 	'''
@@ -93,21 +93,21 @@ def remove_temporary_sources_list ():
 		os.remove(TMPSOURCE)
 
 def usage(fd=sys.stdout):
-	print >> fd, 'univention-security-update: tool for including security updates into local repository'
+	print >> fd, 'univention-errata-update: tool for including errata updates into local repository'
 	print >> fd, 'copyright (c) 2004-2011 Univention GmbH, Germany'
 	print >> fd, ''
 	print >> fd, 'Syntax:'
-	print >> fd, '  univention-security-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate] [--check]'
-	print >> fd, '  univention-security-update [--help] '
+	print >> fd, '  univention-errata-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate] [--check]'
+	print >> fd, '  univention-errata-update [--help] '
 	print >> fd, ''
 
 def checkForUpdate(command):
-	""" Check for availability of security updates """
+	""" Check for availability of errata updates """
 	if command == 'local':
 		updater = univention.updater.LocalUpdater()
 	elif command == 'net':
 		updater = univention.updater.UniventionUpdater()
-	return updater.security_update_available()
+	return updater.errata_update_available()
 
 def update_ucr_updatestatus():
 	try:
@@ -126,7 +126,7 @@ if __name__ == '__main__':
 	call_upgrade=True
 	file=''
 
-	dprint( '***** Starting univention-security-update at %s\n' % time.ctime(), [fp_debug] )
+	dprint( '***** Starting univention-errata-update at %s\n' % time.ctime(), [fp_debug] )
 
 	if len(sys.argv) < 2:
 		usage(sys.stderr)
@@ -205,7 +205,7 @@ if __name__ == '__main__':
 			# ... via mirror synchronsiation
 			if command == 'net':
 				dprint( 'Update local repository server ...', [fp_debug] )
-				ret = subprocess.call( ['univention-repository-update', 'net', '--security-only'], stdout=fp_debug, stderr=fp_debug )
+				ret = subprocess.call( ['univention-repository-update', 'net', '--errata-only'], stdout=fp_debug, stderr=fp_debug )
 				if ret:
 					update_status( status='FAILED', errorsource='PREPARATION' )
 					dprint( 'Error: Update of local repository server failed', [fp_debug,sys.stderr] )
@@ -216,7 +216,7 @@ if __name__ == '__main__':
 				ret = subprocess.call( ['tar','xzf', file], cwd=os.path.join(repo_path, 'mirror'), stdout=fp_debug, stderr=fp_debug )
 				if ret:
 					update_status( status='FAILED', errorsource='PREPARATION' )
-					dprint( 'Error: Failed to extract security update archive.', [fp_debug,sys.stderr] )
+					dprint( 'Error: Failed to extract errata update archive.', [fp_debug,sys.stderr] )
 					sys.exit( 1 )
 
 		# without a local repository the local mode is not supported
@@ -225,7 +225,7 @@ if __name__ == '__main__':
 			dprint( 'Error: The local mode can just be used on repository servers', [fp_debug,sys.stderr] )
 			sys.exit( 1 )
 
-		# install security updates
+		# install errata updates
 		filename = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
 		if os.path.exists(filename):
 			dprint( 'Warning: Found `%s`\nfrom incomplete univention-updater run. Deleted.' % (filename), [fp_debug,sys.stdout] )
@@ -237,7 +237,7 @@ if __name__ == '__main__':
 		while True:
 			try:
 				updater = univention.updater.UniventionUpdater()
-				nextupdate = updater.security_update_available()
+				nextupdate = updater.errata_update_available()
 			except univention.updater.ConfigurationError, e:
 				dprint(traceback.format_exc(), [fp_debug])
 				dprint('Error: an error occurred during the update: %s.\n\tPlease check the logfile %s' % (e, LOGFILE), [fp_debug, sys.stderr])
@@ -250,15 +250,15 @@ if __name__ == '__main__':
 
 			if not nextupdate:
 				if not upgraded:
-					dprint( 'No Security Update available!', [fp_debug,sys.stdout] )
+					dprint( 'No update available!', [fp_debug,sys.stdout] )
 				break
 
 			secver = updater.current_version
 			secver.patchlevel = nextupdate
-			dprint( 'Update to Security Update %d.%d sec%d' % (secver.major, secver.minor, secver.patchlevel), [fp_debug,sys.stdout] )
+			dprint( 'Update to %d.%d errata%d' % (secver.major, secver.minor, secver.patchlevel), [fp_debug,sys.stdout] )
 
 			remove_temporary_sources_list()
-			sources_list_entries = updater.security_update_temporary_sources_list()
+			sources_list_entries = updater.errata_update_temporary_sources_list()
 			upgraded = nextupdate
 			if not call_upgrade or not sources_list_entries:
 				continue
@@ -266,7 +266,7 @@ if __name__ == '__main__':
 			add_temporary_sources_list('\n'.join(sources_list_entries))
 
 			# Download the pre and postup scripts
-			sec = updater._iterate_security_repositories(secver, secver, ('maintained',), ('all',))
+			sec = updater._iterate_errata_repositories(secver, secver, ('maintained',), ('all',))
 			scripts = updater.get_sh_files(sec)
 			for part, phase in updater.call_sh_files(scripts, LOGFILE, str(secver)):
 				if (part, phase) == ('update', 'main'):
@@ -294,6 +294,9 @@ if __name__ == '__main__':
 						if ret:
 							update_status( status='FAILED', errorsource='UPDATE' )
 							dprint( 'Error: Failed to upgrade packages', [fp_debug,sys.stderr] )
+						else:
+							# OK
+							subprocess.call(('univention-config-registry', 'set', 'version/erratalevel=%s' % secver.patchlevel), stdout=fp_debug, stderr=fp_debug)
 
 					remove_temporary_sources_list()
 					if os.path.exists('/var/run/apt-get.lock'):

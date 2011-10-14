@@ -82,7 +82,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		 		// No matter what has changed: the 'serial' API will reflect it.
 		 		// These dependencies establish the auto-refresh of the combobox
 		 		// whenever the form itself has been reloaded.
-		 		depends:		['ucs_version','latest_security_update','security_patchlevel','serial','timestamp'],
+		 		depends:		['ucs_version','latest_errata_update','erratalevel','serial','timestamp'],
 		 		dynamicValues:	'updater/updates/query',
 		 		// FIXME Manual placement: should be done by the layout framework some day.
 		 		style:			'width:300px;',
@@ -170,25 +170,25 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 				name:			'ucs_updates_text',
 				content:		this._("There are no release updates available.")
 			},
-			// ---------------------- Security updates -----------------------
+			// ---------------------- Errata updates -----------------------
 			{
 				type:			'HiddenInput',
-				name:			'security_patchlevel'
+				name:			'erratalevel'
 			},
 			{
 				type:			'HiddenInput',
-				name:			'latest_security_update'
+				name:			'latest_errata_update'
 			},
 			{
 				type:			'Text',
 				label:			'',
-				name:			'security_update_text1',
+				name:			'errata_update_text1',
 				content:		this._("... loading data ...")
 			},
 			{
 				type:			'Text',
 				label:			'',
-				name:			'security_update_text2',
+				name:			'errata_update_text2',
 		 		// FIXME Manual placement: should be done by the layout framework some day.
 				style:			'width:500px;margin-top:.5em;'
 			},
@@ -225,10 +225,10 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		 		'class':	'dijitHidden'
            	},
            	{
-   	            name:		'run_security_update',
-     			label:		this._('Install security update'),
+   	            name:		'run_errata_update',
+     			label:		this._('Install errata update'),
      			callback:	dojo.hitch(this, function() {
-     				this.runSecurityUpdate();
+     				this.runErrataUpdate();
      			}),
 		 		'class':	'dijitHidden'
            	},
@@ -292,11 +292,11 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
    		    	]
        	 	},
        	 	{
-       	 		label:		this._("Security updates"),
+       	 		label:		this._("Errata updates"),
        	 		layout:
    	 			[
-   	 			 	['security_update_text1'],
-   	 			 	['security_update_text2' , 'run_security_update']
+   	 			 	['errata_update_text1'],
+   	 			 	['errata_update_text2' , 'run_errata_update']
    		    	]
        	 	},
        	 	{
@@ -359,10 +359,10 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
        			this._form.getWidget('ucs_version_text').set('content',vtxt);
        			
        			// Text (and button visibility) in EASY mode. We reuse the 'vtxt' variable if the
-       			// security patchlevel is not yet set.
-       			if (values['security_patchlevel'] != 0)
+       			// erratalevel is not yet set.
+       			if (values['erratalevel'] != 0)
        			{
-       				vtxt = dojo.replace(this._("The currently installed release version is {ucs_version}-{security_patchlevel}"),values);
+       				vtxt = dojo.replace(this._("The currently installed release version is {ucs_version} errata{erratalevel}"),values);
        			}
        			this._form.getWidget('easy_release_text').set('content',vtxt);
        			
@@ -376,21 +376,21 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
        			var ebu = this._form._buttons['easy_upgrade'];
        			dojo.toggleClass(ebu.domNode,'dijitHidden',! ava);
 
-       			// Text for security updates. Stuffed into two different widgets so the button on the right
+       			// Text for errata updates. Stuffed into two different widgets so the button on the right
        			// can be aligned at the second sentence.
-		    	var tmp1 = (values['security_patchlevel'] != 0) ?
-		    		dojo.replace(this._("Your system is at security patchlevel {security_patchlevel}."),values) :
-		    		this._("No security updates for the current version are installed.");
-				this._form.getWidget('security_update_text1').set('content',tmp1);
-			    var tmp2 = (values['latest_security_update'] != 0) ?
-					dojo.replace(this._("The most recent security update is {latest_security_update}."),values) :
-					this._("There are no security updates available for the current release.");
-				this._form.getWidget('security_update_text2').set('content',tmp2);
+		    	var tmp1 = (values['erratalevel'] != 0) ?
+		    		dojo.replace(this._("Your system is at errata level {erratalevel}."),values) :
+		    		this._("No errata updates for the current version are installed.");
+				this._form.getWidget('errata_update_text1').set('content',tmp1);
+			    var tmp2 = (values['latest_errata_update'] != 0) ?
+					dojo.replace(this._("The most recent errata update is {latest_errata_update}."),values) :
+					this._("There are no errata updates available for the current release.");
+				this._form.getWidget('errata_update_text2').set('content',tmp2);
 				
 				// Uuuh, Buttons are not included in the _widgets list, so they can't be addressed by
 				// showWidget()... so I have to grab into internal structure of the Form :-(
-				var but = this._form._buttons['run_security_update'];
-				dojo.toggleClass(but.domNode,'dijitHidden',values['latest_security_update'] <= values['security_patchlevel']);
+				var but = this._form._buttons['run_errata_update'];
+				dojo.toggleClass(but.domNode,'dijitHidden',values['latest_errata_update'] <= values['erratalevel']);
 
  				var tx1 = '';
  				var tx2 = '';
@@ -493,7 +493,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		
 		this._show_title_pane(1,on);		// this is the 'easy mode' pane
 		this._show_title_pane(2,! on);		// release
-		this._show_title_pane(3,! on);		// security
+		this._show_title_pane(3,! on);		// errata
 		this._show_title_pane(4,! on);		// packages
 	},
 	
@@ -578,7 +578,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 	// to start the corresponding installer call.
 	runReleaseUpdate: function(release) {
 	},
-	runSecurityUpdate: function() {
+	runErrataUpdate: function() {
 	},
 	runDistUpgrade: function() {
 	},

@@ -70,7 +70,7 @@ COMPONENTS_SERIAL_FILE	= '/etc/apt/sources.list.d/20_ucs-online-component.list'
 UPDATE_SERIAL_FILES = [
 	'/etc/apt/mirror.list',
 	'/etc/apt/sources.list.d/15_ucs-online-version.list',
-	'/etc/apt/sources.list.d/18_ucs-online-security.list',
+	'/etc/apt/sources.list.d/18_ucs-online-errata.list',
 	'/etc/apt/sources.list.d/20_ucs-online-component.list'
 ]
 
@@ -93,15 +93,15 @@ STATUS_ICONS = {
 DEFAULT_ICON = 'updater-unknown'		# any states not defined above
 
 INSTALLERS = {
-	'security': {
-		'purpose':		_("Install all security updates"),
-		'command':		'univention-security-update net',
-		'logfile':		'/var/log/univention/security-updates.log',
-		'statusfile':	'/var/lib/univention-updater/univention-security-update.status',
+	'errata': {
+		'purpose':		_("Install all errata updates"),
+		'command':		'/usr/share/univention-updater/univention-errata-update net',
+		'logfile':		'/var/log/univention/errata-updates.log',
+		'statusfile':	'/var/lib/univention-updater/univention-errata-update.status',
 	},
 	'release':	{
 		'purpose':		_("Perform release update up to version '%s'"),
-		'command':		"univention-updater net --updateto %s",
+		'command':		"/usr/share/univention-updater/univention-updater net --updateto %s",
 		'logfile':		'/var/log/univention/updater.log',
 		'statusfile':	'/var/lib/univention-updater/univention-updater.status'
 	},
@@ -123,7 +123,7 @@ INSTALLERS = {
 	# This is the call to be invoked when EASY mode is switched on.
 	'easyupgrade': {
 		'purpose':		_("Install all available updates for the current release"),
-		'command':		'/usr/sbin/univention-upgrade',
+		'command':		'/usr/sbin/univention-upgrade --noninteractive',
 		'logfile':		'/var/log/univention/updater.log',
 		'statusfile':	'/var/lib/univention-updater/univention-upgrade.status'	
 	}
@@ -586,20 +586,20 @@ class Instance(umcm.Base):
 			if result['release_update_available'] == None:
 				result['release_update_available'] = ''
 	
-			# current security patchlevel, converted to int, 0 if unset.
-			what = 'querying security patchlevel'
-			result['security_patchlevel'] = 0
-			tmp = self.ucr.get('version/security-patchlevel')
+			# current errata patchlevel, converted to int, 0 if unset.
+			what = 'querying errata patchlevel'
+			result['erratalevel'] = 0
+			tmp = self.ucr.get('version/erratalevel')
 			if tmp:
-				result['security_patchlevel'] = int(tmp)
+				result['erratalevel'] = int(tmp)
 				
-			# highest security patchlevel, converted to int, 0 if none.
-			what = 'getting highest available security patchlevel'
-			tmp = self.uu.get_all_available_security_updates()
+			# highest errata patchlevel, converted to int, 0 if none.
+			what = 'getting highest available errata patchlevel'
+			tmp = self.uu.get_all_available_errata_updates()
 			spl = 0
-			what = 'iterating over security updates list'
+			what = 'iterating over errata updates list'
 			# *** NOTE *** API changed! until now, the function returned
-			#				a string list with elements: ['sec1','sec2' ...]
+			#				a string list with elements: ['errata1','errata2' ...]
 			#				but now it is an array of integers!
 			#
 			#	We let the old code intact, just in case the API change
@@ -610,12 +610,12 @@ class Instance(umcm.Base):
 					if sa > spl:
 						spl = sa
 				else:
-					match = re.search('^sec(\d+)$',sa)
+					match = re.search('^errata(\d+)$',sa)
 					if (match):
 						sn = int(match.group(1))
 						if sn > spl:
 							spl = sn
-			result['latest_security_update'] = spl
+			result['latest_errata_update'] = spl
 			
 			# it doesn't hurt to include the value of the 'update/available' UCR variable
 			# that has to be honored in easy mode.
@@ -693,7 +693,6 @@ class Instance(umcm.Base):
 		settings = {}
 		settings['maintained']		= self.ucr.is_true('repository/online/maintained',False)
 		settings['unmaintained']	= self.ucr.is_true('repository/online/unmaintained',False)
-		settings['hotfixes']		= self.ucr.is_true('repository/online/hotfixes',False)
 		settings['server']			= self.ucr.get('repository/online/server','')
 		settings['prefix']			= self.ucr.get('repository/online/prefix','')
 		
@@ -982,7 +981,7 @@ class Instance(umcm.Base):
 		"""	This is the function that invokes any kind of installer. Arguments accepted:
 			job ..... the main thing to do. can be one of:
 				'release' ...... perform a release update
-				'security' ..... perform a security update
+				'errata' ..... perform a errata update
 				'component' .... install a component by installing its default package(s)
 				'distupgrade' .. update all currently installed packages (distupgrade)
 				'check' ........ check what would be done for 'update' ... do we need this?
@@ -1430,8 +1429,8 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/univention-man
 #		return self.__is_process_running( 'univention-updater net' )
 #
 #
-#	def __is_security_update_running(self):
-#		return self.__is_process_running( 'univention-security-update net' )
+#	def __is_errata_update_running(self):
+#		return self.__is_process_running( 'univention-errata-update net' )
 #
 #
 #	def __is_dist_upgrade_running(self):

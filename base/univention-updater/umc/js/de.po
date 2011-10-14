@@ -147,9 +147,9 @@ msgid "Disabled"
 msgstr "Deaktiviert"
 
 #: umc/js/updater.js:200
-msgid "Do you really want to install all available security updates?"
+msgid "Do you really want to install all available errata updates?"
 msgstr ""
-"Möchten Sie wirklich alle verfügbaren Sicherheits-Aktualisierungen "
+"Möchten Sie wirklich alle verfügbaren Errata-Aktualisierungen "
 "installieren?"
 
 #: umc/js/updater.js:192
@@ -240,8 +240,8 @@ msgid "Install release update"
 msgstr "Release-Aktualisierungen installieren"
 
 #: umc/js/_updater/UpdatesPage.js:229
-msgid "Install security update"
-msgstr "Sicherheits-Aktualisierungen installieren"
+msgid "Install errata update"
+msgstr "Errata-Aktualisierungen installieren"
 
 #: umc/js/_updater/ComponentsPage.js:100
 msgid "Install the component's default package(s)"
@@ -276,9 +276,9 @@ msgid "Logfiles can be found in the directory /var/log/univention/."
 msgstr "Logdateien können im Verzeichnis /var/log/univention/ gefunden werden."
 
 #: umc/js/_updater/UpdatesPage.js:383
-msgid "No security updates for the current version are installed."
+msgid "No errata updates for the current version are installed."
 msgstr ""
-"Für die aktuelle Version sind keine Sicherheits-Aktualisierungen installiert."
+"Für die aktuelle Version sind keine Errata-Aktualisierungen installiert."
 
 #: umc/js/_updater/UpdatesPage.js:405
 msgid "None of them are currently enabled."
@@ -393,8 +393,8 @@ msgid "Reset"
 msgstr "Zurücksetzen"
 
 #: umc/js/_updater/UpdatesPage.js:295
-msgid "Security updates"
-msgstr "Sicherheits-Aktualisierungen"
+msgid "Errata updates"
+msgstr "Errata-Aktualisierungen"
 
 #: umc/js/_updater/SettingsPage.js:18
 msgid "Settings"
@@ -443,10 +443,9 @@ msgstr "Die momentan installierte Version ist {ucs_version}"
 
 #: umc/js/_updater/UpdatesPage.js:365
 msgid ""
-"The currently installed release version is {ucs_version}-"
-"{security_patchlevel}"
+"The currently installed release version is {ucs_version} errata{erratalevel}"
 msgstr ""
-"Die momentan installierte Version ist {ucs_version}-{security_patchlevel}"
+"Die momentan installierte Version ist {ucs_version} errata{erratalevel}"
 
 #: umc/js/updater.js:384
 msgid "The installer action could not be started [Error {status}]: {message}"
@@ -465,10 +464,10 @@ msgid "The machine is being rebooted right now. "
 msgstr "Der Computer wird jetzt neu gestartet. "
 
 #: umc/js/_updater/UpdatesPage.js:386
-msgid "The most recent security update is {latest_security_update}."
+msgid "The most recent errata update is {latest_errata_update}."
 msgstr ""
-"Die neueste verfügbare Sicherheits-Aktualisierung ist "
-"{latest_security_update}."
+"Die neueste verfügbare Errata-Aktualisierung ist "
+"{latest_errata_update}."
 
 #: umc/js/_updater/UpdatesPage.js:403
 msgid "The system knows about {components} components."
@@ -487,8 +486,8 @@ msgid "There are no release updates available."
 msgstr "Es sind keine Release-Aktualisierungen verfügbar."
 
 #: umc/js/_updater/UpdatesPage.js:387
-msgid "There are no security updates available for the current release."
-msgstr "Momentan sind keine weiteren Sicherheits-Aktualisierungen verfügbar."
+msgid "There are no errata updates available for the current release."
+msgstr "Momentan sind keine weiteren Errata-Aktualisierungen verfügbar."
 
 #: umc/js/_updater/UpdatesPage.js:374
 msgid "There are no updates available."
@@ -589,8 +588,8 @@ msgstr ""
 "verlorengegangen. Sie müssen sich noch einmal neu anmelden."
 
 #: umc/js/_updater/UpdatesPage.js:382
-msgid "Your system is at security patchlevel {security_patchlevel}."
-msgstr "Ihr System ist auf dem Sicherheits-Patchlevel {security_patchlevel}."
+msgid "Your system is at errata level {erratalevel}."
+msgstr "Ihr System ist auf dem Errata-Level {erratalevel}."
 
 #: umc/js/_updater/DetailsPage.js:25 umc/js/_updater/ProgressPage.js:74
 msgid "back to overview"

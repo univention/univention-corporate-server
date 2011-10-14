@@ -478,6 +478,7 @@ class UniventionUpdater:
 		self.ucs_version=self.configRegistry['version/version']
 		self.patchlevel = int(self.configRegistry['version/patchlevel'])
 		self.security_patchlevel = int(self.configRegistry.get('version/security-patchlevel', 0))
+		self.erratalevel = int(self.configRegistry.get('version/erratalevel', 0))
 		self.version_major, self.version_minor = map(int, self.ucs_version.split('.'))
 
 		# should hotfixes be used
@@ -614,6 +615,16 @@ class UniventionUpdater:
 			sources_list.append( ver.deb() )
 		return sources_list
 
+	def errata_update_temporary_sources_list(self):
+		'''Create a list of Debian repository statements for the next errata update'''
+		start = end = UCS_Version( (self.version_major, self.version_minor, self.erratalevel+1) )
+		archs = ['all'] + self.architectures
+
+		sources_list = []
+		for server, ver in self._iterate_errata_repositories(start, end, self.parts, archs):
+			sources_list.append( ver.deb() )
+		return sources_list
+
 	def get_all_available_security_updates(self):
 		'''Returns a list of all available security updates for current major.minor version
 	       as integer
@@ -631,6 +642,24 @@ class UniventionUpdater:
 				break
 		return result
 
+	def get_all_available_errata_updates(self):
+		'''Returns a list of all available security updates for current major.minor version
+	       as integer
+		   >>> updater.get_all_available_security_updates()
+		   [3, 4, 5]
+		'''
+		result = []
+		archs = ['all'] + self.architectures
+		for el in xrange(self.erratalevel + 1, 999):
+			version = UCS_Version( (self.version_major, self.version_minor, el) )
+			secver = self.errata_update_available(version)
+			if secver:
+				result.append( secver )
+			else:
+				break
+		return result
+
+
 	def security_update_available(self, version=None):
 		'''Check for the security version for the current version.
 	       Returns next available security update number (integer) or False if no security update is available.
@@ -641,6 +670,19 @@ class UniventionUpdater:
 			start = end = UCS_Version( (self.version_major, self.version_minor, self.security_patchlevel+1) )
 		archs = ['all'] + self.architectures
 		for server, ver in self._iterate_security_repositories(start, end, self.parts, archs):
+			return ver.patchlevel
+		return False
+
+	def errata_update_available(self, version=None):
+		'''Check for the errata version for the current version.
+	       Returns next available security update number (integer) or False if no security update is available.
+		'''
+		if version:
+			start = end = version
+		else:
+			start = end = UCS_Version( (self.version_major, self.version_minor, self.erratalevel+1) )
+		archs = ['all'] + self.architectures
+		for server, ver in self._iterate_errata_repositories(start, end, self.parts, archs):
 			return ver.patchlevel
 		return False
 
@@ -900,6 +942,14 @@ class UniventionUpdater:
 			for ver in self._iterate_versions(struct, start, end, parts, archs, server):
 				yield server, ver
 
+	def _iterate_errata_repositories(self, start, end, parts, archs):
+		'''Iterate over all errata releases and return (server, version).'''
+		server = self.server
+		struct = UCSRepoPool(prefix=self.server, patch="errata%(patchlevel)d", patchlevel_reset=1)
+		for ver in self._iterate_versions(struct, start, end, parts, archs, server):
+			yield server, ver
+
+
 	def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False):
 		'''
 			Iterate over all components and return (server, version).
@@ -1004,6 +1054,54 @@ class UniventionUpdater:
 		result = []
 
 		for server, ver in self._iterate_security_repositories(start, end, self.parts, archs, self.hotfixes):
+			result.append( ver.deb() )
+			if ver.arch == archs[-1]: # after architectures but before next patch(level)
+				if clean:
+					result.append( ver.clean() )
+				if self.sources:
+					ver.arch = "source"
+					try:
+						assert server.access(ver.path("Sources.gz"))
+						result.append( ver.deb("deb-src") )
+					except DownloadError, e:
+						ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+
+		return '\n'.join(result)
+
+	def print_errata_repositories( self, clean = False, start = None, end = None, all_errata_updates = False ):
+		'''Return a string of Debian repository statements for all UCS errata
+		updates for UCS versions between start and end.
+
+		Default for start: (major, minor)
+		Default for end: (major, minor)
+		With clean=True, online/repository/clean controls if additional clean statements for apt-mirror are added.
+		For all_errata_updates=True, all available instead of all needed statements for errata updates are returned.
+		'''
+		# NOTE: Here "patchlevel" is used for the "erratalevel"
+		if not self.online_repository:
+			return ''
+
+		if clean:
+			clean = self.configRegistry.is_true('online/repository/clean', False)
+
+		if start:
+			start = copy.copy(start)
+			start.patchlevel = 1 # errata updates start with 'errata1'
+		else:
+			start = UCS_Version( ( self.version_major, self.version_minor, 1 ) )
+
+		# Hopefully never more than 999 errata updates
+		max = bool(all_errata_updates) and 1000 or self.erratalevel
+		if end:
+			end = copy.copy(end)
+			end.patchlevel = max
+		else:
+			end = UCS_Version( (self.version_major, self.version_minor, max) )
+
+		archs = ['all'] + self.architectures
+		result = []
+
+		for server, ver in self._iterate_errata_repositories(start, end, self.parts, archs):
 			result.append( ver.deb() )
 			if ver.arch == archs[-1]: # after architectures but before next patch(level)
 				if clean:

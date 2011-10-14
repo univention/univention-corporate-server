@@ -122,7 +122,7 @@ for package in $PACKAGES_TO_BE_REMOVED; do
 done
 
 # remove old sysklogd startup links (Bug #23143)
-update-rc.d -f sysklogd remove
+update-rc.d -f sysklogd remove 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
 
 # executes custom postup script (always required)
 if [ ! -z "$update_custom_postup" ]; then

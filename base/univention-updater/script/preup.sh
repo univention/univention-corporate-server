@@ -32,6 +32,10 @@ exec 3>>"$UPDATER_LOG"
 UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
 
+if [ -n "$UCS_FRONTEND" ]; then
+	UCS_FRONTEND="noninteractive"
+fi
+
 echo "Running preup.sh script" >&3
 date >&3
 
@@ -50,6 +54,22 @@ cleanup () {
 }
 trap cleanup EXIT
 
+readcontinue ()
+{
+    while true ; do
+        echo -n "Do you want to continue [Y/n]? "
+        read var
+        if [ -z "$var" -o "$var" = "y" -o "$var" = 'Y' ]; then
+            return 0
+        elif [ "$var" = "n" -o "$var" = 'N' ]; then
+            return 1
+        else
+            echo ""
+            continue
+        fi
+    done
+}
+
 ###########################################################################
 # RELEASE NOTES SECTION (Bug #19584)
 # Please update URL to release notes and changelog on every release update
@@ -66,17 +86,22 @@ echo
 #echo "3rd party components."
 #echo
 if [ ! "$update_warning_releasenotes" = "no" -a ! "$update_warning_releasenotes" = "false" -a ! "$update_warning_releasenotes_internal" = "no" ] ; then
-	echo "Update will wait here for 60 seconds..."
-	echo "Press CTRL-c to abort or press ENTER to continue"
-	# BUG: 'read -t' is the only bash'ism in this file, therefore she-bang has to be /bin/bash not /bin/sh!
-	read -t 60 somevar
+	if [ "UCS_FRONTEND" = "noninteractive" ]; then
+		echo "Update will wait here for 60 seconds..."
+		echo "Press CTRL-c to abort or press ENTER to continue"
+		# BUG: 'read -t' is the only bash'ism in this file, therefore she-bang has to be /bin/bash not /bin/sh!
+		read -t 60 somevar
+	else
+		readcontinue || exit 0
+	fi
+	
 fi
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
 	if [ "$update30_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or run univention-updater with \"--ignoressh\" to ignore it."
+		echo "Please log in under the console or re-run with \"--ignoressh\" to ignore it."
 		exit 1
 	fi
 fi
@@ -84,7 +109,7 @@ fi
 if [ "$TERM" = "xterm" ]; then
 	if [ "$update30_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or run univention-updater with \"--ignoreterm\" to ignore it."
+		echo "Please log in under the console or re-run with \"--ignoreterm\" to ignore it."
 		exit 1
 	fi
 fi

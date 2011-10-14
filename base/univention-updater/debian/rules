@@ -47,7 +47,7 @@ override_dh_auto_build: $(MO_FILES)
 
 override_dh_install:
 	dh_install
-	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-updater/usr/sbin/univention-updater
+	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-updater/usr/share/univention-updater/univention-updater
 	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-updater/usr/sbin/univention-repository-create
 	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-updater/usr/sbin/univention-repository-merge
 	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-updater/usr/sbin/univention-repository-update

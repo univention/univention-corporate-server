@@ -1,6 +1,6 @@
 import os, shutil
 
-FILE_NAME='/etc/apt/sources.list.d/18_ucs-online-security.list'
+FILE_NAME='/etc/apt/sources.list.d/18_ucs-online-errata.list'
 
 def preinst(baseConfig, changes):
 	if os.path.exists('%s.old' % FILE_NAME):
@@ -12,7 +12,7 @@ def postinst(baseConfig, changes):
 	if os.path.exists(FILE_NAME):
 		# This check is necessary otherwise this handler will reconstruct the
 		# old file because the new file will be empty. 
-		if not baseConfig['version/security-patchlevel'] == '0':
+		if not baseConfig['version/erratalevel'] == '0':
 			res=open(FILE_NAME, 'r').readlines()
 			if len(res) <= 1:
 				os.remove(FILE_NAME)

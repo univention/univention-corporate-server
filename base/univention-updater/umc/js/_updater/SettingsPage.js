@@ -66,11 +66,6 @@ dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
 				name:			'unmaintained',
 				label:			this._("Use unmaintained repositories")
 			},
-			{
-				type:			'CheckBox',
-				name:			'hotfixes',
-				label:			this._("Use hotfix repositories")
-			}
 		];
 
     	var layout = 
@@ -81,7 +76,6 @@ dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
     	 		[
 		    		['server','prefix'],
 		    		['maintained','unmaintained'],
-		    		['hotfixes']
 		    	]
     	 	}
     	];

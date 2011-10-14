@@ -44,8 +44,8 @@ msgid "Install all package updates"
 msgstr "Alle Paket-Aktualisierungen installieren"
 
 #: umc/python/updater/__init__.py:97
-msgid "Install all security updates"
-msgstr "Alle Sicherheits-Aktualisierungen installieren"
+msgid "Install all errata updates"
+msgstr "Alle Errata-Aktualisierungen installieren"
 
 #: umc/python/updater/__init__.py:112
 #, python-format

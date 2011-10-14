@@ -8,7 +8,7 @@ try:
 	updater = UniventionUpdater()
 
 	if updater.online_repository:
-		print updater.print_security_repositories()
+		print updater.print_errata_repositories()
 	else:
 		print '# The online repository is disabled and can be enabled with:'
 		print '#   univention-config-registry set repository/online=true'
@@ -19,7 +19,7 @@ except:
 	print '#'
 	print ''
 	print '# After fixing this issue, you should rewrite this file with the following command:'
-	print '#   univention-config-registry commit /etc/apt/sources.list.d/18_ucs-online-security.list'
+	print '#   univention-config-registry commit /etc/apt/sources.list.d/18_ucs-online-errata.list'
 	print '#'
 	print ''
 @!@

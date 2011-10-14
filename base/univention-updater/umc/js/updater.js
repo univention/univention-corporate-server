@@ -193,11 +193,11 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			});
 		}));
 		
-		// invokes the installer from the 'security update' button (Updates Page)
-		dojo.connect(this._updates,'runSecurityUpdate',dojo.hitch(this, function() {
+		// invokes the installer from the 'errata update' button (Updates Page)
+		dojo.connect(this._updates,'runErrataUpdate',dojo.hitch(this, function() {
 			this._call_installer({
-				job:		'security',
-				confirm:	this._("Do you really want to install all available security updates?")
+				job:		'errata',
+				confirm:	this._("Do you really want to install all available errata updates?")
 			});
 		}));
 		

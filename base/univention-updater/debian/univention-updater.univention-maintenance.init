@@ -134,23 +134,23 @@ case "$1" in
 
 		if [ "$local_repository" = "yes" -o "$local_repository" = "true" ]; then
 			mode="local"
-			/usr/sbin/univention-updater local --silent --check >/dev/null 2>&1
+			/usr/share/univention-updater/univention-updater local --silent --check >/dev/null 2>&1
 			upd_local=$?
-			/usr/sbin/univention-security-update local --silent --check >/dev/null 2>&1
-			sec_local=$?
+			/usr/share/univention-updater/univention-errata-update local --silent --check >/dev/null 2>&1
+			errata_local=$?
 		else
 			mode="net"
 			upd_local=0
-			sec_local=0
+			errata_local=0
 		fi
-		/usr/sbin/univention-updater net --silent --check >/dev/null 2>&1
+		/usr/share/univention-updater/univention-updater net --silent --check >/dev/null 2>&1
 		upd_net=$?
-		/usr/sbin/univention-security-update net --silent --check >/dev/null 2>&1
-		sec_net=$?
-		/usr/sbin/univention-actualise --dist-upgrade --silent --check >/dev/null 2>&1
+		/usr/share/univention-updater/univention-errata-update net --silent --check >/dev/null 2>&1
+		errata_net=$?
+		/usr/share/univention-updater/univention-actualise --dist-upgrade --silent --check >/dev/null 2>&1
 		actualise=$?
 
-		if [ "$upd_local$sec_local$upd_net$sec_net$actualise" = 00000 ]; then
+		if [ "$upd_local$errata_local$upd_net$errata_net$actualise" = 00000 ]; then
 			if echo $update_warning_coloured | egrep -i 'yes|true' >/dev/null 2>&1; then
 				echo -e "\033[32;1mNothing to do for Univention Updater.\033[0m"
 			else
@@ -197,17 +197,17 @@ case "$1" in
 					if [ -n "$univentionUpdateVersion" ]
 					then
 						echo -n "  updater [$univentionUpdateVersion] "
-						/usr/sbin/univention-updater "$mode" --updateto "$univentionUpdateVersion" >>"$LOG" 2>&1
+						/usr/share/univention-updater/univention-updater "$mode" --updateto "$univentionUpdateVersion" >>"$LOG" 2>&1
 					else
 						echo -n "  updater "
-						/usr/sbin/univention-updater "$mode" >>"$LOG" 2>&1
+						/usr/share/univention-updater/univention-updater "$mode" >>"$LOG" 2>&1
 					fi
 				fi
 
 				echo -n "  actualise "
-				/usr/sbin/univention-actualise --dist-upgrade --silent >>"$LOG" 2>&1
-				echo -n "  security-update "
-				/usr/sbin/univention-security-update "$mode" --silent >>"$LOG" 2>&1
+				/usr/share/univention-updater/univention-actualise --dist-upgrade --silent >>"$LOG" 2>&1
+				echo -n "  errata-update "
+				/usr/share/univention-updater/univention-errata-update "$mode" --silent >>"$LOG" 2>&1
 				echo
 			fi
 

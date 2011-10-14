@@ -1,0 +1,3 @@
+usr/share/univention-updater/univention-removed usr/sbin/univention-actualise
+usr/share/univention-updater/univention-removed usr/sbin/univention-updater
+usr/share/univention-updater/univention-removed usr/sbin/univention-security-update

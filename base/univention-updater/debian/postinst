@@ -34,6 +34,7 @@
 
 create_logfile /var/log/univention/repository.log "root:adm" 640
 create_logfile /var/log/univention/security-updates.log "root:adm" 640
+create_logfile /var/log/univention/errata-updates.log "root:adm" 640
 create_logfile /var/log/univention/updater.log "root:adm" 640
 create_logfile /var/log/univention/actualise.log "root:adm" 640
 
@@ -42,6 +43,15 @@ if [ "$1" = "configure" ]; then
 	if [ -x /usr/lib/univention-directory-policy/univention-policy-maintenance ]; then
 		/usr/lib/univention-directory-policy/univention-policy-maintenance
 	fi
+
+	mirror_default=false
+	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.47-1; then
+		local_repository="$(univention-config-registry get local/repository)"
+		if [ -n "$local_repository" ]; then
+			mirror_default="$local_repository"
+		fi
+	fi
+		
 
 	univention-config-registry	set update/warning?"no" \
 								    update/warning/coloured?"no" \
@@ -55,6 +65,7 @@ if [ "$1" = "configure" ]; then
 									repository/online/maintained?yes \
 									repository/online/unmaintained?no \
 									repository/online/hotfixes?no \
+									repository/mirror?"$mirror_default" \
 									repository/mirror/threads?10 \
 									repository/mirror/recreate_packages?yes \
 									repository/mirror/basepath?/var/lib/univention-repository \
@@ -75,7 +86,8 @@ if [ "$1" = "configure" ]; then
 									"update/check/cron/entry?5 * * * *"  \
 									update/check/boot/enabled?yes \
 									update/check/boot/debug?no \
-									update/available?no
+									update/available?no \
+									version/erratalevel?0
 
 fi
 
@@ -92,10 +104,6 @@ if which update-python-modules >/dev/null 2>&1; then
 fi
 
 #DEBHELPER#
-
-if [ -x /etc/init.d/univention-management-console-server ]; then
-	/etc/init.d/univention-management-console-server crestart
-fi
 
 # set the repository server
 eval "$(univention-config-registry shell hostname domainname update/server)"

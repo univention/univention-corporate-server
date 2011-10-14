@@ -29,6 +29,7 @@ try:
 			end = UCS_Version( end )
 		print mirror.print_version_repositories( clean = True, dists = False, start = start, end = end )
 		print mirror.print_security_repositories( clean = True, start = start, end = end, all_security_updates = True )
+		print mirror.print_errata_repositories( clean = True, start = start, end = end, all_errata_updates = True )
 		print mirror.print_component_repositories(clean=True, start=start, end=end, for_mirror_list=True)
 except:
 	print '# An error occurred during the repository check. The error message:'

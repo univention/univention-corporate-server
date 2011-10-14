@@ -62,7 +62,6 @@
 		<attribute name="prefix" syntax="String"/>
 		<attribute name="maintained" syntax="Boolean"/>
 		<attribute name="unmaintained" syntax="Boolean"/>
-		<attribute name="hotfixes" syntax="Boolean"/>
 	</command>
 
 	<!--

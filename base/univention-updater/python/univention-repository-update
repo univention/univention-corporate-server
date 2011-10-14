@@ -148,6 +148,9 @@ def update_net( options ):
 	elif options.security_only:
 		ucr.handler_commit( [ '/etc/apt/mirror.list' ] )
 		mirror.run()
+	elif options.errata_only:
+		ucr.handler_commit( [ '/etc/apt/mirror.list' ] )
+		mirror.run()
 	elif options.update_to:
 		ucr.handler_set( [ 'repository/mirror/version/end=%s' % options.update_to ] )
 		mirror.run()
@@ -210,6 +213,9 @@ if __name__ == '__main__':
 	parser.add_option( '-S', '--security-only', action = 'store_true',
 					   dest = 'security_only', default = False,
 					   help = 'if given only security repositories will be updated' )
+	parser.add_option( '-E', '--errata-only', action = 'store_true',
+					   dest = 'errata_only', default = False,
+					   help = 'if given only errata repositories will be updated' )
 	parser.add_option( '-u', '--updateto', action = 'store',
 					   dest = 'update_to', default = '',
 					   help = 'if given the repository is updated to the specified version but not higher' )

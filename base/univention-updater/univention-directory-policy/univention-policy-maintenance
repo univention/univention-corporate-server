@@ -51,9 +51,9 @@ def write_cron_job(configRegistry, cron, updateto, reboot):
 			updateto='--updateto=%s' % updateto
 		if reboot:
 			reboot='--reboot=%s' % reboot
-		file.write('/usr/sbin/jitter 600 /usr/sbin/univention-updater %s %s %s --silent; ' % (target, updateto, reboot))
-		file.write('/usr/sbin/jitter 600 /usr/sbin/univention-actualise --dist-upgrade --silent; ')
-		file.write('/usr/sbin/jitter 600 /usr/sbin/univention-security-update %s --silent\n' % target)
+		file.write('/usr/sbin/jitter 600 /usr/share/univention-updater/univention-updater %s %s %s --silent; ' % (target, updateto, reboot))
+		file.write('/usr/sbin/jitter 600 /usr/share/univention-updater/univention-actualise --dist-upgrade --silent; ')
+		file.write('/usr/sbin/jitter 600 /usr/share/univention-updater/univention-security-update %s --silent\n' % target)
 	file.close()
 
 

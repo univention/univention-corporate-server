@@ -420,14 +420,14 @@ def main():
 		nextversion = update_available('cdrom', baseConfig, cdrom_mount_point, iso=iso)
 	elif command == 'net':
 		log('starting net mode')
-		if baseConfig.get('local/repository', 'no').lower() in ('true', 'yes', '1'):
-			log('local/repository active, copy from net and start local mode')
-			resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update', 'net' ] + updateto_args )
-			if resultCode != 0:
-				fp_debug.close()
-				raise UpdateError('Failed to execute "univention-repository-update net"', errorsource='PREPARATION')
+		#if baseConfig.get('local/repository', 'no').lower() in ('true', 'yes', '1'):
+		#	log('local/repository active, copy from net and start local mode')
+		#	resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update', 'net' ] + updateto_args )
+		#	if resultCode != 0:
+		#		fp_debug.close()
+		#		raise UpdateError('Failed to execute "univention-repository-update net"', errorsource='PREPARATION')
 
-			call_local(updateto=updateto, clean=clean, ignoressh=ignoressh, ignoreterm=ignoreterm, ignorereleasenotes=ignorereleasenotes)
+		#	call_local(updateto=updateto, clean=clean, ignoressh=ignoressh, ignoreterm=ignoreterm, ignorereleasenotes=ignorereleasenotes)
 		updater = UniventionUpdater()
 		nextversion = update_available('net', baseConfig, cdrom_mount_point, iso=iso, updater=updater)
 	else:
