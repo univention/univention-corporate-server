@@ -231,8 +231,9 @@ class Instance( Base ):
 		"""Searches for LDAP objects and returns a few properties of the found objects
 
 		requests.options = {}
+		  'objectType' -- the object type to search for (default: if not given the flavor is used)
 		  'objectProperty' -- the object property that should be scaned
-		  'objectPropertyValue' -- the filter that should b found in the property
+		  'objectPropertyValue' -- the filter that should be found in the property
 		  'container' -- the base container where the search should be started (default: LDAP base)
 		  'superordinate' -- the superordinate object for the search (default: None)
 
@@ -603,6 +604,7 @@ class Instance( Base ):
 			object_dn = request.options.get( 'objectDN' )
 			container = request.options.get( 'container' )
 			policy_type = request.options.get( 'policyType' )
+			policy_dn = request.options.get( 'policyDN' )
 			if not policy_type:
 				raise UMC_OptionMissing( 'The policy type is missing' )
 
@@ -627,7 +629,7 @@ class Instance( Base ):
 
 			policy_obj = policy_module.get()
 			policy_obj.clone( obj )
-			policy_obj.policy_result()
+			policy_obj.policy_result( faked_policy_reference = policy_dn )
 
 			infos = copy.copy( policy_obj.polinfo_more )
 			for key, value in infos.items():

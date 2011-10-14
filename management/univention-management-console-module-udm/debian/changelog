@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.168-1) unstable; urgency=low
+
+  * udm/object/policies: support faking a policy reference; Bug #23557
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 14 Oct 2011 09:58:44 +0200
+
 univention-management-console-module-udm (1.0.167-1) unstable; urgency=low
 
   * added ComboBoxes for policy linking (Bug #23557)
