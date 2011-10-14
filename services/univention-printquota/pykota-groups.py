@@ -48,7 +48,7 @@ def initialize():
 def callPkusers(cmd):
 
 	cmd.insert(0, "pkusers")
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: calling pkusers with %s' % (name, cmd))
+	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, '%s: calling pkusers with %s' % (name, cmd))
 	listener.setuid(0)
 	try:
 		listener.run('/usr/bin/pkusers', cmd, uid=0, wait=1)

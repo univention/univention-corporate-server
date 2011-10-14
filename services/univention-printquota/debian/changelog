@@ -1,3 +1,10 @@
+univention-printquota (4.0.3-1) unstable; urgency=low
+
+  * fixed listener, print debug message with priority
+    debug.INFO (Bug #21649)
+
+ -- Felix Botner <botner@univention.de>  Fri, 14 Oct 2011 16:13:17 +0200
+
 univention-printquota (4.0.2-1) unstable; urgency=low
 
   * added dependency to pkipplib and pkpgcounter (Bug #21649) 
