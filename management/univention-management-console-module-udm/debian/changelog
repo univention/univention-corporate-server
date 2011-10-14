@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.174-1) unstable; urgency=low
+
+  * added missing settings/* icons (Bug #23218)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 14 Oct 2011 17:35:11 +0200
+
 univention-management-console-module-udm (1.0.173-1) unstable; urgency=low
 
   * add new icons for users, groups and mail; Bug #23218
