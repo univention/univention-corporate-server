@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.95-1) unstable; urgency=low
+
+  * _SelectMixin: added reloadDynamicValues()
+  * Form: make sure that the original data set is returned by load()
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 14 Oct 2011 16:08:25 +0200
+
 univention-management-console-frontend (1.0.94-1) unstable; urgency=low
 
   * added umc.app.closeTab() and focusTab() (Bug #23557)

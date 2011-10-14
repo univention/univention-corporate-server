@@ -353,7 +353,7 @@ dojo.declare("umc.widgets.Form", [
 			// fire event
 			this.onLoaded(true);
 
-			return newValues;
+			return data;
 		}), dojo.hitch(this, function(error) {
 			// fire event also in error case
 			this.onLoaded(false);

@@ -445,6 +445,12 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		if (this._valuesLoaded) {
 			this._loadValues();
 		}
+	},
+
+	reloadDynamicValues: function() {
+		if (this._valuesLoaded) {
+			this._loadValues();
+		}
 	}
 });
 
