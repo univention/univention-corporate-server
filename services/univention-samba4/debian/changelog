@@ -1,3 +1,10 @@
+univention-samba4 (1.0.61-1) unstable; urgency=low
+
+  * samba-dsdb-modules is required to make the provision work
+    (Bug #23929)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 15 Oct 2011 20:08:43 +0200
+
 univention-samba4 (1.0.60-9) unstable; urgency=low
 
   * use the NTACL that provision sets for sysvol (Bug #22865)
