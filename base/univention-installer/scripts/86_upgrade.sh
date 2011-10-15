@@ -34,6 +34,8 @@
 
 . /tmp/installation_profile
 
+export server_role="$system_role"
+
 if [ "$update_system_after_installation" = "true" ] || [ "$update_system_after_installation" = "yes" ]; then
 
 	. /tmp/progress.lib
@@ -44,7 +46,8 @@ if [ "$update_system_after_installation" = "true" ] || [ "$update_system_after_i
 		cat >> /instmnt/upgrade.sh <<"__EOT__"
 #!/bin/sh
 eval "$(ucr shell)"
-univention-upgrade --noninteractive --updateto $version_version-99
+echo "Running upgrade on DC Master: univention-upgrade --noninteractive --updateto $version_version-99"
+univention-upgrade --noninteractive --updateto "$version_version-99"
 __EOT__
 	else
 		# Try to update to the same version as DC master
@@ -53,9 +56,11 @@ eval "$(ucr shell)"
 if [ -e /var/univention-join/joined ]; then
 	vv=$(univention-ssh /etc/machine.secret $hostname\$@$hostname /usr/sbin/ucr get version/version 2>/dev/null)
 	pl=$(univention-ssh /etc/machine.secret $hostname\$@$hostname /usr/sbin/ucr get version/patchlevel 2>/dev/null)
-	univention-upgrade --noninteractive --updateto $vv-$vp
+	echo "Running upgrade to DC Master  version: univention-upgrade --noninteractive --updateto $vv-$pl"
+	univention-upgrade --noninteractive --updateto "$vv-$pl"
 else
-	univention-upgrade --noninteractive --updateto $version_version-0
+	echo "Running normal upgrade: univention-upgrade --noninteractive --updateto $version_version-0"
+	univention-upgrade --noninteractive --updateto "$version_version-0"
 fi
 __EOT__
 	fi

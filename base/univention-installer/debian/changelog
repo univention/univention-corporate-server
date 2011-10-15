@@ -1,3 +1,9 @@
+univention-installer (7.0.103-1) unstable; urgency=low
+
+  * Some more fixes to scripts/86_upgrade.sh (Bug #23284)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 15 Oct 2011 22:01:24 +0200
+
 univention-installer (7.0.102-1) unstable; urgency=low
 
   * Added a simple script for the auto upgrade (Bug #23284)
