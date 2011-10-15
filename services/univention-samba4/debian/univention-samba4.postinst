@@ -114,5 +114,6 @@ if [ "$1" = "configure" ]; then
 fi
 
 call_joinscript 96univention-samba4.inst
+call_joinscript 98univention-samba4.inst
 
 exit 0

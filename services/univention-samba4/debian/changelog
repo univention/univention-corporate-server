@@ -1,3 +1,10 @@
+univention-samba4 (1.0.62-1) unstable; urgency=low
+
+  * Activate samba4 bind backend in a new join script. First the
+    connector must be configured (Bug #23786)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 15 Oct 2011 21:41:53 +0200
+
 univention-samba4 (1.0.61-1) unstable; urgency=low
 
   * samba-dsdb-modules is required to make the provision work
