@@ -1,3 +1,9 @@
+univention-installer (7.0.102-1) unstable; urgency=low
+
+  * Added a simple script for the auto upgrade (Bug #23284)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 15 Oct 2011 20:37:55 +0200
+
 univention-installer (7.0.101-4) unstable; urgency=low
 
   * updated end message (Bug #23955, #3796)

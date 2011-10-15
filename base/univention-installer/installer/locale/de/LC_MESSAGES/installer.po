@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-13 12:26+0200\n"
+"POT-Creation-Date: 2011-10-15 20:35+0200\n"
 "PO-Revision-Date: 2011-10-13 12:27+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2606,6 +2606,10 @@ msgstr "Aktualisierung der udev-Regeln"
 #: scripts/85_postinst_hook.sh:35
 msgid "Calling postinstallation hooks"
 msgstr "Ausführen der Post-Installations-Hooks"
+
+#: scripts/86_upgrade.sh:40
+msgid "Updating system"
+msgstr "Aktualisiere das System"
 
 #: scripts/87_locales.sh:35
 msgid "Generating locales"
