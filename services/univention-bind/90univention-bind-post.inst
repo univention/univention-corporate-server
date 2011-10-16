@@ -113,8 +113,9 @@ fi
 
 if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	# these might be hangovers from the installation
-	pkill /usr/bin/named
+	pkill -f /usr/sbin/named
 	sleep 3
+	pkill -9 -f /usr/sbin/named
 fi
 
 # Restart the bind9 daemon and wait for a few seconds

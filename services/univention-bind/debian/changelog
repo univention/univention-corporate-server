@@ -1,3 +1,10 @@
+univention-bind (6.0.25-1) unstable; urgency=low
+
+  * Be sure the bind hangovers from the installation will be killed
+    (Bug #23161)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 16 Oct 2011 19:46:01 +0200
+
 univention-bind (6.0.24-1) unstable; urgency=low
 
   * Update the samba4 bind configuration to allow updates (Bug #23161)
