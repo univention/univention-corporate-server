@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.40-1) unstable; urgency=low
+
+  * Restart S4 connector in join script (Bug #24074)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 16 Oct 2011 11:30:42 +0200
+
 univention-s4-connector (6.0.39-1) unstable; urgency=low
 
   * The samba-tool command newuser was removed in new samba version.

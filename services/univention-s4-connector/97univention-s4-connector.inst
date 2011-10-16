@@ -97,7 +97,7 @@ else										## we are first system to provide this service
 
 fi
 
-/etc/init.d/univention-s4-connector crestart || true
+/etc/init.d/univention-s4-connector restart
 
 joinscript_save_current_version
 
