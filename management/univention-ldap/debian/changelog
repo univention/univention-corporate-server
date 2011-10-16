@@ -1,3 +1,11 @@
+univention-ldap (8.0.43-1) unstable; urgency=low
+
+  * The LDAP objects Administrator and default network are now created
+    in the LDAP server join script instead of the installer script
+    (Bug #24074)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 16 Oct 2011 11:26:50 +0200
+
 univention-ldap (8.0.42-1) unstable; urgency=low
 
   * add attributes and object classes for new UMC UDM modules; Bug #23494
