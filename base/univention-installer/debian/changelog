@@ -1,3 +1,11 @@
+univention-installer (7.0.104-1) unstable; urgency=low
+
+  * The LDAP objects Administrator and default network are now created
+    in the LDAP server join script instead of the installer script
+    (Bug #24074)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 16 Oct 2011 11:28:50 +0200
+
 univention-installer (7.0.103-1) unstable; urgency=low
 
   * Some more fixes to scripts/86_upgrade.sh (Bug #23284)

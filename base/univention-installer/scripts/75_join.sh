@@ -45,6 +45,12 @@ cat /tmp/installation_profile | sed -e "s|root_password=.*|#root_password=''|" |
 
 sync
 
+if [ ! -e /instmnt/var/lib/univention-ldap ]; then
+	mkdir -p /instmnt/var/lib/univention-ldap
+fi
+echo -n "$root_password" >/instmnt/var/lib/univention-ldap/root.secret
+chmod 600 /instmnt/var/lib/univention-ldap/root.secret
+
 cat >>/instmnt/join.sh <<__EOT__
 
 progress_filter () {
@@ -112,3 +118,6 @@ __EOT__
 
 chmod +x /instmnt/join.sh
 chroot /instmnt ./join.sh
+
+rm -f /instmnt/var/lib/univention-ldap/root.secret
+
