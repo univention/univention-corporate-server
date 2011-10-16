@@ -1,3 +1,9 @@
+univention-quota (6.0.6-1) unstable; urgency=low
+
+  * adapt join script to new UMC access right management; Bug #24045
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 16 Oct 2011 11:43:08 +0200
+
 univention-quota (6.0.5-1) unstable; urgency=low
 
   * fstab module moved to univention.lib (Bug #22865)
