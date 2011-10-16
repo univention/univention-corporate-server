@@ -1,3 +1,9 @@
+univention-ldap (8.0.45-1) unstable; urgency=low
+
+  * Fixed sed expressions in 10univention-ldap-server.inst (Bug #24074)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 16 Oct 2011 14:04:13 +0200
+
 univention-ldap (8.0.44-1) unstable; urgency=low
 
   * Make ucslint happy (Bug #24074)

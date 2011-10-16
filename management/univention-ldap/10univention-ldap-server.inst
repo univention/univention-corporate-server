@@ -214,9 +214,9 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-directory-manager groups/group modify "$@" --dn "cn=Domain Users,cn=groups,$ldap_base" --append users="uid=Administrator,cn=users,$ldap_base"
 
 		#create default network
-		forwardZone=$(univention-directory-manager dns/forward_zone list "$@" --filter zone=\$domainname | grep DN | head -1 | sed -e 's/DN: //g')
-		reverseZone=$(univention-directory-manager dns/reverse_zone list "$@" | grep ^DN | head -1 | sed -e 's|DN: ||')
-		dhcpService=$(univention-directory-manager dhcp/service list "$@" | grep DN | head -1 | sed -e 's/DN: //g')
+		forwardZone=$(univention-directory-manager dns/forward_zone list "$@" --filter zone="$domainname" | sed -ne 's/DN: //p;T;q')
+		reverseZone=$(univention-directory-manager dns/reverse_zone list "$@" --filter subnet="$reverse" | sed -ne 's/DN: //p;T;q')
+		dhcpService=$(univention-directory-manager dhcp/service list "$@" | sed -ne 's/DN: //p;T;q')
 
 		univention-directory-manager networks/network create "$@" --position "cn=networks,$ldap_base" --set name=default --set netmask="$NETMASK" --set network="$NETWORK" --set dnsEntryZoneForward="$forwardZone" --set dnsEntryZoneReverse="$reverseZone" --set dhcpEntryZone="$dhcpService"
 	fi
