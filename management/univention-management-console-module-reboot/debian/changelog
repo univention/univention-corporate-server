@@ -1,3 +1,9 @@
+univention-management-console-module-reboot (1.0.12-1) unstable; urgency=low
+
+  * adapt join script to new UMC access right management; Bug #24045
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 16 Oct 2011 11:45:59 +0200
+
 univention-management-console-module-reboot (1.0.11-1) unstable; urgency=low
 
   * changed icon sizes in overview to 50x50, removed 24x24, 32x32, 64x64
