@@ -1,3 +1,9 @@
+univention-samba4 (1.0.64-1) unstable; urgency=low
+
+  * Added eval ucr shell to 98univention-samba4-dns.inst (Bug #23786)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 16 Oct 2011 12:35:36 +0200
+
 univention-samba4 (1.0.63-1) unstable; urgency=low
 
   * Give join scripts execute permissions (Bug #23786)

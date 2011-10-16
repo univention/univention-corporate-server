@@ -36,6 +36,8 @@ joinscript_init
 
 . /usr/share/univention-lib/all.sh
 
+eval "$(ucr shell)"
+
 if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	ucr set dns/backend=samba4
 	if [ -x /etc/init.d/bind9 ]; then
