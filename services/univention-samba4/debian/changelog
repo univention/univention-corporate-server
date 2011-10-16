@@ -1,3 +1,9 @@
+univention-samba4 (1.0.63-1) unstable; urgency=low
+
+  * Give join scripts execute permissions (Bug #23786)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 16 Oct 2011 09:34:08 +0200
+
 univention-samba4 (1.0.62-1) unstable; urgency=low
 
   * Activate samba4 bind backend in a new join script. First the
