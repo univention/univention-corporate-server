@@ -304,7 +304,7 @@ class access:
 	def requireLicense(self, require=1):
 		self.require_license=require
 
-	def __validateLicense(self):
+	def _validateLicense(self):
 		if self.require_license and not GPLversion:
 			univention.admin.license.select('admin')
 
@@ -343,7 +343,7 @@ class access:
 		return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs )
 
 	def add(self, dn, al, exceptions=False):
-		self.__validateLicense()
+		self._validateLicense()
 		if not self.allow_modify:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'add dn: %s' % dn)
 			raise univention.admin.uexceptions.licenseDisableModify
@@ -364,7 +364,7 @@ class access:
 			raise univention.admin.uexceptions.ldapError, _err2str(msg)
 
 	def modify(self, dn, changes, exceptions=False, ignore_license=0):
-		self.__validateLicense()
+		self._validateLicense()
 		if not self.allow_modify and not ignore_license:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modify dn: %s'%  dn)
 			raise univention.admin.uexceptions.licenseDisableModify
@@ -387,7 +387,7 @@ class access:
 	def rename(self, dn, newdn, move_childs=0, ignore_license=False):
 		if not move_childs == 0:
 			raise univention.admin.uexceptions.noObject, _( "Moving childs is not supported." )
-		self.__validateLicense()
+		self._validateLicense()
 		if not self.allow_modify and not ignore_license:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'move dn: %s'%  dn)
 			raise univention.admin.uexceptions.licenseDisableModify
@@ -406,7 +406,7 @@ class access:
 			raise univention.admin.uexceptions.ldapError, _err2str(msg)
 
 	def delete(self, dn, exceptions=False):
-		self.__validateLicense()
+		self._validateLicense()
 		if exceptions:
 			try:
 				return self.lo.delete(dn)

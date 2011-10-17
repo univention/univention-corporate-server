@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.126-1) unstable; urgency=low
+
+  * changed uldap.access.__validateLicense to _validateLicense (Bug #23213)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 17 Oct 2011 15:41:43 +0200
+
 univention-directory-manager-modules (7.0.125-1) unstable; urgency=low
 
   * Adjust layout of UDM modules to UCS 3.0 (Bug #23709)
