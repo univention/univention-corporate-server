@@ -1,4 +1,4 @@
-univention-system-setup (5.0.12-1) unstable; urgency=low
+univention-system-setup (5.0.12-2) unstable; urgency=low
 
   * rename kerberos realm on domainname change (Bug #22214)
 

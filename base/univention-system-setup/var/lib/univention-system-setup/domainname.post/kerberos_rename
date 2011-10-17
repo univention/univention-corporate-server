@@ -35,7 +35,7 @@ modify_realm_in_ldap() {
 	principal_new="krbtgt/${kerberos_realm_new}@${kerberos_realm_new}"
 
 	ldap_secret=$(</etc/ldap.secret)
-	dn=$( ldapsearch -x -LLL krb5PrincipalName="${principal_old}" dn | ldapsearch-wrapper | sed -n 's/dn: \(.*\)/\1/p' )
+	dn=$(ldapsearch -x -D"cn=admin,$ldap_base" -w"$ldap_secret" -LLL krb5PrincipalName="${principal_old}" dn | ldapsearch-wrapper | sed -n 's/dn: \(.*\)/\1/p')
 
 	if [ -n "$dn" ]; then
 		ldapmodify -x -D"cn=admin,$ldap_base" -w"$ldap_secret" <<-EOF
@@ -86,7 +86,7 @@ modify_realm_in_ldap() {
 			echo "krb5PrincipalName: ${principal_new}"
 			echo -e "-\n"
 		fi | ldapmodify -x -D"cn=admin,$ldap_base" -w"$ldap_secret"
-	done < <(ldapsearch -x -LLL '(objectClass=krb5Principal)' krb5PrincipalName uid | ldapsearch-wrapper | sed 's/^$/\x0/g')
+	done < <(ldapsearch -x -D"cn=admin,$ldap_base" -w"$ldap_secret" -LLL '(objectClass=krb5Principal)' krb5PrincipalName uid | ldapsearch-wrapper | sed 's/^$/\x0/g')
 } # modify_realm_in_ldap
 
 old_domainname="$1" # not needed
