@@ -1,3 +1,9 @@
+univention-installer (7.0.105-1) unstable; urgency=low
+
+  * Set updater/secure_apt in scripts/79_apt.sh to yes (Bug #9475)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Oct 2011 07:37:58 +0200
+
 univention-installer (7.0.104-1) unstable; urgency=low
 
   * The LDAP objects Administrator and default network are now created
