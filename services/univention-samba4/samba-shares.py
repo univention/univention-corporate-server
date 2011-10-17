@@ -194,10 +194,7 @@ def postrun():
 		for f in os.listdir('/etc/samba/shares.conf.d'):
 			print >>fp, 'include = %s' % os.path.join('/etc/samba/shares.conf.d', f)
 		fp.close()
-		if listener.baseConfig.has_key('samba/ha/master') and listener.baseConfig['samba/ha/master']:
-			initscript='/etc/heartbeat/resource.d/samba'
-		else:
-			initscript='/etc/init.d/samba'
-		os.spawnv(os.P_WAIT, initscript, ['samba', 'reload'])
+		initscript='/etc/init.d/samba4'
+		os.spawnv(os.P_WAIT, initscript, ['samba4', 'reload'])
 	finally:
 		listener.unsetuid()
