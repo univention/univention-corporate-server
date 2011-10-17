@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.177-1) unstable; urgency=low
+
+  * show 'edit' links to UCR policies (Bug #23557)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 17 Oct 2011 12:40:27 +0200
+
 univention-management-console-module-udm (1.0.176-1) unstable; urgency=low
 
   * some dhcp/* module represent a container, but not all policies should

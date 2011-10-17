@@ -596,8 +596,9 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					return true;
 				}
 
-				// set the value and laben
+				// set the value and label
 				if (!dojo.isArray(iinfo)) {
+					// standard policy
 					iwidget.set('value', iinfo.value);
 					var label = dojo.replace('{label} (<a href="javascript:void(0)" ' +
 							'onclick=\'dijit.byId("{id}")._openPolicy("{type}", "{dn}")\' ' +
@@ -610,7 +611,45 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 						edit: this._('edit')
 					});
 					iwidget.set('label', label);
-				} else {
+				}
+				else if (dojo.isArray(iinfo) && umc.tools.inheritsFrom(iwidget, 'umc.widgets.MultiInput')) {
+					// we got probably a UCR-Policy, this is a special case:
+					// -> a list of values where each value might have been inherited 
+					//    by different policies
+					iwidget.set('value', dojo.map(iinfo, function(ival) {
+						return ival.value;
+					}));
+
+					dojo.forEach(iinfo, function(jinfo, j) {
+						if (iwidget._rowContainers.length < j) {
+							// something is wrong... there are not enough entries it seems
+							return false;
+						}
+
+						// prepare a new description widget
+						var label = dojo.replace('(<a href="javascript:void(0)" ' +
+								'onclick=\'dijit.byId("{id}")._openPolicy("{type}", "{dn}")\' ' +
+								'title="{title}: {dn}">{edit}</a>)', {
+							id: this.id,
+							type: policyType,
+							dn: jinfo.policy,
+							title: this._('Click to edit the inherited properties of the policy'),
+							edit: this._('edit')
+						});
+						var link = new umc.widgets.LabelPane({ 
+							label: j == 0 ? '&nbsp;' : '',
+							content: new umc.widgets.Text({ 
+								content: label 
+							}) 
+						});
+						
+						// get the correct row container
+						var container = iwidget._rowContainers[j];
+						container.addChild(link);
+					}, this);
+				} 
+				else {
+					// fallback
 					var value = dojo.map( iinfo, function( item ) {
 						return item.value;
 					} );
