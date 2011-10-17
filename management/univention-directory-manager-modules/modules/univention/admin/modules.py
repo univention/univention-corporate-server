@@ -38,7 +38,7 @@ import univention.admin.uldap
 import univention.admin.syntax
 import univention.admin.hook
 import univention.admin.localization
-from univention.admin.layout import Tab
+from univention.admin.layout import Tab, Group, ILayoutElement
 
 translation=univention.admin.localization.translation('univention/admin')
 _=translation.translate
@@ -277,18 +277,6 @@ def init(lo, position, module, template_object=None):
 
 	module.initialized=1
 
-
-def is_property_in_layout(itemlist, field):
-	''' checks recursive if layout (itemlist) contains specified field '''
-	if type(itemlist) == type([]):
-		for item in itemlist:
-			if is_property_in_layout(item, field):
-				return True
-	elif itemlist.property == field.property:
-		return True
-	return False
-
-
 def update_extended_options(lo, module, position):
 	"""Overwrite options defined via LDAP."""
 
@@ -315,6 +303,42 @@ def update_extended_options(lo, module, position):
 				default=default,
 				editable=editable,
 				objectClasses=classes)
+
+class EA_Layout( dict ):
+	def __init__( self, **kwargs ):
+		dict.__init__( self, kwargs )
+
+	@property
+	def name( self ):
+		return self.get( 'name', '' )
+
+	@property
+	def fillWidth( self ):
+		return self.get( 'fillWidth', False )
+
+	@property
+	def overwrite( self ):
+		return self.get( 'overwrite', None )
+
+	@property
+	def tabName( self ):
+		return self.get( 'tabName', '' )
+
+	@property
+	def groupName( self ):
+		return self.get( 'groupName', '' )
+
+	@property
+	def position( self ):
+		return self.get( 'position', -1 )
+
+	@property
+	def groupPosition( self ):
+		return self.get( 'groupPosition', -1 )
+
+	@property
+	def advanced( self ):
+		return self.get( 'advanced', False )
 
 def update_extended_attributes(lo, module, position):
 
@@ -396,6 +420,7 @@ def update_extended_attributes(lo, module, position):
 		longdesc = attrs.get('univentionUDMPropertyTranslationLongDescription;entry-%s' % lang, attrs.get('univentionUDMPropertyLongDescription', ['']))[0]
 
 		# create property
+		# FIXME: must add attribute to honor fullWidth (should be defined by the syntax)
 		module.property_descriptions[pname] = univention.admin.property(
 			short_description = shortdesc,
 			long_description = longdesc,
@@ -418,18 +443,31 @@ def update_extended_attributes(lo, module, position):
 
 		tabname = attrs.get('univentionUDMPropertyTranslationTabName;entry-%s' % lang, attrs.get('univentionUDMPropertyLayoutTabName',[ _('Custom') ]) )[0]
 		overwriteTab = ( attrs.get('univentionUDMPropertyLayoutOverwriteTab',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
-		overwritePosition = ( attrs.get('univentionUDMPropertyLayoutOverwritePosition',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
+		# in the first generation of extended attributes of version 2
+		# this field was a position defining the attribute to
+		# overwrite. now it is the name of the attribute to overwrite
+		overwriteProp = attrs.get( 'univentionUDMPropertyLayoutOverwritePosition', [ '' ] )[ 0 ]
+		if overwriteProp == '0':
+			overwriteProp = None
 		fullWidth = ( attrs.get('univentionUDMPropertyLayoutFullWidth',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
 		deleteObjectClass = ( attrs.get('univentionUDMPropertyDeleteObjectClass', ['0'])[0].upper() in [ '1', 'TRUE' ] )
 		tabAdvanced = ( attrs.get('univentionUDMPropertyLayoutTabAdvanced',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
 
+		groupname = attrs.get( 'univentionUDMPropertyTranslationGroupName;entry-%s' % lang, attrs.get( 'univentionUDMPropertyLayoutGroupName', [ '' ] ) )[ 0 ]
+		try:
+			groupPosition = int( attrs.get( 'univentionUDMPropertyLayoutGroupPosition', [ '-1' ] )[ 0 ] )
+		except TypeError:
+			groupPosition = 0
+
+		ud.debug( ud.ADMIN, ud.INFO, 'update_extended_attributes: extended attribute (LDAP): %s' % str( attrs ) )
+
 		# only one is possible ==> overwriteTab wins
-		if overwriteTab and overwritePosition:
-			overwritePosition = False
+		if overwriteTab and overwriteProp:
+			overwriteProp = None
 
 		# add tab name to list if missing
-		if not properties4tabs.has_key(tabname):
-			properties4tabs[tabname] = []
+		if not tabname in properties4tabs:
+			properties4tabs[ tabname ] = []
 			ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: custom fields init for tab %s' % tabname)
 
 		# remember tab for purging if required
@@ -445,22 +483,15 @@ def update_extended_attributes(lo, module, position):
 			ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname)
 			tabPosition = -1
 
-		# (top left position is defined as 1) ==> if tabPosition is smaller then disable overwritePosition
-		if overwritePosition and tabPosition < 1:
-			overwritePosition = False
-
 		if tabPosition == -1:
-			for (pos, field, tabAdvanced, overwritePosition, fullWidth) in properties4tabs[tabname]:
+			for ea_layout in properties4tabs[ tabname ]:
 				try:
-					if pos <= tabPosition:
+					if ea_layout.position <= tabPosition:
 						tabPosition = pos-1
 				except:
 					ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to set tabPosition' % tabname)
 
-		if fullWidth:
-			properties4tabs[ tabname ].append( (tabPosition, pname, tabAdvanced, overwritePosition, fullWidth) )
-		else:
-			properties4tabs[ tabname ].append( (tabPosition, pname, tabAdvanced, overwritePosition, fullWidth) )
+		properties4tabs[ tabname ].append( EA_Layout( name = pname, tabName = tabname, position = tabPosition, advanced = tabAdvanced, overwrite = overwriteProp, fullWidth = fullWidth, groupName = groupname, groupPosition = groupPosition ) )
 
 		module.extended_udm_attributes.extend( [ univention.admin.extended_attribute( pname, attrs.get('univentionUDMPropertyObjectClass', [])[0],
 																			  attrs['univentionUDMPropertyLdapMapping'][0], deleteObjectClass,
@@ -475,108 +506,78 @@ def update_extended_attributes(lo, module, position):
 	if properties4tabs:
 		lastprio = -1000
 
-		# remove fields on tabs marked for replacement
+		# remove layout of tabs that have been marked for replacement
 		removetab = []
 		for tab in module.layout:
-			if tab.description in overwriteTabList:
+			if tab.label in overwriteTabList:
 				tab.layout = []
 
 		for tabname in properties4tabs.keys():
-			priofields = properties4tabs[tabname]
+			priofields = properties4tabs[ tabname ]
 			priofields.sort()
-			fields = []
-			lastfield = ''
 			currentTab = None
 			# get existing fields if tab has not been overwritten
 			for tab in module.layout:
-				ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: tabname=%s   tab.short=%s' % (tabname, tab.description) )
-
-				if tab.description == tabname:
-					currentTab = tab
+				if tab.label == tabname:
 					# found tab in layout
-					fields = currentTab.layout
-					# get last line
-					if len(fields) > 0:
-						if len(fields[-1]) == 1:
-							# last line contains only one item
-							# ==> remember item and remove last line
-							lastfield = fields[-1][0]
-							fields = fields[:-1]
-							# get prio of first new field and use it as prio of last old field
-							if priofields:
-								lastprio = priofields[0][0]
+					currentTab = tab
 					# tab found ==> leave loop
 					break
 			else:
 				# tab not found in current layout, so add it
-				currentTab = Tab( tabname, tabname, advanced = True, layout = fields )
+				currentTab = Tab( tabname, tabname, advanced = True )
 				module.layout.append( currentTab )
 				# remember tabs that have been added by UDM extended attributes
 				if not tabname in module.extended_attribute_tabnames:
 					module.extended_attribute_tabnames.append( tabname )
-				fields = []
 
 			# check if tab is empty ==> overwritePosition is impossible
-			freshTab = (len(fields) == 0)
+			freshTab = len( currentTab.layout ) == 0
 
-			ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: lastprio=%s   lastfield=%s'% (lastprio,lastfield))
-			for (prio, field, tabAdvanced, overwritePosition, fullWidth) in priofields:
-				ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: custom fields found prio %s'% prio)
-				if currentTab.advanced and not tabAdvanced:
+			for ea_layout in priofields:
+				if currentTab.advanced and not ea_layout.advanced:
 					currentTab.advanced = False
 
-				# do not readd property if already present in layout
-				if lastfield and lastfield.property == field.property:
-					continue
-				if is_property_in_layout(fields, field):
-					continue
+				# if groupName is set check if it exists, otherwise create it
+				if ea_layout.groupName:
+					for item in currentTab.layout:
+						if isinstance( item, ILayoutElement ) and item.label == ea_layout.groupName:
+							break
+					else: # group does not exist
+						grp = Group( ea_layout.groupName )
+						if ea_layout.groupPosition > 0:
+							currentTab.layout.insert( ea_layout.groupPosition, grp )
+						else:
+							currentTab.layout.append( grp )
 
 				# - existing property shall be overwritten AND
 				# - tab is not new and has not been cleaned before AND
-				# - prio AKA position >= 1 (top left position is defined as 1) AND
+				# - position >= 1 (top left position is defined as 1) AND
 				# - old property with given position exists
-				fline = (prio - 1) // 2
-				fpos = (prio - 1) % 2
-				if overwritePosition and not freshTab and prio >= 1 and len(fields) >= fline+1:
-					if len(fields[fline]) >= (fpos+1):
-						oldfield = fields[ fline ][ fpos ]
-						fields[ fline ][ fpos ] = field
-						ud.debug(ud.ADMIN, ud.INFO,
-											   'modules update_extended_attributes: replacing field "%s" with "%s" on position "%s" (%s,%s)' % (oldfield.property, field.property, prio, fline, fpos))
-					else:
-						fields[ fline ].append( field )
-						ud.debug(ud.ADMIN, ud.INFO,
-											   'modules update_extended_attributes: added new field "%s" on position "%s" (%s,%s)' % (field.property, prio, fline, fpos))
-				else:
-					if fullWidth:
-						fields.append([field])
-						ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: full width field added %s' % fields)
-						lastfield = ''
-						lastprio = ''
-					elif not lastfield:
-						# first item in line ==> remember item and do nothing
-						lastfield = field
-						lastprio = prio
-					else:
-						# process second item in line
-						if prio > lastprio+1:
-							# a) abs(prio - lastprio) > 1 ==> only one item in this line
-							fields.append([lastfield])
-							ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: single custom field added %s'% fields)
-							lastfield = field
-							lastprio = prio
-						else:
-							# b) abs(prio - lastprio) <= 1 ==> place two items in this line
-							fields.append([lastfield,field])
-							ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: two custom fields added %s'% fields)
-							lastfield = ''
-							lastprio = ''
 
-			if lastfield:
-				fields.append([lastfield])
-				ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: one custom field added %s'% fields)
-			currentTab.layout = fields
-			ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: layout for tab %s finished: %s'% (tabname, fields) )
+				if currentTab.exists( ea_layout.name ):
+					continue
+				elif ea_layout.overwrite and not freshTab: # we want to overwrite an existing property
+					# in the global fields ...
+					if not ea_layout.groupName:
+						replaced, layout = currentTab.replace( ea_layout.overwrite, ea_layout.name, recursive = True )
+						if not replaced: # the property was not found so we'll append it
+							currentTab.layout.append( ea_layout.label )
+					else:
+						for item in currentTab.layout:
+							if isinstance( item, ILayoutElement ) and item.label == ea_layout.groupName:
+								replaced, layout = item.replace( ea_layout.overwrite, ea_layout.name )
+								if not replaced: # the property was not found so we'll append it
+									item.append( ea_layout.label )
+				else:
+					if not ea_layout.groupName:
+						currentTab.insert( ea_layout.position, ea_layout.name )
+					else:
+						for item in currentTab.layout:
+							if isinstance( item, ILayoutElement ) and item.label == ea_layout.groupName:
+								item.insert( ea_layout.position, ea_layout.name )
+								break
+
 
 	# check for properties with the syntax class LDAP_Search
 	for pname, prop in module.property_descriptions.items():

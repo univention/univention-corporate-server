@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.127-1) unstable; urgency=low
+
+  * fix typo in script univention-remove-old-umc-objects; Bug #24045
+  * fix handling of extended attributes; Bug #23988
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 14 Oct 2011 17:46:50 +0200
+
 univention-directory-manager-modules (7.0.126-1) unstable; urgency=low
 
   * changed uldap.access.__validateLicense to _validateLicense (Bug #23213)

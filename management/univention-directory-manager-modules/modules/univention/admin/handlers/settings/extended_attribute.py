@@ -108,6 +108,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'translationGroupName': univention.admin.property(
+			short_description = _( 'Translation of group name' ),
+			long_description = '',
+			syntax = univention.admin.syntax.I18N_GroupName,
+			multivalue = True,
+			options = [],
+			required = False,
+			may_change = True,
+			identifies = False
+		),
 	'syntax': univention.admin.property(
 			short_description=_('Syntax'),
 			long_description='',
@@ -169,6 +179,26 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'groupName': univention.admin.property(
+			short_description = _( 'Group name' ),
+			long_description = '',
+			syntax = univention.admin.syntax.string,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = True,
+			identifies = False
+		),
+	'groupPosition': univention.admin.property(
+			short_description = _( 'Position number of group' ),
+			long_description = '',
+			syntax = univention.admin.syntax.integer,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = True,
+			identifies = False
+		),
 	'tabAdvanced': univention.admin.property(
 			short_description=_('Advanced tab'),
 			long_description='',
@@ -192,7 +222,7 @@ property_descriptions={
 	'overwritePosition': univention.admin.property(
 			short_description=_('Overwrite existing widget'),
 			long_description='',
-			syntax=univention.admin.syntax.boolean,
+			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -281,14 +311,14 @@ property_descriptions={
 			identifies=0
 		),
 	'module': univention.admin.property(
-			short_description=_('Needed Module'),
-			long_description=_('"users/user" or "computer/thinclient"'),
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			options=[],
-			required=1,
-			may_change=1,
-			identifies=0
+			short_description=_( 'Needed Module' ),
+			long_description = _( '"users/user" or "computer/thinclient"' ),
+			syntax = univention.admin.syntax.univentionAdminModules,
+			multivalue = True,
+			options = [],
+			required = True,
+			may_change = True,
+			identifies = False
 		),
 	'version': univention.admin.property(
 			short_description = _('Version of extended attribute'),
@@ -343,13 +373,19 @@ layout = [
 		] ),
 	] ),
 	Tab(_('UDM Web'),_('Settings for UDM web interface'), layout = [
-		Group( _( 'UDM Web' ), layout = [
+		Group( _( 'Tab layout' ), layout = [
 			[ "tabName", "tabPosition" ],
 			"translationTabName",
+			] ),
+		Group( _( 'Group layout' ), layout = [
+			[ 'groupName', 'groupPosition' ],
+			'translationGroupName',
+			] ),
+		Group( _( 'Extended settings' ), layout = [
 			[ "overwritePosition", "fullWidth" ],
 			[ "overwriteTab", "tabAdvanced" ],
 			"addEmptyValue"
-		] ),
+			] ),
 	] ),
 	Tab(_('UDM General'),_('UDM related settings'), layout = [
 		Group( _( 'UDM General' ), layout = [
@@ -387,6 +423,8 @@ mapping.register('ldapMapping', 'univentionUDMPropertyLdapMapping', None, univen
 mapping.register('multivalue', 'univentionUDMPropertyMultivalue', None, univention.admin.mapping.ListToString)
 mapping.register('tabName', 'univentionUDMPropertyLayoutTabName', None, univention.admin.mapping.ListToString)
 mapping.register('tabPosition', 'univentionUDMPropertyLayoutPosition', None, univention.admin.mapping.ListToString)
+mapping.register('groupName', 'univentionUDMPropertyLayoutGroupName', None, univention.admin.mapping.ListToString)
+mapping.register('groupPosition', 'univentionUDMPropertyLayoutGroupPosition', None, univention.admin.mapping.ListToString)
 mapping.register('tabAdvanced', 'univentionUDMPropertyLayoutTabAdvanced', None, univention.admin.mapping.ListToString)
 mapping.register('overwriteTab', 'univentionUDMPropertyLayoutOverwriteTab', None, univention.admin.mapping.ListToString)
 mapping.register('overwritePosition', 'univentionUDMPropertyLayoutOverwritePosition', None, univention.admin.mapping.ListToString)
@@ -424,7 +462,10 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.open(self)
 
-		for transKey in [ 'ShortDescription', 'LongDescription', 'TabName' ]:
+		if self.dn and self.info.has_key( 'overwritePosition' ) and self.info[ 'overwritePosition' ] == '0':
+			self.info[ 'overwritePosition' ] = ''
+
+		for transKey in [ 'ShortDescription', 'LongDescription', 'TabName', 'GroupName' ]:
 			translations = []
 			keys = self.oldattr.keys()
 			for key in self.oldattr.keys():
@@ -444,7 +485,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
-		for transKey in [ 'ShortDescription', 'LongDescription', 'TabName' ]:
+		for transKey in [ 'ShortDescription', 'LongDescription', 'TabName', 'GroupName' ]:
 			if self.hasChanged( 'translation%s' % transKey ):
 				oldlist = {}
 				newlist = {}

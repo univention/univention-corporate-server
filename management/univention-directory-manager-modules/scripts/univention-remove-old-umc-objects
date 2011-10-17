@@ -62,7 +62,7 @@ def run():
 	global lo
 
 	# find operation objects
-	op_objects = lo.searchDn( filter = 'objectClass=univentionConsoleOperation' )
+	op_objects = lo.searchDn( filter = 'objectClass=univentionConsoleOperations' )
 	for dn in op_objects:
 		remove( dn )
 

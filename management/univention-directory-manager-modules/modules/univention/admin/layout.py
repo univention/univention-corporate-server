@@ -30,13 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import copy
+
 class ILayoutElement( dict ):
 	"""Describes the layout information for a tab or a groupbox"""
 	def __init__( self, label, description = '', layout = [] ):
 		dict.__init__( self )
 		self.__setitem__( 'label', label )
 		self.__setitem__( 'description', description )
-		self.__setitem__( 'layout', layout )
+		self.__setitem__( 'layout', copy.copy( layout ) )
 
 	@property
 	def label( self ):
@@ -53,6 +55,66 @@ class ILayoutElement( dict ):
 	@layout.setter
 	def layout( self, value ):
 		 self[ 'layout' ] = value
+
+	def replace( self, old, new, recursive = True ):
+		new_layout = []
+		replaced = False
+		for item in self.layout:
+			if replaced:
+				new_layout.append( item )
+				continue
+			if isinstance( item, basestring ) and item == old:
+				new_layout.append( new )
+				replaced = True
+			elif isinstance( item, ( tuple, list ) ):
+				line = []
+				for elem in item:
+					if elem == old:
+						replaced = True
+						line.append( new )
+					else:
+						line.append( elem )
+				new_layout.append( line )
+			elif isinstance( item, ILayoutElement ) and recursive:
+				replaced, layout = item.replace( old, new, recursive )
+				new_layout.append( item )
+			else:
+				new_layout.append( item )
+		self.layout = new_layout
+
+		return ( replaced, self.layout )
+
+	def exists( self, field ):
+		for item in self.layout:
+			if isinstance( item, basestring ) and item == field:
+				return True
+			elif isinstance( item, ( tuple, list ) ):
+				if field in item:
+					return True
+			elif isinstance( item, ILayoutElement ):
+				if item.exists( field ):
+					return True
+
+		return False
+
+	def insert( self, position, field ):
+		fline = ( position -1 ) // 2
+		fpos = ( position - 1 ) % 2
+
+		currentLine = fline
+		while len( self.layout ) > currentLine and isinstance( self.layout[ 0 ], ILayoutElement ):
+			currentLine += 1
+
+		if len( self.layout ) <= currentLine:
+			self.layout.append( field )
+		else:
+			if isinstance( self.layout[ currentLine ], basestring ):
+				if fpos == 0:
+					self.layout[ currentLine ] = [ field, self.layout[ currentLine ] ]
+				else:
+					self.layout[ currentLine ] = [ self.layout[ currentLine ], field ]
+			else:
+				self.layout[ currentLine ].insert( fpos, field  )
 
 class Tab( ILayoutElement ):
 	def __init__( self, label, description = '', advanced = False, layout = [] ):

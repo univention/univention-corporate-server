@@ -2614,6 +2614,9 @@ class translationTupleLongDescription(translationTuple):
 class translationTupleTabName(translationTuple):
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated tab name'), string)]
 
+class I18N_GroupName( translationTuple ):
+	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), ( _( 'Translated group name' ), string )]
+
 class disabled( select ):
 	choices = (
 		( 'none', _( 'None' ) ),
