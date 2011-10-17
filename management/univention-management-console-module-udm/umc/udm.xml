@@ -54,6 +54,8 @@
 	<categories>
 	  <category name="domain"/>
 	</categories>
+	<command name="udm/license" function="license">
+	</command>
 	<command name="udm/query" function="query">
 	</command>
 	<command name="udm/containers" function="containers">

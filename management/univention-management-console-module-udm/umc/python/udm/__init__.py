@@ -46,7 +46,7 @@ import univention.admin.objects as udm_objects
 import univention.admin.uexceptions as udm_errors
 from univention.management.console.protocol.definitions import *
 
-from .ldap import UDM_Error, UDM_Module, UDM_Settings, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, LDAP_ConnectionError, set_credentials
+from .ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, LDAP_ConnectionError, set_credentials
 
 _ = Translation( 'univention-management-console-modules-udm' ).translate
 
@@ -94,6 +94,38 @@ class Instance( Base ):
 			msg = str( result ) + '\n' + '\n'.join( thread.trace )
 			MODULE.error( 'An internal error occurred: %s' % msg )
 			self.finished( request.id, None, msg, False )
+
+	@LDAP_Connection
+	def license( self, request, ldap_connection = None, ldap_position = None ):
+		message = ''
+		try:
+			# call the check_license method, handle the different exceptions, and
+			# return a user friendly message
+			check_license(ldap_connection)
+		except udm_errors.licenseNotFound:
+			message = _('License not found. During this session add and modify are disabled.')
+		except udm_errors.licenseAccounts:
+			message = _('You have too many user accounts for your license. During this session add and modify are disabled.')
+		except udm_errors.licenseClients:
+			message = _('You have too many client accounts for your license. During this session add and modify are disabled.')
+		except udm_errors.licenseDesktops:
+			message = _('You have too many desktop accounts for your license. During this session add and modify are disabled.')
+		except udm_errors.licenseGroupware:
+			message = _('You have too many groupware accounts for your license. During this session add and modify are disabled.')
+		except udm_errors.licenseExpired:
+			message = _('Your license is expired. During this session add and modify are disabled.')
+		except udm_errors.licenseWrongBaseDn:
+			message = _('Your license is not valid for your LDAP-Base. During this session add and modify are disabled.')
+		except udm_errors.licenseInvalid:
+			message = _('Your license is not valid. During this session add and modify are disabled.')
+		except udm_errors.licenseDisableModify:
+			message = _('Your license does not allow modifications. During this session add and modify are disabled.')
+		except udm_errors.licenseGPLversion:
+			message = _('Your license status could not be validated. Thus, you are not eligible to support and maintenance. If you have bought a license, please contact Univention or your vendor.')
+		if message:
+			self.finished( request.id, False, message )
+		else:
+			self.finished( request.id, True )
 
 	def add( self, request ):
 		"""Creates LDAP objects.

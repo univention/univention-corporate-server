@@ -49,6 +49,13 @@ from ...log import MODULE
 
 from .syntax import widget, default_value
 
+try:
+    import univention.admin.license
+    GPLversion=False
+except:
+    GPLversion=True
+
+
 _ = Translation( 'univention-management-console-modules-udm' ).translate
 
 udm_modules.update()
@@ -66,6 +73,7 @@ def set_credentials( dn, passwd ):
 # decorator for LDAP connections
 _ldap_connection = None
 _ldap_position = None
+_licenseCheck = 0
 
 class LDAP_ConnectionError( Exception ):
 	pass
@@ -89,7 +97,7 @@ def LDAP_Connection( func ):
 		  ...
 	"""
 	def wrapper_func( *args, **kwargs ):
-		global _ldap_connection, _ldap_position, _user_dn, _password
+		global _ldap_connection, _ldap_position, _user_dn, _password, _licenseCheck
 
 		if _ldap_connection is not None:
 			MODULE.info( 'Using open LDAP connection for user %s' % _user_dn )
@@ -99,6 +107,14 @@ def LDAP_Connection( func ):
 			MODULE.info( 'Opening LDAP connection for user %s' % _user_dn )
 			try:
 				lo = udm_uldap.access( host = ucr.get( 'ldap/master' ), base = ucr.get( 'ldap/base' ), binddn = _user_dn, bindpw = _password )
+
+				# license check (see also univention.admin.uldap.access.bind())
+				if not GPLversion:
+					_licenseCheck = univention.admin.license.init_select(lo, 'admin')
+					if _licenseCheck in range(1, 5):
+						lo.allow_modify = 0
+					lo.requireLicense()
+
 				po = udm_uldap.position( lo.base )
 			except Exception, e:
 				raise LDAP_ConnectionError( 'Opening LDAP connection failed: %s' % str( e ) )
@@ -114,6 +130,7 @@ def LDAP_Connection( func ):
 			MODULE.info( 'LDAP operation for user %s has failed' % _user_dn )
 			try:
 				lo = udm_uldap.access( host = ucr.get( 'ldap/master' ), base = ucr.get( 'ldap/base' ), binddn= _user_dn, bindpw = _password )
+				lo.requireLicense()
 				po = udm_uldap.position( lo.base )
 			except Exception, e:
 				raise LDAP_ConnectionError( 'Opening LDAP connection failed: %s' % str( e ) )
@@ -630,6 +647,24 @@ class UDM_Settings( object ):
 
 	def resultColumns( self, module_name ):
 		pass
+
+def check_license(ldap_connection = None, ldap_position = None ):
+	"""Checks the license cases and throws exceptions accordingly"""
+	global GPLversion
+	if GPLversion:
+		raise udm_errors.licenseGPLversion
+	ldap_connection._validateLicense()  # throws more exceptions in case the license could not be found
+	if _licenseCheck == 1:
+		raise udm_errors.licenseClients
+	elif _licenseCheck == 2:
+		raise udm_errors.licenseAccounts
+	elif _licenseCheck == 3:
+		raise udm_errors.licenseDesktops
+	elif _licenseCheck == 4:
+		raise udm_errors.licenseGroupware
+	elif _licenseCheck == 5:
+		# Free for personal use edition
+		raise udm_errors.freeForPersonalUse
 
 def split_module_name( module_name ):
 	"""Splits a module name into category and internal name"""

@@ -211,6 +211,14 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		});
 		this._searchPage.addChild(titlePane);
 
+		// get the license information
+		this.umcpCommand('udm/license', {}, false).then(dojo.hitch(this, function(data) {
+			console.log(dojo.toJson(data));
+			if (!data.result) {
+				this._searchPage.addNote(data.message);
+			}
+		}));
+
 		//
 		// add data grid
 		//
