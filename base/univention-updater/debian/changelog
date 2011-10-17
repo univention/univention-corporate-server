@@ -1,3 +1,10 @@
+univention-updater (7.0.48-2) unstable; urgency=low
+
+  * Add a note that local repositories are not yet compatible with secure apt
+    (since it would need to create a local archive key) (Bug #9475)	 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 17 Oct 2011 12:23:24 +0200
+
 univention-updater (7.0.48-1) unstable; urgency=low
 
   * Install univention-debmirror in univention-repository-create

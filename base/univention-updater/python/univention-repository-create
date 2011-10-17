@@ -254,7 +254,14 @@ if __name__ == '__main__':
 		os.chdir( os.path.join( configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' ), 'mirror' ) )
 		os.symlink( '.', 'univention-repository' )
 
-		print  "The local repository has been created."
+		print "The local repository has been created."
+		print "UCS validates the integrity of the package file signed Release files (using the secure"
+		print "APT mechanism). Secure APT is not yet available for local repositories. As such, it"
+		print "should be disabled by setting the Univention Configuration Registry variable"
+		print "update/secure_apt to no:"
+		print
+		print "ucr set update/secure_apt=no"
+
 	finally:
 		if not univention.updater.tools.updater_lock_release(lock):
 			print 'WARNING: updater-lock already released!'
