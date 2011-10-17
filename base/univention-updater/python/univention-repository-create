@@ -230,6 +230,13 @@ if __name__ == '__main__':
 			if options.mount:
 				subprocess.call( [ 'umount', options.mount_point ] )
 
+		# install univention-debmirror
+		print 'Installing univention-debmirror'
+		ret=subprocess.call( ['univention-install', '--yes', 'univention-debmirror' ] )
+		if ret != 0:
+			print 'Error: Failed to install univention-debmirror'
+			sys.exit( 1 )
+
 		# set repository server to local system
 		fqdn = '%s.%s' % ( configRegistry.get( 'hostname' ), configRegistry.get( 'domainname' ) )
 		ucr.handler_set( [ 'repository/online/server=%s' % fqdn ] )

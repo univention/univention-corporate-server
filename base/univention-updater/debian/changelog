@@ -1,3 +1,10 @@
+univention-updater (7.0.48-1) unstable; urgency=low
+
+  * Install univention-debmirror in univention-repository-create
+    (Bug #23831)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Oct 2011 08:38:43 +0200
+
 univention-updater (7.0.47-1) unstable; urgency=low
 
   * Merge all update tools to univention-upgrade (Bug #23453)
