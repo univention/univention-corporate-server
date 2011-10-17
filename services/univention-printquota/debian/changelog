@@ -1,3 +1,9 @@
+univention-printquota (4.0.4-1) unstable; urgency=low
+
+  * create /etc/pykota.secret in postinst (Bug #21649) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Oct 2011 13:21:46 +0200
+
 univention-printquota (4.0.3-1) unstable; urgency=low
 
   * fixed listener, print debug message with priority

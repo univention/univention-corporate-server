@@ -54,4 +54,11 @@ if [ "$1" = "configure" ]; then
 	fi
 fi
 
+dest="/etc/pykota.secret"
+if [ ! -f "$dest" ] ; then
+    cp /etc/machine.secret "$dest"
+    chown pykota:root "$dest"
+    chmod 600  "$dest"
+fi
+
 exit 0
