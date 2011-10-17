@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.178-1) unstable; urgency=low
+
+  * fixed removing obsolete 'edit' links to UCR policies (Bug #23557)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 17 Oct 2011 13:00:41 +0200
+
 univention-management-console-module-udm (1.0.177-1) unstable; urgency=low
 
   * show 'edit' links to UCR policies (Bug #23557)

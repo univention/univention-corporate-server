@@ -626,7 +626,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 							return false;
 						}
 
-						// prepare a new description widget
+						// prepare the HTML code to link to the policy
 						var label = dojo.replace('(<a href="javascript:void(0)" ' +
 								'onclick=\'dijit.byId("{id}")._openPolicy("{type}", "{dn}")\' ' +
 								'title="{title}: {dn}">{edit}</a>)', {
@@ -636,17 +636,33 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 							title: this._('Click to edit the inherited properties of the policy'),
 							edit: this._('edit')
 						});
-						var link = new umc.widgets.LabelPane({ 
-							label: j == 0 ? '&nbsp;' : '',
-							content: new umc.widgets.Text({ 
-								content: label 
-							}) 
-						});
-						
-						// get the correct row container
+
 						var container = iwidget._rowContainers[j];
-						container.addChild(link);
+						if (!container.$linkWidget$) {
+							// add an additional widget with the link the the UCR policy to the row
+							container.$linkWidget$ = new umc.widgets.LabelPane({ 
+								label: j == 0 ? '&nbsp;' : '',
+								content: new umc.widgets.Text({ 
+									content: label 
+								}) 
+							});
+
+							// get the correct row container
+							container.addChild(container.$linkWidget$);
+						}
+						else {
+							// link widget already exists, update its content
+							container.$linkWidget$.set('content', label);
+						}
 					}, this);
+
+					// make sure that the last row does not contain a link widget
+					var lastContainer = iwidget._rowContainers[iwidget._rowContainers.length - 1];
+					if (lastContainer.$linkWidget$) {
+						lastContainer.removeChild(lastContainer.$linkWidget$);
+						lastContainer.$linkWidget$.destroyRecursive();
+						lastContainer.$linkWidget$ = null;
+					}
 				} 
 				else {
 					// fallback
