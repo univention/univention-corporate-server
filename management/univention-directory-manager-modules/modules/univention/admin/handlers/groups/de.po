@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-09 19:20+0200\n"
+"POT-Creation-Date: 2011-10-17 15:11+0200\n"
 "PO-Revision-Date: 2011-10-09 19:21+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,7 +78,7 @@ msgstr "Samba-Gruppe"
 msgid "Name"
 msgstr "Name"
 
-#: group.py:96
+#: group.py:96 group.py:248
 msgid "Group ID"
 msgstr "Gruppen-ID"
 
@@ -114,7 +114,7 @@ msgstr "enthaltene Rechner"
 msgid "Mail address"
 msgstr "Mail-Adresse"
 
-#: group.py:182 group.py:242
+#: group.py:182 group.py:245
 msgid "Member of"
 msgstr "Mitglied von"
 
@@ -123,12 +123,12 @@ msgid "Nested group"
 msgstr "enthaltene Gruppe"
 
 #: group.py:204
-msgid "Allowed e-mail users"
-msgstr "Berechtigte E-Mail Benutzer"
+msgid "Users that are allowed to send e-mails to the group"
+msgstr "Benutzer die berechtigt sind E-Mails an diese Gruppe zu versenden"
 
 #: group.py:215
-msgid "Allowed e-mail groups"
-msgstr "Berechtigte E-Mail Gruppen"
+msgid "Groups that are allowed to send e-mails to the group"
+msgstr "Gruppen die berechtigt sind E-Mails an diese Gruppe zu versenden"
 
 #: group.py:228
 msgid "General"
@@ -138,49 +138,37 @@ msgstr "Allgemein"
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: group.py:233
-msgid "Members"
-msgstr "Mitglieder"
+#: group.py:229
+msgid "Group account"
+msgstr "Gruppen-Konto"
 
-#: group.py:233
-msgid "Members of this Group"
+#: group.py:232
+msgid "Members of this group"
 msgstr "Mitglieder dieser Gruppe"
 
-#: group.py:236
+#: group.py:237
+msgid "Mail"
+msgstr "Mail"
+
+#: group.py:237
+msgid "Mail settings of this group"
+msgstr "Mail-Einstellungen dieser Gruppe"
+
+#: group.py:242
 msgid "Host members"
 msgstr "enthaltene Rechner"
 
-#: group.py:236
+#: group.py:242
 msgid "Host members of this group"
 msgstr "in dieser Gruppe enthaltene Rechner"
 
-#: group.py:239
-msgid "Nested groups"
-msgstr "enthaltene Gruppen"
-
-#: group.py:239
-msgid "Membership of other groups"
-msgstr "Mitgliedschaft von weiteren Gruppen"
-
-#: group.py:242
+#: group.py:245
 msgid "Membership in other groups"
 msgstr "Mitgliedschaft in weiteren Gruppen"
 
-#: group.py:245
-msgid "Allowed users"
-msgstr "Berechtigte Benutzer"
-
-#: group.py:245
-msgid "Users that are allowed to send e-mails to the group"
-msgstr "Benutzer die berechtigt sind E-Mails an diese Gruppe zu versenden"
-
 #: group.py:248
-msgid "Allowed groups"
-msgstr "Berechtigte Gruppen"
-
-#: group.py:248
-msgid "Groups that are allowed to send e-mails to the group"
-msgstr "Gruppen die berechtigt sind E-Mails an diese Gruppe zu versenden"
+msgid "ID of this group"
+msgstr "ID dieser Gruppe"
 
 #: group.py:251
 msgid "Windows"
@@ -189,3 +177,24 @@ msgstr "Windows"
 #: group.py:251
 msgid "Windows account settings"
 msgstr "Windows-Kontoeinstellungen"
+
+#~ msgid "Allowed e-mail users"
+#~ msgstr "Berechtigte E-Mail Benutzer"
+
+#~ msgid "Allowed e-mail groups"
+#~ msgstr "Berechtigte E-Mail Gruppen"
+
+#~ msgid "Members"
+#~ msgstr "Mitglieder"
+
+#~ msgid "Nested groups"
+#~ msgstr "enthaltene Gruppen"
+
+#~ msgid "Membership of other groups"
+#~ msgstr "Mitgliedschaft von weiteren Gruppen"
+
+#~ msgid "Allowed users"
+#~ msgstr "Berechtigte Benutzer"
+
+#~ msgid "Allowed groups"
+#~ msgstr "Berechtigte Gruppen"

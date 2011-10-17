@@ -145,13 +145,15 @@ property_descriptions = {
 
 layout = [
 	Tab(_('General'), _('Basic Values'), layout = [
-		'name',
-		[ "shortDescription", "longDescription" ],
-		[ "translationShortDescription", "translationLongDescription" ],
-		[ "default", "editable" ],
-		[ 'module', "objectClass" ],
+		Group( _( 'General' ), layout = [
+			'name',
+			[ "shortDescription", "longDescription" ],
+			[ "translationShortDescription", "translationLongDescription" ],
+			[ "default", "editable" ],
+			[ 'module', "objectClass" ],
 		] ),
-	]
+	] ),
+]
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

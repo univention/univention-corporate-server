@@ -63,9 +63,11 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _('General settings'), layout = [
-		'server'
-		] )
-	]
+		Group( _( 'General' ), layout = [
+			'server'
+		] ),
+	] )
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('server', 'cn', None, univention.admin.mapping.ListToString)

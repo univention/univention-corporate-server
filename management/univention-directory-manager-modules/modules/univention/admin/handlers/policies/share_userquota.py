@@ -158,15 +158,17 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Quota'), layout = [
-		'name',
-		[ 'softLimitSpace', 'hardLimitSpace' ],
-		[ 'softLimitInodes', 'hardLimitInodes' ]
+		Group( _( 'General' ), layout = [
+			'name',
+			[ 'softLimitSpace', 'hardLimitSpace' ],
+			[ 'softLimitInodes', 'hardLimitInodes' ]
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
-		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

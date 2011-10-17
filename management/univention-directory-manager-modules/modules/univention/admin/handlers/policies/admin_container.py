@@ -129,14 +129,16 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Univention Directory Manager settings' ), layout = [
-                'name',
-                'listModules',
-                ] ),
+		Group( _( 'General' ), layout = [
+				'name',
+				'listModules',
+			] ),
+		] ),
 	Tab( _( 'Object' ), _( 'Object' ), advanced = True, layout = [
-                [ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
-                [ 'fixedAttributes', 'emptyAttributes' ]
-                ] ),
-        ]
+		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
+		[ 'fixedAttributes', 'emptyAttributes' ]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

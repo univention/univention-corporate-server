@@ -124,14 +124,16 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic settings'), layout = [
-		'name',
-		'printServer'
+		Group( _( 'General' ), layout = [
+			'name',
+			'printServer'
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
-		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-09 19:21+0200\n"
+"POT-Creation-Date: 2011-10-17 15:06+0200\n"
 "PO-Revision-Date: 2011-10-09 19:22+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,15 +54,15 @@ msgstr "Passwort"
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: self.py:55 self.py:115 user.py:876 user.py:954
+#: self.py:54 self.py:114 user.py:876 user.py:941
 msgid "General"
 msgstr "Allgemein"
 
-#: self.py:55 self.py:115
+#: self.py:54 self.py:114
 msgid "There are no options enabled."
 msgstr "Es wurden keine Optionen freigegeben."
 
-#: self.py:59
+#: self.py:58
 msgid "User: Self"
 msgstr "Benutzer: Persönliche Einstellungen"
 
@@ -122,7 +122,7 @@ msgstr "Mail-Konto"
 msgid "Public key infrastructure account"
 msgstr "Public Key Infrastruktur-Konto"
 
-#: user.py:121 user.py:883
+#: user.py:121 user.py:884
 msgid "Personal information"
 msgstr "Persönliche Informationen"
 
@@ -166,7 +166,7 @@ msgstr "Samba Privilegien verwalten"
 msgid "Description"
 msgstr "Beschreibung"
 
-#: user.py:224 user.py:891
+#: user.py:224 user.py:890
 msgid "Organisation"
 msgstr "Organisation"
 
@@ -286,7 +286,7 @@ msgstr "Laufwerk für das Windows-Heimatverzeichnis"
 msgid "Relative ID"
 msgstr "Relative ID"
 
-#: user.py:526 user.py:897
+#: user.py:526 user.py:895
 msgid "Groups"
 msgstr "Gruppen"
 
@@ -494,107 +494,106 @@ msgstr "Grundeinstellungen"
 msgid "User account"
 msgstr "Benutzer-Konto"
 
-#: user.py:898
+#: user.py:896
 msgid "Additional groups"
 msgstr "Weitere Gruppen"
 
-#: user.py:902
+#: user.py:900
 msgid "Account"
 msgstr "Konto"
 
-#: user.py:902
+#: user.py:900
 msgid "Account settings"
 msgstr "Konto-Einstellungen"
 
-#: user.py:903
-msgid "Windows"
-msgstr "Windows"
-
-#: user.py:903
-msgid "Windows account settings"
-msgstr "Windows-Kontoeinstellungen"
-
-#: user.py:911
+#: user.py:901
 msgid "Locking and deactivation"
 msgstr "Konto-Deaktivierung"
 
-#: user.py:917
-msgid "Extended settings"
-msgstr "Erweiterte Einstellungen"
+#: user.py:905
+msgid "Windows"
+msgstr "Windows"
 
-#: user.py:921
+#: user.py:905
+msgid "Windows account settings"
+msgstr "Windows-Kontoeinstellungen"
+
+#: user.py:913
 msgid "POSIX (Linux/UNIX)"
 msgstr "POSIX (Linux/UNIX)"
 
-#: user.py:921
+#: user.py:913
 msgid "POSIX (Linux/UNIX) account settings"
 msgstr "POSIX (Linux/UNIX) Kontoeinstellungen"
 
-#: user.py:931
+#: user.py:920
 msgid "Contact"
 msgstr "Kontakt"
 
-#: user.py:931
+#: user.py:920
 msgid "Contact information"
 msgstr "Kontaktinformationen"
 
-#: user.py:932
+#: user.py:921
 msgid "Business"
 msgstr "Geschäftlich"
 
-#: user.py:940
+#: user.py:927
 msgid "Privat"
 msgstr "Privat"
 
-#: user.py:947
+#: user.py:934
 msgid "Mail"
 msgstr "Mail"
 
-#: user.py:947
+#: user.py:934
 msgid "Mail preferences"
 msgstr "Maileinstellungen"
 
-#: user.py:948
+#: user.py:935
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
-#: user.py:953
+#: user.py:940
 msgid "Certificate"
 msgstr "Zertifikat"
 
-#: user.py:964
+#: user.py:951
 msgid "Issuer"
 msgstr "Aussteller"
 
-#: user.py:973
+#: user.py:960
 msgid "Dates"
 msgstr "Datumsangaben"
 
-#: user.py:977
+#: user.py:964
 msgid "Misc"
 msgstr "Verschiedenes"
 
-#: user.py:1787
+#: user.py:1774
 #, python-format
 msgid "Need one of %s, %s, %s or %s in options to create user."
 msgstr ""
 "Mindestens eine Option aus %s, %s, %s oder %s muss aktiv sein, um einen "
 "neuen Benutzer zu erstellen."
 
-#: user.py:2082
+#: user.py:2069
 #, python-format
 msgid "The password is too short, at least %d characters!"
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 
-#: user.py:2088
+#: user.py:2075
 #, python-format
 msgid "The password is too short, at least %d character!"
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 
-#: user.py:2453
+#: user.py:2440
 msgid "DN given as share is not valid."
 msgstr "Der DN der Freigabe ist nicht zulässig."
 
-#: user.py:2469
+#: user.py:2456
 msgid "Given DN is no share."
 msgstr "Der angegebene DN ist keine Freigabe."
+
+#~ msgid "Extended settings"
+#~ msgstr "Erweiterte Einstellungen"

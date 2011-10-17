@@ -136,14 +136,16 @@ server from which the initial boot file is retrieved.'),
 
 layout = [
 	Tab(_('Boot'), _('Boot settings'), layout = [
-		'name',
-		[ 'boot_server', 'boot_filename' ]
+		Group( _( 'General' ), layout = [
+			'name',
+			[ 'boot_server', 'boot_filename' ]
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
-		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

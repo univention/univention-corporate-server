@@ -307,17 +307,6 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 		),
-	'mailGlobalSpamFolder': univention.admin.property(
-			short_description=_('Use Global Spam Folder'),
-			long_description=_('Move Spam to a global spam folder instead of a local folder'),
-			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
-			options=[],
-			required=0,
-			may_change=1,
-			dontsearch=1,
-			identifies=0
-		),
 	'mailAlternativeAddress': univention.admin.property(
 			short_description=_('Alternative E-Mail Addresses'),
 			long_description='',
@@ -328,183 +317,6 @@ property_descriptions={
 			dontsearch=0,
 			may_change=1,
 			identifies=0,
-		),
-	# Groupware settings
-	'kolabForwardActive': univention.admin.property(
-			short_description=_("Forward Mail"),
-			long_description='',
-			syntax=univention.admin.syntax.TrueFalseUp,
-			multivalue=0,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabForwardAddress': univention.admin.property(
-			short_description=_("Forward Address"),
-			long_description='',
-			syntax=univention.admin.syntax.emailAddress,
-			multivalue=0,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabForwardKeepCopy': univention.admin.property(
-			short_description=_("Forward Keep Copy"),
-			long_description='',
-			syntax=univention.admin.syntax.TrueFalseUp,
-			multivalue=0,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabHomeServer': univention.admin.property(
-			short_description=_("Kolab Home Server"),
-			long_description='',
-			syntax=univention.admin.syntax.kolabHomeServer,
-			multivalue=0,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabForwardUCE': univention.admin.property(
-			short_description=_("Forward Spam"),
-			long_description='',
-			syntax=univention.admin.syntax.TrueFalseUp,
-			multivalue=0,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabDeliveryToFolderActive': univention.admin.property(
-			short_description=_("Activate folderdelivery"),
-			long_description='',
-			syntax=univention.admin.syntax.TrueFalseUp,
-			multivalue=0,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabDeliveryToFolderName': univention.admin.property(
-			short_description=_("Deliver to Folder"),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabDelegate': univention.admin.property(
-			short_description=_("Delegates"),
-			long_description='',
-			syntax=univention.admin.syntax.emailAddress,
-			multivalue=1,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabVacationAddress': univention.admin.property(
-			short_description=_("Vacation Address"),
-			long_description='',
-			syntax=univention.admin.syntax.emailAddress,
-			multivalue=1,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabVacationActive': univention.admin.property(
-			short_description=_("Activate Vacation"),
-			long_description='',
-			syntax=univention.admin.syntax.TrueFalseUp,
-			multivalue=0,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabVacationText': univention.admin.property(
-			short_description=_("Vacation Text"),
-			long_description='',
-			syntax=univention.admin.syntax.long_string,
-			multivalue=0,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabVacationResendInterval':univention.admin.property(
-			short_description=_("Vacation Resend Interval"),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=0,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabVacationReplyToUCE': univention.admin.property(
-			short_description=_("Vacation Spam Reply"),
-			long_description='',
-			syntax=univention.admin.syntax.TrueFalseUp,
-			multivalue=0,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabVacationReactDomain': univention.admin.property(
-			short_description=_("React Domain"),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabVacationNoReactDomain': univention.admin.property(
-			short_description=_("No React Domain"),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
-		),
-	'kolabInvitationPolicy': univention.admin.property(
-			short_description=_("Invitation Policy"),
-			long_description='',
-			syntax=univention.admin.syntax.kolabInvitationPolicy,
-			multivalue=1,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			options=['groupware'],
-			identifies=0
 		),
 	'_options': univention.admin.property(
 			short_description=_('Options'),
@@ -524,59 +336,54 @@ for key, value in mungeddial.properties.items():
 
 layout = [
 	Tab(_('General'),_('Basic Values'), layout = [
-		[ "name","description" ],
-		[ [ "title", "organisation" ], "_options" ],
+		Group( _( 'General' ), layout = [
+			[ "name","description" ],
+			[ [ "title", "organisation" ], "_options" ],
 		] ),
+	] ),
  	Tab(_('User Account'),_('Account Settings'), layout = [
-		[ "disabled", "pwdChangeNextLogin" ]
+		Group( _( 'User Account' ), layout = [
+			[ "disabled", "pwdChangeNextLogin" ]
 		] ),
+	] ),
 	Tab(_('Mail'),_('Mail Settings'),[
-		"mailPrimaryAddress",
-		"mailAlternativeAddress",
-		"mailGlobalSpamFolder",
+		Group( _( 'Mail' ), layout = [
+			"mailPrimaryAddress",
+			"mailAlternativeAddress",
 		] ),
+	] ),
 	Tab(_('User Contact'),_('Contact Information'), layout = [
-		[ "e-mail", "phone" ],
-		"street",
-		[ "postcode","city" ]
+		Group( _( 'User Contact' ), layout = [
+			[ "e-mail", "phone" ],
+			"street",
+			[ "postcode","city" ]
 		] ),
+	] ),
 	Tab(_('Employee'),_('Employee Information'), layout = [
-		"employeeType",
-		"departmentNumber",
-		"secretary"
+		Group( _( 'Employee' ), layout = [
+			"employeeType",
+			"departmentNumber",
+			"secretary"
 		] ),
+	] ),
 	Tab(_('Linux'),_('Unix Account Settings'), layout = [
-		["unixhome", "shell"],
-		["homeShare", "homeSharePath"]
+		Group( _( 'Linux' ), layout = [
+			["unixhome", "shell"],
+			["homeShare", "homeSharePath"]
 		] ),
+	] ),
 	Tab(_('Windows'),_('Windows Account Settings'), layout = [
-		["sambahome", "homedrive"],
-		["scriptpath", "profilepath"]
+		Group( _( 'Windows' ), layout = [
+			["sambahome", "homedrive"],
+			["scriptpath", "profilepath"]
 		] ),
+	] ),
 	Tab(_('Groups'),_('Group Memberships'), layout = [
-		["primaryGroup"],
-		["groups"]
+		Group( _( 'Groups' ), layout = [
+			["primaryGroup"],
+			["groups"]
 		] ),
-	Tab(_('Vacation'),_('Vacation'), layout = [
-		['kolabVacationText',
-		 ['kolabVacationActive',
-		  'kolabVacationReplyToUCE',
-		  'kolabVacationResendInterval',]],
-		'kolabVacationAddress',
-		['kolabVacationReactDomain', 'kolabVacationNoReactDomain']
-		] ),
-	Tab(_('Groupware'),_('Groupware Settings'), layout = [
-		'kolabHomeServer',
-		['kolabForwardAddress',
-		 ['kolabForwardActive',
-		  'kolabForwardKeepCopy',
-		  'kolabForwardUCE'],],
-		['kolabDeliveryToFolderName', 'kolabDeliveryToFolderActive'],
-		'kolabDelegate'
-		] ),
-	Tab(_('Invitation'),_('Invitation'), layout = [
-		'kolabInvitationPolicy',
-		] ),
+	] ),
 	]
 
 # append tab with CTX flags
@@ -611,24 +418,7 @@ mapping.register('primaryGroup','userPrimaryGroupPreset',None,univention.admin.m
 mapping.register('groups','userGroupsPreset')
 mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
 mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
-mapping.register('mailGlobalSpamFolder', 'mailGlobalSpamFolder', None, univention.admin.mapping.ListToString)
 
-mapping.register('kolabHomeServer', 'kolabHomeServer', None, univention.admin.mapping.ListToString)
-mapping.register('kolabForwardActive', 'univentionKolabForwardActive',  None, univention.admin.mapping.ListToString)
-mapping.register('kolabForwardAddress', 'kolabForwardAddress', None, univention.admin.mapping.ListToString)
-mapping.register('kolabForwardKeepCopy', 'kolabForwardKeepCopy', None, univention.admin.mapping.ListToString)
-mapping.register('kolabForwardUCE', 'kolabForwardUCE', None, univention.admin.mapping.ListToString)
-mapping.register('kolabDeliveryToFolderActive', 'univentionKolabDeliveryToFolderActive',  None, univention.admin.mapping.ListToString)
-mapping.register('kolabDeliveryToFolderName', 'univentionKolabDeliveryToFolderName', None, univention.admin.mapping.ListToString)
-mapping.register('kolabDelegate', 'kolabDelegate')
-mapping.register('kolabVacationActive', 'univentionKolabVacationActive', None, univention.admin.mapping.ListToString)
-mapping.register('kolabVacationText', 'univentionKolabVacationText', None, univention.admin.mapping.ListToString)
-mapping.register('kolabVacationResendInterval', 'kolabVacationResendInterval', None, univention.admin.mapping.ListToString)
-mapping.register('kolabVacationReplyToUCE', 'kolabVacationReplyToUCE', None, univention.admin.mapping.ListToString)
-mapping.register('kolabVacationAddress', 'kolabVacationAddress')
-mapping.register('kolabVacationReactDomain', 'kolabVacationReactDomain')
-mapping.register('kolabVacationNoReactDomain', 'univentionKolabVacationNoReactDomain')
-mapping.register('kolabInvitationPolicy', 'kolabInvitationPolicy')
 
 mapping.register('_options', 'userOptionsPreset')
 

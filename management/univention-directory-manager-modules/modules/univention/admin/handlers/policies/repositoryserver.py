@@ -125,14 +125,16 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Update'), layout = [
-		'name',
-		'repositoryServer'
+		Group( _( 'General' ), layout = [
+			'name',
+			'repositoryServer'
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
-		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

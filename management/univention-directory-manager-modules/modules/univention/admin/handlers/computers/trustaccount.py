@@ -87,11 +87,11 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic Values' ), layout = [
-		[ "name", "description" ],
+		Group( _( 'Trust account' ), layout = [
+			[ "name", "description" ],
+			"password"
 		] ),
-	Tab( _( 'Domain trust account' ), _( 'Trust account settings' ), layout = [
-		"password"
-		] )
+		] ),
 ]
 
 mapping=univention.admin.mapping.mapping()

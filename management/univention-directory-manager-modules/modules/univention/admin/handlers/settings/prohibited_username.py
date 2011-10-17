@@ -75,10 +75,12 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Prohibited user names'), layout = [
-		'name',
-		'usernames',
+		Group( _( 'General' ), layout = [
+			'name',
+			'usernames',
 		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

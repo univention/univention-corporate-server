@@ -211,20 +211,24 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'General settings' ), layout = [
-				[ 'name', 'sambaName'],
-				'spoolHost',
-				'uri',
-				[ 'producer', 'model' ],
-				[ 'location',  'description' ],
-				[ 'setQuota', ],
-				[ 'pagePrice', 'jobPrice' ],
-				] ),
+		Group( _( 'General' ), layout = [
+			[ 'name', 'sambaName'],
+			'spoolHost',
+			'uri',
+			[ 'producer', 'model' ],
+			[ 'location',  'description' ],
+			[ 'setQuota', ],
+			[ 'pagePrice', 'jobPrice' ],
+		] ),
+	] ),
 	Tab( _( 'Access control' ), _( 'Access control for users and groups' ), layout = [
-				'ACLtype',
-				'ACLUsers',
-				'ACLGroups',
-				] ),
-		]
+		Group( _( 'Access control' ), layout = [
+			'ACLtype',
+			'ACLUsers',
+			'ACLGroups',
+		] ),
+	] ),
+]
 
 def boolToString(value):
 	if value == '1':

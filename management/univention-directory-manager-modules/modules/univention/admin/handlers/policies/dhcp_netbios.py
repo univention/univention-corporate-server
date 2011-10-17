@@ -146,14 +146,16 @@ property_descriptions={
 
 layout=[
 	Tab(_('Netbios'),_('SMB/CIFS name resolution'), layout = [
-		'name',
-		[ 'netbios_scope', 'netbios_node_type' ],
+		Group( _( 'General' ), layout = [
+			'name',
+			[ 'netbios_scope', 'netbios_node_type' ],
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
-		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

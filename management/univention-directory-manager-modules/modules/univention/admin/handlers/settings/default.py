@@ -155,20 +155,26 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic Values'), layout = [
-		"name"
+		Group( _( 'General' ), layout = [
+			"name"
 		] ),
+	] ),
 	Tab(_('Primary Groups'),_('Primary Groups'), layout = [
-		"defaultGroup",
-		"defaultComputerGroup",
-		"defaultDomainControllerMBGroup",
-		"defaultDomainControllerGroup",
-		"defaultMemberServerGroup",
-		"defaultClientGroup"
+		Group( _( 'Primary Groups' ), layout = [
+			"defaultGroup",
+			"defaultComputerGroup",
+			"defaultDomainControllerMBGroup",
+			"defaultDomainControllerGroup",
+			"defaultMemberServerGroup",
+			"defaultClientGroup"
 		] ),
+	] ),
 	Tab(_('KDE Profiles'),_('KDE Profiles'), layout = [
-		"defaultKdeProfiles",
+		Group( _( 'KDE Profiles' ), layout = [
+			"defaultKdeProfiles",
 		] ),
-	Tab(_('Groupware'),_('Groupware'), layout = [
+	] ),
+	Tab(_('Groupware'),_('Groupware'), advanced = True, layout = [
 		"defaultKolabHomeServer",
 		"defaultScalixMailnode",
 		] ),

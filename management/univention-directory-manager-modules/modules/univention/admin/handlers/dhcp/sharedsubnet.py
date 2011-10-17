@@ -81,8 +81,8 @@ property_descriptions={
 			identifies=0
 		),
 	'range': univention.admin.property(
-			short_description=_('Dynamic range'),
-			long_description='',
+			short_description=_('Dynamic address assignment'),
+			long_description=_( 'Define a pool of addresses available for dynamic address assignment.'),
 			syntax=univention.admin.syntax.IP_AddressRange,
 			multivalue=1,
 			options=[],
@@ -97,12 +97,12 @@ options={
 
 layout = [
 	Tab(_('General'), _('Basic settings'), layout = [
-		[ 'subnet', 'subnetmask' ],
-		'broadcastaddress'
+		Group( _( 'General' ), layout = [
+			[ 'subnet', 'subnetmask' ],
+			'broadcastaddress'
+			'range'
 		] ),
-	Tab( _( 'Dynamic address assignment' ), _( 'Define a pool of addresses available for dynamic address assignment.' ), layout = [
-		'range'
-		] ),
+	] ),
 ]
 
 def rangeMap( value ):

@@ -138,20 +138,20 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		'name',
-		[ 'network', 'netmask' ],
+		Group( _( 'General' ), layout = [
+			'name',
+			[ 'network', 'netmask' ],
+			'ipRange',
 		] ),
-	Tab(_('IP'),_('IP address ranges'), layout = [
-		'ipRange',
+		Group( _( 'DNS preferences' ), layout = [
+			'dnsEntryZoneForward',
+			'dnsEntryZoneReverse',
 		] ),
-	Tab(_('DNS'),_('DNS preferences'), layout = [
-		'dnsEntryZoneForward',
-		'dnsEntryZoneReverse',
+		Group( _( 'DHCP preferences' ), layout = [
+			'dhcpEntryZone',
 		] ),
-	Tab(_('DHCP'),_('DHCP'), layout = [
-		"dhcpEntryZone"
-		] )
-	]
+	] ),
+]
 
 def rangeMap( value ):
 	return map( lambda x: ' '.join( x ), value )

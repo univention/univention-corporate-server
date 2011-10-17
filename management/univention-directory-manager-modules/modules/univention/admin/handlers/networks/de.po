@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-12 09:35+0100\n"
+"POT-Creation-Date: 2011-10-17 15:12+0200\n"
 "PO-Revision-Date: 2006-01-12 13:25+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,89 +38,89 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: network.py:46 network.py:65
+#: network.py:49 network.py:68
 msgid "Networks"
 msgstr "Netzwerk"
 
-#: network.py:47
+#: network.py:50
 msgid "Add, edit and delete networks"
 msgstr "Hinzufügen, bearbeiten und löschen von Netzwerken"
 
-#: network.py:48
+#: network.py:51
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: network.py:48
+#: network.py:51
 msgid "Add network object"
 msgstr "Netz-Objekte hinzufügen"
 
-#: network.py:48
+#: network.py:51
 msgid "Search"
 msgstr "Suchen"
 
-#: network.py:48
+#: network.py:51
 msgid "Search network object(s)"
 msgstr "Netz-Objekt(e) suchen"
 
-#: network.py:51
+#: network.py:54
 msgid "Networks: Network"
 msgstr "Netze: Netz"
 
-#: network.py:56
+#: network.py:59
 msgid "Name"
 msgstr "Name"
 
-#: network.py:74
+#: network.py:77
 msgid "Netmask"
 msgstr "Netzmaske"
 
-#: network.py:83
+#: network.py:86
 msgid "Next IP address"
 msgstr "nächste IP-Adresse"
 
-#: network.py:92
+#: network.py:95
 msgid "IP Address Range"
 msgstr "IP-Adressbereich"
 
-#: network.py:102
+#: network.py:105
 msgid "DNS forward lookup zone"
 msgstr "Forward Lookup Zone für DNS-Einträge"
 
-#: network.py:113
+#: network.py:116
 msgid "DNS reverse lookup zone"
 msgstr "Reverse Lookup Zone für DNS-Einträge"
 
-#: network.py:124
+#: network.py:127
 msgid "DHCP service"
 msgstr "DHCP-Einträge"
 
-#: network.py:147
+#: network.py:140 network.py:141
 msgid "General"
 msgstr "Allgemein"
 
-#: network.py:147
+#: network.py:140
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: network.py:151
-msgid "IP"
-msgstr "IP"
-
-#: network.py:151
-msgid "IP address ranges"
-msgstr "IP-Adressbereiche"
-
-#: network.py:154
-msgid "DNS"
-msgstr "DNS"
-
-#: network.py:154
+#: network.py:146
 msgid "DNS preferences"
 msgstr "DNS-Einstellungen"
 
-#: network.py:158
-msgid "DHCP"
-msgstr "DHCP"
+#: network.py:150
+msgid "DHCP preferences"
+msgstr "DHCP-Einstellungen"
+
+#~ msgid "IP"
+#~ msgstr "IP"
+
+#~ msgid "IP address ranges"
+#~ msgstr "IP-Adressbereiche"
+
+#~ msgid "DNS"
+#~ msgstr "DNS"
+
+#~ msgid "DHCP"
+#~ msgstr "DHCP"
 
 #~ msgid "nextIp"
 #~ msgstr "nächste IP-Adresse"

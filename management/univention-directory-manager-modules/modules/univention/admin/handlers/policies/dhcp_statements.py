@@ -179,16 +179,18 @@ property_descriptions={
 
 layout = [
 	Tab(_('DHCP statements'), _('Miscellaneous DHCP statements'), layout = [
-		'name',
-		[ 'authoritative','boot-unknown-clients' ],
-		[ 'pingCheck', 'getLeaseHostnames' ],
-		[ 'serverIdentifier', 'serverName' ]
+		Group( _( 'General' ), layout = [
+			'name',
+			[ 'authoritative','boot-unknown-clients' ],
+			[ 'pingCheck', 'getLeaseHostnames' ],
+			[ 'serverIdentifier', 'serverName' ]
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes' , 'emptyAttributes' ]
-		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

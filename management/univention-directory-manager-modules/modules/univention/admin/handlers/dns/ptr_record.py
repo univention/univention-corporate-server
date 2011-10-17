@@ -71,8 +71,10 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		[ 'address', 'ptr_record' ],
+		Group( _( 'General' ), layout = [
+			[ 'address', 'ptr_record' ],
 		] ),
+	] ),
 ]
 
 mapping=univention.admin.mapping.mapping()

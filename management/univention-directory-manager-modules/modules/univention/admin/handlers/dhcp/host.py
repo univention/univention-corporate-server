@@ -84,12 +84,12 @@ Each address should be either an IP address or a domain name that resolves to on
 }
 layout=[
 	Tab( _('General'), _('Basic settings'), layout = [
-		'host',
-		'hwaddress'
+		Group( _( 'General' ), layout = [
+			'host',
+			'hwaddress'
+			'fixedaddress'
 		] ),
-	Tab( _( 'Fixed IP addresses' ), _( 'Fixed IP Addresses of the Host' ), layout = [
-		'fixedaddress'
-		] )
+	] )
 ]
 
 def unmapHWAddress(old):

@@ -146,14 +146,16 @@ property_descriptions={
 
 layout = [
 	Tab(_('Lease Time'), _('DHCP lease time'), layout = [
-		'name',
-		[ 'lease_time_max', 'lease_time_min' ],
+		Group( _( 'General' ), layout = [
+			'name',
+			[ 'lease_time_max', 'lease_time_min' ],
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
-		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

@@ -156,16 +156,18 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Desktop settings'), layout = [
-		'name',
-		'language',
-		'profile',
-		[ 'logonScripts', "logoutScripts" ],
+		Group( _( 'General' ), layout = [
+			'name',
+			'language',
+			'profile',
+			[ 'logonScripts', "logoutScripts" ],
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', "emptyAttributes" ]
-		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

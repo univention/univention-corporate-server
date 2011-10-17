@@ -233,7 +233,7 @@ property_descriptions={
 	'userexpiry': univention.admin.property(
 			short_description=_('Account expiry date'),
 			long_description=_('Enter date as day.month.year.'),
-			syntax=univention.admin.syntax.date,
+			syntax=univention.admin.syntax.iso8601Date,
 			multivalue=0,
 			options=['posix', 'samba', 'kerberos', 'mail'],
 			required=0,
@@ -244,7 +244,7 @@ property_descriptions={
 	'passwordexpiry': univention.admin.property(
 			short_description=_('Password expiry date'),
 			long_description=_('Enter date as day.month.year.'),
-			syntax=univention.admin.syntax.date,
+			syntax=univention.admin.syntax.iso8601Date,
 			multivalue=0,
 			options=['posix', 'samba', 'kerberos', 'mail'],
 			editable=0,
@@ -876,21 +876,19 @@ layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ),	layout = [
 		Group( _( 'User account' ), layout = [
 			[ 'username', 'description' ],
-			[ 'password', 'pwdChangeNextLogin' ],
+			'password',
+ 			[ 'pwdChangeNextLogin', 'overridePWHistory', 'overridePWLength' ] ,
 			'primaryGroup',
 			'mailPrimaryAddress',
 			] ),
 		Group( _( 'Personal information' ), layout = [
-			'title',
-			'firstname',
-			'lastname',
+			[ 'title', 'firstname', 'lastname'],
 			'organisation',
 			'birthday',
 			'jpegPhoto',
 			] ),
 		Group( _( 'Organisation' ), layout = [
-			'employeeNumber',
-			'employeeType',
+			[ 'employeeNumber', 'employeeType' ],
 			'secretary',
 			] ),
 		] ),
@@ -900,6 +898,10 @@ layout = [
 			] ),
 		] ),
 	Tab( _( 'Account' ),  _( 'Account settings' ), layout = [
+		Group( _( 'Locking and deactivation' ), layout = [
+			[ 'disabled', 'locked'],
+			[ 'userexpiry', 'passwordexpiry' ],
+			] ),
 		Group( _( 'Windows' ), _( 'Windows account settings' ), layout = [
 			[ 'homedrive', 'sambahome' ],
 			[ 'scriptpath', 'profilepath' ],
@@ -908,23 +910,10 @@ layout = [
 			'sambaLogonHours',
 			'sambaUserWorkstations'
 			] ),
-		Group( _( 'Locking and deactivation' ), layout = [
-			'disabled',
-			'locked',
-			'userexpiry',
-			'passwordexpiry',
-			] ),
-		Group( _( 'Extended settings' ), layout = [
-			'overridePWHistory',
-			'overridePWLength',
-			] ),
 		Group( _( 'POSIX (Linux/UNIX)' ), _( 'POSIX (Linux/UNIX) account settings' ), layout = [
-			'unixhome',
-			'shell',
-			'uidNumber',
-			'gidNumber',
-			'homeShare',
-			'homeSharePath',
+			[ 'unixhome', 'shell' ],
+			[ 'uidNumber', 'gidNumber' ],
+			[ 'homeShare', 'homeSharePath' ],
 			'gecos'
 			] ),
 		] ),
@@ -932,14 +921,12 @@ layout = [
 		Group( _( 'Business' ), layout = [
 			'e-mail',
 			'phone',
-			'roomNumber',
-			'departmentNumber',
-			'street',
-			[ 'postcode', 'city' ],
+			[ 'roomNumber', 'departmentNumber' ],
+			[ 'street', 'postcode', 'city' ],
 			] ),
 		Group( _( 'Privat' ), layout = [
-			'mobileTelephoneNumber',
 			'homeTelephoneNumber',
+			'mobileTelephoneNumber',
 			'pagerTelephoneNumber',
 			'homePostalAddress'
 			] ),

@@ -175,19 +175,45 @@ property_descriptions={
 }
 
 layout = [
-	Tab( _('General'),_('Basic Values'), layout = [ "name" ] ),
-	Tab( _('Users'),_('User Links'), layout = [ "users" ] ),
-	Tab( _('Groups'),_('Group Links'), layout = [ "groups" ] ),
-	Tab( _('Computers'),_('Computer Links'), layout = [ "computers" ] ),
-	Tab( _('Policy'),_('Policy Links'), layout = [ "policies" ] ),
-	Tab( _('DNS'),_('DNS Links'), layout = [ "dns" ] ),
-	Tab( _('DHCP'),_('DHCP Links'), layout = [ "dhcp" ] ),
-	Tab( _('Network'),_('Network Links'), layout = [ "networks" ] ),
-	Tab( _('Shares'),_('Shares Links'), layout = [ "shares" ] ),
-	Tab( _('Printers'),_('Printers Links'), layout = [ "printers" ] ),
-	Tab( _('Mail'),_('Mail Links'), layout = [ "mail" ] ),
-	Tab( _('License'),_('License Links'), layout = [ "license" ] )
-	]
+	Tab( _('General'),_('Basic Values'), layout = [
+		Group( _( 'General' ), layout = [
+			"name"
+		] ),
+		Group( _( 'User Links' ), layout = [
+			"users"
+		] ),
+		Group( _( 'Group Links' ), layout = [
+			"groups"
+		] ),
+		Group( _( 'Computer Links' ), layout = [
+			"computers",
+		] ),
+		Group( _( 'Policy Links' ), layout = [
+			"policies",
+		] ),
+		Group( _( 'DNS Links' ), layout = [
+			"dns",
+		] ),
+		Group( _( 'DHCP Links' ), layout = [
+			"dhcp",
+		] ),
+		Group( _( 'Network Links' ), layout = [
+			"networks",
+		] ),
+		Group( _( 'Shares Links' ), layout = [
+			"shares",
+		] ),
+		Group( _( 'Printers Links' ), layout = [
+			"printers",
+		] ),
+		Group( _( 'Mail Links' ), layout = [
+			"mail",
+		] ),
+		Group( _( 'License Links' ), layout = [
+			"license",
+		] ),
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

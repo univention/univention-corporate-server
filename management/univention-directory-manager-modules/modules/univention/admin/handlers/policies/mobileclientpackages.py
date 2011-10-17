@@ -136,10 +136,12 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Mobile client packages'), layout = [
-		'name',
-		'clientPackages',
-		'clientPackagesRemove'
+		Group( _( 'General' ), layout = [
+			'name',
+			'clientPackages',
+			'clientPackagesRemove'
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]

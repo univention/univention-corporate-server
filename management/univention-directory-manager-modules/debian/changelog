@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.125-1) unstable; urgency=low
+
+  * Adjust layout of UDM modules to UCS 3.0 (Bug #23709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Oct 2011 15:00:46 +0200
+
 univention-directory-manager-modules (7.0.124-1) unstable; urgency=low
 
   * udm/object/policies: support faking a policy reference; Bug #23557

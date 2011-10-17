@@ -129,14 +129,16 @@ options={
 
 layout = [
 	Tab(_('General'), _('Basic settings'), layout = [
-		[ 'name', 'range' ]
+		Group( _( 'General' ), layout = [
+			[ 'name', 'range' ]
 		] ),
+	] ),
 	Tab( _( 'Advanced' ), _('Advanced DHCP pool options'), advanced = True, layout = [
 		'failover_peer',
 		[ 'known_clients', 'unknown_clients' ],
 		[ 'dynamic_bootp_clients', 'all_clients' ]
-		] )
-	]
+	] )
+]
 
 def rangeMap( value ):
 	return map( lambda x: ' '.join( x ), value )

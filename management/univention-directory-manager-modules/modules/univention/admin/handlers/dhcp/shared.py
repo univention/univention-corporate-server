@@ -64,9 +64,11 @@ options={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		'name'
+		Group( _( 'General' ), layout = [
+			'name'
 		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

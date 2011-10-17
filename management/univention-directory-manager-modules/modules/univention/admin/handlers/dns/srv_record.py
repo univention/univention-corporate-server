@@ -84,10 +84,12 @@ property_descriptions={
 }
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		'name',
-		'location',
-		'zonettl'
+		Group( _( 'General' ), layout = [
+			'name',
+			'location',
+			'zonettl'
 		] ),
+	] ),
 ]
 
 def unmapName(old):

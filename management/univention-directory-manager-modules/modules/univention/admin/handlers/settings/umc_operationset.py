@@ -99,11 +99,13 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Package List'), layout = [
-		[ 'name', 'description' ],
-		'operation',
-		'flavor'
+		Group( _( 'General' ), layout = [
+			[ 'name', 'description' ],
+			'operation',
+			'flavor'
 		] ),
-	]
+	] ),
+]
 
 def mapUMC_CommandPattern( value ):
 	return map( lambda x: ':'.join( x ), value )

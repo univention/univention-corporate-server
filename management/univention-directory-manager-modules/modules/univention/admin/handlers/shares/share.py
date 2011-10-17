@@ -75,11 +75,6 @@ options={
 			editable=1,
 			default=1
 		),
-	'webaccess': univention.admin.option(
-			short_description=_('Export for Web clients'),
-			editable=1,
-			default=0
-		),
 }
 property_descriptions={
 	'name': univention.admin.property(
@@ -223,7 +218,7 @@ property_descriptions={
 			long_description=_('This is the NetBIOS name. Among other places, it appears in the Windows Network Neighborhood.'),
 			syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
 			multivalue=0,
-			options=['samba', 'webaccess'],
+			options=['samba'],
 			required=0,
 			may_change=1,
 			identifies=0,
@@ -632,74 +627,65 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 		),
-	'webaccessName': univention.admin.property(
-			short_description=_('Name'),
-			long_description=_('Name of the web access share.'),
-			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			options=['webaccess'],
-			required=1,
-			may_change=1,
-			identifies=0,
-		),
-	'webaccessIpaddress': univention.admin.property(
-			short_description=_('IP address'),
-			long_description=_('IP address of the web access share host.'),
-			syntax=univention.admin.syntax.ipAddress,
-			multivalue=0,
-			options=['webaccess'],
-			required=0,
-			may_change=1,
-			identifies=0,
-		),
 }
 
 layout = [
 	Tab(_('General'),_('General settings'), layout = [
-		'name',
-		['host', 'path'],
-		['owner', 'group'],
-		'directorymode'
+		Group( _( 'General' ), layout = [
+			'name',
+			['host', 'path'],
+			['owner', 'group'],
+			'directorymode'
 		] ),
+	] ),
 	Tab(_('NFS general'),_('General NFS settings'), layout = [
-		['writeable', 'sync'],
-		['subtree_checking', 'root_squash'],
-		'nfs_hosts',
+		Group( _( 'NFS general' ), layout = [
+			['writeable', 'sync'],
+			['subtree_checking', 'root_squash'],
+			'nfs_hosts',
 		] ),
-	Tab(_('Web access general'),_('General Webaccess Settings'), layout = [
-		[ 'webaccessName', 'webaccessIpaddress' ],
-		] ),
+	] ),
 	Tab( _( 'Samba general' ), _( 'General Samba settings' ), layout = [
-		'sambaName',
-		[ 'sambaBrowseable', 'sambaPublic'],
-		[ 'sambaPostexec', 'sambaPreexec'],
-		[ 'sambaVFSObjects', 'sambaMSDFSRoot' ],
-		[ 'sambaDosFilemode', 'sambaHideUnreadable' ],
+		Group( _( 'Samba general' ), layout = [
+			'sambaName',
+			[ 'sambaBrowseable', 'sambaPublic'],
+			[ 'sambaPostexec', 'sambaPreexec'],
+			[ 'sambaVFSObjects', 'sambaMSDFSRoot' ],
+			[ 'sambaDosFilemode', 'sambaHideUnreadable' ],
 		] ),
+	] ),
 	Tab( _( 'Samba permissions' ), _( 'Samba permission settings' ), advanced = True, layout = [
-		'sambaWriteable',
-		[ 'sambaForceUser', 'sambaForceGroup' ],
-		[ 'sambaValidUsers', 'sambaInvalidUsers' ],
-		[ 'sambaHostsAllow', 'sambaHostsDeny' ],
-		[ 'sambaWriteList', 'sambaHideFiles' ],
-		[ 'sambaNtAclSupport', 'sambaInheritAcls' ],
-		[ 'sambaInheritOwner', 'sambaInheritPermissions' ],
+		Group( _( 'Samba permissions' ), layout = [
+			'sambaWriteable',
+			[ 'sambaForceUser', 'sambaForceGroup' ],
+			[ 'sambaValidUsers', 'sambaInvalidUsers' ],
+			[ 'sambaHostsAllow', 'sambaHostsDeny' ],
+			[ 'sambaWriteList', 'sambaHideFiles' ],
+			[ 'sambaNtAclSupport', 'sambaInheritAcls' ],
+			[ 'sambaInheritOwner', 'sambaInheritPermissions' ],
 		] ),
+	] ),
 	Tab( _( 'Samba extended permissions' ), _( 'Samba extended permission settings' ), advanced = True, layout = [
-		[ 'sambaCreateMode', 'sambaDirectoryMode' ],
-		[ 'sambaForceCreateMode', 'sambaForceDirectoryMode' ],
-		[ 'sambaSecurityMode', 'sambaDirectorySecurityMode' ],
-		[ 'sambaForceSecurityMode', 'sambaForceDirectorySecurityMode' ],
+		Group( _( 'Samba extended permissions' ), layout = [
+			[ 'sambaCreateMode', 'sambaDirectoryMode' ],
+			[ 'sambaForceCreateMode', 'sambaForceDirectoryMode' ],
+			[ 'sambaSecurityMode', 'sambaDirectorySecurityMode' ],
+			[ 'sambaForceSecurityMode', 'sambaForceDirectorySecurityMode' ],
 		] ),
+	] ),
 	Tab( _( 'Samba performance' ), _( 'Samba performance settings' ), advanced = True, layout = [
-		[ 'sambaLocking', 'sambaBlockingLocks' ],
-		[ 'sambaStrictLocking', 'sambaOplocks' ],
-		[ 'sambaLevel2Oplocks', 'sambaFakeOplocks' ],
-		[ 'sambaBlockSize', 'sambaCscPolicy' ],
+		Group( _( 'Samba performance' ), layout = [
+			[ 'sambaLocking', 'sambaBlockingLocks' ],
+			[ 'sambaStrictLocking', 'sambaOplocks' ],
+			[ 'sambaLevel2Oplocks', 'sambaFakeOplocks' ],
+			[ 'sambaBlockSize', 'sambaCscPolicy' ],
 		] ),
+	] ),
 	Tab( _( 'Samba custom settings' ), _( 'Custom settings for Samba shares' ), advanced = True, layout = [
-		'sambaCustomSettings'
+		Group( _( 'Samba custom settings' ), layout = [
+			'sambaCustomSettings'
 		] ),
+	] ),
 ]
 
 def boolToString(value):
@@ -799,9 +785,6 @@ mapping.register('sambaMSDFSRoot', 'univentionShareSambaMSDFS', boolToString, st
 mapping.register('sambaInheritOwner', 'univentionShareSambaInheritOwner', boolToString, stringToBool)
 mapping.register('sambaInheritPermissions', 'univentionShareSambaInheritPermissions', boolToString, stringToBool)
 mapping.register('sambaCustomSettings', 'univentionShareSambaCustomSetting', mapKeyAndValue, unmapKeyAndValue)
-mapping.register('webaccessName', 'univentionShareWebaccessName', None, univention.admin.mapping.ListToString)
-mapping.register('webaccessIpaddress', 'univentionShareWebaccessIpaddress', None, univention.admin.mapping.ListToString)
-mapping.register('webaccessHordeauth', 'univentionShareWebaccessHordeauth', boolToString, stringToBool)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
@@ -835,8 +818,6 @@ class object(univention.admin.handlers.simpleLdap):
 				self.options.append( 'samba' )
 			if 'univentionShareNFS' in self.oldattr['objectClass']:
 				self.options.append( 'nfs' )
-			if 'univentionShareWebaccess' in self.oldattr['objectClass']:
-				self.options.append( 'webaccess' )
 			try:
 				self['printablename'] = "%s (%s)" % (self['name'], self['host'])
 			except:
@@ -862,17 +843,10 @@ class object(univention.admin.handlers.simpleLdap):
 				options['samba'].short_description,
 				options['nfs'].short_description)
 
-		if 'webaccess' in self.options and not 'samba' in self.options:
-			raise univention.admin.uexceptions.invalidOptions, _('Need  %s option to create a %s share.')%(
-				options['samba'].short_description,
-				options['webaccess'].short_description)
-
 		if 'samba' in self.options:
 			ocs.append('univentionShareSamba')
 		if 'nfs' in self.options:
 			ocs.append('univentionShareNFS')
-		if 'webaccess' in self.options:
-			ocs.append('univentionShareWebaccess')
 		return [
 			('objectClass', ocs)
 		]
@@ -894,16 +868,10 @@ class object(univention.admin.handlers.simpleLdap):
 				options['samba'].short_description,
 				options['nfs'].short_description)
 
-		if 'webaccess' in self.options and not 'samba' in self.options:
-			raise univention.admin.uexceptions.invalidOptions, _('Need  %s option to create a %s share.')%(
-				options['samba'].short_description,
-				options['webaccess'].short_description)
-
-
 		if self.options != self.old_options:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'options: %s' % self.options)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'old_options: %s' % self.old_options)
-			for option,objectClass in [ ('samba','univentionShareSamba'), ('nfs','univentionShareNFS'), ('webaccess','univentionShareWebaccess') ]:
+			for option,objectClass in [ ('samba','univentionShareSamba'), ('nfs','univentionShareNFS') ]:
 
 				if option in self.options and not option in self.old_options:
 					ocs=self.oldattr.get('objectClass', [])

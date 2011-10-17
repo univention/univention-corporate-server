@@ -170,13 +170,15 @@ property_descriptions={
 
 layout = [
 	Tab( _('General'), _('Time Period Settings'), layout = [
-			[ "name",	 "description" ],
-			[ "periodMonday", "periodTuesday" ],
-			[ "periodWednesday", "periodThursday" ],
-			[ "periodFriday", "periodSaturday" ],
-			"periodSunday"
-		] )
-	]
+		Group( _( 'General' ), layout = [
+				[ "name",	 "description" ],
+				[ "periodMonday", "periodTuesday" ],
+				[ "periodWednesday", "periodThursday" ],
+				[ "periodFriday", "periodSaturday" ],
+				"periodSunday"
+		] ),
+	] ),
+]
 
 
 

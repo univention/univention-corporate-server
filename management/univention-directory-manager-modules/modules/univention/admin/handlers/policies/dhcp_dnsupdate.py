@@ -201,17 +201,19 @@ property_descriptions={
 
 layout = [
 	Tab(_('DNS Update'), _('Dynamic DNS update'), layout = [
-		'name',
-		[ 'ddnsDomainname', 'ddnsRevDomainname' ],
-		[ 'ddnsUpdates', 'ddnsUpdateStyle' ],
-		[ 'ddnsDoForwardUpdate', 'updateStaticLeases' ],
-		'clientUpdates'
+		Group( _( 'General' ), layout = [
+			'name',
+			[ 'ddnsDomainname', 'ddnsRevDomainname' ],
+			[ 'ddnsUpdates', 'ddnsUpdateStyle' ],
+			[ 'ddnsDoForwardUpdate', 'updateStaticLeases' ],
+			'clientUpdates'
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
-		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

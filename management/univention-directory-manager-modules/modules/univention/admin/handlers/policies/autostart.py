@@ -125,13 +125,15 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Autostart' ), layout = [
-		'name',
-		'autostartScript'
+		Group( _( 'General' ), layout = [
+			'name',
+			'autostartScript'
 		] ),
+	] ),
 	Tab( _( 'Object' ), _( 'Object' ), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
-		] ),
+	] ),
 ]
 
 mapping=univention.admin.mapping.mapping()

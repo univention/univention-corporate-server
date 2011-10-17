@@ -81,7 +81,7 @@ property_descriptions={
 			identifies=1
 		)
 }
-layout = [ Tab(_('General'),_('Basic settings'),[ "name" ] ) ]
+layout = [ Tab(_('General'),_('Basic settings'), layout = [ "name" ] ) ]
 
 mapping=univention.admin.mapping.mapping()
 

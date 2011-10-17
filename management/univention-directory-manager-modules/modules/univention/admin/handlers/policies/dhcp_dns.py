@@ -135,14 +135,16 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic DNS settings'), layout = [
-		'name',
-		[ 'domain_name', 'domain_name_servers' ]
+		Group( _( 'General' ), layout = [
+			'name',
+			[ 'domain_name', 'domain_name_servers' ]
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
 	] ),
-	]
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

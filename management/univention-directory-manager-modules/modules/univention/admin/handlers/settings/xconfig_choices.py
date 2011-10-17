@@ -166,14 +166,16 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('X Configuration Choices'), layout = [
-		'name',
-		[ 'resolution', 'colorDepth' ],
-		[ 'mouseProtocol', 'mouseDevice' ],
-		[ 'keyboardLayout', 'keyboardVariant' ],
-		[ 'hSync', 'vRefresh' ],
-		'displaySize'
-		] )
-	]
+		Group( _( 'General' ), layout = [
+			'name',
+			[ 'resolution', 'colorDepth' ],
+			[ 'mouseProtocol', 'mouseDevice' ],
+			[ 'keyboardLayout', 'keyboardVariant' ],
+			[ 'hSync', 'vRefresh' ],
+			'displaySize',
+		] ),
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

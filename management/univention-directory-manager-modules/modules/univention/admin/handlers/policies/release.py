@@ -135,14 +135,16 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Release updates'), layout = [
-		'name',
-		[ 'activate', 'releaseVersion' ]
+		Group( _( 'General' ), layout = [
+			'name',
+			[ 'activate', 'releaseVersion' ]
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
-		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

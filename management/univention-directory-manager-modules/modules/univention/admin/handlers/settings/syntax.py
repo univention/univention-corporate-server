@@ -142,13 +142,15 @@ property_descriptions = {
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic Values' ), layout = [
-		[  "name",  "description" ],
-		[  "filter",  "base" ],
-		[  "attribute",  "ldapattribute" ],
-		[  "value",  "ldapvalue" ],
-		[  "viewonly" ]
-		] )
-	]
+		Group( _( 'General' ), layout = [
+			[  "name",  "description" ],
+			[  "filter",  "base" ],
+			[  "attribute",  "ldapattribute" ],
+			[  "value",  "ldapvalue" ],
+			[  "viewonly" ],
+		] ),
+	] ),
+]
 
 
 mapping = univention.admin.mapping.mapping()

@@ -182,8 +182,10 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic settings'), layout = [
-		[ "name", "description" ],
-		] ),
+		Group( _( 'General' ), layout = [
+			[ "name", "description" ],
+			] ),
+	] ),
 	Tab(_('Container settings'),_('Default position when adding objects'), advanced = True, layout = [
 		["userPath", "groupPath" ],
 		[ "computerPath", "policyPath" ],
@@ -191,8 +193,8 @@ layout = [
 		[ "networkPath", "sharePath" ],
 		[ "printerPath", "mailPath" ],
 		"licensePath",
-		] )
-	]
+	] )
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

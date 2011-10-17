@@ -75,7 +75,7 @@ property_descriptions={
 		),
 	'cname': univention.admin.property(
 			short_description=_('Canonical name'),
-			long_description=_("FQDNs must end with '.'"),
+			long_description=_("Alias for this host. FQDNs must end with '.'"),
 			syntax=univention.admin.syntax.dnsName,
 			multivalue=0,
 			options=[],
@@ -86,12 +86,12 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'), _('Basic settings'), layout = [
-		'name',
-		'zonettl'
+		Group( _( 'General' ), layout = [
+			'name',
+			'zonettl'
+			'cname'
 		] ),
-	Tab(_('Alias'), _('Alias for this host'), layout = [
-		'cname'
-		] )
+	] )
 ]
 
 

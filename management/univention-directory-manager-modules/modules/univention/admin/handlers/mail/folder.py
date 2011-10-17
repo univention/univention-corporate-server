@@ -136,15 +136,20 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		[ "name" , "mailDomain" ],
-		[ "mailHomeServer", "cyrus-userquota" ],
-		[ "mailPrimaryAddress" ],
+		Group( _( 'General' ), layout = [
+			[ "name" , "mailDomain" ],
+			[ "mailHomeServer" ],
+			[ "cyrus-userquota" ],
+			[ "mailPrimaryAddress" ],
 		] ),
+	] ),
 	Tab( _( 'Access Rights'),_('Access rights for shared folder'), layout = [
-		"sharedFolderUserACL",
-		"sharedFolderGroupACL",
-		] )
-	]
+		Group( _( 'Access Rights' ), layout = [
+			"sharedFolderUserACL",
+			"sharedFolderGroupACL",
+		] ),
+	] )
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('cyrus-userquota', 'univentionMailUserQuota', None, univention.admin.mapping.ListToString)

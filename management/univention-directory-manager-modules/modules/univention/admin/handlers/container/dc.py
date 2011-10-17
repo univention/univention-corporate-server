@@ -171,23 +171,25 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic settings'), layout = [
-		"name"
+		Group( _( 'General' ), layout = [
+			"name"
+			] ),
 		] ),
-	Tab(_('Domain Password'),_('Administrator password for this domain'), layout = [
+	Tab(_('Domain Password'),_('Administrator password for this domain'), advanced = True, layout = [
 		"domainPassword"
 		] ),
 	Tab(_('DNS'),_('DNS Zones'), advanced = True, layout = [
-		[ "dnsForwardZone", "dnsReverseZone" ]
+			[ "dnsForwardZone", "dnsReverseZone" ]
 		] ),
 	Tab(_('Samba'),_('Samba Settings'), advanced = True, layout = [
-		[ "sambaDomainName", "sambaSID" ],
-		[ "sambaNextUserRid", "sambaNextGroupRid" ]
+			[ "sambaDomainName", "sambaSID" ],
+			[ "sambaNextUserRid", "sambaNextGroupRid" ]
 		] ),
 	Tab(_('Kerberos'), _('Kerberos Settings'), advanced = True, layout = [
-		'kerberosRealm'
+			'kerberosRealm'
 		] ),
 	Tab(_('Mail'), _('Mail Settings'), advanced = True, layout = [
-		'mailRelay'
+			'mailRelay'
 		] ),
 	]
 

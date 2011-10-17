@@ -170,16 +170,18 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Servers to use'), layout = [
-		'name',
-		[ 'authServer', 'fileServer' ],
-		[ 'linuxTerminalServer', 'windowsTerminalServer' ],
-		'windowsDomain'
+		Group( _( 'General' ), layout = [
+			'name',
+			[ 'authServer', 'fileServer' ],
+			[ 'linuxTerminalServer', 'windowsTerminalServer' ],
+			'windowsDomain'
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
-		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

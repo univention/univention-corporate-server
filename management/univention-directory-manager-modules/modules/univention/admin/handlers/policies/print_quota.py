@@ -149,15 +149,17 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Print quota'), layout = [
-		'name',
-		[ 'quotaUsers', 'quotaGroupsPerUsers' ],
-		'quotaGroups'
+		Group( _( 'General' ), layout = [
+			'name',
+			[ 'quotaUsers', 'quotaGroupsPerUsers' ],
+			'quotaGroups'
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
-		] )
-	]
+	] )
+]
 
 def unmapQuotaEntries(old):
 	new=[]

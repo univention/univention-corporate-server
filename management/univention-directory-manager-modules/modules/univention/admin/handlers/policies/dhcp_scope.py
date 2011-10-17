@@ -168,16 +168,18 @@ property_descriptions={
 
 layout = [
 	Tab(_('Allow/Deny'), _('Allow/Deny/Ignore statements'), layout = [
-		'name',
-		[ 'scopeUnknownClients', 'bootp' ],
-		[ 'booting','duplicates' ],
-		'declines'
+		Group( _( 'General' ), layout = [
+			'name',
+			[ 'scopeUnknownClients', 'bootp' ],
+			[ 'booting','duplicates' ],
+			'declines'
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
-		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

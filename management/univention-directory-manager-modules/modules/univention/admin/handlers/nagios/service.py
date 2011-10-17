@@ -225,23 +225,27 @@ property_descriptions={
 
 layout = [
 	Tab( _('General'), _('Basic settings'), layout = [
-		[ "name", "description" ],
-		[ "checkCommand" ,  "checkArgs" ],
-		"useNRPE"
+		Group( _( 'General' ), layout = [
+			[ "name", "description" ],
+			[ "checkCommand" ,  "checkArgs" ],
+			"useNRPE"
 		] ),
+	] ),
 	Tab( _('Interval'), _('Check settings'), advanced = True, layout = [
 		[ "normalCheckInterval", "retryCheckInterval" ],
 		[ "maxCheckAttempts", "checkPeriod" ]
-		] ),
+	] ),
 	Tab( _('Notification'), _('Notification settings'), advanced = True, layout = [
 		[ "notificationInterval", "notificationPeriod" ],
 		[ "notificationOptionWarning", "notificationOptionCritical" ],
 		[ "notificationOptionUnreachable", "notificationOptionRecovered" ]
-		] ),
+	] ),
 	Tab( _('Hosts'), _('Assigned hosts'), layout = [
-		"assignedHosts" 
-		] )
-	]
+		Group( _( 'Assigned hosts' ), layout = [
+			"assignedHosts" 
+		] ),
+	] ),
+]
 
 
 mapping=univention.admin.mapping.mapping()

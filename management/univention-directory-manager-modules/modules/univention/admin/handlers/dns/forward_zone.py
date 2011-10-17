@@ -183,25 +183,35 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		'zone',
-		'nameserver',
-		'zonettl'
+		Group( _( 'General' ), layout = [
+			'zone',
+			'nameserver',
+			'zonettl'
 		] ),
+	] ),
 	Tab( _( 'Start of Authority' ), _( 'Primary name server information' ), layout = [
-		'contact',
-		'serial',
-		[ 'refresh', 'retry' ],
-		[ 'expire', 'ttl' ]
+		Group( _( 'Start of Authority' ), layout = [
+			'contact',
+			'serial',
+			[ 'refresh', 'retry' ],
+			[ 'expire', 'ttl' ]
 		] ),
+	] ),
 	Tab(_('IP addresses'), _('IP addresses of the zone'), layout = [
-		'a'
+		Group( _( 'IP addresses of the zone' ), layout = [
+			'a'
 		] ),
+	] ),
 	Tab( _( 'MX records' ), _( 'Mail exchanger records' ), layout = [
-		'mx'
+		Group( _( 'MX records' ), layout = [
+			'mx'
 		] ),
+	] ),
 	Tab(_('TXT records'), _('Text records'), layout = [
-		'txt'
+		Group( _( 'TXT records' ), layout = [
+			'txt'
 		] ),
+	] ),
 ]
 
 def mapMX(old):

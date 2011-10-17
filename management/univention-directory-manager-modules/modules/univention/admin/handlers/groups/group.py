@@ -201,7 +201,7 @@ property_descriptions={
 			identifies=0
 		),
 	'allowedEmailUsers': univention.admin.property(
-			short_description=_('Allowed e-mail users'),
+			short_description=_( 'Users that are allowed to send e-mails to the group' ),
 			long_description='',
 			syntax=univention.admin.syntax.userDn,
 			multivalue=1,
@@ -212,7 +212,7 @@ property_descriptions={
 			identifies=0
 		),
 	'allowedEmailGroups': univention.admin.property(
-			short_description=_('Allowed e-mail groups'),
+			short_description=_('Groups that are allowed to send e-mails to the group'),
 			long_description='',
 			syntax=univention.admin.syntax.groupDn,
 			multivalue=1,
@@ -226,29 +226,31 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ),_( 'Basic settings' ), layout = [
-		[ 'name', 'description' ],
-		[ 'gidNumber','sambaRID' ],
-		[ 'sambaGroupType', 'mailAddress' ]
-		] ),
-	Tab( _( 'Members' ), _( 'Members of this Group' ), layout = [
-		'users'
+		Group( _( 'Group account' ), layout = [
+			[ 'name', 'description' ],
+		]),
+		Group ( _('Members of this group'), layout = [
+				'users',
+				'nestedGroup'
+		]),
+		]),
+	Tab( _( 'Mail' ), _( 'Mail settings of this group' ), advanced = True, layout = [
+		'mailAddress', 
+		'allowedEmailUsers',
+		'allowedEmailGroups',
 		] ),
 	Tab( _( 'Host members' ), _( 'Host members of this group' ), advanced = True, layout = [
 		'hosts'
 		] ),
-	Tab( _( 'Nested groups' ), _( 'Membership of other groups' ), advanced = True, layout = [
-		'nestedGroup'
-		] ),
 	Tab( _( 'Member of' ), _( 'Membership in other groups' ), advanced = True, layout = [
 		'memberOf'
 		] ),
-	Tab( _( 'Allowed users' ), _( 'Users that are allowed to send e-mails to the group' ), advanced = True, layout = [
-		'allowedEmailUsers'
-		] ),
-	Tab( _( 'Allowed groups' ), _( 'Groups that are allowed to send e-mails to the group' ), advanced = True, layout = [
-		'allowedEmailGroups'
+	Tab( _( 'Group ID' ), _( 'ID of this group' ), advanced = True, layout = [
+		'gidNumber',
 		] ),
 	Tab( _( 'Windows' ), _( 'Windows account settings' ), advanced = True, layout = [
+		'sambaRID',
+		'sambaGroupType',
 		'sambaPrivileges'
 		] )
 ]

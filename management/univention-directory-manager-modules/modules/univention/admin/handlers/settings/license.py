@@ -165,15 +165,19 @@ property_descriptions={
 
 layout = [
 	Tab(_('License'),_('Licensing Information'), layout = [
-		['name', 'module'],
-		['expires', 'base'],
-		['accounts', 'groupwareaccounts'],
-		['clients', 'desktops'],
-		'productTypes',
-		'oemProductTypes',
-		'signature',
+		Group( _( 'General' ), layout = [
+			'name',
+			'module',
+			'expires',
+			'base',
+			['accounts', 'groupwareaccounts'],
+			['clients', 'desktops'],
+			'productTypes',
+			'oemProductTypes',
+			'signature',
 		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

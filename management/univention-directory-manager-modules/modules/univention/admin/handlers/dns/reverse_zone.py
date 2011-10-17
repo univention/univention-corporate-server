@@ -153,18 +153,24 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		'subnet',
-		'zonettl'
+		Group( _( 'General' ), layout = [
+			'subnet',
+			'zonettl'
 		] ),
+	] ),
 	Tab(_('Start of Authority'), _('Primary name server information'), layout = [
-		'contact',
-		['nameserver', 'serial'],
-		['refresh', 'retry'],
-		['expire', 'ttl']
+		Group( _( 'General' ), layout = [
+			'contact',
+			['nameserver', 'serial'],
+			['refresh', 'retry'],
+			['expire', 'ttl']
 		] ),
+	] ),
 	Tab(_('Name servers'), _('Additional name servers'), layout = [
-		'nameserver'
-		] )
+		Group( _( 'Name servers' ), layout = [
+			'nameserver'
+		] ),
+	] )
 ]
 
 def mapSubnet(subnet):

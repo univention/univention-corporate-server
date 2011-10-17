@@ -336,32 +336,42 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic Values'), layout = [
-		"name",
-		[ "shortDescription", "longDescription" ],
-		[ "translationShortDescription", "translationLongDescription" ]
+		Group( _( 'General' ), layout = [
+			"name",
+			[ "shortDescription", "longDescription" ],
+			[ "translationShortDescription", "translationLongDescription" ]
 		] ),
+	] ),
 	Tab(_('UDM Web'),_('Settings for UDM web interface'), layout = [
-		[ "tabName", "tabPosition" ],
-		"translationTabName",
-		[ "overwritePosition", "fullWidth" ],
-		[ "overwriteTab", "tabAdvanced" ],
-		"addEmptyValue"
+		Group( _( 'UDM Web' ), layout = [
+			[ "tabName", "tabPosition" ],
+			"translationTabName",
+			[ "overwritePosition", "fullWidth" ],
+			[ "overwriteTab", "tabAdvanced" ],
+			"addEmptyValue"
 		] ),
+	] ),
 	Tab(_('UDM General'),_('UDM related settings'), layout = [
-		[ "CLIName", "hook" ],
-		[ "options", "module" ]
+		Group( _( 'UDM General' ), layout = [
+			[ "CLIName", "hook" ],
+			[ "options", "module" ]
 		] ),
+	] ),
 	Tab(_('Data type'),_('Data type definition'), layout = [
-		[ "syntax", "default" ],
-		[ "multivalue", "valueRequired" ],
-		[ "mayChange",  "doNotSearch" ],
-		"notEditable"
+		Group( _( 'Data type' ), layout = [
+			[ "syntax", "default" ],
+			[ "multivalue", "valueRequired" ],
+			[ "mayChange",  "doNotSearch" ],
+			"notEditable"
 		] ),
+	] ),
 	Tab(_('LDAP'),_('LDAP mapping'), layout = [
-		[ "objectClass", "ldapMapping" ],
-		[ "deleteObjectClass" ]
-		] )
-	]
+		Group( _( 'LDAP' ), layout = [
+			[ "objectClass", "ldapMapping" ],
+			[ "deleteObjectClass" ]
+		] ),
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

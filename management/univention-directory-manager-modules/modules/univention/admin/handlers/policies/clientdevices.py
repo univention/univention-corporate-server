@@ -125,9 +125,11 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Client devices' ), layout = [
-		'name',
-		'clientDevicesActivate'
+		Group( _( 'General' ), layout = [
+			'name',
+			'clientDevicesActivate'
 		] ),
+	] ),
 	Tab( _( 'Object' ), _( 'Object' ), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]

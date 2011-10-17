@@ -78,10 +78,12 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Printer List'), layout = [
-		'name',
-		'printmodel',
+		Group( _( 'General' ), layout = [
+			'name',
+			'printmodel',
 		] ),
-	]
+	] ),
+]
 
 def unmapDriverList( old ):
 	return map( lambda x: shlex.split( x ), old )

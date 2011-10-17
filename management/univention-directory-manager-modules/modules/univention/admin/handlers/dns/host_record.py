@@ -102,10 +102,12 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'), _('Basic Values'), layout = [
-		'name',
-		'a',
-		'zonettl'
+		Group( _( 'General' ), layout = [
+			'name',
+			'a',
+			'zonettl'
 		] ),
+	] ),
 	Tab(_('Mail'), _('Mail exchangers for this host'), advanced = True, layout = [
 		'mx'
 		] ),

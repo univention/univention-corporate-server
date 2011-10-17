@@ -136,15 +136,17 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Slave packages'), layout = [
-		'name',
-		'slavePackages',
-		'slavePackagesRemove'
+		Group( _( 'General' ), layout = [
+			'name',
+			'slavePackages',
+			'slavePackagesRemove'
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
-		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

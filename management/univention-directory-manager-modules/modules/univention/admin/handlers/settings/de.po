@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-12 19:07+0200\n"
+"POT-Creation-Date: 2011-10-17 15:13+0200\n"
 "PO-Revision-Date: 2011-10-12 19:10+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -59,17 +59,22 @@ msgstr "Sichtbare Assistenten"
 msgid "Visible Modules"
 msgstr "Sichtbare Module"
 
-#: admin.py:87 cn.py:64 default.py:157 directory.py:178
-#: extended_attribute.py:338 extended_options.py:147 lock.py:77 packages.py:78
-#: printermodel.py:80 printeruri.py:78 prohibited_username.py:77
-#: sambaconfig.py:182 sambadomain.py:229 service.py:64 syntax.py:144
-#: umc_operationset.py:101 usertemplate.py:526 xconfig_choices.py:168
+#: admin.py:87 admin.py:88 cn.py:64 default.py:157 default.py:158
+#: directory.py:178 directory.py:179 extended_attribute.py:338
+#: extended_attribute.py:339 extended_options.py:147 extended_options.py:148
+#: license.py:168 lock.py:77 lock.py:78 packages.py:78 packages.py:79
+#: printermodel.py:80 printermodel.py:81 printeruri.py:78 printeruri.py:79
+#: prohibited_username.py:77 prohibited_username.py:78 sambaconfig.py:182
+#: sambaconfig.py:183 sambadomain.py:229 sambadomain.py:230 service.py:64
+#: service.py:65 syntax.py:144 syntax.py:145 umc_operationset.py:101
+#: umc_operationset.py:102 user.py:218 usertemplate.py:338 usertemplate.py:339
+#: xconfig_choices.py:168 xconfig_choices.py:169
 msgid "General"
 msgstr "Allgemein"
 
 #: admin.py:87 cn.py:64 default.py:157 directory.py:178
 #: extended_attribute.py:338 extended_options.py:147 sambaconfig.py:182
-#: sambadomain.py:229 service.py:64 syntax.py:144 usertemplate.py:526
+#: sambadomain.py:229 service.py:64 syntax.py:144 usertemplate.py:338
 msgid "Basic Values"
 msgstr "Grundeinstellungen"
 
@@ -117,15 +122,15 @@ msgstr "Standard Kolab Home Server"
 msgid "Default Scalix Mailnode"
 msgstr "Standard Scalix Mailnode"
 
-#: default.py:160
+#: default.py:162 default.py:163
 msgid "Primary Groups"
 msgstr "Primäre Gruppen"
 
-#: default.py:168
+#: default.py:172 default.py:173
 msgid "KDE Profiles"
 msgstr "KDE-Profile"
 
-#: default.py:171 usertemplate.py:568
+#: default.py:177
 msgid "Groupware"
 msgstr "Groupware"
 
@@ -177,91 +182,47 @@ msgstr "Mailverweis"
 msgid "License Link"
 msgstr "Lizenzverweis"
 
-#: directory.py:179
-msgid "Users"
-msgstr "Benutzer"
-
-#: directory.py:179
+#: directory.py:182
 msgid "User Links"
 msgstr "Benutzerverweise"
 
-#: directory.py:180 usertemplate.py:277 usertemplate.py:556
-msgid "Groups"
-msgstr "Gruppen"
-
-#: directory.py:180
+#: directory.py:185
 msgid "Group Links"
 msgstr "Gruppenverweise"
 
-#: directory.py:181
-msgid "Computers"
-msgstr "Rechner"
-
-#: directory.py:181
+#: directory.py:188
 msgid "Computer Links"
 msgstr "Rechnerverweise"
 
-#: directory.py:182
-msgid "Policy"
-msgstr "Richtlinie"
-
-#: directory.py:182
+#: directory.py:191
 msgid "Policy Links"
 msgstr "Richtlinienverweise"
 
-#: directory.py:183
-msgid "DNS"
-msgstr "DNS"
-
-#: directory.py:183
+#: directory.py:194
 msgid "DNS Links"
 msgstr "DNS-Verweise"
 
-#: directory.py:184
-msgid "DHCP"
-msgstr "DHCP"
-
-#: directory.py:184
+#: directory.py:197
 msgid "DHCP Links"
 msgstr "DHCP-Verweise"
 
-#: directory.py:185
-msgid "Network"
-msgstr "Netz"
-
-#: directory.py:185
+#: directory.py:200
 msgid "Network Links"
 msgstr "Netzverweise"
 
-#: directory.py:186
-msgid "Shares"
-msgstr "Freigaben"
-
-#: directory.py:186
+#: directory.py:203
 msgid "Shares Links"
 msgstr "Freigabenverweise"
 
-#: directory.py:187
-msgid "Printers"
-msgstr "Drucker"
-
-#: directory.py:187
+#: directory.py:206
 msgid "Printers Links"
 msgstr "Druckerverweise"
 
-#: directory.py:188 usertemplate.py:533
-msgid "Mail"
-msgstr "Mail"
-
-#: directory.py:188
+#: directory.py:209
 msgid "Mail Links"
 msgstr "Mailverweise"
 
-#: directory.py:189 license.py:167
-msgid "License"
-msgstr "Lizenz"
-
-#: directory.py:189
+#: directory.py:212
 msgid "License Links"
 msgstr "Lizenzverweise"
 
@@ -333,7 +294,7 @@ msgstr "Beide Spalten umfassen"
 msgid "Add an empty value to choicelist"
 msgstr "Einen leeren Wert zur Auswahlliste hinzufügen"
 
-#: extended_attribute.py:223 extended_attribute.py:360
+#: extended_attribute.py:223 extended_attribute.py:368
 msgid "LDAP mapping"
 msgstr "LDAP-Abbildung"
 
@@ -380,7 +341,7 @@ msgstr "Version des erweiterten Attributs"
 msgid "UDM CLI name of extended attribute"
 msgstr "UDM-CLI Attributname"
 
-#: extended_attribute.py:316 usertemplate.py:510
+#: extended_attribute.py:316 usertemplate.py:322
 msgid "Options"
 msgstr "Optionen"
 
@@ -388,31 +349,31 @@ msgstr "Optionen"
 msgid "Unsearchable"
 msgstr "Nicht durchsuchbar"
 
-#: extended_attribute.py:343
+#: extended_attribute.py:345 extended_attribute.py:346
 msgid "UDM Web"
 msgstr "UDM Web"
 
-#: extended_attribute.py:343
+#: extended_attribute.py:345
 msgid "Settings for UDM web interface"
 msgstr "UDM-Web-spezifische Einstellungen"
 
-#: extended_attribute.py:350
+#: extended_attribute.py:354 extended_attribute.py:355
 msgid "UDM General"
 msgstr "UDM Allgemein"
 
-#: extended_attribute.py:350
+#: extended_attribute.py:354
 msgid "UDM related settings"
 msgstr "UDM-spezifische Einstellungen"
 
-#: extended_attribute.py:354
+#: extended_attribute.py:360 extended_attribute.py:361
 msgid "Data type"
 msgstr "Datentyp"
 
-#: extended_attribute.py:354
+#: extended_attribute.py:360
 msgid "Data type definition"
 msgstr "Datentyp-Definition"
 
-#: extended_attribute.py:360
+#: extended_attribute.py:368 extended_attribute.py:369
 msgid "LDAP"
 msgstr "LDAP"
 
@@ -571,6 +532,10 @@ msgstr "Produkttypen, für die die vorliegenden Lizenz gültig ist."
 #: license.py:156
 msgid "OEM Product types this license allows."
 msgstr "OEM-Produkttypen, für die die vorliegenden Lizenz gültig ist."
+
+#: license.py:167
+msgid "License"
+msgstr "Lizenz"
 
 #: license.py:167
 msgid "Licensing Information"
@@ -776,7 +741,7 @@ msgstr "Zu speicherndes Attribut"
 msgid "Stored LDAP Attribute"
 msgstr "Zu speicherndes LDAP-Attribut"
 
-#: syntax.py:182
+#: syntax.py:184
 msgid ""
 "An LDAP attribute is required that should be used for storing the information"
 msgstr ""
@@ -810,7 +775,9 @@ msgstr "Variante"
 msgid ""
 "Defines a specific flavor of the UMC module. If given the operations are "
 "permitted only if the flavor matches."
-msgstr "Definiert eine spezielle Variante des UMC-Moduls. Wenn diese angegeben ist müssen Operationen diese setzen ansonsten werden sie zurückgewiesen"
+msgstr ""
+"Definiert eine spezielle Variante des UMC-Moduls. Wenn diese angegeben ist "
+"müssen Operationen diese setzen ansonsten werden sie zurückgewiesen"
 
 #: user.py:49
 msgid "Preferences: Univention Directory Manager user settings"
@@ -948,6 +915,10 @@ msgstr "Abteilungsnummer"
 msgid "Employee Type"
 msgstr "Mitarbeiterkategorie"
 
+#: usertemplate.py:277 usertemplate.py:381 usertemplate.py:382
+msgid "Groups"
+msgstr "Gruppen"
+
 #: usertemplate.py:287
 msgid "Primary Group"
 msgstr "Primäre Gruppe"
@@ -957,140 +928,60 @@ msgid "Primary E-Mail Address"
 msgstr "Primäre E-Mail-Adresse"
 
 #: usertemplate.py:311
-msgid "Use Global Spam Folder"
-msgstr "Globalen Spam-Ordner verwenden"
-
-#: usertemplate.py:312
-msgid "Move Spam to a global spam folder instead of a local folder"
-msgstr "Spam in einen globalen statt in einen lokalen Ordner verschieben"
-
-#: usertemplate.py:322
 msgid "Alternative E-Mail Addresses"
 msgstr "Alternative E-Mail-Adressen"
 
-#: usertemplate.py:334
-msgid "Forward Mail"
-msgstr "Mails weiterleiten"
-
-#: usertemplate.py:345
-msgid "Forward Address"
-msgstr "E-Mail-Adresse für Mailweiterleitung"
-
-#: usertemplate.py:356
-msgid "Forward Keep Copy"
-msgstr "Kopie erstellen bei Mailweiterleitung"
-
-#: usertemplate.py:367
-msgid "Kolab Home Server"
-msgstr "Kolab Home Server"
-
-#: usertemplate.py:378
-msgid "Forward Spam"
-msgstr "Spam weiterleiten"
-
-#: usertemplate.py:389
-msgid "Activate folderdelivery"
-msgstr "Eingehende Mails in einen ausgewählten Ordner verschieben"
-
-#: usertemplate.py:400
-msgid "Deliver to Folder"
-msgstr "Ordner für eingehende Mails"
-
-#: usertemplate.py:411
-msgid "Delegates"
-msgstr "Authorisierte E-Mail-Adressen"
-
-#: usertemplate.py:422
-msgid "Vacation Address"
-msgstr "E-Mail-Adressen für Abwesenheitsnotiz"
-
-#: usertemplate.py:433
-msgid "Activate Vacation"
-msgstr "Aktiviere Abwesenheitsnotiz"
-
-#: usertemplate.py:444
-msgid "Vacation Text"
-msgstr "Abwesenheitstext"
-
-#: usertemplate.py:455
-msgid "Vacation Resend Interval"
-msgstr "Interval: Abwesenheitsnotiz erneut senden (Tage)"
-
-#: usertemplate.py:466
-msgid "Vacation Spam Reply"
-msgstr "Abwesenheitsnotiz als Antwort auf Spam Mails senden"
-
-#: usertemplate.py:477
-msgid "React Domain"
-msgstr "Abwesenheitsnotiz an folgende Domänen senden"
-
-#: usertemplate.py:488
-msgid "No React Domain"
-msgstr "Abwesenheitsnotiz an folgende nicht senden Domänen"
-
-#: usertemplate.py:499
-msgid "Invitation Policy"
-msgstr "Richtlinien automatische Terminannahme"
-
-#: usertemplate.py:530
+#: usertemplate.py:344 usertemplate.py:345
 msgid "User Account"
 msgstr "Benutzer-Konto"
 
-#: usertemplate.py:530
+#: usertemplate.py:344
 msgid "Account Settings"
 msgstr "Kontoeinstellungen"
 
-#: usertemplate.py:533
+#: usertemplate.py:349 usertemplate.py:350
+msgid "Mail"
+msgstr "Mail"
+
+#: usertemplate.py:349
 msgid "Mail Settings"
 msgstr "Maileinstellungen"
 
-#: usertemplate.py:538
+#: usertemplate.py:355 usertemplate.py:356
 msgid "User Contact"
 msgstr "Kontakt"
 
-#: usertemplate.py:538
+#: usertemplate.py:355
 msgid "Contact Information"
 msgstr "Kontaktinformationen"
 
-#: usertemplate.py:543
+#: usertemplate.py:362 usertemplate.py:363
 msgid "Employee"
 msgstr "Mitarbeiter"
 
-#: usertemplate.py:543
+#: usertemplate.py:362
 msgid "Employee Information"
 msgstr "Mitarbeiterinformationen"
 
-#: usertemplate.py:548
+#: usertemplate.py:369 usertemplate.py:370
 msgid "Linux"
 msgstr "Linux/UNIX"
 
-#: usertemplate.py:548
+#: usertemplate.py:369
 msgid "Unix Account Settings"
 msgstr "UNIX-Kontoeinstellungen"
 
-#: usertemplate.py:552
+#: usertemplate.py:375 usertemplate.py:376
 msgid "Windows"
 msgstr "Windows"
 
-#: usertemplate.py:552
+#: usertemplate.py:375
 msgid "Windows Account Settings"
 msgstr "Windows-Kontoeinstellungen"
 
-#: usertemplate.py:556
+#: usertemplate.py:381
 msgid "Group Memberships"
 msgstr "Gruppenmitgliedschaften"
-
-#: usertemplate.py:560
-msgid "Vacation"
-msgstr "Abwesenheitsnotiz"
-
-#: usertemplate.py:568
-msgid "Groupware Settings"
-msgstr "Groupware-Einstellungen"
-
-#: usertemplate.py:577
-msgid "Invitation"
-msgstr "Terminannahme"
 
 #: xconfig_choices.py:50
 msgid "Preferences: X Configuration Choices"
@@ -1139,6 +1030,93 @@ msgstr "Bildschirm Grösse (mm)"
 #: xconfig_choices.py:168
 msgid "X Configuration Choices"
 msgstr "X Konfiguration Auswahl"
+
+#~ msgid "Users"
+#~ msgstr "Benutzer"
+
+#~ msgid "Computers"
+#~ msgstr "Rechner"
+
+#~ msgid "Policy"
+#~ msgstr "Richtlinie"
+
+#~ msgid "DNS"
+#~ msgstr "DNS"
+
+#~ msgid "DHCP"
+#~ msgstr "DHCP"
+
+#~ msgid "Network"
+#~ msgstr "Netz"
+
+#~ msgid "Shares"
+#~ msgstr "Freigaben"
+
+#~ msgid "Printers"
+#~ msgstr "Drucker"
+
+#~ msgid "Use Global Spam Folder"
+#~ msgstr "Globalen Spam-Ordner verwenden"
+
+#~ msgid "Move Spam to a global spam folder instead of a local folder"
+#~ msgstr "Spam in einen globalen statt in einen lokalen Ordner verschieben"
+
+#~ msgid "Forward Mail"
+#~ msgstr "Mails weiterleiten"
+
+#~ msgid "Forward Address"
+#~ msgstr "E-Mail-Adresse für Mailweiterleitung"
+
+#~ msgid "Forward Keep Copy"
+#~ msgstr "Kopie erstellen bei Mailweiterleitung"
+
+#~ msgid "Kolab Home Server"
+#~ msgstr "Kolab Home Server"
+
+#~ msgid "Forward Spam"
+#~ msgstr "Spam weiterleiten"
+
+#~ msgid "Activate folderdelivery"
+#~ msgstr "Eingehende Mails in einen ausgewählten Ordner verschieben"
+
+#~ msgid "Deliver to Folder"
+#~ msgstr "Ordner für eingehende Mails"
+
+#~ msgid "Delegates"
+#~ msgstr "Authorisierte E-Mail-Adressen"
+
+#~ msgid "Vacation Address"
+#~ msgstr "E-Mail-Adressen für Abwesenheitsnotiz"
+
+#~ msgid "Activate Vacation"
+#~ msgstr "Aktiviere Abwesenheitsnotiz"
+
+#~ msgid "Vacation Text"
+#~ msgstr "Abwesenheitstext"
+
+#~ msgid "Vacation Resend Interval"
+#~ msgstr "Interval: Abwesenheitsnotiz erneut senden (Tage)"
+
+#~ msgid "Vacation Spam Reply"
+#~ msgstr "Abwesenheitsnotiz als Antwort auf Spam Mails senden"
+
+#~ msgid "React Domain"
+#~ msgstr "Abwesenheitsnotiz an folgende Domänen senden"
+
+#~ msgid "No React Domain"
+#~ msgstr "Abwesenheitsnotiz an folgende nicht senden Domänen"
+
+#~ msgid "Invitation Policy"
+#~ msgstr "Richtlinien automatische Terminannahme"
+
+#~ msgid "Vacation"
+#~ msgstr "Abwesenheitsnotiz"
+
+#~ msgid "Groupware Settings"
+#~ msgstr "Groupware-Einstellungen"
+
+#~ msgid "Invitation"
+#~ msgstr "Terminannahme"
 
 #~ msgid "Settings: UMC ACLs"
 #~ msgstr "Einstellungen: UMC ACLs"

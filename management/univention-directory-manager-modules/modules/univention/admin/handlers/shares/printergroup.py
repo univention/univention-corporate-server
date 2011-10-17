@@ -126,12 +126,14 @@ property_descriptions={
 
 layout=[
 	Tab(_('General'),_('General settings'), layout = [
-		[ 'name', 'spoolHost' ],
-		[ 'sambaName', 'groupMember' ],
-		'setQuota',
-		[ 'pagePrice', 'jobPrice' ],
+		Group( _( 'General' ), layout = [
+			[ 'name', 'spoolHost' ],
+			[ 'sambaName', 'groupMember' ],
+			'setQuota',
+			[ 'pagePrice', 'jobPrice' ],
 		] ),
-	]
+	] ),
+]
 
 def boolToString(value):
 	if value == '1':

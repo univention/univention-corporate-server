@@ -126,14 +126,16 @@ property_descriptions = {
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		'name',
-		'allow',
+		Group( _( 'General' ), layout = [
+			'name',
+			'allow',
 		] ),
+	] ),
 	Tab( _( 'Object' ), _( 'Object' ), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
-		] ),
-	]
+	] ),
+]
 
 mapping = udm_mapping.mapping()
 mapping.register( 'name', 'cn', None, udm_mapping.ListToString )

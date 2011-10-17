@@ -180,14 +180,16 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic Values'), layout = [
-		"name",
-		[ "passwordLength", "passwordHistory" ],
-		[ "minPasswordAge", "maxPasswordAge" ],
-		[ "badLockoutAttempts", "lockoutDuration" ],
-		[ "resetCountMinutes", "logonToChangePW" ],
-		[ "disconnectTime", "refuseMachinePWChange" ],
-		] )
-	]
+		Group( _( 'General' ), layout = [
+			"name",
+			[ "passwordLength", "passwordHistory" ],
+			[ "minPasswordAge", "maxPasswordAge" ],
+			[ "badLockoutAttempts", "lockoutDuration" ],
+			[ "resetCountMinutes", "logonToChangePW" ],
+			[ "disconnectTime", "refuseMachinePWChange" ],
+		] ),
+	] ),
+]
 
 
 mapping=univention.admin.mapping.mapping()

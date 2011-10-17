@@ -279,13 +279,22 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		[ 'name', 'description' ],
-		[ 'mac', 'network' ],
-		[ 'operatingSystem', 'operatingSystemVersion' ],
-		'inventoryNumber',
+		Group( _( 'Computer account' ), layout = [
+			[ 'name', 'description' ],
+			[ 'operatingSystem', 'operatingSystemVersion' ],
+			'inventoryNumber',
 		] ),
-	Tab( _( 'IP' ), _( 'IP' ), layout = [
-		'ip',
+		Group( _( 'Network settings ' ), layout = [
+			'network',
+			[ 'mac', 'ip', ],
+		] ),
+		Group( _( 'DNS Forward and Reverse Lookup Zone' ), layout = [
+			'dnsEntryZoneForward',
+			'dnsEntryZoneReverse',
+		] ),
+		Group( _( 'DHCP' ), layout = [
+			'dhcpEntryZone'
+		] ),
 		] ),
 	Tab( _( 'Account' ), _( 'Account' ), advanced = True, layout = [
 		'password',
@@ -305,7 +314,10 @@ layout = [
 		] ),
 	Tab( _( 'Groups' ), _( 'Group memberships' ), advanced = True, layout = [
 		'groups',
-		] )
+		] ),
+	Tab( _( 'DNS alias' ),_( 'Alias DNS entry' ), advanced = True, layout = [
+		'dnsEntryZoneAlias'
+		] ),
 ]
 
 mapping=univention.admin.mapping.mapping()

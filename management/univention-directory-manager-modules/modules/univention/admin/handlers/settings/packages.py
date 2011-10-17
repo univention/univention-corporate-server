@@ -76,10 +76,12 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Package List'), [
-		'name',
-		'packageList',
+		Group( _( 'General' ), layout = [
+			'name',
+			'packageList',
 		] ),
-	]
+	] ),
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

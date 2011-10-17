@@ -76,10 +76,12 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Printer URI'), layout = [
-		'name',
-		'printeruri',
+		Group( _( 'General' ), layout = [
+			'name',
+			'printeruri',
 		] ),
-	]
+	] ),
+]
 
 
 mapping=univention.admin.mapping.mapping()

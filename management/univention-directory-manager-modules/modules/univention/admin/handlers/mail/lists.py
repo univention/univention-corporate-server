@@ -112,10 +112,12 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		[ "name", "description" ],
-		"mailAddress",
-		"members"
+		Group( _( 'General' ), layout = [
+			[ "name", "description" ],
+			"mailAddress",
+			"members"
 		] ),
+	] ),
 	Tab( _( 'Allowed users' ), _( 'Users that are allowed to send e-mails to the list' ), advanced = True, layout = [
 		"allowedEmailUsers"
 		] ),

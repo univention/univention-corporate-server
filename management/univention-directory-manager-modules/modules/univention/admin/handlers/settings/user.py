@@ -215,11 +215,13 @@ property_descriptions={
 
 layout = [
 	Tab(_('Univention Directory Manager'),_('Univention Directory Manager User Settings'), layout = [
-		[ "username", 'baseDN' ],
-		[ 'listWizards', 'listWebModules' ],
-		[ 'selfAttributes', 'listAttributes' ],
-		'listNavigationAttributes',
+		Group( _( 'General' ), layout = [
+			[ "username", 'baseDN' ],
+			[ 'listWizards', 'listWebModules' ],
+			[ 'selfAttributes', 'listAttributes' ],
+			'listNavigationAttributes',
 		] ),
+	] ),
 # TODO: default container
 #	univention.admin.tab(_('Users'),_('User Links'),[[univention.admin.field("users")]]),
 #	univention.admin.tab(_('Groups'),_('Group Links'),[[univention.admin.field("groups")]]),
@@ -230,7 +232,7 @@ layout = [
 #	univention.admin.tab(_('Network'),_('Network Links'),[[univention.admin.field("networks")]]),
 #	univention.admin.tab(_('Shares'),_('Shares Links'),[[univention.admin.field("shares")]]),
 #	univention.admin.tab(_('Printers'),_('Printers Links'),[[univention.admin.field("printers")]]),
-	]
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)

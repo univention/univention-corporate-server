@@ -125,14 +125,16 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic settings'), layout = [
-		'name',
-		'nfsMounts'
+		Group( _( 'General' ), layout = [
+			'name',
+			'nfsMounts'
 		] ),
+	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes' , 'emptyAttributes' ]
-		] ),
-	]
+	] ),
+]
 
 def unmapMounts(old):
 	new=[]
