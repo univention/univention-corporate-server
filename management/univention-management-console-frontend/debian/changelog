@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.96-1) unstable; urgency=low
+
+  * added isLabelDisplayed property for widgets using LabelPane
+  * disabled login tooltips
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 17 Oct 2011 11:33:43 +0200
+
 univention-management-console-frontend (1.0.95-1) unstable; urgency=low
 
   * _SelectMixin: added reloadDynamicValues()

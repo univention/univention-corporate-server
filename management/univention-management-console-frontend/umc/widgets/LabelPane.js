@@ -23,6 +23,7 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 	//		a dijit._Widget instance.
 	content: '',
 
+
 	// the widget's class name as CSS class
 	'class': 'umcLabelPane',
 
@@ -47,7 +48,7 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 				this.set('label', newVal || '');
 			}));
 			this.content.watch('visible', dojo.hitch(this, function(attr, oldVal, newVal) {
-				dojo.toggleClass(this.domNode, 'dijitHidden', !newVal);
+				 dojo.toggleClass(this.domNode, 'dijitHidden', !newVal);
 			}));
 		}
 		else if (!dojo.isString(this.label)) {
@@ -55,9 +56,12 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 		}
 	},
 
-	_setLabelAttr: function(_label) {
-		var label = _label;
-
+	_setLabelAttr: function(label) {
+		if (dojo.getObject('content.isLabelDisplayed', false, this)) {
+			// the widget displays the label itself
+			return;
+		}
+		
 		// if we have a widget which is required, add the string ' (*)' to the label
 		if (dojo.getObject('domNode', false, this.content) &&
 				dojo.getObject('declaredClass', false, this.content) &&
@@ -100,3 +104,14 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 	}
 });
 
+dojo.extend(dijit._Widget, {
+    // isLabelDisplayed: Boolean?
+    //		If specified as true, LabelPane assumes that the widget itself will take
+	//		care of displaying the label correctly.
+	//		This property is specified by `umc.widgets.LabelPane`.
+    isLabelDisplayed: false,
+
+	// visible: Boolean?
+	//		If set to false, the label and widget will be hidden.
+	visible: true
+});

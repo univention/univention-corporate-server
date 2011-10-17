@@ -18,6 +18,8 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 	// summary:
 	//		Simple widget that displays a widget/HTML code with a label above.
 
+	isLabelDisplayed: true,
+
 	name: '',
 
 	label: '',
@@ -35,6 +37,10 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 
 	_secondWidget: null,
 
+	_setLabelAttr: function(newLabel) {
+		
+	},
+
 	buildRendering: function() {
 		this.inherited(arguments);
 
@@ -42,14 +48,15 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 		this._firstWidget = this.adopt(umc.widgets.PasswordBox, {
 			required: this.required,
 			disabled: this.disabled,
-			name: '__' + this.name, // '__' will exclude the entry from umc.widgets.Form.gatherFormValues()
+			label: this.label,
+			name: this.name + '_1',
 			validator: dojo.hitch(this, '_checkValidity', 1)
 		});
 		this._secondWidget = this.adopt(umc.widgets.PasswordBox, {
 			required: this.required,
 			disabled: this.disabled,
 			label: this._('%(label)s (retype)', this),
-			name: this.name,
+			name: this.name + '_2',
 			validator: dojo.hitch(this, '_checkValidity', 2),
 			invalidMessage: this._('The passwords do not match, please retype again.')
 		});
@@ -60,10 +67,9 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 		// create layout
 		var container = this.adopt(umc.widgets.ContainerWidget, {});
 		this.addChild(container);
-		container.addChild(this._firstWidget);
-
-		container = this.adopt(umc.widgets.ContainerWidget, {});
-		this.addChild(container);
+		container.addChild(new umc.widgets.LabelPane({
+			content: this._firstWidget
+		}));
 		container.addChild(new umc.widgets.LabelPane({
 			content: this._secondWidget
 		}));
