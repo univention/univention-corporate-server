@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-15 20:35+0200\n"
-"PO-Revision-Date: 2011-10-13 12:27+0200\n"
+"POT-Creation-Date: 2011-10-17 14:57+0200\n"
+"PO-Revision-Date: 2011-10-17 14:58+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -497,7 +497,7 @@ msgstr "Starte Post-Installation-Trigger %(pkg)s"
 msgid "Running %(pkg)s"
 msgstr "Starte %(pkg)s"
 
-#: installer/progress.py:154 installer/progress.py:628
+#: installer/progress.py:154 installer/progress.py:632
 #: scripts/00_scripts.sh:35
 msgid "Preparing installation"
 msgstr "Installation wird vorbereitet"
@@ -610,15 +610,15 @@ msgstr ""
 msgid "dynamic"
 msgstr "dynamisch"
 
-#: installer/progress.py:532
+#: installer/progress.py:536
 msgid "Current joinscript: "
 msgstr "Aktuelles Joinskript: "
 
-#: installer/progress.py:680
+#: installer/progress.py:684
 msgid "Installation complete"
 msgstr "Installation abgeschlossen"
 
-#: installer/progress.py:695
+#: installer/progress.py:699
 msgid "Preparing reboot"
 msgstr "Neustart wird vorbereitet"
 
@@ -2591,10 +2591,6 @@ msgstr "Beitritt des Systems in die Domäne"
 msgid "Configuring online repository"
 msgstr "Einbinden des Online-Repositorys"
 
-#: scripts/80_ldap.sh:35
-msgid "Configuring LDAP server"
-msgstr "Konfiguration des LDAP-Servers"
-
 #: scripts/82_administrator_sync.sh:35
 msgid "Configuring Samba4"
 msgstr "Konfiguration von Samba4"
@@ -2607,9 +2603,13 @@ msgstr "Aktualisierung der udev-Regeln"
 msgid "Calling postinstallation hooks"
 msgstr "Ausführen der Post-Installations-Hooks"
 
-#: scripts/86_upgrade.sh:40
+#: scripts/86_upgrade.sh:42
 msgid "Updating system"
 msgstr "Aktualisiere das System"
+
+#: scripts/86_upgrade.sh:43
+msgid "This might take a while depending on the number of pending updates."
+msgstr "Abhängig von der Anzahl der austehenden Updates, kann dies einige Zeit dauern."
 
 #: scripts/87_locales.sh:35
 msgid "Generating locales"
@@ -2626,6 +2626,9 @@ msgstr "Teste installiertes System"
 #: scripts/90_cleanup.sh:35
 msgid "Performing cleanup"
 msgstr "Ausführen von Aufräumarbeiten"
+
+#~ msgid "Configuring LDAP server"
+#~ msgstr "Konfiguration des LDAP-Servers"
 
 #~ msgid "\t https://%s/ox6/"
 #~ msgstr "  https://%s/ox6/"

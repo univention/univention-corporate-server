@@ -494,6 +494,10 @@ Please visit the following websites to learn more about %(name)s:
 					elif line.startswith('__MSG__:'):
 						self.script_msg = line.split(':',1)[1]
 
+					# __SUBMSG__ will be emitted by scripts for displaying any kind of data
+					elif line.startswith('__SUBMSG__:'):
+						self.progress_msg = line.split(':',1)[1]
+
 					# __STEPS__ will be emitted by scripts like 50_packages.py to inform read_data() how often the triggers should fire
 					# value has to be an integer
 					elif line.startswith('__STEPS__:'):

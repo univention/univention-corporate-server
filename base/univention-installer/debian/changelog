@@ -1,3 +1,9 @@
+univention-installer (7.0.107-1) unstable; urgency=low
+
+  * added additional progress message for 86_upgrade.sh (Bug #23284)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 17 Oct 2011 14:59:33 +0200
+
 univention-installer (7.0.106-1) unstable; urgency=low
 
   * Install univention-debmirror in univention-repository-create

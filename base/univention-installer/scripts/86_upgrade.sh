@@ -40,6 +40,7 @@ if [ "$update_system_after_installation" = "true" ] || [ "$update_system_after_i
 
 	. /tmp/progress.lib
 	echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Updating system")" >&9
+	echo "__SUBMSG__:$(LC_ALL=$INSTALLERLOCALE gettext "This might take a while depending on the number of pending updates.")" >&9
 
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		# Update to latest patchlevel
