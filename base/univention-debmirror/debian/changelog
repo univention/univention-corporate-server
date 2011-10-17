@@ -1,3 +1,9 @@
+univention-debmirror (5.0.1-1) unstable; urgency=low
+
+  * Cleanup univention-debmirror (Bug #23831)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Oct 2011 08:39:18 +0200
+
 univention-debmirror (5.0.0-2) unstable; urgency=low
 
   * Run join script and postinst with bash (Bug #23927)

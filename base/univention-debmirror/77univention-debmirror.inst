@@ -31,33 +31,38 @@
 # <http://www.gnu.org/licenses/>.
 
 VERSION=2
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
 
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
-fi
+. /usr/share/univention-lib/all.sh
 
-touch /usr/lib/univention-install/.index.txt
-
-test -n "`grep "univention-debmirror v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
-
-eval "$(univention-config-registry shell hostname domainname local/repository server/role ldap/hostdn ldap/base)"
-
-univention-directory-manager container/cn create --ignore_exists "$@" --position cn=univention,$ldap_base --set name=services
-univention-directory-manager settings/service create "$@" --ignore_exists --position cn=services,cn=univention,$ldap_base --set name=Repository-Server
+eval "$(univention-config-registry shell)"
 
 if [ -n "$local_repository" ] && [ "$local_repository" = "true" -o "$local_repository" = "True" -o "$local_repository" = "yes" ]; then
-	# there is already another repository server
-	if host univention-repository.$domainname &> /dev/null; then
-		univention-config-registry set repository/mirror/server=univention-repository.$domainname
+	# Is there already another repository server?
+	target="$(LC_ALL=C host -t CNAME univention-repository.$domainname | sed -ne 's|.* is an alias for ||;s|\.$||p')"
+	if [ -z "$target" ]; then
+		target="$(LC_ALL=C host -t CNAME univention-repository.$domainname | sed -ne 's|.*  has address ||;s|\.$||p')"
+	fi
+
+	if [ -n "$target" ]; then
+		if [ "$target" = "$hostname" ] || [ "$target" = "$hostname.$domainname" ]; then
+			# univention-repository is a alias for this host
+			;
+		else
+			univention-config-registry set repository/mirror/server=univention-repository.$domainname
+		fi
 	else
 		univention-config-registry set repository/mirror/server=apt.univention.de
 		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists --stoptls $domainname add cname univention-repository $hostname
 	fi
 
-	univention-directory-manager computers/$server_role modify "$@" --dn $ldap_hostdn --append service="Repository-Server"
+	ucs_addServiceToLocalhost "Repository-Server" "$@" 
 fi
 
-test -n "`grep "univention-debmirror v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-debmirror v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+univention-config-registry set	repository/online/server="$hostname.$domainname" \
+								repository/online/prefix="univention-repository"
+
+joinscript_save_current_version
 
 exit 0

@@ -36,36 +36,12 @@ eval "$(univention-config-registry shell)"
 
 #DEBHELPER#
 
-
-call_joinscript 77univention-debmirror.inst
-
-# on installation, definitely set local repository
-if [ "$1" = configure -a -z "$2" ]; then
-	univention-config-registry set repository/online/server="$hostname.$domainname"
-	univention-config-registry set repository/online/prefix="univention-repository"
-# on update, only if not set already
-else
-	# only set prefix if there is no other local repository server set
-	if [ -z "$repository_online_server" ]; then
-		univention-config-registry set repository/online/prefix?"univention-repository"
-	fi
-	univention-config-registry set repository/online/server?"$hostname.$domainname"
-fi
-
-# set the mirror server to univention-repository if it exists ...
-if host univention-repository.$domainname &> /dev/null; then
-	# ... and if it is not the local system
-	if ! host univention-repository.$domainname | grep "$hostname.$domainname"; then
-		univention-config-registry set repository/mirror/server="univention-repository.$domainname"
-	fi
-else
-	univention-config-registry set repository/mirror/server="apt.univention.de"
-fi
-
 # activate local repository on installation only
 if [ "$1" = "configure" -a -z "$2" ]; then
 	univention-config-registry set local/repository?yes
 fi
+
+call_joinscript 77univention-debmirror.inst
 
 a2ensite univention-repository
 /etc/init.d/apache2 reload || true
