@@ -48,9 +48,6 @@ _PyCObject_FromVoidPtr = ctypes.pythonapi.PyCObject_FromVoidPtr
 _PyCObject_FromVoidPtr.argtypes = [ctypes.POINTER(ctypes.c_char_p), ctypes.c_void_p] 
 _PyCObject_FromVoidPtr.restype = ctypes.py_object 
 
-def lm_password_to_user_password(lm_password):
-	return '{LANMAN}%s' % lm_password
-
 
 def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 	up_blob = unicodePwd
@@ -546,7 +543,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object):
 					modlist.append(('krb5KeyVersionNumber', krb5KeyVersionNumber, msDS_KeyVersionNumber))
 
 			## Append modification as well to modlist, to apply in one transaction
-			modlist.append(('userPassword', userPassword_ucs, lm_password_to_user_password(lmPwd)))
+			modlist.append(('userPassword', userPassword_ucs, '{K5KEY}'))
 
 			# Remove the POSIX and Kerberos password expiry interval
 			if res[0][1].has_key('shadowLastChange'):

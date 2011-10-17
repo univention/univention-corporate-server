@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.41-1) unstable; urgency=low
+
+  * Use new overlay module k5pwd and set userPassword to {K5KEY}
+    (Bug #15062)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Oct 2011 17:41:48 +0200
+
 univention-s4-connector (6.0.40-1) unstable; urgency=low
 
   * Restart S4 connector in join script (Bug #24074)
