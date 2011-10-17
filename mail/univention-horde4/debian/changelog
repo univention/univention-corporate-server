@@ -1,3 +1,10 @@
+univention-horde4 (1.0.11-1) unstable; urgency=low
+
+  * added description for horde ucs vars (Bug #23745) 
+  * added logrotate template for horde's log file
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Oct 2011 11:22:43 +0200
+
 univention-horde4 (1.0.10-1) unstable; urgency=low
 
   * activate sieve backend in ingo (Bug #23741)

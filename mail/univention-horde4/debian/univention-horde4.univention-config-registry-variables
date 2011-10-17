@@ -1,0 +1,294 @@
+[horde/sql/persistent]
+Description[de]=Persistente Datenbank-Verbindungen anfordern
+Description[en]=Request persistent database connections
+Type=str
+Categories=service-mail
+
+[horde/sql/username]
+Description[de]=Benutzername für die Datenbank-Verbindung
+Description[en]=Username to connect to the database as
+Type=str
+Categories=service-mail
+
+[horde/sql/hostspec]
+Description[de]=Datenbank-Server
+Description[en]=Database server
+Type=str
+Categories=service-mail
+
+[horde/sql/port]
+Description[de]=Port auf dem die Datenbank läuft
+Description[en]=Port the databse is running on
+Type=str
+Categories=service-mail
+
+[horde/sql/protocol]
+Description[de]=Datenbank-Protokoll
+Description[en]=Database protocol
+Type=str
+Categories=service-mail
+
+[horde/sql/database]
+Description[de]=Name der Datenbank
+Description[en]=Database name
+Type=str
+Categories=service-mail
+
+[horde/sql/charset]
+Description[de]=Intern verwendete Zeichenkodierung
+Description[en]=Internally used charset
+Type=str
+Categories=service-mail
+
+[horde/sql/splitread]
+Description[de]=Lesevorgänge auf einem anderen Server durchführen
+Description[en]=Split reads to a different server
+Type=str
+Categories=service-mail
+
+[horde/sql/phptype]
+Description[de]=Datenbank Backend für Horde
+Description[en]=Horde database backend
+Type=str
+Categories=service-mail
+
+[horde/testdisable]
+Description[de]=Das Horde Testskript deaktivieren
+Description[en]=Disable the Horde test script
+Type=str
+Categories=service-mail
+
+[horde/auth/admins]
+Description[de]=Benutzer die von Horde als Administratoren behandelt werden
+Description[en]=Users, which should be treated as administrators by Horde
+Type=str
+Categories=service-mail
+
+[horde/mailer/params/host]
+Description[de]=SMPT Server
+Description[en]=SMTP Server
+Type=str
+Categories=service-mail
+
+[horde/mailer/params/port]
+Description[de]=SMTP Port
+Description[en]=SMTP Port
+Type=str
+Categories=service-mail
+
+[horde/mailer/params/auth]
+Description[de]=SMTP Authentifizierung
+Description[en]=SMTP authentication
+Type=str
+Categories=service-mail
+
+[horde/mailer/type]
+Description[de]=Methode für das Versenden von E-Mails
+Description[en]=Method that should we used for sending mails
+Type=str
+Categories=service-mail
+
+[horde/log/enabled]
+Description[de]=Protokollierung von Fehlern aktivieren
+Description[en]=Should Horde log errors and other useful information
+Type=str
+Categories=service-mail
+
+[horde/log/type]
+Description[de]=Backend für die Protokollierung
+Description[en]=Log driver
+Type=str
+Categories=service-mail
+
+[horde/log/priority]
+Description[de]=Priorität der Protokollierungs-Meldungen
+Description[en]=Log level
+Type=str
+Categories=service-mail
+
+[horde/log/name]
+Description[de]=Datei für die Protokollierung
+Description[en]=Path to the log file
+Type=str
+Categories=service-mail
+
+[horde/log/params/append]
+Description[de]=Neue Protokoll-Meldungen an bestehende Datei anhängen
+Description[en]=Should new log entries be appended to an existing log file
+Type=str
+Categories=service-mail
+
+[horde/auth/params/app]
+Description[de]=Die Applikation, die die Authentifizierung bereitstellt
+Description[en]=The application which is providing authentication
+Type=str
+Categories=service-mail
+
+[horde/auth/driver]
+Description[de]=Backend für die Authentifizierung von Benutzern am Horde
+Description[en]=What backend should Horde use for authenticating users
+Type=str
+Categories=service-mail
+
+[horde/imap/hostspec]
+Description[de]=Name/IP-Adresse des IMAP Mailservers
+Description[en]=The hostname/IP address of the IMAP mail server to connect to
+Type=str
+Categories=service-mail
+
+[horde/imap/hordeauth]
+Description[de]=Unmodifizierten Benutzername für die Anmeldung verwenden ('full') oder alles nach @ vom Benutzernamen abschneiden
+Description[en]=Use unmodified username for login ('full') or strip everything @ in the username (true)
+Type=str
+Categories=service-mail
+
+[horde/imap/port]
+Description[de]=IMAP Port
+Description[en]=IMAP port
+Type=str
+Categories=service-mail
+
+[horde/imap/secure]
+Description[de]=Sicherheit der Verbindung zum Server
+Description[en]=Transport security used for connection to the server
+Type=str
+Categories=service-mail
+
+[horde/imap/quota/driver]
+Description[de]=Quota Treiber 
+Description[en]=Quota driver for the imap server
+Type=str
+Categories=service-mail
+
+[horde/imap/quota/params/userhierarchy]
+Description[de]=Die Hierarchie, in der  Benutzerpostfächer gespeichert sind
+Description[en]=The hierarchy where user mailboxes are stored
+Type=str
+Categories=service-mail
+
+[horde/imap/acl/driver]
+Description[de]=IMAP ACL Treiber
+Description[en]=IMAP ACL driver
+Type=str
+Categories=service-mail
+
+[horde/folder/spam]
+Description[de]=Name des Spam Ordners
+Description[en]=Name of the spam folder
+Type=str
+Categories=service-mail
+
+[horde/folder/trash]
+Description[de]=Name des Ordners für gelöschte E-Mails
+Description[en]=Name of the trash folder
+Type=str
+Categories=service-mail
+
+[horde/folder/drafts]
+Description[de]=Name des Ordners für Vorlagen
+Description[en]=Name of the drafts folder
+Type=str
+Categories=service-mail
+
+[horde/folder/sent]
+Description[de]=Name des Ordners für gesendete E-Mails
+Description[en]=Name of the sent Folder
+Type=str
+Categories=service-mail
+
+[horde/group/driver]
+Description[de]=Treiber für Horde Gruppen
+Description[en]=Backend driver for Horde Groups
+Type=str
+Categories=service-mail
+
+[horde/share/driver]
+Description[de]=Treiber für Horde Shares
+Description[en]=Backend driver for Horde Shares
+Type=str
+Categories=service-mail
+
+[horde/horde/initial_page]
+Description[de]=Die Startseite für das Horde Modul
+Description[en]=The initial page for the Horde module
+Type=str
+Categories=service-mail
+
+[horde/ingo/status]
+Description[de]=Status der Horde Applikation Ingo
+Description[en]=Status of the Ingo Horde application
+Type=str
+Categories=service-mail
+
+[horde/horde/status]
+Description[de]=Status der Horde Applikation
+Description[en]=Status of the Horde application
+Type=str
+Categories=service-mail
+
+[horde/imp/status]
+Description[de]=Status der Horde Applikation imp
+Description[en]=Status of the Horde application imp
+Type=str
+Categories=service-mail
+
+[horde/kronolith/status]
+Description[de]=Status der Horde Applikation kronolith
+Description[en]=Status of the Horde application kronolith
+Type=str
+Categories=service-mail
+
+[horde/mnemo/status]
+Description[de]=Status der Horde Applikation mnemo
+Description[en]=Status of the Horde application mnemo
+Type=str
+Categories=service-mail
+
+[horde/nag/status]
+Description[de]=Status der Horde Applikation nag
+Description[en]=Status of the Horde application nag
+Type=str
+Categories=service-mail
+
+[horde/turba/status]
+Description[de]=Status der Horde Applikation turba
+Description[en]=Status of the Horde application turba
+Type=str
+Categories=service-mail
+
+[horde/menu/apps]
+Description[de]=Applikationen die im Horde Menü angezeigt werden
+Description[en]=Applications that should be linked in Horde's menu
+Type=str
+Categories=service-mail
+
+[horde/imp/menu/apps_iframe]
+Description[de]=Applikationen im Hauptfenster von imp anzeigen
+Description[en]=Display applications in imp's main windows
+Type=str
+Categories=service-mail
+
+[horde/subscribe/value]
+Description[de]=IMAP Ordner Abonnements verwenden
+Description[en]=Use IMAP folder subscriptions
+Type=str
+Categories=service-mail
+
+[horde/ingo/imap/disabled]
+Description[de]=Standard ingo Mailfilter Backend verwenden
+Description[en]=Use Sstandard ingo mailfilter backend
+Type=str
+Categories=service-mail
+
+[horde/imap/sieve/port]
+Description[de]=IMAP Sieve Port
+Description[en]=IMAP sieve port
+Type=str
+Categories=service-mail
+
+[horde/problems/mail]
+Description[de]=E-Mail Adresse an die Problemberichte gesendet werden
+Description[en]=Email address to which problem report emails should be sent
+Type=str
+Categories=service-mail
+

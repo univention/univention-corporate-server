@@ -1,0 +1,4 @@
+[service-mail]
+name[de]=Dienst: Mail
+name[en]=Service: Mail
+icon=service-mail.gif

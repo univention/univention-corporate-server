@@ -86,7 +86,8 @@ univention-config-registry set \
 	horde/imp/menu/apps_iframe?true \
 	horde/subscribe/value?0 \
 	horde/ingo/imap/disabled?true \
-	horde/imap/sieve/port?4190
+	horde/imap/sieve/port?4190 \
+	logrotate/horde/create="640 www-data adm"
 
 domain=$(echo $mail_hosteddomains | awk '{print $1}')
 if [ -n "$domain" ]; then

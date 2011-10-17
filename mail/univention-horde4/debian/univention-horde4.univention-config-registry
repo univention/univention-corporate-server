@@ -79,3 +79,7 @@ Mode: 640
 Variables: mail/cyrus/folder/spam
 Variables: mail/antispam/requiredhits
 Variables: horde/.*
+
+Type: file
+File: etc/logrotate.d/univention-horde4
+Variables: logrotate/.*
