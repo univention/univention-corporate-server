@@ -1,3 +1,9 @@
+univention-ldap (8.0.47-1) unstable; urgency=low
+
+  * Added new overlay module k5pwd (Bug #15062)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Oct 2011 17:38:10 +0200
+
 univention-ldap (8.0.46-1) unstable; urgency=low
 
   * Start slapd before starting bind9 (Bug #24080)

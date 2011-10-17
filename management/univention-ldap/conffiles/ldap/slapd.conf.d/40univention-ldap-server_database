@@ -2,27 +2,33 @@
 modulepath	/usr/lib/ldap
 moduleload	back_@%@ldap/database/type@%@.so
 @!@
-if baseConfig.has_key('ldap/translogfile') and baseConfig['ldap/translogfile']:
+if configRegistry.has_key('ldap/translogfile') and configRegistry['ldap/translogfile']:
 	print "moduleload\ttranslog.so"
+if configRegistry.is_true('ldap/k5pwd', True):
+	print "moduleload\tk5pwd.so"
 @!@
 
 database	@%@ldap/database/type@%@
 suffix		"@%@ldap/base@%@"
 
 @!@
-if baseConfig.has_key('ldap/translogfile') and baseConfig['ldap/translogfile']:
+if configRegistry.has_key('ldap/translogfile') and configRegistry['ldap/translogfile']:
 	print "overlay\t\ttranslog"
-	print "translog\t%s" % baseConfig['ldap/translogfile']
+	print "translog\t%s" % configRegistry['ldap/translogfile']
+if configRegistry.is_true('ldap/k5pwd', True):
+	print "overlay\tk5pwd"
 @!@
+
+
 
 cachesize   @%@ldap/cachesize@%@
 idlcachesize   @%@ldap/idlcachesize@%@
 threads		@%@ldap/threads@%@
 
 @!@
-if baseConfig['ldap/database/type'] == "bdb":
-	if baseConfig.has_key('ldap/database/bdb/checkpoint') and baseConfig['ldap/database/bdb/checkpoint']:
-		print 'checkpoint %s'%baseConfig['ldap/database/bdb/checkpoint']
+if configRegistry['ldap/database/type'] == "bdb":
+	if configRegistry.has_key('ldap/database/bdb/checkpoint') and configRegistry['ldap/database/bdb/checkpoint']:
+		print 'checkpoint %s'%configRegistry['ldap/database/bdb/checkpoint']
 	else:
 		print 'checkpoint 1024 30'
 
@@ -30,10 +36,10 @@ index_attrs={}
 indextypes=['eq','pres','sub','approx']
 
 for indextype in indextypes:
-	if baseConfig.has_key('ldap/index/%s'%indextype):
+	if configRegistry.has_key('ldap/index/%s'%indextype):
 		# ignore dummy entries for indeces
-		if not baseConfig['ldap/index/%s'%indextype].strip()=="none":
-			index_attrs['%s'%indextype]=baseConfig['ldap/index/%s'%indextype].split(',')
+		if not configRegistry['ldap/index/%s'%indextype].strip()=="none":
+			index_attrs['%s'%indextype]=configRegistry['ldap/index/%s'%indextype].split(',')
 		else:
 			index_attrs['%s'%indextype]=[]
 	else:
@@ -63,12 +69,12 @@ for indexcombination in indexcombinations:
 limits users time.soft=-1 time.hard=-1
 
 @!@
-if baseConfig['ldap/server/type'] == "slave":
+if configRegistry['ldap/server/type'] == "slave":
 	if configRegistry.is_true("ldap/online/master", True):
-		print 'rootdn\t"cn=update,%s"'%baseConfig['ldap/base']
+		print 'rootdn\t"cn=update,%s"'%configRegistry['ldap/base']
 		print 'include\t"/etc/ldap/rootpw.conf"'
-		print 'updatedn\t"cn=update,%s"'%baseConfig["ldap/base"]
-		print 'updateref\tldap://%s:%s'% (baseConfig["ldap/master"], baseConfig["ldap/master/port"])
+		print 'updatedn\t"cn=update,%s"'%configRegistry["ldap/base"]
+		print 'updateref\tldap://%s:%s'% (configRegistry["ldap/master"], configRegistry["ldap/master/port"])
 @!@
 
 directory	"/var/lib/univention-ldap/ldap"
