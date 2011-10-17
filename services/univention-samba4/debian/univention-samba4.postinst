@@ -111,6 +111,10 @@ if [ "$1" = "configure" ]; then
 		fi
 
 	fi
+
+	if test -f /etc/init.d/univention-directory-listener; then
+		/etc/init.d/univention-directory-listener crestart
+	fi
 fi
 
 call_joinscript 96univention-samba4.inst
