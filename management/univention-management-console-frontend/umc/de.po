@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-17 11:29+0200\n"
+"POT-Creation-Date: 2011-10-17 17:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,6 +206,10 @@ msgstr "Kein Objekt ausgewählt"
 #: umc/widgets/Grid.js:514
 msgid "No objects could be found"
 msgstr "Keine Objekte konnten gefunden werden"
+
+#: umc/widgets/Page.js:211
+msgid "Note"
+msgstr "Hinweis"
 
 #: umc/dialog.js:86
 msgid "Notification"

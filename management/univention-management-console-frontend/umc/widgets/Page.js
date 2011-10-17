@@ -6,8 +6,9 @@ dojo.require("dijit.layout.BorderContainer");
 dojo.require("umc.render");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.Text");
+dojo.require("umc.i18n");
 
-dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
+dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin ], {
 	// summary:
 	//		Class that abstracts a displayable page for a module.
 	//		Offers the possibility to enter a help text that is shown or not
@@ -39,6 +40,8 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 	// the widget's class name as CSS class
 	'class': 'umcPage',
 
+	i18nClass: 'umc.app',
+
 	gutters: false,
 
 	//style: 'width: 100%; height: 100%;',
@@ -47,6 +50,7 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 	_headerTextPane: null,
 	_subscriptionHandle: null,
 	_footer: null,
+	_notes: null,
 
 	_setHelpTextAttr: function(newVal) {
 		this.helpText = newVal;
@@ -69,6 +73,9 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 
 		// remove title from the attributeMap
 		delete this.attributeMap.title;
+
+		// initiate array for notes
+		this._notes = [];
 	},
 
 	buildRendering: function() {
@@ -195,6 +202,42 @@ dojo.declare("umc.widgets.Page", dijit.layout.BorderContainer, {
 				//this.layout();
 			})
 		}).play();
+	},
+
+	addNote: function(message) {
+		var closeButton = '<span class="dijitTabCloseButton dijitTabCloseIcon" style="float:right" title="Close"></span>';
+
+		var note = new umc.widgets.Text({
+			content: '<b>' + this._('Note') + ':</b> ' + closeButton + message,
+			region: 'top',
+			'class': 'umcPageNote'
+		});
+		dojo.query('.dijitTabCloseButton', note.domNode).forEach(function(inode) {
+			this.connect(inode, 'onmousedown', function() {
+				dojo.addClass(inode, 'dijitTabCloseButtonActive');
+			});
+			this.connect(inode, 'onmouseup', function() {
+				dojo.removeClass(inode, 'dijitTabCloseButtonActive');
+			});
+			this.connect(inode, 'onmouseover', function() {
+				dojo.addClass(inode, 'dijitTabCloseButtonHover');
+			});
+			this.connect(inode, 'onmouseout', function() {
+				dojo.removeClass(inode, 'dijitTabCloseButtonHover');
+			});
+			this.connect(inode, 'onclick', function() {
+				dojo.fadeOut({
+					node: note.domNode,
+					duration: 500,
+					onEnd: dojo.hitch(this, function() {
+						this.removeChild(note);
+						note.destroyRecursive();
+					})
+				}).play();
+			});
+		}, this);
+		this.addChild(note);
+		return note;
 	}
 });
 

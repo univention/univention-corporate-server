@@ -114,6 +114,12 @@ form {
 	margin-bottom: 15px;
 }
 
+.umcPageNote {
+	margin-bottom: 15px;
+	border: 2px solid #DBDBDB;
+	padding: 10px;
+}
+
 .dijitTitlePane {
 	margin: 0 0 15px 0;
 }

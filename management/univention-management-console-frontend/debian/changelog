@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.97-1) unstable; urgency=low
+
+  * Page: added possibility to show notes (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 17 Oct 2011 17:24:50 +0200
+
 univention-management-console-frontend (1.0.96-1) unstable; urgency=low
 
   * added isLabelDisplayed property for widgets using LabelPane
