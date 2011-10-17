@@ -1,3 +1,9 @@
+univention-samba4 (1.0.65-5) unstable; urgency=low
+
+  * fix typo in joinscript call (Bug #23786)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 17 Oct 2011 17:29:34 +0200
+
 univention-samba4 (1.0.65-4) unstable; urgency=low
 
   * adjust samba-shares.py to samba4 (Bug #22865)
