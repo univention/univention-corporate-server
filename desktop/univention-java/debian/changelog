@@ -1,3 +1,10 @@
+univention-java (6.0.0-2) stable; urgency=low
+
+  * Switch to OpenJDK instead of Sun Java. This also allows us to turn the package
+    into an Arch:all package (Bug #24040)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 17 Oct 2011 13:06:24 +0200
+
 univention-java (6.0.0-1) stable; urgency=low
 
   * Package cleanup for UCS 3.0 Bug #22432
