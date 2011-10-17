@@ -1,3 +1,10 @@
+univention-ad-connector (6.0.12-1) unstable; urgency=low
+
+  * Use new overlay module k5pwd and set userPassword to {K5KEY}
+    (Bug #15062)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Oct 2011 17:43:26 +0200
+
 univention-ad-connector (6.0.11-2) unstable; urgency=low
 
   * fixed logrotate template (Bug #18002) 

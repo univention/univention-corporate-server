@@ -48,9 +48,6 @@ def nt_password_to_arcfour_hmac_md5(nt_password):
 		key+=chr(int(o, 16))
 	return key
 	
-def lm_password_to_user_password(lm_password):
-	return '{LANMAN}%s' % lm_password
-	
 def _append_length(a, str):
 	l = len(str)
 	a.append(chr((l & 0xff)))
@@ -321,8 +318,6 @@ def password_sync(connector, key, ucs_object):
 			else:
 				pwd_changed = True
 				modlist.append(('sambaLMPassword', lmPwd_ucs, str(lmPwd.upper())))
-				connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']),
-								[(ldap.MOD_REPLACE, 'userPassword', lm_password_to_user_password(lmPwd.upper()))])
 		if ntPwd.upper() != ntPwd_ucs.upper():
 			if ntPwd == '00000000000000000000000000000000':
 				ud.debug(ud.LDAP, ud.WARN, "password_sync: AD connector password daemon retured 0 for the nt hash. Please check the LANMAN hash group policy.")
@@ -333,6 +328,7 @@ def password_sync(connector, key, ucs_object):
 					connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']),
 									[(ldap.MOD_REPLACE, 'krb5Key', nt_password_to_arcfour_hmac_md5(ntPwd.upper()))])
 		if pwd_changed:
+			connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'userPassword', '{K5KEY}')])
 			# Remove the POSIX and Kerberos password expiry interval
 			if ucs_result[0][1].has_key('shadowLastChange'):
 				modlist.append(('shadowLastChange', ucs_result[0][1]['shadowLastChange'][0], None))
