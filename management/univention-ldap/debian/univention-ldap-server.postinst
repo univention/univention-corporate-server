@@ -176,6 +176,11 @@ fi
 
 ## after this line slapd.conf is expected to be updated properly and slapd may restart
 
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.46-1 ; then
+	update-rc.d -f slapd remove >/dev/null
+	update-rc.d slapd defaults 14 80 >/dev/null
+fi
+
 if [ "$1" = "configure" -a -n "$2" ];
 	then
 	if test -x /etc/init.d/slapd

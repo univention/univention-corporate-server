@@ -1,3 +1,9 @@
+univention-ldap (8.0.46-1) unstable; urgency=low
+
+  * Start slapd before starting bind9 (Bug #24080)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Oct 2011 16:22:25 +0200
+
 univention-ldap (8.0.45-1) unstable; urgency=low
 
   * Fixed sed expressions in 10univention-ldap-server.inst (Bug #24074)
