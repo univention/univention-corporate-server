@@ -514,7 +514,7 @@ class UDM_Module( object ):
 		containers = getattr( self.module, 'default_containers', [] )
 		ldap_base = ucr.get( 'ldap/base' )
 
-		return map( lambda x: { 'id' : x + ldap_base, 'label' : ldap_dn2path( x + ldap_base ) }, containers )
+		return map( lambda x: { 'id' : '%s,%s' % ( x, ldap_base ), 'label' : ldap_dn2path( '%s,%s' % ( x, ldap_base ) ) }, containers )
 
 	@property
 	def superordinate( self ):

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.180-1) unstable; urgency=low
+
+  * fixed typo in udm/containers; Bug #23783
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 17 Oct 2011 17:45:53 +0200
+
 univention-management-console-module-udm (1.0.179-1) unstable; urgency=low
 
   * added license check (Bug #23213)
