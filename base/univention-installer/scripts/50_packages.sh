@@ -173,12 +173,6 @@ if [ -n "$extra_packages" ]; then
 		$PIPE dpkg --configure -a
 	done
 fi
-if [ -n "$local_repository" ]; then
-	if [ "$local_repository" = "true" ] || [ "$local_repository" = "yes" ]; then
-		apt-get -y -o APT::Status-FD=9 -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-debmirror
-		$PIPE dpkg --configure -a
-	fi
-fi
 __EOT__
 
 chmod +x /instmnt/install_packages.sh

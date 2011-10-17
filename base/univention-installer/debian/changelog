@@ -1,3 +1,10 @@
+univention-installer (7.0.106-1) unstable; urgency=low
+
+  * Install univention-debmirror in univention-repository-create
+    (Bug #23831)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Oct 2011 08:40:24 +0200
+
 univention-installer (7.0.105-1) unstable; urgency=low
 
   * Set updater/secure_apt in scripts/79_apt.sh to yes (Bug #9475)
