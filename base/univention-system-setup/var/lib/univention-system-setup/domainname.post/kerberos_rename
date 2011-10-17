@@ -1,0 +1,127 @@
+#!/bin/bash
+#
+# Univention Setup
+#  kerberos realm change script
+#
+# Copyright 2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+modify_realm_in_ldap() {
+	principal_old="krbtgt/${kerberos_realm_old}@${kerberos_realm_old}"
+	principal_new="krbtgt/${kerberos_realm_new}@${kerberos_realm_new}"
+
+	ldap_secret=$(</etc/ldap.secret)
+	dn=$( ldapsearch -x -LLL krb5PrincipalName="${principal_old}" dn | ldapsearch-wrapper | sed -n 's/dn: \(.*\)/\1/p' )
+
+	if [ -n "$dn" ]; then
+		ldapmodify -x -D"cn=admin,$ldap_base" -w"$ldap_secret" <<-EOF
+		dn: $dn
+		changetype: modify
+		replace: uid
+		uid: ${principal_new%@*}
+		-
+		EOF
+	fi
+
+	ldapmodify -x -D"cn=admin,$ldap_base" -w"$ldap_secret" <<-EOF
+	dn: $ldap_base
+	changetype: modify
+	replace: krb5RealmName
+	krb5RealmName: $kerberos_realm_new
+	-
+
+	dn: relativeDomainName=_kerberos,zoneName=${domainname},cn=dns,$ldap_base
+	changetype: modify
+	replace: tXTRecord
+	tXTRecord: $kerberos_realm_new
+	-
+	EOF
+
+	IFS=$'\n' read -a ktutil_principals -d '' < <(ktutil list | awk '{print $3}' | grep "@${kerberos_realm_old}\$" | sort | uniq)
+
+	while read -d $'\0'; do
+		dn=$(sed -n 's/^dn: \(.*\)/\1/p' <<<"$REPLY")
+		principal_old=$(sed -n 's/^krb5PrincipalName: \(.*\)/\1/p' <<<"$REPLY")
+		spn_old="${principal_old%@*}"
+		spn_new=${spn_old/\/${kerberos_realm_old}/\/${kerberos_realm_new}}
+		principal_new="${spn_new}@${kerberos_realm_new}"
+		for ktutil_principal in "${ktutil_principals[@]}"; do
+			if [ "$ktutil_principal" = "$principal_old" ]; then
+				echo KTUTIL: RENAMING "$ktutil_principal" to "${principal_new}" 1>&2
+				ktutil rename "${ktutil_principal}" "${principal_new}"
+				break
+			fi
+		done
+		if grep -q ^krb5PrincipalName= <<<"$dn"; then
+			echo ldapmodrdn "${dn}" krb5PrincipalName="${principal_new}" 1>&2
+			ldapmodrdn -x -r -D"cn=admin,$ldap_base" -w"$ldap_secret" "${dn}" krb5PrincipalName="${principal_new}"
+		else
+			echo "dn: $dn"
+			echo "changetype: modify"
+			echo "replace: krb5PrincipalName"
+			echo "krb5PrincipalName: ${principal_new}"
+			echo -e "-\n"
+		fi | ldapmodify -x -D"cn=admin,$ldap_base" -w"$ldap_secret"
+	done < <(ldapsearch -x -LLL '(objectClass=krb5Principal)' krb5PrincipalName uid | ldapsearch-wrapper | sed 's/^$/\x0/g')
+} # modify_realm_in_ldap
+
+old_domainname="$1" # not needed
+new_domainname="$2" # not needed
+
+eval "$(univention-config-registry shell)"
+kerberos_realm_old="$kerberos_realm"
+kerberos_realm_new=$(tr '[:lower:]' '[:upper:]' <<<"$domainname")
+
+if [ "$kerberos_realm_old" ==  "$kerberos_realm_new" ]; then
+	echo "Nothing to do: kerberos_realm_new == kerberos_realm_old"
+	exit 0
+fi
+
+if ! dpkg -l univention-heimdal-kdc >&/dev/null; then
+	if ! dpkg -l univention-heimdal-member >&/dev/null; then
+		echo "Nothing to do: no Kerberos config on this system"
+		exit 0
+	fi
+fi
+
+if [ "$server_role" != "domaincontroller_master" ]; then
+	echo "Nothing to do: only on master"
+	exit 0
+fi
+
+if [ ! -e "/etc/krb5.keytab.$kerberos_realm_old" ]; then
+	cp /etc/krb5.keytab "/etc/krb5.keytab.$kerberos_realm_old"
+fi
+
+modify_realm_in_ldap
+
+univention-config-registry set kerberos/realm="$kerberos_realm_new"
+
+services=("heimdal-kdc" "univention-bind" "univention-bind-proxy" "nscd")
+for service in "${services[@]}"; do
+	[ -x "/etc/init.d/$service" ] && invoke-rc.d "$service" restart
+done

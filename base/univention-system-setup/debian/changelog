@@ -1,3 +1,9 @@
+univention-system-setup (5.0.12-1) unstable; urgency=low
+
+  * rename kerberos realm on domainname change (Bug #22214)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 17 Oct 2011 12:29:18 +0200
+
 univention-system-setup (5.0.11-1) unstable; urgency=low
 
   * fix 12domainname: (Bug #23371)
