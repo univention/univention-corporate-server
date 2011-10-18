@@ -1,3 +1,10 @@
+univention-samba4 (1.0.68-1) unstable; urgency=low
+
+  * avoid calling 98univention-samba4-dns.inst in postinst, in case
+    the S4 Connector did not run at that time (Bug #23786)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Oct 2011 18:39:27 +0200
+
 univention-samba4 (1.0.67-1) unstable; urgency=low
 
   * added firewall settings (Bug #23577)
