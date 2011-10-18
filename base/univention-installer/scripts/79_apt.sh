@@ -41,7 +41,7 @@ eval "$(ucr shell)"
 if [ "$repository_online_server" = "apt.univention.de" ] || 
    [ "$repository_online_server" = "testing.univention.de" ]; then
 	
-	ucr set updater/secure_apt=yes
+	ucr set update/secure_apt=yes
 fi
 
 __EOT__
