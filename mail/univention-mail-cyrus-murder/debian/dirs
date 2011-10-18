@@ -1,0 +1,6 @@
+var/lib/mupdate
+usr/lib/univention-directory-listener/system
+usr/lib/univention-install
+usr/sbin
+etc/imapd
+etc/pam.d

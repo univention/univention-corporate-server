@@ -1,0 +1,16 @@
+#!/bin/sh
+eval `univention-config-registry shell mail/cyrus/murder/backend/id server/role domainname`
+if [ -n "$mail_cyrus_murder_backend_id" ]; then
+        ## Set the backend/id email address
+        backend_hostname=`echo "$mail_cyrus_murder_backend_id" | /usr/bin/awk -F'.' '{print $1}'`
+        backend_hostdn=`univention-admin computers/computer list $@ --filter "cn=$backend_hostname" | grep '^DN: ' | /usr/bin/awk -F': ' '{print $2}'`
+	if [ -n "$backend_hostdn" ]; then
+        	# set password and Email-ID for imap and mupdate PAM services
+        	univention-admin "computers/$server_role" modify $@ --dn="$backend_hostdn" \
+        	--set password=$(cat /etc/machine.secret) \
+        	--customattribute Hostmailaddress="$mail_cyrus_murder_backend_id"
+	fi
+fi
+
+univention-config-registry commit /etc/imapd/imapd.conf /etc/imapd/frontend.conf
+
