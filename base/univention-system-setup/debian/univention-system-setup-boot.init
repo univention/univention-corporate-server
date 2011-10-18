@@ -30,26 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell system/setup/boot/start system/setup/boot/modules system/setup/appliance/start)"
+eval "$(univention-config-registry shell system/setup/boot/start)"
 
 . /lib/lsb/init-functions
 
 case "$1" in
 	start)
 		log_action_msg "Starting univention-system setup tools"
-		if [ -n "$system_setup_boot_start" ] && [ "$system_setup_boot_start" = "yes" ] || [ "$system_setup_boot_start" = "true" ]; then
-			if [ -n "$system_setup_boot_modules" ]; then
-				/sbin/usplash_write "QUIT" || true
-				test -x "/etc/init.d/dbus" && "/etc/init.d/dbus" stop
-				sleep 2s
-				if echo $system_setup_boot_modules | grep -q "keyboard"; then
-					univention-system-setup --modules=keyboard </dev/tty1 >/dev/tty1
-				fi
-				univention-system-setup --modules=`echo $system_setup_boot_modules | sed -e 's| |,|g' | sed 's/keyboard//;s/,,/,/;s/^,//;s/,$//'` </dev/tty1 >/dev/tty1
-				univention-config-registry set system/setup/boot/start=false
-				test -x "/etc/init.d/dbus" && "/etc/init.d/dbus" start
-				exit 0
-			fi
+		if [ "$system_setup_boot_start" = "yes" -o "$system_setup_boot_start" = "true" ]; then
+			/usr/share/univention-system-setup/startxwithfirefox >"$(mktemp -t univention-system-setup-boot-XXXXXXXXXX.xsession-errors)" 2>&1 &
+			disown
 		fi
 		log_action_end_msg 0
 		;;
