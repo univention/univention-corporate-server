@@ -45,6 +45,7 @@ import univention.admin.filter
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.dns.host_record
+import univention.admin.handlers.dns.txt_record
 import univention.admin.handlers.dns.ptr_record
 import univention.admin.handlers.dns.srv_record
 import univention.admin.handlers.dns.alias
@@ -256,11 +257,11 @@ def add_txt_record(args):
 	text=args[1]
 
 	filter=univention.admin.filter.expression('name', name)
-	records=univention.admin.handlers.dns.host_record.lookup(co, lo, filter, scope='domain', base=position.getDomain(), superordinate=zone, unique=1)
+	records=univention.admin.handlers.dns.txt_record.lookup(co, lo, filter, scope='domain', base=position.getDomain(), superordinate=zone, unique=1)
 	if records:
 		record=records[0]
 	else:
-		record=univention.admin.handlers.dns.host_record.object(co, lo, position, superordinate=zone)
+		record=univention.admin.handlers.dns.txt_record.object(co, lo, position, superordinate=zone)
 		record['name']=name
 		record['zonettl']='80600'
 	

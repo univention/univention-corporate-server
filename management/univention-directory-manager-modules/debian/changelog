@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.129-1) unstable; urgency=low
+
+  * univention-dnsedit: Use txt_record to create a txt record
+    (Bug #23772)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Oct 2011 09:49:36 +0200
+
 univention-directory-manager-modules (7.0.128-1) unstable; urgency=low
 
   * Moved pwdChangeNextLogin to account tab (Bug #23709)
