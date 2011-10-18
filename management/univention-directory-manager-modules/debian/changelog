@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.128-1) unstable; urgency=low
+
+  * Moved pwdChangeNextLogin to account tab (Bug #23709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Oct 2011 08:23:48 +0200
+
 univention-directory-manager-modules (7.0.127-1) unstable; urgency=low
 
   * fix typo in script univention-remove-old-umc-objects; Bug #24045

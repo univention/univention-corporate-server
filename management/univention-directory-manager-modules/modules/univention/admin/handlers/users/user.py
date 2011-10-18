@@ -877,7 +877,7 @@ layout = [
 		Group( _( 'User account' ), layout = [
 			[ 'username', 'description' ],
 			'password',
- 			[ 'pwdChangeNextLogin', 'overridePWHistory', 'overridePWLength' ] ,
+ 			[ 'overridePWHistory', 'overridePWLength' ] ,
 			'primaryGroup',
 			'mailPrimaryAddress',
 			] ),
@@ -901,6 +901,7 @@ layout = [
 		Group( _( 'Locking and deactivation' ), layout = [
 			[ 'disabled', 'locked'],
 			[ 'userexpiry', 'passwordexpiry' ],
+			'pwdChangeNextLogin', 
 			] ),
 		Group( _( 'Windows' ), _( 'Windows account settings' ), layout = [
 			[ 'homedrive', 'sambahome' ],
