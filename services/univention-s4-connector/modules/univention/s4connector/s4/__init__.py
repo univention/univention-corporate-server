@@ -779,8 +779,16 @@ class s4(univention.s4connector.ucs):
 
 		returnObjects = []
 		try:
-			returnObjects = search_s4_changes_by_attribute( 'uSNCreated', lastUSN+1 )
-			returnObjects += search_s4_changes_by_attribute( 'uSNChanged', lastUSN+1 )
+			if lastUSN > 0:
+				# During the init phase we have to search for created and changed objects
+				# but we need to sync the objects only once
+				returnObjects = search_s4_changes_by_attribute( 'uSNCreated', lastUSN+1 )
+				for changedObject in search_s4_changes_by_attribute( 'uSNChanged', lastUSN+1 ):
+					if changedObject not in returnObjects:
+						returnObjects.append(changedObject)
+			else:
+				# Every object has got a uSNCreated
+				returnObjects = search_s4_changes_by_attribute( 'uSNCreated', lastUSN+1 )
 		except (ldap.SERVER_DOWN, SystemExit):		
 			raise
 		except: # FIXME: which exception is to be caught?
@@ -798,8 +806,14 @@ class s4(univention.s4connector.ucs):
 
 				ud.debug(ud.LDAP, ud.INFO, "__search_s4_changes: search between USNs %s and %s"%(lastUSN+1,tmpUSN))
 
-				returnObjects += search_s4_changes_by_attribute( 'uSNCreated', lastUSN+1, tmpUSN )
-				returnObjects += search_s4_changes_by_attribute( 'uSNChanged', lastUSN+1, tmpUSN )
+				if lastUSN > 0:
+					returnObjects += search_s4_changes_by_attribute( 'uSNCreated', lastUSN+1, tmpUSN )
+					for changedObject in search_s4_changes_by_attribute( 'uSNChanged', lastUSN+1, tmpUSN ):
+						if changedObject not in returnObjects:
+							returnObjects.append(changedObject)
+				else:
+					# Every object has got a uSNCreated
+					returnObjects += search_s4_changes_by_attribute( 'uSNCreated', lastUSN+1, tmpUSN )
 				
 		return returnObjects
 
@@ -1004,6 +1018,7 @@ class s4(univention.s4connector.ucs):
 				for member in ldap_object_s4_group['member']:
 					if compatible_modstring(object['dn']).lower() == compatible_modstring(member).lower():
 						is_member = True # FIXME: should left the for-loop here for better perfomance
+						break
 
 			if not is_member: # add as member
 				s4_members = []
@@ -1038,8 +1053,6 @@ class s4(univention.s4connector.ucs):
 
 		object_sid_string = str(self.s4_sid) + "-" + str(s4_group_rid)
 
-		if self.baseConfig.has_key('%s/s4/windows_version' % self.CONFIGBASENAME) and self.baseConfig['%s/s4/windows_version' % self.CONFIGBASENAME] == "win2000":
-			object_sid_string = encode_object_sid_to_binary_ldapfilter(object_sid_string)
 
 		ldap_group_s4 = encode_s4_resultlist(self.lo_s4.lo.search_ext_s(self.lo_s4.base,ldap.SCOPE_SUBTREE,
 							   ('objectSID=' + object_sid_string),
@@ -1120,8 +1133,7 @@ class s4(univention.s4connector.ucs):
 		else:
 			ucs_members = []
 
-		ud.debug(ud.LDAP, ud.INFO,
-							   "ucs_members: %s" % ucs_members)
+		ud.debug(ud.LDAP, ud.INFO, "ucs_members: %s" % ucs_members)
 
 		# remove members which have this group as primary group (set same gidNumber)
 		prim_members_ucs = self.lo.lo.search(filter='gidNumber=%s'%ldap_object_ucs['gidNumber'][0],attr=['gidNumber'])
@@ -1138,8 +1150,7 @@ class s4(univention.s4connector.ucs):
 			if  prim_object[0].lower() in ucs_members:
 				ucs_members.remove(prim_object[0].lower())
 
-		ud.debug(ud.LDAP, ud.INFO,
-							   "group_members_sync_from_ucs: clean ucs_members: %s" % ucs_members)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: clean ucs_members: %s" % ucs_members)
 
 		ldap_object_s4 = self.get_object(object['dn'])
 		if not ldap_object_s4:
@@ -1224,7 +1235,7 @@ class s4(univention.s4connector.ucs):
 		except ldap.NO_SUCH_OBJECT:
 			group_rid = ''
 
-		tmp_members = s4_members_from_ucs
+		tmp_members = copy.deepcopy(s4_members_from_ucs)
 		for member_dn in tmp_members:			
 			member_object = self.get_object(member_dn)
 			if member_object and member_object.has_key('primaryGroupID') and member_object['primaryGroupID'][0] == group_rid:
@@ -1236,10 +1247,8 @@ class s4(univention.s4connector.ucs):
 		add_members = s4_members_from_ucs
 		del_members = []
 
-		ud.debug(ud.LDAP, ud.INFO,
-							   "group_members_sync_from_ucs: members to add initialized: %s" % add_members)
-		ud.debug(ud.LDAP, ud.INFO,
-							   "group_members_sync_from_ucs: members to del initialized: %s" % del_members)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to add initialized: %s" % add_members)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to del initialized: %s" % del_members)
 
 		for member_dn in s4_members:
 			if member_dn.lower() in s4_members_from_ucs:
@@ -1248,17 +1257,14 @@ class s4(univention.s4connector.ucs):
 				del_members.append(member_dn)
 
 		
-		ud.debug(ud.LDAP, ud.INFO,
-							   "group_members_sync_from_ucs: members to add: %s" % add_members)
-		ud.debug(ud.LDAP, ud.INFO,
-							   "group_members_sync_from_ucs: members to del: %s" % del_members)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to add: %s" % add_members)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to del: %s" % del_members)
 
 		if add_members or del_members:
 			s4_members = s4_members + add_members
 			for member in del_members:
 				s4_members.remove(member)
-			ud.debug(ud.LDAP, ud.INFO,
-								   "group_members_sync_from_ucs: members result: %s" % s4_members)
+			ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members result: %s" % s4_members)
 
 			modlist_members = []
 			for member in s4_members:
@@ -1359,10 +1365,14 @@ class s4(univention.s4connector.ucs):
 				except: # FIXME: which exception is to be caught?
 					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: failed to get dn from ucs, assume object doesn't exist")
 				
+		# build an internal cache
+		cache={}
+
 		# check if members in UCS don't exist in S4, if true they need to be added in UCS
 		for member_dn in ucs_members:
 			if not (member_dn.lower() in ucs_members_from_s4['user'] or member_dn.lower() in ucs_members_from_s4['group']):
 				try:
+					cache[member_dn] = self.lo.get(member_dn)
 					ucs_object = {'dn':member_dn,'modtype':'modify','attributes':self.lo.get(member_dn)}
 
 					if self._ignore_object(key, object):
@@ -1400,7 +1410,11 @@ class s4(univention.s4connector.ucs):
 			elif member_dn.lower() in ucs_members_from_s4['group']:
 				add_members['group'].remove(member_dn.lower())
 			else:
-				ucs_object = {'dn':member_dn,'modtype':'modify','attributes':self.lo.get(member_dn)}
+				ucs_object_attr=cache.get(member_dn)
+				if not ucs_object_attr:
+					ucs_object_attr = self.lo.get(member_dn)
+					cache[member_dn] = ucs_object_attr
+				ucs_object = {'dn':member_dn,'modtype':'modify','attributes':ucs_object_attr}
 
 				# TODO: check if ucs_object is really an user
 				if not self._ignore_object('user', ucs_object):
@@ -1433,8 +1447,6 @@ class s4(univention.s4connector.ucs):
 				ud.debug(ud.LDAP, ud.INFO,
 						       "group_members_sync_to_ucs: members %s result: %s" % (key,modlist_members[key]) )
 
-			ucs_admin_object=univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
-			ucs_admin_object.open()
 			ucs_admin_object['users'] = modlist_members['user']
 			ucs_admin_object['nestedGroup'] = modlist_members['group']
 			ucs_admin_object.modify()

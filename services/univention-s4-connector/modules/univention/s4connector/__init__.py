@@ -36,7 +36,6 @@ import ldap
 import pdb
 import univention_baseconfig
 import univention.uldap
-import univention.admin.config
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
@@ -241,7 +240,7 @@ class ucs:
 
 		self.CONFIGBASENAME = CONFIGBASENAME
 
-		self.ucs_no_recode=['krb5Key','userPassword','pwhistory','sambaNTPassword','sambaLMPassword']
+		self.ucs_no_recode=['krb5Key','userPassword','pwhistory','sambaNTPassword','sambaLMPassword', 'userCertificate']
 
 		self.baseConfig=baseConfig
 		self.property=_property
@@ -273,7 +272,14 @@ class ucs:
 		if bindpw[-1] == '\n':
 			bindpw=bindpw[0:-1]
 
-		self.lo=univention.admin.uldap.access(host=self.baseConfig['ldap/master'], base=self.baseConfig['ldap/base'], binddn='cn=admin,'+self.baseConfig['ldap/base'], bindpw=bindpw, start_tls=2)
+		host = self.baseConfig.get('%s/ldap/server' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master'))
+
+		try:
+			port = int(self.baseConfig.get('%s/ldap/port' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master/port')))
+		except:
+			port = 7389
+
+		self.lo=univention.admin.uldap.access(host=host, port=port, base=self.baseConfig['ldap/base'], binddn='cn=admin,'+self.baseConfig['ldap/base'], bindpw=bindpw, start_tls=2)
 
 	def search_ucs( self, filter = '(objectClass=*)', base = '', scope = 'sub', attr = [], unique = 0, required = 0, timeout = -1, sizelimit = 0 ):
 		try:
@@ -590,6 +596,7 @@ class ucs:
 
 	def get_ucs_ldap_object(self, dn):
 		_d=ud.function('ldap.get_ucs_ldap_object')
+
 		if type(dn) == type(u''):
 			searchdn = dn
 		else:
