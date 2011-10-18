@@ -200,7 +200,18 @@ else:
 // 0 = blank, 1 = home (browser.startup.homepage), 2 = last visited page, 3 = resume previous browser session
 // The behavior of option 3 is detailed at: http://wiki.mozilla.org/Session_Restore
 pref("browser.startup.page",                1);
-pref("browser.startup.homepage",            "resource:/browserconfig.properties");
+
+
+@!@
+if baseConfig.has_key('firefox/prefs/homepage') and baseConfig['firefox/prefs/homepage']:
+	print 'pref("browser.startup.homepage", %s);' %  baseConfig['firefox/prefs/homepage']
+	print 'pref("browser.startup.homepage_reset", %s);' %  baseConfig['firefox/prefs/homepage']
+	print 'pref("startup.homepage_welcome_url", %s);' %  baseConfig['firefox/prefs/homepage']
+else:
+	print 'pref("browser.startup.homepage", http://de.start2.mozilla.com/firefox?client=firefox-a&rls=org.mozilla:de:official);'
+	print 'pref("browser.startup.homepage_reset", http://de.start2.mozilla.com/firefox?client=firefox-a&rls=org.mozilla:de:official);'
+	print 'pref("startup.homepage_welcome_url", http://de.start2.mozilla.com/firefox?client=firefox-a&rls=org.mozilla:de:official);'
+@!@
 
 pref("browser.cache.disk.capacity",         50000);
 pref("browser.enable_automatic_image_resizing", true);

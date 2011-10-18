@@ -7,10 +7,6 @@ Variables: firefox/prefs/printing
 Variables: firefox/prefs/spellchecker/dictionary
 
 Type: file
-File: opt/firefox/browserconfig.properties
-Variables: firefox/prefs/homepage
-
-Type: file
 File: etc/mozilla-firefox/pref/firefox.js
 Variables: firefox/prefs/conffile
 Variables: firefox/prefs/mailto

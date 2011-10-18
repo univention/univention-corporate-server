@@ -41,8 +41,9 @@ if	[ -z "$firefox_prefs_homepage" ] ||
 	[ "$firefox_prefs_homepage" = "http://www.univention.de/ucd-welcome-2_0-0.html" ] ||
 	[ "$firefox_prefs_homepage" = "http://www.univention.de/ucd-welcome-2_1-0.html" ] ||
 	[ "$firefox_prefs_homepage" = "http://www.univention.de/ucd-welcome-2_2-0.html" ] ||
+	[ "$firefox_prefs_homepage" = "http://www.univention.de/ucd-welcome-2_4-0.html" ] ||
 	[ "$firefox_prefs_homepage" = "http://www.univention.de/ucd-welcome-2_3-0.html" ]; then
-	univention-config-registry set firefox/prefs/homepage="http://www.univention.de/ucd-welcome-2_4-0.html"
+	univention-config-registry set firefox/prefs/homepage="http://www.univention.de/"
 fi
 
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/firefox 101
