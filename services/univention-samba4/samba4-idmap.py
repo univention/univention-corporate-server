@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+	# -*- coding: utf-8 -*-
 #
 # Univention Samba
 #  listener module: manage idmap
@@ -118,6 +118,19 @@ def remove_idmap_entry(sambaSID, xidNumber, type_string):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, estr)
 
 def handler(dn, new, old):
+	global lp, idmap
+	lp.load('/etc/samba/smb.conf')
+
+	listener.setuid(0)
+	try:
+		idmap = IDmapDB('/var/lib/samba/private/idmap.ldb', session_info=system_session(), lp=lp)
+	except ldb.LdbError
+		listener.unsetuid()
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
+				"%s: /var/lib/samba/private/idmap.ldb could not be opened" % name )
+		return
+	finally:
+		listener.unsetuid()
 
 	if new:
 		if 'uidNumber' in new:
@@ -126,17 +139,9 @@ def handler(dn, new, old):
 			add_modify_idmap_entry(lp, new['sambaSID'][0], new['gidNumber'][0], 'ID_TYPE_GID')
 	elif old:
 		if 'uidNumber' in old:
-			remove_idmap_entry(new['sambaSID'][0], new['uidNumber'][0], 'ID_TYPE_UID')
+			# remove_idmap_entry(new['sambaSID'][0], new['uidNumber'][0], 'ID_TYPE_UID')
+			pass
 		if 'gidNumber' in old:
-			remove_idmap_entry(new['sambaSID'][0], new['gidNumber'][0], 'ID_TYPE_GID')
-
-def initialize():
-	global lp, idmap
-	lp.load('/etc/samba/smb.conf')
-
-	listener.setuid(0)
-	try:
-		idmap = IDmapDB('/var/lib/samba/private/idmap.ldb', session_info=system_session(), lp=lp)
-	finally:
-		listener.unsetuid()
+			# remove_idmap_entry(new['sambaSID'][0], new['gidNumber'][0], 'ID_TYPE_GID')
+			pass
 
