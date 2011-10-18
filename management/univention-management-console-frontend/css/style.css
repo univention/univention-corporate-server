@@ -129,11 +129,11 @@ form {
 #dijit_layout_TabContainer_0 .modLaunchButton {
 	position: relative;
 	float: left;
-	height: 85px;
-	width: 85px;
-	padding: 15px;
-	margin: 0 30px 20px 0;
-	background-position: center 10px;
+	height: 65px;
+	width: 145px;
+	padding: 10px;
+	margin: 0 5px 0 0;
+	background-position: left center;
 }
 #dijit_layout_TabContainer_0 #umc_widgets__CategoryItem_14 {
 	height: 105px;
@@ -142,7 +142,8 @@ form {
 /* @end */
 
 .modLaunchButton div {
-	margin-top: 70px;
+	margin-top: 25px;
+	margin-left: 50px;
 	text-align: center;
 }
 
