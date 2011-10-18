@@ -4,3 +4,4 @@ scripts/*.py usr/share/univention-samba4/scripts
 98univention-samba4-dns.inst usr/lib/univention-install
 univention-s4search usr/sbin/
 samba-shares.py usr/lib/univention-directory-listener/system
+samba4-idmap.py usr/lib/univention-directory-listener/system
