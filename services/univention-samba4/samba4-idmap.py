@@ -48,7 +48,7 @@ idmap = None
 name='samba4-idmap'
 description='Update local IDmap entries'
 filter='(&(|(objectClass=sambaSamAccount)(objectClass=sambaGroupMapping))(sambaSID=*))'
-atributes=[]
+attributes=['sambaSID', 'uidNumber', 'gidNumber']
 
 def add_modify_idmap_entry(lp, sambaSID, xidNumber, type_string):
 	try:
@@ -124,7 +124,7 @@ def handler(dn, new, old):
 	listener.setuid(0)
 	try:
 		idmap = IDmapDB('/var/lib/samba/private/idmap.ldb', session_info=system_session(), lp=lp)
-	except ldb.LdbError
+	except ldb.LdbError:
 		listener.unsetuid()
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
 				"%s: /var/lib/samba/private/idmap.ldb could not be opened" % name )
