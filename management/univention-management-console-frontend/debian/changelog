@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.102-1) unstable; urgency=low
+
+  * added test cases for form widgets with dependencies tests/depends.html
+    (Bug #23797)
+  * Grid: added getAllItems() (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 18 Oct 2011 18:09:50 +0200
+
 univention-management-console-frontend (1.0.101-1) unstable; urgency=low
 
   * MultiInput: fixed caching of multiple dynamicValues request

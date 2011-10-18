@@ -699,6 +699,15 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		this.layout();
 	},
 
+	getAllItems: function() {
+		// summary:
+		//		Returns a list of all items
+
+		return dojo.map(this._grid._by_idx, function(i) {
+			return i.item;
+		});
+	},
+
 	getSelectedItems: function() {
 		// summary:
 		//		Return the currently selected items.

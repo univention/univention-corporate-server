@@ -1,0 +1,228 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+			@import url("/univention-management-console/js/dojo/resources/dojo.css");
+			@import url("/univention-management-console/css/dijit/themes/umc/umc.css");
+			@import url("/univention-management-console/css/dojox/grid/resources/Grid.css");
+			@import url("/univention-management-console/css/dojox/grid/resources/umcGrid.css");
+			@import url("/univention-management-console/css/dojox/grid/enhanced/resources/EnhancedGrid.css");
+			@import url("/univention-management-console/css/dojox/grid/enhanced/resources/umc/EnhancedGrid.css");
+			@import url("/univention-management-console/css/dojox/form/resources/CheckedMultiSelect.css");
+			@import url("/univention-management-console/css/dojox/widget/Dialog/Dialog.css");
+			@import url("/univention-management-console/css/style.css");
+			h1 {
+				margin-bottom: 5px;
+				margin-top: 10px;
+			}
+			.umcLabelPane {
+				margin-right: 10px;
+				margin-bottom: 10px;
+			}
+			html {
+				background: #FFF;
+			}
+			body {
+				overflow: auto;
+			}
+		</style>
+		<script type="text/javascript" src="/univention-management-console/js/dojo/dojo.js"></script>
+		<script type="text/javascript">
+			dojo.require("umc.tools");
+			dojo.require("umc.widgets.Form");
+			dojo.require("umc.widgets.MultiInput");
+			dojo.require("umc.widgets.ContainerWidget");
+		</script>
+		<script type="text/javascript">
+			var valuesAnimals = [ 'dog', 'cat', 'eagle', 'polar bear' ];
+			var valuesColors = [ 'green', 'blue', 'yellow', 'red', 'purple', 'pink', 'orange', 'transparent', 'white', 'black' ];
+			var mapContinents = {
+				Africa: [ 'Egypt', 'Sudan', 'Kenia' ],
+				Europe: [ 'France', 'Germany', 'UK' ],
+				NorthAmerica: [ 'USA', 'Canada', 'Mexico' ],
+				SouthAmerica: [ 'Chile', 'Venezuela', 'Brazil' ],
+				Oceania: [ 'Australia' ],
+				Asia: [ 'China', 'India', 'Russia', 'Japan' ]
+			};
+			var continents = [];
+			umc.tools.forIn(mapContinents, function(ikey) {
+				continents.push(ikey);
+			});
+
+			function _values(deps) {
+				if (deps._dep) {
+					var choice = deps[deps._dep];
+					if (choice in deps._data) {
+						return deps._data[choice];
+					}
+					return [];
+				}
+				if (deps._func) {
+					return deps._func();
+				}
+				return deps._data;
+			}
+
+			function valuesSync(deps) {
+				console.log('# valuesSync: ', dojo.toJson(deps));
+				var ret = _values(deps);
+				console.log('# valuesSync return:', dojo.toJson(ret));
+				return ret;
+			}
+
+			function valuesAsync(deps) {
+				console.log('# valuesAsync:', dojo.toJson(deps));
+				var deferred = new dojo.Deferred();
+				setTimeout(function() {
+					console.log('# valuesAsync: deferred done');
+					var ret = _values(deps);
+					console.log('# valuesAsync return:', dojo.toJson(ret));
+					deferred.callback(ret);
+				}, 1000);
+				return deferred;
+			}
+
+			dojo.addOnLoad(function() {
+				var widgets = [{
+					type: 'Text',
+					label: '',
+					name: 'test0',
+					content: '<h1>Test case: ComboBox</h1>'
+				}, {
+					type: 'ComboBox',
+					name: 'ComboBox0-1',
+					label: 'ComboBox - static values - value=red',
+					staticValues: ['green', 'red', 'blue'],
+					value: 'red'
+				}, {
+					type: 'ComboBox',
+					name: 'ComboBox0-2',
+					label: 'ComboBox - dynamic values - value=green',
+					dynamicOptions: { _data: valuesColors },
+					dynamicValues: valuesAsync,
+					value: 'green'
+				}, {
+					type: 'Text',
+					label: '',
+					name: 'test1',
+					content: '<h1>Test case: ComboBox &larr; ComboBox</h1>'
+				}, {
+					type: 'ComboBox',
+					name: 'ComboBox1-1',
+					label: 'ComboBox1',
+					dynamicOptions: { _data: continents },
+					dynamicValues: valuesAsync,
+					staticValues: [ '-None-' ]
+				}, {
+					type: 'ComboBox',
+					name: 'ComboBox1-2',
+					label: 'ComboBox2',
+					depends: 'ComboBox1-1',
+					dynamicOptions: { _data: mapContinents, _dep: 'ComboBox1-1' },
+					dynamicValues: valuesAsync
+				}, {
+					type: 'Text',
+					label: '',
+					name: 'test2',
+					content: '<h1>Test case: MultiInput w/TextBox &larr; MultiInput.ComboBox</h1>'
+				}, {
+					type: 'MultiInput',
+					name: 'MultiInput2-1',
+					subtypes: [{ type: 'TextBox' }],
+					label: 'MultiInput1'
+				}, {
+					type: 'MultiInput',
+					name: 'MultiInput2-2',
+					label: 'MultiInput2',
+					subtypes: [{ 
+						type: 'ComboBox', 
+						depends: 'MultiInput2-1', 
+						dynamicValues: valuesAsync, 
+						dynamicOptions: { _func: function() { return form.getWidget('MultiInput2-1').get('value'); } } 
+					}]
+				}, {
+					type: 'Text',
+					label: '',
+					name: 'test3',
+					content: '<h1>Test case: MultiInput w/ComboBox &larr; MultiInput.ComboBox</h1>'
+				}, {
+					type: 'MultiInput',
+					name: 'MultiInput3-1',
+					subtypes: [{ 
+						type: 'ComboBox',
+						dynamicOptions: { _data: valuesAnimals },
+						dynamicValues: valuesAsync,
+						staticValues: [ '-None-' ]
+					}],
+					label: 'MultiInput1'
+				}, {
+					type: 'MultiInput',
+					name: 'MultiInput3-2',
+					label: 'MultiInput3',
+					subtypes: [{ 
+						type: 'ComboBox', 
+						depends: 'MultiInput3-1', 
+						dynamicValues: valuesAsync, 
+						dynamicOptions: { _func: function() { return form.getWidget('MultiInput3-1').get('value'); } } 
+					}]
+				}, {
+					type: 'Text',
+					label: '',
+					name: 'test4',
+					content: '<h1>Test case: MultiInput w/TextBox &larr; ComboBox</h1>'
+				}, {
+					type: 'MultiInput',
+					name: 'MultiInput4-1',
+					subtypes: [{ type: 'TextBox' }], 
+					label: 'MultiInput1'
+				}, {
+					type: 'ComboBox',
+					name: 'ComboBox4-1',
+					label: 'ComboBox1',
+					depends: 'MultiInput4-1', 
+					dynamicValues: valuesAsync, 
+					dynamicOptions: { _func: function() { return form.getWidget('MultiInput4-1').get('value'); } } 
+				}, {
+					type: 'Text',
+					label: '',
+					name: 'test5',
+					content: '<h1>Test case: MultiSelect &larr; ComboBox</h1>'
+				}, {
+					type: 'MultiSelect',
+					name: 'MultiSelect5-1',
+					label: 'MultiSelect1',
+					dynamicValues: valuesAsync, 
+					dynamicOptions: { _data: valuesColors }
+					//staticValues: [ '-None-' ]
+				}, {
+					type: 'ComboBox',
+					name: 'ComboBox5-1',
+					label: 'ComboBox1',
+					depends: 'MultiSelect5-1', 
+					dynamicValues: valuesAsync, 
+					dynamicOptions: { _func: function() { return form.getWidget('MultiSelect5-1').get('value'); } } 
+				}];
+				var buttons = [{
+					name: 'submit',
+					label: 'Submit'
+				}];
+				form = new umc.widgets.Form({
+					widgets: widgets,
+					buttons: buttons,
+					layout: [
+						'test0', 'ComboBox0-1', 'ComboBox0-2',
+						'test1', ['ComboBox1-1', 'ComboBox1-2'],
+						'test2', ['MultiInput2-1', 'MultiInput2-2'],
+						'test3', ['MultiInput3-1', 'MultiInput3-2'],
+						'test4', ['MultiInput4-1', 'ComboBox4-1'],
+						'test5', ['MultiSelect5-1', 'ComboBox5-1']
+					]
+				});
+				form.startup();
+				form.placeAt(dojo.body());
+			});
+		</script>
+	</head>
+	<body class="umc">
+	</body>
+</html>
