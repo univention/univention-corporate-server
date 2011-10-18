@@ -3,7 +3,9 @@ univention-mozilla-firefox (7.0.0-2) unstable; urgency=low
   * Update template variables for startup page (Bug #22116)
   * Remove firefox/prefs/mailto, the new interface is different and focuses
     on integrating web mail services	
-
+  * Remove firefox/prefs/printing. Firefox includes native Cups printing and
+    kprinter no longer exists.	
+	
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 18 Oct 2011 12:15:12 +0200
 
 univention-mozilla-firefox (7.0.0-1) unstable; urgency=low

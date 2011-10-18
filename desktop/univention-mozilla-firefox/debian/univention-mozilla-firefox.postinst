@@ -51,8 +51,6 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 
 	mkdir -p /etc/univention/skel/Downloads
 
-	univention-config-registry set firefox/prefs/printing?kprinter
-
 	univention-config-registry set firefox/prefs/spellchecker/dictionary="en-US"
 	if [ -n "$locale_default" ]; then
 		lang=$(echo $locale_default | sed -e 's|_.*||')

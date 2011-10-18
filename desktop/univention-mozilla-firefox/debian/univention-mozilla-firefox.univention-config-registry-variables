@@ -10,12 +10,6 @@ Description[en]=Specifies wether to run the default browser check on startup (de
 Type=str
 Categories=system-desktop
 
-[firefox/prefs/printing]
-Description[de]=Druckprogramm
-Description[en]=Printing command
-Type=str
-Categories=system-desktop
-
 [firefox/prefs/spellchecker/dictionary]
 Description[de]=Standard Wörterbuch
 Description[en]=Default spellchecke dictionary

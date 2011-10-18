@@ -2,7 +2,6 @@ Type: file
 File: opt/firefox/defaults/pref/firefox.js
 Variables: firefox/prefs/conffile
 Variables: firefox/prefs/checkdefaultbrowser
-Variables: firefox/prefs/printing
 Variables: firefox/prefs/homepage
 Variables: firefox/prefs/spellchecker/dictionary
 

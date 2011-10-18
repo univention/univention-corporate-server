@@ -833,17 +833,6 @@ pref("geo.wifi.uri", "https://www.google.com/loc/json");
 
 // UCS extensions
 @!@
-if baseConfig.has_key('firefox/prefs/printing') and baseConfig['firefox/prefs/printing'].lower() == 'kprinter':
-	print '//pref("print.always_print_silent", true);'
-	print 'pref("print.printer_PostScript/default.print_command", "kprinter --stdin");'
-	print 'pref("print.printer_PostScript/default.print_paper_height", "297,00");'
-	print 'pref("print.printer_PostScript/default.print_paper_name", "A4");'
-	print 'pref("print.printer_PostScript/default.print_paper_width", "210,00");'
-elif not baseConfig.has_key('firefox/prefs/printing'):
-	print 'pref("print.print_command", "kprinter --stdin");'
-	print 'pref("print.postscript.print_command", "kprinter --stdin");'
-	print 'pref("print.postscript.paper_size", "A4");'
-
 if baseConfig.has_key('firefox/prefs/conffile') and baseConfig['firefox/prefs/conffile']:
 	print 'pref("general.config.filename", "%s");' % baseConfig['firefox/prefs/conffile']
 @!@
