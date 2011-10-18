@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.43-1) unstable; urgency=low
+
+  * call 98univention-samba4-dns.inst in joinscript (Bug #23786)
+  * don't call password_sync_ucs_to_s4 for Administratror
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Oct 2011 18:43:06 +0200
+
 univention-s4-connector (6.0.42-1) unstable; urgency=low
 
   * Merged AD connector changes from r27472

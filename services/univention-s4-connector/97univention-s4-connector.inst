@@ -83,7 +83,6 @@ else										## we are first system to provide this service
 
 	if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 		/usr/share/univention-heimdal/salt_krb5Keys 
-		/usr/sbin/univention-password_sync_ucs_to_s4 Administrator	## this account already exists in Samba4, set UCS password for it
 	fi
 
 	## create an admin user for synchronisation
@@ -98,6 +97,9 @@ else										## we are first system to provide this service
 fi
 
 /etc/init.d/univention-s4-connector restart
+
+## run 98univention-samba4-dns.inst to switch the dns/backend
+call_joinscript 98univention-samba4-dns.inst
 
 joinscript_save_current_version
 
