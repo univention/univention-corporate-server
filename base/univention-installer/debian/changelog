@@ -1,3 +1,9 @@
+univention-installer (7.0.108-1) unstable; urgency=low
+
+  * Set time to hardware clock in UTC (Bug #23924)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Oct 2011 18:38:48 +0200
+
 univention-installer (7.0.107-2) unstable; urgency=low
 
   * Set update/secure_apt, not updater/secure_apt (Bug #9475)
