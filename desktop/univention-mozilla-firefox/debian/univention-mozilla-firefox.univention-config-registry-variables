@@ -4,12 +4,6 @@ Description[en]=Additional configuration file
 Type=str
 Categories=system-desktop
 
-[firefox/prefs/mailto]
-Description[de]=Mailprogramm
-Description[en]=Mail program
-Type=str
-Categories=system-desktop
-
 [firefox/prefs/checkdefaultbrowser]
 Description[de]=Gibt an ob der Standard-Browser beim Start geprüft wird (default: false)
 Description[en]=Specifies wether to run the default browser check on startup (default: false) 

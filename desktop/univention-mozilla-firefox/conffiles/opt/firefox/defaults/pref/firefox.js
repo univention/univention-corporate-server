@@ -204,13 +204,13 @@ pref("browser.startup.page",                1);
 
 @!@
 if baseConfig.has_key('firefox/prefs/homepage') and baseConfig['firefox/prefs/homepage']:
-	print 'pref("browser.startup.homepage", %s);' %  baseConfig['firefox/prefs/homepage']
-	print 'pref("browser.startup.homepage_reset", %s);' %  baseConfig['firefox/prefs/homepage']
-	print 'pref("startup.homepage_welcome_url", %s);' %  baseConfig['firefox/prefs/homepage']
+	print 'pref("browser.startup.homepage", "%s");' %  baseConfig['firefox/prefs/homepage']
+	print 'pref("browser.startup.homepage_reset", "%s");' %  baseConfig['firefox/prefs/homepage']
+	print 'pref("startup.homepage_welcome_url", "%s");' %  baseConfig['firefox/prefs/homepage']
 else:
-	print 'pref("browser.startup.homepage", http://de.start2.mozilla.com/firefox?client=firefox-a&rls=org.mozilla:de:official);'
-	print 'pref("browser.startup.homepage_reset", http://de.start2.mozilla.com/firefox?client=firefox-a&rls=org.mozilla:de:official);'
-	print 'pref("startup.homepage_welcome_url", http://de.start2.mozilla.com/firefox?client=firefox-a&rls=org.mozilla:de:official);'
+	print 'pref("browser.startup.homepage", "http://de.start2.mozilla.com/firefox?client=firefox-a&rls=org.mozilla:de:official");'
+	print 'pref("browser.startup.homepage_reset", "http://de.start2.mozilla.com/firefox?client=firefox-a&rls=org.mozilla:de:official");'
+	print 'pref("startup.homepage_welcome_url", "http://de.start2.mozilla.com/firefox?client=firefox-a&rls=org.mozilla:de:official");'
 @!@
 
 pref("browser.cache.disk.capacity",         50000);
@@ -843,9 +843,6 @@ elif not baseConfig.has_key('firefox/prefs/printing'):
 	print 'pref("print.print_command", "kprinter --stdin");'
 	print 'pref("print.postscript.print_command", "kprinter --stdin");'
 	print 'pref("print.postscript.paper_size", "A4");'
-
-if baseConfig.has_key('firefox/prefs/mailto') and baseConfig['firefox/prefs/mailto']:
-	print 'pref("network.protocol-handler.app.mailto", "%s");' % baseConfig['firefox/prefs/mailto']
 
 if baseConfig.has_key('firefox/prefs/conffile') and baseConfig['firefox/prefs/conffile']:
 	print 'pref("general.config.filename", "%s");' % baseConfig['firefox/prefs/conffile']

@@ -32,7 +32,6 @@
 
 #DEBHELPER#
 
-univention-config-registry set firefox/prefs/mailto?kmail
 univention-config-registry set firefox/prefs/checkdefaultbrowser?false
 
 eval "$(univention-config-registry shell)"
