@@ -27,3 +27,9 @@ Description[de]=Legt den Algorithmus fest nach dem Passwörter im LDAP-Verzeichn
 Description[en]=Selects the algorithm to use for saving passwords in the LDAP directory. Possible values are: "MD5": Less secure than the SHA methods, not recommended; "SHA-256": more secure than MD5; "SHA-512": more secure than MD5, recommended. (default if not or wrongly set: "SHA-512", capitalisation is ignored)
 Type=str
 Categories=system-password
+
+[directory/manager/child/cn/ou]
+Description[de]=Definiert ob es gestattet ist einen container/ou als untergeordnetes Objekt von container/cn zu erstellen.
+Description[en]=Defines whether it is allowed to create a container/ou as child object of a container/cn.
+Type=str
+Categories=management-udm

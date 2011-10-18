@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-17 15:08+0200\n"
+"POT-Creation-Date: 2011-10-18 20:51+0200\n"
 "PO-Revision-Date: 2004-04-02 16:24+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,75 +38,75 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.3\n"
 
-#: cn.py:46
+#: cn.py:47
 msgid "Container: Container"
 msgstr "Container: Container"
 
-#: cn.py:52 dc.py:67 ou.py:53
+#: cn.py:53 dc.py:67 ou.py:55
 msgid "Name"
 msgstr "Name"
 
-#: cn.py:62 ou.py:63
+#: cn.py:63 ou.py:65
 msgid "Add to standard policy containers"
 msgstr "Zu Standard-Richtlinien-Container hinzufügen"
 
-#: cn.py:72 ou.py:73
+#: cn.py:73 ou.py:75
 msgid "Add to standard DHCP containers"
 msgstr "Zu Standard-DHCP-Container hinzufügen"
 
-#: cn.py:82 ou.py:83
+#: cn.py:83 ou.py:85
 msgid "Add to standard DNS containers"
 msgstr "Zu Standard-DNS-Container hinzufügen"
 
-#: cn.py:92 ou.py:93
+#: cn.py:93 ou.py:95
 msgid "Add to standard user containers"
 msgstr "Zu Standard-Benutzer-Container hinzufügen"
 
-#: cn.py:102 ou.py:103
+#: cn.py:103 ou.py:105
 msgid "Add to standard group containers"
 msgstr "Zu Standard-Gruppen-Container hinzufügen"
 
-#: cn.py:112 ou.py:113
+#: cn.py:113 ou.py:115
 msgid "Add to standard computer containers"
 msgstr "Zu Standard-Rechner-Containern hinzufügen"
 
-#: cn.py:122 ou.py:123
+#: cn.py:123 ou.py:125
 msgid "Add to standard network containers"
 msgstr "Zu Standard-Netzwerk-Containern hinzufügen"
 
-#: cn.py:132 ou.py:133
+#: cn.py:133 ou.py:135
 msgid "Add to standard share containers"
 msgstr "Zu Standard-Freigaben-Container hinzufügen"
 
-#: cn.py:142 ou.py:143
+#: cn.py:143 ou.py:145
 msgid "Add to standard printer containers"
 msgstr "Zu Standard-Drucker-Container hinzufügen"
 
-#: cn.py:152 ou.py:153
+#: cn.py:153 ou.py:155
 msgid "Add to standard mail containers"
 msgstr "Zu Standard-Mail-Container hinzufügen"
 
-#: cn.py:162 ou.py:163
+#: cn.py:163 ou.py:165
 msgid "Add to standard license containers"
 msgstr "Zu Standard-Lizenz-Containern hinzufügen"
 
-#: cn.py:172 ou.py:173
+#: cn.py:173 ou.py:175
 msgid "Description"
 msgstr "Beschreibung"
 
-#: cn.py:184 cn.py:185 dc.py:173 dc.py:174 ou.py:185 ou.py:186
+#: cn.py:185 cn.py:186 dc.py:173 dc.py:174 ou.py:187 ou.py:188
 msgid "General"
 msgstr "Allgemein"
 
-#: cn.py:184 dc.py:173 ou.py:185
+#: cn.py:185 dc.py:173 ou.py:187
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: cn.py:189 ou.py:190
+#: cn.py:190 ou.py:192
 msgid "Container settings"
 msgstr "Container-Einstellungen"
 
-#: cn.py:189 ou.py:190
+#: cn.py:190 ou.py:192
 msgid "Default position when adding objects"
 msgstr "Vorgegebene Position beim Hinzufügen von Objekten"
 
@@ -190,9 +190,16 @@ msgstr "Mail"
 msgid "Mail Settings"
 msgstr "Mail-Einstellungen"
 
-#: ou.py:47
+#: ou.py:49
 msgid "Container: Organisational Unit"
 msgstr "Container: Organisationseinheit"
+
+#: ou.py:253
+msgid ""
+"It is not allowed to create a container/ou as child object of a container/cn."
+msgstr ""
+"Es ist nicht gestattet einen container/ou als untergeordnetes Objekt von "
+"einem container/cn zu erstellen."
 
 #~ msgid "FIXME"
 #~ msgstr "FIXME"

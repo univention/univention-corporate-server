@@ -247,3 +247,6 @@ class dnsAliasRecordExists(base):
 
 class circularGroupDependency(base):
 	message=_('Circular group dependency detected: ')
+
+class invalidChild(base):
+	pass

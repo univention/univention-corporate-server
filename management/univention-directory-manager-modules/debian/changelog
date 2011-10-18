@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.133-1) unstable; urgency=low
+
+  * Avoid the creation of ou under cn like in S4 and AD. It can be
+    configured via directory/manager/child/cn/ou (Bug #23473)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Oct 2011 21:17:20 +0200
+
 univention-directory-manager-modules (7.0.132-1) unstable; urgency=low
 
   * Added S4 accounts to the license ignore list (Bug #23643)
