@@ -1,3 +1,9 @@
+univention-updater (7.0.51-1) unstable; urgency=low
+
+  * postup.sh: Do SRV record modification on DC master only (Bug #24088)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Oct 2011 11:31:52 +0200
+
 univention-updater (7.0.50-1) unstable; urgency=low
 
   * postup.sh: Increase priority for some system SRV records from 0 to
