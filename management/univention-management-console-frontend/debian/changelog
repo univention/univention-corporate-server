@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.102-2) unstable; urgency=low
+
+  * version bump (Bug #23797)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 18 Oct 2011 22:02:44 +0200
+
 univention-management-console-frontend (1.0.102-1) unstable; urgency=low
 
   * added test cases for form widgets with dependencies tests/depends.html
