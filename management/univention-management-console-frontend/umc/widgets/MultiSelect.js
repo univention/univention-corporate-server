@@ -147,8 +147,9 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 	onValuesLoaded: function(values) {
 		this.inherited(arguments);
 
-		// stop standby animation
+		// stop standby animation and re-render
 		this.standby(false);
+		this.render();
 	},
 
 	onChange: function(newValues) {

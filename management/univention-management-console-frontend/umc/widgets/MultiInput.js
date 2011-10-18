@@ -53,18 +53,20 @@ dojo.declare("umc.widgets.MultiInput", [
 	_createHandler: function(ifunc) {
 		// This handler will be called by all subwidgets of the MultiInput widget.
 		// When the first request comes in, we will execute the function to compute
-		// the dynamic values. We cound the requests in order to know when all
-		// subwidgets will have sent their request.
-		var _nRequests = Infinity;
+		// the dynamic values. Request within a small time interval will get the
+		// same result in order to have a caching mechanism for multiple queries.
 		var _valueOrDeferred = null;
+		var _lastCall = 0;
 
 		return function(iname, options) {
-			_nRequests++;
-			// in case all subwidgets have sent their requests, reset the counter
-			if (_nRequests > this._widgets.length) {
-				// upon first call, execute the function for the dynamic values
+			// current timestamp
+			var currentTime = (new Date()).getTime();
+			var elapsedTime = Math.abs(currentTime - _lastCall);
+			_lastCall = currentTime;
+			
+			// if the elapsed time is too big, execute the function
+			if (elapsedTime > 100) {
 				_valueOrDeferred = ifunc(options);
-				_nRequests = 1;
 			}
 
 			// return the value

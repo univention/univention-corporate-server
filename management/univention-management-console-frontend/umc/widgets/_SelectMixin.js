@@ -92,6 +92,17 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		this._saveInitialValue();
 	},
 
+	postCreate: function() {
+		this.inherited(arguments);
+
+		this.connect(this, 'onChange', function(newVal) {
+			if (this.focused) {
+				// the user has entered a value, use this value as initial value
+				this._saveInitialValue();
+			}
+		});
+	},
+
 	startup: function() {
 		this.inherited(arguments);
 
@@ -169,11 +180,15 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 	_setCustomValue: function() {
 		if (null === this._initialValue || undefined === this._initialValue) {
-			this._initialValue = this._firstValueInList;
-			//this._isAutoValue = true;
+			// no initial value is given, use the first value in the list
+			this.set('value', this._firstValueInList);
+			this._resetValue = this._firstValueInList;
 		}
-		this.set('value', this._initialValue);
-		this._resetValue = this._initialValue;
+		else {
+			// otherwise use the initial value
+			this.set('value', this._initialValue);
+			this._resetValue = this._initialValue;
+		}
 	},
 
 	_clearValues: function() {
@@ -222,12 +237,16 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 				}
 				// array of dicts
 				else if (dojo.isObject(iitem)) {
-					umc.tools.assert('id' in iitem && 'label' in iitem, "umc.widgets._SelectMixin: One of the entries specified does not have the properties 'id' and 'label': " + dojo.toJson(iitem));
-					items.push(iitem);
+					if (!('id' in iitem && 'label' in iitem)) {
+						console.log("WARNING: umc.widgets._SelectMixin: One of the entries specified does not have the properties 'id' and 'label', ignoring item: " + dojo.toJson(iitem));
+					}
+					else {
+						items.push(iitem);
+					}
 				}
 				// unknown format
 				else {
-					umc.tools.assert(false, "umc.widgets._SelectMixin: Given items are in incorrect format: " + dojo.toJson(_items));
+					console.log("WARNING: umc.widgets._SelectMixin: Given items are in incorrect format, ignoring item: " + dojo.toJson(_items));
 				}
 			});
 		}
@@ -256,11 +275,15 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 			}
 
 			// add item to store
-			umc.tools.assert(!(iitem.id in this._ids), "umc.widgets._SelectMixin: Entry already previously defined: " + dojo.toJson(iitem));
-			this.store.newItem(iitem);
+			if (iitem.id in this._ids) {
+				console.log("WARNING: umc.widgets._SelectMixin: Entry already previously defined, ignoring: " + dojo.toJson(iitem));
+			}
+			else {
+				this.store.newItem(iitem);
 
-			// cache the values in a dict
-			this._ids[iitem.id] = iitem.label;
+				// cache the values in a dict
+				this._ids[iitem.id] = iitem.label;
+			}
 		}, this);
 
 		// save the store in order for the changes to take effect
@@ -293,16 +316,20 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 				}
 
 				// add item to store
-				umc.tools.assert(!(iitem.id in this._ids), "umc.widgets._SelectMixin: Entry already previously defined: " + dojo.toJson(iitem));
-				this.store.newItem(iitem);
+				if (iitem.id in this._ids) {
+					console.log("WARNING: umc.widgets._SelectMixin: Entry already previously defined, ignoring: " + dojo.toJson(iitem));
+				}
+				else {
+					this.store.newItem(iitem);
 
-				// cache the values in a dict
-				this._ids[iitem.id] = iitem.label;
+					// cache the values in a dict
+					this._ids[iitem.id] = iitem.label;
 
-				// set pre-selected item
-				if (iitem.preselected) {
-                    this._initialValue = iitem.id;
-                }
+					// set pre-selected item
+					if (iitem.preselected) {
+						this._initialValue = iitem.id;
+					}
+				}
 			}
 		}, this);
 
@@ -313,8 +340,6 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 	_loadValues: function(/*Object?*/ _dependValues) {
 		this._valuesLoaded = true;
-		this._clearValues();
-		this._setStaticValues();
 
 		// unify `depends` property to be an array
 		var dependList = dojo.isArray(this.depends) ? this.depends :
@@ -346,7 +371,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		// get the dynamic values, block concurrent events for value loading
 		var func = umc.tools.stringOrFunction(this.dynamicValues, this.umcpCommand);
 		var deferredOrValues = this._deferredOrValues ? null : func(params);
-		if (!deferredOrValues) {
+		if (!deferredOrValues && this.dynamicValues) {
 			// another request is pending
 			return;
 		}
@@ -359,7 +384,9 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 			this.onLoadDynamicValues();
 			dojo.when(deferredOrValues, dojo.hitch(this, function(res) {
 				// callback handler
-				// update dynamic values
+				// update dynamic and static values
+				this._clearValues();
+				this._setStaticValues();
 				this._setDynamicValues(res);
 				this.onDynamicValuesLoaded(res);
 
@@ -369,6 +396,10 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 				// unblock value loading
 				this._deferredOrValues = null;
 			}), dojo.hitch(this, function() {
+				// set only the static values
+				this._clearValues();
+				this._setStaticValues();
+
 				// error handler
 				this.onDynamicValuesLoaded([]);
 				this.onValuesLoaded(this.getAllItems());
@@ -378,6 +409,10 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 			}));
 		}
 		else {
+			// set only the static values
+			this._clearValues();
+			this._setStaticValues();
+
 			// values have been loaded
 			this.onValuesLoaded(this.getAllItems());
 
