@@ -8,7 +8,7 @@ Build-Depends: debhelper, univention-config-dev, ucslint
 
 Package: univention-firewall
 Architecture: all
-Depends: univention-config-registry, python2.6, iptables
+Depends: univention-config-registry, iptables
 Description: UCS - firewall integration
  This package contains scripts to combine iptables with
  univention-config-registry.

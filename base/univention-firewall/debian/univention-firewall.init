@@ -1,0 +1,74 @@
+#!/bin/sh
+#
+# Copyright 2004-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+. /lib/lsb/init-functions
+
+case "$1" in
+    start)
+
+        security_disabled="$(univention-config-registry get security/packetfilter/disabled)"
+
+        if [ -n "$security_disabled" -a "$security_disabled" = "true" ]; then
+            echo "Univention iptables configuration has been disabled."
+        else
+            log_daemon_msg "Starting Univention iptables configuration:"
+            if [ -x /etc/security/packetfilter/packetfilter.univention ] ; then
+                /etc/security/packetfilter/packetfilter.univention
+            fi
+            if [ -x /etc/security/packetfilter/packetfilter.local ] ; then
+                /etc/security/packetfilter/packetfilter.local
+            fi
+            log_end_msg 0
+        fi
+        ;;
+    stop)
+        log_daemon_msg "Stopping Univention iptables configuration:"
+
+        iptables -P INPUT ACCEPT
+        iptables -P OUTPUT ACCEPT
+        iptables -F
+        iptables -F -t nat
+        iptables -F -t mangle
+
+        ip6tables -P INPUT ACCEPT
+        ip6tables -P OUTPUT ACCEPT
+        ip6tables -F
+        ip6tables -F -t mangle
+
+        log_end_msg 0
+        ;;
+    restart)
+        $0 stop
+        $0 start
+        ;;
+    *)
+        log_action_msg "Usage: /etc/init.d/univention-iptables {start|stop|restart}"
+        exit 1
+        ;;
+esac

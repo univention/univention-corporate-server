@@ -1,9 +1,9 @@
 #!/bin/sh
-
-@%@UCRWARNING=# @%@
-
 #
-# Copyright 2007-2011 Univention GmbH
+# Univention Firewall
+#  postinst script for the debian package
+#
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,10 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-@!@
-if baseConfig.has_key('security/services/dns') and baseConfig['security/services/dns'] == 'disabled':
-	print '/sbin/iptables -A INPUT  -p tcp --dport 53 -j REJECT'
-	print '/sbin/iptables -A INPUT  -p udp --dport 53 -j REJECT'
-	print '/sbin/iptables -A INPUT  -p tcp --dport 7777 -j REJECT'
-	print '/sbin/iptables -A INPUT  -p udp --dport 7777 -j REJECT'
-@!@
+#DEBHELPER#
+
+# init.d script has been renamed with UCS 3.0-0
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3; then
+	# remove rc.d-symlinks to old univention-iptables
+	update-rc.d -f univention-iptables remove
+	# rename old init.d script
+	if [ ! -e /etc/init.d/univention-iptables.disabled ] ; then
+		mv /etc/init.d/univention-iptables /etc/init.d/univention-iptables.disabled
+	fi
+fi
+
+exit 0

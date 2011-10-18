@@ -1,3 +1,11 @@
+univention-firewall (4.0.3-1) unstable; urgency=low
+
+  * renamed init.d script to univention-firewall (Bug #23577)
+  * added user specific script packetfilter.local.sh
+  * new UCR variable concept for univention-firewall
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Oct 2011 12:15:08 +0200
+
 univention-firewall (4.0.2-3) unstable; urgency=low
 
   * register ucr variables (Bug #23231)

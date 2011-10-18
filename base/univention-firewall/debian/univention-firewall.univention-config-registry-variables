@@ -1,162 +1,36 @@
-[security/packetfilter/*]
-Description[de]=Variablen, um eigene Firewall Filterregeln zu definieren (z.B. security/packetfilter/tcp/deny=2000, security/packetfilter/udp/accept=500:600).
-Description[en]=Variables to setup  firewall rules (e.g. security/packetfilter/tcp/deny=2000, security/packetfilter/udp/accept=500:600).
+[security/packetfilter/package/.*]
+Description[de]=Iptables-Filterregeln, die von den installierten Softwarepaketen automatisch definiert werden und nicht modfiziert werden sollten.
+Description[en]=iptables filter rules defined automatically by installed software packages. These rules should not be modified manually.
+Type=str
+Categories=service-security
+
+[security/packetfilter/tcp/.*]
+Description[de]=Variablen, um eigene iptables-Filterregeln zu definieren (z.B. security/packetfilter/tcp/2000/all=REJECT, security/packetfilter/udp/500/all=ACCEPT).
+Description[en]=Variables to setup custom firewall rules (e.g. security/packetfilter/tcp/2000/all=REJECT, security/packetfilter/udp/500/all=ACCEPT).
+Type=str
+Categories=service-security
+
+[security/packetfilter/udp/.*]
+Description[de]=Variablen, um eigene iptables-Filterregeln zu definieren (z.B. security/packetfilter/tcp/2000/all=REJECT, security/packetfilter/udp/500/all=ACCEPT).
+Description[en]=Variables to setup firewall rules (e.g. security/packetfilter/tcp/2000/all=REJECT, security/packetfilter/udp/500/all=ACCEPT).
 Type=str
 Categories=service-security
 
 [security/packetfilter/disabled]
-Description[de]=Falls diese Variable auf true gesetzt ist, wird die Univention Firewall deaktiviert.
-Description[en]=If this variable is set to true the Univention Firewall is deactivated.
+Description[de]=Falls diese Variable auf "true" gesetzt ist, wird die Univention Firewall deaktiviert.
+Description[en]=If this variable is set to "true" the Univention Firewall is deactivated.
 Type=str
 Categories=service-security
 
-[security/services/smtp]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst smtp per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service smtp is blocked via Univention Firewall.
+[security/packetfilter/use_packages]
+Description[de]=Falls diese Variable auf "false" gesetzt ist, werden die paketspezifischen Filterregel (security/packetfilter/package/...) nicht gesetzt.
+Description[en]=If this variable is set to "false", all package-related filter rules (security/packetfilter/package/...) will not be set.
 Type=str
 Categories=service-security
 
-[security/services/pop3]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst pop3 per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service pop3 is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/imap]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst imap per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service imap is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/sieve]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst sieve per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service sieve is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/kerberos]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst kerberos per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service kerberos is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/time]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst time per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service time is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/krsh]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst krsh per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service krsh is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/nfs]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst nfs per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service nfs is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/umc]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst umc per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service umc is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/nagios]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst nagios per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service nagios is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/ipp]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst ipp per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service ipp is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/notifier]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst notifier per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service notifier is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/dhcp]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst dhcp per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service dhcp is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/dns]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst dns per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service dns is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/ftp]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst ftp per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service ftp is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/http]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst http per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service http is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/x11]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst x11 per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service x11 is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/https]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst https per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service https is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/ldap]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst ldap per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service ldap is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/postgres]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst postgres per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service postgres is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/samba]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst samba per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service samba is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/ssh]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst ssh per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service ssh is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/telnet]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst telnet per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service telnet is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/tftp]
-Description[de]=Falls diese Variable auf disabled gesetzt ist, wird der Dienst tftp per Univention Firewall gefiltert.
-Description[en]=If this variable is set to disabled the service tftp is blocked via Univention Firewall.
-Type=str
-Categories=service-security
-
-[security/services/localhost]
-Description[de]=Falls diese Variable nicht auf disabled gesetzt ist, wird der Netzwerkverkehr für das Loopback-Gerät immer zugelassen.
-Description[en]=If this variable is not set to disabled, network traffic for the loopback device is always allowed.
+[security/packetfilter/defaultpolicy]
+Description[de]=Standard-Richtlinie für iptables-Filterregeln (mögliche Werte: DROP, REJECT, ACCEPT)
+Description[en]=Default policy for iptables filter rules (possible values: DROP, REJECT, ACCEPT)
 Type=str
 Categories=service-security
 

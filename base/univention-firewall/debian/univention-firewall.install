@@ -1,2 +1,1 @@
-00init etc/security/netfilter.d
-
+etc/security/packetfilter/packetfilter.local etc/security/packetfilter/
