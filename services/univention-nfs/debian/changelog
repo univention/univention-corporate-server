@@ -1,3 +1,9 @@
+univention-nfs (4.0.5-1) unstable; urgency=low
+
+  * added firewall settings (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Oct 2011 15:17:56 +0200
+
 univention-nfs (4.0.4-1) unstable; urgency=low
 
   * removed obsolete univention-nfs-server-ha (Bug #23273) 

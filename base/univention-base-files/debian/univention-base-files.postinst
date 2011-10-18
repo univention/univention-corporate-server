@@ -63,6 +63,7 @@ univention-config-registry set ldap/base?dc=univention,dc=unconfigured \
 	logrotate/notifempty?yes \
 	nameserver/option/timeout?2 \
 	update/secure_apt?no \
+	security/packetfilter/defaultpolicy=REJECT \
 
 # services
 univention-config-registry set cron/autostart?yes \
@@ -179,5 +180,12 @@ univention-config-registry set kernel/do_initrd?yes \
 
 # set UCR value for package python-univention (Bug: #15971)
 univention-config-registry set ldap/binaryattributes?"krb5Key,userCertificate;binary"
+
+# configure firewall
+ucr set security/packetfilter/package/univention-base-files/tcp/22/all=ACCEPT \
+	security/packetfilter/package/univention-base-files/tcp/22/all/en="SSH" \
+	security/packetfilter/package/univention-base-files/tcp/37/all=ACCEPT \
+	security/packetfilter/package/univention-base-files/tcp/37/all/en="time"
+invoke-rc.d univention-firewall restart
 
 exit 0

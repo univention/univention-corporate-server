@@ -46,5 +46,10 @@ remove_ucr_template /etc/default/atftpd.conf
 
 #DEBHELPER#
 
+# configure firewall
+ucr set security/packetfilter/package/univention-tftp/udp/69/all=ACCEPT \
+		security/packetfilter/package/univention-tftp/udp/69/all/en="TFTP"
+invoke-rc.d univention-firewall restart
+
 exit 0
 

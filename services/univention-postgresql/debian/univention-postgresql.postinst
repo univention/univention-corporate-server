@@ -1,9 +1,9 @@
-#! /bin/sh
+#!/bin/sh
 #
-# Univention Log Collector
-#  postinst script
+# Univention Postgresql
+#  postinst
 #
-# Copyright 2007-2011 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,31 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-set -e
+# configure firewall
+ucr set security/packetfilter/package/univention-postgresql/tcp/5432/all="ACCEPT" \
+		security/packetfilter/package/univention-postgresql/tcp/5432/all/en="postgresql"
+invoke-rc.d univention-firewall restart
 
 #DEBHELPER#
-
-case "$1" in
-    configure)
-
-		univention-config-registry set logcollector/logrotation/maxsize?10M \
-									logcollector/logrotation/keepcount?99 \
-									logcollector/targetdir?/var/log/logcollector
-
-		# configure firewall
-		ucr set security/packetfilter/package/univention-log-collector-server/tcp/7450/all="ACCEPT" \
-			security/packetfilter/package/univention-log-collector-server/tcp/7450/all/en="univention-log-collector"
-		invoke-rc.d univention-firewall restart
-
-		;;
-
-    abort-upgrade|abort-remove|abort-deconfigure)
-		;;
-
-    *)
-        echo "postinst called with unknown argument \`$1'" >&2
-        exit 1
-		;;
-esac
 
 exit 0

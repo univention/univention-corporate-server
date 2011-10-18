@@ -41,6 +41,16 @@ univention-config-registry set kerberos/autostart?yes
 call_joinscript 11univention-heimdal-init.inst
 call_joinscript 15univention-heimdal-kdc.inst
 
+# configure firewall
+ucr set security/packetfilter/package/univention-heimdal-kdc/tcp/88/all="ACCEPT" \
+		security/packetfilter/package/univention-heimdal-kdc/tcp/88/all/en="kerberos" \
+		security/packetfilter/package/univention-heimdal-kdc/udp/88/all="ACCEPT" \
+		security/packetfilter/package/univention-heimdal-kdc/udp/88/all/en="kerberos" \
+		security/packetfilter/package/univention-heimdal-kdc/tcp/749/all="ACCEPT" \
+		security/packetfilter/package/univention-heimdal-kdc/tcp/749/all/en="kadmin"
+invoke-rc.d univention-firewall restart
+
+
 # fix for http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=470404
 # fix for https://forge.univention.org/bugzilla/show_bug.cgi?id=16462
 for fn in kdc.conf kadmind.acl ; do

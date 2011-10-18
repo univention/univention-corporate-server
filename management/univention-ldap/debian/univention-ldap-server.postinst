@@ -73,6 +73,17 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-config-registry set ldap/master/port?"7389"
 fi
 
+# configure firewall
+ucr set security/packetfilter/package/univention-ldap-server/tcp/389/all="ACCEPT" \
+		security/packetfilter/package/univention-ldap-server/tcp/389/all/en="LDAP" \
+		security/packetfilter/package/univention-ldap-server/tcp/636/all="ACCEPT" \
+		security/packetfilter/package/univention-ldap-server/tcp/636/all/en="LDAPS" \
+		security/packetfilter/package/univention-ldap-server/tcp/7389/all="ACCEPT" \
+		security/packetfilter/package/univention-ldap-server/tcp/7389/all/en="LDAP" \
+		security/packetfilter/package/univention-ldap-server/tcp/7636/all="ACCEPT" \
+		security/packetfilter/package/univention-ldap-server/tcp/7636/all/en="LDAPS"
+invoke-rc.d univention-firewall restart
+
 univention-config-registry set	ldap/debug/level?0 \
 								slapd/port?"7389,389" \
 								slapd/port/ldaps?"7636,636" \

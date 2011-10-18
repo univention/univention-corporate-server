@@ -135,4 +135,17 @@ if [ -x /etc/init.d/univention-directory-listener ]; then
 	/etc/init.d/univention-directory-listener crestart
 fi
 
+# configure firewall
+ucr set security/packetfilter/package/univention-mail-cyrus/tcp/110/all="ACCEPT" \
+		security/packetfilter/package/univention-mail-cyrus/tcp/110/all/en="POP3" \
+		security/packetfilter/package/univention-mail-cyrus/tcp/143/all="ACCEPT" \
+		security/packetfilter/package/univention-mail-cyrus/tcp/143/all/en="IMAP" \
+		security/packetfilter/package/univention-mail-cyrus/tcp/993/all="ACCEPT" \
+		security/packetfilter/package/univention-mail-cyrus/tcp/993/all/en="IMAPS" \
+		security/packetfilter/package/univention-mail-cyrus/tcp/995/all="ACCEPT" \
+		security/packetfilter/package/univention-mail-cyrus/tcp/995/all/en="POP3S" \
+		security/packetfilter/package/univention-mail-cyrus/tcp/2000/all="ACCEPT" \
+		security/packetfilter/package/univention-mail-cyrus/tcp/2000/all/en="Sieve"
+invoke-rc.d univention-firewall restart
+
 exit 0

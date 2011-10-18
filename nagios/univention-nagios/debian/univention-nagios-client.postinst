@@ -65,6 +65,11 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.13; 
 	done
 fi
 
+# configure firewall
+ucr set security/packetfilter/package/univention-nagios-client/tcp/5666/all="ACCEPT" \
+		security/packetfilter/package/univention-nagios-client/tcp/5666/all="Nagios NRPE"
+invoke-rc.d univention-firewall restart
+
 if [ "$1" = "configure" ]; then
 	if test -f /etc/init.d/univention-directory-listener
 		then

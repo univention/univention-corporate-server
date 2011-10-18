@@ -1,3 +1,9 @@
+univention-nagios (5.0.13-1) unstable; urgency=low
+
+  * added firewall settings (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Oct 2011 15:18:28 +0200
+
 univention-nagios (5.0.12-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3

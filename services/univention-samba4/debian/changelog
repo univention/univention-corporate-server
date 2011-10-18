@@ -1,3 +1,9 @@
+univention-samba4 (1.0.67-1) unstable; urgency=low
+
+  * added firewall settings (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Oct 2011 15:14:36 +0200
+
 univention-samba4 (1.0.66-2) unstable; urgency=low
 
   * svn add samba4-idmap (Bug #23917)

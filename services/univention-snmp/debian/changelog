@@ -1,3 +1,9 @@
+univention-snmp (4.0.1-1) unstable; urgency=low
+
+  * added firewall settings (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Oct 2011 15:49:15 +0200
+
 univention-snmp (4.0.0-1) unstable; urgency=low
 
   * Update for UCS 3.0 (Bug #22576)

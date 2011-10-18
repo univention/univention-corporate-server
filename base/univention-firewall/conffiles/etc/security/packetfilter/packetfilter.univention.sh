@@ -111,19 +111,22 @@ def print_descriptions(var):
 
 filterlist = {}
 
+import re
+rePort = re.compile('^\d+(:\d+)?$')
+
 # get package settings
 if configRegistry.is_true('security/packetfilter/use_packages', True):
 	for key in [ x for x in configRegistry.keys() if x.startswith('security/packetfilter/package/') ]:
 		items = key.split('/')
 		# check if UCR variable is valid: security/packetfilter/package/univention-samba/tcp/139/all=ACCEPT
-		if items[-3] in ['tcp', 'udp'] and items[-2].isdigit():
+		if items[-3] in ['tcp', 'udp'] and rePort.search(items[-2]) is not None:
 			filterlist[ '/'.join(items[-3:]) ] = key
 
 # get user settings
 for key in [ x for x in configRegistry.keys() if x.startswith('security/packetfilter/') and not x.startswith('security/packetfilter/package/') ]:
 	items = key.split('/')
 	# check if UCR variable is valid: security/packetfilter/package/univention-samba/tcp/139/all=ACCEPT
-	if items[-3] in ['tcp', 'udp'] and items[-2].isdigit():
+	if items[-3] in ['tcp', 'udp'] and rePort.search(items[-2]) is not None:
 		filterlist[ '/'.join(items[-3:]) ] = key
 
 # print values

@@ -32,6 +32,12 @@
 
 #DEBHELPER#
 
+# configure firewall
+ucr set security/packetfilter/package/univention-heimdal-common/tcp/544/all=ACCEPT \
+        security/packetfilter/package/univention-heimdal-common/tcp/544/all/en="krsh"
+invoke-rc.d univention-firewall restart
+
+
 eval "$(univention-config-registry shell domainname)"
 
 realm="$(echo $domainname | tr "[:lower:]" "[:upper:]")"

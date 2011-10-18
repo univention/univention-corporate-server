@@ -1,3 +1,9 @@
+univention-dhcp (6.0.7-1) unstable; urgency=low
+
+  * added firewall settings (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Oct 2011 15:11:52 +0200
+
 univention-dhcp (6.0.6-2) unstable; urgency=low
 
   * fixed univention-config-registry (Bug #18002) 

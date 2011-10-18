@@ -99,4 +99,11 @@ if [ "$1" = "configure" ]; then
 	fi
 fi
 
+# configure firewall
+ucr set security/packetfilter/package/univention-dhcp/udp/67/all=ACCEPT \
+		security/packetfilter/package/univention-dhcp/udp/67/all/en="DHCP" \
+        security/packetfilter/package/univention-dhcp/udp/68/all=ACCEPT \
+		security/packetfilter/package/univention-dhcp/udp/68/all/en="DHCP"
+invoke-rc.d univention-firewall restart || true
+
 exit 0

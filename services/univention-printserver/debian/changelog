@@ -1,3 +1,9 @@
+univention-printserver (5.0.10-1) unstable; urgency=low
+
+  * added firewall settings (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Oct 2011 15:21:41 +0200
+
 univention-printserver (5.0.9-1) unstable; urgency=low
 
   * listener cups-printers.py: delete printer in pykota if

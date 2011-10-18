@@ -1,3 +1,9 @@
+univention-tftp (5.0.1-1) unstable; urgency=low
+
+  * added firewall settings (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Oct 2011 15:30:23 +0200
+
 univention-tftp (5.0.0-2) unstable; urgency=low
 
   * Bump version (Bug #22576) 

@@ -48,6 +48,13 @@ univention-config-registry set apache2/documentroot?"/var/www/"
 univention-config-registry set apache2/maxclients?150
 univention-config-registry set mail/alias/webmaster?root
 
+# configure firewall
+ucr set security/packetfilter/package/univention-apache/tcp/80/all=ACCEPT \
+        security/packetfilter/package/univention-apache/tcp/80/all/en="HTTP" \
+        security/packetfilter/package/univention-apache/tcp/443/all=ACCEPT \
+		security/packetfilter/package/univention-apache/tcp/443/all/en="HTTPS"
+invoke-rc.d univention-firewall restart
+
 eval "$(univention-config-registry shell)"
 
 if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then

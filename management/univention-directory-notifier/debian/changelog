@@ -1,3 +1,9 @@
+univention-directory-notifier (6.0.6-1) unstable; urgency=low
+
+  * added firewall settings (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Oct 2011 15:16:50 +0200
+
 univention-directory-notifier (6.0.5-2) unstable; urgency=low
 
   * added logrotate template (Bug #18002) 

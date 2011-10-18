@@ -34,6 +34,17 @@
 
 #DEBHELPER#
 
+# configure firewall
+ucr set security/packetfilter/package/univention-bind/udp/53/all=ACCEPT \
+        security/packetfilter/package/univention-bind/tcp/53/all=ACCEPT \
+		security/packetfilter/package/univention-bind/udp/7777/all=ACCEPT \
+		security/packetfilter/package/univention-bind/tcp/7777/all=ACCEPT \
+		security/packetfilter/package/univention-bind/udp/53/all/en="DNS proxy" \
+        security/packetfilter/package/univention-bind/tcp/53/all/en="DNS proxy" \
+		security/packetfilter/package/univention-bind/udp/7777/all/en="DNS server" \
+		security/packetfilter/package/univention-bind/tcp/7777/all/en="DNS server"
+invoke-rc.d univention-firewall restart
+
 chmod g+w /etc/bind
 chmod g+w /etc/bind/*
 

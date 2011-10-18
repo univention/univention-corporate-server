@@ -96,6 +96,11 @@ univention-config-registry set listener/supply/notifier?yes
 
 create_logfile /var/log/univention/notifier.log "root:adm" 640
 
+# configure firewall
+ucr set security/packetfilter/package/univention-directory-notifier/tcp/6669/all="ACCEPT" \
+		security/packetfilter/package/univention-directory-notifier/tcp/6669/all/en="Univention Directory Notifier"
+invoke-rc.d univention-firewall restart
+
 call_joinscript 02univention-directory-notifier.inst
 
 if [ -h /etc/runit/univention/univention-ldap-notifier ]; then

@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.28-1) unstable; urgency=low
+
+  * added firewall settings (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Oct 2011 15:13:39 +0200
+
 univention-mail-postfix (6.0.27-1) unstable; urgency=low
 
   * added postgrey as recipient restriction (Bug #23775)

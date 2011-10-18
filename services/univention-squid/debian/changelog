@@ -1,3 +1,9 @@
+univention-squid (5.0.3-1) unstable; urgency=low
+
+  * added firewall settings (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Oct 2011 15:32:47 +0200
+
 univention-squid (5.0.2-15) unstable; urgency=low
 
   * Fix permissions of join script (Bug #19737)

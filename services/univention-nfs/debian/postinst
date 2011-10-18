@@ -38,6 +38,25 @@ fi
 
 univention-config-registry set nfs/ports?static
 
+# configure firewall
+ucr set security/packetfilter/package/univention-nfs/tcp/111/all="ACCEPT" \
+		security/packetfilter/package/univention-nfs/tcp/111/all/en="portmap" \
+		security/packetfilter/package/univention-nfs/udp/111/all="ACCEPT" \
+		security/packetfilter/package/univention-nfs/udp/111/all/en="portmap" \
+		security/packetfilter/package/univention-nfs/tcp/2049/all="ACCEPT" \
+		security/packetfilter/package/univention-nfs/tcp/2049/all/en="NFS" \
+		security/packetfilter/package/univention-nfs/udp/2049/all="ACCEPT" \
+		security/packetfilter/package/univention-nfs/udp/2049/all/en="NFS" \
+		security/packetfilter/package/univention-nfs/tcp/4660/all="ACCEPT" \
+		security/packetfilter/package/univention-nfs/tcp/4660/all/en="NFS" \
+		security/packetfilter/package/univention-nfs/udp/4660/all="ACCEPT" \
+		security/packetfilter/package/univention-nfs/udp/4660/all/en="NFS" \
+		security/packetfilter/package/univention-nfs/tcp/32765:32769/all="ACCEPT" \
+		security/packetfilter/package/univention-nfs/tcp/32765:32769/all/en="NFS related RPC daemons" \
+		security/packetfilter/package/univention-nfs/udp/32765:32769/all="ACCEPT" \
+		security/packetfilter/package/univention-nfs/udp/32765:32769/all/en="NFS related RPC daemons" \
+invoke-rc.d univention-firewall restart
+
 
 if [ "$1" = "configure" ]; then
 	if test -f /etc/init.d/univention-directory-listener

@@ -55,4 +55,11 @@ if [ -z "$postfix_autostart" ] || [ "$postfix_autostart" = "yes" ]; then
 	/etc/init.d/postfix restart
 fi
 
+# configure firewall
+ucr set security/packetfilter/package/univention-mail-postfix/tcp/25/all="ACCEPT" \
+		security/packetfilter/package/univention-mail-postfix/tcp/25/all/en="SMTP" \
+		security/packetfilter/package/univention-mail-postfix/tcp/465/all="ACCEPT" \
+		security/packetfilter/package/univention-mail-postfix/tcp/465/all/en="SSMTP"
+invoke-rc.d univention-firewall restart
+
 exit 0
