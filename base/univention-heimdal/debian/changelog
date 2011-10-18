@@ -1,3 +1,9 @@
+univention-heimdal (5.0.14-1) unstable; urgency=low
+
+  * Set priority for kerberos SRV records to 100 (Bug #24088)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Oct 2011 10:56:48 +0200
+
 univention-heimdal (5.0.13-1) unstable; urgency=low
 
   * First default_tkt_enctypes must be arcfour-hmac-md5, otherwise dns
