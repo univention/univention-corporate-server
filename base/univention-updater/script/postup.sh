@@ -121,6 +121,9 @@ for package in $PACKAGES_TO_BE_REMOVED; do
 	fi
 done
 
+echo "Increase priority for some system SRV records from 0 to 100" >>"$UPDATER_LOG" 2>&1 
+/usr/share/univention-directory-manager-tools/change_srv_priority.py >>"$UPDATER_LOG" 2>&1
+
 # remove old sysklogd startup links (Bug #23143)
 update-rc.d -f sysklogd remove 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
 
