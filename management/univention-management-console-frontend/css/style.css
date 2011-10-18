@@ -129,7 +129,7 @@ form {
 #dijit_layout_TabContainer_0 .modLaunchButton {
 	position: relative;
 	float: left;
-	height: 65px;
+	height: 55px;
 	width: 145px;
 	padding: 10px;
 	margin: 0 5px 0 0;
@@ -142,8 +142,8 @@ form {
 /* @end */
 
 .modLaunchButton div {
-	margin-top: 25px;
-	margin-left: 50px;
+	margin-top: 20px;
+	margin-left: 46	px;
 	text-align: center;
 }
 

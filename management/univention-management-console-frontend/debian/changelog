@@ -1,4 +1,4 @@
-univention-management-console-frontend (1.0.98-1) unstable; urgency=low
+univention-management-console-frontend (1.0.98-2) unstable; urgency=low
 
   * overview style: move text right next to the icon; Bug #22811
 
