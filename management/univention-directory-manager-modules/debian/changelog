@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.130-1) unstable; urgency=low
+
+  * Added script to modify the SRV priority from 0 to 100 (Bug #24088)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Oct 2011 10:50:32 +0200
+
 univention-directory-manager-modules (7.0.129-1) unstable; urgency=low
 
   * univention-dnsedit: Use txt_record to create a txt record
