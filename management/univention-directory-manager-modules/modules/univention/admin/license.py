@@ -38,11 +38,15 @@ import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.localization
 import univention.admin.license_data as licenses
+import univention.config_registry
 
 translation=univention.admin.localization.translation('univention/admin')
 _=translation.translate
 
 _license = None
+
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
 
 class License( object ):
 	( CLIENT, ACCOUNT, DESKTOP, GROUPWARE ) = range( 4 )
@@ -54,7 +58,7 @@ class License( object ):
 		self.disable_add = 0
 		self._expired = False
 		self.types= []
-		self.sysAccountNames = ( 'Administrator', 'join-backup', 'join-slave', 'spam', 'oxadmin' )
+		self.sysAccountNames = ( 'Administrator', 'join-backup', 'join-slave', 'spam', 'oxadmin', 'krbtgt', 'Guest', 'dns-%s' % configRegistry.get('ldap/master').split('.')[0], 'dns-%s' % configRegistry.get('hostname') )
 		self.sysAccountsFound = 0
 		self.licenses = {
 				License.CLIENT : None, License.ACCOUNT : None,
