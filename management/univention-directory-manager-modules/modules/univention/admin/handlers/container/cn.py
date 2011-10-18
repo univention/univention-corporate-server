@@ -36,6 +36,7 @@ import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+import string
 
 translation=univention.admin.localization.translation('univention.admin.handlers.container')
 _=translation.translate
@@ -55,7 +56,7 @@ property_descriptions={
 			multivalue=0,
 			options=[],
 			required=1,
-			may_change=0,
+			may_change=1,
 			identifies=1
 		),
 	'policyPath': univention.admin.property(
@@ -257,6 +258,11 @@ class object(univention.admin.handlers.simpleLdap):
 		if changes:
 			self.lo.modify(self.default_dn,changes)
 
+	def _ldap_pre_modify(self):
+		if self.hasChanged('name'):
+			newdn = string.replace(self.dn, 'cn=%s,' % self.oldinfo['name'], 'cn=%s,' % self.info['name'], 1)
+			self.move(newdn)
+
 	def _ldap_post_modify(self):
 		changes=[]
 
@@ -268,6 +274,7 @@ class object(univention.admin.handlers.simpleLdap):
 					changes.append((self.ldapKeys[i],'',self.dn))
 		if changes:
 			self.lo.modify(self.default_dn,changes)
+
 
 	def _ldap_post_move(self, olddn):
 		settings_module=univention.admin.modules.get('settings/directory')
