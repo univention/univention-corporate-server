@@ -33,7 +33,8 @@
 
 import sys, os, string, getopt, DNS, time, tempfile, os.path
 import apt_pkg
-import pgdb, commands
+import pgdb
+import subprocess
 import univention.baseconfig
 import univention.uldap
 
@@ -175,7 +176,7 @@ def sql_test_superuser():
 	try:
 		# gibt es lokal das passwort von pkgdbu, dann nutze dieses
 		pgdbpwfile = open('/etc/postgresql/pkgdb.secret','r')
-		pgdbpw = pgdbpwfile.readline()[:-1]
+		pgdbpw = pgdbpwfile.readline().rstrip('\n')
 		pgdbpwfile.close()
 		pkgdb_connect_string = ':pkgdb:pkgdbu:'+pgdbpw
 		if len(pkgdb_connect_string)==0:
@@ -294,17 +295,13 @@ def execute_psql_command(connect_string, cmd):
                 print("Error parsing connect string in execute_psql_command")
                 sys.exit(1)
 
-	# export pg-password (there seems to be no other way of passing it to pg)
 
-	os.environ["PGPASSWORD"] = pw
-	ret = ""
-	try:
-		foox = """psql -d "pkgdb" -c "%s" -q -h %s -U %s """%(cmd, host, user)
-		ret = commands.getstatusoutput(foox)
-	finally:
-		# always unset password in environment
-		os.environ["PGPASSWORD"] = ""
-		return ret
+	environment = os.environ.copy()
+	environment['PGPASSWORD'] = pw
+	command = ['psql', '-d', 'pkgdb', '-c', cmd, '-q', '-h', host, '-U', user, ]
+	process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=environment)
+	(stdout, stderr, ) = process.communicate()
+	return (process.returncode, stdout)
 
 # ------------------------------------------------------------------------------
 # Datenbankbenutzer hinzufügen

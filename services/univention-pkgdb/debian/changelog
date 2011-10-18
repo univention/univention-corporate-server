@@ -1,3 +1,10 @@
+univention-pkgdb (5.0.7-1) unstable; urgency=low
+
+  * fix password file reading (Bug #24092)
+  * fix subprocess call
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 18 Oct 2011 14:51:33 +0200
+
 univention-pkgdb (5.0.6-1) unstable; urgency=low
 
   * added logrotate configuration (Bug #18002) 
