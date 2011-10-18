@@ -1,3 +1,9 @@
+univention-ldap (8.0.48-1) unstable; urgency=low
+
+  * Set priority for SRV record _ldap._tcp to 100 (Bug #24088)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Oct 2011 10:55:22 +0200
+
 univention-ldap (8.0.47-1) unstable; urgency=low
 
   * Added new overlay module k5pwd (Bug #15062)
