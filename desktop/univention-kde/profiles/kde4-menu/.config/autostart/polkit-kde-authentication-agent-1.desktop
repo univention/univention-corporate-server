@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=PolicyKit Authentication Agent
+Comment=PolicyKit Authentication Agent
+Exec=/usr/lib/kde4/libexec/polkit-kde-authentication-agent-1
+Terminal=false
+Type=Application
+Categories=
+X-Desktop-File-Install-Version=0.15
+OnlyShowIn=KDE;
+# see: Bug #23864
+# Setting Hidden=true unintuitively disables autostart on KDE and
+# GNOME >= 2.19.2, but it breaks disabling of autostart in older GNOME.
+Hidden=true
+X-GNOME-Autostart-enabled=false

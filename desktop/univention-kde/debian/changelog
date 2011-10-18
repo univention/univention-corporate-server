@@ -1,3 +1,9 @@
+univention-kde (6.0.7-1) unstable; urgency=low
+
+  * added polkit-kde-authentication-agent-1.desktop (Bug #23864) 
+
+ -- Florian Best <best@univention.de>  Tue, 18 Oct 2011 18:58:19 +0200
+
 univention-kde (6.0.6-1) unstable; urgency=low
 
   * added univention-x-core to recommends (Bug #22882)
