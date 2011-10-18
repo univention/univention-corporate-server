@@ -727,6 +727,67 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			values[key] = this._dataStore.getValue(item, key);
 		}));
 		return values;
+	},
+
+	getItemIndex: function(id) {
+		// summary:
+		//		Returns the index of the given item specified by its ID.
+		//		In case the item could not be resolved, returns -1.
+		// id: String
+		
+		var item = this.getItem(id);
+		if (!item) {
+			return -1;
+		}
+		return this._grid.getItemIndex(item);
+	},
+
+	getItem: function(id) {
+		// summary:
+		//		Returns the item for a given ID.
+		// id: String
+
+		return dojo.getObject('item', false, this._grid._by_idty[id]);
+	},
+
+	setDisabledItem: function(_ids, disable) {
+		// summary:
+		//		Disables the specified items.
+		// ids: String|String[]
+		//		Item ID or list of IDs.
+		// disable: Boolean
+		//		Disable or enable the specified items.
+
+		var ids = umc.tools.stringOrArray(_ids);
+		dojo.forEach(ids, function(id) {
+			var idx = this.getItemIndex(id);
+			if (idx >= 0) {
+				this._grid.rowSelectCell.setDisabled(idx, disable);
+			}
+		}, this);
+	},
+
+	getDisabledItem: function(_ids) {
+		// summary:
+		//		Returns an array (if input is an array) of Boolean or Boolean.
+		//		If an item could not be resolved, returns null.
+		// ids: String|String[]
+		//		Item ID or list of IDs.
+
+		var ids = umc.tools.stringOrArray(_ids);
+		var result = dojo.map(ids, function(id) {
+			var idx = this.getItemIndex(id);
+			if (idx >= 0) {
+				return this._grid.rowSelectCell.disabled(idx);
+			}
+			return null;
+		}, this);
+
+		// return Boolean or array depending on the input
+		if (!dojo.isArray(_ids)) {
+			return result[0]; // Boolean
+		}
+		return result; // Boolean[]
 	}
 });
 

@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.99-1) unstable; urgency=low
+
+  * Grid: added methods: getItemIndex(), getItem(), setDisabledItem()
+    getDisabledItem() (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 18 Oct 2011 11:57:09 +0200
+
 univention-management-console-frontend (1.0.98-2) unstable; urgency=low
 
   * overview style: move text right next to the icon; Bug #22811
