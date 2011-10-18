@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.100-1) unstable; urgency=low
+
+  * Grid: added event onFilterDone (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 18 Oct 2011 16:24:26 +0200
+
 univention-management-console-frontend (1.0.99-1) unstable; urgency=low
 
   * Grid: added methods: getItemIndex(), getItem(), setDisabledItem()

@@ -450,11 +450,13 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			this.standby(false);
 			this._grid.selection.clear();
 			this._updateFooterContent();
+			this.onFilterDone(true);
 		});
 		this.connect(this._grid, "_onFetchError", function() {
 			this.standby(false);
 			this._grid.selection.clear();
 			this._updateFooterContent();
+			this.onFilterDone(false);
 		});
 
 		// when a cell gets modified, save the changes directly back to the server
@@ -788,6 +790,10 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			return result[0]; // Boolean
 		}
 		return result; // Boolean[]
+	},
+
+	onFilterDone: function(success) {
+		// event stub
 	}
 });
 
