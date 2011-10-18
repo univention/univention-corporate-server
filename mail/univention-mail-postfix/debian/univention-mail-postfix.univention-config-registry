@@ -59,6 +59,7 @@ Variables: mail/postfix/virtual/enabled
 Type: subfile
 Multifile: etc/postfix/main.cf
 Subfile: etc/postfix/main.cf.d/50_restrictions
+Variables: mail/postfix/greylisting
 
 Type: subfile
 Multifile: etc/postfix/main.cf
