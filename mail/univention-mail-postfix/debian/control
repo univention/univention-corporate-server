@@ -45,8 +45,8 @@ Description: Transitional package for univention-mail-postfix-forward
 
 Package: univention-mail-server
 Architecture: all
-Depends: univention-mail-postfix (= ${binary:Version}), univention-antivir-mail, univention-spamassassin, univention-sasl, univention-mail-cyrus
-Recommends: bsd-mailx
+Depends: univention-mail-postfix (= ${binary:Version}), univention-sasl, univention-mail-cyrus
+Recommends: bsd-mailx, univention-spamassassin, univention-antivir-mail
 Conflicts: univention-mail-postfix-kolab2
 Description: UCS - postfix configuration
  This package contains the configuration for the postfix

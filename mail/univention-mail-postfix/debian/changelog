@@ -1,3 +1,10 @@
+univention-mail-postfix (6.0.28-2) unstable; urgency=low
+
+  * changed Dependency to Recommends for univention-spamassassin and
+    univention-antivir-mail (Bug #23369)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 19 Oct 2011 15:37:14 +0200
+
 univention-mail-postfix (6.0.28-1) unstable; urgency=low
 
   * added firewall settings (Bug #23577)
