@@ -557,17 +557,16 @@ class ad(univention.connector.ucs):
 		univention.connector.ucs.__init__(self, CONFIGBASENAME, property, baseConfig, listener_dir)
 
 		self.CONFIGBASENAME = CONFIGBASENAME
-		tls_mode = 2
-		if baseConfig.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and self.baseConfig['%s/ad/ldap/ssl' % CONFIGBASENAME] == "no":
-			ud.debug(ud.LDAP, ud.INFO,"__init__: LDAP-connection to AD switched of by UCR.")
-			tls_mode = 0
 
-		ldaps = baseConfig.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False) # tls or ssl
-
-		self.lo_ad=univention.uldap.access(host=ad_ldap_host, port=int(ad_ldap_port), base=ad_ldap_base, binddn=ad_ldap_binddn, bindpw=ad_ldap_bindpw, start_tls=tls_mode, use_ldaps = ldaps, ca_certfile=ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
-
-		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS,0)
+		self.ad_ldap_host = ad_ldap_host
+		self.ad_ldap_port = ad_ldap_port
+		self.ad_ldap_base = ad_ldap_base
+		self.ad_ldap_binddn = ad_ldap_binddn
+		self.ad_ldap_bindpw = ad_ldap_bindpw
+		self.ad_ldap_certificate = ad_ldap_certificate
 		self.baseConfig = baseConfig
+
+		self.open_ad()
 
 		if not self.config.has_section('AD'):
 			ud.debug(ud.LDAP, ud.INFO,"__init__: init add config section 'AD'")
@@ -594,6 +593,17 @@ class ad(univention.connector.ucs):
 			print "Failed to get SID from AD: %s" % msg
 			sys.exit(1)
 
+	def open_ad(self):
+		tls_mode = 2
+		if self.baseConfig.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and self.self.baseConfig['%s/ad/ldap/ssl' % CONFIGBASENAME] == "no":
+			ud.debug(ud.LDAP, ud.INFO,"__init__: LDAP-connection to AD switched of by UCR.")
+			tls_mode = 0
+
+		ldaps = self.baseConfig.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False) # tls or ssl
+
+		self.lo_ad=univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps = ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
+
+		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS,0)
 
 	# encode string to unicode
 	def encode(self, string):
@@ -786,6 +796,8 @@ class ad(univention.connector.ucs):
 
 
 		# search fpr objects with uSNCreated and uSNChanged in the known range
+
+		returnObjects = []
 		try:
 			if lastUSN > 0:
 				# During the init phase we have to search for created and changed objects
@@ -1622,6 +1634,8 @@ class ad(univention.connector.ucs):
 							self._remove_rejected(id)
 							self.__update_lastUSN(object)
 							self._set_DN_for_GUID(elements[0][1]['objectGUID'][0],elements[0][0])
+				except (ldap.SERVER_DOWN, SystemExit):
+					raise		
 				except Exception, msg:
 					self._debug_traceback(ud.ERROR,
 										  "unexpected Error during ad.resync_rejected")
@@ -1787,6 +1801,8 @@ class ad(univention.connector.ucs):
 			# the old object was moved in UCS, but does this object exist in AD?
 			try:
 				old_object = self.lo_ad.lo.search_ext_s(compatible_modstring(old_dn),ldap.SCOPE_BASE,'objectClass=*',timeout=-1,sizelimit=0)
+			except (ldap.SERVER_DOWN, SystemExit):
+				raise
 			except:
 				old_object=None
 

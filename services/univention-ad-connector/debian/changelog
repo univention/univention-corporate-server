@@ -1,3 +1,10 @@
+univention-ad-connector (6.0.13-1) unstable; urgency=low
+
+  * Merged S4 connector changes from r27948
+    * Handle LDAP server restarts and AD restarts (Bug #22861)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Oct 2011 08:39:47 +0200
+
 univention-ad-connector (6.0.12-1) unstable; urgency=low
 
   * Use new overlay module k5pwd and set userPassword to {K5KEY}
