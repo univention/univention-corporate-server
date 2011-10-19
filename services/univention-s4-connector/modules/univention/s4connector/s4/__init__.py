@@ -565,23 +565,16 @@ class s4(univention.s4connector.ucs):
 		univention.s4connector.ucs.__init__(self, CONFIGBASENAME, property, baseConfig, listener_dir)
 
 		self.CONFIGBASENAME = CONFIGBASENAME
-		tls_mode = 2
-		if baseConfig.has_key('%s/s4/ldap/ssl' % CONFIGBASENAME) and self.baseConfig['%s/s4/ldap/ssl' % CONFIGBASENAME] == "no":
-			ud.debug(ud.LDAP, ud.INFO,"__init__: LDAP-connection to S4 switched of by UCR.")
-			tls_mode = 0
 
-		protocol = baseConfig.get('%s/s4/ldap/protocol' % CONFIGBASENAME, 'ldap').lower()
-		if protocol == 'ldapi':
-			import urllib
-			socket = urllib.quote(baseConfig.get('%s/s4/ldap/socket' % CONFIGBASENAME, ''), '')
-			ldapuri = "%s://%s" % (protocol, socket)
-		else:
-			ldapuri = "%s://%s:%d" % (protocol, baseConfig['%s/s4/ldap/host' % CONFIGBASENAME],int(baseConfig['%s/s4/ldap/port' % CONFIGBASENAME]))
-
-		self.lo_s4=univention.uldap.access(host=s4_ldap_host, port=int(s4_ldap_port), base=s4_ldap_base, binddn=s4_ldap_binddn, bindpw=s4_ldap_bindpw, start_tls=tls_mode, ca_certfile=s4_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'], uri=ldapuri)
-
-		self.lo_s4.lo.set_option(ldap.OPT_REFERRALS,0)
+		self.s4_ldap_host = s4_ldap_host
+		self.s4_ldap_port = s4_ldap_port
+		self.s4_ldap_base = s4_ldap_base
+		self.s4_ldap_binddn = s4_ldap_binddn
+		self.s4_ldap_bindpw = s4_ldap_bindpw
+		self.s4_ldap_certificate = s4_ldap_certificate
 		self.baseConfig = baseConfig
+
+		self.open_s4()
 
 		if not self.config.has_section('S4'):
 			ud.debug(ud.LDAP, ud.INFO,"__init__: init add config section 'S4'")
@@ -620,6 +613,23 @@ class s4(univention.s4connector.ucs):
 			print "Failed to get SID from S4: %s" % msg
 			sys.exit(1)
 
+	def open_s4(self):
+		tls_mode = 2
+		if self.baseConfig.has_key('%s/s4/ldap/ssl' % self.CONFIGBASENAME) and self.baseConfig['%s/s4/ldap/ssl' % self.CONFIGBASENAME] == "no":
+			ud.debug(ud.LDAP, ud.INFO,"__init__: LDAP-connection to S4 switched of by UCR.")
+			tls_mode = 0
+
+		protocol = self.baseConfig.get('%s/s4/ldap/protocol' % self.CONFIGBASENAME, 'ldap').lower()
+		if protocol == 'ldapi':
+			import urllib
+			socket = urllib.quote(self.baseConfig.get('%s/s4/ldap/socket' % self.CONFIGBASENAME, ''), '')
+			ldapuri = "%s://%s" % (protocol, socket)
+		else:
+			ldapuri = "%s://%s:%d" % (protocol, self.baseConfig['%s/s4/ldap/host' % self.CONFIGBASENAME],int(self.baseConfig['%s/s4/ldap/port' % self.CONFIGBASENAME]))
+
+		self.lo_s4=univention.uldap.access(host=self.s4_ldap_host, port=int(self.s4_ldap_port), base=self.s4_ldap_base, binddn=self.s4_ldap_binddn, bindpw=self.s4_ldap_bindpw, start_tls=tls_mode, ca_certfile=self.s4_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'], uri=ldapuri)
+
+		self.lo_s4.lo.set_option(ldap.OPT_REFERRALS,0)
 
 	# encode string to unicode
 	def encode(self, string):
@@ -1607,6 +1617,8 @@ class s4(univention.s4connector.ucs):
 							self._remove_rejected(id)
 							self.__update_lastUSN(object)
 							self._set_DN_for_GUID(elements[0][1]['objectGUID'][0],elements[0][0])
+				except (ldap.SERVER_DOWN, SystemExit):
+					raise		
 				except Exception, msg:
 					self._debug_traceback(ud.ERROR,
 										  "unexpected Error during s4.resync_rejected")
@@ -1766,6 +1778,8 @@ class s4(univention.s4connector.ucs):
 			# the old object was moved in UCS, but does this object exist in S4?
 			try:
 				old_object = self.lo_s4.lo.search_ext_s(compatible_modstring(old_dn),ldap.SCOPE_BASE,'objectClass=*',timeout=-1,sizelimit=0)
+			except (ldap.SERVER_DOWN, SystemExit):
+				raise
 			except:
 				old_object=None
 

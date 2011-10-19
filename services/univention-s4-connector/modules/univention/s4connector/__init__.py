@@ -550,6 +550,8 @@ class ucs:
 							change_type="add"
 							old_dn = '' # there may be an old_dn if object was moved from ignored container
 							ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was added: %s" % dn)
+				except (ldap.SERVER_DOWN, SystemExit):
+					raise
 				except:
 					# the ignore_object method might throw an exception if the subschema will be synced
 					change_type="add"
@@ -750,6 +752,8 @@ class ucs:
 					try:
 						f=file(filename,'r')
 					except IOError: # file not found so there's nothing to sync
+						if self.dn_list.get(dn):
+							self.dn_list[dn].remove(filename)
 						continue
 
 					dn,new,old,old_dn=cPickle.load(f)
@@ -1175,6 +1179,8 @@ class ucs:
 							return True
 						else:
 							return False
+					except (ldap.SERVER_DOWN, SystemExit):
+						raise
 					except:
 						ud.debug(ud.LDAP, ud.WARN, "attribute_filter: Failed to convert attributes for bitwise filter")
 						return False

@@ -182,7 +182,11 @@ def connect():
 			s4.initialize_ucs()
 			ucs_init=True
 		except ldap.SERVER_DOWN:
+			print "Can't contact LDAP server during ucs-poll, sync not possible."
+ 			sys.stdout.flush()
 			time.sleep(poll_sleep)
+			s4.open_s4()
+			s4.open_ucs()
 			pass
 	
 
@@ -191,7 +195,11 @@ def connect():
 			s4.initialize()
 			s4_init=True
 		except ldap.SERVER_DOWN:
+			print "Can't contact LDAP server during ucs-poll, sync not possible."
+ 			sys.stdout.flush()
 			time.sleep(poll_sleep)
+			s4.open_s4()
+			s4.open_ucs()
 			pass
 
 	f.close()
@@ -224,11 +232,18 @@ def connect():
 			if change_counter > 0:
 				retry_rejected=0
 
-		if str(retry_rejected) == baseconfig_retry_rejected:
-			s4.resync_rejected_ucs()
-			s4.resync_rejected()
-			retry_rejected=0
-		else:
+		try:
+			if str(retry_rejected) == baseconfig_retry_rejected:
+				s4.resync_rejected_ucs()
+				s4.resync_rejected()
+				retry_rejected=0
+			else:
+				retry_rejected+=1
+		except ldap.SERVER_DOWN:
+			print "Can't contact LDAP server during resync rejected, sync not possible."
+			connected = False
+ 			sys.stdout.flush()
+			change_counter=0
 			retry_rejected+=1
 
 		print '- sleep %s seconds (%s/%s until resync) -'%(poll_sleep, retry_rejected, baseconfig_retry_rejected)
