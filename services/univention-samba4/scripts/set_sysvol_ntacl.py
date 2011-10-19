@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python2.6
 
 #
 # Copyright 2004-2011 Univention GmbH
