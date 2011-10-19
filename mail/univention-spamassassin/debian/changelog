@@ -1,3 +1,9 @@
+univention-spamassassin (4.0.3-2) unstable; urgency=low
+
+  * removed unused variable registration (Bug #23824)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 19 Oct 2011 15:40:47 +0200
+
 univention-spamassassin (4.0.3-1) unstable; urgency=low
 
   * removed user "spam" and its special procmail handling (Bug #23824)

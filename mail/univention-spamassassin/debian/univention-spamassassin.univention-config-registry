@@ -9,7 +9,6 @@ Variables: mail/antispam/rules/autoupdate
 
 Type: file
 File: usr/sbin/univention-sa-learn
-Variables: mail/antispam/globalfolder
 Variables: mail/cyrus/folder/spam
 Variables: mail/cyrus/folder/ham
 
