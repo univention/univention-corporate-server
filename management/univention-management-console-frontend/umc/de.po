@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-19 14:17+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2011-10-16 10:24+0200\n"
+"PO-Revision-Date: 2011-10-19 14:39+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -34,6 +34,10 @@ msgstr "1 Objekt von %d ausgewählt"
 #: umc/app.js:356
 msgid "About UMC"
 msgstr "Über UMC"
+
+#: umc/widgets/UnixAccessRights.js:65
+msgid "Access"
+msgstr "Zugriff"
 
 #: umc/widgets/MultiObjectSelect.js:76 umc/widgets/MultiObjectSelect.js:229
 msgid "Add"
@@ -98,6 +102,10 @@ msgstr "Englisch"
 #: umc/widgets/LoginDialog.js:40
 msgid "German"
 msgstr "Deutsch"
+
+#: umc/widgets/UnixAccessRights.js:42
+msgid "Group"
+msgstr "Gruppe"
 
 #: umc/i18n.js:94
 #, python-format
@@ -219,13 +227,25 @@ msgstr "Hinweis"
 msgid "Ok"
 msgstr "Ok"
 
+#: umc/widgets/UnixAccessRights.js:43
+msgid "Others"
+msgstr "Andere"
+
 #: umc/app.js:300 umc/app.js:301
 msgid "Overview"
 msgstr "Übersicht"
 
+#: umc/widgets/UnixAccessRights.js:41
+msgid "Owner"
+msgstr "Besitzer"
+
 #: umc/widgets/LoginDialog.js:94
 msgid "Password"
 msgstr "Passwort"
+
+#: umc/widgets/UnixAccessRights.js:55
+msgid "Read"
+msgstr "Lesen"
 
 #: umc/widgets/MultiObjectSelect.js:95
 msgid "Remove"
@@ -338,6 +358,10 @@ msgstr ""
 "Willkommen auf der Univention Management Console. Bitte geben Sie "
 "Benutzername und Passwort Ihres Domänen-Kontos an."
 
+#: umc/widgets/UnixAccessRights.js:60
+msgid "Write"
+msgstr "Schreiben"
+
 #: umc/tools.js:153
 msgid "You are not authorized to perform this action."
 msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
@@ -345,44 +369,3 @@ msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
 #: umc/tools.js:152
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
-
-#~ msgid "<br>Error message from server: %s"
-#~ msgstr "<br>Fehlermeldung des Servers: %s"
-
-#~ msgid ""
-#~ "An unexpected HTTP-error occurred (status: %(status)s):\n"
-#~ "%(msg)s"
-#~ msgstr ""
-#~ "Ein unerwarteter HTTP-Fehler trat auf (Status: %(status)s:\n"
-#~ "%(msg)s"
-
-#~ msgid "Domain"
-#~ msgstr "Domäne"
-
-#~ msgid "Internal UMC protocol error: The UMCP command is not known."
-#~ msgstr "Interner UMC-Protokoll-Fehler: Der UMCP-Befehl ist nicht bekannt."
-
-#~ msgid ""
-#~ "Internal UMC protocol error: The specified number of arguments for the "
-#~ "UMCP command is not valid."
-#~ msgstr ""
-#~ "Interner UMC-Protokoll-Fehler: Die angegebene Anzahl an Argumente für den "
-#~ "UCMP-Befehl ist nicht zulässig."
-
-#~ msgid "More actions..."
-#~ msgstr "Weitere Aktionen..."
-
-#~ msgid "The domain for the login session."
-#~ msgstr "Die Domäne für die Anmeldesitzung."
-
-#~ msgid "Webfrontend error: The specified request is not allowed."
-#~ msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht zulässig."
-
-#~ msgid "Wrong credentials, please try again!"
-#~ msgstr "Falsche Zugangsdaten, bitte versuchen Sie es erneut!"
-
-#~ msgid "You are not authenticated, please log in."
-#~ msgstr "Sie sind nicht authentifiziert, bitte melden Sie sich an."
-
-#~ msgid "You are not authorized to perform this action!"
-#~ msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen!"

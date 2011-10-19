@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.105-1) unstable; urgency=low
+
+  * add Widget UnixAccessRights; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Oct 2011 15:18:26 +0200
+
 univention-management-console-frontend (1.0.104-1) unstable; urgency=low
 
   * Grid: fixed problems with setDisabledItem() (Bug #22461)

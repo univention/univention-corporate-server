@@ -30,6 +30,18 @@ form {
 
 /* @group Header */
 
+.umcUNIXAccessRights-table {
+	width: auto;
+	padding-top: 4px;
+	padding-bottom: 10px;
+	padding-right: 15px;
+}
+
+.umcUNIXAccessRights-valueCell {
+	width: auto;
+	padding:4px;
+}
+
 .umcHeader {
 	height: 34px;
 	overflow: hidden;
