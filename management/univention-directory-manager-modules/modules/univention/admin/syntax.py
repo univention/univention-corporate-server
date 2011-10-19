@@ -1085,6 +1085,12 @@ class LDAP_Server( UDM_Objects ):
 	label = '%(fqdn)s'
 	simple = True
 
+class IMAP_POP3( select ):
+	choices = (
+		( 'IMAP', _('IMAP') ),
+		( 'POP3', _('POP3') ),
+		)
+
 class IMAP_Right( select ):
 	choices = (
 		( 'none', _( 'No access' ) ),

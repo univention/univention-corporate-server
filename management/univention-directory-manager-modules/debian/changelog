@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.135-1) unstable; urgency=low
+
+  * added static selection syntax IMAP_POP3 (Bug #20791)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 19 Oct 2011 12:34:17 +0200
+
 univention-directory-manager-modules (7.0.134-1) unstable; urgency=low
 
   * adapt further syntax classes for the new web frontend; Bug #22439
