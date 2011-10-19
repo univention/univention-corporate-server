@@ -1,5 +1,5 @@
 [fetchmail/enabled]
-Description[de]=Fetchmail-Dienst mit 'yes' aktivieren (Standard: 'no')
+Description[de]=Um den Fetchmail-Dienst zu aktivieren, ist diese Variable auf den Wert 'yes' zu setzen (Standard: 'no')
 Description[en]=To enable fetchmail service set this option to 'yes' (Default: 'no')
 Type=str
 Categories=service-mail,system-services

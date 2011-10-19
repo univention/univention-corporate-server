@@ -34,7 +34,7 @@ import listener
 import univention.debug
 import univention.utf8
 import re
-import ldap
+import univention.uldap
 import univention.config_registry
 
 fn_fetchmailrc = '/etc/fetchmailrc'
@@ -185,13 +185,18 @@ def handler(dn, new, old):
 
 			baseDN = configRegistry.get('ldap/base')
 			fqdnMaster = configRegistry.get('ldap/master')
+			portMaster = configRegistry.get('ldap/master/port')
 
 			if not baseDN:
-				univention.debug.debug( univention.debug.LISTENER, univention.debug.ERROR, 'fetchmail: cannot get UCR variable ldap/base' )
+				univention.debug.debug( univention.debug.LISTENER, univention.debug.WARN, 'fetchmail: cannot get UCR variable ldap/base' )
 				return
 
 			if not fqdnMaster:
-				univention.debug.debug( univention.debug.LISTENER, univention.debug.ERROR, 'fetchmail: cannot get UCR variable ldap/master' )
+				univention.debug.debug( univention.debug.LISTENER, univention.debug.WARN, 'fetchmail: cannot get UCR variable ldap/master' )
+				return
+
+			if not portMaster or not portMaster.isdigit():
+				univention.debug.debug( univention.debug.LISTENER, univention.debug.WARN, 'fetchmail: cannot get UCR variable ldap/master/port or value is no integer' )
 				return
 
 			bindpw = ''
@@ -203,11 +208,11 @@ def handler(dn, new, old):
 				listener.unsetuid()
 
 			if not bindpw:
-				univention.debug.debug( univention.debug.LISTENER, univention.debug.ERROR, 'fetchmail: cannot get password for cn=admin,%s' % baseDN )
+				univention.debug.debug( univention.debug.LISTENER, univention.debug.PROCESS, 'fetchmail: cannot get password for cn=admin,%s' % baseDN )
 				return
 
 			try:
-				lo = ldap.open( fqdnMaster, 389 )
+				lo = ldap.open( fqdnMaster, int(portMaster) )
 				lo.simple_bind_s("cn=admin,"+baseDN, bindpw)
 
 				modlist = [ (ldap.MOD_DELETE, 'univentionFetchmailPasswd', new['univentionFetchmailPasswd'][0]) ]

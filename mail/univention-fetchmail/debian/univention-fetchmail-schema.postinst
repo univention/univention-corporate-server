@@ -39,6 +39,7 @@ univention-config-registry commit /etc/ldap/slapd.conf
 /etc/init.d/slapd crestart
 
 . /usr/share/univention-lib/all.sh
+
 call_joinscript 92univention-fetchmail-schema.inst
 
 exit 0

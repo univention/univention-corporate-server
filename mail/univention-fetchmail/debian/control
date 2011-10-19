@@ -8,10 +8,10 @@ Standards-Version: 3.8.2
 
 Package: univention-fetchmail
 Architecture: all
-Depends: univention-ldap-server, fetchmail, univention-fetchmail-schema
+Depends: fetchmail, univention-fetchmail-schema
 Description: fetchmail integration for UDM
- This package contains additional LDAP schema
- defining extension for fetchmail management
+ This package contains UDM extensions for integrating 
+ remote mail retrieval via fetchmail.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -23,7 +23,7 @@ Architecture: all
 Depends: univention-directory-manager
 Description: schema package for univention-fetchmail
  This package contains additional LDAP schema
- defining extension for fetchmail management
+ defining extension for fetchmail management.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
