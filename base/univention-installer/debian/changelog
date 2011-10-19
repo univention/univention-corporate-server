@@ -1,3 +1,11 @@
+univention-installer (7.0.109-1) unstable; urgency=low
+
+  * changed UCR variable names (Bug #22872)
+    old: interfaces/DEVICE/ipv6/base/{address,prefix}
+    new: interfaces/DEVICE/ipv6/default/{address,prefix}
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 19 Oct 2011 12:08:40 +0200
+
 univention-installer (7.0.108-1) unstable; urgency=low
 
   * Set time to hardware clock in UTC (Bug #23924)

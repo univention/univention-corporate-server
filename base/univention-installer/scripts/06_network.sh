@@ -150,7 +150,7 @@ for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
 		prefix="$(set | egrep "^${network_device}_prefix6=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g")"
 
     	if [ -n "$address" -a -n "$prefix" ] ; then
-			python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/base/address=$address" "interfaces/$network_device/ipv6/base/prefix=$prefix"
+			python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/default/address=$address" "interfaces/$network_device/ipv6/default/prefix=$prefix"
 			ip link set "$network_device" up
 			ip -6 addr add "$address/$prefix" dev "${network_device}"
     	fi
