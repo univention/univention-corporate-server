@@ -582,7 +582,14 @@ def ucs_srv_record_create(s4connector, object):
 
 		newRecord= univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
-		newRecord['name']=relativeDomainName
+		# Make syntax UDM compatible
+		service=string.join(relativeDomainName.split('.')[:-1])
+		if service.startswith('_'):
+			service=service[1:] 
+		protocol=relativeDomainName.split('.')[-1]
+		if protocol.startswith('_'):
+			protocol=protocol[1:] 
+		newRecord['name']=[service, protocol]
 		newRecord['location']=srv
 		newRecord.create()
 	
