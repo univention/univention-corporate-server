@@ -1,0 +1,20 @@
+# format version number, currently 3; this line is compulsory!
+version=3
+
+## This does not work, as the http://www.mozilla.com/products/download.html
+## neither points to a proper file, nor contains a href to parse from
+# opts=filenamemangle=s/.*product=firefox-(.*)\&amp.*os=linux.*/firefox-$1\.tar\.bz2/ \
+# http://www.mozilla.com/en-US/firefox/all-older.html \
+# /products/download.html\?product=firefox-(.+)&amp;os=linux&amp;lang=en-US \
+#     debian
+
+## so we parse the german download url and urlmangle it to en-US:
+opts=filenamemangle=s/.*product=firefox-(.*)\&amp.*os=linux.*/firefox-$1\.tar\.bz2/,downloadurlmangle=s/lang=de/lang=en-US/ \
+http://www.mozilla.com/en-US/firefox/all.html \
+http://download.mozilla.org/\?product=firefox-(.+)&amp;os=linux&amp;lang=de \
+    debian uupdate
+
+# German download direct:
+# http://www.mozilla.com/en-US/firefox/all-older.html \
+# http://download.mozilla.org/\?product=firefox-(.+)&amp;os=linux&amp;lang=de
+#     debian  uupdate

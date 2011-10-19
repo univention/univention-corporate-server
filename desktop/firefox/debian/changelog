@@ -1,0 +1,377 @@
+firefox (7.0.1-7) unstable; urgency=low
+
+  * Bump version to be higher than the experimental build for UCS 2.4 (Bug #22116)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 18 Oct 2011 13:23:00 +0200
+
+firefox (7.0.1-2) unstable; urgency=low
+
+  * Bump version (Bug #22116)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 18 Oct 2011 13:15:52 +0200
+
+firefox (7.0.1-1) unstable; urgency=low
+
+  * Bump version (Bug #22116)
+  * Update XPI translation files for 7.0.1 release 	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 18 Oct 2011 10:24:23 +0200
+
+firefox (6.0.2-2) unstable; urgency=low
+
+  * Update to Firefox 7.0.1 (Bug #22116)
+  * Depend on libstdc++6
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 18 Oct 2011 10:17:37 +0200
+
+firefox (6.0.2-1) unstable; urgency=low
+
+  * Update to Firefox 6.0.2 (Bug #22116)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 09 Sep 2011 11:04:33 +0200
+
+firefox (5.0.1-3) unstable; urgency=low
+
+  * run ucslint in debian/rules Bug #22432
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Jul 2011 14:03:20 +0200
+
+firefox (5.0.1-2) unstable; urgency=low
+
+  * updated language packs as well Bug #22432
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Jul 2011 12:46:40 +0200
+
+firefox (5.0.1-1) unstable; urgency=low
+
+  * Update to Firefox 5.0.1 Bug #22432
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Jul 2011 12:43:42 +0200
+
+firefox (5.0.0-1) unstable; urgency=low
+
+  * Update to Firefox 5.0.0
+  * Package cleanup for UCS 3.0 Bug #22432
+
+ -- Felix Botner <botner@univention.de>  Mon, 11 Jul 2011 16:12:59 +0200
+
+firefox (3.6.13-2) unstable; urgency=low
+
+  * Update to Firefox 3.6.13 (Bug #19337)
+
+ -- Felix Botner <botner@univention.de>  Fri, 10 Dec 2010 15:09:41 +0100
+
+firefox (3.6.10-2) unstable; urgency=low
+
+  * xpi update Bug #19337
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Oct 2010 12:03:10 +0200
+
+firefox (3.6.10-1) unstable; urgency=low
+
+  * Update to Firefox 3.6.10 (Bug #19272)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 28 Sep 2010 17:29:30 +0200
+
+firefox (3.6.9-3) unstable; urgency=low
+
+  * Fix tarball, previous download was corrupted (Bug #19272)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 08 Sep 2010 15:56:26 +0200
+
+firefox (3.6.9-2) unstable; urgency=low
+
+  * Really include tarball (Bug #19272)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 08 Sep 2010 15:46:42 +0200
+
+firefox (3.6.9-1) unstable; urgency=low
+
+  * Update to Firefox 3.6.9 (Bug #19272)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 08 Sep 2010 15:24:45 +0200
+
+firefox (3.6.2-2) unstable; urgency=low
+
+  * Update to Firefox 3.6.2 Bug #18453
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Jun 2010 15:48:01 +0200
+
+firefox (3.5.9-1) unstable; urgency=low
+
+  * Update to Firefox 3.5.9 (en-US) (Bug #18015)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 31 Mar 2010 16:52:59 +0200
+
+firefox (3.5.8-1) unstable; urgency=low
+
+  * Update to Firefox 3.5.8 (Bug #17701)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 18 Feb 2010 18:26:16 +0100
+
+firefox (3.5.7-1) unstable; urgency=low
+
+  * Update to Firefox 3.5.7 Bug #17125 
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Jan 2010 08:28:23 +0100
+
+firefox (3.5.6-4) unstable; urgency=low
+
+  * added en-US dictionary Bug #17125 
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Dec 2009 14:57:57 +0100
+
+firefox (3.5.6-3) unstable; urgency=low
+
+  * Switch back to the German language build, since the Firefox
+    version from UCS 2.3 is currently doesn't permit switching
+    the interface language (Bug #17119)	  
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 21 Dec 2009 10:20:19 +0100
+
+firefox (3.5.6-2) unstable; urgency=low
+
+  * Also update XPI files for the translations (Bug #17119) 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 21 Dec 2009 09:12:54 +0100
+
+firefox (3.5.6-1) unstable; urgency=low
+
+  * Fix version number (Bug #17119) 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 18 Dec 2009 14:28:33 +0100
+
+firefox (3.5.3-2) unstable; urgency=low
+
+  * Update to Firefox 3.5.6 (Bug #17119)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 18 Dec 2009 14:25:43 +0100
+
+firefox (3.5.3-1) unstable; urgency=low
+
+  * update to firefox 3.5.3 (Bug #14426)
+
+ -- Felix Botner <botner@univention.de>  Thu, 15 Oct 2009 10:08:19 +0200
+
+firefox (3.5.1-2) unstable; urgency=low
+
+  * new xpi language packs for versiob 3.5.1 (Bug #14426)
+
+ -- Felix Botner <botner@univention.de>  Fri, 31 Jul 2009 16:05:09 +0200
+
+firefox (3.5.1-1) unstable; urgency=low
+
+  * update to Firefox 3.5.1 (Bug #14426)
+
+ -- Felix Botner <botner@univention.de>  Fri, 31 Jul 2009 14:44:58 +0200
+
+firefox (3.5.0-1) unstable; urgency=low
+
+  * update to Firefox 3.5.0 (Bug #14426)
+
+ -- Felix Botner <botner@univention.de>  Mon, 13 Jul 2009 17:28:16 +0200
+
+firefox (3.0.11-1) unstable; urgency=low
+
+  * Update to Firefox 3.0.11 (Bug #14763)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 15 Jun 2009 11:14:26 +0200
+
+firefox (3.0.10-2) unstable; urgency=low
+
+  * Use US build of Firefox 3.0.10 (Bug #13322)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 28 Apr 2009 11:13:25 +0200
+
+firefox (3.0.10-1) unstable; urgency=low
+
+  * Update to Firefox 3.0.10 (Bug #13322)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 28 Apr 2009 10:29:42 +0200
+
+firefox (3.0.6-7) unstable; urgency=low
+
+  * added the german dictionary. Bug #11603
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Mar 2009 10:06:29 +0100
+
+firefox (3.0.6-5) unstable; urgency=low
+
+  * added unzip as build dependency. Bug #11603
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Feb 2009 11:01:20 +0100
+
+firefox (3.0.6-4) unstable; urgency=low
+
+  * install the language packs directly because the option -install-
+    global-extension needs a DISPLAY. Bug #11603
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Feb 2009 10:48:42 +0100
+
+firefox (3.0.6-3) unstable; urgency=low
+
+  * added language packs from
+    http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.6/l
+    inux-i686/xpi/
+  * switch to the en-US firefox version, so the english firefox will be
+    default
+    Closes Bug #11603
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Feb 2009 09:15:33 +0100
+
+firefox (3.0.6-2) unstable; urgency=low
+
+  * depend on ttf-dejavu or ttf-dustin. Bug #13281
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Feb 2009 07:00:20 +0100
+
+firefox (3.0.6-1) unstable; urgency=low
+
+  * Update to firefox 3.0.5 (Closes: #13321)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu,  5 Feb 2009 15:04:13 +0100
+
+firefox (3.0.5-1) unstable; urgency=low
+
+  * Update to firefox 3.0.5 (Closes: #12664)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 17 Dec 2008 16:55:39 +0100
+
+firefox (3.0.3.0-1) unstable; urgency=low
+
+  * update to firefox 3.0.3. Bug #11726
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue,  7 Oct 2008 09:53:31 +0200
+
+firefox (3.0.1.0-1) unstable; urgency=low
+
+  * update to firefox 3.0.1
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu, 11 Sep 2008 15:12:18 +0200
+
+firefox (3.0.0.0-4) unstable; urgency=low
+
+  * wrapper script: pass arguments to firefox 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  7 Aug 2008 08:30:58 +0200
+
+firefox (3.0.0.0-3) unstable; urgency=low
+
+  * ensure that firefox finds the GTK+ printer backends on amd64 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 31 Jul 2008 12:10:59 +0200
+
+firefox (3.0.0.0-2) unstable; urgency=low
+
+  * added bzip2 as build dependency
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Jul 2008 21:36:06 +0200
+
+firefox (3.0.0.0-1) unstable; urgency=low
+
+  * update to firefox 3.0
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Jul 2008 21:10:00 +0200
+
+firefox (2.0.0.13-4) unstable; urgency=low
+
+  * Bump version
+
+ -- Moritz Mühlenhoff <jmm@ivar.knut.univention.de>  Fri, 16 May 2008 10:55:28 +0200
+
+firefox (2.0.0.13-3) unstable; urgency=low
+
+  * If Adobe Acrobat Reader is present, register the plugin
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 14 May 2008 11:01:31 +0200
+
+firefox (2.0.0.13-2) unstable; urgency=low
+
+  * Update to Firefox 2.0.0.13
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 30 Apr 2008 16:57:24 +0200
+
+firefox (2.0.0.6-6) unstable; urgency=low
+
+  * added ia32-libs and ia32-libs-gtk as amd64 dependencies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 30 Apr 2008 16:45:43 +0200
+
+firefox (2.0.0.6-5) unstable; urgency=low
+
+  * also build this package on amd64
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Apr 2008 15:51:51 +0200
+
+firefox (2.0.0.6-4) unstable; urgency=low
+
+  * change the plugin link to the iceweasel directory
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Oct 2007 14:54:58 +0200
+
+firefox (2.0.0.6-3) unstable; urgency=low
+
+  * Use the German language release
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  6 Aug 2007 12:04:58 +0200
+
+firefox (2.0.0.6-2) unstable; urgency=low
+
+  * Bump version.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  3 Aug 2007 11:44:35 +0200
+
+firefox (2.0.0.6-1) unstable; urgency=low
+
+  * Update to Firefox 2.0.0.6
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  3 Aug 2007 11:38:18 +0200
+
+firefox (2.0.0.5-1) unstable; urgency=low
+
+  * update to Firefox 2.0.0.5
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Jul 2007 15:15:33 +0200
+
+firefox (2.0.0.4-2) unstable; urgency=low
+
+  * Depend on libstdc++5
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 Jun 2007 08:02:55 +0200
+
+firefox (2.0.0.4-1) unstable; urgency=low
+
+  * update to Firefox 2.0.0.4
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Jun 2007 16:21:34 +0200
+
+firefox (2.0.0.2-1) unstable; urgency=low
+
+  * New upstream release fixing several vulnerabilities.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 14 Mar 2007 10:45:20 +0100
+
+firefox (2.0.0.0-4) unstable; urgency=low
+
+  * use /usr/lib/mozilla-firefox/plugins/ as plugins directory
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Jan 2007 07:48:10 +0100
+
+firefox (2.0.0.0-3) unstable; urgency=low
+
+  * update the desktop file
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 22 Jan 2007 08:52:53 +0100
+
+firefox (2.0.0.0-2) unstable; urgency=low
+
+  * added desktop icons and menu entries
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Jan 2007 16:49:09 +0100
+
+firefox (2.0.0.0-1) unstable; urgency=low
+
+  * initial release
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Jan 2007 11:39:45 +0100
+
