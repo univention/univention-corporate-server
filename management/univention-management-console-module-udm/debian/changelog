@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.182-1) unstable; urgency=low
+
+  * support widget MultiSelect; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Oct 2011 15:43:09 +0200
+
 univention-management-console-module-udm (1.0.181-1) unstable; urgency=low
 
   * adapt frontend to fixes in syntax classes; Bug #22439
