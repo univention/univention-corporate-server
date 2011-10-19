@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.138-1) unstable; urgency=low
+
+  * support creating computers with several IP addresses and DNS entries; Bug #23768
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Oct 2011 20:36:20 +0200
+
 univention-directory-manager-modules (7.0.137-1) unstable; urgency=low
 
   * simplified users/self module for UCS 3.0; Bug #23705

@@ -176,7 +176,7 @@ class complex( ISyntax ):
 			raise univention.admin.uexceptions.valueInvalidSyntax, _("too many arguments")
 			p=s.parse(texts[i])
 
-		for i in range( 0, count ):
+		for i in range( len( texts ) ):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i,self.subsyntaxes[i],  texts))
 			if type( self.subsyntaxes[i][1] ) == types.InstanceType:
 				s=self.subsyntaxes[i][1]
@@ -256,7 +256,7 @@ class UDM_Objects( ISyntax ):
 	def parse( self, text ):
 		if not self.empty_value and not text:
 			raise univention.admin.uexceptions.valueError( _( 'An empty value is not allowed' ) )
-		if not text or self.regex.match( text ) != None:
+		if not text or not self.regex or self.regex.match( text ) != None:
 			return text
 		raise univention.admin.uexceptions.valueError( self.error_message )
 
@@ -1116,7 +1116,7 @@ class GroupName( UDM_Objects ):
 
 class UserName( UDM_Objects ):
 	udm_modules = ( 'users/user', )
-	key = '%(name)s'
+	key = '%(username)s'
 	regex = re.compile( '^.+$' )
 	simple = True
 
@@ -2169,8 +2169,10 @@ class ServicePrint( UDM_Objects ):
 
 class Service( UDM_Objects ):
 	udm_modules = ( 'settings/service', )
+	regex = None
 	key = '%(name)s'
 	label = '%(name)s'
+	simple = True
 
 class nfssync(select):
 	choices=[
