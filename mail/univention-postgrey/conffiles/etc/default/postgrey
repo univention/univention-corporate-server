@@ -31,12 +31,12 @@ if configRegistry.is_true('mail/postfix/greylisting/privacy', True):
 if 'mail/postfix/greylisting/client/whitelist' in configRegistry:
 	for filename in configRegistry['mail/postfix/greylisting/client/whitelist'].split():
 		if exists(filename):
-			POSTGREY_OPTS.append('--whitelist-clients=%s' % file)
+			POSTGREY_OPTS.append('--whitelist-clients=%s' % filename)
 
 if 'mail/postfix/greylisting/recipient/whitelist' in configRegistry:
 	for filename in configRegistry['mail/postfix/greylisting/recipient/whitelist'].split():
 		if exists(filename):
-			POSTGREY_OPTS.append('--whitelist-recipients=%s' % file)
+			POSTGREY_OPTS.append('--whitelist-recipients=%s' % filename)
 
 print "POSTGREY_OPTS='%s'" % escapeString(' '.join(POSTGREY_OPTS))
 
