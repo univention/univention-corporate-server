@@ -1,3 +1,10 @@
+univention-directory-listener (5.0.13-1) unstable; urgency=low
+
+  * Write the new object into the cache before giving the entry to the
+    handlers. This is similar to Bug #21914. (Bug #23802)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Oct 2011 21:52:08 +0200
+
 univention-directory-listener (5.0.12-1) unstable; urgency=low
 
   * Fixed double free (Bug #22579)
