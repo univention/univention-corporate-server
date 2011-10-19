@@ -1,4 +1,4 @@
-	# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #
 # Univention Samba
 #  listener module: manage idmap
@@ -41,16 +41,38 @@ from samba.idmap import IDmapDB
 from samba.auth import system_session
 from samba.param import LoadParm
 
-### Globals
-lp = LoadParm()
-idmap = None
-
 name='samba4-idmap'
 description='Update local IDmap entries'
 filter='(&(|(objectClass=sambaSamAccount)(objectClass=sambaGroupMapping))(sambaSID=*))'
 attributes=['sambaSID', 'uidNumber', 'gidNumber']
 
-def add_modify_idmap_entry(lp, sambaSID, xidNumber, type_string):
+### Globals
+lp = LoadParm()
+lp.load('/etc/samba/smb.conf')
+
+def open_idmap():
+	global lp
+	listener.setuid(0)
+	try:
+		idmap = IDmapDB('/var/lib/samba/private/idmap.ldb', session_info=system_session(), lp=lp)
+	except ldb.LdbError:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
+				"%s: /var/lib/samba/private/idmap.ldb could not be opened" % name )
+		idmap = None
+	finally:
+		listener.unsetuid()
+
+	return idmap
+
+
+def add_modify_idmap_entry(sambaSID, xidNumber, type_string):
+	## need to open idmap here in case it has been removed since the module  was loaded
+	idmap = open_idmap()
+	if not idmap:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
+				"%s: entry for %s could not be updated" % (name, sambaSID) )
+		return
+
 	try:
 		idmap_type = {
 			'ID_TYPE_UID': idmap.TYPE_UID,
@@ -97,7 +119,15 @@ def add_modify_idmap_entry(lp, sambaSID, xidNumber, type_string):
 		except ldb.LdbError, (enum, estr):
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, estr)
 
+
 def remove_idmap_entry(sambaSID, xidNumber, type_string):
+	## need to open idmap here in case it has been removed since the module  was loaded
+	idmap = open_idmap()
+	if not idmap:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
+				"%s: entry for %s could not be removed" % (name, sambaSID) )
+		return
+
 	try:
 		res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % sambaSID, attrs = ["objectSid", "xidNumber", "type"])
 		record = res.msgs[0]
@@ -117,31 +147,32 @@ def remove_idmap_entry(sambaSID, xidNumber, type_string):
 	except ldb.LdbError, (enum, estr):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, estr)
 
-def handler(dn, new, old):
-	global lp, idmap
-	lp.load('/etc/samba/smb.conf')
 
-	listener.setuid(0)
-	try:
-		idmap = IDmapDB('/var/lib/samba/private/idmap.ldb', session_info=system_session(), lp=lp)
-	except ldb.LdbError:
-		listener.unsetuid()
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
-				"%s: /var/lib/samba/private/idmap.ldb could not be opened" % name )
-		return
-	finally:
-		listener.unsetuid()
+def handler(dn, new, old):
 
 	if new:
-		if 'uidNumber' in new:
-			add_modify_idmap_entry(lp, new['sambaSID'][0], new['uidNumber'][0], 'ID_TYPE_UID')
-		elif 'gidNumber' in new:
-			add_modify_idmap_entry(lp, new['sambaSID'][0], new['gidNumber'][0], 'ID_TYPE_GID')
-	elif old:
-		if 'uidNumber' in old:
-			# remove_idmap_entry(new['sambaSID'][0], new['uidNumber'][0], 'ID_TYPE_UID')
-			pass
-		if 'gidNumber' in old:
-			# remove_idmap_entry(new['sambaSID'][0], new['gidNumber'][0], 'ID_TYPE_GID')
-			pass
+		if 'sambaSamAccount' in new['objectClass']:
+			xid_attr = 'uidNumber'
+			xid_type = 'ID_TYPE_UID'
+		elif 'sambaGroupMapping' in new['objectClass']:
+			xid_attr = 'gidNumber'
+			xid_type = 'ID_TYPE_GID'
 
+		new_xid = new.get(xid_attr, [''] )[0]
+		if new_xid:
+			if old:
+				old_xid = old.get(xid_attr, [''] )[0]
+				if new_xid == old_xid:
+					return
+			add_modify_idmap_entry(new['sambaSID'][0], new_xid, xid_type)
+	# elif old:
+	# 	if 'sambaSamAccount' in old['objectClass']:
+	# 		xid_attr = 'uidNumber'
+	# 		xid_type = 'ID_TYPE_UID'
+	# 	elif 'sambaGroupMapping' in old['objectClass']:
+	# 		xid_attr = 'gidNumber'
+	# 		xid_type = 'ID_TYPE_GID'
+	# 
+	# 	old_xid = old.get(xid_attr, [''] )[0]
+	# 	if old_xid:
+	# 		remove_idmap_entry(old['sambaSID'][0], old_xid, xid_type)

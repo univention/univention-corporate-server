@@ -1,3 +1,12 @@
+univention-samba4 (1.0.69-3) unstable; urgency=low
+
+  * check if uid/gid was modified at all in samba4-idmap (Bug #23917)
+  * make samba4-idmap robust against removal of idmap.ldb
+  * resync the listener module after provision/join
+  * adjust samba-tool domain join to new cli api (Bug #23929)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 19 Oct 2011 00:31:14 +0200
+
 univention-samba4 (1.0.69-2) unstable; urgency=low
 
   * add attribute filter to samba4-idmap (Bug #23917)

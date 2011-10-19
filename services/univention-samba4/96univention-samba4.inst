@@ -298,7 +298,7 @@ elif [ "$samba4_role" = "RODC" ]; then
 	fi
 
 	extract_binddn_and_bindpwd_from_args "$@"
-	samba-tool join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
+	samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 
 	## Adding DNS records is currently necessary, probably this will can be avoided with dlz-dlopen on samba4
 	## see https://wiki.samba.org/index.php/Samba4/HOWTO/Join_a_domain_as_a_DC#A_note_on_DNS_updates
@@ -353,12 +353,17 @@ elif [ "$samba4_role" = "RODC" ]; then
 elif [ "$samba4_role" = "MEMBER" ]; then
 
 	extract_binddn_and_bindpwd_from_args "$@"
-	samba-tool join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
+	samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 	univention-config-registry set samba/share/netlogon?no \
 									samba/share/sysvol?no
 
 	# set_machine_secret	## currently disabled
 
+fi
+
+## provision erases the idmap.ldb
+if test -f /usr/sbin/univention-directory-listener-ctrl; then
+		/usr/sbin/univention-directory-listener-ctrl resync samba4-idmap
 fi
 
 /etc/init.d/samba4 restart
