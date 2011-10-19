@@ -56,7 +56,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set overwriteTab='0' \
 	--set valueRequired='0' \
 	--set CLIName='fetchmailServer' \
-	--set syntax='DNS_Name' \
+	--set syntax='string' \
 	--set tabAdvanced='1' \
 	--set mayChange='1' \
 	--set multivalue='0' \
@@ -64,11 +64,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set tabPosition='4' \
 	--set overwritePosition='0' \
 	--set doNotSearch='0' \
-	--set hook='None' \
-# 	--set groupName='Remote mail retrieval' \
-# 	--set translationGroupName='"de_DE" "Mailabruf von externen Servern"' \
-# 	--set groupPosition='1' \
-# 	--set default='' \
+	--set hook='None'
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set module="users/user" \
@@ -92,11 +88,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set tabPosition='3' \
 	--set overwritePosition='0' \
 	--set doNotSearch='0' \
-	--set hook='None' \
-# 	--set groupName='Remote mail retrieval' \
-# 	--set translationGroupName='"de_DE" "Mailabruf von externen Servern"' \
-# 	--set groupPosition='1' \
-# 	--set default='' \
+	--set hook='None'
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set module="users/user" \
@@ -120,11 +112,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set tabPosition='1' \
 	--set overwritePosition='0' \
 	--set doNotSearch='0' \
-	--set hook='None' \
-# 	--set groupName='Remote mail retrieval' \
-# 	--set translationGroupName='"de_DE" "Mailabruf von externen Servern"' \
-# 	--set groupPosition='1' \
-# 	--set default='' \
+	--set hook='None'
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set module="users/user" \
@@ -140,7 +128,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set overwriteTab='0' \
 	--set valueRequired='0' \
 	--set CLIName='fetchmailPassword' \
-	--set syntax='string' \
+	--set syntax='userPasswd' \
 	--set tabAdvanced='1' \
 	--set mayChange='1' \
 	--set multivalue='0' \
@@ -148,20 +136,16 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set tabPosition='1' \
 	--set overwritePosition='0' \
 	--set doNotSearch='0' \
-	--set hook='None' \
-# 	--set groupName='Remote mail retrieval' \
-# 	--set translationGroupName='"de_DE" "Mailabruf von externen Servern"' \
-# 	--set groupPosition='1' \
-# 	--set default='' \
+	--set hook='None'
 
 if [ "$JS_LAST_EXECUTED_VERSION" = "1" ]; then
 	# univention-fetchmail has been installed in UCS 2.4 and old custom attributes have to be removed
-	udm settings/syntax remove --dn "cn=UniventionFetchmail-Syntax-ProtocolType,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
-	udm settings/customattribute remove --dn "cn=UniventionFetchmail-ContainerDC-ProtocolTypeList,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
-	udm settings/customattribute remove --dn "cn=UniventionFetchmail-User-Server,cn=custom attributes,cn=univention,$ldap_base"
-	udm settings/customattribute remove --dn "cn=UniventionFetchmail-User-Protocol,cn=custom attributes,cn=univention,$ldap_base"
-	udm settings/customattribute remove --dn "cn=UniventionFetchmail-User-Address,cn=custom attributes,cn=univention,$ldap_base"
-	udm settings/customattribute remove --dn "cn=UniventionFetchmail-User-Password,cn=custom attributes,cn=univention,$ldap_base"
+	udm settings/syntax remove "$@" --dn "cn=UniventionFetchmail-Syntax-ProtocolType,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+	udm settings/customattribute remove "$@" --dn "cn=UniventionFetchmail-ContainerDC-ProtocolTypeList,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+	udm settings/customattribute remove "$@" --dn "cn=UniventionFetchmail-User-Server,cn=custom attributes,cn=univention,$ldap_base"
+	udm settings/customattribute remove "$@" --dn "cn=UniventionFetchmail-User-Protocol,cn=custom attributes,cn=univention,$ldap_base"
+	udm settings/customattribute remove "$@" --dn "cn=UniventionFetchmail-User-Address,cn=custom attributes,cn=univention,$ldap_base"
+	udm settings/customattribute remove "$@" --dn "cn=UniventionFetchmail-User-Password,cn=custom attributes,cn=univention,$ldap_base"
 
 	univention-directory-manager container/dc modify "$@" --ignore_exists --dn "$ldap_base" --customattribute-remove Protocol-Types=IMAP
 	univention-directory-manager container/dc modify "$@" --ignore_exists --dn "$ldap_base" --customattribute-remove Protocol-Types=POP3
