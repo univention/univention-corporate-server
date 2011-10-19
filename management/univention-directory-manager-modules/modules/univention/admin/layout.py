@@ -98,6 +98,10 @@ class ILayoutElement( dict ):
 		return False
 
 	def insert( self, position, field ):
+		if position == -1:
+			self.layout.insert( 0, field )
+			return
+
 		fline = ( position -1 ) // 2
 		fpos = ( position - 1 ) % 2
 

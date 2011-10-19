@@ -190,7 +190,7 @@ property_descriptions={
 	'ACLUsers': univention.admin.property(
 			short_description=_('Allowed/denied users'),
 			long_description=_('For the given users printing is explicitly allowed or denied.'),
-			syntax=univention.admin.syntax.userDn,
+			syntax=univention.admin.syntax.UserDN,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -200,7 +200,7 @@ property_descriptions={
 	'ACLGroups': univention.admin.property(
 			short_description=_('Allowed/denied groups'),
 			long_description=_('For the given groups printing is explicitly allowed or denied.'),
-			syntax=univention.admin.syntax.groupDn,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=1,
 			options=[],
 			required=0,

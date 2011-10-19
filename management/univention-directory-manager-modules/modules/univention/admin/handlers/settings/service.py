@@ -89,22 +89,21 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
-	def _ldap_pre_create(self):		
+	def _ldap_pre_create(self):
 		self.dn='cn=%s,%s' % ( mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		ocs=['univentionServiceObject']		
+		ocs=['univentionServiceObject']
 
-		
 		return [
 			('objectClass', ocs),
 		]
 
-
-	
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.expression('objectClass', 'univentionServiceObject')
+	filter = univention.admin.filter.conjunction( '&', [
+		univention.admin.filter.expression( 'objectClass', 'univentionServiceObject' ),
+		] )
 
 	if filter_s:
 		filter_p=univention.admin.filter.parse(filter_s)
@@ -117,5 +116,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-	
+
 	return 'univentionServiceObject' in attr.get('objectClass', [])

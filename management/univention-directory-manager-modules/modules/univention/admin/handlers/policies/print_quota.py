@@ -78,7 +78,7 @@ property_descriptions={
 	'quotaGroups': univention.admin.property(
 			short_description=_('Print quota for groups'),
 			long_description=_('Soft- and Hardlimit for each allowed group'),
-			syntax=univention.admin.syntax.printQuotaGroup,
+			syntax=univention.admin.syntax.PrintQuotaGroup,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -88,7 +88,7 @@ property_descriptions={
 	'quotaGroupsPerUsers': univention.admin.property(
 			short_description=_('Print quota for groups per user'),
 			long_description=_('Soft- and Hardlimit for each member of allowed group'),
-			syntax=univention.admin.syntax.printQuotaGroup,
+			syntax=univention.admin.syntax.PrintQuotaGroupPerUser,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -98,7 +98,7 @@ property_descriptions={
 	'quotaUsers': univention.admin.property(
 			short_description=_('Print quota for users'),
 			long_description=_('Soft- and Hardlimit for each allowed user'),
-			syntax=univention.admin.syntax.printQuotaUser,
+			syntax=univention.admin.syntax.PrintQuotaUser,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -202,23 +202,23 @@ class object(univention.admin.handlers.simplePolicy):
 
 	def _ldap_pre_modify(self):
 		self.check_entries()
-	
+
 	def _ldap_addlist(self):
 		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicySharePrintQuota']) ]
-	
+
 	def check_entries(self):
 		if self.hasChanged('quotaGroups'):
 			for entry in self.info['quotaGroups']:
 				group_dn=self.lo.searchDn(filter='(&(objectClass=posixGroup)(cn=%s))' % entry[2])
 				if len(group_dn) < 1 and entry[2] != 'root':
 					raise univention.admin.uexceptions.notValidGroup,_('%s is not valid. ') % entry[2]
-		
+
 		if self.hasChanged('quotaUsers'):
 			for entry in self.info['quotaUsers']:
 				user_dn=self.lo.searchDn(filter='(&(objectClass=posixAccount)(uid=%s))' % entry[2])
 				if len(user_dn) < 1 and entry[2] != 'root':
 					raise univention.admin.uexceptions.notValidUser,_('%s is not valid. ') % entry[2]
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [

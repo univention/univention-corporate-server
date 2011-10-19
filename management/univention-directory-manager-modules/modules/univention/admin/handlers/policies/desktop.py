@@ -46,7 +46,6 @@ class desktopFixedAttributes(univention.admin.syntax.select):
 	choices=[(('univentionDesktopLanguage'),_('Desktop language')),
 			 (('univentionDesktopProfile'),_('Desktop profile'))
 			 ]
-			
 
 module='policies/desktop'
 operations=['add','edit','remove','search']
@@ -85,7 +84,7 @@ property_descriptions={
 	'profile': univention.admin.property(
 			short_description=_('Desktop profile'),
 			long_description='',
-			syntax=univention.admin.syntax.kdeProfiles,
+			syntax=univention.admin.syntax.KDE_Profile,
 			multivalue=1,
 			options=[],
 			required=0,

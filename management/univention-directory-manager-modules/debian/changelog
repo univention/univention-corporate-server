@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.134-1) unstable; urgency=low
+
+  * adapt further syntax classes for the new web frontend; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Oct 2011 15:15:01 +0200
+
 univention-directory-manager-modules (7.0.133-1) unstable; urgency=low
 
   * Avoid the creation of ou under cn like in S4 and AD. It can be

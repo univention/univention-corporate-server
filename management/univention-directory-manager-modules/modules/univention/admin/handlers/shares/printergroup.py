@@ -64,7 +64,7 @@ property_descriptions={
 	'spoolHost': univention.admin.property(
 			short_description=_('Spool host'),
 			long_description='',
-			syntax=univention.admin.syntax.spoolHost,
+			syntax=univention.admin.syntax.ServicePrint,
 			multivalue=1,
 			options=[],
 			required=1,
@@ -74,7 +74,7 @@ property_descriptions={
 	'groupMember': univention.admin.property(
 			short_description=_('Group members'),
 			long_description='',
-			syntax=univention.admin.syntax.printerShare,
+			syntax=univention.admin.syntax.Printers,
 			multivalue=1,
 			options=[],
 			required=1,

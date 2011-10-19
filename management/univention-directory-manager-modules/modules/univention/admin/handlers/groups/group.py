@@ -147,7 +147,7 @@ property_descriptions={
 	'users': univention.admin.property(
 			short_description=_('Users'),
 			long_description='',
-			syntax=univention.admin.syntax.userDn,
+			syntax=univention.admin.syntax.UserDN,
 			multivalue=1,
 			options=['posix'],
 			required=0,
@@ -158,7 +158,7 @@ property_descriptions={
 	'hosts': univention.admin.property(
 			short_description=_('Hosts'),
 			long_description='',
-			syntax=univention.admin.syntax.hostDn,
+			syntax=univention.admin.syntax.HostDN,
 			multivalue=1,
 			options=['posix'],
 			license=['UGS', 'UCS'],
@@ -181,7 +181,7 @@ property_descriptions={
 	'memberOf': univention.admin.property(
 			short_description=_('Member of'),
 			long_description='',
-			syntax=univention.admin.syntax.groupDn,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=1,
 			options=['posix'],
 			required=0,
@@ -192,7 +192,7 @@ property_descriptions={
 	'nestedGroup': univention.admin.property(
 			short_description=_('Nested group'),
 			long_description='',
-			syntax=univention.admin.syntax.groupDn,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=1,
 			options=['posix'],
 			required=0,
@@ -203,7 +203,7 @@ property_descriptions={
 	'allowedEmailUsers': univention.admin.property(
 			short_description=_( 'Users that are allowed to send e-mails to the group' ),
 			long_description='',
-			syntax=univention.admin.syntax.userDn,
+			syntax=univention.admin.syntax.UserDN,
 			multivalue=1,
 			options=['posix'],
 			required=0,
@@ -214,7 +214,7 @@ property_descriptions={
 	'allowedEmailGroups': univention.admin.property(
 			short_description=_('Groups that are allowed to send e-mails to the group'),
 			long_description='',
-			syntax=univention.admin.syntax.groupDn,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=1,
 			options=['posix'],
 			required=0,

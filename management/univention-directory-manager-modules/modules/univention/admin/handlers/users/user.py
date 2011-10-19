@@ -371,7 +371,7 @@ property_descriptions={
 	'secretary': univention.admin.property(
 			short_description=_('Superior'),
 			long_description='',
-			syntax=univention.admin.syntax.userDn,
+			syntax=univention.admin.syntax.UserDN,
 			multivalue=1,
 			options=['person'],
 			required=0,
@@ -525,7 +525,7 @@ property_descriptions={
 	'groups': univention.admin.property(
 			short_description=_('Groups'),
 			long_description='',
-			syntax=univention.admin.syntax.groupDn,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=1,
 			options=['posix'],
 			required=0,
@@ -536,7 +536,7 @@ property_descriptions={
 	'primaryGroup': univention.admin.property(
 			short_description=_('Primary group'),
 			long_description='',
-			syntax=univention.admin.syntax.primaryGroup,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=0,
 			options=['posix'],
 			required=1,
@@ -602,7 +602,7 @@ property_descriptions={
 	'homeShare': univention.admin.property(
 			short_description=_('Home share'),
 			long_description=_('Share, the user\'s home directory resides on'),
-			syntax=univention.admin.syntax.module('shares/share'),
+			syntax = univention.admin.syntax.WritableShare,
 			multivalue=0,
 			options=['samba', 'posix', 'kerberos' ],
 			required=0,
@@ -636,7 +636,7 @@ property_descriptions={
 	'sambaLogonHours': univention.admin.property(
 			short_description=_('Samba User Login Times'),
 			long_description=(""),
-			syntax=univention.admin.syntax.sambaLogonHours,
+			syntax=univention.admin.syntax.SambaLogonHours,
 			multivalue=0,
 			options=['samba'],
 			required=0,
@@ -1039,7 +1039,7 @@ def logonHoursMap(logontimes):
 def logonHoursUnmap(logontimes):
 	"converts the string to a bit array"
 
-        times=logontimes[0][:42]
+	times=logontimes[0][:42]
 	while len(times)<42:
 		times=times
         ret=""

@@ -134,7 +134,7 @@ property_descriptions={
  	'homeShare': univention.admin.property(
  			short_description=_('Home Share'),
  			long_description=_('Share, the user\'s home directory resides on'),
- 			syntax=univention.admin.syntax.module('shares/share'),
+ 			syntax = univention.admin.syntax.WritableShare,
  			multivalue=0,
  			required=0,
  			dontsearch=1,
@@ -246,7 +246,7 @@ property_descriptions={
 	'secretary': univention.admin.property(
 			short_description=_('Secretary'),
 			long_description='',
-			syntax=univention.admin.syntax.userDn,
+			syntax=univention.admin.syntax.UserDN,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -276,7 +276,7 @@ property_descriptions={
  	'groups': univention.admin.property(
  			short_description=_('Groups'),
  			long_description='',
- 			syntax=univention.admin.syntax.groupDn,
+ 			syntax=univention.admin.syntax.GroupDN,
  			multivalue=1,
  			options=[],
  			required=0,
@@ -286,7 +286,7 @@ property_descriptions={
  	'primaryGroup': univention.admin.property(
  			short_description=_('Primary Group'),
  			long_description='',
- 			syntax=univention.admin.syntax.primaryGroup,
+ 			syntax=univention.admin.syntax.GroupDN,
  			one_only=1,
  			parent='groups',
  			multivalue=0,

@@ -96,9 +96,20 @@ class ISyntax( object ):
 		return text
 
 class simple( ISyntax ):
+	regex = None
+	error_message = _( 'Invalid value' )
+
+	@classmethod
+	def parse( self, text ):
+		if self.regex is None or self.regex.match( text ) is not None:
+			return text
+		else:
+			raise univention.admin.uexceptions.valueError( self.error_message )
+
 	@classmethod
 	def new(self):
 		return ''
+
 	@classmethod
 	def any(self):
 		return '*'
@@ -125,6 +136,20 @@ class select( ISyntax ):
 	@classmethod
 	def any(self):
 		return '*'
+
+class MultiSelect( ISyntax ):
+	choices = ()
+	empty_value = True
+	error_message = _( 'Invalid value' )
+
+	@classmethod
+	def parse( self, value ):
+		if not self.empty_value and not value:
+			raise univention.admin.uexceptions.valueError( _( 'An empty value is not allowed' ) )
+		key_list = map( lambda x: x[ 0 ], self.choices )
+		for item in value:
+			if not item in key_list:
+				raise univention.admin.uexceptions.valueError( self.error_message )
 
 class complex( ISyntax ):
 	delimiter = ' '
@@ -223,6 +248,7 @@ class UDM_Objects( ISyntax ):
 	regex = re.compile( '^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$' )
 	static_values = None
 	empty_value = False
+	depends = None
 	error_message = _( "Not a valid LDAP DN" )
 	simple = False # by default a MultiObjectSelect widget is used; if simple == True a ComboBox is used
 
@@ -244,6 +270,7 @@ class UDM_Attribute( ISyntax ):
 	regex = None
 	static_values = None
 	empty_value = False
+	depends = None
 	error_message = _( 'Invalid value' )
 
 	@classmethod
@@ -257,37 +284,6 @@ class UDM_Attribute( ISyntax ):
 class none(simple):
 	pass
 
-class info_text(simple):
-	pass
-
-class module( ISyntax ):
-	def __init__(self, type, filter='', description=''):
-		self.module_type=type
-		self.filter=filter
-		self.description=description
-
-		if self.filter == '' or self.description == '':
-			name = type.replace( os.path.sep, '.' )
-			module = 'univention.admin.handlers.%s' % name 
-			module_name = 'univention/admin/handlers/%s' % type
-			mymodule = __import__(  module, globals(), locals(), module_name )
-			if self.filter == '' and hasattr(mymodule,'syntax_filter'):
-				self.filter=mymodule.syntax_filter
-			if self.description == '':
-				self.description=mymodule.short_description
-
-	@classmethod
-	def new(self):
-		return ''
-
-	@classmethod
-	def any(self):
-		return '*'
-
-	@classmethod
-	def parse(self, text):
-		return text
-
 class string(simple):
 	min_length=0
 	max_length=0
@@ -295,10 +291,6 @@ class string(simple):
 	@classmethod
 	def parse(self, text):
 		return text
-
-# FIXME: do we still need this?
-class long_string(string):
-	pass
 
 class file(string):
 	pass
@@ -378,16 +370,14 @@ class boolean(simple):
 	"""
 	min_length=1
 	max_length=1
-	_re = re.compile('^[01]?$')
+	regex = re.compile('^[01]?$')
+	error_message = _( "Value must be 0 or 1" )
 
 	@classmethod
 	def parse(self, text):
 		if isinstance( text, bool ):
 			return text and '1' or '0'
-		if self._re.match(text) != None:
-			return text
-		else:
-			raise univention.admin.uexceptions.valueError, _("Value must be 0 or 1")
+		return simple.parse( self, text )
 
 class filesize(simple):
 	"""
@@ -420,14 +410,8 @@ class filesize(simple):
 	"""
 	min_length=1
 	max_length=0
-	_re = re.compile('^[0-9]+(|[gGmMkK])(|[bB])$')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		else:
-			raise univention.admin.uexceptions.valueError, _("Value must be an integer followed by one of GB,MB,KB,B or nothing (equals B)!")
+	regex = re.compile('^[0-9]+(|[gGmMkK])(|[bB])$')
+	error_message = _( "Value must be an integer followed by one of GB,MB,KB,B or nothing (equals B)!" )
 
 class mail_folder_name(simple):
 	"""
@@ -522,14 +506,8 @@ class string_numbers_letters_dots(simple):
 	valueError:
 	"""
 
-	_re = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		else:
-			raise univention.admin.uexceptions.valueError, _("Value must not contain anything other than digits, letters or dots, must be at least 2 characters long, and start and end with a digit or letter!")
+	regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)')
+	error_message = _( 'Value must not contain anything other than digits, letters or dots, must be at least 2 characters long, and start and end with a digit or letter!' )
 
 class string_numbers_letters_dots_spaces(simple):
 	"""
@@ -577,15 +555,8 @@ class string_numbers_letters_dots_spaces(simple):
 	valueError:
 	"""
 
-	_re = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._ -]*([a-zA-Z0-9]$)')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		else:
-			raise univention.admin.uexceptions.valueError, _("Value must not contain anything other than digits, letters, dots or spaces, must be at least 2 characters long, and start and end with a digit or letter!")
-
+	regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._ -]*([a-zA-Z0-9]$)')
+	error_message = _("Value must not contain anything other than digits, letters, dots or spaces, must be at least 2 characters long, and start and end with a digit or letter!")
 
 class phone(simple):
 	"""
@@ -602,13 +573,8 @@ class phone(simple):
 	"""
 	min_length=1
 	max_length=16
-	_re = re.compile('(?u)[a-zA-Z0-9._ ()\\\/+-]*$')
-
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		else:
-			raise univention.admin.uexceptions.valueError, _("Value must not contain anything other than digits, letters, dots, brackets, slash, plus, or minus!")
+	regex = re.compile('(?u)[a-zA-Z0-9._ ()\\\/+-]*$')
+	error_message = _("Value must not contain anything other than digits, letters, dots, brackets, slash, plus, or minus!")
 
 class IA5string(string):
 	"""
@@ -675,14 +641,8 @@ class uid(simple):
 	"""
 	min_length=1
 	max_length=16
-	_re = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None and text != 'admin':
-			return text
-		else:
-			raise univention.admin.uexceptions.valueError, _("Value must not contain anything other than digits, letters, dots, dash or underscore, must be at least 2 characters long, must start and end with a digit or letter, and must not be admin!")
+	regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)')
+	error_message = _("Value must not contain anything other than digits, letters, dots, dash or underscore, must be at least 2 characters long, must start and end with a digit or letter, and must not be admin!")
 
 class uid_umlauts(simple):
 	name='uid'
@@ -717,17 +677,12 @@ class uid_umlauts_lower_except_first_letter(simple):
 class gid(simple):
 	min_length=1
 	max_length=32
-	_re = re.compile('(?u)^\w([\w -.]*\w)?$')
+	regex = re.compile( '(?u)^\w([\w -.]*\w)?$' )
+	error_message = _("Value may not contain other than numbers, letters and dots!")
 
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		else:
-			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots!")
-
-class sharePath(simple):
-	_re = re.compile('.*".*')
+class sharePath( simple ):
+	regex = re.compile('.*".*')
+	error_message = _('Value may not contain double quotes (")!')
 
 	@classmethod
 	def parse(self, text):
@@ -736,10 +691,8 @@ class sharePath(simple):
 		for path in ["tmp", "root", "proc", "dev", "sys"]:
 			if re.match("(^/%s$)|(^/%s/)" % (path, path), os.path.realpath(text)):
 				raise univention.admin.uexceptions.valueError, _('Path may not start with "%s" !') % path
-		if self._re.match(text) == None:
-			return text
-		else:
-			raise univention.admin.uexceptions.valueError, _('Value may not contain double quotes (")!')
+
+		return simple.parse( text )
 
 class passwd(simple):
 	min_length=8
@@ -754,6 +707,7 @@ class passwd(simple):
 			return text
 		else:
 			raise univention.admin.uexceptions.valueError, _('The password is too short, at least %d characters needed.') % self.min_length
+
 class userPasswd(simple):
 	@classmethod
 	def parse(self, text):
@@ -766,39 +720,21 @@ class hostName(simple):
 	min_length=0
 	max_length=0
 	# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
-	_re = re.compile("(^[a-zA-Z0-9])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$")
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		else:
-			raise univention.admin.uexceptions.valueError, _("This is not a valid hostname.")
+	regex = re.compile("(^[a-zA-Z0-9])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$")
+	error_message = _("This is not a valid hostname.")
 
 class DNS_Name(simple):
 	# Regular expression for DNS entries (based on RFC 1123)
-	_re = re.compile("(^[a-zA-Z0-9])(([a-zA-Z0-9-_.]*)([a-zA-Z0-9]$))?$")
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		else:
-			raise univention.admin.uexceptions.valueError, _("This is not a valid DNS entry name.")
+	regex = re.compile("(^[a-zA-Z0-9])(([a-zA-Z0-9-_.]*)([a-zA-Z0-9]$))?$")
+	error_message = _("This is not a valid DNS entry name.")
 
 class windowsHostName(simple):
 	min_length=0
 	max_length=0
 	# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
 	# windows hostnames are allowed to begin with digits
-	_re = re.compile('^([0-9]*)([a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		else:
-			raise univention.admin.uexceptions.valueError, _("Not a valid windows hostname!")
+	regex = re.compile('^([0-9]*)([a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$')
+	error_message = _("Not a valid windows hostname!")
 
 class ipAddress(simple):
 	min_length=7
@@ -939,13 +875,8 @@ class iso8601Date(simple):
 	'''
 
 	# regexp-source: http://regexlib.com/REDetails.aspx?regexp_id=2092
-	_re=re.compile('^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		raise univention.admin.uexceptions.valueError,_("The given date does not conform to iso8601, example: \"2009-01-01\".")
+	regex = re.compile('^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$')
+	error_message = _("The given date does not conform to iso8601, example: \"2009-01-01\".")
 
 class date(simple):
 	"""
@@ -1036,24 +967,12 @@ class dnsName(simple):
 		raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots!")
 
 class dnsName_umlauts(simple):
-	_re = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots!")
+	regex = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')
+	error_message = _("Value may not contain other than numbers, letters and dots!")
 
 class dnsNameDot(simple):
-	_re = re.compile('^[0-9a-zA-Z.-]+$')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-
-		raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots!")
-
+	regex = re.compile('^[0-9a-zA-Z.-]+$')
+	error_message = _("Value may not contain other than numbers, letters and dots!")
 
 class keyAndValue(complex):
 	delimiter = ' = '
@@ -1083,13 +1002,8 @@ class dnsSRVLocation(complex):
 	all_required=1
 
 class unixTime(simple):
-	_re=re.compile('^[0-9]+$')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		raise univention.admin.uexceptions.valueError,_("Not a valid time format")
+	regex = re.compile('^[0-9]+$')
+	error_message = _("Not a valid time format")
 
 class unixTimeInterval(simple):
 	_re=re.compile('^[0-9]+$')
@@ -1139,43 +1053,6 @@ class dhcpHWAddress(complex):
 	subsyntaxes=[(_('Type'), dhcpHWAddressHardware), (_('Address'), macAddress)]
 	all_required=1
 
-class printerName(simple):
-	min_length=1
-	max_length=16
-	_re = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9_-]*([a-zA-Z0-9]$)')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		else:
-			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters, underscore (\"_\") and minus (\"-\")!")
-
-class printerModel(complex):
-	subsyntaxes=[(_('Driver'), string), (_('Description'), string)]
-	all_required=1
-
-class PrinterDriverList( UDM_Attribute ):
-	udm_module = 'settings/printermodel'
-	attribute = 'printmodel'
-	is_complex = True
-	key_index = 0
-	label_index = 1
-	udm_filter = 'dn'
-	depends = 'producer'
-
-class PrinterProducerList( UDM_Objects ):
-	udm_modules = ( 'settings/printermodel', )
-	label = '%(name)s'
-
-class PrinterProtocol( UDM_Attribute ):
-	udm_module = 'settings/printeruri'
-	attribute = 'printeruri'
-	is_complex = False
-
-class PrinterURI( complex ):
-	subsyntaxes = ( ( _( 'Protocol' ), PrinterProtocol ), ( _( 'Destination' ), string ) )
-
 class packageList(string):
 	pass
 
@@ -1190,13 +1067,8 @@ class ldapDn(simple):
 	>>> ldapDn().parse('dc=foo,dc=bar,dc=test')
 	'dc=foo,dc=bar,dc=test'
 	"""
-	_re=re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		raise univention.admin.uexceptions.valueError,_("Not a valid LDAP DN")
+	regex = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
+	error_message = _("Not a valid LDAP DN")
 
 class UMC_OperationSet( UDM_Objects ):
 	udm_modules = ( 'settings/umc_operationset', )
@@ -1212,35 +1084,6 @@ class LDAP_Server( UDM_Objects ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave' )
 	label = '%(fqdn)s'
 	simple = True
-
-# FIXME old stuff
-class ldapServer(simple):
-	@classmethod
-	def parse(self, text):
-		return text
-
-class printerServer(simple):
-	@classmethod
-	def parse(self, text):
-		return text
-
-class kolabHomeServer(simple):
-	@classmethod
-	def parse(self, text):
-		return text
-
-class mailDomain(simple):
-	@classmethod
-	def parse(self, text):
-		return text
-
-class kolabInvitationPolicy(string):
-	searchFilter='(&(uid=*)(objectClass=posixAccount)(mailPrimaryAddress=*))'
-	description=_('Invitation Policy')
-
-	@classmethod
-	def parse(self, text):
-		return text
 
 class IMAP_Right( select ):
 	choices = (
@@ -1263,6 +1106,13 @@ class GroupName( UDM_Objects ):
 	udm_modules = ( 'groups/group', )
 	key = '%(name)s'
 	regex = re.compile( '^.+$' )
+	simple = True
+
+class UserName( UDM_Objects ):
+	udm_modules = ( 'users/user', )
+	key = '%(name)s'
+	regex = re.compile( '^.+$' )
+	simple = True
 
 class SharedFolderUserACL( complex ):
 	subsyntaxes = ( ( _( 'User' ), UserMailAddress ), ( _( 'Access right' ), IMAP_Right ) )
@@ -1292,29 +1142,15 @@ class ldapAttribute(simple):
 		return text
 
 class XResolution(simple):
-	_re=re.compile('^[0-9]+x[0-9]+$')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text):
-			return text
-		raise univention.admin.uexceptions.valueError,_("Value consists of two integer numbers separated by an \"x\" (e.g. \"1024x768\")")
+	regex = re.compile('^[0-9]+x[0-9]+$')
+	error_message = _("Value consists of two integer numbers separated by an \"x\" (e.g. \"1024x768\")")
 
 class XSync(simple):
-	_re=re.compile('^[0-9]+(-[0-9]+)?( +[0-9]+(-[0-9]+)?)*$')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text):
-			return text
-		raise univention.admin.uexceptions.valueError,_("Value consists of two integer numbers separated by a \"-\" (e.g. \"30-70\")")
+	regex = re.compile('^[0-9]+(-[0-9]+)?( +[0-9]+(-[0-9]+)?)*$')
+	error_message = _("Value consists of two integer numbers separated by a \"-\" (e.g. \"30-70\")")
 
 class XColorDepth(simple):
-	_re=re.compile('^[0-9]+$')
-
-	@classmethod
-	def parse(self, text):
-		return text
+	regex = re.compile('^[0-9]+$')
 
 class XModule(select):
 	choices=[
@@ -1624,58 +1460,49 @@ class soundModule(select):
 		( 'snd-opl3sa2', 'Yamaha OPL3SA2+' ),
 	]
 
-class groupDn( UDM_Objects ):
+class GroupDN( UDM_Objects ):
 	udm_modules = ( 'groups/group', )
 
-class userDn( UDM_Objects ):
+class UserDN( UDM_Objects ):
 	udm_modules = ( 'users/user', )
 
-class hostDn( UDM_Objects ):
+class HostDN( UDM_Objects ):
 	udm_modules = ( 'computers/computer', )
 
-class userID(integer):
-	searchFilter='(&(uid=*)(objectClass=posixAccount)(!(objectClass=univentionHost)))'
-	description=_('User ID')
+class UserID( UDM_Objects ):
+	udm_modules = ( 'users/user', )
+	key = '%(uidNumber)s'
+	label = '%(username)s'
+	regex = re.compile( '^[0-9]+$' )
+	static_values = ( ( '0', 'root' ), )
 
-class groupID(integer):
-	searchFilter='(&(cn=*)(objectClass=posixGroup))'
-	description=_('Group ID')
+class GroupID( UDM_Objects ):
+	udm_modules = ( 'groups/group', )
+	key = '%(gidNumber)s'
+	label = '%(name)s'
+	regex = re.compile( '^[0-9]+$' )
+	static_values = ( ( '0', 'root' ), )
 
-class UCS_Server( UDM_Objects ):
-	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
+class IComputer_FQDN( UDM_Objects ):
+	udm_modules = ()
 	key = '%(fqdn)s'
 	label = '%(fqdn)s'
-	empty_value = True
 	regex = re.compile( '(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z]{2,})$)' ) #'(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
 	error_message = _( 'Not a valid FQDN' )
+	simple = True
 
-class windowsTerminalServer(string):
-	searchFilter='(&(cn=*)(objectClass=univentionWindows))'
-	description=_('Windows Terminal Server Hosts')
+class DomainController( IComputer_FQDN ):
+	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave' )
 
-class linuxTerminalServer(string):
-	searchFilter='(&(cn=*)(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)))'
-	description=_('Linux Terminal Server Hosts')
+class Windows_Server( IComputer_FQDN ):
+	udm_modules = ( 'computers/windows', 'computers/windows_domaincontroller' )
 
-class authenticationServer(string):
-	searchFilter='(&(cn=*)(objectClass=univentionDomainController))'
-	description=_('Authentication Server')
+class UCS_Server( IComputer_FQDN ):
+	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
 
-class fileServer(string):
-	searchFilter='(&(cn=*)(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)))'
-	description=_('File Server')
-
-class repositoryServer(string):
-	pass
-
-class policyPrinterServer(string):
-	pass
-
-class kdeProfiles(string):
-	pass
-
-class genericSelect(string):
-	pass
+class KDE_Profile( UDM_Attribute ):
+	udm_module = 'settings/default'
+	attribute = 'defaultKDEProfiles'
 
 class primaryGroup(ldapDn):
 	searchFilter='objectClass=posixGroup'
@@ -1748,9 +1575,13 @@ class dhcpEntry( complex ):
 	def parse( self, value ):
 		return value
 
-class share(ldapDnOrNone):
-	searchFilter='(objectClass=univentionShare)'
-	description=_('Share')
+class WritableShare( UDM_Objects ):
+	udm_modules = ( 'shares/share', )
+	udm_filter = 'writeable=1'
+
+# class share(ldapDnOrNone):
+# 	searchFilter='(objectClass=univentionShare)'
+# 	description=_('Share')
 
 class AllowDenyIgnore(select):
 	choices=[
@@ -2295,12 +2126,7 @@ class MinuteSimple(select):
 		('55', '55'),
 	]
 
-class fileMode(simple):
-	@classmethod
-	def parse(self, text):
-		return text
-
-class directoryMode(fileMode):
+class UNIX_AccessRight( simple ):
 	pass
 
 class sambaGroupType(select):
@@ -2310,9 +2136,8 @@ class sambaGroupType(select):
 		('5', _('Well-Known Group'))
 	]
 
-class sambaLogonHours(string):
-	pass
-
+class SambaLogonHours( MultiSelect ):
+	choices = [ ( idx *24 + hour, '%s %d-%d' % (day, hour, hour +1) ) for idx, day in ( ( 0, _( 'Sun' ) ), ( 1, _( 'Mon' ) ), ( 2, _( 'Tue' ) ), ( 3, _( 'Wed' ) ), ( 4, _( 'Thu' ) ), ( 5, _( 'Fri' ) ), ( 6, _( 'Sat' ) ) ) for hour in range( 24 ) ]
 
 class SambaPrivileges( select ):
 	empty_value = True
@@ -2328,30 +2153,18 @@ class SambaPrivileges( select ):
 		( 'SeDiskOperatorPrivilege', _( 'Manage disk shares' ) ),
 	]
 
-class printQuotaGroup(complex):
-	searchFilter='(&(cn=*)(objectClass=posixGroup))'
-	subsyntaxes=[(_('Soft limit'), integer), (_('Hard limit'), integer), (_('Group'), string)]
-	all_required=0
+class ServiceMail( UDM_Objects ):
+	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
+	udm_filter = 'service=SMTP'
 
-class printQuotaUser(complex):
-	searchFilter='(&(uid=*)(objectClass=posixAccount)(!(objectClass=univentionHost)))'
-	subsyntaxes=[(_('Soft limit'), integer), (_('Hard limit'), integer), (_('User'), string)]
-	all_required=0
+class ServicePrint( UDM_Objects ):
+	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
+	udm_filter = 'service=Print'
 
-class printQuotaGroupsPerUser(complex):
-	searchFilter='(&(uid=*)(objectClass=posixAccount)(!(objectClass=univentionHost)))'
-	subsyntaxes=[(_('Soft limit'), integer), (_('Hard limit'), integer), (_('Group'), string)]
-	all_required=0
-
-
-class printerShare(string):
-	pass
-
-class spoolHost(string):
-	pass
-
-class service(string):
-	pass
+class Service( UDM_Objects ):
+	udm_modules = ( 'settings/service', )
+	key = '%(name)s'
+	label = '%(name)s'
 
 class nfssync(select):
 	choices=[
@@ -2637,6 +2450,65 @@ class locked( select ):
 		( 'windows', _( 'Locked Windows/Kerberos only' ) ),
 		( 'posix', _( 'Locked POSIX/LDAP only' ) ),
 	)
+
+# printing stuff
+
+class Printers( UDM_Objects ):
+	udm_modules = ( 'shares/printer', )
+	depends = 'spoolHost'
+	simple = True
+	key = '%(name)s'
+
+	@classmethod
+	def udm_filter( self, options ):
+		return 'spoolHost=%s' % '|'.join( options[ Printers.depends ] )
+
+class PrintQuotaGroup( complex ):
+	subsyntaxes = ( ( _( 'Soft limit' ), integer ), ( _( 'Hard limit' ), integer ), ( _( 'Group' ), GroupName ) )
+
+class PrintQuotaGroupPerUser( complex ):
+	subsyntaxes = ( ( _( 'Soft limit' ), integer ), ( _( 'Hard limit' ), integer ), ( _( 'Group' ), GroupName ) )
+
+class PrintQuotaUser( complex ):
+	subsyntaxes = ( ( _( 'Soft limit' ), integer ), ( _( 'Hard limit' ), integer ), ( _( 'User' ), UserName ) )
+
+class printerName(simple):
+	min_length=1
+	max_length=16
+	_re = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9_-]*([a-zA-Z0-9]$)')
+
+	@classmethod
+	def parse(self, text):
+		if self._re.match(text) != None:
+			return text
+		else:
+			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters, underscore (\"_\") and minus (\"-\")!")
+
+class printerModel(complex):
+	subsyntaxes=[(_('Driver'), string), (_('Description'), string)]
+	all_required=1
+
+class PrinterDriverList( UDM_Attribute ):
+	udm_module = 'settings/printermodel'
+	attribute = 'printmodel'
+	is_complex = True
+	key_index = 0
+	label_index = 1
+	udm_filter = 'dn'
+	depends = 'producer'
+
+class PrinterProducerList( UDM_Objects ):
+	udm_modules = ( 'settings/printermodel', )
+	label = '%(name)s'
+
+class PrinterProtocol( UDM_Attribute ):
+	udm_module = 'settings/printeruri'
+	attribute = 'printeruri'
+	is_complex = False
+
+class PrinterURI( complex ):
+	subsyntaxes = ( ( _( 'Protocol' ), PrinterProtocol ), ( _( 'Destination' ), string ) )
+
 
 if __name__ == '__main__':
 	import doctest

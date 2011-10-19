@@ -74,7 +74,7 @@ property_descriptions={
 	'repositoryServer': univention.admin.property(
 			short_description=_('Repository server'),
 			long_description='',
-			syntax=univention.admin.syntax.repositoryServer,
+			syntax=univention.admin.syntax.UCS_Server,
 			multivalue=0,
 			options=[],
 			required=0,

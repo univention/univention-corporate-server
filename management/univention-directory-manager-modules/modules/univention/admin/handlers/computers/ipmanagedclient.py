@@ -171,7 +171,7 @@ property_descriptions={
 	'groups': univention.admin.property(
 			short_description=_('Groups'),
 			long_description='',
-			syntax=univention.admin.syntax.groupDn,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=1,
 			options=[],
 			required=0,

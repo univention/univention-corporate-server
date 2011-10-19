@@ -91,7 +91,7 @@ property_descriptions={
 	'allowedEmailUsers': univention.admin.property(
 			short_description=_('Allowed e-mail users'),
 			long_description='',
-			syntax=univention.admin.syntax.userDn,
+			syntax=univention.admin.syntax.UserDN,
 			multivalue=1,
 			required=0,
 			may_change=1,
@@ -101,7 +101,7 @@ property_descriptions={
 	'allowedEmailGroups': univention.admin.property(
 			short_description=_('Allowed e-mail groups'),
 			long_description='',
-			syntax=univention.admin.syntax.groupDn,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=1,
 			required=0,
 			may_change=1,

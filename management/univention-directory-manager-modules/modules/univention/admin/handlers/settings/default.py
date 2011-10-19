@@ -131,26 +131,6 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 		),
-	'defaultKolabHomeServer': univention.admin.property(
-			short_description=_("Default Kolab Home Server"),
-			long_description='',
-			syntax=univention.admin.syntax.kolabHomeServer,
-			multivalue=0,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			identifies=0
-		),
-	'defaultScalixMailnode': univention.admin.property(
-			short_description=_("Default Scalix Mailnode"),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			required=0,
-			dontsearch=1,
-			may_change=1,
-			identifies=0
-		),
 }
 
 layout = [
@@ -174,10 +154,6 @@ layout = [
 			"defaultKdeProfiles",
 		] ),
 	] ),
-	Tab(_('Groupware'),_('Groupware'), advanced = True, layout = [
-		"defaultKolabHomeServer",
-		"defaultScalixMailnode",
-		] ),
 	]
 
 mapping=univention.admin.mapping.mapping()
@@ -189,8 +165,6 @@ mapping.register('defaultDomainControllerGroup', 'univentionDefaultDomainControl
 mapping.register('defaultMemberServerGroup', 'univentionDefaultMemberserverGroup', None, univention.admin.mapping.ListToString)
 mapping.register('defaultClientGroup', 'univentionDefaultClientGroup', None, univention.admin.mapping.ListToString)
 mapping.register('defaultKdeProfiles', 'univentionDefaultKdeProfiles' )
-mapping.register('defaultKolabHomeServer', 'univentionDefaultKolabHomeServer', None, univention.admin.mapping.ListToString)
-mapping.register('defaultScalixMailnode', 'univentionDefaultScalixMailnode', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
@@ -209,7 +183,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'univentionDefault'] ) ]
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
