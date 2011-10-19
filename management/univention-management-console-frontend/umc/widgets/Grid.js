@@ -797,10 +797,11 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		//		Disables the specified items.
 		// ids: String|String[]
 		//		Item ID or list of IDs.
-		// disable: Boolean
+		// disable: Boolean?
 		//		Disable or enable the specified items.
 
 		var ids = umc.tools.stringOrArray(_ids);
+		disable = undefined === disable ? true : disable;
 		dojo.forEach(ids, function(id) {
 			this._disabledIDs[id] = disable;
 		}, this);
