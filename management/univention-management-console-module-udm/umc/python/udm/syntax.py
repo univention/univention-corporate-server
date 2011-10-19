@@ -74,7 +74,8 @@ __widgets = (
 	Widget( 'TextBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', subclasses = False ),
 	Widget( None, udm_syntax.UDM_Objects, '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and len( syn.udm_modules ) == 1 and syn.simple == False and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
 	Widget( 'ComboBox', udm_syntax.UDM_Attribute, '' ),
-	Widget( None, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn, udm_syntax.module ), '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
+	Widget( None, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
+	Widget( 'UnixAccessRights', udm_syntax.UNIX_AccessRight, '000' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
 	Widget( None, udm_syntax.complex, None, widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'MultiInput' or 'ComplexInput' ),
 	)
@@ -92,11 +93,6 @@ def choices( syntax, udm_property ):
 			opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__name__ } }
 	elif isinstance( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ) or inspect.isclass( syntax ) and issubclass( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
 		opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : inspect.isclass( syntax ) and syntax.__name__ or syntax.__class__.__name__ } }
-	elif isinstance( syntax, udm_syntax.module ):
-		opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__, 'options' : { 'module' : syntax.module_type, 'filter' : str( syntax.filter ) } } }
-	elif inspect.isclass( syntax ) and issubclass( syntax, udm_syntax.select ) and hasattr( syntax, 'udm_modules' ):
-		opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.name } }
-
 	elif isinstance( syntax, udm_syntax.LDAP_Search ):
 		opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__, 'options' : { 'syntax' : syntax.name, 'filter' : syntax.filter, 'viewonly' : syntax.viewonly, 'base' : getattr( syntax, 'base', '' ), 'value' : syntax.value, 'attributes' : syntax.attributes, 'empty' : syntax.addEmptyValue } } }
 

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.181-1) unstable; urgency=low
+
+  * adapt frontend to fixes in syntax classes; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Oct 2011 15:20:22 +0200
+
 univention-management-console-module-udm (1.0.180-1) unstable; urgency=low
 
   * fixed typo in udm/containers; Bug #23783
