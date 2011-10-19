@@ -93,6 +93,10 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 	_footerLegend: null,
 
+	// internal list of all disabled items... when data has been loaded, we need to
+	// disable these items again
+	_disabledIDs: null,
+
 	_iconFormatter: function(valueField, iconField) {
 		// summary:
 		//		Generates a formatter functor for a given value and icon field.
@@ -120,6 +124,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		this._dataStore = new dojo.data.ObjectStore({
 			objectStore: this.moduleStore
 		});
+
+		this._disabledIDs = {};
 	},
 
 	_getHeaderWidth: function(text) {
@@ -450,12 +456,14 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			this.standby(false);
 			this._grid.selection.clear();
 			this._updateFooterContent();
+			this._updateDisabledItems();
 			this.onFilterDone(true);
 		});
 		this.connect(this._grid, "_onFetchError", function() {
 			this.standby(false);
 			this._grid.selection.clear();
 			this._updateFooterContent();
+			this._updateDisabledItems();
 			this.onFilterDone(false);
 		});
 
@@ -761,6 +769,17 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		return dojo.getObject('item', false, this._grid._by_idty[id]);
 	},
 
+	_updateDisabledItems: function() {
+		umc.tools.forIn(this._disabledIDs, function(id, disabled) {
+			if (disabled) {
+				var idx = this.getItemIndex(id);
+				if (idx >= 0) {
+					this._grid.rowSelectCell.setDisabled(idx, disabled);
+				}
+			}
+		}, this);
+	},
+
 	setDisabledItem: function(_ids, disable) {
 		// summary:
 		//		Disables the specified items.
@@ -771,11 +790,10 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 		var ids = umc.tools.stringOrArray(_ids);
 		dojo.forEach(ids, function(id) {
-			var idx = this.getItemIndex(id);
-			if (idx >= 0) {
-				this._grid.rowSelectCell.setDisabled(idx, disable);
-			}
+			this._disabledIDs[id] = disable;
 		}, this);
+		this._updateDisabledItems();
+		this._grid.render();
 	},
 
 	getDisabledItem: function(_ids) {
@@ -799,6 +817,14 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			return result[0]; // Boolean
 		}
 		return result; // Boolean[]
+	},
+
+	clearDisabledItems: function() {
+		// summary:
+		//		Enables all previously disabled items and clears internal cache.a
+		this._disabledIDs = {};
+		this._updateDisabledItems();
+		this._grid.render();
 	},
 
 	onFilterDone: function(success) {

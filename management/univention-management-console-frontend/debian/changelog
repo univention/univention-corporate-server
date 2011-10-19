@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.104-1) unstable; urgency=low
+
+  * Grid: fixed problems with setDisabledItem() (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 19 Oct 2011 13:32:57 +0200
+
 univention-management-console-frontend (1.0.103-1) unstable; urgency=low
 
   * _SelectMixin: fixed blocking of concurrent requests
