@@ -66,13 +66,40 @@ def open_idmap():
 	return idmap
 
 
+def modrdn_idmap_entry(old_sambaSID, new_sambaSID, type_string):
+	## need to open idmap here in case it has been removed since the module  was loaded
+	idmap = open_idmap()
+	if not idmap:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
+				"%s: entry for %s could not be updated" % (name, sambaSID) )
+		return False
+
+	try:
+		res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % old_sambaSID, attrs = ["objectSid", "type"])
+		record = res.msgs[0]
+
+		if record["type"][0] != type_string:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
+				"%s: %s entry type %s does not match object type %s" % (name, old_sambaSID, record["type"][0], type_string) )
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
+				"%s: skipping rename of %s to %s" % (name, old_sambaSID, new_sambaSID) )
+			return False
+
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS,
+			"%s: renaming entry for %s to %s" % (name, old_sambaSID, new_sambaSID) )
+
+		idmap.rename(str(record.dn), "CN=%s" % new_sambaSID)
+
+	except ldb.LdbError, (enum, estr):
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, estr)
+
 def add_modify_idmap_entry(sambaSID, xidNumber, type_string):
 	## need to open idmap here in case it has been removed since the module  was loaded
 	idmap = open_idmap()
 	if not idmap:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
 				"%s: entry for %s could not be updated" % (name, sambaSID) )
-		return
+		return False
 
 	try:
 		idmap_type = {
@@ -127,7 +154,7 @@ def remove_idmap_entry(sambaSID, xidNumber, type_string):
 	if not idmap:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
 				"%s: entry for %s could not be removed" % (name, sambaSID) )
-		return
+		return False
 
 	try:
 		res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % sambaSID, attrs = ["objectSid", "xidNumber", "type"])
@@ -161,11 +188,17 @@ def handler(dn, new, old):
 
 		new_xid = new.get(xid_attr, [''] )[0]
 		if new_xid:
+			new_sid = new['sambaSID'][0]
 			if old:
+				old_sid = old['sambaSID'][0]
+				if new_sid != old_sid:
+					modrdn_idmap_entry(old_sid, new_sid, xid_type)
 				old_xid = old.get(xid_attr, [''] )[0]
-				if new_xid == old_xid:
-					return
-			add_modify_idmap_entry(new['sambaSID'][0], new_xid, xid_type)
+				if new_xid != old_xid:
+					add_modify_idmap_entry(new_sid, new_xid, xid_type)
+			else:
+				add_modify_idmap_entry(new_sid, new_xid, xid_type)
+
 	# elif old:
 	# 	if 'sambaSamAccount' in old['objectClass']:
 	# 		xid_attr = 'uidNumber'
