@@ -100,37 +100,37 @@ remove_port ()
 }
 
 if [ -n "$slapd_port" ]; then
-	univention-config-registry set slapd/port="$(remove_port "$slapd_port" 389)" >>$LOGFILE 2>&1
+	univention-config-registry set slapd/port="$(remove_port "$slapd_port" 389)" 2>&1 | tee -a "$LOGFILE"
 fi
 if [ -n "$slapd_port_ldaps" ]; then
-	univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)" >>$LOGFILE 2>&1
+	univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)" 2>&1 | tee -a "$LOGFILE"
 fi
 if [ "$ldap_server_name" = "$hostname.$domainname" ]; then
-	univention-config-registry set ldap/server/port="7389" >>$LOGFILE 2>&1
+	univention-config-registry set ldap/server/port="7389" 2>&1 | tee -a "$LOGFILE"
 fi
 if [ "$ldap_master" = "$hostname.$domainname" ]; then
-	univention-config-registry set ldap/master/port="7389" >>$LOGFILE 2>&1
+	univention-config-registry set ldap/master/port="7389" 2>&1 | tee -a "$LOGFILE"
 fi
 
 ## restart processes with adjusted ports
 stop_udm_cli_server
-/etc/init.d/slapd restart >>$LOGFILE 2>&1
-/etc/init.d/univention-directory-listener restart >>$LOGFILE 2>&1
-/etc/init.d/univention-management-console-server restart >>$LOGFILE 2>&1
+/etc/init.d/slapd restart 2>&1 | tee -a "$LOGFILE"
+/etc/init.d/univention-directory-listener restart 2>&1 | tee -a "$LOGFILE"
+/etc/init.d/univention-management-console-server restart 2>&1 | tee -a "$LOGFILE"
 
 ## Provision Samba4
 eval "$(univention-config-registry shell)"
 
 if [ -x /etc/init.d/samba ]; then
-	/etc/init.d/samba stop >>$LOGFILE 2>&1
+	/etc/init.d/samba stop 2>&1 | tee -a "$LOGFILE"
 fi
 if [ -x /etc/init.d/winbind ]; then
-	/etc/init.d/winbind stop >>$LOGFILE 2>&1
+	/etc/init.d/winbind stop 2>&1 | tee -a "$LOGFILE"
 fi
-univention-config-registry set samba/autostart=no winbind/autostart=no >>$LOGFILE 2>&1
+univention-config-registry set samba/autostart=no winbind/autostart=no 2>&1 | tee -a "$LOGFILE"
 
-/etc/init.d/heimdal-kdc stop >>$LOGFILE 2>&1
-univention-config-registry set kerberos/autostart=no >>$LOGFILE 2>&1
+/etc/init.d/heimdal-kdc stop 2>&1 | tee -a "$LOGFILE"
+univention-config-registry set kerberos/autostart=no 2>&1 | tee -a "$LOGFILE"
 
 if [ ! -e /usr/modules ]; then
 	ln -s /usr/lib /usr/modules		# somehow MODULESDIR is set to /usr/modules in samba4 source despite --enable-fhs
@@ -147,7 +147,7 @@ fi
 /usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$S3_DOMAIN_SID" \
 					--function-level="$samba4_function_level" \
 					--adminpass="$adminpw" --server-role='domain controller'	\
-					--machinepass="$(</etc/machine.secret)" >>$LOGFILE 2>&1
+					--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
 
 if [ ! -d /etc/phpldapadmin ]; then
 	mkdir /etc/phpldapadmin
