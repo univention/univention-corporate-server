@@ -1,3 +1,9 @@
+univention-installer (7.0.113-1) unstable; urgency=low
+
+  * fixed length of SLAAC checkbox text (Bug #23836)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 19 Oct 2011 17:53:14 +0200
+
 univention-installer (7.0.112-1) unstable; urgency=low
 
   * always set eth*_acceptra in profile (Bug #22872)

@@ -471,7 +471,7 @@ class object(content):
 			val_ipv6ra_cb = []
 			if self.container.get('%s_acceptra' % iface.name) == 'true':
 				val_ipv6ra_cb = [0]
-			card.add_elem('CB_IPv6RA', checkbox(val_ipv6ra, 10, 3, 50, 2, val_ipv6ra_cb, position_parent=card))
+			card.add_elem('CB_IPv6RA', checkbox(val_ipv6ra, 10, 3, 60, 2, val_ipv6ra_cb, position_parent=card))
 
 			# IPv6 address
 			val_ipv6addr = self.container.get('%s_ip6' % iface.name, '')
