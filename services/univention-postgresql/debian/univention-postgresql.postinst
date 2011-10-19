@@ -33,7 +33,7 @@
 # configure firewall
 ucr set security/packetfilter/package/univention-postgresql/tcp/5432/all="ACCEPT" \
 		security/packetfilter/package/univention-postgresql/tcp/5432/all/en="postgresql"
-invoke-rc.d univention-firewall restart
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 #DEBHELPER#
 

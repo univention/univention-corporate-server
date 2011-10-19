@@ -99,7 +99,7 @@ create_logfile /var/log/univention/notifier.log "root:adm" 640
 # configure firewall
 ucr set security/packetfilter/package/univention-directory-notifier/tcp/6669/all="ACCEPT" \
 		security/packetfilter/package/univention-directory-notifier/tcp/6669/all/en="Univention Directory Notifier"
-invoke-rc.d univention-firewall restart
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 call_joinscript 02univention-directory-notifier.inst
 

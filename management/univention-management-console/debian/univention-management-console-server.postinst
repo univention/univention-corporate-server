@@ -54,7 +54,7 @@ univention-config-registry set \
 # configure firewall
 ucr set security/packetfilter/package/univention-management-console-server/tcp/6670/all="ACCEPT" \
 		security/packetfilter/package/univention-management-console-server/tcp/6670/all/en="UMC"
-invoke-rc.d univention-firewall restart
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 # ucslint needs this
 exit 0

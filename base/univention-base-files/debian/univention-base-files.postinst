@@ -186,6 +186,6 @@ ucr set security/packetfilter/package/univention-base-files/tcp/22/all=ACCEPT \
 	security/packetfilter/package/univention-base-files/tcp/22/all/en="SSH" \
 	security/packetfilter/package/univention-base-files/tcp/37/all=ACCEPT \
 	security/packetfilter/package/univention-base-files/tcp/37/all/en="time"
-invoke-rc.d univention-firewall restart
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 exit 0

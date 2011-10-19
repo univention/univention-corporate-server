@@ -54,8 +54,8 @@ ucr set security/packetfilter/package/univention-nfs/tcp/111/all="ACCEPT" \
 		security/packetfilter/package/univention-nfs/tcp/32765:32769/all="ACCEPT" \
 		security/packetfilter/package/univention-nfs/tcp/32765:32769/all/en="NFS related RPC daemons" \
 		security/packetfilter/package/univention-nfs/udp/32765:32769/all="ACCEPT" \
-		security/packetfilter/package/univention-nfs/udp/32765:32769/all/en="NFS related RPC daemons" \
-invoke-rc.d univention-firewall restart
+		security/packetfilter/package/univention-nfs/udp/32765:32769/all/en="NFS related RPC daemons"
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 
 if [ "$1" = "configure" ]; then

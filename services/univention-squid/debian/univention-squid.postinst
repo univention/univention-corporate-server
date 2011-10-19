@@ -62,7 +62,7 @@ ucr set squid/debug/level?ALL,1
 # configure firewall
 ucr set security/packetfilter/package/univention-squid/tcp/3128/all="ACCEPT" \
 		security/packetfilter/package/univention-squid/tcp/3128/all/en="HTTP proxy"
-invoke-rc.d univention-firewall restart
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 call_joinscript 79univention-squid.inst
 

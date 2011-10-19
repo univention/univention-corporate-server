@@ -68,7 +68,7 @@ ucr set dansguardian/virusscanner?clamav
 # configure firewall
 ucr set security/packetfilter/package/univention-dansguardian/tcp/3128/all="ACCEPT" \
 		security/packetfilter/package/univention-dansguardian/tcp/3128/all/en="HTTP proxy (dansguardian)"
-invoke-rc.d univention-firewall restart
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 
 exit 0

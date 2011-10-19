@@ -48,7 +48,7 @@ ucr set security/packetfilter/package/univention-heimdal-kdc/tcp/88/all="ACCEPT"
 		security/packetfilter/package/univention-heimdal-kdc/udp/88/all/en="kerberos" \
 		security/packetfilter/package/univention-heimdal-kdc/tcp/749/all="ACCEPT" \
 		security/packetfilter/package/univention-heimdal-kdc/tcp/749/all/en="kadmin"
-invoke-rc.d univention-firewall restart
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 
 # fix for http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=470404

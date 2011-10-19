@@ -146,6 +146,6 @@ ucr set security/packetfilter/package/univention-mail-cyrus/tcp/110/all="ACCEPT"
 		security/packetfilter/package/univention-mail-cyrus/tcp/995/all/en="POP3S" \
 		security/packetfilter/package/univention-mail-cyrus/tcp/2000/all="ACCEPT" \
 		security/packetfilter/package/univention-mail-cyrus/tcp/2000/all/en="Sieve"
-invoke-rc.d univention-firewall restart
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 exit 0

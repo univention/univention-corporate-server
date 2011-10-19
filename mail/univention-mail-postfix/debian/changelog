@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.28-3) unstable; urgency=low
+
+  * updated postinst (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 19 Oct 2011 17:57:36 +0200
+
 univention-mail-postfix (6.0.28-2) unstable; urgency=low
 
   * changed Dependency to Recommends for univention-spamassassin and

@@ -38,6 +38,6 @@ ucr set \
 	security/packetfilter/package/univention-base-files/tcp/20/all/en="FTP" \
 	security/packetfilter/package/univention-base-files/tcp/21/all=ACCEPT \
 	security/packetfilter/package/univention-base-files/tcp/21/all/en="FTP"
-invoke-rc.d univention-firewall restart
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 exit 0

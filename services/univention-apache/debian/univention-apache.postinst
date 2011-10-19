@@ -53,7 +53,7 @@ ucr set security/packetfilter/package/univention-apache/tcp/80/all=ACCEPT \
         security/packetfilter/package/univention-apache/tcp/80/all/en="HTTP" \
         security/packetfilter/package/univention-apache/tcp/443/all=ACCEPT \
 		security/packetfilter/package/univention-apache/tcp/443/all/en="HTTPS"
-invoke-rc.d univention-firewall restart
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 eval "$(univention-config-registry shell)"
 

@@ -51,7 +51,7 @@ ucr set security/packetfilter/package/univention-printserver/tcp/631/all="ACCEPT
 		security/packetfilter/package/univention-printserver/tcp/631/all/en="IPP" \
 		security/packetfilter/package/univention-printserver/udp/631/all="ACCEPT" \
 		security/packetfilter/package/univention-printserver/udp/631/all/en="IPP"
-invoke-rc.d univention-firewall restart
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 call_joinscript 79univention-printserver.inst
 

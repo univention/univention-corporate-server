@@ -98,7 +98,7 @@ ucr set security/packetfilter/package/univention-samba4/tcp/389/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/tcp/445/all/en="microsoft-ds (Samba)" \
 		security/packetfilter/package/univention-samba4/udp/445/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/udp/445/all/en="microsoft-ds (Samba)"
-invoke-rc.d univention-firewall restart
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 if [ "$1" = "configure" ]; then
 
