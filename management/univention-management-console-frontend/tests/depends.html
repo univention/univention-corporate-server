@@ -201,6 +201,23 @@
 					depends: 'MultiSelect5-1', 
 					dynamicValues: valuesAsync, 
 					dynamicOptions: { _func: function() { return form.getWidget('MultiSelect5-1').get('value'); } } 
+				}, {
+					type: 'Text',
+					label: '',
+					name: 'test6',
+					content: '<h1>Test case: MultiInput w/ComboBox &amp; staticValues</h1>'
+				}, {
+					type: 'MultiInput',
+					name: 'MultiInput6',
+					subtypes: [{
+						type: 'TextBox',
+						label: 'Test'
+					}, {
+						type: 'ComboBox',
+						staticValues: [ 'house', 'car', 'yacht' ],
+						label: 'Test2'
+					}],
+					label: 'MultiInput'
 				}];
 				var buttons = [{
 					name: 'submit',
@@ -215,7 +232,8 @@
 						'test2', ['MultiInput2-1', 'MultiInput2-2'],
 						'test3', ['MultiInput3-1', 'MultiInput3-2'],
 						'test4', ['MultiInput4-1', 'ComboBox4-1'],
-						'test5', ['MultiSelect5-1', 'ComboBox5-1']
+						'test5', ['MultiSelect5-1', 'ComboBox5-1'],
+						'test6', 'MultiInput6'
 					]
 				});
 				form.startup();

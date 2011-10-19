@@ -64,6 +64,8 @@ dojo.declare("umc.widgets.Form", [
 	// the widget's class name as CSS class
 	'class': 'umcForm',
 
+	'style': 'overflow: auto;',
+
 	_widgets: null,
 
 	_buttons: null,

@@ -368,13 +368,15 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 			dojo.mixin(params, this.dynamicOptions);
 		}
 
-		// get the dynamic values, block concurrent events for value loading
-		var func = umc.tools.stringOrFunction(this.dynamicValues, this.umcpCommand);
-		var deferredOrValues = this._deferredOrValues ? null : func(params);
-		if (!deferredOrValues && this.dynamicValues) {
+		// block concurrent events for value loading
+		if (this._deferredOrValues) {
 			// another request is pending
 			return;
 		}
+
+		// get dynamic values
+		var func = umc.tools.stringOrFunction(this.dynamicValues, this.umcpCommand);
+		var deferredOrValues = func(params);
 		this._deferredOrValues = deferredOrValues;
 
 		// make sure we have an array or a dojo.Deferred object

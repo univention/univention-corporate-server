@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.103-1) unstable; urgency=low
+
+  * _SelectMixin: fixed blocking of concurrent requests
+  * extended tests/depends.html
+  * Form: set overflow=auto to allow scrollbars for forms
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 19 Oct 2011 09:22:56 +0200
+
 univention-management-console-frontend (1.0.102-2) unstable; urgency=low
 
   * version bump (Bug #23797)
