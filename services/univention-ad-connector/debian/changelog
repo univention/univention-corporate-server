@@ -1,3 +1,10 @@
+univention-ad-connector (6.0.14-1) unstable; urgency=low
+
+  * Don't show first traceback if an object was dropped because it might
+    be the parent object (Bug #22861)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Oct 2011 12:10:15 +0200
+
 univention-ad-connector (6.0.13-1) unstable; urgency=low
 
   * Merged S4 connector changes from r27948

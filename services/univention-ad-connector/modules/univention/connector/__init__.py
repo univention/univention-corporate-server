@@ -457,7 +457,7 @@ class ucs:
 		'''
 		return dn.split(',',1)[1]
 
-	def __sync_file_from_ucs(self, filename, append_error=''):
+	def __sync_file_from_ucs(self, filename, append_error='', traceback_level=ud.WARN):
 		_d=ud.function('ldap._sync_file_from_ucs')
 		'''
 		sync changes from UCS stored in given file
@@ -575,7 +575,7 @@ class ucs:
 						raise
 					except: # FIXME: which exception is to be caught?
 						self._save_rejected_ucs(filename, dn)
-						self._debug_traceback(ud.WARN, "sync failed, saved as rejected")
+						self._debug_traceback(traceback_level, "sync failed, saved as rejected")
 						return False
 				else:
 					return True
@@ -730,9 +730,11 @@ class ucs:
 		# Create a dictonary with all DNs
 		self._generate_dn_list_from(files)
 
+		# We may dropped the parent object, so don't show the traceback in any case
+		traceback_level = ud.WARN
+
 		for listener_file in files:
 			sync_successfull = False
-			delete_file = False
 			filename = os.path.join(self.listener_dir, listener_file)
 			if not filename == "%s/tmp" % self.baseConfig['%s/ad/listener/dir' % self.CONFIGBASENAME]:
 				if not filename in self.rejected_files:
@@ -748,18 +750,24 @@ class ucs:
 					if len(self.dn_list.get(dn, [])) < 2:
 						# If the list contains more then one file, the DN will be synced later
 						try:
-							sync_successfull = self.__sync_file_from_ucs(filename)
+							sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
 						except (ldap.SERVER_DOWN, SystemExit):
 							raise
 						except: # FIXME: which exception is to be caught?
 							self._save_rejected_ucs(filename, 'unknown')
-							self._debug_traceback(ud.WARN,
-											 	"sync failed, saved as rejected \n\t%s" % filename)					
+							# We may dropped the parent object, so don't show this warning
+							self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)					
 						if sync_successfull:
 							os.remove(os.path.join(self.listener_dir,listener_file))
 							change_counter += 1
+						elif traceback_level == ud.INFO:
+							try:
+								ud.debug(ud.LDAP, ud.PROCESS, 'Saved DN %s as rejected. Will be synced in next sync step.' % (dn))
+							except:
+								ud.debug(ud.LDAP, ud.PROCESS, 'Saved as rejected. Will be synced in next sync step.' )
 					else:
 						os.remove(os.path.join(filename))
+						traceback_level = ud.INFO
 						# Show the drop process message only if in write or sync mode
 						try:
 							ud.debug(ud.LDAP, ud.INFO, 'Drop %s. The DN %s will synced later' % (filename, dn))
