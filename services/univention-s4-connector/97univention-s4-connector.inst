@@ -83,6 +83,7 @@ else										## we are first system to provide this service
 
 	if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 		/usr/share/univention-heimdal/salt_krb5Keys 
+		/usr/sbin/univention-password_sync_ucs_to_s4 Administrator      ## this account already exists in Samba4, set UCS password for it
 	fi
 
 	## create an admin user for synchronisation

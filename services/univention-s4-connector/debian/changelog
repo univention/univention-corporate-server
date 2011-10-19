@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.46-1) unstable; urgency=low
+
+  * add password_sync_ucs_to_s4 for Administratror again (Bug #22861)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 19 Oct 2011 14:52:24 +0200
+
 univention-s4-connector (6.0.45-1) unstable; urgency=low
 
   * Don't show first traceback if an object was dropped because it might
