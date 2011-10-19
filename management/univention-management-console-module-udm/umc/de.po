@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Tue, 19 Jul 2011 11:39:43 +0200\n"
-"PO-Revision-Date: 2011-09-08 07:58+0200\n"
+"POT-Creation-Date: Sun, 16 Oct 2011 13:46:08 +0200\n"
+"PO-Revision-Date: 2011-10-19 18:11+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -69,6 +69,9 @@ msgstr "Verwaltung von Freigaben"
 msgid "Managing users"
 msgstr "Verwaltung von Benutzern"
 
+msgid "My account"
+msgstr "Mein Konto"
+
 msgid "Nagios"
 msgstr "Nagios"
 
@@ -83,6 +86,9 @@ msgstr "Richtlinien"
 
 msgid "Printers"
 msgstr "Drucker"
+
+msgid "Settings for the personal account"
+msgstr ""
 
 msgid "Shares"
 msgstr "Freigaben"

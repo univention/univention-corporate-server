@@ -230,6 +230,8 @@ class Instance( Base ):
 			MODULE.info( 'Thread for udm/get request is running' )
 			result = []
 			for ldap_dn in request.options:
+				if request.flavor == 'users/self':
+					ldap_dn = self._user_dn
 				module = get_module( request.flavor, ldap_dn )
 				if module is None:
 					MODULE.error( 'A module for the LDAP DN %s could not be found' % ldap_dn )
@@ -440,7 +442,11 @@ class Instance( Base ):
 		return: <layout data structure (see UDM python modules)>
 		"""
 		module = self._get_module( request )
-		self.finished( request.id, module.get_layout( request.options.get( 'objectDN', None ) ) )
+		if request.flavor == 'users/self':
+			object_dn = None
+		else:
+			object_dn = request.options.get( 'objectDN', None )
+		self.finished( request.id, module.get_layout( object_dn ) )
 
 	def properties( self, request ):
 		"""Returns the properties of the given object type.

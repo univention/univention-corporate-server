@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.183-1) unstable; urgency=low
+
+  * add users/self; Bug #23705
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Oct 2011 18:13:39 +0200
+
 univention-management-console-module-udm (1.0.182-1) unstable; urgency=low
 
   * support widget MultiSelect; Bug #22439

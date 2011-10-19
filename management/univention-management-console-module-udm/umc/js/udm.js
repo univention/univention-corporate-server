@@ -159,6 +159,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		// call superclass method
 		this.inherited(arguments);
 
+		if ( 'users/self' == this.moduleFlavor ) {
+			this.openObject = {
+				objectType: this.moduleFlavor,
+				objectDN: 'self'
+			};
+		}
+
 		// check whether we need to open directly the detail page of a given or a new object
 		if (this.openObject) {
 			this.createDetailPage(this.openObject.objectType, this.openObject.objectDN, undefined, true);

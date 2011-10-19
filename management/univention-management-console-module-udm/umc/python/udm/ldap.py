@@ -892,18 +892,3 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 				syntax.choices.append( { 'module' : 'udm', 'flavor' : module.flavor, 'objectType' : module.name, 'id' : id, 'label' : label, 'icon' : 'udm-%s' % module.name.replace( '/', '-' ) } )
 		return syntax.choices
 	return map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syn, 'choices', [] ) )
-
-def map_syntaxes( object_type, ldap_object ):
-	"""Maps syntax types like boolean and integers to the value expected
-	by the UDM syntax"""
-	for key, value in ldap_object:
-		mod = UDM_Module( object_type )
-		if not nod:
-			continue
-		if isinstance( value, bool ):
-			try:
-				prop = mod[ key ]
-			except KeyError:
-				continue
-			# this should help to remove the hack in umc/widgets/Checkbox.js
-			ldap_object[ key ] = prop.syntax.parse( value )
