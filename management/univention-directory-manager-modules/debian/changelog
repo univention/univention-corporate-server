@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.219-1) unstable; urgency=low
+
+  * Remove duplicate mapping of univentionInventoryNumber (Bug #24102)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 19 Oct 2011 07:23:22 +0200
+
 univention-directory-manager-modules (6.0.218-1) unstable; urgency=low
 
   * fixed univention-sync-memberuid (Bug #23281)
