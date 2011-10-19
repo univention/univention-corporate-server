@@ -1,3 +1,9 @@
+univention-ldap (7.0.24-1) unstable; urgency=low
+
+  * Make univentionInventoryNumber searchable (Bug #18184)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 19 Oct 2011 07:24:27 +0200
+
 univention-ldap (7.0.23-1) unstable; urgency=low
 
   * In preparation for the UCS 3.0 update start the slapd by default on
