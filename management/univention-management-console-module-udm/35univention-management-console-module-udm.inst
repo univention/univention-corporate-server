@@ -80,6 +80,8 @@ umc_operation_create "udm-nagios" "UDM - Nagios" "nagios/nagios" "udm/*:objectTy
 
 umc_operation_create "udm-navigation" "UDM - Policies" "navigation" "udm/nav/*"
 
+umc_operation_create "udm-self" "UDM - Personal account" "udm/self" "udm/*:objectType=users/self"
+
 umc_policy_append "default-umc-all" "udm-all"
 
 joinscript_save_current_version

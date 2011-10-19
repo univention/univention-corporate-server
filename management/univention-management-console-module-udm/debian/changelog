@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.184-1) unstable; urgency=low
+
+  * add operation set for users/self; Bug #23705
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Oct 2011 18:18:03 +0200
+
 univention-management-console-module-udm (1.0.183-1) unstable; urgency=low
 
   * add users/self; Bug #23705
