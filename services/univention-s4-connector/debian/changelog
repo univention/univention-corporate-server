@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.45-1) unstable; urgency=low
+
+  * Don't show first traceback if an object was dropped because it might
+    be the parent object (Bug #22861)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Oct 2011 12:09:37 +0200
+
 univention-s4-connector (6.0.44-1) unstable; urgency=low
 
   * Handle LDAP server restarts and S4 restarts (Bug #22861)
