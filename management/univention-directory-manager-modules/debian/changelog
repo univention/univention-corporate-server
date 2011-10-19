@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.137-1) unstable; urgency=low
+
+  * simplified users/self module for UCS 3.0; Bug #23705
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Oct 2011 18:14:30 +0200
+
 univention-directory-manager-modules (7.0.136-1) unstable; urgency=low
 
   * fixed wrong missing path to exception in license.py (Bug #23213) 

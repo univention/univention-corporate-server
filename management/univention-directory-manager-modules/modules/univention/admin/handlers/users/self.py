@@ -30,88 +30,34 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import copy
-
 from univention.admin.layout import Tab, Group
 import univention.admin.handlers
-import univention.admin.handlers.settings.user
 import univention.admin.localization
-import univention.admin.uexceptions
-import univention.admin.uldap
 
-import univention.debug
-import univention.admin.handlers.users.user
+import univention.admin.handlers.users.user as udm_user
 
 translation=univention.admin.localization.translation('univention.admin.handlers.users')
 _=translation.translate
 
-module='users/self'
-operations=['edit','search']
+module = 'users/self'
+operations = [ 'edit','search' ]
 options = {}
 
-mapping = univention.admin.handlers.users.user.mapping
-property_descriptions = univention.admin.handlers.users.user.property_descriptions
-layout = [ Tab( _( 'General' ), _( 'There are no options enabled.' ) ) ]
+mapping = udm_user.mapping
+
+property_descriptions = {
+	'password' : udm_user.property_descriptions[ 'password' ]
+	}
+
+layout = [ Tab( _( 'General' ), layout = [ 'password' ] ) ]
 
 uid_umlauts=0
 childs=0
 short_description=_('User: Self')
 long_description=''
 
-def _check_cell(cell, fields, options):
-	if not cell.property in fields:
-		return False
-	prop = property_descriptions[cell.property]
-	return prop.matches(options)
-
-def _create_layout(fields, options):
-	layout = []
-	for tab in univention.admin.handlers.users.user.layout:
-		newtab = copy.deepcopy( tab )
-		newtab.layout = []
-		for line in tab.fields:
-			newline = []
-			for cell in line:
-				if isinstance( cell, ( list, tuple ) ):
-					newcell = []
-					for subcell in cell:
-						if isinstance( subcell, basestring ):
-							if _check_cell(subcell, fields, options):
-								newcell.append( copy.copy( subcell ) )
-					if newcell: newline.append( newcell )
-				else:
-					if _check_cell(cell, fields, options):
-						newline.append( copy.copy( cell ) )
-			if newline:
-				newtab.fields.append( newline )
-		if newtab.fields:
-			layout.append( newtab )
-		else:
-			del newtab
-	return layout
-
-class object(univention.admin.handlers.users.user.object):
+class object( univention.admin.handlers.users.user.object ):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		univention.admin.handlers.users.user.object.__init__( self, co, lo, position, dn, superordinate, attributes )
-		self.__modifyLayout()
-
-	def __modifyLayout( self ):
-		global layout
-		admin_settings_dn='uid=%s,cn=admin-settings,cn=univention,%s' % (self['username'], self.lo.base)
-		policy = self.lo.getPolicies(self.dn)
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'self.py: policy: %s' % (policy))
-		overrides = self.lo.get(admin_settings_dn, attr=['univentionAdminSelfAttributes'])
-		fields = []
-		if overrides:
-			fields = overrides[ 'univentionAdminSelfAttributes' ]
-		elif policy.has_key( 'univentionPolicyAdminSettings') and policy[ 'univentionPolicyAdminSettings' ].has_key( 'univentionAdminSelfAttributes' ):
-			fields = policy[ 'univentionPolicyAdminSettings' ][ 'univentionAdminSelfAttributes' ][ 'value' ]
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'self.py: fields: %s' % (fields))
-		self.layout = _create_layout(fields, self.options)
-		if not self.layout:
-			tab = Tab( _( 'General' ), _( 'There are no options enabled.' ) )
-			self.layout.append( tab )
-		layout = self.layout
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'self.py: layout: %s' % (layout))
