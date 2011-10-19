@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-17 14:57+0200\n"
-"PO-Revision-Date: 2011-10-17 14:58+0200\n"
+"POT-Creation-Date: 2011-10-19 15:56+0200\n"
+"PO-Revision-Date: 2011-10-19 15:56+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2033,8 +2033,8 @@ msgid "Enable IPv6"
 msgstr "IPv6 aktivieren"
 
 #: installer/modules/70_net.py:470
-msgid "Dynamic (accept router advertisements)"
-msgstr "Dynamisch (Router Advertisements akzeptieren)"
+msgid "Dynamic (Stateless address autoconfiguration (SLAAC))"
+msgstr "Dynamic (zustandslose Adressenautokonfiguration (SLAAC))"
 
 #: installer/modules/70_net.py:478 installer/modules/90_overview.py:121
 msgid "IPv6 address"
@@ -2127,11 +2127,11 @@ msgstr "IPv6-Prefix"
 #: installer/modules/70_net.py:811
 #, python-format
 msgid ""
-"Neither accepting router advertisements is activated nor an IPv6 address "
-"with prefix has been entered for interface \"%s\"."
+"Neither SLAAC is activated nor an IPv6 address with prefix has been entered "
+"for interface \"%s\"."
 msgstr ""
-"Es wurden weder die IPv6 Router Advertisements aktiviert noch eine gültige "
-"IPv6 Adresse inl. Prefix für Interface \"%s\" angegeben."
+"Es wurde weder SLAAC aktiviert noch wurde eine gültige IPv6-Adresse inkl. "
+"Prefix für Interface \"%s\" angegeben."
 
 #: installer/modules/70_net.py:918
 msgid ""
@@ -2150,7 +2150,7 @@ msgid ""
 "   Mark this field if you want this interface to retrieve its IPv4 "
 "configuration via DHCP (Dynamic Host Configuration Protocol). \n"
 " \n"
-" Dynamic (accept router advertisements): \n"
+" Dynamic (Stateless address autoconfiguration (SLAAC)): \n"
 "   Mark this field if you want this interface to retrieve its IPv6 "
 "configuration via ND (IPv6 neighbour discovery) \n"
 "\n"
@@ -2190,7 +2190,7 @@ msgstr ""
 " Bitte markieren Sie dieses Feld, wenn die IPv4-Konfiguration via DHCP "
 "(Dynamic Host Configuration Protocol) zugeteilt werden soll. \n"
 " \n"
-" Dynamisch (Router Advertisements akzeptieren):\n"
+" Dynamisch (zustandslose Adressenautokonfiguration (SLAAC)):\n"
 " Bitte markieren Sie dieses Feld, wenn die IPv6-Konfiguration via ND (IPv6 "
 "Neighbour Discovery) zugeteilt werden soll. \n"
 "\n"
@@ -2408,8 +2408,8 @@ msgid "IPv4 netmask"
 msgstr "IPv4-Netzmaske"
 
 #: installer/modules/90_overview.py:124
-msgid "configuration via router advertisements"
-msgstr "Konfiguration über Router Advertisements"
+msgid "configuration via SLAAC"
+msgstr "Konfiguration über SLAAC"
 
 #: installer/modules/90_overview.py:157
 msgid "Update system after installation"
@@ -2605,7 +2605,9 @@ msgstr "Aktualisiere das System"
 
 #: scripts/86_upgrade.sh:43
 msgid "This might take a while depending on the number of pending updates."
-msgstr "Abhängig von der Anzahl der austehenden Updates, kann dies einige Zeit dauern."
+msgstr ""
+"Abhängig von der Anzahl der austehenden Updates, kann dies einige Zeit "
+"dauern."
 
 #: scripts/87_locales.sh:35
 msgid "Generating locales"
@@ -2622,6 +2624,19 @@ msgstr "Teste installiertes System"
 #: scripts/90_cleanup.sh:35
 msgid "Performing cleanup"
 msgstr "Ausführen von Aufräumarbeiten"
+
+#~ msgid "configuration via router advertisements"
+#~ msgstr "Konfiguration über Router Advertisements"
+
+#~ msgid "Dynamic (accept router advertisements)"
+#~ msgstr "Dynamisch (Router Advertisements akzeptieren)"
+
+#~ msgid ""
+#~ "Neither accepting router advertisements is activated nor an IPv6 address "
+#~ "with prefix has been entered for interface \"%s\"."
+#~ msgstr ""
+#~ "Es wurden weder die IPv6 Router Advertisements aktiviert noch eine "
+#~ "gültige IPv6 Adresse inl. Prefix für Interface \"%s\" angegeben."
 
 #~ msgid "Configuring LDAP server"
 #~ msgstr "Konfiguration des LDAP-Servers"

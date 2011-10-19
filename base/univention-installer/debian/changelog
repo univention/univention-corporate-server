@@ -1,3 +1,9 @@
+univention-installer (7.0.111-1) unstable; urgency=low
+
+  * fixed naming of SLAAC (Bug #23836)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 19 Oct 2011 15:52:30 +0200
+
 univention-installer (7.0.110-1) unstable; urgency=low
 
   * remove password_sync_ucs_to_s4 for Administratror (Bug #22861)

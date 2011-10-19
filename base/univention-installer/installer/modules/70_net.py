@@ -467,7 +467,7 @@ class object(content):
 			card.add_elem('CB_IPv6', checkbox(val_ipv6, 8, 1, 30, 2, val_ipv6_cb, position_parent=card))
 
 			# activate checkbox if dynamic interface config is enabled
-			val_ipv6ra={_('Dynamic (accept router advertisements)'): ['CB_IPv6_RA', 0]}
+			val_ipv6ra={_('Dynamic (Stateless address autoconfiguration (SLAAC))'): ['CB_IPv6_RA', 0]}
 			val_ipv6ra_cb = []
 			if self.container.get('%s_acceptra' % iface.name) == 'true':
 				val_ipv6ra_cb = [0]
@@ -808,7 +808,7 @@ class object(content):
 					return invalid_value % { 'interface': name, 'elemname': _('IPv6 Prefix') }
 				# at least acceptra or valid IPv6 has to be set
 				if not(acceptra or (addr and prefix)):
-					return _('Neither accepting router advertisements is activated nor an IPv6 address with prefix has been entered for interface "%s".') % name
+					return _('Neither SLAAC is activated nor an IPv6 address with prefix has been entered for interface "%s".') % name
 
 
 		testlist = []  # list of 3-tuples ( profile name, descriptive name, is_required?, address type ('4', '6', '46') )
@@ -915,7 +915,7 @@ class object(content):
 	def helptext(self):
 		self.debug('helptext()')
 
-		return _('Network \n \n In this module the network configuration is done. \n \n In the upper part, all detected interfaces are show. By pressing F2 or F3 the next/previous interface can be selected. \n \n For each interface an IPv4 address with netmask and/or IPv6 address with prefix can be entered. \n The configuration of interfaces can also be done automatically: \n \n Dynamic (DHCP): \n   Mark this field if you want this interface to retrieve its IPv4 configuration via DHCP (Dynamic Host Configuration Protocol). \n \n Dynamic (accept router advertisements): \n   Mark this field if you want this interface to retrieve its IPv6 configuration via ND (IPv6 neighbour discovery) \n\n IPv4 Gateway: \n Default gateway to be used for IPv4 traffic. \n IPv6 Gateway: \n Default gateway to be used for IPv6 traffic. \n \n Domain DNS server: \n Enter the IP address of the primary name server, if you are adding a system to an existing UCS domain. \n More: \n Enter additional name servers \n \n External DNS server: \n Enter the IP address of a DNS server to forward queries to. \n More: \n Enter additional DNS forwarders \n \n HTTP-Proxy: \n Enter IP address and port number of HTTP-Proxy to be used (example: http://192.168.1.123:5858)')
+		return _('Network \n \n In this module the network configuration is done. \n \n In the upper part, all detected interfaces are show. By pressing F2 or F3 the next/previous interface can be selected. \n \n For each interface an IPv4 address with netmask and/or IPv6 address with prefix can be entered. \n The configuration of interfaces can also be done automatically: \n \n Dynamic (DHCP): \n   Mark this field if you want this interface to retrieve its IPv4 configuration via DHCP (Dynamic Host Configuration Protocol). \n \n Dynamic (Stateless address autoconfiguration (SLAAC)): \n   Mark this field if you want this interface to retrieve its IPv6 configuration via ND (IPv6 neighbour discovery) \n\n IPv4 Gateway: \n Default gateway to be used for IPv4 traffic. \n IPv6 Gateway: \n Default gateway to be used for IPv6 traffic. \n \n Domain DNS server: \n Enter the IP address of the primary name server, if you are adding a system to an existing UCS domain. \n More: \n Enter additional name servers \n \n External DNS server: \n Enter the IP address of a DNS server to forward queries to. \n More: \n Enter additional DNS forwarders \n \n HTTP-Proxy: \n Enter IP address and port number of HTTP-Proxy to be used (example: http://192.168.1.123:5858)')
 
 
 	def modheader(self):

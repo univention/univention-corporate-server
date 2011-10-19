@@ -121,7 +121,7 @@ class object(content):
 		head = _("IPv6 address") + ":"
 		if self.all_results.get('eth0_acceptra') in ['true']:
 			linecnt += 1
-			self.elements.append(textline('%s %s' % (ljust_utf8(head, ifjust), _('configuration via router advertisements')), linecnt, self.minX+7, width=MAXLENGTH))
+			self.elements.append(textline('%s %s' % (ljust_utf8(head, ifjust), _('configuration via SLAAC')), linecnt, self.minX+7, width=MAXLENGTH))
 		else:
 			if self.all_results.get('eth0_ip6') and self.all_results.get('eth0_prefix6'):
 				linecnt += 1
