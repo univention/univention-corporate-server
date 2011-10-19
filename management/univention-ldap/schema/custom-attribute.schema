@@ -259,6 +259,25 @@ attributetype ( 1.3.6.1.4.1.10176.200.126 NAME 'univentionUDMPropertyValueNotEdi
 		SUBSTR caseIgnoreSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
 
+# new with UCS 3.0
+attributetype ( 1.3.6.1.4.1.10176.200.127 NAME 'univentionUDMPropertyLayoutGroupName'
+        DESC ' name of group the extended attribute shall be displayed in'
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.128 NAME 'univentionUDMPropertyTranslationGroupName'
+        DESC ' some translated text describing the tab name eg.: "general"'
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.10176.200.129 NAME 'univentionUDMPropertyLayoutGroupPosition'
+        DESC ' position of group  on given tab '
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
 objectclass ( 1.3.6.1.4.1.10176.200.199
     NAME 'univentionUDMProperty'
         DESC ' defines a custom attribute for use in univention directory manager '
@@ -289,7 +308,10 @@ objectclass ( 1.3.6.1.4.1.10176.200.199
 			  univentionUDMPropertyLayoutTabAdvanced $
 			  univentionUDMPropertyHook $
 			  univentionUDMPropertyDoNotSearch $
-			  univentionUDMPropertyAddEmptyValue
+			  univentionUDMPropertyAddEmptyValue $
+			  univentionUDMPropertyLayoutGroupName $
+			  univentionUDMPropertyTranslationGroupName $
+			  univentionUDMPropertyLayoutGroupPosition
 			  )
 	)
 
