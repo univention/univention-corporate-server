@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Univention Samba
@@ -176,3 +177,38 @@ def handler(dn, new, old):
 	# 	old_xid = old.get(xid_attr, [''] )[0]
 	# 	if old_xid:
 	# 		remove_idmap_entry(old['sambaSID'][0], old_xid, xid_type)
+
+if __name__ == '__main__':
+	from optparse import OptionParser
+	parser = OptionParser(usage="%prog [-h|--help] [--direct-resync]")
+	parser.add_option("--direct-resync", action="store_true", dest="direct_resync", default=False,
+		help="Filter the output of univention-ldapsearch through the this module")
+	(options, args) = parser.parse_args()
+
+	if not options.direct_resync:
+		parser.error("The option --direct-resync is required to run this module directly")
+		import sys
+		sys.exit(1)
+
+	univention.debug.init("stderr", univention.debug.NO_FLUSH, univention.debug.NO_FUNCTION)
+	from univention.config_registry import ConfigRegistry
+	ucr = ConfigRegistry()
+	ucr.load()
+	univention.debug.set_level(univention.debug.LISTENER, int(ucr.get('listener/debug/level', 2)))
+
+	import subprocess
+	cmd = ['/usr/bin/univention-ldapsearch', '-xLLL', filter, 'objectClass']
+	cmd.extend(attributes)
+	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+	(stdout, stderr) = p1.communicate()
+
+	from ldif import LDIFParser
+	class ListenerHandler(LDIFParser):
+		def __init__(self,input):
+			LDIFParser.__init__(self,input)
+		def handle(self,dn,entry):
+			handler(dn, entry, {})
+
+	import StringIO
+	parser=ListenerHandler(StringIO.StringIO(stdout))
+	parser.parse()

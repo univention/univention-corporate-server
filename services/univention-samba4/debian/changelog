@@ -1,3 +1,10 @@
+univention-samba4 (1.0.69-4) unstable; urgency=low
+
+  * add script functionality to the samba4-sync module (Bug #23917)
+  * replace resync of listener module by direct run of samba4-sync
+
+ -- Arvid Requate <requate@univention.de>  Wed, 19 Oct 2011 17:45:46 +0200
+
 univention-samba4 (1.0.69-3) unstable; urgency=low
 
   * check if uid/gid was modified at all in samba4-idmap (Bug #23917)

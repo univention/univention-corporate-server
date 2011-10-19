@@ -362,9 +362,7 @@ elif [ "$samba4_role" = "MEMBER" ]; then
 fi
 
 ## provision erases the idmap.ldb
-if test -f /usr/sbin/univention-directory-listener-ctrl; then
-		/usr/sbin/univention-directory-listener-ctrl resync samba4-idmap
-fi
+/usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync 2>/dev/null
 
 /etc/init.d/samba4 restart
 
