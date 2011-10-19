@@ -1,5 +1,5 @@
 Type: file
-File: etc/security/packetfilter/packetfilter.univention
+File: etc/security/packetfilter/packetfilter.univention.sh
 Variables: security/packetfilter/.*
 User: root
 Group: root

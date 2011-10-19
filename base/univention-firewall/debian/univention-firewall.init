@@ -38,11 +38,11 @@ case "$1" in
             echo "Univention iptables configuration has been disabled."
         else
             log_daemon_msg "Starting Univention iptables configuration:"
-            if [ -x /etc/security/packetfilter/packetfilter.univention ] ; then
-                /etc/security/packetfilter/packetfilter.univention
+            if [ -x /etc/security/packetfilter/packetfilter.univention.sh ] ; then
+                /etc/security/packetfilter/packetfilter.univention.sh
             fi
-            if [ -x /etc/security/packetfilter/packetfilter.local ] ; then
-                /etc/security/packetfilter/packetfilter.local
+            if [ -x /etc/security/packetfilter/packetfilter.local.sh ] ; then
+                /etc/security/packetfilter/packetfilter.local.sh
             fi
             log_end_msg 0
         fi

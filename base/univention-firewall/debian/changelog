@@ -1,3 +1,9 @@
+univention-firewall (4.0.4-1) unstable; urgency=low
+
+  * fixed filenames (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 19 Oct 2011 15:17:15 +0200
+
 univention-firewall (4.0.3-1) unstable; urgency=low
 
   * renamed init.d script to univention-firewall (Bug #23577)
