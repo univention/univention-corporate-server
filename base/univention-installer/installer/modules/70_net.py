@@ -676,7 +676,7 @@ class object(content):
 			self.container.update(result)
 
 		# IPv6
-		self.container['%s_acceptra' % name] = ''
+		self.container['%s_acceptra' % name] = 'false'
 		self.container['%s_ip6' % name] = ''
 		self.container['%s_prefix6' % name] = ''
 		if card.get_elem('CB_IPv6RA').result():
