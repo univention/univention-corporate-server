@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.106-1) unstable; urgency=low
+
+  * revert changes from 1.0.98-2; Bug #22811
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Oct 2011 20:42:08 +0200
+
 univention-management-console-frontend (1.0.105-1) unstable; urgency=low
 
   * add Widget UnixAccessRights; Bug #22439
