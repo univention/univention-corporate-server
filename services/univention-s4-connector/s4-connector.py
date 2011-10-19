@@ -47,11 +47,11 @@ modrdn="1"
 s4_init_mode = False
 group_objects = []
 
-dirs = [listener.baseConfig['connector/s4/listener/dir']]
-if listener.baseConfig.has_key('connector/listener/additionalbasenames') and listener.baseConfig['connector/listener/additionalbasenames']:
-	for configbasename in listener.baseConfig['connector/listener/additionalbasenames'].split(' '):
-		if listener.baseConfig.has_key('%s/s4/listener/dir' % configbasename) and listener.baseConfig['%s/s4/listener/dir' % configbasename]:
-			dirs.append(listener.baseConfig['%s/s4/listener/dir' % configbasename])
+dirs = [listener.configRegistry.get('connector/s4/listener/dir', '/var/lib/univention-connector/s4')]
+if listener.configRegistry.has_key('connector/listener/additionalbasenames') and listener.configRegistry['connector/listener/additionalbasenames']:
+	for configbasename in listener.configRegistry['connector/listener/additionalbasenames'].split(' '):
+		if listener.configRegistry.has_key('%s/s4/listener/dir' % configbasename) and listener.configRegistry['%s/s4/listener/dir' % configbasename]:
+			dirs.append(listener.configRegistry['%s/s4/listener/dir' % configbasename])
 		else:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "s4-connector: additional config basename %s given, but %s/s4/listener/dir not set; ignore basename." % (configbasename, configbasename))
 
@@ -65,7 +65,7 @@ def handler(dn, new, old, command):
 	try:
 		for directory in dirs:
 			if not os.path.exists(os.path.join(directory, 'tmp')):
-				os.mkdir(os.path.join(directory, 'tmp'))
+				os.makedirs(os.path.join(directory, 'tmp'))
 
 			old_dn=None
 			if os.path.exists(os.path.join(directory, 'tmp','old_dn')):

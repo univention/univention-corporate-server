@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.48-1) unstable; urgency=low
+
+  * Be sure the connector/s4/listener/dir directory exists (Bug #22861)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Oct 2011 19:23:16 +0200
+
 univention-s4-connector (6.0.47-1) unstable; urgency=low
 
   * Support complex service records (Bug #22861)
