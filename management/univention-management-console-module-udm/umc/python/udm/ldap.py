@@ -788,7 +788,6 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 			module = UDM_Module( udm_module )
 			if module is None:
 				continue
-			MODULE.info( 'Found syntax %s with udm_module property' % syntax_name )
 			filter_s = _create_ldap_filter( syn, options )
 			if filter_s is None:
 				syn.choices = []

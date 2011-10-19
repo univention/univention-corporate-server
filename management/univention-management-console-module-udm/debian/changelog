@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.185-1) unstable; urgency=low
+
+  * minor fix when passing dependency information to frontend; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Oct 2011 19:00:09 +0200
+
 univention-management-console-module-udm (1.0.184-1) unstable; urgency=low
 
   * add operation set for users/self; Bug #23705
