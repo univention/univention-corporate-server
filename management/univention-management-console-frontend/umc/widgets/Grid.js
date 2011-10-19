@@ -97,6 +97,9 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 	// disable these items again
 	_disabledIDs: null,
 
+	// internal flag in order to ignore the next onFetch events
+	_ignoreNextFetch: false,
+
 	_iconFormatter: function(valueField, iconField) {
 		// summary:
 		//		Generates a formatter functor for a given value and icon field.
@@ -453,6 +456,10 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 		// standby animation when loading data
 		this.connect(this._grid, "_onFetchComplete", function() {
+			if (this._ignoreNextFetch) {
+				this._ignoreNextFetch = false;
+				return;
+			}
 			this.standby(false);
 			this._grid.selection.clear();
 			this._updateFooterContent();
@@ -460,6 +467,10 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			this.onFilterDone(true);
 		});
 		this.connect(this._grid, "_onFetchError", function() {
+			if (this._ignoreNextFetch) {
+				this._ignoreNextFetch = false;
+				return;
+			}
 			this.standby(false);
 			this._grid.selection.clear();
 			this._updateFooterContent();
@@ -704,6 +715,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		this.query = query;
 		this.standby(true);
 		this._grid.filter(query);
+		this.clearDisabledItems(false);
 		this.layout();
 	},
 
@@ -793,6 +805,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			this._disabledIDs[id] = disable;
 		}, this);
 		this._updateDisabledItems();
+		this._ignoreNextFetch = true;
 		this._grid.render();
 	},
 
@@ -819,12 +832,15 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		return result; // Boolean[]
 	},
 
-	clearDisabledItems: function() {
+	clearDisabledItems: function(/*Boolean?*/ doRendering) {
 		// summary:
 		//		Enables all previously disabled items and clears internal cache.a
 		this._disabledIDs = {};
 		this._updateDisabledItems();
-		this._grid.render();
+		if (undefined === doRendering || doRendering) {
+			this._ignoreNextFetch = true;
+			this._grid.render();
+		}
 	},
 
 	onFilterDone: function(success) {
