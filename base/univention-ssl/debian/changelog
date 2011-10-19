@@ -1,3 +1,9 @@
+univention-ssl (5.0.8-1) unstable; urgency=low
+
+  * Be sure the new certificate gets correct permissions (Bug #23802)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Oct 2011 21:54:33 +0200
+
 univention-ssl (5.0.7-1) unstable; urgency=low
 
   * sync root certificate to /var/www (Bug #22909)

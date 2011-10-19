@@ -59,6 +59,8 @@ def initialize():
 	return
 
 def handler(dn, new, old):
+	global uidNumber
+	global gidNumber
 	set_privileges_cert(root=1)
 
 	if baseConfig['server/role'] != 'domaincontroller_master':
@@ -66,6 +68,17 @@ def handler(dn, new, old):
 		return
 
 	try:
+		try:
+			uidNumber = int(new.get('uidNumber', ['0'])[0])
+		except:
+			uidNumber = 0
+
+		try:
+			gidNumber = int(grp.getgrnam('DC Backup Hosts')[2])
+		except:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % name)
+			gidNumber = 0
+
 		if new and not old:			
 			if new.has_key('associatedDomain'):
 				domain=new['associatedDomain'][0]
@@ -130,15 +143,9 @@ def create_certificate(name, serverUidNumber, domainname):
 		if not os.path.islink("%s/%s" % (ssldir,name)):
 			p = os.popen('ln -sf %s/%s.%s %s/%s' % (ssldir,name,domainname,ssldir,name) )
 			p.close
-                return
-
+		a=os.path.walk(certpath,set_permissions, None)
 		return
 
-	try:
-		gidNumber = int(grp.getgrnam('DC Backup Hosts')[2])
-	except:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % name)
-		gidNumber = 0
 
 	if len("%s.%s" % (name,domainname)) > 64:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: can\'t create certificate, Common Name too long: %s.%s' % (name,domainname))
