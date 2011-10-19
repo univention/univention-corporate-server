@@ -240,7 +240,7 @@ class License( object ):
 		try:
 			searchResult = lo.searchDn(filter=str(filter))
 			self.sysAccountsFound = len(searchResult)
-		except uexceptions.noObject:
+		except univention.admin.uexceptions.noObject:
 			pass
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
 				'LICENSE: Univention sysAccountsFound: %d' % self.sysAccountsFound )

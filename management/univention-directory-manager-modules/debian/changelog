@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.136-1) unstable; urgency=low
+
+  * fixed wrong missing path to exception in license.py (Bug #23213) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 19 Oct 2011 17:50:23 +0200
+
 univention-directory-manager-modules (7.0.135-1) unstable; urgency=low
 
   * added static selection syntax IMAP_POP3 (Bug #20791)
