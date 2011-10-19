@@ -2591,10 +2591,6 @@ msgstr "Beitritt des Systems in die Domäne"
 msgid "Configuring online repository"
 msgstr "Einbinden des Online-Repositorys"
 
-#: scripts/82_administrator_sync.sh:35
-msgid "Configuring Samba4"
-msgstr "Konfiguration von Samba4"
-
 #: scripts/83_filter_udev_rules.sh:35
 msgid "Updating udev rules"
 msgstr "Aktualisierung der udev-Regeln"
