@@ -56,7 +56,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		}, {
 			type: 'Text',
 			name: 'mountPointValue',
-			content: 'FIXME'
+			content: '...'
 		}, {
 			type: 'Text',
 			name: 'filesystemText',
@@ -64,7 +64,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		}, {
 			type: 'Text',
 			name: 'filesystemValue',
-			content: 'FIXME'
+			content: '...'
 		}, {
 			type: 'Text',
 			name: 'optionsText',
@@ -72,11 +72,10 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		}, {
 			type: 'Text',
 			name: 'optionsValue',
-			content: 'FIXME'
+			content: '...'
 		}];
 
 		var layout = [['mountPointText', 'mountPointValue', 'filesystemText', 'filesystemValue', 'optionsText', 'optionsValue']];
-		//var layout = [['mountPointText', 'mountPointValue'], ['filesystemText', 'filesystemValue'], ['optionsText', 'optionsValue']];
 
 		this._form = new umc.widgets.Form({
 			region: 'top',
@@ -114,7 +113,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 				this.onShowDetailPage();
 			})
 		}, {
-			name: 'configure',
+			name: 'edit',
 			label: this._('Configure'),
 			iconClass: 'dijitIconEdit',
 			isStandardAction: true,
@@ -151,16 +150,16 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 			width: 'auto'
 		}, {
 			name: 'sizeLimitUsed',
-			label: this._('Size used'),
+			label: this._('Size used (MB)'),
 			width: 'adjust'
 		}, {
 			name: 'sizeLimitSoft',
-			label: this._('Soft'),
+			label: this._('Soft (MB)'),
 			width: 'adjust'
 		}, {
 			name: 'sizeLimitHard',
-			label: this._('Hard'),
-			width: 'adjust'
+			label: this._('Hard (MB)'),
+			width: 'adjust',
 		}, {
 			name: 'sizeLimitTime',
 			label: this._('Grace'),

@@ -48,19 +48,30 @@ _ = umc.Translation('univention-management-console-module-quota').translate
 class Commands(object):
 	def getUsers(self, request):
 		resultMessage = ''
-
-		fs = fstab.File()
-		mt = mtab.File()
-		part = fs.find(spec = request.options['partitionDevice'])
-		mounted = mt.get(part.spec)
-		if mounted and 'usrquota' in mounted.options:
-			cb = notifier.Callback(self._getUsers, request.id,
-			                       request.options['partitionDevice'], request)
-			tools.repquota(request.options['partitionDevice'], cb)
-		else:
+		try:
+			fs = fstab.File()
+			mt = mtab.File()
+		except IOError as error:
+			MODULE.error('Could not open %s' % error.filename)
+			resultMessage = _('Could not open %s' % error.filename)
 			request.status = MODULE_ERR
-			MODULE.error('partition is not mounted') # TODO
 			self.finished(request.id, resultMessage)
+		else:
+			partition = fs.find(spec = request.options['partitionDevice'])
+			if partition:
+				mounted = mt.get(partition.spec)
+				if mounted and 'usrquota' in mounted.options:
+					cb = notifier.Callback(self._getUsers, request.id,
+										   request.options['partitionDevice'], request)
+					tools.repquota(request.options['partitionDevice'], cb)
+				else:
+					request.status = MODULE_ERR
+					resultMessage = _('This partition is currently not mounted')
+					self.finished(request.id, resultMessage)
+			else:
+				request.status = MODULE_ERR
+				resultMessage = _('No partition found')
+				self.finished(request.id, resultMessage)
 
 	def _getUsers(self, pid, status, result, id, partition,
 	                          request):
@@ -78,13 +89,12 @@ class Commands(object):
 		except:
 			pass
 		quotas = tools.repquota_parse(partition, result[header + 1 :])
-		MODULE.error(str(quotas))
 		erg = []
 		for listEntry in quotas:
 			if fnmatch(listEntry['user'], request.options['filter']):
 				erg.append(listEntry)
 		request.status = SUCCESS
-		self.finished(id, erg)
+		self.finished(request.id, erg)
 
 	def setUser(self, request):
 		def _thread(request):
@@ -92,9 +102,7 @@ class Commands(object):
 						   tools.byte2block(request.options['sizeLimitSoft']),
 						   tools.byte2block(request.options['sizeLimitHard']),
 						   request.options['fileLimitSoft'], request.options['fileLimitHard'])
-			MODULE.error(str(result))
 			return result
-		MODULE.error('setUser')
 		thread = notifier.threads.Simple('Set', notifier.Callback(_thread, request),
 		                                 notifier.Callback(self._setUser, request))
 		thread.run()
@@ -104,16 +112,9 @@ class Commands(object):
 			request.status = SUCCESS
 			self.finished(request.id, [])
 		else:
-			msg = str( result ) + '\n' + '\n'.join( thread.trace )
-			MODULE.error( 'An internal error occurred: %s' % msg )
-			self.finished( request.id, None, msg, False )
-		# if not result:
-		# 	text = _('Successfully set quota settings')
-		# 	self.finished(request.id, [], report = text, success = True)
-		# else:
-		# 	text = _('Failed to modify quota settings for user %(user)s on partition %(partitionDevice)s') % \
-		# 	         request.options
-		# 	self.finished(request.id, [], report = text, success = False)
+			msg = str(result) + '\n' + '\n'.join(thread.trace)
+			MODULE.error('An internal error occurred: %s' % msg)
+			self.finished(request.id, msg)
 
 	def removeUsers(self, request):
 		def _thread(request):
@@ -121,11 +122,9 @@ class Commands(object):
 			for userID in request.options: # TODO rename userID
 				(user, partitionDevice) = userID.split('@')
 				success = tools.setquota(partitionDevice, user, '0', '0', '0', '0')
-				MODULE.error(str(success))
 				if not success:
 					failed.append((user, partitionDevice))
 			return failed
-
 		thread = notifier.threads.Simple('Remove', notifier.Callback(_thread, request),
 		                                 notifier.Callback(self._removeUsers, request))
 		thread.run()
@@ -135,10 +134,9 @@ class Commands(object):
 			request.status = SUCCESS
 			self.finished(request.id, result)
 		else:
-			msg = str( result ) + '\n' + '\n'.join( thread.trace )
-			MODULE.error( 'An internal error occurred: %s' % msg )
-			request.status = MODULE_ERR
-			self.finished( request.id, None, msg, False )
+			msg = str(result) + '\n' + '\n'.join(thread.trace)
+			MODULE.error('An internal error occurred: %s' % msg)
+			self.finished(request.id, msg)
 		# if not status:
 		# 	if request.options['user']:
 		# 		user = request.options['user'].pop(0)

@@ -2,6 +2,7 @@
 
 dojo.provide("umc.modules.quota");
 
+dojo.require("dojox.string.sprintf");
 dojo.require("umc.i18n");
 dojo.require("umc.store");
 dojo.require("umc.widgets.Grid");
@@ -49,8 +50,16 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 			isMultiAction: true,
 			callback: dojo.hitch(this, function() {
 				var partitions = this._grid.getSelectedIDs();
-				umc.tools.umcpCommand('quota/partitions/activate', {"partitions" : partitions}).then(dojo.hitch(this, function(result) {
-					umc.dialog.notify(this._('Quota support successfully activated'));
+				umc.tools.umcpCommand('quota/partitions/activate', {"partitions" : partitions}).then(dojo.hitch(this, function(data) {
+					if (data.result.failed === false) {
+							umc.dialog.alert(data.result.message);
+					}
+					else {
+						umc.dialog.notify(this._('Quota support successfully activated'));
+					}
+					this._grid.filter({
+						'dummy': 'dummy'
+					});
 				}));
 			})
 		}, {
@@ -61,19 +70,27 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 			isMultiAction: true,
 			callback: dojo.hitch(this, function() {
 				var partitions = this._grid.getSelectedIDs();
-				umc.tools.umcpCommand('quota/partitions/deactivate', {"partitions" : partitions}).then(dojo.hitch(this, function() {
-					umc.dialog.notify(this._('Quota support successfully deactivated'));
+				umc.tools.umcpCommand('quota/partitions/deactivate', {"partitions" : partitions}).then(dojo.hitch(this, function(data) {
+					if (data.result.failed === false) {
+						var message = '';
+						dojo.forEach(data.result.partitions, function(i) {
+							umc.dialog.notify(this._('Failed to deactivate quota support')); // TODO
+						});
+					}
+					else {
+						umc.dialog.notify(this._('Quota support successfully deactivated'));
+					}
+					this._grid.filter({'dummy': 'dummy'});
 				}));
 			})
 		}, {
-			name: 'configure',
+			name: 'edit',
 			label: this._('Configure'),
 			iconClass: 'dijitIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
 			callback: dojo.hitch(this, function(partitionDevice) {
 				this.createPageContainer(partitionDevice[0]);
-				// this._partitionPage.init(partitionDevice[0]);
 			})
 		}];
 
@@ -88,15 +105,36 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 		}, {
 			name: 'inUse',
 			label: this._('Quota'),
-			width: '85px'
+			width: '85px',
+			formatter: dojo.hitch(this, function(value) {
+				if (value === true) {
+					return this._('Activated');
+				} else {
+					return this._('Deactivated');
+				}
+			})
 		}, {
 			name: 'partitionSize',
-			label: this._('Size'),
-			width: 'adjust'
+			label: this._('Size (GB)'),
+			width: 'adjust',
+			formatter: function(value) {
+				if (value == null) {
+					return '-';
+				} else {
+					return dojox.string.sprintf('%.1f', value);
+				}
+			}
 		}, {
 			name: 'freeSpace',
-			label: this._('Free'),
-			width: 'adjust'
+			label: this._('Free (GB)'),
+			width: 'adjust',
+			formatter: function(value) {
+				if (value == null) {
+					return '-';
+				} else {
+					return dojox.string.sprintf('%.1f', value);
+				}
+			}
 		}];
 
 		this._grid = new umc.widgets.Grid({
@@ -109,6 +147,15 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 			}
 		});
 		titlePane.addChild(this._grid);
+		this.connect(this._grid, 'onFilterDone', function() {
+			var gridItems = this._grid.getAllItems();
+			console.log(gridItems);
+			dojo.forEach(gridItems, dojo.hitch(this, function(item) {
+				if (item.inUse === false) {
+					this._grid.setDisabledItem(item.partitionDevice);
+				}
+			}));
+		});
 
 		this._overviewPage.startup();
 	},

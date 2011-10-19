@@ -53,8 +53,8 @@ class Commands(object):
 			fs = fstab.File()
 			mt = mtab.File()
 		except IOError as error:
-			MODULE.error('Could not open {0}'.format(error.filename))
-			resultMessage = _('Could not open {0}'.format(error.filename))
+			MODULE.error('Could not open %s' % error.filename)
+			resultMessage = _('Could not open %s' % error.filename)
 			request.status = MODULE_ERR
 		else:
 			partitions = fs.get(['xfs', 'ext3', 'ext2'], False) # TODO ext4?
@@ -65,35 +65,46 @@ class Commands(object):
 				else:
 					listEntry['partitionDevice'] = partition.spec
 				listEntry['mountPoint'] = partition.mount_point
-				listEntry['partitionSize'] = '-'
-				listEntry['freeSpace'] = '-'
-				listEntry['inUse'] = _('Deactivated')
-				mountedPartition = mt.get(partition.spec) # TODO rename?
+				listEntry['partitionSize'] = None
+				listEntry['freeSpace'] = None
+				listEntry['inUse'] = False
+				mountedPartition = mt.get(partition.spec)
 				if mountedPartition:
 					infoPartition = df.DeviceInfo(partition.mount_point) # TODO rename?
-					listEntry['partitionSize'] = tools.block2byte(infoPartition.size(), 1)
-					listEntry['freeSpace'] = tools.block2byte(infoPartition.free(), 1)
+					listEntry['partitionSize'] = tools.block2byte(infoPartition.size(), 'GB', 1)
+					listEntry['freeSpace'] = tools.block2byte(infoPartition.free(), 'GB', 1)
 					if 'usrquota' in mountedPartition.options:
-						listEntry['inUse'] = _('Activated')
+						listEntry['inUse'] = True
 				result.append(listEntry)
 			request.status = SUCCESS
 		self.finished(request.id, result, resultMessage)
 
 	def getPartitionInfo(self, request):
-		message = ''
-		fs = fstab.File()
-		mt = mtab.File()
-		part = fs.find(spec = request.options['partitionDevice'])
-		mounted = mt.get(part.spec)
 		result = {}
-		if mounted:
-			result['mountPoint'] = mounted.mount_point
-			result['filesystem'] = mounted.type
-			result['options'] = mounted.options
-			request.status = SUCCESS
-		else:
+		resultMessage = ''
+		try:
+			fs = fstab.File()
+			mt = mtab.File()
+		except IOError as error:
+			MODULE.error('Could not open %s' % error.filename)
+			resultMessage = _('Could not open %s' % error.filename)
 			request.status = MODULE_ERR
-		self.finished(request.id, result, message)
+		else:
+			partition = fs.find(spec = request.options['partitionDevice'])
+			if partition:
+				mounted = mt.get(partition.spec)
+				if mounted:
+					result['mountPoint'] = mounted.mount_point
+					result['filesystem'] = mounted.type
+					result['options'] = mounted.options
+					request.status = SUCCESS
+				else:
+					request.status = MODULE_ERR
+					resultMessage = _('This partition is currently not mounted')
+			else:
+				request.status = MODULE_ERR
+				resultMessage = _('No partition found')
+		self.finished(request.id, result, resultMessage)
 
 	def activatePartitions(self, request):
 		cb = notifier.Callback(self._activatePartitions, request)
@@ -104,18 +115,13 @@ class Commands(object):
 		tools.activate_quota(request.options['partitions'], False, cb)
 
 	def _activatePartitions(self, thread, cbResult, request):
-		result = []
+		message = '<tr><th>%s</th><th>%s</th><th>%s</th></tr>' % (_('Partition'), _('State'), _('Message'))
 		failed = False
 		for partitionDevice, partitionInfo in cbResult.items():
 			(success, message, ) = partitionInfo
 			if not success:
 				failed = True
-			result.append({'partitionDevice': partitionDevice,
-			               'success': str(success),
-			               'message': message,
-			               })
-		if failed:
-			request.status = MODULE_ERR
-		else:
-			request.status = SUCCESS
-		self.finished(request.id, result)
+			message = '%s<tr><th>%s</th><th>%s</th><th>%s</th></tr>' % (message, partitionDevice, _(str(success)), _(message))
+		message = '<table>%s</table>' % message
+		request.status = SUCCESS
+		self.finished(request.id, {'message': message, 'failed': failed})

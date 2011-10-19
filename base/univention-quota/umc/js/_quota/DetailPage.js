@@ -59,7 +59,7 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 		}, {
 			type: 'NumberSpinner',
 			name: 'sizeLimitSoft',
-			label: this._('Data size soft limit'),
+			label: this._('Data size soft limit (MB)'),
 			value: 0,
 			smallDelta: 10,
 			largeDelta: 100,
@@ -69,7 +69,7 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 		}, {
 			type: 'NumberSpinner',
 			name: 'sizeLimitHard',
-			label: this._('Data size hard limit'),
+			label: this._('Data size hard limit (MB)'),
 			smallDelta: 10,
 			largeDelta: 100,
 			constraints: {

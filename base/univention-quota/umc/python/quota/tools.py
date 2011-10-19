@@ -44,22 +44,22 @@ from univention.lib import fstab
 _ = umc.Translation('univention-management-console-modules-quota').translate
 
 class UserQuota(dict):
-	def __init__(self, partitionDevice, user, sizeLimitUsed, sizeLimitSoft,
-	             sizeLimitHard, sizeLimitTime, fileLimitUsed, fileLimitSoft,
-	             fileLimitHard, fileLimitTime):
-		self['id'] = '{0}@{1}'.format(partitionDevice, user)
-		self['partitionDevice'] = partitionDevice
+	def __init__(self, partition, user, bused, bsoft,
+	             bhard, btime, fused, fsoft,
+	             fhard, ftime):
+		self['id'] = '%s@%s' % (user, partition)
+		self['partitionDevice'] = partition
 		self['user'] = user
-		self['sizeLimitUsed'] = sizeLimitUsed
-		self['sizeLimitSoft'] = sizeLimitSoft
-		self['sizeLimitHard'] = sizeLimitHard
+		self['sizeLimitUsed'] = block2byte(bused, 'MB')
+		self['sizeLimitSoft'] = block2byte(bsoft, 'MB')
+		self['sizeLimitHard'] = block2byte(bhard, 'MB')
 
-		self['fileLimitUsed'] = fileLimitUsed
-		self['fileLimitSoft'] = fileLimitSoft
-		self['fileLimitHard'] = fileLimitHard
+		self['fileLimitUsed'] = fused
+		self['fileLimitSoft'] = fsoft
+		self['fileLimitHard'] = fhard
 
-		self.set_time('sizeLimitTime', sizeLimitTime)
-		self.set_time('fileLimitTime', fileLimitTime)
+		self.set_time('sizeLimitTime', btime)
+		self.set_time('fileLimitTime', ftime)
 
 	def set_time(self, time, value):
 		if not value:
@@ -95,27 +95,23 @@ def repquota_parse(partition, output):
 	if not output:
 		return result
 
-	regex = re.compile('(?P<user>[^ ]*) *[-+]+ *(?P<sizeLimitUsed>[0-9]*) *(?P<sizeLimitSoft>[0-9]*) *(?P<sizeLimitHard>[0-9]*) *((?P<sizeLimitTime>([0-9]*days|none|[0-9]{2}:[0-9]{2})))? *(?P<fileLimitUsed>[0-9]*) *(?P<fileLimitSoft>[0-9]*) *(?P<fileLimitHard>[0-9]*) *((?P<fileLimitTime>([0-9]*days|none|[0-9]{2}:[0-9]{2})))?')
+	regex = re.compile('(?P<user>[^ ]*) *[-+]+ *(?P<bused>[0-9]*) *(?P<bsoft>[0-9]*) *(?P<bhard>[0-9]*) *((?P<btime>([0-9]*days|none|[0-9]{2}:[0-9]{2})))? *(?P<fused>[0-9]*) *(?P<fsoft>[0-9]*) *(?P<fhard>[0-9]*) *((?P<ftime>([0-9]*days|none|[0-9]{2}:[0-9]{2})))?')
 	for line in output:
 		matches = regex.match(line)
 		if not matches:
 			break
 		grp = matches.groupdict()
-		grp['sizeLimitTime'] = str(grp['sizeLimitTime'])
-		grp['fileLimitTime'] = str(grp['fileLimitTime'])
-		grp['id'] = '{0}@{1}'.format(grp['user'], partition)
-		#if not grp['user'] or grp['user'] == 'root':
-		#	continue
-		#info = UserQuota(partition, grp['user'], grp['bused'], grp['bsoft'],
-		#                 grp['bhard'], grp['btime'], grp['fused'],
-		#                 grp['fsoft'], grp['fhard'], grp['ftime'])
-		result.append(grp)
+		if not grp['user'] or grp['user'] == 'root':
+			continue
+		quota = UserQuota(partition, grp['user'], grp['bused'], grp['bsoft'],
+		                grp['bhard'], grp['btime'], grp['fused'],
+		                grp['fsoft'], grp['fhard'], grp['ftime'])
+		result.append(quota)
 	return result
 
 def setquota(partition, user, bsoft, bhard, fsoft, fhard):
 	cmd = ('/usr/sbin/setquota', '-u', user, str(bsoft), str(bhard),
 	       str(fsoft), str(fhard), partition)
-	MODULE.error(str(cmd))
 	result = subprocess.call(cmd)
 	return result
 
@@ -186,16 +182,23 @@ def _activate_quota_ext(partition, create):
 _units = ('B', 'KB', 'MB', 'GB', 'TB')
 _size_regex = re.compile('(?P<size>[0-9.]+)(?P<unit>(B|KB|MB|GB|TB))?')
 
-def block2byte(size, block_size = 1024):
+def block2byte(size, convertTo, block_size = 1024): # TODO rename
 	global _units
 	size = long(size) * float(block_size)
 	unit = 0
-	while size > 1024.0 and unit < (len(_units) - 1) :
-		size /= 1024.0
-		unit += 1
+	if convertTo in _units:
+		while _units[unit] != convertTo:
+			size /= 1024.0
+			unit += 1
+	return size
 
-	return '%.1f%s' % (size, _units[unit])
-
-def byte2block(size, block_size = 1024):
-	size = float(size) * math.pow(1024, 2)
-	return long(size / float(block_size))
+def byte2block(size, unit = 'MB', block_size = 1024):
+	global _units
+	factor = 0
+	if unit in _units:
+		while _units[factor] != unit:
+			factor += 1
+		size = float(size) * math.pow(1024, factor)
+		return long(size / float(block_size))
+	else:
+		return ''
