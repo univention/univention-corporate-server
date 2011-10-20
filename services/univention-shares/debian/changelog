@@ -1,3 +1,9 @@
+univention-shares (5.0.1-2) unstable; urgency=low
+
+  * Remove univention-share-replication (obsolete) (Bug #22576)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 20 Oct 2011 15:39:49 +0200
+
 univention-shares (5.0.1-1) unstable; urgency=low
 
   * added logrotate configuration (Bug #18002) 
