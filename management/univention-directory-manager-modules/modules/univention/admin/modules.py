@@ -340,6 +340,17 @@ class EA_Layout( dict ):
 	def advanced( self ):
 		return self.get( 'advanced', False )
 
+	def __cmp__( self, other ):
+		if self.groupName < other.groupName:
+			return -1
+		if other.groupName < self.groupName:
+			return 1
+		if self.position < other.position:
+			return -1
+		if other.position < self.position:
+			return 1
+		return 0
+
 def update_extended_attributes(lo, module, position):
 
 	# add list of tabnames created by extended attributes

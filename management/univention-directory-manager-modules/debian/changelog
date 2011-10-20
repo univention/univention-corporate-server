@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.141-1) unstable; urgency=low
+
+  * fixed positioning of extended attributes; Bug #23988
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 20 Oct 2011 14:08:23 +0200
+
 univention-directory-manager-modules (7.0.140-1) unstable; urgency=low
 
   * fixed syntax for hardware addresses; Bug #22439

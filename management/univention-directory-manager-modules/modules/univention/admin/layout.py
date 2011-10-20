@@ -106,8 +106,6 @@ class ILayoutElement( dict ):
 		fpos = ( position - 1 ) % 2
 
 		currentLine = fline
-		while len( self.layout ) > currentLine and isinstance( self.layout[ 0 ], ILayoutElement ):
-			currentLine += 1
 
 		if len( self.layout ) <= currentLine:
 			self.layout.append( field )
