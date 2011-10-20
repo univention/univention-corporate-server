@@ -105,6 +105,11 @@ def handler(dn, new, old):
 			if new_domain != old_domain:
 				remove_certificate(old['cn'][0], domainname=old_domain)
 				create_certificate(new['cn'][0], int(new['uidNumber'][0]), domainname=new_domain)
+			else:
+				# Reset permissions
+				ssldir='/etc/univention/ssl'
+				certpath=os.path.join(ssldir,"%s.%s" % (new['cn'][0],new_domain))
+				a=os.path.walk(certpath,set_permissions, None)
 	finally:
 		set_privileges_cert(root=0)
 	return
