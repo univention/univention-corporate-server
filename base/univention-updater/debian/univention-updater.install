@@ -27,6 +27,4 @@ script/univention-removed usr/share/univention-updater/
 script/preup.sh usr/share/univention-updater/
 script/postup.sh usr/share/univention-updater/
 
-41univention-updater.inst usr/lib/univention-install/
-
 modules/univention/updater/*.py usr/share/pyshared/univention/updater/

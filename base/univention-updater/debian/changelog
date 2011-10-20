@@ -1,4 +1,4 @@
-univention-updater (7.0.52-2) unstable; urgency=low
+univention-updater (7.0.52-3) unstable; urgency=low
 
   * fixed rules file: do not try to install old join script; Bug #24047
 
