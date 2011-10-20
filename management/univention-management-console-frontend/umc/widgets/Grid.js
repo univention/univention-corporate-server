@@ -530,12 +530,12 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			msg = this.footerFormatter(nItems, nItemsTotal);
 		}
 		else {
-			msg = this._('%d objects of %d selected', nItems, nItemsTotal);
+			msg = this._('%d entries of %d selected', nItems, nItemsTotal);
 			if (0 === nItemsTotal) {
-				msg = this._('No objects could be found');
+				msg = this._('No entries could be found');
 			}
 			else if (1 == nItems) {
-				msg = this._('1 object of %d selected', nItemsTotal);
+				msg = this._('1 entry of %d selected', nItemsTotal);
 			}
 		}
 		this._footerLegend.set('content', msg);

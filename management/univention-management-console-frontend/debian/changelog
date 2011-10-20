@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.107-1) unstable; urgency=low
+
+  * Grid: changed footer caption (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 20 Oct 2011 10:22:02 +0200
+
 univention-management-console-frontend (1.0.106-1) unstable; urgency=low
 
   * revert changes from 1.0.98-2; Bug #22811

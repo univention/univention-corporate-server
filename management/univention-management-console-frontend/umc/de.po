@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-16 10:24+0200\n"
+"POT-Creation-Date: 2011-10-20 10:20+0200\n"
 "PO-Revision-Date: 2011-10-19 14:39+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,20 +22,18 @@ msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
 #: umc/widgets/Grid.js:533
-#, python-format
-msgid "%d objects of %d selected"
-msgstr "%d Objekte von %d ausgewählt"
+msgid "%d entries of %d selected"
+msgstr "%d Einträge von %d ausgewählt"
 
 #: umc/widgets/Grid.js:538
-#, python-format
-msgid "1 object of %d selected"
-msgstr "1 Objekt von %d ausgewählt"
+msgid "1 entry of %d selected"
+msgstr "1 Eintrag von %d ausgewählt"
 
 #: umc/app.js:356
 msgid "About UMC"
 msgstr "Über UMC"
 
-#: umc/widgets/UnixAccessRights.js:65
+#: umc/widgets/UnixAccessRights.js:67
 msgid "Access"
 msgstr "Zugriff"
 
@@ -103,7 +101,7 @@ msgstr "Englisch"
 msgid "German"
 msgstr "Deutsch"
 
-#: umc/widgets/UnixAccessRights.js:42
+#: umc/widgets/UnixAccessRights.js:44
 msgid "Group"
 msgstr "Gruppe"
 
@@ -207,13 +205,13 @@ msgstr "Weitere Aktionen"
 msgid "More..."
 msgstr "Weitere..."
 
+#: umc/widgets/Grid.js:535
+msgid "No entries could be found"
+msgstr "Keine Einträge konnten gefunden werden"
+
 #: umc/widgets/Grid.js:594
 msgid "No object selected"
 msgstr "Kein Objekt ausgewählt"
-
-#: umc/widgets/Grid.js:535
-msgid "No objects could be found"
-msgstr "Keine Objekte konnten gefunden werden"
 
 #: umc/widgets/Page.js:211
 msgid "Note"
@@ -227,7 +225,7 @@ msgstr "Hinweis"
 msgid "Ok"
 msgstr "Ok"
 
-#: umc/widgets/UnixAccessRights.js:43
+#: umc/widgets/UnixAccessRights.js:45
 msgid "Others"
 msgstr "Andere"
 
@@ -235,7 +233,7 @@ msgstr "Andere"
 msgid "Overview"
 msgstr "Übersicht"
 
-#: umc/widgets/UnixAccessRights.js:41
+#: umc/widgets/UnixAccessRights.js:43
 msgid "Owner"
 msgstr "Besitzer"
 
@@ -243,7 +241,7 @@ msgstr "Besitzer"
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/widgets/UnixAccessRights.js:55
+#: umc/widgets/UnixAccessRights.js:57
 msgid "Read"
 msgstr "Lesen"
 
@@ -358,7 +356,7 @@ msgstr ""
 "Willkommen auf der Univention Management Console. Bitte geben Sie "
 "Benutzername und Passwort Ihres Domänen-Kontos an."
 
-#: umc/widgets/UnixAccessRights.js:60
+#: umc/widgets/UnixAccessRights.js:62
 msgid "Write"
 msgstr "Schreiben"
 
