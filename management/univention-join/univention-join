@@ -111,12 +111,53 @@ download_host_certificate () {
 check_ldap_tls_connection () {
 	echo -n "Check TLS connection "
 
-	ldapsearch -x -ZZ -s base -h "$DCNAME" dn >/dev/null
+	eval "$(ucr shell ldap/master/port)"
+	
+	if [ -z "$ldap_master_port" ]; then
+		ldap_master_port=389
+	fi
+
+	ldapsearch -x -ZZ -p "$ldap_master_port" -s base -h "$DCNAME" -D "$binddn" -w `cat $DCPWD` dn >/dev/null
 	if  [ $? != 0 ]; then
  		failed_message "Establishing a TLS connection with $DCNAME failed. Maybe you didn't specify a FQDN."
 	fi
 
 	echo -e "\033[60Gdone"
+}
+
+index_search ()
+{
+	internal_index=",seeAlso,userid,description,gidNumber,uidNumber,memberOf,entry,children,supportedAuthPasswordSchemes,authPassword,supportedFeatures,OpenLDAPaci,entryUUID,entryCSN,saslAuthzTo,saslAuthzFrom,monitorContext,superiorUUID,namingCSN,syncreplCookie,contextCSN,glue,syncConsumerSubentry,syncProviderSubentry,objectClass,aliasedObjectName,cn,userPassword,name,dn,top,subentry,collectiveAttributeSubentry,createTimestamp,modifyTimestamp,creatorsName,modifiersName,administrativeRole,subtreeSpecification,collectiveExclusions,hasSubordinates,subschemaSubentry,collectiveAttributeSubentries,subschema,ditStructureRules,ditContentRules,matchingRules,attributeTypes,objectClasses,nameForms,matchingRuleUse,structuralObject,,givenName,mail,ou,sn,uid,default,"
+	schemafile="$1"
+	variables="$2"
+
+	new_attr=""
+	for attr in $(echo $variables | tr "," "\n"); do
+		if grep -q "^attributeTypes: .* NAME '$attr'" $schemafile; then
+			export new_attr="$new_attr,$attr"
+		elif echo $internal_index | grep -q ",$attr," ; then
+			export new_attr="$new_attr,$attr"
+		else
+			echo "Remove $attr from index" >>/var/log/univention.join.log 2>&1
+		fi
+	done
+
+	echo "${new_attr#,}"
+
+}
+cleanup_index () {
+
+	schemafile="$(mktemp)"
+	ldapsearch -x -h $ldap_master -p "$ldap_master_port" -s base -b cn=Subschema '(&(objectClass=subschema)(objectClasses=univentionMetaDirectory))'  objectClasses attributeTypes matchingRules matchingRuleUse dITStructureRules dITContentRules nameForms ldapSyntaxes | ldapsearch-wrapper >$schemafile
+
+	eval "$(ucr shell ldap/index/eq ldap/index/pres ldap/index/sub ldap/index/approx)"
+
+	ucr set ldap/index/eq="$(index_search $schemafile "$ldap_index_eq")" >>/var/log/univention.join.log 2>&1  
+	ucr set ldap/index/pres="$(index_search $schemafile "$ldap_index_pres")" >>/var/log/univention.join.log 2>&1  
+	ucr set ldap/index/sub="$(index_search $schemafile "$ldap_index_sub")" >>/var/log/univention.join.log 2>&1  
+	ucr set ldap/index/approx="$(index_search $schemafile "$ldap_index_approx")" >>/var/log/univention.join.log 2>&1  
+
+	/usr/sbin/slapindex >>/var/log/univention/join.log 2>&1
 }
 
 while [ $# -gt 0 ]
@@ -255,9 +296,24 @@ if [ -x /etc/init.d/slapd ]; then
 	echo -e "\033[60Gdone"
 fi
 
+master_version="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" /usr/sbin/ucr search --brief ^version/version$ | sed -ne 's|^version/version: ||p')"
+
+if [ "${master_version:0:1}" -lt 3 ]; then
+	# UCS 2.x
+	if [ -z "$ldap_master_port" ]; then
+		ucr set ldap/master/port=389 >>/var/log/univention/join.log 2>&1
+	fi
+else
+	if [ -z "$ldap_master_port" ]; then
+		ucr set ldap/master/port=7389 >>/var/log/univention/join.log 2>&1
+	fi
+fi
+
+eval "$(ucr shell)"
+
 if [ -z "$LDAPBASE" ]; then
 	echo -n "Search ldap/base"
-	ldap_base=`ldapsearch -x  -h $DCNAME -b "" -s base 'objectclass=*' NamingContexts -LLL | grep namingContexts | sed -e 's|namingContexts: ||'`
+	ldap_base="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" /usr/sbin/ucr search --brief ^ldap/base$ | sed -ne 's|^ldap/base: ||p')"
 else
 	ldap_base="$LDAPBASE"
 fi
@@ -271,20 +327,37 @@ if [ -x /etc/init.d/slapd ]; then
 fi
 
 echo -n "Search LDAP binddn "
-binddn=""
-for i in `ldapsearch -x -h $DCNAME -LLL -b $ldap_base "(&(uid=$DCACCOUNT)(objectClass=person))" | ldapsearch-wrapper | grep ^dn | sed -e 's|dn: ||'`; do
-	if [ -n "$binddn" ]; then
-		failed_message "binddn for user $DCACCOUNT not unique, $i and $binddn"
-	fi
-	echo -e "\033[60Gdone"
-	binddn="$i"
-done
+# First use udm to search the user DN
+binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
+	/usr/sbin/udm users/user list --filter uid=$DCACCOUNT --logfile /dev/null | sed -ne 's|DN: ||p')"
+
 if [ -z "$binddn" ]; then
-	failed_message "binddn for user $DCACCOUNT not found"
+	# Next check is the local ldapi interface
+	binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
+		ldapsearch -x -LLL -H ldapi:/// "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
+fi
+
+if [ -z "$binddn" ]; then
+	# Check with anonymous bind
+	binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
+		ldapsearch -x -LLL "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
+fi
+if [ -z "$binddn" ]; then
+	binddn="$(ldapsearch -x -h $DCNAME -p $ldap_master_port -LLL -b $ldap_base "(&(uid=$DCACCOUNT)(objectClass=person))" | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
+fi
+
+if [ -z "$binddn" ]; then
+	failed_message "binddn for user $DCACCOUNT not found. "
 else
-	ldapsearch -x -h $DCNAME -LLL -b "$ldap_base" -D "$binddn" -w `cat $DCPWD` -LLL -s base >/dev/null 2>&1
+	ldapsearch -x -h $DCNAME -p $ldap_master_port -LLL -b "$ldap_base" -D "$binddn" -w "$(cat $DCPWD)" -LLL -s base >/dev/null 2>&1
 	if [ $? != 0 ]; then
 		failed_message "Invalid credentials"
+	else
+		echo -e "\033[60Gdone"
+	fi
+	if [ "${master_version:0:1}" -gt 2 ]; then
+		# UCS 3
+    	auth_cmd="-binddn \"$binddn\" -bindpwfile \"$DCPWD\""
 	fi
 fi
 
@@ -304,7 +377,12 @@ fi
 
 if [ -n "$server_role" ]; then
 	if [ -n "$interfaces_eth0_address" ]; then
-		ip_cmd="-ip $interfaces_eth0_address"
+		if [ "${master_version:0:1}" -lt 3 ]; then
+			ip_cmd="-ip $interfaces_eth0_address"
+		else
+			# Since UCS 3.0 it is possible to append the netmask
+			ip_cmd="-ip $interfaces_eth0_address -netmask $interfaces_eth0_netmask"
+		fi
 	fi
 	echo -n "Join Computer Account: "
 	univention-scp "$DCPWD" "$DCPWD" "$DCACCOUNT@$DCNAME:$DCPWD" >>/var/log/univention/join.log 2>&1
@@ -487,6 +565,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 
 	echo -n "0" >/var/lib/univention-ldap/schema/id/id
 	chown listener /var/lib/univention-ldap/schema/id/id
+	cleanup_index
 
 	if test -e "/usr/lib/univention-install/"; then
 		for i in /usr/lib/univention-install/*.inst; do
@@ -567,6 +646,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 
 	echo -n "0" >/var/lib/univention-ldap/schema/id/id
 	chown listener /var/lib/univention-ldap/schema/id/id
+	cleanup_index
 
 	touch /var/univention-join/joined
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined

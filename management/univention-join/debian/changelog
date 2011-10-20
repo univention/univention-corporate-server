@@ -1,3 +1,10 @@
+univention-join (3.0.5-1) unstable; urgency=low
+
+  * Allow the join of a UCS 2.4 backup or slave against a UCS 3.0 master
+    (Bug #24012)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Oct 2011 16:41:07 +0200
+
 univention-join (3.0.4-4) unstable; urgency=low
 
   * Display a warning and error out if univention-run-join-scripts
