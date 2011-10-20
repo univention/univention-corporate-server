@@ -33,6 +33,10 @@
 import listener
 import os, re, string
 import univention.debug
+## for the ucr commit below in postrun we need ucr configHandlers
+from univention.config_registry import configHandlers
+ucr_handlers = configHandlers()
+ucr_handlers.load()
 
 hostname=listener.baseConfig['hostname']
 domainname=listener.baseConfig['domainname']
@@ -174,6 +178,7 @@ def initialize():
 			listener.unsetuid()
 
 def clean():
+	global ucr_handlers
 	listener.setuid(0)
 	try:
 		if os.path.exists('/etc/samba/shares.conf.d'):
@@ -181,19 +186,26 @@ def clean():
 				os.unlink(os.path.join('/etc/samba/shares.conf.d', f))
 			if os.path.exists('/etc/samba/shares.conf'):
 				os.unlink('/etc/samba/shares.conf')
+				ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
 			os.rmdir('/etc/samba/shares.conf.d')
 	finally:
 		listener.unsetuid()
 
 def postrun():
+	global ucr_handlers
 	listener.setuid(0)
 	try:
+		run_ucs_commit = False
+		if not os.path.exists('/etc/samba/shares.conf'):
+			run_ucs_commit = True
 		fp = open('/etc/samba/shares.conf', 'w')
 		print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Modul überschrieben werden. \n#          Ergänzungen können an folgende Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#'
 
 		for f in os.listdir('/etc/samba/shares.conf.d'):
 			print >>fp, 'include = %s' % os.path.join('/etc/samba/shares.conf.d', f)
 		fp.close()
+		if run_ucs_commit:
+			ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
 		initscript='/etc/init.d/samba4'
 		os.spawnv(os.P_WAIT, initscript, ['samba4', 'reload'])
 	finally:
