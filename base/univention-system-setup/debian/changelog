@@ -1,3 +1,9 @@
+univention-system-setup (5.0.15-1) unstable; urgency=low
+
+  * UMC: added missing page classes (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 20 Oct 2011 17:20:40 +0200
+
 univention-system-setup (5.0.14-1) unstable; urgency=low
 
   * UMC: added network module and SSL certificate module (Bug #22904)
