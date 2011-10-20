@@ -249,10 +249,10 @@ int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMes
 		rv = LDAP_OTHER;
 	} else {
 		signals_block();
-		handlers_update(dn, &cache_entry, &old_cache_entry, command);
 		if ((rv=cache_update_entry_lower(id, dn, &cache_entry)) != 0) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
 		}
+		handlers_update(dn, &cache_entry, &old_cache_entry, command);
 		signals_unblock();
 	}
 

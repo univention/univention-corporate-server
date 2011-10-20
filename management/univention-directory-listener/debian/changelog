@@ -1,3 +1,11 @@
+univention-directory-listener (6.0.12-1) unstable; urgency=low
+
+  * Merged from UCS 2.4-4:
+    * Write the new object into the cache before giving the entry to the
+      handlers. This is similar to Bug #21914. (Bug #23802)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Oct 2011 07:09:06 +0200
+
 univention-directory-listener (6.0.11-2) unstable; urgency=low
 
   * fixed logrotate configuration (Bug #18002) 
