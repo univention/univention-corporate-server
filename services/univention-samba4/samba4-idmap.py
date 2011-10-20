@@ -36,8 +36,8 @@ import os
 import univention.debug
 
 import ldb
-# from samba.ndr import ndr_pack, ndr_unpack
-# from samba.dcerpc import security
+from samba.ndr import ndr_pack, ndr_unpack
+from samba.dcerpc import security
 from samba.idmap import IDmapDB
 from samba.auth import system_session
 from samba.param import LoadParm
@@ -90,8 +90,9 @@ def rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, xidNumber, type_str
 		## and update related attributes
 		msg = ldb.Message()
 		msg.dn = ldb.Dn(idmap, "CN=%s" % new_sambaSID)
-		msg["cn"] = ldb.MessageElement([new_sambaSID], ldb.FLAG_MOD_REPLACE, "cn")
-		msg["objectSid"] = ldb.MessageElement([new_sambaSID], ldb.FLAG_MOD_REPLACE, "objectSid")
+		msg["cn"] = ldb.MessageElement( [ new_sambaSID ] , ldb.FLAG_MOD_REPLACE, "cn")
+		new_objectSid = ndr_pack(security.dom_sid(new_sambaSID))
+		msg["objectSid"] = ldb.MessageElement(i [ new_objectSid ] , ldb.FLAG_MOD_REPLACE, "objectSid")
 		idmap.modify(msg)
 
 	except ldb.LdbError, (enum, estr):
