@@ -377,9 +377,9 @@ class object(content):
 
 		elif key == 276:
 			return 'next'
-		if key in [ 10, 32 ] and self.get_elem('__NEXT_BUTTON__').usable() and self.get_elem('__NEXT_BUTTON__').get_status():
+		if key in [ 10, 32 ] and self.get_elem('__NEXT_BUTTON__').usable() and self.get_elem_id('__NEXT_BUTTON__') == self.current and self.get_elem('__NEXT_BUTTON__').get_status():
 			return 'next'
-		elif key in [ 10, 32 ] and self.get_elem('__BACK_BUTTON__').usable() and self.get_elem('__BACK_BUTTON__').get_status():
+		elif key in [ 10, 32 ] and self.get_elem('__BACK_BUTTON__').usable() and self.get_elem_id('__BACK_BUTTON__') == self.current and self.get_elem('__BACK_BUTTON__').get_status():
 			return 'prev'
 		elif key == 258:
 			# down
