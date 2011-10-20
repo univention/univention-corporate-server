@@ -1,3 +1,10 @@
+univention-installer (7.0.114-2) unstable; urgency=low
+
+  * added country_codes list to debian/univention-installer-modules.install
+    (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 20 Oct 2011 12:51:39 +0200
+
 univention-installer (7.0.114-1) unstable; urgency=low
 
   * added installer/locale/country_codes (Bug #22904) 
