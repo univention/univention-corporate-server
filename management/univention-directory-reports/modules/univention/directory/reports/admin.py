@@ -67,7 +67,7 @@ TEX_ESCAPE = {
 		}
 def texClean(str):
 	u"""Escape string for use in LaTeX.
-	
+
 	>>> texClean('Test')
 	'Test'
 	>>> texClean('"\\&%#_{}~^$')
@@ -101,6 +101,7 @@ class AdminConnection( object ):
 		else:
 			self._access = ua_ldap.access(  host = host, base = self._base,
 											binddn = userdn, bindpw = password, start_tls = start_tls )
+		ua_modules.update()
 		self._config = ua_config.config( host = host )
 
 	def __repr__(self):

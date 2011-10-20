@@ -1,3 +1,10 @@
+univention-directory-reports (4.0.7-1) unstable; urgency=low
+
+  * fixed typo in install file (logo image was installed into wrong directory)
+  * update UDM modules list otherwise no reports can be generated; Bug #23336
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 20 Oct 2011 11:54:39 +0200
+
 univention-directory-reports (4.0.6-1) unstable; urgency=low
 
   * added logrotate configuration (Bug #18002) 
