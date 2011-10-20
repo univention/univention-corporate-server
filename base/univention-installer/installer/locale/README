@@ -20,4 +20,6 @@
      sh locale2xkblayout.sh --variant fr_CH -> fr
      wurde z.T. aus /var/lib/dpkg/info/keyboard-configuration.config kopiert
 
+   * country_codes - Mapping von Country zu Country-Code
+     (http://en.wikipedia.org/wiki/ISO_3166-1)
 

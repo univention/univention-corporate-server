@@ -1,3 +1,9 @@
+univention-installer (7.0.114-1) unstable; urgency=low
+
+  * added installer/locale/country_codes (Bug #22904) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 20 Oct 2011 12:47:09 +0200
+
 univention-installer (7.0.113-1) unstable; urgency=low
 
   * fixed length of SLAAC checkbox text (Bug #23836)
