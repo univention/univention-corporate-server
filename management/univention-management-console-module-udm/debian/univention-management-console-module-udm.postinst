@@ -47,8 +47,12 @@ done
 univention-config-registry set directory/manager/web/modules/autosearch?1
 
 # default search
-univention-config-registry set directory/manager/web/modules/users/user/search/default?username
-univention-config-registry set directory/manager/web/modules/dhcp/service/search/default?service
+univention-config-registry set directory/manager/web/modules/users/user/search/default?username \
+	directory/manager/web/modules/dhcp/service/search/default?service
+
+# directory reports
+univention-config-registry set directory/reports/cleanup/cron?"0 0 * * *" \
+	directory/reports/cleanup/age?43200
 
 for i in \
 	computers/computer \

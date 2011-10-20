@@ -114,5 +114,9 @@
 	  <attribute name="objectType" syntax="String" required="True"/>
 	  <attribute name="objectDN" syntax="String" required="False"/>
 	</command>
+	<command name="udm/reports/query" function="reports_query">
+	</command>
+	<command name="udm/reports/create" function="reports_create">
+	</command>
   </module>
 </umc>

@@ -1,0 +1,6 @@
+@%@UCRWARNING=# @%@
+
+SHELL=/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+@%@directory/reports/cleanup/cron@%@ root /usr/sbin/univention-directory-reports-cleanup >>/var/log/univention/directory-reports-cleanup.log

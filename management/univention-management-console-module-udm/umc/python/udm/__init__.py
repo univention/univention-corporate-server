@@ -32,7 +32,8 @@
 # <http://www.gnu.org/licenses/>.
 
 import copy
-
+import os
+import shutil
 import notifier
 import notifier.threads
 
@@ -44,6 +45,9 @@ from univention.management.console.log import MODULE
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.uexceptions as udm_errors
+
+import univention.directory.reports as udr
+
 from univention.management.console.protocol.definitions import *
 
 from .ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, LDAP_ConnectionError, set_credentials
@@ -54,16 +58,18 @@ class Instance( Base ):
 	def __init__( self ):
 		Base.__init__( self )
 		self.settings = None
+		self.reports = None
 
 	def init( self ):
 		'''Initialize the module. Invoked when ACLs, commands and
 		credentials are available'''
 		set_credentials( self._user_dn, self._password )
 
-		# read user settings
+		# read user settings and initial UDR
 		if self._username is not None:
 			self.settings = UDM_Settings()
 			self.settings.user( self._user_dn )
+			self.reports_cfg = udr.Config()
 
 	def _get_module( self, request, object_type = None ):
 		"""Tries to determine to UDM module to use. If no specific
@@ -311,6 +317,61 @@ class Instance( Base ):
 			return entries
 
 		thread = notifier.threads.Simple( 'Query', notifier.Callback( _thread, request ),
+										  notifier.Callback( self._thread_finished, request ) )
+		thread.run()
+
+	def reports_query( self, request ):
+		"""Returns a list of reports for the given object type"""
+		self.finished( request.id, self.reports_cfg.get_report_names( request.flavor ) )
+
+	def reports_create( self, request ):
+		"""Creates a report for the given LDAP DNs and returns the file
+
+		requests.options = {}
+		  'report' -- name of the report
+		  'objects' -- list of LDAP DNs to include in the report
+
+		return: report file
+		"""
+
+		if not 'report' in request.options:
+			raise UMC_OptionMissing( "No report is specified" )
+		if not 'objects' in request.options or not request.options[ 'objects' ]:
+			raise UMC_OptionMissing( "No LDAP DNs specified to include in the report" )
+
+		@LDAP_Connection
+		def _thread( request, ldap_connection = None, ldap_position = None ):
+			udr.admin.connect( access = ldap_connection )
+			udr.admin.clear_cache()
+			cfg = udr.Config()
+			module = self._get_module( request )
+			template = cfg.get_report( request.flavor, request.options[ 'report' ] )
+			doc = udr.Document( template, header = cfg.get_header( request.flavor, request.options[ 'report' ] ), footer = cfg.get_footer( request.flavor, request.options[ 'report' ] ) )
+			tmpfile = doc.create_source( request.options[ 'objects' ] )
+			if doc._type == udr.Document.TYPE_LATEX:
+				doc_type = _( 'PDF document' )
+				pdffile = doc.create_pdf( tmpfile )
+				os.unlink( tmpfile )
+			else:
+				doc_type = _( 'text file' )
+				pdffile = tmpfile
+			try:
+				os.unlink( tmpfile[ : -4 ] + 'aux' )
+				os.unlink( tmpfile[ : -4 ] + 'log' )
+			except:
+				pass
+			if pdffile:
+				shutil.copy( pdffile, '/var/www/univention-directory-reports' )
+				os.unlink( pdffile )
+
+				url = '/univention-directory-reports/%s' % os.path.basename( pdffile )
+				link = '<a target="_blank" href="%s">%s (%s)</a>' % ( url, module.name, request.options[ 'report' ] )
+
+				return { 'success': True, 'count' : len( request.options[ 'objects' ] ), 'URL': url, 'docType' : doc_type }
+			else:
+				return { 'success': False, 'count' : 0, 'URL': None, 'docType' : doc_type }
+
+		thread = notifier.threads.Simple( 'ReportsCreate', notifier.Callback( _thread, request ),
 										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 

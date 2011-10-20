@@ -102,6 +102,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 	// button to navigate back to the list of superordinates
 	_upButton: null,
 
+	// button to generate reports
+	_reportButton: null,
+
+	// available reports
+	_reports: null,
+
 	// UDM object type name in singular and plural
 	objectNameSingular: '',
 	objectNamePlural: '',
@@ -191,11 +197,14 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			(new dojo.DeferredList([
 				this.umcpCommand('udm/containers'),
 				this.umcpCommand('udm/superordinates'),
+				this.umcpCommand('udm/reports/query'),
 				umc.tools.ucr('directory/manager/web*')
 			])).then(dojo.hitch(this, function(results) {
+				// result: [ 0 ] -> success/failure, [ 1 ] -> data
 				var containers = results[0][0] ? results[0][1] : [];
 				var superordinates = results[1][0] ? results[1][1] : [];
-				this._ucr = umc.modules._udm.ucr = results[2][0] ? results[2][1] : {};
+				this._reports = results[ 2 ][ 0 ] ? results[ 2 ][ 1 ].result : [];
+				this._ucr = umc.modules._udm.ucr = results[3][0] ? results[3][1] : {};
 				this.renderSearchPage(containers.result, superordinates.result);
 			}));
 		}
@@ -631,12 +640,37 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		}
 
 		// check whether we have autosearch activated
-		if ('navigation' != this.moduleFlavor && umc.tools.isTrue(autoSearch)) {
-			// connect to the onValuesInitialized event of the form
-			var initHandle = this.connect(this._searchForm, 'onValuesInitialized', function() {
-				this.filter(this._searchForm.gatherFormValues());
-				this.disconnect(initHandle);
-			});
+		if ('navigation' != this.moduleFlavor ) {
+			if ( umc.tools.isTrue(autoSearch)) {
+				// connect to the onValuesInitialized event of the form
+				var initHandle = this.connect(this._searchForm, 'onValuesInitialized', function() {
+					this.filter(this._searchForm.gatherFormValues());
+					this.disconnect(initHandle);
+				});
+			}
+			// create report button
+			this.connect( this._grid, 'onFilterDone', 'checkReportButton' );
+		}
+	},
+
+	createReport: function () {
+	},
+
+	checkReportButton: function() {
+		var items = this._grid.getAllItems();
+
+		if ( items.length && this._reports.length) {
+			if ( null === this._reportButton ) {
+				this._reportButton = this.adopt( umc.widgets.Button, {
+					label: this._( 'Create report' ),
+					callback: dojo.hitch( this, 'createReport' )
+				} );
+				this._grid._toolbar.addChild( this._reportButton, 0 );
+			}
+		} else if ( null !== this._reportButton ) {
+			this._grid._toolbar.removeChild( this._reportButton, 0 );
+			this.orphan( this._reportButton, true );
+			this._reportButton = null;
 		}
 	},
 

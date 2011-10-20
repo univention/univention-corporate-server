@@ -83,3 +83,9 @@ umc-client -t -U root -P univention COMMAND udm/policies -o objectType=users/use
 
 # effective values of a specific policy tpye for a given object
 umc-client -t -U root -P univention COMMAND udm/object/policies -o objectType=users/user -o policyType=policies/pwhistory -o objectDN=uid=Administrator,cn=users,dc=univention,dc=qa
+
+# list of reports
+umc-client -U Administrator -P univention command udm/reports/query -f users/user
+
+# create report
+umc-client -U Administrator -P univention command udm/reports/create -f users/user -e -o '{ "report": "Standard Report", "objects" : [ "uid=crunchy,cn=users,dc=ucs3,dc=test", "uid=stefan,cn=users,dc=ucs3,dc=test" ] }'

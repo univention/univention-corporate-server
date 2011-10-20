@@ -294,7 +294,8 @@ class UDM_Module( object ):
 				obj.policies = ldap_object[ '$policies$' ].values()
 			obj.modify()
 		except udm_errors.base, e:
-			MODULE.error( 'Failed to modify LDAP object %s' % obj.dn )
+			MODULE.error( 'Failed to modify LDAP object %s: %s' % ( obj.dn, e.message ) )
+			MODULE.error( '-> details: %s' % str( e ) )
 			raise UDM_Error( e.message )
 
 	@LDAP_Connection
