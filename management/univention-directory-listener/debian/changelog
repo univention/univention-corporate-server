@@ -1,3 +1,9 @@
+univention-directory-listener (5.0.14-1) unstable; urgency=low
+
+  * Use ldap/master/port in UCS 2.4 listener join script (Bug #24101)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Oct 2011 14:16:47 +0200
+
 univention-directory-listener (5.0.13-1) unstable; urgency=low
 
   * Write the new object into the cache before giving the entry to the

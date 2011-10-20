@@ -83,6 +83,10 @@ options="$options -ZZ -d 1"
 
 options="$options -i -h $ldap_master -b "$ldap_base" -m $moduledir -c $cachedir"
 
+if [ -n "$ldap_master_port" ]; then
+	options="$options -p $ldap_master_port"
+fi
+
 if [ -n "$server_role" ]; then
 
 	if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
