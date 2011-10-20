@@ -1,3 +1,9 @@
+univention-management-console (4.0.68-3) unstable; urgency=low
+
+  * added UMC module system-setup to the dependency list (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 20 Oct 2011 17:22:47 +0200
+
 univention-management-console (4.0.68-2) unstable; urgency=low
 
   * updated postinst (Bug #23577)
