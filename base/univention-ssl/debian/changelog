@@ -1,3 +1,9 @@
+univention-ssl (5.0.10-1) unstable; urgency=low
+
+  * Fixed debug messages in gencertificate.py (Bug #23802)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Oct 2011 06:55:59 +0200
+
 univention-ssl (5.0.9-1) unstable; urgency=low
 
   * Handle the permissions for another case in gencertificate.py
