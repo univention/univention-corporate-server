@@ -59,20 +59,17 @@ def open_idmap():
 	except ldb.LdbError:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
 				"%s: /var/lib/samba/private/idmap.ldb could not be opened" % name )
-		idmap = None
+		raise
 	finally:
 		listener.unsetuid()
 
 	return idmap
 
 
-def modrdn_idmap_entry(old_sambaSID, new_sambaSID, type_string):
-	## need to open idmap here in case it has been removed since the module  was loaded
-	idmap = open_idmap()
+def rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, type_string, idmap=None):
 	if not idmap:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
-				"%s: entry for %s could not be updated" % (name, sambaSID) )
-		return False
+		## need to open idmap here in case it has been removed since the module  was loaded
+		idmap = open_idmap()
 
 	try:
 		res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % old_sambaSID, attrs = ["objectSid", "type"])
@@ -91,15 +88,47 @@ def modrdn_idmap_entry(old_sambaSID, new_sambaSID, type_string):
 		idmap.rename(str(record.dn), "CN=%s" % new_sambaSID)
 
 	except ldb.LdbError, (enum, estr):
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, estr)
+		## ok, there is an entry for the target sambaSID, let's remove the old sambaSID and modify the target
+		remove_idmap_entry(old_sambaSID, xidNumber, type_string, idmap)
+		modify_idmap_entry(new_sambaSID, xidNumber, type_string, idmap)
+
+def modify_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
+	if not idmap:
+		## need to open idmap here in case it has been removed since the module  was loaded
+		idmap = open_idmap()
+
+	try:
+		res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % sambaSID, attrs = ["objectSid", "xidNumber", "type"])
+		record = res.msgs[0]
+
+		msg = ldb.Message()
+		msg.dn = ldb.Dn(idmap, str(record.dn))
+		if record["type"][0] != type_string:
+			msg["type"] = ldb.MessageElement([type_string], ldb.FLAG_MOD_REPLACE, "type")
+		if record["xidNumber"][0] != str(xidNumber):
+			msg["xidNumber"] = ldb.MessageElement([str(xidNumber)], ldb.FLAG_MOD_REPLACE, "xidNumber")
+
+		if len(msg) != 0:
+			# objectSid = ndr_unpack(security.dom_sid, record["objectSid"][0])
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS,
+				"%s: modifying entry for %s" % (name, sambaSID) )
+			if "xidNumber" in msg:
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
+					"%s: changing xidNumber from %s to %s" % (name, record["xidNumber"][0], xidNumber) )
+			if "type" in msg:
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
+					"%s: changing type from %s to %s" % (name, record["type"][0], type_string) )
+
+		idmap.modify(msg)
+
+	except ldb.LdbError, (enum, estr):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, estr)
 
-def add_modify_idmap_entry(sambaSID, xidNumber, type_string):
-	## need to open idmap here in case it has been removed since the module  was loaded
-	idmap = open_idmap()
+def add_or_modify_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 	if not idmap:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
-				"%s: entry for %s could not be updated" % (name, sambaSID) )
-		return False
+		## need to open idmap here in case it has been removed since the module  was loaded
+		idmap = open_idmap()
 
 	try:
 		idmap_type = {
@@ -120,41 +149,12 @@ def add_modify_idmap_entry(sambaSID, xidNumber, type_string):
 
 	except ldb.LdbError, (enum, estr):
 		## ok, there is an entry for this sambaSID, let's replace it
-		try:
-			res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % sambaSID, attrs = ["objectSid", "xidNumber", "type"])
-			record = res.msgs[0]
+		modify_idmap_entry(sambaSID, xidNumber, type_string, idmap)
 
-			msg = ldb.Message()
-			msg.dn = ldb.Dn(idmap, str(record.dn))
-			if record["type"][0] != type_string:
-				msg["type"] = ldb.MessageElement([type_string], ldb.FLAG_MOD_REPLACE, "type")
-			if record["xidNumber"][0] != str(xidNumber):
-				msg["xidNumber"] = ldb.MessageElement([str(xidNumber)], ldb.FLAG_MOD_REPLACE, "xidNumber")
-
-			if len(msg) != 0:
-				# objectSid = ndr_unpack(security.dom_sid, record["objectSid"][0])
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS,
-					"%s: modifying entry for %s" % (name, sambaSID) )
-				if "xidNumber" in msg:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
-						"%s: changing xidNumber from %s to %s" % (name, record["xidNumber"][0], xidNumber) )
-				if "type" in msg:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
-						"%s: changing type from %s to %s" % (name, record["type"][0], type_string) )
-
-			idmap.modify(msg)
-
-		except ldb.LdbError, (enum, estr):
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, estr)
-
-
-def remove_idmap_entry(sambaSID, xidNumber, type_string):
-	## need to open idmap here in case it has been removed since the module  was loaded
-	idmap = open_idmap()
+def remove_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 	if not idmap:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
-				"%s: entry for %s could not be removed" % (name, sambaSID) )
-		return False
+		## need to open idmap here in case it has been removed since the module  was loaded
+		idmap = open_idmap()
 
 	try:
 		res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % sambaSID, attrs = ["objectSid", "xidNumber", "type"])
@@ -178,38 +178,42 @@ def remove_idmap_entry(sambaSID, xidNumber, type_string):
 
 def handler(dn, new, old):
 
-	if new:
-		if 'sambaSamAccount' in new['objectClass']:
-			xid_attr = 'uidNumber'
-			xid_type = 'ID_TYPE_UID'
-		elif 'sambaGroupMapping' in new['objectClass']:
-			xid_attr = 'gidNumber'
-			xid_type = 'ID_TYPE_GID'
+	try:
+		if new:
+			if 'sambaSamAccount' in new['objectClass']:
+				xid_attr = 'uidNumber'
+				xid_type = 'ID_TYPE_UID'
+			elif 'sambaGroupMapping' in new['objectClass']:
+				xid_attr = 'gidNumber'
+				xid_type = 'ID_TYPE_GID'
 
-		new_xid = new.get(xid_attr, [''] )[0]
-		if new_xid:
-			new_sid = new['sambaSID'][0]
-			if old:
-				old_sid = old['sambaSID'][0]
-				if new_sid != old_sid:
-					modrdn_idmap_entry(old_sid, new_sid, xid_type)
-				old_xid = old.get(xid_attr, [''] )[0]
-				if new_xid != old_xid:
-					add_modify_idmap_entry(new_sid, new_xid, xid_type)
-			else:
-				add_modify_idmap_entry(new_sid, new_xid, xid_type)
+			new_xid = new.get(xid_attr, [''] )[0]
+			if new_xid:
+				new_sambaSID = new['sambaSID'][0]
+				if old:
+					old_sambaSID = old['sambaSID'][0]
+					if new_sambaSID != old_sambaSID:
+						rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, new_xid, xid_type)
+					old_xid = old.get(xid_attr, [''] )[0]
+					if new_xid != old_xid:
+						add_or_modify_idmap_entry(new_sambaSID, new_xid, xid_type)
+				else:
+					add_or_modify_idmap_entry(new_sambaSID, new_xid, xid_type)
+		# elif old:
+		# 	if 'sambaSamAccount' in old['objectClass']:
+		# 		xid_attr = 'uidNumber'
+		# 		xid_type = 'ID_TYPE_UID'
+		# 	elif 'sambaGroupMapping' in old['objectClass']:
+		# 		xid_attr = 'gidNumber'
+		# 		xid_type = 'ID_TYPE_GID'
+		# 
+		# 	old_xid = old.get(xid_attr, [''] )[0]
+		# 	if old_xid:
+		# 		remove_idmap_entry(old['sambaSID'][0], old_xid, xid_type)
+	except:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
+			"%s: entry for %s could not be updated" % (name, dn) )
 
-	# elif old:
-	# 	if 'sambaSamAccount' in old['objectClass']:
-	# 		xid_attr = 'uidNumber'
-	# 		xid_type = 'ID_TYPE_UID'
-	# 	elif 'sambaGroupMapping' in old['objectClass']:
-	# 		xid_attr = 'gidNumber'
-	# 		xid_type = 'ID_TYPE_GID'
-	# 
-	# 	old_xid = old.get(xid_attr, [''] )[0]
-	# 	if old_xid:
-	# 		remove_idmap_entry(old['sambaSID'][0], old_xid, xid_type)
 
 if __name__ == '__main__':
 	from optparse import OptionParser
