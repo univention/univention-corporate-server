@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.187-1) unstable; urgency=low
+
+  * first step in reactivating Univention Directory Reports; Bug #23336
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 20 Oct 2011 16:59:04 +0200
+
 univention-management-console-module-udm (1.0.186-1) unstable; urgency=low
 
   * add support for UDM_Attribute.label_format; Bug #22439
