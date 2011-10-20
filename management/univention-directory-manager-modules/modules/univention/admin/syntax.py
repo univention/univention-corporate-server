@@ -267,6 +267,7 @@ class UDM_Attribute( ISyntax ):
 	is_complex = False
 	key_index = 0
 	label_index = 0
+	label_format = None
 	regex = None
 	static_values = None
 	empty_value = False
@@ -1021,40 +1022,26 @@ class unixTimeInterval(simple):
 		else:
 			return 'None'
 
-class dhcpHWAddressHardware(select):
-	choices=[('ethernet', _('Ethernet')), ('fddi', _('FDDI')), ('token-ring', _('Token-Ring'))]
+class NetworkType( select ):
+	choices = ( ( 'ethernet', _( 'Ethernet' ) ), ( 'fddi', _( 'FDDI' ) ), ( 'token-ring', _( 'Token-Ring' ) ) )
 
-class macAddress(simple):
-	_re=re.compile('^[0-9a-fA-F][0-9a-fA-F]??$')
+class MAC_Address( simple ):
+	regex = re.compile( '^([0-9a-fA-F]{1,2}[:-]){5}[0-9a-fA-F]{1,2}$' )
+	error_message = _( 'This is not a valid MAC address. It must have 6 two digit hexadecimal numbers separated by \"-\" or \":\"' )
 
 	@classmethod
-	def parse(self, text):
-		c=''
-		if not text:
-			raise univention.admin.uexceptions.valueError,_("Value must have 6 two digit hexadecimal numbers separated by \"-\" or \":\" !")
+	def parse( self, text ):
+		simple.parse( text )
+		return text.replace( '-', ':' ).lower()
 
-		if text.find(":") != -1:
-			c=':'
-		elif text.find("-") != -1:
-			c='-'
-
-		if c:
-			ls = text.split(c)
-			i=0
-			for num in ls:
-				if not self._re.match(num):
-					return None
-				i+=1
-			if i==6:
-				return text.replace('-',':').lower()
-		raise univention.admin.uexceptions.valueError,_("Value must have 6 two digit hexadecimal numbers separated by \"-\" or \":\" !")
-
-class dhcpHWAddress(complex):
-	subsyntaxes=[(_('Type'), dhcpHWAddressHardware), (_('Address'), macAddress)]
+class DHCP_HardwareAddress( complex ):
+	subsyntaxes = ( ( _( 'Type' ), NetworkType ), ( _( 'Address' ), MAC_Address ) )
 	all_required=1
 
-class packageList(string):
-	pass
+class Packages( UDM_Attribute ):
+	udm_module = 'settings/packages'
+	attribute = 'packageList'
+	label_format = '%(name)s: %($attribute$)s'
 
 class userAttributeList(string):
 	@classmethod

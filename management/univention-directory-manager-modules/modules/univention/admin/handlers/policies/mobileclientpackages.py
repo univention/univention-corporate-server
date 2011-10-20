@@ -75,7 +75,7 @@ property_descriptions={
 	'clientPackages': univention.admin.property(
 			short_description=_('Package installation list'),
 			long_description='',
-			syntax=univention.admin.syntax.packageList,
+			syntax=univention.admin.syntax.Packages,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -85,7 +85,7 @@ property_descriptions={
 	'clientPackagesRemove': univention.admin.property(
 			short_description=_('Package removal list'),
 			long_description='',
-			syntax=univention.admin.syntax.packageList,
+			syntax=univention.admin.syntax.Packages,
 			multivalue=1,
 			options=[],
 			required=0,

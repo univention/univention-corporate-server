@@ -95,7 +95,7 @@ property_descriptions={
 	'mac': univention.admin.property(
 			short_description=_('MAC address'),
 			long_description='',
-			syntax=univention.admin.syntax.macAddress,
+			syntax=univention.admin.syntax.MAC_Address,
 			multivalue=1,
 			options=[],
 			required=0,

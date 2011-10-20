@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.140-1) unstable; urgency=low
+
+  * fixed syntax for hardware addresses; Bug #22439
+  * add a simple support for package list policies;
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 20 Oct 2011 11:23:23 +0200
+
 univention-directory-manager-modules (7.0.139-1) unstable; urgency=low
 
   * Fixed wrong classmethod call in syntax.py (Bug #22439)

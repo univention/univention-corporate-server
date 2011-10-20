@@ -63,7 +63,7 @@ property_descriptions={
 			short_description=_('Hardware address'),
 			long_description=_('Currently, only the ethernet and token-ring types are recognized. \
 The hardware-address should be a set of hexadecimal octets (numbers from 0 through ff) separated by colons.'),
-			syntax=univention.admin.syntax.dhcpHWAddress,
+			syntax=univention.admin.syntax.DHCP_HardwareAddress,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -86,7 +86,7 @@ layout=[
 	Tab( _('General'), _('Basic settings'), layout = [
 		Group( _( 'General' ), layout = [
 			'host',
-			'hwaddress'
+			'hwaddress',
 			'fixedaddress'
 		] ),
 	] )
