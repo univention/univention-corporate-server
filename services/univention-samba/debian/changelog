@@ -1,3 +1,9 @@
+univention-samba (6.0.10-3) unstable; urgency=low
+
+  * Remove now obsolete dependency on univention-shares (Bug #22576)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 20 Oct 2011 16:09:51 +0200
+
 univention-samba (6.0.10-2) unstable; urgency=low
 
   * updated postinst (Bug #23577)
