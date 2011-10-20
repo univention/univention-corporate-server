@@ -1,3 +1,9 @@
+univention-updater (7.0.52-2) unstable; urgency=low
+
+  * fixed rules file: do not try to install old join script; Bug #24047
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 20 Oct 2011 17:22:52 +0200
+
 univention-updater (7.0.52-1) unstable; urgency=low
 
   * removed old join script; Bug #24047
