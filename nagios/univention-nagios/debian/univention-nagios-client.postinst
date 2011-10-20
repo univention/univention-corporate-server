@@ -67,7 +67,7 @@ fi
 
 # configure firewall
 ucr set security/packetfilter/package/univention-nagios-client/tcp/5666/all="ACCEPT" \
-		security/packetfilter/package/univention-nagios-client/tcp/5666/all="Nagios NRPE"
+		security/packetfilter/package/univention-nagios-client/tcp/5666/all/en="Nagios NRPE"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 if [ "$1" = "configure" ]; then

@@ -1,6 +1,12 @@
+univention-nagios (5.0.13-3) unstable; urgency=low
+
+  * updated firewall settings (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 20 Oct 2011 08:44:09 +0200
+
 univention-nagios (5.0.13-2) unstable; urgency=low
 
-  * updated postinst (Bug #23577)
+  * updated firewall settings (Bug #23577)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 19 Oct 2011 17:57:06 +0200
 
