@@ -34,6 +34,7 @@
 
 eval "$(univention-config-registry shell)"
 
+new_ssl_common=$(get_profile_var "ssl/common")
 new_ssl_locality=$(get_profile_var "ssl/locality")
 new_ssl_organization=$(get_profile_var "ssl/organization")
 new_ssl_country=$(get_profile_var "ssl/country")
@@ -43,7 +44,7 @@ new_ssl_email=$(get_profile_var "ssl/email")
 
 recreate="no"
 
-for var in "locality" "organization" "country" "state" "organizationalunit" "email"; do
+for var in "common" "locality" "organization" "country" "state" "organizationalunit" "email"; do
 	old="ssl_$var"
 	new="new_ssl_$var"
 
@@ -68,7 +69,7 @@ if [ $recreate = "yes" ]; then
 	rdate time.fu-berlin.de || rdate 130.133.1.10 || true
 
 	# set UCR variables
-	for var in "locality" "organization" "country" "state" "organizationalunit" "email"; do
+	for var in "common" "locality" "organization" "country" "state" "organizationalunit" "email"; do
 		old="ssl_$var"
 		new="new_ssl_$var"
 		if [ -n "${!new}" ]; then

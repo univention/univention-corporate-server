@@ -36,8 +36,19 @@ import os
 import tempfile
 import subprocess
 import threading
-import univention_baseconfig
+import univention.config_registry
 import time
+import fnmatch
+import re
+import sys
+import apt
+
+if not '/lib/univention-installer/' in sys.path:
+	sys.path.append('/lib/univention-installer/')
+import package_list
+
+ucr=univention.config_registry.ConfigRegistry()
+ucr.load()
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
 PATH_SETUP_SCRIPTS = '/usr/lib/univention-system-setup/scripts'
@@ -51,63 +62,38 @@ UCR_VARIABLES = [
 	'locale/keymap',
 	# basis
 	'hostname', 'domainname', 'ldap/base', 'windows/domain',
-	# net
-	#'gateway',
-	#'nameserver1', 'nameserver2', 'nameserver3',
-	#'dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3',
-	#'proxy/http'
+	# net: ipv4
+	'gateway',
+	'nameserver1', 'nameserver2', 'nameserver3',
+	'dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3',
+	'proxy/http',
+	# net: ipv6
+	'ipv6/gateway',
+	# ssl
+	'ssl/common', 'ssl/locality', 'ssl/country', 'ssl/state',
+	'ssl/organization', 'ssl/organizationalunit', 'ssl/email',
 ]
 
 # net
-#for idev in range(0,4):
-#	for iattr in ['address' 'broadcast' 'netmask' 'network' 'type']:
-#		UCR_VARIABLES.append('interfaces/eth%d/%s' % (idev, iattr))
-#		if iattr != 'type':
-#			for ivirt in range(0,4):
-#				UCR_VARIABLES.append('interfaces/eth%d_%d/%s' % (idev, ivirt, iattr))
+for idev in range(0,4):
+	for iattr in ('address', 'broadcast', 'netmask', 'network', 'type'):
+		UCR_VARIABLES.append('interfaces/eth%d/%s' % (idev, iattr))
+		if iattr != 'type':
+			for ivirt in range(0,4):
+				UCR_VARIABLES.append('interfaces/eth%d_%d/%s' % (idev, ivirt, iattr))
 
 def timestamp():
 	return time.strftime('%Y-%m-%d %H:%M:%S')
 
 def load_values():
-#	mapping={
-#		'server/role':			'system_role',
-#		'ldap/base':			'ldap_base',
-#		'windows/domain':		'windows_domain',
-#		'nameserver1':			'nameserver_1',
-#		'nameserver2':			'nameserver_2',
-#		'nameserver3':			'nameserver_3',
-#		'dns/forwarder1':		'dns_forwarder_1',
-#		'dns/forwarder2':		'dns_forwarder_2',
-#		'dns/forwarder3':		'dns_forwarder_3',
-#		'proxy/http':			'http_proxy',
-#		'locale/default':		'locale_default',
-#		'locale':				'locales',
-#		'locale/keymap':		'keymap',
-#		'ssl/email':			'ssl_email',
-#		'ssl/country':			'ssl_country',
-#		'ssl/organization':		'ssl_organization',
-#		'ssl/organizationalunit':	'ssl_organizationalunit',
-#		'ssl/state':			'ssl_state',
-#		'ssl/locality':			'ssl_locality',
-#		'ox/mail/domain/primary':	'ox_primary_maildomain',
-#	}
-#	for i in range(0,4):
-#		mapping['interfaces/eth%d/type' % (i)]='eth%d_type' % (i)
-#		mapping['interfaces/eth%d/address' % (i)]='eth%d_ip' % (i)
-#		mapping['interfaces/eth%d/broadcast' % (i)]='eth%d_broadcast' % (i)
-#		mapping['interfaces/eth%d/netmask' % (i)]='eth%d_netmask' % (i)
-#		mapping['interfaces/eth%d/network' % (i)]='eth%d_network' % (i)
-#		for j in range(0,4):
-#			mapping['interfaces/eth%d_%d/address' % (i,j)]='eth%d_%d_ip' % (i,j)
-#			mapping['interfaces/eth%d_%d/broadcast' % (i,j)]='eth%d_%d_broadcast' % (i,j)
-#			mapping['interfaces/eth%d_%d/netmask' % (i,j)]='eth%d_%d_netmask' % (i,j)
-#			mapping['interfaces/eth%d_%d/network' % (i,j)]='eth%d_%d_network' % (i,j)
-
 	# load UCR variables
-	baseConfig=univention_baseconfig.baseConfig()
-	baseConfig.load()
-	values = dict([ (ikey, baseConfig[ikey]) for ikey in UCR_VARIABLES ])
+	ucr.load()
+	values = dict([ (ikey, ucr[ikey]) for ikey in UCR_VARIABLES ])
+
+	# net: ipv6 interfaces
+	for k, v in ucr.items():
+		if fnmatch.fnmatch(k, 'interfaces/eth*/ipv6/*'):
+			values[k] = v
 
 	#other values
 	values['root_password'] = ''
@@ -120,27 +106,43 @@ def load_values():
 	else:
 		values['timezone']=''
 
-
-#	#             scan packages:
-#	values['packages']=[]
-#
-#	installed_packages=[]
-#	packages = package_cache.packages
-#	for package in packages:
-#		if package.current_state == 6 and package.inst_state == 0:
-#			installed_packages.append(package.name)
-#
-#	import package_list
-#	for category in package_list.PackageList:
-#		for component in category['Packages']:
-#			for p in component['Packages']:
-#				debug('p=%s' % p )
-#				if p in installed_packages:
-#					values['packages'].append(p)
-#
-#	self.result=copy.deepcopy(values)
+	# get installed packages
+	allPackages = reduce(lambda x, y: x + y, [ i['Packages'] for i in get_packages() ])
+	installedPackages = get_installed_packages()
+	values['packages'] = list(set(allPackages) & set(installedPackages))
 
 	return values;
+
+def pre_save(newValues, oldValues):
+	'''Modify the final dict before saving it to the profile file.'''
+	regIpv4Device = re.compile(r'interfaces/(?P<device>[^/]+)/(?P<type>.*)')
+	newValues = {}
+	for ikey, ival in newValues.iteritems():
+		# add broadcast addresses for ipv4 addresses... in order to use the ipaddr library
+		m = regIpv4Device.match(ikey)
+		if m:
+			vals = m.groupdict()
+			if vals['type'] == 'address' or vals['type'] == 'netmask':
+				# new value might already exist
+				broadcastKey = 'interfaces/%s/broadcast' % vals['device']
+				maskKey = 'interfaces/%s/netmask' % vals['device']
+				addressKey = 'interfaces/%s/address' % vals['device']
+				if broadcastKey in newValues:
+					continue
+
+				# try to compute the broadcast address
+				address = newValues.get(addressKey, oldValues.get(addressKey, ''))
+				mask = newValues.get(maskKey, oldValues.get(maskKey, ''))
+				broadcast = get_broadcast(address, mask)
+				if broadcast:
+					# we could compute a broadcast address
+					newValues[broadcastKey] = broadcast
+	
+	# add a list with all packages that should not exist on the system
+	regSpaces = re.compile(r'\s+')
+	installPackages = regSpaces.split(newValues['packages'])
+	allPackages = reduce(lambda x, y: x + y, [ i['Packages'] for i in get_packages() ])
+	newValues['packages_remove'] = list(set(allPackages) - set(installPackages))
 
 def write_profile(values):
 	cache_file=open('/var/cache/univention-system-setup/profile',"w+")
@@ -188,6 +190,14 @@ def detect_interfaces():
 			interfaces.append(idev)
 
 	return interfaces
+
+def get_broadcast(ip, netmask):
+	try:
+		ip = util.ipaddr.IPv4Network('%s/%s')
+		return ip.broadcast
+	except ValueError:
+		pass
+	return None
 
 def is_proxy(proxy):
 	if proxy and proxy != 'http://' and proxy != 'https://':
@@ -283,4 +293,20 @@ def dhclient(interface, timeout=None):
 	file.close()
 	os.unlink(tempfilename)
 	return dhcp_dict
+
+def get_packages():
+	'''Returns a list of packages that may be installed on the current system.'''
+
+	# get all package sets that are available for the current system role
+	role = ucr.get('server/role')
+	pkglist = [ jpackage for icategory in package_list.PackageList 
+			for jpackage in icategory['Packages']
+			if 'all' in jpackage['Possible'] or role in jpackage['Possible'] ]
+	return pkglist
+
+def get_installed_packages():
+	'''Returns a list of all installed packages on the system.'''
+	cache = apt.Cache()
+	return [ p.name for p in cache if p.is_installed ]
+
 

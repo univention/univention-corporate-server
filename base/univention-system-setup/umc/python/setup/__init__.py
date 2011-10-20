@@ -64,8 +64,10 @@ class Instance(umcm.Base):
 			return
 
 		# write the profile file and run setup scripts
+		oldValues = util.load_values()
+		util.pre_save(values, oldValues)
 		util.write_profile(values)
-		util.run_scripts()
+		#util.run_scripts()
 
 		# finish request
 		self.finished(request.id, True)
@@ -110,6 +112,21 @@ class Instance(umcm.Base):
 		keymaps = [ { 'label': i[0], 'id': i[1] } for i in r if not i[0].startswith('#') ]
 
 		self.finished(request.id, keymaps)
+	
+	def lang_countrycodes(self, request):
+		'''Return a list of all countries with their two letter chcountry codes.'''
+		try:
+			file = open('/lib/univention-installer/locale/country_codes')
+		except:
+			MODULE.error( 'Cannot find locale data for keymaps in /lib/univention-installer/locale' )
+			self.finished(request.id, None)
+			return
+
+		r = csv.reader(file, delimiter=':')
+		countries = [ { 'label': i[0], 'id': i[1].lower() } for i in r if not i[0].startswith('#') ]
+
+		self.finished(request.id, countries)
+
 
 	def net_read(self, request):
 		'''Return a dict of all current network settings.'''
@@ -125,12 +142,53 @@ class Instance(umcm.Base):
 		interface = request.options.get('interface')
 		timeout = request.options.get('timeout', 45)
 		if not interface:
-			MODULE.error( 'No property "interface" given for dhclient().' )
-			self.finished(request.id, None)
+			message = 'No property "interface" given for dhclient().'
+			MODULE.error(message)
+			self.finished(request.id, None, success = false, message = message)
 			return
 
 		res = util.dhclient(interface, timeout)
 		self.finished(request.id, res)
+
+#	def net_ipv4resolve(self, request):
+#		'''Resolves the network configuration. Expects a list of dicts containing entries
+#		for "address" and "netmask". Returns a dict with the entries address, netmask, and
+#		broadcast. Returns False if settings could not be resolved.'''
+#
+#		# check whether we have a list of configurations
+#		items = request.options
+#		if not isinstance(items, (list, tuple)):
+#			MODULE.error('Wrong parameters, options is not a list: %s' % items)
+#			self.finished(request.id, False, success = False)
+#
+#		# iterate over all given items
+#		result = []
+#		for iitem in items:
+#			# try to initiate an IPv4Network object
+#			address = iitem.get('address')
+#			netmask = iitem.get('netmask')
+#			try:
+#				ip = util.ipaddr.IPv4Network('%s/%s')
+#			except ValueError: 
+#				MODULE.error('Could not resolve network configuration: %s/%s' % (ip, netmask))
+#
+#			# everything went well
+#			result.append({
+#				'broadcast': str(ip.broadcast),
+#				'netmask': str(ip.netmask),
+#				'address': str(ip.ip)
+#			})
+#
+#		self.finished(request.id, result)
+
+	def software_packages(self, request):
+		'''Return a list of all available software packages. Entries have the properties 
+		"id", "label", and "packages" which is an array of the Debian package names.'''
+		choices = [ { 'id': ':'.join(i['Packages']), 'label': i['Name'], 'packages': i['Packages'] }
+				for i in util.get_packages() ]
+		self.finished(request.id, choices)
+
+
 
 
 

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-12 16:27+0200\n"
+"POT-Creation-Date: 2011-10-20 12:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,110 +12,98 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/setup.js:210
+#: umc/js/setup.js:72
 msgid ""
 "<p>These options control which system services are initially blocked via "
 "packet filtering (iptables).<br>The locked-down setup only allows SSH, LDAP, "
 "HTTPS, UCS UMC and UDM Listeners/Modifiers.</p>"
 msgstr ""
 
+#: umc/js/_setup/NetworkPage.js:161
+msgid "A virtual network device cannot be used for DHCP."
+msgstr ""
+
 #: umc/js/_setup/ServerPage.js:55
 msgid "Access settings"
 msgstr ""
 
-#: umc/js/setup.js:97 umc/js/setup.js:163
+#: umc/js/_setup/NetworkPage.js:70
 msgid "Activated"
 msgstr ""
 
-#: umc/js/setup.js:300
+#: umc/js/setup.js:121
 msgid "Active Directory Connector"
 msgstr ""
 
-#: umc/js/setup.js:329
+#: umc/js/_setup/NetworkPage.js:103
+msgid "Autoconfiguration (SLAAC)"
+msgstr ""
+
+#: umc/js/setup.js:150
 msgid "Backup (Bacula)"
 msgstr ""
 
-#: umc/js/setup.js:258
+#: umc/js/_setup/CertificatePage.js:58
 msgid "Business unit"
 msgstr ""
 
-#: umc/js/setup.js:234
+#: umc/js/_setup/CertificatePage.js:26
 msgid "Certificate"
 msgstr ""
 
-#: umc/js/setup.js:235
+#: umc/js/_setup/CertificatePage.js:27
 msgid "Certificate settings"
 msgstr ""
 
-#: umc/js/setup.js:240
-msgid "Contry code"
+#: umc/js/_setup/CertificatePage.js:36
+msgid "Common name for the root SSL certificate"
 msgstr ""
 
-#: umc/js/setup.js:245
-msgid "Country"
+#: umc/js/_setup/CertificatePage.js:41
+msgid "Contry"
 msgstr ""
 
-#: umc/js/setup.js:265
-msgid "Country settings"
-msgstr ""
-
-#: umc/js/setup.js:121
+#: umc/js/_setup/NetworkPage.js:173
 msgid "DHCP query failed."
 msgstr ""
 
-#: umc/js/setup.js:314
+#: umc/js/setup.js:135
 msgid "DHCP server"
 msgstr ""
 
-#: umc/js/setup.js:197
-msgid "DNS settings"
-msgstr ""
-
-#: umc/js/setup.js:96 umc/js/setup.js:162
+#: umc/js/_setup/NetworkPage.js:69
 msgid "Deactivated"
 msgstr ""
 
-#: umc/js/_setup/LanguagePage.js:51
+#: umc/js/_setup/SoftwarePage.js:51 umc/js/_setup/LanguagePage.js:51
 msgid "Default system language"
 msgstr ""
 
-#: umc/js/setup.js:281
+#: umc/js/setup.js:102
 msgid "Desktop environment"
 msgstr ""
 
-#: umc/js/setup.js:81 umc/js/setup.js:148
-msgid "Device"
-msgstr ""
-
-#: umc/js/setup.js:78 umc/js/setup.js:145
-msgid "Devices"
-msgstr ""
-
-#: umc/js/setup.js:217
+#: umc/js/setup.js:79
 msgid "Disabled"
 msgstr ""
 
-#: umc/js/setup.js:179
+#: umc/js/_setup/NetworkPage.js:118
 msgid "Domain name server (max. 3)"
 msgstr ""
 
-#: umc/js/setup.js:160
-msgid "Dynamic"
-msgstr ""
-
-#: umc/js/setup.js:94
+#: umc/js/_setup/NetworkPage.js:67
 msgid "Dynamic (DHCP)"
 msgstr ""
 
-#: umc/js/setup.js:262
+#: umc/js/_setup/CertificatePage.js:62
 msgid "Email address"
 msgstr ""
 
-#: umc/js/setup.js:184
+#: umc/js/_setup/NetworkPage.js:123
 msgid "External name server (max. 3)"
 msgstr ""
 
-#: umc/js/setup.js:214
+#: umc/js/setup.js:76
 msgid "Filtering of system services"
 msgstr ""
 
@@ -123,11 +111,23 @@ msgstr ""
 msgid "Fully qualified domain name (e.g., master.example.com)"
 msgstr ""
 
-#: umc/js/setup.js:170 umc/js/setup.js:174
-msgid "Gateway"
+#: umc/js/_setup/NetworkPage.js:109
+msgid "Gateway (IPv4)"
 msgstr ""
 
-#: umc/js/setup.js:188
+#: umc/js/_setup/NetworkPage.js:113
+msgid "Gateway (IPv6)"
+msgstr ""
+
+#: umc/js/_setup/CertificatePage.js:66
+msgid "General settings"
+msgstr ""
+
+#: umc/js/_setup/NetworkPage.js:137
+msgid "Global network settings"
+msgstr ""
+
+#: umc/js/_setup/NetworkPage.js:127
 msgid "HTTP proxy"
 msgstr ""
 
@@ -135,31 +135,43 @@ msgstr ""
 msgid "Host and domain settings"
 msgstr ""
 
-#: umc/js/setup.js:86
+#: umc/js/_setup/NetworkPage.js:59
 msgid "IPv4 address"
 msgstr ""
 
-#: umc/js/setup.js:191
-msgid "IPv4 network device settings"
+#: umc/js/_setup/NetworkPage.js:131
+msgid "IPv4 network devices"
 msgstr ""
 
-#: umc/js/setup.js:153
+#: umc/js/_setup/NetworkPage.js:93
 msgid "IPv6 address"
 msgstr ""
 
-#: umc/js/setup.js:194
-msgid "IPv6 network device settings"
+#: umc/js/_setup/NetworkPage.js:134
+msgid "IPv6 network devices"
 msgstr ""
 
-#: umc/js/setup.js:156
+#: umc/js/_setup/NetworkPage.js:97
 msgid "IPv6 prefix"
 msgstr ""
 
-#: umc/js/setup.js:347
+#: umc/js/_setup/NetworkPage.js:89
+msgid "Identifier"
+msgstr ""
+
+#: umc/js/setup.js:168
 msgid "Installation of software components"
 msgstr ""
 
-#: umc/js/_setup/LanguagePage.js:41
+#: umc/js/_setup/NetworkPage.js:41 umc/js/_setup/NetworkPage.js:84
+msgid "Interface"
+msgstr ""
+
+#: umc/js/_setup/NetworkPage.js:38 umc/js/_setup/NetworkPage.js:81
+msgid "Interfaces"
+msgstr ""
+
+#: umc/js/_setup/SoftwarePage.js:41 umc/js/_setup/LanguagePage.js:41
 msgid "Keyboard layout"
 msgstr ""
 
@@ -167,59 +179,64 @@ msgstr ""
 msgid "LDAP base"
 msgstr ""
 
-#: umc/js/_setup/LanguagePage.js:26
+#: umc/js/_setup/SoftwarePage.js:26 umc/js/_setup/LanguagePage.js:26
 msgid "Language"
 msgstr ""
 
+#: umc/js/_setup/SoftwarePage.js:27 umc/js/_setup/SoftwarePage.js:62
 #: umc/js/_setup/LanguagePage.js:27 umc/js/_setup/LanguagePage.js:62
 msgid "Language settings"
 msgstr ""
 
-#: umc/js/setup.js:250
-msgid "Location"
+#: umc/js/_setup/CertificatePage.js:50
+msgid "Locality"
 msgstr ""
 
-#: umc/js/setup.js:223
+#: umc/js/_setup/CertificatePage.js:69
+msgid "Location settings"
+msgstr ""
+
+#: umc/js/setup.js:85
 msgid "Locked-down setup"
 msgstr ""
 
-#: umc/js/setup.js:309
+#: umc/js/setup.js:130
 msgid "Mail sever (Postfix, Cyrus IMAPd, Horde 4)"
 msgstr ""
 
-#: umc/js/setup.js:90
+#: umc/js/_setup/NetworkPage.js:63
 msgid "Netmask"
 msgstr ""
 
-#: umc/js/setup.js:72
+#: umc/js/_setup/NetworkPage.js:28
 msgid "Network"
 msgstr ""
 
-#: umc/js/setup.js:338
+#: umc/js/setup.js:159
 msgid "Network monitoring (Nagios)"
 msgstr ""
 
-#: umc/js/setup.js:73
+#: umc/js/_setup/NetworkPage.js:29
 msgid "Network settings"
 msgstr ""
 
-#: umc/js/setup.js:383
+#: umc/js/setup.js:215
 msgid "No changes have been made."
 msgstr ""
 
-#: umc/js/setup.js:254
+#: umc/js/_setup/CertificatePage.js:54
 msgid "Organisation"
 msgstr ""
 
-#: umc/js/setup.js:268
+#: umc/js/_setup/CertificatePage.js:72
 msgid "Organisation settings"
 msgstr ""
 
-#: umc/js/setup.js:109
+#: umc/js/_setup/NetworkPage.js:156
 msgid "Please choose a network device before querying a DHCP address."
 msgstr ""
 
-#: umc/js/setup.js:319
+#: umc/js/setup.js:140
 msgid "Print server (CUPS)"
 msgstr ""
 
@@ -231,11 +248,11 @@ msgstr ""
 msgid "Root password"
 msgstr ""
 
-#: umc/js/setup.js:295
+#: umc/js/setup.js:116
 msgid "Samba 3 server"
 msgstr ""
 
-#: umc/js/setup.js:290
+#: umc/js/setup.js:111
 msgid "Samba 4 server"
 msgstr ""
 
@@ -243,11 +260,11 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: umc/js/setup.js:204
+#: umc/js/setup.js:66
 msgid "Security"
 msgstr ""
 
-#: umc/js/setup.js:205 umc/js/setup.js:227
+#: umc/js/setup.js:67 umc/js/setup.js:89
 msgid "Security settings"
 msgstr ""
 
@@ -259,38 +276,46 @@ msgstr ""
 msgid "Server settings"
 msgstr ""
 
-#: umc/js/setup.js:275
+#: umc/js/setup.js:96
 msgid "Software"
 msgstr ""
 
-#: umc/js/setup.js:343
+#: umc/js/setup.js:164
 msgid "Software installation monitor"
 msgstr ""
 
-#: umc/js/setup.js:276
+#: umc/js/setup.js:97
 msgid "Software settings"
 msgstr ""
 
-#: umc/js/_setup/LanguagePage.js:46
+#: umc/js/_setup/CertificatePage.js:46
+msgid "State"
+msgstr ""
+
+#: umc/js/_setup/SoftwarePage.js:46 umc/js/_setup/LanguagePage.js:46
 msgid "System languages"
 msgstr ""
 
-#: umc/js/_setup/LanguagePage.js:36
+#: umc/js/_setup/SoftwarePage.js:36 umc/js/_setup/LanguagePage.js:36
 msgid "Time zone"
 msgstr ""
 
-#: umc/js/_setup/LanguagePage.js:59
+#: umc/js/_setup/SoftwarePage.js:59 umc/js/_setup/LanguagePage.js:59
 msgid "Time zone and keyboard settings"
 msgstr ""
 
-#: umc/js/setup.js:220
+#: umc/js/setup.js:82
 msgid "Typical selection of services (recommended)"
 msgstr ""
 
-#: umc/js/setup.js:324
+#: umc/js/setup.js:145
 msgid "Web proxy server (Squid)"
 msgstr ""
 
 #: umc/js/_setup/ServerPage.js:44
 msgid "Windows domain"
+msgstr ""
+
+#: umc/js/_setup/NetworkPage.js:49
+msgid "virtual"
 msgstr ""

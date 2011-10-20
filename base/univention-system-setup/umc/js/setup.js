@@ -15,7 +15,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 
 	i18nClass: 'umc.modules.setup',
 
-	pages: [ 'LanguagePage', 'ServerPage' ],
+	// pages: String[]
+	//		List of all setup-pages that are visible.
+	pages: [ 'LanguagePage', 'ServerPage', 'NetworkPage', 'CertificatePage' ],
 
 	wizard: false,
 
@@ -58,147 +60,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 			this._pages.push(ipage);
 		}, this);
 
-		// get settings from server
-		umc.tools.umcpCommand('setup/load').then(dojo.hitch(this, function(data) {
-			// update setup pages with loaded values
-			this.setValues(data.result);
-			this.standby(false);
-		}), dojo.hitch(this, function() {
-			this.standby(false);
-		}));
+		this.load();
+
 /*
-        this._makePage(
-			'network',
-			this._("Network"),
-            this._("Network settings"),
-			undefined,
-			[{
-				type: 'MultiInput',
-				name: 'devices_ipv4',
-				label: this._('Devices'),
-				subtypes: [{
-					type: 'ComboBox',
-					label: this._('Device'),
-					dynamicValues: 'setup/net/interfaces',
-					style: 'width: 7em'
-				}, {
-					type: 'TextBox',
-					label: this._('IPv4 address'),
-					style: 'width: 14em'
-				}, {
-					type: 'TextBox',
-					label: this._('Netmask'),
-					style: 'width: 14em'
-				}, {
-					type: 'ComboBox',
-					label: this._('Dynamic (DHCP)'),
-					staticValues: [
-						{ id: 'false', label: this._('Deactivated') },
-						{ id: 'true', label: this._('Activated') }
-					],
-					style: 'width: 10em'
-				}, {
-					type: 'Button',
-					label: 'DHCP query',
-					callback: dojo.hitch(this, function(item, idx) {
-						// switch on standby animation
-						this.standby(true);
-
-						// make sure we have an interface selected
-						if (!item || !item[0] || !dojo.isString(item[0])) {
-							umc.dialog.alert(this._('Please choose a network device before querying a DHCP address.'));
-							this.standby(false);
-							return;
-						}
-						umc.tools.umcpCommand('setup/net/dhclient', {
-							'interface': item[0]
-						}).then(dojo.hitch(this, function(data) {
-							// switch off standby animation
-							this.standby(false);
-
-							var result = data.result;
-							if (!result.address && !result.netmask) {
-								umc.dialog.alert(this._('DHCP query failed.'));
-								return;
-							}
-
-							// set the queried IP and netmask
-							var devicesWidget = this._forms.network.getWidget('devices_ipv4');
-							var val = devicesWidget.get('value');
-							if (result.address) {
-								val[idx][1] = result.address;
-							}
-							if (result.netmask) {
-								val[idx][2] = result.netmask;
-							}
-							val[idx][3] = 'false';
-							devicesWidget.set('value', val);
-						}), dojo.hitch(this, function() {
-							// switch off standby animation
-							this.standby(false);
-						}));
-					})
-				}]
-			}, {
-				type: 'MultiInput',
-				name: 'devices_ipv6',
-				label: this._('Devices'),
-				subtypes: [{
-					type: 'ComboBox',
-					label: this._('Device'),
-					staticValues: [ 'eth0', 'eth1', 'eth2' ],
-					style: 'width: 7em'
-				}, {
-					type: 'TextBox',
-					label: this._('IPv6 address')
-				}, {
-					type: 'TextBox',
-					label: this._('IPv6 prefix'),
-					style: 'width: 14em'
-				}, {
-					type: 'ComboBox',
-					label: this._('Dynamic'),
-					staticValues: [
-						{ id: 'false', label: this._('Deactivated') },
-						{ id: 'true', label: this._('Activated') }
-					],
-					style: 'width: 10em'
-				}]
-			}, {
-				type: 'TextBox',
-				name: 'gateway_ipv4',
-				label: this._('Gateway')
-			}, {
-				type: 'TextBox',
-				name: 'gateway_ipv6',
-				label: this._('Gateway')
-			}, {
-				type: 'MultiInput',
-				subtypes: [{ type: 'TextBox' }],
-				name: 'nameServer',
-				label: this._('Domain name server (max. 3)')
-			}, {
-				type: 'MultiInput',
-				subtypes: [{ type: 'TextBox' }],
-				name: 'forwarder',
-				label: this._('External name server (max. 3)')
-			}, {
-				type: 'TextBox',
-				name: 'proxy',
-				label: this._('HTTP proxy')
-			}],
-			[{
-				label: this._('IPv4 network device settings'),
-				layout: ['devices_ipv4', 'gateway_ipv4']
-			}, {
-				label: this._('IPv6 network device settings'),
-				layout: ['devices_ipv6', 'gateway_ipv6']
-			}, {
-				label: this._('DNS settings'),
-				layout: ['nameServer', 'forwarder', 'proxy']
-			}]
-		);
-
         this._makePage(
 			'security',
 			this._("Security"),
@@ -226,47 +90,6 @@ dojo.declare("umc.modules.setup", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 			[{
 				label: this._('Security settings'),
 				layout: ['text', 'security']
-			}]
-		);
-
-        this._makePage(
-			'certificate',
-			this._("Certificate"),
-            this._("Certificate settings"),
-			undefined,
-			[{
-				type: 'TextBox',
-				name: 'countryCode',
-				label: this._('Contry code'),
-				style: 'width: 7em'
-			}, {
-				type: 'TextBox',
-				name: 'country',
-				label: this._('Country'),
-				style: 'width: 16.5em'
-			}, {
-				type: 'TextBox',
-				name: 'location',
-				label: this._('Location')
-			}, {
-				type: 'TextBox',
-				name: 'organisation',
-				label: this._('Organisation')
-			}, {
-				type: 'TextBox',
-				name: 'unit',
-				label: this._('Business unit')
-			}, {
-				type: 'TextBox',
-				name: 'email',
-				label: this._('Email address')
-			}],
-			[{
-				label: this._('Country settings'),
-				layout: [ ['countryCode', 'country'], 'location' ]
-			}, {
-				label: this._('Organisation settings'),
-				layout: [ 'organisation', 'unit', 'email' ]
 			}]
 		);
 
@@ -367,6 +190,17 @@ dojo.declare("umc.modules.setup", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 		return values;
 	},
 
+	load: function() {
+		// get settings from server
+		umc.tools.umcpCommand('setup/load').then(dojo.hitch(this, function(data) {
+			// update setup pages with loaded values
+			this.setValues(data.result);
+			this.standby(false);
+		}), dojo.hitch(this, function() {
+			this.standby(false);
+		}));
+	},
+
 	save: function(_values) {
 		// only save the true changes
 		var values = {};
@@ -385,8 +219,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 		else {
 			this.standby(true);
 			umc.tools.umcpCommand('setup/save', { values: values }).then(dojo.hitch(this, function() {
-				this.standby(false);
-				this._orgValues = values;
+				this.load();
 			}), dojo.hitch(this, function() {
 				this.standby(false);
 			}));
