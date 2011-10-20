@@ -1,3 +1,9 @@
+univention-fetchmail (5.0.1-1) unstable; urgency=low
+
+  * set service "Fetchmail" in join script (Bug #20791)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 20 Oct 2011 10:46:11 +0200
+
 univention-fetchmail (5.0.0-1) unstable; urgency=low
 
   * bumped version for UCS 3.0 (Bug #20791)

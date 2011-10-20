@@ -1,2 +1,3 @@
+92univention-fetchmail.inst usr/lib/univention-install
 fetchmailrc.py usr/lib/univention-directory-listener/system
 fetchmailrc etc
