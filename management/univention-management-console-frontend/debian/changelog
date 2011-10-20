@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.109-1) unstable; urgency=low
+
+  * Grid: fixed getAllItems() (Bug #22461) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 20 Oct 2011 16:53:39 +0200
+
 univention-management-console-frontend (1.0.108-1) unstable; urgency=low
 
   * Grid: added check for canExecute/getDisabledItem() for the default action

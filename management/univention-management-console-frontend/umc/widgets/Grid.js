@@ -720,10 +720,12 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 	getAllItems: function() {
 		// summary:
 		//		Returns a list of all items
-
-		return dojo.map(this._grid._by_idx, function(i) {
-			return i.item;
-		});
+		var items = [];
+		var i;
+		for (i = 0; i < _grid.rowCount; i++) { 
+			items.push(grid.getItem(i));
+		}
+		return items;
 	},
 
 	getSelectedItems: function() {
