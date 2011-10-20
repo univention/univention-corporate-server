@@ -1,16 +1,14 @@
-@%@BCWARNING=#@%@
-
 # This file controls the activity of snmpd and snmptrapd
 
-# MIB directories.  /usr/share/snmp/mibs is the default, but
-# including it here avoids some strange problems.
-export MIBDIRS=/usr/share/snmp/mibs
+# Don't load any MIBs by default.
+# You might comment this lines once you have the MIBs downloaded.
+export MIBS=
 
 # snmpd control (yes means start daemon).
 SNMPDRUN=@!@print baseConfig.get('snmpd/autostart', 'yes')@!@
 
 # snmpd options (use syslog, close stdin/out/err).
-SNMPDOPTS='-Lsd -Lf /dev/null -u snmp -I -smux -p /var/run/snmpd.pid'
+SNMPDOPTS='-Lsd -Lf /dev/null -u snmp -g snmp -I -smux -p /var/run/snmpd.pid'
 
 # snmptrapd control (yes means start daemon).  As of net-snmp version
 # 5.0, master agentx support must be enabled in snmpd before snmptrapd
@@ -20,4 +18,5 @@ TRAPDRUN=@!@print baseConfig.get('snmptrapd/autostart', 'no')@!@
 # snmptrapd options (use syslog).
 TRAPDOPTS='-Lsd -p /var/run/snmptrapd.pid'
 
-
+# create symlink on Debian legacy location to official RFC path
+SNMPDCOMPAT=yes
