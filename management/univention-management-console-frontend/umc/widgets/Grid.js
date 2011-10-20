@@ -722,8 +722,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		//		Returns a list of all items
 		var items = [];
 		var i;
-		for (i = 0; i < _grid.rowCount; i++) { 
-			items.push(grid.getItem(i));
+		for (i = 0; i < this._grid.rowCount; i++) { 
+			items.push(this._grid.getItem(i));
 		}
 		return items;
 	},
