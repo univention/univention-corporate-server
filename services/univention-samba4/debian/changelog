@@ -1,3 +1,9 @@
+univention-samba4 (1.0.71-6) unstable; urgency=low
+
+  * fix vim typo (Bug #23917)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 20 Oct 2011 13:21:55 +0200
+
 univention-samba4 (1.0.71-5) unstable; urgency=low
 
   * convert sambaSid to objecSid NDR format (Bug #23917)

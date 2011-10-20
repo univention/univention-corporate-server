@@ -92,7 +92,7 @@ def rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, xidNumber, type_str
 		msg.dn = ldb.Dn(idmap, "CN=%s" % new_sambaSID)
 		msg["cn"] = ldb.MessageElement( [ new_sambaSID ] , ldb.FLAG_MOD_REPLACE, "cn")
 		new_objectSid = ndr_pack(security.dom_sid(new_sambaSID))
-		msg["objectSid"] = ldb.MessageElement(i [ new_objectSid ] , ldb.FLAG_MOD_REPLACE, "objectSid")
+		msg["objectSid"] = ldb.MessageElement([ new_objectSid ] , ldb.FLAG_MOD_REPLACE, "objectSid")
 		idmap.modify(msg)
 
 	except ldb.LdbError, (enum, estr):
