@@ -377,7 +377,7 @@ class boolean(simple):
 	def parse(self, text):
 		if isinstance( text, bool ):
 			return text and '1' or '0'
-		return simple.parse( self, text )
+		return simple.parse( text )
 
 class filesize(simple):
 	"""
