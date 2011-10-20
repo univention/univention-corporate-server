@@ -61,7 +61,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set mayChange='1' \
 	--set multivalue='0' \
 	--set deleteObjectClass='1' \
-	--set tabPosition='4' \
+	--set tabPosition='6' \
 	--set overwritePosition='0' \
 	--set doNotSearch='0' \
 	--set hook='None'
@@ -85,7 +85,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set mayChange='1' \
 	--set multivalue='0' \
 	--set deleteObjectClass='1' \
-	--set tabPosition='3' \
+	--set tabPosition='5' \
 	--set overwritePosition='0' \
 	--set doNotSearch='0' \
 	--set hook='None'
@@ -94,7 +94,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set module="users/user" \
 	--set ldapMapping='univentionFetchmailAddress' \
 	--set objectClass='univentionFetchmail' \
-	--set name='UniventionFetchmail-User-Address' \
+	--set name='UniventionFetchmail-User-Username' \
 	--set shortDescription='Username' \
 	--set longDescription='Username for remote mail server' \
 	--set translationShortDescription='"de_DE" "Benutzername"' \
@@ -133,10 +133,59 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set mayChange='1' \
 	--set multivalue='0' \
 	--set deleteObjectClass='1' \
-	--set tabPosition='1' \
+	--set tabPosition='3' \
 	--set overwritePosition='0' \
 	--set doNotSearch='0' \
 	--set hook='None'
+
+univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set module="users/user" \
+	--set ldapMapping='univentionFetchmailUseSSL' \
+	--set objectClass='univentionFetchmail' \
+	--set name='UniventionFetchmail-User-UseSSL' \
+	--set shortDescription='Encrypt connection (SSL/TLS)' \
+	--set longDescription='If enabled, an encrypted connection (SSL/TLS) will be used to fetch mails.' \
+	--set translationShortDescription='"de_DE" "Verbindung verschlüsseln (SSL/TLS)"' \
+	--set translationLongDescription='"de_DE" "Falls aktiviert, wird die Verbindung zum Mailabruf mit SSL/TLS verschlüsselt."' \
+	--set tabName='Remote mail retrieval' \
+	--set translationTabName='"de_DE" "Mailabruf von externen Servern"' \
+	--set overwriteTab='0' \
+	--set valueRequired='0' \
+	--set CLIName='fetchmailUseSSL' \
+	--set syntax='boolean' \
+	--set tabAdvanced='1' \
+	--set mayChange='1' \
+	--set multivalue='0' \
+	--set deleteObjectClass='1' \
+	--set tabPosition='7' \
+	--set overwritePosition='0' \
+	--set doNotSearch='0' \
+	--set hook='None'
+
+univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set module="users/user" \
+	--set ldapMapping='univentionFetchmailKeepMailOnServer' \
+	--set objectClass='univentionFetchmail' \
+	--set name='UniventionFetchmail-User-KeepMailOnServer' \
+	--set shortDescription='Keep mails on server' \
+	--set longDescription='If enabled, fetched mails will be kept on mail server. Otherwise mails on server will be deleted after fetching them.' \
+	--set translationShortDescription='"de_DE" "Mails auf dem Server nicht löschen"' \
+	--set translationLongDescription='"de_DE" "Falls aktiviert, werden abgerufene Mails auf dem Server nicht gelöscht."' \
+	--set tabName='Remote mail retrieval' \
+	--set translationTabName='"de_DE" "Mailabruf von externen Servern"' \
+	--set overwriteTab='0' \
+	--set valueRequired='0' \
+	--set CLIName='fetchmailKeep' \
+	--set syntax='boolean' \
+	--set tabAdvanced='1' \
+	--set mayChange='1' \
+	--set multivalue='0' \
+	--set deleteObjectClass='1' \
+	--set tabPosition='8' \
+	--set overwritePosition='0' \
+	--set doNotSearch='0' \
+	--set hook='None'
+
 
 if [ "$JS_LAST_EXECUTED_VERSION" = "1" ]; then
 	# univention-fetchmail has been installed in UCS 2.4 and old custom attributes have to be removed

@@ -34,6 +34,12 @@ attributetype ( 1.3.6.1.4.1.10176.1057.1.7 NAME 'univentionFetchmailProtocolType
 	EQUALITY caseIgnoreMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
 
+attributetype ( 1.3.6.1.4.1.10176.1057.1.8 NAME 'univentionFetchmailUseSSL'
+	SUBSTR caseIgnoreSubstringsMatch
+	DESC 'flag to enable ssl/tls'
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+
 
 
 objectclass ( 1.3.6.1.4.1.10176.1057.2.1

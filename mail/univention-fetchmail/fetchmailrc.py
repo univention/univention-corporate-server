@@ -34,7 +34,7 @@ import listener
 import univention.debug
 import univention.utf8
 import re
-import univention.uldap
+import ldap
 import univention.config_registry
 
 fn_fetchmailrc = '/etc/fetchmailrc'
@@ -90,14 +90,22 @@ def objdelete(dlist, old):
 def objappend(flist, new, password = None):
 	passwd = password
 	if details_complete(new):
+		flag_ssl = ''
+		flag_keep = 'nokeep'
 		passwd = new.get('univentionFetchmailPasswd', [ passwd ])[0]
+		if new.get('univentionFetchmailUseSSL', [''])[0].upper() in ['1']:
+			flag_ssl = 'ssl'
+		if new.get('univentionFetchmailKeepMailOnServer', [''])[0].upper() in ['1']:
+			flag_keep = 'keep'
 
-		flist.append( "poll %s with proto %s auth password user '%s' there with password '%s' is '%s' here options fetchall  #UID='%s'\n" % \
+		flist.append( "poll %s with proto %s auth password user '%s' there with password '%s' is '%s' here %s %s #UID='%s'\n" % \
 					  ( new['univentionFetchmailServer'][0],
 						new['univentionFetchmailProtocol'][0],
 						new['univentionFetchmailAddress'][0],
 						passwd,
 						new['mailPrimaryAddress'][0],
+						flag_keep,
+						flag_ssl,
 						new['uid'][0] ) )
 	else:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,'Adding user to "fetchmailrc" failed')
