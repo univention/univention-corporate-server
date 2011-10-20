@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-20 10:20+0200\n"
+"POT-Creation-Date: 2011-10-20 13:39+0200\n"
 "PO-Revision-Date: 2011-10-19 14:39+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,11 +21,13 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
-#: umc/widgets/Grid.js:533
+#: umc/widgets/Grid.js:531
+#, python-format
 msgid "%d entries of %d selected"
 msgstr "%d Einträge von %d ausgewählt"
 
-#: umc/widgets/Grid.js:538
+#: umc/widgets/Grid.js:536
+#, python-format
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
 
@@ -201,15 +203,15 @@ msgstr "Modul-Hilfetexte"
 msgid "More actions"
 msgstr "Weitere Aktionen"
 
-#: umc/widgets/Grid.js:322 umc/widgets/Grid.js:666
+#: umc/widgets/Grid.js:322 umc/widgets/Grid.js:664
 msgid "More..."
 msgstr "Weitere..."
 
-#: umc/widgets/Grid.js:535
+#: umc/widgets/Grid.js:533
 msgid "No entries could be found"
 msgstr "Keine Einträge konnten gefunden werden"
 
-#: umc/widgets/Grid.js:594
+#: umc/widgets/Grid.js:592
 msgid "No object selected"
 msgstr "Kein Objekt ausgewählt"
 

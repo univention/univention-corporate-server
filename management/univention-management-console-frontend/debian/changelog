@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.108-1) unstable; urgency=low
+
+  * Grid: added check for canExecute/getDisabledItem() for the default action
+    (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 20 Oct 2011 13:40:56 +0200
+
 univention-management-console-frontend (1.0.107-1) unstable; urgency=low
 
   * Grid: changed footer caption (Bug #22461)

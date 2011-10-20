@@ -30,6 +30,9 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 	// actions: Object[]
 	//		Array of config objects that specify the actions that are going to
 	//		be used in the grid.
+	//		'canExecute': function that specifies whether an action can be excuted for
+	//		              a particular item; the function receives a dict of all item
+	//		              properties as parameter
 	//		TODO: explain isContextAction, isStandardAction, isMultiAction
 	//		TODO: explain also the 'adjust' value for columns
 	//		TODO: iconClass, label -> may be of type string or function
@@ -45,9 +48,6 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 	//		'description': text for tooltip;
 	//		'type': defaults to string, otherwise checkbox, icon, ...???;
 	//		'editable': whether or not the field can be edited by the user;
-	//		'canExecute': function that specifies whether an action can be excuted for
-	//		              a particular item; the function receives a dict of all item
-	//		              properties as parameter
 	columns: null,
 
 	// query: Object?
@@ -504,21 +504,19 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		var item = this._grid.getItem( ev.rowIndex );
 		var identity = item[ this.moduleStore.idProperty ];
 
-		var defaultAction = null;
-		if (dojo.isFunction( this.defaultAction ) ) {
-			defaultAction = this.defaultAction( [ identity ], [ item ] );
-		} else {
-			defaultAction = this.defaultAction;
-		}
+		var defaultAction = dojo.isFunction(this.defaultAction) ? 
+				this.defaultAction( [ identity ], [ item ] ) : this.defaultAction;
+
 		if ( defaultAction ) {
-			dojo.forEach( this.actions, dojo.hitch( this, function( action ) {
+			dojo.forEach( this.actions, function( action ) {
 				if ( action.name == defaultAction ) {
-					if ( action.callback ) {
+					var isExecutable = dojo.isFunction(action.canExecute) ? action.canExecute(identity) : true;
+					if ( action.callback && isExecutable && !this.getDisabledItem(identity)) {
 						action.callback( [ identity ], [ item ] );
 					}
 					return false;
 				}
-			} ) );
+			}, this);
 		}
 	},
 
