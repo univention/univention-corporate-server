@@ -1,3 +1,11 @@
+univention-fetchmail (5.0.2-1) unstable; urgency=low
+
+  * added additional extended attributes for SSL and KeepMailsOnServer (Bug #12573)
+  * enhanced LDAP schema: univentionFetchmailUseSSL (Bug #12573)
+  * changed LDAP string type for fetchmail attributes (Bug #19446)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 20 Oct 2011 13:47:59 +0200
+
 univention-fetchmail (5.0.1-1) unstable; urgency=low
 
   * set service "Fetchmail" in join script (Bug #20791)
