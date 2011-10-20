@@ -1,3 +1,13 @@
+univention-ssl (6.0.9-1) unstable; urgency=low
+
+  * Merged from UCS 2.4-4:
+    * Be sure the new certificate gets correct permissions (Bug #23802)
+    * Handle the permissions for another case in gencertificate.py
+      (Bug #23802)
+    * Fixed debug messages in gencertificate.py (Bug #23802)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Oct 2011 07:05:08 +0200
+
 univention-ssl (6.0.8-1) unstable; urgency=low
 
   * added logrotate configuration (Bug #18002) 

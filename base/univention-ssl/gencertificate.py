@@ -59,6 +59,8 @@ def initialize():
 	return
 
 def handler(dn, new, old):
+	global uidNumber
+	global gidNumber
 	set_privileges_cert(root=1)
 
 	if baseConfig['server/role'] != 'domaincontroller_master':
@@ -66,6 +68,17 @@ def handler(dn, new, old):
 		return
 
 	try:
+		try:
+			uidNumber = int(new.get('uidNumber', ['0'])[0])
+		except:
+			uidNumber = 0
+
+		try:
+			gidNumber = int(grp.getgrnam('DC Backup Hosts')[2])
+		except:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % name)
+			gidNumber = 0
+
 		if new and not old:			
 			if new.has_key('associatedDomain'):
 				domain=new['associatedDomain'][0]
@@ -92,6 +105,11 @@ def handler(dn, new, old):
 			if new_domain != old_domain:
 				remove_certificate(old['cn'][0], domainname=old_domain)
 				create_certificate(new['cn'][0], int(new['uidNumber'][0]), domainname=new_domain)
+			else:
+				# Reset permissions
+				ssldir='/etc/univention/ssl'
+				certpath=os.path.join(ssldir,"%s.%s" % (new['cn'][0],new_domain))
+				a=os.path.walk(certpath,set_permissions, None)
 	finally:
 		set_privileges_cert(root=0)
 	return
@@ -100,13 +118,13 @@ def set_permissions(tmp1, directory, filename):
 	global uidNumber
 	global gidNumber
 	
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (directory, gidNumber, uidNumber))
+	univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (directory, gidNumber, uidNumber))
 	os.chown(directory, uidNumber, gidNumber)
 	os.chmod(directory, 0750)
 
 	for f in filename:
 		file=os.path.join(directory,f)
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (file, gidNumber, uidNumber))
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (file, gidNumber, uidNumber))
 		os.chown(file, uidNumber, gidNumber)
 		os.chmod(file, 0750)
 
@@ -122,7 +140,7 @@ def create_certificate(name, serverUidNumber, domainname):
 	uidNumber = serverUidNumber
 	
 	ssldir='/etc/univention/ssl'
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'CERTIFICATE: Creating certificate %s' % name)
+	univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'CERTIFICATE: Creating certificate %s' % name)
 
 	certpath=os.path.join(ssldir,name+'.'+domainname)
 	if os.path.exists(certpath):
@@ -130,15 +148,9 @@ def create_certificate(name, serverUidNumber, domainname):
 		if not os.path.islink("%s/%s" % (ssldir,name)):
 			p = os.popen('ln -sf %s/%s.%s %s/%s' % (ssldir,name,domainname,ssldir,name) )
 			p.close
-                return
-
+		a=os.path.walk(certpath,set_permissions, None)
 		return
 
-	try:
-		gidNumber = int(grp.getgrnam('DC Backup Hosts')[2])
-	except:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % name)
-		gidNumber = 0
 
 	if len("%s.%s" % (name,domainname)) > 64:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: can\'t create certificate, Common Name too long: %s.%s' % (name,domainname))
