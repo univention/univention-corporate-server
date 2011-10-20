@@ -1,3 +1,9 @@
+univention-printserver (5.0.11-1) unstable; urgency=low
+
+  * commit smb.conf after creation of printers.conf (Bug #22865)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 20 Oct 2011 18:16:23 +0200
+
 univention-printserver (5.0.10-2) unstable; urgency=low
 
   * updated postinst (Bug #23577)

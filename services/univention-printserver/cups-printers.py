@@ -33,6 +33,10 @@
 import listener
 import os, string, time
 import univention.debug
+## for the ucr commit below in postrun we need ucr configHandlers
+from univention.config_registry import configHandlers
+ucr_handlers = configHandlers()
+ucr_handlers.load()
 
 hostname=listener.baseConfig['hostname']
 domainname=listener.baseConfig['domainname']
@@ -388,6 +392,7 @@ def initialize():
 			listener.unsetuid()
 
 def clean():
+	global ucr_handlers
 	listener.setuid(0)
 	try:
 		for f in os.listdir('/etc/samba/printers.conf.d'):
@@ -395,17 +400,24 @@ def clean():
 				os.unlink(os.path.join('/etc/samba/printers.conf.d', f))
 		if os.path.exists('/etc/samba/printers.conf'):
 			os.unlink('/etc/samba/printers.conf')
+			ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
 		os.rmdir('/etc/samba/printers.conf.d')
 	finally:
 		listener.unsetuid()
 
 def postrun():
+	global ucr_handlers
 	listener.setuid(0)
 	try:
+		run_ucs_commit = False
+		if not os.path.exists('/etc/samba/shares.conf'):
+			run_ucs_commit = True
 		fp = open('/etc/samba/printers.conf', 'w')
 		for f in os.listdir('/etc/samba/printers.conf.d'):
 			print >>fp, 'include = %s' % os.path.join('/etc/samba/printers.conf.d', f)
 		fp.close()
+		if run_ucs_commit:
+			ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
 		initscript='/etc/init.d/samba'
 		os.spawnv(os.P_WAIT, initscript, ['samba', 'reload'])
 	finally:
