@@ -1,3 +1,10 @@
+univention-python (5.0.12-1) unstable; urgency=low
+
+  * If no port was given and the hostname is equal to the DC master,
+    then consider the UCR variable ldap/master/port (Bug #24100)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Oct 2011 16:39:03 +0200
+
 univention-python (5.0.11-1) unstable; urgency=low
 
   * Initialize protocol with a default value. This is required if an old

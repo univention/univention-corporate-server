@@ -117,10 +117,9 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True):
 
 class access:
 
-	def __init__(self, host='localhost', port=389, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False):
+	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False):
 		"""start_tls = 0 (no); 1 (try); 2 (must)"""
 		self.host = host
-		self.port = port
 		self.base = base
 		self.binddn = binddn
 		self.bindpw = bindpw
@@ -131,6 +130,14 @@ class access:
 		self.protocol = 'ldap'
 		if use_ldaps:
 			self.protocol = 'ldaps'
+
+		if not port:
+			baseConfig=univention_baseconfig.baseConfig()
+			baseConfig.load()
+			if host == baseConfig.get('ldap/master'):
+				self.port=int(baseConfig.get('ldap/master/port', 389))
+		else:
+			self.port=port
 
 		if not decode_ignorelist or decode_ignorelist == []:
 			baseConfig = univention_baseconfig.baseConfig()
