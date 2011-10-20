@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.186-1) unstable; urgency=low
+
+  * add support for UDM_Attribute.label_format; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 20 Oct 2011 11:24:43 +0200
+
 univention-management-console-module-udm (1.0.185-1) unstable; urgency=low
 
   * minor fix when passing dependency information to frontend; Bug #22439

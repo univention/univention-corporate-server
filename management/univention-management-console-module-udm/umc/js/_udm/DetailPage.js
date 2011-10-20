@@ -756,11 +756,6 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 		// hide/show title panes
 		this._visibilityTitlePanes( this._layoutMap );
-		// dojo.forEach( this._tabs.getChildren(), dojo.hitch( this, function( tab ) {
-		// 	dojo.forEach( dojo.query( 'div[widgetid*=dijit_TitlePane]', tab.domNode ), dojo.hitch( this, function( node ) {
-		// 		this._visibilityTitlePane( dijit.getEnclosingWidget( node ) );
-		// 	} ) );
-		// } ) );
 	},
 
 	_anyVisibleWidget: function( titlePane ) {

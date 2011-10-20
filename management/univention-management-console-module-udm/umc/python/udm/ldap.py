@@ -809,6 +809,12 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 			MODULE.info( 'Loading choices from %s: %s' % ( obj.dn, obj.info ) )
 			if syn.is_complex:
 				return map( lambda x: ( x[ syn.key_index ], x[ syn.label_index ] ), obj.info[ syn.attribute ] )
+			if syn.label_format is not None:
+				choices = []
+				for value in obj.info[ syn.attribute ]:
+					obj.info[ '$attribute$' ] = value
+					choices.append( ( value, syn.label_format % obj.info ) )
+				return choices
 			return map( lambda x: ( x, x ), obj.info[ syn.attribute ] )
 
 		module = UDM_Module( syn.udm_module )
