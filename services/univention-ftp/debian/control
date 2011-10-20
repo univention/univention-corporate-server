@@ -8,6 +8,7 @@ Build-Depends: debhelper, univention-config-dev, ucslint
 Package: univention-ftp
 Architecture: all
 Depends: proftpd-basic
+Recommends: proftpd-mod-ldap
 Description: UCS - FTP configuration
  This package provides an FTP service for UCS based on ProFTPD.
  .
