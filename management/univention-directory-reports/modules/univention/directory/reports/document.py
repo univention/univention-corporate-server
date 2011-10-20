@@ -76,6 +76,7 @@ class Document( object ):
 		else:
 			suffix = self._template.rsplit('.', 1)[1]
 		fd, filename = tempfile.mkstemp(suffix, 'univention-directory-reports-')
+		os.chmod( filename, 0644 )
 		os.close(fd)
 
 		return filename
