@@ -129,7 +129,7 @@ INSTALLERS = {
 	}
 }
 
-class Watched_File():
+class Watched_File(object):
 	"""	A class that takes a file name and watches changes to this file.
 		We don't use any advanced technologies (FAM, inotify etc.) but
 		rather basic 'stat' calls, monitoring mtime and size.

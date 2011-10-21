@@ -1,3 +1,9 @@
+univention-updater (7.0.52-6) unstable; urgency=low
+
+  * Derive Watched_File-class from object-class (Bug #24115)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 21 Oct 2011 15:38:41 +0200
+
 univention-updater (7.0.52-5) unstable; urgency=low
 
   * Alternative Squid transition fix (Bug #22576)
