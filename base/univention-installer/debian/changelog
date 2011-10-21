@@ -1,3 +1,9 @@
+univention-installer (7.0.117-1) unstable; urgency=low
+
+  * added 45_password.py (Bug #23870)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 21 Oct 2011 16:53:05 +0200
+
 univention-installer (7.0.116-1) unstable; urgency=low
 
   * updated univention-system-setup translations (Bug #23870)
