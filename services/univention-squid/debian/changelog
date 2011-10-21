@@ -1,3 +1,10 @@
+univention-squid (5.0.3-4) unstable; urgency=low
+
+  * ucslint fixes  (Bug #22576)
+  * Remove two files, which don't need to be templates	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Oct 2011 13:48:41 +0200
+
 univention-squid (5.0.3-3) unstable; urgency=low
 
   * Fix LDAP authentication by switching to new auth helper (Bug #22576)
