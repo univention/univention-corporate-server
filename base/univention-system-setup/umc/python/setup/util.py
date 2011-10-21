@@ -43,6 +43,8 @@ import re
 import sys
 import apt
 
+from univention.management.console.log import MODULE
+
 if not '/lib/univention-installer/' in sys.path:
 	sys.path.append('/lib/univention-installer/')
 import package_list
@@ -107,18 +109,18 @@ def load_values():
 		values['timezone']=''
 
 	# get installed packages
-	allPackages = reduce(lambda x, y: x + y, [ i['Packages'] for i in get_packages() ])
+	allPackages = reduce(lambda x, y: x + y, [ i['Packages'] for i in get_components() ])
 	installedPackages = get_installed_packages()
-	values['packages'] = list(set(allPackages) & set(installedPackages))
+	values['packages'] = ' '.join(set(allPackages) & set(installedPackages))
 
 	return values;
 
 def pre_save(newValues, oldValues):
 	'''Modify the final dict before saving it to the profile file.'''
+
+	# add broadcast addresses for ipv4 addresses using the ipaddr library
 	regIpv4Device = re.compile(r'interfaces/(?P<device>[^/]+)/(?P<type>.*)')
-	newValues = {}
 	for ikey, ival in newValues.iteritems():
-		# add broadcast addresses for ipv4 addresses... in order to use the ipaddr library
 		m = regIpv4Device.match(ikey)
 		if m:
 			vals = m.groupdict()
@@ -139,10 +141,12 @@ def pre_save(newValues, oldValues):
 					newValues[broadcastKey] = broadcast
 	
 	# add a list with all packages that should not exist on the system
-	regSpaces = re.compile(r'\s+')
-	installPackages = regSpaces.split(newValues['packages'])
-	allPackages = reduce(lambda x, y: x + y, [ i['Packages'] for i in get_packages() ])
-	newValues['packages_remove'] = list(set(allPackages) - set(installPackages))
+	installPackages = []
+	if 'packages' in newValues:
+		regSpaces = re.compile(r'\s+')
+		installPackages = regSpaces.split(newValues.get('packages', ''))
+		allPackages = reduce(lambda x, y: x + y, [ i['Packages'] for i in get_components() ])
+		newValues['packages_remove'] = ' '.join(set(allPackages) - set(installPackages))
 
 def write_profile(values):
 	cache_file=open('/var/cache/univention-system-setup/profile',"w+")
@@ -294,7 +298,7 @@ def dhclient(interface, timeout=None):
 	os.unlink(tempfilename)
 	return dhcp_dict
 
-def get_packages():
+def get_components():
 	'''Returns a list of packages that may be installed on the current system.'''
 
 	# get all package sets that are available for the current system role

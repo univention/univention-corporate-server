@@ -17,7 +17,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 
 	// pages: String[]
 	//		List of all setup-pages that are visible.
-	pages: [ 'LanguagePage', 'ServerPage', 'NetworkPage', 'CertificatePage' ],
+	pages: [ 'LanguagePage', 'ServerPage', 'NetworkPage', 'CertificatePage', 'SoftwarePage' ],
 
 	wizard: false,
 
@@ -41,7 +41,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 			name: 'restore',
 			label: this._('Reset'),
 			callback: dojo.hitch(this, function() {
-				this.setValues(this._orgValues);
+				this.load();
 			})
 		}];
 
@@ -61,117 +61,6 @@ dojo.declare("umc.modules.setup", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 		}, this);
 
 		this.load();
-
-/*
-        this._makePage(
-			'security',
-			this._("Security"),
-            this._("Security settings"),
-			undefined,
-			[{
-				type: 'Text',
-				name: 'text',
-				content: this._('<p>These options control which system services are initially blocked via packet filtering (iptables).<br>The locked-down setup only allows SSH, LDAP, HTTPS, UCS UMC and UDM Listeners/Modifiers.</p>')
-			}, {
-				type: 'ComboBox',
-				name: 'security',
-				label: this._('Filtering of system services'),
-				staticValues: [{
-					id: 'disabled',
-					label: this._('Disabled')
-				}, {
-					id: 'typical',
-					label: this._('Typical selection of services (recommended)')
-				}, {
-					id: 'locked',
-					label: this._('Locked-down setup')
-				}]
-			}],
-			[{
-				label: this._('Security settings'),
-				layout: ['text', 'security']
-			}]
-		);
-
-		this._makePage(
-			'software',
-			this._("Software"),
-			this._("Software settings"),
-			undefined,
-			[{
-				type: 'CheckBox',
-				name: 'desktop',
-				label: this._('Desktop environment'),
-				value: true
-			}, {
-				type: 'Text',
-				name: 'text0',
-				content: '&nbsp;'
-			}, {
-				type: 'CheckBox',
-				name: 'samba4',
-				label: this._('Samba 4 server'),
-				value: true
-			}, {
-				type: 'CheckBox',
-				name: 'samba3',
-				label: this._('Samba 3 server'),
-				value: false
-			}, {
-				type: 'CheckBox',
-				name: 'adconnector',
-				label: this._('Active Directory Connector'),
-				value: false
-			}, {
-				type: 'Text',
-				name: 'text1',
-				content: '&nbsp;'
-			}, {
-				type: 'CheckBox',
-				name: 'mail',
-				label: this._('Mail sever (Postfix, Cyrus IMAPd, Horde 4)'),
-				value: false
-			}, {
-				type: 'CheckBox',
-				name: 'dhcp',
-				label: this._('DHCP server'),
-				value: true
-			}, {
-				type: 'CheckBox',
-				name: 'cups',
-				label: this._('Print server (CUPS)'),
-				value: false
-			}, {
-				type: 'CheckBox',
-				name: 'squid',
-				label: this._('Web proxy server (Squid)'),
-				value: false
-			}, {
-				type: 'CheckBox',
-				name: 'bacula',
-				label: this._('Backup (Bacula)'),
-				value: false
-			}, {
-				type: 'Text',
-				name: 'text2',
-				content: '&nbsp;'
-			}, {
-				type: 'CheckBox',
-				name: 'nagios',
-				label: this._('Network monitoring (Nagios)'),
-				value: true
-			}, {
-				type: 'CheckBox',
-				name: 'softwaremonitor',
-				label: this._('Software installation monitor'),
-				value: undefined
-			}],
-			[{
-				label: this._('Installation of software components'),
-				layout: [ 'desktop', 'text0', 'samba4', 'samba3', 'adconnector', 'text1', 'mail', 'dhcp', 'cups', 'squid', 'bacula', 'text2', 'nagios', 'softwaremonitor' ]
-			}]
-		);
-*/
 	},
 
 	setValues: function(values) {
@@ -192,6 +81,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 
 	load: function() {
 		// get settings from server
+		this.standby(true);
 		umc.tools.umcpCommand('setup/load').then(dojo.hitch(this, function(data) {
 			// update setup pages with loaded values
 			this.setValues(data.result);

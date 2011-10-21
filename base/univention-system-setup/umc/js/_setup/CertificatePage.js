@@ -38,7 +38,7 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 		}, {
 			type: 'ComboBox',
 			name: 'ssl/country',
-			label: this._('Contry'),
+			label: this._('Country'),
 			dynamicValues: 'setup/lang/countrycodes'
 		}, {
 			type: 'TextBox',

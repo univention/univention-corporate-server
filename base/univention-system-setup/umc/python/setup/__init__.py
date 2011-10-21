@@ -58,6 +58,7 @@ class Instance(umcm.Base):
 		option names "values".'''
 
 		values = request.options.get('values')
+		MODULE.error( '@@@ values: %s' % values)
 		if not values:
 			MODULE.error( 'No property "values" given for save().' )
 			self.finished(request.id, False)
@@ -181,11 +182,11 @@ class Instance(umcm.Base):
 #
 #		self.finished(request.id, result)
 
-	def software_packages(self, request):
+	def software_components(self, request):
 		'''Return a list of all available software packages. Entries have the properties 
 		"id", "label", and "packages" which is an array of the Debian package names.'''
 		choices = [ { 'id': ':'.join(i['Packages']), 'label': i['Name'], 'packages': i['Packages'] }
-				for i in util.get_packages() ]
+				for i in util.get_components() ]
 		self.finished(request.id, choices)
 
 

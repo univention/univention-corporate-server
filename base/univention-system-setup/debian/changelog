@@ -1,3 +1,9 @@
+univention-system-setup (5.0.18-1) unstable; urgency=low
+
+  * UMC: added software page class (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 21 Oct 2011 17:07:02 +0200
+
 univention-system-setup (5.0.17-1) unstable; urgency=low
 
   * start text-mode univention-system-setup if X11 is not available (Bug #23870)

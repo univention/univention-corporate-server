@@ -14,6 +14,6 @@
 	<command name="setup/lang/countrycodes" function="lang_countrycodes"></command>
 	<command name="setup/net/interfaces" function="net_interfaces"></command>
 	<command name="setup/net/dhclient" function="net_dhclient"></command>
-	<command name="setup/software/packages" function="software_packages"></command>
+	<command name="setup/software/components" function="software_components"></command>
   </module>
 </umc>

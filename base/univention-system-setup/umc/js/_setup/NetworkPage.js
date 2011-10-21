@@ -315,7 +315,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		vals.dynamic_interfaces_ipv6 = [];
 		dojo.forEach(sortedKeys, function(ikey) {
 			var match = ikey.match(r);
-			if (_vals[ikey] && match) {
+			if (umc.tools.isTrue(_vals[ikey]) && match) {
 				vals.dynamic_interfaces_ipv6.push(match[1]);
 			}
 		});
