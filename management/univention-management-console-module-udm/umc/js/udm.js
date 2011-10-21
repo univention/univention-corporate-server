@@ -20,6 +20,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
 dojo.require("umc.modules._udm.Template");
 dojo.require("umc.modules._udm.NewObjectDialog");
+dojo.require("umc.modules._udm.CreateReportDialog");
 dojo.require("umc.modules._udm.TreeModel");
 dojo.require("umc.modules._udm.DetailPage");
 
@@ -653,7 +654,17 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		}
 	},
 
-	createReport: function () {
+	createReport: function ( objects ) {
+		// open the dialog
+		var dialog = new umc.modules._udm.CreateReportDialog( {
+			umcpCommand: dojo.hitch( this, 'umcpCommand' ),
+			moduleFlavor: this.moduleFlavor,
+			objects: objects,
+			reports: this._reports,
+			objectNamePlural: this.objectNamePlural,
+			objectNameSingular: this.objectNameSingular
+		} );
+		dialog.show();
 	},
 
 	checkReportButton: function() {
@@ -663,12 +674,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			if ( null === this._reportButton ) {
 				this._reportButton = this.adopt( umc.widgets.Button, {
 					label: this._( 'Create report' ),
-					callback: dojo.hitch( this, 'createReport' )
+					iconClass: 'dijitIconDocuments', // FIXME: we need a new icon
+					callback: dojo.hitch( this, 'createReport', dojo.map( items, function( item ) { return item.$dn$; } ) )
 				} );
-				this._grid._toolbar.addChild( this._reportButton, 0 );
+				this._grid._toolbar.addChild( this._reportButton );
 			}
 		} else if ( null !== this._reportButton ) {
-			this._grid._toolbar.removeChild( this._reportButton, 0 );
+			this._grid._toolbar.removeChild( this._reportButton );
 			this.orphan( this._reportButton, true );
 			this._reportButton = null;
 		}

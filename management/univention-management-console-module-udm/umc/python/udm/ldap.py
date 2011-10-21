@@ -252,7 +252,7 @@ class UDM_Module( object ):
 				obj[ key ] = value
 			obj.create()
 		except udm_errors.base, e:
-			MODULE.error( 'Failed to create LDAP object: %s' % str( e ) )
+			MODULE.process( 'Failed to create LDAP object: %s' % str( e ) )
 			raise UDM_Error( e.message, obj.dn )
 
 		return obj.dn
@@ -267,7 +267,7 @@ class UDM_Module( object ):
 			MODULE.info( 'Removing LDAP object %s' % ldap_dn )
 			obj.remove()
 		except udm_errors.base, e:
-			MODULE.error( 'Failed to remove LDAP object %s' % ldap_dn )
+			MODULE.process( 'Failed to remove LDAP object %s' % ldap_dn )
 			raise UDM_Error( str( e ) )
 
 	@LDAP_Connection
@@ -294,8 +294,8 @@ class UDM_Module( object ):
 				obj.policies = ldap_object[ '$policies$' ].values()
 			obj.modify()
 		except udm_errors.base, e:
-			MODULE.error( 'Failed to modify LDAP object %s: %s' % ( obj.dn, e.message ) )
-			MODULE.error( '-> details: %s' % str( e ) )
+			MODULE.process( 'Failed to modify LDAP object %s: %s' % ( obj.dn, e.message ) )
+			MODULE.process( '-> details: %s' % str( e ) )
 			raise UDM_Error( e.message )
 
 	@LDAP_Connection
@@ -729,7 +729,7 @@ def list_objects( container, ldap_connection = None, ldap_position = None ):
 			continue
 		module = UDM_Module( modules[ 0 ] )
 		if not module:
-			MODULE.error( 'The UDM module %s could not be found. Ignoring LDAP object %s' % ( modules[ 0 ], dn ) )
+			MODULE.process( 'The UDM module %s could not be found. Ignoring LDAP object %s' % ( modules[ 0 ], dn ) )
 			continue
 		if module.superordinate:
 			so_module = UDM_Module( module.superordinate )
@@ -844,7 +844,7 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 		try:
 			result = ldap_connection.searchDn( filter = syn.searchFilter )
 		except udm_errors.base, e:
-			MODULE.error( 'Failed to initialize syntax class %s' % syntax_name )
+			MODULE.process( 'Failed to initialize syntax class %s' % syntax_name )
 			return
 		syn.choices = []
 		for dn in result:

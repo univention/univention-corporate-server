@@ -98,7 +98,7 @@ class Instance( Base ):
 			self.finished( request.id, result )
 		else:
 			msg = str( result ) + '\n' + '\n'.join( thread.trace )
-			MODULE.error( 'An internal error occurred: %s' % msg )
+			MODULE.process( 'An internal error occurred: %s' % msg )
 			self.finished( request.id, None, msg, False )
 
 	@LDAP_Connection
@@ -240,7 +240,7 @@ class Instance( Base ):
 					ldap_dn = self._user_dn
 				module = get_module( request.flavor, ldap_dn )
 				if module is None:
-					MODULE.error( 'A module for the LDAP DN %s could not be found' % ldap_dn )
+					MODULE.process( 'A module for the LDAP DN %s could not be found' % ldap_dn )
 					continue
 				obj = module.get( ldap_dn )
 				if obj:
@@ -259,7 +259,7 @@ class Instance( Base ):
 							props[ '$policies$' ][ pol_mod.name ] = policy
 					result.append( props )
 				else:
-					MODULE.error( 'The LDAP object for the LDAP DN %s could not be found' % ldap_dn )
+					MODULE.process( 'The LDAP object for the LDAP DN %s could not be found' % ldap_dn )
 			return result
 
 		MODULE.info( 'Starting thread for udm/get request' )

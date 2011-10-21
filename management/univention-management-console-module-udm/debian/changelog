@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.189-1) unstable; urgency=low
+
+  * add support for reports; Bug #23336
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 21 Oct 2011 18:01:23 +0200
+
 univention-management-console-module-udm (1.0.188-1) unstable; urgency=low
 
   * enhance error handling; Bug #23336

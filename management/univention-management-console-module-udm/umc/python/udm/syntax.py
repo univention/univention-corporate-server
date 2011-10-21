@@ -150,7 +150,7 @@ def widget( syntax, udm_property ):
 		name = syntax.__class__.__name__
 	else:
 		name = "Unknown class (name attribute :%s)" % syntax.name
-	MODULE.error( 'Could not convert UDM syntax %s' % name )
+	MODULE.process( 'Could not convert UDM syntax %s' % name )
 
 	return {}
 
