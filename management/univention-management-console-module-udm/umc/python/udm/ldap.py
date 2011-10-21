@@ -333,7 +333,7 @@ class UDM_Module( object ):
 				obj = self.module.object( None, ldap_connection, None, '', superordinate, attributes = attributes )
 		except Exception, e:
 			MODULE.info( 'Failed to retrieve LDAP object: %s' % str( e ) )
-
+			raise UDM_Error( str( e ) )
 		return obj
 
 	def get_property( self, property_name ):
@@ -728,6 +728,9 @@ def list_objects( container, ldap_connection = None, ldap_position = None ):
 			MODULE.warn( 'Could not identify LDAP object %s' % dn )
 			continue
 		module = UDM_Module( modules[ 0 ] )
+		if not module:
+			MODULE.error( 'The UDM module %s could not be found. Ignoring LDAP object %s' % ( modules[ 0 ], dn ) )
+			continue
 		if module.superordinate:
 			so_module = UDM_Module( module.superordinate )
 			so_obj = so_module.get( container )
