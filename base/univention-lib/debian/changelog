@@ -1,3 +1,9 @@
+univention-lib (1.0.33-1) unstable; urgency=low
+
+  * fallback locale is C; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 21 Oct 2011 12:35:48 +0200
+
 univention-lib (1.0.32-1) unstable; urgency=low
 
   * do not create acls container for UMC anymore; Bug #23494

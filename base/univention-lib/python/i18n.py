@@ -34,23 +34,30 @@ import gettext
 from locale import getlocale, getdefaultlocale, Error, LC_MESSAGES
 import re
 
-class LocaleNotFound( Exception ):
+class I18N_Error( Exception ):
 	pass
 
 class Locale( object ):
 	'''Represents a locale specification and provides simple access to
 	language, territory, codeset and modifier'''
 
-	REGEX = re.compile( '(?P<language>[a-z]{2})(_(?P<territory>[A-Z]{2}))?(.(?P<codeset>[a-zA-Z-0-9]+)(@(?P<modifier>.+))?)?' )
+	REGEX = re.compile( '(?P<language>([a-z]{2}|C|POSIX))(_(?P<territory>[A-Z]{2}))?(.(?P<codeset>[a-zA-Z-0-9]+)(@(?P<modifier>.+))?)?' )
 
 	def __init__( self, locale = None ):
-		self.language = None
+		self.__reset()
 		if locale is not None:
 			self.parse( locale )
+
+	def __reset( self ):
+		self.language = None
+		self.territory = None
+		self.codeset = None
+		self.modifier = None
 
 	def parse( self, locale ):
 		if not isinstance( locale, basestring ):
 			raise TypeError( 'locale must be of type string' )
+		self.__reset()
 		regex = Locale.REGEX.match( locale )
 		if not regex:
 			raise AttributeError( 'attribute does not match locale specification language[_territory][.codeset][@modifier]' )
@@ -66,12 +73,13 @@ class Locale( object ):
 
 	def __str__( self ):
 		text = self.language
-		if getattr( self, 'territory', None ) is not None:
-			text += '_%s' % self.territory
-		if getattr( self, 'codeset', None ) is not None:
-			text += '.%s' % self.codeset
-		if getattr( self, 'modifier', None ) is not None:
-			text += '@%s' % self.modifier
+		if self.language not in ( 'C', 'POSIX' ):
+			if self.territory is not None:
+				text += '_%s' % self.territory
+			if self.codeset is not None:
+				text += '.%s' % self.codeset
+			if self.modifier is not None:
+				text += '@%s' % self.modifier
 		return text is None and '' or text
 
 class NullTranslation( object ):
@@ -81,7 +89,8 @@ class NullTranslation( object ):
 		self._localedir = localedir
 		self._localespec = None
 		self._locale = locale_spec
-		self.set_language()
+		if not self._locale:
+			self.set_language()
 
 	def _set_domain( self, namespace ):
 		if namespace is not None:
@@ -121,20 +130,19 @@ class Translation( NullTranslation ):
 		if language is not None:
 			Translation.locale.parse( language )
 
-		if not self._domain:
-			return
-
 		if not Translation.locale:
 			try:
 				lang = getlocale( LC_MESSAGES )
 				if lang[ 0 ] is None:
-					lang = getdefaultlocale()
-				language = lang[ 0 ]
-				if language is None:
-					language = 'de_DE'
+					language = 'C'
+				else:
+					language = lang[ 0 ]
 				Translation.locale.parse( language )
 			except Error:
-				raise LocaleNotFound()
+				raise I18N_Error( 'The given locale is not vaild: %s' % str( e ) )
+
+		if not self._domain:
+			return
 
 		try:
 			self._translation = gettext.translation( self._domain, languages = ( Translation.locale.language, ), localedir = self._localedir )
