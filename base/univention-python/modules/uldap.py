@@ -136,6 +136,8 @@ class access:
 			baseConfig.load()
 			if host == baseConfig.get('ldap/master'):
 				self.port=int(baseConfig.get('ldap/master/port', 389))
+			else:
+				self.port = int(baseConfig.get('ldap/port', 389))
 		else:
 			self.port=port
 

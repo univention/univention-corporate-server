@@ -1,3 +1,9 @@
+univention-python (5.0.13-1) unstable; urgency=low
+
+  * Set self.port in any case (Bug #24100)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Oct 2011 16:56:40 +0200
+
 univention-python (5.0.12-1) unstable; urgency=low
 
   * If no port was given and the hostname is equal to the DC master,
