@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.142-1) unstable; urgency=low
+
+  * fixed a problem with syntax complex if not all values are required; Bug #23593
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 21 Oct 2011 18:10:45 +0200
+
 univention-directory-manager-modules (7.0.141-1) unstable; urgency=low
 
   * fixed positioning of extended attributes; Bug #23988

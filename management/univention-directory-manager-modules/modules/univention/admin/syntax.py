@@ -183,10 +183,11 @@ class complex( ISyntax ):
 			else:
 				s=self.subsyntaxes[i][1]()
 			if texts[i] == None:
-				raise univention.admin.uexceptions.valueInvalidSyntax, _("Invalid syntax")
-			p=s.parse(texts[i])
+				if min_elements is None or ( i + 1 ) < min_elements:
+					raise univention.admin.uexceptions.valueInvalidSyntax, _("Invalid syntax")
+			p = s.parse( texts[ i ] )
 			if not p:
-				return
+				break
 			parsed.append(p)
 		return parsed
 
