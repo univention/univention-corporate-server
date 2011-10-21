@@ -1,3 +1,10 @@
+univention-squid (5.0.3-3) unstable; urgency=low
+
+  * Fix LDAP authentication by switching to new auth helper (Bug #22576)
+    Create /etc/squid3.secret for searching the LDAP directory
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Oct 2011 13:40:03 +0200
+
 univention-squid (5.0.3-2) unstable; urgency=low
 
   * updated postinst (Bug #23577)
