@@ -31,7 +31,7 @@ UPDATER_LOG="/var/log/univention/updater.log"
 UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
 PACKAGES_TO_BE_PURGED="kcontrol libusplash0 univention-usplash-theme usplash libnjb5"
-PACKAGES_TO_BE_REMOVED="nagios2 nagios2-common nagios2-doc squid"
+PACKAGES_TO_BE_REMOVED="nagios2 nagios2-common nagios2-doc"
 
 check_and_install ()
 {
@@ -103,6 +103,11 @@ fi
 # Enable usplash after update (Bug #16363) (always required)
 if dpkg -l lilo 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
 	dpkg-divert --rename --divert /usr/share/initramfs-tools/bootsplash.debian --remove /usr/share/initramfs-tools/hooks/bootsplash 2>> "$UPDATER_LOG" >> "$UPDATER_LOG"
+fi
+
+# univention-squid might be held back due squid still being installed
+if dpkg -l squid 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
+    DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-squid  >>"$UPDATER_LOG" 2>&1
 fi
 
 # remove obsolte packages, no more required after UCS 3.0-0 update
