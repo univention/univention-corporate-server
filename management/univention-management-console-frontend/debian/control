@@ -30,6 +30,7 @@ Package: univention-management-console-web-server
 Architecture: all
 Depends: univention-management-console-frontend,
  univention-management-console-server,
+ python-univention-management-console,
  python-cherrypy3,
  python-daemon,
  python-simplejson
