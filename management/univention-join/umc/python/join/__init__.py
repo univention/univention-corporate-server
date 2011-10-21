@@ -364,41 +364,41 @@ class Instance(umcm.Base):
 		fcount = 0			# file count
 		try:
 			file = open(self._statusfile)
-			for line in file:
-				lcount = lcount + 1
-				temp = line.split()
-				if len(temp) != 3:
-					next
-				if temp[2] != 'successful':
-					next
-				fcount = fcount + 1
-				(fname,version,status) = temp
-				version = version.replace('v','')
-				if fname in files:
-					# Some join scripts fail to remove older entries from the status
-					# file, so we have to check that we've catched the highest version!
-					if 'last' in files[fname]:					# we have already registered an instance of this script, and...
-						if version < files[fname]['last']:		# ... it has a higher version than the one we're processing, so...
-							next								# ... ignore this entry
-					files[fname]['last'] = version
-					if files[fname]['last'] < files[fname]['current']:
-						files[fname]['action'] = _('run')
-						files[fname]['status'] = _('due')
+			try:
+				for line in file:
+					lcount = lcount + 1
+					temp = line.split()
+					if len(temp) != 3:
+						next
+					if temp[2] != 'successful':
+						next
+					fcount = fcount + 1
+					(fname,version,status) = temp
+					version = version.replace('v','')
+					if fname in files:
+						# Some join scripts fail to remove older entries from the status
+						# file, so we have to check that we've catched the highest version!
+						if 'last' in files[fname]:					# we have already registered an instance of this script, and...
+							if version < files[fname]['last']:		# ... it has a higher version than the one we're processing, so...
+								next								# ... ignore this entry
+						files[fname]['last'] = version
+						if files[fname]['last'] < files[fname]['current']:
+							files[fname]['action'] = _('run')
+							files[fname]['status'] = _('due')
+						else:
+							files[fname]['status'] = _('successful')
+							files[fname]['action'] = ''
 					else:
-						files[fname]['status'] = _('successful')
-						files[fname]['action'] = ''
-				else:
-					MODULE.warn("  Script '%s' has no package" % fname)
-					e = {}
-					e['script'] = fname
-					e['status'] = _('not installed')
-					e['last'] = version
-					files[fname] = e
+						MODULE.warn("  Script '%s' has no package" % fname)
+						e = {}
+						e['script'] = fname
+						e['status'] = _('not installed')
+						e['last'] = version
+						files[fname] = e
+			finally:
+				file.close()
 		except Exception,ex:
 			MODULE.warn("ERROR: %s" % str(ex))
-		finally:
-			if file != None:
-				file.close()
 		MODULE.info("   .. Read %d lines, extracted %d success entries" % (lcount,fcount))
 		# Say it perlish: @result = values %files;
 		result = []
