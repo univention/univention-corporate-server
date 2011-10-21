@@ -1,9 +1,8 @@
-#!/usr/bin/make -f
+#!/bin/sh
 #
 # Univention Mail Cyrus Murder
-#  rules file for the debian package
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,13 +29,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_test:
-	ucslint
+eval "$(ucr shell)"
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install 
+if [ "$1" = "postchange" -o "$1" = "nochange" ] ; then
 
-%:
-	dh $@
+	# update configs
+	ucr commit /etc/imapd/imapd.conf
+	ucr commit /etc/imapd/frontend.conf
+	
+	if [ -x "/etc/init.d/cyrus-imapd" ]; then
+		/etc/init.d/cyrus-imapd reload
+	fi
 
+	if [ -x "/etc/init.d/cyrus2.2" ]; then
+		/etc/init.d/cyrus2.2 reload
+	fi
+fi

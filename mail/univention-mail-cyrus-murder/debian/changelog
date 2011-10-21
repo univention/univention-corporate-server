@@ -1,3 +1,13 @@
+univention-mail-cyrus-murder (4.0.0-1) unstable; urgency=low
+
+  * package cleanup for UCS 3.0-0 
+  * removed kolab stuff
+  * changed ldap attributes and objectclasses 
+  * fixed, changed templates/join script/tools
+  (Bug #22875)
+
+ -- Felix Botner <botner@univention.de>  Thu, 20 Oct 2011 14:57:05 +0200
+
 univention-mail-cyrus-murder (3.0.0-1) unstable; urgency=low
 
   * fixed join script registry search Bug #19776

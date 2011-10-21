@@ -2,31 +2,34 @@
 hostname = baseConfig['hostname']
 domainname = baseConfig['domainname']
 myfqdn = '.'.join([ hostname, domainname ])
-
-frontend_emailId = baseConfig.get('mail/cyrus/murder/frontend/id')
-if not frontend_emailId:
-	frontend_emailId = "%s@%s" % (myfqdn, domainname)
-
+isMurder = False
+murders = baseConfig.get('mail/cyrus/murder/servers', "")
 mail_cyrus_murder_master = baseConfig.get('mail/cyrus/murder/master')
+
+if hostname + "$" in murders.split(" "):
+    isMurder = True
+
 if mail_cyrus_murder_master:
 	if mail_cyrus_murder_master == myfqdn:
-		mupdateMaster=1
-		print'''
-	# --- Mupdate master ---------------------------
-	checkpointmaster	cmd="/usr/sbin/ctl_cyrusdb -c -C /etc/imapd/master.conf" period=30
-	# ----------------------------------------------'''
+		mupdateMaster = 1
+		print ''
+		print '        # --- Mupdate master ---------------------------'
+		print ''
+		print '        checkpointmaster cmd="/usr/sbin/ctl_cyrusdb -c -C /etc/imapd/master.conf" period=30'
 	else:
-		mupdateMaster=0		# used below to avoid deep nesting
+		mupdateMaster = 0
 
-	frontends = baseConfig.get('mail/cyrus/murder/frontends')
-	if frontend_emailId in frontends.split(' '):
+	if isMurder:
 		if not mupdateMaster:
-			print'''
-	# --- Mupdate slave ----------------------------
-	checkpointslave	cmd="/usr/sbin/ctl_cyrusdb -c -C /etc/imapd/frontend.conf" period=30
-	# ----------------------------------------------'''
+			print ''
+			print '        # --- Mupdate slave ----------------------------'
+			print ''
+			print '        checkpointslave cmd="/usr/sbin/ctl_cyrusdb -c -C /etc/imapd/frontend.conf" period=30'
 
-		print'''
-	# this is only necessary if caching TLS sessions
-	tlsprunefrontend	cmd="/usr/sbin/tls_prune -C /etc/imapd/frontend.conf" at=0401'''
+		print ''
+		print '        # this is only necessary if caching TLS sessions'
+		print '        tlsprunefrontend cmd="/usr/sbin/tls_prune -C /etc/imapd/frontend.conf" at=0401'
+		print ''
+		print '        # ----------------------------------------------'
+		print ''
 @!@

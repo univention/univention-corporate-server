@@ -1,10 +1,11 @@
 Type: file
 File: etc/imapd/master.conf
 Variables: domainname
-Variables: mail/cyrus/murder/backends
-Variables: mail/cyrus/murder/frontends
+Variables: mail/cyrus/murder/servers
 Variables: mail/cyrus/loginrealms
 Variables: mail/hosteddomains
+Variables: mail/cyrus/ssl/certificate
+Variables: mail/cyrus/ssl/key
 User: cyrus
 Group: sasl
 Mode: 0640
@@ -13,19 +14,22 @@ Type: file
 File: etc/imapd/frontend.conf
 Variables: hostname
 Variables: domainname
+Variables: mail/cyrus/murder/servers
 Variables: mail/cyrus/admins
 Variables: mail/cyrus/imap/admins
 Variables: mail/cyrus/loginrealms
 Variables: mail/hosteddomains
 Variables: mail/cyrus/murder/master
-Variables: mail/cyrus/murder/backends
-Variables: mail/cyrus/murder/frontend/id
 Variables: mail/cyrus/imap/quotawarnpercent
 Variables: mail/cyrus/imap/quotawarnkb
 Variables: mail/cyrus/imap/lookup_groups
+Variables: mail/cyrus/ldap/pwfile
+Variables: mail/cyrus/ssl/certificate
+Variables: mail/cyrus/ssl/key
 Variables: ldap/base
-Variables: ldap/server
-Variables: ldap/port
+Variables: ldap/server/name
+Variables: ldap/server/port
+Variables: ldap/hostdn
 User: cyrus
 Group: sasl
 Mode: 0640
@@ -35,11 +39,8 @@ Multifile: etc/imapd/cyrus.conf
 Variables: hostname
 Variables: domainname
 Variables: mail/cyrus/murder/master
-Variables: mail/cyrus/murder/backends
-Variables: mail/cyrus/murder/backend/id
+Variables: mail/cyrus/murder/servers
 Variables: mail/cyrus/murder/backend/interface
-Variables: mail/cyrus/murder/frontends
-Variables: mail/cyrus/murder/frontend/id
 Variables: mail/cyrus/murder/frontend/interface
 Variables: mail/cyrus/imap
 Variables: mail/cyrus/imap/maxchilds
@@ -54,10 +55,7 @@ Subfile: etc/imapd/cyrus.conf.d/15_START_mupdate
 Variables: hostname
 Variables: domainname
 Variables: mail/cyrus/murder/master
-Variables: mail/cyrus/murder/backends
-Variables: mail/cyrus/murder/backend/id
-Variables: mail/cyrus/murder/frontends
-Variables: mail/cyrus/murder/frontend/id
+Variables: mail/cyrus/murder/servers
 
 Type: subfile
 Multifile: etc/imapd/cyrus.conf
@@ -65,11 +63,8 @@ Subfile: etc/imapd/cyrus.conf.d/25_SERVICES_mupdate
 Variables: hostname
 Variables: domainname
 Variables: mail/cyrus/murder/master
-Variables: mail/cyrus/murder/backends
-Variables: mail/cyrus/murder/backend/id
+Variables: mail/cyrus/murder/servers
 Variables: mail/cyrus/murder/backend/interface
-Variables: mail/cyrus/murder/frontends
-Variables: mail/cyrus/murder/frontend/id
 Variables: mail/cyrus/murder/frontend/interface
 Variables: mail/cyrus/imap
 Variables: mail/cyrus/imap/maxchilds
@@ -82,24 +77,14 @@ Subfile: etc/imapd/cyrus.conf.d/35_EVENT_mupdate
 Variables: hostname
 Variables: domainname
 Variables: mail/cyrus/murder/master
-Variables: mail/cyrus/murder/frontends
-Variables: mail/cyrus/murder/frontend/id
+Variables: mail/cyrus/murder/servers
 
 Type: file
 File: etc/pam.d/mupdate
 Variables: ldap/base
 Variables: ldap/server/name
-
-Type: file
-File: etc/imapd/pam_ldap_mupdate.conf
-Variables: ldap/base
-Variables: ldap/server/name
-
-Type: file
-File: usr/lib/univention-server/server_password_change.d/10machine_email_ids
-
-Type: file
-File: usr/lib/univention-mail-cyrus-murder/coherence-check.py
+Variables: ldap/hostdn
+Variables: ldap/server/port
 
 Type: file
 File: etc/cron.d/univention-mail-cyrus-murder
@@ -107,6 +92,11 @@ Variables: mail/cyrus/murder/crontime
 
 Type: subfile
 Multifile: etc/hosts
-Subfile: etc/hosts.d/15uknrw_nat
+Subfile: etc/hosts.d/15cyrus_murder_nat
+Variables: mail/cyrus/murder/master
+Variables: mail/cyrus/murder/nat/*
+
+Type: multifile
+Multifile: etc/hosts
 Variables: mail/cyrus/murder/master
 Variables: mail/cyrus/murder/nat/*

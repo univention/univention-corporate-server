@@ -17,31 +17,31 @@ Type=str
 Categories=Mail
 
 [mail/cyrus/murder/frontend/id]
-Description[de]=Email-ID für das lokale Cyrus Murder Frontend
+Description[de]=Email-ID fÃ¼r das lokale Cyrus Murder Frontend
 Description[en]=Email-ID for the local Cyrus Murder frontend
 Type=str
 Categories=Mail
 
 [mail/cyrus/murder/backend/id]
-Description[de]=Email-ID für das lokale Cyrus Murder Backend
+Description[de]=Email-ID fÃ¼r das lokale Cyrus Murder Backend
 Description[en]=Email-ID for the local Cyrus Murder backend
 Type=str
 Categories=Mail
 
 [mail/cyrus/murder/backend/id]
-Description[de]=Hostname für das lokale Cyrus Murder Backend
+Description[de]=Hostname fÃ¼r das lokale Cyrus Murder Backend
 Description[en]=Hostname for the local Cyrus Murder backend
 Type=str
 Categories=Mail
 
 [mail/cyrus/murder/backend/interface]
-Description[de]=Netzwerkinterface für das lokale Cyrus Murder Backend
+Description[de]=Netzwerkinterface fÃ¼r das lokale Cyrus Murder Backend
 Description[en]=Network interface for the local Cyrus Murder backend
 Type=str
 Categories=Mail
 
 [mail/cyrus/murder/backend/interface]
-Description[de]=Netzwerkinterface für das lokale Cyrus Murder Frontend
+Description[de]=Netzwerkinterface fÃ¼r das lokale Cyrus Murder Frontend
 Description[en]=Network interface for the local Cyrus Murder frontend
 Type=str
 Categories=Mail

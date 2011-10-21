@@ -23,12 +23,12 @@
 ### Authentication Section
 #
 auth    sufficient    pam_unix.so
-auth	requisite     pam_univentionmailcyrus.so ldap_host=@%@ldap/server/name@%@ ldap_base=@%@ldap/base@%@ from_attr=mailPrimaryAddress to_attr=uid
-auth    [success=1 default=ignore]    pam_ldap.so use_first_pass config=/etc/imapd/pam_ldap_mupdate.conf
+auth	requisite     pam_univentionmailcyrus.so ldap_host=@%@ldap/server/name@%@ ldap_base=@%@ldap/base@%@ from_attr=mailPrimaryAddress to_attr=uid binddn=@%@ldap/hostdn@%@ pwfile=/etc/machine.secret ldap_port=@%@ldap/server/port@%@
+auth    [success=1 default=ignore]    pam_ldap.so use_first_pass 
 auth    [success=ok default=die]      pam_krb5.so use_first_pass
 
 ### Account Section
 #
 account  sufficient   pam_unix.so
-account  required     pam_ldap.so config=/etc/imapd/pam_ldap_mupdate.conf
+account  required     pam_ldap.so
 

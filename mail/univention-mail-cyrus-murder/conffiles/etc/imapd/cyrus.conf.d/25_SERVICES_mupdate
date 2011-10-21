@@ -2,63 +2,69 @@
 hostname = baseConfig['hostname']
 domainname = baseConfig['domainname']
 myfqdn = '.'.join([ hostname, domainname ])
-
-backend_emailId = baseConfig.get('mail/cyrus/murder/backend/id')
-if not backend_emailId:
-	backend_emailId = "%s@%s" % (myfqdn, domainname)
-
-frontend_emailId = baseConfig.get('mail/cyrus/murder/frontend/id')
-if not frontend_emailId:
-	frontend_emailId = "%s@%s" % (myfqdn, domainname)
-
+isMurder = False
+murders = baseConfig.get('mail/cyrus/murder/servers', "")
 mail_cyrus_murder_master = baseConfig.get('mail/cyrus/murder/master')
+
+if hostname + "$" in murders.split(" "):
+	isMurder = True
+
 if mail_cyrus_murder_master:
 	if mail_cyrus_murder_master == myfqdn:
-		mupdateMaster=1
-		print '''
-	# --- Mupdate master ---------------------------
-	# (mupdate master, only one in the entire cluster)
-	# mupdate database service - must prefork at least 1
-	mupdate       cmd="mupdate -m -C /etc/imapd/master.conf" listen=3905 prefork=1
-	# ----------------------------------------------'''
+		mupdateMaster = 1
+		print ' '
+		print '        # --- Mupdate master ---------------------------'
+		print ''
+		print '        # (mupdate master, only one in the entire cluster)'
+		print '        # mupdate database service - must prefork at least 1'
+		print '        mupdate cmd="mupdate -m -C /etc/imapd/master.conf" listen=3905 prefork=1'
+		print ''
+		print '        # ----------------------------------------------'
+		print ''
 	else:
-		mupdateMaster=0		# used below to avoid deep nesting
+		mupdateMaster = 0
 
-	frontends = baseConfig.get('mail/cyrus/murder/frontends')
-	if frontend_emailId in frontends.split(' '):
-		print '''
-	# --- Murder frontends -------------------------
-	# (mupdate slaves) except for sieve (which deals automatically with Mupdate)'''
+	if isMurder:
+		print ''
+		print '        # --- Murder frontends -------------------------'
+		print ''
+		print '        # (mupdate slaves) except for sieve (which deals automatically with Mupdate)'
 		if not mupdateMaster:
-			print '''
-	# mupdate database service - must prefork at least 1
-	mupdate		cmd="mupdate -C /etc/imapd/frontend.conf" listen="3905" prefork=1'''
+			print '        # mupdate database service - must prefork at least 1'
+			print '        mupdate cmd="mupdate -C /etc/imapd/frontend.conf" listen="3905" prefork=1'
 
-		bindprefix = ''
-		backends = baseConfig.get('mail/cyrus/murder/backends')
-		if backend_emailId in backends.split(' '):
-			interface=baseConfig.get('mail/cyrus/murder/frontend/interface')
-			if interface:
-				ucrVariable='interfaces/' + interface + '/address'
-				interfaceIP = baseConfig.get(ucrVariable)
-				if interfaceIP:
-					bindprefix = "%s:" % interfaceIP
+		pre = ''
+		interface = baseConfig.get('mail/cyrus/murder/frontend/interface')
+		if interface:
+			ucrVariable = 'interfaces/' + interface + '/address'
+			interfaceIP = baseConfig.get(ucrVariable)
+			if interfaceIP:
+				pre = "%s:" % interfaceIP
 
-		print '\t# proxies that will connect to the backends'
+		print '        # proxies that will connect to the backends'
 
-		if baseConfig.get('mail/cyrus/imap') == 'yes':
+		if baseConfig.get('mail/cyrus/imap') == 'yes' and pre:
 			maxchild = baseConfig.get('mail/cyrus/imap/maxchilds', '400')
-			print '\timapproxy       cmd="/usr/lib/cyrus/bin/proxyd -C /etc/imapd/frontend.conf -U 30" listen="%simap" prefork=0 maxchild=%s' % (bindprefix, maxchild)
-			print '\timapsproxy       cmd="/usr/lib/cyrus/bin/proxyd -C /etc/imapd/frontend.conf -s -U 30" listen="%simaps" prefork=0 maxchild=%s' % (bindprefix, maxchild)
+			print ''
+			print '        # proxy imap/imaps'
+			print '        imapproxy cmd="proxyd -C /etc/imapd/frontend.conf -U 30" listen="%simap" prefork=0 maxchild=%s' % (pre, maxchild)
+			print '        imapsproxy cmd="proxyd -C /etc/imapd/frontend.conf -s -U 30" listen="%simaps" prefork=0 maxchild=%s' % (pre, maxchild)
+			
 
-		if baseConfig.get('mail/cyrus/pop') == 'yes':
+		if baseConfig.get('mail/cyrus/pop') == 'yes' and pre:
 			maxchild = baseConfig.get('mail/cyrus/pop/maxchilds', '400')
-			print '\tpop3proxy       cmd="/usr/lib/cyrus/bin/pop3proxyd -C /etc/imapd/frontend.conf -U 30" listen="%spop3" prefork=0 maxchild=%s' % (bindprefix, maxchild)
-			print '\tpop3sproxy       cmd="/usr/lib/cyrus/bin/pop3proxyd -C /etc/imapd/frontend.conf -s -U 30" listen="%spop3s" prefork=0 maxchild=%s' % (bindprefix, maxchild)
+			print ''
+			print '        # proxy pop/pops'
+			print '        pop3proxy cmd="pop3proxyd -C /etc/imapd/frontend.conf -U 30" listen="%spop3" prefork=0 maxchild=%s' % (pre, maxchild)
+			print '        pop3sproxy cmd="pop3proxyd -C /etc/imapd/frontend.conf -s -U 30" listen="%spop3s" prefork=0 maxchild=%s' % (pre, maxchild)
 
-			#currently we leave it up to postfix to route mail to the backends
-			#so we leave this commented out
-			print '\tlmtpproxy            cmd="lmtpproxyd -C /etc/imapd/frontend.conf" listen="%s2003" prefork=0 maxchild=20' % bindprefix
-			print '\t#lmtpproxy            cmd="lmtpproxyd -C /etc/imapd/frontend.conf" listen="/var/run/cyrus/socket/lmtp" prefork=0 maxchild=20'
-			print '\t# ----------------------------------------------'
+		if pre:
+			# currently we leave it up to postfix to route mail to the backends
+			# so we leave this commented out
+			print ''
+			print '        # proxy lmtp'
+			print '        lmtpproxy cmd="lmtpproxyd -C /etc/imapd/frontend.conf" listen="%s2003" prefork=0 maxchild=20' % pre
+			print '        #lmtpproxy cmd="lmtpproxyd -C /etc/imapd/frontend.conf" listen="/var/run/cyrus/socket/lmtp" prefork=0 maxchild=20'
+			print ''
+			print '        # ----------------------------------------------'
 @!@

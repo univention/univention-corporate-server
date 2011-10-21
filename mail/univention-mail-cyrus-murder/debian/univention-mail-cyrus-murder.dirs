@@ -1,5 +1,7 @@
 var/lib/mupdate
+var/tmp/mupdate
 usr/lib/univention-directory-listener/system
+usr/lib/univention-mail-cyrus-murder
 usr/lib/univention-install
 usr/sbin
 etc/imapd

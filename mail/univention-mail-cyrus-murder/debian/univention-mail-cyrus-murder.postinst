@@ -1,9 +1,9 @@
-#!/usr/bin/make -f
+#!/bin/sh
 #
 # Univention Mail Cyrus Murder
-#  rules file for the debian package
+#  postinst script for the debian package
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright (C) 2008-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,13 +30,32 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_test:
-	ucslint
+eval "$(univention-config-registry shell hostname domainname server/role)"
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install 
+#DEBHELPER#
 
-%:
-	dh $@
+# already done by entry in 'dirs', but just in case..
+mkdir -p /var/lib/mupdate
+mkdir -p /var/tmp/mupdate
+cyrus-makedirs /etc/imapd/frontend.conf
 
+# change /etc/services entry from cfinger to lmtp
+sed -i 's|cfinger.*2003/tcp.*# GNU Finger|lmtp        2003/tcp            # Local mail transport|' /etc/services
+
+# add mupdate service
+if ! grep -q "mupdate 3905/tcp # Cyrus Mupdate" /etc/services; then 
+	echo "mupdate 3905/tcp # Cyrus Mupdate" >> /etc/services
+fi
+
+univention-config-registry set mail/cyrus/murder/crontime='0 2 * * *'
+
+# activate the listener modules
+/etc/init.d/univention-directory-listener restart
+
+# configure firewall
+ucr set \
+	security/packetfilter/package/univention-mail-cyrus-murder/tcp/3905/all="ACCEPT" \
+	security/packetfilter/package/univention-mail-cyrus-murder/tcp/3905/all/en="MUPDATE" 
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+
+exit 0
