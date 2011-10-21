@@ -45,7 +45,10 @@ except ImportError, e:
 
 def convertToUtf8(arguments):
 	'Try to decode as UTF-8, then try to decode with locale encoding. If decoded successful encode with UTF-8.'
-	locale.setlocale(locale.LC_ALL, '')
+	try:
+		locale.setlocale(locale.LC_ALL, '')
+	except locale.Error:
+		locale.setlocale(locale.LC_ALL, 'C')
 	new_arguments = []
 	for argument in arguments:
 		try:
