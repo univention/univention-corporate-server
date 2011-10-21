@@ -186,7 +186,7 @@ class Watched_File(object):
 			
 		return self._last_returned_stamp
 	
-class Watched_Files():
+class Watched_Files(object):
 	""" Convenience class to monitor more than one file at a time.
 	"""
 	
