@@ -13,7 +13,15 @@ XS-Python-Version: all
 
 Package: univention-system-setup
 Architecture: all
-Depends: univention-installer-modules, ${python:Depends}, ${misc:Depends}, univention-ipcalc, whois, shell-univention-lib, python-univention-lib (>= 1.0.25-1)
+Depends: univention-installer-modules, 
+ ${python:Depends}, 
+ ${misc:Depends}, 
+ univention-ipcalc, 
+ whois, 
+ shell-univention-lib, 
+ python-univention-lib (>= 1.0.25-1), 
+ univention-management-console-module-setup, 
+ console-tools
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: univention system setup tools

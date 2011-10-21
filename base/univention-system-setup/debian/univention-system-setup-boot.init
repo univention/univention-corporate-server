@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention System Setup
 #  boot init script for univention system setup
@@ -38,8 +38,7 @@ case "$1" in
 	start)
 		log_action_msg "Starting univention-system setup tools"
 		if [ "$system_setup_boot_start" = "yes" -o "$system_setup_boot_start" = "true" ]; then
-			/usr/share/univention-system-setup/startxwithfirefox >"$(mktemp -t univention-system-setup-boot-XXXXXXXXXX.xsession-errors)" 2>&1 &
-			disown
+			/usr/share/univention-system-setup/startxwithfirefox >"$(mktemp -t univention-system-setup-boot-XXXXXXXXXX.xsession-errors)" 2>&1
 		fi
 		log_action_end_msg 0
 		;;

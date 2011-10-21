@@ -40,8 +40,8 @@ override_dh_auto_install:
 	dh_auto_install 
 
 override_dh_installinit:
-	dh_installinit -punivention-system-setup-boot --no-start -u"defaults 70"
-	dh_installinit -punivention-system-setup-appliance --no-start -u"defaults 75"
+	dh_installinit -punivention-system-setup-boot --no-start -u"defaults 93"
+	dh_installinit -punivention-system-setup-appliance --no-start -u"defaults 95"
 
 override_dh_fixperms:
 	dh_fixperms

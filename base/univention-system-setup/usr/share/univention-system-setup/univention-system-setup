@@ -36,7 +36,8 @@ import types, traceback, thread
 import curses, curses.ascii
 import apt_pkg, tempfile
 import univention_baseconfig
-import datetime
+import time
+import locale
 
 sys.path.append("/lib/univention-installer")
 sys.path.append("/lib/univention-installer/modules")
@@ -46,8 +47,7 @@ from local import _
 from objects import *
 
 #start logging
-date = datetime.datetime.now()
-now = date.strftime("%Y-%m-%d %H:%M")
+now = time.strftime("%Y-%m-%d %H:%M")
 
 f = open('/var/log/univention/setup.log', 'a')
 f.write('\n\n%s running univention-system-setup\n\n' %now)
@@ -83,6 +83,15 @@ if len(sys.argv) > 1:
 
 baseConfig=univention_baseconfig.baseConfig()
 baseConfig.load()
+
+# get locale and cut off trailing ":UTF-8"
+current_locale = baseConfig.get('locale', baseConfig.get('locale/default', '')).split(':',1)[0]
+if current_locale:
+	locale.setlocale(locale.LC_MESSAGES, current_locale)
+
+s = _('Press F8 to exit or any key to continue.')
+for i in s:
+	open('/tmp/LOG','a').write('%d  %s\n' % (ord(i), i))
 
 univention_ox_integration_oxae=baseConfig.get('univention-ox-directory-integration/oxae', 'false')
 if univention_ox_integration_oxae.lower() in ['true', 'yes', '1']:
@@ -126,6 +135,7 @@ def debug(text):
 class error_message(subwin):
 	def __init__(self,parent,pos_y,pos_x,width,height, message):
 		self.message=message
+		self.message_width = width - 4
 		text = _( 'This error message is shown when an unexpected error occures '
 				'during the installation process. The best way is to reboot '
 				'the computer and retry the installation. Confirming this '
@@ -153,7 +163,7 @@ class error_message(subwin):
 			l=l.replace('\n','')
 			l=l.replace('\r','')
 			l=l.strip(' ')
-			self.elements.append(textline(l[:60],self.pos_y+4+count,self.pos_x+2)) #0
+			self.elements.append(textline(l[:self.message_width],self.pos_y+4+count,self.pos_x+2)) #0
 			count=count+1
 			f.write(str(l)+'\n')
 
@@ -357,13 +367,13 @@ class mods:
 		self.result=copy.deepcopy(self.baseconfig)
 
 	def mainwin(self):
-		window = curses.newpad(25,80)
+		window = curses.newpad(37,100)
 		window.bkgd(" ",curses.color_pair(4))
-		window.border(' ',' ',curses.ACS_HLINE,curses.ACS_HLINE,curses.ACS_HLINE,curses.ACS_HLINE,curses.ACS_HLINE,curses.ACS_HLINE)
+		window.border(' ',' ',curses.MY_HLINE,curses.MY_HLINE,curses.MY_HLINE,curses.MY_HLINE,curses.MY_HLINE,curses.MY_HLINE)
 		return window
 
 	def header(self):
-		return objects.headline(_(' Univention Corporate Server - Setup Tools'),max_y/2-12,max_x/2-35)
+		return objects.headline(_(' Univention Corporate Server - Setup Tools'),max_y/2-18,max_x/2-45)
 
 	def footer(self, last):
 		if last[0]==0: # first
@@ -377,7 +387,7 @@ class mods:
 			elif last[1]==1: # not last
 				text = _(' F1-Help | F11-Back | F12-Next | F8-Exit')
 
-		return objects.footline(text,max_y/2+12,max_x/2-(len(text)/2))
+		return objects.footline(text,max_y/2+18,max_x/2-(len(text)/2))
 
 
 	def draw(self):
@@ -387,22 +397,31 @@ class mods:
 			else:
 				self.modview[i][0].bgcolor()
 			self.modview[i][0].draw()
+
+		# refresh header, footer and buttons (language update)
+		self.footline1=self.footer((0,0))
+		self.footline2=self.footer((0,1))
+		self.footline3=self.footer((1,0))
+		self.footline4=self.footer((1,1))
+		self.obj[self.current].std_button()
+		self.obj[self.current].refresh_modheader()
+
 		if self.current == len(self.modules)-1 and self.current == 0:
-			self.window.refresh(0,0,self.max_y/2+12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+			self.window.refresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 			self.footline1.draw()
 		elif self.current == 0:
-			self.window.refresh(0,0,self.max_y/2+12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+			self.window.refresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 			self.footline2.draw()
 		elif self.current == len(self.modules)-1:
-			self.window.refresh(0,0,self.max_y/2+12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+			self.window.refresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 			self.footline3.draw()
 		else:
-			self.window.refresh(0,0,self.max_y/2+12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+			self.window.refresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 			self.footline4.draw()
 		self.obj[self.current].draw()
 
 	def draw_all(self):
-		self.window.refresh(0,0,self.max_y/2-12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+		self.window.refresh(0,0,self.max_y/2-18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 		self.headerline.draw()
 		if self.current == len(self.modules)-1 and self.current == 0:
 			self.footline1.draw()
@@ -424,11 +443,11 @@ class mods:
 					if self.result.has_key(key):
 						for l in depends[key]:
 							if l in self.result[key]:
-								self.modview.append((objects.modline(self.obj[i].modheader(),self.max_y/2-10+count,self.max_x/2-38),self.obj[i].mod_depends()))
+								self.modview.append((objects.modline(self.obj[i].modheader(),self.max_y/2-16+count,self.max_x/2-48),self.obj[i].mod_depends()))
 								count=count+1
 								break
 			else:
-				self.modview.append((objects.modline(self.obj[i].modheader(),self.max_y/2-10+count,self.max_x/2-38),self.obj[i].mod_depends()))
+				self.modview.append((objects.modline(self.obj[i].modheader(),self.max_y/2-16+count,self.max_x/2-48),self.obj[i].mod_depends()))
 				count=count+1
 
 	def result_update(self):
@@ -596,18 +615,17 @@ os.close(tmp_file2)
 # create a window-object
 stdscr = curses.initscr()
 
-# univention-system-setup couldn't start in a pure utf-8 environment
-os.system("echo -n -e '\033%@' >/dev/console")
+with open('/dev/console','w') as f: f.write('\033%G')
 
 if cmdline.has_key('simple'):
 	curses.MY_VLINE='|'
 	curses.MY_HLINE='-'
 	curses.MY_BOARD='#'
 	curses.MY_PLUS='+'
-	curses.EDGE_TL=' '
-	curses.EDGE_TR=' '
-	curses.EDGE_BL=' '
-	curses.EDGE_BR=' '
+	curses.EDGE_TL='+'
+	curses.EDGE_TR='+'
+	curses.EDGE_BL='+'
+	curses.EDGE_BR='+'
 else:
 	curses.MY_VLINE=curses.ACS_VLINE
 	curses.MY_HLINE=curses.ACS_HLINE
@@ -658,6 +676,12 @@ max_y, max_x = stdscr.getmaxyx()
 if max_y == 24:
 	max_y=23
 
+# check minimal size
+if max_y < 37 or max_x < 100:
+	exit_curses()
+	print 'ERROR: terminal resolution is too low! At least 100x37 characters is required!'
+	sys.exit(1)
+
 # refresh screen
 stdscr.refresh()
 
@@ -667,6 +691,7 @@ cmdline['loaded_modules']=[]
 name_mapping={  'timezone':			'20_timezone',
 				'keyboard':			'25_keyboard',
 				'language':			'05_language',
+				'password':			'45_password',
 				'basis':			'50_basis',
 				'net':				'70_net',
 				'software':			'85_software' }
@@ -870,8 +895,8 @@ except KeyboardInterrupt:
 except:
 	info = sys.exc_info()
 
-	err_height=15
-	err_width=66
+	err_height=20
+	err_width=92
 	err_min_x=(max_x/2)-(err_width/2)
 	err_min_y=(max_y/2)-(err_height/2)
 	try:

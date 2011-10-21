@@ -32,7 +32,7 @@
 
 #DEBHELPER#
 
-. /usr/share/univention-lib/base.sh
+. /usr/share/univention-lib/all.sh
 create_logfile /var/log/univention/setup.log "root:adm" 640
 
 chmod -R 700 /var/cache/univention-system-setup

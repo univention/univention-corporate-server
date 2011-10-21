@@ -1,4 +1,4 @@
-usr/sbin/univention-system-setup                                  usr/sbin/
+usr/share/univention-system-setup/univention-system-setup         usr/share/univention-system-setup
 usr/lib/univention-system-setup/scripts/setup_utils.sh            usr/lib/univention-system-setup/scripts/
 usr/lib/univention-system-setup/scripts/ldap_available.sh         usr/lib/univention-system-setup/scripts/
 usr/lib/univention-system-setup/scripts/ldif_rewrite.py           usr/lib/univention-system-setup/scripts/
