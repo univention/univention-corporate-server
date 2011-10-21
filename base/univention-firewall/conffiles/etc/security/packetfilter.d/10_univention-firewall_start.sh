@@ -134,18 +134,4 @@ for ucrkey in filterlist.values():
 	print_descriptions(ucrkey)
 	print_packetfilter(ucrkey, configRegistry[ucrkey])
 
-
-print
-print '# set default policy for incoming traffic'
-policy = configRegistry.get('security/packetfilter/defaultpolicy','ACCEPT').upper()
-if policy == 'REJECT':
-	print '# "REJECT" is no valid default policy - changing default policy to "DROP" and'
-	print '# adding final "REJECT" rule in INPUT queue.'
-	print '/sbin/iptables -A INPUT -j REJECT'
-	print '/sbin/ip6tables -A INPUT -j REJECT'
-	policy = 'DROP'
-print '/sbin/iptables -P INPUT %s' % policy
-print '/sbin/iptables -P OUTPUT ACCEPT'
-print '/sbin/ip6tables -P INPUT %s' % policy
-print '/sbin/ip6tables -P OUTPUT ACCEPT'
 @!@

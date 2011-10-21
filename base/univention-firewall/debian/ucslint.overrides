@@ -1,1 +1,1 @@
-0013-2: conffiles/etc/security/packetfilter/packetfilter.univention.sh
+0013-2: conffiles/etc/security/packetfilter.d/80_univention-firewall_policy.sh:33

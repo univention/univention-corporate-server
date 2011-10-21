@@ -1,3 +1,9 @@
+univention-firewall (4.0.6-1) unstable; urgency=low
+
+  * switched files to /etc/security/packetfilter.d/ (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 21 Oct 2011 17:01:09 +0200
+
 univention-firewall (4.0.5-1) unstable; urgency=low
 
   * allow REJECT as default policy and convert it into REJECT-rule and

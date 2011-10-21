@@ -1,4 +1,5 @@
 #!/bin/sh
+@%@UCRWARNING=# @%@
 #
 # Copyright 2004-2011 Univention GmbH
 #
@@ -27,45 +28,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /lib/lsb/init-functions
-
-case "$1" in
-    start)
-
-        security_disabled="$(univention-config-registry get security/packetfilter/disabled)"
-
-        if [ -n "$security_disabled" -a "$security_disabled" = "true" ]; then
-            echo "Univention iptables configuration has been disabled."
-        else
-            log_daemon_msg "Starting Univention iptables configuration:"
-            if [ -x /etc/security/packetfilter.d ] ; then
-                run-parts --regex='^[a-zA-Z0-9_.-]+$' /etc/security/packetfilter.d/
-            fi
-            log_end_msg 0
-        fi
-        ;;
-    stop)
-        log_daemon_msg "Stopping Univention iptables configuration:"
-
-        iptables -P INPUT ACCEPT
-        iptables -P OUTPUT ACCEPT
-        iptables -F
-        iptables -F -t nat
-        iptables -F -t mangle
-
-        ip6tables -P INPUT ACCEPT
-        ip6tables -P OUTPUT ACCEPT
-        ip6tables -F
-        ip6tables -F -t mangle
-
-        log_end_msg 0
-        ;;
-    restart)
-        $0 stop
-        $0 start
-        ;;
-    *)
-        log_action_msg "Usage: /etc/init.d/univention-iptables {start|stop|restart}"
-        exit 1
-        ;;
-esac
+# set default policy for incoming traffic
+@!@
+policy = configRegistry.get('security/packetfilter/defaultpolicy','ACCEPT').upper()
+if policy == 'REJECT':
+	print '# "REJECT" is no valid default policy - changing default policy to "DROP" and'
+	print '# adding final "REJECT" rule in INPUT queue.'
+	print '/sbin/iptables -A INPUT -j REJECT'
+	print '/sbin/ip6tables -A INPUT -j REJECT'
+	policy = 'DROP'
+print '/sbin/iptables -P INPUT %s' % policy
+print '/sbin/iptables -P OUTPUT ACCEPT'
+print '/sbin/ip6tables -P INPUT %s' % policy
+print '/sbin/ip6tables -P OUTPUT ACCEPT'
+@!@

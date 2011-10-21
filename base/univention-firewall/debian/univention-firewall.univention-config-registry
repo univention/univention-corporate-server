@@ -1,5 +1,12 @@
 Type: file
-File: etc/security/packetfilter/packetfilter.univention.sh
+File: etc/security/packetfilter.d/10_univention-firewall_start.sh
+Variables: security/packetfilter/.*
+User: root
+Group: root
+Mode: 0755
+
+Type: file
+File: etc/security/packetfilter.d/80_univention-firewall_policy.sh
 Variables: security/packetfilter/.*
 User: root
 Group: root
