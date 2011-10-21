@@ -195,16 +195,21 @@ class modrelogin(unimodule.unimodule):
                 #check if http should realy be used
 
 		# select domain...
-		domaindns=[]
-		for i in self.uaccess.searchDn(filter='(objectClass=univentionBase)', scope='base+one'):
-			domaindns.append(i)
+		try:
+			domaindns=[]
+			for i in self.uaccess.searchDn(filter='(objectClass=univentionBase)', scope='base+one'):
+				domaindns.append(i)
 
-		domainpos=univention.admin.uldap.position(self.uaccess.base)
-		domainlist=[]
-		for dn in domaindns:
-			domainpos.setDn(dn)
+			domainpos=univention.admin.uldap.position(self.uaccess.base)
+			domainlist=[]
+			for dn in domaindns:
+				domainpos.setDn(dn)
+				(domaindescr,domaindepth) = domainpos.getPrintable_depth()
+				domainlist.append({"level":str(domaindepth),"name":domainpos.getDn(),"description":domaindescr})
+		except:
+			domainpos=univention.admin.uldap.position(configRegistry.get('ldap/base'))
 			(domaindescr,domaindepth) = domainpos.getPrintable_depth()
-			domainlist.append({"level":str(domaindepth),"name":domainpos.getDn(),"description":domaindescr})
+			domainlist=[{"level":str(domaindepth),"name":domainpos.getDn(),"description":domaindescr}]
 		if domainlist:
 			self.choosedomain=question_select(_("Login Domain:"),{'width':'255'},{"helptext":_("choose Domain for login"),"choicelist":domainlist})
 			self.div_start('form-item', divtype='class')

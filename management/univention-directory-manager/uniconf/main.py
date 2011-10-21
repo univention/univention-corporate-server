@@ -463,7 +463,6 @@ def new_uaccess():
 		ubc.load()
 		host=ubc["ldap/master"]
 		base=ubc["ldap/base"]
-		port=ubc["ldap/port"]
 	except ImportError:
 		errors=1
 	except IOError:
@@ -471,6 +470,6 @@ def new_uaccess():
 
 	if not port:
 		# should be safe to fall back to default LDAP port
-		port = "389"
+		port = ubc.get("ldap/master/port", 389)
 
 	return univention.admin.uldap.access(host=host, port=int(port), base=base)
