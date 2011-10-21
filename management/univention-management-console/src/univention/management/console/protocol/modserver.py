@@ -181,10 +181,10 @@ class ModuleServer( Server ):
 						MODULE.info( "Setting specified locale (%s)" % str( locale_obj ) )
 					except locale.Error:
 						MODULE.warn( "Specified locale is not available (%s)" % str( locale_obj ) )
-						# specified locale is not available -> using system locale
-						# resp.status = BAD_REQUEST_UNAVAILABLE_LOCALE
-						# resp.message = status_description( resp.status )
-						# break
+						MODULE.warn( "Falling back to C" )
+						# specified locale is not available -> falling back to C
+						locale.setlocale( locale.LC_MESSAGES, 'C' )
+						self.__locale = 'C'
 					self.__handler.set_language( self.__locale )
 				else:
 					resp.status = BAD_REQUEST_INVALID_OPTS

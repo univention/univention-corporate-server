@@ -93,14 +93,7 @@ class I18N_Manager( dict ):
 	def __init__( self ):
 		lang, codeset = getdefaultlocale()
 		if lang is None:
-			# get default locale from UCR
-			default_locale = ucr.get( 'locale/default' )
-			# cut at colon
-			colon = default_locale.find( ':' )
-			if colon != -1:
-				lang = default_locale[ : colon ]
-			else:
-				lang = default_locale
+			lang = 'C'
 		self.locale = Locale( lang )
 
 	def set_locale( self, locale ):

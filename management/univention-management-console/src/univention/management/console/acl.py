@@ -291,10 +291,13 @@ class ACLs( object ):
 			for rule in acls[ 'allow' ]:
 				rule = Rule( rule )
 				if not rule in self.acls:
+					rule.flavor = None
 					self.acls.append( rule )
 		else: # new format
 			for rule in acls:
 				if not rule in self.acls:
+					if not 'flavor' in rule:
+						rule[ 'flavor' ] = None
 					self.acls.append( rule )
 
 	def _write_to_file( self, username ):

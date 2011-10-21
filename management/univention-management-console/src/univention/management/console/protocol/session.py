@@ -45,7 +45,7 @@ import notifier.popen as popen
 from OpenSSL import *
 
 import univention.uldap
-from univention.lib.i18n import Translation, LocaleNotFound
+from univention.lib.i18n import Translation, I18N_Error
 
 from .message import Response, Request
 from .client import Client, NoSocketError, ConnectionError
@@ -298,6 +298,9 @@ class Processor( signals.Provider ):
 					res.status = BAD_REQUEST_UNAVAILABLE_LOCALE
 					res.message = status_description( res.status )
 					CORE.warn( 'Setting locale to specified locale failed (%s)' % value )
+					CORE.warn( 'Falling back to C' )
+					self.core_i18n.set_language( 'C' )
+					self.i18n.set_locale( 'C' )
 					break
 			else:
 				res.status = BAD_REQUEST_INVALID_OPTS

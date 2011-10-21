@@ -1,3 +1,10 @@
+univention-management-console (4.0.69-1) unstable; urgency=low
+
+  * fallback locale is C
+  * fix login of local users; Bug #23494
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 21 Oct 2011 12:37:34 +0200
+
 univention-management-console (4.0.68-3) unstable; urgency=low
 
   * added UMC module system-setup to the dependency list (Bug #22904)

@@ -61,7 +61,7 @@ class UMC_Daemon( DaemonRunner ):
 						   dest = 'port', default = 6670,
 						   help = 'defines an alternative port number [default %default]' )
 		self.parser.add_option( '-l', '--language', type = 'string', action = 'store',
-						   dest = 'language', default = 'de_DE.utf8',
+						   dest = 'language', default = 'C',
 						   help = 'defines the language to use [default: %default]' )
 
 		default_debug = SERVER_DEBUG_LEVEL
