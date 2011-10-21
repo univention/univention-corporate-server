@@ -1,3 +1,9 @@
+univention-mail-cyrus-murder (4.0.1-1) unstable; urgency=low
+
+  * added server_password_change.d hook (Bug #22875)
+
+ -- Felix Botner <botner@univention.de>  Fri, 21 Oct 2011 17:16:16 +0200
+
 univention-mail-cyrus-murder (4.0.0-1) unstable; urgency=low
 
   * package cleanup for UCS 3.0-0 

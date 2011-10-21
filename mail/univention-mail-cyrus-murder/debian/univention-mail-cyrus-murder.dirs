@@ -1,6 +1,7 @@
 var/lib/mupdate
 var/tmp/mupdate
 usr/lib/univention-directory-listener/system
+usr/lib/univention-server/server_password_change.d
 usr/lib/univention-mail-cyrus-murder
 usr/lib/univention-install
 usr/sbin
