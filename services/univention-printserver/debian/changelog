@@ -1,3 +1,9 @@
+univention-printserver (5.0.11-2) unstable; urgency=low
+
+  * Depends: udm-tools (Bug #23342)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 21 Oct 2011 15:23:26 +0200
+
 univention-printserver (5.0.11-1) unstable; urgency=low
 
   * commit smb.conf after creation of printers.conf (Bug #22865)

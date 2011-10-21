@@ -17,7 +17,8 @@ Standards-Version: 3.8.2
 
 Package: univention-printserver
 Architecture: all
-Depends: univention-config-registry (>=0.06),
+Depends: univention-config-registry (>= 0.06),
+ univention-directory-manager-tools,
  cups,
  cups-client,
  cups-bsd,
@@ -37,7 +38,7 @@ Depends: univention-config-registry (>=0.06),
  openprinting-ppds-extra,
  univention-foomatic-ppds,
  python-univention-lib (>= 1.0.25-1)
-Conflicts: univention-management-console (<<0.9.33-1)
+Conflicts: univention-management-console (<< 0.9.33-1)
 Recommends: univention-nagios-cups
 Description: UCS - print server
  This packages provides the printer configuration. Printers
