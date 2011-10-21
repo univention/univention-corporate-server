@@ -76,7 +76,7 @@ def doit(arglist):
 
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'binddn: %s; bindpwd: *************' % (binddn))
 	try:
-		lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseDN, binddn=binddn, bindpw=bindpw, start_tls=2)
+		lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], port=int(baseConfig.get('ldap/master/port', 389)), base=baseDN, binddn=binddn, bindpw=bindpw, start_tls=2)
 	except Exception, e:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
 		out.append('authentication error: %s' % e)

@@ -189,6 +189,7 @@ def main(argv):
 			raise UsageError, "Permission denied, try `--binddn' and `--bindpw'"
 	try:
 		lo = univention.admin.uldap.access(host = master,
+						   port=int(baseConfig.get('ldap/master/port', 389)),
 						   base = baseDN,
 						   binddn = binddn,
 						   bindpw = bindpw)

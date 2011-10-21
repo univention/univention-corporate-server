@@ -237,7 +237,7 @@ class position:
 
 class access:
 
-	def __init__(self, host='localhost', port=389, base='', binddn='', bindpw='', start_tls=2, lo=None):
+	def __init__(self, host='localhost',  port=None, base='', binddn='', bindpw='', start_tls=2, lo=None):
 		if lo:
 			self.lo=lo
 		else:
