@@ -1,10 +1,24 @@
+univention-ldap (7.0.26-1) unstable; urgency=low
+
+  * Update DHCP-LDAP-schema (Bug #23718)
+    +IPv6-Attribute
+    ±/dhcpHWAddress/s/IA5/Directory/ (Bug #15211)
+    +/dhcpService#dhcpPrimaryDN/s/MUST/MAY/
+    +/dhcpServer#dhcpServiceDN/s/MUST/MAY/
+  * Update Univention-DHCP-LDAP-schema
+    ±univentionDhcpService SUP dhcpService
+    ±univentionDhcpPool SUP dhcpPool
+    ±univentionuniventionDhcpSubnet SUP dhcpSubnet + uDhcpBroadcastAddress
+    ±univentionDhcpHost SUP dhcpHost + dhcpHWAddress + uDhcpFixedAddress
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Sep 2011 10:42:50 +0200
+
 univention-ldap (7.0.25-1) unstable; urgency=low
 
   * Removed kolabHomeServer and alias from recommended index list
     (Bug #24101)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Oct 2011 16:35:23 +0200
-
 univention-ldap (7.0.24-1) unstable; urgency=low
 
   * Make univentionInventoryNumber searchable (Bug #18184)
