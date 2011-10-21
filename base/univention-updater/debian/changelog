@@ -1,3 +1,9 @@
+univention-updater (7.0.52-4) unstable; urgency=low
+
+  * Also remove squid in postup (Bug #22576)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Oct 2011 10:50:46 +0200
+
 univention-updater (7.0.52-3) unstable; urgency=low
 
   * fixed rules file: do not try to install old join script; Bug #24047
