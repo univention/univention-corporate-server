@@ -136,7 +136,7 @@ def handler(dn, new, old, command):
 					p = os.popen( '/usr/sbin/univention-cyrus-mkdir-shared  %s' % name )
 					p.close()
 				else:
-					p = os.popen( '/usr/sbin/univention-cyrus-rename-mailbox %s %s' % (old_dn, name) )
+					p = os.popen( '/usr/sbin/univention-cyrus-rename-shared %s %s' % (old_dn, name) )
 					p.close()
 
 				anyone_acl_set = False

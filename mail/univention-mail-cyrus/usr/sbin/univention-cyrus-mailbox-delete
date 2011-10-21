@@ -90,7 +90,7 @@ if configRegistry.get('mail/cyrus/murder/backend/hostname'):
 elif configRegistry.get('mail/cyrus/murder/master'):
 	serverhost = '%s.%s' % (configRegistry['hostname'], configRegistry['domainname'])
 
-if partition and partition != 'default' and not configRegistry.get('mail/cyrus/murder/frontend/id'):
+if partition and partition != 'default' and not configRegistry.get('mail/cyrus/murder/servers'):
 	print >> sys.stderr, "this host is not a cyrus murder frontend"
 	sys.exit(1)
 
