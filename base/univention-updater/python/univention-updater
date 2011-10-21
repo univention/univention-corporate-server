@@ -279,7 +279,10 @@ def call_local(updateto=None, clean=None, ignoressh=False, ignoreterm=False, ign
 		calllocal.append('--ignoreterm')
 	if ignorereleasenotes:
 		calllocal.append('--ignore-releasenotes')
-	os.execv(sys.argv[0], calllocal)
+	prog=sys.argv[0]
+	if os.path.exists('/usr/share/univention-updater/univention-updater'):
+		prog='/usr/share/univention-updater/univention-updater'
+	os.execv(prog, calllocal)
 	dprint('Fatal: failed to exec: %r' % calllocal)
 	sys.exit(1)
 
@@ -530,7 +533,10 @@ def main():
 		os.unlink(failure)
 	subprocess.call(['touch', reboot_required])
 	update_status( status='DONE' )
-	os.execv(sys.argv[0], sys.argv)
+	prog=sys.argv[0]
+	if os.path.exists('/usr/share/univention-updater/univention-updater'):
+		prog='/usr/share/univention-updater/univention-updater'
+	os.execv(prog, sys.argv)
 
 def reenable_apache2_and_umc():
 	'''

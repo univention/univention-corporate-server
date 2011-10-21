@@ -1,3 +1,10 @@
+univention-updater (6.0.106-1) unstable; urgency=low
+
+  * univention-updater has been moved to /usr/share/univention-updater.
+    Use the new path for os.execv (Bug #24072)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Oct 2011 20:59:41 +0200
+
 univention-updater (6.0.105-1) unstable; urgency=low
 
   * reverted patch of Bug #15630
