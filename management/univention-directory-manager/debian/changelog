@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.80-1) unstable; urgency=low
+
+  * Try to get DN of the user via local ldap connection (Bug #24012)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Oct 2011 17:11:59 +0200
+
 univention-directory-manager (8.0.79-1) unstable; urgency=low
 
   * Consider ldap/master/port and use UCR to determine the ldap/base if

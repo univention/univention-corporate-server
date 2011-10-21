@@ -42,6 +42,7 @@ import unimodule
 import settings
 from local import _
 
+import univention.uldap
 import univention.debug
 import univention.config_registry
 
@@ -354,8 +355,12 @@ class modrelogin(unimodule.unimodule):
 				else:
 					userdn=self.uaccess.searchDn("(&(objectClass=posixAccount)(uid=%s))" % user,position.getLoginDomain(),required=1,scope="domain")[0]
 			except univention.admin.uexceptions.noObject, ex:
-				self.usermessage(_("Wrong Username or Password for the selected Domain"), need_header=True, relogin=True)
-				return
+				try:
+					lo_local=univention.uldap.access(host='localhost')
+					userdn=lo_local.searchDn("(&(objectClass=posixAccount)(uid=%s))" % user,position.getLoginDomain(),required=1,scope="domain")[0]
+				except:
+					self.usermessage(_("Wrong Username or Password for the selected Domain"), need_header=True, relogin=True)
+					return
 			except Exception,ex:
 				pass
 			try:
