@@ -34,7 +34,7 @@ Description: univention system setup tools
 Package: univention-system-setup-boot
 Architecture: all
 Provides: univention-setup-boot
-Depends: univention-system-setup
+Depends: univention-system-setup, xinit, firefox
 Replaces: univention-setup-boot
 Description: starting univention-system-setup on next boot
  .

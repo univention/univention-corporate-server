@@ -36,9 +36,9 @@ then # call self in xinit as nobody, then start gdm
 
 	# save deadline (15 seconds from now on)
 	deadline="$(( $(date +%s) + 15))"
-	[ -x /usr/sbin/xinit ] && /usr/sbin/xinit /bin/su nobody -c "'$0' 'http://localhost/umc'"
+	[ -x /usr/bin/xinit ] && /usr/bin/xinit /bin/su nobody -c "'$0' 'http://localhost/umc'"
 	# if xinit returns a non-zero exitcode or xinit does not exist or session returned within 15 seconds...
-	if [ ! $? = 0 ] || [ ! -x /usr/sbin/xinit ] || [[ $deadline > $(date +%s) ]] ; then
+	if [ ! $? = 0 ] || [ ! -x /usr/bin/xinit ] || [[ $deadline > $(date +%s) ]] ; then
 		# ... then start console tool univention-system-setup
 		eval "$(ucr shell)"
 		plymouth quit
