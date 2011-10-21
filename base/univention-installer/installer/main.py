@@ -210,6 +210,8 @@ for file in files:
 				continue
 		if not profile and file == '15_profile.py':
 			continue
+		if cmdline.get('mode') != 'setup' and file in ['45_password.py']:
+			continue
 		if temp[0].split('_')[0].isdigit():
 			if cmdline.has_key("expert_partition") and temp[0] == "65_partition":
 				continue

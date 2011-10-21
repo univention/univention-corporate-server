@@ -56,7 +56,7 @@ msgcat $po.py.pot.out $po.sh.pot.out > $po.pot
 echo "Merging old gettext data with newly introduced strings"
 msgmerge ./installer/locale/$po/LC_MESSAGES/installer.po  $po.pot > $po.pox
 
-echo "Now you need to fix up all "fuzzy" entries in your editor"
+echo "Now you need to fix up all 'fuzzy' entries in your editor"
 read answ
 
 if [ -n "$EDITOR" ]; then
@@ -75,4 +75,4 @@ if [ -z "$yn" -o "$yn" = "y" ]; then
     msgfmt -o ./installer/locale/$po/LC_MESSAGES/installer.mo ./installer/locale/$po/LC_MESSAGES/installer.po
 fi
 
-rm -rf $po.pot $po.pot.tmp2 $po.pox.tmp $po.pox $po.pot $po.pot2
+rm -rf $po.pot $po.pot.tmp2 $po.pox.tmp $po.pox $po.pot $po.pot2 $po.py.pot $po.sh.pot $po.py.pot.out $po.sh.pot.out
