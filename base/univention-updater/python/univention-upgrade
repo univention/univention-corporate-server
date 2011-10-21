@@ -49,11 +49,14 @@ LOGFN = '/var/log/univention/updater.log'
 configRegistry = None
 logfd = None
 def dprint(silent, msg, newline=True, debug=False):
-	if logfd:
-		print >>logfd, msg
-		logfd.flush()
 	if silent:
 		return
+	if logfd:
+		if newline:
+			print >>logfd, msg
+		else:
+			print >>logfd, '%-55s' % msg,
+		logfd.flush()
 	if not debug:
 		if newline:
 			print msg
@@ -149,7 +152,7 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 		else:
 			version_next = None
 			run = False
-			dprint(silent, 'no')
+			dprint(silent, 'none')
 
 		# continue update as long there's a next version and major/minor version are equal ==> do ONE major/minor update and ALL patchlevel updates
 		while run and version_first.major == version_next.major and version_first.minor == version_next.minor:
@@ -158,19 +161,21 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 			# - if updateto is set and updateto is smaller than next_version
 			if not version_next:
 				run = False
-				dprint(silent, 'no')
+				dprint(silent, 'none')
 			elif version_updateto and version_updateto < version_next:
 				run = False
 				dprint(silent, '%s is available but updater has been instructed to stop at version %s.' % (version_next,updateto))
 			else:
 				# updates available ==> stop here in "check-mode"
 				if checkForUpdates:
-					dprint(silent, 'yes: UCS %s' % version_next)
+					dprint(silent, 'found: UCS %s' % version_next)
 					return True
 
 				if interactive:
-					dprint(silent, 'yes: UCS %s\n' % version_next)
+					dprint(silent, 'found: UCS %s\n' % version_next)
 					run = readcontinue('Do you want to update to %s [Y|n]?' % version_next)
+				else:
+					dprint(silent, 'found: UCS %s\n' % version_next)
 				
 				if run:
 					update_status( next_version=version_next )
@@ -184,7 +189,7 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 						params.append('--ignoressh')
 					if ignoreterm:
 						params.append('--ignoreterm')
-					retcode = subprocess.call(['/usr/share/univention-updater/univention-updater',  'net', '--updateto' , '%s' % (version_next)] + params , shell=False)
+					retcode = subprocess.call(['/usr/share/univention-updater/univention-updater',  'net', '--updateto' , '%s' % (version_next)] + params , shell=False, env=os.environ)
 					if retcode:
 						dprint(silent, 'exitcode of univention-updater: %s' % retcode, debug=True)
 						dprint(silent, 'ERROR: update failed. Please check /var/log/univention/updater.log\n')
@@ -207,9 +212,9 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 				if next_release_update:
 					version_next = UCS_Version(next_release_update)
 					if  version_first.major != version_next.major or version_first.minor != version_next.minor:
-						dprint(silent, 'yes: UCS %s (skip in first iteration)' % version_next)
+						dprint(silent, 'found: UCS %s (skip in first iteration)' % version_next)
 				else:
-					dprint(silent, 'no')
+					dprint(silent, 'none')
 					version_next = None
 					run = False
 
@@ -227,10 +232,10 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 			run = True
 			# updates available ==> stop here in "check-mode"
 			if checkForUpdates:
-				dprint(silent, 'yes')
+				dprint(silent, 'found')
 				return True
 
-			dprint(silent, 'yes\n')
+			dprint(silent, 'found\n')
 			if len(new_packages) > 0:
 				dprint(silent, 'The following packages will be installed:\n %s' % _package_list(new_packages))
 			if len(upgraded_packages) > 0:
@@ -255,7 +260,7 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 				dprint(silent, 'done')
 				time.sleep(1)
 		else:
-			dprint(silent, 'no')
+			dprint(silent, 'none')
 
 		#######################################################################
 		# SECURITY UPDATE
@@ -266,15 +271,15 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 		current_errata_update = 0
 		next_errata_update = updater.errata_update_available()
 		if not next_errata_update or next_errata_update != current_errata_update:
-			dprint(silent, 'no')
+			dprint(silent, 'none')
 		while next_errata_update and ( next_errata_update != current_errata_update ):
 			run = True
 			# updates available ==> stop here in "check-mode"
 			if checkForUpdates:
-				dprint(silent, 'no')
+				dprint(silent, 'none')
 				return True
 
-			dprint(silent, 'yes: errata%s' % next_errata_update)
+			dprint(silent, 'found: errata%s' % next_errata_update)
 			if interactive:
 				run = readcontinue('Do you want to update to errata%s [Y|n]?' % next_errata_update)
 
@@ -284,7 +289,7 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 				dprint(silent, '\n')
 				dprint(silent, 'Starting update to errata%s' % next_errata_update )
 				time.sleep(1)
-				retcode = subprocess.call(['/usr/share/univention-updater/univention-errata-update',  'net'], shell=False)
+				retcode = subprocess.call(['/usr/share/univention-updater/univention-errata-update',  'net'], shell=False, env=os.environ)
 				if retcode:
 					dprint(silent, 'exitcode of univention-errata-update: %s' % retcode, debug=True)
 					dprint(silent, 'ERROR: update failed. Please check /var/log/univention/errata-updates.log\n')
@@ -298,7 +303,7 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 				current_errata_update = next_errata_update
 				next_errata_update = updater.errata_update_available()
 			if  next_errata_update != current_errata_update:
-				dprint(silent, 'no')
+				dprint(silent, 'none')
 
 	# updates available ==> stop here in "check-mode"
 	if checkForUpdates:
@@ -328,32 +333,35 @@ def main():
 
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
+	
+	if options.noninteractive:
+		os.environ['UCS_FRONTEND']='noninteractive'
 
 	silent = False
 	dprint(silent, '\nStarting univention-upgrade. Current UCS version is %s-%s errata%s\n' % (configRegistry.get('version/version'), configRegistry.get('version/patchlevel'), configRegistry.get('version/erratalevel')))
 
 	dprint(silent, 'Checking for local repository: ', newline=False)
 	if configRegistry.is_true('local/repository', False) and configRegistry.is_true('repository/mirror', False):
-		dprint(silent, 'yes\n')
+		dprint(silent, 'found\n')
 		run=True
 		if not options.noninteractive:
 			run = readcontinue('Update the local repository via network [Y|n]?')
 		if run:
 			if options.updateto:
-				retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'net', '--updateto' '%s' % (version_next)], shell=False)
+				retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'net', '--updateto' '%s' % (version_next)], shell=False, env=os.environ)
 			else:
-				retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'net'], shell=False)
+				retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'net'], shell=False, env=os.environ)
 		else:
 			run=True
 			if not options.noninteractive:
 				run = readcontinue('Update the local repository via cdrom [Y|n]?')
 			if run:
 				if options.iso:
-					retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'cdrom','--iso', options.iso], shell=False)
+					retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'cdrom','--iso', options.iso], shell=False, env=os.environ)
 				else:
-					retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'cdrom', '--cdrom', options.cdrom ], shell=False)
+					retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'cdrom', '--cdrom', options.cdrom ], shell=False, env=os.environ)
 	else:
-		dprint(silent, 'no')
+		dprint(silent, 'none')
 			
 
 	if options.check:

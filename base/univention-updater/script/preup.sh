@@ -32,10 +32,6 @@ exec 3>>"$UPDATER_LOG"
 UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
 
-if [ -n "$UCS_FRONTEND" ]; then
-	UCS_FRONTEND="noninteractive"
-fi
-
 echo "Running preup.sh script" >&3
 date >&3
 
@@ -86,13 +82,13 @@ echo
 #echo "3rd party components."
 #echo
 if [ ! "$update_warning_releasenotes" = "no" -a ! "$update_warning_releasenotes" = "false" -a ! "$update_warning_releasenotes_internal" = "no" ] ; then
-	if [ "UCS_FRONTEND" = "noninteractive" ]; then
+	if [ "$UCS_FRONTEND" = "noninteractive" ]; then
 		echo "Update will wait here for 60 seconds..."
 		echo "Press CTRL-c to abort or press ENTER to continue"
 		# BUG: 'read -t' is the only bash'ism in this file, therefore she-bang has to be /bin/bash not /bin/sh!
 		read -t 60 somevar
 	else
-		readcontinue || exit 0
+		readcontinue || exit 1
 	fi
 	
 fi

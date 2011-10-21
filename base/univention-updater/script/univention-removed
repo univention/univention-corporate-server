@@ -30,6 +30,6 @@
 # <http://www.gnu.org/licenses/>.
 
 
-echo "$0 has been removed. Please use /usr/sbin/univention-upgrade"
+echo "${0/*\//} has been removed. Please use univention-upgrade."
 exit 1
 

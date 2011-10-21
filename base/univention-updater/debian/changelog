@@ -1,3 +1,11 @@
+univention-updater (7.0.53-1) unstable; urgency=low
+
+  * Fixed minor univention-upgrade text issues (Bug #23453)
+  * Give UCS_FRONTEND environment to prup.sh
+  * Cleanup logfile
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Oct 2011 20:35:22 +0200
+
 univention-updater (7.0.52-7) unstable; urgency=low
 
   * Derive Watched_Files-class from object-class too (Bug #24115)
