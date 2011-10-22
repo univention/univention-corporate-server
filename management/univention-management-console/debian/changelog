@@ -1,3 +1,9 @@
+univention-management-console (4.0.69-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:21 +0200
+
 univention-management-console (4.0.69-1) unstable; urgency=low
 
   * fallback locale is C

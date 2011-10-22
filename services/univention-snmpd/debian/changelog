@@ -1,3 +1,9 @@
+univention-snmpd (4.0.0-4) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:28 +0200
+
 univention-snmpd (4.0.0-3) unstable; urgency=low
 
   * ucslint is buggy, so set an overrride (Bug #22576)

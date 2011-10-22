@@ -1,3 +1,9 @@
+univention-quota (6.0.6-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:14 +0200
+
 univention-quota (6.0.6-1) unstable; urgency=low
 
   * adapt join script to new UMC access right management; Bug #24045

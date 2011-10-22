@@ -1,3 +1,9 @@
+univention-firewall (4.0.6-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:11 +0200
+
 univention-firewall (4.0.6-1) unstable; urgency=low
 
   * switched files to /etc/security/packetfilter.d/ (Bug #23577)

@@ -1,3 +1,9 @@
+univention-horde4 (1.0.11-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:17 +0200
+
 univention-horde4 (1.0.11-1) unstable; urgency=low
 
   * added description for horde ucs vars (Bug #23745) 

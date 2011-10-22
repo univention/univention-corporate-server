@@ -1,3 +1,9 @@
+univention-debmirror (5.0.1-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:10 +0200
+
 univention-debmirror (5.0.1-1) unstable; urgency=low
 
   * Cleanup univention-debmirror (Bug #23831)

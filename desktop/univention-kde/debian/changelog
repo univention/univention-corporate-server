@@ -1,3 +1,9 @@
+univention-kde (6.0.7-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:16 +0200
+
 univention-kde (6.0.7-1) unstable; urgency=low
 
   * added polkit-kde-authentication-agent-1.desktop (Bug #23864) 

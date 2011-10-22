@@ -1,3 +1,9 @@
+univention-postgrey (1.0.2-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:18 +0200
+
 univention-postgrey (1.0.2-1) unstable; urgency=low
 
   * fixed UCR template (Bug #23775)

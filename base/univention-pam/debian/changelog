@@ -1,3 +1,9 @@
+univention-pam (5.0.16-3) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:13 +0200
+
 univention-pam (5.0.16-2) unstable; urgency=low
 
   * fixed last commit (Bug #21358)

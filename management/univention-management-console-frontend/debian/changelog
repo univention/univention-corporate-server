@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.109-3) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:21 +0200
+
 univention-management-console-frontend (1.0.109-2) unstable; urgency=low
 
   * Depends on python-u-m-c for u.m.c.protocol (Bug #23644)

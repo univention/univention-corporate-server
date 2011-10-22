@@ -1,3 +1,9 @@
+univention-ssh (5.0.0-3) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:15 +0200
+
 univention-ssh (5.0.0-2) unstable; urgency=low
 
   * Fix debian/univention-ssh.install (Bug #22160)

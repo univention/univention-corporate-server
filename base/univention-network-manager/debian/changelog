@@ -1,3 +1,9 @@
+univention-network-manager (3.0.2-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:13 +0200
+
 univention-network-manager (3.0.2-1) unstable; urgency=low
 
   * fixed bashisms that preventing installation (Bug #22433)

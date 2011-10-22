@@ -1,3 +1,9 @@
+univention-system-setup (5.0.19-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:15 +0200
+
 univention-system-setup (5.0.19-1) unstable; urgency=low
 
   * fixed path for xinit (Bug #23870)

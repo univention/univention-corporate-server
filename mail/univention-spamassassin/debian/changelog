@@ -1,3 +1,9 @@
+univention-spamassassin (4.0.3-3) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:18 +0200
+
 univention-spamassassin (4.0.3-2) unstable; urgency=low
 
   * removed unused variable registration (Bug #23824)

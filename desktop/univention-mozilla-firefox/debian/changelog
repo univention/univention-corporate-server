@@ -1,3 +1,9 @@
+univention-mozilla-firefox (7.0.0-4) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:16 +0200
+
 univention-mozilla-firefox (7.0.0-3) unstable; urgency=low
 
   * Use UCRWARNING in templates (Bug #18617)

@@ -1,3 +1,9 @@
+univention-printquota (4.0.4-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:26 +0200
+
 univention-printquota (4.0.4-1) unstable; urgency=low
 
   * create /etc/pykota.secret in postinst (Bug #21649) 

@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.14-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:23 +0200
+
 univention-ad-connector (6.0.14-1) unstable; urgency=low
 
   * Don't show first traceback if an object was dropped because it might

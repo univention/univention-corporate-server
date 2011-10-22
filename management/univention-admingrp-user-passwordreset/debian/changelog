@@ -1,3 +1,9 @@
+univention-admingrp-user-passwordreset (2.0.1-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:19 +0200
+
 univention-admingrp-user-passwordreset (2.0.1-1) unstable; urgency=low
 
   * Added dependency to shell-univention-lib > 1.0.6 (Bug #22431)

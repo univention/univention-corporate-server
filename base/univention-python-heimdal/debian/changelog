@@ -1,3 +1,9 @@
+univention-python-heimdal (4.0.2-3) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:14 +0200
+
 univention-python-heimdal (4.0.2-2) unstable; urgency=low
 
   * merge module API changes from ucs_2.4-samba4 to ucs main (Bug #22580)

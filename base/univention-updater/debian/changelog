@@ -1,3 +1,9 @@
+univention-updater (7.0.53-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:15 +0200
+
 univention-updater (7.0.53-1) unstable; urgency=low
 
   * Fixed minor univention-upgrade text issues (Bug #23453)

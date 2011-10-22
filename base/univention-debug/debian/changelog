@@ -1,3 +1,9 @@
+univention-debug (5.0.9-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:11 +0200
+
 univention-debug (5.0.9-1) unstable; urgency=low
 
   * Purge leftover files from PyCentral on upgrade (Bug #23054)

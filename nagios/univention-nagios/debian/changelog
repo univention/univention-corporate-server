@@ -1,3 +1,9 @@
+univention-nagios (5.0.13-4) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:22 +0200
+
 univention-nagios (5.0.13-3) unstable; urgency=low
 
   * updated firewall settings (Bug #23577)

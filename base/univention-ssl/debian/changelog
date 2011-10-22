@@ -1,3 +1,9 @@
+univention-ssl (6.0.9-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:15 +0200
+
 univention-ssl (6.0.9-1) unstable; urgency=low
 
   * Merged from UCS 2.4-4:

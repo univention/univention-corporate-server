@@ -1,3 +1,9 @@
+univention-nagios-raid (2.0.4-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:22 +0200
+
 univention-nagios-raid (2.0.4-1) unstable; urgency=low
 
   * harmonise container check in join script (Bug #23180)

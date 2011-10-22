@@ -1,3 +1,9 @@
+univention-nfs (4.0.5-4) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:25 +0200
+
 univention-nfs (4.0.5-3) unstable; urgency=low
 
   * Remove now obsolete dependency on univention-shares (Bug #22576)

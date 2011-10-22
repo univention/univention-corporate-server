@@ -1,3 +1,9 @@
+univention-debootstrap (4.0.3-4) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:10 +0200
+
 univention-debootstrap (4.0.3-3) unstable; urgency=low
 
   * fixed bug in debian/univention-debootstrap-3.install (Bug #22448)

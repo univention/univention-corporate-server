@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.48-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:27 +0200
+
 univention-s4-connector (6.0.48-1) unstable; urgency=low
 
   * Be sure the connector/s4/listener/dir directory exists (Bug #22861)

@@ -1,3 +1,9 @@
+univention-directory-logger (4.0.3-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:19 +0200
+
 univention-directory-logger (4.0.3-1) unstable; urgency=low
 
   * added logrotate configuration (Bug #18002)

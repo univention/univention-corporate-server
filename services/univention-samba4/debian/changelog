@@ -1,3 +1,9 @@
+univention-samba4 (1.0.72-2) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:27 +0200
+
 univention-samba4 (1.0.72-1) unstable; urgency=low
 
   * commit smb.conf after creation of shares.conf (Bug #22865)
