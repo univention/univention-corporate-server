@@ -19,8 +19,8 @@ Depends: ${misc:Depends}, ${python:Depends},
  whois,
  shell-univention-lib,
  python-univention-lib (>= 1.0.25-1),
- univention-management-console-module-setup,
  console-tools
+Recommends: univention-management-console-module-setup
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: UCS System Setup tools
