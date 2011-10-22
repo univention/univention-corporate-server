@@ -192,24 +192,24 @@ then
     rm /usr/sbin/univention-ad-"$CONFIGBASENAME"
 
     echo "-- unset known UCR variables"
-    univention-config-registry unset "$CONFIGBASENAME"/ad/ldap/base 
-    univention-config-registry unset "$CONFIGBASENAME"/ad/ldap/binddn 
-    univention-config-registry unset "$CONFIGBASENAME"/ad/ldap/bindpw 
-    univention-config-registry unset "$CONFIGBASENAME"/ad/ldap/certificate 
-    univention-config-registry unset "$CONFIGBASENAME"/ad/ldap/host 
-    univention-config-registry unset "$CONFIGBASENAME"/ad/ldap/port 
-    univention-config-registry unset "$CONFIGBASENAME"/ad/ldap/ssl
-    univention-config-registry unset "$CONFIGBASENAME"/ad/listener/dir 
-    univention-config-registry unset "$CONFIGBASENAME"/ad/mapping/group/language 
-    univention-config-registry unset "$CONFIGBASENAME"/ad/mapping/group/primarymail 
-    univention-config-registry unset "$CONFIGBASENAME"/ad/mapping/syncmode 
-    univention-config-registry unset "$CONFIGBASENAME"/ad/mapping/user/primarymail 
-    univention-config-registry unset "$CONFIGBASENAME"/ad/poll/sleep 
-    univention-config-registry unset "$CONFIGBASENAME"/ad/retryrejected 
-    univention-config-registry unset "$CONFIGBASENAME"/debug/function 
-    univention-config-registry unset "$CONFIGBASENAME"/debug/level 
-    univention-config-registry unset "$CONFIGBASENAME"/password/service/encoding
-    
+	univention-config-registry unset "$CONFIGBASENAME"/ad/ldap/base \
+		"$CONFIGBASENAME"/ad/ldap/binddn \
+		"$CONFIGBASENAME"/ad/ldap/bindpw \
+		"$CONFIGBASENAME"/ad/ldap/certificate \
+		"$CONFIGBASENAME"/ad/ldap/host \
+		"$CONFIGBASENAME"/ad/ldap/port \
+		"$CONFIGBASENAME"/ad/ldap/ssl \
+		"$CONFIGBASENAME"/ad/listener/dir \
+		"$CONFIGBASENAME"/ad/mapping/group/language \
+		"$CONFIGBASENAME"/ad/mapping/group/primarymail \
+		"$CONFIGBASENAME"/ad/mapping/syncmode \
+		"$CONFIGBASENAME"/ad/mapping/user/primarymail \
+		"$CONFIGBASENAME"/ad/poll/sleep \
+		"$CONFIGBASENAME"/ad/retryrejected \
+		"$CONFIGBASENAME"/debug/function \
+		"$CONFIGBASENAME"/debug/level \
+		"$CONFIGBASENAME"/password/service/encoding
+
     echo "-- remove config-dir /etc/univention$CONFIGBASENAME"
     rm -r /etc/univention/"$CONFIGBASENAME"
     

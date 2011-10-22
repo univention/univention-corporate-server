@@ -35,13 +35,13 @@
 eval "$(univention-config-registry shell)"
 
 # remove old variables
+VARIABLES=
 for mod in modwizard modbrowse; do
 	varname="directory_manager_web_${mod}_defaults_visible_results"
 	eval var=\$${varname}
-	if [ -n "${var}" ]; then
-		univention-config-registry unset directory/manager/web/${mod}/defaults/visible-results
-	fi
+	[ -n "${var}" ] && VARIABLES="${VARIABLES} directory/manager/web/${mod}/defaults/visible-results"
 done
+[ -n "$VARIABLES" ] && univention-config-registry unset $VARIABLES
 
 # autosearch
 univention-config-registry set directory/manager/web/modules/autosearch?1
@@ -54,6 +54,7 @@ univention-config-registry set directory/manager/web/modules/users/user/search/d
 univention-config-registry set directory/reports/cleanup/cron?"0 0 * * *" \
 	directory/reports/cleanup/age?43200
 
+VARIABLES=
 for i in \
 	computers/computer \
 	computers/domaincontroller_backup \

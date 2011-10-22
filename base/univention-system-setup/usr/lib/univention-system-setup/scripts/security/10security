@@ -45,33 +45,33 @@ security_profile=`get_profile_var "security_profile"`
 
 reset_services ()
 {
-    univention-config-registry unset security/services/smtp >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/pop3 >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/krsh >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/nfs >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/x11 >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/nagios >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/dhcp >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/ftp >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/http >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/postgres >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/samba >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/tftp >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/ipp >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/pop3 >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/postgres >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/kerberos >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/imap >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/sieve >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/dns >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/ldap >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/telnet >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/ldap >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/time >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/umc >> /var/log/univention/setup.log
+  univention-config-registry unset \
+    security/services/smtp \
+    security/services/pop3 \
+    security/services/krsh \
+    security/services/nfs \
+    security/services/x11 \
+    security/services/nagios \
+    security/services/dhcp \
+    security/services/ftp \
+    security/services/http \
+    security/services/postgres \
+    security/services/samba \
+    security/services/tftp \
+    security/services/ipp \
+    security/services/pop3 \
+    security/services/postgres \
+    security/services/kerberos \
+    security/services/imap \
+    security/services/sieve \
+    security/services/dns \
+    security/services/ldap \
+    security/services/telnet \
+    security/services/ldap \
+    security/services/time \
+    security/services/umc \
+    >> /var/log/univention/setup.log
 }
-
-
 
 if [ -z "$security_profile" ]; then
 	exit 0
@@ -80,47 +80,53 @@ fi
 echo `date` : "Configuring security profile : " $security_profile  >> /var/log/univention/setup.log
 
 if [ -n "$security_profile" -a "$security_profile" = "strict" ]; then
-
-  univention-config-registry set security/profile="strict"  >> /var/log/univention/setup.log
-  univention-config-registry set security/packetfilter/disabled="false"  >> /var/log/univention/setup.log
+  univention-config-registry set security/profile="strict" \
+    security/packetfilter/disabled="false" \
+    >> /var/log/univention/setup.log
 
   if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-    univention-config-registry set security/services/smtp="disabled" security/services/pop3="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/kerberos="disabled" security/services/krsh="disabled" security/services/nfs="disabled" security/services/x11="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/imap="disabled" security/services/sieve="disabled" security/services/nagios="disabled" security/services/dhcp="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/dns="disabled" security/services/ftp="disabled" security/services/http="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/postgres="disabled" security/services/time="disabled" security/services/samba="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/telnet="disabled" security/services/tftp="disabled" security/services/ipp="disabled" security/services/umc="disabled" >> /var/log/univention/setup.log
+    univention-config-registry set \
+      security/services/smtp="disabled" security/services/pop3="disabled" \
+      security/services/kerberos="disabled" security/services/krsh="disabled" security/services/nfs="disabled" security/services/x11="disabled" \
+      security/services/imap="disabled" security/services/sieve="disabled" security/services/nagios="disabled" security/services/dhcp="disabled" \
+      security/services/dns="disabled" security/services/ftp="disabled" security/services/http="disabled" \
+      security/services/postgres="disabled" security/services/time="disabled" security/services/samba="disabled" \
+      security/services/telnet="disabled" security/services/tftp="disabled" security/services/ipp="disabled" security/services/umc="disabled" \
+      >> /var/log/univention/setup.log
   fi
 
 
   # Right now the selection is identical to DC M/B, eventually merge later
   if [ "$server_role" = "fatclient" -o "$server_role" = "mobileclient" -o "$server_role" = "basesystem" ]; then
-    univention-config-registry set security/services/smtp="disabled" security/services/pop3="disabled" security/services/notifier="disabled" security/services/x11="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/kerberos="disabled" security/services/krsh="disabled" security/services/nfs="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/imap="disabled" security/services/sieve="disabled" security/services/nagios="disabled" security/services/dhcp="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/dns="disabled" security/services/time="disabled" security/services/ftp="disabled" security/services/http="disabled" >> /var/log/univention/setup.log
-    univention-config-registry set security/services/postgres="disabled" security/services/samba="disabled" >> /var/log/univention/setup.log
-    univention-config-registry set security/services/telnet="disabled" security/services/tftp="disabled" security/services/ipp="disabled" security/services/umc="disabled" >> /var/log/univention/setup.log
+    univention-config-registry set \
+      security/services/smtp="disabled" security/services/pop3="disabled" security/services/notifier="disabled" security/services/x11="disabled" \
+      security/services/kerberos="disabled" security/services/krsh="disabled" security/services/nfs="disabled" \
+      security/services/imap="disabled" security/services/sieve="disabled" security/services/nagios="disabled" security/services/dhcp="disabled" \
+      security/services/dns="disabled" security/services/time="disabled" security/services/ftp="disabled" security/services/http="disabled" \
+      security/services/postgres="disabled" security/services/samba="disabled" \
+      security/services/telnet="disabled" security/services/tftp="disabled" security/services/ipp="disabled" security/services/umc="disabled" \
+      >> /var/log/univention/setup.log
   fi
 
   if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
-    univention-config-registry set security/services/smtp="disabled" security/services/pop3="disabled" security/services/notifier="disabled" security/services/x11="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/kerberos="disabled" security/services/krsh="disabled" security/services/nfs="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/imap="disabled" security/services/sieve="disabled" security/services/time="disabled" security/services/nagios="disabled" security/services/dhcp="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/dns="disabled" security/services/ftp="disabled" security/services/http="disabled" >> /var/log/univention/setup.log
-    univention-config-registry set security/services/postgres="disabled" security/services/samba="disabled" >> /var/log/univention/setup.log
-    univention-config-registry set security/services/telnet="disabled" security/services/tftp="disabled" security/services/ipp="disabled" security/services/umc="disabled" >> /var/log/univention/setup.log
+    univention-config-registry set \
+      security/services/smtp="disabled" security/services/pop3="disabled" security/services/notifier="disabled" security/services/x11="disabled" \
+      security/services/kerberos="disabled" security/services/krsh="disabled" security/services/nfs="disabled" \
+      security/services/imap="disabled" security/services/sieve="disabled" security/services/time="disabled" security/services/nagios="disabled" security/services/dhcp="disabled" \
+      security/services/dns="disabled" security/services/ftp="disabled" security/services/http="disabled" \
+      security/services/postgres="disabled" security/services/samba="disabled" \
+      security/services/telnet="disabled" security/services/tftp="disabled" security/services/ipp="disabled" security/services/umc="disabled" \
+      >> /var/log/univention/setup.log
   fi
 
 fi
 
 if [ -n "$security_profile" -a "$security_profile" = "normal" ]; then
-
-
-  reset_services 
-  univention-config-registry set security/profile="normal"  >> /var/log/univention/setup.log
-  univention-config-registry set security/packetfilter/disabled="false"  >> /var/log/univention/setup.log
+  reset_services
+  univention-config-registry set \
+    security/profile="normal" \
+    security/packetfilter/disabled="false" \
+    >> /var/log/univention/setup.log
 
   if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
     univention-config-registry set security/services/telnet="disabled" security/services/ftp="disabled"  >> /var/log/univention/setup.log
@@ -131,21 +137,22 @@ if [ -n "$security_profile" -a "$security_profile" = "normal" ]; then
   fi
 
   if [ "$server_role" = "fatclient" -o "$server_role" = "mobileclient" -o "$server_role" = "basesystem" ]; then
-    univention-config-registry set security/services/smtp="disabled" security/services/pop3="disabled" security/services/notifier="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/kerberos="disabled" security/services/krsh="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/imap="disabled" security/services/sieve="disabled" security/services/nagios="disabled" security/services/dhcp="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/dns="disabled" security/services/ftp="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/ldap="disabled" security/services/postgres="disabled" security/services/samba="disabled"  >> /var/log/univention/setup.log
-    univention-config-registry set security/services/telnet="disabled" security/services/tftp="disabled"  >> /var/log/univention/setup.log
+    univention-config-registry set security/services/smtp="disabled" security/services/pop3="disabled" security/services/notifier="disabled" \
+      security/services/kerberos="disabled" security/services/krsh="disabled" \
+      security/services/imap="disabled" security/services/sieve="disabled" security/services/nagios="disabled" security/services/dhcp="disabled" \
+      security/services/dns="disabled" security/services/ftp="disabled" \
+      security/services/ldap="disabled" security/services/postgres="disabled" security/services/samba="disabled" \
+      security/services/telnet="disabled" security/services/tftp="disabled" \
+      >> /var/log/univention/setup.log
   fi
-fi   
+fi
 
 if [ -n "$security_profile" -a "$security_profile" = "open" ]; then
-  iptables -F    
+  iptables -F
   reset_services
-  univention-config-registry set security/profile="open"  >> /var/log/univention/setup.log
-  univention-config-registry set security/packetfilter/disabled="true"  >> /var/log/univention/setup.log
-
+  univention-config-registry set security/profile="open" \
+    security/packetfilter/disabled="true" \
+    >> /var/log/univention/setup.log
 fi
 
 echo `date` : "Restarting univention-iptables "  >> /var/log/univention/setup.log
@@ -153,4 +160,3 @@ echo `date` : "Restarting univention-iptables "  >> /var/log/univention/setup.lo
 /etc/init.d/univention-iptables restart >> /var/log/univention/setup.log
 
 exit 0
-

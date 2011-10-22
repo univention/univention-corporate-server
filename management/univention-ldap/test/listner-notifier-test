@@ -119,34 +119,32 @@ random_name () # create objectnames
 
 user () # create a users/user object
 {
-	univention-admin $module create --set username=$rand1 --set lastname=$rand2 --set password=univention --set unixhome=/home/$rand1 --set primaryGroup="cn=Domain Users,cn=groups,$ldap_base" --position="cn=users,$ldap_base"
-
-
+	univention-admin "$module" create --set username="$rand1" --set lastname="$rand2" --set password=univention --set unixhome="/home/$rand1" --set primaryGroup="cn=Domain Users,cn=groups,$ldap_base" --position="cn=users,$ldap_base"
 }
 
 group () # create a groups/group object
 {
-	univention-admin $module create --set name=$rand1 --position="cn=groups,$ldap_base"
+	univention-admin "$module" create --set name="$rand1" --position="cn=groups,$ldap_base"
 }
 
 computer () # create a computers/managedclient object
 {
-	univention-admin $module create --set name=$rand1 --set unixhome=/dev/null --set primaryGroup="cn=Computers,cn=groups,$ldap_base" --position="cn=computers,$ldap_base"
+	univention-admin "$module" create --set name="$rand1" --set unixhome=/dev/null --set primaryGroup="cn=Computers,cn=groups,$ldap_base" --position="cn=computers,$ldap_base"
 }
 
 network () # create a networks/network object
 {
-	univention-admin $module create --set name=$rand1 --set network=192.168.0.0 --set netmask=255.255.255.0 --position="cn=networks,$ldap_base"
+	univention-admin "$module" create --set name="$rand1" --set network=192.168.0.0 --set netmask=255.255.255.0 --position="cn=networks,$ldap_base"
 }
 
 printer () # create a shares/printer object
 {
-	univention-admin $module create --set name=$rand1 --set spoolHost=$cups_server --set uri=lp0://$rand1/ --set model=$rand2 --position="cn=printers,$ldap_base"
+	univention-admin "$module" create --set name="$rand1" --set spoolHost="$cups_server" --set uri="lp0://$rand1/" --set model="$rand2" --position="cn=printers,$ldap_base"
 }
 
 share () # create a shares/share object
 {
-	univention-admin $module create --set name=$rand1 --set host=$hostname.$domainname --set path=/home/groups/$rand1/ --position="cn=shares,$ldap_base"
+	univention-admin "$module" create --set name="$rand1" --set host="$hostname.$domainname" --set path="/home/groups/$rand1/" --position="cn=shares,$ldap_base"
 }
 
 
@@ -164,14 +162,14 @@ do
 		*);;
 	esac
 	count=0
-	for dn in `ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b cn=$cn,$ldap_base -s one |grep Object |grep ^dn: |awk '{print $2}'`
+	for dn in $(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b cn="$cn,$ldap_base" -s one | sed -ne '/Object/s/^dn: //p')
 	do
 		rdn=`echo $dn |awk -F , '{print $1}' |awk -F = '{print $1}'`
 		random_string
 		echo "Changing $dn to $rdn=Object$string1"
-		ldapmodrdn -x -D cn=admin,$ldap_base -w `cat /etc/ldap.secret` $dn $rdn=Object$string1
+		ldapmodrdn -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" "$dn" "$rdn=Object$string1"
 		echo "Changing $rdn=Object$string1 to $rdn=Objectxxx$string2 (using argument -r )"
-		ldapmodrdn -x -D cn=admin,$ldap_base -w `cat /etc/ldap.secret` -r $rdn=Object$string1,cn=$cn,$ldap_base $rdn=Objectxxx$string2
+		ldapmodrdn -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" -r "$rdn=Object$string1,cn=$cn,$ldap_base" "$rdn=Objectxxx$string2"
 		count=`expr $count + 1`
 		if [ "$count" -eq "$LIMIT" ]
 		then
@@ -210,7 +208,7 @@ create_ldif () # creates a ldif-file and the same objects on master
 touch backup.ldif
 touch master.tmp
 echo -e "\v===> create ldif-file for backup-manipulation"
-for dn in `ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b cn=users,$ldap_base -s one |grep ^dn: |grep Object |awk '{print $2}'`
+for dn in $(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b "cn=users,$ldap_base" -s one | sed -ne '/Object/s/^dn: //p')
 do
 	echo -e "dn: $dn\nchangetype: modify\nreplace: homeDirectory\nhomeDirectory: /dev/null\n" >> backup.ldif
 	echo -e "$dn" >> master.tmp
@@ -222,35 +220,35 @@ compare () # compares two ldap_dump-files using diff
 echo -e "\v===> comparing $rmhost and $rmhost2"
 if [ "$rmhost" == "$slave" ]
 then
-	univention-scp -timeout 60 $pw /etc/ldap.secret root@$rmhost:/etc/
+	univention-scp -timeout 60 "$pw" /etc/ldap.secret "root@$rmhost:/etc/"
 elif [ "$rmhost2" == "$slave" ]
 then
-	univention-scp -timeout 60 $pw /etc/ldap.secret root@$rmhost2:/etc/
+	univention-scp -timeout 60 "$pw" /etc/ldap.secret "root@$rmhost2:/etc/"
 fi
 
-cmd="for module in users/user groups/group computers/managedclient networks/network shares/printer shares/share; do univention-admin $module list >> /tmp/ldap_dump_$rmhost.tmp; done"
+cmd="for module in users/user groups/group computers/managedclient networks/network shares/printer shares/share; do univention-admin "$module" list >> /tmp/ldap_dump_$rmhost.tmp; done"
 #cmd="ldapsearch -x -b $ldap_base > /tmp/ldap_dump_$rmhost.tmp"
-univention-ssh -timeout 60 $pw root@$rmhost $cmd
-univention-scp -timeout 60 $pw root@$rmhost:/tmp/ldap_dump_$rmhost.tmp /tmp/
+univention-ssh -timeout 60 "$pw" "root@$rmhost" $cmd
+univention-scp -timeout 60 "$pw" "root@$rmhost:/tmp/ldap_dump_$rmhost.tmp" /tmp/
 
-cmd="for module in users/user groups/group computers/managedclient networks/network shares/printer shares/share; do univention-admin $module list >> /tmp/ldap_dump_$rmhost2.tmp; done"
+cmd="for module in users/user groups/group computers/managedclient networks/network shares/printer shares/share; do univention-admin "$module" list >> /tmp/ldap_dump_$rmhost2.tmp; done"
 #cmd="ldapsearch -x -b $ldap_base > /tmp/ldap_dump_$rmhost2.tmp"
-univention-ssh -timeout 60 $pw root@$rmhost2 $cmd
-univention-scp -timeout 60 $pw root@$rmhost2:/tmp/ldap_dump_$rmhost2.tmp /tmp/
+univention-ssh -timeout 60 "$pw" "root@$rmhost2" $cmd
+univention-scp -timeout 60 "$pw" "root@$rmhost2:/tmp/ldap_dump_$rmhost2.tmp" /tmp/
 echo -e "\v ###### $test " >> result.txt
 echo -e "diff /tmp/ldap_dump_$rmhost.tmp /tmp/ldap_dump_$rmhost2.tmp :\v" >> result.txt
-diff /tmp/ldap_dump_$rmhost.tmp /tmp/ldap_dump_$rmhost2.tmp >> result.txt
+diff "/tmp/ldap_dump_$rmhost.tmp" "/tmp/ldap_dump_$rmhost2.tmp" >> result.txt
 cmd="rm /tmp/ldap_dump*"
 echo -e "\v===> deleting temp-files"
-univention-ssh -timeout 60 $pw root@$rmhost $cmd &> /dev/null
-univention-ssh -timeout 60 $pw root@$rmhost2 $cmd &> /dev/null
+univention-ssh -timeout 60 "$pw" "root@$rmhost" $cmd &> /dev/null
+univention-ssh -timeout 60 "$pw" "root@$rmhost2" $cmd &> /dev/null
 
 if [ "$rmhost" == "$slave" ]
 then
-	univention-ssh -timeout 60 $pw root@$rmhost "rm /etc/ldap.secret"
+	univention-ssh -timeout 60 "$pw" "root@$rmhost" "rm /etc/ldap.secret"
 elif [ "$rmhost2" == "$slave" ]
 then
-	univention-ssh -timeout 60 $pw root@$rmhost2 "rm /etc/ldap.secret"
+	univention-ssh -timeout 60 "$pw" "root@$rmhost2" "rm /etc/ldap.secret"
 fi
 
 }
@@ -271,14 +269,14 @@ stop () # stopping daemon on remote host using init-script
 {
 echo -e "\v===> stopping $what on $where"
 cmd="/etc/init.d/$what stop"
-univention-ssh -timeout 60 $pw root@$where $cmd
+univention-ssh -timeout 60 "$pw" "root@$where" $cmd
 }
 
 start () # starting daemon on remote host using init-script
 {
 echo -e "\v===> starting $what on $where"
 cmd="/etc/init.d/$what start"
-univention-ssh -timeout 60 $pw root@$where $cmd
+univention-ssh -timeout 60 "$pw" "root@$where" $cmd
 }
 
 reset ()
@@ -287,32 +285,32 @@ echo -e "\v ------ resetting all needed daemon  ------"
 
 cmd="/etc/init.d/univention-directory-listener start"
 echo -e "\v===>master:"
-univention-ssh -timeout 60 $pw root@$master $cmd
+univention-ssh -timeout 60 "$pw" "root@$master" $cmd
 echo -e "\v===>backup:"
-univention-ssh -timeout 60 $pw root@$backup $cmd
+univention-ssh -timeout 60 "$pw" "root@$backup" $cmd
 echo -e "\v===>slave:"
-univention-ssh -timeout 60 $pw root@$slave $cmd
+univention-ssh -timeout 60 "$pw" "root@$slave" $cmd
 
 cmd="/etc/init.d/univention-directory-notifier start"
 echo -e "\v===>master:"
-univention-ssh -timeout 60 $pw root@$master $cmd
+univention-ssh -timeout 60 "$pw" "root@$master" $cmd
 echo -e "\v===>backup:"
-univention-ssh -timeout 60 $pw root@$backup $cmd
+univention-ssh -timeout 60 "$pw" "root@$backup" $cmd
 
 cmd="/etc/init.d/slapd start"
 echo -e "\v===>master"
-univention-ssh -timeout 60 $pw root@$master $cmd
+univention-ssh -timeout 60 "$pw" "root@$master" $cmd
 echo -e "\v===>backup"
-univention-ssh -timeout 60 $pw root@$backup $cmd
+univention-ssh -timeout 60 "$pw" "root@$backup" $cmd
 echo -e "\v===>slave"
-univention-ssh -timeout 60 $pw root@$slave $cmd
+univention-ssh -timeout 60 "$pw" "root@$slave" $cmd
 }
 
 check_failed () # check for replication failed.ldif
 {
 echo -e "------ checking for failed.ldiff ------"
 cmd="/usr/bin/test -e /var/lib/univention-directory-replication/failed.ldif"
-univention-scp -timeout 60 $pw root@$where:/var/lib/univention-directory-replication/failed.ldif . >/dev/null 2>&1
+univention-scp -timeout 60 "$pw" "root@$where:/var/lib/univention-directory-replication/failed.ldif" . >/dev/null 2>&1
 
 if [ -e failed.ldif ] ; then
 	echo "failed.ldif exists on $where"
@@ -326,7 +324,7 @@ get_id () # get notifier id
 {
 echo -e "------ getting notifier id from $where ------"
 cmd="cat /var/lib/univention-directory-listener/notifier_id"
-notifier_id=$(univention-ssh -timeout 60 $pw root@where $cmd)
+notifier_id=$(univention-ssh -timeout 60 "$pw" "root@where" $cmd)
 echo "notifier_id: $notifier_id"
 }
 
@@ -347,21 +345,21 @@ config_slavelistener () # config listener to connect first on $con_to
 	eval "$(univention-config-registry shell)"
 
 	slave="$where"
-	slave_hostdn=`univention-admin computers/domaincontroller_slave list --filter cn=$slave |grep ^DN |sed 's/DN: //'`
+	slave_hostdn=$(univention-admin computers/domaincontroller_slave list --filter cn="$slave" | sed -ne 's/^DN: //p')
 
 	backup="$con_to.$domainname"
 	echo '#!/bin/sh -e' > /tmp/listener-run0
 	echo "" >> /tmp/listener-run0
-	echo "exec /usr/sbin/univention-directory-listener -h $backup -F -b \"$ldap_base\" -m \"/usr/lib/univention-directory-listener/system\" -c \"/var/lib/univention-directory-listener\" -o -x -ZZ -D \"$slave_hostdn\" -y /etc/machine.secret >>/var/log/univention/listener.log 2>&1" >> /tmp/listener-run0
+	echo "exec /usr/sbin/univention-directory-listener -h '$backup' -F -b '$ldap_base' -m '/usr/lib/univention-directory-listener/system' -c '/var/lib/univention-directory-listener' -o -x -ZZ -D '$slave_hostdn' -y /etc/machine.secret >>/var/log/univention/listener.log 2>&1" >> /tmp/listener-run0
 
-	univention-scp -timeout 60 $pw /tmp/listener-run0 root@$where:/etc/runit/univention-directory-listener/run
+	univention-scp -timeout 60 "$pw" /tmp/listener-run0 "root@$where:/etc/runit/univention-directory-listener/run"
 	rm /tmp/listener-run0
 }
 
 defconfig_slavelistener ()
 {
 	cmd="univention-config-registry commit /etc/runit/univention-directory-listener/run"
-	univention-ssh -timeout 60 $pw root@$where $cmd
+	univention-ssh -timeout 60 "$pw" "root@$where" $cmd
 }
 
 #####################  Tests ###############################
@@ -462,22 +460,22 @@ echo -e "\v$test"
 	create_ldif
 
 	echo -e "\v===> copy ldif to $rmhost"
-	univention-scp -timeout 60 $pw backup.ldif root@$rmhost:~/
+	univention-scp -timeout 60 "$pw" backup.ldif "root@$rmhost:~/"
 
 	echo -e "\v===> get ldap-rootpw from $rmhost"
-	univention-scp -timeout 60 $pw root@$rmhost:/etc/ldap/rootpw.conf .
+	univention-scp -timeout 60 "$pw" "root@$rmhost:/etc/ldap/rootpw.conf" .
 	rootpw=`cat rootpw.conf |awk '{print $2}' |perl -pi -e 's/\"/ /g'`
 	echo -e "===> sounds like: $rootpw"
 	rm rootpw.conf
 
 	echo -e "\v===> using ldif on $rmhost"
-	cmd="ldapmodify -x -D cn=update,$ldap_base -w $rootpw -f backup.ldif"
-	univention-ssh -timeout 60 $pw root@$rmhost $cmd
+	cmd="ldapmodify -x -D 'cn=update,$ldap_base' -w '$rootpw' -f backup.ldif"
+	univention-ssh -timeout 60 "$pw" "root@$rmhost" $cmd
 
 	echo -e "\v===> using ldif on master"
 	for dn in `cat master.tmp`
 	do
-		univention-admin users/user modify --dn $dn --set unixhome=/home/groups
+		univention-admin users/user modify --dn "$dn" --set unixhome=/home/groups
 	done
 
 	start
@@ -505,19 +503,19 @@ echo -e "\v$test"
 
 	echo -e "\v===> killing backup listener"
 	cmd="killall -9 univention-directory-listener"
-	univention-ssh -timeout 60 $pw root@$backup $cmd
+	univention-ssh -timeout 60 "$pw" "root@$backup" $cmd
 
 	create_objects
 
 	echo -e "\v\v===> starting killing-loop"
 	for module in "users/user" "groups/group" "computers/managedclient" "networks/network" "shares/printer" "shares/share"
 	do
-        	for ((a=1; a <= LIMIT; a++))
+		for ((a=1; a <= LIMIT; a++))
 		do
 			random_name
 			echo -e "\v\v===> killing master listener"
 			cmd="killall -9 univention-directory-listener"
-			univention-ssh -timeout 60 $pw root@$backup $cmd 2> /dev/null
+			univention-ssh -timeout 60 "$pw" "root@$backup" $cmd 2> /dev/null
 			case "$module" in
 				users/user)user;;
 				groups/group)group;;
@@ -553,7 +551,7 @@ echo -e "\v$test"
 
 	echo -e "\v===> killing backup listener"
 	cmd="killall -9 univention-directory-listener"
-	univention-ssh -timeout 60 $pw root@$backup $cmd
+	univention-ssh -timeout 60 "$pw" "root@$backup" $cmd
 
 	create_objects
 
@@ -565,8 +563,8 @@ echo -e "\v$test"
 			random_name
 			echo -e "\v\v===> killing master notifier"
 			cmd="killall -9 univention-directory-notifier"
-        	        univention-ssh -timeout 60 $pw root@$master $cmd 2> /dev/null
-        		case "$module" in
+			univention-ssh -timeout 60 "$pw" "root@$master" $cmd 2> /dev/null
+			case "$module" in
 				users/user)user;;
 				groups/group)group;;
 				computers/managedclient)computer;;
@@ -675,7 +673,7 @@ echo -e "\v$test"
 
 	echo -e "\v===> execute univention-directory-replication-resync on backup"
 	cmd="univention-directory-replication-resync /var/lib/univention-directory-replication/failed.ldif"
-	univention-ssh -timeout 360 $pw root@$slave $cmd
+	univention-ssh -timeout 360 "$pw" "root@$slave" $cmd
 
 	pause=`expr 30 + $sync_time`
 	wait_for
@@ -758,8 +756,8 @@ echo -e "\v\v**********  The Results **********"
 echo -e "\v Results saved in result.txt"
 
 echo -e "\v**********  removing temp-files **********"
-cmd="if [ -e \"backup.ldif\" ] ; then rm backup.ldif ; fi"
-univention-ssh -timeout 60 $pw root@$backup $cmd
+cmd="if [ -e backup.ldif ] ; then rm backup.ldif ; fi"
+univention-ssh -timeout 60 "$pw" "root@$backup" $cmd
 if [ -e "backup.ldif" ] ; then rm backup.ldif ; fi
 if [ -e "master.tmp" ] ; then rm master.tmp ; fi
 if [ -e "pw.tmp" ] ; then rm pw.tmp ; fi
@@ -781,9 +779,9 @@ do
 		*)cn="cn=NotValidCN$pre";;
 	esac
 
-	for dn in `ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b $cn,$ldap_base -s one |grep ^dn: |grep 'Object' |awk '{print $2}'`
+	for dn in $(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b "$cn,$ldap_base" -s one | sed -ne '/Object/s/^dn: //p')
 	do
-		univention-admin $module remove --dn $dn
+		univention-admin "$module" remove --dn "$dn"
 	done
 done
 
