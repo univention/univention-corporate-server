@@ -16,12 +16,9 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 	'class': 'umcSearchForm',
 
 	postMixInProperties: function() {
-		// in case no buttons are defined, define the standard buttons: 'submit' and 'reset'
+		// in case no buttons are defined, define the standard 'submit' button
 		if (!this.buttons) {
-			this.buttons = [{
-				name: 'reset',
-				label: this._( 'Reset' )
-			}, {
+			this.buttons = [ {
 				name: 'submit',
 				label: this._( 'Search' ),
 				callback: dojo.hitch(this, function(values) {
@@ -40,13 +37,13 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 					stack.push(i);
 				});
 			}
-			else if ('reset' == el || 'submit' == el) {
+			else if ( 'submit' == el ) {
 				buttonsExist = true;
 				break;
 			}
 		}
 		if (!buttonsExist) {
-			this.layout.push(['reset', 'submit']);
+			this.layout.push( [ 'submit' ] );
 		}
 
 		this.inherited(arguments);
@@ -55,11 +52,6 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 	onSearch: function(values) {
 		// event stub
 	},
-
-	onReset: function() {
-		// event stub
-	}
-
 });
 
 

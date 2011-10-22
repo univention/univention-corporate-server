@@ -686,7 +686,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 				return;
 			}
 		}
-		
+
 		// adjust the margin of the first cell in order to align correctly
 		var margin = dojo.position(dojo.query('th', this._grid.viewsHeaderNode)[0]).x;
 		margin -= dojo.position(this._grid.domNode).x;

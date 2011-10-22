@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.110-1) unstable; urgency=low
+
+  * remove default button reset from SearchForm and LoginDialog; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 22 Oct 2011 17:29:08 +0200
+
 univention-management-console-frontend (1.0.109-3) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

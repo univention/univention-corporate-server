@@ -109,10 +109,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 				this._authenticate(values.username, values.password);
 				this._form.elementValue('password', '');
 			})
-		}, {
-			name: 'cancel',
-			label: this._('Reset')
-		}];
+		} ];
 
 		var layout = [['username'], ['password'], ['language']];
 
@@ -161,13 +158,6 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		if (this._form.elementValue('username')) {
 			this._form._widgets.password.focus();
 		}
-	},
-
-	reset: function() {
-		// description:
-		//		Reset all form entries to their initial values.
-		this._passwordTextBox.reset();
-		this._usernameTextBox.reset();
 	},
 
 	_onKey:  function(evt) {
