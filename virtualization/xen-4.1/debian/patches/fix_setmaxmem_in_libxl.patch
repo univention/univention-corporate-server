@@ -1,5 +1,5 @@
---- a/xen-4.1.0/tools/libxl/libxl.c       Thu May 26 15:04:46 2011 +0100
-+++ b/xen-4.1.0/tools/libxl/libxl.c       Thu May 26 15:05:47 2011 +0100
+--- a/tools/libxl/libxl.c       Thu May 26 15:04:46 2011 +0100
++++ b/tools/libxl/libxl.c       Thu May 26 15:05:47 2011 +0100
 @@ -1955,6 +1955,13 @@
          LIBXL__LOG_ERRNO(ctx, LIBXL__LOG_ERROR, "memory_static_max must be greater than or or equal to memory_dynamic_max\n");
          goto out;

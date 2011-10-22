@@ -1,5 +1,5 @@
---- a/xen-4.1.0/tools/libxc/xc_domain_restore.c   Tue May 24 17:12:27 2011 +0100
-+++ b/xen-4.1.0/tools/libxc/xc_domain_restore.c   Tue May 24 10:14:10 2011 +0100
+--- a/tools/libxc/xc_domain_restore.c   Tue May 24 17:12:27 2011 +0100
++++ b/tools/libxc/xc_domain_restore.c   Tue May 24 10:14:10 2011 +0100
 @@ -1134,23 +1134,19 @@
 
      int orig_io_fd_flags;
@@ -29,8 +29,8 @@
 
      if ( ctxt == NULL )
 diff -r ba8da39c6729 -r 23b423a39557 tools/libxc/xc_domain_save.c
---- a/xen-4.1.0/tools/libxc/xc_domain_save.c      Tue May 24 17:12:27 2011 +0100
-+++ b/xen-4.1.0/tools/libxc/xc_domain_save.c      Tue May 24 10:14:10 2011 +0100
+--- a/tools/libxc/xc_domain_save.c      Tue May 24 17:12:27 2011 +0100
++++ b/tools/libxc/xc_domain_save.c      Tue May 24 10:14:10 2011 +0100
 @@ -958,11 +958,8 @@
      unsigned long mfn;
 

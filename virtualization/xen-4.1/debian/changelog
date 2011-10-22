@@ -1,3 +1,44 @@
+xen-4.1 (4.1.2-1) ucs3-0-0-0; urgency=low
+
+  * Update to 4.1.2 (Bug #18357)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 07 Oct 2011 11:26:50 +0200
+
+xen-4.1 (4.1.1-5) ucs3-0-0-0; urgency=low
+
+  [Guido Günther]
+  * Fix init scripts.
+  * Add xen-default symlink.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 13 Oct 2011 09:27:34 +0200
+
+xen-4.1 (4.1.1-4) ucs3-0-0-0; urgency=low
+
+  [Guido Günther]
+  * Split libraries into their own package.
+  * Split Hypervisor into it sown package.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 10 Oct 2011 11:40:16 +0200
+
+xen-4.1 (4.1.1-3) ucs3-0-0-0; urgency=low
+
+  * Fix build on ia-32 (Bug #18357)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 07 Oct 2011 12:28:14 +0200
+
+xen-4.1 (4.1.1-2) ucs3-0-0-0; urgency=low
+
+  * Fix build on ia-32 (Bug #18357)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 07 Oct 2011 12:08:14 +0200
+
+xen-4.1 (4.1.1-1) ucs3-0-0-0; urgency=low
+
+  [Guido Günther]
+  * Update to 4.1.1 (Bug #18357)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 07 Oct 2011 11:26:50 +0200
+
 xen-4.1 (4.1.0-6) unstable; urgency=low
 
   * Added some patches for the libxl driver (Bug #18357)

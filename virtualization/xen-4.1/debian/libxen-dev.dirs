@@ -1,2 +1,3 @@
 usr/lib
 usr/include/xen/sys
+usr/include/xen/foreign

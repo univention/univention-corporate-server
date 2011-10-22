@@ -4,22 +4,4 @@
 
 /usr/sbin/update-grub
 
-# restart udev
-if [ -x /etc/init.d/udev ]; then
-	/etc/init.d/udev restart
-fi
-
-if [ -x "/etc/init.d/xend" ]; then
-        if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
-                invoke-rc.d xend stop || exit $?
-        else
-                /etc/init.d/xend stop || exit $?
-        fi
-        update-rc.d -f xend remove >/dev/null
-fi
-
-if [ -x "/etc/init.d/xendomains" ]; then
-	update-rc.d xendomains defaults 21 20 >/dev/null || exit $?
-fi
-
 exit 0
