@@ -94,7 +94,7 @@ do
 	fi
 done
 
-eval `/usr/sbin/univention-config-registry shell`
+eval "$(/usr/sbin/univention-config-registry shell)"
 
 if [ -n "$quota_logfile" ]
 then

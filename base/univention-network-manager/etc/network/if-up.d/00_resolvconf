@@ -33,7 +33,7 @@
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
-eval $(univention-config-registry shell nameserver/option/timeout nameserver1 nameserver2 nameserver3)
+eval "$(univention-config-registry shell nameserver/option/timeout nameserver1 nameserver2 nameserver3)"
 
 if [ -n "$nameserver_option_timeout" ] && ! grep timeout /etc/resolv.conf &>/dev/null; then
 	echo "options timeout:$nameserver_option_timeout" >> /etc/resolv.conf

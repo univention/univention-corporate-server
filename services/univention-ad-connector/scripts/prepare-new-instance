@@ -162,7 +162,7 @@ then
     chgrp nogroup /var/lib/univention-"$CONFIGBASENAME"/ad/tmp
 
     echo "-- register second listener-instance"
-    eval `univention-config-registry shell connector/listener/additionalbasenames`
+    eval "$(univention-config-registry shell connector/listener/additionalbasenames)"
     echo $connector_listener_additionalbasenames | grep -q "$CONFIGBASENAME" || univention-config-registry set connector/listener/additionalbasenames="$connector_listener_additionalbasenames $CONFIGBASENAME"
 
     echo ""
@@ -214,7 +214,7 @@ then
     rm -r /etc/univention/"$CONFIGBASENAME"
     
     echo "-- unregister second listener-instance"
-    eval `univention-config-registry shell connector/listener/additionalbasenames`
+    eval "$(univention-config-registry shell connector/listener/additionalbasenames)"
     univention-config-registry set connector/listener/additionalbasenames=`echo $connector_listener_additionalbasenames | sed "s| $CONFIGBASENAME||"`
 
     echo "-- remove listener-dir"

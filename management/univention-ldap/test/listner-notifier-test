@@ -87,7 +87,7 @@ read answer
 echo "Starting ..."
 
 # Setting variables and deleting old results
-eval `univention-config-registry shell`
+eval "$(univention-config-registry shell)"
 echo $dc_pw > pw.tmp
 cat /dev/null > result.txt
 master=$hostname
@@ -344,7 +344,7 @@ compare_ids ()
 
 config_slavelistener () # config listener to connect first on $con_to
 {
-	eval `univention-config-registry shell`
+	eval "$(univention-config-registry shell)"
 
 	slave="$where"
 	slave_hostdn=`univention-admin computers/domaincontroller_slave list --filter cn=$slave |grep ^DN |sed 's/DN: //'`

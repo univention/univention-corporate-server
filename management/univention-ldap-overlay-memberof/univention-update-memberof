@@ -32,7 +32,7 @@
 
 #DEBHELPER#
 
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ] ; then
 	USER_NAME="x$(date +%s$RANDOM)x"

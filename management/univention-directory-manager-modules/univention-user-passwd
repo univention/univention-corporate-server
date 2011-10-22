@@ -68,7 +68,7 @@ if [ -z "$NEWPW" ]; then
     fi
 fi
 
-eval $(univention-config-registry shell ldap/hostdn)
+eval "$(univention-config-registry shell ldap/hostdn)"
 
 DN=`ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret '(&(uid='"$PWUSER"')(objectClass=posixAccount))' dn -LLL| ldapsearch-wrapper | grep ^dn | sed -e 's|^dn: ||'`
 

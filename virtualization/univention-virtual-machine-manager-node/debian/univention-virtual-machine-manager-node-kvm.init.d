@@ -101,7 +101,7 @@ find_alt_device () {
     echo "$ifs"
 }
 
-eval $(univention-config-registry shell uvmm/kvm/bridge/interface)
+eval "$(univention-config-registry shell uvmm/kvm/bridge/interface)"
 if [ -n "$uvmm_kvm_bridge_interface" ]; then
 	netdev=$uvmm_kvm_bridge_interface
 else

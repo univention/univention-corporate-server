@@ -45,7 +45,7 @@
 
 # do not start the GDM if the setup tools will be started
 if [ -x /usr/sbin/univention-config-registry ]; then
-	eval $(/usr/sbin/univention-config-registry shell system/setup/boot/start system/setup/boot/modules system/setup/appliance/start)
+	eval "$(/usr/sbin/univention-config-registry shell system/setup/boot/start system/setup/boot/modules system/setup/appliance/start)"
 	if [ -n "$system_setup_boot_start" ] && [ "$system_setup_boot_start" = "yes" ] || [ "$system_setup_boot_start" = "true" ]; then
 		if [ -n "$system_setup_boot_modules" ]; then
 			exit 0
@@ -65,7 +65,7 @@ if [ -x /usr/sbin/univention-config-registry ]; then
 	}
 
 	# calculate xorg/display/virtual if xorg/resolution/secondary is set
-	eval $(/usr/sbin/univention-config-registry shell xorg/resolution/secondary xorg/display/relative-position xorg/display/virtual xorg/resolution)
+	eval "$(/usr/sbin/univention-config-registry shell xorg/resolution/secondary xorg/display/relative-position xorg/display/virtual xorg/resolution)"
 	if [ -n "$xorg_resolution_secondary" ]; then
 		x_prim="${xorg_resolution%x*}"
 		y_prim="${xorg_resolution##*x}"
@@ -117,7 +117,7 @@ case "$1" in
 
 	# check for autostart scripts
 	if [ -x /usr/sbin/univention-config-registry ]; then
-		eval $(/usr/sbin/univention-config-registry shell univentionAutoStartScript gdm/autostart/user)
+		eval "$(/usr/sbin/univention-config-registry shell univentionAutoStartScript gdm/autostart/user)"
 		if [ -n "$univentionAutoStartScript" ] && [ "$univentionAutoStartScript" != "none" -a "$univentionAutoStartScript" != "None" ]; then
 			/usr/share/univention-gdm-sessions/autostart >>/var/log/x-autostart.log 2>&1 &
 			exit 0

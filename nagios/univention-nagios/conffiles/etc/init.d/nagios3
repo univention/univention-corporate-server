@@ -126,7 +126,7 @@ check_univentionConfigComplete () {
   set +e
   PKGCNT=$(COLUMNS=200 dpkg -l univention-nagios-server 2> /dev/null | grep -c ^ii)
   if [ ! "$PKGCNT" = "0" ] ; then
-    eval `univention-config-registry shell`
+    eval "$(univention-config-registry shell)"
     if [ "$(find /etc/nagios3/conf.univention.d/ -type f | wc -l)" -le 3 ] ; then
       echo ""
       echo "WARNING: nagios3 configuration seems to be incomplete yet - start of nagios3 aborted"

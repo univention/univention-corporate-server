@@ -33,7 +33,7 @@
 
 export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
 
-eval `univention-config-registry shell`
+eval "$(univention-config-registry shell)"
 
 display_help() {
 	display_header

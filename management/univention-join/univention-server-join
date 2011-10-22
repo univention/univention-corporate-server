@@ -195,7 +195,7 @@ if [ "$BINDPWFILE" ]; then
 fi
 
 
-eval `univention-config-registry shell`
+eval "$(univention-config-registry shell)"
 if [ -z "$ROLE" ]; then
 	log 1 "E: 	-role is missing"
 	display_help

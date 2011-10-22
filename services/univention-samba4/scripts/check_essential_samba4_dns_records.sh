@@ -29,7 +29,7 @@
 
 LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary for ldbtools
 
-eval $(univention-config-registry shell windows/domain samba4/ldap/base ldap/hostdn)
+eval "$(univention-config-registry shell windows/domain samba4/ldap/base ldap/hostdn)"
 
 host gc._msdcs
 

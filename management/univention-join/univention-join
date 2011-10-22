@@ -521,7 +521,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 
-	eval `univention-config-registry shell`
+	eval "$(univention-config-registry shell)"
 
 	mkdir -p /var/lib/univention-ldap/notify/
 
@@ -717,7 +717,7 @@ else
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
 	univention-config-registry set nsswitch/ldap=yes >>/var/log/univention/join.log 2>&1
-	eval `univention-config-registry shell`
+	eval "$(univention-config-registry shell)"
 
 	if test -e "/usr/lib/univention-install/"; then
 		for i in /usr/lib/univention-install/*.inst; do
