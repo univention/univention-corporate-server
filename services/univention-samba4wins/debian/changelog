@@ -1,3 +1,16 @@
+univention-samba4wins (4.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22676)
+    * Bump version for UCS 3.0
+    * Replace univention-baseconfig with univention-config-registry
+    * Replace static UCR header in the UCR templates with '@%@UCRWARNING=#
+      @%@'
+    * Update copyright to 2011
+    * Update to debhelper 7
+    * Switch from custom attributes to extended attributes
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 22 Oct 2011 22:17:38 +0200
+
 univention-samba4wins (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

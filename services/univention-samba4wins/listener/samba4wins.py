@@ -3,7 +3,7 @@
 # Univention Samba4WINS
 #  listener module: Samba4WINS configuration
 #
-# Copyright 2008-2010 Univention GmbH
+# Copyright 2008-2011 Univention GmbH
 #
 # http://www.univention.de/
 #

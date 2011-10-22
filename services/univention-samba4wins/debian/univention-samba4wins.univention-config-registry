@@ -14,3 +14,5 @@ Type: subfile
 Multifile: etc/samba/smb.conf
 Subfile: etc/samba/smb.conf.d/62univention-samba_4wins
 Variables: samba4wins/address
+Variables: samba/interfaces
+Variables: interfaces/.*/broadcast

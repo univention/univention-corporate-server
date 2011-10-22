@@ -3,7 +3,7 @@
 # Univention Samba4WINS schema
 #  postinst file
 #
-# Copyright 2008-2010 Univention GmbH
+# Copyright 2008-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,11 +34,9 @@
 
 #DEBHELPER#
 
-eval $(univention-config-registry shell)
+. /usr/share/univention-lib/all.sh
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/89univention-samba4wins-schema.inst || true
-fi
+call_joinscript 89univention-samba4wins-schema.inst
 
 test -x /etc/init.d/slapd && /etc/init.d/slapd crestart
 

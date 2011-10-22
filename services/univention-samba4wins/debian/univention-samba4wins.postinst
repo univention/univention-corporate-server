@@ -3,7 +3,7 @@
 # Univention Samba4WINS
 #  postinst file
 #
-# Copyright 2008-2010 Univention GmbH
+# Copyright 2008-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,17 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# This is the debhelper compatibility version to use.
-
 #DEBHELPER#
 
-eval $(univention-config-registry shell)
+. /usr/share/univention-lib/all.sh
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/90univention-samba4wins.inst || true
+call_joinscript 90univention-samba4wins.inst
+
+if [ -x /etc/init.d/univention-directory-listener ]; then
+	/etc/init.d/univention-directory-listener restart
 fi
-
-/etc/init.d/univention-directory-listener restart
 
 exit 0
 

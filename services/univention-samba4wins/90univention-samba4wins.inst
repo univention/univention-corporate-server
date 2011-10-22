@@ -3,7 +3,7 @@
 # Univention Samba4WINS
 #  join script
 #
-# Copyright 2008-2010 Univention GmbH
+# Copyright 2008-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,22 +32,15 @@
 
 VERSION=1
 
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
-fi
+. /usr/share/univention-join/joinscripthelper.lib
 
-touch /usr/lib/univention-install/.index.txt
+joinscript_init
 
-test -n "`grep "univention-samba4wins v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
-
-
-
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 univention-config-registry set 'samba/interfaces'?eth0
 univention-config-registry set 'samba4wins/interface'?eth0_0
 
-test -n "`grep "univention-samba4wins v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-samba4wins v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+joinscript_save_current_version
 
 exit 0

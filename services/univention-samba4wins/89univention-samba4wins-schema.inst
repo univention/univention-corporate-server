@@ -3,7 +3,7 @@
 # Univention Samba4WINS Schema
 #  join script
 #
-# Copyright 2008-2010 Univention GmbH
+# Copyright 2008-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,45 +30,56 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
+. /usr/share/univention-join/joinscripthelper.lib
+
+joinscript_init
+
+eval "$(univention-config-registry shell)"
+
+if [ $JS_LAST_EXECUTED_VERSION = 1 ]; then
+	univention-directory-manager settings/extended_attribute remove "$@" --dn  "cn=samba4wins-netbiosNam,ecn=custom attributes,cn=univention,$ldap_base"
+	univention-directory-manager settings/extended_attribute remove "$@" --dn  "cn=samba4wins-secondaryIp,ecn=custom attributes,cn=univention,$ldap_base"
 fi
 
-touch /usr/lib/univention-install/.index.txt
-
-test -n "`grep "univention-samba4wins-schema v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
-
-eval $(univention-config-registry shell)
-
-univention-admin settings/customattribute create $@ --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
+univention-directory-manager settings/extended_attribute create "$@" --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
 	--set name=samba4wins-netbiosName \
 	--append module=computers/domaincontroller_master \
 	--append module=computers/domaincontroller_backup \
 	--append module=computers/domaincontroller_slave \
 	--append module=computers/memberserver \
 	--set syntax=string \
+	--set mayChange=1 \
 	--set objectClass=univentionSamba4WinsHost \
 	--set tabName=WINS \
+	--set groupName=WINS \
+	--set groupPosition=1 \
+	--set tabAdvanced=1 \
 	--set ldapMapping=univentionSamba4WinsNetbiosName \
-	--set shortDescription="Samba4WINS Netbios Name" \
-	--set tabPosition=1
+	--set shortDescription="Samba4WINS netbios name" \
+	--set 'translationShortDescription="de_DE" "Samba4WINS Netbios Name"'
+if [ $? != 0 ]; then exit 1; fi
 
-univention-admin settings/customattribute create $@ --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
+univention-directory-manager settings/extended_attribute create "$@" --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
 	--set name=samba4wins-secondaryIp \
 	--append module=computers/domaincontroller_master \
 	--append module=computers/domaincontroller_backup \
 	--append module=computers/domaincontroller_slave \
 	--append module=computers/memberserver \
 	--set syntax=string \
+	--set mayChange=1 \
 	--set objectClass=univentionSamba4WinsHost \
 	--set tabName=WINS \
+	--set groupName=WINS \
+	--set groupName=WINS \
+	--set groupPosition=2 \
+	--set tabAdvanced=1 \
 	--set ldapMapping=univentionSamba4WinsSecondaryIp \
-	--set shortDescription="Samba4WINS Secondary IP-Address" \
-	--set tabPosition=2
+	--set shortDescription="Samba4WINS secondary IP address" \
+	--set 'translationShortDescription="de_DE" "Samba4WINS Zweite IP Adresse"' 
+if [ $? != 0 ]; then exit 1; fi
 
-test -n "`grep "univention-samba4wins-schema v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-samba4wins-schema v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+joinscript_save_current_version
 
 exit 0
