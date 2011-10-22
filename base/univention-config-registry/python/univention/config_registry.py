@@ -709,12 +709,9 @@ class configHandlers:
 			except LookupError:
 				return None
 			from_path = os.path.join(file_dir, name)
-			if not os.path.exists(from_path):
-				return None
 			handler = configHandlerFile(from_path, name)
-			if not handler:
-				return None
-			handler.variables = grepVariables(open(from_path, 'r').read())
+			if os.path.exists(from_path):
+				handler.variables = grepVariables(open(from_path, 'r').read())
 			if entry.has_key('Preinst'):
 				handler.preinst = entry['Preinst'][0]
 			if entry.has_key('Postinst'):
@@ -822,10 +819,10 @@ class configHandlers:
 		self._subfiles.clear()
 
 		handlers = set()
-		for file in directoryFiles(info_dir):
-			if not file.endswith('.info'):
+		for info in directoryFiles(info_dir):
+			if not info.endswith('.info'):
 				continue
-			for section in parseRfc822(open(file, 'r').read()):
+			for section in parseRfc822(open(info, 'r').read()):
 				handler = self.getHandler(section)
 				if handler:
 					handlers.add(handler)
@@ -889,6 +886,9 @@ class configHandlers:
 				handler = self._multifiles[mfile]
 				handler.def_count -= 1
 			else:
+				continue
+			if not handler: # Bug #17913
+				print >>sys.stderr, "Skipping internal error: no handler for %r in %s" % (section, package)
 				continue
 			handler.uninstall_divert()
 			# regenerate multifile from remaining parts
