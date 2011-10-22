@@ -1,12 +1,4 @@
-// Warning: This file is auto-generated and might be overwritten by
-//          univention-baseconfig.
-//          Please edit the following file instead:
-// Warnung: Diese Datei wurde automatisch generiert und kann durch
-//          univention-baseconfig überschrieben werden.
-//          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
-//
-//         /etc/univention/templates/files/etc/mozilla-firefox/pref/firefox.js
-//
+@%@UCRWARNING=// @%@
 
 // This is the Debian specific preferences file for Mozilla Firefox
 // You can make any change in here, it is the purpose of this file.

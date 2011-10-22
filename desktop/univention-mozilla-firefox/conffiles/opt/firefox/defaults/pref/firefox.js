@@ -1,15 +1,5 @@
 /* -*- Mode: Java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
-
-/*
- * Warning: This file is auto-generated and might be overwritten by
- *          univention-baseconfig.
- *          Please edit the following file instead:
- * Warnung: Diese Datei wurde automatisch generiert und kann durch
- *          univention-baseconfig überschrieben werden.
- *          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
- *
- *         /etc/univention/templates/files/opt/firefox/defaults/pref/firefox.js
- */
+@%@UCRWARNING=// @%@
 
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
