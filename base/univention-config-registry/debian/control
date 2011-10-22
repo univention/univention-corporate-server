@@ -16,6 +16,7 @@ XS-Python-Version: all
 
 Package: univention-config-registry
 Architecture: all
+Pre-Depends: dpkg (>= 1.15.7.2)
 Depends: univention-base-files
 Description: UCS transitional package - base configuration
  This package can be savely removed, since all previously contained base

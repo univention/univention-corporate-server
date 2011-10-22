@@ -1,8 +1,9 @@
 univention-config-registry (7.0.25-1) unstable; urgency=low
 
   * Drop dependency on pciutils (→univention-system-info) (Bug #22586)
+  * Handle conffiles transition fom u-c-r to u-base-files (Bug #22586)
 
- -- Philipp Hahn <hahn@univention.de>  Wed, 19 Oct 2011 11:26:23 +0200
+ -- Philipp Hahn <hahn@univention.de>  Wed, 19 Oct 2011 11:35:55 +0200
 
 univention-config-registry (7.0.24-1) unstable; urgency=low
 
