@@ -56,11 +56,11 @@ Konfigurationsdateien auf mehreren Dateien (multifile):
 Implementationsluecken / Einschraenkungen:
 
  - nach dem hinzufuegen neuer Konfigurationsdateien, muss
-   univention-baseconfig update aufgerufen werden, sodass die neuen
+   univention-config-registry update aufgerufen werden, sodass die neuen
    Konfigurationsdateien oder Skripte in den Cache aufgenommen werden
 
  - Nach dem Aendern von base.conf oder nach dem hinzufuegen von
-   Konfigurationsdateien muss univention-baseconfig commit aufgerufen werden,
+   Konfigurationsdateien muss univention-config-registry commit aufgerufen werden,
    sodass alle Konfigurationsdateien neu geschrieben werden
 
    (TODO: commit muss feingradiger werden)

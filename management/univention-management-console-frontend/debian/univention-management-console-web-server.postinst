@@ -50,7 +50,7 @@ univention-config-registry set "umc/http/session/timeout?600" \
 	umc/http/autostart?yes
 
 if dpkg --compare-versions "$2" lt-nl 1.0.8-1; then
-	ucr unregister univention-directory-manager || true
+	univention-config-registry unregister univention-directory-manager || true
     dpkg-query -W -f='${Conffiles}' univention-directory-manager | egrep -- '-(en|de)\.html' | sort -u | while read path md5 flag; do
 		# make sure the path exists
         [ ! -e "$path" ] && continue

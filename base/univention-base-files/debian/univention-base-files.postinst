@@ -165,7 +165,7 @@ if [ -z "$locale_keymap" ]; then
 			fi
 			md5_file=$(md5sum "$f" | sed -e 's| .*||')
 			if [ "$md5_boottime" = "$md5_file" ]; then
-				ucr set locale/keymap=$(echo "$f" | sed -e 's|.*/||;s|.kmap.gz||')
+				univention-config-registry set locale/keymap=$(echo "$f" | sed -e 's|.*/||;s|.kmap.gz||')
 				break
 			fi
 		done
@@ -182,7 +182,7 @@ univention-config-registry set kernel/do_initrd?yes \
 univention-config-registry set ldap/binaryattributes?"krb5Key,userCertificate;binary"
 
 # configure firewall
-ucr set security/packetfilter/package/univention-base-files/tcp/22/all=ACCEPT \
+univention-config-registry set security/packetfilter/package/univention-base-files/tcp/22/all=ACCEPT \
 	security/packetfilter/package/univention-base-files/tcp/22/all/en="SSH" \
 	security/packetfilter/package/univention-base-files/tcp/37/all=ACCEPT \
 	security/packetfilter/package/univention-base-files/tcp/37/all/en="time"

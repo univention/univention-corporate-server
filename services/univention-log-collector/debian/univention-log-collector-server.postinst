@@ -42,7 +42,7 @@ case "$1" in
 									logcollector/targetdir?/var/log/logcollector
 
 		# configure firewall
-		ucr set security/packetfilter/package/univention-log-collector-server/tcp/7450/all="ACCEPT" \
+		univention-config-registry set security/packetfilter/package/univention-log-collector-server/tcp/7450/all="ACCEPT" \
 			security/packetfilter/package/univention-log-collector-server/tcp/7450/all/en="univention-log-collector"
 		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 

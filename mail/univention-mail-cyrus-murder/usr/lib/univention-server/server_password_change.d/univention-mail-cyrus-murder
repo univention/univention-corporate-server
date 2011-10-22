@@ -29,13 +29,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(ucr shell)"
+eval "$(univention-config-registry shell)"
 
 if [ "$1" = "postchange" -o "$1" = "nochange" ] ; then
 
 	# update configs
-	ucr commit /etc/imapd/imapd.conf
-	ucr commit /etc/imapd/frontend.conf
+	univention-config-registry commit /etc/imapd/imapd.conf /etc/imapd/frontend.conf
 	
 	if [ -x "/etc/init.d/cyrus-imapd" ]; then
 		/etc/init.d/cyrus-imapd reload

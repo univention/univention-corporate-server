@@ -67,7 +67,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	# later this var will be managed by the listener modul
 	murders=$(univention-ldapsearch  univentionService="Cyrus Murder" uid | grep ^uid:| awk {'print $2'})
 	murders=$(echo $murders)
-	ucr set mail/cyrus/murder/servers="$murders"
+	univention-config-registry set mail/cyrus/murder/servers="$murders"
 
 	# cyrus-imap-2.2 does not support the 'murder_config=unified' yet, so the backend is startet
 	# on a separate ip/hostname.
@@ -76,9 +76,9 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	univention-config-registry set 'mail/cyrus/murder/backend/interface'?eth1
 
 	# store backend name
-	backend_interface=$(ucr get mail/cyrus/murder/backend/interface)
+	backend_interface=$(univention-config-registry get mail/cyrus/murder/backend/interface)
 	if [ -n "$backend_interface" ]; then
-		backend_name=$(ucr get interfaces/$backend_interface/hosts  | awk '{print $1}')
+		backend_name=$(univention-config-registry get interfaces/$backend_interface/hosts  | awk '{print $1}')
 		if [ -n "$backend_name" ]; then
 			univention-config-registry set mail/cyrus/murder/backend/hostname?"$backend_name"	
 		fi

@@ -81,7 +81,7 @@ remove_ucr_info_file () {
 
 	if [ -e /etc/univention/templates/info/"$1" ] ; then
 	    # unregister info file before moving
-		ucr unregister "$(basename "$1" .info)"
+		univention-config-registry unregister "$(basename "$1" .info)"
 	    mv /etc/univention/templates/info/"$1" "/etc/univention/templates/removed/$(basename "$1").$(date +%Y%m%d_%H%M%S_%N)"
 	fi
 }

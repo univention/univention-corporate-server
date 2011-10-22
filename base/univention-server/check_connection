@@ -41,10 +41,10 @@ fi
 
 export PATH=$PATH:/sbin:/usr/sbin
 
-eval `/usr/sbin/univention-baseconfig shell`
+eval "$(/usr/sbin/univention-config-registry shell)"
 
 if [ -z "$auth_methods_default" ]; then
-	/usr/sbin/univention-baseconfig set auth/methods/default="$auth_methods" >/dev/null
+	/usr/sbin/univention-config-registry set auth/methods/default="$auth_methods" >/dev/null
 fi
 
 # do we need to run run-parts etc/network/if-$1.d
@@ -83,13 +83,13 @@ fi
 if [ $connection_okay = 1 ]; then
 	res="`echo $auth_methods | grep ldap`"
 	if [ -z "$res" ]; then
-		/usr/sbin/univention-baseconfig set auth/methods="$auth_methods_default" >/dev/null
+		/usr/sbin/univention-config-registry set auth/methods="$auth_methods_default" >/dev/null
 		action up
 	fi
 else
 	res="`echo $auth_methods | grep ldap`"
 	if [ -n "$res" ]; then
-		/usr/sbin/univention-baseconfig set auth/methods=cache >/dev/null
+		/usr/sbin/univention-config-registry set auth/methods=cache >/dev/null
 		action down
 	fi
 

@@ -29,7 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(ucr shell)"
+eval "$(univention-config-registry shell)"
 
 if [ -n "$bind_bindpw" -a "$bind_bindpw" != "/etc/machine.secret" ]; then
 	# Skip the passwdord change
@@ -40,7 +40,7 @@ if [ "$1" = "prechange" ] ; then
 	# start / stop bind9 only if the ldap backend is configured
 	if [ "$dns_backend" = "ldap" ]; then
 		if /etc/init.d/bind9 status | grep -q "is running" ; then
-			ucr set dns/bind9/stoppedbyserverpasswordchange=yes >/dev/null
+			univention-config-registry set dns/bind9/stoppedbyserverpasswordchange=yes >/dev/null
 			echo "stopping bind9 due to upcoming server password change" | logger -t "server-password-change"
 			/etc/init.d/bind9 stop >/dev/null
 		fi
@@ -56,7 +56,7 @@ if [ "$1" = "postchange" ] ; then
 		if [ "$dns_bind9_stoppedbyserverpasswordchange" = "yes" ] ; then
 			echo "starting bind9 after server password change" | logger -t "server-password-change"
 			/etc/init.d/bind9 start >/dev/null
-			ucr unset dns/bind9/stoppedbyserverpasswordchange >/dev/null
+			univention-config-registry unset dns/bind9/stoppedbyserverpasswordchange >/dev/null
 		fi
 	fi
 fi

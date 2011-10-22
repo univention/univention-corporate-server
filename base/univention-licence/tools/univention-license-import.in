@@ -97,7 +97,7 @@ if [ -z "$dn" ]; then
 	exit 1
 fi
 
-eval "$(univention-baseconfig shell ldap/base ldap/master)"
+eval "$(univention-config-registry shell ldap/base ldap/master)"
 if ! echo "$dn" | grep -q "$ldap_base\$"; then
 	echo "E: Your system is configured to use the LDAP base DN" >&2
 	echo "E:   $ldap_base" >&2

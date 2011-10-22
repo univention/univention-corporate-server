@@ -42,7 +42,7 @@ call_joinscript 11univention-heimdal-init.inst
 call_joinscript 15univention-heimdal-kdc.inst
 
 # configure firewall
-ucr set security/packetfilter/package/univention-heimdal-kdc/tcp/88/all="ACCEPT" \
+univention-config-registry set security/packetfilter/package/univention-heimdal-kdc/tcp/88/all="ACCEPT" \
 		security/packetfilter/package/univention-heimdal-kdc/tcp/88/all/en="kerberos" \
 		security/packetfilter/package/univention-heimdal-kdc/udp/88/all="ACCEPT" \
 		security/packetfilter/package/univention-heimdal-kdc/udp/88/all/en="kerberos" \
@@ -73,7 +73,7 @@ univention-config-registry set kerberos/password/quality/check?yes
 # Bug #19020, use $hostname.$domainname in kerberos/kdc
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-1; then
 	if [ -n "$kerberos_kdc" -a "$kerberos_kdc" = "$hostname" ]; then
-		ucr set kerberos/kdc="$hostname.$domainname"
+		univention-config-registry set kerberos/kdc="$hostname.$domainname"
 	fi
 fi
 

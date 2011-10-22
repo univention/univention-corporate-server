@@ -39,7 +39,7 @@ for mod in modwizard modbrowse; do
 	varname="directory_manager_web_${mod}_defaults_visible_results"
 	eval var=\$${varname}
 	if [ -n "${var}" ]; then
-		ucr unset directory/manager/web/${mod}/defaults/visible-results
+		univention-config-registry unset directory/manager/web/${mod}/defaults/visible-results
 	fi
 done
 

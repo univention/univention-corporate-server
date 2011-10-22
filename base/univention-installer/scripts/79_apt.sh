@@ -36,16 +36,15 @@
 
 cat >> /instmnt/apt.sh <<"__EOT__"
 #!/bin/sh
-eval "$(ucr shell)"
+eval "$(univention-config-registry shell)"
 
 if [ "$repository_online_server" = "apt.univention.de" ] || 
    [ "$repository_online_server" = "testing.univention.de" ]; then
 	
-	ucr set update/secure_apt=yes
+	univention-config-registry set update/secure_apt=yes
 fi
 
 __EOT__
 
 chmod +x /instmnt/apt.sh
 chroot /instmnt ./apt.sh </dev/tty1
-

@@ -934,14 +934,14 @@ def main(args):
 		log( 'start scan of system ' + sysname )
 
 		if baseConfig['pkgdb/scan'] != 'yes':
-			log( 'univention-baseconfig pkgdb/scan != yes' )
+			log( 'univention-config-registry pkgdb/scan != yes' )
 			print 'The Univention Configuration Registry variable pkgdb/scan is not set to yes.'
 			sys.exit(0)
 
 		# ------------------------------------------------------------------------------
 		# Datenbankverbindung öffnen
 		# ------------------------------------------------------------------------------
-    		if to_debug == 1:
+		if to_debug == 1:
 			pkgdbhdl = pgdb.connect(pkgdb_connect_string)
 		else:
 			try:

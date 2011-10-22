@@ -48,10 +48,10 @@ eval "$(univention-config-registry shell)"
 # migration from old variables while updating to UCS 3.0 (Bug #22369)
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.15; then
 	if [ -n "$postfix_masquerade_domains" -a -z "$mail_postfix_masquerade_domains" ] ; then
-		ucr set "mail/postfix/masquerade/domains=$postfix_masquerade_domains"
+		univention-config-registry set "mail/postfix/masquerade/domains=$postfix_masquerade_domains"
 	fi
 	if [ -n "$postfix_masquerade_exceptions" -a -z "$mail_postfix_masquerade_exceptions" ] ; then
-		ucr set "mail/postfix/masquerade/exceptions=$postfix_masquerade_exceptions"
+		univention-config-registry set "mail/postfix/masquerade/exceptions=$postfix_masquerade_exceptions"
 	fi
 fi
 

@@ -29,11 +29,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(ucr shell)"
+eval "$(univention-config-registry shell)"
 
 if [ "$1" = "prechange" ] ; then
 	if /etc/init.d/postfix status | grep -q "is running" ; then
-		ucr set mail/postfix/stoppedbyserverpasswordchange=yes
+		univention-config-registry set mail/postfix/stoppedbyserverpasswordchange=yes
 		echo "stopping postfix due to upcoming server password change" | logger -t "server-password-change"
 		/etc/init.d/postfix stop
 	fi
@@ -41,13 +41,11 @@ fi
 
 if [ "$1" = "postchange" -o "$1" = "nochange" ] ; then
 	# update ldap query definitions
-	for fn in /etc/postfix/ldap.* ; do
-		ucr commit $fn
-	done
+	univention-config-registry commit /etc/postfix/ldap.*
 	# start postfix only if it has been stopped by this script
 	if [ "$mail_postfix_stoppedbyserverpasswordchange" = "yes" ] ; then
 		echo "starting postfix after server password change" | logger -t "server-password-change"
 		/etc/init.d/postfix start
-		ucr unset mail/postfix/stoppedbyserverpasswordchange
+		univention-config-registry unset mail/postfix/stoppedbyserverpasswordchange
 	fi
 fi

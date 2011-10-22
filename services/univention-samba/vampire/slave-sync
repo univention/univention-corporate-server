@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval $(/usr/sbin/univention-baseconfig shell ldap/master server/role hostname samba/netlogon/sync)
+eval "$(/usr/sbin/univention-config-registry shell ldap/master server/role hostname samba/netlogon/sync)"
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "memberserver" ]; then
 	exit 0

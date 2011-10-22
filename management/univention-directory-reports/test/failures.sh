@@ -31,11 +31,11 @@
 #
 set -e
 
-ucr set directory/reports/templates/csv/user2='users/user "My CSV Report" /etc/univention/directory/reports/default/users2.csv'
+univention-config-registry set directory/reports/templates/csv/user2='users/user "My CSV Report" /etc/univention/directory/reports/default/users2.csv'
 tmp=$(mktemp)
 cleanup () {
 	[ $? -eq 0 ] || cat "$tmp"
-	ucr unset directory/reports/templates/csv/user2
+	univention-config-registry unset directory/reports/templates/csv/user2
 	rm -rf "$tmp"
 }
 trap cleanup EXIT

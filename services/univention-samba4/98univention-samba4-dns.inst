@@ -36,10 +36,10 @@ joinscript_init
 
 . /usr/share/univention-lib/all.sh
 
-eval "$(ucr shell)"
+eval "$(univention-config-registry shell)"
 
 if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
-	ucr set dns/backend=samba4
+	univention-config-registry set dns/backend=samba4
 	if [ -x /etc/init.d/bind9 ]; then
 		/etc/init.d/bind9 restart
 	fi
@@ -60,4 +60,3 @@ fi
 joinscript_save_current_version
 
 exit 0
-
