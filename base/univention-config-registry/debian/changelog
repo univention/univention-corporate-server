@@ -1,3 +1,9 @@
+univention-config-registry (7.0.25-1) unstable; urgency=low
+
+  * Drop dependency on pciutils (→univention-system-info) (Bug #22586)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 19 Oct 2011 11:26:23 +0200
+
 univention-config-registry (7.0.24-1) unstable; urgency=low
 
   * Set LC_ALL to C in /usr/sbin/ucr if locale-gen has not genereated
