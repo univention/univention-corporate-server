@@ -1,4 +1,0 @@
-etc/network/if-up.d/
-etc/network/if-down.d/
-etc/NetworkManager/dhcp-hooks.d/
-usr/lib/NetworkManager/

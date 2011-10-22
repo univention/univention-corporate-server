@@ -1,5 +1,0 @@
-etc/network/ucs-network-tools etc/network
-etc/network/if-up.d/[0-9]* etc/network/if-up.d
-etc/network/if-down.d/[0-9]* etc/network/if-down.d
-univention-ifplugd-enter-hook etc/dhcp3/dhclient-enter-hooks.d
-etc/NetworkManager/dhcp-hooks.d/[0-9]* etc/dhcp3/dhclient-enter-hooks.univention.d
