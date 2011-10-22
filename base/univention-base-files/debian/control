@@ -7,9 +7,9 @@ Build-Depends: debhelper (>= 7.0.50~),
 Standards-Version: 3.5.2
 XS-Python-Version: all
 
-Package: univention-base-files
+Package: univention-base-packages
 Architecture: all
-Depends: univention-config,
+Depends: univention-base-files (= ${source:Version}),
  python-ipaddr,
  rsyslog,
  bash-completion,
@@ -35,6 +35,20 @@ Recommends: vim,
  unzip,
  eject,
  locate
+Description: UCS - base packages
+ This metapackage depends on all packages and recommends several other
+ packages which should be installed on a default UCS installation.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+# Every added Depends delays the configuration of this package!
+Package: univention-base-files
+Architecture: all
+Depends: univention-config,
+ ${misc:Depends}
 Conflicts: univention-config-registry (<= 7.0.7),
  univention-config (<= 7.0.8)
 Replaces: univention-config-registry (<= 7.0.7),

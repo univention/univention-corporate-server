@@ -1,3 +1,9 @@
+univention-base-files (1.0.31-1) unstable; urgency=low
+
+  * Split meta package for dependencies from base-files (Bug #22586)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 19 Oct 2011 11:36:52 +0200
+
 univention-base-files (1.0.30-2) unstable; urgency=low
 
   * updated postinst (Bug #23577)

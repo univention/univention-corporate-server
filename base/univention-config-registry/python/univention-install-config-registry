@@ -123,7 +123,7 @@ def do_package(package):
 
 	f_prerm = open(extFile(package, 'prerm.debhelper'), 'a')
 	f_prerm.write('# Automatically added by univention-install-config-registry\n')
-	f_prerm.write('if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then\n')
+	f_prerm.write('if [ "$1" = "remove" ]; then\n')
 	f_prerm.write('	test -x /usr/sbin/univention-config-registry && univention-config-registry unregister "%s" || true\n' % package)
 	f_prerm.write('fi\n')
 	f_prerm.write('# End automatically added section\n')
@@ -136,6 +136,8 @@ def do_package(package):
 	f_postrm.write('fi\n')
 	f_postrm.write('# End automatically added section\n')
 	f_postrm.close()
+
+	#doIt('perl', '-e', 'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-config (>= 7)");' % package)
 
 if __name__ == '__main__':
 	for package in binary_packages():
