@@ -1,3 +1,4 @@
+#!/bin/sh
 # User defined iptables/ip6tables rules can be placed here and
 # will not be overwritten during system updates.
 # This file will be called automatically by /etc/init.d/univention-firewall
