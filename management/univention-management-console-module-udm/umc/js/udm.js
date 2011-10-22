@@ -469,11 +469,11 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		// add also the buttons (specified by the search form itself) to the layout
 		if ('navigation' == this.moduleFlavor) {
 			// put the buttons in the first row for the navigation
-			layout[0].push('submit', 'reset');
+			layout[0].push('submit');
 		}
 		else {
 			// append the buttons to the last row otherwise
-			layout[1].push('submit', 'reset');
+			layout[1].push('submit');
 		}
 
 		// generate the search widget

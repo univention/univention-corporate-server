@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.190-1) unstable; urgency=low
+
+  * remove reset button in search form; Bug #22439
+  * hide flavor user/self
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 22 Oct 2011 15:49:43 +0200
+
 univention-management-console-module-udm (1.0.189-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
