@@ -35,6 +35,10 @@ import os
 import sys
 import univention.config_registry
 from univention.debhelper import doIt, binary_packages
+try:
+	from shlex import quote
+except ImportError:
+	from pipes import quote
 
 def tmpDir(package):
 	return 'debian/'+package
@@ -115,16 +119,21 @@ def do_package(package):
 		doIt('install', '-d', destDir('', package, 'mapping'))
 		doIt('install', '-m644', mapping_file, destPath(package+'.univention-config-registry-mapping', package, 'mapping'))
 
+	data = {
+			'pkg': quote(package),
+			'info': quote("/etc/univention/templates/info/%s.info" % package),
+			'removed': quote("/etc/univention/templates/removed/%s.info" % package),
+			}
 	f_postinst = open(extFile(package, 'postinst.debhelper'), 'a')
 	f_postinst.write('# Automatically added by univention-install-config-registry\n')
-	f_postinst.write('test -x /usr/sbin/univention-config-registry && univention-config-registry register "%s" || true\n' % package)
+	f_postinst.write('[ -x /usr/sbin/univention-config-registry ] && univention-config-registry register %(pkg)s || true\n' % data)
 	f_postinst.write('# End automatically added section\n')
 	f_postinst.close()
 
 	f_prerm = open(extFile(package, 'prerm.debhelper'), 'a')
 	f_prerm.write('# Automatically added by univention-install-config-registry\n')
 	f_prerm.write('if [ "$1" = "remove" ]; then\n')
-	f_prerm.write('	test -x /usr/sbin/univention-config-registry && univention-config-registry unregister "%s" || true\n' % package)
+	f_prerm.write('  [ -x /usr/sbin/univention-config-registry ] && univention-config-registry unregister %(pkg)s || true\n' % data)
 	f_prerm.write('fi\n')
 	f_prerm.write('# End automatically added section\n')
 	f_prerm.close()
@@ -132,7 +141,7 @@ def do_package(package):
 	f_postrm = open(extFile(package, 'postrm.debhelper'), 'a')
 	f_postrm.write('# Automatically added by univention-install-config-registry\n')
 	f_postrm.write('if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then\n')
-	f_postrm.write(' mv "/etc/univention/templates/info/%s.info" /etc/univention/templates/removed/\n' % package)
+	f_postrm.write('  [ -e %(info)s ] && mv %(info)s %(removed)s || true\n' % data)
 	f_postrm.write('fi\n')
 	f_postrm.write('# End automatically added section\n')
 	f_postrm.close()

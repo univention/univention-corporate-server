@@ -4,6 +4,7 @@ univention-config-registry (7.0.25-1) unstable; urgency=low
   * Handle conffiles transition fom u-c-r to u-base-files (Bug #22586)
   * Split meta package for dependencies from base-files (Bug #22586)
   * Handle errors on unregister gracefully (Bug #17913)
+  * Fix missing template on remove (Bug #17913)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 19 Oct 2011 11:35:55 +0200
 
