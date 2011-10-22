@@ -109,8 +109,8 @@ get_default_ip_address () {
 	eval "$(/usr/sbin/univention-config-registry shell \
 					interfaces/eth0/address interfaces/eth1/address \
 					interfaces/eth2/address interfaces/eth3/address \
-					interfaces/eth0/ipv6/base/address interfaces/eth1/ipv6/base/address \
-					interfaces/eth2/ipv6/base/address interfaces/eth4/ipv6/base/address)"
+					interfaces/eth0/ipv6/default/address interfaces/eth1/ipv6/default/address \
+					interfaces/eth2/ipv6/default/address interfaces/eth4/ipv6/default/address)"
 
 	if [ -n "$interfaces_eth0_address" ]; then
 		echo "$interfaces_eth0_address"
@@ -120,14 +120,14 @@ get_default_ip_address () {
 		echo "$interfaces_eth2_address"
 	elif [ -n "$interfaces_eth3_address" ]; then
 		echo "$interfaces_eth3_address"
-	elif [ -n "$interfaces_eth0_ipv6_base_address" ]; then
-		echo "$interfaces_eth0_ipv6_base_address"
-	elif [ -n "$interfaces_eth1_ipv6_base_address" ]; then
-		echo "$interfaces_eth1_ipv6_base_address"
-	elif [ -n "$interfaces_eth2_ipv6_base_address" ]; then
-		echo "$interfaces_eth2_ipv6_base_address"
-	elif [ -n "$interfaces_eth3_ipv6_base_address" ]; then
-		echo "$interfaces_eth3_ipv6_base_address"
+	elif [ -n "$interfaces_eth0_ipv6_default_address" ]; then
+		echo "$interfaces_eth0_ipv6_default_address"
+	elif [ -n "$interfaces_eth1_ipv6_default_address" ]; then
+		echo "$interfaces_eth1_ipv6_default_address"
+	elif [ -n "$interfaces_eth2_ipv6_default_address" ]; then
+		echo "$interfaces_eth2_ipv6_default_address"
+	elif [ -n "$interfaces_eth3_ipv6_default_address" ]; then
+		echo "$interfaces_eth3_ipv6_default_address"
 	fi
 }
 
@@ -138,8 +138,8 @@ get_default_netmask () {
 	eval "$(/usr/sbin/univention-config-registry shell \
 					interfaces/eth0/netmask interfaces/eth1/netmask \
 					interfaces/eth2/netmask interfaces/eth3/netmask \
-					interfaces/eth0/ipv6/base/netmask interfaces/eth1/ipv6/base/netmask \
-					interfaces/eth2/ipv6/base/netmask interfaces/eth4/ipv6/base/netmask)"
+					interfaces/eth0/ipv6/default/netmask interfaces/eth1/ipv6/default/netmask \
+					interfaces/eth2/ipv6/default/netmask interfaces/eth4/ipv6/default/netmask)"
 
 	if [ -n "$interfaces_eth0_netmask" ]; then
 		echo "$interfaces_eth0_netmask"
@@ -149,14 +149,14 @@ get_default_netmask () {
 		echo "$interfaces_eth2_netmask"
 	elif [ -n "$interfaces_eth3_netmask" ]; then
 		echo "$interfaces_eth3_netmask"
-	elif [ -n "$interfaces_eth0_ipv6_base_netmask" ]; then
-		echo "$interfaces_eth0_ipv6_base_netmask"
-	elif [ -n "$interfaces_eth1_ipv6_base_netmask" ]; then
-		echo "$interfaces_eth1_ipv6_base_netmask"
-	elif [ -n "$interfaces_eth2_ipv6_base_netmask" ]; then
-		echo "$interfaces_eth2_ipv6_base_netmask"
-	elif [ -n "$interfaces_eth3_ipv6_base_netmask" ]; then
-		echo "$interfaces_eth3_ipv6_base_netmask"
+	elif [ -n "$interfaces_eth0_ipv6_default_netmask" ]; then
+		echo "$interfaces_eth0_ipv6_default_netmask"
+	elif [ -n "$interfaces_eth1_ipv6_default_netmask" ]; then
+		echo "$interfaces_eth1_ipv6_default_netmask"
+	elif [ -n "$interfaces_eth2_ipv6_default_netmask" ]; then
+		echo "$interfaces_eth2_ipv6_default_netmask"
+	elif [ -n "$interfaces_eth3_ipv6_default_netmask" ]; then
+		echo "$interfaces_eth3_ipv6_default_netmask"
 	fi
 }
 #
@@ -166,8 +166,8 @@ get_default_network () {
 	eval "$(/usr/sbin/univention-config-registry shell \
 					interfaces/eth0/network interfaces/eth1/network \
 					interfaces/eth2/network interfaces/eth3/network \
-					interfaces/eth0/ipv6/base/network interfaces/eth1/ipv6/base/network \
-					interfaces/eth2/ipv6/base/network interfaces/eth4/ipv6/base/network)"
+					interfaces/eth0/ipv6/default/network interfaces/eth1/ipv6/default/network \
+					interfaces/eth2/ipv6/default/network interfaces/eth4/ipv6/default/network)"
 
 	if [ -n "$interfaces_eth0_network" ]; then
 		echo "$interfaces_eth0_network"
@@ -177,13 +177,13 @@ get_default_network () {
 		echo "$interfaces_eth2_network"
 	elif [ -n "$interfaces_eth3_network" ]; then
 		echo "$interfaces_eth3_network"
-	elif [ -n "$interfaces_eth0_ipv6_base_network" ]; then
-		echo "$interfaces_eth0_ipv6_base_network"
-	elif [ -n "$interfaces_eth1_ipv6_base_network" ]; then
-		echo "$interfaces_eth1_ipv6_base_network"
-	elif [ -n "$interfaces_eth2_ipv6_base_network" ]; then
-		echo "$interfaces_eth2_ipv6_base_network"
-	elif [ -n "$interfaces_eth3_ipv6_base_network" ]; then
-		echo "$interfaces_eth3_ipv6_base_network"
+	elif [ -n "$interfaces_eth0_ipv6_default_network" ]; then
+		echo "$interfaces_eth0_ipv6_default_network"
+	elif [ -n "$interfaces_eth1_ipv6_default_network" ]; then
+		echo "$interfaces_eth1_ipv6_default_network"
+	elif [ -n "$interfaces_eth2_ipv6_default_network" ]; then
+		echo "$interfaces_eth2_ipv6_default_network"
+	elif [ -n "$interfaces_eth3_ipv6_default_network" ]; then
+		echo "$interfaces_eth3_ipv6_default_network"
 	fi
 }
