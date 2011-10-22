@@ -1,3 +1,10 @@
+univention-samba4 (1.0.74-1) unstable; urgency=low
+
+  * Fixed error in 98univention-samba4-dns.inst from last commit 
+    (Bug #24129)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 22 Oct 2011 21:45:17 +0200
+
 univention-samba4 (1.0.73-1) unstable; urgency=low
 
   * Don't wait endless for bind with samba4 as backend. Exit after 10

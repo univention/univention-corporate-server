@@ -45,12 +45,13 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	fi
 
 	# Wait until the local S4 contains the DNS record
-	echo -n "Wait for bind9 "
+	echo -n "Wait for bind9: "
 	count=0
-	while [ $count -le 600 ];do
+	while [ $count -le 600 ]; do
 		timeout=`LC_ALL=C host -W 1 $ldap_master 2>&1| grep "has address "`
 		if [ -n "$timeout" ]; then
-			continue=0
+			echo " done"
+			break
 		else
 			echo -n "."
 			sleep 1
@@ -59,6 +60,7 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	done
 
 	if [ $count -gt 600 ]; then
+		echo " failed"
 		univention-config-registry set dns/backend=ldap
 		if [ -x /etc/init.d/bind9 ]; then
 			/etc/init.d/bind9 restart
