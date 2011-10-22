@@ -3,14 +3,23 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper, libgtk2.0-0, libldap2, libxt6, libgl1-mesa-dev | libgl-dev, ucslint
+Build-Depends: debhelper,
+ ucslint
 
 Package: acroread-de
 Architecture: i386 amd64
 Provides: pdf-viewer, postscript-preview
-Conflicts: acroread-debian-files (<= 0.0.8), acroread-de-plugins (<= 7.0-0sarge0.3)
-Replaces: acroread-debian-files (<= 0.0.8), acroread-de-plugins (<= 7.0-0sarge0.3)
-Depends: ${shlibs:Depends}, libldap-2.4-2, libcups2, adobereader-deu (>= 9.4.2), xulrunner-1.9.1, libnspr4-0d, ia32-libs-gtk [amd64]
+Conflicts: acroread-debian-files (<= 0.0.8),
+ acroread-de-plugins (<= 7.0-0sarge0.3)
+Replaces: acroread-debian-files (<= 0.0.8),
+ acroread-de-plugins (<= 7.0-0sarge0.3)
+Depends: ${misc:Depends}, ${shlibs:Depends},
+ libldap-2.4-2,
+ libcups2,
+ adobereader-deu (>= 9.4.2),
+ xulrunner-1.9.1,
+ libnspr4-0d,
+ ia32-libs-gtk [amd64]
 Description: Adobe Acrobat Reader: Portable Document Format file viewer
  Adobe Acrobat Reader for viewing and printing Adobe Portable Document
  Format (PDF) files.

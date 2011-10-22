@@ -1,3 +1,9 @@
+acroread (9.4.2-9) stable; urgency=low
+
+  * Bug #24155: Drop unused Build-Depends
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 07:17:15 +0200
+
 acroread (9.4.2-8) stable; urgency=low
 
   * made acro-update.sh a bash script (bashism) Bug #22432 
