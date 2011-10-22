@@ -30,8 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/all.sh
+
 invoke-rc.d --quiet univention-directory-listener || true
 
 #DEBHELPER#
+
+call_joinscript 98univention-pkgdb-tools.inst || true
 
 exit 0

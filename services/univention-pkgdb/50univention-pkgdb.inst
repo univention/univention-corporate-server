@@ -30,61 +30,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
-fi
+. /usr/share/univention-join/joinscripthelper.lib
 
-touch /usr/lib/univention-install/.index.txt
-
-test -n "`grep "univention-pkgdb v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+joinscript_init
 
 eval "$(univention-config-registry shell)"
 
 res=`ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL relativeDomainName=_pkgdb._tcp relativeDomainName`
 if [ -z "$res" ]; then
-	/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv pkgdb tcp 0 0 5432 $hostname.$domainname.
+	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv pkgdb tcp 0 0 5432 $hostname.$domainname.
 fi
-
-univention-directory-manager container/cn create "$@" --ignore_exists --position "cn=univention,$ldap_base" --set name=console
-univention-directory-manager container/cn create "$@" --ignore_exists --position "cn=console,cn=univention,$ldap_base" --set name=acls
-univention-directory-manager container/cn create "$@" --ignore_exists --position "cn=console,cn=univention,$ldap_base" --set name=operations
-
-# create software monitor operations
-univention-directory-manager settings/console_operation create "$@" --ignore_exists \
-	--position "cn=operations,cn=console,cn=univention,$ldap_base" \
-	--set name=softmon \
-	--set description="Software Monitor" \
-	--append operation="softmon/*" \
-	--append operation="softmon/system/search" \
-	--append operation="softmon/package/search" \
-	--append operation="softmon/problem/identification"
-
-# create softmon acls
-univention-directory-manager settings/console_acl create "$@" --ignore_exists \
-	--position "cn=acls,cn=console,cn=univention,$ldap_base" \
-	--set name=softmon-all \
-	--set category="Software Monitor" \
-	--set ldapbase="$ldap_base" \
-	--set command="softmon/*" \
-	--set description="All Software Monitor Operations"
-
-# add to default policies
-univention-directory-manager container/cn create "$@" --ignore_exists --position "cn=policies,$ldap_base" --set name=console --set policyPath=1
-
-univention-directory-manager policies/console_access create "$@" --ignore_exists \
-	--position "cn=console,cn=policies,$ldap_base" \
-	--set name=default-admin
-
-univention-directory-manager policies/console_access create "$@" --ignore_exists \
-	--position "cn=console,cn=policies,$ldap_base" \
-	--set name=default-admin
-
-univention-directory-manager policies/console_access modify "$@" --ignore_exists \
-	--dn "cn=default-admin,cn=console,cn=policies,$ldap_base" \
-	--append "allow=cn=softmon-all,cn=acls,cn=console,cn=univention,$ldap_base"
 
 if [ -x /usr/sbin/univention-pkgdb-check ] && [ -e /usr/share/pyshared/univention/pkgdb.py ]; then
 	/usr/share/pyshared/univention/pkgdb.py --db-server $hostname.$domainname --add $hostname\$
@@ -99,6 +56,6 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
     univention-directory-manager computers/$server_role modify "$@" --ignore_exists --dn "$ldap_hostdn" --append service="Software Monitor"
 fi
 
-test -n "`grep "univention-pkgdb v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-pkgdb v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+joinscript_save_current_version
 
 exit 0

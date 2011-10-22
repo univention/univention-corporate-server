@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="pkgdb" icon="pkgdb" version="1.0">
+	<name>Software Monitor</name>
+	<description>Manage software installation status of all machines of your domain</description>
+	<categories>
+	  <category name="system"/>
+	</categories>
+	
+	<!-- the big worker function that realizes the invocation
+		of the requested query.
+		
+		Filter is an array containing dicts with 'key','operator' and 'pattern'.
+		Currently the frontend posts only a single entry, but the backend
+		code is already prepared to handle multiple conditions.
+	-->
+	<command name="pkgdb/query" function="query">
+		<attribute name="page" syntax="String"/>
+		<!-- attribute name="filter" syntax="Array"/ -->
+	</command>
+
+	<!-- Helper queries for the query editors. We want to centralise
+		all structural information here, along with the functions that
+		do the actual filtering and queries. Helpers are:-
+
+		KEYS:			return the allowed filter keys for a given page
+		OPERATORS:		return the allowed comparison operators for a given page+key
+		PROPOSALS:		return proposed values for a given page+key
+		COLUMNS:		return the table structure for a given query (page+key)
+	 -->
+
+	<command name="pkgdb/keys" function="keys">
+		<attribute name="page" syntax="String"/>
+	</command>
+
+	<command name="pkgdb/operators" function="operators">
+		<attribute name="page" syntax="String"/>
+		<attribute name="key" syntax="String"/>
+	</command>
+
+	<command name="pkgdb/proposals" function="proposals">
+		<attribute name="page" syntax="String"/>
+		<attribute name="key" syntax="String"/>
+	</command>
+
+	<command name="pkgdb/columns" function="columns">
+		<attribute name="page" syntax="String"/>
+		<attribute name="key" syntax="String"/>
+	</command>
+  </module>
+</umc>

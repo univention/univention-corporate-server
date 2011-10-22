@@ -1,0 +1,7 @@
+Module: pkgdb
+Python: umc/python
+Definition: umc/pkgdb.xml
+Javascript: umc/js
+Icons: umc/icons
+Syntax: umc/syntax/pkgdb.xml
+

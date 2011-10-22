@@ -84,7 +84,7 @@ def handler(dn, new, old):
 
 	try:
 		if old and not new:
-			if old.has_key('uid'):
+			if 'uid' in old:
 				if del_system( old['uid'][0] ) != 0:
 					listener.setuid(0)
 					file = open( os.path.join(DELETE_DIR, old['uid'][0]), 'w' )
@@ -92,7 +92,7 @@ def handler(dn, new, old):
 					file.close()
 
 		elif new and not old:
-			if new.has_key('uid'):
+			if 'uid' in new:
 				if (add_system( new['uid'][0] )) != 0:
 					listener.setuid(0)
 					file = open( os.path.join(ADD_DIR, new['uid'][0]), 'w' )

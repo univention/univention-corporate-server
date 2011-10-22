@@ -63,9 +63,7 @@ univention-config-registry set \
 	pgsql/pkgdb/netmask?"$(get_default_netmask)" \
 	pkgdb/scan?yes
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-  /usr/lib/univention-install/50univention-pkgdb.inst || true
-fi
+call_joinscript 50univention-pkgdb.inst || true
 
 if [ -x "/etc/init.d/univention-directory-listener" ]; then
   /etc/init.d/univention-directory-listener crestart

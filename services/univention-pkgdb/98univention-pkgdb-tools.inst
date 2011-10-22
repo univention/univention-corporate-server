@@ -30,19 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
-fi
+. /usr/share/univention-join/joinscripthelper.lib
 
-touch /usr/lib/univention-install/.index.txt
-
-test -n "`grep "univention-pkgdb-tools v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+joinscript_init
 
 univention-pkgdb-scan
 
-test -n "`grep "univention-pkgdb-tools v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-pkgdb-tools v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+joinscript_save_current_version
 
 exit 0

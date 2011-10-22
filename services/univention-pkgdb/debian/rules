@@ -33,11 +33,6 @@
 version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
 
 PYVERS=$(shell pyversions -vr)
-PACKAGE_UMCMOD=univention-pkgdb
-PACKAGE_IMAGES=univention-pkgdb
-UMC_MODULES=$(shell find modules/univention -name '*.py')
-UMC_MO_FILES=$(shell find modules/univention -name '*.po' | sed 's/\.po/\.mo/g')
-UMC_IMAGES=$(shell find images -name '*.gif' -o -name '*.png')
 
 D=${CURDIR}/debian/univention-pkgdb
 
@@ -51,34 +46,18 @@ override_dh_auto_clean:
 	rm -f debian/univention-pkgdb-lib.conffiles
 	rm -f debian/python-univention-pkgdb.conffiles
 
-override_dh_auto_install: $(UMC_MO_FILES)
+override_dh_auto_build:
+	dh-umc-module-build
+	dh_auto_build
+
+override_dh_auto_install:
+	dh-umc-module-install
 	dh_auto_install
-	# install Univention Management Console Module
-	install -d debian/$(PACKAGE_UMCMOD)/usr/share/pyshared
-	@for i in $(UMC_MODULES); do\
-		o=debian/$(PACKAGE_UMCMOD)/usr/share/pyshared/$${i#modules};\
-		install -d "`dirname $$o`";\
-		install -m755 $$i $$o;\
-	done
-	# install UMC locales
-	@for i in $(UMC_MO_FILES); do\
-		lang=`basename $$i .mo`;\
-		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`;\
-		o=debian/$(PACKAGE_UMCMOD)/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
-		install -d "`dirname $$o`";\
-		install -m 644 $$i $$o;\
-	done
-	@for i in $(UMC_IMAGES); do\
-		o=debian/$(PACKAGE_IMAGES)/usr/share/univention-management-console/www/themes/$$i;\
-		install -d "`dirname $$o`";\
-		install -m755 $$i $$o;\
-	done
 
 #	 Set package_version
 	install -d debian/python-univention-pkgdb/usr/share/pyshared/univention/
 	cat univention_pkgdb.py| sed -e "s/@%@package_version@%@/${version}/" > debian/python-univention-pkgdb/usr/share/pyshared/univention/pkgdb.py
 	chmod 755 debian/python-univention-pkgdb/usr/share/pyshared/univention/pkgdb.py
-
 
 	univention-install-config-registry
 	univention-install-config-registry-info
@@ -91,10 +70,6 @@ override_dh_fixperms:
 	dh_fixperms
 	chmod +x debian/univention-pkgdb/var/lib/postgres/pkgdb.bash
 	chmod +x debian/univention-pkgdb/usr/lib/univention-directory-listener/system/pkgdb.py
-
-
-#TODO binary-arch: build install
-#	dh_pycentral -Nunivention-pkgdb-tools
 
 %:
 	dh $@

@@ -2,12 +2,15 @@ Source: univention-pkgdb
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper,
+Build-Depends: debhelper (>= 7.0.50~),
  python-dev,
  python-support,
  univention-config-dev,
+ univention-management-console-dev,
+ python-all,
  ucslint
 Standards-Version: 3.8.2
+XS-Python-Version: >= 2.6
 
 Package: univention-pkgdb
 Architecture: all
@@ -17,7 +20,8 @@ Depends: ${misc:Depends},
  postgresql-client,
  univention-pkgdb-tools,
  shell-univention-lib (>= 1.0.23),
- python-univention-lib (>= 1.0.25-1)
+ python-univention-lib (>= 1.0.25-1),
+ univention-management-console-module-pkgdb
 Description: UCS - PkgDB
  This package contains server-side-components for the UCS package database.
  .
@@ -66,3 +70,14 @@ Description: Transition package
  python-univention-pkgdb to the new package.  This package
  can be purged at anytime once the
  python-univention-pkgdb package has been installed.
+
+Package: univention-management-console-module-pkgdb
+Architecture: all
+Depends: univention-management-console-server
+Description: UMC module for software monitor
+ This package contains the UMC module for the software monitor.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

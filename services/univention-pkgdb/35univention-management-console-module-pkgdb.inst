@@ -1,10 +1,10 @@
-#!/usr/bin/python2.6
+#!/bin/sh
 # -*- coding: utf-8 -*-
 #
-# Univention Package Database
-#  python preporcessor
+# Univention Management Console Module pkgdb
+#  "Software Monitor"
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,20 +31,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, py_compile
+VERSION=1
 
-if len(sys.argv) == 2:
-	input=sys.argv[1]
-	output=input+'o'
-elif len(sys.argv) == 3:
-	input, output = sys.argv[1:]
-else:
-	sys.exit(1)
+. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/umc.sh
 
-print 'byte-compiling: %s' % input
+joinscript_init
 
-if os.path.exists(output):
-	os.unlink(output)
-e=py_compile.compile(input, output)
-if not os.path.exists(output):
-	sys.exit(1)
+umc_init
+umc_operation_create "pkgdb-all" "Query Package DB" "" "pkgdb/*"
+umc_policy_append "default-umc-all" "pkgdb-all"
+
+joinscript_save_current_version
+
+exit 0
