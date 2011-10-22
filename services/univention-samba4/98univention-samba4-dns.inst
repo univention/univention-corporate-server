@@ -45,16 +45,31 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	fi
 
 	# Wait until the local S4 contains the DNS record
-	continue=1
-	while [ $continue = "1" ];do
-		echo "wait for named ?"
+	echo -n "Wait for bind9 "
+	count=0
+	while [ $count -le 600 ];do
 		timeout=`LC_ALL=C host -W 1 $ldap_master 2>&1| grep "has address "`
 		if [ -n "$timeout" ]; then
 			continue=0
 		else
+			echo -n "."
 			sleep 1
 		fi;
+		count=$((count+1))
 	done
+
+	if [ $count -gt 600 ]; then
+		univention-config-registry set dns/backend=ldap
+		if [ -x /etc/init.d/bind9 ]; then
+			/etc/init.d/bind9 restart
+		fi
+		echo "**************************************************************"
+		echo "* ERROR: Failed to configure Samba4 as backend for bind.     *"
+		echo "*        Please check the samba and the s4-connector logfile.*"
+		echo "**************************************************************"
+		exit 1
+	fi
+	
 fi
 
 joinscript_save_current_version

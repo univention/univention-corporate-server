@@ -1,3 +1,10 @@
+univention-samba4 (1.0.73-1) unstable; urgency=low
+
+  * Don't wait endless for bind with samba4 as backend. Exit after 10
+    minutes with an error (Bug #24129)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 22 Oct 2011 20:48:39 +0200
+
 univention-samba4 (1.0.72-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
