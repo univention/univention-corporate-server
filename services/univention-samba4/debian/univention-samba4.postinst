@@ -88,16 +88,35 @@ univention-config-registry set \
 	samba4/ntacl/backend?'native'
 
 # configure firewall
+# http://technet.microsoft.com/en-us/library/dd772723%28WS.10%29.aspx
 ucr set security/packetfilter/package/univention-samba4/tcp/389/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/tcp/389/all/en="LDAP" \
+		security/packetfilter/package/univention-samba4/udp/389/all="ACCEPT" \
+		security/packetfilter/package/univention-samba4/udp/389/all/en="LDAP" \
 		security/packetfilter/package/univention-samba4/tcp/636/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/tcp/636/all/en="LDAPS" \
+		security/packetfilter/package/univention-samba4/tcp/53/all="ACCEPT" \
+		security/packetfilter/package/univention-samba4/tcp/53/all/en="DNS" \
+		security/packetfilter/package/univention-samba4/udp/53/all="ACCEPT" \
+		security/packetfilter/package/univention-samba4/udp/53/all/en="DNS" \
+		security/packetfilter/package/univention-samba4/udp/123/all="ACCEPT" \
+		security/packetfilter/package/univention-samba4/udp/123/all/en="TIME" \
+		security/packetfilter/package/univention-samba4/tcp/135/all="ACCEPT" \
+		security/packetfilter/package/univention-samba4/tcp/135/all/en="RPC (Samba)" \
 		security/packetfilter/package/univention-samba4/tcp/137:139/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/tcp/137:139/all/en="netbios (Samba)" \
+		security/packetfilter/package/univention-samba4/udp/137:139/all="ACCEPT" \
+		security/packetfilter/package/univention-samba4/udp/137:139/all/en="netbios (Samba)" \
 		security/packetfilter/package/univention-samba4/tcp/445/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/tcp/445/all/en="microsoft-ds (Samba)" \
 		security/packetfilter/package/univention-samba4/udp/445/all="ACCEPT" \
-		security/packetfilter/package/univention-samba4/udp/445/all/en="microsoft-ds (Samba)"
+		security/packetfilter/package/univention-samba4/udp/445/all/en="microsoft-ds (Samba)" \
+		security/packetfilter/package/univention-samba4/tcp/1024/all="ACCEPT" \
+		security/packetfilter/package/univention-samba4/tcp/1024/all/en="Port 1024 (Samba)" \
+		security/packetfilter/package/univention-samba4/tcp/3268/all="ACCEPT" \
+		security/packetfilter/package/univention-samba4/tcp/3268/all/en="LDAP GC (Samba)" \
+		security/packetfilter/package/univention-samba4/tcp/3269/all="ACCEPT" \
+		security/packetfilter/package/univention-samba4/tcp/3269/all/en="LDAP GC SSL (Samba)"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 if [ "$1" = "configure" ]; then

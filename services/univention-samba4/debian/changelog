@@ -1,3 +1,9 @@
+univention-samba4 (1.0.75-1) unstable; urgency=low
+
+  * AD needs some more open ports (Bug #23929)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 23 Oct 2011 00:01:25 +0200
+
 univention-samba4 (1.0.74-1) unstable; urgency=low
 
   * Fixed error in 98univention-samba4-dns.inst from last commit 
