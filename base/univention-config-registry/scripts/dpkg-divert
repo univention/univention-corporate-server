@@ -1,0 +1,78 @@
+#!/bin/sh
+#
+# Wrapper for dpkg-divert to ignore several calls from pre-UCS-3.0 packages
+#
+
+log () { # log call to dpkg-divert
+	exec 3>>/var/log/univention/dpkg-divert.log
+	echo "# $(exec date --rfc-2822)" >&3
+	#echo "DEBIAN_FRONTENT=$DEBIAN_FRONTENT \\" >&3
+	echo "DPKG_MAINTSCRIPT_ARCH=$DPKG_MAINTSCRIPT_ARCH \\" >&3
+	#echo "DPKG_MAINTSCRIPT_NAME=$DPKG_MAINTSCRIPT_NAME \\" >&3
+	echo "DPKG_MAINTSCRIPT_PACKAGE=$DPKG_MAINTSCRIPT_PACKAGE \\" >&3
+	echo "DPKG_NO_TSTP=$DPKG_NO_TSTP \\" >&3
+	echo "DPKG_RUNNING_VERSION=$DPKG_RUNNING_VERSION \\" >&3
+	echo "$0 $@" >&3
+	exec 3>&-
+}
+
+is_template () { # detect dpkg-divert --local --divert $file.debian --remove $file
+	#[ "$DPKG_MAINTSCRIPT_NAME" != "postrm" ] && return 1 # dpkg_1.15.7
+	[ -z "$DPKG_MAINTSCRIPT_PACKAGE" ] && return 1
+	[ "$DPKG_MAINTSCRIPT_PACKAGE" = "univention-config" ] && return 1
+	while [ $# -ge 1 ]
+	do
+		case "$1" in
+			# command
+			--add) return 1 ;;
+			--remove)
+				shift 1 # path
+				break
+				;;
+			--list) return 1 ;;
+			--listpackage) return 1 ;;
+			--truename) return 1 ;;
+			--help) return 1 ;;
+			--version) return 1 ;;
+			# options
+			--package) return 1 ;;
+			--local) shift 1 ;;
+			--divert)
+				shift
+				case "$1" in
+					*.debian) ;;
+					*) return 1 ;;
+				esac
+				shift
+				;;
+			--admindir) return 1 ;;
+			--test) return 1 ;;
+			--quiet) shift 1 ;;
+			/*) return 1 ;; # [--add]
+			*) shift 1 ;; # unknown?
+		esac
+	done
+	local relpath=${1#/}
+	if grep --fixed-strings --line-regexp --quiet --no-messages "File: $relpath" /etc/univention/templates/info/*.info ||
+		grep --fixed-strings --line-regexp --quiet --no-messages "Multifile: $relpath" /etc/univention/templates/info/*.info
+	then
+		path=$1
+		return 0
+	elif grep --fixed-strings --line-regexp --quiet --no-messages "Subfile: $relpath" /etc/univention/templates/info/*.info
+	then
+		return 1
+	fi
+	return 1
+}
+
+if is_template "$@"
+then
+	# log this call for debugging
+	log "$@"
+	# re-commit the just deleted file for now
+	univention-config-registry commit "$path"
+	# trigger delayed cleanup
+	dpkg-trigger "univention-config-wrapper"
+else
+	exec "$0.ucr" "$@"
+fi

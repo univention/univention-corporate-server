@@ -5,8 +5,9 @@ univention-config-registry (7.0.25-1) unstable; urgency=low
   * Split meta package for dependencies from base-files (Bug #22586)
   * Handle errors on unregister gracefully (Bug #17913)
   * Fix missing template on remove (Bug #17913)
+  * Add wrapper for dpkg-divert for upgrade (Bug #22668)
 
- -- Philipp Hahn <hahn@univention.de>  Wed, 19 Oct 2011 11:35:55 +0200
+ -- Philipp Hahn <hahn@univention.de>  Fri, 21 Oct 2011 10:56:18 +0200
 
 univention-config-registry (7.0.24-1) unstable; urgency=low
 

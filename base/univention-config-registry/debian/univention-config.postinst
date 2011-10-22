@@ -30,19 +30,55 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-rm -f /var/cache/univention-config/cache
-
-# Bug #22524: move obsolete univention-baseconfig.info
-if [ -f /etc/univention/templates/info/univention-baseconfig.info ]
-then
-	mv /etc/univention/templates/info/univention-baseconfig.info /etc/univention/templates/removed/
-fi
-
 #DEBHELPER#
 
-if [ "$1" = 'configure' -a -z "$2" ]
-then # fresh installation
-	univention-config-registry set 'ucr/encoding/strict?true'
-fi
+trigger () {
+	while [ $# -ge 1 ]
+	do
+		case "$1" in
+		univention-config-wrapper)
+			univention-config-registry update
+			;;
+		/etc/univention/templates/info)
+			local info pkg state
+			for info in $(find /etc/univention/templates/info -name '*.info' -printf '%f\n')
+			do
+				pkg=${info%.info}
+				state=$(dpkg-query -W -f '${Status}' "$pkg") || continue
+				case "$state" in
+					unknown*) # never installed; no state in /var/lib/dpkg/status
+						;;
+					deinstall*|purge*)
+						univention-config-registry unregister "$pkg"
+						mv "$info" /etc/univention/templates/removed/
+						;;
+				esac
+			done
+			;;
+		esac
+		shift
+	done
+}
+
+case "$1" in
+configure)
+	rm -f /var/cache/univention-config/cache
+
+	# Bug #22524: move obsolete univention-baseconfig.info
+	if [ -n "$2" ] && [ -f /etc/univention/templates/info/univention-baseconfig.info ]
+	then
+		mv /etc/univention/templates/info/univention-baseconfig.info /etc/univention/templates/removed/
+	fi
+
+	if [ -z "$2" ]
+	then # fresh installation
+		univention-config-registry set 'ucr/encoding/strict?true'
+	fi
+	;;
+
+triggered)
+	trigger $2 # no quoting; split on $IFS
+	;;
+esac
 
 exit 0

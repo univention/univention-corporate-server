@@ -35,11 +35,11 @@ dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/syslog.c
 dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/init.d/sysklogd -- "$@"
 dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/cron.daily/sysklogd -- "$@"
 dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/cron.weekly/sysklogd -- "$@"
-dpkg-maintscript-helper rm_conffile /etc/univention/templates/info/univention-config-registry.info -- "$@"
 dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/locale.py -- "$@"
 dpkg-maintscript-helper rm_conffile /etc/univention/registry.info/variables/univention-config-registry.cfg -- "$@"
 dpkg-maintscript-helper rm_conffile /etc/univention/registry.info/categories/univention-config-registry.cfg -- "$@"
 dpkg-maintscript-helper rm_conffile /etc/univention/service.info/services/univention-config-registry.cfg -- "$@"
+# Keep /etc/univention/templates/info/univention-config-registry.info until u-b-files is configured!
 
 #DEBHELPER#
 

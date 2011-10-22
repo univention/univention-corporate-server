@@ -484,12 +484,21 @@ class configHandlerDiverting(configHandler):
 		"""Call command with stdin, stdout, and stderr redirected from/to devnull."""
 		null = open(os.path.devnull, 'rw')
 		try:
-			return subprocess.call(cmd, stdin=null, stdout=null, stderr=null)
+			# tell possibly wrapped dpkg-divert to really do the work
+			env = dict(os.environ)
+			env['DPKG_MAINTSCRIPT_PACKAGE'] = 'univention-config'
+			return subprocess.call(cmd, stdin=null, stdout=null, stderr=null, env=env)
 		finally:
 			null.close()
 
+	def need_divert(self):
+		"""Check if diversion is needed."""
+		return False
+
 	def install_divert(self):
 		"""Prepare file for diversion."""
+		if not self.need_divert():
+			return
 		d = '%s.debian' % self.to_file
 		self._call_silent('dpkg-divert', '--quiet', '--rename', '--divert', d, '--add', self.to_file)
 		# Make sure a valid file still exists
@@ -499,6 +508,8 @@ class configHandlerDiverting(configHandler):
 
 	def uninstall_divert(self):
 		"""Undo diversion of file."""
+		if self.need_divert():
+			return
 		try:
 			os.unlink(self.to_file)
 		except OSError:
@@ -559,15 +570,9 @@ class configHandlerMultifile(configHandlerDiverting):
 
 		self._set_perm(st)
 
-	def install_divert(self):
-		"""Only do diversion when at least one multifile and one subfile definition exists."""
-		if self.def_count >= 1 and self.from_files:
-			super(configHandlerMultifile, self).install_divert()
-
-	def uninstall_divert(self):
-		"""Undo diversion when no multifile or no subfile definition exists."""
-		if self.def_count == 0 or not self.from_files:
-			super(configHandlerMultifile, self).uninstall_divert()
+	def need_divert(self):
+		"""Diversion is needed when at least one multifile and one subfile definition exists."""
+		return self.def_count >= 1 and self.from_files
 
 class configHandlerFile(configHandlerDiverting):
 
@@ -611,6 +616,10 @@ class configHandlerFile(configHandlerDiverting):
 		script_file = self.from_file.replace(file_dir, script_dir)
 		if os.path.isfile(script_file):
 			runScript(script_file, 'postinst', changed)
+
+	def need_divert(self):
+		"""For simple files the diversion is always needed."""
+		return True
 
 class configHandlerScript(configHandler):
 
@@ -832,6 +841,38 @@ class configHandlers:
 				v2h.add(handler)
 
 		self._save_cache()
+		return handlers
+
+	def update_divert(self, handlers):
+		"""Synchronize diversions with handlers."""
+		wanted = dict([(h.to_file, h) for h in handlers if isinstance(h, configHandlerDiverting) and h.need_divert()])
+		to_remove = set()
+		# Scan for diversions done by UCR
+		f = open('/var/lib/dpkg/diversions', 'r') # from \n to \n package \n
+		try:
+			try:
+				while True:
+					path_from = f.next().rstrip()
+					if path_from + '.debian\n' != f.next():
+						continue
+					if ':\n' != f.next(): # local diversion
+						continue
+					assert path_from not in to_remove # no dulicates
+					try:
+						handler = wanted.pop(path_from)
+					except KeyError:
+						to_remove.add(path_from)
+			except StopIteration:
+				pass
+		finally:
+			f.close()
+		# Remove existing diversion not wanted
+		for path in to_remove:
+			tmp_handler = configHandlerDiverting(path)
+			tmp_handler.uninstall_divert()
+		# Install missing diversions still wanted
+		for path, handler in wanted.items():
+			handler.install_divert()
 
 	def _save_cache(self):
 		"""Write cache file."""
@@ -863,6 +904,7 @@ class configHandlers:
 			handler((ucr, values))
 
 		self._save_cache()
+		return handlers
 
 	def unregister(self, package, ucr):
 		"""Un-register info file for package."""
@@ -903,6 +945,7 @@ class configHandlers:
 			os.unlink(configHandlers.CACHE_FILE)
 		except OSError:
 			pass
+		return handlers
 
 	def __call__(self, variables, arg):
 		"""Call handlers registered for changes in variables."""
@@ -1101,7 +1144,8 @@ def handler_dump( args, opts = {} ):
 
 def handler_update( args, opts = {} ):
 	c = configHandlers()
-	c.update()
+	cur = c.update()
+	c.update_divert(cur)
 
 def handler_commit( args, opts = {} ):
 	b = ConfigRegistry()
@@ -1126,8 +1170,9 @@ def handler_unregister( args, opts = {} ):
 	b.load()
 
 	c = configHandlers()
-	c.update() # cache must be current
+	cur = c.update() # cache must be current
 	c.unregister(args[0], b)
+	c.update_divert(cur)
 
 def handler_randpw( args, opts = {} ):
 	print randpw()

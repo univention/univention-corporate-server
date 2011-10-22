@@ -126,6 +126,9 @@ def do_package(package):
 			}
 	f_postinst = open(extFile(package, 'postinst.debhelper'), 'a')
 	f_postinst.write('# Automatically added by univention-install-config-registry\n')
+	f_postinst.write('if [ "$1" = "abort-remove" ]; then\n')
+	f_postinst.write('  [ -e %(removed)s ] && mv %(removed)s %(info)s || true\n' % data)
+	f_postinst.write('fi\n')
 	f_postinst.write('[ -x /usr/sbin/univention-config-registry ] && univention-config-registry register %(pkg)s || true\n' % data)
 	f_postinst.write('# End automatically added section\n')
 	f_postinst.close()
@@ -134,19 +137,12 @@ def do_package(package):
 	f_prerm.write('# Automatically added by univention-install-config-registry\n')
 	f_prerm.write('if [ "$1" = "remove" ]; then\n')
 	f_prerm.write('  [ -x /usr/sbin/univention-config-registry ] && univention-config-registry unregister %(pkg)s || true\n' % data)
+	f_prerm.write('  [ -e %(info)s ] && mv %(info)s %(removed)s || true\n' % data)
 	f_prerm.write('fi\n')
 	f_prerm.write('# End automatically added section\n')
 	f_prerm.close()
 
-	f_postrm = open(extFile(package, 'postrm.debhelper'), 'a')
-	f_postrm.write('# Automatically added by univention-install-config-registry\n')
-	f_postrm.write('if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then\n')
-	f_postrm.write('  [ -e %(info)s ] && mv %(info)s %(removed)s || true\n' % data)
-	f_postrm.write('fi\n')
-	f_postrm.write('# End automatically added section\n')
-	f_postrm.close()
-
-	#doIt('perl', '-e', 'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-config (>= 7)");' % package)
+	doIt('perl', '-e', 'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-config (>= 7.0.25)");' % package)
 
 if __name__ == '__main__':
 	for package in binary_packages():

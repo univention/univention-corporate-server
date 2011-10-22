@@ -96,3 +96,15 @@ Description: UCS - Python interface to configuration registry
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-config-wrapper
+Architecture: all
+Depends: ${misc:Depends}
+Description: UCS - configuration manager wrapper
+ This package provides a wrapper for dpkg-divert to work-around broken
+ pre-installation and post-removal scripts from pre-UCS-3.0 packages.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
