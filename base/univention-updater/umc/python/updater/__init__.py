@@ -855,7 +855,10 @@ class Instance(umcm.Base):
 			job = request.options.get('job','')
 
 		count = request.options.get('count',0)
-		result = 0 if count < 0 else []
+		if count < 0:
+			result = 0
+		else:
+			result = []
 		if not job in INSTALLERS:
 			# job empty: this is the first call I can't avoid
 			if job != '':
