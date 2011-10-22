@@ -261,6 +261,10 @@ fi
 
 if [ -x /etc/init.d/samba4 ]; then
 	echo -n "Stop Samba 4 Server: "
+	if [ "$dns_backend" = "samba4" ]; then
+		ucr set dns/backend=ldap >>/var/log/univention/join.log 2>&1 
+		/etc/init.d/bind9 restart >>/var/log/univention/join.log 2>&1 
+	fi
 	/etc/init.d/samba4 stop >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
 fi
