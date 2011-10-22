@@ -1,5 +1,5 @@
 #!/bin/sh
-# Univention Virtual Machine Manager Daemon
+# UCS Virtual Machine Manager Daemon
 #  init script
 #
 # Copyright 2010 Univention GmbH
@@ -37,7 +37,7 @@
 # Should-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Univention Virtual Machine Manager Daemon
+# Short-Description: UCS Virtual Machine Manager Daemon
 # Description:       Service to manage virtualization hosts.
 ### END INIT INFO
 
@@ -45,7 +45,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 DAEMON=/usr/sbin/univention-virtual-machine-manager-daemon  # Introduce the server's location here
 NAME="uvmmd"              # Introduce the short server's name here
-DESC="Univention Virtual Machine Manager" # Introduce a short description here
+DESC="UCS Virtual Machine Manager" # Introduce a short description here
 LOGDIR=/var/log/univention # Log directory to use
 
 PIDFILE=/var/run/$NAME.pid

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Univention Virtual Machine Manager Daemon
+# UCS Virtual Machine Manager Daemon
 #  join script
 #
 # Copyright 2010,2011 Univention GmbH

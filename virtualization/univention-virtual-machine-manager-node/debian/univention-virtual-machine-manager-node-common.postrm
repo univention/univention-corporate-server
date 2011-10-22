@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Univention Virtual Machine Manager Node
+# UCS Virtual Machine Manager Node
 #  postinst script
 #
 # Copyright 2010 Univention GmbH

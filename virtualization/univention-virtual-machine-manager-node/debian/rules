@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 #
-# Univention Virtual Machine Manager Node
+# UCS Virtual Machine Manager Node
 #  rules file
 #
 # Copyright 2010 Univention GmbH

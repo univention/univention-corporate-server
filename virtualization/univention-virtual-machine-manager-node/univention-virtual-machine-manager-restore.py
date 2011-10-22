@@ -1,7 +1,7 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Virtual Machine Manager Node Common
+# UCS Virtual Machine Manager Node Common
 #  script to restore virtual machines
 #
 # Copyright 2010 Univention GmbH

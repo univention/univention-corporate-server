@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Univention Virtual Machine Manager Daemon
+# UCS Virtual Machine Manager Daemon
 #  uvmm check script
 #
 # Copyright 2011 Univention GmbH

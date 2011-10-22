@@ -1,6 +1,6 @@
 [uvmmd]
-Description[de]=Univention Virtual Machine Manager
-Description[en]=Univention Virtual Machine Manager
+Description[de]=UCS Virtual Machine Manager
+Description[en]=UCS Virtual Machine Manager
 start_type=yes
 programs=/usr/sbin/univention-virtual-machine-manager-daemon
 icon=service/uvmmd

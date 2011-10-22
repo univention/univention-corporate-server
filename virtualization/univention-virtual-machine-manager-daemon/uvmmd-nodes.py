@@ -1,7 +1,7 @@
 #!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
-# Univention Virtual Machine Manager Daemon
+# UCS Virtual Machine Manager Daemon
 #  listener module for nodes
 #
 # Copyright 2010-2011 Univention GmbH
@@ -34,7 +34,7 @@
 accordingly."""
 
 name='uvmmd-nodes'
-description='Univention Virtual Machine Manager Daemon Nodes'
+description='UCS Virtual Machine Manager Daemon Nodes'
 filter='(objectClass=univentionHost)'
 attributes=['univentionService']
 

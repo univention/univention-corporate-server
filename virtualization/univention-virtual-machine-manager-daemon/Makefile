@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# Univention Virtual Machine Manager
+# UCS Virtual Machine Manager
 #  makefile
 #
 # Copyright 2010,2011 Univention GmbH

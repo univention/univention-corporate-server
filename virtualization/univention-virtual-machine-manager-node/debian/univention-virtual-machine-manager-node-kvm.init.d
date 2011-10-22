@@ -1,5 +1,5 @@
 #!/bin/bash
-# Univention Virtual Machine Manager KVM Node
+# UCS Virtual Machine Manager KVM Node
 #  init script
 #
 # Most parts of this script are taken from the xen bridging scripts.
@@ -17,7 +17,7 @@
 # Should-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Univention Virtual Machine Manager KVM Node
+# Short-Description: UCS Virtual Machine Manager KVM Node
 # Description:       Create a bridging network interface
 ### END INIT INFO
 

@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# Univention Virtual Machine Manager Daemon
+# UCS Virtual Machine Manager Daemon
 #  rules file for the univention-virtual-machine-manager-daemon package
 #
 # Copyright 2010,2011 Univention GmbH

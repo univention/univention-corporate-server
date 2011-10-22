@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# Univention Virtual Machine Manager schema
+# UCS Virtual Machine Manager schema
 #  rules file for the debian package
 #
 # Copyright 2009-2010 Univention GmbH
@@ -54,8 +54,7 @@ override_dh_auto_install:
 
 clean::
 	dh_testdir
-	rm -f build-stamp
+	$(RM) build-stamp
 	dh_clean
 	$(RM) debian/python-univention-directory-manager-uvmm.conffiles
 	$(RM) $(MO_FILES)
-

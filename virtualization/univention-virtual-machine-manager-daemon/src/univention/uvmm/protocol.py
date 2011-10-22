@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Univention Virtual Machine Manager Daemon
+# UCS Virtual Machine Manager Daemon
 #  listener module
 #
 # Copyright 2010 Univention GmbH

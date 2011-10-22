@@ -73,7 +73,7 @@ _uvmm_locale = umc.Translation('univention.virtual.machine.manager').translate
 name = 'uvmm'
 icon = 'uvmm/module'
 short_description = _('Virtual Machines (UVMM)')
-long_description = _('Univention Virtual Machine Manager')
+long_description = _('UCS Virtual Machine Manager')
 categories = [ 'system', 'all' ]
 hide_tabs = True
 
@@ -431,7 +431,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			res = tv.get_failure_response(e)
 		else:
 			self.domain_wizard.reset()
-			self.set_content( res, umcd.ModuleDescription( 'Univention Virtual Machine Manager (UVMM)', _( 'This module provides a management interface for physical servers that are registered within the UCS domain.\nThe tree view on the left side shows an overview of all existing physical servers and the residing virtual instances. By selecting one of the physical servers statistics of the current state are displayed to get an impression of the health of the hardware system. Additionally actions like start, stop, suspend and resume for each virtual instance can be invoked on each of the instances.\nAlso possible is direct access to virtual instances. Therefor it must be activated in the configuration.\nEach virtual instance entry in the tree view provides access to detailed information und gives the possibility to change the configuration or state and migrated it to another physical server.' ) ), location = False, refresh = False )
+			self.set_content( res, umcd.ModuleDescription( 'UCS Virtual Machine Manager (UVMM)', _( 'This module provides a management interface for physical servers that are registered within the UCS domain.\nThe tree view on the left side shows an overview of all existing physical servers and the residing virtual instances. By selecting one of the physical servers statistics of the current state are displayed to get an impression of the health of the hardware system. Additionally actions like start, stop, suspend and resume for each virtual instance can be invoked on each of the instances.\nAlso possible is direct access to virtual instances. Therefor it must be activated in the configuration.\nEach virtual instance entry in the tree view provides access to detailed information und gives the possibility to change the configuration or state and migrated it to another physical server.' ) ), location = False, refresh = False )
 		self.finished( object.id(), res )
 
 	def uvmm_search( self, object ):

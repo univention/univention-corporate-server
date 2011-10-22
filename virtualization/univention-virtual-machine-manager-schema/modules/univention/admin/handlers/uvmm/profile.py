@@ -1,7 +1,7 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Virtual Machine Manager
+# UCS Virtual Machine Manager
 #  UDM Virtual Machine Manager Profiles
 #
 # Copyright 2010,2011 Univention GmbH

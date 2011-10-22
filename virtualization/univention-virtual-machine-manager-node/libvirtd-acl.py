@@ -1,7 +1,7 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Virtual Machine Manager Node
+# UCS Virtual Machine Manager Node
 #  libvirtd listener module
 #
 # Copyright 2010-2011 Univention GmbH
@@ -34,7 +34,7 @@
 /etc/libvirt/libvirtd.conf and the UCR variable uvmm/managers accordingly."""
 
 name='libvirtd-acl'
-description='Update Univention Virtual Machine Manager libvirtd permissions'
+description='Update UCS Virtual Machine Manager libvirtd permissions'
 #filter='(|(objectClass=univentionHost)(&(objectClass=univentionVirtualMachineGroupOC)(univentionVirtualMachineGroup=1)))'
 filter='(objectClass=univentionHost)'
 attributes=['univentionService']

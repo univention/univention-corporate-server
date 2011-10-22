@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (1.0.0-2) unstable; urgency=low
+
+  * Bug #20667: Rename UVMM to UCS...
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 06:19:24 +0200
+
 univention-virtual-machine-manager-node (1.0.0-1) unstable; urgency=low
 
   * bump version and adapt packaging for UCS 3.0; Bug #22893

@@ -14,35 +14,36 @@ XS-Python-Version: 2.6
 
 Package: univention-virtual-machine-manager-daemon
 Architecture: all
-Depends: univention-ssl,
- python-univention (>>5.0.10),
+Depends: ${misc:Depends}, ${python:Depends},
+ univention-ssl,
+ python-univention (>> 5.0.10),
  univention-virtual-machine-manager-schema (>= 1.0.32-1),
  python-univention-virtual-machine-manager (= ${source:Version}),
- ${python:Depends}, ${misc:Depends}, python-univention-lib (>= 1.0.25-1)
+ python-univention-lib (>= 1.0.25-1)
 Recommends: libvirt-bin,
  univention-nagios-uvmmd,
  univention-management-console-module-uvmm (= ${source:Version})
-Description: Univention Virtual Machine Manager Daemon
- This package contains the Univention Virtual Machine Manager Daemon
+Description: UCS Virtual Machine Manager Daemon
+ This package contains the UCS Virtual Machine Manager Daemon
  used to collect informations from a farm of virtualization servers.
 
 Package: python-univention-virtual-machine-manager
 Architecture: all
-Depends: python-libvirt,
+Depends: ${misc:Depends}, ${python:Depends},
+ python-libvirt,
  python-openssl,
  python-pam,
- python-univention-directory-manager (>>6.0.103),
- ${python:Depends}, ${misc:Depends}
+ python-univention-directory-manager (>> 6.0.103)
 Provides: ${python:Provides}
-Description: Univention Virtual Machine Manager Daemon - Python bindings
- This package contains the Univention Virtual Machine Manager Daemon
+Description: UCS Virtual Machine Manager Daemon - Python bindings
+ This package contains the UCS Virtual Machine Manager Daemon
  Python bindings used to communicate with the daemon.
 
 Package: univention-management-console-module-uvmm
 Architecture: all
-Depends: univention-management-console-server,
- python-univention-virtual-machine-manager (= ${source:Version}),
- ${python:Depends}, ${misc:Depends}
-Description: Univention Virtual Machine Manager UMC module
- This package contains the Univention Virtual Machine Manager Daemon
+Depends: ${misc:Depends}, ${python:Depends},
+ univention-management-console-server,
+ python-univention-virtual-machine-manager (= ${source:Version})
+Description: UCS Virtual Machine Manager UMC module
+ This package contains the UCS Virtual Machine Manager Daemon
  UMC module.

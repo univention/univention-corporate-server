@@ -1,3 +1,9 @@
+univention-xen (4.0.0-2) ucs-3-0-0-0; urgency=low
+
+  * Bug #20667: Rename UVMM to UCS...
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 06:20:32 +0200
+
 univention-xen (4.0.0-1) ucs-3-0-0-0; urgency=low
 
   * Adapt to UCS-3.0 (Bug #18357)

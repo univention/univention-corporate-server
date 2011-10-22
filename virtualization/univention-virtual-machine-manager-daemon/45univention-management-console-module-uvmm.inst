@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Univention Virtual Machine Manager UMC modul
+# UCS Virtual Machine Manager UMC modul
 #  join script
 #
 # Copyright 2010,2011 Univention GmbH
@@ -40,7 +40,7 @@ joinscript_init
 eval "$(univention-config-registry shell)"
 
 umc_init
-umc_operation_create "uvmm" "Univention Virtual Machine Manager" "uvmm/*"
+umc_operation_create "uvmm" "UCS Virtual Machine Manager" "uvmm/*"
 umc_acl_create "uvmm-all" "Virtualization" "All operations" "uvmm/*"
 umc_policy_append "default-admin" "uvmm-all"
 

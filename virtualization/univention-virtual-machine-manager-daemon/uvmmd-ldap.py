@@ -1,7 +1,7 @@
 #!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
-# Univention Virtual Machine Manager Daemon
+# UCS Virtual Machine Manager Daemon
 #  listener module for guests
 #
 # Copyright 2010-2011 Univention GmbH
@@ -34,7 +34,7 @@
 accordingly."""
 
 name = 'uvmmd-ldap'
-description = 'Univention Virtual Machine Manager Daemon LDAP monitor'
+description = 'UCS Virtual Machine Manager Daemon LDAP monitor'
 filter = '(objectClass=univentionVirtualMachine)'
 attributes = []
 

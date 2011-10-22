@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Univention Virtual Machine Manager schema
+# UCS Virtual Machine Manager schema
 #  join script
 #
 # Copyright 2010 Univention GmbH
@@ -92,9 +92,9 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set version="2" \
 	--set valueRequired="0" \
 	--set CLIName="UVMMGroup" \
-	--set shortDescription="Univention Virtual Machine group" \
+	--set shortDescription="UCS Virtual Machine group" \
 	--set longDescription="Defines if this group is a UVMM group" \
-	--set 'translationShortDescription="de_DE" "Univention Virtual Machine Manager Gruppe"' \
+	--set 'translationShortDescription="de_DE" "UCS Virtual Machine Manager Gruppe"' \
 	--set 'translationLongDescription="de_DE" "Definiert ob dies eine UVMM Gruppe ist"' \
 	--set doNotSearch="0" \
 	--set tabName="UVMM" \

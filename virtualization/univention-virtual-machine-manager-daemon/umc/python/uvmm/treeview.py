@@ -160,7 +160,7 @@ class TreeView( object ):
 		Return a response indicating an error in the last request to UVMMd.
 		The exception is currently ignored.
 		"""
-		info_txt = _('The connection to the Univention Virtual Machine Manager service could not be established. Please verify that it is started. You may use the UMC service module therefor.')
+		info_txt = _('The connection to the UCS Virtual Machine Manager service could not be established. Please verify that it is started. You may use the UMC service module therefor.')
 		info_box = umcd.InfoBox(info_txt)
 
 		table = umcd.SimpleTreeTable()

@@ -1,7 +1,7 @@
 #!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
-# Univention Virtual Machine Manager
+# UCS Virtual Machine Manager
 #  module: wizards for devices and virtual instances
 #
 # Copyright 2010 Univention GmbH

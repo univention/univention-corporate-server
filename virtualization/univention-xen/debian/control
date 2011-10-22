@@ -8,12 +8,13 @@ Standards-Version: 3.6.2
 
 Package: univention-xen
 Architecture: i386 amd64
-Depends: xen-4.1,
+Depends: ${misc:Depends}, ${perl:Depends},
+ xen-4.1,
  libc6-xen [i386],
  univention-kernel-image-2.6.32-xen,
- bridge-utils,
- ${misc:Depends}, ${perl:Depends}
-Suggests: xen-tools, wget
+ bridge-utils
+Suggests: xen-tools,
+ wget
 Description: UCS - Xen configuration and management subsystem
  This packages provides the basic configuration for the
  Xen virtualisation technology.

@@ -12,13 +12,13 @@
 # <http://www.openldap.org/doc/admin24/schema.html>
 
 attributetype ( 1.3.6.1.4.1.10176.4101.1.1 NAME 'univentionVirtualMachineGroup'
-	DESC 'Is this group an Univention Virtual Machine Group'
+	DESC 'Is this group an UCS Virtual Machine Group'
 	EQUALITY caseIgnoreIA5Match
 	SUBSTR caseIgnoreIA5SubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
 objectclass ( 1.3.6.1.4.1.10176.4101.2.1 NAME 'univentionVirtualMachineGroupOC'
-	DESC 'Univention Virtual Machine group objectclass'
+	DESC 'UCS Virtual Machine group objectclass'
 	SUP top AUXILIARY
 	MAY ( univentionVirtualMachineGroup ) )
 
@@ -47,7 +47,7 @@ attributetype ( 1.3.6.1.4.1.10176.4101.1.13 NAME 'univentionVirtualMachineDescri
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
 
 objectclass ( 1.3.6.1.4.1.10176.4101.2.10 NAME 'univentionVirtualMachine'
-	DESC 'Univention Virtual Machine objectclass'
+	DESC 'UCS Virtual Machine objectclass'
 	STRUCTURAL
 	MUST ( univentionVirtualMachineUUID )
 	MAY ( univentionVirtualMachineDescription $ univentionVirtualMachineOS $ univentionVirtualMachineContact )
@@ -168,7 +168,7 @@ attributetype ( 1.3.6.1.4.1.10176.4101.3.19 NAME 'univentionVirtualMachineProfil
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
 objectclass ( 1.3.6.1.4.1.10176.4101.4.1 NAME 'univentionVirtualMachineProfile'
-	DESC 'Univention Virtual Machine profile objectclass'
+	DESC 'UCS Virtual Machine profile objectclass'
 	STRUCTURAL
 	MUST ( cn )
 	MAY ( univentionVirtualMachineProfileNamePrefix
@@ -200,6 +200,6 @@ attributetype ( 1.3.6.1.4.1.10176.4101.5.1 NAME 'univentionVirtualMachineManagea
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
 objectclass ( 1.3.6.1.4.1.10176.4101.6.1 NAME 'univentionVirtualMachineHostOC'
-	DESC 'Univention Virtual Machine host objectclass'
+	DESC 'UCS Virtual Machine host objectclass'
 	SUP top AUXILIARY
 	MAY ( univentionVirtualMachineManageableBy ) )
