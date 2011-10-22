@@ -1,25 +1,27 @@
 Source: univention-mail-postfix
 Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7), 
-  univention-config-dev, 
+Build-Depends: debhelper (>> 7),
+  univention-config-dev,
   ucslint
 Standards-Version: 3.8.2
 
 Package: univention-mail-postfix
 Architecture: all
-Depends: postfix, 
-  postfix-ldap, 
-  shell-univention-lib (>> 1.0.16),
-  sasl2-bin,
-  libpam-univentionmailcyrus, 
-  univention-config-registry
-Conflicts: univention-mail, 
-  exim4, 
-  exim4-base, 
-  exim4-config,
-  univention-mail-postfix-forward (<< 6.0), 
-  univention-mail-postfix-kolab2
+Depends: ${misc:Depends},
+ postfix,
+ postfix-ldap,
+ shell-univention-lib (>> 1.0.16),
+ sasl2-bin,
+ libpam-univentionmailcyrus,
+ univention-base-files,
+ univention-config-registry
+Conflicts: univention-mail,
+ exim4,
+ exim4-base,
+ exim4-config,
+ univention-mail-postfix-forward (<< 6.0),
+ univention-mail-postfix-kolab2
 Replaces: univention-mail-postfix-forward (<< 6.0)
 Provides: univention-mail-postfix-forward
 Description: UCS - postfix configuration
@@ -33,9 +35,10 @@ Description: UCS - postfix configuration
 
 Package: univention-mail-postfix-forward
 Architecture: all
-Depends: univention-mail-postfix
+Depends: ${misc:Depends},
+ univention-mail-postfix
 Description: Transitional package for univention-mail-postfix-forward
- This is a transitional package for univention-mail-postfix-forward, 
+ This is a transitional package for univention-mail-postfix-forward,
  and can be safely removed after the installation is complete.
  .
  This package is part of Univention Corporate Server (UCS),
@@ -45,8 +48,13 @@ Description: Transitional package for univention-mail-postfix-forward
 
 Package: univention-mail-server
 Architecture: all
-Depends: univention-mail-postfix (= ${binary:Version}), univention-sasl, univention-mail-cyrus
-Recommends: bsd-mailx, univention-spamassassin, univention-antivir-mail
+Depends: ${misc:Depends},
+ univention-mail-postfix (= ${binary:Version}),
+ univention-sasl,
+ univention-mail-cyrus
+Recommends: bsd-mailx,
+ univention-spamassassin,
+ univention-antivir-mail
 Conflicts: univention-mail-postfix-kolab2
 Description: UCS - postfix configuration
  This package contains the configuration for the postfix

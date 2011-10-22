@@ -2,14 +2,18 @@ Source: univention-nagios-raid
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev, ucslint
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint
 Standards-Version: 3.8.2
 
 Package: univention-nagios-raid
 Architecture: all
-Depends: univention-nagios-client, mdadm
+Depends: ${misc:Depends},
+ univention-nagios-client,
+ mdadm
 Description: nagios raid plugin
- This package installs a nagios plugin to monitor software 
+ This package installs a nagios plugin to monitor software
  RAID status.
  .
  It is part of Univention Corporate Server (UCS), an

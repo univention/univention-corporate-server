@@ -2,13 +2,23 @@ Source: univention-kde
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), univention-config-dev, ucslint
+Build-Depends: debhelper (>> 3.0.0),
+ univention-config-dev,
+ ucslint
 Standards-Version: 3.8.2
 
 Package: univention-kde
 Architecture: all
-Recommends: kde-l10n-de, okular, univention-gdm, univention-mozilla-firefox, univention-flashplugin, univention-x-core
-Depends: univention-config-registry, kde-standard (>= 5:66), univention-kde-setdirs
+Recommends: kde-l10n-de,
+ okular,
+ univention-gdm,
+ univention-mozilla-firefox,
+ univention-flashplugin,
+ univention-x-core
+Depends: ${misc:Depends},
+ univention-config-registry,
+ kde-standard (>= 5:66),
+ univention-kde-setdirs
 Description: UCS - KDE desktop
  This package installs the KDE desktop.
  .
@@ -19,8 +29,9 @@ Description: UCS - KDE desktop
 
 Package: univention-kde-setdirs
 Architecture: all
-Depends: univention-config-registry
-Conflicts: univention-kde (<<1.25)
+Depends: ${misc:Depends},
+ univention-config-registry
+Conflicts: univention-kde (<< 1.25)
 Description: UCS - Set Profile Path
  This package sets the profile path for the user
  .

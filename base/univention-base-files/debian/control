@@ -9,28 +9,29 @@ XS-Python-Version: all
 
 Package: univention-base-packages
 Architecture: all
-Depends: univention-base-files (= ${source:Version}),
+Depends: ${misc:Depends},
+ univention-base-files (= ${source:Version}),
  python-ipaddr,
  rsyslog,
  bash-completion,
  locales,
- ntpdate, rdate,
+ ntpdate,
+ rdate,
  acl,
  xfsprogs,
  lsof,
- console-data, 
+ console-data,
  console-common,
  console-tools,
  bzip2,
  psmisc,
- lsb-base,
- ${misc:Depends}
+ lsb-base
 Recommends: vim,
  emacs23,
  less,
  elinks,
  wget,
- nmap, 
+ nmap,
  zip,
  unzip,
  eject,
@@ -47,8 +48,8 @@ Description: UCS - base packages
 # Every added Depends delays the configuration of this package!
 Package: univention-base-files
 Architecture: all
-Depends: univention-config,
- ${misc:Depends}
+Depends: ${misc:Depends},
+ univention-config
 Conflicts: univention-config-registry (<= 7.0.7),
  univention-config (<= 7.0.8)
 Replaces: univention-config-registry (<= 7.0.7),

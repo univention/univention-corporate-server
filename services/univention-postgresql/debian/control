@@ -9,9 +9,10 @@ Build-Depends: debhelper,
 Package: univention-postgresql
 Architecture: all
 Pre-Depends: postgresql-8.4 | postgresql-8.3 | postgresql-7.4
-Depends: univention-config-registry
+Depends: ${misc:Depends},
+ univention-config-registry
 Description: UCS - postgresql configuration
- This package contains the configuration for the 
+ This package contains the configuration for the
  postgresql package.
  .
  It is part of Univention Corporate Server (UCS), an

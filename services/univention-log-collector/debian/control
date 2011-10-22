@@ -3,13 +3,20 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper, univention-config-dev, ucslint, python-support
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint,
+ python-support
 
 Package: univention-log-collector-server
 Architecture: all
-Depends: gzip, univention-config-registry, ${python:Depends}, ${misc:Depends}, python-pyopenssl, python-univention-lib (>= 1.0.25-1)
-Description: Univention Log Collector Server
- Univention Log Collector - receives logfiles via SSL connection
+Depends: ${misc:Depends}, ${python:Depends},
+ gzip,
+ univention-config-registry,
+ python-pyopenssl,
+ python-univention-lib (>= 1.0.25-1)
+Description: UCS log-file Collector Server
+ UCS log-file collector - receives log-files via SSL connection.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -18,9 +25,12 @@ Description: Univention Log Collector Server
 
 Package: univention-log-collector-client
 Architecture: all
-Depends: univention-config-registry, ${python:Depends}, ${misc:Depends}, python-pyopenssl, python-univention-lib (>= 1.0.25-1)
-Description: Univention Log Collector Client
- Univention Log Collector - Sends logfiles via SSL connection to loghost
+Depends: ${misc:Depends}, ${python:Depends},
+ univention-config-registry,
+ python-pyopenssl,
+ python-univention-lib (>= 1.0.25-1)
+Description: UCS log-file Collector Client
+ UCS log-file collector - Sends log-files via SSL connection to logging host.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

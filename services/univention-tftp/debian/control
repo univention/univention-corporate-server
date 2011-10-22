@@ -2,16 +2,19 @@ Source: univention-tftp
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev, ucslint
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint
 Standards-Version: 3.8.2
 
 Package: univention-tftp
 Architecture: all
-Depends: atftpd
+Depends: ${misc:Depends},
+ atftpd
 Description: UCS - TFTP server
  This packages installs a TFTP server, which can be used
  by computers booting off the network to receive their
- operating system (such as Univention Thin Clients).
+ operating system (such as UCS thin clients).
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

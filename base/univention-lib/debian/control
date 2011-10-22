@@ -2,7 +2,7 @@ Source: univention-lib
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7), 
+Build-Depends: debhelper (>= 7),
  python-all,
  python-support (>= 0.90),
  ucslint
@@ -22,6 +22,7 @@ Description: UCS - common scripting functions for Python scripts
 
 Package: shell-univention-lib
 Architecture: all
+Depends: ${misc:Depends}
 Description: UCS - common scripting functions for shell scripts
  This package contains shell functions used by various
  components of UCS.

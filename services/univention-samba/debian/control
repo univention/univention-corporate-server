@@ -2,18 +2,21 @@ Source: univention-samba
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7), univention-config-dev, ucslint
+Build-Depends: debhelper (>> 7),
+ univention-config-dev,
+ ucslint
 Standards-Version: 3.5.2
 
 Package: univention-samba
 Architecture: all
 Pre-Depends: samba (>= 3.0.20)
-Depends: univention-config-registry (>= 0.07),
+Depends: ${misc:Depends},
+ univention-base-files,
  univention-ldap-client (>= 1.4),
  univention-directory-manager-tools,
  smbclient,
  univention-directory-listener,
- rsync, 
+ rsync,
  univention-ssh,
  expect,
  univention-samba-local-config,
@@ -33,7 +36,8 @@ Description: UCS - Samba domain controller
 
 Package: univention-samba-slave-pdc
 Architecture: all
-Depends: univention-samba
+Depends: ${misc:Depends},
+ univention-samba
 Description: UCS - Samba domain controller (as slave)
  With this package, the Samba domain controller is
  configured as a slave to another master domain controller.
@@ -46,6 +50,7 @@ Description: UCS - Samba domain controller (as slave)
 Package: univention-samba-local-config
 Architecture: all
 Pre-Depends: samba (>= 3.0.20) | samba-bdc
+Depends: ${misc:Depends}
 Description: UCS - UCR Extensions for configuration of local shares
  This package contains some scripts and templates to configure
  samba shares via UCR.

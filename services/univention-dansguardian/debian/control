@@ -2,15 +2,19 @@ Source: univention-dansguardian
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev, ucslint
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint
 
 Package: univention-dansguardian
 Architecture: all
-Depends: univention-squid, dansguardian
+Depends: ${misc:Depends},
+ univention-squid,
+ dansguardian
 Breaks: univention-antivir-web
 Recommends: univention-nagios-dansguardian
-Description: univention antivirus web
- univention antivirus web module
+Description: UCS - antivirus web
+ UCS module to add antivirus protection to the web module.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

@@ -2,14 +2,19 @@ Source: univention-mail-cyrus-murder
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7), univention-config-dev, ucslint
+Build-Depends: debhelper (>> 7),
+ univention-config-dev,
+ ucslint
 Standards-Version: 3.8.2
 
 Package: univention-mail-cyrus-murder
 Architecture: all
-Depends: univention-config-registry, cyrus-murder-2.4 | cyrus-murder-2.2, univention-mail-cyrus
+Depends: ${misc:Depends},
+ univention-config-registry,
+ cyrus-murder-2.4 | cyrus-murder-2.2,
+ univention-mail-cyrus
 Description: UCS - Cyrus Murder configuration
- The UCS Cyrus Murder package
+ The UCS Cyrus Murder package.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

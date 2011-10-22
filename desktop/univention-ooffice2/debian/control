@@ -2,13 +2,25 @@ Source: univention-ooffice2
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), univention-config-dev, ucslint
+Build-Depends: debhelper (>> 3.0.0),
+ univention-config-dev,
+ ucslint
 Standards-Version: 3.8.2
 
 Package: univention-ooffice2
 Architecture: all
-Depends: openoffice.org, openoffice.org-core, openoffice.org-l10n-de, openoffice.org-l10n-en-us, openoffice.org-kde, libpaper-utils, openoffice.org-help-de, openoffice.org-help-en-us, openoffice.org-style-crystal
-Conflicts: univention-ooffice-mimelnk, univention-ooffice (<<1.0.2)
+Depends: ${misc:Depends},
+ openoffice.org,
+ openoffice.org-core,
+ openoffice.org-l10n-de,
+ openoffice.org-l10n-en-us,
+ openoffice.org-kde,
+ libpaper-utils,
+ openoffice.org-help-de,
+ openoffice.org-help-en-us,
+ openoffice.org-style-crystal
+Conflicts: univention-ooffice-mimelnk,
+ univention-ooffice (<< 1.0.2)
 Description: UCS - Openoffice.org 2
  This package installs Openoffice.org 2, including German
  language support.
@@ -20,7 +32,8 @@ Description: UCS - Openoffice.org 2
 
 Package: univention-ooffice
 Architecture: all
-Depends: univention-ooffice2
+Depends: ${misc:Depends},
+ univention-ooffice2
 Description: UCS - Openoffice.org transition package
  Package to ease upgrading from old package
  univention-ooffice to the new package. This package

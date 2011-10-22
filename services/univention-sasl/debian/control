@@ -2,16 +2,18 @@ Source: univention-sasl
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7), 
-  univention-config-dev, 
+Build-Depends: debhelper (>> 7),
+  univention-config-dev,
   ucslint
 Standards-Version: 3.8.2
 
 Package: univention-sasl
 Architecture: all
-Depends: sasl2-bin, univention-config-registry
-Description: univention sasl
- configuration for sasl2
+Depends: ${misc:Depends},
+ sasl2-bin,
+ univention-config-registry
+Description: UCS SASL configuration
+ Configuration for Simple Auhentication and Security Layer (SASL2).
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

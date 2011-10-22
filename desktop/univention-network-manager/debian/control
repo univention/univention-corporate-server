@@ -2,15 +2,20 @@ Source: univention-network-manager
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev, ucslint
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint
 Standards-Version: 3.8.2
 
 Package: univention-network-manager
 Architecture: all
-Conflicts: ifplugd, univention-ifplugd
-Depends: network-manager
+Conflicts: ifplugd,
+ univention-ifplugd
+Depends: ${misc:Depends},
+ network-manager
 Description: UCS - Support for the Network Manager
- This package installs the configuration for the network manager.
+ This package installs the configuration for the network manager, which is used
+ for managing network interfaces and connections.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -19,10 +24,14 @@ Description: UCS - Support for the Network Manager
 
 Package: univention-ifplugd
 Architecture: all
-Conflicts: network-manager, univention-network-manager
-Depends: ifplugd, dhcp3-client
+Conflicts: network-manager,
+ univention-network-manager
+Depends: ${misc:Depends},
+ ifplugd,
+ isc-dhcp-client | dhcp3-client
 Description: UCS - Support for ifplugd
- This package installs the configuration for ifplugd.
+ This package installs the configuration for ifplugd, which is used for
+ managing network interfaces and connections.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

@@ -13,7 +13,7 @@ Package: univention-management-console-module-ucr
 Architecture: all
 Depends: univention-management-console-server
 Description: UMC module for UCR
- This package contains the UMC module for Univention Configuration Registry
+ This package contains the UMC module for UCS Configuration Registry.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

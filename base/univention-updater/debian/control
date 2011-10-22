@@ -2,14 +2,29 @@ Source: univention-updater
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7), univention-config-dev, python-all, python-support (>= 0.90), ucslint, univention-management-console-dev
+Build-Depends: debhelper (>> 7),
+ univention-config-dev,
+ python-all,
+ python-support (>= 0.90),
+ ucslint,
+ univention-management-console-dev
 
 Package: univention-updater
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}, univention-config-registry, univention-directory-policy, netcat, wget, apt-mirror, at, sed, gzip, screen, python-univention (>> 5.0.6), shell-univention-lib, python-univention-lib (>= 1.0.25-1)
+Depends: ${misc:Depends}, ${python:Depends},
+ univention-config-registry,
+ univention-directory-policy,
+ netcat,
+ wget,
+ apt-mirror,
+ at,
+ screen,
+ python-univention (>> 5.0.6),
+ shell-univention-lib,
+ python-univention-lib (>= 1.0.25-1)
 Provides: ${python:Provides}
 Description: UCS - system upgrading tool
- Univention Updater can upgrade your version of UCS.
+ UCS Updater can upgrade your version of UCS.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
@@ -18,10 +33,11 @@ Description: UCS - system upgrading tool
 
 Package: univention-management-console-module-updater
 Architecture: all
-Depends: univention-management-console-server,
+Depends: ${misc:Depends},
+ univention-management-console-server,
  univention-updater (= ${source:Version})
-Description: UMC module for Univention updater
- This package contains the UMC module for the Univention updater.
+Description: UMC module for UCS updater
+ This package contains the UMC module for the UCS updater.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

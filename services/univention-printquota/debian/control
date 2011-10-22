@@ -2,16 +2,25 @@ Source: univention-printquota
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7), univention-config-dev, ucslint
+Build-Depends: debhelper (>> 7),
+ univention-config-dev,
+ ucslint
 Standards-Version: 3.8.2
 
 Package: univention-printquota
 Architecture: all
-Depends: univention-config-registry, univention-printserver, pykota, univention-printquotadb, pkipplib, pkpgcounter
-Pre-Depends: pykota
+Depends: ${misc:Depends},
+ univention-config-registry,
+ univention-printserver,
+ pykota,
+ univention-printquotadb,
+ pkipplib,
+ pkpgcounter
+Pre-Depends: pykota,
+ univention-config (>= 7.0.25)
 Description: UCS - quotasupport for printserver
  This packages provides the printquota configuration. Quotas
- can be managed with Univention Admin and Univention Console.
+ can be managed with UCS Directory Manager and UCS Management Console.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -20,14 +29,17 @@ Description: UCS - quotasupport for printserver
 
 Package: univention-printquotadb
 Architecture: all
-Pre-Depends: univention-postgresql
-Depends: univention-config-registry, pykota, makepasswd
+Pre-Depends: univention-postgresql,
+ univention-config (>= 7.0.25)
+Depends: ${misc:Depends},
+ univention-config-registry,
+ pykota,
+ makepasswd
 Description: UCS - quotasupport for printserver
  This packages provides the printquota-database configuration. Quota-Database
- can be managed with Univention Admin and Univention Console.
+ can be managed with UCS Directory Manager and UCS Management Console.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
-

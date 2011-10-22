@@ -17,7 +17,9 @@ XS-Python-Version: all
 Package: univention-config-registry
 Architecture: all
 Pre-Depends: dpkg (>= 1.15.7.2)
-Depends: univention-base-files, univention-base-packages
+Depends: ${misc:Depends},
+ univention-base-files,
+ univention-base-packages
 Description: UCS transitional package - base configuration
  This package can be savely removed, since all previously contained base
  configuration files for UCS have been moved to the univention-base-files
@@ -30,9 +32,9 @@ Description: UCS transitional package - base configuration
 
 Package: univention-config
 Architecture: all
-Depends: python-univention,
- python-univention-config-registry (= ${source:Version}),
- ${misc:Depends}, ${python:Depends}
+Depends: ${misc:Depends}, ${python:Depends},
+ python-univention,
+ python-univention-config-registry (= ${source:Version})
 Replaces: univention-config-registry (<< 7.0.9~)
 Description: UCS - configuration manager
  This package contains the univention-config configuration
@@ -45,8 +47,8 @@ Description: UCS - configuration manager
 
 Package: univention-config-dev
 Architecture: all
-Depends: univention-config (= ${binary:Version}),
- ${misc:Depends}, ${python:Depends}
+Depends: ${misc:Depends}, ${python:Depends},
+ univention-config (= ${binary:Version})
 Description: UCS - configuration manager (development files)
  This package contains the files needed to develop packages
  that use univention-config.
@@ -58,7 +60,7 @@ Description: UCS - configuration manager (development files)
 
 Package: libunivention-config0
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: UCS - C library to configuration manager
  The included library provides a C API to access the
  UCS configuration manager.
@@ -70,8 +72,8 @@ Description: UCS - C library to configuration manager
 
 Package: libunivention-config-dev
 Architecture: any
-Depends: libunivention-config0 (= ${binary:Version}),
- ${misc:Depends}
+Depends: ${misc:Depends},
+ libunivention-config0 (= ${binary:Version})
 Replaces: libunivention-config0 (<< 7)
 Description: UCS - C interface to configuration manager (development files)
  This package includes the development files to access
@@ -84,7 +86,7 @@ Description: UCS - C interface to configuration manager (development files)
 
 Package: python-univention-config-registry
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends},
+Depends: ${misc:Depends}, ${python:Depends},
  python-univention-lib
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}

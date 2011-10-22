@@ -2,19 +2,25 @@ Source: univention-bind
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), univention-config-dev, ucslint
+Build-Depends: debhelper (>> 3.0.0),
+ univention-config-dev,
+ ucslint
 Standards-Version: 3.8.2
 
 Package: univention-bind
 Architecture: all
-Depends: univention-config-registry (>=7),
+Depends: ${misc:Depends},
+ univention-config (>= 7.0.25),
+ univention-base-files,
  bind9 (>= 1:9.8.0.P4),
  univention-directory-manager-tools,
  univention-runit (>= 0.2),
  shell-univention-lib (>= 1.0.23),
  univention-ipcalc
-Conflicts: univention-dns, univention-bind-proxy
-Replaces: univention-dns, univention-bind-proxy
+Conflicts: univention-dns,
+ univention-bind-proxy
+Replaces: univention-dns,
+ univention-bind-proxy
 Description: UCS - DNS server
  This package installs a DNS server that receives its zone
  information from LDAP or from Samba 4.

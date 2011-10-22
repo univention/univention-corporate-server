@@ -2,11 +2,14 @@ Source: univention-maintenance
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, ucslint, univention-config-dev
+Build-Depends: debhelper,
+ ucslint,
+ univention-config-dev
 
 Package: univention-maintenance
 Architecture: all
-Depends: bc,
+Depends: ${misc:Depends},
+ bc,
  ldap-utils,
  httpd,
  nmap,
@@ -14,7 +17,7 @@ Depends: bc,
  netcat,
  mail-transport-agent,
  cron,
- univention-config-registry, 
+ univention-config-registry,
  python-univention-lib (>= 1.0.25-1)
 Description: UCS - maintenance tools
  This package monitors the server root's homedir and

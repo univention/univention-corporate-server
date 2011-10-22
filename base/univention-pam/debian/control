@@ -2,11 +2,23 @@ Source: univention-pam
 Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper, univention-config-dev, ucslint
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint
 
 Package: univention-pam
 Architecture: all
-Depends: univention-config-registry, libpam-ldap (>=161), libnss-ldap (>=204), libpam-heimdal, libpam-cracklib, pam-runasroot, univention-skel, nscd, univention-home-mounter, shell-univention-lib
+Depends: ${misc:Depends},
+ univention-config-registry,
+ libpam-ldap (>= 161),
+ libnss-ldap (>= 204),
+ libpam-heimdal,
+ libpam-cracklib,
+ pam-runasroot,
+ univention-skel,
+ nscd,
+ univention-home-mounter,
+ shell-univention-lib
 Description: UCS - login configuration
  This package contains the configuration for the pluggable
  authentication modules (PAM) and the network name switch

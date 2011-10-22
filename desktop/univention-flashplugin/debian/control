@@ -2,11 +2,14 @@ Source: univention-flashplugin
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev, ucslint
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint
 Standards-Version: 3.8.2
 
 Package: univention-flashplugin
 Architecture: i386 amd64
+Depends: ${misc:Depends}
 Replaces: flashplugin-nonfree
 Breaks: flashplugin-nonfree
 Description: UCS - flashplayer plugin for netscape browsers

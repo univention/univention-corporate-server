@@ -2,11 +2,15 @@ Source: univention-nfs
 Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper, univention-config-dev, ucslint
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint
 
 Package: univention-nfs-server
 Architecture: all
-Depends: nfs-kernel-server, univention-directory-listener
+Depends: ${misc:Depends},
+ nfs-kernel-server,
+ univention-directory-listener
 Description: UCS - NFS server
  This package configures the Network FileSystem (NFS).
  Shares, that are directories which can be accessed by

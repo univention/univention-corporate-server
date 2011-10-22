@@ -4,12 +4,18 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
  univention-config-dev,
-  ucslint
+ ucslint
 Standards-Version: 3.8.2
 
 Package: univention-apache
 Architecture: all
-Depends: univention-ssl, apache2, libapache2-mod-auth-pam, python2.6, univention-config-registry, php5
+Depends: ${misc:Depends},
+ univention-ssl,
+ apache2,
+ libapache2-mod-auth-pam,
+ python2.6,
+ univention-config-registry,
+ php5
 Conflicts: apache
 Breaks: univention-webui-style
 Replaces: univention-webui-style

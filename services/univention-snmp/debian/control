@@ -2,11 +2,15 @@ Source: univention-snmp
 Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper, univention-config-dev, ucslint
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint
 
 Package: univention-snmp
 Architecture: all
-Depends: univention-config-registry, snmp
+Depends: ${misc:Depends},
+ univention-config-registry,
+ snmp
 Description: UCS - SNMP client configuration
  This package contains the configuration for the
  snmp package.

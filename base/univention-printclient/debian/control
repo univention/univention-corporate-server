@@ -2,14 +2,18 @@ Source: univention-printclient
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), ucslint, univention-config-dev
+Build-Depends: debhelper (>> 3.0.0),
+ ucslint,
+ univention-config-dev
 Standards-Version: 3.5.2
 
 Package: univention-printclient
 Architecture: all
-Conflicts: univention-printserver (<<0.12)
-Depends: univention-config-registry (>=0.06), cups-client, cups-bsd
-Description: UCS - print client
+Conflicts: univention-printserver (<< 0.12)
+Depends: ${misc:Depends},
+ cups-client,
+ cups-bsd
+Description: UCS - printing client
  This packages provides the printer configuration.
  .
  It is part of Univention Corporate Server (UCS), an

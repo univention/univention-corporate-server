@@ -2,13 +2,18 @@ Source: univention-passwd-store
 Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper, ucslint, univention-config-dev
+Build-Depends: debhelper,
+ ucslint,
+ univention-config-dev
 
 Package: univention-passwd-store
 Architecture: all
-Depends: univention-config-registry, univention-pam, pam-runasroot
-Description: UCS - passwd store
- This package stores the cleartext-passwort while a user is 
+Depends: ${misc:Depends},
+ univention-config-registry,
+ univention-pam,
+ pam-runasroot
+Description: UCS - password store
+ This package stores the cleartext-passwort while a user is
  logged in. While this decrease system-security it allows
  the user to start applications like rdesktop with a
  "single sign on".

@@ -3,11 +3,15 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper, univention-config-dev, ucslint
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint
 
 Package: univention-mozilla-firefox
 Architecture: all
-Depends: univention-config-registry, firefox
+Depends: ${misc:Depends},
+ univention-config-registry,
+ firefox
 Description: UCS - Mozilla Firefox support
  This package contains the univention-config configuration
  manager, primarily used by the UCS base configuration.
@@ -16,4 +20,3 @@ Description: UCS - Mozilla Firefox support
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
-

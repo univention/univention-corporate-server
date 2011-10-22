@@ -3,11 +3,14 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper (>> 7), univention-config-dev, ucslint
+Build-Depends: debhelper (>> 7),
+ univention-config-dev,
+ ucslint
 
 Package: univention-ldap-overlay-memberof
 Architecture: all
-Depends: univention-ldap-server
+Depends: ${misc:Depends},
+ univention-ldap-server
 Description: configuration for OpenLDAP memberOf overlay module
  This package contains the general configuration for the
  OpenLDAP memberOf overlay module.

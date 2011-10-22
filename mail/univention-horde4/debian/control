@@ -2,19 +2,22 @@ Source: univention-horde4
 Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper, univention-config-dev, ucslint
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint
 
 Package: univention-horde4
 Architecture: all
-Depends: pear-horde-channel,
- php-horde-role, 
- php-horde-webmail, 
- php5-pgsql, 
- univention-postgresql, 
- shell-univention-lib, 
+Depends: ${misc:Depends},
+ pear-horde-channel,
+ php-horde-role,
+ php-horde-webmail,
+ php5-pgsql,
+ univention-postgresql,
+ shell-univention-lib,
  python-univention-lib,
- php-net-sieve, 
- php5-imagick, 
+ php-net-sieve,
+ php5-imagick,
  php5-tidy,
  php-xml-serializer,
  php-services-weather,

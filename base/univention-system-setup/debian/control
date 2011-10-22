@@ -13,18 +13,19 @@ XS-Python-Version: all
 
 Package: univention-system-setup
 Architecture: all
-Depends: univention-installer-modules, 
- ${python:Depends}, 
- ${misc:Depends}, 
- univention-ipcalc, 
- whois, 
- shell-univention-lib, 
- python-univention-lib (>= 1.0.25-1), 
- univention-management-console-module-setup, 
+Depends: ${misc:Depends}, ${python:Depends},
+ univention-installer-modules,
+ univention-ipcalc,
+ whois,
+ shell-univention-lib,
+ python-univention-lib (>= 1.0.25-1),
+ univention-management-console-module-setup,
  console-tools
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
-Description: univention system setup tools
+Description: UCS System Setup tools
+ This package provides the tool to configure the system, especially its name,
+ domain, network configuration, software.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -34,9 +35,14 @@ Description: univention system setup tools
 Package: univention-system-setup-boot
 Architecture: all
 Provides: univention-setup-boot
-Depends: univention-system-setup, xinit, firefox
+Depends: ${misc:Depends},
+ univention-system-setup,
+ xinit,
+ firefox
 Replaces: univention-setup-boot
-Description: starting univention-system-setup on next boot
+Description: Starting univention-system-setup on next boot
+ This package configures the computer to launch UCS System Setup on its next
+ boot.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -45,8 +51,10 @@ Description: starting univention-system-setup on next boot
 
 Package: univention-system-setup-appliance
 Architecture: all
-Depends: univention-system-setup-boot, univention-installer-modules (>= 4.0.28)
-Description: perform initial configuration of appliance editions
+Depends: ${misc:Depends},
+ univention-system-setup-boot,
+ univention-installer-modules (>= 4.0.28)
+Description: Perform initial configuration of appliance editions
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -59,7 +67,7 @@ Depends: univention-management-console-server,
  univention-installer-modules,
  univention-system-setup (= ${source:Version})
 Description: UMC module for Univention system setup
- This package contains the UMC module for the Univention system setup.
+ This package contains the UMC module for the UCS System Setup.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

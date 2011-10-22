@@ -3,20 +3,25 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.7.2
-Build-Depends: debhelper (>= 7.0.50~), ucslint, python2.6-dev, python-support, univention-config-dev
+Build-Depends: debhelper (>= 7.0.50~),
+ ucslint,
+ python2.6-dev,
+ python-support,
+ univention-config-dev
 
 Package: python-univention-connector
 Architecture: all
-Depends: ${python:Depends},
+Depends: ${misc:Depends}, ${python:Depends},
  python-univention,
  python-univention-license,
  univention-server-master | univention-server-backup
 Pre-Depends: univention-config-registry (>= 2.6.8-5)
 Provides: ${python:Provides}
-Conflicts: univention-server-slave, univention-server-member
+Conflicts: univention-server-slave,
+ univention-server-member
 Description: UCS - Modules for connector sychronisation
  This package contains the modules that implement the
- features of Univention AD Connector.
+ features of UCS Active Directory (AD) Connector.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -25,7 +30,7 @@ Description: UCS - Modules for connector sychronisation
 
 Package: python-univention-connector-ad
 Architecture: all
-Depends: ${python:Depends},
+Depends: ${misc:Depends}, ${python:Depends},
  python-univention,
  python-univention-license,
  python-univention-connector (= ${binary:Version}),
@@ -34,7 +39,7 @@ Pre-Depends: univention-config-registry
 Provides: ${python:Provides}
 Description: UCS - Modules for connector sychronisation
  This package contains the modules that implement the
- features of Univention AD Connector.
+ features of UCS Active Directory (AD) Connector.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -43,14 +48,15 @@ Description: UCS - Modules for connector sychronisation
 
 Package: univention-ad-connector
 Architecture: all
-Depends: univention-config-registry,
+Depends: ${misc:Depends},
+ univention-config-registry,
  python-univention-connector-ad (= ${binary:Version}),
  shell-univention-lib (>= 1.0.6),
  python-univention-lib (>= 1.0.25-1)
 Recommends: univention-nagios-ad-connector
-Description: UCS - Modules for sync ucs and active directory
+Description: UCS - Modules for sync UCS and Active Directory
  This package contains the modules that implement the
- features of Univention AD Connector.
+ features of UCS Active Directory (AD) Connector.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -59,9 +65,11 @@ Description: UCS - Modules for sync ucs and active directory
 
 Package: univention-ad-connector-exchange
 Architecture: all
-Depends: univention-server-master | univention-server-backup,
+Depends: ${misc:Depends},
+ univention-server-master | univention-server-backup,
  shell-univention-lib (>= 1.0.6)
-Description: This package extends a configured AD-Connector
+Description: UCS - AD-connector Exchange configuration
+ This package extends a configured Active Directory (AD) Connector
  to sync Microsoft-Exchange attributes by adding
  UCS LDAP-schema, custom attributes and activate
  mapping in univention baseconfig.

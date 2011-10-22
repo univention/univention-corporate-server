@@ -3,13 +3,16 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debootstrap, debhelper, ucslint
+Build-Depends: debootstrap,
+ debhelper,
+ ucslint
 
 Package: univention-debootstrap-3
 Architecture: all
-Depends: debootstrap, ${shlibs:Depends}
-Description: univention debootstrap script for UCS 3
- The debootstrap configuration for UCS 3.
+Depends: ${misc:Depends}, ${shlibs:Depends},
+ debootstrap
+Description: UCS debootstrap script for UCS 3
+ This package contains the debootstrap configuration for UCS 3.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

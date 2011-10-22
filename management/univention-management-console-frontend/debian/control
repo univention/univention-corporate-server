@@ -12,9 +12,10 @@ Build-Depends: debhelper (>= 7.0.50~),
 
 Package: univention-management-console-frontend
 Architecture: all
-Depends: ${misc:Depends}, univention-apache
-Description: Univention Management Console - Web based computer administration tool
- Univention Console is a web based program to manage computers.
+Depends: ${misc:Depends},
+ univention-apache
+Description: UCS Management Console - Web based computer administration tool
+ UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
  its features. This package contains the AJAX web-frontend
  application. It is written using the Dojo Toolkit and allows to
@@ -28,14 +29,15 @@ Description: Univention Management Console - Web based computer administration t
 
 Package: univention-management-console-web-server
 Architecture: all
-Depends: univention-management-console-frontend,
+Depends: ${misc:Depends},
+ univention-management-console-frontend,
  univention-management-console-server,
  python-univention-management-console,
  python-cherrypy3,
  python-daemon,
  python-simplejson
-Description: Univention Management Console - Web server
- Univention Console is a web based program to manage computers.
+Description: UCS Management Console - Web server
+ UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
  its features. This package contains the web server providing
  HTTP access to the UMC server.
@@ -47,12 +49,13 @@ Description: Univention Management Console - Web server
 
 Package: univention-management-console-fontend-dev
 Architecture: all
-Depends: univention-dojo,
+Depends: ${misc:Depends},
+ univention-dojo,
  univention-management-console-dev,
  imagemagick,
  rsync
-Description: Univention Management Console - development files
- Univention Console is a web based program to manage computers.  It has
+Description: UCS Management Console - development files
+ UCS Management Console is a web based program to manage computers.  It has
  an extensible architecture, using modules to implement its
  features. This package is a meta package that contains dependencies
  to packages that are necessary for the framework development.

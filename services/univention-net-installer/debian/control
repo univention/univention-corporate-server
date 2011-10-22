@@ -2,12 +2,17 @@ Source: univention-net-installer
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev, ucslint
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint
 Standards-Version: 3.8.2
 
 Package: univention-net-installer
 Architecture: all
-Depends: univention-tftp, syslinux, univention-config-registry
+Depends: ${misc:Depends},
+ univention-tftp,
+ syslinux,
+ univention-config-registry
 Description: UCS - automatic profile-based installation services
  This package contain the packages for the profile-based installation
  of UCS systems.

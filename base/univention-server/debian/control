@@ -13,7 +13,8 @@ Pre-Depends: univention-ssl
 Recommends: univention-nagios-client,
  openssh-server,
  python-univention-license
-Depends: univention-config-registry,
+Depends: ${misc:Depends},
+ univention-config-registry,
  univention-join,
  univention-ldap-server,
  univention-maintenance,
@@ -58,7 +59,9 @@ Recommends: univention-nagios-client,
  univention-bind,
  openssh-server,
  python-univention-license
-Depends: univention-config-registry,
+Pre-Depends: univention-config (>= 7.0.25)
+Depends: ${misc:Depends},
+ univention-config-registry,
  univention-join,
  univention-ssl,
  univention-ldap-server,
@@ -106,7 +109,8 @@ Recommends: univention-management-console,
  univention-bind,
  openssh-server,
  univention-nagios-client
-Depends: univention-config-registry,
+Depends: ${misc:Depends},
+ univention-config-registry,
  univention-join,
  univention-ldap-server,
  univention-maintenance,,
@@ -148,7 +152,8 @@ Architecture: all
 Recommends: univention-management-console,
  openssh-server,
  univention-nagios-client
-Depends: univention-config-registry,
+Depends: ${misc:Depends},
+ univention-config-registry,
  univention-join,
  univention-showload,
  univention-maintenance,
@@ -185,7 +190,8 @@ Conflicts: univention-application-server
 Recommends: univention-management-console,
  openssh-server,
  univention-nagios-client
-Depends: univention-policy-tools,
+Depends: ${misc:Depends},
+ univention-policy-tools,
  univention-updater,
  ldap-utils,
  univention-x-core,
@@ -236,7 +242,8 @@ Provides: univention-fat-client,
 Recommends: univention-management-console,
  openssh-server,
  univention-nagios-client
-Depends: univention-policy-tools,
+Depends: ${misc:Depends},
+ univention-policy-tools,
  univention-updater,
  ldap-utils,
  univention-x-core,
@@ -277,7 +284,8 @@ Description: UCS - Managed Client
 Package: univention-basesystem
 Architecture: all
 Recommends: openssh-server
-Depends: univention-updater,
+Depends: ${misc:Depends},
+ univention-updater,
  univention-grub,
  univention-archive-key,
  univention-firewall,

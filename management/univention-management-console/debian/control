@@ -12,7 +12,8 @@ Standards-Version: 3.7.2
 
 Package: univention-management-console
 Architecture: all
-Depends: python-univention-management-console (= ${source:Version}),
+Depends: ${misc:Depends},
+ python-univention-management-console (= ${source:Version}),
  univention-management-console-server (= ${source:Version}),
  univention-management-console-web-server,
  univention-management-console-module-top,
@@ -22,8 +23,8 @@ Depends: python-univention-management-console (= ${source:Version}),
  univention-management-console-module-join,
  univention-management-console-module-updater,
  univention-management-console-module-setup
-Description: Univention Management Console - Web based computer administration tool
- Univention Console is a web based program to manage computers.
+Description: UCS Management Console - Web based computer administration tool
+ UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
  its features. This package contains the web-frontend, which
  can be installed to provide access to one or several daemons.
@@ -35,12 +36,13 @@ Description: Univention Management Console - Web based computer administration t
 
 Package: univention-management-console-server
 Architecture: all
-Depends: python-univention-management-console (= ${source:Version}),
+Depends: ${misc:Depends},
+ python-univention-management-console (= ${source:Version}),
  shell-univention-lib (>= 1.0.10-1),
  python-daemon,
  python-univention-lib (>= 1.0.25-1)
-Description: Univention Management Console - server
- Univention Console is a web based program to manage computers.
+Description: UCS Management Console - server
+ UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
  its features. This package contains the backend-daemon, which
  can be installed on any UCS-system to provide functionalities
@@ -53,7 +55,7 @@ Description: Univention Management Console - server
 
 Package: python-univention-management-console
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends},
+Depends: ${misc:Depends}, ${python:Depends},
  python-univention-config-registry,
  python-univention-lib,
  univention-join,
@@ -63,8 +65,8 @@ Depends: ${python:Depends}, ${misc:Depends},
  python-polib,
  python-notifier (>= 0.9.0)
 Provides: ${python:Provides}
-Description: Univention Management Console - Python Modules
- Univention Console is a web based program to manage computers.
+Description: UCS Management Console - Python Modules
+ UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
  its features. This package contains the backend-daemon, which
  can be installed on any UCS-system to provide functionalities
@@ -77,12 +79,12 @@ Description: Univention Management Console - Python Modules
 
 Package: univention-management-console-dev
 Architecture: all
-Depends: ${python:Depends},
+Depends: ${misc:Depends}, ${python:Depends},
  python-univention-config-registry,
  python-polib,
  gettext
-Description: Univention Management Console - development files
- Univention Console is a web based program to manage computers.  It has
+Description: UCS Management Console - development files
+ UCS Management Console is a web based program to manage computers. It has
  an extensible architecture, using modules to implement its
  features. This package contains development files helping to implement
  and package own UMC module

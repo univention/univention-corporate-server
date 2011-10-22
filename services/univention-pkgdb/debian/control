@@ -2,19 +2,24 @@ Source: univention-pkgdb
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, python-dev, python-support, univention-config-dev, ucslint
+Build-Depends: debhelper,
+ python-dev,
+ python-support,
+ univention-config-dev,
+ ucslint
 Standards-Version: 3.8.2
 
 Package: univention-pkgdb
 Architecture: all
 Pre-Depends: univention-postgresql (>= 2.0.1-5)
-Depends: univention-config-registry,
+Depends: ${misc:Depends},
+ univention-config-registry,
  postgresql-client,
  univention-pkgdb-tools,
  shell-univention-lib (>= 1.0.23),
  python-univention-lib (>= 1.0.25-1)
 Description: UCS - PkgDB
- This package contains server-side-components for the Univention package database.
+ This package contains server-side-components for the UCS package database.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -23,11 +28,15 @@ Description: UCS - PkgDB
 
 Package: python-univention-pkgdb
 Architecture: all
-Depends:  ${python:Depends}, python-apt, python-pygresql, python-dns, univention-config-registry
+Depends: ${misc:Depends}, ${python:Depends},
+ python-apt,
+ python-pygresql,
+ python-dns,
+ univention-config-registry
 Provides: ${python:Provides}
-Conflicts: univention-pkgdb-lib (<<1.0.4)
+Conflicts: univention-pkgdb-lib (<< 1.0.4)
 Description: UCS - PkgDB
- This package contains python libraries needed for all Univention package database components.
+ This package contains python libraries needed for all UCS package database components.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -36,10 +45,12 @@ Description: UCS - PkgDB
 
 Package: univention-pkgdb-tools
 Architecture: all
-Depends: univention-config-registry, python-univention-pkgdb
+Depends: ${misc:Depends},
+ univention-config-registry,
+ python-univention-pkgdb
 Recommends: postgresql-client
 Description: UCS - PkgDB-Tools
- This package contains client-side-tools for the Univention package database.
+ This package contains client-side-tools for the UCS package database.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -48,7 +59,8 @@ Description: UCS - PkgDB-Tools
 
 Package: univention-pkgdb-lib
 Architecture: all
-Depends: python-univention-pkgdb
+Depends: ${misc:Depends},
+ python-univention-pkgdb
 Description: Transition package
  Package to ease upgrading from old package
  python-univention-pkgdb to the new package.  This package

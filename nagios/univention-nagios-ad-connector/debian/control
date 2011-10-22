@@ -8,10 +8,11 @@ Standards-Version: 3.7.2
 
 Package: univention-nagios-ad-connector
 Architecture: any
-Depends: univention-nagios-client
-Description: nagios plugin for Univention AD connector
+Depends: ${misc:Depends},
+ univention-nagios-client
+Description: nagios plugin for UCS AD connector
  This package installs a nagios plugin to monitor the state
- of Univention Active Directory (AD) connectors.
+ of UCS Active Directory (AD) connectors.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

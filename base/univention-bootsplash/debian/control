@@ -2,15 +2,19 @@ Source: univention-bootsplash
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev, ucslint
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint
 Standards-Version: 3.8.2
 
 Package: univention-bootsplash
 Architecture: all
 Pre-Depends: univention-config-registry
-Depends: plymouth, plymouth-themes-all
+Depends: ${misc:Depends},
+ plymouth,
+ plymouth-themes-all
 Description: UCS - bootsplash
- Univention Bootsplash manages splashimages on bootup.
+ This package configures the graphical boot screen.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
