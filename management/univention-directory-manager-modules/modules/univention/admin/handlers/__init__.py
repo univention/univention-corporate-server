@@ -45,9 +45,20 @@ import univention.admin.mapping
 import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.localization
+from univention.admin import configRegistry
 
 translation=univention.admin.localization.translation('univention/admin/handlers')
 _=translation.translate
+
+# global caching variable
+if configRegistry.is_true('directory/manager/samba3/legacy', False):
+	s4connector_present = False
+elif configRegistry.is_false('directory/manager/samba3/legacy', False):
+	s4connector_present = True
+else:
+	s4connector_present = None
+
+s4connector_search = False
 
 # FIXME: What is the use of the following line?
 # __path__.append("users")
@@ -445,10 +456,26 @@ class base(object):
 class simpleLdap(base):
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+		global s4connector_present
+		global s4connector_search
+
 		self._exists = False
 		self.exceptions=[]
 		base.__init__(self, co, lo, position, dn, superordinate )
 		base.open(self)
+
+		if not s4connector_search:
+			s4connector_search = True
+			# s4connector_present is a global caching variable than can be
+			# None ==> ldap has not been checked for servers with service "S4 Connector"
+			# True ==> at least one server with IP address (aRecord) is present
+			# False ==> no server is present
+			if s4connector_present == None:
+				searchResult = self.lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr = ['aRecord'])
+				s4connector_present = True
+				if not [ ddn for (ddn, attr) in searchResult if attr.has_key('aRecord') ]:
+					s4connector_present = False
+		self.s4connector_present = s4connector_present
 
 		if attributes:
 			self.oldattr = attributes

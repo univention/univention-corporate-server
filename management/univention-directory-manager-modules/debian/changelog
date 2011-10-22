@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.143-1) unstable; urgency=low
+
+  * Use a builtin SID for computers too. S4 must create the SID for
+    user objects and for computer objects (Bug #24234)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 22 Oct 2011 20:33:17 +0200
+
 univention-directory-manager-modules (7.0.142-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

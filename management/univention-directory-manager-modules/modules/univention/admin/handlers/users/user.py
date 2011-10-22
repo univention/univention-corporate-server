@@ -969,14 +969,6 @@ layout = [
 		] )
 	]
 
-# global caching variable
-if configRegistry.is_true('directory/manager/samba3/legacy', False):
-	s4connector_present = False
-elif configRegistry.is_false('directory/manager/samba3/legacy', False):
-	s4connector_present = True
-else:
-	s4connector_present = None
-
 # append tab with CTX flags
 layout.append( mungeddial.tab )
 
@@ -1290,7 +1282,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		global mapping
 		global property_descriptions
 		global default_property_descriptions
-		global s4connector_present
 
 		# homePostalAddress backward compatibility
 		# change mapping only if new syntax is used (via ucr)
@@ -1315,15 +1306,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 		mungeddial.Support.__init__( self )
-		# s4connector_present is a global caching variable than can be
-		# None ==> ldap has not been checked for servers with service "S4 Connector"
-		# True ==> at least one server with IP address (aRecord) is present
-		# False ==> no server is present
-		if s4connector_present == None:
-			searchResult = self.lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr = ['aRecord'])
-			s4connector_present = True
-			if not [ ddn for (ddn, attr) in searchResult if attr.has_key('aRecord') ]:
-				s4connector_present = False
 
 		self.options=[]
 		if 'objectClass' in self.oldattr:
@@ -1830,7 +1812,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						raise univention.admin.uexceptions.sidAlreadyUsed, ': %s' % self['sambaRID']
 
 				else:
-					if s4connector_present:
+					if self.s4connector_present:
 						# In this case Samba 4 must create the SID, the s4 connector will sync the
 						# new sambaSID back from Samba 4.
 						self.userSid='S-1-4-%s' % self.uidNum
