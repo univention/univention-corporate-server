@@ -1,6 +1,8 @@
 univention-updater (7.0.53-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
+  * Install univention-config-wrapper on upgrades to help UCR transition (Bug
+  	#22668)
 
  -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:15 +0200
 

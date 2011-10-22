@@ -370,7 +370,7 @@ apt-get update >&3 2>&3
 
 # BEGIN -- update to 3.0-0 Bug #23054
 # 1. Install Python2.6-minimal before Python-minimal gets installed to workaround broken /usr/bin/python being used by python-support
-$update_commands_install libssl0.9.8 python2.6-minimal python-central >&3 2>&3
+$update_commands_install libssl0.9.8 python2.6-minimal python-central univention-config-wrapper >&3 2>&3
 # 2. Upgrade slapd before new libdb4.7 4.7.25-9.3.201105022022 gets installed, which used a different signature than old 4.7.25-6.7.201101311721
 case "$(dpkg-query -W -f '${Status}' slapd)" in
 install*)
