@@ -32,14 +32,14 @@
 
 po=de
 
-if  [ ! -e ../univention-system-setup/usr/sbin/univention-system-setup ]; then
+if  [ ! -e ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup ]; then
 	echo "Please checkout univention-system-setup, the installer combines i18n strings"
 	echo "from both the installer and univention-system-setup"
 	exit
 fi
 
 
-xgettext -L Python -o $po.py.pot installer/*py installer/modules/*.py ../univention-system-setup/usr/sbin/univention-system-setup*
+xgettext -L Python -o $po.py.pot installer/*py installer/modules/*.py ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup*
 xgettext -L Shell -o $po.sh.pot scripts/*.sh
 
 for fn in $po.py.pot $po.sh.pot ; do
