@@ -32,17 +32,8 @@
 
 eval "$(univention-config-registry shell)"
 
-if [ -n "$boot_setup_start" ]; then
-	univention-config-registry set "system/setup/boot/start?$boot_setup_start"
-else
-	univention-config-registry set 'system/setup/boot/start?true'
-fi
-
-if [ -n "$boot_setup_modules" ]; then
-	univention-config-registry set "system/setup/boot/modules?$boot_setup_modules"
-else
-	univention-config-registry set 'system/setup/boot/modules?basis,net'
-fi
+univention-config-registry set 'system/setup/boot/start?true'
+univention-config-registry set 'system/setup/boot/modules?password,net'
 
 #DEBHELPER#
 

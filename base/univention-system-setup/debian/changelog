@@ -1,3 +1,10 @@
+univention-system-setup (5.0.19-3) unstable; urgency=low
+
+  * set system/setup/boot/modules to "password,net" (Bug #23870)
+  * removed old migration code for UCS 2.0
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 23 Oct 2011 18:14:02 +0200
+
 univention-system-setup (5.0.19-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
