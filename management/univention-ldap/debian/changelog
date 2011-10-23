@@ -1,4 +1,4 @@
-univention-ldap (8.0.51-3) unstable; urgency=low
+univention-ldap (8.0.51-4) unstable; urgency=low
 
   * fixed ucslint warning; Bug #22668
 
