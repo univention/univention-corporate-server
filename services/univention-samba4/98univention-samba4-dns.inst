@@ -38,7 +38,7 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
+if [ $JS_LAST_EXECUTED_VERSION = 0 ] && [ "$dns_backend" != "samba4" ]; then
 	univention-config-registry set dns/backend=samba4
 	if [ -x /etc/init.d/bind9 ]; then
 		/etc/init.d/bind9 restart

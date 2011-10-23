@@ -1,3 +1,12 @@
+univention-samba4 (1.0.77-1) unstable; urgency=low
+
+  * Give DC Backup Hosts read permissions for /etc/samba4.secret
+    (Bug #22861)
+  * Set description for firewall port 1024
+  * Open Kerberos ports for Samba 4
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 23 Oct 2011 20:17:57 +0200
+
 univention-samba4 (1.0.76-1) unstable; urgency=low
 
   * Added kerberos ports (Bug #23929)

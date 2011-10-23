@@ -81,7 +81,8 @@ if [ -e "$pwfile" ]; then
 	printf "\t# modification timestamp: $timestamp\n" >> "$pwhistoryfile"
 fi
 touch "$pwfile"
-chmod 600 "$pwfile"
+chgrp "DC Backup Hosts" "$pwfile"
+chmod 640 "$pwfile"
 echo -n "$adminpw" > "$pwfile"
 
 # Test:
