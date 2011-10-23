@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.111-1) unstable; urgency=low
+
+  * umc.tools.ldapDn2Path: converts LDAP DN to "human readable" path; Bug #22439
+  * hostname is now shown as normal text in header instead of button
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 23 Oct 2011 12:07:37 +0200
+
 univention-management-console-frontend (1.0.110-1) unstable; urgency=low
 
   * remove default button reset from SearchForm and LoginDialog; Bug #22439

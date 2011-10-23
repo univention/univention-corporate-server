@@ -358,16 +358,17 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		}));
 
 		// query domainname and hostname and add this information to the header
-		var hostInfo = new dijit.form.Button({
-			label: '...',
-			'class': 'umcHeaderButton'
-		});
+		var hostInfo = new umc.widgets.Text( {
+			templateString: '<span dojoAttachPoint="contentNode">${content}</span>',
+			content: '...',
+			'class': 'umcHeaderText'
+		} );
 		headerRight.addChild(hostInfo);
 		umc.tools.umcpCommand('get/ucr', [ 'domainname', 'hostname' ]).
 			then(dojo.hitch(this, function(data) {
 				this.domainname = data.result.domainname;
 				this.hostname = data.result.hostname;
-				hostInfo.set('label', this._('Host: %(host)s.%(domain)s', {
+				hostInfo.set('content', this._('Host: %(host)s.%(domain)s', {
 					domain: this.domainname,
 					host: this.hostname
 				}));

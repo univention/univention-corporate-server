@@ -557,6 +557,22 @@ dojo.mixin(umc.tools, {
 		return res;
 	},
 
+	ldapDn2Path: function( dn, base ) {
+		var base_list = this.explodeDn( base, true );
+		var path = '';
+
+		dn = dn.slice( 0, - ( base.length + 1 ) );
+		var dn_list = this.explodeDn( dn, true ).slice( 1 );
+
+		// format base
+		path = base_list.reverse().join( '.' ) + ':/';
+		if ( dn_list.length ) {
+			path += dn_list.reverse().join( '/' );
+		}
+
+		return path;
+	},
+
 	inheritsFrom: function(/*Object*/ _o, /*String*/ c) {
 		// summary:
 		//		Returns true in case object _o inherits from class c.

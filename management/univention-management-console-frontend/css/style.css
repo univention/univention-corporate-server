@@ -48,6 +48,20 @@ form {
 	background: url(../images/bg/top.png) repeat-x top;
 }
 
+.umcHeaderText {
+	display: inline-block;
+	vertical-align: middle;
+	color: #fff;
+	height: auto;
+	background: none;
+	border-radius: 0;
+	border: none;
+	padding: 0;
+	box-shadow: none;
+	padding: 9px;
+	font-size: 15px;
+}
+
 .umcHeader .umcHeaderButton {
 	margin: 0;
 }
