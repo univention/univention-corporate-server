@@ -258,14 +258,16 @@ class UDM_Module( object ):
 		return obj.dn
 
 	@LDAP_Connection
-	def remove( self, ldap_dn, ldap_connection = None, ldap_position = None ):
+	def remove( self, ldap_dn, cleanup = False, recursive = False, ldap_connection = None, ldap_position = None ):
 		"""Removes a LDAP object"""
 		superordinate = udm_objects.get_superordinate( self.module, None, ldap_connection, ldap_dn )
 		obj = self.module.object( None, ldap_connection, ldap_position, dn = ldap_dn, superordinate = superordinate )
 		try:
 			obj.open()
 			MODULE.info( 'Removing LDAP object %s' % ldap_dn )
-			obj.remove()
+			obj.remove( remove_childs = recursive )
+			if cleanup:
+				udm_objects.performCleanup( obj )
 		except udm_errors.base, e:
 			MODULE.process( 'Failed to remove LDAP object %s' % ldap_dn )
 			raise UDM_Error( str( e ) )

@@ -206,20 +206,22 @@ class Instance( Base ):
 	def remove( self, request ):
 		"""Removes the given list of LDAP objects.
 
-		requests.options = [ <LDAP DN>, ... ]
+		requests.options = [ { 'object' : <LDAP DN>, 'options' { 'cleanup' : (True|False), 'recursive' : (True|False) } }, ... ]
 
 		return: [ { '$dn$' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
 		"""
 
 		def _thread( request ):
 			result = []
-			for ldap_dn in request.options:
+			for item in request.options:
+				ldap_dn = item.get( 'object' )
+				options = item.get( 'options', {} )
 				module = get_module( request.flavor, ldap_dn )
 				if module is None:
 					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : _( 'LDAP object could not be identified' ) } )
 					continue
 				try:
-					module.remove( ldap_dn )
+					module.remove( ldap_dn, options.get( 'cleanup', False ), options.get( 'recursive', False ) )
 					result.append( { '$dn$' : ldap_dn, 'success' : True } )
 				except UDM_Error, e:
 					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e ) } )

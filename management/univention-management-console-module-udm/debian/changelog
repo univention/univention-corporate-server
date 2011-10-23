@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.192-1) unstable; urgency=low
+
+  * adapt to new remove API of the ModuleStore; Bug #22439
+  * backend supports cleanup and recursive option for deletion
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 23 Oct 2011 14:19:16 +0200
+
 univention-management-console-module-udm (1.0.191-1) unstable; urgency=low
 
   * minor fixes and preparation for displaying object type and location; Bug #22439

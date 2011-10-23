@@ -769,11 +769,11 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		}
 	},
 
-	removeObjects: function(/*String|String[]*/ _ids) {
+	removeObjects: function( /*String|String[]*/ _ids, /*Boolean?*/ cleanup, /*Boolean?*/ recursive ) {
 		// summary:
 		//		Remove the selected UDM objects.
 
-		// get an array
+		// get an object
 		var ids = dojo.isArray(_ids) ? _ids : (_ids ? [ _ids ] : []);
 
 		// ignore empty array
@@ -786,13 +786,18 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		if (ids.length == 1) {
 			msg = this._('Please confirm the removal of the selected %s!', this.objectNameSingular);
 		}
+		var options = {
+			cleanup: undefined === cleanup ? false : cleanup,
+			recursive: undefined === recursive ? false : recursive
+		};
+
 		umc.dialog.confirm(msg, [{
 			label: this._('Delete'),
 			callback: dojo.hitch(this, function() {
 				// remove the selected elements via a transaction on the module store
 				var transaction = this.moduleStore.transaction();
 				dojo.forEach(ids, function(iid) {
-					this.moduleStore.remove(iid);
+					this.moduleStore.remove( iid, options );
 				}, this);
 				transaction.commit();
 			})
