@@ -1,3 +1,9 @@
+univention-firewall (4.0.6-4) unstable; urgency=low
+
+  * override ucslint copyright error (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 23 Oct 2011 18:42:36 +0200
+
 univention-firewall (4.0.6-3) unstable; urgency=low
 
   * set default INPUT firewall policy in univention-firewall (Bug #23577)
