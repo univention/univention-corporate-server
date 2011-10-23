@@ -56,3 +56,5 @@ Variables: ldap/index/eq
 Variables: ldap/index/pres
 Variables: ldap/index/sub
 Variables: ldap/online/master
+Variables: ldap/translogfile
+Variables: ldap/k5pwd

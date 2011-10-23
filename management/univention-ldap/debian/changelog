@@ -1,3 +1,9 @@
+univention-ldap (8.0.51-3) unstable; urgency=low
+
+  * fixed ucslint warning; Bug #22668
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 23 Oct 2011 21:25:19 +0200
+
 univention-ldap (8.0.51-2) unstable; urgency=low
 
   * fixed typo in ucslint override for slapd init script; Bug #23494

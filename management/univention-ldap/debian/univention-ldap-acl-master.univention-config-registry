@@ -15,6 +15,7 @@ Variables: ldap/server/type
 Variables: ldap/master
 Variables: interfaces/eth0/address
 Variables: ldap/replog
+Variables: slapd/port
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf

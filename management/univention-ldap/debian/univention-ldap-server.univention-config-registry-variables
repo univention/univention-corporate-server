@@ -153,3 +153,9 @@ Description[de]=IP Adressen, von denen aus anonyme LDAP-Suche erlaubt ist
 Description[en]=IP addresses for which anonymous directory search is allowed
 Type=str
 Categories=service-ldap
+
+[ldap/k5pwd]
+Description[de]=Aktiviert das k5pwd Overlay-Modul
+Description[en]=Activates th k5pwd overlay module
+Type=bool
+Categories=service-ldap
