@@ -34,6 +34,13 @@
 
 . /usr/share/univention-lib/all.sh
 
+# configure firewall
+ucr set security/packetfilter/package/univention-samba4wins/udp/137/all="ACCEPT" \
+		security/packetfilter/package/univention-samba4wins/udp/137/all/en="netbios 137 (Samba)" \
+		security/packetfilter/package/univention-samba4wins/tcp/42/all="ACCEPT" \
+		security/packetfilter/package/univention-samba4wins/tcp/42/all/en="wins replication (Samba)"
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+
 call_joinscript 90univention-samba4wins.inst
 
 if [ -x /etc/init.d/univention-directory-listener ]; then

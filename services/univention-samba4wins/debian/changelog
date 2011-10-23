@@ -1,3 +1,10 @@
+univention-samba4wins (4.0.0-2) unstable; urgency=low
+
+  * Added workgroup to etc/samba4wins/samba4wins.conf (Bug #22676)
+  * Added firewall configuration
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 23 Oct 2011 21:46:57 +0200
+
 univention-samba4wins (4.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22676)

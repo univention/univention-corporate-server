@@ -2,6 +2,7 @@ Type: file
 File: etc/samba4wins/samba4wins.conf
 Variables: samba4wins/netbios/name
 Variables: samba4wins/address
+Variables: windows/domain
 User: root
 Group: root
 Mode: 0644
