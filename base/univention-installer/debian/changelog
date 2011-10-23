@@ -1,3 +1,10 @@
+univention-installer (7.0.119-1) unstable; urgency=low
+
+  * Redirect stderr for join scripts to join.log for DC master systems
+    too (Bug #24074)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 23 Oct 2011 20:12:56 +0200
+
 univention-installer (7.0.118-1) unstable; urgency=low
 
   * fixed detection of xinit in 45_password.py (Bug #23870)

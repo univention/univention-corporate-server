@@ -110,7 +110,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	for i in /usr/lib/univention-install/*.inst; do
 		echo "Configure \`basename \$i\`" | progress_filter
 		echo "Configure \`basename \$i\`" >>/var/log/univention/join.log
-		\$i >>/var/log/univention/join.log;
+		\$i >>/var/log/univention/join.log 2>&1;
 	done
 fi
 
