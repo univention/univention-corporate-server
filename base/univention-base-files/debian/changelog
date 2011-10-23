@@ -1,3 +1,9 @@
+univention-base-files (1.0.31-3) unstable; urgency=low
+
+  * moved default INPUT firewall policy to univention-firewall (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 23 Oct 2011 18:10:08 +0200
+
 univention-base-files (1.0.31-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

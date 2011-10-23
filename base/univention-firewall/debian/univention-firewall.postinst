@@ -42,4 +42,11 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3; t
 	fi
 fi
 
+# during installation set default policy to REJECT, during update to ACCEPT
+if [ "$1" = "configure" -a -n "$2" ] ; then
+	ucr set security/packetfilter/defaultpolicy?ACCEPT
+else
+	ucr set security/packetfilter/defaultpolicy?REJECT
+fi
+
 exit 0
