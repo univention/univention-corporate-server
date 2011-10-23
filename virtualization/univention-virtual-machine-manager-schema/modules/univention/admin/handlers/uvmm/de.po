@@ -7,139 +7,175 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager-schema\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-21 09:17+0200\n"
-"PO-Revision-Date: 2011-04-21 09:23+0200\n"
+"POT-Creation-Date: 2011-10-23 14:41+0200\n"
+"PO-Revision-Date: 2011-10-23 14:42+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: profile.py:46
+#: info.py:49
+msgid "UVMM: Machine information"
+msgstr "UVMM: Informationen zur Maschine"
+
+#: info.py:55 info.py:56
+msgid "UUID"
+msgstr "UUID"
+
+#: info.py:65
+msgid "Description"
+msgstr "Beschreibung"
+
+#: info.py:66
+msgid "Description of virtual machine"
+msgstr "Beschreibung der virtuellen Maschine"
+
+#: info.py:75 profile.py:235 profile.py:236
+msgid "Operating system"
+msgstr "Betriebssystem"
+
+#: info.py:76
+msgid "Name of the operation system"
+msgstr "Name des Betriebssystem"
+
+#: info.py:85
+msgid "Contact"
+msgstr "Kontakt"
+
+#: info.py:97 info.py:98 profile.py:284 profile.py:285
+msgid "General"
+msgstr "Allgemein"
+
+#: info.py:97
+msgid "Virtual machine information"
+msgstr "Informationen zur virtuelle Maschine"
+
+#: profile.py:47
 msgid "UVMM: Profile"
 msgstr "UVMM: Profil"
 
-#: profile.py:53
+#: profile.py:54
 msgid "hard drive"
 msgstr "Festplatte"
 
-#: profile.py:54
+#: profile.py:55
 msgid "CDROM drive"
 msgstr "CDROM-Laufwerk"
 
-#: profile.py:55
+#: profile.py:56
 msgid "Network"
 msgstr "Netzwerk"
 
-#: profile.py:61
+#: profile.py:62
 msgid "Automatic"
 msgstr "Automatisch"
 
-#: profile.py:69
+#: profile.py:70
 msgid "Full virtualization (KVM)"
 msgstr "Volle Virtualisierung (KVM)"
 
-#: profile.py:70
+#: profile.py:71
 msgid "Full virtualization (XEN)"
 msgstr "Volle Virtualisierung (XEN)"
 
-#: profile.py:71
+#: profile.py:72
 msgid "Paravirtualization (XEN)"
 msgstr "Paravirtualisierung (XEN)"
 
-#: profile.py:78
+#: profile.py:79
 msgid "Coordinated Universal Time"
 msgstr "Koordinierte Weltzeit"
 
-#: profile.py:79
+#: profile.py:80
 msgid "Local time zone"
 msgstr "Lokale Zeitzone"
 
-#: profile.py:84 profile.py:85
+#: profile.py:85 profile.py:86
 msgid "Name"
 msgstr "Name"
 
-#: profile.py:94
+#: profile.py:95
 msgid "Name prefix"
 msgstr "Namenspräfix"
 
-#: profile.py:95
+#: profile.py:96
 msgid "Prefix for the name of virtual machines"
 msgstr "Präfix für den Namen von virtuellen Maschinen"
 
-#: profile.py:104
+#: profile.py:105
 msgid "Architecture"
 msgstr "Architektur"
 
-#: profile.py:105
+#: profile.py:106
 msgid "Architecture of the virtual machine"
 msgstr "Architektur der virtuellen Maschine"
 
-#: profile.py:114 profile.py:115
+#: profile.py:115 profile.py:116
 msgid "Virtualisation Technology"
 msgstr "Virtualisierungstechnology"
 
-#: profile.py:124
+#: profile.py:125
 msgid "CPUs"
 msgstr "Prozessoren"
 
-#: profile.py:125
+#: profile.py:126
 msgid "Number of virtual CPUs"
 msgstr "Anzahl der Prozessoren"
 
-#: profile.py:134
+#: profile.py:135
 msgid "Memory"
 msgstr "Speicher"
 
-#: profile.py:135
+#: profile.py:136
 msgid "Amount of memory"
 msgstr "Größe des Speichers"
 
-#: profile.py:144
+#: profile.py:145
 msgid "Disk space"
 msgstr "Festplatten Speicherplatz"
 
-#: profile.py:145
+#: profile.py:146
 msgid "Amount of disk space"
 msgstr "Größe der Festplatte"
 
-#: profile.py:154
+#: profile.py:155
 msgid "Network interface"
 msgstr "Netz-Interface"
 
-#: profile.py:155
+#: profile.py:156
 msgid "Bridging interface"
 msgstr "Bridging Interface"
 
-#: profile.py:164
+#: profile.py:165 profile.py:302
 msgid "Remote access"
 msgstr "Fernzugriff"
 
-#: profile.py:165
+#: profile.py:166
 msgid "Active VNC remote acess"
 msgstr "Aktiviert den VNC Fernzugriff"
 
-#: profile.py:174 profile.py:175
+#: profile.py:175 profile.py:176
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
-#: profile.py:184 profile.py:185
+#: profile.py:185 profile.py:186
 msgid "Kernel"
 msgstr "Kernel"
 
-#: profile.py:194 profile.py:195
+#: profile.py:195 profile.py:196
 msgid "Kernel parameter"
 msgstr "Kernel Parameter"
 
-#: profile.py:204 profile.py:205
+#: profile.py:205 profile.py:206
 msgid "Initramfs disk"
 msgstr "Iinitramfs Disk"
 
-#: profile.py:214
+#: profile.py:215
 msgid "Use advanced kernel configuarion"
 msgstr "Verwende erweiterte Kernelkonfiguration"
 
-#: profile.py:215
+#: profile.py:216
 msgid ""
 "Manually specify the kernel configuration for paravirtualized machines or "
 "use pyGrub as bootloader"
@@ -147,75 +183,44 @@ msgstr ""
 "Entweder kann manuell die Kernelkonfiguration für die paravirtualisierte "
 "Maschine angegeben werden oder es wird pyGrub als Bootloder verwendet"
 
-#: profile.py:224
+#: profile.py:225
 msgid "Boot devices"
 msgstr "Boot-Device"
 
-#: profile.py:225
+#: profile.py:226
 msgid "Order of boot devices"
 msgstr "Reihenfolge der Boot-Devices"
 
-#: profile.py:234 profile.py:235
-msgid "Operating system"
-msgstr "Betriebssystem"
-
-#: profile.py:244
+#: profile.py:245
 msgid "Use para-virtual driver for hard drives"
 msgstr "Verwende paravirtualisierte Treiber für Festplatten"
 
-#: profile.py:253
+#: profile.py:254
 msgid "Use para-virtual driver for network interface"
 msgstr "Verwende paravirtualisierte Treiber für Netzwerkkarten"
 
-#: profile.py:262
+#: profile.py:263
 msgid "Use para-virtual driver for CDROM drives"
 msgstr "Verwende paravirtualisierte Treiber für CDROM-Laufwerke"
 
-#: profile.py:271
+#: profile.py:272
 msgid "Real Time Clock offset"
 msgstr "Realzeituhrversatz"
 
-#: profile.py:272
+#: profile.py:273
 msgid "Offset of instances Real Time Clock to host computers clock"
-msgstr "Versatz der Realzeituhr der Instanz gegenüber der Uhr der Virtualisierungsservers"
+msgstr ""
+"Versatz der Realzeituhr der Instanz gegenüber der Uhr der "
+"Virtualisierungsservers"
 
-#: profile.py:281
-msgid "Hardware"
-msgstr "Hardware"
-
-#: profile.py:285
-msgid "Boot"
-msgstr "Bootvorgang"
-
-#: profile.py:289
-msgid "Virtualization"
-msgstr "Virtualisierung"
-
-#: profile.py:295
-msgid "General"
-msgstr "Allgemein"
-
-#: profile.py:295
+#: profile.py:284
 msgid "Virtual machine profile"
 msgstr "Profil für eine virtuelle Maschine"
 
-#~ msgid "UVMM: Machine information"
-#~ msgstr "UVMM: Informationen zur Maschine"
+#: profile.py:291
+msgid "Virtual hardware"
+msgstr "Virtuelle Hardware"
 
-#~ msgid "UUID"
-#~ msgstr "UUID"
-
-#~ msgid "Description"
-#~ msgstr "Beschreibung"
-
-#~ msgid "Description of virtual machine"
-#~ msgstr "Beschreibung der virtuellen Maschine"
-
-#~ msgid "Name of the operation system"
-#~ msgstr "Name des Betriebssystem"
-
-#~ msgid "Contact"
-#~ msgstr "Kontakt"
-
-#~ msgid "Virtual machine information"
-#~ msgstr "Informationen zur virtuelle Maschine"
+#: profile.py:306
+msgid "Boot configuration"
+msgstr "Bootkonfiguration"

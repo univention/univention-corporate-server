@@ -278,38 +278,38 @@ property_descriptions={
 			may_change=True,
 			identifies=False
 			),
-	'txt_hardware': univention.admin.property(
-		short_description = _('Hardware'),
-		syntax=univention.admin.syntax.info_text,
-		),
-	'txt_boot': univention.admin.property(
-		short_description = _('Boot'),
-		syntax=univention.admin.syntax.info_text,
-		),
-	'txt_virt': univention.admin.property(
-		short_description = _('Virtualization'),
-		syntax=univention.admin.syntax.info_text,
-		),
 }
 
 layout = [
 	Tab( _( 'General' ), _( 'Virtual machine profile' ), layout = [
-		[ "name", "os" ],
-		"name_prefix",
-		"txt_hardware",
-		[ "arch", "cpus" ],
-		[ "ram", "diskspace" ],
-		[ "interface", 'rtcoffset' ],
-		[ "vnc", "kblayout" ],
-		"txt_boot",
-		"bootdev",
-		"advkernelconf",
-		[ "kernel", "kernel_parameter" ],
-		"initramfs",
-		"txt_virt",
-		"virttech",
-		[ "pvdisk", "pvinterface" ],
-		"pvcdrom",
+		Group( _( 'General' ), layout = [
+			"name",
+			"virttech",
+			"os",
+			"name_prefix",
+			] ),
+		Group( _( 'Virtual hardware' ), layout = [
+			"arch",
+			"cpus",
+			"ram",
+			"diskspace",
+			"interface",
+			'rtcoffset',
+			"pvdisk",
+			"pvinterface",
+			"pvcdrom",
+			] ),
+		Group( _( 'Remote access' ), layout = [
+			"vnc",
+			"kblayout",
+			] ),
+		Group( _( 'Boot configuration' ), layout = [
+			"bootdev",
+			"advkernelconf",
+			"kernel",
+			"kernel_parameter",
+			"initramfs",
+			] )
 		] )
 	]
 

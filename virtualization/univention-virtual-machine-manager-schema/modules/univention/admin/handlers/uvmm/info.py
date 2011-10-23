@@ -95,9 +95,13 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Virtual machine information' ), layout = [
-		[ "uuid", "contact" ],
-		[ "os", "description" ],
+		Group( _( 'General' ), layout = [
+			"uuid",
+			"description",
+			"contact",
+			"os",
 		] )
+	] )
 	]
 
 mapping=univention.admin.mapping.mapping()
