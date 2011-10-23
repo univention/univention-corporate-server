@@ -62,7 +62,7 @@ class object(content):
 	def layout(self):
 		index = -11
 
-		if os.path.isfile('/usr/sbin/xinit'):
+		if os.path.isfile('/usr/bin/xinit'):
 			msg = _('''The graphical configuration frontend could not be started! To continue the reconfiguration of this system, a web browser is required.
 
 You can access the configuration frontend by opening the following URL:

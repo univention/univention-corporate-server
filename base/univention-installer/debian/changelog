@@ -1,3 +1,9 @@
+univention-installer (7.0.118-1) unstable; urgency=low
+
+  * fixed detection of xinit in 45_password.py (Bug #23870)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 23 Oct 2011 18:27:33 +0200
+
 univention-installer (7.0.117-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
