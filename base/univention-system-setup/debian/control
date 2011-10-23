@@ -37,7 +37,6 @@ Architecture: all
 Provides: univention-setup-boot
 Depends: ${misc:Depends},
  univention-system-setup,
- xinit,
  firefox
 Replaces: univention-setup-boot
 Description: Starting univention-system-setup on next boot

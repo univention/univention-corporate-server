@@ -1,3 +1,9 @@
+univention-system-setup (5.0.19-4) unstable; urgency=low
+
+  * removed direct dependency to xinit; xorg depends on xinit (Bug #23870)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 23 Oct 2011 18:50:13 +0200
+
 univention-system-setup (5.0.19-3) unstable; urgency=low
 
   * set system/setup/boot/modules to "password,net" (Bug #23870)
