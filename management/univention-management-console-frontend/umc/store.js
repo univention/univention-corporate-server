@@ -156,14 +156,19 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		});
 	},
 
-	remove: function(id) {
+	remove: function( object, options ) {
 		//console.log('remove: ' + dojo.toJson(arguments));
 		// summary:
 		//		Deletes an object by its identity. This will trigger an UCMP request
 		//		calling the module method 'UNSET'
-		// id: Number
-		//		The identity to use to delete the object
-		return this._genericCmd('remove', id);
+		// object: Object
+		//		The object to store.
+		// options:
+		//		bla fasel
+		return this._genericCmd('remove', {
+			object: object,
+			options: options || null
+		} );
 	},
 
 	query: function(_query, options) {

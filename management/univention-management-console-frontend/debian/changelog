@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.112-1) unstable; urgency=low
+
+  * ModuleStore: support options for remove; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 23 Oct 2011 14:17:33 +0200
+
 univention-management-console-frontend (1.0.111-1) unstable; urgency=low
 
   * umc.tools.ldapDn2Path: converts LDAP DN to "human readable" path; Bug #22439
