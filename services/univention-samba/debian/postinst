@@ -119,6 +119,7 @@ univention-config-registry set samba/script/adduser?true \
 				samba/map_to_guest?"Bad User" \
 				samba/netlogon/sync?sync \
 				samba/domain/logons?auto \
+				samba/winbind/max/clients?500 \
 				samba/password/checkscript?"/usr/share/univention-samba/password_check %u"
 
 if [ "$1" = "configure" ]; then
@@ -144,6 +145,8 @@ fi
 # configure firewall
 ucr set security/packetfilter/package/univention-samba/tcp/137:139/all="ACCEPT" \
 		security/packetfilter/package/univention-samba/tcp/137:139/all/en="netbios (Samba)" \
+		security/packetfilter/package/univention-samba/udp/137:139/all="ACCEPT" \
+		security/packetfilter/package/univention-samba/udp/137:139/all/en="netbios (Samba)" \
 		security/packetfilter/package/univention-samba/tcp/445/all="ACCEPT" \
 		security/packetfilter/package/univention-samba/tcp/445/all/en="microsoft-ds (Samba)" \
 		security/packetfilter/package/univention-samba/udp/445/all="ACCEPT" \

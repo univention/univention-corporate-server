@@ -345,3 +345,16 @@ Description[de]=Dieser Parameter steuert den Security-Modus auf einem Memberserv
 Description[en]=This parameter controls which security mode will be useed on a memberserver (default: domain)
 Type=str
 Categories=service-samba
+
+[samba/max/protocol]
+Description[de]=Dieser Parameter definiert das höchte Protokoll, welches dieser Server unterstützt (gültige Werte: CORE, COREPLUS, LANMAN1, LANMAN2, NT1, SMB2)
+Description[en]=This parameter defines the highest protocol level that will be supported by the server (valid values: CORE, COREPLUS, LANMAN1, LANMAN2, NT1, SMB2)
+Type=str
+Categories=service-samba
+
+[samba/winbind/max/clients]
+Description[de]=Dieser Parameter spezifiziet die Anzahl der gleichzeitigen Netzwerkverbindungen des winbind-Dienstes.
+Description[en]=This parameter specifies the maximum number of clients the winbindd daemon can connect with.
+Type=str
+Categories=service-samba
+
