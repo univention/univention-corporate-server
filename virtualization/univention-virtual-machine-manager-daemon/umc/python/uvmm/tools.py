@@ -34,25 +34,7 @@
 import re
 import math
 
-import univention.management.console as umc
-import univention.management.console.dialog as umcd
-
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
-
-def percentage( percent, label = None, width = 100 ):
-	if isinstance( percent, basestring ):
-		percent = float( percent )
-	elif callable( percent ):
-		try:
-			percent = percent()
-		except:
-			return umcd.HTML( '<i>%s</i>' % _( 'currently not available' ) )
-	elif percent is None:
-		return umcd.HTML( '<i>%s</i>' % _( 'currently not available' ) )
-	try:
-		return umcd.Progressbar( percent, label = label, attributes = { 'width' : '%dpx' % width } )
-	except:
-		return umcd.HTML( '<i>%s</i>' % _( 'unknown value' ) )
 
 def str2pat( string ):
 	if not string:
@@ -64,78 +46,6 @@ def str2pat( string ):
 
 	return string
 
-class MemorySize( object ):
-	"""Parse and convert size with optional prefix from and to numbers."""
-	UNITS = ( 'B', 'KB', 'MB', 'GB', 'TB' )
-	SIZE_REGEX = re.compile( '^ *(?P<size>[0-9]+(?:[,.][0-9]+)?)[ \t]*(?P<unit>(%s))? *$' % '|'.join( UNITS ) )
-
-	@staticmethod
-	def num2str( size, unit = 'B' ):
-		"""Pretty-print number to string consisting of size and optional prefix.
-		>>> MemorySize.num2str(512)
-		'512 B'
-		>>> MemorySize.num2str(512, unit='MB')
-		'512.0 MB'
-		"""
-		block_size = 1
-		for item in MemorySize.UNITS:
-			if item == unit:
-				break
-			else:
-				block_size <<= 10
-		size = long( size ) * float( block_size )
-		unit = 0
-		while size > 1024.0 and unit < ( len( MemorySize.UNITS ) - 1 ):
-			size /= 1024.0
-			unit += 1
-
-		if unit > 0:
-			return '%.1f %s' % ( size, MemorySize.UNITS[ unit ] )
-		else:
-			return '%.0f %s' % ( size, MemorySize.UNITS[ unit ] )
-
-	@staticmethod
-	def str2num( size, block_size = 1, unit = 'B' ):
-		"""Parse string consisting of size and prefix into number.
-		>>> MemorySize.str2num('512')
-		512L
-		>>> MemorySize.str2num('512 MB')
-		536870912L
-		>>> MemorySize.str2num('512,0 MB')
-		536870912L
-		>>> MemorySize.str2num('2.0 GB')
-		2147483648L
-		>>> MemorySize.str2num('8GB')
-		8589934592L
-		>>> MemorySize.str2num('2.,0 GB')
-		-1
-		"""
-		match = MemorySize.SIZE_REGEX.match( size )
-		if not match:
-			return -1
-
-		grp = match.groupdict()
-		grp[ 'size' ] = grp[ 'size' ].replace( ',', '.' )
-		size = float( grp[ 'size' ] )
-		factor = 0
-		if 'unit' in grp and grp[ 'unit' ] in MemorySize.UNITS:
-			unit = grp[ 'unit' ]
-		while MemorySize.UNITS[ factor ] != unit:
-				factor +=1
-		size = size * math.pow( 1024, factor )
-
-		return long( size / float( block_size ) )
-
-	@staticmethod
-	def str2str( size, unit = 'B' ):
-		"""Normalize string consisting of size and prefix.
-		>>> MemorySize.str2str('0.5 MB')
-		'512.0 KB'
-		"""
-		num = MemorySize.str2num( size, unit = unit )
-		if num == -1:
-			return ''
-		return MemorySize.num2str( num )
 
 class VirtTech( object ):
 	def __init__( self, virttech = None ):

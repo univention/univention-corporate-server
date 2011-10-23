@@ -117,10 +117,12 @@ class _Commands:
 		"""Return list of nodes in group."""
 		if not isinstance(request.group, basestring):
 			raise CommandError('NODE_LIST', _('group != string: %(group)s'), group=request.group)
+		if not isinstance(request.pattern, basestring):
+			raise CommandError( 'NODE_LIST', _('group != string: %(pattern)s'), pattern = request.pattern )
 		logger.debug('NODE_LIST')
 		try:
 			res = protocol.Response_DUMP()
-			res.data = node.node_list(request.group)
+			res.data = node.node_list( request.group, request.pattern )
 			return res
 		except node.NodeError, e:
 			raise CommandError('NODE_LIST', e)

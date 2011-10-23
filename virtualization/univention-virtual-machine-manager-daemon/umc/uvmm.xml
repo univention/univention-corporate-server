@@ -1,12 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
   <module id="uvmm" icon="uvmm/module" version="1.0">
-	<name>Virtual machines</name>
+	<name>Virtual machines (UVMM)</name>
 	<description>Manages virtual machines</description>
 	<categories>
-	  <category name="domain"/>
+	  <category name="system"/>
 	</categories>
-	<command name="uvmm/query" function="query">
+	<command name="uvmm/group/query" function="group_query">
+	</command>
+	<command name="uvmm/node/query" function="node_query">
+	</command>
+	<command name="uvmm/domain/query" function="domain_query">
+	</command>
+	<command name="uvmm/node/get" function="node_get">
+	</command>
+	<command name="uvmm/domain/get" function="domain_get">
+	</command>
+	<command name="uvmm/domain/add" function="domain_ad">
+	</command>
+	<command name="uvmm/domain/put" function="domain_put">
+	</command>
+	<command name="uvmm/domain/state" function="domain_state">
+	</command>
+	<command name="uvmm/domain/migrate" function="domain_migrate">
+	</command>
+	<command name="uvmm/nic/get" function="nic_get">
+	</command>
+	<command name="uvmm/nic/add" function="nic_add">
+	</command>
+	<command name="uvmm/nic/put" function="nic_put">
+	</command>
+	<command name="uvmm/snapshot/get" function="snapshot_get">
+	</command>
+	<command name="uvmm/snapshot/add" function="snapshot_add">
+	</command>
+	<command name="uvmm/snapshot/set" function="snapshot_set">
+	</command>
+	<command name="uvmm/device/get" function="device_get">
+	</command>
+	<command name="uvmm/device/add" function="device_add">
+	</command>
+	<command name="uvmm/device/put" function="device_put">
+	</command>
+	<command name="uvmm/storage/query" function="storage_query">
 	</command>
   </module>
 </umc>

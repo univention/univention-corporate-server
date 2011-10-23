@@ -31,20 +31,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from univention.lib.i18n import Translation
+
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.handlers.uvmm.profile as uvmm_profile
 
-import univention.config_registry as ucr
+from univention.management.console.log import MODULE
+from univention.management.console.config import ucr
 
-import univention.debug as ud
-
-import univention.management.console as umc
-
-_ = umc.Translation('univention.management.console.handlers.uvmm').translate
-
-registry = ucr.ConfigRegistry()
-registry.load()
+_ = Translation('univention.management.console.handlers.uvmm').translate
 
 class LDAP_ConnectionError( Exception ):
 	pass
@@ -84,11 +80,11 @@ class ensureLDAP_Connection( object ):
 		if hasattr( klass, 'ldap_conn' ) and klass.ldap_conn:
 			return True
 
-		host = registry.get( 'ldap/server/name' )
-		base = registry.get( 'ldap/base' )
+		host = ucr.get( 'ldap/server/name' )
+		base = ucr.get( 'ldap/base' )
 		if self.account == 'machine':
 			pwfile = '/etc/machine.secret'
-			binddn = registry.get( 'ldap/hostdn' )
+			binddn = ucr.get( 'ldap/hostdn' )
 		elif self.account == 'admin':
 			pwfile = '/etc/ldap.secret'
 			binddn = 'cn=admin,%s' % base

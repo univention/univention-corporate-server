@@ -101,9 +101,5 @@ if [ -x /etc/init.d/univention-virtual-machine-manager-daemon ] && [ -d "/etc/ru
     fi
 fi
 
-if [ -x /etc/init.d/univention-management-console-server ]; then
-    invoke-rc.d univention-management-console-server crestart
-fi
-
 exit 0
 # vim:set ft=sh ts=4 sw=4 et:

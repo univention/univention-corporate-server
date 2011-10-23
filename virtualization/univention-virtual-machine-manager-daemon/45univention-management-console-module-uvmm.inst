@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="1"
+VERSION="2"
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -40,11 +40,10 @@ joinscript_init
 eval "$(univention-config-registry shell)"
 
 umc_init
-umc_operation_create "uvmm" "UCS Virtual Machine Manager" "uvmm/*"
-umc_acl_create "uvmm-all" "Virtualization" "All operations" "uvmm/*"
-umc_policy_append "default-admin" "uvmm-all"
+umc_operation_create "uvmm-all" "UCS Virtual Machine Manager" "" "uvmm/*"
+umc_policy_append "default-umc-all" "uvmm-all"
 
-invoke-rc.d univention-virtual-machine-manager-daemon restart 
+invoke-rc.d univention-virtual-machine-manager-daemon restart
 
 joinscript_save_current_version
 

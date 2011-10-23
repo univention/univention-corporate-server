@@ -119,6 +119,7 @@ class Request_NODE_LIST(Request):
 	def _default(self):
 		self.command = 'NODE_LIST'
 		self.group = None
+		self.pattern = '*' # wildcard pattern
 class Request_GROUP_LIST(Request):
 	"""Query for list of known groups."""
 	def _default(self):

@@ -266,16 +266,16 @@ class Client(object):
 		"""
 		return protocol.Request_GROUP_LIST()
 
-	def nodes(self, group):
+	def nodes(self, group, pattern ):
 		"""
-		%prog nodes <group>
+		%prog nodes <group> <pattern>
 
 		Return the list of uris used to specify the virtualization server,
 		which belong to the given <group>.
 		Examples:
-			%prog nodes default
+			%prog nodes default *
 		"""
-		return protocol.Request_NODE_LIST(group=group)
+		return protocol.Request_NODE_LIST( group = group, pattern = pattern )
 
 	def bye(self):
 		"""

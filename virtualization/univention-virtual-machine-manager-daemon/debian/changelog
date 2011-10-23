@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (1.0.4-1) unstable; urgency=low
+
+  * do not restart UMC server (not necessary); Bug #22893
+  * UMC module: implement request broker for parallel requests to UVMMd
+  * UMCmodule: implement first commands
+  * UVMMd, NODE_LIST: support pattern to filter list of returned nodes
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 23 Oct 2011 20:30:29 +0200
+
 univention-virtual-machine-manager-daemon (1.0.3-3) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

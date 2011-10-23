@@ -53,6 +53,7 @@ import os
 import stat
 import operator
 import errno
+import fnmatch
 import re
 import xml.etree.ElementTree as ET
 try:
@@ -837,10 +838,12 @@ class Nodes(dict):
 			node = self.query(uri)
 			node.set_frequency(hz)
 
-	def list(self, group):
+	def list( self, group, pattern ):
 		"""Return list of watched nodes."""
 		if group == 'default': # FIXME
-			return self.keys()
+			nodes = []
+			pattern_regex = re.compile( fnmatch.translate( pattern ), re.IGNORECASE )
+			return filter( lambda x: pattern_regex.match( x ) is not None, self.keys() )
 		else:
 			return []
 
