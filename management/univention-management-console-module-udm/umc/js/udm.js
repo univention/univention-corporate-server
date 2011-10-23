@@ -185,7 +185,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		if ('navigation' == this.moduleFlavor) {
 			// for the UDM navigation, we only query the UCR variables
-			umc.tools.ucr('directory/manager/web*').then(dojo.hitch(this, function(ucr) {
+			umc.tools.ucr( [ 'directory/manager/web*', 'ldap/base' ] ).then(dojo.hitch(this, function(ucr) {
 				// save the ucr variables locally and also globally
 				this._ucr = umc.modules._udm.ucr = ucr;
 				this.renderSearchPage();
@@ -199,7 +199,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				this.umcpCommand('udm/containers'),
 				this.umcpCommand('udm/superordinates'),
 				this.umcpCommand('udm/reports/query'),
-				umc.tools.ucr('directory/manager/web*')
+				umc.tools.ucr( [ 'directory/manager/web*', 'ldap/base' ] )
 			])).then(dojo.hitch(this, function(results) {
 				// result: [ 0 ] -> success/failure, [ 1 ] -> data
 				var containers = results[0][0] ? results[0][1] : [];
@@ -853,6 +853,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			moduleFlavor: this.moduleFlavor,
 			objectType: objectType,
 			ldapName: ldapName,
+			ldapBase: this._ucr[ 'ldap/base' ],
 			newObjectOptions: newObjOptions,
 			moduleWidget: this,
 			isClosable: isClosable

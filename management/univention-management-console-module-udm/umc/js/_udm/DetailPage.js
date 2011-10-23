@@ -195,6 +195,16 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				layout.push(ilayout);
 			}
 		});
+
+		// show object type and path above all other items an first tab
+		// var first_tab = layout[ 0 ];
+		// first_tab.layout = [ {
+		// 	type: 'Text',
+		// 	label: '',
+		// 	content: '',
+		// 	name: '$location$'
+		// } ].concat( first_tab.layout );
+
 		// if there are advanced settings, add them to the layout
 		if (advancedGroup.layout.length) {
 			layout.push(advancedGroup);
@@ -540,6 +550,14 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					}, this);
 				}));
 
+				// var label = ' (' + vals.$labelObjectType$;
+				// label += ': ' + umc.tools.ldapDn2Path( this.ldapName, this.ldapBase ) + ')';
+				// this._tabs.getChildren()[ 0 ].addChild( new umc.widgets.Text( {
+				// 	label: '',
+				// 	name: '$location$',
+				// 	content: label
+				// } ), 0 );
+
 				// save the original form data
 				this._receivedObjFormData = this.getValues();
 			}));
@@ -641,7 +659,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 						if (!container.$linkWidget$) {
 							// add an additional widget with the link the the UCR policy to the row
 							container.$linkWidget$ = new umc.widgets.LabelPane({ 
-								label: j == 0 ? '&nbsp;' : '',
+								label: j === 0 ? '&nbsp;' : '',
 								content: new umc.widgets.Text({ 
 									content: label 
 								}) 

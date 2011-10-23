@@ -151,6 +151,8 @@ class Instance( Base ):
 				properties = obj.get( 'object', {} )
 
 				module = self._get_module( request, object_type = options.get( 'objectType' ) )
+				if '$labelObjectType$' in properties:
+					del properties[ '$labelObjectType$' ]
 				try:
 					dn = module.create( properties, container = options.get( 'container' ), superordinate = options.get( 'superordinate' ) )
 					result.append( { '$dn$' : dn, 'success' : True } )
@@ -187,6 +189,8 @@ class Instance( Base ):
 				if module is None:
 					raise UMC_OptionTypeError( _( 'Could not find a matching UDM module for the LDAP object %s' ) % ldap_dn )
 				MODULE.info( 'Modifying LDAP object %s' % ldap_dn )
+				if '$labelObjectType$' in properties:
+					del properties[ '$labelObjectType$' ]
 				try:
 					module.modify( properties )
 					result.append( { '$dn$' : ldap_dn, 'success' : True } )
@@ -257,6 +261,7 @@ class Instance( Base ):
 						pol_mod = get_module( None, policy )
 						if pol_mod and pol_mod.name:
 							props[ '$policies$' ][ pol_mod.name ] = policy
+					props[ '$labelObjectType$' ] = module.title;
 					result.append( props )
 				else:
 					MODULE.process( 'The LDAP object for the LDAP DN %s could not be found' % ldap_dn )
