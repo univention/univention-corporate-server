@@ -1,6 +1,0 @@
-Type: file
-File: etc/cron.d/univention-shares
-
-Type: file
-File: etc/logrotate.d/univention-shares
-Variables: logrotate/.*
