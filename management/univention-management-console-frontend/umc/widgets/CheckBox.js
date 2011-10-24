@@ -12,6 +12,11 @@ dojo.declare("umc.widgets.CheckBox", [ dijit.form.CheckBox, umc.widgets._FormWid
 	// the widget's class name as CSS class
 	'class': 'umcCheckBox',
 
+	postMixInProperties: function() {
+		this.inherited( arguments );
+		this.sizeClass = null;
+	},
+
 	_setValueAttr: function(newValue) {
 		this.set('checked', newValue == '0' || newValue == 'false' || newValue == 'FALSE' || !newValue ? false : true);
 	},

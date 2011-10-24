@@ -6,6 +6,8 @@ dojo.declare("umc.widgets._FormWidgetMixin", null, {
 	// by default, set required to 'false'
 	required: false,
 
+	sizeClass: 'One',
+
 	//
 	// event handling
 	//
@@ -21,6 +23,14 @@ dojo.declare("umc.widgets._FormWidgetMixin", null, {
 
 	_getBlockOnChangeAttr: function(/*Boolean*/ value) {
 		return this._onChangeActive;
+	},
+
+	postCreate: function() {
+		this.inherited( arguments );
+
+		if ( this.sizeClass ) {
+			dojo.addClass( this.domNode, 'umcSize-' + this.sizeClass );
+		}
 	},
 
 	// provide 'onChange' method stub in case it does not exist yet

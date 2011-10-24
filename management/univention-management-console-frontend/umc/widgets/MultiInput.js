@@ -63,7 +63,7 @@ dojo.declare("umc.widgets.MultiInput", [
 			var currentTime = (new Date()).getTime();
 			var elapsedTime = Math.abs(currentTime - _lastCall);
 			_lastCall = currentTime;
-			
+
 			// if the elapsed time is too big, execute the function
 			if (elapsedTime > 100) {
 				_valueOrDeferred = ifunc(options);
@@ -76,6 +76,8 @@ dojo.declare("umc.widgets.MultiInput", [
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
+
+		this.sizeClass = null;
 
 		// check the property 'subtypes'
 		umc.tools.assert(dojo.isArray(this.subtypes),

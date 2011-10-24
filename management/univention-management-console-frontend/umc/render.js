@@ -57,6 +57,9 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 		// remove property 'id'
 		delete conf.id;
 
+		conf.sizeClass = conf.size;
+		delete conf.size;
+
 		var WidgetClass = undefined;
 		var path;
 		try {

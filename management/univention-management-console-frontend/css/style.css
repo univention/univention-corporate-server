@@ -17,6 +17,34 @@ form {
 	margin-bottom: 15px;
 }
 
+.umcSize-OneThird {
+	width: 94px !important;
+}
+
+.umcSize-Half {
+	width: 143px !important;
+}
+
+.umcSize-TwoThirds {
+	width: 190px !important;
+}
+
+.umcSize-One {
+	width: 300px !important;
+}
+
+.umcSize-FourThirds {
+	width: 382px !important;
+}
+
+.umcSize-OneAndAHalf {
+	width: 442px !important;
+}
+
+.umcSize-FiveThirds {
+	width: 490px !important;
+}
+
 .umcTopContainer {
 	height: 100%;
 	width: 960px;
@@ -176,6 +204,7 @@ form {
 #umc_widgets_LabelPane_4 {
   float: right;
 }
+
 
 #umc_widgets_LabelPane_3 {
   width: 300px !important;
