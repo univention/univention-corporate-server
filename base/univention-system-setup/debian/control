@@ -17,6 +17,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  univention-installer-modules,
  univention-ipcalc,
  whois,
+ passwd,
  shell-univention-lib,
  python-univention-lib (>= 1.0.25-1),
  console-tools
