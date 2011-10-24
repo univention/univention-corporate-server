@@ -1,4 +1,4 @@
- univention-squid (5.0.3-6) unstable; urgency=low
+univention-squid (5.0.3-6) unstable; urgency=low
 
   * Fix escaping in template (Bug #22576)
   * Move netfilter rule to new univention-firewall directory
