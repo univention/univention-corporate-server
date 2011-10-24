@@ -128,14 +128,14 @@ class Message( object ):
 			else:
 				self.body[ key ] = value
 		else:
-			PARSER.error( 'Attribute %s just available for MIME type %s' % ( key, MIMETYPE_JSON ) )
+			PARSER.process( 'Attribute %s just available for MIME type %s' % ( key, MIMETYPE_JSON ) )
 			raise AttributeError( _( 'Attribute %s just available for MIME type %s' ) % ( key, MIMETYPE_JSON ) )
 
 	def _get_key( self, key ):
 		if self.mimetype == MIMETYPE_JSON:
 			return self.body.get( key )
 		else:
-			PARSER.error( 'Attribute %s just available for MIME type %s' % ( key, MIMETYPE_JSON ) )
+			PARSER.process( 'Attribute %s just available for MIME type %s' % ( key, MIMETYPE_JSON ) )
 			raise AttributeError( _( 'Attribute %s just available for MIME type %s' ) % ( key, MIMETYPE_JSON ) )
 
 	# property: message
@@ -167,20 +167,20 @@ class Message( object ):
 		try:
 			self._length = int( groups[ 'length' ] )
 		except ValueError:
-			PARSER.error( 'Invalid length information' )
+			PARSER.process( 'Invalid length information' )
 			raise ParseError( 551, _( 'Invalid length information' ) )
 		self.command = groups[ 'command' ]
 
 		# known command?
 		if not command_is_known( self.command ):
-			PROTOCOL.error( 'Unknown UMCP command: %s' % self.command )
+			PROTOCOL.process( 'Unknown UMCP command: %s' % self.command )
 			raise UnknownCommandError( 552, _( 'Unknown UMCP command: %s' ) % self.command )
 
 		if groups.get( 'arguments' ):
 			if command_has_arguments( self.command ):
 				self.arguments = groups[ 'arguments' ].split( ' ' )
 			else:
-				PROTOCOL.error( "The command '%s' do not have any arguments" % self.command )
+				PROTOCOL.process( "The command '%s' do not have any arguments" % self.command )
 				raise InvalidArgumentsError( 553, _( "The command '%s' do not have any arguments" ) % self.command )
 
 		# invalid/missing message body?
@@ -201,7 +201,7 @@ class Message( object ):
 			try:
 				self.body = json.loads( self.body )
 			except:
-				PARSER.error( 'Error parsing UMCP message body' )
+				PARSER.process( 'Error parsing UMCP message body' )
 				raise ParseError( 554, _( 'error parsing UMCP message body' ) )
 
 		for key in ( 'options', ):
@@ -217,7 +217,7 @@ class Request( Message ):
 
 	def __init__( self, command, arguments = [], options = {}, mime_type = MIMETYPE_JSON ):
 		if not command_is_known( command ):
-			PROTOCOL.error( "'%s' is not a valid UMCP command" % command )
+			PROTOCOL.process( "'%s' is not a valid UMCP command" % command )
 			raise UnknownCommandError( _( "'%s' is not a valid UMCP command" ) % command )
 		Message.__init__( self, Message.REQUEST, command, arguments = arguments, options = options, mime_type = mime_type )
 		self._create_id()
@@ -257,7 +257,7 @@ class Response( Message ):
 		self.mimetype, encoding = mimetypes.guess_type( filename )
 
 		if self.mimetype is None:
-			PROTOCOL.error( 'Failed to guess MIME type of %s' % filename )
+			PROTOCOL.process( 'Failed to guess MIME type of %s' % filename )
 			raise TypeError( _( 'Unknown mime type' ) )
 
 		fd = open( filename, 'b' )

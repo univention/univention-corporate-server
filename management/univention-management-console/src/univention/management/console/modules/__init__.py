@@ -108,8 +108,8 @@ class Base( signals.Provider, Translation ):
 					  { 'command' : request.arguments[ 0 ], 'text' : unicode( traceback.format_exc() ) }
 		res = Response( request )
 		res.message = message
-		MODULE.error( str( res.message ) )
-		res.status = MODULE_ERR_COMMAND_FAILED
+		MODULE.process( str( res.message ) )
+		res.status = MODULE_ERR_COMMAND_FAILED 
 		self.signal_emit( 'failure', res )
 		if request.id in self.__requests:
 			del self.__requests[ request.id ]

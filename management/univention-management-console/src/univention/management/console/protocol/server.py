@@ -141,19 +141,19 @@ class MagicBucket( object ):
 		except IncompleteMessageError, e:
 			CORE.info( 'MagicBucket: incomplete message: %s' % str( e ) )
 		except ParseError, e:
-			CORE.error( 'Parser error: %s' % str( e ) )
+			CORE.process( 'Parser error: %s' % str( e ) )
 			state.requests[ msg.id ] = msg
 			res = Response( msg )
 			res.status = UMCP_ERR_UNPARSABLE_BODY
 			self._response( res, state )
 		except UnknownCommandError, e:
-			CORE.error( 'Unknown Command message: %s' % str( e ) )
+			CORE.process( 'Unknown Command message: %s' % str( e ) )
 			state.requests[ msg.id ] = msg
 			res = Response( msg )
 			res.status = BAD_REQUEST_NOT_FOUND
 			self._response( res, state )
 		except InvalidArgumentsError, e:
-			CORE.error( 'Invalid arguments to UMCP command: %s' % str( e ) )
+			CORE.process( 'Invalid arguments to UMCP command: %s' % str( e ) )
 			state.requests[ msg.id ] = msg
 			res = Response( msg )
 			res.status = BAD_REQUEST_INVALID_ARGS
@@ -241,7 +241,7 @@ class MagicBucket( object ):
 		request.'''
 		# FIXME: error handling is missing!!
 		if not msg.id in state.requests and msg.id != -1:
-			CORE.error( 'The given response is invalid or not known' )
+			CORE.process( 'The given response is invalid or not known' )
 			return
 
 		try:
@@ -322,7 +322,7 @@ class Server( signals.Provider ):
 				self.crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/ucsCA', 'CAcert.pem' ) )
 			except SSL.Error, e:
 				# SSL is not possible
-				CRYPT.error( 'Setting up SSL configuration failed: %s' % str( e ) )
+				CRYPT.process( 'Setting up SSL configuration failed: %s' % str( e ) )
 				CRYPT.warn( 'Communication will not be encrypted!' )
 				self.__ssl = False
 				self.crypto_context = None

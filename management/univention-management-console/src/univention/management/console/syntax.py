@@ -111,7 +111,7 @@ class Manager( dict ):
 					self[ syntax.name ] = syntax
 				RESOURCES.info( 'Loaded syntax definitions from %s' % filename )
 			except xml.parsers.expat.ExpatError, e:
-				RESOURCES.error( 'Failed to parse syntax definition %s: %s' % ( filename, str( e ) ) )
+				RESOURCES.process( 'Failed to parse syntax definition %s: %s' % ( filename, str( e ) ) )
 				continue
 
 	def verify( self, syntax_name, value ):
@@ -143,7 +143,7 @@ class Manager( dict ):
 		try:
 			func( value, syntax, self.verify )
 		except Exception, e:
-			RESOURCES.error( 'Given verification function %s failed: %s' % ( verify_func, str( e ) ) )
+			RESOURCES.process( 'Given verification function %s failed: %s' % ( verify_func, str( e ) ) )
 			raise SyntaxVerificationError( _( 'Execution of verification function %(function)s for syntax %(base)s failed:' ) % { 'base' : syntax.name, 'function' : syntax.verify_function } )
 
 		return True

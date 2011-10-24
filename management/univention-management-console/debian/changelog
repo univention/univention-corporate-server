@@ -1,3 +1,10 @@
+univention-management-console (4.0.70-1) unstable; urgency=low
+
+  * fix login of local users; Bug #23494
+  * changed log level from error to process
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 24 Oct 2011 11:32:56 +0200
+
 univention-management-console (4.0.69-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

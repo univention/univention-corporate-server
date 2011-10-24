@@ -270,7 +270,7 @@ class ACLs( object ):
 		ACL.process( ' %-5s | %-20s | %-15s | %-20s | %-20s' % ( 'User', 'Host', 'Flavor', 'Command', 'Options' ) )
 		ACL.process( '******************************************************************************')
 		for rule in self.acls:
-			ACL.process( ' %(fromUser)-5s | %(host)-20s | %(flavor)-15s | %(command)-20s | %(options)-20s' % rule )
+			ACL.process( ' %-5s | %-20s | %-15s | %-20s | %-20s' % ( rule.fromUser, rule.host, rule.flavor, rule.command, rule.options ) )
 		ACL.process( '' )
 
 	def _read_from_file( self, username ):
@@ -298,6 +298,8 @@ class ACLs( object ):
 				if not rule in self.acls:
 					if not 'flavor' in rule:
 						rule[ 'flavor' ] = None
+					if not 'options' in rule:
+						rule[ 'options' ] = {}
 					self.acls.append( rule )
 
 	def _write_to_file( self, username ):

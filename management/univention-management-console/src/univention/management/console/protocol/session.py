@@ -388,7 +388,7 @@ class Processor( signals.Provider ):
 			mod._connect_retries += 1
 			return True
 		except Exception, e:
-			CORE.error( 'Unknown error while trying to connect to module process: %s' % str( e ) )
+			CORE.process( 'Unknown error while trying to connect to module process: %s' % str( e ) )
 			_send_error()
 			return False
 		else:

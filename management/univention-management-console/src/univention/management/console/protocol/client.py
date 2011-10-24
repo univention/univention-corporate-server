@@ -85,8 +85,8 @@ class Client( signals.Provider, Translation ):
 				self.__crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/ucsCA', 'CAcert.pem' ) )
 			except SSL.Error, e:
 				# SSL is not possible
-				CORE.error( 'Client: Setting up SSL configuration failed: %s' % str( e ) )
-				CORE.error( 'Client: Communication will not be encrypted!' )
+				CORE.process( 'Client: Setting up SSL configuration failed: %s' % str( e ) )
+				CORE.process( 'Client: Communication will not be encrypted!' )
 				self.__crypto_context = None
 				self.__ssl = False
 		self.__port = port
@@ -148,8 +148,8 @@ class Client( signals.Provider, Translation ):
 					notifier.socket_add( self.__socket, self._recv )
 					CORE.info( 'Client.connect: SSL connection established' )
 				except SSL.Error, e:
-					CORE.error( 'Client: Setting up SSL configuration failed: %s' % str( e ) )
-					CORE.error( 'Client: Communication will not be encrypted!' )
+					CORE.process( 'Client: Setting up SSL configuration failed: %s' % str( e ) )
+					CORE.process( 'Client: Communication will not be encrypted!' )
 					self.__realsocket.shutdown( socket.SHUT_RDWR )
 					self.__ssl = False
 					self._init_socket()
@@ -197,8 +197,8 @@ class Client( signals.Provider, Translation ):
 				except ( SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError ), e:
 					return True
 				except SSL.Error, e:
-					CORE.error( 'Client: Setting up SSL configuration failed: %s' % str( e ) )
-					CORE.error( 'Client: Communication will not be encrypted!' )
+					CORE.process( 'Client: Setting up SSL configuration failed: %s' % str( e ) )
+					CORE.process( 'Client: Communication will not be encrypted!' )
 					save = self.__resend_queue[ self.__socket ]
 					del self.__resend_queue[ self.__socket ]
 					self.__realsocket.shutdown( socket.SHUT_RDWR )
