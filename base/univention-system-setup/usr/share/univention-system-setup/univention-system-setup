@@ -312,18 +312,24 @@ class mods:
 			'ssl/state':			'ssl_state',
 			'ssl/locality':			'ssl_locality',
 			'ox/mail/domain/primary':	'ox_primary_maildomain',
+			'ipv6/gateway':			'gateway6',
 		}
-		for i in range(0,4):
+		for i in range(0,99):
 			mapping['interfaces/eth%d/type' % (i)]='eth%d_type' % (i)
 			mapping['interfaces/eth%d/address' % (i)]='eth%d_ip' % (i)
 			mapping['interfaces/eth%d/broadcast' % (i)]='eth%d_broadcast' % (i)
 			mapping['interfaces/eth%d/netmask' % (i)]='eth%d_netmask' % (i)
 			mapping['interfaces/eth%d/network' % (i)]='eth%d_network' % (i)
-			for j in range(0,4):
+
+			for j in range(0,99):
 				mapping['interfaces/eth%d_%d/address' % (i,j)]='eth%d_%d_ip' % (i,j)
 				mapping['interfaces/eth%d_%d/broadcast' % (i,j)]='eth%d_%d_broadcast' % (i,j)
 				mapping['interfaces/eth%d_%d/netmask' % (i,j)]='eth%d_%d_netmask' % (i,j)
 				mapping['interfaces/eth%d_%d/network' % (i,j)]='eth%d_%d_network' % (i,j)
+
+			mapping['interfaces/eth%d/ipv6/default/address' % i] = 'eth%d_ip6' % i
+			mapping['interfaces/eth%d/ipv6/default/prefix' % i] = 'eth%d_prefix6' % i
+			mapping['interfaces/eth%d/ipv6/acceptRA' % i] = 'eth%d_acceptra' % i
 
 		self.mapping_reverse={}
 		for k in mapping.keys():
