@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.117-1) unstable; urgency=low
+
+  * fixed action function canExecute() for defaultAction (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Oct 2011 17:02:34 +0200
+
 univention-management-console-frontend (1.0.116-1) unstable; urgency=low
 
   * umc.render.layout: LabelPanes inherit the style from the widget

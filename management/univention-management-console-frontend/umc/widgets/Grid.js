@@ -510,7 +510,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		if ( defaultAction ) {
 			dojo.forEach( this.actions, function( action ) {
 				if ( action.name == defaultAction ) {
-					var isExecutable = dojo.isFunction(action.canExecute) ? action.canExecute(identity) : true;
+					var isExecutable = dojo.isFunction(action.canExecute) ? action.canExecute(item) : true;
 					if ( action.callback && isExecutable && !this.getDisabledItem(identity)) {
 						action.callback( [ identity ], [ item ] );
 					}
