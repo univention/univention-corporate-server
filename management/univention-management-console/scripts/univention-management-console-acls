@@ -53,6 +53,9 @@ parser.add_option( '-u', '--user', action = 'store',
 parser.add_option( '-c', '--command', type = 'string', action = 'append',
 				   dest = 'commands', default = [],
 				   help = 'defines a list of UMC commands (or patterns)' )
+parser.add_option( '-f', '--flavor', type = 'string', action = 'store',
+				   dest = 'flavor', default = '*',
+				   help = 'defines the flavor' )
 parser.add_option( '-H', '--host', type = 'string', action = 'store',
 				   dest = 'host', default = configRegistry[ 'hostname' ],
 				   help = 'on which host the commands are allowed [default: %default]' )
@@ -101,7 +104,7 @@ if operation == 'show':
 	sys.exit( 0 )
 elif operation == 'allow':
 	for command in options.commands:
-		rule = Rule( { 'fromUser': False, 'host': options.host, 'command': command } )
+		rule = Rule( { 'fromUser': False, 'host': options.host, 'command': command, 'flavor': options.flavor } )
 		if not rule in acls:
 			acls.append( rule )
 			print 'info: rule %s appended' % command

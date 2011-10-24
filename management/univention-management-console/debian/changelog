@@ -1,3 +1,9 @@
+univention-management-console (4.0.71-1) unstable; urgency=low
+
+  * umc-acls commandline tool: support setting the flavor for a command; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 24 Oct 2011 15:10:16 +0200
+
 univention-management-console (4.0.70-1) unstable; urgency=low
 
   * fix login of local users; Bug #23494
