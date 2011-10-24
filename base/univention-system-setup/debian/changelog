@@ -1,3 +1,9 @@
+univention-system-setup (5.0.22-2) unstable; urgency=low
+
+  * redirect output to permanent logfile
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 24 Oct 2011 15:40:55 +0200
+
 univention-system-setup (5.0.22-1) unstable; urgency=low
 
   * added dependency to passwd (Bug #23870)
