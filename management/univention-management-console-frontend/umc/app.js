@@ -335,7 +335,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 
 		// container for all modules tabs
 		this._tabContainer = new dijit.layout.TabContainer({
-			region: 'center'
+			region: 'center',
+			'class': 'umcMainTabContainer'
 		});
 		topContainer.addChild(this._tabContainer);
 
