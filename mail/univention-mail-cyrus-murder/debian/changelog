@@ -1,3 +1,10 @@
+univention-mail-cyrus-murder (4.0.2-1) unstable; urgency=low
+
+  * start one lmtpproxy on localhost and one on the frontend ip 
+    (Bug #22875)
+
+ -- Felix Botner <botner@univention.de>  Mon, 24 Oct 2011 11:13:18 +0200
+
 univention-mail-cyrus-murder (4.0.1-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
