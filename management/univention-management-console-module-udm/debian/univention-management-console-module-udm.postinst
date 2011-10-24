@@ -43,6 +43,9 @@ for mod in modwizard modbrowse; do
 done
 [ -n "$VARIABLES" ] && univention-config-registry unset $VARIABLES
 
+# not required anymore. syntax postalAddress is directly set in the property descriptions
+ucr unset directory/manager/web/modules/users/user/properties/homePostalAddress/syntax
+
 # autosearch
 univention-config-registry set directory/manager/web/modules/autosearch?1
 

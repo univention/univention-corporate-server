@@ -185,7 +185,8 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					type: iprop.type,
 					dynamicValues: iprop.dynamicValues,
 					dynamicOptions: iprop.dynamicOptions,
-					staticValues: iprop.staticValues
+					staticValues: iprop.staticValues,
+					size: iprop.size
 				}];
 				iprop.type = 'MultiInput';
 			}

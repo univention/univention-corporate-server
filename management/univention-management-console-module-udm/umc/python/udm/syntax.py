@@ -122,6 +122,7 @@ def subsyntaxes( syntax, udm_property ):
 	udm_prop[ 'multivalue' ] = False
 	def subtypes_dict( item ):
 		elem = widget( item[ 1 ], udm_prop )
+		elem[ 'size' ] = item[ 1 ].size
 		elem[ 'label' ] = item[ 0 ]
 		return elem
 

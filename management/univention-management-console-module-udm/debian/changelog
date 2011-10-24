@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.195-1) unstable; urgency=low
+
+  * add support for resizing a widget to a given width; Bug #22881
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 24 Oct 2011 20:08:11 +0200
+
 univention-management-console-module-udm (1.0.194-1) unstable; urgency=low
 
   * removed empty values from validation check (causing empty values to be

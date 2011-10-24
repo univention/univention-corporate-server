@@ -443,7 +443,7 @@ class UDM_Module( object ):
 		props = [ { 'id' : '$dn$', 'type' : 'HiddenInput', 'label' : '', 'searchable' : False } ]
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if key == 'filler': continue # FIXME: should be removed from all UDM modules
-			item = { 'id' : key, 'label' : prop.short_description, 'description' : prop.long_description, 'syntax' : prop.syntax.name,
+			item = { 'id' : key, 'label' : prop.short_description, 'description' : prop.long_description, 'syntax' : prop.syntax.name, 'size' : prop.syntax.size,
 					 'required' : bool( prop.required ), 'editable' : bool( prop.may_change ), 'options' : prop.options,
 					 'searchable' : not prop.dontsearch, 'multivalue' : bool( prop.multivalue ), 'identifies' : bool( prop.identifies ) }
 
