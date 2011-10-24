@@ -40,12 +40,12 @@ Description: UCS - LDAP server configuration
 
 Package: univention-ldap-client
 Architecture: all
-Pre-Depends: univention-join
+Recommends: univention-pam,
+ univention-join
 Depends: ${misc:Depends},
  ldap-utils,
  univention-config-registry,
- libldap-2.4-2,
- univention-pam
+ libldap-2.4-2
 Description: UCS - LDAP client configuration
  This package contains the configuration for the OpenLDAP
  client tools.

@@ -1,3 +1,10 @@
+univention-ldap (8.0.52-1) unstable; urgency=low
+
+  * Removed pre dependency to univention-join to avoid a dependency
+    cycle. Moved univention-pam from Depends to Recommends (Bug #24159)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Oct 2011 07:37:55 +0200
+
 univention-ldap (8.0.51-4) unstable; urgency=low
 
   * fixed ucslint warning; Bug #22668
