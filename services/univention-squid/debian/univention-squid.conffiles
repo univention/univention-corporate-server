@@ -1,4 +1,3 @@
-/etc/univention/templates/files/etc/security/netfilter.d/20squid
 /etc/univention/registry.info/categories/univention-squid.cfg
 /etc/univention/registry.info/variables/univention-squid.cfg
 /etc/univention/templates/files/etc/squid3/squid.conf
