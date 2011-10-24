@@ -17,6 +17,11 @@ form {
 	margin-bottom: 15px;
 }
 
+p {
+	margin-bottom: 0.25em;
+	margin-top: 0.25em;
+}
+
 .umcSize-OneThird {
 	width: 94px !important;
 }
