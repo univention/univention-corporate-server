@@ -1,3 +1,9 @@
+univention-system-setup (5.0.19-6) unstable; urgency=low
+
+  * fixed misplaced debhelper replacement (Bug #23870)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 24 Oct 2011 09:09:21 +0200
+
 univention-system-setup (5.0.19-5) unstable; urgency=low
 
   * update rc.d-symlinks during update (Bug #23870)
