@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.120-1) unstable; urgency=low
+
+  * added Univention logo to header
+  * added mores test cases
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Oct 2011 15:33:04 -0400
+
 univention-management-console-frontend (1.0.119-1) unstable; urgency=low
 
   * add support for defining a width for a widget via the attribute

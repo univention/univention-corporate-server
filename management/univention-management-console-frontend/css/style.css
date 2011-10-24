@@ -268,3 +268,11 @@ form {
 	text-decoration:underline; 
 	color:#888;
 }
+
+.univentionLogo {
+	background-image: url(../images/univention_logo.png) !important;
+	background-position: 10px 0 !important;
+	width: 165px !important;
+	height: 18px !important;
+	background-repeat: no-repeat !important;
+}

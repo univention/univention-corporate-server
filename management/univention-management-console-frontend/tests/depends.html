@@ -218,6 +218,49 @@
 						label: 'Test2'
 					}],
 					label: 'MultiInput'
+				}, {
+					type: 'Text',
+					label: '',
+					name: 'test7',
+					content: '<h1>Test case: disabled ComboBoxes with staticValues and dynamicValues</h1>'
+				}, {
+					type: 'MultiInput',
+					name: 'MultiInput7-1',
+					subtypes: [{
+						type: 'ComboBox',
+						dynamicOptions: { _data: valuesColors },
+						dynamicValues: valuesAsync,
+						label: 'Value'
+					}],
+					label: 'MultiInput (dynamic)',
+					value: ['green', 'blue'],
+					disabled: true
+				}, {
+					type: 'MultiInput',
+					name: 'MultiInput7-2',
+					subtypes: [{
+						type: 'ComboBox',
+						staticValues: ['green', 'red', 'blue'],
+						label: 'Value'
+					}],
+					label: 'MultiInput (static)',
+					value: ['green', 'blue'],
+					disabled: true
+				}, {
+					type: 'ComboBox',
+					name: 'ComboBox7-1',
+					label: 'ComboBox (dynamic)',
+					dynamicOptions: { _data: valuesColors },
+					dynamicValues: valuesAsync,
+					value: 'green',
+					disabled: true
+				}, {
+					type: 'ComboBox',
+					name: 'ComboBox7-2',
+					label: 'ComboBox (static)',
+					staticValues: ['green', 'red', 'blue'],
+					value: 'green',
+					disabled: true
 				}];
 				var buttons = [{
 					name: 'submit',
@@ -233,7 +276,8 @@
 						'test3', ['MultiInput3-1', 'MultiInput3-2'],
 						'test4', ['MultiInput4-1', 'ComboBox4-1'],
 						'test5', ['MultiSelect5-1', 'ComboBox5-1'],
-						'test6', 'MultiInput6'
+						'test6', 'MultiInput6',
+						'test7', 'MultiInput7-1', 'MultiInput7-2', 'ComboBox7-1', 'ComboBox7-2'
 					]
 				});
 				form.startup();

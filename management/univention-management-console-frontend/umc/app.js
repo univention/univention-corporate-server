@@ -398,14 +398,22 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		});
 		header.addChild(headerRight);
 
-		// add some buttons
-		headerLeft.addChild(new dijit.form.Button({
-			label: this._('Help'),
-			'class': 'umcHeaderButton'
+		// the univention context menu
+		var menu = new dijit.Menu({});
+		menu.addChild(new dijit.MenuItem({
+			label: this._('Help')
 		}));
-		headerLeft.addChild(new dijit.form.Button({
-			label: this._('About UMC'),
-			'class': 'umcHeaderButton'
+		menu.addChild(new dijit.MenuItem({
+			label: this._('About UMC')
+		}));
+		menu.addChild(new dijit.MenuItem({
+			label: this._('Univention Website')
+		}));
+		headerLeft.addChild(new dijit.form.DropDownButton({
+			label: '&nbsp;',
+			'class': 'umcHeaderButton univentionButton',
+			iconClass: 'univentionLogo',
+			dropDown: menu
 		}));
 
 		// query domainname and hostname and add this information to the header
@@ -426,7 +434,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			}));
 
 		// the user context menu
-		var menu = new dijit.Menu({});
+		menu = new dijit.Menu({});
 		menu.addChild(new dijit.CheckedMenuItem({
 			label: this._('Tooltips'),
 			checked: umc.tools.preferences('tooltips'),
