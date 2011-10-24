@@ -31,13 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 univention-config-registry set 'system/setup/appliance/start?true'
-univention-config-registry set 'system/setup/boot/modules?password,net'
-
-eval "$(univention-config-registry shell system/setup/boot/modules)"
-
-if [ "$1" = "configure" -a -z "$2" ]; then
-	univention-config-registry set system/setup/boot/modules="$system_setup_boot_modules,ssl"
-fi
 
 # remove initscript to place updated version by DEBHELPER (Bug #23870)
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.19-5; then
