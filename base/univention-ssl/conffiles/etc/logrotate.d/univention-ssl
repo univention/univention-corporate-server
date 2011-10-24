@@ -1,14 +1,23 @@
 @%@UCRWARNING=# @%@
 
 @!@
-import univention.lib.ucrLogrotate
 
-name = "ssl-sync"
-settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+libAvailable = True
 
-print "/var/log/univention/%s.log {" % name
+try:
+	import univention.lib.ucrLogrotate
+except:
+	libAvailable = False
 
-for setting in settings.keys():
-	print "\t%s" % settings[setting]
+if libAvailable:
+
+	name = "ssl-sync"
+	settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+
+	print "/var/log/univention/%s.log {" % name
+
+	for setting in settings.keys():
+		print "\t%s" % settings[setting]
+
+	print "}"
 @!@
-}

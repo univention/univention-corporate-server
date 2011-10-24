@@ -1,3 +1,10 @@
+univention-ssl (6.0.10-1) unstable; urgency=low
+
+  * immunised logrotate template against missing
+    univention.lib.ucrLogrotate (Bug #18002)
+
+ -- Felix Botner <botner@univention.de>  Mon, 24 Oct 2011 14:31:57 +0200
+
 univention-ssl (6.0.9-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
