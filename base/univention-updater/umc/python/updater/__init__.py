@@ -1113,7 +1113,7 @@ class Instance(umcm.Base):
 			[	'repository/online',					onoff]
 		]
 		
-		intval = 1 if value else 0			# speak C:  intval = value ? 1 : 0;
+		intval = int(bool(value))			# speak C:  intval = value ? 1 : 0;
 		
 		for s in setup:
 			if s[0] in variable:
