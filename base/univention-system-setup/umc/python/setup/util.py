@@ -54,6 +54,7 @@ ucr.load()
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
 PATH_SETUP_SCRIPTS = '/usr/lib/univention-system-setup/scripts'
+PATH_PROFILE = '/var/cache/univention-system-setup/profile'
 LOG_FILE = '/var/log/univention/setup.log'
 
 # list of all needed UCR variables
@@ -149,7 +150,7 @@ def pre_save(newValues, oldValues):
 		newValues['packages_remove'] = ' '.join(set(allPackages) - set(installPackages))
 
 def write_profile(values):
-	cache_file=open('/var/cache/univention-system-setup/profile',"w+")
+	cache_file=open(PATH_PROFILE,"w+")
 	for ientry in values.iteritems():
 		cache_file.write('%s="%s"\n\n' % ientry)
 	cache_file.close()
@@ -197,7 +198,7 @@ def detect_interfaces():
 
 def get_broadcast(ip, netmask):
 	try:
-		ip = util.ipaddr.IPv4Network('%s/%s')
+		ip = ipaddr.IPv4Network('%s/%s')
 		return ip.broadcast
 	except ValueError:
 		pass
