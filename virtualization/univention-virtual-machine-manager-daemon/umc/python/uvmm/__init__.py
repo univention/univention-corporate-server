@@ -68,7 +68,7 @@ class Instance( Base ):
 		self.uvmm.send( 'NODE_LIST', Callback( self._thread_finish, request ), group = 'default', pattern = request.options.get( 'pattern', '*' ) )
 
 	def domain_query( self, request ):
-		self.finished( request.id )
+		self.uvmm.send( 'DOMAIN_LIST', Callback( self._thread_finish, request ), uri = request.options.get( 'uri', '*' ), pattern = request.options.get( 'pattern', '*' ) )
 
 	def node_get( self, request ):
 		self.finished( request.id )

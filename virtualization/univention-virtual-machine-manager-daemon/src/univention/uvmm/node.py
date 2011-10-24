@@ -770,8 +770,17 @@ class Node(PersistentCached):
 			uri = self.pd.uri
 		return os.path.join(self.cache_dir, uri_encode(uri) + suffix)
 
-	def domain_list( self ):
-		return map( lambda dom: ( self.domains[ dom ].pd.uuid, self.domains[ dom ].pd.name ), self.domains )
+	def domain_list( self, pattern = '*' ):
+		regex = re.compile( fnmatch.translate( pattern ), re.IGNORECASE )
+		domains = []
+		for dom in self.domains:
+			contact = self.domains[ dom ].pd.annotations.get( 'contact', '' )
+			name = self.domains[ dom ].pd.name
+			descr = self.domains[ dom ].pdannotations.get( 'description', '' )
+			if regex.match( name ) is not None or regex.match( contact )  is not None or regex.match( descr ) is not None:
+				domains.append( ( self.domains[ dom ].pd.uuid, self.domains[ dom ].pd.name ) )
+
+		return domains
 
 	def cache_dom_dir(self, uri=None):
 		"""Return the path of the domain cache directory of the node."""
@@ -1314,10 +1323,10 @@ def domain_define( uri, domain ):
 
 	return ( domain.uuid, warnings )
 
-def domain_list( uri ):
+def domain_list( uri, pattern = '*' ):
 	"""Returns a list of domains. For each domain a tuple with UUID and name is add to the list."""
 	node = node_query(uri)
-	return node.domain_list()
+	return node.domain_list( pattern )
 
 def domain_info( uri, domain ):
 	"""Return detailed information of a domain."""

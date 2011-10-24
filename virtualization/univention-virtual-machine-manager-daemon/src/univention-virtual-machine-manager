@@ -321,15 +321,15 @@ class Client(object):
 		"""
 		return protocol.Request_DOMAIN_MIGRATE(uri=uri, domain=domain, target_uri=target_uri)
 
-	def domains( self, uri ):
+	def domains( self, uri, pattern = '*' ):
 		"""
-		%prog domains <uri>
+		%prog domains <uri> <pattern>
 
 		Return a list of available domains on the given node
 		Examples:
-			%prog domains xen://server.domain.name/
+			%prog domains xen://server.domain.name/ *
 		"""
-		return protocol.Request_DOMAIN_LIST( uri = uri )
+		return protocol.Request_DOMAIN_LIST( uri = uri, pattern = pattern )
 
 	def domain_info( self, uri, domain ):
 		"""

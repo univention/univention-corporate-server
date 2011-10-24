@@ -118,7 +118,7 @@ class _Commands:
 		if not isinstance(request.group, basestring):
 			raise CommandError('NODE_LIST', _('group != string: %(group)s'), group=request.group)
 		if not isinstance(request.pattern, basestring):
-			raise CommandError( 'NODE_LIST', _('group != string: %(pattern)s'), pattern = request.pattern )
+			raise CommandError( 'NODE_LIST', _('pattern != string: %(pattern)s'), pattern = request.pattern )
 		logger.debug('NODE_LIST')
 		try:
 			res = protocol.Response_DUMP()
@@ -149,15 +149,17 @@ class _Commands:
 		"""Return a list of available domains of a given node."""
 		if not isinstance( request.uri, basestring ):
 			raise CommandError( 'DOMAIN_LIST', _( 'uri != string: %(uri)s' ), uri = request.uri )
+		if not isinstance( request.pattern, basestring ):
+			raise CommandError( 'DOMAIN_LIST', _( 'pattern != string: %(pattern)s' ), pattern = request.pattern )
 
-		logger.debug('DOMAIN_LIST %s' % request.uri )
+		logger.debug('DOMAIN_LIST %s %s' % ( request.uri, request.pattern ) )
 		try:
-			domains = node.domain_list( request.uri )
+			domains = node.domain_list( request.uri, request.pattern )
 			res = protocol.Response_DUMP()
 			res.data = domains
 			return res
 		except node.NodeError, e:
-			raise CommandError('DOMAIN_DEFINE', e)
+			raise CommandError('DOMAIN_LIST', e)
 
 	@staticmethod
 	def DOMAIN_INFO( server, request ):
