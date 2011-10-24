@@ -38,8 +38,10 @@ if baseConfig.has_key('mail/cyrus/pop') and baseConfig['mail/cyrus/pop'] == 'yes
 print ''
 print '        # At least one form of LMTP is required for delivery'
 print '        # (you must keep the Unix socket name in sync with imap.conf)'
-print '        lmtp cmd="lmtpd -C /etc/imapd/imapd.conf -a" listen="localhost:2003" prefork=0 maxchild=20'
-print '        #lmtpunix  cmd="lmtpd -C /etc/imapd/imapd.conf" listen="/var/run/cyrus/socket/lmtp" prefork=0 maxchild=20'
+if pre:
+	print '        lmtp cmd="lmtpd -C /etc/imapd/imapd.conf" listen="%s2003" prefork=0 maxchild=20' % pre
+else:
+	print '        lmtp cmd="lmtpd -C /etc/imapd/imapd.conf -a" listen="localhost:2003" prefork=0 maxchild=20'
 print ''
 
 # sieve

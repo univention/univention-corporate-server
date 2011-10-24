@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.22-2) unstable; urgency=low
+
+  * start lmtp on backend id if we are a murder backedn (Bug #22875)
+
+ -- Felix Botner <botner@univention.de>  Mon, 24 Oct 2011 11:08:18 +0200
+
 univention-mail-cyrus (4.0.21-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
