@@ -1,0 +1,12 @@
+@%@UCRWARNING=# @%@
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+@!@
+comment = '# '
+if configRegistry.is_true('ucr/backup/enabled'):
+	comment = ''
+
+print '%s30 3     * * *   root            /usr/share/univention-config-registry/univention-config-registry-backup' % comment
+@!@

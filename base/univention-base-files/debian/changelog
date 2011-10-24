@@ -1,3 +1,12 @@
+univention-base-files (1.0.32-1) unstable; urgency=low
+
+  * added UCR variable descriptions for ucr/backup/enabled and
+    ucr/replog/enabled (Bug 3515)
+  * added cron job
+  * added logrotate config
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 24 Oct 2011 16:22:51 +0200
+
 univention-base-files (1.0.31-3) unstable; urgency=low
 
   * moved default INPUT firewall policy to univention-firewall (Bug #23577)

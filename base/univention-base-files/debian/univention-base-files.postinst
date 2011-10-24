@@ -63,6 +63,9 @@ univention-config-registry set ldap/base?dc=univention,dc=unconfigured \
 	logrotate/notifempty?yes \
 	nameserver/option/timeout?2 \
 	update/secure_apt?no \
+	ucr/backup/enabled?yes \
+	ucr/replog/enabled?no \
+
 
 # services
 univention-config-registry set cron/autostart?yes \

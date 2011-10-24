@@ -1,3 +1,4 @@
+scripts/univention-config-registry-backup usr/share/univention-config-registry/
 scripts/init-autostart.lib usr/share/univention-config-registry/
 scripts/univention-set-logfile-permissions usr/sbin/
 scripts/univention-keyboardmapping usr/bin/

@@ -1,0 +1,10 @@
+@%@UCRWARNING=# @%@
+
+/var/log/univention/config-registry.replog {
+        weekly
+        rotate 16
+        create 640 root adm
+        compress
+        missingok
+        notifempty
+}

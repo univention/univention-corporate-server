@@ -1,3 +1,9 @@
+univention-config-registry (7.0.26-1) unstable; urgency=low
+
+  * added replog feature (Bug #3515)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 24 Oct 2011 16:46:34 +0200
+
 univention-config-registry (7.0.25-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

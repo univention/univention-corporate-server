@@ -222,3 +222,10 @@ Subfile: etc/python2.6/sitecustomize.py.d/10apport.py
 Type: subfile
 Multifile: etc/python2.6/sitecustomize.py
 Subfile: etc/python2.6/sitecustomize.py.d/20utf8.py
+
+Type: file
+File: etc/logrotate.d/univention-config-registry-replog
+
+Type: file
+File: etc/cron.d/univention-config-registry-backup
+Variables: ucr/backup/enabled

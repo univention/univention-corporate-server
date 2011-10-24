@@ -40,6 +40,7 @@ import subprocess
 import fcntl
 import pwd
 import grp
+import time
 from debhelper import parseRfc822
 try:
 	from univention.lib.shell import escape_value
@@ -50,6 +51,7 @@ variable_pattern = re.compile('@%@([^@]+)@%@')
 variable_token = re.compile('@%@')
 execute_token = re.compile('@!@')
 warning_pattern = re.compile('(UCRWARNING|BCWARNING|UCRWARNING_ASCII)=(.+)')
+replog_file = '/var/log/univention/config-registry.replog'
 file_dir = '/etc/univention/templates/files'
 script_dir = '/etc/univention/templates/scripts'
 module_dir = '/etc/univention/templates/modules'
@@ -1028,6 +1030,34 @@ def randpw():
 	fp.close()
 	return pw
 
+def replog(method, scope, ucr, var, value=None):
+	"""
+ 	This function writes a new entry to replication logfile if
+    this feature has been enabled.
+	"""
+	if ucr.is_true('ucr/replog/enabled',False):
+		if method == 'set':
+			varvalue = "%s=%s" % (var,escape_value(value))
+		else:
+			varvalue = "'%s'" % var
+
+		scope_arg = ''
+		if scope == ConfigRegistry.LDAP:
+			scope_arg = '--ldap-policy '
+		elif scope == ConfigRegistry.FORCED:
+			scope_arg = '--force '
+		elif scope == ConfigRegistry.SCHEDULE:
+			scope_arg = '--schedule '
+
+		str = '%s: %s %s%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), method, scope_arg, varvalue)
+		try:
+			logfile = open(replog_file,"a+")
+			logfile.write(str)
+			logfile.close()
+		except Exception, e:
+			print "error: exception occurred while writing to replication log: %s" % str(e)
+			exception_occured()
+
 def handler_set( args, opts = {}, quiet = False ):
 	"""
 	Set config registry variables in args.
@@ -1082,6 +1112,7 @@ def handler_set( args, opts = {}, quiet = False ):
 						print 'Warning: %s is overridden by scope "%s"' % (key, SCOPE[k[0]])
 				reg[key] = value
 				changed[key] = (old, value)
+				replog( 'set', current_scope, reg, key, value )
 			else:
 				if not quiet:
 					if old is not None:
@@ -1127,6 +1158,7 @@ def handler_unset( args, opts = {} ):
 				del reg[arg]
 				changed[arg] = ( oldvalue, '' )
 				k = reg.get(arg, None, getscope=True)
+				replog( 'unset', current_scope, reg, arg )
 				if k and k[0] > current_scope:
 					print 'Warning: %s is still set in scope "%s"' % (arg, SCOPE[k[0]])
 			else:

@@ -455,8 +455,20 @@ Type=str
 Categories=system-network
 
 [ucr/output/brief]
-Description[de]=UCR aktiviert für das Kommando search standardmäßig die Option --brief (yes, no)
+Description[de]=UCR aktiviert für das Kommando "search" standardmäßig die Option --brief (yes, no)
 Description[en]=UCR activates the option --brief of the search-command by default (yes, no)
+Type=bool
+Categories=system-base
+
+[ucr/replog/enabled]
+Description[de]=UCR aktiviert für die Kommandos "set" und "unset" ein Replikations-Logfile (yes, no)
+Description[en]=UCR activates a replication logfile for UCR commands "set" and "unset" (yes, no)
+Type=bool
+Categories=system-base
+
+[ucr/backup/enabled]
+Description[de]=Aktivert ein nächtliches Backup der UCR-Daten (yes, no)
+Description[en]=Create nightly backup of UCR data (yes, no)
 Type=bool
 Categories=system-base
 
