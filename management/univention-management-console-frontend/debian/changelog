@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.116-1) unstable; urgency=low
+
+  * umc.render.layout: LabelPanes inherit the style from the widget
+    definition; Bug #22881
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 24 Oct 2011 16:51:04 +0200
+
 univention-management-console-frontend (1.0.115-1) unstable; urgency=low
 
   * CSS adaptations (Bug #22881)
