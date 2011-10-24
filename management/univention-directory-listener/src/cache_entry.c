@@ -363,3 +363,143 @@ char** cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old)
 
 	return changes;
 }
+
+int copy_cache_entry(CacheEntry *cache_entry, CacheEntry *backup_cache_entry) {
+	CacheEntryAttribute **cur1, **cur2;
+	int i=0;
+	int rv=0;
+	memset(&backup_cache_entry, 0, sizeof(CacheEntry));
+	for (cur1 = cache_entry->attributes; cur1 != NULL && *cur1 != NULL; cur1++) {
+		if ((backup_cache_entry->attributes = realloc(backup_cache_entry->attributes, (backup_cache_entry->attribute_count+2)*sizeof(CacheEntryAttribute*))) == NULL) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of attributes array failed");
+			rv = 1;
+			goto result;
+		}
+		if ((backup_cache_entry->attributes[backup_cache_entry->attribute_count] = malloc(sizeof(CacheEntryAttribute))) == NULL) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc for CacheEntryAttribute failed");
+			rv = 1;
+			goto result;
+		}
+		cur2 = &backup_cache_entry->attributes[backup_cache_entry->attribute_count];
+		(*cur2)->name=strdup((*cur1)->name);
+		(*cur2)->values=NULL;
+		(*cur2)->length=NULL;
+		(*cur2)->value_count=0;
+		backup_cache_entry->attributes[backup_cache_entry->attribute_count+1]=NULL;
+
+		for (i = 0; i < (*cur1)->value_count; i++) {
+			if (((*cur2)->values = realloc((*cur2)->values, ((*cur2)->value_count+2)*sizeof(char*))) == NULL) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of values array failed");
+				rv = 1;
+				goto result;
+			}
+			if (((*cur2)->length = realloc((*cur2)->length, ((*cur2)->value_count+2)*sizeof(int))) == NULL) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of length array failed");
+				rv = 1;
+				goto result;
+			}
+			if ((*cur1)->length[i] == strlen((*cur1)->values[i]) + 1) {
+				if (((*cur2)->values[(*cur2)->value_count]=strdup((*cur1)->values[i])) == NULL) {
+					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: strdup of value failed");
+					rv = 1;
+					goto result;
+				}
+				(*cur2)->length[(*cur2)->value_count]=strlen((*cur2)->values[(*cur2)->value_count])+1;
+			} else {	// in this case something is strange about the string in bv_val, maybe contains a '\0'
+				// the legacy approach is to copy bv_len bytes, let's stick with this and just terminate to be safe
+				if (((*cur2)->values[(*cur2)->value_count]=malloc(((*cur1)->length[i]+1)*sizeof(char))) == NULL) {
+					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc for value failed");
+					rv = 1;
+					goto result;
+				}
+				memcpy((*cur2)->values[(*cur2)->value_count],(*cur1)->values[i],(*cur1)->length[i]);
+				(*cur2)->values[(*cur2)->value_count][(*cur1)->length[i]]='\0'; // terminate the string to be safe
+				(*cur2)->length[(*cur2)->value_count]=(*cur1)->length[i]+1;
+			}
+			(*cur2)->values[(*cur2)->value_count+1]=NULL;
+			(*cur2)->value_count++;
+		}
+		backup_cache_entry->attribute_count++;
+	}
+	char **module_ptr;
+	for (module_ptr=cache_entry->modules; module_ptr != NULL && *module_ptr != NULL; module_ptr++) {
+	
+		backup_cache_entry->modules = realloc(backup_cache_entry->modules, (backup_cache_entry->module_count+2)*sizeof(char*));
+		backup_cache_entry->modules[backup_cache_entry->module_count] = strdup(*module_ptr);
+		backup_cache_entry->modules[backup_cache_entry->module_count+1] = NULL;
+		backup_cache_entry->module_count++;
+	}
+result:
+	return rv;
+}
+
+void compare_cache_entries(CacheEntry *lentry, CacheEntry *rentry)
+{
+	char		**changes;
+	char		**cur;
+	int i=0;
+	
+	changes = cache_entry_changed_attributes(lentry, rentry);
+
+	for (cur = changes; cur != NULL && *cur != NULL; cur++) {
+		
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ALERT:     %s differs\n", *cur);
+		
+		for (i=0; lentry->attributes != NULL && lentry->attributes[i] != NULL; i++) {
+			if (strcmp(lentry->attributes[i]->name, *cur) == 0)
+				break;
+		}
+		if (lentry->attributes == NULL || lentry->attributes[i] == NULL) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ALERT:         lentry = []\n");
+		} else {
+			int j;
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ALERT:         lentry = [");
+			for (j=0; lentry->attributes[i]->values &&
+					lentry->attributes[i]->values[j] != NULL;
+					j++) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, j == 0 ? "%s" : ", %s", lentry->attributes[i]->values[j]);
+			}
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "]\n");
+		}
+		
+		for (i=0; rentry->attributes != NULL && rentry->attributes[i] != NULL; i++) {
+			if (strcmp(rentry->attributes[i]->name, *cur) == 0)
+				break;
+		}
+		if (rentry->attributes == NULL || rentry->attributes[i] == NULL) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ALERT:         rentry = []\n");
+		} else {
+			int j;
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ALERT:         rentry = [");
+			for (j=0; rentry->attributes[i]->values &&
+					rentry->attributes[i]->values[j] != NULL;
+					j++) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, j == 0 ? "%s" : ", %s", rentry->attributes[i]->values[j]);
+			}
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "]\n");
+		}
+		
+	}
+	free(changes);
+
+	char		**cur1, **cur2;
+	
+	for (cur1=lentry->modules; cur1 != NULL && *cur1 != NULL; cur1++) {
+
+		for (cur2=rentry->modules; cur2 != NULL && *cur2 != NULL; cur2++)
+			if (strcmp(*cur1, *cur2) == 0)
+				break;
+		if (cur2 != NULL && *cur2 != NULL)
+			continue;
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ALERT:     module %s on lentry missing on rentry\n", *cur1);
+	}
+	for (cur2=rentry->modules; cur2 != NULL && *cur2 != NULL; cur2++) {
+		for (cur1=lentry->modules; cur1 != NULL && *cur1 != NULL; cur1++)
+			if (strcmp(*cur1, *cur2) == 0)
+				break;
+		if (cur1 != NULL && *cur1 != NULL)
+			continue;
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ALERT:     module %s on rentry missing on lentry\n", *cur2);
+	}
+}
+

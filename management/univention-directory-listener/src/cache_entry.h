@@ -68,4 +68,10 @@ int	cache_entry_module_present	(CacheEntry	 *entry,
 char**	cache_entry_changed_attributes	(CacheEntry	 *new,
 					 CacheEntry	 *old);
 
+int	copy_cache_entry		(CacheEntry *cache_entry,
+					 CacheEntry *backup_cache_entry);
+
+void	compare_cache_entries		(CacheEntry *lentry,
+					 CacheEntry *rentry);
+
 #endif /* _CACHE_ENTRY_H_ */
