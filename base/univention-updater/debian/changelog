@@ -1,3 +1,10 @@
+univention-updater (7.0.54-1) unstable; urgency=low
+
+  * Removed pre installation of univention-ssl, univention-thin-client-
+    basesystem, univention-thin-client-x-base and usplash (Bug #24159)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Oct 2011 08:02:38 +0200
+
 univention-updater (7.0.53-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

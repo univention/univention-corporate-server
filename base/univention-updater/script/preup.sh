@@ -382,27 +382,27 @@ install*)
 esac
 # END -- update to 3.0-0 Bug #23054
 
-for pkg in univention-ssl univention-thin-client-basesystem univention-thin-client-x-base usplash ; do
-	# pre-update $pkg to avoid pre-dependency-problems
-	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
-	    echo -n "Starting preupdate of $pkg..."
-	    $update_commands_install "$pkg" >&3 2>&3
-	    if [ ! $? = 0 ]; then
-			echo "failed."
-	        echo "ERROR: pre-update of $pkg failed!"
-	        echo "       Please run 'dpkg --configure -a' manually."
-	        exit 1
-	    fi
-	    dpkg -l 2>&1 | grep "  " | grep -v "^|" | LC_ALL=C grep "^[a-z]*[A-Z]" >&3 2>&3
-	    if [ $? = 0 ]; then
-			echo "failed."
-	        echo "ERROR: pre-update of $pkg failed!"
-	        echo "       Inconsistent package state detected. Please run 'dpkg --configure -a' manually."
-	        exit 1
-	    fi
-		echo "done."
-	fi
-done
+#for pkg in univention-ssl univention-thin-client-basesystem univention-thin-client-x-base usplash ; do
+#	# pre-update $pkg to avoid pre-dependency-problems
+#	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
+#	    echo -n "Starting preupdate of $pkg..."
+#	    $update_commands_install "$pkg" >&3 2>&3
+#	    if [ ! $? = 0 ]; then
+#			echo "failed."
+#	        echo "ERROR: pre-update of $pkg failed!"
+#	        echo "       Please run 'dpkg --configure -a' manually."
+#	        exit 1
+#	    fi
+#	    dpkg -l 2>&1 | grep "  " | grep -v "^|" | LC_ALL=C grep "^[a-z]*[A-Z]" >&3 2>&3
+#	    if [ $? = 0 ]; then
+#			echo "failed."
+#	        echo "ERROR: pre-update of $pkg failed!"
+#	        echo "       Inconsistent package state detected. Please run 'dpkg --configure -a' manually."
+#	        exit 1
+#	    fi
+#		echo "done."
+#	fi
+#done
 
 echo "Starting update process, this may take a while."
 echo "Check /var/log/univention/updater.log for more information."
