@@ -67,7 +67,7 @@ form {
 }
 
 .umcHeader .umcHeaderButton .dijitButtonNode {
-	height: auto;
+	height: auto !important;
 	background: none;
 	border-radius: 0;
 	border: none;
@@ -126,7 +126,7 @@ form {
 
 /* @end */
 
-#dijit_layout_TabContainer_0 {
+.dijitTabContainer {
 	padding: 20px 30px;
 }
 
@@ -134,10 +134,6 @@ form {
 	margin: 15px 0;
 	padding: 0 0 10px 7px;
 	border-bottom: 1px solid #989a9c;
-}
-
-.umcPageHelpText {
-	margin-bottom: 15px;
 }
 
 .umcPageNote {
@@ -150,209 +146,91 @@ form {
 	margin: 0 0 15px 0;
 }
 
-/* @group Main Icons */
 
-#dijit_layout_TabContainer_0 .modLaunchButton {
-	position: relative;
-	float: left;
-	height: 85px;
-	width: 85px;
-	padding: 10px;
-	margin: 0 25px 10px 0;
-	background-position: center 10px;
-}
-#dijit_layout_TabContainer_0 #umc_widgets__CategoryItem_14 {
-	height: 105px;
+
+/* @group search-form */
+/*.umcSearchForm .umcLabelPane {
+  float: left;
+  display: block !important;
 }
 
+#umc_widgets_ContainerWidget_16,
+#umc_widgets_ContainerWidget_17 {
+  overflow: hidden;
+}
+
+#umc_widgets_LabelPane_5 .dijitReset .dijitButtonNode {
+  background: none !important;
+  color: #414142 !important;
+  padding-top: 2px;
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+#umc_widgets_LabelPane_5 .umcLabelPaneLabeNodeTop,
+#umc_widgets_LabelPane_4 .umcLabelPaneLabeNodeTop {
+  display: none !important;
+}
+
+#umc_widgets_LabelPane_5,
+#umc_widgets_LabelPane_4 {
+  float: right;
+}
+
+#umc_widgets_LabelPane_3 {
+  width: 300px !important;
+}
+
+.umcSearchForm .dijitcontentpane {
+  overflow: hidden !important;
+}
+
+.umcSearchForm .umcLabelPaneLabeNodeTop {
+  width: 90px !important;
+  float: left;
+}
+
+.umcSearchForm .umcLabelPaneLabeNodeTop label {
+  padding-top: 5px;
+  display: block;
+}
+
+.umcSearchForm .umcMixedInput {
+  width: 200px !important;
+}
+
+.umcSearchForm .dijitTextBox {
+  width: 190px !important;
+}
+
+.umcMultiInputAddButton .dijitButtonNode,
+.umcMultiInputRemoveButton .dijitButtonNode {
+  background: none !important;
+  padding-top: 3px !important;
+}
+
+.umcLabelPaneLabeNodeRight {
+  padding-left: 5px;
+}*/
 /* @end */
 
-.modLaunchButton div {
-	margin-top: 70px;
-	text-align: center;
+.umc .dijitButton .dijitButtonNode {
+  height: 20px;
+  padding: 0 2px;
 }
 
-#dijit_layout_TabContainer_0 .modLaunchButtonHover {
-	background-color: #ededee;
-	cursor: pointer;
-	border-radius: 5px;
+/* @group notifications */
+.dijitToasterContent {
+  padding-top: 2px !important;
+  padding-bottom: 5px !important;
+  font-size: 12px !important;
 }
-
-#dijit_layout_TabContainer_0 .dojoxGridCell .dijitButtonNode {
-	background: none;
-}
-
-#dijit_layout_TabContainer_0 .dojoxGridRowOver tr {
-	background-color: #dedede !important;
-}
-
-.umcGridFooter {
-	margin-bottom: 10px;
-	padding-top: 10px !important;
-	background-color: #ededee;
-	border-top: 1px solid #000;
-	border-bottom: 2px solid #919395;
-}
-
-.umcGridFooter {
-	padding-top: 10px !important;
-}
-
-#dijit_layout_TabContainer_0 .umcGridFooter .dijitButtonNode {
-	padding-top: 0 !important;
-}
-
-/* @group Forms */
-
-.umcLabelPane {
-	margin-right: 5px;
-}
-
-.dijitDialog .dijitTextBox {
-	width: auto;
-}
-
-.dojoxDialog .umcLabelPane {
-	width: auto;
-}
-
-.umcLabelPaneLabelNode {
-	margin-bottom: 3px;
-}
-
-.dijitAlignBottom .umcSubmitButton .dijitButtonText {
-	display: inline-block;
-    height: 13px;
-    padding: 5px 8px 5px;
-	background-color: #74BE4B !important;
-    background-image: url("../images/button.png") !important;
-    background-position: left top !important;
-    background-repeat: repeat-x !important;
-    color: #FFFFFF;
-    font-size: 14px;
-    text-decoration: none !important;
-}
-
 /* @end */
 
-/* @group Dialog */
-
-.dojoxDialog {
-	position: absolute;
-	z-index: 999;
-	outline:0;
-	background-color: #fff;
+/* @group footer */
+.umcPageFooter {
+  border-top: 1px solid #414142;
+  margin-top: 10px;
+  padding-top: 10px;
 }
-
-.dijitDialog p {
-	margin-top: 0;
-}
-
-.dijitDialog form {
-	margin-bottom: 0;
-}
-
-.dijitDialog form,
-.dijitDialog #umc_widgets_Text_0 {
-	width: auto !important;
-	margin-top: 0 !important;
-}
-
-.dijitDialog .umcLabelPane {
-	margin-bottom: 8px;
-}
-
-.dijitDialog .dijitButtonNode {
-	margin-left: 0 !important;
-}
-
-/* @group Login */
-
-#umc_widgets_LoginDialog_0 {
-	width: 320px;
-	height: 350px !important;
-}
-
-#umc_widgets_LoginDialog_0 * {
-	overflow: hidden;
-}
-
-#umc_widgets_LoginDialog_0 .dojoxDialogPaneContent {
-	width: 202 !important;
-	height: 320px !important;
-	margin: 0 auto !important;
-	padding: 35px 45px 0 45px !important;
-}
-
-#umc_widgets_LoginDialog_0 .dojoxDialogPaneContent .contentNode {
-	margin-bottom: 10px;
-}
-
-#umc_widgets_LoginDialog_0 .umcLabelPane {
-	margin-bottom: 0;
-}
-
-#umc_widgets_LoginDialog_0 .dijitTextBox {
-	width: 200px;
-}
-
-#umc_widgets_LoginDialog_0 #umc_widgets_ContainerWidget_4 {
-	margin-top: 10px;
-}
-
-#umc_widgets_LoginDialog_0 .umcSubmitButton {
-	float: right;
-}
-
-#umc_widgets_Button_0_label .dijitButtonNode {
-	background: none;
-}
-
 /* @end */
-
-/* @end */
-
-#dijit_layout_TabContainer_0 .dijitAlignBottom .dijitButtonNode {
-	background: none;
-	color: #414142;
-}
-#dijit_layout_TabContainer_0 .dijitAlignBottom .dijitButtonContents {
-	display: inline;
-}
-#dijit_layout_TabContainer_0 .dijitAlignBottom .dijitButtonText {
-	display: inline-block;
-	padding: 0 0 0 5px;
-	height: auto;
-	text-align: left;
-}
-
-#dijit_layout_TabContainer_0 .dijitAlignBottom .dijitButtonNode .dijitButtonText {
-	text-decoration: underline;
-}
-
-.umcgrid {
-	border-width: 2px;
-	border-bottom-width: 0;
-}
-
-.umcMultiSelect {
-	width: 25em;
-}
-
-.umcLabelPaneCheckBox {
-	width: 25em;
-}
-
-/* force scrollbars for grids, otherwise vertical scrollbars may be shown is particular circumstances */
-.umcGrid .dojoxGridScrollbox {
-	overflow-y: scroll;
-	overflow-x: hidden;
-}
-
-/* special styling for server error messages in the dialog box */
-.umcServerErrorMessage {
-	color: #888;
-	overflow: auto;
-	max-height: 200px;
-}
-

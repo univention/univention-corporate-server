@@ -2008,10 +2008,12 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
   -moz-transition-duration: 0.3s;
   transition-duration: 0.3s;
 }
-.umc .dijitButton .dijitButtonNode,
+/*.umc .dijitButton .dijitButtonNode,
 .umc .dijitDropDownButton .dijitButtonNode,
 .umc .dijitComboButton .dijitButtonNode,
 .umc .dijitToggleButton .dijitButtonNode {
+*/
+.umcSubmitButton {
 	height: 16px;
   color: #fff;
 	font-size: 14px;
@@ -2062,6 +2064,7 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
   text-align: center;
 	vertical-align: middle;
 }
+
 .umc .dijitButtonHover .dijitButtonNode,
 .umc .dijitDropDownButtonHover .dijitButtonNode,
 .umc .dijitComboButton .dijitButtonNodeHover,
@@ -2072,7 +2075,7 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
   -moz-transition-duration: 0.2s;
   transition-duration: 0.2s;
 }
-.umc .dijitButtonActive .dijitButtonNode,
+/*.umc .dijitButtonActive .dijitButtonNode,
 .umc .dijitDropDownButtonActive .dijitButtonNode,
 .umc .dijitComboButtonActive .dijitButtonNode,
 .umc .dijitToggleButtonActive .dijitButtonNode {
@@ -2084,7 +2087,7 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
   -moz-transition-duration: 0.1s;
   transition-duration: 0.1s;
 }
-.umc .dijitButtonDisabled,
+*/.umc .dijitButtonDisabled,
 .umc .dijitDropDownButtonDisabled,
 .umc .dijitComboButtonDisabled,
 .umc .dijitToggleButtonDisabled {
@@ -4531,4 +4534,247 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
   border-right-width: 0;
   padding-left: 1px;
   padding-right: 2px;
+}
+
+/* @group Login */
+
+#umc_widgets_LoginDialog_0 {
+	width: 230px;
+	padding: 0 45px;
+	height: 350px !important;
+}
+
+#umc_widgets_LoginDialog_0 * {
+	overflow: hidden;
+}
+
+#umc_widgets_LoginDialog_0 .dojoxDialogPaneContent {
+	width: 220px !important;
+	height: 320px !important;
+	margin: 0 auto !important;
+	padding: 35px 0 0 0 !important;
+}
+
+#umc_widgets_LoginDialog_0 .dojoxDialogPaneContent .contentNode {
+	margin-bottom: 10px;
+}
+
+#umc_widgets_LoginDialog_0 .umcLabelPane {
+	margin-bottom: 0;
+}
+
+#umc_widgets_LoginDialog_0 .dijitTextBox {
+	width: 215px;
+}
+
+#umc_widgets_LoginDialog_0 #umc_widgets_Form_0 {
+  overflow: hidden;
+}
+
+#umc_widgets_LoginDialog_0 #umc_widgets_ContainerWidget_4 {
+	margin-top: 10px;
+}
+
+#umc_widgets_LoginDialog_0 .umcSubmitButton {
+	float: right;
+}
+
+#umc_widgets_Button_0_label .dijitButtonNode {
+	background: none;
+}
+
+/* @end */
+
+/* @group Main Icons */
+
+.umcCategoryPane .modLaunchButton {
+	position: relative;
+	float: left;
+	height: 105px;
+	width: 85px;
+	padding: 15px;
+	margin: 0 30px 20px 0;
+	background-position: center 10px;
+}
+.umcCategoryPane #umc_widgets__CategoryItem_14 {
+	height: 105px;
+}
+
+/* @end */
+
+.modLaunchButton div {
+	margin-top: 70px;
+	text-align: center;
+}
+
+.umcCategoryPane .modLaunchButtonHover {
+	background-color: #ededee;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
+.umcCategoryPane .dojoxGridCell .dijitButtonNode {
+	background: none;
+}
+
+.umcCategoryPane .dojoxGridRowOver tr {
+	background-color: #dedede !important;
+}
+
+.umcGridFooter {
+	margin-bottom: 10px;
+	padding-top: 10px !important;
+	background-color: #ededee;
+	border-top: 1px solid #000;
+	border-bottom: 2px solid #919395;
+}
+
+.umcGridFooter {
+	padding-top: 10px !important;
+}
+
+.umcCategoryPane .umcGridFooter .dijitButtonNode {
+	padding-top: 0 !important;
+}
+
+/* @group Forms */
+
+.umcLabelPane {
+	margin-right: 5px;
+}
+
+.dijitDialog .dijitTextBox {
+	width: auto;
+}
+
+.dojoxDialog .umcLabelPane {
+	width: auto;
+}
+
+.umcLabelPaneLabelNode {
+	margin-bottom: 3px;
+}
+
+/*.dijitAlignBottom .umcSubmitButton .dijitButtonText {
+	display: inline-block;
+    height: 13px;
+    padding: 5px 8px 5px;
+	background-color: #74BE4B !important;
+    background-image: url("../images/button.png") !important;
+    background-position: left top !important;
+    background-repeat: repeat-x !important;
+    color: #FFFFFF;
+    font-size: 14px;
+    text-decoration: none !important;
+}
+*/
+/* @end */
+
+/* @group Dialog */
+
+.dojoxDialog {
+	position: absolute;
+	z-index: 999;
+	outline:0;
+	background-color: #fff;
+}
+
+.dijitDialog p {
+	margin-top: 0;
+}
+
+.dijitDialog form {
+	margin-bottom: 0;
+}
+
+.dijitDialog form {
+	width: auto !important;
+	margin-top: 0 !important;
+}
+
+.dijitDialog .umcLabelPane {
+	margin-bottom: 8px;
+}
+
+.dijitDialog .dijitButtonNode {
+	margin-left: 0 !important;
+}
+
+.dijitDialog #umc_widgets_Button_0 .dijitButtonNode {
+  background: none !important;
+}
+
+/*.umc #umc_widgets_Button_0 .dijitReset {
+  background: none !important;
+  font-size: 13px;
+  text-decoration: underline;
+  color: #414142;
+}
+*/
+
+/* @end */
+
+.umcCategoryPane .dijitAlignBottom .dijitButtonNode {
+	background: none;
+	color: #414142;
+}
+.umcCategoryPane .dijitAlignBottom .dijitButtonContents {
+	display: inline;
+}
+.umcCategoryPane .dijitAlignBottom .dijitButtonText {
+	display: inline-block;
+	padding: 0 0 0 5px;
+	height: auto;
+	text-align: left;
+}
+
+.umcCategoryPane .dijitAlignBottom .dijitButtonNode .dijitButtonText {
+	text-decoration: underline;
+}
+
+.umcgrid {
+	border-width: 2px;
+	border-bottom-width: 0;
+}
+
+.umcMultiSelect {
+	width: 25em;
+}
+
+.umcLabelPaneCheckBox {
+	width: 25em;
+}
+
+/* force scrollbars for grids, otherwise vertical scrollbars may be shown is particular circumstances */
+.umcGrid .dojoxGridScrollbox {
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+/* special styling for server error messages in the dialog box */
+.umcServerErrorMessage {
+	color: #888;
+	overflow: auto;
+	max-height: 200px;
+}
+
+/* @group Tabellen */
+.umc .dojoxGridCell .dijitButtonText {
+  color: #414142 !important;
+  font-size: 12px;
+  text-decoration: underline;
+}
+/* @end */
+
+.umcPageHelpText {
+	margin-bottom: 15px;
+}
+
+.umcButton span.dijitIcon,
+.umcButton span.dijitButtonText {
+	float: left;
+}
+
+.umcButton span.dijitButtonText {
+	padding-top: 2px;
 }

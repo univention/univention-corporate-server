@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.114-1) unstable; urgency=low
+
+  * integrated updated CSS theme files (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Oct 2011 15:22:23 +0200
+
 univention-management-console-frontend (1.0.113-1) unstable; urgency=low
 
   * added query-string parameters to launch modules directly, for automatic
