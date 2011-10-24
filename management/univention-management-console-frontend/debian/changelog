@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.113-1) unstable; urgency=low
+
+  * added query-string parameters to launch modules directly, for automatic
+    login (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Oct 2011 14:25:54 +0200
+
 univention-management-console-frontend (1.0.112-1) unstable; urgency=low
 
   * ModuleStore: support options for remove; Bug #22439

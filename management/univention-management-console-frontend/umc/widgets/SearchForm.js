@@ -51,7 +51,7 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 
 	onSearch: function(values) {
 		// event stub
-	},
+	}
 });
 
 

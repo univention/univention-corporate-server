@@ -36,7 +36,22 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	//		The domainname on which the UMC is running.
 	domainname: '',
 
-	start: function() {
+	// overview: Boolean
+	//		Specifies whether or not the overview is visible.
+	overview: true,
+
+	start: function(/*Object*/ props) {
+		// summary:
+		//		Start the UMC, i.e., render layout, request login for a new session etc.
+		// props: Object
+		//		The following properties may be given:
+		//		* username, password: if both values are given, the UMC tries to directly
+		//		  with these credentials.
+		//		* module, flavor: if module is given, the module is started immediately,
+		//		  flavor is optional.
+		//		* overview: if false and a module is given for autostart, the overview will 
+		//		  not been shown and the module cannot be closed
+
 		// create a background process that checks each second the validity of the session
 		// cookie as soon as the session is invalid, the login screen will be shown
 		this._checkSessionTimer = new dojox.timing.Timer(1000);
@@ -45,6 +60,26 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				this.login();
 			}
 		});
+
+		if (dojo.isString(props.module)) {
+			// a startup module is specified
+			var handle = dojo.connect(this, 'onGuiDone', dojo.hitch(this, function() {
+				dojo.disconnect(handle);
+				this.openModule(props.module, props.flavor);
+				this._tabContainer.layout();
+			}));
+
+			if (umc.tools.isFalse(props.overview)) {
+				// overview should not be visible
+				this.overview = false;
+			}
+		}
+
+		if (dojo.isString(props.username) && dojo.isString(props.password)) {
+			// username and password are given, try to login directly
+			this.login(props.username, props.password);
+			return;
+		}
 
 		// check whether we still have a app cookie
 		var sessionCookie = dojo.cookie('UMCSessionId');
@@ -64,11 +99,24 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		});
 	},
 
-	login: function() {
+	login: function(/*String*/ username, /*String*/ password) {
 		// summary:
-		//		Show the login dialog.
+		//		Show the login dialog. If username and password are specified, login
+		//		with these credentials.
 		this._checkSessionTimer.stop();
-		umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
+
+		// if username and password are specified, try to authenticate directly
+		if (dojo.isString(username) && dojo.isString(password)) {
+			umc.tools.umcpCommand('auth', {
+				username: username,
+				password: password
+			}).then(dojo.hitch(this, function(data) {
+				this.onLogin(username);
+			}));
+		}
+		else {
+			umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
+		}
 	},
 
 	onLogin: function(username) {
@@ -119,7 +167,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		var params = dojo.mixin({
 			title: module.name,
 			iconClass: umc.tools.getIconClass(module.icon),
-			closable: true,
+			closable: this.overview,  // closing tabs is only enabled of the overview is visible
 			moduleFlavor: module.flavor,
 			moduleID: module.id,
 			description: module.description
@@ -291,44 +339,46 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		});
 		topContainer.addChild(this._tabContainer);
 
-		// the container for all category panes
-		// NOTE: We add the icon here in the first tab, otherwise the tab heights
-		//	   will not be computed correctly and future tabs will habe display
-		//	   problems.
-		//     -> This could probably be fixed by calling layout() after adding a new tab!
-		var overviewPage = new umc.widgets.Page({
-			title: this._('Overview'),
-			headerText: this._('Overview'),
-			iconClass: umc.tools.getIconClass('univention'),
-			helpText: this._('Univention Management Console is a modularly designed, web-based application for the administration of objects in your Univention Corporate Server domain as well as individual of Univention Corporate Server systems.')
-		});
-		this._tabContainer.addChild(overviewPage);
-
-		// add a CategoryPane for each category
-		var categories = umc.widgets.ContainerWidget({
-			scrollable: true
-		});
-		dojo.forEach(this.getCategories(), dojo.hitch(this, function(icat) {
-			// ignore empty categories
-			var modules = this.getModules(icat.id);
-			if (0 === modules.length) {
-				return;
-			}
-
-			// create a new category pane for all modules in the given category
-			var categoryPane = new umc.widgets.CategoryPane({
-				modules: modules,
-				title: icat.name,
-				open: true //('favorites' == icat.id)
+		if (this.overview) {
+			// the container for all category panes
+			// NOTE: We add the icon here in the first tab, otherwise the tab heights
+			//	   will not be computed correctly and future tabs will habe display
+			//	   problems.
+			//     -> This could probably be fixed by calling layout() after adding a new tab!
+			var overviewPage = new umc.widgets.Page({
+				title: this._('Overview'),
+				headerText: this._('Overview'),
+				iconClass: umc.tools.getIconClass('univention'),
+				helpText: this._('Univention Management Console is a modularly designed, web-based application for the administration of objects in your Univention Corporate Server domain as well as individual of Univention Corporate Server systems.')
 			});
+			this._tabContainer.addChild(overviewPage);
 
-			// register to requests for opening a module
-			dojo.connect(categoryPane, 'onOpenModule', dojo.hitch(this, this.openModule));
+			// add a CategoryPane for each category
+			var categories = umc.widgets.ContainerWidget({
+				scrollable: true
+			});
+			dojo.forEach(this.getCategories(), dojo.hitch(this, function(icat) {
+				// ignore empty categories
+				var modules = this.getModules(icat.id);
+				if (0 === modules.length) {
+					return;
+				}
 
-			// add category pane to overview page
-			categories.addChild(categoryPane);
-		}));
-		overviewPage.addChild(categories);
+				// create a new category pane for all modules in the given category
+				var categoryPane = new umc.widgets.CategoryPane({
+					modules: modules,
+					title: icat.name,
+					open: true //('favorites' == icat.id)
+				});
+
+				// register to requests for opening a module
+				dojo.connect(categoryPane, 'onOpenModule', dojo.hitch(this, this.openModule));
+
+				// add category pane to overview page
+				categories.addChild(categoryPane);
+			}));
+			overviewPage.addChild(categories);
+		}
 
 		// the header
 		var header = new umc.widgets.ContainerWidget({
@@ -434,6 +484,11 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 
 		// set a flag that GUI has been build up
 		this._isSetupGUI = true;
+		this.onGuiDone();
+	},
+
+	onGuiDone: function() {
+		// event stub
 	}
 });
 
