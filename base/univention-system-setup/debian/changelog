@@ -1,3 +1,15 @@
+univention-system-setup (5.0.22-1) unstable; urgency=low
+
+  * added dependency to passwd (Bug #23870)
+  * removed system/setup/boot/modules
+  * added handling of ipv6 variables in univention-system-setup
+  * create special system setup user
+  * redirect output to permanent logfile
+  * set/reset password of special system setup user
+  * save pid of browser into pidfile
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 24 Oct 2011 15:01:33 +0200
+
 univention-system-setup (5.0.21-1) unstable; urgency=low
 
   * UMC: added flavors tabs and wizard to module, minor bug fix (Bug #22908)
