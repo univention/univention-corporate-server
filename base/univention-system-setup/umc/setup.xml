@@ -3,6 +3,14 @@
   <module id="setup" icon="setup" version="1.0">
 	<name>System Setup</name>
 	<description>Univention System Setup for configuring the machine</description>
+	<flavor icon="setup" id="wizard">
+		<name>System Setup</name>
+		<description>Univention System Setup for configuring the machine</description>
+	</flavor>
+	<flavor icon="setup" id="tabs">
+		<name>System Setup</name>
+		<description>Univention System Setup for configuring the machine</description>
+	</flavor>
 	<categories>
 	  <category name="system"/>
 	</categories>

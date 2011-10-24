@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -39,7 +39,8 @@ VERSION=1
 joinscript_init
 
 umc_init
-umc_operation_create "setup-all" "Univention System-Setup" "" "setup/*"
+umc_operation_create "setup-all" "Univention System-Setup" "tabs" "setup/*"
+umc_operation_create "setup-wizard-all" "Univention System-Setup" "wizard" "setup/*"
 umc_policy_append "default-umc-all" "setup-all"
 
 joinscript_save_current_version

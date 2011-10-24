@@ -91,7 +91,7 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 
 			// set the value as soon as the grid has loaded its values
 			this._loadingDone.then(dojo.hitch(this, function() {
-				components.set('value', installedComponents);
+				components.setInitialValue(installedComponents, true);
 			}));
 		}));
 
