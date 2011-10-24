@@ -1,3 +1,5 @@
+@%@UCRWARNING=#@%@
+
 # This file controls the activity of snmpd and snmptrapd
 
 # Don't load any MIBs by default.

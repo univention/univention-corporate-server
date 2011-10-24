@@ -1,3 +1,12 @@
+univention-snmpd (4.0.0-5) unstable; urgency=low
+
+  * Update templates for /etc/default/snmpd  since the old versions are incompatible
+    with version 5.4.3	 (Bug #22576)
+  * Update the snmpd.conf template to the current Squeeze version. The previous
+    UCR variable snmpd/defaultconfig is no longer used	 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 24 Oct 2011 15:39:06 +0200
+
 univention-snmpd (4.0.0-4) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
