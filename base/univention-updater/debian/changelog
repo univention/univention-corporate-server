@@ -1,3 +1,9 @@
+univention-updater (7.0.56-1) unstable; urgency=low
+
+  * Fixed typo in german translation (Bug #22898)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Oct 2011 20:34:58 +0200
+
 univention-updater (7.0.55-2) unstable; urgency=low
 
   * Fix use of python2.6 only syntax (Bug #24157)

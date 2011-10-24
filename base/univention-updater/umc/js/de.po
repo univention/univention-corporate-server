@@ -313,7 +313,7 @@ msgstr "An/Aus"
 #: umc/js/_updater/UpdatesPage.js:22
 msgid "Overview of all updates that affect the system as a whole."
 msgstr ""
-"Überblick über Software-Aktualisierungen, die das System als ganzes betreffen"
+"Überblick über Software-Aktualisierungen, die das System als Ganzes betreffen"
 
 #: umc/js/_updater/UpdatesPage.js:115 umc/js/_updater/UpdatesPage.js:207
 msgid "Package update status not yet checked"
