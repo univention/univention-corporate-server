@@ -29,7 +29,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+eval "$(univention-config-registry shell version/version)"
 
-echo "${0/*\//} has been removed. Please use univention-upgrade."
-exit 1
+if [ "${version_version:0:1}" -lt 3 ]; then
+	prog="${0/*\//}"
+	exec /usr/share/univention-updater/$prog $@
+else
+	echo "${0/*\//} has been removed. Please use univention-upgrade."
+	exit 1
+fi
 
