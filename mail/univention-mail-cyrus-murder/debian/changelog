@@ -1,3 +1,9 @@
+univention-mail-cyrus-murder (4.0.4-1) unstable; urgency=low
+
+  * use localhost instead of 127.0.0.1 for local lmtp proxy (Bug #22875) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 24 Oct 2011 14:11:54 +0200
+
 univention-mail-cyrus-murder (4.0.3-1) unstable; urgency=low
 
   * remove old ucr templates on update (Bug #22875)
