@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.196-1) unstable; urgency=low
+
+  * fixed subtype properties for multivalue policies
+  * fixed editing inherited policy
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Oct 2011 14:13:44 -0400
+
 univention-management-console-module-udm (1.0.195-1) unstable; urgency=low
 
   * add support for resizing a widget to a given width; Bug #22881

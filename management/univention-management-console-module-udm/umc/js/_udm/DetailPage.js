@@ -417,7 +417,12 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 						if (jname in usedProperties) {
 							if (jprop.multivalue && 'MultiInput' != jprop.type) {
 								// handle multivalue inputs
-								jprop.subtypes = [{ type: jprop.type }];
+								jprop.subtypes = [{ 
+									type: jprop.type,
+									dynamicValues: jprop.dynamicValues,
+									dynamicOptions: jprop.dynamicOptions,
+									staticValues: jprop.staticValues
+								}];
 								jprop.type = 'MultiInput';
 							}
 							jprop.disabled = true; // policies cannot be edited
@@ -726,9 +731,9 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 						this.disconnect(handle);
 						var oldDN = widget.get('value');
 
-						// we need to set the new DN, if a new policy object has been created
-						if (oldDN == 'None' && !policyDN) {
-							widget.set('value', dn);
+						// we need to set the new DN, only if a new policy object has been created
+						if (!policyDN) {
+							widget.setInitialValue(dn, true);
 						}
 						if (oldDN == dn) {
 							// we need a manual refresh in case the DN did not change since
