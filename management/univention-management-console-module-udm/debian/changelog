@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.193-1) unstable; urgency=low
+
+  * show object type and position at the top of the first tab; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 24 Oct 2011 16:52:11 +0200
+
 univention-management-console-module-udm (1.0.192-1) unstable; urgency=low
 
   * adapt to new remove API of the ModuleStore; Bug #22439

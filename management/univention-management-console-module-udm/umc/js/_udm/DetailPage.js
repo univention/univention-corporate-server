@@ -98,6 +98,8 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 	// reference to the template object in order to monitor user input changes
 	_template: null,
 
+	ldapBase: null,
+
 	buildRendering: function() {
 		// summary:
 		//		Query necessary information from the server for the object detail page
@@ -117,7 +119,8 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		var commands = [
 			this.umcpCommand('udm/properties', params),
 			this.umcpCommand('udm/layout', params),
-			this.umcpCommand('udm/policies', params)
+			this.umcpCommand('udm/policies', params),
+			umc.tools.ucr( [ 'ldap/base' ] )
 		];
 
 		// in case an object template has been chosen, add the umcp request for the template
@@ -131,7 +134,8 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			var properties = results[0][1].result;
 			var layout = results[1][1].result;
 			var policies = results[2][1].result;
-			var template = results.length > 3 ? results[3][1].result : null;
+			this.ldapBase = results[3][1][ 'ldap/base' ];
+			var template = results.length > 4 ? results[4][1].result : null;
 			this.renderDetailPage(properties, layout, policies, template);
 		}));
 	},
@@ -150,6 +154,21 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// parse the widget configurations
 		var properties = [];
 		var optionMap = {};
+		_properties.push( {
+			type: 'Text',
+			id: '$objecttype$',
+			content: '',
+			style: 'padding-bottom: 5px;',
+			label: ''
+		} );
+		_properties.push( {
+			type: 'Text',
+			id: '$location$',
+			content: '',
+			align: 'right',
+			// style: 'padding-bottom: 10px;',
+			label: ''
+		} );
 		dojo.forEach(_properties, function(iprop) {
 			// ignore internal properties
 			if ( iprop.id.slice( 0, 1 ) == '$' && iprop.id.slice( -1 ) == '$' ) {
@@ -195,15 +214,6 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				layout.push(ilayout);
 			}
 		});
-
-		// show object type and path above all other items an first tab
-		// var first_tab = layout[ 0 ];
-		// first_tab.layout = [ {
-		// 	type: 'Text',
-		// 	label: '',
-		// 	content: '',
-		// 	name: '$location$'
-		// } ].concat( first_tab.layout );
 
 		// if there are advanced settings, add them to the layout
 		if (advancedGroup.layout.length) {
@@ -284,6 +294,8 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// render the layout for each subtab
 		this._propertySubTabMap = {}; // map to remember which form element is displayed on which subtab
 		this._detailPages = [];
+
+		layout[ 0 ].layout.unshift( [ '$objecttype$', '$location$' ] );
 		dojo.forEach(layout, function(ilayout) {
 			// create a new page, i.e., subtab
 			var subTab = new umc.widgets.Page({
@@ -550,13 +562,10 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					}, this);
 				}));
 
-				// var label = ' (' + vals.$labelObjectType$;
-				// label += ': ' + umc.tools.ldapDn2Path( this.ldapName, this.ldapBase ) + ')';
-				// this._tabs.getChildren()[ 0 ].addChild( new umc.widgets.Text( {
-				// 	label: '',
-				// 	name: '$location$',
-				// 	content: label
-				// } ), 0 );
+				// var objecttype = vals.$labelObjectType$;
+				var path = umc.tools.ldapDn2Path( this.ldapName, this.ldapBase );
+				this._form.getWidget( '$objecttype$' ).set( 'content', this._( 'Type: <i>%(type)s</i>', { type: vals.$labelObjectType$ } ) );
+				this._form.getWidget( '$location$' ).set( 'content', this._( 'Position: <i>%(path)s</i>', { path: path } ) );
 
 				// save the original form data
 				this._receivedObjFormData = this.getValues();
@@ -567,7 +576,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 	getValues: function() {
 		// get all form values
 		var vals = this._form.gatherFormValues();
-		
+
 		// get also policy values... can not be handled as standard form entry
 		vals.$policies$ = {};
 		umc.tools.forIn(this._policyWidgets, function(ipolicyType, iwidgets) {
@@ -581,9 +590,9 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 	},
 
 	_queryPolicies: function(objectType) {
-		return this.umcpCommand('udm/query', { 
+		return this.umcpCommand('udm/query', {
 			objectType: objectType,
-			container: 'all', 
+			container: 'all',
 			objectProperty: 'None',
 			objectPropertyValue: ''
 		}).then(function(data) {
