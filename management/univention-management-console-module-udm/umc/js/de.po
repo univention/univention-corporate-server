@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-18 17:23+0200\n"
+"POT-Creation-Date: 2011-10-24 13:07-0400\n"
 "PO-Revision-Date: 2011-10-24 16:44+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_udm/DetailPage.js:953
+#: umc/js/_udm/DetailPage.js:967
 #, python-format
 msgid "%(attribute)s: %(message)s\n"
 msgstr ""
@@ -100,7 +100,7 @@ msgstr "Zurück zur Suche"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/_udm/DetailPage.js:643 umc/js/_udm/DetailPage.js:669
+#: umc/js/_udm/DetailPage.js:645 umc/js/_udm/DetailPage.js:671
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 
@@ -166,7 +166,7 @@ msgstr "Bearbeiten in neuem Tab"
 msgid "Edit the %s."
 msgstr "%s bearbeiten"
 
-#: umc/js/_udm/DetailPage.js:955
+#: umc/js/_udm/DetailPage.js:969
 msgid "Error"
 msgstr "Fehler"
 
@@ -349,7 +349,7 @@ msgstr ""
 "Das %s kann unter der folgenden Adresse heruntergeladen werden<br><br><a "
 "target=\"_blank\" href=\"%s\">%s Report</a>"
 
-#: umc/js/_udm/DetailPage.js:1002
+#: umc/js/_udm/DetailPage.js:1016
 #, python-format
 msgid "The UDM object could not be saved: %(details)s"
 msgstr "Das UDM-Objekt konnte nicht gespeichert werden: %(details)s"
@@ -375,11 +375,11 @@ msgstr "Der genaue %styp"
 msgid "The exact object type of the new UDM object."
 msgstr "Der genaue Objekttyp des neuen UDM-Objektes."
 
-#: umc/js/_udm/DetailPage.js:926
+#: umc/js/_udm/DetailPage.js:940
 msgid "The following properties could not be validated:"
 msgstr "Die folgenden Eigenschaften konnten nicht validiert werden:"
 
-#: umc/js/_udm/DetailPage.js:881
+#: umc/js/_udm/DetailPage.js:887
 msgid "The following properties need to be specified or are invalid:"
 msgstr ""
 "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
@@ -438,7 +438,7 @@ msgstr "Rechner"
 msgid "computers"
 msgstr "Rechner"
 
-#: umc/js/_udm/DetailPage.js:644 umc/js/_udm/DetailPage.js:670
+#: umc/js/_udm/DetailPage.js:646 umc/js/_udm/DetailPage.js:672
 msgid "edit"
 msgstr "bearbeiten"
 
@@ -465,6 +465,10 @@ msgstr "Netz-Objekt"
 #: umc/js/udm.js:142
 msgid "network objects"
 msgstr "Netz-Objekte"
+
+#: umc/js/_udm/DetailPage.js:631
+msgid "not defined"
+msgstr "nicht gesetzt"
 
 #: umc/js/udm.js:149
 msgid "policies"

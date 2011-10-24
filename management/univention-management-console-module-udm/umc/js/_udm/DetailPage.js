@@ -616,15 +616,23 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			objectDN: this.ldapName || null,
 			container: this.newObjectOptions ? this.newObjectOptions.container : null
 		}).then(dojo.hitch(this, function(data) {
-			umc.tools.forIn(data.result, function(iname, iinfo) {
-				// ensure that the given property name exists for the policy
-				var iwidget = this._policyWidgets[policyType][iname];
-				if (!iwidget) {
-					return true;
+			umc.tools.forIn(this._policyWidgets[policyType], function(iname, iwidget) {
+				if (iname == '$policy$') {
+					// the ComboBox for policies, skip this widget
+					return;
 				}
 
 				// set the value and label
-				if (!dojo.isArray(iinfo)) {
+				var iinfo = data.result[iname];
+				if (!iinfo) {
+					// no policy values are inherited
+					var label = dojo.replace('{label} (<span class="umcUnsetPolicy">{edit}</span>)', {
+						label: iwidget.$orgLabel$,
+						edit: this._('not defined')
+					});
+					iwidget.set('label', label);
+				}
+				else if (!dojo.isArray(iinfo)) {
 					// standard policy
 					iwidget.set('value', iinfo.value);
 					var label = dojo.replace('{label} (<a href="javascript:void(0)" ' +
@@ -716,7 +724,11 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					var handle = this.connect(widget, 'onValuesLoaded', dojo.hitch(this, function() {
 						this.disconnect(handle);
 						var oldDN = widget.get('value');
-						widget.set('value', dn);
+
+						// we need to set the new DN, if a new policy object has been created
+						if (oldDN == 'None' && !policyDN) {
+							widget.set('value', dn);
+						}
 						if (oldDN == dn) {
 							// we need a manual refresh in case the DN did not change since
 							// the policy might have been edited and therefore its values
@@ -899,9 +911,17 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		}
 
 		// before storing the values, make a syntax check of the user input on the server side
+		var valsNonEmpty = {};
+		umc.tools.forIn(valsNoID, function(ikey, ival) {
+			var tmpVal = dojo.toJson(ival);
+			var isEmpty = tmpVal == '""' || tmpVal == '[]' || tmpVal == '{}';
+			if (!isEmpty) {
+				valsNonEmpty[ikey] = ival;
+			}
+		});
 		var params = {
 			objectType: this._editedObjType,
-			properties: valsNoID
+			properties: valsNonEmpty
 		};
 		this.umcpCommand('udm/validate', params).then(dojo.hitch(this, function(data) {
 			// if all elements are valid, save element

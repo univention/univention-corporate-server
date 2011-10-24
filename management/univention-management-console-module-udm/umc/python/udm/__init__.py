@@ -45,6 +45,7 @@ from univention.management.console.log import MODULE
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.uexceptions as udm_errors
+import univention.admin.uexceptions as uexceptions
 
 import univention.directory.reports as udr
 

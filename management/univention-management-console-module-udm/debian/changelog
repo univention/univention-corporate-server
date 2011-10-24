@@ -1,3 +1,13 @@
+univention-management-console-module-udm (1.0.194-1) unstable; urgency=low
+
+  * removed empty values from validation check (causing empty values to be
+    invalid)
+  * fixed editing inherited policy
+  * added '(not defined)' to empty policy values
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Oct 2011 13:04:20 -0400
+
 univention-management-console-module-udm (1.0.193-1) unstable; urgency=low
 
   * show object type and position at the top of the first tab; Bug #22439
