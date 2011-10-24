@@ -34,6 +34,16 @@ eval "$(univention-config-registry shell hostname domainname server/role)"
 
 #DEBHELPER#
 
+. /usr/share/univention-lib/all.sh
+# update to 3.0-0 cleanup Bug #22875
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-1; then
+	remove_ucr_template /usr/lib/univention-mail-cyrus-murder/coherence-check.py
+	remove_ucr_template /etc/hosts.d/15uknrw_nat
+	remove_ucr_template /etc/imapd/pam_ldap_mupdate.conf
+	remove_ucr_template /usr/lib/univention-server/server_password_change.d/10machine_email_ids
+fi
+
+
 # already done by entry in 'dirs', but just in case..
 mkdir -p /var/lib/mupdate
 mkdir -p /var/tmp/mupdate

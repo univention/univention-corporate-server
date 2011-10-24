@@ -101,7 +101,6 @@ if isMurder and backend and password:
 			noticelist.append(i)
 
 	# report incoherence
-	noticelist.append("as")
 	if noticelist:
 
 		emailtext  = "Subject: univentionMailHomeServer incoherence on host %s\n" % fqdn

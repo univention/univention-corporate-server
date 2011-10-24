@@ -12,7 +12,8 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-config-registry,
  cyrus-murder-2.4 | cyrus-murder-2.2,
- univention-mail-cyrus
+ univention-mail-cyrus,
+ shell-univention-lib
 Description: UCS - Cyrus Murder configuration
  The UCS Cyrus Murder package.
  .
