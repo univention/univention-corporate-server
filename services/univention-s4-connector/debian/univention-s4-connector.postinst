@@ -45,7 +45,8 @@ univention-config-registry set connector/s4/listener/dir?/var/lib/univention-con
 							   connector/debug/function?0 \
 							   connector/debug/level?2 \
 							   connector/ad/mapping/group/language?de \
-							   connector/s4/mapping/syncmode?sync
+							   connector/s4/mapping/syncmode?sync \
+							   connector/s4/mapping/sid?true
 
 if [ ! -d /var/lib/univention-connector/s4 ]; then
 	mkdir -p /var/lib/univention-connector/s4

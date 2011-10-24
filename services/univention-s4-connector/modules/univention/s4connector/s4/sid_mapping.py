@@ -38,6 +38,11 @@ import univention.s4connector.s4
 
 def sid_to_s4(s4connector, key, object):
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_s4 object: %s" % object)
+
+	if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
+		ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: SID mapping is disabled via UCR: connector/s4/mapping/sid')
+		return
+
 	# object dn was already mapped to the s4 DN:
 	s4_dn = object['dn']
 	modlist = []
@@ -72,6 +77,10 @@ def sid_to_s4(s4connector, key, object):
 	
 def sid_to_ucs(s4connector, key, s4_object):
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs S4: %s" % s4_object)
+
+	if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
+		ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: SID mapping is disabled via UCR: connector/s4/mapping/sid')
+		return
 
 	# modlist
 	ml = []

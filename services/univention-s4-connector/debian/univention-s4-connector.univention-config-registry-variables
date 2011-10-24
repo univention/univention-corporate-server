@@ -69,3 +69,9 @@ Description[de]=Pfad zur Datei aus der das Passwort des Synchronisationsaccounts
 Description[en]=
 Type=str
 Categories=service-adcon
+
+[con.*/s4/mapping/sid]
+Description[de]=Definiert ob die SID synchronisiert werden soll (Default: true)
+Description[en]=Defines whether the SID should be synchronized (Default: true)
+Type=str
+Categories=service-adcon
