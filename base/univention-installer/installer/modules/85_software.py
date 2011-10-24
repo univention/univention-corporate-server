@@ -133,6 +133,10 @@ class object(content):
 	def checkname(self):
 		return ['components']
 
+	def depends(self):
+		# depends() is called every time the user enters this module - so we can reset position here
+		self.reset_position_in_layout()
+		return []
 
 	def start(self):
 		self.sub = self.active(self,_('Preparing package list'),_('Please wait ...'))
@@ -314,6 +318,16 @@ class object(content):
 
 		# skip the initial "tab" "tab"
 		self.skip_tab = True
+
+	def reset_position_in_layout(self):
+		if self.elements and hasattr(self, 'categories'):
+			for i in xrange(len(self.categories)):
+				elem = self.get_elem_by_id(i)
+				if elem.usable():
+					elem.current=0
+					elem.set_off()
+			self.current = 0
+			self.elements[0].set_on()
 
 	def real_tab(self):
 		while not self.elements[self.current].usable():

@@ -1,3 +1,9 @@
+univention-installer (7.0.120-1) unstable; urgency=low
+
+  * fixed focus in software module (Bug #24130)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 24 Oct 2011 18:24:34 +0200
+
 univention-installer (7.0.119-1) unstable; urgency=low
 
   * Redirect stderr for join scripts to join.log for DC master systems
