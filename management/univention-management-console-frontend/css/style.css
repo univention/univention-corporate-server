@@ -235,3 +235,7 @@ form {
 }
 /* @end */
 
+.umcUnsetPolicy {
+	text-decoration:underline; 
+	color:#888;
+}

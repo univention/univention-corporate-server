@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.118-1) unstable; urgency=low
+
+  * added CSS class for undefined policy values (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Oct 2011 13:09:12 -0400
+
 univention-management-console-frontend (1.0.117-1) unstable; urgency=low
 
   * fixed action function canExecute() for defaultAction (Bug #22461)
