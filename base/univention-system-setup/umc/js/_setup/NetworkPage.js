@@ -19,6 +19,8 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.setup',
 
+	umcpCommand: umc.tools.umcpCommand,
+
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
 
@@ -36,11 +38,12 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			type: 'MultiInput',
 			name: 'interfaces_ipv4',
 			label: '', //this._('Interfaces'),
+			umcpCommand: this.umcpCommand,
 			subtypes: [{
 				type: 'ComboBox',
 				label: this._('Interface'),
 				dynamicValues: dojo.hitch(this, function() {
-					return umc.tools.umcpCommand('setup/net/interfaces').then(dojo.hitch(this, function(data) {
+					return this.umcpCommand('setup/net/interfaces').then(dojo.hitch(this, function(data) {
 						// for ipv4 interfaces, we can have a virtual one, as well
 						var list = [];
 						dojo.forEach(data.result, function(idev) {
@@ -79,6 +82,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			type: 'MultiInput',
 			name: 'interfaces_ipv6',
 			label: this._('Interfaces'),
+			umcpCommand: this.umcpCommand,
 			subtypes: [{
 				type: 'ComboBox',
 				label: this._('Interface'),
@@ -101,6 +105,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			type: 'MultiSelect',
 			name: 'dynamic_interfaces_ipv6',
 			label: this._('Autoconfiguration (SLAAC)'),
+			umcpCommand: this.umcpCommand,
 			dynamicValues: 'setup/net/interfaces',
 			autoHeight: true
 		}, {
@@ -162,7 +167,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			this.standby(false);
 			return;
 		}
-		umc.tools.umcpCommand('setup/net/dhclient', {
+		this.umcpCommand('setup/net/dhclient', {
 			'interface': item[0]
 		}).then(dojo.hitch(this, function(data) {
 			// switch off standby animation

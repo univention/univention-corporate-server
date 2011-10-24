@@ -17,6 +17,8 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.setup',
 
+	umcpCommand: umc.tools.umcpCommand,
+
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
 
@@ -34,11 +36,13 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 			type: 'TextBox',
 			name: 'ssl/common',
 			label: this._('Common name for the root SSL certificate'),
+			umcpCommand: this.umcpCommand,
 			dynamicValues: 'ssl/lang/countrycodes'
 		}, {
 			type: 'ComboBox',
 			name: 'ssl/country',
 			label: this._('Country'),
+			umcpCommand: this.umcpCommand,
 			dynamicValues: 'setup/lang/countrycodes'
 		}, {
 			type: 'TextBox',

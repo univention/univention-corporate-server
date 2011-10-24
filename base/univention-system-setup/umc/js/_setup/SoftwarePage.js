@@ -17,6 +17,8 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.setup',
 
+	umcpCommand: umc.tools.umcpCommand,
+
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
 
@@ -36,6 +38,7 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 			type: 'MultiSelect',
 			name: 'components',
 			label: this._('Installed software components'),
+			umcpCommand: this.umcpCommand,
 			dynamicValues: 'setup/software/components',
 			style: 'width: 500px;',
 			height: '200px'
@@ -71,7 +74,7 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 		if (!this._loadingDone) {
 			this._loadingDone = new dojo.Deferred();
 		}
-		umc.tools.umcpCommand('setup/software/components').then(dojo.hitch(this, function(data) {
+		this.umcpCommand('setup/software/components').then(dojo.hitch(this, function(data) {
 			// all form values have been loaded, we have also the list of components
 			var installedComponents = [];
 			dojo.forEach(data.result, function(icomponent) {

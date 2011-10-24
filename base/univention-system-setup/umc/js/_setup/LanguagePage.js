@@ -17,6 +17,8 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.setup',
 
+	umcpCommand: umc.tools.umcpCommand,
+
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
 
@@ -34,22 +36,26 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 			type: 'ComboBox',
 			name: 'timezone',
 			label: this._('Time zone'),
+			umcpCommand: this.umcpCommand,
 			dynamicValues: 'setup/lang/timezones'
 		}, {
 			type: 'ComboBox',
 			name: 'locale/keymap',
 			label: this._('Keyboard layout'),
+			umcpCommand: this.umcpCommand,
 			dynamicValues: 'setup/lang/keymaps'
 		}, {
 			type: 'MultiSelect',
 			name: 'locale',
 			label: this._('System languages'),
+			umcpCommand: this.umcpCommand,
 			dynamicValues: 'setup/lang/locales'
 		}, {
 			type: 'ComboBox',
 			name: 'locale/default',
 			label: this._('Default system language'),
 			depends: 'locale',
+			umcpCommand: this.umcpCommand,
 			dynamicValues: dojo.hitch(this, function(vals) {
 				return this._form.getWidget('locale').getSelectedItems();
 			})

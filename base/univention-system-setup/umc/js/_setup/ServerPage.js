@@ -17,6 +17,8 @@ dojo.declare("umc.modules._setup.ServerPage", [ umc.widgets.Page, umc.i18n.Mixin
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.setup',
 
+	umcpCommand: umc.tools.umcpCommand,
+
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
 

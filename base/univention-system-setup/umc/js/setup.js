@@ -51,6 +51,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 			var ipath = 'umc.modules._setup.' + iclass;
 			dojo['require'](ipath);
 			var ipage = new dojo.getObject(ipath)({
+				umcpCommand: dojo.hitch(this, 'umcpCommand'),
 				footerButtons: buttons,
 				onSave: dojo.hitch(this, function() {
 					this.save(this.getValues());
@@ -82,7 +83,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 	load: function() {
 		// get settings from server
 		this.standby(true);
-		umc.tools.umcpCommand('setup/load').then(dojo.hitch(this, function(data) {
+		this.umcpCommand('setup/load').then(dojo.hitch(this, function(data) {
 			// update setup pages with loaded values
 			this.setValues(data.result);
 			this.standby(false);
@@ -108,7 +109,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 		}
 		else {
 			this.standby(true);
-			umc.tools.umcpCommand('setup/save', { values: values }).then(dojo.hitch(this, function() {
+			this.umcpCommand('setup/save', { values: values }).then(dojo.hitch(this, function() {
 				this.load();
 			}), dojo.hitch(this, function() {
 				this.standby(false);
