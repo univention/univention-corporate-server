@@ -572,7 +572,7 @@ class s4(univention.s4connector.ucs):
 		self.s4_ldap_binddn = s4_ldap_binddn
 		self.s4_ldap_bindpw = s4_ldap_bindpw
 		self.s4_ldap_certificate = s4_ldap_certificate
-		self.baseConfig = baseConfig
+		self.baseConfig = self.configRegistry = baseConfig
 
 		self.open_s4()
 
