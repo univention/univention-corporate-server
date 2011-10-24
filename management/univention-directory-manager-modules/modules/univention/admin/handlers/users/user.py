@@ -163,7 +163,7 @@ property_descriptions={
 	'firstname': univention.admin.property(
 			short_description=_('First name'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.TwoThirdsString,
 			multivalue=0,
 			options=['person'],
 			required=0,
@@ -193,7 +193,7 @@ property_descriptions={
 	'title': univention.admin.property(
 			short_description=_('Title'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.OneThirdString,
 			multivalue=0,
 			options=['person'],
 			required=0,
@@ -321,7 +321,7 @@ property_descriptions={
 	'postcode': univention.admin.property(
 			short_description=_('Postal code'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.OneThirdString,
 			multivalue=0,
 			options=['person'],
 			required=0,
@@ -331,7 +331,7 @@ property_descriptions={
 	'city': univention.admin.property(
 			short_description=_('City'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.TwoThirdsString,
 			multivalue=0,
 			options=['person'],
 			required=0,
@@ -351,7 +351,7 @@ property_descriptions={
 	'employeeNumber': univention.admin.property(
 			short_description=_('Employee number'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.TwoThirdsString,
 			multivalue=0,
 			options=['person'],
 			required=0,
@@ -361,7 +361,7 @@ property_descriptions={
 	'roomNumber': univention.admin.property(
 			short_description=_('Room number'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.OneThirdString,
 			multivalue=0,
 			options=['person'],
 			required=0,
@@ -381,7 +381,7 @@ property_descriptions={
 	'departmentNumber': univention.admin.property(
 			short_description=_('Department number'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.OneThirdString,
 			multivalue=0,
 			options=['person'],
 			required=0,
@@ -401,7 +401,7 @@ property_descriptions={
 	'homePostalAddress': univention.admin.property(
 			short_description=_('Private postal address'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.postalAddress,
 			multivalue=1,
 			options=['person'],
 			required=0,
@@ -463,7 +463,7 @@ property_descriptions={
 	'shell': univention.admin.property(
 			short_description=_('Login shell'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.OneThirdString,
 			multivalue=0,
 			options=['posix'],
 			required=0,
@@ -613,7 +613,7 @@ property_descriptions={
 	'homeSharePath': univention.admin.property(
 			short_description=_('Home share path'),
 			long_description=_('Path to the home directory on the home share'),
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.HalfString,
 			multivalue=0,
 			options=['samba', 'posix', 'kerberos' ],
 			required=0,

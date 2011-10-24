@@ -78,11 +78,17 @@ class ClassProperty( object ):
 	'''A decorator that can be used to define read-only class properties'''
 	def __init__( self, getter ):
 		self.getter = getter
+
 	def __get__( self, instance, owner ):
 		return self.getter( owner )
 
+# widget sizes
+SIZES = ( 'OneThird', 'Half', 'TwoThirds', 'One', 'FourThirds', 'OneAndAHalf', 'FiveThirds' )
+
 class ISyntax( object ):
 	'''A base class for all syntax classes'''
+	size = 'One'
+
 	@ClassProperty
 	def name( cls ):
 		return cls.__name__
@@ -294,6 +300,24 @@ class string(simple):
 	def parse(self, text):
 		return text
 
+class OneThirdString( string ):
+	size = 'OneThird'
+
+class HalfString( string ):
+	size = 'Half'
+
+class TwoThirdsString( string ):
+	size = 'TwoThirds'
+
+class FourThirdsString( string ):
+	size = 'FourThirds'
+
+class OneAndAHalfString( string ):
+	size = 'OneAndAHalf'
+
+class FiveThirdsString( string ):
+	size = 'FiveThirds'
+
 class file(string):
 	pass
 
@@ -341,6 +365,7 @@ class integer(simple):
 	min_length=1
 	max_length=0
 	_re = re.compile('^[0-9]+$')
+	size = 'OneThird'
 
 	@classmethod
 	def parse(self, text):
@@ -742,6 +767,7 @@ class ipAddress(simple):
 	min_length=7
 	max_length=15
 	_re = re.compile('^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$')
+	size = 'TwoThirds'
 
 	@classmethod
 	def parse(self, text):
@@ -828,7 +854,7 @@ class netmask(simple):
 			raise univention.admin.uexceptions.valueError, _("Not a valid netmask!")
 
 class IP_AddressRange( complex ):
-	subsyntaxes = ( ( _( 'First Address' ), ipAddress ), ( _( 'Last Address' ), string ) )
+	subsyntaxes = ( ( _( 'First Address' ), ipAddress ), ( _( 'Last Address' ), TwoThirdsString ) )
 
 class ipProtocol(select):
 	choices=[ ( 'tcp', 'TCP' ), ('udp', 'UDP' ) ]
@@ -994,10 +1020,10 @@ class dnsSRVName(complex):
 	subsyntaxes=[(_('Service'), string), (_('Protocol'), ipProtocolSRV)]
 	all_required=1
 
-class postalAddress(complex):
+class postalAddress( complex ):
 	delimiter = ', '
-	subsyntaxes=[(_('Street'), string), (_('Postal code'), string), (_('City'), string)]
-	all_required=1
+	subsyntaxes = [ ( _( 'Street' ), string ), ( _( 'Postal code' ), OneThirdString ), ( _( 'City' ), TwoThirdsString ) ]
+	all_required = True
 
 class dnsSRVLocation(complex):
 	subsyntaxes=[(_('Priority'), integer), (_('Weight'), integer), (_('Port'), integer), (_('Server'), dnsName)]
@@ -1029,6 +1055,7 @@ class NetworkType( select ):
 class MAC_Address( simple ):
 	regex = re.compile( '^([0-9a-fA-F]{1,2}[:-]){5}[0-9a-fA-F]{1,2}$' )
 	error_message = _( 'This is not a valid MAC address. It must have 6 two digit hexadecimal numbers separated by \"-\" or \":\"' )
+	size = 'TwoThirds'
 
 	@classmethod
 	def parse( self, text ):
@@ -1496,7 +1523,7 @@ class UCS_Server( IComputer_FQDN ):
 
 class KDE_Profile( UDM_Attribute ):
 	udm_module = 'settings/default'
-	attribute = 'defaultKDEProfiles'
+	attribute = 'defaultKdeProfiles'
 
 class primaryGroup(ldapDn):
 	searchFilter='objectClass=posixGroup'
@@ -1511,10 +1538,12 @@ class network( UDM_Objects ):
 	description=_('Network')
 	label = '%(name)s'
 	empty_value = True
+	size = 'TwoThirds'
 
 class IP_AddressList( select ):
 	choices = ()
 	depends = 'ip'
+	size = 'TwoThirds'
 
 	@classmethod
 	def parse( cls, text ):
@@ -1523,6 +1552,7 @@ class IP_AddressList( select ):
 class MAC_AddressList( select ):
 	choices = ()
 	depends = 'mac'
+	size = 'TwoThirds'
 
 	@classmethod
 	def parse( cls, text ):
@@ -1572,6 +1602,7 @@ class dhcpEntry( complex ):
 class WritableShare( UDM_Objects ):
 	udm_modules = ( 'shares/share', )
 	udm_filter = 'writeable=1'
+	size = 'OneAndAHalf'
 
 # class share(ldapDnOrNone):
 # 	searchFilter='(objectClass=univentionShare)'

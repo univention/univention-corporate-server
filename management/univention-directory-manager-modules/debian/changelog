@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.144-1) unstable; urgency=low
+
+  * add attribute size to base syntax class ISyntax. This is used by the
+    web frontend to resize a widget; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 24 Oct 2011 20:09:50 +0200
+
 univention-directory-manager-modules (7.0.143-1) unstable; urgency=low
 
   * Use a builtin SID for computers too. S4 must create the SID for
