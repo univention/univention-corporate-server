@@ -366,7 +366,7 @@ def main():
 
 	if options.check:
 		try:
-			update_available = performUpdate(options.source, options.updateto, checkForUpdates=True, ignoressh=options.ignoressh, ignoreterm=options.ignoreterm, interactive=False, silent=False)
+			update_available = performUpdate(options.updateto, checkForUpdates=True, ignoressh=options.ignoressh, ignoreterm=options.ignoreterm, interactive=False, silent=False)
 		except SystemExit, e:
 			sys.exit(e)
 		except ConfigurationError, e:

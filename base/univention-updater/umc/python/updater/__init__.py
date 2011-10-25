@@ -124,7 +124,7 @@ INSTALLERS = {
 	'easyupgrade': {
 		'purpose':		_("Install all available updates for the current release"),
 		'command':		'/usr/sbin/univention-upgrade --noninteractive',
-		'logfile':		'/var/log/univention/updater.log',
+		'logfile':		'/var/log/univention/upgrade.log',
 		'statusfile':	'/var/lib/univention-updater/univention-upgrade.status'	
 	}
 }

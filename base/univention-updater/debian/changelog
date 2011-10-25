@@ -1,3 +1,9 @@
+univention-updater (7.0.61-1) unstable; urgency=low
+
+  * Use upgrade.log in easyupgrade mode (Bug #23453)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 19:42:47 +0200
+
 univention-updater (7.0.60-1) unstable; urgency=low
 
   * Fixed python error in last commit (Bug #23453)
