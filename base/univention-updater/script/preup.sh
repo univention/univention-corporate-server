@@ -116,13 +116,15 @@ fi
 # in a virtual machine and migrated). To prevent grub-install from failing and rendering the system
 # unbootable, bail out the update
 
-grubbasedevice=`ucr get grub/boot | sed 's/\/dev\///'`
-awk '{print $4}' /proc/partitions | grep ${grubbasedevice} 1> /dev/null
+grubbasedevice="$(univention-config-registry get grub/boot | sed 's/\/dev\///')"
+if [ -n "$grubbasedevice" -a -e "/proc/partitions" ]; then
+	awk '{print $4}' /proc/partitions | grep "${grubbasedevice}" 1> /dev/null
 
-if [ $? = 1 ]; then
-    echo "The partition specified in the Univention Configuration Registry variable"
-    echo "grub/boot could not be found in /proc/partitions, aborting update"
-    exit 1
+	if [ $? = 1 ]; then
+		echo "The partition specified in the Univention Configuration Registry variable"
+		echo "grub/boot could not be found in /proc/partitions, aborting update"
+		exit 1
+	fi
 fi
 
 
