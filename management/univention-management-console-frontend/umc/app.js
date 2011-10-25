@@ -57,7 +57,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		this._checkSessionTimer = new dojox.timing.Timer(1000);
 		this._checkSessionTimer.onTick = dojo.hitch(this, function() {
 			if (!dojo.isString(dojo.cookie('UMCSessionId'))) {
-				this.login();
+				this.login(props.username, props.password);
 			}
 		});
 

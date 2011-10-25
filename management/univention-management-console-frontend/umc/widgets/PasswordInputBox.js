@@ -41,6 +41,17 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 		
 	},
 
+	_setValueAttr: function(newVal) {
+		this._firstWidget.set('value', newVal);
+		this._secondWidget.set('value', newVal);
+	},
+
+	postMixInProperties: function() {
+		this.inherited(arguments);
+
+		this.sizeClass = null;
+	},
+
 	buildRendering: function() {
 		this.inherited(arguments);
 
