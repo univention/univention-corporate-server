@@ -34,5 +34,5 @@ set -e
 
 #DEBHELPER#
 
-univention-baseconfig set version/security-patchlevel=5
+univention-baseconfig set version/security-patchlevel=6
 
