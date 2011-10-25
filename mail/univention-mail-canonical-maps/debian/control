@@ -9,7 +9,7 @@ Standards-Version: 3.8.2
 Package: univention-mail-canonical-maps
 Architecture: all
 Depends: ${misc:Depends},
- univention-directory-manager,
+ univention-directory-manager-tools (>> 7.0.147),
  univention-mail-server
 Description: Canonical maps related extended attributes for UDM
  This package contains extended attributes for UDM  to 
