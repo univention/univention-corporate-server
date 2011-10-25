@@ -110,6 +110,20 @@ if [ "$TERM" = "xterm" ]; then
 	fi
 fi
 
+# In some cases grub/boot might point to a device no longer present (e.g. if the system was installed
+# in a virtual machine and migrated). To prevent grub-install from failing and rendering the system
+# unbootable, bail out the update
+
+grubbasedevice=`ucr get grub/boot | sed 's/\/dev\///'`
+awk '{print $4}' /proc/partitions | grep ${grubbasedevice} 1> /dev/null
+
+if [ $? = 1 ]; then
+    echo "The partition specified in the Univention Configuration Registry variable"
+    echo "grub/boot could not be found in /proc/partitions, aborting update"
+    exit 1
+fi
+
+
 # update to 3.0-0 Bug #23063
 # check if lilo or univention-lilo is installed and exit
 if [ ! "$update_lilo_check" = "no" -a ! "$update_lilo_check" = "false" -a ! "$update_lilo_check" = "1" ]; then
