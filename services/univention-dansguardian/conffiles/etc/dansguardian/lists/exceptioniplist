@@ -1,4 +1,4 @@
-@%@BCWARNING=#@%@
+@%@UCRWARNING=#@%@
 
 #IP addresses of computers to not filter
 #and just pass requests straight through to

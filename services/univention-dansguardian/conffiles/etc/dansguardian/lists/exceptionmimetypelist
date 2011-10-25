@@ -1,4 +1,4 @@
-@%@BCWARNING=#@%@
+@%@UCRWARNING=#@%@
 
 # Exception MIME type list
 # Use as a filter group's "exceptionmimetypelist",
