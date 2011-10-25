@@ -241,7 +241,7 @@ move_cert () {
 	    while :; do
 		linkname="${CA}/certs/""$hash"".""$count";
 		if [ -h "$linkname" ]; then
-		    count=$[count+1];
+		    count=$((count + 1));
 		    continue;
 		else
 		    ln -s "$new" "$linkname";
