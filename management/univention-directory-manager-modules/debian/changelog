@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.145-1) unstable; urgency=low
+
+  * Added displayName to properties and removed gecos from layout
+    (Bug #21157)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 08:10:08 +0200
+
 univention-directory-manager-modules (7.0.144-1) unstable; urgency=low
 
   * add attribute size to base syntax class ISyntax. This is used by the

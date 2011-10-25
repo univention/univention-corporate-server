@@ -78,6 +78,17 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'displayName': univention.admin.property(
+			short_description=_('Display Name'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			options=['posix'],
+			multivalue=0,
+			required=0,
+			may_change=1,
+			default = '<firstname> <lastname>',
+			identifies=0
+		),
 	'organisation': univention.admin.property(
 			short_description=_('Organization'),
 			long_description='',
@@ -338,7 +349,9 @@ layout = [
 	Tab(_('General'),_('Basic Values'), layout = [
 		Group( _( 'General' ), layout = [
 			[ "name","description" ],
-			[ [ "title", "organisation" ], "_options" ],
+			[  "title", "organisation" ],
+			[  "displayName" ],
+			[ "_options" ],
 		] ),
 	] ),
  	Tab(_('User Account'),_('Account Settings'), layout = [
@@ -394,6 +407,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('title', 'title', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('organisation', 'o', None, univention.admin.mapping.ListToString)
+mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
 mapping.register('postcode', 'postalCode', None, univention.admin.mapping.ListToString)
 mapping.register('userexpiry', 'shadowMax', None, univention.admin.mapping.ListToString)
 mapping.register('passwordexpiry', 'shadowExpire', None, univention.admin.mapping.ListToString)

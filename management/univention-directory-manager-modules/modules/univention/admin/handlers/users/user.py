@@ -190,6 +190,17 @@ property_descriptions={
 			default = '<firstname:umlauts> <lastname:umlauts>',
 			identifies=0
 		),
+	'displayName': univention.admin.property(
+			short_description=_('Display Name'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			options=['posix'],
+			multivalue=0,
+			required=0,
+			may_change=1,
+			default = '<firstname> <lastname>',
+			identifies=0
+		),
 	'title': univention.admin.property(
 			short_description=_('Title'),
 			long_description='',
@@ -883,6 +894,7 @@ layout = [
 			] ),
 		Group( _( 'Personal information' ), layout = [
 			[ 'title', 'firstname', 'lastname'],
+			'displayName',
 			'organisation',
 			'birthday',
 			'jpegPhoto',
@@ -915,7 +927,6 @@ layout = [
 			[ 'unixhome', 'shell' ],
 			[ 'uidNumber', 'gidNumber' ],
 			[ 'homeShare', 'homeSharePath' ],
-			'gecos'
 			] ),
 		] ),
 	Tab( _( 'Contact' ), _( 'Contact information' ), layout = [
@@ -1210,6 +1221,7 @@ mapping.register('scriptpath', 'sambaLogonScript', None, univention.admin.mappin
 mapping.register('profilepath', 'sambaProfilePath', None, univention.admin.mapping.ListToString)
 mapping.register('homedrive', 'sambaHomeDrive', None, univention.admin.mapping.ListToString)
 mapping.register('gecos', 'gecos', None, univention.admin.mapping.ListToString)
+mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
 mapping.register('birthday', 'univentionBirthday', None, univention.admin.mapping.ListToString)
 
 mapping.register('userCertificate', 'userCertificate;binary')
@@ -1993,14 +2005,12 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					ml.insert(0, ('objectClass', 'simpleSecurityObject', ''))
 					ml.insert(0, ('objectClass', 'uidObject', ''))
 
-		# set cn and displayName
+		# set cn
 		cnAtts = univention.admin.baseConfig.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
 		prop = univention.admin.property()
 		cn = prop._replace(cnAtts, self)
 		cn = cn.strip()
 		ml.append(('cn', self.oldattr.get('cn', [''])[0], cn))
-		if 'person' in self.options:
-			ml.append(('displayName', self.oldattr.get('displayName', [''])[0], cn))
 
 		if  self.hasChanged(['firstname', 'lastname']):
 			ml.append(('sn', self.oldattr.get('cn', [''])[0], self['lastname']))
