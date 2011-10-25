@@ -1,3 +1,13 @@
+univention-updater (7.0.58-1) unstable; urgency=low
+
+  * Block update to UCS 3.0 on managed and mobile clients without UCD
+    (Bug #23157)
+  * Pre-upgrade univention-ssl (Bug #24159)
+  * Cleanup TCS message (Bug #23553)
+  * Cleanup some preup.sh messages (Bug #24175)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 14:24:45 +0200
+
 univention-updater (7.0.57-2) unstable; urgency=low
 
   * In some cases grub/boot might point to a device no longer present (e.g. if the system was installed

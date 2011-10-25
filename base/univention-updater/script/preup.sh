@@ -93,6 +93,8 @@ if [ ! "$update_warning_releasenotes" = "no" -a ! "$update_warning_releasenotes"
 	
 fi
 
+echo ""
+
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
 	if [ "$update30_ignoressh" != "yes" ]; then
@@ -157,10 +159,19 @@ if [ ! "$update_lilo_check" = "no" -a ! "$update_lilo_check" = "false" -a ! "$up
 	fi
 fi
 
+# check if this is ucs 3.0 and set propper python version
+version=$(dpkg-query -W -f '${Version}' univention-updater)
+if dpkg --compare-versions "$version" lt "7.0"; then
+	python_version="python2.4"
+else
+	python_version="python2.6"
+fi
+
 # BEGIN -- update to 3.0-0 Bug #22878
 # first, test if univention-thin-client-basesystem is installed (UCS TCS or UCS with thin-client packages)
 # second, activate tcs component (thin client services are now only available via component tcs)
 # test if component is available (with univention.updater)
+echo -n "Checking for thin client packages: "
 checkTcsComponent=$(univention-config-registry get update/check/component/tcs)
 tcsInstalled=false
 if [ -n "$checkTcsComponent" -a "$checkTcsComponent" = "no" ]; then
@@ -181,13 +192,6 @@ if [ "$tcsInstalled" = "true" ]; then
 		repository/online/component/tcs=yes \
 		repository/online/component/tcs/version=current >&3
 
-	# check if this is ucs 3.0 and set propper python version
-	version=$(dpkg-query -W -f '${Version}' univention-updater)
-	if dpkg --compare-versions "$version" lt "7.0"; then
-		python_version="python2.4"
-	else
-		python_version="python2.6"
-	fi
 
 	# check if component is available in ucs 3.0-0
 	updateError=$(mktemp)
@@ -229,24 +233,108 @@ sys.exit(0)
 			univention-config-registry unset repository/online/component/tcs/version >&3
 		fi
 
+		echo "found"
 		if [ -s $updateError ]; then
 			echo "WARNING: Traceback in UniventionUpdater() python module:"
 			cat "$updateError"
 		fi
-		echo "WARNING: An update to UCS 3.0 without the component 'tcs' is not possible"
-		echo "     because the component 'tcs' is required. If the thin client packages"
-        echo "     are not essential on this system, it is possible to remove these"
-		echo "     packages by running the following command:"
-		echo "        apt-get remove --purge univention-thin-client-basesystem"
-		echo "     Afterwards a new update test to UCS 3.0 can be started."
-		echo ""
+		cat <<__HERE__
+WARNING: The package univention-thin-client-basesystem is installed on
+      this system. An update to UCS 3.0 without the component 'tcs' is
+      not possible because the component 'tcs' is required to upgrade
+      the installed thin client packages.
+      If the thin client packages are not essential on this system, it
+      is possible to remove these packages by running the following
+      command:
+           apt-get remove --purge univention-thin-client-basesystem
+      Afterwards a new update test to UCS 3.0 can be started.
+
+__HERE__
 		exit 1
+	else
+		echo "done"
 	fi
 	rm "$updateError"
+else
+	echo "done"
 
 fi
 # END -- update to 3.0-0 Bug #22878
 
+# BEGIN -- update to 3.0-0 Bug #23157
+# Update Managed and Mobile client update without UCD 3.2 is not possible
+role="$(univention-config-registry get server/role)"
+if [ "$role" = "managed_client" ] || [ "$role" = "mobile_client" ] || [ "$role" = "fatclient" ]; then
+	echo -n "Checking for Univention Corporate Desktop (UCD): "
+
+	# save old values
+	old_repository_online_component_ucd="$repository_online_component_ucd"
+	old_repository_online_component_ucd_version="$repository_online_component_ucd_version"
+	
+	# activate component
+	univention-config-registry set \
+		repository/online/component/ucd=yes \
+		repository/online/component/ucd/version=current >&3
+
+
+	# check if component is available in ucs 3.0-0
+	updateError=$(mktemp)
+	scope=$($python_version -c '
+from univention.updater import UniventionUpdater, UCS_Version
+from univention.updater.tools import LocalUpdater
+import univention.config_registry
+import sys
+
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
+scope = "ucd"
+version = "3.0"
+
+if configRegistry.is_true("repository/online/component/%s" % scope, False):
+	available = []
+	updater = UniventionUpdater()
+	available += updater.get_component_repositories(scope, [version])
+	updater = LocalUpdater()
+	available += updater.get_component_repositories(scope, [version])
+	if not available:
+		sys.exit(1)
+sys.exit(0)
+' 2>"$updateError")
+	res=$?
+
+	# component ucd in 3.0 not found, -> abort the update
+	if [ ! $res -eq 0 ]; then
+
+		# reset old values
+		if [ -n "$old_repository_online_component_ucd" ]; then
+			univention-config-registry set repository/online/component/ucd="$old_repository_online_component_ucd" >&3
+		else
+			univention-config-registry unset repository/online/component/ucd >&3
+		fi
+		if [ -n "$old_repository_online_component_ucd_version" ]; then
+			univention-config-registry set repository/online/component/ucd/version="$old_repository_online_component_ucd_version" >&3
+		else
+			univention-config-registry unset repository/online/component/ucd/version >&3
+		fi
+
+		if [ -s $updateError ]; then
+			echo "WARNING: Traceback in UniventionUpdater() python module:"
+			cat "$updateError"
+		fi
+		echo "failed"
+		cat <<__HERE__
+WARNING: An update to UCS 3.0 on a Managed or Mobile Client is only
+      possible with the component 'ucd'. The 'ucd' component is
+      currently not available for UCS 3.0.
+__HERE__
+		exit 1
+	else
+		echo "done"
+	fi
+fi
+
+
+# END -- update to 3.0-0 Bug #23157
 
 # call custom preup script if configured
 if [ ! -z "$update_custom_preup" ]; then
@@ -307,10 +395,11 @@ check_space(){
 	partition=$1
 	size=$2
 	usersize=$3
-	if [ `df -P "$partition" | tail -n1 | awk '{print $4}'` -gt "$size" ]
-		then
-		printf "Space on $partition:\t OK\n"
+	echo -n "Checking for space on $partition: "
+	if [ `df -P "$partition" | tail -n1 | awk '{print $4}'` -gt "$size" ]; then
+		echo "OK"
 	else
+		echo "failed"
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
         echo "         This may interrupt the update and result in an inconsistent system!"
     	echo "         If neccessary you can skip this check by setting the value of the"
@@ -338,22 +427,24 @@ mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
 if [ ! "$update30_checkfilesystems" = "no" ]
 then
 
-	check_space "/var/cache/apt/archives" "700000" "0,7 GB"
+	check_space "/var/cache/apt/archives" "1800000" "1,8 GB"
 	check_space "/boot" "50000" "50 MB"
-	check_space "/" "1500000" "1,5 GB"
+	check_space "/" "2800000" "2,8 GB"
 
 else
     echo "WARNING: skipped disk-usage-test as requested"
 fi
 
 
-echo "Checking for the package status"
+echo -n "Checking for package status: "
 dpkg -l 2>&1 | LC_ALL=C grep "^[a-zA-Z][A-Z] " >&3 2>&3
 if [ $? = 0 ]; then
+	echo "failed"
 	echo "ERROR: The package state on this system is inconsistent."
 	echo "       Please run 'dpkg --configure -a' manually"
 	exit 1
 fi
+echo "OK"
 
 # ensure that UMC is not restarted during the update process
 if [ -e /usr/sbin/univention-management-console-server ]; then
@@ -382,52 +473,52 @@ done
 # Update package lists
 apt-get update >&3 2>&3
 
+echo -n "Starting pre-upgrade of python2.6: "
 # BEGIN -- update to 3.0-0 Bug #23054
 # 1. Install Python2.6-minimal before Python-minimal gets installed to workaround broken /usr/bin/python being used by python-support
 $update_commands_install libssl0.9.8 python2.6-minimal python-central univention-config-wrapper >&3 2>&3
 res=$?
 if [ $res != 0 ]; then
+	echo "failed."
 	echo "ERROR: Failed to upgrade python2.6."
 	exit $res
 fi
+echo "done."
+
 # 2. Upgrade slapd before new libdb4.7 4.7.25-9.3.201105022022 gets installed, which used a different signature than old 4.7.25-6.7.201101311721
 case "$(dpkg-query -W -f '${Status}' slapd)" in
 install*)
 	if dpkg --compare-versions "$(dpkg-query -W -f '${Version}' libdb4.7)" lt 4.7.25-9.3.201105022022
 	then
+		echo -n "Starting pre-upgrade of slapd: "
 		$update_commands_install slapd db4.8-util libdb4.7=4.7.25-6\* >&3 2>&3
 		res=$?
 		if [ $res != 0 ]; then
+			echo "failed."
 			echo "ERROR: Failed to upgrade slapd."
 			exit $res
 		fi
+		echo "done."
 	fi
 	;;
 esac
 # END -- update to 3.0-0 Bug #23054
 
-#for pkg in univention-ssl univention-thin-client-basesystem univention-thin-client-x-base usplash ; do
-#	# pre-update $pkg to avoid pre-dependency-problems
-#	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
-#	    echo -n "Starting preupdate of $pkg..."
-#	    $update_commands_install "$pkg" >&3 2>&3
-#	    if [ ! $? = 0 ]; then
-#			echo "failed."
-#	        echo "ERROR: pre-update of $pkg failed!"
-#	        echo "       Please run 'dpkg --configure -a' manually."
-#	        exit 1
-#	    fi
-#	    dpkg -l 2>&1 | grep "  " | grep -v "^|" | LC_ALL=C grep "^[a-z]*[A-Z]" >&3 2>&3
-#	    if [ $? = 0 ]; then
-#			echo "failed."
-#	        echo "ERROR: pre-update of $pkg failed!"
-#	        echo "       Inconsistent package state detected. Please run 'dpkg --configure -a' manually."
-#	        exit 1
-#	    fi
-#		echo "done."
-#	fi
-#done
+for pkg in univention-ssl; do
+	# pre-update $pkg to avoid pre-dependency-problems
+	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
+	    echo -n "Starting pre-upgrade of $pkg: "
+	    $update_commands_install "$pkg" >&3 2>&3
+	    if [ ! $? = 0 ]; then
+			echo "failed."
+			echo "ERROR: Failed to upgrade $pkg."
+	        exit 1
+	    fi
+		echo "done."
+	fi
+done
 
+echo ""
 echo "Starting update process, this may take a while."
 echo "Check /var/log/univention/updater.log for more information."
 date >&3
