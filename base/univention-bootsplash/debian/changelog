@@ -1,3 +1,9 @@
+univention-bootsplash (4.0.7-1) unstable; urgency=low
+
+  * Removed pre dependency to univention-config-registry (Bug #23842)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 12:17:55 +0200
+
 univention-bootsplash (4.0.6-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

@@ -9,7 +9,6 @@ Standards-Version: 3.8.2
 
 Package: univention-bootsplash
 Architecture: all
-Pre-Depends: univention-config-registry
 Depends: ${misc:Depends},
  plymouth,
  plymouth-themes-all
