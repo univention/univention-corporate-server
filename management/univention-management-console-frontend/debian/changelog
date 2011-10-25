@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.123-1) unstable; urgency=low
+
+  * add base class _FormWidgetMixin to MultiSelect (inherits setValid); Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 25 Oct 2011 12:49:53 +0200
+
 univention-management-console-frontend (1.0.122-1) unstable; urgency=low
 
   * Pages: added clearNotes() method

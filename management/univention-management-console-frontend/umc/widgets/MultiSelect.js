@@ -4,12 +4,13 @@ dojo.provide("umc.widgets.MultiSelect");
 
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets._SelectMixin");
+dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.tools");
 dojo.require("dojox.grid.EnhancedGrid");
 dojo.require("dojox.grid.cells");
 dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
 
-dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._SelectMixin, umc.widgets.StandbyMixin ], {
+dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._FormWidgetMixin, umc.widgets._SelectMixin, umc.widgets.StandbyMixin ], {
 	// summary:
 	//		This class represents a MultiSelect widget. Essentially, it adapts a DataGrid
 	//		to the behaviour expected from a MultiSelect widget.
