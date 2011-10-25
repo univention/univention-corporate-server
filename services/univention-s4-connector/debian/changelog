@@ -1,3 +1,12 @@
+univention-s4-connector (6.0.52-1) unstable; urgency=low
+
+  * Synchronize sambaWorkstations (Bug #24119)
+  * Added telephoneNumber synchonization
+  * Added phone numbers to mapping
+  * Synchonize displayName (Bug #20601)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 08:35:51 +0200
+
 univention-s4-connector (6.0.51-1) unstable; urgency=low
 
   * Set self.configRegistry in s4/__init__.py (Bug #24164)

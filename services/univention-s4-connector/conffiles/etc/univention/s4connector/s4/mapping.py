@@ -142,18 +142,23 @@ s4_mapping = {
 					'organisation': univention.s4connector.attribute (
 							ucs_attribute='organisation',
 							ldap_attribute='o',
-							con_attribute='department',
+							con_attribute='company',
+						),
+					'organisation': univention.s4connector.attribute (
+							ucs_attribute='organisation',
+							ldap_attribute='o',
+							con_attribute='company',
 						),
 					'description': univention.s4connector.attribute (
-						ucs_attribute='description',
-						ldap_attribute='description',
-						con_attribute='description',
-					),
+							ucs_attribute='description',
+							ldap_attribute='description',
+							con_attribute='description',
+						),
 					'mailPrimaryAddress': univention.s4connector.attribute (
-						ucs_attribute='mailPrimaryAddress',
-						ldap_attribute='mailPrimaryAddress',
-						con_attribute='mail',
-					),
+							ucs_attribute='mailPrimaryAddress',
+							ldap_attribute='mailPrimaryAddress',
+							con_attribute='mail',
+						),
 					'street': univention.s4connector.attribute (
 							ucs_attribute='street',
 							ldap_attribute='street',
@@ -169,10 +174,15 @@ s4_mapping = {
 							ldap_attribute='postalCode',
 							con_attribute='postalCode',
 						),
-					#'telephoneNumber': univention.s4connector.attribute ( # die Syntax erlaubt in AD mehr als in UCS
-					#		ucs_attribute='phone',
-					#		ldap_attribute='telephoneNumber',
-					#		con_attribute='otherTelephone',
+					'sambaWorkstations': univention.s4connector.attribute (
+							ucs_attribute='sambaUserWorkstations',
+							ldap_attribute='sambaUserWorkstations',
+							con_attribute='userWorkstations',
+						),
+					#'sambaLogonHours': univention.s4connector.attribute (
+					#		ucs_attribute='sambaLogonHours',
+					#		ldap_attribute='sambaLogonHours',
+					#		con_attribute='logonHours',
 					#	),
 					'profilepath': univention.s4connector.attribute (
 							ucs_attribute='profilepath',
@@ -183,6 +193,31 @@ s4_mapping = {
 							ucs_attribute='scriptpath',
 							ldap_attribute='sambaLogonScript',
 							con_attribute='scriptPath',
+						),
+					'telephoneNumber': univention.s4connector.attribute (
+							ucs_attribute='phone',
+							ldap_attribute='telephoneNumber',
+							con_attribute='telephoneNumber',
+						),
+					'homePhone': univention.s4connector.attribute (
+							ucs_attribute='homeTelephoneNumber',
+							ldap_attribute='homePhone',
+							con_attribute='homePhone',
+						),
+					'mobilePhone': univention.s4connector.attribute (
+							ucs_attribute='mobileTelephoneNumber',
+							ldap_attribute='mobile',
+							con_attribute='mobile',
+						),
+					'pager': univention.s4connector.attribute (
+							ucs_attribute='pagerTelephoneNumber',
+							ldap_attribute='pager',
+							con_attribute='pager',
+						),
+					'displayName': univention.s4connector.attribute (
+							ucs_attribute='displayName',
+							ldap_attribute='displayName',
+							con_attribute='displayName',
 						),
 			},
 
