@@ -16,7 +16,7 @@
 	</command>
 	<command name="uvmm/domain/get" function="domain_get">
 	</command>
-	<command name="uvmm/domain/add" function="domain_ad">
+	<command name="uvmm/domain/add" function="domain_add">
 	</command>
 	<command name="uvmm/domain/put" function="domain_put">
 	</command>

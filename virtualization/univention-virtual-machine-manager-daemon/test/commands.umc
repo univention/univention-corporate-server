@@ -1,0 +1,18 @@
+#!/bin/sh
+
+eval "$(ucr shell hostname domainname)"
+
+# list groups
+umc-client -U root -P univention command uvmm/group/query
+
+# list nodes
+umc-client -U root -P univention command uvmm/node/query -o group=default -o pattern="*"
+
+# query domains of node
+umc-client -U root -P univention command uvmm/domain/query -o nodePattern=qemu://$hostname.$domainname/system -o domainPattern="*"
+
+# query domains of ALL node
+umc-client -U root -P univention command uvmm/domain/query -o nodePattern="*" -o domainPattern="*"
+
+# start a domain
+umc-client -U root -P univention command uvmm/domain/state -o nodeURI=qemu://$hostname.$domainname/system -o domainUUID="70ebb8c8-1229-bf60-c0b6-77638ecd35bf" -o domainState=RUN

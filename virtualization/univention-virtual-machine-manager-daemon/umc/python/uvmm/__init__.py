@@ -45,6 +45,7 @@ _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 _uvmm_locale = Translation( 'univention.virtual.machine.manager' ).translate
 
 class Instance( Base ):
+	DOMAIN_STATES = ( 'RUN', 'PAUSE', 'SHUTDOWN', 'RESTART' )
 	def __init__( self ):
 		Base.__init__( self )
 		self.uvmm = UVMM_RequestBroker()
@@ -55,7 +56,8 @@ class Instance( Base ):
 		finished. The result is send back to the client. If the result
 		is an instance of BaseException an error is returned."""
 		if not isinstance( result, BaseException ):
-			self.finished( request.id, result )
+			success, data = result
+			self.finished( request.id, data, success = success )
 		else:
 			msg = str( result ) + '\n' + '\n'.join( thread.trace )
 			MODULE.process( 'An internal error occurred: %s' % msg )
@@ -65,25 +67,29 @@ class Instance( Base ):
 		self.uvmm.send( 'GROUP_LIST', Callback( self._thread_finish, request ) )
 
 	def node_query( self, request ):
-		self.uvmm.send( 'NODE_LIST', Callback( self._thread_finish, request ), group = 'default', pattern = request.options.get( 'pattern', '*' ) )
+		self.uvmm.send( 'NODE_LIST', Callback( self._thread_finish, request ), group = 'default', pattern = request.options.get( 'nodePattern', '*' ) )
 
 	def domain_query( self, request ):
-		self.uvmm.send( 'DOMAIN_LIST', Callback( self._thread_finish, request ), uri = request.options.get( 'uri', '*' ), pattern = request.options.get( 'pattern', '*' ) )
+		self.uvmm.send( 'DOMAIN_LIST', Callback( self._thread_finish, request ), uri = request.options.get( 'nodePattern', '*' ), pattern = request.options.get( 'domainPattern', '*' ) )
 
 	def node_get( self, request ):
 		self.finished( request.id )
 
 	def domain_get( self, request ):
-		self.finished( request.id )
+		self.required_options( request, 'nodeURI', 'domainUUID' )
+		self.uvmm.send( 'DOMAIN_INFO', Callback( self._thread_finish, request ), uri = request.options[ 'nodeURI' ], domain = request.options[ 'domainUUID' ] )
 
-	def domain_ad( self, request ):
+	def domain_add( self, request ):
 		self.finished( request.id )
 
 	def domain_put( self, request ):
 		self.finished( request.id )
 
 	def domain_state( self, request ):
-		self.finished( request.id )
+		self.required_options( request, 'nodeURI', 'domainUUID', 'domainState' )
+		if request.options[ 'domainState' ] not in Instance.DOMAIN_STATES:
+			raise UMC_OptionTypeError( _( 'Invalid domain state' ) )
+		self.uvmm.send( 'DOMAIN_STATE', Callback( self._thread_finish, request ), uri = request.options[ 'nodeURI' ], domain = request.options[ 'domainUUID' ], state = request.options[ 'domainState' ] )
 
 	def domain_migrate( self, request ):
 		self.finished( request.id )

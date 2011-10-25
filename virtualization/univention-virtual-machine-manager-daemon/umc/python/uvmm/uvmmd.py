@@ -106,10 +106,21 @@ class UVMM_ConnectionThread( Simple ):
 
 	def _finished( self, thread, result ):
 		MODULE.info( 'Thread returned result: %s' % str( result ) )
+		data = None
+		success = False
 		if not isinstance( result, BaseException ):
-			result = result.data
-		MODULE.info( 'Passing result to user callback' )
-		self._user_callback( thread, result )
+			success = result.status == 'OK'
+			if isinstance( result, protocol.Response_DUMP ):
+				data = result.data
+			elif isinstance( result, protocol.Response_ERROR ):
+				data = result.msg()
+			elif isinstance( result, protocol.Response_OK ):
+				pass # no further data available
+			MODULE.info( 'Passing result to user callback' )
+			self._user_callback( thread, ( success, data ) )
+		else:
+			MODULE.info( 'Passing exception to user callback' )
+			self._user_callback( thread, result )
 		self.busy = False
 		MODULE.info( 'Thread is free for another request' )
 
