@@ -37,6 +37,7 @@
 # 2. Master is degraded to slave
 #    use existing database
 
+__package__='' 	# workaround for PEP 366
 import listener
 import os, pwd, types, ldap, ldap.schema, re, time, copy, codecs, base64, string
 import univention_baseconfig, univention.debug
