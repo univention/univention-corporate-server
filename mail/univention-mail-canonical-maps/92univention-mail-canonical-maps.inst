@@ -1,0 +1,220 @@
+#! /bin/sh
+#
+# Univention Mail Canonical Maps
+#  join script
+#
+# Copyright 2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+VERSION=1
+
+. /usr/share/univention-lib/base.sh
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+eval "$(univention-config-registry shell)"
+
+univention-directory-manager container/cn create "$@" --ignore_exists \
+		--position "cn=custom attributes,cn=univention,$ldap_base" \
+		--set name=canonical-maps
+
+univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=canonical-maps,cn=custom attributes,cn=univention,$ldap_base" \
+	--set name='Univention-CanonicalRecipientRewriteEnable' \
+	--set module="users/user" \
+	--set ldapMapping='univentionCanonicalRecipientRewriteEnabled' \
+	--set objectClass='univentionMailCanonicalMaps' \
+	--set shortDescription='address mapping for mail recipient enabled' \
+	--set longDescription='This checkbox enables the address mapping in recipient fields (To & CC) of processed mails.' \
+	--set translationShortDescription='"de_DE" "Adressmapping für Mail-Empfänger aktiviert"' \
+	--set translationLongDescription='"de_DE" "Diese Auswahlbox aktiviert das Adressmapping für die Empfängerangaben (An: & CC:) von lokal verarbeiteten Mails."' \
+	--set tabName='Mail' \
+	--set translationTabName='"de_DE" "Mail"' \
+	--set overwriteTab='0' \
+	--set valueRequired='0' \
+	--set CLIName='mailCanonicalRecipientRewriteEnabled' \
+	--set syntax='boolean' \
+	--set tabAdvanced='1' \
+	--set mayChange='1' \
+	--set multivalue='0' \
+	--set deleteObjectClass='1' \
+	--set tabPosition='1' \
+	--set overwritePosition='0' \
+	--set doNotSearch='0' \
+	--set hook='None' \
+	--set groupName='Canonical maps' \
+	--set translationGroupName='"de_DE" "Canonical Maps"' \
+	--set groupPosition=2
+
+univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=canonical-maps,cn=custom attributes,cn=univention,$ldap_base" \
+	--set name='Univention-CanonicalSenderRewriteEnable' \
+	--set module="users/user" \
+	--set ldapMapping='univentionCanonicalSenderRewriteEnabled' \
+	--set objectClass='univentionMailCanonicalMaps' \
+	--set shortDescription='address mapping for mail sender enabled' \
+	--set longDescription='This checkbox enables the address mapping in sender fields (From) of processed mails.' \
+	--set translationShortDescription='"de_DE" "Adressmapping für Mail-Absender aktiviert"' \
+	--set translationLongDescription='"de_DE" "Diese Auswahlbox aktiviert das Adressmapping für die Absenderangaben (Von:) von lokal verarbeiteten Mails."' \
+	--set tabName='Mail' \
+	--set translationTabName='"de_DE" "Mail"' \
+	--set overwriteTab='0' \
+	--set valueRequired='0' \
+	--set CLIName='mailCanonicalSenderRewriteEnabled' \
+	--set syntax='boolean' \
+	--set tabAdvanced='1' \
+	--set mayChange='1' \
+	--set multivalue='0' \
+	--set deleteObjectClass='1' \
+	--set tabPosition='2' \
+	--set overwritePosition='0' \
+	--set doNotSearch='0' \
+	--set hook='None' \
+	--set groupName='Canonical maps' \
+	--set translationGroupName='"de_DE" "Canonical Maps"' \
+	--set groupPosition=2
+
+univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=canonical-maps,cn=custom attributes,cn=univention,$ldap_base" \
+	--set name='Univention-InternalPrimaryMailAddress' \
+	--set module="users/user" \
+	--set ldapMapping='univentionInternalPrimaryMailAddress' \
+	--set objectClass='univentionMailCanonicalMaps' \
+	--set shortDescription='Internal primary mail address' \
+	--set longDescription='Internal mail address where public mail addresses will be mapped to' \
+	--set translationShortDescription='"de_DE" "Interne Haupt-Mailadresse"' \
+	--set translationLongDescription='"de_DE" "Auf diese interne Mailadresse werden die öffentlichen Mailadressen abgebildet."' \
+	--set tabName='Mail' \
+	--set translationTabName='"de_DE" "Mail"' \
+	--set overwriteTab='0' \
+	--set valueRequired='0' \
+	--set CLIName='mailCanonicalInternalPrimaryMailAddress' \
+	--set syntax='emailAddress' \
+	--set tabAdvanced='1' \
+	--set mayChange='1' \
+	--set multivalue='0' \
+	--set deleteObjectClass='1' \
+	--set tabPosition='3' \
+	--set overwritePosition='0' \
+	--set doNotSearch='0' \
+	--set hook='None' \
+	--set groupName='Canonical maps' \
+	--set translationGroupName='"de_DE" "Canonical Maps"' \
+	--set groupPosition=2
+
+univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=canonical-maps,cn=custom attributes,cn=univention,$ldap_base" \
+	--set name='Univention-PublicPrimaryMailAddress' \
+	--set module="users/user" \
+	--set ldapMapping='univentionPublicPrimaryMailAddress' \
+	--set objectClass='univentionMailCanonicalMaps' \
+	--set shortDescription='Public primary mail address' \
+	--set longDescription='Public mail address where internal mail addresses will be mapped to' \
+	--set translationShortDescription='"de_DE" "Öffentliche Haupt-Mailadresse"' \
+	--set translationLongDescription='"de_DE" "Auf diese öffentliche Mailadresse werden die internen Mailadressen abgebildet."' \
+	--set tabName='Mail' \
+	--set translationTabName='"de_DE" "Mail"' \
+	--set overwriteTab='0' \
+	--set valueRequired='0' \
+	--set CLIName='mailCanonicalPublicPrimaryMailAddress' \
+	--set syntax='emailAddress' \
+	--set tabAdvanced='1' \
+	--set mayChange='1' \
+	--set multivalue='0' \
+	--set deleteObjectClass='1' \
+	--set tabPosition='4' \
+	--set overwritePosition='0' \
+	--set doNotSearch='0' \
+	--set hook='None' \
+	--set groupName='Canonical maps' \
+	--set translationGroupName='"de_DE" "Canonical Maps"' \
+	--set groupPosition=2
+
+univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=canonical-maps,cn=custom attributes,cn=univention,$ldap_base" \
+	--set name='Univention-InternalAlternativeMailAddress' \
+	--set module="users/user" \
+	--set ldapMapping='univentionInternalAlternativeMailAddress' \
+	--set objectClass='univentionMailCanonicalMaps' \
+	--set shortDescription='Alternative internal mail addresses' \
+	--set longDescription='Alternative internal mail addresses that will be used besides the internal primary address.' \
+	--set translationShortDescription='"de_DE" "Zusätzliche interne Mailadressen"' \
+	--set translationLongDescription='"de_DE" "Zusätzliche interne Mailadressen, die neben der internen Haupt-Mailadresse verwendet werden."' \
+	--set tabName='Mail' \
+	--set translationTabName='"de_DE" "Mail"' \
+	--set overwriteTab='0' \
+	--set valueRequired='0' \
+	--set CLIName='mailCanonicalInternalAlternativeMailAddress' \
+	--set syntax='emailAddress' \
+	--set tabAdvanced='1' \
+	--set mayChange='1' \
+	--set multivalue='1' \
+	--set deleteObjectClass='1' \
+	--set tabPosition='5' \
+	--set overwritePosition='0' \
+	--set doNotSearch='0' \
+	--set hook='None' \
+	--set groupName='Canonical maps' \
+	--set translationGroupName='"de_DE" "Canonical Maps"' \
+	--set groupPosition=2
+
+univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=canonical-maps,cn=custom attributes,cn=univention,$ldap_base" \
+	--set name='Univention-PublicAlternativeMailAddress' \
+	--set module="users/user" \
+	--set ldapMapping='univentionPublicAlternativeMailAddress' \
+	--set objectClass='univentionMailCanonicalMaps' \
+	--set shortDescription='Alternative public mail addresses' \
+	--set longDescription='Alternative public mail addresses that will be used besides the public primary address.' \
+	--set translationShortDescription='"de_DE" "Zusätzliche öffentliche Mailadressen"' \
+	--set translationLongDescription='"de_DE" "Zusätzliche öffentliche Mailadressen, die neben der öffentlichen Haupt-Mailadresse verwendet werden."' \
+	--set tabName='Mail' \
+	--set translationTabName='"de_DE" "Mail"' \
+	--set overwriteTab='0' \
+	--set valueRequired='0' \
+	--set CLIName='mailCanonicalPublicAlternativeMailAddress' \
+	--set syntax='emailAddress' \
+	--set tabAdvanced='1' \
+	--set mayChange='1' \
+	--set multivalue='1' \
+	--set deleteObjectClass='1' \
+	--set tabPosition='6' \
+	--set overwritePosition='0' \
+	--set doNotSearch='0' \
+	--set hook='None' \
+	--set groupName='Canonical maps' \
+	--set translationGroupName='"de_DE" "Canonical Maps"' \
+	--set groupPosition=2
+
+
+
+
+stop_udm_cli_server
+
+joinscript_save_current_version
+
+exit 0
