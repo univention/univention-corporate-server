@@ -64,7 +64,7 @@ univention-config-registry set ldap/base?dc=univention,dc=unconfigured \
 	nameserver/option/timeout?2 \
 	update/secure_apt?no \
 	ucr/backup/enabled?yes \
-	ucr/replog/enabled?no \
+	ucr/replog/enabled?yes \
 
 
 # services
