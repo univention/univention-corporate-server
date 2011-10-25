@@ -40,6 +40,14 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	//		Specifies whether or not the overview is visible.
 	overview: true,
 
+	// displayUsername: Boolean
+	//		Specifies whether the username is displayed or not
+	displayUsername: true,
+
+	// width: Integer
+	//		Forces a width for the frontend.
+	width: null,
+
 	start: function(/*Object*/ props) {
 		// summary:
 		//		Start the UMC, i.e., render layout, request login for a new session etc.
@@ -51,6 +59,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		//		  flavor is optional.
 		//		* overview: if false and a module is given for autostart, the overview will 
 		//		  not been shown and the module cannot be closed
+		//		* displayUsername: whether or not the username should be displayed
+		//		* width: forces the width of the GUI to a specific value
 
 		// create a background process that checks each second the validity of the session
 		// cookie as soon as the session is invalid, the login screen will be shown
@@ -60,6 +70,10 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				this.login(props.username, props.password);
 			}
 		});
+
+		// save some config properties
+		this.width = props.width;
+		this.displayUsername = umc.tools.isTrue(props.displayUsername);
 
 		if (dojo.isString(props.module)) {
 			// a startup module is specified
@@ -330,7 +344,9 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// set up fundamental layout parts
 		var topContainer = new dijit.layout.BorderContainer( {
 			'class': 'umcTopContainer',
-			gutters: false
+			gutters: false,
+			// force a displayed width if specified
+			style: this.width ? 'width:' + this.width + 'px;' : null 
 		}).placeAt(dojo.body());
 
 		// container for all modules tabs
@@ -458,11 +474,13 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				umc.tools.preferences('moduleHelpText', this.checked);
 			}
 		}));
-		headerRight.addChild(new dijit.form.DropDownButton({
-			label: this._('User: %s', this.username),
-			'class': 'umcHeaderButton',
-			dropDown: menu
-		}));
+		if (this.displayUsername) {
+			headerRight.addChild(new dijit.form.DropDownButton({
+				label: this._('User: %s', this.username),
+				'class': 'umcHeaderButton',
+				dropDown: menu
+			}));
+		}
 
 		// add logout button
 		headerRight.addChild(new dijit.form.Button({

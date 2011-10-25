@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.126-1) unstable; urgency=low
+
+  * added query parameters width and displayUsername (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 25 Oct 2011 11:46:44 -0400
+
 univention-management-console-frontend (1.0.125-1) unstable; urgency=low
 
   * PasswordInputBox: added _setValueAttr() method, fixed sizeClass
