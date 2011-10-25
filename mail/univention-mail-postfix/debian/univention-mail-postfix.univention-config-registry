@@ -55,6 +55,7 @@ Variables: mail/postfix/virtual/mailbox/domains
 Variables: mail/postfix/virtual/mailbox/maps
 Variables: mail/postfix/virtual/transport
 Variables: mail/postfix/virtual/enabled
+Variables: mail/postfix/local/header/rewrite/clients
 
 Type: subfile
 Multifile: etc/postfix/main.cf

@@ -94,6 +94,12 @@ Description[en]=Mailserver runs dns lookups for mx records
 Type=str
 Categories=service-mail
 
+[mail/postfix/local/header/rewrite/clients]
+Description[de]=Leerzeichen-getrennte Berechtigungsliste, die das Umschreiben von Headern für die angegebenen Clients erlaubt
+Description[en]=List of space-delimited permissions that enable header rewriting for specified mail clients
+Type=str
+Categories=service-mail
+
 [mail/maps/canonical/sender/classes]
 Description[de]=Leerzeichen-getrennte Liste mit Adresstypen, auf die das sender_canonical_maps address mapping angewendet wird
 Description[en]=List of space-delimited address types that are subject to sender_canonical_maps address mapping

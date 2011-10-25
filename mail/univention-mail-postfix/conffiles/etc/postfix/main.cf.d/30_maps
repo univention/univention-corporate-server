@@ -5,7 +5,7 @@ val = re.split('[, ]+', configRegistry.get('mail/maps/canonical/sender/enable','
 if 'file' in val:
 	sender_canonical_maps.append('hash:/etc/postfix/canonical_sender')
 if 'ldap' in val:
-	sender_canonical_maps.append('ldap:ldapcanonicalsender')
+	sender_canonical_maps.append('ldap:/etc/postfix/ldap.canonicalsender')
 if sender_canonical_maps:
 	val_classes = [ x for x in re.split('[, ]+', configRegistry.get('mail/maps/canonical/sender/classes','')) if x ]
 	if val_classes:
@@ -17,12 +17,19 @@ val = re.split('[, ]+', configRegistry.get('mail/maps/canonical/recipient/enable
 if 'file' in val:
 	recipient_canonical_maps.append('hash:/etc/postfix/canonical_recipient')
 if 'ldap' in val:
-	recipient_canonical_maps.append('ldap:ldapcanonicalrecipient')
+	recipient_canonical_maps.append('ldap:/etc/postfix/ldap.canonicalrecipient')
 if recipient_canonical_maps:
 	val_classes = [ x for x in re.split('[, ]+', configRegistry.get('mail/maps/canonical/recipient/classes','')) if x ]
 	if val_classes:
 		print 'recipient_canonical_classes = %s' % ', '.join(val_classes)
 	print 'recipient_canonical_maps = %s' % ', '.join(recipient_canonical_maps)
+
+
+local_header_rewrite_clients = re.split('[, ]+', configRegistry.get('mail/postfix/local/header/rewrite/clients',''))
+if local_header_rewrite_clients:
+	print 'local_header_rewrite_clients = %s' % ', '.join(local_header_rewrite_clients)
+
+print
 
 # enable virtual tables if requested
 if configRegistry.is_true('mail/postfix/virtual/enabled', False):
