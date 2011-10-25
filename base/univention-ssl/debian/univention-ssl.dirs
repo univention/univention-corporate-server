@@ -4,3 +4,4 @@ usr/share/univention-ssl
 usr/lib/univention-directory-listener/system
 usr/sbin
 var/www
+usr/share/doc/univention-ssl

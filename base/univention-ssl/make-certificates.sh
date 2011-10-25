@@ -353,9 +353,23 @@ renew_cert () {
 	
 	# revoke cert
 	revoke_cert $1
+
+	# get host extension file
+	hostExt=$(ucr get ssl/host/extensions)
+	if [ -s "$hostExt" ]; then
+		source $hostExt
+		extFile=$(createHostExtensionsFile "$1")
+	fi	
 	
 	# sign the request
-	openssl ca -batch -config openssl.cnf -days $days -in "$1/req.pem" -out "$1/cert.pem" -passin pass:"$PASSWD"
+	if [ -s "$extFile" ]; then
+		openssl ca -batch -config openssl.cnf -days $days -in "$1/req.pem" \
+		-out "$1/cert.pem" -passin pass:"$PASSWD" -extfile "$extFile"
+		rm -f "$extFile"
+	else
+		openssl ca -batch -config openssl.cnf -days $days -in "$1/req.pem" \
+		-out "$1/cert.pem" -passin pass:"$PASSWD"
+	fi
 	
 	# move the new certificate to its place
 	move_cert ${CA}/newcerts/*;
@@ -409,8 +423,22 @@ gencert () {
 	openssl genrsa -out "$name/private.key" 1024
 	yes '' | openssl req -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"
 
+	# get host extension file
+	hostExt=$(ucr get ssl/host/extensions)
+	if [ -s "$hostExt" ]; then
+		source $hostExt
+		extFile=$(createHostExtensionsFile "$cn")
+	fi	
+
 	# sign the key
-	openssl ca -batch -config openssl.cnf -days $days -in "$name/req.pem" -out "$name/cert.pem" -passin pass:"$PASSWD"
+	if [ -s "$extFile" ]; then
+		openssl ca -batch -config openssl.cnf -days $days -in "$name/req.pem" \
+		-out "$name/cert.pem" -passin pass:"$PASSWD" -extfile "$extFile"
+		rm -f "$extFile"
+	else
+		openssl ca -batch -config openssl.cnf -days $days -in "$name/req.pem" \
+		-out "$name/cert.pem" -passin pass:"$PASSWD"
+	fi
 
 	# move the new certificate to its place
 	move_cert ${CA}/newcerts/*;

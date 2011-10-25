@@ -3,4 +3,4 @@ ssl-sync usr/share/univention-ssl/
 gencertificate.py usr/lib/univention-directory-listener/system
 univention-certificate usr/sbin/
 univention-certificate-check-validity usr/sbin/
-
+extensions-example.sh usr/share/doc/univention-ssl/

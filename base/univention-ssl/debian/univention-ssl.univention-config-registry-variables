@@ -75,3 +75,9 @@ Description[de]=Gibt an, ob sich ssl/validity/days auf das Rechnerzertifikat (fa
 Description[en]=Specifies whether ssl/validity/days refers to the host certificate (false) or the root ca (true)
 Type=str
 Categories=system-ssl
+
+[ssl/host/extensions]
+Description[de]=Definiert eine Shell-Scriptd für die Erstellung einer Datei mit Zertifikats-Erweiterungen
+Description[en]=Defines a shell script for the creation of a certificate extensions file
+Type=str
+Categories=system-ssl
