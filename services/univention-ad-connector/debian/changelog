@@ -1,3 +1,13 @@
+univention-ad-connector (6.0.15-1) unstable; urgency=low
+
+  * Merged from S4 connector:
+    * Synchronize sambaWorkstations (Bug #24119)
+    * Added telephoneNumber synchonization
+    * Added phone numbers to mapping
+    * Synchonize displayName (Bug #20601)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 08:36:36 +0200
+
 univention-ad-connector (6.0.14-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

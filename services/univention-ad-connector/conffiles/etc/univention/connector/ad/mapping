@@ -166,10 +166,15 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 							ldap_attribute='postalCode',
 							con_attribute='postalCode',
 						),
-					#'telephoneNumber': univention.connector.attribute ( # die Syntax erlaubt in AD mehr als in UCS
-					#		ucs_attribute='phone',
-					#		ldap_attribute='telephoneNumber',
-					#		con_attribute='otherTelephone',
+					'sambaWorkstations': univention.connector.attribute (
+							ucs_attribute='sambaUserWorkstations',
+							ldap_attribute='sambaUserWorkstations',
+							con_attribute='userWorkstations',
+						),
+					#'sambaLogonHours': univention.connector.attribute (
+					#		ucs_attribute='sambaLogonHours',
+					#		ldap_attribute='sambaLogonHours',
+					#		con_attribute='logonHours',
 					#	),
 					'profilepath': univention.connector.attribute (
 							ucs_attribute='profilepath',
@@ -180,6 +185,31 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 							ucs_attribute='scriptpath',
 							ldap_attribute='sambaLogonScript',
 							con_attribute='scriptPath',
+						),
+					'telephoneNumber': univention.connector.attribute (
+							ucs_attribute='phone',
+							ldap_attribute='telephoneNumber',
+							con_attribute='telephoneNumber',
+						),
+					'homePhone': univention.connector.attribute (
+							ucs_attribute='homeTelephoneNumber',
+							ldap_attribute='homePhone',
+							con_attribute='homePhone',
+						),
+					'mobilePhone': univention.connector.attribute (
+							ucs_attribute='mobileTelephoneNumber',
+							ldap_attribute='mobile',
+							con_attribute='mobile',
+						),
+					'pager': univention.connector.attribute (
+							ucs_attribute='pagerTelephoneNumber',
+							ldap_attribute='pager',
+							con_attribute='pager',
+						),
+					'displayName': univention.connector.attribute (
+							ucs_attribute='displayName',
+							ldap_attribute='displayName',
+							con_attribute='displayName',
 						),
 			},
 
