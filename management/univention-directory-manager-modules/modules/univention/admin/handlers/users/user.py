@@ -648,7 +648,7 @@ property_descriptions={
 			short_description=_('Samba User Login Times'),
 			long_description=(""),
 			syntax=univention.admin.syntax.SambaLogonHours,
-			multivalue=0,
+			multivalue = False,
 			options=['samba'],
 			required=0,
 			dontsearch=0,
@@ -1003,13 +1003,14 @@ def sambaWorkstationsUnmap(workstations):
 def logonHoursMap(logontimes):
 	"converts the bitfield 001110010110...100 to the respective string"
 
-	logontimes=logontimes[0:168]
+	# convert list of bit numbers to bit-string
+	# bitstring = '0' * 168
+	bitstring = ''.join( map( lambda x: x in logontimes and '1' or '0', range( 168 ) ) )
 
-	while len(logontimes)<168:
-		logontimes=logontimes.join("1")
+	# for idx in logontimes:
+	# 	bitstring[ idx ] = '1'
 
-	# shift numbers to correspond to GMT
-	logontimes=shift(logontimes, -GMTOffset()-1) # -1 needed for internal reasons
+	logontimes = bitstring
 
 	# the order of the bits of each byte has to be reversed. The reason for this is that
 	# consecutive bytes mean consecutive 8-hrs-intervals, but the leftmost bit stands for
@@ -1037,6 +1038,7 @@ def logonHoursMap(logontimes):
 	        hx=hex(val)[2:4]
 	        if len(hx)==1: hx="0"+hx
 	        ret+=hx
+
 	return ret
 
 def logonHoursUnmap(logontimes):
@@ -1057,7 +1059,8 @@ def logonHoursUnmap(logontimes):
 		bitlist.reverse()
 		newtime+="".join(bitlist)
 
-        return shift(newtime, GMTOffset()+1)	# +1 needed for internal reasons
+	# convert bit-string to list
+	return filter( lambda i: newtime[ i ] == '1', range( 168 ) )
 
 def intToBinary(val):
         ret=""

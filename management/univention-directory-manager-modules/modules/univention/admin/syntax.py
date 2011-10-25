@@ -38,6 +38,7 @@ import univention.admin.localization
 import base64
 import copy
 import sys, os
+import shlex
 
 translation=univention.admin.localization.translation('univention/admin')
 _=translation.translate
@@ -150,12 +151,18 @@ class MultiSelect( ISyntax ):
 
 	@classmethod
 	def parse( self, value ):
+		# required for UDM CLI
+		if isinstance( value, basestring ):
+			value = map( lambda x: x, shlex.split( value ) )
+
 		if not self.empty_value and not value:
 			raise univention.admin.uexceptions.valueError( _( 'An empty value is not allowed' ) )
 		key_list = map( lambda x: x[ 0 ], self.choices )
 		for item in value:
 			if not item in key_list:
 				raise univention.admin.uexceptions.valueError( self.error_message )
+
+		return value
 
 class complex( ISyntax ):
 	delimiter = ' '
@@ -2163,6 +2170,14 @@ class sambaGroupType(select):
 
 class SambaLogonHours( MultiSelect ):
 	choices = [ ( idx *24 + hour, '%s %d-%d' % (day, hour, hour +1) ) for idx, day in ( ( 0, _( 'Sun' ) ), ( 1, _( 'Mon' ) ), ( 2, _( 'Tue' ) ), ( 3, _( 'Wed' ) ), ( 4, _( 'Thu' ) ), ( 5, _( 'Fri' ) ), ( 6, _( 'Sat' ) ) ) for hour in range( 24 ) ]
+
+	@classmethod
+	def parse( self, value ):
+		# required for UDM CLI: in this case the keys MUST be of type int
+		if isinstance( value, basestring ):
+			value = map( lambda x: int( x ), shlex.split( value ) )
+
+		return MultiSelect.parse.im_func( self, value )
 
 class SambaPrivileges( select ):
 	empty_value = True
