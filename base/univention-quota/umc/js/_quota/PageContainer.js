@@ -50,5 +50,9 @@ dojo.declare("umc.modules._quota.PageContainer", [ dijit.layout.StackContainer, 
 		this.connect(this._detailPage, 'onClosePage', function() {
 			this.selectChild(this._partitionPage);
 		});
+		this.connect(this._detailPage, 'onSetQuota', function() {
+			this.selectChild(this._partitionPage);
+			this._partitionPage.filter();
+		});
 	}
 });

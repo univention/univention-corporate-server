@@ -182,7 +182,7 @@ def _activate_quota_ext(partition, create):
 _units = ('B', 'KB', 'MB', 'GB', 'TB')
 _size_regex = re.compile('(?P<size>[0-9.]+)(?P<unit>(B|KB|MB|GB|TB))?')
 
-def block2byte(size, convertTo, block_size = 1024): # TODO rename
+def block2byte(size, convertTo, block_size = 1024):
 	global _units
 	size = long(size) * float(block_size)
 	unit = 0

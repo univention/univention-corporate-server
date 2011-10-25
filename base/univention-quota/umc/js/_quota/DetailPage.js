@@ -70,6 +70,7 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 			type: 'NumberSpinner',
 			name: 'sizeLimitHard',
 			label: this._('Data size hard limit (MB)'),
+			value: 0,
 			smallDelta: 10,
 			largeDelta: 100,
 			constraints: {
@@ -79,6 +80,7 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 			type: 'NumberSpinner',
 			name: 'fileLimitSoft',
 			label: this._('Files soft limit'),
+			value: 0,
 			smallDelta: 10,
 			largeDelta: 100,
 			constraints: {
@@ -88,6 +90,7 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 			type: 'NumberSpinner',
 			name: 'fileLimitHard',
 			label: this._('Files hard limit'),
+			value: 0,
 			smallDelta: 10,
 			largeDelta: 100,
 			constraints: {
@@ -110,20 +113,17 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 
 	onSetQuota: function() {
 		var values = this._form.gatherFormValues();
-		console.log(values);
-		umc.tools.umcpCommand('quota/users/set', values).then(dojo.hitch(this, function(data) {
-			console.log("Durchgeführt");
-		}));
+		umc.tools.umcpCommand('quota/users/set', values);
 	},
 
 	init: function(userQuota) {
-		if (userQuota) {
-			this._form.setFormValues(userQuota);
-			this._form.getWidget('user').set('disabled', true);
-		}
-		else {
+		if (userQuota === undefined) {
 			this._form.clearFormValues();
 			this._form.getWidget('user').set('disabled', false);
+		}
+		else {
+			this._form.setFormValues(userQuota);
+			this._form.getWidget('user').set('disabled', true);
 		}
 		this._form.getWidget('partitionDevice').setValue(this.partitionDevice);
 	}

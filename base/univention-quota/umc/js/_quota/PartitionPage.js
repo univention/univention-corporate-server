@@ -5,7 +5,6 @@ dojo.provide("umc.modules._quota.PartitionPage");
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.ExpandingTitlePane");
-dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.SearchForm");
@@ -16,29 +15,29 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 	moduleStore: null,
 	partitionDevice: null,
 	footerButtons: null,
-	_form: null,
 	_grid: null,
+	_partitionInfo: null,
 	_searchForm: null,
 
 	_getPartitionInfo: function() {
 		umc.tools.umcpCommand('quota/partitions/info', {'partitionDevice': this.partitionDevice}).then(dojo.hitch(this, function(data) {
-			this._form.getWidget('mountPointValue').set('content', data.result.mountPoint);
-			this._form.getWidget('filesystemValue').set('content', data.result.filesystem);
-			this._form.getWidget('optionsValue').set('content', data.result.options);
+			this._partitionInfo.set('content', dojo.replace('<p>' + this._('Mount point: ') + '{mountPoint} ' + this._('Filesystem: ') + '{filesystem} ' + this._('Options: ') + ' {options}' + '</p>', data.result));
 		}));
 	},
 
 	buildRendering: function() {
 		this.inherited(arguments);
-		this.renderForm();
 		this.renderGrid();
-		this._getPartitionInfo();
-
 		var titlePane = new umc.widgets.ExpandingTitlePane({
 			title: this._('Quota settings')
 		});
 		this.addChild(titlePane);
-		titlePane.addChild(this._form);
+		this._partitionInfo = new umc.widgets.Text({
+			region: 'top',
+			content: '<p>' + this._('loading...') + '</p>'
+		});
+		this._getPartitionInfo();
+		titlePane.addChild(this._partitionInfo);
 		titlePane.addChild(this._searchForm);
 		titlePane.addChild(this._grid);
 	},
@@ -46,42 +45,6 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 	postCreate: function() {
 		this.inherited(arguments);
 		this.startup();
-	},
-
-	renderForm: function() {
-		var widgets = [{
-			type: 'Text',
-			name: 'mountPointText',
-			content: this._('Mount point: ')
-		}, {
-			type: 'Text',
-			name: 'mountPointValue',
-			content: '...'
-		}, {
-			type: 'Text',
-			name: 'filesystemText',
-			content: this._('Filesystem: ')
-		}, {
-			type: 'Text',
-			name: 'filesystemValue',
-			content: '...'
-		}, {
-			type: 'Text',
-			name: 'optionsText',
-			content: this._('Options: ')
-		}, {
-			type: 'Text',
-			name: 'optionsValue',
-			content: '...'
-		}];
-
-		var layout = [['mountPointText', 'mountPointValue', 'filesystemText', 'filesystemValue', 'optionsText', 'optionsValue']];
-
-		this._form = new umc.widgets.Form({
-			region: 'top',
-			widgets: widgets,
-			layout: layout
-		});
 	},
 
 	renderGrid: function() {
@@ -129,18 +92,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 			isStandardAction: true,
 			isMultiAction: true,
 			callback: dojo.hitch(this, function() {
-				var transaction = this.moduleStore.transaction();
-				dojo.forEach(this._grid.getSelectedIDs(), function(iid) {
-					this.moduleStore.remove(iid);
-				}, this);
-				transaction.commit();
-			// 	var users = dojo.map(this._grid.getSelectedItems(), function(iitem) {
-			// 		return iitem.user;
-			// 	});
-			// 	umc.tools.umcpCommand('quota/partitions/info', {'partitionDevice': this.partitionDevice}).then(dojo.hitch(this, function(data) {
-			// 		console.log('command executed');
-			// 	}));
-			// 	console.log(users);
+				this.onRemoveUsers();
 			})
 		}];
 
@@ -159,7 +111,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		}, {
 			name: 'sizeLimitHard',
 			label: this._('Hard (MB)'),
-			width: 'adjust',
+			width: 'adjust'
 		}, {
 			name: 'sizeLimitTime',
 			label: this._('Grace'),
@@ -194,11 +146,56 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		});
 	},
 
+	filter: function() {
+		this._grid.filter({
+			filter: '*',
+			partitionDevice: this.partitionDevice
+		});
+	},
+
 	onShowDetailPage: function(data) {
 		return true;
 	},
 
 	onClosePage: function() {
 		return true;
+	},
+
+	onRemoveUsers: function() {
+		var dialogMessage = '';
+		var users = dojo.map(this._grid.getSelectedItems(), function(iitem) {
+			return iitem.user;
+		});
+		if (users.length == 1) {
+			dialogMessage = this._('Please confirm to remove the following user: %s', users);
+		} else {
+			dialogMessage = this._('Please confirm to remove the following %(length)s users: %(users)s', {'users': users, 'length': users.length});
+		}
+		umc.dialog.confirm(dialogMessage, [{
+			label: this._('OK'),
+			callback: dojo.hitch(this, function() {
+				var transaction = this.moduleStore.transaction();
+				dojo.forEach(this._grid.getSelectedIDs(), function(iid) {
+					this.moduleStore.remove(iid);
+				}, this);
+				transaction.commit().then(dojo.hitch(this, function(data) {
+					if (data.success === false) {
+						var failed = [];
+						dojo.forEach(data.objects, function(item) {
+							if (item.success === false) {
+								var gridItem = this._grid.getItem(item.id);
+								failed.push(gridItem.user);
+							}
+						});
+						var message = this._('Could not remove the following user: %s', failed)
+						umc.dialog.confirm(message, [{
+							label: this._('OK')
+						}]);
+					}
+				}));
+			})
+		}, {
+			label: this._('Cancel')
+		}]);
 	}
 });

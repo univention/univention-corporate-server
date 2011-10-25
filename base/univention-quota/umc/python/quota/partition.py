@@ -31,97 +31,105 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from fnmatch import fnmatch
 import notifier
+from fnmatch import fnmatch
 
-from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
 import univention.management.console as umc
+from univention.management.console.log import MODULE
+from univention.management.console.modules import UMC_CommandError, UMC_OptionMissing
+from univention.management.console.protocol.definitions import *
 
 import df
-from univention.lib import fstab
 import mtab
 import tools
+from univention.lib import fstab
 
 _ = umc.Translation('univention-management-console-module-quota').translate
 
 class Commands(object):
-	def getPartitions(self, request):
+	def partitions_query(self, request):
 		result = []
-		resultMessage = ''
 		try:
 			fs = fstab.File()
 			mt = mtab.File()
 		except IOError as error:
-			MODULE.error('Could not open %s' % error.filename)
-			resultMessage = _('Could not open %s' % error.filename)
-			request.status = MODULE_ERR
+			raise UMC_CommandError(_('Could not open %s') % error.filename)
 		else:
-			partitions = fs.get(['xfs', 'ext3', 'ext2'], False) # TODO ext4?
+			partitions = fs.get(['xfs', 'ext3', 'ext2'], False) # TODO: ext4?
 			for partition in partitions:
-				listEntry = {}
+				list_entry = {}
 				if partition.uuid:
-					listEntry['partitionDevice'] = partition.uuid
+					list_entry['partitionDevice'] = partition.uuid
 				else:
-					listEntry['partitionDevice'] = partition.spec
-				listEntry['mountPoint'] = partition.mount_point
-				listEntry['partitionSize'] = None
-				listEntry['freeSpace'] = None
-				listEntry['inUse'] = False
-				mountedPartition = mt.get(partition.spec)
-				if mountedPartition:
-					infoPartition = df.DeviceInfo(partition.mount_point) # TODO rename?
-					listEntry['partitionSize'] = tools.block2byte(infoPartition.size(), 'GB', 1)
-					listEntry['freeSpace'] = tools.block2byte(infoPartition.free(), 'GB', 1)
-					if 'usrquota' in mountedPartition.options:
-						listEntry['inUse'] = True
-				result.append(listEntry)
+					list_entry['partitionDevice'] = partition.spec
+				list_entry['mountPoint'] = partition.mount_point
+				list_entry['partitionSize'] = None
+				list_entry['freeSpace'] = None
+				list_entry['inUse'] = None
+				mounted_partition = mt.get(partition.spec)
+				if mounted_partition:
+					partition_info = df.DeviceInfo(partition.mount_point)
+					list_entry['partitionSize'] = tools.block2byte(partition_info.size(), 'GB', 1)
+					list_entry['freeSpace'] = tools.block2byte(partition_info.free(), 'GB', 1)
+					if 'usrquota' in mounted_partition.options:
+						list_entry['inUse'] = True
+					else:
+						list_entry['inUse'] = False
+				result.append(list_entry)
 			request.status = SUCCESS
-		self.finished(request.id, result, resultMessage)
+		self.finished(request.id, result)
 
-	def getPartitionInfo(self, request):
+	def partitions_info(self, request):
 		result = {}
-		resultMessage = ''
+		message = ''
 		try:
 			fs = fstab.File()
 			mt = mtab.File()
 		except IOError as error:
 			MODULE.error('Could not open %s' % error.filename)
-			resultMessage = _('Could not open %s' % error.filename)
+			message = _('Could not open %s' % error.filename)
 			request.status = MODULE_ERR
 		else:
 			partition = fs.find(spec = request.options['partitionDevice'])
 			if partition:
-				mounted = mt.get(partition.spec)
-				if mounted:
-					result['mountPoint'] = mounted.mount_point
-					result['filesystem'] = mounted.type
-					result['options'] = mounted.options
+				mounted_partition = mt.get(partition.spec)
+				if mounted_partition:
+					result['mountPoint'] = mounted_partition.mount_point
+					result['filesystem'] = mounted_partition.type
+					result['options'] = mounted_partition.options
 					request.status = SUCCESS
 				else:
 					request.status = MODULE_ERR
-					resultMessage = _('This partition is currently not mounted')
+					message = _('This partition is currently not mounted')
 			else:
 				request.status = MODULE_ERR
-				resultMessage = _('No partition found')
-		self.finished(request.id, result, resultMessage)
+				message = _('No partition found')
+		self.finished(request.id, result, message)
 
-	def activatePartitions(self, request):
-		cb = notifier.Callback(self._activatePartitions, request)
-		tools.activate_quota(request.options['partitions'], True, cb)
+	def partitions_activate(self, request):
+		do_activate = True
+		MODULE.info('quota/partitions/activate: %s' % request.options['partitionDevice'])
+		callback = notifier.Callback(self._partitions_activate, request, do_activate)
+		tools.activate_quota(request.options['partitionDevice'], True, callback)
 
-	def deactivatePartitions(self, request):
-		cb = notifier.Callback(self._activatePartitions, request)
-		tools.activate_quota(request.options['partitions'], False, cb)
+	def partitions_deactivate(self, request):
+		do_activate = False
+		MODULE.info('quota/partitions/deactivate: %s' % request.options['partitionDevice'])
+		callback = notifier.Callback(self._partitions_activate, request, do_activate)
+		tools.activate_quota(request.options['partitionDevice'], False, callback)
 
-	def _activatePartitions(self, thread, cbResult, request):
-		message = '<tr><th>%s</th><th>%s</th><th>%s</th></tr>' % (_('Partition'), _('State'), _('Message'))
-		failed = False
-		for partitionDevice, partitionInfo in cbResult.items():
-			(success, message, ) = partitionInfo
-			if not success:
-				failed = True
-			message = '%s<tr><th>%s</th><th>%s</th><th>%s</th></tr>' % (message, partitionDevice, _(str(success)), _(message))
-		message = '<table>%s</table>' % message
+	def _partitions_activate(self, thread, callback_result, request, do_activate):
+		message = None
+
+		# Check if operation was successful
+		(partition_name, partition_info, ) = callback_result.items()[0]
+		(success, message, ) = partition_info
+		if not success:
+			raise UMC_CommandError(message)
+
+		if do_activate:
+			message = _('Quota support successfully activated')
+		else:
+			message = _('Quota support successfully deactivated')
 		request.status = SUCCESS
-		self.finished(request.id, {'message': message, 'failed': failed})
+		self.finished(request.id, None, message)

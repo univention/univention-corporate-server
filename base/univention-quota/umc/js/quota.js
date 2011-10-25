@@ -44,44 +44,23 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 
 		var actions = [{
 			name: 'activate',
-			label: this._('Activate'),
-			iconClass: 'dijitIconNewTask', // TODO
+			label: dojo.hitch(this, function(item) {
+				if (item === undefined) {
+					return this._('(De)activate');
+				} else if (item.inUse === true) {
+					return this._('Deactivate');
+				} else {
+					return this._('Activate');
+				}
+			}),
 			isStandardAction: true,
-			isMultiAction: true,
-			callback: dojo.hitch(this, function() {
-				var partitions = this._grid.getSelectedIDs();
-				umc.tools.umcpCommand('quota/partitions/activate', {"partitions" : partitions}).then(dojo.hitch(this, function(data) {
-					if (data.result.failed === false) {
-							umc.dialog.alert(data.result.message);
-					}
-					else {
-						umc.dialog.notify(this._('Quota support successfully activated'));
-					}
-					this._grid.filter({
-						'dummy': 'dummy'
-					});
-				}));
-			})
-		}, {
-			name: 'deactivate',
-			label: this._('Deactivate'),
-			iconClass: 'dijitIconDelete', // TODO
-			isStandardAction: true,
-			isMultiAction: true,
-			callback: dojo.hitch(this, function() {
-				var partitions = this._grid.getSelectedIDs();
-				umc.tools.umcpCommand('quota/partitions/deactivate', {"partitions" : partitions}).then(dojo.hitch(this, function(data) {
-					if (data.result.failed === false) {
-						var message = '';
-						dojo.forEach(data.result.partitions, function(i) {
-							umc.dialog.notify(this._('Failed to deactivate quota support')); // TODO
-						});
-					}
-					else {
-						umc.dialog.notify(this._('Quota support successfully deactivated'));
-					}
-					this._grid.filter({'dummy': 'dummy'});
-				}));
+			callback: dojo.hitch(this, function(partitionDevice) {
+				var doActivate = true;
+				var item = this._grid.getItem(partitionDevice);
+				if (item.inUse === true) {
+					doActivate = false;
+				}
+				this.activateQuota(partitionDevice, doActivate);
 			})
 		}, {
 			name: 'edit',
@@ -89,8 +68,24 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 			iconClass: 'dijitIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
+			canExecute: function(item) {
+				if (item.inUse === true) {
+					return true;
+				} else {
+					return false;
+				}
+			},
 			callback: dojo.hitch(this, function(partitionDevice) {
 				this.createPageContainer(partitionDevice[0]);
+			})
+		}, {
+			name: 'refresh',
+			label: this._('Refresh'),
+			isContextAction: false,
+			isStandardAction: true,
+			isMultiAction: false,
+			callback: dojo.hitch(this, function() {
+				this._grid.filter({'dummy': 'dummy'});
 			})
 		}];
 
@@ -107,7 +102,9 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 			label: this._('Quota'),
 			width: '85px',
 			formatter: dojo.hitch(this, function(value) {
-				if (value === true) {
+				if (value === null) {
+					return this._('Unknown');
+				} else if (value === true) {
 					return this._('Activated');
 				} else {
 					return this._('Deactivated');
@@ -118,7 +115,7 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 			label: this._('Size (GB)'),
 			width: 'adjust',
 			formatter: function(value) {
-				if (value == null) {
+				if (value === null) {
 					return '-';
 				} else {
 					return dojox.string.sprintf('%.1f', value);
@@ -129,7 +126,7 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 			label: this._('Free (GB)'),
 			width: 'adjust',
 			formatter: function(value) {
-				if (value == null) {
+				if (value === null) {
 					return '-';
 				} else {
 					return dojox.string.sprintf('%.1f', value);
@@ -148,16 +145,35 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 		});
 		titlePane.addChild(this._grid);
 		this.connect(this._grid, 'onFilterDone', function() {
-			var gridItems = this._grid.getAllItems();
-			console.log(gridItems);
+			var gridItems = this._grid.getAllItems(); // TODO rename?
 			dojo.forEach(gridItems, dojo.hitch(this, function(item) {
-				if (item.inUse === false) {
-					this._grid.setDisabledItem(item.partitionDevice);
+				if (item.inUse === null) {
+					this._grid.setDisabledItem(item.partitionDevice, true);
 				}
 			}));
 		});
 
 		this._overviewPage.startup();
+	},
+
+	activateQuota: function(partitionDevice, doActivate) {
+		var dialogMessage = '';
+		if (doActivate === true) {
+			dialogMessage = this._('Please confirm to activate quota support on device: %s', partitionDevice);
+		} else {
+			dialogMessage = this._('Please confirm to deactivate quota support on device: %s', partitionDevice);
+		}
+		umc.dialog.confirm(dialogMessage, [{
+			label: this._('OK'),
+			callback: dojo.hitch(this, function() {
+				umc.tools.umcpCommand('quota/partitions/' + (doActivate ? 'activate' : 'deactivate'),
+									  {"partitionDevice" : partitionDevice.shift()}).then(dojo.hitch(this, function() {
+					this._grid.filter({'dummy': 'dummy'});
+				}));
+			})
+		}, {
+			label: this._('Cancel')
+		}]);
 	},
 
 	createPageContainer: function(partitionDevice) {

@@ -6,38 +6,25 @@
 	<categories>
 		<category name="system"/>
 	</categories>
-	<command name="quota/partitions/query" function="getPartitions">
-		<attribute name="partitions" syntax="Dictionary"/>
+	<command name="quota/partitions/query" function="partitions_query">
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/partitions/info" function="getPartitionInfo">
-		<attribute name="partitions" syntax="Dictionary"/>
+	<command name="quota/partitions/info" function="partitions_info">
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/partitions/activate" function="activatePartitions">
-		<attribute name="partitions" syntax="Dictionary"/>
+	<command name="quota/partitions/activate" function="partitions_activate">
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/partitions/deactivate" function="deactivatePartitions">
-		<attribute name="partitions" syntax="Dictionary"/>
+	<command name="quota/partitions/deactivate" function="partitions_deactivate">
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/users/query" function="getUsers">
-		<attribute name="partitions" syntax="Dictionary"/>
+	<command name="quota/users/query" function="users_query">
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/users/set" function="setUser">
-		<attribute name="user" syntax="Quota-User"/>
-		<attribute name="partition" syntax="Quota-Partition"/>
-		<attribute name="block_soft" syntax="Quota-Block-Soft"/>
-		<attribute name="block_hard" syntax="Quota-Block-Hard"/>
-		<attribute name="file_soft" syntax="Quota-File-Soft"/>
-		<attribute name="file_hard" syntax="Quota-File-Hard"/>
+	<command name="quota/users/set" function="users_set">
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="quota/users/remove" function="removeUsers">
-		<attribute name="user" syntax="Quota-User"/>
-		<attribute name="partition" syntax="Quota-Partition"/>
+	<command name="quota/users/remove" function="users_remove">
 		<return syntax="Dictionary"/>
 	</command>
 	</module>
