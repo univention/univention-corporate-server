@@ -1,3 +1,13 @@
+univention-system-setup (5.0.26-1) unstable; urgency=low
+
+  * disable performance question of Firefox 7 (Bug #23869)
+  * fix job handling
+  * extend URL to hide username
+  * extend URL to give window width if small (<1000)
+  * change logfile name
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 25 Oct 2011 17:37:31 +0200
+
 univention-system-setup (5.0.25-1) unstable; urgency=low
 
   * fixed utf8 encoding (Bug #23870)
