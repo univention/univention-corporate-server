@@ -38,6 +38,7 @@ description='UCS Virtual Machine Manager Daemon Nodes'
 filter='(objectClass=univentionHost)'
 attributes=['univentionService']
 
+__package__='' 	# workaround for PEP 366
 import listener
 import univention.debug as debug
 from univention.uvmm.uvmm_ldap import SERVICES, ldap2fqdn
