@@ -121,7 +121,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 	} else if (rv == 0) {
 		signals_block();
 		cache_update_entry(0, "cn=subschema", &cache_entry);
-		handler_update("cn=Subschema", &cache_entry, &old_cache_entry, handler, 'n', &cache_entry);
+		handler_update("cn=Subschema", &cache_entry, &old_cache_entry, handler, 'n', NULL);
 		signals_unblock();
 		cache_free_entry(NULL, &cache_entry);
 	}

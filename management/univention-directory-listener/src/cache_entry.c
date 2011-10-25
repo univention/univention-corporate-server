@@ -368,7 +368,7 @@ int copy_cache_entry(CacheEntry *cache_entry, CacheEntry *backup_cache_entry) {
 	CacheEntryAttribute **cur1, **cur2;
 	int i=0;
 	int rv=0;
-	memset(&backup_cache_entry, 0, sizeof(CacheEntry));
+	memset(backup_cache_entry, 0, sizeof(CacheEntry));
 	for (cur1 = cache_entry->attributes; cur1 != NULL && *cur1 != NULL; cur1++) {
 		if ((backup_cache_entry->attributes = realloc(backup_cache_entry->attributes, (backup_cache_entry->attribute_count+2)*sizeof(CacheEntryAttribute*))) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of attributes array failed");

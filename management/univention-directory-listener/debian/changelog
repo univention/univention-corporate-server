@@ -1,3 +1,9 @@
+univention-directory-listener (6.0.13-2) unstable; urgency=low
+
+  * fix initialisation of backup CacheEntry (Bug #23548)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Oct 2011 09:45:51 +0200
+
 univention-directory-listener (6.0.13-1) unstable; urgency=low
 
   * Copy the new entry first before giving the entry to the handler,

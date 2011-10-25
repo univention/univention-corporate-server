@@ -707,7 +707,9 @@ static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEnt
 		if (uptodate) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (up-to-date)", handler->name);
 			cache_entry_module_add(new, handler->name);
-			cache_entry_module_add(scratch, handler->name);
+			if ( scratch != NULL ) {
+				cache_entry_module_add(scratch, handler->name);
+			}
 			return 0;
 		}
 	}
@@ -722,7 +724,9 @@ static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEnt
 	/* run handler */
 	if (handler_exec(handler, argtuple) == 0) {
 		cache_entry_module_add(new, handler->name);
-		cache_entry_module_add(scratch, handler->name);
+		if ( scratch != NULL ) {
+			cache_entry_module_add(scratch, handler->name);
+		}
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (successful)", handler->name);
 	} else {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "handler: %s (failed)", handler->name);
