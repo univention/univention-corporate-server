@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.147-1) unstable; urgency=low
+
+  * Use syntax date for userexpiry and passwordexpiry (Bug #24170)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 10:01:46 +0200
+
 univention-directory-manager-modules (7.0.146-1) unstable; urgency=low
 
   * Added translation for displayName (Bug #21157)

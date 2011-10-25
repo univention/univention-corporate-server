@@ -244,7 +244,7 @@ property_descriptions={
 	'userexpiry': univention.admin.property(
 			short_description=_('Account expiry date'),
 			long_description=_('Enter date as day.month.year.'),
-			syntax=univention.admin.syntax.iso8601Date,
+			syntax=univention.admin.syntax.date,
 			multivalue=0,
 			options=['posix', 'samba', 'kerberos', 'mail'],
 			required=0,
@@ -255,7 +255,7 @@ property_descriptions={
 	'passwordexpiry': univention.admin.property(
 			short_description=_('Password expiry date'),
 			long_description=_('Enter date as day.month.year.'),
-			syntax=univention.admin.syntax.iso8601Date,
+			syntax=univention.admin.syntax.date,
 			multivalue=0,
 			options=['posix', 'samba', 'kerberos', 'mail'],
 			editable=0,
