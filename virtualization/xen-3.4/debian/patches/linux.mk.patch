@@ -1,5 +1,8 @@
---- a/xen-3.4.3/config/Linux.mk	2009-11-09 11:04:34.000000000 +0100
-+++ b/xen-3.4.3/config/Linux.mk	2009-11-09 10:58:03.000000000 +0100
+Bug #16165: Fix lib path for UCS.
+
+/lib64/ is RedHat specific, use /lib/ instead.
+--- a/config/Linux.mk	2009-11-09 11:04:34.000000000 +0100
++++ b/config/Linux.mk	2009-11-09 10:58:03.000000000 +0100
 @@ -1,5 +1,8 @@
  include $(XEN_ROOT)/config/StdGNU.mk
  

@@ -1,3 +1,11 @@
+xen-3.4 (3.4.3-18) ucs2-4-0-0; urgency=low
+
+  * Backport PyGrub from xen-4.1 for Grub2 support (Bug #23812)
+  * debian/rules: Fix clean target.
+  * debian/rules: Use variable for version number.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 24 Oct 2011 11:28:09 +0200
+
 xen-3.4 (3.4.3-17) unstable; urgency=low
 
   * blktap2: fixed backport, import missing thread module (Bug #19345)

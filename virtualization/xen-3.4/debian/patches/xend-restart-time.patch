@@ -1,7 +1,8 @@
-Index: xen-3.4/xen-3.4.3/tools/python/xen/xend/XendConstants.py
-===================================================================
---- xen-3.4.orig/xen-3.4.3/tools/python/xen/xend/XendConstants.py	2010-06-15 14:01:30.000000000 +0200
-+++ xen-3.4/xen-3.4.3/tools/python/xen/xend/XendConstants.py	2010-06-15 14:01:54.000000000 +0200
+Bug #18668: Allow fast restarts
+
+If domeins reboot to fast, Xend detects this and stopps the domain. This breaks SysPrep from UCS DVS.
+--- a/tools/python/xen/xend/XendConstants.py	2010-06-15 14:01:30.000000000 +0200
++++ b/tools/python/xen/xend/XendConstants.py	2010-06-15 14:01:54.000000000 +0200
 @@ -96,7 +96,7 @@
  ZOMBIE_PREFIX = 'Zombie-'
  

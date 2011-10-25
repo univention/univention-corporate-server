@@ -12,8 +12,8 @@ Signed-off-by: Ian Campbell <ian.campbell@citrix.com
 xen-unstable changeset:   21700:fae04060a4f4
 xen-unstable date:        Wed Jun 30 18:12:43 2010 +0100
 
---- a/xen-3.4.3/xen/arch/x86/x86_64/compat/traps.c	Thu Jun 10 10:10:10 2010 +0100
-+++ b/xen-3.4.3/xen/arch/x86/x86_64/compat/traps.c	Wed Jun 30 18:26:13 2010 +0100
+--- a/xen/arch/x86/x86_64/compat/traps.c	Thu Jun 10 10:10:10 2010 +0100
++++ b/xen/arch/x86/x86_64/compat/traps.c	Wed Jun 30 18:26:13 2010 +0100
 @@ -101,9 +101,8 @@ unsigned int compat_iret(void)
          ti = &v->arch.guest_context.trap_ctxt[13];
          if ( TI_GET_IF(ti) )

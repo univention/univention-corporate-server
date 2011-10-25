@@ -1,10 +1,8 @@
 Bug #18690 - Falsche Anzeige bzgl. loop-Mount
 
 http://lists.xensource.com/archives/html/xen-devel/2007-07/msg00084.html
-Index: xen-3.4/xen-3.4.3/tools/hotplug/Linux/block
-===================================================================
---- xen-3.4.orig/xen-3.4.3/tools/hotplug/Linux/block	2010-06-17 16:16:22.000000000 +0200
-+++ xen-3.4/xen-3.4.3/tools/hotplug/Linux/block	2010-06-17 16:20:21.000000000 +0200
+--- a/tools/hotplug/Linux/block	2010-06-17 16:16:22.000000000 +0200
++++ b/tools/hotplug/Linux/block	2010-06-17 16:20:21.000000000 +0200
 @@ -230,6 +230,7 @@
          file=$(readlink -f "$p") || fatal "$p does not exist."
          test -f "$file" || fatal "$file does not exist."

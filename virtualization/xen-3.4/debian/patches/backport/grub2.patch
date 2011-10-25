@@ -1,0 +1,808 @@
+Bug #23812: grub2 support
+
+Backport Grub2 support from xen-4.1 to xen-3.4.
+--- a/tools/pygrub/Makefile
++++ b/tools/pygrub/Makefile
+@@ -1,5 +1,5 @@
+ 
+-XEN_ROOT = ../..
++XEN_ROOT = $(CURDIR)/../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+ .PHONY: all
+@@ -12,6 +12,7 @@ build:
+ install: all
+ 	CC="$(CC)" CFLAGS="$(CFLAGS)" $(PYTHON) setup.py install \
+ 		$(PYTHON_PREFIX_ARG) --root="$(DESTDIR)" --force
++	$(INSTALL_PYTHON_PROG) src/pygrub $(DESTDIR)/$(BINDIR)/pygrub
+ 	$(INSTALL_DIR) $(DESTDIR)/var/run/xend/boot
+ 
+ .PHONY: clean
+--- a/tools/pygrub/src/GrubConf.py
++++ b/tools/pygrub/src/GrubConf.py
+@@ -1,6 +1,7 @@
+ #
+ # GrubConf.py - Simple grub.conf parsing
+ #
++# Copyright 2009 Citrix Systems Inc.
+ # Copyright 2005-2006 Red Hat, Inc.
+ # Jeremy Katz <katzj@redhat.com>
+ #
+@@ -60,7 +61,7 @@ class GrubDiskPart(object):
+         if self.part is not None:
+             return "d%dp%d" %(self.disk, self.part)
+         else:
+-            return "d%d" %(self,disk,)
++            return "d%d" %(self.disk,)
+ 
+     def get_disk(self):
+         return self._disk
+@@ -76,6 +77,8 @@ class GrubDiskPart(object):
+             self._part = val
+             return
+         val = val.replace("(", "").replace(")", "")
++        if val[:5] == "msdos":
++            val = val[5:]
+         self._part = int(val)
+     part = property(get_part, set_part)
+ 
+@@ -162,6 +165,8 @@ class _GrubConfigFile(object):
+         self.images = []
+         self.timeout = -1
+         self._default = 0
++        self.passwordAccess = True
++        self.passExc = None
+ 
+         if fn is not None:
+             self.parse()
+@@ -169,6 +174,38 @@ class _GrubConfigFile(object):
+     def parse(self, buf = None):
+         raise RuntimeError, "unimplemented parse function"   
+ 
++    def hasPasswordAccess(self):
++        return self.passwordAccess
++
++    def setPasswordAccess(self, val):
++        self.passwordAccess = val
++
++    def hasPassword(self):
++        return hasattr(self, 'password')
++
++    def checkPassword(self, password):
++        # Always allow if no password defined in grub.conf
++        if not self.hasPassword():
++            return True
++
++        pwd = getattr(self, 'password').split()
++
++        # We check whether password is in MD5 hash for comparison
++        if pwd[0] == '--md5':
++            try:
++                import crypt
++                if crypt.crypt(password, pwd[1]) == pwd[1]:
++                    return True
++            except Exception, e:
++                self.passExc = "Can't verify password: %s" % str(e)
++                return False
++
++        # ... and if not, we compare it as a plain text
++        if pwd[0] == password:
++            return True
++
++        return False
++
+     def set(self, line):
+         (com, arg) = grub_exact_split(line, 2)
+         if self.commands.has_key(com):
+@@ -217,6 +254,9 @@ class GrubConfigFile(_GrubConfigFile):
+     def __init__(self, fn = None):
+         _GrubConfigFile.__init__(self,fn)
+         
++    def new_image(self, title, lines):
++        return GrubImage(title, lines)
++
+     def parse(self, buf = None):
+         if buf is None:
+             if self.filename is None:
+@@ -262,6 +302,9 @@ class GrubConfigFile(_GrubConfigFile):
+         if img:
+             self.add_image(GrubImage(title, img))
+ 
++        if self.hasPassword():
++            self.setPasswordAccess(False)
++
+ def grub2_handle_set(arg):
+     (com,arg) = grub_split(arg,2)
+     com="set:" + com
+@@ -307,7 +350,10 @@ class Grub2Image(_GrubImage):
+ class Grub2ConfigFile(_GrubConfigFile):
+     def __init__(self, fn = None):
+         _GrubConfigFile.__init__(self, fn)
+-        
++       
++    def new_image(self, title, lines):
++        return Grub2Image(title, lines)
++ 
+     def parse(self, buf = None):
+         if buf is None:
+             if self.filename is None:
+@@ -379,6 +425,9 @@ class Grub2ConfigFile(_GrubConfigFile):
+         if img is not None:
+             raise RuntimeError, "syntax error: end of file with open menuentry(%d %s)" % (len(img),img)
+ 
++        if self.hasPassword():
++            self.setPasswordAccess(False)
++
+     commands = {'set:default': 'default',
+                 'set:root': 'root',
+                 'set:timeout': 'timeout',
+--- a/tools/pygrub/src/LiloConf.py
++++ b/tools/pygrub/src/LiloConf.py
+@@ -138,9 +138,21 @@ class LiloConfigFile(object):
+         if len(img) > 0:
+             self.add_image(LiloImage(img, path))
+ 
++    def hasPassword(self):
++        return False
++
++    def hasPasswordAccess(self):
++        return True
++
+     def add_image(self, image):
+         self.images.append(image)
+ 
++    def new_image(self, title, lines):
++        # LiloImage constructor doesn't have title but since path
++        # is being used by get_{kernel|initrd} functions we pass
++        # empty string rather than None (see lines above)
++        return LiloImage(lines, "")
++
+     def _get_default(self):
+         for i in range(len(self.images)):
+             if self.images[i].title == self._default:
+--- a/tools/pygrub/src/pygrub
++++ b/tools/pygrub/src/pygrub
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#! /usr/bin/env python
+ #
+ # pygrub - simple python-based bootloader for Xen
+ #
+@@ -17,6 +17,7 @@ import os, sys, string, struct, tempfile
+ import copy
+ import logging
+ import platform
++import xen.lowlevel.xc
+ 
+ import curses, _curses, curses.wrapper, curses.textpad, curses.ascii
+ import getopt
+@@ -24,6 +25,7 @@ import getopt
+ import fsimage
+ import grub.GrubConf
+ import grub.LiloConf
++import grub.ExtLinuxConf
+ 
+ PYGRUB_VER = 0.6
+ 
+@@ -48,21 +50,6 @@ def is_disk_image(file):
+         return True
+     return False
+ 
+-def get_active_partition(file):
+-    """Find the offset for the start of the first active partition "
+-    "in the disk image file."""
+-
+-    fd = os.open(file, os.O_RDONLY)
+-    buf = os.read(fd, 512)
+-    for poff in (446, 462, 478, 494): # partition offsets
+-        # active partition has 0x80 as the first byte
+-        if struct.unpack("<c", buf[poff:poff+1]) == ('\x80',):
+-            return buf[poff:poff+16]
+-
+-    # if there's not a partition marked as active, fall back to
+-    # the first partition
+-    return buf[446:446+16]
+-
+ SECTOR_SIZE=512
+ DK_LABEL_LOC=1
+ DKL_MAGIC=0xdabe
+@@ -99,25 +86,44 @@ FDISK_PART_SOLARIS=0xbf
+ FDISK_PART_SOLARIS_OLD=0x82
+ FDISK_PART_GPT=0xee
+ 
+-def get_fs_offset(file):
++def get_partition_offsets(file):
+     if not is_disk_image(file):
+-        return 0
++        # No MBR: assume whole disk filesystem, which is like a 
++        # single partition starting at 0
++        return [0]
+ 
+-    partbuf = get_active_partition(file)
+-    if len(partbuf) == 0:
+-        raise RuntimeError, "Unable to find active partition on disk"
++    part_offs = []
+ 
+-    offset = struct.unpack("<L", partbuf[8:12])[0] * SECTOR_SIZE
++    fd = os.open(file, os.O_RDONLY)
++    buf = os.read(fd, 512)
++    for poff in (446, 462, 478, 494): # partition offsets
+ 
+-    type = struct.unpack("<B", partbuf[4:5])[0]
++        # MBR contains a 16 byte descriptor per partition
++        partbuf = buf[poff:poff+16]
++        offset  = struct.unpack("<L", partbuf[8:12])[0] * SECTOR_SIZE
++        type    = struct.unpack("<B", partbuf[4:5])[0]
++        
++        # offset == 0 implies this partition is not enabled
++        if offset == 0:
++            continue
++
++        if type == FDISK_PART_SOLARIS or type == FDISK_PART_SOLARIS_OLD:
++            try:
++                offset += get_solaris_slice(file, offset)
++            except RuntimeError:
++                continue # no solaris magic at that offset, ignore partition
+ 
+-    if type == FDISK_PART_SOLARIS or type == FDISK_PART_SOLARIS_OLD:
+-        offset += get_solaris_slice(file, offset)
++        if type == FDISK_PART_GPT:
++            offset = get_fs_offset_gpt(file)
+ 
+-    if type == FDISK_PART_GPT:
+-        offset = get_fs_offset_gpt(file)
+-    
+-    return offset
++        # Active partition has 0x80 as the first byte.
++        # If active, prepend to front of list, otherwise append to back.
++        if struct.unpack("<c", buf[poff:poff+1]) == ('\x80',):
++            part_offs.insert(0, offset)
++        else:
++            part_offs.append(offset)
++
++    return part_offs
+ 
+ class GrubLineEditor(curses.textpad.Textbox):
+     def __init__(self, screen, startx, starty, line = ""):
+@@ -354,7 +360,7 @@ class Grub:
+                     continue
+ 
+                 # if we got boot, then we want to boot the entered image 
+-                img = grub.GrubConf.GrubImage(lines)
++                img = self.cf.new_image("entered", lines)
+                 self.cf.add_image(img)
+                 self.selected_image = len(self.cf.images) - 1
+                 self.isdone = True
+@@ -383,13 +389,18 @@ class Grub:
+                            ["/boot/grub/menu.lst", "/boot/grub/grub.conf",
+                             "/grub/menu.lst", "/grub/grub.conf"]) + \
+                        map(lambda x: (x,grub.GrubConf.Grub2ConfigFile),
+-                           ["/boot/grub/grub.cfg", "/grub/grub.cfg"])
++                           ["/boot/grub/grub.cfg", "/grub/grub.cfg"]) + \
++                       map(lambda x: (x,grub.ExtLinuxConf.ExtLinuxConfigFile),
++                           ["/boot/isolinux/isolinux.cfg",
++                            "/boot/extlinux.conf"])
+ 
+         if not fs:
+             # set the config file and parse it
+-            self.cf.filename = fn
+-            self.cf.parse()
+-            return
++            for f,parser in cfg_list:
++                self.cf = parser()
++                self.cf.filename = fn
++                self.cf.parse()
++                return
+ 
+         for f,parser in cfg_list:
+             if fs.file_exists(f):
+@@ -408,6 +419,9 @@ class Grub:
+         timeout = int(self.cf.timeout)
+ 
+         self.selected_image = self.cf.default
++        # If the selected (default) image doesn't exist we select the first entry
++        if self.selected_image > len(self.cf.images):
++            self.selected_image = 0
+         self.isdone = False
+         while not self.isdone:
+             self.run_main(timeout)
+@@ -419,10 +433,18 @@ class Grub:
+         def draw():
+             # set up the screen
+             self.draw_main_windows()
+-            self.text_win.addstr(0, 0, "Use the U and D keys to select which entry is highlighted.")
+-            self.text_win.addstr(1, 0, "Press enter to boot the selected OS. 'e' to edit the")
+-            self.text_win.addstr(2, 0, "commands before booting, 'a' to modify the kernel arguments ")
+-            self.text_win.addstr(3, 0, "before booting, or 'c' for a command line.")
++
++            if not self.cf.hasPassword() or self.cf.hasPasswordAccess():
++                self.text_win.addstr(0, 0, "Use the U and D keys to select which entry is highlighted.")
++                self.text_win.addstr(1, 0, "Press enter to boot the selected OS, 'e' to edit the")
++                self.text_win.addstr(2, 0, "commands before booting, 'a' to modify the kernel arguments ")
++                self.text_win.addstr(3, 0, "before booting, or 'c' for a command line.")
++
++            else:
++                self.text_win.addstr(0, 0, "Use the U and D keys to select which entry is highlighted.")
++                self.text_win.addstr(1, 0, "Press enter to boot the selected OS or `p` to enter a")
++                self.text_win.addstr(2, 0, "password to unlock the next set of features.")
++
+             self.text_win.addch(0, 8, curses.ACS_UARROW)
+             self.text_win.addch(0, 14, curses.ACS_DARROW)
+             (y, x) = self.text_win.getmaxyx()
+@@ -456,10 +478,10 @@ class Grub:
+                 self.screen.timeout(-1)
+ 
+             # handle keypresses
+-            if c == ord('c'):
++            if c == ord('c') and self.cf.hasPasswordAccess():
+                 self.command_line_mode()
+                 break
+-            elif c == ord('a'):
++            elif c == ord('a') and self.cf.hasPasswordAccess():
+                 # find the kernel line, edit it and then boot
+                 img = self.cf.images[self.selected_image]
+                 for line in img.lines:
+@@ -470,10 +492,24 @@ class Grub:
+                             self.isdone = True
+                             break
+                 break
+-            elif c == ord('e'):
++            elif c == ord('e') and self.cf.hasPasswordAccess():
+                 img = self.cf.images[self.selected_image]
+                 self.edit_entry(img)
+                 break
++            elif c == ord('p') and self.cf.hasPassword():
++                self.text_win.addstr(6, 1, "Password: ")
++                pwd = self.text_win.getstr(6, 8)
++                if not self.cf.checkPassword(pwd):
++                    self.text_win.addstr(6, 1, "Password: ")
++                    if self.cf.passExc is not None:
++                        self.text_win.addstr(7, 0, "Exception: %s"
++                                                  % self.cf.passExc)
++                    else:
++                        self.text_win.addstr(7, 0, "Failed!")
++                    self.cf.setPasswordAccess( False )
++                else:
++                    self.cf.setPasswordAccess( True )
++                break
+             elif c in (curses.KEY_ENTER, ord('\n'), ord('\r')):
+                 self.isdone = True
+                 break
+@@ -547,27 +583,28 @@ def run_grub(file, entry, fs, arg):
+ 
+     return grubcfg
+ 
++def supports64bitPVguest():
++    xc = xen.lowlevel.xc.xc()
++    caps = xc.xeninfo()['xen_caps'].split(" ")
++    for cap in caps:
++        if cap == "xen-3.0-x86_64":
++            return True
++    return False
++
+ # If nothing has been specified, look for a Solaris domU. If found, perform the
+ # necessary tweaks.
+ def sniff_solaris(fs, cfg):
+     if not fs.file_exists("/platform/i86xpv/kernel/unix"):
+         return cfg
+-    
+-    # darned python
+-    longmode = (sys.maxint != 2147483647L)
+-    if not longmode:
+-        longmode = os.uname()[4] == "x86_64"
+-    if not longmode:
+-        if (os.access("/usr/bin/isainfo", os.R_OK) and
+-            os.popen("/usr/bin/isainfo -b").read() == "64\n"):
+-            longmode = True
+ 
+     if not cfg["kernel"]:
+-        cfg["kernel"] = "/platform/i86xpv/kernel/unix"
+-        cfg["ramdisk"] = "/platform/i86pc/boot_archive"
+-        if longmode:
++        if supports64bitPVguest() and \
++          fs.file_exists("/platform/i86xpv/kernel/amd64/unix"):
+             cfg["kernel"] = "/platform/i86xpv/kernel/amd64/unix"
+             cfg["ramdisk"] = "/platform/i86pc/amd64/boot_archive"
++        else:
++            cfg["kernel"] = "/platform/i86xpv/kernel/unix"
++            cfg["ramdisk"] = "/platform/i86pc/boot_archive"
+ 
+     # Unpleasant. Typically we'll have 'root=foo -k' or 'root=foo /kernel -k',
+     # and we need to maintain Xen properties (root= and ip=) and the kernel
+@@ -597,17 +634,35 @@ def sniff_netware(fs, cfg):
+ 
+     return cfg
+ 
++def format_sxp(kernel, ramdisk, args):
++    s = "linux (kernel %s)" % kernel
++    if ramdisk:
++        s += "(ramdisk %s)" % ramdisk
++    if args:
++        s += "(args \"%s\")" % args
++    return s
++                
++def format_simple(kernel, ramdisk, args, sep):
++    s = ("kernel %s" % kernel) + sep
++    if ramdisk:
++        s += ("ramdisk %s" % ramdisk) + sep
++    if args:
++        s += ("args %s" % args) + sep
++    s += sep
++    return s
++
+ if __name__ == "__main__":
+     sel = None
+     
+     def usage():
+-        print >> sys.stderr, "Usage: %s [-q|--quiet] [-i|--interactive] [--output=] [--kernel=] [--ramdisk=] [--args=] [--entry=] <image>" %(sys.argv[0],)
++        print >> sys.stderr, "Usage: %s [-q|--quiet] [-i|--interactive] [-n|--not-really] [--output=] [--kernel=] [--ramdisk=] [--args=] [--entry=] [--output-directory=] [--output-format=sxp|simple|simple0] <image>" %(sys.argv[0],)
+ 
+     try:
+-        opts, args = getopt.gnu_getopt(sys.argv[1:], 'qih::',
+-                                   ["quiet", "interactive", "help", "output=",
+-                                    "entry=", "kernel=", "ramdisk=", "args=",
+-                                    "isconfig"])
++        opts, args = getopt.gnu_getopt(sys.argv[1:], 'qinh::',
++                                   ["quiet", "interactive", "not-really", "help", 
++                                    "output=", "output-format=", "output-directory=",
++                                    "entry=", "kernel=", 
++                                    "ramdisk=", "args=", "isconfig"])
+     except getopt.GetoptError:
+         usage()
+         sys.exit(1)
+@@ -621,6 +676,9 @@ if __name__ == "__main__":
+     entry = None
+     interactive = True
+     isconfig = False
++    not_really = False
++    output_format = "sxp"
++    output_directory = "/var/run/xend/boot"
+ 
+     # what was passed in
+     incfg = { "kernel": None, "ramdisk": None, "args": "" }
+@@ -634,6 +692,8 @@ if __name__ == "__main__":
+             interactive = False
+         elif o in ("-i", "--interactive"):
+             interactive = True
++        elif o in ("-n", "--not-really"):
++            not_really = True
+         elif o in ("-h", "--help"):
+             usage()
+             sys.exit()
+@@ -651,6 +711,14 @@ if __name__ == "__main__":
+             interactive = False
+         elif o in ("--isconfig",):
+             isconfig = True
++        elif o in ("--output-format",):
++            if a not in ["sxp", "simple", "simple0"]:
++                print "unkonwn output format %s" % a
++                usage()
++                sys.exit(1)
++            output_format = a
++        elif o in ("--output-directory",):
++            output_directory = a
+ 
+     if output is None or output == "-":
+         fd = sys.stdout.fileno()
+@@ -661,7 +729,7 @@ if __name__ == "__main__":
+     if isconfig:
+         chosencfg = run_grub(file, entry, fs, incfg["args"])
+         print "  kernel: %s" % chosencfg["kernel"]
+-        if img.initrd:
++        if chosencfg["ramdisk"]:
+             print "  initrd: %s" % chosencfg["ramdisk"]
+         print "  args: %s" % chosencfg["args"]
+         sys.exit(0)
+@@ -670,47 +738,79 @@ if __name__ == "__main__":
+     bootfsargs = '"%s"' % incfg["args"]
+     bootfsgroup = re.findall('zfs-bootfs=(.*?)[\s\,\"]', bootfsargs)
+     if bootfsgroup:
+-        fs = fsimage.open(file, get_fs_offset(file), bootfsgroup[0])
++        bootfsoptions = bootfsgroup[0]
+     else:
+-        fs = fsimage.open(file, get_fs_offset(file))
++        bootfsoptions = ""
+ 
+-    chosencfg = sniff_solaris(fs, incfg)
++    # get list of offsets into file which start partitions
++    part_offs = get_partition_offsets(file)
+ 
+-    if not chosencfg["kernel"]:
+-        chosencfg = sniff_netware(fs, incfg)
++    for offset in part_offs:
++        try:
++            fs = fsimage.open(file, offset, bootfsoptions)
+ 
+-    if not chosencfg["kernel"]:
+-        chosencfg = run_grub(file, entry, fs, incfg["args"])
++            chosencfg = sniff_solaris(fs, incfg)
+ 
+-    data = fs.open_file(chosencfg["kernel"]).read()
+-    (tfd, bootcfg["kernel"]) = tempfile.mkstemp(prefix="boot_kernel.",
+-        dir="/var/run/xend/boot")
+-    os.write(tfd, data)
+-    os.close(tfd)
++            if not chosencfg["kernel"]:
++                chosencfg = sniff_netware(fs, incfg)
+ 
+-    if chosencfg["ramdisk"]:
+-        data = fs.open_file(chosencfg["ramdisk"],).read()
+-        (tfd, bootcfg["ramdisk"]) = tempfile.mkstemp(prefix="boot_ramdisk.",
+-            dir="/var/run/xend/boot")
++            if not chosencfg["kernel"]:
++                chosencfg = run_grub(file, entry, fs, incfg["args"])
++
++            # Break as soon as we've found the kernel so that we continue
++            # to use this fsimage object
++            if chosencfg["kernel"]:
++                break
++            fs = None
++
++        except:
++            # IOErrors raised by fsimage.open
++            # RuntimeErrors raised by run_grub if no menu.lst present
++            fs = None
++            continue
++
++    # Did looping through partitions find us a kernel?
++    if not fs:
++        raise RuntimeError, "Unable to find partition containing kernel"
++
++    if not_really:
++        bootcfg["kernel"] = "<kernel:%s>" % chosencfg["kernel"]
++    else:
++        data = fs.open_file(chosencfg["kernel"]).read()
++        (tfd, bootcfg["kernel"]) = tempfile.mkstemp(prefix="boot_kernel.",
++                                                    dir=output_directory)
+         os.write(tfd, data)
+         os.close(tfd)
++
++    if chosencfg["ramdisk"]:
++        if not_really:
++            bootcfg["ramdisk"] = "<ramdisk:%s>" % chosencfg["ramdisk"]
++        else:
++            data = fs.open_file(chosencfg["ramdisk"],).read()
++            (tfd, bootcfg["ramdisk"]) = tempfile.mkstemp(
++                prefix="boot_ramdisk.", dir=output_directory)
++            os.write(tfd, data)
++            os.close(tfd)
+     else:
+         initrd = None
+ 
+-    sxp = "linux (kernel %s)" % bootcfg["kernel"]
+-    if bootcfg["ramdisk"]:
+-        sxp += "(ramdisk %s)" % bootcfg["ramdisk"]
++    args = None
+     if chosencfg["args"]:
+         zfsinfo = fsimage.getbootstring(fs)
+-        if zfsinfo is None:
+-            sxp += "(args \"%s\")" % chosencfg["args"]
+-        else:
++        if zfsinfo is not None:
+             e = re.compile("zfs-bootfs=[\w\-\.\:@/]+" )
+             (chosencfg["args"],count) = e.subn(zfsinfo, chosencfg["args"])
+             if count == 0:
+                chosencfg["args"] += " -B %s" % zfsinfo
+-            sxp += "(args \"%s\")" % (chosencfg["args"])
++        args = chosencfg["args"]
++
++    if output_format == "sxp":
++        ostring = format_sxp(bootcfg["kernel"], bootcfg["ramdisk"], args)
++    elif output_format == "simple":
++        ostring = format_simple(bootcfg["kernel"], bootcfg["ramdisk"], args, "\n")
++    elif output_format == "simple0":
++        ostring = format_simple(bootcfg["kernel"], bootcfg["ramdisk"], args, "\0")
+ 
+     sys.stdout.flush()
+-    os.write(fd, sxp)
++    os.write(fd, ostring)
+     
+--- a/tools/pygrub/src/ExtLinuxConf.py	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/pygrub/src/ExtLinuxConf.py	2011-10-24 12:06:02.000000000 +0200
+@@ -0,0 +1,206 @@
++#
++# ExtLinuxConf.py - Simple syslinux config parsing
++#
++# Copyright 2010 Citrix Systems Ltd.
++#
++# This software may be freely redistributed under the terms of the GNU
++# general public license.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program; if not, write to the Free Software
++# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++#
++
++import sys, re, os
++import logging
++import GrubConf
++
++class ExtLinuxImage(object):
++    def __init__(self, lines, path):
++        self.reset(lines, path)
++
++    def __repr__(self):
++        return ("title: %s\n"
++                "  root: %s\n"
++                "  kernel: %s\n"
++                "  args: %s\n"
++                "  initrd: %s\n" %(self.title, self.root, self.kernel,
++                                   self.args, self.initrd))
++    def reset(self, lines, path):
++        self._initrd = self._kernel = self._readonly = None
++        self._args = ""
++        self.title = ""
++        self.lines = []
++        self.path = path
++        self.root = ""
++        map(self.set_from_line, lines)
++
++    def set_from_line(self, line, replace = None):
++        (com, arg) = GrubConf.grub_exact_split(line, 2)
++        com = com.lower()
++
++        # Special handling for mboot.c32
++        if com.lower() == "append" and self.kernel is not None:
++            (_,kernel) = self.kernel
++            if kernel.endswith("mboot.c32"):
++                kernel = None
++                args = None
++                initrd = None
++                modules = arg.split("---")
++
++                if len(modules) == 3: # Assume Xen + Kernel + Initrd
++                    (_,kernel,initrd) = modules
++                elif len(modules) == 2: # Assume Kernel + Initrd
++                    (kernel,initrd) = modules
++
++                if kernel:
++                    setattr(self, "kernel", kernel.strip())
++                if initrd:
++                    setattr(self, "initrd", initrd.strip())
++
++                # Bypass regular self.commands handling
++                com = None
++
++        if com is not None and self.commands.has_key(com):
++            if self.commands[com] is not None:
++                setattr(self, self.commands[com], re.sub('^"(.+)"$', r"\1", arg.strip()))
++            else:
++                logging.info("Ignored image directive %s" %(com,))
++        elif com is not None:
++            logging.warning("Unknown image directive %s" %(com,))
++
++        # now put the line in the list of lines
++        if replace is None:
++            self.lines.append(line)
++        else:
++            self.lines.pop(replace)
++            self.lines.insert(replace, line)
++
++    def set_kernel(self, val):
++        if val.find(" ") == -1:
++            self._kernel = (None,val)
++            self._args = None
++            return
++        (kernel, args) = val.split(None, 1)
++        self._kernel = (None,kernel)
++        self._args = args
++    def get_kernel(self):
++        return self._kernel
++    def get_args(self):
++        return self._args
++    kernel = property(get_kernel, set_kernel)
++    args = property(get_args)
++
++    def set_initrd(self, val):
++        self._initrd = (None,val)
++    def get_initrd(self):
++        return self._initrd
++    initrd = property(get_initrd, set_initrd)
++
++    def set_readonly(self, val):
++        self._readonly = 1
++    def get_readonly(self):
++        return self._readonly
++    readonly = property(get_readonly, set_readonly)
++
++    # set up command handlers
++    commands = {
++        "label": "title",
++        "kernel": "kernel",
++        "append": "args"}
++
++class ExtLinuxConfigFile(object):
++    def __init__(self, fn = None):
++        self.filename = fn
++        self.images = []
++        self.timeout = -1
++        self._default = 0
++
++        if fn is not None:
++            self.parse()
++
++    def new_image(self, title, lines):
++        # ExtLinuxImage constructor doesn't have title but since path
++        # is being used by get_{kernel|initrd} functions we pass
++        # empty string rather than None (see lines above)
++        return ExtLinuxImage(lines, "")
++
++    def parse(self, buf = None):
++        if buf is None:
++            if self.filename is None:
++                raise ValueError, "No config file defined to parse!"
++
++            f = open(self.filename, 'r')
++            lines = f.readlines()
++            f.close()
++        else:
++            lines = buf.split("\n")
++
++        path = os.path.dirname(self.filename)
++        img = []
++        for l in lines:
++            l = l.strip()
++            # skip blank lines
++            if len(l) == 0:
++                continue
++            # skip comments
++            if l.startswith('#'):
++                continue
++            # new image
++            if l.lower().startswith("label"):
++                if len(img) > 0:
++                    self.add_image(ExtLinuxImage(img, path))
++                img = [l]
++                continue
++
++            if len(img) > 0:
++                img.append(l)
++                continue
++
++            (com, arg) = GrubConf.grub_exact_split(l, 2)
++            com = com.lower()
++            if self.commands.has_key(com):
++                if self.commands[com] is not None:
++                    setattr(self, self.commands[com], arg.strip())
++                else:
++                    logging.info("Ignored directive %s" %(com,))
++            else:
++                logging.warning("Unknown directive %s" %(com,))
++
++        if len(img) > 0:
++            self.add_image(ExtLinuxImage(img, path))
++
++    def hasPassword(self):
++        return False
++
++    def hasPasswordAccess(self):
++        return True
++
++    def add_image(self, image):
++        self.images.append(image)
++
++    def _get_default(self):
++        for i in range(len(self.images)):
++            if self.images[i].title == self._default:
++                return i
++        return 0
++    def _set_default(self, val):
++        self._default = val
++    default = property(_get_default, _set_default)
++
++    commands = { "default": "default",
++                 "timeout": "timeout",
++                 "serial": None,
++                 "prompt": None,
++                 "display": None,
++                 "f1": None,
++                 "f2": None,
++                 }
++        
++if __name__ == "__main__":
++    if sys.argv < 2:
++        raise RuntimeError, "Need a configuration file to read"
++    g = ExtLinuxConfigFile(sys.argv[1])
++    for i in g.images:
++        print i
++    print g.default

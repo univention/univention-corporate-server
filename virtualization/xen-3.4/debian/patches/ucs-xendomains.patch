@@ -1,5 +1,6 @@
---- a/xen-3.4.3/tools/hotplug/Linux/init.d/xendomains	2010-05-17 13:40:41.000000000 +0200
-+++ b/xen-3.4.3/tools/hotplug/Linux/init.d/xendomains	2010-05-17 13:41:04.000000000 +0200
+Bug #18403: Fix quoting of Shell-RegExps.
+--- a/tools/hotplug/Linux/init.d/xendomains	2010-05-17 13:40:41.000000000 +0200
++++ b/tools/hotplug/Linux/init.d/xendomains	2010-05-17 13:41:04.000000000 +0200
 @@ -182,11 +182,11 @@
  
  parseln()

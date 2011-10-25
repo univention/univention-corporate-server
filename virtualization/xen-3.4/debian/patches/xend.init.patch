@@ -1,7 +1,10 @@
-Index: xen-3.4-3.4.3/xen-3.4.3/tools/hotplug/Linux/init.d/xend
-===================================================================
---- xen-3.4-3.4.3.orig/xen-3.4.3/tools/hotplug/Linux/init.d/xend	2010-03-26 17:15:36.000000000 +0100
-+++ xen-3.4-3.4.3/xen-3.4.3/tools/hotplug/Linux/init.d/xend	2010-03-26 17:15:42.000000000 +0100
+Bug #18356: Xen integration for UCS
+
+Check for xenfs.
+Create loop-back-devices.
+Add usplash support via LSB functions.
+--- a/tools/hotplug/Linux/init.d/xend	2010-03-26 17:15:36.000000000 +0100
++++ b/tools/hotplug/Linux/init.d/xend	2010-03-26 17:15:42.000000000 +0100
 @@ -22,16 +22,26 @@
  if   test "x$1" = xstart && \
       test -d /proc/xen && \

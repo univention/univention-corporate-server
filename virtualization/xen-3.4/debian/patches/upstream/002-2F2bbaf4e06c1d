@@ -12,8 +12,8 @@ Signed-off-by: Keir Fraser <keir.fraser@citrix.com>
 xen-unstable changeset:   21492:96917cf25bf3
 xen-unstable date:        Fri May 28 10:54:07 2010 +0100
 
---- a/xen-3.4.3/xen/arch/x86/irq.c	Fri Jun 04 10:20:33 2010 +0100
-+++ b/xen-3.4.3/xen/arch/x86/irq.c	Fri Jun 04 10:52:01 2010 +0100
+--- a/xen/arch/x86/irq.c	Fri Jun 04 10:20:33 2010 +0100
++++ b/xen/arch/x86/irq.c	Fri Jun 04 10:52:01 2010 +0100
 @@ -736,7 +736,8 @@ static irq_guest_action_t *__pirq_guest_
      for ( i = 0; (i < action->nr_guests) && (action->guest[i] != d); i++ )
          continue;

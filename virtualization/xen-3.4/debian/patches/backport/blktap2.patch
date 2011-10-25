@@ -1,6 +1,6 @@
-diff -Nur a/xen-3.4.3/tools/blktap/drivers/block-qcow.c b/xen-3.4.3/tools/blktap/drivers/block-qcow.c
---- a/xen-3.4.3/tools/blktap/drivers/block-qcow.c	2010-05-29 18:49:17.000000000 +0200
-+++ b/xen-3.4.3/tools/blktap/drivers/block-qcow.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap/drivers/block-qcow.c b/tools/blktap/drivers/block-qcow.c
+--- a/tools/blktap/drivers/block-qcow.c	2010-05-29 18:49:17.000000000 +0200
++++ b/tools/blktap/drivers/block-qcow.c	2010-08-25 12:22:07.000000000 +0200
 @@ -862,11 +862,12 @@
  		be32_to_cpus(&exthdr->xmagic);
  		if(exthdr->xmagic != XEN_MAGIC) 
@@ -58,9 +58,9 @@ diff -Nur a/xen-3.4.3/tools/blktap/drivers/block-qcow.c b/xen-3.4.3/tools/blktap
  	exthdr.flags = cpu_to_be32(flags);
  	
  	/* write all the data */
-diff -Nur a/xen-3.4.3/tools/blktap/drivers/Makefile b/xen-3.4.3/tools/blktap/drivers/Makefile
---- a/xen-3.4.3/tools/blktap/drivers/Makefile	2010-05-29 18:49:17.000000000 +0200
-+++ b/xen-3.4.3/tools/blktap/drivers/Makefile	2011-02-24 09:34:21.000000000 +0100
+diff -Nur a/tools/blktap/drivers/Makefile b/tools/blktap/drivers/Makefile
+--- a/tools/blktap/drivers/Makefile	2010-05-29 18:49:17.000000000 +0200
++++ b/tools/blktap/drivers/Makefile	2011-02-24 09:34:21.000000000 +0100
 @@ -4,6 +4,7 @@
  IBIN         = blktapctrl tapdisk
  QCOW_UTIL    = img2qcow qcow2raw qcow-create
@@ -78,9 +78,9 @@ diff -Nur a/xen-3.4.3/tools/blktap/drivers/Makefile b/xen-3.4.3/tools/blktap/dri
  LDFLAGS_img := $(LIBAIO_DIR)/libaio.a $(CRYPT_LIB) -lpthread -lz
  
  BLK-OBJS-y  := block-aio.o
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/aes.c b/xen-3.4.3/tools/blktap2/drivers/aes.c
---- a/xen-3.4.3/tools/blktap2/drivers/aes.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/aes.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/aes.c b/tools/blktap2/drivers/aes.c
+--- a/tools/blktap2/drivers/aes.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/aes.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,1319 @@
 +/**
 + * 
@@ -1401,9 +1401,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/aes.c b/xen-3.4.3/tools/blktap2/driv
 +		}			
 +	}
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/aes.h b/xen-3.4.3/tools/blktap2/drivers/aes.h
---- a/xen-3.4.3/tools/blktap2/drivers/aes.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/aes.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/aes.h b/tools/blktap2/drivers/aes.h
+--- a/tools/blktap2/drivers/aes.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/aes.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,28 @@
 +#ifndef QEMU_AES_H
 +#define QEMU_AES_H
@@ -1433,9 +1433,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/aes.h b/xen-3.4.3/tools/blktap2/driv
 +		     unsigned char *ivec, const int enc);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/atomicio.c b/xen-3.4.3/tools/blktap2/drivers/atomicio.c
---- a/xen-3.4.3/tools/blktap2/drivers/atomicio.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/atomicio.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/atomicio.c b/tools/blktap2/drivers/atomicio.c
+--- a/tools/blktap2/drivers/atomicio.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/atomicio.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,61 @@
 +/*
 + * Copyright (c) 2005 Anil Madhavapeddy. All rights reserved.
@@ -1498,9 +1498,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/atomicio.c b/xen-3.4.3/tools/blktap2
 +	return (pos);
 +}
 +
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/blk.h b/xen-3.4.3/tools/blktap2/drivers/blk.h
---- a/xen-3.4.3/tools/blktap2/drivers/blk.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/blk.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/blk.h b/tools/blktap2/drivers/blk.h
+--- a/tools/blktap2/drivers/blk.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/blk.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,36 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -1538,9 +1538,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/blk.h b/xen-3.4.3/tools/blktap2/driv
 +#ifndef O_LARGEFILE
 +#define O_LARGEFILE	0
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/blk_linux.c b/xen-3.4.3/tools/blktap2/drivers/blk_linux.c
---- a/xen-3.4.3/tools/blktap2/drivers/blk_linux.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/blk_linux.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/blk_linux.c b/tools/blktap2/drivers/blk_linux.c
+--- a/tools/blktap2/drivers/blk_linux.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/blk_linux.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,43 @@
 +#include <inttypes.h>
 +#include <sys/ioctl.h>
@@ -1585,9 +1585,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/blk_linux.c b/xen-3.4.3/tools/blktap
 +	return 0;
 +}
 +
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/blk_netbsd.c b/xen-3.4.3/tools/blktap2/drivers/blk_netbsd.c
---- a/xen-3.4.3/tools/blktap2/drivers/blk_netbsd.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/blk_netbsd.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/blk_netbsd.c b/tools/blktap2/drivers/blk_netbsd.c
+--- a/tools/blktap2/drivers/blk_netbsd.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/blk_netbsd.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,41 @@
 +#include <sys/param.h>
 +#include <sys/ioctl.h>
@@ -1630,9 +1630,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/blk_netbsd.c b/xen-3.4.3/tools/blkta
 +	return 0;
 +}
 +
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/blktap2.h b/xen-3.4.3/tools/blktap2/drivers/blktap2.h
---- a/xen-3.4.3/tools/blktap2/drivers/blktap2.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/blktap2.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/blktap2.h b/tools/blktap2/drivers/blktap2.h
+--- a/tools/blktap2/drivers/blktap2.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/blktap2.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,66 @@
 +/*
 + * Copyright (c) 2008, XenSource Inc.
@@ -1700,9 +1700,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/blktap2.h b/xen-3.4.3/tools/blktap2/
 +};
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/block-aio.c b/xen-3.4.3/tools/blktap2/drivers/block-aio.c
---- a/xen-3.4.3/tools/blktap2/drivers/block-aio.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/block-aio.c	2011-02-24 09:49:54.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/block-aio.c b/tools/blktap2/drivers/block-aio.c
+--- a/tools/blktap2/drivers/block-aio.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/block-aio.c	2011-02-24 09:49:54.000000000 +0100
 @@ -0,0 +1,259 @@
 +/* 
 + * Copyright (c) 2007, XenSource Inc.
@@ -1963,9 +1963,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/block-aio.c b/xen-3.4.3/tools/blktap
 +	.td_validate_parent = tdaio_validate_parent,
 +	.td_debug           = NULL,
 +};
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/block-cache.c b/xen-3.4.3/tools/blktap2/drivers/block-cache.c
---- a/xen-3.4.3/tools/blktap2/drivers/block-cache.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/block-cache.c	2011-02-24 09:52:14.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/block-cache.c b/tools/blktap2/drivers/block-cache.c
+--- a/tools/blktap2/drivers/block-cache.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/block-cache.c	2011-02-24 09:52:14.000000000 +0100
 @@ -0,0 +1,788 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -2755,9 +2755,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/block-cache.c b/xen-3.4.3/tools/blkt
 +	.td_validate_parent         = block_cache_validate_parent,
 +	.td_debug                   = block_cache_debug,
 +};
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/block-log.c b/xen-3.4.3/tools/blktap2/drivers/block-log.c
---- a/xen-3.4.3/tools/blktap2/drivers/block-log.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/block-log.c	2011-02-24 09:50:27.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/block-log.c b/tools/blktap2/drivers/block-log.c
+--- a/tools/blktap2/drivers/block-log.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/block-log.c	2011-02-24 09:50:27.000000000 +0100
 @@ -0,0 +1,689 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -3448,9 +3448,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/block-log.c b/xen-3.4.3/tools/blktap
 +  .td_get_parent_id   = tdlog_get_parent_id,
 +  .td_validate_parent = tdlog_validate_parent,
 +};
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/block-qcow.c b/xen-3.4.3/tools/blktap2/drivers/block-qcow.c
---- a/xen-3.4.3/tools/blktap2/drivers/block-qcow.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/block-qcow.c	2011-02-24 09:50:35.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/block-qcow.c b/tools/blktap2/drivers/block-qcow.c
+--- a/tools/blktap2/drivers/block-qcow.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/block-qcow.c	2011-02-24 09:50:35.000000000 +0100
 @@ -0,0 +1,1529 @@
 +/* block-qcow.c
 + *
@@ -4981,9 +4981,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/block-qcow.c b/xen-3.4.3/tools/blkta
 +	.td_validate_parent  = tdqcow_validate_parent,
 +	.td_debug           = NULL,
 +};
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/block-ram.c b/xen-3.4.3/tools/blktap2/drivers/block-ram.c
---- a/xen-3.4.3/tools/blktap2/drivers/block-ram.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/block-ram.c	2011-02-24 09:50:19.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/block-ram.c b/tools/blktap2/drivers/block-ram.c
+--- a/tools/blktap2/drivers/block-ram.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/block-ram.c	2011-02-24 09:50:19.000000000 +0100
 @@ -0,0 +1,257 @@
 +/* 
 + * Copyright (c) 2007, XenSource Inc.
@@ -5242,9 +5242,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/block-ram.c b/xen-3.4.3/tools/blktap
 +	.td_validate_parent = tdram_validate_parent,
 +	.td_debug           = NULL,
 +};
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/block-remus.c b/xen-3.4.3/tools/blktap2/drivers/block-remus.c
---- a/xen-3.4.3/tools/blktap2/drivers/block-remus.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/block-remus.c	2011-02-24 09:50:42.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/block-remus.c b/tools/blktap2/drivers/block-remus.c
+--- a/tools/blktap2/drivers/block-remus.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/block-remus.c	2011-02-24 09:50:42.000000000 +0100
 @@ -0,0 +1,1675 @@
 +/* block-remus.c
 + *
@@ -6921,9 +6921,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/block-remus.c b/xen-3.4.3/tools/blkt
 +	.td_validate_parent = tdremus_validate_parent,
 +	.td_debug           = NULL,
 +};
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/block-vhd.c b/xen-3.4.3/tools/blktap2/drivers/block-vhd.c
---- a/xen-3.4.3/tools/blktap2/drivers/block-vhd.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/block-vhd.c	2011-02-24 09:52:23.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/block-vhd.c b/tools/blktap2/drivers/block-vhd.c
+--- a/tools/blktap2/drivers/block-vhd.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/block-vhd.c	2011-02-24 09:52:23.000000000 +0100
 @@ -0,0 +1,2322 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -9247,9 +9247,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/block-vhd.c b/xen-3.4.3/tools/blktap
 +	.td_validate_parent = vhd_validate_parent,
 +	.td_debug           = vhd_debug,
 +};
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/bswap.h b/xen-3.4.3/tools/blktap2/drivers/bswap.h
---- a/xen-3.4.3/tools/blktap2/drivers/bswap.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/bswap.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/bswap.h b/tools/blktap2/drivers/bswap.h
+--- a/tools/blktap2/drivers/bswap.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/bswap.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,214 @@
 +#ifndef BSWAP_H
 +#define BSWAP_H
@@ -9465,9 +9465,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/bswap.h b/xen-3.4.3/tools/blktap2/dr
 +#undef be_bswaps
 +
 +#endif /* BSWAP_H */
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/check_gcrypt b/xen-3.4.3/tools/blktap2/drivers/check_gcrypt
---- a/xen-3.4.3/tools/blktap2/drivers/check_gcrypt	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/check_gcrypt	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/check_gcrypt b/tools/blktap2/drivers/check_gcrypt
+--- a/tools/blktap2/drivers/check_gcrypt	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/check_gcrypt	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,18 @@
 +#!/bin/sh
 +
@@ -9487,9 +9487,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/check_gcrypt b/xen-3.4.3/tools/blkta
 +fi
 +
 +rm -f .gcrypt*
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/disktypes.h b/xen-3.4.3/tools/blktap2/drivers/disktypes.h
---- a/xen-3.4.3/tools/blktap2/drivers/disktypes.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/disktypes.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/disktypes.h b/tools/blktap2/drivers/disktypes.h
+--- a/tools/blktap2/drivers/disktypes.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/disktypes.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,197 @@
 +/* 
 + * Copyright (c) 2007, XenSource Inc.
@@ -9688,9 +9688,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/disktypes.h b/xen-3.4.3/tools/blktap
 +};
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/hashtable.c b/xen-3.4.3/tools/blktap2/drivers/hashtable.c
---- a/xen-3.4.3/tools/blktap2/drivers/hashtable.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/hashtable.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/hashtable.c b/tools/blktap2/drivers/hashtable.c
+--- a/tools/blktap2/drivers/hashtable.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/hashtable.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,274 @@
 +/* Copyright (C) 2004 Christopher Clark <firstname.lastname@cl.cam.ac.uk> */
 +
@@ -9966,9 +9966,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/hashtable.c b/xen-3.4.3/tools/blktap
 + * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 + * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 + */
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/hashtable_itr.c b/xen-3.4.3/tools/blktap2/drivers/hashtable_itr.c
---- a/xen-3.4.3/tools/blktap2/drivers/hashtable_itr.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/hashtable_itr.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/hashtable_itr.c b/tools/blktap2/drivers/hashtable_itr.c
+--- a/tools/blktap2/drivers/hashtable_itr.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/hashtable_itr.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,195 @@
 +/* Copyright (C) 2002, 2004 Christopher Clark  <firstname.lastname@cl.cam.ac.uk> */
 +
@@ -10165,9 +10165,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/hashtable_itr.c b/xen-3.4.3/tools/bl
 + * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 + * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 + */
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/hashtable_itr.h b/xen-3.4.3/tools/blktap2/drivers/hashtable_itr.h
---- a/xen-3.4.3/tools/blktap2/drivers/hashtable_itr.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/hashtable_itr.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/hashtable_itr.h b/tools/blktap2/drivers/hashtable_itr.h
+--- a/tools/blktap2/drivers/hashtable_itr.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/hashtable_itr.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,96 @@
 +/* Copyright (C) 2002, 2004 Christopher Clark <firstname.lastname@cl.cam.ac.uk> */
 +
@@ -10265,9 +10265,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/hashtable_itr.h b/xen-3.4.3/tools/bl
 + * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 + * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 + */
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/hashtable_utility.c b/xen-3.4.3/tools/blktap2/drivers/hashtable_utility.c
---- a/xen-3.4.3/tools/blktap2/drivers/hashtable_utility.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/hashtable_utility.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/hashtable_utility.c b/tools/blktap2/drivers/hashtable_utility.c
+--- a/tools/blktap2/drivers/hashtable_utility.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/hashtable_utility.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,71 @@
 +/* Copyright (C) 2002 Christopher Clark <firstname.lastname@cl.cam.ac.uk> */
 +
@@ -10340,9 +10340,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/hashtable_utility.c b/xen-3.4.3/tool
 + * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 + * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 + */
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/hashtable_utility.h b/xen-3.4.3/tools/blktap2/drivers/hashtable_utility.h
---- a/xen-3.4.3/tools/blktap2/drivers/hashtable_utility.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/hashtable_utility.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/hashtable_utility.h b/tools/blktap2/drivers/hashtable_utility.h
+--- a/tools/blktap2/drivers/hashtable_utility.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/hashtable_utility.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,55 @@
 +/* Copyright (C) 2002 Christopher Clark <firstname.lastname@cl.cam.ac.uk> */
 +
@@ -10399,9 +10399,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/hashtable_utility.h b/xen-3.4.3/tool
 + * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 + * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 +*/
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/img2qcow.c b/xen-3.4.3/tools/blktap2/drivers/img2qcow.c
---- a/xen-3.4.3/tools/blktap2/drivers/img2qcow.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/img2qcow.c	2011-02-24 09:52:33.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/img2qcow.c b/tools/blktap2/drivers/img2qcow.c
+--- a/tools/blktap2/drivers/img2qcow.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/img2qcow.c	2011-02-24 09:52:33.000000000 +0100
 @@ -0,0 +1,319 @@
 +/* img2qcow.c
 + *
@@ -10722,9 +10722,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/img2qcow.c b/xen-3.4.3/tools/blktap2
 +
 +	return 0;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/io-optimize.c b/xen-3.4.3/tools/blktap2/drivers/io-optimize.c
---- a/xen-3.4.3/tools/blktap2/drivers/io-optimize.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/io-optimize.c	2011-02-24 09:52:37.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/io-optimize.c b/tools/blktap2/drivers/io-optimize.c
+--- a/tools/blktap2/drivers/io-optimize.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/io-optimize.c	2011-02-24 09:52:37.000000000 +0100
 @@ -0,0 +1,672 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -11398,9 +11398,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/io-optimize.c b/xen-3.4.3/tools/blkt
 +	return 0;
 +}
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/io-optimize.h b/xen-3.4.3/tools/blktap2/drivers/io-optimize.h
---- a/xen-3.4.3/tools/blktap2/drivers/io-optimize.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/io-optimize.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/io-optimize.h b/tools/blktap2/drivers/io-optimize.h
+--- a/tools/blktap2/drivers/io-optimize.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/io-optimize.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,68 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -11470,9 +11470,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/io-optimize.h b/xen-3.4.3/tools/blkt
 +int io_expand_iocbs(struct opioctx *ctx, struct iocb **queue, int idx, int num);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/libaio-compat.h b/xen-3.4.3/tools/blktap2/drivers/libaio-compat.h
---- a/xen-3.4.3/tools/blktap2/drivers/libaio-compat.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/libaio-compat.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/libaio-compat.h b/tools/blktap2/drivers/libaio-compat.h
+--- a/tools/blktap2/drivers/libaio-compat.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/libaio-compat.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,92 @@
 +/*
 + * Copyright (c) 2010, XenSource Inc.
@@ -11566,9 +11566,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/libaio-compat.h b/xen-3.4.3/tools/bl
 +}
 +
 +#endif /* __LIBAIO_COMPAT */
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/lock.c b/xen-3.4.3/tools/blktap2/drivers/lock.c
---- a/xen-3.4.3/tools/blktap2/drivers/lock.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/lock.c	2011-02-24 09:52:41.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/lock.c b/tools/blktap2/drivers/lock.c
+--- a/tools/blktap2/drivers/lock.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/lock.c	2011-02-24 09:52:41.000000000 +0100
 @@ -0,0 +1,1001 @@
 +/*
 + * Copyright (c) 2007, XenSource Inc.
@@ -12571,9 +12571,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/lock.c b/xen-3.4.3/tools/blktap2/dri
 +        return status;
 +}
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/lock.h b/xen-3.4.3/tools/blktap2/drivers/lock.h
---- a/xen-3.4.3/tools/blktap2/drivers/lock.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/lock.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/lock.h b/tools/blktap2/drivers/lock.h
+--- a/tools/blktap2/drivers/lock.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/lock.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,51 @@
 +/*
 + * Copyright (c) 2007, XenSource Inc.
@@ -12626,9 +12626,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/lock.h b/xen-3.4.3/tools/blktap2/dri
 +    LOCK_ENOLOCK     = -13,
 +    LOCK_EUSAGE      = -14,
 +} lock_error;
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/log.h b/xen-3.4.3/tools/blktap2/drivers/log.h
---- a/xen-3.4.3/tools/blktap2/drivers/log.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/log.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/log.h b/tools/blktap2/drivers/log.h
+--- a/tools/blktap2/drivers/log.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/log.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,123 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -12753,9 +12753,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/log.h b/xen-3.4.3/tools/blktap2/driv
 +#define LOG_HEADER_PAGES 4
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/Makefile b/xen-3.4.3/tools/blktap2/drivers/Makefile
---- a/xen-3.4.3/tools/blktap2/drivers/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/Makefile	2011-02-24 09:33:36.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/Makefile b/tools/blktap2/drivers/Makefile
+--- a/tools/blktap2/drivers/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/Makefile	2011-02-24 09:33:36.000000000 +0100
 @@ -0,0 +1,127 @@
 +XEN_ROOT=../../..
 +BLKTAP_ROOT= ..
@@ -12884,9 +12884,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/Makefile b/xen-3.4.3/tools/blktap2/d
 +	rm -rf *.o *~ xen TAGS $(IBIN) $(LIB) $(LOCK_UTIL) $(QCOW_UTIL)
 +
 +.PHONY: clean install
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/profile.h b/xen-3.4.3/tools/blktap2/drivers/profile.h
---- a/xen-3.4.3/tools/blktap2/drivers/profile.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/profile.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/profile.h b/tools/blktap2/drivers/profile.h
+--- a/tools/blktap2/drivers/profile.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/profile.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,191 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -13079,9 +13079,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/profile.h b/xen-3.4.3/tools/blktap2/
 +#endif
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/qcow2raw.c b/xen-3.4.3/tools/blktap2/drivers/qcow2raw.c
---- a/xen-3.4.3/tools/blktap2/drivers/qcow2raw.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/qcow2raw.c	2011-02-24 09:52:44.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/qcow2raw.c b/tools/blktap2/drivers/qcow2raw.c
+--- a/tools/blktap2/drivers/qcow2raw.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/qcow2raw.c	2011-02-24 09:52:44.000000000 +0100
 @@ -0,0 +1,444 @@
 +/* qcow2raw.c
 + *
@@ -13527,9 +13527,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/qcow2raw.c b/xen-3.4.3/tools/blktap2
 +		
 +	return 0;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/qcow-create.c b/xen-3.4.3/tools/blktap2/drivers/qcow-create.c
---- a/xen-3.4.3/tools/blktap2/drivers/qcow-create.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/qcow-create.c	2011-02-24 09:52:48.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/qcow-create.c b/tools/blktap2/drivers/qcow-create.c
+--- a/tools/blktap2/drivers/qcow-create.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/qcow-create.c	2011-02-24 09:52:48.000000000 +0100
 @@ -0,0 +1,122 @@
 +/* qcow-create.c
 + *
@@ -13653,9 +13653,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/qcow-create.c b/xen-3.4.3/tools/blkt
 +
 +	return 0;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/qcow.h b/xen-3.4.3/tools/blktap2/drivers/qcow.h
---- a/xen-3.4.3/tools/blktap2/drivers/qcow.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/qcow.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/qcow.h b/tools/blktap2/drivers/qcow.h
+--- a/tools/blktap2/drivers/qcow.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/qcow.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,131 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -13788,9 +13788,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/qcow.h b/xen-3.4.3/tools/blktap2/dri
 +		const char *backing_file, int sparse);
 +
 +#endif //_QCOW_H_
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/scheduler.c b/xen-3.4.3/tools/blktap2/drivers/scheduler.c
---- a/xen-3.4.3/tools/blktap2/drivers/scheduler.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/scheduler.c	2011-02-24 09:52:53.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/scheduler.c b/tools/blktap2/drivers/scheduler.c
+--- a/tools/blktap2/drivers/scheduler.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/scheduler.c	2011-02-24 09:52:53.000000000 +0100
 @@ -0,0 +1,266 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -14058,9 +14058,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/scheduler.c b/xen-3.4.3/tools/blktap
 +
 +	INIT_LIST_HEAD(&s->events);
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/scheduler.h b/xen-3.4.3/tools/blktap2/drivers/scheduler.h
---- a/xen-3.4.3/tools/blktap2/drivers/scheduler.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/scheduler.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/scheduler.h b/tools/blktap2/drivers/scheduler.h
+--- a/tools/blktap2/drivers/scheduler.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/scheduler.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,65 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -14127,9 +14127,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/scheduler.h b/xen-3.4.3/tools/blktap
 +int scheduler_wait_for_events(scheduler_t *);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk2.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk2.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk2.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk2.c	2011-02-24 09:51:09.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/tapdisk2.c b/tools/blktap2/drivers/tapdisk2.c
+--- a/tools/blktap2/drivers/tapdisk2.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk2.c	2011-02-24 09:51:09.000000000 +0100
 @@ -0,0 +1,456 @@
 +/*
 + * Copyright (c) 2008, XenSource Inc.
@@ -14587,9 +14587,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk2.c b/xen-3.4.3/tools/blktap2
 +		return tapdisk2_wait_for_device();
 +	}
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-client.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk-client.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-client.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-client.c	2011-02-24 09:52:57.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/tapdisk-client.c b/tools/blktap2/drivers/tapdisk-client.c
+--- a/tools/blktap2/drivers/tapdisk-client.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-client.c	2011-02-24 09:52:57.000000000 +0100
 @@ -0,0 +1,497 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -15088,9 +15088,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-client.c b/xen-3.4.3/tools/b
 +
 +  return 0;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-diff.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk-diff.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-diff.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-diff.c	2011-02-24 09:53:05.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/tapdisk-diff.c b/tools/blktap2/drivers/tapdisk-diff.c
+--- a/tools/blktap2/drivers/tapdisk-diff.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-diff.c	2011-02-24 09:53:05.000000000 +0100
 @@ -0,0 +1,799 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -15891,9 +15891,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-diff.c b/xen-3.4.3/tools/blk
 +	usage(stderr);
 +	return 1;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-driver.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk-driver.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-driver.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-driver.c	2011-02-24 09:53:08.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/tapdisk-driver.c b/tools/blktap2/drivers/tapdisk-driver.c
+--- a/tools/blktap2/drivers/tapdisk-driver.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-driver.c	2011-02-24 09:53:08.000000000 +0100
 @@ -0,0 +1,101 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -15996,9 +15996,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-driver.c b/xen-3.4.3/tools/b
 +	if (driver->ops->td_debug)
 +		driver->ops->td_debug(driver);
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-driver.h b/xen-3.4.3/tools/blktap2/drivers/tapdisk-driver.h
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-driver.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-driver.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-driver.h b/tools/blktap2/drivers/tapdisk-driver.h
+--- a/tools/blktap2/drivers/tapdisk-driver.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-driver.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,62 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -16062,9 +16062,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-driver.h b/xen-3.4.3/tools/b
 +void tapdisk_driver_debug(td_driver_t *);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-filter.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk-filter.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-filter.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-filter.c	2011-02-24 09:53:12.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/tapdisk-filter.c b/tools/blktap2/drivers/tapdisk-filter.c
+--- a/tools/blktap2/drivers/tapdisk-filter.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-filter.c	2011-02-24 09:53:12.000000000 +0100
 @@ -0,0 +1,273 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -16339,9 +16339,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-filter.c b/xen-3.4.3/tools/b
 +			check_data(filter, POST_CHECK, io);
 +	}
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-filter.h b/xen-3.4.3/tools/blktap2/drivers/tapdisk-filter.h
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-filter.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-filter.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-filter.h b/tools/blktap2/drivers/tapdisk-filter.h
+--- a/tools/blktap2/drivers/tapdisk-filter.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-filter.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,67 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -16410,9 +16410,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-filter.h b/xen-3.4.3/tools/b
 +void tapdisk_filter_events(struct tfilter *, struct io_event *, int);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk.h b/xen-3.4.3/tools/blktap2/drivers/tapdisk.h
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk.h b/tools/blktap2/drivers/tapdisk.h
+--- a/tools/blktap2/drivers/tapdisk.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,162 @@
 +/*
 + * Copyright (c) 2007, XenSource Inc.
@@ -16576,9 +16576,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk.h b/xen-3.4.3/tools/blktap2/
 +};
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-image.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk-image.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-image.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-image.c	2011-02-24 09:53:15.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/tapdisk-image.c b/tools/blktap2/drivers/tapdisk-image.c
+--- a/tools/blktap2/drivers/tapdisk-image.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-image.c	2011-02-24 09:53:15.000000000 +0100
 @@ -0,0 +1,170 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -16750,9 +16750,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-image.c b/xen-3.4.3/tools/bl
 +	    req->operation, req->sector_number + total);
 +	return -EINVAL;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-image.h b/xen-3.4.3/tools/blktap2/drivers/tapdisk-image.h
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-image.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-image.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-image.h b/tools/blktap2/drivers/tapdisk-image.h
+--- a/tools/blktap2/drivers/tapdisk-image.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-image.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,56 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -16810,9 +16810,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-image.h b/xen-3.4.3/tools/bl
 +int tapdisk_image_check_ring_request(td_image_t *, blkif_request_t *);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-interface.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk-interface.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-interface.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-interface.c	2011-02-24 09:53:19.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/tapdisk-interface.c b/tools/blktap2/drivers/tapdisk-interface.c
+--- a/tools/blktap2/drivers/tapdisk-interface.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-interface.c	2011-02-24 09:53:19.000000000 +0100
 @@ -0,0 +1,251 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -17065,9 +17065,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-interface.c b/xen-3.4.3/tool
 +
 +	tapdisk_driver_debug(driver);
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-interface.h b/xen-3.4.3/tools/blktap2/drivers/tapdisk-interface.h
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-interface.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-interface.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-interface.h b/tools/blktap2/drivers/tapdisk-interface.h
+--- a/tools/blktap2/drivers/tapdisk-interface.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-interface.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,53 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -17122,9 +17122,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-interface.h b/xen-3.4.3/tool
 +		   long long, td_queue_callback_t, void *);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-ipc.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk-ipc.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-ipc.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-ipc.c	2011-02-24 09:37:08.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/tapdisk-ipc.c b/tools/blktap2/drivers/tapdisk-ipc.c
+--- a/tools/blktap2/drivers/tapdisk-ipc.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-ipc.c	2011-02-24 09:37:08.000000000 +0100
 @@ -0,0 +1,354 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -17480,9 +17480,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-ipc.c b/xen-3.4.3/tools/blkt
 +
 +	return -err;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-ipc.h b/xen-3.4.3/tools/blktap2/drivers/tapdisk-ipc.h
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-ipc.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-ipc.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-ipc.h b/tools/blktap2/drivers/tapdisk-ipc.h
+--- a/tools/blktap2/drivers/tapdisk-ipc.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-ipc.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,47 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -17531,9 +17531,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-ipc.h b/xen-3.4.3/tools/blkt
 +int tapdisk_ipc_write_error(td_ipc_t *ipc, const char *message);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-log.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk-log.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-log.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-log.c	2011-02-24 09:47:46.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/tapdisk-log.c b/tools/blktap2/drivers/tapdisk-log.c
+--- a/tools/blktap2/drivers/tapdisk-log.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-log.c	2011-02-24 09:47:46.000000000 +0100
 @@ -0,0 +1,257 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -17792,9 +17792,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-log.c b/xen-3.4.3/tools/blkt
 +out:
 +	close(fd);
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-log.h b/xen-3.4.3/tools/blktap2/drivers/tapdisk-log.h
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-log.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-log.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-log.h b/tools/blktap2/drivers/tapdisk-log.h
+--- a/tools/blktap2/drivers/tapdisk-log.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-log.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,51 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -17847,9 +17847,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-log.h b/xen-3.4.3/tools/blkt
 +	__tlog_error(_err, __func__, _f, ##_a)
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-queue.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk-queue.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-queue.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-queue.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-queue.c b/tools/blktap2/drivers/tapdisk-queue.c
+--- a/tools/blktap2/drivers/tapdisk-queue.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-queue.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,743 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -18594,9 +18594,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-queue.c b/xen-3.4.3/tools/bl
 +
 +	return cancelled;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-queue.h b/xen-3.4.3/tools/blktap2/drivers/tapdisk-queue.h
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-queue.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-queue.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-queue.h b/tools/blktap2/drivers/tapdisk-queue.h
+--- a/tools/blktap2/drivers/tapdisk-queue.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-queue.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,125 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -18723,9 +18723,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-queue.h b/xen-3.4.3/tools/bl
 +			long long, td_queue_callback_t, void *);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-ring.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk-ring.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-ring.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-ring.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-ring.c b/tools/blktap2/drivers/tapdisk-ring.c
+--- a/tools/blktap2/drivers/tapdisk-ring.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-ring.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,439 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -19166,9 +19166,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-ring.c b/xen-3.4.3/tools/blk
 +
 +	return tapdisk_uring_write_message(ring->ctlfd, &message, 1);
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-ring.h b/xen-3.4.3/tools/blktap2/drivers/tapdisk-ring.h
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-ring.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-ring.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-ring.h b/tools/blktap2/drivers/tapdisk-ring.h
+--- a/tools/blktap2/drivers/tapdisk-ring.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-ring.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,87 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -19257,9 +19257,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-ring.h b/xen-3.4.3/tools/blk
 +int tapdisk_uring_kick(td_uring_t *);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-server.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk-server.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-server.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-server.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-server.c b/tools/blktap2/drivers/tapdisk-server.c
+--- a/tools/blktap2/drivers/tapdisk-server.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-server.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,350 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -19611,9 +19611,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-server.c b/xen-3.4.3/tools/b
 +
 +	return 0;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-server.h b/xen-3.4.3/tools/blktap2/drivers/tapdisk-server.h
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-server.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-server.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-server.h b/tools/blktap2/drivers/tapdisk-server.h
+--- a/tools/blktap2/drivers/tapdisk-server.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-server.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,63 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -19678,9 +19678,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-server.h b/xen-3.4.3/tools/b
 +} tapdisk_server_t;
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-stream.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk-stream.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-stream.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-stream.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-stream.c b/tools/blktap2/drivers/tapdisk-stream.c
+--- a/tools/blktap2/drivers/tapdisk-stream.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-stream.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,600 @@
 +/*
 + * Copyright (c) 2008, XenSource Inc.
@@ -20282,9 +20282,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-stream.c b/xen-3.4.3/tools/b
 +	tapdisk_stop_logging();
 +	return err;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-utils.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk-utils.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-utils.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-utils.c	2011-02-24 09:48:20.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/tapdisk-utils.c b/tools/blktap2/drivers/tapdisk-utils.c
+--- a/tools/blktap2/drivers/tapdisk-utils.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-utils.c	2011-02-24 09:48:20.000000000 +0100
 @@ -0,0 +1,218 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -20504,9 +20504,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-utils.c b/xen-3.4.3/tools/bl
 +}
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-utils.h b/xen-3.4.3/tools/blktap2/drivers/tapdisk-utils.h
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-utils.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-utils.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-utils.h b/tools/blktap2/drivers/tapdisk-utils.h
+--- a/tools/blktap2/drivers/tapdisk-utils.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-utils.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,43 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -20551,9 +20551,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-utils.h b/xen-3.4.3/tools/bl
 +int tapdisk_linux_version(void);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-vbd.c b/xen-3.4.3/tools/blktap2/drivers/tapdisk-vbd.c
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-vbd.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-vbd.c	2011-02-24 09:37:57.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/tapdisk-vbd.c b/tools/blktap2/drivers/tapdisk-vbd.c
+--- a/tools/blktap2/drivers/tapdisk-vbd.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-vbd.c	2011-02-24 09:37:57.000000000 +0100
 @@ -0,0 +1,1977 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -22532,9 +22532,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-vbd.c b/xen-3.4.3/tools/blkt
 +{
 +	return list_entry(vbd->images.next, td_image_t, next);
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-vbd.h b/xen-3.4.3/tools/blktap2/drivers/tapdisk-vbd.h
---- a/xen-3.4.3/tools/blktap2/drivers/tapdisk-vbd.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/tapdisk-vbd.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/tapdisk-vbd.h b/tools/blktap2/drivers/tapdisk-vbd.h
+--- a/tools/blktap2/drivers/tapdisk-vbd.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/tapdisk-vbd.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,203 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -22739,9 +22739,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/tapdisk-vbd.h b/xen-3.4.3/tools/blkt
 +void tapdisk_vbd_complete_vbd_request(td_vbd_t *, td_vbd_request_t *);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/td.c b/xen-3.4.3/tools/blktap2/drivers/td.c
---- a/xen-3.4.3/tools/blktap2/drivers/td.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/td.c	2011-02-24 09:51:36.000000000 +0100
+diff -Nur a/tools/blktap2/drivers/td.c b/tools/blktap2/drivers/td.c
+--- a/tools/blktap2/drivers/td.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/td.c	2011-02-24 09:51:36.000000000 +0100
 @@ -0,0 +1,692 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -23435,9 +23435,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/td.c b/xen-3.4.3/tools/blktap2/drive
 +
 +	return (ret >= 0 ? ret : -ret);
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/drivers/xmsnap b/xen-3.4.3/tools/blktap2/drivers/xmsnap
---- a/xen-3.4.3/tools/blktap2/drivers/xmsnap	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/drivers/xmsnap	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/drivers/xmsnap b/tools/blktap2/drivers/xmsnap
+--- a/tools/blktap2/drivers/xmsnap	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/drivers/xmsnap	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,78 @@
 +#!/bin/bash
 +
@@ -23518,9 +23518,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/drivers/xmsnap b/xen-3.4.3/tools/blktap2/dri
 +
 +exit
 \ Kein Zeilenumbruch am Dateiende.
-diff -Nur a/xen-3.4.3/tools/blktap2/include/atomicio.h b/xen-3.4.3/tools/blktap2/include/atomicio.h
---- a/xen-3.4.3/tools/blktap2/include/atomicio.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/include/atomicio.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/include/atomicio.h b/tools/blktap2/include/atomicio.h
+--- a/tools/blktap2/include/atomicio.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/include/atomicio.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,33 @@
 +/*	$OpenBSD: atomicio.h,v 1.6 2005/05/24 17:32:43 avsm Exp $	*/
 +
@@ -23555,9 +23555,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/include/atomicio.h b/xen-3.4.3/tools/blktap2
 +size_t	atomicio(ssize_t (*)(int, void *, size_t), int, void *, size_t);
 +
 +#define vwrite (ssize_t (*)(int, void *, size_t))write
-diff -Nur a/xen-3.4.3/tools/blktap2/include/blktaplib.h b/xen-3.4.3/tools/blktap2/include/blktaplib.h
---- a/xen-3.4.3/tools/blktap2/include/blktaplib.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/include/blktaplib.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/include/blktaplib.h b/tools/blktap2/include/blktaplib.h
+--- a/tools/blktap2/include/blktaplib.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/include/blktaplib.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,250 @@
 +/* blktaplib.h
 + *
@@ -23809,9 +23809,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/include/blktaplib.h b/xen-3.4.3/tools/blktap
 +#endif /* __COMPILING_BLKTAP_LIB */
 +
 +#endif /* __BLKTAPLIB_H__ */
-diff -Nur a/xen-3.4.3/tools/blktap2/include/blk_uuid.h b/xen-3.4.3/tools/blktap2/include/blk_uuid.h
---- a/xen-3.4.3/tools/blktap2/include/blk_uuid.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/include/blk_uuid.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/include/blk_uuid.h b/tools/blktap2/include/blk_uuid.h
+--- a/tools/blktap2/include/blk_uuid.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/include/blk_uuid.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,130 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -23943,9 +23943,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/include/blk_uuid.h b/xen-3.4.3/tools/blktap2
 +#endif
 +
 +#endif /* __BLKTAP2_UUID_H__ */
-diff -Nur a/xen-3.4.3/tools/blktap2/include/libvhd.h b/xen-3.4.3/tools/blktap2/include/libvhd.h
---- a/xen-3.4.3/tools/blktap2/include/libvhd.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/include/libvhd.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/include/libvhd.h b/tools/blktap2/include/libvhd.h
+--- a/tools/blktap2/include/libvhd.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/include/libvhd.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,326 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -24273,9 +24273,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/include/libvhd.h b/xen-3.4.3/tools/blktap2/i
 +int vhd_io_write(vhd_context_t *, char *, uint64_t, uint32_t);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/include/libvhd-journal.h b/xen-3.4.3/tools/blktap2/include/libvhd-journal.h
---- a/xen-3.4.3/tools/blktap2/include/libvhd-journal.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/include/libvhd-journal.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/include/libvhd-journal.h b/tools/blktap2/include/libvhd-journal.h
+--- a/tools/blktap2/include/libvhd-journal.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/include/libvhd-journal.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,68 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -24345,9 +24345,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/include/libvhd-journal.h b/xen-3.4.3/tools/b
 +int vhd_journal_remove(vhd_journal_t *);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/include/list.h b/xen-3.4.3/tools/blktap2/include/list.h
---- a/xen-3.4.3/tools/blktap2/include/list.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/include/list.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/include/list.h b/tools/blktap2/include/list.h
+--- a/tools/blktap2/include/list.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/include/list.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,124 @@
 +/*
 + * list.h
@@ -24473,9 +24473,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/include/list.h b/xen-3.4.3/tools/blktap2/inc
 +	     pos = n, n = list_entry(n->member.next, typeof(*n), member))
 +
 +#endif /* __LIST_H__ */
-diff -Nur a/xen-3.4.3/tools/blktap2/include/lvm-util.h b/xen-3.4.3/tools/blktap2/include/lvm-util.h
---- a/xen-3.4.3/tools/blktap2/include/lvm-util.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/include/lvm-util.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/include/lvm-util.h b/tools/blktap2/include/lvm-util.h
+--- a/tools/blktap2/include/lvm-util.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/include/lvm-util.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,71 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -24548,9 +24548,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/include/lvm-util.h b/xen-3.4.3/tools/blktap2
 +void lvm_free_vg(struct vg *vg);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/include/Makefile b/xen-3.4.3/tools/blktap2/include/Makefile
---- a/xen-3.4.3/tools/blktap2/include/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/include/Makefile	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/include/Makefile b/tools/blktap2/include/Makefile
+--- a/tools/blktap2/include/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/include/Makefile	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,14 @@
 +XEN_ROOT := ../../..
 +include $(XEN_ROOT)/tools/Rules.mk
@@ -24566,9 +24566,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/include/Makefile b/xen-3.4.3/tools/blktap2/i
 +.PHONY: clean
 +clean:
 +	@:
-diff -Nur a/xen-3.4.3/tools/blktap2/include/relative-path.h b/xen-3.4.3/tools/blktap2/include/relative-path.h
---- a/xen-3.4.3/tools/blktap2/include/relative-path.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/include/relative-path.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/include/relative-path.h b/tools/blktap2/include/relative-path.h
+--- a/tools/blktap2/include/relative-path.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/include/relative-path.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,43 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -24613,9 +24613,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/include/relative-path.h b/xen-3.4.3/tools/bl
 +char *relative_path_to(char *src, char *dest, int *err);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/include/tapdisk-message.h b/xen-3.4.3/tools/blktap2/include/tapdisk-message.h
---- a/xen-3.4.3/tools/blktap2/include/tapdisk-message.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/include/tapdisk-message.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/include/tapdisk-message.h b/tools/blktap2/include/tapdisk-message.h
+--- a/tools/blktap2/include/tapdisk-message.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/include/tapdisk-message.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,141 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -24758,9 +24758,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/include/tapdisk-message.h b/xen-3.4.3/tools/
 +}
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/include/vhd.h b/xen-3.4.3/tools/blktap2/include/vhd.h
---- a/xen-3.4.3/tools/blktap2/include/vhd.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/include/vhd.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/include/vhd.h b/tools/blktap2/include/vhd.h
+--- a/tools/blktap2/include/vhd.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/include/vhd.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,219 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -24981,9 +24981,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/include/vhd.h b/xen-3.4.3/tools/blktap2/incl
 + */
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/include/vhd-util.h b/xen-3.4.3/tools/blktap2/include/vhd-util.h
---- a/xen-3.4.3/tools/blktap2/include/vhd-util.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/include/vhd-util.h	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/include/vhd-util.h b/tools/blktap2/include/vhd-util.h
+--- a/tools/blktap2/include/vhd-util.h	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/include/vhd-util.h	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,44 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -25029,9 +25029,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/include/vhd-util.h b/xen-3.4.3/tools/blktap2
 +int vhd_util_revert(int argc, char **argv);
 +
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/lvm/lvm-util.c b/xen-3.4.3/tools/blktap2/lvm/lvm-util.c
---- a/xen-3.4.3/tools/blktap2/lvm/lvm-util.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/lvm/lvm-util.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/lvm/lvm-util.c b/tools/blktap2/lvm/lvm-util.c
+--- a/tools/blktap2/lvm/lvm-util.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/lvm/lvm-util.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,349 @@
 +/* 
 + * Copyright (c) 2008, XenSource Inc.
@@ -25382,9 +25382,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/lvm/lvm-util.c b/xen-3.4.3/tools/blktap2/lvm
 +	return 0;
 +}
 +#endif
-diff -Nur a/xen-3.4.3/tools/blktap2/lvm/Makefile b/xen-3.4.3/tools/blktap2/lvm/Makefile
---- a/xen-3.4.3/tools/blktap2/lvm/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/lvm/Makefile	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/lvm/Makefile b/tools/blktap2/lvm/Makefile
+--- a/tools/blktap2/lvm/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/lvm/Makefile	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,38 @@
 +XEN_ROOT = ../../..
 +BLKTAP_ROOT := ..
@@ -25424,9 +25424,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/lvm/Makefile b/xen-3.4.3/tools/blktap2/lvm/M
 +.PHONY: all build clean install lvm-util
 +
 +-include $(DEPS)
-diff -Nur a/xen-3.4.3/tools/blktap2/Makefile b/xen-3.4.3/tools/blktap2/Makefile
---- a/xen-3.4.3/tools/blktap2/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/Makefile	2011-02-24 09:28:52.000000000 +0100
+diff -Nur a/tools/blktap2/Makefile b/tools/blktap2/Makefile
+--- a/tools/blktap2/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/Makefile	2011-02-24 09:28:52.000000000 +0100
 @@ -0,0 +1,14 @@
 +XEN_ROOT = ../..
 +include $(XEN_ROOT)/tools/Rules.mk
@@ -25442,9 +25442,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/Makefile b/xen-3.4.3/tools/blktap2/Makefile
 +
 +.PHONY: all clean install
 +all clean install: %: subdirs-%
-diff -Nur a/xen-3.4.3/tools/blktap2/README b/xen-3.4.3/tools/blktap2/README
---- a/xen-3.4.3/tools/blktap2/README	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/README	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/README b/tools/blktap2/README
+--- a/tools/blktap2/README	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/README	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,321 @@
 +Blktap2 Userspace Tools + Library
 +================================
@@ -25767,9 +25767,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/README b/xen-3.4.3/tools/blktap2/README
 +
 +
 +
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/atomicio.c b/xen-3.4.3/tools/blktap2/vhd/lib/atomicio.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/atomicio.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/atomicio.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/atomicio.c b/tools/blktap2/vhd/lib/atomicio.c
+--- a/tools/blktap2/vhd/lib/atomicio.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/atomicio.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,61 @@
 +/*
 + * Copyright (c) 2005 Anil Madhavapeddy. All rights reserved.
@@ -25832,9 +25832,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/atomicio.c b/xen-3.4.3/tools/blktap2
 +	return (pos);
 +}
 +
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/libvhd.c b/xen-3.4.3/tools/blktap2/vhd/lib/libvhd.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/libvhd.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/libvhd.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/libvhd.c b/tools/blktap2/vhd/lib/libvhd.c
+--- a/tools/blktap2/vhd/lib/libvhd.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/libvhd.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,3352 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -29188,9 +29188,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/libvhd.c b/xen-3.4.3/tools/blktap2/v
 +
 +	return __vhd_io_dynamic_write(ctx, buf, sec, secs);
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/libvhd-journal.c b/xen-3.4.3/tools/blktap2/vhd/lib/libvhd-journal.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/libvhd-journal.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/libvhd-journal.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/libvhd-journal.c b/tools/blktap2/vhd/lib/libvhd-journal.c
+--- a/tools/blktap2/vhd/lib/libvhd-journal.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/libvhd-journal.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,1534 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -30726,9 +30726,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/libvhd-journal.c b/xen-3.4.3/tools/b
 +
 +	return vhd_journal_sync(j);
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/Makefile b/xen-3.4.3/tools/blktap2/vhd/lib/Makefile
---- a/xen-3.4.3/tools/blktap2/vhd/lib/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/Makefile	2011-02-24 09:28:52.000000000 +0100
+diff -Nur a/tools/blktap2/vhd/lib/Makefile b/tools/blktap2/vhd/lib/Makefile
+--- a/tools/blktap2/vhd/lib/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/Makefile	2011-02-24 09:28:52.000000000 +0100
 @@ -0,0 +1,77 @@
 +XEN_ROOT=../../../..
 +BLKTAP_ROOT := ../..
@@ -30807,9 +30807,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/Makefile b/xen-3.4.3/tools/blktap2/v
 +.PHONY: all build clean install libvhd
 +
 +-include $(DEPS)
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/relative-path.c b/xen-3.4.3/tools/blktap2/vhd/lib/relative-path.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/relative-path.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/relative-path.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/relative-path.c b/tools/blktap2/vhd/lib/relative-path.c
+--- a/tools/blktap2/vhd/lib/relative-path.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/relative-path.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,299 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -31110,9 +31110,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/relative-path.c b/xen-3.4.3/tools/bl
 +
 +	return relative_path;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-check.c b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-check.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-check.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-check.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/vhd-util-check.c b/tools/blktap2/vhd/lib/vhd-util-check.c
+--- a/tools/blktap2/vhd/lib/vhd-util-check.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/vhd-util-check.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,980 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -32094,9 +32094,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-check.c b/xen-3.4.3/tools/b
 +	       "[-p check parents] [-h help]\n");
 +	return err;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-coalesce.c b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-coalesce.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-coalesce.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-coalesce.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/vhd-util-coalesce.c b/tools/blktap2/vhd/lib/vhd-util-coalesce.c
+--- a/tools/blktap2/vhd/lib/vhd-util-coalesce.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/vhd-util-coalesce.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,218 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -32316,9 +32316,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-coalesce.c b/xen-3.4.3/tool
 +	printf("options: <-n name> [-h help]\n");
 +	return -EINVAL;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-create.c b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-create.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-create.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-create.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/vhd-util-create.c b/tools/blktap2/vhd/lib/vhd-util-create.c
+--- a/tools/blktap2/vhd/lib/vhd-util-create.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/vhd-util-create.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,80 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -32400,9 +32400,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-create.c b/xen-3.4.3/tools/
 +	printf("options: <-n name> <-s size (MB)> [-r reserve] [-h help]\n");
 +	return -EINVAL;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-fill.c b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-fill.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-fill.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-fill.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/vhd-util-fill.c b/tools/blktap2/vhd/lib/vhd-util-fill.c
+--- a/tools/blktap2/vhd/lib/vhd-util-fill.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/vhd-util-fill.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,105 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -32509,9 +32509,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-fill.c b/xen-3.4.3/tools/bl
 +	printf("options: <-n name> [-h help]\n");
 +	return -EINVAL;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-modify.c b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-modify.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-modify.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-modify.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/vhd-util-modify.c b/tools/blktap2/vhd/lib/vhd-util-modify.c
+--- a/tools/blktap2/vhd/lib/vhd-util-modify.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/vhd-util-modify.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,132 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -32645,9 +32645,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-modify.c b/xen-3.4.3/tools/
 +			"[-s NEW_SIZE set size] [-h help]\n");
 +	return -EINVAL;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-query.c b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-query.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-query.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-query.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/vhd-util-query.c b/tools/blktap2/vhd/lib/vhd-util-query.c
+--- a/tools/blktap2/vhd/lib/vhd-util-query.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/vhd-util-query.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,159 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -32808,9 +32808,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-query.c b/xen-3.4.3/tools/b
 +	       "[-f print fields] [-d print chain depth] [-h help]\n");
 +	return err;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-read.c b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-read.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-read.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-read.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/vhd-util-read.c b/tools/blktap2/vhd/lib/vhd-util-read.c
+--- a/tools/blktap2/vhd/lib/vhd-util-read.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/vhd-util-read.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,742 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -33554,9 +33554,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-read.c b/xen-3.4.3/tools/bl
 +	       "-x          print in hex\n");
 +	return EINVAL;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-repair.c b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-repair.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-repair.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-repair.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/vhd-util-repair.c b/tools/blktap2/vhd/lib/vhd-util-repair.c
+--- a/tools/blktap2/vhd/lib/vhd-util-repair.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/vhd-util-repair.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,84 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -33642,9 +33642,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-repair.c b/xen-3.4.3/tools/
 +	printf("options: <-n name> [-h help]\n");
 +	return -EINVAL;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-resize.c b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-resize.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-resize.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-resize.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/vhd-util-resize.c b/tools/blktap2/vhd/lib/vhd-util-resize.c
+--- a/tools/blktap2/vhd/lib/vhd-util-resize.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/vhd-util-resize.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,1131 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -34777,9 +34777,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-resize.c b/xen-3.4.3/tools/
 +	printf("options: <-n name> <-j journal> <-s size (in MB)> [-h help]\n");
 +	return -EINVAL;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-revert.c b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-revert.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-revert.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-revert.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/vhd-util-revert.c b/tools/blktap2/vhd/lib/vhd-util-revert.c
+--- a/tools/blktap2/vhd/lib/vhd-util-revert.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/vhd-util-revert.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,106 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -34887,9 +34887,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-revert.c b/xen-3.4.3/tools/
 +	printf("options: <-n name> <-j journal> [-h help]\n");
 +	return -EINVAL;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-scan.c b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-scan.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-scan.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-scan.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/vhd-util-scan.c b/tools/blktap2/vhd/lib/vhd-util-scan.c
+--- a/tools/blktap2/vhd/lib/vhd-util-scan.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/vhd-util-scan.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,1317 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -36208,9 +36208,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-scan.c b/xen-3.4.3/tools/bl
 +	       "[-v verbose] [-h help]\n");
 +	return err;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-set-field.c b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-set-field.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-set-field.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-set-field.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/vhd-util-set-field.c b/tools/blktap2/vhd/lib/vhd-util-set-field.c
+--- a/tools/blktap2/vhd/lib/vhd-util-set-field.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/vhd-util-set-field.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,106 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -36318,9 +36318,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-set-field.c b/xen-3.4.3/too
 +	printf("options: <-n name> <-f field> <-v value> [-h help]\n");
 +	return -EINVAL;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-snapshot.c b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-snapshot.c
---- a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-snapshot.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-snapshot.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/lib/vhd-util-snapshot.c b/tools/blktap2/vhd/lib/vhd-util-snapshot.c
+--- a/tools/blktap2/vhd/lib/vhd-util-snapshot.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/lib/vhd-util-snapshot.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,216 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -36538,9 +36538,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/lib/vhd-util-snapshot.c b/xen-3.4.3/tool
 +	       " [-m parent_is_raw] [-h help]\n");
 +	return err;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/Makefile b/xen-3.4.3/tools/blktap2/vhd/Makefile
---- a/xen-3.4.3/tools/blktap2/vhd/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/Makefile	2011-02-24 09:28:52.000000000 +0100
+diff -Nur a/tools/blktap2/vhd/Makefile b/tools/blktap2/vhd/Makefile
+--- a/tools/blktap2/vhd/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/Makefile	2011-02-24 09:28:52.000000000 +0100
 @@ -0,0 +1,57 @@
 +XEN_ROOT=../../..
 +BLKTAP_ROOT := ..
@@ -36599,9 +36599,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/Makefile b/xen-3.4.3/tools/blktap2/vhd/M
 +.PHONY: all build clean install vhd-util vhd-update
 +
 +-include $(DEPS)
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/vhd-update.c b/xen-3.4.3/tools/blktap2/vhd/vhd-update.c
---- a/xen-3.4.3/tools/blktap2/vhd/vhd-update.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/vhd-update.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/vhd-update.c b/tools/blktap2/vhd/vhd-update.c
+--- a/tools/blktap2/vhd/vhd-update.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/vhd-update.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,259 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -36862,9 +36862,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/vhd-update.c b/xen-3.4.3/tools/blktap2/v
 +	err = close_journal(&journal, err);
 +	return err;
 +}
-diff -Nur a/xen-3.4.3/tools/blktap2/vhd/vhd-util.c b/xen-3.4.3/tools/blktap2/vhd/vhd-util.c
---- a/xen-3.4.3/tools/blktap2/vhd/vhd-util.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/xen-3.4.3/tools/blktap2/vhd/vhd-util.c	2010-08-25 12:22:07.000000000 +0200
+diff -Nur a/tools/blktap2/vhd/vhd-util.c b/tools/blktap2/vhd/vhd-util.c
+--- a/tools/blktap2/vhd/vhd-util.c	1970-01-01 01:00:00.000000000 +0100
++++ b/tools/blktap2/vhd/vhd-util.c	2010-08-25 12:22:07.000000000 +0200
 @@ -0,0 +1,160 @@
 +/* Copyright (c) 2008, XenSource Inc.
 + * All rights reserved.
@@ -37026,9 +37026,9 @@ diff -Nur a/xen-3.4.3/tools/blktap2/vhd/vhd-util.c b/xen-3.4.3/tools/blktap2/vhd
 +
 +	return (ret >= 0 ? ret : -ret);
 +}
-diff -Nur a/xen-3.4.3/tools/hotplug/Linux/xen-hotplug-cleanup b/xen-3.4.3/tools/hotplug/Linux/xen-hotplug-cleanup
---- a/xen-3.4.3/tools/hotplug/Linux/xen-hotplug-cleanup	2010-05-29 18:49:18.000000000 +0200
-+++ b/xen-3.4.3/tools/hotplug/Linux/xen-hotplug-cleanup	2011-02-24 10:15:41.000000000 +0100
+diff -Nur a/tools/hotplug/Linux/xen-hotplug-cleanup b/tools/hotplug/Linux/xen-hotplug-cleanup
+--- a/tools/hotplug/Linux/xen-hotplug-cleanup	2010-05-29 18:49:18.000000000 +0200
++++ b/tools/hotplug/Linux/xen-hotplug-cleanup	2011-02-24 10:15:41.000000000 +0100
 @@ -18,6 +18,13 @@
  # construct /vm/UUID/device/DEVCLASS/DEVID
  if [ "$vm" != "" ]; then
@@ -37043,9 +37043,9 @@ diff -Nur a/xen-3.4.3/tools/hotplug/Linux/xen-hotplug-cleanup b/xen-3.4.3/tools/
  else
    vm_dev=
  fi
-diff -Nur a/xen-3.4.3/tools/Makefile b/xen-3.4.3/tools/Makefile
---- a/xen-3.4.3/tools/Makefile	2010-05-29 18:49:17.000000000 +0200
-+++ b/xen-3.4.3/tools/Makefile	2011-02-24 09:29:45.000000000 +0100
+diff -Nur a/tools/Makefile b/tools/Makefile
+--- a/tools/Makefile	2010-05-29 18:49:17.000000000 +0200
++++ b/tools/Makefile	2011-02-24 09:29:45.000000000 +0100
 @@ -25,6 +25,7 @@
  SUBDIRS-$(LIBXENAPI_BINDINGS) += libxen
  SUBDIRS-$(CONFIG_Linux) += fs-back
@@ -37054,9 +37054,9 @@ diff -Nur a/xen-3.4.3/tools/Makefile b/xen-3.4.3/tools/Makefile
  SUBDIRS-y += xenpmd
  
  # These don't cross-compile
-diff -Nur a/xen-3.4.3/tools/python/xen/util/blkif.py b/xen-3.4.3/tools/python/xen/util/blkif.py
---- a/xen-3.4.3/tools/python/xen/util/blkif.py	2010-05-29 18:49:18.000000000 +0200
-+++ b/xen-3.4.3/tools/python/xen/util/blkif.py	2011-02-24 10:14:38.000000000 +0100
+diff -Nur a/tools/python/xen/util/blkif.py b/tools/python/xen/util/blkif.py
+--- a/tools/python/xen/util/blkif.py	2010-05-29 18:49:18.000000000 +0200
++++ b/tools/python/xen/util/blkif.py	2011-02-24 10:14:38.000000000 +0100
 @@ -77,7 +77,7 @@
          (typ, fn) = uname.split(":", 1)
          if typ in ("phy", "drbd") and not fn.startswith("/"):
@@ -37066,9 +37066,9 @@ diff -Nur a/xen-3.4.3/tools/python/xen/util/blkif.py b/xen-3.4.3/tools/python/xe
              (taptype, fn) = fn.split(":", 1)
      return (fn, taptype)
  
-diff -Nur a/xen-3.4.3/tools/python/xen/xend/server/BlktapController.py b/xen-3.4.3/tools/python/xen/xend/server/BlktapController.py
---- a/xen-3.4.3/tools/python/xen/xend/server/BlktapController.py	2010-05-29 18:49:18.000000000 +0200
-+++ b/xen-3.4.3/tools/python/xen/xend/server/BlktapController.py	2011-02-24 10:30:35.000000000 +0100
+diff -Nur a/tools/python/xen/xend/server/BlktapController.py b/tools/python/xen/xend/server/BlktapController.py
+--- a/tools/python/xen/xend/server/BlktapController.py	2010-05-29 18:49:18.000000000 +0200
++++ b/tools/python/xen/xend/server/BlktapController.py	2011-02-24 10:30:35.000000000 +0100
 @@ -1,24 +1,63 @@
  # Copyright (c) 2005, XenSource Ltd.
 -
@@ -37266,9 +37266,9 @@ diff -Nur a/xen-3.4.3/tools/python/xen/xend/server/BlktapController.py b/xen-3.4
 +
 +        return
 +
-diff -Nur a/xen-3.4.3/tools/python/xen/xend/XendConfig.py b/xen-3.4.3/tools/python/xen/xend/XendConfig.py
---- a/xen-3.4.3/tools/python/xen/xend/XendConfig.py	2010-05-29 18:49:18.000000000 +0200
-+++ b/xen-3.4.3/tools/python/xen/xend/XendConfig.py	2011-02-24 10:05:10.000000000 +0100
+diff -Nur a/tools/python/xen/xend/XendConfig.py b/tools/python/xen/xend/XendConfig.py
+--- a/tools/python/xen/xend/XendConfig.py	2010-05-29 18:49:18.000000000 +0200
++++ b/tools/python/xen/xend/XendConfig.py	2011-02-24 10:05:10.000000000 +0100
 @@ -1097,7 +1097,7 @@
                              controller = domain.getDeviceController(cls)
                              configs = controller.configurations(txn)
@@ -37332,9 +37332,9 @@ diff -Nur a/xen-3.4.3/tools/python/xen/xend/XendConfig.py b/xen-3.4.3/tools/pyth
                  dev_info['type'] = cfg_xenapi.get('type', 'Disk')
                  if dev_info['type'] == 'CD':
                      old_vbd_type = 'cdrom'
-diff -Nur a/xen-3.4.3/tools/python/xen/xend/XendDevices.py b/xen-3.4.3/tools/python/xen/xend/XendDevices.py
---- a/xen-3.4.3/tools/python/xen/xend/XendDevices.py	2010-05-29 18:49:18.000000000 +0200
-+++ b/xen-3.4.3/tools/python/xen/xend/XendDevices.py	2011-02-24 10:07:36.000000000 +0100
+diff -Nur a/tools/python/xen/xend/XendDevices.py b/tools/python/xen/xend/XendDevices.py
+--- a/tools/python/xen/xend/XendDevices.py	2010-05-29 18:49:18.000000000 +0200
++++ b/tools/python/xen/xend/XendDevices.py	2011-02-24 10:07:36.000000000 +0100
 @@ -20,7 +20,7 @@
  #
  
@@ -37352,9 +37352,9 @@ diff -Nur a/xen-3.4.3/tools/python/xen/xend/XendDevices.py b/xen-3.4.3/tools/pyt
          'vfb': vfbif.VfbifController,
          'vkbd': vfbif.VkbdifController,
          'console': ConsoleController,
-diff -Nur a/xen-3.4.3/tools/python/xen/xend/XendDomainInfo.py b/xen-3.4.3/tools/python/xen/xend/XendDomainInfo.py
---- a/xen-3.4.3/tools/python/xen/xend/XendDomainInfo.py	2010-05-29 18:49:18.000000000 +0200
-+++ b/xen-3.4.3/tools/python/xen/xend/XendDomainInfo.py	2011-02-24 10:11:00.000000000 +0100
+diff -Nur a/tools/python/xen/xend/XendDomainInfo.py b/tools/python/xen/xend/XendDomainInfo.py
+--- a/tools/python/xen/xend/XendDomainInfo.py	2010-05-29 18:49:18.000000000 +0200
++++ b/tools/python/xen/xend/XendDomainInfo.py	2011-02-24 10:11:00.000000000 +0100
 @@ -28,6 +28,7 @@
  import time
  import threading
@@ -37580,9 +37580,9 @@ diff -Nur a/xen-3.4.3/tools/python/xen/xend/XendDomainInfo.py b/xen-3.4.3/tools/
              else:
                  dev_control = self.getDeviceController('vbd')
  
-diff -Nur a/xen-3.4.3/tools/python/xen/xm/create.py b/xen-3.4.3/tools/python/xen/xm/create.py
---- a/xen-3.4.3/tools/python/xen/xm/create.py	2010-05-29 18:49:18.000000000 +0200
-+++ b/xen-3.4.3/tools/python/xen/xm/create.py	2011-02-24 10:14:10.000000000 +0100
+diff -Nur a/tools/python/xen/xm/create.py b/tools/python/xen/xm/create.py
+--- a/tools/python/xen/xm/create.py	2010-05-29 18:49:18.000000000 +0200
++++ b/tools/python/xen/xm/create.py	2011-02-24 10:14:10.000000000 +0100
 @@ -680,7 +680,9 @@
      """Create the config for disks (virtual block devices).
      """
@@ -37594,9 +37594,9 @@ diff -Nur a/xen-3.4.3/tools/python/xen/xm/create.py b/xen-3.4.3/tools/python/xen
              cls = 'tap'
          else:
              cls = 'vbd'
-diff -Nur a/xen-3.4.3/tools/python/xen/xm/main.py b/xen-3.4.3/tools/python/xen/xm/main.py
---- a/xen-3.4.3/tools/python/xen/xm/main.py	2010-05-29 18:49:18.000000000 +0200
-+++ b/xen-3.4.3/tools/python/xen/xm/main.py	2011-02-24 10:13:40.000000000 +0100
+diff -Nur a/tools/python/xen/xm/main.py b/tools/python/xen/xm/main.py
+--- a/tools/python/xen/xm/main.py	2010-05-29 18:49:18.000000000 +0200
++++ b/tools/python/xen/xm/main.py	2011-02-24 10:13:40.000000000 +0100
 @@ -2307,7 +2307,9 @@
  def parse_block_configuration(args):
      dom = args[0]
@@ -37619,9 +37619,9 @@ diff -Nur a/xen-3.4.3/tools/python/xen/xm/main.py b/xen-3.4.3/tools/python/xen/x
              detach(args, 'tap')
          else:
              detach(args, 'vbd')
-diff -Nur a/xen-3.4.3/tools/python/xen/xm/xenapi_create.py b/xen-3.4.3/tools/python/xen/xm/xenapi_create.py
---- a/xen-3.4.3/tools/python/xen/xm/xenapi_create.py	2010-05-29 18:49:18.000000000 +0200
-+++ b/xen-3.4.3/tools/python/xen/xm/xenapi_create.py	2011-02-24 10:11:38.000000000 +0100
+diff -Nur a/tools/python/xen/xm/xenapi_create.py b/tools/python/xen/xm/xenapi_create.py
+--- a/tools/python/xen/xm/xenapi_create.py	2010-05-29 18:49:18.000000000 +0200
++++ b/tools/python/xen/xm/xenapi_create.py	2011-02-24 10:11:38.000000000 +0100
 @@ -587,7 +587,7 @@
                     if len(child) > 0 and child[0] == "device"]
                     
@@ -37631,8 +37631,8 @@ diff -Nur a/xen-3.4.3/tools/python/xen/xm/xenapi_create.py b/xen-3.4.3/tools/pyt
  
          vifs_sxp = map(lambda x: x[1], [device for device in devices
                                          if device[1][0] == "vif"])
---- a/xen-3.4.3/xen/include/public/io/ring.h	2010-05-29 18:49:20.000000000 +0200
-+++ b/xen-3.4.3/xen/include/public/io/ring.h	2011-02-24 09:45:54.000000000 +0100
+--- a/xen/include/public/io/ring.h	2010-05-29 18:49:20.000000000 +0200
++++ b/xen/include/public/io/ring.h	2011-02-24 09:45:54.000000000 +0100
 @@ -103,7 +103,16 @@
  struct __name##_sring {                                                 \
      RING_IDX req_prod, req_event;                                       \

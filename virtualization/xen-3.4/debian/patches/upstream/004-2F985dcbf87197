@@ -28,7 +28,7 @@ Signed-off-by: Ian Campbell <ian.campbell@citrix.com>
 xen-unstable changeset:   21507:a3bdee5a20da
 xen-unstable date:        Wed Jun 02 10:54:32 2010 +0100
 
---- a/xen-3.4.3/tools/blktap/drivers/blktapctrl_linux.c	Tue Jun 08 12:00:22 2010 +0100
+--- a/tools/blktap/drivers/blktapctrl_linux.c	Tue Jun 08 12:00:22 2010 +0100
 +++ b/tools/xen/blktap/drivers/blktapctrl_linux.c	Thu Jun 10 10:09:17 2010 +0100
 @@ -79,31 +79,11 @@ int blktap_interface_create(int ctlfd, i
  
@@ -64,7 +64,7 @@ xen-unstable date:        Wed Jun 02 10:54:32 2010 +0100
 -open_failed:
 -	return -1;
  }
---- a/xen-3.4.3/tools/libxc/xc_linux.c	Tue Jun 08 12:00:22 2010 +0100
+--- a/tools/libxc/xc_linux.c	Tue Jun 08 12:00:22 2010 +0100
 +++ b/tools/xen/libxc/xc_linux.c	Thu Jun 10 10:09:17 2010 +0100
 @@ -167,102 +167,11 @@ int do_xen_hypercall(int xc_handle, priv
                        (unsigned long)hypercall);
@@ -207,7 +207,7 @@ xen-unstable date:        Wed Jun 02 10:54:32 2010 +0100
  }
  
  int xc_gnttab_close(int xcg_handle)
---- a/xen-3.4.3/tools/libxc/xc_minios.c	Tue Jun 08 12:00:22 2010 +0100
+--- a/tools/libxc/xc_minios.c	Tue Jun 08 12:00:22 2010 +0100
 +++ b/tools/xen/libxc/xc_minios.c	Thu Jun 10 10:09:17 2010 +0100
 @@ -126,12 +126,6 @@ int do_xen_hypercall(int xc_handle, priv
          return -1;
@@ -222,7 +222,7 @@ xen-unstable date:        Wed Jun 02 10:54:32 2010 +0100
  }
  
  int xc_evtchn_open(void)
---- a/xen-3.4.3/tools/libxc/xenctrl.h	Tue Jun 08 12:00:22 2010 +0100
+--- a/tools/libxc/xenctrl.h	Tue Jun 08 12:00:22 2010 +0100
 +++ b/tools/xen/libxc/xenctrl.h	Thu Jun 10 10:09:17 2010 +0100
 @@ -96,16 +96,6 @@ int xc_interface_close(int xc_handle);
  int xc_interface_close(int xc_handle);

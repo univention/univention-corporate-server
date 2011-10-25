@@ -16,10 +16,13 @@
 # This has to be exported to make some magic below work.
 export DH_OPTIONS
 
+export QUILT_PATCHES=$(CURDIR)/debian/patches/
 export DESTDIR=$(CURDIR)/debian/xen-3.4
 PYVERS=$(shell pyversions -vr)
 
-CFLAGS = -Wall -g
+XENVER := 3.4.3
+
+CFLAGS := -Wall -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
@@ -30,8 +33,8 @@ endif
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	tar xzf xen-3.4.3.tar.gz
-	QUILT_PATCHES=debian/patches quilt push -a || test $$? = 2
+	tar xzf xen-${XENVER}.tar.gz
+	cd xen-${XENVER} && quilt push -a || test $$? = 2
 	touch $@
 
 #Architecture
@@ -39,15 +42,15 @@ build: build-arch build-indep
 
 build-arch: build-arch-stamp
 build-arch-common: configure-stamp
-	$(MAKE) -C xen-3.4.3/xen build
-	$(MAKE) -C xen-3.4.3/tools all
+	$(MAKE) -C xen-${XENVER}/xen build
+	$(MAKE) -C xen-${XENVER}/tools all
 build-python%: build-arch-common
-	$(MAKE) -C xen-3.4.3/tools/pygrub build PYTHON=/usr/bin/python$*
-	$(MAKE) -C xen-3.4.3/tools/python build PYTHON=/usr/bin/python$*
+	$(MAKE) -C xen-${XENVER}/tools/pygrub build PYTHON=/usr/bin/python$*
+	$(MAKE) -C xen-${XENVER}/tools/python build PYTHON=/usr/bin/python$*
 
 build-indep: build-indep-stamp
 build-indep-stamp: configure-stamp
-	$(MAKE) -C xen-3.4.3/docs
+	$(MAKE) -C xen-${XENVER}/docs
 	touch $@
 build-arch-stamp: build-arch-common $(PYVERS:%=build-python%)
 	touch $@
@@ -55,8 +58,7 @@ build-arch-stamp: build-arch-common $(PYVERS:%=build-python%)
 clean:
 	dh_testdir
 	$(RM) build-arch-stamp build-indep-stamp
-	rm -Rf xen-3.4.3 .pc
-	-$(MAKE) clean
+	rm -Rf xen-${XENVER} .pc
 	dh_clean  --exclude ./debian.orig
 
 install: install-indep install-arch
@@ -64,20 +66,20 @@ install-indep:
 	dh_testdir
 	dh_testroot
 	dh_installdirs -i
-	$(MAKE) -C xen-3.4.3/docs         install
+	$(MAKE) -C xen-${XENVER}/docs         install
 	dh_install -i
 
 install-arch-common:
 	dh_testdir
 	dh_testroot
 	dh_installdirs -s
-	$(MAKE) -C xen-3.4.3/xen          install
-	$(MAKE) -C xen-3.4.3/tools        install
+	$(MAKE) -C xen-${XENVER}/xen          install
+	$(MAKE) -C xen-${XENVER}/tools        install
 	mv debian/xen-3.4/usr/lib/libxenstore.* debian/libxenstore3.0/usr/lib/
 install-python%: install-arch-common
-	$(MAKE) -C xen-3.4.3/tools/pygrub install PYTHON=/usr/bin/python$*
-	$(MAKE) -C xen-3.4.3/tools/python install PYTHON=/usr/bin/python$*
-	#$(MAKE) -C xen-3.4.3/tools/security install PYTHON=/usr/bin/python$*
+	$(MAKE) -C xen-${XENVER}/tools/pygrub install PYTHON=/usr/bin/python$*
+	$(MAKE) -C xen-${XENVER}/tools/python install PYTHON=/usr/bin/python$*
+	#$(MAKE) -C xen-${XENVER}/tools/security install PYTHON=/usr/bin/python$*
 install-arch: install-arch-common $(PYVERS:%=install-python%)
 	dh_install -s
 

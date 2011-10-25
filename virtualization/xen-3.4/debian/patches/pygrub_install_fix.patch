@@ -1,0 +1,24 @@
+Bug #23812: grub2 support
+
+xen-3.4 doesn't have INSTALL_PYTHON_PROG and python-install
+
+Use INSTALL_PROG and /usr/bin/python instead.
+--- a/tools/pygrub/Makefile
++++ b/tools/pygrub/Makefile
+@@ -12,7 +12,7 @@ build:
+ install: all
+ 	CC="$(CC)" CFLAGS="$(CFLAGS)" $(PYTHON) setup.py install \
+ 		$(PYTHON_PREFIX_ARG) --root="$(DESTDIR)" --force
+-	$(INSTALL_PYTHON_PROG) src/pygrub $(DESTDIR)/$(BINDIR)/pygrub
++	$(INSTALL_PROG) src/pygrub $(DESTDIR)/$(BINDIR)/pygrub
+ 	$(INSTALL_DIR) $(DESTDIR)/var/run/xend/boot
+ 
+ .PHONY: clean
+--- a/tools/pygrub/src/pygrub
++++ b/tools/pygrub/src/pygrub
+@@ -1,4 +1,4 @@
+-#! /usr/bin/env python
++#!/usr/bin/python
+ #
+ # pygrub - simple python-based bootloader for Xen
+ #

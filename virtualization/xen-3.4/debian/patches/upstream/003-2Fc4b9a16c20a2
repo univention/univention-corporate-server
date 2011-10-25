@@ -43,7 +43,7 @@ Signed-off-by: Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>
 xen-unstable changeset:   21353:2dd3141b3e3e
 xen-unstable date:        Wed May 12 08:48:14 2010 +0100
 
---- a/xen-3.4.3/tools/xenstore/xs.c	Fri Jun 04 10:52:01 2010 +0100
+--- a/tools/xenstore/xs.c	Fri Jun 04 10:52:01 2010 +0100
 +++ b/tools/xen/xenstore/xs.c	Tue Jun 08 12:00:22 2010 +0100
 @@ -85,6 +85,16 @@ struct xs_handle {
  #define mutex_unlock(m)		pthread_mutex_unlock(m)

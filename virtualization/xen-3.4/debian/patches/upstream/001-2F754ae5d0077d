@@ -8,8 +8,8 @@ VMX: add EPT 2M super page feature detection
 
 Signed-off-by: Xin Li <xin.li@intel.com>
 
---- a/xen-3.4.3/xen/arch/x86/hvm/svm/svm.c	Fri Jun 04 10:20:12 2010 +0100
-+++ b/xen-3.4.3/xen/arch/x86/hvm/svm/svm.c	Fri Jun 04 10:20:33 2010 +0100
+--- a/xen/arch/x86/hvm/svm/svm.c	Fri Jun 04 10:20:12 2010 +0100
++++ b/xen/arch/x86/hvm/svm/svm.c	Fri Jun 04 10:20:33 2010 +0100
 @@ -906,6 +906,8 @@ void start_svm(struct cpuinfo_x86 *c)
  
      svm_function_table.hap_supported = cpu_has_svm_npt;
@@ -19,8 +19,8 @@ Signed-off-by: Xin Li <xin.li@intel.com>
      hvm_enable(&svm_function_table);
  }
  
---- a/xen-3.4.3/xen/arch/x86/hvm/vmx/vmcs.c	Fri Jun 04 10:20:12 2010 +0100
-+++ b/xen-3.4.3/xen/arch/x86/hvm/vmx/vmcs.c	Fri Jun 04 10:20:33 2010 +0100
+--- a/xen/arch/x86/hvm/vmx/vmcs.c	Fri Jun 04 10:20:12 2010 +0100
++++ b/xen/arch/x86/hvm/vmx/vmcs.c	Fri Jun 04 10:20:33 2010 +0100
 @@ -47,6 +47,7 @@ u32 vmx_secondary_exec_control __read_mo
  u32 vmx_secondary_exec_control __read_mostly;
  u32 vmx_vmexit_control __read_mostly;
@@ -75,8 +75,8 @@ Signed-off-by: Xin Li <xin.li@intel.com>
          BUG_ON(vmx_vmexit_control != _vmx_vmexit_control);
          BUG_ON(vmx_vmentry_control != _vmx_vmentry_control);
          BUG_ON(cpu_has_vmx_ins_outs_instr_info !=
---- a/xen-3.4.3/xen/arch/x86/hvm/vmx/vmx.c	Fri Jun 04 10:20:12 2010 +0100
-+++ b/xen-3.4.3/xen/arch/x86/hvm/vmx/vmx.c	Fri Jun 04 10:20:33 2010 +0100
+--- a/xen/arch/x86/hvm/vmx/vmx.c	Fri Jun 04 10:20:12 2010 +0100
++++ b/xen/arch/x86/hvm/vmx/vmx.c	Fri Jun 04 10:20:33 2010 +0100
 @@ -1419,6 +1419,10 @@ void start_vmx(void)
      {
          printk("VMX: EPT is available.\n");
@@ -88,8 +88,8 @@ Signed-off-by: Xin Li <xin.li@intel.com>
      }
  
      if ( cpu_has_vmx_vpid )
---- a/xen-3.4.3/xen/arch/x86/mm/p2m.c	Fri Jun 04 10:20:12 2010 +0100
-+++ b/xen-3.4.3/xen/arch/x86/mm/p2m.c	Fri Jun 04 10:20:33 2010 +0100
+--- a/xen/arch/x86/mm/p2m.c	Fri Jun 04 10:20:12 2010 +0100
++++ b/xen/arch/x86/mm/p2m.c	Fri Jun 04 10:20:33 2010 +0100
 @@ -1504,7 +1504,9 @@ int set_p2m_entry(struct domain *d, unsi
  
      while ( todo )
@@ -101,8 +101,8 @@ Signed-off-by: Xin Li <xin.li@intel.com>
          rc = d->arch.p2m->set_entry(d, gfn, mfn, order, p2mt);
          gfn += 1ul << order;
          if ( mfn_x(mfn) != INVALID_MFN )
---- a/xen-3.4.3/xen/include/asm-x86/hvm/hvm.h	Fri Jun 04 10:20:12 2010 +0100
-+++ b/xen-3.4.3/xen/include/asm-x86/hvm/hvm.h	Fri Jun 04 10:20:33 2010 +0100
+--- a/xen/include/asm-x86/hvm/hvm.h	Fri Jun 04 10:20:12 2010 +0100
++++ b/xen/include/asm-x86/hvm/hvm.h	Fri Jun 04 10:20:33 2010 +0100
 @@ -56,6 +56,12 @@ enum hvm_intblk {
  #define HVM_INTR_SHADOW_NMI    0x00000008
  
@@ -136,8 +136,8 @@ Signed-off-by: Xin Li <xin.li@intel.com>
  #ifdef __x86_64__
  #define hvm_long_mode_enabled(v) \
      ((v)->arch.hvm_vcpu.guest_efer & EFER_LMA)
---- a/xen-3.4.3/xen/include/asm-x86/hvm/vmx/vmcs.h	Fri Jun 04 10:20:12 2010 +0100
-+++ b/xen-3.4.3/xen/include/asm-x86/hvm/vmx/vmcs.h	Fri Jun 04 10:20:33 2010 +0100
+--- a/xen/include/asm-x86/hvm/vmx/vmcs.h	Fri Jun 04 10:20:12 2010 +0100
++++ b/xen/include/asm-x86/hvm/vmx/vmcs.h	Fri Jun 04 10:20:33 2010 +0100
 @@ -174,6 +174,10 @@ extern u32 vmx_secondary_exec_control;
  
  extern bool_t cpu_has_vmx_ins_outs_instr_info;
@@ -158,8 +158,8 @@ Signed-off-by: Xin Li <xin.li@intel.com>
  #define cpu_has_vmx_vpid \
      (vmx_secondary_exec_control & SECONDARY_EXEC_ENABLE_VPID)
  #define cpu_has_monitor_trap_flag \
---- a/xen-3.4.3/xen/include/asm-x86/msr-index.h	Fri Jun 04 10:20:12 2010 +0100
-+++ b/xen-3.4.3/xen/include/asm-x86/msr-index.h	Fri Jun 04 10:20:33 2010 +0100
+--- a/xen/include/asm-x86/msr-index.h	Fri Jun 04 10:20:12 2010 +0100
++++ b/xen/include/asm-x86/msr-index.h	Fri Jun 04 10:20:33 2010 +0100
 @@ -164,6 +164,7 @@
  #define MSR_IA32_VMX_CR4_FIXED0                 0x488
  #define MSR_IA32_VMX_CR4_FIXED1                 0x489
