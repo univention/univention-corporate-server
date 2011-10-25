@@ -1,0 +1,29 @@
+Bug #23812: Add HybridISO support for PyGrub2
+
+UCS-3.0 uses grub-mkrescure, which internally uses xorriso, which generates a
+so-called "hybrid ISO": The ISO images also contains a DOS partition table,
+which allows the identical ISO file to be stored on an USB stick for booting
+from it. This breaks PyGrub, since it (wrongly) detects the DOS partition table
+and uses the first partition instead of the complete ISO file.
+
+Add a check to detech HybridISO files and fall back to unpartitioned operation.
+--- a/tools/pygrub/src/pygrub
++++ b/tools/pygrub/src/pygrub
+@@ -41,12 +41,16 @@ def enable_cursor(ison):
+         pass
+ 
+ def is_disk_image(file):
++    """Detect DOS partition table."""
+     fd = os.open(file, os.O_RDONLY)
+-    buf = os.read(fd, 512)
++    buf = os.read(fd, 0x8006)
+     os.close(fd)
+ 
+     if len(buf) >= 512 and \
+            struct.unpack("H", buf[0x1fe: 0x200]) == (0xaa55,):
++        # HybridISO contains a DOS partition table for booting from USB devices, but really is an ISO image
++        if len(buf) >= 0x8006 and buf[0x8001:0x8006] == 'CD001':
++            return False
+         return True
+     return False
+ 

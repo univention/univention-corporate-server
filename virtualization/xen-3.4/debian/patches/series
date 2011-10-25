@@ -15,3 +15,4 @@ backport/grub2.patch
 backport/grub2_add-debug-flag.patch
 pygrub_empty_root.patch
 pygrub_install_fix.patch
+pygrub_hybridiso.patch
