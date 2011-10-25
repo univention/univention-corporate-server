@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.127-1) unstable; urgency=low
+
+  * MultiSelect: fixed problem with double resolve of Deferred object
+    (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 25 Oct 2011 12:01:28 -0400
+
 univention-management-console-frontend (1.0.126-1) unstable; urgency=low
 
   * added query parameters width and displayUsername (Bug #22461)

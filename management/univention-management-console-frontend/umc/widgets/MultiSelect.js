@@ -172,7 +172,9 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 		this.inherited(arguments);
 
 		// resolve the Deferred
-		this._loadingDeferred.resolve();
+		if (this._loadingDeferred.fired < 0) {
+			this._loadingDeferred.resolve();
+		}
 
 		// stop standby animation and re-render
 		this.standby(false);
