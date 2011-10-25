@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.198-1) unstable; urgency=low
+
+  * disabled template/default values for editing objects (Bug #24179)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 25 Oct 2011 04:14:59 -0400
+
 univention-management-console-module-udm (1.0.197-1) unstable; urgency=low
 
   * map syntax date to DateBox widget; Bug #22881

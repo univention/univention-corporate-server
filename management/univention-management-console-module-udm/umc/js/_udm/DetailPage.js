@@ -523,32 +523,35 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		});
 		this.set('content', this._form);
 
-		// search for given default values in the properties... these will be replaced
-		// by the template mechanism
-		var template = {};
-		dojo.forEach(_properties, function(iprop) {
-			if (iprop['default']) {
-				var defVal = iprop['default'];
-				if (dojo.isString(defVal) && iprop.multivalue) {
-					defVal = [ defVal ];
+		// initiate the template mechanism (only for new objects)
+		if (!this.ldapName) {
+			// search for given default values in the properties... these will be replaced
+			// by the template mechanism
+			var template = {};
+			dojo.forEach(_properties, function(iprop) {
+				if (iprop['default']) {
+					var defVal = iprop['default'];
+					if (dojo.isString(defVal) && iprop.multivalue) {
+						defVal = [ defVal ];
+					}
+					template[iprop.id] = defVal;
 				}
-				template[iprop.id] = defVal;
+			});
+
+			// mixin the values set in the template object (if given)
+			if (_template && _template.length > 0) {
+				// remove first the template's LDAP-DN
+				_template = _template[0];
+				delete _template.$dn$;
+				template = dojo.mixin(template, _template);
 			}
-		});
 
-		// mixin the values set in the template object (if given)
-		if (_template && _template.length > 0) {
-			// remove first the template's LDAP-DN
-			_template = _template[0];
-			delete _template.$dn$;
-			template = dojo.mixin(template, _template);
+			// create a new template object that takes care of updating the elements in the form
+			this._template = this.adopt(umc.modules._udm.Template, {
+				widgets: widgets,
+				template: template
+			});
 		}
-
-		// create a new template object that takes care of updating the elements in the form
-		this._template = this.adopt(umc.modules._udm.Template, {
-			widgets: widgets,
-			template: template
-		});
 
 		// load form data
 		if (this.ldapName) {
