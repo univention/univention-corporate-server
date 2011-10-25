@@ -86,7 +86,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			may_change=1,
-			default = '<firstname> <lastname>',
+			default = '<firstname> <lastname><:strip>',
 			identifies=0
 		),
 	'organisation': univention.admin.property(

@@ -187,7 +187,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			may_change=1,
-			default = '<firstname:umlauts> <lastname:umlauts>',
+			default = '<firstname> <lastname><:umlauts,strip>',
 			identifies=0
 		),
 	'displayName': univention.admin.property(
@@ -198,7 +198,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			may_change=1,
-			default = '<firstname> <lastname>',
+			default = '<firstname> <lastname><:strip>',
 			identifies=0
 		),
 	'title': univention.admin.property(
