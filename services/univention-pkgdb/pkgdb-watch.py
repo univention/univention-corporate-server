@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+__package__='' 	# workaround for PEP 366
 import listener
 import univention.config_registry as ucr
 import univention.pkgdb
