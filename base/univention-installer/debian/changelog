@@ -1,3 +1,15 @@
+univention-installer (7.0.122-1) unstable; urgency=low
+
+  * fixed languagelist for Portuguese and Chinese (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 25 Oct 2011 13:04:24 +0200
+
+univention-installer (7.0.121-1) unstable; urgency=low
+
+  * fixed languagelist for Portuguese and Chinese (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 25 Oct 2011 13:03:25 +0200
+
 univention-installer (7.0.120-1) unstable; urgency=low
 
   * fixed focus in software module (Bug #24130)
