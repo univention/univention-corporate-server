@@ -87,7 +87,7 @@ baseConfig.load()
 # get locale and cut off trailing ":UTF-8"
 current_locale = baseConfig.get('locale', baseConfig.get('locale/default', '')).split(':',1)[0]
 if current_locale:
-	locale.setlocale(locale.LC_MESSAGES, current_locale)
+	locale.setlocale(locale.LC_ALL, current_locale)
 
 s = _('Press F8 to exit or any key to continue.')
 for i in s:

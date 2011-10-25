@@ -1,3 +1,9 @@
+univention-system-setup (5.0.25-1) unstable; urgency=low
+
+  * fixed utf8 encoding (Bug #23870)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 25 Oct 2011 16:42:26 +0200
+
 univention-system-setup (5.0.24-2) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)
