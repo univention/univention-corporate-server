@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.17-1) unstable; urgency=low
+
+  * Don't recode userCertificate;binary (Bug #23612)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 16:52:56 +0200
+
 univention-ad-connector (6.0.16-2) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)

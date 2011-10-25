@@ -229,7 +229,7 @@ class ucs:
 
 		self.CONFIGBASENAME = CONFIGBASENAME
 
-		self.ucs_no_recode=['krb5Key','userPassword','pwhistory','sambaNTPassword','sambaLMPassword', 'userCertificate']
+		self.ucs_no_recode=['krb5Key','userPassword','pwhistory','sambaNTPassword','sambaLMPassword', 'userCertificate;binary']
 
 		self.baseConfig=baseConfig
 		self.property=_property
@@ -754,7 +754,7 @@ class ucs:
 						except (ldap.SERVER_DOWN, SystemExit):
 							raise
 						except: # FIXME: which exception is to be caught?
-							self._save_rejected_ucs(filename, 'unknown')
+							self._save_rejected_ucs(filename, dn)
 							# We may dropped the parent object, so don't show this warning
 							self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)					
 						if sync_successfull:
