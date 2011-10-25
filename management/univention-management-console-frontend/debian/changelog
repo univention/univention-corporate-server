@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.124-1) unstable; urgency=low
+
+  * Form: added form elements that return numbers to clearFormValues()
+    (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 25 Oct 2011 10:07:07 -0400
+
 univention-management-console-frontend (1.0.123-1) unstable; urgency=low
 
   * add base class _FormWidgetMixin to MultiSelect (inherits setValid); Bug #22439

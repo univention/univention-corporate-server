@@ -277,6 +277,9 @@ dojo.declare("umc.widgets.Form", [
 			else if (dojo.isObject(val)) {
 				iwidget.set('value', {});
 			}
+			else if (typeof val == 'number') {
+				iwidget.set('value', 0);
+			}
 		}, this);
 	},
 
