@@ -29,6 +29,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+__package__='' 	# workaround for PEP 366
 import listener, os, pwd, types, time, univention.debug
 import univention.config_registry
 
