@@ -17,4 +17,11 @@ for i in eth_devices:
 		if name:
 			print '%s\t%s' % (configRegistry['interfaces/%s/address' % i],name)
 
+for interface in eth_devices:
+	for key, value in configRegistry.items():
+		key = key.split('/')
+		if len(key) == 5 and key[0] == 'interfaces' and key[1] == interface and key[2] == 'ipv6' and key[4] == 'address':
+			name = configRegistry.get('interfaces/%s/ipv6/%s/hosts' % (interface, key[3]), '%s.%s %s' % (configRegistry['hostname'], configRegistry['domainname'], configRegistry['hostname']))
+			if name:
+				print '%s\t%s' % (value, name)
 @!@

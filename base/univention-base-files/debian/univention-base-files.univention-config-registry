@@ -126,6 +126,10 @@ Multifile: etc/hosts
 Subfile: etc/hosts.d/20-static
 Variables: hosts/static/.*
 
+Type: subfile
+Multifile: etc/hosts
+Subfile: etc/hosts.d/90-ipv6defaults
+
 Type: file
 File: etc/logrotate.conf
 Variables: logrotate/.*

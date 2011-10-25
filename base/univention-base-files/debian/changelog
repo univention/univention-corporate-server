@@ -1,3 +1,9 @@
+univention-base-files (1.0.33-3) unstable; urgency=low
+
+  * add IPv6 entries in /etc/hosts (Bug #24194)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 25 Oct 2011 18:18:05 +0200
+
 univention-base-files (1.0.33-2) unstable; urgency=low
 
   * enable UCR replication log by default (Bug #3515)
