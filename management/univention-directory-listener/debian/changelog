@@ -1,3 +1,9 @@
+univention-directory-listener (6.0.14-1) unstable; urgency=low
+
+  * workaround for PEP 366 (Bug #23984)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Oct 2011 13:12:41 +0200
+
 univention-directory-listener (6.0.13-2) unstable; urgency=low
 
   * fix initialisation of backup CacheEntry (Bug #23548)
