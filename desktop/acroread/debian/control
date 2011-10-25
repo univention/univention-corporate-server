@@ -17,7 +17,6 @@ Depends: ${misc:Depends}, ${shlibs:Depends},
  libldap-2.4-2,
  libcups2,
  adobereader-enu (>= 9.4.2),
- xulrunner-1.9.1,
  libnspr4-0d,
  ia32-libs-gtk [amd64]
 Description: Adobe Acrobat Reader: Portable Document Format file viewer
