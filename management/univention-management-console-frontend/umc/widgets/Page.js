@@ -237,7 +237,16 @@ dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 			});
 		}, this);
 		this.addChild(note);
+		this._notes.push(note);
 		return note;
+	},
+
+	clearNotes: function() {
+		dojo.forEach(this._notes, function(inote) {
+			this.removeChild(inote);
+			inote.destroyRecursive();
+		}, this);
+		this._notes = [];
 	}
 });
 

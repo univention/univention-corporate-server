@@ -21,6 +21,8 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 	//		The widgets value, an array of strings containing all elements that are selected.
 	value: null,
 
+	_loadingDeferred: null,
+
 	// we need the plugin for selection via checkboxes
 	plugins : {
 		indirectSelection: {
@@ -38,6 +40,7 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 		width: '100%'
 	}],
 
+
 	// the widget's class name as CSS class
 	'class': 'umcMultiSelect',
 
@@ -51,6 +54,9 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 		if (!dojo.isArray(this.value)) {
 			this.value = [];
 		}
+
+		// initiate a new Deferred object
+		this._loadingDeferred = new dojo.Deferred();
 	},
 
 	postCreate: function() {
@@ -85,29 +91,41 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 			values = [];
 		}
 
-		// map all selected items into a dict for faster access
-		var _map = {};
-		dojo.forEach(values, function(i) {
-			_map[i] = true;
-		});
+		// cache results
+		this.value = values;
 
-		// deselect all elements and update the given selection according to the values
-		this.selection.clear();
-		this.store.fetch({
-			onItem: dojo.hitch(this, function(iitem) {
-				// check whether the item has been selected
-				var iid = this.store.getValue(iitem, 'id');
-				if (iid in _map) {
-					// item in in the given list, activate the selection
-					var idx = this.getItemIndex(iitem);
-					this.selection.addToSelection(idx);
-				}
-			})
-		});
+		// in case the values are loading, we need to postpone the manipulation
+		// of the selection after the grid has been loaded
+		this._loadingDeferred.then(dojo.hitch(this, function() {
+			// map all selected items into a dict for faster access
+			var _map = {};
+			dojo.forEach(values, function(i) {
+				_map[i] = true;
+			});
+
+			// deselect all elements and update the given selection according to the values
+			this.selection.clear();
+			this.store.fetch({
+				onItem: dojo.hitch(this, function(iitem) {
+					// check whether the item has been selected
+					var iid = this.store.getValue(iitem, 'id');
+					if (iid in _map) {
+						// item in in the given list, activate the selection
+						var idx = this.getItemIndex(iitem);
+						this.selection.addToSelection(idx);
+					}
+				})
+			});
+		}));
 	},
 
 	_getValueAttr: function() {
-		// get all selected items
+		// if the grid is loading, return the cached value
+		if (this._loadingDeferred.fired < 0) {
+			return this.value; // String[]
+		}
+
+		// otherwise get all selected items
 		var items = this.selection.getSelected();
 		var vars = [];
 		for (var iitem = 0; iitem < items.length; ++iitem) {
@@ -140,12 +158,20 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 	onLoadDynamicValues: function() {
 		this.inherited(arguments);
 
+		// initiate a new Deferred, if the current one has already been resolved
+		if (this._loadingDeferred.fired >= 0) {
+			this._loadingDeferred = new dojo.Deferred();
+		}
+
 		// start standby animation
 		this.standby(true);
 	},
 
 	onValuesLoaded: function(values) {
 		this.inherited(arguments);
+
+		// resolve the Deferred
+		this._loadingDeferred.resolve();
 
 		// stop standby animation and re-render
 		this.standby(false);
