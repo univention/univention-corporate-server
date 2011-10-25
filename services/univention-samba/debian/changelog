@@ -1,3 +1,9 @@
+univention-samba (6.0.12-1) unstable; urgency=low
+
+  * workaround for PEP 366 (Bug #23984)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Oct 2011 13:20:36 +0200
+
 univention-samba (6.0.11-1) unstable; urgency=low
 
   * Adjust to Samba 3.6.1 (Bug #22561)
