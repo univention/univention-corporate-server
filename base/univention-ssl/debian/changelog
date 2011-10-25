@@ -1,3 +1,9 @@
+univention-ssl (6.0.11-1) unstable; urgency=low
+
+  * workaround for PEP 366 (Bug #23984)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Oct 2011 13:08:40 +0200
+
 univention-ssl (6.0.10-1) unstable; urgency=low
 
   * immunised logrotate template against missing
