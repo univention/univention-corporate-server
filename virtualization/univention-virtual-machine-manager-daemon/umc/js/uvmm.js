@@ -1,6 +1,6 @@
 /*global console MyError dojo dojox dijit umc */
 
-dojo.provide("umc.modules.udm");
+dojo.provide("umc.modules.uvmm");
 
 dojo.require("dijit.Menu");
 dojo.require("dijit.MenuItem");
@@ -43,7 +43,7 @@ dojo.require("umc.modules._udm.DetailPage");
 	});
 })();
 
-dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.i18n.Mixin ], {
+dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// summary:
 	//		Module to interface (Univention Directory Manager) UDM objects.
 	// description:
