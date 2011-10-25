@@ -1,3 +1,9 @@
+univention-base-files (1.0.33-1) unstable; urgency=low
+
+  * special handling for IPv6 "default" address (Bug #22871)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 25 Oct 2011 16:16:39 +0200
+
 univention-base-files (1.0.32-1) unstable; urgency=low
 
   * added UCR variable descriptions for ucr/backup/enabled and

@@ -116,6 +116,19 @@ except ValueError:
 
 # UCRV format: interfaces/$DEVICE/ipv6/$NAME/{address,prefix}
 #                   0        1      2    3           4
+# $NAME "default" is _the_ v6 address for the interface
+def sortDefaultFirst(x, y):
+	if x == y:
+		return 0
+	elif x == 'default':
+		return -1
+	elif y == 'default':
+		return 1
+	elif x < y:
+		return -1
+	elif x > y:
+		return 1
+
 ipv6_interfaces = collections.defaultdict(set)
 for key in configRegistry:
 	key = key.split('/')
@@ -124,7 +137,7 @@ for key in configRegistry:
 
 for interface in ipv6_interfaces:
 	interface_addresses = []
-	for name in sorted(ipv6_interfaces[interface]):
+	for name in sorted(ipv6_interfaces[interface], sortDefaultFirst):
 		address = configRegistry.get('interfaces/%s/ipv6/%s/address' % (interface, name, ))
 		prefix = configRegistry.get('interfaces/%s/ipv6/%s/prefix' % (interface, name, ))
 		parsedAddress = None
