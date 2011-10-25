@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.335-1) unstable; urgency=low
+
+  * Force translation for VNC link. (Bug #24190)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 25 Oct 2011 16:00:33 +0200
+
 univention-virtual-machine-manager-daemon (0.9.334-3) unstable; urgency=low
 
   * Add profile for UCS-3.0 (Bug #24184)

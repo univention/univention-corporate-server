@@ -673,10 +673,11 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 					(family, socktype, proto, canonname, sockaddr) = addrs[0]
 					host = '[%s]' % sockaddr[0]
 			except: pass
+			uri = 'vnc://%s:%s' % (host, vnc.port)
 			helptext = '%s:%s' % (host, vnc.port)
+			txt = str(_('Direct access')) # Force translation now!
 			if configRegistry.get('uvmm/umc/vnc', 'internal').lower() in ('external', ):
-				uri = 'vnc://%s:%s' % (host, vnc.port)
-				html = umcd.HTML('<a class="nounderline" target="_blank" href="%s" title="%s"><span class="content">%s</span></a>' % (uri, helptext, _( 'Direct access' ) ) )
+				html = umcd.HTML('<a class="nounderline" target="_blank" href="%s" title="%s"><span class="content">%s</span></a>' % (uri, helptext, txt))
 			else:
 				popupwindow = ("<html><head><title>" + \
 				               _("%(dn)s on %(nn)s") + \
@@ -685,11 +686,12 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				               "<param name='host' value='%(h)s' />" + \
 				               "<param name='port' value='%(p)s' />" + \
 				               "<param name='offer relogin' value='no' />" + \
+				               _("<div>The Java-VNC-Viewer is not supported by this browser!<br/>Use an external viewer for <a href='%(uri)s'>%(uri)s</a>. See <a href='http://wiki.univention.de/index.php?title=Konfiguration_eines_externen_VNC-Viewers'>Konfiguration eines externen VNC-Viewers</a> (German) for configuring an external VNC viewer.</div>") + \
 				               "</applet>" + \
-				               "</body></html>") % {'h': host, 'p': vnc.port, 'nn': node_info.name, 'dn': domain_info.name}
+				               "</body></html>") % {'h': host, 'p': vnc.port, 'nn': node_info.name, 'dn': domain_info.name, 'uri': uri}
 				id = ''.join([c for c in '%s%s' % (host, vnc.port) if c.lower() in set('abcdefghijklmnopqrstuvwxyz0123456789') ])
 				javascript = "var w=window.open('','VNC%s','dependent=no,resizable=yes');if(w.document.applets.length > 0){w.focus();}else{w.document.write('%s');w.document.close();};return false;" % (id, popupwindow.replace("'", "\\'"))
-				html = umcd.HTML( '<a class="nounderline" href="#" onClick="%s" title="%s"><span class="content">%s</span></a>' % ( javascript, helptext, _( 'Direct access' ) ) )
+				html = umcd.HTML('<a class="nounderline" href="#" onClick="%s" title="%s"><span class="content">%s</span></a>' % (javascript, helptext, txt))
 			buttons.append( html )
 			buttons.append( comma )
 
