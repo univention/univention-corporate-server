@@ -1,9 +1,9 @@
 #!/bin/bash
 #
-# Univention Management Console UCSvirt
+# UCS Virtual Machine Manager Daemon
 #  join script
 #
-# Copyright 2010 Univention GmbH
+# Copyright 2010,2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,6 +35,7 @@ VERSION="6"
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
+# does not work with dash
 declare -a CREDENTIALS=("$@")
 
 eval "$(univention-config-registry shell)"
@@ -55,7 +56,7 @@ univention-directory-manager "computers/$server_role" modify "$@" \
 univention-directory-manager settings/console_operation create "$@" --ignore_exists \
 	--position cn="operations,cn=console,cn=univention,$ldap_base" \
 	--set name="uvmm" \
-	--set description="Univention Virtual Machine Manager" \
+	--set description="UCS Virtual Machine Manager" \
 	--append operation="uvmm/*"
 
 # create acls
@@ -297,6 +298,12 @@ create_xen_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "x86_64" "1024MB" "20GB" "utc"
 
 create_hvm_profile "UCS 2.4" "ucs24-" "kvm" "automatic" "1024MB" "1" "0" "1" "20GB" "utc"
 create_hvm_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
+
+create_xen_profile "UCS 3.0" "ucs30-" "automatic" "1024MB" "20GB" "utc"
+create_xen_profile "UCS 3.0 (64 Bit)" "ucs30-64-" "x86_64" "1024MB" "20GB" "utc"
+
+create_hvm_profile "UCS 3.0" "ucs30-" "kvm" "automatic" "1024MB" "1" "0" "1" "20GB" "utc"
+create_hvm_profile "UCS 3.0 (64 Bit)" "ucs30-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
 
 create_hvm_profile "Other" "other-" "xen" "automatic" "512MB" "0" "0" "0" "20GB" "utc"
 create_hvm_profile "Other" "other-" "kvm" "automatic" "512MB" "0" "0" "0" "20GB" "utc"
