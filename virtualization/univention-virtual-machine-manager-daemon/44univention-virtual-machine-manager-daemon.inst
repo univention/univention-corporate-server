@@ -270,6 +270,12 @@ create_xen_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "x86_64" "1024MB" "20GB" "utc"
 create_hvm_profile "UCS 2.4" "ucs24-" "kvm" "automatic" "1024MB" "1" "0" "1" "20GB" "utc"
 create_hvm_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
 
+create_xen_profile "UCS 3.0" "ucs30-" "automatic" "1024MB" "20GB" "utc"
+create_xen_profile "UCS 3.0 (64 Bit)" "ucs30-64-" "x86_64" "1024MB" "20GB" "utc"
+
+create_hvm_profile "UCS 3.0" "ucs30-" "kvm" "automatic" "1024MB" "1" "0" "1" "20GB" "utc"
+create_hvm_profile "UCS 3.0 (64 Bit)" "ucs30-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
+
 create_hvm_profile "Other" "other-" "xen" "automatic" "512MB" "0" "0" "0" "20GB" "utc"
 create_hvm_profile "Other" "other-" "kvm" "automatic" "512MB" "0" "0" "0" "20GB" "utc"
 
