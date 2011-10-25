@@ -39,6 +39,7 @@ description='Update UCS Virtual Machine Manager libvirtd permissions'
 filter='(objectClass=univentionHost)'
 attributes=['univentionService']
 
+__package__='' 	# workaround for PEP 366
 import listener
 from univention.config_registry import ConfigRegistry, handler_set
 import univention.debug as debug
