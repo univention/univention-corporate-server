@@ -36,6 +36,7 @@ description='The listener module resets the faillog count'
 filter='objectClass=shadowAccount'
 attributes=[]
 
+__package__='' 	# workaround for PEP 366
 import listener, os, sys, string
 import univention.debug as ud
 
