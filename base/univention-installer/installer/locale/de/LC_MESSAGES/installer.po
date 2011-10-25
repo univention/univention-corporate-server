@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-21 14:59+0200\n"
-"PO-Revision-Date: 2011-10-21 14:59+0200\n"
+"POT-Creation-Date: 2011-10-25 16:21+0200\n"
+"PO-Revision-Date: 2011-10-25 16:22+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -132,7 +132,7 @@ msgstr ""
 "Sie das System neu starten oder mittels Strg-Alt-F2 zu einer Shell gelangen."
 
 #: installer/main.py:246
-#: ../univention-system-setup/usr/sbin/univention-system-setup:139
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:139
 msgid ""
 "This error message is shown when an unexpected error occures during the "
 "installation process. The best way is to reboot the computer and retry the "
@@ -146,7 +146,7 @@ msgstr ""
 "Rechner neu initialisiert."
 
 #: installer/main.py:265
-#: ../univention-system-setup/usr/sbin/univention-system-setup:158
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:158
 msgid "A Python Exception has occured!"
 msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 
@@ -154,11 +154,11 @@ msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 #: installer/modules/10_hardware.py:279 installer/modules/10_hardware.py:313
 #: installer/modules/15_profile.py:56 installer/modules/65_partition.py:4276
 #: installer/modules/65_partition.py:4292 installer/modules/70_net.py:1029
-#: ../univention-system-setup/usr/sbin/univention-system-setup:170
-#: ../univention-system-setup/usr/sbin/univention-system-setup:197
-#: ../univention-system-setup/usr/sbin/univention-system-setup:216
-#: ../univention-system-setup/usr/sbin/univention-system-setup:236
-#: ../univention-system-setup/usr/sbin/univention-system-setup:574
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:170
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:197
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:216
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:236
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:580
 msgid "Ok"
 msgstr "Ok"
 
@@ -204,11 +204,11 @@ msgid " End"
 msgstr " Ende"
 
 #: installer/objects.py:1504 installer/modules/65_partition.py:2361
-#: installer/modules/85_software.py:307
+#: installer/modules/85_software.py:311
 msgid "F12-Next"
 msgstr "F12-Weiter"
 
-#: installer/objects.py:1508 installer/modules/85_software.py:300
+#: installer/objects.py:1508 installer/modules/85_software.py:304
 msgid "F12-Accept changes"
 msgstr "F12-Änderungen akzeptieren"
 
@@ -221,7 +221,7 @@ msgid "F12-Start installation"
 msgstr "F12-Installation starten"
 
 #: installer/objects.py:1515 installer/modules/65_partition.py:2360
-#: installer/modules/85_software.py:303 installer/modules/85_software.py:308
+#: installer/modules/85_software.py:307 installer/modules/85_software.py:312
 msgid "F11-Back"
 msgstr "F11-Zurück"
 
@@ -661,7 +661,7 @@ msgstr "Suche CD-ROM-Laufwerk"
 #: installer/modules/65_partition.py:3313
 #: installer/modules/65_partition.py:3318
 #: installer/modules/65_partition.py:3322 installer/modules/70_net.py:745
-#: installer/modules/85_software.py:138
+#: installer/modules/85_software.py:142
 msgid "Please wait ..."
 msgstr "Bitte warten ..."
 
@@ -1023,6 +1023,8 @@ msgid ""
 "\n"
 "http://<ip address of this system>/umc/\n"
 "\n"
+"After logging in as user \"root\",  select the module \"System Setup\".\n"
+"\n"
 "The network settings (IP address) can be configured on next screen (press "
 "F12). To log in, the root password is required. If the password is unknown "
 "or should be changed, enter a new one below.\n"
@@ -1030,23 +1032,19 @@ msgid ""
 "Hint: The network settings have to be confirmed before the system boot "
 "process will continue/the configuration frontend will be available."
 msgstr ""
-"Die graphische Oberfläche konnte nicht gestartet werden. Um die "
-"Konfiguration des Systems abzuschließen, wird ein Webbrowser benötigt.\n"
+"Die graphische Oberfläche konnte nicht gestartet werden. Um die Konfiguration des Systems abzuschließen, wird ein Webbrowser benötigt.\n"
 "\n"
-"Die Konfigurationsoberfläche kann im Webbrowser über folgende URL erreicht "
-"werden:\n"
+"Die Konfigurationsoberfläche kann im Webbrowser über folgende URL erreicht werden:\n"
 "\n"
 "http://<IP-Adresse dieses Systems>/umc/\n"
 "\n"
-"Die Netzwerkeinstellungen (IP-Adresse) können auf dem nächsten Bildschirm "
-"angepasst werden. Um sich in der Konfigurationsoberfläche einzuloggen, wird "
-"das root-Passwort benötigt. Ist dieses unbekannt oder soll geändert werden, "
-"kann unten ein neues angegeben werden.\n"
+"Nach dem Login als Benutzer \"root\", ist das Modul \"System Setup\" auszuwählen.\n"
 "\n"
-"Hinweis: Die Netzwerkeinstellungen müssen bestätigt werden, bevor der "
-"Bootvorgang fortgeführt und die Konfigurationsoberfläche erreichbar wird."
+"Die Netzwerkeinstellungen (IP-Adresse) können auf dem nächsten Bildschirm angepasst werden (weiter mit F12). Um sich in der Konfigurationsoberfläche einzuloggen, wird das root-Passwort benötigt. Ist dieses unbekannt oder soll geändert werden, kann unten ein neues angegeben werden.\n"
+"\n"
+"Hinweis: Die Netzwerkeinstellungen müssen bestätigt werden, bevor der Bootvorgang fortgeführt und die Konfigurationsoberfläche erreichbar wird."
 
-#: installer/modules/45_password.py:76
+#: installer/modules/45_password.py:78
 msgid ""
 "Currently no graphical frontend has been installed! To continue the "
 "reconfiguration of this system, a web browser is required.\n"
@@ -1055,50 +1053,48 @@ msgid ""
 "\n"
 "http://<ip address of this system>/umc/\n"
 "\n"
-"The network settings (IP address) can be configured on next screen. To log "
-"in, the root password is required. If the password is unknown or should be "
-"changed, enter a new one below.\n"
+"After logging in as user \"root\",  select the module \"System Setup\".\n"
+"\n"
+"The network settings (IP address) can be configured on next screen (press "
+"F12). To log in, the root password is required. If the password is unknown "
+"or should be changed, enter a new one below.\n"
 "\n"
 "Hint: The network settings have to be confirmed before the system boot "
 "process will continue/the configuration frontend will be available."
 msgstr ""
-"Es wurde keine graphische Oberfläche installiert! Um die Konfiguration des "
-"Systems abzuschließen, wird ein Webbrowser benötigt.\n"
+"Es wurde keine graphische Oberfläche installiert! Um die Konfiguration des Systems abzuschließen, wird ein Webbrowser benötigt.\n"
 "\n"
-"Die Konfigurationsoberfläche kann im Webbrowser über folgende URL erreicht "
-"werden:\n"
+"Die Konfigurationsoberfläche kann im Webbrowser über folgende URL erreicht werden:\n"
 "\n"
 "http://<IP-Adresse dieses Systems>/umc/\n"
 "\n"
-"Die Netzwerkeinstellungen (IP-Adresse) können auf dem nächsten Bildschirm "
-"angepasst werden. Um sich im Konfigurationsoberfläche einzuloggen, wird das "
-"root-Passwort benötigt. Ist dieses unbekannt oder soll geändert werden, kann "
-"unten ein neues angegeben werden.\n"
+"Nach dem Login als Benutzer \"root\", ist das Modul \"System Setup\" auszuwählen.\n"
 "\n"
-"Hinweis: Die Netzwerkeinstellungen müssen bestätigt werden, bevor der "
-"Bootvorgang fortgeführt und die Konfigurationsoberfläche erreichbar wird."
+"Die Netzwerkeinstellungen (IP-Adresse) können auf dem nächsten Bildschirm angepasst werden (weiter mit F12). Um sich im Konfigurationsoberfläche einzuloggen, wird das root-Passwort benötigt. Ist dieses unbekannt oder soll geändert werden, kann unten ein neues angegeben werden.\n"
+"\n"
+"Hinweis: Die Netzwerkeinstellungen müssen bestätigt werden, bevor der Bootvorgang fortgeführt und die Konfigurationsoberfläche erreichbar wird."
 
-#: installer/modules/45_password.py:95 installer/modules/50_basis.py:151
+#: installer/modules/45_password.py:99 installer/modules/50_basis.py:151
 msgid "Root password:"
 msgstr "Root-Passwort:"
 
-#: installer/modules/45_password.py:100 installer/modules/50_basis.py:156
+#: installer/modules/45_password.py:104 installer/modules/50_basis.py:156
 msgid "Root password (retype):"
 msgstr "Passwort (zur Bestätigung bitte nochmal eingeben):"
 
-#: installer/modules/45_password.py:122 installer/modules/50_basis.py:364
+#: installer/modules/45_password.py:126 installer/modules/50_basis.py:364
 msgid "Please enter a Password."
 msgstr "Bitte geben Sie ein Passwort an."
 
-#: installer/modules/45_password.py:127 installer/modules/50_basis.py:369
+#: installer/modules/45_password.py:131 installer/modules/50_basis.py:369
 msgid "Please retype the Password."
 msgstr "Bitte geben Sie das Passwort nochmal an."
 
-#: installer/modules/45_password.py:132 installer/modules/50_basis.py:374
+#: installer/modules/45_password.py:136 installer/modules/50_basis.py:374
 msgid "Passwords do not match."
 msgstr "Passwörter stimmen nicht überein."
 
-#: installer/modules/45_password.py:137 installer/modules/50_basis.py:379
+#: installer/modules/45_password.py:141 installer/modules/50_basis.py:379
 msgid ""
 "Your password is too short. For security reasons, your password must contain "
 "at least 8 characters."
@@ -1106,26 +1102,26 @@ msgstr ""
 "Ihr Passwort ist zu kurz. Aus Sicherheitsgründen sollte Ihr Passwort "
 "mindestens 8 Zeichen lang sein."
 
-#: installer/modules/45_password.py:141 installer/modules/50_basis.py:383
+#: installer/modules/45_password.py:145 installer/modules/50_basis.py:383
 msgid "Illegal password: A password may only contain ascii characters."
 msgstr "Ungültiges Passwort: Nur ASCII Zeichen sind erlaubt."
 
-#: installer/modules/45_password.py:147 installer/modules/45_password.py:152
+#: installer/modules/45_password.py:151 installer/modules/45_password.py:156
 #: installer/modules/50_basis.py:389 installer/modules/50_basis.py:394
 msgid "Illegal password: A password may not contain blanks."
 msgstr "Ungültiges Passwort: Leerzeichen nicht möglich"
 
-#: installer/modules/45_password.py:157 installer/modules/45_password.py:162
+#: installer/modules/45_password.py:161 installer/modules/45_password.py:166
 #: installer/modules/50_basis.py:399 installer/modules/50_basis.py:404
 msgid "Illegal password: A password may not contain back slashes."
 msgstr "Ungültiges Passwort: Leerzeichen nicht möglich"
 
-#: installer/modules/45_password.py:167 installer/modules/45_password.py:172
+#: installer/modules/45_password.py:171 installer/modules/45_password.py:176
 #: installer/modules/50_basis.py:409 installer/modules/50_basis.py:414
 msgid "Illegal password: A password may not contain quotation marks."
 msgstr "Ungültiges Passwort: Anführungszeichen nicht möglich"
 
-#: installer/modules/45_password.py:189 installer/modules/45_password.py:191
+#: installer/modules/45_password.py:193 installer/modules/45_password.py:195
 msgid ""
 "Password  \n"
 " \n"
@@ -1135,7 +1131,7 @@ msgstr ""
 "\n"
 "In diesem Modul kann das root-Passwort geändert werden."
 
-#: installer/modules/45_password.py:194 installer/modules/80_join.py:65
+#: installer/modules/45_password.py:198 installer/modules/80_join.py:65
 #: installer/modules/80_join.py:87
 msgid "Password"
 msgstr "Passwort"
@@ -2385,15 +2381,15 @@ msgstr ""
 msgid "Join settings"
 msgstr "Join-Einstellungen"
 
-#: installer/modules/85_software.py:138
+#: installer/modules/85_software.py:142
 msgid "Preparing package list"
 msgstr "Bereite Paketliste vor"
 
-#: installer/modules/85_software.py:310
+#: installer/modules/85_software.py:314
 msgid "Please select the software components you want to install:"
 msgstr "Bitte wählen Sie die zu installierenden Softwarekomponenten aus:"
 
-#: installer/modules/85_software.py:422 installer/modules/85_software.py:425
+#: installer/modules/85_software.py:436 installer/modules/85_software.py:439
 #, python-format
 msgid ""
 "Software conflict!\n"
@@ -2406,7 +2402,7 @@ msgstr ""
 "Es ist nicht erlaubt die Software-Pakete %s und %s auf einem System zu "
 "installieren. Bitte wählen Sie nur eine der beiden Komponenten aus."
 
-#: installer/modules/85_software.py:430
+#: installer/modules/85_software.py:444
 #, python-format
 msgid ""
 "The software package %s was selected. It is not possible to mix NT and "
@@ -2422,7 +2418,7 @@ msgstr ""
 "Diese Warnung wird nur einmal angezeigt. Die Installation kann mit dieser "
 "Auswahl fortgesetzt werden."
 
-#: installer/modules/85_software.py:435
+#: installer/modules/85_software.py:449
 #, python-format
 msgid ""
 "The software package %s was selected. It is not possible to mix NT and "
@@ -2439,7 +2435,7 @@ msgstr ""
 "ist (Samba 4). Diese Warnung wird nur einmal angezeigt. Die Installation "
 "kann mit dieser Auswahl fortgesetzt werden."
 
-#: installer/modules/85_software.py:440
+#: installer/modules/85_software.py:454
 msgid ""
 "Software \n"
 " \n"
@@ -2451,7 +2447,7 @@ msgstr ""
 " Bitte wählen Sie die Softwarekomponenten die Sie installieren möchten. Sie "
 "können in den folgenden Schritten die Details für manche Module ändern."
 
-#: installer/modules/85_software.py:443 installer/modules/XX00_example.py:86
+#: installer/modules/85_software.py:457 installer/modules/XX00_example.py:86
 msgid "Software"
 msgstr "Software"
 
@@ -2507,108 +2503,108 @@ msgstr ""
 msgid "Overview"
 msgstr "Überblick"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:92
-#: ../univention-system-setup/usr/sbin/univention-system-setup:118
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:92
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:118
 msgid "Press F8 to exit or any key to continue."
 msgstr "Drücken Sie zum Verlassen F8 oder eine beliebige Taste zum Fortfahren."
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:189
-#: ../univention-system-setup/usr/sbin/univention-system-setup:213
-#: ../univention-system-setup/usr/sbin/univention-system-setup:232
-#: ../univention-system-setup/usr/sbin/univention-system-setup:376
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:189
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:213
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:232
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:382
 msgid " Univention Corporate Server - Setup Tools"
 msgstr " Univention Corporate Server - Setup Tools"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:190
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:190
 msgid "Univention Setup has been configured to be run on system start."
 msgstr "Univention Setup wurde zum Start nach dem Booten eingerichtet."
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:191
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:191
 msgid "It allows you to configure system settings."
 msgstr "Es ermöglicht die Konfiguration von Systemeinstellungen"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:192
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:192
 msgid "Currently supported are configuration of the time zone, keyboard"
 msgstr "Zur Zeit wird die Konfiguration von Zeitzonen, Tastaturlayouts"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:193
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:193
 msgid "layout, language support, the default language, host/LDAP names,"
 msgstr "Sprachen, der Standardsprache, Recher- und LDAP-Namen, Netzwerk-"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:194
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:194
 msgid "network settings and installed software."
 msgstr "einstellungen und installierter Software unterstützt."
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:195
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:195
 msgid "Not all setup modules are enabled in system startup mode."
 msgstr "Im Systemstart-Modus sind nicht alle Module verfügbar."
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:196
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:196
 msgid "The full selection is available through univention-system-setup-all."
 msgstr "Die komplette Auswahl erreichen Sie mit univention-system-setup-all."
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:214
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:214
 msgid "The LDAP server could not be contacted. You need to join the"
 msgstr "Der LDAP-Server ist nicht erreichbar. Das System muss zu"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:215
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:215
 msgid "system into the domain with univention-join at a later point."
 msgstr "einem späteren Zeitpunkt mit univention-join beitreten."
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:233
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:233
 msgid "You are running Univention System Setup on another system role"
 msgstr "Sie führen Univention System Setup auf einer anderen Systemrolle als"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:234
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:234
 msgid "than a domaincontroller master or a basesystem."
 msgstr "einem Domaincontroller Master oder einem Basissystem aus."
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:235
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:235
 msgid "Afterwards the system should be re-joined."
 msgstr "Anschließend soll das System neu gejoint werden"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:381
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:387
 msgid " F1-Help | F12-Accept changes | F8-Exit"
 msgstr " F1-Hilfe | F12-Übernehmen | F8-Abbruch"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:383
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:389
 msgid " F1-Help | F12-Next | F8-Exit"
 msgstr " F1-Hilfe | F12-Weiter | F8-Abbruch"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:386
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:392
 msgid " F1-Help | F11-Back | F12-Accept changes | F8-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Übernehmen | F8-Abbruch"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:388
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:394
 msgid " F1-Help | F11-Back | F12-Next | F8-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Weiter | F8-Abbruch"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:569
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:575
 msgid "LDAP Username"
 msgstr "LDAP-Benutzername"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:571
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:577
 msgid "LDAP Password"
 msgstr "LDAP-Passwort"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:575
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:581
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:875
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:883
 msgid "Updating configuration "
 msgstr "Aktualisiere Konfiguration"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:875
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:883
 #, python-format
 msgid "Updating %s configuration"
 msgstr "Aktualisiere %s Konfiguration"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:886
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:894
 msgid "Processing postrun scripts "
 msgstr "Verarbeite postrun-Skripte"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:886
+#: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:894
 #, python-format
 msgid "Processing %s "
 msgstr "Verarbeite %s"

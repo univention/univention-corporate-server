@@ -1,3 +1,9 @@
+univention-installer (7.0.123-1) unstable; urgency=low
+
+  * added hint to system setup module in 45_password.py (Bug #23870)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 25 Oct 2011 16:41:42 +0200
+
 univention-installer (7.0.122-1) unstable; urgency=low
 
   * fixed languagelist for Portuguese and Chinese (Bug #22904)

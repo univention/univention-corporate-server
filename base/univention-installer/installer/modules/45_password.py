@@ -69,6 +69,8 @@ You can access the configuration frontend by opening the following URL:
 
 http://<ip address of this system>/umc/
 
+After logging in as user "root",  select the module "System Setup".
+
 The network settings (IP address) can be configured on next screen (press F12). To log in, the root password is required. If the password is unknown or should be changed, enter a new one below.
 
 Hint: The network settings have to be confirmed before the system boot process will continue/the configuration frontend will be available.''')
@@ -79,12 +81,14 @@ You can access the configuration frontend by opening the following URL:
 
 http://<ip address of this system>/umc/
 
-The network settings (IP address) can be configured on next screen. To log in, the root password is required. If the password is unknown or should be changed, enter a new one below.
+After logging in as user "root",  select the module "System Setup".
+
+The network settings (IP address) can be configured on next screen (press F12). To log in, the root password is required. If the password is unknown or should be changed, enter a new one below.
 
 Hint: The network settings have to be confirmed before the system boot process will continue/the configuration frontend will be available.''')
 
 
-		msglen = 20
+		msglen = 22
 
 		# description text
 		self.add_elem('TEXTAREA1', textarea( msg, self.minY+index, self.minX+5, msglen, 65))
