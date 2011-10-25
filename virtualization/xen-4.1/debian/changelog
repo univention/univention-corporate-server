@@ -1,3 +1,9 @@
+xen-4.1 (4.1.2-2) ucs3-0-0-0; urgency=low
+
+  * Add HybridISO support for PyGrub2 (Bug #23812)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 25 Oct 2011 11:17:33 +0200
+
 xen-4.1 (4.1.2-1) ucs3-0-0-0; urgency=low
 
   * Update to 4.1.2 (Bug #18357)
