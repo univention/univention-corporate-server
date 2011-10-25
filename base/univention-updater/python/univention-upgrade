@@ -44,7 +44,7 @@ import univention.updater.tools
 FN_STATUS = '/var/lib/univention-updater/univention-upgrade.status'
 
 UCR_UPDATE_AVAILABLE = 'update/available'
-LOGFN = '/var/log/univention/updater.log'
+LOGFN = '/var/log/univention/upgrade.log'
 
 configRegistry = None
 logfd = None
