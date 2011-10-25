@@ -49,6 +49,7 @@ filter = '''(|
 	)'''.replace('\n', '').replace('\t', '')
 attributes = []
 
+__package__='' 	# workaround for PEP 366
 import listener
 from univention.config_registry import ConfigRegistry
 import univention.debug as ud
