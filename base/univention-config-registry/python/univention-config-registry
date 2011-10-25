@@ -44,18 +44,15 @@ except ImportError, e:
 	import univention.config_registry as ub
 
 def convertToUtf8(arguments):
-	'Try to decode as UTF-8, then try to decode with locale encoding. If decoded successful encode with UTF-8.'
-	try:
-		locale.setlocale(locale.LC_ALL, '')
-	except locale.Error:
-		locale.setlocale(locale.LC_ALL, 'C')
+	'Try to decode as UTF-8, then try to decode with locale encoding. If decoded successfully encode with UTF-8.'
+	localeencoding = locale.getpreferredencoding()
 	new_arguments = []
 	for argument in arguments:
 		try:
 			argument = argument.decode('UTF-8').encode('UTF-8')
 		except UnicodeError, e:
 			try:
-				argument = argument.decode(locale.nl_langinfo(locale.CODESET)).encode('UTF-8')
+				argument = argument.decode(localeencoding).encode('UTF-8')
 			except UnicodeError, e:
 				pass
 		new_arguments.append(argument)
