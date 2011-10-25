@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.10-1) unstable; urgency=low
+
+  * DOMAIN_LIST support a pattern for the node uri to search on several
+    nodes for the domain pattern; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 25 Oct 2011 20:02:13 +0200
+
 univention-virtual-machine-manager-daemon (1.0.9-2) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)

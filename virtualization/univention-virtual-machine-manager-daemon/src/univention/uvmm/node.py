@@ -776,7 +776,7 @@ class Node(PersistentCached):
 		for dom in self.domains:
 			contact = self.domains[ dom ].pd.annotations.get( 'contact', '' )
 			name = self.domains[ dom ].pd.name
-			descr = self.domains[ dom ].pdannotations.get( 'description', '' )
+			descr = self.domains[ dom ].pd.annotations.get( 'description', '' )
 			if regex.match( name ) is not None or regex.match( contact )  is not None or regex.match( descr ) is not None:
 				domains.append( ( self.domains[ dom ].pd.uuid, self.domains[ dom ].pd.name ) )
 
@@ -1324,9 +1324,25 @@ def domain_define( uri, domain ):
 	return ( domain.uuid, warnings )
 
 def domain_list( uri, pattern = '*' ):
-	"""Returns a list of domains. For each domain a tuple with UUID and name is add to the list."""
-	node = node_query(uri)
-	return node.domain_list( pattern )
+	"""Returns a dictionary of domains matching the pattern in name, contact or description.
+
+	return: { 'nodeY' : [ ( <uuid>, <domain name> ), ... ], ... }
+	"""
+	global nodes
+
+	if uri == '*':
+		node_list = nodes.values()
+	elif uri.find( '*' ) > -1:
+		regex = re.compile( fnmatch.translate( uri ), re.IGNORECASE )
+		node_list = filter( lambda n: regex.match( n.pd.name ) is not None,  nodes.values() )
+	else:
+		node_list = [ node_query(uri) ]
+
+	domains = {}
+	for node in node_list:
+		domains[ node.pd.uri ] = node.domain_list( pattern )
+
+	return domains
 
 def domain_info( uri, domain ):
 	"""Return detailed information of a domain."""
