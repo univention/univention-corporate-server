@@ -137,18 +137,24 @@ if [ ! -e /usr/modules ]; then
 	ln -s /usr/lib /usr/modules		# somehow MODULESDIR is set to /usr/modules in samba4 source despite --enable-fhs
 fi
 
-S3_DOMAIN_SID="$(univention-ldapsearch -x objectclass=sambadomain sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
+S3_DOMAIN_SID="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
 
 if [ -z "$samba4_function_level" ]; then
 	samba4_function_level=2003
 	univention-config-registry set samba4/function/level="$samba4_function_level"
 fi
 
-# /usr/share/samba/setup/upgradeprovision --full --realm="$kerberos_realm" -s /etc/samba/smb.conf.samba3
-/usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$S3_DOMAIN_SID" \
-					--function-level="$samba4_function_level" \
-					--adminpass="$adminpw" --server-role='domain controller'	\
-					--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
+if [ -z "$S3_DOMAIN_SID" ]; then
+	/usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" \
+						--function-level="$samba4_function_level" \
+						--adminpass="$adminpw" --server-role='domain controller'	\
+						--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
+else
+	/usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$S3_DOMAIN_SID" \
+						--function-level="$samba4_function_level" \
+						--adminpass="$adminpw" --server-role='domain controller'	\
+						--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
+fi
 
 if [ ! -d /etc/phpldapadmin ]; then
 	mkdir /etc/phpldapadmin

@@ -1,3 +1,10 @@
+univention-samba4 (1.0.79-1) unstable; urgency=low
+
+  * retrive S3_DOMAIN_SID only for windows/domain
+  * support the case where S3_DOMAIN_SID cannot be determined (Bug #22866)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Oct 2011 16:55:45 +0200
+
 univention-samba4 (1.0.78-2) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)
