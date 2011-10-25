@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.29-1) unstable; urgency=low
+
+  * workaround for PEP 366 (Bug #23984)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Oct 2011 13:31:36 +0200
+
 univention-mail-postfix (6.0.28-4) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
