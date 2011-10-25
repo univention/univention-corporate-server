@@ -34,7 +34,7 @@ import os
 
 import univention.config_registry as ucr
 
-TEMPLATE_PATH = '/etc/univention/dansguardian'
+TEMPLATE_PATH = '/etc/univention/templates/files/etc/dansguardian/'
 CONFIG_PATH = '/etc/dansguardian'
 
 def handler( configRegistry, changes ):

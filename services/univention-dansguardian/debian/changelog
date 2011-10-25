@@ -1,3 +1,9 @@
+univention-dansguardian (5.0.1-5) unstable; urgency=low
+
+  * File template patch in UCR module (Bug #22576) 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 25 Oct 2011 12:16:15 +0200
+
 univention-dansguardian (5.0.1-4) unstable; urgency=low
 
   * Fix postinst
