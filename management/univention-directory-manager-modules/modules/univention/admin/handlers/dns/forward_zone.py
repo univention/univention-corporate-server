@@ -313,7 +313,6 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged(['nameserver', 'contact', 'serial', 'refresh', 'retry', 'expire', 'ttl']):
 			if self['contact'] and not self['contact'].endswith('.'):
 				self['contact'] = '%s.' % self['contact']
-			ipaddr = re.compile ('^([0-9]{1,3}\.){3}[0-9]{1,3}$') # matches ip addresses - they shouldn't end with a dot!
 			if len (self['nameserver'][0]) > 0 \
 				and self['nameserver'][0].find (':') == -1 \
 				and self['nameserver'][0].find ('.') != -1 \
@@ -333,7 +332,8 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'dNSZone'),
 		univention.admin.filter.expression('relativeDomainName', '@'),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa')])
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa')]),
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.ip6.arpa')]),
 		])
 
 	if filter_s:
@@ -348,4 +348,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 
 def identify(dn, attr, canonical=0):
-	return 'dNSZone' in attr.get('objectClass', []) and ['@'] == attr.get('relativeDomainName', []) and not attr['zoneName'][0].endswith('.in-addr.arpa')
+	return 'dNSZone' in attr.get('objectClass', []) and ['@'] == attr.get('relativeDomainName', []) and not attr['zoneName'][0].endswith('.in-addr.arpa') and not attr['zoneName'][0].endswith('.ip6.arpa')

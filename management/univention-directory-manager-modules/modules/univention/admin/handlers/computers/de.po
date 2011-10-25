@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-17 15:07+0200\n"
+"POT-Creation-Date: 2011-10-25 15:03+0200\n"
 "PO-Revision-Date: 2009-08-04 17:18+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -346,8 +346,8 @@ msgstr "Gruppenmitgliedschaften"
 msgid "Alias DNS entry"
 msgstr "Alias DNS Eintrag"
 
-#: domaincontroller_backup.py:675 domaincontroller_master.py:663
-#: domaincontroller_slave.py:675 managedclient.py:592 memberserver.py:664
+#: domaincontroller_backup.py:685 domaincontroller_master.py:673
+#: domaincontroller_slave.py:685 managedclient.py:592 memberserver.py:674
 #: mobileclient.py:587
 msgid "Open Univention Management Console on this computer"
 msgstr "Univention Management Console auf diesem Rechner öffnen"

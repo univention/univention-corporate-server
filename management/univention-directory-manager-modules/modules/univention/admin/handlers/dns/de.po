@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-17 15:11+0200\n"
+"POT-Creation-Date: 2011-10-25 15:03+0200\n"
 "PO-Revision-Date: 2009-08-04 14:47+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -179,8 +179,8 @@ msgstr "TXT Records"
 msgid "Text records"
 msgstr "Text Records"
 
-#: forward_zone.py:252 host_record.py:157 ptr_record.py:100
-#: reverse_zone.py:205 srv_record.py:139 txt_record.py:116
+#: forward_zone.py:252 host_record.py:156 ptr_record.py:100
+#: reverse_zone.py:212 srv_record.py:139 txt_record.py:116
 msgid "neither DN nor position present"
 msgstr "Weder ein DN noch eine Position wurde angegeben"
 
@@ -216,7 +216,7 @@ msgstr "Text"
 msgid "Optional text"
 msgstr "Optionaler Text"
 
-#: host_record.py:155 ptr_record.py:98 srv_record.py:137 txt_record.py:114
+#: host_record.py:154 ptr_record.py:98 srv_record.py:137 txt_record.py:114
 msgid "superordinate object not present"
 msgstr "Ein übergeordnetes Objekt ist nicht vorhanden"
 

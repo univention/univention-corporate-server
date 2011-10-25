@@ -133,7 +133,6 @@ def mapMX(old):
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'relativeDomainName', None, univention.admin.mapping.ListToString)
-mapping.register('a', 'aRecord')
 mapping.register('mx', 'mXRecord', mapMX, unmapMX)
 mapping.register('txt', 'tXTRecord')
 mapping.register('zonettl', 'dNSTTL', None, univention.admin.mapping.ListToString)
@@ -158,6 +157,15 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
+	def open(self): # IPv6
+		univention.admin.handlers.simpleLdap.open(self)
+		self.info['a'] = []
+		if 'aRecord' in self.oldattr:
+			self.info['a'].extend(self.oldattr['aRecord'])
+		if 'aAAARecord' in self.oldattr:
+			self.info['a'].extend(self.oldattr['aAAARecord'])
+		self.save() # save current state as old state
+
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self['name']), self.position.getDn())
 
@@ -166,6 +174,31 @@ class object(univention.admin.handlers.simpleLdap):
 			('objectClass', ['top', 'dNSZone']),
 			(self.superordinate.mapping.mapName('zone'), self.superordinate.mapping.mapValue('zone', self.superordinate['zone'])),
 		]
+
+	def _ldap_modlist(self): # IPv6
+		modlist = univention.admin.handlers.simpleLdap._ldap_modlist(self)
+		oldAddresses = self.oldinfo.get('a')
+		newAddresses = self.info.get('a')
+		oldARecord = []
+		newARecord = []
+		oldAaaaRecord = []
+		newAaaaRecord = []
+		if oldAddresses != newAddresses:
+			if oldAddresses:
+			    for address in oldAddresses:
+					if ':' in address: # IPv6
+						oldAaaaRecord.append(address)
+					else:
+						oldARecord.append(address)
+			if newAddresses:
+			    for address in newAddresses:
+					if ':' in address: # IPv6
+						newAaaaRecord.append(address)
+					else:
+						newARecord.append(address)
+			modlist.append(('aRecord',    oldARecord,    newARecord, ))
+			modlist.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
+		return modlist
 
 	def _ldap_post_create(self):
 		self._updateZone()
@@ -183,8 +216,14 @@ def lookup(co, lo, filter_s, base='', superordinate=None,scope="sub", unique=0, 
 		univention.admin.filter.expression('objectClass', 'dNSZone'),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa')]),
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.ip6.arpa')]),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('cNAMERecord', '*')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sRVRecord', '*')])
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sRVRecord', '*')]),
+		univention.admin.filter.conjunction('|', [
+			univention.admin.filter.expression('aRecord', '*'),
+			univention.admin.filter.expression('aAAARecord', '*'),
+			univention.admin.filter.expression('mXRecord', '*'),
+			]),
 		])
 
 	if superordinate:
@@ -203,5 +242,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None,scope="sub", unique=0, 
 def identify(dn, attr, canonical=0):
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALIAS(host_record) identify DN=%s'% dn)
 	return 'dNSZone' in attr.get('objectClass', []) and '@' not in attr.get('relativeDomainName', []) and \
-		not attr['zoneName'][0].endswith('.in-addr.arpa') and not attr.get( 'cNAMERecord', [] ) and \
-		not attr.get( 'sRVRecord', [] ) and ( attr.get( 'aRecord', [] ) or attr.get( 'mXRecord', [] ) )
+		not attr['zoneName'][0].endswith('.arpa') and not attr.get( 'cNAMERecord', [] ) and \
+		not attr.get('sRVRecord', []) and ( attr.get('aRecord', []) or attr.get(attr.get('aAAARecord', [])) or attr.get('mXRecord', []))

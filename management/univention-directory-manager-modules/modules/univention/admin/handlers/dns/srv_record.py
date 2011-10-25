@@ -165,6 +165,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None,scope="sub", unique=0, 
 		univention.admin.filter.expression('objectClass', 'dNSZone'),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa')]),
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.ip6.arpa')]),
 		univention.admin.filter.expression('sRVRecord', '*'),
 		])
 
@@ -183,4 +184,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None,scope="sub", unique=0, 
 
 def identify(dn, attr, canonical=0):
 	return 'dNSZone' in attr.get('objectClass', []) and '@' not in attr.get('relativeDomainName', []) and \
-		   not attr['zoneName'][0].endswith('.in-addr.arpa') and attr.get( 'sRVRecord', [] )
+		   not attr['zoneName'][0].endswith('.in-addr.arpa') and not attr['zoneName'][0].endswith('.ip6.arpa') and attr.get( 'sRVRecord', [] )

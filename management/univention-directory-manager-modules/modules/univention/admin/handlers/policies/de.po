@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-17 15:13+0200\n"
+"POT-Creation-Date: 2011-10-25 15:03+0200\n"
 "PO-Revision-Date: 2011-10-13 20:35+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,7 +50,7 @@ msgstr "Richtlinie: Univention Directory Manager Container Konfiguration"
 msgid "Univention Directory Manager container settings"
 msgstr "Univention Directory Manager Container Konfiguration"
 
-#: admin_container.py:69 autostart.py:65 clientdevices.py:65 desktop.py:66
+#: admin_container.py:69 autostart.py:65 clientdevices.py:65 desktop.py:65
 #: dhcp_boot.py:65 dhcp_dns.py:65 dhcp_dnsupdate.py:71 dhcp_leasetime.py:66
 #: dhcp_netbios.py:66 dhcp_routing.py:64 dhcp_scope.py:68
 #: dhcp_statements.py:69 ldapserver.py:65 mailquota.py:65 maintenance.py:66
@@ -66,7 +66,7 @@ msgstr "Name"
 msgid "Available Univention Directory Manager modules"
 msgstr "Verfügbare Univention Directory Manager Module"
 
-#: admin_container.py:89 autostart.py:85 clientdevices.py:85 desktop.py:116
+#: admin_container.py:89 autostart.py:85 clientdevices.py:85 desktop.py:115
 #: dhcp_boot.py:96 dhcp_dns.py:95 dhcp_dnsupdate.py:161 dhcp_leasetime.py:106
 #: dhcp_netbios.py:106 dhcp_routing.py:84 dhcp_scope.py:128
 #: dhcp_statements.py:139 ldapserver.py:85 mailquota.py:85 maintenance.py:166
@@ -78,7 +78,7 @@ msgstr "Verfügbare Univention Directory Manager Module"
 msgid "Required object classes"
 msgstr "Benötigte Objektklassen"
 
-#: admin_container.py:99 autostart.py:95 clientdevices.py:95 desktop.py:126
+#: admin_container.py:99 autostart.py:95 clientdevices.py:95 desktop.py:125
 #: dhcp_boot.py:106 dhcp_dns.py:105 dhcp_dnsupdate.py:171
 #: dhcp_leasetime.py:116 dhcp_netbios.py:116 dhcp_routing.py:94
 #: dhcp_scope.py:138 dhcp_statements.py:149 ldapserver.py:95 mailquota.py:95
@@ -91,7 +91,7 @@ msgstr "Benötigte Objektklassen"
 msgid "Excluded object classes"
 msgstr "Ausgeschlossene Objektklassen"
 
-#: admin_container.py:109 autostart.py:105 clientdevices.py:105 desktop.py:136
+#: admin_container.py:109 autostart.py:105 clientdevices.py:105 desktop.py:135
 #: dhcp_boot.py:116 dhcp_dns.py:115 dhcp_dnsupdate.py:181
 #: dhcp_leasetime.py:126 dhcp_netbios.py:126 dhcp_routing.py:104
 #: dhcp_scope.py:148 dhcp_statements.py:159 ldapserver.py:105 mailquota.py:105
@@ -104,7 +104,7 @@ msgstr "Ausgeschlossene Objektklassen"
 msgid "Fixed attributes"
 msgstr "Festgelegte Attribute"
 
-#: admin_container.py:119 autostart.py:115 clientdevices.py:115 desktop.py:146
+#: admin_container.py:119 autostart.py:115 clientdevices.py:115 desktop.py:145
 #: dhcp_boot.py:126 dhcp_dns.py:125 dhcp_dnsupdate.py:191
 #: dhcp_leasetime.py:136 dhcp_netbios.py:136 dhcp_routing.py:114
 #: dhcp_scope.py:158 dhcp_statements.py:169 ldapserver.py:115 mailquota.py:115
@@ -118,8 +118,8 @@ msgid "Empty attributes"
 msgstr "Leere Attribute"
 
 #: admin_container.py:131 admin_container.py:132 autostart.py:127
-#: autostart.py:128 clientdevices.py:127 clientdevices.py:128 desktop.py:158
-#: desktop.py:159 dhcp_boot.py:139 dhcp_dns.py:137 dhcp_dns.py:138
+#: autostart.py:128 clientdevices.py:127 clientdevices.py:128 desktop.py:157
+#: desktop.py:158 dhcp_boot.py:139 dhcp_dns.py:137 dhcp_dns.py:138
 #: dhcp_dnsupdate.py:204 dhcp_leasetime.py:149 dhcp_netbios.py:149
 #: dhcp_routing.py:126 dhcp_routing.py:127 dhcp_scope.py:171
 #: dhcp_statements.py:182 ldapserver.py:127 ldapserver.py:128 mailquota.py:127
@@ -142,7 +142,7 @@ msgstr "Allgemein"
 msgid "Univention Directory Manager settings"
 msgstr "Univention Directory Manager Konfiguration"
 
-#: admin_container.py:137 autostart.py:133 clientdevices.py:133 desktop.py:166
+#: admin_container.py:137 autostart.py:133 clientdevices.py:133 desktop.py:165
 #: dhcp_boot.py:144 dhcp_dns.py:143 dhcp_dnsupdate.py:212
 #: dhcp_leasetime.py:154 dhcp_netbios.py:154 dhcp_routing.py:132
 #: dhcp_scope.py:178 dhcp_statements.py:189 ldapserver.py:133 mailquota.py:133
@@ -183,27 +183,27 @@ msgstr "Richtlinie: Client-Peripherie"
 msgid "Activate access to client devices"
 msgstr "Aktiviere den Zugriff auf Client-Peripheriegeräte"
 
-#: desktop.py:46 desktop.py:76
+#: desktop.py:46 desktop.py:75
 msgid "Desktop language"
 msgstr "Desktop-Sprache"
 
-#: desktop.py:47 desktop.py:86
+#: desktop.py:47 desktop.py:85
 msgid "Desktop profile"
 msgstr "Desktop-Profil"
 
-#: desktop.py:59
+#: desktop.py:58
 msgid "Policy: Desktop"
 msgstr "Richtlinie: Desktop"
 
-#: desktop.py:60 desktop.py:158
+#: desktop.py:59 desktop.py:157
 msgid "Desktop settings"
 msgstr "Desktop-Einstellungen"
 
-#: desktop.py:96
+#: desktop.py:95
 msgid "Logon scripts"
 msgstr "Login-Skripte"
 
-#: desktop.py:106
+#: desktop.py:105
 msgid "Logout scripts"
 msgstr "Logout-Skripte"
 

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.150-1) unstable; urgency=low
+
+  * support IPv6 in UDM backend (Bug #15687)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 25 Oct 2011 15:07:38 +0200
+
 univention-directory-manager-modules (7.0.149-1) unstable; urgency=low
 
   * adapt mapping for sambaLogonHours to work with new frontend; Bug #22439

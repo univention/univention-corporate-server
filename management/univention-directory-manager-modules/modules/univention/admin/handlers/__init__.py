@@ -35,6 +35,7 @@ import types
 import re
 import string
 import ldap
+import ipaddr
 
 import univention.debug
 
@@ -1077,19 +1078,37 @@ class simpleComputer( simpleLdap ):
 
 	# HELPER
 	def __ip_from_ptr( self, zoneName, relativeDomainName ):
+		if 'ip6' in zoneName:
+			self.__ip_from_ptr_ipv6(zoneName, relativeDomainName)
+		else:
+			self.__ip_from_ptr_ipv4(zoneName, relativeDomainName)
 
+	def __ip_from_ptr_ipv4( self, zoneName, relativeDomainName ):
 		zoneName = zoneName.replace(  '.in-addr.arpa', '' ).split( '.' )
 		zoneName.reverse( )
 		relativeDomainName = relativeDomainName.split( '.' )
 		relativeDomainName.reverse( )
-
 		return '%s.%s' % ( string.join( zoneName, '.' ) , string.join( relativeDomainName, '.' ) )
+
+	def __ip_from_ptr_ipv6( self, zoneName, relativeDomainName ):
+		fullName = relativeDomainName + '.' + zoneName.replace('.ip6.arpa', '')
+		fullName.split('.')
+		fullName = [''.join(reversed(fullName[i:i+4])) for i in xrange(0, len(fullName), 4)]
+		fullName.reverse( )
+		return ':'.join(fullName)
 
 	def __is_mac( self, mac ):
 		return mac is not None and simpleComputer.MAC_REGEX.match( mac ) is not None
 
 	def __is_ip( self, ip ):
-		return ip is not None and simpleComputer.IP_REGEX.match( ip ) is not None
+		# return True if valid IPv4 (0.0.0.0 is allowed) or IPv6 address
+		try:
+			ipaddr.IPAddress(ip)
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'IP[%s]? -> Yes' % ip )
+			return True
+		except ValueError:
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'IP[%s]? -> No' % ip )
+			return False
 
 	def open( self ):
 		simpleLdap.open( self )
@@ -1116,7 +1135,7 @@ class simpleComputer( simpleLdap ):
 
 			searchFilter = '(&(objectClass=dNSZone)(relativeDomainName=%s)(!(cNAMERecord=*)))' % self[ 'name' ]
 			try:
-				result = self.lo.search( base = tmppos.getBase( ),scope = 'domain', filter = searchFilter, attr = [ 'zoneName', 'aRecord' ], unique = 0 )
+				result = self.lo.search( base = tmppos.getBase( ),scope = 'domain', filter = searchFilter, attr = [ 'zoneName', 'aRecord', 'aAAARecord' ], unique = 0 )
 
 				zoneNames = [ ]
 
@@ -1124,6 +1143,8 @@ class simpleComputer( simpleLdap ):
 					for dn, attr in result:
 						if attr.has_key( 'aRecord' ):
 							zoneNames.append( ( attr[ 'zoneName' ][ 0 ], attr[ 'aRecord' ] ) )
+						if attr.has_key( 'aAAARecord' ):
+							zoneNames.append( ( attr[ 'zoneName' ][ 0 ], attr[ 'aAAARecord' ] ) )
 
 				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'zoneNames: %s' % zoneNames )
 
@@ -1301,7 +1322,10 @@ class simpleComputer( simpleLdap ):
 			if not dns_line:
 				continue
 			dn, ip = self.__split_dns_line( dns_line )
-			results = self.lo.searchDn( base = dn, scope = 'domain', filter = 'aRecord=%s' % ip, unique = 0 )
+			if ':' in ip: # IPv6
+				results = self.lo.searchDn( base = dn, scope = 'domain', filter = 'aAAARecord=%s' % ip, unique = 0 )
+			else:
+				results = self.lo.searchDn( base = dn, scope = 'domain', filter = 'aRecord=%s' % ip, unique = 0 )
 			for result in results:
 				object = univention.admin.objects.get( univention.admin.modules.get( 'dns/host_record' ), self.co, self.lo, position = self.position, dn = result )
 				object.open( )
@@ -1447,20 +1471,43 @@ class simpleComputer( simpleLdap ):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should create a dns reverse object: zoneDn="%s", name="%s", ip="%s"' % ( zoneDn, name, ip ) )
 		if name and zoneDn and ip:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'dns reverse object: start' )
-			subnet = ldap.explode_dn( zoneDn, 1 )[ 0 ].replace( '.in-addr.arpa', '' ).split( '.' )
-			subnet.reverse( )
-			subnet = string.join( subnet, '.' ) + '.'
-			ipPart = ip.replace( subnet, '' )
-			if ipPart == ip:
-				raise univention.admin.uexceptions.InvalidDNS_Information, _( 'Reverse zone and IP address are incompatible.' )
-
-			pointer = string.split( ipPart, '.' )
-			pointer.reverse( )
-			ipPart = string.join( pointer, '.' )
-			tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
-			# check in which forward zone the ip is set
-			hostname_list = []
-			results = self.lo.search( base = tmppos.getBase( ) , scope = 'domain', attr = [ 'zoneName' ], filter = '(&(relativeDomainName=%s)(aRecord=%s))' % ( name, ip ), unique = 0 )
+			if ip.find(':')!=-1: # IPv6, e.g. ip=2001:db8:100::5
+				# 0.1.8.b.d.0.1.0.0.2.ip6.arpa → 0.1.8.b.d.1.0.0.2 → ['0', '1', '8', 'b', 'd', '0', '1', '0', '0', '2', ]
+				subnet = ldap.explode_dn(zoneDn, 1)[0].replace('.ip6.arpa', '').split('.')
+				# ['0', '1', '8', 'b', 'd', '0', '1', '0', '0', '2', ] → ['2', '0', '0', '1', '0', 'd', 'b', '8', '1', '0', ]
+				subnet.reverse()
+				# ['2', '0', '0', '1', '0', 'd', 'b', '8', '1', '0', ] → ['2001', '0db8', '10', ] → '2001:0db8:10'
+				subnet = ':'.join([''.join(subnet[i:i+4]) for i in xrange(0, len(subnet), 4)])
+				# '2001:db8:100:5' → '2001:0db8:0100:0000:0000:0000:0000:0005'
+				ip = ipaddr.IPv6Address(ip).exploded
+				if not ip.startswith(subnet):
+					raise univention.admin.uexceptions.missingInformation, _( 'Reverse zone and IP address are incompatible.' )
+				# '2001:0db8:0100:0000:0000:0000:0000:0005' → '00:0000:0000:0000:0000:0005'
+				ipPart = ip[len(subnet):]
+				# '00:0000:0000:0000:0000:0005' → '0000000000000000000005' → ['0', '0', …, '0', '0', '5', ]
+				pointer = list(ipPart.replace(':', ''))
+				# ['0', '0', …, '0', '0', '5', ] → ['5', '0', '0', …, '0', '0', ]
+				pointer.reverse()
+				# ['5', '0', '0', …, '0', '0', ] → '5.0.0.….0.0'
+				ipPart = '.'.join(pointer)
+				tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
+				# check in which forward zone the ip is set
+				hostname_list = []
+				results = self.lo.search( base = tmppos.getBase( ) , scope = 'domain', attr = [ 'zoneName' ], filter = '(&(relativeDomainName=%s)(aAAARecord=%s))' % ( name, ip ), unique = 0 )
+			else:
+				subnet = ldap.explode_dn( zoneDn, 1 )[ 0 ].replace( '.in-addr.arpa', '' ).split( '.' )
+				subnet.reverse( )
+				subnet = string.join( subnet, '.' ) + '.'
+				ipPart = ip.replace( subnet, '' )
+				if ipPart == ip:
+					raise univention.admin.uexceptions.InvalidDNS_Information, _( 'Reverse zone and IP address are incompatible.' )
+				pointer = string.split( ipPart, '.' )
+				pointer.reverse( )
+				ipPart = string.join( pointer, '.' )
+				tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
+				# check in which forward zone the ip is set
+				hostname_list = []
+				results = self.lo.search( base = tmppos.getBase( ) , scope = 'domain', attr = [ 'zoneName' ], filter = '(&(relativeDomainName=%s)(aRecord=%s))' % ( name, ip ), unique = 0 )
 			if results:
 				for dn,attr in results:
 					if attr.has_key( 'zoneName' ):
@@ -1548,12 +1595,29 @@ class simpleComputer( simpleLdap ):
 				base = tmppos.getBase( )
 			else:
 				base = zoneDn
-			results = self.lo.search( base = base, scope = 'domain', attr = [ 'aRecord' ], filter = '(&(relativeDomainName=%s)(aRecord=%s))' % ( name, old_ip ), unique = 0 )
+			if ':' in old_ip: # IPv6
+				results = self.lo.search( base = base, scope = 'domain', attr = [ 'aAAARecord' ], filter = '(&(relativeDomainName=%s)(aAAARecord=%s))' % ( name, old_ip ), unique = 0 )
+			else:
+				results = self.lo.search( base = base, scope = 'domain', attr = [ 'aRecord' ], filter = '(&(relativeDomainName=%s)(aRecord=%s))' % ( name, old_ip ), unique = 0 )
 			for dn, attr in results:
-				new_ip_list = copy.deepcopy( attr[ 'aRecord' ] )
-				new_ip_list.remove( old_ip )
-				new_ip_list.append( new_ip )
-				self.lo.modify( dn, [ ( 'aRecord', attr[ 'aRecord' ],  new_ip_list ) ] )
+				old_aRecord    =               attr['aRecord']
+				new_aRecord    = copy.deepcopy(attr['aRecord'])
+				old_aAAARecord =               attr['aAAARecord']
+				new_aAAARecord = copy.deepcopy(attr['aAAARecord'])
+				if ':' in old_ip: # IPv6
+					new_aAAARecord.remove(old_ip)
+				else:
+					new_aRecord.remove(old_ip)
+				if ':' in new_ip: # IPv6
+					new_aAAARecord.append(new_ip)
+				else:
+					new_aRecord.append(new_ip)
+				modlist = []
+				if ':' in old_ip or ':' in new_ip:
+					modlist.append( ('aAAARecord', old_aAAARecord, new_aAAARecord, ) )
+				if ':' not in old_ip or ':' not in new_ip:
+					modlist.append( ('aRecord', old_aRecord, new_aRecord, ) )
+				self.lo.modify(dn, modlist)
 				if not zoneDn:
 					zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
 
@@ -1569,6 +1633,38 @@ class simpleComputer( simpleLdap ):
 
 	def __add_dns_forward_object( self, name, zoneDn, ip ):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object: zoneDn="%s", name="%s", ip="%s"' % ( zoneDn, name, ip ) )
+		if ip.find(':')!=-1: #IPv6
+			self.__add_dns_forward_object_ipv6(name, zoneDn, ip)
+		else:
+			self.__add_dns_forward_object_ipv4(name, zoneDn, ip)
+
+	def __add_dns_forward_object_ipv6( self, name, zoneDn, ip ):
+		if name and ip and zoneDn:
+			results = self.lo.search( base = zoneDn, scope = 'domain', attr = [ 'aAAARecord' ], filter = '(&(relativeDomainName=%s)(!(cNAMERecord=*)))' % ( name ), unique = 0 )
+			if not results:
+				try:
+					self.lo.add( 'relativeDomainName=%s,%s'% ( name, zoneDn ), [\
+										( 'objectClass', [ 'top', 'dNSZone' ]),\
+										( 'zoneName', univention.admin.uldap.explodeDn( zoneDn, 1 )[ 0 ]),\
+										( 'aAAARecord', [ ip ]),\
+										( 'relativeDomainName', [ name ])])
+				except univention.admin.uexceptions.objectExists, dn:
+					raise univention.admin.uexceptions.dnsAliasRecordExists, dn
+				# TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
+				zone = univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zoneDn )
+				zone.open()
+				zone.modify()
+			else:
+				for dn, attr in results:
+					if attr.has_key( 'aAAARecord' ):
+						new_ip_list = copy.deepcopy( attr[ 'aAAARecord' ] )
+						if not ip in new_ip_list:
+							new_ip_list.append( ip )
+							self.lo.modify( dn, [ ( 'aAAARecord', attr[ 'aAAARecord' ],  new_ip_list ) ] )
+					else:
+						self.lo.modify( dn, [ ( 'aAAARecord', '' ,  ip ) ] )
+
+	def __add_dns_forward_object_ipv4( self, name, zoneDn, ip ):
 		if name and ip and zoneDn:
 			results = self.lo.search( base = zoneDn, scope = 'domain', attr = [ 'aRecord' ], filter = '(&(relativeDomainName=%s)(!(cNAMERecord=*)))' % ( name ), unique = 0 )
 			if not results:
@@ -1580,7 +1676,6 @@ class simpleComputer( simpleLdap ):
 										( 'relativeDomainName', [ name ])])
 				except univention.admin.uexceptions.objectExists, dn:
 					raise univention.admin.uexceptions.dnsAliasRecordExists, dn
-
 				# TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
 				zone = univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zoneDn )
 				zone.open()
@@ -1594,7 +1689,6 @@ class simpleComputer( simpleLdap ):
 							self.lo.modify( dn, [ ( 'aRecord', attr[ 'aRecord' ],  new_ip_list ) ] )
 					else:
 						self.lo.modify( dn, [ ( 'aRecord', '' ,  ip ) ] )
-		pass
 
 
 	def __add_dns_alias_object( self, name, dnsForwardZone, dnsAliasZoneContainer, alias ):
@@ -1956,38 +2050,23 @@ class simpleComputer( simpleLdap ):
 
 		return ml
 
+	# for ip='10.200.2.5' and subnet='2.200.10.in-addr.arpa' -> rmIP='5' ('5.2' for 200.10.in-addr.arpa)
 	def calc_dns_reverse_entry_name(self, sip, reverseDN):
-		subnet=ldap.explode_dn(reverseDN, 1)[0].replace('.in-addr.arpa','').split('.')
-		ip=sip.split('.')
-		zoneNet=subnet
-		zoneNet.reverse()
-		length=len(zoneNet)
-		count=0
-		match=1
-		for i in zoneNet:
-			if count == length:
-				break
-
-			if not ip[count] == i:
-				match=0
-			count += 1
-
-		if match == 1:
-			stop=(4-length)
-			rmIP=''
-			ip.reverse()
-			count=0
-			for i in ip:
-				if count == stop:
-					break
-				if len(rmIP) > 0:
-					rmIP=rmIP+'.'+ip[count]
-				else:
-					rmIP=ip[count]
-				count=count+1
-			return rmIP
+		if ':' in sip:
+			subnet=ldap.explode_dn(reverseDN, 1)[0].replace('.ip6.arpa','').split('.')
+			# '2001::db8::3' → '2001:0db8:0000:…:003' → '20010db800…003' → ['2', '0', '0', '1', …]
+			ip=list(ipaddr.IPv6Address(sip).exploded.replace(':', ''))
+			self.calc_dns_reverse_entry_name_do(32, subnet, ip)
 		else:
+			subnet=ldap.explode_dn(reverseDN, 1)[0].replace('.in-addr.arpa','').split('.')
+			ip=sip.split('.')
+			self.calc_dns_reverse_entry_name_do(4, subnet, ip)
+	def calc_dns_reverse_entry_name_do(self, maxLength, zoneNet, ip):
+		zoneNet.reverse()
+		if not ip[:len(zoneNet)] == zoneNet:
 			return 0
+		ip.reverse()
+		return '.'.join(ip[ : maxLength-len(zoneNet) ])
 
 	def _ldap_pre_create(self):
 		self.check_common_name_length()

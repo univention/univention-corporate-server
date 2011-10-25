@@ -174,17 +174,24 @@ layout = [
 ]
 
 def mapSubnet(subnet):
-	q=subnet.split('.')
-	q.reverse()
-	return string.join(q, '.')+'.in-addr.arpa'
+	if ':' in subnet: # IPv6
+		return '.'.join(reversed(subnet.replace(':', ''))) + '.ip6.arpa'
+	else:
+		q=subnet.split('.')
+		q.reverse()
+		return string.join(q, '.')+'.in-addr.arpa'
 
 def unmapSubnet(zone):
 	if type(zone) == types.ListType:
 		zone=zone[0]
-	zone=zone.replace('.in-addr.arpa', '')
-	q=zone.split('.')
-	q.reverse()
-	return string.join(q, '.')
+	if '.ip6.arpa' in zone: # IPv6
+		zone = list(reversed(zone.replace('.ip6.arpa', '').split('.')))
+		return ':'.join([''.join(zone[i:i+4]) for i in xrange(0, len(zone), 4)])
+	else:
+		zone=zone.replace('.in-addr.arpa', '')
+		q=zone.split('.')
+		q.reverse()
+		return string.join(q, '.')
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('subnet', 'zoneName', mapSubnet, unmapSubnet)
@@ -258,7 +265,10 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'dNSZone'),
 		univention.admin.filter.expression('relativeDomainName', '@'),
-		univention.admin.filter.expression('zoneName', '*.in-addr.arpa')
+		univention.admin.filter.conjunction('|', [
+			univention.admin.filter.expression('zoneName', '*.in-addr.arpa'),
+			univention.admin.filter.expression('zoneName', '*.ip6.arpa')
+			]),
 		])
 
 	if filter_s:
@@ -275,7 +285,7 @@ def identify(dn, attr):
 
 	return 'dNSZone' in attr.get('objectClass', []) and\
 		['@'] == attr.get('relativeDomainName', []) and\
-		attr['zoneName'][0].endswith('.in-addr.arpa')
+		(attr['zoneName'][0].endswith('.in-addr.arpa') or attr['zoneName'][0].endswith('.ip6.arpa'))
 
 def quickDescription(rdn):
 

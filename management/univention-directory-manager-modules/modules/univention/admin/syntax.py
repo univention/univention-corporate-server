@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import re, string, types, math, time, operator
+import ipaddr
 import univention.debug
 import univention.admin.modules
 import univention.admin.uexceptions
@@ -771,34 +772,26 @@ class windowsHostName(simple):
 	error_message = _("Not a valid windows hostname!")
 
 class ipAddress(simple):
-	min_length=7
-	max_length=15
-	_re = re.compile('^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$')
-	size = 'TwoThirds'
 
+	# match IPv4 (0.0.0.0 is allowed) or IPv6 address (with IPv4-mapped IPv6)
 	@classmethod
 	def parse(self, text):
-		if text and self._re.match(text) != None:
-			for q in text.split('.'):
-				if int(q) > 255:
-					raise univention.admin.uexceptions.valueError, _("Not a valid IP address!")
-					return
-			return text
-		raise univention.admin.uexceptions.valueError, _("Not a valid IP address!")
+		try:
+			return str(ipaddr.IPAddress(text))
+		except ValueError:
+			raise univention.admin.uexceptions.valueError, _("Not a valid IP address!")
 
 class hostOrIP(simple):
 	min_length=0
 	max_length=0
 
+	# match IPv4 (0.0.0.0 is allowed) or IPv6 address (with IPv4-mapped IPv6)
 	@classmethod
 	def ipAddress(self, text):
-		_re = re.compile('(^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$)')
-		if text and _re.match(text) != None:
-			for q in text.split('.'):
-				if int(q) > 255:
-					return False
+		try:
+			ipaddr.IPAddress(text)
 			return True
-		else:
+		except ValueError:
 			return False
 
 	@classmethod
@@ -962,33 +955,18 @@ class date(simple):
 		raise univention.admin.uexceptions.valueError,_("Not a valid Date")
 
 class reverseLookupSubnet(simple):
-	min_length=1
-	max_length=15
-	_re = re.compile('^[0-9]+(\.[0-9]+)?(\.[0-9]+)?$')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			for q in text.split('.'):
-				if int(q) > 255:
-					return
-			return text
-		raise univention.admin.uexceptions.valueError,_("An IP subnet consists of one to three numbers ranging from 0 to 255 separated by dots.")
+	#               <-                      0-255                     ->  *dot  <-                      0-255                     ->
+	regex_IPv4 = r'((([1-9]?[0-9])|(1[0-9]{0,2})|(2([0-4][0-9]|5[0-5])))\.){1,2}(([1-9]?[0-9])|(1[0-9]{0,2})|(2([0-4][0-9]|5[0-5])))'
+	# normal IPv6 address without "::" substitution, leading zeroes must be preserved, at most 31 nibbles
+	regex_IPv6 = r'(([0-9a-f]{4}:){0,7}[0-9a-f]{1,3})|(([0-9a-f]{4}:){0,6}[0-9a-f]{1,4})'
+	regex = re.compile(r'^((%s)|(%s))$' % (regex_IPv4, regex_IPv6, ))
+	error_message = _('A subnet for reverse lookup consists of the first one to three parts of an IPv4 address (example: "192.168.0") or of the first 1 to 31 nibbles of an IPv6 address with leading zeroes and without :: substitution (example: "2001:0db8:010")')
 
 class reverseLookupZoneName(simple):
-	min_length=14
-	max_length=30 #?
-	_re=re.compile('^[0-9]+(\.[0-9]+)?(\.[0-9]+)?\.in-addr\.arpa$')
-
-	@classmethod
-	def parse(self, text):
-		if self._re.match(text) != None:
-			t=text.replace('in-addr.arpa', '')
-			for q in t.split('.'):
-				if int(q) > 255:
-					return
-			return text
-		raise univention.admin.uexceptions.valueError,_("The name of a reverse zone consists of the reversed subnet address followed by .in-addr.arpa. Example: \"0.168.192.in-addr.arpa\"")
+	#                       <-    IPv6 reverse zone   -> <-                           IPv4 reverse zone                           ->
+	#                       nibble dot-separated ...arpa   <-                      0-255                     -> dot-separated .arpa
+	regex = re.compile(r'^((([0-9a-f]\.){1,31}ip6\.arpa)|(((([1-9]?[0-9])|(1[0-9]{0,2})|(2([0-4][0-9]|5[0-5])))\.){1,3}in-addr.arpa))$')
+	error_message = _("The name of a reverse zone for IPv4 consists of the reversed subnet address followed by .in-addr.arpa (example: \"0.168.192.in-addr.arpa\") or for IPv6 in nibble format followed by .ip6.arpa (example: \"0.0.0.0.0.0.1.0.8.b.d.0.1.0.0.2.ip6.arpa\")")
 
 class dnsName(simple):
 	_re = re.compile('^[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9.]$')

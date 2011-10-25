@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-25 08:26+0200\n"
+"POT-Creation-Date: 2011-10-25 15:03+0200\n"
 "PO-Revision-Date: 2011-10-09 19:22+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -570,28 +570,28 @@ msgstr "Datumsangaben"
 msgid "Misc"
 msgstr "Verschiedenes"
 
-#: user.py:1769
+#: user.py:1772
 #, python-format
 msgid "Need one of %s, %s, %s or %s in options to create user."
 msgstr ""
 "Mindestens eine Option aus %s, %s, %s oder %s muss aktiv sein, um einen "
 "neuen Benutzer zu erstellen."
 
-#: user.py:2062
+#: user.py:2065
 #, python-format
 msgid "The password is too short, at least %d characters!"
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 
-#: user.py:2068
+#: user.py:2071
 #, python-format
 msgid "The password is too short, at least %d character!"
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 
-#: user.py:2433
+#: user.py:2436
 msgid "DN given as share is not valid."
 msgstr "Der DN der Freigabe ist nicht zulässig."
 
-#: user.py:2449
+#: user.py:2452
 msgid "Given DN is no share."
 msgstr "Der angegebene DN ist keine Freigabe."
 
