@@ -1,3 +1,9 @@
+firefox (7.0.1-8) unstable; urgency=low
+
+  * remove xulrunner dependency (Bug #22860) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 25 Oct 2011 17:26:45 +0200
+
 firefox (7.0.1-7) unstable; urgency=low
 
   * Bump version to be higher than the experimental build for UCS 2.4 (Bug #22116)
