@@ -97,9 +97,9 @@ class Base( signals.Provider, Translation ):
 			func( request )
 			return
 		except UMC_OptionTypeError, e:
-			message = _(  'An attribute passed to %s has the wrong type: %s' ) % ( method, str( e ) )
+			message = _(  'An option passed to %s has the wrong type: %s' ) % ( method, str( e ) )
 		except UMC_OptionMissing, e:
-			message = _(  'An attribute to %s is missing: %s' ) % ( method, str( e ) )
+			message = _(  'One or more options to %s are missing: %s' ) % ( method, str( e ) )
 		except UMC_CommandError, e:
 			message = _(  'The command has failed: %s' ) % str( e )
 		except Exception, e:
@@ -113,6 +113,13 @@ class Base( signals.Provider, Translation ):
 		self.signal_emit( 'failure', res )
 		if request.id in self.__requests:
 			del self.__requests[ request.id ]
+
+	def required_options( self, request, *options ):
+		"""Raises an UMC_OptionMissing exception any of the given
+		options is not found in request.options"""
+		missing = filter( lambda o: o not in request.options, options )
+		if missing:
+			raise UMC_OptionMissing( ', '.join( missing ) )
 
 	def permitted( self, command, options, flavor = None ):
 		if not self.__acls:

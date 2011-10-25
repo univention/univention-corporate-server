@@ -1,3 +1,10 @@
+univention-management-console (4.0.72-1) unstable; urgency=low
+
+  * enhancement to UMC module API: Base.required_options may be called to
+    check for missing but required options; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 25 Oct 2011 20:22:38 +0200
+
 univention-management-console (4.0.71-2) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)
