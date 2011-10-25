@@ -1,3 +1,9 @@
+univention-ldap (8.0.53-1) unstable; urgency=low
+
+  * Added displayName and gecos to the user template (Bug #21157)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 08:31:32 +0200
+
 univention-ldap (8.0.52-1) unstable; urgency=low
 
   * Removed pre dependency to univention-join to avoid a dependency
