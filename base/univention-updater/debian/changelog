@@ -1,3 +1,9 @@
+univention-updater (7.0.60-1) unstable; urgency=low
+
+  * Fixed python error in last commit (Bug #23453)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 18:40:32 +0200
+
 univention-updater (7.0.59-1) unstable; urgency=low
 
   * Use upgrade.log in univnetion-upgrade and return exit code
