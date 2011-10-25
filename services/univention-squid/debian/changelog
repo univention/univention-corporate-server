@@ -1,3 +1,9 @@
+univention-squid (5.0.3-10) unstable; urgency=low
+
+  * Convert join script to univention-ldapsearch (Bug #22576) 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 25 Oct 2011 16:14:21 +0200
+
 univention-squid (5.0.3-9) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)
