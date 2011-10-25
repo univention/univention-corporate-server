@@ -1,3 +1,11 @@
+univention-updater (7.0.62-1) unstable; urgency=low
+
+  * Use updater.log for easy mode and univention-upgrade (Bug #23453)
+  * Start univention-updater and univention-upgrade with --ignoressh and
+    --ignoreterm as workaround for Bug #24197
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 22:01:16 +0200
+
 univention-updater (7.0.61-1) unstable; urgency=low
 
   * Use upgrade.log in easyupgrade mode (Bug #23453)

@@ -101,7 +101,7 @@ INSTALLERS = {
 	},
 	'release':	{
 		'purpose':		_("Perform release update up to version '%s'"),
-		'command':		"/usr/share/univention-updater/univention-updater net --updateto %s",
+		'command':		"/usr/share/univention-updater/univention-updater net --updateto %s --ignoressh --ignoreterm",
 		'logfile':		'/var/log/univention/updater.log',
 		'statusfile':	'/var/lib/univention-updater/univention-updater.status'
 	},
@@ -123,8 +123,8 @@ INSTALLERS = {
 	# This is the call to be invoked when EASY mode is switched on.
 	'easyupgrade': {
 		'purpose':		_("Install all available updates for the current release"),
-		'command':		'/usr/sbin/univention-upgrade --noninteractive',
-		'logfile':		'/var/log/univention/upgrade.log',
+		'command':		'/usr/sbin/univention-upgrade --noninteractive --ignoressh --ignoreterm',
+		'logfile':		'/var/log/univention/updater.log',
 		'statusfile':	'/var/lib/univention-updater/univention-upgrade.status'	
 	}
 }
