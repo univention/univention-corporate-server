@@ -1,3 +1,9 @@
+acroread-de (9.4.2-8) stable; urgency=low
+
+  * removed xulrunner dependency (Bug #22860) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 25 Oct 2011 17:43:18 +0200
+
 acroread-de (9.4.2-7) stable; urgency=low
 
   * Bug #24155: Drop unused Build-Depends
