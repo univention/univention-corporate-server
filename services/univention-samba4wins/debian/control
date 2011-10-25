@@ -25,6 +25,7 @@ Description: UCS - samba4wins configuration
 Package: univention-samba4wins-schema
 Architecture: all
 Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  shell-univention-lib (>= 1.0.6)
 Description: UCS - samba4wins ldap schema file
  This package provides the ldap schema of the samba4wins configuration

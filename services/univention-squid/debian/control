@@ -9,6 +9,7 @@ Build-Depends: debhelper,
 Package: univention-squid
 Architecture: all
 Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  squid3,
  univention-config,
  winbind,

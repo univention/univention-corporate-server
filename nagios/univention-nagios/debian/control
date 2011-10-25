@@ -13,6 +13,7 @@ XS-Python-Version: all
 Package: univention-nagios-server
 Architecture: any
 Depends: ${misc:Depends}, ${python:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  nagios3 (>= 3.0),
  nagios3-common (>= 3.0),
  nagios3-doc (>= 3.0),
@@ -24,7 +25,6 @@ Depends: ${misc:Depends}, ${python:Depends},
  libapache2-mod-auth-pam,
  univention-config-registry,
  univention-base-files,
- python-univention-directory-manager,
  univention-directory-listener,
  univention-nagios-cups,
  univention-nagios-squid,
@@ -49,13 +49,13 @@ Package: univention-nagios-client
 Architecture: any
 Depends: ${misc:Depends}, ${python:Depends},
  univention-nagios-common (= ${binary:Version}),
+ univention-directory-manager-tools (>> 7.0.147),
  nagios-plugins,
  nagios-nrpe-server,
  cron,
  raidutils,
  univention-config-registry,
  univention-base-files,
- python-univention-directory-manager,
  univention-directory-listener,
  shell-univention-lib,
  dnsutils
@@ -74,8 +74,8 @@ Description: UCS: nagios client support
 Package: univention-nagios-common
 Architecture: any
 Depends: ${misc:Depends}, ${python:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  univention-config-registry,
- python-univention-directory-manager,
  univention-directory-listener,
  shell-univention-lib
 XB-Python-Version: ${python:Versions}

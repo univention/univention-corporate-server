@@ -10,6 +10,7 @@ Standards-Version: 3.8.2
 Package: univention-mail-cyrus
 Architecture: all
 Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  univention-config-registry,
  libpam-univentionmailcyrus,
  cyrus-imapd-2.4 | cyrus-imapd-2.2,

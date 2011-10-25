@@ -64,6 +64,7 @@ Description: Perform initial configuration of appliance editions
 Package: univention-management-console-module-setup
 Architecture: all
 Depends: univention-management-console-server,
+ univention-directory-manager-tools (>> 7.0.147),
  univention-installer-modules,
  univention-system-setup (= ${source:Version})
 Description: UMC module for Univention system setup

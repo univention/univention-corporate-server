@@ -11,7 +11,9 @@ XS-Python-Version: all
 
 Package: univention-management-console-module-top
 Architecture: all
-Depends: univention-management-console-server, python-psutil
+Depends: univention-management-console-server,
+ python-psutil,
+ univention-directory-manager-tools (>> 7.0.147)
 Description: UMC module for process overview
  This package contains the UMC module for the process overview
  .

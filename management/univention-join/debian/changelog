@@ -1,3 +1,9 @@
+univention-join (4.0.23-2) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:35:21 +0200
+
 univention-join (4.0.23-1) unstable; urgency=low
 
   * Set dns/backend to ldap when stopping s4 server (Bug #24088)

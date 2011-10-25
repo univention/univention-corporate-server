@@ -36,6 +36,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  shell-univention-lib,
  openprinting-ppds-extra,
  univention-foomatic-ppds,
+ univention-directory-manager-tools (>> 7.0.147),
  python-univention-lib (>= 1.0.25-1)
 Conflicts: univention-management-console (<< 0.9.33-1)
 Recommends: univention-nagios-cups
@@ -51,6 +52,7 @@ Description: UCS - print server
 Package: univention-printserver-pdf
 Architecture: all
 Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  univention-printserver,
  cups-pdf,
  shell-univention-lib

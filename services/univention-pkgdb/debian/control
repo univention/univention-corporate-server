@@ -16,6 +16,7 @@ Package: univention-pkgdb
 Architecture: all
 Pre-Depends: univention-postgresql (>= 2.0.1-5)
 Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  univention-config-registry,
  postgresql-client,
  univention-pkgdb-tools,
@@ -73,7 +74,8 @@ Description: Transition package
 
 Package: univention-management-console-module-pkgdb
 Architecture: all
-Depends: univention-management-console-server
+Depends: univention-management-console-server,
+ univention-directory-manager-tools (>> 7.0.147),
 Description: UMC module for software monitor
  This package contains the UMC module for the software monitor.
  .

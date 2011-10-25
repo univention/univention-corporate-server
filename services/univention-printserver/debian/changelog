@@ -1,3 +1,9 @@
+univention-printserver (5.0.12-3) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:32:31 +0200
+
 univention-printserver (5.0.12-2) unstable; urgency=low
 
   * fix cups-pdf listener as well (Bug #23984)

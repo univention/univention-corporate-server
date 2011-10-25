@@ -1,3 +1,9 @@
+univention-fetchmail (5.0.3-2) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:32:10 +0200
+
 univention-fetchmail (5.0.3-1) unstable; urgency=low
 
   * workaround for PEP 366 (Bug #23984)

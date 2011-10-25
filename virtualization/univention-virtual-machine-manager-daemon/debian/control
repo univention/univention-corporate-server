@@ -15,6 +15,7 @@ XS-Python-Version: 2.6
 Package: univention-virtual-machine-manager-daemon
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  univention-ssl,
  python-univention (>> 5.0.10),
  univention-virtual-machine-manager-schema (>= 1.0.32-1),
@@ -42,6 +43,7 @@ Description: UCS Virtual Machine Manager Daemon - Python bindings
 Package: univention-management-console-module-uvmm
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server,
  python-univention-virtual-machine-manager (= ${source:Version})
 Description: UCS Virtual Machine Manager UMC module

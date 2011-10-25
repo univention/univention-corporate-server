@@ -1,3 +1,9 @@
+univention-nagios (5.0.14-2) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:31:35 +0200
+
 univention-nagios (5.0.14-1) unstable; urgency=low
 
   * workaround for PEP 366 (Bug #23984)

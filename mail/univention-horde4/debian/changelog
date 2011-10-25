@@ -1,3 +1,9 @@
+univention-horde4 (1.0.11-3) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:31:56 +0200
+
 univention-horde4 (1.0.11-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

@@ -1,3 +1,9 @@
+univention-management-console (4.0.71-2) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:35:47 +0200
+
 univention-management-console (4.0.71-1) unstable; urgency=low
 
   * umc-acls commandline tool: support setting the flavor for a command; Bug #22460

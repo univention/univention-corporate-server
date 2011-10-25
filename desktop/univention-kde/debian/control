@@ -17,6 +17,7 @@ Recommends: kde-l10n-de,
  univention-x-core
 Depends: ${misc:Depends},
  univention-config-registry,
+ univention-directory-manager-tools (>> 7.0.147),
  kde-standard (>= 5:66),
  univention-kde-setdirs
 Description: UCS - KDE desktop

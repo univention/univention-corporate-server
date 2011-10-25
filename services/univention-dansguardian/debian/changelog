@@ -1,3 +1,9 @@
+univention-dansguardian (5.0.1-6) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:32:57 +0200
+
 univention-dansguardian (5.0.1-5) unstable; urgency=low
 
   * File template patch in UCR module (Bug #22576) 

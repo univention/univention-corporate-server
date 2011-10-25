@@ -19,7 +19,7 @@ Depends: ${misc:Depends},
  python-univention,
  python-univention-heimdal,
  univention-directory-listener,
- univention-directory-manager-tools,
+ univention-directory-manager-tools (>> 7.0.147),
  python-cracklib,
  univention-heimdal-common (= ${binary:Version}),
  python-univention-lib (>= 1.0.25-1)

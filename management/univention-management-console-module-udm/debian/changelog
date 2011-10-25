@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.198-2) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:36:12 +0200
+
 univention-management-console-module-udm (1.0.198-1) unstable; urgency=low
 
   * disabled template/default values for editing objects (Bug #24179)

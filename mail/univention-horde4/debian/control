@@ -9,6 +9,7 @@ Build-Depends: debhelper,
 Package: univention-horde4
 Architecture: all
 Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  pear-horde-channel,
  php-horde-role,
  php-horde-webmail,

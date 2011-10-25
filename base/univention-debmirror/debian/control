@@ -10,6 +10,7 @@ Build-Depends: debhelper,
 Package: univention-debmirror
 Architecture: all
 Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  univention-apache,
  shell-univention-lib
 Description: UCS - local repository configuration

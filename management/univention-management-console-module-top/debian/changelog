@@ -1,3 +1,9 @@
+univention-management-console-module-top (1.0.13-2) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:35:14 +0200
+
 univention-management-console-module-top (1.0.13-1) unstable; urgency=low
 
   * adapt join script to new UMC UDM modules for access right management; Bug #23494

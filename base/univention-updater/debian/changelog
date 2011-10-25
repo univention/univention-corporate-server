@@ -1,3 +1,9 @@
+univention-updater (7.0.58-2) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:29:43 +0200
+
 univention-updater (7.0.58-1) unstable; urgency=low
 
   * Block update to UCS 3.0 on managed and mobile clients without UCD

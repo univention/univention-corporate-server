@@ -12,8 +12,8 @@ XS-Python-Version: 2.6
 Package: univention-management-console-module-udm
 Architecture: all
 Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server,
- python-univention-directory-manager,
  univention-directory-reports
 Provides: univention-directory-manager
 Replaces: univention-directory-manager (<< 9.0.0)

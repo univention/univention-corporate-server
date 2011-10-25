@@ -13,7 +13,7 @@ Depends: ${misc:Depends},
  univention-config (>= 7.0.25),
  univention-base-files,
  bind9 (>= 1:9.8.0.P4),
- univention-directory-manager-tools,
+ univention-directory-manager-tools (>> 7.0.147),
  univention-runit (>= 0.2),
  shell-univention-lib (>= 1.0.23),
  univention-ipcalc

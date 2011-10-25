@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.9-2) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:34:07 +0200
+
 univention-virtual-machine-manager-daemon (1.0.9-1) unstable; urgency=low
 
   * workaround for PEP 366 (Bug #23984)

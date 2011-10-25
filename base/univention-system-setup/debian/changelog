@@ -1,3 +1,9 @@
+univention-system-setup (5.0.24-2) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:29:49 +0200
+
 univention-system-setup (5.0.24-1) unstable; urgency=low
 
   * UMC: added flavor to umcp commands (Bug #22908)

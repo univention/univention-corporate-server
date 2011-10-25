@@ -12,6 +12,7 @@ Package: univention-nagios-smart
 Architecture: any
 Depends: ${misc:Depends},
  univention-nagios-client,
+ univention-directory-manager-tools (>> 7.0.147),
  smartmontools
 Description: nagios smart plugin
  This package installs a nagios plugin to monitor SMART

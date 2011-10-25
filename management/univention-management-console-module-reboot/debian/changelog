@@ -1,3 +1,9 @@
+univention-management-console-module-reboot (1.0.12-2) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:35:05 +0200
+
 univention-management-console-module-reboot (1.0.12-1) unstable; urgency=low
 
   * adapt join script to new UMC access right management; Bug #24045

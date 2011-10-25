@@ -11,7 +11,8 @@ XS-Python-Version: all
 
 Package: univention-management-console-module-ucr
 Architecture: all
-Depends: univention-management-console-server
+Depends: univention-management-console-server,
+ univention-directory-manager-tools (>> 7.0.147)
 Description: UMC module for UCR
  This package contains the UMC module for UCS Configuration Registry.
  .

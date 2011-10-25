@@ -11,6 +11,7 @@ Build-Depends: debhelper,
 Package: univention-join
 Architecture: all
 Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  univention-config-registry,
  shell-univention-lib (>= 1.0.22),
  univention-ssh (>= 3.0.1-2),
@@ -29,6 +30,7 @@ Description: UCS - join domains
 Package: univention-management-console-module-join
 Architecture: all
 Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server,
  univention-join (= ${source:Version})
 Description: UMC module for system join

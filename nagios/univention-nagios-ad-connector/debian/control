@@ -9,6 +9,7 @@ Standards-Version: 3.7.2
 Package: univention-nagios-ad-connector
 Architecture: any
 Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  univention-nagios-client
 Description: nagios plugin for UCS AD connector
  This package installs a nagios plugin to monitor the state

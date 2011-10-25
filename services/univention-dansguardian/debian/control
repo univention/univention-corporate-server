@@ -9,6 +9,7 @@ Build-Depends: debhelper,
 Package: univention-dansguardian
 Architecture: all
 Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
  univention-squid,
  dansguardian
 Breaks: univention-antivir-web

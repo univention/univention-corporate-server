@@ -11,7 +11,8 @@ XS-Python-Version: all
 
 Package: univention-management-console-module-mrtg
 Architecture: all
-Depends: univention-management-console-server
+Depends: univention-management-console-server,
+ univention-directory-manager-tools (>> 7.0.147),
 Description: UMC module for system statistics
  This package contains the UMC module for the system statistics section
  .
