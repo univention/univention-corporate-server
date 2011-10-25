@@ -1,3 +1,9 @@
+univention-ldap (7.0.27-1) unstable; urgency=low
+
+  * add univentionObjectType (Bug #24182)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 25 Oct 2011 11:52:33 +0200
+
 univention-ldap (7.0.26-1) unstable; urgency=low
 
   * Update DHCP-LDAP-schema (Bug #23718)
