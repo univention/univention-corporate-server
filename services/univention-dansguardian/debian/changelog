@@ -1,3 +1,9 @@
+univention-dansguardian (5.0.1-7) unstable; urgency=low
+
+  * Convert postinst to univention-ldapsearch (Bug #22576) 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 25 Oct 2011 16:11:15 +0200
+
 univention-dansguardian (5.0.1-6) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)

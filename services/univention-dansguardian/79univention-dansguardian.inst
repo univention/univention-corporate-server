@@ -39,11 +39,11 @@ eval "$(univention-config-registry shell)"
 # add dansguardian to nagios' UNIVENTION_DANSGUARDIAN service check
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
 
-	if ! ldapsearch -xLLL -s base -b "cn=UNIVENTION_DANSGUARDIAN,cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
+	if ! univention-ldapsearch -xLLL -s base -b "cn=UNIVENTION_DANSGUARDIAN,cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
 		echo "Cannot find nagios object cn=UNIVENTION_DANSGUARDIAN,cn=nagios,$ldap_base (ldapsearch error $?)"
 		echo "Please check if univention-nagios-server is installed on a system in UCS domain to enable nagios functionality."
 	else
-		if [ "$(ldapsearch -xLLL -b "$ldap_hostdn" univentionNagiosEnabled | sed -ne 's/univentionNagiosEnabled: //p')" = "1" ] ; then
+		if [ "$(univention-ldapsearch -xLLL -b "$ldap_hostdn" univentionNagiosEnabled | sed -ne 's/univentionNagiosEnabled: //p')" = "1" ] ; then
 			univention-directory-manager nagios/service modify "$@" \
 				--dn "cn=UNIVENTION_DANSGUARDIAN,cn=nagios,$ldap_base" \
 				--append assignedHosts="${ldap_hostdn}"
