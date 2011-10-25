@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.16-1) unstable; urgency=low
+
+  * workaround for PEP 366 (Bug #23984)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Oct 2011 13:35:28 +0200
+
 univention-ad-connector (6.0.15-1) unstable; urgency=low
 
   * Merged from S4 connector:
