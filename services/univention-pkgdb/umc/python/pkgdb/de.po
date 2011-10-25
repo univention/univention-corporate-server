@@ -12,167 +12,166 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/pkgdb/__init__.py:200
+#: umc/python/pkgdb/__init__.py:205
 msgid "Compared to version"
 msgstr "Verglichen mit Version"
 
-#: umc/python/pkgdb/__init__.py:227
+#: umc/python/pkgdb/__init__.py:232
 msgid "Deinstall"
 msgstr "Deinstall"
 
-#: umc/python/pkgdb/__init__.py:219
+#: umc/python/pkgdb/__init__.py:224
 msgid "Domaincontroller Backup"
 msgstr "Domaincontroller Backup"
 
-#: umc/python/pkgdb/__init__.py:218
+#: umc/python/pkgdb/__init__.py:223
 msgid "Domaincontroller Master"
 msgstr "Domaincontroller Master"
 
-#: umc/python/pkgdb/__init__.py:220
+#: umc/python/pkgdb/__init__.py:225
 msgid "Domaincontroller Slave"
 msgstr "Domaincontroller Slave"
 
-#: umc/python/pkgdb/__init__.py:196
+#: umc/python/pkgdb/__init__.py:201
 msgid "Find packages installed incompletely"
 msgstr "Unvollständig installierte Pakete"
 
-#: umc/python/pkgdb/__init__.py:226
+#: umc/python/pkgdb/__init__.py:231
 msgid "Hold"
 msgstr "Hold"
 
-#: umc/python/pkgdb/__init__.py:234
+#: umc/python/pkgdb/__init__.py:239
 msgid "Hold + Reinstall required"
 msgstr "Hold + Reinstall required"
 
-#: umc/python/pkgdb/__init__.py:222
+#: umc/python/pkgdb/__init__.py:227
 msgid "IP-managed Client"
 msgstr "IP-managed Client"
 
-#: umc/python/pkgdb/__init__.py:225
+#: umc/python/pkgdb/__init__.py:230
 msgid "Install"
 msgstr "Install"
 
-#: umc/python/pkgdb/__init__.py:197
+#: umc/python/pkgdb/__init__.py:202
 msgid "Installation state"
 msgstr "Installationsstatus"
 
-#: umc/python/pkgdb/__init__.py:198
+#: umc/python/pkgdb/__init__.py:203
 msgid "Inventory date"
 msgstr "Erfassungsdatum"
 
-#: umc/python/pkgdb/__init__.py:221
+#: umc/python/pkgdb/__init__.py:226
 msgid "Member Server"
 msgstr "Member Server"
 
-#: umc/python/pkgdb/__init__.py:223
+#: umc/python/pkgdb/__init__.py:228
 msgid "Mobile Client"
 msgstr "Mobile Client"
 
-#: umc/python/pkgdb/__init__.py:231
+#: umc/python/pkgdb/__init__.py:236
 msgid "OK"
 msgstr "OK"
 
-#: umc/python/pkgdb/__init__.py:201
+#: umc/python/pkgdb/__init__.py:206
 msgid "Package name"
 msgstr "Paketname"
 
-#: umc/python/pkgdb/__init__.py:203
+#: umc/python/pkgdb/__init__.py:208
 msgid "Package state"
 msgstr "Paketstatus"
 
-#: umc/python/pkgdb/__init__.py:202
+#: umc/python/pkgdb/__init__.py:207
 msgid "Package version"
 msgstr "Paketversion"
 
-#: umc/python/pkgdb/__init__.py:228
+#: umc/python/pkgdb/__init__.py:233
 msgid "Purge"
 msgstr "Purge"
 
-#: umc/python/pkgdb/__init__.py:232
+#: umc/python/pkgdb/__init__.py:237
 msgid "Reinstall required"
 msgstr "Neuinstallation erforderlich"
 
-#: umc/python/pkgdb/__init__.py:204
+#: umc/python/pkgdb/__init__.py:209
 msgid "Selection state"
 msgstr "Selektionsstatus"
 
-#: umc/python/pkgdb/__init__.py:205
+#: umc/python/pkgdb/__init__.py:210
 msgid "System name"
 msgstr "Systemname"
 
-#: umc/python/pkgdb/__init__.py:206
+#: umc/python/pkgdb/__init__.py:211
 msgid "System role"
 msgstr "Systemrolle"
 
-#: umc/python/pkgdb/__init__.py:199
+#: umc/python/pkgdb/__init__.py:204
 msgid "Systems not updated"
 msgstr "Nicht aktualisierte Systeme"
 
-#: umc/python/pkgdb/__init__.py:207
+#: umc/python/pkgdb/__init__.py:212
 msgid "UCS Version"
 msgstr "UCS Version"
 
-#: umc/python/pkgdb/__init__.py:229
+#: umc/python/pkgdb/__init__.py:234
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: umc/python/pkgdb/__init__.py:241
+#: umc/python/pkgdb/__init__.py:246
 msgid "configfiles"
 msgstr "configfiles"
 
-#: umc/python/pkgdb/__init__.py:212
+#: umc/python/pkgdb/__init__.py:217
 msgid "doesn't match"
 msgstr "entspricht nicht"
 
-#: umc/python/pkgdb/__init__.py:238
+#: umc/python/pkgdb/__init__.py:243
 msgid "half-configured"
 msgstr "halb-konfiguriert"
 
-#: umc/python/pkgdb/__init__.py:240
+#: umc/python/pkgdb/__init__.py:245
 msgid "half-installed"
 msgstr "halb-installiert"
 
-#: umc/python/pkgdb/__init__.py:242
+#: umc/python/pkgdb/__init__.py:247
 msgid "installed"
 msgstr "installiert"
 
-#: umc/python/pkgdb/__init__.py:209
+#: umc/python/pkgdb/__init__.py:214
 msgid "is"
 msgstr "ist"
 
-#: umc/python/pkgdb/__init__.py:214
+#: umc/python/pkgdb/__init__.py:219
 msgid "is greater or equal"
 msgstr "ist größer oder gleich"
 
-#: umc/python/pkgdb/__init__.py:213
+#: umc/python/pkgdb/__init__.py:218
 msgid "is greater than"
 msgstr "ist größer als"
 
-#: umc/python/pkgdb/__init__.py:210
+#: umc/python/pkgdb/__init__.py:215
 msgid "is not"
 msgstr "ist nicht"
 
-#: umc/python/pkgdb/__init__.py:216
+#: umc/python/pkgdb/__init__.py:221
 msgid "is smaller or equal"
 msgstr "ist kleiner oder gleich"
 
-#: umc/python/pkgdb/__init__.py:215
+#: umc/python/pkgdb/__init__.py:220
 msgid "is smaller than"
 msgstr "ist kleiner als"
 
-#: umc/python/pkgdb/__init__.py:211
+#: umc/python/pkgdb/__init__.py:216
 msgid "matches"
 msgstr "entspricht"
 
-#: umc/python/pkgdb/__init__.py:236
+#: umc/python/pkgdb/__init__.py:241
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/pkgdb/__init__.py:239
+#: umc/python/pkgdb/__init__.py:244
 msgid "uninstalled"
 msgstr "nicht installiert"
 
-#: umc/python/pkgdb/__init__.py:237
+#: umc/python/pkgdb/__init__.py:242
 msgid "unpacked"
 msgstr "ausgepackt"
-

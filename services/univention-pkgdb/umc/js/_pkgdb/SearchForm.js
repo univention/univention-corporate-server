@@ -17,8 +17,14 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 	i18nClass:			'umc.modules.pkgdb',
 	
 	// Some status variables
-	_patterns_allowed:		false,		// true if operator is selectable
-	_pattern_is_list:		false,		// true if pattern is ComboBox (not TextBox)
+	_pattern_needed:		true,		// true if a pattern is required by this key+operator 
+	_pattern_is_list:		false,		// true if pattern is ComboBox. false if TextBox.
+	_submit_allowed:		false,		// true if current input allows SUBMIT (including that no queries are pending)
+	
+	// true while the corresponding query is pending
+	_keys_pending:			true,
+	_operators_pending:		false,
+	_proposals_pending:		false,
 	
 	postMixInProperties: function() {
 		
@@ -36,9 +42,7 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 						dynamicOptions:			{page:this.pageKey},
 						onDynamicValuesLoaded:	dojo.hitch(this, function(values) {
 							this._set_selection_to_first_element('key');
-						}),
-						onChange:				dojo.hitch(this, function(value) {
-							this.onQueryChanged('key',value);
+							this._set_query_pending('key',false);
 						})
 					},
 					{
@@ -53,9 +57,7 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 						}),
 						onDynamicValuesLoaded:	dojo.hitch(this, function(values) {
 							this._handle_operators(values);
-						}),
-						onChange:				dojo.hitch(this, function(value) {
-							this.onQueryChanged('operator',value);
+							this._set_query_pending('operator',false);
 						})
 					},
 					{
@@ -70,9 +72,7 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 						}),
 						onDynamicValuesLoaded:	dojo.hitch(this, function(values) {
 							this._handle_proposals(values);
-						}),
-						onChange:				dojo.hitch(this, function(value) {
-							this.onQueryChanged('pattern_list',value);
+							this._set_query_pending('proposal',false);
 						})
 					},
 					{
@@ -80,13 +80,9 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 						name:					'pattern_text',
 						label:					this._("Pattern"),
 						style:					'width:350px;',
-						onChange:				dojo.hitch(this, function(value) {
-							this.onQueryChanged('pattern_text',value);
-						}),
 						// inherits from dijit.form.ValidationTextBox, so we can use its
 						// validation abilities
 						regExp:					'^[A-Za-z0-9_.*?-]+$',		// [:alnum:] and these: _ - . * ?
-						required:				true						// force nonempty
 					}
 				],
 			layout:
@@ -117,6 +113,31 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 		this.showWidget('pattern_text',false);
 		this.showWidget('pattern_list',false);
 		this.showWidget('operator',false);
+		
+		// whenever one of our 'pending' vars is changed...
+		this.watch('_keys_pending',dojo.hitch(this,function(name,oldval,value) {
+			this._handle_query_changes(name,value);
+		}));
+		this.watch('_operators_pending',dojo.hitch(this,function(name,oldval,value) {
+			this._handle_query_changes(name,value);
+		}));
+		this.watch('_proposals_pending',dojo.hitch(this,function(name,oldval,value) {
+			this._handle_query_changes(name,value);
+		}));
+		
+		// whenever one of the dialog values is being changed...
+		dojo.connect(this.getWidget('key'),'onChange',dojo.hitch(this, function(value) {
+			this._handle_query_changes('key',value);
+		}));
+		dojo.connect(this.getWidget('operator'),'onChange',dojo.hitch(this, function(value) {
+			this._handle_query_changes('operator',value);
+		}));
+		dojo.connect(this.getWidget('pattern_text'),'onChange',dojo.hitch(this, function(value) {
+			this._handle_query_changes('pattern_text',value);
+		}));
+		dojo.connect(this.getWidget('pattern_list'),'onChange',dojo.hitch(this, function(value) {
+			this._handle_query_changes('pattern_list',value);
+		}));
 	},
 	
 	// ---------------------------------------------------------------------
@@ -158,7 +179,7 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 		if (crit != '_')
 		{
 			query['key'] = crit;
-			if (this._patterns_allowed)
+			if (this._submit_allowed)
 			{
 				query['operator'] = this.getWidget('operator').get('value');
 				if (this._pattern_is_list)
@@ -195,13 +216,13 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 	// suitable for a given key
 	_operators_query: function() {
 		
+		if (this._operators_pending)
+		{
+			//alert("OPERATORS already pending!");
+		}
+		this._set_query_pending('operator',true);
 		try
 		{
-			// While the query is underway I can always see the 'invalid' indicator
-			// at the 'operator' ComboBox. So I try to set the ComboBox to a
-			// neutral value.
-			this.getWidget('operator').set('value',null);
-			
 			var value = this.getWidget('key').get('value');
 
 			return umc.tools.umcpCommand('pkgdb/operators',{
@@ -222,13 +243,13 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 	// key and operator. (pageKey is added silently)
 	_proposals_query: function() {
 		
+		if (this._proposals_pending)
+		{
+			//alert("PROPOSALS already pending!");
+		}
+		this._set_query_pending('proposal',true);
 		try
 		{
-			// While the query is underway I can always see the 'invalid' indicator
-			// at the 'pattern_list' ComboBox. So I try to set the ComboBox to a
-			// neutral value.
-			this.getWidget('pattern_list').set('value',null);
-
 			var key = this.getWidget('key').get('value');
 			
 			return umc.tools.umcpCommand('pkgdb/proposals',{
@@ -258,30 +279,51 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 	//		entirely.
 	//
 	_handle_operators: function(values) {
+		
+		var p_label = this._("Pattern");
+		var o_show  = false;
+		var p_show  = true;
 		if (dojo.isArray(values))
 		{
 			if (values.length)
 			{
 				this._set_selection_to_first_element('operator');
-				this._allow_patterns(true);
+				this._pattern_needed = true;
+				o_show = true;
 			}
 			else
 			{
-				this._allow_patterns(false);
+				this._pattern_needed = false;
+				p_show = false;
 			}
 		}
 		else
 		{
-			this._set_single_operator(values);
+			this._pattern_needed = true;
+			p_label = values;
 		}
+		
+		this.showWidget('operator',o_show);
+		
+		if (p_show)
+		{
+			this.showWidget('pattern_text',!this._pattern_is_list);
+			this.showWidget('pattern_list',this._pattern_is_list);
+		}
+		else
+		{
+			this.showWidget('pattern_text',false);
+			this.showWidget('pattern_list',false);
+		}
+
+		this.getWidget('pattern_text').set('label',p_label);
+		this.getWidget('pattern_list').set('label',p_label);
 	},
 	
 	// handles the result (and especially: the result type) of the
 	// proposals returned by the 'pkgdb/proposals' query
 	_handle_proposals: function(values) {
-		
-		if (! this._patterns_allowed) { return; }			// nothing to do here.
-		
+
 		var is_single = dojo.isString(values);
 		this._pattern_is_list = !is_single;				// remember for later.
 		if (is_single)
@@ -292,49 +334,38 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 		{
 			this._set_selection_to_first_element('pattern_list');
 		}
-		// values are set. now show/hide appropriately.
-		this.showWidget('pattern_text',is_single);
-		this.showWidget('pattern_list',!is_single);
+		// values are set. now show/hide appropriately, but only if needed.
+		if (this._pattern_needed)
+		{
+			this.showWidget('pattern_text',is_single);
+			this.showWidget('pattern_list',!is_single);
+		}
 	},
 	
-	// If we get a single operator we use it as a label for the
-	// text input. Here is the function that switches the corresponding
-	// status values.
-	_set_single_operator: function(operator) {
+	// sets state of 'this query is pending' in a boolean variable
+	// and in the 'disabled' state of the corresponding dialog element(s)
+	_set_query_pending: function(element,on) {
 		
-		this._patterns_allowed = true;
-		this.showWidget('operator',false);
-		this._set_selection_to_first_element('operator');
-		this.getWidget('operator').set('value',operator);
-		
-		this.getWidget('pattern_text').set('label',operator);
-		this.getWidget('pattern_list').set('label',operator);
+		var bv = '_' + element + 's_pending';
+		this.set(bv,on);
 
-		this.showWidget('pattern_text',true);
-		this.showWidget('pattern_list',false);
-	},
+// To make it 100% safe against impatient users... but the downside is that
+// the dialog elements would flicker on every selection change at the 'key'
+// ComboBox...
+//
+//		var ele = this.getWidget(element);
+//		if (ele)
+//		{
+//			// applies to 'key' and 'operator' ComboBox
+//			ele.set('disabled',on);
+//		}
+//		else
+//		{
+//			// applies to these two 'pattern' entry elements
+//			this.getWidget('pattern_text').set('disabled',on);
+//			this.getWidget('pattern_list').set('disabled',on);
+//		}
 
-	// switches exutability of this query on or off: shows or hides
-	// the 'operator' and 'pattern' elements. Additionally remembers
-	// the last given pattern so subsequent handlers know the state.
-	_allow_patterns: function(allow) {
-		this._patterns_allowed = allow;
-		
-		this.showWidget('operator',allow);
-		
-		// at least, if NOT allowed -> hide both 'pattern_*' widgets.
-		// showing one of them depending on allowed values must
-		// be deferred until we have the 'proposals' data back.
-		if (! allow)
-		{
-			this.showWidget('pattern_text',false);
-			this.showWidget('pattern_list',false);
-		}
-		else
-		{
-			this.getWidget('pattern_text').set('label',this._("Pattern"));
-			this.getWidget('pattern_list').set('label',this._("Pattern"));
-		}
 	},
 	
 	_set_selection_to_first_element: function(name) {
@@ -351,27 +382,68 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 	// feature if the form doesn't honor it?
 	onSubmit: function() {
 		
-		var keys = this.getWidget('key');
-		var ok = ((keys.get('value') != '_') && (keys.getAllItems().length > 1));
-		if (ok)
+		// the 'onChange' handler of the textbox is not invoked until the focus
+		// has left the field... so we have to do a last check here in case
+		// the text changed.
+		this._handle_query_changes();
+		
+		if (this._submit_allowed)
 		{
-			// this widget must not be honored since it is invisible
-			var ignore = (this._pattern_is_list ? 'pattern_text' : 'pattern_list');
+			this.onExecuteQuery(this.getQuery());
+		}
+	},
+	
+	// an internal callback for everything that changes a query, operator or pattern.
+	// should call the external callback 'onQueryChanged' only if something has
+	// changed. This maintains all internal variables that reflect the state of
+	// the current entry and the executability of the query.
+	_handle_query_changes: function(name,value) {
+		
+		// start with: allowed if none of our dynamicValues queries is pending
+		var allow = ! (this._keys_pending || this._operators_pending || this._proposals_pending);
+		
+		// only allow if the 'key' position is not '--- select one ---'
+		allow = allow && (this.getWidget('key').get('value')!='_');
+		
+		// check validation for all elements that must be valid
+		if (allow)
+		{
 			for (var w in this._widgets)
 			{
 				var widget = this._widgets[w];
-				if (widget.name != ignore)
+				var n = widget['name'];
+				var toprocess = true;
+				if (n.substr(0,8) == 'pattern_')
+				{
+					if (this._pattern_needed)
+					{
+						if (	((this._pattern_is_list) && (n == 'pattern_text'))
+							||	((!this._pattern_is_list) && (n == 'pattern_list')))
+						{
+							toprocess = false;
+						}
+					}
+					else
+					{
+						// no pattern required: pattern_text AND pattern_list should
+						// should be ignored
+						toprocess = false;
+					}
+				}
+				if (toprocess)
 				{
 					if (! widget.isValid())
 					{
-						ok = false;
+						allow = false;
 					}
 				}
 			}
 		}
-		if (ok)
+
+		if (allow != this._submit_allowed)
 		{
-			this.onExecuteQuery(this.getQuery());
+			this._submit_allowed = allow;
+			this.enableSearchButton(allow);
 		}
 	},
 	
@@ -389,14 +461,10 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 		this.enableEntryElements(false);
 	},
 	
-	// invoked whenever a substantial dialog element is being changed. The
-	// ancestor can listen here and clear (or switch invisible) the result
-	// grid. Args are the name of the field being changed, and the new value.
-	onQueryChanged: function(field,value) {
-		if (field == 'key')
-		{
-			this.enableSearchButton(value != '_');
-		}
+	// the invoking Page or Module can listen here to know that the query is become
+	// ready or disabled. Internal function _handle_query_changes() maintains all
+	// state variables and calls this only if the state has changed.
+	onQueryChanged: function(query) {
 	}
 	
 });

@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_pkgdb/SearchForm.js:33
+#: umc/js/_pkgdb/SearchForm.js:39
 msgid "--- Please select ---"
 msgstr "--- Bitte wählen ---"
 
@@ -32,7 +32,7 @@ msgstr "Installations-<br/>Status"
 msgid "Inventory date"
 msgstr "Erfaßt am"
 
-#: umc/js/_pkgdb/SearchForm.js:48
+#: umc/js/_pkgdb/SearchForm.js:52
 msgid "Operator"
 msgstr "Operator"
 
@@ -52,10 +52,8 @@ msgstr "Paket-<br/>status"
 msgid "Packages"
 msgstr "Pakete"
 
-#: umc/js/_pkgdb/SearchForm.js:65
-#: umc/js/_pkgdb/SearchForm.js:81
-#: umc/js/_pkgdb/SearchForm.js:335
-#: umc/js/_pkgdb/SearchForm.js:336
+#: umc/js/_pkgdb/SearchForm.js:67 umc/js/_pkgdb/SearchForm.js:81
+#: umc/js/_pkgdb/SearchForm.js:283
 msgid "Pattern"
 msgstr "Suchbegriff"
 
@@ -63,7 +61,7 @@ msgstr "Suchbegriff"
 msgid "Problems"
 msgstr "Probleme"
 
-#: umc/js/_pkgdb/SearchForm.js:101
+#: umc/js/_pkgdb/SearchForm.js:97
 msgid "Search"
 msgstr "Suchen"
 
@@ -75,7 +73,7 @@ msgstr "Sucht Pakete mit speziellen Software-Eigenschaften"
 msgid "Search for systems with specific software properties"
 msgstr "Sucht Systeme mit speziellen Software-Eigenschaften"
 
-#: umc/js/_pkgdb/SearchForm.js:31
+#: umc/js/_pkgdb/SearchForm.js:37
 msgid "Search for:"
 msgstr "Suche nach:"
 
@@ -106,4 +104,3 @@ msgstr "Systeme"
 #: umc/js/_pkgdb/KeyTranslator.js:53
 msgid "UCS Version"
 msgstr "UCS Version"
-

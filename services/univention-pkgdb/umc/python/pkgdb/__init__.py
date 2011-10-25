@@ -131,8 +131,12 @@ QUERIES = {
 		'columns':		['sysname','pkgname','vername','inventory_date',              'selectedstate','inststate','currentstate' ],
 		'db_fields':	['sysname','pkgname','vername','inventory_date', 'inststatus','selectedstate','inststate','currentstate' ],
 		'function':		'sql_get_packages_in_systems_by_query',
+		# They allow querying for the UCS version, and then they don't display it? Who would use that at all? 
+		# But nevertheless, if 'sysversion' is an allowed search key we have to switch this 'Join' flag on,
+		# or we get always empty result sets.
+		# (No, this join is not the performance bottleneck, believe me.)
 		'args':			{
-			'join_systems':		False,
+			'join_systems':		True,
 # /usr/share/pyshared/univention/pkgdb.py needs to be patched to understand these args:
 #
 #	'limit' ... avoids fetching large amounts of data that can't be processed either
@@ -261,6 +265,10 @@ class Instance(umcm.Base):
 			
 			what = 'checking variable lists'
 			self._check_variable_lists()
+			
+			# initialize some member variables
+			self._last_query = 0
+			self._last_result = []
 
 		except Exception,ex:
 			MODULE.warn("[INIT] while %s: %s" % (what,str(ex)))
@@ -300,6 +308,18 @@ class Instance(umcm.Base):
 		for s in st:
 			MODULE.info("   << %s" % s)
 		# -----------------------------------
+		
+		# When a sort header is clicked, the frontend will issue the same query
+		# again. We're prepared for this, remembering the last query options and
+		# the result set.
+		
+		if cmp(self._last_query,request.options) == 0:
+			MODULE.info("   ++ Same query: returning same result (%d entries) again." % len(self._last_result))
+			result = self._last_result
+			self.finished(request.id,result)
+			return
+		
+		self._last_query = request.options
 
 		result = []
 		
@@ -362,6 +382,10 @@ class Instance(umcm.Base):
 				MODULE.warn("   !! execute query: %s" % str(ex))
 			
 		request.status = SUCCESS
+		
+		# Remember result for repeated invocation of the same query
+		# (e.g. click on any sort header)
+		self._last_result = result
 
 		# ---------- DEBUG --------------
 		MODULE.info("pkgdb/query returns:")
@@ -707,7 +731,7 @@ class Instance(umcm.Base):
 			if len(result) > RECORD_LIMIT:
 				what = 'limiting record count'
 				MODULE.warn("   >> QUERY returned %d entries -> showing only first %d" % (len(result),RECORD_LIMIT))
-				result = result[0:RECORD_LIMIT]
+				del result[RECORD_LIMIT:]
 			return result
 		except Exception,ex:
 			MODULE.warn("   !! Query (function='%s',query='%s',args='%s') failed:" % (function,query,args))

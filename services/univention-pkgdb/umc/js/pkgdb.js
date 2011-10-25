@@ -42,17 +42,4 @@ dojo.declare("umc.modules.pkgdb", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 		
 	}
 	
-//	startup: function() {
-//		
-//		this.inherited(arguments);
-//		
-//	},
-//	
-//	uninitialize: function() {
-//		
-//		this.inherited(arguments);
-//		this._refresh_time = 0;
-//		
-//	}
-	
 });

@@ -61,19 +61,6 @@ dojo.declare("umc.modules._pkgdb.Page", [
 		
 		this._current_query = query;
 		
-		// ----------------- DEBUG ----------------------
-//		var txt = "Executing query:\n~~~~~~~~~~~~~~~\n\n";
-//		var fl = ['key','operator','pattern'];
-//		for (var f in fl)
-//		{
-//			if (query[fl[f]])
-//			{
-//				txt += " '" + query[fl[f]] + "'";
-//			}
-//		}
-//		alert(txt);
-		// ----------------------------------------------
-		
 		try
 		{
 			umc.tools.umcpCommand('pkgdb/columns',{
@@ -131,10 +118,6 @@ dojo.declare("umc.modules._pkgdb.Page", [
 					actions:		[],
 					columns:		columns,
 					moduleStore:	umc.store.getModuleStore(fields[0],'pkgdb')
-//					onFilterDone:	dojo.hitch(this, function(success) {
-//						alert("Filter done!");
-//						this._searchform.enableSearchButton(true);
-//					})
 				});
 				
 				if (this._grid)
