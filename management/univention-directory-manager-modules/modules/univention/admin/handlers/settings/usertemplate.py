@@ -79,7 +79,7 @@ property_descriptions={
 			identifies=0
 		),
 	'displayName': univention.admin.property(
-			short_description=_('Display Name'),
+			short_description=_('Display name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			options=['posix'],

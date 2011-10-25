@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-17 17:20+0200\n"
+"POT-Creation-Date: 2011-10-25 08:26+0200\n"
 "PO-Revision-Date: 2011-10-17 17:22+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -59,7 +59,7 @@ msgstr "Sichtbare Assistenten"
 msgid "Visible Modules"
 msgstr "Sichtbare Module"
 
-#: admin.py:87 admin.py:88 cn.py:64 default.py:157 default.py:158
+#: admin.py:87 admin.py:88 cn.py:64 default.py:137 default.py:138
 #: directory.py:178 directory.py:179 extended_attribute.py:368
 #: extended_attribute.py:369 extended_options.py:147 extended_options.py:148
 #: license.py:168 lock.py:77 lock.py:78 packages.py:78 packages.py:79
@@ -67,14 +67,14 @@ msgstr "Sichtbare Module"
 #: prohibited_username.py:77 prohibited_username.py:78 sambaconfig.py:182
 #: sambaconfig.py:183 sambadomain.py:229 sambadomain.py:230 service.py:64
 #: service.py:65 syntax.py:144 syntax.py:145 umc_operationset.py:101
-#: umc_operationset.py:102 user.py:218 usertemplate.py:338 usertemplate.py:339
+#: umc_operationset.py:102 user.py:218 usertemplate.py:349 usertemplate.py:350
 #: xconfig_choices.py:168 xconfig_choices.py:169
 msgid "General"
 msgstr "Allgemein"
 
-#: admin.py:87 cn.py:64 default.py:157 directory.py:178
+#: admin.py:87 cn.py:64 default.py:137 directory.py:178
 #: extended_attribute.py:368 extended_options.py:147 sambaconfig.py:182
-#: sambadomain.py:229 service.py:64 syntax.py:144 usertemplate.py:338
+#: sambadomain.py:229 service.py:64 syntax.py:144 usertemplate.py:349
 msgid "Basic Values"
 msgstr "Grundeinstellungen"
 
@@ -114,25 +114,13 @@ msgstr "Standardgruppe für Clients"
 msgid "Default KDE Profiles"
 msgstr "Standard KDE-Profile"
 
-#: default.py:135
-msgid "Default Kolab Home Server"
-msgstr "Standard Kolab Home Server"
-
-#: default.py:145
-msgid "Default Scalix Mailnode"
-msgstr "Standard Scalix Mailnode"
-
-#: default.py:162 default.py:163
+#: default.py:142 default.py:143
 msgid "Primary Groups"
 msgstr "Primäre Gruppen"
 
-#: default.py:172 default.py:173
+#: default.py:152 default.py:153
 msgid "KDE Profiles"
 msgstr "KDE-Profile"
-
-#: default.py:177
-msgid "Groupware"
-msgstr "Groupware"
 
 #: directory.py:49
 msgid "Preferences: Default Container"
@@ -353,7 +341,7 @@ msgstr "Version des erweiterten Attributs"
 msgid "UDM CLI name of extended attribute"
 msgstr "UDM-CLI Attributname"
 
-#: extended_attribute.py:346 usertemplate.py:322
+#: extended_attribute.py:346 usertemplate.py:333
 msgid "Options"
 msgstr "Optionen"
 
@@ -397,7 +385,7 @@ msgstr "Datentyp"
 msgid "Data type definition"
 msgstr "Datentyp-Definition"
 
-#: extended_attribute.py:404 extended_attribute.py:411
+#: extended_attribute.py:404 extended_attribute.py:405
 msgid "LDAP"
 msgstr "LDAP"
 
@@ -852,158 +840,162 @@ msgid "Title"
 msgstr "Titel"
 
 #: usertemplate.py:82
+msgid "Display name"
+msgstr "Anzeigename"
+
+#: usertemplate.py:93
 msgid "Organization"
 msgstr "Organisation"
 
-#: usertemplate.py:92
+#: usertemplate.py:103
 msgid "Change password on Next Login"
 msgstr "Passwort bei der nächsten Anmeldung ändern"
 
-#: usertemplate.py:93
+#: usertemplate.py:104
 msgid "Change password on next login"
 msgstr "Passwort bei der nächsten Anmeldung ändern"
 
-#: usertemplate.py:103
+#: usertemplate.py:114
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: usertemplate.py:114
+#: usertemplate.py:125
 msgid "E-Mail Address"
 msgstr "E-Mail-Adresse"
 
-#: usertemplate.py:124
+#: usertemplate.py:135
 msgid "Unix Home Directory"
 msgstr "UNIX-Heimatverzeichnis"
 
-#: usertemplate.py:135
+#: usertemplate.py:146
 msgid "Home Share"
 msgstr "Heimatverzeichnisfreigabe"
 
-#: usertemplate.py:136
+#: usertemplate.py:147
 msgid "Share, the user's home directory resides on"
 msgstr "Freigabe, auf der sich das Heimatverzeichnis des Benutzers befindet"
 
-#: usertemplate.py:145
+#: usertemplate.py:156
 msgid "Home Share Path"
 msgstr "Pfad der Heimatverzeichnisfreigabe"
 
-#: usertemplate.py:146
+#: usertemplate.py:157
 msgid "Path on the home share"
 msgstr "Relativer Pfad des Heimatverzeichnises innerhalb der Freigabe"
 
-#: usertemplate.py:156
+#: usertemplate.py:167
 msgid "Login Shell"
 msgstr "Login-Shell"
 
-#: usertemplate.py:167
+#: usertemplate.py:178
 msgid "Windows Home Path"
 msgstr "Windows-Heimatverzeichnis"
 
-#: usertemplate.py:177
+#: usertemplate.py:188
 msgid "Windows Script Path"
 msgstr "Anmeldeskriptpfad"
 
-#: usertemplate.py:187
+#: usertemplate.py:198
 msgid "Windows Profile Path"
 msgstr "Profilverzeichnis"
 
-#: usertemplate.py:197
+#: usertemplate.py:208
 msgid "Windows Home Drive"
 msgstr "Laufwerk für Heimatverzeichnis"
 
-#: usertemplate.py:207
+#: usertemplate.py:218
 msgid "Street"
 msgstr "Straße"
 
-#: usertemplate.py:217
+#: usertemplate.py:228
 msgid "Postal Code"
 msgstr "Postleitzahl"
 
-#: usertemplate.py:227
+#: usertemplate.py:238
 msgid "City"
 msgstr "Stadt"
 
-#: usertemplate.py:237
+#: usertemplate.py:248
 msgid "Telephone Number"
 msgstr "Telefonnummer"
 
-#: usertemplate.py:247
+#: usertemplate.py:258
 msgid "Secretary"
 msgstr "Vorgesetzter"
 
-#: usertemplate.py:257
+#: usertemplate.py:268
 msgid "Department Number"
 msgstr "Abteilungsnummer"
 
-#: usertemplate.py:267
+#: usertemplate.py:278
 msgid "Employee Type"
 msgstr "Mitarbeiterkategorie"
 
-#: usertemplate.py:277 usertemplate.py:381 usertemplate.py:382
+#: usertemplate.py:288 usertemplate.py:394 usertemplate.py:395
 msgid "Groups"
 msgstr "Gruppen"
 
-#: usertemplate.py:287
+#: usertemplate.py:298
 msgid "Primary Group"
 msgstr "Primäre Gruppe"
 
-#: usertemplate.py:300
+#: usertemplate.py:311
 msgid "Primary E-Mail Address"
 msgstr "Primäre E-Mail-Adresse"
 
-#: usertemplate.py:311
+#: usertemplate.py:322
 msgid "Alternative E-Mail Addresses"
 msgstr "Alternative E-Mail-Adressen"
 
-#: usertemplate.py:344 usertemplate.py:345
+#: usertemplate.py:357 usertemplate.py:358
 msgid "User Account"
 msgstr "Benutzer-Konto"
 
-#: usertemplate.py:344
+#: usertemplate.py:357
 msgid "Account Settings"
 msgstr "Kontoeinstellungen"
 
-#: usertemplate.py:349 usertemplate.py:350
+#: usertemplate.py:362 usertemplate.py:363
 msgid "Mail"
 msgstr "Mail"
 
-#: usertemplate.py:349
+#: usertemplate.py:362
 msgid "Mail Settings"
 msgstr "Maileinstellungen"
 
-#: usertemplate.py:355 usertemplate.py:356
+#: usertemplate.py:368 usertemplate.py:369
 msgid "User Contact"
 msgstr "Kontakt"
 
-#: usertemplate.py:355
+#: usertemplate.py:368
 msgid "Contact Information"
 msgstr "Kontaktinformationen"
 
-#: usertemplate.py:362 usertemplate.py:363
+#: usertemplate.py:375 usertemplate.py:376
 msgid "Employee"
 msgstr "Mitarbeiter"
 
-#: usertemplate.py:362
+#: usertemplate.py:375
 msgid "Employee Information"
 msgstr "Mitarbeiterinformationen"
 
-#: usertemplate.py:369 usertemplate.py:370
+#: usertemplate.py:382 usertemplate.py:383
 msgid "Linux"
 msgstr "Linux/UNIX"
 
-#: usertemplate.py:369
+#: usertemplate.py:382
 msgid "Unix Account Settings"
 msgstr "UNIX-Kontoeinstellungen"
 
-#: usertemplate.py:375 usertemplate.py:376
+#: usertemplate.py:388 usertemplate.py:389
 msgid "Windows"
 msgstr "Windows"
 
-#: usertemplate.py:375
+#: usertemplate.py:388
 msgid "Windows Account Settings"
 msgstr "Windows-Kontoeinstellungen"
 
-#: usertemplate.py:381
+#: usertemplate.py:394
 msgid "Group Memberships"
 msgstr "Gruppenmitgliedschaften"
 
@@ -1054,6 +1046,15 @@ msgstr "Bildschirm Grösse (mm)"
 #: xconfig_choices.py:168
 msgid "X Configuration Choices"
 msgstr "X Konfiguration Auswahl"
+
+#~ msgid "Default Kolab Home Server"
+#~ msgstr "Standard Kolab Home Server"
+
+#~ msgid "Default Scalix Mailnode"
+#~ msgstr "Standard Scalix Mailnode"
+
+#~ msgid "Groupware"
+#~ msgstr "Groupware"
 
 #~ msgid "Users"
 #~ msgstr "Benutzer"
