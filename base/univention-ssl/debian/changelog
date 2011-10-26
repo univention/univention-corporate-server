@@ -1,3 +1,9 @@
+univention-ssl (6.0.13-2) unstable; urgency=low
+
+  * fixed wrong country code that is set in postinst (Bug #24174)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 26 Oct 2011 19:07:51 +0200
+
 univention-ssl (6.0.13-1) unstable; urgency=low
 
   * replaced deprecated shell construct in make-certificates.sh
