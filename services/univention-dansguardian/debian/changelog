@@ -1,3 +1,9 @@
+univention-dansguardian (5.0.1-9) unstable; urgency=low
+
+  * Update UCR descriptions (Bug #22576)  
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 26 Oct 2011 15:45:20 +0200
+
 univention-dansguardian (5.0.1-8) unstable; urgency=low
 
   * Remove templates, which do no make UCR-specific modifications. In such cases it's

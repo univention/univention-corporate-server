@@ -1,72 +1,72 @@
 [dansguardian/virus/notifyemail]
-Description[de]=Benachrichtigungsadresse bei von squid gefundenen Viren
-Description[en]=
+Description[de]=Benachrichtigungs-E-Mail-Adresse bei gefundenen Viren
+Description[en]=Notification email address if a virus has been detected
 Type=str
 Categories=service-webproxy
 
 [dansguardian/groups/.*/banned/extensions]
-Description[de]=Geblockte Dateiendungen in squid
-Description[en]=
+Description[de]=Von Dansguardian blockierte Dateiendungen
+Description[en]=File extensions blocked by Dansguardian
 Type=str
 Categories=service-webproxy
 
 [dansguardian/groups/.*/banned/ipaddresses]
-Description[de]=Rechneradressen, denen der Zugriff auf squid verboten wird
-Description[en]=
+Description[de]=Rechneradressen, denen der Zugriff auf Squid verboten wird
+Description[en]=IP address, which cannot access Squid
 Type=str
 Categories=service-webproxy
 
 [dansguardian/groups/.*/banned/mimetypes]
-Description[de]=Geblockte MIME-Types in squid
-Description[en]=
+Description[de]=Geblockte MIME-Types
+Description[en]=Blocked MIME types
 Type=str
 Categories=service-webproxy
 
 [dansguardian/groups/.*/banned/sites]
-Description[de]=In squid geblockte Webseiten
-Description[en]=
+Description[de]=Domänen von Webseiten, die von Dansguardian blockiert werden
+Description[en]=Web domains sites blocked by Dansguardian
 Type=str
 Categories=service-webproxy
 
 [dansguardian/groups/.*/banned/urls]
-Description[de]=In squid geblockte URLs
-Description[en]=
+Description[de]=URLs von Webseiten, die von Dansguardian blockiert werden
+Description[en]=Web URLs sites blocked by Dansguardian
 Type=str
 Categories=service-webproxy
 
 [dansguardian/groups/.*/exception/ipaddresses]
-Description[de]=Rechneradressen, deren Zugriffe nicht durch squid gefiltert werden
-Description[en]=
+Description[de]=IP-Adressen, deren Zugriffe nicht durch Dansguardian gefiltert werden
+Description[en]=IP addresses, which are not filtered by Dansguardian
 Type=str
 Categories=service-webproxy
 
 [dansguardian/groups/.*/exception/user]
-Description[de]=Benutzernamen, deren Zugriffe nicht durch squid gefiltert werden
-Description[en]=
+Description[de]=Benutzernamen, deren Zugriffe nicht durch Dansguardian gefiltert werden
+Description[en]=User names, whose accesses are not filtered by Dansguardian
 Type=str
 Categories=service-webproxy
 
 [dansguardian/groups/.*/exception/extension]
-Description[de]=Dateiendungen, die nicht von squid auf Viren geprüft werden
-Description[en]=
+Description[de]=Dateiendungen, die nicht von Dansguardian geprüft werden
+Description[en]=File extensions not filtered by Dansguardian
 Type=str
 Categories=service-webproxy
 
 [dansguardian/groups/.*/exception/mimetypes]
-Description[de]=MIME-Types, die nicht von squid auf Viren geprüft werden
-Description[en]=
+Description[de]=MIME-Types, die nicht von Dansguardian geprüft werden
+Description[en]=MIME types not filtered by Dansguardian
 Type=str
 Categories=service-webproxy
 
 [dansguardian/groups/.*/exception/sites]
-Description[de]=Webseiten, bei denen squid nicht auf Viren prüft
-Description[en]=
+Description[de]=Webseiten, die nicht von Dansguardian geprüft werden
+Description[en]=Web sites not filtered by Dansguardian
 Type=str
 Categories=service-webproxy
 
 [dansguardian/groups/.*/exception/urls]
-Description[de]=URLs, bei denen squid nicht auf URLs prüft
-Description[en]=
+Description[de]=URLs, die nicht von Dansguardian geprüft werden
+Description[en]=URLs sites not filtered by Dansguardian
 Type=str
 Categories=service-webproxy
 
