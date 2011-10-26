@@ -1,3 +1,11 @@
+univention-ldap (8.0.54-1) unstable; urgency=low
+
+  * Don't restart slapd in univention-ldap-config.postinst during
+    the update . This breaks the slapd for a while beacuase the
+    configuration of the slapd is not yet complete (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Oct 2011 08:08:29 +0200
+
 univention-ldap (8.0.53-3) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)

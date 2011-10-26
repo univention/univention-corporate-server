@@ -32,16 +32,17 @@
 
 #DEBHELPER#
 
-if test -x /etc/init.d/slapd
-then
-    # always start on master, slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template
-    server_role=$(ucr get server/role)
-    if [ "$server_role" = "domaincontroller_master" ]
-	then
-		/etc/init.d/slapd restart
-    else
-		grep -q crestart /etc/init.d/slapd && /etc/init.d/slapd crestart || true
-    fi
+if [ "$1" = "configure" -a -z "$2" ]; then
+	if test -x /etc/init.d/slapd; then
+		# start on master , slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template
+		server_role=$(ucr get server/role)
+		if [ "$server_role" = "domaincontroller_master" ]
+		then
+			/etc/init.d/slapd restart
+		else
+			grep -q crestart /etc/init.d/slapd && /etc/init.d/slapd crestart || true
+		fi
+	fi
 fi
 
 exit 0
