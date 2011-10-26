@@ -32,22 +32,38 @@
 # <http://www.gnu.org/licenses/>.
 
 import gettext
-import sys
 
-def debug(text):
-	file='/tmp/installer.log'
-	f=open(file, 'a+')
-	f.write("%s\n" % text)
-	f.close()
+def debug(text, file='/tmp/installer.log'):
+	"""Log test to file."""
+	f = open(file, 'a+')
+	try:
+		print >>f, text
+	finally:
+		f.close()
 
 def _(val):
-	try:
+	"""
+	Translate val according to current locale.
+
+	>>> import locale; l = locale.setlocale(locale.LC_MESSAGES, 'de_DE.UTF-8')
+	>>> _('Next')
+	'Weiter'
+	>>> t = 'Untranslated 123'; _(t)
+	'Untranslated 123'
+	"""
+	for p in ('/lib/univention-installer/locale', 'locale'):
 		try:
-			t=gettext.translation('installer', '/lib/univention-installer/locale')
-		except:
-			t=gettext.translation('installer', 'locale' )
-		newval=t.gettext(val)
-	except:
-		debug("could not translate string: \"%s\"\n" % val)
-		newval=val
-	return  newval
+			t = gettext.translation('installer', p)
+		except IOError, e:
+			continue
+		newval = t.gettext(val)
+		return newval
+	if _.__once:
+		_.__once = False
+		debug("No 'installer' locale found")
+	return val
+_.__once = True
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()
