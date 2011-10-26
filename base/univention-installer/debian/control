@@ -10,7 +10,7 @@ Build-Depends: debhelper,
 
 Package: univention-installer
 Architecture: any
-Depends: ${misc:Depends},
+Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends},
  univention-installer-modules,
  python2.6
 Conflicts: univention-server-master,
@@ -26,7 +26,7 @@ Description: UCS installer environment
 
 Package: univention-installer-modules
 Architecture: all
-Depends: ${misc:Depends},
+Depends: ${misc:Depends}, ${python:Depends},
  isc-dhcp-client | dhcp3-client
 Description: UCS installer modules
  .
