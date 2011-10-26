@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.151-1) unstable; urgency=low
+
+  * dns/host_record.py: call self.open() in __init__ to be compatible 
+    with UCS 2.4 and dnsedit (Bug #24210)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Oct 2011 14:19:13 +0200
+
 univention-directory-manager-modules (7.0.150-1) unstable; urgency=low
 
   * support IPv6 in UDM backend (Bug #15687)

@@ -157,6 +157,9 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
+		if dn:
+			self.open()
+
 	def open(self): # IPv6
 		univention.admin.handlers.simpleLdap.open(self)
 		self.info['a'] = []
