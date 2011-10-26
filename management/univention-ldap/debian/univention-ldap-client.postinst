@@ -38,4 +38,6 @@ fi
 
 #DEBHELPER#
 
+univention-config-registry set ldap/master/port?"7389"
+
 exit 0

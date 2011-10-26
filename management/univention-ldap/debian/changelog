@@ -1,3 +1,9 @@
+univention-ldap (8.0.56-1) unstable; urgency=low
+
+  * Set ldap/master/port in univention-ldap-client.postinst (Bug #24200)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Oct 2011 15:35:21 +0200
+
 univention-ldap (8.0.55-1) unstable; urgency=low
 
   * Depend on a slapd version with k5pwd (Bug #15062)
