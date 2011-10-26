@@ -1,3 +1,14 @@
+univention-management-console-module-top (1.0.14-1) unstable; urgency=low
+
+  * removed vsize and rssize column
+  * removed isStandardAction flag
+  * renamed kill function
+  * fixed wrong cpu/mem percent
+  * using cpu percent as default sort order
+  (Bug #24037)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 26 Oct 2011 09:57:51 +0200
+
 univention-management-console-module-top (1.0.13-2) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)

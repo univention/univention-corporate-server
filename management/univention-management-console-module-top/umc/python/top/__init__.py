@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import time
 import psutil
 from fnmatch import fnmatch
 
@@ -52,13 +53,17 @@ class Instance(umcm.Base):
 		processes = []
 		for process in psutil.process_iter():
 			listEntry = {}
+			# Temporary variables; used to calculate cpu percentage
+			listEntry['timestamp'] = []
+			listEntry['cpu_time'] = []
+			listEntry['timestamp'].append(time.time())
+			(user_time, system_time, ) = process.get_cpu_times()
+			listEntry['cpu_time'].append(user_time + system_time)
+
 			listEntry['user'] = process.username
-			listEntry['pid'] = str(process.pid)
-			listEntry['cpu'] = '%.1f' % process.get_cpu_percent()
-			(vsize, rssize, ) = process.get_memory_info()
-			listEntry['vsize'] = vsize / 1048576.0
-			listEntry['rssize'] = rssize / 1048576.0
-			listEntry['mem'] = '%.1f' % process.get_memory_percent()
+			listEntry['pid'] = process.pid
+			listEntry['cpu'] = 0.0
+			listEntry['mem'] = process.get_memory_percent()
 			listEntry['command'] = ' '.join(process.cmdline)
 			if listEntry['command'] == '':
 				listEntry['command'] = process.name
@@ -68,8 +73,29 @@ class Instance(umcm.Base):
 						processes.append(listEntry)
 						break
 			else:
-				if fnmatch(listEntry[category], filter):
+				if fnmatch(str(listEntry[category]), filter):
 					processes.append(listEntry)
+
+		# Calculate correct cpu percentage
+		time.sleep(1)
+		for process_entry in processes:
+			try:
+				process = psutil.Process(process_entry['pid'])
+			except psutil.NoSuchProcess:
+				pass
+			else:
+				process_entry['timestamp'].append(time.time())
+				(user_time, system_time, ) = process.get_cpu_times()
+				process_entry['cpu_time'].append(user_time + system_time)
+
+				elapsed_time = process_entry['timestamp'][1] - process_entry['timestamp'][0]
+				elapsed_cpu_time = process_entry['cpu_time'][1] - process_entry['cpu_time'][0]
+				cpu_percent = (elapsed_cpu_time / elapsed_time) * 100
+				process_entry['cpu'] = cpu_percent
+				# Cleanup request result
+				del process_entry['timestamp']
+				del process_entry['cpu_time']
+
 		request.status = SUCCESS
 		self.finished(request.id, processes)
 

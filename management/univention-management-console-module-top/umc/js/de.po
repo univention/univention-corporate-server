@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-top\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-17 03:41+0200\n"
+"POT-Creation-Date: 2011-10-23 06:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,11 +12,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/top.js:132
+#: umc/js/top.js:116
 msgid "All"
 msgstr "Alle"
 
-#: umc/js/top.js:88
+#: umc/js/top.js:86
 msgid "CPU (%)"
 msgstr "CPU (%)"
 
@@ -24,11 +24,11 @@ msgstr "CPU (%)"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/top.js:130
+#: umc/js/top.js:114
 msgid "Category"
 msgstr "Kategorie"
 
-#: umc/js/top.js:110 umc/js/top.js:135
+#: umc/js/top.js:94 umc/js/top.js:119
 msgid "Command"
 msgstr "Befehl"
 
@@ -36,15 +36,16 @@ msgstr "Befehl"
 msgid "Entries"
 msgstr "Einträge"
 
-#: umc/js/top.js:141
+#: umc/js/top.js:70
+#, fuzzy
+msgid "Force terminate"
+msgstr "Beenden erzwingen"
+
+#: umc/js/top.js:125
 msgid "Keyword"
 msgstr "Schlüsselwort"
 
-#: umc/js/top.js:71
-msgid "Kill"
-msgstr "Töten"
-
-#: umc/js/top.js:106
+#: umc/js/top.js:90
 msgid "Memory (%)"
 msgstr "Speicher (%)"
 
@@ -52,14 +53,15 @@ msgstr "Speicher (%)"
 msgid "OK"
 msgstr ""
 
-#: umc/js/top.js:84 umc/js/top.js:134
+#: umc/js/top.js:82 umc/js/top.js:118
 msgid "PID"
 msgstr "PID"
 
 #: umc/js/top.js:34
 #, python-format
 msgid "Please confirm sending %(sig)s to the %(pids)s selected processes!"
-msgstr "Bitte bestätigen Sie %(sig)s an die %(pid)s ausgewählten Prozesse zu senden!"
+msgstr ""
+"Bitte bestätigen Sie %(sig)s an die %(pid)s ausgewählten Prozesse zu senden!"
 
 #: umc/js/top.js:31
 #, python-format
@@ -69,10 +71,6 @@ msgstr "Bitte bestätigen Sie %s an den ausgewählten Prozess zu senden!"
 #: umc/js/top.js:52
 msgid "Process overview"
 msgstr "Prozessübersicht"
-
-#: umc/js/top.js:99
-msgid "Resident (MB)"
-msgstr ""
 
 #: umc/js/top.js:40
 #, python-format
@@ -96,13 +94,15 @@ msgstr ""
 "werden kann (mittels des Signals SIGTERM), kann die Beendigung erzwungen "
 "werden (mittels des Signals SIGKILL)."
 
-#: umc/js/top.js:80 umc/js/top.js:133
+#: umc/js/top.js:78 umc/js/top.js:117
 msgid "User"
 msgstr "Benutzer"
 
-#: umc/js/top.js:92
-msgid "Virtual (MB)"
-msgstr "Virtuell (MB)"
+#~ msgid "Kill"
+#~ msgstr "Töten"
 
 #~ msgid "Processes killed successfully"
 #~ msgstr "Prozesse würden erfolgreich beendet"
+
+#~ msgid "Virtual (MB)"
+#~ msgstr "Virtuell (MB)"

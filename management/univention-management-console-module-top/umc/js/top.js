@@ -62,16 +62,14 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var actions = [{
 			name: 'terminate',
 			label: this._('Terminate'),
-			iconClass: 'dijitIconDelete',
 			callback: dojo.hitch(this, 'killProcesses', 'SIGTERM'),
-			isStandardAction: true,
+			isStandardAction: false,
 			isMultiAction: true
 		}, {
 			name: 'kill',
-			label: this._('Kill'),
-			iconClass: 'dijitIconDelete',
+			label: this._('Force terminate'),
 			callback: dojo.hitch(this, 'killProcesses', 'SIGKILL'),
-			isStandardAction: true,
+			isStandardAction: false,
 			isMultiAction: true
 		}];
 
@@ -86,25 +84,17 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'cpu',
 			label: this._('CPU (%)'),
-            width: 'adjust'
-		}, {
-			name: 'vsize',
-			label: this._('Virtual (MB)'),
-            width: 'adjust',
-			formatter: function(value) {
-				return dojox.string.sprintf('%.1f', value);
-			}
-		}, {
-			name: 'rssize',
-			label: this._('Resident (MB)'),
-            width: 'adjust',
+			width: 'adjust',
 			formatter: function(value) {
 				return dojox.string.sprintf('%.1f', value);
 			}
 		}, {
 			name: 'mem',
 			label: this._('Memory (%)'),
-            width: 'adjust'
+			width: 'adjust',
+			formatter: function(value) {
+				return dojox.string.sprintf('%.1f', value);
+			}
 		}, {
 			name: 'command',
 			label: this._('Command'),
@@ -116,6 +106,7 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			actions: actions,
 			columns: columns,
 			moduleStore: this.moduleStore,
+			sortIndex: '-3',
 			query: {
                 category: 'all',
                 filter: '*'
