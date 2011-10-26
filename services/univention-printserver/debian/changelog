@@ -1,3 +1,10 @@
+univention-printserver (5.0.13-1) unstable; urgency=low
+
+  * replaced ldapsearch with univention-ldapsearch in join scripts
+    (Bug #23110) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 26 Oct 2011 09:10:43 +0200
+
 univention-printserver (5.0.12-3) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)

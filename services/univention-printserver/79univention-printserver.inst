@@ -56,7 +56,7 @@ fi
 if [ $JS_LAST_EXECUTED_VERSION -le 7 ]; then
 	if [ "$cups_keep_ppds" != "true" ]; then
 		backupfile=/var/backups/ldap-hp-ppds-`date +"%d-%m-%y-%H-%M-%S"`
-		ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret 'objectclass=univentionPrinterModels' >  $backupfile
+		univention-ldapsearch 'objectclass=univentionPrinterModels' >  $backupfile
 		IFS=":"
 		for i in $(udm settings/printermodel list "$@" | grep ^DN:| sed 's|^DN: |:|'); do
 			if [ -n "$i" ]; then
@@ -9885,11 +9885,11 @@ univention-directory-manager policies/console_access create "$@" --ignore_exists
 # add CUPS to nagios' UNIVENTION_CUPS service check
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
 
-	if ! ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -s base -b "cn=UNIVENTION_CUPS,cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
+	if ! univention-ldapsearch -s base -b "cn=UNIVENTION_CUPS,cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
 		echo "Cannot find nagios object cn=UNIVENTION_CUPS,cn=nagios,$ldap_base (ldapsearch error $?)"
 		echo "Please check if univention-nagios-server is installed on a system in UCS domain to enable nagios functionality."
 	else
-		if [ "$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b "$ldap_hostdn" univentionNagiosEnabled | sed -ne 's/univentionNagiosEnabled: //p')" = "1" ] ; then
+		if [ "$(univention-ldapsearch -b "$ldap_hostdn" univentionNagiosEnabled | sed -ne 's/univentionNagiosEnabled: //p')" = "1" ] ; then
 			univention-directory-manager nagios/service modify "$@" \
 				--dn "cn=UNIVENTION_CUPS,cn=nagios,$ldap_base" \
 				--append assignedHosts="${ldap_hostdn}"

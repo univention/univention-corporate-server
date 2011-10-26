@@ -42,7 +42,7 @@ univention-directory-manager settings/printeruri modify "$@" --dn="cn=printeruri
 
 if [ $JS_LAST_EXECUTED_VERSION -le 2 ]; then
 	if [ "$cups_keep_ppds" != "true" ]; then
-		ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectclass=univentionPrinterModels)(cn=PDF))" dn | grep dn: >/dev/null
+		univention-ldapsearch "(&(objectclass=univentionPrinterModels)(cn=PDF))" dn | grep dn: >/dev/null
 		if [ $? -eq 0 ]; then
 			univention-directory-manager settings/printermodel remove "$@" --dn "cn=PDF,cn=cups,cn=univention,$ldap_base"
 		fi
