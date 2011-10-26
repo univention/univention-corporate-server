@@ -1500,6 +1500,37 @@ class object(content):
 
 		for dev in devices:
 			dev=dev.strip()
+			bn = os.path.basename(dev)
+			try:
+				fn = '/sys/block/%s/capability' % (bn,)
+				f = open(fn, 'r')
+				try:
+					d = f.read()
+				finally:
+					f.close()
+				d = d.rstrip()
+				cap = int(d, 16) # hex
+				if cap & 8: # include/linux/genhd.h: GENHD_FL_CD
+					self.debug('Skipping CD-device %s' % (dev,))
+					continue
+			except IOError, e:
+				self.debug('Error querying %s/capability: %s' % (bn, e))
+
+			try:
+				fn = '/sys/block/%s/ro'
+				f = open(fn, 'r')
+				try:
+					d = f.read()
+				finally:
+					f.close()
+				d = d.rstrip()
+				ro = bool(int(d))
+				if ro: # include/linux/genhd.h: GENHD_FL_CD
+					self.debug('Skipping read-only device %s' % (dev,))
+					continue
+			except IOError, e:
+				self.debug('Error querying %s/ro: %s' % (bn, e))
+
 			p = os.popen('/sbin/parted -s %s unit B print 2>&1 | grep [a-z]'% dev)
 
 			first_line=p.readline().strip()

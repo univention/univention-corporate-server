@@ -1,3 +1,9 @@
+univention-installer (7.0.124-1) unstable; urgency=low
+
+  * Ignore read-only and CD devices (Bug #21988)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 26 Oct 2011 18:24:19 +0200
+
 univention-installer (7.0.123-1) unstable; urgency=low
 
   * added hint to system setup module in 45_password.py (Bug #23870)
