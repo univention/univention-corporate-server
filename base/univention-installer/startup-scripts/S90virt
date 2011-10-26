@@ -49,11 +49,14 @@ then
 
         sleep 1
 
+	if [ ! -e /proc/xen/capabilities ] && grep -q xenfs /proc/filesystems
+	then
+	    mount -t xenfs xenfs /proc/xen || true
+	fi
+
         cd /sys/devices/virtual/tty
         for d in hvc[0-9]; do
-		if [ ! -d "/sys/devices/virtual/tty/$d" ]; then
-			continue
-		fi
+		[ -d "/sys/devices/virtual/tty/$d" ] || continue
                 cd "/sys/devices/virtual/tty/$d"
                 . ./uevent
 		if [ ! -e "/dev/$d" ]; then
@@ -73,15 +76,13 @@ fi
 # create xen/kvm block device files
 cd /sys/block
 for d in vd[a-z] xvd[a-z]; do
-	if [ ! -d "/sys/block/$d" ]; then
-		continue
-	fi
+	[ -d "/sys/block/$d" ] || continue
 	cd "/sys/block/$d"
 	. ./uevent
 	if [ ! -e "/dev/$d" ]; then
 		mknod "/dev/$d" b "$MAJOR" "$MINOR"
 	fi
-        for i in 1 2 3 4 5 6 7 8 9; do
+        for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
                 if [ ! -e "/dev/$d$i" ]; then
                         mknod "/dev/$d$i" b "$MAJOR" "$(($MINOR + $i))"
                 fi

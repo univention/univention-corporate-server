@@ -30,7 +30,7 @@
 # <http://www.gnu.org/licenses/>.
 
 # Add Xen console
-if test -d /proc/xen ; then
+if test -c /dev/hvc0 ; then
 	# update progress message
 	. /tmp/progress.lib
     echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Configuring XEN")" >&9
