@@ -44,7 +44,11 @@ import traceback
 import datetime
 import itertools
 
-import univention.debug as ud
+try:
+	import univention.debug as ud
+except ImportError:
+	import univention.debug2 as ud
+
 import univention.config_registry as ucr
 
 from univention.updater import UniventionUpdater, UCS_Version, PreconditionError, ConfigurationError
@@ -294,7 +298,8 @@ def main():
 	iso=None
 	global nostdout
 
-	ud.init(LOGNAME, ud.NO_FLUSH, ud.NO_FUNCTION)
+	nostdout = False
+	ud.init(LOGNAME, 0, 0)
 	fp_debug=open(LOGNAME, 'a+')
 	stdout_orig=sys.stdout
 	#sys.stdout=fp_debug
@@ -324,7 +329,6 @@ def main():
 	ignoressh = False
 	ignoreterm = False
 	ignorereleasenotes = False
-	nostdout = False
 
 	longopts=['src=','device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check', 'ignoressh', 'ignoreterm', 'ignore-releasenotes', 'silent']
 	try:

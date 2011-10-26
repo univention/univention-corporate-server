@@ -31,7 +31,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.debug as ud
+try:
+	import univention.debug as ud
+except ImportError:
+	import univention.debug2 as ud
+
 from commands import cmd_update, cmd_dist_upgrade_sim, cmd_dist_upgrade
 from errors import *
 

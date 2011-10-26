@@ -1,3 +1,11 @@
+univention-updater (6.0.107-1) unstable; urgency=low
+
+  * If univention.debug is not available use univention.debug2. This
+    could happen when updating to UCS 3.0 and the update aborts
+    (Bug #24223)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Oct 2011 21:53:43 +0200
+
 univention-updater (6.0.106-1) unstable; urgency=low
 
   * univention-updater has been moved to /usr/share/univention-updater.
