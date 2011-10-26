@@ -1,3 +1,9 @@
+univention-updater (7.0.64-2) unstable; urgency=low
+
+  * Point to English version of SDB article for LILO upgrade (Bug #22523)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 26 Oct 2011 13:44:54 +0200
+
 univention-updater (7.0.64-1) unstable; urgency=low
 
   * Re-create the python2.4 environment after python-univention-config-
