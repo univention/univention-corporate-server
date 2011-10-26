@@ -42,7 +42,9 @@ dojo.declare("umc.widgets._ModuleMixin", null, {
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
-		this.moduleStore = umc.store.getModuleStore(this.idProperty, this.moduleID, this.moduleFlavor);
+		if (this.idProperty) {
+			this.moduleStore = umc.store.getModuleStore(this.idProperty, this.moduleID, this.moduleFlavor);
+		}
 	},
 
 	umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor ) {
