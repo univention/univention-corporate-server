@@ -104,9 +104,12 @@ if [ $recreate = "yes" ]; then
 
 	# copy certificates for cyrus
     for file in cert.pem private.key; do
-        cp /etc/univention/ssl/$hostname.$domainname/$file /var/lib/cyrus/$file
-        chown cyrus: /var/lib/cyrus/$file
-        chmod 600 /var/lib/cyrus/$file
+		if [ -e "/var/lib/cyrus/$file" ]
+		then
+			cp /etc/univention/ssl/$hostname.$domainname/$file /var/lib/cyrus/$file
+			chown cyrus /var/lib/cyrus/$file
+			chmod 600 /var/lib/cyrus/$file
+		fi
     done
 
 	# restart services

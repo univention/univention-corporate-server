@@ -169,7 +169,7 @@ if [ "$check_ldap_access" = "1" ]; then
 	exit 0
 fi
 
-if [ `cat /var/run/univention-system-setup.ldap` = "no-ldap" ]; then
+if [ "$(cat /var/run/univention-system-setup.ldap)" = "no-ldap" ]; then
 	ldap_available=0
 fi
 
@@ -525,37 +525,22 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		fi
 	fi
 
-	if [ -x /usr/sbin/apachectl ]; then
-		/usr/sbin/apachectl stop
-		count=0
-		while pidof apache; do
-			sleep 1
-			count=$((count+1))
-			if [ $count -gt 20 ]; then
-				continue;
+	if [ -x /usr/sbin/apache2ctl ]; then
+		/usr/sbin/apache2ctl stop
+		for count in $(seq 1 20); do
+			if ! pidof apache2 > /dev/zero; then
+				break
 			fi
+			sleep 1
 		done
-		/usr/sbin/apachectl start
+		/usr/sbin/apache2ctl start
 	fi
 	service_start nscd
 
 	# stop the dns server and remove the cache
-	service_stop univention-bind univention-bind-proxy univention-dhcp heimdal-kdc univention-directory-listener postgresql samba4
-	sleep 1
+	service_stop  univention-bind univention-bind-proxy univention-dhcp heimdal-kdc cupsys samba univention-directory-listener postgresql samba4
 	rm -f /var/cache/bind/*
 	service_start univention-bind univention-bind-proxy univention-dhcp heimdal-kdc cupsys samba univention-directory-listener postgresql samba4
-
-	if [ -x /usr/sbin/smbd ]; then
-	    for i in `pidof smbd`; do
-			/bin/kill -9 $i
-		done
-		sleep 1
-		for i in `pidof nmbd`; do
-			/bin/kill -9 $i
-		done
-		/etc/init.d/samba restart
-	fi
-
 fi
 
 if [ -d "/var/lib/univention-system-setup/interfaces.post" ]; then

@@ -63,7 +63,7 @@ fi
 
 # Remove old NFS exports and resync from LDAP
 sed -i "/$oldbn/d" /etc/exports
-rm /var/lib/univention-directory-listener/nfs-shares
+rm /var/lib/univention-directory-listener/handlers/nfs-shares
 
 service_stop nscd slapd univention-directory-notifier univention-directory-listener heimdal-kdc
 

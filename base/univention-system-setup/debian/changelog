@@ -1,3 +1,14 @@
+univention-system-setup (5.0.27-1) unstable; urgency=low
+
+  Bug #23993
+  * remove obsolete security/10security
+  * fix basis/14ldap_basis: NFS resync
+  * fix basis/18root_password: use MD5-crypt for root password
+  * fix ssl/10ssl: skip cyrus if not installed
+  * fix net/10interfaces: wait for apache2, syntax error, service restarts
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 26 Oct 2011 15:15:28 +0200
+
 univention-system-setup (5.0.26-1) unstable; urgency=low
 
   * disable performance question of Firefox 7 (Bug #23869)
