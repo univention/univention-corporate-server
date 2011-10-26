@@ -1,3 +1,10 @@
+univention-heimdal (5.0.17-1) unstable; urgency=low
+
+  * allow running salt_krb5keys on a DC backup (Bug #22866)
+  * support standard credential options in salt_krb5keys
+
+ -- Arvid Requate <requate@univention.de>  Wed, 26 Oct 2011 17:57:12 +0200
+
 univention-heimdal (5.0.16-2) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)
