@@ -1,3 +1,11 @@
+univention-debug (5.0.10-1) unstable; urgency=low
+
+  * Provide debug2 for python2.4 module on UCS 3.0. This is necessary if
+    the updater abort during the 3.0 upgrade and the debug package is
+    already updated (Bug #24223)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Oct 2011 21:51:11 +0200
+
 univention-debug (5.0.9-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
