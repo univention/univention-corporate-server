@@ -1,3 +1,10 @@
+univention-updater (7.0.64-1) unstable; urgency=low
+
+  * Re-create the python2.4 environment after python-univention-config-
+    registry was updated (Bug #24195)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Oct 2011 10:07:32 +0200
+
 univention-updater (7.0.63-1) unstable; urgency=low
 
   * Make preup.sh checks more robust (Bug #14175)

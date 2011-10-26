@@ -520,6 +520,18 @@ for pkg in univention-ssl; do
 	fi
 done
 
+## BEGIN -- Python 2.4 environment Bug #24195 
+if [ ! -e /usr/lib/python2.4/site-packages/univention/__init__.py ]; then
+	touch /usr/lib/python2.4/site-packages/univention/__init__.py
+fi
+
+for pymodule in config_registry.py config_registry_info.py baseconfig.py debhelper.py; do
+	if [ ! -e /usr/lib/python2.4/site-packages/univention/${pymodule} ]; then
+		ln -sf /usr/share/pyshared/univention/${pymodule} /usr/lib/python2.4/site-packages/univention/                                                                             
+	fi
+done
+## END -- Bug #24195 
+
 echo ""
 echo "Starting update process, this may take a while."
 echo "Check /var/log/univention/updater.log for more information."
