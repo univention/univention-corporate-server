@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.129-1) unstable; urgency=low
+
+  * fixed umc.tools.cmpObjects() error when comparing numbers (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 26 Oct 2011 05:16:14 -0400
+
 univention-management-console-frontend (1.0.128-1) unstable; urgency=low
 
   * Module: added fix for Grid reload when a page is shown (Bug #22461)

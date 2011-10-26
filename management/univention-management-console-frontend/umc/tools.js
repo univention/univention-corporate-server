@@ -368,7 +368,7 @@ dojo.mixin(umc.tools, {
 				// check for lowercase
 				var a = _a[o.attr];
 				var b = _b[o.attr];
-				if (o.ignCase) {
+				if (o.ignCase && a.toLowerCase && b.toLowerCase) {
 					a = a.toLowerCase();
 					b = b.toLowerCase();
 				}
