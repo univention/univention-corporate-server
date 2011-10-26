@@ -1,3 +1,10 @@
+univention-legacy-kolab-schema (1.0.4-1) unstable; urgency=low
+
+  * readded univentionDefaultKolabHomeServer to univention-ldap and 
+    removed transition schema file form kolab legacy package (Bug #23483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 26 Oct 2011 17:31:16 +0200
+
 univention-legacy-kolab-schema (1.0.3-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

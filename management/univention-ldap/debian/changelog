@@ -1,3 +1,10 @@
+univention-ldap (8.0.57-1) unstable; urgency=low
+
+  * readded univentionDefaultKolabHomeServer to univention-ldap and 
+    removed transition schema file form kolab legacy package (Bug #23483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 26 Oct 2011 17:31:53 +0200
+
 univention-ldap (8.0.56-1) unstable; urgency=low
 
   * Set ldap/master/port in univention-ldap-client.postinst (Bug #24200)
@@ -2169,5 +2176,3 @@ univention-ldap (0.01) unstable; urgency=low
   * Initial release.
 
  -- Roland Bauerschmidt <bauerschmidt@univention.de>  Wed,  1 Aug 2001 13:58:44 +0200
-
-
