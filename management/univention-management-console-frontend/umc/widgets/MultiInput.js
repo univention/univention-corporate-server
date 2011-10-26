@@ -406,7 +406,7 @@ dojo.declare("umc.widgets.MultiInput", [
 		var i, j;
 		for (i = 0; i < this._widgets.length; ++i) {
 			for (j = 0; j < this._widgets[i].length; ++j) {
-				areValid = areValid && this._widgets[i][j].isValid();
+				areValid = areValid && (!this._widgets[i][j].isValid || this._widgets[i][j].isValid());
 			}
 		}
 		return areValid;

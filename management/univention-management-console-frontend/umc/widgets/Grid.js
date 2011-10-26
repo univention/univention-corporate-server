@@ -65,6 +65,11 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 	//		will be displayed in the grid footer.
 	footerFormatter: null,
 
+	// sortIndex: Number
+	//		Controls which column is used for default sorting (values < 0 indicated
+	//		sorting in descending order)
+	sortIndex: 1,
+
 	// use the framework wide translation file
 	i18nClass: 'umc.app',
 
@@ -386,7 +391,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		});
 		this.connect( this._grid, 'onRowClick', '_onRowClick' );
 		this._setColumnsAttr( this.columns );
-		this._grid.setSortIndex(1);
+		this._grid.setSortIndex(Math.abs(this.sortIndex), this.sortIndex > 0);
 		this.addChild(this._grid);
 
 		//
