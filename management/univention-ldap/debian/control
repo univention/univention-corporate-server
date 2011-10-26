@@ -9,10 +9,8 @@ Build-Depends: debhelper (>> 7),
 
 Package: univention-ldap-server
 Architecture: all
-Pre-Depends: slapd (>> 2.1),
+Pre-Depends: slapd (>> 2.4.25-1),
  univention-ldap-client,
- univention-config-registry,
- univention-join
 Depends: ${misc:Depends},
  univention-base-files,
  univention-directory-manager-tools (>> 7.0.147),
@@ -25,7 +23,8 @@ Depends: ${misc:Depends},
  univention-ldap-acl-master | univention-ldap-acl-slave,
  bind9-host,
  shell-univention-lib (>= 1.0.23),
- univention-newsid
+ univention-newsid,
+ univention-join
 Conflicts: univention-5250 (<< 0.5),
  univention-mail-cyrus-quota-master
 Replaces: univention-mail-cyrus-quota-master
