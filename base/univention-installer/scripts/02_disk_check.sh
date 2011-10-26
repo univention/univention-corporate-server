@@ -200,7 +200,7 @@ echo "Done"
 # mount root filesystem
 fs=$(python2.6 /sbin/univention-config-registry get installer/device/0/fs)
 dev=$(python2.6 /sbin/univention-config-registry get installer/device/0/name)
-msg=$(/bin/mount -t $fs $dev /instmnt $LOG 2<&1)
+msg=$(/bin/mount -t "$fs" "$dev" /instmnt 2>&1)
 
 # error message if root could not be mounted
 if [ 0 -ne "$?" ]; then
