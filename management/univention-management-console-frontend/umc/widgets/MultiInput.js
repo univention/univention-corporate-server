@@ -25,6 +25,10 @@ dojo.declare("umc.widgets.MultiInput", [
 	//		property is passed to umc.render.widgets().
 	subtypes: null,
 
+	// max: Number
+	//		Maximal number of elements.
+	max: Infinity,
+
 	// the widget's class name as CSS class
 	'class': 'umcMultiInput',
 
@@ -142,6 +146,11 @@ dojo.declare("umc.widgets.MultiInput", [
 
 		// set all values
 		dojo.forEach(valList, function(ival, irow) {
+			if (irow >= this._widgets.length) {
+				// break
+				return false;
+			}
+
 			var rowVals = [];
 			if (dojo.isString(ival)) {
 				// entry is string .. we need to parse it if we have a delimiter
@@ -268,7 +277,8 @@ dojo.declare("umc.widgets.MultiInput", [
 		// remove the 'new' button
 		this._removeNewButton();
 
-		for (var irow = this._nRenderedElements; irow < this._nRenderedElements + n; ++irow) {
+		var nFinal = this._nRenderedElements + n 
+		for (var irow = this._nRenderedElements; irow < nFinal && irow < this.max; ++irow, ++this._nRenderedElements) {
 			// add all other elements with '__' such that they will be ignored by umc.widgets.form
 			var order = [], widgetConfs = [];
 			dojo.forEach(this.subtypes, function(iwidget, i) {
@@ -350,11 +360,10 @@ dojo.declare("umc.widgets.MultiInput", [
 			}, this);
 		}
 
-		// update the number of render elements
-		this._nRenderedElements += n;
-
-		// add the new button
-		this._addNewButton();
+		// add the new button 
+		if (this._nRenderedElements < this.max) {
+			this._addNewButton();
+		}
 	},
 
 	_popElements: function(n) {

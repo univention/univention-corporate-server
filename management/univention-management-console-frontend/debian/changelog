@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.130-1) unstable; urgency=low
+
+  * MultiInput: added property 'max' (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 26 Oct 2011 06:49:49 -0400
+
 univention-management-console-frontend (1.0.129-1) unstable; urgency=low
 
   * fixed umc.tools.cmpObjects() error when comparing numbers (Bug #22461)
