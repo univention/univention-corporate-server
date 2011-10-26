@@ -246,4 +246,4 @@ def identify(dn, attr, canonical=0):
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALIAS(host_record) identify DN=%s'% dn)
 	return 'dNSZone' in attr.get('objectClass', []) and '@' not in attr.get('relativeDomainName', []) and \
 		not attr['zoneName'][0].endswith('.arpa') and not attr.get( 'cNAMERecord', [] ) and \
-		not attr.get('sRVRecord', []) and ( attr.get('aRecord', []) or attr.get(attr.get('aAAARecord', [])) or attr.get('mXRecord', []))
+		not attr.get('sRVRecord', []) and ( attr.get('aRecord', []) or attr.get('aAAARecord', []) or attr.get('mXRecord', []))
