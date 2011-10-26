@@ -1,3 +1,12 @@
+univention-updater (7.0.65-1) unstable; urgency=low
+
+  * If univention.debug is not available use univention.debug2. This
+    could happen when updating to UCS 3.0 and the update aborts
+    (Bug #24223)
+  * postup.sh: create /etc/python2.6/sitecustomize.py (Bug #24175)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Oct 2011 21:14:28 +0200
+
 univention-updater (7.0.64-2) unstable; urgency=low
 
   * Point to English version of SDB article for LILO upgrade (Bug #22523)

@@ -38,7 +38,10 @@ import subprocess
 import itertools
 
 from tools import UniventionUpdater, UCS_Version
-import univention.debug as ud
+try:
+	import univention.debug as ud
+except ImportError:
+	import univention.debug2 as ud
 
 class UniventionMirror( UniventionUpdater ):
 	def __init__( self ):

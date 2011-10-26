@@ -134,6 +134,9 @@ fi
 # remove old sysklogd startup links (Bug #23143)
 update-rc.d -f sysklogd remove 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
 
+# create /etc/python2.6/sitecustomize.py
+univention-config-registry commit /etc/python2.6/sitecustomize.py >>"$UPDATER_LOG" 2>&1
+
 # executes custom postup script (always required)
 if [ ! -z "$update_custom_postup" ]; then
 	if [ -f "$update_custom_postup" ]; then
