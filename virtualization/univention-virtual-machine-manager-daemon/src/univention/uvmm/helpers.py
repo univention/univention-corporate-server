@@ -87,53 +87,9 @@ def ms(ms):
 	h, m = divmod(hm, 60)
 	return "%d:%02d:%06.3f" % (h, m, s / 1000.0)
 
-import re
 import socket
 
-RE_VIRT_URI = re.compile('(?P<scheme>[a-z+]+)://(?P<netloc>[^/]*)(?P<path>/.*)')
-
 FQDN = socket.getfqdn()
-
-def uri_netloc(uri):
-	"""Extract the net-location part from the uri.
-
-	>>> uri_netloc('xen://hostname.domainname/')
-	'hostname.domainname'
-	"""
-	try:
-		m = RE_VIRT_URI.match(uri)
-		g = m.groupdict()
-		return g['netloc']
-	except:
-		raise TypeError('Not a valid uri')
-
-def match_self(uris):
-	"""Check if uris contains own hostname, fqdn or 'all'.
-	
-	>>> match_self(['all'])
-	True
-	>>> match_self(['xen://%s/' % FQDN])
-	True
-	>>> match_self(['xen://%s/' % FQDN.split('.')[0]])
-	True
-	>>> match_self(['invalid host name'])
-	False
-	"""
-	global __self_set
-	try:
-		__self_set
-	except NameError, e:
-		from os import uname
-		__self_set = set((FQDN, uname()[1]))
-	for uri in uris:
-		if 'all' == uri:
-			return True
-		try:
-			if uri_netloc(uri) in __self_set:
-				return True
-		except TypeError, e:
-			pass
-	return False
 
 def uri_encode(uri):
 	"""
@@ -200,6 +156,32 @@ class timeout(object):
 		except Exception, e:
 			self.exception = sys.exc_info()
 
+"""
+Extension ot urlparse for node URIs
+
+example:
+import urlparse
+
+> urlparse.urlsplit( 'xen://host.domain.tld/system' )
+SplitResult(scheme='xen', netloc='host.domain.tld', path='/system', query='', fragment='')
+"""
+
+import urlparse
+
+__all = []
+__all += ['lxc']
+__all += ['vpx', 'esx', 'gsx']
+__all += ['vmwareplayer']
+__all += ['vmwarews%s' % v for v in ['', '+tcp', '+ssh']]
+__all += ['openvz%s' % v for v in ['', '+unix', '+tcp', '+ssh']]
+__all += ['qemu%s' % v for v in ['', '+unix', '+tcp', '+ssh']]
+__all += ['test%s' % v for v in ['', '+unix', '+tcp', '+ssh']]
+__all += ['uml%s' % v for v in ['', '+unix', '+tcp', '+ssh']]
+__all += ['vbox%s' % v for v in ['', '+unix', '+tcp', '+ssh']]
+__all += ['xen%s' % v for v in ['', '+unix', '+tcp', '+ssh']]
+
+urlparse.uses_netloc += __all
+urlparse.uses_query += __all
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

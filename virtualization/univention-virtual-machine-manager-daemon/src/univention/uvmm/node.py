@@ -848,13 +848,15 @@ class Nodes(dict):
 			node.set_frequency(hz)
 
 	def list( self, group, pattern ):
-		"""Return list of watched nodes."""
-		if group == 'default': # FIXME
-			nodes = []
+		"""Return list of watched nodes matching the given pattern."""
+		nodes = []
+		if group == 'default' or group is None: # FIXME
 			pattern_regex = re.compile( fnmatch.translate( pattern ), re.IGNORECASE )
-			return filter( lambda x: pattern_regex.match( x ) is not None, self.keys() )
-		else:
-			return []
+			for node_uri in self.keys():
+				if pattern_regex.match( node_uri ) is not None:
+					nodes.append( self[ node_uri ].pd )
+
+		return nodes
 
 nodes = Nodes()
 node_add = nodes.add

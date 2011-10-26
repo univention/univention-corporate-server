@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.12-1) unstable; urgency=low
+
+  * UMC module: add commands uvmm/nav/query, uvmm/node/query; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Oct 2011 15:01:32 +0200
+
 univention-virtual-machine-manager-daemon (1.0.11-1) unstable; urgency=low
 
   * UMC module: add commands uvmm/domain/get, uvmm/domain/state; Bug #22893

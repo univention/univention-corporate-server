@@ -12,8 +12,8 @@
 	</command>
 	<command name="uvmm/domain/query" function="domain_query">
 	</command>
-	<command name="uvmm/node/get" function="node_get">
-	</command>
+	<!-- <command name="uvmm/node/get" function="node_get"> -->
+	<!-- </command> -->
 	<command name="uvmm/domain/get" function="domain_get">
 	</command>
 	<command name="uvmm/domain/add" function="domain_add">
@@ -43,6 +43,8 @@
 	<command name="uvmm/device/put" function="device_put">
 	</command>
 	<command name="uvmm/storage/query" function="storage_query">
+	</command>
+	<command name="uvmm/nav/query" function="nav_query">
 	</command>
   </module>
 </umc>
