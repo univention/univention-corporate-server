@@ -22,6 +22,26 @@ dojo.declare("umc.widgets.Module", [ dijit.layout.StackContainer, umc.widgets._M
 
 	resetTitle: function() {
 		this.set( 'title', this.defaultTitle );
+	},
+
+	startup: function() {
+		this.inherited(arguments);
+
+		// FIXME: Workaround for refreshing problems with datagrids when they are rendered
+		//        on an inactive tab.
+
+		// iterate over all tabs
+		dojo.forEach(this.getChildren(), function(ipage) {
+			// find all widgets that inherit from dojox.grid._Grid on the tab
+			dojo.forEach(ipage.getDescendants(), function(iwidget) {
+				if (umc.tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
+					// hook to onShow event
+					this.connect(ipage, 'onShow', function() {
+						iwidget.startup();
+					});
+				}
+			}, this);
+		}, this);
 	}
 });
 

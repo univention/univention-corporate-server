@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.128-1) unstable; urgency=low
+
+  * Module: added fix for Grid reload when a page is shown (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 26 Oct 2011 04:16:07 -0400
+
 univention-management-console-frontend (1.0.127-1) unstable; urgency=low
 
   * MultiSelect: fixed problem with double resolve of Deferred object
