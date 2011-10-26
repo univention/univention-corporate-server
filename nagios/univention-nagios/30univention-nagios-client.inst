@@ -58,13 +58,23 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
         univention-directory-manager computers/${server_role} modify "$@" --dn ${ldap_hostdn} --append-option="nagios"
     fi
 
+	# remove obsolte services from host
+	oldServices="UNIVENTION_SMTP"
+	for i in $oldServices; do
+		dn="cn=$i,cn=nagios,$ldap_base"
+		if udm nagios/service list "$@" --filter name="$i" | grep -q "^DN: cn=$i"; then
+			univention-directory-manager nagios/service modify "$@" --dn "$dn" \
+			--remove assignedHosts="${ldap_hostdn}"
+		fi
+	done
+
     # append host to default services
     for dn in "cn=UNIVENTION_PING,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_DISK_ROOT,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_SWAP,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_DNS,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_NTP,cn=nagios,$ldap_base" \
-              "cn=UNIVENTION_SMTP,cn=nagios,$ldap_base" \
+              "cn=UNIVENTION_SMTP2,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_REPLICATION,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_LOAD,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_NSCD,cn=nagios,$ldap_base" ; do

@@ -11,6 +11,7 @@ usr/lib/nagios/plugins/check_univention_joinstatus usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_ldap usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_ldap_suidwrapper usr/lib/nagios/plugins/
+usr/lib/nagios/plugins/check_univention_smtp usr/lib/nagios/plugins/
 usr/share/nagios-plugins/templates-univention/univention.cfg usr/share/nagios-plugins/templates-univention/
 nagios-client.py usr/lib/univention-directory-listener/system/
 30univention-nagios-client.inst usr/lib/univention-install/
