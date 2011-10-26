@@ -1,3 +1,10 @@
+univention-bind (6.0.29-1) unstable; urgency=low
+
+  * activate IPv6 support by default (Bug #15304)
+    (may be deactivated via dns/ipv6=false)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 26 Oct 2011 10:54:49 +0200
+
 univention-bind (6.0.28-1) unstable; urgency=low
 
   * Call univention-dnsedit with --ignore-exists (Bug #23161)

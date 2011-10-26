@@ -15,6 +15,11 @@ if dns_allow_query:
 if dns_allow_query_cache:
 	print '\tallow-recursion { %s; };' % dns_allow_query_cache
 	print '\tallow-query-cache { %s; };' % dns_allow_query_cache
+
+val = 'none'
+if configRegistry.is_true('dns/ipv6', True ):
+	val = 'any'
+print '\tlisten-on-v6 { %s; };' % val
 @!@};
 logging {
    category lame-servers { null; };

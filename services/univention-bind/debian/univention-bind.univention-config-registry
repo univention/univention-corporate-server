@@ -1,5 +1,6 @@
 Type: file
 File: etc/bind/named.conf
+Variables: dns/ipv6
 
 Type: file
 File: etc/runit/univention-bind/run
@@ -18,6 +19,7 @@ Variables: dns/forwarder3
 Variables: dns/allow/query
 Variables: dns/allow/query/cache
 Variables: dns/fakeroot
+Variables: dns/ipv6
 
 Type: file
 File: etc/bind/named.conf.samba4
@@ -27,6 +29,7 @@ Variables: dns/forwarder1
 Variables: dns/forwarder2
 Variables: dns/forwarder3
 Variables: dns/fakeroot
+Variables: dns/ipv6
 
 Type: file
 Mode: 755

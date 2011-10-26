@@ -51,3 +51,9 @@ Description[de]=ACL ID der Systeme oder Netzwerke, die als Option allow-query-ca
 Description[en]=ACL ID of the systems or networks, that are set for the option allow-query-cache. Additionally to the value 'any' the use of defined ACLs is possible.
 Type=str
 Categories=Network
+
+[dns/ipv6]
+Description[de]=Definiert, ob Bind auch über IPv6-Sockets ansprechbar ist (Standard: yes)
+Description[en]=Defines if the bind service should listen on IPv6 sockets (Default: yes)
+Type=str
+Categories=service-bind

@@ -49,7 +49,8 @@ chmod g+w /etc/bind
 chmod g+w /etc/bind/*
 
 univention-config-registry set 'bind/autostart?yes' \
-								'nameserver/external?false'
+                               'dns/ipv6?yes' \
+                               'nameserver/external?false'
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10; then
 	# Update to UCS 3.0
