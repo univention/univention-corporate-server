@@ -53,7 +53,7 @@ from univention.management.console.protocol.definitions import *
 
 from .ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, LDAP_ConnectionError, set_credentials
 
-_ = Translation( 'univention-management-console-modules-udm' ).translate
+_ = Translation( 'univention-management-console-module-udm' ).translate
 
 class Instance( Base ):
 	def __init__( self ):

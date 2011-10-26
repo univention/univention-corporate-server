@@ -56,7 +56,7 @@ except:
     GPLversion=True
 
 
-_ = Translation( 'univention-management-console-modules-udm' ).translate
+_ = Translation( 'univention-management-console-module-udm' ).translate
 
 udm_modules.update()
 
