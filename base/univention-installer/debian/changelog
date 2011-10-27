@@ -1,3 +1,10 @@
+univention-installer (7.0.125-1) unstable; urgency=low
+
+  * The tests must be done before the upgrade, otherwise new join
+    scripts will be shown as warning (Bug #23284)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 27 Oct 2011 15:03:06 +0200
+
 univention-installer (7.0.124-1) unstable; urgency=low
 
   * Ignore read-only and CD devices (Bug #21988)
