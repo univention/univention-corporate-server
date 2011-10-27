@@ -10,7 +10,9 @@ Standards-Version: 3.8.2
 Package: univention-tftp
 Architecture: all
 Depends: ${misc:Depends},
- atftpd
+ atftpd,
+ syslinux
+Replaces: univention-client-boot-pxe
 Description: UCS - TFTP server
  This packages installs a TFTP server, which can be used
  by computers booting off the network to receive their
