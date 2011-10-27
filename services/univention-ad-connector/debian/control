@@ -53,7 +53,8 @@ Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  python-univention-connector-ad (= ${binary:Version}),
  shell-univention-lib (>= 1.0.6),
- python-univention-lib (>= 1.0.25-1)
+ python-univention-lib (>= 1.0.25-1),
+ univention-management-console-module-adconnector (= ${binary:Version})
 Recommends: univention-nagios-ad-connector
 Description: UCS - Modules for sync UCS and Active Directory
  This package contains the modules that implement the
@@ -80,3 +81,10 @@ Description: UCS - AD-connector Exchange configuration
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-management-console-module-adconnector
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends},
+ univention-management-console-server,
+Description: UMC module for Univention AD Connector
+ This package contains the Univention AD Connector UMC module.

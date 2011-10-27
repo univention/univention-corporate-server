@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.18-1) unstable; urgency=low
+
+  * starting to implement new UMC module for AD connector; Bug #23713
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 27 Oct 2011 18:01:27 +0200
+
 univention-ad-connector (6.0.17-1) unstable; urgency=low
 
   * Don't recode userCertificate;binary (Bug #23612)

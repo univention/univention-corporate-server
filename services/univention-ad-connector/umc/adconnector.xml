@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="adconnector" icon="top" version="1.0">
+	<name>Univention AD Connector</name>
+	<description>Configuration of the Univention AD Connector</description>
+	<categories>
+		<category name="system"/>
+	</categories>
+	<command name="adconnector/configure" function="configure">
+	</command>
+	<command name="adconnector/defaults" function="defaults">
+	</command>
+	<command name="adconnector/start" function="start">
+	</command>
+	</module>
+</umc>

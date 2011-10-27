@@ -33,28 +33,19 @@
 
 AD_TOOLS_DEST=$(CURDIR)/debian/univention-ad-connector
 
-
-version := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
-copyrightyear := $(shell date +%Y)
-
 PO_FILES := $(shell find modules -name '*.po')
 MO_FILES := $(PO_FILES:%.po=%.mo)
-IMAGES:=$(shell find images -name '*.gif' -o -name '*.png')
 
 %.mo:	%.po
 	msgfmt --check -o $@ $<
 
 override_dh_auto_build: $(MO_FILES)
+	dh-umc-module-build
 	dh_auto_build
 
 override_dh_auto_install:
+	dh-umc-module-install
 	univention-install-config-registry
-	set -e;\
-	for i in $(IMAGES); do\
-		o=debian/univention-ad-connector/usr/share/univention-management-console/www/themes/$$i;\
-		install -d "`dirname $$o`";\
-		install -m644 $$i $$o;\
-	done
 	@set -e;\
 	for i in $(MO_FILES); do\
 		lang=`basename "$$i" .mo`;\
@@ -63,7 +54,7 @@ override_dh_auto_install:
 		install -d "`dirname "$$o"`";\
 		install -m 644 "$$i" "$$o";\
 	done
-	dh_auto_install 
+	dh_auto_install
 	install -D -m644 windows/ucs-ad-connector/msi-package/UCS\ AD\ Connector/out/installscript.mm/MSI/setup.msi $(AD_TOOLS_DEST)/usr/share/univention-ad-connector/ucs-ad-connector.msi
 	install -D -m644 windows/ucs-ad-connector/msi-package/UCS\ AD\ Connector\ 64bit/out/installscript.mm/MSI/setup.msi $(AD_TOOLS_DEST)/usr/share/univention-ad-connector/ucs-ad-connector-64bit.msi
 
