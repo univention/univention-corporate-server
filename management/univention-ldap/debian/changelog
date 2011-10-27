@@ -1,3 +1,9 @@
+univention-ldap (8.0.58-1) unstable; urgency=low
+
+  * added Recommends dependency to univention-legacy-kolab-schema (Bug #23788)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 27 Oct 2011 10:18:18 +0200
+
 univention-ldap (8.0.57-1) unstable; urgency=low
 
   * readded univentionDefaultKolabHomeServer to univention-ldap and 

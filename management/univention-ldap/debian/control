@@ -61,6 +61,7 @@ Depends: ${misc:Depends}
 Conflicts: univention-5250 (<< 0.5.23),
  univention-5250-powerterm (<< 1.4.11),
  univention-mail-cyrus-quota-master
+Recommends: univention-legacy-kolab-schema
 Replaces: univention-mail-cyrus-quota-master
 Description: UCS - common LDAP configuration
  This package contains the general configuration for the
