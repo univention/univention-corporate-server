@@ -1,0 +1,35 @@
+[pxe/installer/initrd]
+Description[de]=Name der initrd Datei für der Installation via PXE
+Description[en]=Name of the initrd file for the pxe installation
+Type=str
+Categories=system-base
+
+[pxe/installer/ramdisksize]
+Description[de]=Größe der Ramdisk für der Installation via PXE
+Description[en]=Size of the ramdisk for the pxe installation
+Type=str
+Categories=system-base
+
+[pxe/installer/quiet]
+Description[de]=Gibt an, ob der Kernel Paramter quiet bei der PXE Installation gesetzt wird
+Description[en]=Specifies whether to set the kernel paramater quiet for the pxe installation
+Type=str
+Categories=system-base
+
+[pxe/installer/vga]
+Description[de]=VGA Kernel-Parameter für die Installation via PXE
+Description[en]=VGA kernel paramter for the pxe installation
+Type=str
+Categories=system-base
+
+[pxe/installer/loglevel]
+Description[de]=Kernel Loglevel für die Installation via PXE
+Description[en]=Kernel log level for the pxe installation
+Type=str
+Categories=system-base
+
+[pxe/installer/ipappend]
+Description[de]=Wert für die PXE IPAPPEND Option
+Description[en]=Value for the pxe ipappend option
+Type=str
+Categories=system-base

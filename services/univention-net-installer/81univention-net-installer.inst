@@ -41,6 +41,14 @@ eval "$(univention-config-registry shell)"
 univention-directory-manager container/cn create "$@" --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname
 univention-directory-manager shares/share create "$@" --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --option nfs --set name=ucs-repository --set path=/var/lib/univention-repository --set host=$hostname.$domainname
 
+# set boot file on default dhcp/boot policy
+old=$(univention-directory-manager policies/dhcp_boot list "$@" --filter cn=default-settings | grep boot_filename | awk -F "boot_filename: " '{print $2}')
+if [ -z "$old" -o "$old" = "None" ]; then
+	univention-directory-manager policies/dhcp_boot modify "$@" --ignore_exists \
+	--dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$ldap_base" \
+	--set boot_filename=pxelinux.0
+fi
+
 joinscript_save_current_version
 
 

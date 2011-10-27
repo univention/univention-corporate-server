@@ -49,11 +49,17 @@ if [ ! -e /var/lib/univention-client-boot/linux-server ]; then
 	fi
 fi
 
+univention-config-registry set \
+	pxe/installer/initrd?"linux.bin" \
+	pxe/installer/ramdisksize?"184696" \
+	pxe/installer/quiet?"yes" \
+	pxe/installer/vga?"788" \
+	pxe/installer/loglevel?"0" \
+	pxe/installer/ipappend?"3"
+
 call_joinscript 81univention-net-installer.inst
 
-
-if test -f /etc/init.d/univention-directory-listener
-	then
+if test -f /etc/init.d/univention-directory-listener; then
 	/etc/init.d/univention-directory-listener crestart
 fi
 

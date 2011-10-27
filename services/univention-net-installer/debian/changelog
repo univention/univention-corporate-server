@@ -1,3 +1,12 @@
+univention-net-installer (5.0.3-1) unstable; urgency=low
+
+  * added pxe/installer ucr vars
+  * modified listener
+  * set boot_filename=pxelinux.0 on default dhcp_boot policy
+  (Bug #20014)
+
+ -- Felix Botner <botner@univention.de>  Thu, 27 Oct 2011 18:12:33 +0200
+
 univention-net-installer (5.0.2-2) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)

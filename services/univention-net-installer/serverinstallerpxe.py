@@ -54,18 +54,29 @@ def handler(dn, new, old):
 
 	baseConfig.load()
 
-	if baseConfig.has_key('pxe/append'):
-		append = baseConfig['pxe/append']
+
+	if baseConfig.has_key('pxe/installer/append'):
+		append = baseConfig['pxe/installer/append']
 	else:
-		append = "root=/dev/ram rw initrd=linux.bin ramdisk_size=147456 vt.default_utf8=0 flavor=linux nfs"
+
+		append  = "root=/dev/ram rw nomodeset "
+		append += "initrd=%s " % baseConfig.get("pxe/installer/initrd", "linux.bin")
+		append += "ramdisk_size=%s " % baseConfig.get("pxe/installer/ramdisksize", "184696")
+		if baseConfig.is_true("pxe/installer/quiet", False):
+			append += "quiet "
+		append += "vga=%s " % baseConfig.get("pxe/installer/vga", "788")
+		append += "loglevel=%s " % baseConfig.get("pxe/installer/loglevel", "0")
+		append += "flavor=linux nfs"
+  
+	ipappend = baseConfig.get('pxe/installer/ipappend', "3")
 
 	pxeconfig_start = \
 	'''# Perform an profile installation by default
 PROMPT 0
 DEFAULT linux
-IPAPPEND 1
+IPAPPEND %s
 
-APPEND %s '''%append
+APPEND %s ''' % (ipappend, append)
 	pxeconfig_end = \
 	'''
 LABEL linux
