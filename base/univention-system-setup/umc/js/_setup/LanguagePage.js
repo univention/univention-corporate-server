@@ -47,13 +47,14 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 		}, {
 			type: 'MultiSelect',
 			name: 'locale',
-			label: this._('System languages'),
+			label: this._('Installed system locales'),
 			umcpCommand: this.umcpCommand,
-			dynamicValues: 'setup/lang/locales'
+			dynamicValues: 'setup/lang/locales',
+			height: '200px'
 		}, {
 			type: 'ComboBox',
 			name: 'locale/default',
-			label: this._('Default system language'),
+			label: this._('Default system locale'),
 			depends: 'locale',
 			umcpCommand: this.umcpCommand,
 			dynamicValues: dojo.hitch(this, function(vals) {
@@ -72,13 +73,10 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 		this._form = new umc.widgets.Form({
 			widgets: widgets,
 			layout: layout,
-			onSubmit: dojo.hitch(this, 'onSave')
-		});
-
-		/*var container = new umc.widgets.ContainerWidget({
+			onSubmit: dojo.hitch(this, 'onSave'),
 			scrollable: true
 		});
-		container.addChild(this._form);*/
+
 		this.addChild(this._form);
 	},
 
@@ -92,6 +90,38 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 		var vals = this._form.gatherFormValues();
 		vals.locale = vals.locale.join(' ');
 		return vals;
+	},
+	
+	getSummary: function() {
+		// a list of all components with their labels
+		var allLocales = {};
+		dojo.forEach(this._form.getWidget('locale').getAllItems(), function(iitem) {
+			allLocales[iitem.id] = iitem.label;
+		});
+
+		// get a verbose list of all locales
+		var locales = dojo.map(this._form.getWidget('locale').get('value'), function(ilocale) {
+			return allLocales[ilocale];
+		});
+		
+		var vals = this.getValues();
+		return [{
+			variables: ['timezone' ],
+			description: this._('Time zone'),
+			values: vals['timezone']
+		}, {
+			variables: ['locale/keymap' ],
+			description: this._('Keyboard layout'),
+			values: vals['locale/keymap']
+		}, {
+			variables: ['locale' ],
+			description: this._('Installed system locales'),
+			values: locales.join(', ')
+		}, {
+			variables: ['locale/default' ],
+			description: this._('Default system locale'),
+			values: allLocales[vals['locale/default']]
+		}];
 	},
 
 	onSave: function() {

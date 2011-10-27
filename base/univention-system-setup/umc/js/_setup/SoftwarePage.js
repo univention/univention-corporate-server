@@ -22,8 +22,6 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
 
-	_loadingDone: null,
-
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -40,6 +38,7 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 			label: this._('Installed software components'),
 			umcpCommand: this.umcpCommand,
 			dynamicValues: 'setup/software/components',
+			sortDynamicValues: false,
 			style: 'width: 500px;',
 			height: '200px'
 		}];
@@ -52,7 +51,8 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 		this._form = new umc.widgets.Form({
 			widgets: widgets,
 			layout: layout,
-			onSubmit: dojo.hitch(this, 'onSave')
+			onSubmit: dojo.hitch(this, 'onSave'),
+			scrollable: true
 		});
 
 		this.addChild(this._form);
@@ -65,15 +65,7 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 			installedPackages[ipackage] = true;
 		});
 
-		// We need a workaround here since values are set during reloading of 
-		// the grid, we need to wait for onValuesLoaded.
-		// In the grid, there should be a mechanism that takes care of that, 
-		// e.g., a deferred object that executes after fetching
-		// ... any setting of value will be chained to this deferred
 		var components = this._form.getWidget('components');
-		if (!this._loadingDone) {
-			this._loadingDone = new dojo.Deferred();
-		}
 		this.umcpCommand('setup/software/components').then(dojo.hitch(this, function(data) {
 			// all form values have been loaded, we have also the list of components
 			var installedComponents = [];
@@ -92,18 +84,9 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 				}
 			});
 
-			// set the value as soon as the grid has loaded its values
-			this._loadingDone.then(dojo.hitch(this, function() {
-				components.setInitialValue(installedComponents, true);
-			}));
+			// set the values
+			components.setInitialValue(installedComponents, true);
 		}));
-
-		var handle = this.connect(components, 'onValuesLoaded', function() {
-			this.disconnect(handle);
-
-			// notify the deferred that the values are loaded
-			this._loadingDone.resolve();
-		});
 	},
 
 	getValues: function() {
@@ -113,7 +96,27 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 			// are separated with a ':'
 			packages = packages.concat(icomponent.split(':'));
 		});
+		packages = packages.sort();
 		return { packages: packages.join(' ') };
+	},
+
+	getSummary: function() {
+		// a list of all components with their labels
+		var allComponents = {};
+		dojo.forEach(this._form.getWidget('components').getAllItems(), function(iitem) {
+			allComponents[iitem.id] = iitem.label;
+		});
+
+		// get a (verbose) list of all installed components
+		var components = dojo.map(this._form.gatherFormValues().components, function(icomponent) {
+			return allComponents[icomponent];
+		});
+
+		return [{
+			variables: ['packages'],
+			description: this._('Installed software components'),
+			values: components.join(', ')
+		}];
 	},
 
 	onSave: function() {

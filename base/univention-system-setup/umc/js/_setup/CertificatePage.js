@@ -22,6 +22,8 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
 
+	_noteShowed: false,
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -51,7 +53,7 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 		}, {
 			type: 'TextBox',
 			name: 'ssl/locality',
-			label: this._('Locality')
+			label: this._('Location')
 		}, {
 			type: 'TextBox',
 			name: 'ssl/organization',
@@ -73,25 +75,64 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 			label: this._('Location settings'),
 			layout: [ 'ssl/country', 'ssl/state', 'ssl/locality' ]
 		}, {
-			label: this._('Organisation settings'),
+			label: this._('Organization settings'),
 			layout: [ 'ssl/organization', 'ssl/organizationalunit' ]
 		}];
 
 		this._form = new umc.widgets.Form({
 			widgets: widgets,
 			layout: layout,
-			onSubmit: dojo.hitch(this, 'onSave')
+			onSubmit: dojo.hitch(this, 'onSave'),
+			scrollable: true
 		});
+
+		umc.tools.forIn(this._form._widgets, function(iname, iwidget) {
+			this.connect(iwidget, 'onKeyUp', function() {
+				if (iwidget.focused) {
+					this._showNote();
+				}
+			});
+			this.connect(iwidget, 'onChange', function() {
+				if (iwidget.focused) {
+					this._showNote();
+				}
+			});
+		}, this);
 
 		this.addChild(this._form);
 	},
 
+	_showNote: function() {
+		if (!this._noteShowed) {
+			this._noteShowed = true;
+			this.addNote(this._('Changes in the SSL certificate settings will result in generating new root SSL certificates. Note that this will require an update of all host certificates in the domain as the old root certificate is no longer valid.'));
+		}
+	},
+
 	setValues: function(_vals) {
 		this._form.setFormValues(_vals);
+		this.clearNotes();
+		this._noteShowed = false;
 	},
 
 	getValues: function() {
 		return this._form.gatherFormValues();
+	},
+
+	getSummary: function() {
+		// a list of all countries
+		var allCountries = {};
+		dojo.forEach(this._form.getWidget('ssl/country').getAllItems(), function(iitem) {
+			allCountries[iitem.id] = iitem.label;
+		});
+
+		var vals = this.getValues();
+		vals['ssl/country'] = allCountries[vals['ssl/country']];
+		return [{
+			variables: [/^ssl\/.*/],
+			description: this._('SSL root certificate'),
+			values: dojo.replace('{ssl/common}, {ssl/email}, {ssl/organization}, {ssl/organizationalunit}, {ssl/locality}, {ssl/state}, {ssl/country}', vals)
+		}];
 	},
 
 	onSave: function() {

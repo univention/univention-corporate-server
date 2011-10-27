@@ -15,5 +15,5 @@ msgstr ""
 msgid "System Setup"
 msgstr ""
 
-msgid "Univention System Setup for configuring the machine"
-msgstr ""
+msgid "Univention System Setup for configuring the server"
+msgstr "Univention System-Setup zur Konfiguration des Servers"

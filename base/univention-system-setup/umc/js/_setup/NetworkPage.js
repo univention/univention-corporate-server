@@ -24,6 +24,9 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
 
+	// dicts of the original IPv4/v6 values
+	_orgValues: null,
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -120,12 +123,14 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			type: 'MultiInput',
 			subtypes: [{ type: 'TextBox' }],
 			name: 'nameserver',
-			label: this._('Domain name server (max. 3)')
+			label: this._('Domain name server (max. 3)'),
+			max: 3
 		}, {
 			type: 'MultiInput',
 			subtypes: [{ type: 'TextBox' }],
 			name: 'dns/forwarder',
-			label: this._('External name server (max. 3)')
+			label: this._('External name server (max. 3)'),
+			max: 3
 		}, {
 			type: 'TextBox',
 			name: 'proxy/http',
@@ -146,7 +151,8 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		this._form = new umc.widgets.Form({
 			widgets: widgets,
 			layout: layout,
-			onSubmit: dojo.hitch(this, 'onSave')
+			onSubmit: dojo.hitch(this, 'onSave'),
+			scrollable: true
 		});
 
 		this.addChild(this._form);
@@ -221,6 +227,15 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 	},
 		
 	setValues: function(_vals) {
+		// save a copy of all original values that may be lists
+		var r = /^(interfaces\/(eth[0-9]+).*|nameserver[1-3]|dns\/forwarder[1-3])$/;
+		this._orgValues = {};
+		umc.tools.forIn(_vals, function(ikey, ival) {
+			if (r.test(ikey)) {
+				this._orgValues[ikey] = ival;
+			}
+		}, this)
+
 		// copy values that do not change in their name
 		var vals = {};
 		dojo.forEach(['gateway', 'ipv6/gateway', 'proxy/http'], function(ikey) {
@@ -246,7 +261,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		});
 
 		// copy ipv4 interfaces
-		var r = /interfaces\/((eth[0-9]+)(_([0-9]))?)\/(.+)/;
+		r = /interfaces\/((eth[0-9]+)(_([0-9]))?)\/(.+)/;
 		var ipv4 = {};
 		dojo.forEach(sortedKeys, function(ikey) {
 			var match = ikey.match(r);
@@ -267,7 +282,6 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		umc.tools.forIn(ipv4, function(ikey, ival) {
 			sortedIpv4.push(ival);
 		});
-		sortedIpv4.sort(this.sortInterfaces);
 
 		// translate to our datastructure
 		vals.interfaces_ipv4 = [];
@@ -315,7 +329,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			]);
 		});
 
-		// set 
+		// dynamic ipv6 interfaces
 		r = /interfaces\/(eth[0-9]+)\/ipv6\/acceptRA/;
 		vals.dynamic_interfaces_ipv6 = [];
 		dojo.forEach(sortedKeys, function(ikey) {
@@ -381,11 +395,85 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		});
 
 		// dynamic ipv6 interfaces
-		dojo.forEach(_vals.dynamic_interfaces_ipv6, function(idev) {
-			vals['interfaces/' + idev + '/ipv6/acceptRA'] = 'true';
+		//dojo.forEach(_vals.dynamic_interfaces_ipv6, function(idev) {
+		dojo.forEach(this._form.getWidget('dynamic_interfaces_ipv6').getAllItems(), function(iitem) {
+			vals['interfaces/' + iitem.id + '/ipv6/acceptRA'] = (dojo.indexOf(_vals.dynamic_interfaces_ipv6, iitem.id) >= 0) ? 'true' : 'false';
+		});
+
+		// add empty entries for all original entries that are not used anymore
+		umc.tools.forIn(this._orgValues, function(ikey, ival) {
+			if (!(ikey in vals)) {
+				vals[ikey] = '';
+			}
 		});
 
 		return vals;
+	},
+
+	getSummary: function() {
+		// a list of all components with their labels
+		var allInterfaces = {};
+		dojo.forEach(this._form.getWidget('dynamic_interfaces_ipv6').getAllItems(), function(iitem) {
+			allInterfaces[iitem.id] = iitem.label;
+			allInterfaces[iitem.id + '_virtual'] = iitem.label + ' [' + this._('virtual') + ']';
+		}, this);
+
+		// list of all IPv4 network devices
+		var vals = this._form.gatherFormValues();
+		var ipv4Str = '<ul>';
+		dojo.forEach(vals.interfaces_ipv4, function(idev) {
+			ipv4Str += '<li>' +
+					idev[1] + '/' + idev[2] +
+					' (' +
+						allInterfaces[idev[0]] +
+						(idev[3] == 'true' ? ', DHCP' : '') +
+					')</li>';
+		});
+		ipv4Str += '</ul>';
+
+		// list of all IPv6 network devices
+		var ipv6Str = '<ul>';
+		dojo.forEach(vals.interfaces_ipv6, function(idev) {
+			ipv6Str += '<li>' +
+					idev[1] + ' - ' + idev[2] + '/' + idev[3] +
+					' (' + idev[0] + ')</li>';
+		});
+		ipv6Str += '</ul>';
+
+		// create a verbose list of all settings
+		return [{
+			variables: ['gateway'],
+			description: this._('Gateway (IPv4)'),
+			values: vals['gateway']
+		}, {
+			variables: ['ipv6/gateway'],
+			description: this._('Gateway (IPv6)'),
+			values: vals['ipv6/gateway']
+		}, {
+			variables: [/nameserver.*/],
+			description: this._('Domain name server'),
+			values: vals['nameserver'].join(', ')
+		}, {
+			variables: [/dns\/forwarder.*/],
+			description: this._('External name server'),
+			values: vals['dns/forwarder'].join(', ')
+		}, {
+			variables: ['proxy/http'],
+			description: this._('HTTP proxy'),
+			values: vals['proxy/http']
+		}, {
+			variables: [/^interfaces\/eth[0-9]+(_[0-9])?\/(?!ipv6).*/],
+			description: this._('IPv4 network devices'),
+			values: ipv4Str
+		}, {
+			variables: [/^interfaces\/eth[0-9]+\/ipv6\/.*\/(prefix|address)$/],
+			description: this._('IPv6 network devices'),
+			values: ipv6Str
+		}, {
+			variables: [/^interfaces\/eth[0-9]+\/ipv6\/acceptRA/],
+			description: this._('IPv6 interfaces with autoconfiguration (SLAAC)'),
+			values: vals['dynamic_interfaces_ipv6'].length ? vals['dynamic_interfaces_ipv6'].join(', ') : this._('No device')
+		}];
 	},
 
 	onSave: function() {

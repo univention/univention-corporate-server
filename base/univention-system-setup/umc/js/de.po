@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-21 17:11+0200\n"
+"POT-Creation-Date: 2011-10-27 12:39-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,207 +12,291 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_setup/NetworkPage.js:161
+#: umc/js/_setup/NetworkPage.js:172
 msgid "A virtual network device cannot be used for DHCP."
 msgstr "Ein virtuelles Netzwerkgerät kann nicht für DHCP benutzt werden."
 
-#: umc/js/_setup/ServerPage.js:55
+#: umc/js/_setup/BasisPage.js:59
 msgid "Access settings"
 msgstr "Zugriffseinstellungen"
 
-#: umc/js/_setup/NetworkPage.js:70
+#: umc/js/_setup/NetworkPage.js:76
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: umc/js/_setup/NetworkPage.js:103
+#: umc/js/setup.js:288
+msgid "Apply changes"
+msgstr "Änderungen anwenden"
+
+#: umc/js/_setup/NetworkPage.js:110
 msgid "Autoconfiguration (SLAAC)"
 msgstr "Automatische Konfiguration (SLAAC)"
 
-#: umc/js/_setup/CertificatePage.js:58
-msgid "Business unit"
-msgstr ""
+#: umc/js/setup.js:58
+msgid "Back"
+msgstr "Zurück"
 
-#: umc/js/_setup/CertificatePage.js:26
+#: umc/js/_setup/CertificatePage.js:64
+msgid "Business unit"
+msgstr "Abteilung"
+
+#: umc/js/setup.js:283
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: umc/js/_setup/CertificatePage.js:30
 msgid "Certificate"
 msgstr "Zertifikat"
 
-#: umc/js/_setup/CertificatePage.js:27
+#: umc/js/_setup/CertificatePage.js:31
 msgid "Certificate settings"
 msgstr "Zertifikateinstellungen"
 
-#: umc/js/_setup/CertificatePage.js:36
+#: umc/js/_setup/CertificatePage.js:108
+msgid ""
+"Changes in the SSL certificate settings will result in generating new root "
+"SSL certificates. Note that this will require an update of all host "
+"certificates in the domain as the old root certificate is no longer valid."
+msgstr "Durch Änderungen an den SSL-Zertifikat-Einstellungen wird ein neues Root-Zertifikat erstellt. Dies hat zur Folge, dass alle Host-Zertifikate der Domäne aktualisiert werden müssen, da das alte Root-Zertifkat nicht mehr gültig sein wird."
+
+#: umc/js/setup.js:267
+msgid "Changes to system setting may have a severe effect on your system."
+msgstr "Änderungen der Systemeinstellungen kann tiefgreifende Auswirkungen auf Ihr System haben."
+
+#: umc/js/_setup/CertificatePage.js:40
 msgid "Common name for the root SSL certificate"
 msgstr "Common-Name für das Root-SSL-Zertifikat"
 
-#: umc/js/_setup/CertificatePage.js:41
+#: umc/js/_setup/CertificatePage.js:46
 msgid "Country"
 msgstr "Land"
 
-#: umc/js/_setup/NetworkPage.js:173
+#: umc/js/_setup/NetworkPage.js:184
 msgid "DHCP query failed."
 msgstr "DHCP-Anfrage schlug fehl."
 
-#: umc/js/_setup/NetworkPage.js:69
+#: umc/js/_setup/NetworkPage.js:75
 msgid "Deactivated"
 msgstr "Deaktiviert"
 
-#: umc/js/_setup/LanguagePage.js:51
-msgid "Default system language"
-msgstr "Standardsystemsprache"
+#: umc/js/_setup/LanguagePage.js:57 umc/js/_setup/LanguagePage.js:122
+msgid "Default system locale"
+msgstr "Standard-System-Lokalisierung"
 
-#: umc/js/_setup/NetworkPage.js:118
+#: umc/js/_setup/NetworkPage.js:454
+msgid "Domain name server"
+msgstr "Domänen-DNS-Server"
+
+#: umc/js/_setup/NetworkPage.js:126
 msgid "Domain name server (max. 3)"
 msgstr "Domänen-DNS-Server (max. 3)"
 
-#: umc/js/_setup/NetworkPage.js:67
+#: umc/js/_setup/NetworkPage.js:73
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
-#: umc/js/_setup/CertificatePage.js:62
+#: umc/js/_setup/CertificatePage.js:68
 msgid "Email address"
 msgstr "E-Mailadresse"
 
-#: umc/js/_setup/NetworkPage.js:123
+#: umc/js/_setup/NetworkPage.js:458
+msgid "External name server"
+msgstr "Externer DNS-Server "
+
+#: umc/js/_setup/NetworkPage.js:132
 msgid "External name server (max. 3)"
 msgstr "Externer DNS-Server "
 
-#: umc/js/_setup/ServerPage.js:36
+#: umc/js/setup.js:67
+msgid "Finish"
+msgstr "Beenden"
+
+#: umc/js/_setup/BasisPage.js:82
+msgid ""
+"For Active Directory domains the fully qualified domain name must have at "
+"least two dots (e.g. host.example.com). This warning is shown only once, the "
+"installation can be continued with the name currently given."
+msgstr ""
+"Für Active Directory Domänen muss der vollständige Domänenname mindestens "
+"zwei Punkte enthalten (z.B. host.example.com). Dies ist eine einmalige "
+"Warnung, die Einstellungen können mit dem aktuell gewählten Namen gespeichert "
+"werden."
+
+
+#: umc/js/_setup/BasisPage.js:110
+msgid "Fully qualified domain name"
+msgstr "Vollständiger Rechername"
+
+#: umc/js/_setup/BasisPage.js:40
 msgid "Fully qualified domain name (e.g., master.example.com)"
 msgstr "Vollständiger Rechername (z.B., master.example.com)"
 
-#: umc/js/_setup/NetworkPage.js:109
+#: umc/js/_setup/NetworkPage.js:117 umc/js/_setup/NetworkPage.js:446
 msgid "Gateway (IPv4)"
 msgstr ""
 
-#: umc/js/_setup/NetworkPage.js:113
+#: umc/js/_setup/NetworkPage.js:121 umc/js/_setup/NetworkPage.js:450
 msgid "Gateway (IPv6)"
 msgstr ""
 
-#: umc/js/_setup/CertificatePage.js:66
+#: umc/js/_setup/CertificatePage.js:72
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
-#: umc/js/_setup/NetworkPage.js:137
+#: umc/js/_setup/NetworkPage.js:147
 msgid "Global network settings"
 msgstr "Globale Netzwerk-Einstellungen"
 
-#: umc/js/_setup/NetworkPage.js:127
+#: umc/js/_setup/NetworkPage.js:137 umc/js/_setup/NetworkPage.js:462
 msgid "HTTP proxy"
 msgstr "HTTP-Proxy"
 
-#: umc/js/_setup/ServerPage.js:52
+#: umc/js/_setup/BasisPage.js:56
 msgid "Host and domain settings"
 msgstr "Recher- und Domänen-Einstellungen"
 
-#: umc/js/_setup/NetworkPage.js:59
+#: umc/js/_setup/NetworkPage.js:65
 msgid "IPv4 address"
 msgstr "IPv4-Adresse"
 
-#: umc/js/_setup/NetworkPage.js:131
+#: umc/js/_setup/NetworkPage.js:141 umc/js/_setup/NetworkPage.js:466
 msgid "IPv4 network devices"
 msgstr "IPv4-Netzwerkgeräte"
 
-#: umc/js/_setup/NetworkPage.js:93
+#: umc/js/_setup/NetworkPage.js:100
 msgid "IPv6 address"
 msgstr "IPv6-Adresse"
 
-#: umc/js/_setup/NetworkPage.js:134
+#: umc/js/_setup/NetworkPage.js:474
+msgid "IPv6 interfaces with autoconfiguration (SLAAC)"
+msgstr "IPv6-Netzwerkgeräte mit automatische Konfiguration (SLAAC)"
+
+#: umc/js/_setup/NetworkPage.js:144 umc/js/_setup/NetworkPage.js:470
 msgid "IPv6 network devices"
 msgstr "IPv6-Netzwerkgeräte"
 
-#: umc/js/_setup/NetworkPage.js:97
+#: umc/js/_setup/NetworkPage.js:104
 msgid "IPv6 prefix"
 msgstr "IPv6-Präfix"
 
-#: umc/js/_setup/NetworkPage.js:89
+#: umc/js/_setup/NetworkPage.js:96
 msgid "Identifier"
 msgstr "Bezeichner"
 
-#: umc/js/_setup/SoftwarePage.js:45
+#: umc/js/_setup/SoftwarePage.js:47
 msgid "Installation of software components"
 msgstr "Installation von Softwarekomponenten"
 
-#: umc/js/_setup/SoftwarePage.js:38
+#: umc/js/_setup/SoftwarePage.js:38 umc/js/_setup/SoftwarePage.js:117
 msgid "Installed software components"
 msgstr "Installierte Softwarekomponenten"
 
-#: umc/js/_setup/NetworkPage.js:41 umc/js/_setup/NetworkPage.js:84
+#: umc/js/_setup/LanguagePage.js:50 umc/js/_setup/LanguagePage.js:118
+msgid "Installed system locales"
+msgstr "Verfügbare System-Lokalisierungen"
+
+#: umc/js/_setup/NetworkPage.js:47 umc/js/_setup/NetworkPage.js:91
 msgid "Interface"
-msgstr ""
+msgstr "Netzwerkgerät"
 
-#: umc/js/_setup/NetworkPage.js:38 umc/js/_setup/NetworkPage.js:81
+#: umc/js/_setup/NetworkPage.js:43 umc/js/_setup/NetworkPage.js:87
 msgid "Interfaces"
-msgstr ""
+msgstr "Netzwerkgeräte"
 
-#: umc/js/_setup/LanguagePage.js:41
+#: umc/js/_setup/LanguagePage.js:44 umc/js/_setup/LanguagePage.js:114
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
-#: umc/js/_setup/ServerPage.js:40
+#: umc/js/_setup/BasisPage.js:44 umc/js/_setup/BasisPage.js:114
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
-#: umc/js/_setup/LanguagePage.js:26
+#: umc/js/_setup/LanguagePage.js:28
 msgid "Language"
 msgstr "Sprache"
 
-#: umc/js/_setup/LanguagePage.js:27 umc/js/_setup/LanguagePage.js:62
+#: umc/js/_setup/LanguagePage.js:29 umc/js/_setup/LanguagePage.js:69
 msgid "Language settings"
 msgstr "Spracheinstellungen"
 
-#: umc/js/_setup/CertificatePage.js:50
-msgid "Locality"
+#: umc/js/_setup/CertificatePage.js:56
+msgid "Location"
 msgstr "Ort"
 
-#: umc/js/_setup/CertificatePage.js:69
+#: umc/js/_setup/CertificatePage.js:75
 msgid "Location settings"
 msgstr "Standorteinstellungen"
 
-#: umc/js/_setup/NetworkPage.js:63
+#: umc/js/_setup/NetworkPage.js:69
 msgid "Netmask"
 msgstr "Netzmaske"
 
-#: umc/js/_setup/NetworkPage.js:28
+#: umc/js/_setup/NetworkPage.js:33
 msgid "Network"
 msgstr "Netzwerk"
 
-#: umc/js/_setup/NetworkPage.js:29
+#: umc/js/_setup/NetworkPage.js:34
 msgid "Network settings"
 msgstr "Netzwerk-Einstellungen"
 
-#: umc/js/setup.js:107
+#: umc/js/_setup/BasisPage.js:122
+msgid "New root password"
+msgstr "Neues Root-Passwort"
+
+#: umc/js/setup.js:49
+msgid "Next"
+msgstr "Vor"
+
+#: umc/js/setup.js:203
 msgid "No changes have been made."
 msgstr "Keine Änderungen wurden vorgenommen."
 
-#: umc/js/_setup/CertificatePage.js:72
-msgid "Organisation settings"
-msgstr "Einstellungen über die Organisation"
+#: umc/js/_setup/NetworkPage.js:475
+msgid "No device"
+msgstr "Kein Gerät"
 
-#: umc/js/_setup/CertificatePage.js:54
+#: umc/js/setup.js:269
+msgid "Note that some changes may require a new join into the UCS domain."
+msgstr "Nach bestimmten Änderungen kann ein neuer Join des Systems in die UCS-Domäne notwendig sein."
+
+#: umc/js/_setup/CertificatePage.js:60
 msgid "Organization"
 msgstr "Organisation"
 
-#: umc/js/_setup/NetworkPage.js:156
-msgid "Please choose a network device before querying a DHCP address."
-msgstr "Bitte wählen sie ein Netzwerkgerät bevor sie eine DHCP-Adresse anfragen."
+#: umc/js/_setup/CertificatePage.js:78
+msgid "Organization settings"
+msgstr "Einstellungen über die Organisation"
 
-#: umc/js/setup.js:42
+#: umc/js/_setup/NetworkPage.js:167
+msgid "Please choose a network device before querying a DHCP address."
+msgstr ""
+"Bitte wählen sie ein Netzwerkgerät bevor sie eine DHCP-Adresse anfragen."
+
+#: umc/js/setup.js:279
+msgid "Please confirm to apply these changes to the system."
+msgstr "Bitte bestätigen Sie, dass diese Änderungen an dem System vorgenommen werden."
+
+#: umc/js/setup.js:107
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: umc/js/_setup/ServerPage.js:48
+#: umc/js/_setup/BasisPage.js:52
 msgid "Root password"
 msgstr "Root-Passwort"
 
-#: umc/js/setup.js:36
+#: umc/js/_setup/CertificatePage.js:133
+msgid "SSL root certificate"
+msgstr "SSL-Root-Zertifikat"
+
+#: umc/js/setup.js:101
 msgid "Save"
 msgstr "Speichern"
 
-#: umc/js/_setup/ServerPage.js:26
+#: umc/js/_setup/BasisPage.js:30
 msgid "Server"
 msgstr ""
 
-#: umc/js/_setup/ServerPage.js:27
+#: umc/js/_setup/BasisPage.js:31
 msgid "Server settings"
 msgstr "Server-Einstellungen"
 
@@ -224,27 +308,31 @@ msgstr ""
 msgid "Software settings"
 msgstr "Software-Einstellungen"
 
-#: umc/js/_setup/CertificatePage.js:46
+#: umc/js/_setup/CertificatePage.js:52
 msgid "State"
 msgstr "Bundesland"
 
-#: umc/js/_setup/LanguagePage.js:46
-msgid "System languages"
-msgstr "Systemsprachen"
+#: umc/js/setup.js:271
+msgid "The following changes will be applied to the system:"
+msgstr "Die folgenden Änderungen werden an dem System vorgenommen:"
 
-#: umc/js/_setup/LanguagePage.js:36
+#: umc/js/setup.js:209
+msgid "The following entries could not be validated:"
+msgstr "Die folgenden Einträge konnte nicht validiert werden:"
+
+#: umc/js/_setup/LanguagePage.js:38 umc/js/_setup/LanguagePage.js:110
 msgid "Time zone"
 msgstr "Zeitzone"
 
-#: umc/js/_setup/LanguagePage.js:59
+#: umc/js/_setup/LanguagePage.js:66
 msgid "Time zone and keyboard settings"
 msgstr "Zeitzonen- und Tastatureinstellungen"
 
-#: umc/js/_setup/ServerPage.js:44
+#: umc/js/_setup/BasisPage.js:48 umc/js/_setup/BasisPage.js:118
 msgid "Windows domain"
 msgstr "Windows-Domäne"
 
-#: umc/js/_setup/NetworkPage.js:49
+#: umc/js/_setup/NetworkPage.js:55 umc/js/_setup/NetworkPage.js:418
 msgid "virtual"
 msgstr "virtuell"
 
@@ -253,3 +341,9 @@ msgstr "virtuell"
 
 #~ msgid "Desktop environment"
 #~ msgstr "Desktop-Umgebung"
+
+#~ msgid "Locality"
+#~ msgstr "Ort"
+
+#~ msgid "System locales"
+#~ msgstr "Verfügbare System-Locales"

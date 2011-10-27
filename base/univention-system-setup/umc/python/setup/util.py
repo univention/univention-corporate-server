@@ -59,6 +59,8 @@ LOG_FILE = '/var/log/univention/setup.log'
 
 # list of all needed UCR variables
 UCR_VARIABLES = [
+	# common
+	'server/role',
 	# language
 	'locale', 'locale/default',
 	# keyboard
@@ -112,7 +114,9 @@ def load_values():
 	# get installed packages
 	allPackages = reduce(lambda x, y: x + y, [ i['Packages'] for i in get_components() ])
 	installedPackages = get_installed_packages()
-	values['packages'] = ' '.join(set(allPackages) & set(installedPackages))
+	packages = list(set(allPackages) & set(installedPackages))
+	packages.sort()
+	values['packages'] = ' '.join(packages)
 
 	return values;
 
@@ -128,18 +132,21 @@ def pre_save(newValues, oldValues):
 			if vals['type'] == 'address' or vals['type'] == 'netmask':
 				# new value might already exist
 				broadcastKey = 'interfaces/%s/broadcast' % vals['device']
+				networkKey = 'interfaces/%s/network' % vals['device']
 				maskKey = 'interfaces/%s/netmask' % vals['device']
 				addressKey = 'interfaces/%s/address' % vals['device']
-				if broadcastKey in newValues:
-					continue
 
 				# try to compute the broadcast address
 				address = newValues.get(addressKey, oldValues.get(addressKey, ''))
 				mask = newValues.get(maskKey, oldValues.get(maskKey, ''))
 				broadcast = get_broadcast(address, mask)
+				network = get_network(address, mask)
 				if broadcast:
 					# we could compute a broadcast address
 					newValues[broadcastKey] = broadcast
+				if network:
+					# we could compute a network address
+					newValues[networkKey] = network
 	
 	# add a list with all packages that should not exist on the system
 	installPackages = []
@@ -147,12 +154,17 @@ def pre_save(newValues, oldValues):
 		regSpaces = re.compile(r'\s+')
 		installPackages = regSpaces.split(newValues.get('packages', ''))
 		allPackages = reduce(lambda x, y: x + y, [ i['Packages'] for i in get_components() ])
-		newValues['packages_remove'] = ' '.join(set(allPackages) - set(installPackages))
+		removePackages = list(set(allPackages) - set(installPackages))
+		removePackages.sort()
+		newValues['packages_remove'] = ' '.join(removePackages)
 
 def write_profile(values):
 	cache_file=open(PATH_PROFILE,"w+")
-	for ientry in values.iteritems():
-		cache_file.write('%s="%s"\n\n' % ientry)
+	for ikey, ival in values.iteritems():
+		newVal = ival
+		if ival == None:
+			newVal = ''
+		cache_file.write('%s="%s"\n\n' % (ikey, newVal))
 	cache_file.close()
 
 def run_scripts():
@@ -204,46 +216,13 @@ def get_broadcast(ip, netmask):
 		pass
 	return None
 
-def is_proxy(proxy):
-	if proxy and proxy != 'http://' and proxy != 'https://':
-		if not proxy.startswith('http://') and not proxy.startswith('https://'):
-			return False
-	return True
-
-def is_ipaddr(addr):
+def get_network(ip, netmask):
 	try:
-		x = ipaddr.IPAddress(addr)
+		ip = ipaddr.IPv4Network('%s/%s')
+		return ip.network
 	except ValueError:
-		return False
-	return True
-
-def is_ipv4addr(addr):
-	try:
-		x = ipaddr.IPv4Address(addr)
-	except ValueError:
-		return False
-	return True
-
-def is_ipv4netmask(addr_netmask):
-	try:
-		x = ipaddr.IPv4Network(addr_netmask)
-	except (ipaddr.NetmaskValueError, ipaddr.AddressValueError):
-		return False
-	return True
-
-def is_ipv6addr(addr):
-	try:
-		x = ipaddr.IPv6Address(addr)
-	except ValueError:
-		return False
-	return True
-
-def is_ipv6netmask(addr_netmask):
-	try:
-		x = ipaddr.IPv6Network(addr_netmask)
-	except (ipaddr.NetmaskValueError, ipaddr.AddressValueError):
-		return False
-	return True
+		pass
+	return None
 
 def dhclient(interface, timeout=None):
 	"""
@@ -314,4 +293,78 @@ def get_installed_packages():
 	cache = apt.Cache()
 	return [ p.name for p in cache if p.is_installed ]
 
+# from univention-installer/installer/modules/70_net.py
+def is_proxy(proxy):
+	if proxy and proxy != 'http://' and proxy != 'https://':
+		if not proxy.startswith('http://') and not proxy.startswith('https://'):
+			return False
+	return True
+
+def is_ipaddr(addr):
+	try:
+		x = ipaddr.IPAddress(addr)
+	except ValueError:
+		return False
+	return True
+
+def is_ipv4addr(addr):
+	try:
+		x = ipaddr.IPv4Address(addr)
+	except ValueError:
+		return False
+	return True
+
+def is_ipv4netmask(addr_netmask):
+	try:
+		x = ipaddr.IPv4Network(addr_netmask)
+	except (ValueError, ipaddr.NetmaskValueError, ipaddr.AddressValueError):
+		return False
+	return True
+
+def is_ipv6addr(addr):
+	try:
+		x = ipaddr.IPv6Address(addr)
+	except ValueError:
+		return False
+	return True
+
+def is_ipv6netmask(addr_netmask):
+	try:
+		x = ipaddr.IPv6Network(addr_netmask)
+	except (ValueError, ipaddr.NetmaskValueError, ipaddr.AddressValueError):
+		return False
+	return True
+
+# from univention-installer/installer/objects.py
+def is_hostname(hostname):
+	_re=re.compile("^[a-z]([a-z0-9-]*[a-z0-9])*$")
+	if _re.match(hostname):
+		return True
+	return False
+
+def is_domainname(domainname):
+	_re=re.compile("^([a-z0-9]([a-z0-9-]*[a-z0-9])*[.])*[a-z0-9]([a-z0-9-]*[a-z0-9])*$")
+	if _re.match(domainname):
+		return True
+	return False
+
+def is_windowsdomainname(domainname):
+	_re=re.compile("^([a-z]([a-z0-9-]*[a-z0-9])*[.])*[a-z]([a-z0-9-]*[a-z0-9])*$")
+	if _re.match(domainname):
+		return True
+	return False
+
+def is_domaincontroller(domaincontroller):
+	_re=re.compile("^[a-zA-Z].*\..*$")
+	if _re.match(domaincontroller):
+		return True
+	return False
+
+# new defined methods
+def is_ascii(str):
+	try:
+		str.decode("ascii")
+		return True
+	except:
+		return False
 

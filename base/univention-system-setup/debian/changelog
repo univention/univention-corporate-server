@@ -1,3 +1,9 @@
+univention-system-setup (5.0.28-1) unstable; urgency=low
+
+  * UMC: added validation and wizard (Bug #22908)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 27 Oct 2011 13:35:28 -0400
+
 univention-system-setup (5.0.27-1) unstable; urgency=low
 
   Bug #23993
