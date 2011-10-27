@@ -383,7 +383,7 @@ def ucs_host_record_create(s4connector, object):
 	# Does a host record for this zone already exist?
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
 	if len(searchResult) > 0:
-		superordinate=univention.admin.objects.get_superordinate('dns/host_record', None, s4connector.lo, searchResult[0][0])
+		superordinate=s4connector_get_superordinate('dns/host_record', s4connector.lo, searchResult[0][0])
 		newRecord= univention.admin.handlers.dns.host_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
 		if set(newRecord['a']) != set(a):
@@ -394,7 +394,8 @@ def ucs_host_record_create(s4connector, object):
 	else:
 		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
 
-		superordinate=univention.admin.objects.get_superordinate('dns/host_record', None, s4connector.lo, zoneDN)
+		ud.debug(ud.LDAP, ud.INFO, 'ucs_host_record_create: zoneDN: %s' % zoneDN)
+		superordinate=s4connector_get_superordinate('dns/host_record', s4connector.lo, zoneDN)
 		ud.debug(ud.LDAP, ud.INFO, 'ucs_host_record_create: superordinate: %s' % superordinate)
 
 		position=univention.admin.uldap.position(zoneDN)
@@ -414,7 +415,7 @@ def ucs_host_record_delete(s4connector, object):
 
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
 	if len(searchResult) > 0:
-		superordinate=univention.admin.objects.get_superordinate('dns/host_record', None, s4connector.lo, searchResult[0][0])
+		superordinate=s4connector_get_superordinate('dns/host_record', s4connector.lo, searchResult[0][0])
 		newRecord= univention.admin.handlers.dns.host_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord.delete()
@@ -447,7 +448,7 @@ def ucs_ptr_record_create(s4connector, object):
 	# Does a host record for this zone already exist?
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
 	if len(searchResult) > 0:
-		superordinate=univention.admin.objects.get_superordinate('dns/ptr_record', None, s4connector.lo, searchResult[0][0])
+		superordinate=s4connector_get_superordinate('dns/ptr_record', s4connector.lo, searchResult[0][0])
 		newRecord= univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
 		if set(newRecord['ptr_record']) != set(ptr):
@@ -458,7 +459,7 @@ def ucs_ptr_record_create(s4connector, object):
 	else:
 		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
 
-		superordinate=univention.admin.objects.get_superordinate('dns/ptr_record', None, s4connector.lo, zoneDN)
+		superordinate=s4connector_get_superordinate('dns/ptr_record', s4connector.lo, zoneDN)
 		ud.debug(ud.LDAP, ud.INFO, 'ucs_ptr_record_create: superordinate: %s' % superordinate)
 
 		position=univention.admin.uldap.position(zoneDN)
@@ -478,7 +479,7 @@ def ucs_ptr_record_delete(s4connector, object):
 
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
 	if len(searchResult) > 0:
-		superordinate=univention.admin.objects.get_superordinate('dns/ptr_record', None, s4connector.lo, searchResult[0][0])
+		superordinate=s4connector_get_superordinate('dns/ptr_record', s4connector.lo, searchResult[0][0])
 		newRecord= univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord.delete()
@@ -499,7 +500,7 @@ def ucs_cname_create(s4connector, object):
 	# Does a host record for this zone already exist?
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
 	if len(searchResult) > 0:
-		superordinate=univention.admin.objects.get_superordinate('dns/alias', None, s4connector.lo, searchResult[0][0])
+		superordinate=s4connector_get_superordinate('dns/alias', s4connector.lo, searchResult[0][0])
 		newRecord= univention.admin.handlers.dns.alias.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
 		if set(newRecord['cname']) != set(c):
@@ -510,7 +511,7 @@ def ucs_cname_create(s4connector, object):
 	else:
 		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
 
-		superordinate=univention.admin.objects.get_superordinate('dns/alias', None, s4connector.lo, zoneDN)
+		superordinate=s4connector_get_superordinate('dns/alias', s4connector.lo, zoneDN)
 		ud.debug(ud.LDAP, ud.INFO, 'ucs_cname_create: superordinate: %s' % superordinate)
 
 		position=univention.admin.uldap.position(zoneDN)
@@ -530,7 +531,7 @@ def ucs_cname_delete(s4connector, object):
 
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
 	if len(searchResult) > 0:
-		superordinate=univention.admin.objects.get_superordinate('dns/alias', None, s4connector.lo, searchResult[0][0])
+		superordinate=s4connector_get_superordinate('dns/alias', s4connector.lo, searchResult[0][0])
 		newRecord= univention.admin.handlers.dns.alias.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord.delete()
@@ -560,7 +561,7 @@ def ucs_srv_record_create(s4connector, object):
 	# Does a host record for this zone already exist?
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
 	if len(searchResult) > 0:
-		superordinate=univention.admin.objects.get_superordinate('dns/srv_record', None, s4connector.lo, searchResult[0][0])
+		superordinate=s4connector_get_superordinate('dns/srv_record', s4connector.lo, searchResult[0][0])
 		newRecord= univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
 		ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: location: %s' % newRecord['location'])
@@ -575,7 +576,7 @@ def ucs_srv_record_create(s4connector, object):
 	else:
 		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
 
-		superordinate=univention.admin.objects.get_superordinate('dns/srv_record', None, s4connector.lo, zoneDN)
+		superordinate=s4connector_get_superordinate('dns/srv_record', s4connector.lo, zoneDN)
 		ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: superordinate: %s' % superordinate)
 
 		position=univention.admin.uldap.position(zoneDN)
@@ -602,7 +603,7 @@ def ucs_srv_record_delete(s4connector, object):
 
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
 	if len(searchResult) > 0:
-		superordinate=univention.admin.objects.get_superordinate('dns/srv_record', None, s4connector.lo, searchResult[0][0])
+		superordinate=s4connector_get_superordinate('dns/srv_record', s4connector.lo, searchResult[0][0])
 		newRecord= univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord.delete()
@@ -872,4 +873,18 @@ def identify(dn, attr, canonical=0):
 			univention.admin.handlers.dns.srv_record.identify(dn, attr) or\
 			univention.admin.handlers.dns.ptr_record.identify(dn, attr) 
  
-
+'''
+	Because the dns/dns.py identify function has been overwritten
+	we have to use our own get_superordinate function. Otherwise
+	identifyOne in udm will return two results
+'''
+def s4connector_get_superordinate(module, lo, dn):
+	super_module = univention.admin.modules.superordinate( module )
+	if super_module:
+		while dn:
+			attr = lo.get( dn )
+			for mod in  univention.admin.modules.identify( dn, attr ):
+				if mod == super_module:
+					return univention.admin.objects.get( super_module, None, lo, None, dn )
+			dn = lo.parentDn( dn )
+	return None
