@@ -12,9 +12,10 @@ dojo.require("umc.widgets.NumberSpinner");
 
 dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin ], {
 
-	i18nClass: 'umc.modules.quota',
 	partitionDevice: null,
 	_form: null,
+
+	i18nClass: 'umc.modules.quota',
 
 	buildRendering: function() {
 		this.inherited(arguments);

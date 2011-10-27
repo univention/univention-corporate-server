@@ -15,6 +15,8 @@ dojo.declare("umc.modules._quota.PageContainer", [ dijit.layout.StackContainer, 
 	_partitionPage: null,
 	_detailPage: null,
 
+	i18nClass: 'umc.modules.quota',
+
 	buildRendering: function(partitionDevice) {
 		this.inherited(arguments);
 		this.renderPartitionPage();

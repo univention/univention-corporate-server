@@ -19,6 +19,8 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 	_partitionInfo: null,
 	_searchForm: null,
 
+	i18nClass: 'umc.modules.quota',
+
 	_getPartitionInfo: function() {
 		umc.tools.umcpCommand('quota/partitions/info', {'partitionDevice': this.partitionDevice}).then(dojo.hitch(this, function(data) {
 			this._partitionInfo.set('content', dojo.replace('<p>' + this._('Mount point: ') + '{mountPoint} ' + this._('Filesystem: ') + '{filesystem} ' + this._('Options: ') + ' {options}' + '</p>', data.result));
