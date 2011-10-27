@@ -61,6 +61,13 @@ def check_preconditions( options ):
 			print 'Aborted.'
 			sys.exit( 1 )
 
+	# install univention-debmirror
+	print 'Installing univention-debmirror'
+	ret=subprocess.call( ['univention-install', '--yes', 'univention-debmirror' ] )
+	if ret != 0:
+		print 'Error: Failed to install univention-debmirror'
+		sys.exit( 1 )
+
 	ret, msg = urepo.is_debmirror_installed()
 	if not ret:
 		print >> sys.stderr, msg
@@ -229,13 +236,6 @@ if __name__ == '__main__':
 		finally:
 			if options.mount:
 				subprocess.call( [ 'umount', options.mount_point ] )
-
-		# install univention-debmirror
-		print 'Installing univention-debmirror'
-		ret=subprocess.call( ['univention-install', '--yes', 'univention-debmirror' ] )
-		if ret != 0:
-			print 'Error: Failed to install univention-debmirror'
-			sys.exit( 1 )
 
 		# set repository server to local system
 		fqdn = '%s.%s' % ( configRegistry.get( 'hostname' ), configRegistry.get( 'domainname' ) )
