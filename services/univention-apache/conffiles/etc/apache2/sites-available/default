@@ -40,7 +40,7 @@ Allow from 127.0.0.0/255.0.0.0 ::1/128
 if baseConfig.has_key('apache2/allowoverride'):
 	print 'AllowOverride %s' % baseConfig['apache2/allowoverride']
 else:
-	print 'AllowOverride AuthConfig Limit'
+	print 'AllowOverride AuthConfig Limit FileInfo'
 @!@
 	Order allow,deny
 	allow from all
