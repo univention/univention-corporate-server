@@ -36,7 +36,10 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 		}, {
 			name: 'submit',
 			label: this._('Save changes'),
-			callback: dojo.hitch(this, 'onSetQuota')
+			callback: dojo.hitch(this, function() {
+				var values = this._form.gatherFormValues();
+				this.onSetQuota(values);
+			})
 		}];
 	},
 
@@ -111,9 +114,8 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 		return true;
 	},
 
-	onSetQuota: function() {
-		var values = this._form.gatherFormValues();
-		umc.tools.umcpCommand('quota/users/set', values);
+	onSetQuota: function(values) {
+		return true;
 	},
 
 	init: function(userQuota) {

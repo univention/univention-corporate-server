@@ -58,10 +58,7 @@ class Commands(object):
 			partitions = fs.get(['xfs', 'ext3', 'ext2'], False) # TODO: ext4?
 			for partition in partitions:
 				list_entry = {}
-				if partition.uuid:
-					list_entry['partitionDevice'] = partition.uuid
-				else:
-					list_entry['partitionDevice'] = partition.spec
+				list_entry['partitionDevice'] = partition.spec
 				list_entry['mountPoint'] = partition.mount_point
 				list_entry['partitionSize'] = None
 				list_entry['freeSpace'] = None
@@ -107,29 +104,33 @@ class Commands(object):
 		self.finished(request.id, result, message)
 
 	def partitions_activate(self, request):
-		do_activate = True
 		MODULE.info('quota/partitions/activate: %s' % request.options['partitionDevice'])
-		callback = notifier.Callback(self._partitions_activate, request, do_activate)
+		callback = notifier.Callback(self._partitions_activate, request)
 		tools.activate_quota(request.options['partitionDevice'], True, callback)
 
+	def _partitions_activate(self, thread, result, request):
+		message = None
+		success = True
+		for obj in result:
+			if not obj['success']:
+				success = False
+		if success:
+			message = _('Quota support successfully activated')
+		request.status = SUCCESS
+		self.finished(request.id, {'objects': result, 'success': success}, message)
+
 	def partitions_deactivate(self, request):
-		do_activate = False
 		MODULE.info('quota/partitions/deactivate: %s' % request.options['partitionDevice'])
-		callback = notifier.Callback(self._partitions_activate, request, do_activate)
+		callback = notifier.Callback(self._partitions_deactivate, request)
 		tools.activate_quota(request.options['partitionDevice'], False, callback)
 
-	def _partitions_activate(self, thread, callback_result, request, do_activate):
+	def _partitions_deactivate(self, thread, result, request):
 		message = None
-
-		# Check if operation was successful
-		(partition_name, partition_info, ) = callback_result.items()[0]
-		(success, message, ) = partition_info
-		if not success:
-			raise UMC_CommandError(message)
-
-		if do_activate:
-			message = _('Quota support successfully activated')
-		else:
+		success = True
+		for obj in result:
+			if not obj['success']:
+				success = False
+		if success:
 			message = _('Quota support successfully deactivated')
 		request.status = SUCCESS
-		self.finished(request.id, None, message)
+		self.finished(request.id, {'objects': result, 'success': success}, message)

@@ -159,20 +159,43 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 	activateQuota: function(partitionDevice, doActivate) {
 		var dialogMessage = '';
 		if (doActivate === true) {
-			dialogMessage = this._('Please confirm to activate quota support on device: %s', partitionDevice);
+			dialogMessage = this._('Please confirm quota support activation on device: %s', partitionDevice);
 		} else {
-			dialogMessage = this._('Please confirm to deactivate quota support on device: %s', partitionDevice);
+			dialogMessage = this._('Please confirm quota support deactivation on device: %s', partitionDevice);
 		}
 		umc.dialog.confirm(dialogMessage, [{
 			label: this._('OK'),
 			callback: dojo.hitch(this, function() {
 				umc.tools.umcpCommand('quota/partitions/' + (doActivate ? 'activate' : 'deactivate'),
-									  {"partitionDevice" : partitionDevice.shift()}).then(dojo.hitch(this, function() {
-					this._grid.filter({'dummy': 'dummy'});
-				}));
+									  {"partitionDevice" : partitionDevice.shift()}).then(
+										  dojo.hitch(this, function(data) {
+											  if (data.result.success === true) {
+												  this._grid.filter({'dummy': 'dummy'});
+											  } else {
+												  this._showActivateQuotaDialog(data.result, doActivate);
+											  }
+										  })
+									  );
 			})
 		}, {
 			label: this._('Cancel')
+		}]);
+	},
+
+	_showActivateQuotaDialog: function(result, doActivate) {
+		var message = [];
+		if (doActivate === true) {
+			message = this._('Failed to activate quota support: ');
+		} else {
+			message = this._('Failed to deactivate quota support: ');
+		}
+		dojo.forEach(result.objects, function(item) {
+			if (item.success === false) {
+				message = message + item.message;
+			}
+		});
+		umc.dialog.confirm(message, [{
+			label: this._('OK')
 		}]);
 	},
 

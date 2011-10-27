@@ -50,9 +50,13 @@ dojo.declare("umc.modules._quota.PageContainer", [ dijit.layout.StackContainer, 
 		this.connect(this._detailPage, 'onClosePage', function() {
 			this.selectChild(this._partitionPage);
 		});
-		this.connect(this._detailPage, 'onSetQuota', function() {
-			this.selectChild(this._partitionPage);
-			this._partitionPage.filter();
+		this.connect(this._detailPage, 'onSetQuota', function(values) {
+			umc.tools.umcpCommand('quota/users/set', values).then(dojo.hitch(this, function(data) {
+				if (data.result.success === true) {
+					this.selectChild(this._partitionPage);
+					this._partitionPage.filter();
+				}
+			}));
 		});
 	}
 });

@@ -58,7 +58,7 @@ class Commands(object):
 			mounted_partition = mt.get(partition.spec)
 			if mounted_partition:
 				if 'usrquota' not in mounted_partition.options:
-					raise UMC_CommandError(_('The following partition is mounted'
+					raise UMC_CommandError(_('The following partition is mounted '
 					                         'without quota support: %s')
 					                       % partition_name)
 			else:
@@ -113,7 +113,7 @@ class Commands(object):
 			message = None
 			success = True
 			result = []
-			
+
 			self._check_error(request.options['partitionDevice'])
 			failed = tools.setquota(request.options['partitionDevice'],
 			                         request.options['user'],
@@ -125,7 +125,7 @@ class Commands(object):
 				raise UMC_CommandError(_('Failed to modify quota settings '
 				                         'for user %s on partition %s')
 				                       % (request.options['user'],
-				                          request.options['partitionDevice']))				
+				                          request.options['partitionDevice']))
 			message = _('Successfully set quota settings')
 			return {'result': result, 'message': message, 'success': success}
 		thread = notifier.threads.Simple('Set', notifier.Callback(_thread, request),

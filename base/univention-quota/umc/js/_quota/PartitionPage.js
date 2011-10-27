@@ -81,9 +81,9 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 			iconClass: 'dijitIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
-			callback: dojo.hitch(this, function() {
-				var userQuota = this._grid.getSelectedItems()[0];
-				this.onShowDetailPage(userQuota);
+			callback: dojo.hitch(this, function(data) {
+				item = this._grid.getItem(data);
+				this.onShowDetailPage(item);
 			})
 		}, {
 			name: 'remove',
@@ -147,10 +147,9 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 	},
 
 	filter: function() {
-		this._grid.filter({
-			filter: '*',
-			partitionDevice: this.partitionDevice
-		});
+		var data = this._searchForm.gatherFormValues();
+		data.partitionDevice = this.partitionDevice;
+		this._grid.filter(data);
 	},
 
 	onShowDetailPage: function(data) {
@@ -166,7 +165,9 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		var users = dojo.map(this._grid.getSelectedItems(), function(iitem) {
 			return iitem.user;
 		});
-		if (users.length == 1) {
+		if (users.length == 0) {
+			return
+		} else if (users.length == 1) {
 			dialogMessage = this._('Please confirm to remove the following user: %s', users);
 		} else {
 			dialogMessage = this._('Please confirm to remove the following %(length)s users: %(users)s', {'users': users, 'length': users.length});
@@ -187,7 +188,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 								failed.push(gridItem.user);
 							}
 						});
-						var message = this._('Could not remove the following user: %s', failed)
+						var message = this._('Could not remove the following user: %s', failed);
 						umc.dialog.confirm(message, [{
 							label: this._('OK')
 						}]);

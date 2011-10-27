@@ -126,11 +126,13 @@ def activate_quota(partition, activate, callback):
 
 def _do_activate_quota(partitions, activate):
 	fs = fstab.File()
-	failed = {}
+	failed = []
 	for device in partitions:
 		part = fs.find(spec = device)
 		if not part:
-			failed[device] = (False, _('Device could not be found'))
+			failed.append({'partitionDevice': partition.spec,
+			               'success': False,
+			               'message': _('Device could not be found')})
 			continue
 		if activate:
 			if not 'usrquota' in part.options:
@@ -140,10 +142,9 @@ def _do_activate_quota(partitions, activate):
 				# operation successful: nothing to be done
 				continue
 			if part.type == 'xfs':
-				status, text = _activate_quota_xfs(part)
+				failed.append(_activate_quota_xfs(part))
 			elif part.type in ('ext2', 'ext3'):
-				status, text = _activate_quota_ext(part, True)
-			failed[device] = (status, text)
+				failed.append(_activate_quota_ext(part, True))
 		else:
 			if not 'usrquota' in part.options:
 				continue
@@ -151,33 +152,41 @@ def _do_activate_quota(partitions, activate):
 				part.options.remove('usrquota')
 				fs.save()
 			if part.type == 'xfs':
-				status, text = _activate_quota_xfs(part)
+				failed.append(_activate_quota_xfs(part))
 			elif part.type in ('ext2', 'ext3'):
-				status, text = _activate_quota_ext(part, True)
-			failed[device] = (status, text)
+				failed.append(_activate_quota_ext(part, True))
 
 	return failed
 
 def _activate_quota_xfs(partition):
 	if subprocess.call(('umount', partition.spec)):
-		return (False, _('Unmounting the partition has failed'))
+		return {'partitionDevice': partition.spec, 'success': False,
+		        'message':  _('Unmounting the partition has failed')}
 	if subprocess.call(('mount', partition.spec)):
-		return (False, _('Mounting the partition has failed'))
+		return {'partitionDevice': partition.spec, 'success': False,
+		        'message': _('Mounting the partition has failed')}
 	if subprocess.call(('invoke-rc.d', 'quota', 'restart')):
-		return (False, _('Restarting the quota services has failed'))
+		return {'partitionDevice': partition.spec, 'success': False,
+		        'message':  _('Restarting the quota services has failed')}
 
-	return (True, _('Operation was successful'))
+	return {'partitionDevice': partition.spec, 'success': True,
+	        'message': _('Operation was successful')}
 
 def _activate_quota_ext(partition, create):
 	if subprocess.call(('mount', '-o', 'remount', partition.spec)):
-		return (False, _('Remounting the partition has failed'))
+		return {'partitionDevice': partition.spec, 'success': False,
+	        'message':  _('Remounting the partition has failed')}
 	if create:
-		if subprocess.call(('/sbin/quotacheck', '-u', partition.mount_point)):
-			return (False, _('Generating the quota information file failed'))
+		result = subprocess.call(('/sbin/quotacheck', '-u', partition.mount_point))
+		if result not in [0, 6]:
+			return {'partitionDevice': partition.spec, 'success': False,
+	        'message':  _('Generating the quota information file failed')}
 	if subprocess.call(('invoke-rc.d', 'quota', 'restart')):
-		return (False, _('Restarting the quota services has failed'))
+		return {'partitionDevice': partition.spec, 'success': False,
+	        'message': _('Restarting the quota services has failed')}
 
-	return (True, _('Operation was successful'))
+	return {'partitionDevice': partition.spec, 'success': True,
+	        'message': _('Operation was successful')}
 
 _units = ('B', 'KB', 'MB', 'GB', 'TB')
 _size_regex = re.compile('(?P<size>[0-9.]+)(?P<unit>(B|KB|MB|GB|TB))?')
