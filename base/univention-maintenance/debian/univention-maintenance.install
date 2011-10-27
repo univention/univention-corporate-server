@@ -1,3 +1,4 @@
 univention-mrtg usr/sbin/
 univention-system-stats usr/sbin/
 univention-maintenance.conf etc/univention
+.htaccess var/www/statistik/

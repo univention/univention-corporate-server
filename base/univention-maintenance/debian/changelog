@@ -1,3 +1,9 @@
+univention-maintenance (5.0.3-1) unstable; urgency=low
+
+  * added .htaccess to protect /var/www/statistik/ (Bug #22513) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 27 Oct 2011 10:25:44 +0200
+
 univention-maintenance (5.0.2-1) unstable; urgency=low
 
   * added /var/www/mrtg to make standard mrtg cron job happy (Bug #23825)
