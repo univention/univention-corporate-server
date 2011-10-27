@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.134-1) unstable; urgency=low
+
+  * Form: fix for scrollbars
+  * PasswordInputBox: added isValid method
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 26 Oct 2011 12:12:08 -0400
+
 univention-management-console-frontend (1.0.133-1) unstable; urgency=low
 
   * UMC web server: cleanup environment for security reasons; Bug #24197

@@ -124,6 +124,17 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 			return false;
 		}
 		return true;
+	},
+
+	isValid: function() {
+		var res = this.inherited(arguments);
+		if (undefined === res || null === res) {
+			// compare passwords
+			var pw1 = this._firstWidget.get('value');
+			var pw2 = this._secondWidget.get('value');
+			return pw1 == pw2;
+		}
+		return res;
 	}
 });
 

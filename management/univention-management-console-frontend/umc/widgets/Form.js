@@ -61,10 +61,13 @@ dojo.declare("umc.widgets.Form", [
 	//		can be loaded/saved by the form itself.
 	moduleStore: null,
 
+	// scrollable: Boolean
+	//		If set to true, the container will set its width/height to 100% in order
+	//		to enable scrollbars.
+	scrollable: false,
+
 	// the widget's class name as CSS class
 	'class': 'umcForm',
-
-	'style': 'overflow: auto;',
 
 	_widgets: null,
 
@@ -131,6 +134,12 @@ dojo.declare("umc.widgets.Form", [
 
 	buildRendering: function() {
 		this.inherited(arguments);
+
+		if (this.scrollable) {
+			dojo.style(this.containerNode, {
+				overflow: 'auto'
+			});
+		}
 
 		// render the widgets and the layout if no content is given
 		if (!this.content) {
