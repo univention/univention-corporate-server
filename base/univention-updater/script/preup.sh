@@ -150,6 +150,38 @@ if [ -n "$grubbasedevice" -a -e "/proc/partitions" ]; then
 fi
 
 
+# update to 3.0-0 Bug #22436
+# check if kolab is installed ==> exit
+if [ ! "$update_kolab_check" = "no" -a ! "$update_kolab_check" = "false" -a ! "$update_kolab_check" = "1" ] ; then
+	ucs_kolab_is_installed=false
+	if [ "$(dpkg-query -W -f='${Status}\n' univention-kolab2 2>/dev/null)" = "install ok installed" ]; then
+		if dpkg --compare-versions "$(dpkg-query -W -f='${Version}\n' univention-kolab2)" lt "4" ; then
+			ucs_kolab_is_installed=true
+		fi
+	fi
+	if [ "$(dpkg-query -W -f='${Status}\n' univention-mail-postfix-kolab2 2>/dev/null)" = "install ok installed" ]; then
+		if dpkg --compare-versions "$(dpkg-query -W -f='${Version}\n' univention-mail-postfix-kolab2)" lt "5" ; then
+			ucs_kolab_is_installed=true
+		fi
+	fi
+	if [ "$(dpkg-query -W -f='${Status}\n' univention-mail-cyrus-kolab2 2>/dev/null)" = "install ok installed" ]; then
+		if dpkg --compare-versions "$(dpkg-query -W -f='${Version}\n' univention-mail-cyrus-kolab2)" lt "4" ; then
+			ucs_kolab_is_installed=true
+		fi
+	fi
+	if [ "$ucs_kolab_is_installed" = "true" ] ; then
+		echo "WARNING: kolab2 mail stack is installed!"
+		echo
+		echo "As of UCS 3.0 the kolab2 mail stack is no longer part of"
+		echo "Univention Corporate Server. Thus groupware functions of UCS 2.4"
+		echo "will not be available in UCS 3.0. The update process will stop here."
+		echo
+		echo "This check can be disabled by setting the Univention Configuration Registry"
+		echo "variable \"update/kolab/check\" to \"no\"."
+		exit 1
+	fi
+fi
+
 # update to 3.0-0 Bug #23063
 # check if lilo or univention-lilo is installed and exit
 if [ ! "$update_lilo_check" = "no" -a ! "$update_lilo_check" = "false" -a ! "$update_lilo_check" = "1" ]; then

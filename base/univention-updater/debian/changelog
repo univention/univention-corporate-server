@@ -1,3 +1,9 @@
+univention-updater (7.0.68-1) unstable; urgency=low
+
+  * block update if UCS kolab components are installed (Bug #22436)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 27 Oct 2011 15:21:15 +0200
+
 univention-updater (7.0.67-1) unstable; urgency=low
 
   * check if slapd.conf template has been modified (Bug #23483)
