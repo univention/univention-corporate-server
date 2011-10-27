@@ -137,6 +137,7 @@ for key in configRegistry:
 
 for interface in ipv6_interfaces:
 	interface_addresses = []
+	used_interface_addresses = set()
 	for name in sorted(ipv6_interfaces[interface], sortDefaultFirst):
 		address = configRegistry.get('interfaces/%s/ipv6/%s/address' % (interface, name, ))
 		prefix = configRegistry.get('interfaces/%s/ipv6/%s/prefix' % (interface, name, ))
@@ -152,8 +153,12 @@ for interface in ipv6_interfaces:
 				parsedPrefix = ipaddr.IPv6Network(address + '/' + prefix)
 		except ValueError:
 			print '# WARNING: %r is not a valid IPv6 prefix (should be integer 0-128)! (from UCRV interfaces/%s/ipv6/%s/prefix)' % (prefix, interface, name, )
-		if address is not None and prefix is not None:
+		if parsedAddress is not None and parsedPrefix is not None:
+			if parsedAddress in used_interface_addresses:
+				print '# WARNING: duplicate address %s for interface (from UCRV interfaces/%s/ipv6/%s/{address,netmask})' % (parsedAddress, interface, name, )
+				continue
 			interface_addresses.append((name, address, prefix, parsedPrefix, ))
+			used_interface_addresses.add(parsedAddress)
 	if interface_addresses:
 		print
 		auto(interface)

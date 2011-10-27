@@ -1,3 +1,10 @@
+univention-base-files (1.0.34-1) unstable; urgency=low
+
+  * detect duplicate IPv6 addresses (Bug #15438)
+  * fix IPv6 address validation
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 27 Oct 2011 11:07:06 +0200
+
 univention-base-files (1.0.33-3) unstable; urgency=low
 
   * add IPv6 entries in /etc/hosts (Bug #24194)
