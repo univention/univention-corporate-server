@@ -1,3 +1,9 @@
+univention-ldap (8.0.59-1) unstable; urgency=low
+
+  * Added univentionSamba4SID for s3 / s4 migration (Bug #24225)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 27 Oct 2011 17:17:04 +0200
+
 univention-ldap (8.0.58-1) unstable; urgency=low
 
   * added Recommends dependency to univention-legacy-kolab-schema (Bug #23788)
