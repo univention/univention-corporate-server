@@ -846,7 +846,7 @@ class netmask(simple):
 		except Exception, e:
 			try:
 				_int.parse(text)
-				if int(text) > 0 and int(text) < 32:
+				if int(text) > 0 and int(text) < 128:
 					return text
 			except Exception, e:
 				errors=1
