@@ -39,7 +39,7 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Configuring network interfaces"
 ifconfig lo 127.0.0.1 up
 
 echo
-ifconfig -a | grep eth0
+ifconfig -a | grep ^eth
 if [ "$?" -ne 0 ]; then
 	echo "Warning Networking: eth0 not found"
 	echo "YES" > /tmp/dummy-network-interface.txt

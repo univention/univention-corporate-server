@@ -35,9 +35,14 @@ ip_cmdline=`cat /proc/cmdline | grep "ip="`
 
 if [ -n "$ip_cmdline" ]; then
 	_ip=`cat /proc/cmdline | sed -e 's|.*ip=||g' | awk -F ':' '{print $1}'`
-	_netmask=`cat /proc/cmdline | sed -e 's|.*ip=||g' | awk -F ':' '{print $4}'`
+	_netmask=`cat /proc/cmdline | sed -e 's|.*ip=||g' | awk -F ':' '{print $4}' | awk '{print $1}'`
 	_gateway=`cat /proc/cmdline | sed -e 's|.*ip=||g' | awk -F ':' '{print $3}'`
 	_networksleep=`cat /proc/cmdline | sed -nre 's/^.*\bnetworksleep=([^ ]+)\b.*$/\1/p'`
+	_interface=`cat /proc/cmdline | sed -nre 's/^.*\interface=([^ ]+)\b.*$/\1/p'`
+
+	if [ -z "$_interface" ]; then
+		_interface=eth0
+	fi
 
 	echo -n " lo "
 	ifconfig lo 127.0.0.1 up
@@ -47,8 +52,8 @@ if [ -n "$ip_cmdline" ]; then
 	if [ -x /sbin/rpc.statd ]; then
 		/sbin/rpc.statd
 	fi
-	echo -n " eth0 "
-	ifconfig eth0 $_ip netmask $_netmask
+	echo -n " $_interface "
+	ifconfig $_interface $_ip netmask $_netmask
 	if [ ! "$_gateway" = "0.0.0.0" ] ; then
 		route add default gw $_gateway
 	fi

@@ -1,3 +1,11 @@
+univention-installer (7.0.128-1) unstable; urgency=low
+
+  * respect interface= kernel option in startup-scripts/S95network
+  * look for eth (instead of eth0) in scripts/06_network.sh
+    (Bug #20014)
+
+ -- Felix Botner <botner@univention.de>  Thu, 27 Oct 2011 18:03:55 +0200
+
 univention-installer (7.0.127-1) unstable; urgency=low
 
   * moved network.sh to startup-scripts (Bug #20014)
