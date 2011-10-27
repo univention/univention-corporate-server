@@ -1,3 +1,9 @@
+univention-quota (6.0.7-1) unstable; urgency=low
+
+  * update UMC module with several bug fixes (Bug #22903)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 27 Oct 2011 15:58:37 +0200
+
 univention-quota (6.0.6-3) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)
