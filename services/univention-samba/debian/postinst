@@ -119,7 +119,6 @@ univention-config-registry set samba/script/adduser?true \
 				samba/map_to_guest?"Bad User" \
 				samba/netlogon/sync?sync \
 				samba/domain/logons?auto \
-				samba/winbind/max/clients?500 \
 				samba/password/checkscript?"/usr/share/univention-samba/password_check %u"
 
 if [ "$1" = "configure" ]; then

@@ -1,3 +1,9 @@
+univention-samba (6.0.13-1) unstable; urgency=low
+
+  * Revert Samba 3.6.1 changes (Bug #22561)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 27 Oct 2011 12:32:57 +0200
+
 univention-samba (6.0.12-1) unstable; urgency=low
 
   * workaround for PEP 366 (Bug #23984)

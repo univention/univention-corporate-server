@@ -12,8 +12,6 @@ print '\twide links = %s' % configRegistry.get('samba/wide_links', 'no')
 
 print '\tstore dos attributes = %s' % configRegistry.get('samba/store_dos_attributes', 'yes')
 
-if configRegistry.get('samba/client/ntlmv2/auth'):
-	print '\tclient ntlmv2 auth = %s' % configRegistry.get('samba/client/ntlmv2/auth')
 if configRegistry.get('samba/client/use/spnego/principal'):
 	print '\tclient use spnego principal = %s' % configRegistry.get('samba/client/use/spnego/principal')
 if configRegistry.get('samba/send/spnego/principal'):
@@ -21,10 +19,6 @@ if configRegistry.get('samba/send/spnego/principal'):
 
 if configRegistry.get('samba/max/protocol'):
 	print '\tmax protocol = %s' % configRegistry.get('samba/max/protocol')
-
-if configRegistry.get('samba/winbind/max/clients'):
-	print '\twinbind max clients = %s' % configRegistry.get('samba/winbind/max/clients')
-
 
 if configRegistry['server/role'] != 'memberserver':
 	if ( not configRegistry['samba/homedirpath'] or configRegistry['samba/homedirpath']=='local') and configRegistry['samba/homedirserver'] and configRegistry['samba/homedirserver'] == 'local':
