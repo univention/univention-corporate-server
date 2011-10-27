@@ -196,10 +196,11 @@ class ModuleServer( Server ):
 			if 'acls' in msg.options and 'commands' in msg.options and 'credentials' in msg.options:
 				try:
 					self.__handler.init()
-				except Exception, e:
-					import traceback
+				except BaseException, e:
+					import traceback, sys
 					resp.status = MODULE_ERR
-					resp.message = _( 'The init function of the module has failed: %s' ) % traceback.format_stack()
+					exc_info = sys.exc_info()
+					resp.message = _( 'The init function of the module has failed: %s: %s\n%s' ) % ( exc_info[ 0 ].__name__, exc_info[ 1 ], '\n'.join( traceback.format_tb( exc_info[ 2 ] ) ) )
 			self.response( resp )
 
 			if not self.__active_requests and self.__timer == None:

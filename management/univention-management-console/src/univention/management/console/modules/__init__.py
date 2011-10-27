@@ -102,7 +102,7 @@ class Base( signals.Provider, Translation ):
 			message = _(  'One or more options to %s are missing: %s' ) % ( method, str( e ) )
 		except UMC_CommandError, e:
 			message = _(  'The command has failed: %s' ) % str( e )
-		except Exception, e:
+		except BaseException, e:
 			import traceback
 			message = _( "Execution of command '%(command)s' has failed:\n\n%(text)s" ) % \
 					  { 'command' : request.arguments[ 0 ], 'text' : unicode( traceback.format_exc() ) }

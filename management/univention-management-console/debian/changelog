@@ -1,3 +1,9 @@
+univention-management-console (4.0.73-1) unstable; urgency=low
+
+  * UMC server: cleanup environment for security reasons; Bug #24197
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Oct 2011 09:57:22 +0200
+
 univention-management-console (4.0.72-1) unstable; urgency=low
 
   * enhancement to UMC module API: Base.required_options may be called to

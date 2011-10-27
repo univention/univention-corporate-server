@@ -71,6 +71,10 @@ class UMC_Daemon( DaemonRunner ):
 						   help = 'specifies an alternative log file [default: %default]' )
 		( self.options, self.arguments ) = self.parser.parse_args()
 
+		# cleanup environment
+		os.environ.clear() # supported since python 2.6
+		os.environ[ 'PATH' ] = '/bin:/sbin:/usr/bin:/usr/sbin'
+
 		# init logging
 		if not self.options.daemon_mode:
 			debug_fd = log_init( '/dev/stderr', self.options.debug )
@@ -110,37 +114,37 @@ class UMC_Daemon( DaemonRunner ):
 		try:
 			locale.setlocale( locale.LC_MESSAGES, locale.normalize( self.options.language ) )
 		except:
-			CORE.error( 'Specified locale is not available (%s)' % self.options.language )
+			CORE.process( 'Specified locale is not available (%s)' % self.options.language )
 
 	def _reload( self ):
 		"""Handler for the reload action"""
 		if self.pidfile.is_locked():
-			CORE.error( 'Reloading configuration ...' )
+			CORE.process( 'Reloading configuration ...' )
 			pid = self.pidfile.read_pid()
 			os.kill( pid, signal.SIGUSR1 )
 		else:
-			CORE.error( 'Reload failed: server ist not running' )
+			CORE.process( 'Reload failed: server ist not running' )
 
 	DaemonRunner.action_funcs[ 'reload' ] = _reload
 
 	def _restart( self ):
 		"""Handler for the restart action. """
 		if self.pidfile.is_locked():
-			CORE.error( 'Stopping UMC server ...' )
+			CORE.process( 'Stopping UMC server ...' )
 			self._stop()
 
-		CORE.error( 'Starting UMC server ...' )
+		CORE.process( 'Starting UMC server ...' )
 		self._start()
 
 	def _crestart( self ):
 		"""Handler for the crestart action. """
 		if not self.pidfile.is_locked():
-			CORE.error( 'The UMC server will not be restarted as it is not running currently' )
+			CORE.process( 'The UMC server will not be restarted as it is not running currently' )
 			return
 
-		CORE.error( 'Stopping UMC server ...' )
+		CORE.process( 'Stopping UMC server ...' )
 		self._stop()
-		CORE.error( 'Starting UMC server ...' )
+		CORE.process( 'Starting UMC server ...' )
 		self._start()
 
 	DaemonRunner.action_funcs[ 'restart' ] = _restart
@@ -157,7 +161,7 @@ class UMC_Daemon( DaemonRunner ):
 
 		self.server = Server( port = self.options.port )
 
-		CORE.error( 'Server started' )
+		CORE.process( 'Server started' )
 		notifier.loop()
 
 	def signal_hang_up( self, signal, frame ):
@@ -175,7 +179,7 @@ if __name__ == "__main__":
 	try:
 		umc_daemon.do_action()
 	except DaemonRunnerStopFailureError, e:
-		CORE.error( 'Failed to shutdown server gracefully (may be its already dead): %s' % str( e ) )
+		CORE.process( 'Failed to shutdown server gracefully (may be its already dead): %s' % str( e ) )
 	except DaemonRunnerStartFailureError, e:
-		CORE.error( 'Failed to start server: %s' % str( e ) )
+		CORE.process( 'Failed to start server: %s' % str( e ) )
 
