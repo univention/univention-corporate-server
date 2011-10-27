@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.55-1) unstable; urgency=low
+
+  * If connector/s4/mapping/sid is set to false, save the SID from S4 in
+    univentionSamba4SID (Bug #24225)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 27 Oct 2011 17:42:09 +0200
+
 univention-s4-connector (6.0.54-1) unstable; urgency=low
 
   * Don't use the udm get_superordinate function because s4connector.dns

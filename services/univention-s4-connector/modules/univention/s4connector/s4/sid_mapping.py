@@ -39,28 +39,29 @@ import univention.s4connector.s4
 def sid_to_s4(s4connector, key, object):
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_s4 object: %s" % object)
 
+	sidAttribute='sambaSID'
 	if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
 		ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: SID mapping is disabled via UCR: connector/s4/mapping/sid')
-		return
+		sidAttribute='univentionSamba4SID'
 
 	# object dn was already mapped to the s4 DN:
 	s4_dn = object['dn']
 	modlist = []
 	
 	# search the ucs object via 
-	if not object['attributes'].has_key('sambaSID'):
-		ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: UCS object does not have a sambaSID')
+	if not object['attributes'].has_key(sidAttribute):
+		ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: UCS object does not have a %s' % sidAttribute)
 		return
 
 
-	sambaSID = object['attributes']['sambaSID']
+	sambaSID = object['attributes'][sidAttribute]
 	# get the ad sid
 	(s4_dn, s4_attributes) = s4connector.lo_s4.lo.search_s(s4_dn, ldap.SCOPE_BASE, '(objectSid=*)', ['objectSid'] )[0]
 	objectSid = s4_attributes.get('objectSid')
 	if objectSid:
 		decoded_s4_sid = univention.s4connector.s4.decode_sid(objectSid[0])
 		if decoded_s4_sid == sambaSID[0]:
-			ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: objectSID and sambaSID are equal')
+			ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: objectSID and %s are equal' % sidAttribute)
 			return
 
 		# change objectSID
@@ -78,9 +79,10 @@ def sid_to_s4(s4connector, key, object):
 def sid_to_ucs(s4connector, key, s4_object):
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs S4: %s" % s4_object)
 
+	sidAttribute='sambaSID'
 	if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
 		ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: SID mapping is disabled via UCR: connector/s4/mapping/sid')
-		return
+		sidAttribute='univentionSamba4SID'
 
 	# modlist
 	ml = []
@@ -95,16 +97,16 @@ def sid_to_ucs(s4connector, key, s4_object):
 		ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: objectSid not found in attributes!')
 		return
 
-	(ucs_dn, ucs_attributes) = s4connector.lo.lo.search(base=ucs_dn, scope='base', attr=['sambaSID', 'objectClass'])[0]
+	(ucs_dn, ucs_attributes) = s4connector.lo.lo.search(base=ucs_dn, scope='base', attr=[sidAttribute, 'objectClass'])[0]
 
 	if not ucs_dn:
 		ud.debug(ud.LDAP, ud.WARN, 'sid_to_ucs: UCS object (%s) not found' % ucs_dn)
 		return
 
 	objectSid = s4_object['attributes'].get('objectSid')[0]
-	sambaSID = ucs_attributes.get('sambaSID')
+	sambaSID = ucs_attributes.get(sidAttribute)
 	if not sambaSID or objectSid != sambaSID:
-		ml.append(('sambaSID', sambaSID, s4_object['attributes'].get('objectSid')[0]))
+		ml.append((sidAttribute, sambaSID, s4_object['attributes'].get('objectSid')[0]))
 		if 'user' in s4_object['attributes'].get('objectClass', []):
 			if not 'sambaSamAccount' in ucs_attributes.get('objectClass'):
 				ml.append(('objectClass',ucs_attributes.get('objectClass'), ucs_attributes.get('objectClass')+['sambaSamAccount']))
