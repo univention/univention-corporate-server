@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (1.0.13-1) unstable; urgency=low
+
+  * UMC module: add commands uvmm/domain/remove, uvmm/domain/migrate,
+    uvmm/domain/query, uvmm/profile/query, uvmm/profile/get,
+    uvmm/storage/pool/query, uvmm/storage/volume/query,
+    uvmm/storage/volume/remove; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 27 Oct 2011 14:54:26 +0200
+
 univention-virtual-machine-manager-daemon (1.0.12-1) unstable; urgency=low
 
   * UMC module: add commands uvmm/nav/query, uvmm/node/query; Bug #22893

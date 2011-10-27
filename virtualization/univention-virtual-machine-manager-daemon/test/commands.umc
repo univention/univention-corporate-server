@@ -46,6 +46,9 @@ umc-client -U root -P univention command uvmm/domain/query -o nodePattern=qemu:/
 # query domains of ALL node
 umc-client -U root -P univention command uvmm/domain/query -o nodePattern="*" -o domainPattern="*"
 
+# get domain details
+umc-client -U root -P univention command uvmm/domain/get -o "nodeURI=qemu://slave.ucs3.test/system" -o "domainUUID=66e90830-b46b-39c2-873a-8d649f10a011"
+
 # start a domain
 umc-client -U root -P univention command uvmm/domain/state -o nodeURI=qemu://$hostname.$domainname/system -o domainUUID="70ebb8c8-1229-bf60-c0b6-77638ecd35bf" -o domainState=RUN
 

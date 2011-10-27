@@ -44,17 +44,23 @@ from notifier import Callback
 
 from .navigation import Navigation
 from .nodes import Nodes
+from .profiles import Profiles
+from .storages import Storages
+from .domains import Domains
 
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 
 _uvmm_locale = Translation( 'univention.virtual.machine.manager' ).translate
 
-class Instance( Base, Navigation, Nodes ):
+class Instance( Base, Navigation, Nodes, Profiles, Storages, Domains ):
 	DOMAIN_STATES = ( 'RUN', 'PAUSE', 'SHUTDOWN', 'RESTART' )
 
 	def __init__( self ):
 		Base.__init__( self )
 		self.uvmm = UVMM_RequestBroker()
+
+	def init( self ):
+		self.read_profiles()
 
 	def _check_thread_error( self, thread, result, request ):
 		"""Checks if the thread returned an exception. In that case in
@@ -76,32 +82,11 @@ class Instance( Base, Navigation, Nodes ):
 			return
 
 		success, data = result
-		self.finished( request.id, data, success = success )
+		MODULE.info( 'Got result from UVMMd: success: %s, data: %s' % ( success, data ) )
+		self.finished( request.id, { 'success' : success, 'data' : data } )
 
 	def group_query( self, request ):
 		self.uvmm.send( 'GROUP_LIST', Callback( self._thread_finish, request ) )
-
-	def domain_query( self, request ):
-		self.uvmm.send( 'DOMAIN_LIST', Callback( self._thread_finish, request ), uri = request.options.get( 'nodePattern', '*' ), pattern = request.options.get( 'domainPattern', '*' ) )
-
-	def domain_get( self, request ):
-		self.required_options( request, 'nodeURI', 'domainUUID' )
-		self.uvmm.send( 'DOMAIN_INFO', Callback( self._thread_finish, request ), uri = request.options[ 'nodeURI' ], domain = request.options[ 'domainUUID' ] )
-
-	def domain_add( self, request ):
-		self.finished( request.id )
-
-	def domain_put( self, request ):
-		self.finished( request.id )
-
-	def domain_state( self, request ):
-		self.required_options( request, 'nodeURI', 'domainUUID', 'domainState' )
-		if request.options[ 'domainState' ] not in Instance.DOMAIN_STATES:
-			raise UMC_OptionTypeError( _( 'Invalid domain state' ) )
-		self.uvmm.send( 'DOMAIN_STATE', Callback( self._thread_finish, request ), uri = request.options[ 'nodeURI' ], domain = request.options[ 'domainUUID' ], state = request.options[ 'domainState' ] )
-
-	def domain_migrate( self, request ):
-		self.finished( request.id )
 
 	def nic_get( self, request ):
 		self.finished( request.id )
@@ -128,7 +113,4 @@ class Instance( Base, Navigation, Nodes ):
 		self.finished( request.id )
 
 	def device_put( self, request ):
-		self.finished( request.id )
-
-	def storage_query( self, request ):
 		self.finished( request.id )

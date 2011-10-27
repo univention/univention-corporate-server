@@ -58,11 +58,11 @@ class Navigation( object ):
 		elements = []
 		if parent[ 'type' ] == 'group':
 			MODULE.info( 'Parent type is group so we prepare a list of nodes ...' )
-			for node_uri in data:
-				uri = urlparse.urlsplit( node_uri )
+			for node_pd in data:
+				uri = urlparse.urlsplit( node_pd.uri )
 				if not uri or not uri.netloc:
 					continue
-				elements.append( { 'id' : node_uri, 'label' : uri.netloc, 'icon' : 'uvmm-node-%s' % uri.scheme } )
+				elements.append( { 'id' : node_pd.uri, 'label' : uri.netloc, 'icon' : 'uvmm-node-%s' % uri.scheme } )
 			MODULE.info( 'The following nodes have been found: %s' % str( elements ) )
 		self.finished( request.id, elements, success = success )
 

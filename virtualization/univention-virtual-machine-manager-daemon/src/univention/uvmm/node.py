@@ -855,7 +855,6 @@ class Nodes(dict):
 			for node_uri in self.keys():
 				if pattern_regex.match( node_uri ) is not None:
 					nodes.append( self[ node_uri ].pd )
-
 		return nodes
 
 nodes = Nodes()

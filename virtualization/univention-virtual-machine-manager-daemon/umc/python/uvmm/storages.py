@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  UVMM node commands
+#  module: management of virtualization servers
 #
 # Copyright 2010-2011 Univention GmbH
 #
@@ -35,43 +35,24 @@ from univention.lib.i18n import Translation
 
 from univention.management.console.log import MODULE
 
+# get the URI parser for nodes
+import univention.uvmm.helpers
+import urlparse
+
 from notifier import Callback
 
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 
-class Nodes( object ):
-	"""Handler for all commands regarding nodes"""
+class Storages( object ):
+	def storage_pool_query( self, request ):
+		self.required_options( request, 'nodeURI' )
+		self.uvmm.send( 'STORAGE_POOLS', Callback( self._thread_finish, request ), uri = request.options[ 'nodeURI' ] )
 
-	def _node_thread_finished( self, thread, result, request, parent ):
-		"""This method is invoked when a threaded request for the
-		navigation is finished. The result is send back to the
-		client. If the result is an instance of BaseException an error
-		is returned."""
-		if self._check_thread_error( thread, result, request ):
-			return
+	def storage_volume_query( self, request ):
+		self.required_options( request, 'nodeURI', 'pool' )
+		self.uvmm.send( 'STORAGE_VOLUMES', Callback( self._thread_finish, request ), uri = request.options[ 'nodeURI' ], pool = request.options[ 'pool' ], type = request.options.get( 'type', None ) )
 
-	def node_query( self, request ):
-		"""Searches nodes by the given pattern
-
-		options: { 'nodePattern': <pattern> }
-
-		return: [ { 'id' : <node URI>, 'label' : <node name>, 'group' : 'default',
-					'memUsed' : <used amount of memory in B>, 'memAvailable' : <amount of physical memory in B>,
-					'cpuUsage' : <cpu usage in %> }, ... ]
-		"""
-		self.required_options( request, 'nodePattern' )
-
-		def _finished( thread, result, request ):
-			if self._check_thread_error( thread, result, request ):
-				return
-
-			nodes = []
-			success, data = result
-			for node_pd in data:
-				nodes.append( { 'id' : node_pd.uri, 'label' : node_pd.name, 'group' : _( 'Physical servers' ),
-								'memUsed' : node_pd.curMem, 'memAvailable' : node_pd.phyMem, 'cpuUsage' : ( node_pd.cpu_usage or 0 ) / 10.0  } )
-
-			self.finished( request.id, nodes, success )
-
-		self.uvmm.send( 'NODE_LIST', Callback( _finished, request ), group = 'default', pattern = request.options.get( 'nodePattern', '*' ) )
+	def storage_volume_remove( self, request ):
+		self.required_options( request, 'nodeURI', 'volumes' )
+		self.uvmm.send( 'STORAGE_VOLUMES_DESTROY', Callback( self._thread_finish, request ), uri = request.options[ 'nodeURI' ], pool = request.options[ 'volumes' ] )
 
