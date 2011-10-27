@@ -46,11 +46,16 @@ from samba.param import LoadParm
 name='samba4-idmap'
 description='Update local IDmap entries'
 filter='(&(|(objectClass=sambaSamAccount)(objectClass=sambaGroupMapping))(sambaSID=*))'
-attributes=['sambaSID', 'uidNumber', 'gidNumber']
+attributes=['sambaSID', 'univentionSamba4SID', 'uidNumber', 'gidNumber']
 
 ### Globals
 lp = LoadParm()
 lp.load('/etc/samba/smb.conf')
+
+sidAttribute='sambaSID'
+if listener.configRegistry.is_false('connector/s4/mapping/sid', False):
+	sidAttribute='univentionSamba4SID'
+
 
 def open_idmap():
 	global lp
@@ -198,9 +203,9 @@ def handler(dn, new, old):
 
 			new_xid = new.get(xid_attr, [''] )[0]
 			if new_xid:
-				new_sambaSID = new['sambaSID'][0]
+				new_sambaSID = new[sidAttribute][0]
 				if old:
-					old_sambaSID = old['sambaSID'][0]
+					old_sambaSID = old[sidAttribute][0]
 					if new_sambaSID != old_sambaSID:
 						rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, new_xid, xid_type)
 					old_xid = old.get(xid_attr, [''] )[0]
@@ -222,10 +227,10 @@ def handler(dn, new, old):
 	#		
 	#		old_xid = old.get(xid_attr, [''] )[0]
 	#		if old_xid:
-	#		remove_idmap_entry(old['sambaSID'][0], old_xid, xid_type)
+	#		remove_idmap_entry(old[sidAttribute][0], old_xid, xid_type)
 	#	except ldb.LdbError, (enum, estr):
 	#		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
-	#			"%s: entry for %s could not be updated" % (name, old['sambaSID'][0]) )
+	#			"%s: entry for %s could not be updated" % (name, old[sidAttribute][0]) )
 
 
 if __name__ == '__main__':

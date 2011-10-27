@@ -1,3 +1,10 @@
+univention-samba4 (1.0.81-1) unstable; urgency=low
+
+  * If connector/s4/mapping/sid is set to false, use the SID from
+    univentionSamba4SID (Bug #24225)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 27 Oct 2011 17:52:38 +0200
+
 univention-samba4 (1.0.80-1) unstable; urgency=low
 
   * Use nmbd as NetBIOS name server (Bug #24191)
