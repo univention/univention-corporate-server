@@ -11,6 +11,7 @@ Package: univention-legacy-kolab-schema
 Architecture: all
 Depends: ${misc:Depends},
  univention-config-registry,
+ shell-univention-lib,
  univention-ldap-server
 Description: Legacy Kolab LDAP Schema
  This package contains the kolab2 LDAP schema for

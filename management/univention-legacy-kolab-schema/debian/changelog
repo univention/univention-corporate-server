@@ -1,3 +1,9 @@
+univention-legacy-kolab-schema (2.0.0-2) unstable; urgency=low
+
+  * fixed dependencies (Bug #23788)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 27 Oct 2011 16:56:05 +0200
+
 univention-legacy-kolab-schema (2.0.0-1) unstable; urgency=low
 
   * bumped version (Bug #23788)
