@@ -454,6 +454,10 @@ class UMC_HTTP_Daemon(DaemonRunner):
 						   help = 'specifies an alternative log file [default: %default]' )
 		( self.options, self.arguments ) = self.parser.parse_args()
 
+		# cleanup environment
+		os.environ.clear() # supported since python 2.6
+		os.environ[ 'PATH' ] = '/bin:/sbin:/usr/bin:/usr/sbin'
+
 		# init logging
 		if not self.options.daemon_mode:
 			debug_fd = log_init( '/dev/stderr', self.options.debug )
@@ -517,7 +521,12 @@ class UMC_HTTP_Daemon(DaemonRunner):
 
 		if self.pidfile.is_locked():
 			CORE.process( 'The UMC web server is still running. Will wait for 5 seconds' )
-			time.sleep( 5 )
+			count = 10
+			while count:
+				time.sleep( 0.5 )
+				if not self.pidfile.is_locked():
+					break
+				count -= 1
 			if self.pidfile.is_locked():
 				CORE.process( 'The UMC web server is still running. Kill it!' )
 				os.kill( pid, signal.SIGKILL )
