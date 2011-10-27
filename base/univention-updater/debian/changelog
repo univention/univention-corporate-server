@@ -1,3 +1,9 @@
+univention-updater (7.0.70-1) unstable; urgency=low
+
+  * updated kolab blocking message (Bug #22436)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 27 Oct 2011 16:35:18 +0200
+
 univention-updater (7.0.69-1) unstable; urgency=low
 
   * First install univention-debmirror (Bug #23831)

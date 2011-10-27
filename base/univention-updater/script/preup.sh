@@ -172,9 +172,9 @@ if [ ! "$update_kolab_check" = "no" -a ! "$update_kolab_check" = "false" -a ! "$
 	if [ "$ucs_kolab_is_installed" = "true" ] ; then
 		echo "WARNING: kolab2 mail stack is installed!"
 		echo
-		echo "As of UCS 3.0 the kolab2 mail stack is no longer part of"
-		echo "Univention Corporate Server. Thus groupware functions of UCS 2.4"
-		echo "will not be available in UCS 3.0. The update process will stop here."
+		echo "As of UCS 3.0 the Kolab groupware will be maintained by Kolab Systems."
+		echo "Please visit http://kolabsys.com/ucs for update/migration instructions."
+		echo "The update process will stop here."
 		echo
 		echo "This check can be disabled by setting the Univention Configuration Registry"
 		echo "variable \"update/kolab/check\" to \"no\"."
