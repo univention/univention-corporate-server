@@ -1,3 +1,9 @@
+univention-updater (7.0.67-1) unstable; urgency=low
+
+  * check if slapd.conf template has been modified (Bug #23483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 27 Oct 2011 11:11:15 +0200
+
 univention-updater (7.0.66-1) unstable; urgency=low
 
   * During the UCS 3.0 upgrade some kde packages will be removed. preup

@@ -37,6 +37,13 @@ date >&3
 
 eval "$(univention-config-registry shell)" >&3 2>&3
 
+conffile_is_unmodified () {
+	# conffile_is_unmodified <conffile> [<packagename or other arguments for dpkg-query> ...]
+	# returns exitcode 0 if given conffile is unmodified
+	# Note: $1 has to be sed regex compliant!
+	dpkg-query -W -f '${Conffiles}\n' "$@" | sed -nre "s,^ ($1) ([0-9a-f]+)( .*)?$,\2  \1,p" | md5sum -c - >&3
+}
+
 cleanup () {
 	# remove statoverride for UMC and apache in case of error during preup script
 	if [ -e /usr/sbin/univention-management-console-server ]; then
@@ -462,6 +469,18 @@ if [ $? = 0 ]; then
 	exit 1
 fi
 echo "OK"
+
+# only for update to UCS 3.0-0:
+# ensure that /etc/univention/templates/files/etc/ldap/slapd.conf.d/10univention-ldap-server_schema
+# is untouched by the user otherwise the update will fail (Bug #23483)
+for fn in "/etc/univention/templates/files/etc/ldap/slapd.conf.d/10univention-ldap-server_schema" ; do
+	if ! conffile_is_unmodified "$fn" ; then
+		echo "ERROR: the configuration file $fn"
+		echo "       has been modified by user! Please reconstruct original file otherwise"
+		echo "       the update will fail."
+		exit 1
+	fi
+done
 
 # ensure that UMC is not restarted during the update process
 if [ -e /usr/sbin/univention-management-console-server ]; then
