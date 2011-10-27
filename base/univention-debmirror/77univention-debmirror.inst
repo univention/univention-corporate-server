@@ -40,15 +40,15 @@ eval "$(univention-config-registry shell)"
 
 if [ -n "$local_repository" ] && [ "$local_repository" = "true" -o "$local_repository" = "True" -o "$local_repository" = "yes" ]; then
 	# Is there already another repository server?
-	target="$(LC_ALL=C host -t CNAME univention-repository.$domainname | sed -ne 's|.* is an alias for ||;s|\.$||p')"
+	target="$(LC_ALL=C host -t CNAME univention-repository.$domainname | sed -ne 's|.* is an alias for ||p' | sed -e 's|\.$||')"
 	if [ -z "$target" ]; then
-		target="$(LC_ALL=C host -t CNAME univention-repository.$domainname | sed -ne 's|.*  has address ||;s|\.$||p')"
+		target="$(LC_ALL=C host -t CNAME univention-repository.$domainname | sed -ne 's|.*  has address ||p' | sed -e 's|\.$||')"
 	fi
 
 	if [ -n "$target" ]; then
 		if [ "$target" = "$hostname" ] || [ "$target" = "$hostname.$domainname" ]; then
 			# univention-repository is a alias for this host
-			;
+			true ;
 		else
 			univention-config-registry set repository/mirror/server=univention-repository.$domainname
 		fi
