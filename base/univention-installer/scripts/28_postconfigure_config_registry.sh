@@ -41,7 +41,6 @@ architecture=`/bin/uname -m`
 acpi_off=`grep "acpi=off" /proc/cmdline`
 pci_acpi_off=`grep "pci=noacpi" /proc/cmdline`
 pci_acpi_on=`grep "pci=acpi" /proc/cmdline`
-grub_append=`sed -e 's|.* profile||;s|.* usb||;s|.* floppy||;s|.* text||' </proc/cmdline`
 version_version=`sed -ne 's|VERSION=||p' </instmnt/sourcedevice/.univention_install`
 version_patchlevel=`sed -ne 's|PATCHLEVEL=||p' </instmnt/sourcedevice/.univention_install`
 
@@ -258,10 +257,6 @@ fi
 
 if [ -n "$pci_acpi_off" ]; then
 	univention-config-registry set "\$(univention-config-registry get grub/append) pci=noacpi"
-fi
-
-if [ -n "$grub_append" ]; then
-	univention-config-registry set grub/append="$grub_append"
 fi
 
 univention-config-registry set locale="$locales"
