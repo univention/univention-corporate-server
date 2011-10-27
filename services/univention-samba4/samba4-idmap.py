@@ -203,9 +203,9 @@ def handler(dn, new, old):
 
 			new_xid = new.get(xid_attr, [''] )[0]
 			if new_xid:
-				new_sambaSID = new[sidAttribute][0]
+				new_sambaSID = new.get(sidAttribute, [''])[0]
 				if old:
-					old_sambaSID = old[sidAttribute][0]
+					old_sambaSID = old.get(sidAttribute, [''])[0]
 					if new_sambaSID != old_sambaSID:
 						rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, new_xid, xid_type)
 					old_xid = old.get(xid_attr, [''] )[0]

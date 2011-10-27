@@ -1,3 +1,9 @@
+univention-samba4 (1.0.82-1) unstable; urgency=low
+
+  * Fixed python error in samba4-idmap.py (Bug #24225)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 27 Oct 2011 18:26:14 +0200
+
 univention-samba4 (1.0.81-1) unstable; urgency=low
 
   * If connector/s4/mapping/sid is set to false, use the SID from
