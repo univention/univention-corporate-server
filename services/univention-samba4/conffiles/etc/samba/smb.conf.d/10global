@@ -24,11 +24,17 @@ print '\tserver string\t=', samba_serverstring
 server_services=[]
 if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 	server_services.append('-smb')
+if configRegistry.get('samba4/service/nmb', 'nmbd') == 'nmbd':
+	server_services.append('-nbtd')
 if server_services:
 	print '\tserver services\t=', ' '.join(server_services)
 
 print '\tworkgroup\t= %s' % configRegistry['windows/domain']
 print '\trealm\t\t= %s' % configRegistry['kerberos/realm']
+
+if configRegistry.get('samba4/service/nbtd', 'nmbd') == 'nmbd':
+	print '\t# use nmbd; to disable set samba4/service/nbtd to s4'
+	print '\tnmbd_proxy_logon:cldap_server=127.0.0.1'
 
 fqdn = '.'.join([ configRegistry['hostname'], configRegistry['domainname'] ])
 print

@@ -143,8 +143,14 @@ Type=str
 Categories=service-samba
 
 [samba4/service/smb]
-Description[de]=Auswahl des SMB-Dienstes für Samba 4
-Description[en]=Selects the SMB service for Samba 4
+Description[de]=Auswahl des SMB-Dienstes für Samba 4 (e.g. smbd oder s4)
+Description[en]=Selects the SMB service for Samba 4 (e.g. smbd oder s4)
+Type=str
+Categories=service-samba
+
+[samba4/service/nmb]
+Description[de]=Auswahl des NetBIOS Dienstes für Samba 4 (e.g. nmbd oder s4)
+Description[en]=Selects the NetBIOS service for Samba 4 (e.g. nmbd or s4)
 Type=str
 Categories=service-samba
 

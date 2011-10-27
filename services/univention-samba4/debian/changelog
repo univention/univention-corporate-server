@@ -1,3 +1,9 @@
+univention-samba4 (1.0.80-1) unstable; urgency=low
+
+  * Use nmbd as NetBIOS name server (Bug #24191)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 27 Oct 2011 14:01:02 +0200
+
 univention-samba4 (1.0.79-1) unstable; urgency=low
 
   * retrive S3_DOMAIN_SID only for windows/domain
