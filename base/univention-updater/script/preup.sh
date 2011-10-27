@@ -112,6 +112,21 @@ if [ "$TERM" = "xterm" ]; then
 	fi
 fi
 
+# Save current KDE package status. These packages might be removed
+# during the UCS 3.0 update
+if [ -z "$update30_kde_check" ]; then
+	if [ "$(dpkg-query -W -f='${Status}\n' univention-kde 2>/dev/null)" = "install ok installed" ]; then
+		univention-config-registry set update30/kde/univentionkde=true >&3
+	fi
+	if [ "$(dpkg-query -W -f='${Status}\n' kdepim 2>/dev/null)" = "install ok installed" ]; then
+		univention-config-registry set update30/kde/kdepim=true >&3
+	fi
+	if [ "$(dpkg-query -W -f='${Status}\n' kdemultimedia 2>/dev/null)" = "install ok installed" ]; then
+		univention-config-registry set update30/kde/kdemultimedia=true >&3
+	fi
+	univention-config-registry set update30/kde/check=true >&3
+fi
+
 # In some cases grub/boot might point to a device no longer present (e.g. if the system was installed
 # in a virtual machine and migrated). To prevent grub-install from failing and rendering the system
 # unbootable, bail out the update

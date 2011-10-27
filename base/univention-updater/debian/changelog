@@ -1,3 +1,12 @@
+univention-updater (7.0.66-1) unstable; urgency=low
+
+  * During the UCS 3.0 upgrade some kde packages will be removed. preup
+    now checks for the package state of univention-kde, kdepim and
+    kdemultimeda. In postup these packages will be installed again
+    if it is necessary (Bug #24199)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 27 Oct 2011 09:11:14 +0200
+
 univention-updater (7.0.65-1) unstable; urgency=low
 
   * If univention.debug is not available use univention.debug2. This

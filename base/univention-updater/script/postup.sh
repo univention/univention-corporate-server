@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Copyright (C) 2010-2011 Univention GmbH
 #
@@ -33,18 +33,26 @@ UPDATE_NEXT_VERSION="$2"
 PACKAGES_TO_BE_PURGED="kcontrol libusplash0 univention-usplash-theme usplash libnjb5"
 PACKAGES_TO_BE_REMOVED="nagios2 nagios2-common nagios2-doc"
 
+install ()
+{
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install $1 >>"$UPDATER_LOG" 2>&1
+}
+reinstall ()
+{
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes --reinstall install $1 >>"$UPDATER_LOG" 2>&1
+}
 check_and_install ()
 {
 	state="$(dpkg --get-selections $1 2>/dev/null | awk '{print $2}')"
 	if [ "$state" = "install" ]; then
-		DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install $1 >>"$UPDATER_LOG" 2>&1
+		install $1
 	fi
 }
 check_and_reinstall ()
 {
 	state="$(dpkg --get-selections $1 2>/dev/null | awk '{print $2}')"
 	if [ "$state" = "install" ]; then
-		DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install --reinstall $1 >>"$UPDATER_LOG" 2>&1
+		reinstall $1
 	fi
 }
 
@@ -63,19 +71,19 @@ eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
 ## done
 
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-basesystem >>"$UPDATER_LOG" 2>&1
+	install univention-basesystem
 elif [ "$server_role" = "domaincontroller_master" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-server-master  >>"$UPDATER_LOG" 2>&1
+	install univention-server-master
 elif [ "$server_role" = "domaincontroller_backup" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-server-backup  >>"$UPDATER_LOG" 2>&1
+	install univention-server-backup  >>"$UPDATER_LOG" 2>&1
 elif [ "$server_role" = "domaincontroller_slave" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-server-slave  >>"$UPDATER_LOG" 2>&1
+	install univention-server-slave
 elif [ "$server_role" = "memberserver" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-server-member  >>"$UPDATER_LOG" 2>&1
+	install univention-server-member
 elif [ "$server_role" = "mobileclient" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-mobile-client  >>"$UPDATER_LOG" 2>&1
+	install univention-mobile-client
 elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-managed-client  >>"$UPDATER_LOG" 2>&1
+	install univention-managed-client
 fi
 
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes dist-upgrade >>"$UPDATER_LOG" 2>&1
@@ -95,11 +103,6 @@ if [ -e /usr/sbin/apache2 ]; then
 	chmod +x /usr/sbin/apache2 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
 fi
 
-# removes temporary sources list (always required)
-if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
-	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
-fi
-
 # Enable usplash after update (Bug #16363) (always required)
 if dpkg -l lilo 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
 	dpkg-divert --rename --divert /usr/share/initramfs-tools/bootsplash.debian --remove /usr/share/initramfs-tools/hooks/bootsplash 2>> "$UPDATER_LOG" >> "$UPDATER_LOG"
@@ -107,7 +110,7 @@ fi
 
 # univention-squid might be held back due squid still being installed
 if dpkg -l squid 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
-    DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-squid  >>"$UPDATER_LOG" 2>&1
+    install univention-squid  >>"$UPDATER_LOG" 2>&1
 fi
 
 # remove obsolte packages, no more required after UCS 3.0-0 update
@@ -129,6 +132,27 @@ done
 if [ "$server_role" = "domaincontroller_master" ]; then
 	echo "Increase priority for some system SRV records from 0 to 100" >>"$UPDATER_LOG" 2>&1 
 	/usr/share/univention-directory-manager-tools/change_srv_priority.py >>"$UPDATER_LOG" 2>&1
+fi
+
+if [ -n "$update30_kde_check" -a "$update30_kde_check" = "true" ]; then
+	if [ -n "$update30_kde_univentionkde" -a "$update30_kde_univentionkde" = "true" ]; then
+		install univention-kde
+		univention-config-registry unset update30/kde/univentionkde  >>"$UPDATER_LOG" 2>&1
+	fi
+	if [ -n "$update30_kde_kdepim" -a "$update30_kde_kdepim" = "true" ]; then
+		install kdepim
+		univention-config-registry unset update30/kde/kdepim  >>"$UPDATER_LOG" 2>&1
+	fi
+	if [ -n "$update30_kde_kdemultimedia" -a "$update30_kde_kdemultimedia" = "true" ]; then
+		install kdemultimedia
+		univention-config-registry unset update30/kde/kdemultimedia  >>"$UPDATER_LOG" 2>&1
+	fi
+	univention-config-registry unset update30/kde/check  >>"$UPDATER_LOG" 2>&1
+fi
+
+# removes temporary sources list (always required)
+if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
+	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
 fi
 
 # remove old sysklogd startup links (Bug #23143)
