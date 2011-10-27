@@ -1,3 +1,9 @@
+univention-installer (7.0.127-1) unstable; urgency=low
+
+  * moved network.sh to startup-scripts (Bug #20014)
+
+ -- Felix Botner <botner@univention.de>  Thu, 27 Oct 2011 16:58:02 +0200
+
 univention-installer (7.0.126-1) unstable; urgency=low
 
   * removed grub/append in 28_postconfigure_config_registry.sh  (Bug #20014)
