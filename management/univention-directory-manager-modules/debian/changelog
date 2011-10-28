@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.156-2) unstable; urgency=low
+
+  * provide syntax.d directory by default (Bug #24056)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 28 Oct 2011 15:29:42 +0200
+
 univention-directory-manager-modules (7.0.156-1) unstable; urgency=low
 
   * Adjust layout of UDM modules to UCS 3.0 (Bug #23709)
