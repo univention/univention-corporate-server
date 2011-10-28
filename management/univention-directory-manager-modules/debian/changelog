@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.155-1) unstable; urgency=low
+
+  * provide syntax.d directory by default (Bug #24056)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 28 Oct 2011 14:13:45 +0200
+
 univention-directory-manager-modules (7.0.154-1) unstable; urgency=low
 
   * disable IPv6 in dhcp/* syntax (Bug #24256)
