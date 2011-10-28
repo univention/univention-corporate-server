@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.158-1) unstable; urgency=low
+
+  * Fixed debug message (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 28 Oct 2011 16:24:25 +0200
+
 univention-directory-manager-modules (7.0.157-1) unstable; urgency=low
 
   * provide example.py in syntax.d directory (Bug #24056)

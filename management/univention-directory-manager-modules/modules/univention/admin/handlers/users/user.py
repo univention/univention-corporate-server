@@ -1339,7 +1339,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			# shadowExpire contains the absolute date to expire the account.
 
 			if 'shadowExpire' in self.oldattr and len(self.oldattr['shadowExpire']) > 0 :
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'userexpiry: %s' % posixDaysToDate(self.oldattr['shadowExpire'][0]))
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'userexpiry: %s' % posixDaysToDate(self.oldattr['shadowExpire'][0]))
 				if self.oldattr['shadowExpire'][0] != '1':
 					self.info['userexpiry'] = posixDaysToDate(self.oldattr['shadowExpire'][0])
 			if 'shadowLastChange' in self.oldattr and 'shadowMax' in self.oldattr and len(self.oldattr['shadowLastChange']) > 0 and len(self.oldattr['shadowMax']) > 0:
