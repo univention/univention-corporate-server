@@ -42,7 +42,6 @@ from .uvmmd import UVMM_RequestBroker
 
 from notifier import Callback
 
-from .navigation import Navigation
 from .nodes import Nodes
 from .profiles import Profiles
 from .storages import Storages
@@ -52,7 +51,7 @@ _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 
 _uvmm_locale = Translation( 'univention.virtual.machine.manager' ).translate
 
-class Instance( Base, Navigation, Nodes, Profiles, Storages, Domains ):
+class Instance( Base, Nodes, Profiles, Storages, Domains ):
 	DOMAIN_STATES = ( 'RUN', 'PAUSE', 'SHUTDOWN', 'RESTART' )
 
 	def __init__( self ):
@@ -69,7 +68,7 @@ class Instance( Base, Navigation, Nodes, Profiles, Storages, Domains ):
 		if not isinstance( result, BaseException ):
 			return False
 
-		msg = '%s\n%s: %s\n' % ( '\n'.join( traceback.format_tb( thread.exc_info[ 2 ] ) ), thread.exc_info[ 0 ].__name__, str( thread.exc_info[ 1 ] ) )
+		msg = '%s\n%s: %s\n' % ( ''.join( traceback.format_tb( thread.exc_info[ 2 ] ) ), thread.exc_info[ 0 ].__name__, str( thread.exc_info[ 1 ] ) )
 		MODULE.process( 'An internal error occurred: %s' % msg )
 		self.finished( request.id, None, msg, False )
 		return True
@@ -88,7 +87,7 @@ class Instance( Base, Navigation, Nodes, Profiles, Storages, Domains ):
 	def query( self, request ):
 		"""Meta query function for nodes and domains.
 
-		options: { 'type' : (node|domain), 'nodePattern': <node pattern>, [ 'domainPattern' : <domain pattern> ] }
+		options: { 'type' : (group|node|domain), 'nodePattern': <node pattern>, [ 'domainPattern' : <domain pattern> ] }
 
 		return: { 'success' : (True|False), 'message' : <details> }
 		"""
@@ -98,6 +97,8 @@ class Instance( Base, Navigation, Nodes, Profiles, Storages, Domains ):
 			self.node_query( request )
 		elif request.options[ 'type' ] == 'domain':
 			self.domain_query( request )
+		elif request.options[ 'type' ] == 'group':
+			self.finished( request.id, [ { 'id' : 'default', 'label' : _( 'Physical servers' ), 'type' : 'group', 'icon' : 'uvmm-group' }, ] )
 		else:
 			raise UMC_OptionTypeError( _( 'Unknown query type' ) )
 

@@ -35,6 +35,10 @@ from univention.lib.i18n import Translation
 
 from univention.management.console.log import MODULE
 
+# for urlparse extensions
+from univention.uvmm import helpers
+import urlparse
+
 from notifier import Callback
 
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate
@@ -55,9 +59,9 @@ class Nodes( object ):
 
 		options: { 'nodePattern': <pattern> }
 
-		return: [ { 'id' : <node URI>, 'label' : <node name>, 'group' : 'default',
+		return: [ { 'id' : <node URI>, 'label' : <node name>, 'group' : 'default', 'type' : 'node', 'virtech' : <virtualization technology>,
 					'memUsed' : <used amount of memory in B>, 'memAvailable' : <amount of physical memory in B>,
-					'cpuUsage' : <cpu usage in %> }, ... ]
+					'cpuUsage' : <cpu usage in %>, 'available' : (True|False) }, ... ]
 		"""
 		self.required_options( request, 'nodePattern' )
 
@@ -68,8 +72,10 @@ class Nodes( object ):
 			nodes = []
 			success, data = result
 			for node_pd in data:
-				nodes.append( { 'id' : node_pd.uri, 'label' : node_pd.name, 'group' : _( 'Physical servers' ),
-								'memUsed' : node_pd.curMem, 'memAvailable' : node_pd.phyMem, 'cpuUsage' : ( node_pd.cpu_usage or 0 ) / 10.0  } )
+				node_uri = urlparse.urlsplit( node_pd.uri )
+				nodes.append( { 'id' : node_pd.uri, 'label' : node_pd.name, 'group' : _( 'Physical servers' ), 'type' : 'node','virtech' : node_uri.scheme,
+								'memUsed' : node_pd.curMem, 'memAvailable' : node_pd.phyMem, 'cpuUsage' : ( node_pd.cpu_usage or 0 ) / 10.0,
+								'available' : node_pd.last_try == node_pd.last_update } )
 
 			self.finished( request.id, nodes, success = success )
 

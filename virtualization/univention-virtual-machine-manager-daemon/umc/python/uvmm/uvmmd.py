@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import copy
 import fnmatch
 import os
 import socket
@@ -56,28 +57,8 @@ class UVMM_Error( Exception ):
 	"""UVMM-request was not successful."""
 	pass
 
-class UVMM_ConnectionThread( Simple ):
-	SOCKET_PATH = '/var/run/uvmm.socket'
-
-	counter = 0
-	def __init__( self ):
-		Simple.__init__( self, 'UVMM_Connection-%d' % UVMM_ConnectionThread.counter, None, Callback( self._finished ) )
-		UVMM_ConnectionThread.counter += 1
-		self.busy = False
-
-	def __call__( self, callback, command, **kwargs ):
-		MODULE.info( 'Starting request thread ...' )
-		if self.busy:
-			MODULE.info( 'Thread is already busy' )
-			return False
-		self._user_callback = callback
-		self._function = Callback( self._thread, command, **kwargs )
-		self.busy = True
-		MODULE.info( 'Thread is working on a request' )
-		self.run()
-		return True
-
-	def _thread( self, command, **kwargs ):
+class UVMM_Request( object ):
+	def request( self, command, **kwargs ):
 		MODULE.info( 'Sending request %s to UVMM daemon ...' % command )
 		try:
 			request = eval( 'protocol.Request_%s()' % command )
@@ -103,6 +84,27 @@ class UVMM_ConnectionThread( Simple ):
 
 		MODULE.info( 'Returning result from UVMMd' )
 		return data
+
+class UVMM_ConnectionThread( Simple, UVMM_Request ):
+	SOCKET_PATH = '/var/run/uvmm.socket'
+
+	counter = 0
+	def __init__( self ):
+		Simple.__init__( self, 'UVMM_Connection-%d' % UVMM_ConnectionThread.counter, None, Callback( self._finished ) )
+		UVMM_ConnectionThread.counter += 1
+		self.busy = False
+
+	def __call__( self, callback, command, **kwargs ):
+		MODULE.info( 'Starting request thread ...' )
+		if self.busy:
+			MODULE.info( 'Thread is already busy' )
+			return False
+		self._user_callback = callback
+		self._function = Callback( self.request, command, **kwargs )
+		self.busy = True
+		MODULE.info( 'Thread is working on a request' )
+		self.run()
+		return True
 
 	def _finished( self, thread, result ):
 		MODULE.info( 'Thread returned result: %s' % str( result ) )
@@ -130,13 +132,20 @@ class UVMM_RequestBroker( list ):
 
 	def send( self, request, callback, **kwargs ):
 		MODULE.info( 'Sending request %s to UVMMd' % request )
-		for thread in self:
+
+		if callback is None: # synchron call
+			request = UVMM_Request()
+			return request.request( request, **kwargs )
+
+		# cleanup ...
+		for thread in copy.copy( self ):
 			if not thread.busy:
-				free_thread = thread
-				break
-		else:
-			free_thread = UVMM_ConnectionThread()
-			self.append( free_thread )
+				self.remove( thread )
+
+		# asynchron call
+		free_thread = UVMM_ConnectionThread()
+		self.append( free_thread )
+
 
 		MODULE.info( 'There are currently %d threads running' % len( self ) )
 		free_thread( callback, request, **kwargs )

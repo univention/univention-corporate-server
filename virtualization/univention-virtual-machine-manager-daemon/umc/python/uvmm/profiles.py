@@ -44,7 +44,7 @@ import urlparse
 
 from notifier import Callback
 
-from .ldap import LDAP_Connection, LDAP_ConnectionError
+from .udm import LDAP_Connection, LDAP_ConnectionError
 from .tools import object2dict
 
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate

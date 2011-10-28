@@ -1,10 +1,10 @@
 #!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
-# UCS Virtual Machine Manager
-#  module: UDM modules
+# Univention Management Console
+#  module: management of virtualization servers
 #
-# Copyright 2010 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,128 +31,72 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.lib.i18n import Translation
+import univention.admin.uldap as udm_uldap
+import univention.admin.uexceptions as udm_errors
 
-import univention.admin.uldap
-import univention.admin.modules
-import univention.admin.handlers.uvmm.profile as uvmm_profile
+from ldap import LDAPError
 
-from univention.management.console.log import MODULE
-from univention.management.console.config import ucr
-
-_ = Translation('univention.management.console.handlers.uvmm').translate
+# decorator for LDAP connections
+_ldap_connection = None
+_ldap_position = None
 
 class LDAP_ConnectionError( Exception ):
 	pass
 
-# decorators
-def ensureLDAP_Connection_Admin( func ):
-	return ensureLDAP_Connection( func, 'admin' )
+def LDAP_Connection( func ):
+	"""This decorator function provides an open LDAP connection that can
+	be accessed via the variable ldap_connection and a vaild position
+	within the LDAP directory in the variable ldap_position. It reuses
+	an already open connection or creates a new one. If the function
+	fails with an LDAP error the decorators tries to reopen the LDAP
+	connection and invokes the function again. if it still fails an
+	LDAP_ConnectionError is raised.
 
-def ensureLDAP_Connection_Machine( func ):
-	return ensureLDAP_Connection( func, 'machine' )
+	When using the decorator the method gets two additional keyword arguments.
 
-class ensureLDAP_Connection( object ):
-	'''A decorator that creates an LDAP connection and sets class
-	attributes to access it from within the class method:
+	example:
+	  @LDAP_Connection
+	  def do_ldap_stuff( arg1, arg2, ldap_connection = None, ldap_positio = None ):
+		  ...
+		  ldap_connection.searchDn( ..., position = ldap_position )
+		  ...
+	"""
+	def wrapper_func( *args, **kwargs ):
+		global _ldap_connection, _ldap_position
 
-	ldap_conn: univention.uldap.access object
-	ldap_pos: univention.uldap.position object
-
-	for class methods:
-	class Test():
-		@classmethod
-		@ensureLDAP_Connection
-		def do_ldap_stuff( self, bla ):
-			self.ldap_conn ...
-
-	for global functions:
-	@ensureLDAP_Connection
-	def do_ldap_stuff( bla ):
-		do_ldap_stuff.ldap_conn ...
-	'''
-	def __init__( self, f, account ):
-		self.f = f
-		self.account = account
-
-	def open( self, klass ):
-		# LDAP connection already open?
-		if hasattr( klass, 'ldap_conn' ) and klass.ldap_conn:
-			return True
-
-		host = ucr.get( 'ldap/server/name' )
-		base = ucr.get( 'ldap/base' )
-		if self.account == 'machine':
-			pwfile = '/etc/machine.secret'
-			binddn = ucr.get( 'ldap/hostdn' )
-		elif self.account == 'admin':
-			pwfile = '/etc/ldap.secret'
-			binddn = 'cn=admin,%s' % base
-		bindpw = open( pwfile ).read()
-		if bindpw[ -1 ] == '\n':
-			bindpw = bindpw[ 0 : -1 ]
-
-		klass.ldap_conf = None
-		try:
-			klass.ldap_conn = univention.admin.uldap.access( host = host, base = base, binddn = binddn, bindpw = bindpw )
-		except:
-			klass.ldap_conn = None
-			raise LDAP_ConnectionError()
-
-		klass.ldap_pos = univention.admin.uldap.position( klass.ldap_conn.base )
-
-		return True
-
-	def __call__( self, *args, **kwargs ):
-		klass = args[ 0 ]
-		if not isinstance( klass, type ):
-			klass = self
-		self.open( klass )
-		try:
-			return self.f( *args, **kwargs )
-		except univention.admin.uexceptions.base, e:
-			# try to reopen connection
-			klass.ldap_conn = None
-			self.open( klass )
+		if _ldap_connection is not None:
+			lo = _ldap_connection
+			po = _ldap_position
+		else:
 			try:
-				return self.f( *args, **kwargs )
-			except univention.admin.uexceptions.base, e:
+				lo, po = udm_uldap.getMachineConnection( ldap_master = False )
+			except LDAPError, e:
+				raise LDAP_ConnectionError( 'Opening LDAP connection failed: %s' % str( e ) )
+
+		kwargs[ 'ldap_connection' ] = lo
+		kwargs[ 'ldap_position' ] = po
+		try:
+			ret = func( *args, **kwargs )
+			_ldap_connection = lo
+			_ldap_position = po
+			return ret
+		except udm_errors.base, e:
+			try:
+				lo, po = udm_uldap.getMachineConnection( ldap_master = False )
+			except LDAPError, e:
+				raise LDAP_ConnectionError( 'Opening LDAP connection failed: %s' % str( e ) )
+
+			kwargs[ 'ldap_connection' ] = lo
+			kwargs[ 'ldap_position' ] = po
+			try:
+				ret = func( *args, **kwargs )
+				_ldap_connection = lo
+				_ldap_position = po
+				return ret
+			except udm_errors.base, e:
 				raise LDAP_ConnectionError( str( e ) )
 
-class Client( object ):
-	PROFILE_RDN = 'cn=Profiles,cn=Virtual Machine Manager'
+		return []
 
-	@classmethod
-	def _tech_filter( self, tech ):
-		if tech:
-			# FIXME: we need a way to make things unique e.g. kvm == qemu
-			if tech == 'qemu':
-				tech = 'kvm'
-			filter='univentionVirtualMachineProfileVirtTech=%s*' % tech
-		else:
-			filter='univentionVirtualMachineProfileVirtTech=*'
-		return filter
+	return wrapper_func
 
-	@classmethod
-	@ensureLDAP_Connection_Machine
-	def get_profiles( self, tech = None ):
-		base = "%s,%s" % ( Client.PROFILE_RDN, self.ldap_pos.getDn() )
-		res = univention.admin.modules.lookup( uvmm_profile, self.ldap_conf, self.ldap_conn, scope='sub', filter=self._tech_filter(tech), base = base, required = False, unique = False )
-
-		return res
-
-	@classmethod
-	@ensureLDAP_Connection_Machine
-	def get_profile( self, name, tech ):
-		name = name.replace( '(', '\(' )
-		name = name.replace( ')', '\)' )
-		filter = '(&(%s)(cn=%s))' % (self._tech_filter(tech), name)
-		base = "%s,%s" % ( Client.PROFILE_RDN, self.ldap_pos.getDn() )
-		res = univention.admin.modules.lookup( uvmm_profile, self.ldap_conf, self.ldap_conn, filter = filter, scope='sub', base = base, required = False, unique = True )
-
-		ud.debug( ud.ADMIN, ud.ERROR, 'UVMM/UDM: get_profile: profile: %s' % str( res ) )
-		return res[ 0 ]
-
-if __name__ == '__main__':
-	udm = Client()
-	print udm.get_profiles()

@@ -52,7 +52,7 @@ class Domains( object ):
 
 		options: { 'nodepattern': <node name pattern>, 'domainPattern' : <domain pattern> }
 
-		return: { 'id': <uuid>, 'name' : <name>, 'nodeURI' : <node uri>, 'nodeName' : <node>, 'mem' : <ram>, 'state' : <state>, 'cpu_usage' : <percentage> }, ... ], ... }
+		return: { 'id': <domain uri>, 'name' : <name>, 'nodeName' : <node>, 'mem' : <ram>, 'state' : <state>, 'cpu_usage' : <percentage>, 'type' : 'domain' }, ... ], ... }
 		"""
 
 		def _finished( thread, result, request ):
@@ -66,7 +66,9 @@ class Domains( object ):
 				for node_uri, domains in data.items():
 					uri = urlparse.urlsplit( node_uri )
 					for domain in domains:
-						domain_list.append( { 'id' : domain[ 'uuid' ], 'nodeURI' : node_uri, 'label' : domain[ 'name' ], 'nodeName' : uri.netloc, 'state' : domain[ 'state' ], 'mem' : domain[ 'mem' ], 'cpuUsage' : domain[ 'cpu_usage' ] } )
+						domain_uri = '%s#%s' % ( node_uri, domain[ 'uuid' ] )
+						domain_list.append( { 'id' : domain_uri, 'label' : domain[ 'name' ], 'nodeName' : uri.netloc, 'state' : domain[ 'state' ], 'type' : 'domain',
+											  'mem' : domain[ 'mem' ], 'cpuUsage' : domain[ 'cpu_usage' ] } )
 			else:
 				domain_list = data
 			self.finished( request.id, domain_list, success = success )
@@ -76,9 +78,9 @@ class Domains( object ):
 	def domain_get( self, request ):
 		"""Returns details about a domain domainUUID.
 
-		options: { 'nodeURI': <node uri>, 'domainUUID' : <domain UUID> }
+		options: { 'domainURI': <domain uri> }
 
-		return: { 'success' : (True|False), 'message' : <details> }
+		return: { 'success' : (True|False), 'data' : <details> }
 		"""
 		def _finished( thread, result, request ):
 			if self._check_thread_error( thread, result, request ):
@@ -90,8 +92,9 @@ class Domains( object ):
 			MODULE.info( 'Got domain description: success: %s, data: %s' % ( success, json ) )
 			self.finished( request.id, { 'success' : success, 'data' : json } )
 
-		self.required_options( request, 'nodeURI', 'domainUUID' )
-		self.uvmm.send( 'DOMAIN_INFO', Callback( _finished, request ), uri = request.options[ 'nodeURI' ], domain = request.options[ 'domainUUID' ] )
+		self.required_options( request, 'domainURI' )
+		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
+		self.uvmm.send( 'DOMAIN_INFO', Callback( _finished, request ), uri = node_uri, domain = domain_uuid )
 
 	def domain_add( self, request ):
 		"""Creates a new domain on nodeURI.
@@ -181,36 +184,38 @@ class Domains( object ):
 	def domain_state( self, request ):
 		"""Set the state a domain domainUUID on node nodeURI.
 
-		options: { 'nodeURI': <node uri>, 'domainUUID' : <domain UUID>, 'domainState': (RUN|SHUTDOWN|PAUSE|RESTART) }
+		options: { 'domainURI': <domain uri>, 'domainState': (RUN|SHUTDOWN|PAUSE|RESTART) }
 
 		return: { 'success' : (True|False), 'message' : <details> }
 		"""
-		self.required_options( request, 'nodeURI', 'domainUUID', 'domainState' )
+		self.required_options( request, 'domainURI', 'domainState' )
+		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
+
 		if request.options[ 'domainState' ] not in Instance.DOMAIN_STATES:
 			raise UMC_OptionTypeError( _( 'Invalid domain state' ) )
-		self.uvmm.send( 'DOMAIN_STATE', Callback( self._thread_finish, request ), uri = request.options[ 'nodeURI' ], domain = request.options[ 'domainUUID' ], state = request.options[ 'domainState' ] )
+		self.uvmm.send( 'DOMAIN_STATE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, state = request.options[ 'domainState' ] )
 
 	def domain_migrate( self, request ):
 		"""Migrates a domain from sourceURI to targetURI.
 
-		options: { 'sourceURI': <source node uri>, 'domainUUID' : <domain UUID>, 'targetURI': <target node uri> }
+		options: { 'domainURI': <domain uri>, 'targetNodeURI': <target node uri> }
 
 		return: { 'success' : (True|False), 'message' : <details> }
 		"""
-		self.required_options( request, 'sourceURI', 'domainUUID', 'targetURI' )
-		self.uvmm.send( 'DOMAIN_MIGRATE', Callback( self._thread_finish, request ), uri = request.options[ 'sourceURI' ], domain = request.options[ 'domainUUID' ], target_uri = request.options[ 'targetURI' ] )
+		self.required_options( request, 'domainURI', 'targetNodeURI' )
+		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
+		self.uvmm.send( 'DOMAIN_MIGRATE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, target_uri = request.options[ 'targetNodeURI' ] )
 
 	def domain_remove( self, request ):
 		"""Removes a domain. Optional a list of volumes can bes specified that should be removed
 
-		options: { 'nodeURI': <node uri>, 'domainUUID' : <domain UUID> }
+		options: { 'domainURI': <domain uri> }
 
 		return: { 'success' : (True|False), 'message' : <details> }
 		"""
-		self.required_options( request, 'nodeURI', 'domainUUID' )
-		self.uvmm.send( 'DOMAIN_UNDEFINE', Callback( self._thread_finish, request ), uri = request.options[ 'nodeURI' ], domain = request.options[ 'domainUUID' ], volumes = request.options[ 'volumes' ] )
-
-
+		self.required_options( request, 'domainURI' )
+		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
+		self.uvmm.send( 'DOMAIN_UNDEFINE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, volumes = request.options[ 'volumes' ] )
 
 class Bus( object ):
 	"""Periphery bus like IDE-, SCSI-, Xen-, VirtIO- und FDC-Bus."""
