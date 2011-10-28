@@ -122,7 +122,7 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 				return ival.id == val;
 			});
 			var staticValues = countryWidget.get('staticValues');
-			var isInStaticValues = dojo.indexOf(staticValues, val) >= 0
+			var isInStaticValues = dojo.indexOf(staticValues, val) >= 0;
 			if (!matches.length && !isInStaticValues) {
 				// the current value set by the system is not in the list of country codes
 				// we need to add the current value that is being set for backwards 
