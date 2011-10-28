@@ -1,6 +1,4 @@
-/*
-@%@UCRWARNING= * @%@
- */
+@%@UCRWARNING=// @%@
 
 @!@
 if configRegistry.has_key('pkgdb/scan') and configRegistry['pkgdb/scan'] == 'yes':
@@ -12,4 +10,3 @@ if configRegistry.has_key('pkgdb/scan') and configRegistry['pkgdb/scan'] == 'yes
 		print '\tPost-Invoke {"test -e /usr/share/univention-join/.joined && test -x /usr/sbin/univention-pkgdb-scan && /usr/sbin/univention-pkgdb-scan || true";};'
 	print '}'
 @!@
-

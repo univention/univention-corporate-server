@@ -1,6 +1,4 @@
-/*
-@%@UCRWARNING=* @%@
-*/
+@%@UCRWARNING=// @%@
 
 @!@
 def print_proxy(proxy):

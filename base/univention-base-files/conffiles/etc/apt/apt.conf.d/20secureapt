@@ -1,6 +1,5 @@
-/*
-@%@UCRWARNING=* @%@
-*/
+@%@UCRWARNING=// @%@
+
 @!@
 if configRegistry.is_true('update/secure_apt', False):
 	print 'APT::Get::AllowUnauthenticated 0 ;'
