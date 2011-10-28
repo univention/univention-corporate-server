@@ -10,7 +10,6 @@ access to attrs=userPassword
 access to attrs=userPassword,krb5Key,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,sambaPwdCanChange,sambaPwdMustChange,sambaPasswordHistory,sambaClearTextPassword,sambaPreviousClearTextPassword
    by sockname="PATH=/var/run/slapd/ldapi" read
    by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,@%@ldap/base@%@" read
-   by dn.base="uid=root,cn=users,@%@ldap/base@%@" read
 @!@
 if baseConfig['ldap/hostdn']:
 	print '   by dn.base="%s" read' % baseConfig['ldap/hostdn']

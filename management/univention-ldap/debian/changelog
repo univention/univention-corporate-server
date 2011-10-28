@@ -1,3 +1,11 @@
+univention-ldap (8.0.61-1) unstable; urgency=low
+
+  * Give admin and Administrator access to * at the beginning. This
+    improves the LDAP performance (Bug #22879)
+  * Removed LDAP ACLs for user uid=root
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 28 Oct 2011 16:26:35 +0200
+
 univention-ldap (8.0.60-1) unstable; urgency=low
 
   * removed Recommends dependency to univention-legacy-kolab-schema (Bug #23788)
