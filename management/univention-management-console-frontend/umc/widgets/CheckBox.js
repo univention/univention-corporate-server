@@ -4,21 +4,30 @@ dojo.provide("umc.widgets.CheckBox");
 
 dojo.require("dijit.form.CheckBox");
 dojo.require("umc.widgets._FormWidgetMixin");
+dojo.require("umc.tools");
 
 dojo.declare("umc.widgets.CheckBox", [ dijit.form.CheckBox, umc.widgets._FormWidgetMixin ], {
 	// by default, the checkbox is turned off
-	value: 'false',
+	value: false,
 
 	// the widget's class name as CSS class
 	'class': 'umcCheckBox',
 
+	// internal cache of the initial value
+	_initialValue: null,
+
 	postMixInProperties: function() {
+		this._initialValue = this.value;
 		this.inherited( arguments );
 		this.sizeClass = null;
 	},
 
+	postCreate: function() {
+		this.set('checked', umc.tools.isTrue(this._initialValue));
+	},
+
 	_setValueAttr: function(newValue) {
-		this.set('checked', newValue == '0' || newValue == 'false' || newValue == 'FALSE' || !newValue ? false : true);
+		this.set('checked', umc.tools.isTrue(newValue));
 	},
 
 	_getValueAttr: function() {

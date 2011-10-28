@@ -3,8 +3,8 @@
 dojo.provide("umc.widgets.ConfirmDialog");
 
 dojo.require("dijit.Dialog");
+dojo.require("dijit.layout.ContentPane");
 dojo.require("dojox.widget.Dialog");
-dojo.require("umc.widgets.Text");
 dojo.require("umc.widgets.ContainerWidget");
 
 dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
@@ -47,8 +47,8 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 	// |		}
 	// |	});
 
-	// message: String
-	//		The message to be displayed.
+	// message: String|Object
+	//		The message to be displayed, can also be a widget.
 	message: '',
 
 	// title: String
@@ -73,19 +73,25 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 	// internal varialbles
 	_labelWidget: null,
 
+	_container: null,
+
 	_setMessageAttr: function(message) {
 		this.message = message;
-		this._labelWidget.set('content', message);
+		if (this._labelWidget) {
+			this._labelWidget.set('content', message);
+		}
 	},
 
 	buildRendering: function() {
 		this.inherited(arguments);
 
 		// create our widgets...
-		this._labelWidget = new umc.widgets.Text({
-			'class': 'umcConfirmDialogText',
-			content: this.message
-		});
+		if (dojo.isString(this.message)) {
+			this._labelWidget = new umc.widgets.Text({
+				'class': 'umcConfirmDialogText',
+				content: this.message
+			});
+		}
 
 		// put buttons into separate container
 		var buttons = new umc.widgets.ContainerWidget({
@@ -111,13 +117,21 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 		}));
 
 		// put the layout together
-		var layout = new umc.widgets.ContainerWidget({});
-		layout.addChild(this._labelWidget);
-		layout.addChild(buttons);
-		layout.startup();
+		this._container = new umc.widgets.ContainerWidget({});
+		if (dojo.isObject(this.message) && 'declaredClass' in this.message) {
+			// message is a widget
+			dojo.addClass(this.message.domNode, 'umcConfirmDialogText');
+			this._container.addChild(this.message);
+		}
+		else if (this._labelWidget) {
+			// messag is a string
+			this._container.addChild(this._labelWidget);
+		}
+		this._container.addChild(buttons);
+		this._container.startup();
 
 		// attach layout to dialog
-		this.set('content', layout);
+		this.set('content', this._container);
 	},
 
 	postCreate: function() {
@@ -138,6 +152,16 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 		//		either with true or false.
 		// choice:
 		//		The key of option that has been chosen.
+	},
+
+	destroy: function() {
+		this.inherited(arguments);
+
+		if (this._container) {
+			this._container.destroyRecursive();
+		}
+
+		// destroy the message which may be a widget
 	}
 });
 

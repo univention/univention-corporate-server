@@ -277,7 +277,7 @@ dojo.declare("umc.widgets.MultiInput", [
 		// remove the 'new' button
 		this._removeNewButton();
 
-		var nFinal = this._nRenderedElements + n 
+		var nFinal = this._nRenderedElements + n;
 		for (var irow = this._nRenderedElements; irow < nFinal && irow < this.max; ++irow, ++this._nRenderedElements) {
 			// add all other elements with '__' such that they will be ignored by umc.widgets.form
 			var order = [], widgetConfs = [];

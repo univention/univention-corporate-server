@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.137-1) unstable; urgency=low
+
+  * ConfirmDialog: allow messages that are widgets
+  * CheckBox: improve handling of initial values
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Oct 2011 21:06:05 +0200
+
 univention-management-console-frontend (1.0.136-1) unstable; urgency=low
 
   * Grid: added missing references for multi-actions 'more actions' combo

@@ -101,7 +101,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		this._alertDialog.show();
 	},
 
-	confirm: function(/*String*/ message, /*Object[]*/ options) {
+	confirm: function(/*String|_Widget*/ message, /*Object[]*/ options) {
 		// summary:
 		//		Popup a confirmation dialog with a given message string and a
 		//		list of options to choose from.
@@ -111,7 +111,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		//		multiple defined buttons (=choice). When any of the buttons
 		//		is pressed, the dialog is automatically closed.
 		// message:
-		//		The message that is displayed in the dialog.
+		//		The message that is displayed in the dialog, can also be a _Widget.
 		// options:
 		//		Array of objects describing the possible choices. Array is passed to
 		//		umc.widgets.ConfirmDialog as 'options' parameter. The property 'label' needs
