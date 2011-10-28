@@ -1,3 +1,9 @@
+xen-3.4 (3.4.3-19) ucs2-4-0-0; urgency=low
+
+  * Update PyGrub from xen-4.1 for Grub2 support (Bug #23812)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 28 Oct 2011 10:56:33 +0200
+
 xen-3.4 (3.4.3-18) ucs2-4-0-0; urgency=low
 
   * Backport PyGrub from xen-4.1 for Grub2 support (Bug #23812)
