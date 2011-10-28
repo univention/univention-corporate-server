@@ -1,3 +1,9 @@
+univention-nagios-virtualization (1.0.0-1) unstable; urgency=low
+
+  * UCS 3.0 (Bug #24252)
+
+ -- Felix Botner <botner@univention.de>  Fri, 28 Oct 2011 10:34:04 +0200
+
 univention-nagios-virtualization (0.1.2-1) unstable; urgency=low
 
   * changed libvirt xen test

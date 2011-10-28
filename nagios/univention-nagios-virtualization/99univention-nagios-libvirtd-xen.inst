@@ -36,6 +36,14 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
+# check nagios ldap container
+if ! univention-ldapsearch -xLLL -s base -b "cn=nagios,$ldap_base" dn >/dev/null 2>&1 ; then
+	echo "Creation of nagios service skipped - cannot find container cn=nagios,$ldap_base (ldapsearch error $?)"
+	# stop here and do not save current joinscript version
+	exit 0
+fi
+
+# create service
 univention-directory-manager nagios/service create "$@" --ignore_exists \
 	--position "cn=nagios,$ldap_base" \
 	--set name="UNIVENTION_LIBVIRTD_XEN" \
@@ -54,12 +62,11 @@ univention-directory-manager nagios/service create "$@" --ignore_exists \
 	--set checkArgs="10" \
 	--set description="check libvirtd status (option is the timeout)"
 
+# add host to service
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
-	if [ "$(ldapsearch -xLLL -b "$ldap_hostdn" univentionNagiosEnabled | sed -ne 's/univentionNagiosEnabled: //p')" = "1" ] ; then
-		univention-directory-manager nagios/service modify "$@" \
-			--dn "cn=UNIVENTION_LIBVIRTD_XEN,cn=nagios,$ldap_base" \
-			--append assignedHosts="${ldap_hostdn}"
-	fi
+	univention-directory-manager nagios/service modify "$@" \
+		--dn "cn=UNIVENTION_LIBVIRTD_XEN,cn=nagios,$ldap_base" \
+		--append assignedHosts="${ldap_hostdn}"
 fi
 
 joinscript_save_current_version

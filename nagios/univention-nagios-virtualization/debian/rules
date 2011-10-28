@@ -30,54 +30,30 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-build: build-stamp
+%:
+	dh $@
 
-build-stamp:
-	dh_testdir
-	touch build-stamp
-	gcc -o check_libvirtd_suidwrapper check_libvirtd_suidwrapper.c
-	gcc -o check_uvmmd_suidwrapper check_uvmmd_suidwrapper.c
+override_dh_auto_build:
+	make check_libvirtd_suidwrapper
+	make check_uvmmd_suidwrapper
+	dh_auto_build
 
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp
-	dh_clean
+override_dh_auto_clean:
 	$(RM) check_libvirtd_suidwrapper
 	$(RM) check_uvmmd_suidwrapper
+	dh_auto_clean
 
-install: build
+override_dh_auto_install:
 	dh_testdir
-	dh_testroot
-	dh_clean -k
 	dh_installdirs
-	dh_install
-	
-	install -m 0755 99univention-nagios-libvirtd-kvm.inst debian/univention-nagios-libvirtd-kvm/usr/lib/univention-install/
-	install -m 0755 99univention-nagios-libvirtd-xen.inst debian/univention-nagios-libvirtd-xen/usr/lib/univention-install/
-	install -m 4755 check_libvirtd_suidwrapper        debian/univention-nagios-libvirtd/usr/lib/nagios/plugins/
-	
-	install -m 0755 99univention-nagios-uvmmd.inst debian/univention-nagios-uvmmd/usr/lib/univention-install/
-	install -m 4755 check_uvmmd_suidwrapper        debian/univention-nagios-uvmmd/usr/lib/nagios/plugins/
-	
+	install -m 4755 check_libvirtd_suidwrapper debian/univention-nagios-libvirtd/usr/lib/nagios/plugins/
+	install -m 4755 check_uvmmd_suidwrapper debian/univention-nagios-uvmmd/usr/lib/nagios/plugins/
 	univention-install-config-registry
-	univention-install-config-registry-info
+	dh_auto_install
 
-binary-indep: build install
-	dh_testdir 
-	dh_testroot 
-	dh_installchangelogs
-	dh_installdocs 
-	dh_installexamples 
-	dh_link 
-	dh_compress 
-	dh_shlibdeps 
-	dh_installdeb 
-	dh_gencontrol 
-	dh_md5sums 
-	dh_builddeb 
+override_dh_fixperms:
+	dh_fixperms -X usr/lib/nagios/plugins/check_libvirtd_suidwrapper -X usr/lib/nagios/plugins/check_uvmmd_suidwrapper
 
-binary-arch: build install
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
+override_dh_auto_test:
+	ucslint
+	dh_auto_test
