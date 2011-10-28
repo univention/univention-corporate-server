@@ -12,4 +12,5 @@ modules/univention/admin/handlers/dns/*.py usr/share/pyshared/univention/admin/h
 modules/univention/admin/handlers/networks/*.py usr/share/pyshared/univention/admin/handlers/networks/
 modules/univention/admin/handlers/settings/*.py usr/share/pyshared/univention/admin/handlers/settings/
 modules/univention/admin/handlers/computers/*.py usr/share/pyshared/univention/admin/handlers/computers/
+modules/univention/admin/syntax.d/*.py usr/share/pyshared/univention/admin/syntax.d/
 python-lib/*.py usr/share/pyshared/univention/lib
