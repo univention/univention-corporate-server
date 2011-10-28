@@ -189,7 +189,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 		var buttons = [{
 			name: 'add',
 			label: this._('Add'),
-			'default': true,
+			defaultButton: true,
 			callback: dojo.hitch(this, function() {
 				this.onDone(this._form.gatherFormValues());
 				this.destroyRecursive();

@@ -48,12 +48,19 @@ dojo.declare('umc.modules._udm.TreeModel', null, {
 	},
 
 	getChildren: function(parentItem, onComplete) {
-		this.umcpCommand('udm/nav/container/query', { container: parentItem.id }).then(dojo.hitch(this, function(data) {
+		this.umcpCommand('udm/nav/container/query', { container: parentItem.id }, false).then(dojo.hitch(this, function(data) {
 			// sort items alphabetically
 			var results = dojo.isArray(data.result) ? data.result : [];
 			results.sort(umc.tools.cmpObjects('label'));
 			try {
 				onComplete(results);
+			}
+			catch (error) {
+				// don't do anything
+			}
+		}), dojo.hitch(this, function() {
+			try {
+				onComplete([]);
 			}
 			catch (error) {
 				// don't do anything

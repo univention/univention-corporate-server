@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-24 13:07-0400\n"
+"POT-Creation-Date: 2011-10-28 21:09+0200\n"
 "PO-Revision-Date: 2011-10-24 16:44+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_udm/DetailPage.js:967
+#: umc/js/_udm/DetailPage.js:976
 #, python-format
 msgid "%(attribute)s: %(message)s\n"
 msgstr ""
@@ -71,7 +71,7 @@ msgstr "%s hinzufügen"
 msgid "Add a new %s."
 msgstr "%s neu hinzufügen."
 
-#: umc/js/_udm/DetailPage.js:203
+#: umc/js/_udm/DetailPage.js:204
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
@@ -87,24 +87,24 @@ msgstr "Alle Eigenschaften"
 msgid "All types"
 msgstr "Alle Objekttypen"
 
-#: umc/js/_udm/DetailPage.js:483
+#: umc/js/_udm/DetailPage.js:489
 msgid "Back to navigation"
 msgstr "Zurück zur Navigation"
 
-#: umc/js/_udm/DetailPage.js:481
+#: umc/js/_udm/DetailPage.js:487
 msgid "Back to search"
 msgstr "Zurück zur Suche"
 
-#: umc/js/udm.js:805 umc/js/_udm/CreateReportDialog.js:84
-#: umc/js/_udm/DetailPage.js:486
+#: umc/js/udm.js:865 umc/js/_udm/DetailPage.js:492
+#: umc/js/_udm/CreateReportDialog.js:84
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/_udm/DetailPage.js:645 umc/js/_udm/DetailPage.js:671
+#: umc/js/_udm/DetailPage.js:654 umc/js/_udm/DetailPage.js:680
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 
-#: umc/js/_udm/CreateReportDialog.js:127 umc/js/_udm/NewObjectDialog.js:199
+#: umc/js/_udm/NewObjectDialog.js:199 umc/js/_udm/CreateReportDialog.js:127
 msgid "Close"
 msgstr "Schließen"
 
@@ -116,7 +116,7 @@ msgstr "Container"
 msgid "Create"
 msgstr "Erstellen"
 
-#: umc/js/_udm/DetailPage.js:447
+#: umc/js/_udm/DetailPage.js:453
 msgid "Create new policy"
 msgstr "Neue Richtlinie"
 
@@ -144,9 +144,13 @@ msgstr "DNS-Objekt"
 msgid "DNS objects"
 msgstr "DNS-Objekte"
 
-#: umc/js/udm.js:284 umc/js/udm.js:542 umc/js/udm.js:795
+#: umc/js/udm.js:284 umc/js/udm.js:542 umc/js/udm.js:817
 msgid "Delete"
 msgstr "Löschen"
+
+#: umc/js/udm.js:799
+msgid "Delete referring objects."
+msgstr "Zugehörige Objekte löschen."
 
 #: umc/js/udm.js:285
 #, python-format
@@ -166,7 +170,7 @@ msgstr "Bearbeiten in neuem Tab"
 msgid "Edit the %s."
 msgstr "%s bearbeiten"
 
-#: umc/js/_udm/DetailPage.js:969
+#: umc/js/_udm/DetailPage.js:978
 msgid "Error"
 msgstr "Fehler"
 
@@ -178,11 +182,11 @@ msgstr ""
 "Aus bekannten Gründen konnte der Report nicht erstellt werden. Weitere "
 "Informationen sind in den Logdateien zu finden."
 
-#: umc/js/_udm/DetailPage.js:438
+#: umc/js/_udm/DetailPage.js:444
 msgid "Inherited"
 msgstr "Ererbt"
 
-#: umc/js/_udm/DetailPage.js:347
+#: umc/js/_udm/DetailPage.js:348
 msgid ""
 "List of all object properties that are inherited by policies. The values "
 "cannot be edited directly. In order to edit a policy, click on the \"edit\" "
@@ -231,7 +235,7 @@ msgstr "Objekteigenschaft"
 msgid "Open a new tab in order to edit the UDM-object"
 msgstr "Öffnet einen neuen Tab, in dem das UDM-Objekt bearbeitet werden kann."
 
-#: umc/js/_udm/DetailPage.js:235
+#: umc/js/_udm/DetailPage.js:236
 msgid "Options describing the basic features of the UDM object"
 msgstr "Optionen für grundlegenden UDM-Objekt-Eigenschaften"
 
@@ -243,17 +247,17 @@ msgstr "Pfad"
 msgid "Path of the UDM object."
 msgstr "Pfad des UDM-Objektes"
 
-#: umc/js/udm.js:785
+#: umc/js/udm.js:790
 #, python-format
 msgid "Please confirm the removal of the %d selected %s!"
 msgstr "Bitte bestätigen Sie das Löschen der %d ausgewählten %s!"
 
-#: umc/js/udm.js:787
+#: umc/js/udm.js:792
 #, python-format
 msgid "Please confirm the removal of the selected %s!"
 msgstr "Bitte bestätigen Sie das Löschen des/der ausgewählten %s!"
 
-#: umc/js/udm.js:822
+#: umc/js/udm.js:883
 msgid ""
 "Please select a container in the navigation bar. The new object will be "
 "placed at this location."
@@ -261,12 +265,12 @@ msgstr ""
 "Bitte wählen Sie einen Container in der Navigations-Leiste aus. Das neue "
 "Objekte wird an dieser Stelle erzeugt."
 
-#: umc/js/_udm/DetailPage.js:568
+#: umc/js/_udm/DetailPage.js:577
 #, python-format
 msgid "Position: <i>%(path)s</i>"
 msgstr "Position: <i>%(path)s</i>"
 
-#: umc/js/_udm/DetailPage.js:346
+#: umc/js/_udm/DetailPage.js:347
 msgid "Properties inherited from policies"
 msgstr "Durch Richtlinien ererbte Eigenschaften"
 
@@ -300,7 +304,7 @@ msgstr "Report für %s"
 msgid "Report has been created"
 msgstr "Report wurde erstellt"
 
-#: umc/js/_udm/DetailPage.js:492
+#: umc/js/_udm/DetailPage.js:498
 msgid "Save changes"
 msgstr "Änderungen speichern"
 
@@ -313,14 +317,14 @@ msgstr "%s suchen"
 msgid "Search in:"
 msgstr "Suche in:"
 
-#: umc/js/_udm/DetailPage.js:441
+#: umc/js/_udm/DetailPage.js:447
 msgid ""
 "Select a policy that should be directly linked to the current UDM object"
 msgstr ""
 "Wählen Sie eine Richtlinie, die direkt mit dem aktuellen UDM-Objekt "
 "verknüpft werden soll"
 
-#: umc/js/_udm/DetailPage.js:440
+#: umc/js/_udm/DetailPage.js:446
 msgid "Select policy configuration"
 msgstr "Richtlinien-Konfiguration"
 
@@ -349,7 +353,7 @@ msgstr ""
 "Das %s kann unter der folgenden Adresse heruntergeladen werden<br><br><a "
 "target=\"_blank\" href=\"%s\">%s Report</a>"
 
-#: umc/js/_udm/DetailPage.js:1016
+#: umc/js/_udm/DetailPage.js:1025
 #, python-format
 msgid "The UDM object could not be saved: %(details)s"
 msgstr "Das UDM-Objekt konnte nicht gespeichert werden: %(details)s"
@@ -375,11 +379,15 @@ msgstr "Der genaue %styp"
 msgid "The exact object type of the new UDM object."
 msgstr "Der genaue Objekttyp des neuen UDM-Objektes."
 
-#: umc/js/_udm/DetailPage.js:940
+#: umc/js/udm.js:847
+msgid "The following object(s) could not be deleted:"
+msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gelöscht werden:"
+
+#: umc/js/_udm/DetailPage.js:949
 msgid "The following properties could not be validated:"
 msgstr "Die folgenden Eigenschaften konnten nicht validiert werden:"
 
-#: umc/js/_udm/DetailPage.js:887
+#: umc/js/_udm/DetailPage.js:896
 msgid "The following properties need to be specified or are invalid:"
 msgstr ""
 "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
@@ -405,7 +413,7 @@ msgid ""
 "The value for the specified object property on which the query is filtered."
 msgstr "Der Wert der Objekteigenschaft, nach der gesucht wird."
 
-#: umc/js/_udm/DetailPage.js:567
+#: umc/js/_udm/DetailPage.js:576
 #, python-format
 msgid "Type: <i>%(type)s</i>"
 msgstr "Typ: <i>%(type)s</i>"
@@ -418,15 +426,15 @@ msgstr "UDM-Objekt"
 msgid "UDM objects"
 msgstr "UDM-Objekte"
 
-#: umc/js/_udm/DetailPage.js:202
+#: umc/js/_udm/DetailPage.js:203
 msgid "[Advanced settings]"
 msgstr "[Erweiterte Einstellungen]"
 
-#: umc/js/_udm/DetailPage.js:234
+#: umc/js/_udm/DetailPage.js:235
 msgid "[Options]"
 msgstr "[Optionen]"
 
-#: umc/js/_udm/DetailPage.js:344
+#: umc/js/_udm/DetailPage.js:345
 msgid "[Policies]"
 msgstr "[Richtlinien]"
 
@@ -438,7 +446,7 @@ msgstr "Rechner"
 msgid "computers"
 msgstr "Rechner"
 
-#: umc/js/_udm/DetailPage.js:646 umc/js/_udm/DetailPage.js:672
+#: umc/js/_udm/DetailPage.js:655 umc/js/_udm/DetailPage.js:681
 msgid "edit"
 msgstr "bearbeiten"
 
@@ -466,7 +474,7 @@ msgstr "Netz-Objekt"
 msgid "network objects"
 msgstr "Netz-Objekte"
 
-#: umc/js/_udm/DetailPage.js:631
+#: umc/js/_udm/DetailPage.js:640
 msgid "not defined"
 msgstr "nicht gesetzt"
 

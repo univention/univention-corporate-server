@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-24 13:07-0400\n"
+"POT-Creation-Date: 2011-10-28 21:08+0200\n"
 "PO-Revision-Date: 2011-10-21 17:56+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgid "Could not find a matching UDM module for the LDAP object %s"
 msgstr ""
 "Es konnte kein passendes UDM-Modul für das LDAP-Object %s gefunden werden"
 
-#: umc/python/udm/ldap.py:237 umc/python/udm/__init__.py:304
+#: umc/python/udm/__init__.py:304 umc/python/udm/ldap.py:237
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""

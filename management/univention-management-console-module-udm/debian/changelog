@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.202-1) unstable; urgency=low
+
+  * added removal of referring objects and by default remove recursively
+    (Bug #23835)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Oct 2011 21:09:52 +0200
+
 univention-management-console-module-udm (1.0.201-1) unstable; urgency=low
 
   * navigation: dynamically determine list of container modules; Bug #24244

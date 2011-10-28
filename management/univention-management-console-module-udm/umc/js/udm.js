@@ -542,7 +542,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				label: this._( 'Delete' ),
 				iconClass: 'dijitIconDelete',
 				onClick: dojo.hitch(this, function() {
-					this.removeObjects(this._navContextItem.id);
+					this.removeObjects(this._navContextItem.id, true);
 				})
 			}));
 			menu.addChild(new dijit.MenuItem({
@@ -769,9 +769,14 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		}
 	},
 
-	removeObjects: function( /*String|String[]*/ _ids, /*Boolean?*/ cleanup, /*Boolean?*/ recursive ) {
+	removeObjects: function( /*String|String[]*/ _ids, /*Boolean?*/ isContainer, /*Boolean?*/ cleanup, /*Boolean?*/ recursive ) {
 		// summary:
 		//		Remove the selected UDM objects.
+
+		// default values
+		isContainer = isContainer === undefined ? false : isContainer;
+		cleanup = cleanup === undefined ? true : cleanup;
+		recursive = undefined === recursive ? true : recursive;
 
 		// get an object
 		var ids = dojo.isArray(_ids) ? _ids : (_ids ? [ _ids ] : []);
@@ -786,23 +791,79 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		if (ids.length == 1) {
 			msg = this._('Please confirm the removal of the selected %s!', this.objectNameSingular);
 		}
-		var options = {
-			cleanup: undefined === cleanup ? false : cleanup,
-			recursive: undefined === recursive ? false : recursive
-		};
 
-		umc.dialog.confirm(msg, [{
+		// build a small form with a checkbox to mark whether or not referring 
+		// objects are deleted, as well
+		var widgets = [{
+			type: 'CheckBox',
+			label: this._('Delete referring objects.'),
+			name: 'deleteReferring',
+			value: cleanup
+		}, {
+			type: 'Text',
+			label: '',
+			name: 'text',
+			content: msg
+		}];
+		var layout = [ 'text', 'deleteReferring' ];
+		var form = new umc.widgets.Form({
+			widgets: widgets,
+			layout: layout,
+			buttons: []
+		});
+
+		// show the confirmation dialog
+		umc.dialog.confirm(form, [{
 			label: this._('Delete'),
 			callback: dojo.hitch(this, function() {
+				// enable standby animation
+				this.standby(true);
+
+				// set reloading path to ldap base
+				if (isContainer) {
+					var ldapBase = this._tree.model.getIdentity(this._tree.model.root);
+					this._reloadingPath = ldapBase;
+					this._tree.set('path', [ this._tree.model.root ]);
+				}
+
+				// set the options
+				var options = {
+					cleanup: form.getWidget('deleteReferring').get('value'),
+					recursive: recursive
+				};
+
 				// remove the selected elements via a transaction on the module store
 				var transaction = this.moduleStore.transaction();
 				dojo.forEach(ids, function(iid) {
 					this.moduleStore.remove( iid, options );
 				}, this);
-				transaction.commit();
+				transaction.commit().then(dojo.hitch(this, function(data) {
+
+					// disable standby animation
+					this.standby(false);
+
+					// see whether all objects could be removed successfully
+					var success = true;
+					var message = '<p>' + this._('The following object(s) could not be deleted:') + '</p><ul>';
+					dojo.forEach(data.result, function(iresult) {
+						if (!iresult.success) {
+							success = false;
+							message += '<li>' + iresult.$dn$ + ': ' + iresult.details;
+						}
+					}, this);
+					message += '</ul>';
+
+					// show an alert in case something went wrong
+					if (!success) {
+						umc.dialog.alert(message);
+					}
+				}), dojo.hitch(this, function() {
+					this.standby(false);
+				}));
 			})
 		}, {
-			label: this._('Cancel')
+			label: this._('Cancel'),
+			'default': true
 		}]);
 
 	},
