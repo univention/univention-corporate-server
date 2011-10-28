@@ -22,7 +22,8 @@ Depends: ${misc:Depends},
  univention-management-console-module-ucr,
  univention-management-console-module-join,
  univention-management-console-module-updater,
- univention-management-console-module-setup
+ univention-management-console-module-setup,
+ univention-management-console-module-services
 Description: UCS Management Console - Web based computer administration tool
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement

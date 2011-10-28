@@ -1,3 +1,9 @@
+univention-management-console (4.0.74-2) unstable; urgency=low
+
+  * added UMC services module to the dependencies (Bug #22900)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Oct 2011 21:19:10 +0200
+
 univention-management-console (4.0.74-1) unstable; urgency=low
 
   * fixed handling of ACLs in module process; Bug #22460
