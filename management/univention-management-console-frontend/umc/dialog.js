@@ -84,7 +84,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		if (!this._alertDialog) {
 			this._alertDialog = new umc.widgets.ConfirmDialog({
 				title: this._('Notification'),
-				style: 'max-width: 500px;',
+				style: 'max-width: 650px;',
 				options: [{
 					label: this._('Ok'),
 					callback: dojo.hitch(this, function() {

@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.135-1) unstable; urgency=low
+
+  * changed max-width of alert dialogs (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Oct 2011 14:44:50 +0200
+
 univention-management-console-frontend (1.0.134-1) unstable; urgency=low
 
   * Form: fix for scrollbars
