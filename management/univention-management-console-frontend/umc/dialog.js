@@ -176,7 +176,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		// create confirmation dialog
 		var confirmDialog = new umc.widgets.ConfirmDialog({
 			title: this._('Confirmation'),
-			style: 'max-width: 400px;',
+			style: 'max-width: 550px;',
 			message: message,
 			options: options
 		});
