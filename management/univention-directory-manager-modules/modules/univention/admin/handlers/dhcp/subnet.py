@@ -54,7 +54,7 @@ property_descriptions={
 	'subnet': univention.admin.property(
 			short_description=_('Subnet address'),
 			long_description='',
-			syntax=univention.admin.syntax.ipAddress,
+			syntax=univention.admin.syntax.ipv4Address,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -64,7 +64,7 @@ property_descriptions={
 	'subnetmask': univention.admin.property(
 			short_description=_('Netmask'),
 			long_description='',
-			syntax=univention.admin.syntax.netmask,
+			syntax=univention.admin.syntax.v4netmask,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -74,7 +74,7 @@ property_descriptions={
 	'broadcastaddress': univention.admin.property(
 			short_description=_('Broadcast address'),
 			long_description='',
-			syntax=univention.admin.syntax.ipAddress,
+			syntax=univention.admin.syntax.ipv4Address,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -84,7 +84,7 @@ property_descriptions={
 	'range': univention.admin.property(
 			short_description=_('Dynamic address assignment'),
 			long_description=_( 'Define a pool of addresses available for dynamic address assignment.' ),
-			syntax=univention.admin.syntax.IP_AddressRange,
+			syntax=univention.admin.syntax.IPv4_AddressRange,
 			multivalue=1,
 			options=[],
 			required=0,

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.154-1) unstable; urgency=low
+
+  * disable IPv6 in dhcp/* syntax (Bug #24256)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 28 Oct 2011 13:45:06 +0200
+
 univention-directory-manager-modules (7.0.153-2) unstable; urgency=low
 
   * networks/network: make IPv6 compatible (Bug #16577)

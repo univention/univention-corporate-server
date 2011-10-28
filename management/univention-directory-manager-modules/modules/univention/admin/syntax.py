@@ -771,6 +771,15 @@ class windowsHostName(simple):
 	regex = re.compile('^([0-9]*)([a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$')
 	error_message = _("Not a valid windows hostname!")
 
+class ipv4Address(simple):
+	# match IPv4 (0.0.0.0 is allowed)
+	@classmethod
+	def parse(self, text):
+		try:
+			return str(ipaddr.IPv4Address(text))
+		except ValueError:
+			raise univention.admin.uexceptions.valueError, _("Not a valid IP address!")
+
 class ipAddress(simple):
 
 	# match IPv4 (0.0.0.0 is allowed) or IPv6 address (with IPv4-mapped IPv6)
@@ -809,7 +818,7 @@ class hostOrIP(simple):
 		else:
 			raise univention.admin.uexceptions.valueError, _('Not a valid hostname or IP address!')
 
-class netmask(simple):
+class v4netmask(simple):
 	min_length=1
 	max_length=15
 
@@ -846,15 +855,35 @@ class netmask(simple):
 		except Exception, e:
 			try:
 				_int.parse(text)
-				if int(text) > 0 and int(text) < 128:
+				if int(text) > 0 and int(text) < 32:
 					return text
 			except Exception, e:
 				errors=1
 		if errors:
 			raise univention.admin.uexceptions.valueError, _("Not a valid netmask!")
 
+class netmask(simple):
+	@classmethod
+	def parse(self, text):
+		if text.isdigit() and int(text) > 0 and int(text) < max(ipaddr.IPV4LENGTH, ipaddr.IPV6LENGTH):
+			return str(int(text))
+		try:
+			return str(ipaddr.IPv4Network('0.0.0.0/%s' % (text, )).prefixlen)
+		except ValueError:
+			pass
+		raise univention.admin.uexceptions.valueError, _("Not a valid netmask!")
+
+class IPv4_AddressRange( complex ):
+	subsyntaxes = (
+		(_('First Address'), ipv4Address),
+		(_( 'Last Address'), TwoThirdsString),
+		)
+
 class IP_AddressRange( complex ):
-	subsyntaxes = ( ( _( 'First Address' ), ipAddress ), ( _( 'Last Address' ), TwoThirdsString ) )
+	subsyntaxes = (
+		(_('First Address'), ipAddress),
+		(_( 'Last Address'), ipAddress),
+		)
 
 class ipProtocol(select):
 	choices=[ ( 'tcp', 'TCP' ), ('udp', 'UDP' ) ]
