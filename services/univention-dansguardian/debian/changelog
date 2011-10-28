@@ -1,3 +1,9 @@
+univention-dansguardian (5.0.1-10) unstable; urgency=low
+
+  * Revert chamges from 5.0.1-8, which caused regressions (Bug #22576)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 28 Oct 2011 14:26:10 +0200
+
 univention-dansguardian (5.0.1-9) unstable; urgency=low
 
   * Update UCR descriptions (Bug #22576)  

@@ -47,10 +47,31 @@ Variables: dansguardian/current/group
 Variables: dansguardian/groups/.*/exception/mimetypes
 
 Type: file
+File: etc/dansguardian/lists/logurllist
+
+Type: file
+File: etc/dansguardian/lists/greyurllist
+
+Type: file
+File: etc/dansguardian/lists/greysitelist
+
+Type: file
 File: etc/dansguardian/lists/weightedphraselist
 
 Type: file
+File: etc/dansguardian/lists/contentregexplist
+
+Type: file
 File: etc/dansguardian/lists/banneduserlist
+
+Type: file
+File: etc/dansguardian/lists/logsitelist
+
+Type: file
+File: etc/dansguardian/lists/logregexpurllist
+
+Type: file
+File: etc/dansguardian/lists/urlregexplist
 
 Type: file
 File: etc/dansguardian/dansguardianfX.conf
@@ -93,6 +114,18 @@ File: etc/dansguardian/lists/exceptionphraselist
 
 Type: file
 File: etc/dansguardian/lists/bannedphraselist
+
+Type: file
+File: etc/dansguardian/lists/exceptionfilesitelist
+
+Type: file
+File: etc/dansguardian/lists/headerregexplist
+
+Type: file
+File: etc/dansguardian/lists/bannedregexpheaderlist
+
+Type: file
+File: etc/dansguardian/lists/exceptionfileurllist
 
 Type: file
 File: etc/dansguardian/lists/exceptionregexpurllist
