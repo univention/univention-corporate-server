@@ -71,7 +71,7 @@ class Nodes( object ):
 				nodes.append( { 'id' : node_pd.uri, 'label' : node_pd.name, 'group' : _( 'Physical servers' ),
 								'memUsed' : node_pd.curMem, 'memAvailable' : node_pd.phyMem, 'cpuUsage' : ( node_pd.cpu_usage or 0 ) / 10.0  } )
 
-			self.finished( request.id, nodes, success )
+			self.finished( request.id, nodes, success = success )
 
 		self.uvmm.send( 'NODE_LIST', Callback( _finished, request ), group = 'default', pattern = request.options.get( 'nodePattern', '*' ) )
 

@@ -6,6 +6,8 @@
 	<categories>
 	  <category name="system"/>
 	</categories>
+	<command name="uvmm/query" function="query">
+	</command>
 	<command name="uvmm/group/query" function="group_query">
 	</command>
 	<command name="uvmm/node/query" function="node_query">

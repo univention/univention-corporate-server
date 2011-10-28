@@ -83,7 +83,23 @@ class Instance( Base, Navigation, Nodes, Profiles, Storages, Domains ):
 
 		success, data = result
 		MODULE.info( 'Got result from UVMMd: success: %s, data: %s' % ( success, data ) )
-		self.finished( request.id, { 'success' : success, 'data' : data } )
+		self.finished( request.id, data, success = success )
+
+	def query( self, request ):
+		"""Meta query function for nodes and domains.
+
+		options: { 'type' : (node|domain), 'nodePattern': <node pattern>, [ 'domainPattern' : <domain pattern> ] }
+
+		return: { 'success' : (True|False), 'message' : <details> }
+		"""
+		self.required_options( request, 'type', 'nodePattern' )
+
+		if request.options[ 'type' ] == 'node':
+			self.node_query( request )
+		elif request.options[ 'type' ] == 'domain':
+			self.domain_query( request )
+		else:
+			raise UMC_OptionTypeError( _( 'Unknown query type' ) )
 
 	def group_query( self, request ):
 		self.uvmm.send( 'GROUP_LIST', Callback( self._thread_finish, request ) )

@@ -70,7 +70,7 @@ class Profiles( object ):
 	def read_profiles( self, ldap_connection = None, ldap_position = None ):
 		base = "%s,%s" % ( Profiles.PROFILE_RDN, ldap_position.getDn() )
 		res = uvmm_profile.lookup( None, ldap_connection, '', base = base, scope='sub', required = False, unique = False )
-		self.profiles = map( lambda obj: Profile( obj.info ), res )
+		self.profiles = map( lambda obj: ( obj.dn, Profile( obj.info ) ), res )
 
 	def _filter_profiles( self, node_pd ):
 		uri = urlparse.urlsplit( node_pd.uri )
@@ -89,7 +89,7 @@ class Profiles( object ):
 		if 'xen-xen' in tech_types and not 'xen-hvm' in tech_types:
 			tech = 'xen-xen'
 
-		return [ item for item in self.profiles if ( item.arch in archs or item.arch == 'automatic' ) and item.virttech.startswith( tech ) ]
+		return [ ( dn, item ) for dn, item in self.profiles if ( item.arch in archs or item.arch == 'automatic' ) and item.virttech.startswith( tech ) ]
 
 	def profile_query( self, request ):
 		"""Returns a list of profiles for the given virtualization technology"""
@@ -101,7 +101,7 @@ class Profiles( object ):
 
 			success, data = result
 
-			profiles = map( lambda profile: profile.name, self._filter_profiles( data[ 0 ] ) )
+			profiles = map( lambda item: { 'id' : item[ 0 ], 'label' : item[ 1 ].name }, self._filter_profiles( data[ 0 ] ) )
 
 			self.finished( request.id, profiles )
 
@@ -109,20 +109,11 @@ class Profiles( object ):
 
 	def profile_get( self, request ):
 		"""Returns a list of profiles for the given virtualization technology"""
-		self.required_options( request, 'nodeURI', 'profile' )
+		self.required_options( request, 'profileDN' )
 
-		def _finished( thread, result, request ):
-			if self._check_thread_error( thread, result, request ):
+		for dn, profile in self.profiles:
+			if dn == request.options[ 'profileDN' ]:
+				self.finished( request.id, object2dict( profile ) )
 				return
 
-			success, data = result
-			name = request.options[ 'profile' ]
-
-			profile = filter( lambda profile: profile.name == name, self._filter_profiles( data[ 0 ] ) )
-
-			if not profile:
-				self.finished( request.id, None, success = False )
-			else:
-				self.finished( request.id, object2dict( profile[ 0 ] ) )
-
-		self.uvmm.send( 'NODE_LIST', Callback( _finished, request ), group = 'default', pattern = request.options[ 'nodeURI' ] )
+		self.finished( request.id, None, _( 'Unknown profile' ), success = False )

@@ -774,11 +774,12 @@ class Node(PersistentCached):
 		regex = re.compile( fnmatch.translate( pattern ), re.IGNORECASE )
 		domains = []
 		for dom in self.domains:
-			contact = self.domains[ dom ].pd.annotations.get( 'contact', '' )
-			name = self.domains[ dom ].pd.name
-			descr = self.domains[ dom ].pd.annotations.get( 'description', '' )
+			pd = self.domains[ dom ].pd
+			contact = pd.annotations.get( 'contact', '' )
+			name = pd.name
+			descr = pd.annotations.get( 'description', '' )
 			if regex.match( name ) is not None or regex.match( contact )  is not None or regex.match( descr ) is not None:
-				domains.append( ( self.domains[ dom ].pd.uuid, self.domains[ dom ].pd.name ) )
+				domains.append( { 'uuid' : pd.uuid, 'name' : pd.name, 'state' : pd.state, 'mem' : pd.maxMem, 'cpu_usage' : pd.cputime[ 0 ] } )
 
 		return domains
 
