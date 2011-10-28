@@ -2,7 +2,7 @@ univention-virtual-machine-manager-daemon (1.0.15-1) unstable; urgency=low
 
   * added rudimentary GUI-Layout with tree view and icon handling (Bug #22893)
 
- -- root <root@master.ucs3.test>  Fri, 28 Oct 2011 00:10:44 +0200
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Oct 2011 00:10:44 +0200
 
 univention-virtual-machine-manager-daemon (1.0.14-1) unstable; urgency=low
 
@@ -95,7 +95,6 @@ univention-virtual-machine-manager-daemon (1.0.3-1) unstable; urgency=low
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 12:51:00 +0200
 
->>>>>>> .r28429
 univention-virtual-machine-manager-daemon (1.0.2-1) unstable; urgency=low
 
   * add command domain_info to retrieve detailed information about a
