@@ -38,10 +38,19 @@ date >&3
 eval "$(univention-config-registry shell)" >&3 2>&3
 
 conffile_is_unmodified () {
-	# conffile_is_unmodified <conffile> [<packagename or other arguments for dpkg-query> ...]
+	# conffile_is_unmodified <conffile>
 	# returns exitcode 0 if given conffile is unmodified
-	# Note: $1 has to be sed regex compliant!
-	dpkg-query -W -f '${Conffiles}\n' "$@" | sed -nre "s,^ ($1) ([0-9a-f]+)( .*)?$,\2  \1,p" | md5sum -c - >&3
+	if [ ! -f "$1" ]; then
+		return 1
+	fi
+	local chksum="$(md5sum "$1" | awk '{ print $1 }')"
+	local fnregex="$(python -c 'import re,sys;print re.escape(sys.argv[1])' "$1")"
+	for testchksum in $(dpkg-query -W -f '${Conffiles}\n' | sed -nre "s,^ $fnregex ([0-9a-f]+)( .*)?$,\1,p") ; do
+		if [ "$testchksum" = "$chksum" ] ; then
+			return 0
+		fi
+	done
+	return 1
 }
 
 cleanup () {

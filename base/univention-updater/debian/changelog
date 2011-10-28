@@ -1,3 +1,9 @@
+univention-updater (7.0.71-1) unstable; urgency=low
+
+  * updated conffile_is_unmodified (Bug #23483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 28 Oct 2011 10:33:04 +0200
+
 univention-updater (7.0.70-1) unstable; urgency=low
 
   * updated kolab blocking message (Bug #22436)
