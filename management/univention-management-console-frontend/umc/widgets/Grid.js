@@ -655,7 +655,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 					iconClass: iiconClass,
 					onClick: dojo.hitch(this, function() {
 						if (iaction.callback) {
-							iaction.callback([this._contextItemID], [this._contextItem]);
+							iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
 						}
 					})
 				}));
