@@ -304,14 +304,6 @@ layout = [
 	Tab( _( 'Unix account' ), _( 'Unix account settings' ), advanced = True, layout = [
 		[ 'unixhome', 'shell' ]
 		] ),
-	Tab( _( 'DNS' ), _( 'DNS Forward and Reverse Lookup Zone' ),layout = [
-		'dnsEntryZoneForward',
-		'dnsEntryZoneReverse',
-		'dnsEntryZoneAlias'
-		] ),
-	Tab( _( 'DHCP' ), _( 'DHCP' ), layout = [
-		'dhcpEntryZone'
-		] ),
 	Tab( _( 'Groups' ), _( 'Group memberships' ), advanced = True, layout = [
 		'groups',
 		] ),

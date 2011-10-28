@@ -308,6 +308,17 @@ class string(simple):
 	def parse(self, text):
 		return text
 
+class string64(simple):
+
+	@classmethod
+	def parse(self, text):
+		self.min_length=0
+		self.max_length=64
+
+		if len(text) > self.max_length:
+			raise univention.admin.uexceptions.valueError( _('The value must not be longer than %d characters.') % self.max_length)
+		return text
+
 class OneThirdString( string ):
 	size = 'OneThird'
 

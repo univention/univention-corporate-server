@@ -234,7 +234,7 @@ property_descriptions={
 	'organisation': univention.admin.property(
 			short_description=_('Organisation'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.string64,
 			multivalue=0,
 			options=['person'],
 			required=0,

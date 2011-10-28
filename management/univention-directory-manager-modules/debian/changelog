@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.156-1) unstable; urgency=low
+
+  * Adjust layout of UDM modules to UCS 3.0 (Bug #23709)
+  * Limit organisation for users to 64 charachters (Bug #19937)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 28 Oct 2011 15:28:19 +0200
+
 univention-directory-manager-modules (7.0.155-1) unstable; urgency=low
 
   * provide syntax.d directory by default (Bug #24056)
