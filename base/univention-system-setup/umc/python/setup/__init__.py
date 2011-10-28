@@ -91,9 +91,6 @@ class Instance(umcm.Base):
 			if ikey not in allValues:
 				allValues[ikey] = ival
 
-		MODULE.info('### allValues: %s' % allValues)
-		MODULE.info('### orgValues: %s' % orgValues)
-
 		# helper functions
 		def _check(key, check, message):
 			if not key in values:
@@ -238,7 +235,6 @@ class Instance(umcm.Base):
 		tmpUCR = univention.config_registry.ConfigRegistry()
 		
 		for ikey, ival in allValues.iteritems():
-			MODULE.info('### %s=%s' % (ikey, ival)), 
 			m = regIpv6Address.match(ikey) 
 			if m:
 				idev = m.groups()[0]

@@ -81,7 +81,7 @@ UCR_VARIABLES = [
 
 # net
 for idev in range(0,4):
-	for iattr in ('address', 'broadcast', 'netmask', 'network', 'type'):
+	for iattr in ('address', 'netmask', 'type'):
 		UCR_VARIABLES.append('interfaces/eth%d/%s' % (idev, iattr))
 		if iattr != 'type':
 			for ivirt in range(0,4):

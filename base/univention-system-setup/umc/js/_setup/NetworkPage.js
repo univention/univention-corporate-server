@@ -234,7 +234,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			if (r.test(ikey)) {
 				this._orgValues[ikey] = ival;
 			}
-		}, this)
+		}, this);
 
 		// copy values that do not change in their name
 		var vals = {};

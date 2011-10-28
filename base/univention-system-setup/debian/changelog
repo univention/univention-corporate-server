@@ -1,3 +1,13 @@
+univention-system-setup (5.0.29-1) unstable; urgency=low
+
+  * UMC: ignore broacast/network (IPv4) entries
+  * UMC: add the currently set ssl/country entry in case it is invalid in order
+    to avoid error messages
+  * UMC: removed debug output, fixed syntax errors
+  (Bug #22908)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Oct 2011 22:19:20 +0200
+
 univention-system-setup (5.0.28-1) unstable; urgency=low
 
   * UMC: added validation and wizard (Bug #22908)
