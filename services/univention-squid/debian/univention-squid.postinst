@@ -56,12 +56,6 @@ ucr set squid/ldapauth?no
 ucr set squid/cache?yes
 ucr set squid/debug/level?ALL,1
 
-# copy machine.secret
-dest="/etc/squid3.secret"
-cp /etc/machine.secret "$dest"
-chown proxy:root "$dest"
-chmod 600  "$dest"
-
 /etc/init.d/squid3 stop
 /etc/init.d/squid3 start
 

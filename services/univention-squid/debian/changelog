@@ -1,3 +1,10 @@
+univention-squid (5.0.3-11) unstable; urgency=low
+
+  * Move copying of squid3.secret to join script, when the postinst is run during a
+    fresh install, the machine.secret is not yet available (Bug #22576) 	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 28 Oct 2011 10:33:39 +0200
+
 univention-squid (5.0.3-10) unstable; urgency=low
 
   * Convert join script to univention-ldapsearch (Bug #22576) 

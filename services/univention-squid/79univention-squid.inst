@@ -36,6 +36,12 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
+# copy machine.secret
+dest="/etc/squid3.secret"
+cp /etc/machine.secret "$dest"
+chown proxy:root "$dest"
+chmod 600  "$dest"
+
 # add squid to nagios' UNIVENTION_SQUID service check
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
 
