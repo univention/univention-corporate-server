@@ -659,7 +659,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 						}
 					})
 				}));
-			});
+			}, this);
 
 			if (!this._footerCells[i]) {
 				console.log("WARNING: no footer cell: " + i);
