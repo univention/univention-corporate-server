@@ -58,8 +58,8 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
         univention-directory-manager computers/${server_role} modify "$@" --dn ${ldap_hostdn} --append-option="nagios"
     fi
 
-	# remove obsolte services from host
-	oldServices="UNIVENTION_SMTP"
+	# remove obsolete services from host
+	oldServices="UNIVENTION_SMTP UNIVENTION_LDAP"
 	for i in $oldServices; do
 		dn="cn=$i,cn=nagios,$ldap_base"
 		if udm nagios/service list "$@" --filter name="$i" | grep -q "^DN: cn=$i"; then
@@ -104,7 +104,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
     if [ "$server_role" = "domaincontroller_master" -o \
          "$server_role" = "domaincontroller_backup" -o \
          "$server_role" = "domaincontroller_slave" ] ; then
-		dn="cn=UNIVENTION_LDAP,cn=nagios,$ldap_base"
+		dn="cn=UNIVENTION_LDAP_AUTH,cn=nagios,$ldap_base"
 		rdn="$(echo $dn | sed -e 's|,.*||')"
 		if udm nagios/service list "$@" --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
 			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
