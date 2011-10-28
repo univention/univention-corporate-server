@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="services" icon="services" version="1.0">
+	<name>System services</name>
+	<description>Control over system services</description>
+	<categories>
+		<category name="system"/>
+	</categories>
+	<command name="services/query" function="query">
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="services/start" function="start">
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="services/stop" function="stop">
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="services/restart" function="restart">
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="services/start_auto" function="start_type">
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="services/start_manual" function="start_type">
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="services/start_never" function="start_type">
+		<return syntax="Dictionary"/>
+	</command>
+	</module>
+</umc>
