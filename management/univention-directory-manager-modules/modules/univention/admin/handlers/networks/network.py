@@ -191,6 +191,8 @@ class object(univention.admin.handlers.simpleLdap):
 			currentIp = ipaddr.IPAddress(self['nextIp'])
 			newIp = ipaddr.IPAddress(self['nextIp']) + 1
 			for ipRange in self['ipRange']:
+				if not ipRange: # ignore bad default value self['ipRange'] = ['']
+					continue
 				firstIP = ipaddr.IPAddress(ipRange[0])
 				lastIP = ipaddr.IPAddress(ipRange[1])
 				if firstIP < currentIp < lastIP:
@@ -203,7 +205,7 @@ class object(univention.admin.handlers.simpleLdap):
 							self['nextIp'] = str(ipaddr.IPAddress(self['nextIp']) + 1)
 					break
 			else: # currentIp is not in any ipRange
-				if self['ipRange']:
+				if self['ipRange'] and self['ipRange'][0]: # ignore bad default value self['ipRange'] = ['']
 					self['nextIp'] = self['ipRange'][0][0]
 					if ipaddr.IPAddress(self['nextIp']) == network.network: # do not give out all hostbits zero
 						self['nextIp'] = str(ipaddr.IPAddress(self['nextIp']) + 1)

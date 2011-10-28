@@ -1,8 +1,8 @@
-univention-directory-manager-modules (7.0.153-1) unstable; urgency=low
+univention-directory-manager-modules (7.0.153-2) unstable; urgency=low
 
   * networks/network: make IPv6 compatible (Bug #16577)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 27 Oct 2011 19:10:49 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 28 Oct 2011 13:29:39 +0200
 
 univention-directory-manager-modules (7.0.152-1) unstable; urgency=low
 

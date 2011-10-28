@@ -2357,7 +2357,7 @@ class simpleComputer( simpleLdap ):
 									raise univention.admin.uexceptions.nextFreeIp
 									return
 
-								if self['ip'][0].split('.')[3] in ["0", "1", "254"]:
+								if '.' in self['ip'][0] and self['ip'][0].split('.')[-1] in ["0", "1", "254"]:
 									network_object.stepIp()
 									network_object.modify()
 									continue
