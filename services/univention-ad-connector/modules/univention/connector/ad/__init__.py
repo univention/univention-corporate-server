@@ -440,6 +440,8 @@ def encode_object_sid(sid_string, encode_in_base64=True):
 
 def encode_list(list, encoding):
 	newlist=[]
+	if not list:
+		return list
 	for val in list:
 		if hasattr(val,'encode'):
 			newlist.append(val.encode(encoding))
@@ -449,6 +451,8 @@ def encode_list(list, encoding):
 
 def decode_list(list, encoding):
 	newlist=[]
+	if not list:
+		return list
 	for val in list:
 		if hasattr(val,'decode') and not type(val) == types.UnicodeType:
 			newlist.append(val.decode(encoding))
@@ -1771,7 +1775,7 @@ class ad(univention.connector.ucs):
 		return change_count
 
 
-	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None):
+	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object = None):
 		_d=ud.function('ldap.__sync_from_ucs')
 		# Diese Methode erhaelt von der UCS Klasse ein Objekt,
 		# welches hier bearbeitet wird und in das AD geschrieben wird.
@@ -1844,11 +1848,22 @@ class ad(univention.connector.ucs):
 					for attribute in self.property[property_type].attributes.keys():
 						if self.property[property_type].attributes[attribute].con_attribute == attr:
 							addlist.append((attr, value))
+						if self.property[property_type].attributes[attribute].con_other_attribute == attr:
+							addlist.append((attr, value))
 			if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
 				for attr,value in object['attributes'].items():
 					for attribute in self.property[property_type].post_attributes.keys():
 						if self.property[property_type].post_attributes[attribute].con_attribute == attr:
 							modlist.append((ldap.MOD_REPLACE, attr, value))
+							if value:
+								modlist.append((ldap.MOD_REPLACE, attr, value))
+							else:
+								modlist.append((ldap.MOD_DELETE, attr, None))
+						if self.property[property_type].post_attributes[attribute].con_other_attribute == attr:
+							if value:
+								modlist.append((ldap.MOD_REPLACE, attr, value))
+							else:
+								modlist.append((ldap.MOD_DELETE, attr, None))
 
 			self.lo_ad.lo.add_s(compatible_modstring(object['dn']), compatible_addlist(addlist)) #FIXME encoding
 
@@ -1866,24 +1881,33 @@ class ad(univention.connector.ucs):
 
 		elif (object['modtype'] == 'modify' and ad_object) or (object['modtype'] == 'add' and ad_object):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: modify object: %s"%object['dn'])
+			attr_list = []
 			if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes != None:
 				for attr,value in object['attributes'].items():
+					attr_list.append(attr)
 					for attribute in self.property[property_type].attributes.keys():
-						if self.property[property_type].attributes[attribute].con_attribute == attr:
+						if self.property[property_type].attributes[attribute].con_attribute == attr or self.property[property_type].attributes[attribute].con_other_attribute == attr:
 							if not ad_object.has_key(attr):
-								if value != None:
+								if value:
 									modlist.append((ldap.MOD_ADD, attr, value))
  							elif not univention.connector.compare_lowercase(value,ad_object[attr]): # FIXME: use defined compare-function from mapping.py
 								modlist.append((ldap.MOD_REPLACE, attr, value))
 			if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
 				for attr,value in object['attributes'].items():
+					attr_list.append(attr)
 					for attribute in self.property[property_type].post_attributes.keys():
-						if self.property[property_type].post_attributes[attribute].con_attribute == attr:
+						if self.property[property_type].post_attributes[attribute].con_attribute == attr or self.property[property_type].post_attributes[attribute].con_other_attribute == attr:
 							if not ad_object.has_key(attr):
-								if value != None:
+								if value:
 									modlist.append((ldap.MOD_ADD, attr, value))
  							elif not univention.connector.compare_lowercase(value,ad_object[attr]): # FIXME: use defined compare-function from mapping.py
 								modlist.append((ldap.MOD_REPLACE, attr, value))
+			if old_ucs_object:
+				# If the old UCS object has a attribute set, which is not
+				# set in AD, it should be deleted
+				for attr in old_ucs_object.keys():
+					if not attr in attr_list:
+						modlist.append((ldap.MOD_DELETE, attr, None))
 			if modlist:
 				self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
 				

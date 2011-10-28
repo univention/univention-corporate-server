@@ -190,21 +190,25 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 							ucs_attribute='phone',
 							ldap_attribute='telephoneNumber',
 							con_attribute='telephoneNumber',
+							con_other_attribute='otherTelephone',
 						),
 					'homePhone': univention.connector.attribute (
 							ucs_attribute='homeTelephoneNumber',
 							ldap_attribute='homePhone',
 							con_attribute='homePhone',
+							con_other_attribute='otherHomePhone',
 						),
 					'mobilePhone': univention.connector.attribute (
 							ucs_attribute='mobileTelephoneNumber',
 							ldap_attribute='mobile',
 							con_attribute='mobile',
+							con_other_attribute='otherMobile',
 						),
 					'pager': univention.connector.attribute (
 							ucs_attribute='pagerTelephoneNumber',
 							ldap_attribute='pager',
 							con_attribute='pager',
+							con_other_attribute='otherPager',
 						),
 					'displayName': univention.connector.attribute (
 							ucs_attribute='displayName',
