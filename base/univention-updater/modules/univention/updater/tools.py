@@ -367,15 +367,18 @@ class UCSHttpServer(object):
 				raise ConfigurationError(uri, 'host is unresolvable')
 			raise DownloadError(uri, res.code)
 		except urllib2.URLError, e:
-			reason = e.reason.args[1] # default value for error message
-			if isinstance(e.reason, socket.gaierror):
-				if e.reason.args[0] == socket.EAI_NONAME: # -2
-					reason = 'host is unresolvable'
+			if type(e.reason) == str:
+				reason = e.reason
 			else:
-				if e.reason.args[0] == errno.ETIMEDOUT: # 110
-					reason = 'port is blocked'
-				elif e.reason.args[0] == errno.ECONNREFUSED: # 111
-					reason = 'port is closed'
+				reason = e.reason.args[1] # default value for error message
+				if isinstance(e.reason, socket.gaierror):
+					if e.reason.args[0] == socket.EAI_NONAME: # -2
+						reason = 'host is unresolvable'
+				else:
+					if e.reason.args[0] == errno.ETIMEDOUT: # 110
+						reason = 'port is blocked'
+					elif e.reason.args[0] == errno.ECONNREFUSED: # 111
+						reason = 'port is closed'
 			if '/' == req.get_selector()[0]: # direct
 				self.failed_hosts.add(req.get_host())
 				raise ConfigurationError(uri, reason)

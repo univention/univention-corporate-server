@@ -1,3 +1,9 @@
+univention-updater (7.0.72-1) unstable; urgency=low
+
+  * fixed error msg if proxy name has not been specified (Bug #23754)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 28 Oct 2011 14:45:23 +0200
+
 univention-updater (7.0.71-1) unstable; urgency=low
 
   * updated conffile_is_unmodified (Bug #23483)
