@@ -198,21 +198,25 @@ s4_mapping = {
 							ucs_attribute='phone',
 							ldap_attribute='telephoneNumber',
 							con_attribute='telephoneNumber',
+							con_other_attribute='otherTelephone',
 						),
 					'homePhone': univention.s4connector.attribute (
 							ucs_attribute='homeTelephoneNumber',
 							ldap_attribute='homePhone',
 							con_attribute='homePhone',
+							con_other_attribute='otherHomePhone',
 						),
 					'mobilePhone': univention.s4connector.attribute (
 							ucs_attribute='mobileTelephoneNumber',
 							ldap_attribute='mobile',
 							con_attribute='mobile',
+							con_other_attribute='otherMobile',
 						),
 					'pager': univention.s4connector.attribute (
 							ucs_attribute='pagerTelephoneNumber',
 							ldap_attribute='pager',
 							con_attribute='pager',
+							con_other_attribute='otherPager',
 						),
 					'displayName': univention.s4connector.attribute (
 							ucs_attribute='displayName',
@@ -268,9 +272,9 @@ s4_mapping = {
 							con_attribute='description',
 						),
 					'mailAddress': univention.s4connector.attribute (
-						ucs_attribute='mailAddress',
-						ldap_attribute='mailPrimaryAddress',
-						con_attribute='mail',
+							ucs_attribute='mailAddress',
+							ldap_attribute='mailPrimaryAddress',
+							con_attribute='mail',
 					),
 				},
 		),

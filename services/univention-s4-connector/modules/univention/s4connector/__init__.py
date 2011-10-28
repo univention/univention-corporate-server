@@ -179,10 +179,11 @@ class configsaver:
 		return self.config.has_key(section) and self.config[section].has_key(option)
 
 class attribute:
-	def __init__ ( self, ucs_attribute='', ldap_attribute='', con_attribute='', required=0, compare_function='', mapping=() ):
+	def __init__ ( self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, compare_function='', mapping=() ):
 		self.ucs_attribute=ucs_attribute
 		self.ldap_attribute=ldap_attribute
 		self.con_attribute=con_attribute
+		self.con_other_attribute=con_other_attribute
 		self.required=required
 		self.compare_function=compare_function
 		if mapping:
@@ -576,8 +577,8 @@ class ucs:
 				if not self._ignore_object(key,object) or ignore_subtree_match:
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: finished mapping")
 					try:				
-						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn,'utf8')))
-							or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn))):
+						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn,'utf8'), old))
+							or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn, old))):
 							self._save_rejected_ucs(filename, dn)
 							return False
 						else:
@@ -1381,7 +1382,11 @@ class ucs:
 								object_out['attributes'][self.property[key].attributes[attr_key].con_attribute]=self.property[key].attributes[attr_key].mapping[0](self, key, object)
 							# direct mapping
 							else:
-								object_out['attributes'][self.property[key].attributes[attr_key].con_attribute]=values
+								if self.property[key].attributes[attr_key].con_other_attribute:
+									object_out['attributes'][self.property[key].attributes[attr_key].con_attribute]=[values[0]]
+									object_out['attributes'][self.property[key].attributes[attr_key].con_other_attribute]=values[1:]
+								else:
+									object_out['attributes'][self.property[key].attributes[attr_key].con_attribute]=values
 
 							# mapping_table	
 							if self.property[key].mapping_table and attr_key in self.property[key].mapping_table.keys():
@@ -1402,7 +1407,11 @@ class ucs:
 							if hasattr(self.property[key].post_attributes[attr_key], 'mapping'):
 								object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute]=self.property[key].post_attributes[attr_key].mapping[0](self, key, object)
 							else:
-								object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute]=values
+								if self.property[key].post_attributes[attr_key].con_other_attribute:
+									object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute]=[values[0]]
+									object_out['attributes'][self.property[key].post_attributes[attr_key].con_other_attribute]=values[1:]
+								else:
+									object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute]=values
 
 		else:
 			# Filter out Configuration objects w/o DN
@@ -1416,7 +1425,10 @@ class ucs:
 									object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute]=self.property[key].attributes[attr_key].mapping[1](self, key, object)
 									# direct mapping
 								else:
-									object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute]=values
+									if self.property[key].attributes[attr_key].con_other_attribute and object['attributes'].get(self.property[key].attributes[attr_key].con_other_attribute):
+										object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute]=values+object['attributes'].get(self.property[key].attributes[attr_key].con_other_attribute)
+									else:
+										object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute]=values
 
 									# mapping_table	
 								if self.property[key].mapping_table and attr_key in self.property[key].mapping_table.keys():
@@ -1437,7 +1449,10 @@ class ucs:
 								if hasattr(self.property[key].post_attributes[attr_key], 'mapping'):
 									object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute]=self.property[key].post_attributes[attr_key].mapping[1](self, key, object)
 								else:
-									object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute]=values
+									if self.property[key].post_attributes[attr_key].con_other_attribute and object['attributes'].get(self.property[key].post_attributes[attr_key].con_other_attribute):
+										object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute]=values+object['attributes'].get(self.property[key].post_attributes[attr_key].con_other_attribute)
+									else:
+										object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute]=values
 
 		return object_out
 

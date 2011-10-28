@@ -466,7 +466,7 @@ def ucs_ptr_record_create(s4connector, object):
 
 		newRecord= univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
-		newRecord['name']=relativeDomainName
+		newRecord['address']=relativeDomainName
 		newRecord['ptr_record']=ptr[0]
 		newRecord.create()
 	
