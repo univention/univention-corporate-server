@@ -47,26 +47,34 @@ import tools
 _ = umc.Translation('univention-management-console-module-quota').translate
 
 class Commands(object):
-	def _check_error(self, partition_name):
+	def _check_error(self, request, partition_name): # TODO
+		message = None
 		try:
 			fs = fstab.File()
 			mt = mtab.File()
 		except IOError as error:
-			raise UMC_CommandError(_('Could not open %s') % error.filename)
+			MODULE.error('Could not open %s' % error.filename)
+			message = _('Could not open %s') % error.filename
 		partition = fs.find(spec = partition_name)
 		if partition:
 			mounted_partition = mt.get(partition.spec)
 			if mounted_partition:
 				if 'usrquota' not in mounted_partition.options:
-					raise UMC_CommandError(_('The following partition is mounted '
-					                         'without quota support: %s')
-					                       % partition_name)
+					MODULE.error('The following partition is mounted '
+					             'without quota support: %s' % partition_name)
+					message = _('The following partition is mounted mounted '
+					            'without quota support: %s') % partition_name
 			else:
-				raise UMC_CommandError(_('The following partition is '
-				                         'currently not mounted: %s')
-				                       % partition_name)
+				MODULE.error('The following partition is '
+				             'currently not mounted: %s' % partition_name)
+				message = _('The following partition is currently '
+				            'not mounted: %s') % partition_name
 		else:
-			raise UMC_CommandError(_('No partition found (%s)') % partition_name)
+			MODULE.error('No partition found (%s)' % partition_name)
+			message = _('No partition found (%s)') % partition_name
+		if message:
+			request.status = MODULE_ERR
+			self.finished(request.id, None, message)
 
 	def _thread_finished(self, thread, thread_result, request):
 		if not isinstance(thread_result, BaseException):
@@ -81,7 +89,7 @@ class Commands(object):
 			self.finished(request.id, None, message)
 
 	def users_query(self, request):
-		self._check_error(request.options['partitionDevice'])
+		self._check_error(request, request.options['partitionDevice'])
 		callback = notifier.Callback(self._users_query, request.id,
 		                       request.options['partitionDevice'], request)
 		tools.repquota(request.options['partitionDevice'], callback)
@@ -114,18 +122,23 @@ class Commands(object):
 			success = True
 			result = []
 
-			self._check_error(request.options['partitionDevice'])
-			failed = tools.setquota(request.options['partitionDevice'],
-			                         request.options['user'],
-			                         tools.byte2block(request.options['sizeLimitSoft']),
-			                         tools.byte2block(request.options['sizeLimitHard']),
-			                         request.options['fileLimitSoft'],
-			                         request.options['fileLimitHard'])
+			partition = request.options['partitionDevice']
+			user = request.options['user']
+			size_soft = request.options['sizeLimitSoft']
+			size_hard = request.options['sizeLimitHard']
+			file_soft = request.options['fileLimitSoft']
+			file_hard = request.options['fileLimitHard']
+			self._check_error(request, partition)
+			failed = tools.setquota(partition, user, tools.byte2block(size_soft),
+			                        tools.byte2block(size_hard),
+			                        file_soft, file_hard)
 			if failed:
-				raise UMC_CommandError(_('Failed to modify quota settings '
-				                         'for user %s on partition %s')
-				                       % (request.options['user'],
-				                          request.options['partitionDevice']))
+				MODULE.error('Failed to modify quota settings for user %s '
+				             'on partition %s' % (user, partition))
+				message = _('Failed to modify quota settings for user %s on '
+				            'partition %s') % (user, partition)
+				request.status = MODULE_ERR
+				self.finished(request.id, None, message)
 			message = _('Successfully set quota settings')
 			return {'result': result, 'message': message, 'success': success}
 		thread = notifier.threads.Simple('Set', notifier.Callback(_thread, request),
@@ -143,7 +156,7 @@ class Commands(object):
 			for obj in request.options:
 				partitions.append(obj['object'].split('@')[-1])
 			for partition in set(partitions):
-				self._check_error(partition)
+				self._check_error(request, partition)
 
 			# Remove user quota
 			for obj in request.options:

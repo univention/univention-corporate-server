@@ -1,3 +1,11 @@
+univention-quota (6.0.9-1) unstable; urgency=low
+
+  * validate form values
+  * fixed exception handling
+  (Bug #22903)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 28 Oct 2011 10:01:34 +0200
+
 univention-quota (6.0.8-1) unstable; urgency=low
 
   * fixed translation bug (Bug #22903)

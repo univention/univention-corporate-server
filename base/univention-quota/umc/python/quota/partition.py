@@ -36,7 +36,6 @@ from fnmatch import fnmatch
 
 import univention.management.console as umc
 from univention.management.console.log import MODULE
-from univention.management.console.modules import UMC_CommandError, UMC_OptionMissing
 from univention.management.console.protocol.definitions import *
 
 import df
@@ -49,11 +48,14 @@ _ = umc.Translation('univention-management-console-module-quota').translate
 class Commands(object):
 	def partitions_query(self, request):
 		result = []
+		message = None
 		try:
 			fs = fstab.File()
 			mt = mtab.File()
 		except IOError as error:
-			raise UMC_CommandError(_('Could not open %s') % error.filename)
+			MODULE.error('Could not open %s' % error.filename)
+			message = _('Could not open %s') % error.filename
+			request.status = MODULE_ERR
 		else:
 			partitions = fs.get(['xfs', 'ext3', 'ext2'], False) # TODO: ext4?
 			for partition in partitions:
@@ -74,17 +76,17 @@ class Commands(object):
 						list_entry['inUse'] = False
 				result.append(list_entry)
 			request.status = SUCCESS
-		self.finished(request.id, result)
+		self.finished(request.id, result, message)
 
 	def partitions_info(self, request):
 		result = {}
-		message = ''
+		message = None
 		try:
 			fs = fstab.File()
 			mt = mtab.File()
 		except IOError as error:
 			MODULE.error('Could not open %s' % error.filename)
-			message = _('Could not open %s' % error.filename)
+			message = _('Could not open %s') % error.filename
 			request.status = MODULE_ERR
 		else:
 			partition = fs.find(spec = request.options['partitionDevice'])

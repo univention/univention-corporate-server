@@ -38,8 +38,10 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 			name: 'submit',
 			label: this._('Save changes'),
 			callback: dojo.hitch(this, function() {
-				var values = this._form.gatherFormValues();
-				this.onSetQuota(values);
+				if (this.validateValues()) {
+					var values = this._form.gatherFormValues();
+					this.onSetQuota(values);
+				}
 			})
 		}];
 	},
@@ -53,7 +55,8 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 		var widgets = [{
 			type: 'TextBox',
 			name: 'user',
-			label: this._('User')
+			label: this._('User'),
+			required: true
 		}, {
 			type: 'TextBox',
 			name: 'partitionDevice',
@@ -129,5 +132,24 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 			this._form.getWidget('user').set('disabled', true);
 		}
 		this._form.getWidget('partitionDevice').setValue(this.partitionDevice);
+	},
+
+	validateValues: function() {
+		// check whether the username is specified
+		if (this._form.getWidget('user').get('value') == '') {
+			umc.dialog.alert(this._('A username needs to be specified.'));
+			return false;
+		}
+
+		// make sure that not all values are set to zero
+		var quotaValues = ['sizeLimitSoft', 'sizeLimitHard', 'fileLimitSoft', 'fileLimitHard'];
+		var zeroValues = dojo.filter(quotaValues, dojo.hitch(this, function(ikey) {
+			return this._form.getWidget(ikey).get('value') <= 0;
+		}));
+		if (quotaValues.length == zeroValues.length) {
+			umc.dialog.alert(this._('Not all limits can be set to zero.'));
+			return false;
+		}
+		return true;
 	}
 });
