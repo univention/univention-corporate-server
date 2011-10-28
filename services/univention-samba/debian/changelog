@@ -1,3 +1,10 @@
+univention-samba (6.0.14-1) unstable; urgency=low
+
+  * Removed pre dependency to samba for univention-samba-local-config
+    (Bug #23802)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 28 Oct 2011 12:22:58 +0200
+
 univention-samba (6.0.13-1) unstable; urgency=low
 
   * Revert Samba 3.6.1 changes (Bug #22561)
