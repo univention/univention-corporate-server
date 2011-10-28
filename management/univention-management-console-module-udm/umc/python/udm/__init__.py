@@ -36,6 +36,7 @@ import os
 import shutil
 import notifier
 import notifier.threads
+import traceback
 
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
@@ -51,7 +52,7 @@ import univention.directory.reports as udr
 
 from univention.management.console.protocol.definitions import *
 
-from .ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, LDAP_ConnectionError, set_credentials
+from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, LDAP_ConnectionError, set_credentials
 
 _ = Translation( 'univention-management-console-module-udm' ).translate
 
@@ -91,16 +92,26 @@ class Instance( Base ):
 
 		return UDM_Module( module_name )
 
+	def _check_thread_error( self, thread, result, request ):
+		"""Checks if the thread returned an exception. In that case in
+		error response is send and the function returns True. Otherwise
+		False is returned."""
+		if not isinstance( result, BaseException ):
+			return False
+
+		msg = '%s\n%s: %s\n' % ( ''.join( traceback.format_tb( thread.exc_info[ 2 ] ) ), thread.exc_info[ 0 ].__name__, str( thread.exc_info[ 1 ] ) )
+		MODULE.process( 'An internal error occurred: %s' % msg )
+		self.finished( request.id, None, msg, False )
+		return True
+
 	def _thread_finished( self, thread, result, request ):
 		"""This method is invoked when a threaded request function is
 		finished. The result is send back to the client. If the result
 		is an instance of BaseException an error is returned."""
-		if not isinstance( result, BaseException ):
-			self.finished( request.id, result )
-		else:
-			msg = str( result ) + '\n' + '\n'.join( thread.trace )
-			MODULE.process( 'An internal error occurred: %s' % msg )
-			self.finished( request.id, None, msg, False )
+		if self._check_thread_error( thread, result, request ):
+			return
+
+		self.finished( request.id, result )
 
 	@LDAP_Connection
 	def license( self, request, ldap_connection = None, ldap_position = None ):

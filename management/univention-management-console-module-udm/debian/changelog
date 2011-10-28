@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.200-1) unstable; urgency=low
+
+  * fix error handling
+  * map attributes based on their assoziated syntax class; Bug #24063
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 28 Oct 2011 15:03:32 +0200
+
 univention-management-console-module-udm (1.0.199-1) unstable; urgency=low
 
   * fixed wrong locale path (Bug #22881)

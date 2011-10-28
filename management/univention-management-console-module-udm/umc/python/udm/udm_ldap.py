@@ -49,6 +49,8 @@ from ...log import MODULE
 
 from .syntax import widget, default_value
 
+from ldap import LDAPError
+
 try:
     import univention.admin.license
     GPLversion=False
@@ -116,7 +118,7 @@ def LDAP_Connection( func ):
 					lo.requireLicense()
 
 				po = udm_uldap.position( lo.base )
-			except Exception, e:
+			except LDAPError, e:
 				raise LDAP_ConnectionError( 'Opening LDAP connection failed: %s' % str( e ) )
 
 		kwargs[ 'ldap_connection' ] = lo
@@ -132,7 +134,7 @@ def LDAP_Connection( func ):
 				lo = udm_uldap.access( host = ucr.get( 'ldap/master' ), base = ucr.get( 'ldap/base' ), binddn= _user_dn, bindpw = _password )
 				lo.requireLicense()
 				po = udm_uldap.position( lo.base )
-			except Exception, e:
+			except LDAPError, e:
 				raise LDAP_ConnectionError( 'Opening LDAP connection failed: %s' % str( e ) )
 
 			kwargs[ 'ldap_connection' ] = lo
@@ -205,6 +207,32 @@ class UDM_Module( object ):
 			if key == property_name:
 				return default_value( prop.syntax )
 
+	def _map_properties( self, obj, properties ):
+		for property_name, value in properties.items():
+			MODULE.info( 'Setting property %s to %s' % ( property_name, value ) )
+
+			property_obj = self.get_property( property_name )
+			if property_obj is None:
+				raise UMC_OptionMissing( _( 'Property %s not found' ) % property_name )
+
+			# check each element if 'value' is a list
+			if isinstance(value, (tuple, list)) and property_obj.multivalue:
+				subResults = []
+				for ival in value:
+					try:
+						subResults.append( property_obj.syntax.parse( ival ) )
+					except ( udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError ), e:
+						raise UMC_OptionTypeError( _( 'The property %s has an invalid value: %s' ) % ( property_obj.short_description, str( e ) ) )
+				obj[ property_name ] = subResults
+			# otherwise we have a single value
+			else:
+				try:
+					obj[ property_name ] = property_obj.syntax.parse( value )
+				except ( udm_errors.valueInvalidSyntax, udm_errors.valueError ), e:
+					raise UMC_OptionTypeError( _( 'The property %s has an invalid value: %s' ) % ( property_obj.short_description, str( e ) ) )
+
+		return obj
+
 	@LDAP_Connection
 	def create( self, ldap_object, container = None, superordinate = None, ldap_connection = None, ldap_position = None ):
 		"""Creates a LDAP object"""
@@ -248,11 +276,12 @@ class UDM_Module( object ):
 			if '$policies$' in ldap_object:
 				obj.policies = ldap_object[ '$policies$' ].values()
 				del ldap_object[ '$policies$' ]
-			for key, value in ldap_object.items():
-				obj[ key ] = value
+
+			self._map_properties( obj, ldap_object )
+
 			obj.create()
 		except udm_errors.base, e:
-			MODULE.process( 'Failed to create LDAP object: %s' % str( e ) )
+			MODULE.process( 'Failed to create LDAP object: %s: %s' % ( e.__class__.__name__, str( e ) ) )
 			raise UDM_Error( e.message, obj.dn )
 
 		return obj.dn
@@ -289,15 +318,17 @@ class UDM_Module( object ):
 			if '$policies$' in ldap_object:
 				obj.policies = ldap_object[ '$policies$' ].values()
 				del ldap_object[ '$policies$' ]
-			for key, value in ldap_object.items():
-				MODULE.info( 'Setting property %s ot %s' % ( key, value ) )
-				obj[ key ] = value
-			if '$policies$' in ldap_object:
-				obj.policies = ldap_object[ '$policies$' ].values()
+
+			MODULE.info( 'Map attributes ...' )
+			self._map_properties( obj, ldap_object )
+			MODULE.info( 'Mapped attributes' )
+
+			# if '$policies$' in ldap_object:
+			# 	obj.policies = ldap_object[ '$policies$' ].values()
+
 			obj.modify()
 		except udm_errors.base, e:
-			MODULE.process( 'Failed to modify LDAP object %s: %s' % ( obj.dn, e.message ) )
-			MODULE.process( '-> details: %s' % str( e ) )
+			MODULE.process( 'Failed to modify LDAP object %s: %s: %s' % ( obj.dn, e.__class__.__name__, str( e ) ) )
 			raise UDM_Error( e.message )
 
 	@LDAP_Connection
