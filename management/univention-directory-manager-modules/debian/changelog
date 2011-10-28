@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.159-1) unstable; urgency=low
+
+  * removed old module that will not be support with UCS 3.0; Bug #22431
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 28 Oct 2011 18:47:49 +0200
+
 univention-directory-manager-modules (7.0.158-1) unstable; urgency=low
 
   * Fixed debug message (Bug #22431)

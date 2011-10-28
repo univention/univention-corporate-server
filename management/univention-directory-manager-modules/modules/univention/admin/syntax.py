@@ -2256,35 +2256,6 @@ def univentionAdminModules_update():
 
 __register_choice_update_function(univentionAdminModules_update)
 
-class univentionAdminWizards(select):
-	# we need a fallback
-	choices=[('None', 'None'), ('computers/computer', 'Computer'), ('dhcp/dhcp', 'DHCP'), ('dns/dns', 'DNS'), ('groups/group', 'Groups'), ('mail/mail', 'Mail'), ('networks/network', 'Network'), ('policies/policy', 'Policies'), ('shares/print', 'Printers'), ('shares/share', 'Shares'), ('users/user', 'Users')]
-
-def univentionAdminWizards_update():
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'RUN univentionAdminWizards_update')
-	temp = []
-	done = []
-
-	for name, mod in univention.admin.modules.modules.items():
-		if univention.admin.modules.wantsWizard( mod ):
-			subs = univention.admin.modules.childModules( mod )
-			if subs:
-				done.extend( subs )
-				temp.append( ( name, univention.admin.modules.wizardMenuString( mod ) ) )
-
-	for name, mod in univention.admin.modules.modules.items():
-		if name in done: continue
-		if univention.admin.modules.wantsWizard( mod ) and not univention.admin.modules.childModules( mod ):
-			temp.append( ( name, univention.admin.modules.wizardMenuString( mod ) ) )
-
-	univentionAdminWizards.choices = sorted( temp, key = operator.itemgetter( 1 ) )
-	univentionAdminWizards.choices.insert( 0, ( 'None', _( 'None' ) ) )
-__register_choice_update_function(univentionAdminWizards_update)
-
-class univentionAdminWebModules(select):
-	choices = [('modabout',_('About')), ('modbrowse',_('Browse')),( 'modwizard',_('Wizards')), ('modself',_('Personal Settings'))]
-	# make no sense here: 'modedit', 'modlogout', 'modrelogin', 'modspacer'
-
 class listAttributes(select):
 	@classmethod
 	def parse(self, text):

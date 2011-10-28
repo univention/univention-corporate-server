@@ -48,7 +48,6 @@ from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.groups.group
-import univention.admin.handlers.settings.user
 import univention.admin.password
 import univention.admin.samba
 import univention.admin.allocators
