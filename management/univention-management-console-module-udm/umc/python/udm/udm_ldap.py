@@ -700,6 +700,14 @@ def check_license(ldap_connection = None, ldap_position = None ):
 		# Free for personal use edition
 		raise udm_errors.freeForPersonalUse
 
+def container_modules():
+	containers = []
+	for name, mod in udm_modules.modules.items():
+		if getattr( mod, 'childs', None ):
+			containers.append( name )
+
+	return containers
+
 def split_module_name( module_name ):
 	"""Splits a module name into category and internal name"""
 

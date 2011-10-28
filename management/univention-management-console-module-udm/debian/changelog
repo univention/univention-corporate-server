@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.201-1) unstable; urgency=low
+
+  * navigation: dynamically determine list of container modules; Bug #24244
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 28 Oct 2011 18:52:12 +0200
+
 univention-management-console-module-udm (1.0.200-1) unstable; urgency=low
 
   * fix error handling

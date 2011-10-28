@@ -52,7 +52,7 @@ import univention.directory.reports as udr
 
 from univention.management.console.protocol.definitions import *
 
-from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, LDAP_ConnectionError, set_credentials
+from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, LDAP_ConnectionError, set_credentials, container_modules
 
 _ = Translation( 'univention-management-console-module-udm' ).translate
 
@@ -61,6 +61,7 @@ class Instance( Base ):
 		Base.__init__( self )
 		self.settings = None
 		self.reports = None
+		self.modules_with_childs = []
 
 	def init( self ):
 		'''Initialize the module. Invoked when ACLs, commands and
@@ -72,6 +73,7 @@ class Instance( Base ):
 			self.settings = UDM_Settings()
 			self.settings.user( self._user_dn )
 			self.reports_cfg = udr.Config()
+			self.modules_with_childs = container_modules()
 
 	def _get_module( self, request, object_type = None ):
 		"""Tries to determine to UDM module to use. If no specific
@@ -642,7 +644,7 @@ class Instance( Base ):
 			message = None
 			superordinate = None
 			result = []
-			for base, typ in ( ( 'container', 'cn' ), ( 'container', 'ou' ), ( 'settings', 'cn' ), ( 'dhcp', 'service' ), ( 'dhcp', 'subnet' ), ( 'dhcp', 'sharedsubnet' ), ( 'dns', 'forward_zone' ), ( 'dns', 'reverse_zone' ) ):
+			for base, typ in map( lambda x: x.split( '/' ), self.modules_with_childs ):
 				module = UDM_Module( '%s/%s' % ( base, typ ) )
 				if module.superordinate:
 					if superordinate is None:
