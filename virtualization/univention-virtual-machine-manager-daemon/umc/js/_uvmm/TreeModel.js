@@ -35,10 +35,7 @@ dojo.declare('umc.modules._uvmm.TreeModel', null, {
 	},
 
 	mayHaveChildren: function(item) {
-		if (!item.type || item.type == 'node') {
-			return false;
-		}
-		return true;
+		return item.type != 'domain';
 	},
 
 	getIdentity: function(item) {
@@ -46,13 +43,16 @@ dojo.declare('umc.modules._uvmm.TreeModel', null, {
 	},
 
 	getChildren: function(parentItem, onComplete) {
-		if (!parentItem.type || parentItem.type == 'node') {
+		// we only have three levels: root, groups, nodes
+		if (parentItem.type == 'node') {
 			onComplete([]);
-			return
+			return;
 		}
 
-		this.umcpCommand('uvmm/nav/query', { 
-			parent: parentItem.type == 'root' ? null : parentItem
+		this.umcpCommand('uvmm/query', { 
+			type: parentItem.type == 'root' ? 'group' : 'node',
+			domainPattern: '*',
+			nodePattern: '*'
 		}).then(dojo.hitch(this, function(data) {
 			// sort items alphabetically
 			var results = dojo.isArray(data.result) ? data.result : [];
