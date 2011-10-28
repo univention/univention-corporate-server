@@ -85,7 +85,7 @@ class ACLs( object ):
 		if acls is None:
 			self.acls = []
 		else:
-			self.acls = acls
+			self.acls = map( lambda x: Rule( x ), acls )
 
 		# internal cache for the hosts
 		self.__cache = {}

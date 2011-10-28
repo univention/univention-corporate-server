@@ -1,3 +1,9 @@
+univention-management-console (4.0.74-1) unstable; urgency=low
+
+  * fixed handling of ACLs in module process; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 28 Oct 2011 17:39:44 +0200
+
 univention-management-console (4.0.73-1) unstable; urgency=low
 
   * UMC server: cleanup environment for security reasons; Bug #24197
