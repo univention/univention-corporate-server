@@ -55,7 +55,7 @@ dojo.declare("umc.widgets.ComplexInput", umc.widgets.ContainerWidget, {
 		// register onChange event
 		umc.tools.forIn( this._widgets, function( iname, iwidget ) {
 			this.connect( iwidget, 'onChange', dojo.hitch( this, function( newValue ) {
-				this.onChange( newValue, iname );
+				this.onChange( this.get( 'value' ), iname );
 			} ) );
 		}, this );
 
