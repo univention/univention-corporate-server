@@ -1323,9 +1323,9 @@ class simpleComputer( simpleLdap ):
 				continue
 			dn, ip = self.__split_dns_line( dns_line )
 			if ':' in ip: # IPv6
-				results = self.lo.searchDn( base = dn, scope = 'domain', filter = 'aAAARecord=%s' % ip, unique = 0 )
+				results = self.lo.searchDn( base = dn, scope = 'domain', filter = '(&(relativeDomainName=%s)(aAAARecord=%s))' % (old_name, ip), unique = 0 )
 			else:
-				results = self.lo.searchDn( base = dn, scope = 'domain', filter = 'aRecord=%s' % ip, unique = 0 )
+				results = self.lo.searchDn( base = dn, scope = 'domain', filter = '(&(relativeDomainName=%s)(aRecord=%s))' % (old_name, ip), unique = 0 )
 			for result in results:
 				object = univention.admin.objects.get( univention.admin.modules.get( 'dns/host_record' ), self.co, self.lo, position = self.position, dn = result )
 				object.open( )
@@ -1347,11 +1347,11 @@ class simpleComputer( simpleLdap ):
 			if not entry:
 				continue
 			dnsforwardzone, dnsaliaszonecontainer, alias = entry
-			results = self.lo.searchdn( base = dnsaliaszonecontainer, scope = 'domain', filter = 'relativedomainname=%s' % alias, unique = 0 )
+			results = self.lo.searchDn( base = dnsaliaszonecontainer, scope = 'domain', filter = 'relativedomainname=%s' % alias, unique = 0 )
 			for result in results:
 				object = univention.admin.objects.get( univention.admin.modules.get( 'dns/alias' ), self.co, self.lo, position = self.position, dn = result )
 				object.open( )
-				object[ 'cname' ] = '%s.%s.' % (new_name, dnsForwardZone)
+				object[ 'cname' ] = '%s.%s.' % (new_name, dnsforwardzone)
 				object.modify( )
 
 	def __rename_dhcp_object( self, position = None, old_name = None, new_name = None ):
