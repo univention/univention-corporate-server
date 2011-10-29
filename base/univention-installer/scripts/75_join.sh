@@ -56,7 +56,7 @@ cat >>/instmnt/join.sh <<__EOT__
 progress_filter () {
 	# this pipe redirects stdout to read stdout (/proc/\$\$/fd/1) and modifys a copy
 	# of stdout via sed and pushes the result to filedescriptor 9
-	tee /proc/\$\$/fd/1 | sed -e 's/^Configure /__JOINSCRIPT__ /' >&9
+	tee /proc/\$\$/fd/1 | sed -u -e 's/^Configure /__JOINSCRIPT__ /' >&9
 }
 
 if [ -d /var/lib/univention-ldap/ldap ]; then
@@ -90,9 +90,9 @@ if [ "$server_role" != "domaincontroller_master" ] && [ -n "$domain_controller_a
 		chmod 600 \$pwd_file
 		echo "$domain_controller_password" >>\$pwd_file
 		if [ -n "$domain_controller" ]; then
-			/usr/share/univention-join/univention-join -dcname $domain_controller -dcaccount $domain_controller_account -dcpwd \$pwd_file -simplegui | progress_filter
+			/usr/share/univention-join/univention-join -dcname $domain_controller -dcaccount "$domain_controller_account" -dcpwd "\$pwd_file" -simplegui | progress_filter
 		else
-			/usr/share/univention-join/univention-join -dcaccount $domain_controller_account -dcpwd \$pwd_file -simplegui | progress_filter
+			/usr/share/univention-join/univention-join -dcaccount $domain_controller_account -dcpwd "\$pwd_file" -simplegui | progress_filter
 		fi
 	fi
 fi

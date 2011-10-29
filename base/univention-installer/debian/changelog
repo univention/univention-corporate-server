@@ -2,6 +2,7 @@ univention-installer (7.0.129-1) unstable; urgency=low
 
   * acceptra and IPv6 addresses can now both be set simultaneously (Bug #22872)
   * fixed broken translation in progress dialog (Bug #3796)
+  * fixed join script messages in progress dialog (Bug #3796)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 30 Oct 2011 00:31:38 +0200
 
