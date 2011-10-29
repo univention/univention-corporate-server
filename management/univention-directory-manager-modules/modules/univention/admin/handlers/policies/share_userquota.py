@@ -44,8 +44,8 @@ _=translation.translate
 class shareUserQuotaFixedAttributes(univention.admin.syntax.select):
 	name='shareUserQuotaFixedAttributes'
 	choices=[
-		('univentionQuotaSoftLimitSpace',_('Soft limit (Bytes)')),
-		('univentionQuotaHardLimitSpace',_('Hard limit (Bytes)')),
+		('univentionQuotaSoftLimitSpace',_('Soft limit')),
+		('univentionQuotaHardLimitSpace',_('Hard limit')),
 		('univentionQuotaSoftLimitInodes',_('Soft limit (Files)')),
 		('univentionQuotaHardLimitInodes',_('Hard limit (Files)'))
 		]
@@ -75,8 +75,8 @@ property_descriptions={
 			identifies=1,
 		),
 	'softLimitSpace': univention.admin.property(
-			short_description=_('Soft limit (Bytes)'),
-			long_description=_('Soft limit. If exceeded users can be warned.'),
+			short_description=_('Soft limit'),
+			long_description=_('Soft limit. If exceeded users can be warned. Values may be entered with one of the following units as postfix: B, kB, MB, GB'),
 			syntax=univention.admin.syntax.filesize,
 			multivalue=0,
 			options=[],
@@ -85,8 +85,8 @@ property_descriptions={
 			identifies=0
 		),
 	'hardLimitSpace': univention.admin.property(
-			short_description=_('Hard limit (Bytes)'),
-			long_description=_('Hard limit. Can not be exceeded.'),
+			short_description=_('Hard limit'),
+			long_description=_('Hard limit. Can not be exceeded. Values may be entered with one of the following units as postfix: B, kB, MB, GB'),
 			syntax=univention.admin.syntax.filesize,
 			multivalue=0,
 			options=[],

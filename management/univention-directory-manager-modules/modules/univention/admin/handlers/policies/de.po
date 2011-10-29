@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-25 15:03+0200\n"
-"PO-Revision-Date: 2011-10-13 20:35+0200\n"
+"POT-Creation-Date: 2011-10-29 22:18+0200\n"
+"PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -434,7 +434,7 @@ msgstr "Der Node Typ der Clients für NetBIOS over TCP/IP"
 
 #: dhcp_netbios.py:148
 msgid "Netbios"
-msgstr ""
+msgstr "Netbios"
 
 #: dhcp_netbios.py:148
 msgid "SMB/CIFS name resolution"
@@ -905,8 +905,9 @@ msgid "Password quality check"
 msgstr "Passwort-Qualitätsprüfung"
 
 #: pwhistory.py:108
-msgid "Enables/disables password quality checks for example dictonaty entries"
+msgid "Enables/disables password quality checks for example dictionary entries"
 msgstr ""
+"(De-)Aktiviert die Passwort-Qualitätsprüfung wie z.B. Wörterbuch-Prüfungen."
 
 #: registry.py:48
 msgid "UCR Variables"
@@ -978,12 +979,12 @@ msgid "Repository syncronisation settings"
 msgstr "Repository Synchronisationseinstellungen"
 
 #: share_userquota.py:47 share_userquota.py:78
-msgid "Soft limit (Bytes)"
-msgstr "Soft-Limit (Anzahl Byte)"
+msgid "Soft limit"
+msgstr "Soft-Limit"
 
 #: share_userquota.py:48 share_userquota.py:88
-msgid "Hard limit (Bytes)"
-msgstr "Hard-Limit (Anzahl Byte)"
+msgid "Hard limit"
+msgstr "Hard-Limit"
 
 #: share_userquota.py:49 share_userquota.py:98
 msgid "Soft limit (Files)"
@@ -1005,12 +1006,29 @@ msgstr "Benutzer-Quota"
 msgid "Default quota for each user on a share"
 msgstr "Standard-Speicherplatzbegrenzung für jeden User auf der Freigabe"
 
-#: share_userquota.py:79 share_userquota.py:99
+#: share_userquota.py:79
+msgid ""
+"Soft limit. If exceeded users can be warned. Values may be entered with one "
+"of the following units as postfix: B, kB, MB, GB"
+msgstr ""
+"Soft limit. Wenn das Limit überschritten ist, können Benutzer gewarnt "
+"werden. Dem anzugebenden Wert kann eine der folgenden Einheiten folgen: B, "
+"KB, MB, GB"
+
+#: share_userquota.py:89
+msgid ""
+"Hard limit. Can not be exceeded. Values may be entered with one of the "
+"following units as postfix: B, kB, MB, GB"
+msgstr ""
+"Das Hardlimit kann vom Benutzer nicht überschritten werden. Dem anzugebenden "
+"Wert kann eine der folgenden Einheiten folgen: B, KB, MB, GB"
+
+#: share_userquota.py:99
 msgid "Soft limit. If exceeded users can be warned."
 msgstr ""
 "Weiche Grenze, bei deren Überschreitung der Benutzer gewarnt werden kann"
 
-#: share_userquota.py:89 share_userquota.py:109
+#: share_userquota.py:109
 msgid "Hard limit. Can not be exceeded."
 msgstr "Harte Grenze, die nicht überschritten werden kann."
 

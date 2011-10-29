@@ -105,7 +105,7 @@ property_descriptions={
 		),
 	'pwQualityCheck': univention.admin.property(
 			short_description=_('Password quality check'),
-			long_description=_('Enables/disables password quality checks for example dictonaty entries'),
+			long_description=_('Enables/disables password quality checks for example dictionary entries'),
 			syntax=univention.admin.syntax.TrueFalseUp,
 			multivalue=0,
 			options=[],
