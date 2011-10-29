@@ -17,7 +17,7 @@ Depends: ${misc:Depends},
  univention-directory-reports
 Provides: univention-directory-manager
 Replaces: univention-directory-manager (<< 9.0.0)
-Description: UMC module for UCR
+Description: UMC module for UCS Directory Manager
  This package contains the UMC module for UCS Directory Manager.
  .
  It is part of Univention Corporate Server (UCS), an
