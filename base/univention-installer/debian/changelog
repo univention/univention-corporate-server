@@ -1,3 +1,9 @@
+univention-installer (7.0.129-1) unstable; urgency=low
+
+  * acceptra and IPv6 addresses can now both be set simultaneously (Bug #22872)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 30 Oct 2011 00:31:38 +0200
+
 univention-installer (7.0.128-1) unstable; urgency=low
 
   * respect interface= kernel option in startup-scripts/S95network

@@ -586,15 +586,10 @@ class object(content):
 		# if IPv6 checkbox is present...
 		if self.elem_exists('CB_IPv6'):
 			if self.get_elem('CB_IPv6').result():
-				# IPv6 is enabled ==> enable CB for router advertisements
-				self.get_elem('CB_IPv6RA').enable()
-				for name in [ 'INP_IPv6ADDR', 'INP_IPv6PREFIX' ]:
-					if self.get_elem('CB_IPv6RA').result():
-						# router advertisements are on ==> turn off IPv6 address fields
-						self.get_elem(name).disable()
-					else:
-						# router advertisements are off ==> turn on IPv6 address fields
-						self.get_elem(name).enable()
+				# IPv6 is enabled ==> turn on all IPv6 elements
+				for name in [ 'CB_IPv6RA', 'INP_IPv6ADDR', 'INP_IPv6PREFIX' ]:
+					self.get_elem(name).set_on()
+					self.get_elem(name).enable()
 			else:
 				# IPv6 is disabled ==> turn off all IPv6 elements
 				for name in [ 'CB_IPv6RA', 'INP_IPv6ADDR', 'INP_IPv6PREFIX' ]:
@@ -676,14 +671,14 @@ class object(content):
 			self.container.update(result)
 
 		# IPv6
-		self.container['%s_acceptra' % name] = 'false'
 		self.container['%s_ip6' % name] = ''
 		self.container['%s_prefix6' % name] = ''
+		self.container['%s_acceptra' % name] = 'false'
 		if card.get_elem('CB_IPv6RA').result():
 			self.container['%s_acceptra' % name] = 'true'
-		else:
-			self.container['%s_ip6' % name] = card.get_elem('INP_IPv6ADDR').result().strip()
-			self.container['%s_prefix6' % name] = card.get_elem('INP_IPv6PREFIX').result().strip()
+
+		self.container['%s_ip6' % name] = card.get_elem('INP_IPv6ADDR').result().strip()
+		self.container['%s_prefix6' % name] = card.get_elem('INP_IPv6PREFIX').result().strip()
 
 		keylist = [ [ 'INP_GATEWAY4', 'gateway' ],
 					[ 'INP_GATEWAY6', 'gateway6' ],
@@ -779,6 +774,9 @@ class object(content):
 		if not self.ipv4_found and not self.ipv6_found:
 			return _('At least one interface must be configured.')
 
+		# count static ipv6 addresses 
+		cnt_static_ipv6_addresses = 0
+
 		# check every interface if config is complete
 		for name, card in self.cards.items():
 			if card.get_elem('CB_IPv4').result():
@@ -806,10 +804,15 @@ class object(content):
 					return invalid_value % { 'interface': name, 'elemname': _('IPv6 Address') }
 				if prefix and not self.is_ipv6netmask('%s/%s' % (addr, prefix)):
 					return invalid_value % { 'interface': name, 'elemname': _('IPv6 Prefix') }
+				if addr and prefix:
+					cnt_static_ipv6_addresses += 1
 				# at least acceptra or valid IPv6 has to be set
 				if not(acceptra or (addr and prefix)):
 					return _('Neither SLAAC is activated nor an IPv6 address with prefix has been entered for interface "%s".') % name
 
+		# if IPv6-only is used, at least one static IPv6 address has to be defined
+		if not self.ipv4_found and self.ipv6_found and cnt_static_ipv6_addresses == 0:
+			return _('In IPv6-only environments at least one static IPv6 address has to be defined!')
 
 		testlist = []  # list of 3-tuples ( profile name, descriptive name, is_required?, address type ('4', '6', '46') )
 		if self.ipv4_found:
