@@ -5,8 +5,7 @@ dojo.provide('umc.modules._updater._PollingMixin');
 dojo.require('umc.dialog');
 dojo.require('umc.tools');
 
-// Mixin that can be added to everything that has an attached
-// moduleStore, to establish kind of polling for changes.
+// Mixin that establishes a kind of polling for changes.
 //
 // The idea behind is that the store can return a kind of 'serial'
 // value that will change if the underlying data has changed.
@@ -14,10 +13,9 @@ dojo.require('umc.tools');
 dojo.declare('umc.modules._updater._PollingMixin', [
        // currently nothing?
 	], {
-	
+
 	postMixinProperties: function() {
 		this.inherited(arguments);
-		umc.tools.assert(this.moduleStore,"You can't use the _PollingMixin in a class that doesn't have a moduleStore");
 	},
 	
 	buildRendering: function() {
@@ -61,7 +59,7 @@ dojo.declare('umc.modules._updater._PollingMixin', [
 			this.polling['function'] = dojo.hitch(this, function() {
 				try
 				{
-					this.moduleStore.umcpCommand(this.polling['query'],{},false).then(
+					umc.tools.umcpCommand(this.polling['query'],{},false).then(
 						dojo.hitch(this,function(data) {
 							this._query_success(this.polling['query']);
 							this.polling['handler'](data);

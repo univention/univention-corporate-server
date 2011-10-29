@@ -6,6 +6,7 @@ dojo.provide("umc.modules.updater");
 dojo.require("umc.i18n");
 dojo.require("umc.dialog");
 dojo.require("umc.widgets.ConfirmDialog");
+dojo.require("umc.tools");
 
 // ------- Overloaded classes --------
 dojo.require("umc.modules._updater.Module");
@@ -35,29 +36,12 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 	buildRendering: function() {
 
 		this.inherited(arguments);
-		
-		this._updates = new umc.modules._updater.UpdatesPage({
-			moduleStore:	umc.store.getModuleStore(null,'updater/updates')
-		});
-		
-		this._components = new  umc.modules._updater.ComponentsPage({
-			moduleStore:	umc.store.getModuleStore('name','updater/components')
-		});
-
-		this._details = new umc.modules._updater.DetailsPage({
-			moduleStore:	umc.store.getModuleStore('name','updater/components')
-			
-		});
-		
-		this._settings = new umc.modules._updater.SettingsPage({
-			moduleStore:	umc.store.getModuleStore('dummy','updater/settings')
-		});
-
-		this._progress = new umc.modules._updater.ProgressPage({
-			// Strictly spoken, we don't need the args to this moduleStore,
-			// we simply need the store itself.
-			moduleStore:	umc.store.getModuleStore(null,'updater/installer')
-		});
+	
+		this._updates = new umc.modules._updater.UpdatesPage({});
+		this._components = new  umc.modules._updater.ComponentsPage({});
+		this._details = new umc.modules._updater.DetailsPage({});
+		this._settings = new umc.modules._updater.SettingsPage({});
+		this._progress = new umc.modules._updater.ProgressPage({});
 		
 		this.addChild(this._updates);
 		this.addChild(this._components);
@@ -234,7 +218,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 		try
 		{
 			this.standby(true);
-			this.umcpCommand('updater/updates/check').then(dojo.hitch(this, function(data) {
+			umc.tools.umcpCommand('updater/updates/check').then(dojo.hitch(this, function(data) {
 				this.standby(false);
 				// FIXME Lots of manual styling to achieve resonable look
 				var txt = "<div style='overflow:scroll;max-height:400px;'<table>\n";
@@ -382,7 +366,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 
 		this.standby(true);
 
-		this.umcpCommand('updater/installer/execute',{
+		umc.tools.umcpCommand('updater/installer/execute',{
 			job:	args['job'],
 			detail:		args['detail']?args['detail']:''
 		}).then(dojo.hitch(this,function(data) {

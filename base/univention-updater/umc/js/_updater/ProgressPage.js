@@ -4,6 +4,7 @@ dojo.provide("umc.modules._updater.ProgressPage");
 
 dojo.require("umc.i18n");
 dojo.require("umc.dialog");
+dojo.require("umc.tools");
 
 dojo.require("umc.modules._updater.Page");
 dojo.require("umc.modules._updater._LogViewer");
@@ -56,7 +57,6 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
     	
     	this._log = new umc.modules._updater._LogViewer({
     		i18nClass:		this.i18nClass,
-    		moduleStore:	this.moduleStore,
     		region:			'center',
     		query:			'updater/installer/logfile'
     	});
@@ -237,7 +237,7 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 		
 		if (this._job_key == '')
 		{
-			this.moduleStore.umcpCommand('updater/installer/running',{},false).then(
+			umc.tools.umcpCommand('updater/installer/running',{},false).then(
 				dojo.hitch(this, function(data) {
 					this._query_success('updater/installer/running');
 					this._process_job_status(data);
@@ -250,7 +250,7 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 		}
 		else
 		{
-			this.moduleStore.umcpCommand('updater/installer/status',{job:this._job_key},false).then(
+			umc.tools.umcpCommand('updater/installer/status',{job:this._job_key},false).then(
 					dojo.hitch(this, function(data) {
 						this._query_success("updater/installer/status(" + this._job_key + ")");
 						this._process_job_status(data);

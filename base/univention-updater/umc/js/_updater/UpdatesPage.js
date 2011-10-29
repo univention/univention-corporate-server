@@ -4,6 +4,8 @@ dojo.provide("umc.modules._updater.UpdatesPage");
 
 dojo.require("umc.i18n");
 dojo.require("umc.dialog");
+dojo.require("umc.tools");
+dojo.require("umc.store");
 
 dojo.require("umc.modules._updater.Page");
 
@@ -313,7 +315,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
        		widgets:		widgets,
        		layout:			layout,
        		buttons:		buttons,
-       		moduleStore:	this.moduleStore,
+       		moduleStore:	umc.store.getModuleStore(null,'updater/updates'),
 			polling:	{
 				interval:	5000,
 				query:		'updater/updates/serial',
@@ -448,7 +450,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		else
 		{
 			this.standby(true);
-			this.moduleStore.umcpCommand('updater/updates/available').then(
+			umc.tools.umcpCommand('updater/updates/available').then(
 				dojo.hitch(this, function(data) {
 					this.standby(false);
 					this._set_updates_button(data.result,
@@ -537,7 +539,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 	_reboot: function() {
 		
 		this.standby(true);
-		this.moduleStore.umcpCommand('updater/installer/reboot').then(dojo.hitch(this, function() {
+		umc.tools.umcpCommand('updater/installer/reboot').then(dojo.hitch(this, function() {
 			this.standby(false);
 			this._show_reboot_pane(true,true);
 		}),

@@ -4,6 +4,8 @@ dojo.provide("umc.modules._updater.DetailsPage");
 
 dojo.require("umc.i18n");
 dojo.require("umc.dialog");
+dojo.require("umc.store");
+dojo.require("umc.tools");
 
 dojo.require("umc.modules._updater.Page");
 dojo.require("umc.modules._updater.Form");
@@ -125,7 +127,7 @@ dojo.declare("umc.modules._updater.DetailsPage", umc.modules._updater.Page, {
     		widgets:		widgets,
     		layout:			layout,
     		//buttons:		buttons,
-    		moduleStore:	this.moduleStore
+    		moduleStore:	umc.store.getModuleStore('name','updater/components')
     	});
     	this.addChild(this._form);
     	

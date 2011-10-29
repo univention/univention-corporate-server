@@ -31,7 +31,7 @@ dojo.declare('umc.modules._updater._LogViewer', [
 	_last_stamp:		0,
 	_check_interval:	0,
 	_current_job:		'',
-	
+
 	// FIXME which class should I take here?
 	style:		'border:1px solid #d0d0d0;background-color:#f8f8f8;padding:.3em;',
 	
@@ -64,14 +64,14 @@ dojo.declare('umc.modules._updater._LogViewer', [
 	
 	_fetch_log: function() {
 		
-		this.moduleStore.umcpCommand(this.query,{job:this._current_job, count:-1},false).then(dojo.hitch(this,function(data) {
+		umc.tools.umcpCommand(this.query,{job:this._current_job, count:-1},false).then(dojo.hitch(this,function(data) {
 			
 			this._query_success(this.query + " [count=-1]");
 			var stamp = data.result;
 			if (stamp != this._last_stamp)
 			{
 				this._last_stamp = stamp;
-				this.moduleStore.umcpCommand(this.query,{job:this._current_job,count:0},false).then(dojo.hitch(this, function(data) {
+				umc.tools.umcpCommand(this.query,{job:this._current_job,count:0},false).then(dojo.hitch(this, function(data) {
 					
 					this._query_success(this.query + " [count=0]");
 					this.setContentAttr(data.result);

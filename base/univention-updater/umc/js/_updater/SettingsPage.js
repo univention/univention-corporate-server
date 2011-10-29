@@ -4,6 +4,7 @@ dojo.provide("umc.modules._updater.SettingsPage");
 
 dojo.require("umc.i18n");
 dojo.require("umc.dialog");
+dojo.require("umc.store");
 
 dojo.require("umc.modules._updater.Page");
 
@@ -65,7 +66,7 @@ dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
 				type:			'CheckBox',
 				name:			'unmaintained',
 				label:			this._("Use unmaintained repositories")
-			},
+			}
 		];
 
     	var layout = 
@@ -75,7 +76,7 @@ dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
     	 		layout:
     	 		[
 		    		['server','prefix'],
-		    		['maintained','unmaintained'],
+		    		['maintained','unmaintained']
 		    	]
     	 	}
     	];
@@ -84,7 +85,7 @@ dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
     		widgets:		widgets,
     		layout:			layout,
     		//buttons:		buttons,
-    		moduleStore:	this.moduleStore,
+    		moduleStore:	umc.store.getModuleStore('dummy','updater/settings'),
     		onSaved: dojo.hitch(this, function(success,data) {
     			this.standby(false);
     			if (success)		// this is only Python module result, not data validation result!

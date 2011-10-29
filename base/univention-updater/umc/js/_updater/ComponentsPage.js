@@ -4,6 +4,8 @@ dojo.provide("umc.modules._updater.ComponentsPage");
 
 dojo.require("umc.i18n");
 dojo.require("umc.dialog");
+dojo.require("umc.store");
+dojo.require("umc.tools");
 
 dojo.require("umc.modules._updater.Page");
 dojo.require("umc.modules._updater.Grid");
@@ -21,7 +23,6 @@ dojo.declare("umc.modules._updater.ComponentsPage", umc.modules._updater.Page, {
 	        headerText:		this._("Additional components"),
 	        helpText:		this._("On this page, you find all additional components defined for this system. You can enable/disable/edit/delete them, and you can add new ones here.")
         });
-        this.moduleStore.idProperty = 'name';
     },
 
     buildRendering: function() {
@@ -197,7 +198,7 @@ dojo.declare("umc.modules._updater.ComponentsPage", umc.modules._updater.Page, {
     	this._grid = new umc.modules._updater.Grid({
     		region:			'center',
     		query:			this._query,
-			moduleStore:	this.moduleStore,
+			moduleStore:	umc.store.getModuleStore('name','updater/components'),
 			actions:		actions,
 			columns:		columns,
 			polling:	{
@@ -268,7 +269,7 @@ dojo.declare("umc.modules._updater.ComponentsPage", umc.modules._updater.Page, {
 		if (args.length)
 		{
 			this.standby(true);
-			this.moduleStore.umcpCommand('updater/components/put',args).then(
+			umc.tools.umcpCommand('updater/components/put',args).then(
 				dojo.hitch(this, function(data) {
 					this.standby(false);
 					this.refresh();				// refresh own grid
@@ -297,7 +298,7 @@ dojo.declare("umc.modules._updater.ComponentsPage", umc.modules._updater.Page, {
 		 		'default':	true,
 		 		callback:	dojo.hitch(this,function() {
 		 			this.standby(true);
-		 			this.moduleStore.umcpCommand('updater/components/del',ids).then(
+		 			umc.tools.umcpCommand('updater/components/del',ids).then(
 		 					dojo.hitch(this, function(data) {
 		 						this.standby(false);
 		 						this.refresh();
