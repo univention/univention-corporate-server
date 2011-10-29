@@ -125,6 +125,10 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		// register onChange event
 		this.connect(this._form._widgets.language, 'onChange', function(lang) {
 			if (lang != dojo.locale) {
+				// disable the entry fields
+				this._form.getWidget('username').set('disabled', true);
+				this._form.getWidget('password').set('disabled', true);
+
 				// reload the page when a different language is selected
 				var query = dojo.queryToObject(window.location.search.substring(1));
 				query.lang = lang;
