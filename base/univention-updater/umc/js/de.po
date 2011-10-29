@@ -163,9 +163,9 @@ msgid "Do you really want to install the '{name}' component?"
 msgstr "Möchten Sie wirklich die Komponente '{name}' installieren?"
 
 #: umc/js/updater.js:271
-msgid "Do you really want to perform the update/install of the above packages?"
+msgid "Do you really want to perform the update/install/remove of the above packages?"
 msgstr ""
-"Möchten Sie wirklich die genannten Pakete aktualisieren bzw. installieren?"
+"Möchten Sie wirklich die genannten Pakete aktualisieren, installieren bzw. entfernen?"
 
 #: umc/js/updater.js:213
 msgid "Do you really want to upgrade your system?"
@@ -602,6 +602,10 @@ msgstr "{count} Pakete werden NEU installiert"
 #: umc/js/updater.js:250
 msgid "{count} packages to be updated"
 msgstr "{count} Pakete werden aktualisiert"
+
+#: umc/js/updater.js:250
+msgid "{count} packages to be REMOVED"
+msgstr "{count} Pakete werden ENTFERNT"
 
 #: umc/js/_updater/UpdatesPage.js:406
 msgid "{enabled} of them are currently enabled."

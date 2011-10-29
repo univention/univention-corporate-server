@@ -38,10 +38,10 @@ import univention.management.console.modules as umcm
 import univention.config_registry
 
 import re
+import string
 from os import stat,listdir,chmod,unlink,path,getpid
 from locale import nl_langinfo,D_T_FMT
 from time import strftime,localtime,sleep,time
-from string import join
 from subprocess import Popen
 from hashlib import md5
 from copy import deepcopy
@@ -486,6 +486,7 @@ class Instance(umcm.Base):
 		result = {}
 		result['install'] = []
 		result['update'] = []
+		result['remove'] = []
 		for line in stdout.split('\n'):
 			# upgrade:
 			#   Inst univention-updater [3.1.1-5] (3.1.1-6.408.200810311159 192.168.0.10)
@@ -505,10 +506,19 @@ class Instance(umcm.Base):
 					result['update'].append([pkg,ver])
 				else:
 					result['install'].append([pkg,ver])
+			elif line.startswith('Remv '):
+				l=line.split(' ')
+				pkg = l[1]
+				ver = _('unknown')
+				if len(l) > 2:
+					ver = l[2].replace('[','').replace(']','')
+				result['remove'].append([pkg,ver])
+				
 				
 		# sort package names?
 		result['update'] = sorted(result['update'])
 		result['install'] = sorted(result['install'])
+		result['remove'] = sorted(result['remove'])
 		
 		self.finished(request.id,result)
 						
@@ -1368,9 +1378,6 @@ dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-s
 dpkg-statoverride --add root root 0644 /usr/sbin/apache2
 chmod -x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 %s < /dev/null
-if [ $? -eq 0 ]; then
-		univention-config-registry set update/reboot/required=yes
-fi
 dpkg-statoverride --remove /usr/sbin/univention-management-console-web-server
 dpkg-statoverride --remove /usr/sbin/univention-management-console-server
 dpkg-statoverride --remove /usr/sbin/apache2

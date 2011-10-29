@@ -835,8 +835,8 @@ class UniventionUpdater:
 
 	def component_update_available(self):
 		"""Check if any component has new or upgradeable packages available."""
-		new, upgrade = self.component_update_get_packages()
-		return bool(new + upgrade)
+		new, upgrade, removed = self.component_update_get_packages()
+		return bool(new + upgrade + removed)
 
 	def component_update_get_packages(self):
 		"""Return tuple with list of (new, upgradeable) packages."""
@@ -849,6 +849,7 @@ class UniventionUpdater:
 
 		new_packages = []
 		upgraded_packages = []
+		removed_packages = []
 		for line in stdout.splitlines():
 			if line.startswith('Inst '):
 				line_split = line.split(' ')
@@ -866,8 +867,15 @@ class UniventionUpdater:
 				else:
 					ud.debug(ud.NETWORK, ud.WARN, 'unable to parse the update line: %s' % line)
 					continue
+			elif line.startswith('Remv '):
+				if len(line_split) > 3:
+					ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of removed packages' % line_split[1])
+					removed_packages.append((line_split[1], line_split[2].replace('(','')))
+				else:
+					ud.debug(ud.NETWORK, ud.WARN, 'unable to parse the update line: %s' % line)
+					continue
 
-		return ( new_packages, upgraded_packages )
+		return ( new_packages, upgraded_packages, removed_packages )
 
 	def run_dist_upgrade( self ):
 		cmd = 'export DEBIAN_FRONTEND=noninteractive; %s 2>&1 | tee -a /var/log/univention/updater.log 2>&1 ;' % cmd_dist_upgrade

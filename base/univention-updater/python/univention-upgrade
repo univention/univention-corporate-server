@@ -225,8 +225,8 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 		updater.ucr_reinit()
 		# check if component updates are available
 		dprint(silent, 'Checking for package updates: ', newline=False)
-		new_packages, upgraded_packages = updater.component_update_get_packages()
-		update_available = bool(new_packages + upgraded_packages)
+		new_packages, upgraded_packages, removed_packages = updater.component_update_get_packages()
+		update_available = bool(new_packages + upgraded_packages + removed_packages)
 
 		if update_available:
 			run = True
@@ -236,12 +236,14 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 				return True
 
 			dprint(silent, 'found\n')
+			if len(removed_packages) > 0:
+				dprint(silent, 'The following packages will be REMOVED:\n %s' % _package_list(removed_packages))
 			if len(new_packages) > 0:
 				dprint(silent, 'The following packages will be installed:\n %s' % _package_list(new_packages))
 			if len(upgraded_packages) > 0:
-				dprint(silent, 'The following packages will be updated:\n %s' % _package_list(upgraded_packages))
+				dprint(silent, 'The following packages will be upgraded:\n %s' % _package_list(upgraded_packages))
 			if interactive:
-				run = readcontinue('\nDo you want to update/install these packages [Y|n]?')
+				run = readcontinue('\nDo you want to continue [Y|n]?')
 
 			if run:
 				time.sleep(1)

@@ -234,16 +234,28 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 		try
 		{
 			this.standby(true);
-			this.moduleStore.umcpCommand('updater/updates/check').then(dojo.hitch(this, function(data) {
+			this.umcpCommand('updater/updates/check').then(dojo.hitch(this, function(data) {
 				this.standby(false);
 				// FIXME Lots of manual styling to achieve resonable look
 				var txt = "<div style='overflow:scroll;max-height:400px;'<table>\n";
 				var upd = data.result['update'];
 				var ins = data.result['install'];
-				if ((! upd.length) && (! ins.length))
+				var rem = data.result['remove'];
+				if ((! upd.length) && (! ins.length) && (! rem.length))
 				{
 					this._updates.refreshPage(true);
 					return;
+				}
+				if (rem.length)
+				{
+					txt += "<td colspan='2' style='padding:.5em;'><b><u>" + dojo.replace(this._("{count} packages to be REMOVED"),{count:rem.length}) + "</u></b></td>";
+					for (var i in rem)
+					{
+						txt += "<tr>\n";
+						txt += "<td style='padding-left:1em;'>" + rem[i][0] + "</td>\n";
+						txt += "<td style='padding-left:1em;padding-right:.5em;'>" + rem[i][1] + "</td>\n";
+						txt += "</tr>\n";
+					}
 				}
 				if (upd.length)
 				{
@@ -268,7 +280,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 					}
 				}
 				txt += "</table></div>";
-				txt += "<p style='padding:1em;'>" + this._("Do you really want to perform the update/install of the above packages?") + "</p>\n";
+				txt += "<p style='padding:1em;'>" + this._("Do you really want to perform the update/install/remove of the above packages?") + "</p>\n";
 				var dia = new umc.widgets.ConfirmDialog({
 					title:			this._("Start Upgrade?"),
 					message:		txt,
@@ -370,7 +382,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 
 		this.standby(true);
 
-		this.moduleStore.umcpCommand('updater/installer/execute',{
+		this.umcpCommand('updater/installer/execute',{
 			job:	args['job'],
 			detail:		args['detail']?args['detail']:''
 		}).then(dojo.hitch(this,function(data) {
