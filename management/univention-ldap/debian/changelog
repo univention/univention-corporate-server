@@ -1,3 +1,9 @@
+univention-ldap (8.0.62-1) unstable; urgency=low
+
+  * Adjust to slapd downgrade (Bug #22879)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 29 Oct 2011 09:03:52 +0200
+
 univention-ldap (8.0.61-1) unstable; urgency=low
 
   * Give admin and Administrator access to * at the beginning. This
