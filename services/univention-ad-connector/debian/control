@@ -7,6 +7,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  ucslint,
  python2.6-dev,
  python-support,
+ univention-management-console-dev,
  univention-config-dev
 
 Package: python-univention-connector
