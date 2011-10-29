@@ -366,8 +366,8 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	krb5Key = res[0][1].get('krb5Key', [])
 
 	if not ucsNThash:
-		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4: Failed to get Password-Hash from UCS")
-	# ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4: Password-Hash from UCS: %s" % ucsNThash)
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Failed to get Password-Hash from UCS")
+	# ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Password-Hash from UCS: %s" % ucsNThash)
 
 	res=s4connector.lo_s4.lo.search_s(univention.s4connector.s4.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)',['pwdLastSet','objectSid'])
 	pwdLastSet = None
@@ -392,13 +392,13 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	if unicodePwd_attr:
 		s4NThash = binascii.b2a_hex(unicodePwd_attr).upper()
 	else:
-		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4: Failed to get NT Password-Hash from S4")
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Failed to get NT Password-Hash from S4")
 
 	s4LMhash = None
 	if dBCSPwd_attr:
 		s4LMhash = binascii.b2a_hex(dBCSPwd_attr).upper()
 	else:
-		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4: Failed to get LM Password-Hash from S4")
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Failed to get LM Password-Hash from S4")
 
 	modlist=[]
 	if krb5Principal != userPrincipalName_attr:
