@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-29 18:05+0200\n"
+"POT-Creation-Date: 2011-10-30 01:44+0200\n"
 "PO-Revision-Date: 2011-10-21 17:56+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgid "Could not find a matching UDM module for the LDAP object %s"
 msgstr ""
 "Es konnte kein passendes UDM-Modul für das LDAP-Object %s gefunden werden"
 
-#: umc/python/udm/__init__.py:319 umc/python/udm/udm_ldap.py:265
+#: umc/python/udm/udm_ldap.py:270 umc/python/udm/__init__.py:319
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""
@@ -46,7 +46,7 @@ msgstr ""
 msgid "No flavor or valid UDM module name specified"
 msgstr "Keine gültige Variante oder existierendes UDM-Modul wurde angegeben"
 
-#: umc/python/udm/udm_ldap.py:564
+#: umc/python/udm/udm_ldap.py:569
 msgid "None"
 msgstr "Keins"
 
@@ -54,12 +54,12 @@ msgstr "Keins"
 msgid "PDF document"
 msgstr "PDF Dokument"
 
-#: umc/python/udm/__init__.py:586 umc/python/udm/udm_ldap.py:216
+#: umc/python/udm/udm_ldap.py:221 umc/python/udm/__init__.py:586
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
 
-#: umc/python/udm/udm_ldap.py:225 umc/python/udm/udm_ldap.py:232
+#: umc/python/udm/udm_ldap.py:230 umc/python/udm/udm_ldap.py:237
 #, python-format
 msgid "The property %s has an invalid value: %s"
 msgstr "Die Eigenschaft '%s' hat einen nicht gültigen Wert: %s"
@@ -68,7 +68,9 @@ msgstr "Die Eigenschaft '%s' hat einen nicht gültigen Wert: %s"
 msgid ""
 "You are currently using the \"Free for personal use\" edition of Univention "
 "Corporate Server."
-msgstr "Sie verwenden derzeit die \"Free for personal use\" Ausgabe von Univentio Corporate Server."
+msgstr ""
+"Sie verwenden derzeit die \"Free for personal use\" Ausgabe von Univentio "
+"Corporate Server."
 
 #: umc/python/udm/__init__.py:130
 msgid ""
