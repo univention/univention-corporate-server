@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.203-1) unstable; urgency=low
+
+  * fixed error when using the free-for-personal-use license (Bug #23213) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Sat, 29 Oct 2011 18:08:55 +0200
+
 univention-management-console-module-udm (1.0.202-1) unstable; urgency=low
 
   * added removal of referring objects and by default remove recursively

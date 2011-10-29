@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-28 21:08+0200\n"
+"POT-Creation-Date: 2011-10-29 18:05+0200\n"
 "PO-Revision-Date: 2011-10-21 17:56+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,54 +12,65 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/udm/__init__.py:191
+#: umc/python/udm/__init__.py:206
 #, python-format
 msgid "Could not find a matching UDM module for the LDAP object %s"
 msgstr ""
 "Es konnte kein passendes UDM-Modul für das LDAP-Object %s gefunden werden"
 
-#: umc/python/udm/__init__.py:304 umc/python/udm/ldap.py:237
+#: umc/python/udm/__init__.py:319 umc/python/udm/udm_ldap.py:265
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""
 "Es konnte kein UDM-modul für das übergeordnete Objekt %s gefunden werden"
 
-#: umc/python/udm/__init__.py:149 umc/python/udm/__init__.py:181
+#: umc/python/udm/__init__.py:164 umc/python/udm/__init__.py:196
 msgid "Invalid object definition"
 msgstr "Ungültige Objektdefinition"
 
-#: umc/python/udm/__init__.py:187
+#: umc/python/udm/__init__.py:202
 msgid "LDAP DN of object missing"
 msgstr "Die LDAP-DN des Objektes fehlt"
 
-#: umc/python/udm/__init__.py:222
+#: umc/python/udm/__init__.py:237
 msgid "LDAP object could not be identified"
 msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 
-#: umc/python/udm/__init__.py:113
+#: umc/python/udm/__init__.py:126
 msgid "License not found. During this session add and modify are disabled."
 msgstr ""
 "Keine Lizenz gefunden. Während dieser Sitzung ist das Hinzufügen und "
 "Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:90
+#: umc/python/udm/__init__.py:93
 msgid "No flavor or valid UDM module name specified"
 msgstr "Keine gültige Variante oder existierendes UDM-Modul wurde angegeben"
 
-#: umc/python/udm/ldap.py:533
+#: umc/python/udm/udm_ldap.py:564
 msgid "None"
 msgstr "Keins"
 
-#: umc/python/udm/__init__.py:360
+#: umc/python/udm/__init__.py:375
 msgid "PDF document"
 msgstr "PDF Dokument"
 
-#: umc/python/udm/__init__.py:571
+#: umc/python/udm/__init__.py:586 umc/python/udm/udm_ldap.py:216
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
 
-#: umc/python/udm/__init__.py:117
+#: umc/python/udm/udm_ldap.py:225 umc/python/udm/udm_ldap.py:232
+#, python-format
+msgid "The property %s has an invalid value: %s"
+msgstr "Die Eigenschaft '%s' hat einen nicht gültigen Wert: %s"
+
+#: umc/python/udm/__init__.py:144
+msgid ""
+"You are currently using the \"Free for personal use\" edition of Univention "
+"Corporate Server."
+msgstr "Sie verwenden derzeit die \"Free for personal use\" Ausgabe von Univentio Corporate Server."
+
+#: umc/python/udm/__init__.py:130
 msgid ""
 "You have too many client accounts for your license. During this session add "
 "and modify are disabled."
@@ -67,7 +78,7 @@ msgstr ""
 "Sie haben mehr Benutzerkonten, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:119
+#: umc/python/udm/__init__.py:132
 msgid ""
 "You have too many desktop accounts for your license. During this session add "
 "and modify are disabled."
@@ -75,7 +86,7 @@ msgstr ""
 "Sie haben mehr Desktop Rechner, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:121
+#: umc/python/udm/__init__.py:134
 msgid ""
 "You have too many groupware accounts for your license. During this session "
 "add and modify are disabled."
@@ -83,7 +94,7 @@ msgstr ""
 "Sie haben mehr Groupware Konten, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:115
+#: umc/python/udm/__init__.py:128
 msgid ""
 "You have too many user accounts for your license. During this session add "
 "and modify are disabled."
@@ -91,7 +102,7 @@ msgstr ""
 "Sie haben mehr Benutzerkonten, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:129
+#: umc/python/udm/__init__.py:142
 msgid ""
 "Your license does not allow modifications. During this session add and "
 "modify are disabled."
@@ -99,14 +110,14 @@ msgstr ""
 "Die installierte Lizenz erlaubt keine Änderungen. Während dieser Sitzung ist "
 "das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:123
+#: umc/python/udm/__init__.py:136
 msgid ""
 "Your license is expired. During this session add and modify are disabled."
 msgstr ""
 "Die Lizenz ist abgelaufen. Während dieser Sitzung ist das Hinzufügen und "
 "Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:125
+#: umc/python/udm/__init__.py:138
 msgid ""
 "Your license is not valid for your LDAP-Base. During this session add and "
 "modify are disabled."
@@ -114,14 +125,14 @@ msgstr ""
 "Die installierte Linzenz wurde nicht für diese Basis-DN ausgestellt. Während "
 "dieser Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:127
+#: umc/python/udm/__init__.py:140
 msgid ""
 "Your license is not valid. During this session add and modify are disabled."
 msgstr ""
 "Ihre Lizenz ist nicht gültig. Während dieser Sitzung ist das Hinzufügen und "
 "Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:131
+#: umc/python/udm/__init__.py:146
 msgid ""
 "Your license status could not be validated. Thus, you are not eligible to "
 "support and maintenance. If you have bought a license, please contact "
@@ -132,6 +143,6 @@ msgstr ""
 "Sie über eine Lizenz verfügen, wenden Sie sich bitte an Univention oder "
 "einen Univention Partner."
 
-#: umc/python/udm/__init__.py:364
+#: umc/python/udm/__init__.py:379
 msgid "text file"
 msgstr "Textdatei"

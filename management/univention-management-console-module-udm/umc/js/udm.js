@@ -230,11 +230,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		// get the license information
 		this.umcpCommand('udm/license', {}, false).then(dojo.hitch(this, function(data) {
-			console.log(dojo.toJson(data));
-			if (!data.result) {
-				this._searchPage.addNote(data.message);
+			var msg = data.result.message;
+			if (msg) {
+				this._searchPage.addNote(msg);
 			}
-		}));
+		}), function() {
+			console.log('WARNING: An error occurred while verifying the license. Ignoring error.');	
+		});
 
 		//
 		// add data grid

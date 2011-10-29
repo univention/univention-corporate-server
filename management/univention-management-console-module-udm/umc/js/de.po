@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-28 21:09+0200\n"
+"POT-Creation-Date: 2011-10-29 18:05+0200\n"
 "PO-Revision-Date: 2011-10-24 16:44+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,12 @@ msgstr ""
 msgid "%(attribute)s: %(message)s\n"
 msgstr ""
 
-#: umc/js/udm.js:328
+#: umc/js/udm.js:330
 #, python-format
 msgid "%(nSelected)d %(objPlural)s of %(nTotal)d selected"
 msgstr "%(nSelected)d %(objPlural)s von %(nTotal)d sind ausgewählt"
 
-#: umc/js/udm.js:325
+#: umc/js/udm.js:327
 #, python-format
 msgid "%(nSelected)d %(objSingular)s of %(nTotal)d selected"
 msgstr "%(nSelected)d %(objSingular)s von %(nTotal)d ist ausgewählt"
@@ -32,7 +32,7 @@ msgstr "%(nSelected)d %(objSingular)s von %(nTotal)d ist ausgewählt"
 msgid "%s template"
 msgstr "%s-Vorlage"
 
-#: umc/js/udm.js:417 umc/js/_udm/NewObjectDialog.js:125
+#: umc/js/udm.js:419 umc/js/_udm/NewObjectDialog.js:125
 #: umc/js/_udm/NewObjectDialog.js:142 umc/js/_udm/NewObjectDialog.js:172
 #, python-format
 msgid "%s type"
@@ -61,12 +61,12 @@ msgstr "Eine Vorlage definiert Regeln für Vorgabewerte eines neuen Objektes."
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/js/udm.js:246
+#: umc/js/udm.js:248
 #, python-format
 msgid "Add %s"
 msgstr "%s hinzufügen"
 
-#: umc/js/udm.js:247
+#: umc/js/udm.js:249
 #, python-format
 msgid "Add a new %s."
 msgstr "%s neu hinzufügen."
@@ -75,15 +75,15 @@ msgstr "%s neu hinzufügen."
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
-#: umc/js/udm.js:397
+#: umc/js/udm.js:399
 msgid "All containers"
 msgstr "Alle Container"
 
-#: umc/js/udm.js:377 umc/js/udm.js:393 umc/js/udm.js:409
+#: umc/js/udm.js:379 umc/js/udm.js:395 umc/js/udm.js:411
 msgid "All properties"
 msgstr "Alle Eigenschaften"
 
-#: umc/js/udm.js:376 umc/js/udm.js:392 umc/js/udm.js:408
+#: umc/js/udm.js:378 umc/js/udm.js:394 umc/js/udm.js:410
 msgid "All types"
 msgstr "Alle Objekttypen"
 
@@ -95,8 +95,8 @@ msgstr "Zurück zur Navigation"
 msgid "Back to search"
 msgstr "Zurück zur Suche"
 
-#: umc/js/udm.js:865 umc/js/_udm/DetailPage.js:492
-#: umc/js/_udm/CreateReportDialog.js:84
+#: umc/js/udm.js:867 umc/js/_udm/CreateReportDialog.js:84
+#: umc/js/_udm/DetailPage.js:492
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -104,7 +104,7 @@ msgstr "Abbrechen"
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 
-#: umc/js/_udm/NewObjectDialog.js:199 umc/js/_udm/CreateReportDialog.js:127
+#: umc/js/_udm/CreateReportDialog.js:127 umc/js/_udm/NewObjectDialog.js:199
 msgid "Close"
 msgstr "Schließen"
 
@@ -120,7 +120,7 @@ msgstr "Erstellen"
 msgid "Create new policy"
 msgstr "Neue Richtlinie"
 
-#: umc/js/udm.js:676
+#: umc/js/udm.js:678
 msgid "Create report"
 msgstr "Report erstellen"
 
@@ -144,28 +144,28 @@ msgstr "DNS-Objekt"
 msgid "DNS objects"
 msgstr "DNS-Objekte"
 
-#: umc/js/udm.js:284 umc/js/udm.js:542 umc/js/udm.js:817
+#: umc/js/udm.js:286 umc/js/udm.js:544 umc/js/udm.js:819
 msgid "Delete"
 msgstr "Löschen"
 
-#: umc/js/udm.js:799
+#: umc/js/udm.js:801
 msgid "Delete referring objects."
 msgstr "Zugehörige Objekte löschen."
 
-#: umc/js/udm.js:285
+#: umc/js/udm.js:287
 #, python-format
 msgid "Deleting the selected %s."
 msgstr "Die ausgewählten %s löschen"
 
-#: umc/js/udm.js:254 umc/js/udm.js:535
+#: umc/js/udm.js:256 umc/js/udm.js:537
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: umc/js/udm.js:266
+#: umc/js/udm.js:268
 msgid "Edit in new tab"
 msgstr "Bearbeiten in neuem Tab"
 
-#: umc/js/udm.js:255
+#: umc/js/udm.js:257
 #, python-format
 msgid "Edit the %s."
 msgstr "%s bearbeiten"
@@ -218,7 +218,7 @@ msgstr "Name des UDM-Objektes"
 msgid "New %s"
 msgstr "%s anlegen"
 
-#: umc/js/udm.js:322
+#: umc/js/udm.js:324
 #, python-format
 msgid "No %(objPlural)s could be found"
 msgstr "Es wurden keine %(objPlural)s gefunden"
@@ -231,7 +231,7 @@ msgstr "Kein"
 msgid "Object property"
 msgstr "Objekteigenschaft"
 
-#: umc/js/udm.js:267
+#: umc/js/udm.js:269
 msgid "Open a new tab in order to edit the UDM-object"
 msgstr "Öffnet einen neuen Tab, in dem das UDM-Objekt bearbeitet werden kann."
 
@@ -247,17 +247,17 @@ msgstr "Pfad"
 msgid "Path of the UDM object."
 msgstr "Pfad des UDM-Objektes"
 
-#: umc/js/udm.js:790
+#: umc/js/udm.js:792
 #, python-format
 msgid "Please confirm the removal of the %d selected %s!"
 msgstr "Bitte bestätigen Sie das Löschen der %d ausgewählten %s!"
 
-#: umc/js/udm.js:792
+#: umc/js/udm.js:794
 #, python-format
 msgid "Please confirm the removal of the selected %s!"
 msgstr "Bitte bestätigen Sie das Löschen des/der ausgewählten %s!"
 
-#: umc/js/udm.js:883
+#: umc/js/udm.js:885
 msgid ""
 "Please select a container in the navigation bar. The new object will be "
 "placed at this location."
@@ -274,16 +274,16 @@ msgstr "Position: <i>%(path)s</i>"
 msgid "Properties inherited from policies"
 msgstr "Durch Richtlinien ererbte Eigenschaften"
 
-#: umc/js/udm.js:435
+#: umc/js/udm.js:437
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: umc/js/udm.js:445 umc/js/udm.js:461 umc/js/_udm/MultiObjectSelect.js:80
+#: umc/js/udm.js:447 umc/js/udm.js:463 umc/js/_udm/MultiObjectSelect.js:80
 #: umc/js/_udm/MultiObjectSelect.js:96
 msgid "Property value"
 msgstr "Eigenschaftswert"
 
-#: umc/js/udm.js:549
+#: umc/js/udm.js:551
 msgid "Reload"
 msgstr "Neu laden"
 
@@ -313,7 +313,7 @@ msgstr "Änderungen speichern"
 msgid "Search for %s"
 msgstr "%s suchen"
 
-#: umc/js/udm.js:402
+#: umc/js/udm.js:404
 msgid "Search in:"
 msgstr "Suche in:"
 
@@ -328,19 +328,19 @@ msgstr ""
 msgid "Select policy configuration"
 msgstr "Richtlinien-Konfiguration"
 
-#: umc/js/udm.js:618
+#: umc/js/udm.js:620
 msgid "Show all DHCP services"
 msgstr "Alle DHCP-Dienste zeigen"
 
-#: umc/js/udm.js:621
+#: umc/js/udm.js:623
 msgid "Show all DNS zones"
 msgstr "Alle DNS-Zonen zeigen"
 
-#: umc/js/udm.js:616
+#: umc/js/udm.js:618
 msgid "Show all superordinates"
 msgstr "Alle übergeordnete Objekte zeigen"
 
-#: umc/js/udm.js:385 umc/js/_udm/NewObjectDialog.js:119
+#: umc/js/udm.js:387 umc/js/_udm/NewObjectDialog.js:119
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
@@ -362,7 +362,7 @@ msgstr "Das UDM-Objekt konnte nicht gespeichert werden: %(details)s"
 msgid "The container in which the UDM object shall be created."
 msgstr "Der Container, in dem das UDM-Objekt erzeugt wird."
 
-#: umc/js/udm.js:401
+#: umc/js/udm.js:403
 msgid "The container in which the query is executed."
 msgstr "Der Container, in dem die Suche ausgeführt wird."
 
@@ -379,7 +379,7 @@ msgstr "Der genaue %styp"
 msgid "The exact object type of the new UDM object."
 msgstr "Der genaue Objekttyp des neuen UDM-Objektes."
 
-#: umc/js/udm.js:847
+#: umc/js/udm.js:849
 msgid "The following object(s) could not be deleted:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gelöscht werden:"
 
@@ -392,7 +392,7 @@ msgid "The following properties need to be specified or are invalid:"
 msgstr ""
 "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
 
-#: umc/js/udm.js:434 umc/js/_udm/MultiObjectSelect.js:71
+#: umc/js/udm.js:436 umc/js/_udm/MultiObjectSelect.js:71
 msgid "The object property on which the query is filtered."
 msgstr "Die Objekteigenschaft, nach der gesucht wird."
 
@@ -400,15 +400,15 @@ msgstr "Die Objekteigenschaft, nach der gesucht wird."
 msgid "The report template that should be used for the report."
 msgstr "Die zuverwendende Reportvorlage"
 
-#: umc/js/udm.js:384
+#: umc/js/udm.js:386
 msgid "The superordinate in which the search is carried out."
 msgstr "Das übergeordnete Objekt, für welches die Suche ausgeführt wird."
 
-#: umc/js/udm.js:416
+#: umc/js/udm.js:418
 msgid "The type of the UDM object."
 msgstr "Der Type des UDM-Objektes."
 
-#: umc/js/udm.js:460 umc/js/_udm/MultiObjectSelect.js:95
+#: umc/js/udm.js:462 umc/js/_udm/MultiObjectSelect.js:95
 msgid ""
 "The value for the specified object property on which the query is filtered."
 msgstr "Der Wert der Objekteigenschaft, nach der gesucht wird."

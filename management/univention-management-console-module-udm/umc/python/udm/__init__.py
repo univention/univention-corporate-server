@@ -140,12 +140,14 @@ class Instance( Base ):
 			message = _('Your license is not valid. During this session add and modify are disabled.')
 		except udm_errors.licenseDisableModify:
 			message = _('Your license does not allow modifications. During this session add and modify are disabled.')
+		except udm_errors.freeForPersonalUse:
+			message = _('You are currently using the "Free for personal use" edition of Univention Corporate Server.')
 		except udm_errors.licenseGPLversion:
 			message = _('Your license status could not be validated. Thus, you are not eligible to support and maintenance. If you have bought a license, please contact Univention or your vendor.')
 		if message:
-			self.finished( request.id, False, message )
+			self.finished( request.id, { 'message': message })
 		else:
-			self.finished( request.id, True )
+			self.finished( request.id, { 'message': None })
 
 	def add( self, request ):
 		"""Creates LDAP objects.
