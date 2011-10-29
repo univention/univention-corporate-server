@@ -281,3 +281,8 @@ p {
 	height: 18px !important;
 	background-repeat: no-repeat !important;
 }
+
+/* force the default cursor in grid cells (no text cursor) */
+.umc .dojoxGridCell {
+	cursor: default;
+}

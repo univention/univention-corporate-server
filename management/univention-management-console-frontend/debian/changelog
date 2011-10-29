@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.142-1) unstable; urgency=low
+
+  * added css rule to force default mouse cursor on grid cells (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Sat, 29 Oct 2011 20:25:41 +0200
+
 univention-management-console-frontend (1.0.141-1) unstable; urgency=low
 
   * PasswordInputBox: changed first InputBox to return the current value
