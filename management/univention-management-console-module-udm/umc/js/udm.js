@@ -185,16 +185,21 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		if ('navigation' == this.moduleFlavor) {
 			// for the UDM navigation, we only query the UCR variables
+			this.standby(true);
 			umc.tools.ucr( [ 'directory/manager/web*' ] ).then(dojo.hitch(this, function(ucr) {
 				// save the ucr variables locally and also globally
 				this._ucr = umc.modules._udm.ucr = ucr;
 				this.renderSearchPage();
+				this.standby(false);
+			}), dojo.hitch(this, function() {
+				this.standby(false);
 			}));
 		}
 		else {
 			// render search page, we first need to query lists of containers/superodinates
 			// in order to correctly render the search form...
 			// query also necessary UCR variables for the UDM module
+			this.standby(true);
 			(new dojo.DeferredList([
 				this.umcpCommand('udm/containers'),
 				this.umcpCommand('udm/superordinates'),
@@ -207,6 +212,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				this._reports = results[ 2 ][ 0 ] ? results[ 2 ][ 1 ].result : [];
 				this._ucr = umc.modules._udm.ucr = results[3][0] ? results[3][1] : {};
 				this.renderSearchPage(containers.result, superordinates.result);
+				this.standby(false);
+			}), dojo.hitch(this, function() {
+				this.standby(false);
 			}));
 		}
 	},

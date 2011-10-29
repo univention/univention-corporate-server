@@ -17,8 +17,9 @@ dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.TabContainer");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
+dojo.require("umc.widgets.StandbyMixin");
 
-dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widgets._WidgetsInWidgetsMixin, umc.i18n.Mixin ], {
+dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widgets.StandbyMixin, umc.widgets._WidgetsInWidgetsMixin, umc.i18n.Mixin ], {
 	// summary:
 	//		This class renderes a detail page containing subtabs and form elements
 	//		in order to edit UDM objects.
@@ -130,13 +131,20 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		}
 
 		// when the commands have been finished, create the detail page
+		this.standby(true);
 		(new dojo.DeferredList(commands)).then(dojo.hitch(this, function(results) {
 			var properties = results[0][1].result;
 			var layout = results[1][1].result;
 			var policies = results[2][1].result;
 			this.ldapBase = results[3][1][ 'ldap/base' ];
 			var template = results.length > 4 ? results[4][1].result : null;
-			this.renderDetailPage(properties, layout, policies, template);
+			this.renderDetailPage(properties, layout, policies, template).then(dojo.hitch(this, function() {
+				this.standby(false);
+			}), dojo.hitch(this, function() {
+				this.standby(false);
+			}));
+		}), dojo.hitch(this, function() {
+			this.standby(false);
 		}));
 	},
 
@@ -581,6 +589,10 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				this._receivedObjFormData = this.getValues();
 			}));
 		}
+
+		// return the policy deferred object to notify the caller that the page 
+		// has been set up
+		return this._policyDeferred;
 	},
 
 	getValues: function() {
@@ -634,9 +646,10 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 				// set the value and label
 				var iinfo = data.result[iname];
+				var label = '';
 				if (!iinfo) {
 					// no policy values are inherited
-					var label = dojo.replace('{label} (<span class="umcUnsetPolicy">{edit}</span>)', {
+					label = dojo.replace('{label} (<span class="umcUnsetPolicy">{edit}</span>)', {
 						label: iwidget.$orgLabel$,
 						edit: this._('not defined')
 					});
@@ -645,7 +658,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				else if (!dojo.isArray(iinfo)) {
 					// standard policy
 					iwidget.set('value', iinfo.value);
-					var label = dojo.replace('{label} (<a href="javascript:void(0)" ' +
+					label = dojo.replace('{label} (<a href="javascript:void(0)" ' +
 							'onclick=\'dijit.byId("{id}")._openPolicy("{type}", "{dn}")\' ' +
 							'title="{title}: {dn}">{edit}</a>)', {
 						label: iwidget.$orgLabel$,
@@ -911,8 +924,23 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				errMessage += '<li>' + iwidget.label + '</li>';
 				this._setWidgetInvalid(iname);
 			}
+
 		}, this);
 		errMessage += '</ul>';
+
+		// check whether any changes are made at al
+		var nChanges = 0;
+		var regKey = /\$.*\$/;
+		umc.tools.forIn(vals, function(ikey) {
+			if (!regKey.test(ikey)) {
+				// key does not start and end with '$' and is thus a regular key
+				++nChanges;
+			}
+		});
+		if (!nChanges) {
+			umc.dialog.alert(this._('No changes have been made.'));
+			return;
+		}
 
 		// print out an error message if not all required properties are given
 		if (!allValuesGiven) {
@@ -933,11 +961,17 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			objectType: this._editedObjType,
 			properties: valsNonEmpty
 		};
+		this.standby(true);
 		this.umcpCommand('udm/validate', params).then(dojo.hitch(this, function(data) {
 			// if all elements are valid, save element
 			if (this._parseValidation(data.result)) {
 				this.saveChanges(vals);
 			}
+			else {
+				this.standby(false);
+			}
+		}), dojo.hitch(this, function() {
+			this.standby(false);
 		}));
 	},
 
@@ -1018,6 +1052,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			deffered = this.moduleStore.put(vals);
 		}
 		deffered.then(dojo.hitch(this, function(result) {
+			this.standby(false);
 			if (result.success) {
 				this.onClose();
 				this.onSave(result.$dn$, this.objectType);
@@ -1025,6 +1060,8 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			else {
 				umc.dialog.alert(this._('The UDM object could not be saved: %(details)s', result));
 			}
+		}), dojo.hitch(this, function() {
+			this.standby(false);
 		}));
 	},
 
