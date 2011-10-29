@@ -108,10 +108,15 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 	// available reports
 	_reports: null,
+	
+	// internal flag whether the advanced search is shown or not
+	_isAdvancedSearch: true,
 
 	// UDM object type name in singular and plural
 	objectNameSingular: '',
 	objectNamePlural: '',
+	
+	_finishedDeferred: null,
 
 	constructor: function() {
 		this._default_columns = [{
@@ -150,6 +155,11 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			'default': [ this._('UDM object'), this._('UDM objects') ]
 		};
 
+		this._finishedDeferred = new dojo.Deferred();
+		this._finishedDeferred.then(dojo.hitch(this, function() {
+			this.standby(false);
+		}));
+
 		// get the correct entry from the lists above
 		this.objectNameSingular = objNames['default'][0];
 		this.objectNamePlural = objNames['default'][1];
@@ -183,14 +193,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			return; // do not render the search page
 		}
 
+		this.standby(true);
 		if ('navigation' == this.moduleFlavor) {
 			// for the UDM navigation, we only query the UCR variables
-			this.standby(true);
 			umc.tools.ucr( [ 'directory/manager/web*' ] ).then(dojo.hitch(this, function(ucr) {
 				// save the ucr variables locally and also globally
 				this._ucr = umc.modules._udm.ucr = ucr;
 				this.renderSearchPage();
-				this.standby(false);
 			}), dojo.hitch(this, function() {
 				this.standby(false);
 			}));
@@ -199,7 +208,6 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			// render search page, we first need to query lists of containers/superodinates
 			// in order to correctly render the search form...
 			// query also necessary UCR variables for the UDM module
-			this.standby(true);
 			(new dojo.DeferredList([
 				this.umcpCommand('udm/containers'),
 				this.umcpCommand('udm/superordinates'),
@@ -212,7 +220,6 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				this._reports = results[ 2 ][ 0 ] ? results[ 2 ][ 1 ].result : [];
 				this._ucr = umc.modules._udm.ucr = results[3][0] ? results[3][1] : {};
 				this.renderSearchPage(containers.result, superordinates.result);
-				this.standby(false);
 			}), dojo.hitch(this, function() {
 				this.standby(false);
 			}));
@@ -477,6 +484,10 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		layout[1].push('objectProperty', 'objectPropertyValue');
 
 		// add also the buttons (specified by the search form itself) to the layout
+		var buttons = [{
+			name: 'submit',
+			label: this._('Search')
+		}];
 		if ('navigation' == this.moduleFlavor) {
 			// put the buttons in the first row for the navigation
 			layout[0].push('submit');
@@ -484,6 +495,17 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		else {
 			// append the buttons to the last row otherwise
 			layout[1].push('submit');
+
+			// add an additional button to toggle between advanced and simplified search
+			buttons.push({
+				name: 'toggleSearch',
+				label: '',  // label will be set in toggleSearch
+				callback: dojo.hitch(this, function() {
+					this._isAdvancedSearch = !this._isAdvancedSearch;
+					this._updateSearch();
+				})
+			});
+			layout[1].push('toggleSearch');
 		}
 
 		// generate the search widget
@@ -491,6 +513,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			region: 'top',
 			widgets: widgets,
 			layout: layout,
+			buttons: buttons,
 			onSearch: dojo.hitch(this, 'filter')
 		});
 		titlePane.addChild(this._searchForm);
@@ -584,24 +607,11 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		this._searchPage.startup();
 
-		// hide the 'objectType' combo box in case it shows only one value
-		this.connect(this._searchForm._widgets.objectType, 'onValuesLoaded', function(values) {
-			this._searchForm._widgets.objectType.set('visible', values.length > 1);
-		});
+		var objTypeWidget = this._searchForm._widgets.objectType;
+		this.connect(objTypeWidget, 'onValuesLoaded', '_updateSearch');
 
 		// hide the 'objectPropertyValue' combo box in case 'all properties' are shown
-		this.connect(this._searchForm._widgets.objectProperty, 'onChange', function(val) {
-			var labelWidget = this._searchForm._widgets.objectPropertyValue.$refLabel$;
-			if ('None' == val) {
-				// we need to set the height to 0 in order not to affect the position
-				// of the buttons... $refLabel$ is the reference to the Label widget
-				dojo.style(labelWidget.domNode, { height:0, overflow:'hidden' });
-			}
-			else {
-				// restore the height
-				dojo.style(labelWidget.domNode, { height:'auto', overflow:'visible' });
-			}
-		});
+		this.connect(this._searchForm._widgets.objectProperty, 'onChange', '_updateObjectPropertyValue');
 
 		// show/hide object property filter for the navigation
 		if ('navigation' == this.moduleFlavor) {
@@ -661,6 +671,68 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			}
 			// create report button
 			this.connect( this._grid, 'onFilterDone', 'checkReportButton' );
+		}
+	},
+
+	_updateObjectPropertyValue: function(_newVal) {
+		var objPropWidget = this._searchForm._widgets.objectProperty;
+		var objPropValWidget = this._searchForm._widgets.objectPropertyValue;
+		var labelWidget = objPropValWidget.$refLabel$;
+		//var newVal = _newVal === undefined ? objPropWidget.get('value') : _newVal;
+		var newVal = objPropWidget.get('value');
+		if ('None' == newVal) {
+			if (this._isAdvancedSearch) {
+				// we can hide the widget
+				objPropValWidget.set('visible', false);
+			}
+			else {
+				// we need to set the height to 0 in order not to affect the position
+				// of the buttons... $refLabel$ is the reference to the Label widget
+				dojo.addClass(labelWidget.domNode, 'umcZeroHeight');
+			}
+		}
+		else {
+			// restore the height and show widget
+			objPropValWidget.set('visible', true);
+			dojo.removeClass(labelWidget.domNode, 'umcZeroHeight');
+		}
+	},
+
+	_updateSearch: function() {
+		if ('navigation' != this.moduleFlavor) {
+			var widgets = this._searchForm._widgets;
+			var toggleButton = this._searchForm._buttons.toggleSearch;
+			if (!this._isAdvancedSearch) {
+				widgets.objectType.set('visible', widgets.objectType.getAllItems().length > 2);
+				if ('superordinate' in widgets) {
+					widgets.superordinate.set('visible', true);
+				}
+				if ('container' in widgets) {
+					widgets.container.set('visible', true);
+				}
+				widgets.objectProperty.set('visible', true);
+				widgets.objectPropertyValue.set('visible', true);
+				toggleButton.set('label', this._('(Simplified options)'));
+			}
+			else {
+				widgets.objectType.set('visible', false);
+				if ('superordinate' in widgets) {
+					widgets.superordinate.set('visible', false);
+				}
+				if ('container' in widgets) {
+					widgets.container.set('visible', false);
+				}
+				widgets.objectProperty.set('visible', false);
+				dojo.removeClass(widgets.objectPropertyValue.$refLabel$.domNode, 'umcZeroHeight');
+				toggleButton.set('label', this._('(Advanced options)'));
+			}
+			this._updateObjectPropertyValue();
+			this.layout();
+		}
+
+		// GUI setup is done when this method has been called for the first time
+		if (this._finishedDeferred.fired < 0) {
+			this._finishedDeferred.resolve();
 		}
 	},
 

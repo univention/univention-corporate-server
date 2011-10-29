@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.206-1) unstable; urgency=low
+
+  * add simplified search view (Bug #22881) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 01:39:12 +0200
+
 univention-management-console-module-udm (1.0.205-1) unstable; urgency=low
 
   * added standby animations when loading the search and detail page as well as
