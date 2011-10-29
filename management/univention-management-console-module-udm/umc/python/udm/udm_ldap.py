@@ -115,9 +115,12 @@ def LDAP_Connection( func ):
 					_licenseCheck = univention.admin.license.init_select(lo, 'admin')
 					if _licenseCheck in range(1, 5):
 						lo.allow_modify = 0
-					lo.requireLicense()
+					if _licenseCheck is not None:
+						lo.requireLicense()
 
 				po = udm_uldap.position( lo.base )
+			except udm_errors.noObject, e:
+				raise e
 			except LDAPError, e:
 				raise LDAP_ConnectionError( 'Opening LDAP connection failed: %s' % str( e ) )
 
@@ -134,6 +137,8 @@ def LDAP_Connection( func ):
 				lo = udm_uldap.access( host = ucr.get( 'ldap/master' ), base = ucr.get( 'ldap/base' ), binddn= _user_dn, bindpw = _password )
 				lo.requireLicense()
 				po = udm_uldap.position( lo.base )
+			except udm_errors.noObject, e:
+				raise e
 			except LDAPError, e:
 				raise LDAP_ConnectionError( 'Opening LDAP connection failed: %s' % str( e ) )
 
@@ -638,17 +643,23 @@ class UDM_Settings( object ):
 		"""Reads the policies for the current user"""
 		if hasattr( self, 'initialized' ):
 			return
-		self.initalized = True
+		self.initialized = True
 		self.user_dn = None
 		self.policies = None
 
-		directories = udm_modules.lookup( 'settings/directory', None, ldap_connection, scope = 'sub' )
+		try:
+			directories = udm_modules.lookup( 'settings/directory', None, ldap_connection, scope = 'sub' )
+		except udm_errors.noObject:
+			directories = None
 		if not directories:
 			self.directory = None
 		else:
 			self.directory = directories[ 0 ]
 
-		groups = udm_modules.lookup( 'settings/default', None, ldap_connection, scope = 'sub' )
+		try:
+			groups = udm_modules.lookup( 'settings/default', None, ldap_connection, scope = 'sub' )
+		except udm_errors.noObject:
+			groups = None
 		if not groups:
 			self.groups = None
 		else:

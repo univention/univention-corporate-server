@@ -286,8 +286,9 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 							 if ( widget.identifies ) {
 								 // connect to onChange and modify title using this.parentWidget.set( 'title', ... )
 								 this.connect( widget, 'onChange', dojo.hitch( this, function( value ) {
-												   this.moduleWidget.set( 'title', this.moduleWidget.defaultTitle + ': ' + value );
-											   } ) );
+									 value = dojo.isArray( value ) ? value.join( " " ) : value;
+									 this.moduleWidget.set( 'title', this.moduleWidget.defaultTitle + ': ' + value );
+								 } ) );
 								 return false; // break out of forIn
 							 }
 						 }, this );

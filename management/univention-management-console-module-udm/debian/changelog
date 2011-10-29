@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.205-1) unstable; urgency=low
+
+  * fixed typo (ensures that UDM_Settings is just loaded once); Bug #22879
+  * Fixed problems with license check; Bug #23213
+  * handle special DNS SRV record names; Bug #23780
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 29 Oct 2011 13:21:18 +0200
+
 univention-management-console-module-udm (1.0.204-1) unstable; urgency=low
 
   * fixed package description (Bug #23213) 
