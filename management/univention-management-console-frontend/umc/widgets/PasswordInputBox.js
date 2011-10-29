@@ -95,7 +95,7 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 	},
 
 	_getValueAttr: function() {
-		return this._secondWidget.get('value');
+		return this._firstWidget.get('value');
 	},
 
 	_checkValidity: function(ipwBox) {
