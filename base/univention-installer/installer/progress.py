@@ -103,11 +103,11 @@ def init_translations():
 	i18n_aptget = RegExTranslator()
 	i18n_aptget.add_rule('^Retrieving file (?P<current>\d+) of (?P<total>\d+)', _('Retrieving file %(current)s of %(total)s') )
 	i18n_aptget.add_rule('^Installing (?P<pkg>\S+)', _('Installing %(pkg)s') )
+	i18n_aptget.add_rule('^Preparing to configure (?P<pkg>\S+)', _('Preparing to configure %(pkg)s') )
 	i18n_aptget.add_rule('^Preparing (?P<pkg>\S+)', _('Preparing %(pkg)s') )
 	i18n_aptget.add_rule('^Unpacking (?P<pkg>\S+)', _('Unpacking %(pkg)s') )
 	i18n_aptget.add_rule('^Configuring (?P<pkg>\S+)', _('Configuring %(pkg)s') )
 	i18n_aptget.add_rule('^Installed (?P<pkg>\S+)', _('Installed %(pkg)s') )
-	i18n_aptget.add_rule('^Preparing to configure (?P<pkg>\S+)', _('Preparing to configure %(pkg)s') )
 	i18n_aptget.add_rule('^Running post-installation trigger (?P<pkg>\S+)', _('Running post-installation trigger %(pkg)s') )
 	i18n_aptget.add_rule('^Running (?P<pkg>\S+)', _('Running %(pkg)s') )
 
