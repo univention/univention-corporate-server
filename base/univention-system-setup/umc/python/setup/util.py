@@ -349,7 +349,7 @@ def is_domainname(domainname):
 	return False
 
 def is_windowsdomainname(domainname):
-	_re=re.compile("^([a-z]([a-z0-9-]*[a-z0-9])*[.])*[a-z]([a-z0-9-]*[a-z0-9])*$")
+	_re=re.compile("^([A-Z]([A-Z0-9-]*[A-Z0-9])*[.])*[A-Z]([A-Z0-9-]*[A-Z0-9])*$")
 	if _re.match(domainname):
 		return True
 	return False
