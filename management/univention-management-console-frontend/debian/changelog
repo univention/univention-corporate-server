@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.138-1) unstable; urgency=low
+
+  * add warning if SSL certificate is going to expired; Bug #23880
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 29 Oct 2011 14:27:50 +0200
+
 univention-management-console-frontend (1.0.137-1) unstable; urgency=low
 
   * ConfirmDialog: allow messages that are widgets

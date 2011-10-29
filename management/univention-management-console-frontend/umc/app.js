@@ -370,6 +370,16 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			});
 			this._tabContainer.addChild(overviewPage);
 
+			// check validity of SSL certificates
+			umc.tools.umcpCommand( 'get/ucr', [ 'ssl/validity/days', 'ssl/validity/warning' ] ).then( dojo.hitch( this, function( data ) {
+				console.log( dojo.toJson( data ) );
+				days = parseInt( data.result[ 'ssl/validity/days' ] );
+				warning = parseInt( data.result[ 'ssl/validity/warning' ] );
+				if ( days < warning ) {
+					overviewPage.addNote( this._( 'The SSL certificate will expire in %d days and should be renewed!', days ) );
+				}
+			}));
+
 			// add a CategoryPane for each category
 			var categories = umc.widgets.ContainerWidget({
 				scrollable: true

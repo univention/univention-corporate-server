@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-26 12:00-0400\n"
-"PO-Revision-Date: 2011-10-19 14:39+0200\n"
+"POT-Creation-Date: 2011-10-29 16:17+0200\n"
+"PO-Revision-Date: 2011-10-29 14:26+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -31,7 +31,7 @@ msgstr "%d Einträge von %d ausgewählt"
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
 
-#: umc/app.js:423
+#: umc/app.js:433
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -71,7 +71,7 @@ msgstr ""
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
-#: umc/app.js:498
+#: umc/app.js:508
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -83,7 +83,7 @@ msgstr "Schließen"
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:462
+#: umc/app.js:472
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -91,7 +91,7 @@ msgstr "Bestätigungen"
 msgid "Could not fulfill the request."
 msgstr "Die Anfrage konnte nicht ausgeführt werden."
 
-#: umc/app.js:490
+#: umc/app.js:500
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
@@ -117,11 +117,11 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/app.js:420
+#: umc/app.js:430
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/app.js:446
+#: umc/app.js:456
 #, python-format
 msgid "Host: %(host)s.%(domain)s"
 msgstr ""
@@ -191,11 +191,11 @@ msgstr "Anmelden"
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:491
+#: umc/app.js:501
 msgid "Logout"
 msgstr "Abmelden"
 
-#: umc/app.js:470
+#: umc/app.js:480
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
@@ -263,6 +263,11 @@ msgstr "Fehlernachricht des Servers:"
 msgid "Specified locale is not available."
 msgstr "Die angegebenen Locale ist nicht verfügbar."
 
+#: umc/app.js:379
+#, python-format
+msgid "The SSL certificate will expire in %d days and should be renewed!"
+msgstr "Das SSL-Zertifikat wird in %d Tagen ablaufen und sollte erneuert werden!"
+
 #: umc/tools.js:161
 msgid "The account as been disabled."
 msgstr "Das Benutzerkonto wurde deaktiviert."
@@ -294,7 +299,7 @@ msgstr ""
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
-#: umc/app.js:455
+#: umc/app.js:465
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -312,11 +317,11 @@ msgstr ""
 "für die Administrierung von Objekten in der Univention-Corporate-Server-"
 "Domäne und individueller Univention-Corporate-Server-Systeme."
 
-#: umc/app.js:426
+#: umc/app.js:436
 msgid "Univention Website"
-msgstr ""
+msgstr "Univention Webseite"
 
-#: umc/app.js:479
+#: umc/app.js:489
 #, python-format
 msgid "User: %s"
 msgstr "Benutzer: %s"
