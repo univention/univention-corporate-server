@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.160-1) unstable; urgency=low
+
+  * handle special DNS SRV record names; Bug #23780
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 29 Oct 2011 17:12:57 +0200
+
 univention-directory-manager-modules (7.0.159-1) unstable; urgency=low
 
   * removed old module that will not be support with UCS 3.0; Bug #22431

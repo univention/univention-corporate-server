@@ -93,15 +93,18 @@ layout = [
 ]
 
 def unmapName(old):
-	service, protocol = old[0].split('.',1)
-	service=service[1:]
-	protocol=protocol[1:]
-	return [service, protocol]
+	items = old[ 0 ].split( '.', 2 )
+	items[ 0 ] = items[ 0 ][ 1 : ]
+	items[ 1 ] = items[ 1 ][ 1 : ]
+	return items
 
 def mapName(old):
 	if isinstance( old, basestring ):
 		return old
-	return '_%s._%s' % ( old[ 0 ], old[ 1 ] )
+	if len( old ) == 3 and old[ 2 ]:
+		return '_%s._%s.%s' % old
+
+	return '_%s._%s' % old[ : 2 ]
 
 def unmapLocation(old):
 	new=[]

@@ -1042,8 +1042,9 @@ class dnsSRVName(complex):
 	>>> dnsSRVName().parse(['ldap', 'tcp'])
 	['ldap', 'tcp']
 	"""
-	subsyntaxes=[(_('Service'), string), (_('Protocol'), ipProtocolSRV)]
-	all_required=1
+	min_elements = 2
+	all_required = False
+	subsyntaxes = ( ( _( 'Service' ), string ), ( _( 'Protocol' ), ipProtocolSRV ), ( _( 'Extension' ), string ) )
 
 class postalAddress( complex ):
 	delimiter = ', '
