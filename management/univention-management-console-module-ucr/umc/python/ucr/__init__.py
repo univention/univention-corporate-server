@@ -43,7 +43,7 @@ from univention.config_registry_info import ConfigRegistryInfo, Variable
 
 import univention.info_tools as uit
 
-_ = umc.Translation( 'univention-management-console-modules-ucr' ).translate
+_ = umc.Translation( 'univention-management-console-module-ucr' ).translate
 
 class Instance( umcm.Base ):
 	def init(self):
@@ -78,17 +78,31 @@ class Instance( umcm.Base ):
 			info.add_variable( options[ 'key' ], var )
 			info.write_customized()
 
+	def is_readonly( self, key ):
+		ucrinfo_system = ConfigRegistryInfo( registered_only = False, load_customized = False )
+		var = ucrinfo_system.get_variable( key )
+		if var:
+			return var.get( 'readonly' ) in  ( 'yes', '1', 'true' )
+		return False
+
 	def add( self, request ):
 		# does the same as put
 		self.put( request )
 
 	def put( self, request ):
+		message = ''
+		request.status = SUCCESS
+		success = True
 		if isinstance( request.options, ( list, tuple ) ):
 			for _var in request.options:
 				try:
 					var = _var['object']
 					value = var['value'] or ''
 					key = var['key']
+					if self.is_readonly( key ):
+						success = False
+						message = _( 'The UCR variable %s is read-only and can not be changed!' ) % key
+						break
 					arg = [ '%s=%s' % ( key.encode(), value.encode() ) ]
 					ucr.handler_set( arg )
 
@@ -100,16 +114,21 @@ class Instance( umcm.Base ):
 					request.status = BAD_REQUEST_INVALID_OPTS
 					self.finished(request.id, False, message = _('Invalid UCR variable entry, the properties "key" and "value" need to specified.'))
 					return
-			request.status = SUCCESS
-			success = True
 		else:
 			success = False
 			request.status = BAD_REQUEST_INVALID_OPTS
 
-		self.finished( request.id, success )
+		self.finished( request.id, success, message )
 
 	def remove( self, request ):
-		ucr.handler_unset(request.options)
+		variables = filter( lambda x: x is not None, map( lambda x: x.get( 'object' ), request.options ) )
+		for var in variables:
+			if self.is_readonly( var ):
+				message = _( 'The UCR variable %s is read-only and can not be removed!' ) % var
+				self.finished( request.id, False, message )
+				return
+
+		ucr.handler_unset( variables )
 		self.finished( request.id, True )
 
 	def get( self, request ):
