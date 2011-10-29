@@ -38,7 +38,7 @@ eval "$(univention-config-registry shell)"
 
 . /usr/share/univention-lib/all.sh
 
-SIMPLEGUI=
+SIMPLEGUI=""
 TYPE=
 REMOVE_PWD_FILE=""
 
@@ -129,17 +129,17 @@ do
 	case "$1" in
 		"-dcname")
 			shift
-			DCNAME=$1
+			DCNAME="$1"
 			shift
 			;;
 		"-dcaccount")
 			shift
-			DCACCOUNT=$1
+			DCACCOUNT="$1"
 			shift
 			;;
 		"-dcpwd")
 			shift
-			DCPWD=$1
+			DCPWD="$1"
 			shift
 			;;
 		"-ldapbase")
@@ -154,13 +154,13 @@ do
 			;;
 		"-type")
 			shift
-			TYPE=$1
+			TYPE="$1"
 			shift
 			;;
 		"-simplegui")
 			# output simpler gui for univention-installer to be able to parse output
 			shift
-			SIMPLEGUI=yes
+			SIMPLEGUI="yes"
 			;;
 		"--version")
 			display_version
@@ -537,8 +537,11 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 
 	if test -e "/usr/lib/univention-install/"; then
 		for i in /usr/lib/univention-install/*.inst; do
-			echo -n "Configure `basename $i` "
-			[ -n "$SIMPLEGUI" ] && echo
+			if [ -z "$SIMPLEGUI" ] ; then
+				echo -n "Configure $(basename "$i") "
+			else
+				echo "Configure $(basename "$i")"
+			fi
 			echo "Configure `basename $i` " >>/var/log/univention/join.log
 			$i --binddn $binddn --bindpwd `cat $DCPWD` >>/var/log/univention/join.log 2>&1
 			if [ $? != 0 ]; then
