@@ -221,7 +221,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			umc.tools.umcpCommand('updater/updates/check').then(dojo.hitch(this, function(data) {
 				this.standby(false);
 				// FIXME Lots of manual styling to achieve resonable look
-				var txt = "<div style='overflow:scroll;max-height:400px;'<table>\n";
+				var txt = "<div style='overflow:auto;max-height:400px;'<table>\n";
 				var upd = data.result['update'];
 				var ins = data.result['install'];
 				var rem = data.result['remove'];
