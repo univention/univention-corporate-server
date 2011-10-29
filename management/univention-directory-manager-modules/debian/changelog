@@ -1,4 +1,4 @@
-univention-directory-manager-modules (7.0.160-1) unstable; urgency=low
+univention-directory-manager-modules (7.0.160-2) unstable; urgency=low
 
   * handle special DNS SRV record names; Bug #23780
 
