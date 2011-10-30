@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.211-1) unstable; urgency=low
+
+  * added icon to up-button dns and dhcp modules, fixed button label
+    (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 22:08:38 +0100
+
 univention-management-console-module-udm (1.0.210-1) unstable; urgency=low
 
   * set standby opacity to 100%

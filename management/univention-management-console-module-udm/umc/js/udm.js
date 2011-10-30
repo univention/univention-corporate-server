@@ -649,16 +649,17 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				}
 				if (dojo.isString(val) && 'None' != val && !this._upButton) {
 					var label = this._('Show all superordinates');
-					if ('dhcp/dhcp' == this.moduleID) {
+					if ('dhcp/dhcp' == this.moduleFlavor) {
 						label = this._('Show all DHCP services');
 					}
-					else if ('dns/dns' == this.moduleID) {
+					else if ('dns/dns' == this.moduleFlavor) {
 						label = this._('Show all DNS zones');
 					}
 
 					// a superordinate has been selected and we do not have a 'up' button so far -> add the button
 					this._upButton = this.adopt(umc.widgets.Button, {
 						label: label,
+						iconClass: 'umcIconUp',
 						callback: dojo.hitch(this, function() {
 							this._searchForm.getWidget('superordinate').set('value', 'None');
 
