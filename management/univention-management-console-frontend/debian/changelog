@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.143-1) unstable; urgency=low
+
+  * added css clas umcZeroHeight
+  * SearchForm: fixed handling of submit events
+  * LabelPane: ignore label changes of Buttons
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 09:14:53 +0100
+
 univention-management-console-frontend (1.0.142-1) unstable; urgency=low
 
   * added css rule to force default mouse cursor on grid cells (Bug #22881)

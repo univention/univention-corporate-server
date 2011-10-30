@@ -286,3 +286,8 @@ p {
 .umc .dojoxGridCell {
 	cursor: default;
 }
+
+.umcZeroHeight {
+	height: 0;
+	overflow: hidden;
+}

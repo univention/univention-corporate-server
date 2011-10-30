@@ -43,7 +43,7 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 			this.label = this.content.label || '';
 		}
 		// register watch handler for label and visibility changes
-		if (dojo.getObject('content.watch', false, this)) {
+		if (dojo.getObject('content.watch', false, this) && !umc.tools.inheritsFrom(this.content, 'umc.widgets.Button')) {
 			this.content.watch('label', dojo.hitch(this, function(attr, oldVal, newVal) {
 				this.set('label', newVal || '');
 			}));

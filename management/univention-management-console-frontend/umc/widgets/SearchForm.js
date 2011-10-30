@@ -20,10 +20,7 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 		if (!this.buttons) {
 			this.buttons = [ {
 				name: 'submit',
-				label: this._( 'Search' ),
-				callback: dojo.hitch(this, function(values) {
-					this.onSearch(values);
-				})
+				label: this._( 'Search' )
 			}];
 		}
 
@@ -47,6 +44,14 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 		}
 
 		this.inherited(arguments);
+	},
+
+	postCreate: function() {
+		this.inherited(arguments);
+
+		this.connect(this, 'onSubmit', function() {
+			this.onSearch(this.gatherFormValues());
+		});
 	},
 
 	onSearch: function(values) {
