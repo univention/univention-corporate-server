@@ -25,7 +25,7 @@ This patch adds the option 'opacity' that controls the overlay opacity.
  		var underlayNodeAnim = dojo.animateProperty({
  			duration: self.duration,
  			node: self._underlayNode,
--			properties: {opacity: {start: 0, end: 1}}
+-			properties: {opacity: {start: 0, end: 0.75}}
 +			properties: {opacity: {start: 0, end: self.opacity}}
  		});
  		var imageAnim = dojo.animateProperty({
