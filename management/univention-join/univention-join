@@ -537,11 +537,8 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 
 	if test -e "/usr/lib/univention-install/"; then
 		for i in /usr/lib/univention-install/*.inst; do
-			if [ -z "$SIMPLEGUI" ] ; then
-				echo -n "Configure $(basename "$i") "
-			else
-				echo "Configure $(basename "$i")"
-			fi
+			echo -n "Configure $(basename "$i") "
+			[ -n "$SIMPLEGUI" ] && echo
 			echo "Configure `basename $i` " >>/var/log/univention/join.log
 			$i --binddn $binddn --bindpwd `cat $DCPWD` >>/var/log/univention/join.log 2>&1
 			if [ $? != 0 ]; then
@@ -626,7 +623,8 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 
 	if test -e "/usr/lib/univention-install/"; then
 		for i in /usr/lib/univention-install/*.inst; do
-			echo -n "Configure `basename $i` "
+			echo -n "Configure $(basename "$i") "
+			[ -n "$SIMPLEGUI" ] && echo
 			echo "Configure `basename $i` " >>/var/log/univention/join.log
 			$i --binddn $binddn --bindpwd `cat $DCPWD` >>/var/log/univention/join.log 2>&1
 			if [ $? != 0 ]; then
@@ -681,7 +679,8 @@ elif [ "$server_role" = "memberserver" ]; then
 
 	if test -e "/usr/lib/univention-install/"; then
 		for i in /usr/lib/univention-install/*.inst; do
-			echo -n "Configure `basename $i` "
+			echo -n "Configure $(basename "$i") "
+			[ -n "$SIMPLEGUI" ] && echo
 			echo "Configure `basename $i` " >>/var/log/univention/join.log
 			$i --binddn $binddn --bindpwd `cat $DCPWD` >>/var/log/univention/join.log 2>&1
 			if [ $? != 0 ]; then
@@ -728,7 +727,8 @@ else
 
 	if test -e "/usr/lib/univention-install/"; then
 		for i in /usr/lib/univention-install/*.inst; do
-			echo -n "Configure `basename $i` "
+			echo -n "Configure $(basename "$i") "
+			[ -n "$SIMPLEGUI" ] && echo
 			echo "Configure `basename $i` " >>/var/log/univention/join.log
 			$i --binddn $binddn --bindpwd `cat $DCPWD` >>/var/log/univention/join.log 2>&1
 			if [ $? != 0 ]; then

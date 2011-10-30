@@ -1,3 +1,9 @@
+univention-join (4.0.24-2) unstable; urgency=low
+
+  * produce simpler output for univention-installer (Bug #3796)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 30 Oct 2011 17:24:03 +0100
+
 univention-join (4.0.24-1) unstable; urgency=low
 
   * produce simpler output for univention-installer (Bug #3796)
