@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.58-1) unstable; urgency=low
+
+  * Set poll/sleep and retryrejected temporary to a lower value in
+    97univention-s4-connector.inst (Bug #22861)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 30 Oct 2011 21:39:57 +0100
+
 univention-s4-connector (6.0.57-2) unstable; urgency=low
 
   * Adjust service registration to UCS 3.0 (Bug #22861)

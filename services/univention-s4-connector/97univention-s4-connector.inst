@@ -36,7 +36,7 @@ joinscript_init
 
 . /usr/share/univention-lib/all.sh
 
-eval "$(univention-config-registry shell hostname ldap/master samba4/ldap/base)"
+eval "$(univention-config-registry shell)"
 
 NAME="S4 Connector"
 
@@ -102,6 +102,11 @@ else										## we are first system to provide this service
 	univention-config-registry set \
 		connector/s4/autostart?yes
 
+	old_sleep="$connector_s4_poll_sleep"
+	old_retry="$connector_s4_retryrejected"
+
+	univention-config-registry set connector/s4/poll/sleep=1 connector/s4/retryrejected=1
+
 	/etc/init.d/univention-s4-connector restart
 
 	univention-config-registry set dns/backend=samba4
@@ -124,19 +129,21 @@ else										## we are first system to provide this service
 		count=$((count+1))
 	done
 
+	univention-config-registry set connector/s4/poll/sleep="$old_sleep" connector/s4/retryrejected="$old_retry"
+
 	if [ $count -gt 600 ]; then
 		echo " failed"
 		univention-config-registry set dns/backend=ldap
 		if [ -x /etc/init.d/bind9 ]; then
 			/etc/init.d/bind9 restart
 		fi
+
 		echo "**************************************************************"
 		echo "* ERROR: Failed to configure Samba4 as backend for bind.     *"
 		echo "*        Please check the samba and the s4-connector logfile.*"
 		echo "**************************************************************"
 		exit 1
 	fi
-
 fi
 
 joinscript_save_current_version
