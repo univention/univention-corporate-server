@@ -253,14 +253,17 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		this._searchPage.addChild(titlePane);
 
 		// get the license information
-		this.umcpCommand('udm/license', {}, false).then(dojo.hitch(this, function(data) {
-			var msg = data.result.message;
-			if (msg) {
-				this._searchPage.addNote(msg);
-			}
-		}), function() {
-			console.log('WARNING: An error occurred while verifying the license. Ignoring error.');	
-		});
+		if (!umc.tools.status('udm/licenseNote')) {
+			umc.tools.status('udm/licenseNote', true);
+			this.umcpCommand('udm/license', {}, false).then(dojo.hitch(this, function(data) {
+				var msg = data.result.message;
+				if (msg) {
+					this._searchPage.addNote(msg);
+				}
+			}), function() {
+				console.log('WARNING: An error occurred while verifying the license. Ignoring error.');	
+			});
+		}
 
 		//
 		// add data grid
