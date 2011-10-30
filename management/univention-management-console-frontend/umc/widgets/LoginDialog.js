@@ -15,6 +15,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 	_container: null,
 	_passwordTextBox: null,
 	_usernameTextBox: null,
+	_text: null,
 	_form: null,
 	_container: null,
 
@@ -139,10 +140,11 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 
 		// put the layout together
 		this._container = new umc.widgets.ContainerWidget({});
-		this._container.addChild(new umc.widgets.Text({
+		this._text = new umc.widgets.Text({
 			style: 'margin-left: auto; margin-right: auto; margin-top: 1em; width: 250px;',
-			content: '<p>' + this._('Welcome to the Univention Management Console. Please enter your domain username and password for login!') + '</p>'
-		}));
+			content: ''
+		});
+		this._container.addChild(this._text);
 		this._container.addChild(this._form);
 		this.set('content', this._container);
 	},
@@ -162,6 +164,20 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		if (this._form.elementValue('username')) {
 			this._form._widgets.password.focus();
 		}
+
+		// update text and disable/enable username input field
+		var msg = '';
+		if (umc.tools.getStatus('username')) {
+			// user has already logged in before, show message for relogin
+			msg = this._('Your session has been closed due to inactivity. Please login again.');
+			// disable username field
+			this._form.getWidget('username').set('disabled', true);
+		}
+		else {
+			msg = this._('Welcome to Univention Management Console. Please enter your domain username and password for login.');
+			this._form.getWidget('username').set('disabled', false);
+		}
+		this._text.set('content', '<p>' + msg + '</p>');
 	},
 
 	_onKey:  function(evt) {

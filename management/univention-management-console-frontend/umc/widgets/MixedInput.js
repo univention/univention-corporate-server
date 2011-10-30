@@ -207,6 +207,12 @@ dojo.declare("umc.widgets.MixedInput", [
 
 	onValuesLoaded: function() {
 		// event stub
+	},
+
+	focus: function() {
+		if (dojo.getObject('_widget.focus', false, this)) {
+			this._widget.focus();
+		}
 	}
 });
 

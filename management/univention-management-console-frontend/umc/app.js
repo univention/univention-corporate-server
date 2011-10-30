@@ -25,30 +25,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 }), {
 	_checkSessionTimer: null,
 
-	// username: String
-	//		The username of the authenticated user.
-	username: null,
-
-	// hostname: String
-	//		The hostname on which the UMC is running.
-	hostname: '',
-
-	// domainname: String
-	//		The domainname on which the UMC is running.
-	domainname: '',
-
-	// overview: Boolean
-	//		Specifies whether or not the overview is visible.
-	overview: true,
-
-	// displayUsername: Boolean
-	//		Specifies whether the username is displayed or not
-	displayUsername: true,
-
-	// width: Integer
-	//		Forces a width for the frontend.
-	width: null,
-
 	start: function(/*Object*/ props) {
 		// summary:
 		//		Start the UMC, i.e., render layout, request login for a new session etc.
@@ -73,8 +49,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		});
 
 		// save some config properties
-		this.width = props.width;
-		this.displayUsername = umc.tools.isTrue(props.displayUsername);
+		umc.tools.setStatus('width', props.width);
+		umc.tools.setStatus('displayUsername', umc.tools.isTrue(props.displayUsername));
 
 		if (dojo.isString(props.module)) {
 			// a startup module is specified
@@ -84,10 +60,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				this._tabContainer.layout();
 			}));
 
-			if (umc.tools.isFalse(props.overview)) {
-				// overview should not be visible
-				this.overview = false;
-			}
+			umc.tools.setStatus('overview', umc.tools.isTrue(props.overview));
 		}
 
 		if (dojo.isString(props.username) && dojo.isString(props.password)) {
@@ -103,7 +76,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		}
 		else {
 			this.onLogin(dojo.cookie('UMCUsername'));
-			console.log(this._('Login is still valid (cookie: %(cookie)s, username: %(user)s).', { cookie: sessionCookie, user: this.username }));
+			//console.log(this._('Login is still valid (cookie: %(cookie)s, username: %(user)s).', { cookie: sessionCookie, user: umc.tools.getStatus('username') }));
 		}
 	},
 
@@ -137,7 +110,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	onLogin: function(username) {
 		// save the username internally and as cookie
 		dojo.cookie('UMCUsername', username, { expires: 100, path: '/' });
-		this.username = username;
+		umc.tools.setStatus('username', username);
 
 		// restart the timer for session checking
 		this._checkSessionTimer.start();
@@ -182,7 +155,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		var params = dojo.mixin({
 			title: module.name,
 			iconClass: umc.tools.getIconClass(module.icon),
-			closable: this.overview,  // closing tabs is only enabled of the overview is visible
+			closable: umc.tools.getStatus('overview'),  // closing tabs is only enabled of the overview is visible
 			moduleFlavor: module.flavor,
 			moduleID: module.id,
 			description: module.description
@@ -347,7 +320,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			'class': 'umcTopContainer',
 			gutters: false,
 			// force a displayed width if specified
-			style: this.width ? 'width:' + this.width + 'px;' : null 
+			style: umc.tools.getStatus('width') ? 'width:' + umc.tools.getStatus('width') + 'px;' : null 
 		}).placeAt(dojo.body());
 
 		// container for all modules tabs
@@ -357,7 +330,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		});
 		topContainer.addChild(this._tabContainer);
 
-		if (this.overview) {
+		if (umc.tools.getStatus('overview')) {
 			// the container for all category panes
 			// NOTE: We add the icon here in the first tab, otherwise the tab heights
 			//	   will not be computed correctly and future tabs will habe display
@@ -454,12 +427,16 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		headerRight.addChild(hostInfo);
 		umc.tools.umcpCommand('get/ucr', [ 'domainname', 'hostname' ]).
 			then(dojo.hitch(this, function(data) {
-				this.domainname = data.result.domainname;
-				this.hostname = data.result.hostname;
+				var domainname = data.result.domainname;
+				var hostname = data.result.hostname;
 				hostInfo.set('content', this._('Host: %(host)s.%(domain)s', {
-					domain: this.domainname,
-					host: this.hostname
+					domain: domainname,
+					host: hostname
 				}));
+
+				// save hostname and domainname as status information
+				umc.tools.setStatus('domainname', domainname);
+				umc.tools.setStatus('hostname', hostname);
 			}));
 
 		// the user context menu
@@ -487,9 +464,9 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				umc.tools.preferences('moduleHelpText', this.checked);
 			}
 		}));
-		if (this.displayUsername) {
+		if (umc.tools.getStatus('displayUsername')) {
 			headerRight.addChild(new dijit.form.DropDownButton({
-				label: this._('User: %s', this.username),
+				label: this._('User: %s', umc.tools.getStatus('username')),
 				'class': 'umcHeaderButton',
 				dropDown: menu
 			}));

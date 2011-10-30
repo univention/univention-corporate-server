@@ -11,6 +11,46 @@ dojo.mixin(umc.tools, new umc.i18n.Mixin({
 }));
 dojo.mixin(umc.tools, {
 
+	_status: {
+		username: null,
+		hostname: '',
+		domainname: '',
+		overview: true,
+		displayUsername: true,
+		width: null
+	},
+
+	getStatus: function(/*String?*/ key) {
+		// summary:
+		//		Returns a dict with status information (username, domainname,
+		//		hostname, isSetUpGUI, ...). Also contains the properties given
+		//		to `umc.app.start()`. The following properties exist:
+		//		* username (String): The username of the authenticated user.
+		//		* hostname (String): The hostname on which the UMC is running.
+		//		* domainname (String): The domainname on which the UMC is running.
+		//		* overview (Boolean): Specifies whether or not the overview is visible.
+		//		* displayUsername (Boolean): Specifies whether the username is displayed or not.
+		//		* width (Integer): Forces a width for the frontend.
+		// key: String?
+		//		If given, only the value for the specified property is returned.
+
+		if (undefined === key) {
+			return this._status;
+		}
+		if (dojo.isString(key)) {
+			return this._status[key];
+		}
+		return undefined;
+	},
+
+	setStatus: function(/*String*/ key, /*Mixed*/ value) {
+		// summary:
+		//		Sets the specified status property.
+
+		this._status[key] = value;
+		return value;
+	},
+
 	umcpCommand: function(
 		/*String*/ commandStr,
 		/*Object?*/ dataObj,

@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.145-1) unstable; urgency=low
+
+  * added set/getStatus to umc.tools
+  * show different login message at relogin and disable username input field
+  * added focus method to MixedInput
+  (Bug #23798)
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 16:39:24 +0100
+
 univention-management-console-frontend (1.0.144-1) unstable; urgency=low
 
   * add a simple implementation of the online help for UMC; Bug #23656
