@@ -51,7 +51,7 @@ dojo.declare("umc.widgets.MixedInput", [
 		props.disabled = this.disabled;
 
 		// store user defined properties
-		this._userProperties = props;
+		this._userProperties = dojo.clone(props);
 
 		// only copy the properties that we need, the rest is for the actual form widget
 		this.dynamicValues = props.dynamicValues;
@@ -59,6 +59,13 @@ dojo.declare("umc.widgets.MixedInput", [
 		this.depends = props.depends;
 		//umc.tools.assert(this.depends, "For MixedInput, the property 'depends' needs to be specified.");
 		this.umcpCommand = props.umcpCommand || umc.tools.umcpCommand;
+	},
+
+	postMixInProperties: function() {
+		this.inherited(arguments);
+
+		this._userProperties.sizeClass = this.sizeClass;
+		this.sizeClass = null;
 	},
 
 	buildRendering: function() {

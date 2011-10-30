@@ -74,7 +74,7 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		container = new umc.widgets.ContainerWidget({});
 		container.addChild(new umc.widgets.Button({
 			label: this._('Add'),
-			//iconClass: 'dijitIconNewTask',
+			iconClass: 'dijitIconNewTask',
 			onClick: dojo.hitch(this, function() {
 				if (!this._detailDialog) {
 					// dialog does not exist, create a new one
@@ -93,8 +93,9 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		}));
 		container.addChild(new umc.widgets.Button({
 			label: this._('Remove'),
-			//iconClass: 'dijitIconDelete',
-			onClick: dojo.hitch(this, '_removeSelectedElements')
+			iconClass: 'dijitIconDelete',
+			onClick: dojo.hitch(this, '_removeSelectedElements'),
+			style: 'float: right;'
 		}));
 		this.addChild(container);
 	},
@@ -221,12 +222,15 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 		this._container.addChild(this._form);
 
 		// for visualizing the search results, use a MultiSelect
-		this._multiSelect = new umc.widgets.MultiSelect({});
+		this._multiSelect = new umc.widgets.MultiSelect({
+			height: '250px'
+		});
 		this._container.addChild(this._multiSelect);
 
 		// add the final buttons to close the dialog
 		this._container.addChild(new umc.widgets.Button({
 			label: this._('Add'),
+			iconClass: 'dijitIconNewTask',
 			onClick: dojo.hitch(this, function() {
 				// get all elements an trigger onAdd event
 				var ids = this._multiSelect.get('value');
@@ -243,7 +247,9 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 			})
 		}));
 		this._container.addChild(new umc.widgets.Button({
-			label: this._('Close'),
+			label: this._('Cancel'),
+			defaultButton: true,
+			style: 'float: right;',
 			onClick: dojo.hitch(this, function() {
 				// hide the dialog
 				this.hide();
@@ -253,6 +259,18 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 
 			})
 		}));
+
+		// put focus to last widget in the SearchForm
+		this.connect(this, 'onShow', function() {
+			if (this.widgets.length) {
+				var lastConf = this.widgets[this.widgets.length - 1];
+				var lastName = lastConf.id || lastConf.name;
+				var widget = this._form.getWidget(lastName);
+				if (dojo.getObject('focus', false, widget)) {
+					widget.focus();
+				}
+			}
+		});
 	},
 
 	search: function(_values) {
