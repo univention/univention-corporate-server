@@ -1,3 +1,9 @@
+univention-updater (7.0.75-1) unstable; urgency=low
+
+  * remove execute flag of UMC web server before starting an update; Bug #24141
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 30 Oct 2011 13:41:34 +0100
+
 univention-updater (7.0.74-1) unstable; urgency=low
 
   * removed unnecessary references to this.moduleStore and added
