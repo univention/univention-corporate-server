@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.152-1) unstable; urgency=low
+
+  * fixed build problems in umc/helps.js (Bug #23656) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 22:53:43 +0100
+
 univention-management-console-frontend (1.0.151-1) unstable; urgency=low
 
   * removed confirmation option in user menu

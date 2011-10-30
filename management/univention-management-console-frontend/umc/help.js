@@ -5,6 +5,7 @@ dojo.provide("umc.help");
 dojo.require("dojo.cookie");
 dojo.require("umc.i18n");
 dojo.require("umc.dialog");
+dojo.require("dojo.cache");
 
 dojo.mixin(umc.help, new umc.i18n.Mixin({
 	// use the framework wide translation file
@@ -14,7 +15,7 @@ dojo.mixin(umc.help, new umc.i18n.Mixin({
 	show: function() {
 		var introduction = this._( 'Univention Management Console (UMC) is a modularly designed, web-based application to administrate local computers. The application allows the user to control services, check system utilisation, and check or adjust system parameters.  The web-based interface of UMC is described in detail the in current manual of Univention Corporate Server (UCS). Besides the manual, the homepage of Univention provides additional documentation for Univention Corporate Server. These documents assist in different topics like installation or administration.' );
 
-		var message = dojo.cache( "umc", "help.html" );
+		var message = dojo.cache("umc", "help.html");
 		message = dojo.replace( message, {
 			introduction : introduction,
 			manual : this._( 'Current manual (PDF)' ),
