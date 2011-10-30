@@ -291,3 +291,11 @@ p {
 	height: 0;
 	overflow: hidden;
 }
+
+.umcIconUp {
+	background-position: -512px 0px;
+	background-image: url(dijit/icons/images/commonIconsObjActEnabled.png);
+	width: 16px;
+	height: 16px;
+}
+

@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.150-1) unstable; urgency=low
+
+  * added icons (Bug #22881) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 22:11:38 +0100
+
 univention-management-console-frontend (1.0.149-1) unstable; urgency=low
 
   * StandbyMixin: added property to control overlay opacity (Bug #22881)
