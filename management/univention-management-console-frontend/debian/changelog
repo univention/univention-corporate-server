@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.147-1) unstable; urgency=low
+
+  * use dojo.cache to include the help text; Bug #23656
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 30 Oct 2011 17:42:16 +0100
+
 univention-management-console-frontend (1.0.146-1) unstable; urgency=low
 
   * changed umc.tools.get/setStatus() to status() (Bug #22881) 
