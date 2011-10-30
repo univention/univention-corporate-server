@@ -155,9 +155,18 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			'default': [ this._('UDM object'), this._('UDM objects') ]
 		};
 
+		// this deferred is resolved when everything has been loaded
 		this._finishedDeferred = new dojo.Deferred();
 		this._finishedDeferred.then(dojo.hitch(this, function() {
+			// finish standby animation and focus on input widget
 			this.standby(false);
+			this._searchForm.getWidget('objectPropertyValue').focus();
+			
+			// register to onShow events in order on focus to the input widget
+			// when the tab is changed
+			this.connect(this, 'onShow', function() {
+				this._searchForm.getWidget('objectPropertyValue').focus();
+			})
 		}));
 
 		// get the correct entry from the lists above

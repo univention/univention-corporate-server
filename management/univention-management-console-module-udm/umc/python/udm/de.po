@@ -69,7 +69,7 @@ msgid ""
 "You are currently using the \"Free for personal use\" edition of Univention "
 "Corporate Server."
 msgstr ""
-"Sie verwenden derzeit die \"Free for personal use\" Ausgabe von Univentio "
+"Sie verwenden derzeit die \"Free for personal use\" Ausgabe von Univention "
 "Corporate Server."
 
 #: umc/python/udm/__init__.py:130

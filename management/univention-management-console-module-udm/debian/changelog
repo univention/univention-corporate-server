@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.208-1) unstable; urgency=low
+
+  * added autofocus to the search form input field (Bug #22881) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 16:53:05 +0100
+
 univention-management-console-module-udm (1.0.207-1) unstable; urgency=low
 
   * return list of choices for default values of comboboxes; Bug #23556
