@@ -11,6 +11,8 @@ dojo.declare("umc.widgets.StandbyMixin", dijit._Widget, {
 
 	_standbyWidget: null,
 
+	standbyOpacity: 0.75,
+
 	uninitialize: function() {
 		this.inherited(arguments);
 
@@ -25,6 +27,7 @@ dojo.declare("umc.widgets.StandbyMixin", dijit._Widget, {
 			target: this.domNode,
 			duration: 200,
 			//zIndex: 99999999,
+			opacity: this.standbyOpacity,
 			color: '#FFF'
 		});
 		this.domNode.appendChild(this._standbyWidget.domNode);
