@@ -64,19 +64,19 @@ dojo.declare("umc.modules.mrtg", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], {
 		var tab_setup = [
 			{
 				key:		"day",
-				label:		this._("previous day")
+				label:		this._("Previous day")
 			},
 			{
 				key:		"week",
-				label:		this._("previous week")
+				label:		this._("Previous week")
 			},
 			{
 				key:		"month",
-				label:		this._("previous month")
+				label:		this._("Previous month")
 			},
 			{
 				key:		"year",
-				label:		this._("previous year")
+				label:		this._("Previous year")
 			}
 		];
 
@@ -112,8 +112,7 @@ dojo.declare("umc.modules.mrtg", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], {
 			{
 				grid.addChild(new dijit.layout.ContentPane({
 					content: 	dojox.string.sprintf(
-									"<h2 style='white-space:nowrap;'>%s: %s<h2>",
-									this._("Period"),
+									"<span style='white-space:nowrap;'>%s</span>",
 									tab_setup[i].label)
 				}));
 				grid.addChild(new dijit.layout.ContentPane({

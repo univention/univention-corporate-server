@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-mrtg\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-09-23 15:37+0200\n"
+"POT-Creation-Date: 2011-10-30 22:59+0100\n"
 "PO-Revision-Date: 2011-08-18 09:15+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,9 +29,21 @@ msgstr "Speicherbenutzung"
 msgid "Number of active terminal server sessions"
 msgstr "Anzahl der aktiven Terminalserver Sitzungen"
 
-#: umc/js/mrtg.js:116
-msgid "Period"
-msgstr "Zeitraum"
+#: umc/js/mrtg.js:67
+msgid "Previous day"
+msgstr "Vergangener Tag"
+
+#: umc/js/mrtg.js:75
+msgid "Previous month"
+msgstr "Vergangener Monat"
+
+#: umc/js/mrtg.js:71
+msgid "Previous week"
+msgstr "Vergangene Woche"
+
+#: umc/js/mrtg.js:79
+msgid "Previous year"
+msgstr "Vergangenes Jahr"
 
 #: umc/js/mrtg.js:44
 msgid "Sessions"
@@ -65,21 +77,8 @@ msgstr "Auslastung des Auslagerungsspeichers in Prozent"
 msgid "Utilization of system memory in percent"
 msgstr "Auslastung des Hauptspeichers in Prozent"
 
-#: umc/js/mrtg.js:67
-msgid "previous day"
-msgstr "vergangener Tag"
-
-#: umc/js/mrtg.js:75
-msgid "previous month"
-msgstr "vergangener Monat"
-
-#: umc/js/mrtg.js:71
-msgid "previous week"
-msgstr "vergangene Woche"
-
-#: umc/js/mrtg.js:79
-msgid "previous year"
-msgstr "vergangenes Jahr"
+#~ msgid "Period"
+#~ msgstr "Zeitraum"
 
 #~ msgid "Statistics"
 #~ msgstr "Statistiken"

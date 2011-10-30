@@ -1,3 +1,9 @@
+univention-management-console-module-mrtg (1.0.5-1) unstable; urgency=low
+
+  * adjusted style of labels (Bug #23342) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 23:00:37 +0100
+
 univention-management-console-module-mrtg (1.0.4-2) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)
