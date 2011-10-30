@@ -901,6 +901,7 @@ class ipProtocol(select):
 
 class ipProtocolSRV(select):
 	choices=[ ( 'tcp', 'TCP' ), ( 'udp', 'UDP' ), ( 'msdcs', 'MSDCS' ), ( 'sites', 'SITES' ) ]
+	size = 'OneThird'
 
 class absolutePath(simple):
 	min_length=1
@@ -1044,7 +1045,7 @@ class dnsSRVName(complex):
 	"""
 	min_elements = 2
 	all_required = False
-	subsyntaxes = ( ( _( 'Service' ), string ), ( _( 'Protocol' ), ipProtocolSRV ), ( _( 'Extension' ), string ) )
+	subsyntaxes = ( ( _( 'Service' ), TwoThirdsString ), ( _( 'Protocol' ), ipProtocolSRV ), ( _( 'Extension' ), string ) )
 
 class postalAddress( complex ):
 	delimiter = ', '

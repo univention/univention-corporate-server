@@ -102,9 +102,9 @@ def mapName(old):
 	if isinstance( old, basestring ):
 		return old
 	if len( old ) == 3 and old[ 2 ]:
-		return '_%s._%s.%s' % old
+		return '_{0}._{1}.{2}'.format( *old )
 
-	return '_%s._%s' % old[ : 2 ]
+	return '_{0}._{1}'.format( *old[ : 2 ] )
 
 def unmapLocation(old):
 	new=[]

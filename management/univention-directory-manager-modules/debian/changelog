@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.163-1) unstable; urgency=low
+
+  * fixed a bug in the map function for the name of a SRV record; Bug #23780
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 30 Oct 2011 11:23:20 +0100
+
 univention-directory-manager-modules (7.0.162-1) unstable; urgency=low
 
   * changed description texts for policies/share_userquota (Bug #23686)
