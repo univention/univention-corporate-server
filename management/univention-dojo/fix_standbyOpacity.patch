@@ -1,5 +1,6 @@
---- dojox/widget/Standby.js.orig	2011-10-30 20:30:30.000000000 +0100
-+++ dojox/widget/Standby.js	2011-10-30 20:38:04.000000000 +0100
+This patch adds the option 'opacity' that controls the overlay opacity.
+--- ./dojo-release-1.6.1-src/dojox/widget/Standby.js.orig	2011-10-30 20:30:30.000000000 +0100
++++ ./dojo-release-1.6.1-src/dojox/widget/Standby.js	2011-10-30 20:38:04.000000000 +0100
 @@ -38,6 +38,8 @@
  	//		to a particular value.  This is useful when you want to overlay
  	//		things in digit.Dialogs, you can specify a base zIndex to append from.
