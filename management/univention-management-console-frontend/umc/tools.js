@@ -20,10 +20,14 @@ dojo.mixin(umc.tools, {
 		width: null
 	},
 
-	getStatus: function(/*String?*/ key) {
+	status: function(/*String?*/ key, /*Mixed?*/ value) {
 		// summary:
-		//		Returns a dict with status information (username, domainname,
-		//		hostname, isSetUpGUI, ...). Also contains the properties given
+		//		Sets/gets status information. With no parameters given,
+		//		returns a dict with status information (username, domainname,
+		//		hostname, isSetUpGUI, ...). 
+		//		With one parameter given, returns the value of the specified key.
+		//		With two parameters, sets the value of the specified key.
+		//		Also contains the properties given
 		//		to `umc.app.start()`. The following properties exist:
 		//		* username (String): The username of the authenticated user.
 		//		* hostname (String): The hostname on which the UMC is running.
@@ -38,17 +42,12 @@ dojo.mixin(umc.tools, {
 			return this._status;
 		}
 		if (dojo.isString(key)) {
-			return this._status[key];
+			if (undefined === value) {
+				return this._status[key];
+			}
+			this._status[key] = value;
 		}
 		return undefined;
-	},
-
-	setStatus: function(/*String*/ key, /*Mixed*/ value) {
-		// summary:
-		//		Sets the specified status property.
-
-		this._status[key] = value;
-		return value;
 	},
 
 	umcpCommand: function(
