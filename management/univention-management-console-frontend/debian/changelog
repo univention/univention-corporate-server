@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.151-1) unstable; urgency=low
+
+  * removed confirmation option in user menu
+  * fixed alert button to submit button style
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 22:38:57 +0100
+
 univention-management-console-frontend (1.0.150-1) unstable; urgency=low
 
   * added icons (Bug #22881) 

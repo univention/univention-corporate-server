@@ -466,8 +466,8 @@ dojo.mixin(umc.tools, {
 	// internal array with default values for all preferences
 	_defaultPreferences: {
 		tooltips: true,
-		moduleHelpText: true,
-		confirm: true
+		moduleHelpText: true
+		//confirm: true
 	},
 
 	preferences: function(/*String|Object?*/ param1, /*AnyType?*/ value) {

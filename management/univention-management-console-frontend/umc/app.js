@@ -58,6 +58,12 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				dojo.disconnect(handle);
 				this.openModule(props.module, props.flavor);
 				this._tabContainer.layout();
+				
+				// put focus into the CategoryPane for scrolling
+				/*dijit.focus(this._categoryPane.domNode);
+				this.connect(_categoryPane, 'onShow', function() {
+					dijit.focus(this._categoryPane.domNode);
+				});*/
 			}));
 
 			umc.tools.status('overview', umc.tools.isTrue(props.overview));
@@ -309,6 +315,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	},
 
 	_isSetupGUI: false,
+	_categoryPane: null,
 	setupGui: function() {
 		// make sure that we have not build the GUI before
 		if (this._isSetupGUI) {
@@ -365,17 +372,17 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				}
 
 				// create a new category pane for all modules in the given category
-				var categoryPane = new umc.widgets.CategoryPane({
+				this._categoryPane = new umc.widgets.CategoryPane({
 					modules: modules,
 					title: icat.name,
 					open: true //('favorites' == icat.id)
 				});
 
 				// register to requests for opening a module
-				dojo.connect(categoryPane, 'onOpenModule', dojo.hitch(this, this.openModule));
+				dojo.connect(this._categoryPane, 'onOpenModule', dojo.hitch(this, this.openModule));
 
 				// add category pane to overview page
-				categories.addChild(categoryPane);
+				categories.addChild(this._categoryPane);
 			}));
 			overviewPage.addChild(categories);
 		}
@@ -448,14 +455,14 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				umc.tools.preferences('tooltips', this.checked);
 			}
 		}));
-		menu.addChild(new dijit.CheckedMenuItem({
+		/*menu.addChild(new dijit.CheckedMenuItem({
 			label: this._('Confirmations'),
 			checked: true,
 			checked: umc.tools.preferences('confirm'),
 			onClick: function() {
 				umc.tools.preferences('confirm', this.checked);
 			}
-		}));
+		}));*/
 		menu.addChild(new dijit.CheckedMenuItem({
 			label: this._('Module help description'),
 			checked: true,

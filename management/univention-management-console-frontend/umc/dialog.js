@@ -94,7 +94,8 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 					callback: dojo.hitch(this, function() {
 						// hide dialog upon confirmation by click on 'OK'
 						this._alertDialog.hide();
-					})
+					}),
+					'default': true
 				}]
 			});
 		}
