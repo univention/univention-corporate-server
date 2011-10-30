@@ -1,3 +1,9 @@
+univention-installer (7.0.130-1) unstable; urgency=low
+
+  * fixed traceback in profiled installation (Bug #3796)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 30 Oct 2011 17:36:14 +0100
+
 univention-installer (7.0.129-1) unstable; urgency=low
 
   * acceptra and IPv6 addresses can now both be set simultaneously (Bug #22872)

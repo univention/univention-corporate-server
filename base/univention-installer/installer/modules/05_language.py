@@ -55,6 +55,9 @@ class object(content):
 
 	def run_profiled(self):
 
+		# set default (may be overridden by self.set_language()
+		self.write_language_files("en_US.UTF-8", "en")
+
 		lang_dict, langConfig, selectedLine, defaultLanguage = self.get_language_settings()
 		language = defaultLanguage
 
@@ -186,6 +189,15 @@ class object(content):
 		# set language
 		os.environ['LANGUAGE'] = "%s" % language
 
+		self.write_language_files(defaultLocale, language)
+
+		# set kmap (get a the default kmap)
+		kmapFile = "/usr/keymaps/" + defaultKmap + ".kmap"
+		if os.path.exists(kmapFile):
+			os.system('/bin/loadkeys < %s 2>&1 > /dev/null' % kmapFile)
+
+
+	def write_language_files(self, defaultLocale, language):
 		# write default_locale to /etc/locale.gen in installer ramdisk
 		# ==> required for translated installation progress dialog
 		fp = open('/etc/locale.gen', 'w')
@@ -197,11 +209,6 @@ class object(content):
 		fp.write("%s" % language)
 		fp.close()
 
-		# set kmap (get a the default kmap)
-		kmapFile = "/usr/keymaps/" + defaultKmap + ".kmap"
-		if os.path.exists(kmapFile):
-			os.system('/bin/loadkeys < %s 2>&1 > /dev/null' % kmapFile)	
-		
 
 	def result(self):
 
