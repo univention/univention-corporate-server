@@ -73,20 +73,24 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 
 	_alertDialog: null, // internal reference for the alert dialog
 
-	alert: function(/*String*/ message) {
+	alert: function(/*String*/ message, /* String? */ title, /* String? */ buttonLabel) {
 		// summary:
 		//		Popup an alert dialog with the given message string. The users needs to
 		//		confirm the dialog by clicking on the 'OK' button.
 		// message:
 		//		The message that is displayed in the dialog.
+		// title:
+		//		An optional title for the popup window
+		// buttonLabel:
+		//		An alternative label for the button
 
 		// create alert dialog the first time
 		if (!this._alertDialog) {
 			this._alertDialog = new umc.widgets.ConfirmDialog({
-				title: this._('Notification'),
+				title: title || this._('Notification'),
 				style: 'max-width: 650px;',
 				options: [{
-					label: this._('Ok'),
+					label: buttonLabel || this._('Ok'),
 					callback: dojo.hitch(this, function() {
 						// hide dialog upon confirmation by click on 'OK'
 						this._alertDialog.hide();

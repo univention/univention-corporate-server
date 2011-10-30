@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-29 18:03+0200\n"
-"PO-Revision-Date: 2011-10-29 14:26+0200\n"
+"POT-Creation-Date: 2011-10-30 18:18+0100\n"
+"PO-Revision-Date: 2011-10-30 16:23+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -31,7 +31,7 @@ msgstr "%d Einträge von %d ausgewählt"
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
 
-#: umc/app.js:433
+#: umc/app.js:436
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -46,6 +46,10 @@ msgstr "Hinzufügen"
 #: umc/widgets/MultiObjectSelect.js:195
 msgid "Add objects"
 msgstr "Objekte hinzufügen"
+
+#: umc/help.js:35
+msgid "Additional documentation for UCS"
+msgstr "Zusätzliche Dokumentationen zu UCS"
 
 #: umc/tools.js:282
 msgid "An assert statement failed"
@@ -71,7 +75,7 @@ msgstr ""
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
-#: umc/app.js:508
+#: umc/app.js:511
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -83,7 +87,7 @@ msgstr "Schließen"
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:472
+#: umc/app.js:475
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -91,7 +95,11 @@ msgstr "Bestätigungen"
 msgid "Could not fulfill the request."
 msgstr "Die Anfrage konnte nicht ausgeführt werden."
 
-#: umc/app.js:500
+#: umc/help.js:34
+msgid "Current manual (PDF)"
+msgstr "Aktuelles Handbuch (PDF)"
+
+#: umc/app.js:503
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
@@ -117,11 +125,11 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/app.js:430
+#: umc/help.js:44 umc/app.js:430
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/app.js:456
+#: umc/app.js:459
 #, python-format
 msgid "Host: %(host)s.%(domain)s"
 msgstr ""
@@ -186,16 +194,20 @@ msgstr "Sprache"
 msgid "Login"
 msgstr "Anmelden"
 
-#: umc/app.js:105
+#: umc/app.js:106
 #, python-format
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:501
+#: umc/app.js:504
 msgid "Logout"
 msgstr "Abmelden"
 
-#: umc/app.js:480
+#: umc/help.js:40
+msgid "Manual and documentation"
+msgstr "Handbücher und Dokumentation"
+
+#: umc/app.js:483
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
@@ -231,7 +243,7 @@ msgstr "Ok"
 msgid "Others"
 msgstr "Andere"
 
-#: umc/app.js:366 umc/app.js:367
+#: umc/app.js:367 umc/app.js:368
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -262,6 +274,14 @@ msgstr "Fehlernachricht des Servers:"
 #: umc/tools.js:162
 msgid "Specified locale is not available."
 msgstr "Die angegebenen Locale ist nicht verfügbar."
+
+#: umc/help.js:41
+msgid "Supplementary information"
+msgstr "Weiterführende Informationen"
+
+#: umc/help.js:42
+msgid "Support and assistance"
+msgstr "Unterstützung und Support"
 
 #: umc/app.js:379
 #, python-format
@@ -300,7 +320,7 @@ msgstr ""
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
-#: umc/app.js:465
+#: umc/app.js:468
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -308,7 +328,31 @@ msgstr "Tooltips"
 msgid "Translate me!"
 msgstr ""
 
-#: umc/app.js:369
+#: umc/help.js:15
+msgid ""
+"Univention Management Console (UMC) is a modularly designed, web-based "
+"application to administrate local computers. The application allows the user "
+"to control services, check system utilisation, and check or adjust system "
+"parameters.  The web-based interface of UMC is described in detail the in "
+"current manual of Univention Corporate Server (UCS). Besides the manual, the "
+"homepage of Univention provides additional documentation for Univention "
+"Corporate Server. These documents assist in different topics like "
+"installation or administration."
+msgstr ""
+"Univention Management Console (UMC) ermöglicht die komfortable, webbasierte\n"
+"Verwaltung des lokalen Rechners. UMC ermöglicht Dienste zu kontrollieren, "
+"die\n"
+"Systemauslastung zu überprüfen sowie Systemeinstellungen einzusehen und zu\n"
+"ändern.  Das Web-Interface von UMC wird im aktuellen Handbuch des "
+"Univention\n"
+"Corporate Servers (UCS) detailliert beschrieben. Neben dem Handbuch können "
+"auf\n"
+"der Univention-Homepage zusätzliche Dokumentationen zu Univention Corporate\n"
+"Server abgerufen werden, die bei verschiedenen Themen wie der Einrichtung "
+"oder\n"
+"Administration unterstützen."
+
+#: umc/app.js:370
 msgid ""
 "Univention Management Console is a modularly designed, web-based application "
 "for the administration of objects in your Univention Corporate Server domain "
@@ -318,11 +362,27 @@ msgstr ""
 "für die Administrierung von Objekten in der Univention-Corporate-Server-"
 "Domäne und individueller Univention-Corporate-Server-Systeme."
 
-#: umc/app.js:436
+#: umc/app.js:439
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
-#: umc/app.js:489
+#: umc/help.js:38
+msgid "Univention forum"
+msgstr "Univention Forum"
+
+#: umc/help.js:39
+msgid "Univention support"
+msgstr "Univention Support"
+
+#: umc/help.js:36
+msgid "Univention support data base (SDB)"
+msgstr "Univention Supportdatenbank (SDB)"
+
+#: umc/help.js:37
+msgid "Univention wiki site"
+msgstr "Univention Webseite"
+
+#: umc/app.js:492
 #, python-format
 msgid "User: %s"
 msgstr "Benutzer: %s"

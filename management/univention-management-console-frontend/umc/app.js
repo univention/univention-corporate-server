@@ -12,6 +12,7 @@ dojo.require("dojox.html.styles");
 dojo.require("dojox.timing");
 dojo.require("umc.tools");
 dojo.require("umc.dialog");
+dojo.require("umc.help");
 dojo.require("umc.widgets.CategoryPane");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.Page");
@@ -372,9 +373,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 
 			// check validity of SSL certificates
 			umc.tools.umcpCommand( 'get/ucr', [ 'ssl/validity/days', 'ssl/validity/warning' ] ).then( dojo.hitch( this, function( data ) {
-				console.log( dojo.toJson( data ) );
-				days = parseInt( data.result[ 'ssl/validity/days' ] );
-				warning = parseInt( data.result[ 'ssl/validity/warning' ] );
+				var days = parseInt( data.result[ 'ssl/validity/days' ], 10 );
+				var warning = parseInt( data.result[ 'ssl/validity/warning' ], 10 );
 				if ( days < warning ) {
 					overviewPage.addNote( this._( 'The SSL certificate will expire in %d days and should be renewed!', days ) );
 				}
@@ -427,7 +427,10 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// the univention context menu
 		var menu = new dijit.Menu({});
 		menu.addChild(new dijit.MenuItem({
-			label: this._('Help')
+			label: this._('Help'),
+			onClick : function() {
+				umc.help.show();
+			}
 		}));
 		menu.addChild(new dijit.MenuItem({
 			label: this._('About UMC')

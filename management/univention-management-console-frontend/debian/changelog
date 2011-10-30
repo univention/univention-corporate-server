@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.144-1) unstable; urgency=low
+
+  * add a simple implementation of the online help for UMC; Bug #23656
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 30 Oct 2011 16:33:47 +0100
+
 univention-management-console-frontend (1.0.143-1) unstable; urgency=low
 
   * added css clas umcZeroHeight
