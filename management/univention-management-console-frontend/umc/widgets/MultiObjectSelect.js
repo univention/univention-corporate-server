@@ -261,7 +261,7 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 		}));
 
 		// put focus to last widget in the SearchForm
-		this.connect(this, 'onShow', function() {
+		this.connect(this, 'onFocus', function() {
 			if (this.widgets.length) {
 				var lastConf = this.widgets[this.widgets.length - 1];
 				var lastName = lastConf.id || lastConf.name;
