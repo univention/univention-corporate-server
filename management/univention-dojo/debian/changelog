@@ -1,3 +1,9 @@
+univention-dojo (5.0.6-1) unstable; urgency=low
+
+  * added patch for dojox.widget.Standby (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 21:05:29 +0100
+
 univention-dojo (5.0.5-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

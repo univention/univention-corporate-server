@@ -1,0 +1,40 @@
+--- dojox/widget/Standby.js.orig	2011-10-30 20:30:30.000000000 +0100
++++ dojox/widget/Standby.js	2011-10-30 20:38:04.000000000 +0100
+@@ -38,6 +38,8 @@
+ 	//		to a particular value.  This is useful when you want to overlay
+ 	//		things in digit.Dialogs, you can specify a base zIndex to append from.
+ 	//		Default is 'auto'.
++	// opacity:
++	//		Controls the opacity for the overlay.
+ 
+ 	// templateString: [protected] String
+ 	//		The template string defining out the basics of the widget.  No need for an external
+@@ -108,6 +110,10 @@
+ 	//		Default color for the translucent overlay is light gray.
+ 	color: "#C0C0C0",
+ 
++	// opacity: float
++	//		Controls the opacity for the overlay.
++	opacity: 0.75,
++
+ 	// duration: integer
+ 	//		Integer defining how long the show and hide effects should take.
+ 	duration: 500,
+@@ -526,7 +532,7 @@
+ 		var underlayNodeAnim = dojo.animateProperty({
+ 			duration: self.duration,
+ 			node: self._underlayNode,
+-			properties: {opacity: {start: 0, end: 1}}
++			properties: {opacity: {start: 0, end: self.opacity}}
+ 		});
+ 		var imageAnim = dojo.animateProperty({
+ 			duration: self.duration,
+@@ -534,7 +540,7 @@
+ 			properties: {opacity: {start: 0, end: 1}},
+ 			onEnd: function(){
+ 				self.onShow();
+-				delete self._anim;
++				//delete self._anim;
+ 			}
+ 		});
+ 		this._anim = dojo.fx.combine([underlayNodeAnim,imageAnim]);
