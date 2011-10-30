@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.210-1) unstable; urgency=low
+
+  * set standby opacity to 100%
+  * show propertyType and propertyTypeValue fields for simplified search
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 21:11:04 +0100
+
 univention-management-console-module-udm (1.0.209-1) unstable; urgency=low
 
   * only show license information once per session (Bug #22881) 

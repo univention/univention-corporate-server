@@ -139,6 +139,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
+		// set the opacity for the standby to 100%
+		this.standbyOpacity = 1;
+
 		// name for the objects in the current module
 		var objNames = {
 			'users/user': [ this._('user'), this._('users') ],
@@ -693,19 +696,19 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		//var newVal = _newVal === undefined ? objPropWidget.get('value') : _newVal;
 		var newVal = objPropWidget.get('value');
 		if ('None' == newVal) {
-			if (this._isAdvancedSearch) {
-				// we can hide the widget
-				objPropValWidget.set('visible', false);
-			}
-			else {
+			//if (this._isAdvancedSearch) {
+			//	// we can hide the widget
+			//	objPropValWidget.set('visible', false);
+			//}
+			//else {
 				// we need to set the height to 0 in order not to affect the position
 				// of the buttons... $refLabel$ is the reference to the Label widget
 				dojo.addClass(labelWidget.domNode, 'umcZeroHeight');
-			}
+			//}
 		}
 		else {
 			// restore the height and show widget
-			objPropValWidget.set('visible', true);
+			//objPropValWidget.set('visible', true);
 			dojo.removeClass(labelWidget.domNode, 'umcZeroHeight');
 		}
 	},
@@ -722,8 +725,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				if ('container' in widgets) {
 					widgets.container.set('visible', true);
 				}
-				widgets.objectProperty.set('visible', true);
-				widgets.objectPropertyValue.set('visible', true);
+				//widgets.objectProperty.set('visible', true);
+				//widgets.objectPropertyValue.set('visible', true);
 				toggleButton.set('label', this._('(Simplified options)'));
 			}
 			else {
@@ -734,8 +737,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				if ('container' in widgets) {
 					widgets.container.set('visible', false);
 				}
-				widgets.objectProperty.set('visible', false);
-				dojo.removeClass(widgets.objectPropertyValue.$refLabel$.domNode, 'umcZeroHeight');
+				//widgets.objectProperty.set('visible', false);
+				//dojo.removeClass(widgets.objectPropertyValue.$refLabel$.domNode, 'umcZeroHeight');
 				toggleButton.set('label', this._('(Advanced options)'));
 			}
 			this._updateObjectPropertyValue();

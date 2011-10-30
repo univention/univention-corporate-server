@@ -101,6 +101,12 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 	ldapBase: null,
 
+	postMixInProperties: function() {
+		this.inherited(arguments);
+
+		this.standbyOpacity = 1;
+	},
+
 	buildRendering: function() {
 		// summary:
 		//		Query necessary information from the server for the object detail page
