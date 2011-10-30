@@ -210,7 +210,10 @@ class UDM_Module( object ):
 		MODULE.info( 'Searching for property %s' % property_name )
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if key == property_name:
-				return default_value( prop.syntax )
+				value = default_value( prop.syntax )
+				if isinstance( value, ( list, tuple ) ):
+					value = read_syntax_choices( prop.syntax.name )
+				return value
 
 	def _map_properties( self, obj, properties ):
 		for property_name, value in properties.items():

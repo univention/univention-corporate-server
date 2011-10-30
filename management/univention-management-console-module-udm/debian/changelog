@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.207-1) unstable; urgency=low
+
+  * return list of choices for default values of comboboxes; Bug #23556
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 30 Oct 2011 14:03:31 +0100
+
 univention-management-console-module-udm (1.0.206-1) unstable; urgency=low
 
   * add simplified search view (Bug #22881) 
