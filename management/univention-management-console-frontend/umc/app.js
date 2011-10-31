@@ -13,6 +13,8 @@ dojo.require("dojox.timing");
 dojo.require("umc.tools");
 dojo.require("umc.dialog");
 dojo.require("umc.help");
+dojo.require("umc.about");
+dojo.require("umc.license");
 dojo.require("umc.widgets.CategoryPane");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.Page");
@@ -412,11 +414,31 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				umc.help.show();
 			}
 		}));
+		if ( this.getModule( 'udm' ) ) {
+			menu.addChild(new dijit.MenuItem({
+				label: this._('License'),
+				onClick : function() {
+					umc.tools.umcpCommand( 'udm/license/info' ).then( function( data ) {
+						umc.license.show( data.result );
+					} );
+				}
+			}));
+		}
 		menu.addChild(new dijit.MenuItem({
-			label: this._('About UMC')
+			label: this._('About UMC'),
+			onClick : function() {
+				umc.tools.umcpCommand( 'get/info' ).then( function( data ) {
+					umc.about.show( data.result );
+				} );
+			}
 		}));
+		menu.addChild(new dijit.MenuSeparator({}));
 		menu.addChild(new dijit.MenuItem({
-			label: this._('Univention Website')
+			label: this._('Univention Website'),
+			onClick: function() {
+				var w = window.open( 'http://www.univention.de/', 'UMC' );
+				w.focus();
+			}
 		}));
 		headerLeft.addChild(new dijit.form.DropDownButton({
 			label: '&nbsp;',

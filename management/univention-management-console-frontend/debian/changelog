@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.156-1) unstable; urgency=low
+
+  * add about and license dialog; Bug #23655
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 Oct 2011 18:54:06 +0100
+
 univention-management-console-frontend (1.0.155-1) unstable; urgency=low
 
   * fixed documentation of umc.tools.ucr() (Bug #22881)
