@@ -107,11 +107,13 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	ln -s /var/univention-join/joined /usr/share/univention-join/.joined
         ln -s /var/univention-join/status /usr/lib/univention-install/.index.txt
 
-	for i in /usr/lib/univention-install/*.inst; do
-		echo "Configure \`basename \$i\`" | progress_filter
-		echo "Configure \`basename \$i\`" >>/var/log/univention/join.log
-		\$i >>/var/log/univention/join.log 2>&1;
-	done
+	if [ ! "$call_master_joinscripts" = "false" -a ! "$call_master_joinscripts" = "no" -a ! "$call_master_joinscripts" = "FALSE" -a ! "$call_master_joinscripts" = "False" ] ; then
+	 	for i in /usr/lib/univention-install/*.inst; do
+	 		echo "Configure \`basename \$i\`" | progress_filter
+	 		echo "Configure \`basename \$i\`" >>/var/log/univention/join.log
+	 		\$i >>/var/log/univention/join.log 2>&1;
+	 	done
+	fi
 fi
 
 __EOT__
