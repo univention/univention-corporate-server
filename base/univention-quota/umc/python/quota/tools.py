@@ -159,13 +159,13 @@ def _do_activate_quota(partitions, activate):
 	return failed
 
 def _activate_quota_xfs(partition):
-	if subprocess.call(('umount', partition.spec)):
+	if subprocess.call(('/bin/umount', partition.spec)):
 		return {'partitionDevice': partition.spec, 'success': False,
 		        'message':  _('Unmounting the partition has failed')}
-	if subprocess.call(('mount', partition.spec)):
+	if subprocess.call(('/bin/mount', partition.spec)):
 		return {'partitionDevice': partition.spec, 'success': False,
 		        'message': _('Mounting the partition has failed')}
-	if subprocess.call(('invoke-rc.d', 'quota', 'restart')):
+	if subprocess.call(('/usr/sbin/invoke-rc.d', 'quota', 'restart')):
 		return {'partitionDevice': partition.spec, 'success': False,
 		        'message':  _('Restarting the quota services has failed')}
 
@@ -173,7 +173,7 @@ def _activate_quota_xfs(partition):
 	        'message': _('Operation was successful')}
 
 def _activate_quota_ext(partition, create):
-	if subprocess.call(('mount', '-o', 'remount', partition.spec)):
+	if subprocess.call(('/bin/mount', '-o', 'remount', partition.spec)):
 		return {'partitionDevice': partition.spec, 'success': False,
 	        'message':  _('Remounting the partition has failed')}
 	if create:
@@ -181,7 +181,7 @@ def _activate_quota_ext(partition, create):
 		if result not in [0, 6]:
 			return {'partitionDevice': partition.spec, 'success': False,
 	        'message':  _('Generating the quota information file failed')}
-	if subprocess.call(('invoke-rc.d', 'quota', 'restart')):
+	if subprocess.call(('/usr/sbin/invoke-rc.d', 'quota', 'restart')):
 		return {'partitionDevice': partition.spec, 'success': False,
 	        'message': _('Restarting the quota services has failed')}
 

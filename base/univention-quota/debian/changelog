@@ -1,3 +1,9 @@
+univention-quota (6.0.10-1) unstable; urgency=low
+
+  * use absolute paths instead of relative (Bug #22903)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 31 Oct 2011 13:04:12 +0100
+
 univention-quota (6.0.9-1) unstable; urgency=low
 
   * validate form values
