@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.159-2) unstable; urgency=low
+
+  * version bump (Bug #22881) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 31 Oct 2011 23:38:20 +0100
+
 univention-management-console-frontend (1.0.159-1) unstable; urgency=low
 
   * more CSS fixes
