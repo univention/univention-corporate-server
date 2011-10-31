@@ -1,3 +1,9 @@
+univention-updater (7.0.76-2) unstable; urgency=low
+
+  * Add copyright CLOB (Bug #24172)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 31 Oct 2011 09:28:56 +0100
+
 univention-updater (7.0.76-1) unstable; urgency=low
 
   * Enable apt-secure on new installs (Bug #24172)
