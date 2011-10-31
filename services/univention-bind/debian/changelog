@@ -1,6 +1,5 @@
-univention-bind (6.0.29-1.1) unstable; urgency=low
+univention-bind (6.0.30-1) unstable; urgency=low
 
-  * Non-maintainer upload.
   * Adjust service registration to UCS 3.0 (Bug #23168)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 30 Oct 2011 09:20:21 +0100
