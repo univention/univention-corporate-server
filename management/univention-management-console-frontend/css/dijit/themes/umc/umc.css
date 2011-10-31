@@ -5076,6 +5076,11 @@ p {
 	margin-right: -5px;
 }
 
+/* do not allow icons on disabled buttons */
+.umc .dijitButtonDisabled .dijitIcon {
+	display: none;
+}
+
 /* UMC icons */
 .umcIconDelete,
 .umcIconEdit,
