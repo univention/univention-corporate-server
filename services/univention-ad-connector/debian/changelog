@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.22-1) unstable; urgency=low
+
+  * More fixes on attribute deletion (Bug #8604)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 31 Oct 2011 12:26:44 +0100
+
 univention-ad-connector (6.0.21-1) unstable; urgency=low
 
   * Adjust service registration to UCS 3.0 (Bug #21486)

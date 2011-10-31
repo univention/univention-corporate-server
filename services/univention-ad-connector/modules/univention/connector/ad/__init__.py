@@ -1902,38 +1902,26 @@ class ad(univention.connector.ucs):
 									modlist.append((ldap.MOD_ADD, attr, value))
  							elif not univention.connector.compare_lowercase(value,ad_object[attr]): # FIXME: use defined compare-function from mapping.py
 								modlist.append((ldap.MOD_REPLACE, attr, value))
-			if old_ucs_object:
-				# If the old UCS object has a attribute set, which is not
-				# set in AD, it should be deleted
-				for attr in old_ucs_object.keys():
-					if not attr in attr_list:
-						modlist.append((ldap.MOD_DELETE, attr, None))
-			if modlist:
-				self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
-				
+
 			attrs_in_current_ucs_object = object['attributes'].keys()
- 			attrs_which_should_be_mapped = []
- 			attrs_to_remove_from_ad_object = []
 			attrs_which_should_be_mapped = []
+			attrs_to_remove_from_ad_object = []
 
- 			if self.property.has_key('container') and hasattr(self.property['container'], 'post_attributes') and self.property['ou'].post_attributes != None:
-				for ac in self.property['container'].post_attributes.keys():
-					attrs_which_should_be_mapped.append(self.property['container'].post_attributes[ac].con_attribute)
 
-			if self.property.has_key('ou') and hasattr(self.property['ou'], 'post_attributes') and self.property['ou'].post_attributes != None:
-				for ac in self.property['ou'].post_attributes.keys():
-					attrs_which_should_be_mapped.append(self.property['ou'].post_attributes[ac].con_attribute)
+			if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes != None:
+				for ac in self.property[property_type].attributes.keys():
+					attrs_which_should_be_mapped.append(self.property[property_type].attributes[ac].con_attribute)
+					if self.property[property_type].attributes[ac].con_other_attribute:
+						attrs_which_should_be_mapped.append(self.property[property_type].attributes[ac].con_other_attribute)
 
- 			if self.property.has_key('group') and hasattr(self.property['group'], 'post_attributes') and self.property['group'].post_attributes != None:
-				for ac in self.property['group'].post_attributes.keys():
-					attrs_which_should_be_mapped.append(self.property['group'].post_attributes[ac].con_attribute)
-
- 			if self.property.has_key('user') and hasattr(self.property['user'], 'post_attributes') and self.property['user'].post_attributes != None:
-				for ac in self.property['user'].post_attributes.keys():
-					attrs_which_should_be_mapped.append(self.property['user'].post_attributes[ac].con_attribute)
+			if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
+				for ac in self.property[property_type].post_attributes.keys():
+					attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_attribute)
+					if self.property[property_type].post_attributes[ac].con_other_attribute:
+						attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_attribute)
 
 			modlist_empty_attrs = []			
- 			for expected_attribute in attrs_which_should_be_mapped:
+			for expected_attribute in attrs_which_should_be_mapped:
 				if not object['attributes'].has_key(expected_attribute):
 					attrs_to_remove_from_ad_object.append(expected_attribute)
 
@@ -1945,14 +1933,21 @@ class ad(univention.connector.ucs):
 			for yank_empty_attr in attrs_to_remove_from_ad_object:
 				if ad_object.has_key(yank_empty_attr):
 					if value != None:
-						ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Empty value can be set")
-						modlist_empty_attrs.append((ldap.MOD_REPLACE, yank_empty_attr, ""))
+						modlist.append((ldap.MOD_DELETE, yank_empty_attr, None))
 
-			if len(modlist_empty_attrs) > 0:
-				ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Attributes were removed in UCS LDAP, removing them in AD likewise: %s " % str(modlist_empty_attrs))
+			if modlist:
+				for modified_attrs in modlist:
+					if modified_attrs[1] in attrs_to_remove_from_ad_object and len(modified_attrs[2]) > 0:
+						attrs_to_remove_from_ad_object.remove(modified_attrs[1])
+
+			for yank_empty_attr in attrs_to_remove_from_ad_object:
+				if ad_object.has_key(yank_empty_attr):
+					if value != None:
+						modlist.append((ldap.MOD_REPLACE, yank_empty_attr, None))
+
+			if modlist:
+				self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
 				
-				self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist_empty_attrs))
-				modlist_empty_attrs = []
 
 
 			if hasattr(self.property[property_type],"post_con_modify_functions"):
