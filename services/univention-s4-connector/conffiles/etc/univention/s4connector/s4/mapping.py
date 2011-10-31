@@ -531,7 +531,7 @@ s4_mapping = {
 			con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=4096))',
 
 			# ignore_filter='userAccountControl=4096',
-			match_filter='(|(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))(objectClass=univentionMemberServer)(objectClass=computer))',
+			match_filter='(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))',
 
 			ignore_subtree = global_ignore_subtree,
 			
