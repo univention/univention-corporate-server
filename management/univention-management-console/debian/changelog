@@ -1,3 +1,9 @@
+univention-management-console (4.0.75-2) unstable; urgency=low
+
+  * added UMC quota module to the dependencies (Bug #22903)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 31 Oct 2011 21:16:28 +0100
+
 univention-management-console (4.0.75-1) unstable; urgency=low
 
   * implement UMC core command GET info to retrieve details about the
