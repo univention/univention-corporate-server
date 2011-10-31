@@ -57,6 +57,9 @@ class License( object ):
 		self.new_license = False
 		self.disable_add = 0
 		self._expired = False
+		self.endDate = None
+		self.licenseTypes = []
+		self.oemProductTypes = []
 		self.types= []
 		self.sysAccountNames = ( 'Administrator', 'join-backup', 'join-slave', 'spam', 'oxadmin', 'krbtgt', 'Guest', 'dns-%s' % configRegistry.get('ldap/master').split('.')[0], 'dns-%s' % configRegistry.get('hostname') )
 		self.sysAccountsFound = 0
@@ -301,8 +304,10 @@ class License( object ):
 				'License Type', 'univentionLicenseOEMProduct attribute not found' )
 		if not isinstance( self.oemProductTypes, ( list, tuple ) ):
 			self.oemProductTypes = [ self.oemProductTypes ]
+		self.licenseTypes = self.types
 		self.types=list(self.types)
 		self.types.extend(self.oemProductTypes)
+		self.endDate = self.__getValue( 'univentionLicenseEndDate', None, 'License end date', 'univentionLicenseEndDate attribute not found' )
 
 _license = License()
 

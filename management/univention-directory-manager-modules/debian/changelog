@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.164-1) unstable; urgency=low
+
+  * add a few more information to the univention.admin.License object; Bug #23655
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 Oct 2011 18:42:53 +0100
+
 univention-directory-manager-modules (7.0.163-1) unstable; urgency=low
 
   * fixed a bug in the map function for the name of a SRV record; Bug #23780
