@@ -1,6 +1,8 @@
 univention-management-console-frontend (1.0.159-1) unstable; urgency=low
 
-  * more CSS fixes (Bug #22881)
+  * more CSS fixes
+  * MultiInput: ignore labels for Buttons
+  (Bug #22881)
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 31 Oct 2011 21:25:07 +0100
 

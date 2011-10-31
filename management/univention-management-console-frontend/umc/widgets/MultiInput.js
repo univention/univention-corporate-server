@@ -288,13 +288,14 @@ dojo.declare("umc.widgets.MultiInput", [
 					disabled: this.disabled,
 					name: iname,
 					value: '',
-					dynamicValues: dojo.partial(iwidget.dynamicValues, iname)
+					dynamicValues: dojo.partial(iwidget.dynamicValues, iname),
 				});
 				widgetConfs.push(iconf);
 
 				// add the name of the widget to the list of widget names
 				order.push(iname);
 			}, this);
+
 
 			// render the widgets
 			var widgets = umc.render.widgets(widgetConfs);
@@ -311,20 +312,28 @@ dojo.declare("umc.widgets.MultiInput", [
 				}
 			}, this);
 
+			// find out whether all items do have a label
+			var hasSubTypeLabels = dojo.filter(this.subtypes, function(iwidget) {
+				return iwidget.label;
+			}).length > 0;
+
 			// layout widgets
 			var visibleWidgets = dojo.map(order, function(iname) {
 				return widgets[iname];
 			});
 			var rowContainer = this.adopt(umc.widgets.ContainerWidget, {});
-			var hasSubTypeLabels = false;
 			dojo.forEach(order, function(iname) {
 				// add widget to row container (wrapped by a LabelPane)
+				// only keep the label for the first row
 				var iwidget = widgets[iname];
-				hasSubTypeLabels = hasSubTypeLabels || widgets[iname].label;
+				var label = irow !== 0 ? '' : null;
+				if (umc.tools.inheritsFrom(iwidget, 'umc.widgets.Button')) {
+					label = irow !== 0 ? '' : '&nbsp;'
+				}
 				rowContainer.addChild(new umc.widgets.LabelPane({
 					disabled: this.disabled,
 					content: iwidget,
-					label: irow !== 0 ? '' : null // only keep the label for the first row
+					label: label
 				}));
 
 				// register to 'onChange' events
