@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.157-1) unstable; urgency=low
+
+  * integrated CSS-dojo-theme update and adjusted icon names (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 31 Oct 2011 19:31:35 +0100
+
 univention-management-console-frontend (1.0.156-1) unstable; urgency=low
 
   * add about and license dialog; Bug #23655

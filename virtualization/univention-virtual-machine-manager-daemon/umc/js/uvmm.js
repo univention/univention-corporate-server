@@ -70,7 +70,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'add',
 			label: this._( 'Add %s', this.objectNameSingular ),
 			description: this._( 'Add a new %s.', this.objectNameSingular ),
-			iconClass: 'dijitIconNewTask',
+			iconClass: 'umcIconAdd',
 			isContextAction: false,
 			isStandardAction: true,
 			callback: dojo.hitch(this, 'showNewObjectDialog')
@@ -78,7 +78,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'edit',
 			label: this._( 'Edit' ),
 			description: this._( 'Edit the %s.', this.objectNameSingular ),
-			iconClass: 'dijitIconEdit',
+			iconClass: 'umcIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
 			callback: dojo.hitch(this, function(ids, items) {
@@ -106,7 +106,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			description: this._( 'Deleting the selected %s.', this.objectNamePlural ),
 			isStandardAction: true,
 			isMultiAction: true,
-			iconClass: 'dijitIconDelete',
+			iconClass: 'umcIconDelete',
 			callback: dojo.hitch(this, function(ids) {
 				if (ids.length) {
 					this.removeObjects(ids);
@@ -193,21 +193,21 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var menu = dijit.Menu({});
 		menu.addChild(new dijit.MenuItem({
 			label: this._( 'Edit' ),
-			iconClass: 'dijitIconEdit',
+			iconClass: 'umcIconEdit',
 			onClick: dojo.hitch(this, function(e) {
 				this.createDetailPage(this._navContextItem.objectType, this._navContextItem.id);
 			})
 		}));
 		menu.addChild(new dijit.MenuItem({
 			label: this._( 'Delete' ),
-			iconClass: 'dijitIconDelete',
+			iconClass: 'umcIconDelete',
 			onClick: dojo.hitch(this, function() {
 				this.removeObjects(this._navContextItem.id);
 			})
 		}));
 		menu.addChild(new dijit.MenuItem({
 			label: this._( 'Reload' ),
-			iconClass: 'dijitIconUndo',
+			iconClass: 'umcIconRefresh',
 			onClick: dojo.hitch(this, function() {
 				this._tree.reload();
 			})

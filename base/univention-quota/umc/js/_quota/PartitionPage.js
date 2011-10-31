@@ -70,7 +70,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		var actions = [{
 			name: 'add',
 			label: this._('Add user'),
-			iconClass: 'dijitIconNewTask',
+			iconClass: 'umcIconAdd',
 			isContextAction: false,
 			isStandardAction: true,
 			isMultiAction: false,
@@ -80,7 +80,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		}, {
 			name: 'edit',
 			label: this._('Configure'),
-			iconClass: 'dijitIconEdit',
+			iconClass: 'umcIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
 			callback: dojo.hitch(this, function(data) {
@@ -90,7 +90,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		}, {
 			name: 'remove',
 			label: this._('Remove'),
-			iconClass: 'dijitIconDelete',
+			iconClass: 'umcIconDelete',
 			isStandardAction: true,
 			isMultiAction: true,
 			callback: dojo.hitch(this, function() {

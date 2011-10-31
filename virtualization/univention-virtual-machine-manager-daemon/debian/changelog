@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.20-1) unstable; urgency=low
+
+  * UMC: fixed icon names (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 31 Oct 2011 19:25:42 +0100
+
 univention-virtual-machine-manager-daemon (1.0.19-1) unstable; urgency=low
 
   * UMC: adapted tree and query to use uvm/query

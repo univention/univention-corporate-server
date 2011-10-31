@@ -54,7 +54,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'add',
 			label: this._( 'Add' ),
 			description: this._( 'Adding a new UCR variable' ),
-			iconClass: 'dijitIconNewTask',
+			iconClass: 'umcIconAdd',
 			isContextAction: false,
 			isStandardAction: true,
 			callback: dojo.hitch(this, function() {
@@ -64,7 +64,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'edit',
 			label: this._( 'Edit' ),
 			description: this._( 'Setting the UCR variable, editing the categories and/or description' ),
-			iconClass: 'dijitIconEdit',
+			iconClass: 'umcIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
 			callback: dojo.hitch(this, function(ids) {
@@ -76,7 +76,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'delete',
 			label: this._( 'Delete' ),
 			description: this._( 'Deleting the selected UCR variables' ),
-			iconClass: 'dijitIconDelete',
+			iconClass: 'umcIconDelete',
 			isStandardAction: true,
 			isMultiAction: true,
 			callback: dojo.hitch(this, function(ids) {

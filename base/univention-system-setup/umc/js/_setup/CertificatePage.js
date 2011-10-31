@@ -17,6 +17,9 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.setup',
 
+	// page is only visible for DC master
+	role: ['domaincontroller_backup'],
+
 	umcpCommand: umc.tools.umcpCommand,
 
 	// internal reference to the formular containing all form widgets of an UDM object

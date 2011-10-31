@@ -20,6 +20,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	//		List of all setup-pages that are visible.
 	pages: [ 'LanguagePage', 'BasisPage', 'NetworkPage', 'CertificatePage', 'SoftwarePage' ],
 
+	// 100% opacity during rendering the module
+	standbyOpacity: 1,
+
 	_pages: null,
 
 	_orgValues: null,
@@ -29,8 +32,18 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	buildRendering: function() {
 		this.inherited(arguments);
 
+		// query the system role
 		this.standby(true);
+		umc.tools.ucr('server/role').then(dojo.hitch(this, function(ucr) {
+			this.renderPages(ucr['server/role']);
+			this.standby(false);
+			this.standbyOpacity = 0.75;  // set back the opacity to 75%
+		}), dojo.hitch(this, function() {
+			this.standby(false);
+		}));
+	},
 
+	renderPages: function(role) {
 		if (this.moduleFlavor == 'wizard') {
 			// wizard mode
 
@@ -40,6 +53,12 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				// load page class
 				var ipath = 'umc.modules._setup.' + iclass;
 				dojo['require'](ipath);
+
+				// check whether 'role' is set and the page should be visible or not
+				var Class = new dojo.getObject(ipath);
+				if (Class.store && dojo.indexOf(Class.store, role) < 0) {
+					return true;
+				}
 
 				// get the buttons we need
 				var buttons = [];
@@ -72,7 +91,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}
 
 				// make a new page
-				var ipage = new dojo.getObject(ipath)({
+				var ipage = new Class({
 					umcpCommand: dojo.hitch(this, 'umcpCommand'),
 					footerButtons: buttons,
 					onSave: dojo.hitch(this, function() {

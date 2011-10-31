@@ -35,7 +35,7 @@ dojo.declare("umc.modules._updater.ComponentsPage", umc.modules._updater.Page, {
                 name:				'add',
                 label:				this._( 'Add' ),
                 description:		this._( 'Add a new component definition' ),
-                iconClass:			'dijitIconNewTask',
+                iconClass:			'umcIconAdd',
                 isContextAction:	false,
                 isStandardAction:	true,
                 callback: dojo.hitch(this, function() {
@@ -46,7 +46,7 @@ dojo.declare("umc.modules._updater.ComponentsPage", umc.modules._updater.Page, {
                 name:				'refresh',
                 label:				this._( 'Refresh' ),
                 description:		this._( 'Refresh display to see current values' ),
-                iconClass:			'dijitIconSearch',
+                iconClass:			'umcIconRefresh',
                 isContextAction:	false,
                 isStandardAction:	true,
                 callback: dojo.hitch(this, function() {
@@ -99,7 +99,7 @@ dojo.declare("umc.modules._updater.ComponentsPage", umc.modules._updater.Page, {
             	name:				'install',
             	label:				this._("Install"),
             	description:		this._("Install the component's default package(s)"),
-//            	iconClass:			'dijitIconPackage',
+//            	iconClass:			'umcIconRefresh',
             	isStandardAction:	true,
             	isMultiAction:		false,
             	isContextAction:	true,
@@ -119,7 +119,7 @@ dojo.declare("umc.modules._updater.ComponentsPage", umc.modules._updater.Page, {
                 name:				'edit',
                 label:				this._( 'Edit' ),
                 description:		this._( 'Edit the detail information about this component' ),
-                iconClass:			'dijitIconEdit',
+                iconClass:			'umcIconEdit',
                 isStandardAction:	true,
                 isMultiAction:		false,
                 callback: dojo.hitch(this, function(ids) {
@@ -138,7 +138,7 @@ dojo.declare("umc.modules._updater.ComponentsPage", umc.modules._updater.Page, {
                 name:				'delete',
                 label:				this._( 'Delete' ),
                 description:		this._( 'Delete the selected component definition' ),
-                iconClass:			'dijitIconDelete',
+                iconClass:			'umcIconDelete',
                 isStandardAction:	true,
                 // FIXME Should we really allow multiple deletions here?
                 isMultiAction:		true,

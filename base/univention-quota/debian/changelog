@@ -1,3 +1,9 @@
+univention-quota (6.0.12-1) unstable; urgency=low
+
+  * UMC: fixed icon names (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 31 Oct 2011 19:25:11 +0100
+
 univention-quota (6.0.11-1) unstable; urgency=low
 
   * fixed translation (Bug #22903)

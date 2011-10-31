@@ -255,10 +255,11 @@ DIV.dijitArrowButton {
 .dijitTextBox {
 	border: solid black 1px;
 	#overflow: hidden; 
-	width: 25em;	
+	width: 25em;
 	margin-right: 10px;
 	vertical-align: middle;
 }
+
 .dijitTextBoxReadOnly,
 .dijitTextBoxDisabled {
 	color: gray;
@@ -1140,50 +1141,51 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 	display: inline;
 }
 .dijitTabPane,
-#dijit_layout_BorderContainer_0 .SingleChild-child,
+.umc .umcTopContainer .SingleChild-child,
 .dijitAccordionContainer-child {
 	
     border: none !important;
 }
 
 /* @group Sub-Tabs */
-
-#dijit_layout_BorderContainer_0 .SingleChild .dijitTabContainerTop-tabs {
+/*.umc .umcTopContainer .SingleChild .dijitTabContainerTop-tabs,
+.umc .umcTopContainer #umc_modules_mrtg_0_tablist */
+.umc .umcTopContainer .dijitTabContainerTabListNested {
 	background-color: #ededee;
 	border: none;
 	border-top: 1px solid #fff;
 }
 
-#dijit_layout_BorderContainer_0 .SingleChild .dijitTabContainerTop-tabs .dijitTabInnerDiv {
+.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabInnerDiv {
 	background: none;
 	border-right: 1px solid #fff;
 }
 
-#dijit_layout_BorderContainer_0 .SingleChild .dijitTabContainerTop-tabs .dijitTabContent {
+.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabContent {
 	padding: 5px 7px;
 }
-#dijit_layout_BorderContainer_0 .SingleChild .dijitTabContainerTop-tabs .dijitTabChecked .dijitTabContent {
+.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabChecked .dijitTabContent {
 	padding: 5px 7px;
 	background-color: #74be4b;
 }
 
-#dijit_layout_BorderContainer_0 .SingleChild .dijitTabContainerTop-tabs .dijitTabChecked .dijitTabContent .tabLabel {
+.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabChecked .dijitTabContent .tabLabel {
 	color: #fff;
 }
 
-#dijit_layout_BorderContainer_0 .SingleChild .dijitTabContainerTop-tabs .dijitTabHover .dijitTabContent {
+.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabHover .dijitTabContent {
 	border: none;
 }
 
-#dijit_layout_BorderContainer_0 .SingleChild .dijitTabContainerTop-tabs .dijitTabHover .dijitTabInnerDiv {
+.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabHover .dijitTabInnerDiv {
 	background-color: #ddd;
 }
 
-#dijit_layout_BorderContainer_0 .SingleChild .dijitTabContainerTop-tabs .dijitTabActive .dijitTabContent {
+.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabActive .dijitTabContent {
 	border: none;
 }
 
-#dijit_layout_BorderContainer_0 .SingleChild .dijitTabContainerTop-tabs .dijitTabContainerTop-tabs {
+.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabContainerTop-tabs {
 	border: none;
 }
 
@@ -1919,6 +1921,21 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 	margin-bottom: 10px;
   background-color: #ffffff;
 }
+
+.umc .umcLabelPaneCheckBox {
+	margin-bottom: 10px;
+}
+
+.umc .umcLabelPaneCheckBox .umcLabelPaneLabeNodeRight {
+	display: inline-block;
+	padding-left: 5px;
+}
+
+.umc .umcLabelPaneCheckBox label {
+	position: relative;
+	top: 2px;
+}
+
 .umc .dijitTextBoxHover, .umc .dijitTextBoxHover .dijitButtonNode {
   border-color: #999;
   -webkit-transition-duration: 0.25s;
@@ -2063,6 +2080,10 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
   padding: 0 10px;
   text-align: center;
 	vertical-align: middle;
+}
+
+.umc .dijitDownArrowButton .dijitButtonText {
+	display: inline-block !important
 }
 
 .umc .dijitButtonHover .dijitButtonNode,
@@ -4539,9 +4560,14 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 /* @group Login */
 
 #umc_widgets_LoginDialog_0 {
-	width: 230px;
-	padding: 0 45px;
-	height: 350px !important;
+	width: 270px;
+	padding: 25px;
+	height: 300px !important;
+}
+
+#umc_widgets_LoginDialog_0 .umcTex {
+	padding: 0;
+	width: 300px !important;
 }
 
 #umc_widgets_LoginDialog_0 * {
@@ -4549,12 +4575,12 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 }
 
 #umc_widgets_LoginDialog_0 .dojoxDialogPaneContent {
-	width: 220px !important;
-	height: 320px !important;
+	/*width: 220px !important; */
+/*		height: 300px !important;*/
 	margin: 0 auto !important;
-	padding: 35px 0 0 0 !important;
+/*	padding: 35px !important;*/
+	height: 300px !important;
 }
-
 #umc_widgets_LoginDialog_0 .dojoxDialogPaneContent .contentNode {
 	margin-bottom: 10px;
 }
@@ -4593,17 +4619,17 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 	height: 105px;
 	width: 85px;
 	padding: 15px;
-	margin: 0 30px 20px 0;
+	margin: 0 27px 5px 0;
 	background-position: center 10px;
 }
-.umcCategoryPane #umc_widgets__CategoryItem_14 {
+/*.umcCategoryPane #umc_widgets__CategoryItem_14 {
 	height: 105px;
-}
+}*/
 
 /* @end */
 
 .modLaunchButton div {
-	margin-top: 70px;
+	margin-top: 60px;
 	text-align: center;
 }
 
@@ -4622,25 +4648,22 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 }
 
 .umcGridFooter {
-	margin-bottom: 10px;
-	padding-top: 10px !important;
+	margin-bottom: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 	background-color: #ededee;
 	border-top: 1px solid #000;
 	border-bottom: 2px solid #919395;
 }
 
-.umcGridFooter {
-	padding-top: 10px !important;
-}
-
-.umcCategoryPane .umcGridFooter .dijitButtonNode {
+.umcCategoryPane .dijitButtonNode {
 	padding-top: 0 !important;
 }
 
 /* @group Forms */
 
 .umcLabelPane {
-	margin-right: 5px;
+/*	margin-right: 5px;*/
 }
 
 .dijitDialog .dijitTextBox {
@@ -4652,22 +4675,21 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 }
 
 .umcLabelPaneLabelNode {
-	margin-bottom: 3px;
+	margin-bottom: 5px;
 }
 
-/*.dijitAlignBottom .umcSubmitButton .dijitButtonText {
-	display: inline-block;
-    height: 13px;
-    padding: 5px 8px 5px;
-	background-color: #74BE4B !important;
-    background-image: url("../images/button.png") !important;
-    background-position: left top !important;
-    background-repeat: repeat-x !important;
-    color: #FFFFFF;
-    font-size: 14px;
-    text-decoration: none !important;
+.umc .umcMultiSelect, .umc .umcMultiObjectSelect {
+	margin-bottom: 10px !important;
 }
-*/
+
+.umc .umcLabelPaneCheckBox .umcLabelPaneLabeNodeTop {
+	display: inline-block !important;
+	padding-left: 5px;
+}
+
+.umc .umcMultiInput {
+	margin-right: 10px;
+}
 /* @end */
 
 /* @group Dialog */
@@ -4704,14 +4726,6 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
   background: none !important;
 }
 
-/*.umc #umc_widgets_Button_0 .dijitReset {
-  background: none !important;
-  font-size: 13px;
-  text-decoration: underline;
-  color: #414142;
-}
-*/
-
 /* @end */
 
 .umcCategoryPane .dijitAlignBottom .dijitButtonNode {
@@ -4743,6 +4757,11 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 
 .umcLabelPaneCheckBox {
 	width: 25em;
+}
+
+.umc .umcLabelPaneCheckBox {
+	width: auto !important;
+	margin-right: 10px;
 }
 
 /* force scrollbars for grids, otherwise vertical scrollbars may be shown is particular circumstances */
@@ -4777,4 +4796,307 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 
 .umcButton span.dijitButtonText {
 	padding-top: 2px;
+	text-decoration: underline;
 }
+
+.umcHeaderText {
+	display: block;
+	float: left;
+	vertical-align: middle;
+	color: #fff;
+	height: auto;
+	background: none;
+	border-radius: 0;
+	border: none;
+	padding: 0;
+	box-shadow: none;
+	padding: 9px;
+	font-size: 15px;
+}
+
+.umcHeader .umcHeaderButton {
+	margin: 0;
+	display: block;
+	float: left;
+}
+
+/* @group logout button */
+.umcHeader #dijit_form_Button_0_label {
+	padding-top: 6px !important;
+}
+/* @end */
+
+.umcHeader .umcHeaderButton .dijitButtonNode {
+	height: auto !important;
+	background: none;
+	border-radius: 0;
+	border: none;
+	padding: 0;
+	box-shadow: none;
+}
+
+.umcHeader .umcHeaderButton .dijitButtonNode .dijitInline {
+	padding: 9px;
+	font-size: 15px;
+	color: #fff;
+	background: url(../../../../images/bg/top-link.png) repeat-y left 5px;
+}
+
+.umcHeader .dijitDownArrowButton {
+	display: block;
+	overflow: hidden;
+}
+
+.umcHeader .dijitDownArrowButton .dijitArrowButtonInner {
+	position: relative;
+	top: 14px;
+}
+
+.umcHeader .dijitDownArrowButton span {
+	display: block;
+	float: left;
+}
+
+.umcHeader .dijitButtonHover,
+.umcHeader .dijitDropdownButtonHover {
+	background-color: #4d4d4f;
+}
+
+.dijitToasterContent {
+	border: 1px solid #73C74A !important;
+	background: #fff !important;
+	border-top: 0 !important;
+	color: #555 !important;
+	padding: 10px !important;
+}
+
+/* @group umc input sizes */
+.umc .umcSize-One {
+		width: 25em;
+}
+
+.umc .umcSize-OneThird {
+		width: 8em;
+}
+
+.umc .umcSize-Half {
+		width: 12em;
+}
+
+.umc .umcSize-TwoThirds {
+		width: 16em;
+}
+
+.umc .umcSize-FourThirds {
+		width: 32em;
+}
+
+.umc .umcSize-OneAndAHalf {
+		width: 37em;
+}
+
+.umc .umcSize-FiveThirds {
+		width: 40em;
+}
+/* @end */
+
+.umc .univentionLogo {
+	display: block;
+	float: left;
+	margin-top: 8px;
+}
+
+/* @from style css */
+html {
+	background: url(../../../../images/bg/page.png) repeat-y center #eeeeef;
+}
+
+body {
+	font-family: Helvetica, "Helvetica Neue", Arial, Geneva, sans-serif;
+	color: #414142;
+	/* disable scrollbars for the main window, long combo boxes may cause scrollbars to be shown */
+	overflow-y: hidden;
+}
+
+a {
+	color: #74be4b;
+}
+
+form {
+	margin-bottom: 15px;
+}
+
+.umcTopContainer {
+	height: 100%;
+	width: 960px;
+	margin: 0 auto;
+	background: #fff;
+}
+
+.dijitLayoutContainer {
+	overflow: visible !important;
+}
+
+/* @group Header */
+
+.umcUNIXAccessRights-table {
+	width: auto;
+	padding-top: 4px;
+	padding-bottom: 10px;
+	padding-right: 15px;
+}
+
+.umcUNIXAccessRights-valueCell {
+	width: auto;
+	padding:4px;
+}
+
+.umcHeader {
+	height: 34px;
+	overflow: hidden;
+	background: url(../../../../images/bg/top.png) repeat-x top;
+}
+
+/* Useless spans? */
+.umcHeader .umcHeaderButton .dijitButtonNode .dijitIcon {
+	width: auto;
+	height: auto;
+	padding: 0;
+	background: none;
+}
+
+/* Logout-Button */
+.umcHeader .umcHeaderButton .dijitButtonNode #dijit_form_Button_3_label {
+	padding: 0;
+	background: none;
+}
+
+/* @group User-Dropdown */
+
+#dijit_form_DropDownButton_0 {
+	border-right: 5px solid #313133;
+}
+
+#dijit_form_DropDownButton_0_label {
+	padding-right: 5px;
+}
+
+/* @end */
+
+.umcHeader .umcHeaderButton .dijitButtonNode .dijitArrowButtonInner {
+	width: 8px;
+	height: 5px;
+	padding: 0 10px 0 0;
+	background-image: url(../../../../images/arrow-down.png);
+}
+
+/* @end */
+
+.umcMainTabContainer {
+	padding: 20px 30px;
+}
+
+.umcPageHeader h1 {
+	margin: 15px 0;
+	padding: 0 0 10px 7px;
+	border-bottom: 1px solid #989a9c;
+}
+
+.umcPageNote {
+	margin-bottom: 15px;
+	border: 2px solid #DBDBDB;
+	padding: 10px;
+}
+
+.dijitTitlePane {
+	margin: 0 0 15px 0;
+}
+
+.umc .dijitButton .dijitButtonNode {
+  height: 20px;
+  padding: 0 2px;
+}
+
+/* @group notifications */
+.dijitToasterContent {
+  padding-top: 2px !important;
+  padding-bottom: 5px !important;
+  font-size: 12px !important;
+}
+/* @end */
+
+/* @group footer */
+.umcPageFooter {
+  border-top: 1px solid #414142;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+/* @end */
+
+.umcUnsetPolicy {
+	text-decoration:underline; 
+	color:#888;
+}
+
+.univentionLogo {
+	background-image: url(../../../../images/univention_logo.png) !important;
+	background-position: 10px 0 !important;
+	width: 165px !important;
+	height: 18px !important;
+	background-repeat: no-repeat !important;
+}
+
+/* @end */
+
+p {
+	margin-bottom: 0.25em;
+	margin-top: 0.25em;
+}
+
+/* force the default cursor in grid cells (no text cursor) */
+.umc .dojoxGridCell {
+	cursor: default;
+}
+
+.umcZeroHeight {
+	height: 0;
+	overflow: hidden;
+}
+
+/* UMC icons */
+.umcIconDelete,
+.umcIconEdit,
+.umcIconAdd,
+.umcIconReport,
+.umcIconUp,
+.umcIconRefresh {
+	background-image: url(images/commonIcons.png);
+	width: 16px;
+	height: 16px;
+}
+
+.umcIconDelete {
+	background-position: 0px 0px;
+}
+
+.umcIconEdit {
+	background-position: -16px 0px;
+}
+
+.umcIconAdd {
+	background-position: -32px 0px;
+}
+
+.umcIconReport {
+	background-position: -48px 0px;
+}
+
+.umcIconUp {
+	background-position: -64px 0px;
+}
+
+.umcIconRefresh {
+	background-position: -80px 0px;
+}
+
+

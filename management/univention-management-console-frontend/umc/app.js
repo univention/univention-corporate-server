@@ -441,7 +441,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			}
 		}));
 		headerLeft.addChild(new dijit.form.DropDownButton({
-			label: '&nbsp;',
 			'class': 'umcHeaderButton univentionButton',
 			iconClass: 'univentionLogo',
 			dropDown: menu

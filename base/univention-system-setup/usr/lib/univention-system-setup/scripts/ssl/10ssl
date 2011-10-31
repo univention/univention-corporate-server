@@ -49,6 +49,11 @@ done
 
 eval "$(univention-config-registry shell)"
 
+# SSL certificate can only be created on a DC master
+if [ "$server_role" != "domaincontroller_master" ]; then 
+	exit 0
+fi
+
 new_ssl_common=$(get_profile_var "ssl/common")
 new_ssl_locality=$(get_profile_var "ssl/locality")
 new_ssl_organization=$(get_profile_var "ssl/organization")

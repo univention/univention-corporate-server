@@ -74,7 +74,7 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		container = new umc.widgets.ContainerWidget({});
 		container.addChild(new umc.widgets.Button({
 			label: this._('Add'),
-			iconClass: 'dijitIconNewTask',
+			iconClass: 'umcIconAdd',
 			onClick: dojo.hitch(this, function() {
 				if (!this._detailDialog) {
 					// dialog does not exist, create a new one
@@ -93,7 +93,7 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		}));
 		container.addChild(new umc.widgets.Button({
 			label: this._('Remove'),
-			iconClass: 'dijitIconDelete',
+			iconClass: 'umcIconDelete',
 			onClick: dojo.hitch(this, '_removeSelectedElements'),
 			style: 'float: right;'
 		}));
@@ -242,7 +242,7 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 		}));
 		this._container.addChild(new umc.widgets.Button({
 			label: this._('Add'),
-			iconClass: 'dijitIconNewTask',
+			iconClass: 'umcIconAdd',
 			style: 'float: right;',
 			onClick: dojo.hitch(this, function() {
 				// get all elements an trigger onAdd event

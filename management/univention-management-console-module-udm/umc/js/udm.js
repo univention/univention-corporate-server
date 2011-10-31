@@ -277,7 +277,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			name: 'add',
 			label: this._( 'Add %s', this.objectNameSingular ),
 			description: this._( 'Add a new %s.', this.objectNameSingular ),
-			iconClass: 'dijitIconNewTask',
+			iconClass: 'umcIconAdd',
 			isContextAction: false,
 			isStandardAction: true,
 			callback: dojo.hitch(this, 'showNewObjectDialog')
@@ -285,7 +285,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			name: 'edit',
 			label: this._( 'Edit' ),
 			description: this._( 'Edit the %s.', this.objectNameSingular ),
-			iconClass: 'dijitIconEdit',
+			iconClass: 'umcIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
 			callback: dojo.hitch(this, function(ids, items) {
@@ -317,7 +317,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			description: this._( 'Deleting the selected %s.', this.objectNamePlural ),
 			isStandardAction: true,
 			isMultiAction: true,
-			iconClass: 'dijitIconDelete',
+			iconClass: 'umcIconDelete',
 			callback: dojo.hitch(this, function(ids) {
 				if (ids.length) {
 					this.removeObjects(ids);
@@ -581,21 +581,21 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			var menu = dijit.Menu({});
 			menu.addChild(new dijit.MenuItem({
 				label: this._( 'Edit' ),
-				iconClass: 'dijitIconEdit',
+				iconClass: 'umcIconEdit',
 				onClick: dojo.hitch(this, function(e) {
 					this.createDetailPage(this._navContextItem.objectType, this._navContextItem.id);
 				})
 			}));
 			menu.addChild(new dijit.MenuItem({
 				label: this._( 'Delete' ),
-				iconClass: 'dijitIconDelete',
+				iconClass: 'umcIconDelete',
 				onClick: dojo.hitch(this, function() {
 					this.removeObjects(this._navContextItem.id, true);
 				})
 			}));
 			menu.addChild(new dijit.MenuItem({
 				label: this._( 'Reload' ),
-				iconClass: 'dijitIconUndo',
+				iconClass: 'umcIconRefresh',
 				onClick: dojo.hitch(this, 'reloadTree')
 			}));
 
@@ -772,7 +772,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			if ( null === this._reportButton ) {
 				this._reportButton = this.adopt( umc.widgets.Button, {
 					label: this._( 'Create report' ),
-					iconClass: 'dijitIconDocuments', // FIXME: we need a new icon
+					iconClass: 'umcIconReport', // FIXME: we need a new icon
 					callback: dojo.hitch( this, 'createReport', dojo.map( items, function( item ) { return item.$dn$; } ) )
 				} );
 				this._grid._toolbar.addChild( this._reportButton );

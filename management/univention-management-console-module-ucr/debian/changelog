@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (1.0.28-1) unstable; urgency=low
+
+  * fixed icon names (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 31 Oct 2011 19:25:34 +0100
+
 univention-management-console-module-ucr (1.0.27-1) unstable; urgency=low
 
   * import patch from UCS 2.4-3: supprt readonly UCR variables; Bug #23738

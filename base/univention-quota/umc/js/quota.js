@@ -65,7 +65,7 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 		}, {
 			name: 'edit',
 			label: this._('Configure'),
-			iconClass: 'dijitIconEdit',
+			iconClass: 'umcIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
 			canExecute: function(item) {
