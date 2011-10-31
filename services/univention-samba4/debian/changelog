@@ -1,4 +1,4 @@
-univention-samba4 (1.0.83-1) unstable; urgency=low
+univention-samba4 (1.0.84-1) unstable; urgency=low
 
   * Change the dns/backend to samba4 only whether a S4 Connector is
     installed in our domain (Bug #24274)
