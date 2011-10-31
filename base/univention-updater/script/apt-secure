@@ -109,7 +109,7 @@ do
 	esac
 	value=${!key}
 	case "$value" in
-		*"apt-get "*) rewrite "$key" "$value" ;;
+		*"apt-get "*) rewrite "${key//_//}" "$value" ;;
 	esac
 done
 if [ -n "$new" ]

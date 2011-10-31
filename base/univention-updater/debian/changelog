@@ -1,3 +1,9 @@
+univention-updater (7.0.76-3) unstable; urgency=low
+
+  * Fix shell escaping of / to _ (Bug #24172)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 31 Oct 2011 10:21:12 +0100
+
 univention-updater (7.0.76-2) unstable; urgency=low
 
   * Add copyright CLOB (Bug #24172)
