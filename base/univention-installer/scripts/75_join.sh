@@ -107,7 +107,10 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	ln -s /var/univention-join/joined /usr/share/univention-join/.joined
         ln -s /var/univention-join/status /usr/lib/univention-install/.index.txt
 
-	if [ ! "$call_master_joinscripts" = "false" -a ! "$call_master_joinscripts" = "no" -a ! "$call_master_joinscripts" = "FALSE" -a ! "$call_master_joinscripts" = "False" ] ; then
+    run_joinscripts="$(echo "$call_master_joinscripts" | tr '[:upper:]' '[:lower:]')"
+	if [ "$run_joinscripts" = "false" -o "$run_joinscripts" = "no" ] ; then
+		echo "Warning: Join script execution has been disabled via call_master_joinscripts=$call_master_joinscripts"
+    else
 	 	for i in /usr/lib/univention-install/*.inst; do
 	 		echo "Configure \`basename \$i\`" | progress_filter
 	 		echo "Configure \`basename \$i\`" >>/var/log/univention/join.log

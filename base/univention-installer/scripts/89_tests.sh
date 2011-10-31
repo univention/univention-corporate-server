@@ -83,8 +83,10 @@ if [ -n "$system_role" ]; then
 	export server_role="$system_role"
 fi
 
+should_be_joined="$(echo "$call_master_joinscripts" | tr '[:upper:]' '[:lower:]')"
+
 #only check on a DC Master
-if [ "$server_role" = "domaincontroller_master" ]; then
+if [ "$server_role" = "domaincontroller_master" -a ! "$should_be_joined" = "false" -a ! "$should_be_joined" = "no" ]; then
 
 	# Administrator
 	chroot $instmnt << __EOF__
@@ -101,7 +103,7 @@ __EOF__
 fi
 
 # test join status
-if [ ! "$auto_join" = "false" -a ! "${system_role}" = "basesystem" ] ; then
+if [ ! "$auto_join" = "false" -a ! "${system_role}" = "basesystem"  -a ! "$should_be_joined" = "false" -a ! "$should_be_joined" = "no" ] ; then
 chroot $instmnt << __EOF__
 /usr/share/univention-join/check_join_status | grep -c "Joined successful" || exit 1
 __EOF__
