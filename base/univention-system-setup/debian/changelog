@@ -1,3 +1,9 @@
+univention-system-setup (5.0.31-1) unstable; urgency=low
+
+  * remove pid file after use (Bug #23870)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 31 Oct 2011 15:20:37 +0100
+
 univention-system-setup (5.0.30-1) unstable; urgency=low
 
   * UMC: fixed check for correct windows domain name (Bug #22908) 
