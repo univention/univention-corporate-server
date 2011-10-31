@@ -12,7 +12,7 @@ Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  squid3,
  univention-config,
- winbind,
+ winbind | winbind4,
  python-ipaddr
 Breaks: squid
 Recommends: univention-nagios-squid

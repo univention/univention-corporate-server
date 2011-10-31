@@ -1,3 +1,9 @@
+univention-squid (5.0.3-12) unstable; urgency=low
+
+  * Depend on winbind | winbind4 (Bug #22576) 	 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 31 Oct 2011 15:56:11 +0100
+
 univention-squid (5.0.3-11) unstable; urgency=low
 
   * Move copying of squid3.secret to join script, when the postinst is run during a
