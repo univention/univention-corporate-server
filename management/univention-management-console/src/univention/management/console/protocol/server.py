@@ -32,9 +32,12 @@
 # <http://www.gnu.org/licenses/>.
 
 # python packages
+import datetime
 import fcntl
+import gzip
 import os
 import pwd
+import re
 import socket
 import sys
 
@@ -161,6 +164,7 @@ class MagicBucket( object ):
 
 		return True
 
+	CHANGELOG_VERSION = re.compile( '^[^(]*\(([^)]*)\).*' )
 	def _handle( self, state, msg ):
 		'''Ensures that commands are only passed to the processor if a
 		successful authentication has been completed.'''
@@ -174,17 +178,36 @@ class MagicBucket( object ):
 		elif msg.command == 'AUTH':
 			state.authResponse = Response( msg )
 			state.authenticate( msg.body[ 'username' ],	msg.body[ 'password' ] )
-		elif msg.command == 'GET' and 'ucr' in msg.arguments:
+		elif msg.command == 'GET' and ( 'ucr' in msg.arguments or 'info' in msg.arguments ):
 			response = Response( msg )
 			response.result = {}
-			for value in msg.options:
-				if value[ -1 ] == '*':
-					value = value[ : -1 ]
-					for var in filter( lambda x: x.startswith( value ), ucr.keys() ):
-						response.result[ var ] = ucr.get( var )
-				else:
-					response.result[ value ] = ucr.get( value )
 			response.status = SUCCESS
+			if 'ucr' in msg.arguments:
+				for value in msg.options:
+					if value[ -1 ] == '*':
+						value = value[ : -1 ]
+						for var in filter( lambda x: x.startswith( value ), ucr.keys() ):
+							response.result[ var ] = ucr.get( var )
+					else:
+						response.result[ value ] = ucr.get( value )
+			elif 'info' in msg.arguments:
+				try:
+					fd = gzip.open( '/usr/share/doc/univention-management-console-server/changelog.Debian.gz' )
+					line = fd.readline()
+					fd.close()
+					match = MagicBucket.CHANGELOG_VERSION.match( line )
+					if not match:
+						raise IOError
+					response.result[ 'umc_version' ] = match.groups()[ 0 ]
+					response.result[ 'ucs_version' ] = '{0}-{1} errata{2} ({3})'.format( ucr.get( 'version/version', '' ), ucr.get( 'version/patchlevel', '' ), ucr.get( 'version/erratalevel', '0' ), ucr.get( 'version/releasename', '' ) )
+					response.result[ 'server' ] = '{0}.{1}'.format( ucr.get( 'hostname', '' ), ucr.get( 'domainname', '' ) )
+					import locale
+					locale.setlocale( locale.LC_ALL, 'de_DE.UTF-8' )
+					response.result[ 'ssl_validity_date' ] = datetime.datetime.fromtimestamp( int( ucr.get( 'ssl/validity/days', '0' ) ) * 24 * 60 * 60 ).strftime( "%x" )
+				except IOError:
+					response.status = BAD_REQUEST_FORBIDDEN
+					pass
+
 			self._response( response, state )
 		elif msg.command == 'STATISTICS':
 			response = Response( msg )

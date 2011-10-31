@@ -1,3 +1,10 @@
+univention-management-console (4.0.75-1) unstable; urgency=low
+
+  * implement UMC core command GET info to retrieve details about the
+    currently running UMC server; Bug #23655
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 Oct 2011 18:40:59 +0100
+
 univention-management-console (4.0.74-2) unstable; urgency=low
 
   * added UMC services module to the dependencies (Bug #22900)

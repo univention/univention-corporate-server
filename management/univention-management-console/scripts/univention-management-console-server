@@ -47,12 +47,17 @@ from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunn
 from daemon.daemon import set_signal_handlers
 
 from univention.management.console.log import CORE, log_init
-from univention.management.console.config import SERVER_DEBUG_LEVEL
+from univention.management.console.config import SERVER_DEBUG_LEVEL, ucr
 
 server = None
 
 class UMC_Daemon( DaemonRunner ):
 	def __init__( self ):
+		default_debug = SERVER_DEBUG_LEVEL
+		default_locale = ucr.get( 'locale/default', 'C' )
+		colon = default_locale.find( ':' )
+		if colon > 0:
+			default_locale = default_locale[ : colon ]
 		self.parser = OptionParser()
 		self.parser.add_option( '-n', '--no-daemon', action = 'store_false',
 						   dest = 'daemon_mode', default = True,
@@ -61,10 +66,8 @@ class UMC_Daemon( DaemonRunner ):
 						   dest = 'port', default = 6670,
 						   help = 'defines an alternative port number [default %default]' )
 		self.parser.add_option( '-l', '--language', type = 'string', action = 'store',
-						   dest = 'language', default = 'C',
+						   dest = 'language', default = default_locale,
 						   help = 'defines the language to use [default: %default]' )
-
-		default_debug = SERVER_DEBUG_LEVEL
 		self.parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = default_debug,
 						   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
 		self.parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-server',
