@@ -539,11 +539,11 @@ dojo.mixin(umc.tools, {
 		return; // undefined
 	},
 
-	ucr: function(/*String*/ query) {
+	ucr: function(/*String|String[]*/ query) {
 		// summary:
 		//		Function that fetches with the given query the UCR variables.
-		// query: String
-		//		Query string that is matched on the UCR variable names.
+		// query: String|String[]
+		//		Query string (or array of query strings) that is matched on the UCR variable names.
 		// return: dojo.Deferred
 		//		Returns a dojo.Deferred that expects a callback to which is passed
 		//		a dict of variable name -> value entries.

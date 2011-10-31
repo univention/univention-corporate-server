@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.155-1) unstable; urgency=low
+
+  * fixed documentation of umc.tools.ucr() (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 31 Oct 2011 15:38:27 +0100
+
 univention-management-console-frontend (1.0.154-1) unstable; urgency=low
 
   * fixed umc.dialog.alert() to show widgets, as well
