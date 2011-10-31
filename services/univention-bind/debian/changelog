@@ -1,3 +1,9 @@
+univention-bind (6.0.31-1) unstable; urgency=low
+
+  * IPv6 fix: use univention-ipcal6 (Bug #23942)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 31 Oct 2011 17:15:00 +0100
+
 univention-bind (6.0.30-1) unstable; urgency=low
 
   * Adjust service registration to UCS 3.0 (Bug #23168)
