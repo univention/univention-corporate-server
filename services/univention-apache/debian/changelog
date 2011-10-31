@@ -1,3 +1,9 @@
+univention-apache (5.0.6-1) unstable; urgency=low
+
+  * activate SSL for all IP addresses (Bug #24258)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 31 Oct 2011 14:39:24 +0100
+
 univention-apache (5.0.5-1) unstable; urgency=low
 
   * added AllowOverride FileInfo for /var/www/ (Bug #22513)
