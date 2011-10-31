@@ -503,7 +503,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// add logout button
 		headerRight.addChild(new dijit.form.Button({
 			label: '<img src="images/logout.png">',
-			'class': 'umcHeaderButton',
+			'class': 'umcHeaderButton umcLogoutButton',
 			onClick: dojo.hitch(this, function() {
 				umc.dialog.confirm(this._('Do you really want to logout?'), [{
 					label: this._('Logout'),

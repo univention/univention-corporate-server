@@ -31,6 +31,7 @@ dojo.declare("umc.widgets._FormWidgetMixin", null, {
 		if ( this.sizeClass ) {
 			dojo.addClass( this.domNode, 'umcSize-' + this.sizeClass );
 		}
+		dojo.addClass( this.domNode, 'umcFormWidget' );
 	},
 
 	// provide 'onChange' method stub in case it does not exist yet

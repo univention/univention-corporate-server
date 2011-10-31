@@ -19,6 +19,14 @@ dojo.declare("umc.widgets.DateBox", [
 
 	_dateBox: null,
 
+	sizeClass: null,
+
+	postMixInProperties: function() {
+		this.inherited(arguments);
+
+		this.sizeClass = null;
+	},
+
 	buildRendering: function() {
 		this.inherited(arguments);
 

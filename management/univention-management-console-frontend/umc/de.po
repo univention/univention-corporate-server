@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-31 19:32+0100\n"
+"POT-Creation-Date: 2011-10-31 20:53+0100\n"
 "PO-Revision-Date: 2011-10-31 18:27+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,7 +80,7 @@ msgstr ""
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
-#: umc/app.js:517 umc/widgets/MultiObjectSelect.js:232
+#: umc/app.js:516 umc/widgets/MultiObjectSelect.js:232
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -96,7 +96,7 @@ msgstr "Schließen"
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:481
+#: umc/app.js:480
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -112,7 +112,7 @@ msgstr "Aktuelles Handbuch (PDF)"
 msgid "Desktops"
 msgstr "Desktops"
 
-#: umc/app.js:509
+#: umc/app.js:508
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
@@ -146,7 +146,7 @@ msgstr ""
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/app.js:461
+#: umc/app.js:460
 #, python-format
 msgid "Host: %(host)s.%(domain)s"
 msgstr ""
@@ -224,7 +224,7 @@ msgstr "Anmelden"
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:510
+#: umc/app.js:509
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -232,7 +232,7 @@ msgstr "Abmelden"
 msgid "Manual and documentation"
 msgstr "Handbücher und Dokumentation"
 
-#: umc/app.js:489
+#: umc/app.js:488
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
@@ -349,7 +349,7 @@ msgstr ""
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
-#: umc/app.js:474
+#: umc/app.js:473
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -423,7 +423,7 @@ msgstr "Univention Webseite"
 msgid "User accounts"
 msgstr "Benutzerkonten"
 
-#: umc/app.js:498
+#: umc/app.js:497
 #, python-format
 msgid "User: %s"
 msgstr "Benutzer: %s"

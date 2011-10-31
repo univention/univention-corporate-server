@@ -4782,7 +4782,15 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
   color: #414142 !important;
   font-size: 12px;
   text-decoration: underline;
+  padding-left: 0;
+  padding-right: 0;
 }
+
+/* switch off left padding for action buttons in the grid footer */
+.umc .umcGridFooter .dijitButton .dijitButtonNode {
+	padding-left: 0;
+}
+
 /* @end */
 
 .umcPageHelpText {
@@ -5061,6 +5069,11 @@ p {
 .umcZeroHeight {
 	height: 0;
 	overflow: hidden;
+}
+
+/* lower the distance between icon and button text */
+.umc .dijitButton .dijitIcon {
+	margin-right: -5px;
 }
 
 /* UMC icons */
