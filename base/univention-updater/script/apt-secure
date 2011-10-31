@@ -1,0 +1,91 @@
+#!/bin/bash
+#
+# Enable secure APT package verification (Bug #24172)
+#
+shopt -s extglob
+
+usage () {
+	local rv=$1
+	echo "usage: ${0##*/} [-hdn]"
+	echo
+	echo " -h, --help     Print help screen"
+	echo " -d, --debug    Enable additional debug output"
+	echo " -n, --dry-run  Only print final 'ucr set' command."
+	exit $rv
+}
+
+debug () { :; }
+dry=
+while [ $# -ge 1 ]
+do
+	case "$1" in
+	-d|--debug) debug () { echo "$@" >&2 ; } ;;
+	-n|--no-act|--dry-run) dry=echo ;;
+	-h|--help) usage 0 ;;
+	-*) usage 2 >&2 ;;
+	esac
+	shift
+done
+
+unset ${!update_commands_*}
+eval "$(univention-config-registry --shell search --non-empty ^update/commands/)"
+
+declare -a new=(update/secure_apt=yes)
+rewrite () {
+	local key=$1
+	local value=$2
+	set -- $2 # IFS
+	declare -a new_args=("--trivial-only=no" "--assume-yes" "--quiet=1")
+	while [ $# -ge 1 ]
+	do
+		declare -a arg=("$1")
+		shift || return 2
+		case "${arg[0]}" in
+			# Keep some commands unmodified
+			update) return 0 ;;
+			remove) return 0 ;;
+			purge) return 0 ;;
+			clean) return 0 ;;
+			autoclean) return 0 ;;
+			check) return 0 ;;
+			# Remove several options for overwrite later
+			--force-yes) continue ;;
+			-y|--yes|--assume-yes) continue ;;
+			--trivial-only) continue ;;
+			-+(q)|--quiet|--silent) continue ;;
+			-o)
+			arg+=("$1")
+			shift || return 2
+			case "${arg[1]}" in
+				APT::Get::Force-Yes*) continue ;;
+				APT::Get::Trivial-Only*) continue ;;
+			esac
+			;;
+		esac
+		# otherwise keep options
+		new_args+=("${arg[@]}")
+	done
+	local new_value="${new_args[*]}"
+	if [ "$value" != "${new_value}" ]
+	then
+		debug "KEY: $key"
+		debug "OLD: $value"
+		debug "NEW: $new_value"
+		new+=("$key=$new_value")
+	fi
+}
+
+for key in ${!update_commands_*}
+do
+	case "$key" in
+		*_interactive) continue ;;
+	esac
+	value=${!key}
+	case "$value" in
+		*"apt-get "*) rewrite "$key" "$value" ;;
+	esac
+done
+if [ -n "$new" ]
+then
+	$dry univention-config-registry set "${new[@]}"
+fi

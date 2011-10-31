@@ -1,3 +1,12 @@
+univention-updater (7.0.76-1) unstable; urgency=low
+
+  * Enable apt-secure on new installs (Bug #24172)
+  * Provide script to enable apt-secure after upgrade.
+  * debian/: Add prefix univention-updater to main-packge-files.
+  * debian/univention-updater.postinst Fix RegExp to strip scheme.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 31 Oct 2011 09:06:08 +0100
+
 univention-updater (7.0.75-1) unstable; urgency=low
 
   * remove execute flag of UMC web server before starting an update; Bug #24141
