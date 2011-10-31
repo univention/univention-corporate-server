@@ -169,7 +169,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			// when the tab is changed
 			this.connect(this, 'onShow', function() {
 				this._searchForm.getWidget('objectPropertyValue').focus();
-			})
+			});
 		}));
 
 		// get the correct entry from the lists above

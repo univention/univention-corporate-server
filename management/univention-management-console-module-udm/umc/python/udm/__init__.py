@@ -45,6 +45,7 @@ from univention.management.console.log import MODULE
 
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
+import univention.admin.license as udm_license
 import univention.admin.uexceptions as udm_errors
 import univention.admin.uexceptions as uexceptions
 
@@ -117,7 +118,7 @@ class Instance( Base ):
 
 	@LDAP_Connection
 	def license( self, request, ldap_connection = None, ldap_position = None ):
-		message = ''
+		message = None
 		try:
 			# call the check_license method, handle the different exceptions, and
 			# return a user friendly message
@@ -144,10 +145,31 @@ class Instance( Base ):
 			message = _('You are currently using the "Free for personal use" edition of Univention Corporate Server.')
 		except udm_errors.licenseGPLversion:
 			message = _('Your license status could not be validated. Thus, you are not eligible to support and maintenance. If you have bought a license, please contact Univention or your vendor.')
-		if message:
-			self.finished( request.id, { 'message': message })
-		else:
-			self.finished( request.id, { 'message': None })
+
+		self.finished( request.id, { 'message' : message } )
+
+	@LDAP_Connection
+	def license_info( self, request, ldap_connection = None, ldap_position = None ):
+		license_data = {}
+		for item in ( 'licenses', 'real' ):
+			license_data[ item ] = {}
+			for lic_type in ( 'CLIENT', 'ACCOUNT', 'DESKTOP', 'GROUPWARE' ):
+				count = getattr( udm_license._license, item )[ eval( 'udm_license.License.%s' % lic_type ) ]
+				if isinstance( count, basestring ):
+					try:
+						count = int( count )
+					except:
+						count = -1
+				license_data[ item ][ lic_type.lower() ] = count
+
+		if 'UGS' in udm_license._license.licenseTypes:
+			udm_license._license.licenseTypes.remove( 'UGS' )
+		license_data[ 'licenseTypes' ] = udm_license._license.licenseTypes
+		license_data[ 'oemProductTypes' ] = udm_license._license.oemProductTypes
+		license_data[ 'endDate' ] = udm_license._license.endDate
+		license_data[ 'baseDN' ] = ucr.get( 'ldap/base' )
+
+		self.finished( request.id, license_data )
 
 	def add( self, request ):
 		"""Creates LDAP objects.

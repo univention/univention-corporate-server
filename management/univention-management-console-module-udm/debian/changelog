@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.212-1) unstable; urgency=low
+
+  * implement udm/license/info command providing details of the installed
+    license; Bug #23655
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 Oct 2011 18:45:04 +0100
+
 univention-management-console-module-udm (1.0.211-1) unstable; urgency=low
 
   * added icon to up-button dns and dhcp modules, fixed button label
