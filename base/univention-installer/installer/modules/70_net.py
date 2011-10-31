@@ -780,7 +780,6 @@ class object(content):
 		# check every interface if config is complete
 		for name, card in self.cards.items():
 			if card.get_elem('CB_IPv4').result():
-				self.debug('DHCP: %s' % card.get_elem('CB_IPv4DHCP').result())
 				dhcp = bool(card.get_elem('CB_IPv4DHCP').result())
 				addr = card.get_elem('INP_IPv4ADDR').result().strip()
 				netmask = card.get_elem('INP_IPv4NETMASK').result().strip()
@@ -793,6 +792,8 @@ class object(content):
 				# at least dhcp or valid IPv4 has to be set
 				if not(dhcp or (addr and netmask)):
 					return _('Neither DHCP is activated nor an IPv4 address with netmask has been entered for interface "%s".') % name
+				if (dhcp and not(addr and netmask)):
+					return _('For a server role an IPv4 address must be set if DHCP is enabled, please select interface "%s" and press F5 or deselect the DHCP option for interface "%s".') % (name, name)
 
 			if card.get_elem('CB_IPv6').result():
 				acceptra = bool(card.get_elem('CB_IPv6RA').result())
