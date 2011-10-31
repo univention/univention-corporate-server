@@ -1,3 +1,10 @@
+univention-lib (1.0.35-1) unstable; urgency=low
+
+  * calculate network for IPv6 (Bug #10825)
+  * IPv6 netmask is called prefix (Bug #10825)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 31 Oct 2011 14:33:48 +0100
+
 univention-lib (1.0.34-1) unstable; urgency=low
 
   * Use default instead of base for the IPv6 default (Bug #10825)
