@@ -42,8 +42,7 @@ IP="$(get_default_ip_address)"
 NETMASK="$(get_default_netmask)"
 NETWORK="$(get_default_network)"
 
-subnet=$(univention-ipcalc --netmask "$NETMASK" --ip "$IP" --output network --calcdns)
-reverse=$(univention-ipcalc --netmask "$NETMASK" --ip "$IP" --output reverse --calcdns)
+reverse=$(univention-ipcalc6 --netmask "$NETMASK" --ip "$IP" --output reverse --calcdns)
 
 wait_named () {
 	sleep ${1:-5}

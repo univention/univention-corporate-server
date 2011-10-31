@@ -1,3 +1,9 @@
+univention-ldap (8.0.63-1) unstable; urgency=low
+
+  * support IPv6 in join script (Bug #23942)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 31 Oct 2011 15:02:27 +0100
+
 univention-ldap (8.0.62-1) unstable; urgency=low
 
   * Adjust to slapd downgrade (Bug #22879)

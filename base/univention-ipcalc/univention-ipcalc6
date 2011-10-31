@@ -1,0 +1,102 @@
+#!/usr/bin/python2.6
+#
+# Univention IP Calculator (IPv6 edition)
+#
+# Copyright 2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import ipaddr
+import optparse
+
+def parseOptions():
+	parser = optparse.OptionParser()
+	parser.add_option('--ip', dest='address')
+	parser.add_option('--netmask', dest='netmask')
+	parser.add_option('--output', dest='output')
+	parser.add_option('--calcdns', dest='calcdns', action='store_true', default=False)
+	(options, args, ) = parser.parse_args()
+	if not options.calcdns:
+		raise NotImplementedError('--calcdns must be set')
+	if not options.output in ('network', 'reverse', 'pointer', ):
+		raise NotImplementedError('--output invalid')
+	if options.address is None:
+		raise ValueError('missing --ip')
+	if options.netmask is None:
+		raise ValueError('missing --netmask')
+	return options
+
+def calculateIPv6reverse(network):
+	prefixlen = network.prefixlen
+	if prefixlen == network.max_prefixlen:
+		prefixlen-= 1 # at least one part must remain for zone entry
+	reverse = list(network.ip.exploded.replace(':', ''))[:prefixlen / 4]
+	return ':'.join([''.join(reverse[i:i+4]) for i in xrange(0, len(reverse), 4)])
+
+def calculateIPv4reverse(network):
+	prefixlen = network.prefixlen
+	if prefixlen == network.max_prefixlen:
+		prefixlen-= 1 # at least one part must remain for zone entry
+	return '.'.join(network.ip.exploded.split('.')[:prefixlen / 8])
+
+def calculateIPv6network(network):
+	prefixlen = network.prefixlen
+	reverse = list(network.ip.exploded.replace(':', ''))[:prefixlen / 4]
+	return ':'.join([''.join(reverse[i:i+4]) for i in xrange(0, len(reverse), 4)])
+
+def calculateIPv4network(network):
+	prefixlen = network.prefixlen
+	return '.'.join(network.ip.exploded.split('.')[:prefixlen / 8])
+
+def calculateIPv6pointer(network):
+	return '.'.join(reversed(list(network.ip.exploded.replace(':', ''))[network.prefixlen / 4:]))
+
+def calculateIPv4pointer(network):
+	return '.'.join(reversed(network.ip.exploded.split('.')[network.prefixlen / 8:]))
+
+def main():
+	options = parseOptions()
+	ipaddr.IPAddress(options.address)
+	network = ipaddr.IPNetwork('%s/%s' % (options.address, options.netmask, ))
+	if type(network) is ipaddr.IPv6Network:
+		if options.output == 'reverse':
+			print calculateIPv6reverse(network)
+		if options.output == 'network':
+			print calculateIPv6network(network)
+		if options.output == 'pointer':
+			print calculateIPv6pointer(network)
+	elif type(network) is ipaddr.IPv4Network:
+		if options.output == 'reverse':
+			print calculateIPv4reverse(network)
+		if options.output == 'network':
+			print calculateIPv4network(network)
+		if options.output == 'pointer':
+			print calculateIPv4pointer(network)
+	else:
+		raise AssertionError('invalid type')
+
+if __name__ == "__main__":
+	main()

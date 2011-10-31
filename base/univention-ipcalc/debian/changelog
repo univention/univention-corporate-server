@@ -1,3 +1,9 @@
+univention-ipcalc (3.0.1-1) unstable; urgency=low
+
+  * add univention-ipcalc6 (Bug #23942)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 31 Oct 2011 14:59:22 +0100
+
 univention-ipcalc (3.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22511)
