@@ -1,3 +1,9 @@
+univention-system-setup (5.0.32-1) unstable; urgency=low
+
+  * support IPv6 (Bug #23997)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 31 Oct 2011 15:44:41 +0100
+
 univention-system-setup (5.0.31-1) unstable; urgency=low
 
   * remove pid file after use (Bug #23870)

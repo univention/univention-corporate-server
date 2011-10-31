@@ -5,7 +5,9 @@ usr/lib/univention-system-setup/scripts/ldif_rewrite.py           usr/lib/univen
 usr/lib/univention-system-setup/scripts/keyboard/10keyboard       usr/lib/univention-system-setup/scripts/keyboard/
 usr/lib/univention-system-setup/scripts/timezone/10timezone       usr/lib/univention-system-setup/scripts/timezone/
 usr/lib/univention-system-setup/scripts/net/10interfaces          usr/lib/univention-system-setup/scripts/net/
+usr/lib/univention-system-setup/scripts/net/11ipv6interfaces      usr/lib/univention-system-setup/scripts/net/
 usr/lib/univention-system-setup/scripts/net/12gateway             usr/lib/univention-system-setup/scripts/net/
+usr/lib/univention-system-setup/scripts/net/13ipv6gateway         usr/lib/univention-system-setup/scripts/net/
 usr/lib/univention-system-setup/scripts/net/14nameserver          usr/lib/univention-system-setup/scripts/net/
 usr/lib/univention-system-setup/scripts/net/16forwarder           usr/lib/univention-system-setup/scripts/net/
 usr/lib/univention-system-setup/scripts/net/18proxy               usr/lib/univention-system-setup/scripts/net/

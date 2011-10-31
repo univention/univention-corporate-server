@@ -1,0 +1,233 @@
+#!/bin/sh
+#
+# Univention Setup
+#  interfaces change script
+#
+# Copyright 2004-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
+
+# uses $binddn, $bindpwd, $new_ip, and $old_ip
+admin_replace_ip ()
+{
+	admin_module="$1"
+	ldap_attribute="$2"
+	admin_attribute="$3"
+	univention-directory-manager "$admin_module" list --binddn "$binddn" --bindpwd "$bindpwd" --filter "($ldap_attribute=$old_ip)" | grep ^DN | sed -e 's|^DN: ||' | while read dn; do
+		if [ -n "$4" ]; then
+			univention-directory-manager "$admin_module" modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --set "$admin_attribute=$new_ip"
+		else
+			univention-directory-manager "$admin_module" modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --append "$admin_attribute=$new_ip" --remove "$admin_attribute=$old_ip"
+		fi
+	done
+}
+
+to_change=""
+ldap_available=1
+serversystem=0
+
+eval "$(univention-config-registry shell server/role interfaces/handler)"
+
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ] || [ "$server_role" = "domaincontroller_slave" ] || [ "$server_role" = "memberserver" ]; then
+  serversystem=1
+fi
+
+for interface in eth0 eth1 eth2 eth3; do
+	for attr in default/address default/prefix acceptRA; do
+		is_variable_set "interfaces/$interface/ipv6/$attr"
+		if [ $? = 0 ]; then
+			continue
+		fi
+
+		var=$(get_profile_var "interfaces/$interface/ipv6/$attr")
+		if [ -z "$var" ]; then
+			baseconfig_unset="$baseconfig_unset interfaces/$interface/ipv6/$attr"
+		else
+			baseconfig_set="$baseconfig_set interfaces/$interface/ipv6/$attr=$var"
+		fi
+
+		if [ "$attr" = "address" ]; then
+			to_change="$to_change $interface"
+			if [ "$check_ldap_access" = "1" ]; then
+				if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+					exit 0
+				else
+					exit 1
+				fi
+			fi
+		fi
+	
+		
+	done
+done
+
+if [ "$check_ldap_access" = "1" ]; then
+	exit 0
+fi
+
+if [ "$(cat /var/run/univention-system-setup.ldap)" = "no-ldap" ]; then
+	ldap_available=0
+fi
+
+if [ -x /usr/sbin/univention-dnsedit ]; then
+	UNIVENTION_DNSEDIT="/usr/sbin/univention-dnsedit"
+else
+	UNIVENTION_DNSEDIT="/usr/share/univention-directory-manager-tools/univention-dnsedit"
+fi
+
+oldvalues=""
+newvalues=""
+
+if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
+
+	binddn=`ldap_binddn`
+	bindpwd=`ldap_bindpwd`
+
+	eval "$(univention-config-registry shell)"
+		
+	service_stop nscd samba cupsys
+
+	for device in $to_change; do
+		device=`echo "$device" | sed -e 's|^ *||'`
+		if [ -z "$device" ]; then
+			continue;
+		fi
+		new_ip=$(    get_profile_var                "interfaces/$device/ipv6/default/address")
+		old_ip=$(    univention-config-registry get "interfaces/$device/ipv6/default/address")
+ 		new_prefix=$(get_profile_var                "interfaces/$device/ipv6/default/prefix")
+		old_prefix=$(univention-config-registry get "interfaces/$device/ipv6/default/prefix")
+		old_network=$(python -c 'import ipaddr,sys;print ipaddr.IPNetwork(sys.argv[1]).network' "$old_address/$old_prefix")
+		new_network=$(python -c 'import ipaddr,sys;print ipaddr.IPNetwork(sys.argv[1]).network' "$new_address/$new_prefix")
+		if [ -z "$old_ip" ]; then
+			# There was a new interface created
+			continue
+		fi
+
+		# edit LDAP entry
+		if [ "$server_role" = "fatclient" ]; then
+			server_role="client"
+		fi
+		if [ $ldap_available = 1 ]; then
+		    ldap_dn=$(univention-directory-manager "computers/$server_role" list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(&(cn=$hostname)(aAAARecord=$old_ip))" | grep ^DN | sed -e 's|^DN: ||')
+		    if [ -n "$ldap_dn" ]; then
+				#change the ldap entry
+				if [ -n "$new_ip" ]; then
+					# check reverse zone
+					reverse=$(univention-ipcalc6 --netmask "$new_prefix" --ip "$new_ip" --output reverse --calcdns)
+					$UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists --reverse "$reverse" add zone "root@$domainname." 1 28800 10800 604800 108001 "$hostname.$domainname."
+
+					ptr=$(univention-ipcalc6 --netmask "$new_prefix" --ip "$new_ip" --output pointer --calcdns)
+					$UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists --reverse "$reverse" add ptr "$ptr" "$hostname.$domainname."
+
+					univention-directory-manager computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_dn" --set "ip=$new_ip"
+				fi
+		    fi
+		fi
+		
+
+		oldvalues="$oldvalues#$device-$old_ip-$old_prefix"
+		newvalues="$newvalues#$device-$new_ip-$new_prefix"
+
+		# change ip in baseconfig
+		# change other values in baseconfig, for example ldap/server/ip
+		univention-config-registry search --brief --value "^$old_ip$" | sed -e 's|: .*||' | grep -v "interfaces/$device/ipv6/default/address" | while read baseconfig_name; do
+			univention-config-registry set "$baseconfig_name"="$new_ip"
+		done
+
+		# set value in /etc files
+		if [ -d /etc/bind/univention.conf.d ]; then
+			for i in /etc/bind/univention.conf.d/*; do
+				sed -i "s|$old_ip\([:/].\)|$new_ip\1|g" "$i"
+			done
+		fi
+		if [ -e /var/lib/samba/wins.dat ]; then
+			sed -i "s|$old_ip |$new_ip |g" /var/lib/samba/wins.dat
+		fi
+		if [ "$ldap_available = 1" ]; then
+			admin_replace_ip "policies/thinclient" "univentionFileServer" "fileServer"
+			admin_replace_ip "policies/thinclient" "univentionAuthServer" "authServer"
+			admin_replace_ip "policies/thinclient" "univentionDesktopServer" "linuxTerminalServer"
+			admin_replace_ip "policies/ldapserver" "univentionLDAPServer" "ldapServer"
+			admin_replace_ip "policies/dhcp_boot" "univentionDhcpBootServer" "boot_server" "1"
+			admin_replace_ip "policies/dhcp_dns" "univentionDhcpDomainNameServers" "domain_name_servers"
+			admin_replace_ip "policies/dhcp_netbios" "univentionDhcpNetbiosNameServers" "netbios_name_servers"
+			admin_replace_ip "policies/dhcp_routing" "univentionDhcpRouters" "routers"
+			admin_replace_ip "policies/printserver" "univentionPrintServer" "printServer"
+			admin_replace_ip "policies/repositoryserver" "univentionRepositoryServer" "repositoryServer"
+			admin_replace_ip "shares/share" "univentionShareHost" "host" "1"
+			admin_replace_ip "shares/printer" "univentionPrinterSpoolHost" "spoolHost"
+		fi
+
+		old_pkgdb_network=$(univention-config-registry get pgsql/pkgdb/network)
+		old_pkgdb_netmask=$(univention-config-registry get pgsql/pkgdb/netmask)
+		if [ "$old_pkgdb_network" = "$old_network" -a "$old_pkgdb_netmask" = "$old_prefix" ]; then
+			if [ -n "$new_network" -a -n "$new_prefix" ]; then
+				echo `date` : "Configure permitted pkgdb hosts in baseconfig : " $new_network  >> /var/log/univention/setup.log
+				univention-config-registry set pgsql/pkgdb/network=$new_network
+				echo `date` : "Configure netmask for permitted pkgdb hosts in baseconfig : " $new_prefix >> /var/log/univention/setup.log
+				univention-config-registry set pgsql/pkgdb/netmask=$new_prefix
+			fi
+		fi
+	done
+
+	if [ -n "$baseconfig_unset" ]; then
+		univention-config-registry unset $baseconfig_unset
+	fi
+
+	if [ -n "$baseconfig_set" ]; then
+		univention-config-registry set $baseconfig_set
+	fi
+
+	if [ -x /usr/sbin/apache2ctl ]; then
+		/usr/sbin/apache2ctl stop
+		for count in $(seq 1 20); do
+			if ! pidof apache2 > /dev/zero; then
+				break
+			fi
+			sleep 1
+		done
+		/usr/sbin/apache2ctl start
+	fi
+	service_start nscd
+
+	# stop the dns server and remove the cache
+	service_stop  univention-bind univention-bind-proxy univention-dhcp heimdal-kdc cupsys samba univention-directory-listener postgresql samba4
+	rm -f /var/cache/bind/*
+	service_start univention-bind univention-bind-proxy univention-dhcp heimdal-kdc cupsys samba univention-directory-listener postgresql samba4
+fi
+
+if [ -d "/var/lib/univention-system-setup/interfaces6.post" ]; then
+	run-parts /var/lib/univention-system-setup/interfaces6.post --arg=$oldvalues --arg=$newvalues
+fi
+
+if [ $ldap_available = 1 ]; then
+	exit 0
+else
+	exit 100
+fi
+
