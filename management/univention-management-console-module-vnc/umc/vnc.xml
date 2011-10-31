@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="vnc" icon="vnc" version="1.0">
+	<name>VNC</name>
+	<description>Access to a System via VNC Session</description>
+	<categories>
+		<category name="system"/>
+	</categories>
+	<command name="vnc/start" function="query">
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="vnc/stop" function="start">
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="vnc/config" function="stop">
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="vnc/password" function="restart">
+		<return syntax="Dictionary"/>
+	</command>
+	</module>
+</umc>

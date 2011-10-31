@@ -1,0 +1,6 @@
+Module: vnc
+Python: umc/python
+Definition: umc/vnc.xml
+Syntax: umc/syntax/vnc.xml
+Javascript: umc/js
+Icons: umc/icons

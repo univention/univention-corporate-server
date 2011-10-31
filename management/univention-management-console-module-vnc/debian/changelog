@@ -1,0 +1,5 @@
+univention-management-console-module-vnc (1.0.0-1) unstable; urgency=low
+
+  * Initial release (Bug #22901)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 31 Oct 2011 13:52:42 +0100
