@@ -45,6 +45,7 @@ do
  			shift
  			;;
 		*)
+			shift
 			;;
 	esac
 done

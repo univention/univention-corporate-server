@@ -30,12 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/lib/univention-system-setup/scripts/setup_utils.sh
-
 password_file=""
 dcaccount=""
 
-while [ "$#" -gt "0" ]; do
+while [ "$#" -gt 0 ]; do
     case $1 in
         --dcaccount)
 			dcaccount="$2"
@@ -47,30 +45,33 @@ while [ "$#" -gt "0" ]; do
             ;;
         *)
             echo "WARNING: Unknown parameter $1"
+			shift
     esac
 done
 
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
+
 # Re-create SSL certificates even if the admin did'nt change all variables
-/usr/share/univention-system-setup/scripts/ssl/10ssl --force-recreate
+/usr/lib/univention-system-setup/scripts/ssl/10ssl --force-recreate
 
 # Call scripts which won't be handled by join scripts
 # keyboard, language and timezone
-/usr/share/univention-system-setup/scripts/keyboard/10keyboard
-/usr/share/univention-system-setup/scripts/language/10language
-/usr/share/univention-system-setup/scripts/language/11default_locale
-/usr/share/univention-system-setup/scripts/timezone/10timezone
-/usr/share/univention-system-setup/scripts/modules/10modules
+run-parts /usr/lib/univention-system-setup/scripts/keyboard/
+run-parts /usr/lib/univention-system-setup/scripts/language/
+run-parts /usr/lib/univention-system-setup/scripts/timezone/
+run-parts /usr/lib/univention-system-setup/scripts/modules/
 
 # Do network stuff
-run-parts /usr/share/univention-system-setup/scripts/net/ --network-only
+run-parts -a --network-only -- /usr/lib/univention-system-setup/scripts/net/
 
 # Install selected software
-/usr/share/univention-system-setup/scripts/software/10software
+run-parts /usr/lib/univention-system-setup/scripts/software/
 
 # Call join
 if [ -d /var/lib/univention-ldap/ldap ]; then
 	rm -f /var/lib/univention-ldap/ldap/*
 fi
+
 if [ "$server_role" = "domaincontroller_master" ]; then
 	mkdir -p /var/univention-join/ /usr/share/univention-join/
 	touch /var/univention-join/joined /var/univention-join/status

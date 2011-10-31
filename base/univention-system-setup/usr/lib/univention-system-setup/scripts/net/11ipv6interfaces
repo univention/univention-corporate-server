@@ -30,11 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/lib/univention-system-setup/scripts/setup_utils.sh
-
 network_only=0
 
-while [ "$#" -gt "0" ]; do
+while [ "$#" -gt 0 ]; do
     case $1 in
         --network-only)
 			network_only=1
@@ -42,9 +40,12 @@ while [ "$#" -gt "0" ]; do
             ;;
         *)
             echo "WARNING: Unknown parameter $1"
+			shift 1
+			;;
     esac
 done
 
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 # uses $binddn, $bindpwd, $new_ip, and $old_ip
 admin_replace_ip ()

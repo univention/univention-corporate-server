@@ -30,11 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/lib/univention-system-setup/scripts/setup_utils.sh
-
 force_recreate=0
 
-while [ "$#" -gt "0" ]; do
+while [ "$#" -gt 0 ]; do
     case $1 in
         --force-recreate)
 			force_recreate=1
@@ -42,8 +40,12 @@ while [ "$#" -gt "0" ]; do
             ;;
         *)
             echo "WARNING: Unknown parameter $1"
+			shift 1
+			;;
     esac
 done
+
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 eval "$(univention-config-registry shell)"
 
@@ -65,7 +67,7 @@ for var in "common" "locality" "organization" "country" "state" "organizationalu
 	fi
 done
 
-if [ $recreate = "yes" || "force_recreate" = 1 ]; then
+if [ "$recreate" = "yes" -o "force_recreate" = "1" ]; then
 	# remove old backup
 	if [ -d /etc/univention/ssl.orig ]; then
 		rm -rf /etc/univention/ssl.orig

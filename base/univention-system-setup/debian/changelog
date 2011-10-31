@@ -1,3 +1,9 @@
+univention-system-setup (5.0.34-1) unstable; urgency=low
+
+  * Cleanup setup-join.sh (Bug #22904)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 31 Oct 2011 17:04:51 +0100
+
 univention-system-setup (5.0.33-1) unstable; urgency=low
 
   * Added setup-join.sh which configures the unjoined system
