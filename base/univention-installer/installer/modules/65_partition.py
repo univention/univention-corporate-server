@@ -533,7 +533,7 @@ class object(content):
 			return _('Unbootable config! /boot needs non LVM partition')
 
 		if len(self.container['history']) or self.test_changes():
-			self.sub.sub=self.sub.verify_exit(self.sub,self.sub.minY+(self.sub.maxHeight/8)+2,self.sub.minX+(self.sub.maxWidth/8),self.sub.maxWidth,self.sub.maxHeight-7)
+			self.sub.sub=self.sub.verify_exit(self.sub,self.sub.minY+(self.sub.maxHeight/3)+2,self.sub.minX+(self.sub.maxWidth/8),self.sub.maxWidth,self.sub.maxHeight-18)
 			self.sub.sub.draw()
 			return 1
 
@@ -551,7 +551,7 @@ class object(content):
 			self.sub.sub.exit()
 			return 1
 		if len(self.container['history']) or self.test_changes():
-			self.sub.sub=self.sub.verify_exit(self.sub,self.sub.minY+(self.sub.maxHeight/8)+2,self.sub.minX+(self.sub.maxWidth/8),self.sub.maxWidth,self.sub.maxHeight-7)
+			self.sub.sub=self.sub.verify_exit(self.sub,self.sub.minY+(self.sub.maxHeight/3)+2,self.sub.minX+(self.sub.maxWidth/8),self.sub.maxWidth,self.sub.maxHeight-18)
 			self.sub.draw()
 			return 1
 
