@@ -45,6 +45,10 @@ from local import _
 MAXLENGTH=65
 
 class object(content):
+	def __init__(self, *args, **kwargs):
+		content.__init__(self, *args, **kwargs)
+		self.call_master_joinscripts = None
+
 	def checkname(self):
 		return ['system_role']
 
@@ -105,10 +109,27 @@ class object(content):
 
 		self.add_elem('TXT_DESCRIPTION', textline( _('Further information for selected system role:'), self.minY-3, self.minX+5))
 		self.add_elem('TEXTAREA', dummy())
+		self.add_elem('CALL_MASTER_JOINSCRIPTS', dummy())
 
 		self.update_description()
+		self.update_call_master_joinscripts()
 
-	def update_description(self, redraw=False):
+	def update_call_master_joinscripts(self):
+		selected_role = self.get_elem('RADIO').result()
+
+		msg = ''
+		if selected_role == 'domaincontroller_master':
+			if self.call_master_joinscripts is None:
+				msg = ''
+			elif self.call_master_joinscripts:
+				msg = _('Join scripts will be called during installation.')
+			else:
+				msg = _('Join scripts will not be called during installation.')
+
+		idx = self.get_elem_id('CALL_MASTER_JOINSCRIPTS')
+		self.elements[idx] = textline( msg, self.minY+17, self.minX+5 )
+
+	def update_description(self):
 		descriptions = {
 			'domaincontroller_master': _('The domain controller master (DC master for short) contains the original dataset for the entire LDAP directory. Changes to the LDAP directory are only performed on this server. For this reason, this must be the first system to be commissioned and there can only be one of them within a domain. In addition, the Root Certification Authority (root CA) is also on the DC master. All SSL certificates created are archived on the DC master.'),
 			'domaincontroller_backup': _('Servers with the role of domain controller backup (DC backup for short) contain a replicated copy of the entire LDAP directory, which cannot be changed as all write accesses occur exclusively on the DC master. A copy of all SSL certificates including the private key of the root CA is kept on the DC backup. The DC backup is as such a backup copy of the DC master.  If the DC master should collapse completely, running a special command allows the DC backup to take over the role of the DC master permanently in a very short time.'),
@@ -133,8 +154,17 @@ class object(content):
 			return 'next'
 		elif key in [10,32] and self.btn_back():
 			return 'prev'
+		elif key == curses.KEY_F3:
+			if self.call_master_joinscripts is None:
+				self.call_master_joinscripts = False
+			else:
+				self.call_master_joinscripts = not(self.call_master_joinscripts)
+			self.update_call_master_joinscripts()
+			self.draw()
+			return 1
 		elif key in [10,32] and self.get_elem('RADIO').active:
 			val = self.elements[self.current].key_event(key)
+			self.update_call_master_joinscripts()
 			self.update_description()
 			self.draw()
 			return val
@@ -159,4 +189,10 @@ class object(content):
 		return 'System role'
 
 	def result(self):
-		return {'system_role':self.elements[3].result()}
+		if self.call_master_joinscripts is None:
+			# default is to call join scripts
+			self.call_master_joinscripts = True
+
+		return {'system_role': self.elements[3].result(),
+				'call_master_joinscripts': str(bool(self.call_master_joinscripts)).lower(),
+				}
