@@ -1,3 +1,9 @@
+univention-updater (7.0.77-1) unstable; urgency=low
+
+  * added custom attributes check in preup.sh (Bug #23191) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 31 Oct 2011 15:41:50 +0100
+
 univention-updater (7.0.76-3) unstable; urgency=low
 
   * Fix shell escaping of / to _ (Bug #24172)

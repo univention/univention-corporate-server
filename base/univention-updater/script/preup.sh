@@ -191,6 +191,34 @@ if [ ! "$update_kolab_check" = "no" -a ! "$update_kolab_check" = "false" -a ! "$
 	fi
 fi
 
+# update to 3.0-0 Bug #23191
+if [ ! "$update_customatts_check" = "no" -a ! "$update_customatts_check" = "false" -a ! "$update_customatts_check" = "1" ]; then
+	customatts=false
+	ca=$(ldapsearch -x objectClass=univentionAdminProperty -LLL | grep ^cn: | awk -F "cn: " '{print $2}')
+	if [ -n "$ca" ]; then
+		customatts=true
+	fi
+
+	if "$customatts" = "true" ] ; then
+		echo "WARNING: univention-directory-manager custom attributes found!"
+		echo
+		echo "$ca"
+		echo
+		echo "With UCS 3.0 the univention-directory-manager no longer supports"
+		echo "custom attributes (settings/customattribute)."
+		echo "The update process will stop here."
+		echo
+		echo "Please convert the custom attributes to their new counterparts"
+		echo "extended attributes (extended_attribute). Additional information"
+		echo "with migration instructions can be found in the UCS Wiki:"
+		echo "  http://wiki.univention.de/index.php?title=Update_Customon_Attributes_to_Extended_Attributes/en"
+		echo
+		echo "This check can be disabled by setting the Univention Configuration Registry"
+		echo "variable \"update/customatts/check\" to \"no\"."
+		exit 1
+	fi
+fi
+
 # update to 3.0-0 Bug #23063
 # check if lilo or univention-lilo is installed and exit
 if [ ! "$update_lilo_check" = "no" -a ! "$update_lilo_check" = "false" -a ! "$update_lilo_check" = "1" ]; then
