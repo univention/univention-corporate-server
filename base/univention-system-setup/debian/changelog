@@ -1,3 +1,10 @@
+univention-system-setup (5.0.33-1) unstable; urgency=low
+
+  * Added setup-join.sh which configures the unjoined system
+    (Bug #22904)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 31 Oct 2011 15:58:24 +0100
+
 univention-system-setup (5.0.32-1) unstable; urgency=low
 
   * support IPv6 (Bug #23997)

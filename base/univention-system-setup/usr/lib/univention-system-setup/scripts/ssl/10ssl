@@ -32,6 +32,19 @@
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
+force_recreate=0
+
+while [ "$#" -gt "0" ]; do
+    case $1 in
+        --force-recreate)
+			force_recreate=1
+            shift 1
+            ;;
+        *)
+            echo "WARNING: Unknown parameter $1"
+    esac
+done
+
 eval "$(univention-config-registry shell)"
 
 new_ssl_common=$(get_profile_var "ssl/common")
@@ -41,8 +54,6 @@ new_ssl_country=$(get_profile_var "ssl/country")
 new_ssl_state=$(get_profile_var "ssl/state")
 new_ssl_organizationalunit=$(get_profile_var "ssl/organizationalunit")
 new_ssl_email=$(get_profile_var "ssl/email")
-
-recreate="no"
 
 for var in "common" "locality" "organization" "country" "state" "organizationalunit" "email"; do
 	old="ssl_$var"
@@ -54,7 +65,7 @@ for var in "common" "locality" "organization" "country" "state" "organizationalu
 	fi
 done
 
-if [ $recreate = "yes" ]; then
+if [ $recreate = "yes" || "force_recreate" = 1 ]; then
 	# remove old backup
 	if [ -d /etc/univention/ssl.orig ]; then
 		rm -rf /etc/univention/ssl.orig

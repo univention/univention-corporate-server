@@ -32,6 +32,20 @@
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
+network_only=0
+
+while [ "$#" -gt "0" ]; do
+    case $1 in
+        --network-only)
+			network_only=1
+            shift 1
+            ;;
+        *)
+            echo "WARNING: Unknown parameter $1"
+    esac
+done
+
+
 # uses $binddn, $bindpwd, $new_ip, and $old_ip
 admin_replace_ip ()
 {
@@ -94,6 +108,10 @@ if [ "$(cat /var/run/univention-system-setup.ldap)" = "no-ldap" ]; then
 	ldap_available=0
 fi
 
+if [ "$network_only" = 1 ]; then
+	ldap_available=0
+fi
+
 if [ -x /usr/sbin/univention-dnsedit ]; then
 	UNIVENTION_DNSEDIT="/usr/sbin/univention-dnsedit"
 else
@@ -110,7 +128,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 
 	eval "$(univention-config-registry shell)"
 		
-	service_stop nscd samba cupsys
+	[ "$network_only" = 0 ] || service_stop nscd samba cupsys
 
 	for device in $to_change; do
 		device=`echo "$device" | sed -e 's|^ *||'`
@@ -203,15 +221,17 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		univention-config-registry set $baseconfig_set
 	fi
 
-	if [ -x /usr/sbin/apache2ctl ]; then
-		/usr/sbin/apache2ctl stop
-		for count in $(seq 1 20); do
-			if ! pidof apache2 > /dev/zero; then
-				break
-			fi
-			sleep 1
-		done
-		/usr/sbin/apache2ctl start
+	if [ "network_only" = 0 ]; then
+		if [ -x /usr/sbin/apache2ctl ]; then
+			/usr/sbin/apache2ctl stop
+			for count in $(seq 1 20); do
+				if ! pidof apache2 > /dev/zero; then
+					break
+				fi
+				sleep 1
+			done
+			/usr/sbin/apache2ctl start
+		fi
 	fi
 	service_start nscd
 
@@ -225,7 +245,7 @@ if [ -d "/var/lib/univention-system-setup/interfaces6.post" ]; then
 	run-parts /var/lib/univention-system-setup/interfaces6.post --arg=$oldvalues --arg=$newvalues
 fi
 
-if [ $ldap_available = 1 ]; then
+if [ $ldap_available = 1 -o "network_only" = 1 ]; then
 	exit 0
 else
 	exit 100
