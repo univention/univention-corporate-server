@@ -1,3 +1,9 @@
+univention-installer (7.0.133-1) unstable; urgency=low
+
+  * fixed "installation finished" message (Bug #24270)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 31 Oct 2011 14:53:29 +0100
+
 univention-installer (7.0.132-1) unstable; urgency=low
 
   * resizing update (Bug #23120)

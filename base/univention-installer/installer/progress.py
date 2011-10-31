@@ -258,7 +258,7 @@ class ProgressDialog(object):
 		else:
 			msg.append( _('This system has been configured for DHCP usage') )
 
-		if self.profile.get('auto_join') == 'false':
+		if self.profile.get('auto_join') == 'false' or self.profile.get('call_master_joinscripts') in [ 'false', 'no' ]:
 			msg.append( _('and has not been joined to UCS domain yet.') )
 		else:
 			msg.append( _('and has been joined to UCS domain.') )
