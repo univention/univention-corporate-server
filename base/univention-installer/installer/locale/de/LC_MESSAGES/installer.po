@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-30 00:32+0200\n"
-"PO-Revision-Date: 2011-10-30 00:33+0200\n"
+"POT-Creation-Date: 2011-10-31 11:17+0100\n"
+"PO-Revision-Date: 2011-10-31 11:19+0100\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -153,7 +153,7 @@ msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 #: installer/main.py:284 installer/objects.py:2110
 #: installer/modules/10_hardware.py:279 installer/modules/10_hardware.py:313
 #: installer/modules/15_profile.py:56 installer/modules/65_partition.py:4307
-#: installer/modules/65_partition.py:4323 installer/modules/70_net.py:1032
+#: installer/modules/65_partition.py:4323 installer/modules/70_net.py:1033
 #: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:170
 #: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:197
 #: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:216
@@ -405,22 +405,22 @@ msgstr "Paketstatus-Überwachung"
 msgid "Univention packagestatus database"
 msgstr "Univention Paketstatus Datenbank"
 
-#: installer/progress.py:87 installer/modules/40_role.py:83
+#: installer/progress.py:87 installer/modules/40_role.py:87
 msgid "Master domain controller"
 msgstr "Domain Controller Master"
 
-#: installer/progress.py:88 installer/modules/40_role.py:85
-#: installer/modules/40_role.py:101
+#: installer/progress.py:88 installer/modules/40_role.py:89
+#: installer/modules/40_role.py:105
 msgid "Backup domain controller"
 msgstr "Domain Controller Backup"
 
-#: installer/progress.py:89 installer/modules/40_role.py:86
-#: installer/modules/40_role.py:102
+#: installer/progress.py:89 installer/modules/40_role.py:90
+#: installer/modules/40_role.py:106
 msgid "Slave domain controller"
 msgstr "Domain Controller Slave"
 
-#: installer/progress.py:90 installer/modules/40_role.py:87
-#: installer/modules/40_role.py:103
+#: installer/progress.py:90 installer/modules/40_role.py:91
+#: installer/modules/40_role.py:107
 msgid "Member server"
 msgstr "Memberserver"
 
@@ -432,8 +432,8 @@ msgstr "Managed Client"
 msgid "Mobile Client"
 msgstr "Mobile Client"
 
-#: installer/progress.py:93 installer/modules/40_role.py:88
-#: installer/modules/40_role.py:104
+#: installer/progress.py:93 installer/modules/40_role.py:92
+#: installer/modules/40_role.py:108
 msgid "Base system"
 msgstr "Basissystem"
 
@@ -622,15 +622,15 @@ msgstr "Installation abgeschlossen"
 msgid "Preparing reboot"
 msgstr "Neustart wird vorbereitet"
 
-#: installer/modules/05_language.py:123
+#: installer/modules/05_language.py:126
 msgid "Select system language"
 msgstr "Bitte wählen Sie die System-Sprache aus"
 
-#: installer/modules/05_language.py:124
+#: installer/modules/05_language.py:127
 msgid "(also applies to the installation process for supported languages):"
 msgstr "(gilt auch für den Installer, sofern unterstützt):"
 
-#: installer/modules/05_language.py:142
+#: installer/modules/05_language.py:145
 msgid ""
 "Language \n"
 " \n"
@@ -640,7 +640,7 @@ msgstr ""
 " \n"
 " Wählen Sie eine Sprache für das System."
 
-#: installer/modules/05_language.py:145
+#: installer/modules/05_language.py:148
 msgid "Language"
 msgstr "Sprache"
 
@@ -737,7 +737,7 @@ msgstr "Quellmedium"
 #: installer/modules/15_profile.py:57 installer/modules/65_partition.py:3781
 #: installer/modules/65_partition.py:3828
 #: installer/modules/65_partition.py:4082
-#: installer/modules/65_partition.py:4121 installer/modules/70_net.py:1031
+#: installer/modules/65_partition.py:4121 installer/modules/70_net.py:1032
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -858,15 +858,23 @@ msgstr ""
 msgid "Keyboard"
 msgstr "Tastatur"
 
-#: installer/modules/40_role.py:81
+#: installer/modules/40_role.py:85
 msgid "Select the system role:"
 msgstr "Auswahl der zu installierenden Systemrolle:"
 
-#: installer/modules/40_role.py:106
+#: installer/modules/40_role.py:110
 msgid "Further information for selected system role:"
 msgstr "Weitere Informationen über die ausgewählte Systemrolle:"
 
-#: installer/modules/40_role.py:113
+#: installer/modules/40_role.py:125
+msgid "Join scripts will be called during installation."
+msgstr "Die Joinskripte werden während der Installation ausgeführt."
+
+#: installer/modules/40_role.py:127
+msgid "Join scripts will not be called during installation."
+msgstr "Die Joinskripte werden während der Installation nicht ausgeführt."
+
+#: installer/modules/40_role.py:134
 msgid ""
 "The domain controller master (DC master for short) contains the original "
 "dataset for the entire LDAP directory. Changes to the LDAP directory are "
@@ -883,7 +891,7 @@ msgstr ""
 "Authority (Root-CA) auf dem DC Master. Alle ausgestellten SSL-Zertifikate "
 "werden auf dem DC Master archiviert."
 
-#: installer/modules/40_role.py:114
+#: installer/modules/40_role.py:135
 msgid ""
 "Servers with the role of domain controller backup (DC backup for short) "
 "contain a replicated copy of the entire LDAP directory, which cannot be "
@@ -906,7 +914,7 @@ msgstr ""
 "vorgenommen oder neue Zertifikate ausgestellt werden sollen, weil diese "
 "Aufgaben nur von einem DC Master durchgeführt werden können."
 
-#: installer/modules/40_role.py:115
+#: installer/modules/40_role.py:136
 msgid ""
 "Each domain controller slave (DC slave for short) contains a replicated copy "
 "of the entire LDAP directory, which cannot be changed as all write accesses "
@@ -924,7 +932,7 @@ msgstr ""
 "das eigene und das öffentliche SSL-Zertifikat der Root-CA vorgehalten. Ein "
 "DC Slave-System kann nicht zum DC Master hochgestuft werden."
 
-#: installer/modules/40_role.py:116
+#: installer/modules/40_role.py:137
 msgid ""
 "Member servers are members of a LDAP domain and offer services such as file "
 "storage for the domain. Member servers do not contain a copy of the LDAP "
@@ -936,7 +944,7 @@ msgstr ""
 "keine Kopie des LDAP-Verzeichnisses. Auf ihm wird nur das eigene und das "
 "öffentliche SSL-Zertifikat der Root-CA vorgehalten."
 
-#: installer/modules/40_role.py:117
+#: installer/modules/40_role.py:138
 msgid ""
 "A base system is an independent system. It is not a member of a domain and "
 "does not maintain trust relationships with other servers or domains. A base "
@@ -957,7 +965,7 @@ msgstr ""
 "das betreffende Basissystem als IP-Managed-Client im Verzeichnisdienst "
 "eingetragen wurde."
 
-#: installer/modules/40_role.py:153
+#: installer/modules/40_role.py:183
 msgid ""
 "System role \n"
 " \n"
@@ -1010,7 +1018,7 @@ msgstr ""
 "ist nicht Mitglied der Domäne und kann nicht über das UCS Managementsystem "
 "verwaltet werden."
 
-#: installer/modules/40_role.py:156 installer/modules/90_overview.py:94
+#: installer/modules/40_role.py:186 installer/modules/90_overview.py:94
 msgid "System role"
 msgstr "Systemrolle"
 
@@ -2061,28 +2069,28 @@ msgid "Following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
 #: installer/modules/70_net.py:356 installer/modules/70_net.py:506
-#: installer/modules/70_net.py:819 installer/modules/90_overview.py:135
+#: installer/modules/70_net.py:820 installer/modules/90_overview.py:135
 msgid "IPv4 Gateway"
 msgstr "IPv4-Gateway"
 
 #: installer/modules/70_net.py:357 installer/modules/70_net.py:512
-#: installer/modules/70_net.py:821 installer/modules/90_overview.py:141
+#: installer/modules/70_net.py:822 installer/modules/90_overview.py:141
 msgid "IPv6 Gateway"
 msgstr "IPv6-Gateway"
 
 #: installer/modules/70_net.py:358 installer/modules/70_net.py:523
-#: installer/modules/70_net.py:825 installer/modules/70_net.py:1003
+#: installer/modules/70_net.py:826 installer/modules/70_net.py:1004
 #: installer/modules/90_overview.py:147
 msgid "Domain DNS Server"
 msgstr "Domänen-DNS-Server"
 
 #: installer/modules/70_net.py:359 installer/modules/70_net.py:534
-#: installer/modules/70_net.py:823 installer/modules/70_net.py:1007
+#: installer/modules/70_net.py:824 installer/modules/70_net.py:1008
 #: installer/modules/90_overview.py:153
 msgid "External DNS Server"
 msgstr "Externer DNS-Server"
 
-#: installer/modules/70_net.py:374 installer/modules/70_net.py:844
+#: installer/modules/70_net.py:374 installer/modules/70_net.py:845
 msgid "Proxy, example http://10.201.1.1:8080"
 msgstr "Proxy, z.B. http://10.201.1.1:8080"
 
@@ -2126,7 +2134,7 @@ msgstr "IPv6 aktivieren"
 
 #: installer/modules/70_net.py:470
 msgid "Dynamic (Stateless address autoconfiguration (SLAAC))"
-msgstr "Dynamic (zustandslose Adressenautokonfiguration (SLAAC))"
+msgstr "Dynamisch (zustandslose Adressenautokonfiguration (SLAAC))"
 
 #: installer/modules/70_net.py:478 installer/modules/90_overview.py:121
 msgid "IPv6 address"
@@ -2191,15 +2199,15 @@ msgstr ""
 msgid "At least one interface must be configured."
 msgstr "Es muss mindestens ein Interface konfiguriert werden."
 
-#: installer/modules/70_net.py:790
+#: installer/modules/70_net.py:789
 msgid "IPv4 Address"
 msgstr "IPv4-Adresse"
 
-#: installer/modules/70_net.py:792
+#: installer/modules/70_net.py:791
 msgid "IPv4 Netmask"
 msgstr "IPv4-Netzmaske"
 
-#: installer/modules/70_net.py:795
+#: installer/modules/70_net.py:794
 #, python-format
 msgid ""
 "Neither DHCP is activated nor an IPv4 address with netmask has been entered "
@@ -2208,15 +2216,23 @@ msgstr ""
 "Es wurde weder DHCP aktiviert noch wurde eine gültige IPv4-Adresse inkl. "
 "Netzmaske für Interface \"%s\" angegeben."
 
-#: installer/modules/70_net.py:804
+#: installer/modules/70_net.py:796
+#, python-format
+msgid ""
+"For a server role an IPv4 address must be set if DHCP is enabled, please "
+"select interface \"%s\" and press F5 or deselect the DHCP option for "
+"interface \"%s\"."
+msgstr "Für Serversysteme muss eine IPv4-Adresse festgelegt werden, wenn DHCP aktiviert wurde. Bitte das Interface \"%s\" auswählen und  F5 drücken oder die DHCP-Option für Interface \"%s\" abwählen."
+
+#: installer/modules/70_net.py:805
 msgid "IPv6 Address"
 msgstr "IPv6-Adresse"
 
-#: installer/modules/70_net.py:806
+#: installer/modules/70_net.py:807
 msgid "IPv6 Prefix"
 msgstr "IPv6-Prefix"
 
-#: installer/modules/70_net.py:811
+#: installer/modules/70_net.py:812
 #, python-format
 msgid ""
 "Neither SLAAC is activated nor an IPv6 address with prefix has been entered "
@@ -2225,12 +2241,14 @@ msgstr ""
 "Es wurde weder SLAAC aktiviert noch wurde eine gültige IPv6-Adresse inkl. "
 "Prefix für Interface \"%s\" angegeben."
 
-#: installer/modules/70_net.py:815
+#: installer/modules/70_net.py:816
 msgid ""
 "In IPv6-only environments at least one static IPv6 address has to be defined!"
-msgstr "In Nur-IPv6-Umgebungen muss mindestens eine statische IPv6-Adresse vergeben werden!"
+msgstr ""
+"In Nur-IPv6-Umgebungen muss mindestens eine statische IPv6-Adresse vergeben "
+"werden!"
 
-#: installer/modules/70_net.py:921
+#: installer/modules/70_net.py:922
 msgid ""
 "Network \n"
 " \n"
@@ -2316,39 +2334,39 @@ msgstr ""
 " Geben Sie die Transportadresse (IP-Adresse:Port) an, um einen HTTP-Proxy zu "
 "nutzen. z.B: http://192.168.1.123:3128"
 
-#: installer/modules/70_net.py:925
+#: installer/modules/70_net.py:926
 msgid "Network"
 msgstr "Netzwerk"
 
-#: installer/modules/70_net.py:1004
+#: installer/modules/70_net.py:1005
 msgid " More Domain DNS Servers"
 msgstr "Weitere Domänen-DNS-Server"
 
-#: installer/modules/70_net.py:1008
+#: installer/modules/70_net.py:1009
 msgid " More External DNS Servers"
 msgstr "Weitere externe DNS-Server"
 
-#: installer/modules/70_net.py:1024
+#: installer/modules/70_net.py:1025
 #, python-format
 msgid "1. %s"
 msgstr "1. %s"
 
-#: installer/modules/70_net.py:1025
+#: installer/modules/70_net.py:1026
 #, python-format
 msgid "2. %s"
 msgstr "2. %s"
 
-#: installer/modules/70_net.py:1026
+#: installer/modules/70_net.py:1027
 #, python-format
 msgid "3. %s"
 msgstr "3. %s"
 
-#: installer/modules/70_net.py:1057 installer/modules/80_join.py:51
+#: installer/modules/70_net.py:1058 installer/modules/80_join.py:51
 #: installer/modules/80_join.py:138
 msgid "The following value is missing: "
 msgstr "Der folgende Wert fehlt:"
 
-#: installer/modules/70_net.py:1058
+#: installer/modules/70_net.py:1059
 msgid "The following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
@@ -2836,13 +2854,6 @@ msgstr "Ausführen von Aufräumarbeiten"
 
 #~ msgid " Interface configuration"
 #~ msgstr " Interface Konfiguration"
-
-#~ msgid ""
-#~ "For a server role an IP address must be determined at this point, please "
-#~ "press F5 or deselect the DHCP option."
-#~ msgstr ""
-#~ "Für Serversysteme muss an dieser Stelle eine IP-Adresse festgelegt "
-#~ "werden, bitte F5 drücken oder DHCP-Option abwählen."
 
 #~ msgid "Samba 4"
 #~ msgstr "Samba 4"
