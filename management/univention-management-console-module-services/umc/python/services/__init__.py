@@ -51,7 +51,7 @@ class Instance(umcm.Base):
 	def _run_it(self, services, action):
 		failed = []
 		for srv in services:
-			if subprocess.call(('invoke-rc.d', srv, action)):
+			if subprocess.call(('/usr/sbin/invoke-rc.d', srv, action)):
 				failed.append(srv)
 		return failed
 
@@ -99,7 +99,7 @@ class Instance(umcm.Base):
 		if self.permitted('services/start', request.options):
 			message = {}
 			message['success'] = _('Successfully started')
-			message['failed'] = _('Starting the following services failed:') + '<ul>'
+			message['failed'] = _('Starting the following services failed:')
 			cb = notifier.Callback(self._service_changed, request, message)
 			func = notifier.Callback(self._run_it, request.options, 'start')
 			thread = notifier.threads.Simple('services', func, cb)
@@ -113,7 +113,7 @@ class Instance(umcm.Base):
 		if self.permitted('services/stop', request.options):
 			message = {}
 			message['success'] = _('Successfully stopped')
-			message['failed'] = _('Stopping the following services failed:') + '<ul>'
+			message['failed'] = _('Stopping the following services failed:')
 			cb = notifier.Callback(self._service_changed, request, message)
 			func = notifier.Callback(self._run_it, request.options, 'stop')
 			thread = notifier.threads.Simple('services', func, cb)
@@ -128,7 +128,7 @@ class Instance(umcm.Base):
 		if self.permitted('services/restart', request.options):
 			message = {}
 			message['success'] = _('Successfully restarted')
-			message['failed'] = _('Restarting the following services failed:') + '<ul>'
+			message['failed'] = _('Restarting the following services failed:')
 			cb = notifier.Callback(self._service_changed, request, message)
 			func = notifier.Callback(self._run_it, request.options, 'restart')
 			thread = notifier.threads.Simple('services', func, cb)
@@ -141,12 +141,12 @@ class Instance(umcm.Base):
 	def _service_changed(self, thread, result, request, message):
 		if result:
 			if len(request.options) == 1:
-				error_message = '%s %s' % (message['failed'], result)
+				error_message = '%s %s' % (message['failed'], result[0])
 				request.status = MODULE_ERR
 				self.finished(request.id, {'success': False}, error_message)
 			else:
 				request.status = SUCCESS
-				self.finished(request.id, {'result': result, 'success': False})
+				self.finished(request.id, {'objects': result, 'success': False})
 		else:
 			request.status = SUCCESS
 			self.finished(request.id, {'success': True}, message['success'])

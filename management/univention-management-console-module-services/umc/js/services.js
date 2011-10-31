@@ -36,7 +36,6 @@ dojo.declare("umc.modules.services", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var actions = [{
 			name: 'start',
 			label: this._('Start services'),
-			iconClass: 'dijitIconDelete',
 			callback: dojo.hitch(this, function(data) {
 				if (data.length) {
 					var command = 'services/start';
@@ -50,7 +49,6 @@ dojo.declare("umc.modules.services", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'stop',
 			label: this._('Stop services'),
-			iconClass: 'dijitIconDelete',
 			callback: dojo.hitch(this, function(data) {
 				if (data.length) {
 					var command = 'services/stop';
@@ -64,7 +62,6 @@ dojo.declare("umc.modules.services", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'restart',
 			label: this._('Restart services'),
-			iconClass: 'dijitIconDelete',
 			callback: dojo.hitch(this, function(data) {
 				if (data.length) {
 					var command = 'services/restart';
@@ -78,7 +75,6 @@ dojo.declare("umc.modules.services", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'startAutomatically',
 			label: this._('Start automatically'),
-			iconClass: 'dijitIconDelete',
 			callback: dojo.hitch(this, function(data) {
 				var command = 'services/start_auto';
 				var confirmMessage = this._('Please confirm to automatically start the following services: ');
@@ -90,7 +86,6 @@ dojo.declare("umc.modules.services", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'startManually',
 			label: this._('Start manually'),
-			iconClass: 'dijitIconDelete',
 			callback: dojo.hitch(this, function(data) {
 				var command = 'services/start_manual';
 				var confirmMessage = this._('Please confirm to manually start the following services: ');
@@ -102,7 +97,6 @@ dojo.declare("umc.modules.services", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'startNever',
 			label: this._('Start never'),
-			iconClass: 'dijitIconDelete',
 			callback: dojo.hitch(this, function(data) {
 				var command = 'services/start_never';
 				var confirmMessage = this._('Please confirm to never start the following services: ');
@@ -198,12 +192,20 @@ dojo.declare("umc.modules.services", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				umc.tools.umcpCommand(command, data).then(
 					dojo.hitch(this, function(response) {
 						this.standby(false);
-						if (response.success === false) {
+						if (response.result.success === false) {
+							errorMessage += '<ul>'
+							dojo.forEach(response.result.objects, function(item) {
+								errorMessage += '<li>' + item + '</li>';
+							});
+							errorMessage += '</ul>'
 							umc.dialog.alert(errorMessage);
 						}
 						var data = this._searchWidget.gatherFormValues();
 						this._grid.filter(data);
-					}));
+					}), dojo.hitch(this, function() {
+						this.standby(false);
+					})
+				);
 			})
 		}, {
 			label: this._('Cancel')
