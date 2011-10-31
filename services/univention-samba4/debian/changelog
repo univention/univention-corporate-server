@@ -1,5 +1,12 @@
 univention-samba4 (1.0.83-1) unstable; urgency=low
 
+  * Change the dns/backend to samba4 only whether a S4 Connector is
+    installed in our domain (Bug #24274)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 31 Oct 2011 11:02:26 +0100
+
+univention-samba4 (1.0.83-1) unstable; urgency=low
+
   * samba4-idmap.py: Don't count on that the old object has a sambaSID
     (Bug #24225)
 
