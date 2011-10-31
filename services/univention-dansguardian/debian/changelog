@@ -1,3 +1,9 @@
+univention-dansguardian (5.0.1-11) unstable; urgency=low
+
+  * Mark join script as executable (Bug #22576)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 31 Oct 2011 08:10:57 +0100
+
 univention-dansguardian (5.0.1-10) unstable; urgency=low
 
   * Revert chamges from 5.0.1-8, which caused regressions (Bug #22576)
