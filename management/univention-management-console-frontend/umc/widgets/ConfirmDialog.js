@@ -70,28 +70,34 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 	// our own settings
 	closable: false,
 
-	// internal varialbles
-	_labelWidget: null,
-
 	_container: null,
 
 	_setMessageAttr: function(message) {
 		this.message = message;
-		if (this._labelWidget) {
-			this._labelWidget.set('content', message);
+		var childs = this._container.getChildren();
+		if (childs.length > 1) {
+			// a message/widget has been added previously... remove it
+			this._container.removeChild(childs[0]);
+			childs[0].destroyRecursive();
+		}
+
+		// add the new message
+		if (dojo.isString(this.message)) {
+			var widget = new umc.widgets.Text({
+				'class': 'umcConfirmDialogText',
+				content: message
+			});
+			this._container.addChild(widget, 0);
+		}
+		if (dojo.isObject(this.message) && 'declaredClass' in this.message) {
+			// message is a widget
+			dojo.addClass(this.message.domNode, 'umcConfirmDialogText');
+			this._container.addChild(this.message, 0);
 		}
 	},
 
 	buildRendering: function() {
 		this.inherited(arguments);
-
-		// create our widgets...
-		if (dojo.isString(this.message)) {
-			this._labelWidget = new umc.widgets.Text({
-				'class': 'umcConfirmDialogText',
-				content: this.message
-			});
-		}
 
 		// put buttons into separate container
 		var buttons = new umc.widgets.ContainerWidget({
@@ -118,15 +124,6 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 
 		// put the layout together
 		this._container = new umc.widgets.ContainerWidget({});
-		if (dojo.isObject(this.message) && 'declaredClass' in this.message) {
-			// message is a widget
-			dojo.addClass(this.message.domNode, 'umcConfirmDialogText');
-			this._container.addChild(this.message);
-		}
-		else if (this._labelWidget) {
-			// messag is a string
-			this._container.addChild(this._labelWidget);
-		}
 		this._container.addChild(buttons);
 		this._container.startup();
 
@@ -156,12 +153,7 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 
 	destroy: function() {
 		this.inherited(arguments);
-
-		if (this._container) {
-			this._container.destroyRecursive();
-		}
-
-		// destroy the message which may be a widget
+		this._container.destroyRecursive();
 	}
 });
 

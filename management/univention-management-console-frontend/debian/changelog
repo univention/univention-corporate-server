@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.154-1) unstable; urgency=low
+
+  * fixed umc.dialog.alert() to show widgets, as well
+  * LoginDialog: fixed width of input elements in
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 31 Oct 2011 15:04:28 +0100
+
 univention-management-console-frontend (1.0.153-1) unstable; urgency=low
 
   * MultiObjectSelect: changed order of buttons (Bug #22881) 

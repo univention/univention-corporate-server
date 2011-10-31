@@ -87,19 +87,22 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 			name: 'username',
 			value: dojo.cookie('UMCUsername') || '',
 			//description: this._('The username of your domain account.'),
-			label: this._('Username')
+			label: this._('Username'),
+			sizeClass: null
 		}, {
 			type: 'PasswordBox',
 			name: 'password',
 			//description: this._('The password of your domain account.'),
-			label: this._('Password')
+			label: this._('Password'),
+			sizeClass: null
 		}, {
 			type: 'ComboBox',
 			name: 'language',
 			staticValues: this.availableLanguages,
 			value: default_lang,
 			//description: this._('The language for the login session.'),
-			label: this._('Language')
+			label: this._('Language'),
+			sizeClass: null
 		}];
 
 		var buttons = [{
