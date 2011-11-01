@@ -5,6 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
  python-support,
  univention-management-console-dev,
+ ucslint,
  python-all
 Standards-Version: 3.5.2
 XS-Python-Version: 2.6

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.214-3) unstable; urgency=low
+
+  * added missing dependency to ucslint (Bug #24245)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 01 Nov 2011 12:41:03 +0100
+
 univention-management-console-module-udm (1.0.214-2) unstable; urgency=low
 
   * fixed postinst and rules file (Bug #24245)
