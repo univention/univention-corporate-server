@@ -130,3 +130,5 @@ fi
 
 univention-config-registry set directory/manager/web/modules/groups/group/checks/circular_dependency?"yes" \
 	directory/manager/web/update/available/groups?"Domain Admins"
+
+exit 0

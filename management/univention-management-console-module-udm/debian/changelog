@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.214-2) unstable; urgency=low
+
+  * fixed postinst and rules file (Bug #24245)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 01 Nov 2011 12:38:13 +0100
+
 univention-management-console-module-udm (1.0.214-1) unstable; urgency=low
 
   * if requested add empty value to LDAP_Search choices (Bug #24245)
