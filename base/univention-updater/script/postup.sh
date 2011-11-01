@@ -188,6 +188,12 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 	fi
 fi
 
+# restore menu.lst: for grub1 chainload into grub2 (no more required after UCS 3.0-0 update)
+if [ -e /boot/grub/menu.lst.ucs3.0-0 ]; then
+	cp /boot/grub/menu.lst.ucs3.0-0 /boot/grub/menu.lst
+fi
+# end restore menu.lst
+
 # For UCS 3.0 a reboot is required
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
 

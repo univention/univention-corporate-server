@@ -1,3 +1,9 @@
+univention-updater (7.0.79-1) unstable; urgency=low
+
+  * restore menu.lst in postup.sh (Bug #24279) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 01 Nov 2011 16:54:17 +0100
+
 univention-updater (7.0.78-2) unstable; urgency=low
 
   * Fix squid test (Bug #22576)
