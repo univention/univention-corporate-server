@@ -1,3 +1,9 @@
+univention-dojo (5.0.8-1) unstable; urgency=low
+
+  * added patch for dijit.findWidgets() (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 01 Nov 2011 14:20:46 +0100
+
 univention-dojo (5.0.7-1) unstable; urgency=low
 
   * fixed patch (Bug #22881) 
