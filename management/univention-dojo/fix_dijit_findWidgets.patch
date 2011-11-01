@@ -2,7 +2,9 @@ Use children instead of firstChild and nextSibling.
 Under specific circumstances, IE9 would return null with node.nextSibling,
 although multiple childs were present in the root node.
 The property children worked fine in this case.
-(Bug #22881)
+
+This patch has been sent upstream: http://bugs.dojotoolkit.org/ticket/14188
+
 --- ./dojo-release-1.6.1-src/dijit/_base/manager.js.orig	2011-11-01 14:01:59.000000000 +0100
 +++ ./dojo-release-1.6.1-src/dijit/_base/manager.js	2011-11-01 14:02:26.000000000 +0100
 @@ -251,7 +251,8 @@
