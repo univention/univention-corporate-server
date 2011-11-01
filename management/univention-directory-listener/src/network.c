@@ -294,8 +294,13 @@ NotifierMessage* notifier_get_msg(NotifierClient *client, int msgid)
 int notifier_client_new(NotifierClient *client,
 		const char *server, int starttls)
 {
-	struct hostent		*host;
-	struct sockaddr_in	 address;
+	struct sockaddr_in	address4;
+	struct sockaddr_in6	address6;
+	struct sockaddr    *address;
+	socklen_t           addrlen;
+	struct addrinfo 	hints, *res, *result_addrinfo;
+	char addrstr[100];
+	int err;
 	
 	if (client == NULL)
 		client = &global_client;
@@ -312,59 +317,109 @@ int notifier_client_new(NotifierClient *client,
 	client->last_msgid = 0;
 	client->buf = NULL ;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "connecting to notifier %s", client->server);
-	
-	if ((host = gethostbyname(client->server)) == NULL) {
-		free(client->server);
-		client->server = NULL;
-		return 1;
-	}
-	if ((client->fd = socket(PF_INET, SOCK_STREAM, 0)) == -1) {
-		free(client->server);
-		client->server = NULL;
-		return 1;
-	}
-	address.sin_family = AF_INET;
-	memcpy(&address.sin_addr, host->h_addr_list[0], sizeof(address.sin_addr));
+	memset (&hints, 0, sizeof(hints));
+	hints.ai_family = AF_UNSPEC;       /* Allow IPv4 or IPv6 */
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_flags = 0;
+	hints.ai_protocol = 0;             /* Any protocol */
 
-	/* protocol 2 */
-	address.sin_port = htons(NOTIFIER_PORT_PROTOCOL2);
-	if (connect(client->fd, (struct sockaddr*)&address, sizeof(address)) != -1) {
-		const char	*header = "Version: 2\nCapabilities: \n\n";
-		char		*result,
-				*tok;
-		
-		send_block(client, header, strlen(header));
-		if (recv_block(client, &result, NOTIFIER_TIMEOUT) < 1) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "couldn't receive header");
-			free(client->server);
-			client->server = NULL;
-			return 1;
-		}
+	address4.sin_family = AF_INET;
+	address4.sin_port = htons(NOTIFIER_PORT_PROTOCOL2);
+	address6.sin6_family = AF_INET6;
+	address6.sin6_port = htons(NOTIFIER_PORT_PROTOCOL2);
 
-		/* strtok modifies result, but we shouldn't need to care */
-		for(tok=strtok(result, "\n"); tok != NULL; tok=strtok(NULL, "\n")) {
-			char *val;
-			if ((val = strchr(tok, ':')) == NULL) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ignoring bad header: [%s]", tok);
-				continue;
-			}
-			*val++ = '\0';
-			while (*val == ' ')
-				++val;
-			
-			if (strcmp(tok, "Version") == 0) {
-				client->protocol = atoi(val);
-			}
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "connecting to notifier %s:%d", client->server, NOTIFIER_PORT_PROTOCOL2);
+
+	err = getaddrinfo(client->server, NULL, &hints, &result_addrinfo);
+	if (err != 0) {
+	  univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "address resolution of %s failed with errorcode %d: %s", client->server, err, gai_strerror(err));
+	  free(client->server);
+	  client->server = NULL;
+	  return 1;
+	}
+
+	res = result_addrinfo;
+	while (res) { /* process all results */
+	    switch (res->ai_family) {
+		    case AF_INET:
+			    if ((client->fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+				    univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "creating IPv4 socket descriptor failed with errorcode %d: %s", errno, strerror(errno));
+					res = res->ai_next;
+					continue;
+				}
+				memcpy(&address4.sin_addr, &((struct sockaddr_in *) res->ai_addr)->sin_addr, sizeof(address4.sin_addr));
+				inet_ntop(res->ai_family, &((struct sockaddr_in *) res->ai_addr)->sin_addr, addrstr, 100);
+				address = (struct sockaddr*)&address4;
+				addrlen = sizeof(address4);
+				break;
+
+		    case AF_INET6:
+			    if ((client->fd = socket(AF_INET6, SOCK_STREAM, 0)) == -1) {
+				    univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "creating IPv6 socket descriptor failed with errorcode %d: %s", errno, strerror(errno));
+					res = res->ai_next;
+					continue;
+				}
+				memcpy(&address6.sin6_addr, &((struct sockaddr_in6 *) res->ai_addr)->sin6_addr, sizeof(address6.sin6_addr));
+				inet_ntop(res->ai_family, &((struct sockaddr_in6 *) res->ai_addr)->sin6_addr, addrstr, 100);
+				address = (struct sockaddr*)&address6;
+				addrlen = sizeof(address6);
+				break;
+
+		    default:
+			    /* unknown protocol */
+			    res = res->ai_next;
+ 			    continue;
 		}
-		
-		free(result);
-	} else {
+		/* convert IP address to string */
+
+		if (connect(client->fd, address, addrlen) == -1) {
+		    univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "connection to %s failed with errorcode %d: %s", addrstr, errno, strerror(errno));
+			close(client->fd);
+			client->fd = -1;
+			res = res->ai_next;
+			continue;
+		}
+		break;
+	}
+	freeaddrinfo(result_addrinfo);
+
+	if (client->fd == -1) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to connect to notifier");
 		free(client->server);
 		client->server = NULL;
 		return 2;
 	}
+
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "established connection to %s port %d", addrstr, NOTIFIER_PORT_PROTOCOL2);
+
+	const char	*header = "Version: 2\nCapabilities: \n\n";
+	char		*result, *tok;
+		
+	send_block(client, header, strlen(header));
+	if (recv_block(client, &result, NOTIFIER_TIMEOUT) < 1) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "couldn't receive header");
+		free(client->server);
+		client->server = NULL;
+		return 1;
+	}
+
+	/* strtok modifies result, but we shouldn't need to care */
+	for(tok=strtok(result, "\n"); tok != NULL; tok=strtok(NULL, "\n")) {
+		char *val;
+		if ((val = strchr(tok, ':')) == NULL) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ignoring bad header: [%s]", tok);
+			continue;
+		}
+		*val++ = '\0';
+		while (*val == ' ')
+			++val;
+		
+		if (strcmp(tok, "Version") == 0) {
+			client->protocol = atoi(val);
+		}
+	}
+	
+	free(result);
 
 	if (client->protocol != 2) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Protocol version %d is not supported", client->protocol);
