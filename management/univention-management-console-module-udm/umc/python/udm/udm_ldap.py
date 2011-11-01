@@ -802,7 +802,9 @@ def list_objects( container, ldap_connection = None, ldap_position = None ):
 	return objects
 
 def split_module_attr( value ):
-	return value.split( ': ', 1 )
+	if value.find( ':' ) > 0:
+		return value.split( ': ', 1 )
+	return ( None, value )
 
 def _create_ldap_filter( syn, options ):
 	if syn.depends and not syn.depends in options:
@@ -910,10 +912,10 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 		syntax = udm_syntax.LDAP_Search( options[ 'syntax' ], options[ 'filter' ], options[ 'attributes' ], options[ 'base' ], options[ 'value' ], options[ 'viewonly' ], options[ 'empty' ] )
 
 		if '$dn$' in options:
-			# TODO: get LDAP object
-			#obj = 
-			# update choices
-			syntax.filter = udm.pattern_replace( syntax.filter, obj )
+			filter_mod = get_module( None, options[ '$dn$' ] )
+			if filter_mod:
+				obj = filter_mod.get( options[ '$dn$' ] )
+				syntax.filter = udm.pattern_replace( syntax.filter, obj )
 
 		syntax._prepare( ldap_connection, syntax.filter )
 
@@ -926,7 +928,7 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 
 			if display_attr:
 				mod_display, display = split_module_attr( display_attr )
-				module = get_module( mod_display, dn )
+				module = get_module( mod_display, dn ) # mod_display might be None
 			else:
 				module = get_module( None, dn )
 				display = None
@@ -935,12 +937,18 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 			obj = module.get( dn )
 			if not obj:
 				continue
+
+			# find the value to store
 			if not syntax.viewonly:
 				mod_store, store = split_module_attr( store_pattern )
 				if store == 'dn':
 					id = dn
-				else:
+				elif obj.has_key( store ):
 					id = obj.get( store )
+				elif store in obj.oldattr and obj.oldattr[ store ]:
+					id = obj.oldattr[ store ][ 0 ]
+
+			# find the value to display
 			if display == 'dn':
 				label = dn
 			elif display is None: # if view-only and in case of error
@@ -948,8 +956,12 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 			else:
 				if obj.has_key( display ):
 					label = obj[ display ]
+				elif display in obj.oldattr and obj.oldattr[ display ]:
+					label = obj.oldattr[ display ][ 0 ]
 				else:
 					label = 'Unknown attribute %s' % display
+
+			# create list entry
 			if syntax.viewonly:
 				syntax.choices.append( { 'module' : 'udm', 'flavor' : module.flavor, 'objectType' : module.name, 'id' : dn, 'label' : label, 'icon' : 'udm-%s' % module.name.replace( '/', '-' ) } )
 			else:
@@ -957,4 +969,5 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 		if syntax.addEmptyValue:
 			syntax.choices.insert( 0, { 'id': '', 'label': '' } )
 		return syntax.choices
+
 	return map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syn, 'choices', [] ) )

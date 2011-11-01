@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.215-1) unstable; urgency=low
+
+  * fix navigation container search; Bug #24244
+  * LDAP_Search: fix handling of ldapattribute and ldapvalue that do not
+    contain a module name; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 01 Nov 2011 11:59:40 +0100
+
 univention-management-console-module-udm (1.0.214-4) unstable; urgency=low
 
   * dependency update (Bug #24245)

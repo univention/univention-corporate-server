@@ -163,11 +163,11 @@ class Instance( Base ):
 				license_data[ item ][ lic_type.lower() ] = count
 
 		if 'UGS' in udm_license._license.licenseTypes:
-			udm_license._license.licenseTypes.remove( 'UGS' )
+			udm_license._license.licenseTypes = filter( lambda x: x != 'UGS', udm_license._license.licenseTypes )
 		license_data[ 'licenseTypes' ] = udm_license._license.licenseTypes
 		license_data[ 'oemProductTypes' ] = udm_license._license.oemProductTypes
 		license_data[ 'endDate' ] = udm_license._license.endDate
-		license_data[ 'baseDN' ] = ucr.get( 'ldap/base' )
+		license_data[ 'baseDN' ] = udm_license._license.licenseBase
 
 		self.finished( request.id, license_data )
 
@@ -672,9 +672,12 @@ class Instance( Base ):
 				module = UDM_Module( '%s/%s' % ( base, typ ) )
 				if module.superordinate:
 					if superordinate is None:
-						so_module = UDM_Module( module.superordinate )
-						so_obj = so_module.get( request.options.get( 'container' ) )
-						superordinate = so_obj
+						try:
+							so_module = UDM_Module( module.superordinate )
+							so_obj = so_module.get( request.options.get( 'container' ) )
+							superordinate = so_obj
+						except UDM_Error: # superordinate object could not be load -> ignore module
+							continue
 					else:
 						so_obj = superordinate
 				else:
@@ -696,7 +699,7 @@ class Instance( Base ):
 			else:
 				self.finished( request.id, None, str( result ), False )
 
-		thread = notifier.threads.Simple( 'NavObjectQuery', notifier.Callback( _thread, request.options[ 'container' ] ),
+		thread = notifier.threads.Simple( 'NavContainerQuery', notifier.Callback( _thread, request.options[ 'container' ] ),
 										  notifier.Callback( _finish, request ) )
 		thread.run()
 
