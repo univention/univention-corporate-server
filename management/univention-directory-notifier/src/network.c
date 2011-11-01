@@ -70,19 +70,17 @@ extern void unset_listener_callback ();
 int network_create_socket( int port )
 {
 	int server_socketfd;
-	struct sockaddr_in server_address;
+	struct sockaddr_in6 server_address;
 	int i;
-	int server_l;
 
-	server_socketfd = socket(PF_INET, SOCK_STREAM, 0);
+	server_socketfd = socket(PF_INET6, SOCK_STREAM, 0);
 
 	i=1;
 	setsockopt(server_socketfd,SOL_SOCKET, SO_REUSEADDR, &i, sizeof(i));
 
-	server_address.sin_family = AF_INET;
-	memset(&server_address.sin_addr,0,sizeof(server_address.sin_addr));
-	server_address.sin_port = htons(port);
-	server_l = sizeof(server_address);
+	server_address.sin6_family = AF_INET6;
+	server_address.sin6_addr = in6addr_any;;
+	server_address.sin6_port = htons(port);
 
 	if( (bind(server_socketfd,(struct sockaddr*)&server_address,sizeof(server_address))) == -1) {
 		perror("bind");
@@ -297,7 +295,7 @@ static int new_connection(int fd, callback_remove_handler remove)
 {
 	struct sockaddr_in client_address;
 	int client_socketfd;
-	int client_l;
+	socklen_t client_l;
 
 	client_l= sizeof(client_address);
 

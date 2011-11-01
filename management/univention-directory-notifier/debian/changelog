@@ -1,3 +1,9 @@
+univention-directory-notifier (6.0.7-1) unstable; urgency=low
+
+  * open AF_INET6 socket (can handle IPv6 and IPv4 connections) (Bug #24284)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 01 Nov 2011 14:41:28 +0100
+
 univention-directory-notifier (6.0.6-3) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
