@@ -70,6 +70,13 @@ attributetype ( 1.3.6.1.4.1.10176.2000.1.10
   SUBSTR caseIgnoreSubstringsMatch
   SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
 
+attributetype ( 1.3.6.1.4.1.10176.2000.1.11
+  NAME 'univentionSyntaxAddEmptyValue'
+  DESC ' add empty value to choicelist '
+  EQUALITY caseIgnoreMatch
+  SUBSTR caseIgnoreSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
 objectclass ( 1.3.6.1.4.1.10176.2000.1.100
   NAME 'univentionSyntax'
   DESC 'A generic Syntax Definition for Attributes'
@@ -79,4 +86,5 @@ objectclass ( 1.3.6.1.4.1.10176.2000.1.100
 	univentionSyntaxLDAPAttribute )
   MAY ( univentionSyntaxDescription $
   	univentionSyntaxLDAPBase $
-	univentionSyntaxLDAPValue ) )
+	univentionSyntaxLDAPValue $
+	univentionSyntaxAddEmptyValue ) )

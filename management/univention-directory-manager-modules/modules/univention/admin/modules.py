@@ -405,9 +405,6 @@ def update_extended_attributes(lo, module, position):
 			ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch throwed exception - assuming doNotSearch=0')
 			doNotSearch = 0
 
-		# add an empty value
-		propertySyntax.addEmptyValue = ( attrs.get('univentionUDMPropertyAddEmptyValue',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
-
 		# check if CA is multivalue property
 		if attrs.get('univentionUDMPropertyMultivalue', [''])[0] == '1':
 			multivalue = 1

@@ -2417,6 +2417,7 @@ class LDAP_Search( select ):
 			if attrs[ 'univentionSyntaxViewOnly' ][ 0 ] == 'TRUE':
 				self.viewonly = True
 				self.value = 'dn'
+			self.addEmptyValue = ( attrs.get('univentionSyntaxAddEmptyValue', ['0'])[ 0 ].upper() in [ 'TRUE', '1' ] )
 
 	def _prepare( self, lo, filter = None ):
 		if filter is None:

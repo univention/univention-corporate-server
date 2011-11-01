@@ -954,5 +954,7 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 				syntax.choices.append( { 'module' : 'udm', 'flavor' : module.flavor, 'objectType' : module.name, 'id' : dn, 'label' : label, 'icon' : 'udm-%s' % module.name.replace( '/', '-' ) } )
 			else:
 				syntax.choices.append( { 'module' : 'udm', 'flavor' : module.flavor, 'objectType' : module.name, 'id' : id, 'label' : label, 'icon' : 'udm-%s' % module.name.replace( '/', '-' ) } )
+		if syntax.addEmptyValue:
+			syntax.choices.insert( 0, { 'id': '', 'label': '' } )
 		return syntax.choices
 	return map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syn, 'choices', [] ) )

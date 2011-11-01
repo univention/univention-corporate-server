@@ -239,16 +239,6 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'addEmptyValue': univention.admin.property(
-			short_description=_('Add an empty value to choicelist'),
-			long_description='',
-			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
 	'ldapMapping': univention.admin.property(
 			short_description=_('LDAP mapping'),
 			long_description='',
@@ -384,7 +374,6 @@ layout = [
 		Group( _( 'Extended settings' ), layout = [
 			[ "overwritePosition", "fullWidth" ],
 			[ "overwriteTab", "tabAdvanced" ],
-			"addEmptyValue"
 			] ),
 	] ),
 	Tab(_('UDM General'),_('UDM related settings'), layout = [
@@ -429,7 +418,6 @@ mapping.register('tabAdvanced', 'univentionUDMPropertyLayoutTabAdvanced', None, 
 mapping.register('overwriteTab', 'univentionUDMPropertyLayoutOverwriteTab', None, univention.admin.mapping.ListToString)
 mapping.register('overwritePosition', 'univentionUDMPropertyLayoutOverwritePosition', None, univention.admin.mapping.ListToString)
 mapping.register('fullWidth', 'univentionUDMPropertyLayoutFullWidth', None, univention.admin.mapping.ListToString)
-mapping.register('addEmptyValue', 'univentionUDMPropertyAddEmptyValue', None, univention.admin.mapping.ListToString)
 mapping.register('mayChange', 'univentionUDMPropertyValueMayChange', None, univention.admin.mapping.ListToString)
 mapping.register('valueRequired', 'univentionUDMPropertyValueRequired', None, univention.admin.mapping.ListToString)
 mapping.register('notEditable', 'univentionUDMPropertyValueNotEditable', None, univention.admin.mapping.ListToString)
