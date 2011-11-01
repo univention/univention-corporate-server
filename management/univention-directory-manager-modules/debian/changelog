@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.169-1) unstable; urgency=low
+
+  * fix encoding detection (Bug #23475)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 01 Nov 2011 15:59:48 +0100
+
 univention-directory-manager-modules (7.0.168-1) unstable; urgency=low
 
   * fix DNS reverse zone entry display for computers/* (Bug #15555)
