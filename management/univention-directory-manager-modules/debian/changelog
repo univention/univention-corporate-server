@@ -1,3 +1,12 @@
+univention-directory-manager-modules (7.0.165-1) unstable; urgency=low
+
+  * Bug #15687:
+    * fix traceback
+    * fix reverse zone selection
+    * fix IP mapping for computers/*
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 01 Nov 2011 11:05:16 +0100
+
 univention-directory-manager-modules (7.0.164-1) unstable; urgency=low
 
   * add a few more information to the univention.admin.License object; Bug #23655

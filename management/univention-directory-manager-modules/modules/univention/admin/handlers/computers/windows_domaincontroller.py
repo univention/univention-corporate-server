@@ -332,7 +332,6 @@ mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.Li
 mapping.register('inventoryNumber', 'univentionInventoryNumber')
 mapping.register('serverRole', 'univentionServerRole')
 mapping.register('mac', 'macAddress' )
-mapping.register('ip', 'aRecord' )
 mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
 mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
 mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString)

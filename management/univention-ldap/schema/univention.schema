@@ -136,7 +136,7 @@ objectclass ( 1.3.6.1.4.1.10176.70 NAME 'univentionHost'
 	SUP top AUXILIARY
 	DESC 'Univention host'
 	MUST ( cn )
-	MAY ( macAddress $ aRecord $ mXRecord $ cNAMERecord $ associatedDomain $ univentionNetworkLink $ univentionInventoryNumber $ univentionOperatingSystem $ univentionOperatingSystemVersion))
+	MAY ( macAddress $ aRecord $ aAAARecord $ mXRecord $ cNAMERecord $ associatedDomain $ univentionNetworkLink $ univentionInventoryNumber $ univentionOperatingSystem $ univentionOperatingSystemVersion))
 
 objectclass ( 1.3.6.1.4.1.10176.71 NAME 'univentionClient'
 	SUP 'univentionHost' AUXILIARY

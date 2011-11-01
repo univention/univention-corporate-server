@@ -236,7 +236,6 @@ mapping.register('nameserver', 'nSRecord')
 mapping.register('zonettl', 'dNSTTL', None, univention.admin.mapping.ListToString)
 mapping.register('mx', 'mXRecord', mapMX, unmapMX)
 mapping.register('txt', 'tXTRecord', None, univention.admin.mapping.ListToString)
-mapping.register('a', 'aRecord')
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
@@ -287,6 +286,11 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
+		self.info['a'] = []
+		if 'aRecord' in self.oldattr:
+			self.info['a'].extend(self.oldattr['aRecord'])
+		if 'aAAARecord' in self.oldattr:
+			self.info['a'].extend(self.oldattr['aAAARecord'])
 
 		soa=self.oldattr.get('sOARecord',[''])[0].split(' ')
 		if len(soa) > 6:
@@ -320,6 +324,28 @@ class object(univention.admin.handlers.simpleLdap):
 				self['nameserver'][0] = '%s.' % self['nameserver'][0]
 			soa='%s %s %s %s %s %s %s' % (self['nameserver'][0], self.escapeSOAemail(self['contact']), self['serial'], self['refresh'], self['retry'], self['expire'], self['ttl'])
 			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), [soa]))
+
+		oldAddresses = self.oldinfo.get('a')
+		newAddresses = self.info.get('a')
+		oldARecord = []
+		newARecord = []
+		oldAaaaRecord = []
+		newAaaaRecord = []
+		if oldAddresses != newAddresses:
+			if oldAddresses:
+			    for address in oldAddresses:
+					if ':' in address: # IPv6
+						oldAaaaRecord.append(address)
+					else:
+						oldARecord.append(address)
+			if newAddresses:
+			    for address in newAddresses:
+					if ':' in address: # IPv6
+						newAaaaRecord.append(address)
+					else:
+						newARecord.append(address)
+			ml.append(('aRecord',    oldARecord,    newARecord, ))
+			ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
 		return ml
 
 	def _ldap_pre_modify(self, modify_childs=1):

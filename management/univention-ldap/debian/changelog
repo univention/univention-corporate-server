@@ -1,3 +1,9 @@
+univention-ldap (8.0.64-1) unstable; urgency=low
+
+  * support aAAARecord for univentionHost (Bug #15687)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 01 Nov 2011 11:02:56 +0100
+
 univention-ldap (8.0.63-1) unstable; urgency=low
 
   * support IPv6 in join script (Bug #23942)

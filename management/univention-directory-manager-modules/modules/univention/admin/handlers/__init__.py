@@ -1044,7 +1044,6 @@ class simpleLdap(base):
 
 class simpleComputer( simpleLdap ):
 	MAC_REGEX = re.compile( '^([0-9a-fA-F]{2}[:-]){5}[0-9a-fA-F]{2}$' )
-	IP_REGEX = re.compile( '^([0-9]{1,3}\.){3}[0-9]{1,3}$' )
 
 	def __init__( self, co, lo, position, dn = '', superordinate = None, attributes = [] ):
 		simpleLdap.__init__( self, co, lo, position, dn, superordinate, attributes )
@@ -1112,6 +1111,12 @@ class simpleComputer( simpleLdap ):
 
 	def open( self ):
 		simpleLdap.open( self )
+		self.info['ip'] = []
+		if 'aRecord' in self.oldattr:
+			self.info['ip'].extend(self.oldattr['aRecord'])
+		if 'aAAARecord' in self.oldattr:
+			self.info['ip'].extend(self.oldattr['aAAARecord'])
+		self.save() # save current state as old state
 
 		self.ip_alredy_requested = 0
 		self.ip_freshly_set = False
@@ -1600,10 +1605,10 @@ class simpleComputer( simpleLdap ):
 			else:
 				results = self.lo.search( base = base, scope = 'domain', attr = [ 'aRecord' ], filter = '(&(relativeDomainName=%s)(aRecord=%s))' % ( name, old_ip ), unique = 0 )
 			for dn, attr in results:
-				old_aRecord    =               attr['aRecord']
-				new_aRecord    = copy.deepcopy(attr['aRecord'])
-				old_aAAARecord =               attr['aAAARecord']
-				new_aAAARecord = copy.deepcopy(attr['aAAARecord'])
+				old_aRecord    =               attr.get('aRecord', [])
+				new_aRecord    = copy.deepcopy(attr.get('aRecord', []))
+				old_aAAARecord =               attr.get('aAAARecord', [])
+				new_aAAARecord = copy.deepcopy(attr.get('aAAARecord', []))
 				if ':' in old_ip: # IPv6
 					new_aAAARecord.remove(old_ip)
 				else:
@@ -1858,8 +1863,12 @@ class simpleComputer( simpleLdap ):
 					if not changed_ip:
 						self.__add_dns_forward_object( self[ 'name' ], self[ 'dnsEntryZoneForward' ][ 0 ], entry )
 				if self.has_key( 'dnsEntryZoneReverse' ) and len( self[ 'dnsEntryZoneReverse' ] ) > 0:
-					x, ip = self.__split_dns_line( self[ 'dnsEntryZoneReverse' ][ 0 ] )
-					self.__add_dns_reverse_object( self[ 'name' ], x, entry )
+					for dnsEntryZoneReverse in self['dnsEntryZoneReverse']:
+						x, ip = self.__split_dns_line(dnsEntryZoneReverse)
+						zoneIsV6 = ldap.explode_dn(x, 1)[0].endswith('.ip6.arpa')
+						entryIsV6 = ':' in entry
+						if zoneIsV6 == entryIsV6:
+							self.__add_dns_reverse_object( self[ 'name' ], x, entry )
 
 		if self.__changes[ 'name' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: name has changed' )
@@ -1920,6 +1929,27 @@ class simpleComputer( simpleLdap ):
 						continue
 					self.__changes[ 'mac' ][ 'remove' ].append( macAddress )
 
+		oldAddresses = self.oldinfo.get('ip')
+		newAddresses = self.info.get('ip')
+		oldARecord = []
+		newARecord = []
+		oldAaaaRecord = []
+		newAaaaRecord = []
+		if oldAddresses != newAddresses:
+			if oldAddresses:
+			    for address in oldAddresses:
+					if ':' in address: # IPv6
+						oldAaaaRecord.append(address)
+					else:
+						oldARecord.append(address)
+			if newAddresses:
+			    for address in newAddresses:
+					if ':' in address: # IPv6
+						newAaaaRecord.append(address)
+					else:
+						newARecord.append(address)
+			ml.append(('aRecord',    oldARecord,    newARecord, ))
+			ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
 
 		if self.hasChanged( 'ip' ):
 			for ipAddress in self[ 'ip' ]:

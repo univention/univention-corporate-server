@@ -160,7 +160,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if dn:
 			self.open()
 
-	def open(self): # IPv6
+	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 		self.info['a'] = []
 		if 'aRecord' in self.oldattr:
@@ -179,7 +179,7 @@ class object(univention.admin.handlers.simpleLdap):
 		]
 
 	def _ldap_modlist(self): # IPv6
-		modlist = univention.admin.handlers.simpleLdap._ldap_modlist(self)
+		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 		oldAddresses = self.oldinfo.get('a')
 		newAddresses = self.info.get('a')
 		oldARecord = []
@@ -199,9 +199,9 @@ class object(univention.admin.handlers.simpleLdap):
 						newAaaaRecord.append(address)
 					else:
 						newARecord.append(address)
-			modlist.append(('aRecord',    oldARecord,    newARecord, ))
-			modlist.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
-		return modlist
+			ml.append(('aRecord',    oldARecord,    newARecord, ))
+			ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
+		return ml
 
 	def _ldap_post_create(self):
 		self._updateZone()
