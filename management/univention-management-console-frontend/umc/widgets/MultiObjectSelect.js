@@ -229,18 +229,6 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 
 		// add the final buttons to close the dialog
 		this._container.addChild(new umc.widgets.Button({
-			label: this._('Cancel'),
-			defaultButton: true,
-			onClick: dojo.hitch(this, function() {
-				// hide the dialog
-				this.hide();
-
-				// unselect all elements
-				this._multiSelect.set('value', []);
-
-			})
-		}));
-		this._container.addChild(new umc.widgets.Button({
 			label: this._('Add'),
 			iconClass: 'umcIconAdd',
 			style: 'float: right;',
@@ -257,6 +245,18 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 
 				// unselect all elements
 				this._multiSelect.set('value', []);
+			})
+		}));
+		this._container.addChild(new umc.widgets.Button({
+			label: this._('Cancel'),
+			defaultButton: true,
+			onClick: dojo.hitch(this, function() {
+				// hide the dialog
+				this.hide();
+
+				// unselect all elements
+				this._multiSelect.set('value', []);
+
 			})
 		}));
 

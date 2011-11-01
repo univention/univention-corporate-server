@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.164-1) unstable; urgency=low
+
+  * added doctype to HTML file, css fixes, minor fixes (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 01 Nov 2011 16:34:46 +0100
+
 univention-management-console-frontend (1.0.163-1) unstable; urgency=low
 
   * add free for personal use edition information; Bug #23655

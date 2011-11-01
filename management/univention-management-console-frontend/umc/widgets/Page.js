@@ -208,7 +208,7 @@ dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 		var closeButton = '<span class="dijitTabCloseButton dijitTabCloseIcon" style="float:right" title="Close"></span>';
 
 		var note = new umc.widgets.Text({
-			content: '<b>' + this._('Note') + ':</b> ' + closeButton + message,
+			content: closeButton + '<b>' + this._('Note') + ':</b> ' + message,
 			region: 'top',
 			'class': 'umcPageNote'
 		});

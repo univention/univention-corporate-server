@@ -4925,6 +4925,7 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 /* @from style css */
 html {
 	background: url(../../../../images/bg/page.png) repeat-y center #eeeeef;
+	height: 100%;
 }
 
 body {
@@ -4932,6 +4933,8 @@ body {
 	color: #414142;
 	/* disable scrollbars for the main window, long combo boxes may cause scrollbars to be shown */
 	overflow-y: hidden;
+	height: 100%;
+	width: 100%;
 }
 
 a {
