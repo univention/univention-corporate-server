@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.167-1) unstable; urgency=low
+
+  * license: add LDAP base from license to univention.admin.License; Bug #23655
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 01 Nov 2011 15:05:06 +0100
+
 univention-directory-manager-modules (7.0.166-1) unstable; urgency=low
 
   * moved addEmptyValue handling from settings/extended_attribute 

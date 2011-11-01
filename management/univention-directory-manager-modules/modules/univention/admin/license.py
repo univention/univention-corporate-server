@@ -60,6 +60,7 @@ class License( object ):
 		self.endDate = None
 		self.licenseTypes = []
 		self.oemProductTypes = []
+		self.licenseBase = None
 		self.types= []
 		self.sysAccountNames = ( 'Administrator', 'join-backup', 'join-slave', 'spam', 'oxadmin', 'krbtgt', 'Guest', 'dns-%s' % configRegistry.get('ldap/master').split('.')[0], 'dns-%s' % configRegistry.get('hostname') )
 		self.sysAccountsFound = 0
@@ -197,8 +198,8 @@ class License( object ):
 			if disable_add: self._expired = True
 
 			if not disable_add:
-				license_base = univention.license.getValue ( 'univentionLicenseBaseDN' )
-				if license_base == 'Free for personal use edition':
+				self.licenseBase = univention.license.getValue ( 'univentionLicenseBaseDN' )
+				if self.licenseBase == 'Free for personal use edition':
 					disable_add=5
 
 		# check modules list for validity and accepted operations
