@@ -245,7 +245,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 								button.set('style', 'float: ' + button.align);
 							}
 							// but then we should have show/hide methods to be consistent
-							dojo.mixin( widget, {
+							dojo.mixin( button, {
 								visible: true,
 								show: function() {
 									this.set( 'visible', true );
