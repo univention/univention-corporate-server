@@ -109,7 +109,7 @@ if dpkg -l lilo 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
 fi
 
 # univention-squid might be held back due squid still being installed
-if dpkg -l squid 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
+if dpkg -s squid 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
     install univention-squid  >>"$UPDATER_LOG" 2>&1
 fi
 

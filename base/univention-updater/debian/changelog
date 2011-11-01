@@ -1,3 +1,9 @@
+univention-updater (7.0.78-2) unstable; urgency=low
+
+  * Fix squid test (Bug #22576)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 01 Nov 2011 11:25:57 +0100
+
 univention-updater (7.0.78-1) unstable; urgency=low
 
   * UMC: fixed icon names (Bug #22881)
