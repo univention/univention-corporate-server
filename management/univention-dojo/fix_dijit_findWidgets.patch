@@ -11,7 +11,7 @@ The property children worked fine in this case.
  		function getChildrenHelper(root){
 -			for(var node = root.firstChild; node; node = node.nextSibling){
 +			for(var i = 0; i < root.children.length; ++i){
-+				var node = root.children[i]
++				var node = root.children[i];
  				if(node.nodeType == 1){
  					var widgetId = node.getAttribute("widgetId");
  					if(widgetId){
