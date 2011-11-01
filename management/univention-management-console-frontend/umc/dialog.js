@@ -160,7 +160,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		// |	}]);
 
 		// if the user has switched off confirmations, try to find a default option
-		if (!umc.tools.preferences('confirm')) {
+		if (umc.tools.preferences('confirm') === false) {
 			var cb = undefined;
 			var response = undefined;
 			dojo.forEach(options, function(i, idx) {

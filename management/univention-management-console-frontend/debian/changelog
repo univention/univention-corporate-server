@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.161-1) unstable; urgency=low
+
+  * umc.dialog: fixed default for unset confirm value (Bug #22881) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 01 Nov 2011 10:27:33 +0100
+
 univention-management-console-frontend (1.0.160-1) unstable; urgency=low
 
   * Form: added getButton() (Bug #22881)
