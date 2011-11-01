@@ -1078,9 +1078,9 @@ class simpleComputer( simpleLdap ):
 	# HELPER
 	def __ip_from_ptr( self, zoneName, relativeDomainName ):
 		if 'ip6' in zoneName:
-			self.__ip_from_ptr_ipv6(zoneName, relativeDomainName)
+			return self.__ip_from_ptr_ipv6(zoneName, relativeDomainName)
 		else:
-			self.__ip_from_ptr_ipv4(zoneName, relativeDomainName)
+			return self.__ip_from_ptr_ipv4(zoneName, relativeDomainName)
 
 	def __ip_from_ptr_ipv4( self, zoneName, relativeDomainName ):
 		zoneName = zoneName.replace(  '.in-addr.arpa', '' ).split( '.' )
@@ -1091,7 +1091,7 @@ class simpleComputer( simpleLdap ):
 
 	def __ip_from_ptr_ipv6( self, zoneName, relativeDomainName ):
 		fullName = relativeDomainName + '.' + zoneName.replace('.ip6.arpa', '')
-		fullName.split('.')
+		fullName = fullName.split('.')
 		fullName = [''.join(reversed(fullName[i:i+4])) for i in xrange(0, len(fullName), 4)]
 		fullName.reverse( )
 		return ':'.join(fullName)

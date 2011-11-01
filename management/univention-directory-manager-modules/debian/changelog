@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.168-1) unstable; urgency=low
+
+  * fix DNS reverse zone entry display for computers/* (Bug #15555)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 01 Nov 2011 15:25:10 +0100
+
 univention-directory-manager-modules (7.0.167-1) unstable; urgency=low
 
   * license: add LDAP base from license to univention.admin.License; Bug #23655
