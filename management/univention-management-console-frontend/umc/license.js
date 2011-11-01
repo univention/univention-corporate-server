@@ -13,13 +13,12 @@ dojo.mixin(umc.license, new umc.i18n.Mixin({
 } ), {
 
 	show: function( info ) {
-		var message = dojo.cache("umc", "license.html");
 		if ( info.oemProductTypes.length === 0 ) {
 			product = info.licenseTypes.join( ', ' );
 		} else {
 			product = info.oemProductTypes.join( ', ' );
 		}
-		message = dojo.replace( message, {
+		var keys = {
 			title : this._( 'License' ),
 			labelBase : this._( 'LDAP base' ),
 			base: info.baseDN,
@@ -32,8 +31,9 @@ dojo.mixin(umc.license, new umc.i18n.Mixin({
 			labelEndDate : this._( 'Expiry date' ),
 			endDate: this._( info.endDate ),
 			labelProduct : this._( 'Valid product types' ),
-			product: product
-		} );
-		umc.dialog.alert( message, this._( 'About UMC' ), this._( 'Close' ) );
+			product: product,
+			freeLicenseInfo: info.baseDN == 'Free for personal use edition' ? this._( 'FREE LICENSE INFO' ) : ''
+		};
+		umc.dialog.templateDialog( "umc", "license.html", keys, this._( 'About UMC' ), this._( 'Close' ) );
 	}
 } );

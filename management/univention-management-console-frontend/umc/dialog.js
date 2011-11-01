@@ -8,6 +8,7 @@ dojo.require("umc.tools");
 dojo.require("umc.widgets.LoginDialog");
 dojo.require("umc.widgets.Toaster");
 dojo.require("umc.widgets.ConfirmDialog");
+dojo.require("umc.widgets.Text");
 
 dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 	// use the framework wide translation file
@@ -193,6 +194,27 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 
 		// show the confirmation dialog
 		confirmDialog.show();
+	},
+
+	templateDialog: function( /*String*/ templateModule, /*String*/ templateFile, /*String*/ keys, /* String? */ title, /* String? */ buttonLabel ) {
+		// summary:
+		//		Popup an alert dialog with a text message based on the given template file. The users needs to
+		//		confirm the dialog by clicking on the 'OK' button.
+		// templateModule:
+		//		The module name where to find the template
+		// templateFile:
+		//		The template file to use
+		// keys:
+		//		An object with values that should be replaced in the template (using dojo.replace)
+		// title:
+		//		An optional title for the popup window
+		// buttonLabel:
+		//		An alternative label for the button
+		var message = dojo.cache( templateModule, templateFile );
+		message = dojo.replace( message, keys );
+		var widget = new umc.widgets.Text( {  content : message } );
+		dojo.addClass( widget.domNode, 'umcPopup' );
+		this.alert( widget, title || 'UMC', buttonLabel );
 	}
 });
 

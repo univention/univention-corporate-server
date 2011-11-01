@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.163-1) unstable; urgency=low
+
+  * add free for personal use edition information; Bug #23655
+  * add umc.dialog.templateDialog
+  * re-add css for popup dialogs
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 01 Nov 2011 14:59:34 +0100
+
 univention-management-console-frontend (1.0.162-1) unstable; urgency=low
 
   * umc.render: added show/hide methods for Buttons (Bug #22881)

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-31 20:53+0100\n"
-"PO-Revision-Date: 2011-10-31 18:27+0100\n"
+"POT-Creation-Date: 2011-11-01 16:42+0100\n"
+"PO-Revision-Date: 2011-11-01 14:46+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -26,7 +26,7 @@ msgstr "%(label)s (Wiederholung)"
 msgid "%d entries of %d selected"
 msgstr "%d Einträge von %d ausgewählt"
 
-#: umc/license.js:27 umc/license.js:29 umc/license.js:31
+#: umc/license.js:26 umc/license.js:28 umc/license.js:30
 #, python-format
 msgid "%s (used: %s)"
 msgstr "%s (genutzt: %s)"
@@ -36,7 +36,7 @@ msgstr "%s (genutzt: %s)"
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
 
-#: umc/app.js:428 umc/license.js:37 umc/about.js:27
+#: umc/license.js:37 umc/about.js:26 umc/app.js:428
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -52,7 +52,7 @@ msgstr "Hinzufügen"
 msgid "Add objects"
 msgstr "Objekte hinzufügen"
 
-#: umc/help.js:22
+#: umc/help.js:21
 msgid "Additional documentation for UCS"
 msgstr "Zusätzliche Dokumentationen zu UCS"
 
@@ -80,19 +80,19 @@ msgstr ""
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
-#: umc/app.js:516 umc/widgets/MultiObjectSelect.js:232
+#: umc/widgets/MultiObjectSelect.js:232 umc/app.js:516
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/license.js:28
+#: umc/license.js:27
 msgid "Clients"
 msgstr "Clients"
 
-#: umc/license.js:37 umc/help.js:31 umc/about.js:27
+#: umc/license.js:37 umc/about.js:26 umc/help.js:30
 msgid "Close"
 msgstr "Schließen"
 
-#: umc/dialog.js:183
+#: umc/dialog.js:184
 msgid "Confirmation"
 msgstr "Bestätigung"
 
@@ -104,11 +104,11 @@ msgstr "Bestätigungen"
 msgid "Could not fulfill the request."
 msgstr "Die Anfrage konnte nicht ausgeführt werden."
 
-#: umc/help.js:21
+#: umc/help.js:20
 msgid "Current manual (PDF)"
 msgstr "Aktuelles Handbuch (PDF)"
 
-#: umc/license.js:30
+#: umc/license.js:29
 msgid "Desktops"
 msgstr "Desktops"
 
@@ -120,9 +120,18 @@ msgstr "Möchten Sie sich wirklich abmelden?"
 msgid "English"
 msgstr "Englisch"
 
-#: umc/license.js:32
+#: umc/license.js:31
 msgid "Expiry date"
 msgstr "Ablaufdatum"
+
+#: umc/license.js:35
+msgid "FREE LICENSE INFO"
+msgstr ""
+"<p>Die \"Free For Personal Use\" Ausgabe von Univention Corporate Server ist eine spezielle Softwarelizenz mit der Verbraucher im Sinne des § 13 BGB die kostenlose Nutzung von Univention Corporate Server und darauf basierenden Softwareprodukten für private Zwecke ermöglicht wird.</p>\n"
+"\n"
+"<p>Im Rahmen dieser Lizenz darf UCS von unseren Servern heruntergeladen, installiert und genutzt werden. Es ist jedoch nicht erlaubt, die Software Dritten zum Download oder zur Nutzung zur Verfügung zu stellen oder sie im Rahmen einer überwiegend beruflichen oder gewerbsmäßigen Nutzung zu verwenden.</p>\n"
+"\n"
+"<p>Die Überlassung der \"Free For Personal Use\"-Ausgabe von UCS erfolgt im Rahmen eines Schenkungsvertrages. Wir schließen deswegen alle Gewährleistungs- und Haftungsansprüche aus, es sei denn, es liegt ein Fall des Vorsatzes oder der groben Fahrlässigkeit vor. Wir weisen darauf hin, dass bei der \"Free For Personal Use\"-Ausgabe die Haftungs-, Gewährleistungs-, Support- und Pflegeansprüche, die sich aus unseren kommerziellen Softwareverträgen ergeben, nicht gelten.</p>"
 
 #: umc/widgets/LoginDialog.js:41
 msgid "German"
@@ -142,7 +151,7 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/app.js:412 umc/help.js:31
+#: umc/help.js:30 umc/app.js:412
 msgid "Help"
 msgstr "Hilfe"
 
@@ -203,15 +212,15 @@ msgstr "Interner Server-Fehler: Der Modulprozess starb unerwartet."
 msgid "Internal server error: The service is temporarily not available."
 msgstr "Interner Server-Fehler: Der Dienst is momentan nicht erreichbar!"
 
-#: umc/license.js:24
+#: umc/license.js:23
 msgid "LDAP base"
-msgstr "LDAP_Basis"
+msgstr "LDAP-Basis"
 
 #: umc/widgets/LoginDialog.js:104
 msgid "Language"
 msgstr "Sprache"
 
-#: umc/app.js:419 umc/license.js:23
+#: umc/license.js:22 umc/app.js:419
 msgid "License"
 msgstr "Lizenz"
 
@@ -228,7 +237,7 @@ msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 msgid "Logout"
 msgstr "Abmelden"
 
-#: umc/help.js:27
+#: umc/help.js:26
 msgid "Manual and documentation"
 msgstr "Handbücher und Dokumentation"
 
@@ -256,11 +265,11 @@ msgstr "Kein Objekt ausgewählt"
 msgid "Note"
 msgstr "Hinweis"
 
-#: umc/dialog.js:90
+#: umc/dialog.js:91
 msgid "Notification"
 msgstr "Hinweis"
 
-#: umc/dialog.js:93
+#: umc/dialog.js:94
 msgid "Ok"
 msgstr "Ok"
 
@@ -292,7 +301,7 @@ msgstr "Entfernen"
 msgid "Search"
 msgstr "Suchen"
 
-#: umc/about.js:18
+#: umc/about.js:17
 msgid "Server"
 msgstr "Server"
 
@@ -304,11 +313,11 @@ msgstr "Fehlernachricht des Servers:"
 msgid "Specified locale is not available."
 msgstr "Die angegebenen Locale ist nicht verfügbar."
 
-#: umc/help.js:28
+#: umc/help.js:27
 msgid "Supplementary information"
 msgstr "Weiterführende Informationen"
 
-#: umc/help.js:29
+#: umc/help.js:28
 msgid "Support and assistance"
 msgstr "Unterstützung und Support"
 
@@ -357,11 +366,11 @@ msgstr "Tooltips"
 msgid "Translate me!"
 msgstr ""
 
-#: umc/about.js:20
+#: umc/about.js:19
 msgid "UCS version"
 msgstr "UCS Version"
 
-#: umc/about.js:22
+#: umc/about.js:21
 msgid "UMC version"
 msgstr "UMC Version"
 
@@ -403,23 +412,23 @@ msgstr ""
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
-#: umc/help.js:25
+#: umc/help.js:24
 msgid "Univention forum"
 msgstr "Univention Forum"
 
-#: umc/help.js:26
+#: umc/help.js:25
 msgid "Univention support"
 msgstr "Univention Support"
 
-#: umc/help.js:23
+#: umc/help.js:22
 msgid "Univention support data base (SDB)"
 msgstr "Univention Supportdatenbank (SDB)"
 
-#: umc/help.js:24
+#: umc/help.js:23
 msgid "Univention wiki site"
 msgstr "Univention Webseite"
 
-#: umc/license.js:26
+#: umc/license.js:25
 msgid "User accounts"
 msgstr "Benutzerkonten"
 
@@ -432,11 +441,11 @@ msgstr "Benutzer: %s"
 msgid "Username"
 msgstr "Benutzername"
 
-#: umc/license.js:34
+#: umc/license.js:33
 msgid "Valid product types"
 msgstr "Gültige Produkttypen"
 
-#: umc/about.js:24
+#: umc/about.js:23
 msgid "Validity date of the SSL certificate"
 msgstr "Gültigkeitsdatum des SSL-Zertifikats"
 
@@ -491,6 +500,6 @@ msgstr ""
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 
-#: umc/license.js:27 umc/license.js:29 umc/license.js:31
+#: umc/license.js:26 umc/license.js:28 umc/license.js:30
 msgid "unlimited"
 msgstr "unbegrenzt"

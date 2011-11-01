@@ -13,8 +13,7 @@ dojo.mixin(umc.about, new umc.i18n.Mixin({
 } ), {
 
 	show: function( info ) {
-		var message = dojo.cache("umc", "about.html");
-		message = dojo.replace( message, {
+		var keys = {
 			labelServer : this._( 'Server' ),
 			server : info.server,
 			labelUCS_Version : this._( 'UCS version' ),
@@ -23,7 +22,7 @@ dojo.mixin(umc.about, new umc.i18n.Mixin({
 			UMC_Version : info.umc_version,
 			labelSSL_ValidityDate : this._( 'Validity date of the SSL certificate' ),
 			SSL_ValidityDate : info.ssl_validity_date
-		} );
-		umc.dialog.alert( message, this._( 'About UMC' ), this._( 'Close' ) );
+		};
+		umc.dialog.templateDialog( "umc", "about.html", keys, this._( 'About UMC' ), this._( 'Close' ) );
 	}
 } );
