@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.165-1) unstable; urgency=low
+
+  * add english information text for the free for personal use edition; Bug #23655
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 01 Nov 2011 20:19:10 +0100
+
 univention-management-console-frontend (1.0.164-1) unstable; urgency=low
 
   * added doctype to HTML file, css fixes, minor fixes (Bug #22881)
