@@ -223,7 +223,7 @@ def get_storage_volumes(node, pool_name, type=None):
 			disk.type = Disk.TYPE_BLOCK
 			disk.device = Disk.DEVICE_DISK
 			disk.driver_type = None # raw
-		if not type or Disk.map_device( disk.device ) == type:
+		if not type or disk.device == type:
 			volumes.append( disk )
 
 	return volumes

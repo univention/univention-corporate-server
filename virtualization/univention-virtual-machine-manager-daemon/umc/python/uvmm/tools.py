@@ -42,7 +42,7 @@ _ = Translation('univention-management-console-modules-uvmm').translate
 
 BASE_TYPES = ( int, float, long, bool, basestring, NoneType, list, tuple )
 
-def object2dict( obj, convert_attrs = [] ):
+def object2dict( obj ):
 	"""Converts the attributes of an object to a dictionary."""
 	if isinstance( obj, BASE_TYPES ):
 		return obj

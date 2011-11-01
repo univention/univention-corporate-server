@@ -56,6 +56,7 @@ class Instance( Base, Nodes, Profiles, Storages, Domains ):
 
 	def __init__( self ):
 		Base.__init__( self )
+		Storages.__init__( self )
 		self.uvmm = UVMM_RequestBroker()
 
 	def init( self ):

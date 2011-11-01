@@ -33,6 +33,8 @@
 
 from univention.lib.i18n import Translation
 
+from univention.management.console.config import ucr
+from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 from univention.management.console.log import MODULE
 
 from univention.uvmm.protocol import Data_Domain, Disk, Graphic, Interface
@@ -96,6 +98,74 @@ class Domains( object ):
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
 		self.uvmm.send( 'DOMAIN_INFO', Callback( _finished, request ), uri = node_uri, domain = domain_uuid )
 
+	def _create_disks( self, node_uri, disks, domain_info ):
+		drives = []
+
+		uri = urlparse.urlsplit( node_uri )
+		for disk in disks:
+			drive = Disk()
+			drive.device = disk[ 'device' ]
+			drive.driver_type = disk[ 'driver_type' ]
+			pool_path = self.get_pool_path( disk.get( 'poolName' ) )
+			if pool_path:
+				drive.source = os.path.join( pool_path, disk[ 'volumeFilename' ] )
+			else:
+				drive.source = None
+
+			file_pool = self.is_file_pool( disk.get( 'poolName' ) )
+			if file_pool:
+				drive.type = Disk.TYPE_FILE
+			else:
+				drive.type = Disk.TYPE_BLOCK
+				drive.target_bus = 'ide'
+
+			driver_pv = None
+			if drive.device in ( Disk.DEVICE_DISK, Disk.DEVICE_CDROM ):
+				driver_pv = disk[ 'paravirtual' ]
+				if drive.device == Disk.DEVICE_CDROM:
+					drive.type = Disk.TYPE_RAW # ISOs need driver/@type='raw'
+			elif drive.device == Disk.DEVICE_FLOPPY:
+				drive.target_bus = 'fdc'
+			else:
+				raise ValueError('Invalid drive-type "%s"' % drive.device)
+
+			if uri.scheme.startswith( 'qemu' ):
+				drive.driver = 'qemu'
+				if driver_pv and drive.device != Disk.DEVICE_FLOPPY and drive.type != Disk.TYPE_BLOCK:
+					drive.target_bus = 'virtio'
+			elif uri.scheme.startswith( 'xen' ):
+				pv_domain = domain_info.os_type in ( 'xen', 'linux' )
+				if driver_pv and drive.device != Disk.DEVICE_FLOPPY and drive.type != Disk.TYPE_BLOCK:
+					disk.target_bus = 'xen'
+				elif pv_domain and not driver_pv:
+					# explicitly set ide bus
+					drive.target_bus = 'ide'
+				# block devices of para-virtual xen instances must use bus xen
+				if pv_domain and drive.type == Disk.TYPE_BLOCK:
+					drive.target_bus = 'xen'
+				# Since UCS 2.4-2 Xen 3.4.3 contains the blktab2 driver
+				# from Xen 4.0.1
+				if file_pool:
+					# Use tapdisk2 by default, but not for empty CDROM drives
+					if drive.source is not None and ucr.is_true( 'uvmm/xen/images/tap2', True ):
+						drive.driver = 'tap2'
+						if drive.type == Disk.TYPE_RAW:
+							drive.driver_type = 'aio'
+					else:
+						drive.driver = 'file'
+						drive.driver_type = None # only raw support
+				else:
+					drive.driver = 'phy'
+			else:
+				raise ValueError( 'Unknown virt-tech "%s"' % node_uri )
+
+			if disk[ 'vol_size' ]:
+				drive.size = MemorySize.str2num( disk[ 'vol_size' ], unit = 'MB' )
+
+			drives.append( drive )
+
+		return drives
+
 	def domain_add( self, request ):
 		"""Creates a new domain on nodeURI.
 
@@ -107,70 +177,73 @@ class Domains( object ):
 
 		domain = request.options.get( 'domain' )
 
-		# profile_dn = domain[ '$profile$' ]
-		# profile = None
-		# for dn, pro in self.profiles:
-		# 	if dn == profile_dn:
-		# 		profile = pro
-		# 		break
-		# if profile is None:
-		# 	raise UMC_OptionTypeError( _( 'Unknown profile given' ) )
+		profile_dn = domain[ '$profile$' ]
+		profile = None
+		for dn, pro in self.profiles:
+			if dn == profile_dn:
+				profile = pro
+				break
+		if profile is None:
+			raise UMC_OptionTypeError( _( 'Unknown profile given' ) )
 
-		# domain_info = Data_Domain()
-		# domain_info.name = domain[ 'name' ]
-		# domain_info.arch = domain[ 'arch' ]
-		# domain_info.domain_type, domain_info.os_type = domain['type'].split( '-' )
-		# # check configuration for para-virtualized machines
-		# if domain_info.os_type == 'xen':
-		# 	if profile.advkernelconf != True: # use pyGrub
-		# 		domain_info.bootloader = '/usr/bin/pygrub'
-		# 		domain_info.bootloader_args = '-q' # Bug #19249: PyGrub timeout
-		# 	else:
-		# 		domain_info.kernel = domain['kernel']
-		# 		domain_info.cmdline = domain['cmdline']
-		# 		domain_info.initrd = domain['initrd']
-		# # memory
-		# domain_info.maxMem = MemorySize.str2num( domain['memory'], unit = 'MB' )
-		# # CPUs
-		# domain_info.vcpus = domains[ 'cpus' ]
-		# # boot devices
-		# if domain[ 'boot' ]:
-		# 	domain_info.boot = domain[ 'boot' ]
-		# # VNC
-		# if domain[ 'vnc' ]:
-		# 	gfx = Graphic()
-		# 	gfx.listen = '0.0.0.0'
-		# 	gfx.keymap = domain[ 'kblayout' ]
-		# 	domain_info.graphics = [gfx,]
-		# # annotations
-		# domain_info.annotations[ 'os' ] = domain[ 'os' ]
-		# domain_info.annotations[ 'description' ] = domain[ 'description' ]
-		# # RTC offset
-		# domain_info.rtc_offset = domain[ 'rtc_offset' ]
-		# # drives
-		# domain_info.disks = self.drives
-		# self.uvmm._verify_device_files(domain_info)
-		# # on PV machines we should move the CDROM drive to first position
-		# if domain_info.os_type in ( 'linux', 'xen' ):
-		# 	non_disks, disks = [], []
-		# 	for dev in domain_info.disks:
-		# 		if dev.device == uvmmp.Disk.DEVICE_DISK:
-		# 			disks.append(dev)
-		# 		else:
-		# 			non_disks.append(dev)
-		# 	domain_info.disks = non_disks + disks
-		# # network interface
-		# if object.options[ 'interface' ]:
-		# 	iface = uvmmp.Interface()
-		# 	iface.source = object.options[ 'interface' ]
-		# 	if object.options[ 'pvinterface' ] == '1' and domain_info.os_type == 'hvm':
-		# 		if domain_info.domain_type == 'xen':
-		# 			iface.model = 'netfront'
-		# 		elif domain_info.domain_type in ( 'kvm', 'qemu' ):
-		# 			iface.model = 'virtio'
-		# 	domain_info.interfaces = [iface,]
+		domain_info = Data_Domain()
+		domain_info.name = domain[ 'name' ]
+		domain_info.arch = domain[ 'arch' ]
+		domain_info.domain_type, domain_info.os_type = domain['type'].split( '-' )
+		# check configuration for para-virtualized machines
+		if domain_info.os_type == 'xen':
+			if profile.advkernelconf != True: # use pyGrub
+				domain_info.bootloader = '/usr/bin/pygrub'
+				domain_info.bootloader_args = '-q' # Bug #19249: PyGrub timeout
+			else:
+				domain_info.kernel = domain['kernel']
+				domain_info.cmdline = domain['cmdline']
+				domain_info.initrd = domain['initrd']
+		# memory
+		domain_info.maxMem = MemorySize.str2num( domain['memory'], unit = 'MB' )
+		# CPUs
+		domain_info.vcpus = domain[ 'cpus' ]
+		# boot devices
+		if domain[ 'boot' ]:
+			domain_info.boot = domain[ 'boot' ]
+		# VNC
+		if domain[ 'vnc' ]:
+			gfx = Graphic()
+			gfx.listen = '0.0.0.0'
+			gfx.keymap = domain[ 'kblayout' ]
+			domain_info.graphics = [gfx,]
+		# annotations
+		domain_info.annotations[ 'os' ] = domain[ 'os' ]
+		domain_info.annotations[ 'description' ] = domain[ 'description' ]
+		# RTC offset
+		domain_info.rtc_offset = domain[ 'rtc_offset' ]
 
-		# self.finished( request.id )
+
+		# drives
+		domain_info.disks = self._create_disks( request.options[ 'nodeURI' ], domain[ 'disks' ], domain_info )
+		verify_device_files( domain_info )
+		# on PV machines we should move the CDROM drive to first position
+		if domain_info.os_type in ( 'linux', 'xen' ):
+			non_disks, disks = [], []
+			for dev in domain_info.disks:
+				if dev.device == Disk.DEVICE_DISK:
+					disks.append( dev )
+				else:
+					non_disks.append( dev )
+			domain_info.disks = non_disks + disks
+
+		# network interface
+		if domain[ 'interface' ]:
+			iface = Interface()
+			iface.source = domain[ 'interface' ]
+			if domain[ 'pvinterface' ] and domain_info.os_type == 'hvm':
+				if domain_info.domain_type == 'xen':
+					iface.model = 'netfront'
+				elif domain_info.domain_type in ( 'kvm', 'qemu' ):
+					iface.model = 'virtio'
+			domain_info.interfaces = [ iface, ]
+
+		self.uvmm.send( 'DOMAIN_DEFINE', Callback( self._thread_finish, request ), uri = request.options[ 'nodeURI' ], domain = domain_info )
 
 	def domain_put( self, request ):
 		"""Modifies a domain domainUUID on node nodeURI.
@@ -263,7 +336,7 @@ class Bus( object ):
 			self._next_letter = chr( ord( self._next_letter ) + 1 )
 		return self._next_letter
 
-def verify_device_files( self, domain_info ):
+def verify_device_files( domain_info ):
 	if domain_info.domain_type == 'xen' and domain_info.os_type == 'xen':
 		busses = ( Bus( 'ide', 'hd%s' ), Bus( 'xen', 'xvd%s', default = True ), Bus( 'virtio', 'vd%s' ) )
 	else:

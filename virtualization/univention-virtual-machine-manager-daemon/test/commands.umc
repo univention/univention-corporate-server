@@ -52,8 +52,14 @@ umc-client -U root -P univention command uvmm/domain/get -o "nodeURI=qemu://slav
 # start a domain
 umc-client -U root -P univention command uvmm/domain/state -o nodeURI=qemu://$hostname.$domainname/system -o domainUUID="70ebb8c8-1229-bf60-c0b6-77638ecd35bf" -o domainState=RUN
 
-# navigation: elements without parent (groups)
-umc-client -U root -P univention command uvmm/nav/query -e -o "{ 'parent' : None }"
+# query storage pools
+umc-client -U root -P univention command uvmm/storage/pool/query -o nodeURI=qemu://master.ucs3.test/system
 
-# navigation: elements under a group (nodes)
-umc-client -U root -P univention command uvmm/nav/query -e -o "{ 'parent' : { 'id' : 'default', 'type' : 'group' } }"
+# query storage volumes of a pool
+umc-client -U root -P univention command uvmm/storage/volume/query -o nodeURI=qemu://master.ucs3.test/system -o pool=default
+
+# query storage volumes of a pool of type cdrom
+umc-client -U root -P univention command uvmm/storage/volume/query -o nodeURI=qemu://master.ucs3.test/system -o pool=default -o type=cdrom
+
+# create an KVM instance
+umc-client -U root -P univention command uvmm/domain/add -e -o "{ 'nodeURI':'qemu://master.ucs3.test/system', 'domain' : { 'name' : 'crunchy1', 'arch' : 'i686', 'type' :'kvm-hvm', 'memory' : '512MB', 'cpus' : 1, 'boot' : [ 'hd', 'cdrom' ], 'vnc' : True, 'kblayout' : 'de', 'os' : 'UCS 4.1', 'description' : 'testing UMC module', 'rtc_offset' : 'utc', 'interface' : 'eth0', 'pvinterface' : True, 'disks' : [], '\$profile\$' : 'cn=UCS 3.0,cn=kvm,cn=Profiles,cn=Virtual Machine Manager,dc=ucs3,dc=test' }}"

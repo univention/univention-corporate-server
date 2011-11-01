@@ -360,27 +360,19 @@ def _map(dictionary, id=None, name=None):
 
 class Disk(object):
 	'''Container for disk objects'''
-	DEVICE_DISK, DEVICE_CDROM, DEVICE_FLOPPY = range(3)
-	DEVICE_MAP = {
-			DEVICE_DISK: 'disk',
-			DEVICE_CDROM: 'cdrom',
-			DEVICE_FLOPPY: 'floppy',
-			}
+	DEVICE_DISK = 'disk'
+	DEVICE_CDROM = 'cdrom'
+	DEVICE_FLOPPY = 'floppy'
 
-	TYPE_FILE, TYPE_BLOCK = range(2)
-	TYPE_MAP = {
-			TYPE_FILE: 'file',
-			TYPE_BLOCK: 'block',
-			}
+	TYPE_FILE = 'file'
+	TYPE_BLOCK = 'block'
+	TYPE_RAW = 'raw'
 
-	CACHE_DEFAULT, CACHE_NONE, CACHE_WT, CACHE_WB, CACHE_UNSAFE = range(5)
-	CACHE_MAP = {
-			CACHE_DEFAULT: 'default',
-			CACHE_NONE: 'none', # off
-			CACHE_WT: 'writethrough',
-			CACHE_WB: 'writeback',
-			CACHE_UNSAFE: 'unsafe',
-			}
+	CACHE_DEFAULT = 'default'
+	CACHE_NONE ='none' # off
+	CACHE_WT ='writethrough'
+	CACHE_WB ='writeback'
+	CACHE_UNSAFE ='unsafe'
 
 	def __init__(self):
 		self.type = Disk.TYPE_FILE	# disk/@type
@@ -395,31 +387,16 @@ class Disk(object):
 		self.size = None # not defined
 		self.pool = None
 
-	@staticmethod
-	def map_device(id=None, name=None):
-		return _map(Disk.DEVICE_MAP, id, name)
-
-	@staticmethod
-	def map_type(id=None, name=None):
-		return _map(Disk.TYPE_MAP, id, name)
-
-	@staticmethod
-	def map_cache(id=None, name=None):
-		return _map(Disk.CACHE_MAP, id, name)
-
 	def __str__(self):
-		return 'Disk(device=%s, type=%s, driver=%s, source=%s, target=%s, size=%s)' % (Disk.map_device(id=self.device), Disk.map_type(id=self.type), self.driver, self.source, self.target_dev, self.size)
+		return 'Disk(device=%s, type=%s, driver=%s, source=%s, target=%s, size=%s)' % (self.device, self.type, self.driver, self.source, self.target_dev, self.size)
 
 class Interface(object):
 	'''Container for interface objects'''
-	TYPE_BRIDGE, TYPE_NETWORK, TYPE_USER, TYPE_ETHERNET, TYPE_DIRECT = range(5)
-	TYPE_MAP = {
-			TYPE_BRIDGE: 'bridge',
-			TYPE_NETWORK: 'network',
-			TYPE_USER: 'user',
-			TYPE_ETHERNET: 'ethernet',
-			TYPE_DIRECT: 'direct',
-			}
+	TYPE_BRIDGE ='bridge'
+	TYPE_NETWORK ='network'
+	TYPE_USER ='user'
+	TYPE_ETHERNET ='ethernet'
+	TYPE_DIRECT ='direct'
 
 	def __init__(self):
 		self.type = Interface.TYPE_BRIDGE
@@ -429,23 +406,16 @@ class Interface(object):
 		self.script = None
 		self.model = None
 
-	@staticmethod
-	def map_type(id=None, name=None):
-		return _map(Interface.TYPE_MAP, id, name)
-
 	def __str__(self):
-		return 'Interface(type=%s, mac=%s, source=%s, target=%s, script=%s, model=%s)' % (Interface.map_type(id=self.type), self.mac_address, self.source, self.target, self.script, self.model)
+		return 'Interface(type=%s, mac=%s, source=%s, target=%s, script=%s, model=%s)' % (self.type, self.mac_address, self.source, self.target, self.script, self.model)
 
 class Graphic(object):
 	'''Container for graphic objects'''
-	TYPE_VNC, TYPE_SDL, TYPE_SPICE, TYPE_RDP, TYPE_DESKTOP = range(5)
-	TYPE_MAP = {
-			TYPE_VNC: 'vnc',
-			TYPE_SDL: 'sdl',
-			TYPE_SPICE: 'spice',
-			TYPE_RDP: 'rdp',
-			TYPE_DESKTOP: 'desktop',
-			}
+	TYPE_VNC ='vnc'
+	TYPE_SDL ='sdl'
+	TYPE_SPICE ='spice'
+	TYPE_RDP ='rdp'
+	TYPE_DESKTOP ='desktop'
 
 	def __init__(self):
 		self.type = Graphic.TYPE_VNC
@@ -466,12 +436,8 @@ class Graphic(object):
 		#self.replaceUser = None
 		#self.multiUser = None
 
-	@staticmethod
-	def map_type(id=None, name=None):
-		return _map(Graphic.TYPE_MAP, id, name)
-
 	def __str__(self):
-		return 'Graphic(type=%s, port=%s, autoport=%s, keymap=%s, listen=%s, passwd=%s' % (Graphic.map_type(id=self.type), self.port, self.autoport, self.keymap, self.listen, bool(self.passwd))
+		return 'Graphic(type=%s, port=%s, autoport=%s, keymap=%s, listen=%s, passwd=%s' % (self.type, self.port, self.autoport, self.keymap, self.listen, bool(self.passwd))
 
 # TODO: this object definition is not complete!
 class Network( object ):

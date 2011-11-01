@@ -393,13 +393,13 @@ class Domain(PersistentCached):
 		disks = devices.getElementsByTagName( 'disk' )
 		for disk in disks:
 			dev = Disk()
-			dev.type = Disk.map_type( name = disk.getAttribute( 'type' ) )
-			dev.device = Disk.map_device( name = disk.getAttribute( 'device' ) )
+			dev.type = disk.getAttribute( 'type' )
+			dev.device = disk.getAttribute( 'device' )
 			driver = disk.getElementsByTagName('driver')
 			if driver:
 				dev.driver = driver[0].getAttribute('name')
 				dev.driver_type = driver[0].getAttribute('type')
-				dev.driver_cache = Disk.map_cache(name=driver[0].getAttribute('cache'))
+				dev.driver_cache = driver[0].getAttribute('cache')
 			source = disk.getElementsByTagName( 'source' )
 			if source:
 				if dev.type == Disk.TYPE_FILE:
@@ -421,7 +421,7 @@ class Domain(PersistentCached):
 		interfaces = devices.getElementsByTagName( 'interface' )
 		for iface in interfaces:
 			dev = Interface()
-			dev.type = Interface.map_type( name = iface.getAttribute( 'type' ) )
+			dev.type = iface.getAttribute( 'type' )
 			mac = iface.getElementsByTagName( 'mac' )
 			if mac:
 				dev.mac_address = mac[ 0 ].getAttribute( 'address' )
@@ -450,7 +450,7 @@ class Domain(PersistentCached):
 		for graphic in graphics:
 			dev = Graphic()
 			type = graphic.getAttribute('type')
-			dev.type = Graphic.map_type(name=type)
+			dev.type = type
 			if dev.type == Graphic.TYPE_VNC:
 				dev.port = int(graphic.getAttribute('port'))
 				dev.autoport = graphic.getAttribute('autoport').lower() == 'yes'
@@ -1047,10 +1047,10 @@ def _domain_edit(node, dom_stat, xml):
 			domain_devices_disk_target = ET.SubElement(domain_devices_disk, 'target')
 			domain_devices_disk_target.attrib['bus'] = disk.target_bus
 			domain_devices_disk_target.attrib['dev'] = disk.target_dev
-		domain_devices_disk.attrib['type'] = Disk.map_type(id=disk.type)
-		domain_devices_disk.attrib['device'] = Disk.map_device(id=disk.device)
+		domain_devices_disk.attrib['type'] = disk.type
+		domain_devices_disk.attrib['device'] = disk.device
 		# /domain/devices/disk/driver @name @type @cache
-		domain_devices_disk_driver = update(domain_devices_disk, 'driver', None, name=disk.driver, type=disk.driver_type, cache=Disk.map_cache(id=disk.driver_cache))
+		domain_devices_disk_driver = update(domain_devices_disk, 'driver', None, name=disk.driver, type=disk.driver_type, cache=disk.driver_cache)
 		# /domain/devices/disk/source @file @dev
 		if disk.type == Disk.TYPE_FILE:
 			domain_devices_disk_source = update(domain_devices_disk, 'source', None, _changes=changes, file=disk.source, dev=None)
@@ -1091,7 +1091,7 @@ def _domain_edit(node, dom_stat, xml):
 			# /domain/devices/interface/mac @address
 			domain_devices_interface_mac = ET.SubElement(domain_devices_interface, 'mac')
 			domain_devices_interface_mac.attrib['address'] = interface.mac_address
-		domain_devices_interface.attrib['type'] = Interface.map_type(id=interface.type)
+		domain_devices_interface.attrib['type'] = interface.type
 		# /domain/devices/interface/source @bridge @network @dev
 		if interface.type == Interface.TYPE_BRIDGE:
 			domain_devices_interface_source = update(domain_devices_interface, 'source', '', _changes=changes, bridge=interface.source, network=None, dev=None)
@@ -1130,7 +1130,7 @@ def _domain_edit(node, dom_stat, xml):
 	for graphics in dom_stat.graphics:
 		logger.debug('GRAPHIC: %s' % graphics)
 		# /domain/devices/graphics @type
-		key = Graphic.map_type(id=graphics.type)
+		key = graphics.type
 		for domain_devices_graphic in domain_devices_graphics:
 			if key == domain_devices_graphic.attrib['type']:
 				domain_devices.append(domain_devices_graphic)
