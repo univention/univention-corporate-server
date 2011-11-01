@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.23-1) unstable; urgency=low
+
+  * copy new cyrus init script if necessary (Bug #23560) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 01 Nov 2011 16:58:46 +0100
+
 univention-mail-cyrus (4.0.22-3) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)

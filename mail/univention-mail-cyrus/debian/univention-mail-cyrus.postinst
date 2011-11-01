@@ -44,6 +44,11 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; t
 
 	# rename cyrus-db-types.active to "resolve" database backends mismatch!
 	mv /usr/lib/cyrus/cyrus-db-types.active /usr/lib/cyrus/cyrus-db-types.active.old
+
+	# copy new cyrus init script
+	if [ -e "/etc/init.d/cyrus2.2.debian.dpkg-dist" -a ! -e "/etc/init.d/cyrus2.2" ]; then
+		cp /etc/init.d/cyrus2.2.debian.dpkg-dist /etc/init.d/cyrus2.2
+	fi
 fi 
 
 dpkg-statoverride --add cyrus sasl 640 /etc/univention/templates/files/etc/imapd/imapd.conf || true
