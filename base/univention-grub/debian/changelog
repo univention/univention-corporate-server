@@ -1,3 +1,10 @@
+univention-grub (5.0.9-1) unstable; urgency=low
+
+  * save menu.lst in postinst (is needed for chainload into grub2) 
+    (Bug #24279) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 01 Nov 2011 16:46:20 +0100
+
 univention-grub (5.0.8-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

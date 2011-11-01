@@ -34,6 +34,14 @@
 
 eval "$(univention-config-registry shell)"
 
+# Update to UCS 3.0: save menu.lst
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.8; then
+	if [ -e /boot/grub/menu.lst ]; then
+		cp /boot/grub/menu.lst /boot/grub/menu.lst.ucs3.0-0
+	fi
+fi
+# end Update to UCS 3.0
+
 # Remove now obsolete UCR variables previously used for lilo
 univention-config-registry unset lilo/vga lilo/boot lilo/append lilo/root lilo/append/acpi 1> /dev/null 
 univention-config-registry unset lilo/append/pci/acpi lilo/compact lilo/default lilo/append 1> /dev/null 
