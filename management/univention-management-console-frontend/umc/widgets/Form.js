@@ -118,6 +118,12 @@ dojo.declare("umc.widgets.Form", [
 		this._dependencyMap = {};
 	},
 
+	getButton: function( /*String*/ button_name) {
+		// summary:
+		//			  Return a reference to the button with the specified name.
+		return this._buttons[button_name]; // Widget|undefined
+	},
+
 	getWidget: function( /*String*/ widget_name) {
 		// summary:
 		//		Return a reference to the widget with the specified name.

@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.160-1) unstable; urgency=low
+
+  * Form: added getButton() (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 01 Nov 2011 10:15:20 +0100
+
 univention-management-console-frontend (1.0.159-2) unstable; urgency=low
 
   * version bump (Bug #22881) 
