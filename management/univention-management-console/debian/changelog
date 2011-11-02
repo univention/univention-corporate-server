@@ -1,3 +1,10 @@
+univention-management-console (4.0.77-1) unstable; urgency=low
+
+  * support fields in category names that are replaced by UCR variables; Bug #22460
+  * changed category name of system management
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 02 Nov 2011 13:32:53 +0100
+
 univention-management-console (4.0.76-1) unstable; urgency=low
 
   * add software management module to dependencies; Bug #22899

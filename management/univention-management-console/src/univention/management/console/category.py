@@ -45,6 +45,7 @@ class XML_Definition( ET.ElementTree ):
 
 	@property
 	def name( self ):
+		global _ucr_dict
 		return self.find( 'name' ).text
 
 	@property

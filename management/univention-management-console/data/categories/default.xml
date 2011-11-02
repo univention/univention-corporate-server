@@ -5,7 +5,7 @@
 	  <name>Favorites</name>
 	</category>
 	<category id="system">
-	  <name>System</name>
+	  <name>System {hostname}.{domainname}</name>
 	</category>
 	<category id="wizards">
 	  <name>Wizards</name>

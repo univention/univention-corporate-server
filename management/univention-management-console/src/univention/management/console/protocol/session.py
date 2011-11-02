@@ -252,7 +252,9 @@ class Processor( signals.Provider ):
 				else:
 						modules.append( { 'id' : id, 'name' : self.i18n._( module.name, id ), 'description' : self.i18n._( module.description, id ), 'icon' : module.icon, 'categories' : module.categories } )
 			res.body[ 'modules' ] = modules
-			res.body[ 'categories' ] = map( lambda x: { 'id' : x[ 'id' ], 'name' : self.i18n._( x[ 'name' ] ) }, categoryManager.all() )
+			_ucr_dict = dict( ucr.items() )
+
+			res.body[ 'categories' ] = map( lambda x: { 'id' : x[ 'id' ], 'name' : self.i18n._( x[ 'name' ] ).format( **_ucr_dict ) }, categoryManager.all() )
 			CORE.info( 'Modules: %s' % modules )
 			CORE.info( 'Categories: %s' % str( res.body[ 'categories' ] ) )
 			res.status = SUCCESS # Ok
