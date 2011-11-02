@@ -31,6 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
+import subprocess
+
 import univention.info_tools as uit
 import univention.management.console as umc
 import univention.management.console.modules as umcm
@@ -40,14 +43,110 @@ from univention.management.console.protocol.definitions import *
 _ = umc.Translation('univention-management-console-module-services').translate
 
 class Instance(umcm.Base):
-	def start(self):
-		pass
+	def _get_status(self):
+		vnc_dir = os.path.join('/home', self._username, '.vnc')
+		if os.path.isfile(os.path.join(vnc_dir, 'passwd')):
+			passwd_exists = True
+		else:
+			passwd_exists = False
 
-	def stop(self):
-		pass
+		is_running = False
+		if os.path.isdir(vnc_dir):
+			for item in os.listdir(vnc_dir):
+				if os.path.isfile(os.path.join(vnc_dir, item)) and item.endswith('.pid'):
+					try:
+						fd = open(os.path.join(vnc_dir, item), 'r')
+						pid = fd.readline()[: -1]
+						fd.close()
+						if os.path.isfile(os.path.join('/proc', pid, 'cmdline')):
+							is_running = True
+					except:
+						pass
+					break
+		return is_running, passwd_exists
 
-	def config(self):
-		pass
+	def _get_cmdline(self):
+		vnc_dir = os.path.join('/home', self._username, '.vnc')
+		pidfile = None
+		if os.path.isdir(vnc_dir):
+			for item in os.listdir(vnc_dir):
+				if os.path.isfile(os.path.join(vnc_dir, item)) and item.endswith('.pid'):
+					pidfile = os.path.join(vnc_dir, item)
+					break
 
-	def password(self):
-		pass
+		if not pidfile:
+			return ()
+
+		fd = open(pidfile, 'r')
+		pid = fd.readline()[: -1]
+		fd.close()
+		try:
+			fd = open(os.path.join('/proc', pid, 'cmdline'), 'r')
+			cmdline = fd.readline()[: -1]
+			fd.close()
+			return cmdline.split('\x00')
+		except:
+			os.unlink(pidfile)
+			pass
+		return ()
+
+	def status(self, request):
+		message = None
+		if self.permitted('vnc/status', request.options):
+			(is_running, passwd_exists, ) = self._get_status()
+			result = {'isRunning': is_running, 'isSetPassword': passwd_exists}
+			request.status = SUCCESS
+			self.finished(request.id, result)
+		else:
+			message = _('You are not permitted to run this command.')
+			request.status = MODULE_ERR
+			self.finished(request.id, None, message)
+
+	def start(self, request):
+		message = None
+		(is_running, passwd_exists, ) = self._get_status()
+		result = 0
+		if not is_running:
+			result = subprocess.call(('/bin/su', '-',  self._username, '-c',
+			                          'vncserver -geometry 800x600'))
+
+		if result == 0:
+			message = _('Server successfully started')
+			request.status = SUCCESS
+		else:
+			message = _('Could not start server')
+			request.status = MODULE_ERR
+
+		self.finished(request.id, None, message)
+
+	def stop(self, request):
+		message = None
+		(is_running, passwd_exists, ) = self._get_status()
+		if is_running:
+			args = self._get_cmdline()
+			if '-rfbport' in args:
+				port = args[args.index('-rfbport') + 1]
+				port = int(port) - 5900
+				subprocess.call(('/bin/su', '-', self._username, '-c',
+				                 'vncserver -kill :%d' % port))
+				message = _('Server successfully stopped')
+
+		self.finished(request.id, None, message)
+
+	def set_password(self, request):
+		message = None
+		if self.permitted('vnc/password', request.options):
+			# TODO: Check result
+			cmd = ('/bin/su', '-', self._username, '-c',
+			       '/usr/share/univention-management-console-module-vnc/univention-vnc-setpassword %s' % request.options['password'])
+			if subprocess.call(cmd):
+				message = _('Could not set password')
+				request.status = MODULE_ERR
+			else:
+				message = _('Successfully set password')
+				request.status = SUCCESS
+			self.finished(request.id, None, message)
+		else:
+			message = _('You are not permitted to run this command.')
+			request.status = MODULE_ERR
+			self.finished(request.id, None, message)

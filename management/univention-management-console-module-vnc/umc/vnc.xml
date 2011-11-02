@@ -6,16 +6,16 @@
 	<categories>
 		<category name="system"/>
 	</categories>
-	<command name="vnc/start" function="query">
+	<command name="vnc/status" function="status">
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="vnc/stop" function="start">
+	<command name="vnc/start" function="start">
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="vnc/config" function="stop">
+	<command name="vnc/stop" function="stop">
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="vnc/password" function="restart">
+	<command name="vnc/password" function="set_password">
 		<return syntax="Dictionary"/>
 	</command>
 	</module>
