@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.218-1) unstable; urgency=low
+
+  * NewObjectDialog: removed max-width
+  * added icon for creating new policies
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 02 Nov 2011 16:39:59 +0100
+
 univention-management-console-module-udm (1.0.217-1) unstable; urgency=low
 
   * backend: implement move operation; Bug #23704

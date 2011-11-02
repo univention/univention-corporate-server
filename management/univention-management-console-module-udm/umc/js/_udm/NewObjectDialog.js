@@ -44,7 +44,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 	_form: null,
 
 	// force max-width
-	style: 'max-width: 300px;',
+	//style: 'max-width: 300px;',
 
 	postMixInProperties: function() {
 		this.inherited(arguments);

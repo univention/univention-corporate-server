@@ -465,6 +465,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					var buttonsConf = [{
 						type: 'Button',
 						name: '$addPolicy$',
+						iconClass: 'umcIconAdd',
 						label: this._('Create new policy'),
 						callback: dojo.hitch(this, '_openPolicy', ipolicyType, undefined)
 					}];
