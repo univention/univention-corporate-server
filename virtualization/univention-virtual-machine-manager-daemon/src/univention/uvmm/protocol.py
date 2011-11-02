@@ -221,6 +221,15 @@ class Request_DOMAIN_UPDATE(Request):
 		self.command = 'DOMAIN_UPDATE'
 		self.domain = None
 
+class Request_DOMAIN_CLONE(Request):
+	"""Clone a domain."""
+	def _default(self):
+		self.command = 'DOMAIN_CLONE'
+		self.uri = None
+		self.domain = None
+		self.name = None
+		self.subst = {} # key -> value
+
 class Request_STORAGE_POOLS(Request):
 	"""List all pools."""
 	def _default(self):

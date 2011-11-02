@@ -42,7 +42,7 @@ import logging
 from xml.dom.minidom import parseString
 import math
 from helpers import TranslatableException, ms, N_ as _, uri_encode
-from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
+from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify, ldap_annotation
 import univention.admin.uexceptions
 from univention.uvmm.eventloop import *
 import threading
@@ -1655,6 +1655,196 @@ def domain_update(domain):
 	else:
 		logger.info('Domain %s not found for update' % domain)
 		raise NodeError(_('Failto to update domain "%(domain)s"'), domain=domain)
+
+def domain_clone(uri, domain, name, subst):
+	"""Clone a domain."""
+	warnings = []
+	undo_vol = []
+	try:
+		try:
+			node = node_query(uri)
+			conn = node.conn
+			try:
+				dom = conn.lookupByName(name)
+				uuid = dom.UUIDString()
+				raise NodeError(_('Domain "%(domain)s" already exists: %(uuid)s'), domain=name, uuid=uuid)
+			except libvirt.libvirtError, e:
+				if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
+					raise
+
+			dom = conn.lookupByUUIDString(domain)
+			dom_stat = node.domains[domain]
+			if dom_stat.pd.state != libvirt.VIR_DOMAIN_SHUTOFF:
+				raise NodeError(_('Domain "%(domain)s" is not shut off: %(state)d'), domain=domain, state=dom_stat.pd.state)
+			try:
+				annotations = ldap_annotation(domain)
+			except LdapConnectionError, e:
+				warning = 'Failed to get annotations from LDAP for "%(domain)s": %(error)s' % {'domain': domain, 'error': e}
+				logger.warning(warning)
+				warnings.append(warning)
+				annotations = {}
+
+			xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+			# /domain
+			domain = ET.fromstring(xml)
+			# /domain/uuid
+			domain_uuid = __update_xml(domain, 'uuid', None) # remove
+			# /domain/name
+			domain_name = __update_xml(domain, 'name', name) # replace
+			# /domain/devices/*[]
+			domain_devices = __update_xml(domain, 'devices', '')
+
+			# /domain/devices/interface[]
+			domain_devices_interfaces = domain_devices.findall('interface')
+			for domain_devices_interface in domain_devices_interfaces:
+				# /domain/devices/interface/mac @address
+				domain_devices_interface_mac = domain_devices_interface.find('mac')
+				mac_address = domain_devices_interface_mac.attrib['address']
+				key = 'mac#%s' % (mac_address,)
+				new_mac = subst.get(key)
+				if new_mac:
+					logger.debug('Changing MAC to %s' % (new_mac,))
+					domain_devices_interface_mac.attrib['address'] = new_mac
+				else:
+					del domain_devices_interface_mac.attrib['address']
+
+			# /domain/devices/disk[]
+			domain_devices_disks = domain_devices.findall('disk')
+			for domain_devices_disk in domain_devices_disks:
+				# /domain/devices/disk @type @device
+				disk_type = domain_devices_disk.attrib['type']
+				disk_device = domain_devices_disk.attrib['device']
+				# /domain/devices/disk/driver @name @type @cache
+				domain_devices_disk_driver = domain_devices_disk.find('driver')
+				driver_type = domain_devices_disk_driver.attrib.get('type', 'raw')
+				# /domain/devices/disk/readonly
+				readonly = domain_devices_disk.find('readony') is not None
+				# /domain/devices/disk/target @bus @dev
+				domain_devices_disk_target = domain_devices_disk.find('target')
+				target_bus = domain_devices_disk_target.attrib['bus']
+				target_dev = domain_devices_disk_target.attrib['dev']
+
+				key = 'copy#%s' % (target_dev,)
+				try:
+					method = subst[key]
+				except KeyError, e:
+					if disk_device in ('cdrom', 'floppy'):
+						method = 'share'
+					elif readonly:
+						method = 'share'
+					else:
+						method = 'copy'
+				if method == 'share':
+					continue # nothing to clone for shared disks
+
+				# /domain/devices/disk/source @file @dev
+				domain_devices_disk_source = domain_devices_disk.find('source')
+				if disk_type == 'file':
+					source = domain_devices_disk_source.attrib['file']
+					suffix = '.%s' % (driver_type,)
+				elif disk_type == 'block':
+					source = domain_devices_disk_source.attrib['dev']
+					suffix = ''
+				else:
+					raise NodeError(_("Unknown disk/type='%(type)s'"), type=disk_type)
+
+				# lookup old disk
+				try:
+					vol = conn.storageVolLookupByPath(source)
+					pool = vol.storagePoolLookupByVolume()
+				except libvirt.libvirtError, e:
+					if e.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_VOL:
+						raise
+					raise NodeError(_('Volume "%(volume)s" not found: %(error)s'), volume=source, error=e.get_error_message())
+
+				# create new name
+				old_name = vol.name()
+				def new_names():
+					key = 'name#%s' % (target_dev,)
+					if key in subst:
+						yield subst[key]
+						return # Only try the explicit name
+					if dom_stat.pd.name in old_name:
+						yield old_name.replace(dom_stat.pd.name, name, 1)
+					yield '%s_%s%s' % (name, target_dev, suffix)
+					yield '%s_%d%s' % (name, domain_devices_disks.index(domain_devices_disk), suffix)
+					for i in range(10):
+						yield '%s_%08x%s' % (name, random.getrandbits(32), suffix)
+				volumes = pool.listVolumes()
+				for new_name in new_names():
+					if new_name not in volumes:
+						break
+				else:
+					raise NodeError(_('Failed to generate new name for disk "%(disk)s"'), disk=old_name)
+
+				xml = vol.XMLDesc(0)
+				# /volume
+				volume = ET.fromstring(xml)
+				# /volume/name
+				volume_name = __update_xml(volume, 'name', new_name) # replace
+				# /volume/key
+				volume_key = __update_xml(volume, 'key', None) # remove
+				# /volume/source
+				volume_source = __update_xml(volume, 'source', None) # remove
+				# /volume/target
+				volume_target = volume.find('target')
+				if volume_target:
+					# /volume/target/path
+					volume_target_path = __update_xml(volume_target, 'path', None) # remove
+
+				if method == 'cow':
+					# /volume/backingStore
+					volume_backingStore = __update_xml(volume, 'backingStore', '')
+					# /volume/backingStore/path
+					volume_backingStore_path = __update_xml(volume_backingStore, 'path', vol.path())
+				xml = ET.tostring(volume)
+				logger.debug('Cloning disk: %s' % (xml,))
+
+				try:
+					if method == 'copy':
+						logger.info('Copying "%(old_volume)s" to "%(new_volume)s" begins' % {'old_volume': old_name, 'new_volume': new_name})
+						new_vol = pool.createXMLFrom(xml, vol, 0)
+						logger.info('Copying "%(old_volume)s" to "%(new_volume)s" done' % {'old_volume': old_name, 'new_volume': new_name})
+					elif method == 'cow':
+						logger.info('Backing "%(new_volume)s" by "%(old_volume)s"' % {'old_volume': old_name, 'new_volume': new_name})
+						new_vol = pool.createXML(xml, 0)
+					undo_vol.append(new_vol)
+				except libvirt.libvirtError, e:
+					raise NodeError(_('Failed to clone volume "%(volume)s": %(error)s'), volume=source, error=e.get_error_message())
+
+				if disk_type == 'file':
+					domain_devices_disk_source.attrib['file'] = new_vol.path()
+				elif disk_type == 'block':
+					domain_devices_disk_source.attrib['dev'] = new_vol.path()
+
+			xml = ET.tostring(domain)
+			logger.debug('Cloning domain: %s' % (xml,))
+			d = conn.defineXML(xml)
+			uuid = d.UUIDString()
+			logger.info('Clone domain "%s"(%s) defined.' % (name, uuid))
+			del undo_vol[:]
+
+			annotations['uuid'] = uuid
+			try:
+				record = ldap_modify(uuid)
+				for key, value in annotations.items():
+					record[key] = value
+			except (LdapConnectionError, univention.admin.uexceptions.ldapError, univention.admin.uexceptions.objectExists), e:
+				warning = 'Failed to write annotations in LDAP for "%(domain)s": %(error)s' % {'domain': domain, 'error': e}
+				logger.warning(warning)
+				warnings.append(warning)
+
+			return (uuid, warnings)
+		except libvirt.libvirtError, e:
+			logger.error(e)
+			raise NodeError(_('Error cloning "%(domain)s": %(error)s'), domain=domain, error=e.get_error_message())
+	finally:
+		for vol in undo_vol:
+			try:
+				logger.info('Deleting "%(volume)s"' % {'volume': vol.name()})
+				vol.delete(0)
+			except Exception, e:
+				logger.warning('Failed undo: %(error)s' % {'error': e})
 
 if __name__ == '__main__':
 	XEN_CAPABILITIES = '''<capabilities>

@@ -333,6 +333,32 @@ class _Commands:
 			raise CommandError('DOMAIN_UPDATE', e)
 
 	@staticmethod
+	def DOMAIN_CLONE(server, request):
+		"""Clone a domain."""
+		if not isinstance(request.uri, basestring):
+			raise CommandError('DOMAIN_CLONE', _('uri != string: %(uri)s'), uri=request.uri)
+		if not isinstance(request.domain, basestring):
+			raise CommandError('DOMAIN_CLONE', _('domain != string: %(domain)s'), domain=request.domain)
+		if not isinstance(request.name, basestring):
+			raise CommandError('DOMAIN_CLONE', _('name != string: %(name)s'), name=request.name)
+		if not isinstance(request.subst, dict):
+			raise CommandError('DOMAIN_CLONE', _('subst != dict: %(subst)s'), subst=request.subst)
+		for key, value in request.subst.items():
+			if not isinstance(key, basestring):
+				raise CommandError('DOMAIN_CLONE', _('subst[] != string: %(subst)s'), subst=key)
+			if not (value is None or isinstance(value, basestring)):
+				raise CommandError('DOMAIN_CLONE', _('subst[] != string: %(subst)s'), subst=value)
+		logger.debug('DOMAIN_CLONE %s#%s %s %r' % (request.uri, request.domain, request.name, request.subst))
+		try:
+			uuid, warnings = node.domain_clone(request.uri, request.domain, request.name, request.subst)
+			res = protocol.Response_DUMP()
+			res.data = uuid
+			res.messages = warnings
+			return res
+		except node.NodeError, e:
+			raise CommandError('DOMAIN_CLONE', e)
+
+	@staticmethod
 	def STORAGE_POOLS(server, request):
 		"""List all pools."""
 		if not isinstance(request.uri, basestring):

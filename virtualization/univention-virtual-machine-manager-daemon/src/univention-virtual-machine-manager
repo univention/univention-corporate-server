@@ -568,6 +568,30 @@ class Client(object):
 		"""
 		return protocol.Request_DOMAIN_UPDATE(domain=domain)
 
+	def domain_clone(self, uri, domain, name, *subst):
+		"""
+		%prog clone <uri> <domain> <name> <subst>...
+
+		On the virtualization server specified by <uri> clone the instance
+		<domain> with the new name <name>.
+		<subst> provides a mappings from <old> to <new> values, which can be
+		used to overwrite the default behaviour for creating new settings:
+		  mac#<old_mac>=<new_mac>
+		  copy#<dev>=<method>
+		  name#<dev>=<name>
+		Network interfaces are identified by the MAC address. By default a new
+		random MAC address is generated.
+		Disk devices are identified by their <dev>-name (e.g. vda, hdb, xvdc).
+		<method> can be used for cloning the disk: 'copy' creates a full copy,
+		'cow' uses a copy-on-write method to create an overlay over the
+		original disk, 'share' shares the disk.
+		Examples:
+			%prog clone qemu://server.domain.name/system 1-2-3-4-5 test mac#1:2:3:4:5:6=2:3:4:5:6 copy#vda=cow
+		"""
+		_subst = dict([kv.split('=', 1) for kv in subst])
+		p = protocol.Request_DOMAIN_CLONE(uri=uri, domain=domain, name=name, subst=_subst)
+		return p
+
 if __name__ == '__main__':
 	locale.setlocale(locale.LC_ALL, '')
 
