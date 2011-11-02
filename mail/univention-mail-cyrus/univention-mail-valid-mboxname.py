@@ -35,7 +35,7 @@
 GOODCHARS = " +,-.0123456789:=@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~"
 
 # this is the delimiter and was never allowd
-GOODCHARS += "/"
+GOODCHARS += "/&"
 
 import imaplib
 import sys

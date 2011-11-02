@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.24-2) unstable; urgency=low
+
+  * fixed univention-mail-invalid-mboxname.py (Bug #23813) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 02 Nov 2011 13:10:04 +0100
+
 univention-mail-cyrus (4.0.24-1) unstable; urgency=low
 
   * added univention-mail-invalid-mboxname.py (Bug #23813)
