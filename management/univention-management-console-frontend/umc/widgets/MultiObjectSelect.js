@@ -6,6 +6,7 @@ dojo.require("umc.widgets.Button");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.MultiSelect");
 dojo.require("umc.widgets.SearchForm");
+dojo.require("umc.widgets.LabelPane");
 dojo.require("umc.tools");
 dojo.require("umc.render");
 dojo.require("umc.widgets._FormWidgetMixin");
@@ -223,9 +224,13 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 
 		// for visualizing the search results, use a MultiSelect
 		this._multiSelect = new umc.widgets.MultiSelect({
-			height: '250px'
+			height: '250px',
+			label: this._('Search results:')
 		});
-		this._container.addChild(this._multiSelect);
+		this._container.addChild(new umc.widgets.LabelPane({ 
+			content: this._multiSelect,
+			style: 'display: block;' // do not allow for floating
+		}));
 
 		// add the final buttons to close the dialog
 		this._container.addChild(new umc.widgets.Button({

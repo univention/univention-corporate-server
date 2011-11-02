@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.167-1) unstable; urgency=low
+
+  * umc.tools.userPreferences(): return 'undefined' for invalid properties
+  * MultiObjectSelect: fixed spaces
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 02 Nov 2011 13:28:03 +0100
+
 univention-management-console-frontend (1.0.166-1) unstable; urgency=low
 
   * CheckBox: set default for valid (a CheckBox is always valid)

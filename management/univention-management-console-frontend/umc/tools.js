@@ -498,7 +498,10 @@ dojo.mixin(umc.tools, {
 		}
 		// only one parameter, type: String -> return specified preference
 		if (1 == arguments.length && dojo.isString(param1)) {
-			return this._userPreferences[param1]; // Boolean|String|Integer
+			if (param1 in this._defaultPreferences) {
+				return this._userPreferences[param1]; // Boolean|String|Integer
+			}
+			return undefined;
 		}
 
 		// backup the old preferences

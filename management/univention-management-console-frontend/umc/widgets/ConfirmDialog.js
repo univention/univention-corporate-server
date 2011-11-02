@@ -101,7 +101,8 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 
 		// put buttons into separate container
 		var buttons = new umc.widgets.ContainerWidget({
-			style: 'text-align: center;'
+			style: 'text-align: center;',
+			'class': 'umcButtonRow'
 		});
 		dojo.forEach(this.options, dojo.hitch(this, function(ichoice, idx) {
 			buttons.addChild(new umc.widgets.Button({
