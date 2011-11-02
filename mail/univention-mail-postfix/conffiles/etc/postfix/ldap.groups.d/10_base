@@ -6,7 +6,8 @@
 server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
 search_base = @%@ldap/base@%@
 query_filter = (&(mailPrimaryAddress=%s)(objectclass=posixGroup))
-result_attribute = uid
+result_attribute = mailPrimaryAddress
+leaf_result_attribute = mailPrimaryAddress
 special_result_attribute = uniqueMember
 scope = sub
 version = 3

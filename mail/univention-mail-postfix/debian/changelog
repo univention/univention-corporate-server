@@ -1,3 +1,10 @@
+univention-mail-postfix (6.0.31-1) unstable; urgency=low
+
+  * use mailPrimaryAddress in ldap.group table (Bug #22369)
+  * removed delivery via uid
+  
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 02 Nov 2011 15:46:21 +0100
+
 univention-mail-postfix (6.0.30-2) unstable; urgency=low
 
   * updated UCR variable descriptions (Bug #24325)
