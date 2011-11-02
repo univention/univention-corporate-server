@@ -1,3 +1,9 @@
+univention-updater (7.0.79-2) unstable; urgency=low
+
+  * Remove univention-shares in postup (Bug #24279) 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 02 Nov 2011 10:54:46 +0100
+
 univention-updater (7.0.79-1) unstable; urgency=low
 
   * restore menu.lst in postup.sh (Bug #24279) 

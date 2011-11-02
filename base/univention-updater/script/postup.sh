@@ -30,7 +30,7 @@
 UPDATER_LOG="/var/log/univention/updater.log"
 UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
-PACKAGES_TO_BE_PURGED="kcontrol libusplash0 univention-usplash-theme usplash libnjb5"
+PACKAGES_TO_BE_PURGED="kcontrol libusplash0 univention-usplash-theme usplash libnjb5 univention-shares"
 PACKAGES_TO_BE_REMOVED="nagios2 nagios2-common nagios2-doc"
 
 install ()
