@@ -1,0 +1,13 @@
+Same problem as descriobed in fix_dojo_style.patch
+--- dojo-release-1.6.1-src/dojo/_base/html.js.orig	2011-11-02 14:46:28.000000000 +0100
++++ dojo-release-1.6.1-src/dojo/_base/html.js	2011-11-02 14:47:17.000000000 +0100
+@@ -1162,6 +1162,9 @@
+ 		//		not margin).  Does not act as a setter.
+ 
+ 		node = byId(node);
++		if (node.nodeType != 1) {
++			return { x: 0, y: 0, w: 0, h: 0 };
++		}
+ 		var	db = d.body(),
+ 			dh = db.parentNode,
+ 			ret = node.getBoundingClientRect();

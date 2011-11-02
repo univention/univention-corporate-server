@@ -52,6 +52,7 @@ $(DOJO_DIR):
 	patch -p0 < fix_standbyOpacity.patch
 	patch -p0 < fix_dijit_findWidgets.patch
 	patch -p0 < fix_dojo_style.patch
+	patch -p0 < fix_dojo_position.patch
 	
 all: install
 
