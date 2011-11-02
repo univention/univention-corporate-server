@@ -1,3 +1,9 @@
+univention-management-console (4.0.77-2) unstable; urgency=low
+
+  * fix typo in postinst; Bug #24319
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 02 Nov 2011 14:14:37 +0100
+
 univention-management-console (4.0.77-1) unstable; urgency=low
 
   * support fields in category names that are replaced by UCR variables; Bug #22460
