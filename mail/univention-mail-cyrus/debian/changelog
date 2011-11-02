@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.24-3) unstable; urgency=low
+
+  * updated UCR variables (Bug #24325)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 02 Nov 2011 14:31:24 +0100
+
 univention-mail-cyrus (4.0.24-2) unstable; urgency=low
 
   * fixed univention-mail-invalid-mboxname.py (Bug #23813) 

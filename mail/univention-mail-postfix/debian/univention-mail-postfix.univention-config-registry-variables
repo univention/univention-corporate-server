@@ -10,6 +10,12 @@ Description[en]=Enable/Disable virus checking for e-mails
 Type=str
 Categories=service-mail
 
+[mail/hosteddomains]
+Description[de]=Liste aller Mail-Domänen, die auf diesem System gehostet werden.
+Description[en]=List of mail domains hosted by this server
+Type=str
+Categories=service-mail
+
 [mail/archivefolder]
 Description[de]=Archiviert ein und ausgehende E-Mails im angegebenen Postfach
 Description[en]=Archive all incoming and outgoing e-mails in given account
@@ -18,7 +24,7 @@ Categories=service-mail
 
 [mail/messagesizelimit]
 Description[de]=Maximale Größe von E-Mails (Angabe in Bytes)
-Description[en]=Maximum size of e-mails (specified in byte)
+Description[en]=Maximum size of e-mails (specified in bytes)
 Type=str
 Categories=service-mail
 

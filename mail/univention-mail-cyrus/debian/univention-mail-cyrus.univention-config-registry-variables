@@ -1,12 +1,18 @@
 [mail/cyrus/admins]
 Description[de]=Liste von Benutzern mit Administratorrechten
-Description[en]=List of users with administrative rigths
+Description[en]=List of users with administrative rights
 Type=str
 Categories=service-mail
 
 [mail/cyrus/imap/admins]
 Description[de]=Liste von Benutzern mit Administratorrechten im IMAP
-Description[en]=List of users with administrative rigths in IMAP
+Description[en]=List of users with administrative rights in IMAP
+Type=str
+Categories=service-mail
+
+[mail/cyrus/userlogfiles]
+Description[de]=Definiert, ob für neue Benutzer Logfiles in /var/lib/cyrus/log/ erstellt werden sollen.
+Description[en]=Controls whether user log files will be created for new users in /var/lib/cyrus/log/.
 Type=str
 Categories=service-mail
 
