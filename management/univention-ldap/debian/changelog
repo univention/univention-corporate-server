@@ -1,3 +1,9 @@
+univention-ldap (8.0.67-1) unstable; urgency=low
+
+  * Fixed typo in license.schema (Bug #24339)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Nov 2011 21:00:39 +0100
+
 univention-ldap (8.0.66-1) unstable; urgency=low
 
   * Added univentionLicensePhysicalServers,

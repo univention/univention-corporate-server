@@ -78,7 +78,7 @@ attributetype ( 1.3.6.1.4.1.10176.1711 NAME ( 'univentionLicenseOEMProduct' )
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
 
-attributetype ( 1.3.6.1.4.1.10176.1712.1.1 NAME ( 'univentionLicensePhysicalServers ' )
+attributetype ( 1.3.6.1.4.1.10176.1712.1.1 NAME ( 'univentionLicensePhysicalServers' )
 	DESC 'License maximum number of physical UCS servers'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
