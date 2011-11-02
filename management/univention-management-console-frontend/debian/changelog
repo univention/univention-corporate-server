@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.166-1) unstable; urgency=low
+
+  * CheckBox: set default for valid (a CheckBox is always valid)
+  * added test file for different widths
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 02 Nov 2011 12:59:05 +0100
+
 univention-management-console-frontend (1.0.165-1) unstable; urgency=low
 
   * add english information text for the free for personal use edition; Bug #23655

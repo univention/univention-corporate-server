@@ -13,6 +13,9 @@ dojo.declare("umc.widgets.CheckBox", [ dijit.form.CheckBox, umc.widgets._FormWid
 	// the widget's class name as CSS class
 	'class': 'umcCheckBox',
 
+	// a checkbox is always true
+	valid: true,
+
 	// internal cache of the initial value
 	_initialValue: null,
 

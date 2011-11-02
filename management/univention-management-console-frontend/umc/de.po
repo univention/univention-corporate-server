@@ -181,7 +181,7 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/help.js:30 umc/app.js:412
+#: umc/app.js:412 umc/help.js:30
 msgid "Help"
 msgstr "Hilfe"
 
