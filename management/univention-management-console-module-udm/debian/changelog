@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.216-1) unstable; urgency=low
+
+  * renamed category; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 02 Nov 2011 13:34:28 +0100
+
 univention-management-console-module-udm (1.0.215-1) unstable; urgency=low
 
   * fix navigation container search; Bug #24244

@@ -2,7 +2,7 @@
 <umc version="2.0">
   <categories>
 	<category id="domain">
-	  <name>Domain Management</name>
+	  <name>Domain {domainname}</name>
 	</category>
   </categories>
 </umc>
