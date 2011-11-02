@@ -561,7 +561,7 @@ class DriveWizard( umcd.IWizard ):
 	def _is_file_pool(self, pool_name):
 		"""Return if pool conatains files."""
 		try:
-			return self.storage_pools[pool_name].type in ('dir', 'netfs')
+			return self.storage_pools[pool_name].type in ('dir', 'fs', 'netfs')
 		except KeyError:
 			return False
 

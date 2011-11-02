@@ -136,7 +136,7 @@ def create_storage_volume(conn, domain, disk):
 	xml = p.XMLDesc(0)
 	doc = parseString(xml)
 	pool_type = doc.firstChild.getAttribute('type')
-	if pool_type == 'dir':
+	if pool_type in ('dir', 'fs', 'netfs'):
 		if hasattr(disk, 'driver_type') and disk.driver_type not in (None, 'iso', 'aio'):
 			values['type'] = disk.driver_type
 		else:
