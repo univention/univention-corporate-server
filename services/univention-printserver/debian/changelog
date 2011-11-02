@@ -1,3 +1,9 @@
+univention-printserver (5.0.14-1) unstable; urgency=low
+
+  * cups-printers.py must relaod samba4 if init script exists (Bug #22865)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 02 Nov 2011 15:40:30 +0100
+
 univention-printserver (5.0.13-1) unstable; urgency=low
 
   * replaced ldapsearch with univention-ldapsearch in join scripts

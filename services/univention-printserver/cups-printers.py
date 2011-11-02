@@ -419,7 +419,11 @@ def postrun():
 		fp.close()
 		if run_ucs_commit:
 			ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
-		initscript='/etc/init.d/samba'
-		os.spawnv(os.P_WAIT, initscript, ['samba', 'reload'])
+		if os.path.exists('/etc/init.d/samba4'):
+			initscript='/etc/init.d/samba4'
+			os.spawnv(os.P_WAIT, initscript, ['samba4', 'reload'])
+		if os.path.exists('/etc/init.d/samba'):
+			initscript='/etc/init.d/samba'
+			os.spawnv(os.P_WAIT, initscript, ['samba', 'reload'])
 	finally:
 		listener.unsetuid()
