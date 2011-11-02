@@ -1,3 +1,9 @@
+univention-management-console (4.0.76-1) unstable; urgency=low
+
+  * add software management module to dependencies; Bug #22899
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 02 Nov 2011 09:42:15 +0100
+
 univention-management-console (4.0.75-2) unstable; urgency=low
 
   * added UMC quota module to the dependencies (Bug #22903)
