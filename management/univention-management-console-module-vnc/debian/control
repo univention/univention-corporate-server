@@ -12,6 +12,8 @@ XS-Python-Version: all
 Package: univention-management-console-module-vnc
 Architecture: all
 Depends: univention-management-console-server,
+ tightvncserver,
+ expect,
  univention-directory-manager-tools (>> 7.0.147)
 Description: UMC module for VNC
  This package contains the UMC module for the VNC client

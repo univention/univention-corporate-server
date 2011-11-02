@@ -16,6 +16,8 @@ dojo.declare("umc.modules.vnc", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// internal reference to the password page
 	_passwordPage: null,
 
+	standbyOpacity: 1.00,
+
 	buildRendering: function() {
 		this.inherited(arguments);
 		this.standby(true);
@@ -55,6 +57,16 @@ dojo.declare("umc.modules.vnc", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}),
 				dojo.hitch(this, function() {
 					this.standby(false);
+				})
+			);
+		});
+
+		this.connect(this._vncPage, 'onConnect', function() {
+			umc.tools.umcpCommand('vnc/connect').then(
+				dojo.hitch(this, function(data) {
+					if (data.result.url != undefined) {
+						window.open(data.result.url);
+					}
 				})
 			);
 		});
@@ -211,7 +223,7 @@ dojo.declare("umc.modules.vnc._PasswordPage", [ umc.widgets.Page, umc.i18n.Mixin
 
 		var buttons = [{
 			name: 'submit',
-			label: this._('Submit'),
+			label: this._('Set'),
 			callback: dojo.hitch(this, function(data) {
 				// TODO: Check if password value is ''
 				if (this._form.getWidget('password').isValid()) {

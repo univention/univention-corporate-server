@@ -15,6 +15,9 @@
 	<command name="vnc/stop" function="stop">
 		<return syntax="Dictionary"/>
 	</command>
+	<command name="vnc/connect" function="connect">
+		<return syntax="Dictionary"/>
+	</command>
 	<command name="vnc/password" function="set_password">
 		<return syntax="Dictionary"/>
 	</command>

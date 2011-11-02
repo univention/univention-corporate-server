@@ -133,6 +133,18 @@ class Instance(umcm.Base):
 
 		self.finished(request.id, None, message)
 
+	def connect(self, request):
+		url = None
+		(is_running, passwd_exists, ) = self._get_status()
+		port = None
+		if is_running:
+			args = self._get_cmdline()
+			if '-rfbport' in args:
+				port = args[args.index('-rfbport') + 1]
+				url = '/vnc/connect.php?port=%s' % str(port)
+
+		self.finished(request.id, {'url': url})
+
 	def set_password(self, request):
 		message = None
 		if self.permitted('vnc/password', request.options):
