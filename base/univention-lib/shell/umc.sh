@@ -36,20 +36,24 @@ eval "$(ucr shell ldap/base)"
 BIND_ARGS="$@"
 
 umc_frontend_new_hash () {
-	# make sure that the UMC frontend is installed
-	[ -d /usr/share/univention-management-console-frontend ] || return 
-
 	# create new timestamps for index.html and debug.html in order to
 	# avoid caching problems in browsers
 	timestamp=$(date +'%Y%d%m%H%M%S')
 	for ifile in index.html debug.html; do
-		sed -i 's/\$\(.*\)\$/$'$timestamp'$/' /usr/share/univention-management-console-frontend/$ifile
+		f="/usr/share/univention-management-console-frontend/$ifile"
+		[ -w "$f" ] && sed -i 's/\$\(.*\)\$/$'$timestamp'$/' "$f"
 	done
 	# update the symlinks to the js/css directories
 	for idir in css js; do
-		rm -f /usr/share/univention-management-console-frontend/${idir}_\$*\$
-		ln -s "$idir" "/usr/share/univention-management-console-frontend/${idir}_\$${timestamp}\$"
+		for f in /usr/share/univention-management-console-frontend/${idir}_\$*\$; do
+			if [ -e "$f" ]; then
+				rm -f "$f" || true
+				ln -fs "$idir" "/usr/share/univention-management-console-frontend/${idir}_\$${timestamp}\$" || true
+			fi
+		done
 	done
+
+	return 0
 }
 
 umc_init () {

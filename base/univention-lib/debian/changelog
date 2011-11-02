@@ -1,6 +1,13 @@
+univention-lib (1.0.37-1) unstable; urgency=low
+
+  * shell/umc.sh: added more checks for umc_frontend_new_hash to avoid exit
+    codes != 0 (Bug #24330)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 02 Nov 2011 17:49:23 +0100
+
 univention-lib (1.0.36-1) unstable; urgency=low
 
-  * sheel/umc.sh: added check whether UMC frontend is installed for 
+  * shell/umc.sh: added check whether UMC frontend is installed for 
     umc_frontend_new_hash (Bug #22881)
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 02 Nov 2011 17:14:31 +0100
