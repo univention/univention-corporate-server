@@ -295,8 +295,25 @@ class UDM_Module( object ):
 		return obj.dn
 
 	@LDAP_Connection
+	def move( self, ldap_dn, container, ldap_connection = None, ldap_position = None ):
+		"""Moves an LDAP object"""
+		superordinate = udm_objects.get_superordinate( self.module, None, ldap_connection, ldap_dn )
+		obj = self.module.object( None, ldap_connection, ldap_position, dn = ldap_dn, superordinate = superordinate )
+		try:
+			obj.open()
+			# build new dn
+			rdn = udm.uldap.explodeDn( ldap_dn )[ 0 ]
+			dest = '%s,%s' % ( rdn, container )
+			MODULE.info( 'Moving LDAP object %s to %s' % ( ldap_dn, dest ) )
+			obj.move( dest )
+			return dest
+		except udm_errors.base, e:
+			MODULE.process( 'Failed to remove LDAP object %s' % ldap_dn )
+			raise UDM_Error( str( e ) )
+
+	@LDAP_Connection
 	def remove( self, ldap_dn, cleanup = False, recursive = False, ldap_connection = None, ldap_position = None ):
-		"""Removes a LDAP object"""
+		"""Removes an LDAP object"""
 		superordinate = udm_objects.get_superordinate( self.module, None, ldap_connection, ldap_dn )
 		obj = self.module.object( None, ldap_connection, ldap_position, dn = ldap_dn, superordinate = superordinate )
 		try:
@@ -543,7 +560,7 @@ class UDM_Module( object ):
 	@property
 	def operations( self ):
 		"""Allowed operations of the UDM module"""
-		return self.module is not None and getattr( self.module, 'operations', None )
+		return getattr( self.module, 'operations', [] )
 
 	@property
 	def template( self ):

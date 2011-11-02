@@ -98,6 +98,8 @@
 	</command>
 	<command name="udm/get" function="get">
 	</command>
+	<command name="udm/move" function="move">
+	</command>
 	<command name="udm/validate" function="validate">
 	</command>
 	<command name="udm/syntax/choices" function="syntax_choices">

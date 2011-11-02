@@ -171,6 +171,48 @@ class Instance( Base ):
 
 		self.finished( request.id, license_data )
 
+	def move( self, request ):
+		"""Moves LDAP objects.
+
+		requests.options = [ { 'options' : {}, 'object' : <LDAP DN> }, ... ]
+
+		return: [ { '$dn$' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
+		"""
+
+		def _thread( request ):
+			result = []
+			for obj in request.options:
+				if not isinstance( obj, dict ):
+					raise UMC_OptionTypeError( _( 'Invalid object LDAP DN' ) )
+
+				options = obj.get( 'options', {} )
+				ldap_dn = obj.get( 'object', None )
+
+				if not 'container' in options:
+					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : _( 'The destination is missing' ) } )
+					continue
+
+				module = get_module( None, ldap_dn )
+				if not module:
+					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : _( 'Could not identify the given LDAP object' ) } )
+					continue
+
+				if not 'move' in module.operations:
+					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : _( 'This object can not be moved' ) } )
+					continue
+
+				try:
+					new_dn = module.move( ldap_dn, options[ 'container' ] )
+					result.append( { '$dn$' : ldap_dn, 'success' : True } )
+				except UDM_Error, e:
+					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e.args[ 0 ] ) } )
+
+			return result
+
+		thread = notifier.threads.Simple( 'Get', notifier.Callback( _thread, request ),
+										  notifier.Callback( self._thread_finished, request ) )
+		thread.run()
+
 	def add( self, request ):
 		"""Creates LDAP objects.
 

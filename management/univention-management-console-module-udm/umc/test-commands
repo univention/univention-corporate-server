@@ -89,3 +89,6 @@ umc-client -U Administrator -P univention command udm/reports/query -f users/use
 
 # create report
 umc-client -U Administrator -P univention command udm/reports/create -f users/user -e -o '{ "report": "Standard Report", "objects" : [ "uid=crunchy,cn=users,dc=ucs3,dc=test", "uid=stefan,cn=users,dc=ucs3,dc=test" ] }'
+
+# move a user
+umc-client -U Administrator -P univention command udm/move -l -e -o "{ 'options' : { 'container' : 'cn=test,cn=users,dc=ucs3,dc=test' }, 'object' : 'uid=Müller,cn=users,dc=ucs3,dc=test' }"
