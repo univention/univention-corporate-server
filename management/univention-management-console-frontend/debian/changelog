@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.168-1) unstable; urgency=low
+
+  * UMC webserver now listens on "[::]:8080" (Bug #24329)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 02 Nov 2011 18:56:13 +0100
+
 univention-management-console-frontend (1.0.167-2) unstable; urgency=low
 
   * version bump (Bug #22881)

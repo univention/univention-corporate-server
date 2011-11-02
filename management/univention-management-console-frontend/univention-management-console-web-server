@@ -420,7 +420,7 @@ def run_cherrypy():
 	# 'server.environment': 'production',
 	cherrypy.config.update( { 
 		'server.socket_port': 8080,
-		'server.socket_host': '0.0.0.0',
+		'server.socket_host': '::',
 		'server.request_queue_size' : 100,
 		'engine.autoreload_on': False,
 	} )
