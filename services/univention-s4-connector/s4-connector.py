@@ -71,26 +71,32 @@ def handler(dn, new, old, command):
 			old_dn=None
 			if os.path.exists(os.path.join(directory, 'tmp','old_dn')):
 				f=open(os.path.join(directory, 'tmp','old_dn'),'r')
-				old_dn=cPickle.load(f)
+				p=cPickle.Pickler(f)
+				old_dn=p.load()
+				p.clear_memo()
 				f.close()
 			if command == 'r':
 				filename=os.path.join(directory, 'tmp','old_dn')
 
 				f=open(filename, 'w+')
 				os.chmod(filename, 0600)
-				cPickle.dump(dn, f)
+				p=cPickle.Pickler(f)
+				old_dn=p.dump(dn)
+				p.clear_memo()
 				f.close()
 			else:
-				object=(dn, new, old, old_dn)
+				ob=(dn, new, old, old_dn)
 
 				filename=os.path.join(directory,"%f"%time.time())
 	
 				if new and 'univentionGroup' in new.get('objectClass', []):
-					group_objects.append(object)
+					group_objects.append(ob)
 
 				f=open(filename, 'w+')
 				os.chmod(filename, 0600)
-				cPickle.dump(object, f)
+				p=cPickle.Pickler(f)
+				p.dump(ob)
+				p.clear_memo()
 				f.close()
 
 				if os.path.exists(os.path.join(directory, 'tmp','old_dn')):
@@ -120,12 +126,14 @@ def postrun():
 		listener.setuid(0)
 		try:
 			s4_init_mode = False
-			for object in group_objects:
+			for ob in group_objects:
 				for directory in dirs:
 					filename=os.path.join(directory,"%f"%time.time())
 					f=open(filename, 'w+')
 					os.chmod(filename, 0600)
-					cPickle.dump(object, f)
+					p=cPickle.Pickler(f)
+					p.dump(ob)
+					p.clear_memo()
 					f.close()
 		finally:
 			listener.unsetuid()
