@@ -51,7 +51,8 @@ update-rc.d -f univention-ldap-listener remove >/dev/null 2>&1
 
 #DEBHELPER#
 
-univention-config-registry set listener/debug/level?2
+univention-config-registry set listener/debug/level?2 \
+								listener/network/protocol=all
 
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=17998
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=18692

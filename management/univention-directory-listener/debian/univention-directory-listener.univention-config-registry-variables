@@ -3,3 +3,9 @@ Description[de]=Debug level des Univention Directory Listener (0-4)
 Description[en]=Debug level of Univention Directory Listener (0-4)
 Type=str
 Categories=service-ldap
+
+[listener/network/protocol]
+Description[de]=Protokoll für die Verbindung zum Notifier (gültige Werte: "all", "ipv4", "ipv6")
+Description[en]=Notifier connection protocol (valid values: "all", "ipv4", "ipv6")
+Type=str
+Categories=service-ldap

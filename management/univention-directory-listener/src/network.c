@@ -51,6 +51,7 @@
 #include <errno.h>
 
 #include <univention/debug.h>
+#include <univention/config.h>
 
 #include "common.h"
 #include "network.h"
@@ -299,6 +300,7 @@ int notifier_client_new(NotifierClient *client,
 	struct sockaddr    *address;
 	socklen_t           addrlen;
 	struct addrinfo 	hints, *res, *result_addrinfo;
+	char			   *ucrvalue;
 	char addrstr[100];
 	int err;
 	
@@ -322,6 +324,16 @@ int notifier_client_new(NotifierClient *client,
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_flags = 0;
 	hints.ai_protocol = 0;             /* Any protocol */
+
+	/* limit address resolution to IPv4 XOR IPv6 */
+	ucrvalue = univention_config_get_string("listener/network/protocol");
+	if (ucrvalue) {
+	    if (!strcmp(ucrvalue, "ipv4")) {
+		    hints.ai_family = AF_INET;
+		} else if (!strcmp(ucrvalue, "ipv6")) {
+		    hints.ai_family = AF_INET6;
+		}
+	}
 
 	address4.sin_family = AF_INET;
 	address4.sin_port = htons(NOTIFIER_PORT_PROTOCOL2);
