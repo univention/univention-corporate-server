@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.170-1) unstable; urgency=low
+
+  * getPolicies: fix default values for keyword arguments; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 02 Nov 2011 16:43:29 +0100
+
 univention-directory-manager-modules (7.0.169-1) unstable; urgency=low
 
   * fix encoding detection (Bug #23475)
