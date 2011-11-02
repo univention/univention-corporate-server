@@ -43,31 +43,47 @@
 
 int cache_free_entry(char **dn, CacheEntry *entry)
 {
-	CacheEntryAttribute **attribute;
-	char **module;
+	int i, j;
 
 	if (dn != NULL) {
 		free(*dn);
 		*dn = NULL;
 	}
-	
-	for (attribute=entry->attributes; attribute != NULL && *attribute != NULL; attribute++) {
-		char **value;
-		free((*attribute)->name);
-		for (value=(*attribute)->values; value != NULL && *value != NULL; value++) {
-			free(*value);
-		}
-		free((*attribute)->values);
-		free(*attribute);
-	}
-	free(entry->attributes);
-	entry->attributes = NULL;
-	entry->attribute_count = 0;
 
-	for (module=entry->modules; module != NULL && *module != NULL; module++) {
-		free(*module);
+	for(i=0; i<entry->attribute_count; i++) {
+		if(entry->attributes[i]->name) {
+			free(entry->attributes[i]->name);
+		}
+		for(j=0; j<entry->attributes[i]->value_count; j++) {
+			if(entry->attributes[i]->values[j]) {
+				free(entry->attributes[i]->values[j]);
+			}
+		}
+		if(entry->attributes[i]->values) {
+			free(entry->attributes[i]->values);
+		}
+		if(entry->attributes[i]->length) {
+			free(entry->attributes[i]->length);
+		}
+		if(entry->attributes[i]) {
+			free(entry->attributes[i]);
+		}
 	}
-	free(entry->modules);
+	
+	if (entry->attributes) {
+		free(entry->attributes);
+	}
+
+	for(i=0; i<entry->module_count; i++) {
+		if (entry->modules[i]) {
+			free(entry->modules[i]);
+		}
+	}
+	
+	if(entry->modules) {
+		free(entry->modules);
+	}
+
 	entry->modules = NULL;
 	entry->module_count = 0;
 	
@@ -177,6 +193,8 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 	memset(cache_entry, 0, sizeof(CacheEntry));
 	if (dn != NULL) {
 		_dn = ldap_get_dn(ld, ldap_entry);
+		if(*dn)
+				free(*dn);
 		*dn = strdup(_dn);
 		ldap_memfree(_dn);
 	}
@@ -309,7 +327,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 		ldap_memfree(attr);
 	}
 
-	ldap_memfree(ber);
+	ber_free(ber, 0);
 
 result:
 	if (rv != 0)

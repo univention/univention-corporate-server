@@ -1,3 +1,13 @@
+univention-directory-listener (6.0.16-1) unstable; urgency=low
+
+  * Fixed memory leaks (Bug #24273)
+    * Use Py_XDECREF instead of Py_DECREF
+    * Create argtuple in handler_exec for every handler
+    * Use ber_free to free a BerElement
+  * Code cleanup
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Nov 2011 15:47:38 +0100
+
 univention-directory-listener (6.0.15-2) unstable; urgency=low
 
   * added UCR variable listener/network/protocol={all,ipv4,ipv6} (Bug #24284)

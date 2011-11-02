@@ -381,7 +381,6 @@ inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 		return rv;
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "put %d bytes", data.size);
 
 	signals_block();
 #ifdef WITH_DB42
@@ -409,6 +408,8 @@ inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 		free(data.data);
 		return rv;
 	}
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "put %d bytes for %s", (data.size, dn));
+
 
 #ifdef WITH_DB42
 	dbtxnp->commit(dbtxnp, 0);
@@ -629,6 +630,8 @@ int cache_next_entry(DBC **cur, char **dn, CacheEntry *entry)
 		return cache_next_entry(cur, dn, entry);
 	}
 	
+	if (!*dn) 
+		free(*dn);
 	*dn = strdup(key.data);
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "got %d bytes", data.size);

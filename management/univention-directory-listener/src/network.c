@@ -99,6 +99,8 @@ static int parse_entry(const char *line, NotifierEntry *entry)
 	} else {
 		entry->command = 'm';
 	}
+	if (entry->dn)
+		free(entry->dn);
 	entry->dn = strdup(p);
 
 	free(tmp);
@@ -163,6 +165,8 @@ static int recv_block(NotifierClient *client, char **back, time_t timeout)
 	*back = result;
 	
 	if (*(pos+2) != '\0') {
+		if (client->buf)
+			free(client->buf);
 		client->buf = strdup(pos+2);
 	} else {
 		client->buf = NULL;
@@ -202,11 +206,15 @@ int notifier_recv_result(NotifierClient *client, time_t timeout)
 	} else if (rv < 0)
 		return 0;
 	
-	if (recv_block(client, &result, NOTIFIER_TIMEOUT) < 10)
+	if (recv_block(client, &result, NOTIFIER_TIMEOUT) < 10) {
+		if (client->buf)
+			free(client->buf);
 		return 0;
+	}
 	
 	if ((msg = malloc(sizeof(NotifierMessage))) == NULL)
 		return 0;
+	memset(msg, 0, sizeof(NotifierMessage));
 	
 	/* strip MSGID: %d\n and copy the rest to msg->result */
 	tmp = strchr(result, '\n');
@@ -223,6 +231,8 @@ int notifier_recv_result(NotifierClient *client, time_t timeout)
 		return 0;
 	}
 	
+	if (msg->result)
+		free(msg->result);
 	msg->result = strdup(tmp+1);
 	free(result);
 

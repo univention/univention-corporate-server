@@ -53,6 +53,9 @@
 #include "filter.h"
 #include "handlers.h"
 
+PyObject* handlers_argtuple(char *dn, CacheEntry *new, CacheEntry *old);
+PyObject* handlers_argtuple_command(char *dn, CacheEntry *new, CacheEntry *old, char *command);
+
 extern int INIT_ONLY;
 extern char *cache_dir;
 extern char **module_dirs;
@@ -134,7 +137,7 @@ static char* module_get_string(PyObject *module, char *name)
 		return NULL;
 	PyArg_Parse(var, "s", &str1);
 	str2 = strdup(str1);
-	Py_DECREF(var);
+	Py_XDECREF(var);
 
 	return str2;
 }
@@ -148,23 +151,23 @@ static char** module_get_string_list(PyObject *module, char *name)
 	if ((list=PyObject_GetAttrString(module, name)) == NULL)
 		return NULL;
 	if (!PyList_Check(list)) {
-		Py_DECREF(list);
+		Py_XDECREF(list);
 		return NULL;
 	}
 	
 	len = PyList_Size(list);
 	if ((res = malloc((len+1)*sizeof(char*))) == NULL) {
-		Py_DECREF(list);
+		Py_XDECREF(list);
 		return NULL;
 	}
 	for (i = 0; i < len; i++) {
 		PyObject *var;
 		var = PyList_GetItem(list, i);
 		res[i] = strdup(PyString_AsString(var));
-		Py_DECREF(var);
+		Py_XDECREF(var);
 	}
 	res[len] = NULL;
-	Py_DECREF(list);
+	Py_XDECREF(list);
 
 	return res;
 }
@@ -209,6 +212,7 @@ static int handler_import(char* filename)
 		num_filters++;
 		handler->filters[num_filters] = NULL;
 	}
+
 	if (PyObject_HasAttrString(handler->module, "filters")) {
 		PyObject *filters = PyObject_GetAttrString(handler->module, "filters");
 		int len = PyList_Size(filters), i;
@@ -224,9 +228,13 @@ static int handler_import(char* filename)
 			handler->filters[num_filters]->scope = PyInt_AsLong(py_scope);
 			handler->filters[num_filters]->filter = strdup(PyString_AsString(py_filter));
 			num_filters++;
+			Py_XDECREF(py_tuple);
+			Py_XDECREF(py_base);
+			Py_XDECREF(py_scope);
+			Py_XDECREF(py_filter);
 		}
 		handler->filters[num_filters] = NULL;
-		Py_DECREF(filters);
+		Py_XDECREF(filters);
 	}
 
 	handler->attributes = module_get_string_list(handler->module, "attributes");
@@ -286,7 +294,7 @@ static int handler_prerun(Handler *handler)
 	drop_privileges();
 	handler->prepared=1;
 	
-	Py_DECREF(result);
+	Py_XDECREF(result);
 	return 0;
 }
 
@@ -308,7 +316,7 @@ static int handler_postrun(Handler *handler)
 	drop_privileges();
 	handler->prepared=0;
 	
-	Py_DECREF(result);
+	Py_XDECREF(result);
 	return 0;
 }
 
@@ -323,10 +331,11 @@ int handlers_postrun_all(void)
 }
 
 /* execute handler with arguments */
-static int handler_exec(Handler *handler, PyObject *argtuple)
+static int handler_exec(Handler *handler, char *dn, CacheEntry *new, CacheEntry *old, char command)
 {
-	PyObject *result;
-	int rv;
+	PyObject *argtuple, *result;
+	int rv = 0;
+	char cmd[2];
 
 	if ((handler->state & HANDLER_READY) != HANDLER_READY) {
 		if (INIT_ONLY) {
@@ -336,10 +345,20 @@ static int handler_exec(Handler *handler, PyObject *argtuple)
 			return 1;
 		}
 	}
-	
+
+	if ( handler->modrdn ) {
+		cmd[0]=command;
+		cmd[1]='\0';
+		argtuple = handlers_argtuple_command(dn, new, old, cmd);
+	} else {
+		argtuple = handlers_argtuple(dn, new, old);
+	}
 	handler_prerun(handler);
 
-	if ((result = PyObject_CallObject(handler->handler, argtuple)) == NULL) {
+	result = PyObject_CallObject(handler->handler, argtuple);
+	Py_XDECREF(argtuple);
+
+	if (result == NULL) {
 		PyErr_Print();
 		return -1;
 	}
@@ -352,7 +371,8 @@ static int handler_exec(Handler *handler, PyObject *argtuple)
 	else
 		rv=0;
 
-	Py_DECREF(result);
+	Py_XDECREF(result);
+
 	return rv;
 }
 
@@ -372,7 +392,7 @@ int handler_clean(Handler *handler)
 	
 	drop_privileges();
 	
-	Py_DECREF(result);
+	Py_XDECREF(result);
 	return 0;
 }
 
@@ -400,7 +420,7 @@ int handler_initialize(Handler *handler)
 	
 	drop_privileges();
 	
-	Py_DECREF(result);
+	Py_XDECREF(result);
 	return 0;
 }
 
@@ -582,7 +602,8 @@ int handlers_init(void)
 static PyObject* handlers_entrydict(CacheEntry *entry)
 {
 	PyObject *entrydict;
-	CacheEntryAttribute **attribute;
+	PyObject *valuelist, *s;
+	int i, j;
 
 	if ((entrydict = PyDict_New()) == NULL)
 		return NULL;
@@ -590,37 +611,29 @@ static PyObject* handlers_entrydict(CacheEntry *entry)
 	if (entry == NULL)
 		return entrydict;
 
-	for (attribute=entry->attributes; attribute != NULL && *attribute != NULL; attribute++) {
-		PyObject *valuelist, *s;
-		char **value;
-		int *length;
+	for(i=0; i<entry->attribute_count; i++) {
 
 		/* make value list */
-		if ((valuelist = PyList_New(0)) == NULL) {
-			Py_DECREF (entrydict);
+		if ((valuelist = PyList_New(entry->attributes[i]->value_count)) == NULL) {
+			Py_XDECREF (entrydict);
 			return NULL;
 		}
-		for (value=(*attribute)->values, length=(*attribute)->length; value != NULL && *value != NULL; value++, *length++) {
-			if (length!=NULL && *length != strlen(*value)) {
-				s = PyString_FromStringAndSize(*value,*length-1);
-			} else {
-				s = PyString_FromString(*value);
-			}
-			PyList_Append(valuelist, s);
-			Py_DECREF(s);
+		s = PyString_FromString(entry->attributes[i]->name);
+
+		for(j=0; j<entry->attributes[i]->value_count; j++) {
+			PyList_SetItem(valuelist, j, PyString_FromString(entry->attributes[i]->values[j]));
 		}
 
-		s = PyString_FromString((*attribute)->name);
 		PyDict_SetItem(entrydict, s, valuelist);
-		Py_DECREF(s);
-		Py_DECREF(valuelist);
+		Py_XDECREF(s);
+		Py_XDECREF(valuelist);
 	}
 
 	return entrydict;
 }
 
 /* build Python argument tuple for handler */
-static PyObject* handlers_argtuple(char *dn, CacheEntry *new, CacheEntry *old)
+PyObject* handlers_argtuple(char *dn, CacheEntry *new, CacheEntry *old)
 {
 	PyObject *argtuple;
 	PyObject *newdict;
@@ -640,7 +653,7 @@ static PyObject* handlers_argtuple(char *dn, CacheEntry *new, CacheEntry *old)
 
 	return argtuple;
 }
-static PyObject* handlers_argtuple_command(char *dn, CacheEntry *new, CacheEntry *old, char *command)
+PyObject* handlers_argtuple_command(char *dn, CacheEntry *new, CacheEntry *old, char *command)
 {
 	PyObject *argtuple;
 	PyObject *newdict;
@@ -678,7 +691,7 @@ int attribute_has_changed(char** changes, char* attribute)
 
 
 /* a little more low-level interface than handler_update */
-static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEntry *old, PyObject *argtuple, char **changes, CacheEntry *scratch)
+static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEntry *old, char command, char **changes, CacheEntry *scratch)
 {
 	int matched;
 	int rv = 0;
@@ -722,7 +735,7 @@ static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEnt
 	}
 
 	/* run handler */
-	if (handler_exec(handler, argtuple) == 0) {
+	if (handler_exec(handler, dn, new, old, command) == 0) {
 		cache_entry_module_add(new, handler->name);
 		if ( scratch != NULL ) {
 			cache_entry_module_add(scratch, handler->name);
@@ -733,44 +746,31 @@ static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEnt
 		rv=1;
 	}
 
+
 	return rv;
 }
 
 /* run all handlers if object has changed */
 int handlers_update(char *dn, CacheEntry *new, CacheEntry *old, char command, CacheEntry *scratch)
 {
-	PyObject *argtuple;
-	PyObject *argtuple_command;
 	Handler *handler;
 	char** changes;
 	int rv = 0;
-	char cmd[2];
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "running handlers for %s", dn);
 
 	changes = cache_entry_changed_attributes(new, old);
-	argtuple = handlers_argtuple(dn, new, old);
-	cmd[0]=command;
-	cmd[1]='\0';
-	argtuple_command = handlers_argtuple_command(dn, new, old, cmd);
 
 	for (handler=handlers; handler != NULL; handler=handler->next) {
 		if (!strcmp(handler->name, "replication")) {
-			handler__update(handler, dn, new, old, argtuple, changes, scratch);
+			handler__update(handler, dn, new, old, command, changes, scratch);
 		}
 	}
 	for (handler=handlers; handler != NULL; handler=handler->next) {
 		if (strcmp(handler->name, "replication")) {
-			if ( handler->modrdn ) {
-				handler__update(handler, dn, new, old, argtuple_command, changes, scratch);
-			} else {
-				handler__update(handler, dn, new, old, argtuple, changes, scratch);
-			}
+			handler__update(handler, dn, new, old, command, changes, scratch);
 		}
 	}
-	
-	Py_DECREF(argtuple);
-	Py_DECREF(argtuple_command);
 	free(changes);
 	
 	return rv;
@@ -779,28 +779,15 @@ int handlers_update(char *dn, CacheEntry *new, CacheEntry *old, char command, Ca
 /* run given handler if object has changed */
 int handler_update(char *dn, CacheEntry *new, CacheEntry *old, Handler *handler, char command, CacheEntry *scratch)
 {
-	PyObject *argtuple;
-	PyObject *argtuple_command;
 	char** changes;
 	int rv = 0;
-	char cmd[2];
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "running handlers [%s] for %s", handler->name, dn);
 
 	changes = cache_entry_changed_attributes(new, old);
-	argtuple = handlers_argtuple(dn, new, old);
-	cmd[0]=command;
-	cmd[1]='\0';
-	argtuple_command = handlers_argtuple_command(dn, new, old, cmd);
 
-	if ( handler->modrdn ) {
-		rv = handler__update(handler, dn, new, old, argtuple_command, changes, scratch);
-	} else {
-		rv = handler__update(handler, dn, new, old, argtuple, changes, scratch);
-	}
+	rv = handler__update(handler, dn, new, old, command, changes, scratch);
 
-	Py_DECREF(argtuple);
-	Py_DECREF(argtuple_command);
 	free(changes);
 	
 	return rv;
@@ -809,45 +796,25 @@ int handler_update(char *dn, CacheEntry *new, CacheEntry *old, Handler *handler,
 /* run handlers if object has been deleted */
 int handlers_delete(char *dn, CacheEntry *old, char command)
 {
-	PyObject *argtuple;
-	PyObject *argtuple_command;
 	Handler *handler;
-	char cmd[2];
-	int rv = 0;
+	int rv=0;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "delete handlers for %s", dn);
-	argtuple = handlers_argtuple(dn, NULL, old);
-	cmd[0]=command;
-	cmd[1]='\0';
-	argtuple_command = handlers_argtuple_command(dn, NULL, old, cmd);
 
 	for (handler=handlers; handler != NULL; handler=handler->next) {
 		if (!cache_entry_module_present(old, handler->name)) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (skipped)", handler->name);
 			continue;
 		}
-		if ( handler->modrdn ) {
-			if (handler_exec(handler, argtuple_command) == 0) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (successful)", handler->name);
-				cache_entry_module_remove(old, handler->name);
-			} else {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (failed)", handler->name);
-				rv=1;
-			}
+		if (handler_exec(handler, dn, NULL, old, command) == 0 ){
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (successful)", handler->name);
+			cache_entry_module_remove(old, handler->name);
 		} else {
-			if (handler_exec(handler, argtuple) == 0) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (successful)", handler->name);
-				cache_entry_module_remove(old, handler->name);
-			} else {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (failed)", handler->name);
-				rv=1;
-			}
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (failed)", handler->name);
+			rv=1;
 		}
 	}
 	
-	Py_DECREF(argtuple);
-	Py_DECREF(argtuple_command);
-
 	return rv;
 }
 
@@ -881,7 +848,7 @@ int handler_set_data(Handler *handler, PyObject *argtuple)
 	else
 		rv=0;
 
-	Py_DECREF(result);
+	Py_XDECREF(result);
 	return rv;
 }
 
@@ -910,7 +877,7 @@ int handlers_set_data_all(char *key, char *value)
 			rv = -1;
 	}
 
-	Py_DECREF(argtuple);
+	Py_XDECREF(argtuple);
 
 	return 1;
 }
