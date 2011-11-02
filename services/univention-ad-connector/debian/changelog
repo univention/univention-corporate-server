@@ -1,3 +1,10 @@
+univention-ad-connector (6.0.23-1) unstable; urgency=low
+
+  * Use cPickle.Pickler an clear_memo, otherwise the internal python
+    refcount will not be decreased  and the memeory is lost (Bug #24273)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Nov 2011 15:53:15 +0100
+
 univention-ad-connector (6.0.22-1) unstable; urgency=low
 
   * More fixes on attribute deletion (Bug #8604)
