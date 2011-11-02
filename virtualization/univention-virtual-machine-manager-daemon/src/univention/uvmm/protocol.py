@@ -32,6 +32,10 @@
 # <http://www.gnu.org/licenses/>.
 """UVMM protocol."""
 try:
+	from cStringIO import StringIO
+except ImportError:
+	from StringIO import StringIO
+try:
 	import cPickle as pickle
 except ImportError:
 	import pickle
@@ -63,7 +67,10 @@ class Packet(object):
 		return '\n'.join(res)
 	def pack(self):
 		"""Pack data for transfer."""
-		data = pickle.dumps(self)
+		s = StringIO()
+		p = pickle.Pickler(s)
+		p.dump(self)
+		data = s.getvalue()
 		return struct.pack('!HHI', VERSION[0], VERSION[1], len(data)) + data
 	@staticmethod
 	def parse(buffer, offset=0):
@@ -79,7 +86,9 @@ class Packet(object):
 			return None
 		(data,) = struct.unpack('%ds' % length, buffer[offset + SIZE:offset + SIZE + length])
 		try:
-			packet = pickle.loads(data)
+			s = StringIO(data)
+			p = pickle.Unpickler(s)
+			packet = p.load()
 		except Exception, e:
 			raise PacketError(_('Not a valid Packet: %(msg)s'), msg=str(e))
 		if not isinstance(packet, Packet):
@@ -282,7 +291,7 @@ class Data_StoragePool(object):
 		self.available = None
 		self.path = None
 		self.active = None # True False
-		self.type = None # logical 
+		self.type = None # logical
 class Data_Domain(object):
 	"""Container for domain statistics."""
 	def __init__(self):

@@ -88,10 +88,10 @@ def cached(cachefile, func, exception=LdapConnectionError):
 	try:
 		result = func()
 
-		data = pickle.dumps(result)
 		file = open("%s.new" % (cachefile,), "w")
 		try:
-			file.write(data)
+			p = pickle.Pickler(file)
+			p.dump(result)
 		finally:
 			file.close()
 		try:
@@ -117,7 +117,8 @@ def cached(cachefile, func, exception=LdapConnectionError):
 		try:
 			file = open("%s" % (cachefile,), "r")
 			try:
-				result = pickle.load(file)
+				p = pickle.Unpickler(file)
+				result = p.load()
 			finally:
 				file.close()
 		except IOError, e:

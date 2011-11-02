@@ -55,7 +55,11 @@ import operator
 import errno
 import fnmatch
 import re
-import xml.etree.ElementTree as ET
+import random
+try:
+	import xml.etree.ElementTree as ET
+except ImportError:
+	import elementtree.ElementTree as ET
 try:
 	import cPickle as pickle
 except ImportError:
@@ -509,7 +513,8 @@ class Node(PersistentCached):
 			cache_file_name = self.cache_file_name(uri)
 			f = open(cache_file_name, 'r')
 			try:
-				self.pd = pickle.load(f)
+				p = pickle.Unpickler(f)
+				self.pd = p.load()
 			finally:
 				f.close()
 			assert self.pd.uri == uri
@@ -876,7 +881,7 @@ def _domain_backup(dom, save=True):
 	xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
 	if len(xml) < 300: # minimal XML descriptor length
 		logger.error("Failed to backup domain %s: %s" % (uuid, xml))
-		raise NodeError("Failed to backup domain %(domain)s: %(xml)s", domain=uuid, xml=xml)
+		raise NodeError(_("Failed to backup domain %(domain)s: %(xml)s"), domain=uuid, xml=xml)
 	now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 	suffix = 'xml'
 	if save:
@@ -893,6 +898,32 @@ def _domain_backup(dom, save=True):
 	os.rename(tmp_file, file)
 	logger.info("Domain backuped to %s." % (file,))
 
+def __update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
+	'''Create, update or delete node named '_node_name' of '_node_parent'.
+	If _node_value == None and all(attr == None), then node is deleted.
+	'''
+	node = _node_parent.find(_node_name)
+	if _node_value is None and not filter(lambda v: v is not None, attr.values()):
+		if node is not None:
+			_changes.add(None)
+			_node_parent.remove(node)
+	else:
+		if node is None:
+			node = ET.SubElement(_node_parent, _node_name)
+		new_text = _node_value or None
+		if node.text != new_text:
+			_changes.add(None)
+			node.text = new_text
+		for k, v in attr.items():
+			if v is None or v == '':
+				if k in node.attrib:
+					_changes.add(k)
+					del node.attrib[k]
+			elif node.attrib.get(k) != v:
+				_changes.add(k)
+				node.attrib[k] = v
+	return node
+
 def _domain_edit(node, dom_stat, xml):
 	"""Apply python object 'dom_stat' to an XML domain description."""
 	if xml:
@@ -901,32 +932,7 @@ def _domain_edit(node, dom_stat, xml):
 		xml = '<domain/>'
 		defaults = True
 	live_updates = []
-
-	def update(_node_parent, _node_name, _node_value, _changes=set(), **attr):
-		'''Create, update or delete node named '_node_name' of '_node_parent'.
-		If _node_value == None and all(attr == None), then node is deleted.
-		'''
-		node = _node_parent.find(_node_name)
-		if _node_value is None and not filter(lambda v: v is not None, attr.values()):
-			if node is not None:
-				_changes.add(None)
-				_node_parent.remove(node)
-		else:
-			if node is None:
-				node = ET.SubElement(_node_parent, _node_name)
-			new_text = _node_value or None
-			if node.text != new_text:
-				_changes.add(None)
-				node.text = new_text
-			for k, v in attr.items():
-				if v is None or v == '':
-					if k in node.attrib:
-						_changes.add(k)
-						del node.attrib[k]
-				elif node.attrib.get(k) != v:
-					_changes.add(k)
-					node.attrib[k] = v
-		return node
+	update = __update_xml
 
 	# find loader
 	logger.debug('Searching for template: arch=%s domain_type=%s os_type=%s' % (dom_stat.arch, dom_stat.domain_type, dom_stat.os_type))
@@ -978,7 +984,7 @@ def _domain_edit(node, dom_stat, xml):
 			except LookupError, e:
 				domain_os_boot = ET.SubElement(domain_os, 'boot', dev=dev)
 	else:
-		raise NodeError("Unknown os/type='%(type)s'", type=d.os_type)
+		raise NodeError(_("Unknown os/type='%(type)s'"), type=d.os_type)
 	if dom_stat.bootloader:
 		# /domain/bootloader
 		domain_bootloader = update(domain, 'bootloader', dom_stat.bootloader)
@@ -1057,7 +1063,7 @@ def _domain_edit(node, dom_stat, xml):
 		elif disk.type == Disk.TYPE_BLOCK:
 			domain_devices_disk_source = update(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=disk.source)
 		else:
-			raise NodeError("Unknown disk/type='%(type)s'", type=disk.type)
+			raise NodeError(_("Unknown disk/type='%(type)s'"), type=disk.type)
 		# /domain/devices/disk/readonly
 		domain_devices_disk_readonly = domain_devices_disk.find('readonly')
 		if disk.readonly:
@@ -1102,7 +1108,7 @@ def _domain_edit(node, dom_stat, xml):
 		elif interface.type == Interface.TYPE_DIRECT:
 			domain_devices_interface_source = update(domain_devices_interface, 'source', '', _changes=changes, bridge=None, network=None, dev=interface.source)
 		else:
-			raise NodeError("Unknown interface/type='%(type)s'", type=interface.type)
+			raise NodeError(_("Unknown interface/type='%(type)s'"), type=interface.type)
 		# /domain/devices/interface/script @bridge
 		domain_devices_interface_script = update(domain_devices_interface, 'script', None, path=interface.script)
 		# /domain/devices/interface/target @dev
@@ -1425,7 +1431,7 @@ def domain_state(uri, domain, state):
 		raise NodeError(_('Error managing domain "%(domain)s"'), domain=domain)
 	except NetworkError, e:
 		logger.error(e)
-		raise NodeError( _( 'Error managing domain "%(domain)s": %(error)s' ), domain = domain, error = str( e ) )
+		raise NodeError(_('Error managing domain "%(domain)s": %(error)s'), domain=domain, error=str(e))
 	except libvirt.libvirtError, e:
 		logger.error(e)
 		raise NodeError(_('Error managing domain "%(domain)s": %(error)s'), domain=domain, error=e.get_error_message())

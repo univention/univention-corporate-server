@@ -266,12 +266,13 @@ class Client(object):
 		"""
 		return protocol.Request_GROUP_LIST()
 
-	def nodes(self, group, pattern ):
+	def nodes(self, group, pattern='*'):
 		"""
-		%prog nodes <group> <pattern>
+		%prog nodes <group> [pattern]
 
 		Return the list of uris used to specify the virtualization server,
 		which belong to the given <group>.
+		<pattern> is an optional globbing pattern for filtering the host names.
 		Examples:
 			%prog nodes default *
 		"""
@@ -323,9 +324,10 @@ class Client(object):
 
 	def domains( self, uri, pattern = '*' ):
 		"""
-		%prog domains <uri> <pattern>
+		%prog domains <uri> [pattern]
 
 		Return a list of available domains on the given node
+		<pattern> is an optional globbing pattern for filtering the domain names.
 		Examples:
 			%prog domains xen://server.domain.name/ *
 		"""
@@ -562,7 +564,7 @@ class Client(object):
 
 		Trigger an update of the domain specified by its UUID <domain>.
 		Examples:
-			%prog ldap_update 1-2-3-4-5
+			%prog domain_update 1-2-3-4-5
 		"""
 		return protocol.Request_DOMAIN_UPDATE(domain=domain)
 
