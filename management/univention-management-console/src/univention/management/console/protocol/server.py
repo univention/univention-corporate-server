@@ -326,7 +326,7 @@ class Server( signals.Provider ):
 			self.__realsocket = socket.socket( socket.AF_UNIX, socket.SOCK_STREAM )
 		else:
 			CORE.info( 'Using a TCP socket' )
-			self.__realsocket = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
+			self.__realsocket = socket.socket( socket.AF_INET6, socket.SOCK_STREAM )
 
 		self.__realsocket.setsockopt( socket.SOL_SOCKET, socket.SO_REUSEADDR, 1 )
 		self.__realsocket.setblocking( 0 )

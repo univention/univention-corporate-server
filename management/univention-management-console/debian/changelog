@@ -1,3 +1,9 @@
+univention-management-console (4.0.78-1) unstable; urgency=low
+
+  * listen on IPv6 sockets (Bug #24329)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 02 Nov 2011 19:18:11 +0100
+
 univention-management-console (4.0.77-2) unstable; urgency=low
 
   * fix typo in postinst; Bug #24319
