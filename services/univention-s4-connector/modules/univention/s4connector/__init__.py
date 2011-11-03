@@ -190,7 +190,7 @@ class attribute:
 			self.mapping=mapping
 
 class property:
-	def __init__(	self, ucs_default_dn='', con_default_dn='', ucs_module='',  sync_mode='', scope='', con_search_filter='', ignore_filter=None, match_filter=None, ignore_subtree=[],
+	def __init__(	self, ucs_default_dn='', con_default_dn='', ucs_module='', ucs_module_others=[], sync_mode='', scope='', con_search_filter='', ignore_filter=None, match_filter=None, ignore_subtree=[],
 					con_create_objectclass=[], con_create_attributes=[], dn_mapping_function=[], attributes=None, ucs_create_functions=[], post_con_create_functions=[],
 					post_con_modify_functions=[], post_ucs_modify_functions=[], post_attributes=None, mapping_table=None, position_mapping=[], con_sync_function = None, ucs_sync_function = None,
 					identify = None ):
@@ -200,6 +200,11 @@ class property:
 		self.con_default_dn=con_default_dn
 
 		self.ucs_module=ucs_module
+
+		# allow a 1:n mapping, for example a Windows client
+		# could be a computers/windows or a computers/memberserver
+		# object
+		self.ucs_module_others=ucs_module_others
 		self.sync_mode=sync_mode
 
 		self.scope=scope
@@ -509,11 +514,26 @@ class ucs:
 				if self.modules[k].identify(unicode(dn,'utf8'), old):
 					key=k
 					break
+				elif self.modules_others[k]:
+					for m in self.modules_others[k]:
+						if m.identify(unicode(dn,'utf8'), old):
+							key=k
+							break
+				if key:
+					break
 		else:
 			for k in self.property.keys():
 				if self.modules[k].identify(unicode(dn,'utf8'), new):
 					key=k
 					break
+				elif self.modules_others[k]:
+					for m in self.modules_others[k]:
+						if m.identify(unicode(dn,'utf8'), new):
+							key=k
+							break
+				if key:
+					break
+				
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: old: %s" % old)
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new: %s" % new)
 			if old and new:
@@ -651,6 +671,7 @@ class ucs:
 
 		# load UCS Modules
 		self.modules={}
+		self.modules_others={}
 		for key in self.property.keys():
 			if self.property[key].ucs_module:
 				self.modules[key]=univention.admin.modules.get(self.property[key].ucs_module)
@@ -659,6 +680,11 @@ class ucs:
 					self.modules[key].identify = self.property[key].identify
 			else:
 				self.modules[key]=None
+
+			self.modules_others[key]=[]
+			if self.property[key].ucs_module_others:
+				for m in self.property[key].ucs_module_others:
+					self.modules_others[key].append(univention.admin.modules.get(m))
 		
 		# try to resync rejected changes
 		self.resync_rejected_ucs()

@@ -523,6 +523,7 @@ s4_mapping = {
 			ucs_default_dn='cn=computers,@%@ldap/base@%@',
 			con_default_dn='cn=computers,@%@connector/s4/ldap/base@%@',
 			ucs_module='computers/windows',
+			ucs_module_others=['computers/memberserver'],
 
 			sync_mode='@%@connector/s4/mapping/syncmode@%@',
 
@@ -531,7 +532,7 @@ s4_mapping = {
 			con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=4096))',
 
 			# ignore_filter='userAccountControl=4096',
-			match_filter='(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))',
+			match_filter='(|(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))(objectClass=computer)(objectClass=univentionMemberServer))',
 
 			ignore_subtree = global_ignore_subtree,
 			
