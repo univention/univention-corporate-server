@@ -56,7 +56,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 				// check whether 'role' is set and the page should be visible or not
 				var Class = new dojo.getObject(ipath);
-				if (Class.store && dojo.indexOf(Class.store, role) < 0) {
+				if (Class.role && dojo.indexOf(Class.role, role) < 0) {
 					return true;
 				}
 
@@ -217,8 +217,12 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			}, this);
 		}, this);
 
-		// only submit data to server if there are changes
-		if (!nchanges) {
+		// initiate some local check variables
+		var joined = this._orgValues['joined'];
+		var role = this._orgValues['server/role'];
+
+		// only submit data to server if there are changes and the system is joined
+		if (!nchanges && (joined || role == 'basesystem')) {
 			umc.dialog.alert(this._('No changes have been made.'));
 			return;
 		}
@@ -283,40 +287,140 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			});
 
 			// construct message for confirmation
-			var confirmMessage = '<p>' + this._('Changes to system setting may have a severe effect on your system.');
-			if (this._orgValues['server/role'] != 'domaincontroller_master') {
-				confirmMessage += ' ' + this._('Note that some changes may require a new join into the UCS domain.');
-			}
-			confirmMessage += '</p><p>' + this._('The following changes will be applied to the system:') + '</p><ul style="max-height:200px; overflow:auto;">';
-			
-			// collect all summaries to be displayed
+			var confirmMessage = '</p><p>' + this._('The following changes will be applied to the system:') + '</p><ul style="max-height:200px; overflow:auto;">';
 			dojo.forEach(summaries, function(idesc) {
 				if (idesc.showConfirm) {
 					confirmMessage += '<li>' + idesc.description + ': ' + idesc.values + '</li>';
 				}
 			});
-			confirmMessage += '</ul><p>' + this._('Please confirm to apply these changes to the system.') + '</p>';
+			confirmMessage += '</ul><p>' + this._('Please confirm to apply these changes to the system. This may take some time.') + '</p>';
 
-			umc.dialog.confirm(confirmMessage, [{
-				'default': true,
-				label: this._('Cancel'),
-				callback: dojo.hitch(this, function() {
+			// function to confirm changes
+			var _confirm = dojo.hitch(this, function() {
+				return umc.dialog.confirm(confirmMessage, [{
+					name: 'cancel',
+					'default': true,
+					label: this._('Cancel')
+				}, {
+					name: 'apply',
+					label: this._('Apply changes')
+				}]).then(dojo.hitch(this, function(response) {
+					if ('apply' != response) {
+						// throw new error to indicate that action has been canceled
+						throw new Error('cancel');
+					}
+				}), dojo.hitch(this, function() {
+					// error callback... action has been canceld
 					this.standby(false);
-				})
-			}, {
-				label: this._('Apply changes'),
-				callback: dojo.hitch(this, function() {
-					this.standby(true);
-					this.umcpCommand('setup/save', { values: values }).then(dojo.hitch(this, function() {
-						this.load();
-					}), dojo.hitch(this, function() {
-						this.standby(false);
-					}));
-				})
-			}]);
+				}));
+			});
+
+			// function to ask the user for DC account data
+			var _password = dojo.hitch(this, function() {
+				var deferred = new dojo.Deferred();
+				var dialog = null;
+				var form = new umc.widgets.Form({
+					widgets: [{
+						name: 'text',
+						type: 'Text',
+						content: this._('The system needs to be joined into the domain. Please enter username and password of a domain administrator account.')
+					}, {
+						name: 'TextBox',
+						type: 'username'
+					}, {
+						name: 'password',
+						type: 'PasswordBox'
+					}],
+					buttons: [{
+						name: 'submit',
+						label: this._('Join'),
+						callback: function() {
+							deferred.resolve(form.getWidget('username').get('value'), form.getWidget('password').get('value'));
+						}
+					}, {
+						name: 'cancel',
+						label: this._('Cancel'),
+						callback: function() {
+							dialog.hide();
+						}
+					}],
+					layout: [ 'text', 'username', 'password' ]
+				});
+				dialog = new dijit.Dialog({
+					title: this._('Account data'),
+					content: form,
+					onHide: function() {
+						dialog.destroyRecursive();
+						if (deferred.fired < 0) {
+							// user clicked the close button
+							deferred.reject();
+						}
+					}
+				});
+				deferred.addErrback(dojo.hitch(this, function() {
+					this.standby(false);
+				}));
+				return deferred;
+			});
+
+			// function to save data
+			var _save = dojo.hitch(this, function(username, password) {
+				// send save command to server
+				this.standby(true);
+				return this.umcpCommand('setup/save', { 
+					values: values,
+					username: username || null,
+					password: password || null
+				}).then(dojo.hitch(this, function() {
+					this.load();
+					if (joined || role == 'basesystem') {
+						// normal setup mode, notify that the changes have been applied
+						umc.dialog.notify(this._('The changes have been successfully applied.'));
+					}
+				}), dojo.hitch(this, function() {
+					this.standby(false);
+				}));
+			});
+
+			// function to shutdown the browser
+			var _shutdown = dojo.hitch(this, function() {
+				umc.dialog.confirm(this._('All changes have been successfully applied. Please confirm to continue with the boot process.'), [{
+					label: this._('Continue')
+				}]).then(dojo.hitch(this, function() {
+					this.umcpCommand('setup/shutdownbrowser');
+				}));
+			});
+
+			// show the correct dialogs
+			if (joined || role == 'basesystem') {
+				// normal setup scenario, confirm changes and then save
+				_confirm().then(dojo.hitch(this, function() {
+					_save();
+				}));
+			}
+			else if (role != 'domaincontroller_master') {
+				// unjoined system scenario and not master
+				// we need a proper DC administrator account
+				_confirm().then(function() {
+					_password().then(function(username, password) {
+						_save(username, password).then(function() {
+							_shutdown();
+						});
+					});
+				});
+			}
+			else {
+				// unjoined master
+				_confirm().then(function() {
+					_save().then(function() {
+						_shutdown();
+					});
+				});
+			}
 		}), dojo.hitch(this, function() {
 			this.standby(false);
 		}));
 	}
+
 });
 

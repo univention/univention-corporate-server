@@ -47,6 +47,8 @@ done
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
+info_header "$0"
+
 eval "$(univention-config-registry shell)"
 
 # SSL certificate can only be created on a DC master

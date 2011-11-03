@@ -54,8 +54,10 @@ ucr.load()
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
 PATH_SETUP_SCRIPTS = '/usr/lib/univention-system-setup/scripts'
+PATH_JOIN_SCRIPT = '/usr/lib/univention-system-setup/scripts/setup-join.sh'
 PATH_PROFILE = '/var/cache/univention-system-setup/profile'
 LOG_FILE = '/var/log/univention/setup.log'
+PATH_BROWSER_PID = '/var/cache/univention-system-setup/browser.pid'
 
 # list of all needed UCR variables
 UCR_VARIABLES = [
@@ -100,7 +102,10 @@ def load_values():
 		if fnmatch.fnmatch(k, 'interfaces/eth*/ipv6/*'):
 			values[k] = v
 
-	#other values
+	# see whether the system has been joined or not
+	values['joined'] = os.path.exists('/var/univention-join/joined')
+
+	# root password
 	values['root_password'] = ''
 
 	# get timezone
@@ -168,6 +173,11 @@ def write_profile(values):
 	cache_file.close()
 
 def run_scripts():
+	# write header before executing scripts
+	f = open(LOG_FILE, 'a')
+	f.write('\n\n=== RUNNING SETUP SCRIPTS (%s) ===\n\n' % timestamp())
+	f.close();
+
 	for root, dirs, files in os.walk(PATH_SETUP_SCRIPTS): 
 		# ignore the root
 		if root == PATH_SETUP_SCRIPTS:
@@ -179,13 +189,16 @@ def run_scripts():
 			# get the full script path
 			ipath = os.path.join(root, ifile)
 
-			# write header before executing script file
-			f = open(LOG_FILE, 'a')
-			f.write('### %s (%s) ###\n' % (ipath[len(PATH_SETUP_SCRIPTS)+1:], timestamp()))
-			f.close();
-
 			# launch script
-			os.system('%s >>/var/log/univention/setup.log 2>&1' % ipath)
+			os.system('%s >> %s 2>&1' % (ipath, LOG_FILE))
+
+def run_joinscript():
+	# write header before executing join script
+	f = open(LOG_FILE, 'a')
+	f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
+	f.close();
+
+	os.system('%s >> %s 2>&1' % (PATH_JOIN_SCRIPT, LOG_FILE))
 
 def detect_interfaces():
 	"""

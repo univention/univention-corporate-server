@@ -32,10 +32,18 @@
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
+info_header "$0"
+
 is_variable_set "ldap/base"
 
 if [ $? = 0 ]; then
 	exit 0
+fi
+
+# LDAP basis can only be changed via system-setup scripts on a basesystem
+eval "$(univention-config-registry shell)"
+if [ "$server_role" != "basesystem" ]; then 
+	exit 1
 fi
 
 if [ "$check_ldap_access" = "1" ]; then
@@ -52,8 +60,6 @@ fi
 if [ -z "$new_ldap_base" ]; then
 	exit 0
 fi
-
-eval "$(univention-config-registry shell)"
 
 oldbn=$(univention-config-registry get ldap/base)
 

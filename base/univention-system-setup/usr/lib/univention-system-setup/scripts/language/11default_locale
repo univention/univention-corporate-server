@@ -32,6 +32,7 @@
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
+info_header "$0"
 
 is_variable_set "locale/default"
 if [ $? = 0 ]; then

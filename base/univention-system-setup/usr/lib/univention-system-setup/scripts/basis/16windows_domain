@@ -32,10 +32,18 @@
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
+info_header "$0"
+
 is_variable_set "windows/domain"
 
 if [ $? = 0 ]; then
 	exit 0
+fi
+
+# windows domain can only be changed via system-setup scripts on a basesystem
+eval "$(univention-config-registry shell)"
+if [ "$server_role" != "basesystem" ]; then 
+	exit 1
 fi
 
 if [ "$check_ldap_access" = "1" ]; then
@@ -61,8 +69,6 @@ if [ -d "/var/lib/univention-system-setup/windowsdomain.pre" ]; then
 fi
 
 service_stop samba
-
-eval "$(univention-config-registry shell)"
 
 if [ "$ldap_available" = 1 ]; then
 	if [ "$server_role" = "domaincontroller_master" ]; then

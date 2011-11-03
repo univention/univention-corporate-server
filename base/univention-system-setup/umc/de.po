@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Thu, 29 Sep 2011 21:04:19 +0200\n"
+"POT-Creation-Date: Wed, 02 Nov 2011 12:43:35 +0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,8 +12,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "Basic settings"
+msgstr "Basis-Einstellungen"
+
+msgid "Configuration of the basic system settings"
+msgstr "Konfiguration der grundlegenden Systemeinstellungen"
+
 msgid "System Setup"
 msgstr ""
+
+msgid "System Setup Wizard"
+msgstr ""
+
+msgid "Univention System Setup Wizard for configuring the server"
+msgstr "Univention System-Setup-Wizard zur Konfiguration des Servers"
 
 msgid "Univention System Setup for configuring the server"
 msgstr "Univention System-Setup zur Konfiguration des Servers"

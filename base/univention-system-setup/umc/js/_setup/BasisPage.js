@@ -27,8 +27,8 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
-		this.title = this._('Server');
-		this.headerText = this._('Server settings');
+		this.title = this._('Basis');
+		this.headerText = this._('Basic settings');
 	},
 
 	buildRendering: function() {
@@ -91,6 +91,21 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 		var vals = dojo.mixin({}, _vals);
 		vals.fqdn = vals.hostname + '.' + vals.domainname;
 		vals.root_password = '';
+
+		// disable certain widgets depending on the role and the join status
+		var role = _vals['server/role'];
+		var joined = _vals['joined'];
+		if (role == 'basesystem' || !joined) {
+			this._form.getWidget('fqdn').set('disabled', false);
+			this._form.getWidget('ldap/base').set('disabled', false);
+			this._form.getWidget('windows/domain').set('disabled', false);
+		}
+		else {
+			this._form.getWidget('fqdn').set('disabled', true);
+			this._form.getWidget('ldap/base').set('disabled', true);
+			this._form.getWidget('windows/domain').set('disabled', true);
+		}
+
 		this._form.setFormValues(vals);
 	},
 

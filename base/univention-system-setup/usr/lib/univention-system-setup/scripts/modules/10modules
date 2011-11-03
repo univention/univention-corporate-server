@@ -32,6 +32,7 @@
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
+info_header "$0"
 
 modules=`get_profile_var modules`
 

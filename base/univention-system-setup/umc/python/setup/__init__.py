@@ -41,6 +41,7 @@ import util
 import os
 import copy
 import univention.config_registry
+import psutil
 
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
@@ -67,13 +68,43 @@ class Instance(umcm.Base):
 			return
 
 		# write the profile file and run setup scripts
-		oldValues = util.load_values()
-		util.pre_save(values, oldValues)
+		orgValues = util.load_values()
+		util.pre_save(values, orgValues)
 		util.write_profile(values)
-		#util.run_scripts()
+		
+		if orgValues['server/role'] == 'basesystem' or os.path.exists('/var/univention-join/joined'):
+			# on a joined system or on a basesystem, we can run the join scripts
+			MODULE.info('runnning system setup scripts')
+			util.run_scripts()
+		else:
+			# unjoined system and not a basesystem -> run the join script
+			MODULE.info('runnning system setup join script')
+			util.run_joinscript()
 
 		# finish request
 		self.finished(request.id, True)
+
+	def shutdownbrowser(self, request):
+		success = False
+		if self._username == '__systemsetup__':
+			# appliance mode (system setup during the boot), we need to kill firefox
+			try:
+				fpid = open(util.PATH_BROWSER_PID)
+				strpid = fpid.readline().strip()
+				pid = int(strpid)
+				p = psutil.Process(pid)
+				success = True
+			except IOError:
+				MODULE.error('cannot open browser PID file: %s' % util.PATH_BROWSER_PID)
+			except ValueError:
+				MODULE.error('browser PID is not a number: "%s"' % strpid)
+			except psutil.NoSuchProcess:
+				MODULE.error('cannot kill process with PID: %s' % pid)
+
+		if not success:
+			self.finished(request.id, False, message=_('Failed to shut down the web browser.'))
+		else:
+			self.finished(request.id, True)
 
 	def validate(self, request):
 		'''Validate the specified values given in the dict as option named "values".
@@ -226,19 +257,22 @@ class Instance(umcm.Base):
 		isSetIpv6 = False
 		ipv6HasAddress = False
 		hasIpv6DefaultDevices = True
-		devIpv6HasDefaultID = dict([(idev['name'], False) for idev in util.detect_interfaces()])
 		ipv6HasDynamic = False
 		
 		regIpv6Address = re.compile(r'^interfaces/(eth[0-9]+)/ipv6/(.*)/address$')
 		regIpv6Dynamic = re.compile(r'^interfaces/(eth[0-9]+)/ipv6/acceptRA$')
 		
 		tmpUCR = univention.config_registry.ConfigRegistry()
-		
+		devIpv6HasDefaultID = {}
 		for ikey, ival in allValues.iteritems():
 			m = regIpv6Address.match(ikey) 
 			if m:
 				idev = m.groups()[0]
 				iid = m.groups()[1]
+
+				# see whether the device is in the dict
+				if idev not in devIpv6HasDefaultID:
+					devIpv6HasDefaultID[idev] = False
 
 				# identifier 'default'
 				devIpv6HasDefaultID[idev] |= (iid == 'default')
