@@ -257,7 +257,7 @@ if [ "$samba4_role" = 'DC' ]; then
 	if [ $? != 1 ]; then
 		zone="$(udm dns/forward_zone list "$@" --filter zoneName="$domainname" | sed -ne 's|^DN: ||p')"
 		if [ -n "$zone" ]; then
-			IPs=$(univention-ldapsearch "(&(relativeDomainname=$hostname)(zoneName=$domainname))" aRecord | sed -ne 's|^aRecord: ||p')
+			IPs=$(univention-ldapsearch "(&(relativeDomainname=$hostname)(zoneName=$domainname))" aRecord aAAARecord| sed -ne 's|^aRecord: ||p;s|^aAAARecord: ||p')
 			for ip in $IPs; do
 				udm dns/forward_zone modify "$@" --ignore_exists --dn "$zone" --append a="$ip"
 			done

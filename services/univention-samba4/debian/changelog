@@ -1,3 +1,9 @@
+univention-samba4 (1.0.85-1) unstable; urgency=low
+
+  * Register IPv4 and IPv6 addresses for the forward zone (Bug #24348)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Nov 2011 08:03:30 +0100
+
 univention-samba4 (1.0.84-1) unstable; urgency=low
 
   * Change the dns/backend to samba4 only whether a S4 Connector is
