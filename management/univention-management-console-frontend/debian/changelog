@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.170-1) unstable; urgency=low
+
+  * fixed jslint warnings
+  * let umc.dialog.confirm() return a dojo.Deferred
+  (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 03 Nov 2011 15:18:02 +0100
+
 univention-management-console-frontend (1.0.169-1) unstable; urgency=low
 
   * move license code to UDM module; Bug #23655

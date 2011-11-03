@@ -288,7 +288,7 @@ dojo.declare("umc.widgets.MultiInput", [
 					disabled: this.disabled,
 					name: iname,
 					value: '',
-					dynamicValues: dojo.partial(iwidget.dynamicValues, iname),
+					dynamicValues: dojo.partial(iwidget.dynamicValues, iname)
 				});
 				widgetConfs.push(iconf);
 
@@ -328,7 +328,7 @@ dojo.declare("umc.widgets.MultiInput", [
 				var iwidget = widgets[iname];
 				var label = irow !== 0 ? '' : null;
 				if (umc.tools.inheritsFrom(iwidget, 'umc.widgets.Button')) {
-					label = irow !== 0 ? '' : '&nbsp;'
+					label = irow !== 0 ? '' : '&nbsp;';
 				}
 				rowContainer.addChild(new umc.widgets.LabelPane({
 					disabled: this.disabled,

@@ -116,6 +116,8 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		//		The user needs to confirm the dialog by clicking on one of
 		//		multiple defined buttons (=choice). When any of the buttons
 		//		is pressed, the dialog is automatically closed.
+		//		The function returns a dojo.Deferred object. Registered callback
+		//		methods are called with the corresponding choice name as parameter.
 		// message:
 		//		The message that is displayed in the dialog, can also be a _Widget.
 		// options:
@@ -188,12 +190,16 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		});
 
 		// connect to 'onConfirm' event to close the dialog in any case
+		var deferred = new dojo.Deferred();
 		dojo.connect(confirmDialog, 'onConfirm', function(response) {
 			confirmDialog.close();
+			deferred.resolve(response);
 		});
 
 		// show the confirmation dialog
 		confirmDialog.show();
+
+		return deferred;
 	},
 
 	templateDialog: function( /*String*/ templateModule, /*String*/ templateFile, /*String*/ keys, /* String? */ title, /* String? */ buttonLabel ) {
