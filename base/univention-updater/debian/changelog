@@ -1,3 +1,10 @@
+univention-updater (7.0.83-1) unstable; urgency=low
+
+  * Rename univention-security-update to univention-errata-update in
+    univention-policy-maintenance (Bug #24369)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Nov 2011 15:35:23 +0100
+
 univention-updater (7.0.82-1) unstable; urgency=low
 
   * redirect output of univention-object-type-migrate to updater.log (Bug #23167) 
