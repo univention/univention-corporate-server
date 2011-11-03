@@ -35,8 +35,8 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// generate border layout and add it to the module
 		this._page = new umc.widgets.Page({
-			headerText: this._('Univention Config Registry'),
-			helpText: this._('The Univention Config Registry (UCR) is the central tool that allows to access and edit system-wide properties in a unified manner. These settings can be settings such as a static IP address, DNS forwarders, proxies, hostname etc. When changes are made to UCR variables, depending system configuration files are updated.')
+			headerText: this._('Univention Config Registry')
+			//helpText: this._('The Univention Config Registry (UCR) is the central tool that allows to access and edit system-wide properties in a unified manner. These settings can be settings such as a static IP address, DNS forwarders, proxies, hostname etc. When changes are made to UCR variables, depending system configuration files are updated.')
 		});
 		this.addChild(this._page);
 
@@ -135,7 +135,8 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			staticValues: [
 				{ id: 'all', label: this._('All') }
 			],
-			dynamicValues: 'ucr/categories'
+			dynamicValues: 'ucr/categories',
+			size: 'TwoThirds'
 		}, {
 			type: 'ComboBox',
 			name: 'key',
@@ -147,25 +148,35 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				{ id: 'key', label: this._( 'Variable' ) },
 				{ id: 'value', label: this._( 'Value' ) },
 				{ id: 'description', label: this._( 'Description' ) }
-			]
+			],
+			size: 'TwoThirds'
 		}, {
 			type: 'TextBox',
 			name: 'filter',
 			value: '*',
 			description: this._( 'Keyword that should be searched for in the selected attribute' ),
-			label: this._( 'Keyword' )
+			label: this._( 'Keyword' ),
+			size: 'TwoThirds'
 		}];
 
 		// generate the search widget
 		this._searchWidget = new umc.widgets.SearchForm({
 			region: 'top',
 			widgets: widgets,
-			layout: [[ 'category', 'key' ], [ 'filter', 'submit', 'reset' ]],
+			layout: [[ 'category', 'key', 'filter', 'submit' ]],
 			onSearch: dojo.hitch(this._grid, 'filter')
 		});
 		titlePane.addChild(this._searchWidget);
 
 		this._page.startup();
+
+		// make sure that the input field is focused
+		this.connect(this, 'onShow', function() {
+			this._searchWidget.getWidget('filter').focus();
+		});
+		this.connect(this._grid, 'onFilterDone', function() {
+			this._searchWidget.getWidget('filter').focus();
+		});
 
 		//
 		// create dialog for UCR variable details
