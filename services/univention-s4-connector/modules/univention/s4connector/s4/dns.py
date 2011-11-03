@@ -135,9 +135,17 @@ def __create_s4_dns_node(s4connector, dnsNodeDn, relativeDomainNames, dnsRecords
 '''
 def __pack_aRecord(object, dnsRecords):
 	# add aRecords
+
+	#IPv4
 	for a in object['attributes'].get('aRecord', []):
 		a=univention.s4connector.s4.compatible_modstring(a)
 		a_record=ARecord(a)
+		dnsRecords.append(ndr_pack(a_record))
+
+	#IPv6
+	for a in object['attributes'].get('aAAARecord', []):
+		a=univention.s4connector.s4.compatible_modstring(a)
+		a_record=AAAARecord(a)
 		dnsRecords.append(ndr_pack(a_record))
 
 def __unpack_aRecord(object):

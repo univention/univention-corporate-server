@@ -585,7 +585,14 @@ class ucs:
 							return True
 					except (ldap.SERVER_DOWN, SystemExit):
 						raise
-					except: # FIXME: which exception is to be caught?
+					except ldap.NO_SUCH_OBJECT:
+						self._save_rejected_ucs(filename, dn)
+						if traceback_level == ud.INFO:
+							self._debug_traceback(traceback_level, "The sync failed. This could be because the parent object does not exist. This object will be synced in next sync step.")
+						else:
+							self._debug_traceback(traceback_level, "sync failed, saved as rejected")
+						return False
+					except:
 						self._save_rejected_ucs(filename, dn)
 						self._debug_traceback(traceback_level, "sync failed, saved as rejected")
 						return False
@@ -767,18 +774,13 @@ class ucs:
 							sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
 						except (ldap.SERVER_DOWN, SystemExit):
 							raise
-						except: # FIXME: which exception is to be caught?
+						except:
 							self._save_rejected_ucs(filename, 'unknown')
 							# We may dropped the parent object, so don't show this warning
 							self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)					
 						if sync_successfull:
 							os.remove(os.path.join(self.listener_dir,listener_file))
 							change_counter += 1
-						elif traceback_level == ud.INFO:
-							try:
-								ud.debug(ud.LDAP, ud.PROCESS, 'Saved DN %s as rejected. Will be synced in next sync step.' % (dn))
-							except:
-								ud.debug(ud.LDAP, ud.PROCESS, 'Saved as rejected. Will be synced in next sync step.' )
 					else:
 						os.remove(os.path.join(filename))
 						traceback_level = ud.INFO
