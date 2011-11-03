@@ -3,7 +3,7 @@
 # Univention System Info
 #  collects informations about the hardware
 #
-# Copyright 2009-2010 Univention GmbH
+# Copyright 2009-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,17 +41,17 @@ ticket=
 umc=
 
 collect_from_procfile() {
-	if [ -e /proc/$1 ]
+	if [ -e "/proc/$1" ]
 		then
 		[ -z "$umc" ] && echo -n ": $1"
-		filename=`echo $1 | sed -e 's|/|_|g'`
+		filename=$(echo "$1" | sed -e 's|/|_|g')
 		cat "/proc/$1" > "$TEMPDIR/proc/$filename"
 	fi
 }
 
 collect_from_program() {
-	cmd=`echo $1 | sed -e 's/__/ /g'`
-	tmpfile=`echo $1 | sed -e 's/__.*//'`
+	cmd=$(echo "$1" | sed -e 's/__/ /g')
+	tmpfile=$(echo "$1" | sed -e 's/__.*//')
 	$cmd > "$TEMPDIR/$tmpfile"
 	[ -z "$umc" ] && echo -n ": $cmd"
 }
@@ -97,7 +97,7 @@ display_help() {
 
 display_header() {
 	echo "univention-sysinfo: collect information about your system"
-	echo "copyright (c) 2001-2009 Univention GmbH, Germany"
+	echo "Copyright 2009-2011 Univention GmbH, Germany"
 	echo ""
 }
 
@@ -148,7 +148,7 @@ else
 	[ -z "$umc" ] && echo "warning: PCI ID list couldn't be updated"
 fi
 
-mkdir $TEMPDIR/proc > /dev/null 2>&1
+mkdir "$TEMPDIR/proc" > /dev/null 2>&1
 if [ -n "$umc" ]; then
 	echo "Temp: $TEMPDIR"
 else
@@ -157,22 +157,22 @@ fi
 
 [ -z "$umc" ] && echo -n " /proc ... "
 for proc in $PROCFILES; do
-  collect_from_procfile $proc
+  collect_from_procfile "$proc"
 done
 if [ -z "$umc" ]; then
 	echo "done"
 
 	echo -n " program ... "
 fi
-for prog in $PROGRAMS; do	
-  collect_from_program $prog
+for prog in $PROGRAMS; do
+  collect_from_program "$prog"
 done
 [ -z "$umc" ] && echo ""
 
-echo " Manufacturer: "$manufacturer > $TEMPDIR/info
-echo " Model       : "$type >> $TEMPDIR/info
-echo " Comment     : "$comment >> $TEMPDIR/info
-echo " Ticket No   : "$support >> $TEMPDIR/info
+echo " Manufacturer: "$manufacturer > "$TEMPDIR/info"
+echo " Model       : "$type >> "$TEMPDIR/info"
+echo " Comment     : "$comment >> "$TEMPDIR/info"
+echo " Ticket No   : "$support >> "$TEMPDIR/info"
 
 # find unique ID for the computer
 uuid=$(dmidecode -s system-uuid)
@@ -187,26 +187,26 @@ if [ -z "$uuid" ]; then
 fi
 
 cd /tmp
-mv $TEMPDIR $uuid
+mv "$TEMPDIR" "$uuid"
 if [ -n "$file" ]; then
-	tar czf $file $uuid > /dev/null 2>&1
+	tar czf "$file" "$uuid" > /dev/null 2>&1
 	archive=$file
 else
-	tar czf $uuid.tar.gz $uuid > /dev/null 2>&1
+	tar czf "$uuid.tar.gz" "$uuid" > /dev/null 2>&1
 	archive=/tmp/$uuid.tar.gz
 fi
-rm -rf $uuid
+rm -rf "$uuid"
 
 if [ -z "$umc" ]; then
 	echo ""
 	echo "Collection of system-information finished."
 	echo "Archive: $archive"
 else
-	mv $archive /var/www/univention-management-console/system-info/
-	echo "archive:"$(basename $archive)
-	echo "cpu:"$(grep -m 1 "^model name" /proc/cpuinfo | sed 's/model name[ \t] *: //')
-	echo "num_cpu:"$(grep -c "^processor" /proc/cpuinfo)
-	echo "mem:"$(grep "^MemTotal:" /proc/meminfo | sed 's/MemTotal:[ \t]*//')
-	echo "net_dev:"$(lspci | egrep " (Network|Ethernet) controller: " | sed 's/.* \(Network\|Ethernet\) controller: //')
-	echo "gfx_dev:"$(lspci | grep " VGA compatible controller: " | sed 's/.* VGA compatible controller: //')
+	mv "$archive" /var/www/univention-management-console/system-info/
+	echo "archive:$(basename "$archive")"
+	echo "cpu:$(grep -m 1 "^model name" /proc/cpuinfo | sed 's/model name[ \t] *: //')"
+	echo "num_cpu:$(grep -c "^processor" /proc/cpuinfo)"
+	echo "mem:$(grep "^MemTotal:" /proc/meminfo | sed 's/MemTotal:[ \t]*//')"
+	echo "net_dev:$(lspci | egrep " (Network|Ethernet) controller: " | sed 's/.* \(Network\|Ethernet\) controller: //')"
+	echo "gfx_dev:$(lspci | grep " VGA compatible controller: " | sed 's/.* VGA compatible controller: //')"
 fi

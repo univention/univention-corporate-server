@@ -1,3 +1,12 @@
+univention-system-info (2.0.0-1) unstable; urgency=low
+
+  * update to UCS 3.0 policies (Bug #24356)
+  * remove old UMC module
+  * fork off internal part
+  * fix quoting errors
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 03 Nov 2011 14:03:09 +0100
+
 univention-system-info (1.0.3-1) unstable; urgency=low
 
   * added -vnn option for lspci (Bug #18352)

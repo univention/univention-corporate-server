@@ -1,4 +1,4 @@
-Copyright 2002-2010 Univention GmbH
+Copyright 2002-2011 Univention GmbH
 
 http://www.univention.de/
 
@@ -25,10 +25,3 @@ You should have received a copy of the GNU Affero General Public
 License with the Debian GNU/Linux or Univention distribution in file
 /usr/share/common-licenses/AGPL-3; if not, see
 <http://www.gnu.org/licenses/>.
-
-modules/univention/management/console/handlers/sysinfo/upload.py:
- License: LGPL
- Copyright (C) 2004,2005,2006,2008,2009 Fabien SEISEN
- you can contact me at: <fabien@seisen.org>
- http://fabien.seisen.org/python/
-

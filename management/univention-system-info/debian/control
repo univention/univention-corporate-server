@@ -2,39 +2,14 @@ Source: univention-system-info
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, libunivention-debug-dev, python2.4, python-all-dev, python-central, univention-config-dev
-Standards-Version: 3.5.2
-XS-Python-Version: 2.4
+Build-Depends: debhelper (>= 7.0.50~), ucslint
+Standards-Version: 3.8.2
 
 Package: univention-system-info
 Architecture: all
 Depends: pciutils, module-init-tools, iproute, dmidecode
-Description: UCS - base configuration
- This package contains the base configuration for UCS.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-management-console-system-info
-Architecture: all
-Depends: univention-system-info
-XB-Python-Version: 2.4
-Description: Provides a UMC module to collect system information
- The UMC module collects system information und distributs the
- information to Univention.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-system-info-upload
-Architecture: all
-Depends: univention-apache, libapache2-mod-python
-Description: Provides a python CGI script to upload files
- The CGI script stores files received via HTTP POST
+Description: UCS - collect system information
+ This package contains a skcript to collect system information
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
