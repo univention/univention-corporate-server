@@ -161,6 +161,45 @@ update-rc.d -f sysklogd remove 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
 # create /etc/python2.6/sitecustomize.py
 univention-config-registry commit /etc/python2.6/sitecustomize.py >>"$UPDATER_LOG" 2>&1
 
+# restore menu.lst: for grub1 chainload into grub2 (no more required after UCS 3.0-0 update)
+if [ -e /boot/grub/menu.lst.ucs3.0-0 ]; then
+	cp /boot/grub/menu.lst.ucs3.0-0 /boot/grub/menu.lst
+fi
+# end restore menu.lst
+
+# UCS 3.0 add univentionObjectType 
+if [ "$server_role" = "domaincontroller_master" ]; then
+
+	omscript="/usr/share/univention-directory-manager-tools/univention-object-type-migrate"
+
+	if [ ! "$update_objecttype_check" = "no" -a ! "$update_objecttype_check" = "false" -a ! "$update_objecttype_check" = "1" ]; then
+		dcs=$(univention-ldapsearch  -x objectClass=univentionDomainController -LLL dn | grep ^dn:| wc -l)
+		omlog="/var/log/univention/univention-object-type-migrate.log"
+		if [ -n "$dcs" -a "$dcs" -eq 1 ]; then
+			# only one dc -> update univentionObjectType
+			echo
+			echo -n "updating univentionObjectType ... "
+			$omscript -a -v 1>>"$omlog" 2>>"$omlog"
+			echo "done"
+			echo
+		else
+			# multiple dc's -> print a message 
+			echo 
+			echo "To increase the performance of the Univention Director Manager (UDM) the"
+			echo "internal storage of the UDM objects was adapted. To update existing objects,"
+			echo "the script \"$(basename $omscript)\" can be used. This script changes"
+			echo "all the objects in the LDAP directory and therefore must be called manually:"
+			echo
+			echo "-> $omscript -a -v"
+			echo 
+			echo "Additional information can be found in the release notes."
+			echo
+			
+		fi
+	fi
+fi
+# univentionObjectType end
+
 # executes custom postup script (always required)
 if [ ! -z "$update_custom_postup" ]; then
 	if [ -f "$update_custom_postup" ]; then
@@ -187,12 +226,6 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 		fi
 	fi
 fi
-
-# restore menu.lst: for grub1 chainload into grub2 (no more required after UCS 3.0-0 update)
-if [ -e /boot/grub/menu.lst.ucs3.0-0 ]; then
-	cp /boot/grub/menu.lst.ucs3.0-0 /boot/grub/menu.lst
-fi
-# end restore menu.lst
 
 # For UCS 3.0 a reboot is required
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
