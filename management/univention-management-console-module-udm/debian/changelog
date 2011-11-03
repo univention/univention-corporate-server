@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.221-1) unstable; urgency=low
+
+  * added putting focus to TextBox after submitting the search (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 03 Nov 2011 23:18:13 +0100
+
 univention-management-console-module-udm (1.0.220-1) unstable; urgency=low
 
   * add missing file tools.py; Bug #23655

@@ -163,13 +163,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		this._finishedDeferred.then(dojo.hitch(this, function() {
 			// finish standby animation and focus on input widget
 			this.standby(false);
-			this._searchForm.getWidget('objectPropertyValue').focus();
-			
-			// register to onShow events in order on focus to the input widget
-			// when the tab is changed
-			this.connect(this, 'onShow', function() {
-				this._searchForm.getWidget('objectPropertyValue').focus();
-			});
+			this._searchForm.getWidget('objectPropertyValue').focus();	
 		}));
 
 		// get the correct entry from the lists above
@@ -622,6 +616,16 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		this._searchPage.startup();
 
+		// register to onShow as well as onFilterDone events in order on focus to the 
+		// input widget when the tab is changed
+		this.connect(this, 'onShow', function() {
+			this._searchForm.getWidget('objectPropertyValue').focus();
+		});
+		this.connect(this._grid, 'onFilterDone', function() {
+			this._searchForm.getWidget('objectPropertyValue').focus();
+		});
+
+		// register event to update hiding/showing of form fields
 		var objTypeWidget = this._searchForm._widgets.objectType;
 		this.connect(objTypeWidget, 'onValuesLoaded', '_updateSearch');
 
