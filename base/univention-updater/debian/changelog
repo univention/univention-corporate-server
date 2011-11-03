@@ -1,3 +1,9 @@
+univention-updater (7.0.80-2) unstable; urgency=low
+
+  * fixed univention-object-type-migrate message (Bug #23167) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 Nov 2011 11:06:47 +0100
+
 univention-updater (7.0.80-1) unstable; urgency=low
 
   * added univention-object-type-migrate check in postup.sh (Bug #23167) 

@@ -188,7 +188,8 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			echo "To increase the performance of the Univention Director Manager (UDM) the"
 			echo "internal storage of the UDM objects was adapted. To update existing objects,"
 			echo "the script \"$(basename $omscript)\" can be used. This script changes"
-			echo "all the objects in the LDAP directory and therefore must be called manually:"
+			echo "all the objects in the LDAP directory and therefore must be called manually"
+			echo "on the Domain Controller Master:"
 			echo
 			echo "-> $omscript -a -v"
 			echo 
