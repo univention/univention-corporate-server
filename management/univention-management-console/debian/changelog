@@ -1,3 +1,9 @@
+univention-management-console (4.0.80-1) unstable; urgency=low
+
+  * fix build problems; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 03 Nov 2011 16:39:30 +0100
+
 univention-management-console (4.0.79-1) unstable; urgency=low
 
   * dh-umc-module-install: install html files in javascript directory; Bug #23655
