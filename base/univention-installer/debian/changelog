@@ -1,3 +1,9 @@
+univention-installer (7.0.134-1) unstable; urgency=low
+
+  * raise warning if IPv6 addresses are not global or unique local (Bug #24363)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 03 Nov 2011 13:27:56 +0100
+
 univention-installer (7.0.133-2) unstable; urgency=low
 
   * fixed bug in 75_join.sh (Bug #24270)

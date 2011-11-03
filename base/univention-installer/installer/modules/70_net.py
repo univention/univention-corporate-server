@@ -91,6 +91,7 @@ class object(content):
 		self.interfaces = []
 		self.dummy_interface = False
 		self.ask_forwarder = True
+		self.warning_shown_for_ipv6addr = []  # list of IPv6 addresses
 
 		# boolean: True, if edition "oxae" is specified
 		self.is_ox = 'oxae' in self.cmdline.get('edition',[])
@@ -810,6 +811,12 @@ class object(content):
 				# at least acceptra or valid IPv6 has to be set
 				if not(acceptra or (addr and prefix)):
 					return _('Neither SLAAC is activated nor an IPv6 address with prefix has been entered for interface "%s".') % name
+				if addr and prefix:
+					if ipaddr.IPv6Address(addr) not in ipaddr.IPv6Network('2000::/3') and \
+					   ipaddr.IPv6Address(addr) not in ipaddr.IPv6Network('fc::/7') and \
+					   addr not in self.warning_shown_for_ipv6addr:
+						self.warning_shown_for_ipv6addr.append(addr)
+						return _('The given IPv6 address "%(addr)s" of interface "%(interface)s" is not a global unicast address (2000::/3) and not a unique local unicast address (fc00::/7). This warning is shown only once for each address. The installation can be continued but might fail.') % { 'addr': addr, 'interface': name }
 
 		# if IPv6-only is used, at least one static IPv6 address has to be defined
 		if not self.ipv4_found and self.ipv6_found and cnt_static_ipv6_addresses == 0:
