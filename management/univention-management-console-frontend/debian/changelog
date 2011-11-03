@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.172-1) unstable; urgency=low
+
+  * add upload support to UMC web server; Bug #23333
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 03 Nov 2011 21:45:18 +0100
+
 univention-management-console-frontend (1.0.171-1) unstable; urgency=low
 
   * fixed dojo.require statment for license dialog (Bug #23655)

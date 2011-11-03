@@ -38,6 +38,7 @@ from optparse import OptionParser
 import simplejson
 import signal
 import sys
+import tempfile
 import time
 import threading
 import uuid
@@ -207,6 +208,34 @@ class UMCP_Dispatcher( object ):
 		else:
 			CORE.info( 'Session %s not found' % sessionid )
 
+class UploadManager( dict ):
+	def add( self, request_id, store ):
+		tmpfile = tempfile.NamedTemporaryFile( delete = False )
+		if store.file is None:
+			tmpfile.write( store.value )
+		else:
+			tmpfile.write( store.file.read() )
+		tmpfile.close()
+		if request_id in self:
+			self[ request_id ].append( tmpfile.name )
+		else:
+			self[ request_id ] = [ tmpfile.name ]
+
+		return tmpfile.name
+
+	def cleanup( self, request_id ):
+		if request_id in self:
+			filenames = self[ request_id ]
+			for filename in filenames:
+				if os.path.isfile( filename ):
+					os.unlink( filename )
+			del self[ request_id ]
+			return True
+
+		return False
+
+_upload_manager = UploadManager()
+
 class QueueRequest(object):
 	"""Element for the request queue containing the assoziated session
 	ID, the request object and a response queue."""
@@ -223,7 +252,6 @@ def update_session_cookie(cookiejar, sessionid):
 	cookiejar['UMCSessionId']['path'] = '/'
 
 class CPgeneric(object):
-	name = 'CPgeneric'
 
 	# NOTE: only use CORE.process, _not_ CORE.error; since CORE.error writes as
 	#       well to /var/log/syslog, this seems to cause problems with cherrypy.
@@ -233,6 +261,11 @@ class CPgeneric(object):
 		'warn': CORE.warn,
 		'info': CORE.info,
 	}
+
+	@property
+	def name( self ):
+		"""returns class name"""
+		return self.__class__.__name__
 
 	def _log(self, loglevel, _msg):
 		remote = cherrypy.request.remote
@@ -244,11 +277,12 @@ class CPgeneric(object):
 		return req
 
 	@cherrypy.expose
-	def default(self, *args):
+	def default( self, *args, **kwargs ):
 		global _queue_send
 		remote = cherrypy.request.remote
 		self._log('info', 'got new request')
 
+		# check for a valid session key
 		cookie = cherrypy.request.cookie
 		if cookie.get('UMCSessionId'):
 			sessionid = cookie['UMCSessionId'].value
@@ -259,20 +293,27 @@ class CPgeneric(object):
 			self._log('info', 'no sessionid found')
 			raise cherrypy.HTTPError(401)
 
-		if not cherrypy.request.headers.get(u"Content-Length", u""):
-			json = ''
-			self._log('warn', 'missing Content-Length header')
-		else:
-			# get body and parse json
-			body = ''
-			if cherrypy.request.body:
-				body = cherrypy.request.body.read()
+		req = None
 
-			try:
-				json = simplejson.loads(body)
-			except ValueError:
-				self._log('error', 'cannot parse JSON body')
-				raise cherrypy.HTTPError(400, 'Invalid JSON document')
+		if cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'multipart/form-data' ): # upload
+			if not cherrypy.request.path_info.startswith( '/upload' ):
+				raise cherrypy.HTTPError( 400, 'Content type and URL do not match' )
+			json = kwargs.values()
+		elif cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'application/json' ): # normal request
+			if not cherrypy.request.headers.get(u"Content-Length", u""):
+				json = ''
+				self._log('warn', 'missing Content-Length header')
+			else:
+				# get body and parse json
+				body = ''
+				if cherrypy.request.body:
+					body = cherrypy.request.body.read()
+
+				try:
+					json = simplejson.loads(body)
+				except ValueError:
+					self._log('error', 'cannot parse JSON body')
+					raise cherrypy.HTTPError(400, 'Invalid JSON document')
 
 		# create new UMCP request
 		req = self.get_request( cherrypy.request, json )
@@ -302,7 +343,6 @@ class CPgeneric(object):
 
 
 class CPGet(CPgeneric):
-	name = 'CPGet'
 	requestprefix = '/get'
 
 	def get_request(self, request, json):
@@ -321,19 +361,30 @@ class CPGet(CPgeneric):
 
 
 class CPSet(CPgeneric):
-	name = 'CPSet'
 	requestprefix = '/set'
 
 	def get_request(self, request, json):
-		args = request.path_info
+		return umcp.Request( 'SET', options = json.get( 'options', {} ) )
 
-		req = umcp.Request( 'SET', options = json.get( 'options', {} ) )
 
+class CPUpload( CPgeneric ):
+	requestprefix = '/upload'
+
+	def get_request(self, request, storages ):
+		global _upload_manager
+		req = umcp.Request( 'UPLOAD', options = json.get( 'options', {} ) )
+		custom_command = request.path_info[ len( self.requestprefix ) : ]
+
+		options = []
+		for store in storages:
+			tmpfile = _upload_manager.add( req.id, store )
+			options.append( { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )
+
+		req.options = options
 		return req
 
 
 class CPCommand(CPgeneric):
-	name = 'CPCommand'
 	requestprefix = '/command'
 
 	def get_request(self, request, json):
@@ -414,7 +465,6 @@ class CPRoot(object):
 		raise cherrypy.HTTPError(404)
 	index.exposed = True
 
-
 def run_cherrypy():
 	# TODO FIXME Folgenden Configeintrag einbauen, wenn loglevel in (0,1,2)
 	# 'server.environment': 'production',
@@ -434,6 +484,7 @@ def run_cherrypy():
 	root.auth = CPAuth()
 	root.get = CPGet()
 	root.set = CPSet()
+	root.upload = CPUpload()
 
 	cherrypy.quickstart(root=root)
 
