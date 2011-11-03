@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-03 13:12+0100\n"
+"POT-Creation-Date: 2011-11-03 22:55+0100\n"
 "PO-Revision-Date: 2011-11-01 20:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,56 +26,12 @@ msgstr "%(label)s (Wiederholung)"
 msgid "%d entries of %d selected"
 msgstr "%d Einträge von %d ausgewählt"
 
-#: umc/license.js:28 umc/license.js:30 umc/license.js:32
-#, python-format
-msgid "%s (used: %s)"
-msgstr "%s (genutzt: %s)"
-
 #: umc/widgets/Grid.js:541
 #, python-format
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
 
-#: umc/license.js:22
-msgid ""
-"<p>The \"free for personal use\" edition of Univention Corporate Server is a "
-"special software license which allows users free use of the Univention "
-"Corporate Server and software products based on it for private purposes acc. "
-"to § 13 BGB (German Civil Code).</p><p>In the scope of this license, UCS can "
-"be downloaded, installed and used from our servers. It is, however, not "
-"permitted to make the software available to third parties to download or use "
-"it in the scope of a predominantly professional or commercial usage.</"
-"p><p>The license of the \"free for personal use\" edition of UCS occurs in "
-"the scope of a gift contract. We thus exclude all warranty and liability "
-"claims, except in the case of deliberate intention or gross negligence. We "
-"emphasise that the liability, warranty, support and maintance claims arising "
-"from our commercial software contracts do not apply to the \"free for "
-"personal use\" edition.</p><p>We wish you a lot of happiness using the "
-"\"free for personal use\" edition of Univention Corporate Server and look "
-"forward to receiving your feedback. If you have any questions, please "
-"consult our forum, which can be found on the Internet at http://forum."
-"univention.de/.</p>"
-msgstr ""
-"<p>Die \"Free For Personal Use\" Ausgabe von Univention Corporate Server ist "
-"eine spezielle Softwarelizenz mit der Verbraucher im Sinne des § 13 BGB die "
-"kostenlose Nutzung von Univention Corporate Server und darauf basierenden "
-"Softwareprodukten für private Zwecke ermöglicht wird.</p>\n"
-"\n"
-"<p>Im Rahmen dieser Lizenz darf UCS von unseren Servern heruntergeladen, "
-"installiert und genutzt werden. Es ist jedoch nicht erlaubt, die Software "
-"Dritten zum Download oder zur Nutzung zur Verfügung zu stellen oder sie im "
-"Rahmen einer überwiegend beruflichen oder gewerbsmäßigen Nutzung zu "
-"verwenden.</p>\n"
-"\n"
-"<p>Die Überlassung der \"Free For Personal Use\"-Ausgabe von UCS erfolgt im "
-"Rahmen eines Schenkungsvertrages. Wir schließen deswegen alle "
-"Gewährleistungs- und Haftungsansprüche aus, es sei denn, es liegt ein Fall "
-"des Vorsatzes oder der groben Fahrlässigkeit vor. Wir weisen darauf hin, "
-"dass bei der \"Free For Personal Use\"-Ausgabe die Haftungs-, "
-"Gewährleistungs-, Support- und Pflegeansprüche, die sich aus unseren "
-"kommerziellen Softwareverträgen ergeben, nicht gelten.</p>"
-
-#: umc/app.js:428 umc/license.js:39 umc/about.js:26
+#: umc/app.js:429 umc/about.js:26
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -119,15 +75,11 @@ msgstr ""
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
-#: umc/app.js:516 umc/widgets/MultiObjectSelect.js:256
+#: umc/app.js:517 umc/widgets/MultiObjectSelect.js:256
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/license.js:29
-msgid "Clients"
-msgstr "Clients"
-
-#: umc/license.js:39 umc/help.js:30 umc/about.js:26
+#: umc/help.js:30 umc/about.js:26
 msgid "Close"
 msgstr "Schließen"
 
@@ -135,7 +87,7 @@ msgstr "Schließen"
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:480
+#: umc/app.js:481
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -147,21 +99,13 @@ msgstr "Die Anfrage konnte nicht ausgeführt werden."
 msgid "Current manual (PDF)"
 msgstr "Aktuelles Handbuch (PDF)"
 
-#: umc/license.js:31
-msgid "Desktops"
-msgstr "Desktops"
-
-#: umc/app.js:508
+#: umc/app.js:509
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
 #: umc/widgets/LoginDialog.js:42
 msgid "English"
 msgstr "Englisch"
-
-#: umc/license.js:33
-msgid "Expiry date"
-msgstr "Ablaufdatum"
 
 #: umc/widgets/LoginDialog.js:41
 msgid "German"
@@ -181,11 +125,11 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/app.js:412 umc/help.js:30
+#: umc/app.js:411 umc/help.js:30
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/app.js:460
+#: umc/app.js:461
 #, python-format
 msgid "Host: %(host)s.%(domain)s"
 msgstr ""
@@ -242,15 +186,11 @@ msgstr "Interner Server-Fehler: Der Modulprozess starb unerwartet."
 msgid "Internal server error: The service is temporarily not available."
 msgstr "Interner Server-Fehler: Der Dienst is momentan nicht erreichbar!"
 
-#: umc/license.js:25
-msgid "LDAP base"
-msgstr "LDAP-Basis"
-
 #: umc/widgets/LoginDialog.js:104
 msgid "Language"
 msgstr "Sprache"
 
-#: umc/app.js:419 umc/license.js:24
+#: umc/app.js:419
 msgid "License"
 msgstr "Lizenz"
 
@@ -258,12 +198,12 @@ msgstr "Lizenz"
 msgid "Login"
 msgstr "Anmelden"
 
-#: umc/app.js:87
+#: umc/app.js:86
 #, python-format
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:509
+#: umc/app.js:510
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -271,7 +211,7 @@ msgstr "Abmelden"
 msgid "Manual and documentation"
 msgstr "Handbücher und Dokumentation"
 
-#: umc/app.js:488
+#: umc/app.js:489
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
@@ -307,7 +247,7 @@ msgstr "Ok"
 msgid "Others"
 msgstr "Andere"
 
-#: umc/app.js:349 umc/app.js:350
+#: umc/app.js:348 umc/app.js:349
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -355,7 +295,7 @@ msgstr "Weiterführende Informationen"
 msgid "Support and assistance"
 msgstr "Unterstützung und Support"
 
-#: umc/app.js:361
+#: umc/app.js:360
 #, python-format
 msgid "The SSL certificate will expire in %d days and should be renewed!"
 msgstr ""
@@ -392,7 +332,7 @@ msgstr ""
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
-#: umc/app.js:473
+#: umc/app.js:474
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -432,7 +372,7 @@ msgstr ""
 "oder\n"
 "Administration unterstützen."
 
-#: umc/app.js:352
+#: umc/app.js:351
 msgid ""
 "Univention Management Console is a modularly designed, web-based application "
 "for the administration of objects in your Univention Corporate Server domain "
@@ -442,7 +382,7 @@ msgstr ""
 "für die Administrierung von Objekten in der Univention-Corporate-Server-"
 "Domäne und individueller Univention-Corporate-Server-Systeme."
 
-#: umc/app.js:437
+#: umc/app.js:438
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
@@ -462,11 +402,7 @@ msgstr "Univention Supportdatenbank (SDB)"
 msgid "Univention wiki site"
 msgstr "Univention Webseite"
 
-#: umc/license.js:27
-msgid "User accounts"
-msgstr "Benutzerkonten"
-
-#: umc/app.js:497
+#: umc/app.js:498
 #, python-format
 msgid "User: %s"
 msgstr "Benutzer: %s"
@@ -474,10 +410,6 @@ msgstr "Benutzer: %s"
 #: umc/widgets/LoginDialog.js:90
 msgid "Username"
 msgstr "Benutzername"
-
-#: umc/license.js:35
-msgid "Valid product types"
-msgstr "Gültige Produkttypen"
 
 #: umc/about.js:23
 msgid "Validity date of the SSL certificate"
@@ -534,6 +466,65 @@ msgstr ""
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 
-#: umc/license.js:28 umc/license.js:30 umc/license.js:32
-msgid "unlimited"
-msgstr "unbegrenzt"
+#~ msgid "%s (used: %s)"
+#~ msgstr "%s (genutzt: %s)"
+
+#~ msgid ""
+#~ "<p>The \"free for personal use\" edition of Univention Corporate Server "
+#~ "is a special software license which allows users free use of the "
+#~ "Univention Corporate Server and software products based on it for private "
+#~ "purposes acc. to § 13 BGB (German Civil Code).</p><p>In the scope of this "
+#~ "license, UCS can be downloaded, installed and used from our servers. It "
+#~ "is, however, not permitted to make the software available to third "
+#~ "parties to download or use it in the scope of a predominantly "
+#~ "professional or commercial usage.</p><p>The license of the \"free for "
+#~ "personal use\" edition of UCS occurs in the scope of a gift contract. We "
+#~ "thus exclude all warranty and liability claims, except in the case of "
+#~ "deliberate intention or gross negligence. We emphasise that the "
+#~ "liability, warranty, support and maintance claims arising from our "
+#~ "commercial software contracts do not apply to the \"free for personal use"
+#~ "\" edition.</p><p>We wish you a lot of happiness using the \"free for "
+#~ "personal use\" edition of Univention Corporate Server and look forward to "
+#~ "receiving your feedback. If you have any questions, please consult our "
+#~ "forum, which can be found on the Internet at http://forum.univention.de/."
+#~ "</p>"
+#~ msgstr ""
+#~ "<p>Die \"Free For Personal Use\" Ausgabe von Univention Corporate Server "
+#~ "ist eine spezielle Softwarelizenz mit der Verbraucher im Sinne des § 13 "
+#~ "BGB die kostenlose Nutzung von Univention Corporate Server und darauf "
+#~ "basierenden Softwareprodukten für private Zwecke ermöglicht wird.</p>\n"
+#~ "\n"
+#~ "<p>Im Rahmen dieser Lizenz darf UCS von unseren Servern heruntergeladen, "
+#~ "installiert und genutzt werden. Es ist jedoch nicht erlaubt, die Software "
+#~ "Dritten zum Download oder zur Nutzung zur Verfügung zu stellen oder sie "
+#~ "im Rahmen einer überwiegend beruflichen oder gewerbsmäßigen Nutzung zu "
+#~ "verwenden.</p>\n"
+#~ "\n"
+#~ "<p>Die Überlassung der \"Free For Personal Use\"-Ausgabe von UCS erfolgt "
+#~ "im Rahmen eines Schenkungsvertrages. Wir schließen deswegen alle "
+#~ "Gewährleistungs- und Haftungsansprüche aus, es sei denn, es liegt ein "
+#~ "Fall des Vorsatzes oder der groben Fahrlässigkeit vor. Wir weisen darauf "
+#~ "hin, dass bei der \"Free For Personal Use\"-Ausgabe die Haftungs-, "
+#~ "Gewährleistungs-, Support- und Pflegeansprüche, die sich aus unseren "
+#~ "kommerziellen Softwareverträgen ergeben, nicht gelten.</p>"
+
+#~ msgid "Clients"
+#~ msgstr "Clients"
+
+#~ msgid "Desktops"
+#~ msgstr "Desktops"
+
+#~ msgid "Expiry date"
+#~ msgstr "Ablaufdatum"
+
+#~ msgid "LDAP base"
+#~ msgstr "LDAP-Basis"
+
+#~ msgid "User accounts"
+#~ msgstr "Benutzerkonten"
+
+#~ msgid "Valid product types"
+#~ msgstr "Gültige Produkttypen"
+
+#~ msgid "unlimited"
+#~ msgstr "unbegrenzt"

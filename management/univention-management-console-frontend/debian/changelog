@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.173-1) unstable; urgency=low
+
+  * fixed problem with Button labels positioned below the button (Bug #22881) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 03 Nov 2011 23:51:17 +0000
+
 univention-management-console-frontend (1.0.172-1) unstable; urgency=low
 
   * add upload support to UMC web server; Bug #23333

@@ -25,6 +25,12 @@ dojo.declare("umc.widgets.Button", dijit.form.Button, {
 		}
 	},
 
+	buildRendering: function() {
+		this.inherited(arguments);
+
+		this.set('iconClass', this.iconClass);
+	},
+	
 	postCreate: function() {
 		this.inherited(arguments);
 
