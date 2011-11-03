@@ -1,3 +1,9 @@
+univention-directory-listener (6.0.17-1) unstable; urgency=low
+
+  * Initialize dn with NULL (Bug #24273)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Nov 2011 10:39:13 +0100
+
 univention-directory-listener (6.0.16-1) unstable; urgency=low
 
   * Fixed memory leaks (Bug #24273)

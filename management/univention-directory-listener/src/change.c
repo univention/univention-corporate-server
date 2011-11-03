@@ -243,7 +243,7 @@ int change_new_modules(univention_ldap_parameters_t *lp)
    handlers.*/
 int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMessage *ldap_entry, char command)
 {
-	char *dn;
+	char *dn=NULL;
 	CacheEntry cache_entry, old_cache_entry, updated_cache_entry;
 	int rv = 0;
 
