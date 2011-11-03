@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.219-1) unstable; urgency=low
+
+  * add license dialog und support importing a license via copy'n'paste; Bug #23655
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 03 Nov 2011 14:23:18 +0100
+
 univention-management-console-module-udm (1.0.218-1) unstable; urgency=low
 
   * NewObjectDialog: removed max-width

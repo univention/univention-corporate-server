@@ -36,6 +36,7 @@ import os
 import shutil
 import notifier
 import notifier.threads
+import tempfile
 import traceback
 
 from univention.lib.i18n import Translation
@@ -54,7 +55,7 @@ import univention.directory.reports as udr
 from univention.management.console.protocol.definitions import *
 
 from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, LDAP_ConnectionError, set_credentials, container_modules
-
+from .tools import LicenseError, LicenseImport
 _ = Translation( 'univention-management-console-module-udm' ).translate
 
 class Instance( Base ):
@@ -170,6 +171,29 @@ class Instance( Base ):
 		license_data[ 'baseDN' ] = udm_license._license.licenseBase
 
 		self.finished( request.id, license_data )
+
+	@LDAP_Connection
+	def license_import( self, request, ldap_connection = None, ldap_position = None ):
+		self.required_options( request, 'license' )
+		lic = request.options[ 'license' ]
+		if lic.startswith( 'file:' ):
+			lic_file = None # FIXME not yet supported
+		else:
+			lic_file = tempfile.NamedTemporaryFile( delete = False )
+			lic_file.write( lic )
+			lic_file.close()
+
+		importer = LicenseImport( open( lic_file.name, 'rb' ) )
+		os.unlink( lic_file.name )
+		# check license
+		try:
+			importer.check( ldap_position.getBase() )
+		except LicenseError, e:
+			self.finished( request.id, { 'success' : False, 'message' : str( e ) } )
+			return
+		# write license
+		importer.write( self._user_dn, self._password )
+		self.finished( request.id, { 'success' : True } )
 
 	def move( self, request ):
 		"""Moves LDAP objects.

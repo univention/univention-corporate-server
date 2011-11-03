@@ -62,6 +62,8 @@
 	</command>
 	<command name="udm/license/info" function="license_info">
 	</command>
+	<command name="udm/license/import" function="license_import">
+	</command>
 	<command name="udm/query" function="query">
 	</command>
 	<command name="udm/containers" function="containers">
