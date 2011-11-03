@@ -53,7 +53,7 @@ done
 # expects as parameter the path of the script and writes an info header
 info_header()
 {
-	echo "=== $(readlink -m "$m0") ($(date +'%Y-%m-%d %H:%M:%S')) ==="
+	echo "=== $(readlink -m "$0") ($(date +'%Y-%m-%d %H:%M:%S')) ==="
 }
 
 is_variable_set()

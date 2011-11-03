@@ -1,3 +1,9 @@
+univention-system-setup (5.0.40-1) unstable; urgency=low
+
+  * fixed error in script function info_header (Bug #22904) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Nov 2011 00:58:22 +0100
+
 univention-system-setup (5.0.39-1) unstable; urgency=low
 
   * fixed some GUI logic with respect to appliance mode (Bug #22904) 
