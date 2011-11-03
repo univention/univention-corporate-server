@@ -14,7 +14,6 @@ dojo.require("umc.tools");
 dojo.require("umc.dialog");
 dojo.require("umc.help");
 dojo.require("umc.about");
-dojo.require("umc.license");
 dojo.require("umc.widgets.CategoryPane");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.Page");
@@ -415,11 +414,13 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			}
 		}));
 		if ( this.getModule( 'udm' ) ) {
+			dojo.require( 'umc.modules._udm.LicenseDialog' );
 			menu.addChild(new dijit.MenuItem({
 				label: this._('License'),
 				onClick : function() {
 					umc.tools.umcpCommand( 'udm/license/info' ).then( function( data ) {
-						umc.license.show( data.result );
+						var dlg = umc.modules._udm.LicenseDialog( { licenseInfo : data.result } );
+						dlg.show();
 					} );
 				}
 			}));
