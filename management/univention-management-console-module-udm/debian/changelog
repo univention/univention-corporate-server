@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.220-1) unstable; urgency=low
+
+  * add missing file tools.py; Bug #23655
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 03 Nov 2011 17:51:58 +0100
+
 univention-management-console-module-udm (1.0.219-1) unstable; urgency=low
 
   * add license dialog und support importing a license via copy'n'paste; Bug #23655
