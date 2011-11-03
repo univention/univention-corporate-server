@@ -57,6 +57,19 @@ while getopts  "h-:W:" option; do
 	esac
 done
 
+S3_DOMAIN_SID="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
+if [ -n "$S3_DOMAIN_SID" ]; then
+	## safty belt
+	if is_ucr_true samba4/ignore/mixsetup; then
+		echo "WARNING: samba4/ignore/mixsetup is true. Continue as "
+		echo "         requested"
+	else
+		echo "ERROR: It is not possible to install a samba 4 domaincontroller "
+		echo "       into a samba 3 environment."
+		exit 1
+	fi
+fi
+
 while [ "$adminpw" != "$adminpw2" ]; do
 	read -p "Choose Samba4 admin password: " adminpw
 	if [ "${#adminpw}" -lt 8 ]; then
@@ -120,7 +133,7 @@ stop_udm_cli_server
 /etc/init.d/univention-management-console-server restart 2>&1 | tee -a "$LOGFILE"
 
 ## Provision Samba4
-eval "$(univention-config-registry shell)"
+eval "$(univention-config-registry shell)"	## eval again
 
 if [ -x /etc/init.d/samba ]; then
 	/etc/init.d/samba stop 2>&1 | tee -a "$LOGFILE"
@@ -137,23 +150,79 @@ if [ ! -e /usr/modules ]; then
 	ln -s /usr/lib /usr/modules		# somehow MODULESDIR is set to /usr/modules in samba4 source despite --enable-fhs
 fi
 
-S3_DOMAIN_SID="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
-
 if [ -z "$samba4_function_level" ]; then
 	samba4_function_level=2003
 	univention-config-registry set samba4/function/level="$samba4_function_level"
 fi
 
 if [ -z "$S3_DOMAIN_SID" ]; then
-	/usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" \
-						--function-level="$samba4_function_level" \
-						--adminpass="$adminpw" --server-role='domain controller'	\
-						--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
-else
+
 	/usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$S3_DOMAIN_SID" \
 						--function-level="$samba4_function_level" \
 						--adminpass="$adminpw" --server-role='domain controller'	\
 						--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
+
+else
+
+	### create ldifs to temporarily fix sambaGroupType 5 and 2 for samba3upgrade
+	create_modify_ldif() {
+		record="$1"
+		dn=$(echo "$record" | sed -n "s/dn: \(.*\)/\1/p")
+		if [ -n "$dn" ]; then
+			cat <<-%EOF
+			dn: $dn
+			changetype: modify
+			replace: sambaGroupType
+			sambaGroupType: 4
+			-
+
+			%EOF
+		fi
+	}
+
+	ldif_records() {
+		func="$1"; shift
+		if ! declare -F "$func" >/dev/null; then
+			echo "ldif_records: First argument must be a valid function name"
+			echo "ldif_records: "$func" is not a valid function name"
+			return 1
+		fi
+		while read -d '' record; do
+			"$func" "$record" "$@"
+		done < <(sed 's/^$/\x0/')	## beware: skips last record, but that's ok with usual univention-ldapsearch output
+		# done < <(awk 'BEGIN { RS=""; FS="\n"; ORS="\x0" }; {print $0}') ## better, but awk somehow breaks on the \x0
+	}
+
+	ldif_sambaGroupType_5_to_4=$(univention-ldapsearch sambaGroupType=5 dn sambaGroupType | ldif_records create_modify_ldif)
+	reverse_ldif_sambaGroupType_5_to_4="${ldif_sambaGroupType_5_to_4//sambaGroupType: 4/sambaGroupType: 5}"
+
+	ldif_sambaGroupType_2_to_4=$(univention-ldapsearch sambaGroupType=2 dn sambaGroupType | ldif_records create_modify_ldif)
+	reverse_ldif_sambaGroupType_2_to_4="${ldif_sambaGroupType_2_to_4//sambaGroupType: 4/sambaGroupType: 2}"
+
+	reverse_sambaGroupType_change() {
+		echo "$reverse_ldif_sambaGroupType_5_to_4" | ldapmodify -D cn=admin,$ldap_base -y /etc/ldap.secret | tee -a "$LOGFILE"
+		echo "$reverse_ldif_sambaGroupType_2_to_4" | ldapmodify -D cn=admin,$ldap_base -y /etc/ldap.secret | tee -a "$LOGFILE"
+	}
+	trap reverse_sambaGroupType_change EXIT
+
+	## now adjust sambaGroupType 2 and 5
+	echo "$ldif_sambaGroupType_5_to_4" | ldapmodify -D cn=admin,$ldap_base -y /etc/ldap.secret | tee -a "$LOGFILE"
+	echo "$ldif_sambaGroupType_2_to_4" | ldapmodify -D cn=admin,$ldap_base -y /etc/ldap.secret | tee -a "$LOGFILE"
+
+	## fix up /var/lib/samba3/smb.conf for samba-tool
+	touch /etc/samba/base.conf /etc/samba/installs.conf /etc/samba/printers.conf /etc/samba/shares.conf
+	echo -e "[global]\n\trealm = $kerberos_realm" >> /var/lib/samba3/smb.conf
+	## move  univention-samba4 default smb.conf out of the way
+	mv /etc/samba/smb.conf /var/tmp/univention-samba4_smb.conf
+
+	### run samba-tool domain samba3upgrade
+	samba-tool domain samba3upgrade /var/lib/samba3/smb.conf  --libdir /var/lib/samba3 | tee -a "$LOGFILE"
+	## copy univention-samba4 config back again.
+	cp /var/tmp/univention-samba4_smb.conf /etc/samba/smb.conf
+
+	### revert changes for sambaGroupType 5 and 2
+	reverse_sambaGroupType_change
+	trap - EXIT
 fi
 
 if [ ! -d /etc/phpldapadmin ]; then
