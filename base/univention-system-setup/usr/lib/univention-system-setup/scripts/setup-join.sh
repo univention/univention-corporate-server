@@ -67,6 +67,26 @@ run-parts -a --network-only -- /usr/lib/univention-system-setup/scripts/net/
 # Install selected software
 run-parts /usr/lib/univention-system-setup/scripts/software/
 
+# set hostname
+hostname=$(get_profile_var "hostname")
+[ -n "$hostname" ] && univention-config-registry set hostname="$hostname"
+
+# set domainame
+domainname=$(get_profile_var "domainname")
+[ -n "$domainname" ] && univention-config-registry set domainname="$domainname"
+
+# set ldap/basee
+ldap_base=$(get_profile_var "ldap/base")
+[ -n "$ldap_base" ] && univention-config-registry set ldap/base="$ldap_base"
+
+# set windows domain
+windows_domain=$(get_profile_var "windows/domain")
+[ -n "$windows_domain" ] && univention-config-registry set windows/domain="$windows_domain"
+
+# set root password
+/usr/lib/univention-system-setup/scripts/basis/18root_password
+
+
 # Call join
 if [ -d /var/lib/univention-ldap/ldap ]; then
 	rm -f /var/lib/univention-ldap/ldap/*

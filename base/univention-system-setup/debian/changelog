@@ -1,3 +1,10 @@
+univention-system-setup (5.0.35-1) unstable; urgency=low
+
+  * setup-join.sh: set hostname, domainame, ldap/base, windows/domain
+    and root password (Bug #22904)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Nov 2011 10:49:42 +0100
+
 univention-system-setup (5.0.34-1) unstable; urgency=low
 
   * Cleanup setup-join.sh (Bug #22904)
