@@ -1,3 +1,10 @@
+univention-samba4 (1.0.87-2) unstable; urgency=low
+
+  * backup samba3 libdir and config in postinst before committing ucr
+    (Bug #22866)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Nov 2011 19:52:28 +0100
+
 univention-samba4 (1.0.87-1) unstable; urgency=low
 
   * add samba3upgrade case to setup-s4.sh (Bug #22866)
