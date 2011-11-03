@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Setup
 #  interfaces change script
@@ -222,7 +222,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		univention-config-registry set $baseconfig_set
 	fi
 
-	if [ "network_only" = 0 ]; then
+	if [ "$network_only" = 0 ]; then
 		if [ -x /usr/sbin/apache2ctl ]; then
 			/usr/sbin/apache2ctl stop
 			for count in $(seq 1 20); do
@@ -246,7 +246,7 @@ if [ -d "/var/lib/univention-system-setup/interfaces6.post" ]; then
 	run-parts /var/lib/univention-system-setup/interfaces6.post --arg=$oldvalues --arg=$newvalues
 fi
 
-if [ $ldap_available = 1 -o "network_only" = 1 ]; then
+if [ $ldap_available = 1 -o "$network_only" = 1 ]; then
 	exit 0
 else
 	exit 100

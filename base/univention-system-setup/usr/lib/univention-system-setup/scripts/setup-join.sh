@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+
 password_file=""
 dcaccount=""
 
@@ -43,71 +44,101 @@ while [ "$#" -gt 0 ]; do
 			password_file="$2"
             shift 2
             ;;
+		--help)
+            echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>]"
+			exit 1
+            ;;
         *)
             echo "WARNING: Unknown parameter $1"
-			shift
+            echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>]"
+			exit 1
     esac
 done
 
+SETUP_LOG="/var/log/univention/setup.log"
+
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
+echo "no-ldap" > /var/run/univention-system-setup.ldap
+
+
+echo "Starting re-configuration of basic settings"
+# set hostname
+hostname=$(get_profile_var "hostname")
+[ -n "$hostname" ] && univention-config-registry set hostname="$hostname" >>$SETUP_LOG 2>&1
+# set domainame
+domainname=$(get_profile_var "domainname")
+[ -n "$domainname" ] && univention-config-registry set domainname="$domainname" >>$SETUP_LOG 2>&1
+# set ldap/basee
+ldap_base=$(get_profile_var "ldap/base")
+[ -n "$ldap_base" ] && univention-config-registry set ldap/base="$ldap_base" >>$SETUP_LOG 2>&1
+# set windows domain
+windows_domain=$(get_profile_var "windows/domain")
+[ -n "$windows_domain" ] && univention-config-registry set windows/domain="$windows_domain" >>$SETUP_LOG 2>&1
+# set root password
+/usr/lib/univention-system-setup/scripts/basis/18root_password >>$SETUP_LOG 2>&1
+
+eval "$(univention-config-registry shell)"
+
+if [ "$server_role" = "domaincontroller_master" ]; then
+      univention-config-registry set ldap/server/name="$hostname.$domainname" \
+      						ldap/master="$hostname.$domainname" \
+      						kerberos/adminserver="$hostname.$domainname"
+fi
+
+# cleanup secrets
+echo -n "$(makepasswd)" > /etc/ldap.secret
+echo -n "$(makepasswd)" > /etc/ldap-backup.secret
+rm -f /etc/machine.secret
+
+echo "Starting re-configuration of SSL"
 # Re-create SSL certificates even if the admin did'nt change all variables
-/usr/lib/univention-system-setup/scripts/ssl/10ssl --force-recreate
+/usr/lib/univention-system-setup/scripts/ssl/10ssl --force-recreate >>$SETUP_LOG 2>&1
+
+univention-certificate new -name "$hostname.$domainname" >>$SETUP_LOG 2>&1
+ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname" >>$SETUP_LOG 2>&1
 
 # Call scripts which won't be handled by join scripts
 # keyboard, language and timezone
-run-parts /usr/lib/univention-system-setup/scripts/keyboard/
-run-parts /usr/lib/univention-system-setup/scripts/language/
-run-parts /usr/lib/univention-system-setup/scripts/timezone/
-run-parts /usr/lib/univention-system-setup/scripts/modules/
+echo "Starting re-configuration of locales"
+run-parts /usr/lib/univention-system-setup/scripts/keyboard/ >>$SETUP_LOG 2>&1
+run-parts /usr/lib/univention-system-setup/scripts/language/ >>$SETUP_LOG 2>&1
+run-parts /usr/lib/univention-system-setup/scripts/timezone/ >>$SETUP_LOG 2>&1
+run-parts /usr/lib/univention-system-setup/scripts/modules/ >>$SETUP_LOG 2>&1
 
 # Do network stuff
-run-parts -a --network-only -- /usr/lib/univention-system-setup/scripts/net/
+echo "Starting re-configuration of network"
+run-parts -a --network-only -- /usr/lib/univention-system-setup/scripts/net/ >>$SETUP_LOG 2>&1
 
 # Install selected software
-run-parts /usr/lib/univention-system-setup/scripts/software/
+echo "Starting re-configuration of software packages"
+run-parts /usr/lib/univention-system-setup/scripts/software/ >>$SETUP_LOG 2>&1
 
-# set hostname
-hostname=$(get_profile_var "hostname")
-[ -n "$hostname" ] && univention-config-registry set hostname="$hostname"
+eval "$(univention-config-registry shell)"
 
-# set domainame
-domainname=$(get_profile_var "domainname")
-[ -n "$domainname" ] && univention-config-registry set domainname="$domainname"
-
-# set ldap/basee
-ldap_base=$(get_profile_var "ldap/base")
-[ -n "$ldap_base" ] && univention-config-registry set ldap/base="$ldap_base"
-
-# set windows domain
-windows_domain=$(get_profile_var "windows/domain")
-[ -n "$windows_domain" ] && univention-config-registry set windows/domain="$windows_domain"
-
-# set root password
-/usr/lib/univention-system-setup/scripts/basis/18root_password
-
-
+echo -e "\nStarting domain join\n"
 # Call join
 if [ -d /var/lib/univention-ldap/ldap ]; then
 	rm -f /var/lib/univention-ldap/ldap/*
+	univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG >>$SETUP_LOG 2>&1
 fi
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	mkdir -p /var/univention-join/ /usr/share/univention-join/
+	rm -f /var/univention-join/joined /var/univention-join/status
 	touch /var/univention-join/joined /var/univention-join/status
-	if [ -e /usr/lib/univention-install/.index.txt ]; then
-		rm -f /usr/lib/univention-install/.index.txt
-	fi
-	ln -s /var/univention-join/joined /usr/share/univention-join/.joined
-	ln -s /var/univention-join/status /usr/lib/univention-install/.index.txt
+	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
+	ln -sf /var/univention-join/status /usr/lib/univention-install/.index.txt
 
 	for i in /usr/lib/univention-install/*.inst; do
-		echo "Configure $(basename $i)" >>/var/log/univention/join.log
-		$i >>/var/log/univention/join.log 2>&1
+		echo "Configure $(basename $i)"
+		echo "Configure $(basename $i)" >>$SETUP_LOG 2>&1
+		$i >>$SETUP_LOG 2>&1
 	done
 else
 	if [ -n "$dcaccount" -a -n "$password_file" ]; then
-	/usr/share/univention-join/univention-join -dcaccount $domain_controller_account -dcpwd "$password_file"
+		/usr/share/univention-join/univention-join -dcaccount $domain_controller_account -dcpwd "$password_file" >>$SETUP_LOG 2>&1
+	fi
 fi
 
 exit 0

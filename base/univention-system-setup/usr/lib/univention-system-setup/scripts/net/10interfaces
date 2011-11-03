@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Setup
 #  interfaces change script
@@ -547,7 +547,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		fi
 	fi
 
-	if [ "network_only" = 0 ]; then
+	if [ "$network_only" = 0 ]; then
 		if [ -x /usr/sbin/apache2ctl ]; then
 			/usr/sbin/apache2ctl stop
 			for count in $(seq 1 20); do
@@ -561,7 +561,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 	fi
 	service_start nscd
 
-	if [ "network_only" = 0 ]; then
+	if [ "$network_only" = 0 ]; then
 		# stop the dns server and remove the cache
 		service_stop  univention-bind univention-bind-proxy univention-dhcp heimdal-kdc cupsys samba univention-directory-listener postgresql samba4
 		rm -f /var/cache/bind/*
@@ -573,7 +573,7 @@ if [ -d "/var/lib/univention-system-setup/interfaces.post" ]; then
 	run-parts /var/lib/univention-system-setup/interfaces.post --arg=$oldvalues --arg=$newvalues
 fi
 
-if [ $ldap_available = 1 -o "network_only" = 1 ]; then
+if [ $ldap_available = 1 -o "$network_only" = 1 ]; then
 	exit 0
 else
 	exit 100

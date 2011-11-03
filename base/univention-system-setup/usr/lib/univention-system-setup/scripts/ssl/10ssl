@@ -72,7 +72,7 @@ for var in "common" "locality" "organization" "country" "state" "organizationalu
 	fi
 done
 
-if [ "$recreate" = "yes" -o "force_recreate" = "1" ]; then
+if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 	# remove old backup
 	if [ -d /etc/univention/ssl.orig ]; then
 		rm -rf /etc/univention/ssl.orig

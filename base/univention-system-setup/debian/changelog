@@ -1,3 +1,9 @@
+univention-system-setup (5.0.37-1) unstable; urgency=low
+
+  * setup-join.sh: a lot of cleanups (Bug #22904)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Nov 2011 13:53:46 +0100
+
 univention-system-setup (5.0.35-1) unstable; urgency=low
 
   * setup-join.sh: set hostname, domainame, ldap/base, windows/domain
