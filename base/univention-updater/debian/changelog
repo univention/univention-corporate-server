@@ -1,3 +1,9 @@
+univention-updater (7.0.82-1) unstable; urgency=low
+
+  * redirect output of univention-object-type-migrate to updater.log (Bug #23167) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 Nov 2011 15:14:27 +0100
+
 univention-updater (7.0.81-1) unstable; urgency=low
 
   * updated preup.sh (Bug #23483)

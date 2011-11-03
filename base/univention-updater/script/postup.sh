@@ -174,12 +174,11 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 
 	if [ ! "$update_objecttype_check" = "no" -a ! "$update_objecttype_check" = "false" -a ! "$update_objecttype_check" = "1" ]; then
 		dcs=$(univention-ldapsearch  -x objectClass=univentionDomainController -LLL dn | grep ^dn:| wc -l)
-		omlog="/var/log/univention/univention-object-type-migrate.log"
 		if [ -n "$dcs" -a "$dcs" -eq 1 ]; then
 			# only one dc -> update univentionObjectType
 			echo
 			echo -n "updating univentionObjectType ... "
-			$omscript -a -v 1>>"$omlog" 2>>"$omlog"
+			$omscript -a -v >>"$UPDATER_LOG" 2>&1
 			echo "done"
 			echo
 		else
