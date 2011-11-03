@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Management Console
-#  postinst script
+# Univention Common Python and Shell Library
+#  postinst script for UMC python modules
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,9 +32,10 @@
 
 #DEBHELPER#
 
-if [ ! -d /var/cache/univention-management-console/acls ]; then
-	mkdir -p /var/cache/univention-management-console/acls
-fi
+# force pysupport to generate empty __init__.py files causing the postinst file
+# of UMC server not to be called during installation, see also:
+#   https://bugs.launchpad.net/ubuntu/+source/python-support/+bug/716789
+update-python-modules -p
 
+# ucslint needs this
 exit 0
-
