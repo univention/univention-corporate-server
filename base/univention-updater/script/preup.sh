@@ -542,14 +542,16 @@ echo "OK"
 # only for update to UCS 3.0-0:
 # ensure that /etc/univention/templates/files/etc/ldap/slapd.conf.d/10univention-ldap-server_schema
 # is untouched by the user otherwise the update will fail (Bug #23483)
-for fn in "/etc/univention/templates/files/etc/ldap/slapd.conf.d/10univention-ldap-server_schema" ; do
-	if ! conffile_is_unmodified "$fn" ; then
-		echo "ERROR: the configuration file $fn"
-		echo "       has been modified by user! Please reconstruct original file otherwise"
-		echo "       the update will fail."
-		exit 1
-	fi
-done
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" ] ; then
+	for fn in "/etc/univention/templates/files/etc/ldap/slapd.conf.d/10univention-ldap-server_schema" ; do
+	 	if ! conffile_is_unmodified "$fn" ; then
+	 		echo "ERROR: the configuration file $fn"
+	 		echo "       has been modified by user! Please reconstruct original file otherwise"
+	 		echo "       the update will fail."
+	 		exit 1
+	 	fi
+	done
+fi
 
 # ensure that UMC is not restarted during the update process
 if [ -e /usr/sbin/univention-management-console-server ]; then
