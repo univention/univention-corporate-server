@@ -414,7 +414,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			}
 		}));
 		if ( this.getModule( 'udm' ) ) {
-			dojo.require( 'umc.modules._udm.LicenseDialog' );
+			dojo['require']( 'umc.modules._udm.LicenseDialog' );
 			menu.addChild(new dijit.MenuItem({
 				label: this._('License'),
 				onClick : function() {
