@@ -21,7 +21,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	pages: [ 'LanguagePage', 'BasisPage', 'NetworkPage', 'CertificatePage', 'SoftwarePage' ],
 
 	// 100% opacity during rendering the module
-	standbyOpacity: 1,
+	//standbyOpacity: 1,
 
 	_pages: null,
 
@@ -44,6 +44,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	renderPages: function(role) {
+		this.standby(true);
 		if (this.moduleFlavor == 'wizard') {
 			// wizard mode
 
@@ -56,7 +57,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 				// check whether 'role' is set and the page should be visible or not
 				var Class = new dojo.getObject(ipath);
-				if (Class.role && dojo.indexOf(Class.role, role) < 0) {
+				if (Class.prototype.role && dojo.indexOf(Class.prototype.role, role) < 0) {
 					return true;
 				}
 
@@ -134,7 +135,15 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			dojo.forEach(this.pages, function(iclass) {
 				var ipath = 'umc.modules._setup.' + iclass;
 				dojo['require'](ipath);
-				var ipage = new dojo.getObject(ipath)({
+
+				// check whether 'role' is set and the page should be visible or not
+				var Class = new dojo.getObject(ipath);
+				if (Class.prototype.role && dojo.indexOf(Class.prototype.role, role) < 0) {
+					return true;
+				}
+
+				// create new page
+				var ipage = new Class({
 					umcpCommand: dojo.hitch(this, 'umcpCommand'),
 					footerButtons: buttons,
 					onSave: dojo.hitch(this, function() {
@@ -220,6 +229,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// initiate some local check variables
 		var joined = this._orgValues['joined'];
 		var role = this._orgValues['server/role'];
+		var applianceMode = umc.tools.status('username') == '__systemsetup__';
 
 		// only submit data to server if there are changes and the system is joined
 		if (!nchanges && (joined || role == 'basesystem')) {
@@ -277,26 +287,26 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				return;
 			}
 
-			// first see which message needs to be displayed for the confirmation message
-			umc.tools.forIn(values, function(ikey) {
-				dojo.forEach(summaries, function(idesc) {
-					if (matchesSummary(ikey, idesc)) {
-						idesc.showConfirm = true;
-					}
-				});
-			});
-
-			// construct message for confirmation
-			var confirmMessage = '</p><p>' + this._('The following changes will be applied to the system:') + '</p><ul style="max-height:200px; overflow:auto;">';
-			dojo.forEach(summaries, function(idesc) {
-				if (idesc.showConfirm) {
-					confirmMessage += '<li>' + idesc.description + ': ' + idesc.values + '</li>';
-				}
-			});
-			confirmMessage += '</ul><p>' + this._('Please confirm to apply these changes to the system. This may take some time.') + '</p>';
-
 			// function to confirm changes
 			var _confirm = dojo.hitch(this, function() {
+				// first see which message needs to be displayed for the confirmation message
+				umc.tools.forIn(values, function(ikey) {
+					dojo.forEach(summaries, function(idesc) {
+						if (matchesSummary(ikey, idesc)) {
+							idesc.showConfirm = true;
+						}
+					});
+				});
+
+				// construct message for confirmation
+				var confirmMessage = '<p>' + this._('The following changes will be applied to the system:') + '</p><ul style="max-height:200px; overflow:auto;">';
+				dojo.forEach(summaries, function(idesc) {
+					if (idesc.showConfirm) {
+						confirmMessage += '<li>' + idesc.description + ': ' + idesc.values + '</li>';
+					}
+				});
+				confirmMessage += '</ul><p>' + this._('Please confirm to apply these changes to the system. This may take some time.') + '</p>';
+
 				return umc.dialog.confirm(confirmMessage, [{
 					name: 'cancel',
 					'default': true,
@@ -307,11 +317,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}]).then(dojo.hitch(this, function(response) {
 					if ('apply' != response) {
 						// throw new error to indicate that action has been canceled
+						this.standby(false);
 						throw new Error('cancel');
 					}
-				}), dojo.hitch(this, function() {
-					// error callback... action has been canceld
-					this.standby(false);
 				}));
 			});
 
@@ -353,13 +361,11 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						dialog.destroyRecursive();
 						if (deferred.fired < 0) {
 							// user clicked the close button
+							this.standby(false);
 							deferred.reject();
 						}
 					}
 				});
-				deferred.addErrback(dojo.hitch(this, function() {
-					this.standby(false);
-				}));
 				return deferred;
 			});
 
@@ -387,7 +393,11 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				umc.dialog.confirm(this._('All changes have been successfully applied. Please confirm to continue with the boot process.'), [{
 					label: this._('Continue')
 				}]).then(dojo.hitch(this, function() {
-					this.umcpCommand('setup/shutdownbrowser');
+					this.umcpCommand('setup/shutdownbrowser').then(dojo.hitch(this, function() {
+						this.standby(false);
+					}), dojo.hitch(this, function() {
+						this.standby(false);
+					}));
 				}));
 			});
 
@@ -395,7 +405,12 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			if (joined || role == 'basesystem') {
 				// normal setup scenario, confirm changes and then save
 				_confirm().then(dojo.hitch(this, function() {
-					_save();
+					_save().then(function() {
+						if (applianceMode) {
+							// try to shutdown the browser in appliance mode
+							_shutdown();
+						}
+					});
 				}));
 			}
 			else if (role != 'domaincontroller_master') {
@@ -404,7 +419,10 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				_confirm().then(function() {
 					_password().then(function(username, password) {
 						_save(username, password).then(function() {
-							_shutdown();
+							if (applianceMode) {
+								// try to shutdown the browser in appliance mode
+								_shutdown();
+							}
 						});
 					});
 				});
@@ -413,7 +431,10 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				// unjoined master
 				_confirm().then(function() {
 					_save().then(function() {
-						_shutdown();
+						if (applianceMode) {
+							// try to shutdown the browser in appliance mode
+							_shutdown();
+						}
 					});
 				});
 			}

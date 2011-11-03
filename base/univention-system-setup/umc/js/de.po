@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-03 14:50+0100\n"
+"POT-Creation-Date: 2011-11-03 23:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr "Ein virtuelles Netzwerkgerät kann nicht für DHCP benutzt werden."
 msgid "Access settings"
 msgstr "Zugriffseinstellungen"
 
-#: umc/js/setup.js:350
+#: umc/js/setup.js:358
 msgid "Account data"
 msgstr "Kontodaten"
 
@@ -28,13 +28,15 @@ msgstr "Kontodaten"
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: umc/js/setup.js:387
+#: umc/js/setup.js:395
 msgid ""
 "All changes have been successfully applied. Please confirm to continue with "
 "the boot process."
-msgstr "Alle Änderungen wurden erfolgreich übernommen. Bitte bestätigen Sie, um mit dem Bootprozess fortzufahren."
+msgstr ""
+"Alle Änderungen wurden erfolgreich übernommen. Bitte bestätigen Sie, um mit "
+"dem Bootprozess fortzufahren."
 
-#: umc/js/setup.js:306
+#: umc/js/setup.js:314
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
@@ -50,15 +52,11 @@ msgstr "Zurück"
 msgid "Basic settings"
 msgstr "Basis-Einstellungen"
 
-#: umc/js/_setup/BasisPage.js:30
-msgid "Basis"
-msgstr "Allgemein"
-
 #: umc/js/_setup/CertificatePage.js:70
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup.js:303 umc/js/setup.js:342
+#: umc/js/setup.js:311 umc/js/setup.js:350
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -85,7 +83,7 @@ msgstr ""
 msgid "Common name for the root SSL certificate"
 msgstr "Common-Name für das Root-SSL-Zertifikat"
 
-#: umc/js/setup.js:388
+#: umc/js/setup.js:396
 msgid "Continue"
 msgstr "Fortfahren"
 
@@ -160,6 +158,10 @@ msgstr ""
 msgid "Gateway (IPv6)"
 msgstr ""
 
+#: umc/js/_setup/BasisPage.js:30
+msgid "General"
+msgstr "Allgemein"
+
 #: umc/js/_setup/CertificatePage.js:78
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
@@ -224,7 +226,7 @@ msgstr "Netzwerkgerät"
 msgid "Interfaces"
 msgstr "Netzwerkgeräte"
 
-#: umc/js/setup.js:336
+#: umc/js/setup.js:344
 msgid "Join"
 msgstr ""
 
@@ -272,7 +274,7 @@ msgstr "Neues Root-Passwort"
 msgid "Next"
 msgstr "Vor"
 
-#: umc/js/setup.js:226
+#: umc/js/setup.js:234
 msgid "No changes have been made."
 msgstr "Keine Änderungen wurden übernommen."
 
@@ -293,11 +295,12 @@ msgid "Please choose a network device before querying a DHCP address."
 msgstr ""
 "Bitte wählen sie ein Netzwerkgerät bevor sie eine DHCP-Adresse anfragen."
 
-#: umc/js/setup.js:296
+#: umc/js/setup.js:304
 msgid ""
 "Please confirm to apply these changes to the system. This may take some time."
 msgstr ""
-"Bitte bestätigen Sie, dass diese Änderungen auf das System übertragen werden. Dies kann einige Zeit in Anspruch nehmen."
+"Bitte bestätigen Sie, dass diese Änderungen auf das System übertragen "
+"werden. Dies kann einige Zeit in Anspruch nehmen."
 
 #: umc/js/setup.js:126
 msgid "Reset"
@@ -327,23 +330,25 @@ msgstr "Software-Einstellungen"
 msgid "State"
 msgstr "Bundesland"
 
-#: umc/js/setup.js:378
+#: umc/js/setup.js:386
 msgid "The changes have been successfully applied."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
-#: umc/js/setup.js:290
+#: umc/js/setup.js:298
 msgid "The following changes will be applied to the system:"
 msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 
-#: umc/js/setup.js:232
+#: umc/js/setup.js:240
 msgid "The following entries could not be validated:"
 msgstr "Die folgenden Einträge konnte nicht validiert werden:"
 
-#: umc/js/setup.js:326
+#: umc/js/setup.js:334
 msgid ""
 "The system needs to be joined into the domain. Please enter username and "
 "password of a domain administrator account."
-msgstr "Das System muss in die Domäne gejoint werden. Bitte geben Sie dafür Benutzernamen und Password eines Administrator-Kontos der Domäne an."
+msgstr ""
+"Das System muss in die Domäne gejoint werden. Bitte geben Sie dafür "
+"Benutzernamen und Password eines Administrator-Kontos der Domäne an."
 
 #: umc/js/_setup/LanguagePage.js:38 umc/js/_setup/LanguagePage.js:110
 msgid "Time zone"
@@ -360,6 +365,9 @@ msgstr "Windows-Domäne"
 #: umc/js/_setup/NetworkPage.js:55 umc/js/_setup/NetworkPage.js:418
 msgid "virtual"
 msgstr "virtuell"
+
+#~ msgid "Basis"
+#~ msgstr "Allgemein"
 
 #~ msgid "Changes to system setting may have a severe effect on your system."
 #~ msgstr ""

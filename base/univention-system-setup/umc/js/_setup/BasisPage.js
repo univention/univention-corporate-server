@@ -27,7 +27,7 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
-		this.title = this._('Basis');
+		this.title = this._('General');
 		this.headerText = this._('Basic settings');
 	},
 

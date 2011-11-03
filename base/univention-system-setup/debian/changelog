@@ -1,3 +1,9 @@
+univention-system-setup (5.0.39-1) unstable; urgency=low
+
+  * fixed some GUI logic with respect to appliance mode (Bug #22904) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 03 Nov 2011 23:53:14 +0000
+
 univention-system-setup (5.0.38-1) unstable; urgency=low
 
   * respect system roles and join status (Bug #22904) 

@@ -18,7 +18,7 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 	i18nClass: 'umc.modules.setup',
 
 	// page is only visible for DC master
-	role: ['domaincontroller_backup'],
+	role: ['domaincontroller_master'],
 
 	umcpCommand: umc.tools.umcpCommand,
 
