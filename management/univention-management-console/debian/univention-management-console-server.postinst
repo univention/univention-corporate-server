@@ -50,6 +50,8 @@ univention-config-registry set \
 			--command 'mrtg/*' \
 			--command 'service/*' \
 			--command 'online/*'
+/usr/sbin/univention-management-console-acls allow --user root --flavor tabs \
+			--command 'setup/*'
 
 # configure firewall
 ucr set security/packetfilter/package/univention-management-console-server/tcp/6670/all="ACCEPT" \

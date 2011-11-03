@@ -1,3 +1,9 @@
+univention-management-console (4.0.80-2) unstable; urgency=low
+
+  * added ACL rule to allow system-setup module for root (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 03 Nov 2011 16:51:59 +0100
+
 univention-management-console (4.0.80-1) unstable; urgency=low
 
   * fix build problems; Bug #22460
