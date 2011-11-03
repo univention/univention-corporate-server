@@ -105,6 +105,13 @@ def do_package( package, core ):
 				# copy the .js file
 				dh_ucs.doIt( 'install', srcFile, destFile )
 
+			# copy html files
+			for srcFile in module.html_files:
+				# get destination path
+				destFile = 'debian/%s/usr/share/univention-management-console-frontend/js/umc/modules/%s' % ( package, srcFile[len(module.js_path):] )
+				# copy the .html file
+				dh_ucs.doIt( 'install', srcFile, destFile )
+
 			# copy XML definitions
 			dh_ucs.doIt( 'install', module.xml_definition, 'debian/%(package)s/usr/share/univention-management-console/modules' % module )
 
