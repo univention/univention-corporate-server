@@ -40,7 +40,7 @@ import univention.management.console.modules as umcm
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
-_ = umc.Translation('univention-management-console-module-services').translate
+_ = umc.Translation('univention-management-console-module-vnc').translate
 
 class Instance(umcm.Base):
 	def _get_status(self):
