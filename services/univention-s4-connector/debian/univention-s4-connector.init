@@ -39,7 +39,7 @@ case "$1" in
 		# check ucr autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart s4-connector connector/ad/autostart
+			check_autostart s4-connector connector/s4/autostart
 		fi	
 		log_action_msg "Starting univention-s4-connector daemon"
 		start-stop-daemon --start --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-s4-connector
