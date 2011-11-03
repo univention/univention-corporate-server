@@ -1,3 +1,9 @@
+univention-management-console-module-vnc (1.0.2-2) unstable; urgency=low
+
+  * added JSch copyright (Bug #22901)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 03 Nov 2011 10:04:00 +0100
+
 univention-management-console-module-vnc (1.0.2-1) unstable; urgency=low
 
   * added VNC viewer
