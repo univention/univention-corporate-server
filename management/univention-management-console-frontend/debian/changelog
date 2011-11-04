@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.176-1) unstable; urgency=low
+
+  * added tests/post.sh test script for HTTP UMCP request (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Nov 2011 16:38:46 +0100
+
 univention-management-console-frontend (1.0.175-2) unstable; urgency=low
 
   * enhance upload functionality and fix minor bugs; Bug #23333
