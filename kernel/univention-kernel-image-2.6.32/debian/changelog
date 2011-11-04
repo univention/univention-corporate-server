@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.32 (2.0.0-11) unstable; urgency=low
+
+  * Do not depend on firmware-ivtv and firmware-ipw2x00 any more (Bug #22508)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 04 Nov 2011 08:02:14 +0100
+
 univention-kernel-image-2.6.32 (2.0.0-10) unstable; urgency=low
 
   * Update meta-packages (Bug #22868)
