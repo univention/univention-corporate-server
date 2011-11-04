@@ -28,8 +28,9 @@
 # <http://www.gnu.org/licenses/>.
 
 # ensure that firefox finds the GTK+ printer backends on amd64
-if dpkg-architecture -eamd64; then
-	export GTK_PATH=/usr/lib32/gtk-2.0
+arch=`uname -m`
+if [ $arch = "x86_64" ]; then
+    export GTK_PATH=/usr/lib32/gtk-2.0
 fi
 
 exec /opt/firefox/firefox "$@"

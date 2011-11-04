@@ -1,3 +1,13 @@
+firefox (7.0.1-9) unstable; urgency=low
+
+  * Change architecture detection from dpkg-architecture to uname -m. dpkg-architecture
+    was never properly declared dependency-wise (although it was hidden by indirect
+    deps in 2.4). Adding a dependency on dpkg-dev would lead to deps on GCC and many
+    other packages, which are terribly suitable for a Firefox dependency.
+    Bug #22116	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 04 Nov 2011 09:00:07 +0100
+
 firefox (7.0.1-8) unstable; urgency=low
 
   * remove xulrunner dependency (Bug #22860) 
