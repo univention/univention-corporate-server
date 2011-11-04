@@ -901,7 +901,7 @@ class ucs:
 							ud.debug(ud.LDAP, ud.INFO,
 											   "set key in ucs-object: %s" % ucs_key)
 				else:
-					ud.debug(ud.LDAP, ud.WARN, '__set_values: no ucs_attribute found in %s' % attributes)
+					ud.debug(ud.LDAP, ud.INFO, '__set_values: no ucs_attribute found in %s' % attributes)
 			else:
 				
 				# prevent value resets of mandatory attributes

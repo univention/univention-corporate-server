@@ -73,6 +73,15 @@ class PTRRecord(dnsp.DnssrvRpcRecord):
 		self.dwTtlSeconds=ttl
 		self.data=ptr
 
+class MXRecord(dnsp.DnssrvRpcRecord):
+	def __init__(self, name, priority, serial=1, ttl=3600):
+		super(MXRecord, self).__init__()
+		self.wType=dnsp.DNS_TYPE_MX
+		self.dwSerial=serial
+		self.dwTtlSeconds=ttl
+		self.data.wPriority=priority
+		self.data.nameTarget=name
+
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.alias
@@ -207,6 +216,28 @@ def __unpack_nsRecord(object):
 			ns.append(__append_dot(ndrRecord.data))
 	return ns
 
+def __pack_mxRecord(object, dnsRecords):
+	for mXRecord in object['attributes'].get('mXRecord', []):
+		if mXRecord:
+			ud.debug(ud.LDAP, ud.INFO, '__pack_mxRecord: %s' % mXRecord)
+			mXRecord=univention.s4connector.s4.compatible_modstring(mXRecord)
+			mx=mXRecord.split(' ')
+			priority=mx[0]
+			name=mx[1]
+			mx_record=MXRecord(name, int(priority))
+			dnsRecords.append(ndr_pack(mx_record))
+			ud.debug(ud.LDAP, ud.INFO, '__pack_mxRecord: %s' % ndr_pack(mx_record))
+
+def __unpack_mxRecord(object):
+	mx=[]
+	dnsRecords=object['attributes'].get('dnsRecord')
+	for dnsRecord in dnsRecords:
+		dnsRecord=dnsRecord.encode('latin1')
+		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
+		if ndrRecord.wType == dnsp.DNS_TYPE_MX:
+			mx.append( [str(ndrRecord.data.wPriority), __append_dot(ndrRecord.data.nameTarget)] )
+	return mx
+
 def __pack_cName(object, dnsRecords):
 	for c in object['attributes'].get('cNAMERecord', []):
 		c=univention.s4connector.s4.compatible_modstring(__remove_dot(c))
@@ -291,6 +322,8 @@ def s4_zone_create(s4connector, object):
 	__pack_soaRecord(object, dnsRecords)
 
 	__pack_aRecord(object, dnsRecords)
+
+	__pack_mxRecord(object, dnsRecords)
 
 	s4connector.lo_s4.modify(zoneDnAt, [('dnsRecord', old_dnsRecords, dnsRecords)])
 
@@ -592,12 +625,13 @@ def ucs_srv_record_create(s4connector, object):
 		newRecord= univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
 		# Make syntax UDM compatible
-		service=string.join(relativeDomainName.split('.')[:-1])
+		service=string.join(relativeDomainName.split('.')[:-1], '.')
 		if service.startswith('_'):
 			service=service[1:] 
 		protocol=relativeDomainName.split('.')[-1]
 		if protocol.startswith('_'):
 			protocol=protocol[1:] 
+		ud.debug(ud.LDAP, ud.INFO, 'SRV create: service="%s" protocol="%s"' % (service, protocol))
 		newRecord['name']=[service, protocol]
 		newRecord['location']=srv
 		newRecord.create()
@@ -630,6 +664,7 @@ def s4_srv_record_create(s4connector, object):
 
 	dnsNodeDn=s4_dns_node_base_create(s4connector, object, dnsRecords)
 
+	
 def ucs_zone_create(s4connector, object, dns_type):
 	_d=ud.function('ucs_zone_create')
 
@@ -644,6 +679,8 @@ def ucs_zone_create(s4connector, object, dns_type):
 	soa=__unpack_soaRecord(object)
 
 	a=__unpack_aRecord(object)
+
+	mx=__unpack_mxRecord(object)
 
 	# Does a zone already exist?
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
@@ -665,6 +702,9 @@ def ucs_zone_create(s4connector, object, dns_type):
 		if dns_type == 'forward_zone':
 			if set(a) != set(zone['a']):
 				zone['a'] = a
+			mapMX=lambda m: '%s %s' % (m[0], m[1])
+			if set(map(mapMX,mx)) != set(map(mapMX,zone['mx'])):
+				zone['mx'] = mx
 	else:
 		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
 
@@ -686,6 +726,7 @@ def ucs_zone_create(s4connector, object, dns_type):
 		zone['expire']=soa['expire']
 		zone['ttl']=soa['ttl']
 		zone['a']=a
+		zone['mx']=mx
 		zone.create()
 
 		

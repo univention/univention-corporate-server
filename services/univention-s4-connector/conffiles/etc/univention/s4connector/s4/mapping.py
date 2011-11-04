@@ -616,7 +616,7 @@ s4_mapping = {
 
 			con_search_filter='(|(objectClass=container)(objectClass=builtinDomain))', # builtinDomain is cn=builtin (with group cn=Administrators)
 
-			ignore_filter='(|(cn=mail)(cn=kerberos))',
+			ignore_filter='(|(cn=mail)(cn=kerberos)(cn=System)(cn=MicrosoftDNS))',
 
 			ignore_subtree = global_ignore_subtree,
 			
