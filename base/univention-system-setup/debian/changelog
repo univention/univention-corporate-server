@@ -1,3 +1,10 @@
+univention-system-setup (5.0.44-1) unstable; urgency=low
+
+  * UMC: continue automatically with boot process after save in appliance mode,
+    adjusted GUI logic (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Nov 2011 11:52:08 +0100
+
 univention-system-setup (5.0.43-1) unstable; urgency=low
 
   * UMC: modificiation in the confirmation dialogs, handle username/password

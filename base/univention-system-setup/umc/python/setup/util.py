@@ -214,6 +214,22 @@ def run_joinscript(_username, password):
 	# remove password file
 	os.remove(PATH_PASSWORD_FILE)
 
+def shutdown_browser():
+	success = False
+	try:
+		fpid = open(PATH_BROWSER_PID)
+		strpid = fpid.readline().strip()
+		pid = int(strpid)
+		p = psutil.Process(pid)
+		success = True
+	except IOError:
+		MODULE.error('cannot open browser PID file: %s' % PATH_BROWSER_PID)
+	except ValueError:
+		MODULE.error('browser PID is not a number: "%s"' % strpid)
+	except psutil.NoSuchProcess:
+		MODULE.error('cannot kill process with PID: %s' % pid)
+	return success
+
 def detect_interfaces():
 	"""
 	Function to detect network interfaces in local sysfs.

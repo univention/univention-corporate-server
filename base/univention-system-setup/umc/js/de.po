@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-04 02:44+0100\n"
+"POT-Creation-Date: 2011-11-04 11:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr "Ein virtuelles Netzwerkgerät kann nicht für DHCP benutzt werden."
 msgid "Access settings"
 msgstr "Zugriffseinstellungen"
 
-#: umc/js/setup.js:358
+#: umc/js/setup.js:368
 msgid "Account data"
 msgstr "Kontodaten"
 
@@ -28,15 +28,7 @@ msgstr "Kontodaten"
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: umc/js/setup.js:410
-msgid ""
-"All changes have been successfully applied. Please confirm to continue with "
-"the boot process."
-msgstr ""
-"Alle Änderungen wurden erfolgreich übernommen. Bitte bestätigen Sie, um mit "
-"dem Bootprozess fortzufahren."
-
-#: umc/js/setup.js:316 umc/js/setup.js:379
+#: umc/js/setup.js:321 umc/js/setup.js:395
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
@@ -56,7 +48,7 @@ msgstr "Basis-Einstellungen"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup.js:313 umc/js/setup.js:350 umc/js/setup.js:376
+#: umc/js/setup.js:318 umc/js/setup.js:360 umc/js/setup.js:392
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -82,10 +74,6 @@ msgstr ""
 #: umc/js/_setup/CertificatePage.js:46
 msgid "Common name for the root SSL certificate"
 msgstr "Common-Name für das Root-SSL-Zertifikat"
-
-#: umc/js/setup.js:411
-msgid "Continue"
-msgstr "Fortfahren"
 
 #: umc/js/_setup/CertificatePage.js:52
 msgid "Country"
@@ -226,7 +214,7 @@ msgstr "Netzwerkgerät"
 msgid "Interfaces"
 msgstr "Netzwerkgeräte"
 
-#: umc/js/setup.js:344
+#: umc/js/setup.js:354
 msgid "Join"
 msgstr ""
 
@@ -274,7 +262,7 @@ msgstr "Neues Root-Passwort"
 msgid "Next"
 msgstr "Vor"
 
-#: umc/js/setup.js:236
+#: umc/js/setup.js:237
 msgid "No changes have been made."
 msgstr "Keine Änderungen wurden übernommen."
 
@@ -295,14 +283,14 @@ msgid "Please choose a network device before querying a DHCP address."
 msgstr ""
 "Bitte wählen sie ein Netzwerkgerät bevor sie eine DHCP-Adresse anfragen."
 
-#: umc/js/setup.js:308
+#: umc/js/setup.js:309
 msgid ""
 "Please confirm to apply these changes to the system. This may take some time."
 msgstr ""
 "Bitte bestätigen Sie, dass diese Änderungen auf das System übertragen "
 "werden. Dies kann einige Zeit in Anspruch nehmen."
 
-#: umc/js/setup.js:127
+#: umc/js/setup.js:126
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -314,7 +302,7 @@ msgstr "Root-Passwort"
 msgid "SSL root certificate"
 msgstr "SSL-Root-Zertifikat"
 
-#: umc/js/setup.js:121
+#: umc/js/setup.js:120
 msgid "Save"
 msgstr "Speichern"
 
@@ -330,19 +318,23 @@ msgstr "Software-Einstellungen"
 msgid "State"
 msgstr "Bundesland"
 
-#: umc/js/setup.js:401
+#: umc/js/setup.js:312 umc/js/setup.js:336 umc/js/setup.js:387
+msgid "The boot process will then continue automatically."
+msgstr "Der Bootvorgang wird danach automatisch weiterlaufen."
+
+#: umc/js/setup.js:418
 msgid "The changes have been successfully applied."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
-#: umc/js/setup.js:302
+#: umc/js/setup.js:303
 msgid "The following changes will be applied to the system:"
 msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 
-#: umc/js/setup.js:242
+#: umc/js/setup.js:243
 msgid "The following entries could not be validated:"
 msgstr "Die folgenden Einträge konnte nicht validiert werden:"
 
-#: umc/js/setup.js:334
+#: umc/js/setup.js:333
 msgid ""
 "The specified settings will be applied to the system and the system will be "
 "joined into the domain. Please enter username and password of a domain "
@@ -352,13 +344,13 @@ msgstr ""
 "das System in die Domäne gejoint. Bitte geben Sie dafür Benutzernamen und "
 "Password eines Administrator-Kontos der Domäne an."
 
-#: umc/js/setup.js:373
+#: umc/js/setup.js:384
 msgid ""
 "The specified settings will be applied to the system. This may take some "
 "time. Please confirm to proceed."
 msgstr ""
-"Die angegebenen Einstellungen werden auf das System übertragen, dies kann einen Moment dauern. Bitte "
-"bestätigen Sie um fortzufahren."
+"Die angegebenen Einstellungen werden auf das System übertragen, dies kann "
+"einen Moment dauern. Bitte bestätigen Sie um fortzufahren."
 
 #: umc/js/_setup/LanguagePage.js:38 umc/js/_setup/LanguagePage.js:110
 msgid "Time zone"
@@ -376,6 +368,13 @@ msgstr "Windows-Domäne"
 msgid "virtual"
 msgstr "virtuell"
 
+#~ msgid ""
+#~ "All changes have been successfully applied. Please confirm to continue "
+#~ "with the boot process."
+#~ msgstr ""
+#~ "Alle Änderungen wurden erfolgreich übernommen. Bitte bestätigen Sie, um "
+#~ "mit dem Bootprozess fortzufahren."
+
 #~ msgid "Basis"
 #~ msgstr "Allgemein"
 
@@ -383,6 +382,9 @@ msgstr "virtuell"
 #~ msgstr ""
 #~ "Änderungen der Systemeinstellungen kann tiefgreifende Auswirkungen auf "
 #~ "Ihr System haben."
+
+#~ msgid "Continue"
+#~ msgstr "Fortfahren"
 
 #~ msgid "DHCP server"
 #~ msgstr "DHCP-Server"

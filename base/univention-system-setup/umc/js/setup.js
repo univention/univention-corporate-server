@@ -113,7 +113,6 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			var tabContainer = new umc.widgets.TabContainer({
 				nested: true
 			});
-			this.addChild(tabContainer);
 
 			// each page has the same buttons for saving/resetting
 			var buttons = [{
@@ -153,6 +152,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				tabContainer.addChild(ipage);
 				this._pages.push(ipage);
 			}, this);
+
+			this.addChild(tabContainer);
 		}
 
 		this.startup();
@@ -230,6 +231,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var joined = this._orgValues['joined'];
 		var role = this._orgValues['server/role'];
 		var applianceMode = umc.tools.status('username') == '__systemsetup__';
+		var msgBoot = this._('The boot process will then continue automatically.');
 
 		// only submit data to server if there are changes and the system is joined
 		if (!nchanges && (joined || role == 'basesystem')) {
@@ -306,6 +308,10 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					}
 				});
 				confirmMessage += '</ul><p>' + this._('Please confirm to apply these changes to the system. This may take some time.') + '</p>';
+				if (applianceMode) {
+					// note that the boot process will continue afterwards
+					confirmMessage += '<p>' + msgBoot + '</p>';
+				}
 
 				return umc.dialog.confirm(confirmMessage, [{
 					name: 'cancel',
@@ -325,13 +331,18 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 			// function to ask the user for DC account data
 			var _password = dojo.hitch(this, function() {
+				var msg = '<p>' + this._('The specified settings will be applied to the system and the system will be joined into the domain. Please enter username and password of a domain administrator account.') + '</p>'; 
+				if (applianceMode) {
+					// note that the boot process will continue afterwards
+					msg += '<p>' + msgBoot + '</p>';
+				}
 				var deferred = new dojo.Deferred();
 				var dialog = null;
 				var form = new umc.widgets.Form({
 					widgets: [{
 						name: 'text',
 						type: 'Text',
-						content: this._('The specified settings will be applied to the system and the system will be joined into the domain. Please enter username and password of a domain administrator account.')
+						content: msg
 					}, {
 						name: 'TextBox',
 						type: 'username'
@@ -369,8 +380,14 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				return deferred;
 			});
 
+			// confirmation message for the master
 			var _confirmMaster = dojo.hitch(this, function() {
-				return umc.dialog.confirm(this._('The specified settings will be applied to the system. This may take some time. Please confirm to proceed.'), [{
+				var msg = '<p>' + this._('The specified settings will be applied to the system. This may take some time. Please confirm to proceed.') + '</p>';
+				if (applianceMode) {
+					// note that the boot process will continue afterwards
+					msg += '<p>' + msgBoot + '</p>';
+				}
+				return umc.dialog.confirm(msg, [{
 					name: 'cancel',
 					'default': true,
 					label: this._('Cancel')
@@ -390,31 +407,21 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			var _save = dojo.hitch(this, function(username, password) {
 				// send save command to server
 				this.standby(true);
+				var handleErrors = !applianceMode;  // if we are in appliance mode, ignore errors (browser is shutdown automatically)
 				return this.umcpCommand('setup/save', { 
 					values: values,
 					username: username || null,
 					password: password || null
-				}).then(dojo.hitch(this, function() {
+				}, handleErrors).then(dojo.hitch(this, function() {
 					this.load();
 					if (joined || role == 'basesystem') {
 						// normal setup mode, notify that the changes have been applied
 						umc.dialog.notify(this._('The changes have been successfully applied.'));
 					}
 				}), dojo.hitch(this, function() {
-					this.standby(false);
-				}));
-			});
-
-			// function to shutdown the browser
-			var _shutdown = dojo.hitch(this, function() {
-				umc.dialog.confirm(this._('All changes have been successfully applied. Please confirm to continue with the boot process.'), [{
-					label: this._('Continue')
-				}]).then(dojo.hitch(this, function() {
-					this.umcpCommand('setup/shutdownbrowser').then(dojo.hitch(this, function() {
+					if (!applianceMode) {
 						this.standby(false);
-					}), dojo.hitch(this, function() {
-						this.standby(false);
-					}));
+					}
 				}));
 			});
 
@@ -422,35 +429,20 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			if (joined || role == 'basesystem') {
 				// normal setup scenario, confirm changes and then save
 				_confirmChanges().then(dojo.hitch(this, function() {
-					_save().then(function() {
-						if (applianceMode) {
-							// try to shutdown the browser in appliance mode
-							_shutdown();
-						}
-					});
+					_save();
 				}));
 			}
 			else if (role != 'domaincontroller_master') {
 				// unjoined system scenario and not master
 				// we need a proper DC administrator account
 				_password().then(function(username, password) {
-					_save(username, password).then(function() {
-						if (applianceMode) {
-							// try to shutdown the browser in appliance mode
-							_shutdown();
-						}
-					});
+					_save(username, password);
 				});
 			}
 			else {
 				// unjoined master
 				_confirmMaster().then(function() {
-					_save().then(function() {
-						if (applianceMode) {
-							// try to shutdown the browser in appliance mode
-							_shutdown();
-						}
-					});
+					_save();
 				});
 			}
 		}), dojo.hitch(this, function() {

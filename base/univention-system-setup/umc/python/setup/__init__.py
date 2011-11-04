@@ -81,30 +81,16 @@ class Instance(umcm.Base):
 			MODULE.info('runnning system setup join script')
 			util.run_joinscript()
 
-		# finish request
-		self.finished(request.id, True)
-
-	def shutdownbrowser(self, request):
-		success = False
 		if self._username == '__systemsetup__':
-			# appliance mode (system setup during the boot), we need to kill firefox
-			try:
-				fpid = open(util.PATH_BROWSER_PID)
-				strpid = fpid.readline().strip()
-				pid = int(strpid)
-				p = psutil.Process(pid)
-				success = True
-			except IOError:
-				MODULE.error('cannot open browser PID file: %s' % util.PATH_BROWSER_PID)
-			except ValueError:
-				MODULE.error('browser PID is not a number: "%s"' % strpid)
-			except psutil.NoSuchProcess:
-				MODULE.error('cannot kill process with PID: %s' % pid)
-
-		if not success:
-			self.finished(request.id, False, message=_('Failed to shut down the web browser.'))
+			# shut down the browser in appliance mode
+			if not util.shutdown_browser():
+				self.finished(request.id, False, message=_('Failed to shut down the web browser.'))
+			else:
+				self.finished(request.id, True)
 		else:
+			# finish request
 			self.finished(request.id, True)
+
 
 	def validate(self, request):
 		'''Validate the specified values given in the dict as option named "values".
