@@ -42,6 +42,7 @@ import fnmatch
 import re
 import sys
 import apt
+import psutil
 
 from univention.management.console.log import MODULE
 
@@ -220,20 +221,20 @@ def run_joinscript(_username = None, password = None):
 		os.system('%s >> %s 2>&1' % (PATH_JOIN_SCRIPT, LOG_FILE))
 
 def shutdown_browser():
-	success = False
 	try:
 		fpid = open(PATH_BROWSER_PID)
 		strpid = fpid.readline().strip()
 		pid = int(strpid)
 		p = psutil.Process(pid)
-		success = True
+		p.kill()
+		return True
 	except IOError:
 		MODULE.error('cannot open browser PID file: %s' % PATH_BROWSER_PID)
 	except ValueError:
 		MODULE.error('browser PID is not a number: "%s"' % strpid)
 	except psutil.NoSuchProcess:
 		MODULE.error('cannot kill process with PID: %s' % pid)
-	return success
+	return False
 
 def detect_interfaces():
 	"""

@@ -84,7 +84,7 @@ class Instance(umcm.Base):
 		if self._username == '__systemsetup__':
 			# shut down the browser in appliance mode
 			MODULE.info('Appliance mode: try to shut down the browser')
-			if not util.shutdown_browser():
+			if util.shutdown_browser():
 				MODULE.info('... shutting down successful')
 				self.finished(request.id, False, message=_('Failed to shut down the web browser.'))
 			else:
