@@ -46,13 +46,13 @@ fi
 locale=`get_profile_var locale`
 default_locale=`get_profile_var "locale/default"`
 
-locale-gen
-
 if [ -z "$locale" ]; then
 	univention-config-registry unset locale
 else
 	univention-config-registry set locale="$locale"
 fi
+
+locale-gen
 
 
 exit 0

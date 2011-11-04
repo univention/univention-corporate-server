@@ -1,3 +1,9 @@
+univention-system-setup (5.0.41-1) unstable; urgency=low
+
+  * fixed wrong execution order in language/10language (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Nov 2011 01:08:22 +0100
+
 univention-system-setup (5.0.40-1) unstable; urgency=low
 
   * fixed error in script function info_header (Bug #22904) 
