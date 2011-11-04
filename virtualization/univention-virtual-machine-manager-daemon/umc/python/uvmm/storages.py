@@ -80,7 +80,10 @@ class Storages( object ):
 	def get_pool( self, node_uri, pool_name ):
 		"""Returns a pool object or None if the pool could not be found"""
 		if not node_uri in self.storage_pools:
-			return None
+			success, data = self.uvmm.send( 'STORAGE_POOLS', None, uri = node_uri )
+			self.storage_pools[ node_uri ] = dict( map( lambda p: ( p.name, object2dict( p ) ), data ) )
+			if not node_uri in self.storage_pools:
+				return None
 		if not pool_name in self.storage_pools[ node_uri ]:
 			return None
 
@@ -92,11 +95,11 @@ class Storages( object ):
 		pool = self.get_pool( node_uri, pool_name )
 		if pool is None:
 			return None
-		return pool.path
+		return pool[ 'path' ]
 
 	def is_file_pool( self, node_uri, pool_name ):
 		pool = self.get_pool( node_uri, pool_name )
 		if pool is None:
 			return None
 
-		return pool.type in ( 'dir', 'netfs' )
+		return pool[ 'type' ] in ( 'dir', 'netfs' )

@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
+
 from univention.lib.i18n import Translation
 
 from univention.management.console.config import ucr
@@ -90,7 +92,7 @@ class Domains( object ):
 
 			success, data = result
 
-			json = object2dict( data, convert_attrs = ( 'graphics', 'interfaces', 'disks' )  )
+			json = object2dict( data )
 			MODULE.info( 'Got domain description: success: %s, data: %s' % ( success, json ) )
 			self.finished( request.id, { 'success' : success, 'data' : json } )
 
@@ -106,13 +108,13 @@ class Domains( object ):
 			drive = Disk()
 			drive.device = disk[ 'device' ]
 			drive.driver_type = disk[ 'driver_type' ]
-			pool_path = self.get_pool_path( disk.get( 'poolName' ) )
+			pool_path = self.get_pool_path( node_uri, disk.get( 'poolName' ) )
 			if pool_path:
 				drive.source = os.path.join( pool_path, disk[ 'volumeFilename' ] )
 			else:
 				drive.source = None
 
-			file_pool = self.is_file_pool( disk.get( 'poolName' ) )
+			file_pool = self.is_file_pool( node_uri, disk.get( 'poolName' ) )
 			if file_pool:
 				drive.type = Disk.TYPE_FILE
 			else:
@@ -243,7 +245,17 @@ class Domains( object ):
 					iface.model = 'virtio'
 			domain_info.interfaces = [ iface, ]
 
-		self.uvmm.send( 'DOMAIN_DEFINE', Callback( self._thread_finish, request ), uri = request.options[ 'nodeURI' ], domain = domain_info )
+		def _finished( thread, result, request ):
+			if self._check_thread_error( thread, result, request ):
+				return
+
+			success, data = result
+
+			json = object2dict( data )
+			MODULE.info( 'New domain: success: %s, data: %s' % ( success, json ) )
+			self.finished( request.id, { 'success' : success, 'data' : json } )
+
+		self.uvmm.send( 'DOMAIN_DEFINE', Callback( _finished, request ), uri = request.options[ 'nodeURI' ], domain = domain_info )
 
 	def domain_put( self, request ):
 		"""Modifies a domain domainUUID on node nodeURI.
@@ -263,8 +275,8 @@ class Domains( object ):
 		"""
 		self.required_options( request, 'domainURI', 'domainState' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
-
-		if request.options[ 'domainState' ] not in Instance.DOMAIN_STATES:
+		MODULE.info( 'nodeURI: %s, domainUUID: %s' % ( node_uri, domain_uuid ) )
+		if request.options[ 'domainState' ] not in self.DOMAIN_STATES:
 			raise UMC_OptionTypeError( _( 'Invalid domain state' ) )
 		self.uvmm.send( 'DOMAIN_STATE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, state = request.options[ 'domainState' ] )
 

@@ -152,37 +152,6 @@ class MemorySize( object ):
 			return ''
 		return MemorySize.num2str( num )
 
-class VirtTech( object ):
-	def __init__( self, virttech = None ):
-		self.reset()
-		if virttech:
-			self.__call__( virttech )
-
-	def reset( self ):
-		self.domain = None
-		self.os = None
-
-	def __call__( self, virttech ):
-		if virttech == None:
-			self.reset()
-			return
-		if virttech.find( '-' ) < 0:
-			raise AttributeError( 'wrong format of attribute' )
-		self.domain, self.os = virttech.split( '-', 1 )
-
-	def pv( self ):
-		return self.os in ( 'xen', 'linux' )
-
-	def hvm( self ):
-		return self.os == 'hvm'
-
-class ddict(dict):
-	"""Wrapper for dictionary with default value for unset keys."""
-	def __init__(self, *args, **kwargs):
-		dict.__init__(self, *args, **kwargs)
-	def __getitem__(self, key):
-		return self.get(key, '<UNSET>')
-
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

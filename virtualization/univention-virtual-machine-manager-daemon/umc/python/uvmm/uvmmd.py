@@ -79,11 +79,20 @@ class UVMM_Request( object ):
 		except client.ClientError, e:
 			MODULE.info( 'The UVMM client raised an exception: %s' % str( e ) )
 			raise UVMM_Error( str( e ) )
-		except Exception, e:
-			MODULE.error( 'EXCEPTION: %s' % str( e ) )
 
 		MODULE.info( 'Returning result from UVMMd' )
-		return data
+		return self.response( data )
+
+	def response( self, result ):
+		data = None
+		success = result.status == 'OK'
+		if isinstance( result, protocol.Response_DUMP ):
+			data = result.data
+		elif isinstance( result, protocol.Response_ERROR ):
+			data = result.msg
+		elif isinstance( result, protocol.Response_OK ):
+			pass # no further data available
+		return ( success, data )
 
 class UVMM_ConnectionThread( Simple, UVMM_Request ):
 	SOCKET_PATH = '/var/run/uvmm.socket'
@@ -108,18 +117,8 @@ class UVMM_ConnectionThread( Simple, UVMM_Request ):
 
 	def _finished( self, thread, result ):
 		MODULE.info( 'Thread returned result: %s' % str( result ) )
-		data = None
-		success = False
 		if not isinstance( result, BaseException ):
-			success = result.status == 'OK'
-			if isinstance( result, protocol.Response_DUMP ):
-				data = result.data
-			elif isinstance( result, protocol.Response_ERROR ):
-				data = result.msg()
-			elif isinstance( result, protocol.Response_OK ):
-				pass # no further data available
-			MODULE.info( 'Passing result to user callback' )
-			self._user_callback( thread, ( success, data ) )
+			self._user_callback( thread, result )
 		else:
 			MODULE.info( 'Passing exception to user callback' )
 			self._user_callback( thread, result )
@@ -134,8 +133,8 @@ class UVMM_RequestBroker( list ):
 		MODULE.info( 'Sending request %s to UVMMd' % request )
 
 		if callback is None: # synchron call
-			request = UVMM_Request()
-			return request.request( request, **kwargs )
+			request_obj = UVMM_Request()
+			return request_obj.request( request, **kwargs )
 
 		# cleanup ...
 		for thread in copy.copy( self ):

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.22-1) unstable; urgency=low
+
+  * support creation of domains with disks; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 04 Nov 2011 18:08:53 +0100
+
 univention-virtual-machine-manager-daemon (1.0.21-1) unstable; urgency=low
 
   * first step in creating domains via UMC; Bug #22893

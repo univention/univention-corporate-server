@@ -182,6 +182,8 @@ __all += ['xen%s' % v for v in ['', '+unix', '+tcp', '+ssh']]
 
 urlparse.uses_netloc += __all
 urlparse.uses_query += __all
+urlparse.uses_fragment += __all
+
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()
