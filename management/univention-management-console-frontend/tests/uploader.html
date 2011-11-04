@@ -1,0 +1,49 @@
+<html>
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style type="text/css">
+            @import url("/univention-management-console/js/dojo/resources/dojo.css");
+            @import url("/univention-management-console/css/dijit/themes/umc/umc.css");
+            @import url("/univention-management-console/css/dojox/grid/resources/Grid.css");
+            @import url("/univention-management-console/css/dojox/grid/resources/umcGrid.css");
+            @import url("/univention-management-console/css/dojox/grid/enhanced/resources/EnhancedGrid.css");
+            @import url("/univention-management-console/css/dojox/grid/enhanced/resources/umc/EnhancedGrid.css");
+            @import url("/univention-management-console/css/dojox/form/resources/CheckedMultiSelect.css");
+            @import url("/univention-management-console/css/dojox/widget/Dialog/Dialog.css");
+            h1 {
+                margin-bottom: 5px;
+                margin-top: 10px;
+            }
+            .umcLabelPane {
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+            html {
+                background: #FFF;
+            }
+            body {
+                overflow: auto;
+            }
+        </style>
+        <script type="text/javascript" src="/univention-management-console/js/dojo/dojo.js"></script>
+        <script type="text/javascript">
+            dojo.require("umc.tools");
+            dojo.require("umc.widgets.Form");
+            dojo.require("umc.widgets.MultiInput");
+            dojo.require("umc.widgets.ContainerWidget");
+        </script>
+        <script type="text/javascript">
+			umc.tools.umcpCommand( 'auth', { username : 'Administrator', password : 'univention' } );
+		</script>
+</head>
+<body>
+
+<h2>Upload a file</h2>
+            <form action="/umcp/upload" method="post" enctype="multipart/form-data">
+            filename: <input type="file" name="myFile" /><br />
+            <input type="submit" />
+            </form>
+            <h2>Download a file</h2>
+            <a href='download'>This one</a>
+</body>
+</html>
