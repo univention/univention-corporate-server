@@ -260,6 +260,22 @@ else
 	python_version="python2.6"
 fi
 
+
+# Remove firmware packages, which require an interactive debconf EULA confirmation. Early kernel
+# meta packages had a dependency, which has been removed in 2.4-4. Double-check anyway, since
+# some installations might carry the package locally or from uninstalled UCS 2.3 packages
+dpkg --purge firmware-ipw2x00 firmware-ivtv
+if [ "$(dpkg-query -W -f='${Status}\n' firmware-ipw2x00 2>/dev/null)" = "hold ok installed" ]; then
+	echo "firmware-ipw2x00 needs to be removed before the update"
+	exit 1
+fi
+
+if [ "$(dpkg-query -W -f='${Status}\n' firmware-ivtv 2>/dev/null)" = "hold ok installed" ]; then
+	echo "firmware-ivtv needs to be removed before the update"
+	exit 1
+fi
+
+
 # BEGIN -- update to 3.0-0 Bug #22878
 # first, test if univention-thin-client-basesystem is installed (UCS TCS or UCS with thin-client packages)
 # second, activate tcs component (thin client services are now only available via component tcs)
