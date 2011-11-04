@@ -1,3 +1,9 @@
+univention-system-setup (5.0.42-1) unstable; urgency=low
+
+  * UMC: added call to this.startup (Bug #22904) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Nov 2011 02:07:42 +0100
+
 univention-system-setup (5.0.41-1) unstable; urgency=low
 
   * fixed wrong execution order in language/10language (Bug #22904)

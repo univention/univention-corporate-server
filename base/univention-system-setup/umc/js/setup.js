@@ -153,9 +153,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				tabContainer.addChild(ipage);
 				this._pages.push(ipage);
 			}, this);
-			tabContainer.startup();
 		}
 
+		this.startup();
 		this.load();
 	},
 
