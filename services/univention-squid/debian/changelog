@@ -1,3 +1,9 @@
+univention-squid (5.0.3-13) unstable; urgency=low
+
+  * Silence warning (Bug #24372)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 04 Nov 2011 09:37:50 +0100
+
 univention-squid (5.0.3-12) unstable; urgency=low
 
   * Depend on winbind | winbind4 (Bug #22576) 	 
