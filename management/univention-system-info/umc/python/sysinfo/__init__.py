@@ -1,9 +1,10 @@
-#!/usr/bin/make -f
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
 #
-# Univention System Info
-#  rules file for the debian package
+# Univention Management Console
+#  module: ceollecting system information
 #
-# Copyright 2009-2011 Univention GmbH
+# Copyright 2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,16 +31,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_test:
-	ucslint
+import univention.info_tools as uit
+import univention.management.console as umc
+import univention.management.console.modules as umcm
+from univention.management.console.log import MODULE
+from univention.management.console.protocol.definitions import *
 
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
+_ = umc.Translation('univention-management-console-module-sysinfo').translate
 
-override_dh_auto_install:
-	dh-umc-module-install
-	dh_auto_install
+class Instance(umcm.Base):
+	def __init__(self):
+		pass
 
-%:
-	dh $@

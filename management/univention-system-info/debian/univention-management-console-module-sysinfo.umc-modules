@@ -1,0 +1,6 @@
+Module: sysinfo
+Python: umc/python
+Definition: umc/sysinfo.xml
+Syntax: umc/syntax/sysinfo.xml
+Javascript: umc/js
+Icons: umc/icons
