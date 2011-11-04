@@ -58,6 +58,7 @@ PATH_JOIN_SCRIPT = '/usr/lib/univention-system-setup/scripts/setup-join.sh'
 PATH_PROFILE = '/var/cache/univention-system-setup/profile'
 LOG_FILE = '/var/log/univention/setup.log'
 PATH_BROWSER_PID = '/var/cache/univention-system-setup/browser.pid'
+PATH_PASSWORD_FILE = '/var/cache/univention-system-setup/secret'
 
 # list of all needed UCR variables
 UCR_VARIABLES = [
@@ -192,13 +193,26 @@ def run_scripts():
 			# launch script
 			os.system('%s >> %s 2>&1' % (ipath, LOG_FILE))
 
-def run_joinscript():
+def run_joinscript(_username, password):
+	# write password file
+	f = open(PATH_PASSWORD_FILE, 'w')
+	f.write('%s' % password)
+	f.close()
+	os.chmod(PATH_PASSWORD_FILE, 0600)
+
+	# sanitize username
+	reg = re.compile('[^ a-zA-Z_1-9-]')
+	username = reg.sub('_', _username)
+
 	# write header before executing join script
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
 	f.close();
 
-	os.system('%s >> %s 2>&1' % (PATH_JOIN_SCRIPT, LOG_FILE))
+	os.system('%s --dcaccount "%s" --password_file "%s" >> %s 2>&1' % (PATH_JOIN_SCRIPT, username, PATH_PASSWORD_FILE, LOG_FILE))
+
+	# remove password file
+	os.remove(PATH_PASSWORD_FILE)
 
 def detect_interfaces():
 	"""

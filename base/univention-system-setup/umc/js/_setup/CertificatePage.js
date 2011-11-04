@@ -155,7 +155,10 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 		this._form.setFormValues(_vals);
 		this._orgVals = dojo.clone(_vals);
 		this.clearNotes();
-		this._noteShowed = false;
+
+		// reset the flag indicating whether certificate note has been shown or not
+		// we do not need to show the note in appliance mode
+		this._noteShowed = umc.tools.status('username') == '__systemsetup__';
 	},
 
 	getValues: function() {

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-04 00:59+0100\n"
+"POT-Creation-Date: 2011-11-04 02:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr "Kontodaten"
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: umc/js/setup.js:393
+#: umc/js/setup.js:410
 msgid ""
 "All changes have been successfully applied. Please confirm to continue with "
 "the boot process."
@@ -36,7 +36,7 @@ msgstr ""
 "Alle Änderungen wurden erfolgreich übernommen. Bitte bestätigen Sie, um mit "
 "dem Bootprozess fortzufahren."
 
-#: umc/js/setup.js:316
+#: umc/js/setup.js:316 umc/js/setup.js:379
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
@@ -56,7 +56,7 @@ msgstr "Basis-Einstellungen"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup.js:313 umc/js/setup.js:350
+#: umc/js/setup.js:313 umc/js/setup.js:350 umc/js/setup.js:376
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -83,7 +83,7 @@ msgstr ""
 msgid "Common name for the root SSL certificate"
 msgstr "Common-Name für das Root-SSL-Zertifikat"
 
-#: umc/js/setup.js:394
+#: umc/js/setup.js:411
 msgid "Continue"
 msgstr "Fortfahren"
 
@@ -310,7 +310,7 @@ msgstr "Zurücksetzen"
 msgid "Root password"
 msgstr "Root-Passwort"
 
-#: umc/js/_setup/CertificatePage.js:176
+#: umc/js/_setup/CertificatePage.js:179
 msgid "SSL root certificate"
 msgstr "SSL-Root-Zertifikat"
 
@@ -330,7 +330,7 @@ msgstr "Software-Einstellungen"
 msgid "State"
 msgstr "Bundesland"
 
-#: umc/js/setup.js:384
+#: umc/js/setup.js:401
 msgid "The changes have been successfully applied."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
@@ -344,11 +344,21 @@ msgstr "Die folgenden Einträge konnte nicht validiert werden:"
 
 #: umc/js/setup.js:334
 msgid ""
-"The system needs to be joined into the domain. Please enter username and "
-"password of a domain administrator account."
+"The specified settings will be applied to the system and the system will be "
+"joined into the domain. Please enter username and password of a domain "
+"administrator account."
 msgstr ""
-"Das System muss in die Domäne gejoint werden. Bitte geben Sie dafür "
-"Benutzernamen und Password eines Administrator-Kontos der Domäne an."
+"Die angegebenen Einstellungen werden auf das System übertragen, danach wird "
+"das System in die Domäne gejoint. Bitte geben Sie dafür Benutzernamen und "
+"Password eines Administrator-Kontos der Domäne an."
+
+#: umc/js/setup.js:373
+msgid ""
+"The specified settings will be applied to the system. This may take some "
+"time. Please confirm to proceed."
+msgstr ""
+"Die angegebenen Einstellungen werden auf das System übertragen, dies kann einen Moment dauern. Bitte "
+"bestätigen Sie um fortzufahren."
 
 #: umc/js/_setup/LanguagePage.js:38 umc/js/_setup/LanguagePage.js:110
 msgid "Time zone"

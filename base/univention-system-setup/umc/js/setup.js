@@ -288,7 +288,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			}
 
 			// function to confirm changes
-			var _confirm = dojo.hitch(this, function() {
+			var _confirmChanges = dojo.hitch(this, function() {
 				// first see which message needs to be displayed for the confirmation message
 				umc.tools.forIn(values, function(ikey) {
 					dojo.forEach(summaries, function(idesc) {
@@ -331,7 +331,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					widgets: [{
 						name: 'text',
 						type: 'Text',
-						content: this._('The system needs to be joined into the domain. Please enter username and password of a domain administrator account.')
+						content: this._('The specified settings will be applied to the system and the system will be joined into the domain. Please enter username and password of a domain administrator account.')
 					}, {
 						name: 'TextBox',
 						type: 'username'
@@ -369,6 +369,23 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				return deferred;
 			});
 
+			var _confirmMaster = dojo.hitch(this, function() {
+				return umc.dialog.confirm(this._('The specified settings will be applied to the system. This may take some time. Please confirm to proceed.'), [{
+					name: 'cancel',
+					'default': true,
+					label: this._('Cancel')
+				}, {
+					name: 'apply',
+					label: this._('Apply changes')
+				}]).then(dojo.hitch(this, function(response) {
+					if ('apply' != response) {
+						// throw new error to indicate that action has been canceled
+						this.standby(false);
+						throw new Error('cancel');
+					}
+				}));
+			});
+
 			// function to save data
 			var _save = dojo.hitch(this, function(username, password) {
 				// send save command to server
@@ -404,7 +421,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			// show the correct dialogs
 			if (joined || role == 'basesystem') {
 				// normal setup scenario, confirm changes and then save
-				_confirm().then(dojo.hitch(this, function() {
+				_confirmChanges().then(dojo.hitch(this, function() {
 					_save().then(function() {
 						if (applianceMode) {
 							// try to shutdown the browser in appliance mode
@@ -416,20 +433,18 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			else if (role != 'domaincontroller_master') {
 				// unjoined system scenario and not master
 				// we need a proper DC administrator account
-				_confirm().then(function() {
-					_password().then(function(username, password) {
-						_save(username, password).then(function() {
-							if (applianceMode) {
-								// try to shutdown the browser in appliance mode
-								_shutdown();
-							}
-						});
+				_password().then(function(username, password) {
+					_save(username, password).then(function() {
+						if (applianceMode) {
+							// try to shutdown the browser in appliance mode
+							_shutdown();
+						}
 					});
 				});
 			}
 			else {
 				// unjoined master
-				_confirm().then(function() {
+				_confirmMaster().then(function() {
 					_save().then(function() {
 						if (applianceMode) {
 							// try to shutdown the browser in appliance mode
