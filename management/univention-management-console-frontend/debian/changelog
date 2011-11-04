@@ -1,4 +1,4 @@
-univention-management-console-frontend (1.0.175-1) unstable; urgency=low
+univention-management-console-frontend (1.0.175-2) unstable; urgency=low
 
   * enhance upload functionality and fix minor bugs; Bug #23333
   * add upload test web page
