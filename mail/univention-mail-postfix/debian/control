@@ -20,10 +20,9 @@ Conflicts: univention-mail,
  exim4,
  exim4-base,
  exim4-config,
- univention-mail-postfix-forward (<< 6.0),
  univention-mail-postfix-kolab2
 Replaces: univention-mail-postfix-forward (<< 6.0)
-Provides: univention-mail-postfix-forward
+Breaks: univention-mail-postfix-forward (<< 6.0)
 Description: UCS - postfix configuration
  This package contains a basic configuration for the postfix
  mail transport agent.
