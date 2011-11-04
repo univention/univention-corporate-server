@@ -187,7 +187,9 @@ univention-config-registry set ldap/binaryattributes?"krb5Key,userCertificate;bi
 univention-config-registry set security/packetfilter/package/univention-base-files/tcp/22/all=ACCEPT \
 	security/packetfilter/package/univention-base-files/tcp/22/all/en="SSH" \
 	security/packetfilter/package/univention-base-files/tcp/37/all=ACCEPT \
-	security/packetfilter/package/univention-base-files/tcp/37/all/en="time"
+	security/packetfilter/package/univention-base-files/tcp/37/all/en="time" \
+	security/packetfilter/package/univention-base-files/udp/123/all=ACCEPT \
+	security/packetfilter/package/univention-base-files/udp/123/all/en="ntp"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 exit 0
