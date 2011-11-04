@@ -1,3 +1,9 @@
+univention-system-setup (5.0.48-1) unstable; urgency=low
+
+  * UMC: corrected messages for shutting down web browser (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Nov 2011 14:25:20 +0100
+
 univention-system-setup (5.0.47-1) unstable; urgency=low
 
   * UMC: fixed shutting down web browser in appliance mode (Bug #22904)
