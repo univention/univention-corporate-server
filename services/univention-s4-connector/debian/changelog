@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.64-1) unstable; urgency=low
+
+  * Map DNS MX records between S4 and UCS LDAP (Bug #24403)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Nov 2011 23:37:28 +0100
+
 univention-s4-connector (6.0.63-2) unstable; urgency=low
 
   * Ignore cn=System and cn=MicrosoftDNS (Bug #24365)

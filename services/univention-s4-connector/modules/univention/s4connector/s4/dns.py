@@ -702,9 +702,10 @@ def ucs_zone_create(s4connector, object, dns_type):
 		if dns_type == 'forward_zone':
 			if set(a) != set(zone['a']):
 				zone['a'] = a
-			mapMX=lambda m: '%s %s' % (m[0], m[1])
-			if set(map(mapMX,mx)) != set(map(mapMX,zone['mx'])):
-				zone['mx'] = mx
+			if mx:
+				mapMX=lambda m: '%s %s' % (m[0], m[1])
+				if set(map(mapMX,mx)) != set(map(mapMX,zone['mx'])):
+					zone['mx'] = mx
 	else:
 		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
 
