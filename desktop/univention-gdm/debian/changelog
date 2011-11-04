@@ -1,3 +1,9 @@
+univention-gdm (8.0.8-1) unstable; urgency=low
+
+  * remove UCRV system/setup/boot/modules (Bug #23870)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 04 Nov 2011 16:09:19 +0100
+
 univention-gdm (8.0.7-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
