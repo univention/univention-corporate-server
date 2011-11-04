@@ -1,3 +1,9 @@
+univention-squid (5.0.3-16) unstable; urgency=low
+
+  * Fix ucslint warning (Bug #22576)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 04 Nov 2011 14:35:23 +0100
+
 univention-squid (5.0.3-15) unstable; urgency=low
 
   * Merge template changes from 2.4 (Bug #22576)

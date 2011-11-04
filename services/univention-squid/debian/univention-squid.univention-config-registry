@@ -23,6 +23,7 @@ Variables: squid/webports
 Variables: squid/transparentproxy
 Variables: interfaces/.*/address
 Variables: interfaces/.*/netmask
+Variables: interfaces/.*/network
 Variables: squid/ntlmauth/children
 Variables: squid/ntlmauth/keepalive
 Variables: squid/ipauth/.*
