@@ -9,6 +9,7 @@ Build-Depends: debhelper (>> 7),
 
 Package: univention-ldap-server
 Architecture: all
+Recommends: univention-virtual-machine-manager-schema
 Pre-Depends: slapd (>> 2.4.23-7),
  univention-ldap-client,
 Depends: ${misc:Depends},
