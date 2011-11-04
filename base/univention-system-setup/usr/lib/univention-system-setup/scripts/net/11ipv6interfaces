@@ -202,6 +202,9 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 			admin_replace_ip "policies/repositoryserver" "univentionRepositoryServer" "repositoryServer"
 			admin_replace_ip "shares/share" "univentionShareHost" "host" "1"
 			admin_replace_ip "shares/printer" "univentionPrinterSpoolHost" "spoolHost"
+
+			# Change IP at the forward_zone, need by Samba 4
+			admin_replace_ip "dns/forward_zone" "aAAARecord" "a"
 		fi
 
 		old_pkgdb_network=$(univention-config-registry get pgsql/pkgdb/network)

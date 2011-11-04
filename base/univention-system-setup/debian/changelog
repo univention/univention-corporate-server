@@ -1,3 +1,9 @@
+univention-system-setup (5.0.49-1) unstable; urgency=low
+
+  * Change ip address at the dns forward zone (Bug #24166)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Nov 2011 16:16:22 +0100
+
 univention-system-setup (5.0.48-1) unstable; urgency=low
 
   * UMC: corrected messages for shutting down web browser (Bug #22904)
