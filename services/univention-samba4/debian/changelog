@@ -1,3 +1,12 @@
+univention-samba4 (1.0.88-1) unstable; urgency=low
+
+  * Search for S3 DCs instead of search for the samba domain object to
+    determine if we are in a S3 environment. The samba object will be
+    created in 01univention-ldap.inst as part of the base.ldif
+    (Bug #22866)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Nov 2011 06:22:51 +0100
+
 univention-samba4 (1.0.87-2) unstable; urgency=low
 
   * backup samba3 libdir and config in postinst before committing ucr

@@ -58,12 +58,16 @@ while getopts  "h-:W:" option; do
 done
 
 S3_DOMAIN_SID="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
-if [ -n "$S3_DOMAIN_SID" ]; then
+
+# Search for Samba 3 DCs
+S3_DCS="$(univention-ldapsearch -x "(&(objectclass=univentionDomainController)(univentionService=Samba 3))" cn | sed -n 's/cn: \(.*\)/\1/p')"
+if [ -n "$S3_DCS" ]; then
 	## safty belt
 	if is_ucr_true samba4/ignore/mixsetup; then
 		echo "WARNING: samba4/ignore/mixsetup is true. Continue as "
 		echo "         requested"
 	else
+		echo "The following Samba 3 domaincontroller have been found: $S3_DCS"
 		echo "ERROR: It is not possible to install a samba 4 domaincontroller "
 		echo "       into a samba 3 environment."
 		exit 1
@@ -155,7 +159,7 @@ if [ -z "$samba4_function_level" ]; then
 	univention-config-registry set samba4/function/level="$samba4_function_level"
 fi
 
-if [ -z "$S3_DOMAIN_SID" ]; then
+if [ -z "$S3_DCS" ]; then
 
 	/usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$S3_DOMAIN_SID" \
 						--function-level="$samba4_function_level" \
