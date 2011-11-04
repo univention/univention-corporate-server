@@ -1,3 +1,9 @@
+univention-nagios-servicechecks (2.0.3-1) unstable; urgency=low
+
+  * fixed squid process name in check_univention_squid  (Bug #24379)
+
+ -- Felix Botner <botner@univention.de>  Fri, 04 Nov 2011 10:24:55 +0100
+
 univention-nagios-servicechecks (2.0.2-3) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)

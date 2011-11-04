@@ -61,7 +61,7 @@ if [ "$1" = "-h" -o "$1" = "--help" ] ; then
 fi
 
 # check for at least one squid process
-MSG="$(/usr/lib/nagios/plugins/check_procs -w 1: -c 1: -C squid)"
+MSG="$(/usr/lib/nagios/plugins/check_procs -w 1: -c 1: -C squid3)"
 RET="$?"
 if [ ! "$RET" = "0" ] ; then
 	nagiosExit "$RET" "$MSG"
