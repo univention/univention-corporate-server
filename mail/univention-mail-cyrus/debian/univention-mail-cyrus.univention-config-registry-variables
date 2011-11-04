@@ -58,7 +58,6 @@ Description[en]=Sets time interval for checking mailquota settings (minutes)
 Type=str
 Categories=service-mail
 
-
 [mail/cyrus/idlemethod]
 Description[de]=Zu verwendendes Backend für das IDLE Kommando ("no", "poll", "idled")
 Description[en]=The idle backend to use for IDLE command ("no", "poll", "idled")
@@ -92,6 +91,12 @@ Categories=service-mail
 [mail/cyrus/sieve/listen_host]
 Description[de]=Von Sieve zu belegender UNIX oder Internetsocket
 Description[en]=UNIX or internet socket for sieve to listen on
+Type=str
+Categories=service-mail
+
+[mail/cyrus/sieve/port]
+Description[de]=Der von Cyrus zu verwendende Sieve-Port (Standard: 4190)
+Description[en]=The TCP port cyrus should listen on for sieve connections (Default: 4190)
 Type=str
 Categories=service-mail
 

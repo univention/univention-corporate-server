@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.25-2) unstable; urgency=low
+
+  * updated UCR variable descriptions (Bug #24390)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 04 Nov 2011 14:41:43 +0100
+
 univention-mail-cyrus (4.0.25-1) unstable; urgency=low
 
   * set sieve port via UCR variable mail/cyrus/sieve/port (Bug #24390)

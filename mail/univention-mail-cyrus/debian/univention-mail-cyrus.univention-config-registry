@@ -63,6 +63,7 @@ Variables: mail/cyrus/pop
 Variables: mail/cyrus/pop/maxchilds
 Variables: mail/cyrus/sieve/listen_host
 Variables: mail/cyrus/sieve/maxchilds
+Variables: mail/cyrus/sieve/port
 
 Type: subfile
 Multifile: etc/imapd/cyrus.conf
