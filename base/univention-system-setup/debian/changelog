@@ -1,3 +1,12 @@
+univention-system-setup (5.0.51-1) unstable; urgency=low
+
+  * In appliance mode the Administrator account will be created. The
+    password will be saved in /var/lib/univention-ldap/root.secret for
+    the join (Bug #24166)
+  * Remove root password from profile (Bug #22904)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Nov 2011 16:51:47 +0100
+
 univention-system-setup (5.0.50-1) unstable; urgency=low
 
   * stop plymouth before starting X11 (Bug 23870)
