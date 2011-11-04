@@ -1,3 +1,9 @@
+univention-system-setup (5.0.50-1) unstable; urgency=low
+
+  * stop plymouth before starting X11 (Bug 23870)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 04 Nov 2011 16:46:05 +0100
+
 univention-system-setup (5.0.49-1) unstable; urgency=low
 
   * Change ip address at the dns forward zone (Bug #24166)
