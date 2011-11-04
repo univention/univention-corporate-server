@@ -504,7 +504,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 				forwardZone=`univention-directory-manager dns/forward_zone list --filter zone=\$domainname | grep DN | tail -1 | sed -e 's/DN: //g'`
 				reverseZone=`univention-directory-manager dns/reverse_zone list | grep ^DN | tail -1 | sed -e 's|DN: ||'`
 				dhcpService=`univention-directory-manager dhcp/service list | grep DN | tail -1 | sed -e 's/DN: //g'`
-				univention-directory-manager networks/network create --position "cn=networks,$ldap_base" --set name=default --set netmask=$new_ip --set network=$net --set dnsEntryZoneForward=$forwardZone --set dnsEntryZoneReverse=$reverseZone --set dhcpEntryZone=$dhcpService
+				univention-directory-manager networks/network create --position "cn=networks,$ldap_base" --set name=default --set "netmask=$new_netmask" --set "network=$net" --set "dnsEntryZoneForward=$forwardZone" --set "dnsEntryZoneReverse=$reverseZone" --set "dhcpEntryZone=$dhcpService"
 			fi
 		fi
 	fi
