@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.174-1) unstable; urgency=low
+
+  * fixed focus to default buttons in ConfirmDialogs (Bug #22881) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Nov 2011 02:06:26 +0100
+
 univention-management-console-frontend (1.0.173-1) unstable; urgency=low
 
   * fixed problem with Button labels positioned below the button (Bug #22881) 

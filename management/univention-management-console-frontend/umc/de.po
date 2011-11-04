@@ -378,7 +378,7 @@ msgid ""
 "for the administration of objects in your Univention Corporate Server domain "
 "as well as individual of Univention Corporate Server systems."
 msgstr ""
-"Die Univention Management Console ist eine modulare, Web-basierte Anwendung "
+"Univention Management Console ist eine modulare, Web-basierte Anwendung "
 "für die Administrierung von Objekten in der Univention-Corporate-Server-"
 "Domäne und individueller Univention-Corporate-Server-Systeme."
 

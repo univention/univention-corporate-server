@@ -104,8 +104,9 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 			style: 'text-align: center;',
 			'class': 'umcButtonRow'
 		});
+		var defaultButton = null;
 		dojo.forEach(this.options, dojo.hitch(this, function(ichoice, idx) {
-			buttons.addChild(new umc.widgets.Button({
+			var button = new umc.widgets.Button({
 				label: ichoice.label,
 				defaultButton: true === ichoice['default'],
 				onClick: dojo.hitch(this, function(values) {
@@ -120,8 +121,22 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 						ichoice.callback(response);
 					}
 				})
-			}));
+			});
+			buttons.addChild(button);
+
+			// remember default button
+			if (ichoice['default']) {
+				defaultButton = button;
+			}
 		}));
+
+		// make sure that the default button is focused
+		defaultButton = defaultButton || buttons.getChildren()[0];
+		if (defaultButton) {
+			this.connect(this, 'onFocus', function() {
+				defaultButton.focus();
+			});
+		}
 
 		// put the layout together
 		this._container = new umc.widgets.ContainerWidget({});
