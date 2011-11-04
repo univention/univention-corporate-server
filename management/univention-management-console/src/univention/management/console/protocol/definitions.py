@@ -69,6 +69,7 @@ COMMANDS = (
 	CommandDefinition( 'CANCEL', False, 'ids' ),
 	CommandDefinition( 'STATUS', False, 'ids' ),
 	CommandDefinition( 'EXIT', True ),
+	CommandDefinition( 'UPLOAD', True ),
 )
 
 class Status( object ):

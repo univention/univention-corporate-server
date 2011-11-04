@@ -1,3 +1,9 @@
+univention-management-console (4.0.81-1) unstable; urgency=low
+
+  * add UPLOAD command; Bug #23333
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 04 Nov 2011 14:57:17 +0100
+
 univention-management-console (4.0.80-2) unstable; urgency=low
 
   * added ACL rule to allow system-setup module for root (Bug #22904)

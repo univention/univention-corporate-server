@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import base64
 import ldap
 import locale
 import os
@@ -205,6 +206,8 @@ class Processor( signals.Provider ):
 			self.handle_request_version( msg )
 		elif msg.command == 'COMMAND':
 			self.handle_request_command( msg )
+		elif msg.command == 'UPLOAD':
+			self.handle_request_upload( msg )
 		elif msg.command in ( 'STATUS', 'CANCEL', 'CLOSE' ):
 			self.handle_request_unknown( msg )
 		else:
@@ -332,6 +335,38 @@ class Processor( signals.Provider ):
 			notifier.timer_remove( module._inactivity_timer )
 
 		module._inactivity_timer = notifier.timer_add( MODULE_INACTIVITY_TIMER, notifier.Callback( self._mod_inactive, module ) )
+
+	def handle_request_upload( self, msg ):
+		# request.options = { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )
+		response = Response( msg )
+		if not isinstance( msg.options, ( list, tuple ) ):
+			res.status = BAD_REQUEST
+			res.message = status_description( res.status )
+			self.signal_emit( 'response', res )
+			return
+
+		# read tmpfile and convert to base64
+		result = []
+		for file_obj in msg.options:
+			tmpfilename = file_obj[ 'tmpfile' ]
+			if not os.path.isfile( tmpfilename ):
+				res.status = BAD_REQUEST
+				res.message = status_description( res.status )
+				self.signal_emit( 'response', res )
+				return
+			st = os.stat( tmpfilename )
+			max_size = int( ucr.get( 'umc/server/upload/max', 64 ) ) * 1024
+			if st.st_size > max_size:
+				res.status = BAD_REQUEST
+				res.message = status_description( res.status )
+				self.signal_emit( 'response', res )
+				return
+			buf = open( tmpfilename ).read()
+			b64buf = base64.b64encode( buf )
+			result.append( { 'filename' : file_obj.get( 'filename', None ), 'name' : file_obj.get( 'name', None ), 'content' : b64buf } )
+		response.result = result
+		response.status = SUCCESS
+		self.signal_emit( 'response', response )
 
 	def handle_request_command( self, msg ):
 		module_name = self.__is_command_known( msg )
