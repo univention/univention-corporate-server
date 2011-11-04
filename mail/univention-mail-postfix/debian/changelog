@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.32-1) unstable; urgency=low
+
+  * reuse cyrus-ldap.secret for listfilter module (Bug #23819)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 04 Nov 2011 08:56:50 +0100
+
 univention-mail-postfix (6.0.31-1) unstable; urgency=low
 
   * use mailPrimaryAddress in ldap.group table (Bug #22369)
@@ -63,7 +69,7 @@ univention-mail-postfix (6.0.27-1) unstable; urgency=low
 
 univention-mail-postfix (6.0.26-1) unstable; urgency=low
 
-  * do not use ldap_master in listfilter listener module (Bug #23819)
+  * do not use ldap_master in listfilter script (Bug #23819)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 14 Oct 2011 10:34:50 +0200
 
@@ -75,7 +81,7 @@ univention-mail-postfix (6.0.25-2) unstable; urgency=low
 
 univention-mail-postfix (6.0.25-1) unstable; urgency=low
 
-  * fixed LDAP connection of listfilter listener module (Bug #23819)
+  * fixed LDAP connection of listfilter script (Bug #23819)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 13 Oct 2011 15:47:46 +0200
 

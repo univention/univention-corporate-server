@@ -54,7 +54,8 @@ def listfilter(attr):
 
 	if options.ldap_base and sender and recipient:
 
-		ldap = univention.uldap.getMachineConnection(ldap_master=False)
+		# reuse secret file of univention-mail-cyrus
+		ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file = "/etc/cyrus-ldap.secret")
 
 		userDn = ""
 		userGroups = []
