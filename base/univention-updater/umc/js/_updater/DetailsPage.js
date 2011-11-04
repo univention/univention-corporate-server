@@ -98,6 +98,12 @@ dojo.declare("umc.modules._updater.DetailsPage", umc.modules._updater.Page, {
 	    		type:			'TextBox',
 	    		name:			'password',
 	    		label:			this._("Password")
+	    	},
+	    	{
+	    		type:			'TextBox',
+	    		name:			'version',
+	    		label:			this._("Version"),
+	    		regExp:			'^((([0-9]+\.[0-9]+|current),)*([0-9]+\.[0-9]+|current))?$'
 	    	}
     	];
     
@@ -118,7 +124,7 @@ dojo.declare("umc.modules._updater.DetailsPage", umc.modules._updater.Page, {
 	 			[
 		    		['maintained','unmaintained'],
 		    		['username','password'],
-		    		['defaultpackages']
+		    		['version']
 		    	]
     	 	}
     	];

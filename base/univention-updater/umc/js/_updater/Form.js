@@ -51,7 +51,7 @@ dojo.declare("umc.modules._updater.Form", [
 					}
 					else
 					{
-						widget.setValid(true);
+						widget.setValid(null);
 					}
 				}
 			}

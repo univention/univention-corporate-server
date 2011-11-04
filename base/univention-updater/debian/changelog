@@ -1,3 +1,10 @@
+univention-updater (7.0.84-1) unstable; urgency=low
+
+  * applied patch from Frank Greif <fg@it25.de> adding the version field
+    for components; Bug #24357
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 04 Nov 2011 09:12:55 +0100
+
 univention-updater (7.0.83-1) unstable; urgency=low
 
   * Rename univention-security-update to univention-errata-update in

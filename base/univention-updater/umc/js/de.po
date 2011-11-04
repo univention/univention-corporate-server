@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-29 23:07+0200\n"
+"POT-Creation-Date: 2011-11-03 13:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgstr "... bitte warten ..."
 msgid "Add"
 msgstr "Neu"
 
-#: umc/js/_updater/DetailsPage.js:162
+#: umc/js/_updater/DetailsPage.js:168
 msgid "Add a new component"
 msgstr "Neue Komponente hinzufügen"
 
@@ -45,7 +45,7 @@ msgstr "Neue Komponente hinzufügen"
 msgid "Additional components"
 msgstr "Zusätzliche Komponenten"
 
-#: umc/js/_updater/DetailsPage.js:116
+#: umc/js/_updater/DetailsPage.js:122
 msgid "Advanced settings"
 msgstr "Weitere Einstellungen"
 
@@ -87,7 +87,7 @@ msgstr "Verfügbar"
 msgid "Available system updates"
 msgstr "Verfügbare System-Updates"
 
-#: umc/js/_updater/DetailsPage.js:107
+#: umc/js/_updater/DetailsPage.js:113
 msgid "Basic settings"
 msgstr "Allgemeine Einstellungen"
 
@@ -193,7 +193,7 @@ msgstr ""
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: umc/js/_updater/DetailsPage.js:185
+#: umc/js/_updater/DetailsPage.js:191
 msgid "Edit component details [{component}]"
 msgstr "Komponenten-Details [{component}] bearbeiten"
 
@@ -346,7 +346,7 @@ msgstr ""
 "jeweiligen Update in dem <a href='http://forum.univention.de'>Univention "
 "Forum</a>."
 
-#: umc/js/_updater/DetailsPage.js:163
+#: umc/js/_updater/DetailsPage.js:169
 msgid "Please enter the details for the new component."
 msgstr "Bitte geben Sie die Details für die neue Komponente ein."
 
@@ -554,6 +554,10 @@ msgstr "'Unmaintained' Repositories benutzen"
 msgid "Username"
 msgstr "Benutzername"
 
+#: umc/js/_updater/DetailsPage.js:105
+msgid "Version"
+msgstr "Version"
+
 #: umc/js/_updater/UpdatesPage.js:46
 msgid ""
 "When the connection is back you will be prompted to authenticate yourself "
@@ -572,7 +576,7 @@ msgstr ""
 msgid "You're currently watching its log file <b>{logfile}</b>"
 msgstr "Sie sehen die Protokolldatei <b>{logfile}</b>"
 
-#: umc/js/_updater/DetailsPage.js:186
+#: umc/js/_updater/DetailsPage.js:192
 msgid "You're editing the details of the component definition."
 msgstr "Sie bearbeiten die Details der Komponenten-Definition."
 
@@ -588,7 +592,7 @@ msgstr ""
 msgid "Your system is at errata level {erratalevel}."
 msgstr "Ihr System ist auf dem Errata-Level {erratalevel}."
 
-#: umc/js/_updater/DetailsPage.js:27 umc/js/_updater/ProgressPage.js:74
+#: umc/js/_updater/ProgressPage.js:74 umc/js/_updater/DetailsPage.js:27
 msgid "back to overview"
 msgstr "zurück zur Übersicht"
 
