@@ -857,7 +857,7 @@ class v4netmask(simple):
 
 	@classmethod
 	def parse(self, text):
-		_ip=ipAddress()
+		_ip=ipv4Address()
 		_int=integer()
 		errors=0
 		try:

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.171-1) unstable; urgency=low
+
+  * use IPv4 address in IPv4 netmask syntax (Bug #24256)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 04 Nov 2011 13:06:24 +0100
+
 univention-directory-manager-modules (7.0.170-1) unstable; urgency=low
 
   * getPolicies: fix default values for keyword arguments; Bug #22439
