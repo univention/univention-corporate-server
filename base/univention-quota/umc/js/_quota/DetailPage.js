@@ -150,6 +150,15 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 			umc.dialog.alert(this._('Not all limits can be set to zero.'));
 			return false;
 		}
+
+		var sizeLimitSoft = this._form.getWidget('sizeLimitSoft').get('value');
+		var sizeLimitHard = this._form.getWidget('sizeLimitHard').get('value');
+		var fileLimitSoft = this._form.getWidget('fileLimitSoft').get('value');
+		var fileLimitHard = this._form.getWidget('fileLimitHard').get('value');
+		if (sizeLimitHard < sizeLimitSoft || fileLimitHard < fileLimitSoft) {
+			umc.dialog.alert(this._('The soft limit needs to be less than or equal to the hard limit'));
+			return false;
+		}
 		return true;
 	}
 });

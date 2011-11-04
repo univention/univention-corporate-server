@@ -1,3 +1,11 @@
+univention-quota (6.0.13-1) unstable; urgency=low
+
+  * UMC: add missing po-files
+  * UMC: fix validation rule on DetailPage
+  (Bug #22903)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 04 Nov 2011 15:34:53 +0100
+
 univention-quota (6.0.12-2) unstable; urgency=low
 
   * UMC: added dependency to univention-quota (Bug #22903)
