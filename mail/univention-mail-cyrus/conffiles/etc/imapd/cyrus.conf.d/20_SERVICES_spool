@@ -53,10 +53,11 @@ if sieve_host:
 		sieve_pre = ""
 	else:
 		sieve_pre = sieve_host + ":"
+sieve_port = configRegistry.get('mail/cyrus/sieve/port', '4190')
 
 print '        # useful if you need to give users remote access to sieve'
 print '        # by default, we limit this to localhost in Debian'
-print '        sieve cmd="timsieved -C /etc/imapd/imapd.conf" listen="%ssieve"  prefork=0 maxchild=%s' % (sieve_pre, maxchild) 
+print '        sieve cmd="timsieved -C /etc/imapd/imapd.conf" listen="%s%s"  prefork=0 maxchild=%s' % (sieve_pre, sieve_port, maxchild) 
 @!@
         # this one is needed for the notification services
         #notify cmd="notifyd -C /etc/imapd/imapd.conf" listen="/var/run/cyrus/socket/notify" proto="udp" prefork=1

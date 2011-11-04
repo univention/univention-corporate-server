@@ -65,12 +65,12 @@ cp /etc/univention/ssl/$hostname.$domainname/private.key /var/lib/cyrus/ || true
 chmod 600 /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
 chown cyrus /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
 
-# new installations
-if [ "$1" = "configure" -a -z "$2" ]; then
-	univention-config-registry set mail/cyrus/imap/quota?"yes" \
-		mail/cyrus/imap/quotawarnpercent?90 \
-		mail/cyrus/imap/quotawarnkb?0 \
-		mail/cyrus/squatter/cron?"30 3 * * Sun"
+# (Bug 24390)
+if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 4.0.24; then
+	# set sieve port and firewall during update but NOT on initial installation
+	ucr set mail/cyrus/sieve/port?2000 \
+		security/packetfilter/package/univention-mail-cyrus/tcp/2000/all="ACCEPT" \
+		security/packetfilter/package/univention-mail-cyrus/tcp/2000/all/en="Sieve"
 fi
 
 univention-config-registry set mail/cyrus?yes \
@@ -81,12 +81,15 @@ univention-config-registry set mail/cyrus?yes \
 	mail/cyrus/sieve/listen_host?all \
 	mail/cyrus/idlemethod?idled \
 	mail/cyrus/imap/quotainterval?60 \
+	mail/cyrus/imap/quotawarnpercent?90 \
+	mail/cyrus/imap/quotawarnkb?0 \
 	mail/cyrus/mailbox/rename?no \
 	mail/cyrus/mailbox/delete?no \
 	mail/cyrus/backup-metadata/cron?"15 3 * * *" \
-	mail/cyrus/squatter/cron?"#30 3 * * Sun" \
+	mail/cyrus/squatter/cron?"30 3 * * Sun" \
 	mail/cyrus/ldap/pwfile?"/etc/cyrus-ldap.secret" \
 	mail/cyrus/sieve/spam?true \
+	mail/cyrus/sieve/port?4190 \
 	mail/cyrus/userlogfiles?no
 
 CHROOT=/var/spool/postfix
@@ -150,8 +153,8 @@ ucr set security/packetfilter/package/univention-mail-cyrus/tcp/110/all="ACCEPT"
 		security/packetfilter/package/univention-mail-cyrus/tcp/993/all/en="IMAPS" \
 		security/packetfilter/package/univention-mail-cyrus/tcp/995/all="ACCEPT" \
 		security/packetfilter/package/univention-mail-cyrus/tcp/995/all/en="POP3S" \
-		security/packetfilter/package/univention-mail-cyrus/tcp/2000/all="ACCEPT" \
-		security/packetfilter/package/univention-mail-cyrus/tcp/2000/all/en="Sieve"
+		security/packetfilter/package/univention-mail-cyrus/tcp/4190/all="ACCEPT" \
+		security/packetfilter/package/univention-mail-cyrus/tcp/4190/all/en="Sieve"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 exit 0
