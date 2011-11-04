@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-03 22:55+0100\n"
+"POT-Creation-Date: 2011-11-04 19:15+0100\n"
 "PO-Revision-Date: 2011-11-01 20:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -75,7 +75,12 @@ msgstr ""
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
-#: umc/app.js:517 umc/widgets/MultiObjectSelect.js:256
+#: umc/widgets/Wizard.js:39
+msgid "Back"
+msgstr ""
+
+#: umc/app.js:517 umc/widgets/Wizard.js:54
+#: umc/widgets/MultiObjectSelect.js:256
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -106,6 +111,10 @@ msgstr "Möchten Sie sich wirklich abmelden?"
 #: umc/widgets/LoginDialog.js:42
 msgid "English"
 msgstr "Englisch"
+
+#: umc/widgets/Wizard.js:50
+msgid "Finish"
+msgstr ""
 
 #: umc/widgets/LoginDialog.js:41
 msgid "German"
@@ -223,6 +232,10 @@ msgstr "Weitere Aktionen"
 msgid "More..."
 msgstr "Weitere..."
 
+#: umc/widgets/Wizard.js:45
+msgid "Next"
+msgstr ""
+
 #: umc/widgets/Grid.js:538
 msgid "No entries could be found"
 msgstr "Keine Einträge konnten gefunden werden"
@@ -231,7 +244,7 @@ msgstr "Keine Einträge konnten gefunden werden"
 msgid "No object selected"
 msgstr "Kein Objekt ausgewählt"
 
-#: umc/widgets/Page.js:211
+#: umc/widgets/Page.js:213
 msgid "Note"
 msgstr "Hinweis"
 
@@ -378,9 +391,9 @@ msgid ""
 "for the administration of objects in your Univention Corporate Server domain "
 "as well as individual of Univention Corporate Server systems."
 msgstr ""
-"Univention Management Console ist eine modulare, Web-basierte Anwendung "
-"für die Administrierung von Objekten in der Univention-Corporate-Server-"
-"Domäne und individueller Univention-Corporate-Server-Systeme."
+"Univention Management Console ist eine modulare, Web-basierte Anwendung für "
+"die Administrierung von Objekten in der Univention-Corporate-Server-Domäne "
+"und individueller Univention-Corporate-Server-Systeme."
 
 #: umc/app.js:438
 msgid "Univention Website"

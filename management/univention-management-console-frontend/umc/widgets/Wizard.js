@@ -1,0 +1,210 @@
+/*global dojo dijit dojox umc console */
+
+dojo.provide("umc.widgets.Wizard");
+
+dojo.require("dijit.layout.StackContainer");
+dojo.require("umc.widgets.Form");
+dojo.require("umc.widgets.Page");
+dojo.require("umc.i18n");
+dojo.require("umc.tools");
+dojo.require("umc.widgets.StandbyMixin");
+
+dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
+	// summary:
+	//		This wizard class allows to specify a list of pages which will be
+	//		shown in a controlable manner.
+
+	// pages: Object[]
+	//		Array of page configuration objects. Each object consists of the following
+	//		properties:
+	//		* name: the page's identifier
+	//		* helpText: see `umc.widgets.Page`
+	//		* headerText: see `umc.widgets.Page`
+	//		* widgets: see `umc.widgets.Form`
+	//		* layout: see `umc.widgets.Form`
+	//		* buttons: see `umc.widgets.Form`
+	pages: null,
+
+	_pages: null,
+
+	buildRendering: function() {
+		this.inherited(arguments);
+
+		// render all pages
+		this.standby(true);
+		this._pages = {};
+		dojo.forEach(this.pages, function(ipage) {
+			// setup the footer buttons
+			var footerButtons = [{
+				name: 'previous',
+				label: this._('Back'),
+				align: 'right',
+				callback: dojo.hitch(this, '_previous', ipage.name)
+			}, {
+				name: 'next',
+				defaultButton: true,
+				label: this._('Next'),
+				callback: dojo.hitch(this, '_next', ipage.name)
+			}, {
+				name: 'finish',
+				defaultButton: true,
+				label: this._('Finish'),
+				callback: dojo.hitch(this, '_finish', ipage.name)
+			}, {
+				name: 'cancel',
+				label: this._('Cancel'),
+				callback: dojo.hitch(this, 'onCancel')
+			}];
+
+			// render the page
+			var pageConf = dojo.clone(ipage);
+			delete pageConf.widgets;
+			delete pageConf.buttons;
+			delete pageConf.layout;
+			pageConf.footerButtons = footerButtons;
+			var page = new umc.widgets.Page(pageConf);
+
+			// create the page form
+			page._form = new umc.widgets.Form({
+				widgets: ipage.widgets,
+				buttons: ipage.buttons,
+				layout: ipage.layout
+			});
+			page.addChild(page._form);
+			
+			// add page and remember it internally
+			this.addChild(page);
+			this._pages[ipage.name] = page;
+		}, this);
+	},
+
+	postCreate: function() {
+		this.inherited(arguments);
+
+		this._next(null);
+		this.standby(false);
+	},
+
+	_getPageIndex: function(/*String*/ pageName) {
+		var idx = -1;
+		dojo.forEach(this.pages, function(ipage, i) {
+			if (ipage.name == pageName) {
+				idx = i;
+				return false;
+			}
+		});
+		return idx;
+	},
+
+	getPage: function(name) {
+		return this._pages[name];
+	},
+
+	getWidget: function(pageName, widgetName) {
+		return dojo.getObject('_pages.' + pageName + '._form._widgets.' + widgetName, false, this);
+	},
+
+	_updateButtons: function(/*String*/ pageName) {
+		var buttons = this._pages[pageName]._footerButtons;
+		dojo.toggleClass(buttons.cancel.domNode, 'dijitHidden', !this.canCancel(pageName));
+		dojo.toggleClass(buttons.next.domNode, 'dijitHidden', !this.hasNext(pageName));
+		dojo.toggleClass(buttons.finish.domNode, 'dijitHidden', this.hasNext(pageName));
+		dojo.toggleClass(buttons.previous.domNode, 'dijitHidden', !this.hasPrevious(pageName));
+	},
+
+	hasNext: function(/*String*/ pageName) {
+		// summary:
+		//		Specifies whether there exists a following page for the specified page name.
+		//		By default any page but the last one has a follow-up.
+		if (!this.pages.length) {
+			return false;
+		}
+		return this.pages[this.pages.length - 1].name != pageName;
+	},
+
+	_next: function(/*String*/ currentPage) {
+		// update visibilty of buttons and show next page
+		var nextPage = this.next(currentPage);
+		this._updateButtons(nextPage);
+		this.selectChild(this._pages[nextPage]);
+	},
+
+	next: function(/*String*/ pageName) {
+		// summary:
+		//		next() is called when the user requested to advance to the next page.
+		//		The custom wizard logic can be implemented here. The method is
+		//		expected to return the name of the next page. A pageName == null
+		//		indicates that the start page is requested.
+		//		By default the wizard implements a logic that takes the order as given
+		//		by the `pages` property.
+		if ((null === pageName || undefined === pageName) && this.pages.length) {
+			return this.pages[0].name;
+		}
+		var i = this._getPageIndex(pageName);
+		if (i < 0) {
+			return pageName;
+		}
+		return this.pages[Math.min(i + 1, this.pages.length - 1)].name;
+	},
+
+	hasPrevious: function(/*String*/ pageName) {
+		// summary:
+		//		Specifies whether there exists a previous page for the specified page name.
+		//		By default any page but the first one has a previous page.
+		if (!this.pages.length) {
+			return false;
+		}
+		return this.pages[0].name != pageName;
+	},
+
+	_previous: function(/*String*/ currentPage) {
+		// update visibilty of buttons and show previous page
+		var previousPage = this.previous(currentPage);
+		this._updateButtons(previousPage);
+		this.selectChild(this._pages[previousPage]);
+	},
+
+	previous: function(/*String*/ pageName) {
+		// summary:
+		//		previous() is called when the user requested to go back to the previous page.
+		//		The custom wizard logic can be implemented here. The method is
+		//		expected to return the name of the next page.
+		//		By default the wizard implements a logic that takes the order as given
+		//		by the `pages` property.
+		var i = this._getPageIndex(pageName);
+		if (i < 0) {
+			return pageName;
+		}
+		return this.pages[Math.max(i - 1, 0)].name;
+	},
+
+	_finish: function(/*String*/ pageName) {
+		// gather all values
+		var values = {};
+		dojo.forEach(this.pages, function(ipage) {
+			dojo.mixin(values, this._pages[ipage.name]._form.gatherFormValues());
+		}, this);
+		this.onFinished(values);
+	},
+
+	canCancel: function(/*String*/ pageName) {
+		// summary:
+		//		Specifies per page whether a cancel button is visible.
+		return true;
+	},
+
+	onFinished: function(/*Object*/ values) {
+		// summary:
+		//		This event is called when the wizard has been finished.
+		//		The parameter `values` contains the values collected from all pages.
+	},
+
+	onCancel: function() {
+		// summary:
+		//		This event is triggered when the user clicks on the 'cancel' button.
+	}
+});
+
+
+
+

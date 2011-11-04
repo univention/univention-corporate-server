@@ -51,6 +51,7 @@ dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 	_subscriptionHandle: null,
 	_footer: null,
 	_notes: null,
+	_footerButtons: null,
 
 	_setHelpTextAttr: function(newVal) {
 		this.helpText = newVal;
@@ -115,13 +116,14 @@ dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 			if (this.footerButtons && dojo.isArray(this.footerButtons) && this.footerButtons.length) {
 				var buttons = umc.render.buttons(this.footerButtons);
 				dojo.forEach(buttons.$order$, function(ibutton) {
-					if ('submit' == ibutton.type || ibutton.defaultButton) {
+					if ('submit' == ibutton.type || ibutton.defaultButton || 'right' == ibutton.align) {
 						footerRight.addChild(ibutton);
 					}
 					else {
 						footerLeft.addChild(ibutton);
 					}
 				}, this);
+				this._footerButtons = buttons;
 			}
 		}
 	},

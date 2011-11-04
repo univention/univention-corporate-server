@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+			@import url("/univention-management-console/js/dojo/resources/dojo.css");
+			@import url("/univention-management-console/css/dijit/themes/umc/umc.css");
+			@import url("/univention-management-console/css/dojox/grid/resources/Grid.css");
+			@import url("/univention-management-console/css/dojox/grid/resources/umcGrid.css");
+			@import url("/univention-management-console/css/dojox/grid/enhanced/resources/EnhancedGrid.css");
+			@import url("/univention-management-console/css/dojox/grid/enhanced/resources/umc/EnhancedGrid.css");
+			@import url("/univention-management-console/css/dojox/form/resources/CheckedMultiSelect.css");
+			@import url("/univention-management-console/css/dojox/widget/Dialog/Dialog.css");
+			html {
+				background: #FFF;
+			}
+			body {
+				overflow: auto;
+			}
+		</style>
+		<script type="text/javascript" src="/univention-management-console/js/dojo/dojo.js"></script>
+		<script type="text/javascript">
+			dojo.require("umc.tools");
+			dojo.require("umc.widgets.Form");
+			dojo.require("umc.widgets.MultiInput");
+			dojo.require("umc.widgets.ContainerWidget");
+			dojo.require("umc.widgets.Wizard");
+		</script>
+		<script type="text/javascript">
+			
+			dojo.declare("MyWizard", umc.widgets.Wizard, {
+				pages: [{
+					name: 'first',
+					helpText: 'This is the first page of my wizard :) !',
+					headerText: 'Start page',
+					widgets: [{
+						name: 'name',
+						type: 'TextBox',
+						label: 'Name'
+					}, {
+						name: 'color',
+						type: 'TextBox',
+						label: 'Favorite color'
+					}],
+					layout: [ 'name', 'color' ]
+				}, {
+					name: 'second',
+					helpText: 'This is the second page of my wizard :) ! What a fantastic page!',
+					headerText: 'Second page',
+					widgets: [{
+						name: 'name',
+						type: 'TextBox',
+						label: 'Another name'
+					}, {
+						name: 'color',
+						type: 'TextBox',
+						label: 'Another favorite color'
+					}],
+					layout: [ 'name', 'color' ]
+				}, {
+					name: 'last',
+					helpText: 'This is the last page of my magic wizard :) !',
+					headerText: 'Last page',
+					widgets: [{
+						name: 'name',
+						type: 'TextBox',
+						label: 'A last name'
+					}, {
+						name: 'color',
+						type: 'TextBox',
+						label: 'A last favorite color'
+					}],
+					layout: [ 'name', 'color' ]
+				}],
+
+				next: function(/*String*/ currentID) {
+					if (!currentID) {
+						return 'first';
+					}
+					if (currentID == 'first') {
+						return 'second';
+					}
+					if (currentID == 'second') {
+						this.getWidget('last', 'name').set('value', this.getWidget('first', 'name').get('value'));
+						return 'last';
+					}
+					return null;
+				}
+			});
+
+			dojo.addOnLoad(function() {
+				wizard = new MyWizard({
+					style: 'width:100%; height:100%;'
+				});
+				dojo.place(wizard.domNode, dojo.body());
+				wizard.startup();
+			});
+		</script>
+	</head>
+	<body class="umc">
+	</body>
+</html>

@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.177-1) unstable; urgency=low
+
+  * added umc.widgets.Wizard with test HTML page (Bug #23217)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Nov 2011 19:31:53 +0100
+
 univention-management-console-frontend (1.0.176-1) unstable; urgency=low
 
   * added tests/post.sh test script for HTTP UMCP request (Bug #22881)
