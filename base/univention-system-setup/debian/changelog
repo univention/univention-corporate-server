@@ -1,3 +1,12 @@
+univention-system-setup (5.0.46-1) unstable; urgency=low
+
+  * UMC: make sure that UMC server, UMC web server, and apache are not 
+    restarted during the join script
+  * UMC: fixed handling of username+password for domain join
+  (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Nov 2011 13:11:56 +0100
+
 univention-system-setup (5.0.45-1) unstable; urgency=low
 
   * fix network "default" netmask when changing master IP address (Bug #23993)

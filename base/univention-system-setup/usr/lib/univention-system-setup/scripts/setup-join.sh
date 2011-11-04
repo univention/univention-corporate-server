@@ -86,6 +86,9 @@ if [ "$server_role" = "domaincontroller_master" ]; then
       						kerberos/adminserver="$hostname.$domainname"
 fi
 
+# do not allow the UMC or webserver to be restarted
+chmod -x /usr/sbin/univention-management-console-server /usr/sbin/univention-management-console-web-server /usr/sbin/apache2
+
 # cleanup secrets
 echo -n "$(makepasswd)" > /etc/ldap.secret
 echo -n "$(makepasswd)" > /etc/ldap-backup.secret
@@ -141,4 +144,8 @@ else
 	fi
 fi
 
+# allow execution of servers again
+chmod +x /usr/sbin/univention-management-console-server /usr/sbin/univention-management-console-web-server /usr/sbin/apache2
+
 exit 0
+

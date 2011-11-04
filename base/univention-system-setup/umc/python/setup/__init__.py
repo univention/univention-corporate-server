@@ -79,13 +79,16 @@ class Instance(umcm.Base):
 		else:
 			# unjoined system and not a basesystem -> run the join script
 			MODULE.info('runnning system setup join script')
-			util.run_joinscript()
+			util.run_joinscript(request.options.get('username'), request.options.get('password'))
 
 		if self._username == '__systemsetup__':
 			# shut down the browser in appliance mode
+			MODULE.info('Appliance mode: try to shut down the browser')
 			if not util.shutdown_browser():
+				MODULE.info('... shutting down successful')
 				self.finished(request.id, False, message=_('Failed to shut down the web browser.'))
 			else:
+				MODULE.info('... shutting down operation failed')
 				self.finished(request.id, True)
 		else:
 			# finish request

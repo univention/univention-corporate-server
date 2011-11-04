@@ -193,26 +193,31 @@ def run_scripts():
 			# launch script
 			os.system('%s >> %s 2>&1' % (ipath, LOG_FILE))
 
-def run_joinscript(_username, password):
-	# write password file
-	f = open(PATH_PASSWORD_FILE, 'w')
-	f.write('%s' % password)
-	f.close()
-	os.chmod(PATH_PASSWORD_FILE, 0600)
-
-	# sanitize username
-	reg = re.compile('[^ a-zA-Z_1-9-]')
-	username = reg.sub('_', _username)
-
+def run_joinscript(_username = None, password = None):
 	# write header before executing join script
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
 	f.close();
 
-	os.system('%s --dcaccount "%s" --password_file "%s" >> %s 2>&1' % (PATH_JOIN_SCRIPT, username, PATH_PASSWORD_FILE, LOG_FILE))
+	# write password file
+	if _username and password:
+		f = open(PATH_PASSWORD_FILE, 'w')
+		f.write('%s' % password)
+		f.close()
+		os.chmod(PATH_PASSWORD_FILE, 0600)
 
-	# remove password file
-	os.remove(PATH_PASSWORD_FILE)
+		# sanitize username
+		reg = re.compile('[^ a-zA-Z_1-9-]')
+		username = reg.sub('_', _username)
+
+		# run join scripts
+		os.system('%s --dcaccount "%s" --password_file "%s" >> %s 2>&1' % (PATH_JOIN_SCRIPT, username, PATH_PASSWORD_FILE, LOG_FILE))
+
+		# remove password file
+		os.remove(PATH_PASSWORD_FILE)
+	else:
+		# run join scripts
+		os.system('%s >> %s 2>&1' % (PATH_JOIN_SCRIPT, LOG_FILE))
 
 def shutdown_browser():
 	success = False
