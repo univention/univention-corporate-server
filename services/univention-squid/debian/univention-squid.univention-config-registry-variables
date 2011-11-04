@@ -82,3 +82,21 @@ Description[de]=keep_alive Option für ntlm_auth
 Description[en]=keep_alive option for ntlm_auth
 Type=str
 Categories=service-webproxy
+
+[squid/ipauth/allow]
+Description[de]=Liste von Netzen. Clients aus diesen Netzen verwenden den IP-basierten Authentisierungscache (Leerzeichen separariert)
+Description[en]=List of networks. Clients in these networks will use the IP-based authentication cache (space separated)
+Type=str
+Categories=service-webproxy
+
+[squid/ipauth/deny]
+Description[de]=Liste von Netzen. Clients aus diesen Netzen werden vom IP-basierten Authentisierungscache ausgeschlossen (Leerzeichen separariert)
+Description[en]=List of networks. Clients in these networks will be excluded from the usage of the IP-based authentication cache (space separated)
+Type=str
+Categories=service-webproxy
+
+[squid/ipauth/ttl]
+Description[de]=Die TTL in Sekunden für den IP-basierten Authentisierungscache (0=deaktiviert)
+Description[en]=The TTL in seconds for the IP-based authentication cache (0=disabled)
+Type=str
+Categories=service-webproxy
