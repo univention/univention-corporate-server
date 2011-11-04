@@ -1,3 +1,9 @@
+univention-squid (5.0.3-14) unstable; urgency=low
+
+  * Define cache dir to silence warning in daemon startup (Bug #22576)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 04 Nov 2011 13:58:06 +0100
+
 univention-squid (5.0.3-13) unstable; urgency=low
 
   * Silence warning (Bug #24372)
