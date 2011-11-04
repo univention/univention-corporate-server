@@ -1,3 +1,10 @@
+univention-kernel-image-2.6.32 (1.0.15-6) unstable; urgency=low
+
+  * Drop dependency on firmware-ipw2x00, which will be removed in UCS 3.0
+    (Bug #24389)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 04 Nov 2011 14:44:16 +0100
+
 univention-kernel-image-2.6.32 (1.0.15-5) unstable; urgency=low
 
   * Update kernel for 2.4-3 (Bug #23258)
