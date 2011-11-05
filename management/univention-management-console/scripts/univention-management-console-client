@@ -35,6 +35,7 @@ from getpass import getpass
 
 import datetime
 import os
+import pprint
 import sys
 
 import notifier
@@ -52,8 +53,7 @@ class CLI_Client( umcp.Client ):
 								  port = options.port,
 								  auth = options.authenticate )
 		self.__wait = None
-		self.__quite = options.quite
-		self.__timing = options.timing
+		self._options = options
 		self.__started = None
 		self.__finished = None
 
@@ -69,7 +69,7 @@ class CLI_Client( umcp.Client ):
 		if arguments:
 			self.__wait = self.create( arguments[ 0 ], arguments[ 1 : ], options )
 		if options.authenticate:
-			if self.__timing:
+			if self._options.timing:
 				self.__started = datetime.datetime.now()
 			self.authenticate( options.username, options.password )
 		else:
@@ -119,12 +119,12 @@ class CLI_Client( umcp.Client ):
 		self.__finished = None
 
 	def _authenticated( self, success, status, text ):
-		if self.__timing:
+		if self._options.timing:
 			self.__finished = datetime.datetime.now()
 			self.print_timing()
 		if success:
 			if self.__wait:
-				if self.__timing:
+				if self._options.timing:
 					self.__started = datetime.datetime.now()
 				self.request( self.__wait )
 				self.__wait = None
@@ -132,25 +132,34 @@ class CLI_Client( umcp.Client ):
 			raise Exception( 'error: authentication failed' )
 
 	def _response( self, msg ):
-		if self.__timing:
+		if self._options.timing:
 			self.__finished = datetime.datetime.now()
 			self.print_timing( msg )
-		if self.__quite:
+		if self._options.quite:
 			sys.exit( 0 )
 		print 'Response: %s' % msg.command
 		print '  data length   : %4d' % len( str( msg ) )
 		print '  message length: %4d' % msg._length
 		print '  ---'
 		if msg.arguments:
-			print '  ARGUMENTS: %s' % ' '.join( msg.arguments )
+			if self._options.prettyprint:
+				print '  ARGUMENTS: %s' % pprint.pformat( msg.arguments )
+			else:
+				print '  ARGUMENTS: %s' % ' '.join( msg.arguments )
 		print '  STATUS   : %d' % msg.status
 		if msg.options:
-			if isinstance( msg.options, ( list, tuple ) ):
-				print '  OPTIONS  : %s' % ', '.join( map( lambda x: str( x ), msg.options ) )
+			if self._options.prettyprint:
+				print '  OPTIONS  : %s' % pprint.pformat( msg.options, indent = 2 )
 			else:
-				print '  OPTIONS  : %s' % ' '.join( [ '%s=%s' % ( k, v ) for k, v in msg.options.items() ] )
+				if isinstance( msg.options, ( list, tuple ) ):
+					print '  OPTIONS  : %s' % ', '.join( map( lambda x: str( x ), msg.options ) )
+				else:
+					print '  OPTIONS  : %s' % ' '.join( [ '%s=%s' % ( k, v ) for k, v in msg.options.items() ] )
 		print '  MESSAGE  : %s' % msg.message
-		print '  RESULT   : %s' % msg.result
+		if self._options.prettyprint:
+			print '  RESULT   : %s' % pprint.pformat( msg.result, indent = 2 )
+		else:
+			print '  RESULT   : %s' % msg.result
 		sys.exit( 0 )
 
 if __name__ == '__main__':
@@ -183,6 +192,9 @@ if __name__ == '__main__':
 	parser.add_option( '-o', '--option', type = 'string', default = [],
 					   action = 'append', dest = 'options',
 					   help = 'append an option to the request' )
+	parser.add_option( '-r', '--pretty-print', action = 'store_true',
+					   dest = 'prettyprint', default = False,
+					   help = 'if given the output will be printed out using pretty print' )
 	parser.add_option( '-l', '--list-options', action = 'store_true', dest = 'list_options',
 					   help = 'if set all specified options will be assembled in a list' )
 	parser.add_option( '-e', '--eval-option', action = 'store_true', dest = 'eval_options',
@@ -193,6 +205,12 @@ if __name__ == '__main__':
 					   help = 'if given the amount of time required for the UMCP request is measured. -q will not supress the output' )
 
 	( options, arguments ) = parser.parse_args()
+
+	prog = os.path.basename( sys.argv[ 0 ] )
+	if prog.startswith( 'umc-' ):
+		command = prog[ 4 : ]
+		if command != 'client':
+			arguments.insert( 0, command )
 
 	log_init( '/dev/stderr', options.debug )
 
