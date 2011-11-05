@@ -1,3 +1,10 @@
+univention-samba4 (1.0.89-1) unstable; urgency=low
+
+  * Use -x for ldapsearch in 96univention-samba4.inst
+  * Some more updates on S3 / S4 determination (Bug #22866)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 05 Nov 2011 11:56:30 +0100
+
 univention-samba4 (1.0.88-1) unstable; urgency=low
 
   * Search for S3 DCs instead of search for the samba domain object to
