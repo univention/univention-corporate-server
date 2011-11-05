@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.222-1) unstable; urgency=low
+
+  * ensue that a search for an object without a valid superordinate does
+    not fail; Bug #24380
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 05 Nov 2011 09:17:16 +0100
+
 univention-management-console-module-udm (1.0.221-1) unstable; urgency=low
 
   * added putting focus to TextBox after submitting the search (Bug #22881)

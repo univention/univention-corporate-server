@@ -374,6 +374,8 @@ class UDM_Module( object ):
 		MODULE.info( 'Searching for LDAP objects: container = %s, filter = %s, superordinate = %s' % ( container, filter_s, superordinate ) )
 		try:
 			return self.module.lookup( None, ldap_connection, filter_s, base = container, superordinate = superordinate, scope = scope )
+		except udm_errors.insufficientInformation, e:
+			return []
 		except udm_errors.base, e:
 			raise UDM_Error( str( e ) )
 
