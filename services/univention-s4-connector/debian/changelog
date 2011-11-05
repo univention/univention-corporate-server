@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.65-1) unstable; urgency=low
+
+  * Don't show a warning if userPrincipalName and krb5Principal only
+    differ in uppercase and lowercase (Bug #22861)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 05 Nov 2011 09:31:50 +0100
+
 univention-s4-connector (6.0.64-1) unstable; urgency=low
 
   * Map DNS MX records between S4 and UCS LDAP (Bug #24403)

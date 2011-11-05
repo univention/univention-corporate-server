@@ -406,7 +406,8 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 			if not userPrincipalName_attr:	## new and not old
 				modlist.append((ldap.MOD_ADD, 'userPrincipalName', krb5Principal))
 			else:				## new and old differ
-				ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4: userPrincipalName != krb5Principal: userPrincipalName='%s'" % userPrincipalName_attr)
+				if krb5Principal.lower() != userPrincipalName_attr.lower():
+					ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4: userPrincipalName != krb5Principal: '%s' != '%s'" % (userPrincipalName_attr, krb5Principal))
 				modlist.append((ldap.MOD_REPLACE, 'userPrincipalName', krb5Principal))
 		else:
 			if userPrincipalName_attr:	## old and not new
