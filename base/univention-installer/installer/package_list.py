@@ -81,7 +81,7 @@ PackageList=[
 				},
 				{
 					'Name': _('Windows memberserver (Samba 3 / Samba 4)'),
-					'Packages': ['univention-samba', 'samba'],
+					'Packages': ['univention-samba', 'samba', 'winbind'],
 					'Edition': [ 'ucs' ],
 					'Active': [],
 					'Possible': ['memberserver'],

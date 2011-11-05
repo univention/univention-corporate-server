@@ -1,3 +1,9 @@
+univention-installer (7.0.136-1) unstable; urgency=low
+
+  * Install winbind when selected 'Windows memberserver' (Bug #22561)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 05 Nov 2011 15:13:37 +0100
+
 univention-installer (7.0.135-1) unstable; urgency=low
 
   * fixed bug in 75_join.sh (Bug #24270)
