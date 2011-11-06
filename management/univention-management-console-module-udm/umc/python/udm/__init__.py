@@ -419,8 +419,9 @@ class Instance( Base ):
 				entry = {
 					'$dn$' : obj.dn,
 					'objectType' : module.name,
+					'labelObjectType' : module.subtitle,
 					'name' : udm_objects.description( obj ),
-					'path' : ldap_dn2path( obj.dn )
+					'path' : ldap_dn2path( obj.dn, include_rdn = False )
 					}
 				if request.options[ 'objectProperty' ] not in ( 'name', 'None' ):
 					entry[ request.options[ 'objectProperty' ] ] = obj[ request.options[ 'objectProperty' ] ]
@@ -799,7 +800,11 @@ class Instance( Base ):
 			for module, obj in list_objects( container ):
 				if obj is None or module.childs:
 					continue
-				entries.append( { '$dn$' : obj.dn, 'objectType' : module.name, 'name' : udm_objects.description(obj), 'path' : ldap_dn2path( obj.dn ) } )
+				entries.append( { '$dn$' : obj.dn,
+								  'objectType' : module.name,
+								  'labelObjectType' : module.subtitle,
+								  'name' : udm_objects.description(obj),
+								  'path' : ldap_dn2path( obj.dn, include_rdn = False ) } )
 
 			return entries
 

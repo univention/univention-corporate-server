@@ -406,6 +406,15 @@ class UDM_Module( object ):
 		return self.module is not None and self.module.module
 
 	@property
+	def subtitle( self ):
+		"""Returns the descriptive name of the UDM module without the part for the module group"""
+		descr = getattr( self.module, 'short_description', self.module.module )
+		colon = descr.find( ':' )
+		if colon > 0:
+			return descr[ colon + 1 : ].strip()
+		return descr
+
+	@property
 	def title( self ):
 		"""Descriptive name of the UDM module"""
 		return getattr( self.module, 'short_description', self.module.module )
@@ -752,24 +761,32 @@ def split_module_name( module_name ):
 
 	return ( None, None )
 
-def ldap_dn2path( ldap_dn ):
-	"""Returns a path representation of an LDAP DN"""
+def ldap_dn2path( ldap_dn, include_rdn = True ):
+	"""Returns a path representation of an LDAP DN. If include_rdn is
+	false just the container of the given object is returned in a path
+	representation"""
 
 	ldap_base = ucr.get( 'ldap/base' )
 	if ldap_base is None or not ldap_dn.endswith( ldap_base ):
 		return ldap_dn
-	rdn = ldap_dn[ : -1 * len( ldap_base ) ]
+	rel_path = ldap_dn[ : -1 * len( ldap_base ) ]
 	path = []
 	for item in ldap_base.split( ',' ):
 		if not item: continue
 		dummy, value = item.split( '=', 1 )
 		path.insert( 0, value )
 	path = [ '.'.join( path ) + ':', ]
-	if rdn:
-		for item in rdn.split( ',' )[ : -1 ]:
+	if rel_path:
+		if not include_rdn:
+			lst = rel_path.split( ',' )[ 1 : -1 ]
+		else:
+			lst = rel_path.split( ',' )[ : -1 ]
+		for item in lst:
 			if not item: continue
 			dummy, value = item.split( '=', 1 )
 			path.insert( 1, value )
+		if not lst:
+			path.insert( 1, '' )
 	else:
 		path.append('')
 	return '/'.join( path )

@@ -853,11 +853,25 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				});
 				this._grid.filter(vals);
 			}
-		}
-		else {
+			var new_column = {
+				name: 'labelObjectType',
+				label: this._( 'Type' )
+			};
+			columns = this._default_columns.slice( 0, 1 ).concat( new_column, this._default_columns.slice( 1 ) );
+			this._grid.set( 'columns', columns );
+		} else {
 			var identifies = this.identityProperty();
 			var selected_value = this._searchForm._widgets.objectProperty.get( 'value' );
 			var columns = this._default_columns;
+			var objTypeWidget = this._searchForm._widgets.objectType;
+
+			if ( objTypeWidget.getNumItems() > 1 ) {
+				var new_column = {
+					name: 'labelObjectType',
+					label: this._( 'Type' )
+				};
+				columns = this._default_columns.slice( 0, 1 ).concat( new_column, this._default_columns.slice( 1 ) );
+			}
 			if ( 'None' != selected_value && ( identifies === null || selected_value != identifies.id ) ) {
 				var new_column = {
 					name: selected_value,
