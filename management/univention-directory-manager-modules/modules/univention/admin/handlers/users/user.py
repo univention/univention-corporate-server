@@ -656,7 +656,7 @@ property_descriptions={
 		),
 	'jpegPhoto': univention.admin.property(
 			short_description=_("jpeg photo"),
-			long_description=_( 'Public key infrastructure - user certificate ' ),
+			long_description=_( 'Picture for user account in JPEG format' ),
 			syntax=univention.admin.syntax.jpegPhoto,
 			multivalue=0,
 			required=0,
