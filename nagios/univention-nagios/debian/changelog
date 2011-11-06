@@ -1,3 +1,10 @@
+univention-nagios (5.0.18-1) unstable; urgency=low
+
+  * Disable kpasswdd check by default. On S4 systems the samba daemon
+    will take over the kpasswdd role (Bug #24405)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 06 Nov 2011 19:38:48 +0100
+
 univention-nagios (5.0.17-1) unstable; urgency=low
 
   * fixed nrpe init script (force start-stop-daemon to stop nrpe) (Bug #24378) 

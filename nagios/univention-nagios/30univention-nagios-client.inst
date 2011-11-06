@@ -89,8 +89,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
     # add ssl check only on role "domaincontroler_master/backup"
     if [ "$server_role" = "domaincontroller_master" -o \
          "$server_role" = "domaincontroller_backup" ] ; then
-		for dn in "cn=UNIVENTION_SSL,cn=nagios,$ldap_base" \
-				  "cn=UNIVENTION_KPASSWDD,cn=nagios,$ldap_base" ; do
+		for dn in "cn=UNIVENTION_SSL,cn=nagios,$ldap_base"; do
 			rdn="$(echo $dn | sed -e 's|,.*||')"
 			if udm nagios/service list "$@" --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
 				univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
