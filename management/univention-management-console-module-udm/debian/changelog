@@ -1,6 +1,13 @@
+univention-management-console-module-udm (1.0.223-1) unstable; urgency=low
+
+  * add type column to grid of more than one object type is handled by the
+    flavor; Bug #24337
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 06 Nov 2011 10:26:09 +0100
+
 univention-management-console-module-udm (1.0.222-1) unstable; urgency=low
 
-  * ensue that a search for an object without a valid superordinate does
+  * ensure that a search for an object without a valid superordinate does
     not fail; Bug #24380
 
  -- Andreas Büsching <buesching@univention.de>  Sat, 05 Nov 2011 09:17:16 +0100
