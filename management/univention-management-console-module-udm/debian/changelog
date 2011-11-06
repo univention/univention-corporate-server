@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.225-1) unstable; urgency=low
+
+  * fix layout of dialogs shown when creating reports; Bug #23336
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 06 Nov 2011 12:57:45 +0100
+
 univention-management-console-module-udm (1.0.224-1) unstable; urgency=low
 
   * enhance handling for broken LDAP connection; Bug #24324

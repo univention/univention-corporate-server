@@ -43,8 +43,10 @@ dojo.declare("umc.modules._udm.CreateReportDialog", [ dijit.Dialog, umc.widgets.
 
 	_container: null,
 
+	'class' : 'umcPopup',
+
 	// force max-width
-	style: 'max-width: 300px;',
+	style: 'max-width: 400px;',
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
@@ -114,7 +116,7 @@ dojo.declare("umc.modules._udm.CreateReportDialog", [ dijit.Dialog, umc.widgets.
 			this.standby( false );
 			this._container.removeChild( waiting );
 			if ( true === data.result.success ) {
-				message = this._( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">%s report</a>', data.result.docType, data.result.URL, this.objectNameSingular );
+				message = dojo.replace( '<p>{0}</p>', [ this._( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">%s report</a>', data.result.docType, data.result.URL, this.objectNameSingular ) ] );
 				title = this._( 'Report has been created' );
 			} else {
 				title = this._( 'Report creation has failed' );
@@ -122,7 +124,11 @@ dojo.declare("umc.modules._udm.CreateReportDialog", [ dijit.Dialog, umc.widgets.
 			}
 			this.set( 'title', title );
 			this._container.addChild( new umc.widgets.Text( { content: message } ) );
-			this._container.addChild( new umc.widgets.Button( {
+			var btnContainer = new umc.widgets.ContainerWidget( {
+				style: 'text-align: center;',
+				'class' : 'umcButtonRow'
+			} );
+			btnContainer.addChild( new umc.widgets.Button( {
 				defaultButton: true,
 				label: this._( 'Close' ),
 				style: 'margin-left: auto;',
@@ -130,6 +136,7 @@ dojo.declare("umc.modules._udm.CreateReportDialog", [ dijit.Dialog, umc.widgets.
 					this.destroyRecursive();
 				} )
 			} ) );
+			this._container.addChild( btnContainer );
 		} ) );
 	}
 });
