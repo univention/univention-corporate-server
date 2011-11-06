@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.178-2) unstable; urgency=low
+
+  * fix build problems; Bug #24337
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 06 Nov 2011 13:00:33 +0100
+
 univention-management-console-frontend (1.0.178-1) unstable; urgency=low
 
   * _SelectMxin: add function to retrieve number of items; Bug #24337
