@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.172-1) unstable; urgency=low
+
+  * adjust size of IP adress lists to make IPv6 address fit; Bug #16464
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 06 Nov 2011 10:48:17 +0100
+
 univention-directory-manager-modules (7.0.171-1) unstable; urgency=low
 
   * use IPv4 address in IPv4 netmask syntax (Bug #24256)

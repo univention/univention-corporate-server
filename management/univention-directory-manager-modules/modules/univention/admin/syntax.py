@@ -1570,7 +1570,7 @@ class network( UDM_Objects ):
 class IP_AddressList( select ):
 	choices = ()
 	depends = 'ip'
-	size = 'TwoThirds'
+	size = 'One'
 
 	@classmethod
 	def parse( cls, text ):
@@ -1589,11 +1589,13 @@ class DNS_ForwardZone( UDM_Objects ):
  	description=_('DNS forward zone')
 	udm_modules = ( 'dns/forward_zone', )
 	empty_value = True
+	size = 'TwoThirds'
 
 class DNS_ReverseZone( UDM_Objects ):
  	description=_('DNS reverse zone')
 	udm_modules = ( 'dns/reverse_zone', )
 	empty_value = True
+	size = 'TwoThirds'
 
 class dnsEntry( complex ):
  	description=_('DNS Entry')
@@ -1607,6 +1609,7 @@ class dnsEntryReverse( complex ):
 
 class DNS_ForwardZoneList( select ):
 	depends = 'dnsEntryZoneForward'
+	size = 'TwoThirds'
 
 class dnsEntryAlias( complex ):
 	description=_('DNS Entry Alias')
@@ -1617,6 +1620,7 @@ class dhcpService( UDM_Objects ):
 	description=_('DHCP service')
 	label = '%(name)s'
 	empty_value = True
+	size = 'TwoThirds'
 
 class dhcpEntry( complex ):
 	subsyntaxes= ( ( _( 'DHCP service' ), dhcpService ), ( _( 'IP address' ), IP_AddressList ), ( _( 'MAC address' ), MAC_AddressList ) )
