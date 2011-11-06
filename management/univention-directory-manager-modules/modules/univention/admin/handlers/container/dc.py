@@ -73,16 +73,6 @@ property_descriptions={
 			may_change=0,
 			identifies=1
 		),
-	'domainPassword': univention.admin.property(
-			short_description=_('Domain password'),
-			long_description='',
-			syntax=univention.admin.syntax.passwd,
-			multivalue=0,
-			options=[],
-			required=1,
-			may_change=0,
-			identifies=0
-		),
 	'dnsForwardZone': univention.admin.property(
 			short_description=_('DNS forward lookup zone'),
 			long_description='',
@@ -175,9 +165,6 @@ layout = [
 			"name"
 			] ),
 		] ),
-	Tab(_('Domain Password'),_('Administrator password for this domain'), advanced = True, layout = [
-		"domainPassword"
-		] ),
 	Tab(_('DNS'),_('DNS Zones'), advanced = True, layout = [
 			[ "dnsForwardZone", "dnsReverseZone" ]
 		] ),
@@ -224,7 +211,6 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.dn:
 			self['name']=ldap.explode_dn(self.dn,1)[0]
 
-			self['domainPassword']='********'
 			
 			self['dnsForwardZone']=''
 			self['dnsReverseZone']=''
@@ -270,10 +256,6 @@ class object(univention.admin.handlers.simpleLdap):
 		directoryObject['groups'] = 'cn=groups,%s' % self.dn
 		directoryObject['computers'] = 'cn=computers,%s' % self.dn
 		directoryObject.create()
-	
-
-		cryptPassword='{crypt}'+univention.admin.password.crypt(self['domainPassword'])
-		ntPassword, lmPassword=univention.admin.password.ntlm(self['domainPassword']+"\n")
 			
 		rootSambaSID=None
 		while rootSambaSID == None:

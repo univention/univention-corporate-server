@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.173-1) unstable; urgency=low
+
+  * Removed domainPassword from container/dc.py (Bug #24404)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 06 Nov 2011 20:03:58 +0100
+
 univention-directory-manager-modules (7.0.172-1) unstable; urgency=low
 
   * adjust size of IP adress lists to make IPv6 address fit; Bug #16464
