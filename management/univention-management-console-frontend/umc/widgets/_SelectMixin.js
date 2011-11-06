@@ -146,6 +146,12 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		}, this );
 	},
 
+	getNumItems: function() {
+		// summary:
+		//		Returns number of items in combobox
+		return this.store._getItemsArray().length;
+	},
+
 	_setValueAttr: function(newVal) {
 		this.inherited(arguments);
 
