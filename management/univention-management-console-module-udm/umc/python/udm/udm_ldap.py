@@ -131,7 +131,7 @@ def LDAP_Connection( func ):
 			_ldap_connection = lo
 			_ldap_position = po
 			return ret
-		except udm_errors.base, e:
+		except ( LDAPError, udm_errors.base ), e:
 			MODULE.info( 'LDAP operation for user %s has failed' % _user_dn )
 			try:
 				lo = udm_uldap.access( host = ucr.get( 'ldap/master' ), base = ucr.get( 'ldap/base' ), binddn= _user_dn, bindpw = _password )
@@ -139,7 +139,7 @@ def LDAP_Connection( func ):
 				po = udm_uldap.position( lo.base )
 			except udm_errors.noObject, e:
 				raise e
-			except LDAPError, e:
+			except ( LDAPError, udm_errors.base ), e:
 				raise LDAP_ConnectionError( 'Opening LDAP connection failed: %s' % str( e ) )
 
 			kwargs[ 'ldap_connection' ] = lo
@@ -376,6 +376,8 @@ class UDM_Module( object ):
 			return self.module.lookup( None, ldap_connection, filter_s, base = container, superordinate = superordinate, scope = scope )
 		except udm_errors.insufficientInformation, e:
 			return []
+		except ( LDAPError, udm_errors.ldapError ), e:
+			raise e
 		except udm_errors.base, e:
 			raise UDM_Error( str( e ) )
 
@@ -391,6 +393,8 @@ class UDM_Module( object ):
 				obj.open()
 			else:
 				obj = self.module.object( None, ldap_connection, None, '', superordinate, attributes = attributes )
+		except ( LDAPError, udm_errors.ldapError ), e:
+			raise e
 		except Exception, e:
 			MODULE.info( 'Failed to retrieve LDAP object: %s' % str( e ) )
 			raise UDM_Error( str( e ) )
@@ -680,6 +684,8 @@ class UDM_Settings( object ):
 
 		try:
 			directories = udm_modules.lookup( 'settings/directory', None, ldap_connection, scope = 'sub' )
+		except ( LDAPError, udm_errors.ldapError ), e:
+			raise e
 		except udm_errors.noObject:
 			directories = None
 		if not directories:
@@ -689,6 +695,8 @@ class UDM_Settings( object ):
 
 		try:
 			groups = udm_modules.lookup( 'settings/default', None, ldap_connection, scope = 'sub' )
+		except ( LDAPError, udm_errors.ldapError ), e:
+			raise e
 		except udm_errors.noObject:
 			groups = None
 		if not groups:
@@ -810,6 +818,8 @@ def list_objects( container, ldap_connection = None, ldap_position = None ):
 	"""Returns a list of UDM objects"""
 	try:
 		result = ldap_connection.search( base = container, scope = 'one' )
+	except ( LDAPError, udm_errors.ldapError ), e:
+		raise e
 	except udm_errors.base, e:
 		raise UDM_Error( str( e ) )
 	objects = []

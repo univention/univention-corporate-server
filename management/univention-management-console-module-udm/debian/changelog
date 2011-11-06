@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.224-1) unstable; urgency=low
+
+  * enhance handling for broken LDAP connection; Bug #24324
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 06 Nov 2011 11:47:34 +0100
+
 univention-management-console-module-udm (1.0.223-1) unstable; urgency=low
 
   * add type column to grid of more than one object type is handled by the
