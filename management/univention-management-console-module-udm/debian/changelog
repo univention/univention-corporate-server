@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.227-1) unstable; urgency=low
+
+  * support read-only properties; Bug #24354
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 07 Nov 2011 15:09:44 +0100
+
 univention-management-console-module-udm (1.0.226-1) unstable; urgency=low
 
   * directory reports: fixed problems with wrong number of users
