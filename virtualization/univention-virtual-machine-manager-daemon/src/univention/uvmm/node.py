@@ -777,6 +777,8 @@ class Node(PersistentCached):
 		return os.path.join(self.cache_dir, uri_encode(uri) + suffix)
 
 	def domain_list( self, pattern = '*' ):
+		global STATES
+
 		regex = re.compile( fnmatch.translate( pattern ), re.IGNORECASE )
 		domains = []
 		for dom in self.domains:
@@ -785,7 +787,7 @@ class Node(PersistentCached):
 			name = pd.name
 			descr = pd.annotations.get( 'description', '' )
 			if regex.match( name ) is not None or regex.match( contact )  is not None or regex.match( descr ) is not None:
-				domains.append( { 'uuid' : pd.uuid, 'name' : pd.name, 'state' : pd.state, 'mem' : pd.maxMem, 'cpu_usage' : pd.cputime[ 0 ] } )
+				domains.append( { 'uuid' : pd.uuid, 'name' : pd.name, 'state' : STATES[ pd.state ], 'mem' : pd.maxMem, 'cpu_usage' : pd.cputime[ 0 ] } )
 
 		return domains
 
@@ -1355,6 +1357,7 @@ def domain_list( uri, pattern = '*' ):
 
 def domain_info( uri, domain ):
 	"""Return detailed information of a domain."""
+	global STATES
 
 	node = node_query( uri )
 	# transfer state number into string constant

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.24-1) unstable; urgency=low
+
+  * return domain state as string; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 07 Nov 2011 19:31:38 +0100
+
 univention-virtual-machine-manager-daemon (1.0.23-1) unstable; urgency=low
 
   * adjustments in the API of the UMC backend module; Bug #22893
