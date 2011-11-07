@@ -1,6 +1,7 @@
 univention-dansguardian (5.0.1-12) unstable; urgency=low
 
   * Fix name of variable for notification address (Bug #22576)
+  * Fix template syntax (Bug #14257)	
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 07 Nov 2011 09:34:40 +0100
 
