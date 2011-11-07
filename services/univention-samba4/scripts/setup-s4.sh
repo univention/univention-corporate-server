@@ -106,40 +106,6 @@ chgrp "DC Backup Hosts" "$pwfile"
 chmod 640 "$pwfile"
 echo -n "$adminpw" > "$pwfile"
 
-# Test:
-# r 389
-# r 7389,389
-# r 389,7389
-# r 389,7389,8389
-# r 7389,389,8389
-# r 7389,8389,389
-remove_port ()
-{
-	if [ -n "$1" -a -n "$2" ]; then
-		echo "$1" | sed -e "s|^${2},||;s|,${2},|,|;s|,${2}$||;s|^${2}$||"
-	fi
-
-}
-
-if [ -n "$slapd_port" ]; then
-	univention-config-registry set slapd/port="$(remove_port "$slapd_port" 389)" 2>&1 | tee -a "$LOGFILE"
-fi
-if [ -n "$slapd_port_ldaps" ]; then
-	univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)" 2>&1 | tee -a "$LOGFILE"
-fi
-if [ "$ldap_server_name" = "$hostname.$domainname" ]; then
-	univention-config-registry set ldap/server/port="7389" 2>&1 | tee -a "$LOGFILE"
-fi
-if [ "$ldap_master" = "$hostname.$domainname" ]; then
-	univention-config-registry set ldap/master/port="7389" 2>&1 | tee -a "$LOGFILE"
-fi
-
-## restart processes with adjusted ports
-stop_udm_cli_server
-/etc/init.d/slapd restart 2>&1 | tee -a "$LOGFILE"
-/etc/init.d/univention-directory-listener restart 2>&1 | tee -a "$LOGFILE"
-/etc/init.d/univention-management-console-server restart 2>&1 | tee -a "$LOGFILE"
-
 ## Provision Samba4
 eval "$(univention-config-registry shell)"	## eval again
 
@@ -245,5 +211,41 @@ fi
 if [ ! -e /etc/phpldapadmin/config.php ]; then
 	cp /var/lib/samba/private/phpldapadmin-config.php /etc/phpldapadmin/config.php
 fi
+
+### Next adjust OpenLDAP ports before starting Samba4
+
+# Test:
+# r 389
+# r 7389,389
+# r 389,7389
+# r 389,7389,8389
+# r 7389,389,8389
+# r 7389,8389,389
+remove_port ()
+{
+	if [ -n "$1" -a -n "$2" ]; then
+		echo "$1" | sed -e "s|^${2},||;s|,${2},|,|;s|,${2}$||;s|^${2}$||"
+	fi
+
+}
+
+if [ -n "$slapd_port" ]; then
+	univention-config-registry set slapd/port="$(remove_port "$slapd_port" 389)" 2>&1 | tee -a "$LOGFILE"
+fi
+if [ -n "$slapd_port_ldaps" ]; then
+	univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)" 2>&1 | tee -a "$LOGFILE"
+fi
+if [ "$ldap_server_name" = "$hostname.$domainname" ]; then
+	univention-config-registry set ldap/server/port="7389" 2>&1 | tee -a "$LOGFILE"
+fi
+if [ "$ldap_master" = "$hostname.$domainname" ]; then
+	univention-config-registry set ldap/master/port="7389" 2>&1 | tee -a "$LOGFILE"
+fi
+
+## restart processes with adjusted ports
+stop_udm_cli_server
+/etc/init.d/slapd restart 2>&1 | tee -a "$LOGFILE"
+/etc/init.d/univention-directory-listener restart 2>&1 | tee -a "$LOGFILE"
+/etc/init.d/univention-management-console-server restart 2>&1 | tee -a "$LOGFILE"
 
 exit 0

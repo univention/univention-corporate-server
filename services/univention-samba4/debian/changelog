@@ -1,3 +1,10 @@
+univention-samba4 (1.0.90-1) unstable; urgency=low
+
+  * Adjust OpenLDAP ports after running the provision / samba3upgrade
+    as samba3upgrade needs the ldapsam backend (Bug #22866)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 07 Nov 2011 19:27:51 +0100
+
 univention-samba4 (1.0.89-2) unstable; urgency=low
 
   * adjust setup-s4 case for update szenario 2 (Bug #22866)
