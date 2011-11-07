@@ -1,3 +1,9 @@
+univention-dansguardian (5.0.1-13) unstable; urgency=low
+
+  * Fix name of variable for notification address (Bug #13934)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 07 Nov 2011 13:39:37 +0100
+
 univention-dansguardian (5.0.1-12) unstable; urgency=low
 
   * Fix name of variable for notification address (Bug #22576)
