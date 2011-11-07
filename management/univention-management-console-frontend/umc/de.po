@@ -31,7 +31,7 @@ msgstr "%d Einträge von %d ausgewählt"
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
 
-#: umc/app.js:429 umc/about.js:26
+#: umc/about.js:26 umc/app.js:429
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -79,12 +79,12 @@ msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 msgid "Back"
 msgstr "Zurück"
 
-#: umc/app.js:517 umc/widgets/Wizard.js:55
-#: umc/widgets/MultiObjectSelect.js:256
+#: umc/widgets/MultiObjectSelect.js:256 umc/widgets/Wizard.js:55
+#: umc/app.js:517
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/help.js:30 umc/about.js:26
+#: umc/about.js:26 umc/help.js:30
 msgid "Close"
 msgstr "Schließen"
 
@@ -134,7 +134,7 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/app.js:411 umc/help.js:30
+#: umc/help.js:30 umc/app.js:411
 msgid "Help"
 msgstr "Hilfe"
 
@@ -479,6 +479,10 @@ msgstr ""
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 
+#: umc/widgets/Grid.js:326 umc/widgets/Grid.js:668
+msgid "more"
+msgstr "mehr"
+
 #~ msgid "%s (used: %s)"
 #~ msgstr "%s (genutzt: %s)"
 
@@ -532,6 +536,9 @@ msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 
 #~ msgid "LDAP base"
 #~ msgstr "LDAP-Basis"
+
+#~ msgid "More actions"
+#~ msgstr "Weitere Aktionen"
 
 #~ msgid "User accounts"
 #~ msgstr "Benutzerkonten"

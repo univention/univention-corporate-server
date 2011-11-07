@@ -34,8 +34,33 @@ dojo.declare("umc.widgets.StandbyMixin", dijit._Widget, {
 		this._standbyWidget.startup();
 	},
 
-	standby: function(/*Boolean*/ doStandby) {
+	_updateContent: function(content) {
+		// type check of the content
+		if (dojo.isString(content)) {
+			// string
+			this._standbyWidget.set('text', content);
+			this._standbyWidget.set('centerIndicator', 'text');
+		}
+		else if (dojo.isObject(content) && content.declaredClass && content.domNode) {
+			// widget
+			this._standbyWidget.set('text', '');
+			this._standbyWidget.set('centerIndicator', 'text');
+
+			// hook the given widget to the text node
+			dojo.place(content.domNode, this._standbyWidget._textNode);
+			content.startup();
+		}
+		else {
+			// set default image
+			this._standbyWidget.set('centerIndicator', 'image');
+		}
+	},
+
+	standby: function(/*Boolean*/ doStandby, /*mixed?*/ content) {
 		if (doStandby) {
+			// update the content of the standby widget
+			this._updateContent(content)
+
 			// show standby widget
 			this._standbyWidget.show();
 		}

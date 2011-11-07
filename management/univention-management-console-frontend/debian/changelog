@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.182-1) unstable; urgency=low
+
+  * StandbyMixin: added standby() parameter to change the standby content
+    (Bug #22893)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Nov 2011 17:12:30 +0100
+
 univention-management-console-frontend (1.0.181-1) unstable; urgency=low
 
   * DateBox: add support for disabling the widget; Bug #24354
