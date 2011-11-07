@@ -1,3 +1,9 @@
+univention-system-setup (5.0.53-1) unstable; urgency=low
+
+  * restart services for changed SSL certificate (Bug #23869)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 07 Nov 2011 15:32:09 +0100
+
 univention-system-setup (5.0.52-1) unstable; urgency=low
 
   * fixed typo (Bug #22904)
