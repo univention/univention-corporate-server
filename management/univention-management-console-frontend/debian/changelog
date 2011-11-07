@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.181-1) unstable; urgency=low
+
+  * DateBox: add support for disabling the widget; Bug #24354
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 07 Nov 2011 15:07:40 +0100
+
 univention-management-console-frontend (1.0.180-1) unstable; urgency=low
 
   * adjusted code to use umc.widgets.Button class (Bug #22881)

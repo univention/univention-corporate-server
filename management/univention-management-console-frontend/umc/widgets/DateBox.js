@@ -21,6 +21,8 @@ dojo.declare("umc.widgets.DateBox", [
 
 	sizeClass: null,
 
+	disabled: false,
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -31,7 +33,8 @@ dojo.declare("umc.widgets.DateBox", [
 		this.inherited(arguments);
 
 		this._dateBox = this.adopt(dijit.form.DateTextBox, {
-			name: this.name
+			name: this.name,
+			disabled: this.disabled
 		});
 		this.addChild(this._dateBox);
 
