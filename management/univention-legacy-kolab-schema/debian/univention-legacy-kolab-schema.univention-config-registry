@@ -1,4 +1,4 @@
 Type: subfile
 Multifile: etc/ldap/slapd.conf
-Subfile: etc/ldap/slapd.conf.d/11univention-kolab_schema
+Subfile: etc/ldap/slapd.conf.d/20univention-kolab_schema
 Variables: ldap/server/type

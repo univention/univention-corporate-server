@@ -1,3 +1,11 @@
+univention-legacy-kolab-schema (1.0.6-1) unstable; urgency=low
+
+  * added schema file kolab-legacy.schema for univentionLegacyUserTemplate (Bug #23483)
+  * renamed subtemplate from 11univention-kolab_schema to 20univention-kolab_schema
+  * added script "add-legacy-objectclasses"
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 07 Nov 2011 13:37:10 +0100
+
 univention-legacy-kolab-schema (1.0.5-2) unstable; urgency=low
 
   * fixed dependencies (Bug #23788)

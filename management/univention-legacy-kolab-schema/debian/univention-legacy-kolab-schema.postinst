@@ -64,4 +64,10 @@ else
 	grep -q crestart /etc/init.d/slapd && /etc/init.d/slapd crestart || true
 fi
 
+
+# Bug 23483 - add objectclass univentionLegacyUserTemplate to all user template objects 
+if [ "$server_role" = "domaincontroller_master" ] ; then
+	/usr/share/univention-legacy-kolab-schema/add-legacy-objectclasses --update
+fi
+
 exit 0
