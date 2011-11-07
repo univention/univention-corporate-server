@@ -809,9 +809,9 @@ class configHandlers:
 					variables |= grepVariables(f.read())
 				finally:
 					f.close()
-			except IOError:
-				print "The following Subfile doesnt exist:\n%s\nunivention-config-registry aborted" % name
-				sys.exit(1)
+			except IOError, e:
+				print >>sys.stderr, "Failed to process Subfile %s" % (name,)
+				return None
 			qentry = (name, variables)
 			# if multifile handler does not yet exists, queue subfiles for later
 			try:

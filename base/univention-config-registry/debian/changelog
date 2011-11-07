@@ -1,3 +1,9 @@
+univention-config-registry (7.0.27-2) unstable; urgency=low
+
+  * Don't abort on failed SubFile (Bug #2268)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 07 Nov 2011 11:37:25 +0100
+
 univention-config-registry (7.0.27-1) unstable; urgency=low
 
   * fix traceback with wrong locale setting (Bug #23753)
