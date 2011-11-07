@@ -813,7 +813,7 @@ class object(content):
 					return _('Neither SLAAC is activated nor an IPv6 address with prefix has been entered for interface "%s".') % name
 				if addr and prefix:
 					if ipaddr.IPv6Address(addr) not in ipaddr.IPv6Network('2000::/3') and \
-					   ipaddr.IPv6Address(addr) not in ipaddr.IPv6Network('fc::/7') and \
+					   ipaddr.IPv6Address(addr) not in ipaddr.IPv6Network('fc00::/7') and \
 					   addr not in self.warning_shown_for_ipv6addr:
 						self.warning_shown_for_ipv6addr.append(addr)
 						return _('The given IPv6 address "%(addr)s" of interface "%(interface)s" is not a global unicast address (2000::/3) and not a unique local unicast address (fc00::/7). This warning is shown only once for each address. The installation can be continued but might fail.') % { 'addr': addr, 'interface': name }
