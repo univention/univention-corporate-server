@@ -19,7 +19,7 @@ Variables: domainname
 
 Type: file
 File: etc/dansguardian/dansguardianf1.conf
-Variables: squid/virusscan/notifyemail
+Variables: dansguardian/virusscan/notifyemail
 Variables: domainname
 
 Type: file
