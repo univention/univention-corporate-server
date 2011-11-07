@@ -49,6 +49,7 @@ import threading
 from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError, storage_pools
 from protocol import Data_Domain, Data_Node, Data_Snapshot, Disk, Interface, Graphic
 from network import network_start, network_find_by_bridge, NetworkError
+import copy
 import os
 import stat
 import operator
@@ -1356,7 +1357,10 @@ def domain_info( uri, domain ):
 	"""Return detailed information of a domain."""
 
 	node = node_query( uri )
-	return node.domains[ domain ].pd
+	# transfer state number into string constant
+	domain_pd = copy.copy( node.domains[ domain ].pd )
+	domain_pd.state = STATES[ domain_pd.state ]
+	return domain_pd
 
 def domain_state(uri, domain, state):
 	"""Change running state of domain on node and wait for updated state."""

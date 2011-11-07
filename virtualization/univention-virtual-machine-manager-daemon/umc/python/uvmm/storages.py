@@ -77,8 +77,10 @@ class Storages( object ):
 
 
 	# helper functions
-	def get_pool( self, node_uri, pool_name ):
+	def get_pool( self, node_uri, pool_name = None, pool_path = None ):
 		"""Returns a pool object or None if the pool could not be found"""
+		if pool_name is None and pool_path is None:
+			return None
 		if not node_uri in self.storage_pools:
 			success, data = self.uvmm.send( 'STORAGE_POOLS', None, uri = node_uri )
 			self.storage_pools[ node_uri ] = dict( map( lambda p: ( p.name, object2dict( p ) ), data ) )
@@ -87,7 +89,14 @@ class Storages( object ):
 		if not pool_name in self.storage_pools[ node_uri ]:
 			return None
 
-		return self.storage_pools[ node_uri ][ pool_name ]
+		if pool_name is not None:
+			return self.storage_pools[ node_uri ][ pool_name ]
+
+		for uri, pool in self.storage_pools.items():
+			if pool_path.startswith( pool[ 'path' ] ):
+				return pool
+
+		return None
 
 	def get_pool_path( self, node_uri, pool_name ):
 		"""returns the absolute path for the given pool name on the node
@@ -96,6 +105,14 @@ class Storages( object ):
 		if pool is None:
 			return None
 		return pool[ 'path' ]
+
+	def get_pool_name( self, node_uri, pool_path ):
+		"""returns the pool name for the given pool path on the node
+		node_uri"""
+		pool = self.get_pool( node_uri, pool_path = pool_path )
+		if pool is None:
+			return None
+		return pool[ 'name' ]
 
 	def is_file_pool( self, node_uri, pool_name ):
 		pool = self.get_pool( node_uri, pool_name )

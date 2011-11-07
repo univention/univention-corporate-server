@@ -51,6 +51,8 @@ from .tools import object2dict, MemorySize
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 
 class Domains( object ):
+	STATES = ( 'NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED' )
+
 	def domain_query( self, request ):
 		"""Returns a list of domains matching domainPattern on the nodes matching nodePattern.
 
@@ -93,6 +95,16 @@ class Domains( object ):
 			success, data = result
 
 			json = object2dict( data )
+			## re-arrange a few attributes for the frontend
+			# disks
+			for disk in json[ 'disks' ]:
+				disk[ 'volumeFilename' ] = os.path.basename( disk[ 'source' ] )
+				# disk[ 'poolName' ] = self.get_pool_name( os.path.dirname( disk[ 'source' ] ) ) -> disk has attribute pool containing the name
+				disk[ 'paravirtual' ] = disk[ 'target_bus' ] in ( 'virtio', 'xen' )
+
+			for iface in json[ 'interfaces' ]:
+				iface[ 'paravirtual' ] = iface[ 'model' ] in ( 'xen', 'virtio' )
+
 			MODULE.info( 'Got domain description: success: %s, data: %s' % ( success, json ) )
 			self.finished( request.id, { 'success' : success, 'data' : json } )
 
@@ -108,13 +120,13 @@ class Domains( object ):
 			drive = Disk()
 			drive.device = disk[ 'device' ]
 			drive.driver_type = disk[ 'driver_type' ]
-			pool_path = self.get_pool_path( node_uri, disk.get( 'poolName' ) )
+			pool_path = self.get_pool_path( node_uri, disk.get( 'pool' ) )
 			if pool_path:
 				drive.source = os.path.join( pool_path, disk[ 'volumeFilename' ] )
 			else:
 				drive.source = None
 
-			file_pool = self.is_file_pool( node_uri, disk.get( 'poolName' ) )
+			file_pool = self.is_file_pool( node_uri, disk.get( 'pool' ) )
 			if file_pool:
 				drive.type = Disk.TYPE_FILE
 			else:
@@ -136,7 +148,7 @@ class Domains( object ):
 				if driver_pv and drive.device != Disk.DEVICE_FLOPPY and drive.type != Disk.TYPE_BLOCK:
 					drive.target_bus = 'virtio'
 			elif uri.scheme.startswith( 'xen' ):
-				pv_domain = domain_info.os_type in ( 'xen', 'linux' )
+				pv_domain = domain_info.os_type == 'xen'
 				if driver_pv and drive.device != Disk.DEVICE_FLOPPY and drive.type != Disk.TYPE_BLOCK:
 					disk.target_bus = 'xen'
 				elif pv_domain and not driver_pv:
@@ -225,7 +237,7 @@ class Domains( object ):
 		domain_info.disks = self._create_disks( request.options[ 'nodeURI' ], domain[ 'disks' ], domain_info )
 		verify_device_files( domain_info )
 		# on PV machines we should move the CDROM drive to first position
-		if domain_info.os_type in ( 'linux', 'xen' ):
+		if domain_info.os_type == 'xen':
 			non_disks, disks = [], []
 			for dev in domain_info.disks:
 				if dev.device == Disk.DEVICE_DISK:
@@ -235,7 +247,7 @@ class Domains( object ):
 			domain_info.disks = non_disks + disks
 
 		# network interface
-		if domain[ 'interface' ]:
+		for iface in domain[ 'interfaces' ]:
 			iface = Interface()
 			iface.source = domain[ 'interface' ]
 			if domain[ 'pvinterface' ] and domain_info.os_type == 'hvm':
@@ -264,7 +276,7 @@ class Domains( object ):
 
 		return: { 'success' : (True|False), 'message' : <details> }
 		"""
-		self.finished( request.id )
+		self.domain_add( request )
 
 	def domain_state( self, request ):
 		"""Set the state a domain domainUUID on node nodeURI.
