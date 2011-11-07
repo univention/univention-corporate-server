@@ -99,7 +99,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set doNotSearch="0" \
 	--set tabName="UVMM" \
 	--set syntax="boolean" \
-	--set tabAdvanced="0" \
+	--set tabAdvanced="1" \
 	--set name="UVMMGroup" \
 	--set default="0" \
 	--set mayChange="1" \
