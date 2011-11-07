@@ -163,7 +163,8 @@ if [ -z "$samba4_function_level" ]; then
 	univention-config-registry set samba4/function/level="$samba4_function_level"
 fi
 
-if [ -z "$S3_DCS" ] || is_ucr_true samba4/ignore/mixsetup; then
+S3_DOMAIN_SID_FOR_MY_DOMAIN="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
+if [ -z "$S3_DCS" ] || [ -z "$S3_DOMAIN_SID_FOR_MY_DOMAIN" ]; then
 
 	if [ -z "$DOMAIN_SID" ]; then
 		# No SID for this windows/domain has been generated
