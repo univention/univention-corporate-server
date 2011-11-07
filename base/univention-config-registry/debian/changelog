@@ -1,6 +1,12 @@
+univention-config-registry (7.0.27-3) unstable; urgency=low
+
+  * Fix moving .info files from removed packags in trigger (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 07 Nov 2011 12:38:48 +0100
+
 univention-config-registry (7.0.27-2) unstable; urgency=low
 
-  * Don't abort on failed SubFile (Bug #2268)
+  * Don't abort on failed SubFile (Bug #22668)
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 07 Nov 2011 11:37:25 +0100
 

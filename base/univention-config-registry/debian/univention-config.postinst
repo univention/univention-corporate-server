@@ -41,9 +41,9 @@ trigger () {
 			;;
 		/etc/univention/templates/info)
 			local info pkg state
-			for info in $(find /etc/univention/templates/info -name '*.info' -printf '%f\n')
+			for info in $(find /etc/univention/templates/info -name '*.info' -print)
 			do
-				pkg=${info%.info}
+				pkg=$(basename "$info" .info)
 				state=$(dpkg-query -W -f '${Status}' "$pkg") || continue
 				case "$state" in
 					unknown*) # never installed; no state in /var/lib/dpkg/status
