@@ -227,6 +227,13 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 	fi
 fi
 
+## BEGIN Bug #24413
+echo "Starting gdm"
+/etc/init.d/gdm start >&3 2>&3
+ucr set gdm/autostart="$(ucr get gdm/autostart/update30backup)" >&3 2>&3
+ucr unset gdm/autostart/update30backup >&3 2>&3
+## END Bug #24413
+
 # For UCS 3.0 a reboot is required
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
 
