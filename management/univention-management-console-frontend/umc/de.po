@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-07 12:30+0100\n"
+"POT-Creation-Date: 2011-11-07 16:11+0100\n"
 "PO-Revision-Date: 2011-11-01 20:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,12 +21,12 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
-#: umc/widgets/Grid.js:537
+#: umc/widgets/Grid.js:536
 #, python-format
 msgid "%d entries of %d selected"
 msgstr "%d Einträge von %d ausgewählt"
 
-#: umc/widgets/Grid.js:542
+#: umc/widgets/Grid.js:541
 #, python-format
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
@@ -92,7 +92,7 @@ msgstr "Schließen"
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:481
+#: umc/app.js:482
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -104,7 +104,7 @@ msgstr "Die Anfrage konnte nicht ausgeführt werden."
 msgid "Current manual (PDF)"
 msgstr "Aktuelles Handbuch (PDF)"
 
-#: umc/app.js:509
+#: umc/app.js:510
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
@@ -138,7 +138,7 @@ msgstr ""
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/app.js:461
+#: umc/app.js:462
 #, python-format
 msgid "Host: %(host)s.%(domain)s"
 msgstr ""
@@ -199,7 +199,7 @@ msgstr "Interner Server-Fehler: Der Dienst is momentan nicht erreichbar!"
 msgid "Language"
 msgstr "Sprache"
 
-#: umc/app.js:419
+#: umc/app.js:420
 msgid "License"
 msgstr "Lizenz"
 
@@ -207,12 +207,12 @@ msgstr "Lizenz"
 msgid "Login"
 msgstr "Anmelden"
 
-#: umc/app.js:86
+#: umc/app.js:87
 #, python-format
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:510
+#: umc/app.js:511
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -220,27 +220,19 @@ msgstr "Abmelden"
 msgid "Manual and documentation"
 msgstr "Handbücher und Dokumentation"
 
-#: umc/app.js:489
+#: umc/app.js:490
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
-
-#: umc/widgets/Grid.js:284 umc/widgets/Grid.js:285
-msgid "More actions"
-msgstr "Weitere Aktionen"
-
-#: umc/widgets/Grid.js:328 umc/widgets/Grid.js:670
-msgid "more"
-msgstr "mehr"
 
 #: umc/widgets/Wizard.js:46
 msgid "Next"
 msgstr "Weiter"
 
-#: umc/widgets/Grid.js:539
+#: umc/widgets/Grid.js:538
 msgid "No entries could be found"
 msgstr "Keine Einträge konnten gefunden werden"
 
-#: umc/widgets/Grid.js:598
+#: umc/widgets/Grid.js:597
 msgid "No object selected"
 msgstr "Kein Objekt ausgewählt"
 
@@ -260,7 +252,7 @@ msgstr "Ok"
 msgid "Others"
 msgstr "Andere"
 
-#: umc/app.js:348 umc/app.js:349
+#: umc/app.js:349 umc/app.js:350
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -308,7 +300,7 @@ msgstr "Weiterführende Informationen"
 msgid "Support and assistance"
 msgstr "Unterstützung und Support"
 
-#: umc/app.js:360
+#: umc/app.js:361
 #, python-format
 msgid "The SSL certificate will expire in %d days and should be renewed!"
 msgstr ""
@@ -345,7 +337,7 @@ msgstr ""
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
-#: umc/app.js:474
+#: umc/app.js:475
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -385,7 +377,7 @@ msgstr ""
 "oder\n"
 "Administration unterstützen."
 
-#: umc/app.js:351
+#: umc/app.js:352
 msgid ""
 "Univention Management Console is a modularly designed, web-based application "
 "for the administration of objects in your Univention Corporate Server domain "
@@ -395,7 +387,7 @@ msgstr ""
 "die Administrierung von Objekten in der Univention-Corporate-Server-Domäne "
 "und individueller Univention-Corporate-Server-Systeme."
 
-#: umc/app.js:438
+#: umc/app.js:439
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
@@ -415,7 +407,7 @@ msgstr "Univention Supportdatenbank (SDB)"
 msgid "Univention wiki site"
 msgstr "Univention Webseite"
 
-#: umc/app.js:498
+#: umc/app.js:499
 #, python-format
 msgid "User: %s"
 msgstr "Benutzer: %s"

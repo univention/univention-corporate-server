@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.183-1) unstable; urgency=low
+
+  * umc.tools.inheritsFrom(): adapted function to use dojo meta information
+    (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Nov 2011 16:16:12 +0100
+
 univention-management-console-frontend (1.0.182-1) unstable; urgency=low
 
   * StandbyMixin: added standby() parameter to change the standby content

@@ -619,13 +619,20 @@ dojo.mixin(umc.tools, {
 		// summary:
 		//		Returns true in case object _o inherits from class c.
 		var o = _o;
-		while (o) {
-			if (o.declaredClass == c) {
-				return true;
-			}
-			o = o.__proto__;
+		var bases = dojo.getObject('_meta.bases', false, _o.constructor);
+		if (!bases) {
+			// no dojo object
+			return false;
 		}
-		return undefined;
+
+		var matched = false;
+		dojo.forEach(bases, function(ibase) {
+			if (ibase.prototype.declaredClass == c) {
+				matched = true;
+				return false;
+			}
+		});
+		return matched;
 	},
 
 	capitalize: function(/*String*/ str) {
