@@ -18,6 +18,7 @@ dojo.require("umc.widgets.CategoryPane");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.Text");
+dojo.require("umc.widgets.Button");
 dojo.require("umc.i18n");
 
 dojo.mixin(umc.app, new umc.i18n.Mixin({
@@ -502,7 +503,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		}
 
 		// add logout button
-		headerRight.addChild(new dijit.form.Button({
+		headerRight.addChild(new umc.widgets.Button({
 			label: '<img src="images/logout.png">',
 			'class': 'umcHeaderButton umcLogoutButton',
 			onClick: dojo.hitch(this, function() {

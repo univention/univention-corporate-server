@@ -18,6 +18,7 @@ dojo.require("dojox.grid.enhanced.plugins.Menu");
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
 dojo.require("umc.render");
+dojo.require("umc.widgets.Button");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
@@ -268,7 +269,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 					}
 
 					// return final button
-					return new dijit.form.Button(props);
+					return new umc.widgets.Button(props);
 				})
 			});
 		}, this);
@@ -629,7 +630,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 					console.log("WARNING: no footer cell: " + i);
 				}
 				else {
-					this._footerCells[i].addChild(new dijit.form.Button(props));
+					this._footerCells[i].addChild(new umc.widgets.Button(props));
 				}
 			}
 

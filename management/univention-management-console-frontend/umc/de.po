@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-04 19:34+0100\n"
+"POT-Creation-Date: 2011-11-07 12:30+0100\n"
 "PO-Revision-Date: 2011-11-01 20:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,12 +21,12 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
-#: umc/widgets/Grid.js:536
+#: umc/widgets/Grid.js:537
 #, python-format
 msgid "%d entries of %d selected"
 msgstr "%d Einträge von %d ausgewählt"
 
-#: umc/widgets/Grid.js:541
+#: umc/widgets/Grid.js:542
 #, python-format
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
@@ -224,11 +224,11 @@ msgstr "Handbücher und Dokumentation"
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
-#: umc/widgets/Grid.js:283 umc/widgets/Grid.js:284
+#: umc/widgets/Grid.js:284 umc/widgets/Grid.js:285
 msgid "More actions"
 msgstr "Weitere Aktionen"
 
-#: umc/widgets/Grid.js:327 umc/widgets/Grid.js:669
+#: umc/widgets/Grid.js:328 umc/widgets/Grid.js:670
 msgid "more"
 msgstr "mehr"
 
@@ -236,11 +236,11 @@ msgstr "mehr"
 msgid "Next"
 msgstr "Weiter"
 
-#: umc/widgets/Grid.js:538
+#: umc/widgets/Grid.js:539
 msgid "No entries could be found"
 msgstr "Keine Einträge konnten gefunden werden"
 
-#: umc/widgets/Grid.js:597
+#: umc/widgets/Grid.js:598
 msgid "No object selected"
 msgstr "Kein Objekt ausgewählt"
 

@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.180-1) unstable; urgency=low
+
+  * adjusted code to use umc.widgets.Button class (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Nov 2011 12:32:11 +0100
+
 univention-management-console-frontend (1.0.179-1) unstable; urgency=low
 
   * more actions: removed header and replaced drop-down button label with
