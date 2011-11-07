@@ -191,7 +191,7 @@
 	vertical-align: middle;
 }
 .dijitButtonContents {
-	display: block;		
+	display: inline-block;		
 }
 td.dijitButtonContents {
 	display: table-cell;	
@@ -1905,8 +1905,14 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
   padding: 1px 2px;
 }
 .dj_gecko .umc .dijitTextBox .dijitInputInner, .dj_webkit .umc .dijitTextBox .dijitInputInner {
-  padding: 3px;
+  padding: 4px 3px 3px;
 }
+
+.dj_gecko .umc .umcComboBox .dijitInputInner,
+.dj_webkit .umc .umcComboBox .dijitInputInner {
+	padding-top: 5px;
+}
+
 .umc .dijitTextBox, .umc .dijitTextBox .dijitButtonNode {
   
   border-color: #d7d8da;
@@ -2040,6 +2046,7 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
   background-repeat: repeat-x;
   background-color: #74be4b;
 }
+
 .umc .dijitComboButton .dijitArrowButton {
   border-left-width: 0;
   padding: 4px 2px 4px 2px;
@@ -2112,7 +2119,7 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 .umc .dijitDropDownButtonDisabled,
 .umc .dijitComboButtonDisabled,
 .umc .dijitToggleButtonDisabled {
-  background-image: none;
+  background: none;
   outline: none;
 }
 .umc .dijitButtonDisabled .dijitButtonNode,
@@ -4567,19 +4574,29 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 
 #umc_widgets_LoginDialog_0 .umcTex {
 	padding: 0;
-	width: 300px !important;
+	width: 225px !important;
+	margin: 0 auto 15px auto;
 }
 
 #umc_widgets_LoginDialog_0 * {
 	overflow: hidden;
 }
 
-#umc_widgets_LoginDialog_0 .dojoxDialogPaneContent {
-	/*width: 220px !important; */
-/*		height: 300px !important;*/
+#umc_widgets_LoginDialog_0 #umc_widgets_ContainerWidget_1,
+#umc_widgets_LoginDialog_0 #umc_widgets_ContainerWidget_2,
+#umc_widgets_LoginDialog_0 #umc_widgets_ContainerWidget_3,
+#umc_widgets_LoginDialog_0 #umc_widgets_ContainerWidget_4 {
+	width: 225px;
+	margin: 0 auto;
+}
+
+#umc_widgets_LoginDialog_0 #umc_widgets_ContainerWidget_4 {
+	width: 215px;
+}
+
+.umc #umc_widgets_LoginDialog_0 .dojoxDialogPaneContent {
 	margin: 0 auto !important;
-/*	padding: 35px !important;*/
-	height: 300px !important;
+	height: 310px !important;
 }
 #umc_widgets_LoginDialog_0 .dojoxDialogPaneContent .contentNode {
 	margin-bottom: 10px;
@@ -4836,11 +4853,15 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 	float: left;
 }
 
-/* @group logout button */
-.umcHeader #dijit_form_Button_0_label {
-	padding-top: 6px !important;
+.umc .umcHeader .umcLogoutButton .dijitButtonNode,
+.umc .umcHeader .umcLogoutButton .dijitButtonNode .dijitButtonContents {
+	height: 30px !important;
 }
-/* @end */
+
+.umc .umcHeader .umcLogoutButton .dijitButtonNode .dijitInline {
+	padding-top: 3px;
+	display: block;
+}
 
 .umcHeader .umcHeaderButton .dijitButtonNode {
 	height: auto !important;
@@ -4892,7 +4913,7 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 }
 
 .umc .umcSize-OneThird {
-		width: 8em;
+		width: 9em;
 }
 
 .umc .umcSize-Half {
@@ -4900,19 +4921,19 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 }
 
 .umc .umcSize-TwoThirds {
-		width: 16em;
+		width: 15em;
 }
 
 .umc .umcSize-FourThirds {
-		width: 32em;
+		width: 35em;
 }
 
 .umc .umcSize-OneAndAHalf {
-		width: 37em;
+		width: 38em;
 }
 
 .umc .umcSize-FiveThirds {
-		width: 40em;
+		width: 41em;
 }
 /* @end */
 
@@ -4984,12 +5005,6 @@ form {
 	background: none;
 }
 
-/* Logout-Button */
-.umcHeader .umcHeaderButton .dijitButtonNode #dijit_form_Button_3_label {
-	padding: 0;
-	background: none;
-}
-
 /* @group User-Dropdown */
 
 #dijit_form_DropDownButton_0 {
@@ -4998,6 +5013,7 @@ form {
 
 #dijit_form_DropDownButton_0_label {
 	padding-right: 5px;
+	background: none;
 }
 
 /* @end */

@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.184-1) unstable; urgency=low
+
+  * integrated new CSS files (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Nov 2011 16:42:12 +0100
+
 univention-management-console-frontend (1.0.183-1) unstable; urgency=low
 
   * umc.tools.inheritsFrom(): adapted function to use dojo meta information
