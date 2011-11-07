@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.226-1) unstable; urgency=low
+
+  * directory reports: fixed problems with wrong number of users
+  * fixed some layout problems
+  (Bug #23336)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Nov 2011 00:56:29 +0100
+
 univention-management-console-module-udm (1.0.225-1) unstable; urgency=low
 
   * fix layout of dialogs shown when creating reports; Bug #23336

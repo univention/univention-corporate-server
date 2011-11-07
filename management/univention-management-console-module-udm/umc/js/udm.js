@@ -756,8 +756,11 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		}
 	},
 
-	createReport: function ( objects ) {
+	createReport: function () {
 		// open the dialog
+		var objects = dojo.map( this._grid.getAllItems(), function( item ) { 
+			return item.$dn$; 
+		} );
 		var dialog = new umc.modules._udm.CreateReportDialog( {
 			umcpCommand: dojo.hitch( this, 'umcpCommand' ),
 			moduleFlavor: this.moduleFlavor,
@@ -776,8 +779,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			if ( null === this._reportButton ) {
 				this._reportButton = this.adopt( umc.widgets.Button, {
 					label: this._( 'Create report' ),
-					iconClass: 'umcIconReport', // FIXME: we need a new icon
-					callback: dojo.hitch( this, 'createReport', dojo.map( items, function( item ) { return item.$dn$; } ) )
+					iconClass: 'umcIconReport',
+					callback: dojo.hitch( this, 'createReport' )
 				} );
 				this._grid._toolbar.addChild( this._reportButton );
 			}
@@ -845,6 +848,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		//		and (for the UDM navigation) the selected container.
 
 		var vals = this._searchForm.gatherFormValues();
+		var columns = null;
+		var new_column = null;
 		if ('navigation' == this.moduleFlavor) {
 			var path = this._tree.get('path');
 			if (path.length) {
@@ -853,7 +858,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				});
 				this._grid.filter(vals);
 			}
-			var new_column = {
+			new_column = {
 				name: 'labelObjectType',
 				label: this._( 'Type' )
 			};
@@ -862,18 +867,18 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		} else {
 			var identifies = this.identityProperty();
 			var selected_value = this._searchForm._widgets.objectProperty.get( 'value' );
-			var columns = this._default_columns;
+			columns = this._default_columns;
 			var objTypeWidget = this._searchForm._widgets.objectType;
 
 			if ( objTypeWidget.getNumItems() > 1 ) {
-				var new_column = {
+				new_column = {
 					name: 'labelObjectType',
 					label: this._( 'Type' )
 				};
 				columns = this._default_columns.slice( 0, 1 ).concat( new_column, this._default_columns.slice( 1 ) );
 			}
 			if ( 'None' != selected_value && ( identifies === null || selected_value != identifies.id ) ) {
-				var new_column = {
+				new_column = {
 					name: selected_value,
 					label: this._searchForm._widgets.objectProperty.get( 'displayedValue' )
 				};

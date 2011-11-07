@@ -77,7 +77,7 @@ dojo.declare("umc.modules._udm.CreateReportDialog", [ dijit.Dialog, umc.widgets.
 		var buttons = [ {
 			name: 'create',
 			label: this._( 'Create' ),
-			'default': true,
+			defaultButton: true,
 			callback: dojo.hitch( this, function() {
 				this.onDone( this._form.gatherFormValues() );
 			} )
