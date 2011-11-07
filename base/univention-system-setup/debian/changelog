@@ -1,3 +1,9 @@
+univention-system-setup (5.0.54-2) unstable; urgency=low
+
+  * Fixed order while writing the root password (Bug #24166)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Nov 2011 16:30:44 +0100
+
 univention-system-setup (5.0.54-1) unstable; urgency=low
 
   * Set new hostname in setup-join.sh (Bug #24166)

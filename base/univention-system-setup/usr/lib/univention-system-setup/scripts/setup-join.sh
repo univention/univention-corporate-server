@@ -78,6 +78,8 @@ ldap_base=$(get_profile_var "ldap/base")
 windows_domain=$(get_profile_var "windows/domain")
 [ -n "$windows_domain" ] && univention-config-registry set windows/domain="$windows_domain" >>$SETUP_LOG 2>&1
 
+eval "$(univention-config-registry shell)"
+
 # The ldap server join script must create the Administrator account
 if [ "$server_role" = "domaincontroller_master" ]; then
 	p=$(get_profile_var "password")
@@ -85,15 +87,13 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		if [ ! -e /var/lib/univention-ldap ]; then
 			mkdir -p /var/lib/univention-ldap
 		fi
-		echo -n "$root_password" >/var/lib/univention-ldap/root.secret
+		echo -n "$p" >/var/lib/univention-ldap/root.secret
 		chmod 600 /var/lib/univention-ldap/root.secret
 	fi
 	unset p
 fi
 # set root password
 /usr/lib/univention-system-setup/scripts/basis/18root_password >>$SETUP_LOG 2>&1
-
-eval "$(univention-config-registry shell)"
 
 if [ "$server_role" = "domaincontroller_master" ]; then
       univention-config-registry set ldap/server/name="$hostname.$domainname" \
