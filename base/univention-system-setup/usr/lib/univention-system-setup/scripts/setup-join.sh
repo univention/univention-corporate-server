@@ -82,7 +82,7 @@ eval "$(univention-config-registry shell)"
 
 # The ldap server join script must create the Administrator account
 if [ "$server_role" = "domaincontroller_master" ]; then
-	p=$(get_profile_var "password")
+	p=$(get_profile_var "root_password")
 	if [ -n "$p" ]; then
 		if [ ! -e /var/lib/univention-ldap ]; then
 			mkdir -p /var/lib/univention-ldap

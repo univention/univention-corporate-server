@@ -1,3 +1,9 @@
+univention-system-setup (5.0.54-3) unstable; urgency=low
+
+  * Read root_password instead of password from profile (Bug #24166)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Nov 2011 17:02:30 +0100
+
 univention-system-setup (5.0.54-2) unstable; urgency=low
 
   * Fixed order while writing the root password (Bug #24166)
