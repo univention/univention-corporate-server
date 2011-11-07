@@ -6,11 +6,15 @@
 	<categories>
 		<category name="system"/>
 	</categories>
-	<command name="adconnector/configure" function="configure">
+	<command name="adconnector/save" function="save">
+	</command>
+	<command name="adconnector/guess" function="guess">
 	</command>
 	<command name="adconnector/defaults" function="defaults">
 	</command>
-	<command name="adconnector/start" function="start">
+	<command name="adconnector/state" function="state">
+	</command>
+	<command name="adconnector/service" function="service">
 	</command>
 	</module>
 </umc>
