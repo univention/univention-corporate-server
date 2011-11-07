@@ -1,3 +1,10 @@
+univention-ldap (8.0.69-1) unstable; urgency=low
+
+  * fixed OID collision between univentionUserTemplate and
+    univentionShareHost (Bug #24421)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 07 Nov 2011 13:42:08 +0100
+
 univention-ldap (8.0.68-1) unstable; urgency=low
 
   * Added univention-virtual-machine-manager-schema to univention-ldap-

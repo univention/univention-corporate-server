@@ -60,7 +60,7 @@ attributetype ( 1.3.6.1.4.1.10176.1001.12.1.7 NAME 'userOptionsPreset'
 	EQUALITY caseExactIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
-objectclass ( 1.3.6.1.4.1.10176.1001.1.1.1 NAME 'univentionUserTemplate'
+objectclass ( 1.3.6.1.4.1.10176.1001.12.2.1 NAME 'univentionUserTemplate'
 	DESC 'univention Template for users'
 	SUP top STRUCTURAL
 	MUST ( cn )
