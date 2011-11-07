@@ -318,7 +318,7 @@ class Instance(umcm.Base):
 			_append('interfaces/eth0/ipv6/default/address', _('A default entry with the identifier "default" needs to be specified for each network device.'))
 		if orgValues.get('server/role', '') in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'] and isSetIpv4 and not ipv4HasAddress:
 			_append('interfaces/eth0/address', _('At least one IPv4 address needs to be specified.'))
-		if not ipv4HasDynamic and not ipv6HasDynamic and not allValues.get('nameserver1') and not allValues.get('nameserver2') and not allValues('nameserver3'):
+		if not ipv4HasDynamic and not ipv6HasDynamic and not allValues.get('nameserver1') and not allValues.get('nameserver2') and not allValues.get('nameserver3'):
 			_append('nameserver1', _('At least one domain name server needs to be given if DHCP or SLAAC is not specified.'))
 
 		self.finished(request.id, messages)

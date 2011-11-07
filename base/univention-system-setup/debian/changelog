@@ -1,3 +1,9 @@
+univention-system-setup (5.0.52-1) unstable; urgency=low
+
+  * fixed typo (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Nov 2011 14:34:20 +0100
+
 univention-system-setup (5.0.51-1) unstable; urgency=low
 
   * In appliance mode the Administrator account will be created. The
