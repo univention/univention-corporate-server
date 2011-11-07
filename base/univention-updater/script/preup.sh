@@ -648,18 +648,24 @@ ucr set gdm/autostart/update30backup="$(ucr get gdm/autostart)" >&3 2>&3
 ucr set gdm/autostart=false >&3 2>&3
 ## END Bug #24413
 
+## BEGIN Bug #23483
+# add legacy objectclasses in preparation for update
+if [ "$server_role" = "domaincontroller_master" ] ; then
+	/usr/share/univention-legacy-kolab-schema/add-legacy-objectclasses --update
+fi
+## END Bug #23483
 
-## BEGIN -- Python 2.4 environment Bug #24195 
+## BEGIN -- Python 2.4 environment Bug #24195
 if [ ! -e /usr/lib/python2.4/site-packages/univention/__init__.py ]; then
 	touch /usr/lib/python2.4/site-packages/univention/__init__.py
 fi
 
 for pymodule in config_registry.py config_registry_info.py baseconfig.py debhelper.py; do
 	if [ ! -e /usr/lib/python2.4/site-packages/univention/${pymodule} ]; then
-		ln -sf /usr/share/pyshared/univention/${pymodule} /usr/lib/python2.4/site-packages/univention/                                                                             
+		ln -sf /usr/share/pyshared/univention/${pymodule} /usr/lib/python2.4/site-packages/univention/
 	fi
 done
-## END -- Bug #24195 
+## END -- Bug #24195
 
 echo ""
 echo "Starting update process, this may take a while."
