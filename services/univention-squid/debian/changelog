@@ -1,3 +1,10 @@
+univention-squid (5.0.3-18) unstable; urgency=low
+
+  * Convert localnet ACLs to CIDR notation to avoid warning messages during
+    daemon startup (Bug #22576)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 07 Nov 2011 10:51:22 +0100
+
 univention-squid (5.0.3-17) unstable; urgency=low
 
   * Fix syntax error (Bug #22576)
