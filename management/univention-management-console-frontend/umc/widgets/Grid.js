@@ -280,8 +280,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		if (tmpActions.length) {
 			gridColumns.push({
 				field: this.moduleStore.idProperty,
-				name: this._('More actions'),
-				width: this._getHeaderWidth(this._('More actions')) + 'px',
+				name: ' ',
 				editable: false,
 				formatter: dojo.hitch(this, function(key, rowIndex) {
 					// do not show buttons in case the row is disabled
@@ -324,7 +323,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 					// by default only create a button with icon
 					return this.adopt(dijit.form.DropDownButton, {
-						label: this._('More...'),
+						label: this._('more'),
 						dropDown: menu
 					});
 				})
@@ -666,7 +665,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			}
 			else {
 				this._footerCells[i].addChild(new dijit.form.DropDownButton({
-					label: this._('More...'),
+					label: this._('more'),
 					dropDown: moreActionsMenu
 				}));
 			}

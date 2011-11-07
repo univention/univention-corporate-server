@@ -229,8 +229,8 @@ msgid "More actions"
 msgstr "Weitere Aktionen"
 
 #: umc/widgets/Grid.js:327 umc/widgets/Grid.js:669
-msgid "More..."
-msgstr "Weitere..."
+msgid "more"
+msgstr "mehr"
 
 #: umc/widgets/Wizard.js:46
 msgid "Next"
