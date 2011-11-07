@@ -651,7 +651,8 @@ ucr set gdm/autostart=false >&3 2>&3
 ## BEGIN Bug #23483
 # add legacy objectclasses in preparation for update
 if [ "$server_role" = "domaincontroller_master" ] ; then
-	/usr/share/univention-legacy-kolab-schema/add-legacy-objectclasses --update
+	echo "Adding additional objectclasses to user template objects..."
+	/usr/share/univention-legacy-kolab-schema/add-legacy-objectclasses --update >&3 2>&3
 fi
 ## END Bug #23483
 
