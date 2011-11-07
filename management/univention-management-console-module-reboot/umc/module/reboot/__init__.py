@@ -32,35 +32,36 @@
 # <http://www.gnu.org/licenses/>.
 
 import subprocess
+
 import univention.info_tools as uit
 import univention.management.console as umc
 import univention.management.console.modules as umcm
-
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
-_ = umc.Translation('univention-management-console-modules-reboot').translate
+_ = umc.Translation('univention-management-console-module-reboot').translate
 
 class Instance(umcm.Base):
-	def init(self):
-		uit.set_language(str(self.locale))
+	def reboot(self, request):
+		message = None
+		if request.options['action'] == 'halt':
+			do = 'h'
+			target = _('The system is going down for system halt NOW '
+			         'with following message: ')
+		elif request.options['action'] == 'reboot':
+			do = 'r'
+			target = _('The system is going down for reboot NOW '
+			         'with following message: ')
 
-        def reboot(self, request):
-                if request.options['action'] == 'halt':
-                        do="h"
-                        target=_('The system is going down for system halt NOW with following message: ')
-                elif request.options['action'] == 'reboot':
-                        do = "r"
-                        target=_('The system is going down for reboot NOW with following message: ')
+		message = '%s%s' % (target, request.options['message'])
+		subprocess.call(('/usr/bin/logger', '-f', '/var/log/syslog',
+						 '-t', 'UMC', message))
+		shutdown_failed = subprocess.call(('/sbin/shutdown', '-%s' %do,
+		                                   'now', message))
+		if shutdown_failed:
+			message = _('System could not reboot/shutdown')
+			request.status = MODULE_ERR
+		else:
+			request.status = SUCCESS
 
-                message = target + request.options['message']
-
-                try:
-                        subprocess.call(('logger', '-f', '/var/log/syslog', '-t', 'UMC', message))
-                        subprocess.call(('shutdown', '-%s' %do, 'now', message))
-                        request.status = SUCCESS
-                except (OSError, ValueError), e:
-                        request.status = MODULE_ERR
-                        MODULE.warn(str(e))
-
-		self.finished(request.id, {"message": message})
+		self.finished(request.id, None, message)

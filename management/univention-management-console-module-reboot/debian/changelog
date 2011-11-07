@@ -1,3 +1,12 @@
+univention-management-console-module-reboot (1.0.13-1) unstable; urgency=low
+
+  * Fix translation
+  * Refactoring
+  * Use absolute paths instead of relative
+  (Bug #22848)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 07 Nov 2011 09:50:38 +0100
+
 univention-management-console-module-reboot (1.0.12-2) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)
