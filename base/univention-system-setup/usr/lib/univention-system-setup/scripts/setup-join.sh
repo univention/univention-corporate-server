@@ -66,6 +66,8 @@ echo "Starting re-configuration of basic settings"
 # set hostname
 hostname=$(get_profile_var "hostname")
 [ -n "$hostname" ] && univention-config-registry set hostname="$hostname" >>$SETUP_LOG 2>&1
+[ -n "$hostname" ] && hostname -F /etc/hostname >>$SETUP_LOG 2>&1
+
 # set domainame
 domainname=$(get_profile_var "domainname")
 [ -n "$domainname" ] && univention-config-registry set domainname="$domainname" >>$SETUP_LOG 2>&1

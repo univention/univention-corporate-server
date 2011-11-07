@@ -1,3 +1,9 @@
+univention-system-setup (5.0.54-1) unstable; urgency=low
+
+  * Set new hostname in setup-join.sh (Bug #24166)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Nov 2011 16:24:17 +0100
+
 univention-system-setup (5.0.53-1) unstable; urgency=low
 
   * restart services for changed SSL certificate (Bug #23869)
