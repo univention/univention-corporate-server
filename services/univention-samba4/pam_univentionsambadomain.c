@@ -38,6 +38,7 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <dirent.h>
@@ -70,8 +71,6 @@ static void _log_err(int err, const char *format, ...)
 static int _pam_parse(int flags, int argc, const char **argv)
 {
    int ctrl = 0;
-   FILE *fp;
-   int len;
 
    windows_domain = univention_config_get_string("windows/domain");
    /* does the appliction require quiet? */
@@ -107,7 +106,7 @@ int mapuser(const char *fromuser, char *touser)
             break;
          }
       }
-	  if (i == len_windows_domain) {
+	  if (i == len_windows_domain && ( fromuser[i] == '+' || fromuser[i] == '\\' ) ) {
          strncpy(touser, fromuser + len_windows_domain + 1, strlen(fromuser) - len_windows_domain - 1 );
 		 mapped = 1;
       }
