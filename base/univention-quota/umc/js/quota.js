@@ -54,6 +54,13 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 				}
 			}),
 			isStandardAction: true,
+			canExecute: function(item) {
+				if (item.mountPoint == '/') {
+					return false;
+				} else {
+					return true;
+				}
+			},
 			callback: dojo.hitch(this, function(partitionDevice) {
 				var doActivate = true;
 				var item = this._grid.getItem(partitionDevice);
@@ -69,7 +76,7 @@ dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 			isStandardAction: true,
 			isMultiAction: false,
 			canExecute: function(item) {
-				if (item.inUse === true) {
+				if (item.inUse === true && item.mountPoint != '/') {
 					return true;
 				} else {
 					return false;

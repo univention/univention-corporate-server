@@ -93,8 +93,8 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 			iconClass: 'umcIconDelete',
 			isStandardAction: true,
 			isMultiAction: true,
-			callback: dojo.hitch(this, function() {
-				this.onRemoveUsers();
+			callback: dojo.hitch(this, function(data) {
+				this.onRemoveUsers(data);
 			})
 		}];
 
@@ -162,23 +162,24 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 		return true;
 	},
 
-	onRemoveUsers: function() {
+	onRemoveUsers: function(ids) {
 		var dialogMessage = '';
-		var users = dojo.map(this._grid.getSelectedItems(), function(iitem) {
-			return iitem.user;
-		});
-		if (users.length == 0) {
+		var usernames = dojo.map(ids, dojo.hitch(this, function(id) {
+			item = this._grid.getItem(id);
+			return item.user;
+		}));
+		if (usernames.length == 0) {
 			return
-		} else if (users.length == 1) {
-			dialogMessage = this._('Please confirm to remove the following user: %s', users);
+		} else if (usernames.length == 1) {
+			dialogMessage = this._('Please confirm to remove the following user: %s', usernames);
 		} else {
-			dialogMessage = this._('Please confirm to remove the following %(length)s users: %(users)s', {'users': users, 'length': users.length});
+			dialogMessage = this._('Please confirm to remove the following %(length)s users: %(usernames)s', {'usernames': usernames, 'length': usernames.length});
 		}
 		umc.dialog.confirm(dialogMessage, [{
 			label: this._('OK'),
 			callback: dojo.hitch(this, function() {
 				var transaction = this.moduleStore.transaction();
-				dojo.forEach(this._grid.getSelectedIDs(), function(iid) {
+				dojo.forEach(ids, function(iid) {
 					this.moduleStore.remove(iid);
 				}, this);
 				transaction.commit().then(dojo.hitch(this, function(data) {

@@ -1,3 +1,11 @@
+univention-quota (6.0.15-1) unstable; urgency=low
+
+  * UMC: Disable quota support for root device
+  * UMC: Fix remove users function
+  (Bug #22903)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 08 Nov 2011 12:15:35 +0100
+
 univention-quota (6.0.14-1) unstable; urgency=low
 
   * UMC: Remove old join script (Bug #22903)
