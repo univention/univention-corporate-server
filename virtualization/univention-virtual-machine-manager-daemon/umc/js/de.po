@@ -4,26 +4,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-uvmm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-27 23:50+0200\n"
+"POT-Creation-Date: 2011-11-08 12:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 
-#: umc/js/_uvmm/DetailPage.js:677
-#, python-format
-msgid "%(attribute)s: %(message)s\n"
-msgstr ""
-
-#: umc/js/uvmm.js:140
+#: umc/js/uvmm.js:154
 #, python-format
 msgid "%(nSelected)d %(objPlural)s of %(nTotal)d selected"
 msgstr ""
 
-#: umc/js/uvmm.js:137
+#: umc/js/uvmm.js:151
 #, python-format
 msgid "%(nSelected)d %(objSingular)s of %(nTotal)d selected"
 msgstr ""
@@ -53,80 +48,212 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: umc/js/uvmm.js:70
-#, python-format
-msgid "Add %s"
+#: umc/js/uvmm.js:424
+msgid "An error ocurred during processing your request."
 msgstr ""
 
-#: umc/js/uvmm.js:71
-#, python-format
-msgid "Add a new %s."
+#: umc/js/_uvmm/types.js:35
+msgid "Arabic"
 msgstr ""
 
-#: umc/js/_uvmm/DetailPage.js:174
-msgid "Advanced settings"
+#: umc/js/_uvmm/DomainPage.js:70
+msgid "Architecture"
 msgstr ""
 
-#: umc/js/_uvmm/DetailPage.js:431
-msgid "Back to navigation"
+#: umc/js/_uvmm/DomainPage.js:87
+msgid "Boot order"
 msgstr ""
 
-#: umc/js/_uvmm/DetailPage.js:431
-msgid "Back to search"
+#: umc/js/_uvmm/types.js:15
+msgid "CDROM drive"
 msgstr ""
 
-#: umc/js/uvmm.js:307
+#: umc/js/uvmm.js:269 umc/js/uvmm.js:285
+msgid "CPU usage"
+msgstr ""
+
+#: umc/js/uvmm.js:458 umc/js/_uvmm/DomainPage.js:37
 msgid "Cancel"
-msgstr ""
-
-#: umc/js/_uvmm/DetailPage.js:395
-#, python-format
-msgid "Click to edit the inherited properties of the policy: %s"
 msgstr ""
 
 #: umc/js/_uvmm/NewObjectDialog.js:199
 msgid "Close"
 msgstr ""
 
+#: umc/js/uvmm.js:80
+msgid "Configure"
+msgstr ""
+
+#: umc/js/_uvmm/DomainPage.js:61
+msgid "Contact"
+msgstr ""
+
 #: umc/js/_uvmm/NewObjectDialog.js:108
 msgid "Container"
 msgstr ""
 
-#: umc/js/uvmm.js:104 umc/js/uvmm.js:213 umc/js/uvmm.js:297
+#: umc/js/_uvmm/types.js:19
+msgid "Coordinated Universal Time"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:49
+msgid "Croatian"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:36
+msgid "Danish"
+msgstr ""
+
+#: umc/js/uvmm.js:196 umc/js/uvmm.js:448
 msgid "Delete"
 msgstr ""
 
-#: umc/js/uvmm.js:105
-#, python-format
-msgid "Deleting the selected %s."
+#: umc/js/_uvmm/DomainPage.js:66
+msgid "Description"
 msgstr ""
 
-#: umc/js/uvmm.js:151
+#: umc/js/_uvmm/DomainPage.js:109
+msgid "Direct access (VNC)"
+msgstr ""
+
+#: umc/js/uvmm.js:115
 msgid "Displayed type"
 msgstr ""
 
-#: umc/js/uvmm.js:78 umc/js/uvmm.js:206
+#: umc/js/_uvmm/types.js:57
+msgid "Dutch"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:58
+msgid "Dutch-Belgium"
+msgstr ""
+
+#: umc/js/uvmm.js:189
 msgid "Edit"
 msgstr ""
 
-#: umc/js/uvmm.js:90
-msgid "Edit in new tab"
+#: umc/js/_uvmm/types.js:40
+msgid "English-America"
 msgstr ""
 
-#: umc/js/uvmm.js:79
-#, python-format
-msgid "Edit the %s."
+#: umc/js/_uvmm/types.js:39
+msgid "English-Britain"
 msgstr ""
 
-#: umc/js/_uvmm/DetailPage.js:679
-msgid "Error"
+#: umc/js/_uvmm/types.js:42
+msgid "Estonian"
 msgstr ""
 
-#: umc/js/_uvmm/DetailPage.js:308
-msgid ""
-"List of all object properties that are inherited by policies. The values "
-"cannot be edited directly. In order to edit a policy, click on the \"edit\" "
-"button to open a particular policy in a new tab."
+#: umc/js/_uvmm/DomainPage.js:133
+msgid "Extended settings"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:44
+msgid "Faroese"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:43
+msgid "Finnish"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:45
+msgid "French"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:46
+msgid "French-Belgium"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:47
+msgid "French-Canada"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:48
+msgid "French-Switzerland"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:23
+msgid "Full virtualization (KVM)"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:24
+msgid "Full virtualization (XEN)"
+msgstr ""
+
+#: umc/js/_uvmm/DomainPage.js:34 umc/js/_uvmm/DomainPage.js:35
+msgid "General"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:37
+msgid "German"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:38
+msgid "German-Switzerland"
+msgstr ""
+
+#: umc/js/_uvmm/DomainPage.js:113
+msgid "Globally available"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:14
+msgid "Hard drive"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:50
+msgid "Hungarian"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:51
+msgid "Icelandic"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:52
+msgid "Italian"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:53
+msgid "Japanese"
+msgstr ""
+
+#: umc/js/_uvmm/DomainPage.js:121
+msgid "Keyboard layout"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:55
+msgid "Latvian"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:54
+msgid "Lithuanian"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:20
+msgid "Local time zone"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:56
+msgid "Macedonian"
+msgstr ""
+
+#: umc/js/_uvmm/DomainPage.js:83
+msgid "Memory"
+msgstr ""
+
+#: umc/js/uvmm.js:289
+msgid "Memory available"
+msgstr ""
+
+#: umc/js/uvmm.js:273
+msgid "Memory usage"
+msgstr ""
+
+#: umc/js/uvmm.js:265 umc/js/uvmm.js:281 umc/js/_uvmm/DomainPage.js:51
+msgid "Name"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:16
+msgid "Network"
 msgstr ""
 
 #: umc/js/_uvmm/NewObjectDialog.js:55
@@ -134,7 +261,7 @@ msgstr ""
 msgid "New %s"
 msgstr ""
 
-#: umc/js/uvmm.js:134
+#: umc/js/uvmm.js:148
 #, python-format
 msgid "No %(objPlural)s could be found"
 msgstr ""
@@ -143,55 +270,118 @@ msgstr ""
 msgid "None"
 msgstr ""
 
+#: umc/js/_uvmm/types.js:59
+msgid "Norwegian"
+msgstr ""
+
+#: umc/js/_uvmm/DomainPage.js:78
+msgid "Number of CPUs"
+msgstr ""
+
 #: umc/js/_uvmm/MultiObjectSelect.js:68
 msgid "Object property"
 msgstr ""
 
-#: umc/js/uvmm.js:91
-msgid "Open a new tab in order to edit the UDM-object"
+#: umc/js/_uvmm/DomainPage.js:56
+msgid "Operating system"
 msgstr ""
 
-#: umc/js/_uvmm/DetailPage.js:205
-msgid "Options describing the basic features of the UDM object"
+#: umc/js/_uvmm/types.js:25
+msgid "Paravirtualization (XEN)"
 msgstr ""
 
-#: umc/js/uvmm.js:292
+#: umc/js/uvmm.js:99
+msgid "Pause"
+msgstr ""
+
+#: umc/js/uvmm.js:443
 #, python-format
 msgid "Please confirm the removal of the %d selected %s!"
 msgstr ""
 
-#: umc/js/uvmm.js:294
+#: umc/js/uvmm.js:445
 #, python-format
 msgid "Please confirm the removal of the selected %s!"
 msgstr ""
 
-#: umc/js/_uvmm/DetailPage.js:307
-msgid "Properties inherited from policies"
+#: umc/js/uvmm.js:362
+msgid "Please select a valid search type."
+msgstr ""
+
+#: umc/js/uvmm.js:230
+msgid "Please wait, your requests are being processed..."
+msgstr ""
+
+#: umc/js/_uvmm/types.js:60
+msgid "Polish"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:61
+msgid "Portuguese"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:62
+msgid "Portuguese-Brasil"
 msgstr ""
 
 #: umc/js/_uvmm/MultiObjectSelect.js:76 umc/js/_uvmm/MultiObjectSelect.js:92
 msgid "Property value"
 msgstr ""
 
-#: umc/js/uvmm.js:220
+#: umc/js/_uvmm/DomainPage.js:104
+msgid "RTC reference"
+msgstr ""
+
+#: umc/js/uvmm.js:203
 msgid "Reload"
 msgstr ""
 
-#: umc/js/_uvmm/DetailPage.js:427
-msgid "Save changes"
+#: umc/js/uvmm.js:105
+msgid "Restart"
 msgstr ""
 
-#: umc/js/uvmm.js:58
+#: umc/js/_uvmm/types.js:63
+msgid "Russian"
+msgstr ""
+
+#: umc/js/_uvmm/DomainPage.js:41
+msgid "Save"
+msgstr ""
+
+#: umc/js/uvmm.js:68
 msgid "Search for virtual machines and virtualization servers"
+msgstr ""
+
+#: umc/js/_uvmm/DomainPage.js:125
+msgid "Settings"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:64
+msgid "Slovene"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:41
+msgid "Spanish"
+msgstr ""
+
+#: umc/js/uvmm.js:87
+msgid "Start"
+msgstr ""
+
+#: umc/js/uvmm.js:93
+msgid "Stop"
 msgstr ""
 
 #: umc/js/_uvmm/NewObjectDialog.js:119
 msgid "Superordinate"
 msgstr ""
 
-#: umc/js/_uvmm/DetailPage.js:709
-#, python-format
-msgid "The UDM object could not be saved: %(details)s"
+#: umc/js/_uvmm/types.js:65
+msgid "Swedish"
+msgstr ""
+
+#: umc/js/_uvmm/types.js:66
+msgid "Thai"
 msgstr ""
 
 #: umc/js/_uvmm/NewObjectDialog.js:109
@@ -211,14 +401,6 @@ msgstr ""
 msgid "The exact object type of the new UDM object."
 msgstr ""
 
-#: umc/js/_uvmm/DetailPage.js:644
-msgid "The following properties could not be validated:"
-msgstr ""
-
-#: umc/js/_uvmm/DetailPage.js:605
-msgid "The following properties need to be specified or are invalid:"
-msgstr ""
-
 #: umc/js/_uvmm/MultiObjectSelect.js:67
 msgid "The object property on which the query is filtered."
 msgstr ""
@@ -228,26 +410,22 @@ msgid ""
 "The value for the specified object property on which the query is filtered."
 msgstr ""
 
-#: umc/js/uvmm.js:153
+#: umc/js/_uvmm/types.js:67
+msgid "Turkish"
+msgstr ""
+
+#: umc/js/_uvmm/DomainPage.js:117
+msgid "VNC password"
+msgstr ""
+
+#: umc/js/uvmm.js:117
 msgid "Virtual machine"
 msgstr ""
 
-#: umc/js/uvmm.js:154
+#: umc/js/uvmm.js:118
 msgid "Virtualization sever"
 msgstr ""
 
-#: umc/js/_uvmm/DetailPage.js:173
-msgid "[Advanced settings]"
-msgstr ""
-
-#: umc/js/_uvmm/DetailPage.js:204
-msgid "[Options]"
-msgstr ""
-
-#: umc/js/_uvmm/DetailPage.js:305
-msgid "[Policies]"
-msgstr ""
-
-#: umc/js/_uvmm/DetailPage.js:396
-msgid "edit"
+#: umc/js/_uvmm/DomainPage.js:99
+msgid "Virtualization technology"
 msgstr ""

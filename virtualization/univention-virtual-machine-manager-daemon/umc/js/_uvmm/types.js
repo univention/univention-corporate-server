@@ -1,0 +1,111 @@
+/*global console MyError dojo dojox dijit umc */
+
+dojo.provide("umc.modules._uvmm.types");
+
+dojo.require("umc.tools");
+
+
+(function() {
+	// translation function
+	var i18n = new umc.i18n.Mixin({
+		i18nClass: 'umc.modules.uvmm'
+	});
+	var _ = dojo.hitch(i18n, '_');
+
+	var self = umc.modules._uvmm.types;
+	dojo.mixin(umc.modules._uvmm.types, {
+		architecture: [
+			{ id: 'i686', label: '32 bit' },
+			{ id: 'x86_64', label: '64 bit' }
+		],
+		bootDevices: [
+			{ id: 'hd', label: _('Hard drive') },
+			{ id: 'cdrom', label: _( 'CDROM drive' ) },
+			{ id: 'network', label: _( 'Network' ) }
+		],
+		rtcOffset: [
+			{ id: 'utc', label: _('Coordinated Universal Time') },
+			{ id: 'localtime', label: _('Local time zone') }
+		],
+		virtualizationTechnology: [
+			{ id: 'kvm-hvm', label: _( 'Full virtualization (KVM)' ) },
+			{ id: 'xen-hvm', label: _( 'Full virtualization (XEN)' ) },
+			{ id: 'xen-xen', label: _( 'Paravirtualization (XEN)' ) }
+		],
+		getVirtualizationTechnology: function(options) {
+			// return all technologies that are supported by the corresponding
+			// opertating system type (KVM/Xen)
+			return dojo.filter(self.virtualizationTechnology, function(itech) {
+				return itech.id.indexOf(options.domain_type) === 0;
+			});
+		},
+		keyboardLayout: [
+			{ id: 'ar', label: _('Arabic') },
+			{ id: 'da', label: _('Danish') },
+			{ id: 'de', label: _('German') },
+			{ id: 'de-ch', label: _('German-Switzerland') },
+			{ id: 'en-gb', label: _('English-Britain') },
+			{ id: 'en-us', label: _('English-America') },
+			{ id: 'es', label: _('Spanish') },
+			{ id: 'et', label: _('Estonian') },
+			{ id: 'fi', label: _('Finnish') },
+			{ id: 'fo', label: _('Faroese') },
+			{ id: 'fr', label: _('French') },
+			{ id: 'fr-be', label: _('French-Belgium') },
+			{ id: 'fr-ca', label: _('French-Canada') },
+			{ id: 'fr-ch', label: _('French-Switzerland') },
+			{ id: 'hr', label: _('Croatian') },
+			{ id: 'hu', label: _('Hungarian') },
+			{ id: 'is', label: _('Icelandic') },
+			{ id: 'it', label: _('Italian') },
+			{ id: 'ja', label: _('Japanese') },
+			{ id: 'lt', label: _('Lithuanian') },
+			{ id: 'lv', label: _('Latvian') },
+			{ id: 'mk', label: _('Macedonian') },
+			{ id: 'nl', label: _('Dutch') },
+			{ id: 'nl-be', label: _('Dutch-Belgium') },
+			{ id: 'no', label: _('Norwegian') },
+			{ id: 'pl', label: _('Polish') },
+			{ id: 'pt', label: _('Portuguese') },
+			{ id: 'pt-br', label: _('Portuguese-Brasil') },
+			{ id: 'ru', label: _('Russian') },
+			{ id: 'sl', label: _('Slovene') },
+			{ id: 'sv', label: _('Swedish') },
+			{ id: 'th', label: _('Thai') },
+			{ id: 'tr', label: _('Turkish') }
+		],
+		getCPUs: function(options) {
+			// query the domain's node and get its number of CPUs
+			var nodeURI = options.domainURI.split('#')[0];
+			return umc.tools.umcpCommand('uvmm/node/query', {
+				nodePattern: nodeURI
+			}).then(function(data) {
+				// query successful
+				var list = [ { id: 1, label: '1' } ];
+				if (data.result.length) {
+					// we got a result
+					var nCPU = data.result[0].cpus;
+					for (var i = 2; i <= nCPU; ++i) {
+						list.push({ id: i, label: '' + i });
+					}
+				}
+				return list;
+			}, function() {
+				// fallback
+				return [ { id: 1, label: '1' } ];
+			});
+		},
+		interfaceModels: {
+			'rtl8139': _( 'Default (RealTek RTL-8139)' ),
+			'e1000': _( 'Intel PRO/1000' ),
+			'netfront': _( 'Paravirtual device (xen)' ),
+			'virtio': _( 'Paravirtual device (virtio)' )
+		},
+		blockDevices: {
+			'cdrom': _( 'CDROM drive' ),
+			'disk': _( 'hard drive' ),
+			'floppy': _( 'floppy drive' )
+		}
+	});
+})();
+

@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-27 23:50+0200\n"
+"POT-Creation-Date: 2011-11-08 12:20+0100\n"
 "PO-Revision-Date: 2011-09-28 19:23+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -370,7 +370,7 @@ msgstr "Image-Datei nicht gefunden"
 msgid "Image size"
 msgstr "Image-Größe"
 
-#: umc/python/uvmm/domains.py:101
+#: umc/python/uvmm/domains.py:318
 msgid "Invalid domain state"
 msgstr ""
 
@@ -438,8 +438,8 @@ msgstr ""
 msgid "Paravirtualization (XEN)"
 msgstr "Paravirtualisierung (XEN)"
 
-#: umc/python/uvmm/navigation.py:84 umc/python/uvmm/treeview.py:206
-#: umc/python/uvmm/nodes.py:71
+#: umc/python/uvmm/__init__.py:102 umc/python/uvmm/treeview.py:206
+#: umc/python/uvmm/nodes.py:76
 msgid "Physical servers"
 msgstr "Physikalische Server"
 
@@ -568,7 +568,7 @@ msgstr ""
 "Die folgenden Einstellungen wurden aus dem ausgewählten Profil gelesen und "
 "können nun angepasst werden."
 
-#: umc/python/uvmm/uvmmd.py:86
+#: umc/python/uvmm/uvmmd.py:67
 msgid "The given UVMM command is not known"
 msgstr ""
 
@@ -597,10 +597,6 @@ msgstr ""
 #: umc/python/uvmm/wizards.py:784
 msgid "The name of the virtual instance should be modified"
 msgstr "Der Name der virtuellen Instanz sollte angepasst werden"
-
-#: umc/python/uvmm/navigation.py:81
-msgid "The parent must be None or a dictionary"
-msgstr ""
 
 #: umc/python/uvmm/wizards.py:800
 #, python-format
@@ -717,6 +713,19 @@ msgstr ""
 #: umc/python/uvmm/nic.py:68
 msgid "Type"
 msgstr "Typ"
+
+#: umc/python/uvmm/profiles.py:119
+#, fuzzy
+msgid "Unknown profile"
+msgstr "Unbekannter Wert"
+
+#: umc/python/uvmm/domains.py:218
+msgid "Unknown profile given"
+msgstr ""
+
+#: umc/python/uvmm/__init__.py:104
+msgid "Unknown query type"
+msgstr ""
 
 #: umc/python/uvmm/drive.py:273
 msgid "VMWare Disk"
@@ -1340,8 +1349,8 @@ msgstr "Unbekannt"
 #~ msgid ""
 #~ "Snapshoting the instance <i>%(domain)s</i> to <i>%(snapshot)s</i> failed"
 #~ msgstr ""
-#~ "Das Speichern der virtuellen Maschine <i>%(domain)s</i> in <i>"
-#~ "%(snapshot)s</i> ist fehlgeschlagen"
+#~ "Das Speichern der virtuellen Maschine <i>%(domain)s</i> in <i>%(snapshot)"
+#~ "s</i> ist fehlgeschlagen"
 
 #~ msgid "Snapshots"
 #~ msgstr "Sicherungspunkte"
@@ -1466,15 +1475,15 @@ msgstr "Unbekannt"
 #~ "The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> could not be "
 #~ "deleted"
 #~ msgstr ""
-#~ "Der Sicherungspunkt <i>%(snapshot)s</i> der virtuelle Instanz <i>"
-#~ "%(domain)s</i> konnte nicht gelöscht werden"
+#~ "Der Sicherungspunkt <i>%(snapshot)s</i> der virtuelle Instanz <i>%(domain)"
+#~ "s</i> konnte nicht gelöscht werden"
 
 #~ msgid ""
 #~ "The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> was deleted "
 #~ "successfully"
 #~ msgstr ""
-#~ "Der Sicherungspunkt <i>%(snapshot)s</i> der virtuelle Instanz <i>"
-#~ "%(domain)s</i> wurde erfolgreich gelöscht"
+#~ "Der Sicherungspunkt <i>%(snapshot)s</i> der virtuelle Instanz <i>%(domain)"
+#~ "s</i> wurde erfolgreich gelöscht"
 
 #~ msgid "There are no snapshots available"
 #~ msgstr "Es sind keine Sicherungspunkte verfügbar"
@@ -1598,6 +1607,3 @@ msgstr "Unbekannt"
 
 #~ msgid "snapshot name"
 #~ msgstr "Name für den Sicherungspunkt"
-
-#~ msgid "unknown value"
-#~ msgstr "Unbekannter Wert"

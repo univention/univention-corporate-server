@@ -22,7 +22,7 @@ dojo.require("umc.widgets.Tree");
 //dojo.require("umc.modules._udm.Template");
 //dojo.require("umc.modules._udm.NewObjectDialog");
 dojo.require("umc.modules._uvmm.TreeModel");
-//dojo.require("umc.modules._udm.DetailPage");
+dojo.require("umc.modules._uvmm.DomainPage");
 
 dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
@@ -33,7 +33,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	_searchPage: null,
 
 	// internal reference to the detail page for editing an UDM object
-	_detailPage: null,
+	_domainPage: null,
 
 	// reference to a `umc.widgets.Tree` instance which is used to display the container
 	// hierarchy for the UDM navigation module
@@ -41,6 +41,15 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	// reference to the last item in the navigation on which a context menu has been opened
 	_navContextItem: null,
+
+	_progressBar: null,
+	_progressContainer: null,
+
+	uninitialize: function() {
+		this.inherited(arguments);
+
+		this._progressContainer.destroyRecursive();
+	},
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
@@ -66,53 +75,54 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		//
 
 		// define actions
-		var actions = [/*{
-			name: 'add',
-			label: this._( 'Add %s', this.objectNameSingular ),
-			description: this._( 'Add a new %s.', this.objectNameSingular ),
-			iconClass: 'umcIconAdd',
-			isContextAction: false,
-			isStandardAction: true,
-			callback: dojo.hitch(this, 'showNewObjectDialog')
-		}, {
+		// STATES = ( 'NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED' )
+		var actions = [{
 			name: 'edit',
-			label: this._( 'Edit' ),
-			description: this._( 'Edit the %s.', this.objectNameSingular ),
-			iconClass: 'umcIconEdit',
+			label: this._('Configure'),
 			isStandardAction: true,
 			isMultiAction: false,
-			callback: dojo.hitch(this, function(ids, items) {
-				if (items.length && items[0].objectType) {
-					this.createDetailPage(items[0].objectType, ids[0]);
-				}
-			})
+			iconClass: 'umcIconEdit',
+			callback: dojo.hitch(this, 'openDomainPage')
 		}, {
-			name: 'editNewTab',
-			label: this._('Edit in new tab'),
-			description: this._( 'Open a new tab in order to edit the UDM-object' ),
-			isMultiAction: false,
-			callback: dojo.hitch(this, function(ids, items) {
-				var moduleProps = {
-					openObject: {
-						objectType: items[0].objectType,
-						objectDN: ids[0]
-					}
-				};
-				dojo.publish('/umc/modules/open', [ this.moduleID, this.moduleFlavor, moduleProps ]);
-			})
-		}, {
-			name: 'delete',
-			label: this._( 'Delete' ),
-			description: this._( 'Deleting the selected %s.', this.objectNamePlural ),
+			name: 'start',
+			label: this._('Start'),
+			iconClass: 'umcIconPlay',
 			isStandardAction: true,
 			isMultiAction: true,
-			iconClass: 'umcIconDelete',
-			callback: dojo.hitch(this, function(ids) {
-				if (ids.length) {
-					this.removeObjects(ids);
-				}
-			})
-		}*/];
+			callback: dojo.hitch(this, 'changeState', 'RUN'),
+			canExecute: function(item) {
+				return item.state != 'RUNNING' && item.state != 'IDLE';
+			}
+		}, {
+			name: 'stop',
+			label: this._( 'Stop' ),
+			iconClass: 'umcIconStop',
+			isStandardAction: true,
+			isMultiAction: true,
+			callback: dojo.hitch(this, 'changeState', 'SHUTDOWN'),
+			canExecute: function(item) {
+				return item.state == 'RUNNING' || item.state == 'IDLE';
+			}
+		}, {
+			name: 'pause',
+			label: this._('Pause'),
+			iconClass: 'umcIconPause',
+			isStandardAction: false,
+			isMultiAction: true,
+			callback: dojo.hitch(this, 'changeState', 'PAUSE'),
+			canExecute: function(item) {
+				return item.state == 'RUNNING' || item.state == 'IDLE';
+			}
+		}, {
+			name: 'restart',
+			label: this._( 'Restart' ),
+			isStandardAction: false,
+			isMultiAction: true,
+			callback: dojo.hitch(this, 'changeState', 'RESTART'),
+			canExecute: function(item) {
+				return item.state == 'RUNNING' || item.state == 'IDLE';
+			}
+		}];
 
 		// search widgets
 		var widgets = [{
@@ -195,7 +205,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			label: this._( 'Edit' ),
 			iconClass: 'umcIconEdit',
 			onClick: dojo.hitch(this, function(e) {
-				this.createDetailPage(this._navContextItem.objectType, this._navContextItem.id);
+				this.createDomainPage(this._navContextItem.objectType, this._navContextItem.id);
 			})
 		}));
 		menu.addChild(new dijit.MenuItem({
@@ -225,14 +235,43 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		});*/
 
 		this._searchPage.startup();
+
+		// setup a progress bar with some info text
+		this._progressContainer = new umc.widgets.ContainerWidget({});
+		this._progressBar = new dijit.ProgressBar({
+			style: 'background-color: #fff;'
+		});
+		this._progressContainer.addChild(this._progressBar);
+		this._progressContainer.addChild(new umc.widgets.Text({
+			content: this._('Please wait, your requests are being processed...')
+		}));
+
+		// setup the detail page
+		this._domainPage = new umc.modules._uvmm.DomainPage({
+			onClose: dojo.hitch(this, function() {
+				this.selectChild(this._searchPage);
+			})
+		});
+		this.addChild(this._domainPage);
 	},
 
 	postCreate: function() {
 		this.inherited(arguments);
 
 		this._tree.watch('path', dojo.hitch(this, function() {
-			this.filter();
-		}))
+			var searchType = this._searchForm.getWidget('type').get('value');
+			if (searchType == 'domain') {
+				this.filter();
+			}
+		}));
+	},
+
+	openDomainPage: function(ids) {
+		if (!ids.length) {
+			return;
+		}
+		this._domainPage.load(ids[0]);
+		this.selectChild(this._domainPage);
 	},
 
 	_getGridColumns: function(type) {
@@ -309,6 +348,14 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				iconName += '-off';	
 			}
 		}
+		else if (item.type == 'domain') {
+			if (item.state == 'RUNNING' || item.state == 'IDLE') {
+				iconName += '-on';
+			}
+			else if (item.state == 'PAUSED') {
+				iconName += '-paused';
+			}
+		}
 		return iconName;
 	},
 
@@ -370,6 +417,38 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// update the grid columns
 		this._grid.set('columns', this._getGridColumns(vals.type));
+	},
+
+	changeState: function(/*String*/ newState, ids) {
+		// initiate the progressbar and start the standby
+		var progress = this._progressBar;
+		progress.set('maximum', ids.length);
+		progress.set('value', 0);
+		this.standby(true, this._progressContainer);
+
+		// chain all UMCP commands
+		var deferred = new dojo.Deferred();
+		deferred.resolve();
+		dojo.forEach(ids, function(iid, i) {
+			deferred = deferred.then(function() {
+				progress.set('value', i);
+				return umc.tools.umcpCommand('uvmm/domain/state', {
+					domainURI: iid,
+					domainState: newState
+				}); 
+			});
+		});
+
+		// finish the progress bar and add error handler
+		deferred = deferred.then(dojo.hitch(this, function() {
+			progress.set('value', ids.length);
+			this.moduleStore.onChange();
+			this.standby(false);
+		}), dojo.hitch(this, function() {
+			umc.dialog.alert(this._('An error ocurred during processing your request.'));
+			this.moduleStore.onChange();
+			this.standby(false);
+		}));
 	},
 
 	removeObjects: function(/*String|String[]*/ _ids) {

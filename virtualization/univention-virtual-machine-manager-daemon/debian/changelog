@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.30-1) unstable; urgency=low
+
+  * added basic detail page for VM instances (Bug #22893)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 08 Nov 2011 19:23:58 +0100
+
 univention-virtual-machine-manager-daemon (1.0.29-1) unstable; urgency=low
 
   * snapshot/query: contain creation date and time; Bug #22893
