@@ -195,7 +195,7 @@ else
 
 	## commit samba3 smb.conf
 	mkdir -p /var/lib/samba3/etc/samba
-	cat /usr/share/univention-samba4/samba3upgrade/* | ucr filter > /var/lib/samba3/etc/samba/smb.conf
+	cat /usr/share/univention-samba4/samba3upgrade/smb.conf.d/* | ucr filter > /var/lib/samba3/etc/samba/smb.conf
 	## fix up /var/lib/samba3/smb.conf for samba-tool
 	touch /etc/samba/base.conf /etc/samba/installs.conf /etc/samba/printers.conf /etc/samba/shares.conf
 	echo -e "[global]\n\trealm = $kerberos_realm" >> /var/lib/samba3/etc/samba/smb.conf
