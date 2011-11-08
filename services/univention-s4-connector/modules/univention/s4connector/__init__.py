@@ -192,7 +192,7 @@ class attribute:
 class property:
 	def __init__(	self, ucs_default_dn='', con_default_dn='', ucs_module='', ucs_module_others=[], sync_mode='', scope='', con_search_filter='', ignore_filter=None, match_filter=None, ignore_subtree=[],
 					con_create_objectclass=[], con_create_attributes=[], dn_mapping_function=[], attributes=None, ucs_create_functions=[], post_con_create_functions=[],
-					post_con_modify_functions=[], post_ucs_modify_functions=[], post_attributes=None, mapping_table=None, position_mapping=[], con_sync_function = None, ucs_sync_function = None,
+					post_con_modify_functions=[], post_ucs_modify_functions=[], post_attributes=None, mapping_table=None, position_mapping=[], con_sync_function = None, ucs_sync_function = None, disable_delete = False,
 					identify = None ):
 
 		self.ucs_default_dn=ucs_default_dn
@@ -237,6 +237,8 @@ class property:
 		# Overwrite the identify function from the ucs modules, at least needed for dns
 		if identify:
 			self.identify = identify
+
+		self.disable_delete = disable_delete
 
 		pass
 	
@@ -1005,6 +1007,11 @@ class ucs:
 
 	def delete_in_ucs(self, property_type, object, module, position):
 		_d=ud.function('ldap.delete_in_ucs')		
+
+		if self.property[property_type].disable_delete:
+			ud.debug(ud.LDAP, ud.PROCESS, "Delete of %s was disabled in mapping" % object['dn'])
+			return True
+
 		module = self.modules[property_type]
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
 

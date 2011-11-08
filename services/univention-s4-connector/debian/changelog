@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.65-2) unstable; urgency=low
+
+  * Synchronize DC objects (Bug #24437)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Nov 2011 12:04:20 +0100
+
 univention-s4-connector (6.0.65-1) unstable; urgency=low
 
   * Don't show a warning if userPrincipalName and krb5Principal only
