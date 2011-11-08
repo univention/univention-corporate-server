@@ -102,8 +102,14 @@ class Domains( object ):
 				# disk[ 'poolName' ] = self.get_pool_name( os.path.dirname( disk[ 'source' ] ) ) -> disk has attribute pool containing the name
 				disk[ 'paravirtual' ] = disk[ 'target_bus' ] in ( 'virtio', 'xen' )
 
+			#interfaces
 			for iface in json[ 'interfaces' ]:
 				iface[ 'paravirtual' ] = iface[ 'model' ] in ( 'xen', 'virtio' )
+
+			# graphics
+			if json[ 'graphics' ]:
+				json[ 'vnc' ] = True
+				json[ 'kblayout' ] = json[ 'graphics' ][ 0 ][ 'keymap' ]
 
 			MODULE.info( 'Got domain description: success: %s, data: %s' % ( success, json ) )
 			self.finished( request.id, { 'success' : success, 'data' : json } )

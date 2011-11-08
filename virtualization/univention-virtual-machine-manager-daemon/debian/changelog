@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.26-1) unstable; urgency=low
+
+  * map graphics settings of domain to keys vnc and kblayout; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 08 Nov 2011 09:48:29 +0100
+
 univention-virtual-machine-manager-daemon (1.0.25-1) unstable; urgency=low
 
   * node/query: return number of physical CPUs; Bug #22893
