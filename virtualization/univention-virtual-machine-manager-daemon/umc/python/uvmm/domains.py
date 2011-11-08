@@ -110,6 +110,17 @@ class Domains( object ):
 			if json[ 'graphics' ]:
 				json[ 'vnc' ] = True
 				json[ 'kblayout' ] = json[ 'graphics' ][ 0 ][ 'keymap' ]
+				json[ 'vnc_remote' ] = json[ 'graphics' ][ 0 ][ 'listen' ] == '0.0.0.0'
+				# vnc_password will not be send to frontend
+
+			# annotations
+			for key in json[ 'annotations' ]:
+				if key == 'uuid':
+					continue
+				json[ key ] = json[ 'annotations' ][ key ]
+
+			# type
+			json[ 'type' ] = '%(domain_type)s-%(os_type)s' % json
 
 			MODULE.info( 'Got domain description: success: %s, data: %s' % ( success, json ) )
 			self.finished( request.id, { 'success' : success, 'data' : json } )
@@ -221,23 +232,32 @@ class Domains( object ):
 				domain_info.initrd = domain['initrd']
 		# memory
 		domain_info.maxMem = MemorySize.str2num( domain['memory'], unit = 'MB' )
+
 		# CPUs
 		domain_info.vcpus = domain[ 'cpus' ]
+
 		# boot devices
 		if domain[ 'boot' ]:
 			domain_info.boot = domain[ 'boot' ]
+
 		# VNC
 		if domain[ 'vnc' ]:
 			gfx = Graphic()
-			gfx.listen = '0.0.0.0'
+			if domain[ 'vnc_remote' ]:
+				gfx.listen = '0.0.0.0'
+			else:
+				gfx.listen = '127.0.0.1'
 			gfx.keymap = domain[ 'kblayout' ]
+			gfx.passord = domain.get( 'vnc_password', None )
 			domain_info.graphics = [gfx,]
+
 		# annotations
 		domain_info.annotations[ 'os' ] = domain[ 'os' ]
 		domain_info.annotations[ 'description' ] = domain[ 'description' ]
+		domain_info.annotations[ 'contact' ] = domain[ 'contact' ]
+
 		# RTC offset
 		domain_info.rtc_offset = domain[ 'rtc_offset' ]
-
 
 		# drives
 		domain_info.disks = self._create_disks( request.options[ 'nodeURI' ], domain[ 'disks' ], domain_info )
