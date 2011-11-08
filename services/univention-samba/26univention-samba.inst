@@ -53,7 +53,7 @@ if [ -n "$s4setup" ] && is_domain_controller; then
 	fi
 fi
 
-# Join as ADS member if the S4 connector ist installed.
+# Join as ADS member if the S4 connector is installed.
 # To overwrite this setting:
 #  ucr set --force samba/domain/security=ads
 #  ucr set --force samba/domain/security=domain
@@ -129,9 +129,16 @@ elif [ -e /etc/backup-join.secret ]; then
 	samba_pwd="$(cat /etc/backup-join.secret)"
 fi
 
-
 security="$(univention-config-registry get samba/domain/security)"
 if [ "$security" = "ads" ]; then
+	# Use the correct kerberos KDC
+	if [ -z "$kerberos_kdc" ]; then
+		kdc="$(LC_ALL=C net ads lookup | sed -ne 's|^Domain Controller:[\t]*||p' | head -n 1)"
+		if [ -n "$kdc" ]; then
+			univention-config-registry set	kerberos/defaults/dns_lookup_kdc=false \
+											kerberos/kdc="$kdc"
+		fi
+	fi
 	JOIN_CMD="net ads join"
 else
 	JOIN_CMD="net rpc join"
@@ -147,7 +154,7 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	if [ $? != 0 ]; then
 		$JOIN_CMD -U${samba_account}%${samba_pwd} -S${ldap_master}
 		if [ $? != 0 ]; then
-			echo "ERROR: Failed to join via net rpc join. Please run \"net rpc join\" manually."
+			echo "ERROR: Failed to join via $JOIN_CMD. Please run \"$JOIN_CMD\" manually."
 		fi
 	fi
 	
