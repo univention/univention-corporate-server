@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (1.0.32-1) unstable; urgency=low
+
+  * added snapshot functionality
+  * refactored disk, network device, and snapshot grids into separate classes
+  (Bug #22893)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 08 Nov 2011 23:08:37 +0100
+
 univention-virtual-machine-manager-daemon (1.0.31-1) unstable; urgency=low
 
   * snapshot/query: if snapshots is None return empty list; Bug #22893

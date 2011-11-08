@@ -253,6 +253,9 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			})
 		});
 		this.addChild(this._domainPage);
+
+		// register events
+		this.connect(this._domainPage, 'onUpdateProgress', 'updateProgress');
 	},
 
 	postCreate: function() {
@@ -420,70 +423,47 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	changeState: function(/*String*/ newState, ids) {
-		// initiate the progressbar and start the standby
-		var progress = this._progressBar;
-		progress.set('maximum', ids.length);
-		progress.set('value', 0);
-		this.standby(true, this._progressContainer);
-
 		// chain all UMCP commands
 		var deferred = new dojo.Deferred();
 		deferred.resolve();
 		dojo.forEach(ids, function(iid, i) {
-			deferred = deferred.then(function() {
-				progress.set('value', i);
+			deferred = deferred.then(dojo.hitch(this, function() {
+				this.updateProgress(i, ids.length);
 				return umc.tools.umcpCommand('uvmm/domain/state', {
 					domainURI: iid,
 					domainState: newState
 				}); 
-			});
-		});
+			}));
+		}, this);
 
 		// finish the progress bar and add error handler
 		deferred = deferred.then(dojo.hitch(this, function() {
-			progress.set('value', ids.length);
 			this.moduleStore.onChange();
-			this.standby(false);
+			this.updateProgress(ids.length, ids.length);
 		}), dojo.hitch(this, function() {
 			umc.dialog.alert(this._('An error ocurred during processing your request.'));
 			this.moduleStore.onChange();
-			this.standby(false);
+			this.updateProgress(ids.length, ids.length);
 		}));
 	},
 
-	removeObjects: function(/*String|String[]*/ _ids) {
-		// summary:
-		//		Remove the selected UDM objects.
-
-		// get an array
-		var ids = dojo.isArray(_ids) ? _ids : (_ids ? [ _ids ] : []);
-
-		// ignore empty array
-		if (!ids.length) {
-			return;
+	updateProgress: function(i, n) {
+		var progress = this._progressBar;
+		if (i === 0) {
+			// initiate the progressbar and start the standby
+			progress.set('maximum', n);
+			progress.set('value', 0);
+			this.standby(true, this._progressContainer);
 		}
-
-		// let user confirm deletion
-		var msg = this._('Please confirm the removal of the %d selected %s!', ids.length, this.objectNamePlural);
-		if (ids.length == 1) {
-			msg = this._('Please confirm the removal of the selected %s!', this.objectNameSingular);
+		else if (i >= n || i < 0) {
+			// finish the progress bar
+			progress.set('value', n);
+			this.standby(false);
 		}
-		umc.dialog.confirm(msg, [{
-			label: this._('Delete'),
-			callback: dojo.hitch(this, function() {
-				// remove the selected elements via a transaction on the module store
-				var transaction = this.moduleStore.transaction();
-				dojo.forEach(ids, function(iid) {
-					this.moduleStore.remove(iid);
-				}, this);
-				transaction.commit();
-			})
-		}, {
-			label: this._('Cancel')
-		}]);
-
+		else {
+			progress.set('value', i);
+		}
 	}
-
 });
 
 

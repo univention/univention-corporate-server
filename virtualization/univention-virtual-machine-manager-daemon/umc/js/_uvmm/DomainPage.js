@@ -4,9 +4,9 @@ dojo.provide("umc.modules._uvmm.DomainPage");
 
 dojo.require("dojox.string.sprintf");
 dojo.require("umc.i18n");
-dojo.require("umc.render");
 dojo.require("umc.tools");
 dojo.require("umc.store");
+dojo.require("umc.dialog");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Grid");
@@ -16,6 +16,9 @@ dojo.require("umc.widgets.TitlePane");
 dojo.require("umc.widgets.ExpandingTitlePane");
 dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.modules._uvmm.types");
+dojo.require("umc.modules._uvmm.SnapshotGrid");
+dojo.require("umc.modules._uvmm.InterfaceGrid");
+dojo.require("umc.modules._uvmm.DiskGrid");
 
 dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
 	nested: true,
@@ -166,8 +169,8 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		//
 
 		this._devicesPage = new umc.widgets.Page({
-			headerText: this._('Devices'),
-			title: this._('Settings for devices'),
+			headerText: this._('Settings for devices'),
+			title: this._('Devices'),
 			footerButtons: [{
 				label: this._('Back to overview'),
 				name: 'cancel',
@@ -189,36 +192,8 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		this._diskStore = new umc.store.Memory({
 			idProperty: 'source'
 		});
-		var diskGrid = new umc.widgets.Grid({
-			query: { source: '*' },
-			style: 'width: 100%; height: 150px;',
-			moduleStore: this._diskStore,
-			columns: [{
-				name: 'device',
-				label: this._('Type'),
-				formatter: dojo.hitch(this, function(dev) {
-					return umc.modules._uvmm.types.blockDevices[dev] || this._('unknown');
-				})
-			}, {
-				name: 'source',
-				label: this._('Image'),
-				formatter: function(source) {
-					var list = source.split('/');
-					if (list.length) {
-						return list[list.length - 1];
-					}
-					return this._('unknown');
-				}
-			}, {
-				name: 'size',
-				label: this._('Size'),
-				formatter: function(size) {
-					return dojox.string.sprintf('%.1f GB', size / 1073741824.0);
-				}
-			}, {
-				name: 'pool',
-				label: this._('Pool')
-			}]
+		var diskGrid = new umc.modules._uvmm.DiskGrid({
+			moduleStore: this._diskStore
 		});
 
 		// wrap grid in a titlepane
@@ -232,26 +207,8 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		this._interfaceStore = new umc.store.Memory({
 			idProperty: 'mac_address'
 		});
-		var interfaceGrid = new umc.widgets.Grid({
-			query: { source: '*' },
-			style: 'width: 100%; height: 150px;',
-			moduleStore: this._interfaceStore,
-			columns: [{
-				name: 'type',
-				label: this._('Type')
-			}, {
-				name: 'source',
-				label: this._('Source')
-			}, {
-				name: 'model',
-				label: this._('Driver'),
-				formatter: dojo.hitch(this, function(model) {
-					return umc.modules._uvmm.types.interfaceModels[model] || this._('unknown');
-				})
-			}, {
-				name: 'mac_address',
-				label: this._('MAC address')
-			}]
+		var interfaceGrid = new umc.modules._uvmm.InterfaceGrid({
+			moduleStore: this._interfaceStore
 		});
 
 		// wrap grid in a titlepane
@@ -272,8 +229,8 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		//
 
 		this._snapshotPage = new umc.widgets.Page({
-			headerText: this._('Snapshots'),
-			title: this._('Snapshot settings'),
+			headerText: this._('Snapshots settings'),
+			title: this._('Snapshots'),
 			footerButtons: [{
 				label: this._('Back to overview'),
 				name: 'cancel',
@@ -289,15 +246,9 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 
 		// grid for the disks
 		this._snapshotStore = umc.store.getModuleStore('id', 'uvmm/snapshot');
-		this._snapshotGrid = new umc.widgets.Grid({
+		this._snapshotGrid = new umc.modules._uvmm.SnapshotGrid({
 			moduleStore: this._snapshotStore,
-			columns: [{
-				name: 'label',
-				label: this._('Name')
-			}, {
-				name: 'time',
-				label: this._('Date')
-			}]
+			onUpdateProgress: dojo.hitch(this, 'onUpdateProgress')
 		});
 		titlePane = new umc.widgets.ExpandingTitlePane({
 			title: this._('Snapshots')
@@ -326,7 +277,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				// update the stores
 				this._interfaceStore.setData(this._domain.interfaces);
 				this._diskStore.setData(this._domain.disks);
-				this._snapshotGrid.filter({ domainURI: this._domain.domainURI });
+				this._snapshotGrid.set('domainURI', id);
 			}
 			this.standby(false);
 		}), dojo.hitch(this, function() {
@@ -336,8 +287,11 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 
 	onClose: function() {
 		// event stub
-	}
+	},
 
+	onUpdateProgress: function(i, n) {
+		// event stub
+	}
 });
 
 
