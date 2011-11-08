@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.29-1) unstable; urgency=low
+
+  * snapshot/query: contain creation date and time; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 08 Nov 2011 17:18:25 +0100
+
 univention-virtual-machine-manager-daemon (1.0.28-1) unstable; urgency=low
 
   * node/query: add supports_suspend and supports_snapshot to node infos

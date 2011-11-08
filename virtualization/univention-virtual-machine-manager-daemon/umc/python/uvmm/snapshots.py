@@ -32,7 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
-from datetime import date
+from datetime import datetime
 
 from univention.lib.i18n import Translation
 
@@ -69,8 +69,8 @@ class Snapshots( object ):
 			snapshot_list = []
 			if success:
 				for name, info in data.snapshots.items():
-					creation = date.fromtimestamp( info.ctime )
-					snapshot = { 'id' : name, 'label' : name, 'time' : creation.strftime( "%x" )  }
+					creation = datetime.fromtimestamp( info.ctime )
+					snapshot = { 'id' : name, 'label' : name, 'time' : creation.strftime( "%x %X" )  }
 					snapshot_list.append( snapshot )
 
 			self.finished( request.id, snapshot_list, success = success )
