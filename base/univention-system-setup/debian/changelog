@@ -1,3 +1,11 @@
+univention-system-setup (5.0.55-1) unstable; urgency=low
+
+  * Don't set Administrator password in setup script in non appliance
+    mode (Bug #24166)
+  * run scripts for default locales
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Nov 2011 16:16:29 +0100
+
 univention-system-setup (5.0.54-3) unstable; urgency=low
 
   * Read root_password instead of password from profile (Bug #24166)

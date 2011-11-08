@@ -121,6 +121,7 @@ ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostnam
 echo "Starting re-configuration of locales"
 run-parts /usr/lib/univention-system-setup/scripts/keyboard/ >>$SETUP_LOG 2>&1
 run-parts /usr/lib/univention-system-setup/scripts/language/ >>$SETUP_LOG 2>&1
+run-parts /usr/lib/univention-system-setup/scripts/defaultlocale/ >>$SETUP_LOG 2>&1
 run-parts /usr/lib/univention-system-setup/scripts/timezone/ >>$SETUP_LOG 2>&1
 run-parts /usr/lib/univention-system-setup/scripts/modules/ >>$SETUP_LOG 2>&1
 
