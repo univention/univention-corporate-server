@@ -1,3 +1,12 @@
+univention-pkgdb (5.0.11-1) unstable; urgency=low
+
+  * restart postgresql instead of reloading (Bug #24092)
+  * set pgsql/pkgdb/network before restarting postgresql
+  * abort join on error
+  * improve postinst and join script
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 08 Nov 2011 12:57:19 +0100
+
 univention-pkgdb (5.0.10-1) unstable; urgency=low
 
   * applay patch from Frank Greif <fg@it25.de>; Bug #22896

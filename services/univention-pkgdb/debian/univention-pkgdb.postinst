@@ -34,49 +34,46 @@
 
 . /usr/share/univention-lib/all.sh
 
-if [ "$1" = "configure" -o "$1" = "reconfigure" ]
+if [ "$1" = "configure" ]
 then
+	univention-config-registry set \
+		pgsql/pkgdb/network?"$(get_default_network)" \
+		pgsql/pkgdb/netmask?"$(get_default_netmask)" \
+		pkgdb/scan?yes
 
-  if [ -f /var/lib/postgres/pkgdb.bash ] ;then
-    chmod 500 /var/lib/postgres/pkgdb.bash
-    /var/lib/postgres/pkgdb.bash
-  fi
+	if [ -f /var/lib/postgres/pkgdb.bash ] ;then
+		chmod 500 /var/lib/postgres/pkgdb.bash
+		/var/lib/postgres/pkgdb.bash
+	fi
 
-	invoke-rc.d postgresql reload
-fi
+	invoke-rc.d postgresql restart
 
-if [ -z "$2" ]; then
-  su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes-0.13"
-  su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes-2.0.2"
-fi
+	if [ -z "$2" ]; then
+		su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes-0.13"
+		su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes-2.0.2"
+	fi
 
-# fix permissions (after postgresql sledgehammer-postinst )
-if [ -e /etc/postgresql/pkgdb.secret ] ;then
-  chmod ug=r,o= /etc/postgresql/pkgdb.secret
-  chown postgres:www-data /etc/postgresql/pkgdb.secret
-fi
+	# fix permissions (after postgresql sledgehammer-postinst )
+	if [ -e /etc/postgresql/pkgdb.secret ] ;then
+		chmod ug=r,o= /etc/postgresql/pkgdb.secret
+		chown postgres:www-data /etc/postgresql/pkgdb.secret
+	fi
 
-eval "$(univention-config-registry shell)"
+	call_joinscript 50univention-pkgdb.inst || true
 
-univention-config-registry set \
-	pgsql/pkgdb/network?"$(get_default_network)" \
-	pgsql/pkgdb/netmask?"$(get_default_netmask)" \
-	pkgdb/scan?yes
+	if [ -x "/etc/init.d/univention-directory-listener" ]; then
+		/etc/init.d/univention-directory-listener crestart
+	fi
 
-call_joinscript 50univention-pkgdb.inst || true
+	if [ ! -e /var/log/univention/pkgdb.log ]; then
+		touch /var/log/univention/pkgdb.log
+		chown root:adm /var/log/univention/pkgdb.log
+		chmod 640 /var/log/univention/pkgdb.log
+	fi
 
-if [ -x "/etc/init.d/univention-directory-listener" ]; then
-  /etc/init.d/univention-directory-listener crestart
-fi
-
-if [ ! -e /var/log/univention/pkgdb.log ]; then
-	touch /var/log/univention/pkgdb.log
-	chown root:adm /var/log/univention/pkgdb.log
-	chmod 640 /var/log/univention/pkgdb.log
-fi
-
-if [ -x "/etc/init.d/univention-management-console-server" ] ; then
-	/etc/init.d/univention-management-console-server crestart || true
+	if [ -x "/etc/init.d/univention-management-console-server" ] ; then
+		/etc/init.d/univention-management-console-server crestart || true
+	fi
 fi
 
 exit 0

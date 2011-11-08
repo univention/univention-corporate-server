@@ -1,3 +1,9 @@
+univention-postgresql (4.0.4-1) unstable; urgency=low
+
+  * add pam_ldap.conf to support authenticated bind as postgres user (Bug #24092)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 08 Nov 2011 11:30:42 +0100
+
 univention-postgresql (4.0.3-3) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

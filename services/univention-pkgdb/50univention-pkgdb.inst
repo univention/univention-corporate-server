@@ -38,14 +38,13 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-res=`ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL relativeDomainName=_pkgdb._tcp relativeDomainName`
-if [ -z "$res" ]; then
-	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv pkgdb tcp 0 0 5432 $hostname.$domainname.
+if [ -z "$(univention-ldapsearch -xLLL relativeDomainName=_pkgdb._tcp relativeDomainName)" ]; then
+	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add srv pkgdb tcp 0 0 5432 "$hostname.$domainname."
 fi
 
 if [ -x /usr/sbin/univention-pkgdb-check ] && [ -e /usr/share/pyshared/univention/pkgdb.py ]; then
-	/usr/share/pyshared/univention/pkgdb.py --db-server $hostname.$domainname --add $hostname\$
-	univention-pkgdb-scan --db-server $hostname.$domainname
+	/usr/share/pyshared/univention/pkgdb.py --db-server "$hostname.$domainname" --add "$hostname$" || exit 1
+	univention-pkgdb-scan --db-server "$hostname.$domainname"
 fi
 
 # add service entry

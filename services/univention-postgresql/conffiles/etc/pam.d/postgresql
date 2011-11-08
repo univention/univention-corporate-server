@@ -1,5 +1,3 @@
 @%@UCRWARNING=# @%@
-#%PAM-1.0
-auth     required      pam_ldap.so
-account  required      pam_ldap.so
-
+auth     required      pam_ldap.so config=/etc/postgresql/pam_ldap.conf
+account  required      pam_ldap.so config=/etc/postgresql/pam_ldap.conf
