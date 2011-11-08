@@ -22,8 +22,7 @@ Depends: ${misc:Depends},
  ldb-tools,
  winbind4,
  pwgen,
- python-univention-lib (>= 1.0.30-1),
- attr
+ python-univention-lib (>= 1.0.30-1)
 Description: UCS - Samba4 integration package
  This package contains the scripts and patches
  for integration of Samba4 into Univention Corporate Server (UCS)
