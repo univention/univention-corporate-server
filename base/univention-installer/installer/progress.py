@@ -267,7 +267,7 @@ class ProgressDialog(object):
 		msg.append( _('press ENTER to reboot this system.') )
 
 		# do not display UMC hint on basesystem
-		if self.profile.get('systemrole') not in ['basesystem']:
+		if self.profile.get('system_role') not in ['basesystem']:
 			msg.append( '' )
 			msg.append( _('Administrative frontend:') )
 			msg.append( '' )
@@ -421,7 +421,7 @@ Please visit the following websites to learn more about %(name)s:
   http://sdb.univention.de
 ''') % { 'name': self.options.name,
 		 'hostname': '%s.%s' % (self.profile.get('hostname','unknown'), self.profile.get('domainname','example.com')),
-		 'systemrole': systemrole2name[ self.profile.get('systemrole','domaincontroller_master') ],
+		 'systemrole': systemrole2name[ self.profile.get('system_role','domaincontroller_master') ],
 		 'address': self.profile.get('hostaddress', _('dynamic')),
 		 }
 
