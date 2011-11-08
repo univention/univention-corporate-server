@@ -46,12 +46,13 @@ from .nodes import Nodes
 from .profiles import Profiles
 from .storages import Storages
 from .domains import Domains
+from .snapshots import Snapshots
 
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 
 _uvmm_locale = Translation( 'univention.virtual.machine.manager' ).translate
 
-class Instance( Base, Nodes, Profiles, Storages, Domains ):
+class Instance( Base, Nodes, Profiles, Storages, Domains, Snapshots ):
 	DOMAIN_STATES = ( 'RUN', 'PAUSE', 'SHUTDOWN', 'RESTART' )
 
 	def __init__( self ):

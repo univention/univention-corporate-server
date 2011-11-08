@@ -26,23 +26,13 @@
 	</command>
 	<command name="uvmm/domain/migrate" function="domain_migrate">
 	</command>
-	<command name="uvmm/nic/get" function="nic_get">
+	<command name="uvmm/snapshot/query" function="snapshot_query">
 	</command>
-	<command name="uvmm/nic/add" function="nic_add">
+	<command name="uvmm/snapshot/create" function="snapshot_create">
 	</command>
-	<command name="uvmm/nic/put" function="nic_put">
+	<command name="uvmm/snapshot/remove" function="snapshot_remove">
 	</command>
-	<command name="uvmm/snapshot/get" function="snapshot_get">
-	</command>
-	<command name="uvmm/snapshot/add" function="snapshot_add">
-	</command>
-	<command name="uvmm/snapshot/set" function="snapshot_set">
-	</command>
-	<command name="uvmm/device/get" function="device_get">
-	</command>
-	<command name="uvmm/device/add" function="device_add">
-	</command>
-	<command name="uvmm/device/put" function="device_put">
+	<command name="uvmm/snapshot/revert" function="snapshot_revert">
 	</command>
 	<command name="uvmm/storage/pool/query" function="storage_pool_query">
 	</command>

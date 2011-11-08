@@ -61,7 +61,7 @@ class Nodes( object ):
 
 		return: [ { 'id' : <node URI>, 'label' : <node name>, 'group' : 'default', 'type' : 'node', 'virtech' : <virtualization technology>,
 					'memUsed' : <used amount of memory in B>, 'memAvailable' : <amount of physical memory in B>, 'cpus' : <number of CPUs>,
-					'cpuUsage' : <cpu usage in %>, 'available' : (True|False) }, ... ]
+					'cpuUsage' : <cpu usage in %>, 'available' : (True|False), 'supports_suspend' : (True|False), 'supports_snapshot' : (True|False) }, ... ]
 		"""
 		self.required_options( request, 'nodePattern' )
 
@@ -73,9 +73,18 @@ class Nodes( object ):
 			success, data = result
 			for node_pd in data:
 				node_uri = urlparse.urlsplit( node_pd.uri )
-				nodes.append( { 'id' : node_pd.uri, 'label' : node_pd.name, 'group' : _( 'Physical servers' ), 'type' : 'node','virtech' : node_uri.scheme,
-								'memUsed' : node_pd.curMem, 'memAvailable' : node_pd.phyMem, 'cpuUsage' : ( node_pd.cpu_usage or 0 ) / 10.0,
-								'available' : node_pd.last_try == node_pd.last_update, 'cpus' : node_pd.cpus } )
+				nodes.append( { 'id' : node_pd.uri, 'label' : node_pd.name,
+								'group' : _( 'Physical servers' ),
+								'type' : 'node',
+								'virtech' : node_uri.scheme,
+								'memUsed' : node_pd.curMem,
+								'memAvailable' : node_pd.phyMem,
+								'cpuUsage' : ( node_pd.cpu_usage or 0 ) / 10.0,
+								'available' : node_pd.last_try == node_pd.last_update,
+								'cpus' : node_pd.cpus,
+								'supports_suspend' : node_pd.supports_suspend,
+								'supports_snapshot' : node_pd.supports_snapshot,
+								} )
 
 			self.finished( request.id, nodes, success = success )
 

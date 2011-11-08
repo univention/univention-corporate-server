@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (1.0.28-1) unstable; urgency=low
+
+  * node/query: add supports_suspend and supports_snapshot to node infos
+  * add commands uvmm/snapshot/create,uvmm/snapshot/remove,
+    uvmm/snapshot/query and uvmm/snapshot/revert; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 08 Nov 2011 15:00:14 +0100
+
 univention-virtual-machine-manager-daemon (1.0.27-1) unstable; urgency=low
 
   * map annotations and type; Bug #22893

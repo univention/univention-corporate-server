@@ -62,4 +62,16 @@ umc-client -U root -P univention command uvmm/storage/volume/query -o nodeURI=qe
 umc-client -U root -P univention command uvmm/storage/volume/query -o nodeURI=qemu://master.ucs3.test/system -o pool=default -o type=cdrom
 
 # create an KVM instance
-umc-client -U root -P univention command uvmm/domain/add -e -o "{ 'nodeURI':'qemu://master.ucs3.test/system', 'domain' : { 'name' : 'crunchy1', 'arch' : 'i686', 'type' :'kvm-hvm', 'memory' : '512MB', 'cpus' : 1, 'boot' : [ 'hd', 'cdrom' ], 'vnc' : True, 'kblayout' : 'de', 'os' : 'UCS 4.1', 'description' : 'testing UMC module', 'rtc_offset' : 'utc', 'interface' : 'eth0', 'pvinterface' : True, 'disks' : [], '\$profile\$' : 'cn=UCS 3.0,cn=kvm,cn=Profiles,cn=Virtual Machine Manager,dc=ucs3,dc=test' }}"
+umc-command -U root -P univention uvmm/domain/add -e -o "{ 'nodeURI':'qemu://master.ucs3.test/system', 'domain' : { 'name' : 'crunchy1', 'arch' : 'i686', 'type' :'kvm-hvm', 'memory' : '512MB', 'cpus' : 1, 'boot' : [ 'hd', 'cdrom' ], 'vnc' : True, 'kblayout' : 'de', 'os' : 'UCS 4.1', 'description' : 'testing UMC module', 'rtc_offset' : 'utc', 'interface' : 'eth0', 'pvinterface' : True, 'disks' : [], '\$profile\$' : 'cn=UCS 3.0,cn=kvm,cn=Profiles,cn=Virtual Machine Manager,dc=ucs3,dc=test' }}"
+
+# query snapshots
+umc-command -U Administrator -P univention uvmm/snapshot/query -o 'domainURI=qemu://master.ucs3.test/system#6612fd7c-ef89-cc60-07bc-47aa5b319e13'
+
+# create snapshot
+umc-command -U Administrator -P univention uvmm/snapshot/create -o 'domainURI=qemu://master.ucs3.test/system#6612fd7c-ef89-cc60-07bc-47aa5b319e13' -o snapshotName=test2
+
+# remove snapshot
+umc-command -U Administrator -P univention uvmm/snapshot/remove -o 'domainURI=qemu://master.ucs3.test/system#6612fd7c-ef89-cc60-07bc-47aa5b319e13' -o snapshotName=test1
+
+# revert snapshot
+umc-command -U Administrator -P univention uvmm/snapshot/revert -o 'domainURI=qemu://master.ucs3.test/system#6612fd7c-ef89-cc60-07bc-47aa5b319e13' -o snapshotName=test2
