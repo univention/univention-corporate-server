@@ -1,0 +1,37 @@
+
+	; ldap
+
+@!@
+if configRegistry.has_key('server/role') and configRegistry['server/role'] != 'memberserver':
+	ldapserver = configRegistry['ldap/server/name'].split(' ')
+	if configRegistry.get('ldap/server/addition',''):
+		ldapserver.extend( configRegistry.get('ldap/server/addition').split(' ') )
+	print '\tpassdb backend = ldapsam:"ldap://%s"' % ' ldap://'.join(ldapserver)
+	print '\tauth methods = %s' % configRegistry.get('samba/auth/methods', 'guest sam winbind')
+
+if configRegistry.get('server/role') == 'memberserver' and configRegistry.get('samba/memberserver/passdb/ldap','').lower() in ('yes', 'true'):
+	ldapserver = configRegistry['ldap/server/name'].split(' ')
+	if configRegistry.get('ldap/server/addition',''):
+		ldapserver.extend( configRegistry.get('ldap/server/addition').split(' ') )
+	print '\tpassdb backend = ldapsam:"ldap://%s"' % ' ldap://'.join(ldapserver)
+
+if len(configRegistry.get('samba/ldap/timeout','')):
+	print '\tldap timeout = %s' % configRegistry.get('samba/ldap/timeout')
+
+print '\tldap suffix = %s' % configRegistry['ldap/base']
+if configRegistry.has_key('samba/user'):
+	print '\tldap admin dn = "%s"' %  configRegistry['samba/user']
+elif configRegistry['server/role'] == 'domaincontroller_master':
+	print '\tldap admin dn = "cn=admin,%s"' % (configRegistry['ldap/base'])
+else:
+	print '\tldap admin dn = "cn=backup,%s"' % (configRegistry['ldap/base'])
+
+print '\tldap ssl = start tls'
+
+if configRegistry.has_key('server/role') and configRegistry['server/role'] != 'memberserver':
+	if configRegistry.has_key('samba/ldap/replication/sleep'):
+		print '\tldap replication sleep = %s' %  configRegistry['samba/ldap/replication/sleep']
+
+print '\tpassdb expand explicit = %s' % configRegistry.get('samba/passdb/expand/explicit', 'no')
+@!@
+

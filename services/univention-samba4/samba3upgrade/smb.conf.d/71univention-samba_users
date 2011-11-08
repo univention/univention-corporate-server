@@ -1,0 +1,8 @@
+@!@
+print '\tguest account = %s' % configRegistry.get('samba/guest_account', 'nobody')	
+print '\tmap to guest = %s' % configRegistry.get('samba/map_to_guest', 'Bad User')	
+invalid_users=configRegistry.get('samba/invalid_users', '')
+if invalid_users:
+	print '\tinvalid users = %s' % invalid_users
+@!@
+	admin users = @%@samba/adminusers@%@

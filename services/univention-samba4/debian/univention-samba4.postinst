@@ -34,13 +34,9 @@
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	if [ -d '/var/lib/samba' ]; then
+		mkdir -p /var/lib/samba3
 		## backup existing samba3 lib dir
-		cp -a /var/lib/samba /var/lib/samba3
-	fi
-	if [ -f '/etc/samba/smb.conf' ]; then
-		## backup samba3 config
-		mkdir -p /var/lib/samba3/etc
-		cp -a /etc/samba /var/lib/samba3/etc
+		cp -a /var/lib/samba/* /var/lib/samba3
 	fi
 fi
 

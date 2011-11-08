@@ -1,0 +1,3 @@
+
+	include = /etc/samba/shares.conf
+	include = /etc/samba/printers.conf

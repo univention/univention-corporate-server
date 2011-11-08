@@ -1,0 +1,54 @@
+@!@
+print '\toplocks = %s' % configRegistry.get('samba/oplocks', 'yes')
+print '\tkernel oplocks = %s' % configRegistry.get('samba/kernel_oplocks', 'yes')
+print '\tlarge readwrite = %s' % configRegistry.get('samba/large_readwrite', 'yes')
+print '\tdeadtime = %s' % configRegistry.get('samba/deadtime', '15')
+print '\tread raw = %s' % configRegistry.get('samba/read_raw', 'yes')
+print '\twrite raw = %s' % configRegistry.get('samba/write_raw', 'yes')
+print '\tmax xmit = %s' % configRegistry.get('samba/max_xmit', '65535')
+print '\tgetwd cache = %s' % configRegistry.get('samba/getwd_cache', 'yes')
+
+print '\twide links = %s' % configRegistry.get('samba/wide_links', 'no')
+
+print '\tstore dos attributes = %s' % configRegistry.get('samba/store_dos_attributes', 'yes')
+
+if configRegistry.get('samba/client/use/spnego/principal'):
+	print '\tclient use spnego principal = %s' % configRegistry.get('samba/client/use/spnego/principal')
+if configRegistry.get('samba/send/spnego/principal'):
+	print '\tsend spnego principal = %s' % configRegistry.get('samba/send/spnego/principal')
+
+if configRegistry.get('samba/max/protocol'):
+	print '\tmax protocol = %s' % configRegistry.get('samba/max/protocol')
+
+if configRegistry['server/role'] != 'memberserver':
+	if ( not configRegistry['samba/homedirpath'] or configRegistry['samba/homedirpath']=='local') and configRegistry['samba/homedirserver'] and configRegistry['samba/homedirserver'] == 'local':
+		print '\tlogon home ='
+	elif configRegistry['samba/homedirserver'] and configRegistry['samba/homedirpath']:
+		print '\tlogon home = \\\\%s\%s' % (configRegistry['samba/homedirserver'],configRegistry['samba/homedirpath'])
+
+	if configRegistry['samba/homedirletter'] and len(configRegistry['samba/homedirletter']) == 1:
+		print '\tlogon drive = %s:' % configRegistry['samba/homedirletter']
+	elif configRegistry['samba/homedirletter'] and configRegistry['samba/homedirletter'] == 'local':
+		print '\tlogon drive = '
+		
+	if ( not configRegistry['samba/profilepath'] or configRegistry['samba/profilepath'] == 'local' ) and configRegistry['samba/profileserver'] and configRegistry['samba/profileserver'] == 'local':
+		print '\tlogon path ='
+	elif configRegistry['samba/profileserver'] and configRegistry['samba/profilepath']:
+		print '\tlogon path = \\\\%s\%s' % (configRegistry['samba/profileserver'],configRegistry['samba/profilepath'])
+
+	if configRegistry.has_key('samba/logonscript'):
+		print '\tlogon script = %s' % configRegistry['samba/logonscript']
+
+
+
+print '\tpreserve case = %s' % configRegistry.get('samba/preserve_case', 'yes')
+print '\tshort preserve case = %s' % configRegistry.get('samba/short_preserve_case', 'yes')
+
+print '\ttime server = %s' % configRegistry.get('samba/time_server', 'yes')
+
+if configRegistry.has_key('samba/enable-msdfs') and configRegistry['samba/enable-msdfs'] == 'yes':
+	print '\thost msdfs = yes'
+else:
+	print '\thost msdfs = no'
+	print '\tmsdfs root = no'
+@!@

@@ -193,6 +193,8 @@ else
 	echo "$ldif_sambaGroupType_5_to_4" | ldapmodify -D cn=admin,$ldap_base -y /etc/ldap.secret | tee -a "$LOGFILE"
 	echo "$ldif_sambaGroupType_2_to_4" | ldapmodify -D cn=admin,$ldap_base -y /etc/ldap.secret | tee -a "$LOGFILE"
 
+	## commit samba3 smb.conf
+	cat /usr/share/univention-samba4/samba3upgrade/* | ucr filter > /var/lib/samba3/etc/samba/smb.conf
 	## fix up /var/lib/samba3/smb.conf for samba-tool
 	touch /etc/samba/base.conf /etc/samba/installs.conf /etc/samba/printers.conf /etc/samba/shares.conf
 	echo -e "[global]\n\trealm = $kerberos_realm" >> /var/lib/samba3/etc/samba/smb.conf
