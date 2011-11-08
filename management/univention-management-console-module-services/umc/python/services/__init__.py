@@ -152,8 +152,10 @@ class Instance(umcm.Base):
 			self.finished(request.id, {'success': True}, message['success'])
 
 	def start_type(self, request):
+		message = None
 		srvs = usi.ServiceInfo()
 
+		failed = []
 		for name in request.options:
 			srv = srvs.services.get(name, None)
 			if srv:
@@ -169,7 +171,18 @@ class Instance(umcm.Base):
 				if request.arguments[0] == 'services/start_never':
 					value = 'no'
 				ucr.handler_set(['%s=%s' % (key, value)])
+			else:
+				failed.append(name)
 
-		message = _('Successfully changed start type')
-		self.finished(request.id, None, message)
-
+		if failed:
+			if len(request.options) == 1:
+				message = _('Could not change start type')
+				request.status = MODULE_ERR
+				self.finished(request.id, {'success': False}, message)
+			else:
+				request.status = SUCCESS
+				self.finished(request.id, {'objects': failed, 'success': False})
+		else:
+			message = _('Successfully changed start type')
+			request.status = SUCCESS
+			self.finished(request.id, {'success': True}, message)

@@ -78,7 +78,7 @@ dojo.declare("umc.modules.services", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			callback: dojo.hitch(this, function(data) {
 				var command = 'services/start_auto';
 				var confirmMessage = this._('Please confirm to automatically start the following services: ');
-				var errorMessage = '';
+				var errorMessage = this._('Could not change start type of the following services: ');
 				this._changeState(data, command, confirmMessage, errorMessage);
 			}),
 			isStandardAction: false,
@@ -89,7 +89,7 @@ dojo.declare("umc.modules.services", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			callback: dojo.hitch(this, function(data) {
 				var command = 'services/start_manual';
 				var confirmMessage = this._('Please confirm to manually start the following services: ');
-				var errorMessage = '';
+				var errorMessage = this._('Could not change start type of the following services: ');
 				this._changeState(data, command, confirmMessage, errorMessage);
 			}),
 			isStandardAction: false,
@@ -100,7 +100,7 @@ dojo.declare("umc.modules.services", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			callback: dojo.hitch(this, function(data) {
 				var command = 'services/start_never';
 				var confirmMessage = this._('Please confirm to never start the following services: ');
-				var errorMessage = '';
+				var errorMessage = this._('Could not change start type of the following services: ');
 				this._changeState(data, command, confirmMessage, errorMessage);
 			}),
 			isStandardAction: false,
@@ -193,14 +193,14 @@ dojo.declare("umc.modules.services", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					dojo.hitch(this, function(response) {
 						this.standby(false);
 						if (response.result.success === false) {
-							errorMessage += '<ul>'
+							errorMessage += '<ul>';
 							dojo.forEach(response.result.objects, function(item) {
 								errorMessage += '<li>' + item + '</li>';
 							});
-							errorMessage += '</ul>'
+							errorMessage += '</ul>';
 							umc.dialog.alert(errorMessage);
 						}
-						var data = this._searchWidget.gatherFormValues();
+						data = this._searchWidget.gatherFormValues();
 						this._grid.filter(data);
 					}), dojo.hitch(this, function() {
 						this.standby(false);
