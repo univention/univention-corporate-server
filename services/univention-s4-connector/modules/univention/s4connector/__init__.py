@@ -192,7 +192,7 @@ class attribute:
 class property:
 	def __init__(	self, ucs_default_dn='', con_default_dn='', ucs_module='', ucs_module_others=[], sync_mode='', scope='', con_search_filter='', ignore_filter=None, match_filter=None, ignore_subtree=[],
 					con_create_objectclass=[], con_create_attributes=[], dn_mapping_function=[], attributes=None, ucs_create_functions=[], post_con_create_functions=[],
-					post_con_modify_functions=[], post_ucs_modify_functions=[], post_attributes=None, mapping_table=None, position_mapping=[], con_sync_function = None, ucs_sync_function = None, disable_delete = False,
+					post_con_modify_functions=[], post_ucs_modify_functions=[], post_attributes=None, mapping_table=None, position_mapping=[], con_sync_function = None, ucs_sync_function = None, disable_delete_in_ucs = False,
 					identify = None ):
 
 		self.ucs_default_dn=ucs_default_dn
@@ -238,7 +238,7 @@ class property:
 		if identify:
 			self.identify = identify
 
-		self.disable_delete = disable_delete
+		self.disable_delete_in_ucs = disable_delete_in_ucs
 
 		pass
 	
@@ -1008,7 +1008,7 @@ class ucs:
 	def delete_in_ucs(self, property_type, object, module, position):
 		_d=ud.function('ldap.delete_in_ucs')		
 
-		if self.property[property_type].disable_delete:
+		if self.property[property_type].disable_delete_in_ucs:
 			ud.debug(ud.LDAP, ud.PROCESS, "Delete of %s was disabled in mapping" % object['dn'])
 			return True
 

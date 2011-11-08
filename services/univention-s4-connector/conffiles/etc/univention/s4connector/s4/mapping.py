@@ -291,7 +291,7 @@ s4_mapping = {
 
 			# Whether a DC joins to the samba 4 domain
 			# the DC will be deleted.
-			disable_delete = True,
+			disable_delete_in_ucs = True,
 	
 			con_create_objectclass=['top', 'computer' ],
 			

@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.66-1) unstable; urgency=low
+
+  * Rename disbale_delete into disable_delete_in_ucs (Bug #24437)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Nov 2011 16:24:25 +0100
+
 univention-s4-connector (6.0.65-2) unstable; urgency=low
 
   * Synchronize DC objects (Bug #24437)
