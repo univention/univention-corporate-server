@@ -1,3 +1,9 @@
+univention-installer (7.0.139-1) unstable; urgency=low
+
+  * do not resolve LVM symlinks - not required/desired anymore (Bug #24436)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 08 Nov 2011 14:38:40 +0100
+
 univention-installer (7.0.138-1) unstable; urgency=low
 
   * display correct system role in progress dialog (Bug #3796)
