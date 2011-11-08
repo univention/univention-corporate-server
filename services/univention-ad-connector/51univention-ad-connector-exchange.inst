@@ -33,6 +33,8 @@
 VERSION="1"
 
 . /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/base.sh
+
 joinscript_init
 
 eval "$(univention-config-registry shell)"

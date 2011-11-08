@@ -6,167 +6,49 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-11 15:22+0100\n"
-"PO-Revision-Date: 2009-07-02 10:26+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2011-11-08 19:28+0100\n"
+"PO-Revision-Date: 2011-11-08 17:56+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: __init__.py:60
-msgid "Active Directory Connector"
-msgstr "Active Directory Connector"
+#: umc/python/adconnector/__init__.py:275
+msgid "Active Directory Connector is already running. Nothing to do."
+msgstr ""
+"Der Active Directory Connector ist bereits aktiv. Keine Aktion notwendig."
 
-#: __init__.py:61 __init__.py:84 __init__.py:85 __init__.py:496
-#: __init__.py:497
-msgid "Configure Active Directory Connector"
-msgstr "Active Directory Connector einrichten"
+#: umc/python/adconnector/__init__.py:277
+msgid "Active Directory Connector is already stopped. Nothing to do."
+msgstr ""
+"Der Active Directory Connector ist bereits gestoppt. Keine Aktion notwendig."
 
-#: __init__.py:75 __init__.py:76
-msgid "Overview"
-msgstr "Übersicht"
-
-#: __init__.py:89
-msgid "Hostname of Active Directory server"
-msgstr "Rechnername des Active Directory Servers"
-
-#: __init__.py:90
-msgid "BaseDN of Active Directory"
-msgstr "BasisDN des Active Directorys"
-
-#: __init__.py:91
-msgid "DN of replication user"
-msgstr "DN des Replikationsbenutzers"
-
-#: __init__.py:92
-msgid "Password of replication user"
-msgstr "Passwort des Replikationsbenutzers"
-
-#: __init__.py:93
-msgid "Poll Interval (seconds)"
-msgstr "Polling-Intervall (in Sekunden)"
-
-#: __init__.py:94
-msgid "Version of Windows server"
-msgstr "Version des Windows-Servers"
-
-#: __init__.py:95
-msgid "Windows 2000"
-msgstr "Windows 2000"
-
-#: __init__.py:95
-msgid "Windows 2003/2008"
-msgstr "Windows 2003/2008"
-
-#: __init__.py:96
-msgid "Retry interval for rejected objects"
-msgstr "Wiederholungsintervall für abgelehnte Objekte"
-
-#: __init__.py:97
-msgid "Kerberos domain of Active Directory server"
-msgstr "Kerberos Domäne des Active Directory Servers"
-
-#: __init__.py:99
-msgid "Debug level of Active Directory Connector"
-msgstr "Debug-Level des Active Directory Connectors"
-
-#: __init__.py:100
-msgid "0"
-msgstr "0"
-
-#: __init__.py:100
-msgid "1"
-msgstr "1"
-
-#: __init__.py:100
-msgid "2"
-msgstr "2"
-
-#: __init__.py:100
-msgid "3"
-msgstr "3"
-
-#: __init__.py:100
-msgid "4"
-msgstr "4"
-
-#: __init__.py:102
-msgid "Add debug output for functions"
-msgstr "Debug-Ausgaben für Funktionen ausgeben"
-
-#: __init__.py:103
-msgid "no"
-msgstr "nein"
-
-#: __init__.py:103
-msgid "yes"
-msgstr "ja"
-
-#: __init__.py:104
-msgid "Active Directory Connector sync mode"
-msgstr "Synchronisationsmodus des Active Directory Connectors"
-
-#: __init__.py:105
-msgid "read (AD --> UCS)"
-msgstr "lesen (AD --> UCS)"
-
-#: __init__.py:106
-msgid "write (UCS --> AD)"
-msgstr "schreiben (UCS --> AD)"
-
-#: __init__.py:107
-msgid "sync (AD <--> UCS)"
-msgstr "sync (AD <--> UCS)"
-
-#: __init__.py:108
-msgid "Active Directory Connector group mapping language"
-msgstr "Verwendete Sprache für das Gruppen-Mapping"
-
-#: __init__.py:114 __init__.py:115 __init__.py:629 __init__.py:693
-msgid "Upload Active Directory Certificate"
-msgstr "Active Directory-Zertifikat hochladen"
-
-#: __init__.py:118
-msgid "Please upload Active Directory certificate"
-msgstr "Bitte das Active Directory-Zertifikat hochladen."
-
-#: __init__.py:124 __init__.py:125
-msgid "Start/Stop Active Directory Connector"
-msgstr "Active Directory Connector starten/stoppen"
-
-#: __init__.py:197
+#: umc/python/adconnector/__init__.py:119
 #, python-format
 msgid ""
-"An error occured while saving .htaccess (filename=%(fn)s ; exception=%"
-"(exception)s)"
+"An error occured while saving .htaccess (filename=%(fn)s ; exception="
+"%(exception)s)"
 msgstr ""
-"Ein Fehler ist beim Speicher der Datei .htaccess aufgetreten (filename=%(fn)"
-"s ; exception=%(exception)s)"
+"Ein Fehler ist beim Speicher der Datei .htaccess aufgetreten (filename="
+"%(fn)s ; exception=%(exception)s)"
 
-#: __init__.py:250
+#: umc/python/adconnector/__init__.py:243
+msgid "Certificate has been uploaded successfully."
+msgstr "Zertifikat wurde erfolgreich installiert."
+
+#: umc/python/adconnector/__init__.py:247
+msgid "Certificate upload or conversion failed."
+msgstr "Zertifikatsinstallation oder -konvertierung fehlgeschlagen."
+
+#: umc/python/adconnector/__init__.py:228
 #, python-format
-msgid "saving bind password failed (filename=%(fn)s ; exception=%(exception)s)"
-msgstr ""
-"Speichern des Replikationspasswortes fehlgeschlagen (filename=%(fn)s ; "
-"exception=%(exception)s)"
-
-#: __init__.py:254
-msgid "Active Directory Connector settings have been saved."
-msgstr "Active Directory Connector-Einstellungen wurden gespeichert."
-
-#: __init__.py:297
-#, python-format
-msgid "copy of %s/%s to %s/%s failed (exception=%s)"
+msgid "Copying of %s/%s to %s/%s failed (exception=%s)"
 msgstr "Das Kopieren von %s/%s nach %s/%s ist fehlgeschlagen (exception=%s)"
 
-#: __init__.py:301
-#, python-format
-msgid "creation of certificate failed (%s)"
-msgstr "Erstellung eines neuen Zertifikats fehlgeschlagen (%s)"
-
-#: __init__.py:329
+#: umc/python/adconnector/__init__.py:198
 msgid ""
 "Could not determine baseDN of given ldap server. Maybe FQDN is wrong or "
 "unresolvable!"
@@ -174,25 +56,36 @@ msgstr ""
 "Konnte BasisDN des angegebenen Servers nicht ermitteln. Angegebener FQDN ist "
 "ggf. falsch oder nicht auflösbar!"
 
-#: __init__.py:365
-msgid "Certificate has been uploaded successfully."
-msgstr "Zertifikat wurde erfolgreich installiert."
+#: umc/python/adconnector/__init__.py:232
+#, python-format
+msgid "Creation of certificate failed (%s)"
+msgstr "Erstellung eines neuen Zertifikats fehlgeschlagen (%s)"
 
-#: __init__.py:368
-msgid "Certificate upload or conversion failed."
-msgstr "Zertifikatsinstallation oder -konvertierung fehlgeschlagen."
-
-#: __init__.py:389
-msgid "Active Directory Connector is already running. Nothing to do."
+#: umc/python/adconnector/__init__.py:148
+#, python-format
+msgid "Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)"
 msgstr ""
-"Der Active Directory Connector ist bereits aktiv. Keine Aktion notwendig."
+"Speichern des Replikationspasswortes fehlgeschlagen (filename=%(fn)s ; "
+"exception=%(exception)s)"
 
-#: __init__.py:393
-msgid "Active Directory Connector is already stopped. Nothing to do."
-msgstr ""
-"Der Active Directory Connector ist bereits gestoppt. Keine Aktion notwendig."
+#: umc/python/adconnector/__init__.py:293
+msgid "Switching running state of Active Directory Connector failed."
+msgstr "Starten/Stoppen des Active Directory Connectors ist fehlgeschlagen."
 
-#: __init__.py:403
+#: umc/python/adconnector/__init__.py:297
+msgid "UCS Active Directory Connector has been started."
+msgstr "Der UCS Active Directory Connector wurde gestartet."
+
+#: umc/python/adconnector/__init__.py:299
+msgid "UCS Active Directory Connector has been stopped."
+msgstr "Der UCS Active Directory Connector wurde beendet."
+
+#: umc/python/adconnector/__init__.py:154
+#: umc/python/adconnector/__init__.py:162
+msgid "UCS Active Directory Connector settings have been saved."
+msgstr "Die UCS Active Directory Connector Einstellungen wurden gespeichert."
+
+#: umc/python/adconnector/__init__.py:280
 #, python-format
 msgid ""
 "Unknown command (\"%s\") Please report error to your local administrator"
@@ -200,134 +93,189 @@ msgstr ""
 "Unbekanntes Kommando (\"%s\"). Bitte den Fehler beim lokalen Administrator "
 "melden."
 
-#: __init__.py:419
-msgid "Switching running state of Active Directory Connector failed."
-msgstr "Starten/Stoppen des Active Directory Connectors ist fehlgeschlagen."
+#~ msgid "0"
+#~ msgstr "0"
 
-#: __init__.py:423
-msgid "Active Directory Connector has been started."
-msgstr "Der Active Directory Connector wurde gestartet."
+#~ msgid "1"
+#~ msgstr "1"
 
-#: __init__.py:425
-msgid "Active Directory Connector has been stopped."
-msgstr "Der Active Directory Connector wurde beendet."
+#~ msgid "2"
+#~ msgstr "2"
 
-#: __init__.py:475
-msgid ""
-"The configuration process has been finished and all required settings for "
-"Active Directory Connector are set."
-msgstr ""
-"Der Konfigurationsvorgang ist abgeschlossen und alle vom Active Directory "
-"Connector benötigten Einstellungen wurden gesetzt."
+#~ msgid "3"
+#~ msgstr "3"
 
-#: __init__.py:477
-msgid "The configuration process has not been started yet or is incomplete."
-msgstr ""
-"Die Konfiguration des Active Directory Connectors wurde noch nicht "
-"durchgeführt oder ist unvollständig."
+#~ msgid "4"
+#~ msgstr "4"
 
-#: __init__.py:480
-msgid "The Active Directory certificate has been sucessfully installed."
-msgstr "Das Active-Directory-Zertifikat wurde erfolgreich installiert."
+#~ msgid "Actions"
+#~ msgstr "Aktionen"
 
-#: __init__.py:482
-msgid "The Active Directory certificate has not been installed yet."
-msgstr "Das Active-Directory-Zertifikat wurde noch nicht installiert."
+#~ msgid "Active Directory Connector"
+#~ msgstr "Active Directory Connector"
 
-#: __init__.py:485
-msgid "Active Directory Connector is currently running."
-msgstr "Der Active Directory Connector wurde gestartet."
+#~ msgid "Active Directory Connector Configuration"
+#~ msgstr "Active Directory Connector-Konfiguration"
 
-#: __init__.py:487
-msgid "Active Directory Connector is not running."
-msgstr "Der Active Directory Connector wurde noch nicht gestartet."
+#~ msgid "Active Directory Connector group mapping language"
+#~ msgstr "Verwendete Sprache für das Gruppen-Mapping"
 
-#: __init__.py:489
-msgid "Active Directory Connector status"
-msgstr "Active Directory Connector-Status"
+#~ msgid "Active Directory Connector is currently running."
+#~ msgstr "Der Active Directory Connector wurde gestartet."
 
-#: __init__.py:502
-msgid "Stop Active Directory Connector"
-msgstr "Active Directory Connector beenden"
+#~ msgid "Active Directory Connector is not running."
+#~ msgstr "Der Active Directory Connector wurde noch nicht gestartet."
 
-#: __init__.py:505
-msgid "Start Active Directory Connector"
-msgstr "Active Directory Connector starten"
+#~ msgid "Active Directory Connector status"
+#~ msgstr "Active Directory Connector-Status"
 
-#: __init__.py:513
-msgid "Actions"
-msgstr "Aktionen"
+#~ msgid "Active Directory Connector sync mode"
+#~ msgstr "Synchronisationsmodus des Active Directory Connectors"
 
-#: __init__.py:542
-msgid "Determine BaseDN"
-msgstr "BasisDN ermitteln"
+#~ msgid "Add debug output for functions"
+#~ msgstr "Debug-Ausgaben für Funktionen ausgeben"
 
-#: __init__.py:548
-#, python-format
-msgid ""
-"BaseDN of %s has been determined successfully. Suggestion for replication "
-"user has been set."
-msgstr ""
-"BasisDN von %s wurde erfolgreich ermittelt. Vorschlag für "
-"Replikationsbenutzer wurde automatisch gesetzt."
+#~ msgid "Additional Configuration Steps"
+#~ msgstr "Active Directory Connector-Konfiguration"
 
-#: __init__.py:567
-msgid "The password of specified replication user has not been set yet!"
-msgstr "Das Passwort des Replikationsbenutzers wurde noch nicht gesetzt!"
+#~ msgid ""
+#~ "After the above configuration values have been set, the Active Directory "
+#~ "certificate has to be uploaded to Active Directory Connector."
+#~ msgstr ""
+#~ "Nachdem die oben gemachten Einstellungen speichert wurden, muss das "
+#~ "Active-Directory-Zertifikat für den Active Directory Connector "
+#~ "hochgeladen werden."
 
-#: __init__.py:621 __init__.py:684
-msgid "Save"
-msgstr "Speichern"
+#~ msgid ""
+#~ "BaseDN of %s has been determined successfully. Suggestion for replication "
+#~ "user has been set."
+#~ msgstr ""
+#~ "BasisDN von %s wurde erfolgreich ermittelt. Vorschlag für "
+#~ "Replikationsbenutzer wurde automatisch gesetzt."
 
-#: __init__.py:626
-msgid "Download ucs-ad-connector.msi and UCS certificate"
-msgstr "Download des .msi-Pakets und UCS-Zertifikats"
+#~ msgid "BaseDN of Active Directory"
+#~ msgstr "BasisDN des Active Directorys"
 
-#: __init__.py:628
-msgid "Upload Active Directory certificate"
-msgstr "Active Directory-Zertifikat hochladen"
+#~ msgid "Configure Active Directory Connector"
+#~ msgstr "Active Directory Connector einrichten"
 
-#: __init__.py:632
-msgid ""
-"Hint: all settings become operative after (re)start of Active Directory "
-"Connector."
-msgstr ""
-"Hinweis: alle Einstellungen werden erst nach dem (Neu)Start des Active "
-"Directory Connectors wirksam."
+#~ msgid "DN of replication user"
+#~ msgstr "DN des Replikationsbenutzers"
 
-#: __init__.py:647
-msgid "Active Directory Connector Configuration"
-msgstr "Active Directory Connector-Konfiguration"
+#~ msgid "Debug level of Active Directory Connector"
+#~ msgstr "Debug-Level des Active Directory Connectors"
 
-#: __init__.py:650
-msgid ""
-"After the above configuration values have been set, the Active Directory "
-"certificate has to be uploaded to Active Directory Connector."
-msgstr ""
-"Nachdem die oben gemachten Einstellungen speichert wurden, muss das Active-"
-"Directory-Zertifikat für den Active Directory Connector hochgeladen werden."
+#~ msgid "Determine BaseDN"
+#~ msgstr "BasisDN ermitteln"
 
-#: __init__.py:651
-msgid ""
-"Finally on the Active Directory Server some files have to be installed for "
-"correct function of Active Directory Connector. Press button to get these "
-"files."
-msgstr ""
-"Abschließend müssen auf dem Active Directory Server einige Programme/Dateien "
-"für die korrekte Funktion installiert werden. Klicken Sie auf den Button, um "
-"diese Dateien herunterzuladen."
+#~ msgid "Download ucs-ad-connector.msi and UCS certificate"
+#~ msgstr "Download des .msi-Pakets und UCS-Zertifikats"
 
-#: __init__.py:652
-msgid "Additional Configuration Steps"
-msgstr "Active Directory Connector-Konfiguration"
+#~ msgid ""
+#~ "Finally on the Active Directory Server some files have to be installed "
+#~ "for correct function of Active Directory Connector. Press button to get "
+#~ "these files."
+#~ msgstr ""
+#~ "Abschließend müssen auf dem Active Directory Server einige Programme/"
+#~ "Dateien für die korrekte Funktion installiert werden. Klicken Sie auf den "
+#~ "Button, um diese Dateien herunterzuladen."
 
-#: __init__.py:662 __init__.py:703
-msgid "Notice"
-msgstr "Hinweis"
+#~ msgid ""
+#~ "Hint: all settings become operative after (re)start of Active Directory "
+#~ "Connector."
+#~ msgstr ""
+#~ "Hinweis: alle Einstellungen werden erst nach dem (Neu)Start des Active "
+#~ "Directory Connectors wirksam."
 
-#: __init__.py:690
-msgid "Please select the file containing the Active Directory certificate."
-msgstr "Bitte das Active Directory-Zertifikat auswählen und hochladen."
+#~ msgid "Hostname of Active Directory server"
+#~ msgstr "Rechnername des Active Directory Servers"
+
+#~ msgid "Kerberos domain of Active Directory server"
+#~ msgstr "Kerberos Domäne des Active Directory Servers"
+
+#~ msgid "Notice"
+#~ msgstr "Hinweis"
+
+#~ msgid "Overview"
+#~ msgstr "Übersicht"
+
+#~ msgid "Password of replication user"
+#~ msgstr "Passwort des Replikationsbenutzers"
+
+#~ msgid "Please select the file containing the Active Directory certificate."
+#~ msgstr "Bitte das Active Directory-Zertifikat auswählen und hochladen."
+
+#~ msgid "Please upload Active Directory certificate"
+#~ msgstr "Bitte das Active Directory-Zertifikat hochladen."
+
+#~ msgid "Poll Interval (seconds)"
+#~ msgstr "Polling-Intervall (in Sekunden)"
+
+#~ msgid "Retry interval for rejected objects"
+#~ msgstr "Wiederholungsintervall für abgelehnte Objekte"
 
 #~ msgid "Running status of Active Directory Connector."
 #~ msgstr "Starten/Stoppen des Active Directory Connectors ist fehlgeschlagen."
+
+#~ msgid "Save"
+#~ msgstr "Speichern"
+
+#~ msgid "Start Active Directory Connector"
+#~ msgstr "Active Directory Connector starten"
+
+#~ msgid "Start/Stop Active Directory Connector"
+#~ msgstr "Active Directory Connector starten/stoppen"
+
+#~ msgid "Stop Active Directory Connector"
+#~ msgstr "Active Directory Connector beenden"
+
+#~ msgid "The Active Directory certificate has been sucessfully installed."
+#~ msgstr "Das Active-Directory-Zertifikat wurde erfolgreich installiert."
+
+#~ msgid "The Active Directory certificate has not been installed yet."
+#~ msgstr "Das Active-Directory-Zertifikat wurde noch nicht installiert."
+
+#~ msgid ""
+#~ "The configuration process has been finished and all required settings for "
+#~ "Active Directory Connector are set."
+#~ msgstr ""
+#~ "Der Konfigurationsvorgang ist abgeschlossen und alle vom Active Directory "
+#~ "Connector benötigten Einstellungen wurden gesetzt."
+
+#~ msgid "The configuration process has not been started yet or is incomplete."
+#~ msgstr ""
+#~ "Die Konfiguration des Active Directory Connectors wurde noch nicht "
+#~ "durchgeführt oder ist unvollständig."
+
+#~ msgid "The password of specified replication user has not been set yet!"
+#~ msgstr "Das Passwort des Replikationsbenutzers wurde noch nicht gesetzt!"
+
+#~ msgid "Upload Active Directory Certificate"
+#~ msgstr "Active Directory-Zertifikat hochladen"
+
+#~ msgid "Upload Active Directory certificate"
+#~ msgstr "Active Directory-Zertifikat hochladen"
+
+#~ msgid "Version of Windows server"
+#~ msgstr "Version des Windows-Servers"
+
+#~ msgid "Windows 2000"
+#~ msgstr "Windows 2000"
+
+#~ msgid "Windows 2003/2008"
+#~ msgstr "Windows 2003/2008"
+
+#~ msgid "no"
+#~ msgstr "nein"
+
+#~ msgid "read (AD --> UCS)"
+#~ msgstr "lesen (AD --> UCS)"
+
+#~ msgid "sync (AD <--> UCS)"
+#~ msgstr "sync (AD <--> UCS)"
+
+#~ msgid "write (UCS --> AD)"
+#~ msgstr "schreiben (UCS --> AD)"
+
+#~ msgid "yes"
+#~ msgstr "ja"

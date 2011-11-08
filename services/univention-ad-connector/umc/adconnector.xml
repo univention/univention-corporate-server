@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="adconnector" icon="top" version="1.0">
-	<name>Univention AD Connector</name>
-	<description>Configuration of the Univention AD Connector</description>
+	<module id="adconnector" icon="adconnector" version="1.0">
+	<name>UCS Active Directory Connector</name>
+	<description>Configuration of the UCS Active Directory Connector</description>
 	<categories>
 		<category name="system"/>
 	</categories>

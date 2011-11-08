@@ -75,13 +75,14 @@ class Instance( Base ):
 		self.__update_status()
 
 	def state( self, request ):
-		"""Retrieve current status of the AD connector configuration and the service
+		"""Retrieve current status of the UCS Active Directory Connector configuration and the service
 
 		options: {}
 
 		return: { 'configured' : (True|False), 'certificate' : (True|False), 'running' : (True|False) }
 		"""
 
+		self.__update_status()
 		self.finished( request.id, {
 			'configured' : self.status_configured,
 			'certificate' : self.status_certificate,
@@ -89,7 +90,7 @@ class Instance( Base ):
 			} )
 
 	def save( self, request ):
-		"""Saves the AD connector configuration
+		"""Saves the UCS Active Directory Connector configuration
 
 		options:
 			LDAP_Host: hostname of the AD server
@@ -150,7 +151,7 @@ class Instance( Base ):
 		if os.path.exists( '/etc/univention/ssl/%s' % request.options.get( 'LDAP_Host' ) ):
 			try:
 				self._copy_certificate( request )
-				self.finished( request.id,  { 'success' : True, 'message' :  _('Active Directory Connector settings have been saved.') } )
+				self.finished( request.id,  { 'success' : True, 'message' :  _('UCS Active Directory Connector settings have been saved.') } )
 			except ConnectorError, e:
 				self.finished( request.id,  { 'success' : False, 'message' :  str( e ) } )
 			return
@@ -158,7 +159,7 @@ class Instance( Base ):
 		def _return(  pid, status, buffer, request ):
 			try:
 				self._copy_certificate( request, error_if_missing = True )
-				self.finished( request.id, { 'success' : True, 'message' :  _('Active Directory Connector settings have been saved.') } )
+				self.finished( request.id, { 'success' : True, 'message' :  _('UCS Active Directory Connector settings have been saved.') } )
 			except ConnectorError, e:
 				self.finished( request.id, { 'success' : False, 'message' : str( e ) } )
 
@@ -289,13 +290,13 @@ class Instance( Base ):
 		def _return( self, thread, result, request ):
 			success = not result
 			if result:
-				message = _('Switching running state of Active Directory Connector failed.') )
+				message = _('Switching running state of Active Directory Connector failed.')
 				MODULE.info( 'Switching running state of Active Directory Connector failed. exitcode=%s' % result )
 			else:
 				if request.options.get( 'action' ) == 'start':
-					message = _( 'Active Directory Connector has been started.' )
+					message = _( 'UCS Active Directory Connector has been started.' )
 				else:
-					message = _( 'Active Directory Connector has been stopped.' )
+					message = _( 'UCS Active Directory Connector has been stopped.' )
 
 			self.finished( request.id, { 'success' : success, 'message' : message } )
 
@@ -303,15 +304,15 @@ class Instance( Base ):
 		func = notifier.Callback( _run_it, action )
 		thread = notifier.threads.Simple( 'service', func, cb )
 
-	def __update_status( self):
+	def __update_status( self ):
 		ucr.load()
-		self.status_configured = ucr.get( 'connector/ad/ldap/host' ) and ucr.get( 'connector/ad/ldap/base' ) and ucr.get( 'connector/ad/ldap/binddn' ) and ucr.get( 'connector/ad/ldap/bindpw' )
+		self.status_configured = bool( ucr.get( 'connector/ad/ldap/host' ) and ucr.get( 'connector/ad/ldap/base' ) and ucr.get( 'connector/ad/ldap/binddn' ) and ucr.get( 'connector/ad/ldap/bindpw' ) )
 		fn = ucr.get( 'connector/ad/ldap/certificate' )
-		self.status_certificate = ( fn and os.path.exists( fn ) )
+		self.status_certificate = bool( fn and os.path.exists( fn ) )
 		self.status_running = self.__is_process_running( '*python*univention/connector/ad/main.py*' )
 
 	def __is_process_running( self, command ):
 		for proc in psutil.process_iter():
-			if fnmatch.fnmatch( proc.cmdline, command ):
+			if proc.cmdline and fnmatch.fnmatch( ' '.join( proc.cmdline ), command ):
 				return True
 		return False

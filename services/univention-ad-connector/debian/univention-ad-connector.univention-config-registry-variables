@@ -35,10 +35,8 @@ Type=str
 Categories=service-adcon
 
 [con.*/debug/level]
-Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector.log (0-4).
-Voreingestellt ist 1, so dass Warnungen und Fehler protokolliert werden.
-Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector.log (0-4).  Preset as 1, so that
-warnings and errors are documented.
+Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector.log (0-4). Voreingestellt ist 1, so dass Warnungen und Fehler protokolliert werden.
+Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector.log (0-4). Preset as 1, so that warnings and errors are documented.
 Type=str
 Categories=service-adcon
 
@@ -50,8 +48,7 @@ Categories=service-adcon
 
 [con.*/ad/mapping/group/primarymail]
 Description[de]=Definiert, ob die primäre Mailadresse an Gruppenobjekten von UCS mit dem Attribut "mail" in Active Directory synchronisiert werden soll. Da "mail" ein multivalue ist kann es zu Problemen bei der Synchronisation kommen, default ist daher "false". Active Directory benötigt ggf. die Exchange-Erweiterung für diese Option. Bei der Installation des Pakets "univention-ad-connector-exchange" wird der Wert auf "true" gesetzt.
-Description[en]=
-Defines whether the primary e-mail address on group objects in UCS should be synchronised with the "mail" attribute in Active Directory. As "mail" is a multivalue, this can cause problems during the synchronisation. Thus preset as "false". Active Directory may require the Exchange expansion for this option. During the installation of the "univention-ad-connector-exchange" package the value is set to "true".
+Description[en]=Defines whether the primary e-mail address on group objects in UCS should be synchronised with the "mail" attribute in Active Directory. As "mail" is a multivalue, this can cause problems during the synchronisation. Thus preset as "false". Active Directory may require the Exchange expansion for this option. During the installation of the "univention-ad-connector-exchange" package the value is set to "true".
 Type=str
 Categories=service-adcon
 

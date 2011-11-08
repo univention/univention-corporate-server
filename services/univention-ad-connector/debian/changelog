@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.25-1) unstable; urgency=low
+
+  * first version of UMC frontend (incomplete); Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 08 Nov 2011 20:01:04 +0100
+
 univention-ad-connector (6.0.24-1) unstable; urgency=low
 
   * first version of complete Backend API; Bug #23713

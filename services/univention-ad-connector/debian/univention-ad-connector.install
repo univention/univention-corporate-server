@@ -1,11 +1,10 @@
-univention-ad-connector usr/sbin
-univention-adsearch usr/sbin
-univention-connector-list-rejected usr/sbin
+univention-ad-connector usr/sbin/
+univention-adsearch usr/sbin/
+univention-connector-list-rejected usr/sbin/
 scripts/prepare-new-instance usr/share/univention-ad-connector/scripts
 
 conffiles/etc/univention/connector/ad/mapping etc/univention/connector/ad/
 files/var/www/univention-ad-connector/index.html var/www/univention-ad-connector/
-42univention-ad-connector.inst usr/lib/univention-install/
 
 # apache config
 apache2.conf etc/apache2/conf.d/univention-ad-connector
