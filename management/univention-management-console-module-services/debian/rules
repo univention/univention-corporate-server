@@ -33,6 +33,9 @@
 %:
 	dh $@
 
+override_dh_auto_test:
+	ucslint
+
 override_dh_auto_build:
 	dh-umc-module-build
 	dh_auto_build
