@@ -35,6 +35,6 @@ TARGET="/var/univention-backup/ucr-backup_$(date +%Y%m%d).tgz"
 touch "$TARGET"
 chmod 600 "$TARGET"
 chown root:root "$TARGET"
-tar cvfz "$TARGET" ./base*.conf
+tar cfz "$TARGET" ./base*.conf
 
 exit 0

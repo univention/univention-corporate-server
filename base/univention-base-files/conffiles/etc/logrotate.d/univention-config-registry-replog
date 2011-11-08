@@ -1,10 +1,14 @@
 @%@UCRWARNING=# @%@
 
-/var/log/univention/config-registry.replog {
-        weekly
-        rotate 16
-        create 640 root adm
-        compress
-        missingok
-        notifempty
+@!@
+import univention.lib.ucrLogrotate
+
+name = "ucr-replog"
+settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+
+print "/var/log/univention/config-registry.replog {" % name
+
+for setting in settings.keys():
+        print "\t%s" % settings[setting]
+@!@
 }
