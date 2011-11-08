@@ -12,7 +12,10 @@ $_prefs['rules'] = array(
 
 @!@
 try:
-    spamHits = int(float(baseConfig.get("mail/antispam/requiredhits", "5.0")))
+	flo = float(cr.get("mail/antispam/requiredhits", "5.0"))
+	spamHits = int(flo)
+	if spamHits < flo:
+		spamHits = spamHits + 1
 except:
     spamHits = 5
 
