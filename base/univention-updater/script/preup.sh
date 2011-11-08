@@ -158,6 +158,18 @@ if [ -n "$grubbasedevice" -a -e "/proc/partitions" ]; then
 	fi
 fi
 
+# BEGIN Bug #24448
+if [ "$mail_relay" = "$(hostname -f)" -a ! "$update_mailrelay_check" = "no" ] ; then
+	echo "WARNING: UCR variable mail/relay refers back to local system"
+	echo
+	echo "$mail_relay has been configured as mail relay for local system."
+	echo "This causes a mail loop and may break the update process."
+	echo "Please change the value of mail/relay to a proper mail server"
+	echo "or set update/mailrelay/check=no to continue update process."
+	exit 1
+fi
+# END Bug #24448
+
 
 # update to 3.0-0 Bug #22436
 # check if kolab is installed ==> exit

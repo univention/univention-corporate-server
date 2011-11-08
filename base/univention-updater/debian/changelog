@@ -1,3 +1,9 @@
+univention-updater (7.0.88-2) unstable; urgency=low
+
+  * stop update if mail/relay == $(hostname -f) (Bug #24448)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 08 Nov 2011 18:25:00 +0100
+
 univention-updater (7.0.88-1) unstable; urgency=low
 
   * start gdm after update (Bug #24413)
