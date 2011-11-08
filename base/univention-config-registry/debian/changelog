@@ -1,3 +1,9 @@
+univention-config-registry (7.0.27-4) unstable; urgency=low
+
+  * Handle SubFile entries without MultiFile entry (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Nov 2011 07:13:20 +0100
+
 univention-config-registry (7.0.27-3) unstable; urgency=low
 
   * Fix moving .info files from removed packags in trigger (Bug #22668)

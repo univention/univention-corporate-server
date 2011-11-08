@@ -922,7 +922,10 @@ class configHandlers:
 			elif typ == 'subfile':
 				mfile = section['Multifile'][0]
 				sfile = section['Subfile'][0]
-				handler = self._multifiles[mfile]
+				try:
+					handler = self._multifiles[mfile]
+				except KeyError, e:
+					continue # skip SubFile w/o MultiFile
 				name = os.path.join(file_dir, sfile)
 				handler.remove_subfile(name)
 			elif typ == 'multifile':
