@@ -44,17 +44,24 @@ jobPath = "/var/spool/cyrus/jobs/mailbox/create/user"
 cr = univention.config_registry.ConfigRegistry()
 cr.load()
 
-sieveSpamFilter =  """
-# Univention Sieve Script - generated on %s
+# get spam required hits in "*"
+spamHitsValue = ""
+try:
+	spamHits = int(float(cr.get("mail/antispam/requiredhits", "5.0")))
+except:
+	spamHits = 5
+for i in range(0, spamHits):
+	spamHitsValue += "*"
 
-require ["fileinto", "relational", "comparator-i;ascii-numeric"];
+
+sieveSpamFilter =  """# Univention Sieve Script - generated on %s
+require "fileinto";
 
 # Spamfilter
-if allof ( not header :comparator "i;ascii-casemap" :contains "X-Spam-Score" "-", header :value "ge" :comparator "i;ascii-numeric" "X-Spam-Score" ["%s"] ) {
+if header :comparator "i;ascii-casemap" :contains "X-Spam-Level" "%s"  {
 	fileinto "INBOX/%s";
 	stop;
-}
-""" % (time.asctime(time.localtime()), cr.get("mail/antispam/requiredhits", "5.0"), cr.get('mail/cyrus/folder/spam', "Spam"))
+}""" % (time.asctime(time.localtime()), spamHitsValue, cr.get('mail/cyrus/folder/spam', "Spam"))
 
 # save mailbox name if creation failed
 def failed(mailBox, remote, e):

@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.26-2) unstable; urgency=low
+
+  * reverted last commit (Bug #23741) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Nov 2011 14:45:43 +0100
+
 univention-mail-cyrus (4.0.26-1) unstable; urgency=low
 
   * use X-Spam-Score in default sieve filter (Bug #23741) 
