@@ -67,6 +67,12 @@ Mode: 640
 Variables: horde/.*
 
 Type: file
+File: etc/horde4/kronolith/conf.d/10-ucs.php
+User: www-data
+Mode: 640
+Variables: horde/.*
+
+Type: file
 File: etc/horde4/ingo/backends.d/10-ucs.php
 User: www-data
 Mode: 640

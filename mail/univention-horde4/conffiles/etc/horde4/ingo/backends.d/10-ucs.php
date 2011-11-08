@@ -10,7 +10,7 @@ $backends['sieve'] = array(
     'hordeauth' => 'full',
     'params' => array(
         // Hostname of the timsieved server
-        'hostspec' => @%@horde/imap/hostspec@%@,
+        'hostspec' => '@%@horde/imap/hostspec@%@',
         // Login type of the server
         'logintype' => 'PLAIN',
         // Enable/disable TLS encryption

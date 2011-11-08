@@ -4,18 +4,13 @@
 
 @!@
 
-# print variable if set
-def setVar(phpName, ucrName):
-    if baseConfig.get(ucrName):
-        print phpName + " = %s;" % baseConfig[ucrName]
-
-setVar("$this->applications['horde']['initial_page']", "horde/horde/initial_page")
-setVar("$this->applications['ingo']['status']", "horde/ingo/status")
-setVar("$this->applications['horde']['status']", "horde/horde/status")
-setVar("$this->applications['imp']['status']", "horde/imp/status")
-setVar("$this->applications['kronolith']['status']", "horde/kronolith/status")
-setVar("$this->applications['mnemo']['status']", "horde/mnemo/status")
-setVar("$this->applications['nag']['status']", "horde/nag/status")
-setVar("$this->applications['turba']['status']", "horde/turba/status")
+print "$this->applications['horde']['initial_page'] = '%s';" % baseConfig.get("horde/horde/initial_page", "imp")
+print "$this->applications['ingo']['status']        = '%s';" % baseConfig.get("horde/ingo/status", "active")
+print "$this->applications['horde']['status']       = '%s';" % baseConfig.get("horde/horde/status", "active")
+print "$this->applications['imp']['status']         = '%s';" % baseConfig.get("horde/imp/status", "active")
+print "$this->applications['kronolith']['status']   = '%s';" % baseConfig.get("horde/kronolith/status", "inactive")
+print "$this->applications['mnemo']['status']       = '%s';" % baseConfig.get("horde/mnemo/status", "inactive")
+print "$this->applications['nag']['status']         = '%s';" % baseConfig.get("horde/nag/status", "inactive")
+print "$this->applications['turba']['status']       = '%s';" % baseConfig.get("horde/turba/status", "active")
 
 @!@

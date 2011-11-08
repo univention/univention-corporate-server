@@ -11,47 +11,48 @@ try:
 except:
 	pass
 
-# print variable if set
-def setVar(phpName, ucrName):
-	if baseConfig.get(ucrName):
-		print phpName + " = %s;" % baseConfig[ucrName]
-
 # db
-setVar("$conf['sql']['persistent']", "horde/sql/persistent")
-setVar("$conf['sql']['username']", "horde/sql/username")
-setVar("$conf['sql']['hostspec']", "horde/sql/hostspec")
-setVar("$conf['sql']['port']", "horde/sql/port")
-setVar("$conf['sql']['protocol']", "horde/sql/protocol")
-setVar("$conf['sql']['database']", "horde/sql/database")
-setVar("$conf['sql']['charset']", "horde/sql/charset")
-setVar("$conf['sql']['splitread']", "horde/sql/splitread")
-setVar("$conf['sql']['phptype']", "horde/sql/phptype")
-print "$conf['sql']['password'] = '%s';" % passwd
+print "$conf['sql']['persistent'] =   %s;" % baseConfig.get("horde/sql/persistent", "true")
+print "$conf['sql']['username']   = '%s';" % baseConfig.get("horde/sql/username", "horde")
+print "$conf['sql']['hostspec']   = '%s';" % baseConfig.get("horde/sql/hostspec", "localhost")
+print "$conf['sql']['port']       =   %s;" % baseConfig.get("horde/sql/port", "5432")
+print "$conf['sql']['protocol']   = '%s';" % baseConfig.get("horde/sql/protocol", "tcp")
+print "$conf['sql']['database']   = '%s';" % baseConfig.get("horde/sql/database", "hordedb")
+print "$conf['sql']['charset']    = '%s';" % baseConfig.get("horde/sql/charset", "utf-8")
+print "$conf['sql']['splitread']  =   %s;" % baseConfig.get("horde/sql/splitread", "false")
+print "$conf['sql']['phptype']    = '%s';" % baseConfig.get("horde/sql/phptype", "pgsql")
+print "$conf['sql']['password']   = '%s';" % passwd
 
 # mailer
-setVar("$conf['mailer']['type']", "horde/mailer/type")
-setVar("$conf['mailer']['params']['host']", "horde/mailer/params/host")
-setVar("$conf['mailer']['params']['port']", "horde/mailer/params/port")
-setVar("$conf['mailer']['params']['auth']", "horde/mailer/params/auth")
+print "$conf['mailer']['type']           = '%s';" % baseConfig.get("horde/mailer/type", "smtp")
+print "$conf['mailer']['params']['host'] = '%s';" % baseConfig.get("horde/mailer/params/host", "localhost")
+print "$conf['mailer']['params']['port'] =   %s;" % baseConfig.get("horde/mailer/params/port", "25")
+print "$conf['mailer']['params']['auth'] =   %s;" % baseConfig.get("horde/mailer/params/auth", "true")
 
 # auth
-setVar("$conf['auth']['params']['app']", "horde/auth/params/app")
-setVar("$conf['auth']['driver']", "horde/auth/driver")
+admins = baseConfig.get("horde/auth/admins", "")
+admins = "', '".join(admins.split(","))
+if admins:
+	admins = "'" + admins + "'"
+else:
+	admins = ""
+print "$conf['auth']['admins'] = array(%s);" % admins
+print "$conf['auth']['params']['app'] = '%s';" % baseConfig.get("horde/auth/params/app", "imp")
+print "$conf['auth']['driver'] = '%s';" % baseConfig.get("horde/auth/driver", "application")
 
 # misc
-setVar("$conf['auth']['admins']", "horde/auth/admins")
-setVar("$conf['testdisable']", "horde/testdisable")
-setVar("$conf['problems']['email']", "horde/problems/mail")
+print "$conf['problems']['email'] = '%s';" % baseConfig.get("horde/problems/mail", "")
+print "$conf['testdisable'] = %s;" % baseConfig.get("horde/testdisable", "true")
 
 # logging
-setVar("$conf['log']['enabled']", "horde/log/enabled")
-setVar("$conf['log']['type']", "horde/log/type")
-setVar("$conf['log']['priority']", "horde/log/priority")
-setVar("$conf['log']['name']", "horde/log/name")
-setVar("$conf['log']['params']['append']", "horde/log/params/append")
+print "$conf['log']['enabled']          =   %s;" % baseConfig.get("horde/log/enabled", "true")
+print "$conf['log']['type']             = '%s';" % baseConfig.get("horde/log/type", "file")
+print "$conf['log']['priority']         =   %s;" % baseConfig.get("horde/log/priority", "LOG_ERR")
+print "$conf['log']['name']             = '%s';" % baseConfig.get("horde/log/name", "/var/log/horde/horde.log")
+print "$conf['log']['params']['append'] =   %s;" % baseConfig.get("horde/log/params/append", "true")
 
 # driver
-setVar("$conf['group']['driver']", "horde/group/driver")
-setVar("$conf['share']['driver']", "horde/share/driver")
+print "$conf['group']['driver'] = '%s';" % baseConfig.get("horde/group/driver", "Sql")
+print "$conf['share']['driver'] = '%s';" % baseConfig.get("horde/share/driver", "Sqlng")
 @!@
 

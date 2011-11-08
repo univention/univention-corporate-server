@@ -4,13 +4,12 @@
 
 @!@
 
-# print variable if set
-def setVar(phpName, ucrName):
-	if baseConfig.get(ucrName):
-		print phpName + " = %s;" % baseConfig[ucrName]
+apps = baseConfig.get("horde/imp/menu/apps", "imp,ingo,turba")
+apps = "', '".join(apps.split(","))
+apps = "'" + apps + "'"
 
-setVar("$conf['menu']['apps_iframe']", "horde/imp/menu/apps_iframe")
-setVar("$conf['menu']['apps']", "horde/menu/apps")
+print "$conf['menu']['apps'] = array(%s);" % apps
+print "$conf['menu']['apps_iframe'] = %s;" % baseConfig.get("horde/imp/menu/apps_iframe", "true")
 
 @!@
 

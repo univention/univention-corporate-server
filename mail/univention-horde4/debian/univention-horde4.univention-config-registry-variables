@@ -59,8 +59,8 @@ Type=str
 Categories=service-mail
 
 [horde/auth/admins]
-Description[de]=Benutzer die von Horde als Administratoren behandelt werden
-Description[en]=Users, which should be treated as administrators by Horde
+Description[de]=Komma-separierte Liste von Benutzer die von Horde als Administratoren behandelt werden
+Description[en]=Comma-separated list of users, which should be treated as administrators by Horde
 Type=str
 Categories=service-mail
 
@@ -256,15 +256,27 @@ Description[en]=Status of the Horde application turba
 Type=str
 Categories=service-mail
 
-[horde/menu/apps]
-Description[de]=Applikationen die im Horde Menü angezeigt werden
-Description[en]=Applications that should be linked in Horde's menu
+[horde/imp/menu/apps]
+Description[de]=Komma-separierte Liste von Applikationen die im IMP Menü angezeigt werden
+Description[en]=Comma-separated list of applications that should be linked in IMP's menu
 Type=str
 Categories=service-mail
 
 [horde/imp/menu/apps_iframe]
-Description[de]=Applikationen im Hauptfenster von imp anzeigen
-Description[en]=Display applications in imp's main windows
+Description[de]=Applikationen im Hauptfenster von IMP anzeigen
+Description[en]=Display applications in IMP's main windows
+Type=str
+Categories=service-mail
+
+[horde/kronolith/menu/apps]
+Description[de]=Komma-separierte Liste von Applikationen die im Kronolith Menü angezeigt werden
+Description[en]=Comma-separated list of applications that should be linked in Kronolith's menu
+Type=str
+Categories=service-mail
+
+[horde/kronolith/menu/apps_iframe]
+Description[de]=Applikationen im Hauptfenster von Kronolith anzeigen
+Description[en]=Display applications in Kronolith's main windows
 Type=str
 Categories=service-mail
 

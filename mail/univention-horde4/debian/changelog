@@ -1,3 +1,9 @@
+univention-horde4 (1.0.13-1) unstable; urgency=low
+
+  * changed templates and postinst (Bug #23933)
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Nov 2011 10:49:56 +0100
+
 univention-horde4 (1.0.12-2) unstable; urgency=low
 
   * escape shell command in horde4/imp/hooks.php (Bug #23739)

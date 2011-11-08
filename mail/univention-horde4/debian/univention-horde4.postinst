@@ -40,50 +40,52 @@ create_logfile_if_missing /var/log/horde/horde.log "www-data:adm" 640
 
 univention-config-registry set \
 	horde/sql/persistent?true \
-	horde/sql/username?"'horde'" \
-	horde/sql/hostspec?"'localhost'" \
+	horde/sql/username?"horde" \
+	horde/sql/hostspec?"localhost" \
 	horde/sql/port?5432 \
-	horde/sql/protocol?"'tcp'" \
-	horde/sql/database?"'hordedb'" \
-	horde/sql/charset?"'utf-8'" \
+	horde/sql/protocol?"tcp" \
+	horde/sql/database?"hordedb" \
+	horde/sql/charset?"utf-8" \
 	horde/sql/splitread?false \
-	horde/sql/phptype?"'pgsql'" \
+	horde/sql/phptype?"pgsql" \
 	horde/testdisable?true \
-	horde/auth/admins?"array()" \
-	horde/mailer/params/host?"'localhost'" \
+	horde/auth/admins?"" \
+	horde/mailer/params/host?"localhost" \
 	horde/mailer/params/port?25 \
 	horde/mailer/params/auth?true \
-	horde/mailer/type?"'smtp'" \
+	horde/mailer/type?"smtp" \
 	horde/log/enabled?true \
-	horde/log/type?"'file'" \
+	horde/log/type?"file" \
 	horde/log/priority?LOG_ERR \
-	horde/log/name?"'/var/log/horde/horde.log'" \
+	horde/log/name?"/var/log/horde/horde.log" \
 	horde/log/params/append?true \
-	horde/auth/params/app?"'imp'" \
-	horde/auth/driver?"'application'" \
-	horde/imap/hostspec?"'localhost'" \
-	horde/imap/hordeauth?"'full'" \
+	horde/auth/params/app?"imp" \
+	horde/auth/driver?"application" \
+	horde/imap/hostspec?"localhost" \
+	horde/imap/hordeauth?"full" \
 	horde/imap/port?143 \
-	horde/imap/secure?"'tls'" \
-	horde/imap/quota/driver?"'imap'" \
-	horde/imap/quota/params/userhierarchy?"'user.'" \
-	horde/imap/acl/driver?"'rfc2086'" \
-	horde/folder/spam?"'Spam'" \
-	horde/folder/trash?"'Trash'" \
-	horde/folder/drafts?"'Drafts'" \
-	horde/folder/sent?"'Sent'" \
-	horde/group/driver?"'Sql'" \
-	horde/share/driver?"'Sqlng'" \
-	horde/horde/initial_page?"'imp'" \
-	horde/ingo/status?"'active'" \
-	horde/horde/status?"'active'" \
-	horde/imp/status?"'active'" \
-	horde/kronolith/status?"'inactive'" \
-	horde/mnemo/status?"'inactive'" \
-	horde/nag/status?"'inactive'" \
-	horde/turba/status?"'active'" \
-	horde/menu/apps?"array('imp', 'ingo', 'turba')" \
+	horde/imap/secure?"tls" \
+	horde/imap/quota/driver?"imap" \
+	horde/imap/quota/params/userhierarchy?"user." \
+	horde/imap/acl/driver?"rfc2086" \
+	horde/folder/spam?"Spam" \
+	horde/folder/trash?"Trash" \
+	horde/folder/drafts?"Drafts" \
+	horde/folder/sent?"Sent" \
+	horde/group/driver?"Sql" \
+	horde/share/driver?"Sqlng" \
+	horde/horde/initial_page?"imp" \
+	horde/ingo/status?"active" \
+	horde/horde/status?"active" \
+	horde/imp/status?"active" \
+	horde/kronolith/status?"inactive" \
+	horde/mnemo/status?"inactive" \
+	horde/nag/status?"inactive" \
+	horde/turba/status?"active" \
+	horde/imp/menu/apps?"imp,ingo,turba" \
 	horde/imp/menu/apps_iframe?true \
+	horde/kronolith/menu/apps?"imp,ingo,turba" \
+	horde/kronolith/menu/apps_iframe?true \
 	horde/subscribe/value?0 \
 	horde/ingo/imap/disabled?true \
 	horde/imap/sieve/port?4190 \
@@ -91,7 +93,7 @@ univention-config-registry set \
 
 domain=$(echo $mail_hosteddomains | awk '{print $1}')
 if [ -n "$domain" ]; then
-	univention-config-registry set horde/problems/mail?"'webmaster@$domain'"
+	univention-config-registry set horde/problems/mail?"webmaster@$domain"
 fi
 
 call_joinscript 85univention-horde4.inst
