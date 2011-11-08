@@ -34,23 +34,27 @@ eval "$(/usr/sbin/univention-config-registry shell hostname samba4/sysvol/sync/h
 
 SYSVOL_PATH='/var/lib/samba/sysvol'
 SYSVOL_SYNCDIR='/var/cache/univention-samba4/sysvol-sync'
-
-SYSVOL_SDDL=$(samba-tool ntacl get --as-sddl  /var/lib/samba/sysvol 2>/dev/null)
-if [ $? != 0 ]; then
-	SYSVOL_SDDL=''
-fi
+SYSVOL_HOSTDIR="${SYSVOL_SYNCDIR}/${hostname}"
 
 if ! [ -d "$SYSVOL_SYNCDIR" ]; then
 	mkdir -p "$SYSVOL_SYNCDIR"
-	chgrp 'DC Slave Hosts' "$SYSVOL_SYNCDIR"
-	chmod g+w "$SYSVOL_SYNCDIR"
 fi
+chgrp 'DC Slave Hosts' "$SYSVOL_SYNCDIR"
+chmod g+w "$SYSVOL_SYNCDIR"
 
 ## merge updates pushed to us by other s4DCs
-for importdir in $(find "${SYSVOL_SYNCDIR}" -mindepth 1 -maxdepth 1 -type d); do
+for importdir in $(find "$SYSVOL_SYNCDIR" -mindepth 1 -maxdepth 1 -type d); do
+	s4dc=$(basename "$importdir")
+	if [ "$s4dc" = "$hostname" ]; then
+		continue
+	fi
+
 	## these directories were written by a non-privileged account, so the xattrs are missing
-	samba-tool ntacl set "$SYSVOL_SDDL" "$importdir" > /dev/null 2>&1
-	rsync -auAX "$importdir"/ "$SYSVOL_PATH"
+	cd "$importdir/sysvol"	## necessary for relative paths in .xattr
+	setfattr --restore="${importdir}/.xattr"
+
+	## now rsync into hot target zone
+	rsync -auAX "${importdir}/sysvol/" "$SYSVOL_PATH"
 done
 
 for s4dc in $samba4_sysvol_sync_host; do	## usually there should only be one..
@@ -58,14 +62,24 @@ for s4dc in $samba4_sysvol_sync_host; do	## usually there should only be one..
 		continue
 	fi
 
-	## pull from parent s4dc
+	## pull sysvol from parent s4dc
 	univention-ssh-rsync /etc/machine.secret -auAX \
 		"${hostname}\$"@"${s4dc}":"${SYSVOL_PATH}"/ "$SYSVOL_PATH" 2>/dev/null
 
+	## snapshot hot sysvol into transfer directory
+	SYSVOL_SNAPSHOTDIR="$SYSVOL_HOSTDIR/sysvol"
+	mkdir -p "$SYSVOL_SNAPSHOTDIR"
+	rsync -auAX "$SYSVOL_PATH"/ "$SYSVOL_SNAPSHOTDIR"
+
+	## dump xattrs from that path, must be identical to import upstream path
+	SYSVOL_XATTRFILE="$SYSVOL_HOSTDIR/.xattr"
+	cd "$SYSVOL_SNAPSHOTDIR"	## necessary for relative paths in .xattr
+	getfattr -R -d -m '' -P . > "$SYSVOL_XATTRFILE"
+
 	## push to parent s4dc
 	univention-ssh /etc/machine.secret "${hostname}\$"@"${s4dc}" \
-		mkdir -p "${SYSVOL_SYNCDIR}/${hostname}" 2>/dev/null
+		mkdir -p "${SYSVOL_HOSTDIR}" 2>/dev/null
 
 	univention-ssh-rsync /etc/machine.secret -aAX --delete \
-		"$SYSVOL_PATH"/ "${hostname}\$"@"${s4dc}":"${SYSVOL_SYNCDIR}/${hostname}" 2>/dev/null
+		"${SYSVOL_HOSTDIR}"/ "${hostname}\$"@"${s4dc}":"${SYSVOL_HOSTDIR}" 2>/dev/null
 done

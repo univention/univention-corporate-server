@@ -1,3 +1,10 @@
+univention-samba4 (1.0.91-1) unstable; urgency=low
+
+  * dump and restore xattrs in upstream sysvol push (Bug #24163)
+  * depend on winbind4
+
+ -- Arvid Requate <requate@univention.de>  Tue, 08 Nov 2011 12:26:53 +0100
+
 univention-samba4 (1.0.90-1) unstable; urgency=low
 
   * Adjust OpenLDAP ports after running the provision / samba3upgrade
