@@ -31,7 +31,7 @@ dojo.declare("umc.modules.vnc", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	renderVNCPage: function() {
 		this._vncPage = new umc.modules.vnc._VNCPage({
 			headerText: this._('VNC'),
-			helpText: this._('Access to a System via VNC Session')
+			helpText: this._('A connection to the VNC server can be established now. A click on the corresponding button launches a VNC browser client. To login, enter username and the password for VNC connection as specified in this module.')
 		});
 		this.addChild(this._vncPage);
 
@@ -75,7 +75,7 @@ dojo.declare("umc.modules.vnc", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	renderPasswordPage: function() {
 		this._passwordPage = new umc.modules.vnc._PasswordPage({
 			headerText: this._('VNC'),
-			helpText: this._('Access to a System via VNC Session')
+			helpText: this._('This UMC module allows direct access to the graphical interface of the server via the VNC protocol. For this, a VNC server will be started first, then a connection can be established.')
 		});
 		this.addChild(this._passwordPage);
 
@@ -170,13 +170,13 @@ dojo.declare("umc.modules.vnc._VNCPage", [ umc.widgets.Page, umc.i18n.Mixin ], {
 			this._form.getButton('start').set('visible', false);
 			this._form.getButton('stop').set('visible', true);
 			this._form.getButton('connect').set('visible', true);
-			message += this._('Password is set and the VNC server is running.');
+			message += this._('VNC server is running and password is set.');
 			this._form.getWidget('info').set('content', message);
 		} else {
 			this._form.getButton('start').set('visible', true);
 			this._form.getButton('stop').set('visible', false);
 			this._form.getButton('connect').set('visible', false);
-			message += this._('Currently there is no VNC server running.');
+			message += this._('VNC server is not running.');
 			this._form.getWidget('info').set('content', message);
 		}
 	},

@@ -3,59 +3,82 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-vnc\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-02 04:35+0100\n"
+"POT-Creation-Date: 2011-11-04 03:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 
-#: umc/js/vnc.js:32 umc/js/vnc.js:76
-msgid "Access to a System via VNC Session"
-msgstr "Verbindung zum VNC-Server aufbauen"
+#: umc/js/vnc.js:34
+msgid ""
+"A connection to the VNC server can be established now. A click on the "
+"corresponding button launches a VNC browser client. To login, enter username "
+"and the password for VNC connection as specified in this module."
+msgstr ""
+"Die Verbindung zum VNC-Server kann nun aufgebaut werden. Durch Klick auf die "
+"betreffende Schaltfläche wird ein VNC-Client browser-seitig gestartet. Zum "
+"Login werden Benutzername sowie das in diesem Modul gesetzte Passwort für die "
+"VNC-Verbindung angegeben."
 
-#: umc/js/vnc.js:142
+#: umc/js/vnc.js:144
 msgid "Connect to the VNC server"
 msgstr "Verbindung zum VNC-Server aufbauen"
 
-#: umc/js/vnc.js:177
-msgid "Currently there is no VNC server running."
-msgstr "Momentan läuft noch kein VNC-Server."
-
-#: umc/js/vnc.js:218
+#: umc/js/vnc.js:220
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/js/vnc.js:171
-msgid "Password is set and the VNC server is running."
-msgstr "Ein Passwort existiert und der VNC-Server läuft bereits."
-
-#: umc/js/vnc.js:130
-msgid "Start VNC server"
-msgstr "Starten des VNC-Server"
-
-#: umc/js/vnc.js:126 umc/js/vnc.js:166
-msgid "Status: "
-msgstr "Status: "
-
-#: umc/js/vnc.js:136
-msgid "Stop VNC server"
-msgstr "Stoppen des VNC-Server"
-
-#: umc/js/vnc.js:224
+#: umc/js/vnc.js:226
 msgid "Set"
 msgstr "Setzen"
 
-#: umc/js/vnc.js:214
+#: umc/js/vnc.js:132
+msgid "Start VNC server"
+msgstr "Starten des VNC-Servers"
+
+#: umc/js/vnc.js:128 umc/js/vnc.js:168
+msgid "Status: "
+msgstr "Status: "
+
+#: umc/js/vnc.js:138
+msgid "Stop VNC server"
+msgstr "Stoppen des VNC-Servers"
+
+#: umc/js/vnc.js:78
+msgid ""
+"This UMC module allows direct access to the graphical interface of the "
+"server via the VNC protocol. For this, a VNC server will be started first, "
+"then a connection can be established."
+msgstr ""
+"Dieses UMC-Modul ermöglicht den direkten Zugriff auf die graphische "
+"Oberfläche des Servers über das VNC-Protokoll. Dazu wird zunächst ein "
+"VNC-Server gestartet und dann eine Verbindung dazu aufgebaut."
+
+#: umc/js/vnc.js:216
 msgid "To setup a VNC session a password is required."
 msgstr "Zum Aufbauen einer VNC-Sitzung wird ein Passwort benötigt."
 
-#: umc/js/vnc.js:31 umc/js/vnc.js:75
+#: umc/js/vnc.js:33 umc/js/vnc.js:77
 msgid "VNC"
 msgstr "VNC"
 
-#: umc/js/vnc.js:155 umc/js/vnc.js:242
+#: umc/js/vnc.js:157 umc/js/vnc.js:244
 msgid "VNC configuration"
 msgstr "VNC Konfiguration"
+
+#: umc/js/vnc.js:179
+msgid "VNC server is not running."
+msgstr "VNC-Server ist nicht gestartet."
+
+#: umc/js/vnc.js:173
+msgid "VNC server is running and password is set."
+msgstr "VNC-Server läuft und Passwort gesetzt."
+
+#~ msgid "Access to a System via VNC Session"
+#~ msgstr "Verbindung zum VNC-Server aufbauen"
+
+#~ msgid "Currently there is no VNC server running."
+#~ msgstr "Momentan läuft noch kein VNC-Server."
