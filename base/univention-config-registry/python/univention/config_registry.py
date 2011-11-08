@@ -867,9 +867,11 @@ class configHandlers:
 			try:
 				while True:
 					path_from = f.next().rstrip()
-					if path_from + '.debian\n' != f.next():
+					path_to = f.next().rstrip()
+					diversion = f.next().rstrip()
+					if path_from + '.debian' != path_to:
 						continue
-					if ':\n' != f.next(): # local diversion
+					if ':' != diversion: # local diversion
 						continue
 					assert path_from not in to_remove # no dulicates
 					try:
