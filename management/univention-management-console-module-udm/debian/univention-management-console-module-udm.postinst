@@ -131,4 +131,7 @@ fi
 univention-config-registry set directory/manager/web/modules/groups/group/checks/circular_dependency?"yes" \
 	directory/manager/web/update/available/groups?"Domain Admins"
 
+# activate new sites
+invoke-rc.d apache2 restart
+
 exit 0

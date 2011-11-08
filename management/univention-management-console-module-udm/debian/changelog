@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.227-2) unstable; urgency=low
+
+  * activate new apache2 sites in postinst (Bug #24453)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 08 Nov 2011 18:29:52 +0100
+
 univention-management-console-module-udm (1.0.227-1) unstable; urgency=low
 
   * support read-only properties; Bug #24354
