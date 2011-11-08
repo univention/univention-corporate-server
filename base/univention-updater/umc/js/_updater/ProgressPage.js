@@ -357,7 +357,7 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 	stopWatching: function(tab) {
 		this._job_key = '';
 		this._last_job = null;
-		this._log.StopWatching(true);
+		this._log.stopWatching(true);
 	},
 	
 	// lets the timer loop stop when the module is closed.

@@ -221,7 +221,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			umc.tools.umcpCommand('updater/updates/check').then(dojo.hitch(this, function(data) {
 				this.standby(false);
 				// FIXME Lots of manual styling to achieve resonable look
-				var txt = "<div style='overflow:auto;max-height:400px;'<table>\n";
+				var txt = "<div style='overflow:auto;max-height:400px;'><table>\n";
 				var upd = data.result['update'];
 				var ins = data.result['install'];
 				var rem = data.result['remove'];
@@ -232,7 +232,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 				}
 				if (rem.length)
 				{
-					txt += "<td colspan='2' style='padding:.5em;'><b><u>" + dojo.replace(this._("{count} packages to be REMOVED"),{count:rem.length}) + "</u></b></td>";
+					txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + dojo.replace(this._("{count} packages to be REMOVED"),{count:rem.length}) + "</u></b></td></tr>";
 					for (var i in rem)
 					{
 						txt += "<tr>\n";
@@ -243,7 +243,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 				}
 				if (upd.length)
 				{
-					txt += "<td colspan='2' style='padding:.5em;'><b><u>" + dojo.replace(this._("{count} packages to be updated"),{count:upd.length}) + "</u></b></td>";
+					txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + dojo.replace(this._("{count} packages to be updated"),{count:upd.length}) + "</u></b></td></tr>";
 					for (var i in upd)
 					{
 						txt += "<tr>\n";
@@ -254,7 +254,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 				}
 				if (ins.length)
 				{
-					txt += "<td colspan='2' style='padding:.5em;'><b><u>" + dojo.replace(this._("{count} packages to be installed"),{count:ins.length}) + "</u></b></td>";
+					txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + dojo.replace(this._("{count} packages to be installed"),{count:ins.length}) + "</u></b></td></tr>";
 					for (var i in ins)
 					{
 						txt += "<tr>\n";
