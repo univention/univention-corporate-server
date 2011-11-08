@@ -1,3 +1,9 @@
+univention-samba4 (1.0.94-3) unstable; urgency=low
+
+  * move pam_univentionsambadomain.c into pam session part (Bug #22865)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 08 Nov 2011 17:04:38 +0100
+
 univention-samba4 (1.0.94-2) unstable; urgency=low
 
   * fix path to samba3 smb.conf template for samba3upgrade (Bug #22866)

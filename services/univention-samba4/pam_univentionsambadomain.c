@@ -93,7 +93,7 @@ static int _pam_parse(int flags, int argc, const char **argv)
 	return ctrl;
 }
 
-int mapuser(const char *fromuser, char *touser)
+inline int mapuser(const char *fromuser, char *touser)
 {
 	int mapped = 0;
 	int len_windows_domain = strlen(windows_domain);
@@ -107,7 +107,7 @@ int mapuser(const char *fromuser, char *touser)
 			}
 		}
 		if (i == len_windows_domain && ( fromuser[i] == '+' || fromuser[i] == '\\' ) ) {
-			strncpy(touser, fromuser + len_windows_domain + 1, strlen(fromuser) - len_windows_domain - 1 );
+			strncpy(touser, fromuser + len_windows_domain + 1, strlen(fromuser) - len_windows_domain );
 			mapped = 1;
 		}
 	}
@@ -115,8 +115,7 @@ int mapuser(const char *fromuser, char *touser)
 	return mapped;
 }
 
-PAM_EXTERN
-int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv)
+inline int pam_map_user(pam_handle_t *pamh, int flags, int argc, const char **argv)
 {
 	int retval, ctrl;
 	const char* auth_user;
@@ -138,15 +137,21 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **ar
 			_log_err(LOG_NOTICE, "could not set new username");
 			return PAM_USER_UNKNOWN;
 		}
+		_log_err(LOG_INFO, "continuing as user %s", user);
 	}
-
-	_log_err(LOG_NOTICE, "continuing as user %s", user);
 
 	return PAM_SUCCESS;
 }
 
+PAM_EXTERN
+int pam_sm_open_session(pam_handle_t *pamh, int flags, int argc, const char **argv)
+{
+	return pam_map_user(pamh, flags, argc, argv);
+}
+
 /* Ignore */
-int pam_sm_setcred(pam_handle_t *pamh, int flags, int argc, const char **argv)
+PAM_EXTERN
+int pam_sm_close_session(pam_handle_t *pamh, int flags, int argc, const char **argv)
 {
 	return PAM_IGNORE;
 }
@@ -157,11 +162,11 @@ int pam_sm_setcred(pam_handle_t *pamh, int flags, int argc, const char **argv)
 struct pam_module _pam_univentionsambadomain_modstruct =
 {
 	"pam_univentionsambadomain",
-	pam_sm_authenticate,
-	pam_sm_setcred,
 	NULL,
 	NULL,
 	NULL,
+	pam_sm_open_session,
+	pam_sm_close_session,
 	NULL,
 	NULL,
 };
