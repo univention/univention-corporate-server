@@ -129,10 +129,6 @@ if [ -z "$samba4_function_level" ]; then
 	univention-config-registry set samba4/function/level="$samba4_function_level"
 fi
 
-## set default ACLs so sysvol-sync can read files and directories
-mkdir -p /var/lib/samba/sysvol
-setfacl -m "d:g:DC Slave Hosts:r-x" /var/lib/samba/sysvol
-
 S3_DOMAIN_SID_FOR_MY_DOMAIN="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
 if [ -z "$S3_DCS" ] || [ -z "$S3_DOMAIN_SID_FOR_MY_DOMAIN" ]; then
 
