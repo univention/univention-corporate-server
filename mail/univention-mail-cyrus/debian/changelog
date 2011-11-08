@@ -1,3 +1,10 @@
+univention-mail-cyrus (4.0.27-1) unstable; urgency=low
+
+  * round mail/antispam/requiredhits to next integer 
+    for sieve's spamHits in univention-cyrus-mkdir (Bug #23741) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Nov 2011 15:03:56 +0100
+
 univention-mail-cyrus (4.0.26-2) unstable; urgency=low
 
   * reverted last commit (Bug #23741) 

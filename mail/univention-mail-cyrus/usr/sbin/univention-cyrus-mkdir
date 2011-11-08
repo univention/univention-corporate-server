@@ -47,7 +47,10 @@ cr.load()
 # get spam required hits in "*"
 spamHitsValue = ""
 try:
-	spamHits = int(float(cr.get("mail/antispam/requiredhits", "5.0")))
+	flo = float(cr.get("mail/antispam/requiredhits", "5.0"))
+	spamHits = int(flo)
+	if spamHits < flo:
+		spamHits = spamHits + 1
 except:
 	spamHits = 5
 for i in range(0, spamHits):
