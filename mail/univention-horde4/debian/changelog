@@ -1,3 +1,10 @@
+univention-horde4 (1.0.14-2) unstable; urgency=low
+
+  * reuse sieve port definition of cyrus when setting
+  	horde/imap/sieve/port (Bug #24390)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 08 Nov 2011 16:38:02 +0100
+
 univention-horde4 (1.0.14-1) unstable; urgency=low
 
   * round mail/antispam/requiredhits to next integer 

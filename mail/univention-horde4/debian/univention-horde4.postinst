@@ -88,8 +88,13 @@ univention-config-registry set \
 	horde/kronolith/menu/apps_iframe?true \
 	horde/subscribe/value?0 \
 	horde/ingo/imap/disabled?true \
-	horde/imap/sieve/port?4190 \
 	logrotate/horde/create="640 www-data adm"
+
+if [ -n "$mail_cyrus_sieve_port" ] ; then
+	ucr set horde/imap/sieve/port?"$mail_cyrus_sieve_port"
+else
+	ucr set horde/imap/sieve/port?4190
+fi
 
 domain=$(echo $mail_hosteddomains | awk '{print $1}')
 if [ -n "$domain" ]; then
