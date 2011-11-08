@@ -468,6 +468,12 @@ class configHandlerDiverting(configHandler):
 		self.group = None
 		self.mode = None
 
+	def __hash__(self):
+		return hash(self.to_file)
+
+	def __cmp__(self, other):
+		return cmp(self.to_file, other.to_file)
+
 	def _set_perm(self, st):
 		"""Set file permissions."""
 		if self.user or self.group or self.mode:
@@ -499,8 +505,6 @@ class configHandlerDiverting(configHandler):
 
 	def install_divert(self):
 		"""Prepare file for diversion."""
-		if not self.need_divert():
-			return
 		d = '%s.debian' % self.to_file
 		self._call_silent('dpkg-divert', '--quiet', '--rename', '--divert', d, '--add', self.to_file)
 		# Make sure a valid file still exists
@@ -510,8 +514,6 @@ class configHandlerDiverting(configHandler):
 
 	def uninstall_divert(self):
 		"""Undo diversion of file."""
-		if self.need_divert():
-			return
 		try:
 			os.unlink(self.to_file)
 		except OSError:
@@ -541,7 +543,7 @@ class configHandlerMultifile(configHandlerDiverting):
 	def remove_subfile(self, subfile):
 		"""Remove subfile and return if set is now empty."""
 		self.from_files.discard(subfile)
-		if self.def_count == 0 or not self.from_files:
+		if not self.need_divert():
 			self.uninstall_divert()
 
 	def __call__(self, args):
@@ -575,6 +577,16 @@ class configHandlerMultifile(configHandlerDiverting):
 	def need_divert(self):
 		"""Diversion is needed when at least one multifile and one subfile definition exists."""
 		return self.def_count >= 1 and self.from_files
+
+	def install_divert(self):
+		"""Prepare file for diversion."""
+		if self.need_divert():
+			super(configHandlerMultifile, self).install_divert()
+
+	def uninstall_divert(self):
+		"""Undo diversion of file."""
+		if not self.need_divert():
+			super(configHandlerMultifile, self).uninstall_divert()
 
 class configHandlerFile(configHandlerDiverting):
 
@@ -911,6 +923,7 @@ class configHandlers:
 	def unregister(self, package, ucr):
 		"""Un-register info file for package."""
 		handlers = set()
+		mf_handlers = set()
 		file = os.path.join(info_dir, package+'.info')
 		for section in parseRfc822(open(file, 'r').read()):
 			try:
@@ -937,12 +950,13 @@ class configHandlers:
 			if not handler: # Bug #17913
 				print >>sys.stderr, "Skipping internal error: no handler for %r in %s" % (section, package)
 				continue
+			handlers.add(handler)
 			handler.uninstall_divert()
 			# regenerate multifile from remaining parts
 			if isinstance(handler, configHandlerMultifile):
-				handlers.add(handler)
+				mf_handlers.add(handler)
 
-		for handler in handlers:
+		for handler in mf_handlers:
 			self.call_handler(ucr, handler)
 
 		try:
@@ -1206,8 +1220,8 @@ def handler_unregister( args, opts = {} ):
 
 	c = configHandlers()
 	cur = c.update() # cache must be current
-	c.unregister(args[0], b)
-	c.update_divert(cur)
+	obsolete = c.unregister(args[0], b)
+	c.update_divert(cur - obsolete)
 
 def handler_randpw( args, opts = {} ):
 	print randpw()
