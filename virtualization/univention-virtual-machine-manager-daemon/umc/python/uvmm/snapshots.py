@@ -67,7 +67,7 @@ class Snapshots( object ):
 			success, data = result
 
 			snapshot_list = []
-			if success:
+			if success and data.snapshots is not None:
 				for name, info in data.snapshots.items():
 					creation = datetime.fromtimestamp( info.ctime )
 					snapshot = { 'id' : name, 'label' : name, 'time' : creation.strftime( "%x %X" )  }

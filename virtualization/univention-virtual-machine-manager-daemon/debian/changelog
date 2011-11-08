@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.31-1) unstable; urgency=low
+
+  * snapshot/query: if snapshots is None return empty list; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 08 Nov 2011 18:51:36 +0100
+
 univention-virtual-machine-manager-daemon (1.0.30-1) unstable; urgency=low
 
   * added basic detail page for VM instances (Bug #22893)
