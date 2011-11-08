@@ -1,3 +1,9 @@
+univention-updater (7.0.88-1) unstable; urgency=low
+
+  * start gdm after update (Bug #24413)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 08 Nov 2011 13:22:37 +0100
+
 univention-updater (7.0.87-1) unstable; urgency=low
 
   * fixed listing of packages and problem after updater when clicking on button

@@ -643,7 +643,7 @@ done
 
 ## BEGIN Bug #24413
 echo "Stopping gdm (will get restarted after update)"
-/etc/init.d/gdm stop >&3 2>&3
+[ -x /etc/init.d/gdm ] && /etc/init.d/gdm stop >&3 2>&3
 ucr set gdm/autostart/update30backup="$(ucr get gdm/autostart)" >&3 2>&3
 ucr set gdm/autostart=false >&3 2>&3
 ## END Bug #24413
