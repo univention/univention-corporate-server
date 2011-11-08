@@ -124,6 +124,15 @@ def do_package(package):
 			'info': quote("/etc/univention/templates/info/%s.info" % package),
 			'removed': quote("/etc/univention/templates/removed/%s.info" % package),
 			}
+
+	f_preinst = open(extFile(package, 'preinst.debhelper'), 'a')
+	f_preinst.write('# Automatically added by univention-install-config-registry\n')
+	f_preinst.write('if [ "$1" = "install" ] ; then\n')
+	f_preinst.write('  [ -e %(removed)s ] && [ ! -e %(info)s ] && mv %(removed)s %(info)s || true\n' % data)
+	f_preinst.write('fi\n')
+	f_preinst.write('# End automatically added section\n')
+	f_preinst.close()
+
 	f_postinst = open(extFile(package, 'postinst.debhelper'), 'a')
 	f_postinst.write('# Automatically added by univention-install-config-registry\n')
 	f_postinst.write('if [ "$1" = "abort-remove" ]; then\n')
@@ -135,9 +144,9 @@ def do_package(package):
 
 	f_prerm = open(extFile(package, 'prerm.debhelper'), 'a')
 	f_prerm.write('# Automatically added by univention-install-config-registry\n')
-	f_prerm.write('if [ "$1" = "remove" ]; then\n')
+	f_prerm.write('if [ "$1" = "remove" ] && [ -e %(info)s ] ; then\n' % data)
 	f_prerm.write('  [ -x /usr/sbin/univention-config-registry ] && univention-config-registry unregister %(pkg)s || true\n' % data)
-	f_prerm.write('  [ -e %(info)s ] && mv %(info)s %(removed)s || true\n' % data)
+	f_prerm.write('  mv %(info)s %(removed)s || true\n' % data)
 	f_prerm.write('fi\n')
 	f_prerm.write('# End automatically added section\n')
 	f_prerm.close()

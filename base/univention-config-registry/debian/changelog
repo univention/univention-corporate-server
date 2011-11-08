@@ -3,6 +3,7 @@ univention-config-registry (7.0.27-4) unstable; urgency=low
   * Handle SubFile entries without MultiFile entry (Bug #22668)
   * Undo divert on unregister.
   * Fix parsing of /var/lib/dpkg/diversions.
+  * Move .info files back on re-install.
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 08 Nov 2011 07:13:20 +0100
 
