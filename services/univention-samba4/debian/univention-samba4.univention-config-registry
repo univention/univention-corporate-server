@@ -78,3 +78,6 @@ Variables: samba4/sysvol/sync/jitter
 Type: file
 File: etc/logrotate.d/univention-samba4
 Variables: logrotate/.*
+
+Type: file
+File: etc/pam.d/samba

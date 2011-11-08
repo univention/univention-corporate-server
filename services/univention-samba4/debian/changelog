@@ -1,6 +1,8 @@
 univention-samba4 (1.0.94-1) unstable; urgency=low
 
   * create /var/lib/samba3/etc/samba directory (Bug #22866)
+  * ship pam stack for samba (Bug #22865)
+  * retab pam_univentionsambadomain.c
 
  -- Arvid Requate <requate@univention.de>  Tue, 08 Nov 2011 14:39:10 +0100
 

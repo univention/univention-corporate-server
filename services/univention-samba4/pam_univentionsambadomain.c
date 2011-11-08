@@ -59,98 +59,96 @@ static char *windows_domain;
 /* some syslogging */
 static void _log_err(int err, const char *format, ...)
 {
-   va_list args;
+	va_list args;
 
-   va_start(args, format);
-   openlog("PAM-univentionsambadomain", LOG_CONS|LOG_PID, LOG_AUTH);
-   vsyslog(err, format, args);
-   va_end(args);
-   closelog();
+	va_start(args, format);
+	openlog("PAM-univentionsambadomain", LOG_CONS|LOG_PID, LOG_AUTH);
+	vsyslog(err, format, args);
+	va_end(args);
+	closelog();
 }
 
 static int _pam_parse(int flags, int argc, const char **argv)
 {
-   int ctrl = 0;
+	int ctrl = 0;
 
-   windows_domain = univention_config_get_string("windows/domain");
-   /* does the appliction require quiet? */
-   if ((flags & PAM_SILENT) == PAM_SILENT)
-      ctrl |= UNIVENTIONSAMBADOMAIN_QUIET;
+	windows_domain = univention_config_get_string("windows/domain");
+	/* does the appliction require quiet? */
+	if ((flags & PAM_SILENT) == PAM_SILENT)
+		ctrl |= UNIVENTIONSAMBADOMAIN_QUIET;
 
-   /* reset global variables to their default values */
-   /* step through arguments */
-   for (; argc-- > 0; ++argv)
-   {
-      if (!strcmp(*argv, "silent")) {
-	 ctrl |= UNIVENTIONSAMBADOMAIN_QUIET;
-      } else if (!strncmp(*argv,"windows_domain=",15))
-	strncpy(windows_domain,*argv+15,BUFSIZ);
-      else {
-	 _log_err(LOG_ERR, "unknown option; %s", *argv);
-      }
-   }
+	/* reset global variables to their default values */
+	/* step through arguments */
+	for (; argc-- > 0; ++argv)
+	{
+		if (!strcmp(*argv, "silent")) {
+			ctrl |= UNIVENTIONSAMBADOMAIN_QUIET;
+		} else if (!strncmp(*argv,"windows_domain=",15))
+			strncpy(windows_domain,*argv+15,BUFSIZ);
+		else {
+			_log_err(LOG_ERR, "unknown option; %s", *argv);
+		}
+	}
 
-   return ctrl;
+	return ctrl;
 }
 
 int mapuser(const char *fromuser, char *touser)
 {
-   int mapped = 0;
-   int len_windows_domain = strlen(windows_domain);
+	int mapped = 0;
+	int len_windows_domain = strlen(windows_domain);
 
-   if ( strlen(fromuser) > len_windows_domain ) {
+	if ( strlen(fromuser) > len_windows_domain ) {
 
-      int i;
-      for (i=0; i<len_windows_domain; i++) {
-         if ( toupper(windows_domain[i]) != toupper(fromuser[i]) ) {
-            break;
-         }
-      }
-	  if (i == len_windows_domain && ( fromuser[i] == '+' || fromuser[i] == '\\' ) ) {
-         strncpy(touser, fromuser + len_windows_domain + 1, strlen(fromuser) - len_windows_domain - 1 );
-		 mapped = 1;
-      }
-   }
+		int i;
+		for (i=0; i<len_windows_domain; i++) {
+			if ( toupper(windows_domain[i]) != toupper(fromuser[i]) ) {
+				break;
+			}
+		}
+		if (i == len_windows_domain && ( fromuser[i] == '+' || fromuser[i] == '\\' ) ) {
+			strncpy(touser, fromuser + len_windows_domain + 1, strlen(fromuser) - len_windows_domain - 1 );
+			mapped = 1;
+		}
+	}
 
-   return mapped;
+	return mapped;
 }
 
 PAM_EXTERN
-int pam_sm_authenticate(pam_handle_t *pamh, int flags,
-			int argc, const char **argv)
+int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv)
 {
-   int retval, ctrl;
-   const char* auth_user;
-   char user[BUFSIZ];
+	int retval, ctrl;
+	const char* auth_user;
+	char user[BUFSIZ];
 
-   /* Parse the flag values */
-   ctrl = _pam_parse(flags, argc, argv);
+	/* Parse the flag values */
+	ctrl = _pam_parse(flags, argc, argv);
 
-   retval = pam_get_item(pamh, PAM_USER, (const void **) &auth_user);
-   if (retval != PAM_SUCCESS || auth_user == NULL || *auth_user == '\0') {
-       _log_err(LOG_NOTICE, "user unknown");
-       return PAM_USER_UNKNOWN;
-   }
+	retval = pam_get_item(pamh, PAM_USER, (const void **) &auth_user);
+	if (retval != PAM_SUCCESS || auth_user == NULL || *auth_user == '\0') {
+		_log_err(LOG_NOTICE, "user unknown");
+		return PAM_USER_UNKNOWN;
+	}
 
-   if (mapuser(auth_user, user)) {
-      retval = pam_set_item(pamh, PAM_USER, user);
+	if (mapuser(auth_user, user)) {
+		retval = pam_set_item(pamh, PAM_USER, user);
 
-      if (retval != PAM_SUCCESS) {
-         _log_err(LOG_NOTICE, "could not set new username");
-         return PAM_USER_UNKNOWN;
-      }
-   }
+		if (retval != PAM_SUCCESS) {
+			_log_err(LOG_NOTICE, "could not set new username");
+			return PAM_USER_UNKNOWN;
+		}
+	}
 
-   _log_err(LOG_NOTICE, "continuing as user %s", user);
+	_log_err(LOG_NOTICE, "continuing as user %s", user);
 
-   return PAM_SUCCESS;
+	return PAM_SUCCESS;
 }
 
 /* Ignore */
-int pam_sm_setcred(pam_handle_t *pamh, int flags, int
-		     argc, const char **argv)
+int pam_sm_setcred(pam_handle_t *pamh, int flags, int argc, const char **argv)
 {
-   return PAM_IGNORE;
+	return PAM_IGNORE;
 }
 
 #ifdef PAM_STATIC
@@ -158,14 +156,14 @@ int pam_sm_setcred(pam_handle_t *pamh, int flags, int
 /* static module data */
 struct pam_module _pam_univentionsambadomain_modstruct =
 {
-   "pam_univentionsambadomain",
-   pam_sm_authenticate,
-   pam_sm_setcred,
-   NULL,
-   NULL,
-   NULL,
-   NULL,
-   NULL,
+	"pam_univentionsambadomain",
+	pam_sm_authenticate,
+	pam_sm_setcred,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 };
 
 #endif
