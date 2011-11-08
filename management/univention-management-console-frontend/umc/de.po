@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-07 16:11+0100\n"
+"POT-Creation-Date: 2011-11-08 11:52+0100\n"
 "PO-Revision-Date: 2011-11-01 20:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgstr "%d Einträge von %d ausgewählt"
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
 
-#: umc/about.js:26 umc/app.js:429
+#: umc/about.js:26 umc/app.js:430
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -80,7 +80,7 @@ msgid "Back"
 msgstr "Zurück"
 
 #: umc/widgets/MultiObjectSelect.js:256 umc/widgets/Wizard.js:55
-#: umc/app.js:517
+#: umc/app.js:518
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -134,7 +134,7 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/help.js:30 umc/app.js:411
+#: umc/help.js:30 umc/app.js:412
 msgid "Help"
 msgstr "Hilfe"
 
@@ -471,7 +471,7 @@ msgstr ""
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 
-#: umc/widgets/Grid.js:326 umc/widgets/Grid.js:668
+#: umc/widgets/Grid.js:327 umc/widgets/Grid.js:669
 msgid "more"
 msgstr "mehr"
 
