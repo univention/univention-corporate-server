@@ -33,15 +33,20 @@
 # <http://www.gnu.org/licenses/>.
 
 import univention.uldap
+import ldap.filter
 import sys
 
 if (len(sys.argv) < 2):
 	sys.exit(1)
 
 mail = "None"
-ldap = univention.uldap.getMachineConnection()
-filter = "(|(uid=%s)(mailPrimaryAddress=%s))" % (sys.argv[1], sys.argv[1])
-result = ldap.search(filter=filter, attr=["mailPrimaryAddress"])
+uidOrMail = ldap.filter.escape_filter_chars(sys.argv[1])
+ldap = univention.uldap.getMachineConnection(ldap_master = False)
+filter = "(|(uid=%s)(mailPrimaryAddress=%s))" % (uidOrMail, uidOrMail)
+try:
+	result = ldap.search(filter=filter, attr=["mailPrimaryAddress"])
+except Exception, e:
+	result = None
 if result:
 	mail = result[0][1].get("mailPrimaryAddress", ["None"])[0]
 

@@ -1,3 +1,9 @@
+univention-lib (1.0.38-1) unstable; urgency=low
+
+  * escape ldap filter in python/getMailFromMailOrUid.py (Bug #23739) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Nov 2011 08:54:44 +0100
+
 univention-lib (1.0.37-1) unstable; urgency=low
 
   * shell/umc.sh: added more checks for umc_frontend_new_hash to avoid exit
