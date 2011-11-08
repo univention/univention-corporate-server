@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.26-1) unstable; urgency=low
+
+  * use X-Spam-Score in default sieve filter (Bug #23741) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Nov 2011 14:28:39 +0100
+
 univention-mail-cyrus (4.0.25-2) unstable; urgency=low
 
   * updated UCR variable descriptions (Bug #24390)
