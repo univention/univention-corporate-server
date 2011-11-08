@@ -50,7 +50,7 @@ class IMP_Hooks
 	public function preauthenticate($userId, $credentials) {
 
 		$userId = escapeshellcmd($userId);
-		$handle = popen("/usr/share/univention-horde4/univention-horde-login-wrapper $userId","r");
+		$handle = popen("/usr/share/univention-horde4/univention-horde-login-wrapper '$userId'","r");
 		$Id = fread($handle, 2096);
 		pclose($handle);
 

@@ -1,3 +1,9 @@
+univention-horde4 (1.0.12-2) unstable; urgency=low
+
+  * escape shell command in horde4/imp/hooks.php (Bug #23739)
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Nov 2011 09:41:15 +0100
+
 univention-horde4 (1.0.12-1) unstable; urgency=low
 
   * escapeshellcmd shell command in horde4/imp/hooks.php (Bug #23739) 
