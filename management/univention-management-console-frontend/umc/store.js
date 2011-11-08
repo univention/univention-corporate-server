@@ -6,6 +6,7 @@ dojo.require("umc.tools");
 dojo.require("dojo.DeferredList");
 dojo.require("dojo.store.util.QueryResults");
 dojo.require("dojo.store.Observable");
+dojo.require("dojo.store.Memory");
 dojo.require("dojo.data.ObjectStore");
 
 
@@ -43,6 +44,38 @@ umc.store.getModuleStore = function(/*String*/ idProperty, /*String*/ storePath,
 	}
 	return stores[key];
 };
+
+dojo.declare("umc.store.Memory", dojo.store.Memory, {
+	// summary:
+	//		Enhances the original Memory class with a onChange event for the Grid.
+
+	onChange: function() {
+		// event stub
+	},
+
+	put: function() {
+		var res = this.inherited(arguments);
+		this.onChange();
+		return res;
+	},
+
+	add: function() {
+		var res = this.inherited(arguments);
+		this.onChange();
+		return res;
+	},
+
+	remove: function() {
+		var res = this.inherited(arguments);
+		this.onChange();
+		return res;
+	},
+
+	setData: function() {
+		this.inherited(arguments);
+		this.onChange();
+	}
+});
 
 dojo.declare("umc.store.UmcpModuleStore", null, {
 	// idProperty: String

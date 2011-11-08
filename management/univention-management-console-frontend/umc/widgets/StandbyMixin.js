@@ -59,7 +59,7 @@ dojo.declare("umc.widgets.StandbyMixin", dijit._Widget, {
 	standby: function(/*Boolean*/ doStandby, /*mixed?*/ content) {
 		if (doStandby) {
 			// update the content of the standby widget
-			this._updateContent(content)
+			this._updateContent(content);
 
 			// show standby widget
 			this._standbyWidget.show();

@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.187-1) unstable; urgency=low
+
+  * added umc.store.Memory
+  * fixed umc.app.closeTab()
+  * minor fixes
+  (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 08 Nov 2011 19:22:16 +0100
+
 univention-management-console-frontend (1.0.186-1) unstable; urgency=low
 
   * added icons for play, pause, and stop (Bug #22881)

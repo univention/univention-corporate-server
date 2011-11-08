@@ -39,7 +39,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 	//		TODO: iconClass, label -> may be of type string or function
 	//		      they are called either per item (with a dict as parameter) or
 	//		      once as column caption (without any parameters)
-	actions: null,
+	actions: [],
 
 	// columns: Object[]
 	//		Array of config objects that specify how the listing is rendered in
@@ -371,7 +371,6 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			region: 'center',
 			query: this.query,
 			queryOptions: { ignoreCase: true },
-			//rowSelector: '2px',
 			'class': 'umcGrid',
 			plugins : {
 				indirectSelection: {

@@ -184,9 +184,12 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		this._tabContainer.selectChild(tab, true);
 	},
 
-	closeTab: function(tab) {
+	closeTab: function(tab, /*Boolean?*/ destroy) {
 		tab.onClose();
 		this._tabContainer.removeChild(tab);
+		if (destroy === undefined || destroy === true) {
+			tab.destroyRecursive();
+		}
 	},
 
 	onModulesLoaded: function() {
