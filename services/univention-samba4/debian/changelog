@@ -1,3 +1,10 @@
+univention-samba4 (1.0.98-1) unstable; urgency=low
+
+  * after samba3upgrade set the Administrator password to samba4.secret
+    (Bug #22866)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 09 Nov 2011 18:35:47 +0100
+
 univention-samba4 (1.0.97-1) unstable; urgency=low
 
   * renew fACLs for 'DC Slave Hosts' on all sysvol files

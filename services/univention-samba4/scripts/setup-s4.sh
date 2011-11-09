@@ -245,6 +245,9 @@ else
 	### revert changes for sambaGroupType 5 and 2
 	reverse_sambaGroupType_change
 	trap - EXIT
+
+	## finally set the Administrator password, which samba3upgrade did not migrate
+	samba-tool user setpassword Administrator --newpassword="$adminpw"
 fi
 
 if [ ! -d /etc/phpldapadmin ]; then
