@@ -1,4 +1,4 @@
-/*global console MyError dojo dojox dijit umc */
+/*global console MyError dojo dojox dijit umc location */
 
 dojo.provide("umc.modules._uvmm.DomainPage");
 
@@ -18,7 +18,7 @@ dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.modules._uvmm.types");
 dojo.require("umc.modules._uvmm.SnapshotGrid");
 dojo.require("umc.modules._uvmm.InterfaceGrid");
-dojo.require("umc.modules._uvmm.DiskGrid");
+dojo.require("umc.modules._uvmm.DriveGrid");
 
 dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
 	nested: true,
@@ -26,12 +26,15 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 	i18nClass: 'umc.modules.uvmm',
 
 	_generalForm: null,
+	_advancedForm: null,
 
 	_generalPage: null,
+	_advancedPage: null,
 	_devicesPage: null,
 	_snapshotPage: null,
 
-	_diskStore: null,
+	_driveStore: null,
+	_driveGrid: null,
 	_interfaceStore: null,
 	_snapshotStore: null,
 	_snapshotGrid: null,
@@ -77,11 +80,62 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			}, {
 				name: 'contact',
 				type: 'TextBox',
-				label: this._('Contact')
+				regExp: '^.+@.+\\..+$',
+				invalidMessage: this._('This is not a valid email address (e.g., someone@example.com)'),
+				label: this._('Contact (email address)')
 			}, {
 				name: 'description',
 				type: 'TextBox',
 				label: this._('Description')
+			}],
+			buttons: [{
+				name: 'email',
+				label: this._('Send email'),
+				callback: dojo.hitch(this, function() {
+					var address = this._generalForm.getWidget('contact').get('value');
+					if (address) {
+						location.href = 'mailto:' + address;
+					}
+				})
+			}],
+			layout: [{
+				label: this._('Settings'),
+				layout: [
+					'name',
+					'os',
+					[ 'contact', 'email' ],
+					'description'
+				]
+			}],
+			scrollable: true
+		});
+		this.connect(this._generalForm, 'onSubmit', 'save');
+		this._generalPage.addChild(this._generalForm);
+
+		//
+		// general settings page
+		//
+
+		this._advancedPage = new umc.widgets.Page({
+			headerText: this._('Advanced settings'),
+			title: this._('Advanced'),
+			footerButtons: [{
+				label: this._('Back to overview'),
+				name: 'cancel',
+				callback: dojo.hitch(this, 'onClose')
+			}, {
+				label: this._('Save'),
+				defaultButton: true,
+				name: 'save',
+				callback: dojo.hitch(this, 'save')
+			}]
+		});
+		this.addChild(this._advancedPage);
+
+		this._advancedForm = new umc.widgets.Form({
+			widgets: [{
+				name: 'domainURI',
+				type: 'HiddenInput'
 			}, {
 				name: 'arch',
 				type: 'ComboBox',
@@ -141,28 +195,25 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				staticValues: types.keyboardLayout
 			}],
 			layout: [{
-				label: this._('Settings'),
+				label: this._('Machine'),
 				layout: [
-					[ 'name', 'os' ],
-					[ 'contact', 'description' ],
-					'arch',
-					[ 'vcpus', 'maxMem' ]
+					[ 'arch', 'vcpus' ],
+					[ 'maxMem', 'domain_type', 'os_type', 'type' ],
+					'rtc_offset',
+					'boot'
 				]
 			}, {
-				label: this._('Extended settings'),
+				label: this._('Remote access'),
 				layout: [
-					[ 'domain_type', 'os_type', 'type' ],
-					'boot',
-					'rtc_offset',
-					[ 'vnc', 'vnc_remote' ],
+					 [ 'vnc', 'vnc_remote' ],
 					'vnc_password',
 					'kblayout'
 				]
 			}],
-			onSubmit: dojo.hitch(this, 'save'),
 			scrollable: true
 		});
-		this._generalPage.addChild(this._generalForm);
+		this.connect(this._advancedForm, 'onSubmit', 'save');
+		this._advancedPage.addChild(this._advancedForm);
 
 		//
 		// devices page
@@ -188,19 +239,19 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		});
 		this._devicesPage.addChild(container);
 
-		// grid for the disks
-		this._diskStore = new umc.store.Memory({
+		// grid for the drives
+		this._driveStore = new umc.store.Memory({
 			idProperty: 'source'
 		});
-		var diskGrid = new umc.modules._uvmm.DiskGrid({
-			moduleStore: this._diskStore
+		this._driveGrid = new umc.modules._uvmm.DriveGrid({
+			moduleStore: this._driveStore
 		});
 
 		// wrap grid in a titlepane
 		var titlePane = new umc.widgets.TitlePane({
 			title: this._('Drives')
 		});
-		titlePane.addChild(diskGrid);
+		titlePane.addChild(this._driveGrid);
 		container.addChild(titlePane);
 
 		// grid for the network interfaces
@@ -220,7 +271,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		
 		// we need to call resize() manually to make sure the grids are rendered correctly
 		this.connect(this._devicesPage, 'onShow', function() {
-			diskGrid.resize();
+			this._driveGrid.resize();
 			interfaceGrid.resize();
 		});
 
@@ -244,7 +295,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		});
 		this.addChild(this._snapshotPage);
 
-		// grid for the disks
+		// grid for the drives
 		this._snapshotStore = umc.store.getModuleStore('id', 'uvmm/snapshot');
 		this._snapshotGrid = new umc.modules._uvmm.SnapshotGrid({
 			moduleStore: this._snapshotStore,
@@ -258,7 +309,32 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 	},
 
 	save: function() {
-		this.onClose();
+		// validate
+		var valid = true;
+		var widgets = dojo.mixin({}, this._generalForm._widgets, this._advancedForm._widgets);
+		var values = dojo.clone(this._domain);
+		delete values.domainURI;
+		umc.tools.forIn(widgets, function(iname, iwidget) {
+			valid = valid && (false !== iwidget.isValid());
+			values[iname] = iwidget.get('value');
+			return valid;
+		}, this);
+
+		if (!valid) {
+			umc.dialog.alert(this._('The entered data is not valid. Please correct your input.'));
+		}
+		else {
+			this.standby(true);
+			umc.tools.umcpCommand('uvmm/domain/put', {
+				nodeURI: this._domain.domainURI.split('#')[0],
+				domain: values
+			}).then(dojo.hitch(this, function() {
+				this.onClose();
+				this.standby(false);
+			}), dojo.hitch(this, function() {
+				this.standby(false);
+			}));
+		}
 	},
 
 	load: function(id) {
@@ -273,11 +349,13 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			if (data) {
 				// set values to form
 				this._generalForm.setFormValues(this._domain);
+				this._advancedForm.setFormValues(this._domain);
 
 				// update the stores
 				this._interfaceStore.setData(this._domain.interfaces);
-				this._diskStore.setData(this._domain.disks);
+				this._driveStore.setData(this._domain.disks);
 				this._snapshotGrid.set('domainURI', id);
+				this._driveGrid.set('domain', this._domain);
 			}
 			this.standby(false);
 		}), dojo.hitch(this, function() {

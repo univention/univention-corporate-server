@@ -15,7 +15,7 @@ dojo.declare("umc.modules._uvmm.InterfaceGrid", [ umc.widgets.Grid, umc.i18n.Mix
 
 	query: {},
 
-	style: 'width: 100%; height: 200px;',
+	style: 'width: 100%; height: 150px;',
 
 	constructor: function() {
 		dojo.mixin(this, {

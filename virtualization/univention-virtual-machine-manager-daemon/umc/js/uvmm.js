@@ -62,6 +62,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// setup search page
 		this._searchPage = new umc.widgets.Page({
 			headerText: 'Univention Virtual Machine Manager'
+			//helpText: this._('<p>This module provides a management interface for physical servers that are registered within the UCS domain.</p><p>The tree view on the left side shows an overview of all existing physical servers and the residing virtual instances. By selecting one of the physical servers statistics of the current state are displayed to get an impression of the health of the hardware system. Additionally actions like start, stop, suspend and resume for each virtual instance can be invoked on each of the instances.</p><p>Also possible is direct access to virtual instances. Therefor it must be activated in the configuration.</p><p>Each virtual instance entry in the tree view provides access to detailed information und gives the possibility to change the configuration or state and migrated it to another physical server.</p>')
 		});
 		this.addChild(this._searchPage);
 		var titlePane = new umc.widgets.ExpandingTitlePane({
@@ -392,7 +393,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	memoryUsageFormatter: function(id, rowIndex) {
 		// summary:
-		//		Formatter method for cpu usage.
+		//		Formatter method for memory usage.
 
 		var item = this._grid._grid.getItem(rowIndex);
 		if (item.type == 'node') {

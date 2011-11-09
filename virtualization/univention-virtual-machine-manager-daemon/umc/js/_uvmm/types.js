@@ -13,7 +13,17 @@ dojo.require("umc.tools");
 	var _ = dojo.hitch(i18n, '_');
 
 	var self = umc.modules._uvmm.types;
-	dojo.mixin(umc.modules._uvmm.types, {
+	dojo.mixin(self, {
+		dict2list: function(dict) {
+			var list = [];
+			umc.tools.forIn(dict, function(ikey, ival) {
+				list.push({
+					id: ikey,
+					label: ival
+				});
+			});
+			return list;
+		},
 		architecture: [
 			{ id: 'i686', label: '32 bit' },
 			{ id: 'x86_64', label: '64 bit' }
@@ -102,9 +112,57 @@ dojo.require("umc.tools");
 			'virtio': _( 'Paravirtual device (virtio)' )
 		},
 		blockDevices: {
-			'cdrom': _( 'CDROM drive' ),
-			'disk': _( 'hard drive' ),
-			'floppy': _( 'floppy drive' )
+			'cdrom': _( 'CD/DVD-ROM drive' ),
+			'disk': _( 'Hard drive' ),
+			'floppy': _( 'Floppy drive' )
+		},
+		diskChoice: [
+			{ id: 'new', label: _('Create a new image') },
+			{ id: 'exists', label: _('Choose existing image') },
+			{ id: 'block', label: _('Use a local device') },
+			{ id: 'empty', label: _('No media') }
+		],
+		getPools: function(options) {
+			if (!options.nodeURI) {
+				return [];
+			}
+			return umc.tools.umcpCommand('uvmm/storage/pool/query', {
+				nodeURI: options.nodeURI
+			}).then(function(data) {
+				return dojo.map(data.result, function(iitem) {
+					return iitem.name;
+				});
+			}, function() {
+				// fallback
+				return [];
+			});
+		},
+		getVolumes: function(options) {
+			if (!options.nodeURI || !options.pool) {
+				return [];
+			}
+			return umc.tools.umcpCommand('uvmm/storage/volume/query', {
+				nodeURI: options.nodeURI,
+				pool: options.pool,
+				type: options.type || null
+			}).then(function(data) {
+				return dojo.map(data.result, function(iitem) {
+					return iitem.volumeFilename;
+				});
+			}, function() {
+				// fallback
+				return [];
+			});
+		},
+		getImageFormat: function(options) {
+			if (!options.domain_type) {
+				return [];
+			}
+			var list = [ { id: 'raw', label: _('Simple format (raw)') } ];
+			if (options.domain_type == 'kvm') {
+				list.push({ id: 'qcow2', label: _('Extended format (qcow2)') });
+			}
+			return list;
 		}
 	});
 })();
