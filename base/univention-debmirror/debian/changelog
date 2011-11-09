@@ -1,3 +1,9 @@
+univention-debmirror (5.0.3-1) unstable; urgency=low
+
+  * fix host parsing for IPv6 (Bug #24479)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Nov 2011 13:58:07 +0100
+
 univention-debmirror (5.0.2-1) unstable; urgency=low
 
   * Cleanup univention-debmirror (Bug #23831)

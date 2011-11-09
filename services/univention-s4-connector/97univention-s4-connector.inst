@@ -116,7 +116,7 @@ else										## we are first system to provide this service
 	echo -n "Wait for bind9: "
 	count=0
 	while [ $count -le 600 ]; do
-		timeout=`LC_ALL=C host -W 1 $ldap_master 2>&1| grep "has address "`
+		timeout=$(LC_ALL=C host -W 1 "$ldap_master" 2>&1| grep 'has \(IPv6 \)\?address ')
 		if [ -n "$timeout" ]; then
 			echo " done"
 			break

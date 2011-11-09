@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.68-1) unstable; urgency=low
+
+  * fix host parsing for IPv6 (Bug #24479)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Nov 2011 13:56:46 +0100
+
 univention-s4-connector (6.0.67-1) unstable; urgency=low
 
   * Sync pwdChangeNextLogin from UCS to S4 (Bug #24465)

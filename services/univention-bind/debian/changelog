@@ -1,3 +1,9 @@
+univention-bind (6.0.32-1) unstable; urgency=low
+
+  * fix host parsing for IPv6 (Bug #24479)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Nov 2011 13:55:51 +0100
+
 univention-bind (6.0.31-1) unstable; urgency=low
 
   * IPv6 fix: use univention-ipcal6 (Bug #23942)

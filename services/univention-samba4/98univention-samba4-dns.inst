@@ -51,7 +51,7 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ] && [ "$dns_backend" != "samba4" ] && [ -n "
 	echo -n "Wait for bind9: "
 	count=0
 	while [ $count -le 600 ]; do
-		timeout=`LC_ALL=C host -W 1 $ldap_master 2>&1| grep "has address "`
+		timeout=$(LC_ALL=C host -W 1 "$ldap_master" 2>&1| grep 'has \(IPv6 \)\?address ')
 		if [ -n "$timeout" ]; then
 			echo " done"
 			break

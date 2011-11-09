@@ -1,3 +1,9 @@
+univention-samba4 (1.0.96-1) unstable; urgency=low
+
+  * fix host parsing for IPv6 (Bug #24479)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Nov 2011 13:51:46 +0100
+
 univention-samba4 (1.0.95-1) unstable; urgency=low
 
   * pass credentials to setup-s4 for samba3upgrade case
