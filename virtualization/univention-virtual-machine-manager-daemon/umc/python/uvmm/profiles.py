@@ -52,10 +52,11 @@ _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 class Profile( object ):
 	def __init__( self, profile ):
 		for key, value in profile.items():
-			if value in ( '0', 'FALSE' ):
-				value = False
-			elif value in ( '1', 'TRUE' ):
-				value = True
+			if key not in ( 'cpus', ):
+				if value in ( '0', 'FALSE' ):
+					value = False
+				elif value in ( '1', 'TRUE' ):
+					value = True
 			setattr( self, key, value )
 
 class Profiles( object ):

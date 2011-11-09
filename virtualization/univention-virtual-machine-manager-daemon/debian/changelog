@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.42-1) unstable; urgency=low
+
+  * domain/add: read domain type from profile if attribute type is
+    missing; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 09 Nov 2011 23:21:07 +0100
+
 univention-virtual-machine-manager-daemon (1.0.41-1) unstable; urgency=low
 
   * support editing existing domains; Bug #22893

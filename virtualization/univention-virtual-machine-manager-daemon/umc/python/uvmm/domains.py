@@ -231,7 +231,13 @@ class Domains( object ):
 
 		domain_info.name = domain[ 'name' ]
 		domain_info.arch = domain[ 'arch' ]
-		domain_info.domain_type, domain_info.os_type = domain['type'].split( '-' )
+		if 'type' in domain:
+			domain_info.domain_type, domain_info.os_type = domain['type'].split( '-' )
+		elif profile:
+			domain_info.domain_type, domain_info.os_type = profile.virttech.split( '-' )
+		else:
+			raise UMC_CommandError( 'Could not determine virtualisation technology for domain' )
+
 		# check configuration for para-virtualized machines
 		if domain_info.os_type == 'xen':
 			if profile.advkernelconf != True: # use pyGrub
