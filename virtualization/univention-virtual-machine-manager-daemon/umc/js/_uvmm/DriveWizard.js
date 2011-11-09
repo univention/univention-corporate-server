@@ -4,6 +4,7 @@ dojo.provide("umc.modules._uvmm.DriveWizard");
 
 dojo.require("umc.widgets.Wizard");
 dojo.require("umc.i18n");
+dojo.require("umc.tools");
 dojo.require("umc.modules._uvmm.types");
 
 dojo.declare("umc.modules._uvmm.DriveWizard", [ umc.widgets.Wizard, umc.i18n.Mixin ], {
@@ -152,15 +153,9 @@ dojo.declare("umc.modules._uvmm.DriveWizard", [ umc.widgets.Wizard, umc.i18n.Mix
 					label: this._('Device filename'),
 					required: true,
 					description: this._('To bind the drive to a local device the filename of the associated block device must be specified.'),
-					value: '/dev/fd0',
 					depends: 'driveType',
 					dynamicValue: function(options) {
-						var vals = {
-							disk: '/dev/',
-							cdrom: '/dev/cdrom',
-							floppy: '/dev/fd0'
-						};
-						return vals[options.driveType] || '';
+						return types.blockDevicePath[options.driveType] || '';
 					}
 				}]
 			}]
@@ -168,6 +163,9 @@ dojo.declare("umc.modules._uvmm.DriveWizard", [ umc.widgets.Wizard, umc.i18n.Mix
 	},
 
 	_getNodeURI: function() {
+		if (this.domain.nodeURI) {
+			return this.domain.nodeURI;
+		}
 		return this.domain.domainURI.split('#')[0];
 	},
 

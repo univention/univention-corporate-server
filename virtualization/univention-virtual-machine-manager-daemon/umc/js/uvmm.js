@@ -23,6 +23,7 @@ dojo.require("umc.widgets.Tree");
 //dojo.require("umc.modules._udm.NewObjectDialog");
 dojo.require("umc.modules._uvmm.TreeModel");
 dojo.require("umc.modules._uvmm.DomainPage");
+dojo.require("umc.modules._uvmm.DomainWizard");
 
 dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
@@ -79,7 +80,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// STATES = ( 'NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED' )
 		var actions = [{
 			name: 'edit',
-			label: this._('Configure'),
+			label: this._('Edit'),
 			isStandardAction: true,
 			isMultiAction: false,
 			iconClass: 'umcIconEdit',
@@ -90,7 +91,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			iconClass: 'umcIconPlay',
 			isStandardAction: true,
 			isMultiAction: true,
-			callback: dojo.hitch(this, 'changeState', 'RUN'),
+			callback: dojo.hitch(this, '_changeState', 'RUN'),
 			canExecute: function(item) {
 				return item.state != 'RUNNING' && item.state != 'IDLE';
 			}
@@ -100,7 +101,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			iconClass: 'umcIconStop',
 			isStandardAction: true,
 			isMultiAction: true,
-			callback: dojo.hitch(this, 'changeState', 'SHUTDOWN'),
+			callback: dojo.hitch(this, '_changeState', 'SHUTDOWN'),
 			canExecute: function(item) {
 				return item.state == 'RUNNING' || item.state == 'IDLE';
 			}
@@ -110,7 +111,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			iconClass: 'umcIconPause',
 			isStandardAction: false,
 			isMultiAction: true,
-			callback: dojo.hitch(this, 'changeState', 'PAUSE'),
+			callback: dojo.hitch(this, '_changeState', 'PAUSE'),
 			canExecute: function(item) {
 				return item.state == 'RUNNING' || item.state == 'IDLE';
 			}
@@ -119,7 +120,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			label: this._( 'Restart' ),
 			isStandardAction: false,
 			isMultiAction: true,
-			callback: dojo.hitch(this, 'changeState', 'RESTART'),
+			callback: dojo.hitch(this, '_changeState', 'RESTART'),
 			canExecute: function(item) {
 				return item.state == 'RUNNING' || item.state == 'IDLE';
 			}
@@ -128,10 +129,17 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			label: this._( 'Clone' ),
 			isStandardAction: false,
 			isMultiAction: false,
-			callback: dojo.hitch(this, 'cloneDomain' ),
+			callback: dojo.hitch(this, '_cloneDomain' ),
 			canExecute: function(item) {
 				return item.state == 'SHUTOFF';
 			}
+		}, {
+			name: 'add',
+			label: this._( 'Create virtual instance' ),
+			iconClass: 'umcIconAdd',
+			isMultiAction: false,
+			isContextAction: false,
+			callback: dojo.hitch(this, '_addDomain' )
 		}];
 
 		// search widgets
@@ -279,7 +287,62 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}));
 	},
 
-	cloneDomain: function( ids ) {
+	_addDomain: function() {
+		var wizard = null;
+
+		var _cleanup = dojo.hitch(this, function() {
+			this.selectChild(this._searchPage);
+			this.removeChild(wizard);
+			wizard.destroyRecursive();
+		});
+
+		var _finished = dojo.hitch(this, function(values) {
+			this.standby(true);
+			umc.tools.umcpCommand('uvmm/domain/add', {
+				nodeURI: values.nodeURI,
+				domain: values
+			}).then(dojo.hitch(this, function() {
+				_cleanup();
+				this.standby(false);
+			}), dojo.hitch(this, function() {
+				this.standby(false);
+			}));
+		});
+
+		wizard = new umc.modules._uvmm.DomainWizard({
+			onFinished: _finished,
+			onCancel: _cleanup
+		});
+		this.addChild(wizard);
+		this.selectChild(wizard);
+	},
+
+	_changeState: function(/*String*/ newState, ids) {
+		// chain all UMCP commands
+		var deferred = new dojo.Deferred();
+		deferred.resolve();
+		dojo.forEach(ids, function(iid, i) {
+			deferred = deferred.then(dojo.hitch(this, function() {
+				this.updateProgress(i, ids.length);
+				return umc.tools.umcpCommand('uvmm/domain/state', {
+					domainURI: iid,
+					domainState: newState
+				}); 
+			}));
+		}, this);
+
+		// finish the progress bar and add error handler
+		deferred = deferred.then(dojo.hitch(this, function() {
+			this.moduleStore.onChange();
+			this.updateProgress(ids.length, ids.length);
+		}), dojo.hitch(this, function() {
+			umc.dialog.alert(this._('An error ocurred during processing your request.'));
+			this.moduleStore.onChange();
+			this.updateProgress(ids.length, ids.length);
+		}));
+	},
+
+	_cloneDomain: function( ids ) {
 		var dialog = null, form = null;
 
 		var _cleanup = function() {
@@ -356,10 +419,12 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			}, {
 				name: 'cpuUsage',
 				label: this._('CPU usage'),
+				width: 'adjust',
 				formatter: dojo.hitch(this, 'cpuUsageFormatter')
 			}, {
 				name: 'memUsed',
 				label: this._('Memory usage'),
+				width: 'adjust',
 				formatter: dojo.hitch(this, 'memoryUsageFormatter')
 			}];
 		}
@@ -372,10 +437,12 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'cpuUsage',
 			label: this._('CPU usage'),
+			width: 'adjust',
 			formatter: dojo.hitch(this, 'cpuUsageFormatter')
 		}, {
 			name: 'mem',
-			label: this._('Memory available'),
+			label: this._('Memory avail.'),
+			width: 'adjust',
 			formatter: dojo.hitch(this, 'memoryUsageFormatter')
 		}];
 	},
@@ -490,31 +557,6 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// update the grid columns
 		this._grid.set('columns', this._getGridColumns(vals.type));
-	},
-
-	changeState: function(/*String*/ newState, ids) {
-		// chain all UMCP commands
-		var deferred = new dojo.Deferred();
-		deferred.resolve();
-		dojo.forEach(ids, function(iid, i) {
-			deferred = deferred.then(dojo.hitch(this, function() {
-				this.updateProgress(i, ids.length);
-				return umc.tools.umcpCommand('uvmm/domain/state', {
-					domainURI: iid,
-					domainState: newState
-				}); 
-			}));
-		}, this);
-
-		// finish the progress bar and add error handler
-		deferred = deferred.then(dojo.hitch(this, function() {
-			this.moduleStore.onChange();
-			this.updateProgress(ids.length, ids.length);
-		}), dojo.hitch(this, function() {
-			umc.dialog.alert(this._('An error ocurred during processing your request.'));
-			this.moduleStore.onChange();
-			this.updateProgress(ids.length, ids.length);
-		}));
 	},
 
 	updateProgress: function(i, n) {

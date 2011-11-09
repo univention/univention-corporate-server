@@ -79,7 +79,7 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 		});
 
 		wizard = new umc.modules._uvmm.DriveWizard({
-			style: 'width: 450px !important; height:400px;',
+			style: 'width: 450px; height:400px;',
 			moduleStore: this.moduleStore,
 			domain: this.domain,
 			onFinished: _finished,

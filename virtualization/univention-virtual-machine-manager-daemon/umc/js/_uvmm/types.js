@@ -86,7 +86,7 @@ dojo.require("umc.tools");
 		],
 		getCPUs: function(options) {
 			// query the domain's node and get its number of CPUs
-			var nodeURI = options.domainURI.split('#')[0];
+			var nodeURI = options.nodeURI || options.domainURI.split('#')[0];
 			return umc.tools.umcpCommand('uvmm/node/query', {
 				nodePattern: nodeURI
 			}).then(function(data) {
@@ -115,6 +115,11 @@ dojo.require("umc.tools");
 			'cdrom': _( 'CD/DVD-ROM drive' ),
 			'disk': _( 'Hard drive' ),
 			'floppy': _( 'Floppy drive' )
+		},
+		blockDevicePath: {
+			disk: '/dev/',
+			cdrom: '/dev/cdrom',
+			floppy: '/dev/fd0'
 		},
 		diskChoice: [
 			{ id: 'new', label: _('Create a new image') },
@@ -163,6 +168,21 @@ dojo.require("umc.tools");
 				list.push({ id: 'qcow2', label: _('Extended format (qcow2)') });
 			}
 			return list;
+		},
+		getNodes: function() {
+			return umc.tools.umcpCommand('uvmm/query', {
+				type: 'node',
+				nodePattern: '*'
+			}).then(function(data) {
+				return data.result;
+			});
+		},
+		getProfiles: function(options) {
+			return umc.tools.umcpCommand('uvmm/profile/query', {
+				nodeURI: options.nodeURI
+			}).then(function(data) {
+				return data.result;
+			});
 		}
 	});
 })();
