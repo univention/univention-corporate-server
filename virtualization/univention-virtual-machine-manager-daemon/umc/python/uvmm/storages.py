@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
+
 from univention.lib.i18n import Translation
 
 from univention.management.console.log import MODULE
@@ -63,11 +65,22 @@ class Storages( object ):
 		self.uvmm.send( 'STORAGE_POOLS', Callback( _finished, request ), uri = request.options[ 'nodeURI' ] )
 
 	def storage_volume_query( self, request ):
+		"""Returns a list of volumes located in the given pool.
+
+		options: { 'nodeURI': <node uri>, 'pool' : <pool name>[, 'type' : (disk|cdrom|floppy)] }
+
+		return: [ { <volume description> }, ... ]
+		"""
 		self.required_options( request, 'nodeURI', 'pool' )
 
 		def _finished( thread, result, request ):
 			success, data = result
-			self.finished( request.id, map( lambda d: object2dict( d ), data ) )
+			volume_list = []
+			for vol in data:
+				vol = object2dict( vol )
+				vol[ 'volumeFilename' ] = os.path.basename( vol.get( 'source', '' ) )
+				volume_list.append( vol )
+			self.finished( request.id,volume_list )
 
 		self.uvmm.send( 'STORAGE_VOLUMES', Callback( _finished, request ), uri = request.options[ 'nodeURI' ], pool = request.options[ 'pool' ], type = request.options.get( 'type', None ) )
 
