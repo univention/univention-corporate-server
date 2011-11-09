@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>> 7),
  univention-config-dev,
+ univention-management-console-dev,
  python2.6,
  python2.6-dev,
  python-support,
