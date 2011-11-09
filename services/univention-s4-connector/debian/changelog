@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.69-1) unstable; urgency=low
+
+  * Use Unpickler for loading the object (Bug #24273)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Nov 2011 22:18:48 +0100
+
 univention-s4-connector (6.0.68-1) unstable; urgency=low
 
   * fix host parsing for IPv6 (Bug #24479)

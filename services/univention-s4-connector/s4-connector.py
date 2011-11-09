@@ -71,9 +71,8 @@ def handler(dn, new, old, command):
 			old_dn=None
 			if os.path.exists(os.path.join(directory, 'tmp','old_dn')):
 				f=open(os.path.join(directory, 'tmp','old_dn'),'r')
-				p=cPickle.Pickler(f)
+				p=cPickle.Unpickler(f)
 				old_dn=p.load()
-				p.clear_memo()
 				f.close()
 			if command == 'r':
 				filename=os.path.join(directory, 'tmp','old_dn')
