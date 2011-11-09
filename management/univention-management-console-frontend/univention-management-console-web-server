@@ -66,14 +66,14 @@ _queue_send = Queue.Queue()
 
 class SessionClient(object):
 	def __init__( self, timeout = 300 ):
-		CORE.info('SessionClient: creating new session')
+		CORE.info('SessionClient(0x%x): creating new session' % (id(self),))
 		self.client = umcp.Client()
 		self.client.signal_connect( 'authenticated', self._authenticated )
 		self.client.signal_connect( 'response', self._response )
 		if self.client.connect():
-			CORE.info( 'SessionClient: connected to UMC server' )
+			CORE.info('SessionClient(0x%x): connected to UMC server' % (id(self),))
 		else:
-			CORE.process( 'SessionClient: connection to UMC server failed' )
+			CORE.process('SessionClient(0x%x): connection to UMC server failed' % (id(self),))
 		self._auth_response = None
 		self._auth_response_queue = None
 		self._requestid2response_queue = {}
@@ -92,34 +92,37 @@ class SessionClient(object):
 		"""Timer event: the session has expired and therefor the
 		connection to the UMC server is closed as long as there are no
 		open requests."""
-		CORE.info( 'Session timed out!' )
+		CORE.info('SessionClient(0x%x): timed out!' % (id(self),))
 		if self._requestid2response_queue:
-			CORE.info( 'There are open requests (%s). Postpone session shutdown' % ','.join( self._requestid2response_queue.keys() ) )
+			CORE.info('SessionClient(0x%x): There are open requests (%s). Postpone session shutdown' % (id(self), ','.join( self._requestid2response_queue.keys())))
 			self._timeout = 0 # wait until all requests are answered
 		else:
-			CORE.info( 'Closing connection to UMC server' )
+			CORE.info('SessionClient(0x%x): Closing connection to UMC server' % (id(self),))
 			self.client.disconnect()
 		return False
 
 	def _authenticated(self, success, status, message):
-		CORE.process('SessionClient: _authenticated: success=%s  status=%s  message=%s' % (success, status, message) )
+		"""Callback function for 'authenticated' from UMCP-Server."""
+		CORE.process('SessionClient(0x%x): _authenticated: success=%s  status=%s  message=%s' % (id(self), success, status, message))
 		self._auth_response.status = status
 		self._auth_response_queue.put( self._auth_response )
 		# release queue object
 		self._auth_response_queue = None
 
 	def authenticate_user(self, request, response_queue):
-		CORE.info('SessionClient: authenticate_user: sending authentication request for user %s' % request.body[ 'username' ])
+		"""Send authentication request to UMC server."""
+		CORE.info('SessionClient(0x%x): authenticate_user: sending authentication request for user %s' % (id(self), request.body['username']))
 		self._auth_response = umcp.Response( request )
 		self._auth_response.body['sessionid'] = request.body.get('sessionid','')
 		self._auth_response_queue = response_queue
 		self.client.authenticate( request.body[ 'username' ], request.body[ 'password' ] )
 
 	def _response(self, response):
+		"""Queue response from UMC server."""
 		if not response.id in self._requestid2response_queue:
-			CORE.process('SessionClient: could not find request id for response %s, status %d:' % ( str( response.id ), response.status ) )
+			CORE.process('SessionClient(0x%x): no request(%s) found: status=%s' % (id(self), response.id, response.status))
 		else:
-			CORE.info('SessionClient: got response with id=%s and status=%s' % ( response.id, response.status ) )
+			CORE.info('SessionClient(0x%x): got response(%s): status=%s queue=0x%x' % (id(self), response.id, response.status, id(queue)))
 			self._requestid2response_queue[ response.id ].put( response )
 			# remove response_queue from internal mapping
 			self.cleanup_request( response )
@@ -129,12 +132,14 @@ class SessionClient(object):
 			self.client.disconnect()
 
 	def send_request(self, request, response_queue):
-		CORE.info('SessionClient: sending request with id=%s' % request.id)
+		"""Send request to UMC server."""
+		CORE.info('SessionClient(0x%x): sending request(%s)' % (id(self), request.id))
 		self._requestid2response_queue[request.id] = response_queue
 		self.client.request( request )
 		self.renew_timer()
 
 	def cleanup_request(self, request):
+		"""Remove request from mapping."""
 		del self._requestid2response_queue[request.id]
 
 
@@ -146,19 +151,19 @@ class UMCP_Dispatcher( object ):
 	def check_queue():
 		global _queue_send
 		while _queue_send.qsize():
-			CORE.info('UMCP_Dispatcher: check_queue: new object in queue')
 			try:
 				queuerequest = _queue_send.get_nowait()
 			except Queue.Empty:
 				# Queue is empty - nothing to do
 				return
+			CORE.info('UMCP_Dispatcher: check_queue: new request: 0x%x' % (id(queuerequest),))
 
 			if not type(queuerequest.sessionid) == str and queuerequest.sessionid is not None:
-				CORE.process('UMCP_Dispatcher: check_queue: got invalid sessionid: %s' % repr(queuerequest.sessionid))
+				CORE.process('UMCP_Dispatcher: check_queue: got invalid sessionid: %r' % (queuerequest.sessionid,))
 			if not isinstance(queuerequest.request, umcp.Request):
-				CORE.process('UMCP_Dispatcher: check_queue: got invalid UMCP request: %s' % repr(queuerequest.request))
+				CORE.process('UMCP_Dispatcher: check_queue: got invalid UMCP request: %r' % (queuerequest.request,))
 			if not isinstance(queuerequest.response_queue, Queue.Queue):
-				CORE.process('UMCP_Dispatcher: check_queue: got invalid response_queue: %s' % repr(queuerequest.response_queue))
+				CORE.process('UMCP_Dispatcher: check_queue: got invalid response_queue: %r' % (queuerequest.response_queue,))
 
 			# stop here if sessionid is missing or unknown and request is no AUTH request
 			if ( not queuerequest.sessionid or not queuerequest.sessionid in UMCP_Dispatcher.sessions.keys() ) and not queuerequest.request.command == 'AUTH':
@@ -327,9 +332,9 @@ class CPgeneric(object):
 		request = QueueRequest(sessionid, req, response_queue)
 		_queue_send.put(request)
 
-		self._log('info', 'pushed request %s to queue - waiting for response (sessionid="%s")' % (req.id, sessionid))
+		self._log('info', 'pushed request(0x%x) to queue(0x%x) - waiting for response (sessionid="%s")' % (id(req), id(response_queue), sessionid))
 		response = response_queue.get()
-		self._log('info', 'got response %s with status %s (sessionid="%s")' % (response.id, response.status, sessionid))
+		self._log('info', 'got response(0x%x) from queue(0x%x): status=%s (sessionid="%s")' % (id(response), id(response_queue), response.status, sessionid))
 
 		if response.status == 200:
 			update_session_cookie(cherrypy.response.cookie, sessionid)
