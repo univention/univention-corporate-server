@@ -223,6 +223,8 @@ class Domains( object ):
 			raise UMC_OptionTypeError( _( 'Unknown profile given' ) )
 
 		domain_info = Data_Domain()
+		# when we edit a domain there must be a UUID
+		domain_info.uuid = domain.get( 'uuid', None )
 		domain_info.name = domain[ 'name' ]
 		domain_info.arch = domain[ 'arch' ]
 		domain_info.domain_type, domain_info.os_type = domain['type'].split( '-' )
@@ -303,10 +305,14 @@ class Domains( object ):
 	def domain_put( self, request ):
 		"""Modifies a domain domainUUID on node nodeURI.
 
-		options: { 'nodeURI': <node uri>, 'domainUUID' : <domain UUID>, 'domain' : {} }
+		options: { 'domainURI': <domain uri>, 'domain' : {} }
 
 		return: { 'success' : (True|False), 'message' : <details> }
 		"""
+		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
+		request.options[ 'nodeURI' ] = node_uri
+		request.options[ 'domain' ][ 'uuid' ] = domain_uuid
+
 		self.domain_add( request )
 
 	def domain_state( self, request ):

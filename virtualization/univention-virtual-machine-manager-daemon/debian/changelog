@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.39-1) unstable; urgency=low
+
+  * domain/put. adapt request options to match domain/add; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 09 Nov 2011 20:56:35 +0100
+
 univention-virtual-machine-manager-daemon (1.0.38-1) unstable; urgency=low
 
   * add clone action to UMC frontend; Bug #22893
