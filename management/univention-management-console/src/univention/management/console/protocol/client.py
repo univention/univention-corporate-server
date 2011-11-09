@@ -282,12 +282,12 @@ class Client( signals.Provider, Translation ):
 			notifier.socket_remove( sock )
 			return False
 
-		response = Response()
 		if self.__buffer:
 			recv = self.__buffer + recv
 			self.__buffer = ''
 		try:
 			while recv:
+				response = Response()
 				recv = response.parse( recv )
 				self._handle( response )
 		except IncompleteMessageError:
