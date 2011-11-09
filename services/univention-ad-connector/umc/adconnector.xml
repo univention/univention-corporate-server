@@ -8,6 +8,8 @@
 	</categories>
 	<command name="adconnector/save" function="save">
 	</command>
+	<command name="adconnector/load" function="load">
+	</command>
 	<command name="adconnector/guess" function="guess">
 	</command>
 	<command name="adconnector/defaults" function="defaults">

@@ -54,16 +54,16 @@ DIR_WEB_AD = '/var/www/univention-ad-connector'
 DO_NOT_CHANGE_PWD = '********************'
 
 class Instance( Base ):
-	OPTION_MAPPING = ( ( 'LDAP_Host', 'connector/ad/ldap/host' ),
-					   ( 'LDAP_Base', 'connector/ad/ldap/base' ),
-					   ( 'LDAP_BindDN', 'connector/ad/ldap/binddn' ),
-					   ( 'KerberosDomain', 'connector/ad/mapping/kerberosdomain' ),
-					   ( 'PollSleep', 'connector/ad/poll/sleep' ),
-					   ( 'RetryRejected', 'connector/ad/retryrejected' ),
-					   # ( 'DebugLevel', 'connector/debug/level' ),
-					   # ( 'DebugFunction', 'connector/debug/function' ),
-					   ( 'MappingSyncMode', 'connector/ad/mapping/syncmode' ),
-					   ( 'MappingGroupLanguage', 'connector/ad/mapping/group/language' ) )
+	OPTION_MAPPING = ( ( 'LDAP_Host', 'connector/ad/ldap/host', '' ),
+					   ( 'LDAP_Base', 'connector/ad/ldap/base', '' ),
+					   ( 'LDAP_BindDN', 'connector/ad/ldap/binddn', '' ),
+					   ( 'KerberosDomain', 'connector/ad/mapping/kerberosdomain', '' ),
+					   ( 'PollSleep', 'connector/ad/poll/sleep', 5 ),
+					   ( 'RetryRejected', 'connector/ad/retryrejected', 10 ),
+					   ( 'DebugLevel', 'connector/debug/level', 1 ),
+					   ( 'DebugFunction', 'connector/debug/function', False ),
+					   ( 'MappingSyncMode', 'connector/ad/mapping/syncmode', 'sync' ),
+					   ( 'MappingGroupLanguage', 'connector/ad/mapping/group/language', 'de' ) )
 
 	def __init__( self ):
 		Base.__init__( self )
@@ -89,6 +89,23 @@ class Instance( Base ):
 			'running' : self.status_running
 			} )
 
+	def load( self, request ):
+		"""Retrieve current status of the UCS Active Directory Connector configuration and the service
+
+		options: {}
+
+		return: { <all AD connector UCR variables> }
+		"""
+
+		result = {}
+		for option, var, default in Instance.OPTION_MAPPING:
+			result[ option ] = ucr.get( var, default )
+
+		pwd_file = ucr.get( 'connector/ad/ldap/bindpw' )
+		result[ 'passwordExists' ] = bool( pwd_file and os.path.exists( pwd_file ) )
+
+		self.finished( request.id, result )
+
 	def save( self, request ):
 		"""Saves the UCS Active Directory Connector configuration
 
@@ -105,7 +122,7 @@ class Instance( Base ):
 		return: { 'success' : (True|False), 'message' : <details> }
 		"""
 
-		self.required_options( request, *Instance.OPTION_MAPPING.keys() )
+		self.required_options( request, *map( lambda x: x[ 0 ], Instance.OPTION_MAPPING ) )
 		self.guessed_baseDN = None
 
 		try:
@@ -121,9 +138,11 @@ class Instance( Base ):
 			self.finished( request.id, { 'success' : False, 'message' : message } )
 			return
 
-		for umckey, ucrkey in Instance.OPTION_MAPPING:
+		for umckey, ucrkey, default in Instance.OPTION_MAPPING:
 			val = request.options[ umckey ]
 			if val:
+				if isinstance( val, bool ):
+					val = val and 'yes' or 'no'
 				MODULE.info( 'Setting %s=%s' % ( ucrkey, val ) )
 				univention.config_registry.handler_set( [ u'%s=%s' % ( ucrkey, val ) ] )
 
@@ -135,23 +154,24 @@ class Instance( Base ):
 			MODULE.info( 'Setting ldap port to 389' )
 			univention.config_registry.handler_set( [ u'connector/ad/ldap/port=389' ] )
 
-		if not request.options.get( 'LDAP_BindPW' ) in ( None, '', DO_NOT_CHANGE_PWD ):
+		if not request.options.get( 'LDAP_Password' ) in ( None, '', DO_NOT_CHANGE_PWD ):
 			fn = ucr.get( 'connector/ad/ldap/bindpw', FN_BINDPW )
 			try:
 				fd = open( fn ,'w')
-				fd.write( request.options.get( 'LDAP_BindPW' ) )
+				fd.write( request.options.get( 'LDAP_Password' ) )
 				fd.close()
 				os.chmod( fn, 0600 )
 				os.chown( fn, 0, 0 )
+				univention.config_registry.handler_set( [ u'connector/ad/ldap/bindpw=%s' % fn ] )
 			except Exception, e:
 				MODULE.info( 'Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)' % { 'fn' : fn, 'exception' : str( e.__class__ ) } )
-				self.finished( request.id, { 'success' : False, 'message' : _('Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)') % { 'fn' : fn, 'exception' : str(e.__class__ ) } } )
+				self.finished( request.id, { 'success' : False, 'message' : _( 'Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)' ) % { 'fn' : fn, 'exception' : str(e.__class__ ) } } )
 				return
 
 		if os.path.exists( '/etc/univention/ssl/%s' % request.options.get( 'LDAP_Host' ) ):
 			try:
 				self._copy_certificate( request )
-				self.finished( request.id,  { 'success' : True, 'message' :  _('UCS Active Directory Connector settings have been saved.') } )
+				self.finished( request.id,  { 'success' : True, 'message' :  _('UCS Active Directory Connector settings have been saved and a new certificate for the Active Directory server has been created.') } )
 			except ConnectorError, e:
 				self.finished( request.id,  { 'success' : False, 'message' :  str( e ) } )
 			return
@@ -173,11 +193,11 @@ class Instance( Base ):
 	def guess( self, request ):
 		"""Tries to guess some values like the base DN of the AD server
 
-		options: { 'fqdn': <ad server fqdn> }
+		options: { 'LDAP_Host': <ad server fqdn> }
 
-		return: { 'baseDN' : <LDAP base>, 'data' : <details> }
+		return: { 'LDAP_Base' : <LDAP base>, 'success' : (True|False) }
 		"""
-		self.required_options( request, 'baseDN' )
+		self.required_options( request, 'LDAP_Host' )
 
 		def _return( pid, status, buffer, request ):
 			# dn:
@@ -195,15 +215,15 @@ class Instance( Base ):
 						self.guessed_baseDN = dn
 
 			if self.guessed_baseDN is None:
-				self.finished( request.id, { 'success' : False, 'message' : _('Could not determine baseDN of given ldap server. Maybe FQDN is wrong or unresolvable!' ) } )
+				self.finished( request.id, { 'success' : False, 'message' : _('The LDAP base of the given Active Directory server could not be determined. Maybe the full-qualified hostname is wrong or unresolvable.' ) } )
 				MODULE.process( 'Could not determine baseDN of given ldap server. Maybe FQDN is wrong or unresolvable! FQDN=%s' % request.options[ 'baseDN' ] )
 			else:
-				self.finished( request.id, { 'success' : True } )
+				self.finished( request.id, { 'success' : True, 'LDAP_Base' : self.guessed_baseDN } )
 
 			MODULE.info( 'Guessed the LDAP base: %s' % self.guessed_baseDN )
 
 
-		cmd = '/usr/bin/univention-ldapsearch -x -s base -b "" namingContexts -LLL -h "%s"' % request.options[ 'baseDN' ]
+		cmd = '/usr/bin/ldapsearch -x -s base -b "" namingContexts -LLL -h "%s"' % request.options[ 'LDAP_Host' ]
 		MODULE.info( 'Determine LDAP base for AD server of specified system FQDN: %s' % cmd )
 		proc = notifier.popen.Shell( cmd, stdout = True )
 		cb = notifier.Callback( _return, request )

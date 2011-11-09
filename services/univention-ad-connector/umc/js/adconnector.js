@@ -3,7 +3,9 @@
 dojo.provide("umc.modules.adconnector");
 
 dojo.require( "umc.i18n" );
+dojo.require( "umc.dialog" );
 dojo.require( "umc.render" );
+dojo.require( "umc.tools" );
 dojo.require( "umc.widgets.Module" );
 dojo.require( "umc.widgets.Page" );
 dojo.require( "umc.widgets.Wizard" );
@@ -74,6 +76,10 @@ dojo.declare("umc.modules.adconnector", [ umc.widgets.Module, umc.i18n.Mixin ], 
 						title: this._( 'UCS Active Directory Connector Wizard' )
 					} );
 					dlg.show();
+					this.connect( dlg, 'onClose', function() {
+						dlg.destroyRecursive();
+						this.showHideElements();
+					} );
 				} )
 			}
 		];
@@ -92,16 +98,8 @@ dojo.declare("umc.modules.adconnector", [ umc.widgets.Module, umc.i18n.Mixin ], 
 			layout: [ 'certificate', 'download' ]
 		}  ], this._widgets, this._buttons );
 
-		// var container = new umc.widgets.ContainerWidget( {
-		// 	scrollable: true
-		// } );
 		this._page.addChild( _container );
 
-		// var titlePane = new dijit.TitlePane({
-		// 	title: this._( 'Status' ),
-		// 	content: _container
-		// });
-		// container.addChild( titlePane );
 		this.showHideElements();
 		this.standby( false );
     },
@@ -143,7 +141,7 @@ dojo.declare("umc.modules._adconnector.Wizard", [ umc.widgets.Wizard, umc.i18n.M
 
 	pages: null,
 
-	style: 'width: 400px; height: 80%',
+	variables: null,
 
 	constructor: function() {
 		this.pages = [ {
@@ -151,7 +149,7 @@ dojo.declare("umc.modules._adconnector.Wizard", [ umc.widgets.Wizard, umc.i18n.M
 			helpText: this._( 'The full qualified hostname of the Active Directory server is required' ),
 			headerText: this._( 'UCS Active Directory Connector configuration' ),
 			widgets: [{
-				name: 'fqdnAD',
+				name: 'LDAP_Host',
 				type: 'TextBox',
 				label: this._( 'Active Directory Server' )
 			}, {
@@ -159,31 +157,37 @@ dojo.declare("umc.modules._adconnector.Wizard", [ umc.widgets.Wizard, umc.i18n.M
 				type: 'CheckBox',
 				label: this._( 'Determine LDAP configuration' )
 			}],
-			layout: [ 'fqdnAD', 'guess' ]
+			layout: [ 'LDAP_Host', 'guess' ]
 		}, {
 			name: 'ldap',
-			helpText: this._( 'For the synchronisation a user account of the Active Directory server is required.' ),
-			headerText: this._( 'Synchronisation account' ),
+			helpText: this._( 'LDAP und kerberos configuration of the Active Directory server needs to be specified for the synchronisation' ),
+			headerText: this._( 'LDAP and Kerberos' ),
 			widgets: [{
-				name: 'baseLDAP',
+				name: 'LDAP_Base',
 				type: 'TextBox',
+				sizeClass: 'OneAndAHalf',
 				label: this._( 'LDAP base' )
 			}, {
-				name: 'userLDAP',
+				name: 'LDAP_BindDN',
 				type: 'TextBox',
+				sizeClass: 'OneAndAHalf',
 				label: this._( 'LDAP DN of the synchronisation user' )
 			}, {
-				name: 'passwordLDAP',
+				name: 'LDAP_Password',
 				type: 'PasswordBox',
 				label: this._( 'Password of the synchronisation user' )
+			}, {
+				name: 'KerberosDomain',
+				type: 'TextBox',
+				label: this._( 'Kerberos domain of the Active Directory server' )
 			}],
-			layout: [ 'baseLDAP', 'userLDAP', 'passwordLDAP' ]
+			layout: [ 'LDAP_Base', 'LDAP_BindDN', 'LDAP_Password', 'KerberosDomain' ]
 		}, {
 			name: 'sync',
 			helpText: this._( 'UCS Active Directory Connector supports three types of synchronisation.' ),
 			headerText: this._( 'Synchronisation mode' ),
-			widgets: [{
-				name: 'syncMode',
+			widgets: [ {
+				name: 'MappingSyncMode',
 				type: 'ComboBox',
 				staticValues: [
 					{
@@ -197,27 +201,93 @@ dojo.declare("umc.modules._adconnector.Wizard", [ umc.widgets.Wizard, umc.i18n.M
 						label: 'UCS -> AD'
 					} ],
 				label: this._( 'Synchronisation mode' )
+			}, {
+				name: 'MappingGroupLanguage',
+				label: this._( 'System langauge of Active Directory server' ),
+				type: 'ComboBox',
+				staticValues: [
+					{
+						id: 'de',
+						label: this._( 'German' )
+					}, {
+						id: 'en',
+						label: this._( 'English' )
+					} ]
 			} ],
-			layout: [ 'sync' ]
+			layout: [ 'MappingSyncMode', 'MappingGroupLanguage' ]
+		}, {
+			name: 'extended',
+			helpText: this._( 'The following settings control the internal behaviour of the UCS Active Directory connector. For all attributes reasonable default values are provided.' ),
+			headerText: this._( 'Extended settings' ),
+			widgets: [ {
+				name: 'PollSleep',
+				type: 'TextBox',
+				sizeClass: 'OneThird',
+				label: this._( 'Poll Interval (seconds)' )
+			}, {
+				name: 'RetryRejected',
+				label: this._( 'Retry interval for rejected objects' ),
+				type: 'TextBox',
+				sizeClass: 'OneThird'
+			}, {
+				name: 'DebugLevel',
+				label: this._( 'Debug level of Active Directory Connector' ),
+				type: 'TextBox',
+				sizeClass: 'OneThird'
+			}, {
+				name: 'DebugFunction',
+				label: this._( 'Add debug output for functions' ),
+				type: 'CheckBox',
+				sizeClass: 'OneThird'
+			} ],
+			layout: [ 'PollSleep', 'RetryRejected', 'DebugLevel', 'DebugFunction' ]
 		} ];
 	},
 
 	next: function(/*String*/ currentID) {
-		// if (!currentID) {
-		// 	return 'fqdn';
-		// }
-		if (currentID == 'fqdn') {
+		if ( !currentID ) {
+			umc.tools.forIn( this.variables, dojo.hitch( this, function( option, value ) {
+				var w = this.getWidget( null, option );
+				if ( w ) {
+					w.set( 'value', value );
+				}
+			} ) );
+		} else if (currentID == 'fqdn') {
 			var guess = this.getWidget( 'fqdn', 'guess' );
 			if ( guess.get( 'value' ) ) {
-				console.log( 'Guess LDAP Base' );
+				this.standby( true );
+				var server = this.getWidget( 'fqdn', 'LDAP_Host' );
+				umc.tools.umcpCommand( 'adconnector/guess', { 'LDAP_Host' : server.get( 'value' ) } ).then( dojo.hitch( this, function( response ) {
+					if ( response.result.LDAP_Base ) {
+						this.getWidget( 'ldap', 'LDAP_Base' ).set( 'value', response.result.LDAP_Base );
+						this.getWidget( 'ldap', 'LDAP_BindDN' ).set( 'value', 'cn=Administrator,cn=users,' + response.result.LDAP_Base );
+						this.getWidget( 'ldap', 'KerberosDomain' ).set( 'value', umc.tools.explodeDn( response.result.LDAP_Base, true ).join( '.' ) );
+					} else {
+						umc.dialog.notify( response.result.message );
+					}
+					this.standby( false );
+				} ) );
+			}
+		} else if ( currentID == 'ldap' ) {
+			var password = this.getWidget( 'ldap', 'LDAP_Password' );
+			if ( ! this.variables.passwordExists && ! password.get( 'value' ) ) {
+				umc.dialog.alert( this._( 'The password for the synchronisation account is required!' ) );
+				return currentID;
 			}
 		}
-		// if (currentID == 'second') {
-		// 	this.getWidget('last', 'name').set('value', this.getWidget('first', 'name').get('value'));
-		// 	return 'last';
-		// }
-		// return null;
+
 		return this.inherited( arguments );
+	},
+
+	onFinished: function( values ) {
+		this.standby( true );
+		umc.tools.umcpCommand( 'adconnector/save', values ).then( dojo.hitch( this, function( response ) {
+			if ( !response.result.success ) {
+				umc.dialog.alert( response.result.message );
+			} else {
+				umc.dialog.notify( response.result.message );
+			}
+		} ) );
 	}
 });
 
@@ -235,18 +305,20 @@ dojo.declare("umc.modules._adconnector.WizardDialog", [ dijit.Dialog, umc.widget
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		this._wizard = new umc.modules._adconnector.Wizard({
-			style: 'width: 400px; height: 400px;'
-		} );
-		this.set( 'content', this._wizard );
-		this.connect( this._wizard, 'onFinished', function() {
-			this.hide();
-			this.destroyRecursive();
-		} );
-		this.connect( this._wizard, 'onCancel', function() {
-			this.hide();
-			this.destroyRecursive();
-		} );
-		this._wizard.startup();
+		umc.tools.umcpCommand( 'adconnector/load' ).then( dojo.hitch( this, function( response ) {
+			this._wizard = new umc.modules._adconnector.Wizard( {
+				style: 'width: 500px; height: 400px;',
+				variables: response.result
+			} );
+			this.set( 'content', this._wizard );
+			this.connect( this._wizard, 'onFinished', function() {
+				this.hide();
+			} );
+			this.connect( this._wizard, 'onCancel', function() {
+				this.hide();
+				this.destroyRecursive();
+			} );
+			this._wizard.startup();
+		} ) );
 	}
 });
