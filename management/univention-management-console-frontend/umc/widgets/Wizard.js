@@ -25,6 +25,8 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 	//		* buttons: see `umc.widgets.Form`
 	pages: null,
 
+	i18nClass: 'umc.app',
+
 	_pages: null,
 
 	buildRendering: function() {

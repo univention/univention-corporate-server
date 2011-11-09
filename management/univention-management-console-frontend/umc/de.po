@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-08 18:44+0100\n"
+"POT-Creation-Date: 2011-11-08 22:18+0100\n"
 "PO-Revision-Date: 2011-11-01 20:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,12 +21,12 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
-#: umc/widgets/Grid.js:538
+#: umc/widgets/Grid.js:535
 #, python-format
 msgid "%d entries of %d selected"
 msgstr "%d Einträge von %d ausgewählt"
 
-#: umc/widgets/Grid.js:543
+#: umc/widgets/Grid.js:540
 #, python-format
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
@@ -75,11 +75,11 @@ msgstr ""
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
-#: umc/widgets/Wizard.js:40
+#: umc/widgets/Wizard.js:42
 msgid "Back"
 msgstr "Zurück"
 
-#: umc/widgets/MultiObjectSelect.js:256 umc/widgets/Wizard.js:55
+#: umc/widgets/MultiObjectSelect.js:256 umc/widgets/Wizard.js:57
 #: umc/app.js:521
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -112,7 +112,7 @@ msgstr "Möchten Sie sich wirklich abmelden?"
 msgid "English"
 msgstr "Englisch"
 
-#: umc/widgets/Wizard.js:51
+#: umc/widgets/Wizard.js:53
 msgid "Finish"
 msgstr "Beenden"
 
@@ -224,15 +224,15 @@ msgstr "Handbücher und Dokumentation"
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
-#: umc/widgets/Wizard.js:46
+#: umc/widgets/Wizard.js:48
 msgid "Next"
 msgstr "Weiter"
 
-#: umc/widgets/Grid.js:540
+#: umc/widgets/Grid.js:537
 msgid "No entries could be found"
 msgstr "Keine Einträge konnten gefunden werden"
 
-#: umc/widgets/Grid.js:599
+#: umc/widgets/Grid.js:596
 msgid "No object selected"
 msgstr "Kein Objekt ausgewählt"
 
@@ -471,7 +471,7 @@ msgstr ""
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 
-#: umc/widgets/Grid.js:327 umc/widgets/Grid.js:671
+#: umc/widgets/Grid.js:327 umc/widgets/Grid.js:668
 msgid "more"
 msgstr "mehr"
 
