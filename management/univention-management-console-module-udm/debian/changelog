@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.228-1) unstable; urgency=low
+
+  * removed message for free for personal use license (Bug #23213)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 09 Nov 2011 19:53:27 +0100
+
 univention-management-console-module-udm (1.0.227-2) unstable; urgency=low
 
   * activate new apache2 sites in postinst (Bug #24453)

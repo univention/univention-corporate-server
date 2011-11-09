@@ -746,9 +746,9 @@ def check_license(ldap_connection = None, ldap_position = None ):
 		raise udm_errors.licenseDesktops
 	elif _licenseCheck == 4:
 		raise udm_errors.licenseGroupware
-	elif _licenseCheck == 5:
-		# Free for personal use edition
-		raise udm_errors.freeForPersonalUse
+	#elif _licenseCheck == 5:
+	#	# Free for personal use edition
+	#	raise udm_errors.freeForPersonalUse
 
 def container_modules():
 	containers = []
