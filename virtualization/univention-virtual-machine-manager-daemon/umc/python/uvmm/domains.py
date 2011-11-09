@@ -96,11 +96,15 @@ class Domains( object ):
 
 			json = object2dict( data )
 			## re-arrange a few attributes for the frontend
+			# RAM
+			json[ 'maxMem' ] = MemorySize.num2str( json[ 'maxMem' ] )
 			# disks
 			for disk in json[ 'disks' ]:
 				disk[ 'volumeFilename' ] = os.path.basename( disk[ 'source' ] )
 				# disk[ 'poolName' ] = self.get_pool_name( os.path.dirname( disk[ 'source' ] ) ) -> disk has attribute pool containing the name
 				disk[ 'paravirtual' ] = disk[ 'target_bus' ] in ( 'virtio', 'xen' )
+				if isinstance( disk[ 'size' ], ( int, long ) ):
+					disk[ 'size' ] = MemorySize.num2str( disk[ 'size' ] )
 
 			#interfaces
 			for iface in json[ 'interfaces' ]:

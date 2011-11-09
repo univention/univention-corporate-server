@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.35-1) unstable; urgency=low
+
+  * domain/get: return memory and disk size in [KMGT]?B; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 09 Nov 2011 17:24:24 +0100
+
 univention-virtual-machine-manager-daemon (1.0.34-1) unstable; urgency=low
 
   * domain/add: set source to value of attribute volumeFilename for block
