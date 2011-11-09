@@ -4734,12 +4734,12 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 	margin-bottom: 0;
 }
 
-.dijitDialog form {
+.umcLoginDialog form {
 	width: auto !important;
 	margin-top: 0 !important;
 }
 
-.dijitDialog .umcLabelPane {
+.umcLoginDialog .umcLabelPane {
 	margin-bottom: 8px;
 }
 

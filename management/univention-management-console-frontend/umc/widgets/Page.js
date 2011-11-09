@@ -37,6 +37,10 @@ dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 	//		Disable the page footer.
 	noFooter: false,
 
+	// forceHelpText: Boolean
+	//		If set to true, forces the help text to be shown.
+	forceHelpText: false,
+
 	// the widget's class name as CSS class
 	'class': 'umcPage',
 
@@ -131,15 +135,21 @@ dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 	postCreate: function() {
 		this.inherited(arguments);
 
-		// register for events to hide the help text information
-		this._subscriptionHandle = dojo.subscribe('/umc/preferences/moduleHelpText', dojo.hitch(this, function(show) {
-			if (false === show) {
-				this.hideDescription();
-			}
-			else {
-				this.showDescription();
-			}
-		}));
+		if (this.forceHelpText) {
+			// help text should be displayed in any case
+			this.showDescription();
+		}
+		else {
+			// register for events to hide the help text information
+			this._subscriptionHandle = dojo.subscribe('/umc/preferences/moduleHelpText', dojo.hitch(this, function(show) {
+				if (false === show) {
+					this.hideDescription();
+				}
+				else {
+					this.showDescription();
+				}
+			}));
+		}
 	},
 
 	uninitialize: function() {

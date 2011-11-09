@@ -21,9 +21,11 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	//		staticValues. Dynamic values may be mixed with staticValues.
 	dynamicValues: null,
 
-	// dynamicOptions: Object?
+	// dynamicOptions: Object?|Function?
 	//		Reference to a dictionary containing options that are passed over to
-	//		the UMCP command specified by `dynamicValues`.
+	//		the UMCP command specified by `dynamicValues`. Can be a function that
+	//		is expected to return a dictionary, it is called with a dict of all
+	//		values of the widget's dependencies.
 	dynamicOptions: null,
 
 	// sortDynamicValues: Boolean
@@ -370,8 +372,13 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		}
 
 		// mixin additional options for the UMCP command
-		if (this.dynamicOptions && dojo.isObject(this.dynamicOptions)) {
-			dojo.mixin(params, this.dynamicOptions);
+		if (this.dynamicOptions) {
+			if (dojo.isFunction(this.dynamicOptions)) {
+				dojo.mixin(params, this.dynamicOptions(params));
+			}
+			else if (dojo.isObject(this.dynamicOptions)) {
+				dojo.mixin(params, this.dynamicOptions);
+			}
 		}
 
 		// block concurrent events for value loading

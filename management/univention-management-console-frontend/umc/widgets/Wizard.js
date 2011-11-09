@@ -64,13 +64,26 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 			delete pageConf.buttons;
 			delete pageConf.layout;
 			pageConf.footerButtons = footerButtons;
+			pageConf.forceHelpText = true;
 			var page = new umc.widgets.Page(pageConf);
 
 			// create the page form
 			page._form = new umc.widgets.Form({
 				widgets: ipage.widgets,
 				buttons: ipage.buttons,
-				layout: ipage.layout
+				layout: ipage.layout,
+				scrollable: true,
+				onSubmit: dojo.hitch(this, function(e) {
+					e.preventDefault();
+					dojo.stopEvent(e);
+					if (this.hasNext(ipage.name)) {
+						this._next(ipage.name);
+					}
+					else {
+						this._finish(ipage.name);
+					}
+					return true;
+				})
 			});
 			page.addChild(page._form);
 			
@@ -102,12 +115,17 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 		return this._pages[name];
 	},
 
-	getWidget: function(pageName, widgetName) {
-		if ( pageName ) {
+	getWidget: function(pageName, _widgetName) {
+		var widgetName = _widgetName;
+		if ( arguments.length >= 2 && pageName ) {
 			return dojo.getObject('_pages.' + pageName + '._form._widgets.' + widgetName, false, this);
 		}
 
 		// if no page name is given search on all pages
+		if ( arguments.length == 1 ) {
+			// in case only one parameter has been specified, it indicates the widget name
+			widgetName = arguments[0];
+		}
 		var widget = false;
 		dojo.forEach( this.pages, dojo.hitch( this, function( page ) {
 			var w = this.getWidget( page.name, widgetName );
@@ -141,6 +159,9 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 	_next: function(/*String*/ currentPage) {
 		// update visibilty of buttons and show next page
 		var nextPage = this.next(currentPage);
+		if (!nextPage) {
+			throw new Error('ERROR: received invalid page name [' + dojo.toJson(nextPage) + '] for Wizard.next(' + dojo.toJson(currentPage) + ')');
+		}
 		this._updateButtons(nextPage);
 		this.selectChild(this._pages[nextPage]);
 	},
@@ -196,11 +217,19 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 
 	_finish: function(/*String*/ pageName) {
 		// gather all values
+		var values = this.getValues();
+		this.canFinish(values);
+		this.onFinished(values);
+	},
+
+	getValues: function() {
+		// summary:
+		//		Collects all entered values and returns a dict.
 		var values = {};
 		dojo.forEach(this.pages, function(ipage) {
 			dojo.mixin(values, this._pages[ipage.name]._form.gatherFormValues());
 		}, this);
-		this.onFinished(values);
+		return values;
 	},
 
 	canCancel: function(/*String*/ pageName) {
@@ -213,6 +242,12 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 		// summary:
 		//		This event is called when the wizard has been finished.
 		//		The parameter `values` contains the values collected from all pages.
+	},
+
+	canFinish: function(/*Object*/ values) {
+		// summary:
+		//		Specifies whether the onFinished event can be called
+		return true;
 	},
 
 	onCancel: function() {
