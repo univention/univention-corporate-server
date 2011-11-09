@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.38-1) unstable; urgency=low
+
+  * add clone action to UMC frontend; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 09 Nov 2011 20:00:12 +0100
+
 univention-virtual-machine-manager-daemon (1.0.37-1) unstable; urgency=low
 
   * _thread_finished: return error message in 'message' field of UMCP

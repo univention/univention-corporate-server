@@ -122,6 +122,15 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			canExecute: function(item) {
 				return item.state == 'RUNNING' || item.state == 'IDLE';
 			}
+		}, {
+			name: 'clone',
+			label: this._( 'Clone' ),
+			isStandardAction: false,
+			isMultiAction: false,
+			callback: dojo.hitch(this, 'cloneDomain' ),
+			canExecute: function(item) {
+				return item.state == 'SHUTOFF';
+			}
 		}];
 
 		// search widgets
@@ -267,6 +276,66 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				this.filter();
 			}
 		}));
+	},
+
+	cloneDomain: function( ids ) {
+		var dialog = null, form = null;
+
+		var _cleanup = function() {
+			dialog.hide();
+			dialog.destroyRecursive();
+			form.destroyRecursive();
+		};
+
+		var _createClone = dojo.hitch(this, function(name) {
+			// send the UMCP command
+			this.updateProgress(0, 1);
+			umc.tools.umcpCommand('uvmm/domain/clone', {
+				domainURI: ids[ 0 ],
+				cloneName: name
+			}).then(dojo.hitch(this, function() {
+				this.moduleStore.onChange();
+				this.updateProgress(1, 1);
+			}), dojo.hitch(this, function() {
+				umc.dialog.alert(this._('An error ocurred during processing your request.'));
+				this.moduleStore.onChange();
+				this.updateProgress(1, 1);
+			}));
+		});
+
+		form = new umc.widgets.Form({
+			widgets: [{
+				name: 'name',
+				type: 'TextBox',
+				label: this._('Please enter the name for the clone:'),
+				regExp: '^[^./][^/]*$',
+				invalidMessage: this._('A valid clone name cannot contain "/" and may not start with "." .')
+			}],
+			buttons: [{
+				name: 'submit',
+				label: this._('Create'),
+				style: 'float: right;',
+				callback: function() {
+					var nameWidget = form.getWidget('name');
+					if (nameWidget.isValid()) {
+						var name = nameWidget.get('value');
+						_cleanup();
+						_createClone( name );
+					}
+				}
+			}, {
+				name: 'cancel',
+				label: this._('Cancel'),
+				callback: _cleanup
+			}],
+			layout: [ 'name' ]
+		});
+
+		dialog = new dijit.Dialog({
+			title: this._('Create a clone'),
+			content: form
+		});
+		dialog.show();
 	},
 
 	openDomainPage: function(ids) {
