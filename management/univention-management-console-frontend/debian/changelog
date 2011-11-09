@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.192-1) unstable; urgency=low
+
+  * Wizard: allow for empty pages (Bug #22893)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 10 Nov 2011 01:39:33 +0100
+
 univention-management-console-frontend (1.0.191-1) unstable; urgency=low
 
   * Fix threading issues (Bug #24393)

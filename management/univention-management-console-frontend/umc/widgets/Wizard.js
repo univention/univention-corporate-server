@@ -68,24 +68,26 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 			var page = new umc.widgets.Page(pageConf);
 
 			// create the page form
-			page._form = new umc.widgets.Form({
-				widgets: ipage.widgets,
-				buttons: ipage.buttons,
-				layout: ipage.layout,
-				scrollable: true,
-				onSubmit: dojo.hitch(this, function(e) {
-					e.preventDefault();
-					dojo.stopEvent(e);
-					if (this.hasNext(ipage.name)) {
-						this._next(ipage.name);
-					}
-					else {
-						this._finish(ipage.name);
-					}
-					return true;
-				})
-			});
-			page.addChild(page._form);
+			if (ipage.widgets) {
+				page._form = new umc.widgets.Form({
+					widgets: ipage.widgets,
+					buttons: ipage.buttons,
+					layout: ipage.layout,
+					scrollable: true,
+					onSubmit: dojo.hitch(this, function(e) {
+						e.preventDefault();
+						dojo.stopEvent(e);
+						if (this.hasNext(ipage.name)) {
+							this._next(ipage.name);
+						}
+						else {
+							this._finish(ipage.name);
+						}
+						return true;
+					})
+				});
+				page.addChild(page._form);
+			}
 			
 			// add page and remember it internally
 			this.addChild(page);
@@ -228,7 +230,9 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 		//		Collects all entered values and returns a dict.
 		var values = {};
 		dojo.forEach(this.pages, function(ipage) {
-			dojo.mixin(values, this._pages[ipage.name]._form.gatherFormValues());
+			if (this._pages[ipage.name]._form) {
+				dojo.mixin(values, this._pages[ipage.name]._form.gatherFormValues());
+			}
 		}, this);
 		return values;
 	},
