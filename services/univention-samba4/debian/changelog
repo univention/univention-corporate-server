@@ -1,3 +1,10 @@
+univention-samba4 (1.0.95-1) unstable; urgency=low
+
+  * pass credentials to setup-s4 for samba3upgrade case
+  * add group descriptions in setup-s4 for samba3upgrade (Bug #22866)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 09 Nov 2011 13:07:35 +0100
+
 univention-samba4 (1.0.94-4) unstable; urgency=low
 
   * initialize the sysvol with default ACL for 'DC Slave Hosts'

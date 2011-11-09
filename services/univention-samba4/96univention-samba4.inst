@@ -198,7 +198,7 @@ if [ "$samba4_role" = 'DC' ]; then
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 			## Provision Samba4
-			/usr/share/univention-samba4/scripts/setup-s4.sh
+			/usr/share/univention-samba4/scripts/setup-s4.sh "$@"
 
 		fi
 

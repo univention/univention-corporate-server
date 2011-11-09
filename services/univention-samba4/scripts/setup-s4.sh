@@ -49,8 +49,20 @@ while getopts  "h-:W:" option; do
 		h) usage;;
 		-)
 		case "${OPTARG}" in
-			help) usage;;
-			*) echo "$0: illegal option -- --${OPTARG}"; exit 1;;
+			binddn)
+				binddn="${!OPTIND}"
+				OPTIND=$((OPTIND+1))
+				;;
+			bindpwd)
+				bindpwd="${!OPTIND}"
+				OPTIND=$((OPTIND+1))
+				;;
+			help)
+				usage
+				;;
+			*)
+				echo "Unknown option --${OPTARG}" >&2
+				;;
 		esac;;
 		w) if [ -r "$OPTARG" ]; then adminpw="$(< $OPTARG)"; adminpw2="$adminpw"; fi ;;
 		W) adminpw2='!unset';;
@@ -77,6 +89,23 @@ if [ -n "$S3_DCS" ]; then
 		exit 1
 	fi
 fi
+
+S3_DOMAIN_SID_FOR_MY_DOMAIN="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
+if [ -n "$S3_DCS" ] && [ -n "$S3_DOMAIN_SID_FOR_MY_DOMAIN" ]; then
+	if [ -z "$binddn" ]; then
+		if [ -r "/etc/ldap.secret" ]; then
+			binddn="cn=admin,$ldap_base"
+			bindpwd=$(< /etc/ldap.secret)
+		else
+			echo "ERROR: Options --binddn and --bindpwd not given for samba3upgrade"
+			exit 1
+		fi
+	fi
+	## store the binddn and bindpwd options in UDM_ARGV
+	UDM_ARGV=("--binddn" "$binddn" --bindpwd "$bindpwd")
+	set -- "${UDM_ARGV[@]}"
+fi
+
 
 while [ "$adminpw" != "$adminpw2" ]; do
 	read -p "Choose Samba4 admin password: " adminpw
@@ -129,7 +158,6 @@ if [ -z "$samba4_function_level" ]; then
 	univention-config-registry set samba4/function/level="$samba4_function_level"
 fi
 
-S3_DOMAIN_SID_FOR_MY_DOMAIN="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
 if [ -z "$S3_DCS" ] || [ -z "$S3_DOMAIN_SID_FOR_MY_DOMAIN" ]; then
 
 	if [ -z "$DOMAIN_SID" ]; then
@@ -144,7 +172,19 @@ if [ -z "$S3_DCS" ] || [ -z "$S3_DOMAIN_SID_FOR_MY_DOMAIN" ]; then
 
 else
 
+	eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nbindpwd="\2"/p')
+	groups=("Windows Hosts" "DC Backup Hosts" "DC Slave Hosts" "Computers" "Power Users")
+	for group in "${groups[@]}"; do
+		record=$(univention-ldapsearch -xLLL "(&(cn=$group)(objectClass=univentionGroup))" dn description | ldapsearch-wrapper)
+		description=$(echo "$record" | sed -n 's/^description: \(.*\)/\1/p')
+		if [ -z "$description" ]; then
+			dn=$(echo "$record" | sed -n 's/^dn: \(.*\)/\1/p')
+			univention-directory-manager groups/group modify "$@" --dn "$dn" --set description="$group"
+		fi
+	done
+
 	### create ldifs to temporarily fix sambaGroupType 5 and 2 for samba3upgrade
+	### unfortunately udm currently does not allow setting sambaGroupType=4
 	create_modify_ldif() {
 		record="$1"
 		dn=$(echo "$record" | sed -n "s/dn: \(.*\)/\1/p")
@@ -170,7 +210,6 @@ else
 		while read -d '' record; do
 			"$func" "$record" "$@"
 		done < <(sed 's/^$/\x0/')	## beware: skips last record, but that's ok with usual univention-ldapsearch output
-		# done < <(awk 'BEGIN { RS=""; FS="\n"; ORS="\x0" }; {print $0}') ## better, but awk somehow breaks on the \x0
 	}
 
 	ldif_sambaGroupType_5_to_4=$(univention-ldapsearch sambaGroupType=5 dn sambaGroupType | ldif_records create_modify_ldif)
@@ -180,14 +219,14 @@ else
 	reverse_ldif_sambaGroupType_2_to_4="${ldif_sambaGroupType_2_to_4//sambaGroupType: 4/sambaGroupType: 2}"
 
 	reverse_sambaGroupType_change() {
-		echo "$reverse_ldif_sambaGroupType_5_to_4" | ldapmodify -D cn=admin,$ldap_base -y /etc/ldap.secret | tee -a "$LOGFILE"
-		echo "$reverse_ldif_sambaGroupType_2_to_4" | ldapmodify -D cn=admin,$ldap_base -y /etc/ldap.secret | tee -a "$LOGFILE"
+		echo "$reverse_ldif_sambaGroupType_5_to_4" | ldapmodify -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
+		echo "$reverse_ldif_sambaGroupType_2_to_4" | ldapmodify -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
 	}
 	trap reverse_sambaGroupType_change EXIT
 
 	## now adjust sambaGroupType 2 and 5
-	echo "$ldif_sambaGroupType_5_to_4" | ldapmodify -D cn=admin,$ldap_base -y /etc/ldap.secret | tee -a "$LOGFILE"
-	echo "$ldif_sambaGroupType_2_to_4" | ldapmodify -D cn=admin,$ldap_base -y /etc/ldap.secret | tee -a "$LOGFILE"
+	echo "$ldif_sambaGroupType_5_to_4" | ldapmodify -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
+	echo "$ldif_sambaGroupType_2_to_4" | ldapmodify -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
 
 	## commit samba3 smb.conf
 	mkdir -p /var/lib/samba3/etc/samba
