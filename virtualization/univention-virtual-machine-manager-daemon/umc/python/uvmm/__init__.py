@@ -86,6 +86,17 @@ class Instance( Base, Nodes, Profiles, Storages, Domains, Snapshots ):
 		MODULE.info( 'Got result from UVMMd: success: %s, data: %s' % ( success, data ) )
 		self.finished( request.id, data, success = success )
 
+	def _thread_finish_success( self, thread, result, request ):
+		"""This method is invoked when a threaded request function is
+		finished. The result is send back to the client. If the result
+		is an instance of BaseException an error is returned."""
+		if self._check_thread_error( thread, result, request ):
+			return
+
+		success, data = result
+		MODULE.info( 'Got result from UVMMd: success: %s, data: %s' % ( success, data ) )
+		self.finished( request.id, { 'success' : success, 'data' : data } )
+
 	def query( self, request ):
 		"""Meta query function for nodes and domains.
 

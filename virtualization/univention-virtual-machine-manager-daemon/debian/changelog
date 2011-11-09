@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.36-1) unstable; urgency=low
+
+  * add command uvmm/domain/clone; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 09 Nov 2011 18:24:56 +0100
+
 univention-virtual-machine-manager-daemon (1.0.35-1) unstable; urgency=low
 
   * domain/get: return memory and disk size in [KMGT]?B; Bug #22893
