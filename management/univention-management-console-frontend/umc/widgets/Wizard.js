@@ -101,7 +101,21 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 	},
 
 	getWidget: function(pageName, widgetName) {
-		return dojo.getObject('_pages.' + pageName + '._form._widgets.' + widgetName, false, this);
+		if ( pageName ) {
+			return dojo.getObject('_pages.' + pageName + '._form._widgets.' + widgetName, false, this);
+		}
+
+		// if no page name is given search on all pages
+		var widget = false;
+		dojo.forEach( this.pages, dojo.hitch( this, function( page ) {
+			var w = this.getWidget( page.name, widgetName );
+			if ( undefined !== w ) {
+				widget = w;
+				return true;
+			}
+		} ) );
+
+		return widget;
 	},
 
 	_updateButtons: function(/*String*/ pageName) {
