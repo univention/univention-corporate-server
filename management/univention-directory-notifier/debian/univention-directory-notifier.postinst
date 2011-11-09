@@ -109,7 +109,7 @@ if [ -h /etc/runit/univention/univention-ldap-notifier ]; then
 fi
 
 if [ "$1" = "configure" -a -n "$2" ]; then
-	if dpkg --compare-versions "$2" lt 1.10; then
+	if dpkg --compare-versions "$2" lt 6.0.8-1; then
 		/etc/init.d/univention-directory-notifier restart || true
 	else
 		/etc/init.d/univention-directory-notifier crestart || true
