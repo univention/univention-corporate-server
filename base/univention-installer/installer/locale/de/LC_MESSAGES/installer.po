@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-03 13:37+0100\n"
-"PO-Revision-Date: 2011-11-03 13:39+0100\n"
+"POT-Creation-Date: 2011-11-09 14:17+0100\n"
+"PO-Revision-Date: 2011-11-09 14:17+0100\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -521,7 +521,7 @@ msgstr "und ist der UCS-Domäne beigetreten."
 
 #: installer/progress.py:267
 msgid "press ENTER to reboot this system."
-msgstr "drücken ENTER, um das System neu zu starten."
+msgstr "drücken Sie ENTER, um das System neu zu starten."
 
 #: installer/progress.py:272
 msgid "Administrative frontend:"
@@ -2251,7 +2251,11 @@ msgid ""
 "global unicast address (2000::/3) and not a unique local unicast address "
 "(fc00::/7). This warning is shown only once for each address. The "
 "installation can be continued but might fail."
-msgstr "Die angegebene IPv6-Adresse \"%(addr)s\" für Interface \"%(interface)s\" ist keine globale Unicast-Adresse (2000::/3) und keine Unique-Local-Unicast-Adresse (fc00::/7). Diese Warnung wird nur einmal für jede IP-Adresse angezeigt. Die Installation kann fortgesetzt werden, kann aber fehlschlagen. "
+msgstr ""
+"Die angegebene IPv6-Adresse \"%(addr)s\" für Interface \"%(interface)s\" ist "
+"keine globale Unicast-Adresse (2000::/3) und keine Unique-Local-Unicast-"
+"Adresse (fc00::/7). Diese Warnung wird nur einmal für jede IP-Adresse "
+"angezeigt. Die Installation kann fortgesetzt werden, kann aber fehlschlagen. "
 
 #: installer/modules/70_net.py:823
 msgid ""

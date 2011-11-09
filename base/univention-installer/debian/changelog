@@ -1,3 +1,9 @@
+univention-installer (7.0.140-1) unstable; urgency=low
+
+  * small change in german translation (Bug #23955)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 09 Nov 2011 14:18:46 +0100
+
 univention-installer (7.0.139-1) unstable; urgency=low
 
   * do not resolve LVM symlinks - not required/desired anymore (Bug #24436)
