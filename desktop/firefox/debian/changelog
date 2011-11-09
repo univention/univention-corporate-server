@@ -1,3 +1,9 @@
+firefox (8.0-1) unstable; urgency=low
+
+  * Update to Firefox 8 (Bug #22116)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 09 Nov 2011 08:39:36 +0100
+
 firefox (7.0.1-9) unstable; urgency=low
 
   * Change architecture detection from dpkg-architecture to uname -m. dpkg-architecture
