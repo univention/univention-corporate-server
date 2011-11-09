@@ -1,3 +1,10 @@
+univention-samba4 (1.0.97-1) unstable; urgency=low
+
+  * renew fACLs for 'DC Slave Hosts' on all sysvol files
+    on each run of sysvol-sync (Bug #24163)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 09 Nov 2011 14:50:13 +0100
+
 univention-samba4 (1.0.96-1) unstable; urgency=low
 
   * fix host parsing for IPv6 (Bug #24479)
