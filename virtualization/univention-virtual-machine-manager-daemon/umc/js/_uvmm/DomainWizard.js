@@ -161,6 +161,7 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 	getValues: function() {
 		var values = this._pages.general._form.gatherFormValues();
 		values.nodeURI = this.getWidget('nodeURI').get('value');
+		values.vnc_remote = true;
 		values.disks = this._driveStore.data;
 		values.interfaces = [{
 			paravirtual: this._profile.pvinterface,
