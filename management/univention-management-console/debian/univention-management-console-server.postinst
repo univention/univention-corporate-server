@@ -44,15 +44,29 @@ univention-config-registry set \
 /usr/sbin/univention-management-console-acls remove --user root \
 			--command 'baseconfig/*'
 
+# create UMC ACLs for user root
+eval "$(ucr shell server/role)"
+
 # append new command patterns to allow list
-/usr/sbin/univention-management-console-acls allow --user root \
-            --command 'join/*' \
+/usr/sbin/univention-management-console-acls allow --user root --host "*" \
 			--command 'ucr/*' \
 			--command 'mrtg/*' \
 			--command 'service/*' \
-			--command 'online/*'
-/usr/sbin/univention-management-console-acls allow --user root --flavor tabs \
+			--command 'quota/*' \
+			--command 'top/*' \
+			--command 'reboot/*' \
+			--command 'services/*' \
+			--command 'packages/*' \
+			--command 'updater/*'
+
+if [ "$server_role" != "basesystem" ]; then
+	/usr/sbin/univention-management-console-acls allow --user root --host "*" --command 'join/*'
+fi
+
+/usr/sbin/univention-management-console-acls allow --user root --host "*" --flavor tabs \
 			--command 'setup/*'
+
+
 
 # configure firewall
 ucr set security/packetfilter/package/univention-management-console-server/tcp/6670/all="ACCEPT" \

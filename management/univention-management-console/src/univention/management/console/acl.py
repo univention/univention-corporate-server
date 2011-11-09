@@ -128,7 +128,8 @@ class ACLs( object ):
 					for role in ACLs._systemroles:
 						servers += role.lookup( None, self.lo, None, base=self.__ldap_base )
 
-					new_hosts = filter( lambda server: 'name' in server, servers )
+						new_hosts = filter( lambda server: 'name' in server, servers )
+
 					hosts.extend( new_hosts )
 					self.__cache[ self.__ldap_base ].extend( new_hosts )
 				else:
@@ -244,7 +245,7 @@ class ACLs( object ):
 
 	def _is_allowed( self, acls, command, hostname, options, flavor ):
 		for rule in acls:
-			if hostname and rule.host != hostname:
+			if hostname and rule.host != '*' and rule.host != hostname:
 				continue
 			match = self.__command_match( rule.command, command )
 			opt_match = self.__option_match( rule.options, options )
