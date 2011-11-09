@@ -1,3 +1,9 @@
+univention-printserver (5.0.15-1) unstable; urgency=low
+
+  * add UMC module from Frank Greif <fg@it25.de>; Bug #22902
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 09 Nov 2011 20:14:00 +0100
+
 univention-printserver (5.0.14-1) unstable; urgency=low
 
   * cups-printers.py must relaod samba4 if init script exists (Bug #22865)

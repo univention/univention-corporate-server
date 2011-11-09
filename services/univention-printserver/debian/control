@@ -74,3 +74,18 @@ Description: UCS - foomatic ppds
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-management-console-module-printers
+Architecture: all
+Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
+ univention-management-console-server,
+ univention-printserver (= ${source:Version})
+Description: UMC module for printer administration
+ This package contains the UMC module for the administration
+ of configured printers.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

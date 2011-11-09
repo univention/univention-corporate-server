@@ -1,9 +1,10 @@
-#!/usr/bin/make -f
+#!/bin/sh
+# -*- coding: utf-8 -*-
 #
-# Univention Print Server
-#  rules file for the debian package
+# Univention Management Console Module printers
+#  join script
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,32 +31,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-PO_FILES := $(shell find modules -name '*.po')
-MO_FILES := $(PO_FILES:%.po=%.mo)
+VERSION=1
 
-%.mo:   %.po
-	msgfmt --check -o $@ $<
+. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/umc.sh
 
-override_dh_auto_build: $(MO_FILES)
-	dh-umc-module-build
-	dh_auto_build
+joinscript_init
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
+umc_init
+umc_operation_create "printers-all" "Printer Administration" "" "printers/*"
+umc_policy_append "default-umc-all" "printers-all"
 
-override_dh_auto_install:
-	dh-umc-module-install
-	for i in $$(ls /usr/share/foomatic/db/source/driver/ | sed 's|\.xml$$||'); do foomatic-compiledb -d $$(pwd)/foomatic-rip/ -f -t ppd -j 5 "$$i"; done
-	dh_auto_install
-	univention-install-config-registry
-	@for i in $(MO_FILES); do\
-		lang=`basename $$i .mo`;\
-		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`;\
-		o=debian/univention-printserver/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
-		install -d "`dirname $$o`";\
-		install -m 644 $$i $$o;\
-	done
+joinscript_save_current_version
 
-%:
-	dh $@
+exit 0
+
+

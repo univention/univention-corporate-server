@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="printers" icon="printing" version="1.0">
+	<name>Printer Administration</name>
+	<description>Manage defined printers</description>
+	<categories>
+	  <category name="system"/>
+	</categories>
+
+	<command name="printers/query" function="list_printers"/>
+
+	<command name="printers/get" function="get">
+		<attribute name="printer" syntax="String"/>
+	</command>
+
+	<command name="printers/enable" function="enable">
+		<attribute name="printer" syntax="String"/>
+		<attribute name="on" syntax="Bool"/>
+	</command>
+
+	<command name="printers/jobs/query" function="list_jobs">
+		<attribute name="printer" syntax="String"/>
+	</command>
+
+	<command name="printers/jobs/cancel" function="cancel">
+		<attribute name="printer" syntax="String"/>
+		<attribute name="jobs" syntax="String"/>
+	</command>
+
+	<command name="printers/quota/query" function="list_quota">
+		<attribute name="printer" syntax="String"/>
+	</command>
+
+  </module>
+</umc>
