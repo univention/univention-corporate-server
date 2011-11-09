@@ -218,8 +218,9 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 	_finish: function(/*String*/ pageName) {
 		// gather all values
 		var values = this.getValues();
-		this.canFinish(values);
-		this.onFinished(values);
+		if (this.canFinish(values)) {
+			this.onFinished(values);
+		}
 	},
 
 	getValues: function() {
