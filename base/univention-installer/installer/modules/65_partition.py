@@ -2401,7 +2401,7 @@ class object(content):
 				self.parent.scan_extended_size()
 				self.parent.debug('SCAN_EXT: %s' % self.container['temp'])
 				if len(self.container['temp'].keys()):
-					self.sub=self.resize_extended(self,self.minY+4,self.minX-2,self.maxWidth+16,self.maxHeight-8)
+					self.sub=self.resize_extended(self,self.minY+4,self.minX-2,self.maxWidth+16,self.maxHeight-19)
 					self.sub.draw()
 
 		def get_col(self, word, width, align='r'):
