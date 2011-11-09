@@ -1,3 +1,9 @@
+univention-heimdal (5.0.18-1) unstable; urgency=low
+
+  * add firewall exception for kpasswd (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 09 Nov 2011 14:23:26 +0100
+
 univention-heimdal (5.0.17-1) unstable; urgency=low
 
   * allow running salt_krb5keys on a DC backup (Bug #22866)

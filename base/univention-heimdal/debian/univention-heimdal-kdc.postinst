@@ -46,6 +46,8 @@ univention-config-registry set security/packetfilter/package/univention-heimdal-
 		security/packetfilter/package/univention-heimdal-kdc/tcp/88/all/en="kerberos" \
 		security/packetfilter/package/univention-heimdal-kdc/udp/88/all="ACCEPT" \
 		security/packetfilter/package/univention-heimdal-kdc/udp/88/all/en="kerberos" \
+		security/packetfilter/package/univention-heimdal-kdc/udp/464/all="ACCEPT" \
+		security/packetfilter/package/univention-heimdal-kdc/udp/464/all/en="kpasswd" \
 		security/packetfilter/package/univention-heimdal-kdc/tcp/749/all="ACCEPT" \
 		security/packetfilter/package/univention-heimdal-kdc/tcp/749/all/en="kadmin"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
