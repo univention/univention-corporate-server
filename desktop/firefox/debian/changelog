@@ -1,3 +1,9 @@
+firefox (1:7.0.1-1) unstable; urgency=low
+
+  * Revert to Firefox 7.0.1 (Bug #22116) 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 09 Nov 2011 09:30:10 +0100
+
 firefox (8.0-1) unstable; urgency=low
 
   * Update to Firefox 8 (Bug #22116)
