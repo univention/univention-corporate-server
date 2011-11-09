@@ -477,7 +477,7 @@ class Client( notifier.signals.Provider ):
 					node_info = res.data
 					node_info.domains = dict(((domain_info.uuid, domain_info) for domain_info in node_info.domains))
 				except UvmmError, e:
-					node_info = protocol.Data_node()
+					node_info = protocol.Data_Node()
 					node_info.uri = node_uri
 					node_info.last_try = time.time()
 					node_info.domains = {}

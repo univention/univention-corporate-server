@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.335-2) unstable; urgency=low
+
+  * Fix Traceback: Data_node -> Data_Node (Bug #23092)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 09 Nov 2011 08:49:14 +0100
+
 univention-virtual-machine-manager-daemon (0.9.335-1) unstable; urgency=low
 
   * Force translation for VNC link. (Bug #24190)
