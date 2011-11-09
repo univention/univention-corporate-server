@@ -1161,6 +1161,9 @@ class object(content):
 							self.run_cmd('/sbin/PartedCreate -d %s -t %s -s %s -e %s 2>&1' % (disk, type, start, end))
 						else:
 							self.run_cmd('/sbin/PartedCreate -d %s -t %s -f %s -s %s -e %s 2>&1' % (disk, type, fstype, start, end))
+						if 'boot' in flaglist:
+							self.parent.debug('%s%s: boot flag' % (disk, num))
+							self.run_cmd('/sbin/parted -s %s set %s boot on' % (disk, num))
 						if 'lvm' in flaglist:
 							device = self.get_real_partition_device_name(disk,num)
 							self.parent.debug('%s: lvm flag' % device)

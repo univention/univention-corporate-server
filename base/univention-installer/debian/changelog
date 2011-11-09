@@ -1,3 +1,9 @@
+univention-installer (7.0.140-3) unstable; urgency=low
+
+  * set boot flag in profile installation (Bug #19226)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 09 Nov 2011 16:34:56 +0100
+
 univention-installer (7.0.140-2) unstable; urgency=low
 
   * display one dialog at a time (Bug #22312)
