@@ -84,7 +84,7 @@ class Snapshots( object ):
 
 		options: { 'domainURI': <domain URI>. 'snapshotName' : <snapshot name> }
 
-		return: { 'success' : (True|False), 'message' : <details> }
+		return: { 'success' : (True|False), 'data' : <details> }
 		"""
 		self.required_options( request, 'domainURI', 'snapshotName' )
 
@@ -96,7 +96,7 @@ class Snapshots( object ):
 
 		options: { 'domainURI': <domain URI>. 'name' : <snapshot name> }
 
-		return: { 'success' : (True|False), 'message' : <details> }
+		return: { 'success' : (True|False), 'data' : <details> }
 		"""
 		self.required_options( request, 'domainURI', 'snapshotName' )
 

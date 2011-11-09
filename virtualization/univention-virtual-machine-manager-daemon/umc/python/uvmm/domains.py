@@ -332,7 +332,7 @@ class Domains( object ):
 		"""
 		self.required_options( request, 'domainURI', 'targetNodeURI' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
-		self.uvmm.send( 'DOMAIN_MIGRATE', Callback( self._thread_finish_success, request ), uri = node_uri, domain = domain_uuid, target_uri = request.options[ 'targetNodeURI' ] )
+		self.uvmm.send( 'DOMAIN_MIGRATE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, target_uri = request.options[ 'targetNodeURI' ] )
 
 	def domain_clone( self, request ):
 		"""Clones an existing domain.
@@ -343,7 +343,7 @@ class Domains( object ):
 		"""
 		self.required_options( request, 'domainURI', 'cloneName' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
-		self.uvmm.send( 'DOMAIN_CLONE', Callback( self._thread_finish_success, request ), uri = node_uri, domain = domain_uuid, name = request.options[ 'cloneName' ] )
+		self.uvmm.send( 'DOMAIN_CLONE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, name = request.options[ 'cloneName' ] )
 
 	def domain_remove( self, request ):
 		"""Removes a domain. Optional a list of volumes can bes specified that should be removed
@@ -354,7 +354,7 @@ class Domains( object ):
 		"""
 		self.required_options( request, 'domainURI' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
-		self.uvmm.send( 'DOMAIN_UNDEFINE', Callback( self._thread_finish_success, request ), uri = node_uri, domain = domain_uuid, volumes = request.options[ 'volumes' ] )
+		self.uvmm.send( 'DOMAIN_UNDEFINE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, volumes = request.options[ 'volumes' ] )
 
 class Bus( object ):
 	"""Periphery bus like IDE-, SCSI-, Xen-, VirtIO- und FDC-Bus."""

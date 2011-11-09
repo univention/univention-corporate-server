@@ -84,7 +84,10 @@ class Instance( Base, Nodes, Profiles, Storages, Domains, Snapshots ):
 
 		success, data = result
 		MODULE.info( 'Got result from UVMMd: success: %s, data: %s' % ( success, data ) )
-		self.finished( request.id, data, success = success )
+		if not success:
+			self.finished( request.id, None, message = data, success = success )
+		else:
+			self.finished( request.id, data, success = success )
 
 	def _thread_finish_success( self, thread, result, request ):
 		"""This method is invoked when a threaded request function is
