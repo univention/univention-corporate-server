@@ -524,9 +524,9 @@ class UMC_HTTP_Daemon(DaemonRunner):
 
 		# default action: start
 		if not self.arguments:
-			sys.argv[ 1 ] = 'start'
+			sys.argv[1:] = ['start']
 		elif self.arguments:
-			sys.argv[ 1 ] = self.arguments[ 0 ]
+			sys.argv[1:] = self.arguments
 
 		# for daemon runner
 		if self.options.daemon_mode:
