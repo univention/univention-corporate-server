@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.44-1) unstable; urgency=low
+
+  * UMC: merged translations from 2.4 (Bug #22893) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 10 Nov 2011 02:18:22 +0100
+
 univention-virtual-machine-manager-daemon (1.0.43-1) unstable; urgency=low
 
   * UMC: added domain wizard (Bug #22893) 

@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-08 12:20+0100\n"
+"POT-Creation-Date: 2011-11-10 02:02+0100\n"
 "PO-Revision-Date: 2011-09-28 19:23+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -303,11 +303,11 @@ msgstr ""
 "werden. Dabei sollte ein Festplatten-Image immer nur von einer virtuellen "
 "Instanz zur Zeit verwendet werden."
 
-#: umc/python/uvmm/profiles.py:64
+#: umc/python/uvmm/profiles.py:65
 msgid "Full virtualization (KVM)"
 msgstr "Voll-Virtualisierung (KVM)"
 
-#: umc/python/uvmm/profiles.py:65
+#: umc/python/uvmm/profiles.py:66
 msgid "Full virtualization (XEN)"
 msgstr "Voll-Virtualisierung (XEN)"
 
@@ -370,7 +370,7 @@ msgstr "Image-Datei nicht gefunden"
 msgid "Image size"
 msgstr "Image-Größe"
 
-#: umc/python/uvmm/domains.py:318
+#: umc/python/uvmm/domains.py:338
 msgid "Invalid domain state"
 msgstr ""
 
@@ -434,12 +434,12 @@ msgstr ""
 "installiert werden, siehe <a href=\"http://wiki.univention.de/index.php?"
 "title=UVMM_Technische_Details\"> Univention Wiki. </a>"
 
-#: umc/python/uvmm/profiles.py:66
+#: umc/python/uvmm/profiles.py:67
 msgid "Paravirtualization (XEN)"
 msgstr "Paravirtualisierung (XEN)"
 
-#: umc/python/uvmm/__init__.py:102 umc/python/uvmm/treeview.py:206
-#: umc/python/uvmm/nodes.py:76
+#: umc/python/uvmm/__init__.py:117 umc/python/uvmm/treeview.py:206
+#: umc/python/uvmm/nodes.py:77
 msgid "Physical servers"
 msgstr "Physikalische Server"
 
@@ -714,16 +714,16 @@ msgstr ""
 msgid "Type"
 msgstr "Typ"
 
-#: umc/python/uvmm/profiles.py:119
+#: umc/python/uvmm/profiles.py:120
 #, fuzzy
 msgid "Unknown profile"
 msgstr "Unbekannter Wert"
 
-#: umc/python/uvmm/domains.py:218
+#: umc/python/uvmm/domains.py:230
 msgid "Unknown profile given"
 msgstr ""
 
-#: umc/python/uvmm/__init__.py:104
+#: umc/python/uvmm/__init__.py:119
 msgid "Unknown query type"
 msgstr ""
 
