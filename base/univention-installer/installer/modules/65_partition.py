@@ -2095,6 +2095,10 @@ class object(content):
 				# already checked and approved by user
 				return
 
+			if hasattr(self, 'sub') and self.sub:
+				# there's another subwindow active ==> stop here
+				return
+
 			self.parent.debug('check_partition_table_msg()')
 			for dev in self.container['problemdisk']:
 				self.parent.debug('Checking problems for device %s ==> %s' % (dev, self.container['problemdisk'][dev]))
