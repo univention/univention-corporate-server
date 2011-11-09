@@ -1,3 +1,9 @@
+univention-base-files (1.0.37-2) unstable; urgency=low
+
+  * fixed UCR template (Bug #3515)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 09 Nov 2011 10:08:23 +0100
+
 univention-base-files (1.0.37-1) unstable; urgency=low
 
   * updated logrotate entry for UCR replication log (Bug #3515)

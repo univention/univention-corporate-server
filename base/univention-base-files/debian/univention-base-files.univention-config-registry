@@ -85,6 +85,8 @@ File: etc/apt/apt.conf.d/80proxy
 Variables: proxy/http
 Variables: proxy/username
 Variables: proxy/password
+Variables: proxy/address
+Variables: proxy/port
 
 Type: file
 File: etc/apt/apt.conf.d/20secureapt
@@ -229,6 +231,7 @@ Subfile: etc/python2.6/sitecustomize.py.d/20utf8.py
 
 Type: file
 File: etc/logrotate.d/univention-config-registry-replog
+Variables: logrotate/.*
 
 Type: file
 File: etc/cron.d/univention-config-registry-backup

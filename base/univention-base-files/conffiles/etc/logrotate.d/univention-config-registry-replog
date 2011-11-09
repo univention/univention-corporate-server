@@ -1,12 +1,11 @@
 @%@UCRWARNING=# @%@
 
+/var/log/univention/config-registry.replog {
 @!@
 import univention.lib.ucrLogrotate
 
 name = "ucr-replog"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
-print "/var/log/univention/config-registry.replog {" % name
 
 for setting in settings.keys():
         print "\t%s" % settings[setting]
