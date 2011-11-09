@@ -63,7 +63,6 @@ except TypeError, ValueError:
 	CORE.process( 'Failed to read session timeout from UCR variable umc/http/session/timeout. Using default of 300 seconds' )
 	_session_timeout = 300
 _thread_http = None
-_queue_send = Queue.Queue()
 
 class SessionClient(object):
 	def __init__( self, timeout = 300 ):
@@ -147,16 +146,16 @@ class SessionClient(object):
 class UMCP_Dispatcher( object ):
 	"""Dispatcher used to exchange the requests between CherryPy and UMC"""
 	sessions = {}
+	_queue_send = Queue.Queue()
 
-	@staticmethod
-	def check_queue():
-		global _queue_send
-		while _queue_send.qsize():
+	@classmethod
+	def check_queue(cls):
+		while True:
 			try:
-				queuerequest = _queue_send.get_nowait()
+				queuerequest = cls._queue_send.get_nowait()
 			except Queue.Empty:
-				# Queue is empty - nothing to do
-				return
+				# Queue is empty - nothing to do (for now)
+				return True
 			CORE.info('UMCP_Dispatcher: check_queue: new request: 0x%x' % (id(queuerequest),))
 
 			if not type(queuerequest.sessionid) == str and queuerequest.sessionid is not None:
@@ -167,7 +166,7 @@ class UMCP_Dispatcher( object ):
 				CORE.process('UMCP_Dispatcher: check_queue: got invalid response_queue: %r' % (queuerequest.response_queue,))
 
 			# stop here if sessionid is missing or unknown and request is no AUTH request
-			if ( not queuerequest.sessionid or not queuerequest.sessionid in UMCP_Dispatcher.sessions.keys() ) and not queuerequest.request.command == 'AUTH':
+			if ( not queuerequest.sessionid or not queuerequest.sessionid in cls.sessions.keys() ) and not queuerequest.request.command == 'AUTH':
 				CORE.process('UMCP_Dispatcher: check_queue: invalid session: sessionid=%s' % repr(queuerequest.sessionid))
 				response = umcp.Response( queuerequest.request )
 				response.status = httplib.UNAUTHORIZED # set status to unauthorized
@@ -183,9 +182,9 @@ class UMCP_Dispatcher( object ):
 					queuerequest.sessionid = str( uuid.uuid4() )
 				# create new session / umcp client
 				# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
-				UMCP_Dispatcher.sessions[ queuerequest.sessionid ] = SessionClient(timeout = _session_timeout + 5)
-				client = UMCP_Dispatcher.sessions.get(queuerequest.sessionid)
-				callback = notifier.Callback( UMCP_Dispatcher.cleanup_session, queuerequest.sessionid )
+				cls.sessions[queuerequest.sessionid] = SessionClient(timeout = _session_timeout + 5)
+				client = cls.sessions.get(queuerequest.sessionid)
+				callback = notifier.Callback(cls.cleanup_session, queuerequest.sessionid)
 				client.client.signal_connect( 'closed', callback )
 
 				# save new sessionid in UMCP request so it can be returned after authentication
@@ -204,15 +203,13 @@ class UMCP_Dispatcher( object ):
 					# remove response_queue from internal mapping
 					client.cleanup_request( queuerequest.request )
 
-		return True
-
-	@staticmethod
-	def cleanup_session( sessionid ):
+	@classmethod
+	def cleanup_session(cls, sessionid):
 		"""Removes a session when the connection to the UMC server has died or the session is expired"""
-		CORE.info( 'Open sessions: %s' % ','.join( UMCP_Dispatcher.sessions.keys() ) )
-		CORE.info( 'Cleaning up session %s' % sessionid )
-		if sessionid in UMCP_Dispatcher.sessions:
-			del UMCP_Dispatcher.sessions[ sessionid ]
+		CORE.info('Open sessions: %s' % (','.join(cls.sessions.keys())))
+		if sessionid in cls.sessions:
+			del cls.sessions[sessionid]
+			CORE.info('Cleaning up session %s' % sessionid)
 		else:
 			CORE.info( 'Session %s not found' % sessionid )
 
@@ -286,7 +283,6 @@ class CPgeneric(object):
 
 	@cherrypy.expose
 	def default( self, *args, **kwargs ):
-		global _queue_send
 		remote = cherrypy.request.remote
 		self._log('info', 'got new request')
 
@@ -331,7 +327,7 @@ class CPgeneric(object):
 
 		# send request to UMC server
 		request = QueueRequest(sessionid, req, response_queue)
-		_queue_send.put(request)
+		UMCP_Dispatcher._queue_send.put(request)
 
 		self._log('info', 'pushed request(0x%x) to queue(0x%x) - waiting for response (sessionid="%s")' % (id(req), id(response_queue), sessionid))
 		response = response_queue.get()
@@ -420,7 +416,6 @@ class CPCommand(CPgeneric):
 class CPAuth(object):
 	@cherrypy.expose
 	def default(self):
-		global _queue_send
 		remote = cherrypy.request.remote
 		CORE.info('CPRoot/auth: got new auth request (%s:%s <=> %s)' % (remote.ip, remote.port, remote.name))
 
@@ -453,7 +448,7 @@ class CPAuth(object):
 
 		# send request to UMC server
 		request = QueueRequest(None, req, response_queue)
-		_queue_send.put(request)
+		UMCP_Dispatcher._queue_send.put(request)
 
 		CORE.info('CPRoot/auth: pushed request to queue - waiting for response')
 		response = response_queue.get()
