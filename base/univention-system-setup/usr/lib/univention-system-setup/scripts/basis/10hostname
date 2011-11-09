@@ -231,7 +231,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then  # create the new certif
 	if [ ! -d "/etc/univention/ssl/$new_hostname.$domainname" ]; then
 		univention-certificate new -name "$new_hostname.$domainname"
 	fi
-else # download certificate from master
+elif [ "$server_role" != "basesystem" ]; then # download certificate from master
 	if [ -x "/usr/sbin/univention-scp" ]; then
 		echo `date` : "Download host certificate"  >> /var/log/univention/setup.log
 		HOSTPWD="/etc/machine.secret"
@@ -253,46 +253,48 @@ else # download certificate from master
 	fi
 fi
 
-if [ -d "/etc/univention/ssl/$new_hostname.$domainname" ]; then
-	cp /etc/univention/ssl/$new_hostname.$domainname/cert.pem /var/lib/cyrus/cert.pem
-	chown cyrus: /var/lib/cyrus/cert.pem
-	chmod 600 /var/lib/cyrus/cert.pem
+if [ "$server_role" != "basesystem" ]; then
+	if [ -d "/etc/univention/ssl/$new_hostname.$domainname" ]; then
+		cp /etc/univention/ssl/$new_hostname.$domainname/cert.pem /var/lib/cyrus/cert.pem
+		chown cyrus: /var/lib/cyrus/cert.pem
+		chmod 600 /var/lib/cyrus/cert.pem
 
-	if [ -d /etc/cups/ssl ]; then
-		rm -f /etc/cups/ssl/server.crt
-		ln -s /etc/univention/ssl/$new_hostname.$domainname/cert.pem /etc/cups/ssl/server.crt
-		rm -f /etc/cups/ssl/server.key
-		ln -s /etc/univention/ssl/$new_hostname.$domainname/private.key /etc/cups/ssl/server.key
+		if [ -d /etc/cups/ssl ]; then
+			rm -f /etc/cups/ssl/server.crt
+			ln -s /etc/univention/ssl/$new_hostname.$domainname/cert.pem /etc/cups/ssl/server.crt
+			rm -f /etc/cups/ssl/server.key
+			ln -s /etc/univention/ssl/$new_hostname.$domainname/private.key /etc/cups/ssl/server.key
+		fi
 	fi
+
+
+	echo `date` : "Create new host certificate"  >> /var/log/univention/setup.log
+
+	rm -f /etc/univention/ssl/$new_hostname
+	ln -sf /etc/univention/ssl/$new_hostname.$domainname /etc/univention/ssl/$new_hostname
+
+
+	if [ -d "/var/lib/cyrus/" ]; then
+		echo `date` : "Include new host certificate for Cyrus"  >> /var/log/univention/setup.log
+		for file in cert.pem private.key; do
+			cp /etc/univention/ssl/$new_hostname.$domainname/$file /var/lib/cyrus/$file
+			chown cyrus: /var/lib/cyrus/$file
+			chmod 600 /var/lib/cyrus/$file
+		done
+	fi
+
+
+	echo `date` : "Restart LDAP server"  >> /var/log/univention/setup.log
+	service_stop slapd
+	service_start slapd nscd heimdal-kdc
+
+
+	#TODO: get keytab from dc master
+	echo `date` : "Setting new hostname into effect for Kerberos"  >> /var/log/univention/setup.log
+	rm -f /etc/krb5.keytab
+	kadmin -l ext "host/$new_hostname.$domainname@`echo $kerberos_realm | tr [[:lower:]] [[:upper:]]`"
+	kadmin -l ext "ldap/$new_hostname.$domainname@`echo $kerberos_realm | tr [[:lower:]] [[:upper:]]`"
 fi
-
-
-echo `date` : "Create new host certificate"  >> /var/log/univention/setup.log
-
-rm -f /etc/univention/ssl/$new_hostname
-ln -sf /etc/univention/ssl/$new_hostname.$domainname /etc/univention/ssl/$new_hostname
-
-
-if [ -d "/var/lib/cyrus/" ]; then
-	echo `date` : "Include new host certificate for Cyrus"  >> /var/log/univention/setup.log
-	for file in cert.pem private.key; do
-		cp /etc/univention/ssl/$new_hostname.$domainname/$file /var/lib/cyrus/$file
-		chown cyrus: /var/lib/cyrus/$file
-		chmod 600 /var/lib/cyrus/$file
-	done
-fi
-
-
-echo `date` : "Restart LDAP server"  >> /var/log/univention/setup.log
-service_stop slapd
-service_start slapd nscd heimdal-kdc
-
-
-#TODO: get keytab from dc master
-echo `date` : "Setting new hostname into effect for Kerberos"  >> /var/log/univention/setup.log
-rm -f /etc/krb5.keytab
-kadmin -l ext "host/$new_hostname.$domainname@`echo $kerberos_realm | tr [[:lower:]] [[:upper:]]`"
-kadmin -l ext "ldap/$new_hostname.$domainname@`echo $kerberos_realm | tr [[:lower:]] [[:upper:]]`"
 
 
 #DNS settings

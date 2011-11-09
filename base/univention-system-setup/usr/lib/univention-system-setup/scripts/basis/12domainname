@@ -206,7 +206,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then  # create the new certif
 	univention-certificate new -name "univention-directory-manager.$new_domainname"
 	rm -f /etc/univention/ssl/univention-directory-manager
 	ln -sf /etc/univention/ssl/univention-directory-manager.$new_domainname /etc/univention/ssl/univention-directory-manager
-else # download certificate from master
+elif [ "$server_role" != "basesystem" ]; then # download certificate from master
 	if [ -x "/usr/sbin/univention-scp" ]; then
 		echo `date` : "Download host certificate"  >> /var/log/univention/setup.log
 		HOSTPWD="/etc/machine.secret"
@@ -228,33 +228,35 @@ else # download certificate from master
 	fi
 fi
 
-rm -f /etc/univention/ssl/$hostname
-ln -sf /etc/univention/ssl/$hostname.$new_domainname /etc/univention/ssl/$hostname
+if [ "$server_role" != "basesystem" ]; then
+	rm -f /etc/univention/ssl/$hostname
+	ln -sf /etc/univention/ssl/$hostname.$new_domainname /etc/univention/ssl/$hostname
 
-if [ -d "/etc/univention/ssl/$hostname.$new_domainname" ]; then
-	echo `date` : "Include new host certificate for Cyrus"  >> /var/log/univention/setup.log
-	for file in cert.pem private.key; do
-		cp /etc/univention/ssl/$hostname.$new_domainname/$file /var/lib/cyrus/$file
-		chown cyrus: /var/lib/cyrus/$file
-		chmod 600 /var/lib/cyrus/$file
-	done
+	if [ -d "/etc/univention/ssl/$hostname.$new_domainname" ]; then
+		echo `date` : "Include new host certificate for Cyrus"  >> /var/log/univention/setup.log
+		for file in cert.pem private.key; do
+			cp /etc/univention/ssl/$hostname.$new_domainname/$file /var/lib/cyrus/$file
+			chown cyrus: /var/lib/cyrus/$file
+			chmod 600 /var/lib/cyrus/$file
+		done
 
-	echo `date` : "Include new host certificate for CUPS"  >> /var/log/univention/setup.log
-	if [ -d /etc/cups/ssl ]; then
-		rm -f /etc/cups/ssl/server.crt
-		ln -s /etc/univention/ssl/$hostname.$new_domainname/cert.pem /etc/cups/ssl/server.crt
-		rm -f /etc/cups/ssl/server.key
-		ln -s /etc/univention/ssl/$hostname.$new_domainname/private.key /etc/cups/ssl/server.key
+		echo `date` : "Include new host certificate for CUPS"  >> /var/log/univention/setup.log
+		if [ -d /etc/cups/ssl ]; then
+			rm -f /etc/cups/ssl/server.crt
+			ln -s /etc/univention/ssl/$hostname.$new_domainname/cert.pem /etc/cups/ssl/server.crt
+			rm -f /etc/cups/ssl/server.key
+			ln -s /etc/univention/ssl/$hostname.$new_domainname/private.key /etc/cups/ssl/server.key
+		fi
 	fi
+
+
+	eval "$(univention-config-registry shell)"
+
+	echo `date` : "Setting new hostname into effect for Kerberos : $hostname.$new_domainname@$kerberos_realm"  >> /var/log/univention/setup.log
+	rm -f /etc/krb5.keytab
+	kadmin -l ext "host/$hostname.$new_domainname@$(echo $kerberos_realm | tr '[[:lower:]]' '[[:upper:]]')"
+	kadmin -l ext "ldap/$hostname.$new_domainname@$(echo $kerberos_realm | tr '[[:lower:]]' '[[:upper:]]')"
 fi
-
-
-eval "$(univention-config-registry shell)"
-
-echo `date` : "Setting new hostname into effect for Kerberos : $hostname.$new_domainname@$kerberos_realm"  >> /var/log/univention/setup.log
-rm -f /etc/krb5.keytab
-kadmin -l ext "host/$hostname.$new_domainname@$(echo $kerberos_realm | tr '[[:lower:]]' '[[:upper:]]')"
-kadmin -l ext "ldap/$hostname.$new_domainname@$(echo $kerberos_realm | tr '[[:lower:]]' '[[:upper:]]')"
 
 if [ "$ldap_available" = 1 ]; then
 

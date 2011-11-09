@@ -1,3 +1,9 @@
+univention-system-setup (5.0.56-1) unstable; urgency=low
+
+  * do not download certificates on basesystem (Bug #23993)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Nov 2011 17:35:27 +0100
+
 univention-system-setup (5.0.55-1) unstable; urgency=low
 
   * Don't set Administrator password in setup script in non appliance
