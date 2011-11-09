@@ -33,6 +33,7 @@
 
 import cherrypy
 import os
+import threading
 import Queue
 from optparse import OptionParser
 import simplejson
@@ -80,6 +81,7 @@ class SessionClient(object):
 		self._timeout = timeout * 1000
 		self._timeout_id = None
 		self.renew_timer()
+		self._lock = threading.Lock()
 
 	def renew_timer( self ):
 		"""Refresh the session timer. If there is already a timer
@@ -119,13 +121,18 @@ class SessionClient(object):
 
 	def _response(self, response):
 		"""Queue response from UMC server."""
-		if not response.id in self._requestid2response_queue:
-			CORE.process('SessionClient(0x%x): no request(%s) found: status=%s' % (id(self), response.id, response.status))
-		else:
-			CORE.info('SessionClient(0x%x): got response(%s): status=%s queue=0x%x' % (id(self), response.id, response.status, id(queue)))
-			self._requestid2response_queue[ response.id ].put( response )
-			# remove response_queue from internal mapping
-			self.cleanup_request( response )
+		self._lock.acquire()
+		try:
+			try:
+				# get and remove queue for response
+				queue = self._requestid2response_queue.pop(response.id)
+			except KeyError:
+				CORE.process('SessionClient(0x%x): no request(%s) found: status=%s' % (id(self), response.id, response.status))
+			else:
+				CORE.info('SessionClient(0x%x): got response(%s): status=%s queue=0x%x' % (id(self), response.id, response.status, id(queue)))
+				queue.put(response)
+		finally:
+			self._lock.release()
 
 		# shutdown connection when the session is expired and there are no open requests
 		if self._timeout == 0 and not self._requestid2response_queue:
@@ -134,13 +141,21 @@ class SessionClient(object):
 	def send_request(self, request, response_queue):
 		"""Send request to UMC server."""
 		CORE.info('SessionClient(0x%x): sending request(%s)' % (id(self), request.id))
-		self._requestid2response_queue[request.id] = response_queue
+		self._lock.acquire()
+		try:
+			self._requestid2response_queue[request.id] = response_queue
+		finally:
+			self._lock.release()
 		self.client.request( request )
 		self.renew_timer()
 
 	def cleanup_request(self, request):
 		"""Remove request from mapping."""
-		del self._requestid2response_queue[request.id]
+		self._lock.acquire()
+		try:
+			del self._requestid2response_queue[request.id]
+		finally:
+			self._lock.release()
 
 
 class UMCP_Dispatcher( object ):
@@ -158,7 +173,7 @@ class UMCP_Dispatcher( object ):
 				return True
 			CORE.info('UMCP_Dispatcher: check_queue: new request: 0x%x' % (id(queuerequest),))
 
-			if not type(queuerequest.sessionid) == str and queuerequest.sessionid is not None:
+			if not isinstance(queuerequest.sessionid, basestring) and queuerequest.sessionid is not None:
 				CORE.process('UMCP_Dispatcher: check_queue: got invalid sessionid: %r' % (queuerequest.sessionid,))
 			if not isinstance(queuerequest.request, umcp.Request):
 				CORE.process('UMCP_Dispatcher: check_queue: got invalid UMCP request: %r' % (queuerequest.request,))
@@ -166,12 +181,15 @@ class UMCP_Dispatcher( object ):
 				CORE.process('UMCP_Dispatcher: check_queue: got invalid response_queue: %r' % (queuerequest.response_queue,))
 
 			# stop here if sessionid is missing or unknown and request is no AUTH request
-			if ( not queuerequest.sessionid or not queuerequest.sessionid in cls.sessions.keys() ) and not queuerequest.request.command == 'AUTH':
-				CORE.process('UMCP_Dispatcher: check_queue: invalid session: sessionid=%s' % repr(queuerequest.sessionid))
-				response = umcp.Response( queuerequest.request )
-				response.status = httplib.UNAUTHORIZED # set status to unauthorized
-				queuerequest.response_queue.put( response )
-				return True
+			try:
+				client = cls.sessions[queuerequest.sessionid]
+			except KeyError:
+				if queuerequest.request.command != 'AUTH':
+					CORE.process('UMCP_Dispatcher: check_queue: invalid session: sessionid=%s' % repr(queuerequest.sessionid))
+					response = umcp.Response( queuerequest.request )
+					response.status = httplib.UNAUTHORIZED # set status to unauthorized
+					queuerequest.response_queue.put( response )
+					continue # with next request
 
 			if queuerequest.request.command == 'AUTH':
 				# AUTH request
@@ -182,8 +200,8 @@ class UMCP_Dispatcher( object ):
 					queuerequest.sessionid = str( uuid.uuid4() )
 				# create new session / umcp client
 				# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
-				cls.sessions[queuerequest.sessionid] = SessionClient(timeout = _session_timeout + 5)
-				client = cls.sessions.get(queuerequest.sessionid)
+				client = SessionClient(timeout = _session_timeout + 5)
+				cls.sessions[queuerequest.sessionid] = client
 				callback = notifier.Callback(cls.cleanup_session, queuerequest.sessionid)
 				client.client.signal_connect( 'closed', callback )
 
@@ -193,7 +211,6 @@ class UMCP_Dispatcher( object ):
 			else:
 				# COMMAND / GET / SET request
 				CORE.info('UMCP_Dispatcher: check_queue: normal request')
-				client = UMCP_Dispatcher.sessions.get(queuerequest.sessionid)
 				try:
 					client.send_request( queuerequest.request, queuerequest.response_queue )
 				except umcp.client.NotAuthenticatedError:
@@ -207,10 +224,10 @@ class UMCP_Dispatcher( object ):
 	def cleanup_session(cls, sessionid):
 		"""Removes a session when the connection to the UMC server has died or the session is expired"""
 		CORE.info('Open sessions: %s' % (','.join(cls.sessions.keys())))
-		if sessionid in cls.sessions:
+		try:
 			del cls.sessions[sessionid]
 			CORE.info('Cleaning up session %s' % sessionid)
-		else:
+		except KeyError, e:
 			CORE.info( 'Session %s not found' % sessionid )
 
 class UploadManager( dict ):
@@ -476,7 +493,7 @@ class CPRoot(object):
 def run_cherrypy():
 	# TODO FIXME Folgenden Configeintrag einbauen, wenn loglevel in (0,1,2)
 	# 'server.environment': 'production',
-	cherrypy.config.update( { 
+	cherrypy.config.update( {
 		'server.socket_port': 8080,
 		'server.socket_host': '::',
 		'server.request_queue_size' : 100,

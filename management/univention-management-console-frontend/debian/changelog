@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.191-1) unstable; urgency=low
+
+  * Fix threading issues (Bug #24393)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 09 Nov 2011 20:53:43 +0100
+
 univention-management-console-frontend (1.0.190-1) unstable; urgency=low
 
   * _SelectMixin: allowed dynamicOptions to be of type function
