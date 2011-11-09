@@ -472,6 +472,7 @@ class mods:
 		else:
 			debug('check depends return 0 for %s'% self.obj[number].modheader())
 			return 0
+
 	def chg_current(self,diff):
 		if self.current+diff >= len(self.modules):
 			debug('>= len(self.modules)')
@@ -641,7 +642,9 @@ def next_screen():
 			return 0
 		message=objects.warning(missing,installer.max_y,installer.max_x)
 		message.draw()
-		stdscr.getch()
+		c = None
+		while c != 27:
+			c = stdscr.getch()
 		installer.draw_all()
 	else:
 		installer.result_update()

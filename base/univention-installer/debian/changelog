@@ -1,3 +1,9 @@
+univention-installer (7.0.140-4) unstable; urgency=low
+
+  * wait for ESC key instead of "anykey" (Bug #22869)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 09 Nov 2011 17:56:47 +0100
+
 univention-installer (7.0.140-3) unstable; urgency=low
 
   * set boot flag in profile installation (Bug #19226)
