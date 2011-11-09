@@ -42,6 +42,7 @@ import tempfile
 import time
 import threading
 import uuid
+import httplib
 
 import notifier
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
@@ -169,7 +170,7 @@ class UMCP_Dispatcher( object ):
 			if ( not queuerequest.sessionid or not queuerequest.sessionid in UMCP_Dispatcher.sessions.keys() ) and not queuerequest.request.command == 'AUTH':
 				CORE.process('UMCP_Dispatcher: check_queue: invalid session: sessionid=%s' % repr(queuerequest.sessionid))
 				response = umcp.Response( queuerequest.request )
-				response.status = 401 # set status to unauthorized
+				response.status = httplib.UNAUTHORIZED # set status to unauthorized
 				queuerequest.response_queue.put( response )
 				return True
 
@@ -198,7 +199,7 @@ class UMCP_Dispatcher( object ):
 					client.send_request( queuerequest.request, queuerequest.response_queue )
 				except umcp.client.NotAuthenticatedError:
 					response = umcp.Response( queuerequest.request )
-					response.status = 401 # set status to unauthorized
+					response.status = httplib.UNAUTHORIZED # set status to unauthorized
 					queuerequest.response_queue.put( response )
 					# remove response_queue from internal mapping
 					client.cleanup_request( queuerequest.request )
@@ -298,13 +299,13 @@ class CPgeneric(object):
 		else:
 			# a sessionid is required to use this command
 			self._log('info', 'no sessionid found')
-			raise cherrypy.HTTPError(401)
+			raise cherrypy.HTTPError(httplib.UNAUTHORIZED)
 
 		req = None
 
 		if cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'multipart/form-data' ): # upload
 			if not cherrypy.request.path_info.startswith( '/upload' ):
-				raise cherrypy.HTTPError( 400, 'Content type and URL do not match' )
+				raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Content type and URL do not match')
 			json = kwargs.values()
 		elif cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'application/json' ): # normal request
 			if not cherrypy.request.headers.get(u"Content-Length", u""):
@@ -320,7 +321,7 @@ class CPgeneric(object):
 					json = simplejson.loads(body)
 				except ValueError:
 					self._log('error', 'cannot parse JSON body')
-					raise cherrypy.HTTPError(400, 'Invalid JSON document')
+					raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Invalid JSON document')
 
 		# create new UMCP request
 		req = self.get_request( cherrypy.request, json )
@@ -336,7 +337,7 @@ class CPgeneric(object):
 		response = response_queue.get()
 		self._log('info', 'got response(0x%x) from queue(0x%x): status=%s (sessionid="%s")' % (id(response), id(response_queue), response.status, sessionid))
 
-		if response.status == 200:
+		if response.status == umcp.SUCCESS:
 			update_session_cookie(cherrypy.response.cookie, sessionid)
 			return simplejson.dumps(response.body)
 
@@ -360,7 +361,7 @@ class CPGet(CPgeneric):
 
 		if not args:
 			self._log('error', 'get_request: args is empty')
-			raise cherrypy.HTTPError(404)
+			raise cherrypy.HTTPError(httplib.NOT_FOUND)
 
 		req = umcp.Request( 'GET', arguments = [ args ], options = json.get( 'options', {} ) )
 
@@ -407,7 +408,7 @@ class CPCommand(CPgeneric):
 
 		if not args:
 			self._log('error', 'get_request: args is empty')
-			raise cherrypy.HTTPError(404)
+			raise cherrypy.HTTPError(httplib.NOT_FOUND)
 
 		req = umcp.Command( [ args ], options = json.get( 'options', {} ) )
 		if 'flavor' in json:
@@ -425,7 +426,7 @@ class CPAuth(object):
 
 		if not cherrypy.request.headers.get(u"Content-Length", u""):
 			CORE.process('CPRoot/auth: missing Content-Length header')
-			raise cherrypy.HTTPError(411)
+			raise cherrypy.HTTPError(httplib.LENGTH_REQUIRED)
 
 		# TODO FIXME check body length and stop here if too much data has been sent by client
 
@@ -438,7 +439,7 @@ class CPAuth(object):
 			json = simplejson.loads(body)
 		except ValueError:
 			CORE.process('CPRoot/auth: cannot parse JSON body')
-			raise cherrypy.HTTPError(400, 'Invalid JSON document')
+			raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Invalid JSON document')
 
 		CORE.info('CPRoot/command: request: command=%s' % cherrypy.request.path_info )
 
@@ -458,7 +459,7 @@ class CPAuth(object):
 		response = response_queue.get()
 		CORE.info('CPRoot/auth: got response with status %s' % response.status)
 
-		if response.status == 200 and response.body.get('sessionid'):
+		if response.status == umcp.SUCCESS and response.body.get('sessionid'):
 			CORE.info('CPRoot/auth: creating cookie with sessionid=%s' % response.body.get('sessionid'))
 			update_session_cookie(cherrypy.response.cookie, response.body['sessionid'])
 			return ""
@@ -474,7 +475,7 @@ class CPRoot(object):
 		"""
 		http://localhost:8080/
 		"""
-		raise cherrypy.HTTPError(404)
+		raise cherrypy.HTTPError(httplib.NOT_FOUND)
 	index.exposed = True
 
 def run_cherrypy():
