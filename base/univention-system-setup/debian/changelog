@@ -1,3 +1,9 @@
+univention-system-setup (5.0.56-2) unstable; urgency=low
+
+  * add dependency python-apt to UMC module package; Bug #24463
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 09 Nov 2011 20:50:34 +0100
+
 univention-system-setup (5.0.56-1) unstable; urgency=low
 
   * do not download certificates on basesystem (Bug #23993)
