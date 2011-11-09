@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.41-1) unstable; urgency=low
+
+  * support editing existing domains; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 09 Nov 2011 21:58:27 +0100
+
 univention-virtual-machine-manager-daemon (1.0.40-1) unstable; urgency=low
 
   * UMC: added support for adding drives and saving domain details (Bug #22893) 

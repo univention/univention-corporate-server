@@ -157,7 +157,7 @@ class Domains( object ):
 
 			driver_pv = None
 			if drive.device in ( Disk.DEVICE_DISK, Disk.DEVICE_CDROM ):
-				driver_pv = disk[ 'paravirtual' ]
+				driver_pv = disk.get( 'paravirtual', False ) # by default no paravirtual devices
 				if drive.device == Disk.DEVICE_CDROM:
 					drive.type = Disk.TYPE_RAW # ISOs need driver/@type='raw'
 			elif drive.device == Disk.DEVICE_FLOPPY:
@@ -195,8 +195,8 @@ class Domains( object ):
 			else:
 				raise ValueError( 'Unknown virt-tech "%s"' % node_uri )
 
-			if disk[ 'vol_size' ]:
-				drive.size = MemorySize.str2num( disk[ 'vol_size' ], unit = 'MB' )
+			if disk[ 'size' ]:
+				drive.size = MemorySize.str2num( disk[ 'size' ], unit = 'MB' )
 
 			drives.append( drive )
 
@@ -213,18 +213,22 @@ class Domains( object ):
 
 		domain = request.options.get( 'domain' )
 
-		profile_dn = domain[ '$profile$' ]
-		profile = None
-		for dn, pro in self.profiles:
-			if dn == profile_dn:
-				profile = pro
-				break
-		if profile is None:
-			raise UMC_OptionTypeError( _( 'Unknown profile given' ) )
-
 		domain_info = Data_Domain()
 		# when we edit a domain there must be a UUID
-		domain_info.uuid = domain.get( 'uuid', None )
+		if 'domainURI' in domain:
+			node_uri, domain_uuid = urlparse.urldefrag( domain[ 'domainURI' ] )
+			domain_info.uuid = domain_uuid
+
+		if not domain_info.uuid:
+			profile_dn = domain.get( '$profile$' )
+			profile = None
+			for dn, pro in self.profiles:
+				if dn == profile_dn:
+					profile = pro
+					break
+			if profile is None:
+				raise UMC_OptionTypeError( _( 'Unknown profile given' ) )
+
 		domain_info.name = domain[ 'name' ]
 		domain_info.arch = domain[ 'arch' ]
 		domain_info.domain_type, domain_info.os_type = domain['type'].split( '-' )
@@ -238,10 +242,13 @@ class Domains( object ):
 				domain_info.cmdline = domain['cmdline']
 				domain_info.initrd = domain['initrd']
 		# memory
-		domain_info.maxMem = MemorySize.str2num( domain['memory'], unit = 'MB' )
+		domain_info.maxMem = MemorySize.str2num( domain['maxMem'], unit = 'MB' )
 
 		# CPUs
-		domain_info.vcpus = domain[ 'cpus' ]
+		try:
+			domain_info.vcpus = int( domain[ 'vcpus' ] )
+		except ValueError:
+			raise UMC_OptionTypeError( 'vcpus must be a number' )
 
 		# boot devices
 		if domain[ 'boot' ]:
@@ -280,10 +287,10 @@ class Domains( object ):
 			domain_info.disks = non_disks + disks
 
 		# network interface
-		for iface in domain[ 'interfaces' ]:
+		for interface in domain[ 'interfaces' ]:
 			iface = Interface()
-			iface.source = domain[ 'interface' ]
-			if domain[ 'pvinterface' ] and domain_info.os_type == 'hvm':
+			iface.source = interface[ 'source' ]
+			if interface[ 'paravirtual' ] and domain_info.os_type == 'hvm':
 				if domain_info.domain_type == 'xen':
 					iface.model = 'netfront'
 				elif domain_info.domain_type in ( 'kvm', 'qemu' ):
@@ -309,10 +316,6 @@ class Domains( object ):
 
 		return: { 'success' : (True|False), 'message' : <details> }
 		"""
-		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
-		request.options[ 'nodeURI' ] = node_uri
-		request.options[ 'domain' ][ 'uuid' ] = domain_uuid
-
 		self.domain_add( request )
 
 	def domain_state( self, request ):
