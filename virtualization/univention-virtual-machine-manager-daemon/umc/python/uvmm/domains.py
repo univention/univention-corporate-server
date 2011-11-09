@@ -149,6 +149,7 @@ class Domains( object ):
 			else:
 				drive.type = Disk.TYPE_BLOCK
 				drive.target_bus = 'ide'
+				drive.source = disk[ 'volumeFilename' ]
 
 			driver_pv = None
 			if drive.device in ( Disk.DEVICE_DISK, Disk.DEVICE_CDROM ):
