@@ -1,3 +1,9 @@
+firefox (1:7.0.1-2) unstable; urgency=low
+
+  * Fix plugin path (Bug #22116) 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 10 Nov 2011 15:53:28 +0100
+
 firefox (1:7.0.1-1) unstable; urgency=low
 
   * Revert to Firefox 7.0.1 (Bug #22116) 
