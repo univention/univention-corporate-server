@@ -1,3 +1,9 @@
+univention-updater (7.0.89-1) unstable; urgency=low
+
+  * block update if univention-kolab2-webclient < V7 is installed  (Bug #24502)
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Nov 2011 16:42:37 +0100
+
 univention-updater (7.0.88-3) unstable; urgency=low
 
   * Redirect firmware removal to updater.log (Bug #22508)

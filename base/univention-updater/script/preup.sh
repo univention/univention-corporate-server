@@ -190,6 +190,11 @@ if [ ! "$update_kolab_check" = "no" -a ! "$update_kolab_check" = "false" -a ! "$
 			ucs_kolab_is_installed=true
 		fi
 	fi
+	if [ "$(dpkg-query -W -f='${Status}\n' univention-kolab2-webclient 2>/dev/null)" = "install ok installed" ]; then
+		if dpkg --compare-versions "$(dpkg-query -W -f='${Version}\n' univention-kolab2-webclient)" lt "7" ; then
+			ucs_kolab_is_installed=true
+		fi
+	fi
 	if [ "$ucs_kolab_is_installed" = "true" ] ; then
 		echo "WARNING: kolab2 mail stack is installed!"
 		echo
