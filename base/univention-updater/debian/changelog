@@ -1,3 +1,9 @@
+univention-updater (7.0.88-3) unstable; urgency=low
+
+  * Redirect firmware removal to updater.log (Bug #22508)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 10 Nov 2011 12:34:04 +0100
+
 univention-updater (7.0.88-2) unstable; urgency=low
 
   * stop update if mail/relay == $(hostname -f) (Bug #24448)
