@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.46-1) unstable; urgency=low
+
+  * fix VNC link; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 10 Nov 2011 11:09:00 +0100
+
 univention-virtual-machine-manager-daemon (1.0.45-2) unstable; urgency=low
 
   * updates in german translation for backend

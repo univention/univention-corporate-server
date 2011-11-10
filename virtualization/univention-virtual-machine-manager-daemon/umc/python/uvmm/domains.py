@@ -75,7 +75,7 @@ class Domains( object ):
 					for domain in domains:
 						domain_uri = '%s#%s' % ( node_uri, domain[ 'uuid' ] )
 						domain_list.append( { 'id' : domain_uri, 'label' : domain[ 'name' ], 'nodeName' : uri.netloc, 'state' : domain[ 'state' ], 'type' : 'domain',
-											  'mem' : domain[ 'mem' ], 'cpuUsage' : domain[ 'cpu_usage' ] } )
+											  'mem' : domain[ 'mem' ], 'cpuUsage' : domain[ 'cpu_usage' ], 'vnc' : domain[ 'vnc' ] } )
 			else:
 				domain_list = data
 			self.finished( request.id, domain_list, success = success )
@@ -297,7 +297,7 @@ class Domains( object ):
 			if domain.get( 'vnc_remote', False ):
 				gfx.listen = '0.0.0.0'
 			else:
-				gfx.listen = '127.0.0.1'
+				gfx.listen = None
 			if 'kblayout' in domain:
 				gfx.keymap = domain[ 'kblayout' ]
 			elif profile:
