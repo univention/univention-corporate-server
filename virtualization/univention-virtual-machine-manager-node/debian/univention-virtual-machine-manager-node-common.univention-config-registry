@@ -2,7 +2,7 @@ Type: file
 File: etc/libvirt/libvirtd.conf
 Variables: hostname
 Variables: domainname
-Variables: ssl/*
+Variables: ssl/.*
 Variables: uvmm/managers
 
 Type: file
@@ -14,4 +14,4 @@ Variables: uvmm/backup/directory
 
 Type: file
 File: etc/default/libvirt-guests
-Variables: uvmm/libvirt/action/*
+Variables: uvmm/libvirt/action/.*
