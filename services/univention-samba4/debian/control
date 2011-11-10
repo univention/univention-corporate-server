@@ -10,7 +10,7 @@ Build-Depends: debhelper (>> 7),
  libunivention-config-dev
 
 Package: univention-samba4
-Architecture: all
+Architecture: any
 Conflicts: samba,
  univention-samba
 Depends: ${misc:Depends},

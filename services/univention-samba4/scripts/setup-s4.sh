@@ -90,21 +90,18 @@ if [ -n "$S3_DCS" ]; then
 	fi
 fi
 
-S3_DOMAIN_SID_FOR_MY_DOMAIN="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
-if [ -n "$S3_DCS" ] && [ -n "$S3_DOMAIN_SID_FOR_MY_DOMAIN" ]; then
-	if [ -z "$binddn" ]; then
-		if [ -r "/etc/ldap.secret" ]; then
-			binddn="cn=admin,$ldap_base"
-			bindpwd=$(< /etc/ldap.secret)
-		else
-			echo "ERROR: Options --binddn and --bindpwd not given for samba3upgrade"
-			exit 1
-		fi
+if [ -z "$binddn" ]; then
+	if [ -r "/etc/ldap.secret" ]; then
+		binddn="cn=admin,$ldap_base"
+		bindpwd=$(< /etc/ldap.secret)
+	else
+		echo "ERROR: Options --binddn and --bindpwd not given for samba3upgrade"
+		exit 1
 	fi
-	## store the binddn and bindpwd options in UDM_ARGV
-	UDM_ARGV=("--binddn" "$binddn" --bindpwd "$bindpwd")
-	set -- "${UDM_ARGV[@]}"
 fi
+## store the binddn and bindpwd options in UDM_ARGV
+UDM_ARGV=("--binddn" "$binddn" --bindpwd "$bindpwd")
+set -- "${UDM_ARGV[@]}"
 
 
 while [ "$adminpw" != "$adminpw2" ]; do
@@ -158,6 +155,22 @@ if [ -z "$samba4_function_level" ]; then
 	univention-config-registry set samba4/function/level="$samba4_function_level"
 fi
 
+univention-directory-manager groups/group create "$@" \
+	--position cn=groups,$ldap_base --set name="Builtin Users" \
+	--append nestedGroup="cn=Domain Users,cn=groups,$ldap_base"  \
+	--append nestedGroup="cn=Domain Admins,cn=groups,$ldap_base" \
+	--append nestedGroup="cn=Windows Hosts,cn=groups,$ldap_base" \
+	--append nestedGroup="cn=DC Slave Hosts,cn=groups,$ldap_base"
+
+# cat <<%EOF | ldapmodify -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
+# dn: cn=Builtin Users,cn=groups,$ldap_base
+# changetype: modify
+# replace: sambaSID
+# sambaSID: S-1-5-11
+# -
+# %EOF
+
+S3_DOMAIN_SID_FOR_MY_DOMAIN="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
 if [ -z "$S3_DCS" ] || [ -z "$S3_DOMAIN_SID_FOR_MY_DOMAIN" ]; then
 
 	if [ -z "$DOMAIN_SID" ]; then
