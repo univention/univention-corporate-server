@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.193-1) unstable; urgency=low
+
+  * umc.render: fixed show/hide for buttons (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 10 Nov 2011 03:10:39 +0100
+
 univention-management-console-frontend (1.0.192-1) unstable; urgency=low
 
   * Wizard: allow for empty pages (Bug #22893)

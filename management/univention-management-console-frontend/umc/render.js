@@ -234,11 +234,24 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 						if (nWidgetsWithLabel) {
 							// if buttons are displayed along with widgets, we need to add a '&nbps;'
 							// as label in order to display them on the same height
-							elContainer.addChild(new umc.widgets.LabelPane({
+							var label = new umc.widgets.LabelPane({
 								label: '&nbsp;',
 								content: button,
 								style: button.align ? 'float: ' + button.align : ''
-							}));
+							});
+							elContainer.addChild(label);
+
+							// add show and hide function to widget
+							dojo.mixin( button, {
+								visible: true,
+								show: function() {
+									this.set( 'visible', true );
+								},
+								hide: function() {
+									this.set( 'visible', false );
+								},
+								$refLabel$: label
+							} );
 						} else {
 							// if there are only buttons in the row, we do not need a label
 							if (button.align) {
