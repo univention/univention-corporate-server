@@ -1,3 +1,9 @@
+univention-heimdal (5.0.18-2) unstable; urgency=low
+
+  * add additional firewall exception for kpasswd (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 10 Nov 2011 09:23:59 +0100
+
 univention-heimdal (5.0.18-1) unstable; urgency=low
 
   * add firewall exception for kpasswd (Bug #23577)
