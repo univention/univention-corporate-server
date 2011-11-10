@@ -48,3 +48,7 @@ override_dh_auto_clean:
 	$(RM) debian/univention-virtual-machine-manager-node-*{pre,post}{inst,rm}.debhelper
 	$(RM) debian/univention-virtual-machine-manager-node-*.conffiles
 	dh_auto_clean
+
+override_dh_auto_test:
+	ucslint
+	dh_auto_test
