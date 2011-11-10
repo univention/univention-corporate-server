@@ -176,7 +176,7 @@ class Domains( object ):
 			if drive.device in ( Disk.DEVICE_DISK, Disk.DEVICE_CDROM ):
 				driver_pv = disk.get( 'paravirtual', False ) # by default no paravirtual devices
 				if drive.device == Disk.DEVICE_CDROM:
-					drive.type = Disk.TYPE_RAW # ISOs need driver/@type='raw'
+					drive.driver_type = Disk.TYPE_RAW # ISOs need driver/@type='raw'
 			elif drive.device == Disk.DEVICE_FLOPPY:
 				drive.target_bus = 'fdc'
 			else:
@@ -202,8 +202,9 @@ class Domains( object ):
 					# Use tapdisk2 by default, but not for empty CDROM drives
 					if drive.source is not None and ucr.is_true( 'uvmm/xen/images/tap2', True ):
 						drive.driver = 'tap2'
-						if drive.type == Disk.TYPE_RAW:
-							drive.driver_type = 'aio'
+						drive.driver_type = 'aio'
+						# if drive.type == Disk.TYPE_RAW:
+						# 	drive.driver_type = 'aio'
 					else:
 						drive.driver = 'file'
 						drive.driver_type = None # only raw support

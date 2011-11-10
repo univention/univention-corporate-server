@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.47-1) unstable; urgency=low
+
+  * fix bug when adding CD-ROM drives; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 10 Nov 2011 12:03:21 +0100
+
 univention-virtual-machine-manager-daemon (1.0.46-1) unstable; urgency=low
 
   * fix VNC link; Bug #22893
