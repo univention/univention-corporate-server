@@ -13,7 +13,7 @@ dojo.declare("umc.modules.sysinfo", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		this._wizard = new umc.widgets.Wizard({
+		this._wizard = new umc.modules._sysinfo.Wizard({
 			pages: [{
 				name: 'general',
 				headerText: this._('General Information'),
@@ -83,22 +83,22 @@ dojo.declare("umc.modules.sysinfo", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					value: ''
 				}, {
 					type: 'TextBox',
-					name: 'cores', // TODO: rename?
+					name: 'num_cpu',
 					label: this._('Number of CPUs'),
 					value: ''
 				}, {
 					type: 'TextBox',
-					name: 'memory',
+					name: 'mem',
 					label: this._('Memory'),
 					value: ''
 				}, {
 					type: 'TextBox',
-					name: 'network',
+					name: 'net_dev',
 					label: this._('Network Device'),
 					value: ''
 				}, {
 					type: 'TextBox',
-					name: 'graphic',
+					name: 'gfx_dev',
 					label: this._('Graphics Device')
 				}, {
 					type: 'Text',
@@ -115,10 +115,10 @@ dojo.declare("umc.modules.sysinfo", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}],
 				layout: [['firstText'],
 						 ['cpu'],
-						 ['cores'],
-						 ['memory'],
-						 ['network'],
-						 ['graphic'],
+						 ['num_cpu'],
+						 ['mem'],
+						 ['net_dev'],
+						 ['gfx_dev'],
 						 ['secondText'],
 						 ['download'],
 						 ['thirdText']]
@@ -143,16 +143,6 @@ dojo.declare("umc.modules.sysinfo", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				layout: [['firstText'],
 						 ['method']]
 			}, {
-				name: 'mail',
-				headerText: this._('Transfer via mail'),
-				helpText: this._(''),
-				widgets: [{
-					type: 'Text',
-					name: 'firstText',
-					content: this._('To transfer the information via mail please follow these steps:<ol><li>Download the archive with the collected information and save it on your local system (find the link below)</li><li>Click on link Send mail to open your mail program</li><li>Attach the downloaded archive to the mail and send it to Univention</li><li>End this assistant by clicking on the button Finish</li></ol>') + '<br /><br />'
-				}],
-				layout: [['firstText']]
-			}, {
 				name: 'uploaded',
 				headerText: this._('Transfered successfully'),
 				helpText: this._(''),
@@ -162,69 +152,17 @@ dojo.declare("umc.modules.sysinfo", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					content: this._('The information were transfered to Univention successfully.<br />Thank you very much for your support!') + '<br /><br />'
 				}],
 				layout: [['firstText']]
+			}, {
+				name: 'mail',
+				headerText: this._('Transfer via mail'),
+				helpText: this._(''),
+				widgets: [{
+					type: 'Text',
+					name: 'firstText',
+					content: this._('To transfer the information via mail please follow these steps:<ol><li>Download the archive with the collected information and save it on your local system (find the link below)</li><li>Click on link Send mail to open your mail program</li><li>Attach the downloaded archive to the mail and send it to Univention</li><li>End this assistant by clicking on the button Finish</li></ol>') + '<br /><br />'
+				}],
+				layout: [['firstText']]
 			}],
-
-			canCancel: function() {
-				return false;
-			},
-
-			next: function(currentID) {
-				if (!currentID) {
-					return 'general';
-				}
-				if (currentID == 'general') {
-					if (this.getWidget('general', 'supportBox').get('value') === false) {
-						return 'collect';
-					} else {
-						return 'support';
-					}
-				}
-				if (currentID == 'support') {
-					return 'collect';
-				}
-				if (currentID ==  'collect') {
-					return 'transfer';
-				}
-				if (currentID == 'transfer') {
-					if (this.getWidget('transfer', 'method') == 'upload') {
-						return 'uploaded';
-					} else {
-						return 'mail';
-					}
-				}
-			},
-
-			previous: function(currentID) {
-				if (currentID == 'support') {
-					return 'general';
-				}
-				if (currentID == 'collect') {
-					if (this.getWidget('general', 'supportBox').get('value') === false) {
-						return 'general';
-					} else {
-						return 'support';
-					}
-				}
-				if (currentID == 'transfer') {
-					return 'collect';
-				}
-				if (currentID == 'mail') {
-					return 'transfer';
-				}
-				if (currentID == 'uploaded') {
-					return 'transfer';
-				}
-			},
-
-			hasNext: function(currentID) {
-				if (!this.pages.length) {
-					return false;
-				}
-				if (currentID == 'mail') {
-					return false;
-				}
-				return this.pages[this.pages.length - 1].name != currentID;
-			},
 
 			onFinished: dojo.hitch(this, function() {
 					dojo.publish('/umc/tabs/close', [ this ]);
@@ -232,5 +170,127 @@ dojo.declare("umc.modules.sysinfo", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		});
 
 		this.addChild(this._wizard);
+	}
+});
+
+
+dojo.declare("umc.modules._sysinfo.Wizard", [ umc.widgets.Wizard, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
+
+	standbyOpacity: 1.00,
+
+	buildRendering: function() {
+		this.inherited(arguments);
+		this._disableWidgets();
+	},
+
+	_disableWidgets: function() {
+		var widgets = ['cpu', 'num_cpu', 'mem', 'net_dev', 'gfx_dev'];
+		dojo.forEach(widgets, dojo.hitch(this, function(iwidget) {
+			this.getWidget('collect', iwidget).set('disabled', true);
+		}));
+	},
+
+	_getGeneralFormValues: function() {
+		var generalPage = this.getPage('general');
+		return generalPage._form.gatherFormValues();
+	},
+
+	_getSupportFormValues: function() {
+		var supportPage = this.getPage('support');
+		return supportPage._form.gatherFormValues();
+	},
+
+	canCancel: function() {
+		return false;
+	},
+
+	hasNext: function(pageName) {
+		if (pageName == 'uploaded') {
+			return false;
+		} else {
+			return this.inherited(arguments);
+		}
+	},
+
+	next: function() {
+		var nextPage = this.inherited(arguments);
+		if (nextPage == 'general') {
+			this.standby(true);
+			this.onGeneralPage().then(
+				dojo.hitch(this, function() {
+					this.standby(false);
+				})
+			);
+		}
+		if (nextPage == 'support') {
+			if (this.getWidget('general', 'supportBox').get('value') === false) {
+				nextPage = 'collect';
+			}
+		}
+		if (nextPage == 'collect') {
+			this.standby(true);
+			this.onCollectPage().then(
+				dojo.hitch(this, function() {
+					this.standby(false);
+				})
+			);
+		}
+		if (nextPage == 'uploaded') {
+			if (this.getWidget('transfer', 'method') == 'mail') {
+				return 'mail';
+			}
+		}
+		return nextPage;
+	},
+
+	previous: function() {
+		var previousPage = this.inherited(arguments);
+		if (previousPage == 'support') {
+			if (this.getWidget('general', 'supportBox').get('value') === false) {
+				return 'general';
+			}
+		}
+		if (previousPage == 'uploaded') {
+			if (this.getWidget('transfer', 'method') == 'mail') {
+				return 'transfer';
+			}
+		}
+		return previousPage;
+	},
+
+	onGeneralPage: function() {
+		var deferred = umc.tools.umcpCommand('sysinfo/general').then(
+			dojo.hitch(this, function(data) {
+				this.setGeneralFormValues(data.result);
+			})
+		);
+		return deferred;
+	},
+
+	onCollectPage: function() {
+		var generalValues =  this._getGeneralFormValues();
+		var supportValues =  this._getSupportFormValues();
+		var resultValues = {
+			'manufacturer': generalValues.manufacturer,
+			'model': generalValues.model,
+			'comment': generalValues.comment,
+			'ticket': supportValues.ticket
+		};
+		var deferred = umc.tools.umcpCommand('sysinfo/system', resultValues).then(
+			dojo.hitch(this, function(data) {
+				this.setCollectFormValues(data.result);
+			})
+		);
+		return deferred;
+	},
+
+	setGeneralFormValues: function(data) {
+		var generalPage = this.getPage('general');
+		generalPage._form.setFormValues(data);
+	},
+
+	setCollectFormValues: function(data) {
+		var collectPage = this.getPage('collect');
+		collectPage._form.setFormValues(data);
 	}
 });

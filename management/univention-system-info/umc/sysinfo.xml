@@ -6,5 +6,11 @@
 	<categories>
 		<category name="system"/>
 	</categories>
+	<command name="sysinfo/general" function="get_general_info">
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="sysinfo/system" function="get_system_info">
+		<return syntax="Dictionary"/>
+	</command>
 	</module>
 </umc>
