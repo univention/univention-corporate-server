@@ -10,7 +10,7 @@ to_check="hostname domainname"
 #auto_part="full_disk"
 
 # [Bootloader]
-#bootloader_record=/dev/sda
+#bootloader_device=/dev/sda
 
 # [Timezone]
 timezone="Europe/Berlin"
@@ -28,11 +28,13 @@ locale_default="de_DE.UTF-8:UTF-8"
 system_role="memberserver"
 
 # [Settings]
+domainname='example.com'
+hostname='memberserver'
+ldap_base='dc=example,dc=com'
+fqdn='memberserver.example.com'
 windows_domain="EXAMPLE"
-hostname="memberserver"
 ## determine hostname by reverse DNS lookup of IP, works only with valid nameserver_1:
 #scan=hostname
-domainname="example.com"
 ## use root_password with care
 #root_password=''
 
@@ -43,18 +45,22 @@ domain_controller_account="Administrator"
 auto_reboot=yes
 
 # [Network]
-#gateway=''
 #nameserver_1=''
-#forwarder=''
+#eth0_broadcast=''
+#dns_forwarder_1=''
+#eth0_acceptra=''
+#eth0_netmask=''
+#eth0_network=''
+#gateway=''
+#eth0_ip=''
 
-# [Security settings]
-#security_profile='normal'
+# [Overview]
+update_system_after_installation='true'
 
 # [System settings]
-local_repository="false"
-create_home_share="true"
+#local_repository="false"
+#create_home_share="false"
 
 # [Software]
-# Example
-packages="winbind univention-samba samba univention-management-console univention-x-core univention-gdm univention-gdm-sessions xtightvncviewer univention-nagios-client openssh-server univention-printquota pykota univention-printquotadb univention-printserver cupsys openssh-client eject less nmap vim wget"
+packages="univention-kde"
 

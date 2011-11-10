@@ -1,3 +1,9 @@
+univention-installer (7.0.142-1) unstable; urgency=low
+
+  * updated standard profiles (Bug #24494) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Nov 2011 17:26:04 +0100
+
 univention-installer (7.0.141-1) unstable; urgency=low
 
   * fixed path for mkfs.btrfs (Bug #24495)

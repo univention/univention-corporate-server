@@ -10,7 +10,7 @@ to_check="hostname domainname"
 #auto_part="full_disk"
 
 # [Bootloader]
-#bootloader_record=/dev/sda
+#bootloader_device=/dev/sda
 
 # [Timezone]
 timezone="Europe/Berlin"
@@ -28,20 +28,27 @@ locale_default="de_DE.UTF-8:UTF-8"
 system_role="basesystem"
 
 # [Settings]
-hostname="basesystem"
-domainname="example.com"
+domainname='example.com'
+hostname='basesystem'
+ldap_base='dc=example,dc=com'
+fqdn='basesystem.example.com'
 ## use root_password with care
 #root_password=''
 
 # [Network]
-#gateway=''
 #nameserver_1=''
-#forwarder=''
+#eth0_broadcast=''
+#dns_forwarder_1=''
+#eth0_acceptra=''
+#eth0_netmask=''
+#eth0_network=''
+#gateway=''
+#eth0_ip=''
 
-# [Security settings]
-#security_profile='normal'
+# [Overview]
+update_system_after_installation='true'
 
 # [Software]
 # Example
-packages="openssh-client openssh-server dhcp-client vim links-ssl wget xtightvncviewer"
+packages="openssh-client openssh-server dhcp3-client vim  wget"
 

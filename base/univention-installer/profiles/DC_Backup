@@ -10,7 +10,7 @@ to_check="hostname domainname"
 #auto_part="full_disk"
 
 # [Bootloader]
-#bootloader_record=/dev/sda
+#bootloader_device=/dev/sda
 
 # [Timezone]
 timezone="Europe/Berlin"
@@ -28,11 +28,13 @@ locale_default="de_DE.UTF-8:UTF-8"
 system_role="domaincontroller_backup"
 
 # [Settings]
-windows_domain="EXAMPLE"
-hostname="dc-backup"
-## determine hostname by reverse DNS lookup of IP, works only with valid nameserver1:
-#scan=hostnam
-domainname="example.com"
+domainname='example.com'
+hostname='dc-backup'
+ldap_base='dc=example,dc=com'
+fqdn='dc-backup.example.com'
+windows_domain='EXAMPLE'
+## determine hostname by reverse DNS lookup of IP, works only with valid nameserver_1:
+#scan=hostname
 ## use root_password with care
 #root_password=''
 
@@ -43,18 +45,22 @@ domain_controller_account="Administrator"
 auto_reboot=yes
 
 # [Network]
-#gateway=''
 #nameserver_1=''
-#forwarder=''
+#eth0_broadcast=''
+#dns_forwarder_1=''
+#eth0_acceptra=''
+#eth0_netmask=''
+#eth0_network=''
+#gateway=''
+#eth0_ip=''
 
-# [Security settings]
-#security_profile='normal'
+# [Overview]
+update_system_after_installation='true'
 
 # [System settings]
-local_repository="false"
-create_home_share="true"
+#local_repository="false"
+#create_home_share="false"
 
 # [Software]
-# Example
-packages="univention-samba samba univention-dhcp dhcp3-server univention-bind univention-bind-proxy bind9 univention-management-console univention-directory-manager python-univention-license univention-mozilla-firefox univention-kde ispell ingerman amarok kaffeine kmplayer kdemultimedia mplayer univention-java k3b k3b-i18n cdrdao kdeartwork-misc kdeartwork-emoticons kdeartwork-style kdeartwork-theme-icon kscreensaver kdewallpapers kdeartwork-theme-window kamera kfax kpdf kview kuickshow ksnapshot ark kcalc kgpg klaptopdaemon kwalletmanager kdepim univention-x-core univention-gdm univention-gdm-sessions univention-flashplugin xtightvncviewer mozilla-mplayer univention-nagios-client univention-thin-client openssh-server univention-printquota pykota univention-printquotadb univention-printserver cupsys univention-application-server openssh-client univention-java eject less nmap vim wget"
+packages="univention-kde univention-samba4 univention-dhcp"
 
