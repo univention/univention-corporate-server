@@ -80,9 +80,12 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			}, {
 				name: 'contact',
 				type: 'TextBox',
-				regExp: '^.+@.+\\..+$',
-				invalidMessage: this._('This is not a valid email address (e.g., someone@example.com)'),
-				label: this._('Contact (email address)')
+				label: this._('Contact'),
+				onChange: dojo.hitch(this, function(newVal) {
+					// if the value looks like a email address, show the email button
+					var r = /^.+@.+\..+$/;
+					this._generalForm._buttons.email.set('visible', r.test(newVal));
+				})
 			}, {
 				name: 'description',
 				type: 'TextBox',
