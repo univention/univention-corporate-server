@@ -344,39 +344,50 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						type: 'Text',
 						content: msg
 					}, {
-						name: 'TextBox',
-						type: 'username'
+						name: 'username',
+						type: 'TextBox',
+						label: this._('Username')
 					}, {
 						name: 'password',
-						type: 'PasswordBox'
+						type: 'PasswordBox',
+						label: this._('Password')
 					}],
 					buttons: [{
 						name: 'submit',
 						label: this._('Join'),
 						callback: function() {
-							deferred.resolve(form.getWidget('username').get('value'), form.getWidget('password').get('value'));
+							deferred.resolve({
+								username: form.getWidget('username').get('value'),
+								password: form.getWidget('password').get('value')
+							});
+							dialog.hide();
+							dialog.destroyRecursive();
 						}
 					}, {
 						name: 'cancel',
 						label: this._('Cancel'),
-						callback: function() {
+						callback: dojo.hitch(this, function() {
+							deferred.reject();
+							this.standby(false);
 							dialog.hide();
-						}
+							dialog.destroyRecursive();
+						})
 					}],
 					layout: [ 'text', 'username', 'password' ]
 				});
 				dialog = new dijit.Dialog({
 					title: this._('Account data'),
 					content: form,
-					onHide: function() {
-						dialog.destroyRecursive();
-						if (deferred.fired < 0) {
-							// user clicked the close button
-							this.standby(false);
-							deferred.reject();
-						}
+					style: 'max-width: 400px;'
+				});
+				this.connect(dialog, 'onHide', function() {
+					if (deferred.fired < 0) {
+						// user clicked the close button
+						this.standby(false);
+						deferred.reject();
 					}
 				});
+				dialog.show();
 				return deferred;
 			});
 
@@ -435,8 +446,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			else if (role != 'domaincontroller_master') {
 				// unjoined system scenario and not master
 				// we need a proper DC administrator account
-				_password().then(function(username, password) {
-					_save(username, password);
+				_password().then(function(opt) {
+					_save(opt.username, opt.password);
 				});
 			}
 			else {
