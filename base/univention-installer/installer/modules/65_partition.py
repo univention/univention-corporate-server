@@ -1205,10 +1205,8 @@ class object(content):
 
 						mkfs_cmd = None
 						fstype = fstype.lower()
-						if fstype in ['ext2','ext3','vfat','msdos', 'ext4']:
+						if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
 							mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,self.get_real_partition_device_name(disk,num))
-						elif fstype == 'btrfs':
-							mkfs_cmd='/bin/mkfs.btrfs %s' % self.get_real_partition_device_name(disk,num)
 						elif fstype == 'xfs':
 							mkfs_cmd='/sbin/mkfs.xfs -f %s' % self.get_real_partition_device_name(disk,num)
 						elif fstype == 'linux-swap':
@@ -1230,10 +1228,8 @@ class object(content):
 
 					mkfs_cmd = None
 					fstype = fstype.lower()
-					if fstype in ['ext2','ext3','vfat','msdos', 'ext4']:
+					if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
 						mkfs_cmd='/sbin/mkfs.%s %s' % (fstype, device)
-					elif fstype == 'btrfs':
-						mkfs_cmd='/sbin/mkfs.btrfs %s' % device
 					elif fstype == 'xfs':
 						mkfs_cmd='/sbin/mkfs.xfs -f %s' % device
 					elif fstype == 'linux-swap':
@@ -3409,10 +3405,8 @@ class object(content):
 							if self.parent.container['disk'][disk]['partitions'][part]['format']:
 								device = self.parent.parent.get_device(disk, part)
 								fstype=self.parent.container['disk'][disk]['partitions'][part]['fstype']
-								if fstype in ['ext2','ext3','vfat','msdos', 'ext4']:
+								if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
 									mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,device)
-								elif fstype == 'btrfs':
-									mkfs_cmd='/bin/mkfs.btrfs %s' % device
 								elif fstype == 'xfs':
 									mkfs_cmd='/sbin/mkfs.xfs -f %s' % device
 								elif fstype == 'linux-swap':
@@ -3430,10 +3424,8 @@ class object(content):
 							if vg['lv'][lvname]['format']:
 								device = vg['lv'][lvname]['dev']
 								fstype = vg['lv'][lvname]['fstype']
-								if fstype in ['ext2','ext3','vfat','msdos', 'ext4']:
+								if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
 									mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,device)
-								elif fstype == 'btrfs':
-									mkfs_cmd='/bin/mkfs.btrfs %s' % device
 								elif fstype == 'xfs':
 									mkfs_cmd='/sbin/mkfs.xfs -f %s' % device
 								elif fstype == 'linux-swap':

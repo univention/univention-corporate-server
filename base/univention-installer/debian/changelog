@@ -1,3 +1,9 @@
+univention-installer (7.0.141-1) unstable; urgency=low
+
+  * fixed path for mkfs.btrfs (Bug #24495)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 10 Nov 2011 08:40:57 +0100
+
 univention-installer (7.0.140-4) unstable; urgency=low
 
   * keep active state of NEXT and PREV buttons (Bug #22869)
