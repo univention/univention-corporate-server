@@ -134,6 +134,15 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				return item.state == 'SHUTOFF';
 			}
 		}, {
+			name: 'vnc',
+			label: this._( 'Direct access' ),
+			isStandardAction: false,
+			isMultiAction: false,
+			callback: dojo.hitch(this, 'vncLink' ),
+			canExecute: function(item) {
+				return item.state == 'RUNNING' || item.state == 'IDLE';
+			}
+		}, {
 			name: 'add',
 			label: this._( 'Create virtual instance' ),
 			iconClass: 'umcIconAdd',
@@ -285,6 +294,18 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				this.filter();
 			}
 		}));
+	},
+
+	vncLink: function( ids, items ) {
+		umc.tools.umcpCommand( 'uvmm/domain/get', { domainURI : ids[ 0 ] } ).then( dojo.hitch( this, function( response ) {
+			var w = window.open();
+			w.document.write( dojo.replace( "<html><head><title>{domainName} on {nodeName}</title></head><body><applet archive='/TightVncViewer.jar' code='com.tightvnc.vncviewer.VncViewer' height='100%%' width='100%%'><param name='host' value='{vncHost}' /><param name='port' value='{vncPort}' /><param name='offer relogin' value='no' /></applet></body></html>"), {
+				domainName: items[ 0 ].label,
+				nodeName: items[ 0 ].nodeName,
+				vncHost: response.result.vncHost,
+				vncPort: response.result.vncHost
+			} );
+		} ) );
 	},
 
 	_addDomain: function() {

@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
+import socket
 
 from univention.lib.i18n import Translation
 
@@ -94,6 +95,7 @@ class Domains( object ):
 
 			success, data = result
 
+			node_uri = urlparse.urlsplit( request.options[ 'domainURI' ] )
 			json = object2dict( data )
 			## re-arrange a few attributes for the frontend
 			# RAM
@@ -116,7 +118,22 @@ class Domains( object ):
 				json[ 'kblayout' ] = json[ 'graphics' ][ 0 ][ 'keymap' ]
 				json[ 'vnc_remote' ] = json[ 'graphics' ][ 0 ][ 'listen' ] == '0.0.0.0'
 				# vnc_password will not be send to frontend
-
+				try:
+					port = json[ 'graphics' ][ 0 ][ 'port' ]
+					VNC_LINK_BY_NAME, VNC_LINK_BY_IPV4, VNC_LINK_BY_IPV6 = range(3)
+					vnc_link_format = VNC_LINK_BY_IPV4
+					if vnc_link_format == VNC_LINK_BY_IPV4:
+						addrs = socket.getaddrinfo( node_uri.netloc, port, socket.AF_INET )
+						(family, socktype, proto, canonname, sockaddr) = addrs[0]
+						host = sockaddr[0]
+					elif vnc_link_format == VNC_LINK_BY_IPV6:
+						addrs = socket.getaddrinfo( node_uri.netloc, port, socket.AF_INET6 )
+						(family, socktype, proto, canonname, sockaddr) = addrs[0]
+						host = '[%s]' % sockaddr[0]
+					json[ 'vncHost' ] = host
+					json[ 'vncPort' ] = port
+				except Exception, e:
+					MODULE.process( 'CRUNCHY: %s' % str( e ) )
 			# annotations
 			for key in json[ 'annotations' ]:
 				if key == 'uuid':
@@ -230,7 +247,17 @@ class Domains( object ):
 				raise UMC_OptionTypeError( _( 'Unknown profile given' ) )
 
 		domain_info.name = domain[ 'name' ]
-		domain_info.arch = domain[ 'arch' ]
+		if 'arch' in domain:
+			domain_info.arch = domain[ 'arch' ]
+		elif profile:
+			domain_info.arch = profile.arch
+		else:
+			raise UMC_CommandError( 'Could not determine architecture for domain' )
+
+		# FIXME: should read from the node capabilities
+		if domain_info.arch == 'automatic':
+			domain_info.arch = 'i686'
+
 		if 'type' in domain:
 			domain_info.domain_type, domain_info.os_type = domain['type'].split( '-' )
 		elif profile:
@@ -257,27 +284,36 @@ class Domains( object ):
 			raise UMC_OptionTypeError( 'vcpus must be a number' )
 
 		# boot devices
-		if domain[ 'boot' ]:
+		if 'boot' in domain:
 			domain_info.boot = domain[ 'boot' ]
+		elif profile:
+			domain_info.boot = profile.bootdev
+		else:
+			raise UMC_CommandError( 'Could not determine the list of boot devices for domain' )
 
 		# VNC
 		if domain[ 'vnc' ]:
 			gfx = Graphic()
-			if domain[ 'vnc_remote' ]:
+			if domain.get( 'vnc_remote', False ):
 				gfx.listen = '0.0.0.0'
 			else:
 				gfx.listen = '127.0.0.1'
-			gfx.keymap = domain[ 'kblayout' ]
+			if 'kblayout' in domain:
+				gfx.keymap = domain[ 'kblayout' ]
+			elif profile:
+				gfx.keymap = profile.kblayout
+			else:
+				raise UMC_CommandError( 'Could not determine the keyboard layout for the VNC access' )
 			gfx.passord = domain.get( 'vnc_password', None )
 			domain_info.graphics = [gfx,]
 
 		# annotations
-		domain_info.annotations[ 'os' ] = domain[ 'os' ]
-		domain_info.annotations[ 'description' ] = domain[ 'description' ]
-		domain_info.annotations[ 'contact' ] = domain[ 'contact' ]
+		domain_info.annotations[ 'os' ] = domain.get( 'os', '' )
+		domain_info.annotations[ 'description' ] = domain.get( 'description', '' )
+		domain_info.annotations[ 'contact' ] = domain.get( 'contact', '' )
 
 		# RTC offset
-		domain_info.rtc_offset = domain[ 'rtc_offset' ]
+		domain_info.rtc_offset = domain.get( 'rtc_offset', '' )
 
 		# drives
 		domain_info.disks = self._create_disks( request.options[ 'nodeURI' ], domain[ 'disks' ], domain_info )
