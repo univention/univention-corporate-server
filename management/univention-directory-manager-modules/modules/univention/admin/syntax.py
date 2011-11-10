@@ -30,8 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import re, string, types, math, time, operator
+import re, string, math, time, operator
 import ipaddr
+import inspect
 import univention.debug
 import univention.admin.modules
 import univention.admin.uexceptions
@@ -192,10 +193,10 @@ class complex( ISyntax ):
 
 		for i in range( len( texts ) ):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i,self.subsyntaxes[i],  texts))
-			if type( self.subsyntaxes[i][1] ) == types.InstanceType:
-				s=self.subsyntaxes[i][1]
+			if not inspect.isclass( self.subsyntaxes[ i ][ 1 ] ):
+				s = self.subsyntaxes[ i ][ 1 ]
 			else:
-				s=self.subsyntaxes[i][1]()
+				s = self.subsyntaxes[ i ][ 1 ]()
 			if texts[i] == None:
 				if min_elements is None or ( i + 1 ) < min_elements:
 					raise univention.admin.uexceptions.valueInvalidSyntax, _("Invalid syntax")
@@ -214,7 +215,7 @@ class complex( ISyntax ):
 		else:
 			for i in range(0,len(texts)):
 				if  texts[i]:
-					if type( self.subsyntaxes[i][1] ) == types.InstanceType:
+					if not inspect.isclass( self.subsyntaxes[ i ][ 1 ] ):
 						res=self.subsyntaxes[i][1].parse(texts[i])
 					else:
 						res=self.subsyntaxes[i][1]().parse(texts[i])
@@ -240,7 +241,7 @@ class complex( ISyntax ):
 	def new(self):
 		s=[]
 		for desc, syntax in self.subsyntaxes:
-			if type( syntax ) == types.InstanceType:
+			if not inspect.isclass( syntax ):
 				s.append(syntax.new())
 			else:
 				s.append(syntax().new())
@@ -249,7 +250,7 @@ class complex( ISyntax ):
 	def any(self):
 		s=[]
 		for desc, syntax in self.subsyntaxes:
-			if type( syntax ) == types.InstanceType:
+			if not inspect.isclass( syntax ):
 				s.append(syntax.any())
 			else:
 				s.append(syntax().any())

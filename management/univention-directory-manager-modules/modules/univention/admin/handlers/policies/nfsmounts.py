@@ -136,17 +136,11 @@ layout = [
 	] ),
 ]
 
-def unmapMounts(old):
-	new=[]
-	for i in old:
-		new.append(i.split(' '))
-	return new
+def unmapMounts( old ):
+	return map( lambda x: x.split( ' ' ), old )
 
-def mapMounts(old):
-	new=[]
-	for i in old:
-		new.append(string.join(i, ' '))
-	return new
+def mapMounts( old ):
+	return map( lambda x: ' '.join( x ), old )
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
@@ -173,7 +167,7 @@ class object(univention.admin.handlers.simplePolicy):
 
 	def _ldap_addlist(self):
 		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicyNFSMounts']) ]
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
