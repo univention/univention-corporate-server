@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (1.0.1-6) unstable; urgency=low
+
+  * added firewall rules for VNC (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 10 Nov 2011 10:57:20 +0100
+
 univention-virtual-machine-manager-node (1.0.1-5) unstable; urgency=low
 
   * added ucslint (Bug #22893)

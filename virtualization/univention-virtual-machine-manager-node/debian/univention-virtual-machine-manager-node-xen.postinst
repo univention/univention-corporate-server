@@ -48,7 +48,9 @@ fi
 ucr set security/packetfilter/package/univention-virtual-machine-manager-node-xen/tcp/8002/all="ACCEPT" \
 		security/packetfilter/package/univention-virtual-machine-manager-node-xen/tcp/8002/all/en="xend-relocation" \
 		security/packetfilter/package/univention-virtual-machine-manager-node-xen/tcp/8003/all="ACCEPT" \
-		security/packetfilter/package/univention-virtual-machine-manager-node-xen/tcp/8003/all/en="xend-relocation-ssl"
+		security/packetfilter/package/univention-virtual-machine-manager-node-xen/tcp/8003/all/en="xend-relocation-ssl" \
+		security/packetfilter/package/univention-virtual-machine-manager-node-xen/tcp/5900:5999/all="ACCEPT" \
+		security/packetfilter/package/univention-virtual-machine-manager-node-xen/tcp/5900:5999/all/en="VNC"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 #DEBHELPER#
