@@ -58,6 +58,10 @@ case "$1" in
 	update-rc.d -f libvirt-bin remove
 	test -e /etc/runit/univention/univention-libvirt || \
 		ln -s ../univention-libvirt /etc/runit/univention/univention-libvirt
+
+	ucr set security/packetfilter/package/univention-virtual-machine-manager-node-common/tcp/16514/all="ACCEPT" \
+			security/packetfilter/package/univention-virtual-machine-manager-node-common/tcp/16514/all/en="libvirt"
+	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

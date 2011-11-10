@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (1.0.1-3) unstable; urgency=low
+
+  * added firewall rules (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 10 Nov 2011 09:42:26 +0100
+
 univention-virtual-machine-manager-node (1.0.1-2) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)

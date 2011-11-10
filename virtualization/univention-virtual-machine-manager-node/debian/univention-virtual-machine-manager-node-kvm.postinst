@@ -54,6 +54,10 @@ case "$1" in
 	;;
 esac
 
+ucr set security/packetfilter/package/univention-virtual-machine-manager-node-kvm/tcp/49152:49215/all="ACCEPT" \
+		security/packetfilter/package/univention-virtual-machine-manager-node-kvm/tcp/49152:49215/all/en="kvm-migration"
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+
 #DEBHELPER#
 
 exit 0
