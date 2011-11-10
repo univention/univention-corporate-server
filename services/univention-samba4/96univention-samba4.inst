@@ -252,7 +252,7 @@ if [ "$samba4_role" = 'DC' ]; then
 	fi
 
 	## activate sysvol replication
-	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
+	univention-config-registry set samba4/sysvol/sync/cron?"*/1 * * * *"
 
 	# The windows clients connect to //$domainname/sysvol for GPOs during logon
 	# Register the local ips for the forward zone, skip with 'ucr set samba4/dns/domain/register=false'
@@ -345,7 +345,7 @@ elif [ "$samba4_role" = "RODC" ]; then
 	/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH"	2>/dev/null
 
 	## activate sysvol replication
-	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
+	univention-config-registry set samba4/sysvol/sync/cron?"*/1 * * * *"
 
 	## Kerberos keytab adjustments for Samba 4
 
