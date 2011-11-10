@@ -1,3 +1,10 @@
+univention-printserver (5.0.16-2) unstable; urgency=low
+
+  * univention-printserver depends on
+    univention-management-console-module-printers; Bug #22902
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 10 Nov 2011 12:29:24 +0100
+
 univention-printserver (5.0.16-1) unstable; urgency=low
 
   * add icons

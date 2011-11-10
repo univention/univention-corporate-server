@@ -38,7 +38,8 @@ Depends: ${misc:Depends}, ${python:Depends},
  openprinting-ppds-extra,
  univention-foomatic-ppds,
  univention-directory-manager-tools (>> 7.0.147),
- python-univention-lib (>= 1.0.25-1)
+ python-univention-lib (>= 1.0.25-1),
+ univention-management-console-module-printers (= ${build:Version})
 Conflicts: univention-management-console (<< 0.9.33-1)
 Recommends: univention-nagios-cups
 Description: UCS - print server
@@ -80,8 +81,8 @@ Package: univention-management-console-module-printers
 Architecture: all
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
- univention-management-console-server,
- univention-printserver (= ${source:Version})
+ univention-management-console-server
+Recommends: univention-printserver (= ${build:Version})
 Description: UMC module for printer administration
  This package contains the UMC module for the administration
  of configured printers.
