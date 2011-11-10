@@ -1,3 +1,9 @@
+univention-samba4 (1.0.101-1) unstable; urgency=low
+
+  * Run sysvol-sync every minute (Bug #24163)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Nov 2011 13:34:42 +0100
+
 univention-samba4 (1.0.100-1) unstable; urgency=low
 
   * Create group 'Builtin Users' to handle sysvol permissions (Bug #24163)
