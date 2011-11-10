@@ -39,6 +39,7 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3; t
 	# rename old init.d script
 	if [ ! -e /etc/init.d/univention-iptables.disabled ] ; then
 		mv /etc/init.d/univention-iptables /etc/init.d/univention-iptables.disabled
+		chmod a-x /etc/init.d/univention-iptables.disabled
 	fi
 fi
 

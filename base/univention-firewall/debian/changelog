@@ -1,3 +1,10 @@
+univention-firewall (4.0.6-5) unstable; urgency=low
+
+  * remove executable flag of /etc/init.d/univention-iptables.disabled
+    after update to UCS 3.0 (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 10 Nov 2011 10:56:50 +0100
+
 univention-firewall (4.0.6-4) unstable; urgency=low
 
   * override ucslint copyright error (Bug #23577)
