@@ -171,6 +171,15 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && item.vnc;
 			}
 		}, {
+			name: 'migrate',
+			label: this._( 'Migrate' ),
+			isStandardAction: false,
+			isMultiAction: true,
+			callback: dojo.hitch(this, '_migrateDomain' ),
+			canExecute: function(item) {
+				return item.state != 'PAUSE'; // FIXME need to find out if there are more than one node of this type
+			}
+		}, {
 			name: 'add',
 			label: this._( 'Create virtual instance' ),
 			iconClass: 'umcIconAdd',
@@ -208,27 +217,29 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		titlePane.addChild(this._searchForm);
 
 		// generate the data grid
-		this._grid = new umc.widgets.Grid({
-			region: 'center',
-			actions: actions,
-			// actionLabel: false, // hide labels of action columns
-			columns: this._getGridColumns('domain'),
-			moduleStore: this.moduleStore
-			/*footerFormatter: dojo.hitch(this, function(nItems, nItemsTotal) {
+		this._finishedDeferred.then( dojo.hitch( this, function( ucr ) {
+			this._grid = new umc.widgets.Grid({
+				region: 'center',
+				actions: actions,
+				actionLabel: ucr[ 'uvmm/umc/action/label' ] != 'no', // hide labels of action columns
+				columns: this._getGridColumns('domain'),
+				moduleStore: this.moduleStore
+				/*footerFormatter: dojo.hitch(this, function(nItems, nItemsTotal) {
 				// generate the caption for the grid footer
 				if (0 === nItemsTotal) {
-					return this._('No %(objPlural)s could be found', map);
+				return this._('No %(objPlural)s could be found', map);
 				}
 				else if (1 == nItems) {
-					return this._('%(nSelected)d %(objSingular)s of %(nTotal)d selected', map);
+				return this._('%(nSelected)d %(objSingular)s of %(nTotal)d selected', map);
 				}
 				else {
-					return this._('%(nSelected)d %(objPlural)s of %(nTotal)d selected', map);
+				return this._('%(nSelected)d %(objPlural)s of %(nTotal)d selected', map);
 				}
-			}),*/
-		});
+				}),*/
+			});
 
-		titlePane.addChild(this._grid);
+			titlePane.addChild(this._grid);
+		} ) );
 		// generate the navigation tree
 		var model = new umc.modules._uvmm.TreeModel({
 			umcpCommand: dojo.hitch(this, 'umcpCommand')
@@ -341,6 +352,72 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			w.document.write( html );
 			w.document.close();
 		} ) );
+	},
+
+	_migrateDomain: function( ids ) {
+		var dialog = null, form = null;
+
+		var _cleanup = function() {
+			dialog.hide();
+			dialog.destroyRecursive();
+			form.destroyRecursive();
+		};
+
+		var _migrate = dojo.hitch(this, function(name) {
+			// send the UMCP command
+			this.updateProgress(0, 1);
+			umc.tools.umcpCommand('uvmm/domain/migrate', {
+				domainURI: ids[ 0 ],
+				targetNodeURI: name
+			}).then(dojo.hitch(this, function() {
+				this.moduleStore.onChange();
+				this.updateProgress(1, 1);
+			}), dojo.hitch(this, function() {
+				umc.dialog.alert(this._('An error ocurred during processing your request.'));
+				this.moduleStore.onChange();
+				this.updateProgress(1, 1);
+			}));
+		});
+
+		var sourceURI = ids[ 0 ].slice( 0, ids[ 0 ].indexOf( '#' ) );
+		form = new umc.widgets.Form({
+			widgets: [{
+				name: 'name',
+				type: 'ComboBox',
+				label: this._('Please select the destination server:'),
+				dynamicValues: function() {
+					return umc.modules._uvmm.types.getNodes().then( function( items ) {
+						return dojo.filter( items, function( item ) {
+							return item.id != sourceURI;
+						} );
+					} );
+				}
+			}],
+			buttons: [{
+				name: 'submit',
+				label: this._( 'Migrate' ),
+				style: 'float: right;',
+				callback: function() {
+					var nameWidget = form.getWidget('name');
+					if (nameWidget.isValid()) {
+						var name = nameWidget.get('value');
+						_cleanup();
+						_migrate( name );
+					}
+				}
+			}, {
+				name: 'cancel',
+				label: this._('Cancel'),
+				callback: _cleanup
+			}],
+			layout: [ 'name' ]
+		});
+
+		dialog = new dijit.Dialog({
+			title: this._('Migrate domain'),
+			content: form
+		});
+		dialog.show();
 	},
 
 	_addDomain: function() {

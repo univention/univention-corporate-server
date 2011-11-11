@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (1.0.53-1) unstable; urgency=low
+
+  * UCR variable uvmm/umc/action/label: setting this UCR variable to no
+    will hide the labels on action columns; Bug #22893
+  * add (not yet complete) support for migrate
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 11 Nov 2011 21:21:14 +0100
+
 univention-virtual-machine-manager-daemon (1.0.52-1) unstable; urgency=low
 
   * dmoain_list: send attribute suspended for each domain; Bug #22893
