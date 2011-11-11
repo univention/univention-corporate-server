@@ -1,5 +1,11 @@
 univention-management-console-frontend (1.0.195-1) unstable; urgency=low
 
+  * Grid: support hiding the labels of action columns; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 11 Nov 2011 18:22:10 +0100
+
+univention-management-console-frontend (1.0.195-1) unstable; urgency=low
+
   * CSS fixes for the login screen (Bug #22881)
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 11 Nov 2011 19:40:25 +0100

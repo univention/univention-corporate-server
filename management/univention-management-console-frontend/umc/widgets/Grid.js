@@ -21,6 +21,7 @@ dojo.require("umc.render");
 dojo.require("umc.widgets.Button");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.StandbyMixin");
+dojo.require("umc.widgets.Tooltip");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
 dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._WidgetsInWidgetsMixin, umc.i18n.Mixin, umc.widgets.StandbyMixin ], {
@@ -73,6 +74,9 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 	// use the framework wide translation file
 	i18nClass: 'umc.app',
+
+	// turn an labels for action columns by default
+	actionLabel: true,
 
 	// turn off gutters by default
 	gutters: false,
@@ -233,8 +237,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			var ilabel = dojo.isFunction(iaction.label) ? iaction.label() : iaction.label;
 			gridColumns.push({
 				field: this.moduleStore.idProperty,
-				name: ilabel,
-				width: this._getHeaderWidth(ilabel) + 'px',
+				name: this.actionLabel ? ilabel : ' ',
+				width: ! this.actionLabel && iaction.iconClass ? '28px':  this._getHeaderWidth( ilabel ) + 'px',
 				description: iaction.description,
 				editable: false,
 				formatter: dojo.hitch(this, function(key, rowIndex) {
@@ -269,7 +273,18 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 					}
 
 					// return final button
-					return new umc.widgets.Button(props);
+					var btn = new umc.widgets.Button( props );
+					if ( iaction.description ) {
+						var idescription = dojo.isFunction( iaction.description ) ? iaction.description( item ) : iaction.description;
+						var tooltip = new umc.widgets.Tooltip( {
+							label: idescription,
+							connectId: [ btn.domNode ]
+						});
+
+						// destroy the tooltip when the widget is destroyed
+						tooltip.connect( btn, 'destroy', 'destroy' );
+					}
+					return btn;
 				})
 			});
 		}, this);

@@ -5130,7 +5130,8 @@ p {
 .umcIconRefresh,
 .umcIconPlay,
 .umcIconPause,
-.umcIconStop {
+.umcIconStop,
+.umcIconView {
 	background-image: url(images/commonIcons.png);
 	width: 16px;
 	height: 16px;
@@ -5170,6 +5171,10 @@ p {
 
 .umcIconStop {
 	background-position: -128px 0px;
+}
+
+.umcIconView {
+	background-position: -144px 0px;
 }
 
 .umcButtonRow {
