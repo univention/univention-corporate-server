@@ -1,3 +1,9 @@
+univention-printserver (5.0.16-4) unstable; urgency=low
+
+  * fixed wrong version reference (Bug #22902)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 11 Nov 2011 16:51:51 +0100
+
 univention-printserver (5.0.16-3) unstable; urgency=low
 
   * added "exit 0" at the end of the postint script (Bug #22902)
