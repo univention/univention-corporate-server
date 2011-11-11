@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.53-2) unstable; urgency=low
+
+  * add missing file InterfaceWizard.js; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 11 Nov 2011 23:05:22 +0100
+
 univention-virtual-machine-manager-daemon (1.0.53-1) unstable; urgency=low
 
   * UCR variable uvmm/umc/action/label: setting this UCR variable to no
