@@ -36,6 +36,7 @@ eval "$(univention-config-registry shell hostname domainname server/role)"
 univention-config-registry set "uvmm/pool/default/path?/var/lib/libvirt/images" \
 			"uvmm/umc/vnc?internal" \
 			"uvmm/umc/show/pause?xen" \
+			"uvmm/umc/autosearch?true" \
             "uvmm/check/interval?2" \
             "uvmm/check/timeout?10" \
             "auth/uvmmd/accessfile?/etc/security/access-uvmmd.conf"

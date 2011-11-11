@@ -43,6 +43,9 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// reference to the last item in the navigation on which a context menu has been opened
 	_navContextItem: null,
 
+	_finishedDeferred: null,
+	_ucr: null,
+
 	_progressBar: null,
 	_progressContainer: null,
 
@@ -59,6 +62,13 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	buildRendering: function() {
 		// call superclass method
 		this.inherited(arguments);
+
+		// load asynchronously some UCR variables
+		this._finishedDeferred = new dojo.Deferred();
+		umc.tools.ucr('uvmm/umc/*').then(dojo.hitch(this, function(ucr) {
+			this._ucr = ucr;
+			this._finishedDeferred.resolve(this._ucr);
+		}));
 
 		// setup search page
 		this._searchPage = new umc.widgets.Page({
@@ -291,7 +301,11 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._tree.watch('path', dojo.hitch(this, function() {
 			var searchType = this._searchForm.getWidget('type').get('value');
 			if (searchType == 'domain') {
-				this.filter();
+				this._finishedDeferred.then(dojo.hitch(this, function(ucr) {
+					if (umc.tools.isTrue(ucr['uvmm/umc/autosearch'])) {
+						this.filter();
+					}
+				}));
 			}
 		}));
 	},
@@ -464,7 +478,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			formatter: dojo.hitch(this, 'cpuUsageFormatter')
 		}, {
 			name: 'mem',
-			label: this._('Memory avail.'),
+			label: this._('Memory'),
 			width: 'adjust',
 			formatter: dojo.hitch(this, 'memoryUsageFormatter')
 		}];
@@ -476,9 +490,15 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		var item = this._grid._grid.getItem(rowIndex);
 		var percentage = Math.round(item.cpuUsage);
-		return new dijit.ProgressBar({
-			value: percentage + '%'
-		});
+
+		if (item.state == 'RUNNING' || item.state == 'IDLE') {
+			// only show CPU info, if the machine is running
+			return new dijit.ProgressBar({
+				value: percentage + '%'
+			});
+		}
+
+		return '';
 	},
 
 	memoryUsageFormatter: function(id, rowIndex) {

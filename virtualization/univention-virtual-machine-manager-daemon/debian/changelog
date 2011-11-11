@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.51-1) unstable; urgency=low
+
+  * UMC: added autosearch support via the UCR variable uvmm/umc/autosearch,
+    minor layout changes (Bug #22893)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 11 Nov 2011 20:28:00 +0100
+
 univention-virtual-machine-manager-daemon (1.0.50-1) unstable; urgency=low
 
   * UMC: added creation/removal/editing of network interfaces (Bug #22893)

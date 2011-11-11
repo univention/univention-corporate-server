@@ -498,7 +498,7 @@ msgid "Memory (default unit MB)"
 msgstr "Größe (Standardeinheit MB)"
 
 #: umc/js/uvmm.js:444
-msgid "Memory avail."
+msgid "Memory"
 msgstr "Speicher"
 
 #: umc/js/uvmm.js:426

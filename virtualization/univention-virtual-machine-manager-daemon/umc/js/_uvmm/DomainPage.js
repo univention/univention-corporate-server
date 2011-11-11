@@ -64,7 +64,6 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				callback: dojo.hitch(this, 'save')
 			}]
 		});
-		this.addChild(this._generalPage);
 
 		this._generalForm = new umc.widgets.Form({
 			widgets: [{
@@ -118,7 +117,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		this._generalForm._buttons.email.set('visible', false);
 
 		//
-		// general settings page
+		// advanced settings page
 		//
 
 		this._advancedPage = new umc.widgets.Page({
@@ -135,7 +134,6 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				callback: dojo.hitch(this, 'save')
 			}]
 		});
-		this.addChild(this._advancedPage);
 
 		this._advancedForm = new umc.widgets.Form({
 			widgets: [{
@@ -238,7 +236,6 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				callback: dojo.hitch(this, 'save')
 			}]
 		});
-		this.addChild(this._devicesPage);
 		var container = new umc.widgets.ContainerWidget({
 			scrollable: true
 		});
@@ -298,7 +295,6 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				callback: dojo.hitch(this, 'save')
 			}]
 		});
-		this.addChild(this._snapshotPage);
 
 		// grid for the drives
 		this._snapshotStore = umc.store.getModuleStore('id', 'uvmm/snapshot');
@@ -311,6 +307,12 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		});
 		titlePane.addChild(this._snapshotGrid);
 		this._snapshotPage.addChild(titlePane);
+
+		// add pages in the correct order
+		this.addChild(this._generalPage);
+		this.addChild(this._devicesPage);
+		this.addChild(this._snapshotPage);
+		this.addChild(this._advancedPage);
 	},
 
 	save: function() {
