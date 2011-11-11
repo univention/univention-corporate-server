@@ -216,7 +216,7 @@ class object(univention.admin.handlers.simpleLdap):
 		al=[]
 
 		if self[ 'mailPrimaryAddress' ]:
-			al.append(('univentionMailSharedFolderDeliveryAddress', 'univentioninternalpostuser+shared/%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] ) ) )
+			al.append(('univentionMailSharedFolderDeliveryAddress', 'univentioninternalpostuser+shared/%s@%s' % ( self[ 'name' ].lower(), self[ 'mailDomain' ].lower() ) ) )
 
 			address = '%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] )
 			if self[ 'mailPrimaryAddress' ] != address:
@@ -252,7 +252,7 @@ class object(univention.admin.handlers.simpleLdap):
 			else:
 				ml.append( ( 'univentionMailSharedFolderDeliveryAddress',
 							 self.oldattr.get( 'univentionMailSharedFolderDeliveryAddress', [] ),
-							 [ 'univentioninternalpostuser+shared/%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] ) ] ) )
+							 [ 'univentioninternalpostuser+shared/%s@%s' % ( self[ 'name' ].lower(), self[ 'mailDomain' ].lower() ) ] ) )
 
 				address = '%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] )
 				if self[ 'mailPrimaryAddress' ] != address:

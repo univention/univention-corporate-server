@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.176-1) unstable; urgency=low
+
+  * use lowercase address for shared folder mail delivery (Bug #24503)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 11 Nov 2011 11:31:17 +0100
+
 univention-directory-manager-modules (7.0.175-1) unstable; urgency=low
 
   * fix complex syntax when using instances in subsyntaxes; Bug #24508
