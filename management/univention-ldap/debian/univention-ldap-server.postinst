@@ -192,7 +192,7 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.46-1
 fi
 
 # Bug 24503: convert
-if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 8.0.70-1; then
+if [ "$1" = "configure" -a "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions "$2" lt-nl 8.0.70-1; then
 	echo "Updating LDAP attribute univentionMailSharedFolderDeliveryAddress..."
 	/usr/share/univention-ldap/convert_univentionMailSharedFolderDeliveryAddress.py
 fi

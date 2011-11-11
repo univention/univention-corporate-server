@@ -1,3 +1,10 @@
+univention-ldap (8.0.70-2) unstable; urgency=low
+
+  * call convert_univentionMailSharedFolderDeliveryAddress only on DC
+    master (Bug #24503) 
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 11 Nov 2011 12:41:09 +0100
+
 univention-ldap (8.0.70-1) unstable; urgency=low
 
   * added convert_univentionMailSharedFolderDeliveryAddress (Bug #24503)
