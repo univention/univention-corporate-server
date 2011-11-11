@@ -390,7 +390,7 @@ fi
 # BEGIN -- update to 3.0-0 Bug #23157
 # Update Managed and Mobile client update without UCD 3.2 is not possible
 role="$(univention-config-registry get server/role)"
-if [ "$role" = "managed_client" ] || [ "$role" = "mobile_client" ] || [ "$role" = "fatclient" ]; then
+if [ "$role" = "managedclient" ] || [ "$role" = "mobileclient" ] || [ "$role" = "fatclient" ]; then
 	echo -n "Checking for Univention Corporate Desktop (UCD): "
 
 	# save old values

@@ -1,3 +1,10 @@
+univention-updater (7.0.90-1) unstable; urgency=low
+
+  * Check for mobileclient instead of mobile_client in preup.sh
+    (Bug #23157)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Nov 2011 06:50:48 +0100
+
 univention-updater (7.0.89-1) unstable; urgency=low
 
   * block update if univention-kolab2-webclient < V7 is installed  (Bug #24502)
