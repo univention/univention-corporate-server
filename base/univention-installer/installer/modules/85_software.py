@@ -136,7 +136,7 @@ class object(content):
 	def depends(self):
 		# depends() is called every time the user enters this module - so we can reset position here
 		self.reset_position_in_layout()
-		return []
+		return {}
 
 	def start(self):
 		self.sub = self.active(self,_('Preparing package list'),_('Please wait ...'))

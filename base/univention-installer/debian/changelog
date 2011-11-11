@@ -1,3 +1,9 @@
+univention-installer (7.0.144-1) unstable; urgency=low
+
+  * readded bootloader module (Bug #24516)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 11 Nov 2011 17:01:30 +0100
+
 univention-installer (7.0.143-1) unstable; urgency=low
 
   * Fix bug in read-only device detection (Bug #21988)

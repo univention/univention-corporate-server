@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-09 14:17+0100\n"
-"PO-Revision-Date: 2011-11-09 14:17+0100\n"
+"POT-Creation-Date: 2011-11-11 16:51+0100\n"
+"PO-Revision-Date: 2011-11-11 17:00+0100\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -150,10 +150,10 @@ msgstr ""
 msgid "A Python Exception has occured!"
 msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 
-#: installer/main.py:284 installer/objects.py:2110
+#: installer/main.py:284 installer/objects.py:2117
 #: installer/modules/10_hardware.py:279 installer/modules/10_hardware.py:313
-#: installer/modules/15_profile.py:56 installer/modules/65_partition.py:4307
-#: installer/modules/65_partition.py:4323 installer/modules/70_net.py:1040
+#: installer/modules/15_profile.py:56 installer/modules/65_partition.py:4306
+#: installer/modules/65_partition.py:4322 installer/modules/70_net.py:1040
 #: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:170
 #: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:197
 #: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:216
@@ -203,7 +203,7 @@ msgstr " Warnung"
 msgid " End"
 msgstr " Ende"
 
-#: installer/objects.py:1504 installer/modules/65_partition.py:2392
+#: installer/objects.py:1504 installer/modules/65_partition.py:2395
 #: installer/modules/85_software.py:311
 msgid "F12-Next"
 msgstr "F12-Weiter"
@@ -220,22 +220,22 @@ msgstr "F12-Recover Shell starten"
 msgid "F12-Start installation"
 msgstr "F12-Installation starten"
 
-#: installer/objects.py:1515 installer/modules/65_partition.py:2391
+#: installer/objects.py:1516 installer/modules/65_partition.py:2394
 #: installer/modules/85_software.py:307 installer/modules/85_software.py:312
 msgid "F11-Back"
 msgstr "F11-Zurück"
 
-#: installer/objects.py:1608 installer/objects.py:1897
+#: installer/objects.py:1615 installer/objects.py:1904
 msgid "Sorry, no help for this module."
 msgstr "Es existiert keine Hilfe für dieses Modul"
 
-#: installer/objects.py:2000 installer/modules/65_partition.py:4154
-#: installer/modules/65_partition.py:4275
+#: installer/objects.py:2007 installer/modules/65_partition.py:4153
+#: installer/modules/65_partition.py:4274
 msgid "Yes"
 msgstr "Ja"
 
-#: installer/objects.py:2004 installer/modules/65_partition.py:4155
-#: installer/modules/65_partition.py:4276
+#: installer/objects.py:2011 installer/modules/65_partition.py:4154
+#: installer/modules/65_partition.py:4275
 msgid "No"
 msgstr "Nein"
 
@@ -657,10 +657,10 @@ msgstr "Suche CD-ROM-Laufwerk"
 #: installer/modules/65_partition.py:1058
 #: installer/modules/65_partition.py:1061
 #: installer/modules/65_partition.py:1064
-#: installer/modules/65_partition.py:2148
-#: installer/modules/65_partition.py:3344
-#: installer/modules/65_partition.py:3349
-#: installer/modules/65_partition.py:3353 installer/modules/70_net.py:741
+#: installer/modules/65_partition.py:2151
+#: installer/modules/65_partition.py:3347
+#: installer/modules/65_partition.py:3352
+#: installer/modules/65_partition.py:3356 installer/modules/70_net.py:741
 #: installer/modules/85_software.py:142
 msgid "Please wait ..."
 msgstr "Bitte warten ..."
@@ -734,10 +734,10 @@ msgid "Source device"
 msgstr "Quellmedium"
 
 #: installer/modules/10_hardware.py:280 installer/modules/10_hardware.py:314
-#: installer/modules/15_profile.py:57 installer/modules/65_partition.py:3781
-#: installer/modules/65_partition.py:3828
-#: installer/modules/65_partition.py:4082
-#: installer/modules/65_partition.py:4121 installer/modules/70_net.py:1039
+#: installer/modules/15_profile.py:57 installer/modules/65_partition.py:3780
+#: installer/modules/65_partition.py:3827
+#: installer/modules/65_partition.py:4081
+#: installer/modules/65_partition.py:4120 installer/modules/70_net.py:1039
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -1424,220 +1424,220 @@ msgstr "Erstelle LVM-Geräte"
 msgid "Formatting partitions"
 msgstr "Formatiere Partitionen"
 
-#: installer/modules/65_partition.py:1861
+#: installer/modules/65_partition.py:1860
 msgid "Include USB storage devices while auto partitioning?"
 msgstr "USB-Geräte während der Auto-Partitionierung verwenden?"
 
-#: installer/modules/65_partition.py:1863
-#: installer/modules/65_partition.py:2168
+#: installer/modules/65_partition.py:1862
+#: installer/modules/65_partition.py:2171
 msgid "WARNING: Choosing \"yes\" prepares for deletion of all"
 msgstr "WARNUNG: \"Ja\" bereitet das Löschen aller Partitionen auf"
 
-#: installer/modules/65_partition.py:1864
+#: installer/modules/65_partition.py:1863
 msgid "partitions on all disks! This includes USB harddisks"
 msgstr "allen Festplatten vor! Das beinhaltet auch USB-Festplatten"
 
-#: installer/modules/65_partition.py:1865
+#: installer/modules/65_partition.py:1864
 msgid "and USB sticks. In any case *ALL* LVM LV and LVM VG"
 msgstr "und USB-Sticks. Es werden alle LVM LV und LVM VG"
 
-#: installer/modules/65_partition.py:1866
+#: installer/modules/65_partition.py:1865
 msgid "will be deleted!"
 msgstr "gelöscht!"
 
-#: installer/modules/65_partition.py:1960
-#: installer/modules/65_partition.py:2020
+#: installer/modules/65_partition.py:1959
+#: installer/modules/65_partition.py:2019
 msgid "Not enough disk space found for /boot!"
 msgstr "Nicht genug Speicherplatz für /boot!"
 
-#: installer/modules/65_partition.py:1961
-#: installer/modules/65_partition.py:1992
-#: installer/modules/65_partition.py:2021
+#: installer/modules/65_partition.py:1960
+#: installer/modules/65_partition.py:1991
+#: installer/modules/65_partition.py:2020
 msgid "Auto partitioning aborted."
 msgstr "Automatische Partitionierung abgebrochen."
 
-#: installer/modules/65_partition.py:1991
+#: installer/modules/65_partition.py:1990
 msgid "Not enough disk space found!"
 msgstr "Nicht genügend Speicherplatz vorhanden!"
 
-#: installer/modules/65_partition.py:2064
+#: installer/modules/65_partition.py:2063
 msgid "WARNING: No devices or valid partitions found!"
 msgstr "WARNUNG: Es konnten keine Festplatten oder validen Partitionen"
 
-#: installer/modules/65_partition.py:2065
+#: installer/modules/65_partition.py:2064
 msgid "Please check your harddrive or partitioning."
 msgstr "gefunden werden! Bitte überprüfen Sie die Festplatte oder"
 
-#: installer/modules/65_partition.py:2066
+#: installer/modules/65_partition.py:2065
 msgid "Further information can be found in the"
 msgstr "Partitionierung. Weitere Informationen finden Sie in der"
 
-#: installer/modules/65_partition.py:2067
-#: installer/modules/65_partition.py:2129
+#: installer/modules/65_partition.py:2066
+#: installer/modules/65_partition.py:2132
 msgid "Support & Knowledge Base: http://sdb.univention.de."
 msgstr "Support & Knowledge Base: http://sdb.univention.de."
 
-#: installer/modules/65_partition.py:2104
+#: installer/modules/65_partition.py:2107
 #, python-format
 msgid "No valid partition table found on device %s."
 msgstr "Keine gültige Partitionstabelle auf Gerät %s vorhanden."
 
-#: installer/modules/65_partition.py:2105
+#: installer/modules/65_partition.py:2108
 #, python-format
 msgid "Install empty MBR to device %s ?"
 msgstr "Einen leeren MBR auf das Gerät %s schreiben?"
 
-#: installer/modules/65_partition.py:2107
-#: installer/modules/65_partition.py:2124
+#: installer/modules/65_partition.py:2110
+#: installer/modules/65_partition.py:2127
 msgid "WARNING: By choosing \"Write MBR\" existing data"
 msgstr "WARNUNG: Durch Auswahl von \"MBR schreiben\" gehen vorhandene"
 
-#: installer/modules/65_partition.py:2108
-#: installer/modules/65_partition.py:2125
+#: installer/modules/65_partition.py:2111
+#: installer/modules/65_partition.py:2128
 #, python-format
 msgid "on device %s will be lost."
 msgstr "Daten auf dem Gerät %s verloren."
 
-#: installer/modules/65_partition.py:2111
-#: installer/modules/65_partition.py:2135
+#: installer/modules/65_partition.py:2114
+#: installer/modules/65_partition.py:2138
 msgid "Write MBR"
 msgstr "MBR schreiben"
 
-#: installer/modules/65_partition.py:2111
-#: installer/modules/65_partition.py:2135
+#: installer/modules/65_partition.py:2114
+#: installer/modules/65_partition.py:2138
 msgid "Ignore Device"
 msgstr "Gerät ignorieren"
 
-#: installer/modules/65_partition.py:2119
+#: installer/modules/65_partition.py:2122
 #, python-format
 msgid "A GUID partition table (GPT) has been found on device %s."
 msgstr "Eine GUID Partition Table (GPT) wurde auf Gerät %s gefunden."
 
-#: installer/modules/65_partition.py:2120
+#: installer/modules/65_partition.py:2123
 msgid "GPT devices are not supported by the interactive installation."
 msgstr "Geräte mit GPT werden von der interaktiven Installation nicht"
 
-#: installer/modules/65_partition.py:2121
+#: installer/modules/65_partition.py:2124
 msgid "You can proceed by ignoring this device or by removing"
 msgstr "unterstützt. Es kann fortgefahren werden, indem das Gerät ignoriert"
 
-#: installer/modules/65_partition.py:2122
+#: installer/modules/65_partition.py:2125
 msgid "the existing GPT and writing an empty MBR."
 msgstr "wird oder durch das Entfernen der GPT und Schreiben eines MBR."
 
-#: installer/modules/65_partition.py:2127
+#: installer/modules/65_partition.py:2130
 msgid "HINT: Further information for an installation"
 msgstr "HINWEIS: Weitere Informationen zur Installation"
 
-#: installer/modules/65_partition.py:2128
+#: installer/modules/65_partition.py:2131
 msgid "on a device with GPT can be found in the"
 msgstr "auf Geräten mit GPT finden Sie in der"
 
-#: installer/modules/65_partition.py:2132
+#: installer/modules/65_partition.py:2135
 #, python-format
 msgid "Write an empty MBR to device %s ?"
 msgstr "Leeren MBR auf Gerät %s schreiben?"
 
-#: installer/modules/65_partition.py:2148
+#: installer/modules/65_partition.py:2151
 msgid "Detecting LVM devices"
 msgstr "Suche LVM-Geräte"
 
-#: installer/modules/65_partition.py:2157
+#: installer/modules/65_partition.py:2160
 msgid "WARNING: not enough free space for auto partitioning!"
 msgstr "WARNUNG: Nicht genug Platz für Autopartitionierung!"
 
-#: installer/modules/65_partition.py:2158
+#: installer/modules/65_partition.py:2161
 msgid "Auto partitioning has been disabled!"
 msgstr "Automatische Partitionierung wurde deaktiviert!"
 
-#: installer/modules/65_partition.py:2166
+#: installer/modules/65_partition.py:2169
 msgid "Do you want to use auto-partitioning?"
 msgstr "Soll die automatische Partitionierung verwendet werden? "
 
-#: installer/modules/65_partition.py:2169
+#: installer/modules/65_partition.py:2172
 msgid "partitions on all disks! If auto-partition result is"
 msgstr "allen Festplatten vor! Wenn der Vorschlag der Auto-Partitionierung"
 
-#: installer/modules/65_partition.py:2170
+#: installer/modules/65_partition.py:2173
 msgid "unsuitable press F5 to restart partitioning."
 msgstr "unpassend ist, drücken Sie F5, um alle Änderungen zu verwerfen."
 
-#: installer/modules/65_partition.py:2179
+#: installer/modules/65_partition.py:2182
 msgid "LVM1 volumes detected. To use LVM1 volumes all"
 msgstr "LVM1-Medium gefunden. Um LVM1-Medien zu nutzen"
 
-#: installer/modules/65_partition.py:2180
+#: installer/modules/65_partition.py:2183
 msgid "existing LVM1 snapshots have to be removed!"
 msgstr "müssen alle LVM1-Snapshots gelöscht werden!"
 
-#: installer/modules/65_partition.py:2181
+#: installer/modules/65_partition.py:2184
 msgid "Otherwise kernel is unable to mount them!"
 msgstr "Anderenfalls kann der Kernel sie nicht einbinden!"
 
-#: installer/modules/65_partition.py:2200
+#: installer/modules/65_partition.py:2203
 msgid "No LVM volume group found on current system."
 msgstr "Keine LVM-Gruppe gefunden."
 
-#: installer/modules/65_partition.py:2201
+#: installer/modules/65_partition.py:2204
 msgid "Do you want to use LVM2?"
 msgstr "Möchten Sie LVM2 verwenden?"
 
-#: installer/modules/65_partition.py:2221
+#: installer/modules/65_partition.py:2224
 msgid " Partitioning dialog "
 msgstr "Partitionierung"
 
-#: installer/modules/65_partition.py:2241
+#: installer/modules/65_partition.py:2244
 msgid "Device"
 msgstr "Gerät"
 
-#: installer/modules/65_partition.py:2242
+#: installer/modules/65_partition.py:2245
 msgid "Area(MB)"
 msgstr "Bereich(MB)"
 
-#: installer/modules/65_partition.py:2243
+#: installer/modules/65_partition.py:2246
 msgid "Type"
 msgstr "Typ"
 
-#: installer/modules/65_partition.py:2244
+#: installer/modules/65_partition.py:2247
 msgid "Form."
 msgstr "Form."
 
-#: installer/modules/65_partition.py:2245
-#: installer/modules/65_partition.py:3811
-#: installer/modules/65_partition.py:4112
+#: installer/modules/65_partition.py:2248
+#: installer/modules/65_partition.py:3810
+#: installer/modules/65_partition.py:4111
 msgid "Mount point"
 msgstr "Mount-Point"
 
-#: installer/modules/65_partition.py:2246
+#: installer/modules/65_partition.py:2249
 msgid "Size(MB)"
 msgstr "Größe(MB)"
 
-#: installer/modules/65_partition.py:2260
+#: installer/modules/65_partition.py:2263
 msgid "diskdrive"
 msgstr "Festplatte"
 
-#: installer/modules/65_partition.py:2286
+#: installer/modules/65_partition.py:2289
 msgid "(unassigned)"
 msgstr "(nicht zugewiesen)"
 
-#: installer/modules/65_partition.py:2312
+#: installer/modules/65_partition.py:2315
 msgid "unusable"
 msgstr "unbenutzbar"
 
-#: installer/modules/65_partition.py:2315
-#: installer/modules/65_partition.py:2319
+#: installer/modules/65_partition.py:2318
+#: installer/modules/65_partition.py:2322
 msgid "free"
 msgstr "frei"
 
-#: installer/modules/65_partition.py:2322
+#: installer/modules/65_partition.py:2325
 msgid "unknown"
 msgstr "unbekannt"
 
-#: installer/modules/65_partition.py:2340
+#: installer/modules/65_partition.py:2343
 msgid "LVM volume group"
 msgstr "LVM-Medien-Gruppe"
 
-#: installer/modules/65_partition.py:2382
+#: installer/modules/65_partition.py:2385
 msgid ""
 "This module is used for partitioning the existing hard drives. It is "
 "recommended to use at least two partitions - one for the root file system, "
@@ -1658,27 +1658,27 @@ msgstr ""
 "alle Daten verloren! Sollte der Partitionierungsvorschlag unpassend sein, "
 "kann er durch die Funktionstaste F5 verworfen werden."
 
-#: installer/modules/65_partition.py:2386
+#: installer/modules/65_partition.py:2389
 msgid "F2-Create"
 msgstr "F2-Erstellen"
 
-#: installer/modules/65_partition.py:2387
+#: installer/modules/65_partition.py:2390
 msgid "F3-Edit"
 msgstr "F3-Editieren"
 
-#: installer/modules/65_partition.py:2388
+#: installer/modules/65_partition.py:2391
 msgid "F4-Delete"
 msgstr "F4-Löschen"
 
-#: installer/modules/65_partition.py:2389
+#: installer/modules/65_partition.py:2392
 msgid "F5-Reset changes"
 msgstr "F5-Änderungen verwerfen"
 
-#: installer/modules/65_partition.py:2390
+#: installer/modules/65_partition.py:2393
 msgid "F6-Write partitions"
 msgstr "F6-Änderungen schreiben"
 
-#: installer/modules/65_partition.py:2431
+#: installer/modules/65_partition.py:2434
 msgid ""
 "UCS-Partition-Tool \n"
 " \n"
@@ -1714,350 +1714,376 @@ msgstr ""
 " Bitte benutzen Sie  \"Änderungen schreiben\", um Ihre Einstellungen nun auf "
 "die Festplatte zu schreiben."
 
-#: installer/modules/65_partition.py:2528
-#: installer/modules/65_partition.py:2562
-#: installer/modules/65_partition.py:2584
+#: installer/modules/65_partition.py:2531
+#: installer/modules/65_partition.py:2565
+#: installer/modules/65_partition.py:2587
 msgid "LVM physical volumes cannot be modified!"
 msgstr "LVM Physikalische Medien können nicht verändert werden!"
 
-#: installer/modules/65_partition.py:2528
-#: installer/modules/65_partition.py:2562
-#: installer/modules/65_partition.py:2584
+#: installer/modules/65_partition.py:2531
+#: installer/modules/65_partition.py:2565
+#: installer/modules/65_partition.py:2587
 msgid "If necessary delete this partition."
 msgstr "Wenn es notwendig ist, sollte die Partition gelöscht werden."
 
-#: installer/modules/65_partition.py:2649
-#: installer/modules/65_partition.py:2660
+#: installer/modules/65_partition.py:2652
+#: installer/modules/65_partition.py:2663
 msgid "Unable to remove physical volume from"
 msgstr "Das Löschen des physikalischen Mediums der"
 
-#: installer/modules/65_partition.py:2650
-#: installer/modules/65_partition.py:2661
+#: installer/modules/65_partition.py:2653
+#: installer/modules/65_partition.py:2664
 #, python-format
 msgid "volume group \"%s\"!"
 msgstr "Medien-Gruppe \"%s\" ist fehlgeschlagen!"
 
-#: installer/modules/65_partition.py:2651
-#: installer/modules/65_partition.py:2662
+#: installer/modules/65_partition.py:2654
+#: installer/modules/65_partition.py:2665
 msgid "Physical volume contains physical extents in use!"
 msgstr "Physikalisches Medium enthält verwendete Systemdaten!"
 
-#: installer/modules/65_partition.py:2663
+#: installer/modules/65_partition.py:2666
 msgid "Please use \"pvmove\" to move data to other"
 msgstr "Bitte verschieben Sie die Daten mit \"pvmove\""
 
-#: installer/modules/65_partition.py:2664
+#: installer/modules/65_partition.py:2667
 msgid "physical volumes."
 msgstr "auf ein anderes phys. Medium."
 
-#: installer/modules/65_partition.py:3344
+#: installer/modules/65_partition.py:3347
 msgid "Writing partitions"
 msgstr "Schreibe Partitionen"
 
-#: installer/modules/65_partition.py:3347
+#: installer/modules/65_partition.py:3350
 msgid "Error while writing partitions:"
 msgstr "Fehler beim Anlegen der Partitionen:"
 
-#: installer/modules/65_partition.py:3349
+#: installer/modules/65_partition.py:3352
 msgid "Creating LVM Volumes"
 msgstr "Erstelle LVM-Geräte"
 
-#: installer/modules/65_partition.py:3352
+#: installer/modules/65_partition.py:3355
 msgid "Error while creating LVM volumes:"
 msgstr "Fehler beim Anlegen der LVM Volumes:"
 
-#: installer/modules/65_partition.py:3353
+#: installer/modules/65_partition.py:3356
 msgid "Creating file systems"
 msgstr "Erstelle Dateisysteme"
 
-#: installer/modules/65_partition.py:3356
+#: installer/modules/65_partition.py:3359
 msgid "Error while creating file systems:"
 msgstr "Fehler beim Anlegen der Dateisysteme:"
+
+#: installer/modules/65_partition.py:3524
+#: installer/modules/65_partition.py:3585
+#: installer/modules/65_partition.py:3942
+#: installer/modules/65_partition.py:3984
+#, python-format
+msgid "Filesystem %s:"
+msgstr "Dateisystem %s:"
 
 #: installer/modules/65_partition.py:3525
 #: installer/modules/65_partition.py:3586
 #: installer/modules/65_partition.py:3943
 #: installer/modules/65_partition.py:3985
-#, python-format
-msgid "Filesystem %s:"
-msgstr "Dateisystem %s:"
-
-#: installer/modules/65_partition.py:3526
-#: installer/modules/65_partition.py:3587
-#: installer/modules/65_partition.py:3944
-#: installer/modules/65_partition.py:3986
 msgid "This is a highly experimental filesystem"
 msgstr "Dies ist ein experimentelles Dateisystem"
 
-#: installer/modules/65_partition.py:3526
-#: installer/modules/65_partition.py:3587
-#: installer/modules/65_partition.py:3944
-#: installer/modules/65_partition.py:3986
+#: installer/modules/65_partition.py:3525
+#: installer/modules/65_partition.py:3586
+#: installer/modules/65_partition.py:3943
+#: installer/modules/65_partition.py:3985
 msgid "and should not be used in productive"
 msgstr "und sollte nicht in produktiven"
 
-#: installer/modules/65_partition.py:3526
-#: installer/modules/65_partition.py:3587
-#: installer/modules/65_partition.py:3944
-#: installer/modules/65_partition.py:3986
+#: installer/modules/65_partition.py:3525
+#: installer/modules/65_partition.py:3586
+#: installer/modules/65_partition.py:3943
+#: installer/modules/65_partition.py:3985
 msgid "environments."
 msgstr "Umgebungen eingesetzt werden."
 
-#: installer/modules/65_partition.py:3562
-#: installer/modules/65_partition.py:3632
-#: installer/modules/65_partition.py:3956
-#: installer/modules/65_partition.py:4006
+#: installer/modules/65_partition.py:3561
+#: installer/modules/65_partition.py:3631
+#: installer/modules/65_partition.py:3955
+#: installer/modules/65_partition.py:4005
 msgid "The selected file system takes no"
 msgstr "Das gewählte Dateisystem ist nicht nutzbar,"
 
-#: installer/modules/65_partition.py:3563
-#: installer/modules/65_partition.py:3957
+#: installer/modules/65_partition.py:3562
+#: installer/modules/65_partition.py:3956
 msgid "effect, if format is not selected."
 msgstr "wenn formatieren nicht gewählt wurde."
 
-#: installer/modules/65_partition.py:3565
-#: installer/modules/65_partition.py:3629
-#: installer/modules/65_partition.py:3635
-#: installer/modules/65_partition.py:3959
-#: installer/modules/65_partition.py:4003
-#: installer/modules/65_partition.py:4009
+#: installer/modules/65_partition.py:3564
+#: installer/modules/65_partition.py:3628
+#: installer/modules/65_partition.py:3634
+#: installer/modules/65_partition.py:3958
+#: installer/modules/65_partition.py:4002
+#: installer/modules/65_partition.py:4008
 msgid "Do you want to format this partition?"
 msgstr "Wollen Sie diese Partition formatieren? "
 
-#: installer/modules/65_partition.py:3625
+#: installer/modules/65_partition.py:3624
 msgid "This partition is designated as root file system,"
 msgstr "Diese Partition ist als Root-Dateisystem gekennzeichnet,"
 
-#: installer/modules/65_partition.py:3626
-#: installer/modules/65_partition.py:4000
+#: installer/modules/65_partition.py:3625
+#: installer/modules/65_partition.py:3999
 msgid "but \"format\" is not selected. This can cause"
 msgstr "aber \"Formatieren\" wurde nicht ausgewählt. Dies"
 
-#: installer/modules/65_partition.py:3627
-#: installer/modules/65_partition.py:4001
+#: installer/modules/65_partition.py:3626
+#: installer/modules/65_partition.py:4000
 msgid "problems with preexisting data on disk!"
 msgstr " kann zu Problemen mit existierende Daten führen!"
 
-#: installer/modules/65_partition.py:3633
-#: installer/modules/65_partition.py:4007
+#: installer/modules/65_partition.py:3632
+#: installer/modules/65_partition.py:4006
 msgid "effect, if \"format\" is not selected."
 msgstr "wenn \"formatieren\" nicht gewählt wurde."
 
-#: installer/modules/65_partition.py:3717
+#: installer/modules/65_partition.py:3716
 msgid "Physical Diskdrive"
 msgstr "Physikalisches Laufwerk"
 
-#: installer/modules/65_partition.py:3718
+#: installer/modules/65_partition.py:3717
 #, python-format
 msgid "Device: %s"
 msgstr "Gerät: %s"
 
-#: installer/modules/65_partition.py:3719
+#: installer/modules/65_partition.py:3718
 #, python-format
 msgid "Size: %s"
 msgstr "Größe: %s"
 
-#: installer/modules/65_partition.py:3721
+#: installer/modules/65_partition.py:3720
 #, python-format
 msgid "Primary Partitions: %s"
 msgstr "Primäre Partitionen: %s"
 
-#: installer/modules/65_partition.py:3721
-#: installer/modules/65_partition.py:3763
-#: installer/modules/65_partition.py:3767
+#: installer/modules/65_partition.py:3720
+#: installer/modules/65_partition.py:3762
+#: installer/modules/65_partition.py:3766
 msgid "primary"
 msgstr "primär"
 
-#: installer/modules/65_partition.py:3722
+#: installer/modules/65_partition.py:3721
 #, python-format
 msgid "Logical Partitions: %s"
 msgstr "Logische Partitionen: %s"
 
-#: installer/modules/65_partition.py:3722
-#: installer/modules/65_partition.py:3765
-#: installer/modules/65_partition.py:3768
+#: installer/modules/65_partition.py:3721
+#: installer/modules/65_partition.py:3764
+#: installer/modules/65_partition.py:3767
 msgid "logical"
 msgstr "logisch"
 
-#: installer/modules/65_partition.py:3727
+#: installer/modules/65_partition.py:3726
 msgid "Next"
 msgstr "Weiter"
 
-#: installer/modules/65_partition.py:3738
+#: installer/modules/65_partition.py:3737
 msgid "New Partition:"
 msgstr "Neue Partition"
 
+#: installer/modules/65_partition.py:3739
 #: installer/modules/65_partition.py:3740
-#: installer/modules/65_partition.py:3741
-#: installer/modules/65_partition.py:3743
+#: installer/modules/65_partition.py:3742
+#: installer/modules/65_partition.py:4053
 #: installer/modules/65_partition.py:4054
-#: installer/modules/65_partition.py:4055
-#: installer/modules/65_partition.py:4057
+#: installer/modules/65_partition.py:4056
 msgid "Mount point:"
 msgstr "Mount-Point"
 
-#: installer/modules/65_partition.py:3742
-#: installer/modules/65_partition.py:4056
+#: installer/modules/65_partition.py:3741
+#: installer/modules/65_partition.py:4055
 msgid "Size (MB):"
 msgstr "Größe (MB)"
 
-#: installer/modules/65_partition.py:3744
-#: installer/modules/65_partition.py:3793
-#: installer/modules/65_partition.py:4058
-#: installer/modules/65_partition.py:4091
+#: installer/modules/65_partition.py:3743
+#: installer/modules/65_partition.py:3792
+#: installer/modules/65_partition.py:4057
+#: installer/modules/65_partition.py:4090
 msgid "File system"
 msgstr "Dateisystem"
 
-#: installer/modules/65_partition.py:3771
-#: installer/modules/65_partition.py:3814
-#: installer/modules/65_partition.py:3816
+#: installer/modules/65_partition.py:3770
+#: installer/modules/65_partition.py:3813
+#: installer/modules/65_partition.py:3815
 msgid "bootable"
 msgstr "bootbar"
 
-#: installer/modules/65_partition.py:3773
-#: installer/modules/65_partition.py:3819
-#: installer/modules/65_partition.py:3821
+#: installer/modules/65_partition.py:3772
+#: installer/modules/65_partition.py:3818
+#: installer/modules/65_partition.py:3820
 msgid "PPC PreP"
 msgstr "PPC PreP"
 
-#: installer/modules/65_partition.py:3775
-#: installer/modules/65_partition.py:3777
-#: installer/modules/65_partition.py:3823
-#: installer/modules/65_partition.py:3825
-#: installer/modules/65_partition.py:4079
-#: installer/modules/65_partition.py:4116
-#: installer/modules/65_partition.py:4118
+#: installer/modules/65_partition.py:3774
+#: installer/modules/65_partition.py:3776
+#: installer/modules/65_partition.py:3822
+#: installer/modules/65_partition.py:3824
+#: installer/modules/65_partition.py:4078
+#: installer/modules/65_partition.py:4115
+#: installer/modules/65_partition.py:4117
 msgid "format"
 msgstr "formatieren"
 
-#: installer/modules/65_partition.py:3779
+#: installer/modules/65_partition.py:3778
 msgid "LVM PV"
 msgstr "LVM PV"
 
-#: installer/modules/65_partition.py:3780
-#: installer/modules/65_partition.py:3827
-#: installer/modules/65_partition.py:4081
-#: installer/modules/65_partition.py:4120
+#: installer/modules/65_partition.py:3779
+#: installer/modules/65_partition.py:3826
+#: installer/modules/65_partition.py:4080
+#: installer/modules/65_partition.py:4119
 msgid "Save"
 msgstr "Speichern"
 
-#: installer/modules/65_partition.py:3787
+#: installer/modules/65_partition.py:3786
 #, python-format
 msgid "Partition: %s"
 msgstr "Partition: %s"
 
-#: installer/modules/65_partition.py:3789
+#: installer/modules/65_partition.py:3788
 msgid "Typ: primary"
 msgstr "Typ: primär"
 
-#: installer/modules/65_partition.py:3791
+#: installer/modules/65_partition.py:3790
 msgid "Typ: logical"
 msgstr "Typ: logisch"
 
-#: installer/modules/65_partition.py:3792
-#: installer/modules/65_partition.py:4090
+#: installer/modules/65_partition.py:3791
+#: installer/modules/65_partition.py:4089
 #, python-format
 msgid "Size: %s MB"
 msgstr "Größe: %s MB"
 
-#: installer/modules/65_partition.py:3904
+#: installer/modules/65_partition.py:3903
 msgid "Please enter volume name!"
 msgstr "Geben Sie den Namen des Medium ein!"
 
-#: installer/modules/65_partition.py:3906
+#: installer/modules/65_partition.py:3905
 msgid "Logical volume name contains illegal characters!"
 msgstr "Name des Logischen Mediums enthält nicht erlaubte Zeichen!"
 
-#: installer/modules/65_partition.py:3908
+#: installer/modules/65_partition.py:3907
 msgid "Logical volume name is already in use!"
 msgstr "Der Name des logischen Mediums wird bereits verwendet!"
 
-#: installer/modules/65_partition.py:3923
+#: installer/modules/65_partition.py:3922
 msgid "Size contains non-digit characters!"
 msgstr "Die Größenangabe enthält nicht nur Ziffern"
 
-#: installer/modules/65_partition.py:3936
+#: installer/modules/65_partition.py:3935
 msgid "Not enough free space on volume group!"
 msgstr "Nicht ausreichend Platz in der Medien-Gruppe!"
 
-#: installer/modules/65_partition.py:3999
+#: installer/modules/65_partition.py:3998
 msgid "This volume is designated as root filesystem,"
 msgstr "Dieses Medium ist als Root-Dateisystem gekennzeichnet,"
 
+#: installer/modules/65_partition.py:4051
 #: installer/modules/65_partition.py:4052
-#: installer/modules/65_partition.py:4053
 msgid "New logical volume:"
 msgstr "Neues Logisches Medium:"
 
-#: installer/modules/65_partition.py:4089
+#: installer/modules/65_partition.py:4088
 #, python-format
 msgid "LVM Logical Volume: %s"
 msgstr "LVM Logisches Medium: %s"
 
-#: installer/modules/65_partition.py:4147
+#: installer/modules/65_partition.py:4146
 msgid "The selected partition is the extended partition of this disc."
 msgstr "Diese Partition ist die erweiterte Partition dieser Festplatte."
 
-#: installer/modules/65_partition.py:4149
+#: installer/modules/65_partition.py:4148
 msgid "The extended partition contains all logical partitions."
 msgstr "Diese Partition verwaltet alle logischen Partitionen."
 
-#: installer/modules/65_partition.py:4151
+#: installer/modules/65_partition.py:4150
 msgid "Do you really want to delete all logical partitions?"
 msgstr "Möchten Sie alle logischen Partitionen löschen?"
 
-#: installer/modules/65_partition.py:4193
+#: installer/modules/65_partition.py:4192
 msgid "Found over-sized extended partition."
 msgstr "Zu große erweiterte Partition gefunden"
 
-#: installer/modules/65_partition.py:4195
+#: installer/modules/65_partition.py:4194
 msgid "This program will resize them to free unused space"
 msgstr "Die Größe wird angepasst um die Partitionstabelle zu korrigieren."
 
-#: installer/modules/65_partition.py:4198
-#: installer/modules/65_partition.py:4242
+#: installer/modules/65_partition.py:4197
+#: installer/modules/65_partition.py:4241
 msgid "OK"
 msgstr "OK"
 
-#: installer/modules/65_partition.py:4227
+#: installer/modules/65_partition.py:4226
 msgid "UCS Installer supports only one LVM volume group."
 msgstr "UCS Installer unterstützt nur eine LVM-Medien-Gruppe."
 
-#: installer/modules/65_partition.py:4229
+#: installer/modules/65_partition.py:4228
 msgid "Please select volume group to use for installation."
 msgstr "Bitte wählen Sie die Medien-Gruppe für die Installation."
 
-#: installer/modules/65_partition.py:4231
+#: installer/modules/65_partition.py:4230
 msgid "Volume Group:"
 msgstr "Medien-Gruppe:"
 
-#: installer/modules/65_partition.py:4270
+#: installer/modules/65_partition.py:4269
 msgid "Do you really want to write all changes?"
 msgstr "Wollen Sie wirklich alle Änderungen schreiben?"
 
-#: installer/modules/65_partition.py:4272
+#: installer/modules/65_partition.py:4271
 msgid "This may destroy all data on modified discs!"
 msgstr "Dadurch können Daten vernichtet werden!"
 
-#: installer/modules/65_partition.py:4302
+#: installer/modules/65_partition.py:4301
 msgid "No disk detected!"
 msgstr "Keine Festplatte erkannt!"
 
-#: installer/modules/65_partition.py:4304
+#: installer/modules/65_partition.py:4303
 msgid "Please try to load the suitable module and rescan!"
 msgstr ""
 "Bitte versuchen Sie das passende Modul zu laden \n"
 " und es erneut vom Installer erkennen zu lassen!"
 
-#: installer/modules/65_partition.py:4318
+#: installer/modules/65_partition.py:4317
 msgid "Wrong file system type for mount point \"/\" !"
 msgstr "Falsches Dateisystem für '/'"
 
-#: installer/modules/65_partition.py:4320
+#: installer/modules/65_partition.py:4319
 msgid "Please select another file system."
 msgstr ""
 "Bitte wählen Sie ein anderes \n"
 "Dateisystem."
+
+#: installer/modules/67_bootloader.py:151
+msgid ""
+"This module is used to specifiy the device where to install the boot loader. "
+"The correct device depends on current BIOS settings and partitioning. If an "
+"incorrect device has been selected, the installed system may not boot. If "
+"unsure, continue without change."
+msgstr "In diesem Modul kann das Gerät festgelegt werden, auf dem der Bootloader installiert werden soll. Das auszuwählende Gerät ist abhängig von den aktuellen BIOS-Einstellungen und der Partitionierung. Sollte das falsche Gerät ausgewählt werden, bootet das installierte System ggf. nicht. Falls Sie sich unsicher sind, fahren Sie ohne Änderung fort."
+
+#: installer/modules/67_bootloader.py:156
+msgid "Select where to install the GRUB boot loader:"
+msgstr "Wählen Sie aus, wo der GRUB-Bootloader installiert werden soll:"
+
+#: installer/modules/67_bootloader.py:175
+msgid ""
+"Boot loader \n"
+"Select where you want the GRUB boot loader to be installed. \n"
+" "
+msgstr ""
+"Bootloader \n"
+"Wählen Sie wo der GRUB-Bootloader installiert werden soll. \n"
+" "
+
+#: installer/modules/67_bootloader.py:179
+msgid "Boot loader"
+msgstr "Bootloader"
 
 #: installer/modules/70_net.py:352
 #, python-format
@@ -3201,9 +3227,6 @@ msgstr "Ausführen von Aufräumarbeiten"
 #~ msgstr ""
 #~ "Bitte geben Sie einen gültigen, klein-geschriebenen Domänennamen an."
 
-#~ msgid "Select where to install the boot loader:"
-#~ msgstr "Wählen Sie aus, wo der Bootloader installiert wird:"
-
 #~ msgid "Master boot record"
 #~ msgstr "Master Boot Record"
 
@@ -3212,18 +3235,6 @@ msgstr "Ausführen von Aufräumarbeiten"
 
 #~ msgid "Partition:"
 #~ msgstr "Partition:"
-
-#~ msgid ""
-#~ "Boot loader \n"
-#~ "Select where you want the boot loader to be installed. \n"
-#~ " "
-#~ msgstr ""
-#~ "Bootloader \n"
-#~ "Wählen Sie wo der Bootloader installiert werden soll. \n"
-#~ " "
-
-#~ msgid "Boot loader"
-#~ msgstr "Bootloader"
 
 #~ msgid "The following value is too long, only 128 characters allowed: "
 #~ msgstr "Der folgende Wert ist zu lang, es sind nur 128 Zeichen erlaubt: "

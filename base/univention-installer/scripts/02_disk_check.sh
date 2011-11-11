@@ -183,9 +183,10 @@ fi
 
 touch /instmnt/.log
 
-# get bootloader_device via /proc/cmdline
-if [ -z "$bootloader_device" ] ; then
-	bootloader_device="$(sed -rne 's/.*\bbootloaderdevice=([^ ]+)\s*.*/\1/p' /proc/cmdline)"
+# get bootloader_device via /proc/cmdline and overwrite value of profile/installer
+kernel_bootloader_device="$(sed -rne 's/.*\bbootloaderdevice=([^ ]+)\s*.*/\1/p' /proc/cmdline)"
+if [ -n "$bootloader_device" ] ; then
+	bootloader_device="$kernel_bootloader_device"
 fi
 
 # get bootloader_device via /proc/partitions
@@ -195,7 +196,7 @@ if [ -z "$bootloader_device" ] ; then
 fi
 
 if [ -n "$bootloader_device" ]; then
-	python2.6 /sbin/univention-config-registry set grub/boot?$bootloader_device
+	python2.6 /sbin/univention-config-registry set "grub/boot?$bootloader_device"
 else
 	echo
 	echo
