@@ -4613,10 +4613,6 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 	width: 215px !important;
 }
 
-.umcLoginDialog #umc_widgets_Form_0 {
-  overflow: hidden;
-}
-
 .umcLoginDialog .umcSubmitButton {
 	float: right;
 }
@@ -4744,10 +4740,6 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 
 .dijitDialog .dijitButtonNode {
 	margin-left: 0 !important;
-}
-
-.dijitDialog #umc_widgets_Button_0 .dijitButtonNode {
-  background: none !important;
 }
 
 /* @end */
@@ -5006,10 +4998,7 @@ form {
 
 /* @group User-Dropdown */
 
-#dijit_form_DropDownButton_0 {
-	border-right: 5px solid #313133;
-}
-
+/* univention menu */
 #dijit_form_DropDownButton_0_label {
 	padding-right: 5px;
 	background: none;
