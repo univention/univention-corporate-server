@@ -1,5 +1,6 @@
 univention-virtual-machine-manager-daemon (1.0.48-1) unstable; urgency=low
 
+  * Handle new VNC/listen change in libvirt-0.9.4 (Bug #24504)
   * Fix mapping in CLI (svn28630, Bug #22893)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 10 Nov 2011 12:56:23 +0100

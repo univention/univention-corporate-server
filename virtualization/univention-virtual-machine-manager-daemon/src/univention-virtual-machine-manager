@@ -457,7 +457,13 @@ class Client(object):
 			try: g.keymap = graphics.attrib['keymap']
 			except KeyError: pass
 			try: g.listen = graphics.attrib['listen']
-			except KeyError: pass
+			except KeyError:
+				for listen in graphics.findall('listen'):
+					try:
+						if listen.attrib['type'] != 'address': continue
+						g.listen = listen.attrib['address']
+						break
+					except KeyError: pass
 			try: g.passwd = graphics.attrib['passwd']
 			except KeyError: pass
 			domain.graphics.append(g)

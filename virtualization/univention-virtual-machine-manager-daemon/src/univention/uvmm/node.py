@@ -1157,6 +1157,16 @@ def _domain_edit(node, dom_stat, xml):
 		domain_devices_graphic.attrib['port'] = '%d' % graphics.port
 		domain_devices_graphic.attrib['keymap'] = graphics.keymap
 		domain_devices_graphic.attrib['listen'] = graphics.listen
+		if node.libvirt_version >= tuple2version((0, 9, 4)):
+			domain_devices_graphic_listens = domain_devices_graphic.findall('listen')
+			for listen in domain_devices_graphic_listens:
+				if listen.attrib['type'] != 'address':
+					continue
+				if graphics.listen:
+					listen.attrib['address'] = graphics.listen
+				else:
+					domain_devices_graphic.remove(listen)
+		domain_devices_graphic.attrib['listen'] = graphics.listen
 		if domain_devices_graphic.attrib.get('passwd') != graphics.passwd:
 			domain_devices_graphic.attrib['passwd'] = graphics.passwd
 			live_updates.append(domain_devices_graphic)
