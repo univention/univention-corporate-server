@@ -35,10 +35,6 @@
 arch=`uname -m`
 if [ $arch = "x86_64" ]; then
 
-    if [ -e /opt/firefox/plugins/libjavaplugin.so ] ; then
-	rm /opt/firefox/plugins/libjavaplugin.so
-    fi
-
     if [ -e /usr/lib32/jvm/java-6-openjdk/jre/bin/java ] ; then
 	rm /usr/lib32/jvm/java-6-openjdk/jre/bin/java
     fi

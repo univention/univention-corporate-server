@@ -4,7 +4,7 @@ firefox (1:7.0.1-4) unstable; urgency=low
     in ia32-libs-gtk, but the dependency already exists anyway. Instead we depend on
     the Java runtime, which indirectly pulled in through the icedtea6-plugin dep on
     i386.	 
-  * On amd64 set a symlink to the plugin and a link to java, since the plugin uses
+  * On amd64 set a symlink a link to java, since the plugin uses
     relative links, while the Java interpreter is native amd64 and thus in /usr/lib
     instead of /usr/lib32
   * Add postrm to clean up during removal	

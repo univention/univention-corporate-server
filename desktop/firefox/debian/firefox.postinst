@@ -42,12 +42,8 @@ fi
 # Only needed on amd64, on i386 icedtea6-plugin does everything itself
 arch=`uname -m`
 if [ $arch = "x86_64" ]; then
-    # set a symlink to the 32 bit plugin from ia32-libs-gtk
-    cd /opt/firefox/plugins
-    ln -s /usr/lib32/jvm/java-6-openjdk/jre/lib/i386/IcedTeaPlugin.so libjavaplugin.so
-
-    # a link to java, since the plugin uses relative links(!), while the Java interpreter is native amd64 
-    # and thus in /usr/lib instead of /usr/lib32
+    # link to java, since the plugin uses relative links(!), while the Java interpreter is native amd64 
+    # and thus resides in /usr/lib instead of /usr/lib32
     mkdir -p /usr/lib32/jvm/java-6-openjdk/jre/bin
     cd /usr/lib32/jvm/java-6-openjdk/jre/bin
     ln -s /usr/lib/jvm/java-6-openjdk/jre/bin/java java
