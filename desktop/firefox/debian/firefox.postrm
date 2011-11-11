@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # firefox
-#  postinst script for the debian package
+#  postrm script for the debian package
 #
 # Copyright 2011 Univention GmbH
 #
@@ -31,28 +31,18 @@
 # <http://www.gnu.org/licenses/>.
 
 
-# If Adobe Acrobat Reader is present, register the plugin 
-
-if [ -e /opt/Adobe/Reader8/Browser/install_browser_plugin ]; then
-
-   /opt/Adobe/Reader8/Browser/install_browser_plugin -silent -global -user /opt 
-
-fi
-
 # Only needed on amd64, on i386 icedtea6-plugin does everything itself
 arch=`uname -m`
 if [ $arch = "x86_64" ]; then
-    # set a symlink to the 32 bit plugin from ia32-libs-gtk
-    cd /opt/firefox/plugins
-    ln -s /usr/lib32/jvm/java-6-openjdk/jre/lib/i386/IcedTeaPlugin.so libjavaplugin.so
 
-    # a link to java, since the plugin uses relative links(!), while the Java interpreter is native amd64 
-    # and thus in /usr/lib instead of /usr/lib32
-    mkdir -p /usr/lib32/jvm/java-6-openjdk/jre/bin
-    cd /usr/lib32/jvm/java-6-openjdk/jre/bin
-    ln -s /usr/lib/jvm/java-6-openjdk/jre/bin/java java
+    if [ -e /opt/firefox/plugins/libjavaplugin.so ] ; then
+	rm /opt/firefox/plugins/libjavaplugin.so
+    fi
+
+    if [ -e /usr/lib32/jvm/java-6-openjdk/jre/bin/java ] ; then
+	rm /usr/lib32/jvm/java-6-openjdk/jre/bin/java
+    fi
 fi
-
 
 #DEBHELPER#
 
