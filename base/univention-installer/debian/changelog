@@ -1,3 +1,9 @@
+univention-installer (7.0.143-1) unstable; urgency=low
+
+  * Fix bug in read-only device detection (Bug #21988)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 11 Nov 2011 10:44:01 +0100
+
 univention-installer (7.0.142-1) unstable; urgency=low
 
   * updated standard profiles (Bug #24494) 

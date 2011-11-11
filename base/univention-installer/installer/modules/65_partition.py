@@ -1516,7 +1516,7 @@ class object(content):
 				self.debug('Error querying %s/capability: %s' % (bn, e))
 
 			try:
-				fn = '/sys/block/%s/ro'
+				fn = '/sys/block/%s/ro' % (bn,)
 				f = open(fn, 'r')
 				try:
 					d = f.read()
