@@ -1,3 +1,9 @@
+univention-printserver (5.0.16-3) unstable; urgency=low
+
+  * added "exit 0" at the end of the postint script (Bug #22902)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 11 Nov 2011 13:26:13 +0100
+
 univention-printserver (5.0.16-2) unstable; urgency=low
 
   * univention-printserver depends on
