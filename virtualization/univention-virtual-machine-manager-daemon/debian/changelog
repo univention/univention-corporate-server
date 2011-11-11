@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.54-1) unstable; urgency=low
+
+  * fix trace when retrieving IPv4 address failed (when generating VNC
+    link information); Bug #22893
+  * remove memory in domain listing
+ --
+
 univention-virtual-machine-manager-daemon (1.0.53-2) unstable; urgency=low
 
   * add missing file InterfaceWizard.js; Bug #22893

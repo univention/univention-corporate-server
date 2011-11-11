@@ -110,23 +110,30 @@ class Domains( object ):
 
 			# graphics
 			if json[ 'graphics' ]:
-				json[ 'vnc' ] = True
-				json[ 'kblayout' ] = json[ 'graphics' ][ 0 ][ 'keymap' ]
-				json[ 'vnc_remote' ] = json[ 'graphics' ][ 0 ][ 'listen' ] == '0.0.0.0'
-				# vnc_password will not be send to frontend
-				port = json[ 'graphics' ][ 0 ][ 'port' ]
-				VNC_LINK_BY_NAME, VNC_LINK_BY_IPV4, VNC_LINK_BY_IPV6 = range(3)
-				vnc_link_format = VNC_LINK_BY_IPV4
-				if vnc_link_format == VNC_LINK_BY_IPV4:
-					addrs = socket.getaddrinfo( node_uri.netloc, port, socket.AF_INET )
-					(family, socktype, proto, canonname, sockaddr) = addrs[0]
-					host = sockaddr[0]
-				elif vnc_link_format == VNC_LINK_BY_IPV6:
-					addrs = socket.getaddrinfo( node_uri.netloc, port, socket.AF_INET6 )
-					(family, socktype, proto, canonname, sockaddr) = addrs[0]
-					host = '[%s]' % sockaddr[0]
-				json[ 'vncHost' ] = host
-				json[ 'vncPort' ] = port
+				try:
+					json[ 'vnc' ] = True
+					json[ 'kblayout' ] = json[ 'graphics' ][ 0 ][ 'keymap' ]
+					json[ 'vnc_remote' ] = json[ 'graphics' ][ 0 ][ 'listen' ] == '0.0.0.0'
+					# vnc_password will not be send to frontend
+					port = int( json[ 'graphics' ][ 0 ][ 'port' ] )
+					if port == -1:
+						raise ValueError
+					VNC_LINK_BY_NAME, VNC_LINK_BY_IPV4, VNC_LINK_BY_IPV6 = range(3)
+					vnc_link_format = VNC_LINK_BY_IPV4
+					if vnc_link_format == VNC_LINK_BY_IPV4:
+						addrs = socket.getaddrinfo( node_uri.netloc, port, socket.AF_INET )
+						(family, socktype, proto, canonname, sockaddr) = addrs[0]
+						host = sockaddr[0]
+					elif vnc_link_format == VNC_LINK_BY_IPV6:
+						addrs = socket.getaddrinfo( node_uri.netloc, port, socket.AF_INET6 )
+						(family, socktype, proto, canonname, sockaddr) = addrs[0]
+						host = '[%s]' % sockaddr[0]
+					json[ 'vncHost' ] = host
+					json[ 'vncPort' ] = port
+				except ValueError: # port is not valid
+					json[ 'vncHost' ] = None
+					json[ 'vncPort' ] = None
+
 			# annotations
 			for key in json[ 'annotations' ]:
 				if key == 'uuid':

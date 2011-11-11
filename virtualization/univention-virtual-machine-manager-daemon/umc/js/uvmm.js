@@ -571,13 +571,9 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'cpuUsage',
 			label: this._('CPU usage'),
+			style: 'min-width: 80px;',
 			width: 'adjust',
 			formatter: dojo.hitch(this, 'cpuUsageFormatter')
-		}, {
-			name: 'mem',
-			label: this._('Memory'),
-			width: 'adjust',
-			formatter: dojo.hitch(this, 'memoryUsageFormatter')
 		}];
 	},
 
