@@ -88,17 +88,20 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// define actions
 		// STATES = ( 'NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED' )
+		var types = umc.modules._uvmm.types;
 		var actions = [{
 			name: 'edit',
-			label: this._('Edit'),
+			label: this._( 'Edit' ),
 			isStandardAction: true,
 			isMultiAction: false,
 			iconClass: 'umcIconEdit',
+			description: this._( 'Edit the configuration of the virtual instance' ),
 			callback: dojo.hitch(this, 'openDomainPage')
 		}, {
 			name: 'start',
-			label: this._('Start'),
+			label: this._( 'Start' ),
 			iconClass: 'umcIconPlay',
+			description: this._( 'Start the virtual instance' ),
 			isStandardAction: true,
 			isMultiAction: true,
 			callback: dojo.hitch(this, '_changeState', 'RUN'),
@@ -109,7 +112,8 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'stop',
 			label: this._( 'Stop' ),
 			iconClass: 'umcIconStop',
-			isStandardAction: true,
+			description: this._( 'Shut off the virtual instance' ),
+			isStandardAction: false,
 			isMultiAction: true,
 			callback: dojo.hitch(this, '_changeState', 'SHUTDOWN'),
 			canExecute: function(item) {
@@ -117,7 +121,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			}
 		}, {
 			name: 'pause',
-			label: this._('Pause'),
+			label: this._( 'Pause' ),
 			iconClass: 'umcIconPause',
 			isStandardAction: false,
 			isMultiAction: true,
@@ -126,6 +130,16 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				return item.state == 'RUNNING' || item.state == 'IDLE';
 			}
 		}, {
+ 			name: 'suspend',
+ 			label: this._( 'Save & Stop' ),
+ 			// iconClass: 'umcIconPause',
+ 			isStandardAction: false,
+ 			isMultiAction: true,
+ 			callback: dojo.hitch(this, '_changeState', 'SUSPEND'),
+ 			canExecute: function(item) {
+ 				return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && types.getNodeType( item.id ) == 'qemu';
+ 			}
+ 		}, {
 			name: 'restart',
 			label: this._( 'Restart' ),
 			isStandardAction: false,
@@ -145,9 +159,13 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			}
 		}, {
 			name: 'vnc',
-			label: this._( 'Direct access' ),
-			isStandardAction: false,
+			label: this._( 'View' ),
+			isStandardAction: true,
 			isMultiAction: false,
+			iconClass: 'umcIconView',
+			description: dojo.hitch( this, function( item ) {
+				return dojo.replace( this._( 'Open a view to the virtual instance {label} on {nodeName}' ), item );
+			} ),
 			callback: dojo.hitch(this, 'vncLink' ),
 			canExecute: function(item) {
 				return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && item.vnc;
@@ -170,7 +188,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				{ id: 'domain', label: this._('Virtual machine') },
 				{ id: 'node', label: this._('Virtualization sever') }
 			],
-			size: 'Half' 
+			size: 'Half'
 		}, {
 			type: 'TextBox',
 			name: 'pattern',
@@ -193,6 +211,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._grid = new umc.widgets.Grid({
 			region: 'center',
 			actions: actions,
+			// actionLabel: false, // hide labels of action columns
 			columns: this._getGridColumns('domain'),
 			moduleStore: this.moduleStore
 			/*footerFormatter: dojo.hitch(this, function(nItems, nItemsTotal) {
@@ -317,7 +336,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				domainName: items[ 0 ].label,
 				nodeName: items[ 0 ].nodeName,
 				vncHost: response.result.data.vncHost,
-				vncPort: response.result.data.vncHost
+				vncPort: response.result.data.vncPort
 			} );
 			w.document.write( html );
 			w.document.close();
@@ -364,7 +383,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				return umc.tools.umcpCommand('uvmm/domain/state', {
 					domainURI: iid,
 					domainState: newState
-				}); 
+				});
 			}));
 		}, this);
 
@@ -463,7 +482,8 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				label: this._('Memory usage'),
 				width: 'adjust',
 				formatter: dojo.hitch(this, 'memoryUsageFormatter')
-			}];
+			}
+];
 		}
 
 		// else type == 'domain'
@@ -515,7 +535,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				value: item.memUsed
 			});
 		}
-		
+
 		// else: item.type == 'domain'
 		// for the domain, return a simple string
 		return dojox.string.sprintf('%.1f GB', (item.mem || 0) / 1073741824.0);
@@ -528,14 +548,14 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				iconName += '-' + item.virtech;
 			}
 			if (!item.available) {
-				iconName += '-off';	
+				iconName += '-off';
 			}
 		}
 		else if (item.type == 'domain') {
 			if (item.state == 'RUNNING' || item.state == 'IDLE') {
 				iconName += '-on';
 			}
-			else if (item.state == 'PAUSED') {
+			else if ( item.state == 'PAUSED' || ( item.state == 'SHUTOFF' && item.suspended ) ) {
 				iconName += '-paused';
 			}
 		}
@@ -569,7 +589,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			umc.dialog.alert(this._('Please select a valid search type.'));
 			return;
 		}
-		
+
 		var path = this._tree.get('path');
 		var treeType = 'root';
 		var treeID = '';
@@ -580,7 +600,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}
 
 		// build the query we need to send to the server
-		var vals = { 
+		var vals = {
 			type: _vals.type,
 			domainPattern: '*',
 			nodePattern: '*'

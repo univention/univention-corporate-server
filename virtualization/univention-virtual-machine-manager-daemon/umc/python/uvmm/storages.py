@@ -85,7 +85,7 @@ class Storages( object ):
 		self.uvmm.send( 'STORAGE_VOLUMES', Callback( _finished, request ), uri = request.options[ 'nodeURI' ], pool = request.options[ 'pool' ], type = request.options.get( 'type', None ) )
 
 	def storage_volume_remove( self, request ):
-		"""Returns a list of volumes located in the given pool.
+		"""Removes a list of volumes located in the given pool.
 
 		options: { 'nodeURI': <node uri>, 'volumes' : [ { 'pool' : <pool name>, 'volumeFilename' : <filename> }, ... ] }
 

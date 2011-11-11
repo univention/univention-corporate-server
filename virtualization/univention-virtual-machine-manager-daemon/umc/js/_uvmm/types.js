@@ -206,6 +206,13 @@ dojo.require("umc.tools");
 			}).then(function(data) {
 				return data.result;
 			});
+		},
+		getNodeType: function( uri ) {
+			var colon = uri.indexOf( ':' );
+			if ( colon == -1 ) {
+				return null;
+			}
+			return uri.slice( 0, colon );
 		}
 	});
 })();

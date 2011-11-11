@@ -789,7 +789,7 @@ class Node(PersistentCached):
 			name = pd.name
 			descr = pd.annotations.get( 'description', '' )
 			if regex.match( name ) is not None or regex.match( contact )  is not None or regex.match( descr ) is not None:
-				domains.append( { 'uuid' : pd.uuid, 'name' : pd.name, 'state' : STATES[ pd.state ], 'mem' : pd.maxMem, 'cpu_usage' : pd.cputime[ 0 ], 'vnc' : pd.graphics and pd.graphics[ 0 ].type == Graphic.TYPE_VNC and pd.graphics[ 0 ].listen == '0.0.0.0' } )
+				domains.append( { 'uuid' : pd.uuid, 'name' : pd.name, 'state' : STATES[ pd.state ], 'mem' : pd.maxMem, 'cpu_usage' : pd.cputime[ 0 ], 'vnc' : pd.graphics and pd.graphics[ 0 ].type == Graphic.TYPE_VNC and pd.graphics[ 0 ].listen == '0.0.0.0', 'suspended' : pd.suspended } )
 
 		return domains
 

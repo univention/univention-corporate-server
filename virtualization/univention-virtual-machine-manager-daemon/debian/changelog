@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.52-1) unstable; urgency=low
+
+  * dmoain_list: send attribute suspended for each domain; Bug #22893
+  * UMC module: add suspend operation
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 11 Nov 2011 18:23:59 +0100
+
 univention-virtual-machine-manager-daemon (1.0.51-1) unstable; urgency=low
 
   * UMC: added autosearch support via the UCR variable uvmm/umc/autosearch,

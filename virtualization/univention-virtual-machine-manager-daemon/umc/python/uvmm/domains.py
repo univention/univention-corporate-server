@@ -75,7 +75,7 @@ class Domains( object ):
 					for domain in domains:
 						domain_uri = '%s#%s' % ( node_uri, domain[ 'uuid' ] )
 						domain_list.append( { 'id' : domain_uri, 'label' : domain[ 'name' ], 'nodeName' : uri.netloc, 'state' : domain[ 'state' ], 'type' : 'domain',
-											  'mem' : domain[ 'mem' ], 'cpuUsage' : domain[ 'cpu_usage' ], 'vnc' : domain[ 'vnc' ] } )
+											  'mem' : domain[ 'mem' ], 'cpuUsage' : domain[ 'cpu_usage' ], 'vnc' : domain[ 'vnc' ], 'suspended' : bool( domain[ 'suspended' ] ) } )
 			else:
 				domain_list = data
 			self.finished( request.id, domain_list, success = success )
@@ -114,22 +114,19 @@ class Domains( object ):
 				json[ 'kblayout' ] = json[ 'graphics' ][ 0 ][ 'keymap' ]
 				json[ 'vnc_remote' ] = json[ 'graphics' ][ 0 ][ 'listen' ] == '0.0.0.0'
 				# vnc_password will not be send to frontend
-				try:
-					port = json[ 'graphics' ][ 0 ][ 'port' ]
-					VNC_LINK_BY_NAME, VNC_LINK_BY_IPV4, VNC_LINK_BY_IPV6 = range(3)
-					vnc_link_format = VNC_LINK_BY_IPV4
-					if vnc_link_format == VNC_LINK_BY_IPV4:
-						addrs = socket.getaddrinfo( node_uri.netloc, port, socket.AF_INET )
-						(family, socktype, proto, canonname, sockaddr) = addrs[0]
-						host = sockaddr[0]
-					elif vnc_link_format == VNC_LINK_BY_IPV6:
-						addrs = socket.getaddrinfo( node_uri.netloc, port, socket.AF_INET6 )
-						(family, socktype, proto, canonname, sockaddr) = addrs[0]
-						host = '[%s]' % sockaddr[0]
-					json[ 'vncHost' ] = host
-					json[ 'vncPort' ] = port
-				except Exception, e:
-					MODULE.process( 'CRUNCHY: %s' % str( e ) )
+				port = json[ 'graphics' ][ 0 ][ 'port' ]
+				VNC_LINK_BY_NAME, VNC_LINK_BY_IPV4, VNC_LINK_BY_IPV6 = range(3)
+				vnc_link_format = VNC_LINK_BY_IPV4
+				if vnc_link_format == VNC_LINK_BY_IPV4:
+					addrs = socket.getaddrinfo( node_uri.netloc, port, socket.AF_INET )
+					(family, socktype, proto, canonname, sockaddr) = addrs[0]
+					host = sockaddr[0]
+				elif vnc_link_format == VNC_LINK_BY_IPV6:
+					addrs = socket.getaddrinfo( node_uri.netloc, port, socket.AF_INET6 )
+					(family, socktype, proto, canonname, sockaddr) = addrs[0]
+					host = '[%s]' % sockaddr[0]
+				json[ 'vncHost' ] = host
+				json[ 'vncPort' ] = port
 			# annotations
 			for key in json[ 'annotations' ]:
 				if key == 'uuid':
@@ -221,7 +218,7 @@ class Domains( object ):
 
 		options: { 'nodeURI': <node uri>, 'domain' : {} }
 
-		return: { 'success' : (True|False), 'message' : <details> }
+		return: { 'success' : (True|False), 'data' : <details> }
 		"""
 		self.required_options( request, 'nodeURI', 'domain' )
 
@@ -361,16 +358,16 @@ class Domains( object ):
 
 		options: { 'domainURI': <domain uri>, 'domain' : {} }
 
-		return: { 'success' : (True|False), 'message' : <details> }
+		return: { 'success' : (True|False), 'data' : <details> }
 		"""
 		self.domain_add( request )
 
 	def domain_state( self, request ):
 		"""Set the state a domain domainUUID on node nodeURI.
 
-		options: { 'domainURI': <domain uri>, 'domainState': (RUN|SHUTDOWN|PAUSE|RESTART) }
+		options: { 'domainURI': <domain uri>, 'domainState': (RUN|SHUTDOWN|PAUSE|RESTART|SUSPEND) }
 
-		return: { 'success' : (True|False), 'message' : <details> }
+		return: { 'success' : (True|False), 'data' : <details> }
 		"""
 		self.required_options( request, 'domainURI', 'domainState' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
@@ -384,7 +381,7 @@ class Domains( object ):
 
 		options: { 'domainURI': <domain uri>, 'targetNodeURI': <target node uri> }
 
-		return: { 'success' : (True|False), 'message' : <details> }
+		return: { 'success' : (True|False), 'data' : <details> }
 		"""
 		self.required_options( request, 'domainURI', 'targetNodeURI' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
@@ -395,7 +392,7 @@ class Domains( object ):
 
 		options: { 'domainURI': <domain uri>, 'cloneName': <name of clone> }
 
-		return: { 'success' : (True|False), 'message' : <details> }
+		return: { 'success' : (True|False), 'data' : <details> }
 		"""
 		self.required_options( request, 'domainURI', 'cloneName' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
@@ -406,7 +403,7 @@ class Domains( object ):
 
 		options: { 'domainURI': <domain uri> }
 
-		return: { 'success' : (True|False), 'message' : <details> }
+		return: { 'success' : (True|False), 'data' : <details> }
 		"""
 		self.required_options( request, 'domainURI' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )

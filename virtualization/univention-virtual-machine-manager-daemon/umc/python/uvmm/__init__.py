@@ -53,7 +53,7 @@ _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 _uvmm_locale = Translation( 'univention.virtual.machine.manager' ).translate
 
 class Instance( Base, Nodes, Profiles, Storages, Domains, Snapshots ):
-	DOMAIN_STATES = ( 'RUN', 'PAUSE', 'SHUTDOWN', 'RESTART' )
+	DOMAIN_STATES = ( 'RUN', 'PAUSE', 'SHUTDOWN', 'RESTART', 'SUSPEND' )
 
 	def __init__( self ):
 		Base.__init__( self )
