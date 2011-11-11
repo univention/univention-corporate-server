@@ -41,7 +41,7 @@ import socket
 import logging
 from xml.dom.minidom import parseString
 import math
-from helpers import TranslatableException, ms, N_ as _, uri_encode
+from helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encode
 from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify, ldap_annotation
 import univention.admin.uexceptions
 from univention.uvmm.eventloop import *
@@ -497,6 +497,7 @@ class Node(PersistentCached):
 		self.cache_dir = cache_dir
 		self.domains = _DomainDict()
 		self.conn = None
+		self.libvirt_version = tuple2version((0, 8, 7))
 		self.config_frequency = Nodes.IDLE_FREQUENCY
 		self.current_frequency = Nodes.IDLE_FREQUENCY
 		self.domainCB = None
@@ -653,6 +654,7 @@ class Node(PersistentCached):
 			except libvirt.libvirtError, e:
 				if e.get_error_code() != libvirt.VIR_ERR_NO_SUPPORT:
 					logger.error('%s: Exception testing snapshots' % (self.pd.uri,), exc_info=True)
+		self.libvirt_version = self.conn.getLibVersion()
 
 		def domain_callback(conn, dom, event, detail, node):
 			try:

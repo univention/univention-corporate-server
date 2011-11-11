@@ -82,10 +82,17 @@ def ms(ms):
 	>>> ms(((12*60+34)*60+56)*1000+789)
 	'12:34:56.789'
 	"""
-
 	hm, s = divmod(ms, 60000)
 	h, m = divmod(hm, 60)
 	return "%d:%02d:%06.3f" % (h, m, s / 1000.0)
+
+def tuple2version(version):
+	"""
+	Convert version-as-tuple to version-as-string (as used by libvirt)
+	>>> tuple2version((1, 2, 3))
+	1002003
+	"""
+	return reduce(lambda a, b: a * 1000 + b, version, 0)
 
 import socket
 
