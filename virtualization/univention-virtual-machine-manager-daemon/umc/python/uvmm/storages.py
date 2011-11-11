@@ -85,8 +85,47 @@ class Storages( object ):
 		self.uvmm.send( 'STORAGE_VOLUMES', Callback( _finished, request ), uri = request.options[ 'nodeURI' ], pool = request.options[ 'pool' ], type = request.options.get( 'type', None ) )
 
 	def storage_volume_remove( self, request ):
+		"""Returns a list of volumes located in the given pool.
+
+		options: { 'nodeURI': <node uri>, 'volumes' : [ { 'pool' : <pool name>, 'volumeFilename' : <filename> }, ... ] }
+
+		return: 
+		"""
 		self.required_options( request, 'nodeURI', 'volumes' )
-		self.uvmm.send( 'STORAGE_VOLUMES_DESTROY', Callback( self._thread_finish, request ), uri = request.options[ 'nodeURI' ], pool = request.options[ 'volumes' ] )
+		volume_list = []
+		node_uri = request.options[ 'nodeURI' ]
+		for vol in request.options[ 'volumes' ]:
+			path = self.get_pool_path( node_uri, vol[ 'pool' ] )
+			if not path:
+				MODULE.warn( 'Could not remove volume %(volumeFilename)s. The pool %(pool)s is not known' % vol )
+				continue
+			volume_list.append( os.path.join( path, vol[ 'volumeFilename' ] ) )
+		self.uvmm.send( 'STORAGE_VOLUMES_DESTROY', Callback( self._thread_finish, request ), uri = request.options[ 'nodeURI' ], volumes = volume_list )
+
+	def storage_volume_usedby( self, request ):
+		"""Returns a list of domains that use the given volume.
+
+		options: { 'nodeURI' : <node URI>, 'pool' : <pool name>, 'volumeFilename': <filename> }
+
+		return: [ <domain URI>, ... ]
+		"""
+		self.required_options( request, 'nodeURI', 'pool', 'volumeFilename' )
+
+		def _finished( thread, result, request ):
+			if self._check_thread_error( thread, result, request ):
+				return
+
+			success, data = result
+			if isinstance( data, ( list, tuple ) ):
+				data = map( lambda x: '#'.join( x ), data )
+
+			self.finished( request.id, data, success = success )
+
+		pool_path = self.get_pool_path( request.options[ 'nodeURI' ], request.options[ 'pool' ] )
+		if pool_path is None:
+			raise UMC_OptionTypeError( _( 'The given pool could not be found or is no file pool' ) )
+		volume = os.path.join( pool_path, request.options[ 'volumeFilename' ] )
+		self.uvmm.send( 'STORAGE_VOLUME_USEDBY', Callback( _finished, request ), volume = volume )
 
 
 	# helper functions

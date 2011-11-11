@@ -306,3 +306,18 @@ def storage_pools(node):
 	except libvirt.libvirtError, e:
 		logger.error(e)
 		raise StorageError(_('Error listing pools at "%(uri)s": %(error)s'), uri=node.uri, error=e.get_error_message())
+
+
+def storage_volume_usedby( nodes, volume_path, ignore_cdrom = True ):
+	"""Returns a list of tuples ( <node URI>, <domain UUID> ) of domains
+	that use the given volume"""
+	used_by = []
+	for uir, node in nodes.items():
+		for uuid, domain in node.domains.items():
+			for device in domain.pd.disks:
+				if ignore_cdrom and device.device == Disk.DEVICE_CDROM:
+					continue
+				if device.source == volume_path:
+					used_by.append( ( node.pd.uri, domain.pd.uuid ) )
+
+	return used_by

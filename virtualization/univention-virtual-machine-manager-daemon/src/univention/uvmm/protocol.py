@@ -251,6 +251,12 @@ class Request_STORAGE_VOLUMES_DESTROY(Request):
 		self.uri = None
 		self.volumes = None
 
+class Request_STORAGE_VOLUME_USEDBY(Request):
+	"""Return list of domains using the given iamge."""
+	def _default(self):
+		self.command = 'STORAGE_VOLUME_USEDBY'
+		self.volume = None
+
 class Request_STORAGE_DEFINE(Request):
 	"""Create new volume in pool."""
 	def _default(self):

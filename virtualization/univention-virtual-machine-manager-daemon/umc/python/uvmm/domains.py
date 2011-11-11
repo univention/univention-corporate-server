@@ -108,10 +108,6 @@ class Domains( object ):
 				if isinstance( disk[ 'size' ], ( int, long ) ):
 					disk[ 'size' ] = MemorySize.num2str( disk[ 'size' ] )
 
-			#interfaces
-			for iface in json[ 'interfaces' ]:
-				iface[ 'paravirtual' ] = iface[ 'model' ] in ( 'xen', 'virtio' )
-
 			# graphics
 			if json[ 'graphics' ]:
 				json[ 'vnc' ] = True
@@ -260,11 +256,16 @@ class Domains( object ):
 			domain_info.arch = 'i686'
 
 		if 'type' in domain:
-			domain_info.domain_type, domain_info.os_type = domain['type'].split( '-' )
-		elif profile:
-			domain_info.domain_type, domain_info.os_type = profile.virttech.split( '-' )
-		else:
-			raise UMC_CommandError( 'Could not determine virtualisation technology for domain' )
+			try:
+				domain_info.domain_type, domain_info.os_type = domain['type'].split( '-' )
+			except ValueError:
+				domain_info.domain_type, domain_info.os_type = ( None, None )
+
+		if  domain_info.domain_type is None or domain_info.os_type is None:
+			if profile:
+				domain_info.domain_type, domain_info.os_type = profile.virttech.split( '-' )
+			else:
+				raise UMC_CommandError( 'Could not determine virtualisation technology for domain' )
 
 		# check configuration for para-virtualized machines
 		if domain_info.os_type == 'xen':
@@ -330,15 +331,18 @@ class Domains( object ):
 			domain_info.disks = non_disks + disks
 
 		# network interface
+		domain_info.interfaces = []
 		for interface in domain[ 'interfaces' ]:
 			iface = Interface()
 			iface.source = interface[ 'source' ]
-			if interface[ 'paravirtual' ] and domain_info.os_type == 'hvm':
-				if domain_info.domain_type == 'xen':
-					iface.model = 'netfront'
-				elif domain_info.domain_type in ( 'kvm', 'qemu' ):
-					iface.model = 'virtio'
-			domain_info.interfaces = [ iface, ]
+			iface.model = interface[ 'model' ]
+			iface.mac_address = interface.get( 'mac_address', None )
+			# if  domain_info.os_type == 'hvm':
+			# 	if domain_info.domain_type == 'xen':
+			# 		iface.model = 'netfront'
+			# 	elif domain_info.domain_type in ( 'kvm', 'qemu' ):
+			# 		iface.model = 'virtio'
+			domain_info.interfaces.append( iface )
 
 		def _finished( thread, result, request ):
 			if self._check_thread_error( thread, result, request ):

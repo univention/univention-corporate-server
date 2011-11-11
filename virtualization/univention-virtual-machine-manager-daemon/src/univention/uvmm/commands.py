@@ -401,11 +401,21 @@ class _Commands:
 		logger.debug('STORAGE_VOLUMES_DESTROY %s]' % request.uri )
 		try:
 			n = node.node_query( request.uri )
-			storage.destroy_storage_volumes( n.conn, request.volumes, ignore_error = True)
+			storage.destroy_storage_volumes( n.conn, request.volumes, ignore_error = True )
 			res = protocol.Response_OK()
 			return res
 		except node.NodeError, e:
 			raise CommandError( 'STORAGE_VOLUMES_DESTROY', e )
+
+	@staticmethod
+	def STORAGE_VOLUME_USEDBY( server, request ):
+		'''Return list of domains using the given volume.'''
+		if not isinstance( request.volume, basestring ):
+			raise CommandError( 'STORAGE_VOLUME_USEDBY' , _( 'volume != string: %(volume)s' ), volume = request.volume )
+		logger.debug('STORAGE_VOLUME_USEDBY %s]' % request.volume )
+		res = protocol.Response_DUMP()
+		res.data = storage.storage_volume_usedby( node.nodes, request.volume )
+		return res
 
 	@staticmethod
 	def AUTHENTICATION(server, request):
