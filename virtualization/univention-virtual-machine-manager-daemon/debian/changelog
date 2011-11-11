@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.48-1) unstable; urgency=low
+
+  * Fix mapping in CLI (svn28630, Bug #22893)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Nov 2011 12:56:23 +0100
+
 univention-virtual-machine-manager-daemon (1.0.47-1) unstable; urgency=low
 
   * fix bug when adding CD-ROM drives; Bug #22893

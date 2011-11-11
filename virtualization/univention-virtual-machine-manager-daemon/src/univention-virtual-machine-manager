@@ -399,8 +399,8 @@ class Client(object):
 		from univention.uvmm.node import Disk, Interface, Graphic
 		for disk in root.find('devices').findall('disk'):
 			d = Disk()
-			d.type = d.map_type(name=disk.attrib['type'])
-			try: d.device = d.map_device(name=disk.attrib['device'])
+			d.type = disk.attrib['type']
+			try: d.device = disk.attrib['device']
 			except KeyError: pass
 			try: d.driver = disk.find('driver').attrib['name']
 			except AttributeError: pass
@@ -408,7 +408,7 @@ class Client(object):
 			try: d.driver_type = disk.find('driver').attrib['type']
 			except AttributeError: pass
 			except KeyError: pass
-			try: d.driver_cache = d.map_cache(name=disk.find('driver').attrib['cache'])
+			try: d.driver_cache = disk.find('driver').attrib['cache']
 			except AttributeError: pass
 			except KeyError: pass
 			if d.type == Disk.TYPE_FILE:
@@ -428,7 +428,7 @@ class Client(object):
 			domain.disks.append(d)
 		for interface in root.find('devices').findall('interface'):
 			i = Interface()
-			i.type = i.map_type(name=interface.attrib['type'])
+			i.type = interface.attrib['type']
 			try: i.mac_address = interface.find('mac').attrib['address']
 			except AttributeError: pass
 			except KeyError: pass
@@ -447,7 +447,7 @@ class Client(object):
 			domain.interfaces.append(i)
 		for graphics in root.find('devices').findall('graphics'):
 			g = Graphic()
-			g.type = g.map_type(name=graphics.attrib['type'])
+			g.type = name=graphics.attrib['type']
 			try: g.port = int(graphics.attrib['port'])
 			except KeyError: pass
 			except ValueError: pass
