@@ -666,7 +666,7 @@ for pkg in univention-ssl; do
 done
 
 ## BEGIN Bug #24413
-echo "Stopping gdm (will get restarted after update)"
+echo "Stopping gdm if running (will get restarted after update)"
 [ -x /etc/init.d/gdm ] && /etc/init.d/gdm stop >&3 2>&3
 ucr set gdm/autostart/update30backup="$(ucr get gdm/autostart)" >&3 2>&3
 ucr set gdm/autostart=false >&3 2>&3

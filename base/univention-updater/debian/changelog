@@ -1,3 +1,9 @@
+univention-updater (7.0.92-1) unstable; urgency=low
+
+  * show gdm restart message only if gdm will be started (Bug #24413)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 11 Nov 2011 17:14:16 +0100
+
 univention-updater (7.0.91-1) unstable; urgency=low
 
   * Update dash independently in preup to prevent bashism in packages
