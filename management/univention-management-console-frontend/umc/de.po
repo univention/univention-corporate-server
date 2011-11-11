@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-10 15:50+0100\n"
+"POT-Creation-Date: 2011-11-11 19:05+0100\n"
 "PO-Revision-Date: 2011-11-01 20:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -75,11 +75,11 @@ msgstr ""
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
 
-#: umc/widgets/Wizard.js:42
+#: umc/widgets/Wizard.js:41
 msgid "Back"
 msgstr "Zurück"
 
-#: umc/widgets/MultiObjectSelect.js:256 umc/widgets/Wizard.js:57
+#: umc/widgets/MultiObjectSelect.js:256 umc/widgets/Wizard.js:56
 #: umc/app.js:521
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -112,7 +112,7 @@ msgstr "Möchten Sie sich wirklich abmelden?"
 msgid "English"
 msgstr "Englisch"
 
-#: umc/widgets/Wizard.js:53
+#: umc/widgets/Wizard.js:52
 msgid "Finish"
 msgstr "Beenden"
 
@@ -224,7 +224,7 @@ msgstr "Handbücher und Dokumentation"
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
-#: umc/widgets/Wizard.js:48
+#: umc/widgets/Wizard.js:47
 msgid "Next"
 msgstr "Weiter"
 
@@ -445,7 +445,7 @@ msgstr ""
 msgid "Webfrontend error: The specified request is unknown."
 msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht bekannt."
 
-#: umc/widgets/LoginDialog.js:180
+#: umc/widgets/LoginDialog.js:178
 msgid ""
 "Welcome to Univention Management Console. Please enter your domain username "
 "and password for login."
@@ -461,7 +461,7 @@ msgstr "Schreiben"
 msgid "You are not authorized to perform this action."
 msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
 
-#: umc/widgets/LoginDialog.js:175
+#: umc/widgets/LoginDialog.js:173
 msgid "Your session has been closed due to inactivity. Please login again."
 msgstr ""
 "Ihre Sitzung wurde wegen Inaktivität gesperrt. Bitte melden Sie sich erneut "

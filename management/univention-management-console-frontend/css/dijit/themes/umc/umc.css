@@ -4566,59 +4566,58 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 
 /* @group Login */
 
-#umc_widgets_LoginDialog_0 {
+.umcLoginDialog {
 	width: 270px;
 	padding: 25px;
 	height: 300px !important;
 }
 
-#umc_widgets_LoginDialog_0 .umcTex {
+.umcLoginDialog .umcText {
 	padding: 0;
 	width: 225px !important;
 	margin: 0 auto 15px auto;
 }
 
-#umc_widgets_LoginDialog_0 * {
+.umcLoginDialog * {
 	overflow: hidden;
 }
 
-#umc_widgets_LoginDialog_0 #umc_widgets_ContainerWidget_1,
-#umc_widgets_LoginDialog_0 #umc_widgets_ContainerWidget_2,
-#umc_widgets_LoginDialog_0 #umc_widgets_ContainerWidget_3,
-#umc_widgets_LoginDialog_0 #umc_widgets_ContainerWidget_4 {
+.umcLoginDialog .umcContainerWidget {
 	width: 225px;
 	margin: 0 auto;
 }
 
-#umc_widgets_LoginDialog_0 #umc_widgets_ContainerWidget_4 {
-	width: 215px;
+.umcLoginDialog form > .umcContainerWidget {
+	width: auto;
+	margin 0;
 }
 
-.umc #umc_widgets_LoginDialog_0 .dojoxDialogPaneContent {
+.umcLoginDialog .umcSubmitButton {
+	margin-top: 10px;
+	margin-right: 8px;
+}
+
+.umc .umcLoginDialog .dojoxDialogPaneContent {
 	margin: 0 auto !important;
 	height: 310px !important;
 }
-#umc_widgets_LoginDialog_0 .dojoxDialogPaneContent .contentNode {
+.umcLoginDialog .dojoxDialogPaneContent .contentNode {
 	margin-bottom: 10px;
 }
 
-#umc_widgets_LoginDialog_0 .umcLabelPane {
-	margin-bottom: 0;
+.umcLoginDialog .umcLabelPane {
+	margin-bottom: 0 !important;
 }
 
-#umc_widgets_LoginDialog_0 .dijitTextBox {
-	width: 215px;
+.umcLoginDialog .dijitTextBox {
+	width: 215px !important;
 }
 
-#umc_widgets_LoginDialog_0 #umc_widgets_Form_0 {
+.umcLoginDialog #umc_widgets_Form_0 {
   overflow: hidden;
 }
 
-#umc_widgets_LoginDialog_0 #umc_widgets_ContainerWidget_4 {
-	margin-top: 10px;
-}
-
-#umc_widgets_LoginDialog_0 .umcSubmitButton {
+.umcLoginDialog .umcSubmitButton {
 	float: right;
 }
 
@@ -4730,7 +4729,7 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 	margin-top: 0;
 }
 
-.dijitDialog form {
+.umcLoginDialog form {
 	margin-bottom: 0;
 }
 
@@ -5177,6 +5176,7 @@ p {
 	padding-top: 5px
 }
 
-.umc .umcMultiObjectSelectDetailDialog Form {
+.umc .umcMultiObjectSelectDetailDialog form {
 	padding-bottom: 10px
 }
+
