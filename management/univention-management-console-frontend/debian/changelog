@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.194-1) unstable; urgency=low
+
+  * Wizard: removed automatic standby animation (Bug #22893)
+  * Grid: allow for no sorting option (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 10 Nov 2011 19:20:21 +0100
+
 univention-management-console-frontend (1.0.193-1) unstable; urgency=low
 
   * umc.render: fixed show/hide for buttons (Bug #22881)

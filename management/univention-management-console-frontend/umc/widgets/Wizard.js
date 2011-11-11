@@ -33,7 +33,6 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 		this.inherited(arguments);
 
 		// render all pages
-		this.standby(true);
 		this._pages = {};
 		dojo.forEach(this.pages, function(ipage) {
 			// setup the footer buttons
@@ -99,7 +98,6 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 		this.inherited(arguments);
 
 		this._next(null);
-		this.standby(false);
 	},
 
 	_getPageIndex: function(/*String*/ pageName) {
