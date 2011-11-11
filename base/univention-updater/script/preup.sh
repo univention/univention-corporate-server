@@ -292,7 +292,6 @@ if [ "$(dpkg-query -W -f='${Status}\n' firmware-ivtv 2>/dev/null)" = "hold ok in
 	exit 1
 fi
 
-
 # BEGIN -- update to 3.0-0 Bug #22878
 # first, test if univention-thin-client-basesystem is installed (UCS TCS or UCS with thin-client packages)
 # second, activate tcs component (thin client services are now only available via component tcs)
@@ -461,6 +460,14 @@ fi
 
 
 # END -- update to 3.0-0 Bug #23157
+
+
+# hold on dash update #22557
+if [ "$(dpkg-query -W -f='${Status}\n' dash 2>/dev/null)" = "install ok installed" ]; then
+	echo "dash hold" | dpkg --set-selections
+	univention-config-registry set update30/hold/dash=true >>"$UPDATER_LOG" 2>&1
+fi
+
 
 # call custom preup script if configured
 if [ ! -z "$update_custom_preup" ]; then

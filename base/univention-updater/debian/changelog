@@ -1,3 +1,10 @@
+univention-updater (7.0.91-1) unstable; urgency=low
+
+  * Update dash independently in preup to prevent bashism in packages
+    which haven't been updated (Bug #22557)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Nov 2011 16:37:09 +0100
+
 univention-updater (7.0.90-1) unstable; urgency=low
 
   * Check for mobileclient instead of mobile_client in preup.sh

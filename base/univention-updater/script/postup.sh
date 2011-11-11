@@ -93,6 +93,15 @@ DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPk
 #	update-initramfs -u -k all >>"$UPDATER_LOG" 2>&1
 # fi
 
+# hold on dash update #22557
+if [ "$(dpkg-query -W -f='${Status}\n' dash 2>/dev/null)" = "hold ok installed" ]; then
+	if [ "update30_hold_dash" = "true" ]; then
+		echo "dash install" | dpkg --set-selections
+		install dash
+		univention-config-registry unset update30/hold/dash >>"$UPDATER_LOG" 2>&1
+	fi
+fi
+
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update (always required)
 if [ -e /usr/sbin/univention-management-console-server ]; then
 	dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1
