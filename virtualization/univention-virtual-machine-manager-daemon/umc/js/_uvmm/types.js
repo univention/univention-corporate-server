@@ -111,6 +111,29 @@ dojo.require("umc.tools");
 			'netfront': _( 'Paravirtual device (xen)' ),
 			'virtio': _( 'Paravirtual device (virtio)' )
 		},
+		getInterfaceModels: function(options) {
+			var list = [];
+			umc.tools.forIn(self.interfaceModels, function(ikey, ilabel) {
+				if (ikey == 'virtio') {
+					 if (options.domain_type == 'kvm') {
+						list.push({ id: ikey, label: ilabel });
+					 }
+				}
+				else if (ikey == 'netfront') {
+					 if (options.domain_type == 'xen') {
+						list.push({ id: ikey, label: ilabel });
+					 }
+				}
+				else {
+					list.push({ id: ikey, label: ilabel });
+				}
+			});
+			return list;
+		},
+		interfaceTypes: [
+			{ id: 'bridge', label: _( 'Bridge' ) },
+			{ id: 'network:default', label: _( 'NAT' ) }
+		],
 		blockDevices: {
 			'cdrom': _( 'CD/DVD-ROM drive' ),
 			'disk': _( 'Hard drive' ),

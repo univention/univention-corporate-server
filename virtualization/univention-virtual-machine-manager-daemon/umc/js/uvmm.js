@@ -1,4 +1,4 @@
-/*global console MyError dojo dojox dijit umc */
+/*global window console MyError dojo dojox dijit umc */
 
 dojo.provide("umc.modules.uvmm");
 

@@ -36,6 +36,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 	_driveStore: null,
 	_driveGrid: null,
 	_interfaceStore: null,
+	_interfaceGrid: null,
 	_snapshotStore: null,
 	_snapshotGrid: null,
 
@@ -95,9 +96,9 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				name: 'email',
 				label: this._('Send email'),
 				callback: dojo.hitch(this, function() {
-					var address = this._generalForm.getWidget('contact').get('value');
-					if (address) {
-						location.href = 'mailto:' + address;
+					var val = this._generalForm.gatherFormValues();
+					if (val.contact) {
+						location.href = 'mailto:' + val.contact + '?subject=' + this._('Virtual instance: %s', val.name);
 					}
 				})
 			}],
@@ -114,6 +115,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		});
 		this.connect(this._generalForm, 'onSubmit', 'save');
 		this._generalPage.addChild(this._generalForm);
+		this._generalForm._buttons.email.set('visible', false);
 
 		//
 		// general settings page
@@ -259,9 +261,9 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 
 		// grid for the network interfaces
 		this._interfaceStore = new umc.store.Memory({
-			idProperty: 'mac_address'
+			idProperty: '$id$'
 		});
-		var interfaceGrid = new umc.modules._uvmm.InterfaceGrid({
+		this._interfaceGrid = new umc.modules._uvmm.InterfaceGrid({
 			moduleStore: this._interfaceStore
 		});
 
@@ -269,13 +271,13 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		titlePane = new umc.widgets.TitlePane({
 			title: this._('Network interfaces')
 		});
-		titlePane.addChild(interfaceGrid);
+		titlePane.addChild(this._interfaceGrid);
 		container.addChild(titlePane);
 		
 		// we need to call resize() manually to make sure the grids are rendered correctly
 		this.connect(this._devicesPage, 'onShow', function() {
 			this._driveGrid.resize();
-			interfaceGrid.resize();
+			this._interfaceGrid.resize();
 		});
 
 		//
@@ -354,11 +356,17 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				this._generalForm.setFormValues(this._domain);
 				this._advancedForm.setFormValues(this._domain);
 
+				// we need to add pseud ids for the network interfaces
+				dojo.forEach(this._domain.interfaces, function(idev, i) {
+					idev.$id$ = i + 1;
+				});
+
 				// update the stores
 				this._interfaceStore.setData(this._domain.interfaces);
 				this._driveStore.setData(this._domain.disks);
 				this._snapshotGrid.set('domainURI', id);
 				this._driveGrid.set('domain', this._domain);
+				this._interfaceGrid.set('domain', this._domain);
 			}
 			this.standby(false);
 		}), dojo.hitch(this, function() {

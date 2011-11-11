@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.50-1) unstable; urgency=low
+
+  * UMC: added creation/removal/editing of network interfaces (Bug #22893)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 11 Nov 2011 15:26:42 +0100
+
 univention-virtual-machine-manager-daemon (1.0.49-1) unstable; urgency=low
 
   * uvmm/storage/volume/usedby: returns a list of domains using the given

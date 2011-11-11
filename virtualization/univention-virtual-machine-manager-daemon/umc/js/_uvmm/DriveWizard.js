@@ -9,8 +9,6 @@ dojo.require("umc.modules._uvmm.types");
 
 dojo.declare("umc.modules._uvmm.DriveWizard", [ umc.widgets.Wizard, umc.i18n.Mixin ], {
 	
-	moduleStore: null,
-
 	domain: null,
 
 	i18nClass: 'umc.modules.uvmm',
