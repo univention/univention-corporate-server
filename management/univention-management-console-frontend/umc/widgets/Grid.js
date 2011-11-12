@@ -484,6 +484,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			this.standby(false);
 			this._grid.selection.clear();
 			this._updateFooterContent();
+			this._updateFooterCells();
 			this._updateDisabledItems();
 			this.onFilterDone(true);
 		});
@@ -495,6 +496,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			this.standby(false);
 			this._grid.selection.clear();
 			this._updateFooterContent();
+			this._updateFooterCells();
 			this._updateDisabledItems();
 			this.onFilterDone(false);
 		});
@@ -504,6 +506,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 		// disable edit menu in case there is more than one item selected
 		this.connect(this._grid, 'onSelectionChanged', '_updateFooterContent');
+		this.connect(this._grid, 'onSelectionChanged', '_updateFooterCells');
 
 		/*// disable edit menu in case there is more than one item selected
 		this.connect(this._grid, 'onSelectionChanged', function() {
@@ -539,6 +542,23 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 				}
 			}, this);
 		}
+	},
+
+	_updateFooterCells: function() {
+		// deactivate multi actions if no item is selected
+		if ( ! this._footerCells.length ) {
+			return;
+		}
+
+		dojo.forEach( this._footerCells, dojo.hitch( this, function( cell ) {
+			var nSelected = this._grid.selection.getSelectedCount();
+			var widget = cell.getChildren()[ 0 ];
+			if ( widget instanceof umc.widgets.Button ) {
+				widget.set( 'disabled', nSelected == 0 );
+			} else if ( widget instanceof dijit.form.DropDownButton ) {
+				widget.set( 'disabled', nSelected == 0 );
+			}
+		} ) );
 	},
 
 	_updateFooterContent: function() {

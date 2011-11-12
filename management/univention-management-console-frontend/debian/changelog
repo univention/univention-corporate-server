@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.197-1) unstable; urgency=low
+
+  * Grid: deactivate multi actions if no item is selected; Bug #24547
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 12 Nov 2011 14:20:25 +0100
+
 univention-management-console-frontend (1.0.196-1) unstable; urgency=low
 
   * minor fixes in css; Bug #22881

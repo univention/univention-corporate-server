@@ -2133,6 +2133,7 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
   -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   -moz-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  margin: -1px !important;
 }
 .umc .dijitComboButtonDisabled .dijitArrowButton {
   border-left-width: 0;
