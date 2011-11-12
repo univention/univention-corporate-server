@@ -1,3 +1,12 @@
+univention-base-files (1.0.38-1) unstable; urgency=low
+
+  * nfsmounts: Use univention.uldap and machine credentials for ldap
+    queries (Bug #24508)
+  * Set execute permissions to univention-directory-policy scripts and
+    make them run-parts compatible (Bug #24563)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 12 Nov 2011 22:03:28 +0100
+
 univention-base-files (1.0.37-2) unstable; urgency=low
 
   * fixed UCR template (Bug #3515)

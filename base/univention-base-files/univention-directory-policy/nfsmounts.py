@@ -34,6 +34,7 @@
 import os
 import univention.config_registry
 import ldap
+import univention.uldap
 import sys
 import subprocess
 import shlex
@@ -115,10 +116,7 @@ def main():
 	
 	nfsmounts = query_policy(hostdn)
 
-	ldap_server = configRegistry['ldap/server/name']
-	debug("Using ldap server %s\n" % ldap_server)
-	lo = ldap.initialize("ldap://%s" % ldap_server)
-	lo.simple_bind_s("","")
+	lo = univention.uldap.getMachineConnection()
 
 	# remove all nfs mounts from the fstab
 	debug("Rewriting /etc/fstab...\n")
@@ -169,7 +167,7 @@ def main():
 			debug('no dn, skipping\n')
 			continue
 
-		result = lo.search_s(dn, ldap.SCOPE_SUBTREE, 'objectclass=*', attrlist=['univentionShareHost', 'univentionSharePath'])
+		result = lo.lo.search_s(dn, ldap.SCOPE_SUBTREE, 'objectclass=*', attrlist=['univentionShareHost', 'univentionSharePath'])
 		try:
 			attributes = result[0][1]
 			share_host = attributes['univentionShareHost'][0]
@@ -197,7 +195,7 @@ def main():
 
 		# get the ip of the share_host
 		hostname, domain = share_host.split('.', 1)
-		result = lo.search_s(configRegistry['ldap/base'], ldap.SCOPE_SUBTREE, '(&(relativeDomainName=%s)(zoneName=%s))' % (hostname, domain), attrlist=['aRecord'])
+		result = lo.lo.search_s(configRegistry['ldap/base'], ldap.SCOPE_SUBTREE, '(&(relativeDomainName=%s)(zoneName=%s))' % (hostname, domain), attrlist=['aRecord'])
 		try:
 			attributes = result[0][1]
 			nfs_path_ip = "%s:%s" % (attributes['aRecord'][0], share_path)
