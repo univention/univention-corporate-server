@@ -61,13 +61,20 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10; th
 	update-rc.d bind9 defaults 15 85
 fi
 
+if [ ! -e /etc/bind/local.conf ]; then
+	echo "# add local zones here" >> /etc/bind/local.conf
+fi
+if [ ! -e /etc/bind/local.conf.proxy ]; then
+	echo "# add local zones here" >> /etc/bind/local.conf.proxy
+fi
+if [ ! -e /etc/bind/local.conf.samba4 ]; then
+	echo "# add local zones here" >> /etc/bind/local.conf.samba4
+fi
+
 if [ "$1" = "configure" ]; then
 	if [ -n "$2" ]; then
 		/etc/init.d/bind9 crestart
 	else
-		echo "# add local zones here" >> /etc/bind/local.conf
-		echo "# add local zones here" >> /etc/bind/local.conf.proxy
-		echo "# add local zones here" >> /etc/bind/local.conf.samba4
 		/etc/init.d/bind9 start
 	fi
 	/etc/init.d/univention-directory-listener crestart
