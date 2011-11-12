@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.335-3) unstable; urgency=low
+
+  * Fix s/uri/uuid/ bug (Bug #23092)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 12 Nov 2011 00:35:43 +0100
+
 univention-virtual-machine-manager-daemon (0.9.335-2) unstable; urgency=low
 
   * Fix Traceback: Data_node -> Data_Node (Bug #23092)

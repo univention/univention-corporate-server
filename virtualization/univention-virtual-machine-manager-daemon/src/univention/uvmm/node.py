@@ -308,7 +308,7 @@ class Domain(PersistentCached):
 				dev.pool = pool.name()
 			except libvirt.libvirtError, e:
 				if e.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_VOL:
-					logger.warning('Failed to query disk %s#%s: %s', self.pd.uri, dev.source, e.get_error_message())
+					logger.warning('Failed to query disk %s#%s: %s', self.pd.uuid, dev.source, e.get_error_message())
 
 		# List of snapshots
 		snapshots = None
