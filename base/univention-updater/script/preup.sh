@@ -468,6 +468,8 @@ fi
 if [ "$(dpkg-query -W -f='${Status}\n' dash 2>/dev/null)" = "install ok installed" ]; then
 	echo "dash hold" | dpkg --set-selections
 	univention-config-registry set update30/hold/dash=true >>"$UPDATER_LOG" 2>&1
+else
+	echo "dash hold" | dpkg --set-selections
 fi
 
 

@@ -1,3 +1,11 @@
+univention-updater (7.0.95-1) unstable; urgency=low
+
+  * If dash is not installed on UCS 2.4 it will be installed during the
+    3.0 update. So block the update / installation of dash in any case
+    (Bug #22557)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 12 Nov 2011 22:17:22 +0100
+
 univention-updater (7.0.94-1) unstable; urgency=low
 
   * preup,sh and postup.sh: Set DEBIAN_FRONTEND to noninteractive

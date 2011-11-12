@@ -95,6 +95,8 @@ if [ "$(dpkg-query -W -f='${Status}\n' dash 2>/dev/null)" = "hold ok installed" 
 		install dash
 		univention-config-registry unset update30/hold/dash >>"$UPDATER_LOG" 2>&1
 	fi
+else
+	echo "dash install" | dpkg --set-selections
 fi
 
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes dist-upgrade >>"$UPDATER_LOG" 2>&1
