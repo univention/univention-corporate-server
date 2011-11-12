@@ -1,3 +1,9 @@
+univention-nagios (5.0.19-1) unstable; urgency=low
+
+  * Fix deadlock in listener (Bug #24560)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 11 Nov 2011 23:50:48 +0100
+
 univention-nagios (5.0.18-1) unstable; urgency=low
 
   * Disable kpasswdd check by default. On S4 systems the samba daemon

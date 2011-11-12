@@ -652,7 +652,7 @@ def handleHost(dn, new, old):
 			if new.has_key('univentionNagiosParent') and new['univentionNagiosParent']:
 				fp.write('    parents                 %s\n' % ', '.join(new['univentionNagiosParent']))
 
-			if listener.baseConfig.has_key("nagios/server/hostcheck/enable") and ( listener.baseConfig["nagios/server/hostcheck/enable"] in ["yes", "true", '1']):
+			if listener.baseConfig.is_true("nagios/server/hostcheck/enable", False):
 				fp.write('    check_command           check-host-alive\n')
 
 			fp.write('    max_check_attempts      10\n')
@@ -761,15 +761,18 @@ def postrun():
 		initscript = __initscript
 		# restart nagios if not running and nagios/server/autostart is set to yes/true/1
 		# otherwise if nagios is running, ask nagios to reload config
-		p = os.popen('pidof /usr/sbin/nagios3')
-		pidlist = p.read()
-		p.close()
+		p = subprocess.Popen(('pidof', '/usr/sbin/nagios3'), stdout=subprocess.PIPE)
+		pidlist, stderr = p.communicate()
 		listener.setuid(0)
-		retcode = subprocess.call(['nagios3', '-v', '/etc/nagios3/nagios.cfg'], shell=False, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+		null = open(os.path.devnull, 'w')
+		try:
+			retcode = subprocess.call(('nagios3', '-v', '/etc/nagios3/nagios.cfg'), stdout=null, stderr=null)
+		finally:
+			null.close()
 		listener.unsetuid()
 		if not pidlist.strip():
 			if retcode == 0:
-				if listener.baseConfig.has_key("nagios/server/autostart") and ( listener.baseConfig["nagios/server/autostart"].lower() in ["yes", "true", '1']):
+				if listener.baseConfig.is_true("nagios/server/autostart", False):
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: nagios3 not running - restarting server')
 
 					listener.setuid(0)
@@ -778,7 +781,7 @@ def postrun():
 					finally:
 						listener.unsetuid()
 			else:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios3 reported an error in configfile /etc/nagios3/nagios.cfg. Please restart nagios3 manually: "/etc/init.d/nagios3 restart".')
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios3 reported an error in configfile /etc/nagios3/nagios.cfg. Please restart nagios3 manually: "%s restart".' % initscript)
 				listener.unsetuid()
 
 		else:
@@ -790,7 +793,7 @@ def postrun():
 				finally:
 					listener.unsetuid()
 			else:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios3 reported an error in configfile /etc/nagios3/nagios.cfg. Please restart nagios3 manually: "/etc/init.d/nagios3 restart".')
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios3 reported an error in configfile /etc/nagios3/nagios.cfg. Please restart nagios3 manually: "%s restart".' % initscript)
 				listener.unsetuid()
 		__reload = False
 
