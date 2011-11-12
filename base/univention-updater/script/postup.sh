@@ -86,21 +86,21 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
+# hold on dash update #22557
+if [ "$(dpkg-query -W -f='${Status}\n' dash 2>/dev/null)" = "hold ok installed" ]; then
+	if [ "$update30_hold_dash" = "true" ]; then
+		echo "dash install" | dpkg --set-selections
+		install dash
+		univention-config-registry unset update30/hold/dash >>"$UPDATER_LOG" 2>&1
+	fi
+fi
+
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes dist-upgrade >>"$UPDATER_LOG" 2>&1
 
 # # https://forge.univention.org/bugzilla/show_bug.cgi?id=18529
 # if [ -x /usr/sbin/update-initramfs ]; then
 #	update-initramfs -u -k all >>"$UPDATER_LOG" 2>&1
 # fi
-
-# hold on dash update #22557
-if [ "$(dpkg-query -W -f='${Status}\n' dash 2>/dev/null)" = "hold ok installed" ]; then
-	if [ "update30_hold_dash" = "true" ]; then
-		echo "dash install" | dpkg --set-selections
-		install dash
-		univention-config-registry unset update30/hold/dash >>"$UPDATER_LOG" 2>&1
-	fi
-fi
 
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update (always required)
 if [ -e /usr/sbin/univention-management-console-server ]; then

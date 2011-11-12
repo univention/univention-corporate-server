@@ -1,3 +1,9 @@
+univention-updater (7.0.93-1) unstable; urgency=low
+
+  * postup.sh: Fixed typo in dash update check (Bug #22557)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 12 Nov 2011 20:32:08 +0100
+
 univention-updater (7.0.92-1) unstable; urgency=low
 
   * show gdm restart message only if gdm will be started (Bug #24413)
