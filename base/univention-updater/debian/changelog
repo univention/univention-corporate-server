@@ -1,3 +1,10 @@
+univention-updater (7.0.94-1) unstable; urgency=low
+
+  * preup,sh and postup.sh: Set DEBIAN_FRONTEND to noninteractive
+    (Bug #24556)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 12 Nov 2011 20:37:12 +0100
+
 univention-updater (7.0.93-1) unstable; urgency=low
 
   * postup.sh: Fixed typo in dash update check (Bug #22557)

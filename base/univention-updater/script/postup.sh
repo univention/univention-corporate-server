@@ -27,6 +27,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+export DEBIAN_FRONTEND=noninteractive
+
 UPDATER_LOG="/var/log/univention/updater.log"
 UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
