@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.71-1) unstable; urgency=low
+
+  * Added well known groups to ignore filter (Bug #24288)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Nov 2011 15:35:53 +0100
+
 univention-s4-connector (6.0.70-1) unstable; urgency=low
 
   * Ignore group 'Authenticated Users' (Bug #24288)
