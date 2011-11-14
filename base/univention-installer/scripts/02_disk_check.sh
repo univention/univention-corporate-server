@@ -183,24 +183,23 @@ fi
 
 touch /instmnt/.log
 
-# get bootloader_device via /proc/cmdline and overwrite value of profile/installer
-kernel_bootloader_device="$(sed -rne 's/.*\bbootloaderdevice=([^ ]+)\s*.*/\1/p' /proc/cmdline)"
-if [ -n "$bootloader_device" ] ; then
-	bootloader_device="$kernel_bootloader_device"
+# get bootloader_record via /proc/cmdline and overwrite value of profile/installer
+kernel_bootloader_record="$(sed -rne 's/.*\bbootloaderrecord=([^ ]+)\s*.*/\1/p' /proc/cmdline)"
+if [ -n "$bootloader_record" ] ; then
+	bootloader_record="$kernel_bootloader_record"
 fi
 
-# get bootloader_device via /proc/partitions
-if [ -z "$bootloader_device" ] ; then
+# get bootloader_record via /proc/partitions
+if [ -z "$bootloader_record" ] ; then
 	partitions_device="$(egrep -r '^\s*[0-9]+\s+' /proc/partitions | head -n1 | awk '{ print $NF }')"
-	[ -n "$partitions_device" ] && bootloader_device="/dev/$partitions_device"
+	[ -n "$partitions_device" ] && bootloader_record="/dev/$partitions_device"
 fi
 
-if [ -n "$bootloader_device" ]; then
-	python2.6 /sbin/univention-config-registry set "grub/boot?$bootloader_device"
+if [ -n "$bootloader_record" ]; then
+	python2.6 /sbin/univention-config-registry set "grub/boot?$bootloader_record"
 else
 	echo
-	echo
-	echo "ERROR: bootloader_device has not been set!"
+	echo "ERROR: bootloader_record has not been set!"
 	echo
 	echo
 	sleep 15s

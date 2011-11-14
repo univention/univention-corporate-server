@@ -55,15 +55,15 @@ class object(content):
 		content.debug(self, 'BOOTLOADER:%d: %s' % (line,txt))
 
 	def checkname(self):
-		return ['bootloader_device']
+		return ['bootloader_record']
 
 	def modvars(self):
-		return ['bootloader_device']
+		return ['bootloader_record']
 
 	def profile_complete(self):
-		if self.check('bootloader_device'):
+		if self.check('bootloader_record'):
 			return False
-		return bool(self.all_results.get('bootloader_device'))
+		return bool(self.all_results.get('bootloader_record'))
 
 	def auto_input(self):
 		# Return "next" (== F12) and disable auto_input() function.
@@ -74,7 +74,7 @@ class object(content):
 	def depends(self):
 		# depends() is called every time the user enters this module - so we can update device list here
 		# reset layout and selections
-		return {'bootloader_device': ['boot_partition']}
+		return {'bootloader_record': ['boot_partition']}
 
 	def find_devices(self):
 		self.devices = {}
@@ -124,13 +124,13 @@ class object(content):
 			if len(fullname)+3 > self.max_length:
 				self.max_length = len(fullname) + 3
 
-		self.debug('Possible bootloader_devices: %s' % self.devices)
+		self.debug('Possible bootloader devices: %s' % self.devices)
 
 		if len(self.devices) > 1:
-			self.debug('More than one possible bootloader_devices - disabling auto-f12')
+			self.debug('More than one possible bootloader devices - disabling auto-f12')
 			self.auto_input_enabled = False
 
-		self.selected_device = self.all_results.get('bootloader_device')
+		self.selected_device = self.all_results.get('bootloader_record')
 		self.debug('User selected device: %s' % self.selected_device)
 		if not self.selected_device:
 			 self.selected_device = self.all_results.get('boot_partition','').strip('0123456789')
@@ -184,5 +184,5 @@ class object(content):
 
 
 	def result(self):
-		result = { 'bootloader_device': '%s' % self.get_elem('DEVICE').result()[0] }
+		result = { 'bootloader_record': '%s' % self.get_elem('DEVICE').result()[0] }
 		return result

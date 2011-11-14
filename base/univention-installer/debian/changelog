@@ -1,3 +1,9 @@
+univention-installer (7.0.144-3) unstable; urgency=low
+
+  * fixed backward-compatibility to old profiles (Bug #24516)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 14 Nov 2011 12:13:00 +0100
+
 univention-installer (7.0.144-2) unstable; urgency=low
 
   * reduced size of bootloader list (Bug #24516)
