@@ -197,6 +197,47 @@ if [ "$1" = "configure" -a "$server_role" = "domaincontroller_master" ] && dpkg 
 	/usr/share/univention-ldap/convert_univentionMailSharedFolderDeliveryAddress.py
 fi
 
+create_group()
+{
+	name="$1"
+	sid="$2"
+
+	dn="$(univention-ldapsearch -x "(&(objectClass=univentionGroup)(cn=$name))" dn | sed -ne 's|dn: ||p')"
+	
+	if [ -z "$dn" ]; then
+		univention-directory-manager groups/group create \
+			--position cn=groups,$ldap_base --set name="$name"
+
+		cat <<%EOF | ldapmodify -D "cn=admin,$ldap_base" -w "$(</etc/ldap.secret)" 
+dn: cn=$name,cn=groups,$ldap_base
+changetype: modify
+replace: sambaSID
+sambaSID: $sid
+-
+%EOF
+	fi
+}
+
+if [ "$1" = "configure" -a "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions "$2" lt-nl 8.0.71-1; then
+
+	sambaSID="$(univention-ldapsearch -x sambaDomainName="$windows_domain" sambaSID | sed -ne 's|^sambaSID: ||p')"
+	if [ -n "$sambaSID" ]; then
+		create_group "Enterprise Admins" "$sambaSID-519"
+	fi
+
+	create_group "Authenticated Users" "S-1-5-11"
+	create_group "World Authority" "S-1-1"
+	create_group "Everyone" "S-1-1-0"
+	create_group "Null Authority" "S-1-0"
+	create_group "Nobody" "S-1-0-0"
+
+	univention-directory-manager groups/group modify \
+		--dn "cn=Authenticated Users,cn=groups,$ldap_base" \
+   		--append nestedGroup="cn=DC Slave Hosts,cn=groups,$ldap_base"
+
+fi
+
+
 if [ "$1" = "configure" -a -n "$2" ];
 	then
 	if test -x /etc/init.d/slapd

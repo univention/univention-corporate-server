@@ -1,3 +1,9 @@
+univention-ldap (8.0.71-1) unstable; urgency=low
+
+  * Added well known groups (Bug #24288)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Nov 2011 15:00:04 +0100
+
 univention-ldap (8.0.70-2) unstable; urgency=low
 
   * call convert_univentionMailSharedFolderDeliveryAddress only on DC
