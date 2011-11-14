@@ -252,7 +252,7 @@ if [ "$samba4_role" = 'DC' ]; then
 	fi
 
 	## activate sysvol replication
-	univention-config-registry set samba4/sysvol/sync/cron?"*/1 * * * *"
+	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
 
 	# The windows clients connect to //$domainname/sysvol for GPOs during logon
 	# Register the local ips for the forward zone, skip with 'ucr set samba4/dns/domain/register=false'
@@ -279,8 +279,7 @@ if [ "$samba4_role" = 'DC' ]; then
 	fi
 
 	## set default ACLs so sysvol-sync can read files and directories
-	nscd -i group
-	setfacl -R -P -m 'g:Builtin Users:r-x,d:g:Builtin Users:r-x' /var/lib/samba/sysvol
+	setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' /var/lib/samba/sysvol
 
 
 elif [ "$samba4_role" = "RODC" ]; then
@@ -345,7 +344,7 @@ elif [ "$samba4_role" = "RODC" ]; then
 	/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH"	2>/dev/null
 
 	## activate sysvol replication
-	univention-config-registry set samba4/sysvol/sync/cron?"*/1 * * * *"
+	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
 
 	## Kerberos keytab adjustments for Samba 4
 
@@ -360,7 +359,7 @@ elif [ "$samba4_role" = "RODC" ]; then
 
 	## set default ACLs so sysvol-sync can read files and directories
 	nscd -i group
-	setfacl -R -P -m 'g:Builtin Users:r-x,d:g:Builtin Users:r-x' /var/lib/samba/sysvol
+	setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' /var/lib/samba/sysvol
 
 elif [ "$samba4_role" = "MEMBER" ]; then
 

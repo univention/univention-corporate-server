@@ -1,3 +1,9 @@
+univention-samba4 (1.0.103-1) unstable; urgency=low
+
+  * Give Authenticated Users read access to sysvol share (Bug #24288)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Nov 2011 22:03:08 +0100
+
 univention-samba4 (1.0.102-2) unstable; urgency=low
 
   * Move Authenticated Users creation to univention-ldap (Bug #24288)

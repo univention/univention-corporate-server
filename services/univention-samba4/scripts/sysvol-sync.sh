@@ -42,7 +42,7 @@ fi
 chgrp 'DC Slave Hosts' "$SYSVOL_SYNC_TRIGGERDIR"
 chmod g+w "$SYSVOL_SYNC_TRIGGERDIR"
 
-setfacl -R -P -m 'g:Builtin Users:r-x,d:g:Builtin Users:r-x' /var/lib/samba/sysvol
+setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' /var/lib/samba/sysvol
 
 ## merge updates pushed to us by other s4DCs
 for triggerfile in $(find "${SYSVOL_SYNC_TRIGGERDIR}" -mindepth 1 -maxdepth 1 -type f); do
