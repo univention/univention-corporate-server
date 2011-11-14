@@ -51,7 +51,8 @@ from univention.uvmm import protocol, node, client
 import univention.debug as ud
 import traceback
 
-_ = Translation( 'univention.management.console.handlers.uvmm' ).translate
+_ = Translation( 'univention-management-console-module-uvmm' ).translate
+_uvmm_locale = Translation( 'univention-virtual-machine-manager' ).translate
 
 class UVMM_Error( Exception ):
 	"""UVMM-request was not successful."""
@@ -89,7 +90,7 @@ class UVMM_Request( object ):
 		if isinstance( result, protocol.Response_DUMP ):
 			data = result.data
 		elif isinstance( result, protocol.Response_ERROR ):
-			data = result.msg
+			data = _uvmm_locale( result.translatable_text ) % result.values
 		elif isinstance( result, protocol.Response_OK ):
 			pass # no further data available
 		return ( success, data )

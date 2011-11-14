@@ -34,6 +34,7 @@
 from univention.lib.i18n import Translation
 
 from univention.management.console.log import MODULE
+from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 # for urlparse extensions
 from univention.uvmm import helpers
@@ -71,22 +72,25 @@ class Nodes( object ):
 
 			nodes = []
 			success, data = result
-			for node_pd in data:
-				node_uri = urlparse.urlsplit( node_pd.uri )
-				nodes.append( { 'id' : node_pd.uri, 'label' : node_pd.name,
-								'group' : _( 'Physical servers' ),
-								'type' : 'node',
-								'virtech' : node_uri.scheme,
-								'memUsed' : node_pd.curMem,
-								'memAvailable' : node_pd.phyMem,
-								'cpuUsage' : ( node_pd.cpu_usage or 0 ) / 10.0,
-								'available' : node_pd.last_try == node_pd.last_update,
-								'cpus' : node_pd.cpus,
-								'supports_suspend' : node_pd.supports_suspend,
-								'supports_snapshot' : node_pd.supports_snapshot,
-								} )
+			if success:
+				for node_pd in data:
+					node_uri = urlparse.urlsplit( node_pd.uri )
+					nodes.append( { 'id' : node_pd.uri, 'label' : node_pd.name,
+									'group' : _( 'Physical servers' ),
+									'type' : 'node',
+									'virtech' : node_uri.scheme,
+									'memUsed' : node_pd.curMem,
+									'memAvailable' : node_pd.phyMem,
+									'cpuUsage' : ( node_pd.cpu_usage or 0 ) / 10.0,
+									'available' : node_pd.last_try == node_pd.last_update,
+									'cpus' : node_pd.cpus,
+									'supports_suspend' : node_pd.supports_suspend,
+									'supports_snapshot' : node_pd.supports_snapshot,
+									} )
 
-			self.finished( request.id, nodes, success = success )
+				self.finished( request.id, nodes )
+			else:
+				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
 		self.uvmm.send( 'NODE_LIST', Callback( _finished, request ), group = 'default', pattern = request.options.get( 'nodePattern', '*' ) )
 

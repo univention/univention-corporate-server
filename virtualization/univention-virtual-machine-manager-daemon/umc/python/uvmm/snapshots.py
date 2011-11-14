@@ -39,6 +39,7 @@ from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 from univention.management.console.log import MODULE
+from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 from univention.uvmm.protocol import Data_Domain, Disk, Graphic, Interface
 # for urlparse extensions
@@ -66,14 +67,17 @@ class Snapshots( object ):
 			node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
 			success, data = result
 
-			snapshot_list = []
-			if success and data.snapshots is not None:
-				for name, info in data.snapshots.items():
-					creation = datetime.fromtimestamp( info.ctime )
-					snapshot = { 'id' : name, 'label' : name, 'time' : creation.strftime( "%x %X" )  }
-					snapshot_list.append( snapshot )
+			if success:
+				snapshot_list = []
+				if success and data.snapshots is not None:
+					for name, info in data.snapshots.items():
+						creation = datetime.fromtimestamp( info.ctime )
+						snapshot = { 'id' : name, 'label' : name, 'time' : creation.strftime( "%x %X" )  }
+						snapshot_list.append( snapshot )
 
-			self.finished( request.id, snapshot_list, success = success )
+				self.finished( request.id, snapshot_list )
+			else:
+				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
 		self.uvmm.send( 'DOMAIN_INFO', Callback( _finished, request ), uri = node_uri, domain = domain_uuid )

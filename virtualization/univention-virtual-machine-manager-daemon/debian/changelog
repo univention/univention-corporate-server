@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.58-1) unstable; urgency=low
+
+  * backend: enhance error handling; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 14 Nov 2011 13:23:57 +0100
+
 univention-virtual-machine-manager-daemon (1.0.57-1) unstable; urgency=low
 
   * fixed error handling to show server messages (Bug #22893)

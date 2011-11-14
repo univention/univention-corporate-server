@@ -39,6 +39,7 @@ from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 from univention.management.console.log import MODULE
+from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 from univention.uvmm.protocol import Data_Domain, Disk, Graphic, Interface
 # for urlparse extensions
@@ -76,9 +77,9 @@ class Domains( object ):
 						domain_uri = '%s#%s' % ( node_uri, domain[ 'uuid' ] )
 						domain_list.append( { 'id' : domain_uri, 'label' : domain[ 'name' ], 'nodeName' : uri.netloc, 'state' : domain[ 'state' ], 'type' : 'domain',
 											  'mem' : domain[ 'mem' ], 'cpuUsage' : domain[ 'cpu_usage' ], 'vnc' : domain[ 'vnc' ], 'suspended' : bool( domain[ 'suspended' ] ) } )
+				self.finished( request.id, domain_list )
 			else:
-				domain_list = data
-			self.finished( request.id, domain_list, success = success )
+				self.finished( request.id, None, str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
 		self.uvmm.send( 'DOMAIN_LIST', Callback( _finished, request ), uri = request.options.get( 'nodePattern', '*' ), pattern = request.options.get( 'domainPattern', '*' ) )
 
@@ -87,13 +88,16 @@ class Domains( object ):
 
 		options: { 'domainURI': <domain uri> }
 
-		return: { 'success' : (True|False), 'data' : <details> }
+		return:
 		"""
 		def _finished( thread, result, request ):
 			if self._check_thread_error( thread, result, request ):
 				return
 
 			success, data = result
+			if not success:
+				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
+				return
 
 			node_uri = urlparse.urlsplit( request.options[ 'domainURI' ] )
 			json = object2dict( data )
@@ -144,7 +148,7 @@ class Domains( object ):
 			json[ 'type' ] = '%(domain_type)s-%(os_type)s' % json
 
 			MODULE.info( 'Got domain description: success: %s, data: %s' % ( success, json ) )
-			self.finished( request.id, { 'success' : success, 'data' : json } )
+			self.finished( request.id, json )
 
 		self.required_options( request, 'domainURI' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
@@ -225,7 +229,7 @@ class Domains( object ):
 
 		options: { 'nodeURI': <node uri>, 'domain' : {} }
 
-		return: { 'success' : (True|False), 'data' : <details> }
+		return:
 		"""
 		self.required_options( request, 'nodeURI', 'domain' )
 
@@ -356,7 +360,10 @@ class Domains( object ):
 
 			json = object2dict( data )
 			MODULE.info( 'New domain: success: %s, data: %s' % ( success, json ) )
-			self.finished( request.id, { 'success' : success, 'data' : json } )
+			if success:
+				self.finished( request.id, json )
+			else:
+				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
 		self.uvmm.send( 'DOMAIN_DEFINE', Callback( _finished, request ), uri = request.options[ 'nodeURI' ], domain = domain_info )
 
@@ -365,7 +372,7 @@ class Domains( object ):
 
 		options: { 'domainURI': <domain uri>, 'domain' : {} }
 
-		return: { 'success' : (True|False), 'data' : <details> }
+		return: 
 		"""
 		self.domain_add( request )
 
@@ -374,7 +381,7 @@ class Domains( object ):
 
 		options: { 'domainURI': <domain uri>, 'domainState': (RUN|SHUTDOWN|PAUSE|RESTART|SUSPEND) }
 
-		return: { 'success' : (True|False), 'data' : <details> }
+		return: 
 		"""
 		self.required_options( request, 'domainURI', 'domainState' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
@@ -388,7 +395,7 @@ class Domains( object ):
 
 		options: { 'domainURI': <domain uri>, 'targetNodeURI': <target node uri> }
 
-		return: { 'success' : (True|False), 'data' : <details> }
+		return: 
 		"""
 		self.required_options( request, 'domainURI', 'targetNodeURI' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
@@ -399,7 +406,7 @@ class Domains( object ):
 
 		options: { 'domainURI': <domain uri>, 'cloneName': <name of clone> }
 
-		return: { 'success' : (True|False), 'data' : <details> }
+		return: 
 		"""
 		self.required_options( request, 'domainURI', 'cloneName' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
@@ -410,7 +417,7 @@ class Domains( object ):
 
 		options: { 'domainURI': <domain uri> }
 
-		return: { 'success' : (True|False), 'data' : <details> }
+		return: 
 		"""
 		self.required_options( request, 'domainURI' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )

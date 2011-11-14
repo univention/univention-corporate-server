@@ -37,6 +37,7 @@ from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 from univention.management.console.log import MODULE
+from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 from .uvmmd import UVMM_RequestBroker
 
@@ -49,8 +50,6 @@ from .domains import Domains
 from .snapshots import Snapshots
 
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate
-
-_uvmm_locale = Translation( 'univention.virtual.machine.manager' ).translate
 
 class Instance( Base, Nodes, Profiles, Storages, Domains, Snapshots ):
 	DOMAIN_STATES = ( 'RUN', 'PAUSE', 'SHUTDOWN', 'RESTART', 'SUSPEND' )
@@ -85,9 +84,9 @@ class Instance( Base, Nodes, Profiles, Storages, Domains, Snapshots ):
 		success, data = result
 		MODULE.info( 'Got result from UVMMd: success: %s, data: %s' % ( success, data ) )
 		if not success:
-			self.finished( request.id, None, message = data, success = success )
+			self.finished( request.id, None, message = data, status = MODULE_ERR_COMMAND_FAILED )
 		else:
-			self.finished( request.id, data, success = success )
+			self.finished( request.id, data )
 
 	def _thread_finish_success( self, thread, result, request ):
 		"""This method is invoked when a threaded request function is

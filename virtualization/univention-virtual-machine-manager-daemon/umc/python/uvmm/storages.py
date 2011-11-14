@@ -36,6 +36,7 @@ import os
 from univention.lib.i18n import Translation
 
 from univention.management.console.log import MODULE
+from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 # get the URI parser for nodes
 import univention.uvmm.helpers
@@ -59,8 +60,11 @@ class Storages( object ):
 
 		def _finished( thread, result, request ):
 			success, data = result
-			self.storage_pools[ request.options[ 'nodeURI' ] ] = dict( map( lambda p: ( p.name, object2dict( p ) ), data ) )
-			self.finished( request.id, self.storage_pools[ request.options[ 'nodeURI' ] ].values() )
+			if success:
+				self.storage_pools[ request.options[ 'nodeURI' ] ] = dict( map( lambda p: ( p.name, object2dict( p ) ), data ) )
+				self.finished( request.id, self.storage_pools[ request.options[ 'nodeURI' ] ].values() )
+			else:
+				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
 		self.uvmm.send( 'STORAGE_POOLS', Callback( _finished, request ), uri = request.options[ 'nodeURI' ] )
 
@@ -75,12 +79,15 @@ class Storages( object ):
 
 		def _finished( thread, result, request ):
 			success, data = result
-			volume_list = []
-			for vol in data:
-				vol = object2dict( vol )
-				vol[ 'volumeFilename' ] = os.path.basename( vol.get( 'source', '' ) )
-				volume_list.append( vol )
-			self.finished( request.id,volume_list )
+			if success:
+				volume_list = []
+				for vol in data:
+					vol = object2dict( vol )
+					vol[ 'volumeFilename' ] = os.path.basename( vol.get( 'source', '' ) )
+					volume_list.append( vol )
+				self.finished( request.id, volume_list )
+			else:
+				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
 		self.uvmm.send( 'STORAGE_VOLUMES', Callback( _finished, request ), uri = request.options[ 'nodeURI' ], pool = request.options[ 'pool' ], type = request.options.get( 'type', None ) )
 
@@ -116,10 +123,13 @@ class Storages( object ):
 				return
 
 			success, data = result
-			if isinstance( data, ( list, tuple ) ):
-				data = map( lambda x: '#'.join( x ), data )
+			if success:
+				if isinstance( data, ( list, tuple ) ):
+					data = map( lambda x: '#'.join( x ), data )
+				self.finished( request.id, data )
+			else:
+				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
-			self.finished( request.id, data, success = success )
 
 		pool_path = self.get_pool_path( request.options[ 'nodeURI' ], request.options[ 'pool' ] )
 		if pool_path is None:

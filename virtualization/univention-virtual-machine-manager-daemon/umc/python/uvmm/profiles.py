@@ -37,6 +37,7 @@ import univention.admin.handlers.uvmm.profile as uvmm_profile
 from univention.lib.i18n import Translation
 
 from univention.management.console.log import MODULE
+from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 # get the URI parser for nodes
 import univention.uvmm.helpers
@@ -101,10 +102,12 @@ class Profiles( object ):
 				return
 
 			success, data = result
+			if success:
+				profiles = map( lambda item: { 'id' : item[ 0 ], 'label' : item[ 1 ].name }, self._filter_profiles( data[ 0 ] ) )
 
-			profiles = map( lambda item: { 'id' : item[ 0 ], 'label' : item[ 1 ].name }, self._filter_profiles( data[ 0 ] ) )
-
-			self.finished( request.id, profiles )
+				self.finished( request.id, profiles )
+			else:
+				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
 		self.uvmm.send( 'NODE_LIST', Callback( _finished, request ), group = 'default', pattern = request.options[ 'nodeURI' ] )
 

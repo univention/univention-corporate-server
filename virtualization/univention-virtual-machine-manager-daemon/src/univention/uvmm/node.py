@@ -1373,6 +1373,8 @@ def domain_info( uri, domain ):
 
 	node = node_query( uri )
 	# transfer state number into string constant
+	if not domain in node.domains:
+		raise NodeError( _( 'Unknown domain "%s"' ) % domain )
 	domain_pd = copy.copy( node.domains[ domain ].pd )
 	domain_pd.state = STATES[ domain_pd.state ]
 	return domain_pd
