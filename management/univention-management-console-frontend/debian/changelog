@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.200-1) unstable; urgency=low
+
+  * CheckBox: fix visual of the inital state; Bug #24409
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 14 Nov 2011 14:25:39 +0100
+
 univention-management-console-frontend (1.0.199-1) unstable; urgency=low
 
   * adjusted handling of error 591 (Bug #22881)

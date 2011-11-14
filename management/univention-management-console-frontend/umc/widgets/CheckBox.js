@@ -26,11 +26,18 @@ dojo.declare("umc.widgets.CheckBox", [ dijit.form.CheckBox, umc.widgets._FormWid
 	},
 
 	postCreate: function() {
-		this.set('checked', umc.tools.isTrue(this._initialValue));
+		this.inherited( arguments );
+		this.set( 'value', umc.tools.isTrue( this._initialValue ) );
 	},
 
-	_setValueAttr: function(newValue) {
-		this.set('checked', umc.tools.isTrue(newValue));
+	_setValueAttr: function(/*String|Boolean*/ newValue, /*Boolean*/ priorityChange){
+		// based on the code from dijit.form.CheckBox
+		this.value = newValue = umc.tools.isTrue( newValue );
+
+		// this is important, otherwise the inital state is displayed wrong
+		if(this._created){
+			this.set('checked', newValue, priorityChange);
+		}
 	},
 
 	_getValueAttr: function() {
