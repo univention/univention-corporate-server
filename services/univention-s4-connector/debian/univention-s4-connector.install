@@ -4,3 +4,4 @@ univention-password_sync_ucs_to_s4 usr/sbin
 conffiles/etc/univention/s4connector/s4/mapping.py etc/univention/connector/s4/
 97univention-s4-connector.inst usr/lib/univention-install/
 s4-connector.py usr/lib/univention-directory-listener/system
+sync_krbtgt usr/share/univention-s4-connector/
