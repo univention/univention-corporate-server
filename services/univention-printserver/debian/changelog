@@ -1,3 +1,9 @@
+univention-printserver (5.0.17-2) unstable; urgency=low
+
+  * add exit 0 to postinst for ucslint; Bug #22902
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 14 Nov 2011 15:27:44 +0100
+
 univention-printserver (5.0.17-1) unstable; urgency=low
 
   * remove old UMC UDM objects; Bug #22902
