@@ -347,8 +347,8 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			var html = dojo.replace( "<html><head><title>{domainName} on {nodeName}</title></head><body><applet archive='/TightVncViewer.jar' code='com.tightvnc.vncviewer.VncViewer' height='100%%' width='100%%'><param name='host' value='{vncHost}' /><param name='port' value='{vncPort}' /><param name='offer relogin' value='no' /></applet></body></html>", {
 				domainName: items[ 0 ].label,
 				nodeName: items[ 0 ].nodeName,
-				vncHost: response.result.data.vncHost,
-				vncPort: response.result.data.vncPort
+				vncHost: response.result.vncHost,
+				vncPort: response.result.vncPort
 			} );
 			w.document.write( html );
 			w.document.close();
@@ -374,7 +374,6 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				this.moduleStore.onChange();
 				this.updateProgress(1, 1);
 			}), dojo.hitch(this, function() {
-				umc.dialog.alert(this._('An error ocurred during processing your request.'));
 				this.moduleStore.onChange();
 				this.updateProgress(1, 1);
 			}));
@@ -437,8 +436,8 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				domain: values
 			}).then(dojo.hitch(this, function() {
 				_cleanup();
+				this.moduleStore.onChange();
 				this.standby(false);
-				this.filter();
 			}), dojo.hitch(this, function() {
 				this.standby(false);
 			}));
@@ -470,9 +469,8 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		deferred = deferred.then(dojo.hitch(this, function() {
 			this.moduleStore.onChange();
 			this.updateProgress(ids.length, ids.length);
-		}), dojo.hitch(this, function() {
-			umc.dialog.alert(this._('An error ocurred during processing your request.'));
-			this.moduleStore.onChange();
+		}), dojo.hitch(this, function(error) {
+			this.modulestore.onChange();
 			this.updateProgress(ids.length, ids.length);
 		}));
 	},
@@ -495,8 +493,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			}).then(dojo.hitch(this, function() {
 				this.moduleStore.onChange();
 				this.updateProgress(1, 1);
-			}), dojo.hitch(this, function() {
-				umc.dialog.alert(this._('An error ocurred during processing your request.'));
+			}), dojo.hitch(this, function(error) {
 				this.moduleStore.onChange();
 				this.updateProgress(1, 1);
 			}));

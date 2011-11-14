@@ -144,7 +144,6 @@ dojo.declare("umc.modules._uvmm.SnapshotGrid", [ umc.widgets.Grid, umc.i18n.Mixi
 			}).then(dojo.hitch(this, function() {
 				this.onUpdateProgress(1, 1);
 			}), dojo.hitch(this, function() {
-				umc.dialog.alert(this._('An error ocurred during processing your request.'));
 				this.onUpdateProgress(1, 1);
 			}));
 		}));

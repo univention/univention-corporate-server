@@ -350,7 +350,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			domainURI: id
 		}).then(dojo.hitch(this, function(data) {
 			// get data blob
-			this._domain = dojo.getObject('result.data', false, data);
+			this._domain = dojo.getObject('result', false, data);
 			this._domain.domainURI = id;
 
 			if (data) {
