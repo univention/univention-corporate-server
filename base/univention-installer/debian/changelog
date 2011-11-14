@@ -1,3 +1,9 @@
+univention-installer (7.0.144-2) unstable; urgency=low
+
+  * reduced size of bootloader list (Bug #24516)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 11 Nov 2011 18:19:04 +0100
+
 univention-installer (7.0.144-1) unstable; urgency=low
 
   * readded bootloader module (Bug #24516)

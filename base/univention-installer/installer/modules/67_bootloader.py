@@ -154,7 +154,7 @@ class object(content):
 		pos = self.minY - 10 + self.get_elem('TA_desc').get_number_of_lines()
 
 		self.add_elem('TL_headline', textline(_('Select where to install the GRUB boot loader:'), pos + 1, self.minX+5))
-		self.add_elem('DEVICE',select(self.devices, pos + 3, self.minX+5, self.max_length, 20, self.devices.get(self.selected_device,[0,0])[1]))
+		self.add_elem('DEVICE',select(self.devices, pos + 3, self.minX+5, self.max_length, 15, self.devices.get(self.selected_device,[0,0])[1]))
 		self.move_focus(self.get_elem_id('DEVICE'))
 
 
