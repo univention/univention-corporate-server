@@ -110,9 +110,9 @@ class Snapshots( object ):
 	def snapshot_revert( self, request ):
 		"""Returns a list of snapshots of a domain
 
-		options: { 'domainURI': <domain URI>. 'name' : <snapshot name> }
+		options: { 'domainURI': <domain URI>. 'snapshotName' : <snapshot name> }
 
-		return: { 'success' : (True|False), 'message' : <details> }
+		return:
 		"""
 		self.required_options( request, 'domainURI', 'snapshotName' )
 

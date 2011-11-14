@@ -138,7 +138,7 @@ dojo.declare("umc.modules._uvmm.SnapshotGrid", [ umc.widgets.Grid, umc.i18n.Mixi
 
 			// send the UMCP command
 			this.onUpdateProgress(0, 1);
-			umc.tools.umcpCommand('uvmm/snapshot/remove', {
+			umc.tools.umcpCommand('uvmm/snapshot/revert', {
 				domainURI: this.domainURI,
 				snapshotName: ids[0]
 			}).then(dojo.hitch(this, function() {
