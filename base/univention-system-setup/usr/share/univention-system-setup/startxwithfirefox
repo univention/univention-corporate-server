@@ -112,6 +112,10 @@ mkdir -p "$HOME"/.kde/share/config/
 echo '[1]
 noborder=true
 noborderrule=2
+maximizehoriz=true
+maximizehorizrule=2
+maximizevert=true
+maximizevertrule=2
 types=1
 windowrole=browser
 windowrolematch=1
