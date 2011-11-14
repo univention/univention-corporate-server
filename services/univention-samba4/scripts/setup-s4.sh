@@ -156,19 +156,19 @@ if [ -z "$samba4_function_level" ]; then
 fi
 
 univention-directory-manager groups/group create "$@" \
-	--position cn=groups,$ldap_base --set name="Builtin Users" \
+	--position cn=groups,$ldap_base --set name="Authenticated Users" \
 	--append nestedGroup="cn=Domain Users,cn=groups,$ldap_base"  \
 	--append nestedGroup="cn=Domain Admins,cn=groups,$ldap_base" \
 	--append nestedGroup="cn=Windows Hosts,cn=groups,$ldap_base" \
 	--append nestedGroup="cn=DC Slave Hosts,cn=groups,$ldap_base"
 
-# cat <<%EOF | ldapmodify -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
-# dn: cn=Builtin Users,cn=groups,$ldap_base
-# changetype: modify
-# replace: sambaSID
-# sambaSID: S-1-5-11
-# -
-# %EOF
+cat <<%EOF | ldapmodify -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
+dn: cn=Authenticated Users,cn=groups,$ldap_base
+changetype: modify
+replace: sambaSID
+sambaSID: S-1-5-11
+-
+%EOF
 
 S3_DOMAIN_SID_FOR_MY_DOMAIN="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
 if [ -z "$S3_DCS" ] || [ -z "$S3_DOMAIN_SID_FOR_MY_DOMAIN" ]; then

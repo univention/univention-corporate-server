@@ -1,3 +1,10 @@
+univention-samba4 (1.0.102-1) unstable; urgency=low
+
+  * Set well known sid to cn=Authenticated Users (Bug #24288)
+  * Rename Builtin Users to Authenticated Users
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Nov 2011 14:07:29 +0100
+
 univention-samba4 (1.0.101-2) unstable; urgency=low
 
   * set samba4/sysvol/sync/cron to one minute (Bug #24163)
