@@ -236,7 +236,7 @@ s4_mapping = {
 			sync_mode='@%@connector/s4/mapping/syncmode@%@',
 			scope='sub',
 
-			ignore_filter='(|(sambaGroupType=5)(groupType=5)(cn=Windows Hosts))',
+			ignore_filter='(|(sambaGroupType=5)(groupType=5)(cn=Windows Hosts)(cn=Authenticated Users))',
 
 			ignore_subtree = global_ignore_subtree,
 			

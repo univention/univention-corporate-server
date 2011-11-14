@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.70-1) unstable; urgency=low
+
+  * Ignore group 'Authenticated Users' (Bug #24288)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Nov 2011 12:29:25 +0100
+
 univention-s4-connector (6.0.69-1) unstable; urgency=low
 
   * Use Unpickler for loading the object (Bug #24273)
