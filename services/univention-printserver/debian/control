@@ -82,7 +82,7 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server
-Recommends: univention-printserver (= ${build:Version})
+Recommends: univention-printserver (= ${source:Version})
 Description: UMC module for printer administration
  This package contains the UMC module for the administration
  of configured printers.
