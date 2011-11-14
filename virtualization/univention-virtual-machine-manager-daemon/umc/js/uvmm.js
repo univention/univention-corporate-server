@@ -18,6 +18,7 @@ dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.SearchForm");
 dojo.require("umc.widgets.Tree");
+dojo.require("umc.widgets.Tooltip");
 
 //dojo.require("umc.modules._udm.Template");
 //dojo.require("umc.modules._udm.NewObjectDialog");
@@ -642,12 +643,27 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// create an HTML image that contains the icon (if we have a valid iconName)
 		var item = this._grid._grid.getItem(rowIndex);
-		return dojo.string.substitute('<img src="images/icons/16x16/${icon}.png" height="${height}" width="${width}" style="float:left; margin-right: 5px" /> ${label}', {
+		var html = dojo.string.substitute('<img src="images/icons/16x16/${icon}.png" height="${height}" width="${width}" style="float:left; margin-right: 5px" /> ${label}', {
 			icon: this._iconClass(item),
 			height: '16px',
 			width: '16px',
 			label: label
 		});
+		var widget = new umc.widgets.Text( {
+			content: html
+		} );
+		if ( undefined !== item.state ) {
+			var tooltip = new umc.widgets.Tooltip( {
+				label: umc.modules._uvmm.types.getDomainStateDescription( item ),
+				connectId: [ widget.domNode ],
+				position: 'above'
+			});
+
+			// destroy the tooltip when the widget is destroyed
+			tooltip.connect( widget, 'destroy', 'destroy' );
+		}
+
+		return widget;
 	},
 
 	filter: function() {

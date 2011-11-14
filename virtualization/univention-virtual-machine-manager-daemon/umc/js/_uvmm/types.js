@@ -37,6 +37,20 @@ dojo.require("umc.tools");
 			{ id: 'utc', label: _('Coordinated Universal Time') },
 			{ id: 'localtime', label: _('Local time zone') }
 		],
+		domainStates: {
+			RUNNING : _( 'running' ),
+			SHUTOFF : _( 'shut off' ),
+			PAUSED : _( 'paused' ),
+			IDLE : _( 'running (idle)' ),
+			CRASHED : _( 'shut off (crashed)' )
+		},
+		getDomainStateDescription: function( domain ) {
+			var text = self.domainStates[ domain.state ];
+			if ( true === domain.suspended ) {
+				text += ' ' + _( '(saved state)' );
+			}
+			return text;
+		},
 		virtualizationTechnology: [
 			{ id: 'kvm-hvm', label: _( 'Full virtualization (KVM)' ) },
 			{ id: 'xen-hvm', label: _( 'Full virtualization (XEN)' ) },

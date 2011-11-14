@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-12 00:06+0100\n"
+"POT-Creation-Date: 2011-11-14 12:31+0100\n"
 "PO-Revision-Date: 2011-11-10 01:12+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -370,7 +370,7 @@ msgstr "Image-Datei nicht gefunden"
 msgid "Image size"
 msgstr "Image-Größe"
 
-#: umc/python/uvmm/domains.py:376
+#: umc/python/uvmm/domains.py:383
 msgid "Invalid domain state"
 msgstr "Ungültiger Domain Status"
 
@@ -722,7 +722,7 @@ msgstr "Typ"
 msgid "Unknown profile"
 msgstr "Unbekanntes Profil"
 
-#: umc/python/uvmm/domains.py:241
+#: umc/python/uvmm/domains.py:248
 msgid "Unknown profile given"
 msgstr "Unbekanntes profil wurde angegeben"
 
