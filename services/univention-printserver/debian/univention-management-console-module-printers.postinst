@@ -30,7 +30,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# rpovide root access to the UMC module
+# provide root access to the UMC module
 univention-management-console-acls allow --host "*" --user root --command "printers/*"
-
-exit 0

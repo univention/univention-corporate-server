@@ -1,3 +1,9 @@
+univention-printserver (5.0.17-1) unstable; urgency=low
+
+  * remove old UMC UDM objects; Bug #22902
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 14 Nov 2011 15:12:34 +0100
+
 univention-printserver (5.0.16-5) unstable; urgency=low
 
   * fixed wrong version reference, again (Bug #22902)
