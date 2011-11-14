@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.177-1) unstable; urgency=low
+
+  * Allow numbers at the end of the FQDN string (Bug #24519)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Nov 2011 12:00:27 +0100
+
 univention-directory-manager-modules (7.0.176-1) unstable; urgency=low
 
   * use lowercase address for shared folder mail delivery (Bug #24503)

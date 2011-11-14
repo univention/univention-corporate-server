@@ -1536,7 +1536,7 @@ class IComputer_FQDN( UDM_Objects ):
 	udm_modules = ()
 	key = '%(fqdn)s'
 	label = '%(fqdn)s'
-	regex = re.compile( '(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z]{2,})$)' ) #'(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
+	regex = re.compile( '(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z0-9]{2,})$)' ) #'(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
 	error_message = _( 'Not a valid FQDN' )
 	simple = True
 
