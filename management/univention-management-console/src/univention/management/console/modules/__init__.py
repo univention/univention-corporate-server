@@ -126,7 +126,7 @@ class Base( signals.Provider, Translation ):
 			return False
 		return self.__acls.is_command_allowed( command, options = options, flavor = flavor )
 
-	def finished( self, id, response, message = None, success = True ):
+	def finished( self, id, response, message = None, success = True, status = None ):
 		"""Should be invoked by module to finish the processing of a
 		request. 'id' is the request command identifier, 'dialog' should
 		contain the result as UMC dialog and 'success' defines if the
@@ -143,7 +143,9 @@ class Base( signals.Provider, Translation ):
 			res.message = message
 
 		if not res.status:
-			if success:
+			if status is not None:
+				res.status = status
+			elif success:
 				res.status = SUCCESS
 			else:
 				res.status = MODULE_ERR

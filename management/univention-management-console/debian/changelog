@@ -1,3 +1,10 @@
+univention-management-console (4.0.86-1) unstable; urgency=low
+
+  * Base.finished: add optional argument status that may be used to define
+    a specific UMCP status for the response; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 14 Nov 2011 11:38:50 +0100
+
 univention-management-console (4.0.85-1) unstable; urgency=low
 
   * do not provide access to mrtg module for root on basesystems; Bug #24463
