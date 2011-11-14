@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-04 11:54+0100\n"
+"POT-Creation-Date: 2011-11-14 13:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr "Ein virtuelles Netzwerkgerät kann nicht für DHCP benutzt werden."
 msgid "Access settings"
 msgstr "Zugriffseinstellungen"
 
-#: umc/js/setup.js:369
+#: umc/js/setup.js:379
 msgid "Account data"
 msgstr "Kontodaten"
 
@@ -28,7 +28,7 @@ msgstr "Kontodaten"
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: umc/js/setup.js:322 umc/js/setup.js:396
+#: umc/js/setup.js:322 umc/js/setup.js:407
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
@@ -48,7 +48,7 @@ msgstr "Basis-Einstellungen"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup.js:319 umc/js/setup.js:361 umc/js/setup.js:393
+#: umc/js/setup.js:319 umc/js/setup.js:368 umc/js/setup.js:404
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -214,7 +214,7 @@ msgstr "Netzwerkgerät"
 msgid "Interfaces"
 msgstr "Netzwerkgeräte"
 
-#: umc/js/setup.js:355
+#: umc/js/setup.js:357
 msgid "Join"
 msgstr ""
 
@@ -278,6 +278,10 @@ msgstr "Organisation"
 msgid "Organization settings"
 msgstr "Einstellungen über die Organisation"
 
+#: umc/js/setup.js:353
+msgid "Password"
+msgstr "Passwort"
+
 #: umc/js/_setup/NetworkPage.js:167
 msgid "Please choose a network device before querying a DHCP address."
 msgstr ""
@@ -322,7 +326,7 @@ msgstr "Bundesland"
 msgid "The boot process will then continue automatically."
 msgstr "Der Bootvorgang wird danach automatisch weiterlaufen."
 
-#: umc/js/setup.js:419
+#: umc/js/setup.js:430
 msgid "The changes have been successfully applied."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
@@ -344,7 +348,7 @@ msgstr ""
 "das System in die Domäne gejoint. Bitte geben Sie dafür Benutzernamen und "
 "Password eines Administrator-Kontos der Domäne an."
 
-#: umc/js/setup.js:385
+#: umc/js/setup.js:396
 msgid ""
 "The specified settings will be applied to the system. This may take some "
 "time. Please confirm to proceed."
@@ -359,6 +363,10 @@ msgstr "Zeitzone"
 #: umc/js/_setup/LanguagePage.js:66
 msgid "Time zone and keyboard settings"
 msgstr "Zeitzonen- und Tastatureinstellungen"
+
+#: umc/js/setup.js:349
+msgid "Username"
+msgstr ""
 
 #: umc/js/_setup/BasisPage.js:48 umc/js/_setup/BasisPage.js:133
 msgid "Windows domain"

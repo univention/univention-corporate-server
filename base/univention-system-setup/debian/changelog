@@ -1,3 +1,9 @@
+univention-system-setup (5.0.59-1) unstable; urgency=low
+
+  * fixed translations (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 14 Nov 2011 13:30:26 +0100
+
 univention-system-setup (5.0.58-1) unstable; urgency=low
 
   * force Firefox maximised (Bug #23869)
