@@ -148,13 +148,14 @@ class Storages( object ):
 			self.storage_pools[ node_uri ] = dict( map( lambda p: ( p.name, object2dict( p ) ), data ) )
 			if not node_uri in self.storage_pools:
 				return None
-		if not pool_name in self.storage_pools[ node_uri ]:
+
+		if pool_name is not None and not pool_name in self.storage_pools[ node_uri ]:
 			return None
 
 		if pool_name is not None:
 			return self.storage_pools[ node_uri ][ pool_name ]
 
-		for uri, pool in self.storage_pools.items():
+		for uri, pool in self.storage_pools[ node_uri ].items():
 			if pool_path.startswith( pool[ 'path' ] ):
 				return pool
 

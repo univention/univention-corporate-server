@@ -100,6 +100,7 @@ class Domains( object ):
 				return
 
 			node_uri = urlparse.urlsplit( request.options[ 'domainURI' ] )
+			uri, uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
 			json = object2dict( data )
 			## re-arrange a few attributes for the frontend
 			# RAM
@@ -107,7 +108,7 @@ class Domains( object ):
 			# disks
 			for disk in json[ 'disks' ]:
 				disk[ 'volumeFilename' ] = os.path.basename( disk[ 'source' ] )
-				# disk[ 'poolName' ] = self.get_pool_name( os.path.dirname( disk[ 'source' ] ) ) -> disk has attribute pool containing the name
+				disk[ 'pool' ] = self.get_pool_name( uri, os.path.dirname( disk[ 'source' ] ) )
 				disk[ 'paravirtual' ] = disk[ 'target_bus' ] in ( 'virtio', 'xen' )
 				if isinstance( disk[ 'size' ], ( int, long ) ):
 					disk[ 'size' ] = MemorySize.num2str( disk[ 'size' ] )
@@ -165,8 +166,10 @@ class Domains( object ):
 			pool_path = self.get_pool_path( node_uri, disk.get( 'pool' ) )
 			if pool_path:
 				drive.source = os.path.join( pool_path, disk[ 'volumeFilename' ] )
+			elif 'source' in disk and disk[ 'source' ]:
+				drive.source = disk[ 'source' ]
 			else:
-				drive.source = None
+				raise ValueError( _( 'No valid source for disk "%s" found' ) % drive.device )
 
 			file_pool = self.is_file_pool( node_uri, disk.get( 'pool' ) )
 			if file_pool:

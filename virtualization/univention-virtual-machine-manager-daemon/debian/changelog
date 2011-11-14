@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.60-1) unstable; urgency=low
+
+  * domain/(get|add|put): handle changes to disks correctly by always
+    trying to find the pool; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 14 Nov 2011 18:10:59 +0100
+
 univention-virtual-machine-manager-daemon (1.0.59-1) unstable; urgency=low
 
   * reverting a snapshot: revert a snapshot instead of removing it ;) ; Bug #22893
