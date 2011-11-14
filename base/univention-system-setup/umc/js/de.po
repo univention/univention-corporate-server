@@ -366,7 +366,7 @@ msgstr "Zeitzonen- und Tastatureinstellungen"
 
 #: umc/js/setup.js:349
 msgid "Username"
-msgstr ""
+msgstr "Benutzername"
 
 #: umc/js/_setup/BasisPage.js:48 umc/js/_setup/BasisPage.js:133
 msgid "Windows domain"
