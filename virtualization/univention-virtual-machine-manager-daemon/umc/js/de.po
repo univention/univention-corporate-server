@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-14 12:31+0100\n"
+"POT-Creation-Date: 2011-11-14 15:09+0100\n"
 "PO-Revision-Date: 2011-11-14 10:38+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -86,7 +86,7 @@ msgstr ""
 "detaillierten Anzeige von Einstellungen. Diese können dort entsprechend "
 "bearbeitet und gespeichert werden.</p>"
 
-#: umc/js/uvmm.js:510
+#: umc/js/uvmm.js:508
 msgid "A valid clone name cannot contain \"/\" and may not start with \".\" ."
 msgstr ""
 "Ein gültiger Klonname darf keine \"/\" enthalten und kann nicht mit \".\" "
@@ -129,9 +129,7 @@ msgstr "Erweitert"
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
-#: umc/js/uvmm.js:377 umc/js/uvmm.js:473 umc/js/uvmm.js:498
-#: umc/js/_uvmm/SnapshotGrid.js:79 umc/js/_uvmm/SnapshotGrid.js:147
-#: umc/js/_uvmm/SnapshotGrid.js:195
+#: umc/js/_uvmm/SnapshotGrid.js:79 umc/js/_uvmm/SnapshotGrid.js:194
 msgid "An error ocurred during processing your request."
 msgstr "Ein Fehler trat während der Bearbeitung Ihrer Anfrage auf."
 
@@ -143,12 +141,12 @@ msgstr "Arabisch"
 msgid "Architecture"
 msgstr "Architektur"
 
-#: umc/js/_uvmm/SnapshotGrid.js:163
+#: umc/js/_uvmm/SnapshotGrid.js:162
 msgid "Are you sure to delete the selected snapshot?"
 msgstr ""
 "Sind Sie sicher, dass der ausgewählte Sicherungspunkt gelöscht werden soll?"
 
-#: umc/js/_uvmm/SnapshotGrid.js:161
+#: umc/js/_uvmm/SnapshotGrid.js:160
 msgid "Are you sure to delete the selected {0} snapshots?"
 msgstr ""
 "Sind Sie sicher, dass die {0} ausgewählten Sicherungspunkte gelöscht werden "
@@ -169,7 +167,7 @@ msgstr "Zurück zur Übersicht"
 msgid "Boot order"
 msgstr "Bootreihenfolge"
 
-#: umc/js/_uvmm/types.js:148
+#: umc/js/_uvmm/types.js:157
 msgid "Bridge"
 msgstr "Bridge"
 
@@ -190,7 +188,7 @@ msgstr ""
 "werden, dass ein Profil mit der korrekten Architektur ausgewählt wird, da "
 "diese Option nachträglich nicht geändert werden kann."
 
-#: umc/js/_uvmm/types.js:152
+#: umc/js/_uvmm/types.js:161
 msgid "CD/DVD-ROM drive"
 msgstr "CDROM-Laufwerk"
 
@@ -198,17 +196,17 @@ msgstr "CDROM-Laufwerk"
 msgid "CDROM drive"
 msgstr "CDROM-Laufwerk"
 
-#: umc/js/uvmm.js:555 umc/js/uvmm.js:574
+#: umc/js/uvmm.js:553 umc/js/uvmm.js:572
 msgid "CPU usage"
 msgstr "CPU-Auslastung"
 
-#: umc/js/uvmm.js:411 umc/js/uvmm.js:526 umc/js/_uvmm/InterfaceGrid.js:88
+#: umc/js/uvmm.js:410 umc/js/uvmm.js:524 umc/js/_uvmm/InterfaceGrid.js:88
 #: umc/js/_uvmm/SnapshotGrid.js:107 umc/js/_uvmm/SnapshotGrid.js:133
-#: umc/js/_uvmm/SnapshotGrid.js:171
+#: umc/js/_uvmm/SnapshotGrid.js:170
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/_uvmm/types.js:163
+#: umc/js/_uvmm/types.js:172
 msgid "Choose existing image"
 msgstr "Auswahl einer vorhandenen Image-Datei"
 
@@ -224,15 +222,15 @@ msgstr "Kontakt"
 msgid "Coordinated Universal Time"
 msgstr "Koordinierte Weltzeit"
 
-#: umc/js/uvmm.js:514 umc/js/_uvmm/SnapshotGrid.js:95
+#: umc/js/uvmm.js:512 umc/js/_uvmm/SnapshotGrid.js:95
 msgid "Create"
 msgstr "Erstellen"
 
-#: umc/js/uvmm.js:533
+#: umc/js/uvmm.js:531
 msgid "Create a clone"
 msgstr "Erstellen eines Klons"
 
-#: umc/js/_uvmm/types.js:162
+#: umc/js/_uvmm/types.js:171
 msgid "Create a new image"
 msgstr "Erstellen einer neuen Image-Datei"
 
@@ -270,7 +268,7 @@ msgid "Default (RealTek RTL-8139)"
 msgstr "Voreinstellung (RealTek RTL-8139)"
 
 #: umc/js/uvmm.js:280 umc/js/_uvmm/SnapshotGrid.js:29
-#: umc/js/_uvmm/SnapshotGrid.js:167 umc/js/_uvmm/DriveGrid.js:47
+#: umc/js/_uvmm/SnapshotGrid.js:166 umc/js/_uvmm/DriveGrid.js:47
 msgid "Delete"
 msgstr "Löschen"
 
@@ -365,7 +363,7 @@ msgstr "Englisch-Großbritannien"
 msgid "Estonian"
 msgstr "Estländisch"
 
-#: umc/js/_uvmm/types.js:205
+#: umc/js/_uvmm/types.js:214
 msgid "Extended format (qcow2)"
 msgstr "Erweitertes Format (qcow2)"
 
@@ -381,7 +379,7 @@ msgstr "Dateiname"
 msgid "Finnish"
 msgstr "Finnisch"
 
-#: umc/js/_uvmm/types.js:154
+#: umc/js/_uvmm/types.js:163
 msgid "Floppy drive"
 msgstr "Diskettenlaufwerk"
 
@@ -438,7 +436,7 @@ msgstr "Deutsch-Schweiz"
 msgid "Globally available"
 msgstr "Global verfügbar"
 
-#: umc/js/_uvmm/types.js:32 umc/js/_uvmm/types.js:153
+#: umc/js/_uvmm/types.js:32 umc/js/_uvmm/types.js:162
 msgid "Hard drive"
 msgstr "Festplatte"
 
@@ -480,7 +478,8 @@ msgstr "Intel PRO/1000"
 msgid ""
 "Invalid MAC address. The address should have the form, e.g., "
 "\"01:23:45:67:89:AB\"."
-msgstr "Ungültige MAC-Adresse. Die Adresse soll die Form \"01:23:45:67:89:AB\" haben."
+msgstr ""
+"Ungültige MAC-Adresse. Die Adresse soll die Form \"01:23:45:67:89:AB\" haben."
 
 #: umc/js/_uvmm/types.js:84
 msgid "Italian"
@@ -511,7 +510,6 @@ msgid "MAC address"
 msgstr "MAC-Adresse"
 
 #: umc/js/_uvmm/InterfaceWizard.js:56
-#, fuzzy
 msgid "MAC addresss"
 msgstr "MAC-Adresse"
 
@@ -531,23 +529,23 @@ msgstr "Speicher"
 msgid "Memory (default unit MB)"
 msgstr "Größe (Standardeinheit MB)"
 
-#: umc/js/uvmm.js:560
+#: umc/js/uvmm.js:558
 msgid "Memory usage"
 msgstr "Arbeitsspeichernutzung"
 
-#: umc/js/uvmm.js:176 umc/js/uvmm.js:399
+#: umc/js/uvmm.js:176 umc/js/uvmm.js:398
 msgid "Migrate"
 msgstr "Migrieren"
 
-#: umc/js/uvmm.js:418
+#: umc/js/uvmm.js:417
 msgid "Migrate domain"
 msgstr "Migriere virtuelle Instanz"
 
-#: umc/js/_uvmm/types.js:149
+#: umc/js/_uvmm/types.js:158
 msgid "NAT"
 msgstr "NAT"
 
-#: umc/js/uvmm.js:551 umc/js/uvmm.js:570 umc/js/_uvmm/DomainWizard.js:81
+#: umc/js/uvmm.js:549 umc/js/uvmm.js:568 umc/js/_uvmm/DomainWizard.js:81
 #: umc/js/_uvmm/SnapshotGrid.js:22 umc/js/_uvmm/DomainPage.js:75
 msgid "Name"
 msgstr "Name"
@@ -565,11 +563,11 @@ msgstr "Netzwerkschnittstellen"
 msgid "No %(objPlural)s could be found"
 msgstr "Es konnten keine %(objPlural)s gefunden werden"
 
-#: umc/js/_uvmm/types.js:165
+#: umc/js/_uvmm/types.js:174
 msgid "No media"
 msgstr "Kein Medium"
 
-#: umc/js/_uvmm/SnapshotGrid.js:156
+#: umc/js/_uvmm/SnapshotGrid.js:155
 msgid "No snapshots have been selected!"
 msgstr "Keine Sicherungspunkte wurden ausgewählt!"
 
@@ -609,7 +607,7 @@ msgstr "Pausieren"
 msgid "Physical server"
 msgstr "Physikalischer Server"
 
-#: umc/js/uvmm.js:508
+#: umc/js/uvmm.js:506
 msgid "Please enter the name for the clone:"
 msgstr "Geben die den Namen für den Klon ein:"
 
@@ -617,11 +615,11 @@ msgstr "Geben die den Namen für den Klon ein:"
 msgid "Please enter the name for the snapshot:"
 msgstr "Geben Sie den Namen für den Sicherungspunkt ein:"
 
-#: umc/js/uvmm.js:677
+#: umc/js/uvmm.js:676
 msgid "Please select a valid search type."
 msgstr "Bitte wählen Sie einen gültigen Suchtypen."
 
-#: umc/js/uvmm.js:388
+#: umc/js/uvmm.js:387
 msgid "Please select the destination server:"
 msgstr "Auswahl des Zielservers"
 
@@ -717,7 +715,7 @@ msgstr "Soll die Netzwerkschnittstelle entfernt werden?"
 msgid "Shut off the virtual instance"
 msgstr "Ausschalten einer virtuellen Instanz"
 
-#: umc/js/_uvmm/types.js:203
+#: umc/js/_uvmm/types.js:212
 msgid "Simple format (raw)"
 msgstr "Einfaches Format (raw)"
 
@@ -811,7 +809,6 @@ msgid "Turkish"
 msgstr "Türkisch"
 
 #: umc/js/_uvmm/InterfaceWizard.js:25
-#, fuzzy
 msgid ""
 "Two types of network interfaces are support. The first one is <i>Bridge</i> "
 "that requires a static network connection on the physical server that is "
@@ -848,7 +845,7 @@ msgstr ""
 msgid "Type"
 msgstr "Typ"
 
-#: umc/js/_uvmm/types.js:164
+#: umc/js/_uvmm/types.js:173
 msgid "Use a local device"
 msgstr "Verwenden eines lokalen Gerätes"
 
@@ -894,18 +891,16 @@ msgid "running"
 msgstr "läuft"
 
 #: umc/js/_uvmm/types.js:44
-#, fuzzy
 msgid "running (idle)"
-msgstr "läuft"
+msgstr "läuft (idle)"
 
 #: umc/js/_uvmm/types.js:42
 msgid "shut off"
 msgstr "ausgeschaltet"
 
 #: umc/js/_uvmm/types.js:45
-#, fuzzy
 msgid "shut off (crashed)"
-msgstr "ausgeschaltet"
+msgstr "ausgeschaltet (abgestürzt)"
 
 #: umc/js/_uvmm/InterfaceGrid.js:39 umc/js/_uvmm/DriveGrid.js:33
 msgid "unknown"
