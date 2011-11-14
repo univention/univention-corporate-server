@@ -3,6 +3,7 @@
 dojo.provide("umc.widgets.UnixAccessRights");
 
 dojo.require( "dijit.form.CheckBox" );
+dojo.require( "dojox.layout.TableContainer" );
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.tools");

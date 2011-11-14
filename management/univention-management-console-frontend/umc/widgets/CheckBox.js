@@ -20,14 +20,9 @@ dojo.declare("umc.widgets.CheckBox", [ dijit.form.CheckBox, umc.widgets._FormWid
 	_initialValue: null,
 
 	postMixInProperties: function() {
-		this._initialValue = this.value;
+		this._initialValue = this.checked = this.value;
 		this.inherited( arguments );
 		this.sizeClass = null;
-	},
-
-	postCreate: function() {
-		this.inherited( arguments );
-		this.set( 'value', umc.tools.isTrue( this._initialValue ) );
 	},
 
 	_setValueAttr: function(/*String|Boolean*/ newValue, /*Boolean*/ priorityChange){

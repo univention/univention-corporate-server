@@ -1,4 +1,4 @@
-univention-management-console-frontend (1.0.200-1) unstable; urgency=low
+univention-management-console-frontend (1.0.200-2) unstable; urgency=low
 
   * CheckBox: fix visual of the inital state; Bug #24409
 
