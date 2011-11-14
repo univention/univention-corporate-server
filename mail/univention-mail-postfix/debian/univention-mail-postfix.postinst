@@ -53,6 +53,9 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.15; 
 	if [ -n "$postfix_masquerade_exceptions" -a -z "$mail_postfix_masquerade_exceptions" ] ; then
 		univention-config-registry set "mail/postfix/masquerade/exceptions=$postfix_masquerade_exceptions"
 	fi
+	if [ -n "$mail_relay" -a -z "$mail_relayhost" ] ; then
+		univention-config-registry set "mail/relayhost=$mail_relay"
+	fi
 fi
 
 univention-config-registry set \
