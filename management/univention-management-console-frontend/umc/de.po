@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-14 14:32+0100\n"
+"POT-Creation-Date: 2011-11-14 17:22+0100\n"
 "PO-Revision-Date: 2011-11-01 20:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,12 +21,12 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
-#: umc/widgets/Grid.js:572
+#: umc/widgets/Grid.js:574
 #, python-format
 msgid "%d entries of %d selected"
 msgstr "%d Einträge von %d ausgewählt"
 
-#: umc/widgets/Grid.js:577
+#: umc/widgets/Grid.js:579
 #, python-format
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
@@ -225,11 +225,11 @@ msgstr "Modul-Hilfetexte"
 msgid "Next"
 msgstr "Weiter"
 
-#: umc/widgets/Grid.js:574
+#: umc/widgets/Grid.js:576
 msgid "No entries could be found"
 msgstr "Keine Einträge konnten gefunden werden"
 
-#: umc/widgets/Grid.js:633
+#: umc/widgets/Grid.js:635
 msgid "No object selected"
 msgstr "Kein Objekt ausgewählt"
 
@@ -468,7 +468,7 @@ msgstr ""
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 
-#: umc/widgets/Grid.js:342 umc/widgets/Grid.js:705
+#: umc/widgets/Grid.js:342 umc/widgets/Grid.js:707
 msgid "more"
 msgstr "mehr"
 

@@ -487,6 +487,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			this._updateFooterCells();
 			this._updateDisabledItems();
 			this.onFilterDone(true);
+			this._grid.resize();
 		});
 		this.connect(this._grid, "_onFetchError", function() {
 			if (this._ignoreNextFetch) {
@@ -499,6 +500,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			this._updateFooterCells();
 			this._updateDisabledItems();
 			this.onFilterDone(false);
+			this._grid.resize();
 		});
 
 		// when a cell gets modified, save the changes directly back to the server
