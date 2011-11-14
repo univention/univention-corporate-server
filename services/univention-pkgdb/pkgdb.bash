@@ -46,20 +46,21 @@ fi
 #
 # Create the local DB-Superuser pkgdbu for pkgdb with password in /etc/postgresql/pkgdb.secret
 #
-if [ -e /etc/postgresql/pkgdb.secret ] ;then
-  # always create a new password
-  rm /etc/postgresql/pkgdb.secret
-fi
-makepasswd --char 16 | tr -d '\n' >/etc/postgresql/pkgdb.secret
-chmod ug=r,o= /etc/postgresql/pkgdb.secret
-chown postgres:www-data /etc/postgresql/pkgdb.secret
 pkgdbu=`su - postgres -c "psql template1 -c \"select * from pg_user where usename='pkgdbu'\""|awk '/ pkgdbu /{print $1}'`
 if [ ! "$pkgdbu" ] ;then
   # only, if pkgdbu not exists
   su - postgres -c "createuser --adduser --no-createdb pkgdbu"
 fi
-su - postgres -c "psql -c \"ALTER USER pkgdbu WITH PASSWORD '`cat /etc/postgresql/pkgdb.secret`';\" template1"
-
+newPwdFile=$(mktemp /etc/postgresql/pkgdb.secret.XXXXXX)
+makepasswd --char 16 | tr -d '\n' > "$newPwdFile"
+chmod ug=r,o= "$newPwdFile"
+chown postgres:www-data "$newPwdFile"
+if su - postgres -c "psql -c \"ALTER USER pkgdbu WITH PASSWORD '$(cat "$newPwdFile")';\" template1"
+then
+	mv "$newPwdFile" /etc/postgresql/pkgdb.secret
+else
+	rm "$newPwdFile"
+fi
 
 #
 # Create Database pkgdb and Tables

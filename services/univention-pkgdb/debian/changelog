@@ -1,3 +1,9 @@
+univention-pkgdb (5.0.12-1) unstable; urgency=low
+
+  * do not delete .secret when password could not be changed (Bug #24570)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 14 Nov 2011 15:52:28 +0100
+
 univention-pkgdb (5.0.11-1) unstable; urgency=low
 
   * restart postgresql instead of reloading (Bug #24092)
