@@ -1,3 +1,9 @@
+univention-ldap (8.0.71-2) unstable; urgency=low
+
+  * Except udm check for univention-ldap-server.postinst (Bug #24288)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Nov 2011 16:01:52 +0100
+
 univention-ldap (8.0.71-1) unstable; urgency=low
 
   * Added well known groups (Bug #24288)
