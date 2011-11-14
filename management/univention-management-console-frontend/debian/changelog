@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.199-1) unstable; urgency=low
+
+  * adjusted handling of error 591 (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 14 Nov 2011 15:07:39 +0100
+
 univention-management-console-frontend (1.0.198-1) unstable; urgency=low
 
   * added special handling of error 591 (Bug #22881)

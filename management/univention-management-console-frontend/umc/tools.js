@@ -210,7 +210,7 @@ dojo.mixin(umc.tools, {
 		554: umc.tools._( 'Internal UMC protocol error: The UMCP message body could not be parsed.' ),
 
 		590: umc.tools._( 'Internal module error: An error occured during command processing.' ),
-		591: umc.tools._( 'Could not process the request' )
+		591: umc.tools._( 'Could not process the request.' )
 	},
 
 	handleErrorStatus: function(_status, error) {
@@ -233,12 +233,12 @@ dojo.mixin(umc.tools, {
 				umc.dialog.login();
 				umc.dialog.notify(this._statusMessages[status]);
 			}
-			else if (591 == status) {
+			/*else if (591 == status) {
 				// the command could not be executed, e.g., since the user data was not correct
 				// this error deserves a special treatment as it is not critical, but rather a
 				// a user error
 				umc.dialog.alert('<p>' + this._statusMessages[status] + (message ? ': ' + message : '.') + '</p>');
-			}
+			}*/
 			else {
 				// all other cases
 				umc.dialog.alert('<p>' + this._statusMessages[status] + '</p>' + (message ? '<p>' + this._('Server error message:') + '</p><p class="umcServerErrorMessage">' + message + '</p>' : ''));
