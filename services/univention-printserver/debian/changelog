@@ -1,3 +1,9 @@
+univention-printserver (5.0.18-1) unstable; urgency=low
+
+  * do not remove listener info Bug #22575
+
+ -- Felix Botner <botner@univention.de>  Mon, 14 Nov 2011 16:43:32 +0100
+
 univention-printserver (5.0.17-2) unstable; urgency=low
 
   * add exit 0 to postinst for ucslint; Bug #22902

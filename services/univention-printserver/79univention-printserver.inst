@@ -9809,10 +9809,6 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Panasonic-KX-P1150-eps9high.ppd\" \"Panasonic KX-P1150 Foomatic/eps9high (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Panasonic-DP-C213-pxlmono.ppd\" \"Panasonic DP-C213 Foomatic/pxlmono (recommended)\""
 
-
-
-rm /var/lib/univention-directory-listener/handlers/cups-printers >/dev/null 2>&1|| true
-
 # add CUPS to nagios' UNIVENTION_CUPS service check
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
 
