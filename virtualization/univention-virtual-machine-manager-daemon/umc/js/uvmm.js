@@ -438,6 +438,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			}).then(dojo.hitch(this, function() {
 				_cleanup();
 				this.standby(false);
+				this.filter();
 			}), dojo.hitch(this, function() {
 				this.standby(false);
 			}));

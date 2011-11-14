@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.56-1) unstable; urgency=low
+
+  * fixed wrong network interface parameters when creating a new virtual
+    instance (Bug #22893)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 14 Nov 2011 13:21:55 +0100
+
 univention-virtual-machine-manager-daemon (1.0.55-1) unstable; urgency=low
 
   * add tooltip showing state of domain; Bug #22893

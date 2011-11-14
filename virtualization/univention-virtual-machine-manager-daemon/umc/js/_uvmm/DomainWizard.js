@@ -163,8 +163,11 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 		values.nodeURI = this.getWidget('nodeURI').get('value');
 		values.vnc_remote = true;
 		values.disks = this._driveStore.data;
+
+		// add standard interface
+		var types = umc.modules._uvmm.types;
 		values.interfaces = [{
-			paravirtual: this._profile.pvinterface,
+			model: types.getDefaultInterfaceModel(this.getWidget('domain_type').get('value'), this._profile.pvinterface),
 			source: this._profile['interface']
 		}];
 		return values;

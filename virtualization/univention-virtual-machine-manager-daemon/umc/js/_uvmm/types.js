@@ -144,6 +144,15 @@ dojo.require("umc.tools");
 			});
 			return list;
 		},
+		getDefaultInterfaceModel: function(/*String*/ domain_type, /*Boolean*/ paravirtual) {
+			if (paravirtual && domain_type == 'xen') {
+				return 'netfront';
+			}
+			if (paravirtual && domain_type == 'kvm') {
+				return 'virtio';
+			}
+			return 'rtl8139';
+		},
 		interfaceTypes: [
 			{ id: 'bridge', label: _( 'Bridge' ) },
 			{ id: 'network:default', label: _( 'NAT' ) }
