@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-11 19:05+0100\n"
+"POT-Creation-Date: 2011-11-14 13:39+0100\n"
 "PO-Revision-Date: 2011-11-01 20:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,12 +21,12 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
-#: umc/widgets/Grid.js:537
+#: umc/widgets/Grid.js:572
 #, python-format
 msgid "%d entries of %d selected"
 msgstr "%d Einträge von %d ausgewählt"
 
-#: umc/widgets/Grid.js:542
+#: umc/widgets/Grid.js:577
 #, python-format
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
@@ -51,18 +51,18 @@ msgstr "Objekte hinzufügen"
 msgid "Additional documentation for UCS"
 msgstr "Zusätzliche Dokumentationen zu UCS"
 
-#: umc/tools.js:321
+#: umc/tools.js:327
 msgid "An assert statement failed"
 msgstr "Ein Assert-Anweisung schlug fehl"
 
-#: umc/tools.js:247
+#: umc/tools.js:253
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
 "Ein Fehler trat während des Verbindungsaufbaus zum Server auf, bitte "
 "versuchen Sie es später noch einmal."
 
-#: umc/tools.js:243
+#: umc/tools.js:249
 #, python-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
@@ -99,6 +99,10 @@ msgstr "Bestätigungen"
 #: umc/tools.js:190
 msgid "Could not fulfill the request."
 msgstr "Die Anfrage konnte nicht ausgeführt werden."
+
+#: umc/tools.js:213
+msgid "Could not process the request"
+msgstr "Die Anfrage konnte nicht bearbeitet werden"
 
 #: umc/help.js:20
 msgid "Current manual (PDF)"
@@ -162,13 +166,6 @@ msgstr ""
 "Interner Modul-Fehler: Ein Fehler trat während des Ausführens des Befehls "
 "auf."
 
-#: umc/tools.js:213
-msgid ""
-"Internal module error: The execution of a command caused an fatal error."
-msgstr ""
-"Interner Modul-Fehler: Die Ausführung eines Befehls löste einen "
-"schwerwiegenden Fehler aus."
-
 #: umc/tools.js:203
 msgid "Internal server error."
 msgstr "Interner Server-Fehler."
@@ -228,11 +225,11 @@ msgstr "Modul-Hilfetexte"
 msgid "Next"
 msgstr "Weiter"
 
-#: umc/widgets/Grid.js:539
+#: umc/widgets/Grid.js:574
 msgid "No entries could be found"
 msgstr "Keine Einträge konnten gefunden werden"
 
-#: umc/widgets/Grid.js:598
+#: umc/widgets/Grid.js:633
 msgid "No object selected"
 msgstr "Kein Objekt ausgewählt"
 
@@ -284,7 +281,7 @@ msgstr "Suchergebnisse:"
 msgid "Server"
 msgstr "Server"
 
-#: umc/tools.js:238
+#: umc/tools.js:244
 msgid "Server error message:"
 msgstr "Fehlernachricht des Servers:"
 
@@ -445,7 +442,7 @@ msgstr ""
 msgid "Webfrontend error: The specified request is unknown."
 msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht bekannt."
 
-#: umc/widgets/LoginDialog.js:178
+#: umc/widgets/LoginDialog.js:180
 msgid ""
 "Welcome to Univention Management Console. Please enter your domain username "
 "and password for login."
@@ -461,7 +458,7 @@ msgstr "Schreiben"
 msgid "You are not authorized to perform this action."
 msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
 
-#: umc/widgets/LoginDialog.js:173
+#: umc/widgets/LoginDialog.js:175
 msgid "Your session has been closed due to inactivity. Please login again."
 msgstr ""
 "Ihre Sitzung wurde wegen Inaktivität gesperrt. Bitte melden Sie sich erneut "
@@ -471,7 +468,7 @@ msgstr ""
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
 
-#: umc/widgets/Grid.js:327 umc/widgets/Grid.js:670
+#: umc/widgets/Grid.js:342 umc/widgets/Grid.js:705
 msgid "more"
 msgstr "mehr"
 
@@ -525,6 +522,12 @@ msgstr "mehr"
 
 #~ msgid "Expiry date"
 #~ msgstr "Ablaufdatum"
+
+#~ msgid ""
+#~ "Internal module error: The execution of a command caused an fatal error."
+#~ msgstr ""
+#~ "Interner Modul-Fehler: Die Ausführung eines Befehls löste einen "
+#~ "schwerwiegenden Fehler aus."
 
 #~ msgid "LDAP base"
 #~ msgstr "LDAP-Basis"
