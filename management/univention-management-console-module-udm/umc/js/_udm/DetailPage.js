@@ -789,7 +789,6 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				}
 			}),
 			onCloseTab: dojo.hitch(this, function() {
-				console.log('## policy -> onCloseTab');
 				try {
 					this.onFocusModule();
 				}

@@ -308,7 +308,6 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 						objectDN: ids[0]
 					},
 					onCloseTab: dojo.hitch(this, function() {
-						console.log('## udm -> onCloseTab');
 						try {
 							this.focusModule();
 						}
@@ -1101,7 +1100,6 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 	onCloseTab: function() {
 		// event stub
-		console.log('## udm.onCloseTab (default)');
 	}
 });
 
