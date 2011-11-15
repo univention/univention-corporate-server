@@ -35,7 +35,7 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 						type:					'ComboBox',
 						name:					'key',
 						label:					this._("Search for:"),
-						style:					'width:250px;',
+						size:					'TwoThirds',
 						staticValues:			[{id:'_', label: this._("--- Please select ---")}],
 						sortDynamicValues:		false,
 						dynamicValues:			'pkgdb/keys',
@@ -50,7 +50,7 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 						name:					'operator',
 						depends:				'key',
 						label:					this._("Operator"),
-						style:					'width:150px;',
+						size:					'TwoThirds',
 						sortDynamicValues:		false,
 						dynamicValues:			dojo.hitch(this, function() {
 							return this._operators_query();
@@ -65,7 +65,6 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 						name:					'pattern_list',
 						depends:				'key',
 						label:					this._("Pattern"),
-						style:					'width:350px;',
 						sortDynamicValues:		false,
 						dynamicValues:			dojo.hitch(this, function() {
 							return this._proposals_query();
@@ -79,7 +78,6 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 						type:					'TextBox',
 						name:					'pattern_text',
 						label:					this._("Pattern"),
-						style:					'width:350px;',
 						// inherits from dijit.form.ValidationTextBox, so we can use its
 						// validation abilities
 						regExp:					'^[A-Za-z0-9_.*?-]+$',		// [:alnum:] and these: _ - . * ?

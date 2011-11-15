@@ -1,3 +1,9 @@
+univention-pkgdb (5.0.13-1) unstable; urgency=low
+
+  * UMC: fixed widget sizes (Bug #22896) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 15 Nov 2011 18:37:33 +0100
+
 univention-pkgdb (5.0.12-1) unstable; urgency=low
 
   * do not delete .secret when password could not be changed (Bug #24570)
