@@ -35,11 +35,11 @@ import time
 
 import univention.config_registry as ucr
 
-configRegistry = ucr.ConifgRegistry()
+configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
 now = time.time()
-max_age = int( baseConfig.get( 'directory/reports/cleanup/age', '43200' ) )
+max_age = int( configRegistry.get( 'directory/reports/cleanup/age', '43200' ) )
 
 old = []
 dirname = '/var/www/univention-directory-reports'

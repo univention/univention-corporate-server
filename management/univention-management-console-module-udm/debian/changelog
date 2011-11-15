@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.234-1) unstable; urgency=low
+
+  * fix traceback and typo in univention-directory-reports-cleanup; Bug #24614
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 15 Nov 2011 14:21:57 +0100
+
 univention-management-console-module-udm (1.0.233-1) unstable; urgency=low
 
   * add scrollbars to license dialog; Bug #23655
