@@ -338,7 +338,7 @@ class access:
 				raise univention.admin.uexceptions.ldapError, str(msg)
 			raise univention.admin.uexceptions.ldapError, _err2str(msg)
 
-	def getPolicies( self, dn, policies = [], attrs = None, result = None, fixedattrs = None ):
+	def getPolicies( self, dn, policies = None, attrs = None, result = None, fixedattrs = None ):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'getPolicies modules dn %s result' % dn)
 		return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs )
 

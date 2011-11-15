@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.178-1) unstable; urgency=low
+
+  * another fix in default values for gtPolicies; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 15 Nov 2011 12:09:11 +0100
+
 univention-directory-manager-modules (7.0.177-1) unstable; urgency=low
 
   * Allow numbers at the end of the FQDN string (Bug #24519)
