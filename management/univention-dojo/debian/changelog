@@ -1,3 +1,9 @@
+univention-dojo (5.0.12-1) unstable; urgency=low
+
+  * added patch for dojox.form.Uploader functionality (Bug #23333) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 15 Nov 2011 20:51:56 +0100
+
 univention-dojo (5.0.11-1) unstable; urgency=low
 
   * added patch for dojo.position() called on DOM nodes with nodeType != 1

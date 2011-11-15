@@ -53,7 +53,8 @@ $(DOJO_DIR):
 	patch -p0 < fix_dijit_findWidgets.patch
 	patch -p0 < fix_dojo_style.patch
 	patch -p0 < fix_dojo_position.patch
-	
+	patch -p0 < fix_dojox_form_Uploader.patch
+
 all: install
 
 clean:
