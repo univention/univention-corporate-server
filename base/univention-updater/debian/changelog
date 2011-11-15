@@ -1,3 +1,10 @@
+univention-updater (7.0.96-1) unstable; urgency=low
+
+  * Don't use tee in run_dist_upgrade to get the return code of the
+    dist-upgrade command (Bug #23453)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Nov 2011 21:19:04 +0100
+
 univention-updater (7.0.95-2) unstable; urgency=low
 
   * Silence firmware removal (Bug #22508) 

@@ -878,7 +878,7 @@ class UniventionUpdater:
 		return ( new_packages, upgraded_packages, removed_packages )
 
 	def run_dist_upgrade( self ):
-		cmd = 'export DEBIAN_FRONTEND=noninteractive; %s 2>&1 | tee -a /var/log/univention/updater.log 2>&1 ;' % cmd_dist_upgrade
+		cmd = 'export DEBIAN_FRONTEND=noninteractive; %s >> /var/log/univention/updater.log 2>&1 ;' % cmd_dist_upgrade
 		p = subprocess.Popen([ cmd ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 		(stdout,stderr) = p.communicate()
 		return p.returncode, stdout, stderr
