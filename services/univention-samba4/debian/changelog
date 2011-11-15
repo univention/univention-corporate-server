@@ -1,3 +1,9 @@
+univention-samba4 (1.0.104-1) unstable; urgency=low
+
+  * Force group for sysvol to Authenticated Users (Bug #24288)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Nov 2011 08:10:16 +0100
+
 univention-samba4 (1.0.103-1) unstable; urgency=low
 
   * Give Authenticated Users read access to sysvol share (Bug #24288)
