@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.230-1) unstable; urgency=low
+
+  * fix policy evaluation; Bug #23557
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 15 Nov 2011 12:06:38 +0100
+
 univention-management-console-module-udm (1.0.229-1) unstable; urgency=low
 
   * recognize changes to the policy references; Bug #23557

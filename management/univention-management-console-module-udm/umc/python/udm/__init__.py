@@ -847,6 +847,8 @@ class Instance( Base ):
 
 			policy_obj = policy_module.get()
 			policy_obj.clone( obj )
+			# ensure that the object itself is ignored
+			policy_obj.referring_object_position_dn = None
 			policy_obj.policy_result( faked_policy_reference = policy_dn )
 
 			infos = copy.copy( policy_obj.polinfo_more )
