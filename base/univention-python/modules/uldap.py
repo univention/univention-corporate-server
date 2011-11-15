@@ -317,13 +317,15 @@ class access:
 		_d=univention.debug.function('uldap.searchDn filter=%s base=%s scope=%s unique=%d required=%d' % (filter, base, scope, unique, required))
 		return map(lambda(x): x[0], self.search(filter, base, scope, ['dn'], unique, required, timeout, sizelimit, serverctrls))
 
-	def getPolicies(self, dn, policies=[], attrs = None, result = None, fixedattrs = None ):
+	def getPolicies(self, dn, policies = None, attrs = None, result = None, fixedattrs = None ):
 		if attrs is None:
 			attrs = {}
 		if result is None:
 			result = {}
 		if fixedattrs is None:
 			fixedattrs = {}
+		if policies is None:
+			policies = []
 		_d=univention.debug.function('uldap.getPolicies dn=%s policies=%s attrs=%s result=%s fixedattrs=%s' % (dn, policies, attrs, result, fixedattrs))
 		if not dn:
 			return {}
