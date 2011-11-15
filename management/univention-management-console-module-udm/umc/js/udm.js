@@ -191,17 +191,18 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		// check whether we need to open directly the detail page of a given or a new object
 		if (this.openObject) {
-			this.createDetailPage(this.openObject.objectType, this.openObject.objectDN, undefined, true);
+			this.createDetailPage(this.openObject.objectType, this.openObject.objectDN, undefined, true, this.openObject.note);
 			return; // do not render the search page
 		}
 		if (this.newObject) {
-			this.createDetailPage(this.newObject.objectType, undefined, this.newObject, true);
+			this.createDetailPage(this.newObject.objectType, undefined, this.newObject, true, this.newObject.note);
 			return; // do not render the search page
 		}
 
 		this.standby(true);
 		if ('navigation' == this.moduleFlavor) {
 			// for the UDM navigation, we only query the UCR variables
+			this.standby(true);
 			umc.tools.ucr( [ 'directory/manager/web*' ] ).then(dojo.hitch(this, function(ucr) {
 				// save the ucr variables locally and also globally
 				this._ucr = umc.modules._udm.ucr = ucr;
@@ -214,6 +215,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			// render search page, we first need to query lists of containers/superodinates
 			// in order to correctly render the search form...
 			// query also necessary UCR variables for the UDM module
+			this.standby(true);
 			(new dojo.DeferredList([
 				this.umcpCommand('udm/containers'),
 				this.umcpCommand('udm/superordinates'),
@@ -230,6 +232,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				this.standby(false);
 			}));
 		}
+	},
+
+	postCreate: function() {
+		this.inherited(arguments);
+
+		// register onClose events
+		this.connect(this, 'onClose', 'onCloseTab');
 	},
 
 	renderSearchPage: function(containers, superordinates) {
@@ -298,9 +307,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 						objectType: items[0].objectType,
 						objectDN: ids[0]
 					},
-					onClose: dojo.hitch(this, function() {
-						this.focusModule();
-						return true;
+					onCloseTab: dojo.hitch(this, function() {
+						console.log('## udm -> onCloseTab');
+						try {
+							this.focusModule();
+						}
+						catch (e) { }
 					})
 				};
 				dojo.publish('/umc/modules/open', [ this.moduleID, this.moduleFlavor, moduleProps ]);
@@ -1022,7 +1034,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		});
 	},
 
-	createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable) {
+	createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String*/ note) {
 		// summary:
 		//		Creates and views the detail page for editing UDM objects.
 
@@ -1042,11 +1054,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			ldapName: ldapName,
 			newObjectOptions: newObjOptions,
 			moduleWidget: this,
-			isClosable: isClosable
+			isClosable: isClosable,
+			note: note || null
 		});
+
 		this._detailPageHandles = [];
 
-		this._detailPageHandles.push(dojo.connect(this._detailPage, 'onClose', this, 'closeDetailPage'));
+		this._detailPageHandles.push(dojo.connect(this._detailPage, 'onCloseTab', this, 'closeDetailPage'));
 		this._detailPageHandles.push(dojo.connect(this._detailPage, 'onSave', this, 'onObjectSaved'));
 		this._detailPageHandles.push(dojo.connect(this._detailPage, 'onFocusModule', this, 'focusModule'));
 		this.addChild(this._detailPage);
@@ -1083,6 +1097,11 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 	onObjectSaved: function(dn, objectType) {
 		// event stub
+	},
+
+	onCloseTab: function() {
+		// event stub
+		console.log('## udm.onCloseTab (default)');
 	}
 });
 

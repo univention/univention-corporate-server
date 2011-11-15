@@ -55,6 +55,10 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 	//		Specifies whether this 
 	isClosable: false,
 
+	// note: String?
+	//		If given, this string is displayed as note on the first page.
+	note: null,
+
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.udm',
 
@@ -149,6 +153,9 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			}), dojo.hitch(this, function() {
 				this.standby(false);
 			}));
+		}), dojo.hitch(this, function() {
+			this.standby(false);
+			this.standby(false);
 		}), dojo.hitch(this, function() {
 			this.standby(false);
 		}));
@@ -316,7 +323,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		this._detailPages = [];
 
 		layout[ 0 ].layout.unshift( [ '$objecttype$', '$location$' ] );
-		dojo.forEach(layout, function(ilayout) {
+		dojo.forEach(layout, function(ilayout, i) {
 			// create a new page, i.e., subtab
 			var subTab = new umc.widgets.Page({
 				title: ilayout.label || ilayout.name, //TODO: 'name' should not be necessary
@@ -324,6 +331,10 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				headerText: ilayout.description || ilayout.label || ilayout.name,
 				helpText: ''
 			});
+			if (i === 0 && this.note) {
+				// add the specified note to the first page
+				subTab.addNote(this.note);
+			}
 
 			// add rendered layout to subtab and register subtab
 			var subTabWidgets = umc.render.layout(ilayout.layout, widgets);
@@ -520,7 +531,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		}, {
 			name: 'close',
 			label: closeLabel,
-			callback: dojo.hitch(this, 'onClose'),
+			callback: dojo.hitch(this, 'onCloseTab'),
 			style: 'float: left'
 		}]);
 		var footer = new umc.widgets.ContainerWidget({
@@ -599,6 +610,11 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				// save the original form data
 				this._receivedObjFormData = this.getValues();
 			}));
+		}
+		else {
+			// hide the type info and ldap path in case of a new object
+			this._form.getWidget( '$objecttype$' ).set( 'visible', false);
+			this._form.getWidget( '$location$' ).set( 'visible', false);
 		}
 
 		// return the policy deferred object to notify the caller that the page 
@@ -772,8 +788,12 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					}));
 				}
 			}),
-			onClose: dojo.hitch(this, function() {
-				this.onFocusModule();
+			onCloseTab: dojo.hitch(this, function() {
+				console.log('## policy -> onCloseTab');
+				try {
+					this.onFocusModule();
+				}
+				catch (e) { }
 				return true;
 			})
 		};
@@ -782,7 +802,8 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			// policyDN is given, open an existing object
 			props.openObject = {
 				objectType: policyType,
-				objectDN: policyDN
+				objectDN: policyDN,
+				note: this._('You are currently editing a policy. Changing its properties affects all referenced objects and may affect your system globally.')
 			};
 		}
 		else {
@@ -1073,7 +1094,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		deffered.then(dojo.hitch(this, function(result) {
 			this.standby(false);
 			if (result.success) {
-				this.onClose();
+				this.onCloseTab();
 				this.onSave(result.$dn$, this.objectType);
 			}
 			else {
@@ -1117,7 +1138,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		return newVals;
 	},
 
-	onClose: function() {
+	onCloseTab: function() {
 		// summary:
 		//		Event is called when the page should be closed.
 		return true;

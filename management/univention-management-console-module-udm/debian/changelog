@@ -1,3 +1,12 @@
+univention-management-console-module-udm (1.0.231-1) unstable; urgency=low
+
+  * fixed problem with closing tabs that have been opened either via "Edit in
+    new tab" or the policy references (Bug #24622)
+  * added note message when editing a reference from the policy sub tab of a UDM
+    object (Bug #24526)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 15 Nov 2011 14:53:44 +0100
+
 univention-management-console-module-udm (1.0.230-1) unstable; urgency=low
 
   * fix policy evaluation; Bug #23557
