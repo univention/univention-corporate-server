@@ -1046,9 +1046,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		});
 		this._detailPageHandles = [];
 
-		this._detailPageHandles.push(this.connect(this._detailPage, 'onClose', 'closeDetailPage'));
-		this._detailPageHandles.push(this.connect(this._detailPage, 'onSave', 'onObjectSaved'));
-		this._detailPageHandles.push(this.connect(this._detailPage, 'onFocusModule', 'focusModule'));
+		this._detailPageHandles.push(dojo.connect(this._detailPage, 'onClose', this, 'closeDetailPage'));
+		this._detailPageHandles.push(dojo.connect(this._detailPage, 'onSave', this, 'onObjectSaved'));
+		this._detailPageHandles.push(dojo.connect(this._detailPage, 'onFocusModule', this, 'focusModule'));
 		this.addChild(this._detailPage);
 		this.selectChild(this._detailPage);
 	},
@@ -1066,7 +1066,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		this.resetTitle();
 		this.selectChild(this._searchPage);
 		if (this._detailPageHandles) {
-			dojo.forEach(this._detailPageHandles, dojo.hitch(this, 'disconnect'));
+			dojo.forEach(this._detailPageHandles, dojo.hitch(dojo, 'disconnect'));
 			this._detailPageHandles = null;
 		}
 		if (this._detailPage) {

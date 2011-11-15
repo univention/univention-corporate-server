@@ -948,6 +948,14 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				++nChanges;
 			}
 		});
+		umc.tools.forIn(this._policyWidgets, function(ipolicyType, iwidgets) {
+			var ival = iwidgets.$policy$.get('value');
+			var iresetValue = iwidgets.$policy$._resetValue;
+			if (iresetValue != ival) {
+				++nChanges;
+			}
+		}, this);
+
 		if (!nChanges) {
 			umc.dialog.alert(this._('No changes have been made.'));
 			return;
