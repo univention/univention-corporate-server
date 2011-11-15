@@ -32,12 +32,14 @@
 
 __package__='' 	# workaround for PEP 366
 import listener
-import os, string, pwd, grp, univention.debug, subprocess, glob
+import os, string, pwd, grp, univention.debug, subprocess, glob, copy, cPickle
 
 name='cyrus-mailboxrename'
 description='Rename default imap folders'
 filter='(&(objectClass=univentionMail)(uid=*))'
 attributes=['uid', 'mailPrimaryAddress', 'univentionMailHomeServer']
+FN_CACHE='/var/cache/univention-mail-cyrus/cyrus-mailboxrename.pickle'
+modrdn='1'
 
 def is_cyrus_murder_backend():
 	if (listener.baseConfig.get('mail/cyrus/murder/master') and listener.baseConfig.get('mail/cyrus/murder/backend/hostname')):
@@ -97,13 +99,38 @@ def cyrus_usermailbox_delete(old):
 		finally:
 			listener.unsetuid()
 
-def handler(dn, new, old):
+
+def handler(dn, new, old, command):
+	# copy object "old" - otherwise it gets modified for other listener modules
+	old = copy.deepcopy(old)
+
+	if command == 'r':
+		listener.setuid(0)
+		try:
+			with open(FN_CACHE, 'w+') as f:
+				os.chmod(FN_CACHE, 0600)
+				cPickle.dump(old, f)
+		except Exception, e:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'cyrus-mailboxrename: failed to open/write pickle file: %s' % str(e))
+		listener.unsetuid()
+		# do nothing if command is 'r' ==> modrdn
+		return
+
+	if os.path.exists(FN_CACHE):
+		listener.setuid(0)
+		try:
+			with open(FN_CACHE,'r') as f:
+				old = cPickle.load(f)
+		except Exception, e:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'cyrus-mailboxrename: failed to open/read pickle file: %s' % str(e))
+		listener.unsetuid()
+
 	fqdn = '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
 	if old:
 		oldHomeserver = old.get('univentionMailHomeServer', [''])[0]
 		old_mailPrimaryAddress = old.get('mailPrimaryAddress', [''])[0]
 		if old_mailPrimaryAddress and oldHomeserver == fqdn:
-			# Old mailbox is local to this host
+			# Old mailbox is located on this host
 			if new:
 				newHomeserver = new.get('univentionMailHomeServer', [''])[0]
 				if newHomeserver == fqdn:
@@ -111,10 +138,12 @@ def handler(dn, new, old):
 					new_mailPrimaryAddress = new.get('mailPrimaryAddress', [''])[0]
 					if new_mailPrimaryAddress:
 						# in this case cyrus.py will create a new mailbox
-						# univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'cyrus-mailboxrename: new_mailPrimaryAddress "%s" old_mailPrimaryAddress: "%s"' % (new_mailPrimaryAddress, old_mailPrimaryAddress))
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'cyrus-mailboxrename: new_mailPrimaryAddress "%s" old_mailPrimaryAddress: "%s"' % (new_mailPrimaryAddress, old_mailPrimaryAddress))
 						if string.lower(new_mailPrimaryAddress) != string.lower(old_mailPrimaryAddress):
 							cyrus_usermailbox_rename(new, old)
-					else: # old_mailPrimaryAddress was removed:
+					else:
+						# old_mailPrimaryAddress was removed:
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'cyrus-mailboxrename: new_mailPrimaryAddress is empty ==> removing mailbox')
 						cyrus_usermailbox_delete(old)
 				else:
 					# this is true if is_groupware_user(new) and newHomeserver != fqdn):
@@ -123,4 +152,5 @@ def handler(dn, new, old):
 					#	cyrus_usermailbox_delete(old)
 					pass
 			else: # object was removed
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'cyrus-mailboxrename: new is empty ==> removing mailbox')
 				cyrus_usermailbox_delete(old)
