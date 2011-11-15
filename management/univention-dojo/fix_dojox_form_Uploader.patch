@@ -1,8 +1,8 @@
 The changes for this bit of code were taken from the dojo SVN repository.
 Problems occurred with eval trying to parse a JSON string.
 (Bug #23333)
---- HTML5.js.old	2011-11-08 15:52:04.000000000 +0100
-+++ HTML5.js	2011-11-15 20:47:49.000000000 +0100
+--- ./dojo-release-1.6.1-src/dojox/form/uploader/plugins/HTML5.js.old	2011-11-08 15:52:04.000000000 +0100
++++ ./dojo-release-1.6.1-src/dojox/form/uploader/plugins/HTML5.js	2011-11-15 20:47:49.000000000 +0100
 @@ -139,10 +139,10 @@
  			clearInterval(timer);
  		}), false);
