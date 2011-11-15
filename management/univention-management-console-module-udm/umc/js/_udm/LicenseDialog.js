@@ -62,6 +62,8 @@ dojo.declare('umc.modules._udm.LicenseDialog', [ dijit.Dialog, umc.widgets.Stand
 			free_license_info = this._( '<p>The "free for personal use" edition of Univention Corporate Server is a special software license which allows users free use of the Univention Corporate Server and software products based on it for private purposes acc. to § 13 BGB (German Civil Code).</p><p>In the scope of this license, UCS can be downloaded, installed and used from our servers. It is, however, not permitted to make the software available to third parties to download or use it in the scope of a predominantly professional or commercial usage.</p><p>The license of the "free for personal use" edition of UCS occurs in the scope of a gift contract. We thus exclude all warranty and liability claims, except in the case of deliberate intention or gross negligence. We emphasise that the liability, warranty, support and maintance claims arising from our commercial software contracts do not apply to the "free for personal use" edition.</p><p>We wish you a lot of happiness using the "free for personal use" edition of Univention Corporate Server and look forward to receiving your feedback. If you have any questions, please consult our forum, which can be found on the Internet at http://forum.univention.de/.</p>' );
 		}
 
+		// substract system accounts
+		this.licenseInfo.real.account -= this.licenseInfo.sysAccountsFound;
 		var keys = {
 			title : this._( 'Current license' ),
 			labelBase : this._( 'LDAP base' ),
