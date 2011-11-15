@@ -1,3 +1,9 @@
+univention-installer (7.0.145-1) unstable; urgency=low
+
+  * renamed bootloader_device to bootloader_record  (Bug #24494)
+
+ -- Felix Botner <botner@univention.de>  Tue, 15 Nov 2011 10:53:03 +0100
+
 univention-installer (7.0.144-3) unstable; urgency=low
 
   * fixed backward-compatibility to old profiles (Bug #24516)

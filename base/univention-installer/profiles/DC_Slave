@@ -10,7 +10,7 @@ to_check="hostname domainname"
 #auto_part="full_disk"
 
 # [Bootloader]
-#bootloader_device=/dev/sda
+#bootloader_record=/dev/sda
 
 # [Timezone]
 timezone="Europe/Berlin"
