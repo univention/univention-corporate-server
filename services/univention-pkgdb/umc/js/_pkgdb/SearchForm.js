@@ -85,8 +85,7 @@ dojo.declare("umc.modules._pkgdb.SearchForm", [
 				],
 			layout:
 				[
-					['key','operator','pattern_text','pattern_list'],
-					['submit']
+					['key','operator','pattern_text','pattern_list', 'submit']
 				],
 			buttons:
 				[

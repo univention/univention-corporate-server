@@ -1,3 +1,10 @@
+univention-pkgdb (5.0.14-1) unstable; urgency=low
+
+  * UMC: changed layout to contain search button in same row as widgets
+    (Bug #22896)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 15 Nov 2011 18:41:04 +0100
+
 univention-pkgdb (5.0.13-1) unstable; urgency=low
 
   * UMC: fixed widget sizes (Bug #22896) 
