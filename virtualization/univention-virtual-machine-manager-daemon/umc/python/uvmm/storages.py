@@ -38,6 +38,7 @@ from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
+from univention.uvmm.protocol import Disk
 # get the URI parser for nodes
 import univention.uvmm.helpers
 import urlparse
@@ -89,7 +90,10 @@ class Storages( object ):
 			else:
 				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
-		self.uvmm.send( 'STORAGE_VOLUMES', Callback( _finished, request ), uri = request.options[ 'nodeURI' ], pool = request.options[ 'pool' ], type = request.options.get( 'type', None ) )
+		drive_type = request.options.get( 'type', None )
+		if drive_type == 'floppy': # not yet supported
+			drive_type = 'disk'
+		self.uvmm.send( 'STORAGE_VOLUMES', Callback( _finished, request ), uri = request.options[ 'nodeURI' ], pool = request.options[ 'pool' ], type = drive_type )
 
 	def storage_volume_remove( self, request ):
 		"""Removes a list of volumes located in the given pool.
@@ -137,6 +141,58 @@ class Storages( object ):
 		volume = os.path.join( pool_path, request.options[ 'volumeFilename' ] )
 		self.uvmm.send( 'STORAGE_VOLUME_USEDBY', Callback( _finished, request ), volume = volume )
 
+	def storage_volume_deletable( self, request ):
+		"""Returns a list of domains that use the given volume.
+
+		options: { 'domainURI' : <domain URI>, 'pool' : <pool name>, 'volumeFilename': <filename> }
+
+		return: (True|False)
+		"""
+		self.required_options( request, 'domainURI', 'pool', 'volumeFilename' )
+
+		def _finished( thread, result, request ):
+			if self._check_thread_error( thread, result, request ):
+				return
+
+			success, data = result
+			if success:
+				if isinstance( data, ( list, tuple ) ):
+					data = map( lambda x: '#'.join( x ), data )
+				self.finished( request.id, data )
+			else:
+				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
+
+		# check if volume is used by any other domain
+		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
+		pool_path = self.get_pool_path( node_uri, request.options[ 'pool' ] )
+		if pool_path is None:
+			raise UMC_OptionTypeError( _( 'The given pool could not be found or is no file pool' ) )
+		volume = os.path.join( pool_path, request.options[ 'volumeFilename' ] )
+
+		success, result = self.uvmm.send( 'STORAGE_VOLUME_USEDBY', None, volume = volume )
+		if not success:
+			raise UMC_OptionTypeError( _( 'Failed to check if the drive is used by any other virtual instance' ) )
+
+		if len( result ) > 1: # is used by at leat one other domain
+			self.finished( request.id, False )
+			return
+
+		success, result = self.uvmm.send( 'DOMAIN_INFO', None, uri = node_uri, domain = domain_uuid )
+		if not success:
+			raise UMC_OptionTypeError( _( 'Could not retrieve domain details' ) )
+		drive = None
+		for disk in result.disks:
+			if disk.source == volume:
+				drive = disk
+				break
+		else:
+			raise UMC_OptionTypeError( _( 'Could not find the drive' ) )
+
+		deletable = True
+		if drive.type != Disk.TYPE_FILE or drive.device != Disk.DEVICE_DISK:
+			deletable = False
+
+		self.finished( request.id, deletable )
 
 	# helper functions
 	def get_pool( self, node_uri, pool_name = None, pool_path = None ):

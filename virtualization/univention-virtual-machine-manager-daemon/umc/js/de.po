@@ -34,8 +34,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-14 15:09+0100\n"
-"PO-Revision-Date: 2011-11-14 10:38+0100\n"
+"POT-Creation-Date: 2011-11-15 20:22+0100\n"
+"PO-Revision-Date: 2011-11-15 18:29+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -107,7 +107,7 @@ msgstr ""
 "Ein gültiger Sicherungspunktname darf keine \"/\" enthalten und kann nicht "
 "mit \".\" beginnen."
 
-#: umc/js/_uvmm/DriveWizard.js:33 umc/js/_uvmm/DriveGrid.js:91
+#: umc/js/_uvmm/DriveWizard.js:33 umc/js/_uvmm/DriveGrid.js:153
 msgid "Add a new drive"
 msgstr "Ein neues Laufwerk hinzufügen"
 
@@ -202,7 +202,7 @@ msgstr "CPU-Auslastung"
 
 #: umc/js/uvmm.js:410 umc/js/uvmm.js:524 umc/js/_uvmm/InterfaceGrid.js:88
 #: umc/js/_uvmm/SnapshotGrid.js:107 umc/js/_uvmm/SnapshotGrid.js:133
-#: umc/js/_uvmm/SnapshotGrid.js:170
+#: umc/js/_uvmm/SnapshotGrid.js:170 umc/js/_uvmm/DriveGrid.js:81
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -269,12 +269,17 @@ msgstr "Voreinstellung (RealTek RTL-8139)"
 
 #: umc/js/uvmm.js:280 umc/js/_uvmm/SnapshotGrid.js:29
 #: umc/js/_uvmm/SnapshotGrid.js:166 umc/js/_uvmm/DriveGrid.js:47
+#: umc/js/_uvmm/DriveGrid.js:77
 msgid "Delete"
 msgstr "Löschen"
 
 #: umc/js/_uvmm/DomainWizard.js:85 umc/js/_uvmm/DomainPage.js:92
 msgid "Description"
 msgstr "Beschreibung"
+
+#: umc/js/_uvmm/DriveGrid.js:74
+msgid "Detach"
+msgstr "Aushängen"
 
 #: umc/js/_uvmm/DriveWizard.js:151
 msgid "Device filename"
@@ -340,6 +345,7 @@ msgstr ""
 "aktualisiert."
 
 #: umc/js/uvmm.js:95 umc/js/uvmm.js:273 umc/js/_uvmm/InterfaceGrid.js:53
+#: umc/js/_uvmm/DriveGrid.js:54
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -669,7 +675,6 @@ msgid "Restart"
 msgstr "Neu starten"
 
 #: umc/js/_uvmm/SnapshotGrid.js:36 umc/js/_uvmm/SnapshotGrid.js:129
-#: umc/js/_uvmm/DriveGrid.js:54
 msgid "Revert"
 msgstr "Wiederherstellen"
 
@@ -710,6 +715,13 @@ msgstr "Soll die Netzwerkschnittstelle %d entfernt werden?"
 #: umc/js/_uvmm/InterfaceGrid.js:78
 msgid "Should the network interface be removed?"
 msgstr "Soll die Netzwerkschnittstelle entfernt werden?"
+
+#: umc/js/_uvmm/DriveGrid.js:85
+msgid ""
+"Should the selected drive be deleted or detached from the virtual instance?"
+msgstr ""
+"Soll das ausgewählte Laufwerk gelöscht oder nur bei der virtuellen Instanz "
+"ausgehängt werden?"
 
 #: umc/js/uvmm.js:116
 msgid "Shut off the virtual instance"
@@ -779,6 +791,21 @@ msgid ""
 msgstr ""
 "Die folgenden Einstellungen wurden aus dem ausgewählten Profil gelesen und "
 "können nun angepasst werden."
+
+#: umc/js/_uvmm/DriveGrid.js:98
+msgid ""
+"The selected drive is a CD-ROM and should be detached from the virtual "
+"instance. If the volume is delete no other instance can use it anymore."
+msgstr ""
+"Das ausgewählte Laufwerk ist ein CD-ROM Laufwerk und sollte nur ausgehängt "
+"werden. Wird das Image gelöscht können auch andere Instanzen nicht mehr "
+"darauf zugreifen."
+
+#: umc/js/_uvmm/DriveGrid.js:100
+msgid ""
+"The selected drive seems to be attached to other virtual instances and "
+"therefor should not be deleted."
+msgstr "Das ausgewählte Laufwerk ist scheinbar mit einer anderen virtuellen Instanz verknüpft und sollte daher nicht gelöscht werden."
 
 #: umc/js/_uvmm/InterfaceWizard.js:48
 msgid ""
@@ -1096,9 +1123,6 @@ msgstr "Unbekannt"
 
 #~ msgid "Destination host"
 #~ msgstr "Zielserver"
-
-#~ msgid "Detach"
-#~ msgstr "Aushängen"
 
 #~ msgid "Detaching the drive <i>%(drive)s</i> failed"
 #~ msgstr "Das Aushängen des Laufwerks <i>%(drive)s</i> ist fehlgeschlagen"
@@ -1558,16 +1582,6 @@ msgstr "Unbekannt"
 #~ msgstr "Die Laufwerkskonfiguration wurde erfolgreich gespeichert"
 
 #~ msgid ""
-#~ "The drive will be detached from the virtual instance and the associated "
-#~ "local device will be kept as is."
-#~ msgstr ""
-#~ "Das Laufwerk wird im folgenden Schritt ausgehängt wobei das verknüpfte "
-#~ "lokale Gerät unverändert bleibt."
-
-#~ msgid "The drive will be detached from the virtual instance."
-#~ msgstr "Das Laufwerk wird im folgenden Schritt ausgehängt."
-
-#~ msgid ""
 #~ "The drive will be detached from the virtual instance.<br/>Additionally "
 #~ "the associated image <i>%(image)s</i> may be deleted permanently."
 #~ msgstr ""
@@ -1647,13 +1661,6 @@ msgstr "Unbekannt"
 #~ "Das ausgewählte Image wird bereits von der virtuellen Instanz %(domain)s "
 #~ "verwendet. Es sollte eventuell ein anderes Image verwendet werden, da "
 #~ "ansonsten Probleme nicht ausgeschlossen werden können."
-
-#~ msgid ""
-#~ "The selected image is already used by this virtual instance and therefor "
-#~ "can not be used."
-#~ msgstr ""
-#~ "Das ausgewählte Image wird bereits von dieser virtuellen Instanz "
-#~ "verwendet und kann daher nicht verwendet werden."
 
 #~ msgid ""
 #~ "The selected profile could not be read! Without the information the new "

@@ -59,7 +59,7 @@ dojo.declare("umc.modules._uvmm.InterfaceGrid", [ umc.widgets.Grid, umc.i18n.Mix
 			}, {
 				name: 'remove',
 				label: this._('Remove'),
-				isMultiAction: true,
+				isMultiAction: false,
 				isStandardAction: true,
 				iconClass: 'umcIconDelete',
 				callback: dojo.hitch(this, '_removeInterface')

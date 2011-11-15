@@ -33,91 +33,56 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-14 16:37+0100\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2011-11-15 20:12+0100\n"
 "PO-Revision-Date: 2011-11-14 16:38+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 
-#: domains.py:171
+#: umc/python/uvmm/wizards.py:869
 #, python-format
-msgid "No valid source for disk \"%s\" found"
-msgstr "Es fehlt eine gültige Quelle für das Gerät \"%s\""
-
-#: domains.py:254
-msgid "Unknown profile given"
-msgstr "Unbekanntes profil wurde angegeben"
-
-#: domains.py:392
-msgid "Invalid domain state"
-msgstr "Ungültiger Domain Status"
-
-#: drive.py:162
-#, python-format
-msgid ""
-"The drive will be detached from the virtual instance.<br/>Additionally the "
-"associated image <i>%(image)s</i> may be deleted permanently."
+msgid "<li>%(type)s: %(size)s (image file %(image)s in pool %(pool)s)</li>"
 msgstr ""
-"Das Laufwerk wird im folgenden Schritt ausgehängt.<br/>Zusätzlich kann das "
-"verknüpfte Image <i>%(image)s</i> permanent gelöscht werden."
+"<li>%(type)s: %(size)s (Image-Datei %(image)s im Speicherbereich %(pool)s)</"
+"li>"
 
-#: drive.py:163 drive.py:176 drive.py:302 nic.py:118
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: drive.py:164 drive.py:175
-msgid "Detach"
-msgstr "Aushängen"
-
-#: drive.py:165
-msgid "Delete"
-msgstr "Löschen"
-
-#: drive.py:170
-msgid ""
-"The drive will be detached from the virtual instance and the associated "
-"local device will be kept as is."
-msgstr ""
-"Das Laufwerk wird im folgenden Schritt ausgehängt wobei das verknüpfte "
-"lokale Gerät unverändert bleibt."
-
-#: drive.py:172
-msgid "The drive will be detached from the virtual instance."
-msgstr "Das Laufwerk wird im folgenden Schritt ausgehängt."
-
-#: drive.py:187
+#: umc/python/uvmm/wizards.py:875
 #, python-format
-msgid "Detaching the drive <i>%(drive)s</i> failed"
-msgstr "Das Aushängen des Laufwerks <i>%(drive)s</i> ist fehlgeschlagen"
+msgid "<li>%(type)s: empty device</li>"
+msgstr "<li>%(type)s: leeres Gerät</li>"
 
-#: drive.py:195
+#: umc/python/uvmm/wizards.py:873
 #, python-format
-msgid ""
-"The drive <i>%(drive)s</i> was detached successfully, but removing the image "
-"<i>%(image)s</i> failed. It must be removed manually."
-msgstr ""
-"Das Laufwerk <i>%(drive)s</i> wurde ausgehängt, aber das Löschen des Images "
-"<i>%(image)s</i> ist fehlgeschlagen. Es muß manuell entfernt werden."
+msgid "<li>%(type)s: local device %(device)s</li>"
+msgstr "<li>%(type)s: lokales Gerät %(device)s</li>"
 
-#: drive.py:198
+#: umc/python/uvmm/wizards.py:797
+msgid "A virtual instance must at least have 4 MB memory."
+msgstr "Eine virtuelle Instanz muss mindestens 4 MB Speicher haben."
+
+#: umc/python/uvmm/wizards.py:962 umc/python/uvmm/nic.py:115
+#: umc/python/uvmm/treeview.py:247
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: umc/python/uvmm/wizards.py:72 umc/python/uvmm/wizards.py:688
+msgid "Add drive"
+msgstr "Laufwerk hinzufügen"
+
+#: umc/python/uvmm/wizards.py:952
 #, python-format
-msgid ""
-"The drive <i>%(drive)s</i> was detached and image <i>%(image)s</i> removed "
-"successfully."
-msgstr ""
-"Das Laufwerk <i>%(drive)s</i> wurde ausgehängt und die Datei <i>%(image)s</"
-"i> erfolgreich gelöscht."
+msgid "Add drive to <i>%(name)s</i>"
+msgstr "Laufwerk zu <i>%(name)s</i> hinzufügen"
 
-#: drive.py:200
-#, python-format
-msgid "The drive <i>%(drive)s</i> was detached successfully."
-msgstr "Das Laufwerk <i>%(drive)s</i> wurde erfolgreich ausgehängt."
+#: umc/python/uvmm/nic.py:116
+msgid "Adding network interface"
+msgstr "Hinzufügen einer Netzwerkschnittstelle"
 
-#: drive.py:232
+#: umc/python/uvmm/drive.py:232
 msgid ""
 "All image files are stored in so-called storage pools. They can be stored in "
 "a local directory, an LVM partition or a share (e.g. using iSCSI, NFS or "
@@ -127,7 +92,239 @@ msgstr ""
 "ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder eine "
 "Freigabe (beispielsweise eingebunden über iSCSI, NFS oder CIFS) sein. "
 
-#: drive.py:233
+#: umc/python/uvmm/wizards.py:502
+#, python-format
+msgid ""
+"An image with this name already exists and is used by virtual instance "
+"%(domain)s. The name must be unique for a new image."
+msgstr ""
+"Ein Image mit diesem Namen existiert bereits und wird von der virtuellen "
+"Instanz %(domain)s verwendet. Der Name für ein neues Image muß eindeutig "
+"sein."
+
+#: umc/python/uvmm/wizards.py:504
+msgid ""
+"An unused image with this name already exists. The name must be unique for a "
+"new image."
+msgstr ""
+"Ein unbenutztes Image mit diesem Namen existiert bereits. Der Name für ein "
+"neues Image muß eindeutig sein."
+
+#: umc/python/uvmm/wizards.py:845
+msgid "Attached drives"
+msgstr "Eingebundene Laufwerk"
+
+#: umc/python/uvmm/nic.py:64
+msgid "Bridge"
+msgstr "Bridge"
+
+#: umc/python/uvmm/nic.py:71
+msgid "By default the private network is 192.168.122.0/24"
+msgstr "Vorgegeben ist das private Netzwerk 192.168.122.0/24"
+
+#: umc/python/uvmm/wizards.py:670
+msgid ""
+"By selecting a profile for the virtual instance most of the settings will be "
+"set to default values. In the following steps some of these values might be "
+"modified. After the creation of the virtual instance all parameters, "
+"extended settings und attached drives can be adjusted. It should be ensured "
+"that the profile is for the correct architecture as this option can not be "
+"changed afterwards."
+msgstr ""
+"Durch die Auswahl eines Profils für eine virtuelle Instanz werden die "
+"meisten Einstellungen mit Vorgabewerten ausgefüllt. In den folgenden "
+"Schritten können diese angepasst werden. Nach der Erzeugung der virtuellen "
+"Instanz können alle Parameter, erweiterte Einstellungen und eingebundene "
+"Laufwerke auch nachträglich verändert werden. Es sollte sichergestellt "
+"werden, dass ein Profil mit der korrekten Architektur ausgewählt wird, da "
+"diese Option nachträglich nicht geändert werden kann."
+
+#: umc/python/uvmm/wizards.py:357 umc/python/uvmm/wizards.py:853
+msgid "CDROM drive"
+msgstr "CDROM-Laufwerk"
+
+#: umc/python/uvmm/wizards.py:679 umc/python/uvmm/wizards.py:833
+msgid "CPUs"
+msgstr "CPUs"
+
+#: umc/python/uvmm/nic.py:118 umc/python/uvmm/drive.py:163
+#: umc/python/uvmm/drive.py:176 umc/python/uvmm/drive.py:302
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: umc/python/uvmm/wizards.py:70
+msgid "Change media"
+msgstr "Medium wechseln"
+
+#: umc/python/uvmm/wizards.py:95
+msgid "Chossen between using an existing image or using a local device."
+msgstr ""
+"Auswahl zwischen einer vorhandenen Image-Datei oder einem lokalen Gerät."
+
+#: umc/python/uvmm/storages.py:189
+msgid "Could not find the drive"
+msgstr ""
+
+#: umc/python/uvmm/storages.py:182
+msgid "Could not retrieve domain details"
+msgstr ""
+
+#: umc/python/uvmm/wizards.py:701 umc/python/uvmm/wizards.py:825
+msgid "Create a virtual instance"
+msgstr "Erstellen einer virtuellen Instanz"
+
+#: umc/python/uvmm/wizards.py:704 umc/python/uvmm/wizards.py:822
+#, python-format
+msgid "Create a virtual instance (profile: %(profile)s)"
+msgstr "Erstellen einer virtuellen Instanz: (Profil: %(profile)s)"
+
+#: umc/python/uvmm/wizards.py:706
+#, python-format
+msgid "Create a virtual instance <i>%(name)s</i>"
+msgstr "Erstellen einer virtuellen Instanz <i>%(name)s</i>"
+
+#: umc/python/uvmm/wizards.py:657
+msgid "Create new virtual instance"
+msgstr "Neue virtuelle Maschine erstellen"
+
+#: umc/python/uvmm/drive.py:165
+msgid "Delete"
+msgstr "Löschen"
+
+#: umc/python/uvmm/wizards.py:677 umc/python/uvmm/wizards.py:833
+msgid "Description"
+msgstr "Beschreibung"
+
+#: umc/python/uvmm/drive.py:164 umc/python/uvmm/drive.py:175
+msgid "Detach"
+msgstr "Aushängen"
+
+#: umc/python/uvmm/drive.py:187
+#, python-format
+msgid "Detaching the drive <i>%(drive)s</i> failed"
+msgstr "Das Aushängen des Laufwerks <i>%(drive)s</i> ist fehlgeschlagen"
+
+#: umc/python/uvmm/wizards.py:117 umc/python/uvmm/wizards.py:251
+#: umc/python/uvmm/wizards.py:253 umc/python/uvmm/drive.py:289
+msgid "Device filename"
+msgstr "Gerätedateiname"
+
+#: umc/python/uvmm/wizards.py:842
+msgid "Direct access"
+msgstr "Direktzugriff"
+
+#: umc/python/uvmm/wizards.py:75
+msgid "Drive image"
+msgstr "Laufwerk Image-Datei"
+
+#: umc/python/uvmm/wizards.py:241 umc/python/uvmm/drive.py:235
+msgid "Drive type"
+msgstr "Laufwerksart"
+
+#: umc/python/uvmm/wizards.py:108
+msgid ""
+"Each hard drive image is located within a so called storage pool, which "
+"might be a local directory, a device, an LVM volume or any type of share (e."
+"g. mounted via iSCSI, NFS or CIFS). The newly create image will have the "
+"specified name and size provided by the following settings. Currently these "
+"was been set to default images. It has to be ensured that there is enough "
+"space left in the defined storage pool."
+msgstr ""
+"Jedes Festplatten-Image liegt einem so genannten Speicherbereich. Dies kann "
+"ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder eine "
+"Freigabe (beispielsweise eingebunden über iSCSI, NFS oder CIFS) sein. Das "
+"neu angelegte Festplatten-Image wird mit dem angegebenen Namen und der Größe "
+"aus den folgenden Einstellungen erzeugt. Es sollte sichergestellt werden, "
+"dass in dem Speicherbereich ausreichend Platz verfügbar ist."
+
+#: umc/python/uvmm/wizards.py:226
+msgid ""
+"Each hard drive image is located within a so called storage pool, which "
+"might be a local directory, a device, an LVM volume or any type of share (e."
+"g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list "
+"of available images is updated."
+msgstr ""
+"Jedes Festplatten-Image liegt einem so genannten Speicherbereich. Dies kann "
+"ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder eine "
+"Freigabe (beispielsweise eingebunden über iSCSI, NFS oder CIFS) sein. Wird "
+"ein Speicherbereich ausgewählt, wird die Liste der verfügbaren Festplatten-"
+"Images aktualisiert."
+
+#: umc/python/uvmm/wizards.py:228
+msgid ""
+"Each image is located within a so called storage pool, which might be a "
+"local directory, a device, an LVM volume or any type of share (e.g. mounted "
+"via iSCSI, NFS or CIFS). When selecting a storage pool the list of available "
+"images is updated."
+msgstr ""
+"Jedes Image liegt einem so genannten Speicherbereich. Dies kann ein lokales "
+"Verzeichnis, eine Festplatte, eine LVM-Partition oder eine Freigabe "
+"(beispielsweise eingebunden über iSCSI, NFS oder CIFS) sein. Wird ein "
+"Speicherbereich ausgewählt, wird die Liste der verfügbaren ISO-Images "
+"aktualisiert."
+
+#: umc/python/uvmm/drive.py:306
+msgid "Edit drive"
+msgstr "Laufwerk bearbeiten"
+
+#: umc/python/uvmm/nic.py:113
+msgid "Edit network interface"
+msgstr "Bearbeiten einer Netzwerkschnittstelle"
+
+#: umc/python/uvmm/wizards.py:680
+msgid "Enable direct access"
+msgstr "Direktzugriff aktivieren"
+
+#: umc/python/uvmm/drive.py:271
+msgid "Extended format (qcow)"
+msgstr "Erweitertes Format (qcow)"
+
+#: umc/python/uvmm/wizards.py:167 umc/python/uvmm/drive.py:269
+msgid "Extended format (qcow2)"
+msgstr "Erweitertes Format (qcow2)"
+
+#: umc/python/uvmm/nic.py:144
+#, python-format
+msgid "Failed to add network interface: %s"
+msgstr "Hinzufügen der Netzwerkschnittstelle ist fehlgeschlagen: %s"
+
+#: umc/python/uvmm/storages.py:174
+#, fuzzy
+msgid "Failed to check if the drive is used by any other virtual instance"
+msgstr "Das Laufwerk wird im folgenden Schritt ausgehängt."
+
+#: umc/python/uvmm/nic.py:267
+#, python-format
+msgid "Failed to modify network interface: %s"
+msgstr "Das Bearbeiten der Netzwerkschnittstelle ist fehlgeschlagen: %s"
+
+#: umc/python/uvmm/nic.py:239
+#, python-format
+msgid "Failed to remove network interface: %s"
+msgstr "Entfernen der Netzwerkschnittstelle ist fehlgeschlagen: %s"
+
+#: umc/python/uvmm/wizards.py:111
+msgid "Filename"
+msgstr "Dateiname"
+
+#: umc/python/uvmm/wizards.py:97
+msgid ""
+"For the drive a new image can be created or an existing one can be chosen. "
+"An existing image should only be used by one virtual instance at a time."
+msgstr ""
+"Für das Laufwerk kann ein Image erzeugt oder ein existierendes ausgewählt "
+"werden. Dabei sollte ein Festplatten-Image immer nur von einer virtuellen "
+"Instanz zur Zeit verwendet werden."
+
+#: umc/python/uvmm/profiles.py:66
+msgid "Full virtualization (KVM)"
+msgstr "Voll-Virtualisierung (KVM)"
+
+#: umc/python/uvmm/profiles.py:67
+msgid "Full virtualization (XEN)"
+msgstr "Voll-Virtualisierung (XEN)"
+
+#: umc/python/uvmm/drive.py:233
 msgid ""
 "Hard drive images can be administrated in two ways on KVM systems; by "
 "default images are saved in the <i>Extended format (qcow2)</i>. This format "
@@ -154,7 +351,90 @@ msgstr ""
 "(raw)</i> auf ein Festplatten-Image zugegriffen werden. <p>Auf Xen-Systemen "
 "steht nur das <i>Einfache Format</i> zur Verfügung."
 
-#: drive.py:234
+#: umc/python/uvmm/wizards.py:319
+msgid ""
+"If the required image is not found it might be added by copying the file "
+"into the storage pool, e.g. to /var/lib/libvirt/images/ which is the "
+"directory of the storage pool <i>local directory</i>. After that go to the "
+"previous page an return to this one. The image should now be listed."
+msgstr ""
+"Wenn das gewünschte Image nicht gefunden wird, kann dies in den "
+"Speicherbereich kopiert werden. Beispielsweise in das Verzeichnis /var/lib/"
+"libvirt/images welches den Speicherbereich <i>Lokales Verzeichnis</i> "
+"darstellt. Anschließend kann auf die vorherige Seite des Assistenten "
+"gewechselt und zu dieser wieder zurückgesprungen werden. Das neue ISO-Image "
+"sollte angezeigt werden."
+
+#: umc/python/uvmm/wizards.py:245 umc/python/uvmm/wizards.py:247
+#: umc/python/uvmm/drive.py:281 umc/python/uvmm/drive.py:283
+msgid "Image filename"
+msgstr "Image-Datei"
+
+#: umc/python/uvmm/wizards.py:76 umc/python/uvmm/wizards.py:188
+#: umc/python/uvmm/wizards.py:248 umc/python/uvmm/drive.py:284
+msgid "Image format"
+msgstr "Image-Format"
+
+#: umc/python/uvmm/wizards.py:446
+msgid "Image not found"
+msgstr "Image-Datei nicht gefunden"
+
+#: umc/python/uvmm/wizards.py:249 umc/python/uvmm/drive.py:285
+msgid "Image size"
+msgstr "Image-Größe"
+
+#: umc/python/uvmm/domains.py:393
+msgid "Invalid domain state"
+msgstr "Ungültiger Domain Status"
+
+#: umc/python/uvmm/wizards.py:144 umc/python/uvmm/drive.py:260
+msgid "Local directory"
+msgstr "Lokales Verzeichnis"
+
+#: umc/python/uvmm/wizards.py:833
+msgid "Memory"
+msgstr "Speicher"
+
+#: umc/python/uvmm/wizards.py:678
+msgid "Memory (in MB)"
+msgstr "Arbeitsspeicher (in MB)"
+
+#: umc/python/uvmm/nic.py:64
+msgid "NAT"
+msgstr "NAT"
+
+#: umc/python/uvmm/wizards.py:676 umc/python/uvmm/wizards.py:833
+msgid "Name"
+msgstr "Name"
+
+#: umc/python/uvmm/wizards.py:744
+msgid ""
+"No profiles could be found! Please check your installation and run all join "
+"scripts, e.g. using univention-run-join-scripts."
+msgstr ""
+"Es wurden keine Profile gefunden. Bitte prüfen Sie Ihre Installation und "
+"führen Sie alle Joinskripte aus, z.B. mit Hilfe von univention-run-join-"
+"scripts."
+
+#: umc/python/uvmm/wizards.py:728
+msgid ""
+"No profiles could be found! These are required to create new virtual "
+"instances. Ensure that the LDAP server can be reached."
+msgstr ""
+"Es konnte kein Profil gefunden werden! Diese werden benötigt, um neue "
+"virtuelle Instanzen anzulegen. Stellen Sie sicher, daß der LDAP-Server "
+"erreichbar ist."
+
+#: umc/python/uvmm/domains.py:172
+#, python-format
+msgid "No valid source for disk \"%s\" found"
+msgstr "Es fehlt eine gültige Quelle für das Gerät \"%s\""
+
+#: umc/python/uvmm/drive.py:293
+msgid "Paravirtual drive"
+msgstr "Paravirtualisiertes Laufwerk"
+
+#: umc/python/uvmm/drive.py:234
 msgid ""
 "Paravirtualisation is a special variant of virtualisation in which the "
 "virtualised operating system is adapted to the underlying virtualisation "
@@ -172,93 +452,257 @@ msgstr ""
 "installiert werden, siehe <a href=\"http://wiki.univention.de/index.php?"
 "title=UVMM_Technische_Details\"> Univention Wiki. </a>"
 
-#: drive.py:235 wizards.py:241
-msgid "Drive type"
-msgstr "Laufwerksart"
+#: umc/python/uvmm/profiles.py:68
+msgid "Paravirtualization (XEN)"
+msgstr "Paravirtualisierung (XEN)"
 
-#: drive.py:257 wizards.py:361 wizards.py:857
-msgid "unknown"
-msgstr "Unbekannt"
+#: umc/python/uvmm/__init__.py:116 umc/python/uvmm/treeview.py:206
+#: umc/python/uvmm/nodes.py:79
+msgid "Physical servers"
+msgstr "Physikalische Server"
 
-#: drive.py:260 wizards.py:144
-msgid "Local directory"
-msgstr "Lokales Verzeichnis"
-
-#: drive.py:267 wizards.py:158 wizards.py:169 wizards.py:173
-msgid "Simple format (raw)"
-msgstr "Einfaches Format (raw)"
-
-#: drive.py:269 wizards.py:167
-msgid "Extended format (qcow2)"
-msgstr "Erweitertes Format (qcow2)"
-
-#: drive.py:271
-msgid "Extended format (qcow)"
-msgstr "Erweitertes Format (qcow)"
-
-#: drive.py:273
-msgid "VMWare Disk"
-msgstr "VMware Disk"
-
-#: drive.py:275
-msgid "Virtual Hard Disk"
-msgstr "Virtuelle Festplatte"
-
-#: drive.py:279 wizards.py:74 wizards.py:243
-msgid "Storage pool"
+#: umc/python/uvmm/wizards.py:149
+msgid "Pool"
 msgstr "Speicherbereich"
 
-#: drive.py:281 drive.py:283 wizards.py:245 wizards.py:247
-msgid "Image filename"
-msgstr "Image-Datei"
+#: umc/python/uvmm/wizards.py:661
+msgid "Profiles"
+msgstr "Profile"
 
-#: drive.py:284 wizards.py:76 wizards.py:188 wizards.py:248
-msgid "Image format"
-msgstr "Image-Format"
-
-#: drive.py:285 wizards.py:249
-msgid "Image size"
-msgstr "Image-Größe"
-
-#: drive.py:289 wizards.py:117 wizards.py:251 wizards.py:253
-msgid "Device filename"
-msgstr "Gerätedateiname"
-
-#: drive.py:293
-msgid "Paravirtual drive"
-msgstr "Paravirtualisiertes Laufwerk"
-
-#: drive.py:301 nic.py:112
+#: umc/python/uvmm/nic.py:112 umc/python/uvmm/drive.py:301
 msgid "Save"
 msgstr "Speichern"
 
-#: drive.py:306
-msgid "Edit drive"
-msgstr "Laufwerk bearbeiten"
-
-#: drive.py:334
+#: umc/python/uvmm/drive.py:334
 msgid "Saving the drive configuration has failed"
 msgstr "Das Speichern der Laufwerkskonfiguration ist fehlgeschlagen"
 
-#: drive.py:337
-msgid "The drive configuration has been saved successfully"
-msgstr "Die Laufwerkskonfiguration wurde erfolgreich gespeichert"
-
-#: drive.py:363
+#: umc/python/uvmm/drive.py:363
 #, python-format
 msgid "Setting the drive <i>%(drive)s</i> as boot device as failed"
 msgstr ""
 "Das Setzen des Laufwerks <i>%(drive)s</i> als Boot-Medium ist fehlgeschlagen"
 
-#: __init__.py:116 nodes.py:79 treeview.py:206
-msgid "Physical servers"
-msgstr "Physikalische Server"
+#: umc/python/uvmm/wizards.py:158 umc/python/uvmm/wizards.py:169
+#: umc/python/uvmm/wizards.py:173 umc/python/uvmm/drive.py:267
+msgid "Simple format (raw)"
+msgstr "Einfaches Format (raw)"
 
-#: __init__.py:118
-msgid "Unknown query type"
-msgstr "Unbekannter Anfragetyp"
+#: umc/python/uvmm/wizards.py:112
+msgid "Size (default unit MB)"
+msgstr "Größe (Standardeinheit MB)"
 
-#: nic.py:60
+#: umc/python/uvmm/wizards.py:74 umc/python/uvmm/wizards.py:243
+#: umc/python/uvmm/drive.py:279
+msgid "Storage pool"
+msgstr "Speicherbereich"
+
+#: umc/python/uvmm/wizards.py:792
+msgid ""
+"The chosen name for the virtual instance could not be checked for uniqueness."
+msgstr ""
+"Der gewählte Name für die virtuelle Instanz konnte nicht auf Eindeutigkeit "
+"überprüft werden."
+
+#: umc/python/uvmm/wizards.py:790
+msgid ""
+"The chosen name for the virtual instance is not unique. Another one should "
+"be chosen."
+msgstr ""
+"Der gewählte Name ist nicht eindeutig, daher sollte ein anderer gewählt "
+"werden."
+
+#: umc/python/uvmm/treeview.py:163
+msgid ""
+"The connection to the UCS Virtual Machine Manager service could not be "
+"established. Please verify that it is started. You may use the UMC service "
+"module therefor."
+msgstr ""
+"Die Verbindung zum UCS Virtual Machine Manager-Dienst konnte nicht "
+"hergestellt werden. Bitte prüfen Sie, ob der Dienst gestartet ist. Dafür "
+"können Sie das UMC Dienste-Modul verwenden."
+
+#: umc/python/uvmm/drive.py:198
+#, python-format
+msgid ""
+"The drive <i>%(drive)s</i> was detached and image <i>%(image)s</i> removed "
+"successfully."
+msgstr ""
+"Das Laufwerk <i>%(drive)s</i> wurde ausgehängt und die Datei <i>%(image)s</"
+"i> erfolgreich gelöscht."
+
+#: umc/python/uvmm/drive.py:195
+#, python-format
+msgid ""
+"The drive <i>%(drive)s</i> was detached successfully, but removing the image "
+"<i>%(image)s</i> failed. It must be removed manually."
+msgstr ""
+"Das Laufwerk <i>%(drive)s</i> wurde ausgehängt, aber das Löschen des Images "
+"<i>%(image)s</i> ist fehlgeschlagen. Es muß manuell entfernt werden."
+
+#: umc/python/uvmm/drive.py:200
+#, python-format
+msgid "The drive <i>%(drive)s</i> was detached successfully."
+msgstr "Das Laufwerk <i>%(drive)s</i> wurde erfolgreich ausgehängt."
+
+#: umc/python/uvmm/drive.py:337
+msgid "The drive configuration has been saved successfully"
+msgstr "Die Laufwerkskonfiguration wurde erfolgreich gespeichert"
+
+#: umc/python/uvmm/drive.py:170
+msgid ""
+"The drive will be detached from the virtual instance and the associated "
+"local device will be kept as is."
+msgstr ""
+"Das Laufwerk wird im folgenden Schritt ausgehängt wobei das verknüpfte "
+"lokale Gerät unverändert bleibt."
+
+#: umc/python/uvmm/drive.py:172
+msgid "The drive will be detached from the virtual instance."
+msgstr "Das Laufwerk wird im folgenden Schritt ausgehängt."
+
+#: umc/python/uvmm/drive.py:162
+#, python-format
+msgid ""
+"The drive will be detached from the virtual instance.<br/>Additionally the "
+"associated image <i>%(image)s</i> may be deleted permanently."
+msgstr ""
+"Das Laufwerk wird im folgenden Schritt ausgehängt.<br/>Zusätzlich kann das "
+"verknüpfte Image <i>%(image)s</i> permanent gelöscht werden."
+
+#: umc/python/uvmm/wizards.py:124
+msgid "The following drive will be created:"
+msgstr "Das folgende Laufwerk wird eingebunden:"
+
+#: umc/python/uvmm/wizards.py:122
+msgid "The following drive will be updated:"
+msgstr "Das folgende Laufwerk wird aktualisiert:"
+
+#: umc/python/uvmm/wizards.py:675
+msgid ""
+"The following settings were read from the selected profile and can be "
+"modified now."
+msgstr ""
+"Die folgenden Einstellungen wurden aus dem ausgewählten Profil gelesen und "
+"können nun angepasst werden."
+
+#: umc/python/uvmm/uvmmd.py:68
+msgid "The given UVMM command is not known"
+msgstr "Das angegebene UVMM Kommando ist nicht bekannt"
+
+#: umc/python/uvmm/storages.py:140 umc/python/uvmm/storages.py:169
+msgid "The given pool could not be found or is no file pool"
+msgstr ""
+"Der angegebene Speicherbereich konnte nicht gefunden werden oder ist kein "
+"Verzeichnis"
+
+#: umc/python/uvmm/wizards.py:321
+msgid ""
+"The list of available images is empty! To add an image the file needs to be "
+"copied into the storage pool, e.g. to /var/lib/libvirt/images/ which is the "
+"directory of the storage pool <i>local directory</i>. After that go to the "
+"previous page an return to this one. The image should now be listed."
+msgstr ""
+"Die Liste der verfügbaren Image-Dateien ist leer! Um das gewünschte Image "
+"hinzuzufügen kann dies in den Speicherbereich kopiert werden. Beispielsweise "
+"in das Verzeichnis /var/lib/libvirt/images welches den Speicherbereich "
+"<i>Lokales Verzeichnis</i> darstellt. Anschließend kann auf die vorherige "
+"Seite des Assistenten gewechselt und zu dieser wieder zurückgesprungen "
+"werden. Die neue Image-Datei sollte angezeigt werden."
+
+#: umc/python/uvmm/wizards.py:787
+#, python-format
+msgid ""
+"The name of a virtual instance may not be longer than %(maxlength)d "
+"characters!"
+msgstr ""
+"Der Name einer virtuellen Instanz darf maximal %(maxlength)d Zeichen haben!"
+
+#: umc/python/uvmm/wizards.py:784
+msgid "The name of the virtual instance should be modified"
+msgstr "Der Name der virtuellen Instanz sollte angepasst werden"
+
+#: umc/python/uvmm/wizards.py:800
+#, python-format
+msgid ""
+"The physical server does not have that much memory. As a suggestion the a "
+"mount of memory was set to 75% of the available memory."
+msgstr ""
+"Der physikalische Server hat nicht so viel Arbeitspeicher. Als Vorschlag "
+"wurde die Speichermenge auf 75% des verfügbaren Arbeitsspeichers gesetzt."
+
+#: umc/python/uvmm/wizards.py:464
+#, python-format
+msgid ""
+"The selected image is already used by the virtual instance %(domain)s. It "
+"should be considered to choose another image. Continuing might cause "
+"problems."
+msgstr ""
+"Das ausgewählte Image wird bereits von der virtuellen Instanz %(domain)s "
+"verwendet. Es sollte eventuell ein anderes Image verwendet werden, da "
+"ansonsten Probleme nicht ausgeschlossen werden können."
+
+#: umc/python/uvmm/wizards.py:459 umc/python/uvmm/wizards.py:493
+msgid ""
+"The selected image is already used by this virtual instance and therefor can "
+"not be used."
+msgstr ""
+"Das ausgewählte Image wird bereits von dieser virtuellen Instanz verwendet "
+"und kann daher nicht verwendet werden."
+
+#: umc/python/uvmm/wizards.py:754
+msgid ""
+"The selected profile could not be read! Without the information the new "
+"virtual instance can not be created. Ensure that the LDAP server can be "
+"reached."
+msgstr ""
+"Das ausgewählte Profil konnte nicht gelesen werden! Ohne diese Information "
+"kann die neue Instanz nicht erstellt werden. Stellen Sie sicher, daß der "
+"LDAP-Server erreichbar ist."
+
+#: umc/python/uvmm/wizards.py:740
+msgid ""
+"The server does not have the virtualization extension (Intel VT or AMD-V). "
+"For virtualization with KVM this extension is required."
+msgstr ""
+"Der Server hat keine CPU mit Virtualisierungs-Erweiterung (Intel VT oder AMD-"
+"V). Für die Virtualisierung mit KVM wird eine Virtualisierungs-Erweiterung "
+"benötigt."
+
+#: umc/python/uvmm/wizards.py:736
+msgid ""
+"The server does not have the virtualization extension (Intel VT or AMD-V). "
+"Only profiles using paravirtualization will work."
+msgstr ""
+"Der Server hat keine CPU mit Virtualisierungs-Erweiterung (Intel VT oder AMD-"
+"V). Nur Profile für Paravirtualisierung werden angezeigt."
+
+#: umc/python/uvmm/nic.py:89
+msgid ""
+"The source is the name of the network interface on the phyiscal server that "
+"is configured for bridging. By default it is eth0."
+msgstr ""
+"Die Quelle ist der Name der Netzwerkschnittstelle des pyhsikalischen Server "
+"die als Bridge konfiguriert ist. Normalerweise ist dies eth0."
+
+#: umc/python/uvmm/wizards.py:684
+msgid ""
+"The virtual instance will be created with the settings shown below. The "
+"button <i>Add drive</i> can be used to attach another drive."
+msgstr ""
+"Die virtuelle Instanz wird mit den unten aufgeführten Einstellungen "
+"angelegt. Über die Schaltfläche <i>Laufwerk hinzufügen</i> kann ein weiteres "
+"Laufwerk eingebunden werden."
+
+#: umc/python/uvmm/wizards.py:116
+msgid ""
+"To bind the drive to a local device the filename of the associated block "
+"device must be specified."
+msgstr ""
+"Um das Laufwerk an ein lokales Gerät zu binden, muss der Dateiname der "
+"zugehörigen Gerätedatei angeben werden."
+
+#: umc/python/uvmm/nic.py:60
 msgid ""
 "Two types of network interfaces are support. The first one is <i>Bridge</i> "
 "that requires a static network connection on the physical server that is "
@@ -290,478 +734,56 @@ msgstr ""
 "wird. Weitere Details zur Netzwerkkonfiguration sind in <a href=\"http://sdb."
 "univention.de/1172\" target=\"_blank\">diesem Artikel</a> zu finden."
 
-#: nic.py:64
-msgid "Bridge"
-msgstr "Bridge"
-
-#: nic.py:64
-msgid "NAT"
-msgstr "NAT"
-
-#: nic.py:68
+#: umc/python/uvmm/nic.py:68
 msgid "Type"
 msgstr "Typ"
 
-#: nic.py:71
-msgid "By default the private network is 192.168.122.0/24"
-msgstr "Vorgegeben ist das private Netzwerk 192.168.122.0/24"
-
-#: nic.py:89
-msgid ""
-"The source is the name of the network interface on the phyiscal server that "
-"is configured for bridging. By default it is eth0."
-msgstr ""
-"Die Quelle ist der Name der Netzwerkschnittstelle des pyhsikalischen Server "
-"die als Bridge konfiguriert ist. Normalerweise ist dies eth0."
-
-#: nic.py:113
-msgid "Edit network interface"
-msgstr "Bearbeiten einer Netzwerkschnittstelle"
-
-#: nic.py:115 treeview.py:247 wizards.py:962
-msgid "Add"
-msgstr "Hinzufügen"
-
-#: nic.py:116
-msgid "Adding network interface"
-msgstr "Hinzufügen einer Netzwerkschnittstelle"
-
-#: nic.py:144
-#, python-format
-msgid "Failed to add network interface: %s"
-msgstr "Hinzufügen der Netzwerkschnittstelle ist fehlgeschlagen: %s"
-
-#: nic.py:239
-#, python-format
-msgid "Failed to remove network interface: %s"
-msgstr "Entfernen der Netzwerkschnittstelle ist fehlgeschlagen: %s"
-
-#: nic.py:267
-#, python-format
-msgid "Failed to modify network interface: %s"
-msgstr "Das Bearbeiten der Netzwerkschnittstelle ist fehlgeschlagen: %s"
-
-#: profiles.py:66
-msgid "Full virtualization (KVM)"
-msgstr "Voll-Virtualisierung (KVM)"
-
-#: profiles.py:67
-msgid "Full virtualization (XEN)"
-msgstr "Voll-Virtualisierung (XEN)"
-
-#: profiles.py:68
-msgid "Paravirtualization (XEN)"
-msgstr "Paravirtualisierung (XEN)"
-
-#: profiles.py:123
+#: umc/python/uvmm/profiles.py:123
 msgid "Unknown profile"
 msgstr "Unbekanntes Profil"
 
-#: storages.py:136
-msgid "The given pool could not be found or is no file pool"
-msgstr ""
-"Der angegebene Speicherbereich konnte nicht gefunden werden oder ist kein "
-"Verzeichnis"
+#: umc/python/uvmm/domains.py:255
+msgid "Unknown profile given"
+msgstr "Unbekanntes profil wurde angegeben"
 
-#: treeview.py:163
-msgid ""
-"The connection to the UCS Virtual Machine Manager service could not be "
-"established. Please verify that it is started. You may use the UMC service "
-"module therefor."
-msgstr ""
-"Die Verbindung zum UCS Virtual Machine Manager-Dienst konnte nicht "
-"hergestellt werden. Bitte prüfen Sie, ob der Dienst gestartet ist. Dafür "
-"können Sie das UMC Dienste-Modul verwenden."
+#: umc/python/uvmm/__init__.py:118
+msgid "Unknown query type"
+msgstr "Unbekannter Anfragetyp"
 
-#: uvmmd.py:68
-msgid "The given UVMM command is not known"
-msgstr "Das angegebene UVMM Kommando ist nicht bekannt"
+#: umc/python/uvmm/drive.py:273
+msgid "VMWare Disk"
+msgstr "VMware Disk"
 
-#: wizards.py:70
-msgid "Change media"
-msgstr "Medium wechseln"
+#: umc/python/uvmm/drive.py:275
+msgid "Virtual Hard Disk"
+msgstr "Virtuelle Festplatte"
 
-#: wizards.py:72 wizards.py:688
-msgid "Add drive"
-msgstr "Laufwerk hinzufügen"
-
-#: wizards.py:75
-msgid "Drive image"
-msgstr "Laufwerk Image-Datei"
-
-#: wizards.py:89
+#: umc/python/uvmm/wizards.py:89
 msgid "What type of drive should be created?"
 msgstr "Welche Art von Laufwerk soll erstellt werden?"
 
-#: wizards.py:95
-msgid "Chossen between using an existing image or using a local device."
-msgstr ""
-"Auswahl zwischen einer vorhandenen Image-Datei oder einem lokalen Gerät."
+#: umc/python/uvmm/wizards.py:839
+msgid "activated"
+msgstr "aktiviert"
 
-#: wizards.py:97
-msgid ""
-"For the drive a new image can be created or an existing one can be chosen. "
-"An existing image should only be used by one virtual instance at a time."
-msgstr ""
-"Für das Laufwerk kann ein Image erzeugt oder ein existierendes ausgewählt "
-"werden. Dabei sollte ein Festplatten-Image immer nur von einer virtuellen "
-"Instanz zur Zeit verwendet werden."
+#: umc/python/uvmm/wizards.py:841
+msgid "deactivated"
+msgstr "deaktiviert"
 
-#: wizards.py:108
-msgid ""
-"Each hard drive image is located within a so called storage pool, which "
-"might be a local directory, a device, an LVM volume or any type of share (e."
-"g. mounted via iSCSI, NFS or CIFS). The newly create image will have the "
-"specified name and size provided by the following settings. Currently these "
-"was been set to default images. It has to be ensured that there is enough "
-"space left in the defined storage pool."
-msgstr ""
-"Jedes Festplatten-Image liegt einem so genannten Speicherbereich. Dies kann "
-"ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder eine "
-"Freigabe (beispielsweise eingebunden über iSCSI, NFS oder CIFS) sein. Das "
-"neu angelegte Festplatten-Image wird mit dem angegebenen Namen und der Größe "
-"aus den folgenden Einstellungen erzeugt. Es sollte sichergestellt werden, "
-"dass in dem Speicherbereich ausreichend Platz verfügbar ist."
+#: umc/python/uvmm/wizards.py:359 umc/python/uvmm/wizards.py:855
+msgid "floppy drive"
+msgstr "Diskettenlaufwerk"
 
-#: wizards.py:111
-msgid "Filename"
-msgstr "Dateiname"
+#: umc/python/uvmm/wizards.py:355 umc/python/uvmm/wizards.py:851
+msgid "hard drive"
+msgstr "Festplatte"
 
-#: wizards.py:112
-msgid "Size (default unit MB)"
-msgstr "Größe (Standardeinheit MB)"
-
-#: wizards.py:116
-msgid ""
-"To bind the drive to a local device the filename of the associated block "
-"device must be specified."
-msgstr ""
-"Um das Laufwerk an ein lokales Gerät zu binden, muss der Dateiname der "
-"zugehörigen Gerätedatei angeben werden."
-
-#: wizards.py:122
-msgid "The following drive will be updated:"
-msgstr "Das folgende Laufwerk wird aktualisiert:"
-
-#: wizards.py:124
-msgid "The following drive will be created:"
-msgstr "Das folgende Laufwerk wird eingebunden:"
-
-#: wizards.py:149
-msgid "Pool"
-msgstr "Speicherbereich"
-
-#: wizards.py:226
-msgid ""
-"Each hard drive image is located within a so called storage pool, which "
-"might be a local directory, a device, an LVM volume or any type of share (e."
-"g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list "
-"of available images is updated."
-msgstr ""
-"Jedes Festplatten-Image liegt einem so genannten Speicherbereich. Dies kann "
-"ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder eine "
-"Freigabe (beispielsweise eingebunden über iSCSI, NFS oder CIFS) sein. Wird "
-"ein Speicherbereich ausgewählt, wird die Liste der verfügbaren Festplatten-"
-"Images aktualisiert."
-
-#: wizards.py:228
-msgid ""
-"Each image is located within a so called storage pool, which might be a "
-"local directory, a device, an LVM volume or any type of share (e.g. mounted "
-"via iSCSI, NFS or CIFS). When selecting a storage pool the list of available "
-"images is updated."
-msgstr ""
-"Jedes Image liegt einem so genannten Speicherbereich. Dies kann ein lokales "
-"Verzeichnis, eine Festplatte, eine LVM-Partition oder eine Freigabe "
-"(beispielsweise eingebunden über iSCSI, NFS oder CIFS) sein. Wird ein "
-"Speicherbereich ausgewählt, wird die Liste der verfügbaren ISO-Images "
-"aktualisiert."
-
-#: wizards.py:243
+#: umc/python/uvmm/wizards.py:243
 #, python-format
 msgid "path: %(path)s"
 msgstr "Pfad: %(path)s"
 
-#: wizards.py:319
-msgid ""
-"If the required image is not found it might be added by copying the file "
-"into the storage pool, e.g. to /var/lib/libvirt/images/ which is the "
-"directory of the storage pool <i>local directory</i>. After that go to the "
-"previous page an return to this one. The image should now be listed."
-msgstr ""
-"Wenn das gewünschte Image nicht gefunden wird, kann dies in den "
-"Speicherbereich kopiert werden. Beispielsweise in das Verzeichnis /var/lib/"
-"libvirt/images welches den Speicherbereich <i>Lokales Verzeichnis</i> "
-"darstellt. Anschließend kann auf die vorherige Seite des Assistenten "
-"gewechselt und zu dieser wieder zurückgesprungen werden. Das neue ISO-Image "
-"sollte angezeigt werden."
-
-#: wizards.py:321
-msgid ""
-"The list of available images is empty! To add an image the file needs to be "
-"copied into the storage pool, e.g. to /var/lib/libvirt/images/ which is the "
-"directory of the storage pool <i>local directory</i>. After that go to the "
-"previous page an return to this one. The image should now be listed."
-msgstr ""
-"Die Liste der verfügbaren Image-Dateien ist leer! Um das gewünschte Image "
-"hinzuzufügen kann dies in den Speicherbereich kopiert werden. Beispielsweise "
-"in das Verzeichnis /var/lib/libvirt/images welches den Speicherbereich "
-"<i>Lokales Verzeichnis</i> darstellt. Anschließend kann auf die vorherige "
-"Seite des Assistenten gewechselt und zu dieser wieder zurückgesprungen "
-"werden. Die neue Image-Datei sollte angezeigt werden."
-
-#: wizards.py:355 wizards.py:851
-msgid "hard drive"
-msgstr "Festplatte"
-
-#: wizards.py:357 wizards.py:853
-msgid "CDROM drive"
-msgstr "CDROM-Laufwerk"
-
-#: wizards.py:359 wizards.py:855
-msgid "floppy drive"
-msgstr "Diskettenlaufwerk"
-
-#: wizards.py:446
-msgid "Image not found"
-msgstr "Image-Datei nicht gefunden"
-
-#: wizards.py:459 wizards.py:493
-msgid ""
-"The selected image is already used by this virtual instance and therefor can "
-"not be used."
-msgstr ""
-"Das ausgewählte Image wird bereits von dieser virtuellen Instanz verwendet "
-"und kann daher nicht verwendet werden."
-
-#: wizards.py:464
-#, python-format
-msgid ""
-"The selected image is already used by the virtual instance %(domain)s. It "
-"should be considered to choose another image. Continuing might cause "
-"problems."
-msgstr ""
-"Das ausgewählte Image wird bereits von der virtuellen Instanz %(domain)s "
-"verwendet. Es sollte eventuell ein anderes Image verwendet werden, da "
-"ansonsten Probleme nicht ausgeschlossen werden können."
-
-#: wizards.py:502
-#, python-format
-msgid ""
-"An image with this name already exists and is used by virtual instance %"
-"(domain)s. The name must be unique for a new image."
-msgstr ""
-"Ein Image mit diesem Namen existiert bereits und wird von der virtuellen "
-"Instanz %(domain)s verwendet. Der Name für ein neues Image muß eindeutig "
-"sein."
-
-#: wizards.py:504
-msgid ""
-"An unused image with this name already exists. The name must be unique for a "
-"new image."
-msgstr ""
-"Ein unbenutztes Image mit diesem Namen existiert bereits. Der Name für ein "
-"neues Image muß eindeutig sein."
-
-#: wizards.py:657
-msgid "Create new virtual instance"
-msgstr "Neue virtuelle Maschine erstellen"
-
-#: wizards.py:661
-msgid "Profiles"
-msgstr "Profile"
-
-#: wizards.py:670
-msgid ""
-"By selecting a profile for the virtual instance most of the settings will be "
-"set to default values. In the following steps some of these values might be "
-"modified. After the creation of the virtual instance all parameters, "
-"extended settings und attached drives can be adjusted. It should be ensured "
-"that the profile is for the correct architecture as this option can not be "
-"changed afterwards."
-msgstr ""
-"Durch die Auswahl eines Profils für eine virtuelle Instanz werden die "
-"meisten Einstellungen mit Vorgabewerten ausgefüllt. In den folgenden "
-"Schritten können diese angepasst werden. Nach der Erzeugung der virtuellen "
-"Instanz können alle Parameter, erweiterte Einstellungen und eingebundene "
-"Laufwerke auch nachträglich verändert werden. Es sollte sichergestellt "
-"werden, dass ein Profil mit der korrekten Architektur ausgewählt wird, da "
-"diese Option nachträglich nicht geändert werden kann."
-
-#: wizards.py:675
-msgid ""
-"The following settings were read from the selected profile and can be "
-"modified now."
-msgstr ""
-"Die folgenden Einstellungen wurden aus dem ausgewählten Profil gelesen und "
-"können nun angepasst werden."
-
-#: wizards.py:676 wizards.py:833
-msgid "Name"
-msgstr "Name"
-
-#: wizards.py:677 wizards.py:833
-msgid "Description"
-msgstr "Beschreibung"
-
-#: wizards.py:678
-msgid "Memory (in MB)"
-msgstr "Arbeitsspeicher (in MB)"
-
-#: wizards.py:679 wizards.py:833
-msgid "CPUs"
-msgstr "CPUs"
-
-#: wizards.py:680
-msgid "Enable direct access"
-msgstr "Direktzugriff aktivieren"
-
-#: wizards.py:684
-msgid ""
-"The virtual instance will be created with the settings shown below. The "
-"button <i>Add drive</i> can be used to attach another drive."
-msgstr ""
-"Die virtuelle Instanz wird mit den unten aufgeführten Einstellungen "
-"angelegt. Über die Schaltfläche <i>Laufwerk hinzufügen</i> kann ein weiteres "
-"Laufwerk eingebunden werden."
-
-#: wizards.py:701 wizards.py:825
-msgid "Create a virtual instance"
-msgstr "Erstellen einer virtuellen Instanz"
-
-#: wizards.py:704 wizards.py:822
-#, python-format
-msgid "Create a virtual instance (profile: %(profile)s)"
-msgstr "Erstellen einer virtuellen Instanz: (Profil: %(profile)s)"
-
-#: wizards.py:706
-#, python-format
-msgid "Create a virtual instance <i>%(name)s</i>"
-msgstr "Erstellen einer virtuellen Instanz <i>%(name)s</i>"
-
-#: wizards.py:728
-msgid ""
-"No profiles could be found! These are required to create new virtual "
-"instances. Ensure that the LDAP server can be reached."
-msgstr ""
-"Es konnte kein Profil gefunden werden! Diese werden benötigt, um neue "
-"virtuelle Instanzen anzulegen. Stellen Sie sicher, daß der LDAP-Server "
-"erreichbar ist."
-
-#: wizards.py:736
-msgid ""
-"The server does not have the virtualization extension (Intel VT or AMD-V). "
-"Only profiles using paravirtualization will work."
-msgstr ""
-"Der Server hat keine CPU mit Virtualisierungs-Erweiterung (Intel VT oder AMD-"
-"V). Nur Profile für Paravirtualisierung werden angezeigt."
-
-#: wizards.py:740
-msgid ""
-"The server does not have the virtualization extension (Intel VT or AMD-V). "
-"For virtualization with KVM this extension is required."
-msgstr ""
-"Der Server hat keine CPU mit Virtualisierungs-Erweiterung (Intel VT oder AMD-"
-"V). Für die Virtualisierung mit KVM wird eine Virtualisierungs-Erweiterung "
-"benötigt."
-
-#: wizards.py:744
-msgid ""
-"No profiles could be found! Please check your installation and run all join "
-"scripts, e.g. using univention-run-join-scripts."
-msgstr ""
-"Es wurden keine Profile gefunden. Bitte prüfen Sie Ihre Installation und "
-"führen Sie alle Joinskripte aus, z.B. mit Hilfe von univention-run-join-"
-"scripts."
-
-#: wizards.py:754
-msgid ""
-"The selected profile could not be read! Without the information the new "
-"virtual instance can not be created. Ensure that the LDAP server can be "
-"reached."
-msgstr ""
-"Das ausgewählte Profil konnte nicht gelesen werden! Ohne diese Information "
-"kann die neue Instanz nicht erstellt werden. Stellen Sie sicher, daß der "
-"LDAP-Server erreichbar ist."
-
-#: wizards.py:784
-msgid "The name of the virtual instance should be modified"
-msgstr "Der Name der virtuellen Instanz sollte angepasst werden"
-
-#: wizards.py:787
-#, python-format
-msgid ""
-"The name of a virtual instance may not be longer than %(maxlength)d "
-"characters!"
-msgstr ""
-"Der Name einer virtuellen Instanz darf maximal %(maxlength)d Zeichen haben!"
-
-#: wizards.py:790
-msgid ""
-"The chosen name for the virtual instance is not unique. Another one should "
-"be chosen."
-msgstr ""
-"Der gewählte Name ist nicht eindeutig, daher sollte ein anderer gewählt "
-"werden."
-
-#: wizards.py:792
-msgid ""
-"The chosen name for the virtual instance could not be checked for uniqueness."
-msgstr ""
-"Der gewählte Name für die virtuelle Instanz konnte nicht auf Eindeutigkeit "
-"überprüft werden."
-
-#: wizards.py:797
-msgid "A virtual instance must at least have 4 MB memory."
-msgstr "Eine virtuelle Instanz muss mindestens 4 MB Speicher haben."
-
-#: wizards.py:800
-#, python-format
-msgid ""
-"The physical server does not have that much memory. As a suggestion the a "
-"mount of memory was set to 75% of the available memory."
-msgstr ""
-"Der physikalische Server hat nicht so viel Arbeitspeicher. Als Vorschlag "
-"wurde die Speichermenge auf 75% des verfügbaren Arbeitsspeichers gesetzt."
-
-#: wizards.py:833
-msgid "Memory"
-msgstr "Speicher"
-
-#: wizards.py:839
-msgid "activated"
-msgstr "aktiviert"
-
-#: wizards.py:841
-msgid "deactivated"
-msgstr "deaktiviert"
-
-#: wizards.py:842
-msgid "Direct access"
-msgstr "Direktzugriff"
-
-#: wizards.py:845
-msgid "Attached drives"
-msgstr "Eingebundene Laufwerk"
-
-#: wizards.py:869
-#, python-format
-msgid "<li>%(type)s: %(size)s (image file %(image)s in pool %(pool)s)</li>"
-msgstr ""
-"<li>%(type)s: %(size)s (Image-Datei %(image)s im Speicherbereich %(pool)s)</"
-"li>"
-
-#: wizards.py:873
-#, python-format
-msgid "<li>%(type)s: local device %(device)s</li>"
-msgstr "<li>%(type)s: lokales Gerät %(device)s</li>"
-
-#: wizards.py:875
-#, python-format
-msgid "<li>%(type)s: empty device</li>"
-msgstr "<li>%(type)s: leeres Gerät</li>"
-
-#: wizards.py:952
-#, python-format
-msgid "Add drive to <i>%(name)s</i>"
-msgstr "Laufwerk zu <i>%(name)s</i> hinzufügen"
+#: umc/python/uvmm/wizards.py:361 umc/python/uvmm/wizards.py:857
+#: umc/python/uvmm/drive.py:257
+msgid "unknown"
+msgstr "Unbekannt"

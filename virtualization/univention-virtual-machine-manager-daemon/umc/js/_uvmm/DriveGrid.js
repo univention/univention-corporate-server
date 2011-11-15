@@ -43,19 +43,19 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 				label: this._('Pool')
 			}],
 			actions: [{
-			/*	name: 'delete',
+				name: 'delete',
 				label: this._('Delete'),
-				isMultiAction: true,
-				isStandardAction: true,
-				iconClass: 'umcIconDelete',
-				callback: dojo.hitch(this, '_deleteSnapshots')
-			}, {
-				name: 'revert',
-				label: this._('Revert'),
 				isMultiAction: false,
 				isStandardAction: true,
-				callback: dojo.hitch(this, '_revertSnapshot')
-			}, {*/
+				iconClass: 'umcIconDelete',
+				callback: dojo.hitch(this, '_removeDrive')
+			},/* {
+				name: 'edit',
+				label: this._('Edit'),
+				isMultiAction: false,
+				isStandardAction: true,
+				callback: dojo.hitch(this, '_edit Drive')
+			}, */ {
 				name: 'add',
 				label: this._('Add drive'),
 				isMultiAction: false,
@@ -64,6 +64,68 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 				callback: dojo.hitch(this, '_addDrive')
 			}]
 		});
+	},
+
+	_removeDrive: function( ids, items ) { 
+		var disk = items[ 0 ];
+
+		var buttons = [ {
+			name: 'detach',
+			label: this._('Detach')
+		}, {
+			name: 'delete',
+			label: this._('Delete')
+		}, {
+			name: 'cancel',
+			'default': true,
+			label: this._('Cancel')
+		} ];
+
+		// confirm removal of drive
+		var msg = this._( 'Should the selected drive be deleted or detached from the virtual instance?' );
+		// chain the UMCP commands for removing the drive
+		var deferred = new dojo.Deferred();
+		deferred.resolve();
+		deferred = deferred.then( dojo.hitch( this, function() {
+			return umc.tools.umcpCommand('uvmm/storage/volume/deletable', {
+				domainURI: this.domain.domainURI,
+				volumeFilename: disk.volumeFilename,
+				pool: disk.pool
+			} );
+		} ) );
+		deferred = deferred.then( dojo.hitch( this, function( response ) {
+			if ( disk.device == 'cdrom' ) {
+				msg += ' ' + this._( 'The selected drive is a CD-ROM and should be detached from the virtual instance. If the volume is delete no other instance can use it anymore.' );
+			} else if ( ! response.result ) {
+				msg += ' ' + this._( 'The selected drive seems to be attached to other virtual instances and therefor should not be deleted.' );
+			}
+			return umc.dialog.confirm( msg, buttons );
+		} ) );
+
+		deferred = deferred.then( dojo.hitch( this, function( action ) {
+			if ( action != 'delete' & action != 'detach' ) { 
+				return;
+			}
+			this.onUpdateProgress( 0, 1 );
+
+			// detach the drive from the domain
+			this.moduleStore.remove( ids[ 0 ] );
+
+			if ( action == 'delete' ) {
+				umc.tools.umcpCommand('uvmm/storage/volume/remove', {
+					nodeURI: this.domain.domainURI.slice( 0, this.domain.domainURI.indexOf( '#' ) ),
+					volumes: [ { pool: disk.pool, volumeFilename: disk.volumeFilename } ],
+				pool: disk.pool
+				} ).then( dojo.hitch( this, function( response ) {
+					this.onUpdateProgress( 1, 1 );
+					this.moduleStore.onChange();
+					console.log( response.result );
+				} ) );
+			} else {
+				this.onUpdateProgress( 1, 1 );
+				this.moduleStore.onChange();
+			}
+		} ) );
 	},
 
 	_addDrive: function() {
