@@ -1,3 +1,11 @@
+univention-samba4 (1.0.105-1) unstable; urgency=low
+
+  * merge additional code from univention-samba joinscript (Bug #22865):
+  * print driver directory creation
+  * share container creation
+
+ -- Arvid Requate <requate@univention.de>  Tue, 15 Nov 2011 13:09:56 +0100
+
 univention-samba4 (1.0.104-1) unstable; urgency=low
 
   * Force group for sysvol to Authenticated Users (Bug #24288)
