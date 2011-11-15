@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.233-1) unstable; urgency=low
+
+  * add scrollbars to license dialog; Bug #23655
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 15 Nov 2011 14:08:54 +0100
+
 univention-management-console-module-udm (1.0.232-1) unstable; urgency=low
 
   * license: subtract system accounts; Bug #23655

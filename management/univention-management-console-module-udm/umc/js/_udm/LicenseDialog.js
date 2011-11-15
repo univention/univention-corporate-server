@@ -22,7 +22,7 @@ dojo.declare('umc.modules._udm.LicenseDialog', [ dijit.Dialog, umc.widgets.Stand
 	// the widget's class name as CSS class
 	'class': 'umcPopup',
 
-	style: 'width: 600px',
+	style: 'width: 600px;',
 
 	_widgets: null,
 
@@ -123,9 +123,14 @@ dojo.declare('umc.modules._udm.LicenseDialog', [ dijit.Dialog, umc.widgets.Stand
 		var _buttons = umc.render.buttons( buttons );
 		var _container = umc.render.layout( [ 'message', 'titleImport', [ 'licenseText', 'btnLicenseText' ], 'ffpu' ], this._widgets, _buttons );
 
+		var _content = new umc.widgets.ContainerWidget( {
+			scrollable: true,
+			style: 'max-height: 500px'
+		} );
+		_content.addChild( _container );
 		// put the layout together
 		this._container = new umc.widgets.ContainerWidget();
-		this._container.addChild( _container );
+		this._container.addChild( _content );
 		this._container.addChild( _buttonContainer );
 		this._container.startup();
 
