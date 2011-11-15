@@ -254,7 +254,6 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 
 				if returncode:
 					dprint(silent, 'exitcode of apt-get dist-upgrade: %s' % returncode, debug=True)
-					dprint(stderr, debug=True)
 					dprint(silent, 'ERROR: update failed. Please check /var/log/univention/updater.log\n')
 					update_status( status='FAILED', errorsource='UPDATE' )
 					sys.exit(1)
