@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.32 (2.0.0-12) unstable; urgency=low
+
+  * Re-add KVM reboot fix (Bug #23258)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 15 Nov 2011 15:24:01 +0100
+
 univention-kernel-image-2.6.32 (2.0.0-11) unstable; urgency=low
 
   * Do not depend on firmware-ivtv and firmware-ipw2x00 any more (Bug #22508)
