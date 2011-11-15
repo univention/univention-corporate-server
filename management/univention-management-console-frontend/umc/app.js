@@ -181,7 +181,9 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	},
 
 	focusTab: function(tab) {
-		this._tabContainer.selectChild(tab, true);
+		if (dojo.indexOf(this._tabContainer.getChildren(), tab) >= 0) {
+			this._tabContainer.selectChild(tab, true);
+		}
 	},
 
 	closeTab: function(tab, /*Boolean?*/ destroy) {

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-14 17:22+0100\n"
+"POT-Creation-Date: 2011-11-15 16:31+0100\n"
 "PO-Revision-Date: 2011-11-01 20:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,11 +31,11 @@ msgstr "%d Einträge von %d ausgewählt"
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
 
-#: umc/about.js:26 umc/app.js:433
+#: umc/about.js:26 umc/app.js:435
 msgid "About UMC"
 msgstr "Über UMC"
 
-#: umc/widgets/UnixAccessRights.js:67
+#: umc/widgets/UnixAccessRights.js:68
 msgid "Access"
 msgstr "Zugriff"
 
@@ -80,7 +80,7 @@ msgid "Back"
 msgstr "Zurück"
 
 #: umc/widgets/MultiObjectSelect.js:256 umc/widgets/Wizard.js:56
-#: umc/app.js:521
+#: umc/app.js:523
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -92,7 +92,7 @@ msgstr "Schließen"
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:485
+#: umc/app.js:487
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -108,7 +108,7 @@ msgstr "Die Anfrage konnte nicht bearbeitet werden."
 msgid "Current manual (PDF)"
 msgstr "Aktuelles Handbuch (PDF)"
 
-#: umc/app.js:513
+#: umc/app.js:515
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
@@ -124,7 +124,7 @@ msgstr "Beenden"
 msgid "German"
 msgstr "Deutsch"
 
-#: umc/widgets/UnixAccessRights.js:44
+#: umc/widgets/UnixAccessRights.js:45
 msgid "Group"
 msgstr "Gruppe"
 
@@ -138,11 +138,11 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/help.js:30 umc/app.js:415
+#: umc/help.js:30 umc/app.js:417
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/app.js:465
+#: umc/app.js:467
 #, python-format
 msgid "Host: %(host)s.%(domain)s"
 msgstr ""
@@ -196,7 +196,7 @@ msgstr "Interner Server-Fehler: Der Dienst is momentan nicht erreichbar!"
 msgid "Language"
 msgstr "Sprache"
 
-#: umc/app.js:423
+#: umc/app.js:425
 msgid "License"
 msgstr "Lizenz"
 
@@ -209,7 +209,7 @@ msgstr "Anmelden"
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:514
+#: umc/app.js:516
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -217,7 +217,7 @@ msgstr "Abmelden"
 msgid "Manual and documentation"
 msgstr "Handbücher und Dokumentation"
 
-#: umc/app.js:493
+#: umc/app.js:495
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
@@ -245,15 +245,15 @@ msgstr "Hinweis"
 msgid "Ok"
 msgstr "Ok"
 
-#: umc/widgets/UnixAccessRights.js:45
+#: umc/widgets/UnixAccessRights.js:46
 msgid "Others"
 msgstr "Andere"
 
-#: umc/app.js:352 umc/app.js:353
+#: umc/app.js:354 umc/app.js:355
 msgid "Overview"
 msgstr "Übersicht"
 
-#: umc/widgets/UnixAccessRights.js:43
+#: umc/widgets/UnixAccessRights.js:44
 msgid "Owner"
 msgstr "Besitzer"
 
@@ -261,7 +261,7 @@ msgstr "Besitzer"
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/widgets/UnixAccessRights.js:57
+#: umc/widgets/UnixAccessRights.js:58
 msgid "Read"
 msgstr "Lesen"
 
@@ -297,7 +297,7 @@ msgstr "Weiterführende Informationen"
 msgid "Support and assistance"
 msgstr "Unterstützung und Support"
 
-#: umc/app.js:364
+#: umc/app.js:366
 #, python-format
 msgid "The SSL certificate will expire in %d days and should be renewed!"
 msgstr ""
@@ -334,7 +334,7 @@ msgstr ""
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
-#: umc/app.js:478
+#: umc/app.js:480
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -374,7 +374,7 @@ msgstr ""
 "oder\n"
 "Administration unterstützen."
 
-#: umc/app.js:355
+#: umc/app.js:357
 msgid ""
 "Univention Management Console is a modularly designed, web-based application "
 "for the administration of objects in your Univention Corporate Server domain "
@@ -384,7 +384,7 @@ msgstr ""
 "die Administrierung von Objekten in der Univention-Corporate-Server-Domäne "
 "und individueller Univention-Corporate-Server-Systeme."
 
-#: umc/app.js:442
+#: umc/app.js:444
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
@@ -404,7 +404,7 @@ msgstr "Univention Supportdatenbank (SDB)"
 msgid "Univention wiki site"
 msgstr "Univention Webseite"
 
-#: umc/app.js:502
+#: umc/app.js:504
 #, python-format
 msgid "User: %s"
 msgstr "Benutzer: %s"
@@ -450,7 +450,7 @@ msgstr ""
 "Willkommen bei Univention Management Console. Bitte geben Sie Benutzername "
 "und Passwort Ihres Domänen-Kontos an."
 
-#: umc/widgets/UnixAccessRights.js:62
+#: umc/widgets/UnixAccessRights.js:63
 msgid "Write"
 msgstr "Schreiben"
 

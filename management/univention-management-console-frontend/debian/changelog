@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.202-1) unstable; urgency=low
+
+  * umc.app.focusTab(): make sure that the specified tab is valid (Bug #24622)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 15 Nov 2011 16:32:03 +0100
+
 univention-management-console-frontend (1.0.201-1) unstable; urgency=low
 
   * Grid: fixed rendering problem of grids after sending a query (Bug #23517)
