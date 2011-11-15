@@ -1,3 +1,9 @@
+univention-installer (7.0.146-1) unstable; urgency=low
+
+  * added profile option "create_partitiontable" (Bug #24629)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 15 Nov 2011 18:56:55 +0100
+
 univention-installer (7.0.145-1) unstable; urgency=low
 
   * renamed bootloader_device to bootloader_record  (Bug #24494)

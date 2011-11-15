@@ -710,6 +710,12 @@ class object(content):
 		# create disk list with usb storage devices
 		disklist_usbstorage = self.get_usb_storage_device_list()
 
+		if 'create_partitiontable' in self.all_results:
+			for dev in re.split('[\s,]+', self.all_results.get('create_partitiontable','')):
+				dev = dev.strip()
+				if dev:
+					self.install_fresh_mbr(dev)
+
 		if 'auto_part' in self.all_results.keys():
 			self.debug('read_profile: auto_part key found: %s' % self.all_results['auto_part'])
 			if self.all_results['auto_part'] in [ 'full_disk' ]:
@@ -1836,6 +1842,20 @@ class object(content):
 			i += 1
 		return result
 
+	def install_fresh_mbr(self, device=None):
+		self.debug('Trying to install fresh partition table on device %s' % device)
+		if not os.path.exists(device):
+			self.debug('ERROR: device %s does not exist!' % device)
+		else:
+			command = ['/sbin/parted', '-s', device, 'mklabel', 'msdos']
+			self.debug('Calling %s' % command)
+			proc = subprocess.Popen(command, bufsize=0, shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			(stdout, stderr) = proc.communicate()
+			self.debug('===(exitcode=%d)====> %s\nSTDERR:\n=> %s\nSTDOUT:\n=> %s' %
+							  (proc.returncode, command, stderr.replace('\n','\n=> '), stdout.replace('\n','\n=> ')))
+
+
+
 	class partition(subwin):
 
 		def __init__(self,parent,pos_y,pos_x,width,height):
@@ -2068,17 +2088,8 @@ class object(content):
 					self.sub = msg_win(self,self.pos_y+11,self.pos_x+5,self.maxWidth,6, msglist)
 					self.draw()
 
-		def install_fresh_mbr(self, result, device=None):
-			self.parent.debug('Trying to install fresh MBR on device %s' % device)
-			if not os.path.exists(device):
-				self.parent.debug('ERROR: device %s does not exist!' % device)
-			else:
-				command = ['/sbin/parted', '-s', device, 'mklabel', 'msdos']
-				self.parent.debug('Calling %s' % command)
-				proc = subprocess.Popen(command,bufsize=0,shell=False,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-				(stdout, stderr) = proc.communicate()
-				self.parent.debug('===(exitcode=%d)====> %s\nSTDERR:\n=> %s\nSTDOUT:\n=> %s' %
-										 (proc.returncode, command, stderr.replace('\n','\n=> '), stdout.replace('\n','\n=> ')))
+		def install_fresh_mbr_interactive(self, result, device=None):
+			self.parent.install_fresh_mbr(device)
 			self.container['problemdisk'][device].discard(DISKLABEL_UNKNOWN)
 			self.container['problemdisk'][device].discard(DISKLABEL_GPT)
 			self.parent.debug('performing restart of module')
@@ -2112,7 +2123,7 @@ class object(content):
 							  ]
 					self.sub = yes_no_win(self, self.pos_y+9, self.pos_x+2, self.width-4, self.height-25, msglist, default='no',
 										  btn_name_yes=_('Write MBR'), btn_name_no=_('Ignore Device'),
-										  callback_yes=self.install_fresh_mbr, device=dev)
+										  callback_yes=self.install_fresh_mbr_interactive, device=dev)
 					self.draw()
 					self.container['problemdisk'][dev].discard(DISKLABEL_UNKNOWN)
 					break
@@ -2136,7 +2147,7 @@ class object(content):
 							  ]
 					self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+2, self.width-4, self.height-25, msglist, default='no',
 										  btn_name_yes=_('Write MBR'), btn_name_no=_('Ignore Device'),
-										  callback_yes=self.install_fresh_mbr, device=dev)
+										  callback_yes=self.install_fresh_mbr_interactive, device=dev)
 					self.draw()
 					self.container['problemdisk'][dev].discard(DISKLABEL_GPT)
 					break
