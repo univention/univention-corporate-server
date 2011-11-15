@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.203-1) unstable; urgency=low
+
+  * help: depending on the current language link to the german or english
+    (fallback) contact formular; Bug #24634
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 15 Nov 2011 19:08:06 +0100
+
 univention-management-console-frontend (1.0.202-1) unstable; urgency=low
 
   * umc.app.focusTab(): make sure that the specified tab is valid (Bug #24622)
