@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.181-1) unstable; urgency=low
+
+  * Re-added lease_time_default to policies/dhcp_leasetime.py
+    (Bug #24602)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Nov 2011 22:50:34 +0100
+
 univention-directory-manager-modules (7.0.180-1) unstable; urgency=low
 
   * Re-added broadcast and range to the dhcp subnet (Bug #24595)

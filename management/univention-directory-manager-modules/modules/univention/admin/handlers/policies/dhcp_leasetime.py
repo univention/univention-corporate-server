@@ -148,7 +148,9 @@ layout = [
 	Tab(_('Lease Time'), _('DHCP lease time'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
-			[ 'lease_time_max', 'lease_time_min' ],
+			'lease_time_default',
+			'lease_time_min',
+			'lease_time_max',
 		] ),
 	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
