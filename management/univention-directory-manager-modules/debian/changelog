@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.180-1) unstable; urgency=low
+
+  * Re-added broadcast and range to the dhcp subnet (Bug #24595)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Nov 2011 22:45:22 +0100
+
 univention-directory-manager-modules (7.0.179-1) unstable; urgency=low
 
   * license: always set LDAP base; Bug #23655
