@@ -1,3 +1,9 @@
+univention-updater (7.0.97-1) unstable; urgency=low
+
+  * abort update if univention-fax-.* is installed (Bug #24619)
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 Nov 2011 17:00:44 +0100
+
 univention-updater (7.0.96-3) unstable; urgency=low
 
   * Alternative Squid transition fix (Bug #22576)

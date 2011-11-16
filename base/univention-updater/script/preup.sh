@@ -238,6 +238,48 @@ if [ ! "$update_customatts_check" = "no" -a ! "$update_customatts_check" = "fals
 	fi
 fi
 
+# BEGIN update to 3.0-0 Bug #24619
+# check if univention-fax-* is installed
+if [ ! "$update_fax_check" = "no" -a ! "$update_fax_check" = "false" -a ! "$update_fax_check" = "1" ]; then
+	fax_is_installed=false
+	for package in univention-fax-common univention-fax-client univention-fax-server; do
+		dpkgQuery="$(dpkg-query -W -f='${Status}\n' $package 2>/dev/null)"
+		if [ "$dpkgQuery" = "install ok installed" -o "$dpkgQuery" = "hold ok installed" ]; then
+			fax_is_installed=true
+		fi
+	done
+	if [ "$fax_is_installed" = "true" ]; then
+
+		# There are no *.debian files for 
+		# /etc/default/hylafax 
+		# /etc/init.d/hylafax 
+		# and after removing univention-fax-server these files
+		# are gone. This breaks the update. 
+		if [ -e "/etc/init.d/hylafax" -a ! -e "/etc/init.d/hylafax.debian" ]; then
+			cp /etc/init.d/hylafax /etc/init.d/hylafax.debian
+		fi
+		if [ -e "/etc/default/hylafax" -a ! -e "/etc/default/hylafax.debian" ]; then
+			cp /etc/default/hylafax /etc/default/hylafax.debian
+		fi
+
+		echo "WARNING: univention-fax-* packages are installed!"
+		echo
+		echo "UCS 3.0 no longer provides these packages:"
+		echo
+		echo "   * univention-fax-common"
+		echo "   * univention-fax-client"
+		echo "   * univention-fax-server"
+		echo 
+		echo "Please remove those packages in order to upgrade the system to UCS"
+		echo "3.0. The update process will stop here."
+		echo
+		echo "This check can be disabled by setting the Univention Configuration Registry"
+		echo "variable \"update/fax/check\" to \"no\"."
+	fi
+fi
+
+# END update to 3.0-0 Bug #24619
+
 # update to 3.0-0 Bug #23063
 # check if lilo or univention-lilo is installed and exit
 if [ ! "$update_lilo_check" = "no" -a ! "$update_lilo_check" = "false" -a ! "$update_lilo_check" = "1" ]; then
