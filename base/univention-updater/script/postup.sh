@@ -99,6 +99,9 @@ else
 	echo "dash install" | dpkg --set-selections
 fi
 
+
+
+
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes dist-upgrade >>"$UPDATER_LOG" 2>&1
 
 # # https://forge.univention.org/bugzilla/show_bug.cgi?id=18529
@@ -122,8 +125,9 @@ if dpkg -l lilo 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
 fi
 
 # univention-squid might be held back due squid still being installed
-if dpkg -s squid 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
-    install univention-squid  >>"$UPDATER_LOG" 2>&1
+if [ "$update30_squidpresent" = "true" ]; then
+    univention-install univention-squid  >>"$UPDATER_LOG" 2>&1
+    univention-config-registry unset update30/squidpresent >>"$UPDATER_LOG" 2>&1
 fi
 
 # remove obsolte packages, no more required after UCS 3.0-0 update

@@ -472,6 +472,10 @@ else
 	echo "dash hold" | dpkg --set-selections
 fi
 
+# Test, whether Squid is installed, so that it can be re
+if [ "$(dpkg-query -W -f='${Status}\n' squid 2>/dev/null)" = "install ok installed" ]; then
+	univention-config-registry set update30/squidpresent=true >>"$UPDATER_LOG" 2>&1
+fi
 
 # call custom preup script if configured
 if [ ! -z "$update_custom_preup" ]; then
