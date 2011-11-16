@@ -292,9 +292,6 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 					// add callback handler
 					if (iaction.callback) {
 						props.onClick = dojo.hitch(this, function() {
-							if ( this.disabled ) {
-								return;
-							}
 							iaction.callback([key], [item]);
 						});
 					}
@@ -579,20 +576,25 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		}
 	},
 
+	_disableAllItems: function( disable ) {
+		var items = this.getAllItems();
+		dojo.forEach( items, dojo.hitch( this, function( iitem ) {
+			var idx = this.getItemIndex( iitem[ this.moduleStore.idProperty ] );
+			if (idx >= 0) {
+				this._grid.rowSelectCell.setDisabled( idx, undefined === disable ? true : disable );
+			}
+		} ) );
+		this._grid.render();
+	},
+
 	_setDisabledAttr: function( value ) {
 		this.disabled = value;
 
 		// disable items
-		if ( value ) {
-			this._disabledIDs = {};
-			var items = this.getAllItems();
-			dojo.forEach( items, dojo.hitch( this, function( iitem ) {
-				this._disabledIDs[ iitem[ this.moduleStore.idProperty ] ] = true;
-			} ) );
-			this._updateDisabledItems();
-		} else {
-			this.clearDisabledItems();
-		}
+		this._disableAllItems( value );
+		// re-disable explicitly disabled items
+		this._updateDisabledItems();
+
 		// disable actions in footer
 		dojo.forEach( this._footerCells, dojo.hitch( this, function( cell ) {
 			var widget = cell.getChildren()[ 0 ];
@@ -868,7 +870,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		//		Returns the index of the given item specified by its ID.
 		//		In case the item could not be resolved, returns -1.
 		// id: String
-		
+
 		var item = this.getItem(id);
 		if (!item) {
 			return -1;
