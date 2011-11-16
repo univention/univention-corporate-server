@@ -159,8 +159,10 @@ layout = [
 	Tab(_('General'),_('Passwords'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
-			[ 'length', 'expiryInterval' ],
-			[ 'pwLength', 'pwQualityCheck' ]
+			'pwLength',
+			'expiryInterval',
+			'length',
+			'pwQualityCheck',
 		] ),
 	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [

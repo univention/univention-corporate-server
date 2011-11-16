@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.183-1) unstable; urgency=low
+
+  * Re-organize layout for policies/pwhistory (Bug #23709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Nov 2011 17:56:48 +0100
+
 univention-directory-manager-modules (7.0.182-2) unstable; urgency=low
 
   * Fixed layout typos (Bug #24651)
