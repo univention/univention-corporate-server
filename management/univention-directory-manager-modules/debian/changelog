@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.185-1) unstable; urgency=low
+
+  * dns/reverse_zone: remove empty tab nameserver; Bug #24637
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 16 Nov 2011 22:57:03 +0100
+
 univention-directory-manager-modules (7.0.184-1) unstable; urgency=low
 
   * Removed unused file univention-user-passwd (Bug #22431)

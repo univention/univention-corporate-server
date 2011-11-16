@@ -161,14 +161,10 @@ layout = [
 	Tab(_('Start of Authority'), _('Primary name server information'), layout = [
 		Group( _( 'General' ), layout = [
 			'contact',
-			['nameserver', 'serial'],
+			'nameserver',
+			'serial',
 			['refresh', 'retry'],
 			['expire', 'ttl']
-		] ),
-	] ),
-	Tab(_('Name servers'), _('Additional name servers'), layout = [
-		Group( _( 'Name servers' ), layout = [
-			'nameserver'
 		] ),
 	] )
 ]
