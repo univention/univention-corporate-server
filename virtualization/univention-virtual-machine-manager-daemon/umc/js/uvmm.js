@@ -88,117 +88,6 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// add data grid
 		//
 
-		// define actions
-		// STATES = ( 'NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED' )
-		var types = umc.modules._uvmm.types;
-		var actions = [{
-			name: 'edit',
-			label: this._( 'Edit' ),
-			isStandardAction: true,
-			isMultiAction: false,
-			iconClass: 'umcIconEdit',
-			description: this._( 'Edit the configuration of the virtual instance' ),
-			callback: dojo.hitch(this, 'openDomainPage')
-		}, {
-			name: 'start',
-			label: this._( 'Start' ),
-			iconClass: 'umcIconPlay',
-			description: this._( 'Start the virtual instance' ),
-			isStandardAction: true,
-			isMultiAction: true,
-			callback: dojo.hitch(this, '_changeState', 'RUN'),
-			canExecute: function(item) {
-				return item.state != 'RUNNING' && item.state != 'IDLE';
-			}
-		}, {
-			name: 'stop',
-			label: this._( 'Stop' ),
-			iconClass: 'umcIconStop',
-			description: this._( 'Shut off the virtual instance' ),
-			isStandardAction: false,
-			isMultiAction: true,
-			callback: dojo.hitch(this, '_changeState', 'SHUTDOWN'),
-			canExecute: function(item) {
-				return item.state == 'RUNNING' || item.state == 'IDLE';
-			}
-		}, {
-			name: 'pause',
-			label: this._( 'Pause' ),
-			iconClass: 'umcIconPause',
-			isStandardAction: false,
-			isMultiAction: true,
-			callback: dojo.hitch(this, '_changeState', 'PAUSE'),
-			canExecute: function(item) {
-				return item.state == 'RUNNING' || item.state == 'IDLE';
-			}
-		}, {
- 			name: 'suspend',
- 			label: this._( 'Save & Stop' ),
- 			// iconClass: 'umcIconPause',
- 			isStandardAction: false,
- 			isMultiAction: true,
- 			callback: dojo.hitch(this, '_changeState', 'SUSPEND'),
- 			canExecute: function(item) {
- 				return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && types.getNodeType( item.id ) == 'qemu';
- 			}
- 		}, {
-			name: 'restart',
-			label: this._( 'Restart' ),
-			isStandardAction: false,
-			isMultiAction: true,
-			callback: dojo.hitch(this, '_changeState', 'RESTART'),
-			canExecute: function(item) {
-				return item.state == 'RUNNING' || item.state == 'IDLE';
-			}
-		}, {
-			name: 'clone',
-			label: this._( 'Clone' ),
-			isStandardAction: false,
-			isMultiAction: false,
-			callback: dojo.hitch(this, '_cloneDomain' ),
-			canExecute: function(item) {
-				return item.state == 'SHUTOFF';
-			}
-		}, {
-			name: 'vnc',
-			label: this._( 'View' ),
-			isStandardAction: true,
-			isMultiAction: false,
-			iconClass: 'umcIconView',
-			description: dojo.hitch( this, function( item ) {
-				return dojo.replace( this._( 'Open a view to the virtual instance {label} on {nodeName}' ), item );
-			} ),
-			callback: dojo.hitch(this, 'vncLink' ),
-			canExecute: function(item) {
-				return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && item.vnc;
-			}
-		}, {
-			name: 'migrate',
-			label: this._( 'Migrate' ),
-			isStandardAction: false,
-			isMultiAction: true,
-			callback: dojo.hitch(this, '_migrateDomain' ),
-			canExecute: function(item) {
-				return item.state != 'PAUSE'; // FIXME need to find out if there are more than one node of this type
-			}
-		}, {
-			name: 'remove',
-			label: this._( 'Remove' ),
-			isStandardAction: false,
-			isMultiAction: false,
-			callback: dojo.hitch(this, '_removeDomain' ),
-			canExecute: function(item) {
-				return item.state == 'SHUTOFF';
-			}
-		}, {
-			name: 'add',
-			label: this._( 'Create virtual instance' ),
-			iconClass: 'umcIconAdd',
-			isMultiAction: false,
-			isContextAction: false,
-			callback: dojo.hitch(this, '_addDomain' )
-		}];
-
 		// search widgets
 		var widgets = [{
 			type: 'ComboBox',
@@ -231,7 +120,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._finishedDeferred.then( dojo.hitch( this, function( ucr ) {
 			this._grid = new umc.widgets.Grid({
 				region: 'center',
-				actions: actions,
+				actions: this._getGridActions('domain'),
 				actionLabel: ucr[ 'uvmm/umc/action/label' ] != 'no', // hide labels of action columns
 				columns: this._getGridColumns('domain'),
 				moduleStore: this.moduleStore
@@ -663,6 +552,125 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}];
 	},
 
+	_getGridActions: function(type) {
+		var types = umc.modules._uvmm.types;
+
+		if (type == 'node') {
+			// we do not have any actions for nodes
+			return [];
+		}
+
+		// else type == 'domain'
+		// STATES = ( 'NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED' )
+		return [{
+			name: 'edit',
+			label: this._( 'Edit' ),
+			isStandardAction: true,
+			isMultiAction: false,
+			iconClass: 'umcIconEdit',
+			description: this._( 'Edit the configuration of the virtual instance' ),
+			callback: dojo.hitch(this, 'openDomainPage')
+		}, {
+			name: 'start',
+			label: this._( 'Start' ),
+			iconClass: 'umcIconPlay',
+			description: this._( 'Start the virtual instance' ),
+			isStandardAction: true,
+			isMultiAction: true,
+			callback: dojo.hitch(this, '_changeState', 'RUN'),
+			canExecute: function(item) {
+				return item.state != 'RUNNING' && item.state != 'IDLE';
+			}
+		}, {
+			name: 'stop',
+			label: this._( 'Stop' ),
+			iconClass: 'umcIconStop',
+			description: this._( 'Shut off the virtual instance' ),
+			isStandardAction: false,
+			isMultiAction: true,
+			callback: dojo.hitch(this, '_changeState', 'SHUTDOWN'),
+			canExecute: function(item) {
+				return item.state == 'RUNNING' || item.state == 'IDLE';
+			}
+		}, {
+			name: 'pause',
+			label: this._( 'Pause' ),
+			iconClass: 'umcIconPause',
+			isStandardAction: false,
+			isMultiAction: true,
+			callback: dojo.hitch(this, '_changeState', 'PAUSE'),
+			canExecute: function(item) {
+				return item.state == 'RUNNING' || item.state == 'IDLE';
+			}
+		}, {
+ 			name: 'suspend',
+ 			label: this._( 'Save & Stop' ),
+ 			// iconClass: 'umcIconPause',
+ 			isStandardAction: false,
+ 			isMultiAction: true,
+ 			callback: dojo.hitch(this, '_changeState', 'SUSPEND'),
+ 			canExecute: function(item) {
+ 				return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && types.getNodeType( item.id ) == 'qemu';
+ 			}
+ 		}, {
+			name: 'restart',
+			label: this._( 'Restart' ),
+			isStandardAction: false,
+			isMultiAction: true,
+			callback: dojo.hitch(this, '_changeState', 'RESTART'),
+			canExecute: function(item) {
+				return item.state == 'RUNNING' || item.state == 'IDLE';
+			}
+		}, {
+			name: 'clone',
+			label: this._( 'Clone' ),
+			isStandardAction: false,
+			isMultiAction: false,
+			callback: dojo.hitch(this, '_cloneDomain' ),
+			canExecute: function(item) {
+				return item.state == 'SHUTOFF';
+			}
+		}, {
+			name: 'vnc',
+			label: this._( 'View' ),
+			isStandardAction: true,
+			isMultiAction: false,
+			iconClass: 'umcIconView',
+			description: dojo.hitch( this, function( item ) {
+				return dojo.replace( this._( 'Open a view to the virtual instance {label} on {nodeName}' ), item );
+			} ),
+			callback: dojo.hitch(this, 'vncLink' ),
+			canExecute: function(item) {
+				return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && item.vnc;
+			}
+		}, {
+			name: 'migrate',
+			label: this._( 'Migrate' ),
+			isStandardAction: false,
+			isMultiAction: true,
+			callback: dojo.hitch(this, '_migrateDomain' ),
+			canExecute: function(item) {
+				return item.state != 'PAUSE'; // FIXME need to find out if there are more than one node of this type
+			}
+		}, {
+			name: 'remove',
+			label: this._( 'Remove' ),
+			isStandardAction: false,
+			isMultiAction: false,
+			callback: dojo.hitch(this, '_removeDomain' ),
+			canExecute: function(item) {
+				return item.state == 'SHUTOFF';
+			}
+		}, {
+			name: 'add',
+			label: this._( 'Create virtual instance' ),
+			iconClass: 'umcIconAdd',
+			isMultiAction: false,
+			isContextAction: false,
+			callback: dojo.hitch(this, '_addDomain' )
+		}];
+	},
+
 	cpuUsageFormatter: function(id, rowIndex) {
 		// summary:
 		//		Formatter method for cpu usage.
@@ -793,7 +801,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._grid.filter(vals);
 
 		// update the grid columns
-		this._grid.set('columns', this._getGridColumns(vals.type));
+		this._grid.setColumnsAndActions(this._getGridColumns(vals.type), this._getGridActions(vals.type));
 	},
 
 	updateProgress: function(i, n) {
