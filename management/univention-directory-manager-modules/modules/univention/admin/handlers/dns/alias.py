@@ -88,7 +88,7 @@ layout = [
 	Tab(_('General'), _('Basic settings'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
-			'zonettl'
+			'zonettl',
 			'cname'
 		] ),
 	] )

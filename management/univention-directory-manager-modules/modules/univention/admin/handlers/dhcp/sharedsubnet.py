@@ -99,7 +99,7 @@ layout = [
 	Tab(_('General'), _('Basic settings'), layout = [
 		Group( _( 'General' ), layout = [
 			[ 'subnet', 'subnetmask' ],
-			'broadcastaddress'
+			'broadcastaddress',
 			'range'
 		] ),
 	] ),
