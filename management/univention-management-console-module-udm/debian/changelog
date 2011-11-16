@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.235-1) unstable; urgency=low
+
+  * activate apache site for UDM (Bug #24577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 16 Nov 2011 10:37:09 +0100
+
 univention-management-console-module-udm (1.0.234-1) unstable; urgency=low
 
   * fix traceback and typo in univention-directory-reports-cleanup; Bug #24614

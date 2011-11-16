@@ -132,6 +132,7 @@ univention-config-registry set directory/manager/web/modules/groups/group/checks
 	directory/manager/web/update/available/groups?"Domain Admins"
 
 # activate new sites
+a2ensite univention-directory-manager
 invoke-rc.d apache2 restart
 
 exit 0
