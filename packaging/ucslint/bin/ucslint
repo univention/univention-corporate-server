@@ -252,7 +252,11 @@ if __name__ == '__main__':
 		print "ERROR: %s/debian does not exist or is not a directory!" % pkgpath
 		sys.exit(1)
 
-	plugindirs = [ '~/.ucslint', '/usr/lib/python2.4/site-packages/univention/ucslint', '/usr/lib/pymodules/python2.6/univention/ucslint' ]
+	plugindirs = [
+		'/usr/lib/python2.4/site-packages/univention/ucslint',
+		'/usr/lib/pymodules/python2.6/univention/ucslint',
+		'~/.ucslint',
+		]
 
 	# override plugin directories
 	if options.plugindir:
