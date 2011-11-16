@@ -1,3 +1,9 @@
+univention-heimdal (5.0.19-1) unstable; urgency=low
+
+  * Fixed kerberos/allow/weak/crypto handling (Bug #21213)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Nov 2011 17:51:18 +0100
+
 univention-heimdal (5.0.18-2) unstable; urgency=low
 
   * add additional firewall exception for kpasswd (Bug #23577)
