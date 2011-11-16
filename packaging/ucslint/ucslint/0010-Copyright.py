@@ -52,9 +52,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			for fn in filenames:
 				if fn.endswith('~'):
 					continue
-				if fn.endswith('.py'):
-					check_files.append(os.path.join(dirpath, fn))
-					continue
 				try:
 					content = open( os.path.join( dirpath, fn), 'r').read(100)
 					if content.startswith('#!'):

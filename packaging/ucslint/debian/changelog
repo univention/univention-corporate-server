@@ -1,3 +1,9 @@
+ucslint (2.0.21-1) unstable; urgency=low
+
+  * disable .py copyright check until packages are fixed (Bug #24673)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 16 Nov 2011 18:11:39 +0100
+
 ucslint (2.0.20-1) unstable; urgency=low
 
   * override via shell-like globbing (Bug #24673)
