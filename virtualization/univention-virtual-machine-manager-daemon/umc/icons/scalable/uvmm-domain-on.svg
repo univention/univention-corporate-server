@@ -20,7 +20,7 @@
    xml:space="preserve"
    sodipodi:version="0.32"
    inkscape:version="0.46"
-   sodipodi:docname="domain-on.svg"
+   sodipodi:docname="uvmm-domain-on.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    inkscape:export-filename="/home/andreas/src/dev/trunk/ucs/virtualization/univention-virtual-machine-manager-daemon/umc/images/default/16x16/uvmm/domain-on.png"
    inkscape:export-xdpi="112.5"
@@ -32,10 +32,10 @@
      id="linearGradient3147"><stop
        id="stop3149"
        offset="0"
-       style="stop-color:#8ae234;stop-opacity:1;" /><stop
+       style="stop-color:#71db09;stop-opacity:1;" /><stop
        id="stop3151"
        offset="1"
-       style="stop-color:#4f9a05;stop-opacity:1;" /></linearGradient><linearGradient
+       style="stop-color:#204100;stop-opacity:1;" /></linearGradient><linearGradient
      y2="18.890638"
      x2="15.626115"
      y1="2.3549674"
@@ -68,7 +68,7 @@
      inkscape:persp3d-origin="8 : 5.3333333 : 1"
      id="perspective70" /></defs><sodipodi:namedview
    inkscape:window-height="766"
-   inkscape:window-width="640"
+   inkscape:window-width="943"
    inkscape:pageshadow="2"
    inkscape:pageopacity="0.0"
    guidetolerance="10.0"
@@ -79,12 +79,12 @@
    pagecolor="#ffffff"
    id="base"
    showgrid="false"
-   inkscape:zoom="34.75"
-   inkscape:cx="8.228873"
-   inkscape:cy="8"
-   inkscape:window-x="587"
-   inkscape:window-y="207"
-   inkscape:current-layer="Ebene_1" />
+   inkscape:zoom="17.375"
+   inkscape:cx="5.9863128"
+   inkscape:cy="5.9795114"
+   inkscape:window-x="672"
+   inkscape:window-y="175"
+   inkscape:current-layer="g3414" />
 <linearGradient
    id="SVGID_1_"
    gradientUnits="userSpaceOnUse"
@@ -270,7 +270,7 @@
        id="path4809"
        d="M 46.36834,37.022087 L 36.27936,46.080147 L 34.27771,46.080147 L 34.27771,27.964037 L 36.27936,27.964037 L 46.36834,37.022087 z"
        style="fill:url(#linearGradient3409);fill-opacity:1;stroke:none;stroke-width:1.00000012;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1" /><path
-       style="fill:none;fill-opacity:1;stroke:#4e9a06;stroke-width:1.00000012;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1"
+       style="fill:none;fill-opacity:1;stroke:#215f00;stroke-width:1.00000011999999994;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1"
        d="M 46.36834,37.022087 L 36.27936,46.080147 L 34.27771,46.080147 L 34.27771,27.964037 L 36.27936,27.964037 L 46.36834,37.022087 z"
        id="path4811"
        sodipodi:nodetypes="cccccc" /><path
