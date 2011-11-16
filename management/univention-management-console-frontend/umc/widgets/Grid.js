@@ -210,19 +210,58 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		return footerWidths;
 	},
 
-	_setColumnsAttr: function ( value ) {
-		this.columns = value;
-		if ( this._grid === undefined ) {
-			console.log( 'Grid: grid not yet defined' );
+	_setColumnsAttr: function ( columns ) {
+		umc.tools.assert(dojo.isArray(columns), 'The property columns needs to be defined for umc.widgets.Grid as an array.');
+		this.columns = columns;
+
+		if (!this._grid) {
+			// grid not yet defined
 			return;
 		}
 
-		// assertions
-		umc.tools.assert(dojo.isArray(this.columns), 'The property columns needs to be defined for umc.widgets.Grid as an array.');
+		// 
+		// context menu
+		//
+		
+		// remove all children from context menu
+		dojo.forEach(this._contextMenu.getChildren(), function(ichild) {
+			this._contextMenu.removeChild(ichild);
+			ichild.destroyRecursive();
+		}, this);
+		delete this._contextMenu.focusedChild;
+
+		// populate context menu
+		dojo.forEach(this.actions, function(iaction) {
+			// make sure we get all context actions
+			if (false === iaction.isContextAction) {
+				return;
+			}
+
+			// get icon and label (these properties may be functions)
+			var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass() : iaction.iconClass;
+			var ilabel = dojo.isFunction(iaction.label) ? iaction.label() : iaction.label;
+
+			// create a new menu item
+			var item = new dijit.MenuItem({
+				label: ilabel,
+				iconClass: iiconClass,
+				onClick: dojo.hitch(this, function() {
+					if (iaction.callback) {
+						iaction.callback([this._contextItemID], [this._contextItem]);
+					}
+				}),
+				_action: iaction
+			});
+			this._contextMenu.addChild(item);
+		}, this);
+
+		//
+		// grid columns
+		//
 
 		// create the layout for the grid columns
 		var gridColumns = [];
-		dojo.forEach(this.columns, function(icol) {
+		dojo.forEach(columns, function(icol) {
 			umc.tools.assert(icol.name !== undefined && icol.label !== undefined, 'The definition of grid columns requires the properties \'name\' and \'label\'.');
 
 			// set common properties
@@ -378,6 +417,63 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 		// set new grid structure
 		this._grid.setStructure( gridColumns );
+
+	},
+
+	_setActionsAttr: function(actions, /*Boolean?*/ doSetColumns) {
+		umc.tools.assert(dojo.isArray(actions), 'The property actions needs to be defined for umc.widgets.Grid as an array.');
+		this.actions = actions;
+
+		//
+		// toolbar for non-context actions
+		//
+
+		var myActions = [];
+		dojo.forEach(actions, dojo.hitch(this, function(iaction) {
+			var jaction = iaction;
+			if (iaction.callback) {
+				jaction = dojo.mixin({}, iaction); // shallow copy
+
+				// call custom callback with selected values
+				jaction.callback = dojo.hitch(this, function() {
+					iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
+				});
+			}
+			myActions.push(jaction);
+		}));
+
+		// render buttons
+		var buttonsCfg = [];
+		dojo.forEach(myActions, function(iaction) {
+			// make sure we get all standard actions
+			if (false === iaction.isContextAction) {
+				buttonsCfg.push(iaction);
+			}
+
+		}, this);
+		var buttons = umc.render.buttons(buttonsCfg);
+
+		// clear old buttons
+		dojo.forEach(this._toolbar.getChildren(), function(ibutton) {
+			this._toolbar.removeChild(ibutton);
+			ibutton.destroyRecursive();
+		}, this);
+
+		// add buttons to toolbar
+		dojo.forEach(buttons.$order$, function(ibutton) {
+			this._toolbar.addChild(ibutton);
+		}, this);
+
+		// clear the footer and redraw the columns
+		this._clearFooter();
+		if (doSetColumns !== false) {
+			this._setColumnsAttr(this.columns);
+		}
+	},
+	
+	setColumnsAndActions: function(columns, actions) {
+		this._setActionsAttr(actions, false);
+		this._setColumnsAttr(columns);
 	},
 
 	buildRendering: function() {
@@ -385,29 +481,6 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 		// create right-click context menu
 		this._contextMenu = new dijit.Menu({});
-		dojo.forEach(this.actions, function(iaction) {
-			// make sure we get all context actions
-			if (false === iaction.isContextAction) {
-				return;
-			}
-
-			// get icon and label (these properties may be functions)
-			var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass() : iaction.iconClass;
-			var ilabel = dojo.isFunction(iaction.label) ? iaction.label() : iaction.label;
-
-			// create a new menu item
-			var item = new dijit.MenuItem({
-				label: ilabel,
-				iconClass: iiconClass,
-				onClick: dojo.hitch(this, function() {
-					if (iaction.callback) {
-						iaction.callback([this._contextItemID], [this._contextItem]);
-					}
-				}),
-				_action: iaction
-			});
-			this._contextMenu.addChild(item);
-		}, this);
 
 		// create the grid
 		this._grid = new dojox.grid.EnhancedGrid({
@@ -434,71 +507,34 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			})
 		});
 		this.connect( this._grid, 'onRowClick', '_onRowClick' );
-		this._setColumnsAttr( this.columns );
-		if (typeof(this.sortIndex) == "number") {
-			this._grid.setSortIndex(Math.abs(this.sortIndex), this.sortIndex > 0);
-		}
-		this.addChild(this._grid);
 
-		//
-		// create toolbar
-		//
-
-		// call custom callback with selected values
-		var actions = [];
-		dojo.forEach(this.actions, dojo.hitch(this, function(iaction) {
-			var jaction = iaction;
-			if (iaction.callback) {
-				jaction = dojo.mixin({}, iaction); // shallow copy
-
-				// call custom callback with selected values
-				jaction.callback = dojo.hitch(this, function() {
-					iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
-				});
-			}
-			actions.push(jaction);
-		}));
-
-		// render buttons
-		var buttonsCfg = [];
-		dojo.forEach(actions, function(iaction) {
-			// make sure we get all standard actions
-			if (false === iaction.isContextAction) {
-				buttonsCfg.push(iaction);
-			}
-
-		}, this);
-		var buttons = umc.render.buttons(buttonsCfg);
-
-		// add the toolbar to the bottom of the widget
+		// add the toolbar to the bottom of the widget which contains all multi-actions
 		this._toolbar = new umc.widgets.ContainerWidget({
 			region: 'bottom',
 			'class': 'umcGridToolBar'
 		});
 		this.addChild(this._toolbar);
 
-		// add buttons to toolbar
-		dojo.forEach(buttons.$order$, function(ibutton) {
-			this._toolbar.addChild(ibutton);
-		}, this);
-
-		//
-		// create combo button for all actions
-		//
-
-		// add a footer for the grid
+		// add a footer for the grid which contains all non-context actions
 		this._footer = new umc.widgets.ContainerWidget({
 			region: 'bottom',
 			'class': 'umcGridFooter'
 		});
 		this.addChild(this._footer);
 
-		// connect to layout() and adjust widths of the footer cells
-		this.connect(this._grid, '_resize', '_updateFooter');
+		// update columns and actions
+		this.setColumnsAndActions( this.columns, this.actions );
+		if (typeof(this.sortIndex) == "number") {
+			this._grid.setSortIndex(Math.abs(this.sortIndex), this.sortIndex > 0);
+		}
+		this.addChild(this._grid);
 
 		//
 		// register event handler
 		//
+
+		// connect to layout() and adjust widths of the footer cells
+		this.connect(this._grid, '_resize', '_updateFooter');
 
 		// in case of any changes in the module store, refresh the grid
 		this.connect(this.moduleStore, 'onChange', function() {
@@ -662,6 +698,20 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			iMenuItem.set('label', ilabel);
 			iMenuItem.set('iconClass', iiconClass);
 		}, this);
+	},
+
+	_clearFooter: function() {
+		// make sure that the footer exists
+		if (!this._footerCells) {
+			return;
+		}
+		
+		// remove all footer cells
+		dojo.forEach(this._footerCells, function(icell) {
+			this._footer.removeChild(icell);
+			icell.destroyRecursive();
+		}, this);
+		delete this._footerCells;
 	},
 
 	_createFooter: function() {

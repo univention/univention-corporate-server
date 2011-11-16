@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.208-1) unstable; urgency=low
+
+  * Grid: added support for dynamically changing actions (Bug #22461)
+  * CSS: fixed styles for disabled buttons in the Grid and for MultiInputs
+    (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 16 Nov 2011 19:24:32 +0100
+
 univention-management-console-frontend (1.0.207-1) unstable; urgency=low
 
   * Grid: support re-enabling a disabled grid; Bug #22893
