@@ -431,7 +431,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 			dBCSPwd_new = binascii.a2b_hex(ucsLMhash)
 			modlist.append((ldap.MOD_ADD, 'dBCSPwd', dBCSPwd_new))
 
-	if pwd_set:
+	if pwd_set or not supplementalCredentials:
 		if krb5Principal:
 			## encoding of Samba4 supplementalCredentials
 			if supplementalCredentials:
