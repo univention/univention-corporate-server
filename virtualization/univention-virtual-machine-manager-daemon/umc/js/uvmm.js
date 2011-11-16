@@ -12,6 +12,7 @@ dojo.require("dojox.string.sprintf");
 dojo.require("umc.dialog");
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
+dojo.require("umc.render");
 dojo.require("umc.widgets.ExpandingTitlePane");
 dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.Module");
@@ -179,6 +180,15 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			callback: dojo.hitch(this, '_migrateDomain' ),
 			canExecute: function(item) {
 				return item.state != 'PAUSE'; // FIXME need to find out if there are more than one node of this type
+			}
+		}, {
+			name: 'remove',
+			label: this._( 'Remove' ),
+			isStandardAction: false,
+			isMultiAction: false,
+			callback: dojo.hitch(this, '_removeDomain' ),
+			canExecute: function(item) {
+				return item.state == 'SHUTOFF';
 			}
 		}, {
 			name: 'add',
@@ -418,6 +428,83 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			content: form
 		});
 		dialog.show();
+	},
+
+	_removeDomain: function( ids, items ) {
+		var domain = items[ 0 ];
+		var domain_details = null;
+		var domainURI = ids[ 0 ];
+		var buttons = [ {
+			name: 'delete',
+			label: this._('Delete')
+		}, {
+			name: 'cancel',
+			'default': true,
+			label: this._('Cancel')
+		} ];
+		var widgets = [
+			{
+				type: 'Text',
+				name: 'question',
+				content: this._( 'Should the selected virtual instance be removed?' ),
+				label: ''
+			} ];
+		var _widgets = null;
+		var drive_list = [];
+		// chain the UMCP commands for removing the domain
+		var deferred = new dojo.Deferred();
+		deferred.resolve();
+
+		// get domain details
+		deferred = deferred.then( dojo.hitch( this, function() {
+			return umc.tools.umcpCommand('uvmm/domain/get', { domainURI : domainURI } );
+		} ) );
+		// find the default for the drive checkboxes;
+		deferred = deferred.then( dojo.hitch( this, function( response ) {
+			domain_details = response.result;
+			var drive_list = dojo.map( response.result.disks, function( disk ) {
+				return { domainURI : domainURI, pool : disk.pool, volumeFilename : disk.volumeFilename, source : disk.source };
+			} );
+			return umc.tools.umcpCommand('uvmm/storage/volume/deletable', drive_list );
+		} ) );
+		// got response for UMCP request
+		deferred = deferred.then( dojo.hitch( this, function( response ) {
+			var layout = [ 'question' ];
+			dojo.forEach( response.result, dojo.hitch( this, function( disk ) {
+				layout.push( disk.source );
+				widgets.push( {
+					type: 'CheckBox',
+					name: disk.source,
+					label: dojo.replace( this._( '{volumeFilename} (Pool: {pool})' ), disk ),
+					value: disk.deletable,
+					$id$: { pool : disk.pool, volumeFilename : disk.volumeFilename }
+				} );
+			} ) );
+			_widgets = umc.render.widgets( widgets );
+			var container = umc.render.layout( layout, _widgets );
+			return umc.dialog.confirm( container, buttons );
+		} ) );
+
+		deferred = deferred.then( dojo.hitch( this, function( action ) {
+			if ( action == 'cancel' ) {
+				return;
+			}
+			this.updateProgress( 0, 1 );
+			var volumes = [];
+			umc.tools.forIn( _widgets, dojo.hitch( this, function( iid, iwidget ) {
+				if ( iwidget instanceof umc.widgets.CheckBox && iwidget.get( 'value' ) ) {
+					volumes.push( iwidget.$id$ );
+				}
+			} ) );
+
+			umc.tools.umcpCommand('uvmm/domain/remove', {
+				domainURI: domainURI,
+				volumes: volumes
+			} ).then( dojo.hitch( this, function( response ) {
+				this.updateProgress( 1, 1 );
+				this.moduleStore.onChange();
+			} ) );
+		} ) );
 	},
 
 	_addDomain: function() {

@@ -418,13 +418,21 @@ class Domains( object ):
 	def domain_remove( self, request ):
 		"""Removes a domain. Optional a list of volumes can bes specified that should be removed
 
-		options: { 'domainURI': <domain uri> }
+		options: { 'domainURI': <domain uri>, 'volumes' : [ { 'pool' : <pool name>, 'volumeFilename' : <filename> }, ... ] }
 
 		return: 
 		"""
-		self.required_options( request, 'domainURI' )
+		self.required_options( request, 'domainURI', 'volumes' )
+		volume_list = []
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
-		self.uvmm.send( 'DOMAIN_UNDEFINE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, volumes = request.options[ 'volumes' ] )
+
+		for vol in request.options[ 'volumes' ]:
+			path = self.get_pool_path( node_uri, vol[ 'pool' ] )
+			if not path:
+				MODULE.warn( 'Could not find volume %(volumeFilename)s. The pool %(pool)s is not known' % vol )
+				continue
+			volume_list.append( os.path.join( path, vol[ 'volumeFilename' ] ) )
+		self.uvmm.send( 'DOMAIN_UNDEFINE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, volumes = volume_list )
 
 class Bus( object ):
 	"""Periphery bus like IDE-, SCSI-, Xen-, VirtIO- und FDC-Bus."""

@@ -26,6 +26,8 @@
 	</command>
 	<command name="uvmm/domain/clone" function="domain_clone">
 	</command>
+	<command name="uvmm/domain/remove" function="domain_remove">
+	</command>
 	<command name="uvmm/snapshot/query" function="snapshot_query">
 	</command>
 	<command name="uvmm/snapshot/create" function="snapshot_create">

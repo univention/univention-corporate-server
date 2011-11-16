@@ -87,16 +87,16 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 		var deferred = new dojo.Deferred();
 		deferred.resolve();
 		deferred = deferred.then( dojo.hitch( this, function() {
-			return umc.tools.umcpCommand('uvmm/storage/volume/deletable', {
+			return umc.tools.umcpCommand('uvmm/storage/volume/deletable', [ {
 				domainURI: this.domain.domainURI,
 				volumeFilename: disk.volumeFilename,
 				pool: disk.pool
-			} );
+			} ] );
 		} ) );
 		deferred = deferred.then( dojo.hitch( this, function( response ) {
 			if ( disk.device == 'cdrom' ) {
 				msg += ' ' + this._( 'The selected drive is a CD-ROM and should be detached from the virtual instance. If the volume is delete no other instance can use it anymore.' );
-			} else if ( ! response.result ) {
+			} else if ( ! response.result[ 0 ].deletable ) {
 				msg += ' ' + this._( 'The selected drive seems to be attached to other virtual instances and therefor should not be deleted.' );
 			}
 			return umc.dialog.confirm( msg, buttons );
@@ -119,7 +119,6 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 				} ).then( dojo.hitch( this, function( response ) {
 					this.onUpdateProgress( 1, 1 );
 					this.moduleStore.onChange();
-					console.log( response.result );
 				} ) );
 			} else {
 				this.onUpdateProgress( 1, 1 );

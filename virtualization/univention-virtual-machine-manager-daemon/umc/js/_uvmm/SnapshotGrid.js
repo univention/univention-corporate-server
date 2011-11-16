@@ -123,7 +123,7 @@ dojo.declare("umc.modules._uvmm.SnapshotGrid", [ umc.widgets.Grid, umc.i18n.Mixi
 			return;
 		}
 
-		// confirm removal of snapshot(s)
+		// confirm applying of snapshot
 		umc.dialog.confirm(this._('Are you sure to revert to the selected snapshot?'), [{
 			name: 'revert',
 			label: this._('Revert')

@@ -91,16 +91,16 @@ fi
 
 #DEBHELPER#
 
-if [ -x /etc/init.d/univention-virtual-machine-manager-daemon ] && [ -d "/etc/runit/univention/univention-virtual-machine-manager-daemon/supervise" ]; then
-    # don't restart too fast
-    sleep 10
+# if [ -x /etc/init.d/univention-virtual-machine-manager-daemon ] && [ -d "/etc/runit/univention/univention-virtual-machine-manager-daemon/supervise" ]; then
+#     # don't restart too fast
+#     sleep 10
 
-    if [ "$1" = "configure" ] && [ -z "$2" ]; then
-        invoke-rc.d univention-virtual-machine-manager-daemon crestart
-    elif [ "$1" = "configure" ] && [ -n "$2" ]; then
-        invoke-rc.d univention-virtual-machine-manager-daemon restart 
-    fi
-fi
+#     if [ "$1" = "configure" ] && [ -z "$2" ]; then
+#         invoke-rc.d univention-virtual-machine-manager-daemon crestart
+#     elif [ "$1" = "configure" ] && [ -n "$2" ]; then
+#         invoke-rc.d univention-virtual-machine-manager-daemon restart 
+#     fi
+# fi
 
 exit 0
 # vim:set ft=sh ts=4 sw=4 et:
