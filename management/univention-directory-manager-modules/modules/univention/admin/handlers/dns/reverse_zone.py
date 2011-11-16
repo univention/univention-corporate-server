@@ -155,13 +155,13 @@ layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
 		Group( _( 'General' ), layout = [
 			'subnet',
-			'zonettl'
+			'zonettl',
+			'nameserver'
 		] ),
 	] ),
 	Tab(_('Start of Authority'), _('Primary name server information'), layout = [
 		Group( _( 'General' ), layout = [
 			'contact',
-			'nameserver',
 			'serial',
 			['refresh', 'retry'],
 			['expire', 'ttl']
