@@ -86,6 +86,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 	//		buttons)
 	defaultAction: 'edit',
 
+	disabled: false,
+
 	_contextItem: null,
 	_contextItemID: null,
 	_contextMenu: null,
@@ -262,6 +264,9 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 					// add callback handler
 					if (iaction.callback) {
 						props.onClick = dojo.hitch(this, function() {
+							if ( this.disabled ) {
+								return;
+							}
 							iaction.callback([key], [item]);
 						});
 					}
@@ -533,7 +538,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		var defaultAction = dojo.isFunction(this.defaultAction) ? 
 				this.defaultAction( [ identity ], [ item ] ) : this.defaultAction;
 
-		if ( defaultAction ) {
+		if ( defaultAction && ! this.disabled ) {
 			dojo.forEach( this.actions, function( action ) {
 				if ( action.name == defaultAction ) {
 					var isExecutable = dojo.isFunction(action.canExecute) ? action.canExecute(item) : true;
@@ -546,6 +551,22 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		}
 	},
 
+	_setDisabledAttr: function( value ) {
+		this.disabled = value;
+
+		dojo.forEach( this._footerCells, dojo.hitch( this, function( cell ) {
+			var widget = cell.getChildren()[ 0 ];
+			if ( widget instanceof umc.widgets.Button || widget instanceof dijit.form.DropDownButton ) {
+				widget.set( 'disabled', value );
+			}
+		} ) );
+		dojo.forEach( this._toolbar.getChildren(), dojo.hitch( this, function( widget ) {
+			if ( widget instanceof umc.widgets.Button ) {
+				widget.set( 'disabled', value );
+			}
+		} ) );
+	},
+
 	_updateFooterCells: function() {
 		// deactivate multi actions if no item is selected
 		if ( ! this._footerCells.length ) {
@@ -555,10 +576,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		dojo.forEach( this._footerCells, dojo.hitch( this, function( cell ) {
 			var nSelected = this._grid.selection.getSelectedCount();
 			var widget = cell.getChildren()[ 0 ];
-			if ( widget instanceof umc.widgets.Button ) {
-				widget.set( 'disabled', nSelected == 0 );
-			} else if ( widget instanceof dijit.form.DropDownButton ) {
-				widget.set( 'disabled', nSelected == 0 );
+			if ( widget instanceof umc.widgets.Button || widget instanceof dijit.form.DropDownButton ) {
+				widget.set( 'disabled', nSelected === 0 );
 			}
 		} ) );
 	},

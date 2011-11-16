@@ -191,6 +191,16 @@ dojo.declare("umc.widgets.MultiInput", [
 		this._setAllValues(vals);
 	},
 
+	_setDisabledAttr: function ( value ) {
+		var i;
+		for ( i = 0; i < this._rowContainers.length; ++i) {
+			dojo.forEach( this._rowContainers[ i ].getChildren(), function( widget ) {
+				widget.set( 'disabled', value );
+			} )
+		}
+		this.disabled = value;
+	},
+
 	_getAllValues: function() {
 		var i, j, val, isSet, vals = [], rowVals = [];
 		for (i = 0; i < this._widgets.length; ++i) {

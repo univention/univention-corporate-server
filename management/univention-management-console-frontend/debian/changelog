@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.204-1) unstable; urgency=low
+
+  * support disabling LabelPane widget
+  * support disabling an already rendered MultiInput widget
+  * first step in disabling a Grid; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 16 Nov 2011 15:04:19 +0100
+
 univention-management-console-frontend (1.0.203-1) unstable; urgency=low
 
   * help: depending on the current language link to the german or english

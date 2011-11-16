@@ -23,6 +23,9 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 	//		a dijit._Widget instance.
 	content: '',
 
+	// disabled: Boolean
+	//		if the content of the label pane should be disabled. the content widgets must support it
+	disabled: false,
 
 	// the widget's class name as CSS class
 	'class': 'umcLabelPane',
@@ -64,7 +67,7 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 			// the widget displays the label itself
 			return;
 		}
-		
+
 		// if we have a widget which is required, add the string ' (*)' to the label
 		if (dojo.getObject('domNode', false, this.content) &&
 				dojo.getObject('declaredClass', false, this.content) &&
@@ -103,6 +106,13 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 		else if (dojo.getObject('domNode', false, content) && dojo.getObject('declaredClass', false, content)) {
 			this.contentNode.innerHTML = '';
 			this.addChild(content);
+		}
+		this.set( 'disabled', this.disabled );
+	},
+
+	_setDisabledAttr: function( value ) {
+		if ( this.content ) {
+			this.content.set( 'disabled', value );
 		}
 	}
 });
