@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.209-1) unstable; urgency=low
+
+  * show warning if SSL certificate is going to expired (days <= warning); Bug #23880
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 16 Nov 2011 18:29:35 +0100
+
 univention-management-console-frontend (1.0.208-1) unstable; urgency=low
 
   * Grid: added support for dynamically changing actions (Bug #22461)

@@ -390,7 +390,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			umc.tools.umcpCommand( 'get/ucr', [ 'ssl/validity/days', 'ssl/validity/warning' ] ).then( dojo.hitch( this, function( data ) {
 				var days = parseInt( data.result[ 'ssl/validity/days' ], 10 );
 				var warning = parseInt( data.result[ 'ssl/validity/warning' ], 10 );
-				if ( days < warning ) {
+				if ( days <= warning ) {
 					overviewPage.addNote( this._( 'The SSL certificate will expire in %d days and should be renewed!', days ) );
 				}
 			}));
