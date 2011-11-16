@@ -1,3 +1,9 @@
+ucslint (2.0.19-1) unstable; urgency=low
+
+  * disable .js copyright check until packages are fixed (Bug #24673)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 16 Nov 2011 16:06:43 +0100
+
 ucslint (2.0.18-1) unstable; urgency=low
 
   * fix priority for ~/.ucslint (Bug #24672)

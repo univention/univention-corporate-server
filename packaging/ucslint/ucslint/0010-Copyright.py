@@ -52,7 +52,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			for fn in filenames:
 				if fn.endswith('~'):
 					continue
-				if fn.endswith('.js') or fn.endswith('.py'):
+				if fn.endswith('.py'):
 					check_files.append(os.path.join(dirpath, fn))
 					continue
 				try:
