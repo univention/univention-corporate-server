@@ -1,3 +1,10 @@
+univention-samba4 (1.0.106-2) unstable; urgency=low
+
+  * migrate-sid.py: Use machine connection if ldap.serect is not
+    available (Bug #24246)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Nov 2011 21:07:51 +0100
+
 univention-samba4 (1.0.106-1) unstable; urgency=low
 
   * Added tool migrate-sid.py to migrate univentionSamba4SID to sambaSID

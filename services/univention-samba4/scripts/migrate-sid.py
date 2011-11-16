@@ -60,7 +60,10 @@ if args:
 	parser.print_help()
 	sys.exit(3)
 
-lo, position = univention.admin.uldap.getAdminConnection()
+try:
+	lo, position = univention.admin.uldap.getAdminConnection()
+except IOError:
+	lo, position = univention.admin.uldap.getMachineConnection()
 
 res = lo.search(filter='univentionSamba4SID=*', attr=['dn', 'sambaSID', 'univentionSamba4SID'])
 
