@@ -252,6 +252,10 @@ dojo.declare("umc.modules._adconnector.Wizard", [ umc.widgets.Wizard, umc.i18n.M
 					w.set( 'value', value );
 				}
 			} ) );
+			// of no LDAP_base is set activate the automatic determination
+			if ( !this.variables.LDAP_base ) {
+				this.getWidget( 'fqdn', 'guess' ).set( 'value', true );
+			}
 		} else if (currentID == 'fqdn') {
 			var guess = this.getWidget( 'fqdn', 'guess' );
 			if ( guess.get( 'value' ) ) {
