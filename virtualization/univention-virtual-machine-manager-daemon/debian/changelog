@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.64-1) unstable; urgency=low
+
+  * Save reference to profile for VMs (Bug #24558)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 16 Nov 2011 13:39:49 +0100
+
 univention-virtual-machine-manager-daemon (1.0.63-1) unstable; urgency=low
 
   * support removing domains; Bug #22893

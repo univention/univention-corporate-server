@@ -200,5 +200,6 @@ def ldap_modify(uuid):
 		record['uuid'] = uuid
 		record['description'] = None
 		record['contact'] = None
+		record['profile'] = None
 		record.commit = record.create
 	return record
