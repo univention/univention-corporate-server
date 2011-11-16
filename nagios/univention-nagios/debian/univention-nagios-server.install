@@ -3,3 +3,5 @@ nagios-server.py usr/lib/univention-directory-listener/system/
 icon/nagios.png /var/www/icon/
 usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool usr/share/univention-nagios-server/tools/
 usr/share/nagios3/htdocs-nuvola                    usr/share/nagios3
+usr/share/univention-nagios-server/icons/*.gif usr/share/univention-nagios-server/icons/
+usr/share/univention-nagios-server/icons/*.gd2 usr/share/univention-nagios-server/icons/

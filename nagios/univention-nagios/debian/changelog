@@ -1,3 +1,9 @@
+univention-nagios (5.0.20-1) unstable; urgency=low
+
+  * added system role icons (Bug #24568) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 Nov 2011 11:04:28 +0100
+
 univention-nagios (5.0.19-1) unstable; urgency=low
 
   * Fix deadlock in listener (Bug #24560)
