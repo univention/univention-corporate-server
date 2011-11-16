@@ -42,6 +42,8 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 
 	_domain: null,
 
+	disabled: false,
+
 	buildRendering: function() {
 		this.inherited(arguments);
 		var types = umc.modules._uvmm.types;
@@ -345,7 +347,10 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 	},
 
 	load: function(id) {
+		this._standbyWidget.opacity = 1;
 		this.standby(true);
+		this._standbyWidget.opacity = 0.75;
+
 		umc.tools.umcpCommand('uvmm/domain/get', {
 			domainURI: id
 		}).then(dojo.hitch(this, function(data) {
@@ -369,6 +374,24 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				this._snapshotGrid.set('domainURI', id);
 				this._driveGrid.set('domain', this._domain);
 				this._interfaceGrid.set('domain', this._domain);
+
+				// deactivate most input field when domain is running
+				var disabled = false;
+				if ( this._domain.state == 'RUNNING' || this._domain.state == 'IDLE' ) {
+					disabled = true;
+				}
+				if ( disabled && ! this.disabled ) {
+					this._generalPage.addNote( this._( 'While the virtual instance is running most of the settings can not be changed.' ) );
+				} else if ( ! disabled ) {
+					this._generalPage.clearNotes();
+				}
+				this.disabled = disabled;
+				this._generalForm._widgets.name.set( 'disabled', disabled );
+				this._driveGrid.set( 'disabled', disabled );
+				this._interfaceGrid.set( 'disabled', disabled );
+				umc.tools.forIn( this._advancedForm._widgets, dojo.hitch( this, function( iid, iwidget ) {
+					iwidget.set( 'disabled', disabled );
+				} ) );
 			}
 			this.standby(false);
 		}), dojo.hitch(this, function() {
