@@ -1,3 +1,11 @@
+univention-system-info (2.0.5-1) unstable; urgency=low
+
+  * Add missing po-files
+  * Add missing build dependency
+  (Bug #22927)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 16 Nov 2011 13:14:12 +0100
+
 univention-system-info (2.0.4-1) unstable; urgency=low
 
   * UMC: Refactoring
