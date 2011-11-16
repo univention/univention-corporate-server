@@ -34,8 +34,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-15 20:12+0100\n"
-"PO-Revision-Date: 2011-11-14 16:38+0100\n"
+"POT-Creation-Date: 2011-11-16 17:07+0100\n"
+"PO-Revision-Date: 2011-11-16 16:00+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -161,13 +161,14 @@ msgid "Chossen between using an existing image or using a local device."
 msgstr ""
 "Auswahl zwischen einer vorhandenen Image-Datei oder einem lokalen Gerät."
 
-#: umc/python/uvmm/storages.py:189
+#: umc/python/uvmm/storages.py:185
 msgid "Could not find the drive"
-msgstr ""
+msgstr "Das Laufwerk konnte nicht gefunden werden"
 
-#: umc/python/uvmm/storages.py:182
-msgid "Could not retrieve domain details"
-msgstr ""
+#: umc/python/uvmm/storages.py:175
+#, python-format
+msgid "Could not retrieve details for domain %s"
+msgstr "Die Details zur virtuellen Instanz konnten nicht abgerufen werden"
 
 #: umc/python/uvmm/wizards.py:701 umc/python/uvmm/wizards.py:825
 msgid "Create a virtual instance"
@@ -288,10 +289,9 @@ msgstr "Erweitertes Format (qcow2)"
 msgid "Failed to add network interface: %s"
 msgstr "Hinzufügen der Netzwerkschnittstelle ist fehlgeschlagen: %s"
 
-#: umc/python/uvmm/storages.py:174
-#, fuzzy
+#: umc/python/uvmm/storages.py:165
 msgid "Failed to check if the drive is used by any other virtual instance"
-msgstr "Das Laufwerk wird im folgenden Schritt ausgehängt."
+msgstr "Die Prüfung ob das Laufwerk von einer anderen virtuellen Instanz verwendet wird ist fehlgeschlagen."
 
 #: umc/python/uvmm/nic.py:267
 #, python-format
@@ -590,7 +590,7 @@ msgstr ""
 msgid "The given UVMM command is not known"
 msgstr "Das angegebene UVMM Kommando ist nicht bekannt"
 
-#: umc/python/uvmm/storages.py:140 umc/python/uvmm/storages.py:169
+#: umc/python/uvmm/storages.py:141 umc/python/uvmm/storages.py:160
 msgid "The given pool could not be found or is no file pool"
 msgstr ""
 "Der angegebene Speicherbereich konnte nicht gefunden werden oder ist kein "
