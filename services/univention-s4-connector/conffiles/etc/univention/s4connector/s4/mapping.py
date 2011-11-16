@@ -287,7 +287,7 @@ s4_mapping = {
 
 			position_mapping = [( ',cn=dc,cn=computers,@%@ldap/base@%@', ',ou=Domain Controllers,@%@connector/s4/ldap/base@%@' )],
 
-			match_filter='(|(univentionService=Samba 4)(objectClass=computer))',
+			match_filter='(|(objectClass=univentionDomainController)(objectClass=computer))',
 
 			# Whether a DC joins to the samba 4 domain
 			# the DC will be deleted.
@@ -301,10 +301,12 @@ s4_mapping = {
 	
 			post_con_modify_functions=[
 							univention.s4connector.s4.sid_mapping.sid_to_s4,
+							univention.s4connector.s4.password.password_sync_ucs_to_s4,
 						    ],
 	
 			post_ucs_modify_functions=[
 							univention.s4connector.s4.sid_mapping.sid_to_ucs,
+							univention.s4connector.s4.password.password_sync_s4_to_ucs_no_userpassword,
 						    ],
 	
 			attributes= {
@@ -364,12 +366,12 @@ s4_mapping = {
 			#post_con_create_functions = [ univention.connector.s4.computers.
 			post_con_modify_functions=[
 							univention.s4connector.s4.sid_mapping.sid_to_s4,
-							# univention.s4connector.s4.password.password_sync_ucs_to_s4,
+							univention.s4connector.s4.password.password_sync_ucs_to_s4,
 						    ],
 
 			post_ucs_modify_functions=[
 							univention.s4connector.s4.sid_mapping.sid_to_ucs,
-							# univention.s4connector.s4.password.password_sync_s4_to_ucs,
+							univention.s4connector.s4.password.password_sync_s4_to_ucs_no_userpassword,
 						    ],
 
 			attributes= {

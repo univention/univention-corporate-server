@@ -466,14 +466,15 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: No password change to sync to S4 ")
 
 		# check pwdLastSet
-		newpwdlastset = str(univention.s4connector.s4.samba2s4_time(sambaPwdLastSet))
-		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaPwdLastSet: %d" % sambaPwdLastSet)
-		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: newpwdlastset  : %s" % newpwdlastset)
-		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet (AD): %s" % pwdLastSet)
-		if sambaPwdLastSet in [0, 1]:
-			modlist.append((ldap.MOD_REPLACE, 'pwdlastset', "0"))
-		elif pwdLastSet != newpwdlastset:
-			modlist.append((ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset))
+		if sambaPwdLastSet != None:
+			newpwdlastset = str(univention.s4connector.s4.samba2s4_time(sambaPwdLastSet))
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaPwdLastSet: %d" % sambaPwdLastSet)
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: newpwdlastset  : %s" % newpwdlastset)
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet (AD): %s" % pwdLastSet)
+			if sambaPwdLastSet in [0, 1]:
+				modlist.append((ldap.MOD_REPLACE, 'pwdlastset', "0"))
+			elif pwdLastSet != newpwdlastset:
+				modlist.append((ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset))
 
 	## TODO: Password History
 	ctrl_bypass_password_hash = LDAPControl('1.3.6.1.4.1.7165.4.3.12',criticality=0)
@@ -482,7 +483,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		s4connector.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), modlist, serverctrls=[ ctrl_bypass_password_hash ])
 
 
-def password_sync_s4_to_ucs(s4connector, key, ucs_object):
+def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=True):
 	_d=ud.function('ldap.s4.password_sync_s4_to_ucs')
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs called")
 
@@ -558,7 +559,8 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object):
 					modlist.append(('krb5KeyVersionNumber', krb5KeyVersionNumber, msDS_KeyVersionNumber))
 
 			## Append modification as well to modlist, to apply in one transaction
-			modlist.append(('userPassword', userPassword_ucs, '{K5KEY}'))
+			if modifyUserPassword:
+				modlist.append(('userPassword', userPassword_ucs, '{K5KEY}'))
 
 			# Remove the POSIX and Kerberos password expiry interval
 			if res[0][1].has_key('shadowLastChange'):
@@ -629,4 +631,8 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object):
 	else:
 		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_s4_to_ucs: Failed to get Password-Hash from S4")
 
+
+def password_sync_s4_to_ucs_no_userpassword(s4connector, key, ucs_object):
+	# The userPassword should not synchronized for computer accounts
+	password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=False)
 

@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.73-1) unstable; urgency=low
+
+  * Synchonize the DC and Client password between OpenLDAP and Samba 4
+    (Bug #21213)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Nov 2011 21:25:06 +0100
+
 univention-s4-connector (6.0.72-1) unstable; urgency=low
 
   * Synchronize the kerberos key from S4 krbtgt user to OpenLDAP
