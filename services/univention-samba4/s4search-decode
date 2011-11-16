@@ -1,0 +1,102 @@
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
+#
+# Univention Configuration Registry
+"""Decode LDAP base64 encoded "key:: value" pairs read from standard input to standard output."""
+#
+# Copyright 2004-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+##
+## Usage:
+##	ldbsearch -H /var/lib/samba/private/sam.ldb cn=<dc> supplementalCredentials | s4search-decode
+##
+
+import sys
+import re
+import base64
+import binascii
+from samba.dcerpc import dnsp
+from samba.dcerpc import drsblobs
+from samba.ndr import ndr_unpack
+from samba.ndr import ndr_print
+
+keytypes = {
+	1: 'des_crc',
+	3: 'des_md5',
+	17: 'aes128',
+	18: 'aes256',
+}
+
+regEx = re.compile('^([a-zA-Z0-9-]*):: (.*)')
+
+def decode_supplementalCredentials(value):
+	object_data = ndr_unpack(drsblobs.supplementalCredentialsBlob, binascii.a2b_base64(value))
+	print "# decoded:"
+	# print "%s" % (ndr_print(object_data).strip(),)
+	for p in object_data.sub.packages:
+		krb_blob = binascii.unhexlify(p.data)
+		krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
+		print "#\tkrb5Salt: %s" % (krb.ctr.salt.string)
+		for k in krb.ctr.keys:
+			keytype = keytypes.get(k.keytype, k.keytype)
+			print "#\tkeytype: %s,\tkrb5Key:: %s" % (keytype, binascii.b2a_base64(k.value).strip())
+
+def decode_dnsRecord(value):
+	object_data = ndr_unpack(dnsp.DnssrvRpcRecord, binascii.a2b_base64(value))
+	print "# decoded:"
+	for line in ndr_print(object_data).split('\n'):
+		if line:
+			print "# %s" % line
+
+objecttypes = {
+	'dnsRecord': decode_dnsRecord,
+	'supplementalCredentials': decode_supplementalCredentials,
+}
+
+def decode_line(line):
+	res = regEx.search(line)
+	if res:
+		print line,
+		attributeName = res.group(1)
+		if attributeName in objecttypes:
+			objecttypes[attributeName](res.group(2))
+	else:
+		print line,
+
+try:
+	line = sys.stdin.readline()
+	while line != '':
+		line2 = sys.stdin.readline()
+		if line2[:1] == ' ':
+			line = line[:-1]+line2[1:]
+		else:
+			decode_line(line)
+			line = line2
+except:
+	sys.stdout.flush()
+

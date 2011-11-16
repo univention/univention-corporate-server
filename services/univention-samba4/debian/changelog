@@ -1,3 +1,9 @@
+univention-samba4 (1.0.105-2) unstable; urgency=low
+
+  * Added simple s4search-decode script from Arvid (Bug #21213)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Nov 2011 11:37:14 +0100
+
 univention-samba4 (1.0.105-1) unstable; urgency=low
 
   * merge additional code from univention-samba joinscript (Bug #22865):
