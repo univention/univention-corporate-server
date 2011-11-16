@@ -379,6 +379,7 @@ class base(object):
 				copyobject.open()
 				for key in self.keys():
 					copyobject[key]=self[key]
+				copyobject.policies=self.policies
 				copyobject.create()
 				moved=[]
 				try:

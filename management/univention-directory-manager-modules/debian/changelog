@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.182-1) unstable; urgency=low
+
+  * Copy policy references when copying container/cn or container/ou
+    (Bug #10696)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Nov 2011 10:00:01 +0100
+
 univention-directory-manager-modules (7.0.181-1) unstable; urgency=low
 
   * Re-added lease_time_default to policies/dhcp_leasetime.py
