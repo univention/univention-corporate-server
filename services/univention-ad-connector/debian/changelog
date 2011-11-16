@@ -1,3 +1,10 @@
+univention-ad-connector (6.0.28-1) unstable; urgency=low
+
+  * More attribute deletion handling (Bug #24635)
+  * Don't hide the first traceback
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Nov 2011 19:40:16 +0100
+
 univention-ad-connector (6.0.27-1) unstable; urgency=low
 
   * Use Unpickler for loading the object (Bug #24273)

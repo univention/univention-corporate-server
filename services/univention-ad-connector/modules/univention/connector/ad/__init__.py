@@ -1936,18 +1936,7 @@ class ad(univention.connector.ucs):
 						modlist.append((ldap.MOD_DELETE, yank_empty_attr, None))
 
 			if modlist:
-				for modified_attrs in modlist:
-					if modified_attrs[1] in attrs_to_remove_from_ad_object and len(modified_attrs[2]) > 0:
-						attrs_to_remove_from_ad_object.remove(modified_attrs[1])
-
-			for yank_empty_attr in attrs_to_remove_from_ad_object:
-				if ad_object.has_key(yank_empty_attr):
-					if value != None:
-						modlist.append((ldap.MOD_REPLACE, yank_empty_attr, None))
-
-			if modlist:
 				self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
-				
 
 
 			if hasattr(self.property[property_type],"post_con_modify_functions"):

@@ -761,11 +761,6 @@ class ucs:
 						if sync_successfull:
 							os.remove(os.path.join(self.listener_dir,listener_file))
 							change_counter += 1
-						elif traceback_level == ud.INFO:
-							try:
-								ud.debug(ud.LDAP, ud.PROCESS, 'Saved DN %s as rejected. Will be synced in next sync step.' % (dn))
-							except:
-								ud.debug(ud.LDAP, ud.PROCESS, 'Saved as rejected. Will be synced in next sync step.' )
 					else:
 						os.remove(os.path.join(filename))
 						traceback_level = ud.INFO
