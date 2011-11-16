@@ -582,12 +582,25 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 	_setDisabledAttr: function( value ) {
 		this.disabled = value;
 
+		// disable items
+		if ( value ) {
+			this._disabledIDs = {};
+			var items = this.getAllItems();
+			dojo.forEach( items, dojo.hitch( this, function( iitem ) {
+				this._disabledIDs[ iitem[ this.moduleStore.idProperty ] ] = true;
+			} ) );
+			this._updateDisabledItems();
+		} else {
+			this.clearDisabledItems();
+		}
+		// disable actions in footer
 		dojo.forEach( this._footerCells, dojo.hitch( this, function( cell ) {
 			var widget = cell.getChildren()[ 0 ];
 			if ( widget instanceof umc.widgets.Button || widget instanceof dijit.form.DropDownButton ) {
 				widget.set( 'disabled', value );
 			}
 		} ) );
+		// disable actions in toolbar
 		dojo.forEach( this._toolbar.getChildren(), dojo.hitch( this, function( widget ) {
 			if ( widget instanceof umc.widgets.Button ) {
 				widget.set( 'disabled', value );
