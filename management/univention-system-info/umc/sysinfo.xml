@@ -12,5 +12,11 @@
 	<command name="sysinfo/system" function="get_system_info">
 		<return syntax="Dictionary"/>
 	</command>
+	<command name="sysinfo/mail" function="get_mail_info">
+		<return syntax="Dictionary"/>
+	</command>
+	<command name="sysinfo/upload" function="upload_archive">
+		<return syntax="Dictionary"/>
+	</command>
 	</module>
 </umc>

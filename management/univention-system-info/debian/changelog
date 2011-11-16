@@ -1,3 +1,12 @@
+univention-system-info (2.0.4-1) unstable; urgency=low
+
+  * UMC: Refactoring
+  * UMC: Update module with several bug fixes
+  * UMC: Add translation
+  (Bug #22927)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 16 Nov 2011 12:16:35 +0100
+
 univention-system-info (2.0.3-1) unstable; urgency=low
 
   * UMC: Add python backend (Bug #22927)

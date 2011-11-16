@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
 import re
 import subprocess
 
@@ -39,6 +40,15 @@ import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
+
+from urllib import quote, urlencode
+from urlparse import urlunparse
+
+# locale module that overrides functions in urllib2
+import upload
+import urllib2
+
+import univention.config_registry as ucr
 
 _ = umc.Translation('univention-management-console-module-sysinfo').translate
 
@@ -115,3 +125,43 @@ class Instance(umcm.Base):
 			request.status = SUCCESS
 
 		self.finished(request.id, result)
+
+	def get_mail_info(self, request):
+		ucr_reg = ucr.ConfigRegistry()
+		ucr_reg.load()
+		ADDRESS_KEY = 'umc/sysinfo/mail/address'
+		SUBJECT_KEY = 'umc/sysinfo/mail/subject'
+		ADDRESS_VALUE = ucr_reg.get(ADDRESS_KEY, 'feedback@univention.de')
+		SUBJECT_VALUE = ucr_reg.get(SUBJECT_KEY, 'Univention System Info')
+
+		url = urlunparse(('mailto', '', ADDRESS_VALUE, '',
+		                  urlencode({'subject': SUBJECT_VALUE, }), ''))
+		result = {}
+		result['url'] = url.replace('+', '%20')
+		request.status = SUCCESS
+		self.finished(request.id, result)
+
+	def upload_archive(self, request):
+		UPLOAD_KEY = 'umc/sysinfo/upload/url'
+		FALLBACK_UPLOAD_URL = 'https://forge.univention.de/cgi-bin/system-info-upload.py'
+		ucr_reg = ucr.ConfigRegistry()
+		ucr_reg.load()
+		url = ucr_reg.get(UPLOAD_KEY, FALLBACK_UPLOAD_URL)
+
+		SYSINFO_PATH = '/var/www/univention-management-console/system-info/'
+		fd = open(os.path.join(SYSINFO_PATH, request.options['archive']), 'r')
+		data = {'filename': fd, }
+		req = urllib2.Request(url, data, {})
+		try:
+			u = urllib2.urlopen(req)
+			answer = u.read()
+			success = True
+		except:
+			success = False
+
+		if not success or answer.startswith('ERROR:'):
+			request.status = MODULE_ERR
+		else:
+			request.status = SUCCESS
+
+		self.finished(request.id, None)
