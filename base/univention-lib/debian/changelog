@@ -1,3 +1,9 @@
+univention-lib (1.0.39-1) unstable; urgency=low
+
+  * Delay and really kill udm-cli (Bug #24517)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 16 Nov 2011 21:57:13 +0100
+
 univention-lib (1.0.38-1) unstable; urgency=low
 
   * escape ldap filter in python/getMailFromMailOrUid.py (Bug #23739) 

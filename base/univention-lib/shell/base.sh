@@ -89,7 +89,15 @@ call_joinscript_on_dcmaster () {
 # stops any currently running UDM CLI server
 #
 stop_udm_cli_server () {
-    pkill -f "/usr/bin/python.* /usr/share/univention-directory-manager-tools/univention-cli-server"
+	local pids signal=SIGTERM
+	pids=$(pgrep -f "/usr/bin/python.* /usr/share/univention-directory-manager-tools/univention-cli-server") || return 0
+	# As long as one of the processes remains, try to kill it.
+	while kill -"$signal" $pids 2>/dev/null # IFS
+	do
+		sleep 1
+		signal=SIGKILL
+	done
+	return 0
 }
 
 #
