@@ -1,3 +1,9 @@
+univention-base-files (1.0.39-1) unstable; urgency=low
+
+  * added template for /etc/lsb-release (Bug #24628) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 Nov 2011 10:29:34 +0100
+
 univention-base-files (1.0.38-1) unstable; urgency=low
 
   * nfsmounts: Use univention.uldap and machine credentials for ldap

@@ -16,6 +16,13 @@ Variables: sshd/challengeresponse
 Variables: sshd/passwordauthentication
 
 Type: file
+File: etc/lsb-release
+Variables: version/version
+Variables: version/patchlevel
+Variables: version/erratalevel
+Variables: version/releasename
+
+Type: file
 File: etc/ssh/ssh_config
 Variables: auth/methods
 
