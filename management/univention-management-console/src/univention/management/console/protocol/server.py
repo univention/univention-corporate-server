@@ -317,6 +317,14 @@ class Server( signals.Provider ):
 			CORE.info( 'Loading resources ...' )
 			self.reload()
 
+		# register timer to update UCR variables
+		try:
+			ucr_reload_timer = int( ucr.get( 'umc/server/ucr/update', 600 ) )
+		except ValueError:
+			CORE.warn( 'Failed to read interval for UCR reloads. Using default of 600 seconds' )
+			ucr_reload_timer = 600
+		notifier.timer_add( ucr_reload_timer * 1000, lambda: ucr.load() or True )
+
 		CORE.info( 'Initialising server process' )
 		self.__port = port
 		self.__unix = unix

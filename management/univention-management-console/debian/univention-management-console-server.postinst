@@ -37,6 +37,7 @@ univention-config-registry set \
 	umc/server/debug/level?1 \
 	umc/server/autostart?yes \
 	umc/server/upload/max?512 \
+	umc/server/ucr/update?600 \
 	umc/module/debug/level?1 \
 	umc/module/timeout?600
 
