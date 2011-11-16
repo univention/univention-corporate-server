@@ -114,7 +114,7 @@
    inkscape:cy="7.5485698"
    inkscape:window-x="62"
    inkscape:window-y="37"
-   inkscape:current-layer="Ebene_1" />
+   inkscape:current-layer="g3204" />
 <linearGradient
    id="SVGID_1_"
    gradientUnits="userSpaceOnUse"
@@ -136,10 +136,7 @@
    style="stop-color:#6f7072;stop-opacity:0.39473686;"
    id="stop8" />
 </linearGradient>
-<path
-   d="M 2.567,1.325777 L 2.567,14.774777 C 2.567,14.774777 3.339,16.276777 8.484,15.924777 L 8.484,0.22177698 C 8.484,0.22177698 4.753,-0.63122302 2.567,1.325777 z"
-   id="path10"
-   style="opacity:0.40125392;fill:url(#linearGradient8191);stroke:none;stroke-width:0.10000000000000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+
 <linearGradient
    id="SVGID_2_"
    gradientUnits="userSpaceOnUse"
@@ -225,66 +222,7 @@
    id="path43"
    style="fill:#565656;fill-opacity:1" />
 </g>
-<g
-   id="g45"
-   style="opacity:0.73354231999999997;fill:url(#linearGradient8163);fill-opacity:1.0;stroke:none;stroke-width:0.10000000000000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-   transform="translate(0,2.8776978e-2)">
-	
-		<linearGradient
-   id="SVGID_5_"
-   gradientUnits="userSpaceOnUse"
-   x1="7.7788"
-   y1="14.3613"
-   x2="20.517599"
-   y2="-10.8129"
-   gradientTransform="matrix(1,0,0,-1,0.4204,16.8359)"
-   style="fill:url(#linearGradient8163);fill-opacity:1.0">
-		<stop
-   offset="0.2331"
-   style="stop-color:#B5B5B8;fill-opacity:1.0;fill:url(#linearGradient8163)"
-   id="stop48" />
-		<stop
-   offset="0.6258"
-   style="stop-color:#D9D9DA;fill-opacity:1.0;fill:url(#linearGradient8163)"
-   id="stop50" />
-		<stop
-   offset="1"
-   style="stop-color:#6F7072;fill-opacity:1.0;fill:url(#linearGradient8163)"
-   id="stop52" />
-	</linearGradient>
-	<polygon
-   points="14.367,1.801 14.367,14.242 8.481,15.896 8.481,0.194 14.367,1.801 "
-   id="polygon54"
-   style="fill:url(#linearGradient8193);fill-opacity:1;stroke:none;stroke-width:0.10000000000000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-	
-		<linearGradient
-   id="SVGID_6_"
-   gradientUnits="userSpaceOnUse"
-   x1="8.3212996"
-   y1="14.3672"
-   x2="20.890499"
-   y2="-15.5267"
-   gradientTransform="matrix(1,0,0,-1,0.4204,16.8359)"
-   style="fill:url(#linearGradient8163);fill-opacity:1.0">
-		<stop
-   offset="0.3865"
-   style="stop-color:#B5B5B8;fill-opacity:1.0;fill:url(#linearGradient8163)"
-   id="stop57" />
-		<stop
-   offset="0.6258"
-   style="stop-color:#D9D9DA;fill-opacity:1.0;fill:url(#linearGradient8163)"
-   id="stop59" />
-		<stop
-   offset="1"
-   style="stop-color:#6F7072;fill-opacity:1.0;fill:url(#linearGradient8163)"
-   id="stop61" />
-	</linearGradient>
-	<path
-   d="M 14.367,14.242 L 8.481,15.896 L 14.367,14.242 z"
-   id="path63"
-   style="fill:url(#linearGradient8195);fill-opacity:1.0;stroke:none;stroke-width:0.10000000000000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-   sodipodi:nodetypes="ccc" />
-</g>
+
 <path
    style="opacity:1;fill:none;stroke:#5b5b5b;stroke-width:0.10000000000000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
    id="path8155"
@@ -294,14 +232,14 @@
    id="g3204">
 	
 		<linearGradient
-   style="fill:url(#linearGradient8163);fill-opacity:1"
    gradientTransform="matrix(1,0,0,-1,0.4204,16.8359)"
    y2="-10.8129"
    x2="20.517599"
    y1="14.3613"
    x1="7.7788"
    gradientUnits="userSpaceOnUse"
-   id="linearGradient3206">
+   id="linearGradient3206"
+   style="fill:url(#linearGradient8163);fill-opacity:1">
 		<stop
    id="stop3208"
    style="stop-color:#B5B5B8;fill-opacity:1.0;fill:url(#linearGradient8163)"
@@ -315,20 +253,21 @@
    style="stop-color:#6F7072;fill-opacity:1.0;fill:url(#linearGradient8163)"
    offset="1" />
 	</linearGradient>
-	<polygon
-   style="fill:none;fill-opacity:1;stroke:#5a5a5a;stroke-width:0.10000000000000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+	<path
+   style="stroke:#5a5a5a"
+   d="M 8.481,0.194 L 14.367,1.801 L 14.367,14.242 L 8.481,15.896"
    id="polygon3214"
-   points="14.367,1.801 14.367,14.242 8.481,15.896 8.481,0.194 14.367,1.801 " />
+   sodipodi:nodetypes="ccccc" />
 	
 		<linearGradient
-   style="fill:url(#linearGradient8163);fill-opacity:1"
    gradientTransform="matrix(1,0,0,-1,0.4204,16.8359)"
    y2="-15.5267"
    x2="20.890499"
    y1="14.3672"
    x1="8.3212996"
    gradientUnits="userSpaceOnUse"
-   id="linearGradient3216">
+   id="linearGradient3216"
+   style="fill:url(#linearGradient8163);fill-opacity:1">
 		<stop
    id="stop3218"
    style="stop-color:#B5B5B8;fill-opacity:1.0;fill:url(#linearGradient8163)"
@@ -342,9 +281,5 @@
    style="stop-color:#6F7072;fill-opacity:1.0;fill:url(#linearGradient8163)"
    offset="1" />
 	</linearGradient>
-	<path
-   sodipodi:nodetypes="ccc"
-   style="fill:none;fill-opacity:1;stroke:#5a5a5a;stroke-width:0.10000000000000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-   id="path3224"
-   d="M 14.367,14.242 L 8.481,15.896 L 14.367,14.242 z" />
+	
 </g></svg>
