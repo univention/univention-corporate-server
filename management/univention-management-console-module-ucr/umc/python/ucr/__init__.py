@@ -33,9 +33,9 @@
 
 from fnmatch import fnmatch
 
-import univention.management.console as umc
-import univention.management.console.modules as umcm
-import univention.debug as ud
+from univention.lib.i18n import Translation
+from univention.management.console.modules import UMC_OptionTypeError, Base
+from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
 import univention.config_registry as ucr
@@ -43,12 +43,12 @@ from univention.config_registry_info import ConfigRegistryInfo, Variable
 
 import univention.info_tools as uit
 
-_ = umc.Translation( 'univention-management-console-module-ucr' ).translate
+_ = Translation( 'univention-management-console-module-ucr' ).translate
 
-class Instance( umcm.Base ):
+class Instance( Base ):
 	def init(self):
 		# set the language in order to return the correctly localized labels/descriptions
-		uit.set_language(str(self.locale))
+		uit.set_language( self.locale.language )
 
 	def __create_variable_info( self, options ):
 		all_info = ConfigRegistryInfo( registered_only = False )
@@ -176,7 +176,7 @@ class Instance( umcm.Base ):
 		The dictionary returned is compatible with the Dojo data store
 		format.'''
 		variables = []
-		ud.debug( ud.ADMIN, ud.INFO, 'UCR.query: options: %s' % str( request.options ) )
+		MODULE.info( 'UCR.query: options: %s' % str( request.options ) )
 		category = request.options.get( 'category', None )
 		if category == 'all':
 			# load _all_ config registry variables
@@ -185,28 +185,30 @@ class Instance( umcm.Base ):
 			# load _all registered_ config registry variables
 			baseInfo = ConfigRegistryInfo()
 
-		filter = request.options.get( 'filter', '*' )
-		if filter == None:
-			filter = ''
+		pattern = request.options.get( 'filter', '*' )
+		if pattern == None:
+			pattern = ''
 		key = request.options.get( 'key', 'variable' )
 		if category in ( 'all', 'all-registered' ):
 			cat = None
 		else:
 			cat = category
 
-		for name, var in baseInfo.get_variables( cat ).items():
-			if key == 'value':
-				if var.value and fnmatch( var.value, filter ):
-					variables.append( { 'key' : name, 'value' : var.value } )
-			elif key == 'description':
-				descr = var.get( 'description', '' )
-				if descr and fnmatch( descr, filter ):
-					variables.append( { 'key' : name, 'value' : var.value } )
-			else:
-				if fnmatch( name, filter ):
-					variables.append( { 'key' : name, 'value' : var.value } )
+		def _match_value( name, var ):
+			return var.value and fnmatch( var.value, pattern )
+		def _match_key( name, var ):
+			return fnmatch( name, pattern )
+		def _match_description( name, var ):
+			descr = var.get( 'description', '' )
+			return descr and fnmatch( descr, pattern )
+		def _match_all( name, var ):
+			return _match_value( name, var ) or _match_description( name, var ) or _match_key( name, var )
 
-		if not request.status:
-			request.status = SUCCESS
+		if key in ( 'all', 'key', 'value', 'description' ):
+			func = eval( '_match_%s' % key )
+			variables = filter( lambda x: func( *x ), baseInfo.get_variables( cat ).items() )
+			variables = map( lambda x: { 'key' : x[ 0 ], 'value' : x[ 1 ].value }, variables )
+		else:
+			raise UMC_OptionTypeError( 'Unknown search key' )
 
 		self.finished( request.id, variables )
