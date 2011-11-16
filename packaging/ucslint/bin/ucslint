@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 #
+import fnmatch
 import os
 import sys
 import imp
@@ -136,24 +137,25 @@ class DebianPackageCheck(object):
 				# find filename and cut it off
 				result = reFilename.search(line)
 				if not result:
-					self.overrides.add( '%s:%s:%s' % (module, filename, linenumber) )
+					self.overrides.add( (module, filename, linenumber, ) )
 					continue
 				filename = result.group(1)
 				if not filename:
 					filename = None
 				linenumber = result.group(2)
 				if linenumber:
-					linenumber = linenumber.strip(':')
+					linenumber = int(linenumber.strip(':'))
 
-				self.overrides.add( '%s:%s:%s' % (module, filename, linenumber) )
+				self.overrides.add( (module, filename, linenumber, ) )
 
 	def inOverrides(self, module, filename, linenumber):
-		if '%s:%s:%s' % (module, None, None) in self.overrides:
+		if (module, None, None, ) in self.overrides:
 			return True
-		if '%s:%s:%s' % (module, filename, None) in self.overrides:
-			return True
-		if '%s:%s:%s' % (module, filename, linenumber) in self.overrides:
-			return True
+		for (modulename, pattern, number, ) in self.overrides:
+			if modulename == module:
+				if fnmatch.fnmatch(filename, pattern):
+					if number is None or number == linenumber:
+						return True
 		return False
 
 	def printResult(self, ignore_IDs, display_only_IDs, display_only_categories, exitcode_categories ):

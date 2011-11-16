@@ -1,3 +1,10 @@
+ucslint (2.0.20-1) unstable; urgency=low
+
+  * override via shell-like globbing (Bug #24673)
+  * update tests
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 16 Nov 2011 17:51:43 +0100
+
 ucslint (2.0.19-1) unstable; urgency=low
 
   * disable .js copyright check until packages are fixed (Bug #24673)
