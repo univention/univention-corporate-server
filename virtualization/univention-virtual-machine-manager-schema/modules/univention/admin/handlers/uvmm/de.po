@@ -1,13 +1,13 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# LDAP Schema package.
+# Copyright (C) 2010-2011 Univention GmbH.
+# This file is distributed under the same license as the univention-virtual-machine-manager-schema package.
 # Andreas Büsching <buesching@univention.de>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager-schema\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-23 14:41+0200\n"
+"POT-Creation-Date: 2011-11-16 12:07+0100\n"
 "PO-Revision-Date: 2011-10-23 14:42+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -43,7 +43,15 @@ msgstr "Name des Betriebssystem"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: info.py:97 info.py:98 profile.py:284 profile.py:285
+#: info.py:91
+msgid "Profile"
+msgstr "Profil"
+
+#: info.py:92
+msgid "Reference to the profile used for defining this VM"
+msgstr "Referenz auf das bei der Definition genutzte Profil"
+
+#: info.py:104 info.py:105 profile.py:283 profile.py:284
 msgid "General"
 msgstr "Allgemein"
 

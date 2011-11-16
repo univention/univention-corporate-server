@@ -35,13 +35,19 @@ attributetype ( 1.3.6.1.4.1.10176.4101.1.11 NAME 'univentionVirtualMachineOS'
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.4101.1.12 NAME 'univentionVirtualMachineContact'
-	DESC 'contact person for the virtual instance'
+	DESC 'contact person for the Virtual Machine'
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
 
 attributetype ( 1.3.6.1.4.1.10176.4101.1.13 NAME 'univentionVirtualMachineDescription'
-	DESC 'description for the virtual instance'
+	DESC 'description for the Virtual Machine'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.4101.1.14 NAME 'univentionVirtualMachineProfileRef'
+	DESC 'reference to the profile used to define the Virtual Machine'
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
@@ -50,7 +56,11 @@ objectclass ( 1.3.6.1.4.1.10176.4101.2.10 NAME 'univentionVirtualMachine'
 	DESC 'UCS Virtual Machine objectclass'
 	STRUCTURAL
 	MUST ( univentionVirtualMachineUUID )
-	MAY ( univentionVirtualMachineDescription $ univentionVirtualMachineOS $ univentionVirtualMachineContact )
+	MAY ( univentionVirtualMachineDescription
+		$ univentionVirtualMachineOS
+		$ univentionVirtualMachineContact
+		$ univentionVirtualMachineProfileRef
+		)
 	)
 
 attributetype ( 1.3.6.1.4.1.10176.4101.3.1 NAME 'univentionVirtualMachineProfileNamePrefix'

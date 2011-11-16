@@ -1,10 +1,9 @@
-#!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
 # UCS Virtual Machine Manager
 #  UDM Virtual Machine Manager Information
 #
-# Copyright 2010 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,12 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import re, sys, string
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.syntax
 import univention.admin.localization
-import univention.admin.uexceptions
 from univention.admin.layout import Tab, Group
 
 translation=univention.admin.localization.translation('univention.admin.handlers.uvmm')
@@ -55,31 +52,31 @@ property_descriptions={
 			short_description= _('UUID'),
 			long_description= _('UUID'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=1
+			required=True,
+			may_change=True,
+			identifies=True
 		),
 	'description': univention.admin.property(
 			short_description= _('Description'),
 			long_description= _('Description of virtual machine'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'os': univention.admin.property(
 			short_description= _('Operating system'),
 			long_description= _('Name of the operation system'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'contact': univention.admin.property(
 			short_description = _('Contact'),
@@ -89,6 +86,16 @@ property_descriptions={
 			required = False,
 			may_change = True,
 			identifies = False
+		),
+	'profile': univention.admin.property(
+			short_description=_('Profile'),
+			long_description=_('Reference to the profile used for defining this VM'),
+			syntax=univention.admin.syntax.ldapDnOrNone,
+			multivalue=False,
+			options=[],
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 }
 
@@ -100,6 +107,7 @@ layout = [
 			"description",
 			"contact",
 			"os",
+			"profile",
 		] )
 	] )
 	]
@@ -109,6 +117,7 @@ mapping.register('uuid', 'univentionVirtualMachineUUID', None, univention.admin.
 mapping.register('description', 'univentionVirtualMachineDescription', None, univention.admin.mapping.ListToString)
 mapping.register('os', 'univentionVirtualMachineOS', None, univention.admin.mapping.ListToString)
 mapping.register('contact', 'univentionVirtualMachineContact', None, univention.admin.mapping.ListToString)
+mapping.register('profile', 'univentionVirtualMachineProfileRef', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
