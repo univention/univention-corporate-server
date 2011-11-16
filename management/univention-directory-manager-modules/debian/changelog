@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.184-1) unstable; urgency=low
+
+  * Removed unused file univention-user-passwd (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Nov 2011 18:04:07 +0100
+
 univention-directory-manager-modules (7.0.183-1) unstable; urgency=low
 
   * Re-organize layout for policies/pwhistory (Bug #23709)
