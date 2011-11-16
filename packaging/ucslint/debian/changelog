@@ -1,3 +1,9 @@
+ucslint (2.0.17-1) unstable; urgency=low
+
+  * check .py and .js files without hashbang for copyright (Bug #24673)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 16 Nov 2011 14:33:43 +0100
+
 ucslint (2.0.16-1) unstable; urgency=low
 
   * also check python files without hashbang (Bug #22437)
