@@ -168,7 +168,7 @@ msgstr "Das Laufwerk konnte nicht gefunden werden"
 #: umc/python/uvmm/storages.py:175
 #, python-format
 msgid "Could not retrieve details for domain %s"
-msgstr "Die Details zur virtuellen Instanz konnten nicht abgerufen werden"
+msgstr "Die Details zur virtuellen Instanz %s konnten nicht abgerufen werden"
 
 #: umc/python/uvmm/wizards.py:701 umc/python/uvmm/wizards.py:825
 msgid "Create a virtual instance"

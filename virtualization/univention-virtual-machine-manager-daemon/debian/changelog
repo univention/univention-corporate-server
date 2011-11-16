@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (1.0.68-1) unstable; urgency=low
+
+  * support editing drives; Bug #22893
+  * change tab title whne opening a domain
+  * show physical server in tooltip
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 16 Nov 2011 19:52:03 +0100
+
 univention-virtual-machine-manager-daemon (1.0.67-1) unstable; urgency=low
 
   * UMC: change actions depending on which type (domain/node) has been chosen

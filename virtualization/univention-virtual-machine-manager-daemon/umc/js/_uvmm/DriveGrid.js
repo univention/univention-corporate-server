@@ -49,13 +49,13 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 				isStandardAction: true,
 				iconClass: 'umcIconDelete',
 				callback: dojo.hitch(this, '_removeDrive')
-			},/* {
+			}, {
 				name: 'edit',
 				label: this._('Edit'),
 				isMultiAction: false,
 				isStandardAction: true,
-				callback: dojo.hitch(this, '_edit Drive')
-			}, */ {
+				callback: dojo.hitch(this, '_editDrive')
+			}, {
 				name: 'add',
 				label: this._('Add drive'),
 				isMultiAction: false,
@@ -64,6 +64,95 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 				callback: dojo.hitch(this, '_addDrive')
 			}]
 		});
+	},
+
+
+	_editDrive: function( ids, items ) {
+		var disk = items[ 0 ];
+
+		var types = umc.modules._uvmm.types;
+		var intro_msg = this._( 'All image files are stored in so-called storage pools. They can be stored in a local directory, an LVM partition or a share (e.g. using iSCSI, NFS or CIFS).' );
+		var kvm_msg = this._( 'Hard drive images can be administrated in two ways on KVM systems; by default images are saved in the <i>Extended format (qcow2)</i>. This format supports copy-on-write which means that changes do not overwrite the original version, but store new versions in different locations. The internal references of the file administration are then updated to allow both access to the original and the new version. This technique is a prerequisite for efficiently managing snapshots of virtual machines. Alternatively, you can also access a hard drive image in <i>Simple format (raw)</i>. Snapshots can only be created when using hard drive images in <i>Extended format</i>. Only the <i>Simple format</i> is available on Xen systems.' );
+		var pv_msg = this._( 'Paravirtualisation is a special variant of virtualisation in which the virtualised operating system is adapted to the underlying virtualisation technology. This improves the performance. Linux systems usually support paravirtualisation out of the box. For Windows systems additional support drivers need to be installed, see the <a href="http://wiki.univention.de/index.php?title=UVMM_Technische_Details"> Univention wiki </a> for details (currently only available in German).' );
+
+		var msg = '<p>' + intro_msg + '</p>';
+		if ( types.getNodeType( this.domain.domainURI ) == 'qemu' ) {
+			msg += '<p>' + kvm_msg + '</p>';
+		}
+		msg = '<p>' + pv_msg + '</p>';
+
+		var dialog = null, form = null;
+
+		var _cleanup = function() {
+			dialog.hide();
+			dialog.destroyRecursive();
+			form.destroyRecursive();
+		};
+
+		var _saveDrive = dojo.hitch(this, function() {
+			var values = form.gatherFormValues();
+			console.log( values );
+			disk.paravirtual = values.paravirtual;
+			this.moduleStore.put( disk );
+		});
+
+		form = new umc.widgets.Form({
+			widgets: [
+			{
+				type: 'Text',
+				name: '__message',
+				content: msg,
+				label: ''
+			}, {
+				name: 'device',
+				type: 'ComboBox',
+				value: disk.device,
+				disabled: true,
+				staticValues: types.dict2list(types.blockDevices)
+			}, {
+				name: 'pool',
+				type: 'ComboBox',
+				label: this._( 'Pool' ),
+				description: this._('Each image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS).'),
+				dynamicOptions: dojo.hitch( this, function( options ) {
+					return {
+						nodeURI: this.domain.domainURI.slice( 0, this.domain.domainURI.indexOf( '#' ) )
+					};
+				} ),
+				dynamicValues: types.getPools,
+				disabled: true
+			}, {
+				name: 'volumeFilename',
+				type: 'TextBox',
+				value: disk.volumeFilename,
+				label: this._( 'Filename' ),
+				disabled: true
+			}, {
+				type: 'CheckBox',
+				name: 'paravirtual',
+				value: disk.paravirtual,
+				label: this._( 'Paravirtual drive' )
+			} ],
+			buttons: [{
+				name: 'submit',
+				label: this._('Save'),
+				style: 'float: right;',
+				callback: function() {
+					_saveDrive();
+				}
+			}, {
+				name: 'cancel',
+				label: this._('Cancel'),
+				callback: _cleanup
+			}],
+			layout: [ '__message', 'device', 'pool', 'volumeFilename', 'paravirtual' ]
+		});
+
+		dialog = new dijit.Dialog({
+			title: this._('Edit drive'),
+			content: form
+		});
+		dialog.show();
 	},
 
 	_removeDrive: function( ids, items ) { 

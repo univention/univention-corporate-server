@@ -217,7 +217,9 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._domainPage = new umc.modules._uvmm.DomainPage({
 			onClose: dojo.hitch(this, function() {
 				this.selectChild(this._searchPage);
-			})
+				this.set( 'title', this.defaultTitle );
+			}),
+			moduleWidget: this
 		});
 		this.addChild(this._domainPage);
 
@@ -747,9 +749,12 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		} );
 		if ( undefined !== item.state ) {
 			var tooltip = new umc.widgets.Tooltip( {
-				label: umc.modules._uvmm.types.getDomainStateDescription( item ),
+				label: dojo.replace( this._( 'State: {state}<br>Server: {node}' ), {
+					state: umc.modules._uvmm.types.getDomainStateDescription( item ),
+					node: item.nodeName
+				} ),
 				connectId: [ widget.domNode ],
-				position: 'above'
+				position: 'below'
 			});
 
 			// destroy the tooltip when the widget is destroyed

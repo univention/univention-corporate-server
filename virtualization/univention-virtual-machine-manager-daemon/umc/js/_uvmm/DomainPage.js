@@ -359,6 +359,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			this._domain.domainURI = id;
 
 			if (data) {
+				this.moduleWidget.set( 'title', 'UVMM: ' + this._domain.name );
 				// set values to form
 				this._generalForm.setFormValues(this._domain);
 				this._advancedForm.setFormValues(this._domain);
