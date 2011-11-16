@@ -1,3 +1,10 @@
+univention-quota (6.0.16-1) unstable; urgency=low
+
+  * provide port in addition to explicit servername for ldapsearch in
+    univention-user-quota (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Nov 2011 11:23:04 +0100
+
 univention-quota (6.0.15-2) unstable; urgency=low
 
   * Fix changes from r28796 (Bug #22903)
