@@ -424,7 +424,7 @@ def main():
 		configRegistry.load()
 		if update_available and configRegistry.is_false(UCR_UPDATE_AVAILABLE, True):
 			univention.config_registry.handler_set( [ '%s=yes' % UCR_UPDATE_AVAILABLE ] )
-		elif configRegistry.is_true(UCR_UPDATE_AVAILABLE, True):
+		elif not update_available and configRegistry.is_true(UCR_UPDATE_AVAILABLE, True):
 			univention.config_registry.handler_set( [ '%s=no' % UCR_UPDATE_AVAILABLE] )
 
 if __name__ == '__main__':
