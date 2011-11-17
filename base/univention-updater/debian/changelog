@@ -1,3 +1,9 @@
+univention-updater (7.0.100-1) unstable; urgency=low
+
+  * exit in preup if univention-fax-* packages are installed (Bug #24619) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Nov 2011 09:59:55 +0100
+
 univention-updater (7.0.99-1) unstable; urgency=low
 
   * Fixed setting of update/available (Bug #24670)

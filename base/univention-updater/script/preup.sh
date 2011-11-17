@@ -275,6 +275,7 @@ if [ ! "$update_fax_check" = "no" -a ! "$update_fax_check" = "false" -a ! "$upda
 		echo
 		echo "This check can be disabled by setting the Univention Configuration Registry"
 		echo "variable \"update/fax/check\" to \"no\"."
+		exit 1
 	fi
 fi
 
