@@ -77,6 +77,7 @@ __widgets = (
 	Widget( None, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
 	Widget( 'UnixAccessRights', udm_syntax.UNIX_AccessRight, '000' ),
 	Widget( 'MultiSelect', udm_syntax.MultiSelect, [] ),
+	Widget( 'ImageUploader', udm_syntax.jpegPhoto, '' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
 	Widget( None, udm_syntax.complex, None, widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'MultiInput' or 'ComplexInput' ),
 	)
