@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.210-1) unstable; urgency=low
+
+  * removed default value; Bug #24602
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 17 Nov 2011 10:55:40 +0100
+
 univention-management-console-frontend (1.0.209-1) unstable; urgency=low
 
   * show warning if SSL certificate is going to expired (days <= warning); Bug #23880

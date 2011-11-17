@@ -67,7 +67,6 @@ dojo.declare("umc.widgets.ComplexInput", umc.widgets.ContainerWidget, {
 			widgetConfs.push( dojo.mixin( {}, widget, {
 				disabled: this.disabled,
 				name: iname,
-				value: '',
 				dynamicValues: widget.dynamicValues,
 				umcpCommand: this.umcpCommand
 			}));
