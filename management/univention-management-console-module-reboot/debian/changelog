@@ -1,3 +1,12 @@
+univention-management-console-module-reboot (1.0.15-1) unstable; urgency=low
+
+  * refactoring
+  * add ucslint
+  * support unicode characters in shutdown message
+  (Bug #22848)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 09 Nov 2011 10:03:21 +0100
+
 univention-management-console-module-reboot (1.0.14-1) unstable; urgency=low
 
   * add copyright headers to JavaScript files (Bug #23210)

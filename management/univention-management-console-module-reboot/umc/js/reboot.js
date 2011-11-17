@@ -41,19 +41,19 @@ dojo.require("umc.widgets.TitlePane");
 
 dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
-    _page: null,
-    _form: null,
+	_page: null,
+	_form: null,
 
 	i18nClass: 'umc.modules.reboot',
 
 	buildRendering: function() {
 		this.inherited(arguments);
 
-        this._page = new umc.widgets.Page({
-            helpText: this._("This module can be used to restart or shut down the system remotely. The optionally given message will be displayed on the console and written to the syslog."),
-            headerText: this._("Reboot/shutdown the system")
-        });
-        this.addChild(this._page);
+		this._page = new umc.widgets.Page({
+			helpText: this._("This module can be used to restart or shut down the system remotely. The optionally given message will be displayed on the console and written to the syslog."),
+			headerText: this._("Reboot/shutdown the system")
+		});
+		this.addChild(this._page);
 
 		var widgets = [{
 			type: 'ComboBox',
@@ -74,10 +74,8 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'submit',
 			label: this._('Execute'),
 			callback: dojo.hitch(this, function() {
-                var vals = this._form.gatherFormValues();
-                this.umcpCommand('reboot/reboot', vals).then(dojo.hitch(this, function(data) {
-                	umc.dialog.alert(data.result.message);
-                }));
+				var vals = this._form.gatherFormValues();
+				this.shutdown(vals);
 			})
 		}];
 
@@ -98,7 +96,11 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			title: this._('Actions'),
 			content: this._form
 		});
-		
+
 		container.addChild(titlePane);
+	},
+
+	shutdown: function(data) {
+		this.umcpCommand('reboot/reboot', data);
 	}
 });

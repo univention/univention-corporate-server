@@ -47,15 +47,16 @@ class Instance(umcm.Base):
 		if request.options['action'] == 'halt':
 			do = 'h'
 			target = _('The system is going down for system halt NOW '
-			         'with following message: ')
+			           'with following message: ')
 		elif request.options['action'] == 'reboot':
 			do = 'r'
 			target = _('The system is going down for reboot NOW '
-			         'with following message: ')
+			           'with following message: ')
 
-		message = '%s%s' % (target, request.options['message'])
+		unicode_message = '%s%s' % (target, request.options['message'])
+		message = unicode_message.encode('utf-8')
 		subprocess.call(('/usr/bin/logger', '-f', '/var/log/syslog',
-						 '-t', 'UMC', message))
+		                 '-t', 'UMC', message))
 		shutdown_failed = subprocess.call(('/sbin/shutdown', '-%s' %do,
 		                                   'now', message))
 		if shutdown_failed:
