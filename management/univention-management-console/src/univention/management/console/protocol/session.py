@@ -340,9 +340,9 @@ class Processor( signals.Provider ):
 		# request.options = { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )
 		response = Response( msg )
 		if not isinstance( msg.options, ( list, tuple ) ):
-			res.status = BAD_REQUEST
-			res.message = status_description( res.status )
-			self.signal_emit( 'response', res )
+			response.status = BAD_REQUEST
+			response.message = status_description( response.status )
+			self.signal_emit( 'response', response )
 			return
 
 		# read tmpfile and convert to base64
@@ -350,16 +350,16 @@ class Processor( signals.Provider ):
 		for file_obj in msg.options:
 			tmpfilename = file_obj[ 'tmpfile' ]
 			if not os.path.isfile( tmpfilename ):
-				res.status = BAD_REQUEST
-				res.message = status_description( res.status )
-				self.signal_emit( 'response', res )
+				response.status = BAD_REQUEST
+				response.message = status_description( response.status )
+				self.signal_emit( 'response', response )
 				return
 			st = os.stat( tmpfilename )
 			max_size = int( ucr.get( 'umc/server/upload/max', 64 ) ) * 1024
 			if st.st_size > max_size:
-				res.status = BAD_REQUEST
-				res.message = status_description( res.status )
-				self.signal_emit( 'response', res )
+				response.status = BAD_REQUEST
+				response.message = status_description( response.status )
+				self.signal_emit( 'response', response )
 				return
 			buf = open( tmpfilename ).read()
 			b64buf = base64.b64encode( buf )

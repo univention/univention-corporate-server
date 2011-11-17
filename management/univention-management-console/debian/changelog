@@ -1,3 +1,9 @@
+univention-management-console (4.0.88-1) unstable; urgency=low
+
+  * fixed typos in upload handler; Bug #23333
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 17 Nov 2011 13:34:55 +0100
+
 univention-management-console (4.0.87-1) unstable; urgency=low
 
   * UMC server reloads UCR all umc/server/ucr/update seconds; Bug #23880
