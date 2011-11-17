@@ -217,6 +217,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 
 				// add current form widgets to layout
 				var elContainer = new umc.widgets.ContainerWidget({});
+				var label = null;
 				dojo.forEach(elList, function(jel) {
 					// make sure the reference to the widget/button exists
 					if (!(widgets && jel in widgets) && !(buttons && jel in buttons)) {
@@ -239,7 +240,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 					}
 					else if (widget) {
 						// add the widget or button surrounded with a LabelPane
-						var label = new umc.widgets.LabelPane({
+						label = new umc.widgets.LabelPane({
 							label: widget.label,
 							content: widget,
 							style: (widget.align ? 'float: ' + widget.align +';' : '' ) + (widget.style || '')
@@ -262,7 +263,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 						if (nWidgetsWithLabel) {
 							// if buttons are displayed along with widgets, we need to add a '&nbps;'
 							// as label in order to display them on the same height
-							var label = new umc.widgets.LabelPane({
+							label = new umc.widgets.LabelPane({
 								label: '&nbsp;',
 								content: button,
 								style: button.align ? 'float: ' + button.align : ''

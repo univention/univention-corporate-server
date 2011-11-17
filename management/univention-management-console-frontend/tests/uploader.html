@@ -25,25 +25,37 @@
                 overflow: auto;
             }
         </style>
-        <script type="text/javascript" src="/univention-management-console/js/dojo/dojo.js"></script>
+		<script type="text/javascript">
+			var djConfig = {
+				modulePaths : {"umc" : "/univention-management-console/js/umc"}
+			};
+		</script>    
+        <script type="text/javascript" src="/univention-dojo/dojo/dojo.js"></script>
         <script type="text/javascript">
-            dojo.require("umc.tools");
-            dojo.require("umc.widgets.Form");
-            dojo.require("umc.widgets.MultiInput");
-            dojo.require("umc.widgets.ContainerWidget");
+            dojo.require("umc.widgets.Uploader");
+            dojo.require("umc.widgets.ImageUploader");
         </script>
         <script type="text/javascript">
-			umc.tools.umcpCommand( 'auth', { username : 'Administrator', password : 'univention' } );
+			dojo.addOnLoad(function() {
+				umc.tools.umcpCommand( 'auth', { username : 'Administrator', password : 'univention' } );
+
+				/*uploader = new umc.widgets.Uploader({});
+				dojo.place(uploader.domNode, dojo.body());
+				dojo.connect(uploader, 'onUploaded', function(data) {
+					console.log(data);
+					image.set('value', data.content);
+				});
+
+				image = new umc.widgets.Image({});
+				dojo.place(image.domNode, dojo.body());*/
+
+				imageUploader = new umc.widgets.ImageUploader({});
+				dojo.place(imageUploader.domNode, dojo.body());
+			});
 		</script>
 </head>
 <body>
 
 <h2>Upload a file</h2>
-            <form action="/umcp/upload" method="post" enctype="multipart/form-data">
-            filename: <input type="file" name="myFile" /><br />
-            <input type="submit" />
-            </form>
-            <h2>Download a file</h2>
-            <a href='download'>This one</a>
 </body>
 </html>

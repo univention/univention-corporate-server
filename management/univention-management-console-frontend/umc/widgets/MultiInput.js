@@ -224,7 +224,7 @@ dojo.declare("umc.widgets.MultiInput", [
 		for ( i = 0; i < this._rowContainers.length; ++i) {
 			dojo.forEach( this._rowContainers[ i ].getChildren(), function( widget ) {
 				widget.set( 'disabled', value );
-			} )
+			} );
 		}
 		this.disabled = value;
 	},

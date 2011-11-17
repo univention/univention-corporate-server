@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.211-1) unstable; urgency=low
+
+  * added Image, Uploader, and ImageUploader (Bug #23333)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 17 Nov 2011 18:58:45 +0100
+
 univention-management-console-frontend (1.0.210-1) unstable; urgency=low
 
   * removed default value; Bug #24602

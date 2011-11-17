@@ -37,6 +37,7 @@ dojo.require("umc.widgets.LoginDialog");
 dojo.require("umc.widgets.Toaster");
 dojo.require("umc.widgets.ConfirmDialog");
 dojo.require("umc.widgets.Text");
+dojo.require("umc.widgets.Button");
 
 dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 	// use the framework wide translation file
