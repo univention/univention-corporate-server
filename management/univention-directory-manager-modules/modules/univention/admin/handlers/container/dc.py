@@ -148,15 +148,6 @@ property_descriptions={
 			default = ( configRegistry.get( 'domainname', '' ).upper(), [] ),
 			identifies=0
 		),
-	'mailRelay': univention.admin.property(
-			short_description=_('Mail relay server'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			required=0,
-			may_change=1,
-			identifies=0
-		),
 }
 
 layout = [
@@ -175,9 +166,6 @@ layout = [
 	Tab(_('Kerberos'), _('Kerberos Settings'), advanced = True, layout = [
 			'kerberosRealm'
 		] ),
-	Tab(_('Mail'), _('Mail Settings'), advanced = True, layout = [
-			'mailRelay'
-		] ),
 	]
 
 mapping=univention.admin.mapping.mapping()
@@ -186,7 +174,6 @@ mapping.register('sambaSID', 'sambaSID', None, univention.admin.mapping.ListToSt
 mapping.register('sambaNextUserRid', 'sambaNextUserRid', None, univention.admin.mapping.ListToString)
 mapping.register('sambaNextGroupRid', 'sambaNextGroupRid', None, univention.admin.mapping.ListToString)
 mapping.register('kerberosRealm', 'krb5RealmName', None, univention.admin.mapping.ListToString)
-mapping.register('mailRelay', 'mailRelay')
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
@@ -366,14 +353,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		tmpPosition.setDn(oldPos)
 
-	def _ldap_modlist(self):
-		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
-
-		ocs=self.oldattr.get('objectClass', [])
-		if not 'univentionMailDomain' in ocs:
-			ml.insert(0, ('objectClass', '', 'univentionMailDomain'))
-
-		return ml
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
