@@ -1,3 +1,9 @@
+univention-samba4 (1.0.107-1) unstable; urgency=low
+
+  * Disable password rotation on S4 DCs (Bug #21213)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Nov 2011 16:47:40 +0100
+
 univention-samba4 (1.0.106-2) unstable; urgency=low
 
   * migrate-sid.py: Use machine connection if ldap.serect is not
