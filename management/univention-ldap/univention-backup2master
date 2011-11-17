@@ -77,13 +77,6 @@ ldapmodify -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" -f "$temp_fi
 
 rm "$temp_file"
 
-mailRelay=$(univention-admin container/dc list --dn "$ldap_base" | sed -ne 's|.*mailRelay: ||p')
-if [ -n "$mailRelay" ]; then
-	if [ "$mailRelay" = "$old_ldap_master" ]; then
-		univention-admin container/dc modify --dn "$ldap_base" --set mailRelay="$hostname.$domainname"
-	fi
-fi
-
 srv_dn=$(univention-admin dns/srv_record list --superordinate zoneName="$domainname,cn=dns,$ldap_base" --filter relativeDomainName="_domaincontroller_master._tcp" | sed -ne 's|DN: ||p')
 univention-admin dns/srv_record modify --superordinate zoneName="$domainname,cn=dns,$ldap_base" --dn "$srv_dn" --set location="0 0 0 $hostname.$domainname."
 

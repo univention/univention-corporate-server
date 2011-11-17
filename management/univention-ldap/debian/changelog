@@ -1,3 +1,9 @@
+univention-ldap (8.0.72-1) unstable; urgency=low
+
+  * removed mailRelay from univention-backup2master (Bug #24693)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 17 Nov 2011 14:52:02 +0100
+
 univention-ldap (8.0.71-2) unstable; urgency=low
 
   * Except udm check for univention-ldap-server.postinst (Bug #24288)
