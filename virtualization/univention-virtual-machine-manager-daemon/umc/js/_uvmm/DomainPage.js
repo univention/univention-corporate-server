@@ -202,6 +202,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				name: 'type',
 				depends: 'domain_type',
 				type: 'ComboBox',
+				readonly: true,
 				label: this._('Virtualization technology'),
 				dynamicValues: types.getVirtualizationTechnology
 			}, {
@@ -419,8 +420,13 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				this._driveGrid.set( 'disabled', disabled );
 				this._interfaceGrid.set( 'disabled', disabled );
 				umc.tools.forIn( this._advancedForm._widgets, dojo.hitch( this, function( iid, iwidget ) {
-					iwidget.set( 'disabled', disabled );
+					if ( iwidget.readonly ) {
+						iwidget.set( 'disabled', true );
+					} else {
+						iwidget.set( 'disabled', disabled );
+					}
 				} ) );
+				this.selectChild( this._generalPage, true);
 			}
 			this.standby(false);
 		}), dojo.hitch(this, function() {

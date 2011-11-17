@@ -54,11 +54,20 @@ dojo.declare("umc.modules._uvmm.InterfaceWizard", [ umc.widgets.Wizard, umc.i18n
 				widgets: [{
 					name: 'type',
 					type: 'ComboBox',
+					sizeClass: 'OneThird',
 					label: this._('Type'),
 					staticValues: types.interfaceTypes,
+					onChange: dojo.hitch( this, '_typeDescription' ),
 					value: this.values.type || 'bridge'
 				}, {
+					name: 'typeDescription',
+					type: 'Text',
+					style: 'width: auto;',
+					label: '',
+					content: ''
+				}, {
 					name: 'model',
+					sizeClass: 'One',
 					type: 'ComboBox',
 					label: this._('Driver'),
 					dynamicOptions: dojo.hitch(this, function() {
@@ -71,6 +80,7 @@ dojo.declare("umc.modules._uvmm.InterfaceWizard", [ umc.widgets.Wizard, umc.i18n
 					value: this.values.model || 'rtl8139'
 				}, {
 					name: 'source',
+					sizeClass: 'OneThird',
 					type: 'TextBox',
 					label: this._('Source'),
 					description: this._('The source is the name of the network interface on the phyiscal server that is configured for bridging. By default it is eth0.'),
@@ -78,14 +88,27 @@ dojo.declare("umc.modules._uvmm.InterfaceWizard", [ umc.widgets.Wizard, umc.i18n
 					required: true
 				}, {
 					name: 'mac_address',
+					sizeClass: 'One',
 					type: 'TextBox',
 					regExp: '^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$',
 					invalidMessage: this._('Invalid MAC address. The address should have the form, e.g., "01:23:45:67:89:AB".'),
 					label: this._('MAC addresss'),
 					value: this.values.mac_address || ''
-				}]
+				}],
+				layout: [ [ 'type', 'model' ], 'typeDescription', [ 'source', 'mac_address' ] ]
 			}]
 		});
+	},
+
+	_typeDescription: function() {
+		var widget = this.getWidget( 'typeDescription' );
+		if ( this.getWidget( 'type' ).get( 'value' ) == 'network:default' ) {
+			widget.set( 'content' , 'By default the private network is 192.168.122.0/24' );
+			dojo.addClass( widget.domNode, 'umcPageNote' );
+		} else {
+			widget.set( 'content' , '' );
+			dojo.removeClass( widget.domNode, 'umcPageNote' );
+		}
 	},
 
 	canFinish: function(values) {

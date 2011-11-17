@@ -85,7 +85,14 @@ dojo.declare('umc.modules._uvmm.TreeModel', null, {
 			// sort items alphabetically
 			var results = dojo.isArray(data.result) ? data.result : [];
 			results.sort(umc.tools.cmpObjects('label'));
-			onComplete(results);
+			onComplete(dojo.map( results, function( node ) {
+				// cut off domain name
+				var dot = node.label.indexOf( '.' );
+				if ( dot != -1 ) {
+					node.label = node.label.substr( 0, dot );
+				}
+				return node;
+			} ) );
 		}));
 	}
 });

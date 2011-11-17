@@ -177,7 +177,10 @@ class Domains( object ):
 			else:
 				drive.type = Disk.TYPE_BLOCK
 				drive.target_bus = 'ide'
-				drive.source = disk[ 'volumeFilename' ]
+				if 'source' in disk and disk[ 'source' ]:
+					drive.source = disk[ 'source' ]
+				else:
+					drive.source = disk[ 'volumeFilename' ]
 
 			driver_pv = None
 			if drive.device in ( Disk.DEVICE_DISK, Disk.DEVICE_CDROM ):
@@ -245,7 +248,7 @@ class Domains( object ):
 			domain_info.uuid = domain_uuid
 
 		if not domain_info.uuid:
-			profile_dn = domain.get( '$profile$' )
+			profile_dn = domain.get( 'profile' )
 			profile = None
 			for dn, pro in self.profiles:
 				if dn == profile_dn:
@@ -253,6 +256,7 @@ class Domains( object ):
 					break
 			if profile is None:
 				raise UMC_OptionTypeError( _( 'Unknown profile given' ) )
+			domain_info.annotations[ 'profile' ] = profile_dn
 
 		domain_info.name = domain[ 'name' ]
 		if 'arch' in domain:
@@ -262,9 +266,17 @@ class Domains( object ):
 		else:
 			raise UMC_CommandError( 'Could not determine architecture for domain' )
 
-		# FIXME: should read from the node capabilities
 		if domain_info.arch == 'automatic':
-			domain_info.arch = 'i686'
+			success, node_list = self.uvmm.send( 'NODE_LIST', None, group = 'default', pattern = request.options[ 'nodeURI' ] )
+			if not success:
+				raise UMC_CommandError( _( 'Failed to retrieve details for the server %(nodeURI)s' ) % request.optiond )
+			if not node_list:
+				raise UMC_CommandError( _( 'Unknown physical server %(nodeURI)s' ) % request.options )
+			archs = set( [ t.arch for t in node_list[ 0 ].capabilities ] )
+			if 'x86_64' in archs:
+				domain_info.arch = 'x86_64'
+			else:
+				domain_info.arch = 'i686'
 
 		if 'type' in domain:
 			try:

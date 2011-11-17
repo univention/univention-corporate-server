@@ -1,3 +1,20 @@
+univention-virtual-machine-manager-daemon (1.0.69-2) unstable; urgency=low
+
+  * use host capabilities to determine archiecture for new virtual instances
+  * add information when choosing a NAT interface
+  * interrupt migration of serveral instances when they are not located on
+    the same server
+  * dialog layout fixes
+  * tree view: cut off domain names
+  * save profile in LDAP and use it when adding new drives
+  * remove domain: ignore drives located in unknown pools
+  * DomainWizard: name and memory size are required and the value must
+    match given criteria
+  * virtualisation technology may not be changed
+  * ask before stopping instances; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 17 Nov 2011 22:09:20 +0100
+
 univention-virtual-machine-manager-daemon (1.0.69-1) unstable; urgency=low
 
   * add copyright headers to JavaScript files (Bug #23210)

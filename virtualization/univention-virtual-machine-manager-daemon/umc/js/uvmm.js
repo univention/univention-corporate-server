@@ -107,7 +107,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		});
 		this.addChild(this._searchPage);
 		var titlePane = new umc.widgets.ExpandingTitlePane({
-			title: this._('Search for virtual machines and virtualization servers'),
+			title: this._('Search for virtual instances and physical servers'),
 			design: 'sidebar'
 		});
 		this._searchPage.addChild(titlePane);
@@ -122,8 +122,8 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'type',
 			label: this._('Displayed type'),
 			staticValues: [
-				{ id: 'domain', label: this._('Virtual machine') },
-				{ id: 'node', label: this._('Virtualization sever') }
+				{ id: 'domain', label: this._('Virtual instance') },
+				{ id: 'node', label: this._('Physical server') }
 			],
 			size: 'Half'
 		}, {
@@ -287,6 +287,21 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	_migrateDomain: function( ids ) {
 		var dialog = null, form = null;
 
+		if ( ids.length > 1 ) {
+			var uniqueNodes = {}, count = 0;
+			dojo.forEach( ids, function( id ) {
+				var nodeURI = id.slice( 0, id.indexOf( '#' ) )
+				if ( undefined === uniqueNodes[ nodeURI ] ) {
+					++count;
+				}
+				uniqueNodes[ nodeURI ] = true;
+			} );
+			if ( count > 1 ) {
+				umc.dialog.alert( this._( 'The selected virtual instances are not all located on the same physical server. The migration will not be performed.' ) );
+				return;
+			}
+		}
+
 		var _cleanup = function() {
 			dialog.hide();
 			dialog.destroyRecursive();
@@ -344,32 +359,53 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		dialog = new dijit.Dialog({
 			title: this._('Migrate domain'),
-			content: form
+			content: form,
+			'class': 'umcPopup'
 		});
 		dialog.show();
 	},
 
 	_removeDomain: function( ids, items ) {
+		var dialog = null, form = null;
 		var domain = items[ 0 ];
 		var domain_details = null;
 		var domainURI = ids[ 0 ];
-		var buttons = [ {
-			name: 'delete',
-			label: this._('Delete')
-		}, {
-			name: 'cancel',
-			'default': true,
-			label: this._('Cancel')
-		} ];
 		var widgets = [
 			{
 				type: 'Text',
 				name: 'question',
-				content: this._( 'Should the selected virtual instance be removed?' ),
+				content: '<p>' + dojo.replace( this._( 'Should the selected virtual instance {label} be removed?' ), domain ) + '</p>',
 				label: ''
 			} ];
 		var _widgets = null;
 		var drive_list = [];
+
+		var _cleanup = function() {
+			dialog.hide();
+			dialog.destroyRecursive();
+			form.destroyRecursive();
+		};
+
+		var _remove = dojo.hitch( this, function() {
+			this.updateProgress( 0, 1 );
+			var volumes = [];
+			umc.tools.forIn( form._widgets, dojo.hitch( this, function( iid, iwidget ) {
+				if ( iwidget instanceof umc.widgets.CheckBox && iwidget.get( 'value' ) ) {
+					volumes.push( iwidget.$id$ );
+				}
+			} ) );
+
+			umc.tools.umcpCommand('uvmm/domain/remove', {
+				domainURI: domainURI,
+				volumes: volumes
+			} ).then( dojo.hitch( this, function( response ) {
+				this.updateProgress( 1, 1 );
+				this.moduleStore.onChange();
+			} ), dojo.hitch( this, function() {
+				this.updateProgress( 1, 1 );
+			} ) );
+		} );
+
 		// chain the UMCP commands for removing the domain
 		var deferred = new dojo.Deferred();
 		deferred.resolve();
@@ -389,41 +425,60 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// got response for UMCP request
 		deferred = deferred.then( dojo.hitch( this, function( response ) {
 			var layout = [ 'question' ];
+			var failed_disks = [];
 			dojo.forEach( response.result, dojo.hitch( this, function( disk ) {
-				layout.push( disk.source );
-				widgets.push( {
-					type: 'CheckBox',
-					name: disk.source,
-					label: dojo.replace( this._( '{volumeFilename} (Pool: {pool})' ), disk ),
-					value: disk.deletable,
-					$id$: { pool : disk.pool, volumeFilename : disk.volumeFilename }
-				} );
-			} ) );
-			_widgets = umc.render.widgets( widgets );
-			var container = umc.render.layout( layout, _widgets );
-			return umc.dialog.confirm( container, buttons );
-		} ) );
 
-		deferred = deferred.then( dojo.hitch( this, function( action ) {
-			if ( action == 'cancel' ) {
-				return;
-			}
-			this.updateProgress( 0, 1 );
-			var volumes = [];
-			umc.tools.forIn( _widgets, dojo.hitch( this, function( iid, iwidget ) {
-				if ( iwidget instanceof umc.widgets.CheckBox && iwidget.get( 'value' ) ) {
-					volumes.push( iwidget.$id$ );
+				if ( null !== disk.deletable ) {
+					layout.push( disk.source );
+					widgets.push( {
+						type: 'CheckBox',
+						name: disk.source,
+						label: dojo.replace( this._( '{volumeFilename} (Pool: {pool})' ), disk ),
+						value: disk.deletable,
+						$id$: { pool : disk.pool, volumeFilename : disk.volumeFilename }
+					} );
+				} else {
+					failed_disks.push( disk.source );
+					disk.pool = null === disk.pool ? this._( 'Unknown' ) : disk.pool;
+					widgets.push( {
+						type: 'Text',
+						name: disk.source,
+						content: '<p>' + this._( 'Not removable' ) + ': ' + dojo.replace( this._( '{volumeFilename} (Pool: {pool})' ), disk ) + '</p>',
+						label: '',
+						$id$: { pool : disk.pool, volumeFilename : disk.volumeFilename }
+					} );
 				}
 			} ) );
+			if ( failed_disks.length ) {
+				layout = layout.concat( failed_disks );
+			}
 
-			umc.tools.umcpCommand('uvmm/domain/remove', {
-				domainURI: domainURI,
-				volumes: volumes
-			} ).then( dojo.hitch( this, function( response ) {
-				this.updateProgress( 1, 1 );
-				this.moduleStore.onChange();
-			} ) );
+			form = new umc.widgets.Form({
+				widgets: widgets,
+				buttons: [{
+					name: 'submit',
+					label: this._( 'delete' ),
+					style: 'float: right;',
+					callback: function() {
+						_cleanup();
+						_remove();
+					}
+				}, {
+					name: 'cancel',
+					label: this._('Cancel'),
+					callback: _cleanup
+				}],
+				layout: layout
+			});
+
+			dialog = new dijit.Dialog({
+				title: this._( 'Remove a virtual instance' ),
+				content: form,
+				'class' : 'umcPopup'
+			});
+			dialog.show();
 		} ) );
+
 	},
 
 	_addDomain: function() {
@@ -457,10 +512,51 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.selectChild(wizard);
 	},
 
+	_maybeChangeState: function(/*String*/ question, /*String*/ buttonLabel, /*String*/ newState, ids) {
+		var dialog = null, form = null;
+
+		var _cleanup = function() {
+			dialog.hide();
+			dialog.destroyRecursive();
+			form.destroyRecursive();
+		};
+
+		var sourceURI = ids[ 0 ].slice( 0, ids[ 0 ].indexOf( '#' ) );
+		form = new umc.widgets.Form({
+			widgets: [{
+				name: 'question',
+				type: 'Text',
+				content: '<p>' + question + '</p>'
+			}],
+			buttons: [{
+				name: 'submit',
+				label: buttonLabel,
+				style: 'float: right;',
+				callback: dojo.hitch( this, function() {
+					_cleanup();
+					this._changeState( newState, ids );
+				} )
+			}, {
+				name: 'cancel',
+				label: this._('Cancel'),
+				callback: _cleanup
+			}],
+			layout: [ 'question' ]
+		});
+
+		dialog = new dijit.Dialog({
+			title: this._('Migrate domain'),
+			content: form,
+			'class': 'umcPopup',
+			style: 'max-width: 400px;'
+		});
+		dialog.show();
+	},
 	_changeState: function(/*String*/ newState, ids) {
 		// chain all UMCP commands
 		var deferred = new dojo.Deferred();
 		deferred.resolve();
+
 		dojo.forEach(ids, function(iid, i) {
 			deferred = deferred.then(dojo.hitch(this, function() {
 				this.updateProgress(i, ids.length);
@@ -535,7 +631,8 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		dialog = new dijit.Dialog({
 			title: this._('Create a clone'),
-			content: form
+			content: form,
+			'class': 'umcPopup'
 		});
 		dialog.show();
 	},
@@ -618,7 +715,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			description: this._( 'Shut off the virtual instance' ),
 			isStandardAction: false,
 			isMultiAction: true,
-			callback: dojo.hitch(this, '_changeState', 'SHUTDOWN'),
+			callback: dojo.hitch(this, '_maybeChangeState', this._( 'Stopping virtual instances will turn them off without shutting down the operating system. Should the operation be continued?' ), this._( 'Stop' ), 'SHUTDOWN'),
 			canExecute: function(item) {
 				return item.state == 'RUNNING' || item.state == 'IDLE';
 			}

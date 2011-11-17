@@ -157,7 +157,9 @@ class Storages( object ):
 			node_uri, domain_uuid = urlparse.urldefrag( volume[ 'domainURI' ] )
 			pool_path = self.get_pool_path( node_uri, volume[ 'pool' ] )
 			if pool_path is None:
-				raise UMC_OptionTypeError( _( 'The given pool could not be found or is no file pool' ) )
+				volume[ 'deletable' ] = None
+				return_value.append( volume )
+				continue
 			volume_path = os.path.join( pool_path, volume[ 'volumeFilename' ] )
 
 			success, result = self.uvmm.send( 'STORAGE_VOLUME_USEDBY', None, volume = volume_path )
@@ -182,7 +184,9 @@ class Storages( object ):
 					drive = disk
 					break
 			else:
-				raise UMC_OptionTypeError( _( 'Could not find the drive' ) )
+				volume[ 'deletable' ] = None
+				return_value.append( volume )
+				continue
 
 			volume[ 'deletable' ] = drive.type == Disk.TYPE_FILE and drive.device == Disk.DEVICE_DISK
 

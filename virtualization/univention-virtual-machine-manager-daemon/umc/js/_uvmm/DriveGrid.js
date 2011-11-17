@@ -178,7 +178,9 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 
 		dialog = new dijit.Dialog({
 			title: this._('Edit drive'),
-			content: form
+			content: form,
+			'class' : 'umcPopup',
+			style: 'max-width: 400px;'
 		});
 		dialog.show();
 	},

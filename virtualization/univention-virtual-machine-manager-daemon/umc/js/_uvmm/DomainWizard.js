@@ -84,7 +84,7 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 					label: this._('Physical server'),
 					dynamicValues: types.getNodes
 				}, {
-					name: 'profile',
+					name: 'profileDN',
 					type: 'ComboBox',
 					label: this._('Profile'),
 					depends: 'nodeURI',
@@ -98,7 +98,7 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 					name: 'nodeURI',
 					type: 'HiddenInput'
 				}, {
-					name: '$profile$',
+					name: 'profile',
 					type: 'HiddenInput'
 				}, {
 					name: 'domain_type',
@@ -106,6 +106,8 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 				}, {
 					name: 'name',
 					type: 'TextBox',
+					required: true,
+					invalidMessage: this._( 'A name for the virtual instance is required and should not be the same as the given name prefix' ),
 					label: this._('Name')
 				}, {
 					name: 'description',
@@ -114,6 +116,9 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 				}, {
 					name: 'maxMem',
 					type: 'TextBox',
+					required: true,
+					regExp: '^[0-9]+(?:[,.][0-9]+)?[ \t]*([KkMmGg]?[bB])?$',
+					invalidMessage: this._( 'The memory size format is not valid (e.g. 3GB or 1024 MB)' ),
 					label: this._('Memory (default unit MB)')
 				}, {
 					name: 'vcpus',
@@ -152,7 +157,7 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 		if (pageName == 'profile') {
 			// query the profile settings
 			this.standby(true);
-			var profileDN = this.getWidget('profile').get('value'); 
+			var profileDN = this.getWidget('profileDN').get('value'); 
 			umc.tools.umcpCommand('uvmm/profile/get', {
 				profileDN: profileDN
 			}).then(dojo.hitch(this, function(data) {
@@ -162,9 +167,10 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 
 				// pre-set the form fields
 				this.getWidget('general', 'nodeURI').set('value', this.getWidget('profile', 'nodeURI').get('value'));
-				this.getWidget('$profile$').set('value', profileDN);
+				this.getWidget('profile').set('value', profileDN);
 				this.getWidget('domain_type').set('value', this._profile.virttech.split('-')[0]);
 				this.getWidget('name').set('value', this._profile.name_prefix || '');
+				this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$).*$' : '.*');
 				this.getWidget('maxMem').set('value', this._profile.ram || '');
 				this.getWidget('vcpus').set('value', this._profile.cpus);
 				this.getWidget('vnc').set('value', this._profile.vnc);
@@ -180,7 +186,17 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 		}
 		else if (pageName == 'general') {
 			// update the domain info for the drive grid
-			this._driveGrid.domain = this.getValues();
+			dojo.forEach( [ 'name', 'maxMem' ], dojo.hitch( this, function( widgetName ) {
+				if ( ! this.getWidget( widgetName ).isValid() ) {
+					this.getWidget( widgetName ).focus();
+					nextName = null;
+					return false;
+				}
+			} ) );
+
+			if ( null !== nextName ) {
+				this._driveGrid.domain = this.getValues();
+			}
 		}
 
 		return nextName;

@@ -34,8 +34,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-16 17:07+0100\n"
-"PO-Revision-Date: 2011-11-16 16:00+0100\n"
+"POT-Creation-Date: 2011-11-17 23:50+0100\n"
+"PO-Revision-Date: 2011-11-17 22:01+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -161,11 +161,7 @@ msgid "Chossen between using an existing image or using a local device."
 msgstr ""
 "Auswahl zwischen einer vorhandenen Image-Datei oder einem lokalen Gerät."
 
-#: umc/python/uvmm/storages.py:185
-msgid "Could not find the drive"
-msgstr "Das Laufwerk konnte nicht gefunden werden"
-
-#: umc/python/uvmm/storages.py:175
+#: umc/python/uvmm/storages.py:177
 #, python-format
 msgid "Could not retrieve details for domain %s"
 msgstr "Die Details zur virtuellen Instanz %s konnten nicht abgerufen werden"
@@ -289,9 +285,11 @@ msgstr "Erweitertes Format (qcow2)"
 msgid "Failed to add network interface: %s"
 msgstr "Hinzufügen der Netzwerkschnittstelle ist fehlgeschlagen: %s"
 
-#: umc/python/uvmm/storages.py:165
+#: umc/python/uvmm/storages.py:167
 msgid "Failed to check if the drive is used by any other virtual instance"
-msgstr "Die Prüfung ob das Laufwerk von einer anderen virtuellen Instanz verwendet wird ist fehlgeschlagen."
+msgstr ""
+"Die Prüfung ob das Laufwerk von einer anderen virtuellen Instanz verwendet "
+"wird ist fehlgeschlagen."
 
 #: umc/python/uvmm/nic.py:267
 #, python-format
@@ -302,6 +300,11 @@ msgstr "Das Bearbeiten der Netzwerkschnittstelle ist fehlgeschlagen: %s"
 #, python-format
 msgid "Failed to remove network interface: %s"
 msgstr "Entfernen der Netzwerkschnittstelle ist fehlgeschlagen: %s"
+
+#: umc/python/uvmm/domains.py:272
+#, python-format
+msgid "Failed to retrieve details for the server %(nodeURI)s"
+msgstr "Das Abrufen der Details zum physikalischen Server %(nodeURI)s ist fehlgeschlagen"
 
 #: umc/python/uvmm/wizards.py:111
 msgid "Filename"
@@ -383,7 +386,7 @@ msgstr "Image-Datei nicht gefunden"
 msgid "Image size"
 msgstr "Image-Größe"
 
-#: umc/python/uvmm/domains.py:393
+#: umc/python/uvmm/domains.py:405
 msgid "Invalid domain state"
 msgstr "Ungültiger Domain Status"
 
@@ -590,7 +593,7 @@ msgstr ""
 msgid "The given UVMM command is not known"
 msgstr "Das angegebene UVMM Kommando ist nicht bekannt"
 
-#: umc/python/uvmm/storages.py:141 umc/python/uvmm/storages.py:160
+#: umc/python/uvmm/storages.py:141
 msgid "The given pool could not be found or is no file pool"
 msgstr ""
 "Der angegebene Speicherbereich konnte nicht gefunden werden oder ist kein "
@@ -738,11 +741,16 @@ msgstr ""
 msgid "Type"
 msgstr "Typ"
 
+#: umc/python/uvmm/domains.py:274
+#, python-format
+msgid "Unknown physical server %(nodeURI)s"
+msgstr "Unbekannter physikalischer Server %(nodeURI)s"
+
 #: umc/python/uvmm/profiles.py:123
 msgid "Unknown profile"
 msgstr "Unbekanntes Profil"
 
-#: umc/python/uvmm/domains.py:255
+#: umc/python/uvmm/domains.py:258
 msgid "Unknown profile given"
 msgstr "Unbekanntes profil wurde angegeben"
 
@@ -787,3 +795,6 @@ msgstr "Pfad: %(path)s"
 #: umc/python/uvmm/drive.py:257
 msgid "unknown"
 msgstr "Unbekannt"
+
+#~ msgid "Could not find the drive"
+#~ msgstr "Das Laufwerk konnte nicht gefunden werden"
