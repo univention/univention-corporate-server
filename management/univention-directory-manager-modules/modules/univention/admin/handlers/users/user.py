@@ -1227,7 +1227,7 @@ mapping.register('displayName', 'displayName', None, univention.admin.mapping.Li
 mapping.register('birthday', 'univentionBirthday', None, univention.admin.mapping.ListToString)
 
 mapping.register('userCertificate', 'userCertificate;binary')
-mapping.register('jpegPhoto', 'jpegPhoto')
+mapping.register('jpegPhoto', 'jpegPhoto', None, univention.admin.mapping.ListToString)
 
 class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 	module=module
