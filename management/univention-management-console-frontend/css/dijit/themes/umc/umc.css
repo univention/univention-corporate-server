@@ -5044,10 +5044,14 @@ form {
 	padding: 10px;
 }
 
+.umcPopup .dijitDialogPaneContent {
+    padding: 15px;
+}
+
 .umcPopup h1 {
 	margin: 15px 0;
-	padding: 0 0 10px 7px;
 	border-bottom: 1px solid #989a9c;
+	padding-bottom: 10px;
 }
 
 .umcPopup table {
@@ -5055,7 +5059,7 @@ form {
 	padding-bottom: 15px;
 }
 .umcPopup p {
-	padding: 0 10px 5px 10px;
+	padding-bottom: 5px;
 }
 
 .dijitTitlePane {
