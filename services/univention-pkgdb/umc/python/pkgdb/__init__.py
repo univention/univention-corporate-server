@@ -282,13 +282,13 @@ class Instance(umcm.Base):
 			if not 'sysrole' in PROPOSALS:
 				what = 'fetching system roles'
 				sysroles = self._execute_query('sql_getall_systemroles');
-				PROPOSALS['sysrole'] = sysroles[0]
+				PROPOSALS['sysrole'] = sysroles
 				MODULE.info("   ++ system roles: ['%s']" % "','".join(sysroles[0]))
 	
 			if not 'sysversion' in PROPOSALS:
 				what = 'fetching system versions'
 				sysversions = self._execute_query('sql_getall_systemversions');
-				PROPOSALS['sysversion'] = sysversions[0]
+				PROPOSALS['sysversion'] = sysversions
 				MODULE.info("   ++ system versions: ['%s']" % "','".join(sysversions[0]))
 			
 				# make 'systems not updated' pattern to a selection too
