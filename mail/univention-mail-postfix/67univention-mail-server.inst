@@ -38,12 +38,6 @@ joinscript_init
 
 eval "$(ucr shell)"
 
-# set default mailserver if unset at ldap root object
-res="$(udm container/dc list "$@" --dn "$ldap_base" | grep ".*mailRelay: " | awk -F ': ' '{print $2}')"
-if [ "$res" = "None" ]; then
-	udm container/dc modify "$@" --dn "$ldap_base" --set mailRelay="$hostname.$domainname"
-fi
-
 # add service to my host object
 ucs_addServiceToLocalhost "SMTP" "$@"
 
