@@ -851,8 +851,8 @@ class UniventionUpdater:
 		upgraded_packages = []
 		removed_packages = []
 		for line in stdout.splitlines():
+			line_split = line.split(' ')
 			if line.startswith('Inst '):
-				line_split = line.split(' ')
 				# upgrade:
 				#	Inst univention-updater [3.1.1-5] (3.1.1-6.408.200810311159 192.168.0.10)
 				# inst:
@@ -871,6 +871,9 @@ class UniventionUpdater:
 				if len(line_split) > 3:
 					ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of removed packages' % line_split[1])
 					removed_packages.append((line_split[1], line_split[2].replace('(','')))
+				elif len(line_split) > 2:
+					ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of removed packages' % line_split[1])
+					removed_packages.append((line_split[1], 'unknown'))
 				else:
 					ud.debug(ud.NETWORK, ud.WARN, 'unable to parse the update line: %s' % line)
 					continue
