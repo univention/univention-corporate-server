@@ -39,7 +39,7 @@ VERSION=2
 joinscript_init
 
 umc_init
-umc_operation_create "services-all" "Process overview" "" "services/*"
+umc_operation_create "services-all" "System services" "" "services/*"
 umc_policy_append "default-umc-all" "services-all"
 
 joinscript_save_current_version
