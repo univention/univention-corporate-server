@@ -1,3 +1,9 @@
+univention-updater (7.0.103-1) unstable; urgency=low
+
+  * Cleanup errata upgrade (Bug #23453)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Nov 2011 14:33:28 +0100
+
 univention-updater (7.0.102-1) unstable; urgency=low
 
   * add copyright headers to JavaScript files (Bug #23210)

@@ -264,31 +264,30 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 			dprint(silent, 'none')
 
 		#######################################################################
-		# SECURITY UPDATE
+		# ERRATA UPDATE
 		#######################################################################
 		# reinit updater module
 		updater.ucr_reinit()
 		dprint(silent, 'Checking for errata updates: ', newline=False)
 		current_errata_update = 0
 		next_errata_update = updater.errata_update_available()
-		if not next_errata_update or next_errata_update != current_errata_update:
+		if next_errata_update == current_errata_update:
 			dprint(silent, 'none')
-		while next_errata_update and ( next_errata_update != current_errata_update ):
+		else:
 			run = True
 			# updates available ==> stop here in "check-mode"
 			if checkForUpdates:
 				dprint(silent, 'none')
 				return True
 
-			dprint(silent, 'found: errata%s' % next_errata_update)
+			dprint(silent, 'found\n')
 			if interactive:
-				run = readcontinue('Do you want to update to errata%s [Y|n]?' % next_errata_update)
+				run = readcontinue('Do you want to install all available errata updates [Y|n]?')
 
 			if run:
 				# perform errata update
-				dprint(silent, 'Starting update errata%s at %s...' % (next_errata_update, time.ctime()), debug=True)
-				dprint(silent, '\n')
-				dprint(silent, 'Starting update to errata%s' % next_errata_update )
+				dprint(silent, 'Starting errata update at %s...' % (time.ctime()), debug=True)
+				dprint(silent, 'Starting errata update')
 				time.sleep(1)
 				retcode = subprocess.call(['/usr/share/univention-updater/univention-errata-update',  'net'], shell=False, env=os.environ)
 				if retcode:
@@ -297,14 +296,6 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 					update_status( status='FAILED', errorsource='UPDATE' )
 					sys.exit(1)
 				dprint(silent, 'Errata update finished errata%s at %s...' % (next_errata_update, time.ctime()), debug=True)
-				time.sleep(1)
-
-				updater.ucr_reinit()
-				dprint(silent, 'Checking for errata updates: ', newline=False)
-				current_errata_update = next_errata_update
-				next_errata_update = updater.errata_update_available()
-			if  next_errata_update != current_errata_update:
-				dprint(silent, 'none')
 
 	# updates available ==> stop here in "check-mode"
 	if checkForUpdates:
