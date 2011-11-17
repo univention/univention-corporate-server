@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-16 00:07+0100\n"
+"POT-Creation-Date: 2011-11-16 00:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,9 +20,25 @@ msgstr "Aktion"
 msgid "Actions"
 msgstr "Aktionen"
 
+#: umc/js/reboot.js:116
+msgid "Cancel"
+msgstr "Abbrechen"
+
 #: umc/js/reboot.js:75
 msgid "Execute"
 msgstr "Ausführen"
+
+#: umc/js/reboot.js:111
+msgid "OK"
+msgstr "OK"
+
+#: umc/js/reboot.js:105
+msgid "Please confirm to reboot the computer"
+msgstr "Bitte bestätigen Sie den Computer zu beenden"
+
+#: umc/js/reboot.js:107
+msgid "Please confirm to shutdown the computer"
+msgstr "Bitte bestätigen Sie den Computer neuzustarten"
 
 #: umc/js/reboot.js:70
 msgid "Reason for this reboot/shutdown"

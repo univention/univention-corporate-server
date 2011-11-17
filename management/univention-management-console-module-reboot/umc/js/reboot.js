@@ -101,6 +101,19 @@ dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	shutdown: function(data) {
-		this.umcpCommand('reboot/reboot', data);
+		if (data.action == 'reboot') {
+			var message = this._('Please confirm to reboot the computer');
+		} else {
+			var message = this._('Please confirm to shutdown the computer');
+		}
+
+		umc.dialog.confirm(message, [{
+			label: this._('OK'),
+			callback: dojo.hitch(this, function() {
+				this.umcpCommand('reboot/reboot', data);
+			})
+		}, {
+			label: this._('Cancel')
+		}]);
 	}
 });
