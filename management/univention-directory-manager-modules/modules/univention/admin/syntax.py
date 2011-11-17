@@ -1071,6 +1071,7 @@ class TimeUnits( select ):
 		)
 
 class UNIX_TimeInterval( complex ):
+	min_elements = 1
 	subsyntaxes = ( ( '', integer ), ( '', TimeUnits ) )
 
 class NetworkType( select ):

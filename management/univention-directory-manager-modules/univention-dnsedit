@@ -263,7 +263,7 @@ def add_txt_record(args):
 	else:
 		record=univention.admin.handlers.dns.txt_record.object(co, lo, position, superordinate=zone)
 		record['name']=name
-		record['zonettl']='80600'
+		record['zonettl']=['80600']
 	
 	t=record['txt']
 	if text in t:
@@ -287,7 +287,7 @@ def add_a_record(args):
 	else:
 		record=univention.admin.handlers.dns.host_record.object(co, lo, position, superordinate=zone)
 		record['name']=name
-		record['zonettl']='80600'
+		record['zonettl']=['80600']
 	
 	t=record['a']
 	for i in a:
@@ -312,7 +312,7 @@ def add_cname_record(args):
 	else:
 		record=univention.admin.handlers.dns.alias.object(co, lo, position, superordinate=zone)
 		record['name']=name
-		record['zonettl']='80600'
+		record['zonettl']=['80600']
 	
 	if record['cname'] and not record['cname'] == cname and not options['overwrite'] and not options['ignore-exists']:
 		print >>sys.stderr, 'E: Record exists and points to different address'
@@ -363,10 +363,10 @@ def add_zone(args):
 		zone['subnet']=zone_name
 	zone['contact']=contact
 	zone['serial']=serial
-	zone['refresh']=refresh
-	zone['retry']=retry
-	zone['expire']=expire
-	zone['ttl']=ttl
+	zone['refresh']=[refresh]
+	zone['retry']=[retry]
+	zone['expire']=[expire]
+	zone['ttl']=[ttl]
 	zone['nameserver']=nameserver
 	zone.create()
 
