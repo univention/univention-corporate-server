@@ -80,6 +80,8 @@ def krb5_asn1(principal, password, krb5_context=None):
 	if not krb5_context:
 		krb5_context = heimdal.context()
 	for krb5_etype in krb5_context.get_permitted_enctypes():
+		if str(krb5_etype) == 'des3-cbc-md5' and configRegistry.is_false('password/krb5/enctype/des3-cbc-md5', True):
+			continue
 		krb5_principal = heimdal.principal(krb5_context, principal)
 		krb5_keyblock = heimdal.keyblock(krb5_context, krb5_etype, password, krb5_principal)
 		krb5_salt = heimdal.salt(krb5_context, krb5_principal)

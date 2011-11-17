@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.189-1) unstable; urgency=low
+
+  * To be compatible with Samba 4 we will no longer create des3-cbc-md5
+    keys. To re-enable the keys the ucr variable
+    password/krb5/enctype/des3-cbc-md5 can be set to yes (Bug #21213)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Nov 2011 15:17:55 +0100
+
 univention-directory-manager-modules (7.0.188-1) unstable; urgency=low
 
   * removed mailRelay from container/dc (Bug #24693)
