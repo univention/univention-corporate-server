@@ -100,12 +100,12 @@ dojo.declare("umc.modules._updater.DetailsPage", umc.modules._updater.Page, {
 	    	{
 	    		type:			'TextBox',
 	    		name:			'server',
-	    		label:			this._("Repository Server")
+	    		label:			this._("Repository server")
 	    	},
 	    	{
 	    		type:			'TextBox',
 	    		name:			'prefix',
-	    		label:			this._("Repository Prefix")
+	    		label:			this._("Repository prefix")
 	    	},
 	    	{
 	    		type:			'CheckBox',

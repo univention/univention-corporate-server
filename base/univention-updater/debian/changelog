@@ -1,3 +1,9 @@
+univention-updater (7.0.106-1) unstable; urgency=low
+
+  * adaptations of captions and translations (Bug #24536)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 17 Nov 2011 19:51:25 +0100
+
 univention-updater (7.0.105-1) unstable; urgency=low
 
   * more hylafax preup stuff (Bug #24619)
