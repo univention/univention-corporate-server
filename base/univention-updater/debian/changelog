@@ -1,3 +1,9 @@
+univention-updater (7.0.101-1) unstable; urgency=low
+
+  * fixed traceback if "univention-updater cdrom" get called (Bug #23948)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 17 Nov 2011 10:06:29 +0100
+
 univention-updater (7.0.100-1) unstable; urgency=low
 
   * exit in preup if univention-fax-* packages are installed (Bug #24619) 
