@@ -423,6 +423,7 @@ def main():
 			device_name = "ISO image"
 		else:
 			device_name = "cdrom"
+		updater = LocalUpdater()
 		nextversion = update_available('cdrom', baseConfig, cdrom_mount_point, iso=iso)
 	elif command == 'net':
 		log('starting net mode')

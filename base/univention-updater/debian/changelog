@@ -1,3 +1,9 @@
+univention-updater (6.0.108-1) unstable; urgency=low
+
+  * fixed traceback if "univention-updater cdrom" get called (Bug #23948)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 17 Nov 2011 09:49:26 +0100
+
 univention-updater (6.0.107-1) unstable; urgency=low
 
   * If univention.debug is not available use univention.debug2. This
