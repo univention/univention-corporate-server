@@ -146,7 +146,7 @@ property_descriptions={
 	'minPasswordAge': univention.admin.property(
 			short_description=_('Minimum Password Age'),
 			long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -176,7 +176,7 @@ property_descriptions={
 	'maxPasswordAge': univention.admin.property(
 			short_description=_('Maximum Password Age'),
 			long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -186,7 +186,7 @@ property_descriptions={
 	'lockoutDuration': univention.admin.property(
 			short_description=_('Lockout Duration Minutes'),
 			long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -206,7 +206,7 @@ property_descriptions={
 	'disconnectTime': univention.admin.property(
 			short_description=_('Disconnect Time'),
 			long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -249,13 +249,13 @@ mapping.register('NextGroupRid', 'sambaNextGroupRid', None, univention.admin.map
 mapping.register('NextRid', 'sambaNextRid', None, univention.admin.mapping.ListToString)
 mapping.register('passwordLength', 'sambaMinPwdLength', None, univention.admin.mapping.ListToString)
 mapping.register('passwordHistory', 'sambaPwdHistoryLength', None, univention.admin.mapping.ListToString)
-mapping.register('minPasswordAge', 'sambaMinPwdAge', None, univention.admin.mapping.ListToString)
-mapping.register('maxPasswordAge', 'sambaMaxPwdAge', None, univention.admin.mapping.ListToString)
+mapping.register('minPasswordAge', 'sambaMinPwdAge', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
+mapping.register('maxPasswordAge', 'sambaMaxPwdAge', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
 mapping.register('badLockoutAttempts', 'sambaLockoutThreshold', None, univention.admin.mapping.ListToString)
 mapping.register('logonToChangePW', 'sambaLogonToChgPwd', logonToChangePWMap, logonToChangePWUnmap)
-mapping.register('lockoutDuration', 'sambaLockoutDuration', None, univention.admin.mapping.ListToString)
+mapping.register('lockoutDuration', 'sambaLockoutDuration', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
 mapping.register('resetCountMinutes', 'sambaLockoutObservationWindow', None, univention.admin.mapping.ListToString)
-mapping.register('disconnectTime', 'sambaForceLogoff', None, univention.admin.mapping.ListToString)
+mapping.register('disconnectTime', 'sambaForceLogoff', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
 mapping.register('refuseMachinePWChange', 'sambaRefuseMachinePwdChange', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):

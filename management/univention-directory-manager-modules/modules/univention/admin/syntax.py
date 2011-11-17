@@ -1061,21 +1061,17 @@ class unixTime(simple):
 	regex = re.compile('^[0-9]+$')
 	error_message = _("Not a valid time format")
 
-class unixTimeInterval(simple):
-	_re=re.compile('^[0-9]+$')
+class TimeUnits( select ):
+	size = 'Half'
+	choices = (
+		( 'seconds', _( 'seconds' ) ),
+		( 'minutes', _( 'minutes' ) ),
+		( 'hours', _( 'hours' ) ),
+		( 'days', _( 'days' ) )
+		)
 
-	@classmethod
-	def parse(self, text):
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'TIME %s'%str(text))
-		if text[0]:
-			try:
-				if self._re.match(text) != None:
-					return text
-			except TypeError:
-				pass
-			raise univention.admin.uexceptions.valueError,_("Not a valid time interval")
-		else:
-			return 'None'
+class UNIX_TimeInterval( complex ):
+	subsyntaxes = ( ( '', integer ), ( '', TimeUnits ) )
 
 class NetworkType( select ):
 	choices = ( ( 'ethernet', _( 'Ethernet' ) ), ( 'fddi', _( 'FDDI' ) ), ( 'token-ring', _( 'Token-Ring' ) ) )

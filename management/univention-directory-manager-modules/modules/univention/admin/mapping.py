@@ -71,6 +71,34 @@ def IgnoreNone(list):
 	if list != 'None':
 		return list
 
+def unmapUNIX_TimeInterval( value ):
+	value = int( value[ 0 ] )
+	unit = 'seconds'
+	if value % 60 == 0:
+		value /= 60
+		unit = 'minutes'
+		if value % 60 == 0:
+			value /= 60
+			unit = 'hours'
+			if value % 24 == 0:
+				value /= 24
+				unit = 'days'
+	return [ unicode( value ), unit ]
+
+def mapUNIX_TimeInterval( value ):
+	if len( value ) == 1:
+		unit = 'seconds'
+	else:
+		unit = value[ 1 ]
+	value = int( value[ 0 ] )
+	if unit == 'days':
+		value *= 24 * 60 * 60
+	elif unit == 'hours':
+		value *= 60 * 60
+	elif unit == 'minutes':
+		value *= 60
+	return unicode( value )
+
 class mapping:
 	def __init__(self):
 		self._map={}

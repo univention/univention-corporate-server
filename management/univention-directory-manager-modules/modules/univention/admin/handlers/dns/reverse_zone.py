@@ -65,7 +65,7 @@ property_descriptions={
 	'zonettl': univention.admin.property(
 	        short_description=_('Zone time to live'),
 	        long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -98,7 +98,7 @@ property_descriptions={
 	'refresh': univention.admin.property(
 			short_description=_('Refresh interval'),
 			long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -109,7 +109,7 @@ property_descriptions={
 	'retry': univention.admin.property(
 			short_description=_('Retry interval'),
 			long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -120,7 +120,7 @@ property_descriptions={
 	'expire': univention.admin.property(
 			short_description=_('Expiry interval'),
 			long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -131,7 +131,7 @@ property_descriptions={
 	'ttl': univention.admin.property(
 			short_description=_('Minimum time to live'),
 			long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -191,7 +191,7 @@ def unmapSubnet(zone):
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('subnet', 'zoneName', mapSubnet, unmapSubnet)
-mapping.register('zonettl','dNSTTL', None, univention.admin.mapping.ListToString)
+mapping.register('zonettl','dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
 mapping.register('nameserver', 'nSRecord')
 
 class object(univention.admin.handlers.simpleLdap):
@@ -215,11 +215,11 @@ class object(univention.admin.handlers.simpleLdap):
 		soa=self.oldattr.get('sOARecord',[''])[0].split(' ')
 		if len(soa) > 6:
 			self['contact']=soa[1].replace('.','@',1)
-			self['serial']=soa[2]
-			self['refresh']=soa[3]
-			self['retry']=soa[4]
-			self['expire']=soa[5]
-			self['ttl']=soa[6]
+			self['serial'] = soa[2]
+			self['refresh'] = univention.admin.mapping.unmapUNIX_TimeInterval( soa[3] )
+			self['retry'] = univention.admin.mapping.unmapUNIX_TimeInterval( soa[4] )
+			self['expire'] = univention.admin.mapping.unmapUNIX_TimeInterval( soa[5] )
+			self['ttl'] = univention.admin.mapping.unmapUNIX_TimeInterval( soa[6] )
 
 		self.save()
 
@@ -230,7 +230,11 @@ class object(univention.admin.handlers.simpleLdap):
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
 		if self.hasChanged(['nameserver', 'contact', 'serial', 'refresh', 'retry', 'expire', 'ttl']):
 
-			soa='%s %s %s %s %s %s %s' % (self['nameserver'][0], self['contact'].replace('@','.',1), self['serial'], self['refresh'], self['retry'], self['expire'], self['ttl'])
+			refresh = univention.admin.mapping.mapUNIX_TimeInterval( self[ 'refresh' ] )
+			retry = univention.admin.mapping.mapUNIX_TimeInterval( self[ 'retry' ] )
+			expire = univention.admin.mapping.mapUNIX_TimeInterval( self[ 'expire' ] )
+			ttl = univention.admin.mapping.mapUNIX_TimeInterval( self[ 'ttl' ] )
+			soa = '%s %s %s %s %s %s %s' % ( self[ 'nameserver' ][ 0 ], self[ 'contact' ].replace( '@', '.', 1 ), self[ 'serial' ], refresh, retry, expire, ttl )
 			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), soa))
 		return ml
 

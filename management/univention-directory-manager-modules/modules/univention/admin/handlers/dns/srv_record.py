@@ -73,7 +73,7 @@ property_descriptions={
 	'zonettl': univention.admin.property(
 			short_description=_('Zone time to live'),
 			long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -121,7 +121,7 @@ def mapLocation(old):
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'relativeDomainName', mapName, unmapName)
 mapping.register('location', 'sRVRecord', mapLocation, unmapLocation)
-mapping.register('zonettl', 'dNSTTL', None, univention.admin.mapping.ListToString)
+mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module

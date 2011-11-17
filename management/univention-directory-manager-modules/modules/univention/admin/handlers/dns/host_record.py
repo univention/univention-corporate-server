@@ -63,7 +63,7 @@ property_descriptions={
 	'zonettl': univention.admin.property(
 			short_description=_('Zone time to live'),
 			long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -135,7 +135,7 @@ mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'relativeDomainName', None, univention.admin.mapping.ListToString)
 mapping.register('mx', 'mXRecord', mapMX, unmapMX)
 mapping.register('txt', 'tXTRecord')
-mapping.register('zonettl', 'dNSTTL', None, univention.admin.mapping.ListToString)
+mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module

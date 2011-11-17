@@ -99,7 +99,7 @@ property_descriptions={
 	'minPasswordAge': univention.admin.property(
 			short_description=_('Minimum Password Age'),
 			long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -129,7 +129,7 @@ property_descriptions={
 	'maxPasswordAge': univention.admin.property(
 			short_description=_('Maximum Password Age'),
 			long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -139,7 +139,7 @@ property_descriptions={
 	'lockoutDuration': univention.admin.property(
 			short_description=_('Lockout Duration Minutes'),
 			long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -159,7 +159,7 @@ property_descriptions={
 	'disconnectTime': univention.admin.property(
 			short_description=_('Disconnect Time'),
 			long_description='',
-			syntax=univention.admin.syntax.unixTimeInterval,
+			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -196,13 +196,13 @@ mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('passwordLength', 'univentionSambaMinPasswordLength', None, univention.admin.mapping.ListToString)
 mapping.register('passwordHistory', 'univentionSambaPasswordHistory', None, univention.admin.mapping.ListToString)
-mapping.register('minPasswordAge', 'univentionSambaMinPasswordAge', None, univention.admin.mapping.ListToString)
-mapping.register('maxPasswordAge', 'univentionSambaMaxPasswordAge', None, univention.admin.mapping.ListToString)
+mapping.register('minPasswordAge', 'univentionSambaMinPasswordAge', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
+mapping.register('maxPasswordAge', 'univentionSambaMaxPasswordAge', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
 mapping.register('badLockoutAttempts', 'univentionSambaBadLockoutAttempts', None, univention.admin.mapping.ListToString)
 mapping.register('logonToChangePW', 'univentionSambaLogonToChangePW', logonToChangePWMap, logonToChangePWUnmap)
-mapping.register('lockoutDuration', 'univentionSambaLockoutDuration', None, univention.admin.mapping.ListToString)
+mapping.register('lockoutDuration', 'univentionSambaLockoutDuration', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
 mapping.register('resetCountMinutes', 'univentionSambaResetCountMinutes', None, univention.admin.mapping.ListToString)
-mapping.register('disconnectTime', 'univentionSambaDisconnectTime', None, univention.admin.mapping.ListToString)
+mapping.register('disconnectTime', 'univentionSambaDisconnectTime', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
 mapping.register('refuseMachinePWChange', 'univentionSambaRefuseMachinePWChange', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
