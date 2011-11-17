@@ -123,6 +123,14 @@ def handler(dn, new, old, command):
 				old = cPickle.load(f)
 		except Exception, e:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'cyrus-mailboxrename: failed to open/read pickle file: %s' % str(e))
+		try:
+			os.remove(FN_CACHE)
+		except Exception, e:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'cyrus-mailboxrename: cannot remove pickle file: %s' % str(e))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'cyrus-mailboxrename: for safty reasons cyrus-mailboxrename ignores change of LDAP object: %s' % dn)
+			listener.unsetuid()
+			return
+
 		listener.unsetuid()
 
 	fqdn = '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])

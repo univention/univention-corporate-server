@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.29-2) unstable; urgency=low
+
+  * fixed pickle file handling (Bug #24482)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 17 Nov 2011 14:12:36 +0100
+
 univention-mail-cyrus (4.0.29-1) unstable; urgency=low
 
   * change uid without mail loss (Bug #24482)
