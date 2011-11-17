@@ -538,7 +538,6 @@ if [ "$ldap_available" = 1 ]; then
 	admin_replace_name "policies/repositoryserver" "univentionRepositoryServer" "repositoryServer"
 	admin_replace_name "shares/share" "univentionShareHost" "host" "1"
 	admin_replace_name "shares/printer" "univentionPrinterSpoolHost" "spoolHost"
-	admin_replace_name "container/dc" "mailRelay" "mailRelay" "1"
 	admin_replace_name "users/user" "kolabHomeServer" "kolabHomeServer" "1"
 	admin_replace_name "settings/usertemplate" "kolabHomeServer" "kolabHomeServer" "1"
 	admin_replace_name "settings/default" "univentionDefaultKolabHomeServer" "defaultKolabHomeServer" "1"

@@ -1,3 +1,9 @@
+univention-system-setup (5.0.62-1) unstable; urgency=low
+
+  * removed mailRelay from basis scripts (Bug #24693)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 17 Nov 2011 14:52:22 +0100
+
 univention-system-setup (5.0.61-1) unstable; urgency=low
 
   * add copyright headers to JavaScript files (Bug #23210)
