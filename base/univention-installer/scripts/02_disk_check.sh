@@ -185,7 +185,7 @@ touch /instmnt/.log
 
 # get bootloader_record via /proc/cmdline and overwrite value of profile/installer
 kernel_bootloader_record="$(sed -rne 's/.*\bbootloaderrecord=([^ ]+)\s*.*/\1/p' /proc/cmdline)"
-if [ -n "$bootloader_record" ] ; then
+if [ -n "$kernel_bootloader_record" ] ; then
 	bootloader_record="$kernel_bootloader_record"
 fi
 
