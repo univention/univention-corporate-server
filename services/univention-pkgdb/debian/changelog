@@ -1,3 +1,9 @@
+univention-pkgdb (5.0.16-1) unstable; urgency=low
+
+  * add copyright headers to JavaScript files (Bug #23210)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 17 Nov 2011 13:10:55 +0100
+
 univention-pkgdb (5.0.15-1) unstable; urgency=low
 
   * UMC: applied patch from (Bug #22896, Comment 11)
