@@ -78,7 +78,7 @@ dojo.declare("umc.modules._pkgdb.KeyTranslator", [
 				label:		this._("System role")
 			},
 			'sysversion': {
-				label:		this._("UCS Version")
+				label:		this._("UCS version")
 			}
 		};
 		

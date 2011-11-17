@@ -15,5 +15,5 @@ msgstr ""
 msgid "Manage software installation status of all machines of your domain"
 msgstr "Verwalten der Software-Installationstati der Systeme aus der UCS-Domäne"
 
-msgid "Software Monitor"
-msgstr "Software Monitor"
+msgid "Software monitor"
+msgstr "Software-Monitor"

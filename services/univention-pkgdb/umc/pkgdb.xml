@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
   <module id="pkgdb" icon="pkgdb" version="1.0">
-	<name>Software Monitor</name>
+	<name>Software monitor</name>
 	<description>Manage software installation status of all machines of your domain</description>
 	<categories>
 	  <category name="system"/>

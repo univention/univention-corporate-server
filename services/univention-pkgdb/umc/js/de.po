@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-pkgdb\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-21 21:01+0200\n"
+"POT-Creation-Date: 2011-11-16 05:49+0100\n"
 "PO-Revision-Date: 2011-10-22 15:11+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,95 +12,95 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_pkgdb/SearchForm.js:39
+#: umc/js/_pkgdb/SearchForm.js:67
 msgid "--- Please select ---"
 msgstr "--- Bitte wählen ---"
 
-#: umc/js/pkgdb.js:38
+#: umc/js/pkgdb.js:66
 msgid "Find problems related to software package installation"
 msgstr "Findet Probleme mit den aktuell installierten Paketen"
 
-#: umc/js/pkgdb.js:37
+#: umc/js/pkgdb.js:65
 msgid "Identify problems"
-msgstr "Probleme finden"
+msgstr "Identifizierung potentieller Probleme"
 
-#: umc/js/_pkgdb/KeyTranslator.js:26
+#: umc/js/_pkgdb/KeyTranslator.js:54
 msgid "Installation<br/>state"
 msgstr "Installations-<br/>Status"
 
-#: umc/js/_pkgdb/KeyTranslator.js:30
+#: umc/js/_pkgdb/KeyTranslator.js:58
 msgid "Inventory date"
 msgstr "Erfaßt am"
 
-#: umc/js/_pkgdb/SearchForm.js:52
+#: umc/js/_pkgdb/SearchForm.js:80
 msgid "Operator"
 msgstr "Operator"
 
-#: umc/js/_pkgdb/KeyTranslator.js:33
+#: umc/js/_pkgdb/KeyTranslator.js:61
 msgid "Package name"
 msgstr "Paketname"
 
-#: umc/js/_pkgdb/KeyTranslator.js:36
+#: umc/js/_pkgdb/KeyTranslator.js:64
 msgid "Package version"
 msgstr "Paketversion"
 
-#: umc/js/_pkgdb/KeyTranslator.js:39
+#: umc/js/_pkgdb/KeyTranslator.js:67
 msgid "Package<br/>state"
 msgstr "Paket-<br/>status"
 
-#: umc/js/pkgdb.js:28
+#: umc/js/pkgdb.js:56
 msgid "Packages"
 msgstr "Pakete"
 
-#: umc/js/_pkgdb/SearchForm.js:67 umc/js/_pkgdb/SearchForm.js:81
-#: umc/js/_pkgdb/SearchForm.js:283
+#: umc/js/_pkgdb/SearchForm.js:95 umc/js/_pkgdb/SearchForm.js:108
+#: umc/js/_pkgdb/SearchForm.js:308
 msgid "Pattern"
 msgstr "Suchbegriff"
 
-#: umc/js/pkgdb.js:36
+#: umc/js/pkgdb.js:64
 msgid "Problems"
 msgstr "Probleme"
 
-#: umc/js/_pkgdb/SearchForm.js:97
+#: umc/js/_pkgdb/SearchForm.js:122
 msgid "Search"
 msgstr "Suchen"
 
-#: umc/js/pkgdb.js:30
+#: umc/js/pkgdb.js:58
 msgid "Search for packages with specific software properties"
 msgstr "Sucht Pakete mit speziellen Software-Eigenschaften"
 
-#: umc/js/pkgdb.js:22
+#: umc/js/pkgdb.js:50
 msgid "Search for systems with specific software properties"
 msgstr "Sucht Systeme mit speziellen Software-Eigenschaften"
 
-#: umc/js/_pkgdb/SearchForm.js:37
+#: umc/js/_pkgdb/SearchForm.js:65
 msgid "Search for:"
 msgstr "Suche nach:"
 
-#: umc/js/pkgdb.js:29
+#: umc/js/pkgdb.js:57
 msgid "Search packages"
-msgstr "Pakete suchen"
+msgstr "Suche nach erfassten Paketen"
 
-#: umc/js/pkgdb.js:21
+#: umc/js/pkgdb.js:49
 msgid "Search systems"
-msgstr "Systeme suchen"
+msgstr "Such nach erfassten Systeme"
 
-#: umc/js/_pkgdb/KeyTranslator.js:43
+#: umc/js/_pkgdb/KeyTranslator.js:71
 msgid "Selection<br/>state"
 msgstr "Selektions-<br/>status"
 
-#: umc/js/_pkgdb/KeyTranslator.js:47
+#: umc/js/_pkgdb/KeyTranslator.js:75
 msgid "System name"
 msgstr "Systemname"
 
-#: umc/js/_pkgdb/KeyTranslator.js:50
+#: umc/js/_pkgdb/KeyTranslator.js:78
 msgid "System role"
 msgstr "Systemrolle"
 
-#: umc/js/pkgdb.js:20
+#: umc/js/pkgdb.js:48
 msgid "Systems"
 msgstr "Systeme"
 
-#: umc/js/_pkgdb/KeyTranslator.js:53
-msgid "UCS Version"
-msgstr "UCS Version"
+#: umc/js/_pkgdb/KeyTranslator.js:81
+msgid "UCS version"
+msgstr "UCS-Version"

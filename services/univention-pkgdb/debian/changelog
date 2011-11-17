@@ -1,3 +1,9 @@
+univention-pkgdb (5.0.17-1) unstable; urgency=low
+
+  * adaptations of captions and translations (Bug #24536)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 17 Nov 2011 20:29:56 +0100
+
 univention-pkgdb (5.0.16-1) unstable; urgency=low
 
   * add copyright headers to JavaScript files (Bug #23210)
