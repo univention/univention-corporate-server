@@ -43,6 +43,7 @@ Depends: ${misc:Depends},
  univention-ifplugd | univention-network-manager,
  univention-management-console-module-udm,
  univention-management-console,
+ shell-univention-lib (>= 1.0.25-1),
  python-univention-lib (>= 1.0.25-1)
 Conflicts: exim
 Description: UCS - master domain controller
@@ -91,6 +92,7 @@ Depends: ${misc:Depends},
  univention-ifplugd | univention-network-manager,
  univention-management-console-module-udm,
  univention-management-console,
+ shell-univention-lib (>= 1.0.25-1),
  python-univention-lib (>= 1.0.25-1)
 Conflicts: exim
 Description: UCS - backup domain controller
@@ -135,6 +137,7 @@ Depends: ${misc:Depends},
  univention-grub,
  univention-archive-key,
  univention-ifplugd | univention-network-manager,
+ shell-univention-lib (>= 1.0.25-1),
  python-univention-lib (>= 1.0.25-1)
 Conflicts: exim
 Description: UCS - slave domain controller
@@ -174,6 +177,7 @@ Depends: ${misc:Depends},
  univention-grub,
  univention-archive-key,
  univention-ifplugd | univention-network-manager,
+ shell-univention-lib (>= 1.0.25-1),
  python-univention-lib (>= 1.0.25-1)
 Conflicts: exim
 Description: UCS - member server
@@ -221,6 +225,7 @@ Depends: ${misc:Depends},
  hibernate,
  acpid,
  univention-archive-key,
+ shell-univention-lib (>= 1.0.25-1),
  python-univention-lib (>= 1.0.25-1)
 Description: UCS - Mobile Client
  This is a Meta-package, that sets up a UCS mobile client
@@ -272,6 +277,7 @@ Depends: ${misc:Depends},
  univention-system-setup,
  acpid,
  univention-archive-key,
+ shell-univention-lib (>= 1.0.25-1),
  python-univention-lib (>= 1.0.25-1)
 Description: UCS - Managed Client
  This is a Meta-package, that sets up a UCS managed client
