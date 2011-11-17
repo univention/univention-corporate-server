@@ -56,6 +56,7 @@ dojo.declare("umc.modules.sysinfo", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 
 dojo.declare("umc.modules._sysinfo.Wizard", [ umc.widgets.Wizard, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
+
 	// use i18n information from umc.modules.sysinfo
 	i18nClass: 'umc.modules.sysinfo',
 
@@ -69,12 +70,8 @@ dojo.declare("umc.modules._sysinfo.Wizard", [ umc.widgets.Wizard, umc.widgets.St
 		this.pages = [{
 			name: 'general',
 			headerText: this._('General Information'),
-			helpText: this._(''),
+			helpText: this._('<p>This module collects information about the hardware of your system. This might be helpful in connection with a support case. By transmitting the data to Univention you provide the information on which platforms UCS is currently used and therefore should be supported by newer versions. All information gathered by this module will be made anonymous before the transfer to Univention. In the following procedure you will be informed in detail about the each step.</p><p>No information is transmitted without your acceptance!</p>'),
 			widgets: [{
-				type: 'Text',
-				name: 'firstText',
-				content: this._('This module collects information about the hardware of your system. This might be helpful in connection with a support case. By transmitting the data to Univention you provide the information on which platforms UCS is currently used and therefore should be supported by newer versions. All information gathered by this module will be made anonymous before the transfer to Univention. In the following procedure you will be informed in detail about the each step.<br /><br />No information is transmitted without your acceptance!') + '<br /><br />'
-			}, {
 				type: 'TextBox',
 				name: 'manufacturer',
 				label: this._('Manufacturer')
@@ -95,9 +92,9 @@ dojo.declare("umc.modules._sysinfo.Wizard", [ umc.widgets.Wizard, umc.widgets.St
 				name: 'secondText',
 				label: this._('If this is related to a support case the next step will be to enter the ticket number. if not than the information about your system will be collected and a summary is shown.')
 			}],
-			layout: [['firstText'],
-					 ['manufacturer', 'model'],
-					 ['comment', 'supportBox'],
+			layout: [['manufacturer', 'model'],
+					 ['comment'],
+					 ['supportBox'],
 					 ['secondText']]
 		}, {
 			name: 'support',
@@ -106,7 +103,7 @@ dojo.declare("umc.modules._sysinfo.Wizard", [ umc.widgets.Wizard, umc.widgets.St
 			widgets: [{
 				type: 'Text',
 				name: 'firstText',
-				content: this._('If a Univention Support Engineer has asked you to provide these information, than please insert the ticket number of the related support ticket into the following text field. The ticket number can be found in the subject of a support mail of the ticket. This information will speed up the processing of the ticket.') + '<br /><br />'
+				content: this._('<p>If a Univention Support Engineer has asked you to provide these information, than please insert the ticket number of the related support ticket into the following text field. The ticket number can be found in the subject of a support mail of the ticket. This information will speed up the processing of the ticket.</p>')
 			}, {
 				type: 'TextBox',
 				name: 'ticket',
@@ -115,7 +112,7 @@ dojo.declare("umc.modules._sysinfo.Wizard", [ umc.widgets.Wizard, umc.widgets.St
 			}, {
 				type: 'Text',
 				name: 'secondText',
-				content: this._('In the next step the information about the hardware of your system will be collect and a summary will be shown. No information will be send to Univention.') + '<br /><br />'
+				content: this._('<p>In the next step the information about the hardware of your system will be collect and a summary will be shown. No information will be send to Univention.</p>')
 			}],
 			layout: [['firstText'],
 					 ['ticket'],
@@ -127,7 +124,7 @@ dojo.declare("umc.modules._sysinfo.Wizard", [ umc.widgets.Wizard, umc.widgets.St
 			widgets: [{
 				type: 'Text',
 				name: 'firstText',
-				content: this._('The following information has been collected and will be transfered to Univention with your acceptance.') + '<br /><br />'
+				content: this._('<p>The following information has been collected and will be transfered to Univention with your acceptance.</p>')
 			}, {
 				type: 'TextBox',
 				name: 'cpu',
@@ -155,7 +152,7 @@ dojo.declare("umc.modules._sysinfo.Wizard", [ umc.widgets.Wizard, umc.widgets.St
 			}, {
 				type: 'Text',
 				name: 'secondText',
-				content: this._('Additionally to the information listed above some more details about your system has been collected. The hole set of collected data that will be transmitted to Univention can be downloaded at the following URL:') + '<br /><br />'
+				content: this._('<p>Additionally to the information listed above some more details about your system has been collected. The hole set of collected data that will be transmitted to Univention can be downloaded at the following URL:</p>')
 			}, {
 				type: 'Text',
 				name: 'download',
@@ -181,7 +178,7 @@ dojo.declare("umc.modules._sysinfo.Wizard", [ umc.widgets.Wizard, umc.widgets.St
 			widgets: [{
 				type: 'Text',
 				name: 'firstText',
-				content: this._('The collected information can be transfered to Univention by uploading the data or by sending the data via mail. Please selected the corresponding button for the technique of your choice.') + '<br /><br />'
+				content: this._('<p>The collected information can be transfered to Univention by uploading the data or by sending the data via mail. Please selected the corresponding button for the technique of your choice.</p>')
 			}, {
 				type: 'ComboBox',
 				name: 'method',
@@ -201,7 +198,7 @@ dojo.declare("umc.modules._sysinfo.Wizard", [ umc.widgets.Wizard, umc.widgets.St
 			widgets: [{
 				type: 'Text',
 				name: 'firstText',
-				content: this._('The information were transfered to Univention successfully.<br />Thank you very much for your support!') + '<br /><br />'
+				content: this._('<p>The information were transfered to Univention successfully.</p><p>Thank you very much for your support!</p>')
 			}],
 			layout: [['firstText']]
 		}, {
@@ -211,7 +208,7 @@ dojo.declare("umc.modules._sysinfo.Wizard", [ umc.widgets.Wizard, umc.widgets.St
 			widgets: [{
 				type: 'Text',
 				name: 'firstText',
-				content: this._('To transfer the information via mail please follow these steps:<ol><li>Download the archive with the collected information and save it on your local system (find the link below)</li><li>Click on link Send mail to open your mail program</li><li>Attach the downloaded archive to the mail and send it to Univention</li><li>End this assistant by clicking on the button Finish</li></ol>') + '<br /><br />'
+				content: this._('To transfer the information via mail please follow these steps:<ol><li>Download the archive with the collected information and save it on your local system (find the link below)</li><li>Click on link Send mail to open your mail program</li><li>Attach the downloaded archive to the mail and send it to Univention</li><li>End this assistant by clicking on the button Finish</li></ol>')
 			}, {
 				type: 'Text',
 				name: 'download',
