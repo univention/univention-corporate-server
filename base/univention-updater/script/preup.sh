@@ -248,19 +248,31 @@ if [ ! "$update_fax_check" = "no" -a ! "$update_fax_check" = "false" -a ! "$upda
 			fax_is_installed=true
 		fi
 	done
+
+	# restore /var/spool/hylafax/etc/setup.cache
+	if [ -e "/etc/hylafax/setup.cache" -a ! -e "/var/spool/hylafax/etc/setup.cache" ]; then
+		cp /etc/hylafax/setup.cache /var/spool/hylafax/etc/setup.cache
+	fi
+
+	# delete /var/spool/hylafax/etc/config.faxCAPI
+	if [ -e "/var/spool/hylafax/etc/config.faxCAPI" ]; then
+		mv /var/spool/hylafax/etc/config.faxCAPI /var/spool/hylafax/etc/config.faxCAPI.bak
+	fi
+
 	if [ "$fax_is_installed" = "true" ]; then
 
 		# There are no *.debian files for 
-		# /etc/default/hylafax 
-		# /etc/init.d/hylafax 
+		# the hylafx configs
 		# and after removing univention-fax-server these files
 		# are gone. This breaks the update. 
-		if [ -e "/etc/init.d/hylafax" -a ! -e "/etc/init.d/hylafax.debian" ]; then
-			cp /etc/init.d/hylafax /etc/init.d/hylafax.debian
-		fi
-		if [ -e "/etc/default/hylafax" -a ! -e "/etc/default/hylafax.debian" ]; then
-			cp /etc/default/hylafax /etc/default/hylafax.debian
-		fi
+		faxconfigs=$(dpkg -L univention-fax-server 2>/dev/null| grep 'univention/templates/files/etc/'| sed 's|/etc/univention/templates/files||')
+		for i in $faxconfigs; do
+			if [ -e "$i" -a ! -d "$i" ]; then
+				if [ ! -e "$i.debian" ]; then
+					cp "$i" "$i".debian
+				fi
+			fi
+		done
 
 		echo "WARNING: univention-fax-* packages are installed!"
 		echo
