@@ -1,3 +1,9 @@
+univention-updater (7.0.107-1) unstable; urgency=low
+
+  * Use --device as option for univention-repository-update (Bug #23453)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Nov 2011 10:49:46 +0100
+
 univention-updater (7.0.106-1) unstable; urgency=low
 
   * adaptations of captions and translations (Bug #24536)

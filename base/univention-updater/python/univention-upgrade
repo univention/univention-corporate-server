@@ -351,7 +351,7 @@ def main():
 				if options.iso:
 					retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'cdrom','--iso', options.iso], shell=False, env=os.environ)
 				else:
-					retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'cdrom', '--cdrom', options.cdrom ], shell=False, env=os.environ)
+					retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'cdrom', '--device', options.cdrom ], shell=False, env=os.environ)
 	else:
 		dprint(silent, 'none')
 			
