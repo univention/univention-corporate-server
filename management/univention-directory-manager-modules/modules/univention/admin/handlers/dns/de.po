@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-25 15:03+0200\n"
+"POT-Creation-Date: 2011-11-18 15:47+0100\n"
 "PO-Revision-Date: 2009-08-04 14:47+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,7 +61,7 @@ msgstr "Alias des Rechners. Der FQDN muss mit einem '.' enden"
 
 #: alias.py:88 alias.py:89 dns.py:84 forward_zone.py:185 forward_zone.py:186
 #: host_record.py:104 host_record.py:105 ptr_record.py:73 ptr_record.py:74
-#: reverse_zone.py:155 reverse_zone.py:156 reverse_zone.py:162
+#: reverse_zone.py:155 reverse_zone.py:156 reverse_zone.py:163
 #: srv_record.py:86 srv_record.py:87 txt_record.py:86 txt_record.py:87
 msgid "General"
 msgstr "Allgemein"
@@ -131,7 +131,7 @@ msgstr "Ablaufintervall"
 msgid "Minimum time to live"
 msgstr "Minimum Time-to-Live"
 
-#: forward_zone.py:146
+#: forward_zone.py:146 reverse_zone.py:143
 msgid "Name servers"
 msgstr "Nameserver"
 
@@ -143,17 +143,17 @@ msgstr "Mail Exchanger Rechner"
 msgid "TXT record"
 msgstr "TXT Record"
 
-#: forward_zone.py:192 forward_zone.py:193 reverse_zone.py:161
+#: forward_zone.py:174 forward_zone.py:200 host_record.py:75
+msgid "IP addresses"
+msgstr "IP-Adressen"
+
+#: forward_zone.py:192 forward_zone.py:193 reverse_zone.py:162
 msgid "Start of authority"
 msgstr "Start of Authority Eintrag"
 
-#: forward_zone.py:192 reverse_zone.py:161
+#: forward_zone.py:192 reverse_zone.py:162
 msgid "Primary name server information"
 msgstr "Primäre Nameserver Informationen"
-
-#: forward_zone.py:200
-msgid "IP addresses"
-msgstr "IP-Adressen"
 
 #: forward_zone.py:200 forward_zone.py:201
 msgid "IP addresses of the zone"
@@ -175,8 +175,8 @@ msgstr "TXT Records"
 msgid "Text records"
 msgstr "Text Records"
 
-#: forward_zone.py:252 host_record.py:156 ptr_record.py:100
-#: reverse_zone.py:212 srv_record.py:139 txt_record.py:116
+#: forward_zone.py:251 host_record.py:156 ptr_record.py:100
+#: reverse_zone.py:208 srv_record.py:142 txt_record.py:116
 msgid "neither DN nor position present"
 msgstr "Weder ein DN noch eine Position wurde angegeben"
 
@@ -212,7 +212,7 @@ msgstr "Text"
 msgid "Optional text"
 msgstr "Optionaler Text"
 
-#: host_record.py:154 ptr_record.py:98 srv_record.py:137 txt_record.py:114
+#: host_record.py:154 ptr_record.py:98 srv_record.py:140 txt_record.py:114
 msgid "superordinate object not present"
 msgstr "Ein übergeordnetes Objekt ist nicht vorhanden"
 
@@ -240,14 +240,6 @@ msgstr "DNS: Reverse Lookup Zone"
 msgid "Subnet"
 msgstr "Subnetz"
 
-#: reverse_zone.py:143 reverse_zone.py:169 reverse_zone.py:170
-msgid "Name servers"
-msgstr "Nameserver"
-
-#: reverse_zone.py:169
-msgid "Additional name servers"
-msgstr "Zusätzliche Nameserver"
-
 #: srv_record.py:49
 msgid "DNS: Service record"
 msgstr "DNS: Service Record"
@@ -255,6 +247,9 @@ msgstr "DNS: Service Record"
 #: srv_record.py:65
 msgid "Location"
 msgstr "Ort"
+
+#~ msgid "Additional name servers"
+#~ msgstr "Zusätzliche Nameserver"
 
 #~ msgid "Alias for this host"
 #~ msgstr "Alias des Rechners"

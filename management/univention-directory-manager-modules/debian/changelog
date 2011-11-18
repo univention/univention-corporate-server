@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.195-1) unstable; urgency=low
+
+  * fix r29343 (Bug #24536)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 18 Nov 2011 15:51:27 +0100
+
 univention-directory-manager-modules (7.0.194-1) unstable; urgency=low
 
   * adaptations of captions and translations (Bug #24536)
