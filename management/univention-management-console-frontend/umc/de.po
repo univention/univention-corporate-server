@@ -59,7 +59,7 @@ msgstr "Ein Assert-Anweisung schlug fehl"
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
-"Ein Fehler trat während des Verbindungsaufbaus zum Server auf, bitte "
+"Ein Fehler trat während des Verbindungsaufbaus zum Server auf. Bitte "
 "versuchen Sie es später noch einmal."
 
 #: umc/tools.js:277
@@ -69,11 +69,11 @@ msgid ""
 "server, please try again later."
 msgstr ""
 "Ein unbekannter Fehler mit Status-Code %s trat während des "
-"Verbindungsaufbaus zum Server auf, bitte versuchen Sie es später noch einmal."
+"Verbindungsaufbaus zum Server auf. Bitte versuchen Sie es später noch einmal."
 
 #: umc/tools.js:226
 msgid "Authentication failed, please login again."
-msgstr "Die Authentisierung schlug fehl, bitte melden Sie sich erneut an."
+msgstr "Die Authentisierung schlug fehl. Bitte melden Sie sich erneut an."
 
 #: umc/widgets/Wizard.js:69
 msgid "Back"
@@ -193,7 +193,7 @@ msgstr ""
 
 #: umc/tools.js:233
 msgid "Internal server error: The module process died unexpectedly."
-msgstr "Interner Server-Fehler: Der Modulprozess starb unerwartet."
+msgstr "Interner Server-Fehler: Der Modulprozess wurde unerwartet beendet."
 
 #: umc/tools.js:232
 msgid "Internal server error: The service is temporarily not available."
@@ -234,7 +234,7 @@ msgstr "Weiter"
 
 #: umc/widgets/Grid.js:674
 msgid "No entries could be found"
-msgstr "Keine Einträge konnten gefunden werden"
+msgstr "Es konnten keine Einträge gefunden werden"
 
 #: umc/widgets/Grid.js:747
 msgid "No object selected"
@@ -246,7 +246,7 @@ msgstr "Hinweis"
 
 #: umc/dialog.js:120
 msgid "Notification"
-msgstr "Hinweis"
+msgstr "Benachrichtigung"
 
 #: umc/dialog.js:123
 msgid "Ok"
@@ -294,7 +294,7 @@ msgstr "Fehlernachricht des Servers:"
 
 #: umc/tools.js:229
 msgid "Specified locale is not available."
-msgstr "Die angegebenen Locale ist nicht verfügbar."
+msgstr "Die angegebene Sprachdefinition ist nicht verfügbar."
 
 #: umc/help.js:57
 msgid "Supplementary information"
@@ -317,8 +317,8 @@ msgstr "Das Benutzerkonto wurde deaktiviert."
 #: umc/tools.js:227
 msgid "The account is expired and can not be used anymore."
 msgstr ""
-"Das Benutzerkonto kannt nicht verwendet werden, seine Gültigkeit ist "
-"ausgelaufen."
+"Das Benutzerkonto kannt nicht verwendet werden. Seine Gültigkeit ist "
+"abgelaufen."
 
 #: umc/widgets/LoginDialog.js:131
 msgid "The language for the login session."
@@ -330,7 +330,7 @@ msgstr "Das Passwort Ihres Domänen-Kontos."
 
 #: umc/widgets/PasswordInputBox.js:100
 msgid "The passwords do not match, please retype again."
-msgstr "Die Passworte stimmen nicht überein, bitte versuchen Sie es erneut."
+msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
 #: umc/i18n.js:120
 #, python-format
@@ -385,11 +385,15 @@ msgstr ""
 msgid ""
 "Univention Management Console is a modularly designed, web-based application "
 "for the administration of objects in your Univention Corporate Server domain "
-"as well as individual of Univention Corporate Server systems."
+"as well as individual of Univention Corporate Server systems. Depending on "
+"system role default settings and permissions, you find extensive functions "
+"for the administration of your UCS domain and for the configuration of this "
+"server."
 msgstr ""
-"Univention Management Console ist eine modulare, Web-basierte Anwendung für "
-"die Administrierung von Objekten in der Univention-Corporate-Server-Domäne "
-"und individueller Univention-Corporate-Server-Systeme."
+"Univention Management Console (UMC) ist eine flexible Webanwendung für die "
+"Administration von UCS-basierten Systemen und Domänen. Je nach Systemrolle, "
+"Voreinstellungen und Berechtigungen, finden Sie hier umfangreiche Funktionen "
+"zur UCS-Domänenadministration und für die Konfiguration dieses Servers."
 
 #: umc/app.js:472
 msgid "Univention Website"
@@ -480,12 +484,12 @@ msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
 #: umc/widgets/LoginDialog.js:203
 msgid "Your session has been closed due to inactivity. Please login again."
 msgstr ""
-"Ihre Sitzung wurde wegen Inaktivität gesperrt. Bitte melden Sie sich erneut "
+"Ihre Sitzung wurde wegen Inaktivität geschlossen. Bitte melden Sie sich erneut "
 "an."
 
 #: umc/tools.js:219
 msgid "Your session has expired, please login again."
-msgstr "Ihre Sitzung ist ausgelaufen, bitte melden Sie sich an."
+msgstr "Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an."
 
 #: umc/widgets/Grid.js:411 umc/widgets/Grid.js:819
 msgid "more"

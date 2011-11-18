@@ -382,7 +382,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				title: this._('Overview'),
 				headerText: this._('Overview'),
 				iconClass: umc.tools.getIconClass('univention'),
-				helpText: this._('Univention Management Console is a modularly designed, web-based application for the administration of objects in your Univention Corporate Server domain as well as individual of Univention Corporate Server systems.')
+				helpText: this._('Univention Management Console is a modularly designed, web-based application for the administration of objects in your Univention Corporate Server domain as well as individual of Univention Corporate Server systems. Depending on system role default settings and permissions, you find extensive functions for the administration of your UCS domain and for the configuration of this server.')
 			});
 			this._tabContainer.addChild(overviewPage);
 
