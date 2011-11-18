@@ -5,49 +5,29 @@ import univention.lib.ucrLogrotate
 
 name = "updater"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
-@!@
-}
-
-@!@
-import univention.lib.ucrLogrotate
+print "}"
 
 name = "actualise"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
-@!@
-}
-
-@!@
-import univention.lib.ucrLogrotate
+print "}"
 
 name = "repository"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
-@!@
-}
+print "}"
 
-@!@
-import univention.lib.ucrLogrotate
-
-name = "security-updates"
+name = "errata-updates"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
+print "}"
 @!@
-}
