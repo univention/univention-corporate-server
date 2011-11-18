@@ -39,6 +39,8 @@ dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.Form");
 
+dojo.require("umc.modules._printers.QuotaDialog");
+
 dojo.declare("umc.modules._printers.QuotaPage",
 [
 	umc.widgets.Page,
@@ -100,15 +102,17 @@ dojo.declare("umc.modules._printers.QuotaPage",
 			{
 				name:				'clear',
 				label:				this._("Reset user quota"),
-				callback: dojo.hitch(this, function(ids) {
-					// TODO do something useful here
+				isMultiAction:		true,
+				callback: dojo.hitch(this, function(ids,values) {
+					this._reset_quota_entries(values);
 				})
 			},
 			{
 				name:				'edit',
 				label:				this._("Edit"),
-				callback: dojo.hitch(this, function(ids) {
-					// TODO do something useful here
+				callback: dojo.hitch(this, function(ids,values) {
+					// always use the first value since multiselect doesn't make sense.
+					this._edit_quota_entry(values[0]);
 				})
 			},
 			{
@@ -126,6 +130,14 @@ dojo.declare("umc.modules._printers.QuotaPage",
 				callback: dojo.hitch(this, function() {
 					this._refresh_view();
 				})
+			},
+			{
+				name:				'add',
+				label:				this._("Add new record"),
+				isContextAction:	false,
+				callback: dojo.hitch(this, function(ids) {
+					this._add_quota_entry();
+				})
 			}
         ];
         
@@ -138,6 +150,27 @@ dojo.declare("umc.modules._printers.QuotaPage",
         pane.addChild(this._grid);
         
 	},
+	
+	startup: function() {
+		
+		this.inherited(arguments);
+		
+        // fetch the userlist
+		umc.tools.umcpCommand('printers/users/query').then(
+			dojo.hitch(this, function(data) {
+				if (data.result.length)
+				{
+					// we keep this list unchanged; it will be fetched only once.
+					// on open of 'add quota' dialog, we pass a userlist that
+					// is cleaned up from users already having a quota entry.
+					this._userlist = data.result;
+				}
+			}),
+			dojo.hitch(this, function(data) {
+				umc.dialog.alert('Error fetching userlist: ' + data.message);
+			})
+		);
+	},
     
 	// Calling page passes args here. Arg is here the printer ID.
 	setArgs: function(args) {
@@ -147,9 +180,19 @@ dojo.declare("umc.modules._printers.QuotaPage",
 	},
 	
 	onHide: function() {
-		// force clean state
+		
+		this.inherited(arguments);		// do I need this?
+		
+		// on next show(), the previous content
+		// should not be visible anymore.
 		this._head.set('content','');		// clear header text
 		this._grid.filter();				// clear grid data
+	},
+	
+	onShow: function() {
+		
+		this.inherited(arguments);		// do I need this?
+
 	},
 	
 	// called when the page is shown, but can equally be called
@@ -160,6 +203,153 @@ dojo.declare("umc.modules._printers.QuotaPage",
 		
 		// read current quota list
 		this._grid.filter({printer:this._printer_id});
+
+		// on first open: create the child dialog where we can edit one quota entry.
+		if (! this._dialog)
+		{
+			this._dialog = new umc.modules._printers.QuotaDialog();
+
+			// listen to the events of the dialog
+	        dojo.connect(this._dialog,'onSubmit',dojo.hitch(this, function(values) {
+	        	this._set_quota_entry(values);
+	        }));
+//	        dojo.connect(this._dialog,'onCancel',dojo.hitch(this, function() {
+//	        	// nothing to do here.
+//	        }));
+
+		}
+		
+	},
+	
+	// called from different places: the function that sets
+	// a quota entry. When called with soft=0 and hard=0 this
+	// would effectively forbid the user from printing...
+	_set_quota_entry: function(values) {
+    	umc.tools.umcpCommand('printers/quota/set',values).then(
+    		dojo.hitch(this,function(data) {
+    			if (data.result)
+    			{
+    				// an error message from the edpykota tool
+    				umc.dialog.alert(data.result);
+    			}
+    			else
+    			{
+    				// success -> refresh view.
+    				this._refresh_view();
+    			}
+    		}),
+    		dojo.hitch(this,function(data) {
+    			// error message from framework
+    			umc.dialog.alert(data.message);
+    		})
+		);
+	},
+	
+	// prepares everything to add a new quota entry.
+	_add_quota_entry: function() {
+		this._dialog.setValues({
+			printer: 		this._printer_id,
+			soft:			null,
+			hard:			null,
+			users:			this._cleaned_userlist(),
+			title:			this._("Add quota entry")
+		});
+		this._dialog.show();
+	},
+	
+	// prepares the edit dialog and shows it.
+	// values is here a tuple of fields; this is always a single action.
+	_edit_quota_entry: function(values) {
+
+		try
+		{
+			var val = {
+				printer:	this._printer_id,
+				title:		this._("Edit quota entry")
+			};
+			this._dialog.setValues(dojo.mixin(val,values));
+			this._dialog.show();
+		}
+		catch(ex)
+		{
+			console.error('edit_quota_entry(): ' + ex.message);
+		}
+	},
+	
+	// resets the 'used' counter on a list of users.
+	// values is the array of field tuples of those users.
+	_reset_quota_entries: function(values) {
+		
+		// if nothing is selected... why does the grid call the callback?
+		if (values.length == 0)
+		{
+			return;
+		}
+		
+		// ** NOTE ** we transfer the user names as an array since
+		//			we can't know if some of them contain spaces or
+		//			any other separator chars.
+		var users = [];
+		for (var u in values)
+		{
+			users.push(values[u]['user']);
+		}
+
+		umc.tools.umcpCommand('printers/quota/reset',{
+			printer:			this._printer_id,
+			users:				users
+		}).then(
+    		dojo.hitch(this,function(data) {
+    			if (data.result)
+    			{
+    				// an error message from the edpykota tool
+    				umc.dialog.alert(data.result);
+    			}
+    			else
+    			{
+    				// success -> refresh view.
+    				this._refresh_view();
+    			}
+    		}),
+    		dojo.hitch(this,function(data) {
+    			// error message from framework
+    			umc.dialog.alert(data.message);
+    		})
+		);
+	},
+
+	// prepares the list of users eligible for adding a quota entry:
+	// this is the list of all users minus those that already have
+	// a quota entry for this printer.
+	//
+	// Will be called only directly before a 'add quota entry' dialog
+	// will be shown.
+	_cleaned_userlist: function() {
+		
+		var result = [];
+		var src = this._userlist;
+		
+		var usr = {};	// not an array: i want to to check for containedness!
+		var items = this._grid.getAllItems();
+		for (var i in items)
+		{
+			var u = items[i]['user'];
+			usr[u] = u;
+		}
+		
+		for (var s in src)
+		{
+			var sitem = src[s];
+			
+			// take this source item only if it is not contained
+			// in the 'usr' dict.
+			if (typeof(usr[sitem]) == 'undefined')
+			{
+				result.push(sitem);
+			}
+		}
+		
+		return result;
 	},
 	
     // main module listens here to return to the detail page

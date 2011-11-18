@@ -38,6 +38,7 @@ import univention.management.console.modules as umcm
 import univention.config_registry
 
 from fnmatch import *
+from time import sleep
 import re
 import string
 import subprocess
@@ -107,7 +108,7 @@ class Instance(umcm.Base):
 
 		self.finished(request.id,result)
 
-	def get(self,request):
+	def get_printer(self,request):
 		""" gets detail data for one printer. """
 		
 		# ----------- DEBUG -----------------
@@ -145,7 +146,8 @@ class Instance(umcm.Base):
 			MODULE.info("   << %s" % s)
 		# -----------------------------------
 		
-		result = self._job_list(request.options.get('printer',''))
+		printer = request.options.get('printer','')
+		result = self._job_list(printer)
 		
 		# ---------- DEBUG --------------
 		MODULE.info("printers/jobs/query returns:")
@@ -166,13 +168,118 @@ class Instance(umcm.Base):
 	def list_quota(self,request):
 		""" lists all quota entries related to this printer. """
 		
-		# fill a dummy result table.
-		printer = request.options.get('printer','')
-		result = []
+		# ----------- DEBUG -----------------
+		MODULE.info("printers/quota/query invoked with:")
+		pp = pprint.PrettyPrinter(indent=4)
+		st = pp.pformat(request.options).split("\n")
+		for s in st:
+			MODULE.info("   << %s" % s)
+		# -----------------------------------
 		
+		printer = request.options.get('printer','')
+
+		result = []
+
+		(stdout,stderr,status) = self._shell_command(['/usr/bin/pkusers','--list'],{'LANG':'C'})
+		users = []
+		expr = re.compile('^\s*(.*?)\s+\-\s\<')
+		if status == 0:
+			for line in stdout.split("\n"):
+				match = expr.match(line)
+				if match:
+					users.append(match.group(1))
+					
+		result = []
+		for user in users:
+			(stdout,stderr,status) = self._shell_command(['/usr/bin/repykota','-P',printer,user],{'LANG':'C'})
+			if status == 0:
+				for line in stdout.split("\n"):
+					data = line[16:].split()		# ignore possibly truncated user name
+					if len(data) >= 7:
+						ok = True
+						for n in (2,3,4,len(data)-3):
+							if not data[n].isdigit():
+								ok = False
+						if ok:
+							MODULE.info("      -> user='%s' used=%s soft=%s hard=%s total=%s" % (user,data[2],data[3],data[4],data[len(data)-3]))
+							entry = {
+								'user':		user,
+								'used':		data[2],
+								'soft':		data[3],
+								'hard':		data[4],
+								'total':	data[len(data)-3]
+							}
+							result.append(entry)
+		
+		# ---------- DEBUG --------------
+		MODULE.info("printers/quota/query returns:")
+		pp = pprint.PrettyPrinter(indent=4)
+		st = ''
+		if len(result) > 5:
+			tmp = result[0:5]
+			MODULE.info("   >> %d entries, first 5 are:" % len(result))
+			st = pp.pformat(tmp).split("\n")
+		else:
+			st = pp.pformat(result).split("\n")
+		for s in st:
+			MODULE.info("   >> %s" % s)
+		# --------------------------------
+
 		self.finished(request.id,result)
 		
-	def enable(self,request):
+	def list_users(self,request):
+		""" convenience function for the username entry. Lists
+			all user names. We don't return this as an array of {id,label}
+			tuples because:
+			
+			(1) id and label are always the same here
+			(2) at the frontend, we must do some postprocessing, and an array
+				is easier to handle.
+			(3)	the ComboBox is able to handle a plain array. 
+		"""
+		
+		# ----------- DEBUG -----------------
+		MODULE.info("printers/users/query invoked with:")
+		pp = pprint.PrettyPrinter(indent=4)
+		st = pp.pformat(request.options).split("\n")
+		for s in st:
+			MODULE.info("   << %s" % s)
+		# -----------------------------------
+		
+		result = []
+		expr = re.compile('^\s*username:\s*(.*?)\s*$')
+		(stdout,stderr,status) = self._shell_command(['/usr/sbin/univention-directory-manager','users/user','list'],{'LANG':'C'})
+		if status == 0:
+			for line in stdout.split("\n"):
+				match = expr.match(line)
+				if match:
+					MODULE.warn("  -> %s" % match.group(1))
+					result.append(match.group(1))
+					
+		# simulate 10000 more users
+		for g in range(0,100):
+			gn = 'group %d' % g
+			for u in range(0,100):
+				un = 'user %d' % u
+				result.append('%s in %s' % (un,gn))
+
+		# ---------- DEBUG --------------
+		MODULE.info("printers/users/query returns:")
+		pp = pprint.PrettyPrinter(indent=4)
+		st = ''
+		if len(result) > 5:
+			tmp = result[0:5]
+			MODULE.info("   >> %d entries, first 5 are:" % len(result))
+			st = pp.pformat(tmp).split("\n")
+		else:
+			st = pp.pformat(result).split("\n")
+		for s in st:
+			MODULE.info("   >> %s" % s)
+		# --------------------------------
+
+		self.finished(request.id,result)
+		
+	def enable_printer(self,request):
 		""" can enable or disable a printer, depending on args.
 			returns empty string on success, else error message. 
 		"""
@@ -200,7 +307,7 @@ class Instance(umcm.Base):
 
 		self.finished(request.id, result)
 		
-	def cancel(self,request):
+	def cancel_jobs(self,request):
 		""" cancels one or more print jobs. Job IDs are passed
 			as an array that can be directly passed on to the
 			_shell_command() method
@@ -228,6 +335,67 @@ class Instance(umcm.Base):
 
 		self.finished(request.id, result)
 		
+
+	def set_quota(self,request):
+		""" sets quota limits for a (printer,user) combination.
+			optionally tries to create the corresponding user entry.
+		"""
+
+		# ----------- DEBUG -----------------
+		MODULE.info("printers/quota/set invoked with:")
+		pp = pprint.PrettyPrinter(indent=4)
+		st = pp.pformat(request.options).split("\n")
+		for s in st:
+			MODULE.info("   << %s" % s)
+		# -----------------------------------
+
+		printer = request.options.get('printer','')
+		user = request.options.get('user','')
+		soft = request.options.get('soft',0)
+		hard = request.options.get('hard',0)
+		
+		if printer=='' or user=='':
+			result = "Required parameter missing"
+		else:
+			result = self._set_quota(printer,user,soft,hard)
+		
+		# ---------- DEBUG --------------
+		MODULE.info("printers/quota/set returns:")
+		pp = pprint.PrettyPrinter(indent=4)
+		st = pp.pformat(result).split("\n")
+		for s in st:
+			MODULE.info("   >> %s" % s)
+		# --------------------------------
+
+		self.finished(request.id, result)
+		
+		
+	def reset_quota(self,request):
+		""" resets quota for a (printer,user) combination.
+		"""
+
+		# ----------- DEBUG -----------------
+		MODULE.info("printers/quota/reset invoked with:")
+		pp = pprint.PrettyPrinter(indent=4)
+		st = pp.pformat(request.options).split("\n")
+		for s in st:
+			MODULE.info("   << %s" % s)
+		# -----------------------------------
+
+		printer = request.options.get('printer','')
+		users = request.options.get('users',[])
+
+		result = self._reset_quota(printer,users)
+		
+		# ---------- DEBUG --------------
+		MODULE.info("printers/quota/reset returns:")
+		pp = pprint.PrettyPrinter(indent=4)
+		st = pp.pformat(result).split("\n")
+		for s in st:
+			MODULE.info("   >> %s" % s)
+		# --------------------------------
+
+		self.finished(request.id, result)
 		
 		
 	# ----------------------- Internal functions -------------------------
@@ -317,6 +485,48 @@ class Instance(umcm.Base):
 		
 		return ''
 	
+	def _set_quota(self,printer,user,soft,hard):
+		""" sets a quota entry. Can also add a user """
+		
+		# Before we can set quota we have to ensure that the user is
+		# already known to PyKota. Fortunately these tools don't complain
+		# if we try to create a user that doesn't already exist.
+		
+		self._shell_command(['/usr/bin/pkusers','--skipexisting','--add',user],{'LANG':'C'})
+		
+		# Caution! order of args is important!
+		
+		(stdout,stderr,status) = self._shell_command([
+			'/usr/bin/edpykota',
+			'--printer',printer,
+			'--softlimit',str(soft),
+			'--hardlimit',str(hard),
+			'--add',user
+		],{'LANG':'C'})
+
+		# not all errors are propagated in exit codes...
+		# but at least they adhere to the general rule that
+		# progress is printed to STDOUT and errors/warnings to STDERR
+		if status or len(stderr):
+			return stderr
+		
+		return ''
+	
+	def _reset_quota(self,printer,users):
+		""" resets the 'used' counter on a quota entry. """
+		
+		cmd = [	'/usr/bin/edpykota','--printer',printer,'--reset' ]
+		# appending user names to the args array -> spaces in user names
+		# don't confuse edpykota (In 2.4, this was a problem)
+		for user in users:
+			cmd.append(user)
+		(stdout,stderr,status) = self._shell_command(cmd,{'LANG':'C'})
+	
+		if status or len(stderr):
+			return stderr
+		
+		return ''
+
 	def _quota_enabled(self,printer=None):
 		""" returns a dictionary with printer names and their 'quota active' status.
 			if printer is specified, returns only quota status for this printer.
