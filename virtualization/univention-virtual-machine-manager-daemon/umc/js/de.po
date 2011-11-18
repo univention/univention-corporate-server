@@ -1,4 +1,4 @@
-# Univention Virtual Machine Manager Management Console Module
+# UCS Virtual Machine Manager Management Console Module
 #
 # Copyright 2010 Univention GmbH
 #
@@ -1604,11 +1604,11 @@ msgstr "{volumeFilename} (Speicherbereich: {pool})"
 #~ "werden."
 
 #~ msgid ""
-#~ "The connection to the Univention Virtual Machine Manager service could "
+#~ "The connection to the UCS Virtual Machine Manager service could "
 #~ "not be established. Please verify that it is started. You may use the UMC "
 #~ "service module therefor."
 #~ msgstr ""
-#~ "Die Verbindung zum Univention Virtual Machine Manager-Dienst konnte nicht "
+#~ "Die Verbindung zum UCS Virtual Machine Manager-Dienst konnte nicht "
 #~ "hergestellt werden. Bitte prüfen Sie, ob der Dienst gestartet ist. Dafür "
 #~ "können Sie das UMC Dienste-Modul verwenden."
 
@@ -1794,8 +1794,8 @@ msgstr "{volumeFilename} (Speicherbereich: {pool})"
 #~ msgid "Type of drive"
 #~ msgstr "Art des Laufwerks"
 
-#~ msgid "Univention Virtual Machine Manager"
-#~ msgstr "Univention Virtual Machine Manager"
+#~ msgid "UCS Virtual Machine Manager"
+#~ msgstr "UCS Virtual Machine Manager"
 
 #~ msgid "Unpause"
 #~ msgstr "Fortführen"

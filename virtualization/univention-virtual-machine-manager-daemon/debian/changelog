@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.72-2) unstable; urgency=low
+
+  * Bug #20667: Rename UVMM to UCS... (again)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Nov 2011 17:22:42 +0100
+
 univention-virtual-machine-manager-daemon (1.0.72-1) unstable; urgency=low
 
   * fixed logrotate template (Bug #18002) 

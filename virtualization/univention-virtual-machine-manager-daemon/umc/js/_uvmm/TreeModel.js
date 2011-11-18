@@ -49,7 +49,7 @@ dojo.declare('umc.modules._uvmm.TreeModel', null, {
 	
 		this.root = {
 			id: '$root$',
-			label: 'Univention Virtual Machine Manager',
+			label: 'UCS Virtual Machine Manager',
 			type: 'root'
 		};
 	},
