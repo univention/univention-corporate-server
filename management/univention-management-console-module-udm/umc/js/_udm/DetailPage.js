@@ -742,6 +742,11 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 						edit: this._('not defined')
 					});
 					iwidget.set('label', label);
+					if (!dojo.isArray(iinfo)) {
+						iwidget.set('value', '');
+					} else {
+						iwidget.set('value', []);
+					}
 				}
 				else if (!dojo.isArray(iinfo)) {
 					// standard policy

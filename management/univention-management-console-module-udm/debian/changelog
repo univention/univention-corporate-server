@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.242-1) unstable; urgency=low
+
+  * DetailPage.updatePolicy: reset values of empty properties; Bug #24709
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 18 Nov 2011 15:09:58 +0100
+
 univention-management-console-module-udm (1.0.241-1) unstable; urgency=low
 
   * added missing OverwriteLabel.js (Bug #23199)
