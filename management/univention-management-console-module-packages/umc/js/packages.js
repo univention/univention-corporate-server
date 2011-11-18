@@ -135,12 +135,12 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			},
 			{
 				name:		'status',
-				label:		this._("Install Status"),		// notinstalled/installed/upgradeable
+				label:		this._("Installation status"),		// notinstalled/installed/upgradeable
 				width:		'adjust'
 			},
 			{
 				name:		'summary',
-				label:		this._("Package Description")
+				label:		this._("Package description")
 			}
 		];
 

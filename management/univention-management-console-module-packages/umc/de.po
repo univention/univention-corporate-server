@@ -15,6 +15,6 @@ msgstr ""
 msgid "Manage (install/deinstall) software packages on your machine"
 msgstr "Verwaltung der Software-Pakete auf dieser Maschine"
 
-msgid "Package Management"
+msgid "Package management"
 msgstr "Paketverwaltung"
 

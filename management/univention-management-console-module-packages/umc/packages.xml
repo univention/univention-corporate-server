@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
   <module id="packages" icon="apt" version="1.0">
-	<name>Package Management</name>
+	<name>Package management</name>
 	<description>Manage (install/deinstall) software packages on your machine</description>
 	<categories>
 	  <category name="system"/>

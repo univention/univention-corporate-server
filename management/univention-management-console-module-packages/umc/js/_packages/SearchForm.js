@@ -105,17 +105,12 @@ dojo.declare("umc.modules._packages.SearchForm",
 					{
 						name:		'submit',
 						label:		this._("Search")
-					},
-					{
-						name:		'reset',
-						label:		this._("Reset")
 					}
 				],
 				layout:
 				[
 					[ 'section', 'installed' ],
-					[ 'key', 'pattern' ],
-					[ 'reset', 'submit']
+					[ 'key', 'pattern', 'submit'],
 				]
 			});
 		}
@@ -126,19 +121,6 @@ dojo.declare("umc.modules._packages.SearchForm",
 		
 		this.inherited(arguments);
 	},
-	
-	// TODO What is the correct way start the form with a disabled 'submit' button?
-	
-//	buildRendering: function() {
-//		
-//		this.inherited(arguments);
-//		this.allowSearchButton(false);	// as long as the combobox is not ready
-//	},
-	
-//	startup: function() {
-//		this.inherited(arguments);
-//		this.allowSearchButton(false);	// as long as the combobox is not ready
-//	},
 	
 	_check_submit_allow: function() {
 		
