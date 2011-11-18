@@ -16,4 +16,4 @@ msgid "Domain join"
 msgstr "Domänenbeitritt"
 
 msgid "Show overview of join scripts"
-msgstr "Übersicht über alle Join-Skripte"
+msgstr "Status und Aktionen zum Domänenbeitritt"

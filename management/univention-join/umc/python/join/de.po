@@ -14,7 +14,7 @@ msgstr ""
 
 #: umc/python/join/__init__.py:273
 msgid "Another join operation is in progress"
-msgstr "Es wird gerade eine andere Join Operation ausgeführt"
+msgstr "Es wird gerade eine andere Join-Operation ausgeführt"
 
 #: umc/python/join/__init__.py:386
 msgid "due"
