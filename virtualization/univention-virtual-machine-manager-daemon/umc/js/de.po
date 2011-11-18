@@ -46,12 +46,12 @@ msgstr ""
 #: umc/js/uvmm.js:164
 #, python-format
 msgid "%(nSelected)d %(objPlural)s of %(nTotal)d selected"
-msgstr ""
+msgstr "%(nSelected)d %(objPlural)s von %(nTotal)d ausgewählt"
 
 #: umc/js/uvmm.js:161
 #, python-format
 msgid "%(nSelected)d %(objSingular)s of %(nTotal)d selected"
-msgstr ""
+msgstr "%(nSelected)d %(objSingular)s von %(nTotal)d ausgewählt"
 
 #: umc/js/_uvmm/types.js:78
 msgid "(saved state)"

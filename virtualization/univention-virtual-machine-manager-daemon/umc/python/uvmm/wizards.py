@@ -316,9 +316,9 @@ class DriveWizard( umcd.IWizard ):
 			self[DriveWizard.PAGE_OLD].hint = None
 		elif drive_type in ( 'cdrom', 'floppy' ):
 			if self.image_syntax._choices:
-				msg = _( "If the required image is not found it might be added by copying the file into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>local directory</i>. After that go to the previous page an return to this one. The image should now be listed." )
+				msg = _( "If the required image is not found it might be added by copying the file into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>local directory</i>. After that go to the previous page and return to this one. The image should now be listed." )
 			else:
-				msg = _( "The list of available images is empty! To add an image the file needs to be copied into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>local directory</i>. After that go to the previous page an return to this one. The image should now be listed." )
+				msg = _( "The list of available images is empty! To add an image the file needs to be copied into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>local directory</i>. After that go to the previous page and return to this one. The image should now be listed." )
 			self[DriveWizard.PAGE_OLD].hint = msg
 			self[DriveWizard.PAGE_OLD].description = ''
 		else:
@@ -456,7 +456,7 @@ class DriveWizard( umcd.IWizard ):
 					except uvmmd.UvmmError, e:
 						is_used = self.domain_name # FIXME: need proper error handling
 				if is_used in (object.options.get('domain', ''), object.options.get('name', '')):
-					msg = _('The selected image is already used by this virtual instance and therefor can not be used.')
+					msg = _('The selected image is already used by this virtual instance and therefore can not be used.')
 					return umcd.WizardResult(False, msg)
 				reuse_image = object.options.setdefault('_reuse_image', [])
 				if is_used and vol_path not in reuse_image:
@@ -787,7 +787,7 @@ class InstanceWizard( umcd.IWizard ):
 				return umcd.WizardResult( False, _( 'The name of a virtual instance may not be longer than %(maxlength)d characters!' ) % { 'maxlength' : MAX_NAME_LENGTH } )
 			try:
 				if not self.uvmm.is_domain_name_unique( self.node_uri, object.options[ 'name' ] ):
-					return umcd.WizardResult( False, _( 'The chosen name for the virtual instance is not unique. Another one should be chosen.' ) )
+					return umcd.WizardResult( False, _( 'The chosen name for the virtual instance is not unique. Please choose another name.' ) )
 			except uvmmd.UvmmError, e:
 				return umcd.WizardResult(False, _('The chosen name for the virtual instance could not be checked for uniqueness.'))
 			mem_size = MemorySize.str2num( object.options[ 'memory' ], unit = 'MB' )
@@ -797,7 +797,7 @@ class InstanceWizard( umcd.IWizard ):
 				return umcd.WizardResult( False, _( 'A virtual instance must at least have 4 MB memory.' ) )
 			elif mem_size > self.max_memory:
 				object.options[ 'memory' ] = MemorySize.num2str( self.max_memory * 0.75 )
-				return umcd.WizardResult( False, _( 'The physical server does not have that much memory. As a suggestion the a mount of memory was set to 75% of the available memory.' ) )
+				return umcd.WizardResult( False, _( 'The physical server does not have that much memory. As a suggestion the amount of memory was set to 75% of the available memory.' ) )
 			else:
 				object.options[ 'memory' ] = MemorySize.num2str( mem_size )
 			# activate drive wizard to add a first mandatory drive

@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Manages virtual machines"
-msgstr ""
+msgstr "Verwaltung virtueller Maschinen"
 
 msgid "Virtual machines (UVMM)"
-msgstr ""
+msgstr "Virtuelle Maschinen (UVMM)"
