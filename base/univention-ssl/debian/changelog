@@ -1,3 +1,9 @@
+univention-ssl (6.0.14-1) unstable; urgency=low
+
+  * fixed logrotate template (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:37:24 +0100
+
 univention-ssl (6.0.13-2) unstable; urgency=low
 
   * fixed wrong country code that is set in postinst (Bug #24174)
