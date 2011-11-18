@@ -640,18 +640,23 @@ layout = [
 	] ),
 	Tab(_('NFS general'),_('General NFS settings'), layout = [
 		Group( _( 'NFS general' ), layout = [
-			['writeable', 'sync'],
-			['subtree_checking', 'root_squash'],
+			'writeable',
+			'subtree_checking',
+			'root_squash',
+			'sync',
 			'nfs_hosts',
 		] ),
 	] ),
 	Tab( _( 'Samba general' ), _( 'General Samba settings' ), layout = [
 		Group( _( 'Samba general' ), layout = [
 			'sambaName',
-			[ 'sambaBrowseable', 'sambaPublic'],
+			'sambaBrowseable',
+			'sambaPublic',
+			'sambaMSDFSRoot',
+			[ 'sambaDosFilemode'],
+			[ 'sambaHideUnreadable' ],
+			[ 'sambaVFSObjects'],
 			[ 'sambaPostexec', 'sambaPreexec'],
-			[ 'sambaVFSObjects', 'sambaMSDFSRoot' ],
-			[ 'sambaDosFilemode', 'sambaHideUnreadable' ],
 		] ),
 	] ),
 	Tab( _( 'Samba permissions' ), _( 'Samba permission settings' ), advanced = True, layout = [
