@@ -6,6 +6,8 @@ if configRegistry.has_key('server/role') and configRegistry['server/role'] != 'm
 	ldapserver = configRegistry['ldap/server/name'].split(' ')
 	if configRegistry.get('ldap/server/addition',''):
 		ldapserver.extend( configRegistry.get('ldap/server/addition').split(' ') )
+	port=configRegistry.get('ldap/server/port', '7389')
+	ldapserver=map(lambda s: '%s:%s' % (s,port) , ldapserver)
 	print '\tpassdb backend = ldapsam:"ldap://%s"' % ' ldap://'.join(ldapserver)
 	print '\tauth methods = %s' % configRegistry.get('samba/auth/methods', 'guest sam winbind')
 
@@ -13,6 +15,8 @@ if configRegistry.get('server/role') == 'memberserver' and configRegistry.get('s
 	ldapserver = configRegistry['ldap/server/name'].split(' ')
 	if configRegistry.get('ldap/server/addition',''):
 		ldapserver.extend( configRegistry.get('ldap/server/addition').split(' ') )
+	port=configRegistry.get('ldap/server/port', '7389')
+	ldapserver=map(lambda s: '%s:%s' % (s,port) , ldapserver)
 	print '\tpassdb backend = ldapsam:"ldap://%s"' % ' ldap://'.join(ldapserver)
 
 if len(configRegistry.get('samba/ldap/timeout','')):

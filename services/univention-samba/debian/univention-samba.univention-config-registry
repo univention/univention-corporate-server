@@ -6,6 +6,7 @@ Variables: hostname
 Variables: ldap/base
 Variables: ldap/server/addition
 Variables: ldap/server/name
+Variables: ldap/server/port
 Variables: samba/.*
 Variables: server/role
 Variables: windows/domain

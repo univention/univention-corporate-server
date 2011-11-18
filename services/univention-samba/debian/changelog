@@ -1,3 +1,9 @@
+univention-samba (6.0.16-1) unstable; urgency=low
+
+  * Use ldap/server/port in smb.conf (Bug #23999)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Nov 2011 09:33:46 +0100
+
 univention-samba (6.0.15-1) unstable; urgency=low
 
   * Set kerberos/kdc on S3 Memberserver (Bug #23999)
