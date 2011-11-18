@@ -1,33 +1,59 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" dir="ltr">
 	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 		<title>Univention AD Connector</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link rel="SHORTCUT ICON" href="/style/favicon.ico">
-		<link rel="stylesheet" href="/style/stylesheet.css" type="text/css">
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" title="style.css" charset="utf-8" />
 	</head>
-	<body class="component-menuless tundra" onload="clear_cached()">
-		<form name="content" id="component-menuless" method="post" enctype="multipart/form-data" action="http://10.201.23.1/univention-management-console/index.php">
-		<div id="wrapper">
-			<div id="header">
-					<!-- @start header-title -->
-					<h1 class="header-title">
-						<span class="hide">univention</span>
-						<a href="/univention-management-console/" title="Start">management console</a>
-					</h1>
-			</div>
-			<div id="content-wrapper">
-					<h4>Univention Active Directory Connector</h4>
-					&nbsp;&nbsp;
-					<ul style="padding-left: 20px;">
-						<li><a href="ucs-ad-connector.msi">ucs-ad-connector.msi (for 32bit Windows)</a></li>
-						<li><a href="ucs-ad-connector-64bit.msi">ucs-ad-connector-64bit.msi (for 64bit Windows)</a></li>
-						<li><a href="vcredist_x86.exe">Microsoft Visual C++ 2010 Redistributable Package (x86) - Must be installed on a 64bit Windows.</a></li>
-						<li><a href="private.key"  type="application/octet-stream">private.key</a></li>
-						<li><a href="cert.pem"  type="application/octet-stream">cert.pem</a></br>Please verify that the file has been downloaded as cert.pem, Internet Explorer appends a .txt under some circumstances</li>
-					</ul>	
+	<body>
+		<div id="header">
+			<div id="header-wrapper">
+			  <div style="float: left;">
+				<a href="http://www.univention.de"><img src="images/univention_logo.png" /></a>
+			  </div>
 			</div>
 		</div>
-
+		<div id="wrapper">
+			<div id="content-head">
+				<h1>Univention Active Directory Connector</h1>
+				<div><p>The MSI files are the installation files for the password service and can be started by double clicking on it.</p>
+<p>The package is installed in the <strong>C:\Windows\UCS-AD-Connector</strong> directory automatically. Additionally, the password service is integrated into the Windows environment as a system service, which means the service can be started automatically or manually.</p>
+</div>
+			</div>
+			<div id="content">
+			<table class="content">
+			  <tr>
+				<td class="overview"><a href="ucs-ad-connector.msi"><img src="../icon/about.png" /></a></td>
+				<td class="overview"><a href="ucs-ad-connector.msi">ucs-ad-connector.msi</a></td>
+				<td class="overview">Installation file for the password service for <strong>32bit</strong> Windows.<br />It can be started by double clicking on it.</td>
+			  </tr>
+			  <tr>
+				<td class="overview"><a href="ucs-ad-connector-64bit.msi"><img src="../icon/about.png" /></a></td>
+				<td class="overview"><a href="ucs-ad-connector-64bit.msi">ucs-ad-connector-64bit.msi</a></td>
+				<td class="overview">Installation file for the password service for <strong>64bit</strong> Windows.<br />It can be started by double clicking on it.</a></td>
+			  </tr>
+			  <tr>
+				<td class="overview"><a href="vcredist_x86.exe"><img src="../icon/about.png" /></a></td>
+				<td class="overview"><a href="vcredist_x86.exe">vcredist_x86.exe</a></td>
+				<td class="overview">Microsoft Visual C++ 2010 Redistributable Package (x86) - <strong>Must</strong> be installed on a <strong>64bit</strong> Windows.</td>
+			  </tr>
+			  <tr>
+				<td class="overview"><a href="cert.pem"  type="application/octet-stream"><img src="../icon/about.png" /></a></td>
+				<td class="overview"><a href="cert.pem"  type="application/octet-stream">cert.pem</a></td>
+				<td class="overview">The <strong>cert.pem</strong> file contains the SSL certificates created in UCS for secure communication. It must also be copied into the installation directory of the password service.
+<br />Please verify that the file has been downloaded as <strong>cert.pem</strong>, Internet Explorer appends a .txt under some circumstances.</td>
+			  </tr>
+			  <tr>
+				<td class="overview"><a href="private.key"  type="application/octet-stream"><img src="../icon/about.png" /></a></td>
+				<td class="overview"><a href="private.key"  type="application/octet-stream">private.key</a></td>
+				<td class="overview">The <strong>private.key</strong> file contains the private key to the SSL certificates. It must also be copied into the installation directory of the password service.</td>
+			  </tr>
+			</table>
+			</div>
+			<div id="contentfooter"></div>
+			<br class="clear" />
+		</div>
 	</body>
 </html>

@@ -1,3 +1,5 @@
 usr/share/univention-ad-connector/ucs-ad-connector.msi var/www/univention-ad-connector/ucs-ad-connector.msi
 usr/share/univention-ad-connector/ucs-ad-connector-64bit.msi var/www/univention-ad-connector/ucs-ad-connector-64bit.msi
 usr/share/univention-ad-connector/vcredist_x86.exe var/www/univention-ad-connector/vcredist_x86.exe
+var/www/ucs-overview/css var/www/univention-ad-connector/css
+var/www/ucs-overview/images var/www/univention-ad-connector/images
