@@ -14,7 +14,7 @@ msgstr ""
 
 #: umc/python/packages/__init__.py:321
 msgid "Another package operation is in progress"
-msgstr ""
+msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 
 #: umc/python/packages/__init__.py:288
 msgid "installed"

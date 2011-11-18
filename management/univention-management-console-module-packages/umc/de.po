@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Manage (install/deinstall) software packages on your machine"
-msgstr "Verwaltung der Software-Pakete auf dieser Maschine"
+msgstr "Verwaltung der Software-Pakete auf diesem System"
 
 msgid "Package management"
 msgstr "Paketverwaltung"

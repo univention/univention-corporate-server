@@ -83,9 +83,9 @@ msgstr "Nein"
 #: umc/js/packages.js:26
 msgid ""
 "On this page, you see all software packages available on your system, and "
-"you can install/deinstall them."
-msgstr "Auf dieser Seite sehen Sie alle verfügbaren Software Pakete auf Ihrem "
-"System, und sie können sie installieren, deinstallieren oder aktualisieren."
+"you can install, deinstall or update them."
+msgstr "Dieses Modul zeigt die auf dem System verfügbaren Softwarepakete an und ermöglicht "
+"es, diese zu installieren, zu deinstallieren oder zu aktualisieren."
 
 #: umc/js/packages.js:115
 msgid "Package description"

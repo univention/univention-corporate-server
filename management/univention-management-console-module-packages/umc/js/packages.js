@@ -51,7 +51,7 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		var page = new umc.widgets.Page({
 			headerText:		this._("Package management"),
-			helpText:		this._("On this page, you see all software packages available on your system, and you can install/deinstall them."),
+			helpText:		this._("On this page, you see all software packages available on your system, and you can install, deinstall or update them."),
 			title:			this._("Package management")
 		});
 		this.addChild(page);
