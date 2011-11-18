@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-17 23:50+0100\n"
+"POT-Creation-Date: 2011-11-18 14:53+0100\n"
 "PO-Revision-Date: 2011-11-17 22:01+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -304,7 +304,9 @@ msgstr "Entfernen der Netzwerkschnittstelle ist fehlgeschlagen: %s"
 #: umc/python/uvmm/domains.py:272
 #, python-format
 msgid "Failed to retrieve details for the server %(nodeURI)s"
-msgstr "Das Abrufen der Details zum physikalischen Server %(nodeURI)s ist fehlgeschlagen"
+msgstr ""
+"Das Abrufen der Details zum physikalischen Server %(nodeURI)s ist "
+"fehlgeschlagen"
 
 #: umc/python/uvmm/wizards.py:111
 msgid "Filename"
@@ -459,8 +461,8 @@ msgstr ""
 msgid "Paravirtualization (XEN)"
 msgstr "Paravirtualisierung (XEN)"
 
-#: umc/python/uvmm/__init__.py:116 umc/python/uvmm/treeview.py:206
-#: umc/python/uvmm/nodes.py:79
+#: umc/python/uvmm/nodes.py:79 umc/python/uvmm/treeview.py:206
+#: umc/python/uvmm/__init__.py:116
 msgid "Physical servers"
 msgstr "Physikalische Server"
 

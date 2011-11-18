@@ -731,7 +731,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			}
 		}, {
  			name: 'suspend',
- 			label: this._( 'Save & Stop' ),
+ 			label: this._( 'Suspend' ),
  			// iconClass: 'umcIconPause',
  			isStandardAction: false,
  			isMultiAction: true,

@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-18 14:14+0100\n"
+"POT-Creation-Date: 2011-11-18 14:53+0100\n"
 "PO-Revision-Date: 2011-11-18 12:22+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -115,17 +115,17 @@ msgstr ""
 "Ein gültiger Sicherungspunktname darf keine \"/\" enthalten und kann nicht "
 "mit \".\" beginnen."
 
-#: umc/js/_uvmm/DriveWizard.js:61 umc/js/_uvmm/DriveGrid.js:272
+#: umc/js/_uvmm/DriveGrid.js:272 umc/js/_uvmm/DriveWizard.js:61
 msgid "Add a new drive"
 msgstr "Ein neues Laufwerk hinzufügen"
 
-#: umc/js/_uvmm/DomainWizard.js:136 umc/js/_uvmm/DriveWizard.js:52
-#: umc/js/_uvmm/DriveGrid.js:89
+#: umc/js/_uvmm/DriveGrid.js:89 umc/js/_uvmm/DomainWizard.js:136
+#: umc/js/_uvmm/DriveWizard.js:52
 msgid "Add drive"
 msgstr "Laufwerk hinzufügen"
 
-#: umc/js/_uvmm/InterfaceGrid.js:96 umc/js/_uvmm/InterfaceGrid.js:171
-#: umc/js/_uvmm/InterfaceWizard.js:52
+#: umc/js/_uvmm/InterfaceWizard.js:52 umc/js/_uvmm/InterfaceGrid.js:96
+#: umc/js/_uvmm/InterfaceGrid.js:171
 msgid "Add network interface"
 msgstr "Hinzufügen einer Netzwerkschnittstelle"
 
@@ -223,9 +223,9 @@ msgid "CPU usage"
 msgstr "CPU-Auslastung"
 
 #: umc/js/uvmm.js:354 umc/js/uvmm.js:468 umc/js/uvmm.js:541 umc/js/uvmm.js:626
-#: umc/js/_uvmm/InterfaceGrid.js:116 umc/js/_uvmm/SnapshotGrid.js:135
-#: umc/js/_uvmm/SnapshotGrid.js:161 umc/js/_uvmm/SnapshotGrid.js:198
 #: umc/js/_uvmm/DriveGrid.js:174 umc/js/_uvmm/DriveGrid.js:201
+#: umc/js/_uvmm/SnapshotGrid.js:135 umc/js/_uvmm/SnapshotGrid.js:161
+#: umc/js/_uvmm/SnapshotGrid.js:198 umc/js/_uvmm/InterfaceGrid.js:116
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -243,7 +243,7 @@ msgstr "Kontakt"
 
 #: umc/js/_uvmm/types.js:65
 msgid "Coordinated Universal Time"
-msgstr "Koordinierte Weltzeit"
+msgstr "Koordinierte Weltzeit (UTC)"
 
 #: umc/js/uvmm.js:614 umc/js/_uvmm/SnapshotGrid.js:123
 msgid "Create"
@@ -290,13 +290,13 @@ msgstr "Datum"
 msgid "Default (RealTek RTL-8139)"
 msgstr "Voreinstellung (RealTek RTL-8139)"
 
-#: umc/js/uvmm.js:207 umc/js/_uvmm/SnapshotGrid.js:57
-#: umc/js/_uvmm/SnapshotGrid.js:194 umc/js/_uvmm/DriveGrid.js:82
-#: umc/js/_uvmm/DriveGrid.js:197
+#: umc/js/uvmm.js:207 umc/js/_uvmm/DriveGrid.js:82
+#: umc/js/_uvmm/DriveGrid.js:197 umc/js/_uvmm/SnapshotGrid.js:57
+#: umc/js/_uvmm/SnapshotGrid.js:194
 msgid "Delete"
 msgstr "Löschen"
 
-#: umc/js/_uvmm/DomainWizard.js:115 umc/js/_uvmm/DomainPage.js:122
+#: umc/js/_uvmm/DomainPage.js:122 umc/js/_uvmm/DomainWizard.js:115
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -328,11 +328,11 @@ msgstr "Laufwerk Image-Datei"
 msgid "Drive type"
 msgstr "Laufwerktyp"
 
-#: umc/js/_uvmm/InterfaceGrid.js:65 umc/js/_uvmm/InterfaceWizard.js:72
+#: umc/js/_uvmm/InterfaceWizard.js:72 umc/js/_uvmm/InterfaceGrid.js:65
 msgid "Driver"
 msgstr "Treiber"
 
-#: umc/js/_uvmm/DomainWizard.js:64 umc/js/_uvmm/DomainPage.js:290
+#: umc/js/_uvmm/DomainPage.js:290 umc/js/_uvmm/DomainWizard.js:64
 msgid "Drives"
 msgstr "Laufwerke"
 
@@ -344,7 +344,7 @@ msgstr "Niederländisch"
 msgid "Dutch-Belgium"
 msgstr "Niederländisch-Belgien"
 
-#: umc/js/_uvmm/DriveWizard.js:85 umc/js/_uvmm/DriveGrid.js:145
+#: umc/js/_uvmm/DriveGrid.js:145 umc/js/_uvmm/DriveWizard.js:85
 msgid ""
 "Each image is located within a so called storage pool, which might be a "
 "local directory, a device, an LVM volume or any type of share (e.g. mounted "
@@ -367,8 +367,8 @@ msgstr ""
 "Speicherbereich ausgewählt, wird die Liste der verfügbaren ISO-Images "
 "aktualisiert."
 
-#: umc/js/uvmm.js:200 umc/js/uvmm.js:694 umc/js/_uvmm/InterfaceGrid.js:81
-#: umc/js/_uvmm/DriveGrid.js:75
+#: umc/js/uvmm.js:200 umc/js/uvmm.js:694 umc/js/_uvmm/DriveGrid.js:75
+#: umc/js/_uvmm/InterfaceGrid.js:81
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -404,7 +404,7 @@ msgstr "Erweitertes Format (qcow2)"
 msgid "Faroese"
 msgstr "Färöisch"
 
-#: umc/js/_uvmm/DriveWizard.js:106 umc/js/_uvmm/DriveGrid.js:157
+#: umc/js/_uvmm/DriveGrid.js:157 umc/js/_uvmm/DriveWizard.js:106
 msgid "Filename"
 msgstr "Dateiname"
 
@@ -587,7 +587,7 @@ msgstr "Speicher"
 
 #: umc/js/_uvmm/DomainWizard.js:122
 msgid "Memory (default unit MB)"
-msgstr "Größe (Standardeinheit MB)"
+msgstr "Größe des Arbeitsspeichers (Standardeinheit MB)"
 
 #: umc/js/uvmm.js:661
 msgid "Memory usage"
@@ -605,8 +605,8 @@ msgstr "Migriere virtuelle Instanz"
 msgid "NAT"
 msgstr "NAT"
 
-#: umc/js/uvmm.js:652 umc/js/uvmm.js:671 umc/js/_uvmm/DomainWizard.js:111
-#: umc/js/_uvmm/SnapshotGrid.js:50 umc/js/_uvmm/DomainPage.js:105
+#: umc/js/uvmm.js:652 umc/js/uvmm.js:671 umc/js/_uvmm/SnapshotGrid.js:50
+#: umc/js/_uvmm/DomainPage.js:105 umc/js/_uvmm/DomainWizard.js:111
 msgid "Name"
 msgstr "Name"
 
@@ -639,7 +639,7 @@ msgstr "Norwegisch"
 msgid "Not removable"
 msgstr "Nicht löschbar"
 
-#: umc/js/_uvmm/DomainWizard.js:126 umc/js/_uvmm/DomainPage.js:180
+#: umc/js/_uvmm/DomainPage.js:180 umc/js/_uvmm/DomainWizard.js:126
 msgid "Number of CPUs"
 msgstr "Anzahl der CPUs"
 
@@ -717,8 +717,8 @@ msgstr "Bitte warten Sie, Ihre Anfrage wird bearbeitet..."
 msgid "Polish"
 msgstr "Polnisch"
 
-#: umc/js/_uvmm/DriveWizard.js:84 umc/js/_uvmm/DriveWizard.js:154
 #: umc/js/_uvmm/DriveGrid.js:71 umc/js/_uvmm/DriveGrid.js:144
+#: umc/js/_uvmm/DriveWizard.js:84 umc/js/_uvmm/DriveWizard.js:154
 msgid "Pool"
 msgstr "Speicherbereich"
 
@@ -736,7 +736,7 @@ msgstr "Profile"
 
 #: umc/js/_uvmm/DomainPage.js:215
 msgid "RTC reference"
-msgstr "RTC Referenz"
+msgstr "RTC-Referenz"
 
 #: umc/js/uvmm.js:214
 msgid "Reload"
@@ -774,7 +774,7 @@ msgid "Save"
 msgstr "Speichern"
 
 #: umc/js/uvmm.js:734
-msgid "Save & Stop"
+msgid "Suspend"
 msgstr "Speichern & Beenden"
 
 #: umc/js/uvmm.js:110
@@ -841,7 +841,7 @@ msgstr "Sicherungspunkte"
 msgid "Snapshots settings"
 msgstr "Einstellungen für Sicherungspunkte"
 
-#: umc/js/_uvmm/InterfaceGrid.js:62 umc/js/_uvmm/InterfaceWizard.js:85
+#: umc/js/_uvmm/InterfaceWizard.js:85 umc/js/_uvmm/InterfaceGrid.js:62
 msgid "Source"
 msgstr "Quelle"
 
@@ -881,7 +881,7 @@ msgstr "Schwedisch"
 msgid "Thai"
 msgstr "Thailand"
 
-#: umc/js/_uvmm/DriveWizard.js:219 umc/js/_uvmm/DomainPage.js:367
+#: umc/js/_uvmm/DomainPage.js:367 umc/js/_uvmm/DriveWizard.js:219
 msgid "The entered data is not valid. Please correct your input."
 msgstr ""
 "Die eingegebenen Daten sind nicht gültig. Bitte korrigieren Sie ihre Eingabe."
@@ -984,8 +984,8 @@ msgstr ""
 "wird. Weitere Details zur Netzwerkkonfiguration sind in <a href=\"http://sdb."
 "univention.de/1172\" target=\"_blank\">diesem Artikel</a> zu finden."
 
-#: umc/js/_uvmm/InterfaceGrid.js:59 umc/js/_uvmm/InterfaceWizard.js:58
-#: umc/js/_uvmm/DriveGrid.js:59
+#: umc/js/_uvmm/DriveGrid.js:59 umc/js/_uvmm/InterfaceWizard.js:58
+#: umc/js/_uvmm/InterfaceGrid.js:59
 msgid "Type"
 msgstr "Typ"
 
@@ -999,7 +999,7 @@ msgstr "Verwenden eines lokalen Gerätes"
 
 #: umc/js/_uvmm/DomainPage.js:228
 msgid "VNC password"
-msgstr "VNC Passwort"
+msgstr "VNC-Passwort"
 
 #: umc/js/uvmm.js:762
 msgid "View"
@@ -1058,7 +1058,7 @@ msgstr "ausgeschaltet"
 msgid "shut off (crashed)"
 msgstr "ausgeschaltet (abgestürzt)"
 
-#: umc/js/_uvmm/InterfaceGrid.js:67 umc/js/_uvmm/DriveGrid.js:61
+#: umc/js/_uvmm/DriveGrid.js:61 umc/js/_uvmm/InterfaceGrid.js:67
 msgid "unknown"
 msgstr "Unbekannt"
 

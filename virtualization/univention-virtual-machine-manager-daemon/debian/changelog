@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.71-1) unstable; urgency=low
+
+  * adaptations of captions and translations (Bug #24536)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 18 Nov 2011 15:13:26 +0100
+
 univention-virtual-machine-manager-daemon (1.0.70-1) unstable; urgency=low
 
   * support setting boot medium for paravirtual domains
