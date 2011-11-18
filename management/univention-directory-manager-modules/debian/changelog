@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.193-1) unstable; urgency=low
+
+  * fixed regression of mailAlternativeAddress (Bug #23976)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 18 Nov 2011 12:13:40 +0100
+
 univention-directory-manager-modules (7.0.192-1) unstable; urgency=low
 
   * Re-organize NFS general and Samba general tab (Bug #23709)
