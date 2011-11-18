@@ -1398,12 +1398,12 @@ def domain_state(uri, domain, state):
 		try:
 			TRANSITION = {
 					(libvirt.VIR_DOMAIN_RUNNING,  'PAUSE'   ): dom.suspend,
-					(libvirt.VIR_DOMAIN_RUNNING,  'RESTART' ): lambda:dom.destroy(None),
+					(libvirt.VIR_DOMAIN_RUNNING,  'RESTART' ): lambda:dom.reboot(0),
 					(libvirt.VIR_DOMAIN_RUNNING,  'RUN'     ): None,
 					(libvirt.VIR_DOMAIN_RUNNING,  'SHUTDOWN'): dom.destroy,
 					(libvirt.VIR_DOMAIN_RUNNING,  'SUSPEND' ): lambda:dom.managedSave(0),
 					(libvirt.VIR_DOMAIN_BLOCKED,  'PAUSE'   ): dom.suspend,
-					(libvirt.VIR_DOMAIN_BLOCKED,  'RESTART' ): lambda:dom.destroy(None),
+					(libvirt.VIR_DOMAIN_BLOCKED,  'RESTART' ): lambda:dom.reboot(0),
 					(libvirt.VIR_DOMAIN_BLOCKED,  'RUN'     ): None,
 					(libvirt.VIR_DOMAIN_BLOCKED,  'SHUTDOWN'): dom.destroy,
 					(libvirt.VIR_DOMAIN_BLOCKED,  'SUSPEND' ): lambda:dom.managedSave(0),
