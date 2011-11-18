@@ -5,49 +5,29 @@ import univention.lib.ucrLogrotate
 
 name = "connector-tracebacks"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
-@!@
-}
-
-@!@
-import univention.lib.ucrLogrotate
+print "}"
 
 name = "ad-connector-certificate"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
-@!@
-}
-
-@!@
-import univention.lib.ucrLogrotate
+print "}"
 
 name = "connector-status"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
-@!@
-}
-
-@!@
-import univention.lib.ucrLogrotate
+print "}"
 
 name = "connector"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
+print "}"
 @!@
-}

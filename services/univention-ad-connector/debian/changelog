@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.32-1) unstable; urgency=low
+
+  * fixed logrotate template (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:49:33 +0100
+
 univention-ad-connector (6.0.31-1) unstable; urgency=low
 
   * update download page design for UMC design (Bug #23188)
