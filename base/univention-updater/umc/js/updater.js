@@ -405,7 +405,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			}
 			else
 			{
-				umc.dialog.alert(dojo.replace(this._("The installer action could not be started [Error {status}]: {message}"),data.result));
+				umc.dialog.alert(dojo.replace(this._("The Univention Updater action could not be started [Error {status}]: {message}"),data.result));
 			}
 		}),
 		// Strongly needed: an error callback! In this case, the built-in error processing

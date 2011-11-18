@@ -68,16 +68,16 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 				type:			'Text',
 				name:			'reboot_progress_text',
 				label:			'',
-				content:		this._("The machine is being rebooted right now. ") +
+				content:		this._("The computer is now rebooting. ") +
 								this._("This may take some time. Please be patient. ") +
-								this._("During reboot, the connection to the machine will be lost. ") +
+								this._("During reboot, the connection to the system will be lost. ") +
 								this._("When the connection is back you will be prompted to authenticate yourself again.")
 			},
     	 	{
 				type:			'Text',
 				name:			'reboot_text',
 				label:			'',
-				content:		this._("In order to complete the recently executed installer action, it is required to reboot the machine."),
+				content:		this._("In order to complete the recently executed installer action, it is required to reboot the system."),
 				// FIXME: Manual placement: should be done by the layout framework some day.
 				style:			'width:500px;'
     	 	},
@@ -426,7 +426,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
  				var tx2 = '';
  				if (values['components'] == '0')
  				{
- 					tx1 = this._("There are no components known to this system.");
+ 					tx1 = this._("There are no components configured for this system.");
  				}
  				else
  				{
@@ -483,7 +483,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 					this.standby(false);
 					this._set_updates_button(data.result,
 						data.result ?
-							this._("Some package updates are available.") :
+							this._("Package updates are available.") :
 							this._("There are no package updates available."));
 				}),
 				dojo.hitch(this, function(data) {

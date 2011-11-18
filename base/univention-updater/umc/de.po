@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Online Software Update"
-msgstr ""
+msgstr "Online Software Update"
 
 msgid "Online Update"
-msgstr ""
+msgstr "Online Update"

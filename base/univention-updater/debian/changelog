@@ -1,3 +1,9 @@
+univention-updater (7.0.111-2) unstable; urgency=low
+
+  * Adapted caption and translation (Bug #24724)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 19 Nov 2011 00:13:03 +0100
+
 univention-updater (7.0.111-1) unstable; urgency=low
 
   * fixed logrotate template (Bug #18002) 

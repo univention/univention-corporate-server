@@ -39,7 +39,7 @@ msgstr "Neue Komponente hinzufügen"
 
 #: umc/js/_updater/ComponentsPage.js:65
 msgid "Add a new component definition"
-msgstr "Neue Komponente hinzufügen"
+msgstr "Neue Komponentendefinition hinzufügen"
 
 #: umc/js/_updater/ComponentsPage.js:51
 msgid "Additional components"
@@ -63,7 +63,7 @@ msgstr "Änderungen anwenden"
 
 #: umc/js/_updater/ComponentsPage.js:316
 msgid "Are you sure you want to delete the following components: [{ids}]"
-msgstr "Möchten Sie wirklich die folgenden Komponenten löschen: [{ids}]"
+msgstr "Möchten Sie die folgenden Komponenten wirklich löschen: [{ids}]"
 
 #: umc/js/_updater/ProgressPage.js:67
 msgid ""
@@ -73,7 +73,7 @@ msgid ""
 msgstr ""
 "Solange Univention Updater Ihr System aktualisiert, können Sie keine "
 "Einstellungen verändern oder Komponenten verwalten. Sie können die "
-"Aktualisierung hier verfolgen oder das Modul schließen."
+"Aktualisierung hier verfolgen oder das Modul schliessen."
 
 #: umc/js/updater.js:351
 msgid "Attention!"
@@ -110,7 +110,7 @@ msgstr "Komponenten"
 
 #: umc/js/updater.js:549
 msgid "Connection lost!"
-msgstr "Verbindung zum Server abgebrochen!"
+msgstr "Verbindung zum Server unterbrochen!"
 
 #: umc/js/updater.js:542
 msgid "Connection to server lost. Trying to reconnect."
@@ -178,15 +178,15 @@ msgid "Do you really wish to proceed?"
 msgstr "Möchten Sie wirklich fortfahren?"
 
 #: umc/js/_updater/UpdatesPage.js:73
-msgid "During reboot, the connection to the machine will be lost. "
-msgstr "Während des Neustarts wird die Verbindung zur Maschine unterbrochen. "
+msgid "During reboot, the connection to the system will be lost. "
+msgstr "Während des Neustarts wird die Verbindung zum System unterbrochen. "
 
 #: umc/js/updater.js:359
 msgid ""
 "During setup, the web server may be stopped, leading to a termination of the "
 "HTTP connection. "
 msgstr ""
-"Während des Updates ist es mögich, dass die Verbindung zum Webserver "
+"Während des Updates ist es möglich, dass die Verbindung zum Webserver "
 "unterbrochen wird. "
 
 #: umc/js/_updater/ComponentsPage.js:148
@@ -223,12 +223,12 @@ msgid ""
 "since system services may need to be restarted. "
 msgstr ""
 "Im Normalfall ist während des Updates kein störungsfreies Arbeiten von "
-"Anwendern möglich, da bspw. Dienste neu gestartet werden. "
+"Anwendern möglich, da beispielsweise Dienste neu gestartet werden. "
 
 #: umc/js/_updater/UpdatesPage.js:80
 msgid ""
 "In order to complete the recently executed installer action, it is required "
-"to reboot the machine."
+"to reboot the system."
 msgstr ""
 "Um die kürzlich ausgeführte Installer-Aktion fertigzustellen, ist es "
 "erforderlich, die Maschine neu zu starten."
@@ -295,8 +295,8 @@ msgid ""
 "Nonetheless, the update proceeds and the update can be monitored from a new "
 "UMC session. "
 msgstr ""
-"Das Update wird trotzdem weiter durchgeführt und in einer neuen UMC-Sitzung "
-"kann der Vorgang des Updates dann weiter beobachtet werden. "
+"Das Update wird trotzdem weiter durchgeführt, der Vorgang kann in einer neuen "
+"UMC-Sitzung weiter beobachtet werden. "
 
 #: umc/js/_updater/ComponentsPage.js:216
 msgid "Not found"
@@ -307,10 +307,10 @@ msgid ""
 "On this page, you find all additional components defined for this system. "
 "You can enable/disable/edit/delete them, and you can add new ones here."
 msgstr ""
-"Auf dieser Seite sehen Sie die Übersicht über alle Komponenten, die für "
-"dieses System definiert sind. Sie können Komponenten aktivieren oder "
-"deaktivieren, Details einer Komponente ändern, eine Komponente löschen oder "
-"unter bestimmten Umständen installieren."
+"Auf dieser Seite sehen Sie alle Komponenten, die für "
+"dieses System definiert sind, Die Komponenten können aktiviert oder "
+"deaktiviert werden, Details einer Komponente können geändert, Komponenten "
+"gelöscht oder unter bestimmten Umständen installiert werden."
 
 #: umc/js/_updater/ComponentsPage.js:90
 msgid "On/Off"
@@ -319,7 +319,7 @@ msgstr "An/Aus"
 #: umc/js/_updater/UpdatesPage.js:52
 msgid "Overview of all updates that affect the system as a whole."
 msgstr ""
-"Überblick über Software-Aktualisierungen, die das System als Ganzes betreffen"
+"Überblick über Software-Aktualisierungen, die das Gesamtsystem betreffen"
 
 #: umc/js/_updater/UpdatesPage.js:145 umc/js/_updater/UpdatesPage.js:237
 msgid "Package update status not yet checked"
@@ -407,7 +407,7 @@ msgid "Settings for online updates"
 msgstr "Einstellungen für Online-Aktualisierung"
 
 #: umc/js/_updater/UpdatesPage.js:486
-msgid "Some package updates are available."
+msgid "Package updates are available."
 msgstr "Es sind Paket-Aktualisierungen verfügbar."
 
 #: umc/js/_updater/UpdatesPage.js:289
@@ -431,7 +431,7 @@ msgid ""
 "The connection to the server was lost, trying to reconnect. You may need to "
 "re-authenticate when the connection is restored."
 msgstr ""
-"Die Verbindung zum Server ist verlorengegangen. Es wird versucht, die "
+"Die Verbindung zum Server ist unterbrochen. Es wird versucht, die "
 "Verbindung wieder aufzunehmen. Wahrscheinlich müssen Sie sich neu anmelden, "
 "wenn die Verbindung wieder hergestellt ist."
 
@@ -450,7 +450,7 @@ msgstr ""
 "Die momentan installierte Version ist {ucs_version} errata{erratalevel}"
 
 #: umc/js/updater.js:408
-msgid "The installer action could not be started [Error {status}]: {message}"
+msgid "The Univention Updater action could not be started [Error {status}]: {message}"
 msgstr ""
 "Der Univention Updater konnte nicht gestartet werden [Fehler {status}]: "
 "{message}"
@@ -462,7 +462,7 @@ msgstr ""
 "{elapsed})"
 
 #: umc/js/_updater/UpdatesPage.js:71
-msgid "The machine is being rebooted right now. "
+msgid "The computer is now rebooting. "
 msgstr "Der Computer wird jetzt neu gestartet. "
 
 #: umc/js/_updater/UpdatesPage.js:416
@@ -475,12 +475,12 @@ msgid "The system knows about {components} components."
 msgstr "Dem System sind {components} Komponenten bekannt."
 
 #: umc/js/_updater/UpdatesPage.js:429
-msgid "There are no components known to this system."
+msgid "There are no components configured for this system."
 msgstr "Momentan sind keine Komponenten konfiguriert."
 
 #: umc/js/_updater/UpdatesPage.js:417
 msgid "There are no errata updates available for the current release."
-msgstr "Momentan sind keine weiteren Errata-Aktualisierungen verfügbar."
+msgstr "Es sind keine Errata-Aktualisierungen für das aktuelle Release verfügbar."
 
 #: umc/js/_updater/UpdatesPage.js:487
 msgid "There are no package updates available."

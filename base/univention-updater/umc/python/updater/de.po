@@ -15,7 +15,7 @@ msgstr ""
 #: umc/python/updater/__init__.py:750
 #, python-format
 msgid "At least one out of %s must be selected."
-msgstr "Wenigstens eine der %s Kategorien muß ausgewählt sein."
+msgstr "Wenigstens eine der %s Kategorien muß ausgewählt werden."
 
 #: umc/python/updater/__init__.py:1262
 msgid "Component name is not allowed to be empty."
@@ -67,4 +67,4 @@ msgstr "neueste Version"
 
 #: umc/python/updater/__init__.py:512
 msgid "unknown"
-msgstr ""
+msgstr "unbekannt"
