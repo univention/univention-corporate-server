@@ -18,7 +18,7 @@ msgstr "--- Bitte wählen ---"
 
 #: umc/js/pkgdb.js:66
 msgid "Find problems related to software package installation"
-msgstr "Findet Probleme mit den aktuell installierten Paketen"
+msgstr "Probleme bezüglich aktuell installierter Pakete finden"
 
 #: umc/js/pkgdb.js:65
 msgid "Identify problems"
@@ -67,11 +67,11 @@ msgstr "Suchen"
 
 #: umc/js/pkgdb.js:58
 msgid "Search for packages with specific software properties"
-msgstr "Sucht Pakete mit speziellen Software-Eigenschaften"
+msgstr "Pakete mit bestimmten Software-Eigenschaften suchen"
 
 #: umc/js/pkgdb.js:50
 msgid "Search for systems with specific software properties"
-msgstr "Sucht Systeme mit speziellen Software-Eigenschaften"
+msgstr "Systeme mit bestimmten Software-Eigenschaften suchen"
 
 #: umc/js/_pkgdb/SearchForm.js:65
 msgid "Search for:"

@@ -13,7 +13,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Manage software installation status of all machines of your domain"
-msgstr "Verwalten der Software-Installationstati der Systeme aus der UCS-Domäne"
+msgstr "Abrufen von Software-Installationstati innerhalb der UCS-Domäne"
+
 
 msgid "Software monitor"
 msgstr "Software-Monitor"

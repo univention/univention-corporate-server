@@ -62,7 +62,7 @@ msgstr "Erfassungsdatum"
 
 #: umc/python/pkgdb/__init__.py:225
 msgid "Member Server"
-msgstr "Member Server"
+msgstr "Memberserver"
 
 #: umc/python/pkgdb/__init__.py:227
 msgid "Mobile Client"
@@ -110,7 +110,7 @@ msgstr "Nicht aktualisierte Systeme"
 
 #: umc/python/pkgdb/__init__.py:211
 msgid "UCS Version"
-msgstr "UCS Version"
+msgstr "UCS-Version"
 
 #: umc/python/pkgdb/__init__.py:233
 msgid "Unknown"
