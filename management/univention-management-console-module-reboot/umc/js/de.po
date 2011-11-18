@@ -34,11 +34,11 @@ msgstr "OK"
 
 #: umc/js/reboot.js:105
 msgid "Please confirm to reboot the computer"
-msgstr "Bitte bestätigen Sie, dass dieser Computer heruntergefahren wird"
+msgstr "Bitte bestätigen Sie den Neustart dieses Computers"
 
 #: umc/js/reboot.js:107
 msgid "Please confirm to shutdown the computer"
-msgstr "Bitte bestätigen Sie den Neustart dieses Computers"
+msgstr "Bitte bestätigen Sie, dass dieser Computer heruntergefahren wird"
 
 #: umc/js/reboot.js:70
 msgid "Reason for this reboot/shutdown"

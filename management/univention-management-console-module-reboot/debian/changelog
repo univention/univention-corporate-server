@@ -1,3 +1,9 @@
+univention-management-console-module-reboot (1.0.18-1) unstable; urgency=low
+
+  * fix r29350 typo (Bug #22848)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 18 Nov 2011 16:57:22 +0100
+
 univention-management-console-module-reboot (1.0.17-1) unstable; urgency=low
 
   * update translation (Bug #22848)
