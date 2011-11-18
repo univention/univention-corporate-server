@@ -476,7 +476,7 @@ msgid "Priority"
 msgstr "Priorität"
 
 #: syntax.py:1038
-msgid "Mail Server"
+msgid "Mail server"
 msgstr "Mail-Server"
 
 #: syntax.py:1049
@@ -504,7 +504,7 @@ msgid "City"
 msgstr "Stadt"
 
 #: syntax.py:1057
-msgid "Weight"
+msgid "Weighting"
 msgstr "Gewichtung"
 
 #: syntax.py:1057
@@ -664,11 +664,11 @@ msgstr "Netzwerk"
 
 #: syntax.py:1601 syntax.py:1614 syntax.py:1628
 msgid "DNS forward zone"
-msgstr "DNS Forward Zone"
+msgstr "DNS-Forward-Zone"
 
 #: syntax.py:1607 syntax.py:1619
 msgid "DNS reverse zone"
-msgstr "DNS Reverse Zone"
+msgstr "DNS-Reverse-Zone"
 
 #: syntax.py:1613
 msgid "DNS Entry"

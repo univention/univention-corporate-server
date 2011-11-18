@@ -159,7 +159,7 @@ layout = [
 			'nameserver'
 		] ),
 	] ),
-	Tab(_('Start of Authority'), _('Primary name server information'), layout = [
+	Tab(_('Start of authority'), _('Primary name server information'), layout = [
 		Group( _( 'General' ), layout = [
 			'contact',
 			'serial',

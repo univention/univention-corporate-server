@@ -1035,7 +1035,7 @@ class keyAndValue(complex):
 	all_required = 1
 
 class dnsMX(complex):
-	subsyntaxes=[(_('Priority'), integer), (_('Mail Server'), dnsNameDot)]
+	subsyntaxes=[(_('Priority'), integer), (_('Mail server'), dnsNameDot)]
 	all_required=1
 
 class dnsSRVName(complex):
@@ -1054,7 +1054,7 @@ class postalAddress( complex ):
 	all_required = True
 
 class dnsSRVLocation(complex):
-	subsyntaxes=[(_('Priority'), integer), (_('Weight'), integer), (_('Port'), integer), (_('Server'), dnsName)]
+	subsyntaxes=[(_('Priority'), integer), (_('Weighting'), integer), (_('Port'), integer), (_('Server'), dnsName)]
 	all_required=1
 
 class unixTime(simple):

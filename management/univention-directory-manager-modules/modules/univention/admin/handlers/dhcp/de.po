@@ -100,8 +100,8 @@ msgstr ""
 "durch Doppelpunkte angegeben werden."
 
 #: host.py:74
-msgid "Fixed IP address"
-msgstr "Feste IP-Adresse"
+msgid "Fixed IP addresses"
+msgstr "Feste IP-Adressen"
 
 #: host.py:75
 msgid ""
@@ -117,7 +117,7 @@ msgid "DHCP: Pool"
 msgstr "DHCP: Pool"
 
 #: pool.py:66
-msgid "Dynamic range"
+msgid "IP range for dynamic assignment"
 msgstr "Dynamischer Bereich"
 
 #: pool.py:76
@@ -203,9 +203,6 @@ msgstr "Definiere einen IP-Adressbereich für die dynamische Adresszuweisung."
 #: subnet.py:49
 msgid "DHCP: Subnet"
 msgstr "DHCP: Subnetz"
-
-#~ msgid "Fixed IP addresses"
-#~ msgstr "Feste IP-Adressen"
 
 #~ msgid "Fixed IP Addresses of the Host"
 #~ msgstr "Feste IP-Adressen des Rechners"

@@ -79,7 +79,7 @@ msgid "Next IP address"
 msgstr "nächste IP-Adresse"
 
 #: network.py:95
-msgid "IP Address Range"
+msgid "IP address range"
 msgstr "IP-Adressbereich"
 
 #: network.py:105

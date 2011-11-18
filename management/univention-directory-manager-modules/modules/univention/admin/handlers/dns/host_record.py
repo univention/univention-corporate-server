@@ -72,7 +72,7 @@ property_descriptions={
 			default=('10800', [])
 		),
 	'a': univention.admin.property(
-			short_description=_('IP Address'),
+			short_description=_('IP addresses'),
 			long_description='',
 			syntax=univention.admin.syntax.ipAddress,
 			multivalue=1,

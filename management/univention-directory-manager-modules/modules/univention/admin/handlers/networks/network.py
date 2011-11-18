@@ -92,7 +92,7 @@ property_descriptions={
 			identifies=0
 		),
 	'ipRange': univention.admin.property(
-			short_description=_('IP Address Range'),
+			short_description=_('IP address range'),
 			long_description='',
 			syntax=univention.admin.syntax.IP_AddressRange,
 			multivalue=1,

@@ -281,7 +281,7 @@ msgstr "Rechnerkonto"
 #: memberserver.py:317 mobileclient.py:293 windows_domaincontroller.py:296
 #: windows.py:287
 msgid "Network settings "
-msgstr "Netzerk-Einstellungen"
+msgstr "Netzwerk-Einstellungen"
 
 #: domaincontroller_backup.py:321 domaincontroller_master.py:321
 #: domaincontroller_slave.py:321 ipmanagedclient.py:203 macos.py:259

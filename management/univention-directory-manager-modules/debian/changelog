@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.194-1) unstable; urgency=low
+
+  * adaptations of captions and translations (Bug #24536)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 18 Nov 2011 14:11:05 +0100
+
 univention-directory-manager-modules (7.0.193-1) unstable; urgency=low
 
   * fixed regression of mailAlternativeAddress (Bug #23976)

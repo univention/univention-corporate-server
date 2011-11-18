@@ -95,7 +95,7 @@ msgstr ""
 
 #: __init__.py:2302
 msgid "DNS forward zone"
-msgstr "DNS Forward Zone"
+msgstr "DNS-Forward-Zone"
 
 # __init__.py:chen"024
 #: __init__.py:2302 __init__.py:2310 __init__.py:2318 __init__.py:2326
@@ -104,7 +104,7 @@ msgstr "Löschen"
 
 #: __init__.py:2310
 msgid "DNS reverse zone"
-msgstr "DNS Reverse Zone"
+msgstr "DNS-Reverse-Zone"
 
 #: __init__.py:2318
 msgid "DHCP"

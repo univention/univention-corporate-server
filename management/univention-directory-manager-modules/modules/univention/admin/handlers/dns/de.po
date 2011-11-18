@@ -132,7 +132,7 @@ msgid "Minimum time to live"
 msgstr "Minimum Time-to-Live"
 
 #: forward_zone.py:146
-msgid "Name server"
+msgid "Name servers"
 msgstr "Nameserver"
 
 #: forward_zone.py:156
@@ -143,12 +143,8 @@ msgstr "Mail Exchanger Rechner"
 msgid "TXT record"
 msgstr "TXT Record"
 
-#: forward_zone.py:174 host_record.py:75
-msgid "IP Address"
-msgstr "IP-Adresse"
-
 #: forward_zone.py:192 forward_zone.py:193 reverse_zone.py:161
-msgid "Start of Authority"
+msgid "Start of authority"
 msgstr "Start of Authority Eintrag"
 
 #: forward_zone.py:192 reverse_zone.py:161

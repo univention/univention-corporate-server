@@ -143,7 +143,7 @@ property_descriptions={
 			default=('10800', [])
 		),
 	'nameserver': univention.admin.property(
-			short_description=_('Name server'),
+			short_description=_('Name servers'),
 			long_description='',
 			syntax=univention.admin.syntax.dnsName,
 			multivalue=1,
@@ -171,7 +171,7 @@ property_descriptions={
 			may_change=1
 		),
 	'a': univention.admin.property(
-			short_description=_('IP Address'),
+			short_description=_('IP addresses'),
 			long_description='',
 			syntax=univention.admin.syntax.ipAddress,
 			multivalue=1,
@@ -189,8 +189,8 @@ layout = [
 			'zonettl'
 		] ),
 	] ),
-	Tab( _( 'Start of Authority' ), _( 'Primary name server information' ), layout = [
-		Group( _( 'Start of Authority' ), layout = [
+	Tab( _( 'Start of authority' ), _( 'Primary name server information' ), layout = [
+		Group( _( 'Start of authority' ), layout = [
 			'contact',
 			'serial',
 			[ 'refresh', 'retry' ],
