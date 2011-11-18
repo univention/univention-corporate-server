@@ -63,8 +63,8 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// generate border layout and add it to the module
 		this._page = new umc.widgets.Page({
-			headerText: this._('Univention Config Registry')
-			//helpText: this._('The Univention Config Registry (UCR) is the central tool that allows to access and edit system-wide properties in a unified manner. These settings can be settings such as a static IP address, DNS forwarders, proxies, hostname etc. When changes are made to UCR variables, depending system configuration files are updated.')
+			headerText: this._('Univention Configuration Registry'),
+			helpText: this._('The Univention Configuration Registry (UCR) is the local database for the configuration of UCS systems to access and edit system-wide properties in a unified manner. Caution: Changing UCR variables directly results in the change of the system configuration. Misconfiguration may cause an usable system!')
 		});
 		this.addChild(this._page);
 
@@ -158,7 +158,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			type: 'ComboBox',
 			name: 'category',
 			value: 'all',
-			description: this._( 'Category the UCR variable should associated with' ),
+			description: this._( 'Category the UCR variable should be associated with' ),
 			label: this._('Category'),
 			staticValues: [
 				{ id: 'all', label: this._('All') }
@@ -169,7 +169,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			type: 'ComboBox',
 			name: 'key',
 			value: 'all',
-			description: this._( 'Select the attribute of a UCR variable that should be search for the given keyword' ),
+			description: this._( 'Select the attribute of a UCR variable that should be searched for the given keyword' ),
 			label: this._( 'Search attribute' ),
 			staticValues: [
 				{ id: 'all', label: this._( 'All' ) },
@@ -250,7 +250,7 @@ dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.Standb
 		}, {
 			type: 'TextBox',
 			name: 'value',
-			description: this._( 'Value of UCR variable' ),
+			description: this._( 'Value of the UCR variable' ),
 			label: this._( 'Value' )
 		}, {
 			type: 'Text',

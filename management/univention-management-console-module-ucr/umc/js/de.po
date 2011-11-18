@@ -51,7 +51,7 @@ msgid "Category"
 msgstr "Kategorie"
 
 #: umc/js/ucr.js:133
-msgid "Category the UCR variable should associated with"
+msgid "Category the UCR variable should be associated with"
 msgstr "Kategorie die der UCR-Variable zugeordnet sein soll"
 
 #: umc/js/ucr.js:77 umc/js/ucr.js:84
@@ -67,9 +67,8 @@ msgid "Description"
 msgstr "Beschreibung"
 
 #: umc/js/ucr.js:219
-#, fuzzy
 msgid "Description of the UCR variable"
-msgstr "Wert der UCR-Variable"
+msgstr "Beschreibung der UCR-Variable"
 
 #: umc/js/ucr.js:220
 msgid "Description:"
@@ -81,7 +80,7 @@ msgstr "Bearbeiten"
 
 #: umc/js/ucr.js:197
 msgid "Edit UCR variable"
-msgstr "Bearbeiten einer UCR-Variable"
+msgstr "UCR-Variable bearbeiten"
 
 #: umc/js/ucr.js:44
 msgid "Entries"
@@ -93,7 +92,7 @@ msgstr "Schlüsselwort"
 
 #: umc/js/ucr.js:155
 msgid "Keyword that should be searched for in the selected attribute"
-msgstr "Schlüsselwort nach dem in dem ausgewählten Attribute gesucht werden"
+msgstr "Schlüsselwort nach dem in dem ausgewählten Attribute gesucht werden soll"
 
 #: umc/js/ucr.js:209
 msgid "Name of UCR variable"
@@ -109,7 +108,7 @@ msgstr "Suchattribut"
 
 #: umc/js/ucr.js:143
 msgid ""
-"Select the attribute of a UCR variable that should be search for the given "
+"Select the attribute of a UCR variable that should be searched for the given "
 "keyword"
 msgstr ""
 "Auswählen des Attributes einer UCR-Variable, das durchsucht werden soll"
@@ -121,12 +120,16 @@ msgstr ""
 
 #: umc/js/ucr.js:39
 msgid ""
-"The Univention Config Registry (UCR) is the central tool that allows to "
-"access and edit system-wide properties in a unified manner. These settings "
-"can be settings such as a static IP address, DNS forwarders, proxies, "
-"hostname etc. When changes are made to UCR variables, depending system "
-"configuration files are updated."
+"The Univention Configuration Registry (UCR) is the local database for the configuration "
+"of UCS systems to access and edit system-wide properties in a unified manner. "
+"Caution: Changing UCR variables directly results in the change of the system "
+"configuration. Misconfiguration may cause an usable system!"
 msgstr ""
+"Univention Configuration Registry (UCR) ist die lokale Datenbank zur Konfiguration"
+"von UCS-Systemen. Mit diesem Modul lassen sich UCR-Variablen anlegen, "
+"löschen und verändern. Achtung: Das Verändern von UCR-Variablen führt direkt zur "
+"Veränderung der Systemkonfiguration. Falsche Werte können das System "
+"unbrauchbar machen!"
 
 #: umc/js/ucr.js:102 umc/js/ucr.js:210
 msgid "UCR variable"
@@ -137,7 +140,7 @@ msgid "Unique name of the UCR variable"
 msgstr "Eindeutiger Name für die UCR-Variable"
 
 #: umc/js/ucr.js:38
-msgid "Univention Config Registry"
+msgid "Univention Configuration Registry"
 msgstr ""
 
 #: umc/js/ucr.js:106 umc/js/ucr.js:148 umc/js/ucr.js:215
@@ -145,7 +148,7 @@ msgid "Value"
 msgstr "Wert"
 
 #: umc/js/ucr.js:214
-msgid "Value of UCR variable"
+msgid "Value of the UCR variable"
 msgstr "Wert der UCR-Variable"
 
 #: umc/js/ucr.js:107
