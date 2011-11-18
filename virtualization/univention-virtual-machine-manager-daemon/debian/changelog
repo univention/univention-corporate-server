@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.72-1) unstable; urgency=low
+
+  * fixed logrotate template (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 17:02:00 +0100
+
 univention-virtual-machine-manager-daemon (1.0.71-1) unstable; urgency=low
 
   * adaptations of captions and translations (Bug #24536)

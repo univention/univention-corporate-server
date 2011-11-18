@@ -7,11 +7,11 @@ name = "virtual-machine-manager-daemon*.log"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 
 print "/var/log/univention/%s {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
 @!@
 	delaycompress
+	sharedscripts
 	postrotate
 		if [ -e /etc/runit/univention-virtual-machine-manager-daemon/supervise/pid ]
 		then
