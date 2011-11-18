@@ -1,3 +1,9 @@
+univention-management-console-module-top (1.0.15-2) unstable; urgency=low
+
+  * Adapted caption and translation (Bug #24724)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Nov 2011 23:37:19 +0100
+
 univention-management-console-module-top (1.0.15-1) unstable; urgency=low
 
   * add copyright headers to JavaScript files (Bug #23210)

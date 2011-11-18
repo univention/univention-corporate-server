@@ -78,7 +78,7 @@ dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		this._page = new umc.widgets.Page({
 			headerText: this._('Process overview'),
-			helpText: this._('This module generates an overview of all running processes. The search function can reduce the number of results. Specifig processes can be selected and terminated. If a process can\'t be normally terminated (using SIGTERM signal), the termination can be forced (using SIGKILL signal).')
+			helpText: this._('This module generates an overview of all running processes. The search function can reduce the number of results. Specified processes can be selected and terminated. If a process can\'t be normally terminated (using SIGTERM signal), the termination can be forced (using SIGKILL signal).')
 		});
 		this.addChild(this._page);
 

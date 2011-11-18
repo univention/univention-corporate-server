@@ -37,7 +37,6 @@ msgid "Entries"
 msgstr "Einträge"
 
 #: umc/js/top.js:70
-#, fuzzy
 msgid "Force terminate"
 msgstr "Beenden erzwingen"
 
@@ -51,7 +50,7 @@ msgstr "Speicher (%)"
 
 #: umc/js/top.js:37
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: umc/js/top.js:82 umc/js/top.js:118
 msgid "PID"
@@ -84,11 +83,11 @@ msgstr "Beenden"
 #: umc/js/top.js:53
 msgid ""
 "This module generates an overview of all running processes. The search "
-"function can reduce the number of results. Specifig processes can be "
+"function can reduce the number of results. Specified processes can be "
 "selected and terminated. If a process can't be normally terminated (using "
 "SIGTERM signal), the termination can be forced (using SIGKILL signal)."
 msgstr ""
-"Dieses Modul erzeugt eine Übersicht aller laufenden Prozesse. Über die "
+"Dieses Modul zeigt alle laufenden Prozesse an. Über die "
 "Suchfunktion kann die Ergebnisliste eingeschränkt werden. Einzelne Prozesse "
 "können ausgewählt und beendet werden. Wenn ein Prozess nicht normal beendet "
 "werden kann (mittels des Signals SIGTERM), kann die Beendigung erzwungen "
@@ -99,7 +98,7 @@ msgid "User"
 msgstr "Benutzer"
 
 #~ msgid "Kill"
-#~ msgstr "Töten"
+#~ msgstr "Beenden"
 
 #~ msgid "Processes killed successfully"
 #~ msgstr "Prozesse würden erfolgreich beendet"
