@@ -21,7 +21,7 @@ msgid ""
 "A default entry with the identifier \"default\" needs to be specified for "
 "each network device."
 msgstr ""
-"A Standardeintrag mit dem Bezeichner \"default\" muss für jedes "
+"Ein Standardeintrag mit dem Bezeichner \"default\" muss für jedes "
 "Netzwerkgerät angegeben werden."
 
 #: umc/python/setup/__init__.py:134

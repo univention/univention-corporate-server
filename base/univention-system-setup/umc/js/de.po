@@ -73,7 +73,7 @@ msgstr ""
 
 #: umc/js/_setup/CertificatePage.js:46
 msgid "Common name for the root SSL certificate"
-msgstr "Common-Name für das Root-SSL-Zertifikat"
+msgstr "Allgemeiner Name (common name) für das Root-SSL-Zertifikat"
 
 #: umc/js/_setup/CertificatePage.js:52
 msgid "Country"
@@ -89,7 +89,7 @@ msgstr "Deaktiviert"
 
 #: umc/js/_setup/LanguagePage.js:57 umc/js/_setup/LanguagePage.js:122
 msgid "Default system locale"
-msgstr "Standard-System-Lokalisierung"
+msgstr "Standard-System-Sprachdefinition"
 
 #: umc/js/_setup/NetworkPage.js:454
 msgid "Domain name server"
@@ -264,7 +264,7 @@ msgstr "Vor"
 
 #: umc/js/setup.js:238
 msgid "No changes have been made."
-msgstr "Keine Änderungen wurden übernommen."
+msgstr "Es wurden keine Änderungen vorgenommen."
 
 #: umc/js/_setup/NetworkPage.js:475
 msgid "No device"
@@ -412,4 +412,4 @@ msgstr "virtuell"
 #~ msgstr "Server-Einstellungen"
 
 #~ msgid "System locales"
-#~ msgstr "Verfügbare System-Locales"
+#~ msgstr "Verfügbare System-Sprachdefinitionen"

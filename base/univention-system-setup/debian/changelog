@@ -1,3 +1,9 @@
+univention-system-setup (5.0.62-2) unstable; urgency=low
+
+  * Adapted caption and translation (Bug #24724)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Nov 2011 23:59:18 +0100
+
 univention-system-setup (5.0.62-1) unstable; urgency=low
 
   * removed mailRelay from basis scripts (Bug #24693)
