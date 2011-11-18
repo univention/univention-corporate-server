@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.220-1) unstable; urgency=low
+
+  * fixed regression of mailAlternativeAddress (Bug #23976)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 18 Nov 2011 11:59:31 +0100
+
 univention-directory-manager-modules (6.0.219-1) unstable; urgency=low
 
   * Consider ldap/master/port (Bug #24100)

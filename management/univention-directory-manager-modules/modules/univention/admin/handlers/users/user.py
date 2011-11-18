@@ -1391,7 +1391,7 @@ mapping.register('description', 'description', None, univention.admin.mapping.Li
 mapping.register('organisation', 'o', None, univention.admin.mapping.ListToString)
 
 mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToLowerString)
-mapping.register('mailAlternativeAddress', 'mailAlternativeAddress', None, univention.admin.mapping.ListToLowerListUniq)
+mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
 mapping.register('mailGlobalSpamFolder', 'mailGlobalSpamFolder', None, univention.admin.mapping.ListToString)
 
 mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
