@@ -1,3 +1,9 @@
+univention-heimdal (5.0.20-1) unstable; urgency=low
+
+  * fixed logrotate template (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:28:20 +0100
+
 univention-heimdal (5.0.19-1) unstable; urgency=low
 
   * Fixed kerberos/allow/weak/crypto handling (Bug #21213)
