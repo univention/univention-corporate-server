@@ -24,6 +24,7 @@ Depends: ${misc:Depends},
  univention-management-console-module-updater,
  univention-management-console-module-setup,
  univention-management-console-module-services,
+ univention-management-console-module-sysinfo,
  univention-management-console-module-packages,
  univention-management-console-module-quota
 Description: UCS Management Console - Web based computer administration tool

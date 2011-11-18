@@ -1,3 +1,11 @@
+univention-management-console (4.0.88-2) unstable; urgency=low
+
+  * add system info module to dependencies
+  * add ACL rule to allow sysinfo module for root
+  (Bug #22927)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 18 Nov 2011 13:36:06 +0100
+
 univention-management-console (4.0.88-1) unstable; urgency=low
 
   * fixed typos in upload handler; Bug #23333
