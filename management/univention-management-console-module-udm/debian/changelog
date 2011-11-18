@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.244-1) unstable; urgency=low
+
+  * added dialog to move objects to different LDAP positions (Bug #23704)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 18 Nov 2011 22:53:12 +0100
+
 univention-management-console-module-udm (1.0.243-1) unstable; urgency=low
 
   * adapt tab title when editing multiple objects at once (Bug #23199)

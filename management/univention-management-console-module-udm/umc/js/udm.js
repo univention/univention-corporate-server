@@ -136,7 +136,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 	// available reports
 	_reports: null,
-	
+
 	// internal flag whether the advanced search is shown or not
 	_isAdvancedSearch: true,
 
@@ -371,6 +371,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 					this.removeObjects(ids);
 				}
 			})
+		}, {
+			name: 'move',
+			label: this._('Move to...'),
+			description: this._( 'Move objects to a different LDAP position.' ),
+			isMultiAction: true,
+			callback: dojo.hitch(this, 'moveObjects')
 		}];
 
 		// the navigation needs a slightly modified store that uses the UMCP query
@@ -642,6 +648,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				})
 			}));
 			menu.addChild(new dijit.MenuItem({
+				label: this._('Move to...'),
+				onClick: dojo.hitch(this, function() {
+					this.moveObjects([this._navContextItem.id], true);
+				})
+			}));
+			menu.addChild(new dijit.MenuItem({
 				label: this._( 'Reload' ),
 				iconClass: 'umcIconRefresh',
 				onClick: dojo.hitch(this, 'reloadTree')
@@ -744,7 +756,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				});
 			}
 			// create report button
-			this.connect( this._grid, 'onFilterDone', 'checkReportButton' );
+			this.connect( this._grid, 'onFilterDone', '_checkReportButton' );
 		}
 	},
 
@@ -810,7 +822,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		}
 	},
 
-	createReport: function () {
+	_createReport: function () {
 		// open the dialog
 		var objects = dojo.map( this._grid.getAllItems(), function( item ) { 
 			return item.$dn$; 
@@ -826,7 +838,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		dialog.show();
 	},
 
-	checkReportButton: function() {
+	_checkReportButton: function() {
 		var items = this._grid.getAllItems();
 
 		if ( items.length && this._reports.length) {
@@ -834,7 +846,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				this._reportButton = this.adopt( umc.widgets.Button, {
 					label: this._( 'Create report' ),
 					iconClass: 'umcIconReport',
-					callback: dojo.hitch( this, 'createReport' )
+					callback: dojo.hitch( this, '_createReport' )
 				} );
 				this._grid._toolbar.addChild( this._reportButton );
 			}
@@ -843,6 +855,117 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			this.orphan( this._reportButton, true );
 			this._reportButton = null;
 		}
+	},
+
+	moveObjects: function(ids, /*Boolean?*/ isContainer) {
+		if (!ids.length) {
+			return;
+		}
+
+		// default values
+		isContainer = isContainer === undefined ? false : isContainer;
+
+		// add message to container widget
+		var objectName = ids.length > 1 ? this.objectNamePlural : this.objectNameSingular;
+		var container = new umc.widgets.ContainerWidget({});
+		container.addChild(new umc.widgets.Text({
+			content: '<p>' + this._('Please select a LDAP position to move %d selected %s to:', ids.length, objectName) + '</p>',
+			style: 'width:300px;'
+		}));
+
+		// create the tree
+		var model = new umc.modules._udm.TreeModel({
+		 	umcpCommand: dojo.hitch(this, 'umcpCommand')
+		});
+		var tree = new umc.widgets.Tree({
+			model: model,
+			persist: false,
+			style: 'width: 300px; height: 350px',
+			// customize the method getIconClass()
+			getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
+				return umc.tools.getIconClass(item.icon || 'udm-container-cn');
+			}
+		});
+		container.addChild(tree);
+
+		// add footer message
+		container.addChild(new umc.widgets.Text({
+			content: '<p>' + this._('Note that moving a container can take some time.') + '</p>',
+			style: 'width:300px;'
+		}));
+		container.startup();
+
+		// cleanup function
+		var _cleanup = function() {
+			container.destroyRecursive();
+		};
+
+		// ask for confirmation
+		umc.dialog.confirm(container, [{
+			name: 'cancel',
+			'default': true,
+			label: this._('Cancel')
+		}, {
+			name: 'move',
+			label: this._('Move %s', objectName)
+		}]).then(dojo.hitch(this, function(response) {
+			if (response != 'move') {
+				_cleanup();
+				return;
+			}
+
+			// check whether a LDAP position has been selected
+			var path = tree.get('path');
+			if (!path || !path.length) {
+				umc.dialog.alert(this._('No LDAP position has been selected.'));
+				_cleanup();
+				return;
+			}
+
+			// prepare data array
+			var params = [];
+			dojo.forEach(ids, function(idn) {
+				params.push({
+					'object': idn,
+					options: { container: path[path.length - 1].id }
+				});
+			}, this);
+
+			// set reloading path to ldap base
+			if (isContainer) {
+				var ldapBase = this._tree.model.getIdentity(this._tree.model.root);
+				this._reloadingPath = ldapBase;
+				this._tree.set('path', [ this._tree.model.root ]);
+			}
+
+			// send UMCP command to move the objects
+			this.standby(true);
+			this.umcpCommand('udm/move', params).then(dojo.hitch(this, function(data) {
+				this.standby(false);
+
+				// check whether everything went allright
+				var allSuccess = true;
+				var msg = '<p>' + this._('Failed to move the following objects:') + '</p><ul>';
+				dojo.forEach(data.result, function(iresult) {
+					allSuccess = allSuccess && iresult.success;
+					if (!iresult.success) {
+						msg += '<li>' + iresult.$dn$ + ': ' + iresult.details + '</li>';
+					}
+				}, this);
+				msg += '</ul>';
+				if (!allSuccess) {
+					umc.dialog.alert(msg);
+				}
+
+				// clear the selected objects
+				this.moduleStore.onChange();
+			}), dojo.hitch(this, function() {
+				this.standby(false);
+			}));
+			
+			// cleanup
+			_cleanup();
+		}));
 	},
 
 	// helper function that converts a path into a string
