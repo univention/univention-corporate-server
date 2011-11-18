@@ -60,9 +60,9 @@ fi
 
 if [ -n "$server_role" ]; then
 	if [ "@%@server/role@%@" = "domaincontroller_master" -o "@%@server/role@%@" = "domaincontroller_backup" ]; then
-		exec /usr/sbin/univention-directory-listener -F -p @%@ldap/server/port@%@ -b "@%@ldap/base@%@" -m "$moduledir" -c "$cachedir" $options -D cn=admin,@%@ldap/base@%@ -y /etc/ldap.secret >>/var/log/univention/listener.log 2>&1
+		exec /usr/sbin/univention-directory-listener -F -b "@%@ldap/base@%@" -m "$moduledir" -c "$cachedir" $options -D cn=admin,@%@ldap/base@%@ -y /etc/ldap.secret >>/var/log/univention/listener.log 2>&1
 	else
-		exec /usr/sbin/univention-directory-listener -F -p @%@ldap/server/port@%@ -b "@%@ldap/base@%@" -m "$moduledir" -c "$cachedir" $options -D "@%@ldap/hostdn@%@" -y /etc/machine.secret >>/var/log/univention/listener.log 2>&1
+		exec /usr/sbin/univention-directory-listener -F -b "@%@ldap/base@%@" -m "$moduledir" -c "$cachedir" $options -D "@%@ldap/hostdn@%@" -y /etc/machine.secret >>/var/log/univention/listener.log 2>&1
 	fi
 else
 	exec /usr/sbin/univention-directory-listener -F -b "@%@ldap/base@%@" -m "$moduledir" -c "$cachedir" $options >>/var/log/univention/listener.log 2>&1

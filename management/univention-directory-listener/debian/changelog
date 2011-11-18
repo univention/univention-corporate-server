@@ -1,3 +1,10 @@
+univention-directory-listener (6.0.19-1) unstable; urgency=low
+
+  * Don't use -p port in run file because the listener himself will
+    determine the correct port in select_server (Bug #23094)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Nov 2011 12:25:25 +0100
+
 univention-directory-listener (6.0.18-1) unstable; urgency=low
 
   * Fixed double free on amd64 (Bug #24273)
