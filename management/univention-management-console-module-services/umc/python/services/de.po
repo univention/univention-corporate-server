@@ -30,7 +30,7 @@ msgstr "Die folgenden Dienste konnten nicht gestoppt werden:"
 
 #: umc/python/services/__init__.py:186
 msgid "Successfully changed start type"
-msgstr "Erfolgreich die Startart geändert"
+msgstr "Die Startart wurde erfolgreich geändert"
 
 #: umc/python/services/__init__.py:130
 msgid "Successfully restarted"

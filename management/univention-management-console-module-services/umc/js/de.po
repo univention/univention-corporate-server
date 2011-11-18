@@ -54,15 +54,15 @@ msgstr "OK"
 
 #: umc/js/services.js:80
 msgid "Please confirm to automatically start the following services: "
-msgstr "Bitte bestätigen Sie die folgenden Dienste automatisch zu starten: "
+msgstr "Bitte bestätigen Sie, die folgenden Dienste automatisch zu starten: "
 
 #: umc/js/services.js:91
 msgid "Please confirm to manually start the following services: "
-msgstr "Bitte bestätigen Sie die folgenden Dienste manuell zu starten: "
+msgstr "Bitte bestätigen Sie, die folgenden Dienste manuell zu starten: "
 
 #: umc/js/services.js:102
 msgid "Please confirm to never start the following services: "
-msgstr "Bitte bestätigen Sie die folgenden Dienste niemals zu starten: "
+msgstr "Bitte bestätigen Sie, die folgenden Dienste niemals zu starten: "
 
 #: umc/js/services.js:68
 msgid "Please confirm to restart the following services: "
@@ -70,11 +70,11 @@ msgstr "Bitte bestätigen Sie die folgenden Dienste neuzustarten: "
 
 #: umc/js/services.js:42
 msgid "Please confirm to start the following services: "
-msgstr "Bitte bestätigen Sie die folgenden Dienste zu starten: "
+msgstr "Bitte bestätigen Sie, die folgenden Dienste zu starten: "
 
 #: umc/js/services.js:55
 msgid "Please confirm to stop the following services: "
-msgstr "Bitte bestätigen Sie die folgenden Dienste zu stoppen: "
+msgstr "Bitte bestätigen Sie, die folgenden Dienste zu stoppen: "
 
 #: umc/js/services.js:64
 msgid "Restart services"

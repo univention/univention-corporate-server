@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Control over system services"
-msgstr "Kontrolle über System-Dienste"
+msgstr "Verwaltung von Systemdiensten"
 
 msgid "System services"
-msgstr "System-Dienste"
+msgstr "Systemdienste"
