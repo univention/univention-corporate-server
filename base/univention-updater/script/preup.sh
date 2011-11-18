@@ -254,9 +254,11 @@ if [ ! "$update_fax_check" = "no" -a ! "$update_fax_check" = "false" -a ! "$upda
 		cp /etc/hylafax/setup.cache /var/spool/hylafax/etc/setup.cache
 	fi
 
-	# delete /etc/hylafax/config.faxCAPI
-	if [ -e "/etc/hylafax/config.faxCAPI" ]; then
-		mv /etc/hylafax/config.faxCAPI /etc/hylafax/config.faxCAPI.bak
+	# delete /etc/hylafax/config.faxCAPI, this causes update erros
+	# it is just a link to /etc/hylafax/modem.conf and will be
+	# recreated during the update
+	if [ -e "/var/spool/hylafax/etc/config.faxCAPI" ]; then
+		rm /var/spool/hylafax/etc/config.faxCAPI
 	fi
 
 	if [ "$fax_is_installed" = "true" ]; then
