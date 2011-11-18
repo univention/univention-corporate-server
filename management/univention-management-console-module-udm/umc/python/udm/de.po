@@ -22,11 +22,11 @@ msgstr ""
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""
-"Es konnte kein UDM-modul für das übergeordnete Objekt %s gefunden werden"
+"Es konnte kein UDM-Modul für das übergeordnete Objekt %s gefunden werden"
 
 #: umc/python/udm/__init__.py:222
 msgid "Could not identify the given LDAP object"
-msgstr "Das LDAP-Object konnte nicht identifiziert werden"
+msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 
 #: umc/python/udm/__init__.py:211
 msgid "Invalid object LDAP DN"
@@ -56,7 +56,7 @@ msgstr "Es wurde mehr als ein Objekt gefunden"
 
 #: umc/python/udm/__init__.py:95
 msgid "No flavor or valid UDM module name specified"
-msgstr "Keine gültige Variante oder existierendes UDM-Modul wurde angegeben"
+msgstr "Keine gültige Variante oder existierendes UDM-Modul wurden angegeben"
 
 #: umc/python/udm/tools.py:58
 msgid "No license has been found."
@@ -171,12 +171,12 @@ msgstr ""
 msgid ""
 "Your license status could not be validated. Thus, you are not eligible to "
 "support and maintenance. If you have bought a license, please contact "
-"Univention or your vendor."
+"Univention or your Univention partner."
 msgstr ""
 "Der Lizenzstatus konnte nicht validiert werden, Sie verwenden zur Zeit eine "
 "Version ohne Support oder Maintenance-Unterstützung durch Univention. Wenn "
 "Sie über eine Lizenz verfügen, wenden Sie sich bitte an Univention oder "
-"einen Univention Partner."
+"Ihren Univention Partner."
 
 #: umc/python/udm/__init__.py:469
 msgid "text file"

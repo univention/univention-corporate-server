@@ -125,7 +125,7 @@ class Instance( Base ):
 			# return a user friendly message
 			check_license(ldap_connection)
 		except udm_errors.licenseNotFound:
-			message = _('License not found. During this session add and modify are disabled.')
+			message = _('License not found. During this session add and modify of objects are disabled.')
 		except udm_errors.licenseAccounts:
 			message = _('You have too many user accounts for your license. During this session add and modify are disabled.')
 		except udm_errors.licenseClients:
@@ -145,7 +145,7 @@ class Instance( Base ):
 		except udm_errors.freeForPersonalUse:
 			message = _('You are currently using the "Free for personal use" edition of Univention Corporate Server.')
 		except udm_errors.licenseGPLversion:
-			message = _('Your license status could not be validated. Thus, you are not eligible to support and maintenance. If you have bought a license, please contact Univention or your vendor.')
+			message = _('Your license status could not be validated. Thus, you are not eligible to support and maintenance. If you have bought a license, please contact Univention or your Univention partner.')
 
 		self.finished( request.id, { 'message' : message } )
 

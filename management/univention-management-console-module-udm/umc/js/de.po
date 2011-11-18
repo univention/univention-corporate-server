@@ -64,7 +64,7 @@ msgstr ""
 
 #: umc/js/_udm/LicenseDialog.js:90
 msgid ""
-"<p>The \"free for personal use\" edition of Univention Corporate Server is a "
+"<p>The \"free for personal use\" edition of Univention Corporate Server (UCS) is a "
 "special software license which allows users free use of the Univention "
 "Corporate Server and software products based on it for private purposes acc. "
 "to § 13 BGB (German Civil Code).</p><p>In the scope of this license, UCS can "
@@ -82,7 +82,7 @@ msgid ""
 "consult our forum, which can be found on the Internet at http://forum."
 "univention.de/.</p>"
 msgstr ""
-"<p>Die \"Free For Personal Use\" Ausgabe von Univention Corporate Server ist "
+"<p>Die \"Free For Personal Use\" Ausgabe von Univention Corporate Server (UCS) ist "
 "eine spezielle Softwarelizenz mit der Verbraucher im Sinne des § 13 BGB die "
 "kostenlose Nutzung von Univention Corporate Server und darauf basierenden "
 "Softwareprodukten für private Zwecke ermöglicht wird.</p>\n"
@@ -232,7 +232,7 @@ msgstr "Bearbeiten"
 
 #: umc/js/udm.js:344
 msgid "Edit in new tab"
-msgstr "Bearbeiten in neuem Tab"
+msgstr "Bearbeiten in neuem Reiter"
 
 #: umc/js/udm.js:318
 #, python-format
@@ -253,10 +253,10 @@ msgstr "Die folgenden Objekte konnten nicht verschoben werden:"
 
 #: umc/js/_udm/CreateReportDialog.js:151
 msgid ""
-"For some reason the report could not be created. Details for the problems "
+"The report could not be created. Details for the problems "
 "can be found in the log files."
 msgstr ""
-"Aus bekannten Gründen konnte der Report nicht erstellt werden. Weitere "
+"Der Report konnte nicht erstellt werden. Weitere "
 "Informationen sind in den Logdateien zu finden."
 
 #: umc/js/_udm/DetailPage.js:540
@@ -281,7 +281,7 @@ msgid ""
 "cannot be edited directly. In order to edit a policy, click on the \"edit\" "
 "button to open a particular policy in a new tab."
 msgstr ""
-"Liste aller Objekteigenschaften, die durch Richtlinien ererbt werden. Die "
+"Liste aller für das Objekt geltender Eigenschaften, die durch Richtlinien ererbt werden. Die "
 "Werte können nicht direkt geändert werden, sondern müssen an den "
 "entsprechenden Richtlinien gesetzt werden. Über den Schalter \"bearbeiten\" "
 "wird ein neuer Reiter mit der entsprechenden Richtlinie geöffnet."
@@ -351,7 +351,7 @@ msgstr "Nur Objekte des gleichen Typs können zusammen bearbeitet werden"
 
 #: umc/js/udm.js:345
 msgid "Open a new tab in order to edit the UDM-object"
-msgstr "Öffnet einen neuen Tab, in dem das UDM-Objekt bearbeitet werden kann."
+msgstr "Öffnet einen neuen Reiter, in dem das UDM-Objekt bearbeitet werden kann."
 
 #: umc/js/_udm/DetailPage.js:312
 msgid "Options describing the basic features of the UDM object"
@@ -419,7 +419,7 @@ msgstr "Report"
 
 #: umc/js/_udm/CreateReportDialog.js:150
 msgid "Report creation has failed"
-msgstr "Reporterstellung ist fehlgeschlagen"
+msgstr "Erstellen des Reports ist fehlgeschlagen"
 
 #: umc/js/_udm/CreateReportDialog.js:84
 #, python-format

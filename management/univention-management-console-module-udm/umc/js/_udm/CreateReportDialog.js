@@ -148,7 +148,7 @@ dojo.declare("umc.modules._udm.CreateReportDialog", [ dijit.Dialog, umc.widgets.
 				title = this._( 'Report has been created' );
 			} else {
 				title = this._( 'Report creation has failed' );
-				message = this._( 'For some reason the report could not be created. Details for the problems can be found in the log files.' );
+				message = this._( 'The report could not be created. Details for the problems can be found in the log files.' );
 			}
 			this.set( 'title', title );
 			this._container.addChild( new umc.widgets.Text( { content: message } ) );
