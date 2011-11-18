@@ -1,3 +1,9 @@
+univention-join (4.0.27-1) unstable; urgency=low
+
+  * fixed logrotate template (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:47:34 +0100
+
 univention-join (4.0.26-1) unstable; urgency=low
 
   * add copyright headers to JavaScript files (Bug #23210)

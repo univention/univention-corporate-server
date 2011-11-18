@@ -5,36 +5,22 @@ import univention.lib.ucrLogrotate
 
 name = "join"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
-@!@
-}
-
-@!@
-import univention.lib.ucrLogrotate
+print "}"
 
 name = "check_join_status"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
-@!@
-}
-
-@!@
-import univention.lib.ucrLogrotate
+print "}"
 
 name = "server-join"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
+print "}"
 @!@
-}
