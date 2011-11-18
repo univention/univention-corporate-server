@@ -357,17 +357,22 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			this.connect( this._optionsWidget, 'onChange', 'onOptionsChanged' );
 		}
 
-		// find property identifying the object
-		umc.tools.forIn( widgets, function( name, widget ) {
-			if ( widget.identifies ) {
-				// connect to onChange and modify title using this.parentWidget.set( 'title', ... )
-				this.connect( widget, 'onChange', dojo.hitch( this, function( value ) {
-					value = dojo.isArray( value ) ? value.join( " " ) : value;
-					this.moduleWidget.set( 'title', this.moduleWidget.defaultTitle + ': ' + value );
-				} ) );
-				return false; // break out of forIn
-			}
-		}, this );
+		if (this._multiEdit) {
+			this.moduleWidget.set( 'title', this.moduleWidget.defaultTitle + ' ' + this._('(multi-edit)'));
+		}
+		else {
+			// find property identifying the object
+			umc.tools.forIn( widgets, function( name, widget ) {
+				if ( widget.identifies ) {
+					// connect to onChange and modify title using this.parentWidget.set( 'title', ... )
+					this.connect( widget, 'onChange', dojo.hitch( this, function( value ) {
+						value = dojo.isArray( value ) ? value.join( " " ) : value;
+						this.moduleWidget.set( 'title', this.moduleWidget.defaultTitle + ': ' + value );
+					} ) );
+					return false; // break out of forIn
+				}
+			}, this );
+		}
 
 		// render the layout for each subtab
 		this._propertySubTabMap = {}; // map to remember which form element is displayed on which subtab

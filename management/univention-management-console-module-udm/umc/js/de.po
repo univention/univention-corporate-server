@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-18 13:51+0100\n"
+"POT-Creation-Date: 2011-11-18 19:56+0100\n"
 "PO-Revision-Date: 2011-11-06 10:24+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_udm/DetailPage.js:1115
+#: umc/js/_udm/DetailPage.js:1125
 #, python-format
 msgid "%(attribute)s: %(message)s\n"
 msgstr ""
@@ -50,6 +50,10 @@ msgstr "(Erweiterte Optionen)"
 #: umc/js/udm.js:789
 msgid "(Simplified options)"
 msgstr "(Vereinfachte Optionen)"
+
+#: umc/js/_udm/DetailPage.js:361
+msgid "(multi-edit)"
+msgstr "(Mehrfachbearbeitung)"
 
 #: umc/js/_udm/CreateReportDialog.js:136
 #, python-format
@@ -139,20 +143,20 @@ msgstr "Alle Eigenschaften"
 msgid "All types"
 msgstr "Alle Objekttypen"
 
-#: umc/js/_udm/DetailPage.js:581
+#: umc/js/_udm/DetailPage.js:586
 msgid "Back to navigation"
 msgstr "Zurück zur Navigation"
 
-#: umc/js/_udm/DetailPage.js:579
+#: umc/js/_udm/DetailPage.js:584
 msgid "Back to search"
 msgstr "Zurück zur Suche"
 
 #: umc/js/udm.js:1040 umc/js/_udm/CreateReportDialog.js:114
-#: umc/js/_udm/DetailPage.js:584
+#: umc/js/_udm/DetailPage.js:589
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/_udm/DetailPage.js:756 umc/js/_udm/DetailPage.js:782
+#: umc/js/_udm/DetailPage.js:766 umc/js/_udm/DetailPage.js:792
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 
@@ -173,7 +177,7 @@ msgstr "Container"
 msgid "Create"
 msgstr "Erstellen"
 
-#: umc/js/_udm/DetailPage.js:545
+#: umc/js/_udm/DetailPage.js:550
 msgid "Create new policy"
 msgstr "Neue Richtlinie"
 
@@ -235,7 +239,7 @@ msgstr "Bearbeiten in neuem Tab"
 msgid "Edit the %s."
 msgstr "%s bearbeiten"
 
-#: umc/js/_udm/DetailPage.js:1117
+#: umc/js/_udm/DetailPage.js:1127
 msgid "Error"
 msgstr "Fehler"
 
@@ -251,7 +255,7 @@ msgstr ""
 "Aus bekannten Gründen konnte der Report nicht erstellt werden. Weitere "
 "Informationen sind in den Logdateien zu finden."
 
-#: umc/js/_udm/DetailPage.js:535
+#: umc/js/_udm/DetailPage.js:540
 msgid "Inherited"
 msgstr "Ererbt"
 
@@ -267,7 +271,7 @@ msgstr "Lizenzimport"
 msgid "License text"
 msgstr "Lizenztext"
 
-#: umc/js/_udm/DetailPage.js:439
+#: umc/js/_udm/DetailPage.js:444
 msgid ""
 "List of all object properties that are inherited by policies. The values "
 "cannot be edited directly. In order to edit a policy, click on the \"edit\" "
@@ -304,7 +308,7 @@ msgstr "%s anlegen"
 msgid "No %(objPlural)s could be found"
 msgstr "Es wurden keine %(objPlural)s gefunden"
 
-#: umc/js/_udm/DetailPage.js:1045
+#: umc/js/_udm/DetailPage.js:1055
 msgid "No changes have been made."
 msgstr "Keine Änderungen wurden vorgenommen."
 
@@ -358,12 +362,12 @@ msgstr ""
 "Bitte wählen Sie einen Container in der Navigations-Leiste aus. Das neue "
 "Objekte wird an dieser Stelle erzeugt."
 
-#: umc/js/_udm/DetailPage.js:669
+#: umc/js/_udm/DetailPage.js:674
 #, python-format
 msgid "Position: <i>%(path)s</i>"
 msgstr "Position: <i>%(path)s</i>"
 
-#: umc/js/_udm/DetailPage.js:438
+#: umc/js/_udm/DetailPage.js:443
 msgid "Properties inherited from policies"
 msgstr "Durch Richtlinien ererbte Eigenschaften"
 
@@ -397,7 +401,7 @@ msgstr "Report für %s"
 msgid "Report has been created"
 msgstr "Report wurde erstellt"
 
-#: umc/js/_udm/DetailPage.js:590
+#: umc/js/_udm/DetailPage.js:595
 msgid "Save changes"
 msgstr "Änderungen speichern"
 
@@ -414,14 +418,14 @@ msgstr "%s suchen"
 msgid "Search in:"
 msgstr "Suche in:"
 
-#: umc/js/_udm/DetailPage.js:538
+#: umc/js/_udm/DetailPage.js:543
 msgid ""
 "Select a policy that should be directly linked to the current UDM object"
 msgstr ""
 "Wählen Sie eine Richtlinie, die direkt mit dem aktuellen UDM-Objekt "
 "verknüpft werden soll"
 
-#: umc/js/_udm/DetailPage.js:537
+#: umc/js/_udm/DetailPage.js:542
 msgid "Select policy configuration"
 msgstr "Richtlinien-Konfiguration"
 
@@ -450,7 +454,7 @@ msgstr ""
 "Das %s kann unter der folgenden Adresse heruntergeladen werden<br><br><a "
 "target=\"_blank\" href=\"%s\">%s Report</a>"
 
-#: umc/js/_udm/DetailPage.js:1187
+#: umc/js/_udm/DetailPage.js:1197
 #, python-format
 msgid "The UDM object could not be saved: %(details)s"
 msgstr "Das UDM-Objekt konnte nicht gespeichert werden: %(details)s"
@@ -476,7 +480,7 @@ msgstr "Der genaue %styp"
 msgid "The exact object type of the new UDM object."
 msgstr "Der genaue Objekttyp des neuen UDM-Objektes."
 
-#: umc/js/_udm/DetailPage.js:1175
+#: umc/js/_udm/DetailPage.js:1185
 msgid "The following UDM objects could not be saved:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gespeichert werden:"
 
@@ -484,11 +488,11 @@ msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gespeichert werden:"
 msgid "The following object(s) could not be deleted:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gelöscht werden:"
 
-#: umc/js/_udm/DetailPage.js:1088
+#: umc/js/_udm/DetailPage.js:1098
 msgid "The following properties could not be validated:"
 msgstr "Die folgenden Eigenschaften konnten nicht validiert werden:"
 
-#: umc/js/_udm/DetailPage.js:1002
+#: umc/js/_udm/DetailPage.js:1012
 msgid "The following properties need to be specified or are invalid:"
 msgstr ""
 "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
@@ -526,7 +530,7 @@ msgstr "Der Wert der Objekteigenschaft, nach der gesucht wird."
 msgid "Type"
 msgstr "Typ"
 
-#: umc/js/_udm/DetailPage.js:668
+#: umc/js/_udm/DetailPage.js:673
 #, python-format
 msgid "Type: <i>%(type)s</i>"
 msgstr "Typ: <i>%(type)s</i>"
@@ -555,7 +559,7 @@ msgstr "Benutzerkonten"
 msgid "Valid product types"
 msgstr "Gültige Produkttypen"
 
-#: umc/js/_udm/DetailPage.js:866
+#: umc/js/_udm/DetailPage.js:876
 msgid ""
 "You are currently editing a policy. Changing its properties affects all "
 "referenced objects and may affect your system globally."
@@ -572,7 +576,7 @@ msgstr "[Erweiterte Einstellungen]"
 msgid "[Options]"
 msgstr "[Optionen]"
 
-#: umc/js/_udm/DetailPage.js:436
+#: umc/js/_udm/DetailPage.js:441
 msgid "[Policies]"
 msgstr "[Richtlinien]"
 
@@ -584,7 +588,7 @@ msgstr "Rechner"
 msgid "computers"
 msgstr "Rechner"
 
-#: umc/js/_udm/DetailPage.js:757 umc/js/_udm/DetailPage.js:783
+#: umc/js/_udm/DetailPage.js:767 umc/js/_udm/DetailPage.js:793
 msgid "edit"
 msgstr "bearbeiten"
 
@@ -612,7 +616,7 @@ msgstr "Netz-Objekt"
 msgid "network objects"
 msgstr "Netz-Objekte"
 
-#: umc/js/_udm/DetailPage.js:742
+#: umc/js/_udm/DetailPage.js:747
 msgid "not defined"
 msgstr "nicht gesetzt"
 

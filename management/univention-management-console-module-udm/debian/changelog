@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.243-1) unstable; urgency=low
+
+  * adapt tab title when editing multiple objects at once (Bug #23199)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 18 Nov 2011 19:57:04 +0100
+
 univention-management-console-module-udm (1.0.242-1) unstable; urgency=low
 
   * DetailPage.updatePolicy: reset values of empty properties; Bug #24709
