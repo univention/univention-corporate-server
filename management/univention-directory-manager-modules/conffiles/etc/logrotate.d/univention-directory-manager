@@ -5,49 +5,29 @@ import univention.lib.ucrLogrotate
 
 name = "sync-memberuid"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
-@!@
-}
-
-@!@
-import univention.lib.ucrLogrotate
+print "}"
 
 name = "check_group_recursion"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
-@!@
-}
-
-@!@
-import univention.lib.ucrLogrotate
+print "}"
 
 name = "directory-manager-cmd"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
-@!@
-}
-
-@!@
-import univention.lib.ucrLogrotate
+print "}"
 
 name = "admin-cmd"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
+print "}"
 @!@
-}
