@@ -1,3 +1,9 @@
+univention-management-console-module-vnc (1.0.5-2) unstable; urgency=low
+
+  * Adapted caption and translation (Bug #24724)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Nov 2011 22:58:51 +0100
+
 univention-management-console-module-vnc (1.0.5-1) unstable; urgency=low
 
   * add copyright headers to JavaScript files (Bug #23210)

@@ -59,7 +59,7 @@ msgstr ""
 
 #: umc/js/vnc.js:216
 msgid "To setup a VNC session a password is required."
-msgstr "Zum Aufbauen einer VNC-Sitzung wird ein Passwort benötigt."
+msgstr "Zum Aufbauen einer VNC-Sitzung muss ein Passwort festgelegt werden."
 
 #: umc/js/vnc.js:33 umc/js/vnc.js:77
 msgid "VNC"
@@ -75,7 +75,7 @@ msgstr "VNC-Server ist nicht gestartet."
 
 #: umc/js/vnc.js:173
 msgid "VNC server is running and password is set."
-msgstr "VNC-Server läuft und Passwort gesetzt."
+msgstr "Der VNC-Server wird ausgeführt und ein Passwort wurde gesetzt."
 
 #~ msgid "Access to a System via VNC Session"
 #~ msgstr "Verbindung zum VNC-Server aufbauen"

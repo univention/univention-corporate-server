@@ -34,4 +34,4 @@ msgstr "Passwort erfolgreich gesetzt"
 
 #: umc/python/vnc/__init__.py:101 umc/python/vnc/__init__.py:162
 msgid "You are not permitted to run this command."
-msgstr "Es ist nicht erlaubt dieses Kommando auszuführen"
+msgstr "Sie dürfen dieses Kommando nicht ausführen"
