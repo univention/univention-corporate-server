@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.75-1) unstable; urgency=low
+
+  * In some cases samba4 and bind9 need a restart to complete
+    (Bug #21213)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Nov 2011 16:21:24 +0100
+
 univention-s4-connector (6.0.74-1) unstable; urgency=low
 
   * Sync password if the S4 password is empty (Bug #21213)

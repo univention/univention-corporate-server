@@ -123,6 +123,8 @@ else										## we are first system to provide this service
 			break
 		else
 			echo -n "."
+			# restart samba4 every 200 seconds
+			expr $count % 200 >/dev/null || /etc/init.d/samba4 restart
 			sleep 1
 		fi;
 		count=$((count+1))
