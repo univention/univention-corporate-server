@@ -233,7 +233,7 @@ class UMCP_Dispatcher( object ):
 class UploadManager( dict ):
 	def add( self, request_id, store ):
 		tmpfile = tempfile.NamedTemporaryFile( prefix = request_id, dir = TEMPDIR, delete = False )
-		if store.file is None:
+		if hasattr(store, 'file') and store.file is None:
 			tmpfile.write( store.value )
 		else:
 			tmpfile.write( store.file.read() )
@@ -316,10 +316,12 @@ class CPgeneric(object):
 
 		req = None
 
+		iframe = False
 		if cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'multipart/form-data' ): # upload
 			if not cherrypy.request.path_info.startswith( '/upload' ):
 				raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Content type and URL do not match')
 			json = kwargs.values()
+			iframe = 'iframe' in kwargs and (kwargs['iframe'] != 'false' and kwargs['iframe'] != False)
 		elif cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'application/json' ): # normal request
 			if not cherrypy.request.headers.get(u"Content-Length", u""):
 				json = ''
@@ -352,7 +354,11 @@ class CPgeneric(object):
 
 		if response.status == umcp.SUCCESS:
 			update_session_cookie(cherrypy.response.cookie, sessionid)
-			return simplejson.dumps(response.body)
+			if iframe:
+				# this is a workaround to make iframe uploads work, they need the textarea field
+				return '<html><body><textarea>' + simplejson.dumps(response.body) + '</textarea></body></html>'
+			else:
+				return simplejson.dumps(response.body)
 
 		# something bad happened
 		self._log('error', 'response status code: %s' % response.status)
@@ -394,7 +400,7 @@ class CPUpload( CPgeneric ):
 	def get_request(self, request, storages ):
 		self._log( 'info', 'Handle upload command' )
 		global _upload_manager
-		custom_command = request.path_info[ len( self.requestprefix ) : ]
+		custom_command = request.path_info[ len( self.requestprefix ) + 1 : ]
 		if custom_command:
 			self._log( 'info', 'Send upload to module function' )
 			req = umcp.Request( 'COMMAND', arguments = [ custom_command ] )
@@ -403,8 +409,9 @@ class CPUpload( CPgeneric ):
 
 		options = []
 		for store in storages:
-			tmpfile = _upload_manager.add( req.id, store )
-			options.append( { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )
+			if isinstance(store, cherrypy._cpcgifs.FieldStorage):
+				tmpfile = _upload_manager.add( req.id, store )
+				options.append( { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )
 
 		req.options = options
 		return req

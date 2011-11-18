@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.215-1) unstable; urgency=low
+
+  * fixed Uploader widget for IE and let webserver support iframe upload
+    workaround (Bug #23333)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 18 Nov 2011 19:08:49 +0100
+
 univention-management-console-frontend (1.0.214-1) unstable; urgency=low
 
   * added missing translations (Bug #23199)

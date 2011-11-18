@@ -3,7 +3,7 @@
 dojo.provide("umc.widgets.Uploader");
 
 dojo.require("dojox.form.Uploader");
-dojo.require("dojox.form.uploader.plugins.HTML5");
+dojo.require("dojox.form.uploader.plugins.IFrame");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.i18n");
@@ -91,7 +91,9 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 			}
 			else {
 				this._updateLabel();
-				this._uploader.upload();
+				this._uploader.upload({
+					iframe: (this._uploader.uploadType === 'iframe') ? true : false
+				});
 			}
 		});
 
