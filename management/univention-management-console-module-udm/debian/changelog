@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.238-1) unstable; urgency=low
+
+  * modify/create: if value is empty and the attribute is not required it
+    is not parsed; Bug #24687
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 18 Nov 2011 09:38:12 +0100
+
 univention-management-console-module-udm (1.0.237-1) unstable; urgency=low
 
   * added mapping for jpegPhoto to ImageUploader (Bug #23333)

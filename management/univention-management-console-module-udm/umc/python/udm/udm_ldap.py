@@ -225,6 +225,8 @@ class UDM_Module( object ):
 
 			# check each element if 'value' is a list
 			if isinstance(value, (tuple, list)) and property_obj.multivalue:
+				if not value and not property_obj.required:
+					continue
 				subResults = []
 				for ival in value:
 					try:
@@ -234,6 +236,8 @@ class UDM_Module( object ):
 				obj[ property_name ] = subResults
 			# otherwise we have a single value
 			else:
+				if not value and not property_obj.required:
+					continue
 				try:
 					obj[ property_name ] = property_obj.syntax.parse( value )
 				except ( udm_errors.valueInvalidSyntax, udm_errors.valueError ), e:
@@ -344,12 +348,7 @@ class UDM_Module( object ):
 				obj.policies = ldap_object[ '$policies$' ].values()
 				del ldap_object[ '$policies$' ]
 
-			MODULE.info( 'Map attributes ...' )
 			self._map_properties( obj, ldap_object )
-			MODULE.info( 'Mapped attributes' )
-
-			# if '$policies$' in ldap_object:
-			# 	obj.policies = ldap_object[ '$policies$' ].values()
 
 			obj.modify()
 		except udm_errors.base, e:
