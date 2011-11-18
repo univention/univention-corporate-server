@@ -90,7 +90,7 @@ then
 fi
 
 univention-config-registry set \
-	samba4/debug/level?2 \
+	samba/debug/level?2 \
 	samba4/sysvol/sync/jitter?60 \
 	samba4/service/smb?'smbd' \
 	samba4/service/nmb?'nmbd' \

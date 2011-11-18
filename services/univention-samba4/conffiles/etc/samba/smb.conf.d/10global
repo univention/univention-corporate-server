@@ -3,7 +3,7 @@
 ; ---------------------<10global>------------------------
 [global]
 @!@
-print '\tdebug level\t= %s\n' % configRegistry['samba4/debug/level']
+print '\tdebug level\t= %s\n' % configRegistry['samba/debug/level']
 
 if configRegistry.get('samba/netbios/name'):
 	print '\tnetbios name\t= %s' % configRegistry['samba/netbios/name']
