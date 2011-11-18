@@ -18,8 +18,8 @@ msgstr "System konnte nicht neugestartet/heruntergefahren werden"
 
 #: umc/module/reboot/__init__.py:53
 msgid "The system is going down for reboot NOW with following message: "
-msgstr "Das System startet JETZT neu, mit folgender Systemmeldung: "
+msgstr "Das System startet JETZT mit folgender Systemmeldung neu: "
 
 #: umc/module/reboot/__init__.py:49
 msgid "The system is going down for system halt NOW with following message: "
-msgstr "Das System fährt JETZT herunter, mit folgender Systemmeldung: "
+msgstr "Das System fährt JETZT mit folgender Systemmeldung herunter: "

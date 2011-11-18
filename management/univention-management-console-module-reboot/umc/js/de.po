@@ -49,8 +49,8 @@ msgid "Reboot"
 msgstr "Neustarten"
 
 #: umc/js/reboot.js:54
-msgid "Reboot/shutdown the system"
-msgstr "System neustarten/herunterfahren"
+msgid "Reboot or shutdown the system"
+msgstr "System neustarten oder herunterfahren"
 
 #: umc/js/reboot.js:65
 msgid "Stop"
@@ -62,6 +62,6 @@ msgid ""
 "optionally given message will be displayed on the console and written to the "
 "syslog."
 msgstr ""
-"Mit diesem Modul lässt sich das System aus der Ferne Neustarten oder "
-"Herunterfahren. Der optional angegebene Grund wird beim Ausführen des "
-"Befehls auf der Konsole ausgegeben sowie in die Syslog geschrieben."
+"Mit diesem Modul kann das System neugestartet oder heruntergefahren "
+"werden. Die optional angegebene Nachricht wird auf der Konsole angezeigt "
+"und in das Syslog geschrieben."

@@ -16,4 +16,4 @@ msgid "Reboot"
 msgstr "Neustarten"
 
 msgid "System reboot or halt"
-msgstr "System Neustarten oder Herunterfahren"
+msgstr "System neu starten oder herunterfahren"
