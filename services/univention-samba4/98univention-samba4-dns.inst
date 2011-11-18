@@ -57,6 +57,8 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ] && [ "$dns_backend" != "samba4" ] && [ -n "
 			break
 		else
 			echo -n "."
+			# restart samba4 every 200 seconds
+			expr $count % 200 >/dev/null || /etc/init.d/samba4 restart
 			sleep 1
 		fi;
 		count=$((count+1))

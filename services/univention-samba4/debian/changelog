@@ -1,3 +1,10 @@
+univention-samba4 (1.0.109-1) unstable; urgency=low
+
+  * In some cases samba4 and bind9 need a restart to complete
+    (Bug #21213)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Nov 2011 16:21:47 +0100
+
 univention-samba4 (1.0.108-1) unstable; urgency=low
 
   * Rename samba4/debug/level to samba/debug/level (Bug #23929)
