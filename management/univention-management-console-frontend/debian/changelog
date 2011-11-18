@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.213-1) unstable; urgency=low
+
+  * umc.store: fixed chaining transactions using dojo.Deferred, fixed returning
+    results
+  * umc.render: fixed problems with disabling fields
+    (Bug #23199)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 18 Nov 2011 13:44:09 +0100
+
 univention-management-console-frontend (1.0.212-1) unstable; urgency=low
 
   * adjust umcPopup styles; Bug #22893

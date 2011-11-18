@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-17 18:45+0100\n"
+"POT-Creation-Date: 2011-11-17 23:12+0100\n"
 "PO-Revision-Date: 2011-11-01 20:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,7 +116,7 @@ msgstr "Möchten Sie sich wirklich abmelden?"
 msgid "English"
 msgstr "Englisch"
 
-#: umc/widgets/Uploader.js:89
+#: umc/widgets/Uploader.js:90
 #, python-format
 msgid "File cannot be uploaded, its maximum size may be %.1f MB."
 msgstr ""
@@ -417,7 +417,7 @@ msgstr ""
 msgid "Upload new image"
 msgstr ""
 
-#: umc/widgets/Uploader.js:151
+#: umc/widgets/Uploader.js:152
 msgid "Uploading..."
 msgstr ""
 

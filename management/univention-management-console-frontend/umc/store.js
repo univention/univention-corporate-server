@@ -301,7 +301,8 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 	_commitTransactions: function() {
 		// perform the transactions group-wise, the order of the command groups is respected,
 		// a group of commands is submitted after the preceding one succeeded.
-		var deferred = null;
+		var deferred = new dojo.Deferred();
+		deferred.resolve();
 		var results = [];
 		this._doingTransaction = false;
 		this._noEvents = true; // switch off event notifications
@@ -310,50 +311,36 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 			// check whether the data is modified
 			dataModified = dataModified || 'remove' == igroup.type || 'put' == igroup.type || 'add' == igroup.type;
 
-			// execute group as one command
-			if (0 === i) {
-				// the initial deferred command
-				deferred = this._genericMultiCmd(igroup.type, igroup.params).then(function(data) {
-					results[i] = data;
+			// chain all deferred commands
+			deferred = deferred.then(dojo.hitch(this, function(data) {
+				return this._genericMultiCmd(igroup.type, igroup.params).then(function(data) {
+					results = results.concat(data);
 					//console.log(dojo.replace('# deferred: i={0} data={1}', [i, String(data)]));
 					return null;
 				});
-			}
-			else {
-				// chain all deferred commands
-				deferred = deferred.then(function(data) {
-					this._genericMultiCmd(igroup.type, igroup.params).then(function(data) {
-						results[i] = data;
-						//console.log(dojo.replace('# deferred: i={0} data={1}', [i, String(data)]));
-						return null;
-					});
-				});
-			}
-
+			}));
 		}));
 
-		if (deferred) {
-			// switch back on events
-			this._noEvents = false;
-		} 
-		else {
+		var _cleanup = dojo.hitch(this, function() {
 			// switch back on events and send onChange event
-			deferred = deferred.then(dojo.hitch(this, function() {
-				this._noEvents = false;
-				if (dataModified) {
-					this.onChange();
-				}
-			}));
-		}
+			this._noEvents = false;
+			if (dataModified) {
+				this.onChange();
+			}
 
-		// remove all transactions 
-		this._groupedTransactions = [];
+			// remove all transactions 
+			this._groupedTransactions = [];
 
-		// chain a final deferred that returns all results
-		deferred = deferred.then(function() {
-			//console.log(dojo.replace('# deferred: results={0}', [String(results)]));
-			return results;
 		});
+
+		deferred = deferred.then(dojo.hitch(this, function() {
+			// clean up
+			_cleanup();
+
+			// return all results
+			return results;
+		}), _cleanup);
+
 		return deferred;
 	},
 

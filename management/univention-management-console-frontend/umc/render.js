@@ -243,6 +243,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 						label = new umc.widgets.LabelPane({
 							label: widget.label,
 							content: widget,
+							disabled: widget.disabled,
 							style: (widget.align ? 'float: ' + widget.align +';' : '' ) + (widget.style || '')
 						});
 						// add show and hide function to widget
@@ -266,6 +267,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 							label = new umc.widgets.LabelPane({
 								label: '&nbsp;',
 								content: button,
+								disabled: button.disabled,
 								style: button.align ? 'float: ' + button.align : ''
 							});
 							elContainer.addChild(label);
